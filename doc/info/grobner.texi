@@ -12,7 +12,7 @@
 To use the following functions you must load the @file{grobner.lisp} package.
 
 @example
-load(grobner);
+load("grobner");
 @end example
 
 @noindent

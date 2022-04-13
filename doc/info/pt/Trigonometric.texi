@@ -100,7 +100,7 @@ para funções trigonométricas inversas.  Junto com regras
 já conhecidas para Maxima, os seguintes ângulos estão completamente implementados:
 @code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, e @code{%pi/2}.  
 Os ângulos correspondentes nos outros três quadrantes estão também disponíveis.  
-Faça @code{load(atrig1);} para usá-lo.
+Faça @code{load("atrig1");} para usá-lo.
 
 @end defvr
 

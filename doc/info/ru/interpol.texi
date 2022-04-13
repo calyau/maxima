@@ -54,7 +54,7 @@
 Примеры:
 
 @example
-(%i1) load(interpol)$
+(%i1) load("interpol")$
 (%i2) p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$
 (%i3) lagrange(p);
                  4        3         2
@@ -77,7 +77,7 @@
                      420       210         420        105       5
 (%i6) %,numer;
 (%o6) [- 1.567534999999992, 10.9366573451538, 2.89319655125692]
-(%i7) load(draw)$  /* load draw package */
+(%i7) load("draw")$  /* load draw package */
 (%i8) /* Plot the polynomial together with points */
       draw2d(
         color      = red,
@@ -133,7 +133,7 @@
 
 Примеры:
 @example
-(%i1) load(interpol)$
+(%i1) load("interpol")$
 (%i2) p: matrix([7,2],[8,3],[1,5],[3,2],[6,7])$
 (%i3) linearinterpol(p);
         13   3 x
@@ -159,7 +159,7 @@
                             21    3
 (%i6) %,numer;
 (%o6)  [2.3, 2.952380952380953, 2.235987755982989]
-(%i7) load(draw)$  /* load draw package */
+(%i7) load("draw")$  /* load draw package */
 (%i8)  /* Plot the polynomial together with points */
        draw2d(
          color      = red,
@@ -222,7 +222,7 @@
 
 Примеры:
 @example
-(%i1) load(interpol)$
+(%i1) load("interpol")$
 (%i2) p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$
 (%i3) /* Unknown first derivatives at the extremes
          is equivalent to natural cubic splines */
@@ -248,7 +248,7 @@
 (%i5) /* Some evaluations */
       map(f,[2.3,5/7,%pi]), numer;
 (%o5) [1.991460766423356, 5.823200187269903, 2.227405312429507]
-(%i6) load(draw)$  /* load draw package */
+(%i6) load("draw")$  /* load draw package */
 (%i7) /* Plotting interpolating function */
       draw2d(
         color      = red,

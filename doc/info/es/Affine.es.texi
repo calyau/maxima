@@ -20,7 +20,7 @@ donde todas las @var{a_1}, ..., @var{a_n} están exentas de @var{x_1}, ..., @var
 La función @code{fast_linsolve} es más rápida que @code{linsolve} para sistemas de ecuaciones con coeficientes
 dispersos.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @deffn {Función} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
@@ -39,7 +39,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 combinación  polinómica de los elementos de 
 @var{expr_1}, ..., @var{expr_m}.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
@@ -56,20 +56,20 @@ completar el procedimiento.
 El grado es el devuelto por @code{nc_degree}. Éste a su vez depende de los pesos 
 de las variables individuales.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @deffn {Función} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Asigna los pesos @var{w_1}, ..., @var{w_n} a @var{x_1}, ..., @var{x_n}, respectivamente.
 Estos pesos son los utilizados en el cálculo de @code{nc_degree}.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @deffn {Función} nc_degree (@var{p})
 Devuelve el grado de un polinomio no conmutativo @var{p}. Véase @code{declare_weights}.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
@@ -77,7 +77,7 @@ Antes de utilizar esta función ejecútese @code{load(affine)}.
 Devuelve 0 si y sólo si  @var{f} está en el ideal generado por las ecuaciones, esto es,
 si y sólo si @var{f} es una combinación lineal de los elementos de las ecuaciones.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @deffn {Función} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
@@ -91,7 +91,7 @@ fast_central_elements ([x, y], 2);
 [y.y, x.x];
 @end example
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @c THIS IS NOT AT ALL CLEAR
@@ -104,20 +104,20 @@ Si éste es de dimensión global finita, entonces debería usarse @code{hilbert}
 no se conoce la dimensiones de los monomios, no se debería especificar una @code{rank_function}.
 Un tercer argumento opcional es @code{reset}.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @deffn {Función} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
 Devuelve la lista de monomios independientes. @c FALTA COMPLETAR ESTE PARRAFO (Mario)
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 
 @deffn {Función} monomial_dimensions (@var{n})
 Calcula el desarrollo de Hilbert de grado @var{n} para el algebra actual.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @deffn {Función} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
@@ -125,7 +125,7 @@ Hace una lista de los coeficientes de los polinomios no conmutativos @var{p_1}, 
 de los monomios no conmutativos @var{m_1}, ..., @var{m_n}. Los coeficientes deben escalares. Hágase uso 
 de @code{list_nc_monomials} para construir la lista de monomios.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @deffn {Función} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
@@ -133,7 +133,7 @@ Antes de utilizar esta función ejecútese @code{load(affine)}.
 Devuelve  una lista de los monomios no conmutativos que aparecen en el polinomio  @var{p}
 o una lista de polinomios en @var{p_1}, ..., @var{p_n}.
 
-Antes de utilizar esta función ejecútese @code{load(affine)}.
+Antes de utilizar esta función ejecútese @code{load("affine")}.
 @end deffn
 
 @c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION

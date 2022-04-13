@@ -979,7 +979,6 @@
    "sprint"
    "sqfr"
    "sqrt"
-   "srrat"
    "sstatus"
    "status"
    "string"

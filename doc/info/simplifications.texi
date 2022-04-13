@@ -288,7 +288,7 @@ Removes part @var{n} from the expression @var{expr}.
 If @var{n} is a list of the form @code{[@var{l}, @var{m}]}
 then parts @var{l} thru @var{m} are removed.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -302,7 +302,7 @@ To use this function write first @code{load(functs)}.
 Returns the Wronskian matrix of the list of expressions [@var{f_1}, ..., @var{f_n}] in the variable @var{x}.
 The determinant of the Wronskian matrix is the Wronskian determinant of the list of expressions.
 
-To use @code{wronskian}, first @code{load(functs)}. Example:
+To use @code{wronskian}, first @code{load("functs")}. Example:
 
 @c ===beg===
 @c load ("functs")$
@@ -333,7 +333,7 @@ To use @code{wronskian}, first @code{load(functs)}. Example:
 @deffn {Function} tracematrix (@var{M})
 Returns the trace (sum of the diagonal elements) of matrix @var{M}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -347,7 +347,7 @@ Multiplies numerator and denominator of @var{z} by the complex conjugate of deno
 thus rationalizing the denominator.
 Returns canonical rational expression (CRE) form if given one, else returns general form.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -365,7 +365,7 @@ To use this function write first @code{load(functs)}.
 Returns @code{true} if @var{expr} is nonzero and @code{freeof (@var{x}, @var{expr})} returns @code{true}.
 Returns @code{false} otherwise.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -380,7 +380,7 @@ where @var{a} is nonzero, and @var{a} and @var{b} are free of @var{x},
 @code{linear} returns a list of three equations, one for each of the three formal
 variables @var{b}, @var{a}, and @var{x}. Otherwise, @code{linear} returns @code{false}.
 
-@code{load(antid)} loads this function.
+@code{load("antid")} loads this function.
 
 Example:
 
@@ -424,7 +424,7 @@ function @mref{ezgcd} to divide the polynomials by the greatest common divisor.
 When @code{takegcd} is @code{false}, @code{gcdivide} returns the ratio
 @code{@var{p}/@var{q}}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdex} and
 @mrefdot{poly_gcd}
@@ -432,7 +432,7 @@ See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdex} and
 Example:
 
 @example
-(%i1) load(functs)$
+(%i1) load("functs")$
 
 (%i2) p1:6*x^3+19*x^2+19*x+6; 
                         3       2
@@ -473,7 +473,7 @@ Example:
 Returns the @var{n}-th term of the arithmetic series
 @code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -487,7 +487,7 @@ To use this function write first @code{load(functs)}.
 Returns the @var{n}-th term of the geometric series
 @code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -501,7 +501,7 @@ To use this function write first @code{load(functs)}.
 Returns the @var{n}-th term of the harmonic series
 @code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -514,7 +514,7 @@ To use this function write first @code{load(functs)}.
 @deffn {Function} arithsum (@var{a}, @var{d}, @var{n})
 Returns the sum of the arithmetic series from 1 to @var{n}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -529,7 +529,7 @@ Returns the sum of the geometric series from 1 to @var{n}.  If @var{n} is
 infinity (@code{inf}) then a sum is finite only if the absolute value
 of @var{r} is less than 1.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -543,7 +543,7 @@ To use this function write first @code{load(functs)}.
 Returns the Gaussian probability function
 @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -557,7 +557,7 @@ To use this function write first @code{load(functs)}.
 Returns the Gudermannian function
 @code{2*atan(%e^x)-%pi/2}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -571,7 +571,7 @@ To use this function write first @code{load(functs)}.
 Returns the inverse Gudermannian function
 @code{log (tan (%pi/4 + x/2))}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -584,7 +584,7 @@ To use this function write first @code{load(functs)}.
 @deffn {Function} vers (@var{x})
 Returns the versed sine @code{1 - cos (x)}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -597,7 +597,7 @@ To use this function write first @code{load(functs)}.
 @deffn {Function} covers (@var{x})
 Returns the coversed sine @code{1 - sin (@var{x})}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -610,7 +610,7 @@ To use this function write first @code{load(functs)}.
 @deffn {Function} exsec (@var{x})
 Returns the exsecant @code{sec (@var{x}) - 1}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -623,7 +623,7 @@ To use this function write first @code{load(functs)}.
 @deffn {Function} hav (@var{x})
 Returns the haversine @code{(1 - cos(x))/2}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -638,7 +638,7 @@ To use this function write first @code{load(functs)}.
 Returns the number of combinations of @var{n} objects
 taken @var{r} at a time.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -653,7 +653,7 @@ To use this function write first @code{load(functs)}.
 Returns the number of permutations of @var{r} objects
 selected from a set of @var{n} objects.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 @opencatbox{Categories:}
 @category{Package functs}
@@ -673,7 +673,7 @@ for inequalities.
 Example session:
 
 @c ===beg===
-@c load(ineq)$
+@c load("ineq")$
 @c a>=4;  /* a sample inequality */
 @c (b>c)+%; /* add a second, strict inequality */
 @c 7*(x<y); /* multiply by a positive number */
@@ -692,7 +692,7 @@ Example session:
 @c %,pred;
 @c ===end===
 @example
-(%i1) load(ineq)$
+(%i1) load("ineq")$
 tellsimp: warning: rule will treat '+
                           ' as noncommutative and nonassociative.
 tellsimp: warning: rule will treat '+

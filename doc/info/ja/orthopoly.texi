@@ -42,7 +42,7 @@ University of Nebraska at Kearney (UNK)のBarton Willisが
 
 @subsection Getting Started with orthopoly
 
-@code{load (orthopoly)}は@code{orthopoly}パッケージをロードします。
+@code{load ("orthopoly")}は@code{orthopoly}パッケージをロードします。
 
 3次のLegendre多項式を見つけるには、
 
@@ -289,7 +289,7 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 浮動小数点評価に関しては不適当です。
 以下は例です。
 
-@c ACTUALLY NEEDS load(orthopoly); BEFORE ANYTHING ELSE
+@c ACTUALLY NEEDS load("orthopoly"); BEFORE ANYTHING ELSE
 @c ===beg===
 @c p : jacobi_p (100, 2, 3, x)$
 @c subst (0.2, x, p);

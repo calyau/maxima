@@ -1,15 +1,15 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /bode.texi/1.2/Sat Jun  2 00:13:11 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para bode::
+* Funções e Variáveis Definidas para bode::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para bode,  , bode, bode
-@section Funç@~{o}es e Vari@'{a}veis Definidas para bode
+@node Funções e Variáveis Definidas para bode,  , bode, bode
+@section Funções e Variáveis Definidas para bode
 
 
-@deffn {Funç@~{a}o} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
-Funç@~{a}o para desenhar gr@'{a}ficos de ganho para Bode.
+@deffn {Função} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+Função para desenhar gráficos de ganho para Bode.
 
 Exemplos (1 a 7 provenientes de 
 @example
@@ -54,12 +54,12 @@ http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
 (%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
 @end example
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load("bode")}. Veja tamb@'{e}m @code{bode_phase}
+Para usar essa função escreva primeiramente @code{load("bode")}. Veja também @code{bode_phase}
 @end deffn
 
 
-@deffn {Funç@~{a}o} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
-Funç@~{a}o para desenhar gr@'{a}ficos de fase para Bode
+@deffn {Função} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+Função para desenhar gráficos de fase para Bode
 
 Exemplos (1 a 7 provenientes de
 @example
@@ -110,6 +110,7 @@ http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
               bode_phase (H8 (s), [w, 1/1000, 1000]));
 @end example
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load("bode")}. Veja tamb@'{e}m @code{bode_gain}
+Para usar essa função escreva primeiramente @code{load("bode")}. Veja também @code{bode_gain}
 @end deffn
+
 

@@ -249,7 +249,7 @@ Discrete distributions:
 
 パッケージ @code{distrib}を利用するには、初めに
 @example
-(%i1) load(distrib)$
+(%i1) load("distrib")$
 @end example
 とタイプしてそれをロードする必要があります。
 
@@ -270,7 +270,7 @@ Discrete distributions:
 
 @deffn {関数} pdf_normal (@var{x},@var{m},@var{s})
 @math{s>0}で @math{Normal(m,s)}(正規)確率変数の密度函数の @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -284,11 +284,11 @@ Discrete distributions:
 この関数はMaximaの組み込み誤差関数 @code{erf}を使って定義されます。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(s>0)$ cdf_normal(x,m,s);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(s>0)$ cdf_normal(x,m,s);
                              x - m
                        erf(---------)
@@ -310,15 +310,15 @@ Discrete distributions:
 @math{s>0}で @math{Normal(m,s)}(正規)確率変数の @var{q}分位数を返します。
 言い換えると、これは @code{cdf_normal}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_normal(95/100,0,1);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_normal(95/100,0,1);
                                       9
 (%o2)             sqrt(2) inverse_erf(--)
@@ -336,7 +336,7 @@ Discrete distributions:
 
 @deffn {関数} mean_normal (@var{m},@var{s})
 @math{s>0}で @math{Normal(m,s)}(正規)確率変数の平均、すなわち @var{m}を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -347,7 +347,7 @@ Discrete distributions:
 
 @deffn {関数} var_normal (@var{m},@var{s})
 @math{s>0}で @math{Normal(m,s)}(正規)確率変数の分散、すなわち @var{s^2}を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -357,7 +357,7 @@ Discrete distributions:
 
 @deffn {関数} std_normal (@var{m},@var{s})
 @math{s>0}で @math{Normal(m,s)}(正規)確率変数の分散、すなわち @var{s}を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -368,7 +368,7 @@ Discrete distributions:
 
 @deffn {関数} skewness_normal (@var{m},@var{s})
 @math{s>0}で @math{Normal(m,s)}(正規)確率変数の歪度を返します。それは常に0に等しいです。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -379,7 +379,7 @@ Discrete distributions:
 
 @deffn {関数} kurtosis_normal (@var{m},@var{s})
 @math{s>0}で @math{Normal(m,s)}(正規)確率変数の尖度を返します。それは常に0に等しいです。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -397,7 +397,7 @@ Discrete distributions:
 これはBox-Muellerアルゴリズムの実装です。
 Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesleyに記載されています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -409,7 +409,7 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 
 @deffn {関数} pdf_student_t (@var{x},@var{n})
 @math{n>0}自由度のStudent確率変数 @math{t(n)}の密度函数の @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -422,12 +422,12 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 @math{n>0}自由度のStudent確率変数 @math{t(n)}の分布函数の @var{x}での値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_student_t(1/2, 7/3);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_student_t(1/2, 7/3);
                                          7  1  28
              beta_incomplete_regularized(-, -, --)
@@ -449,7 +449,7 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 @math{n>0}自由度のStudent確率変数 @math{t(n)}の @var{q}-分位数を返します。
 言い換えると、これは @code{cdf_student_t}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -461,7 +461,7 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 @deffn {関数} mean_student_t (@var{n})
 @math{n>0}自由度のStudent確率変数 @math{t(n)}の平均を返します。
 それはいつも0に等しいです。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -474,11 +474,11 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 @math{n>2}自由度のStudent確率変数 @math{t(n)}の分散を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(n>2)$  var_student_t(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(n>2)$  var_student_t(n);
                                 n
 (%o3)                         -----
@@ -494,7 +494,7 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 
 @deffn {関数} std_student_t (@var{n})
 @math{n>2}自由度のStudent確率変数 @math{t(n)}の標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -506,7 +506,7 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 @deffn {関数} skewness_student_t (@var{n})
 @math{n>3}自由度のStudent確率変数 @math{t(n)}の歪度係数を返します。
 それはいつも0に等しいです。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -517,7 +517,7 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 
 @deffn {関数} kurtosis_student_t (@var{n})
 @math{n>4}自由度のStudent確率変数 @math{t(n)}の尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -550,7 +550,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
 は @var{n}自由度のStudent確率変数 @math{t(n)}であるという事実に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -563,17 +563,17 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {関数} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
 @math{n>0}自由度で非中心度パラメータ @math{ncp}を持つ
 非中心Student確率変数 @math{nc_t(n,ncp)}の密度函数の@var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 時々、最終結果を得るために余分な仕事が必要となります。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c expand(pdf_noncentral_student_t(3,5,0.1));
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) expand(pdf_noncentral_student_t(3,5,0.1));
        .01370030107589574 sqrt(5)
 (%o2)  --------------------------
@@ -604,12 +604,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 そうでなければ、名目上の式を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_noncentral_student_t(-2,5,-5);
 @c cdf_noncentral_student_t(-2.0,5,-5);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_noncentral_student_t(-2,5,-5);
 (%o2) cdf_noncentral_student_t(- 2, 5, - 5)
 (%i3) cdf_noncentral_student_t(-2.0,5,-5);
@@ -628,7 +628,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 非中心Student確率変数 @math{nc_t(n,ncp)}の@var{q}-分位数を返します。
 言い換えると、これは @code{cdf_noncentral_student_t}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -640,14 +640,14 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {関数} mean_noncentral_student_t (@var{n},@var{ncp})
 @math{n>0}自由度で非中心度パラメータ @math{ncp}を持つ
 非中心Student確率変数 @math{nc_t(n,ncp)}の平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c (assume(df>1), mean_noncentral_student_t(df,k));
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) (assume(df>1), mean_noncentral_student_t(df,k));
                    df - 1
              gamma(------) sqrt(df) k
@@ -668,7 +668,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {関数} var_noncentral_student_t (@var{n},@var{ncp})
 @math{n>2}自由度で非中心度パラメータ @math{ncp}を持つ
 非中心Student確率変数 @math{nc_t(n,ncp)}の分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -680,7 +680,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {関数} std_noncentral_student_t (@var{n},@var{ncp})
 @math{n>2}自由度で非中心度パラメータ @math{ncp}を持つ
 非中心Student確率変数 @math{nc_t(n,ncp)}の標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -692,7 +692,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {関数} skewness_noncentral_student_t (@var{n},@var{ncp})
 @math{n>3}自由度で非中心度パラメータ @math{ncp}を持つ
 非中心Student確率変数 @math{nc_t(n,ncp)}の歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -704,7 +704,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {関数} kurtosis_noncentral_student_t (@var{n},@var{ncp})
 @math{n>3}自由度で非中心度パラメータ @math{ncp}を持つ
 非中心Student確率変数 @math{nc_t(n,ncp)}の尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -738,7 +738,7 @@ $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 は @var{n}自由度で非中心度パラメータ @math{ncp}を持つ
 非中心Student確率変数 @math{nc_t(n,ncp)}であるという事実に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -757,12 +757,12 @@ $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 ガンマ密度に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_chi2(x,n);
 @c assume(x>0, n>0)$  pdf_chi2(x,n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_chi2(x,n);
                                     n
 (%o2)                  pdf_gamma(x, -, 2)
@@ -787,12 +787,12 @@ $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 @math{n>0}で、カイ二乗確率変数 @math{Chi^2(n)}の分布函数の @var{x}での値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_chi2(3,4);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_chi2(3,4);
                                                3
 (%o2)      1 - gamma_incomplete_regularized(2, -)
@@ -821,12 +821,12 @@ $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 ガンマ分位函数に基づいた名目上の式を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_chi2(0.99,9);
 @c quantile_chi2(0.99,n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_chi2(0.99,9);
 (%o2)                   21.66599433346194
 (%i3) quantile_chi2(0.99,n);
@@ -851,12 +851,12 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 ガンマ平均に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_chi2(n);
 @c assume(n>0)$ mean_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_chi2(n);
                                    n
 (%o2)                   mean_gamma(-, 2)
@@ -881,12 +881,12 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 ガンマ分散に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_chi2(n);
 @c assume(n>0)$ var_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_chi2(n);
                                    n
 (%o2)                    var_gamma(-, 2)
@@ -911,12 +911,12 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 ガンマ標準偏差に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_chi2(n);
 @c assume(n>0)$ std_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_chi2(n);
                                    n
 (%o2)                    std_gamma(-, 2)
@@ -941,12 +941,12 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 ガンマ歪度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_chi2(n);
 @c assume(n>0)$ skewness_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_chi2(n);
                                      n
 (%o2)                 skewness_gamma(-, 2)
@@ -973,12 +973,12 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 ガンマ尖度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_chi2(n);
 @c assume(n>0)$ kurtosis_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_chi2(n);
                                      n
 (%o2)                 kurtosis_gamma(-, 2)
@@ -1005,7 +1005,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 シミュレーションはAhrens-Chengアルゴリズムに基づきます。
 詳細は@code{random_gamma}を参照してください。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1021,7 +1021,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 密度函数の
 @var{x}での値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1035,7 +1035,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 非中心カイ二乗確率変数 @math{nc_Chi^2(n,ncp)}の
 分布函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1130,7 +1130,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 三番目の引数 @var{m}とともに@code{random_noncentral_chi2}をコールすると、
 サイズ @var{m}のランダムな標本がシミュレートされます。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1145,7 +1145,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 @math{m,n>0}で、F確率変数 @math{F(m,n)}の密度関数の
 @var{x}の値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1160,12 +1160,12 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 @var{x}の値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_f(2,3,9/4);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_f(2,3,9/4);
                                          9  3  3
 (%o2)    1 - beta_incomplete_regularized(-, -, --)
@@ -1193,12 +1193,12 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 そうでなければ、名目上の式を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_f(2/5,sqrt(3),5);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_f(2/5,sqrt(3),5);
                                2
 (%o2)               quantile_f(-, sqrt(3), 5)
@@ -1217,7 +1217,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 @deffn {関数} mean_f (@var{m},@var{n})
 @math{m,n>2}で、F確率変数 @math{F(m,n)}の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1229,7 +1229,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 @deffn {関数} var_f (@var{m},@var{n})
 @math{m,n>4}で、F確率変数 @math{F(m,n)}の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1241,7 +1241,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 @deffn {関数} std_f (@var{m},@var{n})
 @math{m,n>4}で、F確率変数 @math{F(m,n)}の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1253,7 +1253,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 @deffn {関数} skewness_f (@var{m},@var{n})
 @math{m,n>6}で、F確率変数 @math{F(m,n)}の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1265,7 +1265,7 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 @deffn {関数} kurtosis_f (@var{m},@var{n})
 @math{m,n>8}で、F確率変数 @math{F(m,n)}の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1295,7 +1295,7 @@ $$F={{n X}\over{m Y}}$$
 は @var{m}と @var{n}自由度を持つ F確率変数 @math{F(m,n)}である
 という事実に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1317,12 +1317,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull密度に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_exp(x,m);
 @c assume(x>0,m>0)$  pdf_exp(x,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_exp(x,m);
                                         1
 (%o2)                 pdf_weibull(x, 1, -)
@@ -1351,12 +1351,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull分布に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_exp(x,m);
 @c assume(x>0,m>0)$  cdf_exp(x,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_exp(x,m);
                                         1
 (%o2)                 cdf_weibull(x, 1, -)
@@ -1386,12 +1386,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull分位数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_exp(0.56,5);
 @c quantile_exp(0.56,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_exp(0.56,5);
 (%o2)                   .1641961104139661
 (%i3) quantile_exp(0.56,m);
@@ -1418,12 +1418,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull平均に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_exp(m);
 @c assume(m>0)$  mean_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_exp(m);
                                        1
 (%o2)                  mean_weibull(1, -)
@@ -1452,12 +1452,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull分散に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_exp(m);
 @c assume(m>0)$  var_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_exp(m);
                                        1
 (%o2)                   var_weibull(1, -)
@@ -1487,12 +1487,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull標準偏差に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_exp(m);
 @c assume(m>0)$  std_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_exp(m);
                                        1
 (%o2)                   std_weibull(1, -)
@@ -1521,12 +1521,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull歪度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_exp(m);
 @c assume(m>0)$  skewness_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_exp(m);
                                          1
 (%o2)                skewness_weibull(1, -)
@@ -1553,12 +1553,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull尖度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_exp(m);
 @c assume(m>0)$  kurtosis_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_exp(m);
                                          1
 (%o2)                kurtosis_weibull(1, -)
@@ -1582,7 +1582,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 シミュレーションアルゴリズムは一般逆函数法です。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1597,7 +1597,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 密度函数の
 @var{x}での値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1614,11 +1614,11 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(x>0, s>0)$  cdf_lognormal(x,m,s);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(x>0, s>0)$  cdf_lognormal(x,m,s);
                            log(x) - m
                        erf(----------)
@@ -1641,15 +1641,15 @@ Weibull尖度係数に基づいた名詞形を返します。
 @var{q}-分位数を返します;
 言い換えると、これは @code{cdf_lognormal}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_lognormal(95/100,0,1);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_lognormal(95/100,0,1);
                   sqrt(2) inverse_erf(9/10)
 (%o2)           %e
@@ -1667,7 +1667,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} mean_lognormal (@var{m},@var{s})
 @math{s>0}で、@math{Lognormal(m,s)}(対数正規)確率変数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1679,7 +1679,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} var_lognormal (@var{m},@var{s})
 @math{s>0}で、@math{Lognormal(m,s)}(対数正規)確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1690,7 +1690,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} std_lognormal (@var{m},@var{s})
 @math{s>0}で、@math{Lognormal(m,s)}(対数正規)確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1702,7 +1702,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} skewness_lognormal (@var{m},@var{s})
 @math{s>0}で、@math{Lognormal(m,s)}(対数正規)確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1714,7 +1714,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} kurtosis_lognormal (@var{m},@var{s})
 @math{s>0}で、@math{Lognormal(m,s)}(対数正規)確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1732,7 +1732,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 対数世紀変量は確率正規変量の平均によってシミュレートされます。
 詳細は @code{random_normal}を見てください。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1746,7 +1746,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{a,b>0}で、 @math{Gamma(a,b)}確率変数の
 密度函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1761,12 +1761,12 @@ Weibull尖度係数に基づいた名詞形を返します。
 @var{x}での値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_gamma(3,5,21);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_gamma(3,5,21);
                                               1
 (%o2)     1 - gamma_incomplete_regularized(5, -)
@@ -1787,7 +1787,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @var{p}-分位数を返します;
 言い換えれば、これは @code{cdf_gamma}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1799,7 +1799,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} mean_gamma (@var{a},@var{b})
 @math{a,b>0}で、 @math{Gamma(a,b)}確率変数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1811,7 +1811,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} var_gamma (@var{a},@var{b})
 @math{a,b>0}で、 @math{Gamma(a,b)}確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1822,7 +1822,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} std_gamma (@var{a},@var{b})
 @math{a,b>0}で、 @math{Gamma(a,b)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1834,7 +1834,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} skewness_gamma (@var{a},@var{b})
 @math{a,b>0}で、 @math{Gamma(a,b)}確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1846,7 +1846,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} kurtosis_gamma (@var{a},@var{b})
 @math{a,b>0}で、 @math{Gamma(a,b)}確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1867,7 +1867,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @math{0<a<1}に対して, Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1881,7 +1881,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{a,b>0}で、 @math{Beta(a,b)}確率変数の
 密度函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1897,12 +1897,12 @@ Weibull尖度係数に基づいた名詞形を返します。
 @var{x}での値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_beta(1/3,15,2);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_beta(1/3,15,2);
                              11
 (%o2)                     --------
@@ -1923,7 +1923,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @var{q}-分位数を返します;
 言い換えると、これは@code{cdf_beta}の逆函数です。
 引数 @var{q} @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1935,7 +1935,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} mean_beta (@var{a},@var{b})
 @math{a,b>0}で、 @math{Beta(a,b)}確率変数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1947,7 +1947,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} var_beta (@var{a},@var{b})
 @math{a,b>0}で、 @math{Beta(a,b)}確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1958,7 +1958,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} std_beta (@var{a},@var{b})
 @math{a,b>0}で、 @math{Beta(a,b)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1970,7 +1970,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} skewness_beta (@var{a},@var{b})
 @math{a,b>0}で、 @math{Beta(a,b)}確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -1982,7 +1982,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} kurtosis_beta (@var{a},@var{b})
 @math{a,b>0}で、 @math{Beta(a,b)}確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2001,7 +2001,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
 に定義されています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2014,7 +2014,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a<b}で、
 @math{Continuous Uniform(a,b)}確率変数の密度函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2027,7 +2027,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a<b}で、
 @math{Continuous Uniform(a,b)}確率変数の分布函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2042,7 +2042,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @var{q}-分位数を返します。
 言い換えると、これは @code{cdf_continuous_uniform}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2055,7 +2055,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a<b}で、
 @math{Continuous Uniform(a,b)}確率変数の分布函数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2068,7 +2068,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a<b}で、
 @math{Continuous Uniform(a,b)}確率変数の分布函数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2080,7 +2080,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a<b}で、
 @math{Continuous Uniform(a,b)}確率変数の分布函数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2093,7 +2093,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a<b}で、
 @math{Continuous Uniform(a,b)}確率変数の分布函数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2106,7 +2106,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a<b}で、
 @math{Continuous Uniform(a,b)}確率変数の分布函数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2125,7 +2125,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 これは @code{random}組み込みMaxima関数の直接の応用です。
 
 @code{random}も参照してください。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2139,7 +2139,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{b>0}で、 @math{Logistic(a,b)}確率変数の
 密度函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2152,7 +2152,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{b>0}で、 @math{Logistic(a,b)}確率変数の
 分布函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2166,7 +2166,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @var{q}-分位数を返します。
 言い換えると、これは @code{cdf_logistic}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2177,7 +2177,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 @deffn {関数} mean_logistic (@var{a},@var{b})
 @math{b>0}で、 @math{Logistic(a,b)}確率変数の平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2188,7 +2188,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 @deffn {関数} var_logistic (@var{a},@var{b})
 @math{b>0}で、 @math{Logistic(a,b)}確率変数の分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2199,7 +2199,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 @deffn {関数} std_logistic (@var{a},@var{b})
 @math{b>0}で、 @math{Logistic(a,b)}確率変数の標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2210,7 +2210,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 @deffn {関数} skewness_logistic (@var{a},@var{b})
 @math{b>0}で、 @math{Logistic(a,b)}確率変数の歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2221,7 +2221,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 @deffn {関数} kurtosis_logistic (@var{a},@var{b})
 @math{b>0}で、 @math{Logistic(a,b)}確率変数の尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2238,7 +2238,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 実装アルゴリズムは一般逆函数法に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2253,7 +2253,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 密度函数の
 @var{x}の値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2267,7 +2267,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 分布函数の
 @var{x}の値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2281,7 +2281,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @var{q}-分位数を返します;
 言い換えると、これは @code{cdf_pareto}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2293,7 +2293,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} mean_pareto (@var{a},@var{b})
 @math{a,b>0}で、 @math{Pareto(a,b)}確率変数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2305,7 +2305,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} var_pareto (@var{a},@var{b})
 @math{a>2,b>0}で、 @math{Pareto(a,b)}確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2316,7 +2316,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} std_pareto (@var{a},@var{b})
 @math{a>2,b>0}で、 @math{Pareto(a,b)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2329,7 +2329,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} skewness_pareto (@var{a},@var{b})
 @math{a>2,b>0}で、 @math{Pareto(a,b)}確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2341,7 +2341,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} kurtosis_pareto (@var{a},@var{b})
 @math{a>2,b>0}で、 @math{Pareto(a,b)}確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2358,7 +2358,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 実装アルゴリズムは一般逆函数法に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2373,7 +2373,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 密度函数の
 @var{x}の値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2386,7 +2386,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @math{a,b>0}で、 @math{Weibull(a,b)}確率変数の
 分布函数の
 @var{x}の値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2400,7 +2400,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @var{q}-分位数を返します;
 言い換えれば、これは @code{cdf_weibull}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2412,7 +2412,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} mean_weibull (@var{a},@var{b})
 @math{a,b>0}で、 @math{Weibull(a,b)}確率変数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2424,7 +2424,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} var_weibull (@var{a},@var{b})
 @math{a,b>0}で、 @math{Weibull(a,b)}確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2435,7 +2435,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} std_weibull (@var{a},@var{b})
 @math{a,b>0}で、 @math{Weibull(a,b)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2448,7 +2448,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} skewness_weibull (@var{a},@var{b})
 @math{a,b>0}で、 @math{Weibull(a,b)}確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2460,7 +2460,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 @deffn {関数} kurtosis_weibull (@var{a},@var{b})
 @math{a,b>0}で、 @math{Weibull(a,b)}確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2475,7 +2475,7 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 
 実装アルゴリズムは一般逆函数法に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2497,12 +2497,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull密度に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_rayleigh(x,b);
 @c assume(x>0,b>0)$ pdf_rayleigh(x,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_rayleigh(x,b);
                                         1
 (%o2)                 pdf_weibull(x, 2, -)
@@ -2531,12 +2531,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull分布に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_rayleigh(x,b);
 @c assume(x>0,b>0)$ cdf_rayleigh(x,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_rayleigh(x,b);
                                         1
 (%o2)                 cdf_weibull(x, 2, -)
@@ -2563,12 +2563,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull分位数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_rayleigh(0.99,b);
 @c assume(x>0,b>0)$ quantile_rayleigh(0.99,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_rayleigh(0.99,b);
                                             1
 (%o2)             quantile_weibull(0.99, 2, -)
@@ -2595,12 +2595,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull平均に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_rayleigh(b);
 @c assume(b>0)$ mean_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_rayleigh(b);
                                        1
 (%o2)                  mean_weibull(2, -)
@@ -2627,12 +2627,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull分散に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_rayleigh(b);
 @c assume(b>0)$ var_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_rayleigh(b);
                                        1
 (%o2)                   var_weibull(2, -)
@@ -2662,12 +2662,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull標準偏差に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_rayleigh(b);
 @c assume(b>0)$ std_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_rayleigh(b);
                                        1
 (%o2)                   std_weibull(2, -)
@@ -2696,12 +2696,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull歪度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_rayleigh(b);
 @c assume(b>0)$ skewness_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_rayleigh(b);
                                          1
 (%o2)                skewness_weibull(2, -)
@@ -2733,12 +2733,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 Weibull尖度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_rayleigh(b);
 @c assume(b>0)$ kurtosis_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_rayleigh(b);
                                          1
 (%o2)                kurtosis_weibull(2, -)
@@ -2769,7 +2769,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 実装アルゴリズムは一般逆函数法に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2784,7 +2784,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の密度函数の
 @var{x}での値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2796,7 +2796,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} cdf_laplace (@var{x},@var{a},@var{b})
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の分布函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2809,7 +2809,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の@var{q}-分位数を返します;
 言い換えれば、これは @code{cdf_laplace}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2820,7 +2820,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} mean_laplace (@var{a},@var{b})
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2831,7 +2831,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} var_laplace (@var{a},@var{b})
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2842,7 +2842,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} std_laplace (@var{a},@var{b})
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2853,7 +2853,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} skewness_laplace (@var{a},@var{b})
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2864,7 +2864,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} kurtosis_laplace (@var{a},@var{b})
 @math{b>0}で、 @math{Laplace(a,b)}確率変数の尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2881,7 +2881,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 実装アルゴリズムは一般逆函数法に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2895,7 +2895,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} pdf_cauchy (@var{x},@var{a},@var{b})
 @math{b>0}で、 @math{Cauchy(a,b)}確率変数の密度函数の@var{x}での値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2906,7 +2906,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} cdf_cauchy (@var{x},@var{a},@var{b})
 @math{b>0}で、 @math{Cauchy(a,b)}確率変数の分布函数の@var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2919,7 +2919,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{b>0}で、 @math{Cauchy(a,b)}確率変数の@var{q}-分位数を返します;
 言い換えると、これは @code{cdf_cauchy}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2936,7 +2936,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 実装アルゴリズムは一般逆函数法に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2949,7 +2949,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} pdf_gumbel (@var{x},@var{a},@var{b})
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の密度函数の@var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2960,7 +2960,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} cdf_gumbel (@var{x},@var{a},@var{b})
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の分布函数の@var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2973,7 +2973,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の@var{q}-分位数を返します;
 言い換えれば、これは @code{cdf_gumbel}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -2986,11 +2986,11 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の平均を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(b>0)$  mean_gumbel(a,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(b>0)$  mean_gumbel(a,b);
 (%o3)                     %gamma b + a
 @end example
@@ -3006,7 +3006,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} var_gumbel (@var{a},@var{b})
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3017,7 +3017,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} std_gumbel (@var{a},@var{b})
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3030,12 +3030,12 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の歪度係数を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(b>0)$ skewness_gumbel(a,b);
 @c numer:true$ skewness_gumbel(a,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(b>0)$ skewness_gumbel(a,b);
                        12 sqrt(6) zeta(3)
 (%o3)                  ------------------
@@ -3055,7 +3055,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 @deffn {関数} kurtosis_gumbel (@var{a},@var{b})
 @math{b>0}で、 @math{Gumbel(a,b)}確率変数の尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3073,7 +3073,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 
 実装アルゴリズムは一般逆函数法に基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3095,15 +3095,15 @@ Weibull尖度係数に基づいた名詞形を返します。
 @var{x}での値を返します。
 ベクトル @math{v}は非負式のリストであり得ます。
 その成分は確率のベクトルを得るために規格化されます。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
 @c pdf_general_finite_discrete(2, [1, 4, 2]);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
                                 4
 (%o2)                           -
@@ -3130,13 +3130,13 @@ Weibull尖度係数に基づいた名詞形を返します。
 さらなる詳細は @code{pdf_general_finite_discrete}を参照してください。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
 @c cdf_general_finite_discrete(2, [1, 4, 2]);
 @c cdf_general_finite_discrete(2+1/2, [1, 4, 2]);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
                                 5
 (%o2)                           -
@@ -3252,12 +3252,12 @@ Weibull尖度係数に基づいた名詞形を返します。
 さらなる詳細は @code{pdf_general_finite_discrete}を参照してください。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c random_general_finite_discrete([1,3,1,5]);
 @c random_general_finite_discrete([1,3,1,5], 10);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) random_general_finite_discrete([1,3,1,5]);
 (%o2)                          4
 (%i3) random_general_finite_discrete([1,3,1,5], 10);
@@ -3275,7 +3275,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} pdf_binomial (@var{x},@var{n},@var{p})
 @math{0<p<1}かつ @math{n}は正の整数で、
 @math{Binomial(n,p)}確率変数の確率函数の@var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
                                   4
 (%o6)                             -
                                   7
@@ -3291,12 +3291,12 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{Binomial(n,p)}確率変数の分布函数の@var{x}での値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_binomial(5,7,1/6);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_binomial(5,7,1/6);
                             7775
 (%o2)                       ----
@@ -3317,7 +3317,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @math{Binomial(n,p)}確率変数の@var{q}-分位数を返します;
 言い換えれば、これは @code{cdf_binomial}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3329,7 +3329,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} mean_binomial (@var{n},@var{p})
 @math{0<p<1}かつ @math{n}は正の整数で、
 @math{Binomial(n,p)}確率変数の平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3341,7 +3341,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} var_binomial (@var{n},@var{p})
 @math{0<p<1}かつ @math{n}は正の整数で、
 @math{Binomial(n,p)}確率変数の分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3353,7 +3353,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} std_binomial (@var{n},@var{p})
 @math{0<p<1}かつ @math{n}は正の整数で、
 @math{Binomial(n,p)}確率変数の標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3365,7 +3365,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} skewness_binomial (@var{n},@var{p})
 @math{0<p<1}かつ @math{n}は正の整数で、
 @math{Binomial(n,p)}確率変数の歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3377,7 +3377,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 @deffn {関数} kurtosis_binomial (@var{n},@var{p})
 @math{0<p<1}かつ @math{n}は正の整数で、
 @math{Binomial(n,p)}確率変数の尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3397,7 +3397,7 @@ Weibull尖度係数に基づいた名詞形を返します。
 Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.に
 記載されているものに基づいています。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3410,7 +3410,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 @deffn {関数} pdf_poisson (@var{x},@var{m})
 @math{m>0}で、 @math{Poisson(m)}確率変数の確率函数の @var{x}での値を返します。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3423,12 +3423,12 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 @math{m>0}で、 @math{Poisson(m)}確率変数の分布函数の @var{x}での値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_poisson(3,5);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_poisson(3,5);
 (%o2)       gamma_incomplete_regularized(4, 5)
 (%i3) float(%);
@@ -3446,7 +3446,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 @math{m>0}で、 @math{Poisson(m)}確率変数の @var{q}-分位数を返します;
 言い換えると、これは @code{cdf_poisson}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなればいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3457,7 +3457,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 
 @deffn {関数} mean_poisson (@var{m})
 @math{m>0}で、 @math{Poisson(m)}確率変数の平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3468,7 +3468,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 
 @deffn {関数} var_poisson (@var{m})
 @math{m>0}で、 @math{Poisson(m)}確率変数の分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3479,7 +3479,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 
 @deffn {関数} std_poisson (@var{m})
 @math{m>0}で、 @math{Poisson(m)}確率変数の標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3490,7 +3490,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 
 @deffn {関数} skewness_poisson (@var{m})
 @math{m>0}で、 @math{Poisson(m)}確率変数の歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3501,7 +3501,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 
 @deffn {関数} kurtosis_poisson (@var{m})
 @math{m>0}で、 @math{Poisson(m)}確率変数の尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3519,7 +3519,7 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 実装アルゴリズムは
 Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.に記述されたものです。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3539,12 +3539,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 二項確率函数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_bernoulli(1,p);
 @c assume(0<p,p<1)$ pdf_bernoulli(1,p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_bernoulli(1,p);
 (%o2)                 pdf_binomial(1, 1, p)
 (%i3) assume(0<p,p<1)$ pdf_bernoulli(1,p);
@@ -3561,7 +3561,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @deffn {関数} cdf_bernoulli (@var{x},@var{p})
 @math{0<p<1}で、  @math{Bernoulli(p)}確率変数の分布函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3574,7 +3574,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、  @math{Bernoulli(p)}確率変数の@var{q}-分位数を返します;
 言い換えると、これは @code{cdf_bernoulli}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3592,12 +3592,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 二項平均に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_bernoulli(p);
 @c assume(0<p,p<1)$ mean_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_bernoulli(p);
 (%o2)                  mean_binomial(1, p)
 (%i3) assume(0<p,p<1)$ mean_bernoulli(p);
@@ -3620,12 +3620,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 二項分散に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_bernoulli(p);
 @c assume(0<p,p<1)$ var_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_bernoulli(p);
 (%o2)                  var_binomial(1, p)
 (%i3) assume(0<p,p<1)$ var_bernoulli(p);
@@ -3648,12 +3648,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 二項標準偏差に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_bernoulli(p);
 @c assume(0<p,p<1)$ std_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_bernoulli(p);
 (%o2)                  std_binomial(1, p)
 (%i3) assume(0<p,p<1)$ std_bernoulli(p);
@@ -3676,12 +3676,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 二項歪度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_bernoulli(p);
 @c assume(0<p,p<1)$ skewness_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_bernoulli(p);
 (%o2)                skewness_binomial(1, p)
 (%i3) assume(0<p,p<1)$ skewness_bernoulli(p);
@@ -3706,12 +3706,12 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 二項尖度係数に基づいた名詞形を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_bernoulli(p);
 @c assume(0<p,p<1)$ kurtosis_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_bernoulli(p);
 (%o2)                kurtosis_binomial(1, p)
 (%i3) assume(0<p,p<1)$ kurtosis_bernoulli(p);
@@ -3736,7 +3736,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 これは @code{random}組み込みMaxima関数の直接の応用です。
 
 @code{random}も参照してください。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3750,7 +3750,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、
 @math{Geometric(p)}(幾何)確率変数の確率函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3763,7 +3763,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、
 @math{Geometric(p)}(幾何)確率変数の分布函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3779,7 +3779,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 言い換えると、これは @code{cdf_geometric}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3792,7 +3792,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、
 @math{Geometric(p)}(幾何)確率変数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3805,7 +3805,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、
 @math{Geometric(p)}(幾何)確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3818,7 +3818,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、
 @math{Geometric(p)}(幾何)確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3831,7 +3831,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、
 @math{Geometric(p)}(幾何)確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3844,7 +3844,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @math{0<p<1}で、
 @math{Geometric(p)}(幾何)確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3860,7 +3860,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 二番目の引数 @var{n}とともに@code{random_geometric}をコールすると、
 サイズ @var{n}のランダムな標本がシミュレートされます。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3873,7 +3873,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @deffn {関数} pdf_discrete_uniform (@var{x},@var{n})
 @math{n}が厳密に正の整数で、 @math{Discrete Uniform(n)}確率変数の確率函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3885,7 +3885,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @deffn {関数} cdf_discrete_uniform (@var{x},@var{n})
 @math{n}が厳密に正の整数で、 @math{Discrete Uniform(n)}確率変数の分風函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3899,7 +3899,7 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 @var{q}-分位数を返します;
 言い換えると、これは @code{cdf_discrete_uniform}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3910,8 +3910,8 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 
 @deffn {関数} mean_discrete_uniform (@var{n})
 Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer.
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
- To make use of this function, write first @code{load(distrib)}.
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
+ To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox
 @category{Package distrib}
@@ -3923,7 +3923,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @deffn {関数} var_discrete_uniform (@var{n})
 @math{n}が厳密に正の整数で、 @math{Discrete Uniform(n)}確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3935,7 +3935,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @deffn {関数} std_discrete_uniform (@var{n})
 @math{n}が厳密に正の整数で、 @math{Discrete Uniform(n)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3947,7 +3947,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @deffn {関数} skewness_discrete_uniform (@var{n})
 @math{n}が厳密に正の整数で、 @math{Discrete Uniform(n)}確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3959,7 +3959,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @deffn {関数} kurtosis_discrete_uniform (@var{n})
 @math{n}が厳密に正の整数で、 @math{Discrete Uniform(n)}確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3977,7 +3977,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 これは @code{random}組み込みMaxima関数の直接の応用です。
 
 @code{random}も参照してください。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -3992,7 +3992,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @math{Hypergeometric(n1,n2,n)}確率変数の
 確率函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4006,7 +4006,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @math{Hypergeometric(n1,n2,n)}確率変数の
 分布函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4021,7 +4021,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @var{q}-分位数を返します。
 言い換えると、これは @code{cdf_hypergeometric}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4034,7 +4034,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @var{n1}, @var{n2}, @var{n}が非負整数でかつ @math{n<=n1+n2}で、
 @math{Hypergeometric(n1,n2,n)}確率変数の
 平均を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4047,7 +4047,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @var{n1}, @var{n2}, @var{n}が非負整数でかつ @math{n<=n1+n2}で、
 @math{Hypergeometric(n1,n2,n)}確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4060,7 +4060,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @var{n1}, @var{n2}, @var{n}が非負整数でかつ @math{n<=n1+n2}で、
 @math{Hypergeometric(n1,n2,n)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4073,7 +4073,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @var{n1}, @var{n2}, @var{n}が非負整数でかつ @math{n<=n1+n2}で、
 @math{Hypergeometric(n1,n2,n)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4086,7 +4086,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 @var{n1}, @var{n2}, @var{n}が非負整数でかつ @math{n<=n1+n2}で、
 @math{Hypergeometric(n1,n2,n)}確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4104,7 +4104,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 
 Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.に記述されたアルゴリズム。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4118,7 +4118,7 @@ Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hyperg
 @math{0<p<1}かつ @math{n}が正の整数で、
 @math{Negative Binomial(n,p)}確率変数の確率函数の
 @var{x}での値を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4133,12 +4133,12 @@ Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hyperg
 @var{x}での値を返します。
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_negative_binomial(3,4,1/8);
 @c float(%);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_negative_binomial(3,4,1/8);
                             3271
 (%o2)                      ------
@@ -4160,7 +4160,7 @@ Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hyperg
 @var{q}-分位数を返します;
 言い換えると、これは @code{cdf_negative_binomial}の逆函数です。
 引数 @var{q}は @math{[0,1]}の要素でなければいけません。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4171,8 +4171,8 @@ Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hyperg
 
 @deffn {関数} mean_negative_binomial (@var{n},@var{p})
 Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer.
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
- To make use of this function, write first @code{load(distrib)}.
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
+ To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox
 @category{Package distrib}
@@ -4185,7 +4185,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 @math{0<p<1}かつ @math{n}が正の整数で、
 @math{Negative Binomial(n,p)}確率変数の
 分散を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4198,7 +4198,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 @math{0<p<1}かつ @math{n}が正の整数で、
 @math{Negative Binomial(n,p)}確率変数の
 標準偏差を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4211,7 +4211,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 @math{0<p<1}かつ @math{n}が正の整数で、
 @math{Negative Binomial(n,p)}確率変数の
 歪度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4224,7 +4224,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 @math{0<p<1}かつ @math{n}が正の整数で、
 @math{Negative Binomial(n,p)}確率変数の
 尖度係数を返します。
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}
@@ -4242,7 +4242,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 
 Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.に記載されたアルゴリズム。
 
-この関数を利用するには、初めに @code{load(distrib)}を書いてください。
+この関数を利用するには、初めに @code{load("distrib")}を書いてください。
 
 @opencatbox
 @category{Package distrib}

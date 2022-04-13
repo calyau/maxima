@@ -15,7 +15,7 @@ have an Output the flow is negative and positive
 for Inputs.
 
 Note that before using the functions defined in this 
-package, you have to load it writing @code{load(finance)$}.
+package, you have to load it writing @code{load("finance")$}.
 
 Author: Nicolas Guarin Zapata.
 

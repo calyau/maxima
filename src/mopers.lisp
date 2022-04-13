@@ -103,18 +103,6 @@
 ;; (TAKE '(%SIN) A) --> (SIMP-%SIN (LIST '(%SIN) A) 1 T)
 
 (defmacro take (operator &rest args)
-; Cutting out the code which bypasses the simplifier.
-;  (let ((simplifier (and (not (atom operator))
-;			 (eq (car operator) 'quote)
-;			 (cdr (assoc (caadr operator) '((%atan  . simp-%atan)
-;							(%tan   . simp-%tan)
-;							(%log   . simpln)
-;							(mabs   . simpabs)
-;							(%sin   . simp-%sin)
-;							(%cos   . simp-%cos)
-;							($atan2 . simpatan2)) :test #'eq)))))
-;    (if simplifier
-;	`(,simplifier (list ,operator ,@args) 1 t)
 	`(simplifya (list ,operator ,@args) t))
 
 ;; take* does not assume that the arguments are simplified.

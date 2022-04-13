@@ -89,7 +89,7 @@ the integration region so that the integrand simplifies to a
 non-signum expression on each subinterval; for example
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) integrate(1 / (1 + abs(x-5)),x,-5,6);
 (%o2)                   log(11) + log(2)
 @end example
@@ -150,7 +150,7 @@ When the function @code{abs_integrate_use_if} is successful, it returns
 a conditional expression; for example
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) integrate(1/(1 + abs(x+1) + abs(x-1)),x);
                            log(1 - 2 x)            2
 (%o2) %if(- (x + 1) > 0, - ------------ + log(3) - -, 
@@ -203,7 +203,7 @@ For such definite integrals, try disallowing the method
 
 Related options @mrefdot{extra_definite_integration_methods}
 
-To use @code{load(abs_integrate)}
+To use @code{load("abs_integrate")}
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -230,7 +230,7 @@ that does not fail (or a pure noun form if all methods fail).
 
 Related options @mrefdot{extra_integration_methods}
 
-To use @code{load(abs_integrate)}.
+To use @code{load("abs_integrate")}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -242,7 +242,7 @@ form @math{f(w(x)) * diff(w(x),x)}.  When @code{infudu} is unable to find
 an antiderivative, it returns false.
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) intfudu(cos(x^2) * x,x);
                                   2
                              sin(x )
@@ -279,8 +279,8 @@ An alternative to calling @code{intfudu} directly is to use the
 @c       BESSELFUNKTIONEN STANDARDMAESSIG INTEGRIEREN.
 
 @example
-(%i1) load(abs_integrate)$
-(%i2) load(basic)$
+(%i1) load("abs_integrate")$
+(%i2) load("basic")$
 (%i3) load("partition.mac")$
 
 (%i4) integrate(bessel_j(1,x^2) * x,x);
@@ -297,7 +297,7 @@ An alternative to calling @code{intfudu} directly is to use the
                                  2
 @end example
 
-To use @code{load(partition)}.
+To use @code{load("partition")}.
 
 Additional documentation@*
 @url{http://www.cs.berkeley.edu/~fateman/papers/partition.pdf}.
@@ -314,7 +314,7 @@ form @math{f(w(x)) * g(w(x)) * diff(w(x),x)}.  When @code{infugudu} is
 unable to find an antiderivative, it returns false.
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) diff(jacobi_sn(x,2/3),x);
                               2               2
 (%o2)            jacobi_cn(x, -) jacobi_dn(x, -)
@@ -334,7 +334,7 @@ unable to find an antiderivative, it returns false.
 For a method for automatically calling @code{infugudu} from @code{integrate},
 see the documentation for @code{intfudu}.
 
-To use @code{load(partition)}.
+To use @code{load("partition")}.
 
 Additional documentation@*
 @url{http://www.cs.berkeley.edu/~fateman/papers/partition.pdf}
@@ -352,7 +352,7 @@ subexpressions of the form @math{signum(p) * signum(q)} by
 @math{signum(p * q)}; examples:
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) map('signum_to_abs, [x * signum(x), 
                            x * y * signum(x)* signum(y)/2]);
                               abs(x) abs(y)
@@ -360,7 +360,7 @@ subexpressions of the form @math{signum(p) * signum(q)} by
                                     2
 @end example
 
-To use @code{load(abs_integrate)}.
+To use @code{load("abs_integrate")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -372,7 +372,7 @@ simplify @math{e}.  The facts are removed before returning the simplified
 expression @math{e}.
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) simp_assuming(x + abs(x), x < 0);
 (%o2)                           0
 @end example
@@ -393,7 +393,7 @@ is arguments; this allows
 (%o5)                          neg
 @end example
 
-To use @code{load(abs_integrate)}.
+To use @code{load("abs_integrate")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -405,7 +405,7 @@ an antiderivative that is valid for all parameter values.  When successful, this
 function returns a conditional expression for the antiderivative.
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) conditional_integrate(cos(m*x),x);
                                 sin(m x)
 (%o2)                %if(m # 0, --------, x)
@@ -451,7 +451,7 @@ min(q1, q2, ..., qn)} and @code{max(q1, q2, ..., qn)} by equivalent
 @math{signum} terms.
 
 @example
-(%i1) load(abs_integrate)$
+(%i1) load("abs_integrate")$
 (%i2) map('convert_to_signum, [abs(x), unit_step(x), 
                                max(a,2), min(a,2)]);
 
@@ -466,7 +466,7 @@ min(q1, q2, ..., qn)} and @code{max(q1, q2, ..., qn)} by equivalent
 To convert @mref{unit_step} to signum form, the function
 @code{convert_to_signum} uses @math{unit_step(x) = (1 + signum(x))/2}.
 
-To use @code{load(abs_integrate)}.
+To use @code{load("abs_integrate")}.
 
 Related functions @mrefdot{signum_to_abs}
 @end deffn

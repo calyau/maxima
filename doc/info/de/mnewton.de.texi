@@ -87,14 +87,14 @@ gefunden werden, ist die R@"uckgabe eine leere Liste @code{[]}.
 @c To use this function write first @code{load("mnewton")}. See also 
 @c @code{newtonepsilon} and @code{newtonmaxiter}.
 
-Die Funktion wird mit dem Kommando @code{load(mnewton)} geladen.  Siehe die
+Die Funktion wird mit dem Kommando @code{load("mnewton")} geladen.  Siehe die
 Funktion @mref{newton} f@"ur eine alternative Implementierung des
 Newton-Verfahrens.
 
 Beispiele:
 
 @example
-(%i1) load(mnewton)$
+(%i1) load("mnewton")$
 
 (%i2) mnewton([x1+3*log(x1)-x2^2, 2*x1^2-x1*x2-5*x1+1],
               [x1, x2], [5, 5]);
@@ -115,7 +115,7 @@ mit Gleitkommazahlen in doppelter oder gro@ss{}er Genauigkeit durchgef@"uhrt
 wird.
 
 @example
-(%i1) load(mnewton)$
+(%i1) load("mnewton")$
 
 (%i2) (fpprec : 25, newtonepsilon : bfloat(10^(-fpprec+5)))$
 
@@ -152,9 +152,9 @@ Ausdruck @code{abs(@var{expr}) < @var{eps}} zu @code{true} oder @code{false}
 ausgewertet werden kann.  Daher ist es nicht notwendig, dass der Ausdruck
 @var{expr} zu einer Zahl ausgewertet werden kann.
 
-@c @code{load(newton1)} loads this function.
+@c @code{load("newton1")} loads this function.
 
-Das Kommando @code{load(newton1)} l@"adt die Funktion.
+Das Kommando @code{load("newton1")} l@"adt die Funktion.
 
 @c See also @code{realroots}, @code{allroots}, @code{find_root}, and 
 @c @code{mnewton}.
@@ -164,14 +164,14 @@ Siehe auch die Funktionen @mrefcomma{realroots} @mref{allroots} und
 Das Paket mnewton enth@"alt mit der Funktion @mref{mnewton} eine weitere
 Implementation des Newton-Verfahrens.
 
-Achtung: Auch mit @code{load(newton)} wird eine Funktion mit dem Namen
+Achtung: Auch mit @code{load("newton")} wird eine Funktion mit dem Namen
 @code{newton} geladen, die sich jedoch in ihrer Syntax von der hier
 beschriebenen Funktion unterscheidet und auch nicht dokumentiert ist.
 
 Beispiele:
 
 @example
-(%i1) load (newton1);
+(%i1) load ("newton1");
 (%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
 (%i2) newton (cos (u), u, 1, 1/100);
 (%o2)                   1.570675277161251

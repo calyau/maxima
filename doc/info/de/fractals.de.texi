@@ -68,7 +68,7 @@ be great enougth, 10000 or greater.
 Example:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) n: 10000$
 (%i3) plot2d([discrete,sierpinskiale(n)], [style,dots])$
 @end example
@@ -83,7 +83,7 @@ Argument @var{n} must be great enougth, 10000 or greater.
 Example:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) n: 10000$
 (%i3) plot2d([discrete,treefale(n)], [style,dots])$
 @end example
@@ -99,7 +99,7 @@ greater.
 Example:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) n: 10000$
 (%i3) plot2d([discrete,fernfale(n)], [style,dots])$
 @end example
@@ -121,7 +121,7 @@ This program is time consuming because it must make a lot of operations;
 the computing time is also related with the number of grid points.
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot3d (mandelbrot_set, [x, -2.5, 1], [y, -1.5, 1.5],
                 [gnuplot_preamble, "set view map"],
                 [gnuplot_pm3d, true],
@@ -140,7 +140,7 @@ the computing time is also related with the number of grid points.
 Example:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot3d (julia_set, [x, -2, 1], [y, -1.5, 1.5],
                 [gnuplot_preamble, "set view map"],
                 [gnuplot_pm3d, true],
@@ -175,7 +175,7 @@ This program is time consuming because it must make a lot of operations;
 the computing time is also related with the number of grid points.
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) julia_parameter:1+.1*%i$
 (%i3) plot3d (julia_sin, [x, -2, 2], [y, -3, 3], 
                 [gnuplot_preamble, "set view map"],
@@ -202,7 +202,7 @@ recursive applications of Koch transformation; @var{nn} must be small (5 or 6).
 Examples:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot2d([discrete,
               snowmap([1,exp(%i*%pi*2/3),exp(-%i*%pi*2/3),1],4)])$
 (%i3) plot2d([discrete,
@@ -231,7 +231,7 @@ is 7 or greater.
 Example:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot2d([discrete,hilbertmap(6)])$
 @end example
 @end deffn
@@ -247,7 +247,7 @@ is 7 or greater.
 Example:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot2d([discrete,sierpinskimap(6)])$
 @end example
 @end deffn

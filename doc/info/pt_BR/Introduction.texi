@@ -1,8 +1,8 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Introduction.texi/1.7/Sat Jun  2 00:12:51 2007/-ko/
-Inicie o Maxima com o comando "maxima".  Maxima mostrar@'{a} a informaç@~{a}o
-de vers@~{a}o e uma linha de comando.  Termine cada comando Maxima com um ponto e v@'{i}rgula.
-Termine uma sess@~{a}o com o comando "quit();".  Aqui est@'{a} um exemplo de sess@~{a}o:
+Inicie o Maxima com o comando "maxima".  Maxima mostrará a informação
+de versão e uma linha de comando.  Termine cada comando Maxima com um ponto e vírgula.
+Termine uma sessão com o comando "quit();".  Aqui está um exemplo de sessão:
 
 @example
 [wfs@@chromium]$ maxima
@@ -25,11 +25,11 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-Maxima pode procurar as p@'{a}ginas info.  Use o comando @kbd{describe} para mostrar
-informaç@~{o}es sobre o comando ou todos os comandos e vari@'{a}veis contendo 
-uma seq@"{u}@^encia de caracteres. 
-O ponto de interrogaç@~{a}o @code{?} (busca exata) e o duplo ponto de interrogaç@~{a}o @code{??} 
-(busca inexata) s@~{a}o abreviaç@~{o}es para @code{describe}:
+Maxima pode procurar as páginas info.  Use o comando @kbd{describe} para mostrar
+informações sobre o comando ou todos os comandos e variáveis contendo 
+uma seq@"{u}ência de caracteres. 
+O ponto de interrogação @code{?} (busca exata) e o duplo ponto de interrogação @code{??} 
+(busca inexata) são abreviações para @code{describe}:
 
 @example
 (%i1) ?? integ
@@ -91,8 +91,8 @@ Enter space-separated numbers, `all' or `none': 5 4
 (%o1)                                true
 @end example
 
-Para usar um resultado em c@'{a}lculos posteriores, voc@^{e} pode atribuir esse valor a uma vari@'{a}vel ou
-referir-se a esse mesmo valor atrav@'{e}s de seu r@'{o}tulo gerado automaticamente.  Adicionalmente, @kbd{%}
+Para usar um resultado em cálculos posteriores, você pode atribuir esse valor a uma variável ou
+referir-se a esse mesmo valor através de seu rótulo gerado automaticamente.  Adicionalmente, @kbd{%}
 refere-se ao mais recente resultado calculado:
 
 @example
@@ -107,7 +107,7 @@ refere-se ao mais recente resultado calculado:
 (%o3)                      6 (y + x)
 @end example
 
-Maxima tem conhecimento sobre n@'{u}meros complexos e constantes num@'{e}ricas:
+Maxima tem conhecimento sobre números complexos e constantes numéricas:
 
 @example
 (%i1) cos(%pi);
@@ -116,7 +116,7 @@ Maxima tem conhecimento sobre n@'{u}meros complexos e constantes num@'{e}ricas:
 (%o2)                          - 1
 @end example
 
-Maxima pode fazer c@'{a}lculos diferenciais e integrais:
+Maxima pode fazer cálculos diferenciais e integrais:
 
 @example
 (%i1) u: expand ((x + y)^6);
@@ -133,7 +133,7 @@ Maxima pode fazer c@'{a}lculos diferenciais e integrais:
                   6             sqrt(3)          3
 @end example
 
-Maxima pode resolver sistemas lineares e equaç@~{o}es c@'{u}bicas:
+Maxima pode resolver sistemas lineares e equações cúbicas:
 
 @example
 (%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -144,8 +144,8 @@ Maxima pode resolver sistemas lineares e equaç@~{o}es c@'{u}bicas:
 (%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
 @end example
 
-Maxima pode resolver sistemas de equaç@~{o}es n@~{a}o lineares.  Note que se voc@^{e} n@~{a}o
-quer um resultado impresso, voc@^{e} pode encerrar seu comando com @kbd{$} em lugar de
+Maxima pode resolver sistemas de equações não lineares.  Note que se você não
+quer um resultado impresso, você pode encerrar seu comando com @kbd{$} em lugar de
 encerrar com @kbd{;}.
 
 @example
@@ -161,8 +161,8 @@ encerrar com @kbd{;}.
                                      2                   2
 @end example
 
-Maxima pode gerar gr@'{a}ficos de uma ou mais
-funç@~{o}es:
+Maxima pode gerar gráficos de uma ou mais
+funções:
 
 @example
 (%i1) eq_1: x^2 + 3*x*y + y^2 = 0$
@@ -190,4 +190,5 @@ funç@~{o}es:
 @c a menu that will, among other things, let you generate a PostScript file
 @c of the plot.  (By default, the file is placed in your home directory.)
 @c You can rotate a 3D plot.
+
 

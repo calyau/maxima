@@ -46,7 +46,7 @@ IPRINTパラメータ(メッセージ出力を制御する２つの整数のリ�
 擬似Newtonアルゴリズムであるメモリ制限付きBFGS (LBFGS)アルゴリズムを適用することで
 拡張Lagraneを最小化します。
 
-@code{load(augmented_lagrangian)}はこの関数をロードします。
+@code{load("augmented_lagrangian")}はこの関数をロードします。
 
 @code{lbfgs}も参照してください。
 
@@ -66,8 +66,8 @@ IPRINTパラメータ(メッセージ出力を制御する２つの整数のリ�
 例:
 
 @c ===beg===
-@c load (lbfgs);
-@c load (augmented_lagrangian);
+@c load ("lbfgs");
+@c load ("augmented_lagrangian");
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c C: [x + y - 1];
@@ -75,9 +75,9 @@ IPRINTパラメータ(メッセージ出力を制御する２つの整数のリ�
 @c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
 @c ===end===
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)     /maxima/share/lbfgs/lbfgs.mac
-(%i2) load (augmented_lagrangian);
+(%i2) load ("augmented_lagrangian");
 (%o2) 
    /maxima/share/contrib/augmented_lagrangian.mac
 (%i3) FOM: x^2 + 2*y^2;
@@ -98,8 +98,8 @@ IPRINTパラメータ(メッセージ出力を制御する２つの整数のリ�
 グラディエントが引数として供給されます。
 
 @c ===beg===
-@c load (lbfgs)$
-@c load (augmented_lagrangian)$
+@c load ("lbfgs")$
+@c load ("augmented_lagrangian")$
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c grad : [2*x, 4*y];
@@ -109,8 +109,8 @@ IPRINTパラメータ(メッセージ出力を制御する２つの整数のリ�
 @c                              iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs)$
-(%i2) load (augmented_lagrangian)$
+(%i1) load ("lbfgs")$
+(%i2) load ("augmented_lagrangian")$
 (%i3) FOM: x^2 + 2*y^2;
                                2    2
 (%o3)                       2 y  + x

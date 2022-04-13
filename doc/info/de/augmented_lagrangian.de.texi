@@ -59,7 +59,7 @@ Lagrangian
 This implementation minimizes the augmented Lagrangian by applying the 
 limited-memory BFGS (LBFGS) algorithm, which is a quasi-Newton algorithm.
 
-@code{load(augmented_lagrangian)} loads this function.
+@code{load("augmented_lagrangian")} loads this function.
 
 See also @code{lbfgs}.
 
@@ -81,9 +81,9 @@ nonlinearcon/\-auglag.html}
 Examples:
 
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)     /maxima/share/lbfgs/lbfgs.mac
-(%i2) load (augmented_lagrangian);
+(%i2) load ("augmented_lagrangian");
 (%o2) 
    /maxima/share/contrib/augmented_lagrangian.mac
 (%i3) FOM: x^2 + 2*y^2;
@@ -105,8 +105,8 @@ Examples:
 Same example as before, but this time the gradient is supplied as an argument.
 
 @example
-(%i1) load (lbfgs)$
-(%i2) load (augmented_lagrangian)$
+(%i1) load ("lbfgs")$
+(%i2) load ("augmented_lagrangian")$
 (%i3) FOM: x^2 + 2*y^2;
                                2    2
 (%o3)                       2 y  + x

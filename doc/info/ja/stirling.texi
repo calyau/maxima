@@ -19,7 +19,7 @@ Stirling公式は適用されます。
 
 例:
 @example
-(%i1) load (stirling)$
+(%i1) load ("stirling")$
 
 (%i2) stirling(gamma(%alpha+x)/gamma(x),1);
        1/2 - x             x + %alpha - 1/2

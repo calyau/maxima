@@ -69,8 +69,8 @@ Referencias:
 Ejemplos:
 
 @c ===beg===
-@c load (lbfgs);
-@c load (augmented_lagrangian);
+@c load ("lbfgs");
+@c load ("augmented_lagrangian");
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c C: [x + y - 1];
@@ -78,9 +78,9 @@ Ejemplos:
 @c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
 @c ===end===
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)     /maxima/share/lbfgs/lbfgs.mac
-(%i2) load (augmented_lagrangian);
+(%i2) load ("augmented_lagrangian");
 (%o2) 
    /maxima/share/contrib/augmented_lagrangian.mac
 (%i3) FOM: x^2 + 2*y^2;
@@ -101,8 +101,8 @@ Mismo ejemplo que en el caso anterior, pero ahora el
 gradiente se suministra como argumento.
 
 @c ===beg===
-@c load (lbfgs)$
-@c load (augmented_lagrangian)$
+@c load ("lbfgs")$
+@c load ("augmented_lagrangian")$
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c grad : [2*x, 4*y];
@@ -112,8 +112,8 @@ gradiente se suministra como argumento.
 @c                              iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs)$
-(%i2) load (augmented_lagrangian)$
+(%i1) load ("lbfgs")$
+(%i2) load ("augmented_lagrangian")$
 (%i3) FOM: x^2 + 2*y^2;
                                2    2
 (%o3)                       2 y  + x

@@ -62,7 +62,7 @@
 もし問題が実現可能でないなら、
 "Problem not feasible!"を返します。
 
-この関数を使うためには、最初に@code{load(simplex);}で@code{simplex}パッケージをロードしてください。
+この関数を使うためには、最初に@code{load("simplex");}で@code{simplex}パッケージをロードしてください。
 
 例:
 
@@ -136,7 +136,7 @@
 Maximaの@code{linear_program}関数で実装された
 シンプレックスアルゴリズムを使います。
 
-この関数を使うためには、最初に@code{load(simplex);}で
+この関数を使うためには、最初に@code{load("simplex");}で
 @code{simplex}パッケージをロードしてください。
 
 例:

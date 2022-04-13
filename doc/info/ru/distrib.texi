@@ -214,8 +214,8 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @code{ahrens_cheng} и @code{inverse} при вычислении гистограмм для Хи-квадрат случайной переменной:
 
 @example
-(%i1) load(distrib)$
-(%i2) load(descriptive)$
+(%i1) load("distrib")$
+(%i2) load("descriptive")$
 (%i3) showtime: true$
 Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
 (%i4) random_chi2_algorithm: 'ahrens_cheng$
@@ -292,7 +292,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования пакет @code{distrib} необходимо загрузить командой
 @example
-(%i1) load(distrib)$
+(%i1) load("distrib")$
 @end example
 
 Для комментариев, сообщений об ошибках и предложений обращайтесь к автору пакета по адресу @var{'mario AT edu DOT xunta DOT es'}.
@@ -312,7 +312,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 Возвращает значение функции плотности вероятности нормального распределения @math{Normal(m,s)}
 с @math{s>0} в точке @var{x}.
 
-Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load(distrib)}.
+Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -328,11 +328,11 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 Эта функция определена в терминах встроенной Maxima функции @code{erf}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(s>0)$ cdf_normal(x,m,s);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(s>0)$ cdf_normal(x,m,s);
                              x - m
                        erf(---------)
@@ -355,7 +355,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 т.е. значение функции обратной @code{cdf_normal}.
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}.
 
-Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load(distrib)}.
+Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -367,7 +367,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @deffn {Функция} mean_normal (@var{m},@var{s})
 Возвращает среднее значение нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @var{m}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -379,7 +379,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @deffn {Функция} var_normal (@var{m},@var{s})
 Возвращает дисперсию нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @var{s^2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -390,7 +390,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @deffn {Функция} std_normal (@var{m},@var{s})
 Возвращает стандартное отклонение нормального распределения @math{Normal(m,s)} с @math{s>0}, т.е. @var{s}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -403,7 +403,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 Возвращает коэффициент асимметрии нормального распределения @math{Normal(m,s)} с @math{s>0},
 котрый всегда равен 0.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -416,7 +416,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 Возвращает коэффициент куртозиса нормального распределения @math{Normal(m,s)} с @math{s>0},
 котрый всегда равен 0.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -459,7 +459,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 См. также @code{random_normal_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -471,7 +471,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @deffn {Функция} pdf_student_t (@var{x},@var{n})
 Возвращает значение функции плотности вероятности распределения Стюдента @math{t(n)} с @math{n>0} в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -488,12 +488,12 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_student_t(1/2, 7/3);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_student_t(1/2, 7/3);
                                      1  7
 (%o2)                  cdf_student_t(-, -)
@@ -514,7 +514,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 т.е. значение функции обратной @code{cdf_student_t}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -527,7 +527,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 Возвращает среднее значение распределения Стюдента @math{t(n)} с @math{n>0}, 
 которое всегда равное 0.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -540,11 +540,11 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 Возвращает дисперсию распределения Стюдента @math{t(n)} с @math{n>2}. 
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(n>2)$  var_student_t(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(n>2)$  var_student_t(n);
                                 n
 (%o3)                         -----
@@ -561,7 +561,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @deffn {Функция} std_student_t (@var{n})
 Возвращает стандартное отклонение распределения Стюдента @math{t(n)} с @math{n>2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -574,7 +574,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 Возвращает коэффициент ассиметрии распределения Стюдента @math{t(n)} с @math{n>3},
 который всегда равен 0.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -586,7 +586,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @deffn {Функция} kurtosis_student_t (@var{n})
 Возвращает коэффициент куртозиса распределения Стюдента @math{t(n)} с @math{n>4}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -656,7 +656,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 См. также @code{random_student_t_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -674,12 +674,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 возвращается невычисляемая форма в терминах функции плотности гамма распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_chi2(x,n);
 @c assume(x>0, n>0)$  pdf_chi2(x,n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_chi2(x,n);
                                     n
 (%o2)                  pdf_gamma(x, -, 2)
@@ -709,12 +709,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 гамма квантили, поскольку распределение @math{Chi^2(n)} эквивалентно @math{Gamma(n/2,2)}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_chi2(3,4);
 @c cdf_chi2(3,4),numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_chi2(3,4);
 (%o2)                  cdf_gamma(3, 2, 2)
 (%i3) cdf_chi2(3,4),numer;
@@ -739,12 +739,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 гамма квантили, поскольку распределение @math{Chi^2(n)} эквивалентно @math{Gamma(n/2,2)}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_chi2(0.99,9);
 @c quantile_chi2(0.99,n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_chi2(0.99,9);
 (%o2)                   21.66599433346194
 (%i3) quantile_chi2(0.99,n);
@@ -768,12 +768,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 возвращается невычисляемая форма в терминах среднего значения гамма распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_chi2(n);
 @c assume(n>0)$ mean_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_chi2(n);
                                    n
 (%o2)                   mean_gamma(-, 2)
@@ -797,12 +797,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 возвращается невычисляемая форма в терминах дисперсии гамма распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_chi2(n);
 @c assume(n>0)$ var_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_chi2(n);
                                    n
 (%o2)                    var_gamma(-, 2)
@@ -826,12 +826,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 возвращается невычисляемая форма в терминах стандартного отклонения гамма распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_chi2(n);
 @c assume(n>0)$ std_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_chi2(n);
                                    n
 (%o2)                    std_gamma(-, 2)
@@ -855,12 +855,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 возвращается невычисляемая форма в терминах коэффициента асимметрии гамма распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_chi2(n);
 @c assume(n>0)$ skewness_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_chi2(n);
                                      n
 (%o2)                 skewness_gamma(-, 2)
@@ -886,12 +886,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 возвращается невычисляемая форма в терминах коэффициента куртозиса гамма распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_chi2(n);
 @c assume(n>0)$ kurtosis_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_chi2(n);
                                      n
 (%o2)                 kurtosis_gamma(-, 2)
@@ -945,7 +945,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 См. также @code{random_chi2_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -957,7 +957,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {Функция} pdf_f (@var{x},@var{m},@var{n})
 Возвращает значение функции плотности вероятности распределения @math{F(m,n)} с @math{m,n>0} в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -975,12 +975,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_f(2,3,9/4);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_f(2,3,9/4);
                                      9
 (%o2)                    cdf_f(2, 3, -)
@@ -1006,12 +1006,12 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_f(2/5,sqrt(3),5);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_f(2/5,sqrt(3),5);
                                2
 (%o2)               quantile_f(-, sqrt(3), 5)
@@ -1030,7 +1030,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {Функция} mean_f (@var{m},@var{n})
 Возвращает среднее значение распределения @math{F(m,n)} с @math{m>0, n>2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1042,7 +1042,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {Функция} var_f (@var{m},@var{n})
 Возвращает дисперсию распределения @math{F(m,n)} с @math{m>0, n>4}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1054,7 +1054,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {Функция} std_f (@var{m},@var{n})
 Возвращает стандартное отклонение распределения @math{F(m,n)} с @math{m>0, n>4}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1066,7 +1066,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {Функция} skewness_f (@var{m},@var{n})
 Возвращает коэффициент асимметрии распределения @math{F(m,n)} с @math{m>0, n>6}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1078,7 +1078,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @deffn {Функция} kurtosis_f (@var{m},@var{n})
 Возвращает коэффициент куртозиса распределения @math{F(m,n)} с @math{m>0, n>8}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1141,7 +1141,7 @@ $$F={{n X}\over{m Y}}$$
 
 См. также @code{random_f_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1160,12 +1160,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах плотности вероятности распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_exp(x,m);
 @c assume(x>0,m>0)$  pdf_exp(x,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_exp(x,m);
                                         1
 (%o2)                 pdf_weibull(x, 1, -)
@@ -1191,12 +1191,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах функции распределения распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_exp(x,m);
 @c assume(x>0,m>0)$  cdf_exp(x,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_exp(x,m);
                                         1
 (%o2)                 cdf_weibull(x, 1, -)
@@ -1223,12 +1223,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах квантили распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_exp(0.56,5);
 @c quantile_exp(0.56,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_exp(0.56,5);
 (%o2)                   .1641961104139661
 (%i3) quantile_exp(0.56,m);
@@ -1253,12 +1253,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах среднего значения распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_exp(m);
 @c assume(m>0)$  mean_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_exp(m);
                                        1
 (%o2)                  mean_weibull(1, -)
@@ -1285,12 +1285,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах дисперсии распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_exp(m);
 @c assume(m>0)$  var_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_exp(m);
                                        1
 (%o2)                   var_weibull(1, -)
@@ -1318,12 +1318,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах стандартного отклонения распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_exp(m);
 @c assume(m>0)$  std_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_exp(m);
                                        1
 (%o2)                   std_weibull(1, -)
@@ -1350,12 +1350,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах коэффициента асимметрии распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_exp(m);
 @c assume(m>0)$  skewness_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_exp(m);
                                          1
 (%o2)                skewness_weibull(1, -)
@@ -1380,12 +1380,12 @@ $$F={{n X}\over{m Y}}$$
 возвращается невычисляемая форма в терминах коэффициента куртозиса распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_exp(m);
 @c assume(m>0)$  kurtosis_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_exp(m);
                                          1
 (%o2)                kurtosis_weibull(1, -)
@@ -1443,7 +1443,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_exp_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1457,7 +1457,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0} в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1473,11 +1473,11 @@ Comm, ACM, 15, Oct.,  873-882.
 Эта функция определена в терминах встроенной Maxima функции @code{erf}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(x>0, s>0)$  cdf_lognormal(x,m,s);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(x>0, s>0)$  cdf_lognormal(x,m,s);
                            log(x) - m
                        erf(----------)
@@ -1501,7 +1501,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_lognormal}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1514,7 +1514,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает среднее значение логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1527,7 +1527,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает дисперсию логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1539,7 +1539,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает стандартное отклонение логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1552,7 +1552,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает коэффициент асимметрии логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1565,7 +1565,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает коэффициент куртозиса логнормального распределения @math{Lognormal(m,s)} 
 с @math{s>0}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1586,7 +1586,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_normal_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1600,7 +1600,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности гамма распределения @math{Gamma(a,b)} с @math{a,b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1618,12 +1618,12 @@ Comm, ACM, 15, Oct.,  873-882.
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_gamma(3,5,21);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_gamma(3,5,21);
 (%o2)                  cdf_gamma(3, 5, 21)
 (%i3) %,numer;
@@ -1642,7 +1642,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_gamma}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1654,7 +1654,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} mean_gamma (@var{a},@var{b})
 Возвращает среднее значение гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1666,7 +1666,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_gamma (@var{a},@var{b})
 Возвращает дисперсию гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1677,7 +1677,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_gamma (@var{a},@var{b})
 Возвращает стандартное отклонение гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1689,7 +1689,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} skewness_gamma (@var{a},@var{b})
 Возвращает коэффициент асимметрии гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1701,7 +1701,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_gamma (@var{a},@var{b})
 Возвращает коэффициент куртозиса гамма распределения @math{Gamma(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1751,7 +1751,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_gamma_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1764,7 +1764,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} pdf_beta (@var{x},@var{a},@var{b})
 Возвращает значение функции плотности вероятности бета распределения @math{Beta(a,b)} с @math{a,b>0} в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1781,12 +1781,12 @@ Comm, ACM, 15, Oct.,  873-882.
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_beta(1/3,15,2);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_beta(1/3,15,2);
                                  1
 (%o2)                   cdf_beta(-, 15, 2)
@@ -1807,7 +1807,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_beta}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1819,7 +1819,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} mean_beta (@var{a},@var{b})
 Возвращает среднее значение бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1831,7 +1831,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_beta (@var{a},@var{b})
 Возвращает дисперсию бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1842,7 +1842,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_beta (@var{a},@var{b})
 Возвращает стандартное отклонение бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1854,7 +1854,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} skewness_beta (@var{a},@var{b})
 Возвращает коэффициент асимметрии бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1866,7 +1866,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_beta (@var{a},@var{b})
 Возвращает коэффициент куртозиса бета распределения @math{Beta(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1916,7 +1916,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_beta_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1929,7 +1929,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности равномерного непрерывного распределения @math{Continuous Uniform(a,b)} с @math{a<b}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1942,7 +1942,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции распределения равномерного непрерывного распределения @math{Continuous Uniform(a,b)}
 с @math{a<b} в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1957,7 +1957,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_continuous_uniform}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1970,7 +1970,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает среднее значение равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1983,7 +1983,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает дисперсию равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -1995,7 +1995,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает стандартное отклонение равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2008,7 +2008,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает коэффициент ассиметрии равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2021,7 +2021,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает коэффициент куртозиса равномерного непрерывного распределения @math{Continuous Uniform(a,b)} 
 с @math{a<b}.  
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2039,7 +2039,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2052,7 +2052,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности логистического распределения @math{Logistic(a,b)} с @math{b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2065,7 +2065,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции распределения логистического распределения @math{Logistic(a,b)} с @math{b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2079,7 +2079,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_logistic}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2091,7 +2091,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} mean_logistic (@var{a},@var{b})
 Возвращает среднее значение логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2103,7 +2103,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_logistic (@var{a},@var{b})
 Возвращает дисперсию логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2115,7 +2115,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_logistic (@var{a},@var{b})
 Возвращает стандартное отклонение логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2127,7 +2127,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} skewness_logistic (@var{a},@var{b})
 Возвращает коэффициент асимметрии логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2139,7 +2139,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_logistic (@var{a},@var{b})
 Возвращает коэффициент куртозиса логистического распределения @math{Logistic(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2155,7 +2155,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Реализован только метод обращения. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2169,7 +2169,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности распределения Парето @math{Pareto(a,b)} с @math{a,b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2182,7 +2182,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции распределения Парето @math{Pareto(a,b)} с @math{a,b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2196,7 +2196,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_pareto}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2208,7 +2208,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} mean_pareto (@var{a},@var{b})
 Возвращает среднее значение распределения Парето @math{Pareto(a,b)} с @math{a>1,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2219,7 +2219,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_pareto (@var{a},@var{b})
 Возвращает дисперсию распределения Парето @math{Pareto(a,b)} с @math{a>2,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2230,7 +2230,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_pareto (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Парето @math{Pareto(a,b)} с @math{a>2,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2241,7 +2241,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} skewness_pareto (@var{a},@var{b})
 Возвращает коэффициент асимметрии распределения Парето @math{Pareto(a,b)} с @math{a>3,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2252,7 +2252,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_pareto (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Парето @math{Pareto(a,b)} с @math{a>4,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2267,7 +2267,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Реализован только метод обращения. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2281,7 +2281,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2294,7 +2294,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2308,7 +2308,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_weibull}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2320,7 +2320,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} mean_weibull (@var{a},@var{b})
 Возвращает среднее значение распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2332,7 +2332,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_weibull (@var{a},@var{b})
 Возвращает дисперсию распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2343,7 +2343,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_weibull (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2354,7 +2354,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} skewness_weibull (@var{a},@var{b})
 Возвращает коэффициент асимметрии распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2365,7 +2365,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_weibull (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Вейбулла @math{Weibull(a,b)} с @math{a,b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2381,7 +2381,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Реализован только метод обращения. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2401,12 +2401,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах плотности вероятности распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_rayleigh(x,b);
 @c assume(x>0,b>0)$ pdf_rayleigh(x,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_rayleigh(x,b);
                                         1
 (%o2)                 pdf_weibull(x, 2, -)
@@ -2433,12 +2433,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах функции распределения распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_rayleigh(x,b);
 @c assume(x>0,b>0)$ cdf_rayleigh(x,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_rayleigh(x,b);
                                         1
 (%o2)                 cdf_weibull(x, 2, -)
@@ -2466,12 +2466,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах квантили распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_rayleigh(0.99,b);
 @c assume(x>0,b>0)$ quantile_rayleigh(0.99,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_rayleigh(0.99,b);
                                             1
 (%o2)             quantile_weibull(0.99, 2, -)
@@ -2497,12 +2497,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах среднего значения распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_rayleigh(b);
 @c assume(b>0)$ mean_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_rayleigh(b);
                                        1
 (%o2)                  mean_weibull(2, -)
@@ -2528,12 +2528,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах дисперсии распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_rayleigh(b);
 @c assume(b>0)$ var_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_rayleigh(b);
                                        1
 (%o2)                   var_weibull(2, -)
@@ -2562,12 +2562,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах стандартного отклонения распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_rayleigh(b);
 @c assume(b>0)$ std_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_rayleigh(b);
                                        1
 (%o2)                   std_weibull(2, -)
@@ -2595,12 +2595,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах коэффициента асимметрии распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_rayleigh(b);
 @c assume(b>0)$ skewness_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_rayleigh(b);
                                          1
 (%o2)                skewness_weibull(2, -)
@@ -2631,12 +2631,12 @@ Comm, ACM, 15, Oct.,  873-882.
 возвращается невычисляемая форма в терминах коэффициента куртозиса распределения Вейбулла.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_rayleigh(b);
 @c assume(b>0)$ kurtosis_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_rayleigh(b);
                                          1
 (%o2)                kurtosis_weibull(2, -)
@@ -2666,7 +2666,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Реализован только метод обращения. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2682,7 +2682,7 @@ Comm, ACM, 15, Oct.,  873-882.
 в точке @var{x}.
 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2695,7 +2695,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции распределения Лапласа @math{Laplace(a,b)} с @math{b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2709,7 +2709,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_laplace}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2721,7 +2721,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} mean_laplace (@var{a},@var{b})
 Возвращает среднее значение распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2733,7 +2733,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_laplace (@var{a},@var{b})
 Возвращает дисперсию распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2745,7 +2745,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_laplace (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2757,7 +2757,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} skewness_laplace (@var{a},@var{b})
 Возвращает коэффициент асимметрии распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2769,7 +2769,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_laplace (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Лапласа @math{Laplace(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2785,7 +2785,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Реализован только метод обращения. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2800,7 +2800,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности распределения Коши @math{Cauchy(a,b)} с @math{b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2813,7 +2813,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции распределения Коши @math{Cauchy(a,b)} с @math{b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2827,7 +2827,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_cauchy}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2843,7 +2843,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Реализован только метод обращения.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2859,7 +2859,7 @@ Comm, ACM, 15, Oct.,  873-882.
 в точке @var{x}.
 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2872,7 +2872,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2886,7 +2886,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_gumbel}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2899,11 +2899,11 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает среднее значение распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(b>0)$  mean_gumbel(a,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(b>0)$  mean_gumbel(a,b);
 (%o3)                     %gamma b + a
 @end example
@@ -2919,7 +2919,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_gumbel (@var{a},@var{b})
 Возвращает дисперсию распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2931,7 +2931,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_gumbel (@var{a},@var{b})
 Возвращает стандартное отклонение распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2944,12 +2944,12 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает коэффициент асимметрии распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(b>0)$ skewness_gumbel(a,b);
 @c numer:true$ skewness_gumbel(a,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(b>0)$ skewness_gumbel(a,b);
                        12 sqrt(6) zeta(3)
 (%o3)                  ------------------
@@ -2970,7 +2970,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_gumbel (@var{a},@var{b})
 Возвращает коэффициент куртозиса распределения Гумбеля @math{Gumbel(a,b)} с @math{b>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -2986,7 +2986,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Реализован только метод обращения. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3005,7 +3005,7 @@ Comm, ACM, 15, Oct.,  873-882.
 с @math{0<p<1} и положительным целым @math{n} в точке @var{x}.
 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3023,12 +3023,12 @@ Comm, ACM, 15, Oct.,  873-882.
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_binomial(5,7,1/6);
 @c cdf_binomial(5,7,1/6), numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_binomial(5,7,1/6);
                                          1
 (%o2)                 cdf_binomial(5, 7, -)
@@ -3050,7 +3050,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_binomial}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3063,7 +3063,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает среднее значение биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3076,7 +3076,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает дисперсию биномиального распределения @math{Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3089,7 +3089,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает стандартное отклонение биномиального распределения @math{Binomial(n,p)}
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3102,7 +3102,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает коэффициент асимметрии биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3115,7 +3115,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает коэффициент куртозиса биномиального распределения @math{Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3164,7 +3164,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_binomial_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3177,7 +3177,7 @@ Comm, ACM, 15, Oct.,  873-882.
 Возвращает значение функции плотности вероятности распределения Пуассона @math{Poisson(m)} с @math{m>0}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3195,12 +3195,12 @@ Comm, ACM, 15, Oct.,  873-882.
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_poisson(3,5);
 @c cdf_poisson(3,5), numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_poisson(3,5);
 (%o2)                   cdf_poisson(3, 5)
 (%i3) cdf_poisson(3,5), numer;
@@ -3219,7 +3219,7 @@ Comm, ACM, 15, Oct.,  873-882.
 т.е. значение функции обратной @code{cdf_poisson}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3231,7 +3231,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} mean_poisson (@var{m})
 Возвращает среднее значение распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3243,7 +3243,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} var_poisson (@var{m})
 Возвращает дисперсию распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3255,7 +3255,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} std_poisson (@var{m})
 Возвращает стандартное отклонение распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3267,7 +3267,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} skewness_poisson (@var{m})
 Возвращает коэффициент асимметрии распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3279,7 +3279,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @deffn {Функция} kurtosis_poisson (@var{m})
 Возвращает коэффициент куртозиса распределения Пуассона @math{Poisson(m)} с @math{m>0}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3325,7 +3325,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 См. также @code{random_poisson_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3344,12 +3344,12 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 возвращается невычисляемая форма в терминах плотности вероятности биномиального распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_bernoulli(1,p);
 @c assume(0<p,p<1)$ pdf_bernoulli(1,p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_bernoulli(1,p);
 (%o2)                 pdf_binomial(1, 1, p)
 (%i3) assume(0<p,p<1)$ pdf_bernoulli(1,p);
@@ -3367,7 +3367,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает значение функции распределения Бернулли @math{Bernoulli(p)} с @math{0<p<1}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3381,7 +3381,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 т.е. значение функции обратной @code{cdf_bernoulli}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3398,12 +3398,12 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 возвращается невычисляемая форма в терминах среднего значения биномиального распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_bernoulli(p);
 @c assume(0<p,p<1)$ mean_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_bernoulli(p);
 (%o2)                  mean_binomial(1, p)
 (%i3) assume(0<p,p<1)$ mean_bernoulli(p);
@@ -3425,12 +3425,12 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 возвращается невычисляемая форма в терминах дисперсии биномиального распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_bernoulli(p);
 @c assume(0<p,p<1)$ var_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_bernoulli(p);
 (%o2)                  var_binomial(1, p)
 (%i3) assume(0<p,p<1)$ var_bernoulli(p);
@@ -3452,12 +3452,12 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 возвращается невычисляемая форма в терминах стандартного отклонения биномиального распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_bernoulli(p);
 @c assume(0<p,p<1)$ std_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_bernoulli(p);
 (%o2)                  std_binomial(1, p)
 (%i3) assume(0<p,p<1)$ std_bernoulli(p);
@@ -3479,12 +3479,12 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 возвращается невычисляемая форма в терминах коэффициента асимметрии биномиального распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_bernoulli(p);
 @c assume(0<p,p<1)$ skewness_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_bernoulli(p);
 (%o2)                skewness_binomial(1, p)
 (%i3) assume(0<p,p<1)$ skewness_bernoulli(p);
@@ -3508,12 +3508,12 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 возвращается невычисляемая форма в терминах коэффициента куртозиса биномиального распределения.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_bernoulli(p);
 @c assume(0<p,p<1)$ kurtosis_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_bernoulli(p);
 (%o2)                kurtosis_binomial(1, p)
 (%i3) assume(0<p,p<1)$ kurtosis_bernoulli(p);
@@ -3538,7 +3538,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 См. также @code{random}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3553,7 +3553,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 в точке @var{x}.
 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3566,7 +3566,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает значение функции распределения геометрического распределения @math{Geometric(p)} с @math{0<p<1}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3580,7 +3580,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 т.е. значение функции обратной @code{cdf_geometric}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3592,7 +3592,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @deffn {Функция} mean_geometric (@var{p})
 Возвращает среднее значение геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3604,7 +3604,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @deffn {Функция} var_geometric (@var{p})
 Возвращает дисперсию геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3616,7 +3616,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @deffn {Функция} std_geometric (@var{p})
 Возвращает стандартное отклонение геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3628,7 +3628,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @deffn {Функция} skewness_geometric (@var{p})
 Возвращает коэффициент асимметрии геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3640,7 +3640,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 @deffn {Функция} kurtosis_geometric (@var{p})
 Возвращает коэффициент куртозиса геометрического распределения @math{Geometric(p)} с @math{0<p<1}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3688,7 +3688,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 См. также @code{random_geometric_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3702,7 +3702,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает значение функции плотности вероятности равномерного дискретного распределения @math{Discrete Uniform(n)}
 со строго положительным целым @math{n} в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3715,7 +3715,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает значение функции распределения равномерного дискретного распределения @math{Discrete Uniform(n)}
 со строго положительным целым @math{n} в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3730,7 +3730,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 т.е. значение функции обратной @code{cdf_discrete_uniform}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3743,7 +3743,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает среднее значение равномерного дискретного распределения @math{Discrete Uniform(n)} 
 со строго положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3756,7 +3756,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает дисперсию равномерного дискретного распределения @math{Discrete Uniform(n)}
 со строго положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3769,7 +3769,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает стандартное отклонение равномерного дискретного распределения @math{Discrete Uniform(n)}
 со строго положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3782,7 +3782,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает коэффициент асимметрии равномерного дискретного распределения @math{Discrete Uniform(n)} 
 со строго положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3795,7 +3795,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает коэффициент куртозиса равномерного дискретного распределения @math{Discrete Uniform(n)} 
 со строго положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3814,7 +3814,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 См. также @code{random}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3829,7 +3829,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3843,7 +3843,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3858,7 +3858,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 т.е. значение функции обратной @code{cdf_hypergeometric}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3871,7 +3871,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает среднее значение гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
 с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3884,7 +3884,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает дисперсию гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
 с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3897,7 +3897,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает стандартное отклонение гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
 с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3910,7 +3910,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает коэффициент асимметрии гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
 с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3923,7 +3923,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 Возвращает коэффициент куртозиса гипергеометрического распределения @math{Hypergeometric(n1,n2,n)}, 
 с неотрицательными целыми @var{n1}, @var{n2}, @var{n} при условии @math{n<=n1+n2}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3969,7 +3969,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 См. также @code{random_hypergeometric_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -3984,7 +3984,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 с @math{0<p<1} и положительным целым @math{n}
 в точке @var{x}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -4003,12 +4003,12 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 иначе возвращается номинальное выражение.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_negative_binomial(3,4,1/8);
 @c cdf_negative_binomial(3,4,1/8), numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_negative_binomial(3,4,1/8);
                                              1
 (%o2)            cdf_negative_binomial(3, 4, -)
@@ -4030,7 +4030,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 т.е. значение функции обратной @code{cdf_negative_binomial}. 
 Значение аргумента @var{q} должно быть в интервале @math{[0,1]}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -4043,7 +4043,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 Возвращает среднее значение отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -4056,7 +4056,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 Возвращает дисперсию отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -4069,7 +4069,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 Возвращает стандартное отклонение отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -4082,7 +4082,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 Возвращает коэффициент асимметрии отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -4095,7 +4095,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 Возвращает коэффициент куртозиса отрицательного биномиального распределения @math{Negative Binomial(n,p)} 
 с @math{0<p<1} и положительным целым @math{n}.
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}
@@ -4144,7 +4144,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 См. также @code{random_negative_binomial_algorithm}. 
 
-Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
+Для использования этой функции, ее необходимо загрузить командой @code{load("distrib")}.
 
 @opencatbox{Категории:}
 @category{Пакет distrib}

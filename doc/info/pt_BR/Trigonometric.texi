@@ -1,145 +1,145 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Trigonometric.texi/1.15/Sat Jun  2 00:13:11 2007/-ko/
 @menu
-* Introduç@~{a}o ao Pacote Trigonom@'{e}trico::  
-* Funç@~{o}es e Vari@'{a}veis Definidas para Trigonometria::  
+* Introdução ao Pacote Trigonométrico::  
+* Funções e Variáveis Definidas para Trigonometria::  
 @end menu
 
-@node Introduç@~{a}o ao Pacote Trigonom@'{e}trico, Funç@~{o}es e Vari@'{a}veis Definidas para Trigonometria, Trigonometria, Trigonometria
-@section Introduç@~{a}o ao Pacote Trigonom@'{e}trico
+@node Introdução ao Pacote Trigonométrico, Funções e Variáveis Definidas para Trigonometria, Trigonometria, Trigonometria
+@section Introdução ao Pacote Trigonométrico
 
-Maxima tem muitas funç@~{o}es trigonom@'{e}tricas definidas.  N@~{a}o todas as identidades
-trigonometricas est@~{a}o programadas, mas isso @'{e} poss@'{i}vel para o usu@'{a}rio adicionar muitas
-delas usando a compatibilidade de correspond@^{e}ncia de modelos do sistema.  As
-funç@~{o}es trigonom@'{e}tricas definidas no Maxima s@~{a}o: @code{acos},
+Maxima tem muitas funções trigonométricas definidas.  Não todas as identidades
+trigonometricas estão programadas, mas isso é possível para o usuário adicionar muitas
+delas usando a compatibilidade de correspondência de modelos do sistema.  As
+funções trigonométricas definidas no Maxima são: @code{acos},
 @code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
 @code{acsch}, @code{asec}, @code{asech}, @code{asin}, 
 @code{asinh}, @code{atan}, @code{atanh}, @code{cos}, 
 @code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch}, 
 @code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan}, 
-e @code{tanh}.  Existe uma coleç@~{a}o de comandos especialmente para 
-manusear funç@~{o}es trigonom@'{e}tricas, veja @code{trigexpand},
+e @code{tanh}.  Existe uma coleção de comandos especialmente para 
+manusear funções trigonométricas, veja @code{trigexpand},
 @code{trigreduce}, e o comutador @code{trigsign}.  Dois pacotes 
-compartilhados extendem as regras de simplificaç@~{a}o constru@'{i}das no Maxima, 
+compartilhados extendem as regras de simplificação construídas no Maxima, 
 @code{ntrig} e @code{atrig1}.  Faça @code{describe(@var{comando})}
 para detalhes.
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Trigonometria,  , Introduç@~{a}o ao Pacote Trigonom@'{e}trico, Trigonometria
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Trigonometria
+@node Funções e Variáveis Definidas para Trigonometria,  , Introdução ao Pacote Trigonométrico, Trigonometria
+@section Funções e Variáveis Definidas para Trigonometria
 
-@deffn {Funç@~{a}o} acos (@var{x})
+@deffn {Função} acos (@var{x})
  - Arco Cosseno.
 
 @end deffn
 
-@deffn {Funç@~{a}o} acosh (@var{x})
- - Arco Cosseno Hiperb@'{o}lico.
+@deffn {Função} acosh (@var{x})
+ - Arco Cosseno Hiperbólico.
 
 @end deffn
 
-@deffn {Funç@~{a}o} acot (@var{x})
+@deffn {Função} acot (@var{x})
  - Arco Cotangente.
 
 @end deffn
 
-@deffn {Funç@~{a}o} acoth (@var{x})
- - Arco Cotangente Hiperb@'{o}lico.
+@deffn {Função} acoth (@var{x})
+ - Arco Cotangente Hiperbólico.
 
 @end deffn
 
-@deffn {Funç@~{a}o} acsc (@var{x})
+@deffn {Função} acsc (@var{x})
  - Arco Cossecante.
 
 @end deffn
 
-@deffn {Funç@~{a}o} acsch (@var{x})
- - Arco Cossecante Hiperb@'{o}lico.
+@deffn {Função} acsch (@var{x})
+ - Arco Cossecante Hiperbólico.
 
 @end deffn
 
-@deffn {Funç@~{a}o} asec (@var{x})
+@deffn {Função} asec (@var{x})
  - Arco Secante.
 
 @end deffn
 
-@deffn {Funç@~{a}o} asech (@var{x})
- - Arco Secante Hiperb@'{o}lico.
+@deffn {Função} asech (@var{x})
+ - Arco Secante Hiperbólico.
 
 @end deffn
 
-@deffn {Funç@~{a}o} asin (@var{x})
+@deffn {Função} asin (@var{x})
  - Arco Seno.
 
 @end deffn
 
-@deffn {Funç@~{a}o} asinh (@var{x})
- - Arco Seno Hiperb@'{o}lico.
+@deffn {Função} asinh (@var{x})
+ - Arco Seno Hiperbólico.
 
 @end deffn
 
-@deffn {Funç@~{a}o} atan (@var{x})
+@deffn {Função} atan (@var{x})
  - Arco Tangente.
 
 @end deffn
 
-@deffn {Funç@~{a}o} atan2 (@var{y}, @var{x})
+@deffn {Função} atan2 (@var{y}, @var{x})
 - retorna o valor de @code{atan(@var{y}/@var{x})} no intervalo de @code{-%pi} a
 @code{%pi}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} atanh (@var{x})
- - Arco tangente Hiperb@'{o}lico.
+@deffn {Função} atanh (@var{x})
+ - Arco tangente Hiperbólico.
 
 @end deffn
 
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 @defvr {Pacote} atrig1
-O pacote @code{atrig1} cont@'{e}m muitas regras adicionais de simplificaç@~{a}o 
-para funç@~{o}es trigonom@'{e}tricas inversas.  Junto com regras
-j@'{a} conhecidas para Maxima, os seguintes @^{a}ngulos est@~{a}o completamente implementados:
+O pacote @code{atrig1} contém muitas regras adicionais de simplificação 
+para funções trigonométricas inversas.  Junto com regras
+já conhecidas para Maxima, os seguintes ângulos estão completamente implementados:
 @code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, e @code{%pi/2}.  
-Os @^{a}ngulos correspondentes nos outros tr@^{e}s quadrantes est@~{a}o tamb@'{e}m dispon@'{i}veis.  
-Faça @code{load(atrig1);} para us@'{a}-lo.
+Os ângulos correspondentes nos outros três quadrantes estão também disponíveis.  
+Faça @code{load("atrig1");} para usá-lo.
 
 @end defvr
 
-@deffn {Funç@~{a}o} cos (@var{x})
+@deffn {Função} cos (@var{x})
  - Cosseno.
 
 @end deffn
 
-@deffn {Funç@~{a}o} cosh (@var{x})
- - Cosseno hiperb@'{o}lico.
+@deffn {Função} cosh (@var{x})
+ - Cosseno hiperbólico.
 
 @end deffn
 
-@deffn {Funç@~{a}o} cot (@var{x})
+@deffn {Função} cot (@var{x})
  - Cotangente.
 
 @end deffn
 
-@deffn {Funç@~{a}o} coth (@var{x})
- - Cotangente Hyperb@'{o}lica.
+@deffn {Função} coth (@var{x})
+ - Cotangente Hyperbólica.
 
 @end deffn
 
-@deffn {Funç@~{a}o} csc (@var{x})
+@deffn {Função} csc (@var{x})
  - Cossecante.
 
 @end deffn
 
-@deffn {Funç@~{a}o} csch (@var{x})
- - Cossecante Hyperb@'{o}lica.
+@deffn {Função} csch (@var{x})
+ - Cossecante Hyperbólica.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} halfangles
+@defvr {Variável de opção} halfangles
 Default value: @code{false}
 
 Quando @code{halfangles} for @code{true},
-meios-@^{a}ngulos s@~{a}o simplificados imediatamente.
+meios-ângulos são simplificados imediatamente.
 @c WHAT DOES THIS STATEMENT MEAN EXACTLY ??
 @c NEEDS EXAMPLES
 
@@ -148,69 +148,69 @@ meios-@^{a}ngulos s@~{a}o simplificados imediatamente.
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 @defvr {Pacote} ntrig
-O pacote @code{ntrig} cont@'{e}m um conjunto de regras de simplificaç@~{a}o que s@~{a}o
-usadas para simplificar funç@~{a}o trigonom@'{e}trica cujos argumentos est@~{a}o na forma
-@code{@var{f}(@var{n} %pi/10)} onde @var{f} @'{e} qualquer das funç@~{o}es 
+O pacote @code{ntrig} contém um conjunto de regras de simplificação que são
+usadas para simplificar função trigonométrica cujos argumentos estão na forma
+@code{@var{f}(@var{n} %pi/10)} onde @var{f} é qualquer das funções 
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} e @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
 @end defvr
 
-@deffn {Funç@~{a}o} sec (@var{x})
+@deffn {Função} sec (@var{x})
  - Secante.
 
 @end deffn
 
-@deffn {Funç@~{a}o} sech (@var{x})
- - Secante Hyperb@'{o}lica.
+@deffn {Função} sech (@var{x})
+ - Secante Hyperbólica.
 
 @end deffn
 
-@deffn {Funç@~{a}o} sin (@var{x})
+@deffn {Função} sin (@var{x})
  - Seno.
 
 @end deffn
 
-@deffn {Funç@~{a}o} sinh (@var{x})
- - Seno Hyperb@'{o}lico.
+@deffn {Função} sinh (@var{x})
+ - Seno Hyperbólico.
 
 @end deffn
 
-@deffn {Funç@~{a}o} tan (@var{x})
+@deffn {Função} tan (@var{x})
  - Tangente.
 
 @end deffn
 
-@deffn {Funç@~{a}o} tanh (@var{x})
- - Tangente Hyperb@'{o}lica.
+@deffn {Função} tanh (@var{x})
+ - Tangente Hyperbólica.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Funç@~{a}o} trigexpand (@var{expr})
-Expande funç@~{o}es trigonometricas e hyperb@'{o}licas de
-adiç@~{o}es de @^{a}ngulos e de @^{a}ngulos multiplos que ocorram em @var{expr}.  Para melhores
-resultados, @var{expr} deve ser expandida.  Para intensificar o controle do usu@'{a}rio
-na simplificaç@~{a}o, essa funç@~{a}o expande somente um n@'{i}vel de cada vez,
-expandindo adiç@~{o}es de @^{a}ngulos ou @^{a}ngulos multiplos.  Para obter expans@~{a}o completa
+@deffn {Função} trigexpand (@var{expr})
+Expande funções trigonometricas e hyperbólicas de
+adições de ângulos e de ângulos multiplos que ocorram em @var{expr}.  Para melhores
+resultados, @var{expr} deve ser expandida.  Para intensificar o controle do usuário
+na simplificação, essa função expande somente um nível de cada vez,
+expandindo adições de ângulos ou ângulos multiplos.  Para obter expansão completa
 dentro de senos e cossenos imediatamente, escolha o comutador @code{trigexpand: true}.
 
-@code{trigexpand} @'{e} governada pelos seguintes sinalizadores globais:
+@code{trigexpand} é governada pelos seguintes sinalizadores globais:
 
 @table @code
 @item trigexpand
-Se @code{true} causa expans@~{a}o de todas as
-express@~{o}es contendo senos e cossenos ocorrendo subseq@"{u}@^{e}ntemente.
+Se @code{true} causa expansão de todas as
+expressões contendo senos e cossenos ocorrendo subseq@"{u}êntemente.
 @item halfangles
-Se @code{true} faz com que meios-@^{a}ngulos sejam simplificados
+Se @code{true} faz com que meios-ângulos sejam simplificados
 imediatamente.
 @item trigexpandplus
 Controla a regra "soma" para @code{trigexpand},
-expans@~{a}o de adiç@~{o}es (e.g. @code{sin(x + y)}) ter@~{a}o lugar somente se
+expansão de adições (e.g. @code{sin(x + y)}) terão lugar somente se
 @code{trigexpandplus} for @code{true}.
 @item trigexpandtimes
 Controla a regra "produto" para @code{trigexpand},
-expans@~{a}o de produtos (e.g. @code{sin(2 x)}) ter@~{a}o lugar somente se
+expansão de produtos (e.g. @code{sin(2 x)}) terão lugar somente se
 @code{trigexpandtimes} for @code{true}.
 @end table
 
@@ -231,55 +231,55 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} trigexpandplus
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} trigexpandplus
+Valor padrão: @code{true}
 
 @code{trigexpandplus} controla a regra da "soma" para
 @code{trigexpand}.  Dessa forma, quando o comando @code{trigexpand} for usado ou o
-comutador @code{trigexpand} escolhido para @code{true}, expans@~{a}o de adiç@~{o}es
-(e.g. @code{sin(x+y))} ter@~{a}o lugar somente se @code{trigexpandplus} for
+comutador @code{trigexpand} escolhido para @code{true}, expansão de adições
+(e.g. @code{sin(x+y))} terão lugar somente se @code{trigexpandplus} for
 @code{true}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} trigexpandtimes
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} trigexpandtimes
+Valor padrão: @code{true}
 
 @code{trigexpandtimes} controla a regra "produto" para
 @code{trigexpand}.  Dessa forma, quando o comando @code{trigexpand} for usado ou o
-comutador @code{trigexpand} escolhido para @code{true}, expans@~{a}o de produtos (e.g. @code{sin(2*x)})
-ter@~{a}o lugar somente se @code{trigexpandtimes} for @code{true}.
+comutador @code{trigexpand} escolhido para @code{true}, expansão de produtos (e.g. @code{sin(2*x)})
+terão lugar somente se @code{trigexpandtimes} for @code{true}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} triginverses
-Valor padr@~{a}o: @code{all}
+@defvr {Variável de opção} triginverses
+Valor padrão: @code{all}
 
-@code{triginverses} controla a simplificaç@~{a}o de
-composiç@~{o}es de funç@~{o}es trigonom@'{e}tricas e hiperb@'{o}licas com suas funç@~{o}es
+@code{triginverses} controla a simplificação de
+composições de funções trigonométricas e hiperbólicas com suas funções
 inversas.
 
 Se @code{all}, ambas e.g. @code{atan(tan(@var{x}))} 
-e @code{tan(atan(@var{x}))} simplificar@~{a}o para @var{x}.  
+e @code{tan(atan(@var{x}))} simplificarão para @var{x}.  
 
-Se @code{true}, a simplificaç@~{a}o  de @code{@var{arcfun}(@var{fun}(@var{x}))} 
-@'{e} desabilitada.
+Se @code{true}, a simplificação  de @code{@var{arcfun}(@var{fun}(@var{x}))} 
+é desabilitada.
 
-Se @code{false}, ambas as simplificaç@~{o}es  
+Se @code{false}, ambas as simplificações  
 @code{@var{arcfun}(@var{fun}(@var{x}))} e  
 @code{@var{fun}(@var{arcfun}(@var{x}))}
-s@~{a}o desabilitadas.
+são desabilitadas.
 
 @end defvr
 
-@deffn {Funç@~{a}o} trigreduce (@var{expr}, @var{x})
-@deffnx {Funç@~{a}o} trigreduce (@var{expr})
+@deffn {Função} trigreduce (@var{expr}, @var{x})
+@deffnx {Função} trigreduce (@var{expr})
 Combina produtos e expoentes de senos e cossenso
-trigonom@'{e}tricos e hiperb@'{o}licos de @var{x} dentro daqueles de m@'{u}ltiplos de @var{x}.
-Tamb@'{e}m tenta eliminar essas funç@~{o}es quando elas ocorrerem em
-denominadores.  Se @var{x} for omitido ent@~{a}o todas as vari@'{a}veis em @var{expr} s@~{a}o usadas.
+trigonométricos e hiperbólicos de @var{x} dentro daqueles de múltiplos de @var{x}.
+Também tenta eliminar essas funções quando elas ocorrerem em
+denominadores.  Se @var{x} for omitido então todas as variáveis em @var{expr} são usadas.
 
-Veja tamb@'{e}m @code{poissimp}.
+Veja também @code{poissimp}.
 
 @c ===beg===
 @c trigreduce(-sin(x)^2+3*cos(x)^2+x);
@@ -292,8 +292,8 @@ Veja tamb@'{e}m @code{poissimp}.
 
 @end example
 
-As rotinas de simplificaç@~{a}o trigonom@'{e}trica ir@~{a}o usar informaç@~{o}es
-declaradas em alguns casos simples.  Declaraç@~{o}es sobre vari@'{a}veis s@~{a}o
+As rotinas de simplificação trigonométrica irão usar informações
+declaradas em alguns casos simples.  Declarações sobre variáveis são
 usadas como segue, e.g.
 
 @c ===beg===
@@ -312,22 +312,22 @@ usadas como segue, e.g.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} trigsign
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} trigsign
+Valor padrão: @code{true}
 
-Quando @code{trigsign} for @code{true}, permite simplificaç@~{a}o de argumentos
-negativos para funç@~{o}es trigonom@'{e}tricas. E.g., @code{sin(-x)} transformar-se-@'{a} em
+Quando @code{trigsign} for @code{true}, permite simplificação de argumentos
+negativos para funções trigonométricas. E.g., @code{sin(-x)} transformar-se-á em
 @code{-sin(x)} somente se @code{trigsign} for @code{true}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} trigsimp (@var{expr})
+@deffn {Função} trigsimp (@var{expr})
 Utiliza as identidades @math{sin(x)^2 + cos(x)^2 = 1} and
-@math{cosh(x)^2 - sinh(x)^2 = 1} para simplificar express@~{o}es contendo @code{tan}, @code{sec},
+@math{cosh(x)^2 - sinh(x)^2 = 1} para simplificar expressões contendo @code{tan}, @code{sec},
 etc., para @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 
 @code{trigreduce}, @code{ratsimp}, e @code{radcan} podem estar
-habilitadas a adicionar simplificaç@~{o}es ao resultado.
+habilitadas a adicionar simplificações ao resultado.
 
 @code{demo ("trgsmp.dem")} mostra alguns exemplos de @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
@@ -335,13 +335,13 @@ habilitadas a adicionar simplificaç@~{o}es ao resultado.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Funç@~{a}o} trigrat (@var{expr})
-Fornece uma forma quase-linear simplificada can@^{o}nica de uma
-express@~{a}o trigonom@'{e}trica; @var{expr} @'{e} uma fraç@~{a}o racional de muitos @code{sin},
-@code{cos} ou @code{tan}, os argumentos delas s@~{a}o formas lineares em algumas vari@'{a}veis (ou
-kernels-n@'{u}cleos) e @code{%pi/@var{n}} (@var{n} inteiro) com coeficientes inteiros. O resultado @'{e} uma
-fraç@~{a}o simplificada com numerador e denominador ambos lineares em @code{sin} e @code{cos}.
-Dessa forma @code{trigrat} lineariza sempre quando isso for pass@'{i}vel.
+@deffn {Função} trigrat (@var{expr})
+Fornece uma forma quase-linear simplificada canônica de uma
+expressão trigonométrica; @var{expr} é uma fração racional de muitos @code{sin},
+@code{cos} ou @code{tan}, os argumentos delas são formas lineares em algumas variáveis (ou
+kernels-núcleos) e @code{%pi/@var{n}} (@var{n} inteiro) com coeficientes inteiros. O resultado é uma
+fração simplificada com numerador e denominador ambos lineares em @code{sin} e @code{cos}.
+Dessa forma @code{trigrat} lineariza sempre quando isso for passível.
 
 @c ===beg===
 @c trigrat(sin(3*a)/sin(a+%pi/3));
@@ -353,8 +353,8 @@ Dessa forma @code{trigrat} lineariza sempre quando isso for pass@'{i}vel.
 @end example
 
 O seguinte exemplo encontra-se em
-Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (ou em ingl@^{e}s,
-Addison-Wesley), seç@~{a}o 1.5.5, teorema de Morley.
+Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (ou em inglês,
+Addison-Wesley), seção 1.5.5, teorema de Morley.
 
 @c ===beg===
 @c c: %pi/3 - a - b;
@@ -413,4 +413,5 @@ Addison-Wesley), seç@~{a}o 1.5.5, teorema de Morley.
 @end example
 
 @end deffn
+
 

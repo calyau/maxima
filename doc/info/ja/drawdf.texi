@@ -11,7 +11,7 @@
 二連立自律一階ODE系の方向場を描画します。
 
 これは追加パッケージなので、利用するには、最初に
-@code{load(drawdf)}でロードしなければいけません。
+@code{load("drawdf")}でロードしなければいけません。
 Drawdfは@code{draw}パッケージ上に構築されています。これはGnuplot 4.2を要求します。
 
 単一のODEの方向場をプロットするには、ODEを以下の形式で書かなければいけません:
@@ -137,12 +137,12 @@ wxMaximaやImaximaのユーザーは@code{wxdrawdf}を代わりに使うかも�
 グラフィックスが@code{wxdraw}を使うノートブック内で描かれることを除いて、
 @code{drawdf}と同一です。
 
-この関数を利用するには、最初に@code{load(drawdf)}を書いてください。
+この関数を利用するには、最初に@code{load("drawdf")}を書いてください。
 
 例:
 
 @example
-(%i1) load(drawdf)$
+(%i1) load("drawdf")$
 (%i2) drawdf(exp(-x)+y)$        /* default vars: x,y */
 (%i3) drawdf(exp(-t)+y, [t,y])$ /* default range: [-10,10] */
 (%i4) drawdf([y,-9*sin(x)-y/5], [x,1,5], [y,-2,2])$

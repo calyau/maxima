@@ -138,7 +138,7 @@ Return code with the following meanings
  @end enumerate
 @end enumerate
 
-@code{load(fmin_cobyla)} loads this function.
+@code{load("fmin_cobyla")} loads this function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ operations are used, and the default value for @var{rhoend} is
 
 See @code{fmin_cobyla} for more information.
 
-@code{load(fmin_cobyla)} loads this function.
+@code{load("fmin_cobyla")} loads this function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ Minimize x1*x2 with 1-x1^2-x2^2 >= 0.
 The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
 @example
-(%i1) load(fmin_cobyla)$
+(%i1) load("fmin_cobyla")$
 
 (%i2) fmin_cobyla(x1*x2, [x1, x2], [1,1], 
                          constraints = [x1^2+x2^2<=1], iprint=1);

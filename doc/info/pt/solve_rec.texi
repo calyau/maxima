@@ -96,7 +96,7 @@ Tenta simplificar todos os somatórios que aparecem na @var{expr} para uma forma
 @code{simplify_sum} usa os algoritmos de Gosper e de Zeilberger para simplificar somatórios.
 
 Para usar essa função primeiramente chame o pacote @code{simplify_sum} com
-@code{load(simplify_sum)}.
+@code{load("simplify_sum")}.
 
 Exemplo:
 
@@ -134,7 +134,7 @@ hipergeométricas aumenta exponencialmente com o grau do coeficiente lider e
 guia.
 
 Para usar essa função primeiramente chame o pacote @code{solve_rec} com
-@code{load(solve_rec);}.
+@code{load("solve_rec");}.
 
 Exemplo de recorrência linear com coeficientes constantes:
 
@@ -196,7 +196,7 @@ Encontra soluções racionais para recorrências lineares. Veja solve_rec para
 uma descrição dos argumentos.
 
 Para usar essa função primeirametne chame o pacote @code{solve_rec} com
-@code{load(solve_rec);}.
+@code{load("solve_rec");}.
 
 Exemplo:
 
@@ -247,7 +247,7 @@ onde x é hipergeométrico em @var{k} e @var{n}. SE @var{inf} e @var{sup}
 forem omitidos, são assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
 
 Para usar essa função primeiro chame o pacote @code{simplify_sum} com
-@code{load(simplify_sum)}.
+@code{load("simplify_sum")}.
 
 Exemplo:
 

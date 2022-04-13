@@ -130,7 +130,7 @@ variables. The FOM has an exact minimum equal to zero at @math{u[k] = 1} for
 @math{k = 1, ..., 8}.
 
 @c ===beg===
-@c load (lbfgs);
+@c load ("lbfgs");
 @c t1[j] := 1 - u[j];
 @c t2[j] := 10*(u[j + 1] - u[j]^2);
 @c n : 8;
@@ -140,7 +140,7 @@ variables. The FOM has an exact minimum equal to zero at @math{u[k] = 1} for
 @c ===end===
 
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
 (%i2) t1[j] := 1 - u[j];
 (%o2)                     t1  := 1 - u
@@ -272,7 +272,7 @@ this example, @code{lbfgs} computes approximate values for the parameters of
 data.
 
 @c ===beg===
-@c load (lbfgs);
+@c load ("lbfgs");
 @c FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, 
 @c                                                 length(X)));
 @c X : [1, 2, 3, 4, 5];
@@ -284,7 +284,7 @@ data.
 @c ===end===
 
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
 (%i2) FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1,
                                                 length(X)));
@@ -365,14 +365,14 @@ I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
 Gradient of FOM is specified (instead of computing it automatically).
 
 @c ===beg===
-@c load (lbfgs)$
+@c load ("lbfgs")$
 @c F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
 @c F_grad : map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]);
 @c estimates : lbfgs ([F(a, b, c), F_grad], 
 @c                    [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs)$
+(%i1) load ("lbfgs")$
 (%i2) F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
                                2          4          6
 (%o2)     F(a, b, c) := (a - 5)  + (b - 3)  + (c - 2)

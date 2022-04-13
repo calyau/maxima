@@ -35,7 +35,7 @@
 @code{fast_linsolve}は、
 粗な方程式系に対して@code{linsolve}より速いです。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -58,7 +58,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 すなわち、@var{f}が@var{expr_1}, ..., @var{expr_m}の要素の多項式結合の時だけ、
 0をもたらします。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -82,7 +82,7 @@ The @var{eqns}は、非可換変数を含む多項式方程式です
 次数は@code{nc_degree}で返されるものです。
 これは、さらに、個々の変数の重みに影響されます。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -95,7 +95,7 @@ The @var{eqns}は、非可換変数を含む多項式方程式です
 それぞれを@var{x_1}, ..., @var{x_n}に割り当てます。
 これらは、@code{nc_degree}を計算する時に使われる重みです。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -106,7 +106,7 @@ The @var{eqns}は、非可換変数を含む多項式方程式です
 非可換多項式@var{p}の次数を返します。
 @code{declare_weights}を参照してください。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -119,7 +119,7 @@ The @var{eqns}は、非可換変数を含む多項式方程式です
 すなわち、@var{f}が方程式の要素の多項式結合の時だけ、
 0を返します。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -138,7 +138,7 @@ fast_central_elements ([x, y], 2);
 [y.y, x.x];
 @end example
 
-@code{load(affine)} loads this function.
+@code{load("affine")} loads this function.
 
 @opencatbox
 @category{Package affine}
@@ -159,7 +159,7 @@ fast_central_elements ([x, y], 2);
 オプションの三番目の引数@code{reset}は、
 @code{false}は、物事の再設定についてわざわざ問い合わせないように言います。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -170,7 +170,7 @@ fast_central_elements ([x, y], 2);
 次数@var{n}の変数@var{x_1}, ..., @var{x_n}に関する現在のドット整理に関係した
 独立な単項式のリストを返します。
 
-@code{load(affine)} loads this function.
+@code{load("affine")} loads this function.
 
 @opencatbox
 @category{Package affine}
@@ -180,7 +180,7 @@ fast_central_elements ([x, y], 2);
 @deffn {関数} monomial_dimensions (@var{n})
 カレント代数に関する次数@var{n}までのヒルベルト級数を計算します。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -195,7 +195,7 @@ fast_central_elements ([x, y], 2);
 係数はスカラーでなければいけません。
 単項式のリストを組み立てるには、@code{list_nc_monomials}を使ってください。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}
@@ -208,7 +208,7 @@ fast_central_elements ([x, y], 2);
 多項式@var{p}または多項式のリスト@var{p_1}, ..., @var{p_n}
 の中に現れる非可換単項式のリストを返します。
 
-@code{load(affine)}はこの関数をロードします。
+@code{load("affine")}はこの関数をロードします。
 
 @opencatbox
 @category{Package affine}

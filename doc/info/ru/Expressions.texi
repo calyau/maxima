@@ -2312,7 +2312,7 @@ if x ## y then
 @deffn {Функция} powers (@var{expr}, @var{x})
 Выдает степени @var{x}, встречающиеся в @var{expr}.
 
-@code{load (powers)} загружает эту функцию.
+@code{load ("powers")} загружает эту функцию.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
 

@@ -118,7 +118,7 @@ ii) В силу специфики способа, при котором тен�
 @subsection Манипулирование тензорными индексами
 
 Пакет манипулирования тензорными индексами загружается в Maxima командой
-@code{load(itensor)}. Доступен ряд демонстрационных программ,
+@code{load("itensor")}. Доступен ряд демонстрационных программ,
 которые загружаются командой @code{demo(tensor)}.
 
 В этом пакете тензор рассматривается, как функция индексов и их списков.
@@ -171,7 +171,7 @@ ii) В силу специфики способа, при котором тен�
 метрики и выполнить простые вычисления.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -322,7 +322,7 @@ ii) В силу специфики способа, при котором тен�
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i,j],[k,l],m,n)*b([k,o],[j,m,p],q,r))$
                                 k l      j m p
@@ -368,7 +368,7 @@ ii) В силу специфики способа, при котором тен�
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) allsym:true;
 (%o2)                                true
@@ -585,7 +585,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) matchdeclare(l1,listp);
 (%o2)                                done
@@ -633,9 +633,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
-(%i2) load(itensor);
+(%i2) load("itensor");
 (%o2)      /share/tensor/itensor.lisp
 (%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
                 [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
@@ -739,7 +739,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) kdelta([1,2],[2,1]);
 (%o2)                                 - 1
@@ -782,7 +782,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:ishow('levi_civita([],[i,j])
                  *'levi_civita([k,l],[])*a([j],[k]))$
@@ -861,7 +861,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2)  el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
                              i  j
@@ -961,7 +961,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:contract( expand( a([i1, j1, k1], [])
            *kdels([i, j, k], [i1, j1, k1])))$
@@ -1088,7 +1088,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(liediff(v,a([i,j],[])*b([],[k],l)))$
        k    %2            %2          %2
@@ -1145,7 +1145,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 невозможно вычислить. Например, следующее выражение приводит к ошибке:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) icurvature([i,j,k],[l],m);
 Maxima encountered a Lisp error:
@@ -1229,7 +1229,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i],[J,r],k,r)+a([i],[j,r,s],k,r,s))$
                                 J r      j r s
@@ -1292,7 +1292,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(g([],[a,b],c))$
                                       a b
@@ -1359,7 +1359,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -1490,7 +1490,7 @@ errexp1 has improper indices
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) entertensor()$
 Enter tensor name: a;
@@ -1562,7 +1562,7 @@ Enter a list of the derivative indices: [];
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(icurvature([r,s,t],[u]))$
              u            u         %1         u     
@@ -1637,7 +1637,7 @@ Maxima использует  поле дуального базиса (@code{ifr
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) iframe_flag:true;
 (%o2)                                true
@@ -2003,7 +2003,7 @@ ikt2   = g   ikt1
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric:g;
 (%o2)                                  g
@@ -2127,7 +2127,7 @@ A       /\ B       = ----- D              A       B
 @code{igeowedge_flag}. Например:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i])~b([j]))$
                                  a  b  - b  a
@@ -2174,7 +2174,7 @@ A       /\ B       = ----- D              A       B
 "внутренние" свертки. Например:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) decsym(a,2,0,[anti(all)],[]);
 (%o2)                                done
@@ -2206,7 +2206,7 @@ A       /\ B       = ----- D              A       B
 Например:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(extdiff(v([i]),j))$
                                   v    - v
@@ -2242,7 +2242,7 @@ A       /\ B       = ----- D              A       B
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                            done
@@ -2310,13 +2310,13 @@ A       /\ B       = ----- D              A       B
 
 Команда экспорта тензорных
 выражений в TeX. Перед использованием необходимо загрузить необходимый
-подпакет, @code{load(tentex)}. Например:
+подпакет, @code{load("tentex")}. Например:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
-(%i2) load(tentex);
+(%i2) load("tentex");
 (%o2)       /share/tensor/tentex.lisp
 (%i3) idummyx:m;
 (%o3)                                  m
@@ -2368,7 +2368,7 @@ $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
 @code{ev}.  Пример:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)
       *b([i],[l,k]))$

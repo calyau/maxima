@@ -182,7 +182,7 @@ the additional step of cross-multiplying numerical denominator factors.
 This results in neater forms, and the possibility of recognizing some
 cancellations.
 
-@code{load(rncomb)} loads this function.
+@code{load("rncomb")} loads this function.
 
 @opencatbox{Categories:}
 @category{Expressions}

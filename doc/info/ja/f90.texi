@@ -18,17 +18,17 @@ Fortran 90のいわゆる「自由形式」入力フォーマットで出力を�
 長い行は、
 アンパサンド@code{&}継続文字で固定幅に分割されます。
 
-@code{load(f90)}はこの関数をロードします。
+@code{load("f90")}はこの関数をロードします。
 
 例:
 
 @c ===beg===
-@c load (f90)$
+@c load ("f90")$
 @c foo : expand ((xxx + yyy + 7)^4);
 @c f90 ('foo = foo);
 @c ===end===
 @example
-(%i1) load (f90)$
+(%i1) load ("f90")$
 (%i2) foo : expand ((xxx + yyy + 7)^4);
          4            3         3        2    2             2
 (%o2) yyy  + 4 xxx yyy  + 28 yyy  + 6 xxx  yyy  + 84 xxx yyy
@@ -47,13 +47,13 @@ foo = yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2&
 @code{with_stdout}関数を介して標準出力をファイルにとらえます。
 
 @c ===beg===
-@c load (f90)$
+@c load ("f90")$
 @c foo : sin (3*x + 1) - cos (7*x - 2);
 @c with_stdout ("foo.f90", f90 (x = 0.25, y = 0.625, 'foo = foo, 'stop, 'end));
 @c printfile ("foo.f90");
 @c ===end===
 @example
-(%i1) load (f90)$
+(%i1) load ("f90")$
 (%i2) foo : sin (3*x + 1) - cos (7*x - 2);
 (%o2)              sin(3 x + 1) - cos(7 x - 2)
 (%i3) with_stdout ("foo.f90",

@@ -100,7 +100,7 @@ Intenta reducir todas las sumas que aparecen en @var{expr} a una forma
 cerrada.
 
 Para utilizar esta función cárguese previamente el paquete @code{simplify_sum}
-ejecutando la instrucción @code{load(simplify_sum)}.
+ejecutando la instrucción @code{load("simplify_sum")}.
 
 Ejemplo:
 
@@ -149,7 +149,7 @@ recurrentes de Ricatti.
 Nótese que el tiempo de ejecución del algoritmo para encontrar soluciones 
 hipergeométricas es exponencial respecto del grado del coeficiente principal.
 
-Para hacer uso de esta función ejecútese previamente @code{load(solve_rec);}.
+Para hacer uso de esta función ejecútese previamente @code{load("solve_rec");}.
 
 Ejemplo de recurrencia lineal con coeficientes constantes:
 
@@ -210,7 +210,7 @@ Véanse también @code{solve_rec_rat}, @code{simplify_products} y @code{product_
 Calcula las soluciones racionales de las expresiones recurrentes lineales. 
 Véase @code{solve_rec} para la descripción de sus argumentos.
 
-Para hacer uso de esta función ejecútese previamente @code{load(solve_rec);}.
+Para hacer uso de esta función ejecútese previamente @code{load("solve_rec");}.
 
 Ejemplo:
 
@@ -260,7 +260,7 @@ donde el sumando es hipergeométrico en  @var{k} y @var{n}.
 
 Para hacer uso de esta función deben cargarse previamente los paquetes
 @code{zeilberger} y @code{solve_rec} mediante la ejecución de las sentencias
-@code{load(solve_rec)} y @code{load(zeilberger)}.
+@code{load("solve_rec")} y @code{load("zeilberger")}.
 
 @example
 (%i17) load("zeilberger")$

@@ -1,15 +1,15 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /makeOrders.texi/1.2/Sat Jun  2 00:13:24 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para makeOrders::
+* Funções e Variáveis Definidas para makeOrders::
 @end menu
 
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para makeOrders,  , makeOrders, makeOrders
-@section Funç@~{o}es e Vari@'{a}veis Definidas para makeOrders
+@node Funções e Variáveis Definidas para makeOrders,  , makeOrders, makeOrders
+@section Funções e Variáveis Definidas para makeOrders
 
-@deffn {Funç@~{a}o} makeOrders (@var{indvarlist},@var{orderlist})
-Retorna uma lista de todos os expoentes para um polin@^{o}mio acima de e incluindo os argumentos. 
+@deffn {Função} makeOrders (@var{indvarlist},@var{orderlist})
+Retorna uma lista de todos os expoentes para um polinômio acima de e incluindo os argumentos. 
 
 @example
 (%i1) load("makeOrders")$
@@ -23,7 +23,8 @@ Retorna uma lista de todos os expoentes para um polin@^{o}mio acima de e incluin
                                                   2
                                            + b + a  + a + 1
 @end example
-onde @code{[0, 1]} est@'{a} associado ao termo @math{b} e @code{[2, 3]} est@'{a} associado ao termo @math{a^2 b^3}.
+onde @code{[0, 1]} está associado ao termo @math{b} e @code{[2, 3]} está associado ao termo @math{a^2 b^3}.
 
-Para usar essa funç@~{a}o escreva primeiro @code{load("makeOrders")}.
+Para usar essa função escreva primeiro @code{load("makeOrders")}.
 @end deffn
+

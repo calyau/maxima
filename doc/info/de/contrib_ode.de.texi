@@ -30,7 +30,7 @@ is still under development and the calling sequence may change in future
 releases.  Once the code has stabilized it may be moved from the contrib
 directory and integrated into Maxima.
 
-This package must be loaded with the command @code{load('contrib_ode)}
+This package must be loaded with the command @code{load("contrib_ode")}
 before use.
 
 The calling convention for @code{contrib_ode} is identical to @code{ode2}.  It
@@ -62,7 +62,7 @@ It is necessary to return a list of solutions, as even first order
 non-linear ODEs can have multiple solutions.  For example:
 
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 (%i2) eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
 
                     dy 2             dy
@@ -79,7 +79,7 @@ Nonlinear ODEs can have singular solutions without constants of
 integration, as in the second solution of the following example:
 
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 (%i2) eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
 @group
                        dy 2     dy
@@ -100,7 +100,7 @@ variable @code{%t}.  In this case the parametric solutions can be manipulated
 to give explicit solutions.
 
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 (%i2) eqn:'diff(y,x)=(x+y)^2;
 
                           dy          2
@@ -116,7 +116,7 @@ to give explicit solutions.
 The following example (Kamke 1.112) demonstrates an implicit solution.
 
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 (%i2) assume(x>0,y>0);
 (%o2)                    [x > 0, y > 0]
 (%i3) eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y;
@@ -139,7 +139,7 @@ the variable @code{%u}.  Maxima is unable to solve the new ODE, so it is
 returned unevaluated.
 
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 (%i2) eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
 
                     2 dy      2  2      n
@@ -193,7 +193,7 @@ For second order ODEs, @code{odelin} uses a method, due to Bronstein and
 Lafaille, that searches for solutions in terms of given special functions.
 
 @example
-(%i1) load('contrib_ode);
+(%i1) load("contrib_ode");
 
 (%i2) odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
 ...trying factor method
@@ -224,7 +224,7 @@ Returns the value of ODE @var{eqn} after substituting a possible solution
 @var{eqn}.
 
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 (%i2) eqn:'diff(y,x,2)+(a*x+b)*y;
 
                          2

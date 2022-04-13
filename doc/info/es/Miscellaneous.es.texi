@@ -145,7 +145,7 @@ Transforma @var{expr} combinando todos los términos de @var{expr} que tengan de
 
 Haciendo @code{pfeformat: true} y utilizando @code{combine} se consiguen resultados similares a aquéllos que se pueden obtener con  @code{rncombine}, pero @code{rncombine} realiza el paso adicional de multiplicar denominadores numéricos. Esto da como resultado expresiones en las que se pueden reconocer algunas cancelaciones.
 
-Antes de utilizar esta función ejecútese @code{load(rncomb)}.
+Antes de utilizar esta función ejecútese @code{load("rncomb")}.
 @end deffn
 
 

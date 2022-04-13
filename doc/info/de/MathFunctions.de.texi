@@ -100,7 +100,7 @@ Betragsfunktion.  Siehe @mrefdot{laplace}
                            ]
                            /
 
-(%i12) load(abs_integrate)$
+(%i12) load("abs_integrate")$
 (%i13) integrate(x*abs(x),x);
                       2           3
                      x  abs(x)   x  signum(x)
@@ -550,7 +550,7 @@ Signumfunktion l@"osen.  Ausdr@"ucke mit der Signumfunktion k@"onnen
 differenziert werden.
 
 @example
-(%i5) load(abs_integrate)$
+(%i5) load("abs_integrate")$
 
 (%i6) integrate(signum(x),x);
 (%o6)                        abs(x)
@@ -1569,7 +1569,7 @@ ist f@"ur das numerische und symbolische Rechnen geeignet.
 
 Maxima hat keine vordefinierte Logarithmusfunktion zur Basis 10 oder anderen 
 Basen.  Eine einfache Definition ist zum Beispiel 
-@code{log10(x) := log(x)/log(10)}.  Mit dem Kommando @code{load(log10)} kann ein
+@code{log10(x) := log(x)/log(10)}.  Mit dem Kommando @code{load("log10")} kann ein
 Paket geladen werden, dass eine dekadische Logarithmusfunktion @code{log10}
 definiert.
 
@@ -2501,7 +2501,7 @@ die Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben.  @var{f} ist eine
 der Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
 @code{cot}.
 
-Das Kommando @code{load(ntrig)} l@"adt das Paket.  Die Vereinfachungen werden
+Das Kommando @code{load("ntrig")} l@"adt das Paket.  Die Vereinfachungen werden
 dann von Maxima automatisch ausgef@"uhrt.
 @end defvr
 

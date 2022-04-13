@@ -39,7 +39,7 @@ b = r sin(t)
 
 @code{polartorect} es la función inversa de @code{recttopolar}.
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
+Para utilizar esta función ejecútese antes @code{load("fft")}.
 Véase también @code{fft}.
 
 @end deffn
@@ -66,7 +66,7 @@ El ángulo calculado pertence al rango de @code{-%pi} a @code{%pi}.
 
 @code{recttopolar} es la función inversa de @code{polartorect}.
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
+Para utilizar esta función ejecútese antes @code{load("fft")}.
 Véase también @code{fft}.
 
 @end deffn
@@ -97,7 +97,7 @@ entonces para @code{j} entre 0 y @code{n - 1} se tiene
 x[j] = sum(y[k] exp(-2 %i %pi j k / n), k, 0, n - 1)
 @end example
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
+Para utilizar esta función ejecútese antes @code{load("fft")}.
 
 Véanse también @code{fft} (transformada directa), @code{recttopolar} y @code{polartorect}.
 
@@ -106,7 +106,7 @@ Ejemplos:
 Datos reales.
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 2, 3, 4, -1, -2, -3, -4] $
 @c L1 : inverse_fft (L);
@@ -114,7 +114,7 @@ Datos reales.
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
 (%i4) L1 : inverse_fft (L);
@@ -131,7 +131,7 @@ Datos reales.
 Datos complejos.
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 @c L1 : inverse_fft (L);
@@ -139,7 +139,7 @@ Datos complejos.
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $                 
 (%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 (%i4) L1 : inverse_fft (L);
@@ -208,7 +208,7 @@ a[n/2] = realpart (y[n/2])
 b[n/2] = 0
 @end example
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
+Para utilizar esta función ejecútese antes @code{load("fft")}.
 
 Véanse también @code{inverse_fft} (transformada inversa), @code{recttopolar} y @code{polartorect}.
 
@@ -217,7 +217,7 @@ Ejemplos:
 Datos reales.
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 2, 3, 4, -1, -2, -3, -4] $
 @c L1 : fft (L);
@@ -225,7 +225,7 @@ Datos reales.
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
 (%i4) L1 : fft (L);
@@ -242,7 +242,7 @@ Datos reales.
 Datos complejos.
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 @c L1 : fft (L);
@@ -250,7 +250,7 @@ Datos complejos.
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 (%i4) L1 : fft (L);
@@ -268,7 +268,7 @@ Datos complejos.
 Cálculo de los coeficientes del seno y coseno.
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 2, 3, 4, 5, 6, 7, 8] $
 @c n : length (L) $
@@ -290,7 +290,7 @@ Cálculo de los coeficientes del seno y coseno.
 @c makelist (float (f (j)), j, 0, n - 1);
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, 5, 6, 7, 8] $
 (%i4) n : length (L) $
@@ -493,14 +493,14 @@ no definidas, siempre y cuando la condición de terminación
 lógico @code{true} o @code{false}; de este modo, no es necesario
 que @var{expr} tome un valor numérico.
 
-Ejecútese @code{load(newton1)} para cargar esta función.
+Ejecútese @code{load("newton1")} para cargar esta función.
 
 Véanse también @code{realroots}, @code{allroots}, @code{find_root} y @code{mnewton}.
 
 Ejemplos:
 
 @c ===beg===
-@c load (newton1);
+@c load ("newton1");
 @c newton (cos (u), u, 1, 1/100);
 @c ev (cos (u), u = %);
 @c assume (a > 0);
@@ -508,7 +508,7 @@ Ejemplos:
 @c ev (x^2 - a^2, x = %);
 @c ===end===
 @example
-(%i1) load (newton1);
+(%i1) load ("newton1");
 (%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
 (%i2) newton (cos (u), u, 1, 1/100);
 (%o2)                   1.570675277161251

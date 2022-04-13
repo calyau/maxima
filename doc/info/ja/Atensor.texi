@@ -7,7 +7,7 @@
 @section Introduction to atensor
 
 @code{atensor}は、代数テンソル操作パッケージです。
-@code{atensor}を使うには、@code{load(atensor)}をタイプしてください。
+@code{atensor}を使うには、@code{load("atensor")}をタイプしてください。
 続いて、@code{init_atensor}関数コールしてください。
 
 @code{atensor}の本質は非可換(ドット)積演算子 ("@code{.}")の整理ルール一式です
@@ -30,7 +30,7 @@
 この例では使わず、四元数乗算表を行列として組むよう試みます:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                                done
@@ -283,7 +283,7 @@ dotexptsimp:false;
 例えば:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
 (%o2)                                  3

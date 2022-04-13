@@ -1343,7 +1343,7 @@ compose (L, x) :=
 
 @var{expr}に現れる@var{x}のべきを返します。
 
-@code{load (powers)} loads this function.
+@code{load ("powers")} loads this function.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
 

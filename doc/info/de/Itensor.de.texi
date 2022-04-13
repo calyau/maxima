@@ -172,10 +172,10 @@ Siehe dazu die ausf@"uhrlichen Beispiele in @code{einhil.dem} und
 @c -----------------------------------------------------------------------------
 
 @c The indicial tensor manipulation package may be loaded by
-@c @code{load(itensor)}.  Demos are also available: try @code{demo(tensor)}.
+@c @code{load("itensor")}.  Demos are also available: try @code{demo(tensor)}.
 
 Das Paket @code{itensor} f@"ur das Rechnen mit Tensoren in der Indexnotation
-wird mit dem Kommando @code{load(itensor)} geladen.  Mit dem Kommando
+wird mit dem Kommando @code{load("itensor")} geladen.  Mit dem Kommando
 @code{demo(tensor)} wird eine Liste mit verschiedenen Beispielen angezeigt.
 
 @c In @code{itensor} a tensor is represented as an "indexed object" .  This is a
@@ -202,7 +202,7 @@ in einer besonderen Schreibweise ausgegeben.
 Beispiele:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) g([a,b], [c]);
 (%o2)                    g([a, b], [c])
@@ -248,7 +248,7 @@ nur als kovariante Indizes auftreten.
 Beispiele:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) ishow(t([a,b],[c],j,i))$
                              c
@@ -281,7 +281,7 @@ Tensors @code{g}.  Ist @code{g} der metrische Tensor, dann entspricht das
 Ergebnis der Definition des Christoffel-Symbols der ersten Art.
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) ishow(1/2*(idiff(g([i,k],[]),j) + idiff(g([j,k],[]),i) 
                                       - idiff(g([i,j],[]),k)))$
@@ -326,7 +326,7 @@ Beispiele:
 Die folgenden Beispiele zeigen einige Anwendungen des Paketes @code{itensor}.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -478,7 +478,7 @@ Beispiel:
 In diesem Beispiel wird der Name @var{c} zu @var{w} ge@"andert.
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) expr:a([i,j],[k])*b([u],[],v)+c([x,y],[])*d([],[])*e$
 
@@ -598,7 +598,7 @@ Funktion gegeben.
 @mref{defrule} und @mref{applyb1} gezeigt.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) matchdeclare(l1,listp);
 (%o2)                                done
@@ -719,7 +719,7 @@ Wird das Paket @code{itensor} geladen, gibt @code{dispcon} das folgende
 Ergebnis.
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) dispcon(all);
 (%o2)      [[[ifr, ifri, ifg]], [[ifg, ifg, kdelta]]]
@@ -743,7 +743,7 @@ kann eine leere Liste sein.
 Beispiel:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) entertensor()$
 Enter tensor name: a;
@@ -861,7 +861,7 @@ jedoch keinen Fehler aus.
 Beispiel:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) ishow(a([i,j],[k,l],m,n)*b([k,o],[j,m,p],q,r))$
                          k l      j m p
@@ -890,7 +890,7 @@ werden.
 Beispiel:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) ishow(a([i,j], [k], v,w))$
                              k
@@ -912,7 +912,7 @@ Im Unterschied zu @code{kdelta} ist das Kronecker-Delta der Funktion
 Beispiele:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) kdelta([1,2],[2,1]);
 (%o2)                                 - 1
@@ -978,7 +978,7 @@ Ausdr@"ucke effizienter zu vereinfachen, als durch eine Auswertung des Symbols
 Beispiele:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
                              i  j
@@ -1033,7 +1033,7 @@ symbolische Vereinfachung zum Beispiel mit den Funktionen @mref{rename} oder
 Beispiel:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:ishow('levi_civita([],[i,j])
                  *'levi_civita([k,l],[])*a([j],[k]))$
@@ -1120,7 +1120,7 @@ mit dem Levi-Civita-Tensor eingef@"uhrt.  Der Ausdruck wird sodann f@"ur die
 erste Komponente zu der bekannten Definition des Kreuzproduktes vereinfacht.
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) ishow(v([],[a])=
            'levi_civita([],[a,b,c])*w([b],[])*r([c],[]))$
@@ -1151,7 +1151,7 @@ In diesem Beispiel wird das Spatprodukt von drei Vektoren @code{a}, @code{b} und
 @code{b} mit dem Levi-Civita-Tensor definiert und dann vereinfacht.
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) ishow(levi_civita([],[i,j,k])*a([i],[])*b([j],[])*c([k],[]))$
                             i j k
@@ -1178,7 +1178,7 @@ enthalten sind.
 Beispiel:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) ishow(a([i,j],[k])*b([u],[],v)+c([x,y],[])*d([],[])*e)$
                                   k
@@ -1256,7 +1256,7 @@ der Indizes.
 Beispiele:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) allsym: true;
 (%o2)                         true
@@ -1320,8 +1320,8 @@ eines Tensors mit einer h@"oheren Stufe als 2 zeigen.
 Beispiel:
 
 @example
-(%i1) load(ctensor)$
-(%i2) load(itensor)$
+(%i1) load("ctensor")$
+(%i2) load("itensor")$
 (%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
                 [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
 @group
@@ -1426,7 +1426,7 @@ werden von der Funktion @mref{canform} angewendet.
 Beispiele:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:contract( expand( a([i1, j1, k1], [])
            *kdels([i, j, k], [i1, j1, k1])))$
@@ -1558,7 +1558,7 @@ Ableitungen abgeleitet werden.
 Beispiele:
 
 @example
-(%i1) load(itensor)$
+(%i1) load("itensor")$
 
 (%i2) depends(v,t);
 (%o2)                        [v(t)]
@@ -1623,7 +1623,7 @@ wird ohne Indizes angegeben.
 Beispiel:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(liediff(v,a([i,j],[])*b([],[k],l)))$
        k    %2            %2          %2
@@ -1687,7 +1687,7 @@ ihrer abgeleiteten Form ausgewertet werden k@"onnen.  So f@"uhrt das folgende
 Beispiel zu einer Fehlermeldung:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) icurvature([i,j,k],[l],m);
 Maxima encountered a Lisp error:
@@ -1785,7 +1785,7 @@ Setzt alle Ableitungen der tensoriellen Gr@"o@ss{}e @var{tensor} die im Ausdruck
 Beispiele:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i],[J,r],k,r)+a([i],[j,r,s],k,r,s))$
                                 J r      j r s
@@ -1881,7 +1881,7 @@ des kontravarianten Metriktensors in Beziehung zu den Christoffel-Symbolen
 setzen:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(g([],[a,b],c))$
                                       a b
@@ -1967,7 +1967,7 @@ und @mrefcomma{conmetderiv} die die Vereinfachung des Weyl-Tensors zeigen.
 Beispiel:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -2132,7 +2132,7 @@ Gibt die kovariante Ableitung des Ausdruck @var{expr} nach den Variablen
 Kommando @code{ev(@var{expr}, ichr2)}.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) entertensor()$
 Enter tensor name: a;
@@ -2210,7 +2210,7 @@ Christoffel-Symbole werden mit @var{ichr1} und @var{ichr2} bezeichnet.
 Beispiele:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(icurvature([r,s,t],[u]))$
 @group
@@ -2277,7 +2277,7 @@ and @code{ifc2}) which form part of the connection coefficients (@code{icc1}
 and @code{icc2}), as the following example demonstrates:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) iframe_flag:true;
 (%o2)                                true
@@ -2605,7 +2605,7 @@ differentiation on a scalar function will not commute, as demonstrated
 by the following example:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric:g;
 (%o2)                                  g
@@ -2729,7 +2729,7 @@ The behavior of the wedge product operator is controlled by the
 @code{igeowedge_flag} flag, as in the following example:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i])~b([j]))$
                                  a  b  - b  a
@@ -2771,7 +2771,7 @@ with respect to the first index in the literal sorting order. This ensures
 better simplification of expressions involving the @code{|} operator. For instance:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) decsym(a,2,0,[anti(all)],[]);
 (%o2)                                done
@@ -2801,7 +2801,7 @@ such, this operation is also controlled by the setting of @code{igeowedge_flag}.
 For instance:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(extdiff(v([i]),j))$
                                   v    - v
@@ -2834,7 +2834,7 @@ For instance:
 Compute the Hodge-dual of @var{expr}. For instance:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                            done
@@ -2902,8 +2902,8 @@ To use the @code{tentex} function, you must first load @code{tentex},
 as in the following example:
 
 @example
-(%i1) load(itensor)$
-(%i2) load(tentex)$
+(%i1) load("itensor")$
+(%i2) load("tentex")$
 (%i3) idummyx:m;
 (%o3)                                  m
 (%i4) ishow(icurvature([j,k,l],[i]))$
@@ -2977,7 +2977,7 @@ kovarianten Indizes durch @mref{lg} und mit zwei kontravarianten Indizes durch
 Beispiele:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)
       *b([i],[l,k]))$

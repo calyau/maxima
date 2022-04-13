@@ -69,7 +69,7 @@ This is the list of @i{graphic objects} available for scenes in two dimensions:
 @end flushleft
 
 See also @code{draw} and @code{draw2d}.
-To make use of this object, write first @code{load(draw)}.
+To make use of this object, write first @code{load("draw")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ dimensions:
 @end flushleft
 
 See also @code{draw} and @code{draw3d}.
-To make use of this object, write first @code{load(draw)}.
+To make use of this object, write first @code{load("draw")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -122,12 +122,12 @@ Functions @code{draw2d} and @code{draw3d} are short cuts to be used
 when only one scene is required, in two or three dimensions, respectively.
 
 See also @code{gr2d} and @code{gr3d}.
-To make use of this function, write first @code{load(draw)}.
+To make use of this function, write first @code{load("draw")}.
 
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) scene1: gr2d(title="Ellipse",
                    nticks=30,
                    parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
@@ -139,7 +139,7 @@ Example:
 The two draw sentences are equivalent:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
 (%o2)                          [gr3d(explicit)]
 (%i3) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1));
@@ -149,7 +149,7 @@ The two draw sentences are equivalent:
 An animated gif file:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         delay     = 100,
         file_name = "zzz",
@@ -172,7 +172,7 @@ This function is a short cut for
 
 It can be used to plot a unique scene in 2d.
 
-To make use of this function, write first @code{load(draw)}.
+To make use of this function, write first @code{load("draw")}.
 
 See also @code{draw} and @code{gr2d}.
 @end deffn
@@ -185,7 +185,7 @@ This function is a short cut for
 
 It can be used to plot a unique scene in 3d.
 
-To make use of this function, write first @code{load(draw)}.
+To make use of this function, write first @code{load("draw")}.
 
 See also @code{draw} and @code{gr3d}.
 @end deffn
@@ -200,7 +200,7 @@ Saves the current plot into a file.  Accepted graphics options are:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* screen plot */
       draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)))$
 (%i3) /* same plot in eps format */
@@ -228,7 +228,7 @@ This feature does not work in Windows platforms.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) set_draw_defaults(
          xrange = [-1,1],
          yrange = [-1,1],
@@ -252,7 +252,7 @@ arguments removes user defaults.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) set_draw_defaults(
          xrange = [-10,10],
          yrange = [-2, 2],
@@ -265,7 +265,7 @@ Example:
       draw2d(explicit(((1+x)**2/(1+x*x))-1,x,-10,10))$
 @end example
 
-To make use of this function, write first @code{load(draw)}.
+To make use of this function, write first @code{load("draw")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -294,7 +294,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(axis_3d = false,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
@@ -315,7 +315,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_bottom = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -336,7 +336,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_left = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -357,7 +357,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_right = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -378,7 +378,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_top = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -416,7 +416,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(color       = brown,
              line_width  = 8,
              polygon([[3,2],[7,2],[5,5]]),
@@ -447,7 +447,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d (
         enhanced3d     = true,
         color          = green,
@@ -473,7 +473,7 @@ See @code{xtics} for a complete description.
 Example :
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d (
         enhanced3d = true,
         color      = green,
@@ -526,7 +526,7 @@ Cromatic componentes in hexadecimal code are introduced in the form
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^2,x,_1,1), /* default is black */
              color = red,
              explicit(0.5 + x^2,x,-1,1),
@@ -559,7 +559,7 @@ Example:
 Color scale and images.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply('matrix,
                  makelist(makelist(random(200),i,1,30),i,1,30))$
 (%i3) draw2d(image(im,0,0,30,30))$
@@ -569,7 +569,7 @@ Color scale and images.
 Color scale and 3D coloured object.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         colorbox   = "Magnitude",
         enhanced3d = true,
@@ -591,7 +591,7 @@ does not matter.  It can be also used as an argument of function @code{draw}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) scene1: gr2d(title="Ellipse",
                    nticks=30,
                    parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
@@ -639,7 +639,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = 15,
              contour        = both,
@@ -681,7 +681,7 @@ Ten equally spaced contour lines.  The actual number of
 levels can be adjusted to give simple labels.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = green,
              explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = 10,
@@ -692,7 +692,7 @@ levels can be adjusted to give simple labels.
 From -8 to 8 in steps of 4.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = green,
              explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = [-8,4,8],
@@ -703,7 +703,7 @@ From -8 to 8 in steps of 4.
 Isolines at levels -7, -6, 0.8 and 5.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = green,
              explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = @{-7, -6, 0.8, 5@},
@@ -739,7 +739,7 @@ does not matter.  It can be also used as an argument of function @code{draw}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         delay     = 100,
         file_name = "zzz",
@@ -783,7 +783,7 @@ Examples:
 Option @code{dimensions} applied to file output and to wxt canvas.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         dimensions = [300,300],
         terminal   = 'png,
@@ -798,7 +798,7 @@ Option @code{dimensions} applied to eps output.
 We want an eps file with A4 portrait dimensions.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) A4portrait: 100*[21, 29.7]$
 (%i3) draw3d(
         dimensions = A4portrait,
@@ -825,7 +825,7 @@ Option @code{draw_realpart} affects objects @code{explicit} and
 @code{parametric}.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         draw_realpart = false,
         explicit(sqrt(x^2  - 4*x) - x, x, -1, 5),
@@ -879,7 +879,7 @@ Examples:
 model.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          enhanced3d = [x-z/10,x,y,z],
          palette    = gray,
@@ -892,7 +892,7 @@ in the definitions of the graphic objects; in this case, @code{r} corresponds
 to @code{x}, and @code{s} to @code{y}.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          enhanced3d = [sin(r*s),r,s],
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
@@ -902,7 +902,7 @@ to @code{x}, and @code{s} to @code{y}.
 model.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          nticks = 100,
          line_width = 2,
@@ -914,7 +914,7 @@ model.
 In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          nticks = 60,
          line_width = 3,
@@ -926,7 +926,7 @@ In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
 model.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) m: apply(
            matrix,
            makelist(makelist(cos(i^2/80-k/30),k,1,30),i,1,20)) $
@@ -941,7 +941,7 @@ model.
 model.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          enhanced3d = [cos(x-y),x,y,z],
          palette = gray,
@@ -954,7 +954,7 @@ Here, @code{enhanced3d = -a} would be the shortcut for
 @code{enhanced3d = [-foo,foo]}.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          tube_extremes = [open, closed],
          palette = [26,15,-2],
@@ -966,7 +966,7 @@ Here, @code{enhanced3d = -a} would be the shortcut for
 @code{[f(x,y,z), x, y, z]} model.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          enhanced3d = [x-y,x,y,z],
          implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
@@ -983,7 +983,7 @@ When points have a chronological nature, model @code{[f(k), k]} is also valid,
 being @code{k} an ordering parameter.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) m:makelist([random(1.0), random(1.0), random(1.0)],k,1,5)$
 (%i3) draw3d(
          enhanced3d = [sin(j), j],
@@ -1021,7 +1021,7 @@ does not matter.  It can be also used as an argument of function @code{draw}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(file_name = "myfile",
              explicit(x^2,x,-1,1),
              terminal  = 'png)$
@@ -1069,7 +1069,7 @@ Example:
 Region bounded by an @code{explicit} object and the bottom of the
 graphic window.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = red,
              filled_func = true,
              explicit(sin(x),x,0,10) )$
@@ -1080,7 +1080,7 @@ defined by option @code{filled_func}.  Note that the variable in
 @code{filled_func} must be the same as that used in @code{explicit}.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = grey,
              filled_func = sin(x),
              explicit(-sin(x),x,0,%pi));
@@ -1113,7 +1113,7 @@ Uses the normal x11 font server mechanism.
 
 Example:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(font      = "Arial", 
              font_size = 20,
              label(["Arial font, size 20",1,1]))$
@@ -1136,7 +1136,7 @@ Examples:
 
 Option @code{font} can be given the complete path to the font file:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) path: "/usr/share/fonts/truetype/freefont/" $
 (%i3) file: "FreeSerifBoldItalic.ttf" $
 (%i4) draw2d(
@@ -1152,7 +1152,7 @@ path where font files are allocated, it is possible to
 set graphic option @code{font} to the name of the font.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         font      = "FreeSerifBoldItalic", 
         font_size = 20,
@@ -1182,7 +1182,7 @@ Standard Postscript fonts are:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         font      = "Courier-Oblique", 
         font_size = 15,
@@ -1239,7 +1239,7 @@ does not matter.  It can be also used as an argument of function @code{draw}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
        file_name = "my_file",
        gnuplot_file_name = "my_commands_for_gnuplot",
@@ -1263,7 +1263,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(grid = true,
              explicit(exp(u),u,-2,2))$
 @end example
@@ -1281,7 +1281,7 @@ This option is relevant only for @code{vector} objects.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,10],
              yrange      = [0,9],
              head_length = 0.7,
@@ -1320,7 +1320,7 @@ This option is relevant only for @code{vector} objects.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,8],
              yrange      = [0,8],
              head_length = 0.7,
@@ -1343,7 +1343,7 @@ This option is relevant only for @code{vector} objects.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,8],
              vector([0,1],[5,5]),
@@ -1371,7 +1371,7 @@ This option is relevant only for @code{vector} objects.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,10],
              head_length = 1,
@@ -1425,7 +1425,7 @@ and @code{parametric_surface}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(key   = "Sinus",
              explicit(sin(x),x,0,10),
              key   = "Cosinus",
@@ -1447,7 +1447,7 @@ This option is relevant only for @code{label} objects.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange          = [0,10],
              yrange          = [0,10],
              points_joined   = true,
@@ -1477,7 +1477,7 @@ Example:
 In this example, a dummy point is added to get an image.
 Package @code{draw} needs always data to draw an scene.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange     = [0,10],
              yrange     = [0,10],
              point_size = 0,
@@ -1514,7 +1514,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(line_type = dots,
              explicit(1 + x^2,x,-1,1),
              line_type = solid, /* default */
@@ -1545,7 +1545,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
              line_width = 5.5,
              explicit(1 + x^2,x,-1,1),
@@ -1572,7 +1572,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d (
         enhanced3d = true,
         color      = green,
@@ -1598,7 +1598,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(log(x),x,0.01,5),
              logx = true)$
 @end example
@@ -1619,7 +1619,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(logy = true,
              explicit(exp(x),x,0,5))$
 @end example
@@ -1640,7 +1640,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(logz = true,
              explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
 @end example
@@ -1669,7 +1669,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(transparent = true,
              ellipse(0,0,4,2,0,180),
              nticks = 5,
@@ -1728,7 +1728,7 @@ Examples:
 It works together with option @code{enhanced3d} in 3D graphics.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         enhanced3d = [z-x+2*y,x,y,z],
         palette = [32, -8, 17],
@@ -1738,7 +1738,7 @@ It works together with option @code{enhanced3d} in 3D graphics.
 It also works with gray images.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
            'matrix,
             makelist(makelist(random(200),i,1,30),i,1,30))$
@@ -1755,7 +1755,7 @@ In this example, low values of @code{x} are colored
 in red, and higher values in yellow.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          palette = [red, blue, yellow],
          enhanced3d = x,
@@ -1787,7 +1787,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
         point_size = 5,
         points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
@@ -1819,7 +1819,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange = [0,10],
              yrange = [0,10],
              point_size = 3,
@@ -1865,7 +1865,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange        = [0,10],
              yrange        = [0,4],
              point_size    = 3,
@@ -1901,7 +1901,7 @@ Examples:
 Single 2D plot.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         ellipse(0,0,1,1,0,360),
         transparent=true,
@@ -1914,7 +1914,7 @@ Single 2D plot.
 Multiplot.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         terminal = wxt,
         gr2d(proportional_axes = xy,
@@ -1941,7 +1941,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(columns=2,
            gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
            gr3d(surface_hide = true,
@@ -1976,7 +1976,7 @@ and libpdf must be installed.  The pdf library is available from:
 Examples:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* screen terminal (default) */
       draw2d(explicit(x^2,x,-1,1))$
 (%i3) /* png file */
@@ -2003,7 +2003,7 @@ Examples:
 Multiple windows.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^5,x,-2,2), terminal=[screen, 3])$
 (%i3) draw2d(explicit(x^2,x,-2,2), terminal=[screen, 0])$
 @end example
@@ -2011,7 +2011,7 @@ Multiple windows.
 An animated gif file.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         delay     = 100,
         file_name = "zzz",
@@ -2044,7 +2044,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(u),u,-2,2),
              title = "Exponential function")$
 @end example
@@ -2071,7 +2071,7 @@ Examples:
 Rotation in 2D.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) th : %pi / 4$
 (%i3) draw2d(
         color = "#e245f0",
@@ -2088,7 +2088,7 @@ Rotation in 2D.
 Translation in 3D.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         color     = "#a02c00",
         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
@@ -2116,7 +2116,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
              transparent = true,
              color       = blue,
@@ -2137,7 +2137,7 @@ or must be closed.  By default, both extremes are left open.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         tube_extremes = [open, closed],
         tube(0, 0, a, 1,
@@ -2158,7 +2158,7 @@ This option is relevant only for @code{vector} objects.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [-1,6],
              yrange      = [-1,6],
              head_length = 0.1,
@@ -2187,7 +2187,7 @@ Example:
 The @i{dumb} terminal is not supported by package @code{draw},
 but it is possible to set it by making use of option @code{user_preamble},
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(x)-1,x,-1,1),
              parametric(cos(u),sin(u),u,0,2*%pi),
              user_preamble="set terminal dumb")$
@@ -2210,7 +2210,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(view = [170, 360],
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
@@ -2230,7 +2230,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         enhanced3d    = [sin(x),x,y],
         wired_surface = true,
@@ -2261,7 +2261,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_color = blue)$
@@ -2283,7 +2283,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_color = red)$
@@ -2304,7 +2304,7 @@ Note that this is a local graphics option which only affects to 2d plots.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
          key   = "Bottom x-axis",
          explicit(x+1,x,1,2),
@@ -2333,7 +2333,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_type  = solid)$
@@ -2355,7 +2355,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_width = 3)$
@@ -2377,7 +2377,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xlabel = "Time",
              explicit(exp(u),u,-2,2),
              ylabel = "Population")$
@@ -2402,7 +2402,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange = [-3,5],
              explicit(x^2,x,-1,1))$
 @end example
@@ -2470,35 +2470,35 @@ Examples:
 
 Disable tics.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = 'none,
              explicit(x^3,x,-1,1)  )$
 @end example
 
 Tics every 1/4 units.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = 1/4,
              explicit(x^3,x,-1,1)  )$
 @end example
 
 Tics from -3/4 to 3/4 in steps of 1/8.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = [-3/4,1/8,3/4],
              explicit(x^3,x,-1,1)  )$
 @end example
 
 Tics at points -1/2, -1/4 and 3/4.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = @{-1/2,-1/4,3/4@},
              explicit(x^3,x,-1,1)  )$
 @end example
 
 Labeled tics.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = @{["High",0.75],["Medium",0],["Low",-0.75]@},
              explicit(x^3,x,-1,1)  )$
 @end example
@@ -2578,7 +2578,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xu_grid = 10,
              yv_grid = 50,
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
@@ -2614,7 +2614,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xyplane = %e-2,
              explicit(x^2+y^2,x,-1,1,y,-1,1))$
 @end example
@@ -2642,7 +2642,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_color = blue)$
@@ -2664,7 +2664,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_color = red)$
@@ -2686,7 +2686,7 @@ Note that this is a local graphics option which only affects to 2d plots.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
          explicit(sin(x),x,0,10),
          yaxis_secondary = true,
@@ -2712,7 +2712,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_type  = solid)$
@@ -2734,7 +2734,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_width = 3)$
@@ -2756,7 +2756,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xlabel = "Time",
              ylabel = "Population",
              explicit(exp(u),u,-2,2) )$
@@ -2781,7 +2781,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(yrange = [-2,3],
              explicit(x^2,x,-1,1),
              xrange = [-3,3])$
@@ -2806,7 +2806,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
          explicit(sin(x),x,0,10),
          yaxis_secondary = true,
@@ -2901,7 +2901,7 @@ This option affects the following graphic objects:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xu_grid = 10,
              yv_grid = 50,
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
@@ -2932,7 +2932,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid,
@@ -2956,7 +2956,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid,
@@ -2980,7 +2980,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid)$
@@ -3002,7 +3002,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid,
@@ -3025,7 +3025,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(zlabel = "Z variable",
              ylabel = "Y variable",
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
@@ -3051,7 +3051,7 @@ does not matter.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(yrange = [-3,3],
              zrange = [-2,5],
              explicit(x^2+y^2,x,-1,1,y,-1,1),
@@ -3114,7 +3114,7 @@ This object is affected by the following @i{graphic options}: @code{key},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
        key          = "Group A",
        fill_color   = blue,
@@ -3150,7 +3150,7 @@ This object is affected by the following @i{graphic options}: @code{xu_grid},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
 @end deffn
@@ -3176,7 +3176,7 @@ See also @code{mesh}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) m: apply(
             matrix,
             makelist(makelist(random(10.0),k,1,30),i,1,20)) $
@@ -3209,7 +3209,7 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(transparent = false,
              fill_color  = red,
              color       = gray30,
@@ -3256,7 +3256,7 @@ Examples:
 Horizontal error bars.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         error_type = y,
         errors([[1,2,1], [3,5,3], [10,3,1], [17,6,2]]))$
@@ -3265,7 +3265,7 @@ Horizontal error bars.
 Vertical and horizontal error bars.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         error_type = xy,
         points_joined = true,
@@ -3294,7 +3294,7 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(line_width = 3,
              color      = blue,
              explicit(x^2,x,-3,3) )$
@@ -3318,7 +3318,7 @@ This object is affected by the following @i{graphic options}:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(key   = "Gauss",
              color = "#a02c00",
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
@@ -3381,7 +3381,7 @@ If @var{im} is a matrix of real numbers, pixel values are interpreted according
 to graphic option @code{palette}.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
            'matrix,
             makelist(makelist(random(200),i,1,30),i,1,30))$
@@ -3398,7 +3398,7 @@ See also @code{colorbox}.
 If @var{im} is a matrix of vectors of length three, they are interpreted
 as red, green and blue color components.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
             'matrix,
              makelist(
@@ -3411,7 +3411,7 @@ as red, green and blue color components.
 Package @code{draw} automatically loads package @code{picture}.  In this
 example, a level picture object is built by hand and then rendered.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: make_level_picture([45,87,2,134,204,16],3,2);
 (%o2)       picture(level, 3, 2, @{Array:  #(45 87 2 134 204 16)@})
 (%i3) /* default color palette */
@@ -3423,7 +3423,7 @@ example, a level picture object is built by hand and then rendered.
 
 An xpm file is read and then rendered.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: read_xpm("myfile.xpm")$
 (%i3) draw2d(image(im,0,0,10,7))$
 @end example
@@ -3457,7 +3457,7 @@ This object is affected by the following @i{graphic options}: @code{ip_grid},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(terminal  = eps,
              grid      = true,
              line_type = solid,
@@ -3485,7 +3485,7 @@ This object is affected by the following @i{graphic options}: @code{x_voxel},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         color=blue,
         implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
@@ -3515,7 +3515,7 @@ This object is affected by the following @i{graphic options}:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(yrange = [0.1,1.4],
              color = red,
              label(["Label in red",0,0.3]),
@@ -3534,7 +3534,7 @@ at point @code{[@var{x}, @var{y}, @var{z}]}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
              color = red,
              label(["UP 1",-2,0,3], ["UP 2",1.5,0,4]),
@@ -3565,7 +3565,7 @@ Examples:
 A simple example.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d( 
          mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
               [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
@@ -3575,7 +3575,7 @@ A simple example.
 Plotting a triangle in 3D.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         line_width = 2,
         mesh([[1,0,0],[0,1,0]],
@@ -3585,7 +3585,7 @@ Plotting a triangle in 3D.
 Two quadrilaterals.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         surface_hide = true,
         line_width   = 3,
@@ -3618,7 +3618,7 @@ parameter @var{par} taking values from @var{parmin} to @var{parmax}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(x),x,-1,3),
              color = red,
              key   = "This is the parametric one!!",
@@ -3635,7 +3635,7 @@ The command @code{parametric(@var{xfun}, @var{yfun}, @var{zfun}, @var{par},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
              color = royalblue,
              parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
@@ -3669,7 +3669,7 @@ This object is affected by the following @i{graphic options}:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(title          = "Sea shell",
              xu_grid        = 100,
              yv_grid        = 25,
@@ -3727,7 +3727,7 @@ Examples:
 Two types of arguments for @code{points}, a list of pairs and two lists
 of separate coordinates.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         key = "Small points",
         points(makelist([random(20),random(50)],k,1,10)),
@@ -3744,7 +3744,7 @@ of separate coordinates.
 
 Drawing impulses.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         points_joined = impulses,
         line_width    = 2,
@@ -3754,7 +3754,7 @@ Drawing impulses.
 
 Array with ordinates.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) a: make_array (flonum, 100) $
 (%i3) for i:0 thru 99 do a[i]: random(1.0) $
 (%i4) draw2d(points(a)) $
@@ -3762,7 +3762,7 @@ Array with ordinates.
 
 Two arrays with separate coordinates.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) x: make_array (flonum, 100) $
 (%i3) y: make_array (fixnum, 100) $
 (%i4) for i:0 thru 99 do (
@@ -3773,7 +3773,7 @@ Two arrays with separate coordinates.
 
 A two-column 2D array.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) xy: make_array(flonum, 100, 2) $
 (%i3) for i:0 thru 99 do (
         xy[i, 0]: float(i/100),
@@ -3783,7 +3783,7 @@ A two-column 2D array.
 
 Drawing an array filled with function @code{read_array}.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) a: make_array(flonum,100) $
 (%i3) read_array (file_search ("pidigits.data"), a) $
 (%i4) draw2d(points(a)) $
@@ -3808,8 +3808,8 @@ Examples:
 One tridimensional sample,
 
 @example
-(%i1) load(draw)$
-(%i2) load (numericalio)$
+(%i1) load("draw")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) draw3d(title = "Daily average wind speeds",
              point_size = 2,
@@ -3819,8 +3819,8 @@ One tridimensional sample,
 Two tridimensional samples,
 
 @example
-(%i1) load(draw)$
-(%i2) load (numericalio)$
+(%i1) load("draw")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) draw3d(
          title = "Daily average wind speeds. Two data sets",
@@ -3835,7 +3835,7 @@ Two tridimensional samples,
 Unidimensional arrays,
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) x: make_array (fixnum, 10) $
 (%i3) y: make_array (fixnum, 10) $
 (%i4) z: make_array (fixnum, 10) $
@@ -3849,7 +3849,7 @@ Unidimensional arrays,
 Bidimensional colored array,
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) xyz: make_array(fixnum, 10, 3) $
 (%i3) for i:0 thru 9 do (
         xyz[i, 0]: random(10),
@@ -3864,7 +3864,7 @@ Bidimensional colored array,
 Color numbers explicitly specified by the user.
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) pts: makelist([t,t^2,cos(t)], t, 0, 15)$
 (%i3) col_num: makelist(k, k, 1, length(pts))$
 (%i4) draw3d(
@@ -3893,7 +3893,7 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(user_preamble = "set grid polar",
              nticks        = 200,
              xrange        = [-5,5],
@@ -3926,7 +3926,7 @@ This object is affected by the following @i{graphic options}:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(color      = "#e245f0",
              line_width = 8,
              polygon([[3,2],[7,2],[5,5]]),
@@ -3959,7 +3959,7 @@ This object is affected by the following @i{graphic options}:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         quadrilateral([1,1],[2,2],[3,-1],[2,-2]))$
 @end example
@@ -3996,7 +3996,7 @@ This object is affected by the following @i{graphic options}:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = red,
              line_width  = 6,
              line_type   = dots,
@@ -4030,7 +4030,7 @@ This object is affected by the following @i{graphic options}: @code{fill_color},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         x_voxel = 30,
         y_voxel = 30,
@@ -4060,7 +4060,7 @@ This object is affected by the following @i{graphic options}: @code{xu_grid},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
 @end deffn
@@ -4087,7 +4087,7 @@ This object is affected by the following @i{graphic options}:
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         triangle([1,1],[2,2],[3,-1]))$
 @end example
@@ -4124,7 +4124,7 @@ This object is affected by the following @i{graphic options}: @code{xu_grid},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         enhanced3d = true,
         xu_grid = 50,
@@ -4152,7 +4152,7 @@ This object is affected by the following @i{graphic options}: @code{head_both},
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,10],
              head_length = 1,
@@ -4174,7 +4174,7 @@ origin in @code{[@var{x}, @var{y}, @var{z}]}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = cyan,
              vector([0,0,0],[1,1,1]/sqrt(3)),
              vector([0,0,0],[1,-1,0]/sqrt(2)),
@@ -4220,14 +4220,14 @@ Example:
 
 Level picture from matrix.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) make_level_picture(matrix([3,2,5],[7,-9,3000]));
 (%o2)         picture(level, 3, 2, @{Array:  #(3 2 5 7 0 255)@})
 @end example
 
 Level picture from numeric list.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) make_level_picture([-2,0,54,%pi],2,2);
 (%o2)            picture(level, 2, 2, @{Array:  #(0 0 54 3)@})
 @end example
@@ -4254,7 +4254,7 @@ from 0 to 255.  Each pixel is represented by three consecutive numbers
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) red: make_level_picture(matrix([3,2],[7,260]));
 (%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
 (%i3) green: make_level_picture(matrix([54,23],[73,-9]));
@@ -4308,7 +4308,7 @@ picture @var{im}.
 Example:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) red: make_level_picture(matrix([3,2],[7,260]));
 (%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
 (%i3) green: make_level_picture(matrix([54,23],[73,-9]));
@@ -4358,7 +4358,7 @@ Example:
 Map of Europe labeling borders with their component number in
 @code{boundaries_array}.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) european_borders: 
            region_boundaries(-31.81,74.92,49.84,32.06)$
 (%i3) numbered_boundaries(european_borders)$
@@ -4375,7 +4375,7 @@ or a list of countries.
 Example:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) /* A continent */
       make_poly_continent(Africa)$
 (%i3) apply(draw2d, %)$
@@ -4395,7 +4395,7 @@ just one polygon.
 Example:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) make_poly_country(India)$
 (%i3) apply(draw2d, %)$
 @end example
@@ -4425,7 +4425,7 @@ of @code{boundaries_array[1143]}; in conclussion, boundary numbers
 polygon can be drawn.
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) Bhutan;
 (%o2)                        [[171, 173, 1143]]
 (%i3) boundaries_array[171];
@@ -4473,7 +4473,7 @@ Example:
 
 Returns segment numbers for plotting southern Italy.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) region_boundaries(10.4,41.5,20.7,35.4);
 (%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
 (%i3) draw2d(geomap(%))$
@@ -4490,7 +4490,7 @@ containing at least one vertex in the rectangle defined by vertices (@var{x1},
 Example:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) region_boundaries_plus(10.4,41.5,20.7,35.4);
 (%o2) [1060, 1062, 1076, 1835, 1839, 1844, 1846, 1858,
        1861, 1863, 1864, 1871, 1881, 1888, 1894, 1897]
@@ -4530,7 +4530,7 @@ Examples:
 A simple map defined by hand:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) /* Vertices of boundary #0: @{(1,1),(2,5),(4,3)@} */
    ( bnd0: make_array(flonum,6),
      bnd0[0]:1.0, bnd0[1]:1.0, bnd0[2]:2.0,
@@ -4568,7 +4568,7 @@ for more information).  The package @code{worldmap} automatically loads
 package @code{worldmap}.
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) c1: gr2d(geomap([Canada,United_States,
                        Mexico,Cuba]))$
 (%i3) c2: gr2d(geomap(Africa))$
@@ -4587,7 +4587,7 @@ arrays, maps rendering will be slower.  See also @code{make_poly_country}
 and @code{make_poly_continent} to understand the following code.
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) mymap: append(
    [color      = white],  /* borders are white */
    [fill_color = red],             make_poly_country(Bolivia),
@@ -4615,7 +4615,7 @@ boundaries on the sphere of radius @var{r} centered at (@var{x}, @var{y},
 @var{z}).
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap(Australia), /* default projection */
              geomap(Australia,
                     [spherical_projection,2,2,2,3]))$
@@ -4628,7 +4628,7 @@ axis passing through the poles of the globe of radius @var{r} centered at
 (@var{x}, @var{y}, @var{z}).
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
                     [cylindrical_projection,2,2,2,3,4]))$
 @end example
@@ -4641,7 +4641,7 @@ axis passing through the poles of the globe of radius @var{r} centered at
 to sphere.
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap(World_coastlines,
                     [conic_projection,0,0,0,1,90]))$
 @end example

@@ -12,7 +12,7 @@ diferencial ordinaria de primer orden (EDO) o de un sistema de dos ecuaciones
 autónomas de primer orden.
 
 Puesto que @code{drawdf} es un paquete adicional, es necesario cargarlo en
-memoria ejecutando previamente la instrucción @code{load(drawdf)}.
+memoria ejecutando previamente la instrucción @code{load("drawdf")}.
 @code{drawdf} utiliza el paquete @code{draw}, que necesita como 
 mínimo la versión 4.2 de Gnuplot.
 
@@ -133,12 +133,12 @@ Los usuarios de wxMaxima y Imaxima pueden hacer uso también @code{wxdrawdf},
 que es idéntica a @code{drawdf}, pero que inserta el gráfico en el 
 propio documento utilizando la función @code{wxdraw}.
 
-Para hacer uso de esta función, ejecútese primero @code{load(drawdf)}.
+Para hacer uso de esta función, ejecútese primero @code{load("drawdf")}.
 
 Ejemplos:
 
 @example
-(%i1) load(drawdf)$
+(%i1) load("drawdf")$
 (%i2) drawdf(exp(-x)+y)$        /* default vars: x,y */
 (%i3) drawdf(exp(-t)+y, [t,y])$ /* default range: [-10,10] */
 (%i4) drawdf([y,-9*sin(x)-y/5], [x,1,5], [y,-2,2])$

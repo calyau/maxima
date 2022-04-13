@@ -67,7 +67,7 @@ der Reihe wird die Funktion @mref{simplify_sum} geladen.  Im zweiten Beispiel
 ist @code{%e} der Grenzwert.
 
 @example
-(%i1) load(simplify_sum)$
+(%i1) load("simplify_sum")$
 
 (%i2) sum(1/n!, n, 0, inf);
                             inf

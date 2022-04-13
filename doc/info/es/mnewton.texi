@@ -58,7 +58,7 @@ aproximaciones. También controla si los cálculos se realizan con
 precisión doble o arbitraria (bigfloats).
 
 @example
-(%i1) load(mnewton)$
+(%i1) load("mnewton")$
 
 (%i2) (fpprec : 25, newtonepsilon : bfloat(10^(-fpprec+5)))$
 

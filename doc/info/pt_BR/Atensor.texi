@@ -1,25 +1,25 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Atensor.texi/1.9/Sat Jun  2 00:12:32 2007//
 @menu
-* Introduç@~{a}o ao Pacote atensor::
-* Funç@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor::
+* Introdução ao Pacote atensor::
+* Funções e Variáveis Definidas para o Pacote atensor::
 @end menu
 
-@node Introduç@~{a}o ao Pacote atensor, Funç@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor, Pacote atensor, Pacote atensor
-@section Introduç@~{a}o ao Pacote atensor
+@node Introdução ao Pacote atensor, Funções e Variáveis Definidas para o Pacote atensor, Pacote atensor, Pacote atensor
+@section Introdução ao Pacote atensor
 
-@code{atensor} @'{e} um pacote de manipulç@~{a}o de tensores alg@'{e}bricos.  Para usar @code{atensor},
-digite @code{load(atensor)}, seguido por uma chamada @`a funç@~{a}o 
+@code{atensor} é um pacote de manipulção de tensores algébricos.  Para usar @code{atensor},
+digite @code{load("atensor")}, seguido por uma chamada à função 
 @code{init_atensor}.
 
-A ess@^{e}ncia de @code{atensor} @'{e} um conjunto de regras de simplificaç@~{a}o para o operador
-de produto (ponto) n@~{a}o comutativo ("@code{.}").  @code{atensor} reconhece
-muitos tipos de @'{a}lgebra; as regras de simplificaç@~{a}o correspondentes s@~{a}o ativadas quando
-a funç@~{a}o @code{init_atensor} @'{e} chamada.
+A essência de @code{atensor} é um conjunto de regras de simplificação para o operador
+de produto (ponto) não comutativo ("@code{.}").  @code{atensor} reconhece
+muitos tipos de álgebra; as regras de simplificação correspondentes são ativadas quando
+a função @code{init_atensor} é chamada.
 
-A compatibilidade de @code{atensor} pode ser demonstrada pela definiç@~{a}o da
-@'{a}lgebra de quat@'{e}rnios como uma @'{a}lgera-Clifford Cl(0,2) com dois vetores
-fundamentais.  As tr@^{e}s unidades quaterni@^{o}nicas imagin@'{a}rias fundamentais s@~{a}o ent@~{a}o os dois
+A compatibilidade de @code{atensor} pode ser demonstrada pela definição da
+álgebra de quatérnios como uma álgera-Clifford Cl(0,2) com dois vetores
+fundamentais.  As três unidades quaterniônicas imaginárias fundamentais são então os dois
 vetores base  e seu produto, i.e.:
 
 @example
@@ -27,13 +27,13 @@ vetores base  e seu produto, i.e.:
          1         2         1    2
 @end example
 
-Embora o pacote @code{atensor} tenha uma definiç@~{a}o interna para a
-@'{a}lgebra dos quat@'{e}rnios, isso n@~{a}o foi usado nesse exemplo, no qual n@'{o}s
-nos esforçamos para construir a tabela de multiplicaç@~{a}o dos quat@'{e}rnios como uma matriz:
+Embora o pacote @code{atensor} tenha uma definição interna para a
+álgebra dos quatérnios, isso não foi usado nesse exemplo, no qual nós
+nos esforçamos para construir a tabela de multiplicação dos quatérnios como uma matriz:
 
 @example
 
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                                done
@@ -73,19 +73,19 @@ nos esforçamos para construir a tabela de multiplicaç@~{a}o dos quat@'{e}rnios
                    [  1    2      2          1            ]
 @end example
 
-@code{atensor} reconhece como bases vetoriais s@'{i}mbolos indexados, onde o s@'{i}mbolo 
-@'{e} aquele armazenado em @code{asymbol} e o i@'{i}ndice est@'{a} entre 1 e @code{adim}.
-Para s@'{i}mbolos indexado, e somente para s@'{i}mbolos indexados, as formas bilineares
-@code{sf}, @code{af}, e @code{av} s@~{a}o avaliadas.  A avaliaç@~{a}o
+@code{atensor} reconhece como bases vetoriais símbolos indexados, onde o símbolo 
+é aquele armazenado em @code{asymbol} e o iíndice está entre 1 e @code{adim}.
+Para símbolos indexado, e somente para símbolos indexados, as formas bilineares
+@code{sf}, @code{af}, e @code{av} são avaliadas.  A avaliação
 substitui os valores  de @code{aform[i,j]} em lugar de @code{fun(v[i],v[j])}
-onde @code{v} representa o valor de @code{asymbol} e @code{fun} @'{e}
+onde @code{v} representa o valor de @code{asymbol} e @code{fun} é
 ainda @code{af} ou @code{sf}; ou, isso substitui @code{v[aform[i,j]]}
 em lugar de @code{av(v[i],v[j])}.
 
-Desnecess@'{a}rio dizer, as funç@~{o}es @code{sf}, @code{af} e @code{av}
+Desnecessário dizer, as funções @code{sf}, @code{af} e @code{av}
 podem ser redefinidas.
 
-Quando o pacote @code{atensor} @'{e} chamado, os seguintes sinalizadores s@~{a}o configurados:
+Quando o pacote @code{atensor} é chamado, os seguintes sinalizadores são configurados:
 
 @example
 dotscrules:true;
@@ -93,144 +93,144 @@ dotdistrib:true;
 dotexptsimp:false;
 @end example
 
-Se voc@^{e} deseja experimentar com uma @'{a}lgebra n@~{a}o associativa, voc@^{e} pode tamb@'{e}m
-considerar a configuraç@~{a}o de @code{dotassoc} para @code{false}.  Nesse caso, todavia,
-@code{atensimp} n@~{a}o star@'{a} sempre habilitado a obter as simplificaç@~{o}es
+Se você deseja experimentar com uma álgebra não associativa, você pode também
+considerar a configuração de @code{dotassoc} para @code{false}.  Nesse caso, todavia,
+@code{atensimp} não stará sempre habilitado a obter as simplificações
 desejadas.
 
 
 @c end concepts atensor
-@node Funç@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor,  , Introduç@~{a}o ao Pacote atensor, Pacote atensor
+@node Funções e Variáveis Definidas para o Pacote atensor,  , Introdução ao Pacote atensor, Pacote atensor
 
-@section Funç@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor
+@section Funções e Variáveis Definidas para o Pacote atensor
 
-@deffn {Funç@~{a}o} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Funç@~{a}o} init_atensor (@var{alg_type})
+@deffn {Função} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Função} init_atensor (@var{alg_type})
 
-Inicializa o pacote @code{atensor} com o tipo especificado de @'{a}lgebra.  @var{alg_type}
+Inicializa o pacote @code{atensor} com o tipo especificado de álgebra.  @var{alg_type}
 pode ser um dos seguintes:
 
-@code{universal}: A @'{a}lgebra universal tendo regras n@~{a}o comutativas.
+@code{universal}: A álgebra universal tendo regras não comutativas.
 
-@code{grassmann}: A @'{a}lgebra de Grassman @'{e} definida pela relaç@~{a}o de 
-comutaç@~{a}o @code{u.v+v.u=0}.
+@code{grassmann}: A álgebra de Grassman é definida pela relação de 
+comutação @code{u.v+v.u=0}.
 
-@code{clifford}: A @'{a}lgebra de Clifford @'{e} definida pela relaç@~{a}o
-de comutaç@~{a}o @code{u.v+v.u=-2*sf(u,v)} onde @code{sf} @'{e} a funç@~{a}o
-valor-escalar sim@'{e}trico.  Para essa @'{a}lgebra, @var{opt_dims} pode ser acima de tr@^{e}s 
-inteiros n@~{a}o negativos, representando o n@'{u}mero de dimens@~{o}es positivas,
-dimens@~{o}es degeneradas, e dimens@~{o}es negativas da @'{a}lgebra, respectivamente.  Se
-quaisquer valores @var{opt_dims} s@~{a}o fornecidos, @code{atensor} ir@'{a} configurar os
-valores de @code{adim} e @code{aform} apropriadamente.  Caso contr@'{a}rio,
-@code{adim} ir@'{a} por padr@~{a}o para 0 e @code{aform} n@~{a}o ser@'{a} definida.
+@code{clifford}: A álgebra de Clifford é definida pela relação
+de comutação @code{u.v+v.u=-2*sf(u,v)} onde @code{sf} é a função
+valor-escalar simétrico.  Para essa álgebra, @var{opt_dims} pode ser acima de três 
+inteiros não negativos, representando o número de dimensões positivas,
+dimensões degeneradas, e dimensões negativas da álgebra, respectivamente.  Se
+quaisquer valores @var{opt_dims} são fornecidos, @code{atensor} irá configurar os
+valores de @code{adim} e @code{aform} apropriadamente.  Caso contrário,
+@code{adim} irá por padrão para 0 e @code{aform} não será definida.
 
-@code{symmetric}: A @'{a}lgebra sim@'{e}trica @'{e} definida pela relaç@~{a}o de 
-comutaç@~{a}o @code{u.v-v.u=0}.
+@code{symmetric}: A álgebra simétrica é definida pela relação de 
+comutação @code{u.v-v.u=0}.
 
-@code{symplectic}: A @'{a}lgebra simpl@'{e}tica @'{e} definida pela relaç@~{a}o de 
-comutaç@~{a}o @code{u.v-v.u=2*af(u,v)} onde @code{af} @'{e} uma funç@~{a}o valor-escalar 
-antisim@'{e}trica.  Para a @'{a}lgebra simpl@'{e}tica, @var{opt_dims} pode
-mais de dois inteiros n@~{a}o negativos, representando a dimens@~{a}o n@~{a}o degenerada e
-e a dimens@~{a}o degenerada, respectivamente.  Se quaisquer valores @var{opt_dims} s@~{a}o
-fornecidos, @code{atensor} ir@'{a} configurar os valores de @code{adim} e @code{aform}
-apropriadamente.  Caso contr@'{a}rio, @code{adim} ir@'{a} por padr@~{a}o para 0 e @code{aform}
-n@~{a}o ser@'{a} definida.
+@code{symplectic}: A álgebra simplética é definida pela relação de 
+comutação @code{u.v-v.u=2*af(u,v)} onde @code{af} é uma função valor-escalar 
+antisimétrica.  Para a álgebra simplética, @var{opt_dims} pode
+mais de dois inteiros não negativos, representando a dimensão não degenerada e
+e a dimensão degenerada, respectivamente.  Se quaisquer valores @var{opt_dims} são
+fornecidos, @code{atensor} irá configurar os valores de @code{adim} e @code{aform}
+apropriadamente.  Caso contrário, @code{adim} irá por padrão para 0 e @code{aform}
+não será definida.
 
-@code{lie_envelop}: O inv@'{o}lucro da @'{a}lgebra de Lie @'{e} definido pela 
-relaç@~{a}o de comutaç@~{a}o @code{u.v-v.u=2*av(u,v)} onde @code{av} @'{e}
-uma funç@~{a}o antisim@'{e}trica.
+@code{lie_envelop}: O invólucro da álgebra de Lie é definido pela 
+relação de comutação @code{u.v-v.u=2*av(u,v)} onde @code{av} é
+uma função antisimétrica.
 
-A funç@~{a}o @code{init_atensor} tamb@'{e}m reconhece muitos tipos pr@'{e}-definidos de 
-@'{a}lgebra:
+A função @code{init_atensor} também reconhece muitos tipos pré-definidos de 
+álgebra:
 
-@code{complex} implementa a @'{a}lgebra de n@'{u}meros complexos como a
-@'{a}lgebra de Clifford Cl(0,1).  A chamada @code{init_atensor(complex)} @'{e}
+@code{complex} implementa a álgebra de números complexos como a
+álgebra de Clifford Cl(0,1).  A chamada @code{init_atensor(complex)} é
 equivalente a @code{init_atensor(clifford,0,0,1)}.
 
-@code{quaternion} implementa a @'{a}lgebra de quat@'{e}rnios.  A chamada
-@code{init_atensor(quaternion)} @'{e} equivalente a 
+@code{quaternion} implementa a álgebra de quatérnios.  A chamada
+@code{init_atensor(quaternion)} é equivalente a 
 @code{init_atensor(clifford,0,0,2)}.
 
-@code{pauli} implementa a @'{a}lgebra de Pauli-spinors como a Clifford-@'{a}lgebra
-Cl(3,0).  Uma chamada a @code{init_atensor(pauli)} @'{e} equivalente a
+@code{pauli} implementa a álgebra de Pauli-spinors como a Clifford-álgebra
+Cl(3,0).  Uma chamada a @code{init_atensor(pauli)} é equivalente a
 @code{init_atensor(clifford,3)}.
 
-@code{dirac} implementa a @'{a}lgebra de Dirac-spinors como a Clifford-@'{a}lgebra
-Cl(3,1).  Uma chamada a @code{init_atensor(dirac)} @'{e} equivalente a
+@code{dirac} implementa a álgebra de Dirac-spinors como a Clifford-álgebra
+Cl(3,1).  Uma chamada a @code{init_atensor(dirac)} é equivalente a
 @code{init_atensor(clifford,3,0,1)}.
 
 @end deffn
 
 
-@deffn {Funç@~{a}o} atensimp (@var{expr})
+@deffn {Função} atensimp (@var{expr})
 
-Simplifica a express@~{a}o alg@'{e}brica de tensores @var{expr} conforme as regras
-configuradas por uma chamada a @code{init_atensor}.  Simplificaç@~{o}es incluem
-aplicaç@~{a}o recursiva de relaç@~{o}es comutativas e resoluç@~{o}es de chamadas a
-@code{sf}, @code{af}, e @code{av} onde for aplic@'{a}vel.  Uma
-salvaguarda @'{e} usada para garantir que a funç@~{a}o sempre termine, mesmo para
-express@~{o}es complexas.
+Simplifica a expressão algébrica de tensores @var{expr} conforme as regras
+configuradas por uma chamada a @code{init_atensor}.  Simplificações incluem
+aplicação recursiva de relações comutativas e resoluções de chamadas a
+@code{sf}, @code{af}, e @code{av} onde for aplicável.  Uma
+salvaguarda é usada para garantir que a função sempre termine, mesmo para
+expressões complexas.
 
 @end deffn
 
-@deffn {Funç@~{a}o} alg_type
+@deffn {Função} alg_type
 
-O tipo de @'{a}lgebra.  Valores v@'{a}lidos s@'{a}o @code{universal}, @code{grassmann},
+O tipo de álgebra.  Valores válidos sáo @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} e @code{lie_envelop}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel} adim
-Valor padr@~{a}o: 0
+@defvr {Variável} adim
+Valor padrão: 0
 
-A dimensionalidade da @'{a}lgebra.  @code{atensor} usa o valor de @code{adim}
-para determinar se um objeto indexado @'{e} uma base vetorial v@'{a}lida. Veja @code{abasep}.
-
-@end defvr
-
-@defvr {Vari@'{a}vel} aform
-
-Valor padr@~{a}o para as formas bilineares @code{sf}, @code{af}, e
-@code{av}.  O padr@~{a}o @'{e} a matriz identidade @code{ident(3)}.
+A dimensionalidade da álgebra.  @code{atensor} usa o valor de @code{adim}
+para determinar se um objeto indexado é uma base vetorial válida. Veja @code{abasep}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel} asymbol
-Valor padr@~{a}o: @code{v}
+@defvr {Variável} aform
 
-O s@'{i}mbolo para bases vetoriais.
+Valor padrão para as formas bilineares @code{sf}, @code{af}, e
+@code{av}.  O padrão é a matriz identidade @code{ident(3)}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} sf (@var{u}, @var{v})
+@defvr {Variável} asymbol
+Valor padrão: @code{v}
 
-@'{E} uma funç@~{a}o escalar sim@'{e}trica que @'{e} usada em relaç@~{o}es comutativas.
-A implementaç@~{a}o padr@~{a}o verifica se ambos os argumentos s@~{a}o bases vetoriais
+O símbolo para bases vetoriais.
+
+@end defvr
+
+@deffn {Função} sf (@var{u}, @var{v})
+
+É uma função escalar simétrica que é usada em relações comutativas.
+A implementação padrão verifica se ambos os argumentos são bases vetoriais
 usando @code{abasep} e se esse for o caso, substitui o valor 
 correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} af (@var{u}, @var{v})
+@deffn {Função} af (@var{u}, @var{v})
 
-@'{E} uma funç@~{a}o escalar antisim@'{e}trica que @'{e} usada em relaç@~{o}es comutativas.
-A implementaç@~{a}o padr@~{a}o verifica se ambos os argumentos s@~{a}o bases vetoriais
+É uma função escalar antisimétrica que é usada em relações comutativas.
+A implementação padrão verifica se ambos os argumentos são bases vetoriais
 usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} av (@var{u}, @var{v})
+@deffn {Função} av (@var{u}, @var{v})
 
-@'{E} uma funç@~{a}o antisim@'{e}trica que @'{e} usada em relaç@~{o}es comutativas.
-A implementaç@~{a}o padr@~{a}o verifica se ambos os argumentos s@~{a}o bases vetoriais
+É uma função antisimétrica que é usada em relações comutativas.
+A implementação padrão verifica se ambos os argumentos são bases vetoriais
 usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.
 
 Por exemplo:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
 (%o2)                                  3
@@ -250,11 +250,12 @@ Por exemplo:
 @end deffn
 
 
-@deffn {Funç@~{a}o} abasep (@var{v})
+@deffn {Função} abasep (@var{v})
 
-Verifica se esse argumento @'{e} uma base vetorial @code{atensor} .  E ser@'{a}, se ele for
-um s@'{i}mbolo indexado, com o s@'{i}mbolo sendo o mesmo que o valor de
-@code{asymbol}, e o @'{i}ndice tiver o mesmo valor num@'{e}rico entre 1
+Verifica se esse argumento é uma base vetorial @code{atensor} .  E será, se ele for
+um símbolo indexado, com o símbolo sendo o mesmo que o valor de
+@code{asymbol}, e o índice tiver o mesmo valor numérico entre 1
 e @code{adim}.
 
 @end deffn
+

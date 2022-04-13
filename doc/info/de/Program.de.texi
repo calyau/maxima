@@ -833,7 +833,7 @@ dem Schl@"usselwort @code{batch} wird beim Laden einmal ausgef@"uhrt.
 @example
 (%i1) file: file_search("eval_when.mac");
 (%o1)        /home/dieter/.maxima/eval_when.mac
-(%i2) load(file);
+(%i2) load("file");
 called in mode BATCH
 (%o2)        /home/dieter/.maxima/eval_when.mac
 @end example

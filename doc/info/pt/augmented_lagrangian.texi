@@ -34,7 +34,7 @@ Essa implementação minimiza o Lagrangiano aumentado pela
 pela aplicação do algoritmo de memória limitada BFGS (LBFGS),
 que é um algoritmo quasi-Newton.
 
-@code{load(augmented_lagrangian)} chama essa função.
+@code{load("augmented_lagrangian")} chama essa função.
  
 Veja também @code{lbfgs}.
 
@@ -47,8 +47,8 @@ References:
 Exemplo:
 
 @c ===beg===
-@c load (lbfgs);
-@c load (augmented_lagrangian);
+@c load ("lbfgs");
+@c load ("augmented_lagrangian");
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c C: [x + y - 1];
@@ -56,10 +56,10 @@ Exemplo:
 @c augmented_lagrangian_method (FOM, xx, C, yy, iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1) /home/robert/tmp/maxima-release-branch/maxima/share/lbfgs/\
 lbfgs.mac
-(%i2) load (augmented_lagrangian);
+(%i2) load ("augmented_lagrangian");
 (%o2) /home/robert/tmp/maxima-release-branch/maxima/share/contri\
 b/augmented_lagrangian.mac
 (%i3) FOM: x^2 + 2*y^2;

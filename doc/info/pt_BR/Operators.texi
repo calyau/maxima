@@ -6,132 +6,132 @@
 @end iftex
 @menu
 * N-Argumentos::                        
-* Operador n@~{a}o fixado::                       
-* Operador P@'{o}sfixado::                     
-* Operador Pr@'{e}fixado::                      
-* Operadores Aritm@'{e}ticos::   
+* Operador não fixado::                       
+* Operador Pósfixado::                     
+* Operador Préfixado::                      
+* Operadores Aritméticos::   
 * Operadores Relacionais::   
 * Operadores Geral::   
 @end menu
 
 
-@node N-Argumentos, Operador n@~{a}o fixado, Operadores, Operadores
+@node N-Argumentos, Operador não fixado, Operadores, Operadores
 @section N-Argumentos
-Um operador @code{nary} @'{e} usado para denotar uma funç@~{a}o com qualquer n@'{u}mero de
-argumentos, cada um dos quais @'{e} separado por uma ocorr@^{e}ncia do
-operador, e.g. A+B ou A+B+C.  A funç@~{a}o @code{nary("x")}  @'{e} uma funç@~{a}o
-de extens@~{a}o sint@'{a}tica para declarar x como sendo um operador @code{nary}.
-Funç@~{o}es podem ser declaradas para serem
-@code{nary}.  Se @code{declare(j,nary);} @'{e} conclu@'{i}da, diz ao simplicador para
+Um operador @code{nary} é usado para denotar uma função com qualquer número de
+argumentos, cada um dos quais é separado por uma ocorrência do
+operador, e.g. A+B ou A+B+C.  A função @code{nary("x")}  é uma função
+de extensão sintática para declarar x como sendo um operador @code{nary}.
+Funções podem ser declaradas para serem
+@code{nary}.  Se @code{declare(j,nary);} é concluída, diz ao simplicador para
 simplificar, e.g. @code{j(j(a,b),j(c,d))} para @code{j(a, b, c, d)}.
 
-Veja tamb@'{e}m @code{syntax}.
+Veja também @code{syntax}.
 
-@node Operador n@~{a}o fixado, Operador P@'{o}sfixado, N-Argumentos, Operadores
-@section Operador n@~{a}o fixado
-Operadores @code{nofix} s@~{a}o usados para denotar funç@~{o}es sem argumentos.
-A mera presença de tal operador em um comando far@'{a} com que a
-funç@~{a}o correspondente seja avaliada.  Por exemplo, quando se digita
+@node Operador não fixado, Operador Pósfixado, N-Argumentos, Operadores
+@section Operador não fixado
+Operadores @code{nofix} são usados para denotar funções sem argumentos.
+A mera presença de tal operador em um comando fará com que a
+função correspondente seja avaliada.  Por exemplo, quando se digita
 "exit;" para sair de uma parada do Maxima, "exit" tem comportamento similar a um
-operador @code{nofix}.  A funç@~{a}o @code{nofix("x")} @'{e} uma funç@~{a}o de extens@~{a}o
-sint@'{a}tica que declara x como sendo um operador @code{nofix}. 
+operador @code{nofix}.  A função @code{nofix("x")} é uma função de extensão
+sintática que declara x como sendo um operador @code{nofix}. 
 
-Veja tamb@'{e}m @code{syntax}.
+Veja também @code{syntax}.
 
-@node Operador P@'{o}sfixado, Operador Pr@'{e}fixado, Operador n@~{a}o fixado, Operadores
-@section Operador P@'{o}sfixado
-Operadores @code{postfix} como a variedade @code{prefix} denotam funç@~{o}es
+@node Operador Pósfixado, Operador Préfixado, Operador não fixado, Operadores
+@section Operador Pósfixado
+Operadores @code{postfix} como a variedade @code{prefix} denotam funções
 de um argumento simples, mas nesse caso  o argumento sucede
-imediatamente uma ocorr@^{e}ncia do operador na seq@"{u}@^{e}ncia de caracteres de entrada, e.g. 3! .
-Uma funç@~{a}o @code{postfix("x")} @'{e} uma funç@~{a}o de extens@~{a}o
-sint@'{a}tica que declara x como sendo um operador @code{postfix}.
+imediatamente uma ocorrência do operador na seq@"{u}ência de caracteres de entrada, e.g. 3! .
+Uma função @code{postfix("x")} é uma função de extensão
+sintática que declara x como sendo um operador @code{postfix}.
 
-Veja tamb@'{e}m @code{syntax}.
+Veja também @code{syntax}.
 
-@node Operador Pr@'{e}fixado, Operadores Aritm@'{e}ticos, Operador P@'{o}sfixado, Operadores
-@section Operador Pr@'{e}fixado
-Um operador @code{prefix} @'{e} um que significa uma funç@~{a}o de um
-argumento, o qual imediatamente segue uma ocorr@^{e}ncia do
-operador.  @code{prefix("x")} @'{e} uma funç@~{a}o de extens@~{a}o
-sint@'{a}tica que declara x como sendo um operador @code{prefix}.
+@node Operador Préfixado, Operadores Aritméticos, Operador Pósfixado, Operadores
+@section Operador Préfixado
+Um operador @code{prefix} é um que significa uma função de um
+argumento, o qual imediatamente segue uma ocorrência do
+operador.  @code{prefix("x")} é uma função de extensão
+sintática que declara x como sendo um operador @code{prefix}.
 
-Veja tamb@'{e}m @code{syntax}.
+Veja também @code{syntax}.
 
-@node Operadores Aritm@'{e}ticos, Operadores Relacionais, Operador Pr@'{e}fixado, Operadores
-@section Operadores Aritm@'{e}ticos
+@node Operadores Aritméticos, Operadores Relacionais, Operador Préfixado, Operadores
+@section Operadores Aritméticos
 
 @deffn {Operador} +
 @ifinfo
-@fnindex Adiç@~{a}o
+@fnindex Adição
 @end ifinfo
 @deffnx {Operador} -
 @ifinfo
-@fnindex Subtraç@~{a}o
+@fnindex Subtração
 @end ifinfo
 @deffnx {Operador} *
 @ifinfo
-@fnindex Multiplicaç@~{a}o
+@fnindex Multiplicação
 @end ifinfo
 @deffnx {Operador} /
 @ifinfo
-@fnindex Divis@~{a}o
+@fnindex Divisão
 @end ifinfo
 @deffnx {Operador} ^
 @ifinfo
-@fnindex Exponenciaç@~{a}o
+@fnindex Exponenciação
 @end ifinfo
 
-Os s@'{i}mbolos @code{+} @code{*} @code{/} e @code{^} representam
-adiç@~{a}o, multiplicaç@~{a}o, divis@~{a}o, e exponenciaç@~{a}o, respectivamente.
-O nome desses operadores s@~{a}o @code{"+"} @code{"*"} @code{"/"} e @code{"^"},
-os quais podem aparecer em lugares onde o nome da funç@~{a}o ou operador @'{e} requerido.
+Os símbolos @code{+} @code{*} @code{/} e @code{^} representam
+adição, multiplicação, divisão, e exponenciação, respectivamente.
+O nome desses operadores são @code{"+"} @code{"*"} @code{"/"} e @code{"^"},
+os quais podem aparecer em lugares onde o nome da função ou operador é requerido.
 
-Os s@'{i}mbolos @code{+} e @code{-} representam a adiç@~{a}o un@'{a}ria e a negaç@~{a}o un@'{a}ria, respectivamente,
-e os nomes desses operadores s@~{a}o @code{"+"} e @code{"-"}, respectivamente.
+Os símbolos @code{+} e @code{-} representam a adição unária e a negação unária, respectivamente,
+e os nomes desses operadores são @code{"+"} e @code{"-"}, respectivamente.
 
-A subtraç@~{a}o @code{a - b} @'{e} representada dentro do Maxima como a adiç@~{a}o, @code{a + (- b)}.
-Express@~{o}es tais como @code{a + (- b)} s@~{a}o mostradas como subtraç@~{a}o.
-Maxima reconhece @code{"-"} somente como o nome do operador un@'{a}rio de negaç@~{a}o,
-e n@~{a}o como o nome do operador bin@'{a}rio de subraç@~{a}o.
+A subtração @code{a - b} é representada dentro do Maxima como a adição, @code{a + (- b)}.
+Expressões tais como @code{a + (- b)} são mostradas como subtração.
+Maxima reconhece @code{"-"} somente como o nome do operador unário de negação,
+e não como o nome do operador binário de subração.
 
-A divis@~{a}o @code{a / b} @'{e} representada dentro do Maxima como multiplicaç@~{a}o, @code{a * b^(- 1)}.
-Express@~{o}es tais como @code{a * b^(- 1)} s@~{a}o mostradas como divis@~{a}o.
-Maxima reconhece @code{"/"} como o nome do operador de divis@~{a}o.
+A divisão @code{a / b} é representada dentro do Maxima como multiplicação, @code{a * b^(- 1)}.
+Expressões tais como @code{a * b^(- 1)} são mostradas como divisão.
+Maxima reconhece @code{"/"} como o nome do operador de divisão.
 
-A adiç@~{a}o e a multiplicaç@~{a}o s@~{a}o operadores en@'{a}rios e comutativos.
-a divis@~{a}o e a exponenciaç@~{a}o s@~{a}o operadores bin@'{a}rios e n@~{a}o comutativos.
+A adição e a multiplicação são operadores enários e comutativos.
+a divisão e a exponenciação são operadores binários e não comutativos.
 
-Maxima ordena os operandos de operadores n@~{a}o comutativos para construir uma representaç@~{a}o can@^{o}nica.
-Para armazenamento interno, a ordem @'{e} determinada por @code{orderlessp}.
-Para mostrar na tela, a ordem para adiç@~{a}o @'{e} determinada por @code{ordergreatp},
-e para a multiplicaç@~{a}o, a ordem @'{e} a mesma da ordenaç@~{a}o para armazenamento interno.
+Maxima ordena os operandos de operadores não comutativos para construir uma representação canônica.
+Para armazenamento interno, a ordem é determinada por @code{orderlessp}.
+Para mostrar na tela, a ordem para adição é determinada por @code{ordergreatp},
+e para a multiplicação, a ordem é a mesma da ordenação para armazenamento interno.
 
-Computaç@~{o}es aritim@'{e}ticas s@~{a}o realizadas sobre n@'{u}meros literais
-(inteiro, racionais, n@'{u}meros comuns em ponto flutuante, e grandes n@'{u}meros em ponto flutuante de dupla precis@~{a}o).
-Execto a exponenciaç@~{a}o, todas as operaç@~{o}es aritm@'{e}ticas sobre n@'{u}meros s@~{a}o simplificadas para n@'{u}meros.
-A exponenciaç@~{a}o @'{e} simplificada para um n@'{u}mero se ou o operando @'{e} um n@'{u}mero comum em ponto flutuante ou um grande n@'{u}mero em ponto flutuante de dupla precis@~{a}o
+Computações aritiméticas são realizadas sobre números literais
+(inteiro, racionais, números comuns em ponto flutuante, e grandes números em ponto flutuante de dupla precisão).
+Execto a exponenciação, todas as operações aritméticas sobre números são simplificadas para números.
+A exponenciação é simplificada para um número se ou o operando é um número comum em ponto flutuante ou um grande número em ponto flutuante de dupla precisão
 ou se o resultado for um inteiro exato ou um racional exato;
-de outra forma uma exponenciaç@~{a}o pode ser simplificada para @code{sqrt} ou outra exponenciaç@~{a}o ou permanecer inalterada.
+de outra forma uma exponenciação pode ser simplificada para @code{sqrt} ou outra exponenciação ou permanecer inalterada.
 
-A propagaç@~{a}o de n@'{u}meros em ponto flutuante aplica-se a computaç@~{o}es aritim@'{e}ticas:
-Se qualquer operando for um grande n@'{u}mero em ponto flutuante, o resultado @'{e} um grande n@'{u}mero em ponto flutuante;
-de outra forma, se qualquer operando for um n@'{u}mero em ponto flutuante comum, o resultado @'{e} um n@'{u}mero comum em ponto flutuante;
-de outra forma, se os operandos forem racioanis ou inteiros e o resultado ser@'{a} um racional ou inteiro.
+A propagação de números em ponto flutuante aplica-se a computações aritiméticas:
+Se qualquer operando for um grande número em ponto flutuante, o resultado é um grande número em ponto flutuante;
+de outra forma, se qualquer operando for um número em ponto flutuante comum, o resultado é um número comum em ponto flutuante;
+de outra forma, se os operandos forem racioanis ou inteiros e o resultado será um racional ou inteiro.
 
-Computaç@~{a}oes aritim@'{e}ticas s@~{a}o uma simplificaç@~{a}o, n@~{a}o uma avaliaç@~{a}o.
-Dessa forma a aritm@'{e}tica @'{e} realizada em  express@~{o}es com ap@'{o}strofo (mas simplificadas).
+Computaçãoes aritiméticas são uma simplificação, não uma avaliação.
+Dessa forma a aritmética é realizada em  expressões com apóstrofo (mas simplificadas).
 
-Operaç@~{o}es aritm@'{e}ticas s@~{a}o aplicadas elemento-por-elemento
-para listas quando a vari@'{a}vel global @code{listarith} for @code{true},
+Operações aritméticas são aplicadas elemento-por-elemento
+para listas quando a variável global @code{listarith} for @code{true},
 e sempre aplicada elemento-por-elemento para matrizes.
 Quando um operando for uma lista ou uma matriz e outro for um operando de algum outro tipo,
-o outro operando @'{e} combinado com cada um dos elementos da lista ou matriz.
+o outro operando é combinado com cada um dos elementos da lista ou matriz.
 
 Exemplos:
 
-Adiç@~{a}o e multiplicaç@~{a}o s@~{a}o opeadores en@'{a}rios comutativos.
-Maxima ordena os operandos para construir uma representaç@~{a}o can@^{o}nica.
-Os nomes desses operadores s@~{a}o @code{"+"} e @code{"*"}.
+Adição e multiplicação são opeadores enários comutativos.
+Maxima ordena os operandos para construir uma representação canônica.
+Os nomes desses operadores são @code{"+"} e @code{"*"}.
 @c ===beg===
 @c c + g + d + a + b + e + f;
 @c [op (%), args (%)];
@@ -157,8 +157,8 @@ Os nomes desses operadores s@~{a}o @code{"+"} e @code{"*"}.
 (%o6)                       144 a  x
 @end example
 
-Divis@~{a}o e exponenciaç@~{a}o s@~{a}o operadores bin@'{a}rios e n@~{a}o comutativos.
-Os nomes desses operadores s@~{a}o @code{"/"} e @code{"^"}.
+Divisão e exponenciação são operadores binários e não comutativos.
+Os nomes desses operadores são @code{"/"} e @code{"^"}.
 @c ===beg===
 @c [a / b, a ^ b];
 @c [map (op, %), map (args, %)];
@@ -178,8 +178,8 @@ Os nomes desses operadores s@~{a}o @code{"/"} e @code{"^"}.
                               b
 @end example
 
-Subtraç@~{a}o e divis@~{a}o s@~{a}o representados internamente
-em termos de adiç@~{a}o e multiplicaç@~{a}o, respectivamente.
+Subtração e divisão são representados internamente
+em termos de adição e multiplicação, respectivamente.
 @c ===beg===
 @c [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
 @c [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
@@ -194,8 +194,8 @@ em termos de adiç@~{a}o e multiplicaç@~{a}o, respectivamente.
                                    b
 @end example
 
-C@'{a}lculos s@~{a}o realizados sobre n@'{u}meros lterais.
-A propagaç@~{a}o de n@'{u}meros em poto flutuante aplica-se.
+Cálculos são realizados sobre números lterais.
+A propagação de números em poto flutuante aplica-se.
 @c ===beg===
 @c 17 + b - (1/2)*29 + 11^(2/4);
 @c [17 + 29, 17 + 29.0, 17 + 29b0];
@@ -210,7 +210,7 @@ A propagaç@~{a}o de n@'{u}meros em poto flutuante aplica-se.
 (%o2)                   [46, 46.0, 4.6b1]
 @end example
 
-Computaç@~oes aritm@'{e}ticas s@~{a}o uma simplificaç@~{a}o, n@~{a}o uma avaliaç@~{a}o.
+Computações aritméticas são uma simplificação, não uma avaliação.
 @c ===beg===
 @c simp : false;
 @c '(17 + 29*11/7 - 5^3);
@@ -233,7 +233,7 @@ Computaç@~oes aritm@'{e}ticas s@~{a}o uma simplificaç@~{a}o, n@~{a}o uma avali
                                  7
 @end example
 
-A aritm@'{e}tica @'{e} realizada elemento-por-elemento para listas lists (dependendo de @code{listarith}) e dependendo de matrizes.
+A aritmética é realizada elemento-por-elemento para listas lists (dependendo de @code{listarith}) e dependendo de matrizes.
 @c ===beg===
 @c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
 @c 5 * matrix ([a, x], [h, u]);
@@ -278,12 +278,12 @@ A aritm@'{e}tica @'{e} realizada elemento-por-elemento para listas lists (depend
 
 @deffn {Operador} **
 
-Operador de exponenciaç@~{a}o.
+Operador de exponenciação.
 Maxima reconhece @code{**} como o mesmo operador que @code{^} em entrada,
-e @code{**} @'{e} mostrado como @code{^} em sa@'{i}da unidimensional,
-ou colocando o expoente  como sobrescrito em sa@'{i}da bidimensional.
+e @code{**} é mostrado como @code{^} em saída unidimensional,
+ou colocando o expoente  como sobrescrito em saída bidimensional.
 
-A funç@~{a}o @code{fortran} mostra o operador de exponenciaç@~{a}o com como @code{**},
+A função @code{fortran} mostra o operador de exponenciação com como @code{**},
 independente de a entrada ter sido na forma @code{**} ou a forma @code{^}.
 
 Exemplos:
@@ -309,7 +309,7 @@ Exemplos:
 
 @end deffn
 
-@node Operadores Relacionais, Operadores Geral, Operadores Aritm@'{e}ticos, Operadores
+@node Operadores Relacionais, Operadores Geral, Operadores Aritméticos, Operadores
 @section Operadores Relacionais
 
 @deffn {Operador} <
@@ -336,7 +336,7 @@ Exemplos:
 
 @deffn {Operador} ^^
 @ifinfo
-@fnindex exponenciaç@~{a}o n@~{a}o comutativa
+@fnindex exponenciação não comutativa
 @end ifinfo
 
 @end deffn
@@ -346,29 +346,29 @@ Exemplos:
 @fnindex Fatorial
 @end ifinfo
 O operador fatorial.
-Para qualquer n@'{u}mero complexo @code{x} (inclu@'{i}ndo n@'{u}meros inteiros, racionais, e reais) exceto para
-inteiros negativos, @code{x!} @'{e} definido como @code{gamma(x+1)}.
+Para qualquer número complexo @code{x} (incluíndo números inteiros, racionais, e reais) exceto para
+inteiros negativos, @code{x!} é definido como @code{gamma(x+1)}.
 
 Para um inteiro @code{x}, @code{x!} simplifica para o produto de inteiros de 1 a @code{x} inclusive.
 @code{0!} simplifica para 1.
-Para um n@'{u}mero em ponto flutuante @code{x}, @code{x!} simplifica para o valor de @code{gamma (x+1)}.
-Para @code{x} igual a @code{n/2} onde @code{n} @'{e} um inteiro @'{i}mpar,
+Para um número em ponto flutuante @code{x}, @code{x!} simplifica para o valor de @code{gamma (x+1)}.
+Para @code{x} igual a @code{n/2} onde @code{n} é um inteiro ímpar,
 @code{x!} simplifica para um fator racional vezes @code{sqrt (%pi)}
-(uma vez que @code{gamma (1/2)} @'{e} igual a @code{sqrt (%pi)}).
+(uma vez que @code{gamma (1/2)} é igual a @code{sqrt (%pi)}).
 Se @code{x} for qualquer outra coisa,
-@code{x!} n@~{a}o @'{e} simplificado.
+@code{x!} não é simplificado.
 
-As vari@'{a}veis
-@code{factlim}, @code{minfactorial}, e @code{factcomb} controlam a simplificaç@~{a}o
-de express@~{o}es contendo fatoriais.
+As variáveis
+@code{factlim}, @code{minfactorial}, e @code{factcomb} controlam a simplificação
+de expressões contendo fatoriais.
 
-As funç@~{o}es @code{gamma}, @code{bffac}, e @code{cbffac}
-s@~{a}o variedades da funç@~{a}o @code{gamma}. 
-@code{makegamma} substitui @code{gamma} para funç@~{o}es relacionadas a fatoriais.
+As funções @code{gamma}, @code{bffac}, e @code{cbffac}
+são variedades da função @code{gamma}. 
+@code{makegamma} substitui @code{gamma} para funções relacionadas a fatoriais.
 
-Veja tamb@'{e}m @code{binomial}.
+Veja também @code{binomial}.
 
-O fatorial de um inteiro, inteiro dividido por dois, ou argumento em ponto flutuante @'{e} simplificado
+O fatorial de um inteiro, inteiro dividido por dois, ou argumento em ponto flutuante é simplificado
 a menos que o operando seja maior que @code{factlim}.
 
 @c ===beg===
@@ -384,8 +384,8 @@ a menos que o operando seja maior que @code{factlim}.
 +                 16
 @end example
 
-O fatorial de um n@'{u}mero complexo, constante conhecida, ou express@~{a}o geral n@~{a}o @'{e} simplificado.
-Ainda assim pode ser poss@'{i}vel simplificar o fatorial ap@'{o}s avaliar o operando.
+O fatorial de um número complexo, constante conhecida, ou expressão geral não é simplificado.
+Ainda assim pode ser possível simplificar o fatorial após avaliar o operando.
 
 @c ===beg===
 @c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
@@ -399,7 +399,7 @@ Ainda assim pode ser poss@'{i}vel simplificar o fatorial ap@'{o}s avaliar o oper
                                                1.227580202486819]
 @end example
 
-O fatorial de um s@'{i}mbolo n@~{a}o associado n@~{a}o @'{e} simplificado.
+O fatorial de um símbolo não associado não é simplificado.
 
 @c ===beg===
 @c kill (foo);
@@ -412,8 +412,8 @@ O fatorial de um s@'{i}mbolo n@~{a}o associado n@~{a}o @'{e} simplificado.
 (%o2)                         foo!
 @end example
 
-Fatoriais s@~{a}o simplificados, n@~{a}o avaliados.
-Dessa forma @code{x!} pode ser substitu@'{i}do mesmo em uma express@~{a}o com ap@'{o}strofo.
+Fatoriais são simplificados, não avaliados.
+Dessa forma @code{x!} pode ser substituído mesmo em uma expressão com apóstrofo.
 
 @c ===beg===
 @c '([0!, (7/2)!, 4.77!, 8!, 20!]);
@@ -434,18 +434,18 @@ Dessa forma @code{x!} pode ser substitu@'{i}do mesmo em uma express@~{a}o com ap
 @end ifinfo
 O operador de duplo fatorial.
 
-Para um n@'{u}mero inteiro, n@'{u}mero em ponto flutuante, ou n@'{u}mero racional @code{n},
+Para um número inteiro, número em ponto flutuante, ou número racional @code{n},
 @code{n!!} avalia para o produto @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
-onde @code{k} @'{e} igual a @code{entier (n/2)},
-que @'{e}, o maior inteiro menor que ou igual a @code{n/2}.
-Note que essa definiç@~{a}o n@~{a}o coincide com outras definiç@~{o}es publicadas
-para argumentos que n@~{a}o s@~{a}o inteiros.
+onde @code{k} é igual a @code{entier (n/2)},
+que é, o maior inteiro menor que ou igual a @code{n/2}.
+Note que essa definição não coincide com outras definições publicadas
+para argumentos que não são inteiros.
 @c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
 
-Para um inteiro par (ou @'{i}mpar) @code{n}, @code{n!!} avalia para o produto de
-todos os inteiros consecutivos pares (ou @'{i}mpares) de 2 (ou 1) at@'{e} @code{n} inclusive.
+Para um inteiro par (ou ímpar) @code{n}, @code{n!!} avalia para o produto de
+todos os inteiros consecutivos pares (ou ímpares) de 2 (ou 1) até @code{n} inclusive.
 
-Para um argumento @code{n} que n@~{a}o @'{e} um n@'{u}mero inteiro, um n@'{u}mero em ponto flutuante, ou um n@'{u}mero racional,
+Para um argumento @code{n} que não é um número inteiro, um número em ponto flutuante, ou um número racional,
 @code{n!!} retorna uma forma substantiva @code{genfact (n, n/2, 2)}.
 @c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
 
@@ -453,40 +453,40 @@ Para um argumento @code{n} que n@~{a}o @'{e} um n@'{u}mero inteiro, um n@'{u}mer
 
 @deffn {Operador} #
 @ifinfo
-@fnindex N@~{a}o igual (desigualdade sint@'{a}tica)
+@fnindex Não igual (desigualdade sintática)
 @end ifinfo
-Representa a negaç@~{a}o da igualdade sint@'{a}tica @code{=}.
+Representa a negação da igualdade sintática @code{=}.
 
-Note que pelo fato de as regras de avaliaç@~{a}o de express@~{o}es predicadas
-(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avaliaç@~{a}o de @var{expr}),
-a forma @code{not @var{a} = @var{b}} n@~{a}o @'{e} equivalente @`a forma @code{@var{a} # @var{b}} em alguns casos.
+Note que pelo fato de as regras de avaliação de expressões predicadas
+(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avaliação de @var{expr}),
+a forma @code{not @var{a} = @var{b}} não é equivalente à forma @code{@var{a} # @var{b}} em alguns casos.
 
-Note que devido @`as regras para avaliaç@~{a}o de express@~{o}es predicadas
-(em particular devido a @code{not @var{expr}} fazer com que a avaliaç@~{a}o de @var{expr} ocorra),
-@code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})},
+Note que devido às regras para avaliação de expressões predicadas
+(em particular devido a @code{not @var{expr}} fazer com que a avaliação de @var{expr} ocorra),
+@code{not @var{a} = @var{b}} é equivalente a @code{is(@var{a} # @var{b})},
 em lugar de ser equivalente a @code{@var{a} # @var{b}}.
 
 Exemplos:
 @c ===beg===
 @c a = b;
-@c @'{e} (a = b);
+@c é (a = b);
 @c a # b;
 @c not a = b;
-@c @'{e} (a # b);
-@c @'{e} (not a = b);
+@c é (a # b);
+@c é (not a = b);
 @c ===end===
 @example
 (%i1) a = b;
 (%o1)                         a = b
-(%i2) @'{e} (a = b);
+(%i2) é (a = b);
 (%o2)                         false
 (%i3) a # b;
 (%o3)                         a # b
 (%i4) not a = b;
 (%o4)                         true
-(%i5) @'{e} (a # b);
+(%i5) é (a # b);
 (%o5)                         true
-(%i6) @'{e} (not a = b);
+(%i6) é (not a = b);
 (%o6)                         true
 @end example
 
@@ -494,14 +494,14 @@ Exemplos:
 
 @deffn {Operador} .
 @ifinfo
-@fnindex Multiplicaç@~{a}o n@~{a}o comutativa matricial
+@fnindex Multiplicação não comutativa matricial
 @end ifinfo
-O operador ponto, para multiplicaç@~{a}o (n@~{a}o comutativa) de matrizes.
-Quando "." @'{e} usado com essa finalidade, espaços devem ser colocados em ambos os lados desse
+O operador ponto, para multiplicação (não comutativa) de matrizes.
+Quando "." é usado com essa finalidade, espaços devem ser colocados em ambos os lados desse
 operador, e.g. A . B.  Isso disting@"{u}e o operador ponto plenamente de um ponto decimal em
-um n@'{u}mero em ponto flutuante.
+um número em ponto flutuante.
 
-Veja tamb@'{e}m
+Veja também
 @code{dot},
 @code{dot0nscsimp},
 @code{dot0simp},
@@ -518,54 +518,54 @@ e
 
 @deffn {Operador} :
 @ifinfo
-@fnindex Operador de atribuiç@~{a}o
+@fnindex Operador de atribuição
 @end ifinfo
-O operador de atribuiç@~{a}o.  E.g. A:3 escolhe a vari@'{a}vel A para 3.
+O operador de atribuição.  E.g. A:3 escolhe a variável A para 3.
 
 @end deffn
 
 @deffn {Operador} ::
 @ifinfo
-@fnindex Operador de atribuiç@~{a}o (avalia o lado esquerdo da igualdade)
+@fnindex Operador de atribuição (avalia o lado esquerdo da igualdade)
 @end ifinfo
-Operador de atribuiç@~{a}o.  :: atribui o valor da express@~{a}o
+Operador de atribuição.  :: atribui o valor da expressão
 em seu lado direito para o valor da quantidade na sua esquerda, que pode
-avaliar para uma vari@'{a}vel at@^{o}mica ou vari@'{a}vel subscrita.
+avaliar para uma variável atômica ou variável subscrita.
 
 @end deffn
 
 @deffn {Operador} ::=
 @ifinfo
-@fnindex Operador de definiç@~{a}o de funç@~{a}o de macro
+@fnindex Operador de definição de função de macro
 @end ifinfo
-Operador de definiç@~{a}o de funç@~{a}o de macro.
-@code{::=} define uma funç@~{a}o (chamada uma "macro" por raz@~{o}es hist@'{o}ricas)
-que coloca um ap@'{o}strofo em seus argumentos (evitando avaliaç@~{a}o),
-e a express@~{a}o que @'{e} retornada (chamada a "expans@~{a}o de macro")
-@'{e} avaliada no contexto a partir do qual a macro foi chamada.
-Uma funç@~{a}o de macro @'{e} de outra forma o mesmo que uma funç@~{a}o comum.
+Operador de definição de função de macro.
+@code{::=} define uma função (chamada uma "macro" por razões históricas)
+que coloca um apóstrofo em seus argumentos (evitando avaliação),
+e a expressão que é retornada (chamada a "expansão de macro")
+é avaliada no contexto a partir do qual a macro foi chamada.
+Uma função de macro é de outra forma o mesmo que uma função comum.
 
-@code{macroexpand} retorna uma expans@~{a}o de macro (sem avaliar a expans@~{a}o).
-@code{macroexpand (foo (x))} seguida por @code{''%} @'{e} equivalente a @code{foo (x)}
-quando @code{foo} for uma funç@~{a}o de macro.
+@code{macroexpand} retorna uma expansão de macro (sem avaliar a expansão).
+@code{macroexpand (foo (x))} seguida por @code{''%} é equivalente a @code{foo (x)}
+quando @code{foo} for uma função de macro.
 
-@code{::=} coloca o nome da nova funç@~{a}o de macro dentro da lista global @code{macros}.
-@code{kill}, @code{remove}, e @code{remfunction} desassocia definiç@~{o}es de funç@~{a}o de macro
+@code{::=} coloca o nome da nova função de macro dentro da lista global @code{macros}.
+@code{kill}, @code{remove}, e @code{remfunction} desassocia definições de função de macro
 e remove nomes de @code{macros}.
 
-@code{fundef} e @code{dispfun} retornam respectivamente uma definiç@~{a}o de funç@~{a}o de macro
-e uma atribuiç@~{a}o dessa definiç@~{a}o a um r@'{o}tulo, respectivamente.
+@code{fundef} e @code{dispfun} retornam respectivamente uma definição de função de macro
+e uma atribuição dessa definição a um rótulo, respectivamente.
 
-Funç@~{o}es de macro comumente possuem express@~{o}es @code{buildq} e
-@code{splice} para construir uma express@~{a}o,
-que @'{e} ent@~{a}o avaliada.
+Funções de macro comumente possuem expressões @code{buildq} e
+@code{splice} para construir uma expressão,
+que é então avaliada.
 
 Exemplos
 
-Uma funç@~{a}o de macro coloca um ap@'{o}strofo em seus argumentos evitando ent@~{a}o a avaliaç@~{a}o,
-ent@~{a}o mensagem (1) mostra @code{y - z}, n@~{a}o o valor de @code{y - z}.
-A expans@~{a}o de macro (a express@~{a}o com ap@'{o}strofo @code{'(print ("(2) x is equal to", x))}
-@'{e} avaliada no contexto a partir do qual a macro for chamada,
+Uma função de macro coloca um apóstrofo em seus argumentos evitando então a avaliação,
+então mensagem (1) mostra @code{y - z}, não o valor de @code{y - z}.
+A expansão de macro (a expressão com apóstrofo @code{'(print ("(2) x is equal to", x))}
+é avaliada no contexto a partir do qual a macro for chamada,
 mostrando a mensagem (2).
 
 @c ===beg===
@@ -582,24 +582,24 @@ mostrando a mensagem (2).
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printq1 (x) ::= block (print ("(1) x @'{e} igual a", x), '(print ("(2) x @'{e} igual a", x)));
-(%o4) printq1(x) ::= block(print("(1) x @'{e} igual a", x), 
-                                '(print("(2) x @'{e} igual a", x)))
+(%i4) printq1 (x) ::= block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
+(%o4) printq1(x) ::= block(print("(1) x é igual a", x), 
+                                '(print("(2) x é igual a", x)))
 (%i5) printq1 (y - z);
-(1) x @'{e} igual a y - z 
-(2) x @'{e} igual a %pi 
+(1) x é igual a y - z 
+(2) x é igual a %pi 
 (%o5)                          %pi
 @end example
 
-Uma funç@~{a}o comum avalia seus argumentos, ent@~{a}o message (1) mostra o valor de @code{y - z}.
-O valor de retorno n@~{a}o @'{e} avaliado, ent@~{a}o mensagem (2) n@~{a}o @'{e} mostrada
-at@'{e} a avaliaç@~{a}o expl@'{i}cita @code{''%}.
+Uma função comum avalia seus argumentos, então message (1) mostra o valor de @code{y - z}.
+O valor de retorno não é avaliado, então mensagem (2) não é mostrada
+até a avaliação explícita @code{''%}.
 
 @c ===beg===
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c printe1 (x) := block (print ("(1) x @'{e} igual a", x), '(print ("(2) x @'{e} igual a", x)));
+@c printe1 (x) := block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
 @c printe1 (y - z);
 @c ''%;
 @c ===end===
@@ -610,26 +610,26 @@ at@'{e} a avaliaç@~{a}o expl@'{i}cita @code{''%}.
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printe1 (x) := block (print ("(1) x @'{e} igual a", x), '(print ("(2) x @'{e} igual a", x)));
-(%o4) printe1(x) := block(print("(1) x @'{e} igual a", x), 
-                                '(print("(2) x @'{e} igual a", x)))
+(%i4) printe1 (x) := block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
+(%o4) printe1(x) := block(print("(1) x é igual a", x), 
+                                '(print("(2) x é igual a", x)))
 (%i5) printe1 (y - z);
-(1) x @'{e} igual a 1234 - 1729 w 
-(%o5)              print((2) x @'{e} igual a, x)
+(1) x é igual a 1234 - 1729 w 
+(%o5)              print((2) x é igual a, x)
 (%i6) ''%;
-(2) x @'{e} igual a %pi 
+(2) x é igual a %pi 
 (%o6)                          %pi
 @end example
 
-@code{macroexpand} retorna uma expans@~{a}o de macro.
-@code{macroexpand (foo (x))} seguido por @code{''%} @'{e} equivalente a @code{foo (x)}
-quando @code{foo} for uma funç@~{a}o de macro.
+@code{macroexpand} retorna uma expansão de macro.
+@code{macroexpand (foo (x))} seguido por @code{''%} é equivalente a @code{foo (x)}
+quando @code{foo} for uma função de macro.
 
 @c ===beg===
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c g (x) ::= buildq ([x], print ("x @'{e} igual a", x));
+@c g (x) ::= buildq ([x], print ("x é igual a", x));
 @c macroexpand (g (y - z));
 @c ''%;
 @c g (y - z);
@@ -641,15 +641,15 @@ quando @code{foo} for uma funç@~{a}o de macro.
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) g (x) ::= buildq ([x], print ("x @'{e} igual a", x));
-(%o4)    g(x) ::= buildq([x], print("x @'{e} igual a", x))
+(%i4) g (x) ::= buildq ([x], print ("x é igual a", x));
+(%o4)    g(x) ::= buildq([x], print("x é igual a", x))
 (%i5) macroexpand (g (y - z));
-(%o5)              print(x @'{e} igual a, y - z)
+(%o5)              print(x é igual a, y - z)
 (%i6) ''%;
-x @'{e} igual a 1234 - 1729 w 
+x é igual a 1234 - 1729 w 
 (%o6)                     1234 - 1729 w
 (%i7) g (y - z);
-x @'{e} igual a 1234 - 1729 w 
+x é igual a 1234 - 1729 w 
 (%o7)                     1234 - 1729 w
 @end example
 
@@ -657,58 +657,58 @@ x @'{e} igual a 1234 - 1729 w
 
 @deffn {Operador} :=
 @ifinfo
-@fnindex Operador de definiç@~{a}o de funç@~{a}o
+@fnindex Operador de definição de função
 @end ifinfo
-O operador de definiç@~{a}o de funç@~{a}o.  E.g. @code{f(x):=sin(x)} define
-uma funç@~{a}o @code{f}.
+O operador de definição de função.  E.g. @code{f(x):=sin(x)} define
+uma função @code{f}.
 
 @end deffn
 
 @deffn {Operador} =
 @ifinfo
-@fnindex Operador de equaç@~{a}o
-@fnindex Igual (igualdade sint@'{a}tica)
+@fnindex Operador de equação
+@fnindex Igual (igualdade sintática)
 @end ifinfo
-O operador de equaç@~{a}o.
+O operador de equação.
 
-Uma express@~{a}o @code{@var{a} = @var{b}}, por si mesma, representa
-uma equaç@~{a}o n@~{a}o avaliada, a qual pode ou n@~{a}o se manter.
-Equaç@~{o}es n@~{a}o avaliadas podem aparecer como argumentos para @code{solve} e @code{algsys}
-ou algumas outras funç@~{o}es.
+Uma expressão @code{@var{a} = @var{b}}, por si mesma, representa
+uma equação não avaliada, a qual pode ou não se manter.
+Equações não avaliadas podem aparecer como argumentos para @code{solve} e @code{algsys}
+ou algumas outras funções.
 
-A funç@~{a}o @code{is} avalia @code{=} para um valor Booleano.
+A função @code{is} avalia @code{=} para um valor Booleano.
 @code{is(@var{a} = @var{b})} avalia @code{@var{a} = @var{b}} para @code{true} quando @var{a} e @var{b}
-forem id@^{e}nticos. Isto @'{e}, @var{a} e @var{b} forem @'{a}tomos que s@~{a}o id@^{e}nticos,
-ou se eles n@~{a}o forem @'{a}tomos e seus operadores forem id@^{e}nticos e seus argumentos forem id@^{e}nticos.
+forem idênticos. Isto é, @var{a} e @var{b} forem átomos que são idênticos,
+ou se eles não forem átomos e seus operadores forem idênticos e seus argumentos forem idênticos.
 De outra forma, @code{is(@var{a} = @var{b})} avalia para @code{false};
 @code{is(@var{a} = @var{b})} nunca avalia para @code{unknown}.
-Quando @code{is(@var{a} = @var{b})} for @code{true}, @var{a} e @var{b} s@~{a}o ditos para serem sintaticamente iguais,
-em contraste para serem express@~{o}es equivalentes, para as quais @code{is(equal(@var{a}, @var{b}))} @'{e} @code{true}.
-Express@~{o}es podem ser equivalentes e n@~{a}o sint@'{a}ticamente iguais.
+Quando @code{is(@var{a} = @var{b})} for @code{true}, @var{a} e @var{b} são ditos para serem sintaticamente iguais,
+em contraste para serem expressões equivalentes, para as quais @code{is(equal(@var{a}, @var{b}))} é @code{true}.
+Expressões podem ser equivalentes e não sintáticamente iguais.
 
-A negaç@~{a}o de @code{=} @'{e} representada por @code{#}.
-Da mesma forma que com @code{=}, uma express@~{a}o @code{@var{a} # @var{b}}, por si mesma, n@~{a}o @'{e} avaliada.
+A negação de @code{=} é representada por @code{#}.
+Da mesma forma que com @code{=}, uma expressão @code{@var{a} # @var{b}}, por si mesma, não é avaliada.
 @code{is(@var{a} # @var{b})} avalia @code{@var{a} # @var{b}} para
 @code{true} ou @code{false}.
 
-Complementando a funç@~{a}o @code{is},
+Complementando a função @code{is},
 alguns outros operadores avaliam @code{=} e @code{#} para @code{true} ou @code{false},
 a saber @code{if}, @code{and}, @code{or}, e @code{not}.
 
-Note que pelo fato de as regras de avaliaç@~{a}o de express@~{o}es predicadas
-(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avaliaç@~{a}o de @var{expr}),
-a forma @code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})},
+Note que pelo fato de as regras de avaliação de expressões predicadas
+(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avaliação de @var{expr}),
+a forma @code{not @var{a} = @var{b}} é equivalente a @code{is(@var{a} # @var{b})},
 em lugar de ser equivalente a @code{@var{a} # @var{b}}.
 
-@code{rhs} e @code{lhs} retornam o primeiro membro e o segundo membro de uma equaç@~{a}o,
-respectivamente, de uma equaç@~{a}o ou inequaç@~{a}o.
+@code{rhs} e @code{lhs} retornam o primeiro membro e o segundo membro de uma equação,
+respectivamente, de uma equação ou inequação.
 
-Veja tamb@'{e}m @code{equal} e @code{notequal}.
+Veja também @code{equal} e @code{notequal}.
 
 Exemplos:
 
-Uma express@~{a}o @code{@var{a} = @var{b}}, por si mesma, representa
-uma equaç@~{a}o n@~{a}o avaliada, a qual pode ou n@~{a}o se manter.
+Uma expressão @code{@var{a} = @var{b}}, por si mesma, representa
+uma equação não avaliada, a qual pode ou não se manter.
 
 @c ===beg===
 @c eq_1 : a * x - 5 * y = 17;
@@ -738,8 +738,8 @@ uma equaç@~{a}o n@~{a}o avaliada, a qual pode ou n@~{a}o se manter.
 @end example
 
 @code{is(@var{a} = @var{b})} avalia @code{@var{a} = @var{b}} para @code{true} quando @var{a} e @var{b}
-s@~{a}o sintaticamente iguais (isto @'{e}, identicos).
-Express@~{o}es podem ser equivalentes e n@~{a}o sintaticamente iguais.
+são sintaticamente iguais (isto é, identicos).
+Expressões podem ser equivalentes e não sintaticamente iguais.
 
 @c ===beg===
 @c a : (x + 1) * (x - 1);
@@ -779,8 +779,8 @@ Alguns operadores avaliam @code{=} e @code{#} para @code{true} ou @code{false}.
 (%o4)                  [false, true, true]
 @end example
 
-Devido a @code{not @var{expr}} fazer com que a avaliaç@~{a}o de @var{expr} ocorra,
-@code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})}.
+Devido a @code{not @var{expr}} fazer com que a avaliação de @var{expr} ocorra,
+@code{not @var{a} = @var{b}} é equivalente a @code{is(@var{a} # @var{b})}.
 
 @c ===beg===
 @c [2 * x # 3 * x, not (2 * x = 3 * x)];
@@ -798,95 +798,95 @@ Devido a @code{not @var{expr}} fazer com que a avaliaç@~{a}o de @var{expr} ocor
 @c NEEDS EXAMPLES
 @deffn {Operador} and
 @ifinfo
-@fnindex Conjunç@~{a}o l@'{o}gica
+@fnindex Conjunção lógica
 @end ifinfo
-O operador l@'{o}gico de conjunç@~{a}o.
-@code{and} @'{e} um operador n-@'{a}rio infixo;
-seus operandos s@~{a}o express@~{o}es Booleanas, e seu resultado @'{e} um valor Booleano.
+O operador lógico de conjunção.
+@code{and} é um operador n-ário infixo;
+seus operandos são expressões Booleanas, e seu resultado é um valor Booleano.
 
-@code{and} força avaliaç@~{a}o (como @code{is}) de um ou mais operandos,
-e pode forçar a avaliaç@~{a}o de todos os operandos.
+@code{and} força avaliação (como @code{is}) de um ou mais operandos,
+e pode forçar a avaliação de todos os operandos.
 
-Operandos s@~{a}o avaliados na ordem em que aparecerem.
-@code{and} avalia somente quantos de seus operandos forem necess@'{a}rios para determinar o resultado.
+Operandos são avaliados na ordem em que aparecerem.
+@code{and} avalia somente quantos de seus operandos forem necessários para determinar o resultado.
 Se qualquer operando for @code{false},
-o resultado @'{e} @code{false} e os operandos restantes n@~{a}o s@~{a}o avaliados.
+o resultado é @code{false} e os operandos restantes não são avaliados.
 
 O sinalizador global @code{prederror} governa o comportamento de @code{and}
-quando um operando avaliado n@~{a}o pode ser determinado como sendo @code{true} ou @code{false}.
+quando um operando avaliado não pode ser determinado como sendo @code{true} ou @code{false}.
 @code{and} imprime uma mensagem de erro quando @code{prederror} for @code{true}.  
-De outra forma, operandos que n@~{a}o avaliam para @code{true} ou para @code{false} s@~{a}o aceitos,
-and o resultado @'{e} uma express@~{a}o Booleana.
+De outra forma, operandos que não avaliam para @code{true} ou para @code{false} são aceitos,
+and o resultado é uma expressão Booleana.
 
-@code{and} n@~{a}o @'{e} comutativo:
-@code{a and b} pode n@~{a}o ser igual a @code{b and a} devido ao tratamento de operandos indeterminados.
+@code{and} não é comutativo:
+@code{a and b} pode não ser igual a @code{b and a} devido ao tratamento de operandos indeterminados.
 
 @end deffn
 
 @c NEEDS EXAMPLES
 @deffn {Operador} or
 @ifinfo
-@fnindex Disjunç@~{a}o l@'{o}gica
+@fnindex Disjunção lógica
 @end ifinfo
-O operador l@'{o}gico de disjunç@~{a}o.
-@code{or} @'{e} um operador n-@'{a}rio infixo;
-seus operandos s@~{a}o express@~{o}es Booleanas, e seu resultado @'{e} um valor Booleano.
+O operador lógico de disjunção.
+@code{or} é um operador n-ário infixo;
+seus operandos são expressões Booleanas, e seu resultado é um valor Booleano.
 
-@code{or} força avaliaç@~{a}o (como @code{is}) de um ou mais operandos,
-e pode forçar a avaliaç@~{a}o de todos os operandos.
+@code{or} força avaliação (como @code{is}) de um ou mais operandos,
+e pode forçar a avaliação de todos os operandos.
 
-Operandos s@~{a}o avaliados na ordem em que aparecem.
-@code{or} avalia somente quantos de seus operandos forem necess@'{a}rios para determinar o resultado.
+Operandos são avaliados na ordem em que aparecem.
+@code{or} avalia somente quantos de seus operandos forem necessários para determinar o resultado.
 Se qualquer operando for @code{true},
-o resultado @'{e} @code{true} e os operandos restantes n@~{a}o s@~{a}o avaliados.
+o resultado é @code{true} e os operandos restantes não são avaliados.
 
 O sinalizador global @code{prederror} governa o comportamento de @code{or}
-quando um operando avaliado n@~{a}o puder ser determinado como sendo @code{true} ou @code{false}.
+quando um operando avaliado não puder ser determinado como sendo @code{true} ou @code{false}.
 @code{or} imprime uma mensagem de erro quando @code{prederror} for @code{true}.
-De outra forma, operandos que n@~{a}o avaliam para @code{true} ou para @code{false} s@~{a}o aceitos,
-E o resultado @'{e} uma express@~{a}o Booleana.
+De outra forma, operandos que não avaliam para @code{true} ou para @code{false} são aceitos,
+E o resultado é uma expressão Booleana.
 
-@code{or} n@~{a}o @'{e} comutativo:
-@code{a or b} pode n@~{a}o ser igual a @code{b or a} devido ao tratamento de operando indeterminados.
+@code{or} não é comutativo:
+@code{a or b} pode não ser igual a @code{b or a} devido ao tratamento de operando indeterminados.
 
 @end deffn
 
 @c NEEDS EXAMPLES
 @deffn {Operador} not
 @ifinfo
-@fnindex Negaç@~{a}o l@'{o}gica
+@fnindex Negação lógica
 @end ifinfo
-O operador l@'{o}gico de negaç@~{a}o.
-@code{not} @'{e} operador prefixado;
-Seu operando @'{e} uma express@~{a}o Booleana, e seu resultado @'{e} um valor Booleano.
+O operador lógico de negação.
+@code{not} é operador prefixado;
+Seu operando é uma expressão Booleana, e seu resultado é um valor Booleano.
 
-@code{not} força a avaliaç@~{a}o (como @code{is}) de seu operando.
+@code{not} força a avaliação (como @code{is}) de seu operando.
 
 O sinalizador global @code{prederror} governa o comportamento de @code{not}
-quando seu operando n@~{a}o pode ser determinado em termos de @code{true} ou @code{false}.
+quando seu operando não pode ser determinado em termos de @code{true} ou @code{false}.
 @code{not} imprime uma mensagem de erro quando @code{prederror} for @code{true}.
-De outra forma, operandos que n@~{a}o avaliam para @code{true} ou para @code{false} s@~{a}o aceitos,
-e o resultado @'{e} uma express@~{a}o Booleana.
+De outra forma, operandos que não avaliam para @code{true} ou para @code{false} são aceitos,
+e o resultado é uma expressão Booleana.
 
 @end deffn
 
-@deffn {Funç@~{a}o} abs (@var{expr})
-Retorna o valor absoluto de @var{expr}.  Se @var{expr} for um n@'{u}mero complexo, retorna o m@'{o}dulo
+@deffn {Função} abs (@var{expr})
+Retorna o valor absoluto de @var{expr}.  Se @var{expr} for um número complexo, retorna o módulo
 complexo de @var{expr}.
 
 @end deffn
 
 @defvr {Palavra chave} additive
-Se @code{declare(f,additive)} tiver sido executado, ent@~{a}o:
+Se @code{declare(f,additive)} tiver sido executado, então:
 
-(1) Se @code{f} for uma funç@~{a}o de uma @'{u}nica vari@'{a}vel, sempre que o simplificador encontrar @code{f} aplicada
-a uma adiç@~{a}o, @code{f} ser@'{a} distribu@'{i}do sobre aquela adiç@~{a}o.  I.e. @code{f(y+x)} ir@'{a}
+(1) Se @code{f} for uma função de uma única variável, sempre que o simplificador encontrar @code{f} aplicada
+a uma adição, @code{f} será distribuído sobre aquela adição.  I.e. @code{f(y+x)} irá
 simplificar para @code{f(y)+f(x)}.
 
-(2) Se @code{f} for uma funç@~{a}o de 2 ou mais argumentos, a adiç@~{a}o @'{e} definida como 
-adiç@~{a}o no primeiro argumento para @code{f}, como no caso de @code{sum} ou  
-@code{integrate}, i.e. @code{f(h(x)+g(x),x)} ir@'{a} simplificar para @code{f(h(x),x)+f(g(x),x)}.
-Essa simplificaç@~{a}o n@~{a}o ocorre quando @code{f} @'{e} aplicada para express@~{o}es da
+(2) Se @code{f} for uma função de 2 ou mais argumentos, a adição é definida como 
+adição no primeiro argumento para @code{f}, como no caso de @code{sum} ou  
+@code{integrate}, i.e. @code{f(h(x)+g(x),x)} irá simplificar para @code{f(h(x),x)+f(g(x),x)}.
+Essa simplificação não ocorre quando @code{f} é aplicada para expressões da
 forma @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @end defvr
@@ -921,7 +921,7 @@ enquanto
 (%o2)                       e + c + b
 @end example
 
-@code{allbut} @'{e} tamb@'{e}m reconhecido por @code{kill}.
+@code{allbut} é também reconhecido por @code{kill}.
  
 @c ===beg===
 @c [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
@@ -938,40 +938,40 @@ enquanto
 @end example
 
 @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} tem o mesmo efeito que @code{kill(all)}
-exceto que n@~{a}o elimina os s@'{i}mbolos @var{a_1}, @var{a_2}, ... .
+exceto que não elimina os símbolos @var{a_1}, @var{a_2}, ... .
 
 @end defvr
 
-@defvr {Declaraç@~{a}o} antisymmetric
-Se @code{declare(h,antisymmetric)} @'{e} conclu@'{i}da, diz ao
-simplicador que @code{h} @'{e} uma funç@~{a}o antisim@'{e}trica.  E.g. @code{h(x,z,y)} simplificar@'{a} para
-@code{- h(x, y, z)}.  Isto @'{e}, dar@'{a} (-1)^n vezes o resultado dado por
-@code{symmetric} ou @code{commutative}, quando n for o n@'{u}mero de interescolhas de dois
-argumentos necess@'{a}rios para converter isso naquela forma.
+@defvr {Declaração} antisymmetric
+Se @code{declare(h,antisymmetric)} é concluída, diz ao
+simplicador que @code{h} é uma função antisimétrica.  E.g. @code{h(x,z,y)} simplificará para
+@code{- h(x, y, z)}.  Isto é, dará (-1)^n vezes o resultado dado por
+@code{symmetric} ou @code{commutative}, quando n for o número de interescolhas de dois
+argumentos necessários para converter isso naquela forma.
 
 @end defvr
 
-@deffn {Funç@~{a}o} cabs (@var{expr})
-Retorna o valor absoluto complexo (o m@'{o}dulo complexo) de
+@deffn {Função} cabs (@var{expr})
+Retorna o valor absoluto complexo (o módulo complexo) de
 @var{expr}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} ceiling (@var{x})
+@deffn {Função} ceiling (@var{x})
 
-Quando @var{x} for um n@'{u}mero real, retorna o @'{u}ltimo inteiro que 
-@'{e} maior que ou igual a @var{x}.  
+Quando @var{x} for um número real, retorna o último inteiro que 
+é maior que ou igual a @var{x}.  
 
-Se @var{x} for uma express@~{a}o constante (@code{10 * %pi}, por exemplo), 
-@code{ceiling} avalia @var{x} usando grandes n@'{u}meros em ponto flutuante, e 
-aplica @code{ceiling} para o grande n@'{u}mero em ponto flutuante resultante. Porque @code{ceiling} usa
-avaliaç@~{a}o de ponto flutuante, @'{e} poss@'{i}vel, embora improv@'{a}vel, 
-que @code{ceiling} possa retornar uma valor err@^{o}neo para entradas
-constantes. Para prevenir erros, a avaliaç@~{a}o de ponto flutuante
-@'{e} conclu@'{i}da usando tr@^{e}s valores para @code{fpprec}.
+Se @var{x} for uma expressão constante (@code{10 * %pi}, por exemplo), 
+@code{ceiling} avalia @var{x} usando grandes números em ponto flutuante, e 
+aplica @code{ceiling} para o grande número em ponto flutuante resultante. Porque @code{ceiling} usa
+avaliação de ponto flutuante, é possível, embora improvável, 
+que @code{ceiling} possa retornar uma valor errôneo para entradas
+constantes. Para prevenir erros, a avaliação de ponto flutuante
+é concluída usando três valores para @code{fpprec}.
 
-Para entradas n@~{a}o constantes, @code{ceiling} tenta retornar um valor
-simplificado.  Aqui est@'{a} um exemplo de simplificaç@~{o}es que @code{ceiling}
+Para entradas não constantes, @code{ceiling} tenta retornar um valor
+simplificado.  Aqui está um exemplo de simplificações que @code{ceiling}
 conhece:
 
 @c ===beg===
@@ -999,13 +999,13 @@ $$\left \lceil a \right \rceil$$
 (%o7)                         false
 @end example
 
-A funç@~{a}o @code{ceiling} n@~{a}o mapeia automaticamente sobre listas ou matrizes.
+A função @code{ceiling} não mapeia automaticamente sobre listas ou matrizes.
 Finalmente, para todas as entradas que forem manifestamente complexas, @code{ceiling} retorna 
 uma forma substantiva.
 
-Se o intervalo de uma funç@~{a}o @'{e} um subconjunto dos inteiros, o intervalo pode ser
-declarado @code{integervalued}. Ambas as funç@~{o}es @code{ceiling} e @code{floor}
-podem usar essa informaç@~{a}o; por exemplo:
+Se o intervalo de uma função é um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as funções @code{ceiling} e @code{floor}
+podem usar essa informação; por exemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -1022,11 +1022,11 @@ podem usar essa informaç@~{a}o; por exemplo:
 
 @end deffn
 
-@deffn {Funç@~{a}o} charfun (@var{p})
+@deffn {Função} charfun (@var{p})
 
 Retorna 0 quando o predicado @var{p} avaliar para @code{false}; retorna
 1 quando o predicado avaliar para @code{true}.  Quando o predicado
-avaliar para alguma coisa que n@~{a}o @code{true} ou @code{false} (@code{unknown}), 
+avaliar para alguma coisa que não @code{true} ou @code{false} (@code{unknown}), 
 retorna uma forma substantiva.
 
 Exemplos:
@@ -1049,22 +1049,22 @@ Exemplos:
 
 @end deffn
 
-@defvr {Declaraç@~{a}o} commutative
-Se @code{declare(h,commutative)} @'{e} conclu@'{i}da, diz ao
-simplicador que @code{h} @'{e} uma funç@~{a}o comutativa.  E.g. @code{h(x,z,y)} ir@'{a}
-simplificar para @code{h(x, y, z)}.  Isto @'{e} o mesmo que @code{symmetric}.
+@defvr {Declaração} commutative
+Se @code{declare(h,commutative)} é concluída, diz ao
+simplicador que @code{h} é uma função comutativa.  E.g. @code{h(x,z,y)} irá
+simplificar para @code{h(x, y, z)}.  Isto é o mesmo que @code{symmetric}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} compare (@var{x}, @var{y})
+@deffn {Função} compare (@var{x}, @var{y})
 
-Retorna um operador de comparaç@~{a}o @var{op}
+Retorna um operador de comparação @var{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, ou @code{#}) tal que
 @code{is (@var{x} @var{op} @var{y})} avalia para @code{true};
 quando ou @var{x} ou @var{y} dependendo de @code{%i} e
 @code{@var{x} # @var{y}}, retorna @code{notcomparable};
-Quando n@~{a}o existir tal operador ou
-Maxima n@~{a}o estiver apto a determinar o operador, retorna @code{unknown}.
+Quando não existir tal operador ou
+Maxima não estiver apto a determinar o operador, retorna @code{unknown}.
 
 Exemplos:
 
@@ -1091,8 +1091,8 @@ Exemplos:
 (%o6)                          <=
 @end example
 
-A funç@~{a}o @code{compare} n@~{a}o tenta de terminar se o dom@'{i}nio real de
-seus argumentos @'{e} n@~{a}o vazio; dessa forma
+A função @code{compare} não tenta de terminar se o domínio real de
+seus argumentos é não vazio; dessa forma
 
 @c ===beg===
 @c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
@@ -1102,32 +1102,32 @@ seus argumentos @'{e} n@~{a}o vazio; dessa forma
 (%o1)                           <
 @end example
 
-O dom@'{i}nio real de @code{acos (x^2 + 1)} @'{e} vazio.
+O domínio real de @code{acos (x^2 + 1)} é vazio.
 
 @end deffn
 
-@deffn {Funç@~{a}o} entier (@var{x})
-Retorna o @'{u}ltimo inteiro menor que ou igual a @var{x} onde @var{x} @'{e} num@'{e}rico.  @code{fix} (como em
-@code{fixnum}) @'{e} um sin@^{o}nimo disso, ent@~{a}o @code{fix(@var{x})} @'{e} precisamente o mesmo.
+@deffn {Função} entier (@var{x})
+Retorna o último inteiro menor que ou igual a @var{x} onde @var{x} é numérico.  @code{fix} (como em
+@code{fixnum}) é um sinônimo disso, então @code{fix(@var{x})} é precisamente o mesmo.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Funç@~{a}o} equal (@var{a}, @var{b})
+@deffn {Função} equal (@var{a}, @var{b})
 
-Representa a equival@^{e}ncia, isto @'{e}, valor igual.
+Representa a equivalência, isto é, valor igual.
  
-Por si mesma, @code{equal} n@~{a}o avalia ou simplifica.
-A funç@~{a}o @code{is} tenta avaliar @code{equal} para um valor Booleano.
+Por si mesma, @code{equal} não avalia ou simplifica.
+A função @code{is} tenta avaliar @code{equal} para um valor Booleano.
 @code{is(equal(@var{a}, @var{b}))} 
 retorna @code{true} (ou @code{false}) se
-e somente se @var{a} e @var{b} forem iguais (ou n@~{a}o iguais) para todos os poss@'{i}veis
-valores de suas vari@'{a}veis, como determinado atrav@'{e}s da avaliaç@~{a}o de @code{ratsimp(@var{a} - @var{b})};
-se @code{ratsimp} retornar 0, as duas express@~{o}es s@~{a}o consideradas equivalentes.
-Duas express@~{o}es podem ser equivalentes mesmo se mesmo se elas n@~{a}o forem sintaticamente iguais (i.e., identicas).
+e somente se @var{a} e @var{b} forem iguais (ou não iguais) para todos os possíveis
+valores de suas variáveis, como determinado através da avaliação de @code{ratsimp(@var{a} - @var{b})};
+se @code{ratsimp} retornar 0, as duas expressões são consideradas equivalentes.
+Duas expressões podem ser equivalentes mesmo se mesmo se elas não forem sintaticamente iguais (i.e., identicas).
 
 Quando @code{is} falhar em reduzir @code{equal} a @code{true} ou @code{false},
-o resultado @'{e} governado atrav@'{e}s do sinalizador global @code{prederror}.
+o resultado é governado através do sinalizador global @code{prederror}.
 Quando @code{prederror} for @code{true},
 @code{is} reclama com uma mensagem de erro.
 De outra forma, @code{is} retorna @code{unknown}.
@@ -1141,11 +1141,11 @@ a saber @code{if}, @code{and}, @code{or}, e @code{not}.
 @c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
 @c All variables are effectively assumed to be real-valued.
 
-A negaç@~{a}o de @code{equal} @'{e} @code{notequal}.
+A negação de @code{equal} é @code{notequal}.
 
 Exemplos:
 
-Por si mesmo, @code{equal} n@~{a}o avalia ou simplifica.
+Por si mesmo, @code{equal} não avalia ou simplifica.
 
 @c ===beg===
 @c equal (x^2 - 1, (x + 1) * (x - 1));
@@ -1162,9 +1162,9 @@ Por si mesmo, @code{equal} n@~{a}o avalia ou simplifica.
 (%o3)                      equal(x, y)
 @end example
 
-A funç@~{a}o @code{is} tenta avaliar @code{equal} para um valor Booleano.
+A função @code{is} tenta avaliar @code{equal} para um valor Booleano.
 @code{is(equal(@var{a}, @var{b}))} retorna @code{true} quando @code{ratsimp(@var{a} - @var{b})} retornar 0.
-Duas express@~{o}es podem ser equivalentes mesmo se n@~{a}o forem sintaticamente iguais (i.e., identicas).
+Duas expressões podem ser equivalentes mesmo se não forem sintaticamente iguais (i.e., identicas).
 
 @c ===beg===
 @c ratsimp (x^2 - 1 - (x + 1) * (x - 1));
@@ -1199,7 +1199,7 @@ Duas express@~{o}es podem ser equivalentes mesmo se n@~{a}o forem sintaticamente
 @end example
  
 Quando @code{is} falha em reduzir @code{equal} a @code{true} ou @code{false},
-o resultado @'{e} governado atrav@'{e}s do sinalizador global @code{prederror}.
+o resultado é governado através do sinalizador global @code{prederror}.
  
 @c ===beg===
 @c [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
@@ -1248,8 +1248,8 @@ Alguns operadores avaliam @code{equal} e @code{notequal} para @code{true} ou @co
 (%o4)                  [false, true, true]
 @end example
 
-Devido a @code{not @var{expr}} fazer com que ocorra a avaliaç@~{a}o de @var{expr},
-@code{not equal(@var{a}, @var{b})} @'{e} equivalente a @code{is(notequal(@var{a}, @var{b}))}.
+Devido a @code{not @var{expr}} fazer com que ocorra a avaliação de @var{expr},
+@code{not equal(@var{a}, @var{b})} é equivalente a @code{is(notequal(@var{a}, @var{b}))}.
 
 @c ===beg===
 @c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
@@ -1264,21 +1264,21 @@ Devido a @code{not @var{expr}} fazer com que ocorra a avaliaç@~{a}o de @var{exp
 
 @end deffn
 
-@deffn {Funç@~{a}o} floor (@var{x})
+@deffn {Função} floor (@var{x})
 
-Quando @var{x} for um n@'{u}mero real, retorna o maior inteiro que 
-@'{e} menor que ou igual a @var{x}.
+Quando @var{x} for um número real, retorna o maior inteiro que 
+é menor que ou igual a @var{x}.
 
-Se @var{x} for uma express@~{a}o constante (@code{10 * %pi}, for exemplo), 
-@code{floor} avalia @var{x} usando grandes n@'{u}meros em ponto flutuante, e 
-aplica @code{floor} ao grande n@'{u}mero em ponto flutuante resultante. Porque @code{floor} usa
-avaliaç@~{a}o em ponto flutuante, @'{e} poss@'{i}vel, embora improv@'{a}vel, 
-que @code{floor} n@~{a}o possa retornar um valor err@^{o}neo para entradas
-constantes.  Para prevenir erros, a avaliaç@~{a}o de ponto flutuante
-@'{e} conclu@'{i}da usando tr@^{e}s valores para @code{fpprec}.
+Se @var{x} for uma expressão constante (@code{10 * %pi}, for exemplo), 
+@code{floor} avalia @var{x} usando grandes números em ponto flutuante, e 
+aplica @code{floor} ao grande número em ponto flutuante resultante. Porque @code{floor} usa
+avaliação em ponto flutuante, é possível, embora improvável, 
+que @code{floor} não possa retornar um valor errôneo para entradas
+constantes.  Para prevenir erros, a avaliação de ponto flutuante
+é concluída usando três valores para @code{fpprec}.
 
-Para entradas n@~{a}o constantes, @code{floor} tenta retornar um valor
-simplificado.  Aqui est@'{a} exemplos de simplificaç@~{o}es que @code{floor}
+Para entradas não constantes, @code{floor} tenta retornar um valor
+simplificado.  Aqui está exemplos de simplificações que @code{floor}
 conhece:
 
 @c ===beg===
@@ -1306,13 +1306,13 @@ $$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
-A funç@~{a}o @code{floor} n@~{a}o mapeia automaticamente sobre listas ou matrizes.
+A função @code{floor} não mapeia automaticamente sobre listas ou matrizes.
 Finalmente, para todas as entradas que forem manifestamente complexas, @code{floor} retorna
 uma forma substantiva.
 
-Se o intervalo de uma funç@~{a}o for um subconjunto dos inteiros, o intervalo pode ser
-declarado @code{integervalued}. Ambas as funç@~{o}es @code{ceiling} e @code{floor}
-podem usar essa informaç@~{a}o; por exemplo:
+Se o intervalo de uma função for um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as funções @code{ceiling} e @code{floor}
+podem usar essa informação; por exemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -1329,7 +1329,7 @@ podem usar essa informaç@~{a}o; por exemplo:
 
 @end deffn
 
-@deffn {Funç@~{a}o} notequal (@var{a}, @var{b})
+@deffn {Função} notequal (@var{a}, @var{b})
 Represents the negation of @code{equal(@var{a}, @var{b})}.
 
 Exemplos:
@@ -1376,32 +1376,32 @@ Exemplos:
 @c BUT FOR SOME REASON eval DOES NOT HAVE THE evflag PROPERTY
 @deffn {Operador} eval
 Como um argumento em uma chamada a @code{ev (@var{expr})},
-@code{eval} causa uma avaliaç@~{a}o extra de @var{expr}.
+@code{eval} causa uma avaliação extra de @var{expr}.
 Veja @code{ev}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} evenp (@var{expr})
+@deffn {Função} evenp (@var{expr})
 Retorna @code{true} se @var{expr} for um inteiro sempre.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
-@code{false} @'{e} retornado em todos os outros casos.
+@code{false} é retornado em todos os outros casos.
 
 @end deffn
 
-@deffn {Funç@~{a}o} fix (@var{x})
-Um sin@^{o}nimo para @code{entier (@var{x})}.
+@deffn {Função} fix (@var{x})
+Um sinônimo para @code{entier (@var{x})}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} fullmap (@var{f}, @var{expr_1}, ...)
-Similar a @code{map}, mas @code{fullmap} mant@'{e}m mapeadas para
-baixo todas as subexpress@~{o}es at@'{e} que os operadores principais n@~{a}o mais sejam os
+@deffn {Função} fullmap (@var{f}, @var{expr_1}, ...)
+Similar a @code{map}, mas @code{fullmap} mantém mapeadas para
+baixo todas as subexpressões até que os operadores principais não mais sejam os
 mesmos.
 
-@code{fullmap} @'{e} usada pelo simplificador do
-Maxima para certas manipulaç@~{o}es de matrizes; dessa forma, Maxima algumas vezes gera
-uma mensagem de erro concernente a @code{fullmap} mesmo apesar de @code{fullmap} n@~{a}o ter sido
-explicitamente chamada pelo usu@'{a}rio.
+@code{fullmap} é usada pelo simplificador do
+Maxima para certas manipulações de matrizes; dessa forma, Maxima algumas vezes gera
+uma mensagem de erro concernente a @code{fullmap} mesmo apesar de @code{fullmap} não ter sido
+explicitamente chamada pelo usuário.
 
 Exemplos:
 
@@ -1421,7 +1421,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Funç@~{a}o} fullmapl (@var{f}, @var{list_1}, ...)
+@deffn {Função} fullmapl (@var{f}, @var{list_1}, ...)
 Similar a @code{fullmap}, mas @code{fullmapl} somente mapeia sobre
 listas e matrizes.
 
@@ -1437,34 +1437,34 @@ Exemplo:
 
 @end deffn
 
-@deffn {Funç@~{a}o} is (@var{expr})
-Tenta determinar se a @var{expr} predicada (express@~{o}es que avaliam para @code{true}
-ou @code{false}) @'{e} dedut@'{i}vel de fatos localizados na base de dados de @code{assume}.
+@deffn {Função} is (@var{expr})
+Tenta determinar se a @var{expr} predicada (expressões que avaliam para @code{true}
+ou @code{false}) é dedutível de fatos localizados na base de dados de @code{assume}.
 
 Se a dedutibilidade do predicado for @code{true} ou @code{false},
 @code{is} retorna @code{true} ou @code{false}, respectivamente.
-De outra forma, o valor de retorno @'{e} governado atrav@'{e}s do sinalizador global @code{prederror}.
+De outra forma, o valor de retorno é governado através do sinalizador global @code{prederror}.
 Quando @code{prederror} for @code{true},
 @code{is} reclama com uma mensagem de erro.
 De outra forma, @code{is} retorna @code{unknown}.
 
 @code{ev(@var{expr}, pred)}
 (que pode ser escrita da forma  @code{@var{expr}, pred} na linha de comando interativa)
-@'{e} equivalente a @code{is(@var{expr})}.
+é equivalente a @code{is(@var{expr})}.
 
-Veja tamb@'{e}m @code{assume}, @code{facts}, e @code{maybe}.
+Veja também @code{assume}, @code{facts}, e @code{maybe}.
 
 Exemplos:
 
-@code{is} causa avaliaç@~{a}o de predicados.
+@code{is} causa avaliação de predicados.
 @c GENERATED FROM:
 @c %pi > %e;
-@c @'{e} (%pi > %e);
+@c é (%pi > %e);
 
 @example
 (%i1) %pi > %e;
 (%o1)                       %pi > %e
-(%i2) @'{e} (%pi > %e);
+(%i2) é (%pi > %e);
 (%o2)                         true
 @end example
 
@@ -1473,60 +1473,60 @@ Exemplos:
 @c ===beg===
 @c assume (a > b);
 @c assume (b > c);
-@c @'{e} (a < b);
-@c @'{e} (a > c);
-@c @'{e} (equal (a, c));
+@c é (a < b);
+@c é (a > c);
+@c é (equal (a, c));
 @c ===end===
 @example
 (%i1) assume (a > b);
 (%o1)                        [a > b]
 (%i2) assume (b > c);
 (%o2)                        [b > c]
-(%i3) @'{e} (a < b);
+(%i3) é (a < b);
 (%o3)                         false
-(%i4) @'{e} (a > c);
+(%i4) é (a > c);
 (%o4)                         true
-(%i5) @'{e} (equal (a, c));
+(%i5) é (equal (a, c));
 (%o5)                         false
 @end example
 
-Se @code{is} n@~{a}o puder nem comprovar nem refutar uma forma predicada a partir da base de dados de @code{assume},
+Se @code{is} não puder nem comprovar nem refutar uma forma predicada a partir da base de dados de @code{assume},
 o sinalizador global @code{prederror} governa o comportamento de @code{is}.
 
 @c ===beg===
 @c assume (a > b);
 @c prederror: true$
-@c @'{e} (a > 0);
+@c é (a > 0);
 @c prederror: false$
-@c @'{e} (a > 0);
+@c é (a > 0);
 @c ===end===
 @example
 (%i1) assume (a > b);
 (%o1)                        [a > b]
 (%i2) prederror: true$
-(%i3) @'{e} (a > 0);
+(%i3) é (a > 0);
 Maxima was unable to evaluate the predicate:
 a > 0
  -- an error.  Quitting.  To debug this try debugmode(true);
 (%i4) prederror: false$
-(%i5) @'{e} (a > 0);
+(%i5) é (a > 0);
 (%o5)                        unknown
 @end example
 
 @end deffn
 
-@deffn {Funç@~{a}o} maybe (@var{expr})
+@deffn {Função} maybe (@var{expr})
 Tenta determinar se a @var{expr} predicada
-@'{e} dedut@'{i}vel dos fatos na base de dados de @code{assume}.
+é dedutível dos fatos na base de dados de @code{assume}.
 
 Se a dedutibilidade do predicado for @code{true} ou @code{false},
 @code{maybe} retorna @code{true} ou @code{false}, respectivamente.
 De outra forma, @code{maybe} retorna @code{unknown}.
 
-@code{maybe} @'{e} funcinalmente equivalente a @code{is} com @code{prederror: false},
-mas o resultado @'{e} computado sem atualmente atribuir um valor a @code{prederror}.
+@code{maybe} é funcinalmente equivalente a @code{is} com @code{prederror: false},
+mas o resultado é computado sem atualmente atribuir um valor a @code{prederror}.
 
-Veja tamb@'{e}m @code{assume}, @code{facts}, e @code{is}.
+Veja também @code{assume}, @code{facts}, e @code{is}.
 
 Exemplos:
 
@@ -1546,83 +1546,83 @@ Exemplos:
 
 @end deffn
 
-@deffn {Funç@~{a}o} isqrt (@var{x})
-Retorna o "inteiro ra@'{i}z quadrada"
+@deffn {Função} isqrt (@var{x})
+Retorna o "inteiro raíz quadrada"
 do valor absoluto de @var{x},
-que @'{e} um inteiro.
+que é um inteiro.
 
 @end deffn
 
-@deffn {Funç@~{a}o} lmax (@var{L})
+@deffn {Função} lmax (@var{L})
 
-Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.  Quando @var{L} n@~{a}o for uma
-lista ou tamb@'{e}m n@~{a}o for um conjunto, sinaliza um erro.
-
-@end deffn
-
-@deffn {Funç@~{a}o} lmin (@var{L})
-
-Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}. Quando @var{L} n@~{a}o for uma
-lista ou ou tamb@'{e}m n@~{a}o for um conjunto, sinaliza um erro.
+Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.  Quando @var{L} não for uma
+lista ou também não for um conjunto, sinaliza um erro.
 
 @end deffn
 
-@deffn {Funç@~{a}o} max (@var{x_1}, ..., @var{x_n})
+@deffn {Função} lmin (@var{L})
 
-Retorna um valor simplificado para o m@'{a}ximo entre as express@~{o}es @var{x_1} a @var{x_n}.
-Quando @code{get (trylevel, maxmin)}, for dois ou mais, @code{max} usa a simplificaç@~{a}o 
+Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}. Quando @var{L} não for uma
+lista ou ou também não for um conjunto, sinaliza um erro.
+
+@end deffn
+
+@deffn {Função} max (@var{x_1}, ..., @var{x_n})
+
+Retorna um valor simplificado para o máximo entre as expressões @var{x_1} a @var{x_n}.
+Quando @code{get (trylevel, maxmin)}, for dois ou mais, @code{max} usa a simplificação 
 @code{max (e, -e) --> |e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @var{max} tenta
-eliminar express@~{o}es que estiverem entre dois outros argumentos; por exemplo,
+eliminar expressões que estiverem entre dois outros argumentos; por exemplo,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
 @code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} min (@var{x_1}, ..., @var{x_n})
+@deffn {Função} min (@var{x_1}, ..., @var{x_n})
 
-Retorna um valor simplificado para o m@'{i}nimo entre as express@~{o}es @code{x_1} at@'{e} @code{x_n}.
-Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplificaç@~{a}o 
+Retorna um valor simplificado para o mínimo entre as expressões @code{x_1} até @code{x_n}.
+Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplificação 
 @code{min (e, -e) --> -|e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @code{min} tenta
-eliminar express@~{o}es que estiverem entre dois outros argumentos; por exemplo,
+eliminar expressões que estiverem entre dois outros argumentos; por exemplo,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
 @code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} polymod (@var{p})
-@deffnx {Funç@~{a}o} polymod (@var{p}, @var{m})
-Converte o polin@^{o}mio @var{p} para uma representaç@~{a}o modular
-com relaç@~{a}o ao m@'{o}dulo corrente que @'{e} o valor da vari@'{a}vel
+@deffn {Função} polymod (@var{p})
+@deffnx {Função} polymod (@var{p}, @var{m})
+Converte o polinômio @var{p} para uma representação modular
+com relação ao módulo corrente que é o valor da variável
 @code{modulus}.  
 
-@code{polymod (@var{p}, @var{m})} especifica um m@'{o}dulo @var{m} para ser usado 
+@code{polymod (@var{p}, @var{m})} especifica um módulo @var{m} para ser usado 
 em lugar do valor corrente de @code{modulus}.
 
 Veja @code{modulus}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} mod (@var{x}, @var{y})
+@deffn {Função} mod (@var{x}, @var{y})
 
-Se @var{x} e @var{y} forem n@'{u}meros reais e @var{y} for n@~{a}o nulo,
+Se @var{x} e @var{y} forem números reais e @var{y} for não nulo,
 retorna @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
-Adicionalmente para todo real @var{x}, n@'{o}s temos @code{mod (@var{x}, 0) = @var{x}}. Para uma discurs@~{a}o da
-definiç@~{a}o @code{mod (@var{x}, 0) = @var{x}}, veja a Seç@~{a}o 3.4, de "Concrete Mathematics," 
-por Graham, Knuth, e Patashnik. A funç@~{a}o @code{mod (@var{x}, 1)} 
-@'{e} uma funç@~{a}o dente de serra com per@'{i}odo 1 e com @code{mod (1, 1) = 0} e 
+Adicionalmente para todo real @var{x}, nós temos @code{mod (@var{x}, 0) = @var{x}}. Para uma discursão da
+definição @code{mod (@var{x}, 0) = @var{x}}, veja a Seção 3.4, de "Concrete Mathematics," 
+por Graham, Knuth, e Patashnik. A função @code{mod (@var{x}, 1)} 
+é uma função dente de serra com período 1 e com @code{mod (1, 1) = 0} e 
 @code{mod (0, 1) = 0}.
 
-Para encontrar o argumento (um n@'{u}mero no intervalo @code{(-%pi, %pi]}) de um 
-n@'{u}mero complexo, use a funç@~{a}o @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, onde 
-@var{x} @'{e} um argumento.
+Para encontrar o argumento (um número no intervalo @code{(-%pi, %pi]}) de um 
+número complexo, use a função @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, onde 
+@var{x} é um argumento.
 
-Quando @var{x} e @var{y} forem express@~{o}es constantes (@code{10 * %pi}, por exemplo), @code{mod}
-usa o mesmo esquema de avaliaç@~{a}o em ponto flutuante que @code{floor} e @code{ceiling} usam.
-Novamente, @'{e} poss@'{i}vel, embora improv@'{a}vel, que @code{mod} possa retornar um
-valor err@^{o}neo nesses casos.
+Quando @var{x} e @var{y} forem expressões constantes (@code{10 * %pi}, por exemplo), @code{mod}
+usa o mesmo esquema de avaliação em ponto flutuante que @code{floor} e @code{ceiling} usam.
+Novamente, é possível, embora improvável, que @code{mod} possa retornar um
+valor errôneo nesses casos.
 
-Para argumentos n@~{a}o num@'{e}ricos @var{x} ou @var{y}, @code{mod }conhece muitas regras de
-simplificaç@~{a}o:
+Para argumentos não numéricos @var{x} ou @var{y}, @code{mod }conhece muitas regras de
+simplificação:
 
 @c ===beg===
 @c mod (x, 0);
@@ -1640,10 +1640,10 @@ simplificaç@~{a}o:
 
 @end deffn
 
-@deffn {Funç@~{a}o} oddp (@var{expr})
-@'{e} @code{true} se @var{expr} for um inteiro @'{i}mpar.
+@deffn {Função} oddp (@var{expr})
+é @code{true} se @var{expr} for um inteiro ímpar.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
-@code{false} @'{e} retornado em todos os outros casos.
+@code{false} é retornado em todos os outros casos.
 
 @end deffn
 
@@ -1652,22 +1652,22 @@ simplificaç@~{a}o:
 @c BUT FOR SOME REASON pred DOES NOT HAVE THE evflag PROPERTY
 @deffn {Operador} pred
 Como um argumento em uma chamada a @code{ev (@var{expr})},
-@code{pred} faz com que predicados (express@~{o}es que avaliam para @code{true}
+@code{pred} faz com que predicados (expressões que avaliam para @code{true}
 ou @code{false}) sejam avaliados.
 Veja @code{ev}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} make_random_state (@var{n})
-@deffnx {Funç@~{a}o} make_random_state (@var{s})
-@deffnx {Funç@~{a}o} make_random_state (true)
-@deffnx {Funç@~{a}o} make_random_state (false)
+@deffn {Função} make_random_state (@var{n})
+@deffnx {Função} make_random_state (@var{s})
+@deffnx {Função} make_random_state (true)
+@deffnx {Função} make_random_state (false)
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
 @c @defunx make_random_state (@var{a})
-Um objeto de estado rand@^{o}mico representa o estado do gerador de n@'{u}meros rand@^{o}micos (aleat@'{o}rios).
+Um objeto de estado randômico representa o estado do gerador de números randômicos (aleatórios).
 O estado compreende 627 palavras de 32 bits.
 
-@code{make_random_state (@var{n})} retorna um novo objeto de estado rand@^{o}mico
+@code{make_random_state (@var{n})} retorna um novo objeto de estado randômico
 criado de um valor inteiro semente igual a @var{n} modulo 2^32.  
 @var{n} pode ser negativo.
 
@@ -1675,34 +1675,34 @@ criado de um valor inteiro semente igual a @var{n} modulo 2^32.
 @c @code{make_random_state (@var{a})} returns a new random state object
 @c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
 
-@code{make_random_state (@var{s})} retorna uma copia do estado rand@^{o}mico @var{s}.
+@code{make_random_state (@var{s})} retorna uma copia do estado randômico @var{s}.
 
-@code{make_random_state (true)} retorna um novo objeto de estado rand@^{o}mico,
-usando a hora corrente  do rel@'{o}gio do computador como semente.
+@code{make_random_state (true)} retorna um novo objeto de estado randômico,
+usando a hora corrente  do relógio do computador como semente.
 
-@code{make_random_state (false)} retorna uma c@'{o}pia do estado corrente
-do gerador de n@'{u}meros rand@^{o}micos.
+@code{make_random_state (false)} retorna uma cópia do estado corrente
+do gerador de números randômicos.
 
 @end deffn
 
-@deffn {Funç@~{a}o} set_random_state (@var{s})
-Copia @var{s} para o estado do gerador de n@'{u}meros rand@^{o}micos.
+@deffn {Função} set_random_state (@var{s})
+Copia @var{s} para o estado do gerador de números randômicos.
 
 @code{set_random_state} sempre retorna @code{done}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} random (@var{x})
-Retorna um n@'{u}mero pseudorand@^{o}mico. Se @var{x} @'{e} um inteiro, @code{random (@var{x})} retorna um
-inteiro de 0 a @code{@var{x} - 1} inclusive. Se @var{x} for um n@'{u}mero em ponto flutuante,
-@code{random (@var{x})} retorna um n@'{u}mero n@~{a}o negativo em ponto flutuante menor que @var{x}.
-@code{random} reclama com um erro se @var{x} n@~{a}o for nem um inteiro nem um n@'{u}mero em ponto flutuante,
-ou se @var{x} n@~{a}o for positivo.
+@deffn {Função} random (@var{x})
+Retorna um número pseudorandômico. Se @var{x} é um inteiro, @code{random (@var{x})} retorna um
+inteiro de 0 a @code{@var{x} - 1} inclusive. Se @var{x} for um número em ponto flutuante,
+@code{random (@var{x})} retorna um número não negativo em ponto flutuante menor que @var{x}.
+@code{random} reclama com um erro se @var{x} não for nem um inteiro nem um número em ponto flutuante,
+ou se @var{x} não for positivo.
 
-As funç@~{o}es @code{make_random_state} e @code{set_random_state}
-mant@'{e}m o estado do gerador de n@'{u}meros rand@^{o}micos.
+As funções @code{make_random_state} e @code{set_random_state}
+mantém o estado do gerador de números randômicos.
 
-O gerador de n@'{u}meros rand@^{o}micos do Maxima @'{e} uma implementaç@~{a}o do algor@'{i}tmo de Mersenne twister MT 19937.
+O gerador de números randômicos do Maxima é uma implementação do algorítmo de Mersenne twister MT 19937.
 
 Exemplos:
 
@@ -1750,14 +1750,14 @@ Exemplos:
 
 @end deffn
 
-@deffn {Funç@~{a}o} rationalize (@var{expr})
+@deffn {Função} rationalize (@var{expr})
 
-Converte todos os n@'{u}meros em ponto flutuante de precis@~{a}o dupla e grandes n@'{u}meros em ponto flutuante na express@~{a}o do Maxima
-@var{expr} para seus exatos equivalentes racionais. Se voc@^{e} n@~{a}o estiver faminilarizado com
-a representaç@~{a}o bin@'{a}ria de n@'{u}meros em ponto flutuante, voc@^{e} pode se
-surpreender que @code{rationalize (0.1)} n@~{a}o seja igual a 1/10.  Esse comportamento
-n@~{a}o @'{e} especial para o Maxima -- o n@'{u}mero 1/10 tem uma representaç@~{a}o bin@'{a}ria
-repetitiva e n@~{a}o terminada.
+Converte todos os números em ponto flutuante de precisão dupla e grandes números em ponto flutuante na expressão do Maxima
+@var{expr} para seus exatos equivalentes racionais. Se você não estiver faminilarizado com
+a representação binária de números em ponto flutuante, você pode se
+surpreender que @code{rationalize (0.1)} não seja igual a 1/10.  Esse comportamento
+não é especial para o Maxima -- o número 1/10 tem uma representação binária
+repetitiva e não terminada.
 
 @c ===beg===
 @c rationalize (0.5);
@@ -1793,11 +1793,11 @@ repetitiva e n@~{a}o terminada.
                               10   5
 @end example
 
-Exemplo de utilizaç@~{a}o:
+Exemplo de utilização:
 
 @c ===beg===
 @c unitfrac(r) := block([uf : [], q],
-@c     if not(ratnump(r)) then error("A entrada para 'unitfrac' deve ser um n@'{u}mero racional"),
+@c     if not(ratnump(r)) then error("A entrada para 'unitfrac' deve ser um número racional"),
 @c     while r # 0 do (
 @c         uf : cons(q : 1/ceiling(1/r), uf),
 @c         r : r - q),
@@ -1852,53 +1852,53 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Funç@~{a}o} sign (@var{expr})
+@deffn {Função} sign (@var{expr})
 Tenta determinar o sinal de @var{expr}
 a partir dos fatos na base de dados corrente.  Retorna uma das
 seguintes respostar: @code{pos} (positivo), @code{neg} (negativo), @code{zero}, @code{pz}
 (positivo ou zero), @code{nz} (negativo ou zero), @code{pn} (positivo ou negativo),
-ou @code{pnz} (positivo, negativo, ou zero, i.e. nada se sabe sobre o sinal da epress@~{a}o).
+ou @code{pnz} (positivo, negativo, ou zero, i.e. nada se sabe sobre o sinal da epressão).
 
 @end deffn
 
-@deffn {Funç@~{a}o} signum (@var{x})
-Para um @var{x} num@'{e}rico retorna 0 se @var{x} for 0, de outra forma retorna -1 ou +1
-@`a medida que @var{x} seja menor ou maior que 0, respectivamente.
+@deffn {Função} signum (@var{x})
+Para um @var{x} numérico retorna 0 se @var{x} for 0, de outra forma retorna -1 ou +1
+à medida que @var{x} seja menor ou maior que 0, respectivamente.
 
-Se @var{x} n@~{a}o for num@'{e}rico ent@~{a}o uma forma simplificada mas equivalente @'{e} retornada.
+Se @var{x} não for numérico então uma forma simplificada mas equivalente é retornada.
 Por exemplo, @code{signum(-x)} fornece @code{-signum(x)}.
 @c UMM, THIS ISN'T THE WHOLE STORY, AS IT APPEARS signum CONSULTS THE assume DATABASE FOR SYMBOLIC ARGUMENT
 
 @end deffn
 
-@deffn {Funç@~{a}o} sort (@var{L}, @var{P})
-@deffnx {Funç@~{a}o} sort (@var{L})
+@deffn {Função} sort (@var{L}, @var{P})
+@deffnx {Função} sort (@var{L})
 Organiza uma lista @var{L} coforme o predicado @code{P} de dois argumentos,
 de forma que @code{@var{P} (@var{L}[k], @var{L}[k + 1])} seja @code{true}
 para qualquer dois elementos sucessivos.
-O predicado pode ser especificado como o nome de uma funç@~{a}o ou operador bin@'{a}rio infixo,
-ou como uma express@~{a}o @code{lambda}.
+O predicado pode ser especificado como o nome de uma função ou operador binário infixo,
+ou como uma expressão @code{lambda}.
 Se especificado como o nome de um operador,
 o nome deve ser contido entre "aspas duplas".
 
-A lista ordenada @'{e} retornada como novo objeto;
-o argumento @var{L} n@~{a}o @'{e} modificado.
+A lista ordenada é retornada como novo objeto;
+o argumento @var{L} não é modificado.
 Para construir o valor de retorno,
-@code{sort} faz uma c@'{o}pia superficial dos elementos de @var{L}.
+@code{sort} faz uma cópia superficial dos elementos de @var{L}.
 @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
 @c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
-Se o predicado @var{P} n@~{a}o for uma ordem total sobre os elementos de @var{L},
-ent@~{a}o @code{sort} possivelvente pode executar para concluir sem error,
-mas os resultados s@~{a}o indefinidos.
+Se o predicado @var{P} não for uma ordem total sobre os elementos de @var{L},
+então @code{sort} possivelvente pode executar para concluir sem error,
+mas os resultados são indefinidos.
 @code{sort} reclama se o predicado avaliar para alguma outra coisa
-que n@~{a}o seja @code{true} ou @code{false}.
+que não seja @code{true} ou @code{false}.
 
-@code{sort (@var{L})} @'{e} equivalente a @code{sort (@var{L}, orderlessp)}.
-Isto @'{e}, a ordem padr@~{a}o de organizaç@~{a}o @'{e} ascendente,
+@code{sort (@var{L})} é equivalente a @code{sort (@var{L}, orderlessp)}.
+Isto é, a ordem padrão de organização é ascendente,
 como determinado por @code{orderlessp}.
-Todos os @'{a}tomos do Maxima e express@~{o}es s@~{a}o compar@'{a}veis sob @code{orderlessp},
-embora exista exemplos isolados de express@~{o}es para as quais @code{orderlessp} n@~{a}o @'{e} transitiva;
-isso @'{e} uma falha.
+Todos os átomos do Maxima e expressões são comparáveis sob @code{orderlessp},
+embora exista exemplos isolados de expressões para as quais @code{orderlessp} não é transitiva;
+isso é uma falha.
  
 Exemplos:
  
@@ -1934,18 +1934,18 @@ Exemplos:
  
 @end deffn
 
-@deffn {Funç@~{a}o} sqrt (@var{x})
-A ra@'{i}z quadrada de @var{x}. @'{E} representada internamente por
-@code{@var{x}^(1/2)}.  Veja tamb@'{e}m @code{rootscontract}.
+@deffn {Função} sqrt (@var{x})
+A raíz quadrada de @var{x}. É representada internamente por
+@code{@var{x}^(1/2)}.  Veja também @code{rootscontract}.
 
-@code{radexpand} se @code{true} far@'{a} com que n-@'{e}simas ra@'{i}zes de fatores de um produto
-que forem pot@^{e}ncias de n sejam colocados fora do radical, e.g.
-@code{sqrt(16*x^2)} retonar@'{a} @code{4*x} somente se @code{radexpand} for @code{true}.
+@code{radexpand} se @code{true} fará com que n-ésimas raízes de fatores de um produto
+que forem potências de n sejam colocados fora do radical, e.g.
+@code{sqrt(16*x^2)} retonará @code{4*x} somente se @code{radexpand} for @code{true}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} sqrtdispflag
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} sqrtdispflag
+Valor padrão: @code{true}
 
 Quando @code{sqrtdispflag} for @code{false},
 faz com que @code{sqrt} seja mostrado como expoente 1/2.
@@ -1955,10 +1955,10 @@ faz com que @code{sqrt} seja mostrado como expoente 1/2.
 
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
 @c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
-@deffn {Funç@~{a}o} sublis (@var{lista}, @var{expr})
-Faz multiplas substituiç@~{o}es paralelas dentro de uma express@~{a}o.
+@deffn {Função} sublis (@var{lista}, @var{expr})
+Faz multiplas substituições paralelas dentro de uma expressão.
 
-A vari@'{a}vel @code{sublis_apply_lambda} controla a simplificaç@~{a}o ap@'{o}s
+A variável @code{sublis_apply_lambda} controla a simplificação após
 @code{sublis}.
 
 Exemplo:
@@ -1971,7 +1971,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Funç@~{a}o} sublist (@var{lista}, @var{p})
+@deffn {Função} sublist (@var{lista}, @var{p})
 Retorna a lista de elementos da @var{lista} da qual o
 predicado @code{p} retornar @code{true}.
 
@@ -1990,44 +1990,44 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} sublis_apply_lambda
-Valor padr@~{a}o: @code{true} - controla se os substitutos de
-@code{lambda} s@~{a}o aplicados na simplificaç@~{a}o ap@'{o}s as @code{sublis} serem usadas ou
-se voc@^{e} tem que fazer um @code{ev} para pegar coisas para aplicar.  @code{true} significa faça a
-aplicaç@~{a}o.
+@defvr {Variável de opção} sublis_apply_lambda
+Valor padrão: @code{true} - controla se os substitutos de
+@code{lambda} são aplicados na simplificação após as @code{sublis} serem usadas ou
+se você tem que fazer um @code{ev} para pegar coisas para aplicar.  @code{true} significa faça a
+aplicação.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, MORE EXAMPLES
-@deffn {Funç@~{a}o} subst (@var{a}, @var{b}, @var{c})
-Substitue @var{a} por @var{b} em @var{c}.  @var{b} deve ser um @'{a}tomo ou uma
-subexpress@~{a}o completa de @var{c}.  Por exemplo, @code{x+y+z} @'{e} uma subexpress@~{a}o
-completa de @code{2*(x+y+z)/w} enquanto @code{x+y} n@~{a}o @'{e}. Quando @var{b} n@~{a}o tem
-essas caracter@'{i}sticas, pode-se algumas vezes usar @code{substpart} ou @code{ratsubst}
-(veja abaixo).  Alternativamente, se @var{b} for da forma de @code{e/f} ent@~{a}o se poder@'{a}
-usar @code{subst (a*f, e, c)} enquanto se @var{b} for da forma @code{e^(1/f)} ent@~{a}o se poder@'{a}
-usar @code{subst (a^f, e, c)}.  O comando @code{subst} tamb@'{e}m discerne o @code{x^y} de @code{x^-y}
-de modo que @code{subst (a, sqrt(x), 1/sqrt(x))} retorna @code{1/a}.  @var{a} e @var{b} podem tamb@'{e}m ser
-operadores de uma express@~{a}o contida entre aspas duplas @code{"} ou eles podem ser nomes de
-funç@~{a}o.  Se se desejar substituir por uma vari@'{a}vel independente em
-formas derivadas ent@~{a}o a funç@~{a}o @code{at} (veja abaixo) poder@'{a} ser usada.
+@deffn {Função} subst (@var{a}, @var{b}, @var{c})
+Substitue @var{a} por @var{b} em @var{c}.  @var{b} deve ser um átomo ou uma
+subexpressão completa de @var{c}.  Por exemplo, @code{x+y+z} é uma subexpressão
+completa de @code{2*(x+y+z)/w} enquanto @code{x+y} não é. Quando @var{b} não tem
+essas características, pode-se algumas vezes usar @code{substpart} ou @code{ratsubst}
+(veja abaixo).  Alternativamente, se @var{b} for da forma de @code{e/f} então se poderá
+usar @code{subst (a*f, e, c)} enquanto se @var{b} for da forma @code{e^(1/f)} então se poderá
+usar @code{subst (a^f, e, c)}.  O comando @code{subst} também discerne o @code{x^y} de @code{x^-y}
+de modo que @code{subst (a, sqrt(x), 1/sqrt(x))} retorna @code{1/a}.  @var{a} e @var{b} podem também ser
+operadores de uma expressão contida entre aspas duplas @code{"} ou eles podem ser nomes de
+função.  Se se desejar substituir por uma variável independente em
+formas derivadas então a função @code{at} (veja abaixo) poderá ser usada.
 
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
-@code{subst} @'{e} um @'{a}lias para @code{substitute}.
+@code{subst} é um álias para @code{substitute}.
 
 @code{subst (@var{eq_1}, @var{expr})} ou @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
-s@~{a}o outras formas
-permitidas.  As @var{eq_i} s@~{a}o equaç@~{o}es indicando substituiç@~{o}es a serem feitas.
-Para cada equaç@~{a}o, o lado direito ser@'{a} substitu@'{i}do pelo lado esquerdo na
-express@~{a}o @var{expr}.
+são outras formas
+permitidas.  As @var{eq_i} são equações indicando substituições a serem feitas.
+Para cada equação, o lado direito será substituído pelo lado esquerdo na
+expressão @var{expr}.
 
-@code{exptsubst} se @code{true} permite que substituiç@~{o}es
+@code{exptsubst} se @code{true} permite que substituições
 como @code{y} por @code{%e^x} em @code{%e^(a*x)} ocorram.
 
 @c WHAT IS THIS ABOUT ??
 Quando @code{opsubst} for @code{false},
-@code{subst} tentar@'{a} substituir dentro do operador de uma express@~{a}o.
-E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} trabalhar@'{a}.
+@code{subst} tentará substituir dentro do operador de uma expressão.
+E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} trabalhará.
 
 Exemplos:
 
@@ -2045,9 +2045,9 @@ Para exemplos adicionais, faça @code{example (subst)}.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Funç@~{a}o} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Função} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 Similar a @code{substpart}, mas @code{substinpart} trabalha sobre a
-representaç@~{a}o interna de @var{expr}.
+representação interna de @var{expr}.
 
 Exemplos:
 
@@ -2070,9 +2070,9 @@ Exemplos:
 (%o3)                       f1(x + 1)
 @end example
 
-Se o @'{u}ltimo argumento para a funç@~{a}o @code{part} for uma lista de @'{i}ndices ent@~{a}o
-muitas subexpress@~{o}es s@~{a}o escolhidas, cada uma correspondendo a um
-@'{i}ndice da lista.  Dessa forma
+Se o último argumento para a função @code{part} for uma lista de índices então
+muitas subexpressões são escolhidas, cada uma correspondendo a um
+índice da lista.  Dessa forma
 
 @c ===beg===
 @c part (x + y + z, [1, 3]);
@@ -2082,12 +2082,12 @@ muitas subexpress@~{o}es s@~{a}o escolhidas, cada uma correspondendo a um
 (%o1)                         z + x
 @end example
 
-@code{piece} recebe o valor da @'{u}ltima express@~{a}o selecionada quando usando as
-funç@~{o}es @code{part}.  @code{piece} @'{e} escolhida durante a execuç@~{a}o da funç@~{a}o e
-dessa forma pode ser referenciada para a pr@'{o}pria funç@~{a}o como mostrado abaixo.
-Se @code{partswitch} for escolhida para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
-parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensagem
-de erro @'{e} fornecida.
+@code{piece} recebe o valor da última expressão selecionada quando usando as
+funções @code{part}.  @code{piece} é escolhida durante a execução da função e
+dessa forma pode ser referenciada para a própria função como mostrado abaixo.
+Se @code{partswitch} for escolhida para @code{true} então @code{end} é retornado quando uma
+parte selecionada de uma expressão não existir, de outra forma uma mensagem
+de erro é fornecida.
 
 @c ===beg===
 @c expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
@@ -2119,16 +2119,16 @@ de erro @'{e} fornecida.
                               x     z
 @end example
 
-Tamb@'{e}m, escolhendo a opç@~{a}o @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'{e}
+Também, escolhendo a opção @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} é
 o mesmo que chamando @code{inpart} ou @code{substinpart}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Funç@~{a}o} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
-Substitue @var{x} para a subexpress@~{a}o
+@deffn {Função} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+Substitue @var{x} para a subexpressão
 selecionada pelo resto dos argumentos como em @code{part}.  Isso retorna o
-novo valor de @var{expr}.  @var{x} pode ser algum operador a ser substitu@'{i}do por um
+novo valor de @var{expr}.  @var{x} pode ser algum operador a ser substituído por um
 operador de @var{expr}.  Em alguns casos @var{x} precisa ser contido em aspas duplas @code{"}
 (e.g.  @code{substpart ("+", a*b, 0)} retorna @code{b + a}).
 
@@ -2155,33 +2155,33 @@ operador de @var{expr}.  Em alguns casos @var{x} precisa ser contido em aspas du
 (%o4)                    x + f(b, y) + a
 @end example
 
-Tamb@'{e}m, escolhendo a opç@~{a}o @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'{e}
+Também, escolhendo a opção @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} é
 o mesmo que chamando @code{inpart} ou @code{substinpart}.
 
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
-@deffn {Funç@~{a}o} subvarp (@var{expr})
-Retorna @code{true} se @var{expr} for uma vari@'{a}vel subscrita (i.e. que possui @'{i}ndice ou subscrito em sua grafia), por exemplo
+@deffn {Função} subvarp (@var{expr})
+Retorna @code{true} se @var{expr} for uma variável subscrita (i.e. que possui índice ou subscrito em sua grafia), por exemplo
 @code{a[i]}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} symbolp (@var{expr})
-Retorna @code{true} se @var{expr} for um s@'{i}mbolo, de outra forma retorna @code{false}.
-com efeito, @code{symbolp(x)} @'{e} equivalente ao predicado @code{atom(x) and not numberp(x)}.
+@deffn {Função} symbolp (@var{expr})
+Retorna @code{true} se @var{expr} for um símbolo, de outra forma retorna @code{false}.
+com efeito, @code{symbolp(x)} é equivalente ao predicado @code{atom(x) and not numberp(x)}.
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
-Veja tamb@'{e}m @ref{Identificadores}
+Veja também @ref{Identificadores}
 
 @end deffn
 
-@deffn {Funç@~{a}o} unorder ()
-Disabilita a aç@~{a}o de alias criada pelo @'{u}ltimo uso dos comandos
-de ordenaç@~{a}o @code{ordergreat} e @code{orderless}. @code{ordergreat} e @code{orderless} n@~{a}o podem
+@deffn {Função} unorder ()
+Disabilita a ação de alias criada pelo último uso dos comandos
+de ordenação @code{ordergreat} e @code{orderless}. @code{ordergreat} e @code{orderless} não podem
 ser usados mais que uma vez cada sem chamar @code{unorder}. 
-Veja tamb@'{e}m @code{ordergreat} e @code{orderless}.
+Veja também @code{ordergreat} e @code{orderless}.
 
 Exemplos:
 
@@ -2215,27 +2215,27 @@ Exemplos:
 
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
-@deffn {Funç@~{a}o} vectorpotential (@var{givencurl})
+@deffn {Função} vectorpotential (@var{givencurl})
 Retorna o potencial do vetor de um dado
-vetor de torç@~{a}o, no sistema de coordenadas corrente.
+vetor de torção, no sistema de coordenadas corrente.
 @code{potentialzeroloc} tem um papel similar ao de @code{potential}, mas a ordem dos
-lados esquerdos das equaç@~{o}es deve ser uma permutaç@~{a}o c@'{i}clica das
-vari@'{a}veis de coordenadas.
+lados esquerdos das equações deve ser uma permutação cíclica das
+variáveis de coordenadas.
 
 @end deffn
 
-@deffn {Funç@~{a}o} xthru (@var{expr})
-Combina todos os termos de @var{expr} (o qual pode ser uma adiç@~{a}o) sobre um
+@deffn {Função} xthru (@var{expr})
+Combina todos os termos de @var{expr} (o qual pode ser uma adição) sobre um
 denominador comum sem produtos e somas exponenciadas
 como @code{ratsimp} faz.  @code{xthru} cancela fatores comuns no numerador e
-denominador de express@~{o}es racionais mas somente se os fatores s@~{a}o
-expl@'{i}citos.
+denominador de expressões racionais mas somente se os fatores são
+explícitos.
 
 @c REPHRASE IN NEUTRAL TONE (GET RID OF "IT IS BETTER")
-Algumas vezes @'{e} melhor usar @code{xthru} antes de @code{ratsimp} em uma
-express@~{a}o com o objetivo de fazer com que fatores explicitos do m@'{a}ximo divisor comum entre o
+Algumas vezes é melhor usar @code{xthru} antes de @code{ratsimp} em uma
+expressão com o objetivo de fazer com que fatores explicitos do máximo divisor comum entre o
 numerador e o denominador seja cancelado simplificando dessa forma a
-express@~{a}o a ser aplicado o @code{ratsimp}.
+expressão a ser aplicado o @code{ratsimp}.
 
 @c ===beg===
 @c ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
@@ -2260,34 +2260,35 @@ express@~{a}o a ser aplicado o @code{ratsimp}.
 
 @c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
 @c DUNNO WHETHER WE CAN CLEAR THIS UP
-@deffn {Funç@~{a}o} zeroequiv (@var{expr}, @var{v})
-Testa se a express@~{a}o @var{expr} na vari@'{a}vel
-@var{v} @'{e} equivalente a zero, retornando @code{true}, @code{false}, ou
-@code{dontknow} (n@~{a}o sei).
+@deffn {Função} zeroequiv (@var{expr}, @var{v})
+Testa se a expressão @var{expr} na variável
+@var{v} é equivalente a zero, retornando @code{true}, @code{false}, ou
+@code{dontknow} (não sei).
 
-@code{zeroequiv} Tem essas restriç@~{o}es:
+@code{zeroequiv} Tem essas restrições:
 @enumerate
 @item
-N@~{a}o use funç@~{o}es que o Maxima n@~{a}o sabe como
+Não use funções que o Maxima não sabe como
 diferenciar e avaliar.
 @item
-Se a express@~{a}o tem postes sobre o eixo real, podem existir erros
-no resultado (mas isso @'{e} improv@'{a}vel ocorrer).
+Se a expressão tem postes sobre o eixo real, podem existir erros
+no resultado (mas isso é improvável ocorrer).
 @item
-Se a express@~{a}o contem funç@~{o}es que n@~{a}o s@~{a}o soluç@~{o}es para
-equaç@~{o}es diferenciais de primeira ordem (e.g.  funç@~{o}es de Bessel) pode ocorrer
+Se a expressão contem funções que não são soluções para
+equações diferenciais de primeira ordem (e.g.  funções de Bessel) pode ocorrer
 resultados incorretos.
 @item
-O algor@'{i}tmo usa avaliaç@~{a}o em pontos aleat@'{o}riamente escolhidos para
-subexpress@~{o}es selecionadas cuidadosamente.  Isso @'{e} sempre neg@'{o}cio um tanto
-quanto perigoso, embora o algor@'{i}tmo tente minimizar o
+O algorítmo usa avaliação em pontos aleatóriamente escolhidos para
+subexpressões selecionadas cuidadosamente.  Isso é sempre negócio um tanto
+quanto perigoso, embora o algorítmo tente minimizar o
 potencial de erro.
 @end enumerate
 
 Por exemplo
  @code{zeroequiv (sin(2*x) - 2*sin(x)*cos(x), x)} retorna
 @code{true} e @code{zeroequiv (%e^x + x, x)} retorna @code{false}.
-Por outro lado @code{zeroequiv (log(a*b) - log(a) - log(b), a)} retorna @code{dontknow} devido @`a
-presença de um par@^{a}metro extra @code{b}.
+Por outro lado @code{zeroequiv (log(a*b) - log(a) - log(b), a)} retorna @code{dontknow} devido à
+presença de um parâmetro extra @code{b}.
 
 @end deffn
+

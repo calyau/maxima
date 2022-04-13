@@ -441,12 +441,12 @@ Pollardのロー法、楕円曲線法です。
 @code{igcdex}はユークリッドのアルゴリズムを実装します。
 @mrefdot{gcdex}も参照してください。
 
-コマンド @code{load(gcdex)}はこの関数をロードします。
+コマンド @code{load("gcdex")}はこの関数をロードします。
 
 例:
 
 @example
-(%i1) load(gcdex)$
+(%i1) load("gcdex")$
 
 (%i2) igcdex(30,18);
 (%o2)                      [- 1, 2, 6]

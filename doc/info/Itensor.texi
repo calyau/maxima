@@ -690,7 +690,7 @@ following example:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) load("itensor");
 (%o2)      /share/tensor/itensor.lisp
@@ -2488,7 +2488,7 @@ as in the following example:
 
 @c ===beg===
 @c load("itensor");
-@c load(tentex);
+@c load("tentex");
 @c idummyx:m;
 @c ishow(icurvature([j,k,l],[i]))$
 @c tentex(%)$
@@ -2496,7 +2496,7 @@ as in the following example:
 @example
 (%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
-(%i2) load(tentex);
+(%i2) load("tentex");
 (%o2)       /share/tensor/tentex.lisp
 (%i3) idummyx:m;
 (%o3)                                  m

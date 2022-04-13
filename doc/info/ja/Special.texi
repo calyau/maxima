@@ -1941,7 +1941,7 @@ Maximaは、これらの関数の非常に限られた知識を持っていま�
 @var{L}は、一般化ラーゲル多項式であることに注意してください。
 
 @example
-(%i5) load(orthopoly)$
+(%i5) load("orthopoly")$
 (%i6) hgfred([-2],[a],z);
 @group
 

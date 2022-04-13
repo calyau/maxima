@@ -1,77 +1,78 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Limits.texi/1.11/Sat Jun  2 00:12:54 2007/-ko/
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para Limites::
+* Funções e Variáveis Definidas para Limites::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Limites,  , Limites, Limites
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Limites
+@node Funções e Variáveis Definidas para Limites,  , Limites, Limites
+@section Funções e Variáveis Definidas para Limites
 
-@defvr {Vari@'{a}vel de Opç@~{a}o} lhospitallim
-Valor padr@~{a}o: 4
+@defvr {Variável de Opção} lhospitallim
+Valor padrão: 4
 
-@code{lhospitallim} @'{e} o m@'{a}ximo n@'{u}mero de vezes que a regra
-L'Hospital @'{e} usada em @code{limit}.  Isso evita ciclos infinitos em casos como
+@code{lhospitallim} é o máximo número de vezes que a regra
+L'Hospital é usada em @code{limit}.  Isso evita ciclos infinitos em casos como
 @code{limit (cot(x)/csc(x), x, 0)}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Funç@~{a}o} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Funç@~{a}o} limit (@var{expr})
-Calcula o limite de @var{expr} com a vari@'{a}vel real
-@var{x} aproximando-se do valor @var{val} pela direç@~{a}o @var{dir}.  @var{dir} pode ter o
+@deffn {Função} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Função} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Função} limit (@var{expr})
+Calcula o limite de @var{expr} com a variável real
+@var{x} aproximando-se do valor @var{val} pela direção @var{dir}.  @var{dir} pode ter o
 valor @code{plus} para um limite pela direita, @code{minus} para um limite pela esquerda, ou
-pode ser omitido (implicando em um limite em ambos os lados @'{e} para ser computado).
+pode ser omitido (implicando em um limite em ambos os lados é para ser computado).
 
 @code{limit} usa os
-seguintes s@'{i}mbolos especiais: @code{inf} (infinito positivo) e @code{minf} (infinito
-negativo).  Em sa@'{i}das essa funç@~{a}o pode tamb@'{e}m usar @code{und} (undefined - n@~{a}o definido), @code{ind} (indefinido
+seguintes símbolos especiais: @code{inf} (infinito positivo) e @code{minf} (infinito
+negativo).  Em saídas essa função pode também usar @code{und} (undefined - não definido), @code{ind} (indefinido
 mas associado) e @code{infinity} (infinito complexo).
 
-@code{lhospitallim} @'{e} o m@'{a}ximo n@'{u}mero de vezes que a regra
-L'Hospital @'{e} usada em @code{limit}.  Isso evita ciclos infinitos em casos como
+@code{lhospitallim} é o máximo número de vezes que a regra
+L'Hospital é usada em @code{limit}.  Isso evita ciclos infinitos em casos como
 @code{limit (cot(x)/csc(x), x, 0)}.
 
-@code{tlimswitch} quando @code{true} far@'{a} o pacote @code{limit} usar
-s@'{e}rie de Taylor quando poss@'{i}vel.
+@code{tlimswitch} quando @code{true} fará o pacote @code{limit} usar
+série de Taylor quando possível.
 
-@code{limsubst} evita que @code{limit} tente substituiç@~{o}es sobre
-formas desconhecidas.  Isso @'{e} para evitar erros como @code{limit (f(n)/f(n+1), n, inf)}
-dando igual a 1.  Escolhendo @code{limsubst} para @code{true} permitir@'{a} tais
-substituiç@~{o}es.
+@code{limsubst} evita que @code{limit} tente substituições sobre
+formas desconhecidas.  Isso é para evitar erros como @code{limit (f(n)/f(n+1), n, inf)}
+dando igual a 1.  Escolhendo @code{limsubst} para @code{true} permitirá tais
+substituições.
 
-@code{limit} com um argumento @'{e} muitas vezes chamado em ocasi@~{o}es para simplificar express@~{o}es de constantes,
+@code{limit} com um argumento é muitas vezes chamado em ocasiões para simplificar expressões de constantes,
 por exemplo, @code{limit (inf-1)}.
 
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (limit)} mostra alguns exemplos.
 
-Para saber sobre o m@'{e}todo utilizado veja Wang, P., "Evaluation of Definite Integrals by Symbolic
+Para saber sobre o método utilizado veja Wang, P., "Evaluation of Definite Integrals by Symbolic
 Manipulation", tese de Ph.D., MAC TR-92, Outubro de 1971.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de Opç@~{a}o} limsubst
-valor padr@~{a}o: @code{false} - evita que @code{limit} tente substituiç@~{o}es sobre
-formas desconhecidas.  Isso @'{e} para evitar erros como @code{limit (f(n)/f(n+1), n, inf)}
-dando igual a 1.  Escolhendo @code{limsubst} para @code{true} permitir@'{a} tais
-substituiç@~{o}es.
+@defvr {Variável de Opção} limsubst
+valor padrão: @code{false} - evita que @code{limit} tente substituições sobre
+formas desconhecidas.  Isso é para evitar erros como @code{limit (f(n)/f(n+1), n, inf)}
+dando igual a 1.  Escolhendo @code{limsubst} para @code{true} permitirá tais
+substituições.
 
 @end defvr
 
-@deffn {Funç@~{a}o} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Funç@~{a}o} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Funç@~{a}o} tlimit (@var{expr})
+@deffn {Função} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Função} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Função} tlimit (@var{expr})
 Retorna @code{limit} com @code{tlimswitch} escolhido para @code{true}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de Opç@~{a}o} tlimswitch
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de Opção} tlimswitch
+Valor padrão: @code{false}
 
-Quando @code{tlimswitch} for @code{true}, far@'{a} o pacote @code{limit} usar
-s@'{e}rie de Taylor quando poss@'{i}vel.
+Quando @code{tlimswitch} for @code{true}, fará o pacote @code{limit} usar
+série de Taylor quando possível.
 
 @end defvr
+
 

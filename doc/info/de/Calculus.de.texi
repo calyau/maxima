@@ -246,7 +246,7 @@ Element der Liste Null.  In anderen F@"allen enth@"alt das erste Elemente den
 integrierbaren Anteil des Ausdrucks @var{expr} und das zweite Element den nicht
 integrierbaren Anteil des Ausdrucks.
 
-Mit dem Kommando @code{load(antid)} wird die Funktion geladen.
+Mit dem Kommando @code{load("antid")} wird die Funktion geladen.
 
 @code{antid} steht in folgender Beziehung zur Funktion @mrefdot{antidiff}  Ist
 @var{L} die Liste mit den Ergebnissen der Funktion @code{antid}, dann hat die
@@ -297,7 +297,7 @@ deren Ableitungen enthalten.
 Kann @code{antidiff} die Stammfunktion nicht oder nur teilweise bestimmen,
 enth@"alt das Ergebnis das Integral des nicht bestimmbaren Anteils.
 
-Mit dem Kommando @code{load(antid)} wird die Funktion geladen.
+Mit dem Kommando @code{load("antid")} wird die Funktion geladen.
 
 @code{antidiff} steht in folgender Beziehung zur Funktion @mrefdot{antid}  Ist 
 @var{L} die Liste mit den Ergebnissen der Funktion @code{antid}, dann hat die

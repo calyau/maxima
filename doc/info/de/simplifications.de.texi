@@ -46,13 +46,13 @@ as @code{modedeclare (m, even, n, odd)} for even or odd integers.
 @code{absimp} defines @code{unitramp} and @code{unitstep} functions
 in terms of @code{abs} and @code{signum}.
 
-@code{load(absimp)} loads this package.
+@code{load("absimp")} loads this package.
 @code{demo(absimp)} shows a demonstration of this package.
 
 Examples:
 
 @example
-(%i1) load (absimp)$
+(%i1) load ("absimp")$
 (%i2) (abs (x))^2;
                                        2
 (%o2)                                 x
@@ -105,7 +105,7 @@ again.  This function may be useful when the expressions are very large.
 @c after loading @code{diageval}. They are special functions used for tensor
 @c manipulation.
 
-@code{load(facexp)} loads this package.
+@code{load("facexp")} loads this package.
 @code{demo(facexp)} shows a demonstration of this package.
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
@@ -233,7 +233,7 @@ Removes part @var{n} from the expression @var{expr}.
 If @var{n} is a list of the form @code{[@var{l}, @var{m}]}
 then parts @var{l} thru @var{m} are removed.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -244,14 +244,14 @@ Returns the Wronskian matrix of the list of expressions [@var{f_1}, @dots{},
 @var{f_n}] in the variable @var{x}.  The determinant of the Wronskian matrix is
 the Wronskian determinant of the list of expressions.
 
-To use @code{wronskian}, first @code{load(functs)}.  Example:
+To use @code{wronskian}, first @code{load("functs")}.  Example:
 
 @c ===beg===
-@c load (functs)$
+@c load ("functs")$
 @c wronskian([f(x), g(x)],x);
 @c ===end===
 @example
-(%i1) load(functs)$
+(%i1) load("functs")$
 (%i2) wronskian([f(x), g(x)],x);
 (%o2) matrix([f(x),g(x)],['diff(f(x),x,1),'diff(g(x),x,1)])
 @end example
@@ -265,7 +265,7 @@ To use @code{wronskian}, first @code{load(functs)}.  Example:
 
 Returns the trace (sum of the diagonal elements) of matrix @var{M}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -276,7 +276,7 @@ Multiplies numerator and denominator of @var{z} by the complex conjugate of
 denominator, thus rationalizing the denominator.  Returns canonical rational
 expression (CRE) form if given one, else returns general form.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -286,7 +286,7 @@ To use this function write first @code{load(functs)}.
 Returns @code{true} if @var{expr} is nonzero and @code{freeof (@var{x}, 
 @var{expr})} returns @code{true}.  Returns @code{false} otherwise.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -298,7 +298,7 @@ returns @code{@var{a}*@var{x} + @var{b}} where @var{a} is nonzero,
 and @var{a} and @var{b} are free of @var{x}.
 Otherwise, @code{linear} returns @var{expr}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -313,7 +313,7 @@ function @mref{ezgcd} to divide the polynomials by the greatest common divisor.
 When @code{takegcd} is @code{false}, @code{gcdivide} returns the ratio
 @code{@var{p}/@var{q}}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 
 See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdex} and
 @mrefdot{poly_gcd}
@@ -321,7 +321,7 @@ See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdex} and
 Example:
 
 @example
-(%i1) load(functs)$
+(%i1) load("functs")$
 
 (%i2) p1:6*x^3+19*x^2+19*x+6; 
                         3       2
@@ -357,7 +357,7 @@ Example:
 Returns the @var{n}-th term of the arithmetic series @code{@var{a}, @var{a} +
 @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -368,7 +368,7 @@ Returns the @var{n}-th term of the geometric series
 @code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ...,
 @var{a}*@var{r}^(@var{n} - 1)}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -379,7 +379,7 @@ Returns the @var{n}-th term of the harmonic series
 @code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} +
 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -388,7 +388,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the sum of the arithmetic series from 1 to @var{n}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -399,7 +399,7 @@ Returns the sum of the geometric series from 1 to @var{n}.  If @var{n} is
 infinity (@code{inf}) then a sum is finite only if the absolute value
 of @var{r} is less than 1.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -409,7 +409,7 @@ To use this function write first @code{load(functs)}.
 Returns the Gaussian probability function
 @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -418,7 +418,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the Gudermannian function @code{2*atan(%e^x)-%pi/2}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -427,7 +427,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the inverse Gudermannian function @code{log (tan (%pi/4 + x/2)))}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -436,7 +436,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the versed sine @code{1 - cos (x)}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -445,7 +445,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the coversed sine @code{1 - sin (@var{x})}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -454,7 +454,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the exsecant @code{sec (@var{x}) - 1}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -463,7 +463,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the haversine @code{(1 - cos(x))/2}.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
@@ -474,7 +474,7 @@ To use this function write first @code{load(functs)}.
 
 Returns the number of combinations of @var{n} objects taken @var{r} at a time.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
@@ -486,7 +486,7 @@ To use this function write first @code{load(functs)}.
 Returns the number of permutations of @var{r} objects selected from a set of
 @var{n} objects.
 
-To use this function write first @code{load(functs)}.
+To use this function write first @code{load("functs")}.
 @end deffn
 
 @c Adapted from ineq.usg ----------------------
@@ -502,7 +502,7 @@ The @code{ineq} package contains simplification rules for inequalities.
 Example session:
 
 @c ===beg===
-@c load(ineq)$
+@c load("ineq")$
 @c a>=4;  /* a sample inequality */
 @c (b>c)+%; /* add a second, strict inequality */
 @c 7*(x<y); /* multiply by a positive number */
@@ -521,7 +521,7 @@ Example session:
 @c %,pred;
 @c ===end===
 @example
-(%i1) load(ineq)$
+(%i1) load("ineq")$
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
@@ -662,7 +662,7 @@ symbols generated by @code{reduce_consts} to represent constant subexpressions.
 @code{const_counter} (default value: 1) is the integer index used to generate unique
 symbols to represent each constant subexpression found by @code{reduce_consts}.
 
-@code{load(rducon)} loads this function.
+@code{load("rducon")} loads this function.
 @code{demo(rducon)} shows a demonstration of this function.
 @end deffn
 
@@ -701,7 +701,7 @@ factoring because of the combinatorially-difficult nature of finding
 which of all possible rearrangements of the pairs yields the most
 compact pair-factored result.
 
-@code{load(scifac)} loads this function.
+@code{load("scifac")} loads this function.
 @code{demo(scifac)} shows a demonstration of this function.
 @end deffn
 
@@ -721,12 +721,12 @@ compact pair-factored result.
 Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 
 @c ===beg===
-@c load (sqdnst)$
+@c load ("sqdnst")$
 @c sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
 @c sqrtdenest(%);
 @c ===end===
 @example
-(%i1) load (sqdnst)$
+(%i1) load ("sqdnst")$
 (%i2) sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
                                     sqrt(3)
                                sqrt(------- + 1)
@@ -745,7 +745,7 @@ Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 Sometimes it helps to apply @code{sqrtdenest} more than once, on such as
 @code{(19601-13860 sqrt(2))^(7/4)}.
 
-@code{load(sqdnst)} loads this function.
+@code{load("sqdnst")} loads this function.
 @end deffn
 
 @c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already

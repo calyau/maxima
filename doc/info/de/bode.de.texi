@@ -23,7 +23,7 @@
 @deffn {Function} bode_gain (@var{H}, @var{range}, @dots{} @var{plot_opts} @dots{})
 
 Function to draw Bode gain plots. To use this function write first
-@code{load(bode)}. See also @mrefdot{bode_phase}
+@code{load("bode")}. See also @mrefdot{bode_phase}
 
 Examples:
 
@@ -115,7 +115,7 @@ Examples (1 through 7 from
 @deffn {Function} bode_phase (@var{H}, @var{range}, @dots{} @var{plot_opts} @dots{})
 
 Function to draw Bode phase plots. To use this function write first 
-@code{load(bode)}. See also @mrefdot{bode_gain}
+@code{load("bode")}. See also @mrefdot{bode_gain}
 
 Examples:
 

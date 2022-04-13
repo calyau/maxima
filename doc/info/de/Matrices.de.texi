@@ -104,7 +104,7 @@ Multiplikation. Zu diesen geh@"oren:
 @c coordinate systems.
 
 @code{vect} ist ein Paket mit Funktionen der Vektoranalysis.  Mit dem Kommando
-@code{load(vect)} wird das Paket geladen.  Das Kommando @code{demo(vect)} zeigt
+@code{load("vect")} wird das Paket geladen.  Das Kommando @code{demo(vect)} zeigt
 Beispiele.
 
 @c The vector analysis package can combine and simplify symbolic expressions 
@@ -153,7 +153,7 @@ Das Paket @code{vect} enth@"alt die folgenden Funktionen:
 Das Paket @code{eigen} enth@"alt verschiedene Funktionen, um symbolisch 
 Eigenwerte und Eigenvektoren zu bestimmen.  Maxima l@"adt dieses Paket 
 automatisch, wenn eine der Funktionen dieses Pakets genutzt wird.  Das Paket 
-kann auch mit dem Kommando @code{load(eigen)} geladen werden.
+kann auch mit dem Kommando @code{load("eigen")} geladen werden.
 
 @c @code{demo ("eigen")} displays a demonstration of the capabilities of this 
 @c package. @code{batch ("eigen")} executes the same demonstration, but without 
@@ -381,7 +381,7 @@ enth@"alt.
 @c @code{load ("eigen")} loads this function.
 
 @code{covect} ist ein Alias-Name f@"ur die Funktion @code{columnvector}.  Das 
-Kommando @code{load(eigen)} l@"adt die Funktion.
+Kommando @code{load("eigen")} l@"adt die Funktion.
 
 @c FOLLOWING COMMENT PRESERVED. WHAT DOES THIS MEAN ??
 @c This is useful if you want to use parts of the outputs of
@@ -393,7 +393,7 @@ Beispiel:
 @c LEAVE IT HERE SINCE THAT'S WHAT A USER ACTUALLY SEES.
 
 @example
-(%i1) load(eigen)$
+(%i1) load("eigen")$
 
 (%i2) columnvector ([aa, bb, cc]);
                              [ aa ]
@@ -1153,7 +1153,7 @@ der Funktion @code{ev} und den Auswertungsschaltern @code{nouns} oder
 @c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN 
 @c WHICH DOES ALL THE WORK
 
-Mit dem Kommando @code{load(vect)} wird die Funktion geladen.
+Mit dem Kommando @code{load("vect")} wird die Funktion geladen.
 
 Beispiele:
 
@@ -1324,9 +1324,9 @@ Jede Stufe des Verfahrens ruft die Funktion @code{factor} auf, um die
 Zwischenergebnisse zu vereinfachen.  Dadurch kann das Ergebnis faktorisierte
 ganze Zahlen enthalten.
 
-@c @code{load(eigen)} loads this function.
+@c @code{load("eigen")} loads this function.
 
-Das Kommando @code{load(eigen)} l@"adt die Funktion.
+Das Kommando @code{load("eigen")} l@"adt die Funktion.
 
 Beispiele:
 
@@ -1336,7 +1336,7 @@ Das Gram-Schmidtsche Orthogonalisierungsverfahren mit @code{innerproduct}
 als Skalarprodukt.
 
 @example
-(%i1) load (eigen)$
+(%i1) load ("eigen")$
 (%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
                          [ 1   2   3  ]
                          [            ]
@@ -1358,7 +1358,7 @@ Das Gram-Schmidtsche Orthogonalisierungsverfahren mit einer selbstdefinierten
 Funktion f@"ur das Skalarprodukt.
 
 @example
-(%i1) load (eigen)$
+(%i1) load ("eigen")$
 (%i2) ip (f, g) := integrate (f * g, u, a, b);
 (%o2)          ip(f, g) := integrate(f g, u, a, b)
 (%i3) y : gramschmidt([1, sin(u), cos(u)], ip), a=-%pi/2, b=%pi/2;
@@ -1396,7 +1396,7 @@ nicht-kommutativen Multiplikation ist.
 
 @c @code{load ("eigen")} loads this function.
 
-Das Kommando @code{load(eigen)} l@"adt die Funktion.
+Das Kommando @code{load("eigen")} l@"adt die Funktion.
 
 @c @code{inprod} is a synonym for @code{innerproduct}.
 
@@ -1990,7 +1990,7 @@ zur@"uck.  Diese Funktion ist eine Alternative zur Funktion @code{charpoly}.
 
 Der Algorithmus von @code{ncharpoly} ist vorteilhaft gegen@"uber 
 @code{charpoly}, wenn gro@ss{}e und d@"unn besetzte Matrizen vorliegen.  Das 
-Kommando @code{load(nchrpl} l@"adt die Funktion.
+Kommando @code{load("nchrpl")} l@"adt die Funktion.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2317,7 +2317,7 @@ Ansonsten entspricht @code{uniteigenvectors} der Funktion @code{eigenvectors}.
 
 @c @code{load ("eigen")} loads this function.
 
-Das Kommando @code{load(eigen)} l@"adt die Funktion.
+Das Kommando @code{load("eigen")} l@"adt die Funktion.
 
 @c @code{ueivects} is a synonym for @code{uniteigenvectors}.
 
@@ -2336,7 +2336,7 @@ Gibt den Einheitsvektor @math{@var{x}/norm(@var{x})} zur@"uck.
 
 @c @code{load ("eigen")} loads this function.
 
-Das Kommando @code{load(eigen)} l@"adt die Funktion.
+Das Kommando @code{load("eigen")} l@"adt die Funktion.
 
 @c @code{uvect} is a synonym for @code{unitvector}.
 
@@ -2424,7 +2424,7 @@ Ableitung eines Kreuzproduktes enthalten, vereinfacht.
 Beispiel:
 
 @example
-(%i1) load(vect)$
+(%i1) load("vect")$
 
 (%i2) vect_cross:false;
 (%o2)                         false

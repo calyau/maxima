@@ -103,7 +103,7 @@ manera sencilla a formas lineales, no se simplifican.
 No está soportada la distributividad de @code{%and} respecto de @code{%or},
 ni la negación respecto de @code{%and}.
 
-Para hacer uso de este operador, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de este operador, ejecútese @code{load("to_poly_solve")}.
 
 Véanse también @code{%or}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
@@ -155,7 +155,7 @@ una forma nominal:
 Por último, las inecuaciones no lineales que no se puedan reducir de
 manera sencilla a formas lineales, no se simplifican.
 
-Para hacer uso de este operador, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de este operador, ejecútese @code{load("to_poly_solve")}.
 @end deffn
 
 
@@ -244,7 +244,7 @@ manera sencilla a formas lineales, no se simplifican.
 No está soportada la distributividad de @code{%or} respecto de @code{%and},
 ni la negación respecto de @code{%or}.
 
-Para hacer uso de este operador, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de este operador, ejecútese @code{load("to_poly_solve")}.
 
 Véanse también @code{%and}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
@@ -275,7 +275,7 @@ Ejemplo:
 
 Véase también @code{isreal_p}.
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 @end deffn
 
 
@@ -340,7 +340,7 @@ determinar que las expresiones lambda son semánticamente equivalentes:
 @end example
 @end itemize
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 @end deffn
 
 
@@ -374,7 +374,7 @@ cuyo valor por defecto es @code{false} y el nombre de una función.
 
 Véanse también @code{float} y @code{bfloat}.
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 @end deffn
 
@@ -451,7 +451,7 @@ las ecuaciones triangularizadas pueden tener soluciones falsas.
 Véanse también @code{elim_allbut}, @code{eliminate_using}, @code{eliminate}
 y @code{resultant}.
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly")}.
 
 @end deffn
 
@@ -475,7 +475,7 @@ Ejemplo:
 (%o2)                [[x - 1], [y + x - 1]]
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly")}.
 
 Véanse también @code{elim}, @code{eliminate_using}, @code{eliminate}
 y @code{resultant}.
@@ -511,7 +511,7 @@ Ejemplos:
 (%o4) @{y  - 3 x y + x  + 5, y  + (1 - 3 x) y  + 3 x  y - x  - x @}
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly")}.
 
 Véanse también @code{elim}, @code{elim_allbut}, @code{eliminate}
 y @code{resultant}.
@@ -606,7 +606,7 @@ que son productos o cocientes de términos lineales:
 (%o12)      [- 1 < x, x < 1] or [1 < x] or [x < - 1]
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(fourier_elim)}.
+Para hacer uso de esta función, ejecútese @code{load("fourier_elim")}.
 
 @end deffn
 
@@ -652,7 +652,7 @@ devolver @code{false}, sin embargo:
 (%o5)                   isreal_p(log(x))
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 Véase también @code{complex_number_p}.
 
@@ -708,7 +708,7 @@ de esta manera se evitan errores como el siguiente:
 (%o9)                         %z150
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 Véase también @code{nicedummies}.
 
@@ -734,7 +734,7 @@ sido introducidas por @code{new_variable}:
 (%o3)                       %z0 - %z1
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 Véase también @code{new_variable}.
 
@@ -786,7 +786,7 @@ puede retornar valores incorrectos:
 (%o2) 0
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 Véanse también @code{carg}, @code{isreal_p}.
 
@@ -812,7 +812,7 @@ por llamadas a @code{conjugate}, obteniendo otra expresión equivalente:
                  2                     2
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 @end deffn
 
@@ -840,7 +840,7 @@ una expresión constante o declarada como tal.
                        2
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 @end deffn
 
@@ -871,7 +871,7 @@ base de datos:
 (%o3)                         x > 0
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 @end deffn
 
@@ -886,7 +886,7 @@ Esta función aplica las identidades @code{cot(x) = atan(1/x)} y
 y @code{acsch}. Consúltese Abramowitz y Stegun, ecuaciones
 4.4.6 a 4.4.8 y 4.6.4 a 4.6.6.
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 @end deffn
 
@@ -901,7 +901,7 @@ Dada la ecuación o lista de ecuaciones @var{l} y la expresión
 de las ecuaciones por los derechos:
 
 @example
-(%i1) load(to_poly_solve)$
+(%i1) load("to_poly_solve")$
 
 (%i2) subst_parallel([x=y,y=x], [x,y]);
 (%o2)                        [y, x]
@@ -952,7 +952,7 @@ log: encountered log(0).
  -- an error. To debug this try: debugmode(true);
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve_extra.lisp)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve_extra.lisp")}.
 
 Véanse también @code{subst}, @code{sublis} y @code{ratsubst}.
 
@@ -974,7 +974,7 @@ polinomio la ecuación @var{e}; un ejemplo ayudará a aclarar su
 comportamiento:
 
 @example
-(%i1) load(to_poly_solve)$
+(%i1) load("to_poly_solve")$
 
 (%i2) to_poly(sqrt(x) = 3, [x]);
                             2
@@ -1023,7 +1023,7 @@ raíz puede hacerse lo siguiente:
 (%o6)                   [x  - 24 x  + 4]
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly")}.
 
 Véase también @code{to_poly_solve}.
 
@@ -1052,7 +1052,7 @@ Cuando @code{to_poly_solve} consigue determinar el conjunto de soluciones, cada
 miembro del conjunto de soluciones es una lista en un objeto  @code{%union}:
 
 @example
-(%i1) load(to_poly_solve)$
+(%i1) load("to_poly_solve")$
 
 (%i2) to_poly_solve(x*(x-1) = 0, x);
 (%o2)               %union([x = 0], [x = 1])
@@ -1120,7 +1120,7 @@ También puede resolver algunas ecuaciones resolubles en términos de la
 función W de Lambert:
 
 @example
-(%i1) load(to_poly_solve)$
+(%i1) load("to_poly_solve")$
 
 (%i2) to_poly_solve(set(max(x,y) = 5, x+y = 2), set(x,y));
 (%o2)      %union([x = - 3, y = 5], [x = 5, y = - 3])
@@ -1351,7 +1351,7 @@ Esta es la única situación en la que @code{to_poly_solve} consulta la base de
 datos; si una incógnita se declara, por ejemplo, como entero, @code{to_poly_solve} lo ignora.
 @end itemize
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve")}.
 
 Véase también @code{algexact}, @code{resultant}, @code{algebraic} y @code{to_poly}.
 

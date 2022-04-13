@@ -1,42 +1,42 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /mnewton.texi/1.3/Sat Jun  2 00:13:25 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para mnewton::
+* Funções e Variáveis Definidas para mnewton::
 @end menu
 
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para mnewton,  , mnewton, mnewton
-@section Funç@~{o}es e Vari@'{a}veis Definidas para mnewton
+@node Funções e Variáveis Definidas para mnewton,  , mnewton, mnewton
+@section Funções e Variáveis Definidas para mnewton
 
-@defvr {Vari@'{a}vel de opç@~{a}o} newtonepsilon
-Valor padr@~{a}o: @code{10.0^(-fpprec/2)}
+@defvr {Variável de opção} newtonepsilon
+Valor padrão: @code{10.0^(-fpprec/2)}
 
-Precis@~{a}o para determinar quando a funç@~{a}o @code{mnewton} convergiu em direç@~{a}o @`a soluç@~{a}o.
+Precisão para determinar quando a função @code{mnewton} convergiu em direção à solução.
 
-Veja tamb@'{e}m @code{mnewton}.
+Veja também @code{mnewton}.
 @end defvr
 
 
-@defvr {Vari@'{a}vel de opç@~{a}o} newtonmaxiter
-Valor padr@~{a}o: @code{50}
+@defvr {Variável de opção} newtonmaxiter
+Valor padrão: @code{50}
 
-N@'{u}mero m@'{a}ximo de iteraç@~{o}es que para a funç@~{a}o @code{mnewton}
-caso essa funç@~{a}o n@~{a}o seja convergente ou se convergir muito lentamente.
+Número máximo de iterações que para a função @code{mnewton}
+caso essa função não seja convergente ou se convergir muito lentamente.
 
-Veja tamb@'{e}m @code{mnewton}.
+Veja também @code{mnewton}.
 @end defvr
 
 
-@deffn {Funç@~{a}o} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
-Soluç@~{a}o de multiplas funç@~{o}es n@~{a}o lineares usando o m@'{e}todo de Newton.
-@var{FuncList} @'{e} a lista de funç@~{o}es a serem resolvidas,
-@var{VarList} @'{e} a lista dos nomes de vari@'{a}veis, e
-@var{GuessList} @'{e} a lista de aproximaç@~{o}es iniciais.
+@deffn {Função} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+Solução de multiplas funções não lineares usando o método de Newton.
+@var{FuncList} é a lista de funções a serem resolvidas,
+@var{VarList} é a lista dos nomes de variáveis, e
+@var{GuessList} é a lista de aproximações iniciais.
 
-A soluç@~{a}o @'{e} retornada no mesmo formato retornado pela funç@~{a}o @code{solve()}.
-Caso a soluç@~{a}o n@~{a}o seja encontrada, @code{[]} @'{e} retornado.
+A solução é retornada no mesmo formato retornado pela função @code{solve()}.
+Caso a solução não seja encontrada, @code{[]} é retornado.
 
-Essa funç@~{a}o @'{e} controlada atrav@'{e}s das vari@'{a}veis globais @code{newtonepsilon} e @code{newtonmaxiter}.
+Essa função é controlada através das variáveis globais @code{newtonepsilon} e @code{newtonmaxiter}.
 
 @example
 (%i1) load("mnewton")$
@@ -50,6 +50,7 @@ Essa funç@~{a}o @'{e} controlada atrav@'{e}s das vari@'{a}veis globais @code{ne
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-Para usar essa funç@~{a}o primeiro escreva @code{load("mnewton")}. Veja tamb@'{e}m @code{newtonepsilon} e @code{newtonmaxiter}.
+Para usar essa função primeiro escreva @code{load("mnewton")}. Veja também @code{newtonepsilon} e @code{newtonmaxiter}.
 @end deffn
+
 

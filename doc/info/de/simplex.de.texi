@@ -68,7 +68,7 @@ bounded, it returns "Problem not bounded!" and if the problem is not
 feasible, it returns "Problem not feasible!".
 
 To use this function first load the @code{simplex} package with
-@code{load(simplex);}.
+@code{load("simplex");}.
 
 Example:
 
@@ -136,7 +136,7 @@ efficient than adding constraints).
 maxima @code{linear_program} function.
 
 To use this function first load the @code{simplex} package with
-@code{load(simplex);}.
+@code{load("simplex");}.
 
 Examples:
 

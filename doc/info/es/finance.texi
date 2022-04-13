@@ -16,7 +16,7 @@ si se tiene un egreso el flujo es negativo y para un
 ingreso un valor positivo.
 
 Note que antes de usar las funciones definidas en este
-paquete, debe cargarla escribiendo @code{load(finance)$}.
+paquete, debe cargarla escribiendo @code{load("finance")$}.
 
 Autor: Nicolás Guarin Zapata.
 
@@ -31,7 +31,7 @@ Calcula la distancia entre 2 fechas, asumiendo años de 360 dias y meses de 30 d
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) days360(2008,12,16,2007,3,25);
 (%o2)                      - 621
 @end example
@@ -47,7 +47,7 @@ de periodos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) fv(0.12,1000,3);
 (%o2)                     1404.928
 @end example
@@ -63,7 +63,7 @@ de periodos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) pv(0.12,1000,3);
 (%o2)                711.7802478134108
 @end example
@@ -81,7 +81,7 @@ La dirección del flujo está dada por el signo de los valores.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) graph_flow([-5000,-3000,800,1300,1500,2000])$
 @end example
 @end deffn
@@ -97,7 +97,7 @@ número de periodos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) annuity_pv(0.12,5000,10);
 (%o2)                884.9208207992202
 @end example
@@ -114,7 +114,7 @@ número de periodos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) annuity_fv(0.12,65000,10);
 (%o2)                3703.970670389863
 @end example
@@ -130,7 +130,7 @@ es el crecimiento de los pagos, @var{PV} es el valor presente, y @var{num} es el
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) geo_annuity_pv(0.14,0.05,5000,10);
 (%o2)                802.6888176505123
 @end example
@@ -147,7 +147,7 @@ es el crecimiento de los pagos, @var{FV} es el valor futuro, y @var{num} es el n
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) geo_annuity_fv(0.14,0.05,5000,10);
 (%o2)                216.5203395312695
 @end example
@@ -162,7 +162,7 @@ and @var{num} es el número de periodos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) amortization(0.05,56000,12)$
       "n"    "Balance"     "Interest"   "Amortization"  "Payment"      
      0.000     56000.000         0.000         0.000         0.000  
@@ -195,7 +195,7 @@ es el valor de la deuda, and @var{num} es el número de periodos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) arit_amortization(0.05,1000,56000,12)$
       "n"    "Balance"     "Interest"   "Amortization"  "Payment"      
      0.000     56000.000         0.000         0.000         0.000  
@@ -228,7 +228,7 @@ es el valor de la deuda, y @var{num} es el numero de periodos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) geo_amortization(0.05,0.03,56000,12)$
       "n"    "Balance"     "Interest"   "Amortization"  "Payment"      
      0.000     56000.000         0.000         0.000         0.000  
@@ -258,7 +258,7 @@ periodos durante los que se ahorrará.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) saving(0.15,12000,15)$
       "n"    "Balance"     "Interest"   "Payment"      
      0.000         0.000         0.000         0.000  
@@ -290,7 +290,7 @@ viabilidad de un proyecto.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) npv(0.25,[100,500,323,124,300]);
 (%o2)                714.4703999999999
 @end example
@@ -307,7 +307,7 @@ valor de tasa que hace que el Valor Presente Neto (NPV) sea cero.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) res:irr([-5000,0,800,1300,1500,2000],0)$
 (%i3) rhs(res[1][1]);
 (%o3)                .03009250374237132
@@ -328,7 +328,7 @@ y @var{output} es una lista con los egresos.
 Ejemplo:
 
 @example
-(%i1) load(finance)$
+(%i1) load("finance")$
 (%i2) benefit_cost(0.24,[0,300,500,150],[100,320,0,180]);
 (%o2)               1.427249324905784
 @end example

@@ -247,7 +247,7 @@ ModeMatrix * diag([f(JF(m1,n1)), ..., f(JF(mk,nk))]) * ModeMatrix^^(-1)}.
 Note that there are about 6 or 8 other methods for this calculation.
 Some examples follow.
 
-To use this function write first @code{load(diag)}.
+To use this function write first @code{load("diag")}.
 
 Example 1:
 

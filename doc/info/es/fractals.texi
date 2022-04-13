@@ -54,7 +54,7 @@ y traslaciones. Todas las aplicaciones tienen la misma constante de contracción
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) n: 10000$
 (%i3) plot2d([discrete,sierpinskiale(n)], [style,dots])$
 @end example
@@ -68,7 +68,7 @@ de contracción. El argumento @var{n} debe ser suficientemente alto, 10000 o may
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) n: 10000$
 (%i3) plot2d([discrete,treefale(n)], [style,dots])$
 @end example
@@ -83,7 +83,7 @@ suficientemente alto, 10000 o mayor.
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) n: 10000$
 (%i3) plot2d([discrete,fernfale(n)], [style,dots])$
 @end example
@@ -103,7 +103,7 @@ de la malla.
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot3d (mandelbrot_set, [x, -2.5, 1], [y, -1.5, 1.5],
                 [gnuplot_preamble, "set view map"],
                 [gnuplot_pm3d, true],
@@ -125,7 +125,7 @@ de la malla.
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot3d (julia_set, [x, -2, 1], [y, -1.5, 1.5],
                 [gnuplot_preamble, "set view map"],
                 [gnuplot_pm3d, true],
@@ -163,7 +163,7 @@ también depende del número de puntos de la malla.
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) julia_parameter:1+.1*%i$
 (%i3) plot3d (julia_sin, [x, -2, 2], [y, -3, 3], 
                 [gnuplot_preamble, "set view map"],
@@ -190,7 +190,7 @@ de Koch, el cual debe ser pequeño (5 o 6).
 Ejemplos:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot2d([discrete,
               snowmap([1,exp(%i*%pi*2/3),exp(-%i*%pi*2/3),1],4)])$
 (%i3) plot2d([discrete,
@@ -220,7 +220,7 @@ Maxima se puede detener si @var{nn} es 7 o mayor.
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot2d([discrete,hilbertmap(6)])$
 @end example
 @end deffn
@@ -233,7 +233,7 @@ Maxima se puede detener si @var{nn} es 7 o mayor.
 Ejemplo:
 
 @example
-(%i1) load(fractals)$
+(%i1) load("fractals")$
 (%i2) plot2d([discrete,sierpinskimap(6)])$
 @end example
 @end deffn

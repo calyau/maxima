@@ -44,7 +44,7 @@ Los cálculos numéricos se realizan en doble precisión con aritmética de
 punto flotante, por lo que números de cualesquiera otro tipo son 
 convenientemente convertidos antes de proceder con los cálculos.
 
-Antes de utilizar esta función ejecútese @code{load(lsquares)}.
+Antes de utilizar esta función ejecútese @code{load("lsquares")}.
 
 Véanse también
 @code{lsquares_estimates_exact},
@@ -58,14 +58,14 @@ Ejemplos:
 Un problema con solución exacta.
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c lsquares_estimates (
 @c          M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                                   [ 1  1  1 ]
@@ -92,13 +92,13 @@ un problema para el que no se encuentra solución exacta,
 por lo que @code{lsquares_estimates} recurre a la aproximación numérica.
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
 @c lsquares_estimates (
 @c   M, [x,y], y=a*x^b+c, [a,b,c], initial=[3,3,3], iprint=[-1,0]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
                                    [ 1  1  ]
                                    [       ]
@@ -143,14 +143,14 @@ y @code{lsquares_residual_mse}.
 Ejemplo:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
 @c lsquares_estimates_exact (mse, [A, B, C, D]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -211,7 +211,7 @@ Los cálculos numéricos se realizan en doble precisión con aritmética de
 punto flotante, por lo que números de cualesquiera otro tipo son 
 convenientemente convertidos antes de proceder con los cálculos.
 
-Antes de utilizar esta función ejecútese @code{load(lsquares)}.
+Antes de utilizar esta función ejecútese @code{load("lsquares")}.
 
 Véanse también
 @code{lsquares_estimates},
@@ -222,7 +222,7 @@ Véanse también
 Ejemplo:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
@@ -230,7 +230,7 @@ Ejemplo:
 @c         mse, [A, B, C, D], iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -290,12 +290,12 @@ siendo @var{n} el número de datos y @code{@var{e}[i]} es la ecuación @var{e}
 evaluada cuando a sus variables @var{x} se le asignan los valores asociados
 al dato @code{i}-ésimo @code{@var{D}[i]}.
 
-Antes de utilizar esta función ejecútese @code{load(lsquares)}.
+Antes de utilizar esta función ejecútese @code{load("lsquares")}.
 
 Ejemplo:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
@@ -303,7 +303,7 @@ Ejemplo:
 @c ''mse, nouns;
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -378,12 +378,12 @@ siendo @code{@var{e}[i]} la ecuación @var{e} evaluada cuando las variables @var
 toman los valores asociados al dato @code{i}-ésimo @code{@var{D}[i]}, y haciendo las
 asignaciones indicadas en @var{a} al resto de variables.
 
-Antes de utilizar esta función ejecútese @code{load(lsquares)}.
+Antes de utilizar esta función ejecútese @code{load("lsquares")}.
 
 Ejemplo:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c a : lsquares_estimates (
@@ -392,7 +392,7 @@ Ejemplo:
 @c           M, [z,x,y], (z+D)^2 = A*x+B*y+C, first(a));
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                                   [ 1  1  1 ]
@@ -449,12 +449,12 @@ siendo @code{@var{e}[i]} la ecuación @var{e} evaluada cuando las variables @var
 toman los valores asociados al dato @code{i}-ésimo @code{@var{D}[i]}, y haciendo las
 asignaciones indicadas en @var{a} al resto de variables.
 
-Antes de utilizar esta función ejecútese @code{load(lsquares)}.
+Antes de utilizar esta función ejecútese @code{load("lsquares")}.
 
 Ejemplo:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c a : lsquares_estimates (
@@ -463,7 +463,7 @@ Ejemplo:
 @c        M, [z,x,y], (z + D)^2 = A*x + B*y + C, first (a));
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]

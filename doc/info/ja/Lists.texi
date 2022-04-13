@@ -645,7 +645,7 @@ Maximaはエラーメッセージを生成します。
 
 例には @mref{push}も参照してください。
 
-@code{load(basic)}はこの関数をロードします。
+@code{load("basic")}はこの関数をロードします。
 
 @opencatbox
 @category{Lists}
@@ -667,7 +667,7 @@ Maximaはエラーメッセージを生成します。
 
 リストから最初の項目を取り除くには @mref{pop}も参照してください。
 
-@code{load(basic)}はこの関数をロードします。
+@code{load("basic")}はこの関数をロードします。
 
 例:
 

@@ -1070,7 +1070,7 @@ Valor por omissão: @code{false}
 Quando @code{lispdisp} for @code{true},
 símbolos Lisp são mostrados com um ponto de interrogação @code{?} na frente.
 De outra forma,
-símbolos Lisp serão mostrados sem o ponto de interrogaçõ na frente.
+símbolos Lisp serão mostrados sem o ponto de interrogação na frente.
 
 Exemplos:
 
@@ -1886,7 +1886,7 @@ $$ \langle a \, | \,b \rangle $$
 @c NEEDS CLARIFICATION
 @deffn {Função} system (@var{comando})
 Executa @var{comando} como um processo separado.
-O comando é passado ao shell padraõ para execução.
+O comando é passado ao shell padrão para execução.
 @code{system} não é suportado por todos os sistemas
 operacionais, mas geralmente existe em ambientes Unix e Unix-like.
 

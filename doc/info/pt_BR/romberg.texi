@@ -1,63 +1,63 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /romberg.texi/1.2/Sat Jun  2 00:13:30 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para romberg::
+* Funções e Variáveis Definidas para romberg::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para romberg, , Top, Top
-@section Funç@~{o}es e Vari@'{a}veis Definidas para romberg
+@node Funções e Variáveis Definidas para romberg, , Top, Top
+@section Funções e Variáveis Definidas para romberg
 
-@deffn {Funç@~{a}o} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Funç@~{a}o} romberg (@var{F}, @var{a}, @var{b})
+@deffn {Função} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {Função} romberg (@var{F}, @var{a}, @var{b})
 
-Calcula uma integraç@~{a}o num@'{e}rica pelo m@'{e}todo de Romberg.
+Calcula uma integração numérica pelo método de Romberg.
 
 @code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}
 retorna uma estimativa da integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
-@var{expr} deve ser uma express@~{a}o que avalie para um valor em ponto flutuante
+@var{expr} deve ser uma expressão que avalie para um valor em ponto flutuante
 quando @var{x} estiver associado a um valor em ponto flutuante.
 
 @code{romberg(@var{F}, @var{a}, @var{b})}
 retorna uma estimativa da integral @code{integrate(@var{F}(x), x, @var{a}, @var{b})}
-onde @code{x} representa o n@~{a}o nomeado, isolado argumeno de @var{F};
-o atual argumento n@~{a}o @'{e} chamado @code{x}.
-@var{F} deve ser uma funç@~{a}o do Maxima ou do Lisp que retorne um valor em ponto flutuante
-quando o argumento for um n@'{u}mero em ponto flutuante.
-@var{F} pode nomear uma funç@~{a}o traduzida ou compilada do Maxima.
+onde @code{x} representa o não nomeado, isolado argumeno de @var{F};
+o atual argumento não é chamado @code{x}.
+@var{F} deve ser uma função do Maxima ou do Lisp que retorne um valor em ponto flutuante
+quando o argumento for um número em ponto flutuante.
+@var{F} pode nomear uma função traduzida ou compilada do Maxima.
 
-A precis@~{a}o de @code{romberg} @'{e} governada pelas vari@'{a}veis globais
+A precisão de @code{romberg} é governada pelas variáveis globais
 @code{rombergabs} e @code{rombergtol}.
 @code{romberg} termina com sucesso quando
-a diferença absoluta entre duas aproximaç@~{o}es sucessivas for menor que @code{rombergabs},
-ou a diferença relativa em aproximaç@~{o}es sucessivas for menor que @code{rombergtol}.
-Dessa forma quando @code{rombergabs} for 0.0 (o padr@~{a}o)
+a diferença absoluta entre duas aproximações sucessivas for menor que @code{rombergabs},
+ou a diferença relativa em aproximações sucessivas for menor que @code{rombergtol}.
+Dessa forma quando @code{rombergabs} for 0.0 (o padrão)
 somente o erro relativo tem algum efeito sobre @code{romberg}.
 
-@code{romberg} divide ao meio o tamanho do passo no m@'{a}ximo @code{rombergit} vezes antes de interromper;
-o n@'{u}mero m@'{a}ximo de avaliaç@~{o}es de funç@~{a}o @'{e} portanto @code{2^rombergit}.
-Se o crit@'{e}rio de erro estabelecido por @code{rombergabs} e por @code{rombergtol}
-n@~{a}o for satisfeito, @code{romberg} mostra uma mensagem de erro.
-@code{romberg} sempre faz ao menos @code{rombergmin} iteraç@~{o}es;
-isso @'{e} uma intenç@~{a}o eur@'{i}sstica de previnir encerramentos esp@'{u}rios quando o integrando for oscilat@'{o}rio.
+@code{romberg} divide ao meio o tamanho do passo no máximo @code{rombergit} vezes antes de interromper;
+o número máximo de avaliações de função é portanto @code{2^rombergit}.
+Se o critério de erro estabelecido por @code{rombergabs} e por @code{rombergtol}
+não for satisfeito, @code{romberg} mostra uma mensagem de erro.
+@code{romberg} sempre faz ao menos @code{rombergmin} iterações;
+isso é uma intenção eurísstica de previnir encerramentos espúrios quando o integrando for oscilatório.
 
-@code{romberg} repetidamente avalia o integrando ap@'{o}s associar a vari@'{a}vel
-de integraç@~{a}o a um valor espec@'{i}fico (e n@~{a}o antes).
-Essa pol@'{i}tica de avaliaç@~{a}o torna poss@'{i}vel aninhar chamadas a @code{romberg},
+@code{romberg} repetidamente avalia o integrando após associar a variável
+de integração a um valor específico (e não antes).
+Essa política de avaliação torna possível aninhar chamadas a @code{romberg},
 para calcular integrais multidimensionais.
-Todavia, os c@'{a}lculos de erro n@~{a}o tomam os erros de integraç@~{o}es aninhadas
-em consideraç@~{a}o, ent@~{a}o erros podem ser subestimados.
-Tamb@'{e}m, m@'{e}todos imaginados especialmente para problemas multidimensionais podem retornar
-a mesma precis@~{a}o com poucas avaliaç@~{o}es de funç@~{a}o.
+Todavia, os cálculos de erro não tomam os erros de integrações aninhadas
+em consideração, então erros podem ser subestimados.
+Também, métodos imaginados especialmente para problemas multidimensionais podem retornar
+a mesma precisão com poucas avaliações de função.
 
-@code{load(romberg)} torna essa funç@~{a}o dispon@'{i}vel para uso.
+@code{load("romberg")} torna essa função disponível para uso.
 
-Veja tamb@'{e}m @code{QUADPACK}, uma coleç@~{a}o de funç@~{o}es de integraç@~{a}o num@'{e}rica.
+Veja também @code{QUADPACK}, uma coleção de funções de integração numérica.
 
 Exemplos:
 
-Uma integraç@~{a}o unidimensonal.
+Uma integração unidimensonal.
 @c ===beg===
-@c load (romberg);
+@c load ("romberg");
 @c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000) + 1/((x - 3)^2 + 1/200);
 @c rombergtol : 1e-6;
 @c rombergit : 15;
@@ -67,7 +67,7 @@ Uma integraç@~{a}o unidimensonal.
 @c ===end===
 
 @example
-(%i1) load (romberg);
+(%i1) load ("romberg");
 (%o1)    /usr/share/maxima/5.11.0/share/numeric/romberg.lisp
 (%i2) f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000) + 1/((x - 3)^2 + 1/200);
                     1                 1                1
@@ -89,9 +89,9 @@ Uma integraç@~{a}o unidimensonal.
 (%o7)                7.5527060865060088E-11
 @end example
 
-Uma integraç@~{a}o bidimensional, implementada com chamadas aninhadas a @code{romberg}.
+Uma integração bidimensional, implementada com chamadas aninhadas a @code{romberg}.
 @c ===beg===
-@c load (romberg);
+@c load ("romberg");
 @c g(x, y) := x*y / (x + y);
 @c rombergtol : 1e-6;
 @c estimate : romberg (romberg (g(x, y), y, 0, x/2), x, 1, 3);
@@ -102,7 +102,7 @@ Uma integraç@~{a}o bidimensional, implementada com chamadas aninhadas a @code{r
 @c ===end===
 
 @example
-(%i1) load (romberg);
+(%i1) load ("romberg");
 (%o1)    /usr/share/maxima/5.11.0/share/numeric/romberg.lisp
 (%i2) g(x, y) := x*y / (x + y);
                                     x y
@@ -130,54 +130,55 @@ Uma integraç@~{a}o bidimensional, implementada com chamadas aninhadas a @code{r
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} rombergabs
-Valor padr@~{a}o: 0.0
+@defvr {Variável de opção} rombergabs
+Valor padrão: 0.0
 
-A precis@~{a}o de @code{romberg} @'{e} governada pelas vari@'{a}vies globais
+A precisão de @code{romberg} é governada pelas variávies globais
 @code{rombergabs} e @code{rombergtol}.
 @code{romberg} termina com sucesso quando
-a diferença absoluta entre duas aproximaç@~{o}es sucessivas for menor que @code{rombergabs},
-ou a diferença relativa em aproximaç@~{o}es sucessivas for menor que @code{rombergtol}.
-Dessa forma quando @code{rombergabs} for 0.0 (o padr@~{a}o)
+a diferença absoluta entre duas aproximações sucessivas for menor que @code{rombergabs},
+ou a diferença relativa em aproximações sucessivas for menor que @code{rombergtol}.
+Dessa forma quando @code{rombergabs} for 0.0 (o padrão)
 somente o erro relativo tem algum efeito sobre @code{romberg}.
 
-Veja tamb@'{e}m @code{rombergit} e @code{rombergmin}.
+Veja também @code{rombergit} e @code{rombergmin}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} rombergit
-Valor padr@~{a}o: 11
+@defvr {Variável de opção} rombergit
+Valor padrão: 11
 
-@code{romberg} divide ao meio o tamanho do passo no m@'{a}ximo @code{rombergit} vezes antes de interromper;
-o n@'{u}mero m@'{a}ximo de avaliaç@~{o}es de funç@~{a}o @'{e} portanto @code{2^rombergit}.
-@code{romberg} sempre faz ao menos @code{rombergmin} iteraç@~{o}es;
-isso @'{e} uma intenç@~{a}o eur@'{i}sstica de previnir encerramentos esp@'{u}rios quando o integrando for oscilat@'{o}rio.
+@code{romberg} divide ao meio o tamanho do passo no máximo @code{rombergit} vezes antes de interromper;
+o número máximo de avaliações de função é portanto @code{2^rombergit}.
+@code{romberg} sempre faz ao menos @code{rombergmin} iterações;
+isso é uma intenção eurísstica de previnir encerramentos espúrios quando o integrando for oscilatório.
 
-Veja tamb@'{e}m @code{rombergabs} e @code{rombergtol}.
-
-@end defvr
-
-@defvr {Vari@'{a}vel de opç@~{a}o} rombergmin
-Valor padr@~{a}o: 0
-
-@code{romberg} sempre faz ao menos @code{rombergmin} iteraç@~{o}es;
-isso @'{e} uma intenç@~{a}o eur@'{i}sstica para prevenir terminaç@~{o}es esp@'{u}rias quando o integrando for.
-
-Veja tamb@'{e}m @code{rombergit}, @code{rombergabs}, e @code{rombergtol}.
+Veja também @code{rombergabs} e @code{rombergtol}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} rombergtol
-Valor padr@~{a}o: 1e-4
+@defvr {Variável de opção} rombergmin
+Valor padrão: 0
 
-A precis@~{a}o de @code{romberg} @'{e} governada pelas vari@'{a}veis globais
+@code{romberg} sempre faz ao menos @code{rombergmin} iterações;
+isso é uma intenção eurísstica para prevenir terminações espúrias quando o integrando for.
+
+Veja também @code{rombergit}, @code{rombergabs}, e @code{rombergtol}.
+
+@end defvr
+
+@defvr {Variável de opção} rombergtol
+Valor padrão: 1e-4
+
+A precisão de @code{romberg} é governada pelas variáveis globais
 @code{rombergabs} e @code{rombergtol}.
 @code{romberg} termina com sucesso quando
-a diferença absoluta entre duas aproximaç@~{o}es sucessivas for menor que @code{rombergabs},
-ou a diferença relativa em aproximaç@~{o}es sucessivas for menor que @code{rombergtol}.
-Dessa forma quando @code{rombergabs} for 0.0 (o padr@~{a}o)
+a diferença absoluta entre duas aproximações sucessivas for menor que @code{rombergabs},
+ou a diferença relativa em aproximações sucessivas for menor que @code{rombergtol}.
+Dessa forma quando @code{rombergabs} for 0.0 (o padrão)
 somente o erro relativo tem algum efeito sobre @code{romberg}.
 
-Veja tamb@'{e}m @code{rombergit} e @code{rombergmin}.
+Veja também @code{rombergit} e @code{rombergmin}.
 
 @end defvr
+

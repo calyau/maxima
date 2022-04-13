@@ -26,7 +26,7 @@ die Behandlung von Datenstr@"omen mit einschlie@ss{}t.
 Abgerundet wird dieses Paket durch Werkzeuge f@"ur die Kryptographie, wie z.B. 
 Base64 und Hashfunktionen.
 
-Das Paket kann explizit durch @code{load(stringproc)} geladen werden oder 
+Das Paket kann explizit durch @code{load("stringproc")} geladen werden oder 
 automatisch durch die Verwendung einer der enthaltenden Funktionen. 
 
 Fragen und Fehlerberichte senden Sie bitte direkt an den Autor, 

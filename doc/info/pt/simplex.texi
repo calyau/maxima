@@ -46,7 +46,7 @@ possível entre vetores para os quais @code{A.x = b} e @code{x >= 0}. O argument
 valor mínimo @code{c.x}. Se o problema for não associado, é retornado "Problem not bounded!" e
 se o problema for não viável, é retornado "Problem not feasible!".
 
-Para usar essa função primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
+Para usar essa função primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
 
 Exemplo:
 
@@ -104,7 +104,7 @@ restrições).
 @code{minimize_sx} utiliza o algoritmo simplex que é implementado na função
 @code{linear_program} do Maxima.
 
-Para usar essa função primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
+Para usar essa função primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
 
 Exemplos:
 

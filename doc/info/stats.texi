@@ -73,7 +73,7 @@ not displayed; to access its value, make use of function @code{take_inference}.
 @c take_inference('diagonal,%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) inference_result("Rectangle",
                         ['base=b,
@@ -143,7 +143,7 @@ of all items, no matter they are displayed or not.
 @c items_inference(%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) inference_result("Hi", ['pi=%pi,'e=%e],[2]);
                             |   Hi
 (%o2)                       |
@@ -197,7 +197,7 @@ called in order to extract some information stored in it.
 @c take_inference(items_inference(sol),sol);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) sol: inference_result("Rectangle",
                             ['base=b,
@@ -1036,7 +1036,7 @@ Exact standard deviation of the asymptotic normal
 distribution when the data are unknown.
 
 @c ===beg===
-@c load(stats)$
+@c load("stats")$
 @c stats_numer: false$
 @c sol: test_proportions_difference(x1,n1,x2,n2)$
 @c last(take_inference('distribution,sol));

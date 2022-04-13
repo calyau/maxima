@@ -27,14 +27,14 @@ Replace @code{gamma(x)} with the @math{O(1/x^(2n-1))} Stirling formula.  When
 argument @code{pred}, the Stirling formula is applied only when @code{pred} is 
 true.
 
-To use this function write first @code{load(stirling)}.
+To use this function write first @code{load("stirling")}.
 
 Reference: Abramowitz & Stegun, "Handbook of mathematical functions", 6.1.40.
 
 Examples:
 
 @example
-(%i1) load (stirling)$
+(%i1) load ("stirling")$
 
 (%i2) stirling(gamma(%alpha+x)/gamma(x),1);
        1/2 - x             x + %alpha - 1/2

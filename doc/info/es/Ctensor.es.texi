@@ -7,7 +7,7 @@
 @node Introducción a ctensor, Funciones y variables para ctensor, ctensor, ctensor
 @section Introducción a ctensor
 
-El paquete @code{ctensor} dispone de herramientas para manipular componentes de tensores. Para poder hacer uso de @code{ctensor} es necesario cargarlo previamente en memoria ejecutando  @code{load(ctensor)}. Para comenzar una sesión interactiva con @code{ctensor}, ejecutar la función @code{csetup()}. Primero se le pregunta al usuario la dimensión de la variedad. Si la dimensión es 2, 3 o 4, entonces la lista de coordenadas será por defecto  @code{[x,y]}, @code{[x,y,z]}
+El paquete @code{ctensor} dispone de herramientas para manipular componentes de tensores. Para poder hacer uso de @code{ctensor} es necesario cargarlo previamente en memoria ejecutando  @code{load("ctensor")}. Para comenzar una sesión interactiva con @code{ctensor}, ejecutar la función @code{csetup()}. Primero se le pregunta al usuario la dimensión de la variedad. Si la dimensión es 2, 3 o 4, entonces la lista de coordenadas será por defecto  @code{[x,y]}, @code{[x,y,z]}
 o @code{[x,y,z,t]}, respectivamente. Estos nombres pueden cambiarse asignando una nueva lista de coordenadas a la variable @code{ct_coords} (que se describe más abajo), siendo el usuario advertido sobre este particular. 
 Se debe tener cuidado en evitar que los nombres de las coordenadas entren en conflicto con los nombres de otros objetos en Maxima.
 
@@ -19,7 +19,7 @@ La métrica se almacena en la matriz @code{lg}. Por último, la métrica inversa
 Se desarrolla a continuación un ejemplo para la métrica estática, esférica y simétrica, en coordenadas estándar, que se aplicará posteriormente al problema de derivar las ecuaciones de vacío de Einstein (de las que se obtiene la solución de Schwarzschild). Muchas de las funciones de @code{ctensor} se mostrarán  en los ejemplos para la métrica estándar.
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)      /share/tensor/ctensor.mac
 (%i2) csetup();
 Enter the dimension of the coordinate system: 
@@ -167,7 +167,7 @@ El argumento @code{sistema_coordenadas} puede ser también una lista de funcione
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
@@ -191,7 +191,7 @@ Las funciones de transformación se pueden utilizar también si @code{cframe_fla
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
 (%o2)                                true
@@ -378,7 +378,7 @@ Como ejemplo, considérese una sencilla métrica que es una perturbación de la 
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
@@ -555,7 +555,7 @@ Calcula la clasificación de  Petrov de la métrica caracterizada por @code{psi[
 Por ejemplo, lo que sigue demuestra cómo obtener la clasificación de Petrov para la métrica de Kerr:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
 (%o2)                                true
@@ -691,7 +691,7 @@ Es una función del paquete @code{ctensor}.  Realiza una transformación de coor
 Devuelve la lista de las ecuaciones diferenciales que corresponden a los elementos del arreglo cuadrado @var{n}-dimensional. El argumento @var{n} puede ser 2 ó 3; @code{deindex} es una lista global que contiene los índices de @var{A} que corresponden a estas ecuaciones diferenciales. Para el tensor de Einstein (@code{ein}), que es un arreglo bidimensional, si se calcula para la métrica del ejemplo de más abajo, @code{findde} devuelve las siguientes ecuaciones diferenciales independientes:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -743,7 +743,7 @@ Calcula el gradiente contravariante de una función escalar permitiendo al usuar
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -772,7 +772,7 @@ Calcula el gradiente contravariante de una función escalar permitiendo al usuar
 Calcula el tensor de d'Alembertian de la función escalar una vez se han declarado las dependencias. Por ejemplo:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -839,7 +839,7 @@ Permite hacerse una idea del tamaño del tensor @var{f}. @c FALTA COMPLETAR PARR
 Muestra todos los elementos del tensor @var{ten} como arreglo multidimensional. Tensors de rango 0 y 1, así como otros tipos de variables, se muestran como en @code{ldisplay}. Tensors de rango 2 se muestran como matrices bidimensionales, mientras que tensores de mayor rango se muestran como listas de matrices bidimensionales. Por ejemplo, el tensor de Riemann de la métrica de Schwarzschild se puede ver como:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
