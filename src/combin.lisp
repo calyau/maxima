@@ -521,14 +521,18 @@
 
 ;;; Set properties to give full support to the parser and display
 
+#+nil
+(progn
 (defprop $zeta %zeta alias)
 (defprop $zeta %zeta verb)
 
 (defprop %zeta $zeta reversealias)
 (defprop %zeta $zeta noun)
+)
 
 ;;; The Riemann Zeta function is a simplifying function
 
+#+nil
 (defprop %zeta simp-zeta operators)
 
 ;;; The Riemann Zeta function has mirror symmetry
