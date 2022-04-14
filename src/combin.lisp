@@ -519,22 +519,6 @@
 (defmfun $zeta (z)
   (simplify (list '(%zeta) z)))
 
-;;; Set properties to give full support to the parser and display
-
-#+nil
-(progn
-(defprop $zeta %zeta alias)
-(defprop $zeta %zeta verb)
-
-(defprop %zeta $zeta reversealias)
-(defprop %zeta $zeta noun)
-)
-
-;;; The Riemann Zeta function is a simplifying function
-
-#+nil
-(defprop %zeta simp-zeta operators)
-
 ;;; The Riemann Zeta function has mirror symmetry
 
 (defprop %zeta t commutes-with-conjugate)
@@ -565,46 +549,6 @@
      (simplify (list '(%zeta) arg))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defun simp-zeta (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
-
-    ;; Check for special values
-    ((eq z '$inf) 1)
-    ((alike1 z '((mtimes) -1 $minf)) 1)
-    ((zerop1 z) 
-     (cond (($bfloatp z) ($bfloat '((rat) -1 2)))
-           ((floatp z) -0.5)
-           (t '((rat simp) -1 2))))
-    ((onep1 z)
-     (simp-domain-error (intl:gettext "zeta: zeta(~:M) is undefined.") z))
-
-    ;; Check for numerical evaluation
-    ((or (bigfloat-numerical-eval-p z)
-	 (complex-bigfloat-numerical-eval-p z)
-	 (float-numerical-eval-p z)
-	 (complex-float-numerical-eval-p z))
-     (to (float-zeta z)))
-    ;; Check for transformations and argument simplifications
-    ((integerp z)
-     (cond
-       ((oddp z)
-        (cond ((> z 1)
-               (eqtest (list '(%zeta) z) expr))
-              ((setq z (sub 1 z))
-               (mul -1 (div ($bern z) z)))))
-       ((minusp z) 0)
-       ((not $zeta%pi) (eqtest (list '(%zeta) z) expr))
-       (t (let ($numer $float)
-            (mul (power '$%pi z)
-                 (mul (div (power 2 (1- z)) 
-                           (take '(mfactorial) z))
-                      (take '(mabs) ($bern z))))))))
-    (t
-     (eqtest (list '(%zeta) z) expr))))
 
 (def-simplifier zeta (z)
   (cond
