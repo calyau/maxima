@@ -610,8 +610,9 @@ The arguments may be general expressions as well as integers.
 @deffn {Function} lucas (@var{n})
 
 Returns the @var{n}'th Lucas number.
-@code{lucas(0)} is equal to 2 and @code{lucas(1)} equal to 1, and 
-@code{lucas(-@var{n})} equal to @code{(-1)^(-@var{n}) * lucas(@var{n})}.
+@code{lucas(0)} is equal to 2 and @code{lucas(1)} equal to 1, and
+in general, @code{lucas(@var{n}) = lucas(@var{n}-1) + lucas(@var{n}-2)}.  Also 
+@code{lucas(-@var{n})} is equal to @code{(-1)^(-@var{n}) * lucas(@var{n})}.
 
 @example
 (%i1) map (lucas, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);

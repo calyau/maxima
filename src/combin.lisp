@@ -709,11 +709,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Returns the N'th Fibonacci number.
 (defmfun $fib (n)
-  (cond ((fixnump n) (ffib n))
-	(t (setq $prevfib `(($fib) ,(add2* n -1)))
-	   `(($fib) ,n))))
+  (cond ((fixnump n)
+	 (ffib n))
+	(t
+	 (setq $prevfib `(($fib) ,(add2* n -1)))
+	 `(($fib) ,n))))
 
+;; Main routine for computing the n'th Fibonacci number where n is an
+;; integer.
 (defun ffib (%n)
   (declare (fixnum %n))
   (cond ((= %n -1)
@@ -734,11 +739,19 @@
 		    f2 (+ f2 $prevfib)))
 	   f2))))
 
+;; Returns the N'th Lucas number defined by the following recursion,
+;; where L(n) is the n'th Lucas number:
+;;
+;;  L(0) = 2;
+;;  L(1) = 1;
+;;  L(n) = L(n-1) + L(n-2), n > 1;
 (defmfun $lucas (n)
   (cond 
-    ((fixnump n) (lucas n))
-	 (t (setq $next_lucas `(($lucas) ,(add2* n 1)))
-	   `(($lucas) ,n) )))
+    ((fixnump n)
+     (lucas n))
+    (t
+     (setq $next_lucas `(($lucas) ,(add2* n 1)))
+     `(($lucas) ,n))))
 
 (defun lucas (n)
   (declare (fixnum n))
