@@ -52,16 +52,6 @@
 (defmfun $bessel_j (v z)
   (simplify (list '(%bessel_j) v z)))
 
-#||
-(defprop $bessel_j %bessel_j alias)
-(defprop $bessel_j %bessel_j verb)
-(defprop %bessel_j $bessel_j reversealias)
-(defprop %bessel_j $bessel_j noun)
-
-;; Bessel J is a simplifying function.
-
-(defprop %bessel_j simp-bessel-j operators)
-||#
 ;; Bessel J distributes over lists, matrices, and equations
 
 (defprop %bessel_j (mlist $matrix mequal) distribute_over)
@@ -375,15 +365,6 @@
 
 (defmfun $bessel_y (v z)
   (simplify (list '(%bessel_y) v z)))
-
-#||
-(defprop $bessel_y %bessel_y alias)
-(defprop $bessel_y %bessel_y verb)
-(defprop %bessel_y $bessel_y reversealias)
-(defprop %bessel_y $bessel_y noun)
-
-(defprop %bessel_y simp-bessel-y operators)
-||#
 
 ;; Bessel Y distributes over lists, matrices, and equations
 
@@ -717,15 +698,6 @@
 (defmfun $bessel_i (v z)
   (simplify (list '(%bessel_i) v z)))
 
-#||
-(defprop $bessel_i %bessel_i alias)
-(defprop $bessel_i %bessel_i verb)
-(defprop %bessel_i $bessel_i reversealias)
-(defprop %bessel_i $bessel_i noun)
-
-(defprop %bessel_i simp-bessel-i operators)
-||#
-
 ;; Bessel I distributes over lists, matrices, and equations
 
 (defprop %bessel_i (mlist $matrix mequal) distribute_over)
@@ -1045,15 +1017,6 @@
 
 (defmfun $bessel_k (v z)
   (simplify (list '(%bessel_k) v z)))
-
-#||
-(defprop $bessel_k %bessel_k alias)
-(defprop $bessel_k %bessel_k verb)
-(defprop %bessel_k $bessel_k reversealias)
-(defprop %bessel_k $bessel_k noun)
-
-(defprop %bessel_k simp-bessel-k operators)
-||#
 
 ;; Bessel K distributes over lists, matrices, and equations
 
@@ -1661,13 +1624,6 @@
 (defmfun $hankel_1 (v z)
   (simplify (list '(%hankel_1) v z)))
 
-#||
-(defprop $hankel_1 %hankel_1 alias)
-(defprop $hankel_1 %hankel_1 verb)
-(defprop %hankel_1 $hankel_1 reversealias)
-(defprop %hankel_1 $hankel_1 noun)
-||#
-
 ;; hankel_1 distributes over lists, matrices, and equations
 
 (defprop %hankel_1 (mlist $matrix mequal) distribute_over)
@@ -1762,13 +1718,6 @@
 (defmfun $hankel_2 (v z)
   (simplify (list '(%hankel_2) v z)))
 
-#||
-(defprop $hankel_2 %hankel_2 alias)
-(defprop $hankel_2 %hankel_2 verb)
-(defprop %hankel_2 $hankel_2 reversealias)
-(defprop %hankel_2 $hankel_2 noun)
-||#
-
 ;; hankel_2 distributes over lists, matrices, and equations
 
 (defprop %hankel_2 (mlist $matrix mequal) distribute_over)
@@ -1862,13 +1811,6 @@
 
 (defmfun $struve_h (v z)
   (simplify (list '(%struve_h) v z)))
-
-#||
-(defprop $struve_h %struve_h alias)
-(defprop $struve_h %struve_h verb)
-(defprop %struve_h $struve_h reversealias)
-(defprop %struve_h $struve_h noun)
-||#
 
 ;; struve_h distributes over lists, matrices, and equations
 
@@ -2113,15 +2055,6 @@
 
 (defmfun $struve_l (v z)
   (simplify (list '(%struve_l) v z)))
-
-#||
-(defprop $struve_l %struve_l alias)
-(defprop $struve_l %struve_l verb)
-(defprop %struve_l $struve_l reversealias)
-(defprop %struve_l $struve_l noun)
-
-(defprop %struve_l simp-struve-l operators)
-||#
 
 ;; struve_l distributes over lists, matrices, and equations
 
