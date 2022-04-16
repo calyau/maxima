@@ -914,6 +914,15 @@ tlimit(x^q/(a*x^q- 1),x,inf);
  limit(x^q/(a*x^q- 1),x,inf));
 1/a;
 
+/*
+ * limit(li[3](sin(x)), x, %pi/2) was returning a noun form.
+ */
+makelist(subst(n=k, limit(li[n](sin(x)), x, %pi/2)), k, 2, 5);
+[zeta(2), zeta(3), zeta(4), zeta(5)];
+
+limit(li[3](sin(x)+x-%pi/2), x, %pi/2);
+zeta(3);
+
 (remove (q, noninteger),
  killcontext (ctxt));
 done;

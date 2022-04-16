@@ -3135,7 +3135,9 @@ ignoring dummy variables and array indices."
 		  '$minf)
 		 ((and (eq e '$inf) (eql n 2))
 		  '$infinity)
-		 ((or (eql e 1) (off-one-to-inf e))
+		 ((or (eql (ridofab e) 1) (off-one-to-inf e))
+		  ;; Limit of li[s](1) can be evaluated by just
+		  ;; substituting in 1.
 		  (subftake '$li (list n) (list e)))
 		 (t (throw 'limit nil))))
 	  ;; Claim ignorance when order depends on limit variable.	
