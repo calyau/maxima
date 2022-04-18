@@ -6,7 +6,7 @@ maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
-	../build_html.sh -l $(lang) -D
+	../build_html.sh -l $(lang)
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)
 	$(TEXI2PDF) $(AM_V_texinfo) -I $(srcdir)/.. -o maxima.pdf $(srcdir)/maxima.texi
