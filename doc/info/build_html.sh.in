@@ -79,7 +79,9 @@ do
 
   if [ -e $includedfile_absolute ]
   then
-      echo "Taking the file $f from the path $includedfile_absolute"
+      if [ "X$DEBUG" = "Xyes" ]; then
+	  echo "Taking the file $f from the path $includedfile_absolute"
+      fi
   else
       echo Error: File $f cannot be found.
       exit -1
