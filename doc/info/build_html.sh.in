@@ -40,15 +40,7 @@ fi
 
 echo "$0: abs_srcdir=@abs_srcdir@, pwd=$pwd, language=$language, languagedir=$languagedir, texiinitfile=$texiinitfile"
 
-# THIS IS KIND OF TERRIBLE BECAUSE IT DEPENDS ON A CONVENTION ABOUT FILE NAMES IN DOC/INFO/*
-# Assume that per-topic Texinfo files are @include'd in
-# a top-level file. That top-level file is either maxima.texi
-# or include-maxima.texi for all languages at present (January 2022).
-
-if [ -e include-maxima.texi ]
-    then includerfile=include-maxima.texi
-    else includerfile=maxima.texi
-fi
+includerfile=include-maxima.texi
 
 # Extract all filenames that are included using @include commands in the order
 # they are included
@@ -74,12 +66,25 @@ do
       then includedfile_absolute=$languagedir/$f
   else if [ -e @abs_srcdir@/$f ]
        then includedfile_absolute=@abs_srcdir@/$f
-       else
-	   includedfile_absolute=`pwd`/../$f
+       else if [ -e ../../$f ]
+       then includedfile_absolute=../../$f
+	    else if [ -e ../$f ]
+		 then includedfile_absolute=../$f
+		 else
+		     includedfile_absolute=`pwd`/../$f
+		 fi
+	    fi
        fi
   fi
 
-
+  if [ -e $includedfile_absolute ]
+  then
+      echo "Taking the file $f from the path $includedfile_absolute"
+  else
+      echo Error: File $f cannot be found.
+      exit -1
+  fi
+  
   filenamebase=`echo $includedfile_absolute | @SED@ -e 's/^.*\///;s/\.texi//'`
   @SED@ -e 's/^@deffnx*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: '$filenamebase'\/deffn\/\1}\
 &/' \

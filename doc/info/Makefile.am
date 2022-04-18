@@ -655,19 +655,12 @@ figures/worldmap_make_polygon.mac\
 figures/worldmap_region_boundaries.mac\
 figures/worldmap_region_boundaries_plus.mac
 
-if CHM
-MAXIMA_CHM = maxima.chm
-INSTALL_CHM = install-chm
-UNINSTALL_CHM = uninstall-chm
-CLEAN_CHM = clean-chm
-endif
-
 INFOLANG ?= en
 
 # We need the html docu to be generated on "make all" because if we fail
 # to do so a "sudo make install" will generate the html docu as read-only
 # fails conflicting with a subsequent "make html".
-all-local: html maxima.info maxima-index.lisp $(MAXIMA_CHM)
+all-local: html maxima.info maxima-index.lisp
 
 infoname = maxima
 include $(top_srcdir)/common-info.mk
@@ -675,7 +668,7 @@ maxima.info : maxima.texi $(maxima_TEXINFOS)
 	-$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) \
 	  --split-size=1000000 $(srcdir)/maxima.texi
 
-html: maxima_toc.html contents.hhc
+html: maxima_toc.html
 
 maxima-index.lisp: build_index.pl maxima.info
 	/usr/bin/env perl $^ ':crlf' > $@
@@ -693,17 +686,10 @@ maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
 	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log
 
-contents.hhc index.hhk: maxima_singlepage.html
-	/usr/bin/env perl $(srcdir)/create_index maxima_singlepage.html
-
-# Squash error on exit from hhc
-maxima.chm: maxima.hhp contents.hhc index.hhk
-	-"$(HHC)" maxima.hhp
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
-genericdirDATA = $(figurefiles) \
-contents.hhc index.hhk header.hhp maxima.hhp
+genericdirDATA = $(figurefiles)
 
 htmlname = maxima
 htmlinstdir = $(dochtmldir)
@@ -713,8 +699,8 @@ all-local: warn_texinfo
 dist-hook: check_texinfo html
 pdf-local: maxima.pdf
 
-install-data-local: install-maxima-index $(INSTALL_CHM)
-uninstall-local: uninstall-maxima-index $(UNINSTALL_CHM)
+install-data-local: install-maxima-index
+uninstall-local: uninstall-maxima-index
 
 install-maxima-index: maxima-index.lisp
 	$(MKDIR_P) "$(DESTDIR)$(infodir)"
@@ -723,29 +709,15 @@ install-maxima-index: maxima-index.lisp
 uninstall-maxima-index: maxima-index.lisp
 	rm -f "$(DESTDIR)$(infodir)/maxima-index.lisp"
 
-clean-local: clean-info clean-html $(CLEAN_CHM)
+clean-local: clean-info clean-html
 
 clean-info:
-	rm -f $(wildcard maxima.info* maxima-index.lisp) \
-	      $(wildcard $(addprefix $(srcdir),maxima.info* maxima-index.lisp))
+	rm -f $(wildcard maxima.info* maxima-index.lisp))
 	rm -f maxima.fns
 
 clean-html:
-	rm -f $(wildcard maxima*.html contents.hhc index.hhk maxima.chm) \
-	      $(wildcard $(addprefix $(srcdir),maxima*.html contents.hhc index.hhk maxima.chm))
-
-if CHM
-install-chm: maxima.chm
-	$(MKDIR_P) "$(DESTDIR)$(docchmdir)"
-	$(INSTALL_DATA) maxima.chm "$(DESTDIR)$(docchmdir)/maxima.chm"
-
-uninstall-chm:
-	rm -f "$(DESTDIR)$(docchmdir)"
-
-clean-chm:
-	rm -f maxima.chm
-	rm -rf chm
-endif
+	rm -f $(wildcard maxima*.html) \
+	      $(wildcard $(addprefix $(srcdir),maxima*.html))
 
 EXTRA_DIST = manual.css texi2html.init maxima.texi \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \

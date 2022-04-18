@@ -1,33 +1,17 @@
 info_TEXINFOS = maxima.texi
-if CHM
-MAXIMA_CHM = maxima.chm
-INSTALL_CHM = install-chm
-UNINSTALL_CHM = uninstall-chm
-CLEAN_CHM = clean-chm
-genericdir = $(dochtmldir)$(langsdir)
-genericdirDATA = \
-contents.hhc index.hhk header.hhp maxima.hhp
-endif
 
-all-local: maxima-index.lisp maxima_toc.html contents.hhc $(MAXIMA_CHM)
-
-install-data-local: $(INSTALL_CHM)
-
-uninstall-local: $(UNINSTALL_CHM)
+all-local: maxima-index.lisp maxima_toc.html
 
 maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
-	$(srcdir)/../build_html.sh -l $(lang) -D
+	../build_html.sh -l $(lang) -D
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)
 	$(TEXI2PDF) $(AM_V_texinfo) -I $(srcdir)/.. -o maxima.pdf $(srcdir)/maxima.texi
 	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log maxima.vrs
-
-contents.hhc: maxima_singlepage.html
-	/usr/bin/env perl $(srcdir)/../create_index maxima_singlepage.html
 
 include $(top_srcdir)/common.mk
 
@@ -35,7 +19,7 @@ htmlname = maxima
 htmlinstdir = $(dochtmldir)$(langsdir)
 include $(top_srcdir)/common-html.mk
 
-clean-local: clean-info clean-html $(CLEAN_CHM)
+clean-local: clean-info clean-html
 
 clean-info:
 	rm -f maxima.info
@@ -45,33 +29,8 @@ clean-info:
 clean-html:
 	rm -f maxima*.html
 	rm -f maxima_singlepage.html
-	rm -f contents.hhc
-	rm -f index.hhk
 
 EXTRA_DIST = maxima-index.lisp $(genericdirDATA) maxima_toc.html
-
-# This builds the Windows help file maxima.chm
-maxima.chm: maxima_toc.html maxima.hhp contents.hhc index.hhk
-	$(MKDIR_P) chm
-	$(MKDIR_P) chm/figures
-	for hfile in *.html ; do \
-	  sed -e 's|$(srcdir)/../figures|figures|g' < $$hfile > chm/$$hfile; \
-	done
-	cp maxima.hhp contents.hhc index.hhk chm
-	cp $(srcdir)/../figures/*.gif chm/figures
-	-(cd chm; "$(HHC)" maxima.hhp)
-	mv chm/maxima.chm .
-
-install-chm: maxima.chm
-	test -z "$(DESTDIR)$(docchmdir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)$(langsdir)"
-	$(INSTALL_DATA) maxima.chm "$(DESTDIR)$(docchmdir)$(langsdir)/maxima.chm"
-
-uninstall-chm:
-	rm -f "$(DESTDIR)$(docchmdir)"
-
-clean-chm:
-	rm -f maxima.chm
-	rm -rf chm
 
 
 install-info-am: $(INFO_DEPS) maxima-index.lisp

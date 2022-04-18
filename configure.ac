@@ -1227,8 +1227,6 @@ AC_CONFIG_FILES([src/startmaxima_abcl.sh], chmod +x src/startmaxima_abcl.sh)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
-AC_CONFIG_FILES([doc/info/de/build_html.sh], chmod +x doc/info/de/build_html.sh)
-AC_CONFIG_FILES([doc/info/ja/build_html.sh], chmod +x doc/info/ja/build_html.sh)
 AC_CONFIG_FILES([src/maxima], chmod +x src/maxima)
 AC_CONFIG_FILES([src/maxima.bat])
 
@@ -1243,13 +1241,16 @@ doc/info/category-macros.texi \
 doc/info/texi2html.init \
 doc/info/figures/Makefile \
 doc/info/de/Makefile \
+doc/info/de/include-maxima.texi \
 doc/info/es/Makefile \
 doc/info/ja/Makefile \
 doc/info/ja/include-maxima.texi \
+doc/info/pt_BR/include-maxima.texi \
 doc/info/pt/Makefile \
 doc/info/pt/include-maxima.texi \
 doc/info/pt_BR/Makefile \
 doc/info/ru/Makefile \
+doc/info/ru/include-maxima.texi \
 doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/man/ru/Makefile doc/man/ru/maxima.1 doc/man/de/Makefile doc/man/de/maxima.1 \
 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile \
 interfaces/emacs/emaxima/Makefile interfaces/emacs/imaxima/Makefile \

@@ -1,2 +1,0 @@
-$USE_UNICODE = '0' ;
-$EXTRA_HEAD = "<link rel=\"icon\" href=\"http://maxima.sourceforge.net/favicon.ico\"/>"
