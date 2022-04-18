@@ -19,14 +19,15 @@ endif
 ## In instsrcdir, we install the lisp source files in src/ (including
 ## the numerical subdirectories).
 ## TODO: Should we also be installing the .system and .asd files here?
-real_lisp_sources := $(shell echo *.lisp $(srcdir)/numerical/*.lisp $(srcdir)/numerical/slatec/*.lisp)
+real_lisp_sources := $(shell echo $(srcdir)/*.lisp $(srcdir)/numerical/*.lisp $(srcdir)/numerical/slatec/*.lisp)
 nobase_dist_instsrc_DATA = $(real_lisp_sources)
 EXTRA_DIST = \
   maxima.asd maxima.system \
   numerical/slatec/fortran \
   maxima-build.lisp maxima-command.ico set_lang.vbs \
   lisp \
-  share-subdirs.lisp
+  share-subdirs.lisp \
+  $(real_lisp_sources)
 
 ## If we can, we use Automake's blah_SCRIPTS targets to install
 ## stuff. When doing this, we have to populate EXTRA_SCRIPTS, so we
