@@ -55,7 +55,7 @@ cp -r @abs_srcdir@/figures tmp_html
 # "make distcheck" write-protects the source tree. We don't want our
 # figures to inherit that attribute as we want to delete the temp folder
 # again, later.
-chmod u+w -R tmp_html
+chmod -R u+w tmp_html
 
 cat include-maxima.texi > tmp_html/include-maxima.texi
 
