@@ -186,21 +186,28 @@
 (defprop $notequal t binary)
 
 (defmfun $bfloatp (x)
+  "Returns true if X is a bigfloat"
   (and (consp x)
        (consp (car x))
        (eq (caar x) 'bigfloat)))
 
 (defun zerop1 (x)
+  "Returns non-NIL if X is an integer, float, or bfloat that is equal
+  to 0"
   (or (and (integerp x) (= 0 x))
       (and (floatp x) (= 0.0 x))
       (and ($bfloatp x) (= 0 (second x)))))
 
 (defun onep1 (x)
+  "Returns non-NIL if X is an integer, float, or bfloat that is equal
+  to 1"
   (or (and (integerp x) (= 1 x))
       (and (floatp x) (= 1.0 x))
       (and ($bfloatp x) (zerop1 (sub x 1)))))
 
 (defun mnump (x)
+  "Returns non-NIL if X is a Lisp number or if it is a Maxima rational
+  form or a bigfloat form"
   (or (numberp x)
       (and (not (atom x)) (not (atom (car x)))
 	   (member (caar x) '(rat bigfloat)))))
@@ -230,23 +237,45 @@
 
 (defun even (a) (and (integerp a) (not (oddp a))))
 
-(defun ratnump (x) (and (not (atom x)) (eq (caar x) 'rat)))
+;; Predicates to determine if X satisfies some condition.
 
-(defun mplusp (x) (and (not (atom x)) (eq (caar x) 'mplus)))
+(defun ratnump (x)
+  "Determines if X is a Maxima rational form:  ((rat ...) a b)"
+  (and (not (atom x)) (eq (caar x) 'rat)))
 
-(defun mtimesp (x) (and (not (atom x)) (eq (caar x) 'mtimes)))
+(defun mplusp (x)
+  "Determines if X is a Maxima sum form: ((mplus ...) ...)"
+  (and (not (atom x)) (eq (caar x) 'mplus)))
 
-(defun mexptp (x) (and (not (atom x)) (eq (caar x) 'mexpt)))
+(defun mtimesp (x)
+  "Determines if X is a Maxima product form: ((mtimes ...) ...)"
+  (and (not (atom x)) (eq (caar x) 'mtimes)))
+
+(defun mexptp (x)
+  "Determines if X is a Maxima exponential form: ((mexpt ...) ...)"
+  (and (not (atom x)) (eq (caar x) 'mexpt)))
 
 (defun mnctimesp (x) (and (not (atom x)) (eq (caar x) 'mnctimes)))
 
 (defun mncexptp (x) (and (not (atom x)) (eq (caar x) 'mncexpt)))
 
-(defun mlogp (x) (and (not (atom x)) (eq (caar x) '%log)))
+(defun mlogp (x)
+  "Determines if X is a Maxima log form: ((%log ...) ...)"
+  (and (not (atom x)) (eq (caar x) '%log)))
 
-(defun mmminusp (x) (and (not (atom x)) (eq (caar x) 'mminus)))
+(defun mmminusp (x)
+  "Determines if X is a Maxima negative form: ((mminus ...) ...)
+
+   This generally only happens on input forms like a - b:
+     ((mplus) $a ((mminus) $b)).  
+   After simplification a - b becomes 
+     ((mplus) $a ((mtimes) -1 $b))"
+  
+  (and (not (atom x)) (eq (caar x) 'mminus)))
 
 (defun mnegp (x)
+  "Determines if X is negative if X is a Lisp number or a Maxima rat
+  form or bigfloat form"
   (cond ((realp x) (minusp x))
         ((or (ratnump x) ($bfloatp x)) (minusp (cadr x)))))
 
@@ -266,7 +295,9 @@
 
 (defun mratcheck (e) (if ($ratp e) (ratdisrep e) e))
 
-(defmfun $numberp (e) (or ($ratnump e) ($floatnump e) ($bfloatp e)))
+(defmfun $numberp (e)
+  "Returns true if E is a Maxima rational, a float, or a bigfloat number"
+  (or ($ratnump e) ($floatnump e) ($bfloatp e)))
 
 (defmfun $integerp (x)
   (or (integerp x)
