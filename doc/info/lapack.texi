@@ -558,7 +558,7 @@ Like @code{dgeev}, but the matrix @var{A} is complex.
 @fname{zheev} (@var{A}) @
 @fname{zheev} (@var{A}, @var{eigvec_p})
 
-Like @code{zheev}, but the matrix @var{A} is assumed to be a square
+Like @code{dgeev}, but the matrix @var{A} is assumed to be a square
 complex Hermitian matrix. If @var{eigvec_p} is @code{true}, then the
 eigenvectors of the matrix are also computed.
 
