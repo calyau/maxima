@@ -52,10 +52,12 @@ if [ -d tmp_html ]; then
 fi
 mkdir tmp_html
 cp -r @abs_srcdir@/figures tmp_html
+# "make distcheck" write-protects the source tree. We don't want our
+# figures to inherit that attribute as we want to delete the temp folder
+# again, later.
+chmod u+w -R tmp_html
 
-if [ -e include-maxima.texi ]
-    then cp include-maxima.texi tmp_html
-fi
+cat include-maxima.texi > tmp_html/include-maxima.texi
 
 cd tmp_html
 
@@ -165,7 +167,7 @@ fi
 
 # --no-node-files so we don't have thousands of little html files
 # --force -e 10000 because the category stuff causes lots of errors.
-TEXIOPT="--html -c INLINE_CONTENTS=0 -c OUTPUT_ENCODING_NAME=UTF-8 --force -e 10000 --document-lang=$language -I . -I $languagedir -I ../.. --css-include=@abs_srcdir@/manual.css --init-file $texiinitfile"
+TEXIOPT="--html -c INLINE_CONTENTS=0 -c OUTPUT_ENCODING_NAME=UTF-8 --force -e 10000 --document-lang=$language -I . -I $languagedir -I ../.. --css-include=@abs_srcdir@/manual.css -I @abs_srcdir@/figures --init-file $texiinitfile"
 makeinfo --split=chapter --no-node-files --output="$languagedestdir" $TEXIOPT maxima.texi 
 makeinfo --no-split --output="$languagedestdir/maxima_singlepage.html" $TEXIOPT maxima.texi 
 
