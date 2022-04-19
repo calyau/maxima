@@ -924,6 +924,7 @@
                                 (eq (caar var) 'mplus))
                             (copy-list var))
                            (t var)))
+	((eql var 1) 1)
 	(t (list '(mexpt ratsimp) var n))))
 
 (defun pdisrep+ (p)

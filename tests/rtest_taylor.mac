@@ -635,3 +635,15 @@ taytorat (taylor (taylor (x + y, [x], 0, 1), [y], 0, 1));
 
 horner (taylor (x, [x], 0, 1));
 x;
+
+/* Bug #608: taylor(x^a,[x],0,1) unsimplified
+ * Bug #545: multivar taylor gives 1^2
+ */
+
+/* This used to yield "+1^2*x^a" */
+string(taylor(x^a,[x],0,1));
+"+x^a";
+
+/* This used to yield "+1^4*(x*y)^a" */
+string(taylor((x*y)^a,[x,y],0,1));
+"+(x*y)^a";
