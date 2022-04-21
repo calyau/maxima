@@ -1513,12 +1513,15 @@ first kind:
 	   ;;
 	   ;; Or
 	   ;;
-	   ;; elliptic_e(x,1) = sin(phi) + 2*round(x/%pi)*elliptic_ec(m)
+	   ;; elliptic_e(x,1) = sin(x-%pi*round(x/%pi)) + 2*round(x/%pi)*elliptic_ec(m)
 	   ;;
-	   (add (ftake '%sin phi)
-		(mul 2
-		     (mul (ftake '%round (div phi '$%pi))
-			  (ftake '%elliptic_ec m)))))
+	   (let ((mult-pi (ftake '%round (div phi '$%pi))))
+	     (add (ftake '%sin (sub phi
+				    (mul '$%pi
+					 mult-pi)))
+		  (mul 2
+		       (mul mult-pi
+			    (ftake '%elliptic_ec m))))))
 	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
 	   ;; Complete elliptic integral
 	   (ftake '%elliptic_ec m))

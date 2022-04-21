@@ -514,7 +514,7 @@ sqrt(2)*elliptic_ec(1/2);
 
 /* Test periodicity of elliptic_e */
 elliptic_e(x, 1);
-2*round(x/%pi)+sin(x);
+2*round(x/%pi)+sin(x-%pi*round(x/%pi));
 
 elliptic_e(3,1/3);
 elliptic_e(3-%pi,1/3)+2*elliptic_ec(1/3);
@@ -910,6 +910,13 @@ elliptic_ec(1/2) - gamma(3/4)^2/(2*sqrt(%pi))- %pi^(3/2)/(4*gamma(3/4)^2);
 
 'elliptic_e(5,0);
 5$
+
+/* #3967 elliptic_e(5*%pi/4,1) inconsistent with numerical evaluation */
+elliptic_e(5*%pi/4, 1);
+1/sqrt(2) + 2;
+
+closeto(elliptic_e(5*%pi/4,1) - elliptic_e(float(5*%pi/4),1), 1e-16);
+true;
 
 /* #3746 derivative of inverse_jacobi_sn is noun/verb confused. 
    The same is true for inverse_jacobi_cn and inverse_jacobi_dn, but the 
