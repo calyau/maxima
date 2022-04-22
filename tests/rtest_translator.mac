@@ -2021,6 +2021,49 @@ block ([translate : false, l1, l2],
 (kill (foo), 0);
 0;
 
+/* Rest args are now allowed in lambda expressions in MQAPPLY
+ * lambda forms
+ */
+
+block ([translate : false, l1, l2],
+  local (foo, bar, baz),
+
+  /* foo used to fail to translate due to the rest arg */
+  foo () :=
+    block ([x : 1, z : 3],
+      lambda ([[x]], x) (x, x + 1, z)),
+  bar () :=
+    block ([x : 2, z : 4],
+      apply (lambda ([[x]], x), [x, x + 1, z])),
+  baz () :=
+    block ([x : 3, z : 5],
+      block ([f : lambda ([[x]], x)],
+        f (x, x + 1, z))),
+
+  l1 : [foo (), bar (), baz ()],
+
+  translate_or_lose (foo, bar, baz),
+
+  l2 : [foo (), bar (), baz ()],
+
+  [l1, is (l1 = l2)]);
+[[[1, 2, 3],[2, 3, 4],[3, 4, 5]], true];
+
+/* Validation has been improved for lambda expressions in MQAPPLY
+ * lambda forms
+ */
+
+block ([translate : false],
+  local (foo, bar),
+
+  /* These should both fail to translate */
+  foo () := lambda ([]) (),
+  bar () := lambda ([x, x], x) (1, 2),
+
+  translate (foo, bar));
+[];
+
+
 
 
 
