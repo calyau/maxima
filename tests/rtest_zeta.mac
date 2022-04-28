@@ -90,5 +90,39 @@ fpprec: 32;
 closeto(abs(zeta(3b0 + %i) - (1.1072144084314091956251002057752233976776b0 - 0.1482908671781753484907641256686246807941b0*%i)), 3.11b-33);
 true$
 
+/*
+ * Bug 3968: For s < 0, zeta(-s) can be expressed in terms of
+ * zeta(1-s), a positive number.
+ *
+ * The expected answer is
+ *
+ * zeta(s) = 2^s*%pi^(s-1)*sin(%pi/2*s)*gamma(1-s)*zeta(1-s))
+ */
+zeta(-1/2);
+-zeta(3/2)/(4*%pi);
+
+zeta(-7/3);
+(7*gamma(1/3)*zeta(10/3))/(27*2^(4/3)*%pi^(10/3));
+
+makelist(
+  block([
+    /* Experimentally determined.  Should be around 1e-15 or so */
+    threshold : 1.5600e-15,
+    exact : zeta(-(k+1/2)),
+    fl : zeta(float(-(k+1/2))), err],
+    /*
+     *
+     * Use relative error.  If the error is too large, return the arg,
+     * the relative error, the exact value, and the corresponding
+     * numerical value
+     *
+     */
+    err : closeto(abs((float(exact)-fl)/fl), threshold),
+    if (err = true)
+    then true
+    else [-(k + 1/2), err, exact, fl]),
+  k, 1, 10);
+[true, true, true, true, true, true, true, true, true, true];
+
 (reset(fpprec), remfunction(chk),0);
 0$

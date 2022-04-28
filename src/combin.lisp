@@ -585,6 +585,19 @@
                  (mul (div (power 2 (1- z)) 
                            (take '(mfactorial) z))
                       (take '(mabs) ($bern z))))))))
+    ((and (mnegp z))
+     ;; z is a negative number.  We can use the relationship (A&S
+     ;; 23.2.6):
+     ;;
+     ;;  zeta(s) = 2^s*%pi^(s-1)*sin(%pi/2*s)*gamma(1-s)*zeta(1-s)
+     ;;
+     ;; to transform zeta of a negative number in terms of a zeta to a
+     ;; positive number.
+     (mul (power 2 z)
+	  (power '$%pi (sub z 1))
+	  (ftake '%sin (div (mul '$%pi z) 2))
+	  (ftake '%gamma (sub 1 z))
+	  (ftake '%zeta (sub 1 z))))
     (t
      (give-up))))
 
