@@ -860,11 +860,11 @@ APPLY means like APPLY.")
   (punt-to-meval form))
 
 (def%tr $local (form)
-  (cond (local
-	 (tr-format (intl:gettext "error: there is already a 'local' in this block.~%"))
-	 (setq tr-abort t))
-	(t
-	 (setq local t)))
+  (when local
+    (tr-format (intl:gettext "error: there is already a 'local' in this block.~%"))
+    (setq tr-abort t)
+    (return-from $local nil))
+  (setq local t)
   ; We can't just translate to a call to MLOCAL here (which is
   ; what used to happen).  That would push onto LOCLIST and bind
   ; MLOCP at the "wrong time".  The push onto LOCLIST and the
@@ -1009,17 +1009,17 @@ APPLY means like APPLY.")
     (let ((dup (find-duplicate arglist :test #'eq)))
       (when dup
         (tr-format (intl:gettext "error: ~M occurs more than once in block variable list") dup)
-        (setq tr-abort t)))
-    (unless tr-abort
-      (setq form
-	    (tr-lambda
-	     ;; [2] call the lambda translator.
-	     `((lambda) ((mlist) ,@arglist) ,@body)
-	     ;; [3] supply our own body translator.
-	     #'tr-mprog-body
-	     val-list
-	     arglist))
-      (cons (car form) `(,(cdr form) ,@val-list)))))
+        (setq tr-abort t)
+        (return-from mprog nil)))
+    (setq form
+	  (tr-lambda
+	   ;; [2] call the lambda translator.
+	   `((lambda) ((mlist) ,@arglist) ,@body)
+	   ;; [3] supply our own body translator.
+	   #'tr-mprog-body
+	   val-list
+	   arglist))
+    (cons (car form) `(,(cdr form) ,@val-list))))
 
 (defun tr-mprog-body (body val-list arglist
 		      &aux 
