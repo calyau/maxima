@@ -312,11 +312,11 @@
 (defun gen-tr-lambda (form &aux arg-info frees t-form dup)
   (unless ($listp (cadr form))
     (tr-format (intl:gettext "error: first argument of lambda expression must be a list; found ~M") (cadr form))
-    (setq tr-abort t)
+    (tr-abort)
     (return-from gen-tr-lambda nil))
   (when (null (cddr form))
     (tr-format (intl:gettext "error: empty body in lambda expression.~%"))
-    (setq tr-abort t)
+    (tr-abort)
     (return-from gen-tr-lambda nil))
   (setq arg-info (mapcar #'(lambda (v)
 			     (cond ((mdefparam v) nil)
@@ -330,11 +330,11 @@
 	     (and (member t arg-info :test #'eq)
 		  (cdr (member t arg-info :test #'eq)))) ;;; the &REST is not the last one.
 	 (tr-format (intl:gettext "error: unsupported argument list ~:M in lambda expression.~%") (cadr form))
-	 (setq tr-abort t)
+	 (tr-abort)
 	 nil)
 	((setq dup (find-duplicate (cdadr form) :test #'eq :key #'mparam))
 	 (tr-format (intl:gettext "error: ~M occurs more than once in lambda expression parameter list") (mparam dup))
-	 (setq tr-abort t)
+	 (tr-abort)
 	 nil)
 	(t
 	 (setq arg-info (member t arg-info :test #'eq) ;; &RESTP

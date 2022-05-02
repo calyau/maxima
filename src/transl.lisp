@@ -184,13 +184,16 @@ APPLY means like APPLY.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun tr-abort ()
+  (setq tr-abort t)
+  nil)
 
 (defun barfo (msg)
   (tr-format (intl:gettext "Internal translator error: ~M~%") msg)
   (cond (*transl-debug*
 	 (break "transl barfo"))
 	(t
-	 (setq tr-abort t)
+	 (tr-abort)
 	 nil)))
 
 (defun specialp (var)
@@ -370,7 +373,7 @@ APPLY means like APPLY.")
 (defun tr-mfun (name &aux (*transl-backtrace* nil))
   (let ((def-form (consfundef name nil nil)))
     (cond ((null def-form)
-	   (setq tr-abort t))
+	   (tr-abort))
 	  (t
 	   (tr-mdefine-toplevel def-form)))))
 
@@ -419,7 +422,7 @@ APPLY means like APPLY.")
 	  ((member tr-unique a-args :test #'eq)
 	   ;; WHAT IS "BAD" ABOUT THE ARGUMENT LIST HERE ??
 	   (tr-format (intl:gettext "error: unhandled argument list in function definition: ~:M~%") `((mlist),@args))
-	   (setq tr-abort t)
+	   (tr-abort)
 	   nil)
 	  ((member (caar form) '(mdefine mdefmacro) :test #'eq)
 	   (setq kind (cond ((eq (caar form) 'mdefmacro) 'macro)
@@ -491,6 +494,7 @@ APPLY means like APPLY.")
 					; ERRSET is crude, but...
 		   (errset (apply 'eval (list lisp-def-form)))))
 	      (cond ((not lisp-action)
+		     (tr-abort)
 		     (trfail name))
 		    (t name))))))))
 
@@ -847,7 +851,7 @@ APPLY means like APPLY.")
 (def%tr $eval_when (form)
   (tr-format (intl:gettext "error: found 'eval_when' in a function or expression: ~:M~%") form)
   (tr-format (intl:gettext "note: 'eval_when' can appear only at the top level in a file.~%"))
-  (setq tr-abort t)
+  (tr-abort)
   '($any . nil))
 
 (def%tr mdefmacro (form)
@@ -862,7 +866,7 @@ APPLY means like APPLY.")
 (def%tr $local (form)
   (when local
     (tr-format (intl:gettext "error: there is already a 'local' in this block.~%"))
-    (setq tr-abort t)
+    (tr-abort)
     (return-from $local nil))
   (setq local t)
   ; We can't just translate to a call to MLOCAL here (which is
@@ -1009,7 +1013,7 @@ APPLY means like APPLY.")
     (let ((dup (find-duplicate arglist :test #'eq)))
       (when dup
         (tr-format (intl:gettext "error: ~M occurs more than once in block variable list") dup)
-        (setq tr-abort t)
+        (tr-abort)
         (return-from mprog nil)))
     (setq form
 	  (tr-lambda
