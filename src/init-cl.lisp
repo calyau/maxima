@@ -650,6 +650,17 @@ When one changes, the other does too."
 
   #+sbcl (setf *read-default-float-format* 'double-float)
 
+  ;; GCL: disable readline symbol completion,
+  ;; leaving other functionality (line editing, anything else?) enabled.
+  ;;
+  ;; This is kind of terrible. I don't see a flag to only disable completion,
+  ;; or a way to set the symbol list to Maxima symbols and disable case inversion,
+  ;; so set the completion prefix to a nonexistent package.
+  ;; If ever package BLURFLE is actually defined, and contains external symbols,
+  ;; those symbols will be completed. I can live with that.
+  
+  #+gcl (setq si::*readline-prefix* "BLURFLE:")
+
   (initialize-real-and-run-time)
   (intl::setlocale)
   (set-locale-subdir)
