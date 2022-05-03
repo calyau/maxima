@@ -1942,7 +1942,7 @@ wrapper for this."
 		    r))))
 
 (defun arrfunp (x)
-  (or (and $transrun (getl x '(a-expr))) (mgetl x '(aexpr))))
+  (or (and $transrun (getl x '(a-expr a-subr))) (mgetl x '(aexpr))))
 
 (defun arrfuncall (arrfun subs form)
   (let ((aexprp t))

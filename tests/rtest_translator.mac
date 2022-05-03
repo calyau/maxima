@@ -2063,6 +2063,26 @@ block ([translate : false],
   translate (foo, bar));
 [];
 
+/* The translation of array functions was broken for decades */
+
+block ([translate : false, l1, l2],
+  local (foo, bar),
+
+  foo[x] := x,
+  bar[n] := if n = 1 then 1 else n * bar[n - 1],
+
+  l1 : [foo[0], foo[5], bar[5], bar[10]],
+
+  translate_or_lose (foo, bar),
+
+  l2 : [foo[0], foo[5], bar[5], bar[10]],
+
+  [l1, is (l1 = l2)]);
+[[0, 5, 120, 3628800], true];
+
+(kill (foo, bar), 0);
+0;
+
 
 
 
