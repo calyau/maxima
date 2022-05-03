@@ -489,20 +489,20 @@ APPLY means like APPLY.")
 	    (if delete-subr? (remprop name 'subr))
 	    (if (mget name 'trace) (macsyma-untrace name))
 	    (if (not $savedef) (meval `(($remfunction) ,name)))
-	    (let ((lisp-action
-					; apply EVAL so it is easy to TRACE.
-					; ERRSET is crude, but...
-		   (errset (apply 'eval (list lisp-def-form)))))
-	      (cond ((not lisp-action)
-		     (tr-abort)
-		     (trfail name))
-		    (t name))))))))
+	    (handler-case (eval lisp-def-form)
+	      (error (e)
+		(tr-abort)
+		(trfail name e)
+		(return-from translate-function nil)))
+	    name)))))
 
 (defun punt-to-meval (form &optional (mode '$any))
   (cons mode `(meval ',form)))
 
-(defun trfail (x)
-  (tr-format (intl:gettext "error: failed to translate ~:@M~%") x)
+(defun trfail (x &optional msg)
+  (tr-format (intl:gettext "Error: failed to translate ~:@M~%") x)
+  (when msg
+    (tr-format (intl:gettext "Message: ~A~%") msg))
   nil)
 
 (defun translate-and-eval-macsyma-expression (form)
