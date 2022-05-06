@@ -607,7 +607,7 @@
               (putprop ',name ',lambda-list 'arg-list)
               (defprop ,name t translated))))
     (let ((impl-name (intern (concatenate 'string
-					  (subseq (string name) 1)
+					  (string name)
 					  "-IMPL"))))
       `(progn
 	 (defun-checked ,name ,lambda-list
