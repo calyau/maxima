@@ -379,7 +379,7 @@ When one changes, the other does too."
                           ns
                           (if (eql #\/ (char ns (1- (length ns)))) "" "/")
                           "*"
-                          #+(or :clisp :sbcl :ecl :openmcl) "/")
+                          #+(or :clisp :sbcl :ecl :openmcl :gcl) "/")
              #+openmcl :directories #+openmcl t))
 
 (defun unix-like-basename (path)
