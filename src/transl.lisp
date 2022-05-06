@@ -416,6 +416,11 @@ APPLY means like APPLY.")
 	   ;; allowed. They won't get passed the interpreter, but
 	   ;; interesting things may happen here. Thats what you
 	   ;; get from too much syntax, so don't sweat it.
+	   ;;
+	   ;; the allowed generalizations aren't necessarily subscripted
+	   ;; functions, but we'll act like they are in this warning.
+	   ;; don't sweat this either.
+	   (tr-format (intl:gettext "warning: subscripted functions do not translate well: ~:M~%") form)
 	   (tr-mdefine-toplevel
 	    `(,(car form) ,(car args)
 	      ((lambda) ((mlist) ,@(cdr args)) ,body))))
