@@ -1217,7 +1217,7 @@
 ;;     key
 ;;     xaxis_secondary
 ;;     yaxis_secondary
-(defun explicit (fcn var minval maxval)
+(defun-checked explicit (fcn var minval maxval)
   (let* ((nticks (get-option '$nticks))
          (depth (get-option '$adapt_depth))
          ($numer t)
