@@ -1585,6 +1585,7 @@ wrapper for this."
 (defun remove-transl-array-fun-props (fun)
   (when (and (get fun 'translated) (not (eq $savedef '$all)))
     (zl-remprop fun 'a-subr)
+    (zl-remprop fun 'arrayfun-mode)
     (if (not (fboundp fun)) (zl-remprop fun 'translated))))
 
 (defun rempropchk (var)
