@@ -1,0 +1,160 @@
+@menu
+* Introduction to pslq::
+* Functions and Variables for pslq::
+@end menu
+
+@node Introduction to pslq, Functions and Variables for pslq, pslq-pkg, pslq-pkg
+@section Introduction to pslq
+
+Package @code{pslq} contains two functions.
+
+(1) @code{guess_exact_value} tries to find
+an exact equivalent for an inexact number (float or bigfloat).
+
+(2) @code{pslq_integer_relation} tries to find
+integer coefficients such that a linear combination of inexact numbers
+is approximately zero.
+
+@node Functions and Variables for pslq, , Introduction to pslq, pslq-pkg
+@section Functions and Variables for pslq
+
+@deffn {Function} guess_exact_value (@var{x})
+
+When @var{x} is a floating point number or bigfloat,
+@code{guess_exact_value} tries to find an exact expression
+(in terms of radicals, logarithms, exponentials, and the constant @code{%pi})
+which is nearly equal to the given number.
+If @code{guess_exact_value} cannot find such an expression,
+@var{x} is returned unchanged.
+
+When @var{x} is rational number or other mapatom
+(other than a float or bigfloat),
+@var{x} is returned unchanged.
+
+Otherwise, @var{x} is a nonatomic expression,
+and @code{guess_exact_value} is applied to each of the arguments of @var{x}.
+
+Example:
+
+@c ===beg===
+@c load ("pslq.mac");
+@c root: float (sin (%pi/12));
+@c guess_exact_value (root);
+@c L: makelist (root^i, i, 0, 4);
+@c m: pslq_integer_relation(%);
+@c makelist (x^i, i, 0, 4) . m;
+@c solve(%);
+@c ===end===
+@example
+(%i1) load ("pslq.mac");
+(%o1)                       pslq.mac
+(%i2) root: float (sin (%pi/12));
+(%o2)                  0.2588190451025207
+(%i3) guess_exact_value (root);
+                        sqrt(2 - sqrt(3))
+(%o3)                   -----------------
+                                2
+(%i4) L: makelist (root^i, i, 0, 4);
+(%o4) [1.0, 0.2588190451025207, 0.06698729810778066, 
+                       0.01733758853025369, 0.004487298107780675]
+(%i5) m: pslq_integer_relation(%);
+(%o5)                 [- 1, 0, 16, 0, - 16]
+(%i6) makelist (x^i, i, 0, 4) . m;
+                             4        2
+(%o6)                 (- 16 x ) + 16 x  - 1
+(%i7) solve(%);
+             sqrt(sqrt(3) + 2)      sqrt(sqrt(3) + 2)
+(%o7) [x = - -----------------, x = -----------------, 
+                     2                      2
+                        sqrt(2 - sqrt(3))      sqrt(2 - sqrt(3))
+                  x = - -----------------, x = -----------------]
+                                2                      2
+@end example
+@end deffn
+
+@deffn {Function} pslq_integer_relation (@var{L})
+
+Implements the PSLQ algorithm [1] to find integer relations between bigfloat numbers.
+
+For a given list @var{L} of floating point numbers,
+@code{pslq_integer_relation} returns a list of integers @var{m}
+such that @code{@var{m} . @var{L} = 0}
+(with absolute residual error less than @code{pslq_threshold}).
+
+[1] D.H.Bailey: Integer Relation Detection and Lattice Reduction.
+
+Example:
+
+@c ===beg===
+@c load ("pslq.mac");
+@c root: float (sin (%pi/12));
+@c L: makelist (root^i, i, 0, 4);
+@c m: pslq_integer_relation(%);
+@c m . L;
+@c float (10^(2 - fpprec));
+@c is (abs (m . L) < 10^(2 - fpprec));
+@c ===end===
+@example
+(%i1) load ("pslq.mac");
+(%o1)                       pslq.mac
+(%i2) root: float (sin (%pi/12));
+(%o2)                  0.2588190451025207
+(%i3) L: makelist (root^i, i, 0, 4);
+(%o3) [1.0, 0.2588190451025207, 0.06698729810778066, 
+                       0.01733758853025369, 0.004487298107780675]
+(%i4) m: pslq_integer_relation(%);
+(%o4)                 [- 1, 0, 16, 0, - 16]
+(%i5) m . L;
+(%o5)                - 2.359223927328458E-16
+(%i6) float (10^(2 - fpprec));
+(%o6)                        1.0E-14
+(%i7) is (abs (m . L) < 10^(2 - fpprec));
+(%o7)                         true
+@end example
+@end deffn
+
+@defvr {Variable} pslq_precision
+Default value: @code{10^(fpprec - 2)}
+
+Maximum magnitude of some intermediate results in @code{pslq_integer_relation}.
+The search fails if one of the intermediate results has elements
+larger than @code{pslq_precision}.
+
+@end defvr
+
+@defvr {Variable} pslq_threshold
+Default value: @code{10^(2 - fpprec)}
+
+Threshold for absolute residual error of integer relation found by @code{pslq_integer_relation}.
+
+@end defvr
+
+@defvr {Variable} pslq_depth
+Default value: @code{20 * @var{n}}
+
+Number of iterations of the PSLQ algorithm.
+
+The default value is 20 times @var{n},
+where @var{n} is the length of the list of numbers supplied to @code{pslq_integer_relation}.
+
+@end defvr
+
+@defvr {Variable} pslq_status
+
+Indicates success or failure for an integer relation search by @code{pslq_integer_relation}.
+
+When @code{pslq_status} is 1, it indicates an integer relation was found,
+and the absolute residual error is less than @code{pslq_threshold}.
+
+When @code{pslq_status} is 2, it indicates an integer relation was not found
+because some intermediate results are larger than @code{pslq_precision}.
+
+When @code{pslq_status} is 3, it indicates an integer relation was not found
+because the number of iterations @code{pslq_depth} was reached.
+
+@end defvr
+
+@c SEEMS TO OBSCURE FOR USER-LEVEL DOCUMENTATION
+@c @defvr {Variable} pslq_fail_norm
+@c @end defvr
+

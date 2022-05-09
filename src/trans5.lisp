@@ -173,7 +173,7 @@
 		     `(cons ',var ,(dtranslate var)))
 		    ((eq (caar var) 'msetq)
 		     `(cons ',(cadr var) ,(dtranslate (caddr var))))
-		    (t (setq tr-abort t)
+		    (t (tr-abort)
 		       (tr-format (intl:gettext "error: found unhandled variable ~:M in 'buildq'.~%") var))))
 					;right thing to do here??
 					;how much error checking does transl do now?

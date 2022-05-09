@@ -1,6 +1,9 @@
 ;;Autoloads for maxima
 (in-package :maxima)
 
+($auto_mexpr '$guess_exact_value "pslq")
+(setf (get '$pslq_integer_relation 'autoload) "pslq")
+
 ($auto_mexpr '$lratsubst "lrats")
 ($auto_mexpr '$fullratsubst "lrats")
 

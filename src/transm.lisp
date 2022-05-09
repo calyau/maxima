@@ -18,7 +18,8 @@
   (setq definition
 	(if (and (null body) (symbolp lambda-list))
 	    `(def-same%tr ,name ,lambda-list)
-	    `(defun-prop (,name translate) ,lambda-list ,@body)))
+	    `(defun-prop (,name translate) ,lambda-list
+	       (block ,name ,@body))))
   `(eval-when (:compile-toplevel :execute :load-toplevel)
     ,definition))
 
