@@ -422,7 +422,7 @@
          :groups '((2 0)) ; numbers are sent to gnuplot in groups of 2
          :points (list pts) ) ))
 
-(defun points (arg1 &optional (arg2 nil))
+(defun-checked points (arg1 &optional (arg2 nil))
    (if (arrayp arg1)
       (if (= (length (array-dimensions arg1)) 2)
          (points-array-2d arg1)
@@ -487,7 +487,7 @@
                  (get-option '$line_type)
                  pal )))))
 
-(defun points3d (arg1 &optional (arg2 nil) (arg3 nil))
+(defun-checked points3d (arg1 &optional (arg2 nil) (arg3 nil))
    (let (pts x y z xmin xmax ymin ymax zmin zmax ncols col)
       (check-enhanced3d-model "points" '(0 1 3))
       (cond (($listp arg1)   ; list input
@@ -607,7 +607,7 @@
 ;;     xaxis_secondary
 ;;     yaxis_secondary
 ;;     transform
-(defun polygon (arg1 &optional (arg2 nil))
+(defun-checked polygon (arg1 &optional (arg2 nil))
    (if (and (get-option '$transparent)
             (not (get-option '$border)))
        (merror "draw (polygon): transparent is true and border is false; this is not consistent"))
@@ -698,7 +698,7 @@
 ;;     xaxis_secondary
 ;;     yaxis_secondary
 ;;     transform
-(defun triangle (arg1 arg2 arg3)
+(defun-checked triangle (arg1 arg2 arg3)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 2))
            (not ($listp arg2))
@@ -739,7 +739,7 @@
 ;;     xaxis_secondary
 ;;     yaxis_secondary
 ;;     transform
-(defun quadrilateral (arg1 arg2 arg3 arg4)
+(defun-checked quadrilateral (arg1 arg2 arg3 arg4)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 2))
            (not ($listp arg2))
@@ -786,7 +786,7 @@
 ;;     xaxis_secondary
 ;;     yaxis_secondary
 ;;     transform
-(defun rectangle (arg1 arg2)
+(defun-checked rectangle (arg1 arg2)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 2))
            (not ($listp arg2))
@@ -826,7 +826,7 @@
 ;;     xaxis_secondary
 ;;     yaxis_secondary
 ;;     transform
-(defun ellipse (xc yc a b ang1 ang2)
+(defun-checked ellipse (xc yc a b ang1 ang2)
   (if (and (get-option '$transparent)
            (not (get-option '$border)))
       (merror "draw2d (ellipse): transparent is true and border is false; this is not consistent"))
@@ -949,7 +949,7 @@
             when pos do (write-string replacement out)
             while pos)))
 
-(defun label (&rest lab)
+(defun-checked label (&rest lab)
   (let ((n (length lab))
         (result nil)
         is2d)
@@ -1022,7 +1022,7 @@
 ;;     line_width
 ;;     xaxis_secondary
 ;;     yaxis_secondary
-(defun bars (&rest boxes)
+(defun-checked bars (&rest boxes)
   (let ((n (length boxes))
         (count -1)
         (xmin most-positive-double-float)
@@ -1081,7 +1081,7 @@
 ;;     unit_vectors
 ;;     xaxis_secondary
 ;;     yaxis_secondary
-(defun vect (arg1 arg2)
+(defun-checked vect (arg1 arg2)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 2))
            (not ($listp arg2))
@@ -1145,7 +1145,7 @@
 ;;     key
 ;;     color
 ;;     unit_vectors
-(defun vect3d (arg1 arg2)
+(defun-checked vect3d (arg1 arg2)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 3))
            (not ($listp arg2))
@@ -1397,7 +1397,7 @@
   (let ((len (1- (length coord))))
     `(push (make-array ,len :element-type 'flonum :initial-contents ,coord) pts)))
 
-(defun region (ineq x-var x-minval x-maxval y-var y-minval y-maxval)
+(defun-checked region (ineq x-var x-minval x-maxval y-var y-minval y-maxval)
   (let* ((nx (get-option '$x_voxel))
          (ny (get-option '$y_voxel))
          (xmin ($float x-minval))
@@ -1638,7 +1638,7 @@
 	  (t
 	   expr1))))
 
-(defun implicit (expr x xmin xmax y ymin ymax)
+(defun-checked implicit (expr x xmin xmax y ymin ymax)
   (let* (($numer t) ($plot_options $plot_options)
          (pts ())
          (expr (m- ($rhs expr) ($lhs expr)))
@@ -1726,7 +1726,7 @@
 ;;     enhanced3d
 ;;     wired_surface
 ;; Some functions and macros are defined in grcommon.lisp
-(defun implicit3d (expr par1 xmin xmax par2 ymin ymax par3 zmin zmax)
+(defun-checked implicit3d (expr par1 xmin xmax par2 ymin ymax par3 zmin zmax)
   (let ((xmin ($float xmin))
         (xmax ($float xmax))
         (ymin ($float ymin))
@@ -1805,7 +1805,7 @@
 ;;     wired_surface
 ;;     surface_hide
 ;;     transform
-(defun explicit3d (fcn par1 minval1 maxval1 par2 minval2 maxval2)
+(defun-checked explicit3d (fcn par1 minval1 maxval1 par2 minval2 maxval2)
   (let* ((xu_grid (get-option '$xu_grid))
          (yv_grid (get-option '$yv_grid))
          (fminval1 ($float minval1))
@@ -1909,7 +1909,7 @@
 ;;     enhanced3d
 ;;     wired_surface
 ;;     transform
-(defun elevation_grid (mat x0 y0 width height)
+(defun-checked elevation_grid (mat x0 y0 width height)
   (let ( (fx0 ($float x0))
          (fy0 ($float y0))
          (fwidth ($float width))
@@ -1996,7 +1996,7 @@
 ;;     enhanced3d
 ;;     wired_surface
 ;;     transform
-(defun mesh (&rest row)
+(defun-checked mesh (&rest row)
   (let (result xx yy zz
         (xmin most-positive-double-float)
         (xmax most-negative-double-float)
@@ -2071,7 +2071,7 @@
 ;;     key
 ;;     enhanced3d
 ;;     transform
-(defun triangle3d (arg1 arg2 arg3)
+(defun-checked triangle3d (arg1 arg2 arg3)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 3))
            (not ($listp arg2))
@@ -2114,7 +2114,7 @@
 ;;     key
 ;;     enhanced3d
 ;;     transform
-(defun quadrilateral3d (arg1 arg2 arg3 arg4)
+(defun-checked quadrilateral3d (arg1 arg2 arg3 arg4)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 3))
            (not ($listp arg2))
@@ -2164,7 +2164,7 @@
 ;;     yaxis_secondary
 ;;     transform
 ;; Note: similar to draw2d-parametric in plot.lisp
-(defun parametric (xfun yfun par parmin parmax)
+(defun-checked parametric (xfun yfun par parmin parmax)
   (let* ((nticks (get-option '$nticks))
          ($numer t)
          (tmin ($float parmin))
@@ -2227,7 +2227,7 @@
 ;;     xaxis_secondary
 ;;     yaxis_secondary
 ;; This object is constructed as a parametric function
-(defun polar (radius ang minang maxang)
+(defun-checked polar (radius ang minang maxang)
   (let ((grobj (parametric `((mtimes simp) ,radius ((%cos simp) ,ang))
                             `((mtimes simp) ,radius ((%sin simp) ,ang))
                             ang minang maxang)))
@@ -2254,7 +2254,7 @@
 ;; This object is constructed as a parametric surface in 3d.
 ;; Functions are defined in format r=r(azimuth,zenith),
 ;; where, normally, azimuth is an angle in [0,2*%pi] and zenith in [0,%pi]
-(defun spherical (radius azi minazi maxazi zen minzen maxzen)
+(defun-checked spherical (radius azi minazi maxazi zen minzen maxzen)
   (let ((grobj (parametric_surface
                      `((mtimes simp) ,radius ((%sin simp) ,zen) ((%cos simp) ,azi))
                      `((mtimes simp) ,radius ((%sin simp) ,zen) ((%sin simp) ,azi))
@@ -2285,7 +2285,7 @@
 ;; This object is constructed as a parametric surface in 3d.
 ;; Functions are defined in format z=z(radius,azimuth), where,
 ;; normally, azimuth is an angle in [0,2*%pi] and r any real
-(defun cylindrical (r z minz maxz azi minazi maxazi)
+(defun-checked cylindrical (r z minz maxz azi minazi maxazi)
   (let ((grobj (parametric_surface
                      `((mtimes simp) ,r ((%cos simp) ,azi))
                      `((mtimes simp) ,r ((%sin simp) ,azi))
@@ -2314,7 +2314,7 @@
 ;;     enhanced3d
 ;;     surface_hide
 ;;     transform
-(defun parametric3d (xfun yfun zfun par1 parmin parmax)
+(defun-checked parametric3d (xfun yfun zfun par1 parmin parmax)
   (let* ((nticks (get-option '$nticks))
          ($numer t)
          (tmin ($float parmin))
@@ -2394,7 +2394,7 @@
 ;;     wired_surface
 ;;     surface_hide
 ;;     transform
-(defun parametric_surface (xfun yfun zfun par1 par1min par1max par2 par2min par2max)
+(defun-checked parametric_surface (xfun yfun zfun par1 par1min par1max par2 par2min par2max)
   (let* ((ugrid (get-option '$xu_grid))
          (vgrid (get-option '$yv_grid))
          ($numer t)
@@ -2501,7 +2501,7 @@
           (dotimes (k vgrid)
             (setf result (append result ,circ))))))
 
-(defun tube (xfun yfun zfun rad par1 parmin parmax)
+(defun-checked tube (xfun yfun zfun rad par1 parmin parmax)
   (let* ((ugrid (get-option '$xu_grid))
          (vgrid (get-option '$yv_grid))
          ($numer t)
@@ -2656,7 +2656,7 @@
 ;; Options:
 ;;     colorbox
 ;;     palette
-(defun image (mat x0 y0 width height)
+(defun-checked image (mat x0 y0 width height)
   (let ( (fx0 ($float x0))
          (fy0 ($float y0))
          (fwidth ($float width))
