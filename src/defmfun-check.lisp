@@ -254,156 +254,144 @@
 	    options)))
 
 (defmacro defun-checked (name lambda-list &body body)
-  (let ((maclisp-narg-p (and (symbolp lambda-list) (not (null lambda-list)))))
-    (cond
-      (maclisp-narg-p
-       ;; If NAME doesn't start with $, it's an internal function not
-       ;; directly exposed to the user.  Basically define the function
-       ;; as is, taking care to support the Maclisp narg syntax.
+  ;; Function name begins with $, so it's exposed to the user;
+  ;; carefully check the number of arguments and print a nice
+  ;; message if the number doesn't match the expected number.
+  (multiple-value-bind (required-args
+			optional-args
+			restp
+			rest-arg
+			keywords-present-p
+			keyword-args
+			allow-other-keys-p)
+      (parse-lambda-list lambda-list)
 
-       ;; Support MacLisp narg syntax:  (defun foo a ...)
-       `(defun ,name (&rest narg-rest-argument
-		      &aux (,lambda-list (length narg-rest-argument)))
-	  ,@body))
-      (t
-       ;; Function name begins with $, so it's exposed to the user;
-       ;; carefully check the number of arguments and print a nice
-       ;; message if the number doesn't match the expected number.
-       (multiple-value-bind (required-args
-			     optional-args
-			     restp
-			     rest-arg
-			     keywords-present-p
-			     keyword-args
-			     allow-other-keys-p)
-	   (parse-lambda-list lambda-list)
+    (when (and keywords-present-p
+	       (or optional-args restp))
+      (error "Keyword args cannot be used with optional args or rest args"))
 
-	 (when (and keywords-present-p
-		    (or optional-args restp))
-	   (error "Keyword args cannot be used with optional args or rest args"))
-
-	 (let* ((required-len (length required-args))
-		(optional-len (length optional-args))
-		(impl-name (intern (concatenate 'string
-						(string name)
-						"-IMPL")))
-		(impl-doc (format nil "Implementation for ~S" name))
-		(nargs (gensym "NARGS-"))
-		(args (gensym "REST-ARG-"))
-		(rest-name (gensym "REST-ARGS"))
-		(pretty-fname
-		  (cond (optional-args
-			 ;; Can't do much with optional args, so just use the function name.
-			 name)
-		        (restp
-			 ;; Use maxima syntax for rest args: foo(a,b,[c]);
-			 `((,name) ,@required-args ((mlist) ,rest-arg)))
-			(keywords-present-p
-			 ;; Not exactly sure how to do this
-			 (let* ((index 1)
-				(keys (mapcar
-				       #'(lambda (k)
-					   (multiple-value-bind (name val)
-					       (if (consp k)
-						   (values
-						    (intern (format nil "$~A" (car k)))
-						    (second k))
-						   (values
-						    (intern (format nil "$~A" k))
-						    nil))
-					     (incf index)
-					     `((mequal) ,name ,val)))
-				       keyword-args)))
-			   `((,name) ,@required-args ,@keys)))
-		        (t
-			 ;; Just have required args: foo(a,b)
-			 `((,name) ,@required-args))))
-		(maxima-keywords
-		  (unless allow-other-keys-p
-		    (mapcar #'(lambda (x)
-				(intern (concatenate
-					 'string "$"
-					 (symbol-name
-					  (if (consp x)
-					      (car x)
-					      x)))))
-			    keyword-args))))
-
-	   (multiple-value-bind (forms decls doc-string)
-	       (parse-body body nil t)
-	     (setf doc-string (if doc-string (list doc-string)))
-	     `(progn
-		(defun ,impl-name ,lambda-list
-		  ,impl-doc
-		  ,@decls
-		  (block ,name
-		    (let ((%%pretty-fname ',pretty-fname))
-		      (declare (ignorable %%pretty-fname))
-		      ,@forms)))
-
-		(defun ,name (&rest ,args)
-		  ,@doc-string
-		  (let ((,nargs (length ,args)))
-		    (declare (ignorable ,nargs))
-		    ,@(cond
-			((or restp keywords-present-p)
-			 ;; When a rest arg is given, there's no upper
-			 ;; limit to the number of args.  Just check that
-			 ;; we have enough args to satisfy the required
-			 ;; args.
-			 (unless (null required-args)
-			   `((when (< ,nargs ,required-len)
-			       (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
-				       ',pretty-fname
-				       ,required-len
-				       ,nargs
-				       (list* '(mlist) ,args))))))
-			(optional-args
-			 ;; There are optional args (but no rest
-			 ;; arg). Verify that we don't have too many args,
-			 ;; and that we still have all the required args.
-			 `(
-			   (when (> ,nargs ,(+ required-len optional-len))
-			     (merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
-				     ',pretty-fname
-				     ,(+ required-len optional-len)
-				     ,nargs
-				     (list* '(mlist) ,args)))
-			   (when (< ,nargs ,required-len)
-			     (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
-				     ',pretty-fname
-				     ,required-len
-				     ,nargs
-				     (list* '(mlist) ,args)))))
-			(t
-			 ;; We only have required args.
-			 `((unless (= ,nargs ,required-len)
-			     (merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
-				     ',pretty-fname
-				     ,required-len
-				     ,nargs
-				     (list* '(mlist) ,args))))))
-		    ,(cond
-		       (keywords-present-p
-			`(apply #',impl-name
-				(append 
-				 (subseq ,args 0 ,required-len)
-				 (defmfun-keywords ',pretty-fname
-				     (nthcdr ,required-len ,args)
-				   ',maxima-keywords))))
-		       (t
-			`(apply #',impl-name ,args)))))
-		,(cond
+    (let* ((required-len (length required-args))
+	   (optional-len (length optional-args))
+	   (impl-name (intern (concatenate 'string
+					   (string name)
+					   "-IMPL")))
+	   (impl-doc (format nil "Implementation for ~S" name))
+	   (nargs (gensym "NARGS-"))
+	   (args (gensym "REST-ARG-"))
+	   (rest-name (gensym "REST-ARGS"))
+	   (pretty-fname
+	     (cond (optional-args
+		    ;; Can't do much with optional args, so just use the function name.
+		    name)
+		   (restp
+		    ;; Use maxima syntax for rest args: foo(a,b,[c]);
+		    `((,name) ,@required-args ((mlist) ,rest-arg)))
 		   (keywords-present-p
-		    `(define-compiler-macro ,name (&rest ,rest-name)
-		       (let ((args (append (subseq ,rest-name 0 ,required-len)
-					   (defmfun-keywords ',pretty-fname
-					       (nthcdr ,required-len ,rest-name)
-					     ',maxima-keywords))))
-			 `(,',impl-name ,@args))))
+		    ;; Not exactly sure how to do this
+		    (let* ((index 1)
+			   (keys (mapcar
+				  #'(lambda (k)
+				      (multiple-value-bind (name val)
+					  (if (consp k)
+					      (values
+					       (intern (format nil "$~A" (car k)))
+					       (second k))
+					      (values
+					       (intern (format nil "$~A" k))
+					       nil))
+					(incf index)
+					`((mequal) ,name ,val)))
+				  keyword-args)))
+		      `((,name) ,@required-args ,@keys)))
 		   (t
-		    `(define-compiler-macro ,name (&rest ,rest-name)
-		       `(,',impl-name ,@,rest-name))))))))))))
+		    ;; Just have required args: foo(a,b)
+		    `((,name) ,@required-args))))
+	   (maxima-keywords
+	     (unless allow-other-keys-p
+	       (mapcar #'(lambda (x)
+			   (intern (concatenate
+				    'string "$"
+				    (symbol-name
+				     (if (consp x)
+					 (car x)
+					 x)))))
+		       keyword-args))))
+
+      (multiple-value-bind (forms decls doc-string)
+	  (parse-body body nil t)
+	(setf doc-string (if doc-string (list doc-string)))
+	`(progn
+	   (defun ,impl-name ,lambda-list
+	     ,impl-doc
+	     ,@decls
+	     (block ,name
+	       (let ((%%pretty-fname ',pretty-fname))
+		 (declare (ignorable %%pretty-fname))
+		 ,@forms)))
+
+	   (defun ,name (&rest ,args)
+	     ,@doc-string
+	     (let ((,nargs (length ,args)))
+	       (declare (ignorable ,nargs))
+	       ,@(cond
+		   ((or restp keywords-present-p)
+		    ;; When a rest arg is given, there's no upper
+		    ;; limit to the number of args.  Just check that
+		    ;; we have enough args to satisfy the required
+		    ;; args.
+		    (unless (null required-args)
+		      `((when (< ,nargs ,required-len)
+			  (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+				  ',pretty-fname
+				  ,required-len
+				  ,nargs
+				  (list* '(mlist) ,args))))))
+		   (optional-args
+		    ;; There are optional args (but no rest
+		    ;; arg). Verify that we don't have too many args,
+		    ;; and that we still have all the required args.
+		    `(
+		      (when (> ,nargs ,(+ required-len optional-len))
+			(merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
+				',pretty-fname
+				,(+ required-len optional-len)
+				,nargs
+				(list* '(mlist) ,args)))
+		      (when (< ,nargs ,required-len)
+			(merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+				',pretty-fname
+				,required-len
+				,nargs
+				(list* '(mlist) ,args)))))
+		   (t
+		    ;; We only have required args.
+		    `((unless (= ,nargs ,required-len)
+			(merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
+				',pretty-fname
+				,required-len
+				,nargs
+				(list* '(mlist) ,args))))))
+	       ,(cond
+		  (keywords-present-p
+		   `(apply #',impl-name
+			   (append 
+			    (subseq ,args 0 ,required-len)
+			    (defmfun-keywords ',pretty-fname
+				(nthcdr ,required-len ,args)
+			      ',maxima-keywords))))
+		  (t
+		   `(apply #',impl-name ,args)))))
+	   ,(cond
+	      (keywords-present-p
+	       `(define-compiler-macro ,name (&rest ,rest-name)
+		  (let ((args (append (subseq ,rest-name 0 ,required-len)
+				      (defmfun-keywords ',pretty-fname
+					  (nthcdr ,required-len ,rest-name)
+					',maxima-keywords))))
+		    `(,',impl-name ,@args))))
+	      (t
+	       `(define-compiler-macro ,name (&rest ,rest-name)
+		  `(,',impl-name ,@,rest-name)))))))))
   
 ;; Define user-exposed functions that are written in Lisp.
 ;;
