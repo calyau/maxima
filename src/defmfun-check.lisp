@@ -608,16 +608,41 @@
               (defprop ,name t translated))))
     (let ((impl-name (intern (concatenate 'string
 					  (string name)
-					  "-IMPL"))))
-      `(progn
-	 (defun-checked ,name ,lambda-list
-	   ,@body)
-	 ,(add-props)
-	 ;; We don't put this putprop in add-props because
-	 ;; add-props is for both user and internal functions
-	 ;; while the impl-name property is only for user
-	 ;; functions.
-	 (putprop ',name ',impl-name 'impl-name)))))
+					  "-IMPL")))
+	  (maclisp-narg-p (and (symbolp lambda-list) (not (null lambda-list)))))
+      (cond
+        ((or (char/= #\$ (aref (string name) 0))
+	     maclisp-narg-p)
+         ;; If NAME doesn't start with $, it's an internal function not
+         ;; directly exposed to the user.  Basically define the function
+         ;; as is, taking care to support the Maclisp narg syntax.
+         (cond (maclisp-narg-p
+	        ;; Support MacLisp narg syntax:  (defun foo a ...)
+	        `(progn
+                   ,(add-props)
+		   (defun ,name (&rest narg-rest-argument
+			         &aux (,lambda-list (length narg-rest-argument)))
+		     ,@body)))
+	       (t
+	        `(progn
+                   ,(add-props)
+		   (defun ,name ,lambda-list ,@body)))))
+	(t
+         ;; Function name begins with $, so it's exposed to the user;
+         ;; carefully check the number of arguments and print a nice
+         ;; message if the number doesn't match the expected number.
+         #+nil
+         (unless (char= #\$ (aref (string name) 0))
+	   (warn "First character of function name must start with $: ~S~%" name))
+	 `(progn
+	    (defun-checked ,name ,lambda-list
+	      ,@body)
+	    ,(add-props)
+	    ;; We don't put this putprop in add-props because
+	    ;; add-props is for both user and internal functions
+	    ;; while the impl-name property is only for user
+	    ;; functions.
+	    (putprop ',name ',impl-name 'impl-name)))))))
 
 ;; Examples:
 ;; (defmfun $foobar (a b) (list '(mlist) a b))
