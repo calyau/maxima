@@ -13,10 +13,28 @@
 ;;   For a given vector x of floating point numbers we want to find a
 ;;   vector of integers m such that m.x=0 (in given precision).
 ;;
-;;   Uses PSLQ algorithm:
-;;     D.H.Bailey: Integer Relation Detection and Lattice Reduction.
+;;   This implementation of PSLQ, to judge by the initialization of s
+;;   (before it was changed, anyway) and the calculation of the bound M,
+;;   may be derived from:
+;;
+;;     D.H. Bailey and S. Plouffe. "Recognizing Numerical Constants."
+;;     http://www.cecm.sfu.ca/organics/papers/bailey/paper/html/paper.html
+;;     See the section titled "The PSLQ Integer Relation Algorithm".
+;;     The version at the above URL appears to have been published as
+;;     part of a workshop proceedings on Dec. 11, 1995.
+;;
+;;     A PDF version, possibly identical, dated Dec. 15, 1995:
+;;     https://www.davidhbailey.com/dhbpapers/recog.pdf
+;;     which mentions:
+;;     Canadian Mathematical Society, vol. 20 (1997), pg. 73-88.
+;;
+;;   Other sources, which might or might not have contributed to this implementation.
+;;
+;;     D.H.Bailey. "Integer relation detection,"
+;;     Computing in Science and Engineering, Jan-Feb, 2000, pg. 24-28.
+;;     Preprint published as "Integer Relation Detection and Lattice Reduction":
 ;;     https://www.davidhbailey.com/dhbpapers/pslq-cse.pdf
-;;   See also:
+;;
 ;;     H.R.P. Ferguson, D.H. Bailey, S. Arno. "Analysis of PSLQ,
 ;;     an integer relation finding algorithm." 
 ;;     Mathematics of Computation, vol. 68, no. 225 (Jan 1999), pg. 351-369.
