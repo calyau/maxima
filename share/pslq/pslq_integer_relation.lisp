@@ -15,6 +15,12 @@
 ;;
 ;;   Uses PSLQ algorithm:
 ;;     D.H.Bailey: Integer Relation Detection and Lattice Reduction.
+;;     https://www.davidhbailey.com/dhbpapers/pslq-cse.pdf
+;;   See also:
+;;     H.R.P. Ferguson, D.H. Bailey, S. Arno. "Analysis of PSLQ,
+;;     an integer relation finding algorithm." 
+;;     Mathematics of Computation, vol. 68, no. 225 (Jan 1999), pg. 351-369.
+;;     https://www.davidhbailey.com/dhbpapers/cpslq.pdf
 ;;
 ;;;;;;;;;;;;;;;;;;
 
