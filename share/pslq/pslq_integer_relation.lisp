@@ -51,6 +51,8 @@
 
 (defmvar $pslq_fail_norm nil)
 
+(defvar *pslq-debugging* nil)
+
 (defun pslq-mabs (x)
   (if (mlsp x 0) (m- x) x))
 
@@ -59,6 +61,19 @@
     (if (mlsp 0.5 (m- x nx))
 	(1+ nx)
         nx)))
+
+(defun my-write-lisp-array (a s &rest args)
+  (declare (ignore args))
+  (let ((d (array-dimensions a)))
+    (if (= (length d) 1)
+      (progn (loop for i from 0 to (1- (first d))
+                   do (format s " ~18a" (aref a i)))
+             (write-char #\newline s))
+      (progn (loop for i from 0 to (1- (first d))
+                   do (loop for j from 0 to (1- (second d))
+                            do (format s " ~18a" (aref a i j)))
+                      (write-char #\newline s))
+             (write-char #\newline s)))))
 
 (defun pslq-integer-relations (x n)
   (let ((A (make-array `(,n ,n) :initial-element 0))
@@ -72,6 +87,9 @@
 	($pslq_depth (if $pslq_depth $pslq_depth (* 20 n)))
 	(tt))
     
+    (when *pslq-debugging*
+      (format t "PSLQ-INTEGER-RELATIONS: n = ~a, gamma = ~a, pslq_precision = ~a, pslq_threshold =  ~a, pslq_depth = ~a~%" n gamma $pslq_precision $pslq_threshold $pslq_depth))
+
     ;; Initialize A, B and s
     (loop for k from 0 to (1- n) do
          (setf (aref A k k) 1)
@@ -94,17 +112,37 @@
               (setf (aref H i j) (m- (m// (m* (aref y i) (aref y j))
                                           (m* (aref s j) (aref s (1+ j))))))))
     
+(when *pslq-debugging*
+  (print "PSLQ-INTEGER-RELATIONS: just before initial reduce h:") (write-char #\newline)
+  (print "A =") (write-char #\newline) (my-write-lisp-array A *terminal-io* '$comma 'text)
+  (print "B =") (write-char #\newline) (my-write-lisp-array B *terminal-io* '$comma 'text)
+  (print "s =") (write-char #\newline) (my-write-lisp-array s *terminal-io* '$comma 'text)
+  (print "y =") (write-char #\newline) (my-write-lisp-array y *terminal-io* '$comma 'text)
+  (print "H =") (write-char #\newline) (my-write-lisp-array H *terminal-io* '$comma 'text))
+
     ;; Perform reduction on H, update A, B, y
     (loop for i from 1 to (- n 1) do
          (loop for j from (1- i) downto 0 do
               (setq tt (pslq-nearest-integer (m// (aref H i j) (aref H j j))))
               (setf (aref y j) (m+ (aref y j) (m* tt (aref y i))))
               (loop for k from 0 to j do
-                   (setf (aref H i k) (m- (aref H i k) (m* tt (aref H j k)))))
+                    (let* ((bar (aref H i k)) (baz tt) (quux (aref H j k))
+                           (foo (m- bar (m* baz quux))))
+                      (when *pslq-debugging*
+                        (format t "PSLQ-INTEGER-RELATIONS: assign ~a = ~a - ~a * ~a to H[~d, ~d]~%" foo bar baz quux i k))
+                   (setf (aref H i k) foo)))
               (loop for k from 0 to (1- n) do
                    (setf (aref A i k) (m- (aref A i k) (m* tt (aref A j k))))
                    (setf (aref B k j) (m+ (aref B k j) (m* tt (aref B k i)))))))
     
+(when *pslq-debugging*
+  (print "PSLQ-INTEGER-RELATIONS: after init, just before iteration:") (write-char #\newline)
+  (print "A =") (write-char #\newline) (my-write-lisp-array A *terminal-io* '$comma 'text)
+  (print "B =") (write-char #\newline) (my-write-lisp-array B *terminal-io* '$comma 'text)
+  (print "s =") (write-char #\newline) (my-write-lisp-array s *terminal-io* '$comma 'text)
+  (print "y =") (write-char #\newline) (my-write-lisp-array y *terminal-io* '$comma 'text)
+  (print "H =") (write-char #\newline) (my-write-lisp-array H *terminal-io* '$comma 'text))
+
     (do ((r 1 (1+ r))) ((= r $pslq_depth))
       (let ((m 0) (mm 0) (s 1))
 	
@@ -149,6 +187,13 @@
                        (setf (aref A i k) (m- (aref A i k) (m* tt (aref A j k))))
                        (setf (aref B k j) (m+ (aref B k j) (m* tt (aref B k i)))))))
 	
+(when *pslq-debugging*
+  (print "PSLQ-INTEGER-RELATIONS: just before bound check:") (write-char #\newline) 
+  (print "A =") (write-char #\newline) (my-write-lisp-array A *terminal-io* '$comma 'text)
+  (print "B =") (write-char #\newline) (my-write-lisp-array B *terminal-io* '$comma 'text)
+  (print "y =") (write-char #\newline) (my-write-lisp-array y *terminal-io* '$comma 'text)
+  (print "H =") (write-char #\newline) (my-write-lisp-array H *terminal-io* '$comma 'text))
+
 	;; Find the bound M
 	(let ((maxNorm 0))
 	  (loop for j from 0 to (1- n) do
