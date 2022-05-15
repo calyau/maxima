@@ -1,0 +1,236 @@
+/* Pure Maxima implementation of PSLQ algorithm,
+ * from: https://www.davidhbailey.com/dhbpapers/pslq-cse.pdf
+ * Section 2, "The PSLQ Algorithm".
+ *
+ * <quote>
+
+   Let x be the n-long input real vector, and let nint denote the nearest integer function.
+   Select γ ≥ √(4/3).
+   Then perform the following operations:
+  
+   Initialize:
+  
+   1. Set the n × n matrices A and B to the identity.
+  
+   2. Compute the n-long vector s as s[k] := sqrt(sum(x[j]^2, j, k, n)),
+   and set y to the x vector, normalized by s[1].
+  
+   3. Compute the initial n × (n − 1) matrix H as
+   H[i,j] = 0 if i < j,
+   H[j,j] := s[j + 1]/s[j], and
+   H[i,j] := −y[i] y[j] /(s[j] s[j+1]) if i > j.
+  
+   4. Reduce H:
+   For i := 2 to n:
+     for j := i − 1 to 1 step −1:
+       set t := nint(H[i,j] / H[j,j]); and y[j] := y[j] + t y[i];
+       for k := 1 to j:
+         set H[i,k] := H[i,k] − t H[j,k];
+       endfor;
+       for k := 1 to n:
+         set A[i,k] := A[i,k] − t A[j,k] and B[k,j] := B[k,j] + t B[k,i];
+       endfor;
+     endfor;
+   endfor.
+  
+   Iterate until an entry of y is within a reasonable tolerance of zero,
+   or precision has been exhausted:
+  
+   1. Select m such that γ^i |H[i,i]| is maximal when i = m.
+  
+   2. Exchange the entries of y indexed m and m + 1,
+      the corresponding rows of A and H,
+      and the corresponding columns of B.
+  
+   3. Remove the corner on H diagonal:
+      If m ≤ n − 2
+      then set t0 := sqrt(H[m,m]^2 + H[m,m + 1]^2),
+               t1 := H[m,m]/t0
+           and t2 := H[m,m + 1]/t0;
+           for i := m to n:
+             set t3 := H[i,m],
+                 t4 := H[i,m + 1],
+                 H[i,m] := t1 t3 + t2 t4
+             and H[i,m + 1] := −t2 t3 + t1 t4;
+           endfor;
+      endif.
+  
+   4. Reduce H:
+      For i := m + 1 to n:
+        for j := min(i − 1, m + 1) to 1 step −1:
+          set t := nint(H[i,j] /H[j,j])
+          and y[j] := y[j] + t y[i];
+          for k := 1 to j:
+            set H[i,k] := H[i,k] − t H[j, k];
+          endfor;
+          for k := 1 to n:
+            set A[i,k] := A[i,k] − t A[j,k] and B[k,j] := B[k,j] + t B[k,i];
+          endfor;
+        endfor;
+      endfor.
+  
+   5. Norm bound: Compute M := 1/ max[j] |H[j,j]|.
+      Then there can exist no relation vector whose Euclidean norm is less than M.
+  
+   Upon completion, the desired relation is found in the column of B corresponding to the
+   zero entry of y.
+  
+ * </quote>
+ *
+ * NOTE 1: This implementation only implements the steps outlined in the paper;
+ * there is no outer loop to control looping until a criterion is met.
+ * The initialization step is pslq_init (no arguments, x is a global variable)
+ * and pslq_iterate (no arguments, intermediate results are global variables).
+ *
+ * NOTE 2: I have translated the stated algorithm carefully, but it should
+ * probably be reviewed for accuracy.
+ */
+
+/* Initialize: */
+
+pslq_init () :=
+   (kill (A, B, s, n, y, H),
+    n: length (x),
+
+    /* 1. Set the n × n matrices A and B to the identity. */
+    A: ident (n),
+    B: ident (n),
+
+    /* 2. Compute the n-long vector s as s[k] := sqrt(sum(x[j]^2, j, k, n)), */
+    s: makelist (sqrt (sum (x[j]^2, j, k, n)), k, 1, n),
+
+    /* and set y to the x vector, normalized by s[1]. */
+    y: x / s[1],
+
+    /* 3. Compute the initial n × (n − 1) matrix H as
+     *    H[i,j] = 0 if i < j,
+     *    H[j,j] := s[j + 1]/s[j], and
+     *    H[i,j] := −y[i] y[j] /(s[j] s[j+1]) if i > j.
+     */
+
+    H: zeromatrix (n, n - 1),
+    for j thru n - 1 do H[j, j]: s[j + 1]/s[j],
+    for i: 2 thru n
+        do for j thru i - 1
+            do H[i, j]: - y[i] * y[j] / (s[j] * s[j + 1]),
+
+    /*  4. Reduce H:
+     *     For i := 2 to n:
+     *       for j := i − 1 to 1 step −1:
+     *         set t := nint(H[i,j] / H[j,j]); and y[j] := y[j] + t y[i];
+     *         for k := 1 to j:
+     *           set H[i,k] := H[i,k] − t H[j,k];
+     *         endfor;
+     *         for k := 1 to n:
+     *           set A[i,k] := A[i,k] − t A[j,k] and B[k,j] := B[k,j] + t B[k,i];
+     *         endfor;
+     *       endfor;
+     *     endfor.
+     */
+
+    (print ("pslq_init: just before step 4 (reduce H)."),
+     display (A, B, s, y, H)),
+
+    for i: 2 thru n
+        do for j: i - 1 thru 1 step -1
+            do block ([t: nint (H[i, j] / H[j, j])],
+                      y[j]: y[j] + t * y[i],
+                      for k thru j
+                          do H[i, k]: H[i, k] - t * H[j, k],
+                      for k thru n
+                          do (A[i, k]: A[i, k] - t * A[j, k],
+                              B[k, j]: B[k, j] + t * B[k, i])));
+
+nint (x) := round (x);
+
+/* Iterate until an entry of y is within a reasonable tolerance of zero,
+ * or precision has been exhausted:
+ */
+
+gamma: sqrt (4/3);
+
+pslq_iterate () :=
+   (/* 1. Select m such that γ^i |H[i,i]| is maximal when i = m. */
+
+    max_foo: gamma * abs (H[1, 1]),
+    max_foo_i: 1,
+    for i:2 thru n - 1
+        do block ([foo: gamma^i * abs (H[i, i])],
+                  if foo > max_foo
+                      then (max_foo: foo, max_foo_i: i)),
+    m: max_foo_i,
+
+    /* 2. Exchange the entries of y indexed m and m + 1,
+     *    the corresponding rows of A and H,
+     *    and the corresponding columns of B.
+     */
+
+    exchange_elements (y, m, m + 1),
+    exchange_rows (A, m, m + 1),
+    exchange_rows (H, m, m + 1),
+    exchange_columns (B, m, m + 1),
+
+    /*  3. Remove the corner on H diagonal:
+     *     If m ≤ n − 2
+     *     then set t0 := sqrt(H[m,m]^2 + H[m,m + 1]^2),
+     *              t1 := H[m,m]/t0
+     *          and t2 := H[m,m + 1]/t0;
+     *          for i := m to n:
+     *            set t3 := H[i,m],
+     *                t4 := H[i,m + 1],
+     *                H[i,m] := t1 t3 + t2 t4
+     *            and H[i,m + 1] := −t2 t3 + t1 t4;
+     *          endfor;
+     *     endif.
+     */
+
+    if m <= n - 2
+        then block ([t0, t1, t2, t3, t4],
+                    t0: sqrt (H[m, m]^2 + H[m, m + 1]^2),
+                    t1: H[m, m] / t0,
+                    t2: H[m, m + 1] / t0,
+                    for i: m thru n
+                        do (t3: H[i, m],
+                            t4: H[i, m + 1],
+                            H[i, m]: t1 * t3 + t2 * t4,
+                            H[i, m + 1]: -t2 * t3 + t1 * t4)),
+
+    /* 4. Reduce H:
+     *    For i := m + 1 to n:
+     *      for j := min(i − 1, m + 1) to 1 step −1:
+     *        set t := nint(H[i,j] /H[j,j])
+     *        and y[j] := y[j] + t y[i];
+     *        for k := 1 to j:
+     *          set H[i,k] := H[i,k] − t H[j, k];
+     *        endfor;
+     *        for k := 1 to n:
+     *          set A[i,k] := A[i,k] − t A[j,k] and B[k,j] := B[k,j] + t B[k,i];
+     *        endfor;
+     *      endfor;
+     *    endfor.
+     */
+
+    for i: m + 1 thru n
+        do for j: min(i - 1, m + 1) thru 1 step -1
+               do block ([t: nint (H[i, j] / H[j, j])],
+                         y[j]: y[j] + t * y[i],
+                         for k thru j
+                             do H[i, k]: H[i, k] - t * H[j, k],
+                         for k thru n
+                             do (A[i, k]: A[i, k] - t * A[j, k],
+                                 B[k, j]: B[k, j] + t * B[k, i])),
+
+    /* 5. Norm bound: Compute M := 1/ max[j] |H[j,j]|.
+     *    Then there can exist no relation vector whose Euclidean norm is less than M.
+     */
+
+    M: 1 / lmax (makelist (abs (H[j, j]), j, 1, n - 1)));
+
+/* Upon completion, the desired relation is found in the column of B corresponding to the
+ * zero entry of y.
+ */
+
+exchange_elements (l, i, j) := ([l[j], l[i]]: [l[i], l[j]], l);
+exchange_rows (M, i, j) := ([M[j], M[i]]: [M[i], M[j]], M);
+exchange_columns (M, i, j) := transpose (exchange_rows (transpose (M), i, j));
+
