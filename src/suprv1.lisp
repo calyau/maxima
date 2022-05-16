@@ -96,8 +96,12 @@
     ;; Clear the facts from asksign and friends.
     (clearsign)))
 
+(defun makelabel10 (x)
+  (let (*print-radix*
+	(*print-base* 10.))
+    ($concat '|| x $linenum)))
 (defun makelabel (x)
-  (setq *linelabel* ($concat '|| x $linenum))
+  (setq *linelabel* (makelabel10 x))
   (unless $nolabels
     (when (or (null (cdr $labels))
 	      (when (member *linelabel* (cddr $labels) :test #'equal)
@@ -138,7 +142,7 @@
 (defun checklabel (x)	; CHECKLABEL returns T iff label is not in use
   (not (or $nolabels
 	   (= $linenum 0)
-	   (boundp ($concat '|| x $linenum)))))
+	   (boundp (makelabel10 x)))))
 
 (defun gctimep (timep tim)
   (cond ((and (eq timep '$all) (not (zerop tim))) (princ (intl:gettext "Total time = ")) t)
