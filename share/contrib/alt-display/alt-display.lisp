@@ -58,8 +58,9 @@
     (cond (f
 	   (if warn (warn "Setting ~dd-display to ~(~a~)." type ($printf nil "~a" f)))
 	   (let ((error? t))
-	     (labels ((error-handler (msg)
-				     (merror "Error in ~a.~%~a~a reset to default." alt-display msg alt-display))
+	     (labels ((error-handler ()
+				     (merror "Error in ~a.~%Message: ~a~a reset to default." alt-display
+					     (with-output-to-string (*standard-output*) ($errormsg)) alt-display))
 		      (alt-display-fun (form)
 				       ;; convert maxima errors to maxima-$error conditions (a type of error)
 				       ;; we can't use handler case to forcibly reset *alt-display[12]d*, because of dynamic scope
@@ -69,7 +70,7 @@
 					 (setq error? nil))
 				       (when error?
 					 ($set_alt_display type nil)
-					 (error-handler ""))))
+					 (error-handler))))
 	       (set alt-display #'alt-display-fun))))
 	  (t
 	   (if warn (warn "Resetting ~dd-display to default." type))
