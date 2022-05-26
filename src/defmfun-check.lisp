@@ -253,10 +253,31 @@
 			      fname opt))))
 	    options)))
 
+;; Internal macro to do the heavy lifting of defining a function that
+;; checks the number of arguments of a function.  This is intended to
+;; give nice error messages to user-callable functions when the number
+;; of arguments is incorrect.
+;;
+;; The function to check arguments is named NAME.  The actual
+;; implementation is in a new function named IMPL, which is called by
+;; NAME.  A compiler-macro is also defined so that Lisp calls of NAME
+;; get automatically converted to IMPL.
+;;
+;; The lambda-list supports &optional and &rest args.  Keyword args
+;; (&key) are also supported.  Maxima keyword args (a=b) are converted
+;; to Lisp keywords appropriately.  Unrecognized keywords signal a
+;; Maxima error.
+;;
+;; The variable %%PRETTY-FNAME is defined such that the body can refer
+;; to this variable to get the pretty name of the defined function for
+;; use in printing error messages or what not.  This allows the
+;; implementation to print out the function name that would also be
+;; used when printing out error messages for incorrect number of
+;; arguments.
+
 (defmacro defun-checked-form ((name impl-name) lambda-list &body body)
-  ;; Function name begins with $, so it's exposed to the user;
-  ;; carefully check the number of arguments and print a nice
-  ;; message if the number doesn't match the expected number.
+  ;; Carefully check the number of arguments and print a nice message
+  ;; if the number doesn't match the expected number.
   (multiple-value-bind (required-args
 			optional-args
 			restp
@@ -389,7 +410,12 @@
 	      (t
 	       `(define-compiler-macro ,name (&rest ,rest-name)
 		  `(,',impl-name ,@,rest-name)))))))))
-  
+
+;; Define a Lisp function that should check the number of arguments to
+;; a function and print out a nice Maxima error message instead of
+;; signaling a Lisp error.  In this case, the function is not
+;; explicitly exposed to the user and can just have an impl name of
+;; "name-impl".
 (defmacro defun-checked (name lambda-list &body body)
   `(defun-checked-form (,name ,(intern (concatenate 'string
 						  (string name)
@@ -407,15 +433,6 @@
 ;; If the function name doesn't start with $, we still allow it, but
 ;; these should be replaced with plain defun eventually.
 ;;
-;; The lambda-list supports &optional and &rest args.  Keyword args
-;; are an error.
-;;
-;; The variable %%PRETTY-FNAME is defined such that the body can refer
-;; to this variable to get the pretty name of the defined function for
-;; use in printing error messages or what not.  This allows the
-;; implementation to print out the function name that would also be
-;; used when printint out error messages for incorrect number of
-;; arguments.
 #+nil
 (defmacro defmfun (name lambda-list &body body)
   (flet ((add-props ()
