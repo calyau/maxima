@@ -253,7 +253,7 @@
 			      fname opt))))
 	    options)))
 
-(defmacro defun-checked (name lambda-list &body body)
+(defmacro defun-checked-form ((name impl-name) lambda-list &body body)
   ;; Function name begins with $, so it's exposed to the user;
   ;; carefully check the number of arguments and print a nice
   ;; message if the number doesn't match the expected number.
@@ -272,9 +272,6 @@
 
     (let* ((required-len (length required-args))
 	   (optional-len (length optional-args))
-	   (impl-name (intern (concatenate 'string
-					   (string name)
-					   "-IMPL")))
 	   (impl-doc (format nil "Implementation for ~S" name))
 	   (nargs (gensym "NARGS-"))
 	   (args (gensym "REST-ARG-"))
@@ -393,6 +390,12 @@
 	       `(define-compiler-macro ,name (&rest ,rest-name)
 		  `(,',impl-name ,@,rest-name)))))))))
   
+(defmacro defun-checked (name lambda-list &body body)
+  `(defun-checked-form (,name ,(intern (concatenate 'string
+						  (string name)
+						  "-IMPL")))
+       ,lambda-list ,@body))
+
 ;; Define user-exposed functions that are written in Lisp.
 ;;
 ;; If the function name NAME starts with #\$ we check the number of
@@ -595,7 +598,7 @@
               (putprop ',name ',lambda-list 'arg-list)
               (defprop ,name t translated))))
     (let ((impl-name (intern (concatenate 'string
-					  (string name)
+					  (subseq (string name) 1)
 					  "-IMPL")))
 	  (maclisp-narg-p (and (symbolp lambda-list) (not (null lambda-list)))))
       (cond
@@ -623,7 +626,7 @@
          (unless (char= #\$ (aref (string name) 0))
 	   (warn "First character of function name must start with $: ~S~%" name))
 	 `(progn
-	    (defun-checked ,name ,lambda-list
+	    (defun-checked-form (,name ,impl-name) ,lambda-list
 	      ,@body)
 	    ,(add-props)
 	    ;; We don't put this putprop in add-props because
