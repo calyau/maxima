@@ -40,6 +40,20 @@
 ;;     Mathematics of Computation, vol. 68, no. 225 (Jan 1999), pg. 351-369.
 ;;     https://www.davidhbailey.com/dhbpapers/cpslq.pdf
 ;;
+;;     Armin Straub. "A gentle introduction to PSLQ."
+;;     https://arminstraub.com/downloads/math/pslq.pdf
+;;
+;;     Jingwei Chen, Damien Stehle, Gilles Villard.
+;;     "A New View on HJLS and PSLQ: Sums and Projections of Lattices."
+;;     Proceedings of ISSAC '13.
+;;     https://arcnl.org/jchen/download/[CSV13].pdf
+;;
+;;     Yong Feng, Jingwei Chen, Wenyuan Wu.
+;;     "The PSLQ algorithm for empirical data."
+;;     Mathematics of Computation
+;;     DOI: 10.1090/mcom/3356
+;;     https://www.ams.org/journals/mcom/2019-88-317/S0025-5718-2018-03356-7/mcom3356_AM.pdf
+;;
 ;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
