@@ -173,16 +173,45 @@
                    (setf (aref A i k) (m- (aref A i k) (m* tt (aref A j k))))
                    (setf (aref B k j) (m+ (aref B k j) (m* tt (aref B k i)))))))
     
+    (do ((r 1 (1+ r))) ((= r $pslq_depth))
+      (let ((m 0) (mm 0) (s 1))
+	
 (when *pslq-debugging*
-  (print "PSLQ-INTEGER-RELATIONS: after init, just before iteration:") (write-char #\newline)
+  (print "PSLQ-INTEGER-RELATIONS: just before bound check:") (write-char #\newline) 
   (print "A =") (write-char #\newline) (my-write-lisp-array A *terminal-io* '$comma 'text)
   (print "B =") (write-char #\newline) (my-write-lisp-array B *terminal-io* '$comma 'text)
-  (print "s =") (write-char #\newline) (my-write-lisp-array s *terminal-io* '$comma 'text)
   (print "y =") (write-char #\newline) (my-write-lisp-array y *terminal-io* '$comma 'text)
   (print "H =") (write-char #\newline) (my-write-lisp-array H *terminal-io* '$comma 'text))
 
-    (do ((r 1 (1+ r))) ((= r $pslq_depth))
-      (let ((m 0) (mm 0) (s 1))
+	;; Find the bound M
+	(let ((maxNorm 0))
+	  (loop for j from 0 to (1- n) do
+               (let ((absHj 0))
+                 (loop for i from 0 to (- n 2) do
+                      (if (mlsp absHj (pslq-mabs (aref H j i)))
+                          (setq absHj (aref H j i))))
+                 (if (mlsp maxNorm absHj)
+                     (setq maxNorm absHj))))
+	  (setq $pslq_fail_norm (m// 1 maxNorm))
+	  
+	  ;; Check to see if we have a relation
+	  (loop for j from 0 to (1- n) do
+               (if (mlsp (pslq-mabs (aref y j)) $pslq_threshold)
+                   (progn
+                     (let ((ans ()))
+                       (loop for i from 0 to (1- n) do
+                            (setq ans (append ans `(,(aref B i j)))))
+                       (setq $pslq_status 1)
+                       (return-from pslq-integer-relations ans)))))
+	  
+	  ;; Check to see if we exhausted the precision
+	  (loop for i from 0 to (1- n) do
+               (loop for j from 0 to (1- n) do
+                    (if (mlsp $pslq_precision (pslq-mabs (aref A i j)))
+                        (progn
+                          (setq $pslq_status 2)
+                          (return-from pslq-integer-relations nil)))))
+	  )
 	
 	;; Find maximal value in H
 	(loop for i from 0 to (m- n 2) do
@@ -224,42 +253,6 @@
                   (loop for k from 0 to (1- n) do
                        (setf (aref A i k) (m- (aref A i k) (m* tt (aref A j k))))
                        (setf (aref B k j) (m+ (aref B k j) (m* tt (aref B k i)))))))
-	
-(when *pslq-debugging*
-  (print "PSLQ-INTEGER-RELATIONS: just before bound check:") (write-char #\newline) 
-  (print "A =") (write-char #\newline) (my-write-lisp-array A *terminal-io* '$comma 'text)
-  (print "B =") (write-char #\newline) (my-write-lisp-array B *terminal-io* '$comma 'text)
-  (print "y =") (write-char #\newline) (my-write-lisp-array y *terminal-io* '$comma 'text)
-  (print "H =") (write-char #\newline) (my-write-lisp-array H *terminal-io* '$comma 'text))
-
-	;; Find the bound M
-	(let ((maxNorm 0))
-	  (loop for j from 0 to (1- n) do
-               (let ((absHj 0))
-                 (loop for i from 0 to (- n 2) do
-                      (if (mlsp absHj (pslq-mabs (aref H j i)))
-                          (setq absHj (aref H j i))))
-                 (if (mlsp maxNorm absHj)
-                     (setq maxNorm absHj))))
-	  (setq $pslq_fail_norm (m// 1 maxNorm))
-	  
-	  ;; Check to see if we have a relation
-	  (loop for j from 0 to (1- n) do
-               (if (mlsp (pslq-mabs (aref y j)) $pslq_threshold)
-                   (progn
-                     (let ((ans ()))
-                       (loop for i from 0 to (1- n) do
-                            (setq ans (append ans `(,(aref B i j)))))
-                       (setq $pslq_status 1)
-                       (return-from pslq-integer-relations ans)))))
-	  
-	  ;; Check to see if we exhausted the precision
-	  (loop for i from 0 to (1- n) do
-               (loop for j from 0 to (1- n) do
-                    (if (mlsp $pslq_precision (pslq-mabs (aref A i j)))
-                        (progn
-                          (setq $pslq_status 2)
-                          (return-from pslq-integer-relations nil)))))
-	  )))
+    ))
     (setq $pslq_status 3)
     (return-from pslq-integer-relations nil) ))
