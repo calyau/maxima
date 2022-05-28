@@ -51,6 +51,16 @@ guess_exact_value(0.1);
 1/10;
 
 /* additional cases related to guess_exact_value(0.1) */
+
+pslq_integer_relation ([1.0, 0.1, 0.010000000000000002, 0.0010000000000000002, 1.0000000000000002E-4]);
+[1, - 10, 0, 0, 0];
+
+pslq_integer_relation (float (makelist (1/10^k, k, 0, 4)));
+[1, - 10, 0, 0, 0];
+
+pslq_integer_relation (makelist (0.1^k, k, 0, 4));
+[1, - 10, 0, 0, 0];
+
 map (guess_exact_value, [0.125, 0.2, 0.25, float(1/15), float(1/17)]);
 [1/8, 1/5, 1/4, 1/15, 1/17];
 
@@ -69,4 +79,16 @@ foolist: apply ('append, makelist (makelist (p/q, p, 1, 20 - q), q, 1, 19));
 map (guess_exact_value, float (foolist));
 ''foolist;
 
+/* still more examples */
 
+guess_exact_value (float (%phi));
+(sqrt(5) + 1)/2;
+
+guess_exact_value (float (1/%phi));
+(sqrt(5) - 1)/2;
+
+guess_exact_value (float (zeta (2)));
+(%pi^2)/6;
+
+guess_exact_value (float (zeta (4)));
+(%pi^4)/90;
