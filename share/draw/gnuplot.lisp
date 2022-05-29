@@ -160,7 +160,7 @@
 ;;     fill_density
 ;;     xaxis_secondary
 ;;     yaxis_secondary
-(defun errors (arg)
+(defun-checked errors (arg)
   (let ((etype  (get-option '$error_type))
         (joined (get-option '$points_joined))
         element-size
