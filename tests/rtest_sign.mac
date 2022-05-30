@@ -431,10 +431,8 @@ pz$
 csign(x^2 + x);
 pnz$
 
-/* This is expected to be wrong
 csign(x^2 + x + 42);
-pos$
-*/
+pnz$
 
 csign(x^2 + sqrt(5) + 101);
 pos$
@@ -445,10 +443,8 @@ pos$
 csign((sqrt(97) - 1) * x^2 + sqrt(5) + 101);
 pos$
 
-/* This is expected to be wrong
 csign(-x^2 + x - 42);
-neg$
-*/
+pnz$
 
 csign(x^2 - 2 * x + 1);
 pz$
@@ -462,10 +458,8 @@ pnz$
 csign(x^2 + 2 * x * y + y^2);
 pz$
 
-/* This is expected to be wrong.
 csign(x^2 + 2 * x * y + y^2 + 1);
 pos$
-*/
 
 csign((x+y)^2 + (z-x)^2);
 pz$
@@ -497,10 +491,8 @@ pnz$
 csign(x/(1+x^2));
 pnz$
 
-/* This is expected to be wrong.
 csign(1 + x/(1+x^2));
-pos$
-*/
+pnz$
 
 csign((1+x^2)/x);
 pn$
@@ -571,23 +563,17 @@ complex$
 csign(cos(x));
 pnz$
 
-/* This is expected to be wrong.
 csign(cos(x) + 42);
 pos$
-*/
 
-/* This is expected to be wrong.
 csign(sin(x) - 42);
 neg$
-*/
 
 csign(cosh(x));
 pos$
 
-/* This is exprected to be wrong.
 csign(cosh(x)-1);
 pz$
-*/
 
 csign(sinh(x));
 pnz$
@@ -703,8 +689,6 @@ zero$
 
 /* SF bug 1045920 */
 
-/* 
-
 (assume(a > 1, b > 1),0);
 0$
 
@@ -713,8 +697,6 @@ pos$
 
 (forget(a > 1, b > 1),0);
 0$
-
-*/
 
 /* SF bug 1724592  */
 
