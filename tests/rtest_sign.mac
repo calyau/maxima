@@ -256,6 +256,39 @@ pnz$
 sign(tanh(x));
 pnz$
 
+(assume(x >= -1), assume(x < 1),0);
+0$
+
+sign(acos(x));
+pos$
+
+(forget(x >= -1), forget(x < 1),0);
+0$
+
+(assume(x > 0), assume(x <= 1),0);
+0$
+
+sign(asin(x));
+pos$
+
+sign(atanh(x));
+pos$
+
+(forget(x > 0), forget(x <= 1),0);
+0$
+
+(assume(x >= -1), assume(x <= 0),0);
+0$
+
+sign(asin(x));
+nz$
+
+sign(atanh(x));
+nz$
+
+(forget(x >= -1), forget(x <= 0),0);
+0$
+
 
 
 /* SF bug 798571 */
@@ -576,13 +609,11 @@ pos$
 
 /* log-like */
 
-/* This is expected to be wrong.
 csign(acos(x));
-pz$
-*/
+complex$
 
 csign(asin(x));
-pnz$
+complex$
 
 csign(atan(x));
 pnz$
@@ -608,16 +639,62 @@ pz$
 (forget(x >= 1),0);
 0$
 
-/* This is expected to be wrong.
 csign(acosh(x));
-pz$
-*/
+complex$
 
 csign(asinh(x));
 pnz$
 
-csign(tanh(x));
+csign(atanh(x));
+complex$
+
+(assume(x >= -1), assume(x <= 1),0);
+0$
+
+csign(acos(x));
+pz$
+
+csign(asin(x));
 pnz$
+
+csign(atanh(x));
+pnz$
+
+(forget(x >= -1), forget(x <= 1),0);
+0$
+
+(assume(x >= -1), assume(x < 1),0);
+0$
+
+csign(acos(x));
+pos$
+
+(forget(x >= -1), forget(x < 1),0);
+0$
+
+(assume(x > 0), assume(x <= 1),0);
+0$
+
+csign(asin(x));
+pos$
+
+csign(atanh(x));
+pos$
+
+(forget(x > 0), forget(x <= 1),0);
+0$
+
+(assume(x >= -1), assume(x <= 0),0);
+0$
+
+csign(asin(x));
+nz$
+
+csign(atanh(x));
+nz$
+
+(forget(x >= -1), forget(x <= 0),0);
+0$
 
 /* SF bug 798571 */
 

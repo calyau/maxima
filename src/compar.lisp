@@ -1315,6 +1315,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '$max #'(lambda (x) (sign-minmax (caar x) (cdr x))))
 	 (list '%csc #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
 	 (list '%csch #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
+	 (list '%acos 'sign-asin/acos/atanh)
+	 (list '%asin 'sign-asin/acos/atanh)
+	 (list '%acosh 'sign-acosh)
+	 (list '%atanh 'sign-asin/acos/atanh)
 
 	 (list '%signum #'(lambda (x) (sign (cadr x))))
 	 (list '%erf #'(lambda (x) (sign (cadr x))))
@@ -1730,6 +1734,26 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (cond ((member sign '($pos $zero) :test #'eq))
 	  ((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
 	  (t (setq sign '$pz minus nil evens (nconc odds evens) odds nil)))))
+
+(defun sign-asin/acos/atanh (x)
+  (cond ((and *complexsign*
+	      (or (not (eq t (mgqp (cadr x) -1)))
+		  (not (eq t (mgqp 1 (cadr x)))))) ; x < -1 or x > 1
+	 (setq sign '$complex))
+	((not (eq (caar x) '%acos))
+	 (sign-oddfun x))
+	((eq t (mlsp (cadr x) 1)) ; x < 1
+	 (sign-posfun x))
+	(t ; x <= 1
+	 (setq sign '$pz))))
+
+(defun sign-acosh (x)
+  (cond ((and *complexsign* (not (eq t (mgqp (cadr x) 1)))) ; x < 1
+	 (setq sign '$complex))
+	((eq t (mgrp (cadr x) 1)) ; x > 1
+	 (sign-posfun x))
+	(t ; x >= 1
+	 (setq sign '$pz))))
 
 ;;; Compare min/max
 
@@ -2546,6 +2570,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  
           ;; Declarations for functions
 	  (kind %log $increasing)
+	  (kind %asin $increasing) (kind %asin $oddfun)
 	  (kind %atan $increasing) (kind %atan $oddfun)
 	  (kind $delta $evenfun)
 	  (kind %sinh $increasing) (kind %sinh $oddfun)
@@ -2558,7 +2583,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ;; It would be nice to say %acosh is $posfun, but then
 	  ;; assume(xn<0); abs(acosh(xn)) -> acosh(xn), which is wrong
 	  ;; since acosh(xn) is complex.
-	  (kind %acosh $increasing)
+	  (kind %acosh $increasing) (kind %acosh $complex)
 	  (kind %atanh $increasing) (kind %atanh $oddfun)
 	  (kind $li $complex)
 	  (kind $lambert_w $complex)
