@@ -1154,13 +1154,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; MGRP-GENERAL applies when sign of A - B (possibly complex) makes sense.
 
 (defun mgrp-general (a b)
-  (let ((*complexsign* t))
-    (setq a (sub a b))
-    (let ((sgn (csign a)))
-      (cond ((eq sgn '$pos) t)
-	    ((eq sgn t) nil) ;; csign thinks a - b isn't real
-	    ((member sgn '($neg $zero $nz) :test #'eq) nil)
-	    (t `((mgreaterp) ,a 0))))))
+  (setq a (sub a b))
+  (let ((sgn (csign a)))
+    (cond ((eq sgn '$pos) t)
+	  ((eq sgn t) nil) ;; csign thinks a - b isn't real
+	  ((member sgn '($neg $zero $nz) :test #'eq) nil)
+	  (t `((mgreaterp) ,a 0)))))
 
 (defun mgrp (a b)
   (cond
@@ -1176,13 +1175,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; MGQP-GENERAL applies when sign of A - B (possibly complex) makes sense.
 
 (defun mgqp-general (a b)
-  (let ((*complexsign* t))
-    (setq a (sub a b))
-    (let ((sgn (csign a)))
-      (cond ((member sgn '($pos $zero $pz) :test #'eq) t)
-	    ((eq sgn t) nil) ;; csign thinks a - b isn't real
-	    ((eq sgn '$neg) nil)
-	    (t `((mgeqp) ,a 0))))))
+  (setq a (sub a b))
+  (let ((sgn (csign a)))
+    (cond ((member sgn '($pos $zero $pz) :test #'eq) t)
+	  ((eq sgn t) nil) ;; csign thinks a - b isn't real
+	  ((eq sgn '$neg) nil)
+	  (t `((mgeqp) ,a 0)))))
 
 (defun mgqp (a b)
   (cond

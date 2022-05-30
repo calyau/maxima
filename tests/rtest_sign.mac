@@ -1444,3 +1444,8 @@ block ([prederror: true],
 
 block ([prederror: false], sort (["xyz", "xy", "vwxy", "vw", "uvwxyz", "uv"], ">"));
 ["xyz", "xy", "vwxy", "vw", "uvwxyz", "uv"];
+
+/* Consistency check for `is(expr >= 0)` and `sign(expr)` */
+
+is(sqrt(x) >= 0);
+true$
