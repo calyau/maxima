@@ -1387,6 +1387,31 @@ See also @mrefcomma{facts} @mrefcomma{newcontext} @mrefcomma{supcontext}@w{}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{csign}
+@deffn {Function} csign (@var{expr})
+
+Attempts to determine the sign of @var{expr} on the basis of the facts
+in the current data base without assuming that @var{expr} is
+real-valued. It returns one of the following answers: @code{pos}
+(positive), @code{neg} (negative), @code{zero}, @code{pz} (positive or
+zero), @code{nz} (negative or zero), @code{pn} (positive or negative),
+@code{pnz} (positive, negative, or zero), @code{imaginary}
+(purely imaginary), or @code{complex}, (complex, i.e. nothing known).
+
+Note that while this function does not assume that @var{expr} is
+real-valued, it still assumes that variables are real-valued unless
+declared otherwise. This means that @code{csign(z)} will return
+@code{pnz} unless @code{declare(z,complex)} or
+@code{declare(z,imaginary)} has been evaluated beforehand.
+
+See also @mrefdot{sign}
+
+@opencatbox{Categories:}
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{deactivate}
 @deffn {Function} deactivate (@var{context_1}, @dots{}, @var{context_n})
 
@@ -1611,6 +1636,10 @@ current data base.  It returns one of the following answers: @code{pos}
 (positive), @code{neg} (negative), @code{zero}, @code{pz} (positive or zero),
 @code{nz} (negative or zero), @code{pn} (positive or negative), or @code{pnz}
 (positive, negative, or zero, i.e. nothing known).
+
+Note that this function assumes that @var{expr} is a real-valued
+expression, such that for example @code{sign(sqrt(x))} will yield @code{pz}
+even though @code{sqrt(x)} may return a complex-valued result for @code{x<0}.
 
 See also @mrefdot{signum}
 

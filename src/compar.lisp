@@ -749,7 +749,7 @@
 
 ;;; $csign works like $sign but switches the sign-functions into a complex
 ;;; mode. In complex mode complex and imaginary expressions give the results
-;;; imagarinary or complex.
+;;; imaginary or complex.
 
 (defmfun $csign (z)
   (let ((*complexsign* t)
