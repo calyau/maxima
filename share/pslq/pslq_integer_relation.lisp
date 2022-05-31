@@ -13,8 +13,46 @@
 ;;   For a given vector x of floating point numbers we want to find a
 ;;   vector of integers m such that m.x=0 (in given precision).
 ;;
-;;   Uses PSLQ algorithm:
-;;     D.H.Bailey: Integer Relation Detection and Lattice Reduction.
+;;   This implementation of PSLQ, to judge by the initialization of s
+;;   (before it was changed, anyway) and the calculation of the bound M,
+;;   may be derived from:
+;;
+;;     D.H. Bailey and S. Plouffe. "Recognizing Numerical Constants."
+;;     http://www.cecm.sfu.ca/organics/papers/bailey/paper/html/paper.html
+;;     See the section titled "The PSLQ Integer Relation Algorithm".
+;;     The version at the above URL appears to have been published as
+;;     part of a workshop proceedings on Dec. 11, 1995.
+;;
+;;     A PDF version, possibly identical, dated Dec. 15, 1995:
+;;     https://www.davidhbailey.com/dhbpapers/recog.pdf
+;;     which mentions:
+;;     Canadian Mathematical Society, vol. 20 (1997), pg. 73-88.
+;;
+;;   Other sources, which might or might not have contributed to this implementation.
+;;
+;;     D.H.Bailey. "Integer relation detection,"
+;;     Computing in Science and Engineering, Jan-Feb, 2000, pg. 24-28.
+;;     Preprint published as "Integer Relation Detection and Lattice Reduction":
+;;     https://www.davidhbailey.com/dhbpapers/pslq-cse.pdf
+;;
+;;     H.R.P. Ferguson, D.H. Bailey, S. Arno. "Analysis of PSLQ,
+;;     an integer relation finding algorithm." 
+;;     Mathematics of Computation, vol. 68, no. 225 (Jan 1999), pg. 351-369.
+;;     https://www.davidhbailey.com/dhbpapers/cpslq.pdf
+;;
+;;     Armin Straub. "A gentle introduction to PSLQ."
+;;     https://arminstraub.com/downloads/math/pslq.pdf
+;;
+;;     Jingwei Chen, Damien Stehle, Gilles Villard.
+;;     "A New View on HJLS and PSLQ: Sums and Projections of Lattices."
+;;     Proceedings of ISSAC '13.
+;;     https://arcnl.org/jchen/download/[CSV13].pdf
+;;
+;;     Yong Feng, Jingwei Chen, Wenyuan Wu.
+;;     "The PSLQ algorithm for empirical data."
+;;     Mathematics of Computation
+;;     DOI: 10.1090/mcom/3356
+;;     https://www.ams.org/journals/mcom/2019-88-317/S0025-5718-2018-03356-7/mcom3356_AM.pdf
 ;;
 ;;;;;;;;;;;;;;;;;;
 
@@ -51,6 +89,8 @@
 
 (defmvar $pslq_fail_norm nil)
 
+(defvar *pslq-debugging* nil)
+
 (defun pslq-mabs (x)
   (if (mlsp x 0) (m- x) x))
 
@@ -59,6 +99,19 @@
     (if (mlsp 0.5 (m- x nx))
 	(1+ nx)
         nx)))
+
+(defun my-write-lisp-array (a s &rest args)
+  (declare (ignore args))
+  (let ((d (array-dimensions a)))
+    (if (= (length d) 1)
+      (progn (loop for i from 0 to (1- (first d))
+                   do (format s " ~18a" (aref a i)))
+             (write-char #\newline s))
+      (progn (loop for i from 0 to (1- (first d))
+                   do (loop for j from 0 to (1- (second d))
+                            do (format s " ~18a" (aref a i j)))
+                      (write-char #\newline s))
+             (write-char #\newline s)))))
 
 (defun pslq-integer-relations (x n)
   (let ((A (make-array `(,n ,n) :initial-element 0))
@@ -72,6 +125,9 @@
 	($pslq_depth (if $pslq_depth $pslq_depth (* 20 n)))
 	(tt))
     
+    (when *pslq-debugging*
+      (format t "PSLQ-INTEGER-RELATIONS: n = ~a, gamma = ~a, pslq_precision = ~a, pslq_threshold =  ~a, pslq_depth = ~a~%" n gamma $pslq_precision $pslq_threshold $pslq_depth))
+
     ;; Initialize A, B and s
     (loop for k from 0 to (1- n) do
          (setf (aref A k k) 1)
@@ -94,19 +150,68 @@
               (setf (aref H i j) (m- (m// (m* (aref y i) (aref y j))
                                           (m* (aref s j) (aref s (1+ j))))))))
     
+(when *pslq-debugging*
+  (print "PSLQ-INTEGER-RELATIONS: just before initial reduce h:") (write-char #\newline)
+  (print "A =") (write-char #\newline) (my-write-lisp-array A *terminal-io* '$comma 'text)
+  (print "B =") (write-char #\newline) (my-write-lisp-array B *terminal-io* '$comma 'text)
+  (print "s =") (write-char #\newline) (my-write-lisp-array s *terminal-io* '$comma 'text)
+  (print "y =") (write-char #\newline) (my-write-lisp-array y *terminal-io* '$comma 'text)
+  (print "H =") (write-char #\newline) (my-write-lisp-array H *terminal-io* '$comma 'text))
+
     ;; Perform reduction on H, update A, B, y
     (loop for i from 1 to (- n 1) do
          (loop for j from (1- i) downto 0 do
               (setq tt (pslq-nearest-integer (m// (aref H i j) (aref H j j))))
               (setf (aref y j) (m+ (aref y j) (m* tt (aref y i))))
               (loop for k from 0 to j do
-                   (setf (aref H i k) (m- (aref H i k) (m* tt (aref H j k)))))
+                    (let* ((bar (aref H i k)) (baz tt) (quux (aref H j k))
+                           (foo (m- bar (m* baz quux))))
+                      (when *pslq-debugging*
+                        (format t "PSLQ-INTEGER-RELATIONS: assign ~a = ~a - ~a * ~a to H[~d, ~d]~%" foo bar baz quux i k))
+                   (setf (aref H i k) foo)))
               (loop for k from 0 to (1- n) do
                    (setf (aref A i k) (m- (aref A i k) (m* tt (aref A j k))))
                    (setf (aref B k j) (m+ (aref B k j) (m* tt (aref B k i)))))))
     
     (do ((r 1 (1+ r))) ((= r $pslq_depth))
       (let ((m 0) (mm 0) (s 1))
+	
+(when *pslq-debugging*
+  (print "PSLQ-INTEGER-RELATIONS: just before bound check:") (write-char #\newline) 
+  (print "A =") (write-char #\newline) (my-write-lisp-array A *terminal-io* '$comma 'text)
+  (print "B =") (write-char #\newline) (my-write-lisp-array B *terminal-io* '$comma 'text)
+  (print "y =") (write-char #\newline) (my-write-lisp-array y *terminal-io* '$comma 'text)
+  (print "H =") (write-char #\newline) (my-write-lisp-array H *terminal-io* '$comma 'text))
+
+	;; Find the bound M
+	(let ((maxNorm 0))
+	  (loop for j from 0 to (1- n) do
+               (let ((absHj 0))
+                 (loop for i from 0 to (- n 2) do
+                      (if (mlsp absHj (pslq-mabs (aref H j i)))
+                          (setq absHj (aref H j i))))
+                 (if (mlsp maxNorm absHj)
+                     (setq maxNorm absHj))))
+	  (setq $pslq_fail_norm (m// 1 maxNorm))
+	  
+	  ;; Check to see if we have a relation
+	  (loop for j from 0 to (1- n) do
+               (if (mlsp (pslq-mabs (aref y j)) $pslq_threshold)
+                   (progn
+                     (let ((ans ()))
+                       (loop for i from 0 to (1- n) do
+                            (setq ans (append ans `(,(aref B i j)))))
+                       (setq $pslq_status 1)
+                       (return-from pslq-integer-relations ans)))))
+	  
+	  ;; Check to see if we exhausted the precision
+	  (loop for i from 0 to (1- n) do
+               (loop for j from 0 to (1- n) do
+                    (if (mlsp $pslq_precision (pslq-mabs (aref A i j)))
+                        (progn
+                          (setq $pslq_status 2)
+                          (return-from pslq-integer-relations nil)))))
+	  )
 	
 	;; Find maximal value in H
 	(loop for i from 0 to (m- n 2) do
@@ -148,35 +253,6 @@
                   (loop for k from 0 to (1- n) do
                        (setf (aref A i k) (m- (aref A i k) (m* tt (aref A j k))))
                        (setf (aref B k j) (m+ (aref B k j) (m* tt (aref B k i)))))))
-	
-	;; Find the bound M
-	(let ((maxNorm 0))
-	  (loop for j from 0 to (1- n) do
-               (let ((absHj 0))
-                 (loop for i from 0 to (- n 2) do
-                      (if (mlsp absHj (pslq-mabs (aref H j i)))
-                          (setq absHj (aref H j i))))
-                 (if (mlsp maxNorm absHj)
-                     (setq maxNorm absHj))))
-	  (setq $pslq_fail_norm (m// 1 maxNorm))
-	  
-	  ;; Check to see if we have a relation
-	  (loop for j from 0 to (1- n) do
-               (if (mlsp (pslq-mabs (aref y j)) $pslq_threshold)
-                   (progn
-                     (let ((ans ()))
-                       (loop for i from 0 to (1- n) do
-                            (setq ans (append ans `(,(aref B i j)))))
-                       (setq $pslq_status 1)
-                       (return-from pslq-integer-relations ans)))))
-	  
-	  ;; Check to see if we exhausted the precision
-	  (loop for i from 0 to (1- n) do
-               (loop for j from 0 to (1- n) do
-                    (if (mlsp $pslq_precision (pslq-mabs (aref A i j)))
-                        (progn
-                          (setq $pslq_status 2)
-                          (return-from pslq-integer-relations nil)))))
-	  )))
+    ))
     (setq $pslq_status 3)
     (return-from pslq-integer-relations nil) ))
