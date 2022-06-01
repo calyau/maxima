@@ -3522,11 +3522,15 @@
 (declare-top (special var $ratfac ratform context))
 
 (defmfun $integrate (expr x &optional lo hi)
+  (declare (special *in-risch-p*))
   (let ($ratfac)
     (if (not hi)
 	(with-new-context (context)
 	  (if (member '%risch *nounl* :test #'eq)
-	      (rischint expr x)
+	      (if *in-risch-p*
+            ;; Give up; we're being called from RISCHINT by some path.
+            (list '(%integrate) expr x)
+            (rischint expr x))
 	      (sinint expr x)))
 	($defint expr x lo hi))))
 
