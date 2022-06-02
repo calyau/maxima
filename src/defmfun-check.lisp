@@ -402,6 +402,7 @@
 	   ,(cond
 	      (keywords-present-p
 	       `(define-compiler-macro ,name (&rest ,rest-name)
+		  ,(format nil "Compiler-macro to convert calls to ~S to ~S" name impl-name)
 		  (let ((args (append (subseq ,rest-name 0 ,required-len)
 				      (defmfun-keywords ',pretty-fname
 					  (nthcdr ,required-len ,rest-name)
@@ -409,6 +410,7 @@
 		    `(,',impl-name ,@args))))
 	      (t
 	       `(define-compiler-macro ,name (&rest ,rest-name)
+		  ,(format nil "Compiler-macro to convert calls to ~S to ~S" name impl-name)
 		  `(,',impl-name ,@,rest-name)))))))))
 
 ;; Define a Lisp function that should check the number of arguments to
@@ -417,10 +419,14 @@
 ;; explicitly exposed to the user and can just have an impl name of
 ;; "name-impl".
 (defmacro defun-checked (name lambda-list &body body)
+  ;; Defun-checked must not be used with functions that are exposed to
+  ;; the (Maxima) user.  That is, it can't start with "$".
+  (when (char-equal #\$ (char (string name) 0))
+    (error "DEFUN-CHECKED functions cannot start with $: ~S~%" name))
   `(defun-checked-form (,name ,(intern (concatenate 'string
-						  (string name)
-						  "-IMPL")))
-       ,lambda-list ,@body))
+						    (string name)
+						    "-IMPL")))
+		       ,lambda-list ,@body))
 
 ;; Define user-exposed functions that are written in Lisp.
 ;;
