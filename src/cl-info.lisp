@@ -171,6 +171,7 @@
       (find-regex-matches topic section-table)
       (find-regex-matches topic defn-table))))
 
+#+nil
 (defun regex-sanitize (s)
   "Precede any regex special characters with a backslash."
   (let
@@ -186,6 +187,11 @@
 					     `(#\\ ,c) `(,c))) (coerce s 'list)))
             'string)))
 
+(defun regex-sanitize (s)
+  "Precede any regex special characters with a backslash."
+  (pregexp:pregexp-quote s))
+
+#+nil
 (defun find-regex-matches (regex-string hashtable)
   (let*
     ((regex (maxima-nregex::regex-compile regex-string :case-sensitive nil))
@@ -196,6 +202,22 @@
           (if (funcall regex-fcn key)
             (setq regex-matches (cons `(,key . ,value) regex-matches))
             nil))
+      hashtable)
+    (stable-sort regex-matches #'string-lessp :key #'car)))
+
+(defun find-regex-matches (regex-string hashtable)
+  (let*
+      ;; Do the search ignoring case by wrapping the regex-string in
+      ;; "(?i:...)"
+      ((regex (concatenate 'string "(?i:" regex-string ")"))
+       (regex-matches nil))
+    (maphash
+     #'(lambda (key value)
+         (when (pregexp:pregexp-match-positions regex key)
+	   #+nil
+	   (format t "key value: ~S ~S: match ~A~%"
+		   key value (pregexp:pregexp-match-positiions regex key))
+	   (setq regex-matches (cons `(,key . ,value) regex-matches))))
       hashtable)
     (stable-sort regex-matches #'string-lessp :key #'car)))
 
