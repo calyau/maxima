@@ -252,7 +252,182 @@
 		      (merror (intl:gettext "~M: Unrecognized keyword: ~M")
 			      fname opt))))
 	    options)))
-  
+
+;; Internal macro to do the heavy lifting of defining a function that
+;; checks the number of arguments of a function.  This is intended to
+;; give nice error messages to user-callable functions when the number
+;; of arguments is incorrect.
+;;
+;; The function to check arguments is named NAME.  The actual
+;; implementation is in a new function named IMPL, which is called by
+;; NAME.  A compiler-macro is also defined so that Lisp calls of NAME
+;; get automatically converted to IMPL.
+;;
+;; The lambda-list supports &optional and &rest args.  Keyword args
+;; (&key) are also supported.  Maxima keyword args (a=b) are converted
+;; to Lisp keywords appropriately.  Unrecognized keywords signal a
+;; Maxima error.
+;;
+;; The variable %%PRETTY-FNAME is defined such that the body can refer
+;; to this variable to get the pretty name of the defined function for
+;; use in printing error messages or what not.  This allows the
+;; implementation to print out the function name that would also be
+;; used when printing out error messages for incorrect number of
+;; arguments.
+
+(defmacro defun-checked-form ((name impl-name) lambda-list &body body)
+  ;; Carefully check the number of arguments and print a nice message
+  ;; if the number doesn't match the expected number.
+  (multiple-value-bind (required-args
+			optional-args
+			restp
+			rest-arg
+			keywords-present-p
+			keyword-args
+			allow-other-keys-p)
+      (parse-lambda-list lambda-list)
+
+    (when (and keywords-present-p
+	       (or optional-args restp))
+      (error "Keyword args cannot be used with optional args or rest args"))
+
+    (let* ((required-len (length required-args))
+	   (optional-len (length optional-args))
+	   (impl-doc (format nil "Implementation for ~S" name))
+	   (nargs (gensym "NARGS-"))
+	   (args (gensym "REST-ARG-"))
+	   (rest-name (gensym "REST-ARGS"))
+	   (pretty-fname
+	     (cond (optional-args
+		    ;; Can't do much with optional args, so just use the function name.
+		    name)
+		   (restp
+		    ;; Use maxima syntax for rest args: foo(a,b,[c]);
+		    `((,name) ,@required-args ((mlist) ,rest-arg)))
+		   (keywords-present-p
+		    ;; Not exactly sure how to do this
+		    (let* ((index 1)
+			   (keys (mapcar
+				  #'(lambda (k)
+				      (multiple-value-bind (name val)
+					  (if (consp k)
+					      (values
+					       (intern (format nil "$~A" (car k)))
+					       (second k))
+					      (values
+					       (intern (format nil "$~A" k))
+					       nil))
+					(incf index)
+					`((mequal) ,name ,val)))
+				  keyword-args)))
+		      `((,name) ,@required-args ,@keys)))
+		   (t
+		    ;; Just have required args: foo(a,b)
+		    `((,name) ,@required-args))))
+	   (maxima-keywords
+	     (unless allow-other-keys-p
+	       (mapcar #'(lambda (x)
+			   (intern (concatenate
+				    'string "$"
+				    (symbol-name
+				     (if (consp x)
+					 (car x)
+					 x)))))
+		       keyword-args))))
+
+      (multiple-value-bind (forms decls doc-string)
+	  (parse-body body nil t)
+	(setf doc-string (if doc-string (list doc-string)))
+	`(progn
+	   (defun ,impl-name ,lambda-list
+	     ,impl-doc
+	     ,@decls
+	     (block ,name
+	       (let ((%%pretty-fname ',pretty-fname))
+		 (declare (ignorable %%pretty-fname))
+		 ,@forms)))
+
+	   (defun ,name (&rest ,args)
+	     ,@doc-string
+	     (let ((,nargs (length ,args)))
+	       (declare (ignorable ,nargs))
+	       ,@(cond
+		   ((or restp keywords-present-p)
+		    ;; When a rest arg is given, there's no upper
+		    ;; limit to the number of args.  Just check that
+		    ;; we have enough args to satisfy the required
+		    ;; args.
+		    (unless (null required-args)
+		      `((when (< ,nargs ,required-len)
+			  (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+				  ',pretty-fname
+				  ,required-len
+				  ,nargs
+				  (list* '(mlist) ,args))))))
+		   (optional-args
+		    ;; There are optional args (but no rest
+		    ;; arg). Verify that we don't have too many args,
+		    ;; and that we still have all the required args.
+		    `(
+		      (when (> ,nargs ,(+ required-len optional-len))
+			(merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
+				',pretty-fname
+				,(+ required-len optional-len)
+				,nargs
+				(list* '(mlist) ,args)))
+		      (when (< ,nargs ,required-len)
+			(merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+				',pretty-fname
+				,required-len
+				,nargs
+				(list* '(mlist) ,args)))))
+		   (t
+		    ;; We only have required args.
+		    `((unless (= ,nargs ,required-len)
+			(merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
+				',pretty-fname
+				,required-len
+				,nargs
+				(list* '(mlist) ,args))))))
+	       ,(cond
+		  (keywords-present-p
+		   `(apply #',impl-name
+			   (append 
+			    (subseq ,args 0 ,required-len)
+			    (defmfun-keywords ',pretty-fname
+				(nthcdr ,required-len ,args)
+			      ',maxima-keywords))))
+		  (t
+		   `(apply #',impl-name ,args)))))
+	   ,(cond
+	      (keywords-present-p
+	       `(define-compiler-macro ,name (&rest ,rest-name)
+		  ,(format nil "Compiler-macro to convert calls to ~S to ~S" name impl-name)
+		  (let ((args (append (subseq ,rest-name 0 ,required-len)
+				      (defmfun-keywords ',pretty-fname
+					  (nthcdr ,required-len ,rest-name)
+					',maxima-keywords))))
+		    `(,',impl-name ,@args))))
+	      (t
+	       `(define-compiler-macro ,name (&rest ,rest-name)
+		  ,(format nil "Compiler-macro to convert calls to ~S to ~S" name impl-name)
+		  `(,',impl-name ,@,rest-name)))))))))
+
+;; Define a Lisp function that should check the number of arguments to
+;; a function and print out a nice Maxima error message instead of
+;; signaling a Lisp error.  In this case, the function is not
+;; explicitly exposed to the user and can just have an impl name of
+;; "name-impl".
+(defmacro defun-checked (name lambda-list &body body)
+  ;; Defun-checked must not be used with functions that are exposed to
+  ;; the (Maxima) user.  That is, it can't start with "$".
+  (when (char-equal #\$ (char (string name) 0))
+    (error "DEFUN-CHECKED functions cannot start with $: ~S~%" name))
+  `(defun-checked-form (,name ,(intern (concatenate 'string
+						    (string name)
+						    "-IMPL")))
+		       ,lambda-list ,@body))
+
 ;; Define user-exposed functions that are written in Lisp.
 ;;
 ;; If the function name NAME starts with #\$ we check the number of
@@ -264,15 +439,7 @@
 ;; If the function name doesn't start with $, we still allow it, but
 ;; these should be replaced with plain defun eventually.
 ;;
-;; The lambda-list supports &optional and &rest args.  Keyword args
-;; are an error.
-;;
-;; The variable %%PRETTY-FNAME is defined such that the body can refer
-;; to this variable to get the pretty name of the defined function for
-;; use in printing error messages or what not.  This allows the
-;; implementation to print out the function name that would also be
-;; used when printint out error messages for incorrect number of
-;; arguments.
+#+nil
 (defmacro defmfun (name lambda-list &body body)
   (flet ((add-props ()
            ;; We make sure that the ARG-LIST property is added
@@ -445,6 +612,51 @@
 		      (t
 		       `(define-compiler-macro ,name (&rest ,rest-name)
 			  `(,',impl-name ,@,rest-name)))))))))))))
+
+(defmacro defmfun (name lambda-list &body body)
+  (flet ((add-props ()
+           ;; We make sure that the ARG-LIST property is added
+           ;; first, so that it will end up last in the list.
+           `(progn
+              (putprop ',name ',lambda-list 'arg-list)
+              (defprop ,name t translated))))
+    (let ((impl-name (intern (concatenate 'string
+					  (subseq (string name) 1)
+					  "-IMPL")))
+	  (maclisp-narg-p (and (symbolp lambda-list) (not (null lambda-list)))))
+      (cond
+        ((or (char/= #\$ (aref (string name) 0))
+	     maclisp-narg-p)
+         ;; If NAME doesn't start with $, it's an internal function not
+         ;; directly exposed to the user.  Basically define the function
+         ;; as is, taking care to support the Maclisp narg syntax.
+         (cond (maclisp-narg-p
+	        ;; Support MacLisp narg syntax:  (defun foo a ...)
+	        `(progn
+                   ,(add-props)
+		   (defun ,name (&rest narg-rest-argument
+			         &aux (,lambda-list (length narg-rest-argument)))
+		     ,@body)))
+	       (t
+	        `(progn
+                   ,(add-props)
+		   (defun ,name ,lambda-list ,@body)))))
+	(t
+         ;; Function name begins with $, so it's exposed to the user;
+         ;; carefully check the number of arguments and print a nice
+         ;; message if the number doesn't match the expected number.
+         #+nil
+         (unless (char= #\$ (aref (string name) 0))
+	   (warn "First character of function name must start with $: ~S~%" name))
+	 `(progn
+	    (defun-checked-form (,name ,impl-name) ,lambda-list
+	      ,@body)
+	    ,(add-props)
+	    ;; We don't put this putprop in add-props because
+	    ;; add-props is for both user and internal functions
+	    ;; while the impl-name property is only for user
+	    ;; functions.
+	    (putprop ',name ',impl-name 'impl-name)))))))
 
 ;; Examples:
 ;; (defmfun $foobar (a b) (list '(mlist) a b))
