@@ -9,6 +9,18 @@
    #:regex-compile
    ))
 
+(defpackage :pregexp
+  (:use :common-lisp)
+  (:export
+   ;; These exports are the regexp procedures mentioned in the manual.
+   #:pregexp
+   #:pregexp-match-positions
+   #:pregexp-match
+   #:pregexp-split
+   #:pregexp-replace
+   #:pregexp-replace*
+   #:pregexp-quote))
+
 (defpackage :cl-info
   (:use :common-lisp))
 

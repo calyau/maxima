@@ -1,6 +1,8 @@
 ;Portable regular expressions for Common Lisp
 ;Dorai Sitaram
 
+(in-package "PREGEXP")
+
 (defparameter *pregexp-version* 20200129) ;last change
 
 (defparameter *pregexp-comment-char* #\;)
