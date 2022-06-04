@@ -393,13 +393,33 @@ values")
       (or (strip-float-zeros string) string)
       string)))
 
+#+nil
 (defun trailing-zeros-regex-f-0 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$") s))
+#+nil
 (defun trailing-zeros-regex-f-1 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.0)00*$") s))
+#+nil
 (defun trailing-zeros-regex-e-0 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$") s))
+#+nil
 (defun trailing-zeros-regex-e-1 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$") s))
+
+(defun trailing-zeros-regex-f-0 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp:pregexp "^(.*\\.[0-9]*[1-9])00*$")
+				   s))
+(defun trailing-zeros-regex-f-1 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp::pregexp "^(.*\\.0)00*$")
+				   s))
+(defun trailing-zeros-regex-e-0 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp:pregexp "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$")
+				   s))
+(defun trailing-zeros-regex-e-1 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp:pregexp "^(.*\\.0)00*([^0-9][+-][0-9]*)$")
+				   s))
+
+
 
 ;; Return S with trailing zero digits stripped off, or NIL if there are none.
 
+#+nil
 (defun strip-float-zeros (s)
   (cond
     ((or (trailing-zeros-regex-f-0 s) (trailing-zeros-regex-f-1 s))
@@ -414,6 +434,22 @@ values")
         (s2 (subseq s (first group2) (second group2))))
        (concatenate 'string s1 s2)))
     (t nil)))
+
+(defun strip-float-zeros (s)
+  (let (matches)
+    (cond
+      ((setq matches (or (trailing-zeros-regex-f-0 s) (trailing-zeros-regex-f-1 s)))
+       (let
+	   ((group1 (elt matches 1)))
+	 (subseq s (car group1) (cdr group1))))
+      ((setq matches (or (trailing-zeros-regex-e-0 s) (trailing-zeros-regex-e-1 s)))
+       (let*
+	   ((group1 (elt matches 1))
+            (s1 (subseq s (car group1) (cdr group1)))
+            (group2 (elt matches 2))
+            (s2 (subseq s (car group2) (cdr group2))))
+	 (concatenate 'string s1 s2)))
+      (t nil))))
 
 (defun explodec (symb)		;is called for symbols and numbers
   (loop for v in (coerce (print-invert-case symb) 'list)
