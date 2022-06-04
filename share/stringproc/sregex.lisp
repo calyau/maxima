@@ -93,7 +93,7 @@
 
 (defun $regex_compile (regex)
   (make-compiled-regex
-    :parse-tree (pregexp regex) ))
+    :parse-tree (pregexp:pregexp regex) ))
 
 
 (defun regex-check-and-maybe-coerce (name regex &rest args)
@@ -134,7 +134,7 @@
             (let ((args (utf-8-fix-start-end ov (list nil start end))))
               (setq start (cadr args)
                     end (caddr args) )))
-          (let ((pos-list (pregexp-match-positions regex str start end))
+          (let ((pos-list (pregexp:pregexp-match-positions regex str start end))
                 (pos-mlist nil) )
             (if pos-list 
               (dolist (pos pos-list (cons '(mlist simp) (nreverse pos-mlist)))
@@ -156,7 +156,7 @@
             (setq start (cadr args)
                   end (caddr args) )))
         (let ((match 
-                (pregexp-match regex str (1- start) (if end (1- end) nil)) ))
+                (pregexp:pregexp-match regex str (1- start) (if end (1- end) nil)) ))
           (if match 
             (cons '(mlist simp) match)
             (return-from $regex_match nil) )))
@@ -165,23 +165,23 @@
 
 (defun $regex_split (regex str)
   (setq regex (regex-check-and-maybe-coerce "regex_split" regex str))
-  (cons '(mlist simp) (pregexp-split regex str)) )
+  (cons '(mlist simp) (pregexp:pregexp-split regex str)) )
 
 
 (defun $regex_subst_first (replacement regex str)
   (setq regex (regex-check-and-maybe-coerce "regex_subst_first" regex str replacement))
-  (pregexp-replace regex str replacement) )
+  (pregexp:pregexp-replace regex str replacement) )
 ;;
 ;; Argument order different to the order of pregexp-replace.
 ;; Use order like in $ssubst or substitute: new, old, str.
 ;;
 (defun $regex_subst (replacement regex str)
   (setq regex (regex-check-and-maybe-coerce "regex_subst" regex str replacement))
-  (pregexp-replace* regex str replacement) )
+  (pregexp:pregexp-replace* regex str replacement) )
 
 
 (defun $string_to_regex (str)
   (unless (stringp str)
     (gf-merror (intl:gettext "`string_to_regex': Argument must be a string.")) )
-  (pregexp-quote str) )
+  (pregexp:pregexp-quote str) )
 
