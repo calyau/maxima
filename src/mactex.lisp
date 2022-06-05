@@ -296,28 +296,6 @@
 ;; Given a string foo_mm_nn, return foo, mm, and nn,
 ;; where mm and nn are integers (not strings of digits).
 ;; Return NIL if argument doesn't have trailing digits.
-
-#+nil
-(defun extract-trailing-digits (s)
-  (let (nn-list)
-    ;; OK (loop while (funcall #.(maxima-nregex::regex-compile "[^_](__*)([0-9][0-9]*)$") s)
-    ;; NOPE (loop while (funcall #.(maxima-nregex::regex-compile "[^0-9_](_*)([0-9][0-9]*)$") s)
-    (loop with nn-string while
-          (or (and
-                (funcall #.(maxima-nregex::regex-compile "[^_](__*)([0-9][0-9]*)$") s)
-                (let*
-                  ((group-_ (aref maxima-nregex::*regex-groups* 1))
-                   (group-nn (aref maxima-nregex::*regex-groups* 2)))
-                  (setq nn-string (subseq s (first group-nn) (second group-nn)))
-                  (setq s (subseq s 0 (first group-_)))))
-              (and
-                (funcall #.(maxima-nregex::regex-compile "[^_]([0-9][0-9]*)$") s)
-                (let* ((group-nn (aref maxima-nregex::*regex-groups* 1)))
-                  (setq nn-string (subseq s (first group-nn) (second group-nn)))
-                  (setq s (subseq s 0 (first group-nn))))))
-          do (push (parse-integer nn-string) nn-list))
-    (and nn-list (cons s nn-list))))
-
 (defun extract-trailing-digits (s)
   (let (nn-list)
     ;; OK (loop while (funcall #.(maxima-nregex::regex-compile "[^_](__*)([0-9][0-9]*)$") s)
