@@ -743,34 +743,66 @@ values")
 (defun match-tz-Z (s) (funcall #.(maxima-nregex::regex-compile "^Z$") s))
 )
 
-(defun match-date-yyyy-mm-dd (s)
-  (pregexp:pregexp-match-positions
-   '#.(pregexp:pregexp "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])")
-   s))
-(defun match-time-hh-mm-ss (s)
-  (pregexp:pregexp-match-positions
-   '#.(pregexp:pregexp "^[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])")
-   s))
-(defun match-fraction-nnn (s)
-  (pregexp:pregexp-match-positions
-   '#.(pregexp:pregexp "^[,.]([0-9][0-9]*)")
-   s))
-(defun match-tz-hh-mm (s)
-  (pregexp:pregexp-match-positions
-   '#.(pregexp:pregexp "^([+-])([0-9][0-9]):([0-9][0-9])$")
-   s))
-(defun match-tz-hhmm (s)
-  (pregexp:pregexp-match-positions
-   '#.(pregexp:pregexp "^([+-])([0-9][0-9])([0-9][0-9])$")
-   s))
-(defun match-tz-hh (s)
-  (pregexp:pregexp-match-positions
-   '#.(pregexp:pregexp "^([+-])([0-9][0-9])$")
-   s))
-(defun match-tz-Z (s)
-  (pregexp:pregexp-match-positions
-   '#.(pregexp:pregexp "^Z$")
-   s))
+;; Originally, these functions all looked like
+;;
+;; (defun match-date-yyyy-mm-dd (s)
+;;   (pregexp:pregexp-match-positions
+;;    '#.(pregexp:pregexp "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])")
+;;    s))
+;;
+;; However, sbcl produces incorrect results for this.  For example,
+;;
+;; (match-date-yyyy-mm-dd "1900-01-01 16:00:00-08:00")
+;;
+;; returns ((0 . 10) (0 . 4) (8 . 10) NIL).  But the correct answer is
+;; ((0 . 10) (0 . 4) (5 . 7) (8 . 10)).
+;;
+;; But if you replace the '#.(pregexp:pregexp ...) with
+;; (pregexp:pregexp ...), sbcl works.  But then we end up compiling
+;; the the regexp on every call.  So we use a closure so the regexp is
+;; compiled only once.
+(let ((pat (pregexp:pregexp "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])")))
+  (defun match-date-yyyy-mm-dd (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])")))
+  (defun match-time-hh-mm-ss (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^[,.]([0-9][0-9]*)")))
+  (defun match-fraction-nnn (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+  
+(let ((pat (pregexp:pregexp "^([+-])([0-9][0-9]):([0-9][0-9])$")))
+  (defun match-tz-hh-mm (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^([+-])([0-9][0-9])([0-9][0-9])$")))
+  (defun match-tz-hhmm (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^([+-])([0-9][0-9])$")))
+  (defun match-tz-hh (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^Z$")))
+  (defun match-tz-Z (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
 
 
 
