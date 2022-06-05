@@ -1,14 +1,5 @@
 (in-package :common-lisp-user)
 
-(defpackage :maxima-nregex
-  (:use :common-lisp)
-  (:export
-   ;; vars
-   #:*regex-debug* #:*regex-groups* #:*regex-groupings*
-   ;; functions
-   #:regex-compile
-   ))
-
 (defpackage :pregexp
   (:use :common-lisp)
   (:export

@@ -131,7 +131,6 @@
 	     (:file "numerical/f2cl-package")
 	     (:file "numerical/slatec")
 	     (:file "command-line")
-	     (:file "nregex")
 	     (:file "pregexp")
 	     #+gcl-working-proclaims
 	     (:private-file "tools/sys-proclaim")))
@@ -163,8 +162,7 @@
 	     (:file "intl")))
    (:module info :source-pathname ""
 	    :components
-	    ((:file "nregex")
-	     (:file "pregexp")
+	    ((:file "pregexp")
 	     (:file "cl-info")))
    (:module sloop :source-pathname ""
 	    :components
