@@ -393,27 +393,35 @@ values")
       (or (strip-float-zeros string) string)
       string)))
 
-(defun trailing-zeros-regex-f-0 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*$") s))
-(defun trailing-zeros-regex-f-1 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.0)00*$") s))
-(defun trailing-zeros-regex-e-0 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$") s))
-(defun trailing-zeros-regex-e-1 (s) (funcall #.(maxima-nregex::regex-compile "^(.*\\.0)00*([^0-9][+-][0-9]*)$") s))
+(defun trailing-zeros-regex-f-0 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp:pregexp "^(.*\\.[0-9]*[1-9])00*$")
+				   s))
+(defun trailing-zeros-regex-f-1 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp::pregexp "^(.*\\.0)00*$")
+				   s))
+(defun trailing-zeros-regex-e-0 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp:pregexp "^(.*\\.[0-9]*[1-9])00*([^0-9][+-][0-9]*)$")
+				   s))
+(defun trailing-zeros-regex-e-1 (s)
+  (pregexp:pregexp-match-positions '#.(pregexp:pregexp "^(.*\\.0)00*([^0-9][+-][0-9]*)$")
+				   s))
 
 ;; Return S with trailing zero digits stripped off, or NIL if there are none.
-
 (defun strip-float-zeros (s)
-  (cond
-    ((or (trailing-zeros-regex-f-0 s) (trailing-zeros-regex-f-1 s))
-     (let
-       ((group1 (aref maxima-nregex::*regex-groups* 1)))
-       (subseq s (first group1) (second group1))))
-    ((or (trailing-zeros-regex-e-0 s) (trailing-zeros-regex-e-1 s))
-     (let*
-       ((group1 (aref maxima-nregex::*regex-groups* 1))
-        (s1 (subseq s (first group1) (second group1)))
-        (group2 (aref maxima-nregex::*regex-groups* 2))
-        (s2 (subseq s (first group2) (second group2))))
-       (concatenate 'string s1 s2)))
-    (t nil)))
+  (let (matches)
+    (cond
+      ((setq matches (or (trailing-zeros-regex-f-0 s) (trailing-zeros-regex-f-1 s)))
+       (let
+	   ((group1 (elt matches 1)))
+	 (subseq s (car group1) (cdr group1))))
+      ((setq matches (or (trailing-zeros-regex-e-0 s) (trailing-zeros-regex-e-1 s)))
+       (let*
+	   ((group1 (elt matches 1))
+            (s1 (subseq s (car group1) (cdr group1)))
+            (group2 (elt matches 2))
+            (s2 (subseq s (car group2) (cdr group2))))
+	 (concatenate 'string s1 s2)))
+      (t nil))))
 
 (defun explodec (symb)		;is called for symbols and numbers
   (loop for v in (coerce (print-invert-case symb) 'list)
@@ -691,48 +699,105 @@ values")
 ;; ...+ indicates one or more instances of ...,
 ;; and [...] indicates literal character alternatives.
 ;;
-;; Note that the nregex package doesn't handle optional groups or ...+.
-;; The notation above is only for describing the behavior of the parser.
-;;
 ;; Trailing unparsed stuff causes the parser to fail (return NIL).
 
-(defun match-date-yyyy-mm-dd (s) (funcall #.(maxima-nregex::regex-compile "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])") s))
-(defun match-time-hh-mm-ss (s) (funcall #.(maxima-nregex::regex-compile "^[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])") s))
-(defun match-fraction-nnn (s) (funcall #.(maxima-nregex::regex-compile "^[,.]([0-9][0-9]*)") s))
-(defun match-tz-hh-mm (s) (funcall #.(maxima-nregex::regex-compile "^([+-])([0-9][0-9]):([0-9][0-9])$") s))
-(defun match-tz-hhmm (s) (funcall #.(maxima-nregex::regex-compile "^([+-])([0-9][0-9])([0-9][0-9])$") s))
-(defun match-tz-hh (s) (funcall #.(maxima-nregex::regex-compile "^([+-])([0-9][0-9])$") s))
-(defun match-tz-Z (s) (funcall #.(maxima-nregex::regex-compile "^Z$") s))
+;; Originally, these functions all looked like
+;;
+;; (defun match-date-yyyy-mm-dd (s)
+;;   (pregexp:pregexp-match-positions
+;;    '#.(pregexp:pregexp "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])")
+;;    s))
+;;
+;; However, sbcl produces incorrect results for this.  For example,
+;;
+;; (match-date-yyyy-mm-dd "1900-01-01 16:00:00-08:00")
+;;
+;; returns ((0 . 10) (0 . 4) (8 . 10) NIL).  But the correct answer is
+;; ((0 . 10) (0 . 4) (5 . 7) (8 . 10)).
+;;
+;; But if you replace the '#.(pregexp:pregexp ...) with
+;; (pregexp:pregexp ...), sbcl works.  But then we end up compiling
+;; the the regexp on every call.  So we use a closure so the regexp is
+;; compiled only once.
+(let ((pat (pregexp:pregexp "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])")))
+  (defun match-date-yyyy-mm-dd (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])")))
+  (defun match-time-hh-mm-ss (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^[,.]([0-9][0-9]*)")))
+  (defun match-fraction-nnn (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+  
+(let ((pat (pregexp:pregexp "^([+-])([0-9][0-9]):([0-9][0-9])$")))
+  (defun match-tz-hh-mm (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^([+-])([0-9][0-9])([0-9][0-9])$")))
+  (defun match-tz-hhmm (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^([+-])([0-9][0-9])$")))
+  (defun match-tz-hh (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
+
+(let ((pat (pregexp:pregexp "^Z$")))
+  (defun match-tz-Z (s)
+    (pregexp:pregexp-match-positions
+     pat
+     s)))
 
 (defmfun $parse_timedate (s)
   (setq s (string-trim '(#\Space #\Tab #\Newline #\Return) s))
-  (let (year month day
-       (hours 0) (minutes 0) (seconds 0)
-       (seconds-fraction 0) seconds-fraction-numerator tz)
-    (if (match-date-yyyy-mm-dd s)
+  (let (matches
+	year month day
+	(hours 0) (minutes 0) (seconds 0)
+	(seconds-fraction 0) seconds-fraction-numerator tz)
+    (if (setq matches (match-date-yyyy-mm-dd s))
       (progn 
-        (multiple-value-setq (year month day) (extract-groups-integers s))
-        (setq s (subseq s (second (aref maxima-nregex::*regex-groups* 0)))))
+        (multiple-value-setq (year month day)
+	  (pregexp-extract-groups-integers matches s))
+        (setq s (subseq s (cdr (elt matches 0)))))
       (return-from $parse_timedate nil))
-    (when (match-time-hh-mm-ss s)
-      (multiple-value-setq (hours minutes seconds) (extract-groups-integers s))
-      (setq s (subseq s (second (aref maxima-nregex::*regex-groups* 0)))))
-    (when (match-fraction-nnn s)
-      (multiple-value-setq (seconds-fraction-numerator) (extract-groups-integers s))
-      (let ((group1 (aref maxima-nregex::*regex-groups* 1)))
-        (setq seconds-fraction (div seconds-fraction-numerator (expt 10 (- (second group1) (first group1))))))
-      (setq s (subseq s (second (aref maxima-nregex::*regex-groups* 0)))))
+    (when (setq matches (match-time-hh-mm-ss s))
+      (multiple-value-setq (hours minutes seconds)
+	(pregexp-extract-groups-integers matches s))
+      (setq s (subseq s (cdr (elt matches 0)))))
+    (when (setq matches (match-fraction-nnn s))
+      (multiple-value-setq (seconds-fraction-numerator)
+	(pregexp-extract-groups-integers matches s))
+      (let ((group1 (elt matches 1)))
+        (setq seconds-fraction (div seconds-fraction-numerator (expt 10 (- (cdr group1) (car group1))))))
+      (setq s (subseq s (cdr (elt matches 0)))))
     (cond
-      ((match-tz-hh-mm s)
-       (multiple-value-bind (tz-sign tz-hours tz-minutes) (extract-groups-integers s)
+      ((setq matches (match-tz-hh-mm s))
+       (multiple-value-bind (tz-sign tz-hours tz-minutes)
+	   (pregexp-extract-groups-integers matches s)
          (setq tz (* tz-sign (+ tz-hours (/ tz-minutes 60))))))
-      ((match-tz-hhmm s)
-       (multiple-value-bind (tz-sign tz-hours tz-minutes) (extract-groups-integers s)
+      ((setq matches (match-tz-hhmm s))
+       (multiple-value-bind (tz-sign tz-hours tz-minutes)
+	   (pregexp-extract-groups-integers matches s)
          (setq tz (* tz-sign (+ tz-hours (/ tz-minutes 60))))))
-      ((match-tz-hh s)
-       (multiple-value-bind (tz-sign tz-hours) (extract-groups-integers s)
+      ((setq matches (match-tz-hh s))
+       (multiple-value-bind (tz-sign tz-hours)
+	   (pregexp-extract-groups-integers matches s)
          (setq tz (* tz-sign tz-hours))))
-      ((match-tz-Z s)
+      ((setq matches (match-tz-Z s))
        (setq tz 0))
       (t
         (if (> (length s) 0)
@@ -740,11 +805,11 @@ values")
 
     (encode-time-with-all-parts year month day hours minutes seconds seconds-fraction (if tz (- tz)))))
 
-(defun extract-groups-integers (s)
-  (let ((groups (coerce (subseq maxima-nregex::*regex-groups* 1 maxima-nregex::*regex-groupings*) 'list)))
-    (values-list (mapcar #'parse-integer-or-sign
-                         (mapcar #'(lambda (ab) (subseq s (first ab) (second ab)))
-                                 groups)))))
+(defun pregexp-extract-groups-integers (matches s)
+  (values-list (mapcar #'parse-integer-or-sign
+                       (mapcar #'(lambda (ab)
+				   (subseq s (car ab) (cdr ab)))
+                               (rest matches)))))
 
 (defun parse-integer-or-sign (s)
   (cond

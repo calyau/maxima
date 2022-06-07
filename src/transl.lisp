@@ -184,13 +184,16 @@ APPLY means like APPLY.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun tr-abort ()
+  (setq tr-abort t)
+  nil)
 
 (defun barfo (msg)
   (tr-format (intl:gettext "Internal translator error: ~M~%") msg)
   (cond (*transl-debug*
 	 (break "transl barfo"))
 	(t
-	 (setq tr-abort t)
+	 (tr-abort)
 	 nil)))
 
 (defun specialp (var)
@@ -370,7 +373,7 @@ APPLY means like APPLY.")
 (defun tr-mfun (name &aux (*transl-backtrace* nil))
   (let ((def-form (consfundef name nil nil)))
     (cond ((null def-form)
-	   (setq tr-abort t))
+	   (tr-abort))
 	  (t
 	   (tr-mdefine-toplevel def-form)))))
 
@@ -413,13 +416,18 @@ APPLY means like APPLY.")
 	   ;; allowed. They won't get passed the interpreter, but
 	   ;; interesting things may happen here. Thats what you
 	   ;; get from too much syntax, so don't sweat it.
+	   ;;
+	   ;; the allowed generalizations aren't necessarily subscripted
+	   ;; functions, but we'll act like they are in this warning.
+	   ;; don't sweat this either.
+	   (tr-format (intl:gettext "warning: subscripted functions do not translate well: ~:M~%") form)
 	   (tr-mdefine-toplevel
 	    `(,(car form) ,(car args)
 	      ((lambda) ((mlist) ,@(cdr args)) ,body))))
 	  ((member tr-unique a-args :test #'eq)
 	   ;; WHAT IS "BAD" ABOUT THE ARGUMENT LIST HERE ??
 	   (tr-format (intl:gettext "error: unhandled argument list in function definition: ~:M~%") `((mlist),@args))
-	   (setq tr-abort t)
+	   (tr-abort)
 	   nil)
 	  ((member (caar form) '(mdefine mdefmacro) :test #'eq)
 	   (setq kind (cond ((eq (caar form) 'mdefmacro) 'macro)
@@ -486,19 +494,20 @@ APPLY means like APPLY.")
 	    (if delete-subr? (remprop name 'subr))
 	    (if (mget name 'trace) (macsyma-untrace name))
 	    (if (not $savedef) (meval `(($remfunction) ,name)))
-	    (let ((lisp-action
-					; apply EVAL so it is easy to TRACE.
-					; ERRSET is crude, but...
-		   (errset (apply 'eval (list lisp-def-form)))))
-	      (cond ((not lisp-action)
-		     (trfail name))
-		    (t name))))))))
+	    (handler-case (eval lisp-def-form)
+	      (error (e)
+		(tr-abort)
+		(trfail name e)
+		(return-from translate-function nil)))
+	    name)))))
 
 (defun punt-to-meval (form &optional (mode '$any))
   (cons mode `(meval ',form)))
 
-(defun trfail (x)
-  (tr-format (intl:gettext "error: failed to translate ~:@M~%") x)
+(defun trfail (x &optional msg)
+  (tr-format (intl:gettext "Error: failed to translate ~:@M~%") x)
+  (when msg
+    (tr-format (intl:gettext "Message: ~A~%") msg))
   nil)
 
 (defun translate-and-eval-macsyma-expression (form)
@@ -847,7 +856,7 @@ APPLY means like APPLY.")
 (def%tr $eval_when (form)
   (tr-format (intl:gettext "error: found 'eval_when' in a function or expression: ~:M~%") form)
   (tr-format (intl:gettext "note: 'eval_when' can appear only at the top level in a file.~%"))
-  (setq tr-abort t)
+  (tr-abort)
   '($any . nil))
 
 (def%tr mdefmacro (form)
@@ -860,11 +869,11 @@ APPLY means like APPLY.")
   (punt-to-meval form))
 
 (def%tr $local (form)
-  (cond (local
-	 (tr-format (intl:gettext "error: there is already a 'local' in this block.~%"))
-	 (setq tr-abort t))
-	(t
-	 (setq local t)))
+  (when local
+    (tr-format (intl:gettext "error: there is already a 'local' in this block.~%"))
+    (tr-abort)
+    (return-from $local nil))
+  (setq local t)
   ; We can't just translate to a call to MLOCAL here (which is
   ; what used to happen).  That would push onto LOCLIST and bind
   ; MLOCP at the "wrong time".  The push onto LOCLIST and the
@@ -1009,17 +1018,17 @@ APPLY means like APPLY.")
     (let ((dup (find-duplicate arglist :test #'eq)))
       (when dup
         (tr-format (intl:gettext "error: ~M occurs more than once in block variable list") dup)
-        (setq tr-abort t)))
-    (unless tr-abort
-      (setq form
-	    (tr-lambda
-	     ;; [2] call the lambda translator.
-	     `((lambda) ((mlist) ,@arglist) ,@body)
-	     ;; [3] supply our own body translator.
-	     #'tr-mprog-body
-	     val-list
-	     arglist))
-      (cons (car form) `(,(cdr form) ,@val-list)))))
+        (tr-abort)
+        (return-from mprog nil)))
+    (setq form
+	  (tr-lambda
+	   ;; [2] call the lambda translator.
+	   `((lambda) ((mlist) ,@arglist) ,@body)
+	   ;; [3] supply our own body translator.
+	   #'tr-mprog-body
+	   val-list
+	   arglist))
+    (cons (car form) `(,(cdr form) ,@val-list))))
 
 (defun tr-mprog-body (body val-list arglist
 		      &aux 
@@ -1104,20 +1113,9 @@ APPLY means like APPLY.")
 	  ((eq (caar fn) 'mquote) 
 	   `($any list ',(cons (cadr fn) aryp) ,@(tr-args args)))
 	  ((eq (caar fn) 'lambda)
-	   ;; LAMBDA([X,'Y,[L]],...)(A,B,C) is a bogus form. Don't bother with it.
-	   ;; ((LAMBDA) ((MLIST) ....) ....)
-	   (cond ((member 'bogus (mapcar #'(lambda (arg)
-					   (cond ((or (mquotep arg)
-						      ($listp arg))
-						  'bogus)))
-				       (cdr (cadr fn))) :test #'eq)
-		  (tr-format (intl:gettext "error: quote or list arguments are not allowed in MQAPPLY; found: ~:M~%") form)
-		  (setq tr-abort t)
-		  nil)
-		 (t
-		  (setq 	fn (tr-lambda fn)
-				args (tr-args args))
-		  `(,(car fn) ,(cdr fn) ,@args))))
+	   (let ((args (tr-args args))
+		 (fn (translate fn)))
+	     (cons (car fn) `(mfuncall ,(cdr fn) ,@args))))
 	  ((not aryp)
 	   `($any simplify (mapply ,(dconvx (translate fn))
 			    (list ,@(tr-args args))

@@ -1,27 +1,9 @@
+;Portable regular expressions for Common Lisp
+;Dorai Sitaram
 
-;; Portable regular expressions for Common Lisp
-;; Dorai Sitaram
+(in-package "PREGEXP")
 
-;; https://github.com/ds26gte/pregexp/
-;; (October 2015)
-
-;; --- file COPYING --------------------------------------------------------- ;;
-
-;; Copyright (c) 1999-2005, Dorai Sitaram.
-;; All rights reserved.
-
-;; Permission to copy, modify, distribute, and use this work or
-;; a modified copy of this work, for any purpose, is hereby
-;; granted, provided that the copy includes this copyright
-;; notice, and in the case of a modified copy, also includes a
-;; notice of modification.  This work is provided as is, with
-;; no warranty of any kind.
-
-;; -------------------------------------------------------------------------- ;;
-
-(in-package :maxima)
-
-(defparameter *pregexp-version* 20090325) ;last change
+(defparameter *pregexp-version* 20200129) ;last change
 
 (defparameter *pregexp-comment-char* #\;)
 
@@ -324,6 +306,7 @@
 (defun pregexp-check-if-in-char-class-p (c char-class) ;check thoroughly
   (case char-class
     (:any (not (char= c #\newline)))
+    (:super-any t)
     (:alnum (or (alpha-char-p c) (digit-char-p c)))
     (:alpha (alpha-char-p c))
     (:ascii (< (char-code c) 128))
@@ -461,9 +444,9 @@
                    (let ((n-actual n) (sn-actual sn))
                      (setq n i sn i)
                      (let ((found-it-p
-                             (match-loop `(:seq (:between nil 0 nil :any)
+                             (match-loop `(:seq (:between nil 0 nil :super-any)
                                                 ,(second re) :eos)
-                                         0
+                                         start
                                          #'identity
                                          (lambda () nil))))
                        (setq n n-actual sn sn-actual)
@@ -472,9 +455,9 @@
                    (let ((n-actual n) (sn-actual sn))
                      (setq n i sn i)
                      (let ((found-it-p
-                             (match-loop `(:seq (:between nil 0 nil :any)
+                             (match-loop `(:seq (:between nil 0 nil :super-any)
                                                 ,(second re) :eos)
-                                         0
+                                         start
                                          #'identity
                                          (lambda () nil))))
                        (setq n n-actual sn sn-actual)
@@ -646,14 +629,34 @@
                   (pregexp-replace-aux str ins ins-len pp)))
         (setq i (cdar pp))))))
 
-
-;; The original pregexp-quote loops endlessly. Fixed by van_nek.
 (defun pregexp-quote (s)
-  (let (r)
-    (dolist (c (nreverse (coerce s 'list)) (concatenate 'string r))
-      (push c r)
-      (when (member c '(#\\ #\. #\? #\* #\+ #\| #\^ #\$ #\[ #\] #\{ #\} #\( #\)))
-        (push #\\ r) ))))
+  (let ((i (- (length s) 1)) (r '()))
+    (loop
+      (when (< i 0) (return (concatenate 'string r)))
+      (let ((c (char s i)))
+        (decf i)
+        (push c r)
+        (when (member c '(#\\ #\. #\? #\* #\+ #\| #\^ #\$
+                        #\[ #\] #\{ #\} #\( #\)))
+          (push #\\ r))))))
 
-
-;; The original file ends with a trace command for debugging. Commented out by van_nek.
+'(trace
+  pregexp
+  pregexp-read-pattern
+  pregexp-read-subpattern
+;  pregexp-read-char-list
+  pregexp-read-piece
+ pregexp-read-branch
+;  pregexp-make-backref-list
+  pregexp-read-cluster-type
+;  pregexp-wrap-quantifier-if-any
+;  pregexp-match-positions
+  pregexp-match-positions-aux
+;  pregexp-replace*
+;  pregexp-read-escaped-char
+;  pregexp-read-escaped-number
+;  pregexp-read-posix-char-class
+;  pregexp-replace pregexp-replace-aux
+;  pregexp-check-if-in-char-class-p
+;  pregexp-read-nums
+  )

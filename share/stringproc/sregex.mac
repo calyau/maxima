@@ -1,4 +1,3 @@
 load("unicode-sniffer.lisp")$
 load("stringproc.lisp")$
-load("pregexp.lisp")$
 load("sregex.lisp")$

@@ -6281,6 +6281,19 @@ integrate(z^4*%e^(f*z)*(b*c^(d*z)+a)^p,z);
 integrate(1/(r^2+1),r);
 atan(r);
 
+/* SF bug report #3985: "integrate(sin(x*cos(x)), x), risch; causes unlimited recursion"
+ * If ever Maxima knows an antiderivative for these,
+ * we can fix up the expected results.
+ */
+integrate (sin(x*cos(x)), x), risch;
+'integrate (sin(x*cos(x)), x);
+
+risch (sin(x*cos(x)), x);
+'integrate (sin(x*cos(x)), x);
+
+integrate (sin(x*cos(x)), x);
+'integrate (sin(x*cos(x)), x);
+
 /* Tidy up */
 (reset(),
  forget(n>0,notequal(v,0)),

@@ -227,7 +227,7 @@
 	     (add2lnc fnname $arrays)
 	     (setq ary (mgetl fnname '(hashar array))))
 	 (unless (= (if (eq (car ary) 'hashar)
-			(funcall (cadr ary) 2)
+			(aref (symbol-array (cadr ary)) 2)
 			(length (cdr (arraydims (cadr ary)))))
 		    number-of-args)
 	   (merror (intl:gettext "INSURE-ARRAY-PROPS: array ~:@M already defined with different dimensions.") fnname)))

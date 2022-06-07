@@ -42,7 +42,7 @@
 	 (setq array-flag (car array-flag)))
     (setq def-header
 	  (cond ((eq prop 'mdefine)
-		 (cond (array-flag `(:property ,name a-subr))
+		 (cond (array-flag `(,name a-subr))
 		       (t name)))
 		(t `(,name translated-mmacro))))
 

@@ -1578,14 +1578,14 @@ wrapper for this."
     (zl-remprop fun 'arg-list)
     (zl-remprop fun 'translated-mmacro)
     (zl-remprop fun 'function-mode)
-    (when (not (getl fun '(a-expr a-subr)))
+    (unless (get fun 'a-subr)
 	(zl-remprop fun 'once-translated)
 	(zl-remprop fun 'translated))))
 
 (defun remove-transl-array-fun-props (fun)
   (when (and (get fun 'translated) (not (eq $savedef '$all)))
-    (zl-remprop fun 'a-expr)
     (zl-remprop fun 'a-subr)
+    (zl-remprop fun 'arrayfun-mode)
     (if (not (fboundp fun)) (zl-remprop fun 'translated))))
 
 (defun rempropchk (var)
@@ -1942,13 +1942,12 @@ wrapper for this."
 		    r))))
 
 (defun arrfunp (x)
-  (or (and $transrun (getl x '(a-expr))) (mgetl x '(aexpr))))
+  (or (and $transrun (getl x '(a-subr))) (mgetl x '(aexpr))))
 
 (defun arrfuncall (arrfun subs form)
   (let ((aexprp t))
     (case (car arrfun)
       (aexpr (mapply1 (cadr arrfun) subs (cadr arrfun) form))
-      (a-expr (apply (cadr arrfun) subs))
       (a-subr (apply (cadr arrfun) subs)))))
 
 (defun hasher (l)  ; This is not the best way to write a hasher.  But,

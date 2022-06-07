@@ -387,8 +387,11 @@ Example:
 @deffn {Function} dlange (@var{norm}, @var{A})
 @deffnx {Function} zlange (@var{norm}, @var{A})
 
-Computes a norm or norm-like function of the matrix @var{A}.
+Computes a norm or norm-like function of the matrix @var{A}.  If
+@var{A} is a real matrix, use @code{dlange}.  For a matrix with
+complex elements, use @code{zlange}.
 
+@code{norm} specifies the kind of norm to be computed:
 @table @code
 @item max
 Compute @math{max(abs(A(i, j)))} where @math{i} and @math{j} range over

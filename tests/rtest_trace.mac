@@ -312,3 +312,67 @@ f7 (error (), error (), error (), error ());
 (kill (a, b, c, d, u, v, w, x),
  0);
 0;
+
+/* SF bug #3963: "trace doesn't detect calls to functions defined by DEFMFUN in Lisp code" */
+
+(S: make_string_output_stream (),
+ untrace (atom),
+ with_stdout (S, atom(1)),
+ get_output_stream_string (S));
+"";
+
+(trace (atom),
+ with_stdout (S, atom(1)),
+ get_output_stream_string (S));
+"1 Enter atom [1]
+1 Exit  atom true
+";
+
+(untrace (atom),
+ trace (?rischint),
+ with_stdout (S, block ([display2d: false], risch (2*x, x))),
+ get_output_stream_string (S));
+"1 Enter rischint [2*x,x]
+1 Exit  rischint (2*x^2)/2
+";
+
+(untrace (?rischint),
+ trace (integrate, defint, limit, ?antideriv),
+ with_stdout (S, block ([display2d: false], integrate (exp(-x)*cos(x), x, 0, inf))),
+ get_output_stream_string (S));
+"1 Enter integrate [%e^-x*cos(x),x,0,inf]
+ 1 Enter defint [%e^-x*cos(x),x,0,inf]
+  1 Enter limit [0]
+  1 Exit  limit 0
+  1 Enter limit [%e^-x,x,inf]
+  1 Exit  limit 0
+  1 Enter limit [0]
+  1 Exit  limit 0
+  1 Enter antideriv [%e^-x*cos(x)]
+  1 Exit  antideriv (%e^-x*(sin(x)-cos(x)))/2
+  1 Enter limit [0]
+  1 Exit  limit 0
+  1 Enter limit [(%e^-x*sin(x))/2-(%e^-x*cos(x))/2,x,0,plus]
+  1 Exit  limit -1/2
+  1 Enter limit [(%e^-x*sin(x))/2-(%e^-x*cos(x))/2,x,inf,minus]
+  1 Exit  limit 0
+ 1 Exit  defint 1/2
+1 Exit  integrate 1/2
+";
+
+(untrace (limit, defint),
+ with_stdout (S, block ([display2d: false], integrate (exp(-x)*cos(x), x, 0, inf))),
+ get_output_stream_string (S));
+"1 Enter integrate [%e^-x*cos(x),x,0,inf]
+ 1 Enter antideriv [%e^-x*cos(x)]
+ 1 Exit  antideriv (%e^-x*(sin(x)-cos(x)))/2
+1 Exit  integrate 1/2
+";
+
+(untrace (integrate, ?antideriv),
+ with_stdout (S, block ([display2d: false], integrate (exp(-x)*cos(x), x, 0, inf))),
+ get_output_stream_string (S));
+"";
+
+(close (S), 0);
+0;

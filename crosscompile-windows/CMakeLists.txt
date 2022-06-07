@@ -67,7 +67,7 @@ string(REPLACE "Function .onInit" "Function .onInit
 
 " MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
-message(STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
+message(STATUS "Copied and patched ${NSISTEMPLATE_IN} to ${CMAKE_BINARY_DIR}/NSIS.template.in")
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." NO)
 option(USE_VTK "Use VTK." YES)

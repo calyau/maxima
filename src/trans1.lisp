@@ -254,7 +254,7 @@
     (t
      (tr-format (intl:gettext "makelist: maximum 5 arguments allowed; found: ~M.~%makelist: to create a list with sublists, use nested makelist commands.~%")
                 (length form))
-     (setq tr-abort t)
+     (tr-abort)
      '($any . '$**error**))))
 
 (def%tr $kill (form)

@@ -199,6 +199,7 @@ and develop DOE Macsyma, now called Maxima.
 * operatingsystem-pkg::             Common operating system tasks (create/remove dirs+files,...).
 * opsubst-pkg::                     Substitutions utility.
 * orthopoly-pkg::                   Orthogonal polynomials.
+* pslq-pkg::                        PSLQ algorithm for integer relations among inexact numbers
 * pytranslate::                     Maxima to Python Translation
 * quantum_computing-pkg::           Quantum computing circuits simulator.
 * ratpow-pkg::                      Determine the coefficients of polynoms.
@@ -587,6 +588,10 @@ opsubst
 orthopoly
 * Introduction to orthogonal polynomials::
 * Functions and Variables for orthogonal polynomials::
+
+pslq
+* Introduction to pslq::
+* Functions and Variables for pslq::
 
 pytranslate
 * Introduction to pytranslate::
@@ -980,11 +985,15 @@ Understanding maxima's output
 @chapter opsubst
 @include opsubst.texi
 
-@node orthopoly-pkg, pytranslate, opsubst-pkg, Top
+@node orthopoly-pkg, pslq-pkg, opsubst-pkg, Top
 @chapter orthopoly
 @include orthopoly.texi
 
-@node pytranslate, quantum_computing-pkg, orthopoly-pkg, Top
+@node pslq-pkg, pytranslate, orthopoly-pkg, Top
+@chapter pslq
+@include pslq.texi
+
+@node pytranslate, quantum_computing-pkg, pslq-pkg, Top
 @chapter pytranslate
 @include pytranslate.texi
 

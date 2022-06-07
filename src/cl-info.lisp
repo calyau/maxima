@@ -173,29 +173,21 @@
 
 (defun regex-sanitize (s)
   "Precede any regex special characters with a backslash."
-  (let
-    ((L (coerce maxima-nregex::*regex-special-chars* 'list)))
-
-    ; WORK AROUND NREGEX STRANGENESS: CARET (^) IS NOT ON LIST *REGEX-SPECIAL-CHARS*
-    ; INSTEAD OF CHANGING NREGEX (WITH POTENTIAL FOR INTRODUCING SUBTLE BUGS)
-    ; JUST APPEND CARET TO LIST HERE
-    (setq L (cons #\^ L))
-
-    (coerce (apply #'append
-                   (mapcar #'(lambda (c) (if (member c L :test #'eq)
-					     `(#\\ ,c) `(,c))) (coerce s 'list)))
-            'string)))
+  (pregexp:pregexp-quote s))
 
 (defun find-regex-matches (regex-string hashtable)
   (let*
-    ((regex (maxima-nregex::regex-compile regex-string :case-sensitive nil))
-     (regex-fcn (coerce regex 'function))
-     (regex-matches nil))
+      ;; Do the search ignoring case by wrapping the regex-string in
+      ;; "(?i:...)"
+      ((regex (concatenate 'string "(?i:" regex-string ")"))
+       (regex-matches nil))
     (maphash
-      #'(lambda (key value)
-          (if (funcall regex-fcn key)
-            (setq regex-matches (cons `(,key . ,value) regex-matches))
-            nil))
+     #'(lambda (key value)
+         (when (pregexp:pregexp-match-positions regex key)
+	   #+nil
+	   (format t "key value: ~S ~S: match ~A~%"
+		   key value (pregexp:pregexp-match-positiions regex key))
+	   (setq regex-matches (cons `(,key . ,value) regex-matches))))
       hashtable)
     (stable-sort regex-matches #'string-lessp :key #'car)))
 

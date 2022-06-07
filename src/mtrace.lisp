@@ -281,7 +281,9 @@
 (defun put-trace-info (fun type ilist)
   (setf (trace-p fun) fun)	 ; needed for MEVAL at this time also.
   (setf (trace-type fun) type)
-  (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
+  ;; Pretty sure this next property assignment is clobbered by TRACE-FSHADOW,
+  ;; however, the assignment is conditional there, so I don't know 100%.
+  (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function (or (get fun 'impl-name) fun))))
   (let ((sym (gensym)))
     (setf (symbol-value sym) 0)
     (setf (trace-level fun) sym))
@@ -360,8 +362,8 @@
 			      `((funcall) ,value ,@params))))
 		    'mfexpr))
 	  ((member shadow '(expr subr) :test #'eq)
-	   (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
-	   (setf (symbol-function fun) value))
+	   (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function (or (get fun 'impl-name) fun))))
+	   (setf (symbol-function (or (get fun 'impl-name) fun)) value))
 	  (t
 	   (setf (symbol-plist fun) `(,shadow ,value ,@(symbol-plist fun)))))))
 
@@ -373,7 +375,7 @@
 	((member type '(expr subr) :test #'eq)
 	 (let ((oldf (trace-oldfun fun)))
 	   (if (not (null oldf))
-	       (setf (symbol-function  fun)  oldf)
+	       (setf (symbol-function (or (get fun 'impl-name) fun))  oldf)
 	       (fmakunbound fun))))
 	(t (remprop fun (get! type 'shadow))
 	   (fmakunbound fun))))
@@ -653,10 +655,6 @@
   #'(lambda (&rest trace-args)
       (funcall handler fun trace-args)))
 
-(defmacro trace-setup-call (prop fun type)
-  (declare (ignore fun type))
-  `(setf (symbol-function 'the-trace-apply-hack) ,prop))
-
 (defun trace-apply (fun largs)
   (let ((prop (trace-fsymeval fun))
 	(type (trace-type fun))
@@ -667,8 +665,7 @@
       ((expr)
        (apply prop largs))
       ((subr lsubr)
-       (setf (symbol-plist 'the-trace-apply-hack) (list type prop))
-       (apply (second (getl 'the-trace-apply-hack '(subr lsubr))) largs))
+       (apply prop largs))
       ((mfexpr* mfexpr*s)
        (funcall prop (car largs))))))
 
