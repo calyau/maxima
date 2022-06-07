@@ -37,8 +37,9 @@
     (setq a (simpcheck (car (subfunargs expr)) z))
     (or (cond ((zerop1 a) a)
 	      ((and (mnump s) (ratgreaterp s 1) (eql a 1))
-	       ;; li[s](a) = zeta(s) if s > 1 and if a = 1.  We don't
-	       ;; simplify this if a is not the integer 1.
+	       ;; li[s](a) = zeta(s) if s > 1 and if a = 1.  We
+	       ;; simplify this only if s is a rational number and a
+	       ;; is the integer 1.
 	       (ftake '%zeta s))
               ((not (integerp s)) ())
               ((= s 1)
