@@ -662,6 +662,10 @@ und;
 limit(x / (x+2^x+cos(x)),x,-inf);
 1;
 
+/* #Bug ID: #3984 limit for und + something yields something instead of und */
+limit(x*sin(x) + erf(x), x, inf);
+und;
+
 /* Bug ID: 811522 - redundant question in limit
  * b is assumed to be zero. Maxima now can deduce from the database
  * that b-2 is an even number.

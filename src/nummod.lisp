@@ -205,8 +205,7 @@
 
 	((and (setq e1 (mget e '$numer)) (floor e1)))
 
-	((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
-	;;((member e '($inf $minf $ind $und)) e) ; Proposed code
+	((member e '($inf $minf $ind $und)) e)
 	;; leave floor(infinity) as is
 	((or (eq e '$zerob)) -1)
 	((or (eq e '$zeroa)) 0)
@@ -286,7 +285,8 @@
 
 	((and (setq e1 (mget e '$numer)) (ceiling e1)))
 
-	((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
+	((member e '($inf $minf $ind $und)) e)
+	;; leave ceiling(infinity) as is
 	((or (eq e '$zerob)) 0)
 	((or (eq e '$zeroa)) 1)
 
@@ -400,7 +400,7 @@
 	  ((and (= b 1)
 		(maxima-integerp (m+ 1//2 arglim)))
 	   (m+ arglim 1//2))
-	  ((and (mnump arglim)
+	  ((and ($constantp arglim)
 		(not (maxima-integerp (m+ 1//2 arglim))))
 	   (simplify (list '(%round) arglim)))
 	  (t

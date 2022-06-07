@@ -38,10 +38,10 @@ ceiling(%phi);
 2$
 
 ceiling(minf);
-und$
+minf$
 
 ceiling(inf);
-und$
+inf$
 
 ceiling(infinity);
 ceiling(infinity)$
@@ -56,7 +56,7 @@ ceiling(und);
 und$
 
 ceiling(ind);
-und$
+ind$
 
 args(ceiling(rat(x)));
 [x]$
@@ -678,13 +678,13 @@ floor(%phi);
 1$
 
 floor(minf);
-und$
+minf$
 
 floor(inf);
-und$
+inf$
 
 floor(infinity);
-und$
+floor(infinity)$
 
 floor(zeroa);
 0$
@@ -696,7 +696,7 @@ floor(und);
 und$
 
 floor(ind);
-und$
+ind$
 
 floor(floor(x));
 '(floor(x))$
