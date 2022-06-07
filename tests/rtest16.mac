@@ -2325,6 +2325,21 @@ closeto(li[20](5b0) - (5.0000238783147176199891129814336b0 - 2.18205440094215142
   6.76366b-24);
 true;
 
+/*
+ * Bug 3966: li[s](1) = zeta(s)
+ */
+makelist(li[s+1/2](1), s, 1, 5);
+[zeta(3/2), zeta(5/2), zeta(7/2), zeta(9/2), zeta(11/2)];
+
+li[7/3](1);
+zeta(7/3);
+
+li[-5/2](1);
+li[-5/2](1);
+
+li[-5/2](1.0);
+li[-5/2](1.0);
+
 /* Bug #3194: No simplification of "tan(x+n*%pi)" and "cot(x+n*%pi)" with "n" being a declared integer */
 /* Also test that the "modulus 1/2" check in "%piargs-tan/cot" works correctly. */
 declare(i, integer, ei, even, oi, odd);
