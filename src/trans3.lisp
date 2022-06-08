@@ -351,8 +351,10 @@
          (let ((tlambda (if arg-info 'm-tlambda& 'm-tlambda)))
            `($any . (,tlambda ,(cadr t-form) ,@(cddr t-form)))))
         ((null (cadr frees))
-         (let ((tlambda (if arg-info 'm-tlambda&env& 'm-tlambda&env)))
-           `($any . (,tlambda (,(cadr t-form) ,(car frees)) ,@(cddr t-form)))))
+         (let* ((tlambda (if arg-info 'm-tlambda&env& 'm-tlambda&env))
+                (fvl (car frees))
+                (cfvl (intersection fvl *tr-free-vars-to-capture*)))
+           `($any . (,tlambda (,(cadr t-form) ,fvl ,cfvl) ,@(cddr t-form)))))
         (t
          (warn-meval form)
          (side-effect-free-check (cadr frees) form)

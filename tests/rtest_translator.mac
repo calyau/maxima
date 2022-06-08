@@ -2151,6 +2151,95 @@ block ([l1, l2,
 (kill (foo, bar, baz), 0);
 0;
 
+/* Tests involving subscripted functions.  These do cause the capture
+ * of values.
+ */
+block ([l1, l2,
+        x : 'ux, y : 'uy,
+        translate : false],
+  local (foo, bar, baz, def, test),
+
+  def () := (
+    foo[x, y](a, b) := [x, y, a, b, q],
+    bar[x, y](a, [b]) := [x, y, a, b, q],
+    baz[v]() := v),
+
+  test () :=
+    block ([f : foo[1, 2],
+            b : bar[3, 4],
+            c : baz[5]],
+      [f (6, 7), b (8, 9, 10), c ()]),
+
+  def (),
+
+  l1 : test (),
+
+  /* just kill and redefine */
+
+  kill (foo, bar, baz),
+
+  def (),
+
+  translate_or_lose (foo, bar, baz),
+
+  l2 : test (),
+
+  [l2, is (l1 = l2)]);
+[[[1, 2, 6, 7, 'q],
+  [3, 4, 8, [9, 10], 'q],
+  5],
+ true];
+
+(kill (foo, bar, baz), 0);
+0;
+
+/* More tests involving multiple nested lambdas */
+block ([l1, l2,
+        x : 'ux, y : 'uy, z : 'uz,
+        translate : false],
+  local (foo, bar, baz, quux, def, test),
+
+  def () := (
+    /* nothing should be captured */
+    foo (x) := lambda ([y], lambda ([z], [x, y, z])),
+    /* x should be captured and used */
+    bar[x](y) := lambda ([z], [x, y, z]),
+    /* x should be captured and used */
+    baz[x](y) := lambda ([z], lambda ([], [x, y, z])),
+    /* nothing should be captured since x is bound by the inner lambda */
+    quux[x](y) := lambda ([x], [x, y])),
+
+  test () :=
+    block ([a : foo (1),
+            b : bar[2],
+            c : baz[3],
+            d : quux[4]],
+      [a (10) (11), b (12) (13), c (14) (15) (), d (16) (17)]),
+
+  def (),
+
+  l1 : test (),
+
+  /* just kill and redefine */
+
+  kill (foo, bar, baz, quux),
+
+  def (),
+
+  translate_or_lose (foo, bar, baz, quux),
+
+  l2 : test (),
+
+  [l2, is (l1 = l2)]);
+[[['ux, 'uy, 11],
+  [2, 'uy, 13],
+  [3, 'uy, 'uz],
+  [17, 'uy]],
+ true];
+
+(kill (foo, bar, baz, quux), 0);
+0;
+
 
 
 

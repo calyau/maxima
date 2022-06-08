@@ -74,18 +74,22 @@
        (push '(mlist) ,rest-arg)
        ,@(skip-declare-exprs body))))
 
-(defun lambda-with-free-vars (bvl fvl lambda-header body)
-  (let ((symevals (mapcar (lambda (x) `(maybe-msymeval ',x)) fvl)))
-    (funcall lambda-header bvl
-      `((let ,(mapcar #'list fvl symevals)
-          (declare (special ,@fvl))
-          ,@body)))))
+(defun lambda-with-free-vars (bvl fvl cfvl lambda-header body)
+  (let* ((lfvl (set-difference fvl cfvl))
+         (lexicals (mapcar (lambda (x) (gensym (symbol-name x))) cfvl))
+         (symevals (mapcar (lambda (x) `(maybe-msymeval ',x)) lfvl)))
+    `(let ,(mapcar #'list lexicals cfvl)
+       ,(funcall lambda-header bvl
+          `((let (,@(mapcar #'list cfvl lexicals)
+                  ,@(mapcar #'list lfvl symevals))
+              (declare (special ,@cfvl ,@lfvl))
+              ,@body))))))
 
-(defun make-tlambda (bvl fvl rest-p body)
+(defun make-tlambda (bvl fvl cfvl rest-p body)
   (let ((lambda-header (if rest-p #'rest-arg-lambda #'vanilla-lambda)))
     (if (null fvl)
         (funcall lambda-header bvl body)
-        (lambda-with-free-vars bvl fvl lambda-header body))))
+        (lambda-with-free-vars bvl fvl cfvl lambda-header body))))
 
 ;;; Lambda expressions emitted by the translator.
 
@@ -93,21 +97,24 @@
 ;; either unbound or globally bound or locally bound in some
 ;; non-enclosing block.
 (defmacro m-tlambda (bvl &rest body)
-  (make-tlambda bvl '() nil body))
+  (make-tlambda bvl '() '() nil body))
 
 ;; lambda([u,...,[v]],...) with the same condition as above.
 (defmacro m-tlambda& (bvl &rest body)
-  (make-tlambda bvl '() t body))
+  (make-tlambda bvl '() '() t body))
 
 ;; lambda([u,...],...) with free unquoted variables in the body which
 ;; have a local binding in some enclosing block, but no global one,
 ;; i.e, the complement of the condition for m-tlambda above.
-(defmacro m-tlambda&env ((bvl fvl) &rest body)
-  (make-tlambda bvl fvl nil body))
+;;
+;; fvl is a list of all free vars.  cfvl is a list of the free vars
+;; to capture.
+(defmacro m-tlambda&env ((bvl fvl cfvl) &rest body)
+  (make-tlambda bvl fvl cfvl nil body))
 
 ;; lambda([u,...,[v]],...) with the same condition as above.
-(defmacro m-tlambda&env& ((bvl fvl) &rest body)
-  (make-tlambda bvl fvl t body))
+(defmacro m-tlambda&env& ((bvl fvl cfvl) &rest body)
+  (make-tlambda bvl fvl cfvl t body))
 
 ;; Problem: You can pass a lambda expression around in macsyma
 ;; because macsyma "general-rep" has a CAR which is a list.

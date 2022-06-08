@@ -163,6 +163,8 @@ APPLY means like APPLY.")
 (defmvar $tr_numer nil
   "If `true' numer properties are used for atoms which have them, e.g. %pi")
 
+(defvar *tr-free-vars-to-capture* '())
+
 (defvar boolean-object-table
   '(($true . ($boolean . t))
     ($false . ($boolean . nil))
@@ -418,12 +420,13 @@ APPLY means like APPLY.")
 	   ;; get from too much syntax, so don't sweat it.
 	   ;;
 	   ;; the allowed generalizations aren't necessarily subscripted
-	   ;; functions, but we'll act like they are in this warning.
+	   ;; functions, but we'll act like they are when determining
+	   ;; the free vars to capture.
 	   ;; don't sweat this either.
-	   (tr-format (intl:gettext "warning: subscripted functions do not translate well: ~:M~%") form)
-	   (tr-mdefine-toplevel
-	    `(,(car form) ,(car args)
-	      ((lambda) ((mlist) ,@(cdr args)) ,body))))
+	   (let ((*tr-free-vars-to-capture* (union (cdar args) *tr-free-vars-to-capture*)))
+	     (tr-mdefine-toplevel
+	       `(,(car form) ,(car args)
+		  ((lambda) ((mlist) ,@(cdr args)) ,body)))))
 	  ((member tr-unique a-args :test #'eq)
 	   ;; WHAT IS "BAD" ABOUT THE ARGUMENT LIST HERE ??
 	   (tr-format (intl:gettext "error: unhandled argument list in function definition: ~:M~%") `((mlist),@args))
