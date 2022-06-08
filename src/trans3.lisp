@@ -347,19 +347,13 @@
 			    ,@(cddr form)))
 	       t-form (cdr t-form)
 	       frees (tbound-free-vars (free-lisp-vars t-form)))))
-					; with this info we now dispatch to the various macros forms.
-					; (cadr t-form) is a lambda list. (cddr t-form) is a progn body.
-  (cond ((null (car frees))		; woopie.
-	 (cond ((null arg-info)
-		`($any . (m-tlambda ,@(cdr t-form))))
-	       (t
-		`($any . (m-tlambda& ,@(cdr t-form))))))
-	((null (cadr frees))
-	`($any . (,(cond ((null arg-info) 'm-tlambda&env)
-			 (t               'm-tlambda&env&))
-		   (,(cadr t-form) ,(car frees))
-		   ,@(cddr t-form))))
-	(t
-	 (warn-meval form)
-	 (side-effect-free-check (cadr frees) form)
-	 (punt-to-meval form))))
+  (cond ((null (car frees))
+         (let ((tlambda (if arg-info 'm-tlambda& 'm-tlambda)))
+           `($any . (,tlambda ,(cadr t-form) ,@(cddr t-form)))))
+        ((null (cadr frees))
+         (let ((tlambda (if arg-info 'm-tlambda&env& 'm-tlambda&env)))
+           `($any . (,tlambda (,(cadr t-form) ,(car frees)) ,@(cddr t-form)))))
+        (t
+         (warn-meval form)
+         (side-effect-free-check (cadr frees) form)
+         (punt-to-meval form))))

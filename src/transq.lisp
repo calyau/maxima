@@ -55,53 +55,59 @@
   "This is a key gotten from the infile name, in the interpreter
   other completely hackish things with FSUBRS will go on.")
 
-(defmacro pop-declare-statement (l)
-  `(and (not (atom (car ,l)))
-    (eq (caar ,l) 'declare)
-    (pop ,l)))
+(defun skip-declare-exprs (l)
+  (do ((l l (cdr l)))
+      ((not (and (consp (car l))
+                 (eq (caar l) 'declare)))
+       l)))
 
+(defun vanilla-lambda (bvl body)
+  `(lambda ,bvl
+     (declare (special ,@bvl))
+     ,@(skip-declare-exprs body)))
+
+(defun rest-arg-lambda (bvl body)
+  (let ((req-args (butlast bvl))
+        (rest-arg (car (last bvl))))
+    `(lambda (,@req-args &rest ,rest-arg)
+       (declare (special ,@bvl))
+       (push '(mlist) ,rest-arg)
+       ,@(skip-declare-exprs body))))
+
+(defun lambda-with-free-vars (bvl fvl lambda-header body)
+  (let ((symevals (mapcar (lambda (x) `(maybe-msymeval ',x)) fvl)))
+    (funcall lambda-header bvl
+      `((let ,(mapcar #'list fvl symevals)
+          (declare (special ,@fvl))
+          ,@body)))))
+
+(defun make-tlambda (bvl fvl rest-p body)
+  (let ((lambda-header (if rest-p #'rest-arg-lambda #'vanilla-lambda)))
+    (if (null fvl)
+        (funcall lambda-header bvl body)
+        (lambda-with-free-vars bvl fvl lambda-header body))))
 
 ;;; Lambda expressions emitted by the translator.
 
 ;; lambda([u,...],...) where any free unquoted variable in the body is
 ;; either unbound or globally bound or locally bound in some
-;; non-enclosing block.  At this point, BODY has already the correct
-;; special declarations for elements of ARGL.
-(defmacro m-tlambda (argl &body body)
-  `(function
-    (lambda ,argl
-     ,@body)))
+;; non-enclosing block.
+(defmacro m-tlambda (bvl &rest body)
+  (make-tlambda bvl '() nil body))
 
 ;; lambda([u,...,[v]],...) with the same condition as above.
-(defmacro m-tlambda& (argl &rest body)
-  `(function (lambda (,@(reverse (cdr (reverse argl)))
-		      &rest ,@(last argl))
-     ,(pop-declare-statement body)
-     (setq ,(car (last argl))
-	   (cons '(mlist) ,(car (last argl))))
-     ,@ body)))
+(defmacro m-tlambda& (bvl &rest body)
+  (make-tlambda bvl '() t body))
 
 ;; lambda([u,...],...) with free unquoted variables in the body which
 ;; have a local binding in some enclosing block, but no global one,
 ;; i.e, the complement of the condition for m-tlambda above.
-(defmacro m-tlambda&env ((reg-argl env-argl) &body body)
-  (declare (ignore env-argl))
-  `(function
-    (lambda ,reg-argl
-     ;;(,@(or (pop-declare-statement body) '(declare)) (special ,@env-argl))
-     ,@body)))
+(defmacro m-tlambda&env ((bvl fvl) &rest body)
+  (make-tlambda bvl fvl nil body))
 
 ;; lambda([u,...,[v]],...) with the same condition as above.
-(defmacro m-tlambda&env& ((reg-argl env-argl) &body body)
-  (declare (ignore env-argl))
-  (let ((last-arg (car (last reg-argl))))
-    `(function
-      (lambda (,@(butlast reg-argl) &rest ,last-arg)
-       ;;(,@(or (pop-declare-statement body) '(declare)) (special ,@env-argl))
-       ,(pop-declare-statement body)
-       (setq ,last-arg (cons '(mlist) ,last-arg))
-       ,@body))))
-
+(defmacro m-tlambda&env& ((bvl fvl) &rest body)
+  (make-tlambda bvl fvl t body))
 
 ;; Problem: You can pass a lambda expression around in macsyma
 ;; because macsyma "general-rep" has a CAR which is a list.

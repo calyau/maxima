@@ -2083,6 +2083,74 @@ block ([translate : false, l1, l2],
 (kill (foo, bar), 0);
 0;
 
+/* The translation of upward funargs (including those created by
+ * subscripted functions) easily lead to lisp errors.
+ */
+
+/* Tests involving returned lambdas without free vars that were
+ * bound during definition
+ */
+block ([l1, l2,
+        translate : false,
+        listarith : true],
+  local (foo, bar, test),
+
+  foo () := lambda ([x], 2 * x + q),
+  bar () := lambda ([x, [y]], x * y + q),
+
+  test () :=
+    block ([f : foo (),
+            b : bar ()],
+      [f (3), f (5), b (2, 3, 4), b (5, 6, 7)]),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  [l2, is (l1 = l2)]);
+[['q + 6, 'q + 10, ['q + 6, 'q + 8], ['q + 30, 'q + 35]],
+ true];
+
+(kill (foo, bar), 0);
+0;
+
+/* Tests involving returned lambdas with free vars that were
+ * bound during definition.  These do not cause the capture of
+ * values.
+ */
+block ([l1, l2,
+        x : 'ux,
+        translate : false,
+        listarith : true],
+  local (foo, bar, baz, test),
+
+  foo (x) := lambda ([y], x + y + q),
+  bar (x) := lambda ([y, [z]], q + x + y * z),
+  baz (v) := lambda ([], v),
+
+  test () :=
+    block ([f : foo (3),
+            b : bar (4),
+            c : baz (5)],
+      [f (5), b (2, 3, 4), c ()]),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar, baz),
+
+  l2 : test (),
+
+  [l2, is (l1 = l2)]);
+[['q + 'ux + 5,
+  ['q + 'ux + 6, 'q + 'ux + 8],
+  'v],
+ true];
+
+(kill (foo, bar, baz), 0);
+0;
+
 
 
 
