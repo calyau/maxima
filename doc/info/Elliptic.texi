@@ -444,22 +444,22 @@ The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}} dt $$ }
+@math{ $$ E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt $$ }
 where:
-@math{ $$ \tau = sn(u,m) $$ }
+@math{ $$ \tau = {\rm sn}(u,m) $$ }
 @end ifset
 @ifclear mathjax
-@math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
+@math{elliptic_eu(u,m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
 where @math{tau = sn(u,m)}.
 @end ifclear
 @end ifhtml
 @ifinfo
-@math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
+@math{elliptic_eu(u,m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
 
 where @math{tau = sn(u,m)}.
 @end ifinfo
 @tex
-$$ \int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}} dt $$
+$$ E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt $$
 
 where $\tau = {\rm sn}(u, m)$.
 @end tex
@@ -468,9 +468,7 @@ This is related to @code{elliptic_e} by
 
 @ifhtml
 @ifset mathjax
-@math{ $$ E(u,m) = E(\phi, m) $$ }
-where:
-@math{ $$ \phi = \sin^{-1} {\rm sn}(u, m) $$ }
+@math{ $$ E(u,m) = E(\sin^{-1} {\rm sn}(u, m), m) $$ }
 @end ifset
 @ifclear mathjax
 @math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}
@@ -481,9 +479,7 @@ where:
 @end ifinfo
 
 @tex
-$$E(u,m) = E(\phi, m)$$
-
-where $\phi = \sin^{-1} {\rm sn}(u, m)$.
+$$E(u,m) = E(\sin^{-1} {\rm sn}(u, m), m)$$
 @end tex
 
 See also @ref{elliptic_e}.
