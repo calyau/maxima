@@ -9,6 +9,10 @@ New items in share:
 
 Changes in core:
 ----------------
+ * Maxima/ABCL: Use the option --noinform for ABCL.
+   This suppresses the startup messages from ABCL, so that e.g. the Maxima
+   option --quiet *is* quiet.
+ * Fix command line options for Maxima with ABCL.
 
 Changes in share:
 -----------------
@@ -18,6 +22,7 @@ Changes in Xmaxima:
 
 Changes in the Windows installer:
 ---------------------------------
+ * Update SBCL.
 
 Bug fixes for numbered bugs:
 ----------------------------
