@@ -417,7 +417,7 @@ The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int_0^\phi {\sqrt{1 - m\sin^2\theta}} d\theta $$ }
+@math{ $$ \int_0^\phi {\sqrt{1 - m\sin^2\theta}}\, d\theta $$ }
 @end ifset
 @ifclear mathjax
 @math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -428,7 +428,7 @@ The incomplete elliptic integral of the second kind, defined as
 @end ifinfo
 
 @tex
-$$ \int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta $$
+$$ \int_0^\phi \sqrt{1 - m\sin^2\theta}\, d\theta $$
 @end tex
 
 See also @ref{elliptic_f} and @ref{elliptic_ec}.
@@ -546,7 +546,7 @@ The complete elliptic integral of the second kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta} d\theta $$ }
+@math{ $$ \int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta}\, d\theta $$ }
 @end ifset
 @ifclear mathjax
 @math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
@@ -557,7 +557,7 @@ The complete elliptic integral of the second kind, defined as
 @end ifinfo
 
 @tex
-$$\int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
+$$\int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta}\, d\theta$$
 @end tex
 
 For certain values of @math{m}, the value of the integral is known in
@@ -596,13 +596,13 @@ way:
 @math{
 $$
 \eqalign{
-\log x &= (x-1) R_C\left(\left({\frac{1+x}{2}}\right)^2, x\right), x > 0 \cr
-\sin^{-1} x &= x R_C(1-x^2, 1), |x| \le 1 \cr
-\cos^{-1} x &= \sqrt{1-x^2} R_C(x^2,1), 0 \le x \le 1  \cr
+\log x &= (x-1) R_C\left(\left({\frac{1+x}{2}}\right)^2, x\right), \quad x > 0 \cr
+\sin^{-1} x &= x R_C(1-x^2, 1), \quad |x| \le 1 \cr
+\cos^{-1} x &= \sqrt{1-x^2} R_C(x^2,1), \quad 0 \le x \le 1  \cr
 \tan^{-1} x &= x  R_C(1,1+x^2)  \cr
 \sinh^{-1} x &= x  R_C(1+x^2,1)  \cr
-\cosh^{-1} x &= \sqrt{x^2-1}  R_C(x^2,1), x \ge 1  \cr
-\tanh^{-1}(x) &= x  R_C(1,1-x^2), |x| \le 1
+\cosh^{-1} x &= \sqrt{x^2-1}  R_C(x^2,1), \quad x \ge 1  \cr
+\tanh^{-1}(x) &= x  R_C(1,1-x^2), \quad |x| \le 1
 }
 $$
 }
@@ -642,13 +642,13 @@ $$
 @tex
 $$
 \eqalign{
-\log x &= (x-1) R_C\left(\left({\frac{1+x}{2}}\right)^2, x\right), x > 0 \cr
-\sin^{-1} x &= x R_C(1-x^2, 1), |x| \le 1 \cr
-\cos^{-1} x &= \sqrt{1-x^2} R_C(x^2,1), 0 \le x \le 1  \cr
+\log x &= (x-1) R_C\left(\left({\frac{1+x}{2}}\right)^2, x\right), \quad x > 0 \cr
+\sin^{-1} x &= x R_C(1-x^2, 1), \quad |x| \le 1 \cr
+\cos^{-1} x &= \sqrt{1-x^2} R_C(x^2,1), \quad 0 \le x \le 1  \cr
 \tan^{-1} x &= x  R_C(1,1+x^2)  \cr
 \sinh^{-1} x &= x  R_C(1+x^2,1)  \cr
-\cosh^{-1} x &= \sqrt{x^2-1}  R_C(x^2,1), x \ge 1  \cr
-\tanh^{-1}(x) &= x  R_C(1,1-x^2), |x| \le 1
+\cosh^{-1} x &= \sqrt{x^2-1}  R_C(x^2,1), \quad x \ge 1  \cr
+\tanh^{-1}(x) &= x  R_C(1,1-x^2), \quad |x| \le 1
 }
 $$
 @end tex
