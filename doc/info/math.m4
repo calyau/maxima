@@ -18,7 +18,7 @@ m4_define(<<<m4_mathjax>>>,
 <<<@ifhtml
 @ifset mathjax
 @html
-@math{$1}
+$1
 @end html
 @end ifset
 @ifclear mathjax

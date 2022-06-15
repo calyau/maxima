@@ -143,7 +143,12 @@ that governs the distribution of Maxima.
 
 @anchor{jacobi_sn}
 @deffn {Function} jacobi_sn (@var{u}, @var{m})
-The Jacobian elliptic function @math{sn(u,m)}.
+The Jacobian elliptic function @math{{\rm sn}(u,m)}.
+
+The Jacobian elliptic function
+m4_mathjax(<<<@math{{\rm sn}(u,m)}>>>,
+<<<@math{sn(u,m)}>>>)
+.
 
 @opencatbox{Categories:}
 @category{Elliptic functions}

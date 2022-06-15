@@ -51,6 +51,9 @@ END-INFO-DIR-ENTRY
 @end ifinfo
 
 @mathjax_enable@
+@ifset mathjax
+@set HTML_MATH mathjax
+@end ifset
 
 @include category-macros.texi
 
