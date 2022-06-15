@@ -792,27 +792,6 @@ AC_ARG_ENABLE(win64-installer,
 AM_CONDITIONAL(WIN64_INSTALLER, test x$win64_installer = xtrue)
 AC_SUBST(win64_installer)
 
-dnl Enable use of MathJax in the html documentation.  This just loads
-dnl MathJax in each html file.  The texi files need to put the
-dnl appropriate @html/@end html text to generate the equations for MathJax.
-AC_ARG_ENABLE(mathjax,
-  [  --enable-mathjax             Enable MathJax support for html manual],
-  [case "${enableval}" in
-      yes) mathjax=true
-           mathjax_enable='@set mathjax true'
-	   dnl See https://www.mathjax.org/#gettingstarted.  We are using version 3.
-           mathjax_script='<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>'
-;;
-      no)  mathjax=false
-           mathjax_enable='@clear mathjax'
-           mathjax_script="";;
-      *) AC_MSG_ERROR(bad value ${enableval} for --enable-mathjax) ;;
-   esac],
-  [mathjax=false])
-AM_CONDITIONAL(MATHJAX, test x$mathjax = xtrue)
-AC_SUBST(mathjax_script)
-AC_SUBST(mathjax_enable)
-
 dnl Tools for building xmaxima.exe on windows
 dnl Hard code the filenames for now.  Can over-ride on make command line
 GCCVER=undefined
