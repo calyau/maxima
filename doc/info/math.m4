@@ -12,22 +12,38 @@ m4_dnl 1:  HTML output with MathJAX enabled
 m4_dnl 2:  HTML output without MathJax. Also used for info
 m4_dnl 3:  If given, this is for TeX output.  If not, then use arg 1.
 m4_dnl
-m4_dnl If an arg contains a comma, you will need to quote the argument
-m4_dnl using `'.
-m4_define(<<<m4_mathjax>>>, 
+m4_dnl For easiest use, it's best to quote each arg, so use
+m4_dnl m4_displaymath(<<<arg1>>>, <<<arg2>>>, <<<arg3>>>)
+m4_dnl
+m4_dnl m4_displaymath is used for displayed math equations.
+m4_dnl
+m4_dnl Be careful not to leave extra blank lines; TeX may complain about the
+m4_dnl blank lines.
+m4_define(<<<m4_displaymath>>>, 
 <<<@ifhtml
-@ifset mathjax
 @html
+@displaymath
 $1
+@end displaymath
 @end html
-@end ifset
-@ifclear mathjax
-$2
-@end ifclear
 @end ifhtml
 @ifinfo
 $2
 @end ifinfo
 @tex
-m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)
+$$m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)$$
+@end tex>>>)
+
+m4_dnl Like m4_displaymath, but this is meant for inline math equations.
+m4_define(<<<m4_math>>>, 
+<<<@ifhtml
+@html
+@math{$1}
+@end html
+@end ifhtml
+@ifinfo
+$2
+@end ifinfo
+@tex
+$m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)$
 @end tex>>>)
