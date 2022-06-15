@@ -50,10 +50,9 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
-@mathjax_enable@
-@ifset mathjax
-@set HTML_MATH mathjax
-@end ifset
+@c Leave this for now so that old bits of code still kind of work
+@c for the HTML docs.  This should eventually be removed.
+@set mathjax true
 
 @include category-macros.texi
 
