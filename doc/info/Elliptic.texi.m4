@@ -25,13 +25,11 @@ In particular, all elliptic functions and integrals use the parameter
 Stegun who use the modular angle for the elliptic functions.  The
 following relationships are true:
 
-m4_mathjax(
-<<<$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 m &= k^2 \cr
 k &= \sin\alpha
-}
-$$>>>
+}>>>
 ,
 <<<@math{m = k^2}
 
@@ -143,10 +141,8 @@ that governs the distribution of Maxima.
 
 @anchor{jacobi_sn}
 @deffn {Function} jacobi_sn (@var{u}, @var{m})
-The Jacobian elliptic function @math{{\rm sn}(u,m)}.
-
 The Jacobian elliptic function
-m4_mathjax(<<<@math{{\rm sn}(u,m)}>>>,
+m4_math(<<<{\rm sn}(u,m)>>>,
 <<<@math{sn(u,m)}>>>)
 .
 
@@ -372,8 +368,8 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @deffn {Function} elliptic_f (@var{phi}, @var{m})
 The incomplete elliptic integral of the first kind, defined as
 
-m4_mathjax(
-<<<$$ \int_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$>>>
+m4_displaymath(
+<<<\int_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}}>>>
 ,
 <<<@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}>>>
 )
@@ -389,8 +385,8 @@ See also @ref{elliptic_e} and @ref{elliptic_kc}.
 @deffn {Function} elliptic_e (@var{phi}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 
-m4_mathjax(
-<<<$$ \int_0^\phi {\sqrt{1 - m\sin^2\theta}}\, d\theta $$>>>
+m4_displaymath(
+<<<\int_0^\phi {\sqrt{1 - m\sin^2\theta}}\, d\theta>>>
 ,
 <<<@math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}>>>
 )
@@ -406,23 +402,24 @@ See also @ref{elliptic_f} and @ref{elliptic_ec}.
 @deffn {Function} elliptic_eu (@var{u}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 
-m4_mathjax(
-<<<$$ E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt $$>>>
+m4_displaymath(
+<<<E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt>>>
 ,
 <<<@math{elliptic_eu(u, m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}>>>
 )
 
 where
-m4_mathjax(
-<<<$$ \tau = {\rm sn}(u,m) $$>>>
+m4_math(
+<<<\tau = {\rm sn}(u,m)>>>
 ,
 <<<@math{tau = sn(u,m)}>>>
 )
+.
 
 This is related to @code{elliptic_e} by
 
-m4_mathjax(
-<<<$$ E(u,m) = E(\sin^{-1} {\rm sn}(u, m), m) $$>>>
+m4_displaymath(
+<<<E(u,m) = E(\sin^{-1} {\rm sn}(u, m), m)>>>
 ,
 <<<@math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}>>>
 )
@@ -437,8 +434,8 @@ See also @ref{elliptic_e}.
 @deffn {Function} elliptic_pi (@var{n}, @var{phi}, @var{m})
 The incomplete elliptic integral of the third kind, defined as
 
-m4_mathjax(
-<<<$$ \int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}} $$>>>
+m4_displaymath(
+<<<\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}>>>
 ,
 <<<@math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}>>>
 )
@@ -452,8 +449,8 @@ m4_mathjax(
 @deffn {Function} elliptic_kc (@var{m})
 The complete elliptic integral of the first kind, defined as
 
-m4_mathjax(
-<<<$$ \int_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}} $$>>>
+m4_displaymath(
+<<<\int_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}>>>
 ,
 <<<@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, pi/2)}>>>
 )
@@ -470,8 +467,8 @@ terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
 @deffn {Function} elliptic_ec (@var{m})
 The complete elliptic integral of the second kind, defined as
 
-m4_mathjax(
-<<<$$ \int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta}\, d\theta $$>>>
+m4_displaymath(
+<<<\int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta}\, d\theta>>>
 ,
 <<<@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}>>>
 )
@@ -488,8 +485,8 @@ terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
 @deffn {Function} carlson_rc (@var{x}, @var{y})
 Carlson's RC integral is defined by
 
-m4_mathjax(
-<<<$$ R_C(x, y) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt $$>>>
+m4_displaymath(
+<<<R_C(x, y) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt>>>
 ,
 <<<@math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}>>>
 )
@@ -497,9 +494,8 @@ m4_mathjax(
 This integral is related to many elementary functions in the following
 way:
 
-m4_mathjax(
-<<<$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 \log x &= (x-1) R_C\left(\left({\frac{1+x}{2}}\right)^2, x\right), \quad x > 0 \cr
 \sin^{-1} x &= x R_C(1-x^2, 1), \quad |x| \le 1 \cr
 \cos^{-1} x &= \sqrt{1-x^2} R_C(x^2,1), \quad 0 \le x \le 1  \cr
@@ -507,8 +503,7 @@ m4_mathjax(
 \sinh^{-1} x &= x  R_C(1+x^2,1)  \cr
 \cosh^{-1} x &= \sqrt{x^2-1}  R_C(x^2,1), \quad x \ge 1  \cr
 \tanh^{-1}(x) &= x  R_C(1,1-x^2), \quad |x| \le 1
-}
-$$>>>
+}>>>
 ,
 <<<@math{log(x)  = (x-1)*rc(((1+x)/2)^2, x), x > 0}
 
@@ -527,22 +522,20 @@ $$>>>
 
 Also, we have the relationship
 
-m4_mathjax(
-<<<$$ R_C(x,y) = R_F(x,y,y) $$>>>
+m4_displaymath(
+<<<R_C(x,y) = R_F(x,y,y)>>>
 ,
 @math{R_C(x,y) = R_F(x,y,y)}
 )
 
 Some special values:
-m4_mathjax(
-$$
-\eqalign{R_C(0, 1) &= \frac{\pi}{2} \cr
+m4_displaymath(
+<<<\eqalign{R_C(0, 1) &= \frac{\pi}{2} \cr
 R_C(0, 1/4) &= \pi \cr
 R_C(2,1) &= \log(\sqrt{2} + 1) \cr
 R_C(i,i+1) &= \frac{\pi}{4} + \frac{i}{2} \log(\sqrt{2}-1) \cr
 R_C(0,i) &= (1-i)\frac{\pi}{2\sqrt{2}} \cr
-}
-$$
+}>>>
 ,
 @math{R_C(0,1) = pi/2}
 
@@ -565,22 +558,20 @@ $$
 @deffn {Function} carlson_rd (@var{x}, @var{y}, @var{z})
 Carlson's RD integral is defined by
 
-m4_mathjax(
-<<<$$ R_D(x,y,z) = \frac{3}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt $$>>>
+m4_displaymath(
+<<<R_D(x,y,z) = \frac{3}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt>>>
 ,
 <<<@math{R_D(x,y,z) = 3/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+z)), t, 0, inf)}>>>
 )
 
 We also have the special values
 
-m4_mathjax(
-<<<$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 R_D(x,x,x) &= x^{-\frac{3}{2}} \cr
 R_D(0,y,y) &= \frac{3}{4} \pi y^{-\frac{3}{2}} \cr
 R_D(0,2,1) &= 3 \sqrt{\pi} \frac{\Gamma(\frac{3}{4})}{\Gamma(\frac{1}{4})}
-}
-$$>>>
+}>>>
 ,
 <<<@math{R_D(x,x,x) = x^(-3/2)}
 
@@ -592,8 +583,8 @@ $$>>>
 
 It is also related to the complete elliptic E function as follows
 
-m4_mathjax(
-<<<$$ E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1) $$>>>
+m4_displaymath(
+<<<E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)>>>
 ,
 <<<@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}>>>
 )
@@ -607,21 +598,19 @@ m4_mathjax(
 @deffn {Function} carlson_rf (@var{x}, @var{y}, @var{z})
 Carlson's RF integral is defined by
 
-m4_mathjax(
-<<<$$ R_F(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt $$>>>
+m4_displaymath(
+<<<R_F(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt>>>
 ,
 <<<@math{R_F(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf)}>>>
 )
 
 We also have the special values
 
-m4_mathjax(
-<<<$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 R_F(0,1,2)  &= \frac{\Gamma({\frac{1}{4}})^2}{4\sqrt{2\pi}} \cr
 R_F(i,-i,0) &= \frac{\Gamma({\frac{1}{4}})^2}{4\sqrt{\pi}}
-}
-$$>>>
+}>>>
 ,
 <<<
 @math{R_F(0,1,2) = gamma(1/4)^2/(4*sqrt(2*pi))}
@@ -632,8 +621,8 @@ $$>>>
 
 It is also related to the complete elliptic E function as follows
 
-m4_mathjax(
-<<<$$ E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1) $$>>>
+m4_displaymath(
+<<<E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)>>>
 ,
 <<<@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}>>>
 )
@@ -647,10 +636,8 @@ m4_mathjax(
 @deffn {Function} carlson_rj (@var{x}, @var{y}, @var{z}, @var{p})
 Carlson's RJ integral is defined by
 
-m4_mathjax(
-<<<$$
-R_J(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt
-$$>>>
+m4_displaymath(
+<<<R_J(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt>>>
 ,
 <<<
 @math{R_J(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+p)), t, 0, inf)}
