@@ -945,7 +945,10 @@ See also @mrefdot{makefact}
 @anchor{beta}
 @c -----------------------------------------------------------------------------
 @deffn {Function} beta (@var{a}, @var{b})
-The beta function is defined as @code{gamma(a) gamma(b)/gamma(a+b)} 
+The beta function is defined as
+m4_displaymath(
+<<<{\rm B}(a, b) = {{\Gamma(a) \Gamma(b)}\over{\Gamma(a+b)}}>>>,
+<<<@math{gamma(a) gamma(b)/gamma(a+b)}>>>)
 (A&S 6.2.1).
 
 Maxima simplifies the beta function for positive integers and rational 
@@ -1083,7 +1086,9 @@ The derivative of the beta function wrt @code{a}:
 
 The basic definition of the incomplete beta function (A&S 6.6.1) is
 
-@example
+m4_displaymath(
+<<<{\rm B}_z(a,b) = \int_0^z t^{a-1}(1-t)^{b-1}\; dt>>>,
+<<<@example
 @group
         z
        /
@@ -1094,9 +1099,21 @@ The basic definition of the incomplete beta function (A&S 6.6.1) is
         0
 @end group
 @end example
+>>>)
+@c @example
+@c @group
+@c         z
+@c        /
+@c        [         b - 1  a - 1
+@c        I  (1 - t)      t      dt
+@c        ]
+@c        /
+@c         0
+@c @end group
+@c @end example
 
-This definition is possible for @math{realpart(a)>0} and @math{realpart(b)>0} 
-and @math{abs(z)<1}. For other values the incomplete beta function can be 
+This definition is possible for m4_math(<<<{\rm Re}(a) > 0>>>, <<<@math{realpart(a)>0}>>>) and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>) and m4_math(<<<|z| < 1>>>, <<<@math{abs(z)<1}>>>).
+For other values the incomplete beta function can be 
 defined through a generalized hypergeometric function:
 
 @example
@@ -1269,12 +1286,21 @@ Derivative and integral for @code{beta_incomplete}:
 
 The regularized incomplete beta function (A&S 6.6.2), defined as
 
-@example
+m4_displaymath(
+<<<I_z(a,b) = {{\rm B}_z(a,b)\over {\rm B}(a,b)}>>>,
+<<<@example
 beta_incomplete_regularized(a, b, z) = 
                                       beta_incomplete(a, b, z)
                                       ------------------------
                                              beta(a, b)
 @end example
+>>>)
+@c @example
+@c beta_incomplete_regularized(a, b, z) = 
+@c                                       beta_incomplete(a, b, z)
+@c                                       ------------------------
+@c                                              beta(a, b)
+@c @end example
 
 As for @code{beta_incomplete} this definition is not complete. See 
 @url{https://functions.wolfram.com} for a complete definition of
@@ -1283,8 +1309,9 @@ As for @code{beta_incomplete} this definition is not complete. See
 @code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
 integer.
 
-For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete_regularized} has 
-the specific value 0. For @var{z=1} and @math{realpart(b)>0}, 
+For @math{z=0} and m4_math(<<<{\rm Re}(a)>0>>>, <<<@math{realpart(a) > 0}>>>),
+@code{beta_incomplete_regularized} has 
+the specific value 0. For @var{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>), 
 @code{beta_incomplete_regularized} simplifies to 1.
 
 Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
@@ -1386,7 +1413,9 @@ The derivative and the integral wrt @var{z}:
 
 The basic definition of the generalized incomplete beta function is
 
-@example
+m4_displaymath(
+<<<\int_{z_1}^{z_2} t^{a-1}(1-t)^{b-1}\; dt>>>,
+<<<@example
 @group
              z2
            /
@@ -1397,6 +1426,18 @@ The basic definition of the generalized incomplete beta function is
             z1
 @end group
 @end example
+>>>)
+@c @example
+@c @group
+@c              z2
+@c            /
+@c            [          b - 1  a - 1
+@c            I   (1 - t)      t      dt
+@c            ]
+@c            /
+@c             z1
+@c @end group
+@c @end example
 
 Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b} 
 a positive integer.
