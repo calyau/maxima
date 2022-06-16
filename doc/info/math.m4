@@ -20,7 +20,8 @@ m4_dnl
 m4_dnl Be careful not to leave extra blank lines; TeX may complain about the
 m4_dnl blank lines.
 m4_define(<<<m4_displaymath>>>, 
-<<<@ifhtml
+<<<
+@ifhtml
 @html
 @displaymath
 $1
@@ -37,7 +38,8 @@ $$m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)$$
 
 m4_dnl Like m4_displaymath, but this is meant for inline math equations.
 m4_define(<<<m4_math>>>, 
-<<<@ifhtml
+<<<
+@ifhtml
 @html
 @math{$1}
 @end html
