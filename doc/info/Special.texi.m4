@@ -1123,10 +1123,11 @@ defined through a generalized hypergeometric function:
 (See @url{https://functions.wolfram.com} for a complete definition of the incomplete beta
 function.)
 
-For negative integers @math{a = -n} and positive integers @math{b=m} with 
-@math{m<=n} the incomplete beta function is defined through
+For negative integers @math{a = -n} and positive integers @math{b=m} with m4_math(<<<m \le n>>>, <<<@math{m<=n}>>>) the incomplete beta function is defined through
 
-@example
+m4_displaymath(
+<<<z^{n-1}\sum_{k=0}^{m-1} {{(1-m)_k z^k} \over {k! (n-k)}}>>>,
+<<<@example
                             m - 1           k
                             ====  (1 - m)  z
                       n - 1 \            k
@@ -1135,6 +1136,16 @@ For negative integers @math{a = -n} and positive integers @math{b=m} with
                             ====
                             k = 0
 @end example
+>>>)
+@c @example
+@c                             m - 1           k
+@c                             ====  (1 - m)  z
+@c                       n - 1 \            k
+@c                      z       >    -----------
+@c                             /     k! (n - k)
+@c                             ====
+@c                             k = 0
+@c @end example
 
 Maxima uses this definition to simplify @code{beta_incomplete} for @var{a} a 
 negative integer.
@@ -1143,8 +1154,8 @@ For @var{a} a positive integer, @code{beta_incomplete} simplifies for any
 argument @var{b} and @var{z} and for @var{b} a positive integer for any 
 argument @var{a} and @var{z}, with the exception of @var{a} a negative integer.
 
-For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete} has the 
-specific value zero. For @var{z=1} and @math{realpart(b)>0}, 
+For @math{z=0} and m4_math(<<<{\rm Re}(a) > 0>>>, <<<@math{realpart(a)>0}>>>), @code{beta_incomplete} has the 
+specific value zero. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>), 
 @code{beta_incomplete} simplifies to the beta function @code{beta(a,b)}.
 
 Maxima evaluates @code{beta_incomplete} numerically for real and complex values 
