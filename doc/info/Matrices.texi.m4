@@ -1648,8 +1648,7 @@ argument. If this argument is omitted @code{matrixexp} replaces it by @code{1}.
 The matrix exponential of a matrix @var{M} can be expressed as a power series:
 m4_displaymath(
 <<<e^M=\sum_{k=0}^\infty{\left(\frac{M^k}{k!}\right)}>>>,
-<<<@math{e^M=sum(M^k/k!,0,inf)}>>>,
-<<<e^M=\sum_{k=0}^\infty{{M^k}\over{k!}>>>
+<<<@math{e^M=sum(M^k/k!,0,inf)}>>>
 )
 @c @ifnotinfo
 @c @tex
