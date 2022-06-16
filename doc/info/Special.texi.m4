@@ -1610,7 +1610,11 @@ When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies
 @c @deffnx {Function} psi [@var{n}](@var{x})
 @deffn {Function} psi [@var{n}](@var{x})
 
-The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
+@c The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
+@code{psi[n](x)} is defined by
+m4_displaymath(
+<<<\psi_n(x) = {d^{n+1}\over{dx^{n+1}}} \log\Gamma(x)>>>,
+<<<@math{diff(log(gamma(x)), x, n+1)}>>>)
 Thus, @code{psi[0](@var{x})} is the first derivative,
 @code{psi[1](@var{x})} is the second derivative, etc.
 
