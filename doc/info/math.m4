@@ -32,7 +32,8 @@ $2
 @end ifinfo
 @tex
 $$m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)$$
-@end tex>>>)
+@end tex
+>>>)
 
 m4_dnl Like m4_displaymath, but this is meant for inline math equations.
 m4_define(<<<m4_math>>>, 
@@ -46,4 +47,5 @@ $2
 @end ifinfo
 @tex
 $m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)$
-@end tex>>>)
+@end tex
+>>>)
