@@ -592,8 +592,8 @@ m4_displaymath(
 @c @end tex
 
 Maxima simplifies @code{gamma} for positive integer and positive and negative 
-rational numbers. For half integral values the result is a rational number times 
-m4_math(<<<\sqrt{\pi}>>>,<<<@math{sqrt(%pi)}>>>). The simplification for integer values is controlled by 
+rational numbers. For half integral values the result is a rational number
+times m4_math(<<<\sqrt{\pi}>>>,<<<@math{sqrt(%pi)}>>>). The simplification for integer values is controlled by 
 @code{factlim}. For integers greater than @code{factlim} the numerical result of 
 the factorial function, which is used to calculate @code{gamma}, will overflow. 
 The simplification for rational numbers is controlled by @code{gammalim} to 
