@@ -191,7 +191,7 @@ The modified Bessel function of the second kind of order @math{v} and argument
 
 @code{bessel_k} is defined as
 m4_displaymath(
-<<<{{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}>>>,
+<<<K_v(z) = {{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}>>>,
 <<<@example
            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
            -------------------------------------------------
@@ -375,9 +375,10 @@ the Bessel function is expanded.
 @deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
 
 The scaled modified Bessel function of the first kind of order
-@math{v} and argument @math{z}.  That is, @math{scaled\_bessel_i(v,z) =
-exp(-abs(z))*bessel_i(v, z)}.  This function is particularly useful
-for calculating @math{bessel_i} for large @math{z}, which is large.
+@math{v} and argument @math{z}.  That is,
+m4_math(<<<{\rm scaled\_bessel\_i}(v,z) = e^{-|z|} I_v(z).>>>,
+<<<scaled_bessel_i(v,z) = exp(-abs(z)) * bessel_i(v,z).>>>) This function is particularly useful
+for calculating m4_math(<<<I_v(z)>>>,<<<bessel_i>>>) for large @math{z}, which is large.
 However, maxima does not otherwise know much about this function.  For
 symbolic work, it is probably preferable to work with the expression
 @code{exp(-abs(z))*bessel_i(v, z)}.
