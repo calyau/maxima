@@ -565,8 +565,9 @@ Complex bigfloat factorial.
 
 The basic definition of the gamma function (A&S 6.1.1) is
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}>>>,
+<<<@example
                          inf
                         /
                         [     z - 1   - t
@@ -574,15 +575,25 @@ The basic definition of the gamma function (A&S 6.1.1) is
                         ]
                         /
                          0
-@end example
-@end ifnottex
-@tex
-$$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
-@end tex
+>>>)
+@c @ifnottex
+@c @example
+@c                          inf
+@c                         /
+@c                         [     z - 1   - t
+@c              gamma(z) = I    t      %e    dt
+@c                         ]
+@c                         /
+@c                          0
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 Maxima simplifies @code{gamma} for positive integer and positive and negative 
 rational numbers. For half integral values the result is a rational number times 
-@code{sqrt(%pi)}. The simplification for integer values is controlled by 
+m4_math(<<<\sqrt{\pi}>>>,<<<@math{sqrt(%pi)}>>>). The simplification for integer values is controlled by 
 @code{factlim}. For integers greater than @code{factlim} the numerical result of 
 the factorial function, which is used to calculate @code{gamma}, will overflow. 
 The simplification for rational numbers is controlled by @code{gammalim} to 
@@ -683,8 +694,9 @@ The natural logarithm of the gamma function.
 
 The lower incomplete gamma function (A&S 6.5.2):
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}>>>,
+<<<@example
                                     z
                                    /
                                    [  a - 1   - t
@@ -692,11 +704,22 @@ The lower incomplete gamma function (A&S 6.5.2):
                                    ]
                                    /
                                     0
-@end example
-@end ifnottex
-@tex
-$$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
-@end tex
+@end example>>>
+)
+@c @ifnottex
+@c @example
+@c                                     z
+@c                                    /
+@c                                    [  a - 1   - t
+@c     gamma_incomplete_lower(a, z) = I t      %e    dt
+@c                                    ]
+@c                                    /
+@c                                     0
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 See also @mref{gamma_incomplete} (upper incomplete gamma function).
 
@@ -712,8 +735,9 @@ See also @mref{gamma_incomplete} (upper incomplete gamma function).
 
 The incomplete upper gamma function (A&S 6.5.3):
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}>>>,
+<<<@example
                               inf
                              /
                              [     a - 1   - t
@@ -722,10 +746,22 @@ The incomplete upper gamma function (A&S 6.5.3):
                              /
                               z
 @end example
-@end ifnottex
-@tex
-$$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
-@end tex
+>>>
+)
+@c @ifnottex
+@c @example
+@c                               inf
+@c                              /
+@c                              [     a - 1   - t
+@c     gamma_incomplete(a, z) = I    t      %e    dt
+@c                              ]
+@c                              /
+@c                               z
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
@@ -745,17 +781,26 @@ Also see the related functions @code{gamma_incomplete_regularized} and
 
 The regularized incomplete upper gamma function (A&S 6.5.1):
 
-@ifnottex
-@example
+m4_displaymath(
+<<<Q\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}>>>,
+<<<@example
 gamma_incomplete_regularized(a, z) = 
                                         gamma_incomplete(a, z)
                                         ----------------------
                                                gamma(a)
 @end example
-@end ifnottex
-@tex
-$${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
-@end tex
+>>>)
+@c @ifnottex
+@c @example
+@c gamma_incomplete_regularized(a, z) = 
+@c                                         gamma_incomplete(a, z)
+@c                                         ----------------------
+@c                                                gamma(a)
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
+@c @end tex
 
 See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
@@ -774,8 +819,9 @@ Also see @code{gamma_incomplete}.
 
 The generalized incomplete gamma function.
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}>>>,
+<<<@example
 gamma_incomplete_generalized(a, z1, z2) = 
                                                z2
                                               /
@@ -785,10 +831,22 @@ gamma_incomplete_generalized(a, z1, z2) =
                                               /
                                                z1
 @end example
-@end ifnottex
-@tex
-$$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
-@end tex
+>>>)
+@c @ifnottex
+@c @example
+@c gamma_incomplete_generalized(a, z1, z2) = 
+@c                                                z2
+@c                                               /
+@c                                               [    a - 1   - t
+@c                                               I   t      %e    dt
+@c                                               ]
+@c                                               /
+@c                                                z1
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
 
