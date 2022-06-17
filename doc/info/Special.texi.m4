@@ -575,7 +575,7 @@ m4_displaymath(
                         ]
                         /
                          0
->>>)
+@end example>>>)
 @c @ifnottex
 @c @example
 @c                          inf
@@ -1952,7 +1952,10 @@ Abramowitz and Stegun,
 @anchor{erf}
 @deffn {Function} erf (@var{z})
 
-The Error Function erf(z) (A&S 7.1.1)
+The Error Function erf(z) (A&S 7.1.1):
+m4_displaymath(
+<<<{\rm erf}\ z = {{2\over \sqrt{\pi}}} \int_0^z e^{-t^2}\, dt>>>,
+<<<@math{erf(z) = 2/sqrt(%pi)*integrate(exp(-t^2), t, 0, z)}>>>)
 
 See also flag @mrefdot{erfflag}
 @opencatbox{Categories:}
@@ -1962,9 +1965,11 @@ See also flag @mrefdot{erfflag}
 
 @anchor{erfc}
 @deffn {Function} erfc (@var{z})
-The Complementary Error Function erfc(z) (A&S 7.1.2)
+The Complementary Error Function erfc(z) (A&S 7.1.2):
+m4_displaymath(
+<<<{\rm erfc}\ z = 1 - {\rm erf}\ z>>>,
+<<<@math{erfc(z) = 1-erf(z)}>>>)
 
-@code{erfc(z) = 1-erf(z)}
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -1972,27 +1977,39 @@ The Complementary Error Function erfc(z) (A&S 7.1.2)
 
 @deffn {Function} erfi (@var{z})
 The Imaginary Error Function. 
+m4_displaymath(
+<<<{\rm erfi}\ z = -i\, {\rm erf}(i z)>>>,
+<<<@math{erfi(z) = -%i*erf(%i*z)}>>>)
 
-@code{erfi(z) = -%i*erf(%i*z)}
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} erf_generalized (@var{z1},@var{z2})
-Generalized Error function Erf(z1,z2)
+Generalized Error function Erf(z1,z2):
+m4_displaymath(
+<<<{\rm erf}(z_1, z_2) = {{2\over \sqrt{\pi}}} \int_{z_1}^{z_2} e^{-t^2}\, dt>>>,
+<<<@math{erf(z) = 2/sqrt(%pi)*integrate(exp(-t^2), t, z1, z2)}>>>)
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} fresnel_c (@var{z})
-The Fresnel Integral C(z) = integrate(cos((%pi/2)*t^2),t,0,z). (A&S 7.3.1)
+The Fresnel Integral
 
-The simplification fresnel_c(-x) = -fresnel_c(x) is applied when
+m4_displaymath(
+<<<C(z) = \int_0^z \cos\left({\pi \over 2} t^2\right)\, dt>>>,
+<<<@math{C(z) = integrate(cos((%pi/2)*t^2),t,0,z)}>>>)
+
+(A&S 7.3.1)
+
+The simplification @code{fresnel_c(-x) = -fresnel_c(x)} is applied when
 flag @code{trigsign} is true.
 
-The simplification fresnel_c(%i*x) =  %i*fresnel_c(x) is applied when
+The simplification @code{fresnel_c(%i*x) =  %i*fresnel_c(x)} is applied when
 flag @code{%iargs} is true.
 
 See flags @code{erf_representation} and @code{hypergeometric_representation}.
@@ -2002,12 +2019,17 @@ See flags @code{erf_representation} and @code{hypergeometric_representation}.
 @end deffn
 
 @deffn {Function} fresnel_s (@var{z})
-The Fresnel Integral S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
+The Fresnel Integral
+m4_displaymath(
+<<<S(z) = \int_0^z \sin\left({\pi \over 2} t^2\right)\, dt>>>,
+<<<@math{S(z) = integrate(sin((%pi/2)*t^2),t,0,z)}>>>)
 
-The simplification fresnel_s(-x) = -fresnel_s(x) is applied when
+(A&S 7.3.2)
+
+The simplification @code{fresnel_s(-x) = -fresnel_s(x)} is applied when
 flag @code{trigsign} is true.
 
-The simplification fresnel_s(%i*x) =  -%i*fresnel_s(x) is applied when
+The simplification @code{fresnel_s(%i*x) =  -%i*fresnel_s(x)} is applied when
 flag @code{%iargs} is true.
 
 See flags @code{erf_representation} and @code{hypergeometric_representation}.
@@ -2019,15 +2041,15 @@ See flags @code{erf_representation} and @code{hypergeometric_representation}.
 @defvr {Option variable} erf_representation
 Default value: false
 
-When T erfc, erfi, erf_generalized, fresnel_s 
-and fresnel_c are transformed to erf.
+When @code{true}, @code{erfc}, @code{erfi}, @code{erf_generalized}, @code{fresnel_s} 
+and @code{fresnel_c} are transformed to @code{erf}.
 @end defvr
 
 @defvr {Option variable} hypergeometric_representation
 Default value: false
 
 Enables transformation to a Hypergeometric
-representation for fresnel_s and fresnel_c
+representation for @code{fresnel_s} and @code{fresnel_c}.
 @end defvr
 
 @node Struve Functions, Hypergeometric Functions, Error Function, Special Functions
