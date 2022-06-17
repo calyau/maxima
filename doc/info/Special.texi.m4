@@ -2106,16 +2106,26 @@ Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
 @deffn {Function} %m [@var{k},@var{u}] (@var{z}) 
-Whittaker M function
-@code{M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}.  
-(A&S 13.1.32)
+Whittaker M function (A&S 13.1.32):
+m4_displaymath(
+<<<M_{\kappa,\mu}(z) = e^{-{1\over 2}z} z^{{1\over 2} + \mu} M\left({1\over 2} + \mu - \kappa, 1 + 2\mu, z\right)>>>,
+<<<@math{%m[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}>>>)
+
+where @math{M(a,b,z)} is Kummer's solution of the confluent hypergeometric equation.
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} %w [@var{k},@var{u}] (@var{z}) 
-Whittaker W function.  (A&S 13.1.33)
+Whittaker W function (A&S 13.1.33):
+m4_displaymath(
+<<<W_{\kappa,\mu}(z) = e^{-{1\over 2}z} z^{{1\over 2} + \mu} U\left({1\over 2} + \mu - \kappa, 1+2\mu,z\right)>>>,
+<<<@math{%w[k,v](z) = exp(-z/2)*z^(1/2+u)*U(1/2+u-k, 1+2*u, z)}>>>)
+
+where @math{U(a,b,z)} is Kummer's second solution of the confluent hypergeometric equation.
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2123,9 +2133,9 @@ Whittaker W function.  (A&S 13.1.33)
 
 
 @deffn {Function} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
-The pFq(a1,a2,..ap;b1,b2,..bq;z) hypergeometric function,
-where @code{a} a list of length @code{p} and 
-@code{b} a list of length @code{q}.
+The m4_math(<<<_{p}F_{q}(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>,<<<pFq(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>) hypergeometric function,
+where @var{a} a list of length @var{p} and 
+@var{b} a list of length @var{q}.
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
@@ -2425,20 +2435,22 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 @end deffn
 
 @deffn {Function} lambert_w (@var{z})
-The principal branch of Lambert's W function W(z), the solution of 
-@code{z = W(z) * exp(W(z))}.  (DLMF 4.13)
+The principal branch of Lambert's W function W(z) (DLMF 4.13), the solution of 
+m4_displaymath(
+<<<z = W(z)e^{W(z)}>>>,
+@math{z = W(z) * exp(W(z))})  
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} generalized_lambert_w (@var{k}, @var{z})
-The @var{k}-th branch of Lambert's W function W(z), the solution of 
-@code{z = W(z) * exp(W(z))}. (DLMF 4.13)
+The @var{k}-th branch of Lambert's W function W(z) (DLMF 4.13), the solution
+of m4_math(<<<z=W(z)e^{W(z)}>>>,@math{z = W(z) * exp(W(z))}).
 
-The principal branch, denoted Wp(z) in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
+The principal branch, denoted m4_math(W_p(z),@math{Wp(z)}) in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
 
-The other branch with real values, denoted Wm(z) in DLMF, is @code{generalized_lambert_w(-1,z)}.
+The other branch with real values, denoted m4_math(W_m(z), @math{Wm(z)}) in DLMF, is @code{generalized_lambert_w(-1,z)}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2448,7 +2460,10 @@ The other branch with real values, denoted Wm(z) in DLMF, is @code{generalized_l
 
 @deffn {Function} nzeta (@var{z})
 The Plasma Dispersion Function 
-@code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}
+m4_displaymath(
+<<<{\rm nzeta}(z) = i\sqrt{\pi}e^{-z^2}(1-{\rm erf}(-iz))>>>,
+<<<@math{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}>>>)
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
