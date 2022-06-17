@@ -1741,17 +1741,23 @@ Abramowitz and Stegun,
 @deffn {Function} expintegral_e1 (@var{z})
 The Exponential Integral E1(z) (A&S 5.1.1) defined as
 
-@ifnotinfo
-@tex
-$$E_1(z) = \int_z^\infty {e^{-t} \over t} dt$$
+m4_displaymath(
+<<<E_1(z) = \int_z^\infty {e^{-t} \over t} dt>>>,
+<<<@math{integrate(exp(-t)/t, t, z, inf)}>>>)
 
-with $|\arg\ z| < \pi$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(exp(-t)/t, t, z, inf)}
-with @math{abs(arg z) < %pi}.
-@end ifinfo
+with m4_math(<<<\arg z < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
+
+@c @ifnotinfo
+@c @tex
+@c $$E_1(z) = \int_z^\infty {e^{-t} \over t} dt$$
+@c 
+@c with $|\arg\ z| < \pi$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(exp(-t)/t, t, z, inf)}
+@c with @math{abs(arg z) < %pi}.
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1780,16 +1786,22 @@ The Exponential Integral Li(z)  (A&S 5.1.3)
 @deffn {Function} expintegral_e (@var{n},@var{z})
 The Exponential Integral En(z)  (A&S 5.1.4) defined as
 
-@ifnotinfo
-@tex
-$$E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt$$
-with ${\rm Re}\ z > 0$ and $n = 0, 1, 2, \ldots$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(exp(-z*t)/t^n, t, 1, inf)}
-with @math{real(x) > 1} and @math{n} a non-negative integer.
-@end ifinfo
+m4_displaymath(
+<<<E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt>>>,
+<<<@math{integrate(exp(-z*t)/t^n, t, 1, inf)}>>>)
+with m4_math(<<<{\rm Re}(z) > 1>>>,<<<@math{realpart(z) > 1}>>>) and @math{n} a
+non-negative integer.
+
+@c @ifnotinfo
+@c @tex
+@c $$E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt$$
+@c with ${\rm Re}\ z > 0$ and $n = 0, 1, 2, \ldots$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(exp(-z*t)/t^n, t, 1, inf)}
+@c with @math{real(x) > 1} and @math{n} a non-negative integer.
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1800,14 +1812,17 @@ with @math{real(x) > 1} and @math{n} a non-negative integer.
 @deffn {Function} expintegral_si (@var{z})
 The Exponential Integral Si(z) (A&S 5.2.1) defined as
 
-@ifnotinfo
-@tex
-$${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(sin(t)/t, t, 0, z)}
-@end ifinfo
+m4_displaymath(
+<<<{\rm Si}(z) = \int_0^z {\sin t \over t} dt>>>,
+<<<@math{integrate(sin(t)/t, t, 0, z)}>>>)
+@c @ifnotinfo
+@c @tex
+@c $${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(sin(t)/t, t, 0, z)}
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1818,18 +1833,23 @@ $${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
 @deffn {Function} expintegral_ci (@var{z})
 The Exponential Integral Ci(z) (A&S 5.2.2) defined as
 
-@ifnotinfo
-@tex
-$${\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt$$
+m4_displaymath(
+<<<{\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt>>>,
+<<<@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}>>>)
 
-with $|\arg\ z| < \pi$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
-
-with @math{abs(arg z) < %pi}
-@end ifinfo
+with m4_math(<<<|\arg z| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
+@c @ifnotinfo
+@c @tex
+@c $${\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt$$
+@c 
+@c with $|\arg\ z| < \pi$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
+@c 
+@c with @math{abs(arg z) < %pi}
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1840,14 +1860,17 @@ with @math{abs(arg z) < %pi}
 @deffn {Function} expintegral_shi (@var{z})
 The Exponential Integral Shi(z) (A&S 5.2.3) defined as
 
-@ifnotinfo
-@tex
-$${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(sinh(t)/t, t, 0, z)}
-@end ifinfo
+m4_displaymath(
+<<<{\rm Shi}(z) = \int_0^z {\sinh t \over t} dt>>>,
+<<<@math{integrate(sinh(t)/t, t, 0, z)}>>>)
+@c @ifnotinfo
+@c @tex
+@c $${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(sinh(t)/t, t, 0, z)}
+@c @end ifinfo
 
 
 @opencatbox{Categories:}
@@ -1859,18 +1882,24 @@ $${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
 @deffn {Function} expintegral_chi (@var{z})
 The Exponential Integral Chi(z) (A&S 5.2.4) defined as
 
-@ifnotinfo
-@tex
-$${\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt$$
+m4_displaymath(
+<<<{\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt>>>,
+<<<@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}>>>)
 
-with $|\arg\ z| < \pi$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
+with m4_math(<<<|\arg z| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
 
-with @math{abs(arg z) < %pi}
-@end ifinfo
+@c @ifnotinfo
+@c @tex
+@c $${\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt$$
+@c 
+@c with $|\arg\ z| < \pi$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
+@c 
+@c with @math{abs(arg z) < %pi}
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1882,19 +1911,19 @@ with @math{abs(arg z) < %pi}
 Default value: false
 
 Change the representation of one of the exponential integrals,
-@var{expintegral_e(m, z)}, @var{expintegral_e1}, or
-@var{expintegral_ei} to an equivalent form if possible.
+@code{expintegral_e(m, z)}, @code{expintegral_e1}, or
+@code{expintegral_ei} to an equivalent form if possible.
 
-Possible values for @var{expintrep} are @var{false},
-@var{gamma_incomplete}, @var{expintegral_e1}, @var{expintegral_ei},
-@var{expintegral_li}, @var{expintegral_trig}, or
-@var{expintegral_hyp}.
+Possible values for @code{expintrep} are @code{false},
+@code{gamma_incomplete}, @code{expintegral_e1}, @code{expintegral_ei},
+@code{expintegral_li}, @code{expintegral_trig}, or
+@code{expintegral_hyp}.
 
-@var{false} means that the representation is not changed.  Other
+@code{false} means that the representation is not changed.  Other
 values indicate the representation is to be changed to use the
-function specified where @var{expintegral_trig} means
-@var{expintegral_si}, @var{expintegral_ci}, and @var{expintegral_hyp}
-means @var{expintegral_shi} or @var{expintegral_chi}.
+function specified where @code{expintegral_trig} means
+@code{expintegral_si}, @code{expintegral_ci}, and @code{expintegral_hyp}
+means @code{expintegral_shi} or @code{expintegral_chi}.
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1904,9 +1933,9 @@ means @var{expintegral_shi} or @var{expintegral_chi}.
 @defvr {Option variable} expintexpand 
 Default value: false
 
-Expand the Exponential Integral E[n](z)
-for half integral values in terms of Erfc or Erf and
-for positive integers in terms of Ei 
+Expand @code{expintegral_e(n,z)} for half
+integral values in terms of @code{erfc} or @code{erf} and
+for positive integers in terms of @code{expintegral_ei}.
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @closecatbox
