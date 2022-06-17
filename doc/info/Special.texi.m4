@@ -1322,7 +1322,7 @@ integer.
 
 For @math{z=0} and m4_math(<<<{\rm Re}(a)>0>>>, <<<@math{realpart(a) > 0}>>>),
 @code{beta_incomplete_regularized} has 
-the specific value 0. For @var{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>), 
+the specific value 0. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>), 
 @code{beta_incomplete_regularized} simplifies to 1.
 
 Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
@@ -1453,9 +1453,9 @@ m4_displaymath(
 Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b} 
 a positive integer.
 
-For @math{realpart(a)>0} and @math{z1=0} or @math{z2=0}, Maxima simplifies
-@code{beta_incomplete_generalized} to @code{beta_incomplete}. For 
-@math{realpart(b)>0} and @math{z1=1} or @var{z2=1}, Maxima simplifies to an 
+For m4_math(<<<{\rm Re}(a) > 0>>>, <<<@math{realpart(a)>0}>>>) and m4_math(z_1 = 0, @math{z1=0}) or m4_math(z_2 = 0, @math{z2=0}), Maxima simplifies
+@code{beta_incomplete_generalized} to @code{beta_incomplete}.
+For m4_math({\rm Re}(b) > 0, @math{realpart(b)>0}) and m4_math(z_1 = 1, @math{z1=1}) or m4_math(z_2 = 1, @math{z2=1}), Maxima simplifies to an 
 expression with @code{beta} and @code{beta_incomplete}.
 
 Maxima evaluates @code{beta_incomplete_regularized} for real and complex values 
