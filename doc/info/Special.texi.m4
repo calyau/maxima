@@ -2057,10 +2057,27 @@ representation for @code{fresnel_s} and @code{fresnel_c}.
 
 The Struve functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 12.
+The Struve Function m4_math(<<<{\bf H}_{\nu}(z)>>>,<<<@math{H[v](z)}>>>) is a particular solution
+of the differential equation:
+m4_displaymath(
+<<<z^2 {d^2 w \over dz^2} + z {dw \over dz} + (z^2-\nu^2)w =
+{{4\left({1\over 2} z\right)^{\nu+1}} \over \sqrt{\pi} \Gamma\left(\nu + {1\over 2}\right)}>>>,
+<<<@math{z^2*diff(w,z,2) + z*diff(w,z)+(z^2-v^2)*w = 4*(z/2)^(v+1)/(sqrt(%pi)*gamma(v+1/2))}>>>)
+
+which has the general soution
+m4_displaymath(
+<<<w = aJ_{\nu}(z) + bY_{\nu}(z) + {\bf H}_{\nu}(z)>>>,
+<<<@math{w = a*bessel_j(v,z) + b*bessel_y(v,z) + struve_h(v,z)}>>>)
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} struve_h (@var{v}, @var{z})
-The Struve Function H of order v and argument z. (A&S 12.1.1)
+The Struve Function H of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z}. (A&S 12.1.1)  This can be expressed by
+the power series
+
+m4_displaymath(
+<<<{\bf H}_{\nu}(z) = \left({z\over 2}\right)^{\nu+1}
+\sum_{k=0}^{\infty} {(-1)^k\left({z\over 2}\right)^{2k} \over \Gamma\left(k + {3\over 2}\right) \Gamma\left(k + \nu + {3\over 2}\right)}>>>,
+<<<@math{struve_h(v,z) = (z/2)^(v+1)*sum((-1)^k*(z/2)^(2*k)/(gamma(k+3/2)*gamma(k+v+3/2)), k, 0, inf)}>>>)
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -2069,7 +2086,10 @@ The Struve Function H of order v and argument z. (A&S 12.1.1)
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} struve_l (@var{v}, @var{z})
-The Modified Struve Function L of order v and argument z. (A&S 12.2.1)
+The Modified Struve Function L of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z} (A&S 12.2.1):
+m4_displaymath(
+<<<{\bf L}_{\nu}(z) = -ie^{-{i\nu\pi\over 2}} {\bf H}_{\nu}(iz)>>>,
+<<<@math{struve_l(v,z) = %i*exp(-%i*v*%pi/2)*struve_h(v,z)}>>>)
 
 @opencatbox{Categories:}
 @category{Special functions}
