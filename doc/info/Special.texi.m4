@@ -2107,11 +2107,18 @@ can be returned from function @code{hgfred}.
 
 @deffn {Function} %m [@var{k},@var{u}] (@var{z}) 
 Whittaker M function (A&S 13.1.32):
+
 m4_displaymath(
 <<<M_{\kappa,\mu}(z) = e^{-{1\over 2}z} z^{{1\over 2} + \mu} M\left({1\over 2} + \mu - \kappa, 1 + 2\mu, z\right)>>>,
 <<<@math{%m[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}>>>)
 
 where @math{M(a,b,z)} is Kummer's solution of the confluent hypergeometric equation.
+
+This can also be expressed by the series (DLMF 13.14.6):
+m4_displaymath(
+<<<M_{\kappa,\mu}(z) = e^{-{1\over 2} z} z^{{1\over 2} + \mu}
+\sum_{s=0}^{\infty} {\left({1\over 2} + \mu - \kappa\right)_s \over (1 + 2\mu)_s s!} z^s>>>,
+<<<@math{%m[k,u](z) = %e^(-z/2)*z^(1/2+u)*sum(pochhammer(1/2+u-k,s)/(pochhammer(1+2*u,s)*s!)*z^s, s, 0, inf)}>>>)
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -2196,7 +2203,15 @@ Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
 @deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
-The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&S 19.3.1)
+The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&S 19.3.1).
+
+@c See https://mathworld.wolfram.com/ParabolicCylinderFunction.html for more info.
+The solution of the Weber differential equation
+m4_displaymath(
+<<<y''(z) + \left(\nu + {1\over 2} - {1\over 4} z^2\right) y(z) = 0>>>,
+<<<diff(y(z), z, 2) + (v+1/2-z^2/4)*y(z) = 0>>>)
+has two independent solutions, one of which is m4_math(<<<D_{\nu}(z)>>>, <<<@code{parabolic_cylinder_d(v,z)}>>>), the parabolic cylinder d function.
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
