@@ -83,7 +83,37 @@ units(e%) :=
   else if op(e%) = "^" then units (first (e%)) ^ second (e%)
   else if op(e%) = "+" or op(e%) = "-" then apply ("+", unique (map (units, args (e%))))
   else if nondimensionalp (e%) then 1
+  else if op(e%) = nounify(diff)
+    then units_diff(e%)
+  else if op(e%) = nounify(integrate)
+    then units_integrate(e%)
+  else if op(e%) = nounify(at)
+    then units_at(e%)
   else apply (op(e%), map (units, args(e%))));
+
+units_diff(e%) :=
+  block ([yy: first(e%), xnpairs: by_twos (rest (args (e%)))],
+         lproduct (units(xn[1])^xn[2], xn, xnpairs),
+         units(yy) / %%);
+
+/* by_twos might want to be a built-in function ... */
+by_twos (l) :=
+  block ([n: length(l)],
+         if mod (n, 2) = 0
+           then makelist ([l[2*k - 1], l[2*k]], k, 1, n/2)
+           else error ("by_twos: length of list must be a multiple of 2, not", n));
+
+/* define lproduct as a macro to work around funny evaluation of makelist ...
+ * lproduct might want to be a built-in function ...
+ */
+lproduct (ee, xx, l) ::=
+  buildq ([ee, xx, l], apply ("*", makelist (ee, xx, l)));
+
+units_integrate(e%) :=
+  block ([ii: first(e%), xx: second(e%)],
+         units(ii) * units(xx));
+
+units_at(e%) := units (first (e%));
 
 d(e%) := dimension (units (e%));
 
