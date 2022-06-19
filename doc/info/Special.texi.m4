@@ -425,22 +425,26 @@ Probably Gradshteyn & Ryzhik 8.570.1.
 @section Airy Functions
 @c -----------------------------------------------------------------------------
 
-The Airy functions Ai(x) and Bi(x) are defined in Abramowitz and Stegun,
+The Airy functions m4_math(<<<{\rm Ai}(x)>>>,<<<@math{Ai(x)}>>>) and m4_math(<<<{\rm Bi}(x)>>>,<<<@math{Bi(x)}>>>) are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 10.4. 
 
-@code{y = Ai(x)} and @code{y = Bi(x)} are two linearly independent solutions 
-of the Airy differential equation @code{diff (y(x), x, 2) - x y(x) = 0}.
+The two linearly independent solutions of the Airy differential equation:
 
-If the argument @code{x} is a real or complex floating point 
+m4_displaymath(
+<<<{d^2 y\over dx^2} - xy = 0>>>,
+<<<@math{diff (y(x), x, 2) - x y(x) = 0}>>>)
+
+are m4_math(<<<y = {\rm Ai}(x)>>>,<<<@math{y = Ai(x)}>>>) and m4_math(<<<y = {\rm Bi}(x)>>>,<<<@math{y = Bi(x)}>>>) 
+
+
+If the argument @math{x} is a real or complex floating point 
 number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function Ai(x).  (A&S 10.4.2)
+The Airy function m4_math(<<<{\rm Ai}(x)>>>, <<<@math{Ai(x)}>>>).  (A&S 10.4.2)
 
-The derivative @code{diff (airy_ai(x), x)} is @code{airy_dai(x)}.
-
-See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} @mrefdot{airy_dbi}
+See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -451,9 +455,13 @@ See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} @mrefdot{airy_dbi}
 @c -----------------------------------------------------------------------------
 @anchor{airy_dai}
 @deffn {Function} airy_dai (@var{x})
-The derivative of the Airy function Ai @code{airy_ai(x)}. 
+The derivative of the Airy function m4_math(<<<{\rm Ai}(x)>>>,@math{Ai(x)}):
 
-See @code{airy_ai}.
+m4_displaymath(
+<<<{\rm airy\_dai}(x) = {d\over dx}{\rm Ai}(x)>>>,
+<<<@math{airy_dai(x) = diff(airy_ai(x),x)>>>}) 
+
+See @mrefdot{airy_ai}.
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -464,11 +472,9 @@ See @code{airy_ai}.
 @c -----------------------------------------------------------------------------
 @anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
-The Airy function Bi(x).  (A&S 10.4.3)
+The Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}).  (A&S 10.4.3)
 
-The derivative @code{diff (airy_bi(x), x)} is @code{airy_dbi(x)}.
-
-See @code{airy_ai}, @code{airy_dbi}.
+See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -479,9 +485,13 @@ See @code{airy_ai}, @code{airy_dbi}.
 @c -----------------------------------------------------------------------------
 @anchor{airy_dbi}
 @deffn {Function} airy_dbi (@var{x})
-The derivative of the Airy Bi function @code{airy_bi(x)}.
+The derivative of the Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}>>>):
 
-See @code{airy_ai} and @code{airy_bi}.
+m4_displaymath(
+<<<{\rm airy\_dbi}(x) = {d\over dx}{\rm Bi}(x)>>>,
+<<<@math{airy_dbi(x) = diff(airy_bi(x),x)}>>>)
+
+See @mrefcomma{airy_ai} and @mrefdot{airy_bi}
 
 @opencatbox{Categories:}
 @category{Airy functions}
