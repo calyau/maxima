@@ -80,16 +80,20 @@ units(e%) :=
   else if mapatom (e%) then units (op (e%))  /* mapatom but not atom => subscripted */
   else if unitop_p(e%) then second(e%)
   else if featurep (op(e%), 'dimensional) then units(op(e%))
+  else if op(e%) = "*" or op(e%) = "/" then map (units, e%)
   else if op(e%) = "^" then units (first (e%)) ^ second (e%)
+  else if op(e%) = 'sqrt then sqrt (units (e%))
   else if op(e%) = "+" or op(e%) = "-" then apply ("+", unique (map (units, args (e%))))
-  else if nondimensionalp (e%) then 1
+  else if member (op(e%), ["=", 'equal, "[", 'matrix, "{"]) then map (units, e%)
+  else if op(e%) = "." then apply ("*", map (units, args (e%)))
   else if op(e%) = nounify(diff)
     then units_diff(e%)
   else if op(e%) = nounify(integrate)
     then units_integrate(e%)
   else if op(e%) = nounify(at)
     then units_at(e%)
-  else apply (op(e%), map (units, args(e%))));
+  else if nondimensionalp (e%) then 1
+  else 'units(e%));
 
 units_diff(e%) :=
   block ([yy: first(e%), xnpairs: by_twos (rest (args (e%)))],

@@ -82,6 +82,76 @@ a/b;
 0 ` kg/m^3;
 0 ` kg/m^3;
 
+/* verify different cases are handled in function units */
+
+(kill (x, y, z, a),
+ declare_constvalue (x, 1000 ` W/m^2),
+ declare (y, dimensional),
+ declare (z, dimensional),
+ declare_units (z, MJ/hour),
+ 0);
+0;
+
+units(x);
+W/m^2;
+
+units(y);
+'units(y);
+
+units(z);
+MJ/hour;
+
+units(123);
+1;
+
+units(a);
+1;
+
+[units(x[1]), units(x[2]), units(x[k])];
+[W/m^2, W/m^2, W/m^2];
+
+units(a ` mile/minute^2);
+mile/minute^2;
+
+units(y(1, 2, 3));
+'units(y);
+
+units(z(a));
+MJ/hour;
+
+units(x*y*z);
+MJ*W*'units(y)/(hour*m^2);
+
+units(z^a);
+(MJ/hour)^a;
+
+units(z + sin(a)`MJ/hour + (10 ` MJ)/(24 ` hour));
+MJ/hour;
+
+units(z - 1000`MJ/hour);
+MJ/hour;
+
+units(y = (a ` foot)/(60 ` minute));
+'units(y) = foot/minute;
+
+units(equal(y, (a ` foot)/(60 ` minute)));
+equal ('units(y), foot/minute);
+
+units(y . x);
+W*'units(y)/m^2;
+
+(declare (nounify (a), nondimensional),
+ units(a(x, y, z)));
+1;
+
+(remove (nounify (a), nondimensional),
+ units(a(x, y, z)));
+'units(a(x, y, z));
+
+/* diff, integrate, and at are handled below */
+
+/* TODO: verify different cases are handled in function qty */
+
 /* next one has result = unknown;
  * substitute narrower test on "=" instead of equal
  * pending simplification rule for equal applied to unitful expressions
