@@ -1,6 +1,122 @@
 (kill(all),0);
 0$
 
+(gcd_all_options(f,g) := append(makelist((gcd:option, gcd(f,g)), option, [ez, subres, red, spmod]),
+                                makelist((gcd:option, gcd(g,f)), option, [ez, subres, red, spmod])),
+ check_gcd(f,g,expected_result) := block([gcds], gcds:gcd_all_options(expand(f), expand(g)),
+                                         if every (lambda ([e], equal (e, expected_result)), gcds)
+                                         then true
+                                         else FAILED_GCDS ('expected = expected_result, 'actual = gcds)),
+ 0);
+0$
+
+/* Basic tests: numbers */
+
+check_gcd(1, 1, 1);
+true$
+
+check_gcd(1, -1, 1);
+true$
+
+check_gcd(6, 2, 2);
+true$
+
+check_gcd(6, -2, 2);
+true$
+
+check_gcd(3/2, 1/2, 1/2);
+true$
+
+check_gcd(3/2, -1/2, 1/2);
+true$
+
+check_gcd(1+%i, 2+2*%i, 1+%i);
+true$
+
+check_gcd(1+%i, -1/2-1/2*%i, 1/2+1/2*%i);
+true$
+
+/* Basic tests: univariate polynomials */
+
+check_gcd(x, 1, 1);
+true$
+
+check_gcd(6*x, 2, 2);
+true$
+
+check_gcd(2*x*(3*x-1), 2*x, 2*x);
+true$
+
+check_gcd(2*x*(3*x-1), 3*x-1, 3*x-1);
+true$
+
+check_gcd(2*x*(3*x-1), 6*x*(3*x-1), 2*x*(3*x-1));
+true$
+
+check_gcd(2*x*(3*x-1), 3*x+1, 1);
+true$
+
+/* Basic tests: multivariate polynomials */
+
+check_gcd(y*x, 1, 1);
+true$
+
+check_gcd(6*y*x, 2, 2);
+true$
+
+check_gcd(2*y*(3*x-1)*(y+1), 2*y, 2*y);
+true$
+
+check_gcd(2*y*(3*x-1)*(y+1), (3*x-1)*(y-1), 3*x-1);
+true$
+
+check_gcd(2*y*(3*x-1)*(y+1), 2*y*(3*x-1)*(y-1), 2*y*(3*x-1));
+true$
+
+check_gcd(2*y*(3*x-1)*(y+1), 6*y*(3*x-1)*(y+1), 2*y*(3*x-1)*(y+1));
+true$
+
+check_gcd(2*y*(3*x-1)*(y+1), (3*x+1)*(y-1), 1);
+true$
+
+/* Randomized tests */
+
+(random_polynomial(var) := product(random(3)+1+sum((random(4)-2)*var^i, i, 1, random(3)), j, 0, random(3)),
+ check_gcd_common_factor(f,g,common_factor,vars) :=
+ block([gcds], gcds: gcd_all_options (expand (f), expand (g)),
+       if every (lambda ([x], equal (remainder (x, common_factor), 0)), gcds)
+       then true
+       else FAILED_GCDS ('common_factor = common_factor, 'gcd_results = gcds)),
+ 0);
+0$
+
+makelist(block([common_factor],
+               common_factor:random_polynomial(x),
+               check_gcd_common_factor(common_factor*random_polynomial(x),
+                                       common_factor*random_polynomial(x),
+                                       common_factor,
+                                       [x])),
+         10);
+[true, true, true, true, true, true, true, true, true, true]$
+
+makelist(block([common_factor],
+               common_factor:random_polynomial(x)*random_polynomial(y),
+               check_gcd_common_factor(common_factor*random_polynomial(x)*random_polynomial(y),
+                                       common_factor*random_polynomial(x)*random_polynomial(y),
+                                       common_factor,
+                                       [x, y])),
+         10);
+[true, true, true, true, true, true, true, true, true, true]$
+
+makelist(block([common_factor],
+               common_factor:random_polynomial(x)*random_polynomial(y)*random_polynomial(z),
+               check_gcd_common_factor(common_factor*random_polynomial(x)*random_polynomial(y)*random_polynomial(z),
+                                       common_factor*random_polynomial(x)*random_polynomial(y)*random_polynomial(z),
+                                       common_factor,
+                                       [x, y, z])),
+         10);
+[true, true, true, true, true, true, true, true, true, true]$
+
 /* SF bug 3832 and merge request 25 */
 
 is(equal(gcd(expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^3*(a^2*s^2+r^2-2*m)), expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^2)),
