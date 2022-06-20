@@ -996,14 +996,34 @@ Return @code{true} if the input is an interval and return false if it isn't.
 
 @anchor{jacobi_p}
 @deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
-The Jacobi polynomial.
+The Jacobi polynomial, m4_math(<<<P_n^{(a,b)}(x)>>>, <<<jacobi_p(n,a,b,x)>>>).
 
 The Jacobi polynomials are actually defined for all
-@var{a} and @var{b}; however, the Jacobi polynomial
-weight @code{(1 - @var{x})^@var{a} (1 + @var{x})^@var{b}} isn't integrable for @code{@var{a} <= -1} or
-@code{@var{b} <= -1}. 
+@math{a} and @math{b}; however, the Jacobi polynomial
+weight @math{(1 - x)^a (1 + x)^b} isn't integrable
+for m4_math(<<<a \le -1>>>, <<<@math{a <= -1}>>>) or m4_math(<<<b \le -1>>>, <<<@math{b <= -1}>>>). 
 
 Reference: Abramowitz and Stegun, equation 22.5.42, page 779.
+
+The polynomial may be defined in terms of hypergeometric functions:
+
+m4_displaymath(
+<<<P_n^{(a,b)}(x) = {n+a\choose n} {_1F_2}\left(-n, n + a + b + 1; a+1; {1-x\over 2}\right)>>>,
+<<<jacobi_p(n,a,b,x) = binomial(n+a,n)*hypergeometric([-n,n+a+b+1],[a+1],(1-x)/2)>>>)
+
+Some examples:
+@c ===beg===
+@c jacobi_p(0,a,b,x);
+@c jacobi_p(1,a,b,x);
+@c ===end===
+@example
+(%i1) jacobi_p(0,a,b,x);
+(%o1)                                  1
+(%i2) jacobi_p(1,a,b,x);
+                                    (b + a + 2) (1 - x)
+(%o2)                  (a + 1) (1 - -------------------)
+                                         2 (a + 1)
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1013,9 +1033,48 @@ Reference: Abramowitz and Stegun, equation 22.5.42, page 779.
 
 @anchor{laguerre}
 @deffn {Function} laguerre (@var{n}, @var{x})
-The Laguerre polynomial of degree @var{n}.
+The Laguerre polynomial, m4_math(<<<L_n(x)>>>,<<<laguerre(n,x)>>>) of degree @math{n}.
 
 Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
+
+These are related to the generalized Laguerre polynomial by
+
+m4_displaymath(
+<<<L_n(x) = L_n^{(0)}(x)>>>,
+<<<laguerre(n,x) = gen_laguerre(n,0,x)>>>)
+
+The polynomials are given by the sum
+
+m4_displaymath(
+<<<L_n(x) = \sum_{k=0}^{n} {(-1)^k\over k!}{n \choose k} x^k>>>,
+<<<laguerre(n,x) = sum((-1)^k/k!*binomial(n,k)*x^k,k,0,n)>>>)
+
+Some examples:
+@c ===beg===
+@c laguerre(1,x);
+@c laguerre(2,x);
+@c gen_laguerre(2,0,x);
+@c sum((-1)^k/k!*binomial(2,k)*x^k,k,0,2);
+@c ===end===
+@example
+(%i1) laguerre(1,x);
+(%o1)                                1 - x
+(%i2) laguerre(2,x);
+                                  2
+                                 x
+(%o2)                            -- - 2 x + 1
+                                 2
+(%i3) gen_laguerre(2,0,x);
+                                  2
+                                 x
+(%o3)                            -- - 2 x + 1
+                                 2
+(%i4) sum((-1)^k/k!*binomial(2,k)*x^k,k,0,2);
+                                  2
+                                 x
+(%o4)                            -- - 2 x + 1
+                                 2
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
