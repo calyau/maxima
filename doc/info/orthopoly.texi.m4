@@ -1084,10 +1084,53 @@ Some examples:
 
 @anchor{legendre_p}
 @deffn {Function} legendre_p (@var{n}, @var{x})
-The Legendre polynomial of the first kind of degree @var{n}.
+The Legendre polynomial of the first kind, m4_math(P_n(x),legendre(n,x)) of degree @math{n}.
 
 Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
 
+The Legendre polynomial is related to the Jacobi polynomials by
+
+m4_displaymath(
+<<<P_n(x) = P_n^{(0,0)}(x)>>>,
+<<<legendre_p(n,x) = jacobi_p(n,0,0,x)>>>)
+
+Some examples:
+@c ===beg===
+@c legendre_p(1,x);
+@c legendre_p(2,x);
+@c expand(%);
+@c expand(legendre_p(3,x));
+@c expand(jacobi_p(3,0,0,x));
+@c ===end===
+@example
+(%i1) legendre_p(1,x);
+Evaluation took 0.0500 seconds (0.0600 elapsed) using 6.947 MB.
+(%o1)                                  x
+(%i2) legendre_p(2,x);
+Evaluation took 0.0000 seconds (0.0000 elapsed) using 11.320 KB.
+                                                 2
+                                        3 (1 - x)
+(%o2)                   (- 3 (1 - x)) + ---------- + 1
+                                            2
+(%i3) expand(%);
+Evaluation took 0.0000 seconds (0.0000 elapsed) using 5.648 KB.
+                                      2
+                                   3 x    1
+(%o3)                              ---- - -
+                                    2     2
+(%i4) expand(legendre_p(3,x));
+Evaluation took 0.0000 seconds (0.0000 elapsed) using 28.242 KB.
+                                     3
+                                  5 x    3 x
+(%o4)                             ---- - ---
+                                   2      2
+(%i5) expand(jacobi_p(3,0,0,x));
+Evaluation took 0.0000 seconds (0.0000 elapsed) using 28.023 KB.
+                                     3
+                                  5 x    3 x
+(%o5)                             ---- - ---
+                                   2      2
+@end example
 @opencatbox{Categories:}
 @category{Package orthopoly}
 @closecatbox
@@ -1096,9 +1139,41 @@ Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
 
 @anchor{legendre_q}
 @deffn {Function} legendre_q (@var{n}, @var{x})
-The Legendre function of the second kind of degree @var{n}.
+The Legendre function of the second kind, m4_math(<<<Q_n(x)>>>, <<<legendre_q(n,x)>>>) of degree @math{n}.
 
 Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
+
+These are related to m4_math(<<<Q_n^m(x)>>>,<<<@math{assoc_legendre_q(n,m,x)}>>>) by
+
+m4_displaymath(
+<<<Q_n(x) = Q_n^0(x)>>>,
+<<<legendre_q(n,x) = assoc_legendre_q(n,0,x)>>>)
+
+@c ===beg===
+@c legendre_q(0,x);
+@c legendre_q(1,x);
+@c assoc_legendre_q(1,0,x);
+@c ===end===
+@example
+(%i1) legendre_q(0,x);
+                                       x + 1
+                                 log(- -----)
+                                       x - 1
+(%o1)                            ------------
+                                      2
+(%i2) legendre_q(1,x);
+                                    x + 1
+                              log(- -----) x - 2
+                                    x - 1
+(%o2)/R/                      ------------------
+                                      2
+(%i3) assoc_legendre_q(1,0,x);
+                                    x + 1
+                              log(- -----) x - 2
+                                    x - 1
+(%o3)/R/                      ------------------
+                                      2
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
