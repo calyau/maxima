@@ -1363,9 +1363,15 @@ Reference: Abramowitz and Stegun, equation 6.1.16, page 256.
 
 @anchor{spherical_bessel_j}
 @deffn {Function} spherical_bessel_j (@var{n}, @var{x})
-The spherical Bessel function of the first kind.
+The spherical Bessel function of the first kind, m4_math(<<<j_n(x).>>>, <<<@math{spherical_bessel_j(n,x)}.>>>)
 
 Reference: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 439.
+
+It is related to the Bessel function by
+
+m4_displaymath(
+<<<j_n(x) = \sqrt{\pi\over 2x} J_{n+1/2}(x)>>>,
+<<<spherical_bessel_j(n,x) = sqrt(%pi/(2*x))*bessel_j(n+1/2,x)>>>)
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1376,9 +1382,15 @@ Reference: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 4
 
 @anchor{spherical_bessel_y}
 @deffn {Function} spherical_bessel_y (@var{n}, @var{x})
-The spherical Bessel function of the second kind. 
+The spherical Bessel function of the second kind, m4_math(<<<y_n(x).>>>, <<<@math{<spherical_bessel_y(n,x)}.>>>)
 
 Reference: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 439.
+
+It is related to the Bessel function by
+
+m4_displaymath(
+<<<y_n(x) = \sqrt{\pi\over 2x} Y_{n+1/2}(x)>>>,
+<<<spherical_bessel_y(n,x) = sqrt(%pi/(2*x))*bessel_y(n+1/2,x)>>>)
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1390,9 +1402,15 @@ Reference: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 4
 @anchor{spherical_hankel1}
 @deffn {Function} spherical_hankel1 (@var{n}, @var{x})
 The spherical Hankel function of the
-first kind.
+first kind, m4_math(<<<h_n^{(1)}(x).>>>, <<<spherical_hankel1(n,x).>>>)
 
 Reference: Abramowitz and Stegun, equation 10.1.36, page 439.
+
+This is defined by
+
+m4_displaymath(
+<<<H_n^{(1)}(x) = j_n(x) + iy_n(x)>>>,
+<<<spherical_hankel1(n,x) = spherical_bessel_j(n,x) + %i*spherical_bessel_y(n,x)>>>)
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1403,9 +1421,16 @@ Reference: Abramowitz and Stegun, equation 10.1.36, page 439.
 
 @anchor{spherical_hankel2}
 @deffn {Function} spherical_hankel2 (@var{n}, @var{x})
-The spherical Hankel function of the second kind.
+The spherical Hankel function of the
+second kind, m4_math(<<<h_n^{(2)}(x).>>>, <<<spherical_hankel2(n,x).>>>)
 
 Reference: Abramowitz and Stegun, equation 10.1.17, page 439.
+
+This is defined by
+
+m4_displaymath(
+<<<H_n^{(2)}(x) = j_n(x) + iy_n(x)>>>,
+<<<spherical_hankel2(n,x) = spherical_bessel_j(n,x) - %i*spherical_bessel_y(n,x)>>>)
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
