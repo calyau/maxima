@@ -1278,12 +1278,13 @@ signals an error.
 
 @anchor{pochhammer}
 @deffn {Function} pochhammer (@var{x}, @var{n})
-The Pochhammer symbol. For nonnegative integers @var{n} with
-@code{@var{n} <= pochhammer_max_index}, the expression @code{pochhammer (@var{x}, @var{n})} 
-evaluates to the product @code{@var{x} (@var{x} + 1) (@var{x} + 2) ... (@var{x} + n - 1)}
-when @code{@var{n} > 0} and
-to 1 when @code{@var{n} = 0}. For negative @var{n},
-@code{pochhammer (@var{x}, @var{n})} is defined as @code{(-1)^@var{n} / pochhammer (1 - @var{x}, -@var{n})}.
+The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). For nonnegative
+integers @var{n} with @code{@var{n} <= pochhammer_max_index}, the
+expression m4_math(<<<(x)_n>>>, <<<@math{pochhammer(x, n)}>>>) evaluates to the
+product m4_math(<<<x(x+1)(x+2)\cdots(x+n-1)>>>, <<<@math{x (x + 1) (x + 2) ... (x + n - 1)}>>>) when m4_math(<<<n > 0>>>, @math{{n} > 0}) and
+to 1 when @math{n = 0}.
+For negative @math{n}, m4_math(<<<(x)_n>>>, <<<@math{pochhammer (x, n)}>>>) is
+defined as m4_math(<<<(-1)^n/(1-x)_{-n}.>>>, <<<@math{(-1)^n / pochhammer (1 - x, -n)}.>>>)
 Thus
 
 @c ===beg===
