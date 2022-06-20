@@ -707,6 +707,38 @@ m4_displaymath(
 Reference: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
 (second equation), page 334, and 8.2.5, page 333.
 
+Some examples:
+@c ===beg===
+@c assoc_legendre_p(2,0,x);
+@c factor(%);
+@c factor(assoc_legendre_p(2,1,x));
+@c (-1)^1*(1-x^2)^(1/2)*diff(legendre_p(2,x),1);
+@c factor(%);
+@c ===end===
+@example
+(%i1) assoc_legendre_p(2,0,x);
+                                                 2
+                                        3 (1 - x)
+(%o1)                   (- 3 (1 - x)) + ---------- + 1
+                                            2
+(%i2) factor(%);
+                                      2
+                                   3 x  - 1
+(%o2)                              --------
+                                      2
+(%i3) factor(assoc_legendre_p(2,1,x));
+                                              2
+(%o3)                         - 3 x sqrt(1 - x )
+
+(%i4) (-1)^1*(1-x^2)^(1/2)*diff(legendre_p(2,x),x);
+                                                    2
+(%o4)                   - (3 - 3 (1 - x)) sqrt(1 - x )
+
+(%i5) factor(%);
+                                              2
+(%o5)                         - 3 x sqrt(1 - x )
+@end example
+
 @opencatbox{Categories:}
 @category{Package orthopoly}
 @closecatbox
@@ -724,6 +756,35 @@ m4_displaymath(
 
 Reference: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
 
+Some examples:
+@c ===beg===
+@c assoc_legendre_q(0,0,x);
+@c assoc_legendre_q(1,0,x);
+@c assoc_legendre_q(1,1,x);
+@c ===end===
+@example
+(%i1) assoc_legendre_q(0,0,x);
+                                       x + 1
+                                 log(- -----)
+                                       x - 1
+(%o1)                            ------------
+                                      2
+(%i2) assoc_legendre_q(1,0,x);
+                                    x + 1
+                              log(- -----) x - 2
+                                    x - 1
+(%o2)/R/                      ------------------
+                                      2
+(%i3) assoc_legendre_q(1,1,x);
+(%o3)/R/ 
+          x + 1            2   2               2            x + 1            2
+    log(- -----) sqrt(1 - x ) x  - 2 sqrt(1 - x ) x - log(- -----) sqrt(1 - x )
+          x - 1                                             x - 1
+  - ---------------------------------------------------------------------------
+                                        2
+                                     2 x  - 2
+@end example
+
 @opencatbox{Categories:}
 @category{Package orthopoly}
 @closecatbox
@@ -735,6 +796,40 @@ Reference: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
 The Chebyshev polynomial of the first kind of degree @math{n} m4_math(<<<, T_n(x)>>>,<<<>>>).
 
 Reference: Abramowitz and Stegun, equation 22.5.47, page 779.
+
+The polynomials m4_math(<<<T_n(x)>>>,<<<chebyshev_t(n,x)>>>) can be written in terms of a hypergeometric function:
+
+m4_displaymath(
+<<<T_n(x) = {_{2}}F_{1}\left(-n, n; {1\over 2}; {1-x\over 2}\right)>>>,
+<<<hypergeometric([-n,n],[1/2],(1-x)/2)>>>)
+
+The polynomials can also be defined in terms of the sum
+
+m4_displaymath(
+<<<T_n(x) = {n\over 2} \sum_{r=0}^{\lfloor {n/2}\rfloor} {(-1)^r\over n-r} {n-r\choose k}(2x)^{n-2r}>>>,
+<<<chebyshev_t(n,x) = n/2*sum((-1)^r/(n-r)*binomial(n-r,r)*(2*x)^(n-2*r), r, 0, floor(n/2))>>>)
+
+Some examples:
+@c ===beg===
+chebyshev_t(2,x);
+@c factor(%);
+@c factor(chebyshev_t(3,x));
+@c factor(hgfred([-3,3],[1/2],(1-x)/2));
+@c ===end===
+@example
+(%i1) chebyshev_t(2,x);
+                                                 2
+(%o1)                   (- 4 (1 - x)) + 2 (1 - x)  + 1
+(%i2) factor(%);
+                                      2
+(%o2)                              2 x  - 1
+(%i3) factor(chebyshev_t(3,x));
+                                       2
+(%o3)                            x (4 x  - 3)
+(%i4) factor(hgfred([-3,3],[1/2],(1-x)/2));
+                                       2
+(%o4)                            x (4 x  - 3)
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
