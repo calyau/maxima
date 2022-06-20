@@ -839,9 +839,44 @@ chebyshev_t(2,x);
 
 @anchor{chebyshev_u}
 @deffn {Function} chebyshev_u (@var{n}, @var{x})
-The Chebyshev polynomial of the second kind of degree @var{n}.
+The Chebyshev polynomial of the second kind of degree @math{n} m4_math(<<<, U_n(x)>>>,<<<>>>).
 
 Reference: Abramowitz and Stegun, equation 22.5.48, page 779.
+
+The polynomials m4_math(<<<U_n(x)>>>,<<<chebyshev_u(n,x)>>>) can be written in terms of a hypergeometric function:
+
+m4_displaymath(
+<<<U_n(x) = (n+1)\; {_{2}F_{1}}\left(-n, n+2; {3\over 2}; {1-x\over 2}\right)>>>,
+<<<cheybshev_u(n,x) = (n+1)*hypergeometric([-n,n+1],[3/2],(1-x)/2)>>>)
+
+The polynomials can also be defined in terms of the sum
+
+m4_displaymath(
+<<<U_n(x) = \sum_{r=0}^{\lfloor n/2 \rfloor} (-1)^r {n-r \choose r} (2x)^{n-2r}>>>,
+<<<cheybshev_u(n,x) = sum((-1)^r*binomial(n-r,r)*(2*x)^(n-2*r), r, 0, floor(n/2))>>>)
+
+@c ===beg===
+@c chebyshev_u(2,x);
+@c expand(%);
+@c expand(chebyshev_u(3,x));
+@c expand(4*hgfred([-3,5],[3/2],(1-x)/2));
+@c ===end===
+@example
+(%i1) chebyshev_u(2,x);
+                                                  2
+                            8 (1 - x)    4 (1 - x)
+(%o1)                 3 ((- ---------) + ---------- + 1)
+                                3            3
+(%i2) expand(%);
+                                      2
+(%o2)                              4 x  - 1
+(%i3) expand(chebyshev_u(3,x));
+                                     3
+(%o3)                             8 x  - 4 x
+(%i4) expand(4*hgfred([-3,5],[3/2],(1-x)/2));
+                                     3
+(%o4)                             8 x  - 4 x
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
