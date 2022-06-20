@@ -1469,9 +1469,17 @@ use @mrefdot{hstep}
 
 @anchor{ultraspherical}
 @deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
-The ultraspherical polynomial (also known as the Gegenbauer polynomial).
+The ultraspherical polynomial, m4_math(<<<C_n^{(a)}(x)>>>, <<<@math{ultraspherical(n,a,x)}>>>) (also known as the Gegenbauer polynomial).
 
 Reference: Abramowitz and Stegun, equation 22.5.46, page 779.
+
+These polynomials can be given in terms of Jacobi polynomials:
+
+m4_displaymath(
+<<<C_n^{(\alpha)}(x) = {\Gamma\left(\alpha + {1\over 2}\right) \over \Gamma(2\alpha)}
+   {\Gamma(n+2\alpha) \over \Gamma\left(n+\alpha + {1\over 2}\right)}
+   P_n^{(\alpha-1/2, \alpha-1/2)}(x)>>>,
+<<<ultraspherical(n,a,x) = gamma(a+1/2)/gamma(2*a)*gamma(n+2*a)/gamma(n+a+1/2)*jacobi_p(n,a-1/2,a-1/2,x)>>>)
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
