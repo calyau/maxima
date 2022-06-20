@@ -1409,7 +1409,7 @@ Reference: Abramowitz and Stegun, equation 10.1.36, page 439.
 This is defined by
 
 m4_displaymath(
-<<<H_n^{(1)}(x) = j_n(x) + iy_n(x)>>>,
+<<<h_n^{(1)}(x) = j_n(x) + iy_n(x)>>>,
 <<<spherical_hankel1(n,x) = spherical_bessel_j(n,x) + %i*spherical_bessel_y(n,x)>>>)
 
 @opencatbox{Categories:}
@@ -1429,7 +1429,7 @@ Reference: Abramowitz and Stegun, equation 10.1.17, page 439.
 This is defined by
 
 m4_displaymath(
-<<<H_n^{(2)}(x) = j_n(x) + iy_n(x)>>>,
+<<<h_n^{(2)}(x) = j_n(x) + iy_n(x)>>>,
 <<<spherical_hankel2(n,x) = spherical_bessel_j(n,x) - %i*spherical_bessel_y(n,x)>>>)
 
 @opencatbox{Categories:}
