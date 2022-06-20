@@ -886,9 +886,43 @@ m4_displaymath(
 
 @anchor{gen_laguerre}
 @deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
-The generalized Laguerre polynomial of degree @var{n}.
+The generalized Laguerre polynomial of degree @math{n}m4_math(<<<, L_n^{(\alpha)}(x)>>>,<<<>>>).
+
+These can be defined by
+
+m4_displaymath(
+<<<L_n^{(\alpha)} = {n+\alpha \choose n}\; {_1F_1}(-n; \alpha+1; x)>>>,
+<<<gen_laguerre(n, a, x) = binomial(n+a,n)*hypergeometric([-n], [a+1], x)>>>)
 
 Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
+
+Some examples:
+@c ===beg===
+@c gen_laguerre(1,k,x);
+@c gen_laguerre(2,k,x);
+@c binomial(2+k,2)*hgfred([-2],[1+k],x);
+@c ===end===
+@example
+(%i1) gen_laguerre(1,k,x);
+                                             x
+(%o1)                         (k + 1) (1 - -----)
+                                           k + 1
+(%i2) gen_laguerre(2,k,x);
+                                         2
+                                        x            2 x
+                 (k + 1) (k + 2) (--------------- - ----- + 1)
+                                  (k + 1) (k + 2)   k + 1
+(%o2)            ---------------------------------------------
+                                       2
+(%i3) binomial(2+k,2)*hgfred([-2],[1+k],x);
+                                         2
+                                        x            2 x
+                 (k + 1) (k + 2) (--------------- - ----- + 1)
+                                  (k + 1) (k + 2)   k + 1
+(%o3)            ---------------------------------------------
+                                       2
+
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -898,9 +932,50 @@ Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
 
 @anchor{hermite}
 @deffn {Function} hermite (@var{n}, @var{x})
-The Hermite polynomial of degree @var{n}.
+The Hermite polynomial of degree @math{n}m4_math(<<<, H_n(x)>>>,<<<>>>).
+
+These polynomials may be defined by a hypergeometric function
+
+m4_displaymath(
+<<<H_n(x) = (2x)^n\; {_2F_0}\left(-{1\over 2} n, -{1\over 2}n+{1\over 2};;-{1\over x^2}\right)>>>,
+<<<hermite(n,x) = (2*x)^n * hypergeometric([-n/2, -n/2+1/2],[], -1/x^2)>>>)
+
+or by the series
+
+m4_displaymath(
+<<<H_n(x) = n! \sum_{k=0}^{\lfloor n/2 \rfloor} {(-1)^k(2x)^{n-2k} \over k! (n-2k)!}>>>,
+<<<hermite(n,x) = n!*sum((-1)^k*(2*x)^(n-2*k)/(k!*(n-2*k)!), k, 0, floor(n/2))>>>)
+
 
 Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
+
+Some examples:
+@c ===beg===
+@c hermite(3,x);
+@c expand(%);
+@c expand(hermite(4,x));
+@c expand((2*x)^4*hgfred([-2,-2+1/2],[],-1/x^2));
+@c expand(4!*sum((-1)^k*(2*x)^(4-2*k)/(k!*(4-2*k)!),k,0,floor(4/2)));
+@c ===end===
+@example
+(%i1) hermite(3,x);
+                                              2
+                                           2 x
+(%o1)                          - 12 x (1 - ----)
+                                            3
+(%i2) expand(%);
+                                     3
+(%o2)                             8 x  - 12 x
+(%i3) expand(hermite(4,x));
+                                  4       2
+(%o3)                         16 x  - 48 x  + 12
+(%i4) expand((2*x)^4*hgfred([-2,-2+1/2],[],-1/x^2));
+                                  4       2
+(%o4)                         16 x  - 48 x  + 12
+(%i5) expand(4!*sum((-1)^k*(2*x)^(4-2*k)/(k!*(4-2*k)!),k,0,floor(4/2)));
+                                  4       2
+(%o5)                         16 x  - 48 x  + 12
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
