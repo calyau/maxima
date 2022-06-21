@@ -80,7 +80,7 @@ above, may be evaluated by @code{ev} with the @code{nouns} flag.
 For example, the expression returned by @code{changevar} above may be evaluated
 by @code{ev (%o3, nouns)}.
 
-@code{changevar} may also be used to changes in the indices of a sum or
+@code{changevar} may also be used to make changes in the indices of a sum or
 product.  However, it must be realized that when a change is made in a
 sum or product, this change must be a shift, i.e., @code{i = j+ ...}, not a
 higher degree function.  E.g.,
