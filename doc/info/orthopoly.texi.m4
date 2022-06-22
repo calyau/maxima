@@ -698,7 +698,7 @@ m4_displaymath(
 <<<(1-z^2){d^2 w\over dz^2} - 2z{dw\over dz} + \left[n(n+1)-{m^2\over 1-z^2}\right] w = 0>>>,
 <<<(1-z^2)*diff(w,z,2) - 2*z*diff(w,z) + (n*(n+1)-m^2/(1-z^2))*w = 0>>>)
 
-This is related to the Legendre polynomial, m4_math(<<<P_n(x)>>>, @math{legendre_p(n,x)>>>) via
+This is related to the Legendre polynomial, m4_math(<<<P_n(x)>>>, @math{legendre_p(n,x)}>>>) via
 
 m4_displaymath(
 <<<P_n^m(x) = (-1)^m\left(1-x^2\right)^{m/2} {d^m\over dx^m} P_n(x)>>>,
