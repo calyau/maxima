@@ -793,7 +793,7 @@ Some examples:
 
 @anchor{chebyshev_t}
 @deffn {Function} chebyshev_t (@var{n}, @var{x})
-The Chebyshev polynomial of the first kind of degree @math{n} m4_math(<<<, T_n(x)>>>,<<<>>>).
+The Chebyshev polynomial of the first kind of degree @math{n}, m4_math(<<<T_n(x).>>>,<<<@math{chebyshev_t(n,x)}.>>>)
 
 Reference: Abramowitz and Stegun, equation 22.5.47, page 779.
 
@@ -839,7 +839,7 @@ chebyshev_t(2,x);
 
 @anchor{chebyshev_u}
 @deffn {Function} chebyshev_u (@var{n}, @var{x})
-The Chebyshev polynomial of the second kind of degree @math{n} m4_math(<<<, U_n(x)>>>,<<<>>>).
+The Chebyshev polynomial of the second kind of degree @math{n}, m4_math(<<<U_n(x)>>>,<<<@math{chebyshev_u(n,x)}>>>).
 
 Reference: Abramowitz and Stegun, equation 22.5.48, page 779.
 
@@ -886,7 +886,7 @@ m4_displaymath(
 
 @anchor{gen_laguerre}
 @deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
-The generalized Laguerre polynomial of degree @math{n}m4_math(<<<, L_n^{(\alpha)}(x)>>>,<<<>>>).
+The generalized Laguerre polynomial of degree @math{n}, m4_math(<<<L_n^{(\alpha)}(x)>>>,<<<@math{gen_labuerre(n,a,x)}>>>).
 
 These can be defined by
 
@@ -932,7 +932,7 @@ Some examples:
 
 @anchor{hermite}
 @deffn {Function} hermite (@var{n}, @var{x})
-The Hermite polynomial of degree @math{n}m4_math(<<<, H_n(x)>>>,<<<>>>).
+The Hermite polynomial of degree @math{n}, m4_math(<<<H_n(x)>>>,<<<@math{hermite(n,x)}>>>).
 
 These polynomials may be defined by a hypergeometric function
 
@@ -996,7 +996,7 @@ Return @code{true} if the input is an interval and return false if it isn't.
 
 @anchor{jacobi_p}
 @deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
-The Jacobi polynomial, m4_math(<<<P_n^{(a,b)}(x)>>>, <<<jacobi_p(n,a,b,x)>>>).
+The Jacobi polynomial, m4_math(<<<P_n^{(a,b)}(x)>>>, <<<@math{jacobi_p(n,a,b,x)}>>>).
 
 The Jacobi polynomials are actually defined for all
 @math{a} and @math{b}; however, the Jacobi polynomial
@@ -1033,7 +1033,7 @@ Some examples:
 
 @anchor{laguerre}
 @deffn {Function} laguerre (@var{n}, @var{x})
-The Laguerre polynomial, m4_math(<<<L_n(x)>>>,<<<laguerre(n,x)>>>) of degree @math{n}.
+The Laguerre polynomial, m4_math(<<<L_n(x)>>>,<<<math{laguerre(n,x)}>>>) of degree @math{n}.
 
 Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
 
@@ -1084,7 +1084,7 @@ Some examples:
 
 @anchor{legendre_p}
 @deffn {Function} legendre_p (@var{n}, @var{x})
-The Legendre polynomial of the first kind, m4_math(P_n(x),legendre(n,x)) of degree @math{n}.
+The Legendre polynomial of the first kind, m4_math(P_n(x),legendre(n,x)), of degree @math{n}.
 
 Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
 
@@ -1149,6 +1149,7 @@ m4_displaymath(
 <<<Q_n(x) = Q_n^0(x)>>>,
 <<<legendre_q(n,x) = assoc_legendre_q(n,0,x)>>>)
 
+Some examples:
 @c ===beg===
 @c legendre_q(0,x);
 @c legendre_q(1,x);
