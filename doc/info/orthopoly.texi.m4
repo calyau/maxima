@@ -952,7 +952,7 @@ w(x) &= e^{-x}x^{\alpha} \cr
 }>>>,
 <<<@math{w(x) = %e^(-x)*x^a
 
-@math{k(n) = n!>>>)
+@math{k(n) = n!}>>>)
 
 Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
 
@@ -1487,6 +1487,32 @@ m4_displaymath(
 <<<j_n(x) = \sqrt{\pi\over 2x} J_{n+1/2}(x)>>>,
 <<<spherical_bessel_j(n,x) = sqrt(%pi/(2*x))*bessel_j(n+1/2,x)>>>)
 
+Some examples:
+@c ===beg===
+@c spherical_bessel_j(1,x);
+@c spherical_bessel_j(2,x);
+@c sqrt(%pi/(2*x))*bessel_j(1+1/2,x),besselexpand:true;
+@c ===end===
+@example
+(%i1) spherical_bessel_j(1,x);
+                                sin(x)
+                                ------ - cos(x)
+                                  x
+(%o1)                           ---------------
+                                       x
+(%i2) spherical_bessel_j(2,x);
+                                3             3 cos(x)
+                        (- (1 - --) sin(x)) - --------
+                                 2               x
+                                x
+(%o2)                   ------------------------------
+                                      x
+(%i3) sqrt(%pi/(2*x))*bessel_j(1+1/2,x),besselexpand:true;
+                                sin(x)   cos(x)
+(%o3)                           ------ - ------
+                                   2       x
+                                  x
+@end example
 @opencatbox{Categories:}
 @category{Package orthopoly}
 @category{Bessel functions}
@@ -1506,6 +1532,31 @@ m4_displaymath(
 <<<y_n(x) = \sqrt{\pi\over 2x} Y_{n+1/2}(x)>>>,
 <<<spherical_bessel_y(n,x) = sqrt(%pi/(2*x))*bessel_y(n+1/2,x)>>>)
 
+@c ===beg===
+@c spherical_bessel_y(1,x);
+@c spherical_bessel_y(2,x);
+@c sqrt(%pi/(2*x))*bessel_y(1+1/2,x),besselexpand:true;
+@c ===end===
+@example
+(%i1) spherical_bessel_y(1,x);
+                                           cos(x)
+                              (- sin(x)) - ------
+                                             x
+(%o1)                         -------------------
+                                       x
+(%i2) spherical_bessel_y(2,x);
+                           3 sin(x)        3
+                           -------- - (1 - --) cos(x)
+                              x             2
+                                           x
+(%o2)                    - --------------------------
+                                       x
+(%i3) sqrt(%pi/(2*x))*bessel_y(1+1/2,x),besselexpand:true;
+                                 sin(x)    cos(x)
+(%o3)                         (- ------) - ------
+                                   x          2
+                                             x
+@end example
 @opencatbox{Categories:}
 @category{Package orthopoly}
 @category{Bessel functions}
@@ -1594,6 +1645,12 @@ m4_displaymath(
    {\Gamma(n+2\alpha) \over \Gamma\left(n+\alpha + {1\over 2}\right)}
    P_n^{(\alpha-1/2, \alpha-1/2)}(x)>>>,
 <<<ultraspherical(n,a,x) = gamma(a+1/2)/gamma(2*a)*gamma(n+2*a)/gamma(n+a+1/2)*jacobi_p(n,a-1/2,a-1/2,x)>>>)
+
+or the series
+
+m4_displaymath(
+<<<C_n^{(\alpha)}(x) = \sum_{k=0}^{\lfloor n/2 \rfloor} {(-1)^k (\alpha)_{n-k} \over k! (n-2k)!}(2x)^{n-2k}>>>,
+<<<@math{ultraspherical(n,a,x) = sum((-1)^k*pochhammer(a,n-k)/k!/(n-2*k)!*(2*x)^(n-2*k),k, 0, floor(n/2))}>>>)
 
 or the Rodrigues formula
 
