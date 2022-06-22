@@ -809,9 +809,27 @@ m4_displaymath(
 <<<T_n(x) = {n\over 2} \sum_{r=0}^{\lfloor {n/2}\rfloor} {(-1)^r\over n-r} {n-r\choose k}(2x)^{n-2r}>>>,
 <<<chebyshev_t(n,x) = n/2*sum((-1)^r/(n-r)*binomial(n-r,r)*(2*x)^(n-2*r), r, 0, floor(n/2))>>>)
 
+or the Rodrigues formula
+
+m4_displaymath(
+<<<T_n(x) = {1\over \kappa_n  w(x)} {d^n\over dx^n}\left(w(x)(1-x^2)^n\right)>>>,
+<<<@math{chebyshev_t(n,x) = 1/(k(n)*w(x))*diff(w(x)*(1-x^2)^n, x, n)}>>>
+)
+
+where
+
+m4_displaymath(
+<<<\eqalign{
+w(x) &= 1/\sqrt{1-x^2} \cr
+\kappa_n &= (-2)^n\left(1\over 2\right)_n
+}>>>,
+<<<@math{w(x) = 1/sqrt(1-x^2)}
+
+@math{k_n = (-2)^n*pochhammer(1/2,n)}>>>)
+
 Some examples:
 @c ===beg===
-chebyshev_t(2,x);
+@c chebyshev_t(2,x);
 @c factor(%);
 @c factor(chebyshev_t(3,x));
 @c factor(hgfred([-3,3],[1/2],(1-x)/2));
@@ -855,6 +873,24 @@ m4_displaymath(
 <<<U_n(x) = \sum_{r=0}^{\lfloor n/2 \rfloor} (-1)^r {n-r \choose r} (2x)^{n-2r}>>>,
 <<<cheybshev_u(n,x) = sum((-1)^r*binomial(n-r,r)*(2*x)^(n-2*r), r, 0, floor(n/2))>>>)
 
+or the Rodrigues formula
+
+m4_displaymath(
+<<<U_n(x) = {1\over \kappa_n  w(x)} {d^n\over dx^n}\left(w(x)(1-x^2)^n\right)>>>,
+<<<@math{chebyshev_u(n,x) = 1/(k(n)*w(x))*diff(w(x)*(1-x^2)^n, x, n)}>>>
+)
+
+where
+
+m4_displaymath(
+<<<\eqalign{
+w(x) &= \sqrt{1-x^2} \cr
+\kappa_n &= {(-2)^n\left({3\over 2}\right)_n \over n+1}
+}>>>,
+<<<@math{w(x) = sqrt(1-x^2)}
+
+@math{k(n) = (-2)^n*pochhammer(3/2,n)/(n+1)}>>>).
+
 @c ===beg===
 @c chebyshev_u(2,x);
 @c expand(%);
@@ -893,6 +929,24 @@ These can be defined by
 m4_displaymath(
 <<<L_n^{(\alpha)} = {n+\alpha \choose n}\; {_1F_1}(-n; \alpha+1; x)>>>,
 <<<gen_laguerre(n, a, x) = binomial(n+a,n)*hypergeometric([-n], [a+1], x)>>>)
+
+or the Rodrigues formula
+
+m4_displaymath(
+<<<L_n^{(\alpha})(x) = {1\over \kappa_n  w(x)} {d^n\over dx^n}\left(w(x)x^n\right)>>>,
+<<<@math{chebyshev_u(n,x) = 1/(k(n)*w(x))*diff(w(x)*(1-x^2)^n, x, n)}>>>
+)
+
+where
+
+m4_displaymath(
+<<<\eqalign{
+w(x) &= e^{-x}x^{\alpha} \cr
+\kappa_n &= n!
+}>>>,
+<<<@math{w(x) = %e^(-x)*x^a
+
+@math{k(n) = n!>>>)
 
 Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
 
@@ -946,6 +1000,23 @@ m4_displaymath(
 <<<H_n(x) = n! \sum_{k=0}^{\lfloor n/2 \rfloor} {(-1)^k(2x)^{n-2k} \over k! (n-2k)!}>>>,
 <<<hermite(n,x) = n!*sum((-1)^k*(2*x)^(n-2*k)/(k!*(n-2*k)!), k, 0, floor(n/2))>>>)
 
+or the Rodrigues formula
+
+m4_displaymath(
+<<<H_n(x) = {1\over \kappa_n  w(x)} {d^n\over dx^n}\left(w(x)\right)>>>,
+<<<@math{hermite(n,x) = 1/(k(n)*w(x))*diff(w(x), x, n)}>>>
+)
+
+where
+
+m4_displaymath(
+<<<\eqalign{
+w(x) &= e^{-{x^2/2}} \cr
+\kappa_n &= (-1)^n
+}>>>,
+<<<@math{w(x) = %e(-x^2/2)
+
+@math{k(n) = (-1)^n>>>)
 
 Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
 
@@ -1010,6 +1081,24 @@ The polynomial may be defined in terms of hypergeometric functions:
 m4_displaymath(
 <<<P_n^{(a,b)}(x) = {n+a\choose n} {_1F_2}\left(-n, n + a + b + 1; a+1; {1-x\over 2}\right)>>>,
 <<<jacobi_p(n,a,b,x) = binomial(n+a,n)*hypergeometric([-n,n+a+b+1],[a+1],(1-x)/2)>>>)
+
+or the Rodrigues formula
+
+m4_displaymath(
+<<<P_n^{(a, b})(x) = {1\over \kappa_n  w(x)} {d^n\over dx^n}\left(w(x)\left(1-x^2\right)^n\right)>>>,
+<<<@math{jacobi_p(n,a,b,x) = 1/(k(n)*w(x))*diff(w(x)*(1-x^2)^n, x, n)}>>>
+)
+
+where
+
+m4_displaymath(
+<<<\eqalign{
+w(x) &= (1-x)^a(1-x)^b \cr
+\kappa_n &= (-2)^n n!
+}>>>,
+<<<@math{w(x) = (1-x)^a*(1-x)^b
+
+@math{k(n) = (-2)^n*n!>>>)
 
 Some examples:
 @c ===beg===
@@ -1093,6 +1182,24 @@ The Legendre polynomial is related to the Jacobi polynomials by
 m4_displaymath(
 <<<P_n(x) = P_n^{(0,0)}(x)>>>,
 <<<legendre_p(n,x) = jacobi_p(n,0,0,x)>>>)
+
+or the Rodrigues formula
+
+m4_displaymath(
+<<<P_n(x) = {1\over \kappa_n  w(x)} {d^n\over dx^n}\left(w(x)\left(1-x^2\right)^n\right)>>>,
+<<<@math{legendre_p(n,x) = 1/(k(n)*w(x))*diff(w(x)*(1-x^2)^n, x, n)}>>>
+)
+
+where
+
+m4_displaymath(
+<<<\eqalign{
+w(x) &= 1 \cr
+\kappa_n &= (-2)^n n!
+}>>>,
+<<<@math{w(x) = 1
+
+@math{k(n) = (-2)^n*n!>>>)
 
 Some examples:
 @c ===beg===
@@ -1481,6 +1588,24 @@ m4_displaymath(
    {\Gamma(n+2\alpha) \over \Gamma\left(n+\alpha + {1\over 2}\right)}
    P_n^{(\alpha-1/2, \alpha-1/2)}(x)>>>,
 <<<ultraspherical(n,a,x) = gamma(a+1/2)/gamma(2*a)*gamma(n+2*a)/gamma(n+a+1/2)*jacobi_p(n,a-1/2,a-1/2,x)>>>)
+
+or the Rodrigues formula
+
+m4_displaymath(
+<<<C_n^{(\alpha)}(x) = {1\over \kappa_n  w(x)} {d^n\over dx^n}\left(w(x)\left(1-x^2\right)^n\right)>>>,
+<<<@math{ultraspherical(n,x) = 1/(k(n)*w(x))*diff(w(x)*(1-x^2)^n, x, n)}>>>
+)
+
+where
+
+m4_displaymath(
+<<<\eqalign{
+w(x) &= \left(1-x^2\right)^{\alpha-{1\over 2}} \cr
+\kappa_n &= {(-2)^n\left(\alpha + {1\over 2}\right)_n n!\over (2\alpha)_n} \cr
+}>>>,
+<<<@math{w(x) = (1-x^2)^(a-1/2)
+
+@math{k(n) = (-2)^n*pochhammer(a+1/2,n)*n!/pochhammer(2*a,n)}>>>)
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
