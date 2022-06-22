@@ -972,9 +972,11 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	(x2 (mul x x)) (m2))
     (dotimes (m n1 s)
       (setq m2 (* 2 m))
-      (setq w (div (mul w `((rat) ,(* -1 (+ n m2 2) (+ n m2 1) 
-				      (- n m2) (- n (+ m2 1)))
-			    ,(* 4 (+ m2 1) (+ m2 2)))) x2))
+      (setq w (div (mul w (div
+			   (* -1 (+ n m2 2) (+ n m2 1) 
+				  (- n m2) (- n (+ m2 1)))
+			   (* 4 (+ m2 1) (+ m2 2))))
+		   x2))
       (setq s (add s w)))))
 
 (defun q-fun (n x)
@@ -983,9 +985,11 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	(n1 (floor (/ (- n 1) 2))))
     (dotimes (m n1 (div (mul n (+ n 1) s) (mul 2 x)))
       (setq m2 (* 2 m))
-      (setq w (div (mul w `((rat) ,(* -1 (+ n m2 3) (+ n m2 2) 
-				      (- n (+ m2 1)) (- n (+ m2 2)))
-			    ,(* 4 (+ m2 3) (+ m2 2)))) x2))
+      (setq w (div (mul w (div
+			   (* -1 (+ n m2 3) (+ n m2 2) 
+			      (- n (+ m2 1)) (- n (+ m2 2)))
+			   (* 4 (+ m2 3) (+ m2 2))))
+		   x2))
       (setq s (add s w)))))
 
 
