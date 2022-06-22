@@ -82,6 +82,76 @@ a/b;
 0 ` kg/m^3;
 0 ` kg/m^3;
 
+/* verify different cases are handled in function units */
+
+(kill (x, y, z, a),
+ declare_constvalue (x, 1000 ` W/m^2),
+ declare (y, dimensional),
+ declare (z, dimensional),
+ declare_units (z, MJ/hour),
+ 0);
+0;
+
+units(x);
+W/m^2;
+
+units(y);
+'units(y);
+
+units(z);
+MJ/hour;
+
+units(123);
+1;
+
+units(a);
+1;
+
+[units(x[1]), units(x[2]), units(x[k])];
+[W/m^2, W/m^2, W/m^2];
+
+units(a ` mile/minute^2);
+mile/minute^2;
+
+units(y(1, 2, 3));
+'units(y);
+
+units(z(a));
+MJ/hour;
+
+units(x*y*z);
+MJ*W*'units(y)/(hour*m^2);
+
+units(z^a);
+(MJ/hour)^a;
+
+units(z + sin(a)`MJ/hour + (10 ` MJ)/(24 ` hour));
+MJ/hour;
+
+units(z - 1000`MJ/hour);
+MJ/hour;
+
+units(y = (a ` foot)/(60 ` minute));
+'units(y) = foot/minute;
+
+units(equal(y, (a ` foot)/(60 ` minute)));
+equal ('units(y), foot/minute);
+
+units(y . x);
+W*'units(y)/m^2;
+
+(declare (nounify (a), nondimensional),
+ units(a(x, y, z)));
+1;
+
+(remove (nounify (a), nondimensional),
+ units(a(x, y, z)));
+'units(a(x, y, z));
+
+/* diff, integrate, and at are handled below */
+
+/* TODO: verify different cases are handled in function qty */
+
 /* next one has result = unknown;
  * substitute narrower test on "=" instead of equal
  * pending simplification rule for equal applied to unitful expressions
@@ -905,20 +975,77 @@ true;
 (kill (corr_xy), corr_xy : covar_xy / std_x / std_y);
 27/(2*sqrt(186));
 
-/* TODO: differentiation via secant approximation:
+/* differentiation via secant approximation:
  * diff(f(x), x) = (f(x + h) - f(x - h))/(2 h)
- *  => diff has units = units(f) / units(x)
+ *  => diff has units = units(f) / units(h) = units(f) / units(x)
+ *                                            since units(x) = units(h)
  */
 
-/* TODO: integration via trapezoid rule:
+(kill (f, x, y, h, e, e1),
+ declare ([f, x, y, h], dimensional),
+ declare_units (h, units(x)),
+ units ('diff (f(x), x)));
+units(f)/units(x);
+
+units ((f(x + h) - f(x - h))/(2*h));
+units(f)/units(x);
+
+/* additional examples for 'diff(...) */
+
+units ('diff (f(x, y), x, 1, y, 1));
+units(f)/(units(x)*units(y));
+
+units ('diff (f(x, h), x, 1, h, 1));
+units(f)/units(x)^2;
+
+units ('diff (f(x, y), x, 2, y, 4));
+units(f)/(units(x)^2*units(y)^4);
+
+(kill (m, n),
+ units ('diff (f(x, y), x, m, y, n)));
+units(f)/(units(x)^m*units(y)^n);
+
+/* second divided difference */
+(declare_units (x1, units(x)),
+ declare_units (x2, units(x)),
+ e: (f(x + h) - f(x - h))/(2*h),
+ e1: subst (x = x1, e),
+ e2: subst (x = x2, e),
+ units ((e2 - e1)/(x2 - x1)));
+units(f)/units(x)^2;
+
+/* integration via trapezoid rule:
  * integral(f(x), x, a, b) = (h/2) (f(a) + 2 f(a + h) + ... + 2 f(b - h) + f(b)), h = (b - a)/n
  *  => integral has units = units(x) * units(f)
  */
 
-/* TODO: root finding via Newton-Raphson algorithm:
+(kill (a, b),
+ declare ([a, b], dimensional),
+ units ('integrate (f(x), x, a, b)));
+units(f)*units(x);
+
+/* TODO: also express summation as a 'sum(...) expression and look at units */
+(e1: (h/2)*(f(a) + 2*f(a + h) + 2*f(a + 2*h) + 2*f(b - 2*h) + 2*f(b - h) + f(b)),
+ units (e1));
+units(f)*units(x);
+
+/* additional examples for 'integrate(...) */
+
+(declare_units (f, mile/hour^2),
+ declare_units (t, hour),
+ units ('integrate (f(t), t, %a ` hour, %b ` hour)));
+mile/hour;
+
+units ('integrate ('integrate (f(t), t), t));
+mile;
+
+/* root finding via Newton-Raphson algorithm:
  * x[n + 1] = x[n] - f(x[n])/f'(x[n])
  *  => each x[n] has same units as x[1]
  */
+
+units (x[n + 1] = x[n] - f(x[n])/'at('diff(f(x), x), x = x[n]));
+units(x) = units(x);
 
 /* solve for units of variable in equation
  * see: http://groups.google.com/group/sage-support/browse_thread/thread/a60c943c224dfe87#

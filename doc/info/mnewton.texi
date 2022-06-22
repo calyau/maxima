@@ -53,12 +53,16 @@ See also @mrefdot{mnewton}
 
 @c -----------------------------------------------------------------------------
 @anchor{mnewton}
-@deffn {Function} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+@deffn {Function} mnewton @
+@fname{mnewton} (@var{FuncList}, @var{VarList}, @var{GuessList}) @
+@fname{mnewton} (@var{FuncList}, @var{VarList}, @var{GuessList}, @var{DF})
 
 Multiple nonlinear functions solution using the Newton method.
 @var{FuncList} is the list of functions to solve,
 @var{VarList} is the list of variable names, and
 @var{GuessList} is the list of initial approximations.
+The optional argument @var{DF} is the Jacobian matrix of the list of functions;
+if not supplied, it is calculated automatically from @var{FuncList}.
 
 The solution is returned in the same format that @code{solve()} returns.
 If the solution is not found, @code{[]} is returned.

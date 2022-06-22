@@ -3,10 +3,11 @@
 Multiple nonlinear functions solution using the Newton method.
 
 Usage:
-  mnewton(FuncList, VarList, GuessList);
+  mnewton(FuncList, VarList, GuessList, [DF]);
     FuncList  - list of functions to solve.
     VarList   - list of variable names.
     GuessList - list of initial approximations.
+    DF        - Jacobian matrix (optional)
 
 Flags:
   newtonepsilon
@@ -55,8 +56,8 @@ solve_by_lu(eqs, vars, field) := block(
     map("=", vars, first(args(transpose(sol[1]))))
 )$
 
-mnewton(FuncList, VarList, GuessList):=
-  block([nfunc, Solutions, Increments, solved:false, h, DF, numer:numer, extra_vars,
+mnewton(FuncList, VarList, GuessList, [DF]):=
+  block([nfunc, Solutions, Increments, solved:false, h, numer:numer, extra_vars,
          i, j, k, keepfloat:true, ratprint:false, field : 'complexfield, float2bf : true],
     local(h),
 
@@ -98,11 +99,15 @@ mnewton(FuncList, VarList, GuessList):=
     ),
     /* apply(kill, VarList), */
 
-    DF: zeromatrix (nfunc, nfunc),
+    /* Jacobian matrix */
+    if DF = []
+      then (DF: zeromatrix (nfunc, nfunc),
+            for i:1 thru nfunc do
+              for j:1 thru nfunc do
+                DF[i][j] : diff (FuncList[i], VarList[j]))
+       else DF: DF[1],
+
     h : makelist (h[i], i, 1, nfunc),
-    for i:1 thru nfunc do
-      for j:1 thru nfunc do
-        DF[i][j] : diff (FuncList[i], VarList[j]),  /* Jacobian matrix */
 
     if field = 'complexfield then
       GuessList: float (GuessList)
