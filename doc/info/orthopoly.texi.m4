@@ -1491,7 +1491,8 @@ Some examples:
 @c ===beg===
 @c spherical_bessel_j(1,x);
 @c spherical_bessel_j(2,x);
-@c sqrt(%pi/(2*x))*bessel_j(1+1/2,x),besselexpand:true;
+@c expand(%);
+@c expand(sqrt(%pi/(2*x))*bessel_j(2+1/2,x)),besselexpand:true;
 @c ===end===
 @example
 (%i1) spherical_bessel_j(1,x);
@@ -1507,11 +1508,16 @@ Some examples:
                                 x
 (%o2)                   ------------------------------
                                       x
-(%i3) sqrt(%pi/(2*x))*bessel_j(1+1/2,x),besselexpand:true;
-                                sin(x)   cos(x)
-(%o3)                           ------ - ------
-                                   2       x
-                                  x
+(%i3) expand(%);
+                          sin(x)    3 sin(x)   3 cos(x)
+(%o3)                  (- ------) + -------- - --------
+                            x           3          2
+                                       x          x
+(%i4) expand(sqrt(%pi/(2*x))*bessel_j(2+1/2,x)),besselexpand:true;
+                          sin(x)    3 sin(x)   3 cos(x)
+(%o4)                  (- ------) + -------- - --------
+                            x           3          2
+                                       x          x
 @end example
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1535,7 +1541,8 @@ m4_displaymath(
 @c ===beg===
 @c spherical_bessel_y(1,x);
 @c spherical_bessel_y(2,x);
-@c sqrt(%pi/(2*x))*bessel_y(1+1/2,x),besselexpand:true;
+@c expand(%);
+@c expand(sqrt(%pi/(2*x))*bessel_y(2+1/2,x)),besselexpand:true;
 @c ===end===
 @example
 (%i1) spherical_bessel_y(1,x);
@@ -1551,11 +1558,16 @@ m4_displaymath(
                                            x
 (%o2)                    - --------------------------
                                        x
-(%i3) sqrt(%pi/(2*x))*bessel_y(1+1/2,x),besselexpand:true;
-                                 sin(x)    cos(x)
-(%o3)                         (- ------) - ------
-                                   x          2
-                                             x
+(%i3) expand(%);
+                          3 sin(x)    cos(x)   3 cos(x)
+(%o3)                  (- --------) + ------ - --------
+                              2         x          3
+                             x                    x
+(%i4) expand(sqrt(%pi/(2*x))*bessel_y(2+1/2,x)),besselexpand:true;
+                          3 sin(x)    cos(x)   3 cos(x)
+(%o4)                  (- --------) + ------ - --------
+                              2         x          3
+                             x                    x
 @end example
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1669,6 +1681,26 @@ w(x) &= \left(1-x^2\right)^{\alpha-{1\over 2}} \cr
 <<<@math{w(x) = (1-x^2)^(a-1/2)
 
 @math{k(n) = (-2)^n*pochhammer(a+1/2,n)*n!/pochhammer(2*a,n)}>>>)
+
+Some examples:
+@c ===beg===
+@c ultraspherical(1,a,x);
+@c factor(%);
+@c factor(ultraspherical(2,a,x));
+@c ===end===
+@example
+(%i1) ultraspherical(1,a,x);
+                                   (2 a + 1) (1 - x)
+(%o1)                     2 a (1 - -----------------)
+                                              1
+                                       2 (a + -)
+                                              2
+(%i2) factor(%);
+(%o2)                                2 a x
+(%i3) factor(ultraspherical(2,a,x));
+                                     2      2
+(%o3)                        a (2 a x  + 2 x  - 1)
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
