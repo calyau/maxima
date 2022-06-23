@@ -40,7 +40,7 @@
                #+#.(cl:if (cl:and (cl:member :cmu cl:*features*) (cl:find-package '#:intl))  '(or) '(and))
               (:file "intl")))
 	       (:module info :pathname ""
-			:components ((:file "nregex")
+			:components ((:file "pregexp")
 				     (:file "cl-info")))
 	       (:module sloop :pathname ""
 			:components ((:file "sloop")))
