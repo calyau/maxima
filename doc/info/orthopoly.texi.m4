@@ -950,7 +950,7 @@ m4_displaymath(
 w(x) &= e^{-x}x^{\alpha} \cr
 \kappa_n &= n!
 }>>>,
-<<<@math{w(x) = %e^(-x)*x^a
+<<<@math{w(x) = %e^(-x)*x^a}
 
 @math{k(n) = n!}>>>)
 
@@ -1020,9 +1020,9 @@ m4_displaymath(
 w(x) &= e^{-{x^2/2}} \cr
 \kappa_n &= (-1)^n
 }>>>,
-<<<@math{w(x) = %e(-x^2/2)
+<<<@math{w(x) = %e(-x^2/2)}
 
-@math{k(n) = (-1)^n>>>)
+@math{k(n) = (-1)^n}>>>)
 
 Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
 
@@ -1102,9 +1102,9 @@ m4_displaymath(
 w(x) &= (1-x)^a(1-x)^b \cr
 \kappa_n &= (-2)^n n!
 }>>>,
-<<<@math{w(x) = (1-x)^a*(1-x)^b
+<<<@math{w(x) = (1-x)^a*(1-x)^b}
 
-@math{k(n) = (-2)^n*n!>>>)
+@math{k(n) = (-2)^n*n!}>>>)
 
 Some examples:
 @c ===beg===
@@ -1128,7 +1128,7 @@ Some examples:
 
 @anchor{laguerre}
 @deffn {Function} laguerre (@var{n}, @var{x})
-The Laguerre polynomial, m4_math(<<<L_n(x)>>>,<<<math{laguerre(n,x)}>>>) of degree @math{n}.
+The Laguerre polynomial, m4_math(<<<L_n(x)>>>,<<<@math{laguerre(n,x)}>>>) of degree @math{n}.
 
 Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
 
@@ -1203,9 +1203,9 @@ m4_displaymath(
 w(x) &= 1 \cr
 \kappa_n &= (-2)^n n!
 }>>>,
-<<<@math{w(x) = 1
+<<<@math{w(x) = 1}
 
-@math{k(n) = (-2)^n*n!>>>)
+@math{k(n) = (-2)^n*n!}>>>)
 
 Some examples:
 @c ===beg===
@@ -1612,10 +1612,69 @@ m4_displaymath(
 @end deffn
 
 @anchor{spherical_harmonic}
-@deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
-The spherical harmonic function.
+@deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{theta}, @var{phi})
+The spherical harmonic function, m4_math(<<<Y_n^m(\theta, \phi)>>>, <<<@math{spherical_harmonic(n,m,theta,phi)}>>>).
+
+Spherical harmonics satisfy the angular part of Laplace's equation in spherical coordinates.
+
+For integers @math{n} and @math{m} such
+that m4_math(<<<n \geq |m|>>>,<<<@math{n <= abs(m)}>>>) and
+for m4_math(<<<\theta \in [0, \pi]>>>,<<<@math{theta in [0, %pi]}>>>), Maxima’s
+spherical harmonic function can be defined by
+
+m4_displaymath(
+<<<Y_n^m(\theta, \phi) = (-1)^m \sqrt{{2n+1\over 4\pi} {(n-m)!\over (n+m)!}} P_n^m(\cos\theta) e^{im\phi}>>>,
+<<<@math{spherical_harmonic(n, m, theta, phi)  :=  (-1)^m *  (((n-m)!*(2*n+1))/(4*%pi*(n+m)!))^(1/2)* exp(%i*m*phi)*assoc_legendre_p(n,m,cos(theta))}>>>)
+ 
+
+Further, when m4_math(<<<n < |m|>>>, <<<@math{n < abs(m)}>>>), the
+spherical harmonic function vanishes.
+
+The factor @math{(-1)^m}, frequently used in Quantum mechanics, is
+called the @url{https://en.wikipedia.org/wiki/Spherical_harmonics#Condon%E2%80%93Shortley_phase, Condon-Shortely phase}.
+Some references, including @emph{NIST Digital Library of Mathematical Functions} omit
+this factor; see @url{http://dlmf.nist.gov/14.30.E1}.
 
 Reference: Merzbacher 9.64.
+
+Some examples:
+@c ===beg===
+@c spherical_harmonic(1,0,theta,phi);
+@c spherical_harmonic(1,1,theta,phi);
+@c spherical_harmonic(1,-1,theta,phi);
+@c spherical_harmonic(2,0,theta,phi);
+@c factor(%);
+@c ===end===
+@example
+(%i1) spherical_harmonic(1,0,theta,phi);
+                              sqrt(3) cos(theta)
+(%o1)                         ------------------
+                                 2 sqrt(%pi)
+(%i2) spherical_harmonic(1,1,theta,phi);
+                                    %i phi
+                          sqrt(3) %e       sin(theta)
+(%o2)                     ---------------------------
+                                 3/2
+                                2    sqrt(%pi)
+(%i3) spherical_harmonic(1,-1,theta,phi);
+                                    - %i phi
+                          sqrt(3) %e         sin(theta)
+(%o3)                   - -----------------------------
+                                  3/2
+                                 2    sqrt(%pi)
+(%i4) spherical_harmonic(2,0,theta,phi);
+                                                              2
+                                            3 (1 - cos(theta))
+          sqrt(5) ((- 3 (1 - cos(theta))) + ------------------- + 1)
+                                                     2
+(%o4)     ----------------------------------------------------------
+                                 2 sqrt(%pi)
+(%i5) factor(%);
+                                        2
+                          sqrt(5) (3 cos (theta) - 1)
+(%o5)                     ---------------------------
+                                  4 sqrt(%pi)
+@end example
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1673,7 +1732,7 @@ m4_displaymath(
 w(x) &= \left(1-x^2\right)^{\alpha-{1\over 2}} \cr
 \kappa_n &= {(-2)^n\left(\alpha + {1\over 2}\right)_n n!\over (2\alpha)_n} \cr
 }>>>,
-<<<@math{w(x) = (1-x^2)^(a-1/2)
+<<<@math{w(x) = (1-x^2)^(a-1/2)}
 
 @math{k(n) = (-2)^n*pochhammer(a+1/2,n)*n!/pochhammer(2*a,n)}>>>)
 
