@@ -1217,28 +1217,23 @@ Some examples:
 @c ===end===
 @example
 (%i1) legendre_p(1,x);
-Evaluation took 0.0500 seconds (0.0600 elapsed) using 6.947 MB.
 (%o1)                                  x
 (%i2) legendre_p(2,x);
-Evaluation took 0.0000 seconds (0.0000 elapsed) using 11.320 KB.
                                                  2
                                         3 (1 - x)
 (%o2)                   (- 3 (1 - x)) + ---------- + 1
                                             2
 (%i3) expand(%);
-Evaluation took 0.0000 seconds (0.0000 elapsed) using 5.648 KB.
                                       2
                                    3 x    1
 (%o3)                              ---- - -
                                     2     2
 (%i4) expand(legendre_p(3,x));
-Evaluation took 0.0000 seconds (0.0000 elapsed) using 28.242 KB.
                                      3
                                   5 x    3 x
 (%o4)                             ---- - ---
                                    2      2
 (%i5) expand(jacobi_p(3,0,0,x));
-Evaluation took 0.0000 seconds (0.0000 elapsed) using 28.023 KB.
                                      3
                                   5 x    3 x
 (%o5)                             ---- - ---
