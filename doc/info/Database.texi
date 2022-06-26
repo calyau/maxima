@@ -1014,6 +1014,22 @@ they are subcontexts of the current context.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{askequal}
+@deffn  {Function} askequal @
+@fname{askequal} (@var{expr1}, @var{expr2})
+
+@code{askinteger (@var{expr1}, @var{expr2})} attempts to determine from the
+@code{assume} database whether @var{expr1} is equal to @var{expr2}.
+@code{askinteger} prompts the user if it cannot tell otherwise.
+Other than @code{askinteger} It doesn't install any information in the database,
+though.
+
+@opencatbox{Categories:}
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
 
 @c -----------------------------------------------------------------------------
@@ -1027,8 +1043,6 @@ they are subcontexts of the current context.
 @code{askinteger (@var{expr}, integer)} attempts to determine from the
 @code{assume} database whether @var{expr} is an integer.
 @code{askinteger} prompts the user if it cannot tell otherwise,
-@c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume
-@c DATABASE !!!
 and attempt to install the information in the database if possible.
 @code{askinteger (@var{expr})} is equivalent to
 @code{askinteger (@var{expr}, integer)}.
@@ -1036,10 +1050,6 @@ and attempt to install the information in the database if possible.
 @code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
 likewise attempt to determine if @var{expr} is an even integer or odd integer,
 respectively.
-
-@opencatbox{Categories:}
-@category{Declarations and inferences}
-@closecatbox
 @end deffn
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
