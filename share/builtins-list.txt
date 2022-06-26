@@ -71,7 +71,6 @@ adjust_external_format
 af
 aform
 agd
-airy
 airy_ai
 airy_bi
 airy_dai
