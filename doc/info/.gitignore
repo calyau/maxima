@@ -11,6 +11,7 @@ include-maxima.texi
 index.hhk
 maxima.html
 maxima-index.lisp
+maxima-index-html.lisp
 category-macros.texi
 
 *.chm
