@@ -13,35 +13,6 @@
 (defun build-html-index (dir)
   (setf *html-index* (make-hash-table :test #'equalp))
   (let ((regexp (pregexp:pregexp "<dt id=\"index-([^\"]+)\"")))
-    (map nil
-         #'(lambda (file)
-             ;; We want to ignore maxima_singlepage.html for now.
-             (unless (string-equal (pathname-name file)
-                                   "maxima_singlepage")
-               (format *debug-io*  "Processing = ~S~%" file)
-               (let ((base-name (make-pathname :name (pathname-name file)
-                                               :type (pathname-type file))))
-                 (with-open-file (s file :direction :input)
-                   (loop for line = (read-line s nil)
-                         while line
-                         for match = (pregexp:pregexp-match-positions regexp line)
-                         when match
-                           do
-                              (let ((item (subseq line
-                                                  (car (elt match 1))
-                                                  (cdr (elt match 1)))))
-                                (setf item
-                                      (pregexp:pregexp-replace* "005f" item ""))
-                                #+nil
-                                (format t "match = ~S ~A~%" match item)
-                                (setf (gethash item
-                                               *html-index*)
-                                      base-name)))))))
-         (directory dir))))
-
-(defun build-html-index (dir)
-  (setf *html-index* (make-hash-table :test #'equalp))
-  (let ((regexp (pregexp:pregexp "<dt id=\"index-([^\"]+)\"")))
     (dolist (file (directory dir))
       ;; We want to ignore maxima_singlepage.html for now.
       (unless (string-equal (pathname-name file)
@@ -76,17 +47,17 @@
     (maphash #'(lambda (k v)
 		 (push (list k (namestring v)) entries))
 	     *html-index*)
-    (let ((*package* (find-package :cl-info)))
-      (with-open-file (s "maxima-index-html.lisp" :direction :output)
-	(with-standard-io-syntax
-	  (let ((*print-length* nil)
-		(*print-case* :downcase))
-	    (format s ";;; Do not edit; automatically generated~2%")
-	    (pprint '(in-package :cl-info)
-		    s)
-	  
-	    (pprint `(let ((cl-info::html-index ',entries))
-		       (cl-info::load-html-index cl-info::html-index))
-		    s)))))))
+    (with-open-file (s "maxima-index-html.lisp" :direction :output)
+      (with-standard-io-syntax
+	(let ((*package* (find-package :cl-info))
+	      (*print-length* nil)
+	      (*print-case* :downcase))
+	  (format s ";;; Do not edit; automatically generated via build-html-index.lisp~2%")
+	  (pprint '(in-package :cl-info)
+		  s)
+
+	  (pprint `(let ((cl-info::html-index ',entries))
+		     (cl-info::load-html-index cl-info::html-index))
+		  s))))))
 
 (build-and-dump-html-index "./*.html")
