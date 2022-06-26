@@ -58,8 +58,12 @@
                        (let ((item (subseq line
                                            (car (elt match 1))
                                            (cdr (elt match 1)))))
+			 ;; Remove "005f" which texinfo adds before every "_".
                          (setf item
                                (pregexp:pregexp-replace* "005f" item ""))
+			 ;; Replace "_0025" which texinfo uses to represent "%".
+			 (setf item
+			       (pregexp:pregexp-replace* "_0025" item "%"))
                          #+nil
                          (format t "match = ~S ~A~%" match item)
                          (setf (gethash item
