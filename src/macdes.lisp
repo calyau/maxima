@@ -167,6 +167,8 @@
     (when found-it
       ;; Massage topic to insert 005f after a "_"
       (setf topic (pregexp:pregexp-replace* "_" topic "_005f"))
+      ;; Massage topic to replace "%" with "_0025"
+      (setf topic (pregexp:pregexp-replace* "%" topic "_0025"))
       (let ((url (concatenate 'string
                               $url_base
                               "/"
