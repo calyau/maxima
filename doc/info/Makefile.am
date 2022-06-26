@@ -660,7 +660,7 @@ INFOLANG ?= en
 # We need the html docu to be generated on "make all" because if we fail
 # to do so a "sudo make install" will generate the html docu as read-only
 # fails conflicting with a subsequent "make html".
-all-local: html maxima.info maxima-index.lisp
+all-local: html maxima.info maxima-index.lisp maxima-index-html.lisp
 
 infoname = maxima
 include $(top_srcdir)/common-info.mk
@@ -672,6 +672,12 @@ html: maxima_toc.html
 
 maxima-index.lisp: build_index.pl maxima.info
 	/usr/bin/env perl $^ ':crlf' > $@
+
+# Really depends on all the individual html files, but let's assume
+# that if maxima_toc.html is done, we have all the remaining html
+# files.
+maxima-index-html.lisp : maxima_toc.html
+	../../maxima-local --batch-lisp=build-html-index.lisp
 
 DOLLAR_SIGN = $$
 

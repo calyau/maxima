@@ -10,6 +10,21 @@
 
 (defvar $manual_demo "manual.demo")
 
+(defmvar $browser "firefox"
+  "Browser to use for displaying the documentation")
+
+(defmvar $browser_options "--new-window"
+  "Browser options")
+
+(defmvar $url_base "localhost:8080"
+  "Base URL where the HTML doc may be found.  This can be a file path
+  like \"file:///<path>\" or a web server like \"localhost:8080\" or
+  some other web server.")
+
+(defmvar $describe_uses_html nil
+  "When true, describe displays the exact help entry as html in a
+  browser instead of text to the terminal")
+  
 (defmspec $example (l)
   (declare (special *need-prompt*))
   (let ((example (second l)))
@@ -143,3 +158,25 @@
         (t
          (merror
           (intl:gettext "apropos: argument must be a string or symbol; found: ~M") s))))
+
+
+;;; Display help in browser instead of the terminal
+(defmfun $hdescribe (x)
+  (let* ((topic ($sconcat x))
+         (found-it (gethash topic cl-info::*html-index*)))
+    (when found-it
+      ;; Massage topic to insert 005f after a "_"
+      (setf topic (pregexp:pregexp-replace* "_" topic "_005f"))
+      (let ((url (concatenate 'string
+                              $url_base
+                              "/"
+                              (namestring found-it)
+                              "#index-"
+                              topic)))
+        ($system (concatenate 'string
+			      $browser
+			      " "
+			      $browser_options
+			      " "
+			      url))))
+    found-it))
