@@ -71,8 +71,8 @@
        (path-to-index (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index.lisp"))
        (path-to-html-index
 	 (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index-html.lisp")))
-    ;; Set the default the html URL base to be a file url pointing ot
-    ;; the info dir.
+    ;; Set the default of the html URL base to be a file URL pointing
+    ;; to the info dir.
     (setf maxima::$url_base (concatenate 'string
 			     "file://"
 			     (maxima::combine-path maxima::*maxima-infodir* "")))
