@@ -164,21 +164,21 @@
 (defmfun $hdescribe (x)
   (let* ((topic ($sconcat x))
          (found-it (gethash topic cl-info::*html-index*)))
+    (format t "topic = ~A~%" topic)
+    (format t "found-it = ~A~%" found-it)
     (when found-it
-      ;; Massage topic to insert 005f after a "_"
-      (setf topic (pregexp:pregexp-replace* "_" topic "_005f"))
-      ;; Massage topic to replace "%" with "_0025"
-      (setf topic (pregexp:pregexp-replace* "%" topic "_0025"))
-      (let ((url (concatenate 'string
-                              $url_base
-                              "/"
-                              (namestring found-it)
-                              "#index-"
-                              topic)))
-        ($system (concatenate 'string
-			      $browser
-			      " "
-			      $browser_options
-			      " "
-			      url))))
-    found-it))
+      (destructuring-bind (base-name . id)
+	  found-it
+	(let ((url (concatenate 'string
+				$url_base
+				"/"
+				(namestring base-name)
+				"#index-"
+				id)))
+          ($system (concatenate 'string
+				$browser
+				" "
+				$browser_options
+				" "
+				url))))
+      topic)))

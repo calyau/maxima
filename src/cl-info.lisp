@@ -6,7 +6,7 @@
   (make-hash-table :test #'equalp)
   "Hash table for looking up which html file contains the
   documentation.  The key is the topic we're looking for and the value
-  is the html file containing the documentation for the topic.")
+  is a cons consisting of the html file and the id for the key.")
 
 
 (defun print-prompt (prompt-count)
@@ -258,7 +258,9 @@
        (t2 (make-hash-table :test 'equal)))
       (setf (gethash dir-name *info-tables*) (list t1 t2)))))
 
-(defun load-html-index (doc-pairs)
-  (dolist (index doc-pairs)
-    (setf (gethash (first index) *html-index*) (second index))))
+(defun load-html-index (entries)
+  (dolist (entry entries)
+    (destructuring-bind (item path id)
+	entry
+      (setf (gethash item *html-index*) (cons path id)))))
 
