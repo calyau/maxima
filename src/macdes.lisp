@@ -24,7 +24,10 @@
 (defmvar $describe_uses_html nil
   "When true, describe displays the exact help entry as html in a
   browser instead of text to the terminal")
-  
+
+(defvar *debug-hdescribe* nil
+  "Set to non-NIL to get some debugging messages from hdescribe")
+
 (defmspec $example (l)
   (declare (special *need-prompt*))
   (let ((example (second l)))
@@ -164,8 +167,9 @@
 (defmfun $hdescribe (x)
   (let* ((topic ($sconcat x))
          (found-it (gethash topic cl-info::*html-index*)))
-    (format t "topic = ~A~%" topic)
-    (format t "found-it = ~A~%" found-it)
+    (when *debug-hdescribe*
+      (format *debug-io* "topic = ~A~%" topic)
+      (format *debug-io* "found-it = ~A~%" found-it))
     (when found-it
       (destructuring-bind (base-name . id)
 	  found-it
