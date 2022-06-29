@@ -530,6 +530,19 @@
                   ($rectform
                     (bessel-y-hypergeometric order arg)))))))
       
+      ((or (bigfloat-numerical-eval-p order arg)
+	   (complex-bigfloat-numerical-eval-p order arg))
+       ;; When the order is not an integer, we can use the
+       ;; hypergeometric representation to evaluate it.
+       (destructuring-bind (re . im)
+	   (risplit order)
+	 (cond ((and (zerop1 im)
+		     (not (zerop1 (sub re (take '($floor) re)))))
+		($rectform
+		 ($bfloat (bessel-y-hypergeometric re arg))))
+	       (t
+		(give-up)))))
+       
       ((and (integerp order) (minusp order))
        ;; Special case when the order is an integer.
        ;; A&S 9.1.5: Y[-n](x) = (-1)^n*Y[n](x)
@@ -1213,6 +1226,19 @@
                   ($rectform
                     (bessel-k-hypergeometric order arg)))))))
       
+      ((or (bigfloat-numerical-eval-p order arg)
+	   (complex-bigfloat-numerical-eval-p order arg))
+       ;; When the order is not an integer, we can use the
+       ;; hypergeometric representation to evaluate it.
+       (destructuring-bind (re . im)
+	   (risplit order)
+	 (cond ((and (zerop1 im)
+		     (not (zerop1 (sub re (take '($floor) re)))))
+		($rectform
+		 ($bfloat (bessel-k-hypergeometric re arg))))
+	       (t
+		(give-up)))))
+
       ((mminusp order)
        ;; A&S 9.6.6: K[-v](x) = K[v](x)
        (take '(%bessel_k) (mul -1 order) arg))
