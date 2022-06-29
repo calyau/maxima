@@ -213,6 +213,14 @@
                   ($rectform
                     (bessel-j-hypergeometric order arg)))))))
       
+      ((or (bigfloat-numerical-eval-p order arg)
+	   (complex-bigfloat-numerical-eval-p order arg))
+       ;; We have the order or arg being a bigfloat, so evaluate it
+       ;; numerically using the hypergeometric representation
+       ;; bessel_j.
+       ($rectform
+        ($bfloat (bessel-j-hypergeometric order arg))))
+
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer.
        ;; A&S 9.1.5: J[-n](x) = (-1)^n*J[n](x)
@@ -853,6 +861,14 @@
                   ($rectform
                     (bessel-i-hypergeometric order arg)))))))
       
+      ((or (bigfloat-numerical-eval-p order arg)
+	   (complex-bigfloat-numerical-eval-p order arg))
+       ;; We have the order or arg being a bigfloat, so evaluate it
+       ;; numerically using the hypergeometric representation
+       ;; bessel_j.
+       ($rectform
+        ($bfloat (bessel-i-hypergeometric order arg))))
+
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer
        ;; A&S 9.6.6: I[-n](x) = I[n](x)
