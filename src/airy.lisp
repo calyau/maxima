@@ -81,9 +81,8 @@
 
 (def-simplifier airy_ai (z)
   (cond ((equal z 0)	     ; A&S 10.4.4: Ai(0) = 3^(-2/3)/gamma(2/3)
-	 '((mtimes simp)
-	   ((mexpt simp) 3 ((rat simp) -2 3))
-	   ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
+	 (div (power 3 (div -2 3))
+	      (take '($gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
 	(t (give-up))))
 
@@ -122,9 +121,9 @@
 
 (def-simplifier airy_dai (z)
   (cond ((equal z 0)	   ; A&S 10.4.5: Ai'(0) = -3^(-1/3)/gamma(1/3)
-         '((mtimes simp) -1
-	   ((mexpt simp) 3 ((rat simp) -1 3))
-	   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
+	 (div -1
+	      (mul (power 3 (div 1 3))
+		   (take '($gamma) (div 1 3)))))
 	((flonum-eval (mop form) z))
 	(t (give-up))))
 
@@ -185,9 +184,9 @@
 
 (def-simplifier airy_bi (z)
   (cond ((equal z 0) ; A&S 10.4.4: Bi(0) = sqrt(3) 3^(-2/3)/gamma(2/3)
-	 '((mtimes simp)
-	   ((mexpt simp) 3 ((rat simp) -1 6))
-	   ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
+	 (div (mul (power 3 1//2)
+		   (power 3 (div -2 3)))
+	      (take '($gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
 	(t (give-up))))
 
@@ -226,9 +225,9 @@
 
 (def-simplifier airy_dbi (z)
   (cond ((equal z 0) ; A&S 10.4.5: Bi'(0) = sqrt(3) 3^(-1/3)/gamma(1/3)
-         '((mtimes simp) 
-	   ((mexpt simp) 3 ((rat simp) 1 6))
-	   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
+	 (div (mul (power 3 1//2)
+		   (power 3 (div -1 3)))
+	      (take '($gamma) (div 1 3))))
 	((flonum-eval (mop form) z))
 	(t (give-up))))
 
