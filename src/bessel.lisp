@@ -218,8 +218,18 @@
        ;; We have the order or arg being a bigfloat, so evaluate it
        ;; numerically using the hypergeometric representation
        ;; bessel_j.
-       ($rectform
-        ($bfloat (bessel-j-hypergeometric order arg))))
+       (destructuring-bind (re . im)
+	   (risplit order)
+	 (cond ((and (zerop1 im)
+		     (zerop1 (sub re (take '($floor) re)))
+		     (mminusp re))
+		;; bessel_j(-n,z) = (-1)^n*bessel_j(n,z)
+		($rectform
+		 (mul (power -1 re)
+		      ($bfloat (bessel-j-hypergeometric (mul -1 re) arg)))))
+	       (t
+		($rectform
+		 ($bfloat (bessel-j-hypergeometric order arg)))))))
 
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer.
@@ -866,8 +876,21 @@
        ;; We have the order or arg being a bigfloat, so evaluate it
        ;; numerically using the hypergeometric representation
        ;; bessel_j.
-       ($rectform
-        ($bfloat (bessel-i-hypergeometric order arg))))
+       ;;
+       ;; When the order is a negative integer, the hypergeometric
+       ;; representation is invalid.  However,
+       ;; https://dlmf.nist.gov/10.27.E1 says bessel_i(-n,z) =
+       ;; bessel_i(n,z).
+       (destructuring-bind (re . im)
+	   (risplit order)
+	 (cond ((and (zerop im)
+		     (zerop1 (sub re (take '($floor) re)))
+		     (mminusp re))
+		($rectform
+		 ($bfloat (bessel-i-hypergeometric (mul -1 order) arg))))
+	       (t
+		($rectform
+		 ($bfloat (bessel-i-hypergeometric order arg)))))))
 
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer
