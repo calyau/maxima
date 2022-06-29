@@ -79,11 +79,34 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_ai) z))))))
 
+(defun airy-ai-hypergeometric (z)
+  "Returns the hypergeometric representation of Airy Ai"
+  ;; See http://functions.wolfram.com/03.05.26.0001.01 and
+  ;; https://fungrim.org/entry/01bbb6/:
+  ;;
+  ;;   Ai(z) = Ai(0)*hypergeometric([],[2/3],z^3/9)
+  ;;     + z*Ai'(0)*hypergeometric([],[4/3],z^3/9)
+  (add (mul (ftake '%airy_ai 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 2 3))
+		   (div (power z 3)
+			9)))
+       (mul z
+	    (ftake '%airy_dai 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 4 3))
+		   (div (power z 3)
+			9)))))
+
 (def-simplifier airy_ai (z)
   (cond ((equal z 0)	     ; A&S 10.4.4: Ai(0) = 3^(-2/3)/gamma(2/3)
 	 (div (power 3 (div -2 3))
-	      (take '($gamma) (div 2 3))))
+	      (take '(%gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
+	($hypergeometric_representation
+	 (airy-ai-hypergeometric z))
 	(t (give-up))))
 
 
@@ -123,7 +146,7 @@
   (cond ((equal z 0)	   ; A&S 10.4.5: Ai'(0) = -3^(-1/3)/gamma(1/3)
 	 (div -1
 	      (mul (power 3 (div 1 3))
-		   (take '($gamma) (div 1 3)))))
+		   (take '(%gamma) (div 1 3)))))
 	((flonum-eval (mop form) z))
 	(t (give-up))))
 
@@ -182,11 +205,18 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_bi) z))))))
 
+(defun airy-bi-hypergeometric (z)
+  "Returns the hypergeometric representation of Airy Bi"
+  ;; See http://functions.wolfram.com/03.06.26.0001.01 and https://fungrim.org/entry/bd319e/ 
+  ;;
+  ;;  Bi(z) = Bi(0)*hypergeometric([],[2/3],z^3/9)
+  ;;    + z*Bi'(0)*hypergeometric([],[4/2],z^3/9)
+  (
 (def-simplifier airy_bi (z)
   (cond ((equal z 0) ; A&S 10.4.4: Bi(0) = sqrt(3) 3^(-2/3)/gamma(2/3)
 	 (div (mul (power 3 1//2)
 		   (power 3 (div -2 3)))
-	      (take '($gamma) (div 2 3))))
+	      (take '(%gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
 	(t (give-up))))
 
