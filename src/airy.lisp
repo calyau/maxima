@@ -211,13 +211,29 @@
   ;;
   ;;  Bi(z) = Bi(0)*hypergeometric([],[2/3],z^3/9)
   ;;    + z*Bi'(0)*hypergeometric([],[4/2],z^3/9)
-  (
+  (add (mul (ftake '%airy_bi 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 2 3))
+		   (div (power z 3)
+			9)))
+       (mul z
+	    (ftake '%airy_dbi 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 4 3))
+		   (div (power z 3)
+			9)))))
+
 (def-simplifier airy_bi (z)
   (cond ((equal z 0) ; A&S 10.4.4: Bi(0) = sqrt(3) 3^(-2/3)/gamma(2/3)
 	 (div (mul (power 3 1//2)
 		   (power 3 (div -2 3)))
 	      (take '(%gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
+
+	($hypergeometric_representation
+	 (airy-bi-hypergeometric z))
 	(t (give-up))))
 
 
