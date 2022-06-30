@@ -145,10 +145,11 @@
 (defun airy-dai-hypergeometric (z)
   "Returns the hypergeometric representation of Ai'(x), the derivative
   of the Airy function Ai(x)"
-  ;; See
+  ;; See http://functions.wolfram.com/03.07.26.0001.01 and
+  ;; https://fungrim.org/entry/20e530/.
   ;;
   ;;
-  ;;   Ai(z) = Ai'(0)*hypergeometric([],[1/3],z^3/9)
+  ;;   Ai'(z) = Ai'(0)*hypergeometric([],[1/3],z^3/9)
   ;;     + z^2/2*Ai(0)*hypergeometric([],[5/3],z^3/9)
   (add (mul (ftake '%airy_dai 0)
 	    (ftake '$hypergeometric
@@ -296,7 +297,11 @@
 (defun airy-dbi-hypergeometric (z)
   "Returns the hypergeometric representation of Bi'(z), the derivative
   of Airy Bi"
-  ;; See
+  ;; See http://functions.wolfram.com/03.08.26.0001.01 and
+  ;; https://fungrim.org/entry/4d65e5/.
+  ;;
+  ;;  Bi'(z) = Bi'(0)*hypergeometric([],[1/3],z^3/9)
+  ;;    + z^2/2*Bi(0)*hypergeometric([],[5/3],z^3/9)
   (add (mul (ftake '%airy_dbi 0)
 	    (ftake '$hypergeometric
 		   (list '(mlist))
