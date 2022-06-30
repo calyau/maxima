@@ -142,12 +142,36 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_dai) z))))))
 
+(defun airy-dai-hypergeometric (z)
+  "Returns the hypergeometric representation of Ai'(x), the derivative
+  of the Airy function Ai(x)"
+  ;; See
+  ;;
+  ;;
+  ;;   Ai(z) = Ai'(0)*hypergeometric([],[1/3],z^3/9)
+  ;;     + z^2/2*Ai(0)*hypergeometric([],[5/3],z^3/9)
+  (add (mul (ftake '%airy_dai 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 1 3))
+		   (div (power z 3)
+			9)))
+       (mul z z 1//2
+	    (ftake '%airy_ai 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 5 3))
+		   (div (power z 3)
+			9)))))
+
 (def-simplifier airy_dai (z)
   (cond ((equal z 0)	   ; A&S 10.4.5: Ai'(0) = -3^(-1/3)/gamma(1/3)
 	 (div -1
 	      (mul (power 3 (div 1 3))
 		   (take '(%gamma) (div 1 3)))))
 	((flonum-eval (mop form) z))
+	($hypergeometric_representation
+	 (airy-dai-hypergeometric z))
 	(t (give-up))))
 
 ;; Airy Bi function 
@@ -269,12 +293,32 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_dbi) z))))))
 
+(defun airy-dbi-hypergeometric (z)
+  "Returns the hypergeometric representation of Bi'(z), the derivative
+  of Airy Bi"
+  ;; See
+  (add (mul (ftake '%airy_dbi 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 1 3))
+		   (div (power z 3)
+			9)))
+       (mul z z 1//2
+	    (ftake '%airy_bi 0)
+	    (ftake '$hypergeometric
+		   (list '(mlist))
+		   (list '(mlist) (div 5 3))
+		   (div (power z 3)
+			9)))))
+
 (def-simplifier airy_dbi (z)
   (cond ((equal z 0) ; A&S 10.4.5: Bi'(0) = sqrt(3) 3^(-1/3)/gamma(1/3)
 	 (div (mul (power 3 1//2)
 		   (power 3 (div -1 3)))
 	      (take '($gamma) (div 1 3))))
 	((flonum-eval (mop form) z))
+	($hypergeometric_representation
+	 (airy-dbi-hypergeometric z))
 	(t (give-up))))
 
 ;; Numerical routines using slatec functions
