@@ -105,6 +105,10 @@
 	 (div (power 3 (div -2 3))
 	      (take '(%gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
+	((or (bigfloat-numerical-eval-p z)
+	     (complex-bigfloat-numerical-eval-p z))
+	 ($rectform
+	  ($bfloat (airy-ai-hypergeometric z))))
 	($hypergeometric_representation
 	 (airy-ai-hypergeometric z))
 	(t (give-up))))
@@ -171,6 +175,10 @@
 	      (mul (power 3 (div 1 3))
 		   (take '(%gamma) (div 1 3)))))
 	((flonum-eval (mop form) z))
+	((or (bigfloat-numerical-eval-p z)
+	     (complex-bigfloat-numerical-eval-p z))
+	 ($rectform
+	  ($bfloat (airy-dai-hypergeometric z))))
 	($hypergeometric_representation
 	 (airy-dai-hypergeometric z))
 	(t (give-up))))
@@ -256,7 +264,10 @@
 		   (power 3 (div -2 3)))
 	      (take '(%gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
-
+	((or (bigfloat-numerical-eval-p z)
+	     (complex-bigfloat-numerical-eval-p z))
+	 ($rectform
+	  ($bfloat (airy-bi-hypergeometric z))))
 	($hypergeometric_representation
 	 (airy-bi-hypergeometric z))
 	(t (give-up))))
@@ -320,8 +331,12 @@
   (cond ((equal z 0) ; A&S 10.4.5: Bi'(0) = sqrt(3) 3^(-1/3)/gamma(1/3)
 	 (div (mul (power 3 1//2)
 		   (power 3 (div -1 3)))
-	      (take '($gamma) (div 1 3))))
+	      (take '(%gamma) (div 1 3))))
 	((flonum-eval (mop form) z))
+	((or (bigfloat-numerical-eval-p z)
+	     (complex-bigfloat-numerical-eval-p z))
+	 ($rectform
+	  ($bfloat (airy-dbi-hypergeometric z))))
 	($hypergeometric_representation
 	 (airy-dbi-hypergeometric z))
 	(t (give-up))))
