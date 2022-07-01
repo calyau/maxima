@@ -660,7 +660,7 @@ INFOLANG ?= en
 # We need the html docu to be generated on "make all" because if we fail
 # to do so a "sudo make install" will generate the html docu as read-only
 # fails conflicting with a subsequent "make html".
-all-local: html maxima.info maxima-index.lisp
+all-local: html maxima.info maxima-index.lisp maxima-index-html.lisp
 
 infoname = maxima
 include $(top_srcdir)/common-info.mk
@@ -672,6 +672,12 @@ html: maxima_toc.html
 
 maxima-index.lisp: build_index.pl maxima.info
 	/usr/bin/env perl $^ ':crlf' > $@
+
+# Really depends on all the individual html files, but let's assume
+# that if maxima_toc.html is done, we have all the remaining html
+# files.
+maxima-index-html.lisp : maxima_toc.html
+	../../maxima-local --batch-lisp=build-html-index.lisp
 
 DOLLAR_SIGN = $$
 
@@ -702,17 +708,19 @@ pdf-local: maxima.pdf
 install-data-local: install-maxima-index
 uninstall-local: uninstall-maxima-index
 
-install-maxima-index: maxima-index.lisp
+install-maxima-index: maxima-index.lisp maxima-index-html.lisp
 	$(MKDIR_P) "$(DESTDIR)$(infodir)"
 	$(INSTALL_DATA) maxima-index.lisp "$(DESTDIR)$(infodir)/maxima-index.lisp"
+	$(INSTALL_DATA) maxima-index-html.lisp "$(DESTDIR)$(infodir)/maxima-index-html.lisp"
 
-uninstall-maxima-index: maxima-index.lisp
+uninstall-maxima-index: maxima-index.lisp maxima-index-html.lisp
 	rm -f "$(DESTDIR)$(infodir)/maxima-index.lisp"
+	rm -f "$(DESTDIR)$(infodir)/maxima-index-html.lisp"
 
 clean-local: clean-info clean-html
 
 clean-info:
-	rm -f $(wildcard maxima.info* maxima-index.lisp)
+	rm -f $(wildcard maxima.info* maxima-index.lisp maxima-index-html.lisp)
 	rm -f maxima.fns
 
 clean-html:
@@ -721,7 +729,7 @@ clean-html:
 
 EXTRA_DIST = manual.css texi2html.init maxima.texi \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
-    create_index build_index.pl maxima-index.lisp docdraw.mac \
+    create_index build_index.pl maxima-index.lisp maxima-index-html.lisp docdraw.mac \
     extract_categories1.awk extract_categories1.sed check_tab fix_tab \
     figures/Makefile.am figures/Makefile.in figures/README \
     maxima-init.lisp README.update_examples \
