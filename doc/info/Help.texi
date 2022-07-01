@@ -240,7 +240,39 @@ Default value: @code{false}
 the help in the terminal or in a browser.  When @code{true}, a browser
 is used to display html help files.
 
-See also @ref{browser} and @ref{url_base}.
+See also @mrefcomma{browser} @mrefcomma{browser_options}  and @mrefdot{url_base}
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@anchor{browser}
+@defvr {Option variable} browser
+
+This specifies the command to use to open an HTML file.
+
+See also @mrefcomma{describe_uses_html} @mrefcomma{browser_options}
+and @mrefdot{url_base}
+
+This value ignored on windows which uses a fixed option.
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@anchor{browser_options}
+@defvr {Option variable} browser_options
+Default value: ""
+
+This specifies options to be used with @code{browser}.
+
+This is ignored on windows.
+
+See also @mrefcomma{describe_uses_html} @mrefcomma{browser} and @mrefdot{url_base}
 
 @opencatbox{Categories:}
 @category{Help}
@@ -257,20 +289,7 @@ directory.  However, you could use @code{localhost:8080/} or some
 other URL that has the HTML help files.  But this requires those URLs
 to have exactly the same HTML files in the info directory.
 
-See also @ref{describe_uses_html} and @ref{browser}.
-
-@opencatbox{Categories:}
-@category{Help}
-@category{Global variables}
-@closecatbox
-@end defvr
-
-@anchor{browser}
-@defvr {Option variable} browser
-
-This specifies the command to use to open an HTML file.
-
-See also @ref{describe_uses_html} and @ref{url_base}.
+See also @ref{describe_uses_html} @mrefcomma{browser} and @mrefdot{browser_options}
 
 @opencatbox{Categories:}
 @category{Help}
