@@ -673,7 +673,16 @@ When one changes, the other does too."
                                  (if *maxima-layout-autotools*
                                      "/share/locale/"
                                      "/locale/")))
-          intl::*locale-directories*)))
+          intl::*locale-directories*))
+  ;; Set up $browser for displaying help in browser.
+  (cond ((and (boundp '*autoconf-windows*)
+	      (string-equal *autoconf-windows* "true"))
+	 (setf $browser "cmd \"start /max"))
+	((boundp '*autoconf-host*)
+	 (cond ((pregexp:pregexp-match-positions "(?i:linux)" *autoconf-host*)
+		(setf $browser "xdg-open"))
+	       ((pregexp:pregexp-match-positions "(?:darwin)" *autoconf-host*)
+		(setf $browser "open"))))))
 
 (defun adjust-character-encoding ()
   #+sbcl (setf sb-impl::*default-external-format* :utf-8)

@@ -13,7 +13,7 @@
 (defmvar $browser "firefox"
   "Browser to use for displaying the documentation")
 
-(defmvar $browser_options "--new-window"
+(defmvar $browser_options ""
   "Browser options")
 
 (defmvar $url_base "localhost:8080"
@@ -179,10 +179,22 @@
 				(namestring base-name)
 				"#index-"
 				id)))
-          ($system (concatenate 'string
-				$browser
-				" "
-				$browser_options
-				" "
-				url))))
-      topic)))
+	  (when *debug-hdescribe*
+	    (format *debug-io* "URL: ~A~%" url)
+	  (cond ((string-equal *autoconf-windows* "true")
+		 ;; On windows we ignore $browser and always use 'cmd
+		 ;; "start /max <url>"'.
+		 ($system (concatenate 'string
+				       "cmd \"start /max "
+				       url
+				       "\"")))
+		(t
+		 ;; Non-windows. Just run the browser with the given URL.
+		 ($system (concatenate 'string
+				       $browser
+				       " "
+				       $browser_options
+				       " '"
+				       url
+				       "'"))))))))
+    topic))
