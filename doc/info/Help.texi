@@ -179,6 +179,10 @@ on-line manual.
 @code{describe} quotes its argument.  @code{describe} returns @code{true} if
 some documentation is found, otherwise @code{false}.
 
+To display the topics using a browser see @ref{describe_uses_html}.
+Also see @ref{browser} and @ref{url_base} to configure how to display
+the HTML files.
+
 See also @ref{Documentation}.
 
 Example:
@@ -227,6 +231,52 @@ respectively.
 @category{Console interaction}
 @closecatbox
 @end deffn
+
+@anchor{describe_uses_html}
+@defvr {Option variable} describe_uses_html
+Default value: @code{false}
+
+@code{describe_uses_html} controls whether @code{describe} displays
+the help in the terminal or in a browser.  When @code{true}, a browser
+is used to display html help files.
+
+See also @ref{browser} and @ref{url_base}.
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@anchor{url_base}
+@defvr {Option variable} url_base
+
+When displaying help using a browser, @code{url_base} defines the URL
+to use.  It defaults to a @code{file://} path pointing to the info
+directory.  However, you could use @code{localhost:8080/} or some
+other URL that has the HTML help files.  But this requires those URLs
+to have exactly the same HTML files in the info directory.
+
+See also @ref{describe_uses_html} and @ref{browser}.
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@anchor{browser}
+@defvr {Option variable} browser
+
+This specifies the command to use to open an HTML file.
+
+See also @ref{describe_uses_html} and @ref{url_base}.
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{example}
