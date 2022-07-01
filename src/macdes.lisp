@@ -178,23 +178,29 @@
 				"/"
 				(namestring base-name)
 				"#index-"
-				id)))
+				id))
+	      command)
 	  (when *debug-hdescribe*
-	    (format *debug-io* "URL: ~A~%" url)
+	    (format *debug-io* "URL: ~A~%" url))
 	  (cond ((string-equal *autoconf-windows* "true")
 		 ;; On windows we ignore $browser and always use 'cmd
 		 ;; "start /max <url>"'.
-		 ($system (concatenate 'string
-				       "cmd \"start /max "
-				       url
-				       "\"")))
+		 (setf command
+		       (concatenate 'string
+				    "cmd \"start /max "
+				    url
+				    "\"")))
 		(t
 		 ;; Non-windows. Just run the browser with the given URL.
-		 ($system (concatenate 'string
-				       $browser
-				       " "
-				       $browser_options
-				       " '"
-				       url
-				       "'"))))))))
+		 (setf command
+		       (concatenate 'string
+				    $browser
+				    " "
+				    $browser_options
+				    " '"
+				    url
+				    "'"))))
+	  (when *debug-hdescribe*
+	    (format *debug-io* "Command: ~S~%" command))
+	  ($system command))))
     topic))
