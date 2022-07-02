@@ -46,7 +46,8 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  operatingsystem.texi orthopoly.texi pytranslate.texi quantum_computing.texi \
  ratpow.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
  stats.texi stirling.texi stringproc.texi to_poly_solve.texi unit.texi \
- zeilberger.texi errormessages.texi commandline-options.texi
+ zeilberger.texi errormessages.texi commandline-options.texi \
+ pslq.texi
 
 figurefiles = \
 figures/introduction1.png\
@@ -752,3 +753,7 @@ distclean-local:
 
 
 .PHONY: check_texinfo warn_texinfo
+
+# Preprocess the files with m4 to handle math equations.
+%.texi : math.m4 %.texi.m4
+	m4 --prefix-builtins $^ > $@

@@ -1622,43 +1622,51 @@ matrix inverse, if it exists.
 @fname{matrixexp} (@var{M}, @var{V})
 
 Calculates the matrix exponential
-@ifnotinfo
-@tex
-@math{e^{MV}}
-@end tex
-@ifset mathjax
-@html
-$$e^{M\cdot V}$$
-@end html
-@end ifset
-@ifclear mathjax
-@math{e^(M*V)}
-@end ifclear
-@end ifnotinfo 
-@ifinfo
-@math{e^(M*V)}
-@end ifinfo
+m4_math(
+<<<e^{M\cdot V}>>>,
+<<<@math{e^(M*V)}>>>,
+<<<e^{MV}>>>)
+@c @ifnotinfo
+@c @tex
+@c @math{e^{MV}}
+@c @end tex
+@c @ifset mathjax
+@c @html
+@c $$e^{M\cdot V}$$
+@c @end html
+@c @end ifset
+@c @ifclear mathjax
+@c @math{e^(M*V)}
+@c @end ifclear
+@c @end ifnotinfo 
+@c @ifinfo
+@c @math{e^(M*V)}
+@c @end ifinfo
 . Instead of the vector @var{V} a number @var{n} can be specified as the second
 argument. If this argument is omitted @code{matrixexp} replaces it by @code{1}.
 
 The matrix exponential of a matrix @var{M} can be expressed as a power series:
-@ifnotinfo
-@tex
-@math{e^M=\sum_{k=0}^\infty{{M^k}\over{k!}}}
-@end tex
-@ifset mathjax
-@html
-$$e^M=\sum_{k=0}^\infty{\left(\frac{M^k}{k!}\right)}$$
-@end html
-@end ifset
-@ifclear mathjax
-@math{e^M=sum(M^k/k!,0,inf)}
-@end ifclear
-@end ifnotinfo 
-@ifinfo
-@math{e^M=sum(M^k/k!,0,inf)}
-@end ifinfo
-
+m4_displaymath(
+<<<e^M=\sum_{k=0}^\infty{\left(\frac{M^k}{k!}\right)}>>>,
+<<<@math{e^M=sum(M^k/k!,0,inf)}>>>
+)
+@c @ifnotinfo
+@c @tex
+@c @math{e^M=\sum_{k=0}^\infty{{M^k}\over{k!}}}
+@c @end tex
+@c @ifset mathjax
+@c @html
+@c $$e^M=\sum_{k=0}^\infty{\left(\frac{M^k}{k!}\right)}$$
+@c @end html
+@c @end ifset
+@c @ifclear mathjax
+@c @math{e^M=sum(M^k/k!,0,inf)}
+@c @end ifclear
+@c @end ifnotinfo 
+@c @ifinfo
+@c @math{e^M=sum(M^k/k!,0,inf)}
+@c @end ifinfo
+@c 
 @c NEED EXAMPLE HERE
 @opencatbox{Categories:}
 @category{Matrices}
@@ -2274,11 +2282,11 @@ expansion for an operand that is any kind of product.
 
 @table @code
 @item expandcrosscross
-Simplifies @math{p ~ (q ~ r)} to @math{(p . r)*q - (p . q)*r}.
+Simplifies m4_math(<<<p \sim (q \sim r)>>>, <<<p ~ (q ~ r)>>>) to m4_math(<<<(p . r)q - (p . q)r>>>, <<<(p . r)*q-(p . q)*r>>>).
 @item expandcurlcurl
-Simplifies @math{curl curl p} to @math{grad div p + div grad p}.
+Simplifies m4_math(<<<{\rm curl}\; {\rm curl}\; p>>>, <<<curl curl p>>>) to m4_math(<<<{\rm grad}\; {\rm div}\; p + {\rm div}\; {\rm grad}\; p>>>, <<<grad div p + div grad p>>>).
 @item expandlaplaciantodivgrad
-Simplifies @math{laplacian p} to @math{div grad p}.
+Simplifies m4_math(<<<{\rm laplacian}\; p>>>,<<<laplacian p>>>) to m4_math(<<<{\rm div}\; {\rm grad}\; p>>>, <<<div grad p>>>).
 @item expandcross
 Enables @code{expandcrossplus} and @code{expandcrosscross}.
 @item expandplus

@@ -25,39 +25,16 @@ In particular, all elliptic functions and integrals use the parameter
 Stegun who use the modular angle for the elliptic functions.  The
 following relationships are true:
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 m &= k^2 \cr
 k &= \sin\alpha
-}
-$$
-}
-@end ifset
-@ifclear mathjax
-@math{m = k^2}
+}>>>
+,
+<<<@math{m = k^2}
 
-@math{k = sin(alpha)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{m = k^2}
-
-@math{k = sin(alpha)}
-@end ifinfo
-
-@tex
-$$
-\eqalign{
-m &= k^2 \cr
-k &= \sin\alpha
-}
-$$
-@end tex
-
+@math{k = sin(alpha)}>>>
+)
 
 
 The elliptic functions and integrals are primarily intended to support
@@ -164,7 +141,10 @@ that governs the distribution of Maxima.
 
 @anchor{jacobi_sn}
 @deffn {Function} jacobi_sn (@var{u}, @var{m})
-The Jacobian elliptic function @math{sn(u,m)}.
+The Jacobian elliptic function
+m4_math(<<<{\rm sn}(u,m).>>>,
+<<<@math{sn(u,m).}>>>)
+
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -388,21 +368,11 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @deffn {Function} elliptic_f (@var{phi}, @var{m})
 The incomplete elliptic integral of the first kind, defined as
 
-@ifhtml
-@ifset mathjax
-@math{ $$ \int_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$ }
-@end ifset
-@ifclear mathjax
-@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
-@end ifinfo
-
-@tex
-$$ \int_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$
-@end tex
+m4_displaymath(
+<<<\int_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}}>>>
+,
+<<<@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}>>>
+)
 
 See also @ref{elliptic_e} and @ref{elliptic_kc}.
 
@@ -415,21 +385,11 @@ See also @ref{elliptic_e} and @ref{elliptic_kc}.
 @deffn {Function} elliptic_e (@var{phi}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 
-@ifhtml
-@ifset mathjax
-@math{ $$ \int_0^\phi {\sqrt{1 - m\sin^2\theta}}\, d\theta $$ }
-@end ifset
-@ifclear mathjax
-@math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
-@end ifinfo
-
-@tex
-$$ \int_0^\phi \sqrt{1 - m\sin^2\theta}\, d\theta $$
-@end tex
+m4_displaymath(
+<<<\int_0^\phi {\sqrt{1 - m\sin^2\theta}}\, d\theta>>>
+,
+<<<@math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}>>>
+)
 
 See also @ref{elliptic_f} and @ref{elliptic_ec}.
 
@@ -442,45 +402,27 @@ See also @ref{elliptic_f} and @ref{elliptic_ec}.
 @deffn {Function} elliptic_eu (@var{u}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 
-@ifhtml
-@ifset mathjax
-@math{ $$ E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt $$ }
-where:
-@math{ $$ \tau = {\rm sn}(u,m) $$ }
-@end ifset
-@ifclear mathjax
-@math{elliptic_eu(u,m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
-where @math{tau = sn(u,m)}.
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{elliptic_eu(u,m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
+m4_displaymath(
+<<<E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt>>>
+,
+<<<@math{elliptic_eu(u, m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}>>>
+)
 
-where @math{tau = sn(u,m)}.
-@end ifinfo
-@tex
-$$ E(u, m) = \int_0^u {\rm dn}(v, m)\, dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}}\, dt $$
-
-where $\tau = {\rm sn}(u, m)$.
-@end tex
+where
+m4_math(
+<<<\tau = {\rm sn}(u,m)>>>
+,
+<<<@math{tau = sn(u,m)}>>>
+)
+.
 
 This is related to @code{elliptic_e} by
 
-@ifhtml
-@ifset mathjax
-@math{ $$ E(u,m) = E(\sin^{-1} {\rm sn}(u, m), m) $$ }
-@end ifset
-@ifclear mathjax
-@math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}
-@end ifinfo
-
-@tex
-$$E(u,m) = E(\sin^{-1} {\rm sn}(u, m), m)$$
-@end tex
+m4_displaymath(
+<<<E(u,m) = E(\sin^{-1} {\rm sn}(u, m), m)>>>
+,
+<<<@math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}>>>
+)
 
 See also @ref{elliptic_e}.
 @opencatbox{Categories:}
@@ -492,20 +434,11 @@ See also @ref{elliptic_e}.
 @deffn {Function} elliptic_pi (@var{n}, @var{phi}, @var{m})
 The incomplete elliptic integral of the third kind, defined as
 
-@ifhtml
-@ifset mathjax
-@math{ $$ \int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}} $$ }
-@end ifset
-@ifclear mathjax
-@math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
-@end ifinfo
-@tex
-$$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
-@end tex
+m4_displaymath(
+<<<\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}>>>
+,
+<<<@math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}>>>
+)
 
 @opencatbox{Categories:}
 @category{Elliptic integrals}
@@ -516,21 +449,11 @@ $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @deffn {Function} elliptic_kc (@var{m})
 The complete elliptic integral of the first kind, defined as
 
-@ifhtml
-@ifset mathjax
-@math{ $$ \int_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}} $$ }
-@end ifset
-@ifclear mathjax
-@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
-@end ifinfo
-
-@tex
-$$\int_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
-@end tex
+m4_displaymath(
+<<<\int_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}>>>
+,
+<<<@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, pi/2)}>>>
+)
 
 For certain values of @math{m}, the value of the integral is known in
 terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
@@ -544,21 +467,11 @@ terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
 @deffn {Function} elliptic_ec (@var{m})
 The complete elliptic integral of the second kind, defined as
 
-@ifhtml
-@ifset mathjax
-@math{ $$ \int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta}\, d\theta $$ }
-@end ifset
-@ifclear mathjax
-@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
-@end ifinfo
-
-@tex
-$$\int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta}\, d\theta$$
-@end tex
+m4_displaymath(
+<<<\int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta}\, d\theta>>>
+,
+<<<@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}>>>
+)
 
 For certain values of @math{m}, the value of the integral is known in
 terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
@@ -572,30 +485,17 @@ terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
 @deffn {Function} carlson_rc (@var{x}, @var{y})
 Carlson's RC integral is defined by
 
-@ifhtml
-@ifset mathjax
-@math{ $$ R_C(x, y) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt $$ }
-@end ifset
-@ifclear mathjax
-@math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}
-@end ifinfo
-
-@tex
-$$ R_C(x, y) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt $$
-@end tex
+m4_displaymath(
+<<<R_C(x, y) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt>>>
+,
+<<<@math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}>>>
+)
 
 This integral is related to many elementary functions in the following
 way:
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 \log x &= (x-1) R_C\left(\left({\frac{1+x}{2}}\right)^2, x\right), \quad x > 0 \cr
 \sin^{-1} x &= x R_C(1-x^2, 1), \quad |x| \le 1 \cr
 \cos^{-1} x &= \sqrt{1-x^2} R_C(x^2,1), \quad 0 \le x \le 1  \cr
@@ -603,12 +503,9 @@ $$
 \sinh^{-1} x &= x  R_C(1+x^2,1)  \cr
 \cosh^{-1} x &= \sqrt{x^2-1}  R_C(x^2,1), \quad x \ge 1  \cr
 \tanh^{-1}(x) &= x  R_C(1,1-x^2), \quad |x| \le 1
-}
-$$
-}
-@end ifset
-@ifclear mathjax
-@math{log(x)  = (x-1)*rc(((1+x)/2)^2, x), x > 0}
+}>>>
+,
+<<<@math{log(x)  = (x-1)*rc(((1+x)/2)^2, x), x > 0}
 
 @math{asin(x) = x * rc(1-x^2, 1), |x|<= 1}
 
@@ -620,79 +517,26 @@ $$
 
 @math{acosh(x) = sqrt(x^2-1) * rc(x^2,1), x >= 1}
 
-@math{atanh(x) = x * rc(1,1-x^2), |x|<=1}
-@end ifclear
-@end ifhtml
-@ifinfo
-@math{log(x)  = (x-1)*rc(((1+x)/2)^2, x), x > 0}
-
-@math{asin(x) = x * rc(1-x^2, 1), |x|<= 1}
-
-@math{acos(x) = sqrt(1-x^2)*rc(x^2,1), 0 <= x <=1}
-
-@math{atan(x) = x * rc(1,1+x^2)}
-
-@math{asinh(x) = x * rc(1+x^2,1)}
-
-@math{acosh(x) = sqrt(x^2-1) * rc(x^2,1), x >= 1}
-
-@math{atanh(x) = x * rc(1,1-x^2), |x|<=1}
-@end ifinfo
-
-@tex
-$$
-\eqalign{
-\log x &= (x-1) R_C\left(\left({\frac{1+x}{2}}\right)^2, x\right), \quad x > 0 \cr
-\sin^{-1} x &= x R_C(1-x^2, 1), \quad |x| \le 1 \cr
-\cos^{-1} x &= \sqrt{1-x^2} R_C(x^2,1), \quad 0 \le x \le 1  \cr
-\tan^{-1} x &= x  R_C(1,1+x^2)  \cr
-\sinh^{-1} x &= x  R_C(1+x^2,1)  \cr
-\cosh^{-1} x &= \sqrt{x^2-1}  R_C(x^2,1), \quad x \ge 1  \cr
-\tanh^{-1}(x) &= x  R_C(1,1-x^2), \quad |x| \le 1
-}
-$$
-@end tex
+@math{atanh(x) = x * rc(1,1-x^2), |x|<=1}>>>
+)
 
 Also, we have the relationship
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-R_C(x,y) = R_F(x,y,y)
-$$
-}
-@end ifset
-@ifclear mathjax
+m4_displaymath(
+<<<R_C(x,y) = R_F(x,y,y)>>>
+,
 @math{R_C(x,y) = R_F(x,y,y)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{R_C(x,y) = R_F(x,y,y)}
-@end ifinfo
-
-@tex
-$$
-R_C(x,y) = R_F(x,y,y)
-$$
-@end tex
+)
 
 Some special values:
-@ifhtml
-@ifset mathjax
-@math{
-$$
-\eqalign{R_C(0, 1) &= \frac{\pi}{2} \cr
+m4_displaymath(
+<<<\eqalign{R_C(0, 1) &= \frac{\pi}{2} \cr
 R_C(0, 1/4) &= \pi \cr
 R_C(2,1) &= \log(\sqrt{2} + 1) \cr
 R_C(i,i+1) &= \frac{\pi}{4} + \frac{i}{2} \log(\sqrt{2}-1) \cr
 R_C(0,i) &= (1-i)\frac{\pi}{2\sqrt{2}} \cr
-}
-$$
-}
-@end ifset
-@ifclear mathjax
+}>>>
+,
 @math{R_C(0,1) = pi/2}
 
 @math{R_C(0,1/4) = pi}
@@ -702,31 +546,7 @@ $$
 @math{R_C(i, i+1) = pi/4 + i/2*log(sqrt(2)+1)}
 
 @math{R_C(0, i) = (1-i)*pi/(2*sqrt(2))}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{R_C(0,1) = pi/2}
-
-@math{R_C(0,1/4) = pi}
-
-@math{R_C(2,1) = log(sqrt(2)+1)}
-
-@math{R_C(i, i+1) = pi/4 + i/2*log(sqrt(2)+1)}
-
-@math{R_C(0, i) = (1-i)*pi/(2*sqrt(2))}
-@end ifinfo
-
-@tex
-$$
-\eqalign{R_C(0, 1) &= \frac{\pi}{2} \cr
-R_C(0, 1/4) &= \pi \cr
-R_C(2,1) &= \log(\sqrt{2} + 1) \cr
-R_C(i,i+1) &= \frac{\pi}{4} + \frac{i}{2} \log(\sqrt{2}-1) \cr
-R_C(0,i) &= (1-i)\frac{\pi}{2\sqrt{2}} \cr
-}
-$$
-@end tex
+)
 
 
 @opencatbox{Categories:}
@@ -738,98 +558,36 @@ $$
 @deffn {Function} carlson_rd (@var{x}, @var{y}, @var{z})
 Carlson's RD integral is defined by
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-R_D(x,y,z) = \frac{3}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt
-$$
-}
-@end ifset
-@ifclear mathjax
-@math{R_D(x,y,z) = 3/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+z)), t, 0, inf)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{R_D(x,y,z) = 3/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+z)), t, 0, inf)}
-@end ifinfo
-
-@tex
-$$
-R_D(x,y,z) = \frac{3}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt
-$$
-@end tex
-
+m4_displaymath(
+<<<R_D(x,y,z) = \frac{3}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt>>>
+,
+<<<@math{R_D(x,y,z) = 3/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+z)), t, 0, inf)}>>>
+)
 
 We also have the special values
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 R_D(x,x,x) &= x^{-\frac{3}{2}} \cr
 R_D(0,y,y) &= \frac{3}{4} \pi y^{-\frac{3}{2}} \cr
 R_D(0,2,1) &= 3 \sqrt{\pi} \frac{\Gamma(\frac{3}{4})}{\Gamma(\frac{1}{4})}
-}
-$$
-}
-@end ifset
-@ifclear mathjax
-@math{R_D(x,x,x) = x^(-3/2)}
+}>>>
+,
+<<<@math{R_D(x,x,x) = x^(-3/2)}
 
 @math{R_D(0,y,y) = 3/4*pi*y^(-3/2)}
 
-@math{R_D(0,2,1) = 3 sqrt(pi) gamma(3/4)/gamma(1/4)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{R_D(x,x,x) = x^(-3/2)}
-
-@math{R_D(0,y,y) = 3/4*pi*y^(-3/2)}
-
-@math{R_D(0,2,1) = 3 sqrt(pi) gamma(3/4)/gamma(1/4)}
-@end ifinfo
-
-@tex
-$$
-\eqalign{
-R_D(x,x,x) &= x^{-\frac{3}{2}} \cr
-R_D(0,y,y) &= \frac{3}{4} \pi y^{-\frac{3}{2}} \cr
-R_D(0,2,1) &= 3 \sqrt{\pi} \frac{\Gamma(\frac{3}{4})}{\Gamma(\frac{1}{4})}
-}
-$$
-@end tex
-
+@math{R_D(0,2,1) = 3 sqrt(pi) gamma(3/4)/gamma(1/4)}>>>
+)
 
 
 It is also related to the complete elliptic E function as follows
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)
-$$
-}
-@end ifset
-@ifclear mathjax
-@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}
-@end ifinfo
-
-@tex
-$$
-E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)
-$$
-@end tex
-
+m4_displaymath(
+<<<E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)>>>
+,
+<<<@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}>>>
+)
 
 @opencatbox{Categories:}
 @category{Elliptic integrals}
@@ -840,93 +598,34 @@ $$
 @deffn {Function} carlson_rf (@var{x}, @var{y}, @var{z})
 Carlson's RF integral is defined by
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-R_F(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt
-$$
-}
-@end ifset
-@ifclear mathjax
-@math{R_F(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{R_F(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf)}
-@end ifinfo
-
-@tex
-$$
-R_F(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt
-$$
-@end tex
-
+m4_displaymath(
+<<<R_F(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt>>>
+,
+<<<@math{R_F(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf)}>>>
+)
 
 We also have the special values
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-\eqalign{
+m4_displaymath(
+<<<\eqalign{
 R_F(0,1,2)  &= \frac{\Gamma({\frac{1}{4}})^2}{4\sqrt{2\pi}} \cr
 R_F(i,-i,0) &= \frac{\Gamma({\frac{1}{4}})^2}{4\sqrt{\pi}}
-}
-$$
-}
-@end ifset
-@ifclear mathjax
+}>>>
+,
+<<<
 @math{R_F(0,1,2) = gamma(1/4)^2/(4*sqrt(2*pi))}
 
 @math{R_F(i,-i,0) = gamma(1/4)^2/(4*sqrt(pi))}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{R_F(0,1,2) = gamma(1/4)^2/(4*sqrt(2*pi))}
-
-@math{R_F(i,-i,0) = gamma(1/4)^2/(4*sqrt(pi))}
-@end ifinfo
-
-@tex
-$$
-\eqalign{
-R_F(0,1,2)  &= \frac{\Gamma({\frac{1}{4}})^2}{4\sqrt{2\pi}} \cr
-R_F(i,-i,0) &= \frac{\Gamma({\frac{1}{4}})^2}{4\sqrt{\pi}}
-}
-$$
-@end tex
-
-
+>>>
+)
 
 It is also related to the complete elliptic E function as follows
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)
-$$
-}
-@end ifset
-@ifclear mathjax
-@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}
-@end ifinfo
-
-@tex
-$$
-E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)
-$$
-@end tex
-
-
+m4_displaymath(
+<<<E(m) = R_F(0, 1 - m, 1) - \frac{m}{3} R_D(0, 1 - m, 1)>>>
+,
+<<<@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}>>>
+)
 
 @opencatbox{Categories:}
 @category{Elliptic integrals}
@@ -937,29 +636,12 @@ $$
 @deffn {Function} carlson_rj (@var{x}, @var{y}, @var{z}, @var{p})
 Carlson's RJ integral is defined by
 
-@ifhtml
-@ifset mathjax
-@math{
-$$
-R_J(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt
-$$
-}
-@end ifset
-@ifclear mathjax
+m4_displaymath(
+<<<R_J(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt>>>
+,
+<<<
 @math{R_J(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+p)), t, 0, inf)}
-@end ifclear
-@end ifhtml
-
-@ifinfo
-@math{R_J(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+p)), t, 0, inf)}
-@end ifinfo
-
-@tex
-$$
-R_J(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt
-$$
-@end tex
-
+>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic integrals}

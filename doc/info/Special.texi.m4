@@ -76,8 +76,10 @@ The Bessel function of the first kind of order @math{v} and argument @math{z}.
 
 @code{bessel_j} is defined as
 
-@ifnottex
-@example
+m4_displaymath(
+<<<J_v(z) = \sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
+ }\over{k!\,\Gamma\left(v+k+1\right)}}}>>>,
+<<<@example
                 inf
                 ====       k  - v - 2 k  v + 2 k
                 \     (- 1)  2          z
@@ -85,13 +87,8 @@ The Bessel function of the first kind of order @math{v} and argument @math{z}.
                 /        k! gamma(v + k + 1)
                 ====
                 k = 0
-@end example
-@end ifnottex
-
-@tex
-$$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
- }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
-@end tex
+@end example>>>
+)
 
 although the infinite series is not used for computations.
 
@@ -108,18 +105,26 @@ although the infinite series is not used for computations.
 The Bessel function of the second kind of order @math{v} and argument @math{z}.
 
 @code{bessel_y} is defined as
-@ifnottex
-@example
+m4_displaymath(
+<<<Y_v(z) = {{\cos(\pi v)\, J_v(z) - J_{-v}(z)}\over{\sin{\pi v}}}>>>,
+<<<@example
               cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
               -------------------------------------------
                              sin(%pi v)
-@end example
-@end ifnottex
-
-@tex
-$${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
- \sin \left(\pi\,v\right)}}$$
-@end tex
+@end example>>>
+)
+@c @ifnottex
+@c @example
+@c               cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
+@c               -------------------------------------------
+@c                              sin(%pi v)
+@c @end example
+@c @end ifnottex
+@c 
+@c @tex
+@c $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
+@c  \sin \left(\pi\,v\right)}}$$
+@c @end tex
 
 when @math{v} is not an integer.  When @math{v} is an integer @math{n},
 the limit as @math{v} approaches @math{n} is taken.
@@ -138,8 +143,10 @@ The modified Bessel function of the first kind of order @math{v} and argument
 @math{z}.
 
 @code{bessel_i} is defined as
-@ifnottex
-@example
+m4_displaymath(
+<<<I_v(z) = \sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
+ \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}>>>,
+<<<@example
                     inf
                     ====   - v - 2 k  v + 2 k
                     \     2          z
@@ -147,13 +154,25 @@ The modified Bessel function of the first kind of order @math{v} and argument
                     /     k! gamma(v + k + 1)
                     ====
                     k = 0
-@end example
-@end ifnottex
+@end example>>>
+)
 
-@tex
-$$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
- \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
-@end tex
+@c @ifnottex
+@c @example
+@c                     inf
+@c                     ====   - v - 2 k  v + 2 k
+@c                     \     2          z
+@c                      >    -------------------
+@c                     /     k! gamma(v + k + 1)
+@c                     ====
+@c                     k = 0
+@c @end example
+@c @end ifnottex
+@c 
+@c @tex
+@c $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
+@c  \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
+@c @end tex
 
 although the infinite series is not used for computations.
 
@@ -171,16 +190,24 @@ The modified Bessel function of the second kind of order @math{v} and argument
 @math{z}.
 
 @code{bessel_k} is defined as
-@ifnottex
-@example
+m4_displaymath(
+<<<K_v(z) = {{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}>>>,
+<<<@example
            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
            -------------------------------------------------
                                   2
-@end example
-@end ifnottex
-@tex
-$${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
-@end tex
+@end example>>>
+)
+@c @ifnottex
+@c @example
+@c            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
+@c            -------------------------------------------------
+@c                                   2
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
+@c @end tex
 
 when @math{v} is not an integer.  If @math{v} is an integer @math{n},
 then the limit as @math{v} approaches @math{n} is taken.
@@ -198,9 +225,12 @@ then the limit as @math{v} approaches @math{n} is taken.
 The Hankel function of the first kind of order @math{v} and argument @math{z}
 (A&S 9.1.3). @code{hankel_1} is defined as
 
-@example
+m4_displaymath(
+<<<H^{(1)}_v(z) = J_v(z) + i Y_v(z)>>>,
+<<<@example
    bessel_j(v,z) + %i * bessel_y(v,z)
-@end example
+@end example>>>
+)
 
 Maxima evaluates @code{hankel_1} numerically for a complex order @math{v} and 
 complex argument @math{z} in float precision. The numerical evaluation in 
@@ -280,9 +310,13 @@ order @math{v} is not supported. Maxima returns a noun form:
 The Hankel function of the second kind of order @math{v} and argument @math{z}
 (A&S 9.1.4). @code{hankel_2} is defined as
 
+m4_displaymath(
+<<<H^{(2)}_v(z) = J_v(z) - i Y_v(z)>>>,
+<<<
 @example
    bessel_j(v,z) - %i * bessel_y(v,z)
 @end example
+>>>)
 
 Maxima evaluates @code{hankel_2} numerically for a complex order @math{v} and 
 complex argument @math{z} in float precision. The numerical evaluation in 
@@ -341,9 +375,10 @@ the Bessel function is expanded.
 @deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
 
 The scaled modified Bessel function of the first kind of order
-@math{v} and argument @math{z}.  That is, @math{scaled\_bessel_i(v,z) =
-exp(-abs(z))*bessel_i(v, z)}.  This function is particularly useful
-for calculating @math{bessel_i} for large @math{z}, which is large.
+@math{v} and argument @math{z}.  That is,
+m4_math(<<<{\rm scaled\_bessel\_i}(v,z) = e^{-|z|} I_v(z).>>>,
+<<<scaled_bessel_i(v,z) = exp(-abs(z)) * bessel_i(v,z).>>>) This function is particularly useful
+for calculating m4_math(<<<I_v(z)>>>,<<<bessel_i>>>) for large @math{z}, which is large.
 However, maxima does not otherwise know much about this function.  For
 symbolic work, it is probably preferable to work with the expression
 @code{exp(-abs(z))*bessel_i(v, z)}.
@@ -390,22 +425,26 @@ Probably Gradshteyn & Ryzhik 8.570.1.
 @section Airy Functions
 @c -----------------------------------------------------------------------------
 
-The Airy functions Ai(x) and Bi(x) are defined in Abramowitz and Stegun,
+The Airy functions m4_math(<<<{\rm Ai}(x)>>>,<<<@math{Ai(x)}>>>) and m4_math(<<<{\rm Bi}(x)>>>,<<<@math{Bi(x)}>>>) are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 10.4. 
 
-@code{y = Ai(x)} and @code{y = Bi(x)} are two linearly independent solutions 
-of the Airy differential equation @code{diff (y(x), x, 2) - x y(x) = 0}.
+The two linearly independent solutions of the Airy differential equation:
 
-If the argument @code{x} is a real or complex floating point 
+m4_displaymath(
+<<<{d^2 y\over dx^2} - xy = 0>>>,
+<<<@math{diff (y(x), x, 2) - x y(x) = 0}>>>)
+
+are m4_math(<<<y = {\rm Ai}(x)>>>,<<<@math{y = Ai(x)}>>>) and m4_math(<<<y = {\rm Bi}(x)>>>,<<<@math{y = Bi(x)}>>>) 
+
+
+If the argument @math{x} is a real or complex floating point 
 number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function Ai(x).  (A&S 10.4.2)
+The Airy function m4_math(<<<{\rm Ai}(x)>>>, <<<@math{Ai(x)}>>>).  (A&S 10.4.2)
 
-The derivative @code{diff (airy_ai(x), x)} is @code{airy_dai(x)}.
-
-See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} @mrefdot{airy_dbi}
+See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -416,9 +455,13 @@ See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} @mrefdot{airy_dbi}
 @c -----------------------------------------------------------------------------
 @anchor{airy_dai}
 @deffn {Function} airy_dai (@var{x})
-The derivative of the Airy function Ai @code{airy_ai(x)}. 
+The derivative of the Airy function m4_math(<<<{\rm Ai}(x)>>>,@math{Ai(x)}):
 
-See @code{airy_ai}.
+m4_displaymath(
+<<<{\rm airy\_dai}(x) = {d\over dx}{\rm Ai}(x)>>>,
+<<<@math{airy_dai(x) = diff(airy_ai(x),x)>>>}) 
+
+See @mrefdot{airy_ai}.
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -429,11 +472,9 @@ See @code{airy_ai}.
 @c -----------------------------------------------------------------------------
 @anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
-The Airy function Bi(x).  (A&S 10.4.3)
+The Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}).  (A&S 10.4.3)
 
-The derivative @code{diff (airy_bi(x), x)} is @code{airy_dbi(x)}.
-
-See @code{airy_ai}, @code{airy_dbi}.
+See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -444,9 +485,13 @@ See @code{airy_ai}, @code{airy_dbi}.
 @c -----------------------------------------------------------------------------
 @anchor{airy_dbi}
 @deffn {Function} airy_dbi (@var{x})
-The derivative of the Airy Bi function @code{airy_bi(x)}.
+The derivative of the Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}>>>):
 
-See @code{airy_ai} and @code{airy_bi}.
+m4_displaymath(
+<<<{\rm airy\_dbi}(x) = {d\over dx}{\rm Bi}(x)>>>,
+<<<@math{airy_dbi(x) = diff(airy_bi(x),x)}>>>)
+
+See @mrefcomma{airy_ai} and @mrefdot{airy_bi}
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -530,8 +575,9 @@ Complex bigfloat factorial.
 
 The basic definition of the gamma function (A&S 6.1.1) is
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}>>>,
+<<<@example
                          inf
                         /
                         [     z - 1   - t
@@ -539,15 +585,25 @@ The basic definition of the gamma function (A&S 6.1.1) is
                         ]
                         /
                          0
-@end example
-@end ifnottex
-@tex
-$$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
-@end tex
+@end example>>>)
+@c @ifnottex
+@c @example
+@c                          inf
+@c                         /
+@c                         [     z - 1   - t
+@c              gamma(z) = I    t      %e    dt
+@c                         ]
+@c                         /
+@c                          0
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 Maxima simplifies @code{gamma} for positive integer and positive and negative 
-rational numbers. For half integral values the result is a rational number times 
-@code{sqrt(%pi)}. The simplification for integer values is controlled by 
+rational numbers. For half integral values the result is a rational number
+times m4_math(<<<\sqrt{\pi}>>>,<<<@math{sqrt(%pi)}>>>). The simplification for integer values is controlled by 
 @code{factlim}. For integers greater than @code{factlim} the numerical result of 
 the factorial function, which is used to calculate @code{gamma}, will overflow. 
 The simplification for rational numbers is controlled by @code{gammalim} to 
@@ -648,8 +704,9 @@ The natural logarithm of the gamma function.
 
 The lower incomplete gamma function (A&S 6.5.2):
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}>>>,
+<<<@example
                                     z
                                    /
                                    [  a - 1   - t
@@ -657,11 +714,22 @@ The lower incomplete gamma function (A&S 6.5.2):
                                    ]
                                    /
                                     0
-@end example
-@end ifnottex
-@tex
-$$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
-@end tex
+@end example>>>
+)
+@c @ifnottex
+@c @example
+@c                                     z
+@c                                    /
+@c                                    [  a - 1   - t
+@c     gamma_incomplete_lower(a, z) = I t      %e    dt
+@c                                    ]
+@c                                    /
+@c                                     0
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 See also @mref{gamma_incomplete} (upper incomplete gamma function).
 
@@ -677,8 +745,9 @@ See also @mref{gamma_incomplete} (upper incomplete gamma function).
 
 The incomplete upper gamma function (A&S 6.5.3):
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}>>>,
+<<<@example
                               inf
                              /
                              [     a - 1   - t
@@ -687,10 +756,22 @@ The incomplete upper gamma function (A&S 6.5.3):
                              /
                               z
 @end example
-@end ifnottex
-@tex
-$$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
-@end tex
+>>>
+)
+@c @ifnottex
+@c @example
+@c                               inf
+@c                              /
+@c                              [     a - 1   - t
+@c     gamma_incomplete(a, z) = I    t      %e    dt
+@c                              ]
+@c                              /
+@c                               z
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
@@ -710,17 +791,26 @@ Also see the related functions @code{gamma_incomplete_regularized} and
 
 The regularized incomplete upper gamma function (A&S 6.5.1):
 
-@ifnottex
-@example
+m4_displaymath(
+<<<Q\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}>>>,
+<<<@example
 gamma_incomplete_regularized(a, z) = 
                                         gamma_incomplete(a, z)
                                         ----------------------
                                                gamma(a)
 @end example
-@end ifnottex
-@tex
-$${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
-@end tex
+>>>)
+@c @ifnottex
+@c @example
+@c gamma_incomplete_regularized(a, z) = 
+@c                                         gamma_incomplete(a, z)
+@c                                         ----------------------
+@c                                                gamma(a)
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
+@c @end tex
 
 See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
@@ -739,8 +829,9 @@ Also see @code{gamma_incomplete}.
 
 The generalized incomplete gamma function.
 
-@ifnottex
-@example
+m4_displaymath(
+<<<\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}>>>,
+<<<@example
 gamma_incomplete_generalized(a, z1, z2) = 
                                                z2
                                               /
@@ -750,10 +841,22 @@ gamma_incomplete_generalized(a, z1, z2) =
                                               /
                                                z1
 @end example
-@end ifnottex
-@tex
-$$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
-@end tex
+>>>)
+@c @ifnottex
+@c @example
+@c gamma_incomplete_generalized(a, z1, z2) = 
+@c                                                z2
+@c                                               /
+@c                                               [    a - 1   - t
+@c                                               I   t      %e    dt
+@c                                               ]
+@c                                               /
+@c                                                z1
+@c @end example
+@c @end ifnottex
+@c @tex
+@c $$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
+@c @end tex
 
 Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
 
@@ -852,7 +955,10 @@ See also @mrefdot{makefact}
 @anchor{beta}
 @c -----------------------------------------------------------------------------
 @deffn {Function} beta (@var{a}, @var{b})
-The beta function is defined as @code{gamma(a) gamma(b)/gamma(a+b)} 
+The beta function is defined as
+m4_displaymath(
+<<<{\rm B}(a, b) = {{\Gamma(a) \Gamma(b)}\over{\Gamma(a+b)}}>>>,
+<<<@math{gamma(a) gamma(b)/gamma(a+b)}>>>)
 (A&S 6.2.1).
 
 Maxima simplifies the beta function for positive integers and rational 
@@ -990,7 +1096,9 @@ The derivative of the beta function wrt @code{a}:
 
 The basic definition of the incomplete beta function (A&S 6.6.1) is
 
-@example
+m4_displaymath(
+<<<{\rm B}_z(a,b) = \int_0^z t^{a-1}(1-t)^{b-1}\; dt>>>,
+<<<@example
 @group
         z
        /
@@ -1001,9 +1109,21 @@ The basic definition of the incomplete beta function (A&S 6.6.1) is
         0
 @end group
 @end example
+>>>)
+@c @example
+@c @group
+@c         z
+@c        /
+@c        [         b - 1  a - 1
+@c        I  (1 - t)      t      dt
+@c        ]
+@c        /
+@c         0
+@c @end group
+@c @end example
 
-This definition is possible for @math{realpart(a)>0} and @math{realpart(b)>0} 
-and @math{abs(z)<1}. For other values the incomplete beta function can be 
+This definition is possible for m4_math(<<<{\rm Re}(a) > 0>>>, <<<@math{realpart(a)>0}>>>) and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>) and m4_math(<<<|z| < 1>>>, <<<@math{abs(z)<1}>>>).
+For other values the incomplete beta function can be 
 defined through a generalized hypergeometric function:
 
 @example
@@ -1013,10 +1133,11 @@ defined through a generalized hypergeometric function:
 (See @url{https://functions.wolfram.com} for a complete definition of the incomplete beta
 function.)
 
-For negative integers @math{a = -n} and positive integers @math{b=m} with 
-@math{m<=n} the incomplete beta function is defined through
+For negative integers @math{a = -n} and positive integers @math{b=m} with m4_math(<<<m \le n>>>, <<<@math{m<=n}>>>) the incomplete beta function is defined through
 
-@example
+m4_displaymath(
+<<<z^{n-1}\sum_{k=0}^{m-1} {{(1-m)_k z^k} \over {k! (n-k)}}>>>,
+<<<@example
                             m - 1           k
                             ====  (1 - m)  z
                       n - 1 \            k
@@ -1025,6 +1146,16 @@ For negative integers @math{a = -n} and positive integers @math{b=m} with
                             ====
                             k = 0
 @end example
+>>>)
+@c @example
+@c                             m - 1           k
+@c                             ====  (1 - m)  z
+@c                       n - 1 \            k
+@c                      z       >    -----------
+@c                             /     k! (n - k)
+@c                             ====
+@c                             k = 0
+@c @end example
 
 Maxima uses this definition to simplify @code{beta_incomplete} for @var{a} a 
 negative integer.
@@ -1033,8 +1164,8 @@ For @var{a} a positive integer, @code{beta_incomplete} simplifies for any
 argument @var{b} and @var{z} and for @var{b} a positive integer for any 
 argument @var{a} and @var{z}, with the exception of @var{a} a negative integer.
 
-For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete} has the 
-specific value zero. For @var{z=1} and @math{realpart(b)>0}, 
+For @math{z=0} and m4_math(<<<{\rm Re}(a) > 0>>>, <<<@math{realpart(a)>0}>>>), @code{beta_incomplete} has the 
+specific value zero. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>), 
 @code{beta_incomplete} simplifies to the beta function @code{beta(a,b)}.
 
 Maxima evaluates @code{beta_incomplete} numerically for real and complex values 
@@ -1176,12 +1307,21 @@ Derivative and integral for @code{beta_incomplete}:
 
 The regularized incomplete beta function (A&S 6.6.2), defined as
 
-@example
+m4_displaymath(
+<<<I_z(a,b) = {{\rm B}_z(a,b)\over {\rm B}(a,b)}>>>,
+<<<@example
 beta_incomplete_regularized(a, b, z) = 
                                       beta_incomplete(a, b, z)
                                       ------------------------
                                              beta(a, b)
 @end example
+>>>)
+@c @example
+@c beta_incomplete_regularized(a, b, z) = 
+@c                                       beta_incomplete(a, b, z)
+@c                                       ------------------------
+@c                                              beta(a, b)
+@c @end example
 
 As for @code{beta_incomplete} this definition is not complete. See 
 @url{https://functions.wolfram.com} for a complete definition of
@@ -1190,8 +1330,9 @@ As for @code{beta_incomplete} this definition is not complete. See
 @code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
 integer.
 
-For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete_regularized} has 
-the specific value 0. For @var{z=1} and @math{realpart(b)>0}, 
+For @math{z=0} and m4_math(<<<{\rm Re}(a)>0>>>, <<<@math{realpart(a) > 0}>>>),
+@code{beta_incomplete_regularized} has 
+the specific value 0. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<@math{realpart(b)>0}>>>), 
 @code{beta_incomplete_regularized} simplifies to 1.
 
 Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
@@ -1293,7 +1434,9 @@ The derivative and the integral wrt @var{z}:
 
 The basic definition of the generalized incomplete beta function is
 
-@example
+m4_displaymath(
+<<<\int_{z_1}^{z_2} t^{a-1}(1-t)^{b-1}\; dt>>>,
+<<<@example
 @group
              z2
            /
@@ -1304,13 +1447,25 @@ The basic definition of the generalized incomplete beta function is
             z1
 @end group
 @end example
+>>>)
+@c @example
+@c @group
+@c              z2
+@c            /
+@c            [          b - 1  a - 1
+@c            I   (1 - t)      t      dt
+@c            ]
+@c            /
+@c             z1
+@c @end group
+@c @end example
 
 Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b} 
 a positive integer.
 
-For @math{realpart(a)>0} and @math{z1=0} or @math{z2=0}, Maxima simplifies
-@code{beta_incomplete_generalized} to @code{beta_incomplete}. For 
-@math{realpart(b)>0} and @math{z1=1} or @var{z2=1}, Maxima simplifies to an 
+For m4_math(<<<{\rm Re}(a) > 0>>>, <<<@math{realpart(a)>0}>>>) and m4_math(z_1 = 0, @math{z1=0}) or m4_math(z_2 = 0, @math{z2=0}), Maxima simplifies
+@code{beta_incomplete_generalized} to @code{beta_incomplete}.
+For m4_math({\rm Re}(b) > 0, @math{realpart(b)>0}) and m4_math(z_1 = 1, @math{z1=1}) or m4_math(z_2 = 1, @math{z2=1}), Maxima simplifies to an 
 expression with @code{beta} and @code{beta_incomplete}.
 
 Maxima evaluates @code{beta_incomplete_regularized} for real and complex values 
@@ -1465,7 +1620,11 @@ When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies
 @c @deffnx {Function} psi [@var{n}](@var{x})
 @deffn {Function} psi [@var{n}](@var{x})
 
-The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
+@c The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
+@code{psi[n](x)} is defined by
+m4_displaymath(
+<<<\psi_n(x) = {d^{n+1}\over{dx^{n+1}}} \log\Gamma(x)>>>,
+<<<@math{diff(log(gamma(x)), x, n+1)}>>>)
 Thus, @code{psi[0](@var{x})} is the first derivative,
 @code{psi[1](@var{x})} is the second derivative, etc.
 
@@ -1592,17 +1751,23 @@ Abramowitz and Stegun,
 @deffn {Function} expintegral_e1 (@var{z})
 The Exponential Integral E1(z) (A&S 5.1.1) defined as
 
-@ifnotinfo
-@tex
-$$E_1(z) = \int_z^\infty {e^{-t} \over t} dt$$
+m4_displaymath(
+<<<E_1(z) = \int_z^\infty {e^{-t} \over t} dt>>>,
+<<<@math{integrate(exp(-t)/t, t, z, inf)}>>>)
 
-with $|\arg\ z| < \pi$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(exp(-t)/t, t, z, inf)}
-with @math{abs(arg z) < %pi}.
-@end ifinfo
+with m4_math(<<<\arg z < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
+
+@c @ifnotinfo
+@c @tex
+@c $$E_1(z) = \int_z^\infty {e^{-t} \over t} dt$$
+@c 
+@c with $|\arg\ z| < \pi$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(exp(-t)/t, t, z, inf)}
+@c with @math{abs(arg z) < %pi}.
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1631,16 +1796,22 @@ The Exponential Integral Li(z)  (A&S 5.1.3)
 @deffn {Function} expintegral_e (@var{n},@var{z})
 The Exponential Integral En(z)  (A&S 5.1.4) defined as
 
-@ifnotinfo
-@tex
-$$E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt$$
-with ${\rm Re}\ z > 0$ and $n = 0, 1, 2, \ldots$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(exp(-z*t)/t^n, t, 1, inf)}
-with @math{real(x) > 1} and @math{n} a non-negative integer.
-@end ifinfo
+m4_displaymath(
+<<<E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt>>>,
+<<<@math{integrate(exp(-z*t)/t^n, t, 1, inf)}>>>)
+with m4_math(<<<{\rm Re}(z) > 1>>>,<<<@math{realpart(z) > 1}>>>) and @math{n} a
+non-negative integer.
+
+@c @ifnotinfo
+@c @tex
+@c $$E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt$$
+@c with ${\rm Re}\ z > 0$ and $n = 0, 1, 2, \ldots$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(exp(-z*t)/t^n, t, 1, inf)}
+@c with @math{real(x) > 1} and @math{n} a non-negative integer.
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1651,14 +1822,17 @@ with @math{real(x) > 1} and @math{n} a non-negative integer.
 @deffn {Function} expintegral_si (@var{z})
 The Exponential Integral Si(z) (A&S 5.2.1) defined as
 
-@ifnotinfo
-@tex
-$${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(sin(t)/t, t, 0, z)}
-@end ifinfo
+m4_displaymath(
+<<<{\rm Si}(z) = \int_0^z {\sin t \over t} dt>>>,
+<<<@math{integrate(sin(t)/t, t, 0, z)}>>>)
+@c @ifnotinfo
+@c @tex
+@c $${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(sin(t)/t, t, 0, z)}
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1669,18 +1843,23 @@ $${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
 @deffn {Function} expintegral_ci (@var{z})
 The Exponential Integral Ci(z) (A&S 5.2.2) defined as
 
-@ifnotinfo
-@tex
-$${\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt$$
+m4_displaymath(
+<<<{\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt>>>,
+<<<@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}>>>)
 
-with $|\arg\ z| < \pi$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
-
-with @math{abs(arg z) < %pi}
-@end ifinfo
+with m4_math(<<<|\arg z| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
+@c @ifnotinfo
+@c @tex
+@c $${\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt$$
+@c 
+@c with $|\arg\ z| < \pi$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
+@c 
+@c with @math{abs(arg z) < %pi}
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1691,14 +1870,17 @@ with @math{abs(arg z) < %pi}
 @deffn {Function} expintegral_shi (@var{z})
 The Exponential Integral Shi(z) (A&S 5.2.3) defined as
 
-@ifnotinfo
-@tex
-$${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{integrate(sinh(t)/t, t, 0, z)}
-@end ifinfo
+m4_displaymath(
+<<<{\rm Shi}(z) = \int_0^z {\sinh t \over t} dt>>>,
+<<<@math{integrate(sinh(t)/t, t, 0, z)}>>>)
+@c @ifnotinfo
+@c @tex
+@c $${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{integrate(sinh(t)/t, t, 0, z)}
+@c @end ifinfo
 
 
 @opencatbox{Categories:}
@@ -1710,18 +1892,24 @@ $${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
 @deffn {Function} expintegral_chi (@var{z})
 The Exponential Integral Chi(z) (A&S 5.2.4) defined as
 
-@ifnotinfo
-@tex
-$${\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt$$
+m4_displaymath(
+<<<{\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt>>>,
+<<<@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}>>>)
 
-with $|\arg\ z| < \pi$.
-@end tex
-@end ifnotinfo
-@ifinfo
-@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
+with m4_math(<<<|\arg z| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
 
-with @math{abs(arg z) < %pi}
-@end ifinfo
+@c @ifnotinfo
+@c @tex
+@c $${\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt$$
+@c 
+@c with $|\arg\ z| < \pi$.
+@c @end tex
+@c @end ifnotinfo
+@c @ifinfo
+@c @math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
+@c 
+@c with @math{abs(arg z) < %pi}
+@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1733,19 +1921,19 @@ with @math{abs(arg z) < %pi}
 Default value: false
 
 Change the representation of one of the exponential integrals,
-@var{expintegral_e(m, z)}, @var{expintegral_e1}, or
-@var{expintegral_ei} to an equivalent form if possible.
+@code{expintegral_e(m, z)}, @code{expintegral_e1}, or
+@code{expintegral_ei} to an equivalent form if possible.
 
-Possible values for @var{expintrep} are @var{false},
-@var{gamma_incomplete}, @var{expintegral_e1}, @var{expintegral_ei},
-@var{expintegral_li}, @var{expintegral_trig}, or
-@var{expintegral_hyp}.
+Possible values for @code{expintrep} are @code{false},
+@code{gamma_incomplete}, @code{expintegral_e1}, @code{expintegral_ei},
+@code{expintegral_li}, @code{expintegral_trig}, or
+@code{expintegral_hyp}.
 
-@var{false} means that the representation is not changed.  Other
+@code{false} means that the representation is not changed.  Other
 values indicate the representation is to be changed to use the
-function specified where @var{expintegral_trig} means
-@var{expintegral_si}, @var{expintegral_ci}, and @var{expintegral_hyp}
-means @var{expintegral_shi} or @var{expintegral_chi}.
+function specified where @code{expintegral_trig} means
+@code{expintegral_si}, @code{expintegral_ci}, and @code{expintegral_hyp}
+means @code{expintegral_shi} or @code{expintegral_chi}.
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1755,9 +1943,9 @@ means @var{expintegral_shi} or @var{expintegral_chi}.
 @defvr {Option variable} expintexpand 
 Default value: false
 
-Expand the Exponential Integral E[n](z)
-for half integral values in terms of Erfc or Erf and
-for positive integers in terms of Ei 
+Expand @code{expintegral_e(n,z)} for half
+integral values in terms of @code{erfc} or @code{erf} and
+for positive integers in terms of @code{expintegral_ei}.
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @closecatbox
@@ -1774,7 +1962,10 @@ Abramowitz and Stegun,
 @anchor{erf}
 @deffn {Function} erf (@var{z})
 
-The Error Function erf(z) (A&S 7.1.1)
+The Error Function erf(z) (A&S 7.1.1):
+m4_displaymath(
+<<<{\rm erf}\ z = {{2\over \sqrt{\pi}}} \int_0^z e^{-t^2}\, dt>>>,
+<<<@math{erf(z) = 2/sqrt(%pi)*integrate(exp(-t^2), t, 0, z)}>>>)
 
 See also flag @mrefdot{erfflag}
 @opencatbox{Categories:}
@@ -1784,9 +1975,11 @@ See also flag @mrefdot{erfflag}
 
 @anchor{erfc}
 @deffn {Function} erfc (@var{z})
-The Complementary Error Function erfc(z) (A&S 7.1.2)
+The Complementary Error Function erfc(z) (A&S 7.1.2):
+m4_displaymath(
+<<<{\rm erfc}\ z = 1 - {\rm erf}\ z>>>,
+<<<@math{erfc(z) = 1-erf(z)}>>>)
 
-@code{erfc(z) = 1-erf(z)}
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -1794,27 +1987,39 @@ The Complementary Error Function erfc(z) (A&S 7.1.2)
 
 @deffn {Function} erfi (@var{z})
 The Imaginary Error Function. 
+m4_displaymath(
+<<<{\rm erfi}\ z = -i\, {\rm erf}(i z)>>>,
+<<<@math{erfi(z) = -%i*erf(%i*z)}>>>)
 
-@code{erfi(z) = -%i*erf(%i*z)}
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} erf_generalized (@var{z1},@var{z2})
-Generalized Error function Erf(z1,z2)
+Generalized Error function Erf(z1,z2):
+m4_displaymath(
+<<<{\rm erf}(z_1, z_2) = {{2\over \sqrt{\pi}}} \int_{z_1}^{z_2} e^{-t^2}\, dt>>>,
+<<<@math{erf(z) = 2/sqrt(%pi)*integrate(exp(-t^2), t, z1, z2)}>>>)
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} fresnel_c (@var{z})
-The Fresnel Integral C(z) = integrate(cos((%pi/2)*t^2),t,0,z). (A&S 7.3.1)
+The Fresnel Integral
 
-The simplification fresnel_c(-x) = -fresnel_c(x) is applied when
+m4_displaymath(
+<<<C(z) = \int_0^z \cos\left({\pi \over 2} t^2\right)\, dt>>>,
+<<<@math{C(z) = integrate(cos((%pi/2)*t^2),t,0,z)}>>>)
+
+(A&S 7.3.1)
+
+The simplification @code{fresnel_c(-x) = -fresnel_c(x)} is applied when
 flag @code{trigsign} is true.
 
-The simplification fresnel_c(%i*x) =  %i*fresnel_c(x) is applied when
+The simplification @code{fresnel_c(%i*x) =  %i*fresnel_c(x)} is applied when
 flag @code{%iargs} is true.
 
 See flags @code{erf_representation} and @code{hypergeometric_representation}.
@@ -1824,12 +2029,17 @@ See flags @code{erf_representation} and @code{hypergeometric_representation}.
 @end deffn
 
 @deffn {Function} fresnel_s (@var{z})
-The Fresnel Integral S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
+The Fresnel Integral
+m4_displaymath(
+<<<S(z) = \int_0^z \sin\left({\pi \over 2} t^2\right)\, dt>>>,
+<<<@math{S(z) = integrate(sin((%pi/2)*t^2),t,0,z)}>>>)
 
-The simplification fresnel_s(-x) = -fresnel_s(x) is applied when
+(A&S 7.3.2)
+
+The simplification @code{fresnel_s(-x) = -fresnel_s(x)} is applied when
 flag @code{trigsign} is true.
 
-The simplification fresnel_s(%i*x) =  -%i*fresnel_s(x) is applied when
+The simplification @code{fresnel_s(%i*x) =  -%i*fresnel_s(x)} is applied when
 flag @code{%iargs} is true.
 
 See flags @code{erf_representation} and @code{hypergeometric_representation}.
@@ -1841,15 +2051,15 @@ See flags @code{erf_representation} and @code{hypergeometric_representation}.
 @defvr {Option variable} erf_representation
 Default value: false
 
-When T erfc, erfi, erf_generalized, fresnel_s 
-and fresnel_c are transformed to erf.
+When @code{true}, @code{erfc}, @code{erfi}, @code{erf_generalized}, @code{fresnel_s} 
+and @code{fresnel_c} are transformed to @code{erf}.
 @end defvr
 
 @defvr {Option variable} hypergeometric_representation
 Default value: false
 
 Enables transformation to a Hypergeometric
-representation for fresnel_s and fresnel_c
+representation for @code{fresnel_s} and @code{fresnel_c}.
 @end defvr
 
 @node Struve Functions, Hypergeometric Functions, Error Function, Special Functions
@@ -1857,10 +2067,27 @@ representation for fresnel_s and fresnel_c
 
 The Struve functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 12.
+The Struve Function m4_math(<<<{\bf H}_{\nu}(z)>>>,<<<@math{H[v](z)}>>>) is a particular solution
+of the differential equation:
+m4_displaymath(
+<<<z^2 {d^2 w \over dz^2} + z {dw \over dz} + (z^2-\nu^2)w =
+{{4\left({1\over 2} z\right)^{\nu+1}} \over \sqrt{\pi} \Gamma\left(\nu + {1\over 2}\right)}>>>,
+<<<@math{z^2*diff(w,z,2) + z*diff(w,z)+(z^2-v^2)*w = 4*(z/2)^(v+1)/(sqrt(%pi)*gamma(v+1/2))}>>>)
+
+which has the general soution
+m4_displaymath(
+<<<w = aJ_{\nu}(z) + bY_{\nu}(z) + {\bf H}_{\nu}(z)>>>,
+<<<@math{w = a*bessel_j(v,z) + b*bessel_y(v,z) + struve_h(v,z)}>>>)
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} struve_h (@var{v}, @var{z})
-The Struve Function H of order v and argument z. (A&S 12.1.1)
+The Struve Function H of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z}. (A&S 12.1.1)  This can be expressed by
+the power series
+
+m4_displaymath(
+<<<{\bf H}_{\nu}(z) = \left({z\over 2}\right)^{\nu+1}
+\sum_{k=0}^{\infty} {(-1)^k\left({z\over 2}\right)^{2k} \over \Gamma\left(k + {3\over 2}\right) \Gamma\left(k + \nu + {3\over 2}\right)}>>>,
+<<<@math{struve_h(v,z) = (z/2)^(v+1)*sum((-1)^k*(z/2)^(2*k)/(gamma(k+3/2)*gamma(k+v+3/2)), k, 0, inf)}>>>)
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -1869,7 +2096,10 @@ The Struve Function H of order v and argument z. (A&S 12.1.1)
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} struve_l (@var{v}, @var{z})
-The Modified Struve Function L of order v and argument z. (A&S 12.2.1)
+The Modified Struve Function L of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z} (A&S 12.2.1):
+m4_displaymath(
+<<<{\bf L}_{\nu}(z) = -ie^{-{i\nu\pi\over 2}} {\bf H}_{\nu}(iz)>>>,
+<<<@math{struve_l(v,z) = %i*exp(-%i*v*%pi/2)*struve_h(v,z)}>>>)
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -1886,16 +2116,33 @@ Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
 @deffn {Function} %m [@var{k},@var{u}] (@var{z}) 
-Whittaker M function
-@code{M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}.  
-(A&S 13.1.32)
+Whittaker M function (A&S 13.1.32):
+
+m4_displaymath(
+<<<M_{\kappa,\mu}(z) = e^{-{1\over 2}z} z^{{1\over 2} + \mu} M\left({1\over 2} + \mu - \kappa, 1 + 2\mu, z\right)>>>,
+<<<@math{%m[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}>>>)
+
+where @math{M(a,b,z)} is Kummer's solution of the confluent hypergeometric equation.
+
+This can also be expressed by the series (DLMF 13.14.6):
+m4_displaymath(
+<<<M_{\kappa,\mu}(z) = e^{-{1\over 2} z} z^{{1\over 2} + \mu}
+\sum_{s=0}^{\infty} {\left({1\over 2} + \mu - \kappa\right)_s \over (1 + 2\mu)_s s!} z^s>>>,
+<<<@math{%m[k,u](z) = %e^(-z/2)*z^(1/2+u)*sum(pochhammer(1/2+u-k,s)/(pochhammer(1+2*u,s)*s!)*z^s, s, 0, inf)}>>>)
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} %w [@var{k},@var{u}] (@var{z}) 
-Whittaker W function.  (A&S 13.1.33)
+Whittaker W function (A&S 13.1.33):
+m4_displaymath(
+<<<W_{\kappa,\mu}(z) = e^{-{1\over 2}z} z^{{1\over 2} + \mu} U\left({1\over 2} + \mu - \kappa, 1+2\mu,z\right)>>>,
+<<<@math{%w[k,v](z) = exp(-z/2)*z^(1/2+u)*U(1/2+u-k, 1+2*u, z)}>>>)
+
+where @math{U(a,b,z)} is Kummer's second solution of the confluent hypergeometric equation.
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -1903,9 +2150,9 @@ Whittaker W function.  (A&S 13.1.33)
 
 
 @deffn {Function} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
-The pFq(a1,a2,..ap;b1,b2,..bq;z) hypergeometric function,
-where @code{a} a list of length @code{p} and 
-@code{b} a list of length @code{q}.
+The m4_math(<<<_{p}F_{q}(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>,<<<pFq(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>) hypergeometric function,
+where @var{a} a list of length @var{p} and 
+@var{b} a list of length @var{q}.
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
@@ -1966,7 +2213,15 @@ Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
 @deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
-The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&S 19.3.1)
+The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&S 19.3.1).
+
+@c See https://mathworld.wolfram.com/ParabolicCylinderFunction.html for more info.
+The solution of the Weber differential equation
+m4_displaymath(
+<<<y''(z) + \left(\nu + {1\over 2} - {1\over 4} z^2\right) y(z) = 0>>>,
+<<<diff(y(z), z, 2) + (v+1/2-z^2/4)*y(z) = 0>>>)
+has two independent solutions, one of which is m4_math(<<<D_{\nu}(z)>>>, <<<@code{parabolic_cylinder_d(v,z)}>>>), the parabolic cylinder d function.
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2205,20 +2460,22 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 @end deffn
 
 @deffn {Function} lambert_w (@var{z})
-The principal branch of Lambert's W function W(z), the solution of 
-@code{z = W(z) * exp(W(z))}.  (DLMF 4.13)
+The principal branch of Lambert's W function W(z) (DLMF 4.13), the solution of 
+m4_displaymath(
+<<<z = W(z)e^{W(z)}>>>,
+@math{z = W(z) * exp(W(z))})  
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} generalized_lambert_w (@var{k}, @var{z})
-The @var{k}-th branch of Lambert's W function W(z), the solution of 
-@code{z = W(z) * exp(W(z))}. (DLMF 4.13)
+The @var{k}-th branch of Lambert's W function W(z) (DLMF 4.13), the solution
+of m4_math(<<<z=W(z)e^{W(z)}>>>,@math{z = W(z) * exp(W(z))}).
 
-The principal branch, denoted Wp(z) in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
+The principal branch, denoted m4_math(W_p(z),@math{Wp(z)}) in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
 
-The other branch with real values, denoted Wm(z) in DLMF, is @code{generalized_lambert_w(-1,z)}.
+The other branch with real values, denoted m4_math(W_m(z), @math{Wm(z)}) in DLMF, is @code{generalized_lambert_w(-1,z)}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2228,7 +2485,10 @@ The other branch with real values, denoted Wm(z) in DLMF, is @code{generalized_l
 
 @deffn {Function} nzeta (@var{z})
 The Plasma Dispersion Function 
-@code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}
+m4_displaymath(
+<<<{\rm nzeta}(z) = i\sqrt{\pi}e^{-z^2}(1-{\rm erf}(-iz))>>>,
+<<<@math{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}>>>)
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
