@@ -256,8 +256,6 @@ This specifies the command to use to open an HTML file.
 See also @mrefcomma{describe_uses_html} @mrefcomma{browser_options}
 and @mrefdot{url_base}
 
-This value ignored on windows which uses a fixed option.
-
 @opencatbox{Categories:}
 @category{Help}
 @category{Global variables}

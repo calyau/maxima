@@ -183,15 +183,16 @@
 	  (when *debug-hdescribe*
 	    (format *debug-io* "URL: ~A~%" url))
 	  (cond ((string-equal *autoconf-windows* "true")
-		 ;; On windows we ignore $browser and always use 'cmd
-		 ;; "start /max <url>"'.
+		 ;; On windows we ignore $browser_options
 		 (setf command
 		       (concatenate 'string
-				    "cmd \"start /max "
-				    url
-				    "\"")))
+				    $browser
+				    " "
+				    url)))
 		(t
-		 ;; Non-windows. Just run the browser with the given URL.
+		 ;; Non-windows. Just run the browser with the given
+		 ;; URL, but quoted because the URL can contain "#"
+		 ;; which would be ignored by the shell.
 		 (setf command
 		       (concatenate 'string
 				    $browser

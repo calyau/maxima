@@ -677,12 +677,14 @@ When one changes, the other does too."
   ;; Set up $browser for displaying help in browser.
   (cond ((and (boundp '*autoconf-windows*)
 	      (string-equal *autoconf-windows* "true"))
-	 (setf $browser "cmd \"start /max"))
+	 (setf $browser "start /max"))
 	((boundp '*autoconf-host*)
-	 (cond ((pregexp:pregexp-match-positions "(?i:linux)" *autoconf-host*)
-		(setf $browser "xdg-open"))
-	       ((pregexp:pregexp-match-positions "(?:darwin)" *autoconf-host*)
-		(setf $browser "open"))))))
+	 ;; Determine what kind of OS we're using from the host and
+	 ;; set up the default browser appropriately.
+	 (cond ((pregexp:pregexp-match-positions "(?:darwin)" *autoconf-host*)
+		(setf $browser "open"))
+	       ((pregexp:pregexp-match-positions "(?i:linux)" *autoconf-host*)
+		(setf $browser "xdg-open"))))))
 
 (defun adjust-character-encoding ()
   #+sbcl (setf sb-impl::*default-external-format* :utf-8)
