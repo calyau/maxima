@@ -1099,7 +1099,7 @@ When @code{programmode} is @code{false}, @code{realroots} creates intermediate
 expression labels @code{%t1}, @code{%t2}, @dots{},
 assigns the results to them, and returns the list of labels.
 
-See also @mrefcomma{allroots} @mrefcomma{bfallroots} @mref{guess_exact_value}
+See also @mrefcomma{allroots} @mrefcomma{bfallroots} @mrefcomma{guess_exact_value}
 and @mrefdot{lhs}
 
 Examples:

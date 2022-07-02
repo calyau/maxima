@@ -96,9 +96,9 @@ Most of these additional failures are due to dispatching sign on und.
 
 
 
-Speculation on how to speed up simplication of sums:
+Speculation on how to speed up simplification of sums:
 
-The altsimp algorithm uses sorting to speed up simplication of expressions with a 
+The altsimp algorithm uses sorting to speed up simplification of expressions with a 
 large number of summands, but at least for running the testsuites, simplus is mostly 
 called with just two summands. If one of the two summands is a sum, say XXX, altsimp 
 re-examines the terms of XXX for common terms. That is, of course, wasteful. If the 

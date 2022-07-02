@@ -10,6 +10,24 @@
 
 (defvar $manual_demo "manual.demo")
 
+(defmvar $browser "firefox"
+  "Browser to use for displaying the documentation")
+
+(defmvar $browser_options ""
+  "Browser options")
+
+(defmvar $url_base "localhost:8080"
+  "Base URL where the HTML doc may be found.  This can be a file path
+  like \"file:///<path>\" or a web server like \"localhost:8080\" or
+  some other web server.")
+
+(defmvar $describe_uses_html nil
+  "When true, describe displays the exact help entry as html in a
+  browser instead of text to the terminal")
+
+(defvar *debug-hdescribe* nil
+  "Set to non-NIL to get some debugging messages from hdescribe")
+
 (defmspec $example (l)
   (declare (special *need-prompt*))
   (let ((example (second l)))
@@ -143,3 +161,47 @@
         (t
          (merror
           (intl:gettext "apropos: argument must be a string or symbol; found: ~M") s))))
+
+
+;;; Display help in browser instead of the terminal
+(defmfun $hdescribe (x)
+  (let* ((topic ($sconcat x))
+         (found-it (gethash topic cl-info::*html-index*)))
+    (when *debug-hdescribe*
+      (format *debug-io* "topic = ~A~%" topic)
+      (format *debug-io* "found-it = ~A~%" found-it))
+    (when found-it
+      (destructuring-bind (base-name . id)
+	  found-it
+	(let ((url (concatenate 'string
+				$url_base
+				"/"
+				(namestring base-name)
+				"#index-"
+				id))
+	      command)
+	  (when *debug-hdescribe*
+	    (format *debug-io* "URL: ~A~%" url))
+	  (cond ((string-equal *autoconf-windows* "true")
+		 ;; On windows we ignore $browser_options
+		 (setf command
+		       (concatenate 'string
+				    $browser
+				    " "
+				    url)))
+		(t
+		 ;; Non-windows. Just run the browser with the given
+		 ;; URL, but quoted because the URL can contain "#"
+		 ;; which would be ignored by the shell.
+		 (setf command
+		       (concatenate 'string
+				    $browser
+				    " "
+				    $browser_options
+				    " '"
+				    url
+				    "'"))))
+	  (when *debug-hdescribe*
+	    (format *debug-io* "Command: ~S~%" command))
+	  ($system command))))
+    topic))

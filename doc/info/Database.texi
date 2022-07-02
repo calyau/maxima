@@ -1014,6 +1014,32 @@ they are subcontexts of the current context.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{askequal}
+@deffn  {Function} askequal @
+@fname{askequal} (@var{expr1}, @var{expr2})
+
+@code{askequal(@var{expr1}, @var{expr2})} attempts to determine from the
+@code{assume} database whether @var{expr1} is equal to @var{expr2},
+and prompts the user if it cannot tell.
+
+If the user provides the answer,
+the answer is stored in the @code{assume} database
+for the duration of the evaluation of the expression currently in progress.
+When the evaluation is completed,
+the user-provided answer is removed from the database.
+
+@code{askequal} returns @code{yes} or @code{no},
+whether the answer was determined from the @code{assume} database
+or provided by the user.
+
+See also @mrefdot{equal}
+
+@opencatbox{Categories:}
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
 
 @c -----------------------------------------------------------------------------

@@ -19,15 +19,13 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst
-		      $abconvtest plogabs))
+(declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst plogabs))
 
 (defmvar $demoivre nil)
 (defmvar $nointegrate nil)
 (defmvar $lhospitallim 4)
 (defmvar $tlimswitch t)
 (defmvar $limsubst nil)
-(defmvar $abconvtest nil)
 (defvar rsn* nil)
 (defvar plogabs nil)
 

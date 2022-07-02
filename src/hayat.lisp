@@ -2527,13 +2527,24 @@
 (defprop $gamma_incomplete_lower gamma-lower-trans tay-trans)
 
 ;; for gamma_incomplete(s,z)
-;; translate into gamma_incomplete_lower if s>0 and z=0
+;; translate into gamma_incomplete_lower if s>0 and z=0 
+
+;; June 2022: To workaround the bug
+;;     integrate(x*exp(-x^2)*sin(x),x,minf,inf)
+;;     limit: variable must be a symbol or subscripted symbol; found: sin(x)
+;; I (Barton Willis) surrounded the call to $limit with errcatch with
+;; $errormsg set to nil. This change allows Maxima to find the correct 
+;; value of this definite integral. But almost surely there is a bug 
+;; somewhere else that calls gamma-upper-trans with faulty arguments.
+;; The real bug should be fixed, but inserting errcatch here is 
+;; harmless.
 (defun gamma-upper-trans (arg func)
   (let ((s (car arg))
 	(z (cadr arg)))
     (if (and
 	 (eq ($sign s) '$pos)
-	 (zerop1 ($limit z (caar tlist) (exp-pt (car tlist)))))
+	 (let (($errormsg nil))
+	  (zerop1 (car (errcatch ($limit z (caar tlist) (exp-pt (car tlist))))))))
 	(taylor2 `((mplus) ((%gamma) ,s)
 		   ((mtimes) -1 ((%gamma_incomplete_lower) ,s ,z))))
 	(taylor2 (diff-expand `((,func) . ,arg)

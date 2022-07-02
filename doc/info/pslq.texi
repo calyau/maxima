@@ -18,6 +18,7 @@ is approximately zero.
 @node Functions and Variables for pslq, , Introduction to pslq, pslq-pkg
 @section Functions and Variables for pslq
 
+@anchor{guess_exact_value}
 @deffn {Function} guess_exact_value (@var{x})
 
 When @var{x} is a floating point number or bigfloat,

@@ -71,7 +71,6 @@ adjust_external_format
 af
 aform
 agd
-airy
 airy_ai
 airy_bi
 airy_dai
@@ -495,6 +494,9 @@ derivdegree
 derivlist
 derivsubst
 describe
+describe_uses_html
+url_base
+browser
 desolve
 determinant
 detout

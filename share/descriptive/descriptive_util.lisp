@@ -6,7 +6,7 @@
 
 (defun $vector_min_max (a)
   (if (> (length a) 0)
-    (let ((min-a '$inf) (max-a '$minf))
+    (let ((min-a '$inf) (max-a '$minf) ($ratprint nil))
       (loop for x across a
             do (let ((cmp-min ($compare x min-a))
                      (cmp-max ($compare x max-a)))

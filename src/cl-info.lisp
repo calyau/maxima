@@ -2,6 +2,13 @@
 
 (defvar *info-tables* (make-hash-table :test 'equal))
 
+(defvar *html-index*
+  (make-hash-table :test #'equalp)
+  "Hash table for looking up which html file contains the
+  documentation.  The key is the topic we're looking for and the value
+  is a cons consisting of the html file and the id for the key.")
+
+
 (defun print-prompt (prompt-count)
   (fresh-line)
   (maxima::format-prompt
@@ -61,14 +68,31 @@
   ;; with-standard-io-syntax too much for what we want?
   (let*
       ((subdir-bit (or maxima::*maxima-lang-subdir* "."))
-       (path-to-index (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index.lisp")))
+       (path-to-index (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index.lisp"))
+       (path-to-html-index
+	 (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index-html.lisp")))
+    ;; Set the default of the html URL base to be a file URL pointing
+    ;; to the info dir.
+    (setf maxima::$url_base (concatenate 'string
+			     "file://"
+			     (maxima::combine-path maxima::*maxima-infodir* "")))
+			     
     (handler-case
 	#-gcl
       (with-standard-io-syntax (load path-to-index))
       #+gcl
       (let ((*read-base* 10.)) (load path-to-index))
+      (error (condition) (warn (intl:gettext (format nil "~&Maxima is unable to set up the help system.~&(Details: CL-INFO::LOAD-PRIMARY-INDEX: ~a)~&" condition)))))
+    (handler-case
+	#-gcl
+      (with-standard-io-syntax
+	(load path-to-html-index))
+      #+gcl
+      (let ((*read-base* 10.))
+	(load path-to-html-index))
       (error (condition) (warn (intl:gettext (format nil "~&Maxima is unable to set up the help system.~&(Details: CL-INFO::LOAD-PRIMARY-INDEX: ~a)~&" condition)))))))
 
+  
 (defun info-exact (x)
   (let ((exact-matches (exact-topic-match x)))
     (if (not (some-exact x exact-matches))
@@ -149,13 +173,20 @@
     (finish-output *debug-io*)
     (when (consp wanted)
       (format t "~%")
-      (loop for item in wanted
-	    do (let ((doc (read-info-text (first item) (second item))))
-		 (if doc
-		     (format t "~A~%~%" doc)
-		     (format t "Unable to find documentation for `~A'.~%~
+      (cond
+	(maxima::$describe_uses_html
+	 (when maxima::*debug-hdescribe*
+	   (format *debug-io* "wanted = ~A~%" wanted))
+	 (loop for (dir entry) in wanted
+	       do (maxima::$hdescribe (car entry))))
+	(t
+	  (loop for item in wanted
+		do (let ((doc (read-info-text (first item) (second item))))
+		     (if doc
+			 (format t "~A~%~%" doc)
+			 (format t "Unable to find documentation for `~A'.~%~
                                 Possible bug maxima-index.lisp or build_index.pl?~%"
-			     (first (second item)))))))))
+				 (first (second item)))))))))))
 
 (defun inexact-topic-match (topic)
   (setq topic (regex-sanitize topic))
@@ -233,4 +264,10 @@
       ((t1 (make-hash-table :test 'equal))
        (t2 (make-hash-table :test 'equal)))
       (setf (gethash dir-name *info-tables*) (list t1 t2)))))
+
+(defun load-html-index (entries)
+  (dolist (entry entries)
+    (destructuring-bind (item path id)
+	entry
+      (setf (gethash item *html-index*) (cons path id)))))
 
