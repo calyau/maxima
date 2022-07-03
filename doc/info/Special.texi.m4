@@ -37,8 +37,8 @@ gamma (z)                      Gamma function
 gamma_incomplete_lower (a,z)   Lower incomplete gamma function
 gamma_incomplete (a,z)         Tail of incomplete gamma function
 hypergeometric (l1, l2, z)     Hypergeometric function
-@c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
-slommel
+%s[u,v] (z)                    Lommel "small" s function
+slommel[u,v] (z)               Lommel "big" S function
 %m[u,k] (z)                    Whittaker function, 1st kind
 %w[u,k] (z)                    Whittaker function, 2nd kind
 erfc (z)                       Complement of the erf function
@@ -72,7 +72,8 @@ parabolic_cylinder_d (v,z)     Parabolic cylinder D function
 @anchor{bessel_j}
 @deffn {Function} bessel_j (@var{v}, @var{z})
 
-The Bessel function of the first kind of order @math{v} and argument @math{z}.
+The Bessel function of the first kind of order @math{v} and argument @math{z}
+(A&S 9.1.10)(DLMF 10.2.2).
 
 @code{bessel_j} is defined as
 
@@ -102,7 +103,8 @@ although the infinite series is not used for computations.
 @anchor{bessel_y}
 @deffn {Function} bessel_y (@var{v}, @var{z})
 
-The Bessel function of the second kind of order @math{v} and argument @math{z}.
+The Bessel function of the second kind of order @math{v} and argument @math{z}
+(A&S 9.1.2)(DLMF 10.2.3).
 
 @code{bessel_y} is defined as
 m4_displaymath(
@@ -140,7 +142,7 @@ the limit as @math{v} approaches @math{n} is taken.
 @deffn {Function} bessel_i (@var{v}, @var{z})
 
 The modified Bessel function of the first kind of order @math{v} and argument
-@math{z}.
+@math{z} (A&S 9.6.10)(DLMF 10.25.2).
 
 @code{bessel_i} is defined as
 m4_displaymath(
@@ -187,7 +189,7 @@ although the infinite series is not used for computations.
 @deffn {Function} bessel_k (@var{v}, @var{z})
 
 The modified Bessel function of the second kind of order @math{v} and argument
-@math{z}.
+@math{z} (A&S 9.6.2)(DLMF 10.27.4).
 
 @code{bessel_k} is defined as
 m4_displaymath(
@@ -223,7 +225,9 @@ then the limit as @math{v} approaches @math{n} is taken.
 @deffn {Function} hankel_1 (@var{v}, @var{z})
 
 The Hankel function of the first kind of order @math{v} and argument @math{z}
-(A&S 9.1.3). @code{hankel_1} is defined as
+(A&S 9.1.3)(DLMF 10.4.3).
+
+@code{hankel_1} is defined as
 
 m4_displaymath(
 <<<H^{(1)}_v(z) = J_v(z) + i Y_v(z)>>>,
@@ -308,7 +312,9 @@ order @math{v} is not supported. Maxima returns a noun form:
 @deffn {Function} hankel_2 (@var{v}, @var{z})
 
 The Hankel function of the second kind of order @math{v} and argument @math{z}
-(A&S 9.1.4). @code{hankel_2} is defined as
+(A&S 9.1.4)(DLMF 10.4.3).
+
+@code{hankel_2} is defined as
 
 m4_displaymath(
 <<<H^{(2)}_v(z) = J_v(z) - i Y_v(z)>>>,
@@ -413,12 +419,23 @@ Identical to @code{scaled_bessel_i(1,z)}.
 @c -----------------------------------------------------------------------------
 @deffn {Function} %s [@var{u},@var{v}] (@var{z}) 
 Lommel's little s[u,v](z) function.  
-Probably Gradshteyn & Ryzhik 8.570.1.
+(DLMF 11.9.3)(G&R 8.570.1).
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} slommel [@var{u},@var{v}] (@var{z}) 
+Lommel's big S[u,v](z) function.  
+(DLMF 11.9.5)(G&R 8.570.2).
+@opencatbox{Categories:}
+@category{Bessel functions}
+@category{Special functions}
+@closecatbox
+@end deffn
+
 
 @c -----------------------------------------------------------------------------
 @node Airy Functions, Gamma and factorial Functions, Bessel Functions, Special Functions
