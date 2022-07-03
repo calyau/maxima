@@ -417,9 +417,30 @@ Identical to @code{scaled_bessel_i(1,z)}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{%s}
 @deffn {Function} %s [@var{u},@var{v}] (@var{z}) 
-Lommel's little s[u,v](z) function.  
+Lommel's little m4_math(<<<s_{\mu,\nu}(z)>>>, <<<@math{s[u,v](z)}>>>) function.  
 (DLMF 11.9.3)(G&R 8.570.1).
+
+This Lommel function is the particular solution of the inhomogeneous
+Bessel differential equation:
+
+m4_displaymath(
+<<<{d^2\over dz^2} + {1\over z}{dw\over dz} + \left(1-{\nu^2\over z^2}\right) w = z^{\mu-1}>>>,
+<<<diff(w,z,2)+1/z*diff(w,z)+(1-v^2/z^2)*w = z^(u-1)>>>)
+
+This can be defined by the series
+
+m4_displaymath(
+<<<s_{\mu,\nu}(z) = z^{\mu+1}\sum_{k=0}^{\infty} (-1)^k {z^{2k}\over a_{k+1}(\mu, \nu)}>>>,
+<<<%s[u,v](z) = z^(u+1)*sum((-1)^k*z^(2*k)/a[k+1](u,v)>>>)
+
+where
+
+m4_displaymath(
+<<<a_k(\mu,\nu) = \prod_{m=1}^k \left(\left(\mu + 2m-1\right)^2-\nu^2\right) = 4^k\left(\mu-\nu+1\over 2\right)_k \left(\mu+\nu+1\over 2\right)_k>>>,
+<<<a[k](u,v) = product(((u+2*m-1)^2-v^2),m,1,k) = 4^k*pochhammer((u-v+1)/2,k)*pochhammer((u+v+1)/2,k)>>>)
+
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
@@ -428,8 +449,25 @@ Lommel's little s[u,v](z) function.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} slommel [@var{u},@var{v}] (@var{z}) 
-Lommel's big S[u,v](z) function.  
+Lommel's big m4_math(<<<S_{\mu,\nu}(z)>>>, <<<@math{S[u,v](z)}>>>) function.  
 (DLMF 11.9.5)(G&R 8.570.2).
+
+Lommels big S function is another particular solution of the
+inhomogeneous Bessel differential equation
+(@pxref{%s}) defined for all values
+of m4_math(\mu, @math{u}) and m4_math(\nu, @math{v}), where
+
+m4_displaymath(
+<<<\eqalign{
+S_{\mu,\nu}(z) = s_{\mu,\nu}(z) + 2^{\mu-1} & \Gamma\left({\mu\over 2} + {\nu\over 2} + {1\over 2}\right) \Gamma\left({\mu\over 2} - {\nu\over 2} + {1\over 2}\right) \cr
+& \times \left(\sin\left({(\mu-\nu)\pi\over 2}\right) J_{\nu}(z) - \cos\left({(\mu-\nu)\pi\over 2}\right) Y_{\nu}(z)\right)
+}>>>,
+<<<@math{slommel[u,v](z) = %s[u,v](z) + 2^(u-1)*gamma(u/2+v/2+1/2)*gamma(u/2-v/2+1/2)
+* (sin(1/2*(u-v)*%pi)*bessel_j(v,z) - cos(1/2*(u-v)*%pi)*bessel_y(v,z))}>>>)
+
+When m4_math(<<<\mu\pm \nu>>>, @math{u+v} or @math{u-v}) is an odd
+negative integer, the limit must be used.
+
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
