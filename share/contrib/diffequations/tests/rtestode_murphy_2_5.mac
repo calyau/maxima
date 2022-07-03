@@ -27,7 +27,7 @@ true;
 (s:first(solve((ans[2])[2],%t)),s:first(solve(ev(first(ans[2]),s),y)));
 y = log(-1/x)+a-1;
 [method,ode_check(eqn,ans[1]),ode_check(eqn,s)];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 405 */
 (pn_(405),ans:contrib_ode(eqn:log('diff(y,x))+a*(x*'diff(y,x)-y)=0,y,x));
@@ -37,7 +37,7 @@ y = log(-1/x)+a-1;
 s:elim_(ans[2],x,y,%t);
 y=(log(-1/(a*x))-1)/a;
 [method,ode_check(eqn,ans[1]),ode_check(eqn,s)];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 408 */
 (pn_(408),ans:contrib_ode(eqn:'diff(y,x)*log('diff(y,x))-(1+x)*'diff(y,x)+y=0,y,x));
@@ -46,7 +46,7 @@ y=(log(-1/(a*x))-1)/a;
 (s:first(solve((ans[2])[2],%t)),s:first(solve(ev(first(ans[2]),s),y)));
 y = %e^x;
 [method,ode_check(eqn,ans[1]),ode_check(eqn,s)];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 409 */
 (pn_(409),ans:contrib_ode(eqn:log('diff(y,x)*x-y)='diff(y,x),y,x));
@@ -55,7 +55,7 @@ y = %e^x;
 (s:first(solve((ans[2])[2],%t)),s:first(solve(ev(first(ans[2]),s),y)));
 y = x*log(x)-x;
 [method,ode_check(eqn,ans[1]),ode_check(eqn,s)];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 410 */
 (pn_(410),ans:contrib_ode(eqn:'diff(y,x)*log('diff(y,x)+sqrt(1+'diff(y,x)^2))-sqrt(1+'diff(y,x)^2)-x*'diff(y,x)+y=0,y,x));
@@ -71,10 +71,10 @@ y-cosh(x)=0;
 ans[2]:first(solve(%,y));
 y=cosh(x);
 [method,ode_check(eqn,ans[1]),radcan(exponentialize((ode_check(eqn,ans[2]))))];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 416 - requires pdiff package */
 block([use_pdiff:true],pn_(416),contrib_ode(eqn:f(x*'diff(y,x)-y)=g('diff(y,x)),y,x));
 [f(%c*x-y)=g(%c)];
 method;
-clairault;
+clairaut;

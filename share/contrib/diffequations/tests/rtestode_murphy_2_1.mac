@@ -195,13 +195,13 @@ solve(ans[1],y);
 (pn_(34),ans:contrib_ode(eqn:'diff(y,x)^2+x*'diff(y,x)-y=0,y,x));
 [y=%c*x+%c^2,y=-x^2/4];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 35 */
 (pn_(35),ans:contrib_ode(eqn:'diff(y,x)^2-x*'diff(y,x)+y=0,y,x));
 [y=%c*x-%c^2,y=x^2/4];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 36 */
 (pn_(36),ans:contrib_ode(eqn:'diff(y,x)^2-x*'diff(y,x)-y=0,y,x));
@@ -231,25 +231,25 @@ lagrange;
 (pn_(38),ans:contrib_ode(eqn:'diff(y,x)^2+(1-x)*'diff(y,x)+y=0,y,x));
 [y=%c*x-%c-%c^2,y=(x^2-2*x+1)/4];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 39 */
 (pn_(39),ans:contrib_ode(eqn:'diff(y,x)^2-(1+x)*'diff(y,x)+y=0,y,x));
 [y=%c*x-%c^2+%c,y=(x^2+2*x+1)/4];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 40 */
 (pn_(40),ans:contrib_ode(eqn:'diff(y,x)^2-(2-x)*'diff(y,x)+1-y=0,y,x));
 [y=%c*x+%c^2-2*%c+1,y=-((x^2-4*x)/4)];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 41 */
 (pn_(41),ans:contrib_ode(eqn:'diff(y,x)^2+(a+x)*'diff(y,x)-y=0,y,x));
 [y=%c*x+%c*a+%c^2,y=-((x^2+2*a*x+a^2)/4)];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 42 */
 (pn_(42),ans:contrib_ode(eqn:'diff(y,x)^2-2*x*'diff(y,x)+1=0,y,x));
@@ -287,7 +287,7 @@ ans:solve(ans[1],y);
 (pn_(46),ans:contrib_ode(eqn:'diff(y,x)^2-2*x*'diff(y,x)+2*y=0,y,x));
 [y=(2*%c*x-%c^2)/2,y=x^2/2];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 47 */
 (pn_(47),ans:contrib_ode(eqn:'diff(y,x)^2+(1+2*x)*diff(y,x)-x*(1-x)=0,y,x));
@@ -313,7 +313,7 @@ lagrange;
 (pn_(50),ans:contrib_ode(eqn:'diff(y,x)^2-4*(1+x)*'diff(y,x)+4*y=0,y,x));
 [y=(4*%c*x-%c^2+4*%c)/4,y=x^2+2*x+1];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 51 */
 assume(4*c+a^2>0,b>0);
@@ -331,7 +331,7 @@ forget(4*c+a^2>0,b>0);
 (pn_(52),ans:contrib_ode(eqn:'diff(y,x)^2-a*x*'diff(y,x)+a*y=0,y,x));
 [y=(%c*a*x-%c^2)/a,y=a*x^2/4];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 53 ode1_lie takes forever */
 /* (pn_(53),ans:contrib_ode(eqn:'diff(y,x)^2+a*x*'diff(y,x)+b*x^2+c*y=0,y,x));*/
@@ -340,7 +340,7 @@ forget(4*c+a^2>0,b>0);
 (pn_(54),ans:contrib_ode(eqn:'diff(y,x)^2+(a+b*x)*'diff(y,x)+c=b*y,y,x));
 [y=(%c*b*x+c+%c*a+%c^2)/b,y=-((b^2*x^2+2*a*b*x-4*c+a^2)/(4*b))];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 55 ode1_lie takes forever */
 /*(pn_(55),ans:contrib_ode(eqn:'diff(y,x)^2-2*x^2*'diff(y,x)+2*x*y=0,y,x));*/
@@ -540,7 +540,7 @@ solve(ans[1],y);
 (pn_(85),ans:contrib_ode(eqn:2*'diff(y,x)^2-(1-x)*'diff(y,x)-y=0,y,x));
 [y=%c*x+2*%c^2-%c,y=-((x^2-2*x+1)/8)];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /* 86 Very long "answer" from ode1_lie that doesn't satisfy ode*/
 /*(pn_(86),ans:contrib_ode(eqn:2*'diff(y,x)^2-2*x^2*'diff(y,x)+3*x*y=0,y,x));*/

@@ -22,8 +22,8 @@
 
 put('ode1_nonlinear,001,'version)$
 
-if get('ode1_clairault,'version)=false then
-  load("ode1_clairault.mac")$
+if get('ode1_clairaut,'version)=false then
+  load("ode1_clairaut.mac")$
 if get('ode1_lagrange,'version)=false then
   load("ode1_lagrange.mac")$
 if get('ode1_riccati,'version)=false then
@@ -45,8 +45,8 @@ ode1_nonlinear(de,y,x):=block(
   q:ode1_factor(de,y,x),
   if (is(q#false)) then return(q),
 
-  ode_disp("       -> ode1_clairault"),
-  q:ode1_clairault(de,y,x),
+  ode_disp("       -> ode1_clairaut"),
+  q:ode1_clairaut(de,y,x),
   if (is(q#false)) then return(q),
 
   ode_disp("       -> ode1_lagrange"),

@@ -114,13 +114,13 @@ true;
 (pn_(521),ans:contrib_ode(eqn:('diff(y,x,1))^3+x*'diff(y,x,1)-y,y,x));
 [y=%c*x+%c^3,y=-2*sqrt(-x)*x/(3*sqrt(3)),y=2*sqrt(-x)*x/(3*sqrt(3))];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
-[clairault,0,0,0];
+[clairaut,0,0,0];
 
 /*  522  */ 
 (pn_(522),ans:contrib_ode(eqn:('diff(y,x,1))^3-(x+5)*'diff(y,x,1)+y,y,x));
 [y=%c*x-%c^3+5*%c,y=-2*(x+5)^(3/2)/(3*sqrt(3)),y=2*(x+5)^(3/2)/(3*sqrt(3))];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
-[clairault,0,0,0];
+[clairaut,0,0,0];
 
 /*  523  */ 
 /* This equation presents a problem - crashes ode_contrib */ 
@@ -181,7 +181,7 @@ lagrange;
 (pn_(533),ans:contrib_ode(eqn:x*('diff(y,x,1))^3-y*('diff(y,x,1))^2+a,y,x));
 [y=(%c^3*x+a)/%c^2,y=(3*sqrt(3)*%i-3)*a^(1/3)*x^(2/3)/(2*4^(1/3)),y=-((3*sqrt(3)*%i+3)*a^(1/3)*x^(2/3)/(2*4^(1/3))),y=3*a^(1/3)*x^(2/3)/4^(1/3)];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3]),ode_check(eqn,ans[4])];
-[clairault,0,0,0,0];
+[clairaut,0,0,0,0];
 
 /*  534  */ 
 (pn_(534),ans:contrib_ode(eqn:4*x*('diff(y,x,1))^3-6*y*('diff(y,x,1))^2+3*y-x,y,x));
@@ -291,7 +291,7 @@ false;
 (pn_(555),ans:contrib_ode(eqn:sqrt(('diff(y,x,1))^2+1)+x*'diff(y,x,1)-y,y,x));
 [y=%c*x+sqrt(%c^2+1),[-y+%t*x+sqrt(%t^2+1)=0,(sqrt(%t^2+1)*x+%t)/sqrt(%t^2+1)=0]];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
-[clairault,0,0];
+[clairaut,0,0];
 
 /*  556  */ 
 (pn_(556),ans:contrib_ode(eqn:sqrt(('diff(y,x,1))^2+1)+x*('diff(y,x,1))^2+y,y,x));
@@ -338,7 +338,7 @@ false;
 (pn_(564),ans:contrib_ode(eqn:log('diff(y,x,1))+a*(x*'diff(y,x,1)-y),y,x));
 [y=(%c*a*x+log(%c))/a,[a*(%t*x-y)+log(%t)=0,(%t*a*x+1)/%t=0]];
 [method,ode_check(eqn,ans[1])];
-[clairault,0];
+[clairaut,0];
 
 /*  565  */ 
 (pn_(565),ans:contrib_ode(eqn:y*log('diff(y,x,1))+'diff(y,x,1)-y*log(y)-x*y,y,x));
@@ -362,7 +362,7 @@ false;
 (pn_(569),ans:contrib_ode(eqn:(('diff(y,x,1))^2+1)*sin(x*'diff(y,x,1)-y)^2-1,y,x));
 [y=%c*x+asin(1/sqrt(%c^2+1)),[(%t^2+1)*sin(y-%t*x)^2-1=0,2*%t*sin(y-%t*x)^2-(2*%t^2*x+2*x)*cos(y-%t*x)*sin(y-%t*x)=0]];
 method;
-clairault;
+clairaut;
 
 /*  570  */ 
 (pn_(570),ans:contrib_ode(eqn:(('diff(y,x,1))^2+1)*(arctan('diff(y,x,1))+a*x)+'diff(y,x,1),y,x));

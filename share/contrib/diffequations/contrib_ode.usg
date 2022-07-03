@@ -54,7 +54,7 @@ integration.
                                                  4
 (C6) method;
 
-(D6)                               clairault
+(D6)                               clairaut
 
 
 The following ode has two parametric solutions in terms of the dummy
@@ -101,7 +101,7 @@ solve the new ODE.
 
 
 For first order ODEs contrib_ode calls ode2.  It then tries the
-following methods: factorization, Clairault, Lagrange, Riccati,
+following methods: factorization, Clairaut, Lagrange, Riccati,
 Abel and Lie symmetry methods.  The Lie method is not attempted
 on Abel equations if the Abel method fails, but it is tried
 if the Riccati method returns an unsolved second order ODE.
@@ -144,7 +144,7 @@ TEST CASES
 The routines have been tested on a few hundred test cases from Murphy,
 Kamke and Zwillinger.  These are included in the tests subdirectory.
 
-* The Clairault routine ode1_clairault finds all known solutions,
+* The Clairaut routine ode1_clairaut finds all known solutions,
   including singular soultions.  (This statement is asking for
   trouble).
 
