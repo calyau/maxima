@@ -10,9 +10,10 @@
 
 (defvar $manual_demo "manual.demo")
 
-(defmvar $browser "firefox"
+(defmvar $browser "firefox '~a'"
   "Browser to use for displaying the documentation.  This may be
-  initialized on startup to an OS-specific value.")
+  initialized on startup to an OS-specific value.  It must contain
+  exactly one ~a which will be replaced by the url.")
 
 (defmvar $browser_options ""
   "Browser options")
@@ -186,26 +187,11 @@
 	      command)
 	  (when *debug-hdescribe*
 	    (format *debug-io* "URL: ~A~%" url))
-	  (cond ((string-equal *autoconf-windows* "true")
-		 ;; On windows we ignore $browser_options
-		 (setf command
-		       (concatenate 'string
-				    $browser
-				    " "
-				    url)))
+	  (setf command (ignore-errors (format nil $browser url)))
+	  (cond (command
+		 (when *debug-hdescribe*
+		   (format *debug-io* "Command: ~S~%" command))
+		 ($system command))
 		(t
-		 ;; Non-windows. Just run the browser with the given
-		 ;; URL, but quoted because the URL can contain "#"
-		 ;; which would be ignored by the shell.
-		 (setf command
-		       (concatenate 'string
-				    $browser
-				    " "
-				    $browser_options
-				    " '"
-				    url
-				    "'"))))
-	  (when *debug-hdescribe*
-	    (format *debug-io* "Command: ~S~%" command))
-	  ($system command))))
+		 (merror "Browser command must contain exactly one ~~A:  ~S" $browser))))))
     topic))

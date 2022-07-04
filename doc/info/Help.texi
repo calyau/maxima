@@ -251,7 +251,10 @@ See also @mrefcomma{browser} @mrefcomma{browser_options}  and @mrefdot{url_base}
 @anchor{browser}
 @defvr {Option variable} browser
 
-This specifies the command to use to open an HTML file.
+This specifies the command to use to open an HTML file.  This is a
+format string of the form @code{<cmd> ~a} where @code{~a} is replaced
+by the URL of the HTML file and @code{<cmd>} is some program that
+takes an arg and opens up a browser to the given URL.
 
 See also @mrefcomma{describe_uses_html} @mrefcomma{browser_options}
 and @mrefdot{url_base}
