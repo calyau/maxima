@@ -72,8 +72,8 @@ parabolic_cylinder_d (v,z)     Parabolic cylinder D function
 @anchor{bessel_j}
 @deffn {Function} bessel_j (@var{v}, @var{z})
 
-The Bessel function of the first kind of order @math{v} and argument @math{z}
-(A&S 9.1.10)(DLMF 10.2.2).
+The Bessel function of the first kind of order @math{v} and argument @math{z}.
+See @urlaands{9.1.10, 360} and @urldlmf{10.2.E2}.
 
 @code{bessel_j} is defined as
 
@@ -103,8 +103,8 @@ although the infinite series is not used for computations.
 @anchor{bessel_y}
 @deffn {Function} bessel_y (@var{v}, @var{z})
 
-The Bessel function of the second kind of order @math{v} and argument @math{z}
-(A&S 9.1.2)(DLMF 10.2.3).
+The Bessel function of the second kind of order @math{v} and argument @math{z}.
+See @urlaands{9.1.2, 358} and @urldlmf{10.2.E3}.
 
 @code{bessel_y} is defined as
 m4_displaymath(
@@ -142,7 +142,7 @@ the limit as @math{v} approaches @math{n} is taken.
 @deffn {Function} bessel_i (@var{v}, @var{z})
 
 The modified Bessel function of the first kind of order @math{v} and argument
-@math{z} (A&S 9.6.10)(DLMF 10.25.2).
+@math{z}. See @urlaands{9.6.10, 375} and @urldlmf{10.25.E2}.
 
 @code{bessel_i} is defined as
 m4_displaymath(
@@ -189,7 +189,7 @@ although the infinite series is not used for computations.
 @deffn {Function} bessel_k (@var{v}, @var{z})
 
 The modified Bessel function of the second kind of order @math{v} and argument
-@math{z} (A&S 9.6.2)(DLMF 10.27.4).
+@math{z}. See @urlaands{9.6.2, 375} and @urldlmf{10.27.E4}.
 
 @code{bessel_k} is defined as
 m4_displaymath(
@@ -224,8 +224,8 @@ then the limit as @math{v} approaches @math{n} is taken.
 @anchor{hankel_1}
 @deffn {Function} hankel_1 (@var{v}, @var{z})
 
-The Hankel function of the first kind of order @math{v} and argument @math{z}
-(A&S 9.1.3)(DLMF 10.4.3).
+The Hankel function of the first kind of order @math{v} and argument @math{z}.
+See @urlaands{9.1.3, 358} and @urldlmf{10.4.E3}.
 
 @code{hankel_1} is defined as
 
@@ -311,8 +311,8 @@ order @math{v} is not supported. Maxima returns a noun form:
 @anchor{hankel_2}
 @deffn {Function} hankel_2 (@var{v}, @var{z})
 
-The Hankel function of the second kind of order @math{v} and argument @math{z}
-(A&S 9.1.4)(DLMF 10.4.3).
+The Hankel function of the second kind of order @math{v} and argument @math{z}.
+See @urlaands{9.1.4, 358} and @urldlmf{10.4.E3}.
 
 @code{hankel_2} is defined as
 
@@ -497,7 +497,7 @@ number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function m4_math(<<<{\rm Ai}(x)>>>, <<<@math{Ai(x)}>>>).  (A&S 10.4.2)
+The Airy function m4_math(<<<{\rm Ai}(x)>>>, <<<@math{Ai(x)}>>>).  See @urlaands{10.4.2, 446}.
 
 See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
@@ -527,7 +527,7 @@ See @mrefdot{airy_ai}.
 @c -----------------------------------------------------------------------------
 @anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
-The Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}).  (A&S 10.4.3)
+The Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}).  See @urlaands{10.4.3, 446}.
 
 See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 
@@ -628,7 +628,7 @@ Complex bigfloat factorial.
 @anchor{gamma}
 @deffn {Function} gamma (@var{z})
 
-The basic definition of the gamma function (A&S 6.1.1) is
+The basic definition of the gamma function (@urlaands{6.1.1, 255}) is
 
 m4_displaymath(
 <<<\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}>>>,
@@ -757,7 +757,7 @@ The natural logarithm of the gamma function.
 @c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete_lower (@var{a}, @var{z})
 
-The lower incomplete gamma function (A&S 6.5.2):
+The lower incomplete gamma function (@urlaands{6.5.2, 260}):
 
 m4_displaymath(
 <<<\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}>>>,
