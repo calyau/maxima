@@ -10,9 +10,9 @@
 
 @section Introduction to contrib_ode 
 
-Maxima's ordinary differential equation (ODE) solver @code{ode2} solves
+Maxima's ordinary differential equation (ODE) solver @mref{ode2} solves
 elementary linear ODEs of first and second order.  The function
-@code{contrib_ode} extends @code{ode2} with additional methods for linear
+@mref{contrib_ode} extends @code{ode2} with additional methods for linear
 and non-linear first order ODEs and linear homogeneous second order ODEs.  
 The code is still under development and the calling sequence may change
 in future releases.  Once the code has stabilized it may be
@@ -46,8 +46,8 @@ a transformation into another ODE in variable @code{%u}.
 
 @end itemize
 
-@code{%c} is used to represent the constant of integration for first order equations.
-@code{%k1} and @code{%k2} are the constants for second order equations.  
+@mref{%c} is used to represent the constant of integration for first order equations.
+@mref{%k1} and @mref{%k2} are the constants for second order equations.  
 If @code{contrib_ode}
 cannot obtain a solution for whatever reason, it returns @code{false}, after
 perhaps printing out an error message.
@@ -224,7 +224,7 @@ Abel and Lie symmetry methods.  The Lie method is not attempted
 on Abel equations if the Abel method fails, but it is tried
 if the Riccati method returns an unsolved second order ODE.
 
-For second order ODEs @code{contrib_ode} calls @code{ode2} then @code{odelin}.
+For second order ODEs @code{contrib_ode} calls @code{ode2} then @mref{odelin}.
 
 Extensive debugging traces and messages are displayed if the command
 @code{put('contrib_ode,true,'verbose)} is executed.
@@ -330,46 +330,6 @@ zero if @var{soln} is a solution of @var{eqn}.
 
 @end deffn
 
-@defvr {System variable} method
-
-The variable @code{method} is set to the successful solution
-method. 
-
-@opencatbox{Categories:}
-@category{Package contrib_ode}
-@closecatbox
-
-@end defvr
-
-@defvr {Variable} %c
-
-@code{%c} is the integration constant for first order ODEs.
-
-@opencatbox{Categories:}
-@category{Package contrib_ode}
-@closecatbox
-
-@end defvr
-
-@defvr {Variable} %k1
-
-@code{%k1} is the first integration constant for second order ODEs.
-
-@opencatbox{Categories:}
-@category{Package contrib_ode}
-@closecatbox
-
-@end defvr
-
-@defvr {Variable} %k2
-
-@code{%k2} is the second integration constant for second order ODEs.
-
-@opencatbox{Categories:}
-@category{Package contrib_ode}
-@closecatbox
-
-@end defvr
 
 @anchor{gauss_a}
 @deffn {Function} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
@@ -429,7 +389,7 @@ Kummer's M function, as defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.2.
 
 The only use of this function is in solutions of ODEs returned by 
-@code{odelin} and @code{contrib_ode}.  The definition and use of this 
+@mref{odelin} and @mref{contrib_ode}.  The definition and use of this 
 function may change in future releases of Maxima.
 
 See also @mrefcomma{kummer_u} @mrefcomma{dkummer_m} and @mrefdot{dkummer_u}
@@ -476,14 +436,15 @@ The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{
 
 @anchor{bessel_simplify}
 @deffn {Function} bessel_simplify (@var{expr})
-Simplifies expressions containing Bessel functions bessel_j, bessel_y,
-bessel_i, bessel_k, hankel_1, hankel_2, strauve_h and strauve_l.
-Recurrence relations (given in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions},
-Section 9.1.27) are used to replace functions of highest order n
+Simplifies expressions containing Bessel functions @mrefcomma{bessel_j}
+@mrefcomma{bessel_y} @mrefcomma{bessel_i} @mrefcomma{bessel_k}
+@mrefcomma{hankel_1} @mrefcomma{hankel_2} @mref{struve_h}
+and @mrefdot{struve_l}
+Recurrence relations (DLMF §10.6(i))(A&S 9.1.27)
+are used to replace functions of highest order n
 by functions of order n-1 and n-2.
 
-This process repeated until all the orders
+This process is repeated until all the orders
 differ by less than 2.
 
 @c ===beg===
@@ -527,7 +488,7 @@ differ by less than 2.
 
 @anchor{expintegral_e_simplify}
 @deffn {Function} expintegral_e_simplify (@var{expr})
-Simplify expressions containing exponential integral expintegral_e
+Simplify expressions containing exponential integral @mref{expintegral_e}
 using the recurrence (A&S 5.1.14).
 
    expintegral_e(n+1,z) 

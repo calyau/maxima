@@ -856,6 +856,7 @@ autonomous.
 @node Functions for numerical solution of differential equations,  , Introduction to numerical solution of differential equations
 @section Functions for numerical solution of differential equations
 @c -----------------------------------------------------------------------------
+@anchor{plotdf}
 @deffn {Function} plotdf @
 @fname{plotdf} (@var{dydx}, options@dots{}) @
 @fname{plotdf} (@var{dvdu}, [@var{u},@var{v}], options@dots{}) @

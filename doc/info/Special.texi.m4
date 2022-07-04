@@ -1848,6 +1848,7 @@ The Exponential Integral Li(z)  (A&S 5.1.3)
 @closecatbox
 @end deffn
 
+@anchor{expintegral_e}
 @deffn {Function} expintegral_e (@var{n},@var{z})
 The Exponential Integral En(z)  (A&S 5.1.4) defined as
 
@@ -2135,6 +2136,7 @@ m4_displaymath(
 <<<@math{w = a*bessel_j(v,z) + b*bessel_y(v,z) + struve_h(v,z)}>>>)
 
 @c -----------------------------------------------------------------------------
+@anchor{struve_h}
 @deffn {Function} struve_h (@var{v}, @var{z})
 The Struve Function H of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z}. (A&S 12.1.1)  This can be expressed by
 the power series
@@ -2150,6 +2152,7 @@ m4_displaymath(
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{struve_l}
 @deffn {Function} struve_l (@var{v}, @var{z})
 The Modified Struve Function L of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z} (A&S 12.2.1):
 m4_displaymath(
