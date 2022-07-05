@@ -2308,7 +2308,7 @@ integrals, bessel functions (including products of bessel functions), hankel
 functions, hermite and the laguerre polynomials.
 
 Furthermore, @code{specint} can handle the hypergeometric function 
-@code{%f[p,q]([],[],z)}, the whittaker function of the first kind 
+@code{%f[p,q]([],[],z)}, the Whittaker function of the first kind 
 @code{%m[u,k](z)} and of the second kind @code{%w[u,k](z)}.
 
 The result may be in terms of special functions and can include unsimplified 
@@ -2534,6 +2534,25 @@ of m4_math(<<<z=W(z)e^{W(z)}>>>,@math{z = W(z) * exp(W(z))}).
 The principal branch, denoted m4_math(W_p(z),@math{Wp(z)}) in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
 
 The other branch with real values, denoted m4_math(W_m(z), @math{Wm(z)}) in DLMF, is @code{generalized_lambert_w(-1,z)}.
+@opencatbox{Categories:}
+@category{Special functions}
+@closecatbox
+@end deffn
+
+
+@anchor{kbateman}
+@deffn {Function} kbateman [@var{v}] (@var{x})
+The Bateman k function
+
+m4_displaymath(
+<<<k_v(x)
+ = \frac{2}{\pi} \int_0^{\frac{\pi}{2}} \cos(x \tan\theta-v\theta)d\theta>>>,
+<<<@math{kbateman[v](x) = (2/%pi) integrate(cos(x*tan(t)-v*t),t,0,%pi/2)}>>>)
+
+It is a special case of the confluent hypergeometric function. Maxima can
+calculate the Laplace transform of @code{kbateman} using @mref{laplace}
+or @mrefcomma{specint} but has no other knowledge of this function.
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
