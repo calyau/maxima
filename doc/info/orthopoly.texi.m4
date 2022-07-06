@@ -1386,7 +1386,9 @@ signals an error.
 
 @anchor{pochhammer}
 @deffn {Function} pochhammer (@var{x}, @var{n})
-The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). For nonnegative
+The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). (See @urlaands{6.1.22, 256} and @urldlmf{5.2.iii}.
+
+For nonnegative
 integers @var{n} with @code{@var{n} <= pochhammer_max_index}, the
 expression m4_math(<<<(x)_n>>>, <<<@math{pochhammer(x, n)}>>>) evaluates to the
 product m4_math(<<<x(x+1)(x+2)\cdots(x+n-1)>>>, <<<@math{x (x + 1) (x + 2) ... (x + n - 1)}>>>) when m4_math(<<<n > 0>>>, @math{{n} > 0}) and
