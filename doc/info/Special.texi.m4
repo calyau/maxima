@@ -1804,13 +1804,14 @@ Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 5
 
 @deffn {Function} expintegral_e1 (@var{z})
-The Exponential Integral E1(z) (@urlaands{5.1.1, 228}) defined as
+The Exponential Integral E1(z) defined as
 
 m4_displaymath(
 <<<E_1(z) = \int_z^\infty {e^{-t} \over t} dt>>>,
 <<<@math{integrate(exp(-t)/t, t, z, inf)}>>>)
 
 with m4_math(<<<\arg z < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
+(@urlaands{5.1.1, 228}) and (@urldlmf{7.2E2})
 
 @c @ifnotinfo
 @c @tex
@@ -1831,7 +1832,8 @@ with m4_math(<<<\arg z < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
 @end deffn
 
 @deffn {Function} expintegral_ei (@var{z})
-The Exponential Integral Ei(z) (@urlaands{5.1.2, 228})
+The Exponential Integral Ei(z) (@urlaands{5.1.2, 228}) and (@urldlmf{6.2E5})
+
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1840,7 +1842,7 @@ The Exponential Integral Ei(z) (@urlaands{5.1.2, 228})
 @end deffn
 
 @deffn {Function} expintegral_li (@var{z})
-The Exponential Integral Li(z)  (@urlaands{5.1.3, 228})
+The Exponential Integral Li(z)  (@urlaands{5.1.3, 228}) and (@urldlmf{6.2E8})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1850,7 +1852,7 @@ The Exponential Integral Li(z)  (@urlaands{5.1.3, 228})
 
 @anchor{expintegral_e}
 @deffn {Function} expintegral_e (@var{n},@var{z})
-The Exponential Integral En(z)  (@urlaands{5.1.4, 228}) defined as
+The Exponential Integral En(z) (@urlaands{5.1.4, 228}) defined as
 
 m4_displaymath(
 <<<E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt>>>,
@@ -2012,16 +2014,18 @@ for positive integers in terms of @code{expintegral_ei}.
 
 The Error function and related functions are defined in
 Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapter 7
+@i{Handbook of Mathematical Functions}, Chapter 7 and (@urldlmf{7})
 
 @c -----------------------------------------------------------------------------
 @anchor{erf}
 @deffn {Function} erf (@var{z})
 
-The Error Function erf(z) (@urlaands{7.1.1, 297}):
+The Error Function erf(z):
 m4_displaymath(
 <<<{\rm erf}\ z = {{2\over \sqrt{\pi}}} \int_0^z e^{-t^2}\, dt>>>,
 <<<@math{erf(z) = 2/sqrt(%pi)*integrate(exp(-t^2), t, 0, z)}>>>)
+
+(@urlaands{7.1.1, 297}) and (@urldlmf{7.2.E1}).
 
 See also flag @mrefdot{erfflag}
 @opencatbox{Categories:}
@@ -2031,10 +2035,12 @@ See also flag @mrefdot{erfflag}
 
 @anchor{erfc}
 @deffn {Function} erfc (@var{z})
-The Complementary Error Function erfc(z) (@urlaands{7.1.2, 297}):
+The Complementary Error Function erfc(z):
 m4_displaymath(
 <<<{\rm erfc}\ z = 1 - {\rm erf}\ z>>>,
 <<<@math{erfc(z) = 1-erf(z)}>>>)
+
+(@urlaands{7.1.2, 297}) and (@urldlmf{7.2.E2}).
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -2063,6 +2069,7 @@ m4_displaymath(
 @closecatbox
 @end deffn
 
+@anchor{fresnel_c}
 @deffn {Function} fresnel_c (@var{z})
 The Fresnel Integral
 
@@ -2070,7 +2077,7 @@ m4_displaymath(
 <<<C(z) = \int_0^z \cos\left({\pi \over 2} t^2\right)\, dt>>>,
 <<<@math{C(z) = integrate(cos((%pi/2)*t^2),t,0,z)}>>>)
 
-(@urlaands{7.3.1, 300})
+(@urlaands{7.3.1, 300}) and (@urldlmf{7.2.E7}).
 
 The simplification @code{fresnel_c(-x) = -fresnel_c(x)} is applied when
 flag @code{trigsign} is true.
@@ -2078,19 +2085,20 @@ flag @code{trigsign} is true.
 The simplification @code{fresnel_c(%i*x) =  %i*fresnel_c(x)} is applied when
 flag @code{%iargs} is true.
 
-See flags @code{erf_representation} and @code{hypergeometric_representation}.
+See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
+@anchor{fresnel_s}
 @deffn {Function} fresnel_s (@var{z})
 The Fresnel Integral
 m4_displaymath(
 <<<S(z) = \int_0^z \sin\left({\pi \over 2} t^2\right)\, dt>>>,
 <<<@math{S(z) = integrate(sin((%pi/2)*t^2),t,0,z)}>>>)
 
-(@urlaands{7.3.2, 300})
+(@urlaands{7.3.2, 300}) and (@urldlmf{7.2.E8}).
 
 The simplification @code{fresnel_s(-x) = -fresnel_s(x)} is applied when
 flag @code{trigsign} is true.
@@ -2098,12 +2106,13 @@ flag @code{trigsign} is true.
 The simplification @code{fresnel_s(%i*x) =  -%i*fresnel_s(x)} is applied when
 flag @code{%iargs} is true.
 
-See flags @code{erf_representation} and @code{hypergeometric_representation}.
+See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
 @end deffn
 
+@anchor{erf_representation}
 @defvr {Option variable} erf_representation
 Default value: false
 
@@ -2111,18 +2120,19 @@ When @code{true}, @code{erfc}, @code{erfi}, @code{erf_generalized}, @code{fresne
 and @code{fresnel_c} are transformed to @code{erf}.
 @end defvr
 
+@anchor{hypergeometric_representation}
 @defvr {Option variable} hypergeometric_representation
 Default value: false
 
 Enables transformation to a Hypergeometric
-representation for @code{fresnel_s} and @code{fresnel_c}.
+representation for @mref{fresnel_s} and @mref{fresnel_c}.
 @end defvr
 
 @node Struve Functions, Hypergeometric Functions, Error Function, Special Functions
 @section Struve Functions
 
 The Struve functions are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapter 12.
+@i{Handbook of Mathematical Functions}, Chapter 12 and (@urldlmf{11}).
 The Struve Function m4_math(<<<{\bf H}_{\nu}(z)>>>,<<<@math{H[v](z)}>>>) is a particular solution
 of the differential equation:
 m4_displaymath(
@@ -2138,13 +2148,14 @@ m4_displaymath(
 @c -----------------------------------------------------------------------------
 @anchor{struve_h}
 @deffn {Function} struve_h (@var{v}, @var{z})
-The Struve Function H of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z}. (@urlaands{12.1.1, 496})  This can be expressed by
-the power series
+The Struve Function H of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z}:
 
 m4_displaymath(
 <<<{\bf H}_{\nu}(z) = \left({z\over 2}\right)^{\nu+1}
 \sum_{k=0}^{\infty} {(-1)^k\left({z\over 2}\right)^{2k} \over \Gamma\left(k + {3\over 2}\right) \Gamma\left(k + \nu + {3\over 2}\right)}>>>,
 <<<@math{struve_h(v,z) = (z/2)^(v+1)*sum((-1)^k*(z/2)^(2*k)/(gamma(k+3/2)*gamma(k+v+3/2)), k, 0, inf)}>>>)
+
+(@urlaands{12.1.3, 496}) and (@urldlmf{11.2.E1}).
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -2154,10 +2165,12 @@ m4_displaymath(
 @c -----------------------------------------------------------------------------
 @anchor{struve_l}
 @deffn {Function} struve_l (@var{v}, @var{z})
-The Modified Struve Function L of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z} (@urlaands{12.2.1, 492}):
+The Modified Struve Function L of order m4_math(<<<\nu>>>, @math{v}) and argument @math{z}:
 m4_displaymath(
 <<<{\bf L}_{\nu}(z) = -ie^{-{i\nu\pi\over 2}} {\bf H}_{\nu}(iz)>>>,
 <<<@math{struve_l(v,z) = %i*exp(-%i*v*%pi/2)*struve_h(v,z)}>>>)
+
+(@urlaands{12.2.1, 498}) and (@urldlmf{11.2.E2}).
 
 @opencatbox{Categories:}
 @category{Special functions}
