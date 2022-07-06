@@ -16,6 +16,8 @@ Changes in core:
 
 Changes in share:
 -----------------
+ * contrib_ode: Fix name of Clairaut differential equation
+   in code and documentation.  Was misspelled as Clairault.
 
 Changes in Xmaxima:
 -------------------
