@@ -107,7 +107,7 @@ zeta(-7/3);
 makelist(
   block([
     /* Experimentally determined.  Should be around 1e-15 or so */
-    threshold : 1.5600e-15,
+    threshold : 2.0e-15,
     exact : zeta(-(k+1/2)),
     fl : zeta(float(-(k+1/2))), err],
     /*
