@@ -1386,7 +1386,7 @@ signals an error.
 
 @anchor{pochhammer}
 @deffn {Function} pochhammer (@var{x}, @var{n})
-The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). (See @urlaands{6.1.22, 256} and @urldlmf{5.2.iii}.
+The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). (See @urlaands{6.1.22, 256} and @urldlmf{5.2.iii}).
 
 For nonnegative
 integers @var{n} with @code{@var{n} <= pochhammer_max_index}, the
