@@ -115,18 +115,6 @@ m4_displaymath(
                              sin(%pi v)
 @end example>>>
 )
-@c @ifnottex
-@c @example
-@c               cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
-@c               -------------------------------------------
-@c                              sin(%pi v)
-@c @end example
-@c @end ifnottex
-@c 
-@c @tex
-@c $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
-@c  \sin \left(\pi\,v\right)}}$$
-@c @end tex
 
 when @math{v} is not an integer.  When @math{v} is an integer @math{n},
 the limit as @math{v} approaches @math{n} is taken.
@@ -159,23 +147,6 @@ m4_displaymath(
 @end example>>>
 )
 
-@c @ifnottex
-@c @example
-@c                     inf
-@c                     ====   - v - 2 k  v + 2 k
-@c                     \     2          z
-@c                      >    -------------------
-@c                     /     k! gamma(v + k + 1)
-@c                     ====
-@c                     k = 0
-@c @end example
-@c @end ifnottex
-@c 
-@c @tex
-@c $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
-@c  \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
-@c @end tex
-
 although the infinite series is not used for computations.
 
 @opencatbox{Categories:}
@@ -200,16 +171,6 @@ m4_displaymath(
                                   2
 @end example>>>
 )
-@c @ifnottex
-@c @example
-@c            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
-@c            -------------------------------------------------
-@c                                   2
-@c @end example
-@c @end ifnottex
-@c @tex
-@c $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
-@c @end tex
 
 when @math{v} is not an integer.  If @math{v} is an integer @math{n},
 then the limit as @math{v} approaches @math{n} is taken.
@@ -641,20 +602,6 @@ m4_displaymath(
                         /
                          0
 @end example>>>)
-@c @ifnottex
-@c @example
-@c                          inf
-@c                         /
-@c                         [     z - 1   - t
-@c              gamma(z) = I    t      %e    dt
-@c                         ]
-@c                         /
-@c                          0
-@c @end example
-@c @end ifnottex
-@c @tex
-@c $$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
-@c @end tex
 
 Maxima simplifies @code{gamma} for positive integer and positive and negative 
 rational numbers. For half integral values the result is a rational number
@@ -771,20 +718,6 @@ m4_displaymath(
                                     0
 @end example>>>
 )
-@c @ifnottex
-@c @example
-@c                                     z
-@c                                    /
-@c                                    [  a - 1   - t
-@c     gamma_incomplete_lower(a, z) = I t      %e    dt
-@c                                    ]
-@c                                    /
-@c                                     0
-@c @end example
-@c @end ifnottex
-@c @tex
-@c $$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
-@c @end tex
 
 See also @mref{gamma_incomplete} (upper incomplete gamma function).
 
@@ -813,20 +746,6 @@ m4_displaymath(
 @end example
 >>>
 )
-@c @ifnottex
-@c @example
-@c                               inf
-@c                              /
-@c                              [     a - 1   - t
-@c     gamma_incomplete(a, z) = I    t      %e    dt
-@c                              ]
-@c                              /
-@c                               z
-@c @end example
-@c @end ifnottex
-@c @tex
-@c $$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
-@c @end tex
 
 See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
@@ -855,17 +774,6 @@ gamma_incomplete_regularized(a, z) =
                                                gamma(a)
 @end example
 >>>)
-@c @ifnottex
-@c @example
-@c gamma_incomplete_regularized(a, z) = 
-@c                                         gamma_incomplete(a, z)
-@c                                         ----------------------
-@c                                                gamma(a)
-@c @end example
-@c @end ifnottex
-@c @tex
-@c $${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
-@c @end tex
 
 See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
@@ -897,21 +805,6 @@ gamma_incomplete_generalized(a, z1, z2) =
                                                z1
 @end example
 >>>)
-@c @ifnottex
-@c @example
-@c gamma_incomplete_generalized(a, z1, z2) = 
-@c                                                z2
-@c                                               /
-@c                                               [    a - 1   - t
-@c                                               I   t      %e    dt
-@c                                               ]
-@c                                               /
-@c                                                z1
-@c @end example
-@c @end ifnottex
-@c @tex
-@c $$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
-@c @end tex
 
 Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
 
@@ -1813,18 +1706,6 @@ m4_displaymath(
 with m4_math(<<<\arg z < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
 (@urlaands{5.1.1, 228}) and (@urldlmf{7.2E2})
 
-@c @ifnotinfo
-@c @tex
-@c $$E_1(z) = \int_z^\infty {e^{-t} \over t} dt$$
-@c 
-@c with $|\arg\ z| < \pi$.
-@c @end tex
-@c @end ifnotinfo
-@c @ifinfo
-@c @math{integrate(exp(-t)/t, t, z, inf)}
-@c with @math{abs(arg z) < %pi}.
-@c @end ifinfo
-
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @category{Special functions}
@@ -1860,17 +1741,6 @@ m4_displaymath(
 with m4_math(<<<{\rm Re}(z) > 1>>>,<<<@math{realpart(z) > 1}>>>) and @math{n} a
 non-negative integer.
 
-@c @ifnotinfo
-@c @tex
-@c $$E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt$$
-@c with ${\rm Re}\ z > 0$ and $n = 0, 1, 2, \ldots$.
-@c @end tex
-@c @end ifnotinfo
-@c @ifinfo
-@c @math{integrate(exp(-z*t)/t^n, t, 1, inf)}
-@c with @math{real(x) > 1} and @math{n} a non-negative integer.
-@c @end ifinfo
-
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @category{Special functions}
@@ -1883,14 +1753,6 @@ The Exponential Integral Si(z) (@urlaands{5.2.1, 231}) defined as
 m4_displaymath(
 <<<{\rm Si}(z) = \int_0^z {\sin t \over t} dt>>>,
 <<<@math{integrate(sin(t)/t, t, 0, z)}>>>)
-@c @ifnotinfo
-@c @tex
-@c $${\rm Si}(z) = \int_0^z {\sin t \over t} dt$$
-@c @end tex
-@c @end ifnotinfo
-@c @ifinfo
-@c @math{integrate(sin(t)/t, t, 0, z)}
-@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1906,18 +1768,6 @@ m4_displaymath(
 <<<@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}>>>)
 
 with m4_math(<<<|\arg z| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
-@c @ifnotinfo
-@c @tex
-@c $${\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt$$
-@c 
-@c with $|\arg\ z| < \pi$.
-@c @end tex
-@c @end ifnotinfo
-@c @ifinfo
-@c @math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}
-@c 
-@c with @math{abs(arg z) < %pi}
-@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1931,15 +1781,6 @@ The Exponential Integral Shi(z) (@urlaands{5.2.3, 231}) defined as
 m4_displaymath(
 <<<{\rm Shi}(z) = \int_0^z {\sinh t \over t} dt>>>,
 <<<@math{integrate(sinh(t)/t, t, 0, z)}>>>)
-@c @ifnotinfo
-@c @tex
-@c $${\rm Shi}(z) = \int_0^z {\sinh t \over t} dt$$
-@c @end tex
-@c @end ifnotinfo
-@c @ifinfo
-@c @math{integrate(sinh(t)/t, t, 0, z)}
-@c @end ifinfo
-
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1955,19 +1796,6 @@ m4_displaymath(
 <<<@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}>>>)
 
 with m4_math(<<<|\arg z| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
-
-@c @ifnotinfo
-@c @tex
-@c $${\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt$$
-@c 
-@c with $|\arg\ z| < \pi$.
-@c @end tex
-@c @end ifnotinfo
-@c @ifinfo
-@c @math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}
-@c 
-@c with @math{abs(arg z) < %pi}
-@c @end ifinfo
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
