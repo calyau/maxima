@@ -54,6 +54,19 @@ END-INFO-DIR-ENTRY
 @c for the HTML docs.  This should eventually be removed.
 @set mathjax true
 
+@c Macro for forming a URL to Abramowitz and Stegun.  Provide the
+@c equation number and the page where the equation is.
+@macro urlaands {eqn, page}
+@url{https://personal.math.ubc.ca/~cbm/aands/page_\page\.htm, Abramowitz and Stegun eqn \eqn\}
+@end macro
+
+@c Macro for forming a URL to the DLMF.  Provide the equation number.
+@c Basically, a full DLMF link (from a permalink) looks like
+@c https://dlmf.nist.gov/6.2.E12.  When calling this macro provide ``6.2.E12''.
+@macro urldlmf {eqn}
+@url{https://dlmf.nist.gov/\eqn\, DLMF \eqn\}
+@end macro
+
 @include category-macros.texi
 
 @titlepage

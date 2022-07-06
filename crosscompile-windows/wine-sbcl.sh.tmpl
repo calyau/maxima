@@ -9,4 +9,8 @@ export WINEDLLOVERRIDES
 SBCL_HOME=Z:@CMAKE_BINARY_DIR@/sbcl/
 export SBCL_HOME
 unset DISPLAY
-@WINE_EXE@ @CMAKE_BINARY_DIR@/sbcl/sbcl.exe --core @CMAKE_BINARY_DIR@/sbcl/sbcl.core "$@"
+if [ "$1" = "--core" ]; then
+    @WINE_EXE@ @CMAKE_BINARY_DIR@/sbcl/sbcl.exe "$@"
+else
+    @WINE_EXE@ @CMAKE_BINARY_DIR@/sbcl/sbcl.exe --core @CMAKE_BINARY_DIR@/sbcl/sbcl.core "$@"
+fi
