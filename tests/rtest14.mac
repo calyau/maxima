@@ -1103,7 +1103,7 @@ airy_dbi(z),hypergeometric_representation:true;
 /* Some simple tests that bigfloat eval is working.  Just compare the
 float result with the bigfloat result */
 
-closeto(airy_ai(1.5)-airy_ai(1.5b0), 2.776b-17);
+closeto(airy_ai(1.5)-airy_ai(1.5b0), 5.0b-17);
 true;
 
 closeto(airy_bi(1.5)-airy_bi(1.5b0), 8.327d-17);
@@ -1118,7 +1118,7 @@ true;
 closeto(airy_ai(1.5+%i)-airy_ai(1.5b0+%i), 2.9022b-16);
 true;
 
-closeto(airy_bi(1.5+%i)-airy_bi(1.5b0+%i), 2.2378b-16);
+closeto(airy_bi(1.5+%i)-airy_bi(1.5b0+%i), 3.0b-16);
 true;
 
 closeto(airy_dai(1.5+%i)-airy_dai(1.5b0+%i), 8.7591b-16);
