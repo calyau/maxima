@@ -438,7 +438,6 @@ mumble;
  mydefaults['nointegrate] : false,
  mydefaults['tlimswitch] : true,
  mydefaults['limsubst] : false,
- mydefaults['abconvtest] : false,
  mydefaults['packagefile] : false,
  mydefaults['factlim] : 100000,
  mydefaults['cflength] : 1,
@@ -454,7 +453,7 @@ mumble;
 true;
 
 (myflags : '[verbose, exptsubst, partswitch, inflag, derivsubst, opsubst, demoivre,
-             nointegrate, tlimswitch, limsubst, abconvtest, packagefile],
+             nointegrate, tlimswitch, limsubst, packagefile],
  /* "not" causes an extra evaluation of its argument,
   * so this next line won't work as expected if "not" ever becomes
   * simplifying operator; update this test case as needed if that
@@ -462,14 +461,14 @@ true;
   */
  myflags :: map ("not", myflags),
  ev (myflags));
-[true, true, true, true, true, false, true, true, false, true, true, true];
+[true, true, true, true, true, false, true, true, false, true, true];
 
 map (reset, myflags);
 [[verbose], [exptsubst], [partswitch], [inflag], [derivsubst], [opsubst], [demoivre],
- [nointegrate], [tlimswitch], [limsubst], [abconvtest], [packagefile]];
+ [nointegrate], [tlimswitch], [limsubst], [packagefile]];
 
 ev (myflags);
-[false, false, false, false, false, true, false, false, true, false, false, false];
+[false, false, false, false, false, true, false, false, true, false, false];
 
 (myvals : '[factlim, cflength, taylordepth, maxtaydiff, lhospitallim, linel],
  myvals :: makelist (99, v, myvals),
