@@ -1723,7 +1723,14 @@ The Exponential Integral Ei(z) (@urlaands{5.1.2, 228}) and (@urldlmf{6.2E5})
 @end deffn
 
 @deffn {Function} expintegral_li (@var{z})
-The Exponential Integral Li(z)  (@urlaands{5.1.3, 228}) and (@urldlmf{6.2E8})
+The Exponential Integral li(z) defined as
+
+m4_displaymath(
+<<<li(x) = -\kern-10.5pt\int_0^x {dt \over \ln t}>>>,
+<<<@math{integrate(1/ln(t), t, 0, x)}>>>)
+
+with m4_math(<<<x > 1>>>, <<<@math{x > 1}>>>)
+(@urlaands{5.1.3, 228}) and (@urldlmf{6.2E8})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
