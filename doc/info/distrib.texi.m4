@@ -255,10 +255,23 @@ For comments, bugs or suggestions, please contact the author at @var{'riotorto A
 @node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, distrib-pkg
 @section Functions and Variables for continuous distributions
 
+@subsection Normal Random Variables
 
+@c Define an m4 macro for the NormalRV function that is used below.
+@c Can't use @macro because m4 is processed too late for this to work.
+m4_define(<<<m4_NormalRV>>>,
+m4_math(<<<{\rm Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
+
+@subsubsection Introduction to Normal Random Variables
+
+Normal random variables (also called Gaussian) is denoted
+by m4_NormalRV(m, s) where
+@math{m} is the mean and @math{s} is the standard deviation.
+
+@subsubsection Functions for Normal Random Variables
 @anchor{pdf_normal}
 @deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the density function of a @math{Normal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_NormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -269,7 +282,7 @@ Returns the value at @var{x} of the density function of a @math{Normal(m,s)} ran
 
 @anchor{cdf_normal}
 @deffn {Function} cdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a @math{Normal(m,s)} random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+Returns the value at @var{x} of the distribution function of a m4_NormalRV(m,s) random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -296,7 +309,7 @@ See also @mrefdot{erf}
 
 @anchor{quantile_normal}
 @deffn {Function} quantile_normal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @mrefdot{cdf_normal} Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_NormalRV(m,s) random variable, with @math{s>0}; in other words, this is the inverse of @mrefdot{cdf_normal} Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -322,7 +335,7 @@ Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math
 
 @anchor{mean_normal}
 @deffn {Function} mean_normal (@var{m},@var{s})
-Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{m}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_NormalRV(m,s) random variable, with @math{s>0}, namely @var{m}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -333,7 +346,7 @@ Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, namel
 
 @anchor{var_normal}
 @deffn {Function} var_normal (@var{m},@var{s})
-Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s^2}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_NormalRV(m,s) random variable, with @math{s>0}, namely @var{s^2}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -343,7 +356,7 @@ Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, n
 
 @anchor{std_normal}
 @deffn {Function} std_normal (@var{m},@var{s})
-Returns the standard deviation of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_NormalRV(m,s) random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -354,7 +367,7 @@ Returns the standard deviation of a @math{Normal(m,s)} random variable, with @ma
 
 @anchor{skewness_normal}
 @deffn {Function} skewness_normal (@var{m},@var{s})
-Returns the skewness coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_NormalRV(m,s) random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -365,7 +378,7 @@ Returns the skewness coefficient of a @math{Normal(m,s)} random variable, with @
 
 @anchor{kurtosis_normal}
 @deffn {Function} kurtosis_normal (@var{m},@var{s})
-Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_NormalRV(m,s) random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -378,7 +391,7 @@ Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @
 @deffn {Function} random_normal (@var{m},@var{s}) @
 @fname{random_normal} (@var{m},@var{s},@var{n})
 
-Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_NormalRV(m,s) random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is an implementation of the Box-Mueller algorithm, as described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
@@ -391,10 +404,30 @@ To make use of this function, write first @code{load("distrib")}.
 
 @end deffn
 
+@subsection Student's t Random Variable
 
+@c Define the function student t to denote Student's t random variable
+m4_define(<<<m4_student_t>>>,
+@math{t($1)})
+
+@subsubsection Introduction to Student's t Random Variable
+
+Student's t random variable is denoted by m4_student_t(n) where
+@math{n} is the degrees of freedom with @math{n > 0}.  If @math{Z} is
+a m4_NormalRV(0,1) variable and @math{V} is an
+independent m4_math(\chi^2, chi^2) random variable with @math{n} degress of
+freedom, then
+
+m4_displaymath(
+<<<Z \over \sqrt{V/n}>>>,
+<<<@math{Z/sqrt(V/n)}>>>)
+
+has a Student's @math{t}-distribution with @math{n} degrees of freedom.
+
+@subsubsection Functions for Student's t Random Variable
 @anchor{pdf_student_t}
 @deffn {Function} pdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the density function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a Student random variable m4_student_t(n), with @math{n>0} degrees of freedom. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -405,7 +438,7 @@ Returns the value at @var{x} of the density function of a Student random variabl
 
 @anchor{cdf_student_t}
 @deffn {Function} cdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom.
+Returns the value at @var{x} of the distribution function of a Student random variable m4_student_t(n), with @math{n>0} degrees of freedom.
 
 @c ===beg===
 @c load ("distrib")$
@@ -433,7 +466,7 @@ Returns the value at @var{x} of the distribution function of a Student random va
 
 @anchor{quantile_student_t}
 @deffn {Function} quantile_student_t (@var{q},@var{n})
-Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a Student random variable m4_student_t(n), with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -444,7 +477,7 @@ Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with @mat
 
 @anchor{mean_student_t}
 @deffn {Function} mean_student_t (@var{n})
-Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a Student random variable m4_student_t(n), with @math{n>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -455,7 +488,7 @@ Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, whic
 
 @anchor{var_student_t}
 @deffn {Function} var_student_t (@var{n})
-Returns the variance of a Student random variable @math{t(n)}, with @math{n>2}.
+Returns the variance of a Student random variable m4_student_t(n), with @math{n>2}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -478,7 +511,7 @@ Returns the variance of a Student random variable @math{t(n)}, with @math{n>2}.
 
 @anchor{std_student_t}
 @deffn {Function} std_student_t (@var{n})
-Returns the standard deviation of a Student random variable @math{t(n)}, with @math{n>2}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a Student random variable m4_student_t(n), with @math{n>2}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -489,7 +522,7 @@ Returns the standard deviation of a Student random variable @math{t(n)}, with @m
 
 @anchor{skewness_student_t}
 @deffn {Function} skewness_student_t (@var{n})
-Returns the skewness coefficient of a Student random variable @math{t(n)}, with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a Student random variable m4_student_t(n), with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -500,7 +533,7 @@ Returns the skewness coefficient of a Student random variable @math{t(n)}, with 
 
 @anchor{kurtosis_student_t}
 @deffn {Function} kurtosis_student_t (@var{n})
-Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with @math{n>4}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a Student random variable m4_student_t(n), with @math{n>4}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -513,7 +546,7 @@ Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with 
 @deffn {Function} random_student_t (@var{n}) @
 @fname{random_student_t} (@var{n},@var{m})
 
-Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a Student random variate m4_student_t(n), with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @var{Z} is a normal random variable @math{N(0,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
 @ifnottex
@@ -529,7 +562,7 @@ The implemented algorithm is based on the fact that if @var{Z} is a normal rando
 @tex
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
-is a Student random variable with @var{n} degrees of freedom, @math{t(n)}.
+is a Student random variable with @var{n} degrees of freedom, m4_student_t(n).
 
 To make use of this function, write first @code{load("distrib")}.
 
@@ -3863,3 +3896,5 @@ To make use of this function, write first @code{load("distrib")}.
 @closecatbox
 
 @end deffn
+@c Undefine all the m4 macros we defined in this file.
+m4_undefine(<<<m4_NormalRV>>>)
