@@ -254,6 +254,7 @@ For comments, bugs or suggestions, please contact the author at @var{'riotorto A
 
 @node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, distrib-pkg
 @section Functions and Variables for continuous distributions
+Maxima knows the following kinds of continuous distributions.
 
 @subsection Normal Random Variables
 
@@ -573,6 +574,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @end deffn
 
+@subsection Noncentral Student's t Random Variable
+
+@subsubsection Introduction to Noncentral Student's t Random Variable
+
+@subsubsection Functions and Variables for Noncentral Student's t Random Variable
 
 @anchor{pdf_noncentral_student_t}
 @deffn {Function} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
@@ -744,6 +750,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @end deffn
 
+
+@subsection Chi-squared Random Variable
+
+@subsubsection Introduction to Chi-squared Random Variable
+@subsubsection Functions and Variables for Chi-squared Random Variable
 
 @anchor{pdf_chi2}
 @deffn {Function} pdf_chi2 (@var{x},@var{n})
@@ -959,6 +970,9 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
+@subsection Noncentral Chi-squared Random Variable
+@subsubsection Introduction to Noncentral Chi-squared Random Variable
+@subsubsection Functions and Variables for Noncentral Chi-squared Random Variable
 @anchor{pdf_noncentral_chi2}
 @deffn {Function} pdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
 Returns the value at @var{x} of the density function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load("distrib")}.
@@ -1066,6 +1080,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 
 
+@subsection F Random Variable
+@subsubsection Introduction to F Random Variable
+@subsubsection Functions and Variables for F Random Variable
 @anchor{pdf_f}
 @deffn {Function} pdf_f (@var{x},@var{m},@var{n})
 Returns the value at @var{x} of the density function of a F random variable @math{F(m,n)}, with @math{m,n>0}. To make use of this function, write first @code{load("distrib")}.
@@ -1208,6 +1225,9 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
+@subsection Exponential Random Variable
+@subsubsection Introduction to Exponential Random Variable
+@subsubsection Functions and Variables for Exponential Random Variable
 @anchor{pdf_exp}
 @deffn {Function} pdf_exp (@var{x},@var{m})
 Returns the value at @var{x} of the density function of an @math{Exponential(m)} random variable, with @math{m>0}.
@@ -1424,6 +1444,9 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
+@subsection Lognormal Random Variable
+@subsubsection Introduction to Lognormal Random Variable
+@subsubsection Functions and Variables for Lognormal Random Variable
 @anchor{pdf_lognormal}
 @deffn {Function} pdf_lognormal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the density function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
@@ -1561,6 +1584,9 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
+@subsection Gamma Random Variable
+@subsubsection Introduction to Gamma Random Variable
+@subsubsection Functions and Variables for Gamma Random Variable
 @anchor{pdf_gamma}
 @deffn {Function} pdf_gamma (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
@@ -1685,6 +1711,9 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
+@subsection Beta Random Variable
+@subsubsection Introduction to Beta Random Variable
+@subsubsection Functions and Variables for Beta Random Variable
 @anchor{pdf_beta}
 @deffn {Function} pdf_beta (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
@@ -1805,6 +1834,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 @end deffn
 
+@subsection Continuous Uniform Random Variable
+@subsubsection Introduction to Continuous Uniform Random Variable
+@subsubsection Functions and Variables for Continuous Uniform Random Variable
 @anchor{pdf_continuous_uniform}
 @deffn {Function} pdf_continuous_uniform (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
@@ -1910,6 +1942,9 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 @end deffn
 
 
+@subsection Logistic Random Variable
+@subsubsection Introduction to Logistic Random Variable
+@subsubsection Functions and Variables for Logistic Random Variable
 @anchor{pdf_logistic}
 @deffn {Function} pdf_logistic (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
@@ -2016,6 +2051,9 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
+@subsection Pareto Random Variable
+@subsubsection Introduction to Pareto Random Variable
+@subsubsection Functions and Variables for Pareto Random Variable
 @anchor{pdf_pareto}
 @deffn {Function} pdf_pareto (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Pareto(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
@@ -2122,6 +2160,9 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
+@subsection Weibull Random Variable
+@subsubsection Introduction to Weibull Random Variable
+@subsubsection Functions and Variables for Weibull Random Variable
 @anchor{pdf_weibull}
 @deffn {Function} pdf_weibull (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
@@ -2229,6 +2270,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 
 
+@subsection Rayleigh Random Variable
+@subsubsection Introduction to Rayleigh Random Variable
+@subsubsection Functions and Variables for Rayleigh Random Variable
 @anchor{pdf_rayleigh}
 @deffn {Function} pdf_rayleigh (@var{x},@var{b})
 Returns the value at @var{x} of the density function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
@@ -2463,6 +2507,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 
 
+@subsection Laplace Random Variable
+@subsubsection Introduction to Laplace Random Variable
+@subsubsection Functions and Variables for Laplace Random Variable
 @anchor{pdf_laplace}
 @deffn {Function} pdf_laplace (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
@@ -2570,6 +2617,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 
 
+@subsection Cauchy Random Variable
+@subsubsection Introduction to Cauchy Random Variable
+@subsubsection Functions and Variables for Cauchy Random Variable
 @anchor{pdf_cauchy}
 @deffn {Function} pdf_cauchy (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Cauchy(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
@@ -2622,6 +2672,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 
 
+@subsection Gumbel Random Variable
+@subsubsection Introduction to Gumbel Random Variable
+@subsubsection Functions and Variables for Gumbel Random Variable
 @anchor{pdf_gumbel}
 @deffn {Function} pdf_gumbel (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
