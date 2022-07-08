@@ -1703,8 +1703,8 @@ m4_displaymath(
 <<<E_1(z) = \int_z^\infty {e^{-t} \over t} dt>>>,
 <<<@math{integrate(exp(-t)/t, t, z, inf)}>>>)
 
-with m4_math(<<<\arg z < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
-(@urlaands{5.1.1, 228}) and (@urldlmf{7.2E2})
+with m4_math(<<<\left| \arg z \right| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>). 
+(@urlaands{5.1.1, 228}) and (@urldlmf{6.2E2})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1712,9 +1712,16 @@ with m4_math(<<<\arg z < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_ei (@var{z})
-The Exponential Integral Ei(z) (@urlaands{5.1.2, 228}) and (@urldlmf{6.2E5})
+@deffn {Function} expintegral_ei (@var{x})
+The Exponential Integral Ei(x) defined as
 
+m4_displaymath(
+<<<Ei(x)
+  = - -\kern-10.5pt\int_{-x}^\infty {e^{-t} \over t} dt
+  = -\kern-10.5pt\int_{-\infty}^x {e^{t} \over t} dt  >>>,
+<<<@math{-integrate(%e^(-t)/t, t, -x, inf)} = integrate(%e^(t)/t, t, -inf, x)} >>>)
+
+with m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 0>>>, <<<@math{x > 0}>>>). (@urlaands{5.1.2, 228}) and (@urldlmf{6.2E5})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1722,15 +1729,14 @@ The Exponential Integral Ei(z) (@urlaands{5.1.2, 228}) and (@urldlmf{6.2E5})
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_li (@var{z})
-The Exponential Integral li(z) defined as
+@deffn {Function} expintegral_li (@var{x})
+The Exponential Integral li(x) defined as
 
 m4_displaymath(
 <<<li(x) = -\kern-10.5pt\int_0^x {dt \over \ln t}>>>,
 <<<@math{integrate(1/ln(t), t, 0, x)}>>>)
 
-with m4_math(<<<x > 1>>>, <<<@math{x > 1}>>>)
-(@urlaands{5.1.3, 228}) and (@urldlmf{6.2E8})
+with  m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 1>>>, <<<@math{x > 1}>>>). (@urlaands{5.1.3, 228}) and (@urldlmf{6.2E8})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
