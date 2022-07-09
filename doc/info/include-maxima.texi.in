@@ -67,6 +67,11 @@ END-INFO-DIR-ENTRY
 @url{https://dlmf.nist.gov/\eqn\, DLMF \eqn\}
 @end macro
 
+@c for PDF output, don't include the urls in the visible text
+@tex
+\global\urefurlonlylinktrue
+@end tex
+
 @include category-macros.texi
 
 @titlepage
