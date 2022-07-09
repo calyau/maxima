@@ -4,6 +4,19 @@
 * Functions and Variables for discrete distributions::
 @end menu
 
+@c Define an m4 macro for the NormalRV function that is used below.
+@c Can't use @macro because m4 is processed too late for this to work.
+m4_define(<<<m4_NormalRV>>>,
+m4_math(<<<{\rm Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
+
+@c Define the function student t to denote Student's t random variable
+m4_define(<<<m4_student_t>>>,
+@math{t($1)})
+
+@c Define Chi^2(n), the chi-squared random variate function.
+m4_define(<<<m4_chi2>>>,
+m4_math(<<<{\rm Chi}^2($1)>>>, <<<@math{Chi^2($2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -259,11 +272,6 @@ Maxima knows the following kinds of continuous distributions.
 @node Normal Random Variable, Functions and Variables for discrete distributions, Functions and Variables for continuous distributions
 @subsection Normal Random Variable
 
-@c Define an m4 macro for the NormalRV function that is used below.
-@c Can't use @macro because m4 is processed too late for this to work.
-m4_define(<<<m4_NormalRV>>>,
-m4_math(<<<{\rm Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
-
 @node Introduction to Normal Random Variables
 @subsubsection Introduction to Normal Random Variables
 
@@ -420,10 +428,6 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Student's t Random Variable, Noncentral Student's t Random Variable, Normal Random Variable, Normal Random Variable
 @subsection Student's t Random Variable
-
-@c Define the function student t to denote Student's t random variable
-m4_define(<<<m4_student_t>>>,
-@math{t($1)})
 
 @node Introduction to Student's t Random Variable
 @subsubsection Introduction to Student's t Random Variable
@@ -592,7 +596,7 @@ Returns a Student random variate m4_student_t(n), with @math{n>0}. Calling @code
 The implemented algorithm is based on the fact that if @math{Z} is a
 normal random variable m4_NormalRV(0,1) and @math{S^2} is
 a m4_math(\chi^2, chi squared) random variable with @math{n} degrees of
-freedom, @math{Chi^2(n)}, then
+freedom, m4_chi2(n), then
 
 m4_displaymath(
 <<<X={{Z}\over{\sqrt{{S^2}\over{n}}}}>>>,
@@ -776,7 +780,7 @@ Returns the kurtosis coefficient of a noncentral Student random variable m4_nonc
 
 Returns a noncentral Student random variate m4_noncentral_t(n,ncp), with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
-The implemented algorithm is based on the fact that if @var{X} is a normal random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
+The implemented algorithm is based on the fact that if @var{X} is a normal random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, m4_chi2(n), then
 @ifnottex
 @example
                            X
@@ -812,8 +816,8 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{pdf_chi2}
 @deffn {Function} pdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the density function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
+Returns the value at @var{x} of the density function of a Chi-square random variable m4_chi2(n), with @math{n>0}.
+The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -839,7 +843,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @anchor{cdf_chi2}
 @deffn {Function} cdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
+Returns the value at @var{x} of the distribution function of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -865,7 +869,7 @@ Returns the value at @var{x} of the distribution function of a Chi-square random
 
 @anchor{quantile_chi2}
 @deffn {Function} quantile_chi2 (@var{q},@var{n})
-Returns the @var{q}-quantile of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of a Chi-square random variable m4_chi2(n), with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
 This function has no closed form and it is numerically computed.
 
@@ -888,9 +892,9 @@ This function has no closed form and it is numerically computed.
 
 @anchor{mean_chi2}
 @deffn {Function} mean_chi2 (@var{n})
-Returns the mean of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
+Returns the mean of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -911,9 +915,9 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @anchor{var_chi2}
 @deffn {Function} var_chi2 (@var{n})
-Returns the variance of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
+Returns the variance of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -934,9 +938,9 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @anchor{std_chi2}
 @deffn {Function} std_chi2 (@var{n})
-Returns the standard deviation of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
+Returns the standard deviation of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -957,9 +961,9 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @anchor{skewness_chi2}
 @deffn {Function} skewness_chi2 (@var{n})
-Returns the skewness coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
+Returns the skewness coefficient of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -983,9 +987,9 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @anchor{kurtosis_chi2}
 @deffn {Function} kurtosis_chi2 (@var{n})
-Returns the kurtosis coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
+Returns the kurtosis coefficient of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -1010,7 +1014,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 @deffn {Function} random_chi2 (@var{n}) @
 @fname{random_chi2} (@var{n},@var{m})
 
-Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a Chi-square random variate m4_chi2(n), with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The simulation is based on the Ahrens-Cheng algorithm. See @code{random_gamma} for details.
 
@@ -1262,7 +1266,7 @@ Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @mat
 
 Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
 
-The simulation algorithm is based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a @math{Chi^2(n)} random variable, then
+The simulation algorithm is based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a m4_chi2(n) random variable, then
 @ifnottex
 @example
                         n X
