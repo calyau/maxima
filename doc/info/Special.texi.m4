@@ -1719,7 +1719,7 @@ m4_displaymath(
 <<<Ei(x)
   = - -\kern-10.5pt\int_{-x}^\infty {e^{-t} \over t} dt
   = -\kern-10.5pt\int_{-\infty}^x {e^{t} \over t} dt  >>>,
-<<<@math{-integrate(%e^(-t)/t, t, -x, inf)} = integrate(%e^(t)/t, t, -inf, x)} >>>)
+<<<@math{-integrate(%e^(-t)/t, t, -x, inf) = integrate(%e^(t)/t, t, -inf, x)} >>>)
 
 with m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 0>>>, <<<@math{x > 0}>>>). (@urlaands{5.1.2, 228}) and (@urldlmf{6.2E5})
 
