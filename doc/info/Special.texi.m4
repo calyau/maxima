@@ -1251,6 +1251,7 @@ Derivative and integral for @code{beta_incomplete}:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{beta_incomplete_regularized}
 @deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
 
 The regularized incomplete beta function (@urlaands{eqn 6.6.2, 263}), defined as
