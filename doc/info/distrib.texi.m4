@@ -631,6 +631,19 @@ m4_math(<<<{\rm nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
 
 @node Introduction to Noncentral Student's t Random Variable
 @subsubsection Introduction to Noncentral Student's t Random Variable
+Let @math{ncp} be the non-centrality parameter, @math{n} be the
+degrees of freedom for the non-central Student's @math{t} random
+variable.
+
+Then let @math{X} be a m4_NormalRV(n,ncp) and @math{S^2} be an independent m4_math(\chi^2,
+chi squared) random variable with @math{n} degrees of freedom, the
+random variable
+m4_displaymath(
+<<<U = {X \over \sqrt{S^2\over n}}>>>,
+<<<@math{U = X/sqrt(S^2/n)}>>>)
+
+has a non-central Student's @math{t} distribution with non-centrality
+parameter @math{ncp}.
 
 @node Functions and Variables for Noncentral Student's t Random Variable
 @subsubsection Functions and Variables for Noncentral Student's t Random Variable
@@ -638,6 +651,57 @@ m4_math(<<<{\rm nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
 @anchor{pdf_noncentral_student_t}
 @deffn {Function} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
 Returns the value at @var{x} of the density function of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+
+The pdf is
+m4_displaymath(
+<<<\left[\sqrt{n} B\left({1\over 2}, {n\over
+2}\right)\right]^{-1}\left(1+{x^2\over n}\right)^{-{(n+1)/2}}
+\exp\left(-{\mu^2\over 2}\right)
+\bigg[A_n(x; \mu) + B_n(x; \mu)\bigg]>>>,
+<<<
+@example
+                2
+              mu          (- n) - 1
+            - ---         ---------
+               2    2         2
+          %e      (x  + 1)          (B(x, n, mu) + An(x, n, mu))
+          -------------------------------------------------
+                              1  n
+                         beta(-, -) sqrt(n)
+                              2  2
+
+@end example
+>>>)
+where
+m4_displaymath(
+<<<\eqalign{
+A_n(x;\mu) &= {}_1F_1\left({n+1\over 2}; {1\over 2}; {\mu^2 x^2\over
+2\left(x^2+n\right)}\right) \cr
+B_n(x;\mu) &= {\sqrt{2}\mu x \over \sqrt{x^2+n}} {\Gamma\left({n\over
+2} + 1\right)\over \Gamma\left({n+1\over 2}\right)}\;
+{}_1F_1\left({n\over 2} + 1; {3\over 2}; {\mu^2 x^2\over
+2\left(x^2+n\right)}\right)
+}>>>,
+<<<
+@example
+                                        2  2
+                       n + 1    1     mu  x
+ A(x, n, mu) = %f    ([-----], [-], ----------)
+                 1, 1    2      2       2
+                                    2 (x  + n)
+
+                                                   2  2
+                                  n        3     mu  x           n
+               sqrt(2) mu %f    ([- + 1], [-], ----------) gamma(- + 1) x
+                            1, 1  2        2       2             2
+                                               2 (x  + n)
+ B(x, n, mu) = ----------------------------------------------------------
+                                     n + 1        2
+                               gamma(-----) sqrt(x  + n)
+                                       2
+@end example
+>>>)
+and m4_math(\mu, mu) is the non-centrality parameter @math{ncp}.
 
 Sometimes an extra work is necessary to get the final result.
 
@@ -707,6 +771,24 @@ Returns the @var{q}-quantile of a noncentral Student random variable m4_noncentr
 @deffn {Function} mean_noncentral_student_t (@var{n},@var{ncp})
 Returns the mean of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<\mu \sqrt{n} \Gamma\left(\displaystyle{n-1\over 2}\right) \over
+\sqrt{2}\Gamma\left(\displaystyle{n\over 2}\right)>>>,
+<<<
+@example
+                                n - 1
+                       mu gamma(-----) sqrt(n)
+                                  2
+                       -----------------------
+                                        n
+                          sqrt(2) gamma(-)
+                                        2
+@end example
+>>>)
+
+where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
+
 @c ===beg===
 @c load ("distrib")$
 @c mean_noncentral_student_t(df,k);
@@ -733,6 +815,24 @@ Returns the mean of a noncentral Student random variable m4_noncentral_t(n,ncp),
 @anchor{var_noncentral_student_t}
 @deffn {Function} var_noncentral_student_t (@var{n},@var{ncp})
 Returns the variance of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<{n(\mu^2+1)\over n-2} - {n\mu^2 \Gamma^2\left(\displaystyle{n-1\over 2}\right)
+\over 2\Gamma^2\left(\displaystyle{n\over 2}\right)}>>>,
+<<<
+@example
+                                     2 n - 1       2
+                       2        gamma (-----) n ncp
+                 n (ncp  + 1)            2
+                 ------------ - --------------------
+                    n - 2                  2 n
+                                    2 gamma (-)
+                                             2
+@end example
+>>>)
+
+where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
