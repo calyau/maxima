@@ -704,7 +704,7 @@ m4_displaymath(
 <<<P_n^m(x) = (-1)^m\left(1-x^2\right)^{m/2} {d^m\over dx^m} P_n(x)>>>,
 <<<assoc_legendre_p(n,m,x) = (-1)^m*(1-x^2)^(m/2) diff(legendre_p(n,x),x,m)>>>)
 
-Reference: @urlaands{22.5.37, 779}, @urlaands{8.6.6, 334}, and @urlaands{8.2.5, 333}.
+Reference: @urlaands{eqn 22.5.37, 779}, @urlaands{eqn 8.6.6, 334}, and @urlaands{eqn 8.2.5, 333}.
 
 Some examples:
 @c ===beg===
@@ -794,7 +794,7 @@ Some examples:
 @deffn {Function} chebyshev_t (@var{n}, @var{x})
 The Chebyshev polynomial of the first kind of degree @math{n}, m4_math(<<<T_n(x).>>>,<<<@math{chebyshev_t(n,x)}.>>>)
 
-Reference: @urlaands{22.5.47, 779}.
+Reference: @urlaands{eqn 22.5.47, 779}.
 
 The polynomials m4_math(<<<T_n(x)>>>,<<<chebyshev_t(n,x)>>>) can be written in terms of a hypergeometric function:
 
@@ -858,7 +858,7 @@ Some examples:
 @deffn {Function} chebyshev_u (@var{n}, @var{x})
 The Chebyshev polynomial of the second kind of degree @math{n}, m4_math(<<<U_n(x)>>>,<<<@math{chebyshev_u(n,x)}>>>).
 
-Reference: @urlaands{22.5.48,779}.
+Reference: @urlaands{eqn 22.5.48,779}.
 
 The polynomials m4_math(<<<U_n(x)>>>,<<<chebyshev_u(n,x)>>>) can be written in terms of a hypergeometric function:
 
@@ -953,7 +953,7 @@ w(x) &= e^{-x}x^{\alpha} \cr
 
 @math{k(n) = n!}>>>)
 
-Reference: @urlaands{22.5.54,780}.
+Reference: @urlaands{eqn 22.5.54,780}.
 
 Some examples:
 @c ===beg===
@@ -1023,7 +1023,7 @@ w(x) &= e^{-{x^2/2}} \cr
 
 @math{k(n) = (-1)^n}>>>)
 
-Reference: @urlaands{22.5.55,780}.
+Reference: @urlaands{eqn 22.5.55,780}.
 
 Some examples:
 @c ===beg===
@@ -1079,7 +1079,7 @@ The Jacobi polynomials are actually defined for all
 weight @math{(1 - x)^a (1 + x)^b} isn't integrable
 for m4_math(<<<a \le -1>>>, <<<@math{a <= -1}>>>) or m4_math(<<<b \le -1>>>, <<<@math{b <= -1}>>>). 
 
-Reference: @urlaands{22.5.42,779}.
+Reference: @urlaands{eqn 22.5.42,779}.
 
 The polynomial may be defined in terms of hypergeometric functions:
 
@@ -1129,7 +1129,7 @@ Some examples:
 @deffn {Function} laguerre (@var{n}, @var{x})
 The Laguerre polynomial, m4_math(<<<L_n(x)>>>,<<<@math{laguerre(n,x)}>>>) of degree @math{n}.
 
-Reference: @urlaands{22.5.16, 778} and @urlaands{22.5.54, 780}.
+Reference: @urlaands{eqn 22.5.16, 778} and @urlaands{eqn 22.5.54, 780}.
 
 These are related to the generalized Laguerre polynomial by
 
@@ -1180,7 +1180,7 @@ Some examples:
 @deffn {Function} legendre_p (@var{n}, @var{x})
 The Legendre polynomial of the first kind, m4_math(P_n(x),legendre(n,x)), of degree @math{n}.
 
-Reference: @urlaands{22.5.50, 779} and @urlaands{22.5.51, 779}.
+Reference: @urlaands{eqn 22.5.50, 779} and @urlaands{eqn 22.5.51, 779}.
 
 The Legendre polynomial is related to the Jacobi polynomials by
 
@@ -1386,7 +1386,7 @@ signals an error.
 
 @anchor{pochhammer}
 @deffn {Function} pochhammer (@var{x}, @var{n})
-The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). (See @urlaands{6.1.22, 256} and @urldlmf{5.2.iii}).
+The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). (See @urlaands{eqn 6.1.22, 256} and @urldlmf{5.2.iii}).
 
 For nonnegative
 integers @var{n} with @code{@var{n} <= pochhammer_max_index}, the
@@ -1411,7 +1411,7 @@ Thus
 @end example
 
 To convert a Pochhammer symbol into a quotient of gamma functions,
-(see @urlaands{6.1.22, 256}) use @code{makegamma}; for example 
+(see @urlaands{eqn 6.1.22, 256}) use @code{makegamma}; for example 
 
 @c ===beg===
 @c makegamma (pochhammer (x, n));
@@ -1462,7 +1462,7 @@ Examples:
                                  4
 @end example
 
-Reference: @urlaands{6.1.16,256}.
+Reference: @urlaands{eqn 6.1.16,256}.
 
 @opencatbox{Categories:}
 @category{Package orthopoly}
@@ -1475,7 +1475,7 @@ Reference: @urlaands{6.1.16,256}.
 @deffn {Function} spherical_bessel_j (@var{n}, @var{x})
 The spherical Bessel function of the first kind, m4_math(<<<j_n(x).>>>, <<<@math{spherical_bessel_j(n,x)}.>>>)
 
-Reference: @urlaands{10.1.8, 437} and @urlaands{10.1.15, 439}.
+Reference: @urlaands{eqn 10.1.8, 437} and @urlaands{eqn 10.1.15, 439}.
 
 It is related to the Bessel function by
 
@@ -1526,7 +1526,7 @@ Some examples:
 @deffn {Function} spherical_bessel_y (@var{n}, @var{x})
 The spherical Bessel function of the second kind, m4_math(<<<y_n(x).>>>, <<<@math{<spherical_bessel_y(n,x)}.>>>)
 
-Reference: @urlaands{10.1.9, 437} and @urlaands{10.1.15, 439}.
+Reference: @urlaands{eqn 10.1.9, 437} and @urlaands{eqn 10.1.15, 439}.
 
 It is related to the Bessel function by
 
@@ -1577,7 +1577,7 @@ m4_displaymath(
 The spherical Hankel function of the
 first kind, m4_math(<<<h_n^{(1)}(x).>>>, <<<spherical_hankel1(n,x).>>>)
 
-Reference: @urlaands{10.1.36,439}.
+Reference: @urlaands{eqn 10.1.36,439}.
 
 This is defined by
 
@@ -1597,7 +1597,7 @@ m4_displaymath(
 The spherical Hankel function of the
 second kind, m4_math(<<<h_n^{(2)}(x).>>>, <<<spherical_hankel2(n,x).>>>)
 
-Reference: @urlaands{10.1.17,439}.
+Reference: @urlaands{eqn 10.1.17,439}.
 
 This is defined by
 
@@ -1703,7 +1703,7 @@ use @mrefdot{hstep}
 @deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
 The ultraspherical polynomial, m4_math(<<<C_n^{(a)}(x)>>>, <<<@math{ultraspherical(n,a,x)}>>>) (also known as the Gegenbauer polynomial).
 
-Reference: @urlaands{22.5.46,779}.
+Reference: @urlaands{eqn 22.5.46,779}.
 
 These polynomials can be given in terms of Jacobi polynomials:
 

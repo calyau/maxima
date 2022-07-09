@@ -56,8 +56,8 @@ END-INFO-DIR-ENTRY
 
 @c Macro for forming a URL to Abramowitz and Stegun.  Provide the
 @c equation number and the page where the equation is.
-@macro urlaands {eqn, page}
-@url{https://personal.math.ubc.ca/~cbm/aands/page_\page\.htm, Abramowitz and Stegun eqn \eqn\}
+@macro urlaands {label, page}
+@url{https://personal.math.ubc.ca/~cbm/aands/page_\page\.htm, A&S \label\}
 @end macro
 
 @c Macro for forming a URL to the DLMF.  Provide the equation number.
@@ -66,6 +66,11 @@ END-INFO-DIR-ENTRY
 @macro urldlmf {eqn}
 @url{https://dlmf.nist.gov/\eqn\, DLMF \eqn\}
 @end macro
+
+@c for PDF output, don't include the urls in the visible text
+@tex
+\global\urefurlonlylinktrue
+@end tex
 
 @include category-macros.texi
 

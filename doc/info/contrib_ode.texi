@@ -46,8 +46,10 @@ a transformation into another ODE in variable @code{%u}.
 
 @end itemize
 
-@mref{%c} is used to represent the constant of integration for first order equations.
-@mref{%k1} and @mref{%k2} are the constants for second order equations.  
+@code{contrib_ode} uses the global variables @mrefcomma{%c} 
+@mrefcomma{%k1} @mrefcomma{%k2} @mref{method} and @mref{yp}
+similarly to @code{ode2}.
+
 If @code{contrib_ode}
 cannot obtain a solution for whatever reason, it returns @code{false}, after
 perhaps printing out an error message.
@@ -245,6 +247,7 @@ Extensive debugging traces and messages are displayed if the command
 Returns a list of solutions of the ODE @var{eqn} with 
 independent variable @var{x} and dependent variable @var{y}.
 
+
 @opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
@@ -335,12 +338,12 @@ zero if @var{soln} is a solution of @var{eqn}.
 @deffn {Function} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 
 @code{gauss_a(a,b,c,x)} and @code{gauss_b(a,b,c,x)} are 2F1 
-geometric functions.  They represent any two independent
+hypergeometric functions.  They represent any two independent
 solutions of the hypergeometric differential equation 
-@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x] diff(y,x) - aby = 0} (A&S 15.5.1).  
+@code{x*(1-x) diff(y,x,2) + [c-(a+b+1)x] diff(y,x) - a*b*y = 0} (A&S 15.5.1).  
 
 The only use of these functions is in solutions of ODEs returned by 
-@code{odelin} and @code{contrib_ode}.  The definition and use of these 
+@mref{odelin} and @mref{contrib_ode}.  The definition and use of these 
 functions may change in future releases of Maxima.
 
 See also @mrefcomma{gauss_b} @mref{dgauss_a} and @mrefdot{gauss_b}
@@ -363,7 +366,8 @@ See @mrefdot{gauss_a}
 
 @anchor{dgauss_a}
 @deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
+The derivative with respect to @var{x} 
+of @mref{gauss_a}@code{(@var{a}, @var{b}, @var{c}, @var{x})}.
 
 @opencatbox{Categories:}
 @category{Package contrib_ode}
@@ -373,7 +377,8 @@ The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c
 
 @anchor{dgauss_b}
 @deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
+The derivative with respect to @var{x} 
+of @mref{gauss_b}@code{(@var{a}, @var{b}, @var{c}, @var{x})}.
 
 @opencatbox{Categories:}
 @category{Package contrib_ode}
@@ -416,7 +421,8 @@ See @mrefdot{kummer_m}
 
 @anchor{dkummer_m}
 @deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
-The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{x})}.
+The derivative with respect to @var{x}
+of @mref{kummer_m}@code{(@var{a}, @var{b}, @var{x})}.
 
 @opencatbox{Categories:}
 @category{Package contrib_ode}
@@ -426,7 +432,8 @@ The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{
 
 @anchor{dkummer_u}
 @deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
-The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{x})}.
+The derivative with respect to @var{x}
+of @mref{kummer_u}@code{(@var{a}, @var{b}, @var{x})}.
 
 @opencatbox{Categories:}
 @category{Package contrib_ode}
