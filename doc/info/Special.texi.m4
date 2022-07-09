@@ -73,7 +73,7 @@ parabolic_cylinder_d (v,z)     Parabolic cylinder D function
 @deffn {Function} bessel_j (@var{v}, @var{z})
 
 The Bessel function of the first kind of order @math{v} and argument @math{z}.
-See @urlaands{9.1.10, 360} and @urldlmf{10.2.E2}.
+See @urlaands{eqn 9.1.10, 360} and @urldlmf{10.2.E2}.
 
 @code{bessel_j} is defined as
 
@@ -104,7 +104,7 @@ although the infinite series is not used for computations.
 @deffn {Function} bessel_y (@var{v}, @var{z})
 
 The Bessel function of the second kind of order @math{v} and argument @math{z}.
-See @urlaands{9.1.2, 358} and @urldlmf{10.2.E3}.
+See @urlaands{eqn 9.1.2, 358} and @urldlmf{10.2.E3}.
 
 @code{bessel_y} is defined as
 m4_displaymath(
@@ -130,7 +130,7 @@ the limit as @math{v} approaches @math{n} is taken.
 @deffn {Function} bessel_i (@var{v}, @var{z})
 
 The modified Bessel function of the first kind of order @math{v} and argument
-@math{z}. See @urlaands{9.6.10, 375} and @urldlmf{10.25.E2}.
+@math{z}. See @urlaands{eqn 9.6.10, 375} and @urldlmf{10.25.E2}.
 
 @code{bessel_i} is defined as
 m4_displaymath(
@@ -160,7 +160,7 @@ although the infinite series is not used for computations.
 @deffn {Function} bessel_k (@var{v}, @var{z})
 
 The modified Bessel function of the second kind of order @math{v} and argument
-@math{z}. See @urlaands{9.6.2, 375} and @urldlmf{10.27.E4}.
+@math{z}. See @urlaands{eqn 9.6.2, 375} and @urldlmf{10.27.E4}.
 
 @code{bessel_k} is defined as
 m4_displaymath(
@@ -186,7 +186,7 @@ then the limit as @math{v} approaches @math{n} is taken.
 @deffn {Function} hankel_1 (@var{v}, @var{z})
 
 The Hankel function of the first kind of order @math{v} and argument @math{z}.
-See @urlaands{9.1.3, 358} and @urldlmf{10.4.E3}.
+See @urlaands{eqn 9.1.3, 358} and @urldlmf{10.4.E3}.
 
 @code{hankel_1} is defined as
 
@@ -273,7 +273,7 @@ order @math{v} is not supported. Maxima returns a noun form:
 @deffn {Function} hankel_2 (@var{v}, @var{z})
 
 The Hankel function of the second kind of order @math{v} and argument @math{z}.
-See @urlaands{9.1.4, 358} and @urldlmf{10.4.E3}.
+See @urlaands{eqn 9.1.4, 358} and @urldlmf{10.4.E3}.
 
 @code{hankel_2} is defined as
 
@@ -442,7 +442,7 @@ negative integer, the limit must be used.
 @c -----------------------------------------------------------------------------
 
 The Airy functions m4_math(<<<{\rm Ai}(x)>>>,<<<@math{Ai(x)}>>>) and m4_math(<<<{\rm Bi}(x)>>>,<<<@math{Bi(x)}>>>) are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Section 10.4. 
+@i{Handbook of Mathematical Functions}, @urlaands{Section 10.4, 446}. 
 
 The two linearly independent solutions of the Airy differential equation:
 
@@ -458,7 +458,7 @@ number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function m4_math(<<<{\rm Ai}(x)>>>, <<<@math{Ai(x)}>>>).  See @urlaands{10.4.2, 446}.
+The Airy function m4_math(<<<{\rm Ai}(x)>>>, <<<@math{Ai(x)}>>>).  See @urlaands{eqn 10.4.2, 446}.
 
 See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
@@ -488,7 +488,7 @@ See @mrefdot{airy_ai}.
 @c -----------------------------------------------------------------------------
 @anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
-The Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}).  See @urlaands{10.4.3, 446}.
+The Airy function m4_math(<<<{\rm Bi}(x)>>>, @math{Bi(x)}).  See @urlaands{eqn 10.4.3, 446}.
 
 See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 
@@ -589,7 +589,7 @@ Complex bigfloat factorial.
 @anchor{gamma}
 @deffn {Function} gamma (@var{z})
 
-The basic definition of the gamma function (@urlaands{6.1.1, 255}) is
+The basic definition of the gamma function (@urlaands{eqn 6.1.1, 255}) is
 
 m4_displaymath(
 <<<\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}>>>,
@@ -704,7 +704,7 @@ The natural logarithm of the gamma function.
 @c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete_lower (@var{a}, @var{z})
 
-The lower incomplete gamma function (@urlaands{6.5.2, 260}):
+The lower incomplete gamma function (@urlaands{eqn 6.5.2, 260}):
 
 m4_displaymath(
 <<<\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}>>>,
@@ -731,7 +731,7 @@ See also @mref{gamma_incomplete} (upper incomplete gamma function).
 @anchor{gamma_incomplete}
 @deffn {Function} gamma_incomplete (@var{a}, @var{z})
 
-The incomplete upper gamma function (@urlaands{6.5.3, 260}):
+The incomplete upper gamma function (@urlaands{eqn 6.5.3, 260}):
 
 m4_displaymath(
 <<<\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}>>>,
@@ -763,7 +763,7 @@ Also see the related functions @code{gamma_incomplete_regularized} and
 @c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete_regularized (@var{a}, @var{z})
 
-The regularized incomplete upper gamma function (@urlaands{6.5.1, 260}):
+The regularized incomplete upper gamma function (@urlaands{eqn 6.5.1, 260}):
 
 m4_displaymath(
 <<<Q\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}>>>,
@@ -907,7 +907,7 @@ The beta function is defined as
 m4_displaymath(
 <<<{\rm B}(a, b) = {{\Gamma(a) \Gamma(b)}\over{\Gamma(a+b)}}>>>,
 <<<@math{gamma(a) gamma(b)/gamma(a+b)}>>>)
-(@urlaands{6.2.1, 258}).
+(@urlaands{eqn 6.2.1, 258}).
 
 Maxima simplifies the beta function for positive integers and rational 
 numbers, which sum to an integer. When @code{beta_args_sum_to_integer} is 
@@ -1042,7 +1042,7 @@ The derivative of the beta function wrt @code{a}:
 @c -----------------------------------------------------------------------------
 @deffn {Function} beta_incomplete (@var{a}, @var{b}, @var{z})
 
-The basic definition of the incomplete beta function (@urlaands{6.6.1, 263}) is
+The basic definition of the incomplete beta function (@urlaands{eqn 6.6.1, 263}) is
 
 m4_displaymath(
 <<<{\rm B}_z(a,b) = \int_0^z t^{a-1}(1-t)^{b-1}\; dt>>>,
@@ -1253,7 +1253,7 @@ Derivative and integral for @code{beta_incomplete}:
 @c -----------------------------------------------------------------------------
 @deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
 
-The regularized incomplete beta function (@urlaands{6.6.2, 263}), defined as
+The regularized incomplete beta function (@urlaands{eqn 6.6.2, 263}), defined as
 
 m4_displaymath(
 <<<I_z(a,b) = {{\rm B}_z(a,b)\over {\rm B}(a,b)}>>>,
@@ -1694,7 +1694,7 @@ Returns the numerical factor multiplying the expression
 
 The Exponential Integral and related functions are defined in
 Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapter 5
+@i{Handbook of Mathematical Functions}, @urlaands{Chapter 5, 228}.
 
 @deffn {Function} expintegral_e1 (@var{z})
 The Exponential Integral E1(z) defined as
@@ -1704,7 +1704,7 @@ m4_displaymath(
 <<<@math{integrate(exp(-t)/t, t, z, inf)}>>>)
 
 with m4_math(<<<\left| \arg z \right| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>). 
-(@urlaands{5.1.1, 228}) and (@urldlmf{6.2E2})
+(@urlaands{eqn 5.1.1, 228}) and (@urldlmf{6.2E2})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1721,7 +1721,7 @@ m4_displaymath(
   = -\kern-10.5pt\int_{-\infty}^x {e^{t} \over t} dt  >>>,
 <<<@math{-integrate(%e^(-t)/t, t, -x, inf) = integrate(%e^(t)/t, t, -inf, x)} >>>)
 
-with m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 0>>>, <<<@math{x > 0}>>>). (@urlaands{5.1.2, 228}) and (@urldlmf{6.2E5})
+with m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 0>>>, <<<@math{x > 0}>>>). (@urlaands{eqn 5.1.2, 228}) and (@urldlmf{6.2E5})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1736,7 +1736,7 @@ m4_displaymath(
 <<<li(x) = -\kern-10.5pt\int_0^x {dt \over \ln t}>>>,
 <<<@math{integrate(1/ln(t), t, 0, x)}>>>)
 
-with  m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 1>>>, <<<@math{x > 1}>>>). (@urlaands{5.1.3, 228}) and (@urldlmf{6.2E8})
+with  m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 1>>>, <<<@math{x > 1}>>>). (@urlaands{eqn 5.1.3, 228}) and (@urldlmf{6.2E8})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1746,7 +1746,7 @@ with  m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 1>>>, <<<@math{x >
 
 @anchor{expintegral_e}
 @deffn {Function} expintegral_e (@var{n},@var{z})
-The Exponential Integral En(z) (@urlaands{5.1.4, 228}) defined as
+The Exponential Integral En(z) (@urlaands{eqn 5.1.4, 228}) defined as
 
 m4_displaymath(
 <<<E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt>>>,
@@ -1761,7 +1761,7 @@ non-negative integer.
 @end deffn
 
 @deffn {Function} expintegral_si (@var{z})
-The Exponential Integral Si(z) (@urlaands{5.2.1, 231}) defined as
+The Exponential Integral Si(z) (@urlaands{eqn 5.2.1, 231}) defined as
 
 m4_displaymath(
 <<<{\rm Si}(z) = \int_0^z {\sin t \over t} dt>>>,
@@ -1774,7 +1774,7 @@ m4_displaymath(
 @end deffn
 
 @deffn {Function} expintegral_ci (@var{z})
-The Exponential Integral Ci(z) (@urlaands{5.2.2, 231}) defined as
+The Exponential Integral Ci(z) (@urlaands{eqn 5.2.2, 231}) defined as
 
 m4_displaymath(
 <<<{\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt>>>,
@@ -1789,7 +1789,7 @@ with m4_math(<<<|\arg z| < \pi>>>, <<<@math{abs(arg z) < %pi}>>>).
 @end deffn
 
 @deffn {Function} expintegral_shi (@var{z})
-The Exponential Integral Shi(z) (@urlaands{5.2.3, 231}) defined as
+The Exponential Integral Shi(z) (@urlaands{eqn 5.2.3, 231}) defined as
 
 m4_displaymath(
 <<<{\rm Shi}(z) = \int_0^z {\sinh t \over t} dt>>>,
@@ -1802,7 +1802,7 @@ m4_displaymath(
 @end deffn
 
 @deffn {Function} expintegral_chi (@var{z})
-The Exponential Integral Chi(z) (@urlaands{5.2.4, 231}) defined as
+The Exponential Integral Chi(z) (@urlaands{eqn 5.2.4, 231}) defined as
 
 m4_displaymath(
 <<<{\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt>>>,
@@ -1855,7 +1855,7 @@ for positive integers in terms of @code{expintegral_ei}.
 
 The Error function and related functions are defined in
 Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapter 7 and (@urldlmf{7})
+@i{Handbook of Mathematical Functions}, @urlaands{Chapter 7, 297} and (@urldlmf{7})
 
 @c -----------------------------------------------------------------------------
 @anchor{erf}
@@ -1866,7 +1866,7 @@ m4_displaymath(
 <<<{\rm erf}\ z = {{2\over \sqrt{\pi}}} \int_0^z e^{-t^2}\, dt>>>,
 <<<@math{erf(z) = 2/sqrt(%pi)*integrate(exp(-t^2), t, 0, z)}>>>)
 
-(@urlaands{7.1.1, 297}) and (@urldlmf{7.2.E1}).
+(@urlaands{eqn 7.1.1, 297}) and (@urldlmf{7.2.E1}).
 
 See also flag @mrefdot{erfflag}
 @opencatbox{Categories:}
@@ -1881,7 +1881,7 @@ m4_displaymath(
 <<<{\rm erfc}\ z = 1 - {\rm erf}\ z>>>,
 <<<@math{erfc(z) = 1-erf(z)}>>>)
 
-(@urlaands{7.1.2, 297}) and (@urldlmf{7.2.E2}).
+(@urlaands{eqn 7.1.2, 297}) and (@urldlmf{7.2.E2}).
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -1918,7 +1918,7 @@ m4_displaymath(
 <<<C(z) = \int_0^z \cos\left({\pi \over 2} t^2\right)\, dt>>>,
 <<<@math{C(z) = integrate(cos((%pi/2)*t^2),t,0,z)}>>>)
 
-(@urlaands{7.3.1, 300}) and (@urldlmf{7.2.E7}).
+(@urlaands{eqn 7.3.1, 300}) and (@urldlmf{7.2.E7}).
 
 The simplification @code{fresnel_c(-x) = -fresnel_c(x)} is applied when
 flag @code{trigsign} is true.
@@ -1939,7 +1939,7 @@ m4_displaymath(
 <<<S(z) = \int_0^z \sin\left({\pi \over 2} t^2\right)\, dt>>>,
 <<<@math{S(z) = integrate(sin((%pi/2)*t^2),t,0,z)}>>>)
 
-(@urlaands{7.3.2, 300}) and (@urldlmf{7.2.E8}).
+(@urlaands{eqn 7.3.2, 300}) and (@urldlmf{7.2.E8}).
 
 The simplification @code{fresnel_s(-x) = -fresnel_s(x)} is applied when
 flag @code{trigsign} is true.
@@ -1973,7 +1973,7 @@ representation for @mref{fresnel_s} and @mref{fresnel_c}.
 @section Struve Functions
 
 The Struve functions are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapter 12 and (@urldlmf{11}).
+@i{Handbook of Mathematical Functions}, @urlaands{Chapter 12, 496} and (@urldlmf{11}).
 The Struve Function m4_math(<<<{\bf H}_{\nu}(z)>>>,<<<@math{H[v](z)}>>>) is a particular solution
 of the differential equation:
 m4_displaymath(
@@ -1996,7 +1996,7 @@ m4_displaymath(
 \sum_{k=0}^{\infty} {(-1)^k\left({z\over 2}\right)^{2k} \over \Gamma\left(k + {3\over 2}\right) \Gamma\left(k + \nu + {3\over 2}\right)}>>>,
 <<<@math{struve_h(v,z) = (z/2)^(v+1)*sum((-1)^k*(z/2)^(2*k)/(gamma(k+3/2)*gamma(k+v+3/2)), k, 0, inf)}>>>)
 
-(@urlaands{12.1.3, 496}) and (@urldlmf{11.2.E1}).
+(@urlaands{eqn 12.1.3, 496}) and (@urldlmf{11.2.E1}).
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -2011,7 +2011,7 @@ m4_displaymath(
 <<<{\bf L}_{\nu}(z) = -ie^{-{i\nu\pi\over 2}} {\bf H}_{\nu}(iz)>>>,
 <<<@math{struve_l(v,z) = %i*exp(-%i*v*%pi/2)*struve_h(v,z)}>>>)
 
-(@urlaands{12.2.1, 498}) and (@urldlmf{11.2.E2}).
+(@urlaands{eqn 12.2.1, 498}) and (@urldlmf{11.2.E2}).
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -2022,13 +2022,14 @@ m4_displaymath(
 @section Hypergeometric Functions
 
 The Hypergeometric Functions are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapters 13 and 15.
+@i{Handbook of Mathematical Functions}, @urlaands{Chapters 13, 504} and
+@urlaands{15, 555}.
 
 Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
 @deffn {Function} %m [@var{k},@var{u}] (@var{z}) 
-Whittaker M function (@urlaands{13.1.32, 505}):
+Whittaker M function (@urlaands{eqn 13.1.32, 505}):
 
 m4_displaymath(
 <<<M_{\kappa,\mu}(z) = e^{-{1\over 2}z} z^{{1\over 2} + \mu} M\left({1\over 2} + \mu - \kappa, 1 + 2\mu, z\right)>>>,
@@ -2048,7 +2049,7 @@ m4_displaymath(
 @end deffn
 
 @deffn {Function} %w [@var{k},@var{u}] (@var{z}) 
-Whittaker W function (@urlaands{13.1.33, 505}):
+Whittaker W function (@urlaands{eqn 13.1.33, 505}):
 m4_displaymath(
 <<<W_{\kappa,\mu}(z) = e^{-{1\over 2}z} z^{{1\over 2} + \mu} U\left({1\over 2} + \mu - \kappa, 1+2\mu,z\right)>>>,
 <<<@math{%w[k,v](z) = exp(-z/2)*z^(1/2+u)*U(1/2+u-k, 1+2*u, z)}>>>)
@@ -2119,13 +2120,13 @@ Both double float and big float evaluation is supported:
 @section  Parabolic Cylinder Functions
 
 The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapter 19.
+@i{Handbook of Mathematical Functions}, @urlaands{Chapter 19, 686}.
 
 Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
 @deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
-The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (@urlaands{19.3.1, 687}).
+The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (@urlaands{eqn 19.3.1, 687}).
 
 @c See https://mathworld.wolfram.com/ParabolicCylinderFunction.html for more info.
 The solution of the Weber differential equation
