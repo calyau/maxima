@@ -1721,7 +1721,7 @@ m4_displaymath(
   = -\kern-10.5pt\int_{-\infty}^x {e^{t} \over t} dt  >>>,
 <<<@math{-integrate(%e^(-t)/t, t, -x, inf) = integrate(%e^(t)/t, t, -inf, x)} >>>)
 
-with m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 0>>>, <<<@math{x > 0}>>>). (@urlaands{eqn 5.1.2, 228}) and (@urldlmf{6.2E5})
+with @math{x} real and @math{x > 0}. (@urlaands{eqn 5.1.2, 228}) and (@urldlmf{6.2E5})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1736,7 +1736,7 @@ m4_displaymath(
 <<<li(x) = -\kern-10.5pt\int_0^x {dt \over \ln t}>>>,
 <<<@math{integrate(1/ln(t), t, 0, x)}>>>)
 
-with  m4_math(<<<x>>>,<<<@math{x}>>>) real and m4_math(<<<x > 1>>>, <<<@math{x > 1}>>>). (@urlaands{eqn 5.1.3, 228}) and (@urldlmf{6.2E8})
+with @math{x} real and @math{x > 1}. (@urlaands{eqn 5.1.3, 228}) and (@urldlmf{6.2E8})
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
