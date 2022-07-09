@@ -269,13 +269,18 @@ m4_math(<<<{\rm Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
 
 Normal random variables (also called Gaussian) is denoted
 by m4_NormalRV(m, s) where
-@math{m} is the mean and @math{s} is the standard deviation.
+@math{m} is the mean and @math{s > 0} is the standard deviation.
 
 @node Functions and Variables for Normal Random Variables
 @subsubsection Functions and Variables for Normal Random Variables
 @anchor{pdf_normal}
 @deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the density function of a m4_NormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+
+The pdf is the well-known integral
+m4_displaymath(
+<<<{1\over s\sqrt{2\pi}} e^{\displaystyle -{(x-m)^2\over 2s^2}}>>>,
+<<<@math{1/(s*sqrt(2*%pi))*exp(-1/(2s^2)*(x-m)^2)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -287,6 +292,11 @@ Returns the value at @var{x} of the density function of a m4_NormalRV(m,s) rando
 @anchor{cdf_normal}
 @deffn {Function} cdf_normal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the distribution function of a m4_NormalRV(m,s) random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+
+The cdf can be written analytically:
+m4_displaymath(
+<<<{1\over 2} + {1\over 2} {\rm erf}\left(x-m\over s\sqrt{2}\right)>>>,
+<<<@math{1/2 + 1/2*erf((x-m)/(s*sqrt(2)))}>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -350,7 +360,7 @@ Returns the mean of a m4_NormalRV(m,s) random variable, with @math{s>0}, namely 
 
 @anchor{var_normal}
 @deffn {Function} var_normal (@var{m},@var{s})
-Returns the variance of a m4_NormalRV(m,s) random variable, with @math{s>0}, namely @var{s^2}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_NormalRV(m,s) random variable, with @math{s>0}, namely @math{s^2}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
