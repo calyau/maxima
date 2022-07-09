@@ -583,6 +583,11 @@ To make use of this function, write first @code{load("distrib")}.
 @node Noncentral Student's t Random Variable, Chi-squared Random Variable, Student's t Random Variable, Normal Random Variable
 @subsection Noncentral Student's t Random Variable
 
+@c Define m4_nct to produce the nc_t function that displays nicely in
+@c html/TeX and info.
+m4_define(<<<m4_noncentral_t>>>,
+m4_math(<<<{\rm nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
+
 @node Introduction to Noncentral Student's t Random Variable
 @subsubsection Introduction to Noncentral Student's t Random Variable
 
@@ -591,7 +596,7 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{pdf_noncentral_student_t}
 @deffn {Function} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the density function of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 Sometimes an extra work is necessary to get the final result.
 
@@ -627,7 +632,7 @@ Sometimes an extra work is necessary to get the final result.
 
 @anchor{cdf_noncentral_student_t}
 @deffn {Function} cdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. This function has no closed form and it is numerically computed.
+Returns the value at @var{x} of the distribution function of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. This function has no closed form and it is numerically computed.
 
 @c ===beg===
 @c load ("distrib")$
@@ -648,7 +653,7 @@ Returns the value at @var{x} of the distribution function of a noncentral Studen
 
 @anchor{quantile_noncentral_student_t}
 @deffn {Function} quantile_noncentral_student_t (@var{q},@var{n},@var{ncp})
-Returns the @var{q}-quantile of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}; in other words, this is the inverse of @code{cdf_noncentral_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}; in other words, this is the inverse of @code{cdf_noncentral_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -659,7 +664,7 @@ Returns the @var{q}-quantile of a noncentral Student random variable @math{nc_t(
 
 @anchor{mean_noncentral_student_t}
 @deffn {Function} mean_noncentral_student_t (@var{n},@var{ncp})
-Returns the mean of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -686,7 +691,7 @@ Returns the mean of a noncentral Student random variable @math{nc_t(n,ncp)}, wit
 
 @anchor{var_noncentral_student_t}
 @deffn {Function} var_noncentral_student_t (@var{n},@var{ncp})
-Returns the variance of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -697,7 +702,7 @@ Returns the variance of a noncentral Student random variable @math{nc_t(n,ncp)},
 
 @anchor{std_noncentral_student_t}
 @deffn {Function} std_noncentral_student_t (@var{n},@var{ncp})
-Returns the standard deviation of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -708,7 +713,7 @@ Returns the standard deviation of a noncentral Student random variable @math{nc_
 
 @anchor{skewness_noncentral_student_t}
 @deffn {Function} skewness_noncentral_student_t (@var{n},@var{ncp})
-Returns the skewness coefficient of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>3} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>3} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -719,7 +724,7 @@ Returns the skewness coefficient of a noncentral Student random variable @math{n
 
 @anchor{kurtosis_noncentral_student_t}
 @deffn {Function} kurtosis_noncentral_student_t (@var{n},@var{ncp})
-Returns the kurtosis coefficient of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>4} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>4} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -732,7 +737,7 @@ Returns the kurtosis coefficient of a noncentral Student random variable @math{n
 @deffn {Function} random_noncentral_student_t (@var{n},@var{ncp}) @
 @fname{random_noncentral_student_t} (@var{n},@var{ncp},@var{m})
 
-Returns a noncentral Student random variate @math{nc_t(n,ncp)}, with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a noncentral Student random variate m4_noncentral_t(n,ncp), with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @var{X} is a normal random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
 @ifnottex
@@ -748,7 +753,7 @@ The implemented algorithm is based on the fact that if @var{X} is a normal rando
 @tex
 $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
-is a noncentral Student random variable with @var{n} degrees of freedom and noncentrality parameter @math{ncp}, @math{nc_t(n,ncp)}.
+is a noncentral Student random variable with @var{n} degrees of freedom and noncentrality parameter @math{ncp}, m4_noncentral_t(n,ncp).
 
 To make use of this function, write first @code{load("distrib")}.
 
