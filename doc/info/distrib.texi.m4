@@ -1374,11 +1374,31 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection F Random Variable
 @node Introduction to F Random Variable
 @subsubsection Introduction to F Random Variable
+Let @math{S_1} and @math{S_2} be independent random variables with
+a m4_math(\chi^2, chi-squared) distribution with degrees of freedom
+@math{n} and @math{m}, respectively.  Then
+m4_displaymath(
+<<<F = {S_1/n \over S_2/m}>>>,
+<<<@math{F = (S_1/n)/(S_2/m)}>>>) has an @math{F} distribution with @math{n} and @math{m} degrees of
+freedom.
+
 @node Functions and Variables for F Random Variable
 @subsubsection Functions and Variables for F Random Variable
 @anchor{pdf_f}
 @deffn {Function} pdf_f (@var{x},@var{m},@var{n})
 Returns the value at @var{x} of the density function of a F random variable @math{F(m,n)}, with @math{m,n>0}. To make use of this function, write first @code{load("distrib")}.
+
+The pdf is
+m4_displaymath(
+<<<{\rm pdf\_f}(x,n,m) =
+\cases{
+B\left({n\over 2},{m\over 2}\right)^{-1}
+\left(\displaystyle{n\over m}\right)^{n/ 2}
+x^{n/2-1}
+\left(1 + \displaystyle{n\over m}x\right)^{-\left(n+m\right)/2} & $x > 0$ \cr
+0 & otherwise
+}>>>,
+<<<>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1391,6 +1411,21 @@ Returns the value at @var{x} of the density function of a F random variable @mat
 @deffn {Function} cdf_f (@var{x},@var{m},@var{n})
 Returns the value at @var{x} of the distribution function of a F random variable @math{F(m,n)}, with @math{m,n>0}.
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_f}(x,n,m) =
+\cases{
+1 - I_z\left(\displaystyle{n\over 2}, {m\over 2}\right) & $x > 0$ \cr
+0 & otherwise
+}>>>,
+<<<>>>)
+
+where
+m4_displaymath(
+<<<z = {m\over nx+m}>>>,
+<<<>>>)
+
+and m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized} function.
 @c ===beg===
 @c load ("distrib")$
 @c cdf_f(2,3,9/4);
