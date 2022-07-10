@@ -885,18 +885,24 @@ Returns the kurtosis coefficient of a noncentral Student random variable m4_nonc
 If @math{U} is a non-central Student's @math{t} random variable with
 @math{n} degrees of freedom and a noncentrality parameter m4_math(\mu,
 @math{mu}), the kurtosis is
+
+@c The formula we see can be basically derived by computing
+@c (kurtosis_noncentral_student_t(n,mu)+3)*var_noncentral_student_t(n,mu)^2,
+@c which comes from the definition of kurtosis.  The rest is then
+@c obtained by replacing a constant by F.
 m4_displaymath(
-<<<KU[U]={{{{
- \left(\mu^4+6\,\mu^2+3\right)\,n^2}\over{\left(n-4\right)\,\left(n-2
- \right)}}-{{\mu^2\,\Gamma\left({{n-1}\over{2}}\right)^2\,n\,\left({{
- n\,\left(3\,\left(3\,n-5\right)+\mu^2\,\left(n+1\right)\right)
- }\over{\left(n-3\right)\,\left(n-2\right)}}-3\,\left({{\left(\mu^2+1
- \right)\,n}\over{n-2}}-{{\mu^2\,\Gamma\left({{n-1}\over{2}}\right)^2
- \,n}\over{2\,\Gamma\left({{n}\over{2}}\right)^2}}\right)\right)
- }\over{2\,\Gamma\left({{n}\over{2}}\right)^2}}}\over{\left({{\left(
- \mu^2+1\right)\,n}\over{n-2}}-{{\mu^2\,\Gamma\left({{n-1}\over{2}}
- \right)^2\,n}\over{2\,\Gamma\left({{n}\over{2}}\right)^2}}\right)^2
- }}-3>>>,
+<<<\eqalign{
+KU[U] &=
+{\mu_4\over \sigma^4} - 3\cr
+  \mu_4 &= {{\left(\mu^4+6\mu^2+3\right)n^2}\over{(n-4)(n-2)}}
+ -\left({{n\left(3(3n-5)+\mu^2(n+1)\right)
+ }\over{(n-3)(n-2)}}-3\sigma^2\right) F \cr
+ \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2
+ \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
+ }\over{2}}\right)^2}} \cr
+ F &= {n\mu^2\Gamma\left({n-1\over 2}\right)^2 \over
+ 2\sigma^4\Gamma\left({n\over 2}\right)^2}
+}>>>,
 <<<
 @example
 kurtosis_noncentral_student_t(n, mu) = 
@@ -921,53 +927,6 @@ kurtosis_noncentral_student_t(n, mu) =
 @end example
 >>>)
 
-m4_displaymath(
-<<<
-\eqalign{
-KU[U] &={{{{
- \left(\mu^4+6\,\mu^2+3\right)\,n^2}\over{\left(n-4\right)\,\left(n-2
- \right)}}-{{\mu^2\,\Gamma\left({{n-1}\over{2}}\right)^2\,n\,\left({{
- n\,\left(3\,\left(3\,n-5\right)+\mu^2\,\left(n+1\right)\right)
- }\over{\left(n-3\right)\,\left(n-2\right)}}-3\,\sigma^2\right)
- }\over{2\,\Gamma\left({{n}\over{2}}\right)^2}}}\over \sigma^4
- }-3 \cr
- \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2\,
- \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
- }\over{2}}\right)^2}}
-}>>>,
-<<<>>>)
-
-m4_displaymath(
-<<<
-\eqalign{
-KU[U] \cr
-  &= {{\left(\mu^4+6\mu^2+3\right)n^2}\over{(n-4)(n-2)\sigma^4}}
- -F\left({{n\left(3(3n-5)+\mu^2(n+1)\right)
- }\over{(n-3)(n-2)}}-3\sigma^2\right)
- -3 \cr
- \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2
- \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
- }\over{2}}\right)^2}} \cr
- F &= {n\mu^2\Gamma\left({n-1\over 2}\right)^2 \over
- 2\sigma^4\Gamma\left({n\over 2}\right)^2}
-}>>>,
-<<<>>>)
-
-m4_displaymath(
-<<<
-\eqalign{
-KU[U] &=
-{\mu_4\over \sigma^4} - 3\cr
-  \mu_4 &= {{\left(\mu^4+6\mu^2+3\right)n^2}\over{(n-4)(n-2)}}
- -\left({{n\left(3(3n-5)+\mu^2(n+1)\right)
- }\over{(n-3)(n-2)}}-3\sigma^2\right) F \cr
- \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2
- \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
- }\over{2}}\right)^2}} \cr
- F &= {n\mu^2\Gamma\left({n-1\over 2}\right)^2 \over
- 2\sigma^4\Gamma\left({n\over 2}\right)^2}
-}>>>,
-<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
