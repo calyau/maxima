@@ -940,8 +940,12 @@ kurtosis_noncentral_student_t(n, mu) =
 
 Returns a noncentral Student random variate m4_noncentral_t(n,ncp), with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
-The implemented algorithm is based on the fact that if @var{X} is a normal random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, m4_chi2(n), then
-@ifnottex
+The implemented algorithm is based on the fact that if @var{X} is a
+normal random variable m4_NormalRV(ncp,1) and @math{S^2} is
+a m4_math(\chi^2, chi square) random variable with @var{n} degrees of freedom, m4_chi2(n), then
+m4_displaymath(
+<<<U={{X}\over{\sqrt{{S^2}\over{n}}}}>>>,
+<<<
 @example
                            X
                  U = -------------
@@ -950,11 +954,8 @@ The implemented algorithm is based on the fact that if @var{X} is a normal rando
                      | ---  |
                      \  n   /
 @end example
-@end ifnottex
-@tex
-$$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
-@end tex
-is a noncentral Student random variable with @var{n} degrees of freedom and noncentrality parameter @math{ncp}, m4_noncentral_t(n,ncp).
+>>>)
+is a noncentral Student random variable with @math{n} degrees of freedom and noncentrality parameter @math{ncp}, m4_noncentral_t(n,ncp).
 
 To make use of this function, write first @code{load("distrib")}.
 
