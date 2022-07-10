@@ -761,6 +761,7 @@ Also see the related functions @code{gamma_incomplete_regularized} and
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gamma_incomplete_regularized}
 @deffn {Function} gamma_incomplete_regularized (@var{a}, @var{z})
 
 The regularized incomplete upper gamma function (@urlaands{eqn 6.5.1, 260}):

@@ -1029,7 +1029,17 @@ m4_displaymath(
 
 @anchor{cdf_chi2}
 @deffn {Function} cdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Chi-square random variable m4_chi2(n), with @math{n>0}.
+Returns the value at @math{x} of the distribution function of a Chi-square random variable m4_chi2(n), with @math{n>0}.
+
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_chi2}(x,n) =
+\cases{
+1 - Q\left(\displaystyle{n\over 2}, {x\over 2}\right) & $x > 0$ \cr
+0 & otherwise
+}>>>,
+<<<>>>)
+where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 
 @c ===beg===
 @c load ("distrib")$
