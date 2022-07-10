@@ -26,7 +26,9 @@ Package @code{distrib} contains a set of functions for making probability comput
 What follows is a short reminder of basic probabilistic related definitions.
 
 Let @math{f(x)} be the @var{density function} of an absolute continuous random variable @math{X}. The @var{distribution function} is defined as
-@ifnottex
+m4_displaymath(
+<<<F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}>>>,
+<<<
 @example
                        x
                       /
@@ -36,14 +38,13 @@ Let @math{f(x)} be the @var{density function} of an absolute continuous random v
                       /
                        minf
 @end example
-@end ifnottex
-@tex
-$$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
-@end tex
-which equals the probability @code{Pr(X <= x)}.
+>>>)
+which equals the probability m4_math(<<<{\rm Pr}(X \le x)>>>, <<<@math{Pr(X <= x)}>>>).
 
 The @var{mean} value is a localization parameter and is defined as
-@ifnottex
+m4_displaymath(
+<<<E\left[X\right]=\int_{ -\infty }^{\infty }{x\,f\left(x\right)\;dx}>>>,
+<<<
 @example
                      inf
                     /
@@ -53,13 +54,13 @@ The @var{mean} value is a localization parameter and is defined as
                     /
                      minf
 @end example
-@end ifnottex
-@tex
-$$E\left[X\right]=\int_{ -\infty }^{\infty }{x\,f\left(x\right)\;dx}$$
-@end tex
+>>>)
 
 The @var{variance} is a measure of variation,
-@ifnottex
+m4_displaymath(
+<<<V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
+ -E\left[X\right]\right)^2\;dx}>>>,
+<<<
 @example
                  inf
                 /
@@ -69,15 +70,15 @@ The @var{variance} is a measure of variation,
                 /
                  minf
 @end example
-@end ifnottex
-@tex
-$$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
- -E\left[X\right]\right)^2\;dx}$$
-@end tex
-which is a positive real number. The square root of the variance is the @var{standard deviation}, @math{D[X]=sqrt(V[X])}, and it is another measure of variation.
+>>>)
+which is a positive real number. The square root of the variance is
+the @var{standard deviation}, m4_math(<<<D[x]=\sqrt{V[X]}>>>, <<<@math{D[X]=sqrt(V[X])}>>>), and it is another measure of variation.
 
 The @var{skewness coefficient} is a measure of non-symmetry,
-@ifnottex
+m4_displaymath(
+<<<SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}>>>,
+<<<
 @example
                  inf
                 /
@@ -87,14 +88,13 @@ The @var{skewness coefficient} is a measure of non-symmetry,
           D[X]  /
                  minf
 @end example
-@end ifnottex
-@tex
-$$SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
- \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
-@end tex
+>>>)
 
 And the @var{kurtosis coefficient} measures the peakedness of the distribution,
-@ifnottex
+m4_displaymath(
+<<<KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3>>>,
+<<<
 @example
                  inf
                 /
@@ -104,15 +104,13 @@ And the @var{kurtosis coefficient} measures the peakedness of the distribution,
           D[X]  /
                  minf
 @end example
-@end ifnottex
-@tex
-$$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
- \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
-@end tex
+>>>)
 If @math{X} is gaussian, @math{KU[X]=0}. In fact, both skewness and kurtosis are shape parameters used to measure the non--gaussianity of a distribution.
 
 If the random variable @math{X} is discrete, the density, or @var{probability}, function @math{f(x)} takes positive values within certain countable set of numbers @math{x_i}, and zero elsewhere. In this case, the distribution function is
-@ifnottex
+m4_displaymath(
+<<< F\left(x\right)=\sum_{x_{i}\leq x}{f\left(x_{i}\right)} >>>,
+<<<
 @example
                        ====
                        \
@@ -122,53 +120,39 @@ If the random variable @math{X} is discrete, the density, or @var{probability}, 
                       x <= x
                        i
 @end example
-@end ifnottex
-@tex
-$$F\left(x\right)=\sum_{x_{i}\leq x}{f\left(x_{i}\right)}$$
-@end tex
+>>>)
 
 The mean, variance, standard deviation, skewness coefficient and kurtosis coefficient take the form
-@ifnottex
+m4_displaymath(
+<<<\eqalign{
+E\left[X\right]&=\sum_{x_{i}}{x_{i}f\left(x_{i}\right)}, \cr
+V\left[X\right]&=\sum_{x_{i}}{f\left(x_{i}\right)\left(x_{i}-E\left[X\right]\right)^2},\cr
+D\left[X\right]&=\sqrt{V\left[X\right]},\cr
+SK\left[X\right]&={{\sum_{x_{i}}{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}, \cr
+KU\left[X\right]&={{\sum_{x_{i}}{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3, 
+}>>>,
+<<<
 @example
-                       ====
-                       \
-                E[X] =  >  x  f(x ) ,
-                       /    i    i
-                       ====
-                        x 
-                         i
-@end example
-@end ifnottex
-@tex
-$$E\left[X\right]=\sum_{x_{i}}{x_{i}f\left(x_{i}\right)},$$
-@end tex
+          ====
+          \
+   E[X] =  >  x  f(x ) ,
+          /    i    i
+          ====
+           x 
+            i
 
-@ifnottex
-@example
-                ====
-                \                     2
-        V[X] =   >    f(x ) (x - E[X])  ,
-                /        i    i
-                ====
-                 x
-                  i
-@end example
-@end ifnottex
-@tex
-$$V\left[X\right]=\sum_{x_{i}}{f\left(x_{i}\right)\left(x_{i}-E\left[X\right]\right)^2},$$
-@end tex
+           ====
+           \                     2
+   V[X] =   >    f(x ) (x - E[X])  ,
+           /        i    i
+           ====
+            x
+             i
 
-@ifnottex
-@example
-               D[X] = sqrt(V[X]),
-@end example
-@end ifnottex
-@tex
-$$D\left[X\right]=\sqrt{V\left[X\right]},$$
-@end tex
+          D[X] = sqrt(V[X]),
 
-@ifnottex
-@example
                      ====
               1      \                     3
   SK[X] =  -------    >    f(x ) (x - E[X])  
@@ -176,15 +160,7 @@ $$D\left[X\right]=\sqrt{V\left[X\right]},$$
                      ====
                       x
                        i
-@end example
-@end ifnottex
-@tex
-$$SK\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
- \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
-@end tex
-and
-@ifnottex
-@example
+
                      ====
               1      \                     4
   KU[X] =  -------    >    f(x ) (x - E[X])   - 3 ,
@@ -193,11 +169,7 @@ and
                       x
                        i
 @end example
-@end ifnottex
-@tex
-$$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
- \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3,$$
-@end tex
+>>>)
 respectively.
 
 There is a naming convention in package @code{distrib}. Every function name has two parts, the first one makes reference to the function or parameter we want to calculate,
