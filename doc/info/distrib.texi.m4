@@ -831,16 +831,18 @@ Returns the skewness coefficient of a noncentral Student random variable m4_nonc
 @c The TeX form is obtained from
 @c tex(skewness_noncentral_student_t(n,mu)).  Likewise the info form
 @c is just cut-n-pasted from maxima's terminal output.
-The skewness is
+If @math{U} is a non-central Student's @math{t} random variable with
+@math{n} degrees of freedom and a noncentrality parameter m4_math(\mu,
+@math{mu}), the skewness is
 m4_displaymath(
 <<<\eqalign{
-{\rm skewness\_noncentral\_student\_t}(n,\mu) &= 
+SK[U] &= 
 {\mu\sqrt{n}\,\Gamma\left({{n-1}\over{2}}\right)
 \over{\sqrt{2}\Gamma\left({{n
- }\over{2}}\right)F^{{{3}\over{2}}}}}\left({{n
+ }\over{2}}\right)\sigma^{3}}}\left({{n
  \left(2n+\mu^2-3\right)}\over{\left(n-3\right)\left(n-2\right)}}
- -2F\right) \cr
- F &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2\,
+ -2\sigma^2\right) \cr
+ \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2\,
  \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
  }\over{2}}\right)^2}}
 }
@@ -880,9 +882,11 @@ skewness_noncentral_student_t(n, mu) =
 @deffn {Function} kurtosis_noncentral_student_t (@var{n},@var{ncp})
 Returns the kurtosis coefficient of a noncentral Student random variable m4_noncentral_t(n,ncp), with @math{n>4} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
-The kurtosis is
+If @math{U} is a non-central Student's @math{t} random variable with
+@math{n} degrees of freedom and a noncentrality parameter m4_math(\mu,
+@math{mu}), the kurtosis is
 m4_displaymath(
-<<<{\rm kurtosis\_noncentral\_student\_t}\left(n , \mu\right)={{{{
+<<<KU[U]={{{{
  \left(\mu^4+6\,\mu^2+3\right)\,n^2}\over{\left(n-4\right)\,\left(n-2
  \right)}}-{{\mu^2\,\Gamma\left({{n-1}\over{2}}\right)^2\,n\,\left({{
  n\,\left(3\,\left(3\,n-5\right)+\mu^2\,\left(n+1\right)\right)
@@ -920,7 +924,7 @@ kurtosis_noncentral_student_t(n, mu) =
 m4_displaymath(
 <<<
 \eqalign{
-{\rm kurtosis\_noncentral\_student\_t}\left(n , \mu\right) &={{{{
+KU[U] &={{{{
  \left(\mu^4+6\,\mu^2+3\right)\,n^2}\over{\left(n-4\right)\,\left(n-2
  \right)}}-{{\mu^2\,\Gamma\left({{n-1}\over{2}}\right)^2\,n\,\left({{
  n\,\left(3\,\left(3\,n-5\right)+\mu^2\,\left(n+1\right)\right)
@@ -936,7 +940,7 @@ m4_displaymath(
 m4_displaymath(
 <<<
 \eqalign{
-{\rm kurtosis\_noncentral\_student\_t}&\left(n , \mu\right) \cr
+KU[U] \cr
   &= {{\left(\mu^4+6\mu^2+3\right)n^2}\over{(n-4)(n-2)\sigma^4}}
  -F\left({{n\left(3(3n-5)+\mu^2(n+1)\right)
  }\over{(n-3)(n-2)}}-3\sigma^2\right)
@@ -952,7 +956,7 @@ m4_displaymath(
 m4_displaymath(
 <<<
 \eqalign{
-{\rm kurtosis\_noncentral\_student\_t}\left(n , \mu\right) &=
+KU[U] &=
 {\mu_4\over \sigma^4} - 3\cr
   \mu_4 &= {{\left(\mu^4+6\mu^2+3\right)n^2}\over{(n-4)(n-2)}}
  -\left({{n\left(3(3n-5)+\mu^2(n+1)\right)
