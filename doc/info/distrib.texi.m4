@@ -15,7 +15,11 @@ m4_define(<<<m4_student_t>>>,
 
 @c Define Chi^2(n), the chi-squared random variate function.
 m4_define(<<<m4_chi2>>>,
-m4_math(<<<{\rm Chi}^2($1)>>>, <<<@math{Chi^2($2)}>>>))
+m4_math(<<<\chi^2($1)>>>, <<<@math{Chi^2($2)}>>>))
+
+@c Define the Gamma RV
+m4_define(<<<m4_GammaRV>>>,
+m4_math(<<<\Gamma\left($1,$2\right)>>>, <<<@math{Gamma($1,$2)}>>>))
 
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
@@ -972,13 +976,34 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Introduction to Chi-squared Random Variable
 @subsubsection Introduction to Chi-squared Random Variable
+
+Let m4_math(<<<X_1, X_2, \ldots, X_n>>>, <<<@math{X_1, X_2, ...,
+X_k}>>>) be independent and identically distributed m4_NormalRV(0,1) variables.  Then
+m4_displaymath(
+<<<X^2 = \sum_{i=1}^n X_i^2>>>,
+<<<@math{X^2 = sum(X_i^2, i, 1, n)}>>>)
+
+is said to follow a chi-square distribution with @math{n} degrees of
+freedom.
+
 @node Functions and Variables for Chi-squared Random Variable
 @subsubsection Functions and Variables for Chi-squared Random Variable
 
 @anchor{pdf_chi2}
 @deffn {Function} pdf_chi2 (@var{x},@var{n})
 Returns the value at @var{x} of the density function of a Chi-square random variable m4_chi2(n), with @math{n>0}.
-The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the m4_GammaRV(n/2,2).
+
+The pdf is
+
+m4_displaymath(
+<<<{\rm pdf\_chi2}(x,n) =
+\cases{
+ \displaystyle{x^{n/2-1} e^{-x/2} \over 2^{n/2} \Gamma\left({n\over 2}\right)} & $x
+ > 0$ \cr
+ 0 & otherwise
+}>>>,
+<<<>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1055,7 +1080,7 @@ This function has no closed form and it is numerically computed.
 @deffn {Function} mean_chi2 (@var{n})
 Returns the mean of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the m4_GammaRV(n/2,2).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1078,7 +1103,7 @@ The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 @deffn {Function} var_chi2 (@var{n})
 Returns the variance of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the m4_GammaRV(n/2,2).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1101,7 +1126,7 @@ The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 @deffn {Function} std_chi2 (@var{n})
 Returns the standard deviation of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the m4_GammaRV(n/2,2).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1124,7 +1149,7 @@ The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 @deffn {Function} skewness_chi2 (@var{n})
 Returns the skewness coefficient of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the m4_GammaRV(n/2,2).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1150,7 +1175,7 @@ The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
 @deffn {Function} kurtosis_chi2 (@var{n})
 Returns the kurtosis coefficient of a Chi-square random variable m4_chi2(n), with @math{n>0}.
 
-The m4_chi2(n) random variable is equivalent to the @math{Gamma(n/2,2)}.
+The m4_chi2(n) random variable is equivalent to the m4_GammaRV(n/2,2).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1823,7 +1848,7 @@ To make use of this function, write first @code{load("distrib")}.
 @subsubsection Functions and Variables for Gamma Random Variable
 @anchor{pdf_gamma}
 @deffn {Function} pdf_gamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1834,7 +1859,7 @@ Returns the value at @var{x} of the density function of a @math{Gamma(a,b)} rand
 
 @anchor{cdf_gamma}
 @deffn {Function} cdf_gamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. 
+Returns the value at @var{x} of the distribution function of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. 
 
 @c ===beg===
 @c load ("distrib")$
@@ -1860,7 +1885,7 @@ Returns the value at @var{x} of the distribution function of a @math{Gamma(a,b)}
 
 @anchor{quantile_gamma}
 @deffn {Function} quantile_gamma (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Gamma(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_gamma}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_GammaRV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_gamma}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1871,7 +1896,7 @@ Returns the @var{q}-quantile of a @math{Gamma(a,b)} random variable, with @math{
 
 @anchor{mean_gamma}
 @deffn {Function} mean_gamma (@var{a},@var{b})
-Returns the mean of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1882,7 +1907,7 @@ Returns the mean of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To m
 
 @anchor{var_gamma}
 @deffn {Function} var_gamma (@var{a},@var{b})
-Returns the variance of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1892,7 +1917,7 @@ Returns the variance of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. 
 
 @anchor{std_gamma}
 @deffn {Function} std_gamma (@var{a},@var{b})
-Returns the standard deviation of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1903,7 +1928,7 @@ Returns the standard deviation of a @math{Gamma(a,b)} random variable, with @mat
 
 @anchor{skewness_gamma}
 @deffn {Function} skewness_gamma (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1914,7 +1939,7 @@ Returns the skewness coefficient of a @math{Gamma(a,b)} random variable, with @m
 
 @anchor{kurtosis_gamma}
 @deffn {Function} kurtosis_gamma (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1927,7 +1952,7 @@ Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @m
 @deffn {Function} random_gamma (@var{a},@var{b}) @
 @fname{random_gamma} (@var{a},@var{b},@var{n})
 
-Returns a @math{Gamma(a,b)} random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_GammaRV(a,b) random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is a combination of two procedures, depending on the value of parameter @var{a}:
 
