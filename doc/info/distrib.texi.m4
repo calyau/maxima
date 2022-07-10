@@ -21,6 +21,10 @@ m4_math(<<<\chi^2($1)>>>, <<<@math{Chi^2($2)}>>>))
 m4_define(<<<m4_GammaRV>>>,
 m4_math(<<<\Gamma\left($1,$2\right)>>>, <<<@math{Gamma($1,$2)}>>>))
 
+@c Define the noncentral chi-squared RV
+m4_define(<<<m4_noncentral_chi2>>>,
+m4_math(<<<{\rm nc\_Chi}^2($1,$2)>>>, <<<@math{nc_Chi^2($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -1228,11 +1232,40 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Noncentral Chi-squared Random Variable
 @node Introduction to Noncentral Chi-squared Random Variable
 @subsubsection Introduction to Noncentral Chi-squared Random Variable
+
+Let m4_math(<<<X_1, X_2, ..., X_n>>>, <<<@math{X[1], X[2], ..., X[n]}>>>) be @math{n} 
+independent normally distributed random variables with
+means m4_math(\mu_k, mu[k]) and unit variances.  Then the random variable
+
+m4_displaymath(
+<<<\sum_{k=1}^n X_k^2>>>,
+<<<@math{sum(X[k]^2, k, 1, n)}>>>)
+
+has a noncentral m4_math(\chi^2, chi-squared) distribution.  The
+number of degrees of freedom is @math{n}, and the noncentrality
+parameter is defined by
+
+m4_displaymath(
+<<<\sum_{k=1}^n \mu_k^2>>>,
+<<<@math{sum(mu[k]^2, k, 1, n)}>>>)
+
+
 @node Functions and Variables for Noncentral Chi-squared Random Variable
 @subsubsection Functions and Variables for Noncentral Chi-squared Random Variable
 @anchor{pdf_noncentral_chi2}
 @deffn {Function} pdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the density function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @math{x} of the density function of a 
+noncentral m4_math(\chi^2, Chi-square) random
+variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}. To 
+make use of this function, write first @code{load("distrib")}.
+
+For @math{x < 0}, the pdf is 0, and for m4_math(x \ge 0, @math{x >= 0}) the pdf is
+m4_displaymath(
+<<<{\rm pdf\_noncentral\_chi2}(x, n,\lambda) = 
+{1\over 2}e^{-(x+\lambda)/2} \left(x\over
+\lambda\right)^{n/4-1/2}I_{{n\over 2} - 1}\left(\sqrt{n \lambda}\right)
+>>>,
+<<<>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1243,7 +1276,7 @@ Returns the value at @var{x} of the density function of a noncentral Chi-square 
 
 @anchor{cdf_noncentral_chi2}
 @deffn {Function} cdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1254,7 +1287,7 @@ Returns the value at @var{x} of the distribution function of a noncentral Chi-sq
 
 @anchor{quantile_noncentral_chi2}
 @deffn {Function} quantile_noncentral_chi2 (@var{q},@var{n},@var{ncp})
-Returns the @var{q}-quantile of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}; in other words, this is the inverse of @code{cdf_noncentral_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}; in other words, this is the inverse of @code{cdf_noncentral_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
 This function has no closed form and it is numerically computed.
 
@@ -1267,7 +1300,7 @@ This function has no closed form and it is numerically computed.
 
 @anchor{mean_noncentral_chi2}
 @deffn {Function} mean_noncentral_chi2 (@var{n},@var{ncp})
-Returns the mean of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+Returns the mean of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1278,7 +1311,7 @@ Returns the mean of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp
 
 @anchor{var_noncentral_chi2}
 @deffn {Function} var_noncentral_chi2 (@var{n},@var{ncp})
-Returns the variance of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+Returns the variance of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1289,7 +1322,7 @@ Returns the variance of a noncentral Chi-square random variable @math{nc_Chi^2(n
 
 @anchor{std_noncentral_chi2}
 @deffn {Function} std_noncentral_chi2 (@var{n},@var{ncp})
-Returns the standard deviation of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+Returns the standard deviation of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1300,7 +1333,7 @@ Returns the standard deviation of a noncentral Chi-square random variable @math{
 
 @anchor{skewness_noncentral_chi2}
 @deffn {Function} skewness_noncentral_chi2 (@var{n},@var{ncp})
-Returns the skewness coefficient of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+Returns the skewness coefficient of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1311,7 +1344,7 @@ Returns the skewness coefficient of a noncentral Chi-square random variable @mat
 
 @anchor{kurtosis_noncentral_chi2}
 @deffn {Function} kurtosis_noncentral_chi2 (@var{n},@var{ncp})
-Returns the kurtosis coefficient of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+Returns the kurtosis coefficient of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1324,7 +1357,7 @@ Returns the kurtosis coefficient of a noncentral Chi-square random variable @mat
 @deffn {Function} random_noncentral_chi2 (@var{n},@var{ncp}) @
 @fname{random_noncentral_chi2} (@var{n},@var{ncp},@var{m})
 
-Returns a noncentral Chi-square random variate @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. Calling @code{random_noncentral_chi2} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a noncentral Chi-square random variate m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}. Calling @code{random_noncentral_chi2} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 To make use of this function, write first @code{load("distrib")}.
 
