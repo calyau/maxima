@@ -745,8 +745,8 @@ Returns the mean of a noncentral Student random variable m4_noncentral_t(n,ncp),
 
 The mean is
 m4_displaymath(
-<<<\mu \sqrt{n} \Gamma\left(\displaystyle{n-1\over 2}\right) \over
-\sqrt{2}\Gamma\left(\displaystyle{n\over 2}\right)>>>,
+<<<\mu \sqrt{n}\; \Gamma\left(\displaystyle{n-1\over 2}\right) \over
+\sqrt{2}\;\Gamma\left(\displaystyle{n\over 2}\right)>>>,
 <<<
 @example
                                 n - 1
@@ -790,8 +790,8 @@ Returns the variance of a noncentral Student random variable m4_noncentral_t(n,n
 
 The variance is
 m4_displaymath(
-<<<{n(\mu^2+1)\over n-2} - {n\mu^2 \Gamma^2\left(\displaystyle{n-1\over 2}\right)
-\over 2\Gamma^2\left(\displaystyle{n\over 2}\right)}>>>,
+<<<{n(\mu^2+1)\over n-2} - {n\mu^2\; \Gamma\left(\displaystyle{n-1\over 2}\right)^2
+\over 2\Gamma\left(\displaystyle{n\over 2}\right)^2}>>>,
 <<<
 @example
                                      2 n - 1       2
