@@ -861,89 +861,6 @@ Returns the skewness coefficient of a noncentral Student random variable m4_nonc
 @c is just cut-n-pasted from maxima's terminal output.
 The skewness is
 m4_displaymath(
-<<<{\rm skewness\_noncentral\_student\_t}(n,\mu) = 
-{{\mu\,\Gamma\left({{n-1}\over{2}}\right)\,\sqrt{n}\,\left({{n\,
- \left(2\,n+\mu^2-3\right)}\over{\left(n-3\right)\,\left(n-2\right)}}
- -2\,\left({{\left(\mu^2+1\right)\,n}\over{n-2}}-{{\mu^2\,
- \Gamma\left({{n-1}\over{2}}\right)^2\,n}\over{2\,\Gamma\left({{n
- }\over{2}}\right)^2}}\right)\right)}\over{\sqrt{2}\,\Gamma\left({{n
- }\over{2}}\right)\,\left({{\left(\mu^2+1\right)\,n}\over{n-2}}-{{\mu
- ^2\,\Gamma\left({{n-1}\over{2}}\right)^2\,n}\over{2\,\Gamma\left({{n
- }\over{2}}\right)^2}}\right)^{{{3}\over{2}}}}}>>>,
-<<<
-@example
-skewness_noncentral_student_t(n, mu) = 
-                                     2
-          n - 1           n (2 n + mu  - 3)
-(mu gamma(-----) sqrt(n) (-----------------
-            2              (n - 3) (n - 2)
-                      2      2 n - 1
-         2          mu  gamma (-----) n
-      (mu  + 1) n                2
- - 2 (----------- - -------------------)))
-         n - 2                 2 n
-                        2 gamma (-)
-                                 2
-                                    2      2 n - 1
-                       2          mu  gamma (-----) n
-                n   (mu  + 1) n                2      3/2
-/(sqrt(2) gamma(-) (----------- - -------------------)   )
-                2      n - 2                 2 n
-                                      2 gamma (-)
-                                               2
-@end example
->>>)
-
-m4_displaymath(
-<<<\eqalign{
-{\rm skewness\_noncentral\_student\_t}(n,\mu) &= 
-{\mu\,\Gamma\left({{n-1}\over{2}}\right)\,\sqrt{n}\,\left({{n\,
- \left(2\,n+\mu^2-3\right)}\over{\left(n-3\right)\,\left(n-2\right)}}
- -2\,F\right)\over{\sqrt{2}\,\Gamma\left({{n
- }\over{2}}\right)\,F^{{{3}\over{2}}}}} \cr
- F &= \left({{\left(\mu^2+1\right)\,n}\over{n-2}}-{{\mu^2\,
- \Gamma\left({{n-1}\over{2}}\right)^2\,n}\over{2\,\Gamma\left({{n
- }\over{2}}\right)^2}}\right)
-}>>>,
-<<<
-@example
-skewness_noncentral_student_t(n, mu) = 
-                                     2
-          n - 1           n (2 n + mu  - 3)
-(mu gamma(-----) sqrt(n) (-----------------
-            2              (n - 3) (n - 2)
-                      2      2 n - 1
-         2          mu  gamma (-----) n
-      (mu  + 1) n                2
- - 2 (----------- - -------------------)))
-         n - 2                 2 n
-                        2 gamma (-)
-                                 2
-                                    2      2 n - 1
-                       2          mu  gamma (-----) n
-                n   (mu  + 1) n                2      3/2
-/(sqrt(2) gamma(-) (----------- - -------------------)   )
-                2      n - 2                 2 n
-                                      2 gamma (-)
-                                               2
-@end example
->>>)
-
-m4_displaymath(
-<<<\eqalign{
-{\rm skewness\_noncentral\_student\_t}(n,\mu) &= 
-{\mu\,\Gamma\left({{n-1}\over{2}}\right)\,\sqrt{n}\,
-\over{\sqrt{2}\,\Gamma\left({{n
- }\over{2}}\right)\,F^{{{3}\over{2}}}}}\left({{n\,
- \left(2\,n+\mu^2-3\right)}\over{\left(n-3\right)\,\left(n-2\right)}}
- -2\,F\right) \cr
- F &= \left({{\left(\mu^2+1\right)\,n}\over{n-2}}-{{\mu^2\,
- \Gamma\left({{n-1}\over{2}}\right)^2\,n}\over{2\,\Gamma\left({{n
- }\over{2}}\right)^2}}\right)
-}>>>,
-<<<>>>)
-
-m4_displaymath(
 <<<\eqalign{
 {\rm skewness\_noncentral\_student\_t}(n,\mu) &= 
 {\mu\sqrt{n}\,\Gamma\left({{n-1}\over{2}}\right)
@@ -954,8 +871,31 @@ m4_displaymath(
  F &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2\,
  \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
  }\over{2}}\right)^2}}
-}>>>,
-<<<>>>)
+}
+>>>,
+<<<
+@example
+skewness_noncentral_student_t(n, mu) = 
+                                     2
+          n - 1           n (2 n + mu  - 3)
+(mu gamma(-----) sqrt(n) (-----------------
+            2              (n - 3) (n - 2)
+                      2      2 n - 1
+         2          mu  gamma (-----) n
+      (mu  + 1) n                2
+ - 2 (----------- - -------------------)))
+         n - 2                 2 n
+                        2 gamma (-)
+                                 2
+                                    2      2 n - 1
+                       2          mu  gamma (-----) n
+                n   (mu  + 1) n                2      3/2
+/(sqrt(2) gamma(-) (----------- - -------------------)   )
+                2      n - 2                 2 n
+                                      2 gamma (-)
+                                               2
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1005,6 +945,53 @@ kurtosis_noncentral_student_t(n, mu) =
 @end example
 >>>)
 
+m4_displaymath(
+<<<
+\eqalign{
+{\rm kurtosis\_noncentral\_student\_t}\left(n , \mu\right) &={{{{
+ \left(\mu^4+6\,\mu^2+3\right)\,n^2}\over{\left(n-4\right)\,\left(n-2
+ \right)}}-{{\mu^2\,\Gamma\left({{n-1}\over{2}}\right)^2\,n\,\left({{
+ n\,\left(3\,\left(3\,n-5\right)+\mu^2\,\left(n+1\right)\right)
+ }\over{\left(n-3\right)\,\left(n-2\right)}}-3\,\sigma^2\right)
+ }\over{2\,\Gamma\left({{n}\over{2}}\right)^2}}}\over \sigma^4
+ }-3 \cr
+ \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2\,
+ \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
+ }\over{2}}\right)^2}}
+}>>>,
+<<<>>>)
+
+m4_displaymath(
+<<<
+\eqalign{
+{\rm kurtosis\_noncentral\_student\_t}&\left(n , \mu\right) \cr
+  &= {{\left(\mu^4+6\mu^2+3\right)n^2}\over{(n-4)(n-2)\sigma^4}}
+ -F\left({{n\left(3(3n-5)+\mu^2(n+1)\right)
+ }\over{(n-3)(n-2)}}-3\sigma^2\right)
+ -3 \cr
+ \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2
+ \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
+ }\over{2}}\right)^2}} \cr
+ F &= {n\mu^2\Gamma\left({n-1\over 2}\right)^2 \over
+ 2\sigma^4\Gamma\left({n\over 2}\right)^2}
+}>>>,
+<<<>>>)
+
+m4_displaymath(
+<<<
+\eqalign{
+{\rm kurtosis\_noncentral\_student\_t}\left(n , \mu\right) &=
+{\mu_4\over \sigma^4} - 3\cr
+  \mu_4 &= {{\left(\mu^4+6\mu^2+3\right)n^2}\over{(n-4)(n-2)}}
+ -\left({{n\left(3(3n-5)+\mu^2(n+1)\right)
+ }\over{(n-3)(n-2)}}-3\sigma^2\right) F \cr
+ \sigma^2 &= {{n\left(\mu^2+1\right)}\over{n-2}}-{{n \mu^2
+ \Gamma\left({{n-1}\over{2}}\right)^2}\over{2\Gamma\left({{n
+ }\over{2}}\right)^2}} \cr
+ F &= {n\mu^2\Gamma\left({n-1\over 2}\right)^2 \over
+ 2\sigma^4\Gamma\left({n\over 2}\right)^2}
+}>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
