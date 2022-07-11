@@ -46,6 +46,10 @@ m4_define(<<<m4_continuous_uniformRV>>>,
 m4_math(<<<{\rm
 ContinuousUniform}($1,$2)>>>,<<<@math{ContinuousUniform($1,$2)}>>>))
 
+@c Define logistic RV
+m4_define(<<<m4_logisticRV>>>,
+m4_math(<<<{\rm Logistic}($1,$2)>>>,<<<<@math{Logistice($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -2447,12 +2451,22 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 @subsection Logistic Random Variable
 @node Introduction to Logistic Random Variable
 @subsubsection Introduction to Logistic Random Variable
+The @emph{logistic} distribution is a continuous distribution where
+it's cumulative distribution function is the logistic function.
+
 @node Functions and Variables for Logistic Random Variable
 @subsubsection Functions and Variables for Logistic Random Variable
 @anchor{pdf_logistic}
 @deffn {Function} pdf_logistic (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_logisticRV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+@math{a} is the location parameter and @math{b} is the scale
+parameter.
+
+The pdf is
+m4_displaymath(
+<<<{e^{-(x-a)/b} \over b\left(1 + e^{-(x-a)/b}\right)^2}>>>,
+<<<@math{exp(-(x-a)/b)/(b*(1+exp(-(x-a)/b))^2)}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2462,7 +2476,12 @@ Returns the value at @var{x} of the density function of a @math{Logistic(a,b)} r
 
 @anchor{cdf_logistic}
 @deffn {Function} cdf_logistic (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_logisticRV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The cdf is
+m4_displaymath(
+<<<1\over 1+e^{-(x-a)/b}>>>,
+<<<@math{1/(1+exp(-(x-a)/b))}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2473,7 +2492,7 @@ Returns the value at @var{x} of the distribution function of a @math{Logistic(a,
 
 @anchor{quantile_logistic}
 @deffn {Function} quantile_logistic (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Logistic(a,b)} random variable , with @math{b>0}; in other words, this is the inverse of @code{cdf_logistic}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_logisticRV(a,b) random variable , with @math{b>0}; in other words, this is the inverse of @code{cdf_logistic}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2484,7 +2503,7 @@ Returns the @var{q}-quantile of a @math{Logistic(a,b)} random variable , with @m
 
 @anchor{mean_logistic}
 @deffn {Function} mean_logistic (@var{a},@var{b})
-Returns the mean of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_logisticRV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2495,7 +2514,7 @@ Returns the mean of a @math{Logistic(a,b)} random variable , with @math{b>0}. To
 
 @anchor{var_logistic}
 @deffn {Function} var_logistic (@var{a},@var{b})
-Returns the variance of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_logisticRV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2506,7 +2525,7 @@ Returns the variance of a @math{Logistic(a,b)} random variable , with @math{b>0}
 
 @anchor{std_logistic}
 @deffn {Function} std_logistic (@var{a},@var{b})
-Returns the standard deviation of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_logisticRV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2517,7 +2536,7 @@ Returns the standard deviation of a @math{Logistic(a,b)} random variable , with 
 
 @anchor{skewness_logistic}
 @deffn {Function} skewness_logistic (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_logisticRV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2528,7 +2547,7 @@ Returns the skewness coefficient of a @math{Logistic(a,b)} random variable , wit
 
 @anchor{kurtosis_logistic}
 @deffn {Function} kurtosis_logistic (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_logisticRV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2541,7 +2560,7 @@ Returns the kurtosis coefficient of a @math{Logistic(a,b)} random variable , wit
 @deffn {Function} random_logistic (@var{a},@var{b}) @
 @fname{random_logistic} (@var{a},@var{b},@var{n})
 
-Returns a @math{Logistic(a,b)} random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_logisticRV(a,b) random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
