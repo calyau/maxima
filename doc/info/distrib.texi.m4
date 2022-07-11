@@ -13,6 +13,10 @@ m4_math(<<<{\rm Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
 m4_define(<<<m4_student_t>>>,
 @math{t($1)})
 
+@c Define noncentral Student's t RV
+m4_define(<<<m4_noncentral_t>>>,
+m4_math(<<<{\rm nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
+
 @c Define Chi^2(n), the chi-squared random variate function.
 m4_define(<<<m4_chi2>>>,
 m4_math(<<<\chi^2($1)>>>, <<<@math{Chi^2($2)}>>>))
@@ -653,11 +657,6 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Noncentral Student's t Random Variable, Chi-squared Random Variable, Student's t Random Variable, Normal Random Variable
 @subsection Noncentral Student's t Random Variable
-
-@c Define m4_nct to produce the nc_t function that displays nicely in
-@c html/TeX and info.
-m4_define(<<<m4_noncentral_t>>>,
-m4_math(<<<{\rm nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
 
 @node Introduction to Noncentral Student's t Random Variable
 @subsubsection Introduction to Noncentral Student's t Random Variable
