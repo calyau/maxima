@@ -33,6 +33,10 @@ m4_math(<<<{\rm Exponential}($1)>>>, <<<@math{Exponential($1)}>>>))
 m4_define(<<<m4_weibullRV>>>,
 m4_math(<<<{\rm Weibull}($1,$2)>>>, <<<@math{Weibull($1,$2)}>>>))
 
+@c Define lognormal RV
+m4_define(<<<m4_lognormalRV>>>,
+m4_math(<<<{\rm Lognormal}($1,$2)>>>,<<<@math{Lognormal($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -1868,12 +1872,12 @@ variable whose logarithm is normally distributed.
 @subsubsection Functions and Variables for Lognormal Random Variable
 @anchor{pdf_lognormal}
 @deffn {Function} pdf_lognormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the density function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_lognormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is 0 for @math{x < 0}.  Otherwise it is
 m4_displaymath(
 <<<{1\over x s \sqrt{2\pi}}
-\exp\left(-{\left(\log x - m)^2\over 2s^2}\right)>>>,
+\exp\left(-{\left(\log x - m\right)^2\over 2s^2}\right)>>>,
 <<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1884,7 +1888,7 @@ m4_displaymath(
 
 @anchor{cdf_lognormal}
 @deffn {Function} cdf_lognormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+Returns the value at @var{x} of the distribution function of a m4_lognormalRV(m,s) random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -1913,7 +1917,7 @@ See also @mrefdot{erf}
 
 @anchor{quantile_lognormal}
 @deffn {Function} quantile_lognormal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a @math{Lognormal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_lognormalRV(m,s) random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -1938,7 +1942,7 @@ Returns the @var{q}-quantile of a @math{Lognormal(m,s)} random variable, with @m
 
 @anchor{mean_lognormal}
 @deffn {Function} mean_lognormal (@var{m},@var{s})
-Returns the mean of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_lognormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1949,7 +1953,7 @@ Returns the mean of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To
 
 @anchor{var_lognormal}
 @deffn {Function} var_lognormal (@var{m},@var{s})
-Returns the variance of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_lognormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1959,7 +1963,7 @@ Returns the variance of a @math{Lognormal(m,s)} random variable, with @math{s>0}
 
 @anchor{std_lognormal}
 @deffn {Function} std_lognormal (@var{m},@var{s})
-Returns the standard deviation of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_lognormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1970,7 +1974,7 @@ Returns the standard deviation of a @math{Lognormal(m,s)} random variable, with 
 
 @anchor{skewness_lognormal}
 @deffn {Function} skewness_lognormal (@var{m},@var{s})
-Returns the skewness coefficient of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_lognormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1981,7 +1985,7 @@ Returns the skewness coefficient of a @math{Lognormal(m,s)} random variable, wit
 
 @anchor{kurtosis_lognormal}
 @deffn {Function} kurtosis_lognormal (@var{m},@var{s})
-Returns the kurtosis coefficient of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_lognormalRV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1994,7 +1998,7 @@ Returns the kurtosis coefficient of a @math{Lognormal(m,s)} random variable, wit
 @deffn {Function} random_lognormal (@var{m},@var{s}) @
 @fname{random_lognormal} (@var{m},@var{s},@var{n})
 
-Returns a @math{Lognormal(m,s)} random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_lognormalRV(m,s) random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 Log-normal variates are simulated by means of random normal variates. See @code{random_normal} for details.
 
@@ -2012,11 +2016,22 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Gamma Random Variable
 @node Introduction to Gamma Random Variable
 @subsubsection Introduction to Gamma Random Variable
+The @emph{gamma distribution} is a two-parameter family of probability
+distributions.  Maxima uses the parameterization using the shape and
+scale for the first and second parameters of the distribution.
+
 @node Functions and Variables for Gamma Random Variable
 @subsubsection Functions and Variables for Gamma Random Variable
 @anchor{pdf_gamma}
 @deffn {Function} pdf_gamma (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The shape parameter is @math{a}, and the scale parameter is @math{b}.
+
+The pdf is 0 for @math{x<0} and for m4_math(x \ge 0, @math{x >= 0})
+m4_displaymath(
+<<<{x^{a-1}e^{-x/b}\over b^a \Gamma(a)}>>>,
+<<<@math{x^(a-1)*exp(-x/b)/(b^a*gamma(a))>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2029,6 +2044,12 @@ Returns the value at @var{x} of the density function of a m4_GammaRV(a,b) random
 @deffn {Function} cdf_gamma (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a m4_GammaRV(a,b) random variable, with @math{a,b>0}. 
 
+The cdf is 0 for @math{x < 0}.  Otherwise it is
+m4_displaymath(
+<<<1-Q(a,{x\over b})>>>,
+<<<@math{1-gamma_incomplete_regularized(a,x/b)}>>>)
+@ifnotinfo
+where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 @c ===beg===
 @c load ("distrib")$
 @c cdf_gamma(3,5,21);
