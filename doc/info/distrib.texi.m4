@@ -2720,6 +2720,16 @@ To make use of this function, write first @code{load("distrib")}.
 @deffn {Function} pdf_weibull (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The pdf is
+m4_displaymath(
+<<<{\rm pdf\_weibull}(x,a,b) =
+\cases{
+\displaystyle{1\over b} \left({x\over b}\right)^{a-1} e^{-(x/b)^a} &
+for $x \ge 0$ \cr
+\cr
+0 & for $x < 0$
+}>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2731,6 +2741,14 @@ Returns the value at @var{x} of the density function of a m4_weibullRV(a,b) rand
 @deffn {Function} cdf_weibull (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_weibull}(x,a,b) =
+\cases{
+1 - e^{-(x/b)^a} & for $x \ge 0$ \cr
+0 & for $x < 0$
+}>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
