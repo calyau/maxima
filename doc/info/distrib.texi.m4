@@ -66,6 +66,10 @@ m4_math(<<<{\rm Laplace}($1,$2)>>>,<<<@math{Laplace($1,$2)}>>>))
 m4_define(<<<m4_CauchyRV>>>,
 m4_math(<<<{\rm Cauchy}($1,$2)>>>,<<<@math{Cauchy($1,$2)}>>>))
 
+@c Define Gumbel RV
+m4_define(<<<m4_GumbelRV>>>,
+m4_math(<<<{\rm Gumbel}($1,$2)>>>,<<<@math{Gumbel($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -3325,7 +3329,12 @@ To make use of this function, write first @code{load("distrib")}.
 @subsubsection Functions and Variables for Gumbel Random Variable
 @anchor{pdf_gumbel}
 @deffn {Function} pdf_gumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_GumbelRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The pdf is
+m4_displaymath(
+<<<{1\over b} \exp\left[{a-x\over b} - \exp\left({a-x\over b}\right)\right]>>>,
+<<<>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3336,8 +3345,12 @@ Returns the value at @var{x} of the density function of a @math{Gumbel(a,b)} ran
 
 @anchor{cdf_gumbel}
 @deffn {Function} cdf_gumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_GumbelRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The cdf is
+m4_displaymath(
+<<<\exp\left[-\exp\left({a-x\over b}\right)\right]>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3347,7 +3360,7 @@ Returns the value at @var{x} of the distribution function of a @math{Gumbel(a,b)
 
 @anchor{quantile_gumbel}
 @deffn {Function} quantile_gumbel (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Gumbel(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_gumbel}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_GumbelRV(a,b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_gumbel}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3358,7 +3371,7 @@ Returns the @var{q}-quantile of a @math{Gumbel(a,b)} random variable, with @math
 
 @anchor{mean_gumbel}
 @deffn {Function} mean_gumbel (@var{a},@var{b})
-Returns the mean of a @math{Gumbel(a,b)} random variable, with @math{b>0}.
+Returns the mean of a m4_GumbelRV(a,b) random variable, with @math{b>0}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -3380,7 +3393,7 @@ where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @m
 
 @anchor{var_gumbel}
 @deffn {Function} var_gumbel (@var{a},@var{b})
-Returns the variance of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_GumbelRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3391,7 +3404,7 @@ Returns the variance of a @math{Gumbel(a,b)} random variable, with @math{b>0}. T
 
 @anchor{std_gumbel}
 @deffn {Function} std_gumbel (@var{a},@var{b})
-Returns the standard deviation of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_GumbelRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3402,7 +3415,7 @@ Returns the standard deviation of a @math{Gumbel(a,b)} random variable, with @ma
 
 @anchor{skewness_gumbel}
 @deffn {Function} skewness_gumbel (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Gumbel(a,b)} random variable, with @math{b>0}.
+Returns the skewness coefficient of a m4_GumbelRV(a,b) random variable, with @math{b>0}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -3428,7 +3441,7 @@ where @code{zeta} stands for the Riemann's zeta function.
 
 @anchor{kurtosis_gumbel}
 @deffn {Function} kurtosis_gumbel (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_GumbelRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3442,7 +3455,7 @@ Returns the kurtosis coefficient of a @math{Gumbel(a,b)} random variable, with @
 @deffn {Function} random_gumbel (@var{a},@var{b}) @
 @fname{random_gumbel} (@var{a},@var{b},@var{n})
 
-Returns a @math{Gumbel(a,b)} random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_GumbelRV(a,b) random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
