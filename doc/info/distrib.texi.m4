@@ -249,6 +249,11 @@ For comments, bugs or suggestions, please contact the author at @var{'riotorto A
 @section Functions and Variables for continuous distributions
 Maxima knows the following kinds of continuous distributions.
 
+@menu
+* Normal Random Variable::
+* Student's t Random Variable::
+@end menu
+
 @node Normal Random Variable, Functions and Variables for discrete distributions, Functions and Variables for continuous distributions
 @subsection Normal Random Variable
 
@@ -1007,7 +1012,16 @@ m4_displaymath(
  > 0$ \cr
  0 & otherwise
 }>>>,
-<<<>>>)
+<<<
+@example
+                        n/2 - 1   - x/2
+                       x        %e      unit_step(x)
+      pdf_chi2(x, n) = -----------------------------
+                                     n   n/2
+                               gamma(-) 2
+                                     2
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1042,7 +1056,13 @@ m4_displaymath(
 1 - Q\left(\displaystyle{n\over 2}, {x\over 2}\right) & $x > 0$ \cr
 0 & otherwise
 }>>>,
-<<<>>>)
+<<<
+@example
+                        n  x
+cdf_chi2(x, n) = (1 - Q(-, -)) unit_step(x)
+                        2  2
+@end example
+>>>)
 where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 
 @c ===beg===
@@ -1265,7 +1285,18 @@ m4_displaymath(
 {1\over 2}e^{-(x+\lambda)/2} \left(x\over
 \lambda\right)^{n/4-1/2}I_{{n\over 2} - 1}\left(\sqrt{n \lambda}\right)
 >>>,
-<<<>>>)
+<<<
+@example
+ pdf_noncentral_chi2(x, n, ncp) = 
+                                                       (- x) - ncp
+                                                       -----------
+                  n                     x  n/4 - 1/2        2
+         bessel_i(- - 1, sqrt(ncp x)) (---)          %e            unit_step(x)
+                  2                    ncp
+         ----------------------------------------------------------------------
+                                           2
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1398,7 +1429,20 @@ x^{n/2-1}
 \left(1 + \displaystyle{n\over m}x\right)^{-\left(n+m\right)/2} & $x > 0$ \cr
 0 & otherwise
 }>>>,
-<<<>>>)
+<<<
+@example
+ pdf_f(x, n, m) = 
+                                                         (- n) - m
+                                                         ---------
+                    n n/2       n + m   n/2 - 1  n x         2
+                   (-)    gamma(-----) x        (--- + 1)          unit_step(x)
+                    m             2               m
+                   ------------------------------------------------------------
+                                              m        n
+                                        gamma(-) gamma(-)
+                                              2        2
+
+@end example>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1418,14 +1462,24 @@ m4_displaymath(
 1 - I_z\left(\displaystyle{n\over 2}, {m\over 2}\right) & $x > 0$ \cr
 0 & otherwise
 }>>>,
-<<<>>>)
+<<<
+@example
+                                                   m  n     m
+ cdf_f(x, n, m) = (1 - beta_incomplete_regularized(-, -, -------))
+                                                   2  2  n x + m
+                                                             unit_step(x)
+@end example
+>>>)
 
+@ifnotinfo
 where
 m4_displaymath(
 <<<z = {m\over nx+m}>>>,
 <<<>>>)
 
-and m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized} function.
+and m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized}
+function.
+@end ifnotinfo
 @c ===beg===
 @c load ("distrib")$
 @c cdf_f(2,3,9/4);
