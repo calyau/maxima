@@ -25,6 +25,14 @@ m4_math(<<<\Gamma\left($1,$2\right)>>>, <<<@math{Gamma($1,$2)}>>>))
 m4_define(<<<m4_noncentral_chi2>>>,
 m4_math(<<<{\rm nc\_Chi}^2($1,$2)>>>, <<<@math{nc_Chi^2($1,$2)}>>>))
 
+@c Define the exponential RV
+m4_define(<<<m4_exponentialRV>>>,
+m4_math(<<<{\rm Exponential}($1)>>>, <<<@math{Exponential($1)}>>>))
+
+@c Define the Weibull RV
+m4_define(<<<m4_weibullRV>>>,
+m4_math(<<<{\rm Weibull}($1,$2)>>>, <<<@math{Weibull($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -1585,16 +1593,15 @@ Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @mat
 Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
 
 The simulation algorithm is based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a m4_chi2(n) random variable, then
-@ifnottex
+m4_displaymath(
+<<<F={{n X}\over{m Y}}>>>,
+<<<
 @example
                         n X
                     F = ---
                         m Y
 @end example
-@end ifnottex
-@tex
-$$F={{n X}\over{m Y}}$$
-@end tex
+>>>)
 is a F random variable with @var{m} and @var{n} degrees of freedom, @math{F(m,n)}.
 
 To make use of this function, write first @code{load("distrib")}.
@@ -1611,13 +1618,26 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Exponential Random Variable
 @node Introduction to Exponential Random Variable
 @subsubsection Introduction to Exponential Random Variable
+The @emph{exponential distribution} is the probablity distribution of
+the time between events in a process where the events occur
+continuously and independently at a constant average rate.
+
 @node Functions and Variables for Exponential Random Variable
 @subsubsection Functions and Variables for Exponential Random Variable
 @anchor{pdf_exp}
 @deffn {Function} pdf_exp (@var{x},@var{m})
-Returns the value at @var{x} of the density function of an @math{Exponential(m)} random variable, with @math{m>0}.
+Returns the value at @var{x} of the density function of an m4_exponentialRV(m) random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
+
+The pdf is
+m4_displaymath(
+<<<{\rm pdf\_exp}(x,m) =
+\cases{
+me^{-mx} & $x \ge 0$ \cr
+0 & otherwise
+}>>>,
+<<<>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1639,10 +1659,18 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 
 @anchor{cdf_exp}
 @deffn {Function} cdf_exp (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of an @math{Exponential(m)} random variable, with @math{m>0}.
+Returns the value at @var{x} of the distribution function of an m4_exponentialRV(m) random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_exp}(x,m) =
+\cases{
+1 - e^{-mx} & $x \ge 0$ \cr
+0 & otherwise
+}>>>,
+<<<>>>)
 @c ===beg===
 @c load ("distrib")$
 @c cdf_exp(x,m);
@@ -1663,9 +1691,9 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 
 @anchor{quantile_exp}
 @deffn {Function} quantile_exp (@var{q},@var{m})
-Returns the @var{q}-quantile of an @math{Exponential(m)} random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of an m4_exponentialRV(m) random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1691,9 +1719,9 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 
 @anchor{mean_exp}
 @deffn {Function} mean_exp (@var{m})
-Returns the mean of an @math{Exponential(m)} random variable, with @math{m>0}.
+Returns the mean of an m4_exponentialRV(m) random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1716,9 +1744,9 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 
 @anchor{var_exp}
 @deffn {Function} var_exp (@var{m})
-Returns the variance of an @math{Exponential(m)} random variable, with @math{m>0}.
+Returns the variance of an m4_exponentialRV(m) random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1742,9 +1770,9 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 
 @anchor{std_exp}
 @deffn {Function} std_exp (@var{m})
-Returns the standard deviation of an @math{Exponential(m)} random variable, with @math{m>0}.
+Returns the standard deviation of an m4_exponentialRV(m) random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1767,9 +1795,9 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 
 @anchor{skewness_exp}
 @deffn {Function} skewness_exp (@var{m})
-Returns the skewness coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
+Returns the skewness coefficient of an m4_exponentialRV(m) random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1790,9 +1818,9 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 
 @anchor{kurtosis_exp}
 @deffn {Function} kurtosis_exp (@var{m})
-Returns the kurtosis coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
+Returns the kurtosis coefficient of an m4_exponentialRV(m) random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}.
+The m4_exponentialRV(m) random variable is equivalent to the m4_weibullRV(1,1/m).
 
 @c ===beg===
 @c load ("distrib")$
@@ -1815,7 +1843,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} random_exp (@var{m}) @
 @fname{random_exp} (@var{m},@var{k})
 
-Returns an @math{Exponential(m)} random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
+Returns an m4_exponentialRV(m) random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
 
 The simulation algorithm is based on the general inverse method.
 
@@ -2571,7 +2599,7 @@ To make use of this function, write first @code{load("distrib")}.
 @subsubsection Functions and Variables for Weibull Random Variable
 @anchor{pdf_weibull}
 @deffn {Function} pdf_weibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2582,7 +2610,7 @@ Returns the value at @var{x} of the density function of a @math{Weibull(a,b)} ra
 
 @anchor{cdf_weibull}
 @deffn {Function} cdf_weibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2593,7 +2621,7 @@ Returns the value at @var{x} of the distribution function of a @math{Weibull(a,b
 
 @anchor{quantile_weibull}
 @deffn {Function} quantile_weibull (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Weibull(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_weibull}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_weibullRV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_weibull}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2604,7 +2632,7 @@ Returns the @var{q}-quantile of a @math{Weibull(a,b)} random variable, with @mat
 
 @anchor{mean_weibull}
 @deffn {Function} mean_weibull (@var{a},@var{b})
-Returns the mean of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2615,7 +2643,7 @@ Returns the mean of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To
 
 @anchor{var_weibull}
 @deffn {Function} var_weibull (@var{a},@var{b})
-Returns the variance of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2625,7 +2653,7 @@ Returns the variance of a @math{Weibull(a,b)} random variable, with @math{a,b>0}
 
 @anchor{std_weibull}
 @deffn {Function} std_weibull (@var{a},@var{b})
-Returns the standard deviation of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2637,7 +2665,7 @@ Returns the standard deviation of a @math{Weibull(a,b)} random variable, with @m
 
 @anchor{skewness_weibull}
 @deffn {Function} skewness_weibull (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2648,7 +2676,7 @@ Returns the skewness coefficient of a @math{Weibull(a,b)} random variable, with 
 
 @anchor{kurtosis_weibull}
 @deffn {Function} kurtosis_weibull (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_weibullRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2661,7 +2689,7 @@ Returns the kurtosis coefficient of a @math{Weibull(a,b)} random variable, with 
 @deffn {Function} random_weibull (@var{a},@var{b}) @
 @fname{random_weibull} (@var{a},@var{b},@var{n})
 
-Returns a @math{Weibull(a,b)} random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_weibullRV(a,b) random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -2686,7 +2714,7 @@ To make use of this function, write first @code{load("distrib")}.
 @deffn {Function} pdf_rayleigh (@var{x},@var{b})
 Returns the value at @var{x} of the density function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2711,7 +2739,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} cdf_rayleigh (@var{x},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2736,7 +2764,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} quantile_rayleigh (@var{q},@var{b})
 Returns the @var{q}-quantile of a @math{Rayleigh(b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2761,7 +2789,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} mean_rayleigh (@var{b})
 Returns the mean of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2786,7 +2814,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} var_rayleigh (@var{b})
 Returns the variance of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2814,7 +2842,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} std_rayleigh (@var{b})
 Returns the standard deviation of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2841,7 +2869,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} skewness_rayleigh (@var{b})
 Returns the skewness coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2871,7 +2899,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} kurtosis_rayleigh (@var{b})
 Returns the kurtosis coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}.
+The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
