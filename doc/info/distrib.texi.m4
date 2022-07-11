@@ -54,6 +54,10 @@ m4_math(<<<{\rm Logistic}($1,$2)>>>,<<<<@math{Logistice($1,$2)}>>>))
 m4_define(<<<m4_paretoRV>>>,
 m4_math(<<<{\rm Pareto}($1,$2)>>>,<<<@math{Pareto($1,$2)}>>>))
 
+@c Define Rayleigh RV
+m4_define(<<<m4_rayleighRV>>>,
+m4_math(<<<{\rm Rayleigh}($1)>>>,<<<@math{Rayleigh($1)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -2845,14 +2849,25 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Rayleigh Random Variable
 @node Introduction to Rayleigh Random Variable
 @subsubsection Introduction to Rayleigh Random Variable
+The @emph{Rayleigh} distribution coincides with the m4_math(\chi^2,
+chi-squared) distribution with two degrees of freedom.
+
 @node Functions and Variables for Rayleigh Random Variable
 @subsubsection Functions and Variables for Rayleigh Random Variable
 @anchor{pdf_rayleigh}
 @deffn {Function} pdf_rayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the density function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+Returns the value at @var{x} of the density function of a m4_rayleighRV(b) random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
+The pdf is
+m4_displaymath(
+<<<{\rm pdf\_rayleigh}(x,b) =
+\cases{
+2b^2 x e^{-b^2 x^2} & for $x \ge 0$ \cr
+0 & for $x < 0$
+}>>>,
+<<<>>>)
 @c ===beg===
 @c load ("distrib")$
 @c pdf_rayleigh(x,b);
@@ -2874,10 +2889,18 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @anchor{cdf_rayleigh}
 @deffn {Function} cdf_rayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+Returns the value at @var{x} of the distribution function of a m4_rayleighRV(b) random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_rayleigh}(x,b) =
+\cases{
+1 - e^{-b^2 x^2} & for $x \ge 0$\cr
+0 & for $x < 0$
+}>>>,
+<<<>>>)
 @c ===beg===
 @c load ("distrib")$
 @c cdf_rayleigh(x,b);
@@ -2899,9 +2922,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @anchor{quantile_rayleigh}
 @deffn {Function} quantile_rayleigh (@var{q},@var{b})
-Returns the @var{q}-quantile of a @math{Rayleigh(b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of a m4_rayleighRV(b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2924,9 +2947,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @anchor{mean_rayleigh}
 @deffn {Function} mean_rayleigh (@var{b})
-Returns the mean of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+Returns the mean of a m4_rayleighRV(b) random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2949,9 +2972,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @anchor{var_rayleigh}
 @deffn {Function} var_rayleigh (@var{b})
-Returns the variance of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+Returns the variance of a m4_rayleighRV(b) random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -2977,9 +3000,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @anchor{std_rayleigh}
 @deffn {Function} std_rayleigh (@var{b})
-Returns the standard deviation of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+Returns the standard deviation of a m4_rayleighRV(b) random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -3004,9 +3027,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @anchor{skewness_rayleigh}
 @deffn {Function} skewness_rayleigh (@var{b})
-Returns the skewness coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+Returns the skewness coefficient of a m4_rayleighRV(b) random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -3034,9 +3057,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @anchor{kurtosis_rayleigh}
 @deffn {Function} kurtosis_rayleigh (@var{b})
-Returns the kurtosis coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+Returns the kurtosis coefficient of a m4_rayleighRV(b) random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
+The m4_rayleighRV(b) random variable is equivalent to the m4_weibullRV(2,1/b).
 
 @c ===beg===
 @c load ("distrib")$
@@ -3066,7 +3089,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the m4_weibullRV(2,1/b).
 @deffn {Function} random_rayleigh (@var{b}) @
 @fname{random_rayleigh} (@var{b},@var{n})
 
-Returns a @math{Rayleigh(b)} random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_rayleighRV(b) random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
