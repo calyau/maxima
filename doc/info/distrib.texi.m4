@@ -37,6 +37,10 @@ m4_math(<<<{\rm Weibull}($1,$2)>>>, <<<@math{Weibull($1,$2)}>>>))
 m4_define(<<<m4_lognormalRV>>>,
 m4_math(<<<{\rm Lognormal}($1,$2)>>>,<<<@math{Lognormal($1,$2)}>>>))
 
+@c Define beta RV
+m4_define(<<<m4_betaRV>>>,
+m4_math(<<<{\rm Beta}($1,$2)>>>,<<<@math{Beta($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -2147,7 +2151,7 @@ The implemented algorithm is a combination of two procedures, depending on the v
 
 For @math{a>=1}, Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
-For @math{0<a<1}, Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
+For @math{0<a<1}, Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, , poisson and binomial cdf_tributions}. Computing, 12, 223-246.
 
 To make use of this function, write first @code{load("distrib")}.
 
@@ -2163,11 +2167,21 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Beta Random Variable
 @node Introduction to Beta Random Variable
 @subsubsection Introduction to Beta Random Variable
+The @emph{beta} distribution is a family of distributions defined over
+@math{[0,1]} parameterized by two positive shape parameters @math{a},
+and @math{b}.
+
 @node Functions and Variables for Beta Random Variable
 @subsubsection Functions and Variables for Beta Random Variable
 @anchor{pdf_beta}
 @deffn {Function} pdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_betaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+For m4_math(<<<0 \le x \le 1>>>, <<<@math{0 <= x <= 1}>>>), the pdf is
+m4_displaymath(
+<<<{1\over B(a,b)}x^{a-1}(1-x)^{b-1}>>>,
+<<<@math{x^(a-1)*(1-x)^(b-1)/beta(a,b)}>>>)
+Otherwise, the pdf is 0.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2179,8 +2193,17 @@ Returns the value at @var{x} of the density function of a @math{Beta(a,b)} rando
 
 @anchor{cdf_beta}
 @deffn {Function} cdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Beta(a,b)} random variable, with @math{a,b>0}.
+Returns the value at @var{x} of the distribution function of a m4_betaRV(a,b) random variable, with @math{a,b>0}.
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_beta}(x,a,b) =
+\cases{
+0 & $x < 0$ \cr
+I_x(a,b) & $0 \le x \le 1$ \cr
+1 & $x > 1$
+}>>>,
+<<<>>>)
 @c ===beg===
 @c load ("distrib")$
 @c cdf_beta(1/3,15,2);
@@ -2205,7 +2228,7 @@ Returns the value at @var{x} of the distribution function of a @math{Beta(a,b)} 
 
 @anchor{quantile_beta}
 @deffn {Function} quantile_beta (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Beta(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_beta}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_betaRV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_beta}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2216,7 +2239,7 @@ Returns the @var{q}-quantile of a @math{Beta(a,b)} random variable, with @math{a
 
 @anchor{mean_beta}
 @deffn {Function} mean_beta (@var{a},@var{b})
-Returns the mean of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_betaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2227,7 +2250,7 @@ Returns the mean of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To ma
 
 @anchor{var_beta}
 @deffn {Function} var_beta (@var{a},@var{b})
-Returns the variance of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_betaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2237,7 +2260,7 @@ Returns the variance of a @math{Beta(a,b)} random variable, with @math{a,b>0}. T
 
 @anchor{std_beta}
 @deffn {Function} std_beta (@var{a},@var{b})
-Returns the standard deviation of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_betaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2248,7 +2271,7 @@ Returns the standard deviation of a @math{Beta(a,b)} random variable, with @math
 
 @anchor{skewness_beta}
 @deffn {Function} skewness_beta (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_betaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2259,7 +2282,7 @@ Returns the skewness coefficient of a @math{Beta(a,b)} random variable, with @ma
 
 @anchor{kurtosis_beta}
 @deffn {Function} kurtosis_beta (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_betaRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2272,7 +2295,7 @@ Returns the kurtosis coefficient of a @math{Beta(a,b)} random variable, with @ma
 @deffn {Function} random_beta (@var{a},@var{b}) @
 @fname{random_beta} (@var{a},@var{b},@var{n})
 
-Returns a @math{Beta(a,b)} random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_betaRV(a,b) random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is defined in Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
 
