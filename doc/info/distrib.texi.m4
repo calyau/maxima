@@ -62,6 +62,10 @@ m4_math(<<<{\rm Rayleigh}($1)>>>,<<<@math{Rayleigh($1)}>>>))
 m4_define(<<<m4_laplaceRV>>>,
 m4_math(<<<{\rm Laplace}($1,$2)>>>,<<<@math{Laplace($1,$2)}>>>))
 
+@c Define Cauchy RV
+m4_define(<<<m4_CauchyRV>>>,
+m4_math(<<<{\rm Cauchy}($1,$2)>>>,<<<@math{Cauchy($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -3247,12 +3251,20 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Cauchy Random Variable
 @node Introduction to Cauchy Random Variable
 @subsubsection Introduction to Cauchy Random Variable
+The @emph{Cauchy} distribution (also known as the Lorentz
+distribution) is the distribution of of the ratio of two independent
+normally distributed random variables with mean zero.
+
 @node Functions and Variables for Cauchy Random Variable
 @subsubsection Functions and Variables for Cauchy Random Variable
 @anchor{pdf_cauchy}
 @deffn {Function} pdf_cauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Cauchy(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_CauchyRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The pdf is
+m4_displaymath(
+<<<{b\over \pi\left((x-a)^2+b^2\right)}>>>,
+<<<b/(%pi*((x-a)^2+b^2))>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3262,8 +3274,12 @@ Returns the value at @var{x} of the density function of a @math{Cauchy(a,b)} ran
 
 @anchor{cdf_cauchy}
 @deffn {Function} cdf_cauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Cauchy(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_CauchyRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The cdf is
+m4_displaymath(
+<<<{1\over 2} + {1\over \pi} \tan^{-1} {x-a\over b}>>>,
+<<<@math{1/2 + 1/%pi*atan((x-a)/b)}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3273,7 +3289,7 @@ Returns the value at @var{x} of the distribution function of a @math{Cauchy(a,b)
 
 @anchor{quantile_cauchy}
 @deffn {Function} quantile_cauchy (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Cauchy(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_cauchy}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_CauchyRV(a,b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_cauchy}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3286,7 +3302,7 @@ Returns the @var{q}-quantile of a @math{Cauchy(a,b)} random variable, with @math
 @deffn {Function} random_cauchy (@var{a},@var{b}) @
 @fname{random_cauchy} (@var{a},@var{b},@var{n})
 
-Returns a @math{Cauchy(a,b)} random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_CauchyRV(a,b) random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
