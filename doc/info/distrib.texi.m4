@@ -50,6 +50,10 @@ ContinuousUniform}($1,$2)>>>,<<<@math{ContinuousUniform($1,$2)}>>>))
 m4_define(<<<m4_logisticRV>>>,
 m4_math(<<<{\rm Logistic}($1,$2)>>>,<<<<@math{Logistice($1,$2)}>>>))
 
+@c Define pareto RV
+m4_define(<<<m4_paretoRV>>>,
+m4_math(<<<{\rm Pareto}($1,$2)>>>,<<<@math{Pareto($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -2062,7 +2066,9 @@ m4_displaymath(
 <<<1-Q(a,{x\over b})>>>,
 <<<@math{1-gamma_incomplete_regularized(a,x/b)}>>>)
 @ifnotinfo
-where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
+where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized}
+function.
+@end ifnotinfo
 @c ===beg===
 @c load ("distrib")$
 @c cdf_gamma(3,5,21);
@@ -2582,7 +2588,17 @@ To make use of this function, write first @code{load("distrib")}.
 @subsubsection Functions and Variables for Pareto Random Variable
 @anchor{pdf_pareto}
 @deffn {Function} pdf_pareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Pareto(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_paretoRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The pdf is
+m4_displaymath(
+<<<{\rm pdf\_pareto}(x,a,b) =
+\cases{
+\displaystyle{a b^a \over x^{a+1}} & for $x \ge b$ \cr
+\cr
+0 & for $x < b$
+}>>>,
+<<<>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2593,8 +2609,16 @@ Returns the value at @var{x} of the density function of a @math{Pareto(a,b)} ran
 
 @anchor{cdf_pareto}
 @deffn {Function} cdf_pareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Pareto(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_paretoRV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_pareto}(x,a,b) =
+\cases{
+1-\left(\displaystyle{b\over x}\right)^a & for $x \ge b$\cr
+0 & for $x < b$
+}>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2604,7 +2628,7 @@ Returns the value at @var{x} of the distribution function of a @math{Pareto(a,b)
 
 @anchor{quantile_pareto}
 @deffn {Function} quantile_pareto (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Pareto(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_pareto}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_paretoRV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_pareto}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2615,7 +2639,7 @@ Returns the @var{q}-quantile of a @math{Pareto(a,b)} random variable, with @math
 
 @anchor{mean_pareto}
 @deffn {Function} mean_pareto (@var{a},@var{b})
-Returns the mean of a @math{Pareto(a,b)} random variable, with @math{a>1,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_paretoRV(a,b) random variable, with @math{a>1,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2626,7 +2650,7 @@ Returns the mean of a @math{Pareto(a,b)} random variable, with @math{a>1,b>0}. T
 
 @anchor{var_pareto}
 @deffn {Function} var_pareto (@var{a},@var{b})
-Returns the variance of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_paretoRV(a,b) random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2636,7 +2660,7 @@ Returns the variance of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0
 
 @anchor{std_pareto}
 @deffn {Function} std_pareto (@var{a},@var{b})
-Returns the standard deviation of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_paretoRV(a,b) random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2648,7 +2672,7 @@ Returns the standard deviation of a @math{Pareto(a,b)} random variable, with @ma
 
 @anchor{skewness_pareto}
 @deffn {Function} skewness_pareto (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Pareto(a,b)} random variable, with @math{a>3,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_paretoRV(a,b) random variable, with @math{a>3,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2659,7 +2683,7 @@ Returns the skewness coefficient of a @math{Pareto(a,b)} random variable, with @
 
 @anchor{kurtosis_pareto}
 @deffn {Function} kurtosis_pareto (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Pareto(a,b)} random variable, with @math{a>4,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_paretoRV(a,b) random variable, with @math{a>4,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2672,7 +2696,7 @@ Returns the kurtosis coefficient of a @math{Pareto(a,b)} random variable, with @
 @deffn {Function} random_pareto (@var{a},@var{b}) @
 @fname{random_pareto} (@var{a},@var{b},@var{n})
 
-Returns a @math{Pareto(a,b)} random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_paretoRV(a,b) random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
