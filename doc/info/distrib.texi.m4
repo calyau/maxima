@@ -41,6 +41,11 @@ m4_math(<<<{\rm Lognormal}($1,$2)>>>,<<<@math{Lognormal($1,$2)}>>>))
 m4_define(<<<m4_betaRV>>>,
 m4_math(<<<{\rm Beta}($1,$2)>>>,<<<@math{Beta($1,$2)}>>>))
 
+@c Define continuous uniform RV
+m4_define(<<<m4_continuous_uniformRV>>>,
+m4_math(<<<{\rm
+ContinuousUniform}($1,$2)>>>,<<<@math{ContinuousUniform($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -2312,11 +2317,19 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Continuous Uniform Random Variable
 @node Introduction to Continuous Uniform Random Variable
 @subsubsection Introduction to Continuous Uniform Random Variable
+The @emph{continuous uniform} distribution is constant over the
+interval @math{[a,b]} and is zero elsewhere.
 @node Functions and Variables for Continuous Uniform Random Variable
 @subsubsection Functions and Variables for Continuous Uniform Random Variable
 @anchor{pdf_continuous_uniform}
 @deffn {Function} pdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+
+The pdf for m4_math(<<<x \in [0,1]>>>, <<<@math{x in [0,1]}>>>) is
+m4_displaymath(
+<<<{1\over b-a}>>>,
+<<<@math{1/(b-a)}>>>)
+and is 0 otherwise.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2327,8 +2340,19 @@ Returns the value at @var{x} of the density function of a @math{Continuous Unifo
 
 @anchor{cdf_continuous_uniform}
 @deffn {Function} cdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_continuous\_uniform}(x,a,b) =
+\cases{
+0 & for $x < a$ \cr
+\cr
+\displaystyle{x-a\over b-a} & for $a \le x \le b$ \cr
+\cr
+1 & for $x > b$
+}>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2338,7 +2362,7 @@ Returns the value at @var{x} of the distribution function of a @math{Continuous 
 
 @anchor{quantile_continuous_uniform}
 @deffn {Function} quantile_continuous_uniform (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}; in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}; in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2349,7 +2373,7 @@ Returns the @var{q}-quantile of a @math{Continuous Uniform(a,b)} random variable
 
 @anchor{mean_continuous_uniform}
 @deffn {Function} mean_continuous_uniform (@var{a},@var{b})
-Returns the mean of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2360,7 +2384,7 @@ Returns the mean of a @math{Continuous Uniform(a,b)} random variable, with @math
 
 @anchor{var_continuous_uniform}
 @deffn {Function} var_continuous_uniform (@var{a},@var{b})
-Returns the variance of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2370,7 +2394,7 @@ Returns the variance of a @math{Continuous Uniform(a,b)} random variable, with @
 
 @anchor{std_continuous_uniform}
 @deffn {Function} std_continuous_uniform (@var{a},@var{b})
-Returns the standard deviation of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2381,7 +2405,7 @@ Returns the standard deviation of a @math{Continuous Uniform(a,b)} random variab
 
 @anchor{skewness_continuous_uniform}
 @deffn {Function} skewness_continuous_uniform (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2392,7 +2416,7 @@ Returns the skewness coefficient of a @math{Continuous Uniform(a,b)} random vari
 
 @anchor{kurtosis_continuous_uniform}
 @deffn {Function} kurtosis_continuous_uniform (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_continuous_uniformRV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2405,7 +2429,7 @@ Returns the kurtosis coefficient of a @math{Continuous Uniform(a,b)} random vari
 @deffn {Function} random_continuous_uniform (@var{a},@var{b}) @
 @fname{random_continuous_uniform} (@var{a},@var{b},@var{n})
 
-Returns a @math{Continuous Uniform(a,b)} random variate, with @math{a<b}. Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_continuous_uniformRV(a,b) random variate, with @math{a<b}. Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
