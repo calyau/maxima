@@ -58,6 +58,10 @@ m4_math(<<<{\rm Pareto}($1,$2)>>>,<<<@math{Pareto($1,$2)}>>>))
 m4_define(<<<m4_rayleighRV>>>,
 m4_math(<<<{\rm Rayleigh}($1)>>>,<<<@math{Rayleigh($1)}>>>))
 
+@c Define Laplace RV
+m4_define(<<<m4_laplaceRV>>>,
+m4_math(<<<{\rm Laplace}($1,$2)>>>,<<<@math{Laplace($1,$2)}>>>))
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -3108,11 +3112,24 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Laplace Random Variable
 @node Introduction to Laplace Random Variable
 @subsubsection Introduction to Laplace Random Variable
+The @emph{Laplace} distribution is a continuous probability
+distribution that is sometimes called the double exponential
+distribution because it can be thought of as two exponential
+distributions spliced back to back.
+
 @node Functions and Variables for Laplace Random Variable
 @subsubsection Functions and Variables for Laplace Random Variable
 @anchor{pdf_laplace}
 @deffn {Function} pdf_laplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_laplaceRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+Here, @math{a} is the location parameter (or mean), and @math{b} is
+the scale parameter, related to the variance.
+
+The pdf is
+m4_displaymath(
+<<<{1\over 2b}\exp\left(-{|x-a|\over b}\right)>>>,
+<<<@math{1/(2*b)*exp(-abs(x-a)/b)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3123,8 +3140,17 @@ Returns the value at @var{x} of the density function of a @math{Laplace(a,b)} ra
 
 @anchor{cdf_laplace}
 @deffn {Function} cdf_laplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_laplaceRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The cdf is
+m4_displaymath(
+<<<{\rm cdf\_laplace}(x,a,b) =
+\cases{
+\displaystyle{1\over 2} \exp\left({x-a\over b}\right) & for $x < a$\cr
+\cr
+1-\displaystyle{1\over 2} \exp\left({x-a\over b}\right) & for $x \ge a$
+}>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3134,7 +3160,7 @@ Returns the value at @var{x} of the distribution function of a @math{Laplace(a,b
 
 @anchor{quantile_laplace}
 @deffn {Function} quantile_laplace (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Laplace(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_laplace}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_laplaceRV(a,b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_laplace}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3145,7 +3171,7 @@ Returns the @var{q}-quantile of a @math{Laplace(a,b)} random variable, with @mat
 
 @anchor{mean_laplace}
 @deffn {Function} mean_laplace (@var{a},@var{b})
-Returns the mean of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_laplaceRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3156,7 +3182,7 @@ Returns the mean of a @math{Laplace(a,b)} random variable, with @math{b>0}. To m
 
 @anchor{var_laplace}
 @deffn {Function} var_laplace (@var{a},@var{b})
-Returns the variance of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_laplaceRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3167,7 +3193,7 @@ Returns the variance of a @math{Laplace(a,b)} random variable, with @math{b>0}. 
 
 @anchor{std_laplace}
 @deffn {Function} std_laplace (@var{a},@var{b})
-Returns the standard deviation of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_laplaceRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3178,7 +3204,7 @@ Returns the standard deviation of a @math{Laplace(a,b)} random variable, with @m
 
 @anchor{skewness_laplace}
 @deffn {Function} skewness_laplace (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_laplaceRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3189,7 +3215,7 @@ Returns the skewness coefficient of a @math{Laplace(a,b)} random variable, with 
 
 @anchor{kurtosis_laplace}
 @deffn {Function} kurtosis_laplace (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_laplaceRV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3202,7 +3228,7 @@ Returns the kurtosis coefficient of a @math{Laplace(a,b)} random variable, with 
 @deffn {Function} random_laplace (@var{a},@var{b}) @
 @fname{random_laplace} (@var{a},@var{b},@var{n})
 
-Returns a @math{Laplace(a,b)} random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_laplaceRV(a,b) random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
