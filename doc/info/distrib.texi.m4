@@ -1861,12 +1861,20 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Lognormal Random Variable
 @node Introduction to Lognormal Random Variable
 @subsubsection Introduction to Lognormal Random Variable
+The @emph{lognormal} distribution is distribution for a random
+variable whose logarithm is normally distributed.
+
 @node Functions and Variables for Lognormal Random Variable
 @subsubsection Functions and Variables for Lognormal Random Variable
 @anchor{pdf_lognormal}
 @deffn {Function} pdf_lognormal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the density function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
+The pdf is 0 for @math{x < 0}.  Otherwise it is
+m4_displaymath(
+<<<{1\over x s \sqrt{2\pi}}
+\exp\left(-{\left(\log x - m)^2\over 2s^2}\right)>>>,
+<<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
