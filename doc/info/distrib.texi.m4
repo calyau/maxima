@@ -321,8 +321,8 @@ Returns the value at @var{x} of the density function of a m4_Normal_RV(m,s) rand
 
 The pdf is the well-known integral
 m4_displaymath(
-<<<{1\over s\sqrt{2\pi}} e^{\displaystyle -{(x-m)^2\over 2s^2}}>>>,
-<<<@math{1/(s*sqrt(2*%pi))*exp(-1/(2s^2)*(x-m)^2)}>>>)
+<<<f(x; m, s) = {1\over s\sqrt{2\pi}} e^{\displaystyle -{(x-m)^2\over 2s^2}}>>>,
+<<<@math{f(x; m, s) = 1/(s*sqrt(2*%pi))*exp(-1/(2s^2)*(x-m)^2)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -337,7 +337,7 @@ Returns the value at @var{x} of the distribution function of a m4_Normal_RV(m,s)
 
 The cdf can be written analytically:
 m4_displaymath(
-<<<{1\over 2} + {1\over 2} {\rm erf}\left(x-m\over s\sqrt{2}\right)>>>,
+<<<F(x; m, s) = {1\over 2} + {1\over 2} {\rm erf}\left(x-m\over s\sqrt{2}\right)>>>,
 <<<@math{1/2 + 1/2*erf((x-m)/(s*sqrt(2)))}>>>)
 
 @c ===beg===
@@ -486,7 +486,7 @@ Returns the value at @var{x} of the density function of a Student random variabl
 
 The pdf is
 m4_displaymath(
-<<<\left[\sqrt{n} B\left({1\over 2}, {n\over 2}\right)\right]^{-1}
+<<<f(x; n) = \left[\sqrt{n} B\left({1\over 2}, {n\over 2}\right)\right]^{-1}
 \left(1+{x^2\over n}\right)^{\displaystyle -{n+1\over 2}}>>>,
 <<<@math{(sqrt(n)*beta(1/2,n/2))^(-1) (1+x^2/n)^(-(n+1)/2)}>>>)
 
@@ -503,7 +503,7 @@ Returns the value at @var{x} of the distribution function of a Student random va
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_student\_t}(x,n) =
+<<<F(x; n) =
 \cases{
 1-\displaystyle{1\over 2} I_t\left({n\over 2}, {1\over 2}\right) & $x \ge 0$ \cr
 \displaystyle{1\over 2} I_t\left({n\over 2}, {1\over 2}\right) & $x < 0$
@@ -683,7 +683,7 @@ Returns the value at @var{x} of the density function of a noncentral Student ran
 
 The pdf is
 m4_displaymath(
-<<<\left[\sqrt{n} B\left({1\over 2}, {n\over
+<<<f(x; n, \mu) = \left[\sqrt{n} B\left({1\over 2}, {n\over
 2}\right)\right]^{-1}\left(1+{x^2\over n}\right)^{-{(n+1)/2}}
 \exp\left(-{\mu^2\over 2}\right)
 \bigg[A_n(x; \mu) + B_n(x; \mu)\bigg]>>>,
@@ -1050,7 +1050,7 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 The pdf is
 
 m4_displaymath(
-<<<{\rm pdf\_chi2}(x,n) =
+<<<f(x; n) =
 \cases{
  \displaystyle{x^{n/2-1} e^{-x/2} \over 2^{n/2} \Gamma\left({n\over 2}\right)} & $x
  > 0$ \cr
@@ -1095,7 +1095,7 @@ Returns the value at @math{x} of the distribution function of a Chi-square rando
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_chi2}(x,n) =
+<<<F(x; n) =
 \cases{
 1 - Q\left(\displaystyle{n\over 2}, {x\over 2}\right) & $x > 0$ \cr
 0 & otherwise
@@ -1325,7 +1325,7 @@ make use of this function, write first @code{load("distrib")}.
 
 For @math{x < 0}, the pdf is 0, and for m4_math(x \ge 0, @math{x >= 0}) the pdf is
 m4_displaymath(
-<<<{\rm pdf\_noncentral\_chi2}(x, n,\lambda) = 
+<<<f(x; n, \lambda) =
 {1\over 2}e^{-(x+\lambda)/2} \left(x\over
 \lambda\right)^{n/4-1/2}I_{{n\over 2} - 1}\left(\sqrt{n \lambda}\right)
 >>>,
@@ -1465,7 +1465,7 @@ Returns the value at @var{x} of the density function of a F random variable @mat
 
 The pdf is
 m4_displaymath(
-<<<{\rm pdf\_f}(x,n,m) =
+<<<f(x; m, n) =
 \cases{
 B\left({n\over 2},{m\over 2}\right)^{-1}
 \left(\displaystyle{n\over m}\right)^{n/ 2}
@@ -1475,7 +1475,7 @@ x^{n/2-1}
 }>>>,
 <<<
 @example
- pdf_f(x, n, m) = 
+ pdf_f(x, m, n) = 
                                                          (- n) - m
                                                          ---------
                     n n/2       n + m   n/2 - 1  n x         2
@@ -1501,7 +1501,7 @@ Returns the value at @var{x} of the distribution function of a F random variable
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_f}(x,n,m) =
+<<<F(x; m, n) =
 \cases{
 1 - I_z\left(\displaystyle{n\over 2}, {m\over 2}\right) & $x > 0$ \cr
 0 & otherwise
@@ -1668,7 +1668,7 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 
 The pdf is
 m4_displaymath(
-<<<{\rm pdf\_exp}(x,m) =
+<<<f(x; m) =
 \cases{
 me^{-mx} & $x \ge 0$ \cr
 0 & otherwise
@@ -1701,7 +1701,7 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_exp}(x,m) =
+<<<F(x; m) =
 \cases{
 1 - e^{-mx} & $x \ge 0$ \cr
 0 & otherwise
@@ -1908,7 +1908,7 @@ Returns the value at @var{x} of the density function of a m4_Lognormal_RV(m,s) r
 
 The pdf is 0 for @math{x < 0}.  Otherwise it is
 m4_displaymath(
-<<<{1\over x s \sqrt{2\pi}}
+<<<f(x; m, s) = {1\over x s \sqrt{2\pi}}
 \exp\left(-{\left(\log x - m\right)^2\over 2s^2}\right)>>>,
 <<<>>>)
 @opencatbox{Categories:}
@@ -2062,7 +2062,7 @@ The shape parameter is @math{a}, and the scale parameter is @math{b}.
 
 The pdf is 0 for @math{x<0} and for m4_math(x \ge 0, @math{x >= 0})
 m4_displaymath(
-<<<{x^{a-1}e^{-x/b}\over b^a \Gamma(a)}>>>,
+<<<f(x; a, b) = {x^{a-1}e^{-x/b}\over b^a \Gamma(a)}>>>,
 <<<@math{x^(a-1)*exp(-x/b)/(b^a*gamma(a))>>>)
 
 @opencatbox{Categories:}
@@ -2078,7 +2078,7 @@ Returns the value at @var{x} of the distribution function of a m4_Gamma_RV(a,b) 
 
 The cdf is 0 for @math{x < 0}.  Otherwise it is
 m4_displaymath(
-<<<1-Q(a,{x\over b})>>>,
+<<<F(x; a, b) = 1-Q(a,{x\over b})>>>,
 <<<@math{1-gamma_incomplete_regularized(a,x/b)}>>>)
 @ifnotinfo
 where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized}
@@ -2209,7 +2209,7 @@ Returns the value at @var{x} of the density function of a m4_Beta_RV(a,b) random
 
 For m4_math(<<<0 \le x \le 1>>>, <<<@math{0 <= x <= 1}>>>), the pdf is
 m4_displaymath(
-<<<{1\over B(a,b)}x^{a-1}(1-x)^{b-1}>>>,
+<<<f(x; a, b) = {1\over B(a,b)}x^{a-1}(1-x)^{b-1}>>>,
 <<<@math{x^(a-1)*(1-x)^(b-1)/beta(a,b)}>>>)
 Otherwise, the pdf is 0.
 
@@ -2227,7 +2227,7 @@ Returns the value at @var{x} of the distribution function of a m4_Beta_RV(a,b) r
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_beta}(x,a,b) =
+<<<F(x; a, b) =
 \cases{
 0 & $x < 0$ \cr
 I_x(a,b) & $0 \le x \le 1$ \cr
@@ -2352,7 +2352,7 @@ Returns the value at @var{x} of the density function of a m4_Continuous_Uniform_
 
 The pdf for m4_math(<<<x \in [0,1]>>>, <<<@math{x in [0,1]}>>>) is
 m4_displaymath(
-<<<{1\over b-a}>>>,
+<<<f(x; a, b) = {1\over b-a}>>>,
 <<<@math{1/(b-a)}>>>)
 and is 0 otherwise.
 
@@ -2369,7 +2369,7 @@ Returns the value at @var{x} of the distribution function of a m4_Continuous_Uni
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_continuous\_uniform}(x,a,b) =
+<<<F(x; a, b) =
 \cases{
 0 & for $x < a$ \cr
 \cr
@@ -2486,7 +2486,7 @@ parameter.
 
 The pdf is
 m4_displaymath(
-<<<{e^{-(x-a)/b} \over b\left(1 + e^{-(x-a)/b}\right)^2}>>>,
+<<<f(x; a, b) = {e^{-(x-a)/b} \over b\left(1 + e^{-(x-a)/b}\right)^2}>>>,
 <<<@math{exp(-(x-a)/b)/(b*(1+exp(-(x-a)/b))^2)}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2501,7 +2501,7 @@ Returns the value at @var{x} of the distribution function of a m4_Logistic_RV(a,
 
 The cdf is
 m4_displaymath(
-<<<1\over 1+e^{-(x-a)/b}>>>,
+<<<F(x; a, b) = {1\over 1+e^{-(x-a)/b}}>>>,
 <<<@math{1/(1+exp(-(x-a)/b))}>>>)
 
 @opencatbox{Categories:}
@@ -2607,7 +2607,7 @@ Returns the value at @var{x} of the density function of a m4_Pareto_RV(a,b) rand
 
 The pdf is
 m4_displaymath(
-<<<{\rm pdf\_pareto}(x,a,b) =
+<<<f(x; a, b) = 
 \cases{
 \displaystyle{a b^a \over x^{a+1}} & for $x \ge b$ \cr
 \cr
@@ -2628,7 +2628,7 @@ Returns the value at @var{x} of the distribution function of a m4_Pareto_RV(a,b)
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_pareto}(x,a,b) =
+<<<F(x; a, b) =
 \cases{
 1-\left(\displaystyle{b\over x}\right)^a & for $x \ge b$\cr
 0 & for $x < b$
@@ -2737,7 +2737,7 @@ Returns the value at @var{x} of the density function of a m4_Weibull_RV(a,b) ran
 
 The pdf is
 m4_displaymath(
-<<<{\rm pdf\_weibull}(x,a,b) =
+<<<f(x; a, b) =
 \cases{
 \displaystyle{1\over b} \left({x\over b}\right)^{a-1} e^{-(x/b)^a} &
 for $x \ge 0$ \cr
@@ -2758,7 +2758,7 @@ Returns the value at @var{x} of the distribution function of a m4_Weibull_RV(a,b
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_weibull}(x,a,b) =
+<<<F(x; a, b) =
 \cases{
 1 - e^{-(x/b)^a} & for $x \ge 0$ \cr
 0 & for $x < 0$
@@ -2873,7 +2873,7 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 
 The pdf is
 m4_displaymath(
-<<<{\rm pdf\_rayleigh}(x,b) =
+<<<f(x; b) =
 \cases{
 2b^2 x e^{-b^2 x^2} & for $x \ge 0$ \cr
 0 & for $x < 0$
@@ -2906,7 +2906,7 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_rayleigh}(x,b) =
+<<<F(x; b) =
 \cases{
 1 - e^{-b^2 x^2} & for $x \ge 0$\cr
 0 & for $x < 0$
@@ -3135,7 +3135,7 @@ the scale parameter, related to the variance.
 
 The pdf is
 m4_displaymath(
-<<<{1\over 2b}\exp\left(-{|x-a|\over b}\right)>>>,
+<<<f(x; a, b) = {1\over 2b}\exp\left(-{|x-a|\over b}\right)>>>,
 <<<@math{1/(2*b)*exp(-abs(x-a)/b)}>>>)
 
 @opencatbox{Categories:}
@@ -3151,7 +3151,7 @@ Returns the value at @var{x} of the distribution function of a m4_Laplace_RV(a,b
 
 The cdf is
 m4_displaymath(
-<<<{\rm cdf\_laplace}(x,a,b) =
+<<<F(x; a, b) =
 \cases{
 \displaystyle{1\over 2} \exp\left({x-a\over b}\right) & for $x < a$\cr
 \cr
@@ -3266,7 +3266,7 @@ Returns the value at @var{x} of the density function of a m4_Cauchy_RV(a,b) rand
 
 The pdf is
 m4_displaymath(
-<<<{b\over \pi\left((x-a)^2+b^2\right)}>>>,
+<<<f(x; a, b) = {b\over \pi\left((x-a)^2+b^2\right)}>>>,
 <<<b/(%pi*((x-a)^2+b^2))>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3281,7 +3281,7 @@ Returns the value at @var{x} of the distribution function of a m4_Cauchy_RV(a,b)
 
 The cdf is
 m4_displaymath(
-<<<{1\over 2} + {1\over \pi} \tan^{-1} {x-a\over b}>>>,
+<<<F(x; a, b) = {1\over 2} + {1\over \pi} \tan^{-1} {x-a\over b}>>>,
 <<<@math{1/2 + 1/%pi*atan((x-a)/b)}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3332,7 +3332,7 @@ Returns the value at @var{x} of the density function of a m4_Gumbel_RV(a,b) rand
 
 The pdf is
 m4_displaymath(
-<<<{1\over b} \exp\left[{a-x\over b} - \exp\left({a-x\over b}\right)\right]>>>,
+<<<f(x; a, b) = {1\over b} \exp\left[{a-x\over b} - \exp\left({a-x\over b}\right)\right]>>>,
 <<<>>>)
 
 @opencatbox{Categories:}
@@ -3348,7 +3348,7 @@ Returns the value at @var{x} of the distribution function of a m4_Gumbel_RV(a,b)
 
 The cdf is
 m4_displaymath(
-<<<\exp\left[-\exp\left({a-x\over b}\right)\right]>>>,
+<<<F(x; a, b) = \exp\left[-\exp\left({a-x\over b}\right)\right]>>>,
 <<<>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
