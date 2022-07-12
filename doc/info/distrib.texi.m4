@@ -301,10 +301,31 @@ Maxima knows the following kinds of continuous distributions.
 @menu
 * Normal Random Variable::
 * Student's t Random Variable::
+* Noncentral Student's t Random Variable::
+* Chi-squared Random Variable::
+* Noncentral Chi-squared Random Variable::
+* F Random Variable::
+* Exponential Random Variable::
+* Lognormal Random Variable::
+* Gamma Random Variable::
+* Beta Random Variable::
+* Continuous Uniform Random Variable::
+* Logistic Random Variable::
+* Pareto Random Variable::
+* Weibull Random Variable::
+* Rayleigh Random Variable::
+* Laplace Random Variable::
+* Cauchy Random Variable::
+* Gumbel Random Variable::
 @end menu
 
 @node Normal Random Variable, Functions and Variables for discrete distributions, Functions and Variables for continuous distributions
 @subsection Normal Random Variable
+
+@menu
+* Introduction to Normal Random Variables::
+* Functions and Variables for Normal Random Variables::
+@end menu
 
 @node Introduction to Normal Random Variables
 @subsubsection Introduction to Normal Random Variables
@@ -481,6 +502,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Student's t Random Variable, Noncentral Student's t Random Variable, Normal Random Variable, Normal Random Variable
 @subsection Student's t Random Variable
+
+@menu
+* Introduction to Student's t Random Variable::
+* Functions and Variables for Student's t Random Variable::
+@end menu
 
 @node Introduction to Student's t Random Variable
 @subsubsection Introduction to Student's t Random Variable
@@ -689,6 +715,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Noncentral Student's t Random Variable, Chi-squared Random Variable, Student's t Random Variable, Normal Random Variable
 @subsection Noncentral Student's t Random Variable
+
+@menu
+* Introduction to Noncentral Student's t Random Variable::
+* Functions and Variables for Noncentral Student's t Random Variable::
+@end menu
 
 @node Introduction to Noncentral Student's t Random Variable
 @subsubsection Introduction to Noncentral Student's t Random Variable
@@ -1059,6 +1090,11 @@ To make use of this function, write first @code{load("distrib")}.
 @node Chi-squared Random Variable, Noncentral Chi-squared Random Variable, Noncentral Student's t Random Variable, Normal Random Variable
 @subsection Chi-squared Random Variable
 
+@menu
+* Introduction to Chi-squared Random Variable::
+* Functions and Variables for Chi-squared Random Variable::
+@end menu
+
 @node Introduction to Chi-squared Random Variable
 @subsubsection Introduction to Chi-squared Random Variable
 
@@ -1332,6 +1368,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Noncentral Chi-squared Random Variable, F Random Variable, Chi-squared Random Variable, Normal Random Variable
 @subsection Noncentral Chi-squared Random Variable
+@menu
+* Introduction to Noncentral Chi-squared Random Variable::
+* Functions and Variables for Noncentral Chi-squared Random Variable::
+@end menu
+
 @node Introduction to Noncentral Chi-squared Random Variable
 @subsubsection Introduction to Noncentral Chi-squared Random Variable
 
@@ -1485,6 +1526,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node F Random Variable, Exponential Random Variable, Noncentral Chi-squared Random Variable, Normal Random Variable
 @subsection F Random Variable
+@menu
+* Introduction to F Random Variable::
+* Functions and Variables for F Random Variable::
+@end menu
+
 @node Introduction to F Random Variable
 @subsubsection Introduction to F Random Variable
 Let @math{S_1} and @math{S_2} be independent random variables with
@@ -1692,6 +1738,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Exponential Random Variable, Lognormal Random Variable, F Random Variable, Normal Random Variable
 @subsection Exponential Random Variable
+@menu
+* Introduction to Exponential Random Variable::
+* Functions and Variables for Exponential Random Variable::
+@end menu
+
 @node Introduction to Exponential Random Variable
 @subsubsection Introduction to Exponential Random Variable
 The @emph{exponential distribution} is the probablity distribution of
@@ -1945,6 +1996,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Lognormal Random Variable, Gamma Random Variable, Exponential Random Variable, Normal Random Variable
 @subsection Lognormal Random Variable
+@menu
+* Introduction to Lognormal Random Variable::
+* Functions and Variables for Lognormal Random Variable::
+@end menu
+
 @node Introduction to Lognormal Random Variable
 @subsubsection Introduction to Lognormal Random Variable
 The @emph{lognormal} distribution is distribution for a random
@@ -2115,6 +2171,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Gamma Random Variable, Beta Random Variable, Lognormal Random Variable, Normal Random Variable
 @subsection Gamma Random Variable
+@menu
+* Introduction to Gamma Random Variable::
+* Functions and Variables for Gamma Random Variable::
+@end menu
+
 @node Introduction to Gamma Random Variable
 @subsubsection Introduction to Gamma Random Variable
 The @emph{gamma distribution} is a two-parameter family of probability
@@ -2280,6 +2341,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Beta Random Variable, Continuous Uniform Random Variable, Gamma Random Variable, Normal Random Variable
 @subsection Beta Random Variable
+@menu
+* Introduction to Beta Random Variable::
+* Functions and Variables for Beta Random Variable::
+@end menu
+
 @node Introduction to Beta Random Variable
 @subsubsection Introduction to Beta Random Variable
 The @emph{beta} distribution is a family of distributions defined over
@@ -2438,6 +2504,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Continuous Uniform Random Variable, Logistic Random Variable, Beta Random Variable, Normal Random Variable
 @subsection Continuous Uniform Random Variable
+@menu
+* Introduction to Continuous Uniform Random Variable::
+* Functions and Variables for Continuous Uniform Random Variable::
+@end menu
+
 @node Introduction to Continuous Uniform Random Variable
 @subsubsection Introduction to Continuous Uniform Random Variable
 The @emph{continuous uniform} distribution is constant over the
@@ -2579,6 +2650,11 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 
 @node Logistic Random Variable, Pareto Random Variable, Continuous Uniform Random Variable, Normal Random Variable
 @subsection Logistic Random Variable
+@menu
+* Introduction to Logistic Random Variable::
+* Functions and Variables for Logistic Random Variable::
+@end menu
+
 @node Introduction to Logistic Random Variable
 @subsubsection Introduction to Logistic Random Variable
 The @emph{logistic} distribution is a continuous distribution where
@@ -2718,6 +2794,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Pareto Random Variable, Weibull Random Variable, Logistic Random Variable, Normal Random Variable
 @subsection Pareto Random Variable
+@menu
+* Introduction to Pareto Random Variable::
+* Functions and Variables for Pareto Random Variable::
+@end menu
+
 @node Introduction to Pareto Random Variable
 @subsubsection Introduction to Pareto Random Variable
 @node Functions and Variables for Pareto Random Variable
@@ -2854,6 +2935,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Weibull Random Variable, Rayleigh Random Variable, Pareto Random Variable, Normal Random Variable
 @subsection Weibull Random Variable
+@menu
+* Introduction to Weibull Random Variable::
+* Functions and Variables for Weibull Random Variable::
+@end menu
+
 @node Introduction to Weibull Random Variable
 @subsubsection Introduction to Weibull Random Variable
 @node Functions and Variables for Weibull Random Variable
@@ -2996,6 +3082,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Rayleigh Random Variable, Laplace Random Variable, Weibull Random Variable, Normal Random Variable
 @subsection Rayleigh Random Variable
+@menu
+* Introduction to Rayleigh Random Variable::
+* Functions and Variables for Rayleigh Random Variable::
+@end menu
+
 @node Introduction to Rayleigh Random Variable
 @subsubsection Introduction to Rayleigh Random Variable
 The @emph{Rayleigh} distribution coincides with the m4_math(\chi^2,
@@ -3261,6 +3352,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Laplace Random Variable, Cauchy Random Variable, Rayleigh Random Variable, Normal Random Variable
 @subsection Laplace Random Variable
+@menu
+* Introduction to Laplace Random Variable::
+* Functions and Variables for Laplace Random Variable::
+@end menu
+
 @node Introduction to Laplace Random Variable
 @subsubsection Introduction to Laplace Random Variable
 The @emph{Laplace} distribution is a continuous probability
@@ -3405,6 +3501,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Cauchy Random Variable, Gumbel Random Variable, Laplace Random Variable, Normal Random Variable
 @subsection Cauchy Random Variable
+@menu
+* Introduction to Cauchy Random Variable::
+* Functions and Variables for Cauchy Random Variable::
+@end menu
+
 @node Introduction to Cauchy Random Variable
 @subsubsection Introduction to Cauchy Random Variable
 The @emph{Cauchy} distribution (also known as the Lorentz
@@ -3482,6 +3583,11 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Gumbel Random Variable,  , Cauchy Random Variable, Normal Random Variable
 @subsection Gumbel Random Variable
+@menu
+* Introduction to Gumbel Random Variable::
+* Functions and Variables for Gumbel Random Variable::
+@end menu
+
 @node Introduction to Gumbel Random Variable
 @subsubsection Introduction to Gumbel Random Variable
 @node Functions and Variables for Gumbel Random Variable
