@@ -2397,7 +2397,15 @@ m4_displaymath(
 I_x(a,b) & $0 \le x \le 1$ \cr
 1 & $x > 1$
 }>>>,
-<<<>>>)
+<<<
+@example
+             [ 0                                     for x < 0
+             [
+F(x, a, b) = [ beta_incomplete_regularized(a, b, x)  for 0 <= x <= 1
+             [
+             [ 1                                     for x > 1
+@end example
+>>>)
 @c ===beg===
 @c load ("distrib")$
 @c cdf_beta(1/3,15,2);
@@ -2523,7 +2531,7 @@ The pdf for m4_math(<<<x \in [0,1]>>>, <<<@math{x in [0,1]}>>>) is
 m4_displaymath(
 <<<f(x; a, b) =
 \cases{
-{1\over b-a} & for $0 \le x \le 1$ \cr
+\displaystyle{1\over b-a} & for $0 \le x \le 1$ \cr
 \cr
 0 & otherwise
 }>>>,
@@ -2557,7 +2565,13 @@ m4_displaymath(
 \cr
 1 & for $x > b$
 }>>>,
-<<<>>>)
+<<<
+@example
+           [ 0              for x < a
+F(x,a,b) = [ (x-a)/(b-a)    for a <= x <= b
+           [ 1              for x > b
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2841,7 +2855,13 @@ m4_displaymath(
 1-\left(\displaystyle{b\over x}\right)^a & for $x \ge b$\cr
 0 & for $x < b$
 }>>>,
-<<<>>>)
+<<<
+@example
+             [ 1 - (b/x)^a     for x >= 0
+F(x, a, b) = [
+             [ 0               for x < 0
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2987,7 +3007,13 @@ m4_displaymath(
 1 - e^{-(x/b)^a} & for $x \ge 0$ \cr
 0 & for $x < 0$
 }>>>,
-<<<>>>)
+<<<
+@example
+             [ 1 - exp(-(x/b)^a)      for x >= 0
+F(x, a, b) = [
+             [ 0                      for x < 0
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3146,7 +3172,13 @@ m4_displaymath(
 1 - e^{-b^2 x^2} & for $x \ge 0$\cr
 0 & for $x < 0$
 }>>>,
-<<<>>>)
+<<<
+@example
+          [ 1 - exp(-b^2*x^2)    for x >= 0
+F(x, b) = [
+          [ 0                    for x < 0
+@end example
+>>>)
 @c ===beg===
 @c load ("distrib")$
 @c cdf_rayleigh(x,b);
@@ -3406,7 +3438,13 @@ m4_displaymath(
 \cr
 1-\displaystyle{1\over 2} \exp\left({x-a\over b}\right) & for $x \ge a$
 }>>>,
-<<<>>>)
+<<<
+@example
+             [ 1/2*exp((x-a)/b)     for x < a
+F(x, a, b) = [
+             [ 1-1/2*exp((x-a)/b)   for x >= a
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3626,7 +3664,15 @@ Returns the value at @var{x} of the distribution function of a m4_Gumbel_RV(a,b)
 The cdf is
 m4_displaymath(
 <<<F(x; a, b) = \exp\left[-\exp\left({a-x\over b}\right)\right]>>>,
-<<<>>>)
+<<<
+@example
+                       a - x
+                       -----
+                         b
+                   - %e
+    F(x, a, b) = %e
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
