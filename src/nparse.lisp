@@ -570,7 +570,7 @@
 	(parse-tyi)
 	(cond ((= depth 0) (return t)))
 	(cond ((eql c *parse-stream-eof*)
-	       (error (intl:gettext "parser: end of file in comment.")))
+	       (merror (intl:gettext "parser: end of file in comment.")))
 	      ((char= c #\*)
 	       (cond ((char= (parse-tyipeek) #\/)
 		      (decf depth)
