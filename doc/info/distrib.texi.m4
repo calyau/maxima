@@ -319,10 +319,21 @@ by m4_Normal_RV(m, s) where
 @deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the density function of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
-The pdf is the well-known integral
+The pdf is
 m4_displaymath(
 <<<f(x; m, s) = {1\over s\sqrt{2\pi}} e^{\displaystyle -{(x-m)^2\over 2s^2}}>>>,
-<<<@math{f(x; m, s) = 1/(s*sqrt(2*%pi))*exp(-1/(2s^2)*(x-m)^2)}>>>)
+<<<
+@example
+                                 2
+                          (x - m)
+                        - --------
+                               2
+                            2 s
+                      %e
+      f(x, m, s) = -------------------
+                   sqrt(2) sqrt(%pi) s
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -338,7 +349,15 @@ Returns the value at @var{x} of the distribution function of a m4_Normal_RV(m,s)
 The cdf can be written analytically:
 m4_displaymath(
 <<<F(x; m, s) = {1\over 2} + {1\over 2} {\rm erf}\left(x-m\over s\sqrt{2}\right)>>>,
-<<<@math{1/2 + 1/2*erf((x-m)/(s*sqrt(2)))}>>>)
+<<<
+@example
+                        x - m
+                  erf(---------)
+                      sqrt(2) s    1
+     F(x, m, s) = -------------- + -
+                        2          2
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -488,7 +507,19 @@ The pdf is
 m4_displaymath(
 <<<f(x; n) = \left[\sqrt{n} B\left({1\over 2}, {n\over 2}\right)\right]^{-1}
 \left(1+{x^2\over n}\right)^{\displaystyle -{n+1\over 2}}>>>,
-<<<@math{(sqrt(n)*beta(1/2,n/2))^(-1) (1+x^2/n)^(-(n+1)/2)}>>>)
+<<<
+@example
+                                     (- n) - 1
+                               2     ---------
+                      n + 1   x          2
+                gamma(-----) (-- + 1)
+                        2     n
+      f(x, n) = ------------------------------
+                                  n
+                  sqrt(%pi) gamma(-) sqrt(n)
+                                  2
+@end example
+@math{(sqrt(n)*beta(1/2,n/2))^(-1) (1+x^2/n)^(-(n+1)/2)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -506,13 +537,14 @@ m4_displaymath(
 <<<F(x; n) =
 \cases{
 1-\displaystyle{1\over 2} I_t\left({n\over 2}, {1\over 2}\right) & $x \ge 0$ \cr
+\cr
 \displaystyle{1\over 2} I_t\left({n\over 2}, {1\over 2}\right) & $x < 0$
 }>>>,
 <<<
 @example
-                     [ 1-1/2*I_t(n/2, 1/2)  x >= 0
-cdf_student_t(x,n) = [
-                     [ 1/2*I_t(n/2, 1/2)    x < 0
+         [ 1-1/2*I_t(n/2, 1/2)  x >= 0
+F(x,n) = [
+         [ 1/2*I_t(n/2, 1/2)    x < 0
 @end example
 >>>)
 
@@ -685,19 +717,19 @@ The pdf is
 m4_displaymath(
 <<<f(x; n, \mu) = \left[\sqrt{n} B\left({1\over 2}, {n\over
 2}\right)\right]^{-1}\left(1+{x^2\over n}\right)^{-{(n+1)/2}}
-\exp\left(-{\mu^2\over 2}\right)
+e^{-\mu^2/ 2}
 \bigg[A_n(x; \mu) + B_n(x; \mu)\bigg]>>>,
 <<<
 @example
-                2
-              mu          (- n) - 1
-            - ---         ---------
-               2    2         2
-          %e      (x  + 1)          (B(x, n, mu) + An(x, n, mu))
-          -------------------------------------------------
-                              1  n
-                         beta(-, -) sqrt(n)
-                              2  2
+                           2
+                         mu          (- n) - 1
+                       - ---         ---------
+                          2    2         2
+                     %e      (x  + 1)          (B(x, n, mu) + An(x, n, mu))
+f(x;n,mu) =          -------------------------------------------------
+                                         1  n
+                                    beta(-, -) sqrt(n)
+                                         2  2
 
 @end example
 >>>)
@@ -1052,18 +1084,22 @@ The pdf is
 m4_displaymath(
 <<<f(x; n) =
 \cases{
- \displaystyle{x^{n/2-1} e^{-x/2} \over 2^{n/2} \Gamma\left({n\over 2}\right)} & $x
+ \displaystyle{x^{n/2-1} e^{-x/2} \over 2^{n/2}
+ \Gamma\left(\displaystyle{n\over 2}\right)} & for $x
  > 0$ \cr
+\cr
  0 & otherwise
 }>>>,
 <<<
 @example
-                        n/2 - 1   - x/2
-                       x        %e      unit_step(x)
-      pdf_chi2(x, n) = -----------------------------
-                                     n   n/2
-                               gamma(-) 2
-                                     2
+             [  n/2 - 1   - x/2
+             [ x        %e      unit_step(x)
+             [ -----------------------------     for x >= 0
+             [               n   n/2
+   f(x, n) = [         gamma(-) 2
+             [               2
+             [
+             [ 0                                 otherwise
 @end example
 >>>)
 
@@ -1102,9 +1138,11 @@ m4_displaymath(
 }>>>,
 <<<
 @example
-                        n  x
-cdf_chi2(x, n) = (1 - Q(-, -)) unit_step(x)
-                        2  2
+          [        n  x
+          [ (1 - Q(-, -))     for x >= 0
+          [        2  2
+F(x, n) = [
+          [ 0                 otherwise
 @end example
 >>>)
 where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
@@ -1331,7 +1369,7 @@ m4_displaymath(
 >>>,
 <<<
 @example
- pdf_noncentral_chi2(x, n, ncp) = 
+ f(x, n, ncp) = 
                                                        (- x) - ncp
                                                        -----------
                   n                     x  n/4 - 1/2        2
@@ -1467,15 +1505,17 @@ The pdf is
 m4_displaymath(
 <<<f(x; m, n) =
 \cases{
-B\left({n\over 2},{m\over 2}\right)^{-1}
+B\left(\displaystyle{n\over 2}, \displaystyle{m\over 2}\right)^{-1}
 \left(\displaystyle{n\over m}\right)^{n/ 2}
 x^{n/2-1}
-\left(1 + \displaystyle{n\over m}x\right)^{-\left(n+m\right)/2} & $x > 0$ \cr
+\left(1 + \displaystyle{n\over m}x\right)^{-\left(n+m\right)/2} & $x >
+0$ \cr
+\cr
 0 & otherwise
 }>>>,
 <<<
 @example
- pdf_f(x, m, n) = 
+ f(x, m, n) = 
                                                          (- n) - m
                                                          ---------
                     n n/2       n + m   n/2 - 1  n x         2
@@ -1509,7 +1549,7 @@ m4_displaymath(
 <<<
 @example
                                                    m  n     m
- cdf_f(x, n, m) = (1 - beta_incomplete_regularized(-, -, -------))
+     F(x, n, m) = (1 - beta_incomplete_regularized(-, -, -------))
                                                    2  2  n x + m
                                                              unit_step(x)
 @end example
@@ -1670,10 +1710,14 @@ The pdf is
 m4_displaymath(
 <<<f(x; m) =
 \cases{
-me^{-mx} & $x \ge 0$ \cr
+me^{-mx} & for $x \ge 0$ \cr
 0 & otherwise
 }>>>,
-<<<>>>)
+<<<
+          [ m*exp(-m*x) for x >= 0
+f(x, m) = [
+          [ 0           otherwise
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1706,7 +1750,13 @@ m4_displaymath(
 1 - e^{-mx} & $x \ge 0$ \cr
 0 & otherwise
 }>>>,
-<<<>>>)
+<<<
+@example
+         [ 1 - exp(-m*x)  for x >= 0
+F(x,n) = [
+         [ 0              otherwise
+@end example
+>>>)
 @c ===beg===
 @c load ("distrib")$
 @c cdf_exp(x,m);
@@ -1906,11 +1956,30 @@ variable whose logarithm is normally distributed.
 @deffn {Function} pdf_lognormal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the density function of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
-The pdf is 0 for @math{x < 0}.  Otherwise it is
+The pdf is
 m4_displaymath(
-<<<f(x; m, s) = {1\over x s \sqrt{2\pi}}
-\exp\left(-{\left(\log x - m\right)^2\over 2s^2}\right)>>>,
-<<<>>>)
+<<<f(x; m, s) =
+\cases{
+\displaystyle{1\over x s \sqrt{2\pi}}
+\exp\left(-\displaystyle{\left(\log x - m\right)^2\over 2s^2}\right) & for $x \ge
+0$ \cr
+\cr
+0 & for $x < 0$
+}>>>,
+<<<
+@example
+                   [                   2
+                   [       (log(x) - m)
+                   [     - -------------
+                   [              2
+                   [           2 s
+                   [   %e
+      f(x, m, s) = [ ---------------------      for x >= 0
+                   [ sqrt(2) sqrt(%pi) s x
+                   [
+                   [ 0                          for x < 0
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2060,10 +2129,18 @@ Returns the value at @var{x} of the density function of a m4_Gamma_RV(a,b) rando
 
 The shape parameter is @math{a}, and the scale parameter is @math{b}.
 
-The pdf is 0 for @math{x<0} and for m4_math(x \ge 0, @math{x >= 0})
+The pdf is
 m4_displaymath(
 <<<f(x; a, b) = {x^{a-1}e^{-x/b}\over b^a \Gamma(a)}>>>,
-<<<@math{x^(a-1)*exp(-x/b)/(b^a*gamma(a))>>>)
+<<<
+@example
+                    a - 1   - x/b
+                   x      %e      unit_step(x)
+      f(x, a, b) = ---------------------------
+                                     a
+                           gamma(a) b
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2076,14 +2153,22 @@ m4_displaymath(
 @deffn {Function} cdf_gamma (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the distribution function of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. 
 
-The cdf is 0 for @math{x < 0}.  Otherwise it is
+The cdf is
 m4_displaymath(
-<<<F(x; a, b) = 1-Q(a,{x\over b})>>>,
-<<<@math{1-gamma_incomplete_regularized(a,x/b)}>>>)
-@ifnotinfo
-where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized}
-function.
-@end ifnotinfo
+<<<F(x; a, b) =
+\cases{
+1-Q(a,{x\over b}) & for $x \ge 0$ \cr
+\cr
+0 & for $x < 0$
+}>>>,
+<<<
+@example
+             [ 1 - Q(a,x/b) for x>= 0
+F(x, a, b) = [
+             [ 0            for x < 0
+@end example
+>>>)
+where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 @c ===beg===
 @c load ("distrib")$
 @c cdf_gamma(3,5,21);
@@ -2209,8 +2294,21 @@ Returns the value at @var{x} of the density function of a m4_Beta_RV(a,b) random
 
 For m4_math(<<<0 \le x \le 1>>>, <<<@math{0 <= x <= 1}>>>), the pdf is
 m4_displaymath(
-<<<f(x; a, b) = {1\over B(a,b)}x^{a-1}(1-x)^{b-1}>>>,
-<<<@math{x^(a-1)*(1-x)^(b-1)/beta(a,b)}>>>)
+<<<f(x; a, b) =
+\cases{
+{1\over B(a,b)}x^{a-1}(1-x)^{b-1} & for $0 \le x \le 1$ \cr
+0 & otherwise
+}>>>,
+<<<
+@example
+              [        b - 1  a - 1
+              [ (1 - x)      x
+ f(x, a, b) = [ -------------------   for 0 <= x <= 1
+              [     beta(a, b)
+              [
+              [ 0                     otherwise
+@end example
+>>>)
 Otherwise, the pdf is 0.
 
 @opencatbox{Categories:}
@@ -2352,8 +2450,19 @@ Returns the value at @var{x} of the density function of a m4_Continuous_Uniform_
 
 The pdf for m4_math(<<<x \in [0,1]>>>, <<<@math{x in [0,1]}>>>) is
 m4_displaymath(
-<<<f(x; a, b) = {1\over b-a}>>>,
-<<<@math{1/(b-a)}>>>)
+<<<f(x; a, b) =
+\cases{
+{1\over b-a} & for $0 \le x \le 1$ \cr
+\cr
+0 & otherwise
+}>>>,
+<<<
+@example
+             [ 1/(b-a) for 0 <= x <= 1
+f(x, a, b) = [
+             [ 0       otherwise
+@end example
+@math{f(x,a,b) = 1/(b-a)}>>>)
 and is 0 otherwise.
 
 @opencatbox{Categories:}
@@ -2487,7 +2596,19 @@ parameter.
 The pdf is
 m4_displaymath(
 <<<f(x; a, b) = {e^{-(x-a)/b} \over b\left(1 + e^{-(x-a)/b}\right)^2}>>>,
-<<<@math{exp(-(x-a)/b)/(b*(1+exp(-(x-a)/b))^2)}>>>)
+<<<
+@example
+                                      a - x
+                                      -----
+                                        b
+                                    %e
+                   f(x, a, b) = ----------------
+                                     a - x
+                                     -----
+                                       b       2
+                                b (%e      + 1)
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2613,7 +2734,13 @@ m4_displaymath(
 \cr
 0 & for $x < b$
 }>>>,
-<<<>>>)
+<<<
+@example
+             [ a*b^a/x^(a+1)   for x >= b
+f(x, a, b) = [
+             [ 0               for x < b
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2744,7 +2871,18 @@ for $x \ge 0$ \cr
 \cr
 0 & for $x < 0$
 }>>>,
-<<<>>>)
+<<<
+@example
+             [                       a
+             [      x a - 1   - (x/b)
+             [   a (-)      %e         unit_step(x)
+             [      b
+             [   ----------------------------------   for x >= 0
+             [                   b
+f(x, a, b) = [
+             [ 0                                      for x < 0
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2878,7 +3016,13 @@ m4_displaymath(
 2b^2 x e^{-b^2 x^2} & for $x \ge 0$ \cr
 0 & for $x < 0$
 }>>>,
-<<<>>>)
+<<<
+@example
+          [ 2*b^2*x*exp(-b^2*x^2)    for x>= 0
+f(x, b) = [
+          [ 0                        otherwise
+@end example
+>>>)
 @c ===beg===
 @c load ("distrib")$
 @c pdf_rayleigh(x,b);
@@ -3136,7 +3280,16 @@ the scale parameter, related to the variance.
 The pdf is
 m4_displaymath(
 <<<f(x; a, b) = {1\over 2b}\exp\left(-{|x-a|\over b}\right)>>>,
-<<<@math{1/(2*b)*exp(-abs(x-a)/b)}>>>)
+<<<
+@example
+                           abs(x - a)
+                         - ----------
+                               b
+                       %e
+          f(x, a, b) = --------------
+                            2 b
+@end example
+@math{1/(2*b)*exp(-abs(x-a)/b)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3267,7 +3420,14 @@ Returns the value at @var{x} of the density function of a m4_Cauchy_RV(a,b) rand
 The pdf is
 m4_displaymath(
 <<<f(x; a, b) = {b\over \pi\left((x-a)^2+b^2\right)}>>>,
-<<<b/(%pi*((x-a)^2+b^2))>>>)
+<<<
+@example
+                            b
+      f(x, a, b) = -------------------
+                               2    2
+                   %pi ((x - a)  + b )
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3333,7 +3493,18 @@ Returns the value at @var{x} of the density function of a m4_Gumbel_RV(a,b) rand
 The pdf is
 m4_displaymath(
 <<<f(x; a, b) = {1\over b} \exp\left[{a-x\over b} - \exp\left({a-x\over b}\right)\right]>>>,
-<<<>>>)
+<<<
+@example
+                             a - x
+                             -----
+                   a - x       b
+                   ----- - %e
+                     b
+                 %e
+    f(x, a, b) = -----------------
+                         b
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
