@@ -51,7 +51,7 @@ prompt; otherwise MFUNCALL $ALT_FORMAT_PROMPT to print prompt."
   "Like AFORMAT, but add the prefix and suffix configured for a prompt. This
 function deals correctly with the ~M control character, but only when
 DESTINATION is an actual stream (rather than nil for a string)."
-  (let ((*print-circle* nil))
+  (let ((*print-circle* nil) (*print-base* 10.) *print-radix*)
     (if (null destination)
 	;; return value string is important
 	(concatenate 'string

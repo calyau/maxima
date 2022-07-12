@@ -10,6 +10,8 @@ MAXIMA_LAYOUT_AUTOTOOLS=false
 export MAXIMA_LAYOUT_AUTOTOOLS
 MAXIMA_OBJDIR="@abs_top_builddir@/binary"
 export MAXIMA_OBJDIR
+MAXIMA_HTMLDIR=${MAXIMA_DOC_PREFIX}
+export MAXIMA_HTMLDIR
 
 # report the compiled in Lisp versions
 if [ x"$1" = "x--list-avail" ]; then

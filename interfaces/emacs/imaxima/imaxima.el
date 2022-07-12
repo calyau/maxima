@@ -8,9 +8,9 @@
 ;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
 ;; Copyright (C) 2006 Stephen Eglen (imaxima-print-buffer)
 ;; Copyright (C) 2007, 2008 Yasuaki Honda (imaxima-to-html, inline graph)
-;; Copyright (C) 2020, 2021 Leo Butler (imaxima-gnuplot-replot, various improvements)
+;; Copyright (C) 2020, 2021, 2022 Leo Butler (imaxima-gnuplot-replot, various improvements)
 
-;; Time-stamp: <2021-05-03 Leo Butler (dev)>
+;; Time-stamp: <16-05-2022 10:48:22 Leo Butler>
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -1120,7 +1120,7 @@ Argument STR contains output received from Maxima.
 			     (rest (match-string 2 imaxima-output))
 			     image)
 			 (setq imaxima-output rest)
-			 (setq output (concat output (setq image (imaxima-make-image match 'latex))))
+			 (setq output (concat output (setq image (imaxima-make-image match 'latex)) "\n"))
 			 ;; Remember the image into main-output if this is the first output.
 			 ;; This will be passed to imaxima-continuation
 			 (if (null main-output)
@@ -1133,7 +1133,7 @@ Argument STR contains output received from Maxima.
 		       (let ((match (match-string 1 imaxima-output))
 			     (rest (match-string 2 imaxima-output)))
 			 (setq imaxima-output rest)
-			 (setq output (concat output (imaxima-make-image match 'latex))))
+			 (setq output (concat output (imaxima-make-image match 'latex) "\n")))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
 		     (cl-return-from imaxima-filter output)))

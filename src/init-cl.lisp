@@ -263,7 +263,8 @@ When one changes, the other does too."
 	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
 	(maxima-docprefix-env (maxima-getenv "MAXIMA_DOC_PREFIX"))
 	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR"))
-	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR")))
+	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR"))
+	(maxima-htmldir-env (maxima-getenv "MAXIMA_HTMLDIR")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
     (unless maxima-prefix-env
       (setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
@@ -294,6 +295,9 @@ When one changes, the other does too."
                          (maxima-parse-dirstring maxima-objdir-env)
                          (concatenate 'string *maxima-userdir* "/binary"))
                        "/" (maxima-version1) "/" *maxima-lispname* "/" (lisp-implementation-version1)))
+
+    (when maxima-htmldir-env
+      (setq *maxima-htmldir* (combine-path (maxima-parse-dirstring maxima-htmldir-env) "doc" "info")))
 
     ;; On ECL the testbench fails mysteriously if this directory doesn't exist =>
     ;; let's create it by hand as a workaround.

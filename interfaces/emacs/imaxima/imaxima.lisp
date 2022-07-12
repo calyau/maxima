@@ -1,6 +1,6 @@
 ;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
 ;; Copyright (C) 2007, 2008 Yasuaki Honda
-;; Copyright (C) 2020, 2021 Leo Butler
+;; Copyright (C) 2020, 2021, 2022 Leo Butler
 ;;
 ;; Plotting support section of this file is the copy of the same
 ;; section of wxmathml.lisp with very small modification. The file
@@ -9,7 +9,7 @@
 ;; Created: 14 Nov 2001
 ;; Version: See version.texi
 ;; Keywords: maxima
-;; Time-stamp: <2021-05-03 Leo Butler (dev)>
+;; Time-stamp: <16-05-2022 10:50:32 Leo Butler>
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -200,14 +200,44 @@ nor Gnuplot is not recognized by maxima")))))
 				   (string chari))))))
   var))
 
+(defun ascii-char-p (c)
+  "Helper function for IMAXIMA-ACCUMULATE."
+  (if (listp c)
+      (every #'identity (mapcar #'ascii-char-p c))
+    (and (characterp c) (< (char-code c) 127.))))
+(defun imaxima-accumulate (l &optional (result '()) (state 'other))
+  "L is a list of characters of length >1. Wrap each sublist of ascii
+characters in \\mathrm{}, leave others alone."
+  (if (null l)
+      (if (eq state 'ascii)
+	  (append result '(#\}))
+	result)
+    (let ((c (list (car l))))
+      (cond ((eq state 'other)
+	     (if (ascii-char-p c)
+		 (setq c (append (coerce "\\mathrm{" 'list) c) state 'ascii)))
+	    ((eq state 'ascii)
+	     (unless (ascii-char-p c)
+	       (setq c (append (list #\}) c) state 'other)))
+	    (t
+	     (merror "imaxima-accumulate")))
+      (setq result (append result c))
+      (imaxima-accumulate (cdr l) result state))))
+
 (defun tex-stripdollar (sym)
+  "TEX-STRIPDOLLAR strips a leading `$' or `&' from symbol SYM. If the
+length of the NAME of SYM is 1, return that string; otherwise, wrap
+NAME in \\mathrm{} (but see IMAXIMA-ACCUMULATE for handling of
+non-ascii characters."
   (or (symbolp sym) (return-from tex-stripdollar sym))
   (let* ((name (print-case-sensitive sym))
-      (pname (if (member (elt name 0) '(#\$ #\&)) (subseq name 1) name))
-      (l (length pname)))
-    (cond
-     ((eql l 1) (myquote pname))
-     (t (concatenate 'string "\\mathrm{" (myquote pname) "}")))))
+	 (pname (if (member (elt name 0) '(#\$ #\&)) (subseq name 1) name))
+	 (mname (myquote pname))
+	 (lname (coerce mname 'list))
+	 (len (length pname)))
+      (cond
+       ((eql len 1) mname)
+       (t (coerce (imaxima-accumulate lname) 'string)))))
 
 ;; (defun strcat (... is removed
 
@@ -478,12 +508,17 @@ nor Gnuplot is not recognized by maxima")))))
 	(displa x)
 	(return-from latex)))
   (mapc #'princ
-	(if (and (listp x) (cdr x) (stringp (cadr x))
-		 (equal (string-right-trim '(#\Space) (cadr x)) "Is"))
-	    (tex x (list (string (code-char 21)))
-		   (list (string (code-char 22))) 'mparen 'mparen)
-	  (tex x (list (string (code-char 2)))
-	         (list (string (code-char 5))) 'mparen 'mparen))))
+	(cond ((and (listp x) (cdr x) (stringp (cadr x))
+		    (equal (string-right-trim '(#\Space) (cadr x)) "Is"))
+	       (tex x (list (string (code-char 21)))
+		    (list (string (code-char 22))) 'mparen 'mparen))
+	      ((and (listp x) (cdr x) (stringp (caddr x))
+		    (equal (string-right-trim '(#\Space) (caddr x)) ""))
+	       (tex (reverse (cons "\\ " (rest (reverse x)))) (list (string (code-char 2)))
+		    (list (string (code-char 5))) 'mparen 'mparen))
+	      (t
+	       (tex x (list (string (code-char 2)))
+	         (list (string (code-char 5))) 'mparen 'mparen)))))
 
 (let ((old-displa (symbol-function 'displa)))
   (defun displa (form)
