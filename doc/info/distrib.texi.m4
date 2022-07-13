@@ -1592,11 +1592,11 @@ m4_displaymath(
           (n + 2 mu)
 
 @end example
+>>>)
 @ifnotinfo
 where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
 
->>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
