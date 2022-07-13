@@ -2918,6 +2918,10 @@ Returns the @var{q}-quantile of a m4_Continuous_Uniform_RV(a,b) random variable,
 @deffn {Function} mean_continuous_uniform (@var{a},@var{b})
 Returns the mean of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = {a+b\over 2}>>>,
+<<<@math{E[X] = (a+b)/2}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2929,6 +2933,11 @@ Returns the mean of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{
 @deffn {Function} var_continuous_uniform (@var{a},@var{b})
 Returns the variance of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
+The variance is
+m4_displaymath(
+<<<V[X] = {(b-a)^2\over 12}>>>,
+<<<@math{V[X] = (b-a)^2/12}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2938,6 +2947,11 @@ Returns the variance of a m4_Continuous_Uniform_RV(a,b) random variable, with @m
 @anchor{std_continuous_uniform}
 @deffn {Function} std_continuous_uniform (@var{a},@var{b})
 Returns the standard deviation of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {b-a \over 2\sqrt{3}}>>>,
+<<<@math{D[X] = (b-a)/(2*sqrt(3))}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2950,6 +2964,11 @@ Returns the standard deviation of a m4_Continuous_Uniform_RV(a,b) random variabl
 @deffn {Function} skewness_continuous_uniform (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = 0>>>,
+<<<@math{SK[X] = 0}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2960,6 +2979,11 @@ Returns the skewness coefficient of a m4_Continuous_Uniform_RV(a,b) random varia
 @anchor{kurtosis_continuous_uniform}
 @deffn {Function} kurtosis_continuous_uniform (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = -{6\over5}>>>,
+<<<@math{KU[X] = -6/5}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3061,6 +3085,11 @@ Returns the @var{q}-quantile of a m4_Logistic_RV(a,b) random variable , with @ma
 @deffn {Function} mean_logistic (@var{a},@var{b})
 Returns the mean of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = a>>>,
+<<<@math{E[X] = a}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3071,6 +3100,11 @@ Returns the mean of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To 
 @anchor{var_logistic}
 @deffn {Function} var_logistic (@var{a},@var{b})
 Returns the variance of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<V[X] = {\pi^2 b^2 \over 3}>>>,
+<<<@math{V[X] = %pi^2*b^2/3}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3083,6 +3117,11 @@ Returns the variance of a m4_Logistic_RV(a,b) random variable , with @math{b>0}.
 @deffn {Function} std_logistic (@var{a},@var{b})
 Returns the standard deviation of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {\pi b\over \sqrt{3}}>>>,
+<<<@math{D[X] = %pi*b/sqrt(3)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3094,6 +3133,11 @@ Returns the standard deviation of a m4_Logistic_RV(a,b) random variable , with @
 @deffn {Function} skewness_logistic (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = 0>>>,
+<<<@math{SK[X] = 0}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3104,6 +3148,11 @@ Returns the skewness coefficient of a m4_Logistic_RV(a,b) random variable , with
 @anchor{kurtosis_logistic}
 @deffn {Function} kurtosis_logistic (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {6\over 5}>>>,
+<<<@math{KU[X] = 6/5}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3208,6 +3257,11 @@ Returns the @var{q}-quantile of a m4_Pareto_RV(a,b) random variable, with @math{
 @deffn {Function} mean_pareto (@var{a},@var{b})
 Returns the mean of a m4_Pareto_RV(a,b) random variable, with @math{a>1,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = {ab\over a-1}>>>,
+<<<@math{E[X] = a*b/(a-1)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3219,6 +3273,19 @@ Returns the mean of a m4_Pareto_RV(a,b) random variable, with @math{a>1,b>0}. To
 @deffn {Function} var_pareto (@var{a},@var{b})
 Returns the variance of a m4_Pareto_RV(a,b) random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The variance is
+m4_displaymath(
+<<<V[X] = {ab^2\over (a-2)(a-1)^2}>>>,
+<<<
+@example
+                              2
+                           a b
+              V[X] = ----------------
+                                    2
+                     (a - 2) (a - 1)
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3228,6 +3295,19 @@ Returns the variance of a m4_Pareto_RV(a,b) random variable, with @math{a>2,b>0}
 @anchor{std_pareto}
 @deffn {Function} std_pareto (@var{a},@var{b})
 Returns the standard deviation of a m4_Pareto_RV(a,b) random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {b\over a-1} \sqrt{a\over a-2}>>>,
+<<<
+@example
+                              a
+                       sqrt(-----) b
+                            a - 2
+                D[X] = -------------
+                           a - 1
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3241,6 +3321,17 @@ Returns the standard deviation of a m4_Pareto_RV(a,b) random variable, with @mat
 @deffn {Function} skewness_pareto (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Pareto_RV(a,b) random variable, with @math{a>3,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {2(a+1)\over a-3} \sqrt{a-2\over a}>>>,
+<<<
+@example
+                     2 sqrt(a - 2) (a + 1)
+             SK[X] = ---------------------
+                        (a - 3) sqrt(a)
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3251,6 +3342,19 @@ Returns the skewness coefficient of a m4_Pareto_RV(a,b) random variable, with @m
 @anchor{kurtosis_pareto}
 @deffn {Function} kurtosis_pareto (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Pareto_RV(a,b) random variable, with @math{a>4,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {6\left(a^3+a^2-6*a-2\right) \over a(a-3)(a-4)} - 3>>>,
+<<<
+@example
+                        3    2
+                    6 (a  + a  - 6 a - 2)
+            KU[X] = --------------------- - 3
+                          2
+                      a (a  - 7 a + 12)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3360,6 +3464,11 @@ Returns the @var{q}-quantile of a m4_Weibull_RV(a,b) random variable, with @math
 @deffn {Function} mean_weibull (@var{a},@var{b})
 Returns the mean of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = b\Gamma\left(1+{1\over a}\right)>>>,
+<<<@math{E[X] = b*gamma(1+1/a)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3371,6 +3480,18 @@ Returns the mean of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To 
 @deffn {Function} var_weibull (@var{a},@var{b})
 Returns the variance of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The variance is
+m4_displaymath(
+<<<V[X] = b^2\left[\Gamma\left(1+{2\over a}\right) -
+\Gamma\left(1+{1\over a}\right)^2\right]>>>,
+<<<
+@example
+                         2             2 1        2
+           V[X] = (gamma(- + 1) - gamma (- + 1)) b
+                         a               a
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3380,6 +3501,18 @@ Returns the variance of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}.
 @anchor{std_weibull}
 @deffn {Function} std_weibull (@var{a},@var{b})
 Returns the standard deviation of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<D[X] = b\sqrt{\Gamma\left(1+{2\over a}\right) -
+\Gamma\left(1+{1\over a}\right)^2}>>>,
+<<<
+@example
+                             2             2 1
+           D[X] = sqrt(gamma(- + 1) - gamma (- + 1)) b
+                             a               a
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3393,6 +3526,28 @@ Returns the standard deviation of a m4_Weibull_RV(a,b) random variable, with @ma
 @deffn {Function} skewness_weibull (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {\displaystyle\Gamma\left(1+{3\over a}\right)
+-3\Gamma\left(1+{1\over a}\right)\Gamma\left(1+{2\over
+a}\right)+2\Gamma\left(1+{1\over a}\right)^3
+ \over
+ \displaystyle\left[\Gamma\left(1+{2\over a}\right)-\Gamma\left(1+{1\over
+ a}\right)^2\right]^{3/2}
+} 
+>>>,
+<<<
+@example
+              3                1            2               3 1
+        gamma(- + 1) - 3 gamma(- + 1) gamma(- + 1) + 2 gamma (- + 1)
+              a                a            a                 a
+SK[X] = ------------------------------------------------------------
+                            2             2 1      3/2
+                     (gamma(- + 1) - gamma (- + 1))
+                            a               a
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -3403,6 +3558,33 @@ Returns the skewness coefficient of a m4_Weibull_RV(a,b) random variable, with @
 @anchor{kurtosis_weibull}
 @deffn {Function} kurtosis_weibull (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {
+\Gamma_4
+ - 4\Gamma_1 \Gamma_3
+ + 6\Gamma_1^2 \Gamma_2
+ - 3 \Gamma_1^4
+\over
+ \left[\Gamma_2 - \Gamma_1^2\right]^2
+} - 3>>>,
+<<<
+@example
+                4                1            3
+ KU[X] = (gamma(- + 1) - 4 gamma(- + 1) gamma(- + 1)
+                a                a            a
+          2 1            2               4 1
+ + 6 gamma (- + 1) gamma(- + 1) - 3 gamma (- + 1))
+            a            a                 a
+        2             2 1      2
+/(gamma(- + 1) - gamma (- + 1))  - 3
+        a               a
+@end example
+>>>)
+@ifnotinfo
+where m4_math(\Gamma_k = \Gamma\left(1+k/a\right)).
+@end ifnotinfo
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3553,6 +3735,11 @@ Returns the mean of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
 
 The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 
+The mean is
+m4_displaymath(
+<<<E[X] = {\sqrt{\pi}\over 2b}>>>,
+<<<@math{E[X] = sqrt(%pi)/(2*b)}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c mean_rayleigh(b);
@@ -3577,6 +3764,20 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 Returns the variance of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
 
 The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+
+The variance is
+m4_displaymath(
+<<<V[X] = {1\over b^2}\left(1-{\pi \over 4}\right)>>>,
+<<<
+@example
+                                    %pi
+                                1 - ---
+                                     4
+                         V[X] = -------
+                                   2
+                                  b
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -3606,6 +3807,19 @@ Returns the standard deviation of a m4_Rayleigh_RV(b) random variable, with @mat
 
 The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {1\over b}\sqrt{\displaystyle 1 - {\pi\over 4}}>>>,
+<<<
+@example
+                                     %pi
+                            sqrt(1 - ---)
+                                      4
+                     D[X] = -------------
+                                  b
+@end example
+>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c std_rayleigh(b);
@@ -3632,6 +3846,22 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 Returns the skewness coefficient of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
 
 The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {2\sqrt{\pi}(\pi - 3)\over (4-\pi)^{3/2}}>>>,
+<<<
+@example
+                            3/2
+                         %pi      3 sqrt(%pi)
+                         ------ - -----------
+                           4           4
+                 SK[X] = --------------------
+                                  %pi 3/2
+                             (1 - ---)
+                                   4
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -3662,6 +3892,22 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 Returns the kurtosis coefficient of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
 
 The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {32-3\pi\over (4-\pi)^2} - 3>>>,
+<<<
+@example
+                                     2
+                                3 %pi
+                            2 - ------
+                                  16
+                    KU[X] = ---------- - 3
+                                 %pi 2
+                            (1 - ---)
+                                  4
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
