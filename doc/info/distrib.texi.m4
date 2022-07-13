@@ -1934,9 +1934,11 @@ me^{-mx} & for $x \ge 0$ \cr
 0 & otherwise
 }>>>,
 <<<
+@example
           [ m*exp(-m*x) for x >= 0
 f(x, m) = [
           [ 0           otherwise
+@end example
 >>>)
 
 @c ===beg===
@@ -2802,7 +2804,7 @@ interval @math{[a,b]} and is zero elsewhere.
 @deffn {Function} pdf_continuous_uniform (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{a<b}. To make use of this function, write first @code{load("distrib")}.
 
-The pdf for m4_math(<<<x \in [0,1]>>>, <<<@math{x in [0,1]}>>>) is
+The pdf
 m4_displaymath(
 <<<f(x; a, b) =
 \cases{
@@ -2816,7 +2818,7 @@ m4_displaymath(
 f(x, a, b) = [
              [ 0       otherwise
 @end example
-@math{f(x,a,b) = 1/(b-a)}>>>)
+>>>)
 and is 0 otherwise.
 
 @opencatbox{Categories:}
@@ -2988,7 +2990,7 @@ Returns the value at @var{x} of the distribution function of a m4_Logistic_RV(a,
 The cdf is
 m4_displaymath(
 <<<F(x; a, b) = {1\over 1+e^{-(x-a)/b}}>>>,
-<<<@math{1/(1+exp(-(x-a)/b))}>>>)
+<<<@math{F(x, a, b) = 1/(1+exp(-(x-a)/b))}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
