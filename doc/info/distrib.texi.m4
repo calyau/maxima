@@ -431,8 +431,11 @@ Returns the @var{q}-quantile of a m4_Normal_RV(m,s) random variable, with @math{
 
 @anchor{mean_normal}
 @deffn {Function} mean_normal (@var{m},@var{s})
-Returns the mean of a m4_Normal_RV(m,s) random variable, with @math{s>0}, namely @var{m}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<E[X] = m>>>,
+<<<@math{E[X] = m}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -442,7 +445,11 @@ Returns the mean of a m4_Normal_RV(m,s) random variable, with @math{s>0}, namely
 
 @anchor{var_normal}
 @deffn {Function} var_normal (@var{m},@var{s})
-Returns the variance of a m4_Normal_RV(m,s) random variable, with @math{s>0}, namely @math{s^2}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<V[X] = s^2>>>,
+<<<@math{V[X] = s^2}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -454,6 +461,9 @@ Returns the variance of a m4_Normal_RV(m,s) random variable, with @math{s>0}, na
 @deffn {Function} std_normal (@var{m},@var{s})
 Returns the standard deviation of a m4_Normal_RV(m,s) random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<D[X] = s>>><
+<<<@math{D[X] = s}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -463,8 +473,11 @@ Returns the standard deviation of a m4_Normal_RV(m,s) random variable, with @mat
 
 @anchor{skewness_normal}
 @deffn {Function} skewness_normal (@var{m},@var{s})
-Returns the skewness coefficient of a m4_Normal_RV(m,s) random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<SK[X] = 0>>>,
+<<<@math{SK[X] = 0}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -475,6 +488,10 @@ Returns the skewness coefficient of a m4_Normal_RV(m,s) random variable, with @m
 @anchor{kurtosis_normal}
 @deffn {Function} kurtosis_normal (@var{m},@var{s})
 Returns the kurtosis coefficient of a m4_Normal_RV(m,s) random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<KU[X] = 0>>>,
+<<<@math{KU[x] = 0}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -614,8 +631,11 @@ Returns the @var{q}-quantile of a Student random variable m4_Student_T_RV(n), wi
 
 @anchor{mean_student_t}
 @deffn {Function} mean_student_t (@var{n})
-Returns the mean of a Student random variable m4_Student_T_RV(n), with @math{n>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a Student random variable m4_Student_T_RV(n), with @math{n>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<E[X] = 0>>>,
+<<<@math{E[X] = 0}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -627,6 +647,9 @@ Returns the mean of a Student random variable m4_Student_T_RV(n), with @math{n>0
 @deffn {Function} var_student_t (@var{n})
 Returns the variance of a Student random variable m4_Student_T_RV(n), with @math{n>2}.
 
+m4_displaymath(
+<<<V[X] = {n\over n-2}>>>,
+<<<@math{V[X] = n/(n-2)}>>>)
 @c ===beg===
 @c load ("distrib")$
 @c var_student_t(n);
@@ -650,6 +673,10 @@ Returns the variance of a Student random variable m4_Student_T_RV(n), with @math
 @deffn {Function} std_student_t (@var{n})
 Returns the standard deviation of a Student random variable m4_Student_T_RV(n), with @math{n>2}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<D[X] = \sqrt{\displaystyle{n\over n-2}}>>>,
+<<<@math{D[X] = sqrt(n/(n-2))}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -661,6 +688,10 @@ Returns the standard deviation of a Student random variable m4_Student_T_RV(n), 
 @deffn {Function} skewness_student_t (@var{n})
 Returns the skewness coefficient of a Student random variable m4_Student_T_RV(n), with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<SK[X] = 0>>>,
+<<<@math{SK[X] = 0}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -671,6 +702,10 @@ Returns the skewness coefficient of a Student random variable m4_Student_T_RV(n)
 @anchor{kurtosis_student_t}
 @deffn {Function} kurtosis_student_t (@var{n})
 Returns the kurtosis coefficient of a Student random variable m4_Student_T_RV(n), with @math{n>4}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<KU[X] = {6\over n-4}>>>,
+<<<@math{KU[X] = 6/(n-4)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -865,17 +900,17 @@ Returns the mean of a noncentral Student random variable m4_Noncentral_T_RV(n,nc
 
 The mean is
 m4_displaymath(
-<<<\mu \sqrt{n}\; \Gamma\left(\displaystyle{n-1\over 2}\right) \over
-\sqrt{2}\;\Gamma\left(\displaystyle{n\over 2}\right)>>>,
+<<<E[X] = {\mu \sqrt{n}\; \Gamma\left(\displaystyle{n-1\over 2}\right) \over
+\sqrt{2}\;\Gamma\left(\displaystyle{n\over 2}\right)}>>>,
 <<<
 @example
-                                n - 1
-                       mu gamma(-----) sqrt(n)
-                                  2
-                       -----------------------
-                                        n
-                          sqrt(2) gamma(-)
-                                        2
+                   n - 1
+          mu gamma(-----) sqrt(n)
+                     2
+E[X] =    -----------------------
+                           n
+             sqrt(2) gamma(-)
+                           2
 @end example
 >>>)
 
@@ -910,17 +945,17 @@ Returns the variance of a noncentral Student random variable m4_Noncentral_T_RV(
 
 The variance is
 m4_displaymath(
-<<<{n(\mu^2+1)\over n-2} - {n\mu^2\; \Gamma\left(\displaystyle{n-1\over 2}\right)^2
+<<<V[X] = {n(\mu^2+1)\over n-2} - {n\mu^2\; \Gamma\left(\displaystyle{n-1\over 2}\right)^2
 \over 2\Gamma\left(\displaystyle{n\over 2}\right)^2}>>>,
 <<<
 @example
-                                     2 n - 1       2
-                       2        gamma (-----) n ncp
-                 n (ncp  + 1)            2
-                 ------------ - --------------------
-                    n - 2                  2 n
-                                    2 gamma (-)
-                                             2
+                             2 n - 1       2
+               2        gamma (-----) n ncp
+         n (ncp  + 1)            2
+V[X] =   ------------ - --------------------
+            n - 2                  2 n
+                            2 gamma (-)
+                                     2
 @end example
 >>>)
 
@@ -936,6 +971,22 @@ where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
 @anchor{std_noncentral_student_t}
 @deffn {Function} std_noncentral_student_t (@var{n},@var{ncp})
 Returns the standard deviation of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<D[X] = \sqrt{{n(\mu^2+1)\over n-2} - {n\mu^2\; \Gamma\left(\displaystyle{n-1\over 2}\right)^2
+\over 2\Gamma\left(\displaystyle{n\over 2}\right)^2}}>>>,
+<<<
+@example
+                             2 n - 1       2
+                    2        gamma (-----) n ncp
+              n (ncp  + 1)            2
+D[X] =   sqrt(------------ - --------------------)
+                 n - 2                  2 n
+                                 2 gamma (-)
+                                          2
+@end example
+>>>,
+<<<>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -969,7 +1020,7 @@ SK[U] &=
 >>>,
 <<<
 @example
-skewness_noncentral_student_t(n, mu) = 
+SK[U] = 
                                      2
           n - 1           n (2 n + mu  - 3)
 (mu gamma(-----) sqrt(n) (-----------------
@@ -1025,7 +1076,7 @@ KU[U] &=
 }>>>,
 <<<
 @example
-kurtosis_noncentral_student_t(n, mu) = 
+KU[U] = 
     4       2       2
  (mu  + 6 mu  + 3) n       2      2 n - 1
 (-------------------- - (mu  gamma (-----) n
@@ -1234,6 +1285,10 @@ Returns the mean of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
 
 The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 
+m4_displaymath(
+<<<E[X] = n>>>,
+<<<@math{E[X] = n}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c mean_chi2(n);
@@ -1256,6 +1311,10 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 Returns the variance of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
 
 The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+
+m4_displaymath(
+<<<V[X] = 2n>>>,
+<<<@math{V[X] = 2*n}>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1280,6 +1339,10 @@ Returns the standard deviation of a Chi-square random variable m4_Chi2_RV(n), wi
 
 The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 
+m4_displaymath(
+<<<D[X] = \sqrt{2n}>>>,
+<<<@math{D[X] = sqrt(2*n)}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c std_chi2(n);
@@ -1302,6 +1365,10 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 Returns the skewness coefficient of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
 
 The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+
+m4_displaymath(
+<<<SK[X] = \sqrt{8\over n}>>>,
+<<<@math{SK[X] = sqrt(8/n)}>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1328,6 +1395,10 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 Returns the kurtosis coefficient of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
 
 The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+
+m4_displaymath(
+<<<KU[X] = {12\over n}>>>,
+<<<@math{KU[X] = 12/n}>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1456,6 +1527,14 @@ This function has no closed form and it is numerically computed.
 @deffn {Function} mean_noncentral_chi2 (@var{n},@var{ncp})
 Returns the mean of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
+m4_displaymath(
+<<<E[X] = n + \mu>>>,
+<<<@math{E[X] = n + ncp}>>>)
+@ifnotinfo
+where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+@end ifnotinfo
+
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -1466,6 +1545,13 @@ Returns the mean of a noncentral Chi-square random variable m4_noncentral_chi2(n
 @anchor{var_noncentral_chi2}
 @deffn {Function} var_noncentral_chi2 (@var{n},@var{ncp})
 Returns the variance of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+
+m4_displaymath(
+<<<V[X] = 2(n+2\mu)>>>,
+<<<@math{V[X] = 2*(n+2*ncp)}>>>)
+@ifnotinfo
+where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+@end ifnotinfo
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1478,6 +1564,12 @@ Returns the variance of a noncentral Chi-square random variable m4_noncentral_ch
 @deffn {Function} std_noncentral_chi2 (@var{n},@var{ncp})
 Returns the standard deviation of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
+m4_displaymath(
+<<<D[X] = \sqrt{2(n+2\mu)}>>>,
+<<<@math{D[X] = sqrt(2*(n+2*ncp))}>>>)
+@ifnotinfo
+where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+@end ifnotinfo
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -1489,6 +1581,23 @@ Returns the standard deviation of a noncentral Chi-square random variable m4_non
 @deffn {Function} skewness_noncentral_chi2 (@var{n},@var{ncp})
 Returns the skewness coefficient of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
 
+m4_displaymath(
+<<<SK[X] = {2^{3/2}(n+3\mu) \over (n+2\mu)^{3/2}}>>>,
+<<<
+@example
+          3/2
+         2    (n + 3 mu)
+ SK[X] = ---------------
+                    3/2
+          (n + 2 mu)
+
+@end example
+@ifnotinfo
+where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+@end ifnotinfo
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -1499,6 +1608,20 @@ Returns the skewness coefficient of a noncentral Chi-square random variable m4_n
 @anchor{kurtosis_noncentral_chi2}
 @deffn {Function} kurtosis_noncentral_chi2 (@var{n},@var{ncp})
 Returns the kurtosis coefficient of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+
+m4_displaymath(
+<<<KU[X] = {12(n+4\mu)\over (2+2\mu)^2}>>>,
+<<<
+@example
+           12 (n + 4 mu)
+   KU[X] = -------------
+                      2
+            (n + 2 mu)
+@end example
+>>>)
+@ifnotinfo
+where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+@end ifnotinfo
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1657,6 +1780,10 @@ Returns the @var{q}-quantile of a F random variable @math{F(m,n)}, with @math{m,
 @deffn {Function} mean_f (@var{m},@var{n})
 Returns the mean of a F random variable @math{F(m,n)}, with @math{m>0, n>2}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<E[X] = {n\over n-2}>>>,
+<<<@math{E[X] = n/(n-1)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -1668,6 +1795,17 @@ Returns the mean of a F random variable @math{F(m,n)}, with @math{m>0, n>2}. To 
 @deffn {Function} var_f (@var{m},@var{n})
 Returns the variance of a F random variable @math{F(m,n)}, with @math{m>0, n>4}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<V[X] = {2n^2(n+m-2) \over m(n-4)(n-2)^2}>>>,
+<<<
+@example
+               2
+            2 n  (n + m - 2)
+    V[X] = ------------------
+                            2
+           m (n - 4) (n - 2)
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -1679,6 +1817,15 @@ Returns the variance of a F random variable @math{F(m,n)}, with @math{m>0, n>4}.
 @deffn {Function} std_f (@var{m},@var{n})
 Returns the standard deviation of a F random variable @math{F(m,n)}, with @math{m>0, n>4}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<D[X] = {\sqrt{2}\, n \over n-2} \sqrt{n+m-2\over m(n-4)}>>>,
+<<<
+@example
+                        n         n + m - 2
+  D[X] = sqrt(2) sqrt(-----) sqrt(---------)
+                      n - 2       m (n - 4)
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -1690,6 +1837,17 @@ Returns the standard deviation of a F random variable @math{F(m,n)}, with @math{
 @deffn {Function} skewness_f (@var{m},@var{n})
 Returns the skewness coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>6}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<SK[X] = {(n+2m-2)\sqrt{8(n-4)} \over (n-6)\sqrt{m(n+m-2)}}>>>,
+<<<
+@example
+          3/2
+         2    sqrt(n - 4) (n + 2 m - 2)
+ SK[X] = ------------------------------
+          (n - 6) sqrt(m (n + m - 2))
+
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -1700,6 +1858,17 @@ Returns the skewness coefficient of a F random variable @math{F(m,n)}, with @mat
 @anchor{kurtosis_f}
 @deffn {Function} kurtosis_f (@var{m},@var{n})
 Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>8}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<KU[X] = 12{m(n+m-2)(5n-22) + (n-4)(n-2)^2 \over m(n-8)(n-6)(n+m-2)}>>>,
+<<<
+@example
+                                                        2
+          12 (m (n + m - 2) (5 n - 22) + (n - 4) (n - 2) )
+  KU[X] = ------------------------------------------------
+                   m (n - 8) (n - 6) (n + m - 2)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1860,6 +2029,10 @@ Returns the mean of an m4_Exponential_RV(m) random variable, with @math{m>0}.
 
 The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
 
+m4_displaymath(
+<<<E[X] = {1\over m}>>>,
+<<<@math{E[X] = 1/m}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c mean_exp(m);
@@ -1885,6 +2058,9 @@ Returns the variance of an m4_Exponential_RV(m) random variable, with @math{m>0}
 
 The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
 
+m4_displaymath(
+<<<V[X] = {1\over m^2}>>>,
+<<<@math{V[X] = 1/m^2}>>>)
 @c ===beg===
 @c load ("distrib")$
 @c var_exp(m);
@@ -1911,6 +2087,10 @@ Returns the standard deviation of an m4_Exponential_RV(m) random variable, with 
 
 The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
 
+m4_displaymath(
+<<<D[X] = {1\over m}>>>,
+<<<@math{D[X] = 1/m}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c std_exp(m);
@@ -1936,6 +2116,10 @@ Returns the skewness coefficient of an m4_Exponential_RV(m) random variable, wit
 
 The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
 
+m4_displaymath(
+<<<SK[X] = 2>>>,
+<<<@math{SK[X] = 2}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c skewness_exp(m);
@@ -1958,6 +2142,10 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 Returns the kurtosis coefficient of an m4_Exponential_RV(m) random variable, with @math{m>0}.
 
 The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+
+m4_displaymath(
+<<<KU[X] = 6>>>,
+<<<@math{KU[X] = 6}>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -2101,6 +2289,10 @@ Returns the @var{q}-quantile of a m4_Lognormal_RV(m,s) random variable, with @ma
 @deffn {Function} mean_lognormal (@var{m},@var{s})
 Returns the mean of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<E[X] = \exp\left(m+{s^2\over 2}\right)>>>,
+<<<@math{E[X] = exp(m+s^2/2)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2112,6 +2304,10 @@ Returns the mean of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To 
 @deffn {Function} var_lognormal (@var{m},@var{s})
 Returns the variance of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<V[X] = \left(\exp\left(s^2\right) - 1\right) \exp\left(2m+s^2\right)>>>,
+<<<@math{V[X] = (exp(s^2)-1) * exp(2*m+s^2)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2122,6 +2318,10 @@ Returns the variance of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}.
 @deffn {Function} std_lognormal (@var{m},@var{s})
 Returns the standard deviation of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<D[X] = \sqrt{\left(\exp\left(s^2\right) - 1\right)}
+\exp\left(m+{s^2\over 2}\right)>>>,
+<<<@math{D[X] = sqrt((exp(s^2)-1)*exp(2*m+s^2))}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2133,6 +2333,10 @@ Returns the standard deviation of a m4_Lognormal_RV(m,s) random variable, with @
 @deffn {Function} skewness_lognormal (@var{m},@var{s})
 Returns the skewness coefficient of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<SK[X] = \left(\exp\left(s^2\right)+2\right)\sqrt{\exp\left(s^2\right)-1}>>>,
+<<<@math{SK[X] = (exp(s^2)+2)*sqrt(exp(s^2)-1)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2143,6 +2347,10 @@ Returns the skewness coefficient of a m4_Lognormal_RV(m,s) random variable, with
 @anchor{kurtosis_lognormal}
 @deffn {Function} kurtosis_lognormal (@var{m},@var{s})
 Returns the kurtosis coefficient of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<KU[X] = \exp\left(4s^2\right)+2\exp\left(3s^2\right)+3\exp\left(2s^2\right)-3>>>,
+<<<@math{KU[X] = exp(4*s^2)+2*exp(3*s^2)+3*exp(2*s^2)-3}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2267,6 +2475,10 @@ Returns the @var{q}-quantile of a m4_Gamma_RV(a,b) random variable, with @math{a
 @deffn {Function} mean_gamma (@var{a},@var{b})
 Returns the mean of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<E[X] = ab>>>,
+<<<@math{E[X] = a*b}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2278,6 +2490,9 @@ Returns the mean of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To ma
 @deffn {Function} var_gamma (@var{a},@var{b})
 Returns the variance of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<V[X] = ab^2>>>,
+<<<@math{V[X] = a*b^2}>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2287,6 +2502,10 @@ Returns the variance of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. T
 @anchor{std_gamma}
 @deffn {Function} std_gamma (@var{a},@var{b})
 Returns the standard deviation of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<D[X] = b\sqrt{a}>>>,
+<<<@math{D[X] = b*sqrt(a)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2298,6 +2517,9 @@ Returns the standard deviation of a m4_Gamma_RV(a,b) random variable, with @math
 @anchor{skewness_gamma}
 @deffn {Function} skewness_gamma (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+m4_displaymath(
+<<<SK[X] = {2\over \sqrt{a}}>>>,
+<<<@math{SK[X] = 2/sqrt(a)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2309,6 +2531,10 @@ Returns the skewness coefficient of a m4_Gamma_RV(a,b) random variable, with @ma
 @anchor{kurtosis_gamma}
 @deffn {Function} kurtosis_gamma (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<KU[X] = {6\over a}>>>,
+<<<@math{KU[X] = 6/a}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2358,11 +2584,13 @@ and @math{b}.
 @deffn {Function} pdf_beta (@var{x},@var{a},@var{b})
 Returns the value at @var{x} of the density function of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
-For m4_math(<<<0 \le x \le 1>>>, <<<@math{0 <= x <= 1}>>>), the pdf is
+The pdf is
 m4_displaymath(
 <<<f(x; a, b) =
 \cases{
-{1\over B(a,b)}x^{a-1}(1-x)^{b-1} & for $0 \le x \le 1$ \cr
+\displaystyle{x^{a-1}(1-x)^{b-1} \over B(a,b)} & for $0 \le x \le 1$
+\cr
+\cr
 0 & otherwise
 }>>>,
 <<<
@@ -2375,7 +2603,6 @@ m4_displaymath(
               [ 0                     otherwise
 @end example
 >>>)
-Otherwise, the pdf is 0.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2443,6 +2670,10 @@ Returns the @var{q}-quantile of a m4_Beta_RV(a,b) random variable, with @math{a,
 @deffn {Function} mean_beta (@var{a},@var{b})
 Returns the mean of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<E[X] = {a\over a+b}>>>,
+<<<@math{E[X] = a/(a+b)>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2454,6 +2685,17 @@ Returns the mean of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To mak
 @deffn {Function} var_beta (@var{a},@var{b})
 Returns the variance of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<V[X] = {ab \over (a+b)^2(a+b+1)}>>>,
+<<<
+@example
+                   a b
+    V[X] = --------------------
+                  2
+           (b + a)  (b + a + 1)
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2463,6 +2705,18 @@ Returns the variance of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To
 @anchor{std_beta}
 @deffn {Function} std_beta (@var{a},@var{b})
 Returns the standard deviation of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<D[X] = {1\over a+b}\sqrt{ab\over a+b+1}>>>,
+<<<
+@example
+                   a b
+           sqrt(---------)
+                b + a + 1
+    D[X] = ---------------
+             abs(b + a)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2475,6 +2729,15 @@ Returns the standard deviation of a m4_Beta_RV(a,b) random variable, with @math{
 @deffn {Function} skewness_beta (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
+m4_displaymath(
+<<<SK[X] = {2(b-a)\sqrt{a+b+1} \over (a+b+2)\sqrt{ab}}>>>,
+<<<
+@example
+           2 (b - a) sqrt(b + a + 1)
+   SK[X] = -------------------------
+             sqrt(a b) (b + a + 2)
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2485,6 +2748,18 @@ Returns the skewness coefficient of a m4_Beta_RV(a,b) random variable, with @mat
 @anchor{kurtosis_beta}
 @deffn {Function} kurtosis_beta (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+
+m4_displaymath(
+<<<KU[X] = {3(a+b+1)\left(2(a+b)^2+ab(a+b-6)\right) \over
+ab(a+b+2)(a+b+3)} - 3>>>,
+<<<
+@example
+                                  2
+          3 (b + a + 1) (2 (b + a)  + a b (b + a - 6))
+  KU[X] = -------------------------------------------- - 3
+                  a b (b + a + 2) (b + a + 3)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
