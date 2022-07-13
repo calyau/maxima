@@ -2672,7 +2672,7 @@ Returns the mean of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To mak
 
 m4_displaymath(
 <<<E[X] = {a\over a+b}>>>,
-<<<@math{E[X] = a/(a+b)>>>)
+<<<@math{E[X] = a/(a+b)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
