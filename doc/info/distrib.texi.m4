@@ -96,7 +96,7 @@ m4_math(<<<{\rm DiscreteUniform}($1)>>>,<<<@math{DiscreteUniform($1)}>>>))
 
 @c Define Hypergeometric RV
 m4_define(<<<m4_Hypergeometric_RV>>>,
-m4_math(<<<{\rm Hypergeometric}($1)>>>,<<<@math{Hypergeometric($1)}>>>))
+m4_math(<<<{\rm Hypergeometric}($1,$2,$3)>>>,<<<@math{Hypergeometric($1,$2,$3)}>>>))
 
 @c Define Negative Binomial RV
 m4_define(<<<m4_NegativeBinomial_RV>>>,
@@ -5674,14 +5674,28 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 @subsection Hypergeometric Random Variable
 
 @anchor{pdf_hypergeometric}
-@deffn {Function} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+@deffn {Function} pdf_hypergeometric (@var{x},@var{n_1},@var{n_2},@var{n})
 Returns the value at @var{x} of the probability function of a m4_Hypergeometric_RV(n1,n2,n)
-random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
-Being @var{n1} the number of objects of class A, @var{n2} the number of objects of class B, and
-@var{n} the size of the sample without replacement, this function returns the probability of
+random variable, with @math{n_1}, @math{n_2} and @math{n} non negative
+integers and @math{n\leq n_1+n_2}.
+Being @math{n_1} the number of objects of class A, @math{n_2} the number of objects of class B, and
+@math{n} the size of the sample without replacement, this function returns the probability of
 event "exactly @var{x} objects are of class A". 
 
 To make use of this function, write first @code{load("distrib")}.
+
+The pdf is
+m4_displaymath(
+<<<f(x; n_1, n_2, n) = {\displaystyle{n_1\choose x} {n_2 \choose n-x}
+\over \displaystyle{n_2+n_1 \choose n}}>>>,
+<<<
+@example
+                           binomial(n_1, x) binomial(n_2, n - x)
+       f(x, n_1, n_2, n) = -----------------------------------
+                                  binomial(n_2 + n_1, n)
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5691,12 +5705,32 @@ To make use of this function, write first @code{load("distrib")}.
 
 
 @anchor{cdf_hypergeometric}
-@deffn {Function} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+@deffn {Function} cdf_hypergeometric (@var{x},@var{n_1},@var{n_2},@var{n})
 Returns the value at @var{x} of the distribution function of a m4_Hypergeometric_RV(n1,n2,n) 
-random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. 
+random variable, with @math{n_1}, @math{n_2} and @math{n} non negative
+integers and @math{n\leq n_1+n_2}. 
 See @code{pdf_hypergeometric} for a more complete description.
 
 To make use of this function, write first @code{load("distrib")}.
+
+The cdf is
+m4_displaymath(
+<<<F(x; n_1, n_2, n) = {n_2+n_1\choose n}^{-1}
+\sum_{k=0}^{\lfloor x \rfloor} {n_1 \choose k} {n_2 \choose n - k}>>>,
+<<<
+@example
+                      floor(x)
+                      ====
+                      \
+                       >       binomial(n_1, k) binomial(n_2, n - k)
+                      /
+                      ====
+                      k = 0
+  F(x, n_1, n_2, n) = --------------------------------------------
+                                  binomial(n_2 + n_1, n)
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5707,7 +5741,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{quantile_hypergeometric}
 @deffn {Function} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
-Returns the @var{q}-quantile of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; in other words, this is the inverse of @code{cdf_hypergeometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_Hypergeometric_RV(n1,n2,n) random
+variable, with @var{n1}, @var{n2} and @var{n} non negative integers
+and @math{n\leq n1+n2}; in other words, this is the inverse of @code{cdf_hypergeometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5717,8 +5753,21 @@ Returns the @var{q}-quantile of a m4_Hypergeometric_RV(n1,n2,n) random variable,
 
 
 @anchor{mean_hypergeometric}
-@deffn {Function} mean_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the mean of a discrete uniform random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+@deffn {Function} mean_hypergeometric (@var{n_1},@var{n_2},@var{n})
+Returns the mean of a discrete uniform random variable m4_Hypergeometric_RV(n_1,n_2,n), with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n_1+n_2}. To make use of this function, write first @code{load("distrib")}.
+
+The mean is
+m4_displaymath(
+<<<E[X] = {n n_1\over n_2+n_1}>>>,
+<<<
+@example
+                                 n n_1
+                         E[X] = -------
+                                n_2 + n_1
+
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5729,7 +5778,22 @@ Returns the mean of a discrete uniform random variable @math{Hyp(n1,n2,n)}, with
 
 @anchor{var_hypergeometric}
 @deffn {Function} var_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the variance of a hypergeometric  random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a hypergeometric  random variable m4_Hypergeometric_RV(n_1,n_2,n), with @math{n1}, @math{n2} and @math{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<V[X] = {n n_1 n_2 (n_1 + n_2 - n)
+ \over
+ (n_1 + n_2 - 1) (n_1 + n_2)^2}>>>,
+<<<
+@example
+                        n n_1 n_2 (n_2 + n_1 - n)
+                V[X] = ----------------------------
+                                                  2
+                       (n_2 + n_1 - 1) (n_2 + n_1)
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5739,8 +5803,22 @@ Returns the variance of a hypergeometric  random variable @math{Hyp(n1,n2,n)}, w
 
 
 @anchor{std_hypergeometric}
-@deffn {Function} std_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the standard deviation of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+@deffn {Function} std_hypergeometric (@var{n_1},@var{n_2},@var{n})
+Returns the standard deviation of a m4_Hypergeometric_RV(n_1,n_2,n) random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n_1+n_2}. To make use of this function, write first @code{load("distrib")}.
+
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {1\over n_1+n_2}\sqrt{n n_1 n_2 (n_1 + n_2 - n) \over n_1+n_2-1}>>>,
+<<<
+@example
+                          n n_1 n_2 (n_2 + n_1 - n)
+                     sqrt(-------------------------)
+                                n_2 + n_1 - 1
+              D[X] = -------------------------------
+                                n_2 + n_1
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5750,8 +5828,24 @@ Returns the standard deviation of a m4_Hypergeometric_RV(n1,n2,n) random variabl
 
 
 @anchor{skewness_hypergeometric}
-@deffn {Function} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the skewness coefficient of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+@deffn {Function} skewness_hypergeometric (@var{n_1},@var{n_2},@var{n})
+Returns the skewness coefficient of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n1+n2}. To make use of this function, write first @code{load("distrib")}.
+
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {(n_2-n_2)(n_1+n_2-2n)\over n_1+n_2-2}
+\sqrt{n_1+n_2-1 \over n n_1 n_2 (n_1+n_2-n)}>>>,
+<<<
+@example
+                                                 n_2 + n_1 - 1
+        (n_2 - n_1) (n_2 + n_1 - 2 n) sqrt(-------------------------)
+                                           n n_1 n_2 (n_2 + n_1 - n)
+SK[X] = -------------------------------------------------------------
+                                n_2 + n_1 - 2
+
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5761,8 +5855,49 @@ Returns the skewness coefficient of a m4_Hypergeometric_RV(n1,n2,n) random varia
 
 
 @anchor{kurtosis_hypergeometric}
-@deffn {Function} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the kurtosis coefficient of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+@deffn {Function} kurtosis_hypergeometric (@var{n_1},@var{n_2},@var{n})
+Returns the kurtosis coefficient of a m4_Hypergeometric_RV(n_1,n_2,n) random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n1+n2}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<
+\eqalign{
+KU[X] = &
+ \left[{C(1)C(0)^2
+   \over
+  n n_1 n_2 C(3)C(2)C(n)}\right. \cr
+  & \times 
+  \left.\left(
+    {3n_1n_2\left((n-2)C(0)^2+6nC(n)-n^2C(0)\right)
+    \over
+    C(0)^2
+    }
+    -6nC(n) + C(0)C(-1)
+  \right)\right] \cr
+  &-3
+}>>>,
+<<<
+@example
+                                    2
+KU[X] = ((n_2 + n_1 - 1) (n_2 + n_1)
+                                2                          2
+  3 n_1 n_2 ((n - 2) (n_2 + n_1)  + 6 n (n_2 + n_1 - n) - n  (n_2 + n_1))
+ (-----------------------------------------------------------------------
+                                          2
+                               (n_2 + n_1)
+ - 6 n (n_2 + n_1 - n) + (n_2 + n_1) (n_2 + n_1 + 1)))
+/(n n_1 n_2 (n_2 + n_1 - 3) (n_2 + n_1 - 2) (n_2 + n_1 - n)) - 3
+@end example
+>>>)
+@ifnotinfo
+where m4_math(C(k) = n_1+n_2-k).
+@end ifnotinfo
+
+m4_displaymath(
+<<<
+>>>,
+<<<
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
