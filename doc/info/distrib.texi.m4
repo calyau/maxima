@@ -4658,7 +4658,7 @@ Returns the value at @var{x} of the distribution function of a m4_Binomial_RV(n,
 The cdf is
 m4_displaymath(
 <<<F(x; n, p) = I_{1-p}(n-\lfloor x \rfloor, \lfloor x \rfloor + 1)>>>,
-<<<@math({F(x,n,p) = beta_incomplete_regularized(n - floor(x), floor(x) + 1, 1 - p)}>>>)
+<<<@math{F(x,n,p) = beta_incomplete_regularized(n - floor(x), floor(x) + 1, 1 - p)}>>>)
 @ifnotinfo
 where m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized}
 function.
@@ -4850,8 +4850,11 @@ m4_displaymath(
 @example
       F(x, m) = gamma_incomplete_regularized(floor(x) + 1, m)
 @end example
-
 >>>)
+@ifnotinfo
+where @math{Q(x,m)} is the @ref{gamma_incomplete_regularized}
+function.
+@end ifnotinfo
 
 @c ===beg===
 @c load ("distrib")$
@@ -5239,14 +5242,19 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 @anchor{pdf_geometric}
 @deffn {Function} pdf_geometric (@var{x},@var{p})
 Returns the value at @var{x} of the probability function of a m4_Geometric_RV(p) random variable, with
-@ifnottex
-@math{0 < p <= 1}.
-@end ifnottex
-@tex
-@math{0 < p \leq 1}.
-@end tex
+@math{0 < p \leq 1}
 
-The probability function is defined as @math{p (1 - p)^x}.
+The pdf is
+m4_displaymath(
+<<<f(x; p) = p(1-p)^x>>>,
+<<<
+@example
+                                        x
+                       f(x, p) = (1 - p)  p
+@end example
+
+>>>)
+
 This is interpreted as the probability of @math{x} failures before the first success.
 
 @code{load("distrib")} loads this function.
@@ -5261,15 +5269,18 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @anchor{cdf_geometric}
 @deffn {Function} cdf_geometric (@var{x},@var{p})
 Returns the value at @var{x} of the distribution function of a m4_Geometric_RV(p) random variable, with
-@ifnottex
-@math{0 < p <= 1}.
-@end ifnottex
-@tex
-@math{0 < p \leq 1}.
-@end tex
+@math{0 < p \leq  1}
 
-The probability from which the distribution function is derived is defined as @math{p (1 - p)^x}.
-This is interpreted as the probability of @math{x} failures before the first success.
+The cdf is
+m4_displaymath(
+<<<1-(1-p)^{1 + \lfloor x \rfloor}>>>,
+<<<
+@example
+                                      floor(x) + 1
+                 F(x, p) = 1 - (1 - p)
+@end example
+
+>>>)
 
 @code{load("distrib")} loads this function.
 
@@ -5307,12 +5318,19 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @anchor{mean_geometric}
 @deffn {Function} mean_geometric (@var{p})
 Returns the mean of a m4_Geometric_RV(p) random variable, with
-@ifnottex
-@math{0 < p <= 1}.
-@end ifnottex
-@tex
 @math{0 < p \leq 1}.
-@end tex
+
+The mean is
+m4_displaymath(
+<<<E[X] = {1\over p} - 1>>>,
+<<<
+@example
+                                 1
+                          E[X] = - - 1
+                                 p
+@end example
+
+>>>)
 
 The probability from which the mean is derived is defined as @math{p (1 - p)^x}.
 This is interpreted as the probability of @math{x} failures before the first success.
@@ -5329,15 +5347,20 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @anchor{var_geometric}
 @deffn {Function} var_geometric (@var{p})
 Returns the variance of a m4_Geometric_RV(p) random variable, with
-@ifnottex
-@math{0 < p <= 1}.
-@end ifnottex
-@tex
 @math{0 < p \leq 1}.
-@end tex
 
-The probability from which the variance is derived is defined as @math{p (1 - p)^x}.
-This is interpreted as the probability of @math{x} failures before the first success.
+The variance is
+m4_displaymath(
+<<<V[X] = {1-p\over p^2}>>>,
+<<<
+@example
+                                 1 - p
+                          V[X] = -----
+                                   2
+                                  p
+@end example
+
+>>>)
 
 @code{load("distrib")} loads this function.
 
@@ -5351,15 +5374,18 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @anchor{std_geometric}
 @deffn {Function} std_geometric (@var{p})
 Returns the standard deviation of a m4_Geometric_RV(p) random variable, with
-@ifnottex
-@math{0 < p <= 1}.
-@end ifnottex
-@tex
 @math{0 < p \leq 1}.
-@end tex
 
-The probability from which the standard deviation is derived is defined as @math{p (1 - p)^x}.
-This is interpreted as the probability of @math{x} failures before the first success.
+m4_displaymath(
+<<<D[X] = {\sqrt{1-p} \over p}>>>,
+<<<
+@example
+                              sqrt(1 - p)
+                       D[X] = -----------
+                                   p
+@end example
+
+>>>)
 
 @code{load("distrib")} loads this function.
 
@@ -5373,15 +5399,19 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @anchor{skewness_geometric}
 @deffn {Function} skewness_geometric (@var{p})
 Returns the skewness coefficient of a m4_Geometric_RV(p) random variable, with
-@ifnottex
-@math{0 < p <= 1}.
-@end ifnottex
-@tex
 @math{0 < p \leq 1}.
-@end tex
 
-The probability from which the skewness is derived is defined as @math{p (1 - p)^x}.
-This is interpreted as the probability of @math{x} failures before the first success.
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {2-p \over \sqrt{1-p}}>>>,
+<<<
+@example
+                                  2 - p
+                       SK[X] = -----------
+                               sqrt(1 - p)
+@end example
+
+>>>)
 
 @code{load("distrib")} loads this function.
 
@@ -5395,15 +5425,20 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @anchor{kurtosis_geometric}
 @deffn {Function} kurtosis_geometric (@var{p})
 Returns the kurtosis coefficient of a geometric random variable  m4_Geometric_RV(p), with
-@ifnottex
-@math{0 < p <= 1}.
-@end ifnottex
-@tex
 @math{0 < p \leq 1}.
-@end tex
 
-The probability from which the kurtosis is derived is defined as @math{p (1 - p)^x}.
-This is interpreted as the probability of @math{x} failures before the first success.
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {p^2-6p+6 \over 1-p}>>>,
+<<<
+@example
+                               2
+                              p  - 6 p + 6
+                      KU[X] = ------------
+                                 1 - p
+@end example
+
+>>>)
 
 @code{load("distrib")} loads this function.
 
@@ -5450,6 +5485,18 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @deffn {Function} pdf_discrete_uniform (@var{x},@var{n})
 Returns the value at @var{x} of the probability function of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The pdf is
+m4_displaymath(
+<<<f(x,n) = {1\over n}>>>,
+<<<
+@example
+                                       1
+                             f(x, n) = -
+                                       n
+@end example
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -5460,6 +5507,18 @@ Returns the value at @var{x} of the probability function of a m4_DiscreteUniform
 @anchor{cdf_discrete_uniform}
 @deffn {Function} cdf_discrete_uniform (@var{x},@var{n})
 Returns the value at @var{x} of the distribution function of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+
+The cdf is
+m4_displaymath(
+<<<F(x; n) = {\lfloor x \rfloor \over n}>>>,
+<<<
+@example
+                                  floor(x)
+                        F(x, n) = --------
+                                     n
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5483,6 +5542,18 @@ Returns the @var{q}-quantile of a m4_DiscreteUniform_RV(n) random variable, with
 @deffn {Function} mean_discrete_uniform (@var{n})
 Returns the mean of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = {n+1\over 2}>>>,
+<<<
+@example
+                                 n + 1
+                          E[X] = -----
+                                   2
+@end example
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -5493,6 +5564,19 @@ Returns the mean of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a 
 @anchor{var_discrete_uniform}
 @deffn {Function} var_discrete_uniform (@var{n})
 Returns the variance of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<V[X] = {n^2-1 \over 12}>>>,
+<<<
+@example
+                                  2
+                                 n  - 1
+                          V[X] = ------
+                                   12
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5505,6 +5589,19 @@ Returns the variance of a m4_DiscreteUniform_RV(n) random variable, with @math{n
 @deffn {Function} std_discrete_uniform (@var{n})
 Returns the standard deviation of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {\sqrt{n^2-1} \over 2\sqrt{3}}>>>,
+<<<
+@example
+                                    2
+                              sqrt(n  - 1)
+                       D[X] = ------------
+                               2 sqrt(3)
+@end example
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -5516,6 +5613,15 @@ Returns the standard deviation of a m4_DiscreteUniform_RV(n) random variable, wi
 @deffn {Function} skewness_discrete_uniform (@var{n})
 Returns the skewness coefficient of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = 0>>>,
+<<<
+@example
+                            SK[X] = 0
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -5526,6 +5632,19 @@ Returns the skewness coefficient of a m4_DiscreteUniform_RV(n) random variable, 
 @anchor{kurtosis_discrete_uniform}
 @deffn {Function} kurtosis_discrete_uniform (@var{n})
 Returns the kurtosis coefficient of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = - {6(n^2+1)\over 5 (n^2-1)}>>>,
+<<<
+@example
+                                    2
+                                6 (n  + 1)
+                   KU[X] = - -----------------
+                             5 (n - 1) (n + 1)
+
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
