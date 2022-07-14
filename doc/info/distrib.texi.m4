@@ -5930,6 +5930,19 @@ To make use of this function, write first @code{load("distrib")}.
 @deffn {Function} pdf_negative_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the probability function of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
+The pdf is
+m4_displaymath(
+<<<f(x; n, p) = {p^n(1-p)^x\Gamma(x+n)\over \Gamma(n) x!}>>>,
+<<<
+@example
+                                   x  n
+                            (1 - p)  p  gamma(x + n)
+               f(x, n, p) = ------------------------
+                                  gamma(n) x!
+@end example
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -5940,6 +5953,18 @@ Returns the value at @var{x} of the probability function of a m4_NegativeBinomia
 @anchor{cdf_negative_binomial}
 @deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the distribution function of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number.
+
+The cdf is
+m4_displaymath(
+<<<F(x; n, p) = I_p(n,\lfloor x \rfloor + 1)>>>,
+<<<
+@example
+   F(x, n, p) = beta_incomplete_regularized(n, floor(x) + 1, p)
+@end example
+>>>)
+@ifnotinfo
+where m4_math(I_p(a,b)) is the @ref{beta_incomplete_regularized} function.
+@end ifnotinfo
 
 @c ===beg===
 @c load ("distrib")$
@@ -5975,6 +6000,17 @@ Returns the @var{q}-quantile of a m4_NegativeBinomial_RV(n,p) random variable, w
 @deffn {Function} mean_negative_binomial (@var{n},@var{p})
 Returns the mean of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = {n(1-p)\over p}>>>,
+<<<
+@example
+                               n (1 - p)
+                        E[X] = ---------
+                                   p
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -5985,6 +6021,18 @@ Returns the mean of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 
 @anchor{var_negative_binomial}
 @deffn {Function} var_negative_binomial (@var{n},@var{p})
 Returns the variance of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<V[X] = {n(1-p)\over p^2}>>>,
+<<<
+@example
+                               n (1 - p)
+                        V[X] = ---------
+                                   2
+                                  p
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5997,6 +6045,17 @@ Returns the variance of a m4_NegativeBinomial_RV(n,p) random variable, with @mat
 @deffn {Function} std_negative_binomial (@var{n},@var{p})
 Returns the standard deviation of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {\sqrt{n(1-p)}\over p}>>>,
+<<<
+@example
+                            sqrt(n (1 - p))
+                     D[X] = ---------------
+                                   p
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -6008,6 +6067,17 @@ Returns the standard deviation of a m4_NegativeBinomial_RV(n,p) random variable,
 @deffn {Function} skewness_negative_binomial (@var{n},@var{p})
 Returns the skewness coefficient of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {2-p \over \sqrt{n(1-p)}}>>>,
+<<<
+@example
+                                  2 - p
+                     SK[X] = ---------------
+                             sqrt(n (1 - p))
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -6018,6 +6088,19 @@ Returns the skewness coefficient of a m4_NegativeBinomial_RV(n,p) random variabl
 @anchor{kurtosis_negative_binomial}
 @deffn {Function} kurtosis_negative_binomial (@var{n},@var{p})
 Returns the kurtosis coefficient of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {p^2-6p+6 \over n(1-p)}>>>,
+<<<
+@example
+                               2
+                              p  - 6 p + 6
+                      KU[X] = ------------
+                               n (1 - p)
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
