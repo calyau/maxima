@@ -83,23 +83,23 @@ m4_define(<<<m4_Poisson_RV>>>,
 m4_math(<<<{\rm Poisson}($1)>>>,<<<@math{Poisson($1)}>>>))
 
 @c Define Bernoulli RV
-m4_define(<<<m4_Bernoulli_RV>>><
+m4_define(<<<m4_Bernoulli_RV>>>,
 m4_math(<<<{\rm Bernoulli}($1)>>>,<<<@math{Bernoulli($1)}>>>))
 
 @c Define Geometric RV
-m4_define(<<<m4_Geometric_RV>>><
+m4_define(<<<m4_Geometric_RV>>>,
 m4_math(<<<{\rm Geometric}($1)>>>,<<<@math{Geometric($1)}>>>))
 
 @c Define Discrete Uniform RV
-m4_define(<<<m4_DiscreteUniform_RV>>><
+m4_define(<<<m4_DiscreteUniform_RV>>>,
 m4_math(<<<{\rm DiscreteUniform}($1)>>>,<<<@math{DiscreteUniform($1)}>>>))
 
 @c Define Hypergeometric RV
-m4_define(<<<m4_Hypergeometric_RV>>><
+m4_define(<<<m4_Hypergeometric_RV>>>,
 m4_math(<<<{\rm Hypergeometric}($1)>>>,<<<@math{Hypergeometric($1)}>>>))
 
 @c Define Negative Binomial RV
-m4_define(<<<m4_NegativeBinomial_RV>>><
+m4_define(<<<m4_NegativeBinomial_RV>>>,
 m4_math(<<<{\rm NegativeBinomial}($1)>>>,<<<@math{NegativeBinomial($1)}>>>))
 
 
