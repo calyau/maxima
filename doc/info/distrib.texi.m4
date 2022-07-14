@@ -74,6 +74,35 @@ m4_math(<<<{\rm Cauchy}($1,$2)>>>,<<<@math{Cauchy($1,$2)}>>>))
 m4_define(<<<m4_Gumbel_RV>>>,
 m4_math(<<<{\rm Gumbel}($1,$2)>>>,<<<@math{Gumbel($1,$2)}>>>))
 
+@c Define Binomial RV
+m4_define(<<<m4_Binomial_RV>>>,
+m4_math(<<<{\rm Binomial}($1,$2)>>>,<<<@math{Binomial($1,$2)}>>>))
+
+@c Define Poisson RV
+m4_define(<<<m4_Poisson_RV>>>,
+m4_math(<<<{\rm Poisson}($1)>>>,<<<@math{Poisson($1)}>>>))
+
+@c Define Bernoulli RV
+m4_define(<<<m4_Bernoulli_RV>>><
+m4_math(<<<{\rm Bernoulli}($1)>>>,<<<@math{Bernoulli($1)}>>>))
+
+@c Define Geometric RV
+m4_define(<<<m4_Geometric_RV>>><
+m4_math(<<<{\rm Geometric}($1)>>>,<<<@math{Geometric($1)}>>>))
+
+@c Define Discrete Uniform RV
+m4_define(<<<m4_DiscreteUniform_RV>>><
+m4_math(<<<{\rm DiscreteUniform}($1)>>>,<<<@math{DiscreteUniform($1)}>>>))
+
+@c Define Hypergeometric RV
+m4_define(<<<m4_Hypergeometric_RV>>><
+m4_math(<<<{\rm Hypergeometric}($1)>>>,<<<@math{Hypergeometric($1)}>>>))
+
+@c Define Negative Binomial RV
+m4_define(<<<m4_NegativeBinomial_RV>>><
+m4_math(<<<{\rm NegativeBinomial}($1)>>>,<<<@math{NegativeBinomial($1)}>>>))
+
+
 @node Introduction to distrib, Functions and Variables for continuous distributions
 @section Introduction to distrib
 
@@ -4418,6 +4447,22 @@ To make use of this function, write first @code{load("distrib")}.
 @node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions
 @section Functions and Variables for discrete distributions
 
+Maxima knows the following kinds of discrete distributions
+
+
+@menu
+* General Finite Discrete Random Variable::
+* Binomial Random Variable::
+* Poisson Random Variable::
+* Bernoulli Random Variable::
+* Geometric Random Variable::
+* Discrete Uniform Random Variable::
+* Hypergeometric Random Variable::
+* Negative Binomial Random Variable::
+@end menu
+
+@node General Finite Discrete Random Variable, Binomial Random Variable, Functions and Variables for discrete distributions, Functions and Variables for discrete distributions
+@subsection General Finite Discrete Random Variable
 
 @anchor{pdf_general_finite_discrete}
 @deffn {Function} pdf_general_finite_discrete (@var{x},@var{v})
@@ -4588,10 +4633,11 @@ See @code{pdf_general_finite_discrete} for more details.
 
 @end deffn
 
-
+@node Binomial Random Variable, Poisson Random Variable, General Finite Discrete Random Variable, Functions and Variables for discrete distributions
+@subsection Binomial Random Variable
 @anchor{pdf_binomial}
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the probability function of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4602,7 +4648,7 @@ Returns the value at @var{x} of the probability function of a @math{Binomial(n,p
 
 @anchor{cdf_binomial}
 @deffn {Function} cdf_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer.
+Returns the value at @var{x} of the distribution function of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer.
 
 @c ===beg===
 @c load ("distrib")$
@@ -4628,7 +4674,7 @@ Returns the value at @var{x} of the distribution function of a @math{Binomial(n,
 
 @anchor{quantile_binomial}
 @deffn {Function} quantile_binomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4639,7 +4685,7 @@ Returns the @var{q}-quantile of a @math{Binomial(n,p)} random variable, with @ma
 
 @anchor{mean_binomial}
 @deffn {Function} mean_binomial (@var{n},@var{p})
-Returns the mean of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4650,7 +4696,7 @@ Returns the mean of a @math{Binomial(n,p)} random variable, with @math{0 \leq p 
 
 @anchor{var_binomial}
 @deffn {Function} var_binomial (@var{n},@var{p})
-Returns the variance of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4661,7 +4707,7 @@ Returns the variance of a @math{Binomial(n,p)} random variable, with @math{0 \le
 
 @anchor{std_binomial}
 @deffn {Function} std_binomial (@var{n},@var{p})
-Returns the standard deviation of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4672,7 +4718,7 @@ Returns the standard deviation of a @math{Binomial(n,p)} random variable, with @
 
 @anchor{skewness_binomial}
 @deffn {Function} skewness_binomial (@var{n},@var{p})
-Returns the skewness coefficient of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4683,7 +4729,7 @@ Returns the skewness coefficient of a @math{Binomial(n,p)} random variable, with
 
 @anchor{kurtosis_binomial}
 @deffn {Function} kurtosis_binomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a @math{Binomial(n,p)} random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4696,7 +4742,7 @@ Returns the kurtosis coefficient of a @math{Binomial(n,p)} random variable, with
 @deffn {Function} random_binomial (@var{n},@var{p}) @
 @fname{random_binomial} (@var{n},@var{p},@var{m})
 
-Returns a @math{Binomial(n,p)} random variate, with @math{0 \leq p \leq 1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a m4_Binomial_RV(n,p) random variate, with @math{0 \leq p \leq 1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the one described in Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
@@ -4709,10 +4755,15 @@ To make use of this function, write first @code{load("distrib")}.
 
 @end deffn
 
+@menu
+* Poisson Random Variable::
+@end menu
 
+@node Poisson Random Variable, Bernoulli Random Variable, Binomial Random Variable, Functions and Variables for discrete distributions
+@subsection Poisson Random Variable
 @anchor{pdf_poisson}
 @deffn {Function} pdf_poisson (@var{x},@var{m})
-Returns the value at @var{x} of the probability function of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4723,7 +4774,7 @@ Returns the value at @var{x} of the probability function of a @math{Poisson(m)} 
 
 @anchor{cdf_poisson}
 @deffn {Function} cdf_poisson (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of a @math{Poisson(m)} random variable, with @math{m>0}.
+Returns the value at @var{x} of the distribution function of a m4_Poisson_RV(m) random variable, with @math{m>0}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -4747,7 +4798,7 @@ Returns the value at @var{x} of the distribution function of a @math{Poisson(m)}
 
 @anchor{quantile_poisson}
 @deffn {Function} quantile_poisson (@var{q},@var{m})
-Returns the @var{q}-quantile of a @math{Poisson(m)} random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_poisson}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_Poisson_RV(m) random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_poisson}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4758,7 +4809,7 @@ Returns the @var{q}-quantile of a @math{Poisson(m)} random variable, with @math{
 
 @anchor{mean_poisson}
 @deffn {Function} mean_poisson (@var{m})
-Returns the mean of a @math{Poisson(m)} random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4769,7 +4820,7 @@ Returns the mean of a @math{Poisson(m)} random variable, with  @math{m>0}. To ma
 
 @anchor{var_poisson}
 @deffn {Function} var_poisson (@var{m})
-Returns the variance of a @math{Poisson(m)} random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4780,7 +4831,7 @@ Returns the variance of a @math{Poisson(m)} random variable, with  @math{m>0}. T
 
 @anchor{std_poisson}
 @deffn {Function} std_poisson (@var{m})
-Returns the standard deviation of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4791,7 +4842,7 @@ Returns the standard deviation of a @math{Poisson(m)} random variable, with @mat
 
 @anchor{skewness_poisson}
 @deffn {Function} skewness_poisson (@var{m})
-Returns the skewness coefficient of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4815,7 +4866,7 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 @deffn {Function} random_poisson (@var{m}) @
 @fname{random_poisson} (@var{m},@var{n})
 
-Returns a @math{Poisson(m)} random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_Poisson_RV(m) random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is the one described in Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
 
@@ -4828,12 +4879,14 @@ To make use of this function, write first @code{load("distrib")}.
 
 @end deffn
 
+@node Bernoulli Random Variable, Geometric Random Variable, Poisson Random Variable, Functions and Variables for discrete distributions
+@subsection Bernoulli Random Variable
 
 @anchor{pdf_bernoulli}
 @deffn {Function} pdf_bernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the probability function of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}.
+Returns the value at @var{x} of the probability function of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}.
+The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
 @c ===beg===
 @c load ("distrib")$
@@ -4854,7 +4907,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 
 @anchor{cdf_bernoulli}
 @deffn {Function} cdf_bernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4865,7 +4918,7 @@ Returns the value at @var{x} of the distribution function of a @math{Bernoulli(p
 
 @anchor{quantile_bernoulli}
 @deffn {Function} quantile_bernoulli (@var{q},@var{p})
-Returns the @var{q}-quantile of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}; in other words, this is the inverse of @code{cdf_bernoulli}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}; in other words, this is the inverse of @code{cdf_bernoulli}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4876,9 +4929,9 @@ Returns the @var{q}-quantile of a @math{Bernoulli(p)} random variable, with @mat
 
 @anchor{mean_bernoulli}
 @deffn {Function} mean_bernoulli (@var{p})
-Returns the mean of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}.
+Returns the mean of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}.
+The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
 @c ===beg===
 @c load ("distrib")$
@@ -4899,9 +4952,9 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 
 @anchor{var_bernoulli}
 @deffn {Function} var_bernoulli (@var{p})
-Returns the variance of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}.
+Returns the variance of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}.
+The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
 @c ===beg===
 @c load ("distrib")$
@@ -4922,9 +4975,9 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 
 @anchor{std_bernoulli}
 @deffn {Function} std_bernoulli (@var{p})
-Returns the standard deviation of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}.
+Returns the standard deviation of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}.
+The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
 @c ===beg===
 @c load ("distrib")$
@@ -4945,9 +4998,9 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 
 @anchor{skewness_bernoulli}
 @deffn {Function} skewness_bernoulli (@var{p})
-Returns the skewness coefficient of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}.
+Returns the skewness coefficient of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}.
+The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
 @c ===beg===
 @c load ("distrib")$
@@ -4970,9 +5023,9 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 
 @anchor{kurtosis_bernoulli}
 @deffn {Function} kurtosis_bernoulli (@var{p})
-Returns the kurtosis coefficient of a @math{Bernoulli(p)} random variable, with @math{0 \leq p \leq 1}.
+Returns the kurtosis coefficient of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}.
+The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
 @c ===beg===
 @c load ("distrib")$
@@ -4997,7 +5050,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @deffn {Function} random_bernoulli (@var{p}) @
 @fname{random_bernoulli} (@var{p},@var{n})
 
-Returns a @math{Bernoulli(p)} random variate, with @math{0 \leq p \leq 1}. Calling @code{random_bernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_Bernoulli_RV(p) random variate, with @math{0 \leq p \leq 1}. Calling @code{random_bernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
@@ -5010,9 +5063,12 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 
 @end deffn
 
+@node Geometric Random Variable, Discrete Uniform Random Variable, Bernoulli Random Variable, Functions and Variables for discrete distributions
+@subsection Geometric Random Variable
+
 @anchor{pdf_geometric}
 @deffn {Function} pdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the probability function of a @math{Geometric(p)} random variable, with
+Returns the value at @var{x} of the probability function of a m4_Geometric_RV(p) random variable, with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5034,7 +5090,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{cdf_geometric}
 @deffn {Function} cdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a @math{Geometric(p)} random variable, with
+Returns the value at @var{x} of the distribution function of a m4_Geometric_RV(p) random variable, with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5056,7 +5112,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{quantile_geometric}
 @deffn {Function} quantile_geometric (@var{q},@var{p})
-Returns the @var{q}-quantile of a @math{Geometric(p)} random variable, with
+Returns the @var{q}-quantile of a m4_Geometric_RV(p) random variable, with
 @ifnottex
 @math{0 < p <= 1};
 @end ifnottex
@@ -5080,7 +5136,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{mean_geometric}
 @deffn {Function} mean_geometric (@var{p})
-Returns the mean of a @math{Geometric(p)} random variable, with
+Returns the mean of a m4_Geometric_RV(p) random variable, with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5102,7 +5158,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{var_geometric}
 @deffn {Function} var_geometric (@var{p})
-Returns the variance of a @math{Geometric(p)} random variable, with
+Returns the variance of a m4_Geometric_RV(p) random variable, with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5124,7 +5180,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{std_geometric}
 @deffn {Function} std_geometric (@var{p})
-Returns the standard deviation of a @math{Geometric(p)} random variable, with
+Returns the standard deviation of a m4_Geometric_RV(p) random variable, with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5146,7 +5202,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{skewness_geometric}
 @deffn {Function} skewness_geometric (@var{p})
-Returns the skewness coefficient of a @math{Geometric(p)} random variable, with
+Returns the skewness coefficient of a m4_Geometric_RV(p) random variable, with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5168,7 +5224,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{kurtosis_geometric}
 @deffn {Function} kurtosis_geometric (@var{p})
-Returns the kurtosis coefficient of a geometric random variable  @math{Geometric(p)}, with
+Returns the kurtosis coefficient of a geometric random variable  m4_Geometric_RV(p), with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5192,7 +5248,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @deffn {Function} random_geometric (@var{p}) @
 @fname{random_geometric} (@var{p},@var{n})
 
-@code{random_geometric(@var{p})} returns one random sample from a @math{Geometric(p)} distribution, with
+@code{random_geometric(@var{p})} returns one random sample from a m4_Geometric_RV(p) distribution, with
 @ifnottex
 @math{0 < p <= 1}.
 @end ifnottex
@@ -5217,10 +5273,12 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @end deffn
 
+@node Discrete Uniform Random Variable, Hypergeometric Random Variable, Geometric Random Variable, Functions and Variables for discrete distributions
+@subsection Discrete Uniform Random Variable
 
 @anchor{pdf_discrete_uniform}
 @deffn {Function} pdf_discrete_uniform (@var{x},@var{n})
-Returns the value at @var{x} of the probability function of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5231,7 +5289,7 @@ Returns the value at @var{x} of the probability function of a @math{Discrete Uni
 
 @anchor{cdf_discrete_uniform}
 @deffn {Function} cdf_discrete_uniform (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5242,7 +5300,7 @@ Returns the value at @var{x} of the distribution function of a @math{Discrete Un
 
 @anchor{quantile_discrete_uniform}
 @deffn {Function} quantile_discrete_uniform (@var{q},@var{n})
-Returns the @var{q}-quantile of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{cdf_discrete_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{cdf_discrete_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5253,7 +5311,7 @@ Returns the @var{q}-quantile of a @math{Discrete Uniform(n)} random variable, wi
 
 @anchor{mean_discrete_uniform}
 @deffn {Function} mean_discrete_uniform (@var{n})
-Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5264,7 +5322,7 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 
 @anchor{var_discrete_uniform}
 @deffn {Function} var_discrete_uniform (@var{n})
-Returns the variance of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5275,7 +5333,7 @@ Returns the variance of a @math{Discrete Uniform(n)} random variable, with @math
 
 @anchor{std_discrete_uniform}
 @deffn {Function} std_discrete_uniform (@var{n})
-Returns the standard deviation of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5286,7 +5344,7 @@ Returns the standard deviation of a @math{Discrete Uniform(n)} random variable, 
 
 @anchor{skewness_discrete_uniform}
 @deffn {Function} skewness_discrete_uniform (@var{n})
-Returns the skewness coefficient of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5297,7 +5355,7 @@ Returns the skewness coefficient of a @math{Discrete Uniform(n)} random variable
 
 @anchor{kurtosis_discrete_uniform}
 @deffn {Function} kurtosis_discrete_uniform (@var{n})
-Returns the kurtosis coefficient of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5310,7 +5368,7 @@ Returns the kurtosis coefficient of a @math{Discrete Uniform(n)} random variable
 @deffn {Function} random_discrete_uniform (@var{n}) @
 @fname{random_discrete_uniform} (@var{n},@var{m})
 
-Returns a @math{Discrete Uniform(n)} random variate, with @math{n} a strictly positive integer. Calling @code{random_discrete_uniform} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a m4_DiscreteUniform_RV(n) random variate, with @math{n} a strictly positive integer. Calling @code{random_discrete_uniform} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
@@ -5323,10 +5381,12 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 
 @end deffn
 
+@node Hypergeometric Random Variable, Negative Binomial Random Variable, Discrete Uniform Random Variable, Functions and Variables for discrete distributions
+@subsection Hypergeometric Random Variable
 
 @anchor{pdf_hypergeometric}
 @deffn {Function} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the probability function of a @math{Hypergeometric(n1,n2,n)}
+Returns the value at @var{x} of the probability function of a m4_Hypergeometric_RV(n1,n2,n)
 random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
 Being @var{n1} the number of objects of class A, @var{n2} the number of objects of class B, and
 @var{n} the size of the sample without replacement, this function returns the probability of
@@ -5343,7 +5403,7 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{cdf_hypergeometric}
 @deffn {Function} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the distribution function of a @math{Hypergeometric(n1,n2,n)} 
+Returns the value at @var{x} of the distribution function of a m4_Hypergeometric_RV(n1,n2,n) 
 random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. 
 See @code{pdf_hypergeometric} for a more complete description.
 
@@ -5358,7 +5418,7 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{quantile_hypergeometric}
 @deffn {Function} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
-Returns the @var{q}-quantile of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; in other words, this is the inverse of @code{cdf_hypergeometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; in other words, this is the inverse of @code{cdf_hypergeometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5391,7 +5451,7 @@ Returns the variance of a hypergeometric  random variable @math{Hyp(n1,n2,n)}, w
 
 @anchor{std_hypergeometric}
 @deffn {Function} std_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the standard deviation of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5402,7 +5462,7 @@ Returns the standard deviation of a @math{Hypergeometric(n1,n2,n)} random variab
 
 @anchor{skewness_hypergeometric}
 @deffn {Function} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the skewness coefficient of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5413,7 +5473,7 @@ Returns the skewness coefficient of a @math{Hypergeometric(n1,n2,n)} random vari
 
 @anchor{kurtosis_hypergeometric}
 @deffn {Function} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5426,7 +5486,7 @@ Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} random vari
 @deffn {Function} random_hypergeometric (@var{n1},@var{n2},@var{n}) @
 @fname{random_hypergeometric} (@var{n1},@var{n2},@var{n},@var{m})
 
-Returns a @math{Hypergeometric(n1,n2,n)} random variate, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Calling @code{random_hypergeometric} with a fourth argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a m4_Hypergeometric_RV(n1,n2,n) random variate, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Calling @code{random_hypergeometric} with a fourth argument @var{m}, a random sample of size @var{m} will be simulated.
 
 Algorithm described in Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
 
@@ -5439,10 +5499,12 @@ To make use of this function, write first @code{load("distrib")}.
 
 @end deffn
 
+@node Negative Binomial Random Variable,  , Hypergeometric Random Variable, Functions and Variables for discrete distributions
+@subsection Negative Binomial Random Variable
 
 @anchor{pdf_negative_binomial}
 @deffn {Function} pdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the probability function of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5453,7 +5515,7 @@ Returns the value at @var{x} of the probability function of a @math{Negative Bin
 
 @anchor{cdf_negative_binomial}
 @deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number.
+Returns the value at @var{x} of the distribution function of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number.
 
 @c ===beg===
 @c load ("distrib")$
@@ -5476,7 +5538,7 @@ Returns the value at @var{x} of the distribution function of a @math{Negative Bi
 
 @anchor{quantile_negative_binomial}
 @deffn {Function} quantile_negative_binomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5487,7 +5549,7 @@ Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable,
 
 @anchor{mean_negative_binomial}
 @deffn {Function} mean_negative_binomial (@var{n},@var{p})
-Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5498,7 +5560,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 
 @anchor{var_negative_binomial}
 @deffn {Function} var_negative_binomial (@var{n},@var{p})
-Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5509,7 +5571,7 @@ Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @m
 
 @anchor{std_negative_binomial}
 @deffn {Function} std_negative_binomial (@var{n},@var{p})
-Returns the standard deviation of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5520,7 +5582,7 @@ Returns the standard deviation of a @math{Negative Binomial(n,p)} random variabl
 
 @anchor{skewness_negative_binomial}
 @deffn {Function} skewness_negative_binomial (@var{n},@var{p})
-Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5531,7 +5593,7 @@ Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random varia
 
 @anchor{kurtosis_negative_binomial}
 @deffn {Function} kurtosis_negative_binomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5544,7 +5606,7 @@ Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random varia
 @deffn {Function} random_negative_binomial (@var{n},@var{p}) @
 @fname{random_negative_binomial} (@var{n},@var{p},@var{m})
 
-Returns a @math{Negative Binomial(n,p)} random variate, with @math{0 < p \leq 1} and @math{n} a positive number. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a m4_NegativeBinomial_RV(n,p) random variate, with @math{0 < p \leq 1} and @math{n} a positive number. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 Algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
