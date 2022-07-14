@@ -4639,6 +4639,11 @@ See @code{pdf_general_finite_discrete} for more details.
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the probability function of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The pdf is
+m4_displaymath(
+<<<f(x; n, p) = {n\choose x} (1-p)^{n-x}p^x>>>,
+<<<@math{f(x,n,p) = binomial(n,x) * (1 - p)^(n-x) p^x}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4649,6 +4654,16 @@ Returns the value at @var{x} of the probability function of a m4_Binomial_RV(n,p
 @anchor{cdf_binomial}
 @deffn {Function} cdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the distribution function of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer.
+
+The cdf is
+m4_displaymath(
+<<<F(x; n, p) = I_{1-p}(n-\lfloor x \rfloor, \lfloor x \rfloor + 1)>>>,
+<<<@math({F(x,n,p) = beta_incomplete_regularized(n - floor(x), floor(x) + 1, 1 - p)}>>>)
+@ifnotinfo
+where m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized}
+function.
+@end ifnotinfo
+
 
 @c ===beg===
 @c load ("distrib")$
@@ -4687,6 +4702,11 @@ Returns the @var{q}-quantile of a m4_Binomial_RV(n,p) random variable, with @mat
 @deffn {Function} mean_binomial (@var{n},@var{p})
 Returns the mean of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = np>>>,
+<<<@math{E[X] = n*p}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4697,6 +4717,11 @@ Returns the mean of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \
 @anchor{var_binomial}
 @deffn {Function} var_binomial (@var{n},@var{p})
 Returns the variance of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<V[X] = np(1-p)>>>,
+<<<@math{V[X] = n*p*(1-p)}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4709,6 +4734,11 @@ Returns the variance of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq
 @deffn {Function} std_binomial (@var{n},@var{p})
 Returns the standard deviation of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = \sqrt{np(1-p)}>>>,
+<<<@math{D[X] = sqrt(n*p*(1-p))}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4720,6 +4750,18 @@ Returns the standard deviation of a m4_Binomial_RV(n,p) random variable, with @m
 @deffn {Function} skewness_binomial (@var{n},@var{p})
 Returns the skewness coefficient of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {1-2p\over \sqrt{np(1-p)}}>>>,
+<<<
+@example
+                                 1 - 2 p
+                    SK[X] = -----------------
+                            sqrt(n (1 - p) p)
+@end example
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4730,6 +4772,18 @@ Returns the skewness coefficient of a m4_Binomial_RV(n,p) random variable, with 
 @anchor{kurtosis_binomial}
 @deffn {Function} kurtosis_binomial (@var{n},@var{p})
 Returns the kurtosis coefficient of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {1-6p(1-p)\over np(1-p)}>>>,
+<<<
+@example
+                             1 - 6 (1 - p) p
+                     KU[X] = ---------------
+                               n (1 - p) p
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
