@@ -4819,6 +4819,19 @@ To make use of this function, write first @code{load("distrib")}.
 @deffn {Function} pdf_poisson (@var{x},@var{m})
 Returns the value at @var{x} of the probability function of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
+The pdf is
+m4_displaymath(
+<<<f(x; m) = {m^x e^{-m}\over x!}>>>,
+<<<
+@example
+                                   x   - m
+                                  m  %e
+                        f(x, m) = --------
+                                     x!
+@end example
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4829,6 +4842,16 @@ Returns the value at @var{x} of the probability function of a m4_Poisson_RV(m) r
 @anchor{cdf_poisson}
 @deffn {Function} cdf_poisson (@var{x},@var{m})
 Returns the value at @var{x} of the distribution function of a m4_Poisson_RV(m) random variable, with @math{m>0}.
+
+The cdf is
+m4_displaymath(
+<<<F(x; m) = Q(\lfloor x \rfloor + 1, m)>>>,
+<<<
+@example
+      F(x, m) = gamma_incomplete_regularized(floor(x) + 1, m)
+@end example
+
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -4865,6 +4888,11 @@ Returns the @var{q}-quantile of a m4_Poisson_RV(m) random variable, with @math{m
 @deffn {Function} mean_poisson (@var{m})
 Returns the mean of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = m>>>,
+<<<@math{E[X] = m}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4875,6 +4903,11 @@ Returns the mean of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To mak
 @anchor{var_poisson}
 @deffn {Function} var_poisson (@var{m})
 Returns the variance of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<V[X] = m>>>,
+<<<@math{V[X] = m}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4887,6 +4920,11 @@ Returns the variance of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To
 @deffn {Function} std_poisson (@var{m})
 Returns the standard deviation of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
+The standard deviation is
+m4_displaymath(
+<<<V[X] = \sqrt{m}>>>,
+<<<@math{V[X] = sqrt(m)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4898,6 +4936,18 @@ Returns the standard deviation of a m4_Poisson_RV(m) random variable, with @math
 @deffn {Function} skewness_poisson (@var{m})
 Returns the skewness coefficient of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
+The skewness is
+m4_displaymath(
+<<<SK[X] = {1\over \sqrt{m}}>>>,
+<<<
+@example
+                                    1
+                         SK[X] = -------
+                                 sqrt(m)
+@end example
+
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4908,6 +4958,11 @@ Returns the skewness coefficient of a m4_Poisson_RV(m) random variable, with @ma
 @anchor{kurtosis_poisson}
 @deffn {Function} kurtosis_poisson (@var{m})
 Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {1\over m}>>>,
+<<<@math{KU[X] = 1/m}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
