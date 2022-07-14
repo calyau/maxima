@@ -4997,6 +4997,17 @@ Returns the value at @var{x} of the probability function of a m4_Bernoulli_RV(p)
 
 The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
+The mean is
+m4_displaymath(
+<<<f(x; p) = p^x (1-p)^{1-x}>>>,
+<<<
+@example
+                                       1 - x  x
+                      f(x, p) = (1 - p)      p
+@end example
+
+>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c pdf_bernoulli(1,p);
@@ -5017,6 +5028,17 @@ The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 @anchor{cdf_bernoulli}
 @deffn {Function} cdf_bernoulli (@var{x},@var{p})
 Returns the value at @var{x} of the distribution function of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+
+The cdf is
+m4_displaymath(
+<<<F(x; p) = I_{1-p}(1-\lfloor x \rfloor, \lfloor x \rfloor + 1)>>>,
+<<<
+@example
+ F(x, n, p) = beta_incomplete_regularized(n - floor(x), floor(x) + 1, 
+                                                                    1 - p)
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5042,6 +5064,11 @@ Returns the mean of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \l
 
 The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
+The mean is
+m4_displaymath(
+<<<E[X] = p>>>,
+<<<@math{E[X] = p}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c mean_bernoulli(p);
@@ -5064,6 +5091,11 @@ The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 Returns the variance of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
 The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+
+The variance is
+m4_displaymath(
+<<<V[X] = p(1-p)>>>,
+<<<@math{V[X] = p*(1-p)}>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -5088,6 +5120,11 @@ Returns the standard deviation of a m4_Bernoulli_RV(p) random variable, with @ma
 
 The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = \sqrt{p(1-p)}>>>,
+<<<@math{D[X] = \qrt(p*(1-p))}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c std_bernoulli(p);
@@ -5110,6 +5147,18 @@ The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 Returns the skewness coefficient of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
 The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {1-2p \over \sqrt{p(1-p)}}>>>,
+<<<
+@example
+                                 1 - 2 p
+                     SK[X] = ---------------
+                             sqrt((1 - p) p)
+@end example
+
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -5135,6 +5184,18 @@ The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 Returns the kurtosis coefficient of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
 
 The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {1-6p(1-p) \over p(1-p)}>>>,
+<<<
+@example
+                             1 - 6 (1 - p) p
+                     KU[X] = ---------------
+                                (1 - p) p
+@end example
+
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
