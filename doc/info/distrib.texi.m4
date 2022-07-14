@@ -4037,6 +4037,11 @@ Returns the @var{q}-quantile of a m4_Laplace_RV(a,b) random variable, with @math
 @deffn {Function} mean_laplace (@var{a},@var{b})
 Returns the mean of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = a>>>,
+<<<@math{E[X] = a}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4047,6 +4052,11 @@ Returns the mean of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To ma
 @anchor{var_laplace}
 @deffn {Function} var_laplace (@var{a},@var{b})
 Returns the variance of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The variance is
+m4_displaymath(
+<<<V[X] = 2b^2>>>,
+<<<@math{V[X] = 2*b^2}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4059,6 +4069,11 @@ Returns the variance of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. T
 @deffn {Function} std_laplace (@var{a},@var{b})
 Returns the standard deviation of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = \sqrt{2} b>>>,
+<<<@math{D[X] = sqrt(2)*b}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4070,6 +4085,11 @@ Returns the standard deviation of a m4_Laplace_RV(a,b) random variable, with @ma
 @deffn {Function} skewness_laplace (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = 0>>>,
+<<<@math{SK[X] = 0}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4080,6 +4100,11 @@ Returns the skewness coefficient of a m4_Laplace_RV(a,b) random variable, with @
 @anchor{kurtosis_laplace}
 @deffn {Function} kurtosis_laplace (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = 3>>>,
+<<<@math{KU[X] = 3}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4119,6 +4144,10 @@ To make use of this function, write first @code{load("distrib")}.
 The @emph{Cauchy} distribution (also known as the Lorentz
 distribution) is the distribution of of the ratio of two independent
 normally distributed random variables with mean zero.
+
+Note that the mean, variance, standard deviation, skewness
+coefficient, and kurtosis coefficient are all undefined for the Cauchy
+distribution.  The integrals do not converge in this case.
 
 @node Functions and Variables for Cauchy Random Variable,  , Introduction to Cauchy Random Variable, Cauchy Random Variable
 @subsubsection Functions and Variables for Cauchy Random Variable
@@ -4265,6 +4294,11 @@ Returns the @var{q}-quantile of a m4_Gumbel_RV(a,b) random variable, with @math{
 @deffn {Function} mean_gumbel (@var{a},@var{b})
 Returns the mean of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}.
 
+The mean is
+m4_displaymath(
+<<<E[X] = a+b\gamma>>>,
+<<<@math{E[X] = a+b*%gamma}>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c mean_gumbel(a,b);
@@ -4287,6 +4321,11 @@ where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @m
 @deffn {Function} var_gumbel (@var{a},@var{b})
 Returns the variance of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The variance is
+m4_displaymath(
+<<<V[X] = {\pi^2\over 6} b^2>>>,
+<<<@math{V[X] = %pi^2*b^2/6}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4298,6 +4337,11 @@ Returns the variance of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To
 @deffn {Function} std_gumbel (@var{a},@var{b})
 Returns the standard deviation of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
+The standard deviation is
+m4_displaymath(
+<<<D[X] = {\pi \over \sqrt{6}} b>>>,
+<<<@math{D[X] = %pi*b/sqrt(6)}>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4308,6 +4352,11 @@ Returns the standard deviation of a m4_Gumbel_RV(a,b) random variable, with @mat
 @anchor{skewness_gumbel}
 @deffn {Function} skewness_gumbel (@var{a},@var{b})
 Returns the skewness coefficient of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}.
+
+The skewness coefficient is
+m4_displaymath(
+<<<SK[X] = {12\sqrt{6}\over \pi^3} \zeta(3)>>>,
+<<<@math{SK[X] = 12*sqrt(6)*zeta(3)/%pi^3}>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -4334,6 +4383,11 @@ where @code{zeta} stands for the Riemann's zeta function.
 @anchor{kurtosis_gumbel}
 @deffn {Function} kurtosis_gumbel (@var{a},@var{b})
 Returns the kurtosis coefficient of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+
+The kurtosis coefficient is
+m4_displaymath(
+<<<KU[X] = {12\over 5}>>>,
+<<<@math{KU[X] = 12/5}>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
