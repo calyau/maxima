@@ -532,7 +532,7 @@
 	   (cond  ((eql test *parse-stream-eof*)
 		   (parse-tyi)
 		   (if eof-ok? eof-obj
-		       (maxima-error (intl:gettext "parser: end of file while scanning expression."))))
+		       (mread-synerr (intl:gettext "end of file while scanning expression."))))
 		  ((eql test #\/)
 		   (parse-tyi)
 		   (cond ((char= (parse-tyipeek) #\*)
@@ -570,7 +570,7 @@
 	(parse-tyi)
 	(cond ((= depth 0) (return t)))
 	(cond ((eql c *parse-stream-eof*)
-	       (merror (intl:gettext "parser: end of file in comment.")))
+	       (mread-synerr (intl:gettext "end of file in comment.")))
 	      ((char= c #\*)
 	       (cond ((char= (parse-tyipeek) #\/)
 		      (decf depth)
