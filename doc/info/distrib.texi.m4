@@ -7,7 +7,7 @@
 @c Define an m4 macro for the NormalRV function that is used below.
 @c Can't use @macro because m4 is processed too late for this to work.
 m4_define(<<<m4_Normal_RV>>>,
-m4_math(<<<{\rm Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
+m4_math(<<<{\it Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
 
 @c Define the function student t to denote Student's t random variable
 m4_define(<<<m4_Student_T_RV>>>,
@@ -15,7 +15,7 @@ m4_define(<<<m4_Student_T_RV>>>,
 
 @c Define noncentral Student's t RV
 m4_define(<<<m4_Noncentral_T_RV>>>,
-m4_math(<<<{\rm nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
+m4_math(<<<{\it nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
 
 @c Define Chi^2(n), the chi-squared random variate function.
 m4_define(<<<m4_Chi2_RV>>>,
@@ -27,80 +27,80 @@ m4_math(<<<\Gamma\left($1,$2\right)>>>, <<<@math{Gamma($1,$2)}>>>))
 
 @c Define the noncentral chi-squared RV
 m4_define(<<<m4_noncentral_chi2_RV>>>,
-m4_math(<<<{\rm nc\_Chi}^2($1,$2)>>>, <<<@math{nc_Chi^2($1,$2)}>>>))
+m4_math(<<<{\it nc\_Chi}^2($1,$2)>>>, <<<@math{nc_Chi^2($1,$2)}>>>))
 
 @c Define the exponential RV
 m4_define(<<<m4_Exponential_RV>>>,
-m4_math(<<<{\rm Exponential}($1)>>>, <<<@math{Exponential($1)}>>>))
+m4_math(<<<{\it Exponential}($1)>>>, <<<@math{Exponential($1)}>>>))
 
 @c Define the Weibull RV
 m4_define(<<<m4_Weibull_RV>>>,
-m4_math(<<<{\rm Weibull}($1,$2)>>>, <<<@math{Weibull($1,$2)}>>>))
+m4_math(<<<{\it Weibull}($1,$2)>>>, <<<@math{Weibull($1,$2)}>>>))
 
 @c Define lognormal RV
 m4_define(<<<m4_Lognormal_RV>>>,
-m4_math(<<<{\rm Lognormal}($1,$2)>>>,<<<@math{Lognormal($1,$2)}>>>))
+m4_math(<<<{\it Lognormal}($1,$2)>>>,<<<@math{Lognormal($1,$2)}>>>))
 
 @c Define beta RV
 m4_define(<<<m4_Beta_RV>>>,
-m4_math(<<<{\rm Beta}($1,$2)>>>,<<<@math{Beta($1,$2)}>>>))
+m4_math(<<<{\it Beta}($1,$2)>>>,<<<@math{Beta($1,$2)}>>>))
 
 @c Define continuous uniform RV
 m4_define(<<<m4_Continuous_Uniform_RV>>>,
-m4_math(<<<{\rm
+m4_math(<<<{\it
 ContinuousUniform}($1,$2)>>>,<<<@math{ContinuousUniform($1,$2)}>>>))
 
 @c Define logistic RV
 m4_define(<<<m4_Logistic_RV>>>,
-m4_math(<<<{\rm Logistic}($1,$2)>>>,<<<<@math{Logistice($1,$2)}>>>))
+m4_math(<<<{\it Logistic}($1,$2)>>>,<<<<@math{Logistice($1,$2)}>>>))
 
 @c Define pareto RV
 m4_define(<<<m4_Pareto_RV>>>,
-m4_math(<<<{\rm Pareto}($1,$2)>>>,<<<@math{Pareto($1,$2)}>>>))
+m4_math(<<<{\it Pareto}($1,$2)>>>,<<<@math{Pareto($1,$2)}>>>))
 
 @c Define Rayleigh RV
 m4_define(<<<m4_Rayleigh_RV>>>,
-m4_math(<<<{\rm Rayleigh}($1)>>>,<<<@math{Rayleigh($1)}>>>))
+m4_math(<<<{\it Rayleigh}($1)>>>,<<<@math{Rayleigh($1)}>>>))
 
 @c Define Laplace RV
 m4_define(<<<m4_Laplace_RV>>>,
-m4_math(<<<{\rm Laplace}($1,$2)>>>,<<<@math{Laplace($1,$2)}>>>))
+m4_math(<<<{\it Laplace}($1,$2)>>>,<<<@math{Laplace($1,$2)}>>>))
 
 @c Define Cauchy RV
 m4_define(<<<m4_Cauchy_RV>>>,
-m4_math(<<<{\rm Cauchy}($1,$2)>>>,<<<@math{Cauchy($1,$2)}>>>))
+m4_math(<<<{\it Cauchy}($1,$2)>>>,<<<@math{Cauchy($1,$2)}>>>))
 
 @c Define Gumbel RV
 m4_define(<<<m4_Gumbel_RV>>>,
-m4_math(<<<{\rm Gumbel}($1,$2)>>>,<<<@math{Gumbel($1,$2)}>>>))
+m4_math(<<<{\it Gumbel}($1,$2)>>>,<<<@math{Gumbel($1,$2)}>>>))
 
 @c Define Binomial RV
 m4_define(<<<m4_Binomial_RV>>>,
-m4_math(<<<{\rm Binomial}($1,$2)>>>,<<<@math{Binomial($1,$2)}>>>))
+m4_math(<<<{\it Binomial}($1,$2)>>>,<<<@math{Binomial($1,$2)}>>>))
 
 @c Define Poisson RV
 m4_define(<<<m4_Poisson_RV>>>,
-m4_math(<<<{\rm Poisson}($1)>>>,<<<@math{Poisson($1)}>>>))
+m4_math(<<<{\it Poisson}($1)>>>,<<<@math{Poisson($1)}>>>))
 
 @c Define Bernoulli RV
 m4_define(<<<m4_Bernoulli_RV>>>,
-m4_math(<<<{\rm Bernoulli}($1)>>>,<<<@math{Bernoulli($1)}>>>))
+m4_math(<<<{\it Bernoulli}($1)>>>,<<<@math{Bernoulli($1)}>>>))
 
 @c Define Geometric RV
 m4_define(<<<m4_Geometric_RV>>>,
-m4_math(<<<{\rm Geometric}($1)>>>,<<<@math{Geometric($1)}>>>))
+m4_math(<<<{\it Geometric}($1)>>>,<<<@math{Geometric($1)}>>>))
 
 @c Define Discrete Uniform RV
 m4_define(<<<m4_DiscreteUniform_RV>>>,
-m4_math(<<<{\rm DiscreteUniform}($1)>>>,<<<@math{DiscreteUniform($1)}>>>))
+m4_math(<<<{\it DiscreteUniform}($1)>>>,<<<@math{DiscreteUniform($1)}>>>))
 
 @c Define Hypergeometric RV
 m4_define(<<<m4_Hypergeometric_RV>>>,
-m4_math(<<<{\rm Hypergeometric}($1,$2,$3)>>>,<<<@math{Hypergeometric($1,$2,$3)}>>>))
+m4_math(<<<{\it Hypergeometric}($1,$2,$3)>>>,<<<@math{Hypergeometric($1,$2,$3)}>>>))
 
 @c Define Negative Binomial RV
 m4_define(<<<m4_NegativeBinomial_RV>>>,
-m4_math(<<<{\rm NegativeBinomial}($1,$2)>>>,<<<@math{NegativeBinomial($1,$2)}>>>))
+m4_math(<<<{\it NegativeBinomial}($1,$2)>>>,<<<@math{NegativeBinomial($1,$2)}>>>))
 
 
 @node Introduction to distrib, Functions and Variables for continuous distributions
