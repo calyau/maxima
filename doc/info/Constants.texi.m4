@@ -24,7 +24,7 @@
 
 @code{%e} represents the base of the natural logarithm, also known as Euler's
 number.  The numeric value of @code{%e} is the double-precision floating-point
-value 2.718281828459045d0.
+value 2.718281828459045d0.  (See @urlaands{eqn 4.1.16, 67}, @urlaands{4.1.17, 67}.)
 
 @opencatbox{Categories:}
 @category{Constants}
@@ -65,9 +65,9 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 @vrindex Euler-Mascheroni constant
 @end ifinfo
 
-The Euler-Mascheroni constant, 0.5772156649015329.... It is defined by (@urlaands(eqn 6.1.3, 255) and @urldlmf(5.2.ii))
+The Euler-Mascheroni constant, 0.5772156649015329.... It is defined by (@urlaands{eqn 6.1.3, 255} and @urldlmf{5.2.ii})
 m4_displaymath(
-<<<\gamma = \lim_{n \rightarrow \inf} \left(\sum_{k=1}^n {1\over k} - \log n\right)>>>,
+<<<\gamma = \lim_{n \rightarrow \infty} \left(\sum_{k=1}^n {1\over k} - \log n\right)>>>,
 <<<
 @example
                                    n
@@ -164,7 +164,7 @@ Example:
 @vrindex Golden mean
 @end ifinfo
 
-@code{%phi} represents the so-called @i{golden mean}, m4_math((1+\sqrt(5))/2, @math{(1 + sqrt(5))/2}).
+@code{%phi} represents the so-called @i{golden mean}, m4_math((1+\sqrt{5})/2, @math{(1 + sqrt(5))/2}).
 The numeric value of @code{%phi} is the double-precision floating-point value
 1.618033988749895d0.
 
