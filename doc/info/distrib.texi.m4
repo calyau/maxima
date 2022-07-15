@@ -100,7 +100,7 @@ m4_math(<<<{\rm Hypergeometric}($1,$2,$3)>>>,<<<@math{Hypergeometric($1,$2,$3)}>
 
 @c Define Negative Binomial RV
 m4_define(<<<m4_NegativeBinomial_RV>>>,
-m4_math(<<<{\rm NegativeBinomial}($1)>>>,<<<@math{NegativeBinomial($1)}>>>))
+m4_math(<<<{\rm NegativeBinomial}($1,$2)>>>,<<<@math{NegativeBinomial($1,$2)}>>>))
 
 
 @node Introduction to distrib, Functions and Variables for continuous distributions
@@ -4452,7 +4452,6 @@ Maxima knows the following kinds of discrete distributions
 
 @menu
 * General Finite Discrete Random Variable::
-* Binomial Random Variable::
 * Poisson Random Variable::
 * Bernoulli Random Variable::
 * Geometric Random Variable::
@@ -4461,7 +4460,7 @@ Maxima knows the following kinds of discrete distributions
 * Negative Binomial Random Variable::
 @end menu
 
-@node General Finite Discrete Random Variable, Binomial Random Variable, Functions and Variables for discrete distributions, Functions and Variables for discrete distributions
+@node General Finite Discrete Random Variable, Poisson Random Variable, Functions and Variables for discrete distributions, Functions and Variables for discrete distributions
 @subsection General Finite Discrete Random Variable
 
 @anchor{pdf_general_finite_discrete}
@@ -4633,8 +4632,36 @@ See @code{pdf_general_finite_discrete} for more details.
 
 @end deffn
 
+@menu
+* Introduction to Binomial Random Variable::
+* Functions for Binomial Random Variable::
+@end menu
+
 @node Binomial Random Variable, Poisson Random Variable, General Finite Discrete Random Variable, Functions and Variables for discrete distributions
+@anchor{Binomial Random Variable}
 @subsection Binomial Random Variable
+
+@menu
+* Introduction to Binomial Random Variable::
+* Functions for Binomial Random Variable::
+@end menu
+
+@node Introduction to Binomial Random Variable, Functions for Binomial Random Variable, General Finite Discrete Random Variable, General Finite Discrete Random Variable
+@subsubsection Introduction to Binomial Random Variable
+The @emph{binomial distribution} with parameters @math{n} and @math{p}
+is a discrete probability distribution.  It consists of @math{n}
+independent experiments where each experiment consists of a
+Boolean-valued outcome where a success occurs with a probablity
+@math{p}.
+
+For example, a biased coin that comes up heads with probablity
+@math{p} is tossed @math{n} times.  Then the probability of exactly
+@math{k} heads in @math{n} tosses is given by the binomial
+distribution.
+
+@node Functions for Binomial Random Variable,  , Introduction to Binomial Random Variable, General Finite Discrete Random Variable
+@subsubsection Functions for Binomial Random Variable
+
 @anchor{pdf_binomial}
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the probability function of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
@@ -4813,8 +4840,26 @@ To make use of this function, write first @code{load("distrib")}.
 * Poisson Random Variable::
 @end menu
 
-@node Poisson Random Variable, Bernoulli Random Variable, Binomial Random Variable, Functions and Variables for discrete distributions
+@node Poisson Random Variable, Bernoulli Random Variable, General Finite Discrete Random Variable, Functions and Variables for discrete distributions
 @subsection Poisson Random Variable
+
+@menu
+* Introduction to Poisson Random Variable::
+* Functions for Poisson Random Variable::
+@end menu
+
+@node Introduction to Poisson Random Variable, Functions for Poisson Random Variable, Poisson Random Variable, Poisson Random Variable
+@subsubsection Introduction to Poisson Random Variable
+
+The @emph{Poisson distribution} is a discrete probability
+distribution. It is the probability that a given number of events
+occur in a fixed interval when the events occur independently of the
+time of the last event, and the events occur with a known constant
+rate.
+
+@node Functions for Poisson Random Variable,  , Introduction to Poisson Random Variable, Poisson Random Variable
+@subsubsection Functions for Poisson Random Variable
+
 @anchor{pdf_poisson}
 @deffn {Function} pdf_poisson (@var{x},@var{m})
 Returns the value at @var{x} of the probability function of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
@@ -4993,6 +5038,23 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Bernoulli Random Variable, Geometric Random Variable, Poisson Random Variable, Functions and Variables for discrete distributions
 @subsection Bernoulli Random Variable
+
+@menu
+* Introduction to Bernoulli Random Variable::
+* Functions for Bernoulli Random Variable::
+@end menu
+
+@node Introduction to Bernoulli Random Variable, Functions for Bernoulli Random Variable, Bernoulli Random Variable, Bernoulli Random Variable
+@subsubsection Introduction to Bernoulli Random Variable
+
+The @emph{Bernoulli distribution} is a discrete probability
+distribution which takes on two values, 0 and 1.  The value 1 occurs
+with probability @math{p}, and 0 occurs with probabilty @math{1-p}.
+
+It is equivalent to the m4_Binomial_RV(1,p) distribution (@pxref{Binomial Random Variable})
+
+@node Functions for Bernoulli Random Variable,  , Introduction to Bernoulli Random Variable, Bernoulli Random Variable
+@subsubsection Functions for Bernoulli Random Variable
 
 @anchor{pdf_bernoulli}
 @deffn {Function} pdf_bernoulli (@var{x},@var{p})
@@ -5239,6 +5301,25 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 @node Geometric Random Variable, Discrete Uniform Random Variable, Bernoulli Random Variable, Functions and Variables for discrete distributions
 @subsection Geometric Random Variable
 
+@menu
+* Introduction to Geometric Random Variable::
+* Functions for Geometric Random Variable::
+@end menu
+
+@node Introduction to Geometric Random Variable, Functions for Geometric Random Variable, Geometric Random Variable, Geometric Random Variable
+@subsubsection Introduction to Geometric Random Variable
+
+The @emph{Geometric distibution} is a discrete probability
+distribution.  It is the distribution of the number 
+Bernoulli trials that fail before the first success.
+
+Consider flipping a biased coin where heads occurs with probablity
+@math{p}.   Then the probability of @math{k-1} tails in a row followed
+by heads is given by the m4_Geometric_RV(p) distribution.
+
+@node Functions for Geometric Random Variable,  , Introduction to Geometric Random Variable, Geometric Random Variable
+@subsubsection Functions for Geometric Random Variable
+
 @anchor{pdf_geometric}
 @deffn {Function} pdf_geometric (@var{x},@var{p})
 Returns the value at @var{x} of the probability function of a m4_Geometric_RV(p) random variable, with
@@ -5481,6 +5562,24 @@ This is interpreted as the probability of @math{x} failures before the first suc
 @node Discrete Uniform Random Variable, Hypergeometric Random Variable, Geometric Random Variable, Functions and Variables for discrete distributions
 @subsection Discrete Uniform Random Variable
 
+@menu
+* Introduction to Discrete Uniform Random Variable::
+* Functions for Discrete Uniform Random Variable::
+@end menu
+
+@node Introduction to Discrete Uniform Random Variable, Functions for Discrete Uniform Random Variable, Discrete Uniform Random Variable, Discrete Uniform Random Variable
+@subsubsection Introduction to Discrete Uniform Random Variable
+
+The @emph{Discrete uniform distribution} is a discrete probablity
+distribution where a finite number of values are equally likely to
+occur.  The values are @math{1,2,3,...,n}.
+
+For example throwing a fair die of 6 sides numbered 1 through 6
+follows a m4_DiscreteUniform_RV(1/6) distribution.
+
+@node Functions for Discrete Uniform Random Variable,  , Introduction to Discrete Uniform Random Variable, Discrete Uniform Random Variable
+@subsubsection Functions for Discrete Uniform Random Variable
+
 @anchor{pdf_discrete_uniform}
 @deffn {Function} pdf_discrete_uniform (@var{x},@var{n})
 Returns the value at @var{x} of the probability function of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
@@ -5672,6 +5771,27 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 
 @node Hypergeometric Random Variable, Negative Binomial Random Variable, Discrete Uniform Random Variable, Functions and Variables for discrete distributions
 @subsection Hypergeometric Random Variable
+
+@menu
+* Introduction to Hypergeometric Random Variable::
+* Functions for Hypergeometric Random Variable::
+@end menu
+
+@node Introduction to Hypergeometric Random Variable, Functions for Hypergeometric Random Variable, Hypergeometric Random Variable, Hypergeometric Random Variable
+@subsubsection Introduction to Hypergeometric Random Variable
+
+The @emph{hypergeometric distribution} is a discrete probability
+distribution.
+
+Let @math{n_1} be the number of objects of a class
+@math{A} and @math{n_2} be the number of objects of class @math{B}.
+We take out @math{n} objects, @emph{without} replacment.  Then the
+hypergeometric distribution is the probability that exactly @math{k}
+objects are from class @math{A}.  Of course @math{n \leq n_1 + n_2}.
+
+@node Functions for Hypergeometric Random Variable,  , Introduction to Hypergeometric Random Variable, Hypergeometric Random Variable
+@subsubsection Functions for Hypergeometric Random Variable
+
 
 @anchor{pdf_hypergeometric}
 @deffn {Function} pdf_hypergeometric (@var{x},@var{n_1},@var{n_2},@var{n})
@@ -5925,6 +6045,26 @@ To make use of this function, write first @code{load("distrib")}.
 
 @node Negative Binomial Random Variable,  , Hypergeometric Random Variable, Functions and Variables for discrete distributions
 @subsection Negative Binomial Random Variable
+
+@menu
+* Introduction to Negative Binomial Random Variable::
+* Functions for Negative Binomial Random Variable::
+@end menu
+
+@node Introduction to Negative Binomial Random Variable, Functions for Negative Binomial Random Variable, Negative Binomial Random Variable, Negative Binomial Random Variable
+@subsubsection Introduction to Negative Binomial Random Variable
+
+The @emph{negative binomial distribution} is a discrete probability
+distribution.  Suppose we have a sequence of Bernoulli trials where
+each trial has two outcomes called ``success'' and ``failure'' where
+``success'' occurs with probablity @math{p} and ``failure'' with
+probability @math{1-p}.  We observe the sequence until a predefined
+number @math{r} of sucesses have occurred.  Then the number of
+failures seen will have a m4_NegativeBinomial_RV(r, p) distribution.
+
+@node Functions for Negative Binomial Random Variable,  , Introduction to Negative Binomial Random Variable, Negative Binomial Random Variable
+@subsubsection Functions for Negative Binomial Random Variable
+
 
 @anchor{pdf_negative_binomial}
 @deffn {Function} pdf_negative_binomial (@var{x},@var{n},@var{p})
