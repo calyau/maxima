@@ -6072,7 +6072,7 @@ Returns the value at @var{x} of the probability function of a m4_NegativeBinomia
 
 The pdf is
 m4_displaymath(
-<<<f(x; n, p) = {p^n(1-p)^x\Gamma(x+n)\over \Gamma(n) x!}>>>,
+<<<f(x; n, p) = {x+n-1 \choose n-1} (1-p)^xp^n>>>,
 <<<
 @example
                                    x  n
