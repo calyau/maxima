@@ -465,7 +465,12 @@ Returns the mean of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To mak
 The mean is
 m4_displaymath(
 <<<E[X] = m>>>,
-<<<@math{E[X] = m}>>>)
+<<<
+@example
+                             E[X] = m
+@end example
+>>>)
+
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -480,7 +485,12 @@ Returns the variance of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To
 The variance is
 m4_displaymath(
 <<<V[X] = s^2>>>,
-<<<@math{V[X] = s^2}>>>)
+<<<
+@example
+                                     2
+                             V[X] = s
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -494,8 +504,13 @@ Returns the standard deviation of a m4_Normal_RV(m,s) random variable, with @mat
 
 The standard deviation is
 m4_displaymath(
-<<<D[X] = s>>><
-<<<@math{D[X] = s}>>>)
+<<<D[X] = s>>>,
+<<<
+@example
+                             D[X] = s
+@end example
+
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -510,7 +525,11 @@ Returns the skewness coefficient of a m4_Normal_RV(m,s) random variable, with @m
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = 0>>>,
-<<<@math{SK[X] = 0}>>>)
+<<<
+@example
+                             SK[X] = 0
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -525,7 +544,12 @@ Returns the kurtosis coefficient of a m4_Normal_RV(m,s) random variable, with @m
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = 0>>>,
-<<<@math{KU[x] = 0}>>>)
+<<<
+@example
+                             SK[X] = 0
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -670,7 +694,11 @@ Returns the mean of a Student random variable m4_Student_T_RV(n), with @math{n>0
 The mean is
 m4_displaymath(
 <<<E[X] = 0>>>,
-<<<@math{E[X] = 0}>>>)
+<<<
+@example
+                             E[X] = 0
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -685,7 +713,14 @@ Returns the variance of a Student random variable m4_Student_T_RV(n), with @math
 The variance is
 m4_displaymath(
 <<<V[X] = {n\over n-2}>>>,
-<<<@math{V[X] = n/(n-2)}>>>)
+<<<
+@example
+                                    n
+                           V[X] = -----
+                                  n - 2
+@end example
+
+>>>)
 @c ===beg===
 @c load ("distrib")$
 @c var_student_t(n);
@@ -712,7 +747,14 @@ Returns the standard deviation of a Student random variable m4_Student_T_RV(n), 
 The standard deviation is
 m4_displaymath(
 <<<D[X] = \sqrt{\displaystyle{n\over n-2}}>>>,
-<<<@math{D[X] = sqrt(n/(n-2))}>>>)
+<<<
+@example
+                                     n
+                       D[X] = sqrt(-----)
+                                   n - 2
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -728,7 +770,11 @@ Returns the skewness coefficient of a Student random variable m4_Student_T_RV(n)
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = 0>>>,
-<<<@math{SK[X] = 0}>>>)
+<<<
+@example
+                             SK[X] = 0
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -744,7 +790,13 @@ Returns the kurtosis coefficient of a Student random variable m4_Student_T_RV(n)
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = {6\over n-4}>>>,
-<<<@math{KU[X] = 6/(n-4)}>>>)
+<<<
+@example
+                                    6
+                          KU[X] = -----
+                                  n - 4
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1328,7 +1380,11 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 The mean is
 m4_displaymath(
 <<<E[X] = n>>>,
-<<<@math{E[X] = n}>>>)
+<<<
+@example
+                            E[X] = n
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1356,7 +1412,11 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 The variance is
 m4_displaymath(
 <<<V[X] = 2n>>>,
-<<<@math{V[X] = 2*n}>>>)
+<<<
+@example
+                           V[X] = 2 n
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1384,7 +1444,11 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 The standard deviation is
 m4_displaymath(
 <<<D[X] = \sqrt{2n}>>>,
-<<<@math{D[X] = sqrt(2*n)}>>>)
+<<<
+@example
+                     D[X] = sqrt(2) sqrt(n)
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1412,7 +1476,14 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = \sqrt{8\over n}>>>,
-<<<@math{SK[X] = sqrt(8/n)}>>>)
+<<<
+@example
+                                   3/2
+                                  2
+                         SK[X] = -------
+                                 sqrt(n)
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1443,7 +1514,13 @@ The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = {12\over n}>>>,
-<<<@math{KU[X] = 12/n}>>>)
+<<<
+@example
+                                   12
+                           KU[X] = --
+                                   n
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -1575,7 +1652,11 @@ Returns the mean of a noncentral Chi-square random variable m4_noncentral_chi2(n
 The mean is
 m4_displaymath(
 <<<E[X] = n + \mu>>>,
-<<<@math{E[X] = n + ncp}>>>)
+<<<
+@example
+                         E[X] = ncp + n
+@end example
+>>>)
 @ifnotinfo
 where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
@@ -1595,7 +1676,11 @@ Returns the variance of a noncentral Chi-square random variable m4_noncentral_ch
 The variance is
 m4_displaymath(
 <<<V[X] = 2(n+2\mu)>>>,
-<<<@math{V[X] = 2*(n+2*ncp)}>>>)
+<<<
+@example
+                      V[X] = 2 (2 ncp + n)
+@end example
+>>>)
 @ifnotinfo
 where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
@@ -1614,7 +1699,11 @@ Returns the standard deviation of a noncentral Chi-square random variable m4_non
 The standard deviation is
 m4_displaymath(
 <<<D[X] = \sqrt{2(n+2\mu)}>>>,
-<<<@math{D[X] = sqrt(2*(n+2*ncp))}>>>)
+<<<
+@example
+                 D[X] = sqrt(2) sqrt(2 ncp + n)
+@end example
+>>>)
 @ifnotinfo
 where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
@@ -1833,7 +1922,13 @@ Returns the mean of a F random variable @math{F(m,n)}, with @math{m>0, n>2}. To 
 The mean is
 m4_displaymath(
 <<<E[X] = {n\over n-2}>>>,
-<<<@math{E[X] = n/(n-1)}>>>)
+<<<
+@example
+                                   n
+                          E[X] = -----
+                                 n - 2
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2089,7 +2184,13 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 The mean is
 m4_displaymath(
 <<<E[X] = {1\over m}>>>,
-<<<@math{E[X] = 1/m}>>>)
+<<<
+@example
+                                   1
+                            E[X] = -
+                                   m
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -2119,7 +2220,15 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 The variance is
 m4_displaymath(
 <<<V[X] = {1\over m^2}>>>,
-<<<@math{V[X] = 1/m^2}>>>)
+<<<
+@example
+                                   1
+                              VX = --
+                                    2
+                                   m
+@end example
+
+>>>)
 @c ===beg===
 @c load ("distrib")$
 @c var_exp(m);
@@ -2149,7 +2258,13 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 The standard deviation is
 m4_displaymath(
 <<<D[X] = {1\over m}>>>,
-<<<@math{D[X] = 1/m}>>>)
+<<<
+@example
+                                   1
+                            D[X] = -
+                                   m
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -2179,7 +2294,11 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = 2>>>,
-<<<@math{SK[X] = 2}>>>)
+<<<
+@example
+                            SK[X] = 2
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -2207,7 +2326,11 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = 6>>>,
-<<<@math{KU[X] = 6}>>>)
+<<<
+@example
+                            KU[X] = 6
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -2354,7 +2477,16 @@ Returns the mean of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To 
 The mean is
 m4_displaymath(
 <<<E[X] = \exp\left(m+{s^2\over 2}\right)>>>,
-<<<@math{E[X] = exp(m+s^2/2)}>>>)
+<<<
+@example
+                                   2
+                                  s
+                                  -- + m
+                                  2
+                         E[X] = %e
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2370,7 +2502,14 @@ Returns the variance of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}.
 The variance is
 m4_displaymath(
 <<<V[X] = \left(\exp\left(s^2\right) - 1\right) \exp\left(2m+s^2\right)>>>,
-<<<@math{V[X] = (exp(s^2)-1) * exp(2*m+s^2)}>>>)
+<<<
+@example
+                             2         2
+                            s         s  + 2 m
+                  V[X] = (%e   - 1) %e
+
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2386,7 +2525,17 @@ The standard deviation is
 m4_displaymath(
 <<<D[X] = \sqrt{\left(\exp\left(s^2\right) - 1\right)}
 \exp\left(m+{s^2\over 2}\right)>>>,
-<<<@math{D[X] = sqrt((exp(s^2)-1)*exp(2*m+s^2))}>>>)
+<<<
+@example
+                                         2
+                                        s  + 2 m
+                               2        --------
+                              s            2
+                D[X] = sqrt(%e   - 1) %e
+
+@end example
+
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2401,7 +2550,13 @@ Returns the skewness coefficient of a m4_Lognormal_RV(m,s) random variable, with
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = \left(\exp\left(s^2\right)+2\right)\sqrt{\exp\left(s^2\right)-1}>>>,
-<<<@math{SK[X] = (exp(s^2)+2)*sqrt(exp(s^2)-1)}>>>)
+<<<
+@example
+                                2          2
+                               s          s
+                SK[X] = sqrt(%e   - 1) (%e   + 2)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2417,7 +2572,15 @@ Returns the kurtosis coefficient of a m4_Lognormal_RV(m,s) random variable, with
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = \exp\left(4s^2\right)+2\exp\left(3s^2\right)+3\exp\left(2s^2\right)-3>>>,
-<<<@math{KU[X] = exp(4*s^2)+2*exp(3*s^2)+3*exp(2*s^2)-3}>>>)
+<<<
+@example
+                         2          2          2
+                      4 s        3 s        2 s
+            KU[X] = %e     + 2 %e     + 3 %e     - 3
+
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2545,7 +2708,11 @@ Returns the mean of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To ma
 The mean is
 m4_displaymath(
 <<<E[X] = ab>>>,
-<<<@math{E[X] = a*b}>>>)
+<<<
+@example
+                           E[X] = a b
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2561,7 +2728,13 @@ Returns the variance of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. T
 The variance is
 m4_displaymath(
 <<<V[X] = ab^2>>>,
-<<<@math{V[X] = a*b^2}>>>)
+<<<
+@example
+                                     2
+                           V[X] = a b
+@end example
+
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2575,7 +2748,11 @@ Returns the standard deviation of a m4_Gamma_RV(a,b) random variable, with @math
 The standard deviation is
 m4_displaymath(
 <<<D[X] = b\sqrt{a}>>>,
-<<<@math{D[X] = b*sqrt(a)}>>>)
+<<<
+@example
+                       D[X] = sqrt(a) b
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2591,7 +2768,13 @@ Returns the skewness coefficient of a m4_Gamma_RV(a,b) random variable, with @ma
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = {2\over \sqrt{a}}>>>,
-<<<@math{SK[X] = 2/sqrt(a)}>>>)
+<<<
+@example
+                                     2
+                          SK[X] = -------
+                                  sqrt(a)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2607,7 +2790,14 @@ Returns the kurtosis coefficient of a m4_Gamma_RV(a,b) random variable, with @ma
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = {6\over a}>>>,
-<<<@math{KU[X] = 6/a}>>>)
+<<<
+@example
+                                     6
+                             KU[X] = -
+                                     a
+
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2746,7 +2936,13 @@ Returns the mean of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To mak
 The mean is
 m4_displaymath(
 <<<E[X] = {a\over a+b}>>>,
-<<<@math{E[X] = a/(a+b)}>>>)
+<<<
+@example
+                                    a
+                           E[X] = -----
+                                  b + a
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2950,7 +3146,14 @@ Returns the mean of a m4_Continuous_Uniform_RV(a,b) random variable, with @math{
 The mean is
 m4_displaymath(
 <<<E[X] = {a+b\over 2}>>>,
-<<<@math{E[X] = (a+b)/2}>>>)
+<<<
+@example
+                                  b + a
+                           E[X] = -----
+                                    2
+
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -2965,7 +3168,14 @@ Returns the variance of a m4_Continuous_Uniform_RV(a,b) random variable, with @m
 The variance is
 m4_displaymath(
 <<<V[X] = {(b-a)^2\over 12}>>>,
-<<<@math{V[X] = (b-a)^2/12}>>>)
+<<<
+@example
+                                        2
+                                 (b - a)
+                          V[X] = --------
+                                    12
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2980,7 +3190,14 @@ Returns the standard deviation of a m4_Continuous_Uniform_RV(a,b) random variabl
 The standard deviation is
 m4_displaymath(
 <<<D[X] = {b-a \over 2\sqrt{3}}>>>,
-<<<@math{D[X] = (b-a)/(2*sqrt(3))}>>>)
+<<<
+@example
+                                abs(b - a)
+                         D[X] = ----------
+                                2 sqrt(3)
+
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2996,7 +3213,11 @@ Returns the skewness coefficient of a m4_Continuous_Uniform_RV(a,b) random varia
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = 0>>>,
-<<<@math{SK[X] = 0}>>>)
+<<<
+@example
+                            SK[X] = 0
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3012,7 +3233,11 @@ Returns the kurtosis coefficient of a m4_Continuous_Uniform_RV(a,b) random varia
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = -{6\over5}>>>,
-<<<@math{KU[X] = -6/5}>>>)
+<<<
+                                     6
+                           KU[X] = - -
+                                     5
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4638,7 +4863,6 @@ See @code{pdf_general_finite_discrete} for more details.
 @end menu
 
 @node Binomial Random Variable, Poisson Random Variable, General Finite Discrete Random Variable, Functions and Variables for discrete distributions
-@anchor{Binomial Random Variable}
 @subsection Binomial Random Variable
 
 @menu
