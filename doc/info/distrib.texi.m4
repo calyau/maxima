@@ -5002,7 +5002,12 @@ Returns the value at @var{x} of the probability function of a m4_Binomial_RV(n,p
 The pdf is
 m4_displaymath(
 <<<f(x; n, p) = {n\choose x} (1-p)^{n-x}p^x>>>,
-<<<@math{f(x,n,p) = binomial(n,x) * (1 - p)^(n-x) p^x}>>>)
+<<<
+@example
+                                               n - x  x
+            f(x, n, p) = binomial(n, x) (1 - p)      p
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5018,7 +5023,12 @@ Returns the value at @var{x} of the distribution function of a m4_Binomial_RV(n,
 The cdf is
 m4_displaymath(
 <<<F(x; n, p) = I_{1-p}(n-\lfloor x \rfloor, \lfloor x \rfloor + 1)>>>,
-<<<@math{F(x,n,p) = beta_incomplete_regularized(n - floor(x), floor(x) + 1, 1 - p)}>>>)
+<<<
+@example
+F(x, n, p) = beta_incomplete_regularized(n - floor(x), floor(x) + 1, 
+                                                                  1 - p)
+@end example
+>>>)
 @ifnotinfo
 where m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized}
 function.
@@ -5065,7 +5075,12 @@ Returns the mean of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \
 The mean is
 m4_displaymath(
 <<<E[X] = np>>>,
-<<<@math{E[X] = n*p}>>>)
+<<<
+@example
+                            E[X] = n p
+@end example
+
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5081,7 +5096,11 @@ Returns the variance of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq
 The variance is
 m4_displaymath(
 <<<V[X] = np(1-p)>>>,
-<<<@math{V[X] = n*p*(1-p)}>>>)
+<<<
+@example
+                       V[X] = n (1 - p) p
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5097,7 +5116,11 @@ Returns the standard deviation of a m4_Binomial_RV(n,p) random variable, with @m
 The standard deviation is
 m4_displaymath(
 <<<D[X] = \sqrt{np(1-p)}>>>,
-<<<@math{D[X] = sqrt(n*p*(1-p))}>>>)
+<<<
+@example
+                    D[X] = sqrt(n (1 - p) p)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5272,7 +5295,11 @@ Returns the mean of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To mak
 The mean is
 m4_displaymath(
 <<<E[X] = m>>>,
-<<<@math{E[X] = m}>>>)
+<<<
+@example
+                            E[X] = m
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5288,7 +5315,11 @@ Returns the variance of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To
 The variance is
 m4_displaymath(
 <<<V[X] = m>>>,
-<<<@math{V[X] = m}>>>)
+<<<
+@example
+                            V[X] = m
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5304,7 +5335,11 @@ Returns the standard deviation of a m4_Poisson_RV(m) random variable, with @math
 The standard deviation is
 m4_displaymath(
 <<<V[X] = \sqrt{m}>>>,
-<<<@math{V[X] = sqrt(m)}>>>)
+<<<
+@example
+                         D[X] = sqrt(m)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5343,7 +5378,13 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = {1\over m}>>>,
-<<<@math{KU[X] = 1/m}>>>)
+<<<
+@example
+                                    1
+                            KU[X] = -
+                                    m
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5465,7 +5506,11 @@ The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 The mean is
 m4_displaymath(
 <<<E[X] = p>>>,
-<<<@math{E[X] = p}>>>)
+<<<
+@example
+                            E[X] = p
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -5493,7 +5538,11 @@ The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 The variance is
 m4_displaymath(
 <<<V[X] = p(1-p)>>>,
-<<<@math{V[X] = p*(1-p)}>>>)
+<<<
+@example
+                        V[X] = (1 - p) p
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -5521,7 +5570,12 @@ The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
 The standard deviation is
 m4_displaymath(
 <<<D[X] = \sqrt{p(1-p)}>>>,
-<<<@math{D[X] = \qrt(p*(1-p))}>>>)
+<<<
+@example
+                     D[X] = sqrt((1 - p) p)
+@end example
+
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -6345,12 +6399,6 @@ KU[X] = ((n_2 + n_1 - 1) (n_2 + n_1)
 @ifnotinfo
 where m4_math(C(k) = n_1+n_2-k).
 @end ifnotinfo
-
-m4_displaymath(
-<<<
->>>,
-<<<
->>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
