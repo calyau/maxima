@@ -3315,7 +3315,16 @@ Returns the value at @var{x} of the distribution function of a m4_Logistic_RV(a,
 The cdf is
 m4_displaymath(
 <<<F(x; a, b) = {1\over 1+e^{-(x-a)/b}}>>>,
-<<<@math{F(x, a, b) = 1/(1+exp(-(x-a)/b))}>>>)
+<<<
+@example
+                                       1
+                     F(x, a, b) = -----------
+                                    a - x
+                                    -----
+                                      b
+                                  %e      + 1
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3342,7 +3351,11 @@ Returns the mean of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To 
 The mean is
 m4_displaymath(
 <<<E[X] = a>>>,
-<<<@math{E[X] = a}>>>)
+<<<
+@example
+                            E[X] = a
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3358,7 +3371,15 @@ Returns the variance of a m4_Logistic_RV(a,b) random variable , with @math{b>0}.
 The variance is
 m4_displaymath(
 <<<V[X] = {\pi^2 b^2 \over 3}>>>,
-<<<@math{V[X] = %pi^2*b^2/3}>>>)
+<<<
+@example
+                                   2  2
+                                %pi  b
+                         V[X] = -------
+                                   3
+
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3374,7 +3395,13 @@ Returns the standard deviation of a m4_Logistic_RV(a,b) random variable , with @
 The standard deviation is
 m4_displaymath(
 <<<D[X] = {\pi b\over \sqrt{3}}>>>,
-<<<@math{D[X] = %pi*b/sqrt(3)}>>>)
+<<<
+@example
+                               %pi abs(b)
+                        D[X] = ----------
+                                sqrt(3)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3390,7 +3417,11 @@ Returns the skewness coefficient of a m4_Logistic_RV(a,b) random variable , with
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = 0>>>,
-<<<@math{SK[X] = 0}>>>)
+<<<
+@example
+                            SK[X] = 0
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3406,7 +3437,13 @@ Returns the kurtosis coefficient of a m4_Logistic_RV(a,b) random variable , with
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = {6\over 5}>>>,
-<<<@math{KU[X] = 6/5}>>>)
+<<<
+@example
+                                    6
+                            KU[X] = -
+                                    5
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3721,7 +3758,13 @@ Returns the mean of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To 
 The mean is
 m4_displaymath(
 <<<E[X] = b\Gamma\left(1+{1\over a}\right)>>>,
-<<<@math{E[X] = b*gamma(1+1/a)}>>>)
+<<<
+@example
+                                   1
+                      E[X] = gamma(- + 1) b
+                                   a
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3992,7 +4035,13 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 The mean is
 m4_displaymath(
 <<<E[X] = {\sqrt{\pi}\over 2b}>>>,
-<<<@math{E[X] = sqrt(%pi)/(2*b)}>>>)
+<<<
+@example
+                               sqrt(%pi)
+                        E[X] = ---------
+                                  2 b
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -4294,7 +4343,11 @@ Returns the mean of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To ma
 The mean is
 m4_displaymath(
 <<<E[X] = a>>>,
-<<<@math{E[X] = a}>>>)
+<<<
+@example
+                            E[X] = a
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4310,7 +4363,12 @@ Returns the variance of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. T
 The variance is
 m4_displaymath(
 <<<V[X] = 2b^2>>>,
-<<<@math{V[X] = 2*b^2}>>>)
+<<<
+@example
+                                     2
+                           V[X] = 2 b
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4326,7 +4384,11 @@ Returns the standard deviation of a m4_Laplace_RV(a,b) random variable, with @ma
 The standard deviation is
 m4_displaymath(
 <<<D[X] = \sqrt{2} b>>>,
-<<<@math{D[X] = sqrt(2)*b}>>>)
+<<<
+@example
+                        D[X] = sqrt(2) b
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4342,7 +4404,11 @@ Returns the skewness coefficient of a m4_Laplace_RV(a,b) random variable, with @
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = 0>>>,
-<<<@math{SK[X] = 0}>>>)
+<<<
+@example
+                            SK[X] = 0
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4358,7 +4424,11 @@ Returns the kurtosis coefficient of a m4_Laplace_RV(a,b) random variable, with @
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = 3>>>,
-<<<@math{KU[X] = 3}>>>)
+<<<
+@example
+                            KU[X] = 3
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4434,7 +4504,15 @@ Returns the value at @var{x} of the distribution function of a m4_Cauchy_RV(a,b)
 The cdf is
 m4_displaymath(
 <<<F(x; a, b) = {1\over 2} + {1\over \pi} \tan^{-1} {x-a\over b}>>>,
-<<<@math{1/2 + 1/%pi*atan((x-a)/b)}>>>)
+<<<
+@example
+                                     x - a
+                                atan(-----)
+                                       b      1
+                   F(x, a, b) = ----------- + -
+                                    %pi       2
+@end example
+>>>)
 @opencatbox{Categories:}
 @category{Package distrib}
 @closecatbox
@@ -4551,7 +4629,11 @@ Returns the mean of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}.
 The mean is
 m4_displaymath(
 <<<E[X] = a+b\gamma>>>,
-<<<@math{E[X] = a+b*%gamma}>>>)
+<<<
+@example
+                       E[X] = %gamma b + a
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -4578,7 +4660,14 @@ Returns the variance of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To
 The variance is
 m4_displaymath(
 <<<V[X] = {\pi^2\over 6} b^2>>>,
-<<<@math{V[X] = %pi^2*b^2/6}>>>)
+<<<
+@example
+                                   2  2
+                                %pi  b
+                         V[X] = -------
+                                   6
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4594,7 +4683,13 @@ Returns the standard deviation of a m4_Gumbel_RV(a,b) random variable, with @mat
 The standard deviation is
 m4_displaymath(
 <<<D[X] = {\pi \over \sqrt{6}} b>>>,
-<<<@math{D[X] = %pi*b/sqrt(6)}>>>)
+<<<
+@example
+                                 %pi b
+                         D[X] = -------
+                                sqrt(6)
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4610,7 +4705,15 @@ Returns the skewness coefficient of a m4_Gumbel_RV(a,b) random variable, with @m
 The skewness coefficient is
 m4_displaymath(
 <<<SK[X] = {12\sqrt{6}\over \pi^3} \zeta(3)>>>,
-<<<@math{SK[X] = 12*sqrt(6)*zeta(3)/%pi^3}>>>)
+<<<
+@example
+                                3/2
+                             2 6    zeta(3)
+                     SK[X] = --------------
+                                     3
+                                  %pi
+@end example
+>>>)
 
 @c ===beg===
 @c load ("distrib")$
@@ -4641,7 +4744,13 @@ Returns the kurtosis coefficient of a m4_Gumbel_RV(a,b) random variable, with @m
 The kurtosis coefficient is
 m4_displaymath(
 <<<KU[X] = {12\over 5}>>>,
-<<<@math{KU[X] = 12/5}>>>)
+<<<
+@example
+                                   12
+                           KU[X] = --
+                                   5
+@end example
+>>>)
 
 @opencatbox{Categories:}
 @category{Package distrib}
