@@ -89,7 +89,7 @@
   ;; use to link to this item.
   (let ((entry-regexp (pregexp:pregexp "<dt id=\"index-([^\"]+)\""))
 	(section-regexp
-	  (pregexp:pregexp "<span id=\"\([^\"]+\)\">.*<h3 class=\"section\">[0-9.]+ *\(.*\)<")))
+	  (pregexp:pregexp "<span id=\"\([^\"]+\)\">.*<h3 class=\"section\">[0-9.,]+ *\(.*\)<")))
     (dolist (file (directory dir))
       ;; We want to ignore maxima_singlepage.html for now.
       (unless (string-equal (pathname-name file)
