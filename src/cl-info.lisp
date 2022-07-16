@@ -75,9 +75,10 @@
     ;; to the info dir.
     (setf maxima::$url_base (concatenate 'string
 			     "file://"
-			     (maxima::combine-path maxima::*maxima-htmldir*
-						   maxima::*maxima-lang-subdir*
-						   "")))
+			     (if maxima::*maxima-lang-subdir*
+				 (maxima::combine-path maxima::*maxima-htmldir*
+						       maxima::*maxima-lang-subdir*)
+				 maxima::*maxima-htmldir*)))
 			     
     (handler-case
 	#-gcl
