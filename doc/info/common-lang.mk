@@ -5,6 +5,12 @@ all-local: maxima-index.lisp maxima_toc.html
 maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
+# Really depends on all the individual html files, but let's assume
+# that if maxima_toc.html is done, we have all the remaining html
+# files.
+maxima-index-html.lisp : maxima_toc.html
+	../../../maxima-local --batch-lisp=../build-html-index.lisp
+
 maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
 	../build_html.sh -l $(lang)
 
@@ -25,15 +31,16 @@ clean-info:
 	rm -f maxima.info
 	rm -f maxima.info*
 	rm -f maxima-index.lisp
+	rm -f maxima-index-html.lisp
 
 clean-html:
 	rm -f maxima*.html
 	rm -f maxima_singlepage.html
 
-EXTRA_DIST = maxima-index.lisp $(genericdirDATA) maxima_toc.html
+EXTRA_DIST = maxima-index.lisp maxima-index-html.lisp $(genericdirDATA) maxima_toc.html
 
 
-install-info-am: $(INFO_DEPS) maxima-index.lisp
+install-info-am: $(INFO_DEPS) maxima-index.lisp maxima-index-html.lisp
 	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	list='$(INFO_DEPS)'; \
@@ -53,6 +60,7 @@ install-info-am: $(INFO_DEPS) maxima-index.lisp
 	  done; \
 	done
 	$(INSTALL_DATA) maxima-index.lisp "$(DESTDIR)$(infodir)$(langsdir)/maxima-index.lisp"
+	$(INSTALL_DATA) maxima-index-html.lisp "$(DESTDIR)$(infodir)$(langsdir)/maxima-index-html.lisp"
 
 uninstall-info-am:
 	@list='$(INFO_DEPS)'; \
@@ -65,3 +73,4 @@ uninstall-info-am:
 	   else :; fi); \
 	done
 	rm -f "$(DESTDIR)$(infodir)$(langsdir)/maxima-index.lisp"
+	rm -f "$(DESTDIR)$(infodir)$(langsdir)/maxima-index-html.lisp"
