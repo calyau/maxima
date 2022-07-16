@@ -2420,6 +2420,25 @@ m4_displaymath(
 @deffn {Function} cdf_lognormal (@var{x},@var{m},@var{s})
 Returns the value at @var{x} of the distribution function of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
+The cdf is
+m4_displaymath(
+<<<F(x; m, s) =
+\cases{
+\displaystyle{1\over 2}\left[1+{\rm erf}\left({\log x - m\over s\sqrt{2}}\right)\right] &
+for $x > 0$ \cr
+\cr
+0 & for $x \le 0$
+}>>>,
+<<<
+@example
+                                         log(x) - m
+                                     erf(----------)
+                                         sqrt(2) s     1
+          F(x, m, s) = unit_step(x) (--------------- + -)
+                                            2          2
+@end example
+>>>)
+
 @c ===beg===
 @c load ("distrib")$
 @c cdf_lognormal(x,m,s);

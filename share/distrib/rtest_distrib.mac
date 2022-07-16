@@ -123,7 +123,8 @@ quantile_lognormal(2/5,2.2,0.2);
 random_lognormal(10,15.23,3);
 [2.353791985229249E-11,0.187574637106219,2.9149310594062033E-9];
 
-
+cdf_lognormal(-2,m,s);
+0;
 
 
 /* gamma distribution */

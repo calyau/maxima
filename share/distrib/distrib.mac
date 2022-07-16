@@ -502,7 +502,7 @@ pdf_lognormal(x,m,s) :=
 cdf_lognormal(x,m,s) :=
    if maybe(s > 0) = false
      then error("cdf_lognormal: parameter s must be greater than 0")
-     else 1/2+erf((log(x)-m)/(s*sqrt(2)))/2 * unit_step(x) $
+     else (1/2+erf((log(x)-m)/(s*sqrt(2)))/2) * unit_step(x) $
 
 /* R: qlnorm(p,m,s)*/
 quantile_lognormal(q,m,s) :=
