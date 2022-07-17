@@ -535,8 +535,10 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	  (if (not *maxima-quiet*) (maxima-banner))
 	  (setq *maxima-started* t)))
     
-    (if ($file_search *maxima-initlisp*) ($load ($file_search *maxima-initlisp*)))
-    (if ($file_search *maxima-initmac*) ($batchload ($file_search *maxima-initmac*)))
+    (when (and *maxima-load-init-files* ($file_search *maxima-initlisp*))
+      ($load ($file_search *maxima-initlisp*)))
+    (when (and *maxima-load-init-files* ($file_search *maxima-initmac*))
+      ($batchload ($file_search *maxima-initmac*)))
 
     (catch 'quit-to-lisp
       (in-package :maxima)
