@@ -14,9 +14,11 @@ maxima-index.lisp
 maxima-index-html.lisp
 category-macros.texi
 
+Constants.texi
 Elliptic.texi
 Matrices.texi
 Special.texi
+distrib.texi
 orthopoly.texi
 
 *.chm
