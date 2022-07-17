@@ -415,12 +415,14 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_normal(x,m,s);
-                                    x - m
-                              erf(---------)
-                                  sqrt(2) s    1
-(%o2)                         -------------- + -
-                                    2          2
+                             x - m
+                       erf(---------)
+                           sqrt(2) s    1
+(%o2)                  -------------- + -
+                             2          2
+@end group
 @end example
 
 See also @mrefdot{erf}
@@ -443,12 +445,16 @@ Returns the @var{q}-quantile of a m4_Normal_RV(m,s) random variable, with @math{
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) quantile_normal(95/100,0,1);
-                                      9
-(%o2)             sqrt(2) inverse_erf(--)
-                                      10
+                                         9
+(%o2)                sqrt(2) inverse_erf(--)
+                                         10
+@end group
+@group
 (%i3) float(%);
-(%o3)               1.644853626951472
+(%o3)                   1.644853626951472
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -659,14 +665,18 @@ where m4_math(<<<t = n/(n+x^2)>>>, <<<@math{t = n/(n+x^2)}>>>) and m4_math(<<<I_
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_student_t(1/2, 7/3);
-                                         7  1  28
-             beta_incomplete_regularized(-, -, --)
-                                         6  2  31
-(%o2)    1 - -------------------------------------
-                               2
+                                            7  1  28
+                beta_incomplete_regularized(-, -, --)
+                                            6  2  31
+(%o2)       1 - -------------------------------------
+                                  2
+@end group
+@group
 (%i3) float(%);
-(%o3)                .6698450596140415
+(%o3)                  0.6698450596140415
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -727,10 +737,12 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) var_student_t(n);
                                 n
 (%o2)                         -----
                               n - 2
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -930,20 +942,35 @@ Sometimes an extra work is necessary to get the final result.
 @c ===end===
 @example
 (%i1) load ("distrib")$
-(%i2) expand(pdf_noncentral_student_t(3,5,0.1));
 @group
+(%i2) expand(pdf_noncentral_student_t(3,5,0.1));
+rat: replaced 0.01889822365046136 by 15934951/843198350 = 0.01889822365046136
+
+rat: replaced -8.734356480209641 by -294697965/33740089 = -8.734356480209641
+
+rat: replaced 4.136255165816327 by 51033443/12338079 = 4.136255165816332
+
+rat: replaced 1.08061432164203 by 56754827/52520891 = 1.08061432164203
+
+rat: replaced 0.0565127306411839 by 5608717/99246965 = 0.05651273064118384
+
+rat: replaced -300.8069396896258 by -79782423/265228 = -300.8069396896256
+
+rat: replaced 160.6269176184973 by 178374907/1110492 = 160.626917618497
                            7/2                         7/2
       0.04296414417400905 5      1.323650307289301e-6 5
 (%o2) ------------------------ + -------------------------
          3/2   5/2                       sqrt(%pi)
         2    14    sqrt(%pi)
-                                                        7/2
-                                   1.94793720435093e-4 5
-                                 + ------------------------
-                                             %pi
+                                                              7/2
+                                         1.94793720435093e-4 5
+                                       + ------------------------
+                                                   %pi
 @end group
+@group
 (%i3) float(%);
-(%o3)          .02080593159405669
+(%o3)                  0.02080593159405671
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -963,8 +990,10 @@ Returns the value at @var{x} of the distribution function of a noncentral Studen
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_noncentral_student_t(-2,5,-5);
-(%o2)          .9952030093319743
+(%o2)                   0.995203009331975
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1013,14 +1042,16 @@ where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) mean_noncentral_student_t(df,k);
-                   df - 1
-             gamma(------) sqrt(df) k
-                     2
-(%o2)        ------------------------
-                              df
-                sqrt(2) gamma(--)
-                              2
+                          df - 1
+                    gamma(------) sqrt(df) k
+                            2
+(%o2)               ------------------------
+                                     df
+                       sqrt(2) gamma(--)
+                                     2
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1288,13 +1319,15 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) pdf_chi2(x,n);
-                         n/2 - 1   - x/2
-                        x        %e
-(%o2)                   ----------------
-                          n/2       n
-                         2    gamma(-)
-                                    2
+                   n/2 - 1   - x/2
+                  x        %e      unit_step(x)
+(%o2)             -----------------------------
+                                n   n/2
+                          gamma(-) 2
+                                2
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1333,12 +1366,16 @@ where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_chi2(3,4);
-                                               3
-(%o2)      1 - gamma_incomplete_regularized(2, -)
-                                               2
+                                                 3
+(%o2)        1 - gamma_incomplete_regularized(2, -)
+                                                 2
+@end group
+@group
 (%i3) float(%);
-(%o3)               .4421745996289256
+(%o3)                  0.4421745996289252
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1360,8 +1397,10 @@ This function has no closed form and it is numerically computed.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) quantile_chi2(0.99,9);
 (%o2)                   21.66599433346194
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1392,8 +1431,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) mean_chi2(n);
 (%o2)                           n
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1424,8 +1465,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) var_chi2(n);
 (%o2)                          2 n
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1456,8 +1499,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) std_chi2(n);
 (%o2)                    sqrt(2) sqrt(n)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1491,11 +1536,13 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) skewness_chi2(n);
-                                     3/2
-                                    2
-(%o2)                              -------
-                                   sqrt(n)
+                               3/2
+                              2
+(%o2)                        -------
+                             sqrt(n)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1528,10 +1575,12 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) kurtosis_chi2(n);
                                12
 (%o2)                          --
                                n
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1879,12 +1928,16 @@ function.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_f(2,3,9/4);
-                                         9  3  3
-(%o2)    1 - beta_incomplete_regularized(-, -, --)
-                                         8  2  11
+                                            9  3  3
+(%o2)       1 - beta_incomplete_regularized(-, -, --)
+                                            8  2  11
+@end group
+@group
 (%i3) float(%);
-(%o3)                 0.66756728179008
+(%o3)                  0.6675672817900802
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1904,8 +1957,10 @@ Returns the @var{q}-quantile of a F random variable @math{F(m,n)}, with @math{m,
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) quantile_f(2/5,sqrt(3),5);
-(%o2)                   0.518947838573693
+(%o2)                  0.5189478385736904
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2097,9 +2152,11 @@ f(x, m) = [
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) pdf_exp(x,m);
-                                - m x
-(%o2)                       m %e
+                         - m x
+(%o2)                m %e      unit_step(x)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2135,9 +2192,11 @@ F(x,n) = [
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_exp(x,m);
-                                 - m x
-(%o2)                      1 - %e
+                          - m x
+(%o2)              (1 - %e     ) unit_step(x)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2160,12 +2219,16 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) quantile_exp(0.56,5);
-(%o2)                   .1641961104139661
+(%o2)                  0.1641961104139661
+@end group
+@group
 (%i3) quantile_exp(0.56,m);
-                             0.8209805520698303
-(%o3)                        ------------------
-                                     m
+                       0.8209805520698303
+(%o3)                  ------------------
+                               m
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2198,10 +2261,12 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) mean_exp(m);
                                 1
 (%o2)                           -
                                 m
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2235,11 +2300,13 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) var_exp(m);
                                1
 (%o2)                          --
                                 2
                                m
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2272,10 +2339,12 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) std_exp(m);
                                 1
 (%o2)                           -
                                 m
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2306,8 +2375,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) skewness_exp(m);
 (%o2)                           2
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2338,8 +2409,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) kurtosis_exp(m);
-(%o3)                           6
+(%o2)                           6
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2445,13 +2518,13 @@ for $x > 0$ \cr
 @c ===end===
 @example
 (%i1) load ("distrib")$
-(%i2) cdf_lognormal(x,m,s);
 @group
-                           log(x) - m
-                       erf(----------)
-                           sqrt(2) s     1
-(%o2)                  --------------- + -
-                              2          2
+(%i2) cdf_lognormal(x,m,s);
+                                 log(x) - m
+                             erf(----------)
+                                 sqrt(2) s     1
+(%o2)          unit_step(x) (--------------- + -)
+                                    2          2
 @end group
 @end example
 
@@ -2475,11 +2548,15 @@ Returns the @var{q}-quantile of a m4_Lognormal_RV(m,s) random variable, with @ma
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) quantile_lognormal(95/100,0,1);
-                  sqrt(2) inverse_erf(9/10)
-(%o2)           %e
+                     sqrt(2) inverse_erf(9/10)
+(%o2)              %e
+@end group
+@group
 (%i3) float(%);
-(%o3)               5.180251602233015
+(%o3)                   5.180251602233015
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2694,12 +2771,16 @@ where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_gamma(3,5,21);
-                                              1
-(%o2)     1 - gamma_incomplete_regularized(5, -)
-                                              7
+                                                 1
+(%o2)        1 - gamma_incomplete_regularized(5, -)
+                                                 7
+@end group
+@group
 (%i3) float(%);
-(%o3)              4.402663157376807E-7
+(%o3)                 4.402663157376807e-7
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2922,12 +3003,16 @@ F(x, a, b) = [ beta_incomplete_regularized(a, b, x)  for 0 <= x <= 1
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_beta(1/3,15,2);
-                             11
-(%o2)                     --------
-                          14348907
+                               11
+(%o2)                       --------
+                            14348907
+@end group
+@group
 (%i3) float(%);
-(%o3)              7.666089131388195E-7
+(%o3)                 7.666089131388195e-7
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -3968,10 +4053,12 @@ f(x, b) = [
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) pdf_rayleigh(x,b);
-                                    2  2
-                           2     - b  x
-(%o2)                   2 b  x %e
+                              2  2
+                     2     - b  x
+(%o2)             2 b  x %e        unit_step(x)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4007,10 +4094,12 @@ F(x, b) = [
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_rayleigh(x,b);
-                                   2  2
-                                - b  x
-(%o2)                     1 - %e
+                            2  2
+                         - b  x
+(%o2)             (1 - %e       ) unit_step(x)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4032,10 +4121,12 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) quantile_rayleigh(0.99,b);
                         2.145966026289347
 (%o2)                   -----------------
                                 b
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4068,10 +4159,12 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) mean_rayleigh(b);
                             sqrt(%pi)
 (%o2)                       ---------
                                2 b
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4107,6 +4200,7 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) var_rayleigh(b);
                                  %pi
                              1 - ---
@@ -4114,6 +4208,7 @@ m4_displaymath(
 (%o2)                        -------
                                 2
                                b
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4148,12 +4243,14 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) std_rayleigh(b);
                                    %pi
                           sqrt(1 - ---)
                                     4
 (%o2)                     -------------
                                 b
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4191,6 +4288,7 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) skewness_rayleigh(b);
                          3/2
                       %pi      3 sqrt(%pi)
@@ -4200,6 +4298,7 @@ m4_displaymath(
                                %pi 3/2
                           (1 - ---)
                                 4
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4237,6 +4336,7 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) kurtosis_rayleigh(b);
                                   2
                              3 %pi
@@ -4246,6 +4346,7 @@ m4_displaymath(
                               %pi 2
                          (1 - ---)
                                4
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4660,8 +4761,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) mean_gumbel(a,b);
 (%o2)                     %gamma b + a
+@end group
 @end example
 where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @mrefdot{%gamma}
 
@@ -4740,12 +4843,14 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) skewness_gumbel(a,b);
-                                  3/2
-                               2 6    zeta(3)
-(%o2)                          --------------
-                                       3
-                                    %pi
+                            3/2
+                         2 6    zeta(3)
+(%o2)                    --------------
+                                 3
+                              %pi
+@end group
 @end example
 where @code{zeta} stands for the Riemann's zeta function.
 
@@ -4827,14 +4932,18 @@ Returns the value at @var{x} of the probability function of a general finite dis
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) pdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
                                 4
 (%o2)                           -
                                 7
+@end group
+@group
 (%i3) pdf_general_finite_discrete(2, [1, 4, 2]);
                                 4
 (%o3)                           -
                                 7
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4858,18 +4967,24 @@ See @code{pdf_general_finite_discrete} for more details.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
                                 5
 (%o2)                           -
                                 7
+@end group
+@group
 (%i3) cdf_general_finite_discrete(2, [1, 4, 2]);
                                 5
 (%o3)                           -
                                 7
+@end group
+@group
 (%i4) cdf_general_finite_discrete(2+1/2, [1, 4, 2]);
                                 5
 (%o4)                           -
                                 7
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -4972,10 +5087,14 @@ See @code{pdf_general_finite_discrete} for more details.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) random_general_finite_discrete([1,3,1,5]);
-(%o2)                          4
+(%o2)                           4
+@end group
+@group
 (%i3) random_general_finite_discrete([1,3,1,5], 10);
-(%o3)           [4, 2, 2, 3, 2, 4, 4, 1, 2, 2]
+(%o3)            [3, 4, 3, 4, 4, 4, 4, 2, 4, 4]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5061,12 +5180,16 @@ function.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_binomial(5,7,1/6);
-                            7775
-(%o2)                       ----
-                            7776
+                              7775
+(%o2)                         ----
+                              7776
+@end group
+@group
 (%i3) float(%);
-(%o3)               .9998713991769548
+(%o3)                  0.9998713991769548
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5283,10 +5406,14 @@ function.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_poisson(3,5);
-(%o2)       gamma_incomplete_regularized(4, 5)
+(%o2)          gamma_incomplete_regularized(4, 5)
+@end group
+@group
 (%i3) float(%);
-(%o3)               .2650259152973623
+(%o3)                  0.2650259152973619
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5472,8 +5599,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) pdf_bernoulli(1,p);
 (%o2)                           p
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5537,8 +5666,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) mean_bernoulli(p);
 (%o2)                           p
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5569,8 +5700,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) var_bernoulli(p);
 (%o2)                       (1 - p) p
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5602,8 +5735,10 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) std_bernoulli(p);
-(%o2)                           sqrt((1 - p) p)
+(%o2)                    sqrt((1 - p) p)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5637,10 +5772,12 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) skewness_bernoulli(p);
-                                    1 - 2 p
-(%o2)                           ---------------
-                                sqrt((1 - p) p)
+                             1 - 2 p
+(%o2)                    ---------------
+                         sqrt((1 - p) p)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -5674,10 +5811,12 @@ m4_displaymath(
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) kurtosis_bernoulli(p);
                          1 - 6 (1 - p) p
 (%o2)                    ---------------
                             (1 - p) p
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -6512,10 +6651,12 @@ where m4_math(I_p(a,b)) is the @ref{beta_incomplete_regularized} function.
 @c ===end===
 @example
 (%i1) load ("distrib")$
+@group
 (%i2) cdf_negative_binomial(3,4,1/8);
-                            3271
-(%o2)                      ------
-                           524288
+                              3271
+(%o2)                        ------
+                             524288
+@end group
 @end example
 
 @opencatbox{Categories:}
