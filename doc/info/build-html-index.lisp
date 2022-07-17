@@ -11,6 +11,14 @@
 ;; leave these alone and have $hdescribe encode any special characters
 ;; before looking them up.  Since ? only used occasionally, we don't
 ;; incur the cost here and move it to ? where the impact is lower.
+;;
+;; However, a test run where this function was removed made virtually
+;; no difference in runtime (with cmucl).  (31.97 sec with and 31.62
+;; sec without; well within timing noise probably.)  Note, however,
+;; that this file is not normally compiled before running, but earlier
+;; tests showed that compiling didn't make much difference either.  I
+;; think this is because most of the cost is in pregexp, which is
+;; compiled.
 (defun handle-special-chars (item)
   "Handle special encoded characters in HTML file.  Texinfo encodes
   special characters to hexadecimal form and this needs to be undone
