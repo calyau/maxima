@@ -18,7 +18,11 @@ else {
 
 my $strip_topdir = $ENV{"STRIP_TOPDIR"} || $topdir;
 
-my $maxima_command = $ENV{"MAXIMA_EXAMPLE_COMMAND"} || "../../maxima-local";
+# Set maxima command to MAXIMA_EXAMPLE_COMMAND if set.  Otherwise use
+# maxima-local.  We use --no-init to make sure no init files are
+# loaded that could change the output.  But we need ./maxima-init.lisp
+# to set up things to work properly for the update. (Hence the -p.)
+my $maxima_command = $ENV{"MAXIMA_EXAMPLE_COMMAND"} || "../../maxima-local --no-init -p maxima-init.lisp";
 
 my $line_cnt    = 0;
 my $error_cnt   = 0;
