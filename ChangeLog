@@ -34,6 +34,9 @@ Unnumbered bugs fixed:
 
 Documentation:
 --------------
+ * Help can use html docs instead of displaying help to the terminal.
+   This is enabled by setting describe_uses_html to true; it defaults
+   to false.
 
 Build system:
 -------------
