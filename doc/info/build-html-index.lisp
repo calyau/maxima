@@ -110,11 +110,29 @@
     (maphash #'(lambda (k v)
 		 (push (list k (namestring (car v)) (cdr v)) entries))
 	     *html-index*)
-    (with-open-file (s "maxima-index-html.lisp" :direction :output)
+    (with-open-file (s "maxima-index-html.lisp"
+		       :direction :output
+		       :if-exists :supersede)
       (with-standard-io-syntax
+	;; Set up printer settings to print the output the way we want.
+	;;
+	;; *package* set to :cl-info so that the symbols aren't
+	;; preceded by the cl-info package marker.
+	;;
+	;; *print-length* is NIL because the list of entries is very
+	;; long.
+	;;
+	;; *print-case* is :downcase just to make it look more
+	;; natural; not really needed.j
+	;;
+	;; *print-readably* is nil so base-strings and strings can
+	;; be printed with any kind of special syntax for
+	;; base-strings for lisps that distinguish between strings
+	;; and base-strings.
 	(let ((*package* (find-package :cl-info))
 	      (*print-length* nil)
-	      (*print-case* :downcase))
+	      (*print-case* :downcase)
+	      (*print-readably* nil))
 	  (format s ";;; Do not edit; automatically generated via build-html-index.lisp~2%")
 	  (pprint '(in-package :cl-info)
 		  s)
