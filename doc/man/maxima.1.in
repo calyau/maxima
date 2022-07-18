@@ -1,4 +1,4 @@
-.TH MAXIMA 1 "2020-03-23"
+.TH MAXIMA 1 "2022-07-18"
 .ds Li "L\s-2isp\s+2
 .ds Pr @prefix@
 .ds Vr @VERSION@
@@ -103,6 +103,10 @@ Suppress expression labels and the Maxima start-up message.
 .TP
 \fB\-X\fR \fILisp options\fR, \fB\-\-lisp-options=\fR\fILisp options\fR
 Options to be given to the underlying Lisp.
+.TP
+\fB\-\-no\-init\fR, \fB\-\-norc\fR
+Do not load the init file(s) on startup.
+
 .SH INTRODUCTORY INSTRUCTIONS
 Upon initialization,
 .I maxima

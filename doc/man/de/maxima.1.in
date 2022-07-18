@@ -1,4 +1,4 @@
-.TH "MAXIMA" "1" "2020-03-30"
+.TH "MAXIMA" "1" "2022-07-18"
 .SH "NAME" 
 Maxima \- Eine Common Lisp Version von MACSYMA, einem Programm f\(:ur symbolische Mathematik, ver\(:offentlicht unter der GNU Public License.
 .LP
@@ -100,6 +100,9 @@ Unterdr\(:uckt Ausdrucksmarken und Startmeldungen.
 .TP
 \fB\-X\fR \fILisp-Optionen\fR, \fB\-\-lisp-options=\fR\fILisp-Optionen\fR
 Optionen, die an das verwendete Lisp weitergereicht werden.
+.TP
+\fB\-\-no\-init\fR, \fB\-\-norc\fR
+Initialisierungsdateien beim Start nicht laden.
 
 .SH EINF\(:UHRENDE ANMERKUNGEN
 Nach dem Start von

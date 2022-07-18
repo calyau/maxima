@@ -92,4 +92,8 @@ The following command line options are available for Maxima:
     @item -X  @var{Lisp options}, --lisp-options=@var{Lisp options}
               Options to be given to the underlying Lisp.
 
+@need 150
+    @item --no-init, --norc
+              Do not load the init file(s) on startup.
+
 @end table
