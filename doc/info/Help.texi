@@ -285,10 +285,12 @@ See also @mrefcomma{describe_uses_html} @mrefcomma{browser} and @mrefdot{url_bas
 @defvr {Option variable} url_base
 
 When displaying help using a browser, @code{url_base} defines the URL
-to use.  It defaults to a @code{file://} path pointing to the info
-directory.  However, you could use @code{localhost:8080/} or some
-other URL that has the HTML help files.  But this requires those URLs
-to have exactly the same HTML files in the info directory.
+to use.  It defaults to a @code{file://} path pointing to the
+directory containing the html files for documentation.  However, you
+could use @code{localhost:8080/} or some other URL that has the HTML
+help files.  But this requires those URLs to have exactly the same
+HTML files in the info directory because an table is needed to
+translate a topic to the appropriate location in an html file.
 
 See also @ref{describe_uses_html} @mrefcomma{browser} and @mrefdot{browser_options}
 
