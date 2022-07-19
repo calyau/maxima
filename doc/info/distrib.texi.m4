@@ -4910,6 +4910,7 @@ Maxima knows the following kinds of discrete distributions
 
 @menu
 * General Finite Discrete Random Variable::
+* Binomial Random Variable::
 * Poisson Random Variable::
 * Bernoulli Random Variable::
 * Geometric Random Variable::
