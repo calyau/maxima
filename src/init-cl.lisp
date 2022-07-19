@@ -516,11 +516,17 @@ When one changes, the other does too."
 			   :action 'list-avail-action
 			   :help-string
 			   "List the installed version/lisp combinations.")
-	   (make-cl-option :names '("-p" "--preload-lisp")
-			   :argument "<lisp-file>"
+	   ;; --preload-lisp is left for backward compatibility.  We
+	   ;; no longer distinguish between mac and lisp files.  Any
+	   ;; file type that $LOAD supports is acceptable.
+	   (make-cl-option :names '("-p" "--preload" "--preload-lisp")
+			   :argument "<file>"
 			   :action #'(lambda (file)
-				       #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file)))
-			   :help-string "Preload <lisp-file>.")
+				       ($load file))
+			   :help-string "Preload <file>, which may be any file time accepted by Maxima's LOAD function.
+        This will be searched for in the locations given by file_search_maxima
+        and file_search_lisp.  This can be specified multiple times to load
+        multiple files.")
 	   (make-cl-option :names '("-q" "--quiet")
 			   :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
 			   :help-string "Suppress Maxima start-up message.")
