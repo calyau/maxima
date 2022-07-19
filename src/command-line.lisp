@@ -54,56 +54,6 @@
       (terpri)))
   (finish-output))
 
-;; Old argument processing.  Leaving this here for now, but if getopts
-;; works well enough, then these should be removed.
-#+(or)
-(progn
-(defun parse-args (args cl-option-list)
-  (if (null args)
-      nil
-      (let ((arg (pop args))
-	    (arg-matched nil))
-	(dolist (opt cl-option-list)
-	  (when (member arg (cl-option-names opt) :test #'equal)
-	    (cond ((and (cl-option-action opt) (cl-option-argument opt))
-		   (funcall (cl-option-action opt) (pop args)))
-		  ((cl-option-action opt)
-		   (funcall (cl-option-action opt)))
-		  ((cl-option-argument opt)
-		   (pop args)))
-	    (setf arg-matched t)
-	    (return t)))
-	(unless (or arg-matched (equal arg ""))
-	  (format t "Warning: argument ~a not recognized~%" arg))
-	(parse-args args cl-option-list))))
-
-(defun expand-compound-arg (arg)
-  (map 'list  #'(lambda (char) (concatenate 'string "-" (string char)))
-       (subseq arg 1)))
-
-(defun expand-equals-arg (arg)
-  (let ((equals-position (search "=" arg)))
-    (list (subseq arg 0 equals-position) (subseq arg (+ 1 equals-position)))))
-
-(defun expand-args (args)
-  (if (null args)
-      nil
-      (let* ((arg (car args))
-	     (rest (expand-args (cdr args)))
-	     (listarg (list arg)))
-	(cond ((< (length arg) 2) nil)
-	      ((and (equal (subseq arg 0 2) "--") (search "=" arg))
-	       (setf listarg (expand-equals-arg arg)))
-	      ((equal (subseq arg 0 2) "--") nil)
-	      ((equal (char arg 0) #\-)
-	       (if (> (length arg) 2)
-		   (setf listarg (expand-compound-arg arg)))))
-	(append listarg rest))))
-
-(defun process-args (args cl-option-list)
-  (parse-args (expand-args args) cl-option-list))
-)
-
 (defun process-args (args cl-option-list)
   (flet ((fixup (options)
 	   ;; Massage cl-option into the format wanted by getopt.
