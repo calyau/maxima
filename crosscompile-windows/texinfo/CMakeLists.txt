@@ -14,10 +14,9 @@ set(TEXINFOVERSION "6.8")
 set(TEXINFO_MD5 "a91b404e30561a5df803e6eb3a53be71")
 set(TEXINFO_URL "https://ftp.gnu.org/gnu/texinfo/texinfo-${TEXINFOVERSION}.tar.xz")
 
-# Build wxWidgets static library (required for wxMaxima)
-# We link statically, so the installation of the library is not
-# necessary, we only need the locale files. But fortunately
-# there is a make target, which does install the locale files only.
+# Build texinfo
+# Maxima requires a recent version (at least 6.8), on the usual build machines
+# (Ubuntu 20.04 now) the version is too old.
 externalproject_add(texinfo
   URL "${TEXINFO_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
@@ -26,6 +25,3 @@ externalproject_add(texinfo
   BUILD_COMMAND $(MAKE)
   INSTALL_COMMAND $(MAKE) install
 )
-
-# Install wxWidgets locale files only.
-#INSTALL(DIRECTORY "${CMAKE_BINARY_DIR}/wxwidgets-installroot/usr/local/share/" DESTINATION share/ COMPONENT wxMaxima)
