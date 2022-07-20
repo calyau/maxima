@@ -1248,7 +1248,7 @@ AC_OUTPUT
 
 # The default of 4096 is sometimes too little for the test suite.
 if test x"${sbcl}" = xtrue ; then
-   AC_MSG_CHECKING(Testing if sbcl complains if we try to enlarge the thread-local storage)
+   AC_MSG_CHECKING(if sbcl complains if we try to enlarge the thread-local storage)
    echo "(quit)" | ${SBCL_NAME} --tls-limit 8192 > /dev/null 2>&1
    if test "$?" = "0" ; then
 	SBCL_EXTRA_ARGS="--tls-limit 8192"
