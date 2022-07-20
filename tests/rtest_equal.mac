@@ -732,12 +732,21 @@ false$
 (forget(-1 < x, x < 1),0);
 0$
 
-/* verify literal equality of CREs, especially as subexpressions */
+/* verify literal equality of specreps, especially as subexpressions */
 
-(kill (a, x, y, foo),
- block ([x : rat(a), y : rat(a)],
-  [is (x = y), is ([x] = [y]), is (matrix ([x]) = matrix ([y])), is (foo (x) = foo (y))]));
-[true, true, true, true];
+(kill (a, foo, spec_cmp),
+ spec_cmp (fn) :=
+   block ([x : fn (a), y : fn (a)],
+     every (lambda ([z], z = true),
+            [is (x = y),
+             is ([x] = [y]),
+             is (matrix ([x]) = matrix ([y])),
+             is (foo (x) = foo (y))])),
+ [spec_cmp (rat), spec_cmp (intopois)]);
+[true, true];
+
+(kill (spec_cmp), 0);
+0;
 
 /* from mailing list 2014-08-16 "bind stack overflow in loop"
  * is(equal(n, m)) needlessly poops n and m into assume database

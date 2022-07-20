@@ -3133,8 +3133,8 @@
 	  (not (atom (car y)))
 	  (eq (caar x) (caar y)))
          (cond
-	  ((eq (caar x) 'mrat)
-	   ;; Punt back to LIKE, which handles CREs.
+	  ((specrepp x)
+	   ;; Punt back to LIKE, which handles specreps
 	   (like x y))
 	  (t (and
 	      (eq (memqarr (cdar x)) (memqarr (cdar y)))
