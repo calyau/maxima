@@ -534,22 +534,27 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	  (if (not *maxima-quiet*) (maxima-banner))
 	  (setq *maxima-started* t)))
     
-    (when (and *maxima-load-init-files* ($file_search *maxima-initlisp*))
-      ($load ($file_search *maxima-initlisp*)))
-    (when (and *maxima-load-init-files* ($file_search *maxima-initmac*))
-      ($batchload ($file_search *maxima-initmac*)))
+    ;; The user init files should only be loaded from the user
+    ;; directory.  Specifically, the are not loaded from the current
+    ;; directory (unless the directory is the user directory).
+    (let ((init-file (combine-path *maxima-userdir* *maxima-initlisp*)))
+      (when (and *maxima-load-init-files* (file-exists-p init-file))
+	($load init-file)))
+    (let ((init-file (combine-path *maxima-userdir* *maxima-initmac*)))
+      (when (and *maxima-load-init-files* (file-exists-p init-file))
+	($batchload init-file)))
 
     (catch 'quit-to-lisp
       (in-package :maxima)
       (loop
 	 do
-	 (catch #+kcl si::*quit-tag*
-		#+(or cmu scl sbcl openmcl lispworks) 'continue
-		#-(or kcl cmu scl sbcl openmcl lispworks) nil
-		(catch 'macsyma-quit
-		  (continue :stream input-stream :batch-or-demo-flag batch-flag)
-		  (format t *maxima-epilog*)
-		  (bye)))))))
+	   (catch #+kcl si::*quit-tag*
+		  #+(or cmu scl sbcl openmcl lispworks) 'continue
+		  #-(or kcl cmu scl sbcl openmcl lispworks) nil
+		  (catch 'macsyma-quit
+		    (continue :stream input-stream :batch-or-demo-flag batch-flag)
+		    (format t *maxima-epilog*)
+		    (bye)))))))
 
 (defun maxima-banner ()
   (format t *maxima-prolog*)
