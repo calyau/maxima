@@ -39,6 +39,37 @@
 	    (t (format nil "~a ~a" name arg)))
       name))
 
+#-gcl
+(defun print-help-string (help-string)
+  "Print the help string neatly by breaking long lines as needed.
+  This assumes that the HELP-STRING doesn't have any kind of manually
+  inserted formatting."
+  ;; Break the string into a list of words, where any number of
+  ;; whitespace characters separates the words.
+  (let ((words (pregexp::pregexp-split "\\s+" help-string)))
+    ;; Print the list of words individually with a single space after,
+    ;; and inserting a newline as needed.  Each line is prefixed by 8
+    ;; spaces.  This bit of code is a slightly modified pprint-vector
+    ;; example from
+    ;; http://www.lispworks.com/documentation/HyperSpec/Body/22_bb.htm.
+    (let ((*print-right-margin* 80))
+      (pprint-logical-block (nil nil :prefix "        ")
+	(let ((end (length words))
+	      (k 0))
+	  (when (plusp end)
+	    (loop (pprint-pop)
+		  (princ (elt words k))
+		  (if (= (incf k) end) (return nil))
+		  (write-char #\space)
+		  (pprint-newline :fill))))))))
+
+;; Gcl doesn't have pprint-logical-block and friends and I (rtoy) am
+;; not going to try to implement it.  Just print the whole string out
+;; as we used to do before.
+#+gcl
+(defun print-help-string (help-string)
+  (format t "        ~a" help-string))
+
 (defun list-cl-options (cl-option-list)
   (format t "options:~%")
   (dolist (opt cl-option-list)
@@ -49,8 +80,8 @@
       (dolist (name (rest names))
 	(format t ", ~a" (cl-option-description name arg)))
       (terpri)
-      (if help-string
-	  (format t "        ~a" help-string))
+      (when help-string
+	(print-help-string help-string))
       (terpri)))
   (finish-output))
 
