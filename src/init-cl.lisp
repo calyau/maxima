@@ -437,6 +437,11 @@ When one changes, the other does too."
     ;; option to have an equivalent long option.  No check is made for
     ;; this, so please make sure this holds.  Or change the code in
     ;; process-args in command-line.lisp.
+    ;;
+    ;; The help strings should not have any special manual formatting
+    ;; but extraneous white space is ok.  They are automatically
+    ;; printed with extraneous whitespace (including newlines) removed
+    ;; and lines wrapped neatly.
     (setf maxima-options
 	  (list
 	   (make-cl-option :names '("-b" "--batch")
@@ -497,12 +502,15 @@ When one changes, the other does too."
 			   :action #'(lambda (file)
 				       (setf *maxima-initmac* (concatenate 'string file ".mac"))
 				       (setf *maxima-initlisp* (concatenate 'string file ".lisp")))
-			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~a)" (subseq *maxima-initmac* 0 (- (length *maxima-initmac*) 4))))
+			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~a)"
+						(subseq *maxima-initmac* 0
+							(- (length *maxima-initmac*) 4))))
  	   (make-cl-option :names '("--init-mac")
 			   :argument "<file>"
 			   :action #'(lambda (file)
 				       (setf *maxima-initmac* file))
-			   :help-string (format nil "Set the name of the Maxima initialization file (default is ~a)" *maxima-initmac*))
+			   :help-string (format nil "Set the name of the Maxima initialization file (default is ~a)"
+						*maxima-initmac*))
  	   (make-cl-option :names '("--init-lisp")
 			   :argument "<file>"
 			   :action #'(lambda (file)
@@ -528,7 +536,9 @@ When one changes, the other does too."
         and file_search_lisp.  This can be specified multiple times to load
         multiple files.")
 	   (make-cl-option :names '("-q" "--quiet")
-			   :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
+			   :action #'(lambda ()
+				       (declare (special *maxima-quiet*))
+				       (setq *maxima-quiet* t))
 			   :help-string "Suppress Maxima start-up message.")
 	   (make-cl-option :names '("-r" "--run-string")
 			   :argument "<string>"
@@ -563,13 +573,16 @@ When one changes, the other does too."
 			   :help-string
 			   "Display the default installed version.")
 	   (make-cl-option :names '("--very-quiet")
-			   :action #'(lambda () (declare (special *maxima-quiet* *display-labels-p*))
-					     (setq *maxima-quiet* t *display-labels-p* nil))
+			   :action #'(lambda ()
+				       (declare (special *maxima-quiet* *display-labels-p*))
+				       (setq *maxima-quiet* t *display-labels-p* nil))
 			   :help-string "Suppress expression labels and Maxima start-up message.")
 	   (make-cl-option :names '("-X" "--lisp-options")
 			   :argument "<Lisp options>"
-			   :action #'(lambda (&rest opts) (declare (special *maxima-quiet*))
-				       (unless *maxima-quiet* (format t "Lisp options: ~A" opts)))
+			   :action #'(lambda (&rest opts)
+				       (declare (special *maxima-quiet*))
+				       (unless *maxima-quiet*
+					 (format t "Lisp options: ~A" opts)))
 			   :help-string "Options to be given to the underlying Lisp")
 	   (make-cl-option :names '("--no-init" "--norc")
 			   :action #'(lambda ()
