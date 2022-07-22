@@ -256,6 +256,15 @@ format string of the form @code{<cmd> ~a} where @code{~a} is replaced
 by the URL of the HTML file and @code{<cmd>} is some program that
 takes an arg and opens up a browser to the given URL.
 
+On windows, the default setting is @code{"start msedge -url ~A"}, which
+uses MS Edge to display the html file.  You may replace @code{msedge}
+with @code{firefox} or @code{chrome} if you want to use Firefox or
+Chrome instead.  (Currently Maxima is not able to determine the
+default browser, so it defaults to MS Edge.)
+
+On other OSes, the user's default browser should be used
+automatically.
+
 See also @mrefcomma{describe_uses_html} @mrefcomma{browser_options}
 and @mrefdot{url_base}
 
