@@ -179,7 +179,7 @@ on-line manual.
 @code{describe} quotes its argument.  @code{describe} returns @code{true} if
 some documentation is found, otherwise @code{false}.
 
-To display the topics using a browser see @ref{describe_uses_html}.
+To display the topics using a browser see @ref{output_format_for_help}.
 Also see @ref{browser} and @ref{url_base} to configure how to display
 the HTML files.
 
@@ -232,13 +232,28 @@ respectively.
 @closecatbox
 @end deffn
 
-@anchor{describe_uses_html}
-@defvr {Option variable} describe_uses_html
-Default value: @code{false}
+@anchor{output_format_for_help}
+@defvr {Option variable} output_format_for_help
+Default value: @code{text}
 
-@code{describe_uses_html} controls whether @code{describe} displays
-the help in the terminal or in a browser.  When @code{true}, a browser
-is used to display html help files.
+@code{output_format_for_help} controls how @code{describe} displays
+help.
+
+@code{output_format_for_help} can be set to one of the following
+values:
+@table @code
+@item text
+Help is displayed as plain text sent to a terminal.  This is the default.
+@item html
+Help is displayed using a browser to display the HTML version of the
+manual.  See
+@item wxmaxima
+Help is displayed using wxMaxima's help system.
+@end table
+
+Any other value is a error.  If @code{output_format_for_help} is set
+to @code{wxmaxima} and wxMaxima is not running, an error is thrown.
+
 
 See also @mrefcomma{browser} and @mrefdot{url_base}
 
@@ -266,7 +281,7 @@ default browser, so it defaults to MS Edge.)
 On other OSes, the user's default browser should be used
 automatically.
 
-See also @mrefcomma{describe_uses_html} and @mrefdot{url_base}
+See also @mrefcomma{output_format_for_help} and @mrefdot{url_base}
 
 @opencatbox{Categories:}
 @category{Help}
@@ -285,7 +300,7 @@ help files.  But this requires those URLs to have exactly the same
 HTML files in the info directory because a table is needed to
 translate a topic to the appropriate location in an html file.
 
-See also @ref{describe_uses_html} and @mrefdot{browser}
+See also @ref{output_format_for_help} and @mrefdot{browser}
 
 @opencatbox{Categories:}
 @category{Help}
