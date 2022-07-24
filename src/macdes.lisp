@@ -27,7 +27,7 @@
   "When true, describe displays the exact help entry as html in a
   browser instead of text to the terminal.")
 
-(defvar *debug-hdescribe* nil
+(defvar *debug-display-html-help* nil
   "Set to non-NIL to get some debugging messages from hdescribe.")
 
 (defmspec $example (l)
@@ -169,7 +169,7 @@
 (defun display-html-help (x)
   (let* ((topic ($sconcat x))
          (found-it (gethash topic cl-info::*html-index*)))
-    (when *debug-hdescribe*
+    (when *debug-display-html-help*
       (format *debug-io* "topic = ~A~%" topic)
       (format *debug-io* "found-it = ~A~%" found-it))
     (when found-it
@@ -182,11 +182,11 @@
 				"#index-"
 				id))
 	      command)
-	  (when *debug-hdescribe*
+	  (when *debug-display-html-help*
 	    (format *debug-io* "URL: ~A~%" url))
 	  (setf command (ignore-errors (format nil $browser url)))
 	  (cond (command
-		 (when *debug-hdescribe*
+		 (when *debug-display-html-help*
 		   (format *debug-io* "Command: ~S~%" command))
 		 ($system command))
 		(t

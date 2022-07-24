@@ -179,7 +179,7 @@
       (format t "~%")
       (cond
 	(maxima::$describe_uses_html
-	 (when maxima::*debug-hdescribe*
+	 (when maxima::*debug-display-html-help*
 	   (format *debug-io* "wanted = ~A~%" wanted))
 	 (loop for (dir entry) in wanted
 	       do (maxima::display-html-help (car entry))))
