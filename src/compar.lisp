@@ -1666,10 +1666,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  odds nil))))
 	  ((and (member sign-expt '($neg $nz) :test #'eq)
 		(member sign-base '($nz $pz $pnz) :test #'eq))
-	   (setq sign (cond ((eq sign-base '$pnz) '$pn)
-			    ((eq sign-base '$pz) '$pos)
-			    ((eq sign-expt '$neg) '$neg)
-			    (t '$pn))))
+	   (setq sign (if (eq sign-base '$pz)
+			  '$pos
+			  '$pn)))
 	  ((member sign-expt '($pz $nz $pnz) :test #'eq)
 	   (cond ((eq sign-base '$neg)
 		  (setq odds (ncons x) sign '$pn))))
