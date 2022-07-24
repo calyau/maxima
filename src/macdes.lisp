@@ -23,9 +23,20 @@
   This may be initialized on startup to a file path where the html
   files can be found.")
 
-(defmvar $describe_uses_html nil
-  "When true, describe displays the exact help entry as html in a
-  browser instead of text to the terminal.")
+(defmvar $output_format_for_help '$text
+  "The output format for help.  It should be one of the values '$text,
+  '$html, '$wxmaxima.  The default is '$text which causes the help to
+  be sent to the terminal as plain text.  '$html opens a browser to
+  the page for the help.  '$wxmaxima uses wxMaxima's help system to
+  display help.")
+
+;; When $output_format_for_help is set, set-output-format is called.
+(putprop '$output_format_for_help 'set-output-format 'assign)
+
+(defvar *help-display-function*
+  'display-text-topics
+  "A symbol naming the function used to display help, as determined
+  from $output_format_for_help.")
 
 (defvar *debug-display-html-help* nil
   "Set to non-NIL to get some debugging messages from hdescribe.")
@@ -192,3 +203,63 @@
 		(t
 		 (merror "Browser command must contain exactly one ~~A:  ~S" $browser))))))
     topic))
+
+(defun display-html-topics (wanted)
+  (when maxima::*debug-display-html-help*
+    (format *debug-io* "wanted = ~A~%" wanted))
+  (loop for (dir entry) in wanted
+	do (display-html-help (car entry))))
+  
+(defun display-text-topics (wanted)
+  (loop for item in wanted
+	do (let ((doc (cl-info::read-info-text (first item) (second item))))
+	     (if doc
+		 (format t "~A~%~%" doc)
+		 (format t "Unable to find documentation for `~A'.~%~
+                                Possible bug maxima-index.lisp or build_index.pl?~%"
+			 (first (second item)))))))  
+
+;; Escape the characters that are special to XML. This mechanism excludes
+;; the possibility that any keyword might coincide with the any xml tag
+;; start or tag end marker.
+(defun xml-fix-string (x)
+  (when (stringp x)
+    (let* ((tmp-x (wxxml-string-substitute "&amp;" #\& x))
+           (tmp-x (wxxml-string-substitute "&lt;" #\< tmp-x))
+           (tmp-x (wxxml-string-substitute "&gt;" #\> tmp-x))
+           (tmp-x (wxxml-string-substitute "&#13;" #\Return tmp-x))
+           (tmp-x (wxxml-string-substitute "&#13;" #\Linefeed tmp-x))
+           (tmp-x (wxxml-string-substitute "&#13;" #\Newline tmp-x))
+           (tmp-x (wxxml-string-substitute "&quot;" #\" tmp-x)))
+      tmp-x)
+    x))
+
+
+(defun display-wxmaxima-topics (wanted)
+  (loop for (dir entry) in wanted
+	do
+	   ;; Tell wxMaxima to jump to the manual entry for "keyword"
+	   (format t "<html-manual-keyword>~a</html-manual-keyword>~%"
+		   (xml-fix-string (car entry)))
+	   ;; Tell the lisp to make sure that this string is actually output
+	   ;; as soon as possible
+	   (finish-output)))
+
+(defun set-output-format (assign-var val)
+  "When $output_format_for_help is set, this function validates the
+  value and sets *help-display-function* to the function to display
+  the help item in the specified format."
+  ;; Don't need assign-var here.  It should be $output_format_for_help
+  ;; since this function is only called when $output_format_for_help
+  ;; is assigned.
+  (declare (ignore assign-var))
+  (case val
+    ($text
+     (setf *help-display-function* 'display-text-topics))
+    ($html
+     (setf *help-display-function* 'display-html-topics))
+    ($wxmaxima
+     (setf *help-display-function* 'display-wxmaxima-topics))
+    (otherwise
+     (merror (intl:gettext "output_format_for_help should be one of text, html, or wxmaxima: ~M")
+	     val))))
