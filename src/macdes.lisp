@@ -222,6 +222,7 @@
 ;; Escape the characters that are special to XML. This mechanism excludes
 ;; the possibility that any keyword might coincide with the any xml tag
 ;; start or tag end marker.
+#+(or)
 (defun xml-fix-string (x)
   (when (stringp x)
     (let* ((tmp-x (wxxml-string-substitute "&amp;" #\& x))
@@ -235,6 +236,7 @@
     x))
 
 
+#+(or)
 (defun display-wxmaxima-topics (wanted)
   (loop for (dir entry) in wanted
 	do
@@ -259,7 +261,9 @@
     ($html
      (setf *help-display-function* 'display-html-topics))
     ($wxmaxima
-     (setf *help-display-function* 'display-wxmaxima-topics))
+     (if (equal $maxima_frontend "wxMaxima")
+	 (setf *help-display-function* 'display-wxmaxima-topics)
+	 (merror (intl:gettext "output_format_for_help set to wxmaxima, but wxMaxima is not running."))))
     (otherwise
      (merror (intl:gettext "output_format_for_help should be one of text, html, or wxmaxima: ~M")
 	     val))))
