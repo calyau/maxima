@@ -1610,6 +1610,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (let* ((expt (caddr x)) (base1 (cadr x))
 	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
 	 (evod (evod expt)))
+    ;; The variable sign is now equal to sign-base. This is used below
+    ;; in some places to avoid an assignment operation for sign.
     (cond ((and *complexsign* (or (eq sign-expt '$complex)
 				  (eq sign-expt '$imaginary)
 				  (eq sign-base '$complex)))
