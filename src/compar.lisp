@@ -1645,6 +1645,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		(member sign-expt '($zero $neg $nz) :test #'eq))
 	   (dbzs-err x))
 	  ((eq sign-expt '$zero) (setq sign '$pos))
+	  ((and *complexsign*
+		(not evod)
+		(not (ratnump expt))
+		(not (member sign-base '($pos $pz $zero) :test #'eq)))
+	   (when *debug-compar*
+	     (format t "~&in SIGN-MEXPT for ~A, base is not $pos, $pz or $zero.~%" x))
+	   (setq sign (if (maxima-integerp expt) '$pnz '$complex)))
 	  ((eq sign-base '$pos))
 	  ((eq sign-base '$zero))
 	  ((eq evod '$even)
