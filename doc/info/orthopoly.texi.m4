@@ -1,3 +1,4 @@
+@c -*- mode: texinfo -*-
 @menu
 * Introduction to orthogonal polynomials::
 * Functions and Variables for orthogonal polynomials::
