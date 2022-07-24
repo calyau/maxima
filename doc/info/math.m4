@@ -22,11 +22,9 @@ m4_dnl blank lines.
 m4_define(<<<m4_displaymath>>>, 
 <<<
 @ifhtml
-@html
 @displaymath
 $1
 @end displaymath
-@end html
 @end ifhtml
 @ifinfo
 $2
@@ -40,9 +38,7 @@ m4_dnl Like m4_displaymath, but this is meant for inline math equations.
 m4_define(<<<m4_math>>>, 
 <<<
 @ifhtml
-@html
 @math{$1}
-@end html
 @end ifhtml
 @ifinfo
 $2
