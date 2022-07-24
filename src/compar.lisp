@@ -1642,7 +1642,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	     (t (setq sign '$complex))))
 
 	  ((and (eq sign-base '$zero)
-		(member sign-expt '($zero $neg) :test #'eq))
+		(member sign-expt '($zero $neg $nz) :test #'eq))
 	   (dbzs-err x))
 	  ((eq sign-expt '$zero) (setq sign '$pos))
 	  ((eq sign-base '$pos))
