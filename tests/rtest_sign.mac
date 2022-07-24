@@ -289,7 +289,23 @@ nz$
 (forget(x >= -1), forget(x <= 0),0);
 0$
 
+/* expt */
+(assume(xpos > 0), assume(xneg < 0), assume(xpz >= 0), assume(xnz <= 0), assume(notequal(xpn, 0)), assume(equal(xzero, 0)), declare(xeven, even), declare(xodd, odd),0);
+0$
 
+create_list(errcatch(sign(x^y)),
+            x, [xpos, xneg, xpz, xnz, xpn, xzero, xpnz],
+            y, [xpos, xneg, xpz, xnz, xpn, xzero, xpnz, xeven, xodd]);
+[[pos], [pos], [pos], [pos], [pos], [pos], [pos], [pos], [pos],   /* xpos^y */
+ [pn], [pn], [pn], [pn], [pn], [pos], [pn], [pos], [neg],         /* xneg^y */
+ [pz], [pos], [pz], [pos], [pz], [pos], [pz], [pz], [pz],         /* xpz^y */
+ [pnz], [pn], [pnz], [pn], [pnz], [pos], [pnz], [pz], [nz],       /* xnz^y */
+ [pn], [pn], [pn], [pn], [pn], [pos], [pn], [pos], [pn],          /* xpn^y */
+ [zero], [], [zero], [], [zero], [], [zero], [zero], [zero],      /* xzero^y */
+ [pnz], [pn], [pnz], [pn], [pnz], [pos], [pnz], [pz], [pnz]]$     /* xpnz^y */
+
+(forget(xpos > 0), forget(xneg < 0), forget(xpz >= 0), forget(xnz <= 0), forget(notequal(xpn, 0)), forget(equal(xzero, 0)), remove(xeven, even), remove(xodd, odd),0);
+0$
 
 /* SF bug 798571 */
 
@@ -680,6 +696,28 @@ csign(atanh(x));
 nz$
 
 (forget(x >= -1), forget(x <= 0),0);
+0$
+
+/* expt */
+(assume(xpos > 0), assume(xneg < 0), assume(xpz >= 0), assume(xnz <= 0), assume(notequal(xpn, 0)), assume(equal(xzero, 0)),
+ declare(xeven, even), declare(xodd, odd), declare(ximag, imaginary), declare(xcomplex, complex),0);
+0$
+
+create_list(errcatch(csign(x^y)),
+            x, [xpos, xneg, xpz, xnz, xpn, xzero, xpnz, ximag, xcomplex],
+            y, [xpos, xneg, xpz, xnz, xpn, xzero, xpnz, xeven, xodd, ximag, xcomplex]);
+[[pos], [pos], [pos], [pos], [pos], [pos], [pos], [pos], [pos], [complex], [complex],                         /* xpos^y */
+ [complex], [complex], [complex], [complex], [complex], [pos], [complex], [pos], [neg], [complex], [complex], /* xneg^y */
+ [pz], [pos], [pz], [pos], [pz], [pos], [pz], [pz], [pz], [complex], [complex],                               /* xpz^y */
+ [complex], [complex], [complex], [complex], [complex], [pos], [complex], [pz], [nz], [complex], [complex],   /* xnz^y */
+ [complex], [complex], [complex], [complex], [complex], [pos], [complex], [pos], [pn], [complex], [complex],  /* xpn^y */
+ [zero], [], [zero], [], [zero], [], [zero], [zero], [zero], [zero], [zero],                                  /* xzero^y */
+ [complex], [complex], [complex], [complex], [complex], [pos], [complex], [pz], [pnz], [complex], [complex],  /* xpnz^y */
+ [complex], [complex], [complex], [complex], [complex], [pos], [complex], [complex], [complex], [complex], [complex], /* ximag^y */
+ [complex], [complex], [complex], [complex], [complex], [pos], [complex], [complex], [complex], [complex], [complex]]$  /* xcomplex^y */
+
+(forget(xpos > 0), forget(xneg < 0), forget(xpz >= 0), forget(xnz <= 0), forget(notequal(xpn, 0)), forget(equal(xzero, 0)),
+ remove(xeven, even), remove(xodd, odd), remove(ximag, imaginary), remove(xcomplex, complex),0);
 0$
 
 /* SF bug 798571 */
