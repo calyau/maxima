@@ -1712,8 +1712,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			((eq sign-base '$pnz)
 			 (setq sign-base '$pn)))))
 	   (setq sign sign-base))
-	  ((eq sign-base '$pos)
-	   (setq sign '$pos))
 	  ((eq sign-base '$neg)
 	   (if (eq evod '$odd)
 	       (setq sign '$neg)
