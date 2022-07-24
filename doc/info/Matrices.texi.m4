@@ -1,3 +1,4 @@
+@c -*- mode: texinfo -*-
 @menu
 * Introduction to Matrices and Linear Algebra::  
 * Functions and Variables for Matrices and Linear Algebra::  

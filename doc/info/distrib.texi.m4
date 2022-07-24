@@ -1,3 +1,4 @@
+@c -*- mode: texinfo -*-
 @menu
 * Introduction to distrib::
 * Functions and Variables for continuous distributions::

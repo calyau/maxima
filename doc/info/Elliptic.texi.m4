@@ -1,3 +1,4 @@
+@c -*- mode: texinfo -*-
 
 @menu
 * Introduction to Elliptic Functions and Integrals::
