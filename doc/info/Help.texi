@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Documentation, Functions and Variables for Help, Help, Help
+@node Documentation, Functions and Variables for Help
 @section Documentation
 @c -----------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ and additional output.
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Help,  , Documentation, Help
+@node Functions and Variables for Help,  , Documentation
 @section Functions and Variables for Help
 @c -----------------------------------------------------------------------------
 
@@ -240,7 +240,7 @@ Default value: @code{false}
 the help in the terminal or in a browser.  When @code{true}, a browser
 is used to display html help files.
 
-See also @mrefcomma{browser} @mrefcomma{browser_options}  and @mrefdot{url_base}
+See also @mrefcomma{browser} and @mrefdot{url_base}
 
 @opencatbox{Categories:}
 @category{Help}
@@ -256,33 +256,17 @@ format string of the form @code{<cmd> ~a} where @code{~a} is replaced
 by the URL of the HTML file and @code{<cmd>} is some program that
 takes an arg and opens up a browser to the given URL.
 
-On windows, the default setting is @code{"start msedge -url ~A"}, which
-uses MS Edge to display the html file.  You may replace @code{msedge}
-with @code{firefox} or @code{chrome} if you want to use Firefox or
-Chrome instead.  (Currently Maxima is not able to determine the
+On windows, the default setting is @code{"start msedge -url ~A"},
+which uses MS Edge to display the html file.  You may replace
+@code{msedge} with @code{firefox}, @code{chrome}, or @code{iexplore}
+if you want to use Firefox, Chrome, or Internet Explorer,
+respectively, instead.  (Currently Maxima is not able to determine the
 default browser, so it defaults to MS Edge.)
 
 On other OSes, the user's default browser should be used
 automatically.
 
-See also @mrefcomma{describe_uses_html} @mrefcomma{browser_options}
-and @mrefdot{url_base}
-
-@opencatbox{Categories:}
-@category{Help}
-@category{Global variables}
-@closecatbox
-@end defvr
-
-@anchor{browser_options}
-@defvr {Option variable} browser_options
-Default value: ""
-
-This specifies options to be used with @code{browser}.
-
-This is ignored on windows.
-
-See also @mrefcomma{describe_uses_html} @mrefcomma{browser} and @mrefdot{url_base}
+See also @mrefcomma{describe_uses_html} and @mrefdot{url_base}
 
 @opencatbox{Categories:}
 @category{Help}
@@ -301,7 +285,7 @@ help files.  But this requires those URLs to have exactly the same
 HTML files in the info directory because a table is needed to
 translate a topic to the appropriate location in an html file.
 
-See also @ref{describe_uses_html} @mrefcomma{browser} and @mrefdot{browser_options}
+See also @ref{describe_uses_html} and @mrefdot{browser}
 
 @opencatbox{Categories:}
 @category{Help}

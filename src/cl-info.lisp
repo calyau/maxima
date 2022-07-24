@@ -182,7 +182,7 @@
 	 (when maxima::*debug-hdescribe*
 	   (format *debug-io* "wanted = ~A~%" wanted))
 	 (loop for (dir entry) in wanted
-	       do (maxima::$hdescribe (car entry))))
+	       do (maxima::display-html-help (car entry))))
 	(t
 	  (loop for item in wanted
 		do (let ((doc (read-info-text (first item) (second item))))

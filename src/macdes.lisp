@@ -15,9 +15,6 @@
   initialized on startup to an OS-specific value.  It must contain
   exactly one ~a which will be replaced by the url.")
 
-(defmvar $browser_options ""
-  "Browser options")
-
 (defmvar $url_base "localhost:8080"
   "Base URL where the HTML doc may be found.  This can be a file path
   like \"file:///<path>\" or a web server like \"localhost:8080\" or
@@ -169,7 +166,7 @@
 
 
 ;;; Display help in browser instead of the terminal
-(defmfun $hdescribe (x)
+(defun display-html-help (x)
   (let* ((topic ($sconcat x))
          (found-it (gethash topic cl-info::*html-index*)))
     (when *debug-hdescribe*
