@@ -1612,7 +1612,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (evod (evod expt)))
     ;; The variable sign is now equal to sign-base. This is used below
     ;; in some places to avoid an assignment operation for sign.
-    (cond ((and *complexsign* (or (eq sign-expt '$complex)
+    (cond ((and (eq sign-base '$zero)
+		(member sign-expt '($zero $neg $nz) :test #'eq))
+	   (dbzs-err x))
+	  ((eq sign-expt '$zero) (setq sign '$pos))
+	  ((eq sign-base '$zero))
+
+	  ((and *complexsign* (or (eq sign-expt '$complex)
 				  (eq sign-expt '$imaginary)
 				  (eq sign-base '$complex)))
 	   ;; Base is complex or exponent is complex or imaginary.
@@ -1643,10 +1649,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		    minus (if (eql (mod (- expt 1) 4) 0) t nil)))
 	     (t (setq sign '$complex))))
 
-	  ((and (eq sign-base '$zero)
-		(member sign-expt '($zero $neg $nz) :test #'eq))
-	   (dbzs-err x))
-	  ((eq sign-expt '$zero) (setq sign '$pos))
 	  ((and *complexsign*
 		(not evod)
 		(not (ratnump expt))
@@ -1655,7 +1657,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	     (format t "~&in SIGN-MEXPT for ~A, base is not $pos, $pz or $zero.~%" x))
 	   (setq sign (if (maxima-integerp expt) '$pnz '$complex)))
 	  ((eq sign-base '$pos))
-	  ((eq sign-base '$zero))
 	  ((eq evod '$even)
 	   (cond ((eq sign-expt '$neg)
 		  (setq sign '$pos minus nil evens (ncons base1) odds nil))
