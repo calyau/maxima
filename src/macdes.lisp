@@ -30,8 +30,11 @@
   the page for the help.  '$wxmaxima uses wxMaxima's help system to
   display help.")
 
-;; When $output_format_for_help is set, set-output-format is called.
-(putprop '$output_format_for_help 'set-output-format 'assign)
+;; When $output_format_for_help is set, set-output-format-for-help is
+;; called to validate the value.
+(putprop '$output_format_for_help
+	 'set-output-format-for-help
+	 'assign)
 
 (defvar *help-display-function*
   'display-text-topics
@@ -247,7 +250,13 @@
 	   ;; as soon as possible
 	   (finish-output)))
 
-(defun set-output-format (assign-var val)
+;; When wxMaxima is running, this function should be redefined to
+;; display the help in whatever way wxMaxima wants to.
+(defun display-wxmaxima-topics (wanted)
+  (declare (ignore wanted))
+  (merror (intl:"output_format_for_help: wxmaxima not implemented.")))
+
+(defun set-output-format-for-help (assign-var val)
   "When $output_format_for_help is set, this function validates the
   value and sets *help-display-function* to the function to display
   the help item in the specified format."
