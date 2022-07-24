@@ -177,6 +177,8 @@
     (finish-output *debug-io*)
     (when (consp wanted)
       (format t "~%")
+      (funcall maxima::*help-display-function* wanted)
+      #+nil
       (cond
 	(maxima::$describe_uses_html
 	 (when maxima::*debug-display-html-help*
