@@ -1862,10 +1862,10 @@ The pdf is
 m4_displaymath(
 <<<f(x; m, n) =
 \cases{
-B\left(\displaystyle{n\over 2}, \displaystyle{m\over 2}\right)^{-1}
-\left(\displaystyle{n\over m}\right)^{n/ 2}
-x^{n/2-1}
-\left(1 + \displaystyle{n\over m}x\right)^{-\left(n+m\right)/2} & $x >
+B\left(\displaystyle{m\over 2}, \displaystyle{n\over 2}\right)^{-1}
+\left(\displaystyle{m\over n}\right)^{m/ 2}
+x^{m/2-1}
+\left(1 + \displaystyle{m\over n}x\right)^{-\left(n+m\right)/2} & $x >
 0$ \cr
 \cr
 0 & otherwise
@@ -1900,14 +1900,14 @@ The cdf is
 m4_displaymath(
 <<<F(x; m, n) =
 \cases{
-1 - I_z\left(\displaystyle{n\over 2}, {m\over 2}\right) & $x > 0$ \cr
+1 - I_z\left(\displaystyle{m\over 2}, {n\over 2}\right) & $x > 0$ \cr
 0 & otherwise
 }>>>,
 <<<
 @example
-                                                   m  n     m
-     F(x, n, m) = (1 - beta_incomplete_regularized(-, -, -------))
-                                                   2  2  n x + m
+                                               n  m     n
+ F(x, m, n) = (1 - beta_incomplete_regularized(-, -, -------))
+                                               2  2  m x + n
                                                              unit_step(x)
 @end example
 >>>)
@@ -1915,7 +1915,7 @@ m4_displaymath(
 @ifnotinfo
 where
 m4_displaymath(
-<<<z = {m\over nx+m}>>>,
+<<<z = {n\over mx+n}>>>,
 <<<>>>)
 
 and m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized}
