@@ -1712,10 +1712,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			((eq sign-base '$pnz)
 			 (setq sign-base '$pn)))))
 	   (setq sign sign-base))
-	  ((eq sign-base '$neg)
-	   (if (eq evod '$odd)
-	       (setq sign '$neg)
-	     (setq sign (if *complexsign* '$complex '$pn)))))))
+	  ((member sign-base '($neg $nz) :test #'eq)
+	   (cond ((eq evod '$odd))
+		 (*complexsign*
+		  (setq sign '$complex))
+		 ((eq sign-base '$neg)
+		  (setq sign '$pn))
+		 (t (setq sign '$pnz)))))))
 
 ;;; Determine the sign of log(expr). This function changes the special variable sign.
 
