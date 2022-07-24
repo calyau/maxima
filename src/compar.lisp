@@ -1670,8 +1670,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  '$pos
 			  '$pn)))
 	  ((member sign-expt '($pz $nz $pnz) :test #'eq)
-	   (cond ((eq sign-base '$neg)
-		  (setq odds (ncons x) sign '$pn))))
+	   (cond ((member sign-base '($neg $nz) :test #'eq)
+		  (setq odds (ncons x) sign (if (eq sign-base '$neg) '$pn '$pnz)))))
 	  ((eq sign-expt '$pn))
 	  ((ratnump expt)
 	   (cond ((mevenp (cadr expt))
