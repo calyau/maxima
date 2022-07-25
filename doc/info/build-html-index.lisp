@@ -164,12 +164,12 @@
 	;; long.
 	;;
 	;; *print-case* is :downcase just to make it look more
-	;; natural; not really needed.j
+	;; natural; not really needed.
 	;;
-	;; *print-readably* is nil so base-strings and strings can
-	;; be printed with any kind of special syntax for
-	;; base-strings for lisps that distinguish between strings
-	;; and base-strings.
+	;; *print-readably* is nil so base-strings and strings can be
+	;; printed without any kind of special syntax for base-strings
+	;; for lisps that distinguish between strings and
+	;; base-strings.
 	(let ((*package* (find-package :cl-info))
 	      (*print-length* nil)
 	      (*print-case* :downcase)
