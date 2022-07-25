@@ -4953,11 +4953,6 @@ See @code{pdf_general_finite_discrete} for more details.
 
 @end deffn
 
-@menu
-* Introduction to Binomial Random Variable::
-* Functions for Binomial Random Variable::
-@end menu
-
 @node Binomial Random Variable, Poisson Random Variable, General Finite Discrete Random Variable, Functions and Variables for discrete distributions
 @subsection Binomial Random Variable
 
@@ -5172,10 +5167,6 @@ To make use of this function, write first @code{load("distrib")}.
 @closecatbox
 
 @end deffn
-
-@menu
-* Poisson Random Variable::
-@end menu
 
 @node Poisson Random Variable, Bernoulli Random Variable, Binomial Random Variable, Functions and Variables for discrete distributions
 @subsection Poisson Random Variable
