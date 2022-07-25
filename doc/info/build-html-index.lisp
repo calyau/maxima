@@ -1,7 +1,7 @@
 (in-package #:maxima)
 
 (defvar *html-index*
-  (make-hash-table :test #'equalp)
+  (make-hash-table :test #'equal)
   "Hash table for looking up which html file contains the
   documentation.  The key is the topic we're looking for and the value
   is the html file containing the documentation for the topic.")
@@ -60,6 +60,10 @@
 		      (setf item (handle-special-chars item))
                       #+nil
                       (format t "match = ~S ~A~%" match item)
+		      (when (gethash item *html-index*)
+			(format t "Already added entry ~S ~S: ~S~%"
+				item (gethash item *html-index*)
+				line))
                       (setf (gethash item
                                      *html-index*)
 			    (cons base-name item-id))))
@@ -72,6 +76,11 @@
 					(cdr (elt match 2)))))
 		      #+nil
 		      (format t "section item = ~A~%" item)
+		      (when (gethash item *html-index*)
+			(format t "Already added section ~S ~S: ~S~%"
+				item
+				(gethash item *html-index*)
+				line))
 		      (setf (gethash item *html-index*)
 			    (cons base-name item-id))))))))))
 
@@ -98,11 +107,43 @@
   (let ((entry-regexp (pregexp:pregexp "<dt id=\"index-([^\"]+)\""))
 	(section-regexp
 	  (pregexp:pregexp "<span id=\"\([^\"]+\)\">.*<h3 class=\"section\">[0-9.,]+ *\(.*\)<")))
-    (dolist (file (directory dir))
-      ;; We want to ignore maxima_singlepage.html for now.
-      (unless (string-equal (pathname-name file)
-                        "maxima_singlepage")
-	(process-one-html-file file entry-regexp section-regexp)))))
+    ;; Get a list of the files in the directory.  Remove all the ones
+    ;; that don't start with "maxima".  Then sort them all in
+    ;; numerical order.
+    (let ((files (directory dir)))
+      ;; First, remove "maxima_singlepage.html"
+      (setf files (remove-if #'(lambda (name)
+				 (string-equal name "maxima_singlepage"))
+			     files
+			     :key #'pathname-name))
+      ;; Now remove any that don't start with "maxima"
+      (setf files (remove-if-not #'(lambda (name)
+				     (string-equal "maxima" name :end2 (min (length name) 6)))
+				 files
+				 :key #'pathname-name))
+      ;; Now sort them in numerical order.
+      (setf files
+	    (sort files #'<
+		  :key #'(lambda (p)
+			   (let ((name (pathname-name p)))
+			     (cond ((string-equal name "maxima_toc")
+				    ;; maxima_toc.html is first
+				    -1)
+				   ((string-equal name "maxima")
+				    ;; maxima.html is second.
+				    0)
+				   (t
+				    ;; Everything else is the number
+				    ;; in the file name, which starts
+				    ;; with 1.
+				    (if (> (length name) 7)
+					(parse-integer (subseq name 7))
+					0)))))))
+      (dolist (file files)
+	;; We want to ignore maxima_singlepage.html for now.
+	(unless (string-equal (pathname-name file)
+                              "maxima_singlepage")
+	  (process-one-html-file file entry-regexp section-regexp))))))
 
 (defun build-and-dump-html-index (dir)
   (build-html-index dir)
