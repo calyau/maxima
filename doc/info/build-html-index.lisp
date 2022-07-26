@@ -89,7 +89,7 @@
 ;; directory that contains the html files to be searched for the
 ;; topics.  For exapmle it can be "<maxima-dir>/doc/info/*.html"
 (defun build-html-index (dir)
-  (setf *html-index* (make-hash-table :test #'equalp))
+  (clrhash *html-index*)
   ;; entry-regexp searches for entries for functions and variables.
   ;; We're looking for something like
   ;;
