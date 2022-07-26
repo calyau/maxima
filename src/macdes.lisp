@@ -254,7 +254,7 @@
 ;; display the help in whatever way wxMaxima wants to.
 (defun display-wxmaxima-topics (wanted)
   (declare (ignore wanted))
-  (merror (intl:"output_format_for_help: wxmaxima not implemented.")))
+  (merror (intl:gettext "output_format_for_help: wxmaxima not implemented.")))
 
 (defun set-output-format-for-help (assign-var val)
   "When $output_format_for_help is set, this function validates the
