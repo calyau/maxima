@@ -181,31 +181,42 @@
 
 ;;; Display help in browser instead of the terminal
 (defun display-html-help (x)
-  (let* ((topic ($sconcat x))
-         (found-it (gethash topic cl-info::*html-index*)))
-    (when *debug-display-html-help*
-      (format *debug-io* "topic = ~A~%" topic)
-      (format *debug-io* "found-it = ~A~%" found-it))
-    (when found-it
-      (destructuring-bind (base-name . id)
-	  found-it
-	(let ((url (concatenate 'string
-				$url_base
-				"/"
-				(namestring base-name)
-				"#index-"
-				id))
-	      command)
-	  (when *debug-display-html-help*
-	    (format *debug-io* "URL: ~A~%" url))
-	  (setf command (ignore-errors (format nil $browser url)))
-	  (cond (command
-		 (when *debug-display-html-help*
-		   (format *debug-io* "Command: ~S~%" command))
-		 ($system command))
-		(t
-		 (merror "Browser command must contain exactly one ~~A:  ~S" $browser))))))
-    topic))
+  ;; The pattern is basically " <nnn>" where "nnn" is any number of
+  ;; digits.
+  (let ((fixup-regexp (pregexp:pregexp " <\([[:digit:]]\)>")))
+    (flet ((fixup-topic (topic)
+	     ;; When using ?? adapt_depth, the list of topics is
+	     ;; "adapt_depth" and "adapt_depth <1>".  The HTML id of
+	     ;; "adapt_depth <1>" is "adapt-depth-1", so massage any
+	     ;; topic of the form "foo <n>" to "foo-n" so we can find
+	     ;; the HTML doc for it.  For simplicity, we'll use
+	     ;; pregexp to replace " <n>" with "-n".
+	     (pregexp:pregexp-replace fixup-regexp topic "-\\1")))
+      (let* ((topic (fixup-topic ($sconcat x)))
+             (found-it (gethash topic cl-info::*html-index*)))
+	(when *debug-display-html-help*
+	  (format *debug-io* "topic = ~A~%" topic)
+	  (format *debug-io* "found-it = ~A~%" found-it))
+	(when found-it
+	  (destructuring-bind (base-name . id)
+	      found-it
+	    (let ((url (concatenate 'string
+				    $url_base
+				    "/"
+				    (namestring base-name)
+				    "#index-"
+				    id))
+		  command)
+	      (when *debug-display-html-help*
+		(format *debug-io* "URL: ~A~%" url))
+	      (setf command (ignore-errors (format nil $browser url)))
+	      (cond (command
+		     (when *debug-display-html-help*
+		       (format *debug-io* "Command: ~S~%" command))
+		     ($system command))
+		    (t
+		     (merror "Browser command must contain exactly one ~~A:  ~S" $browser))))))
+	topic))))
 
 (defun display-html-topics (wanted)
   (when maxima::*debug-display-html-help*
