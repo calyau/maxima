@@ -247,12 +247,13 @@ Help is displayed as plain text sent to a terminal.  This is the default.
 @item html
 Help is displayed using a browser to display the HTML version of the
 manual.  See
-@item wxmaxima
-Help is displayed using wxMaxima's help system.
+@item frontend
+Help is displayed using the frontend's help system.  If no frontend is
+running then an error is signaled.  For example, wxMaxima and xmaxima
+are some frontends for maxima.
 @end table
 
-Any other value is a error.  If @code{output_format_for_help} is set
-to @code{wxmaxima} and wxMaxima is not running, an error is thrown.
+Any other value is a error.
 
 
 See also @mrefcomma{browser} and @mrefdot{url_base}

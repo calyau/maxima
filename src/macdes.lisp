@@ -25,10 +25,11 @@
 
 (defmvar $output_format_for_help '$text
   "The output format for help.  It should be one of the values '$text,
-  '$html, '$wxmaxima.  The default is '$text which causes the help to
+  '$html, '$frontend.  The default is '$text which causes the help to
   be sent to the terminal as plain text.  '$html opens a browser to
-  the page for the help.  '$wxmaxima uses wxMaxima's help system to
-  display help.")
+  the page for the help.  '$frontend assumes that some frontend will
+  provide the necessary function to display help appropriately for the
+  frontend.")
 
 ;; When $output_format_for_help is set, set-output-format-for-help is
 ;; called to validate the value.
@@ -261,11 +262,11 @@
 	   ;; as soon as possible
 	   (finish-output)))
 
-;; When wxMaxima is running, this function should be redefined to
-;; display the help in whatever way wxMaxima wants to.
-(defun display-wxmaxima-topics (wanted)
+;; When a frontend is running, this function should be redefined to
+;; display the help in whatever way the frontend wants to.
+(defun display-frontend-topics (wanted)
   (declare (ignore wanted))
-  (merror (intl:gettext "output_format_for_help: wxmaxima not implemented.")))
+  (merror (intl:gettext "output_format_for_help: frontend not implemented.")))
 
 (defun set-output-format-for-help (assign-var val)
   "When $output_format_for_help is set, this function validates the
@@ -280,10 +281,10 @@
      (setf *help-display-function* 'display-text-topics))
     ($html
      (setf *help-display-function* 'display-html-topics))
-    ($wxmaxima
-     (if (equal $maxima_frontend "wxMaxima")
-	 (setf *help-display-function* 'display-wxmaxima-topics)
-	 (merror (intl:gettext "output_format_for_help set to wxmaxima, but wxMaxima is not running."))))
+    ($frontend
+     (if $maxima_frontend
+	 (setf *help-display-function* 'display-frontend-topics)
+	 (merror (intl:gettext "output_format_for_help set to frontend, but no frontend is running."))))
     (otherwise
-     (merror (intl:gettext "output_format_for_help should be one of text, html, or wxmaxima: ~M")
+     (merror (intl:gettext "output_format_for_help should be one of text, html, or frontend: ~M")
 	     val))))
