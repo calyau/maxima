@@ -27,7 +27,8 @@
   ;; This is probably not the best way to do this.  Regexp searches
   ;; are probably pretty expensive.
   (dolist (spec-char '(#\% #\$ #\? #\. #\< #\> #\#
-		       #\= #\: #\* #\- #\\ #\^ #\+ #\/ #\'))
+		       #\= #\: #\* #\- #\\ #\^ #\+ #\/ #\'
+		       #\( #\)))
     (let ((code (string-downcase
 		 (format nil "_~4,'0x" (char-code spec-char)))))
       (setf item
@@ -42,9 +43,13 @@
   (let ((base-name (make-pathname :name (pathname-name file)
                                   :type (pathname-type file))))
     (flet ((add-entry (item item-id file line)
-	     ;; Add entry to the hash table.  Check if the entry
-	     ;; already exists and print a message.  Presumably, this
-	     ;; shouldn't happen, so warn if it does.
+	     ;; Add entry to the hash table.
+	     ;;
+	     ;; Replace any special chars that texinfo has encoded.
+	     (setf item (handle-special-chars item))
+
+	     ;; Check if the entry already exists and print a message.
+	     ;; Presumably, this shouldn't happen, so warn if it does.
 	     (when (gethash item *html-index*)
 	       (format t "Already added entry ~S ~S: ~S~%"
 				item (gethash item *html-index*)
@@ -68,7 +73,6 @@
 			(format t "item-id = ~A~%" item-id)
 			(setf item
 			      (pregexp:pregexp-replace* "005f" item-id ""))
-			(setf item (handle-special-chars item))
 			#+nil
 			(format t "match = ~S ~A~%" match item)
 			(add-entry item item-id base-name line)))
@@ -87,6 +91,7 @@
 					      (car (elt match 1))
 					      (cdr (elt match 1))))
 			     (item (pregexp::pregexp-replace* "-" item-id " ")))
+			(setf item (handle-special-chars item))
 			(add-entry item item-id base-name line))))))))))
 
 ;; Run this build a hash table from the topic to the HTML file
