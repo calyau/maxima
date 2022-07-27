@@ -195,8 +195,8 @@
       (let* ((topic (fixup-topic ($sconcat x)))
              (found-it (gethash topic cl-info::*html-index*)))
 	(when *debug-display-html-help*
-	  (format *debug-io* "topic = ~A~%" topic)
-	  (format *debug-io* "found-it = ~A~%" found-it))
+	  (format *debug-io* "topic = ~S~%" topic)
+	  (format *debug-io* "found-it = ~S~%" found-it))
 	(when found-it
 	  (destructuring-bind (base-name . id)
 	      found-it
@@ -208,7 +208,7 @@
 				    id))
 		  command)
 	      (when *debug-display-html-help*
-		(format *debug-io* "URL: ~A~%" url))
+		(format *debug-io* "URL: ~S~%" url))
 	      (setf command (ignore-errors (format nil $browser url)))
 	      (cond (command
 		     (when *debug-display-html-help*
@@ -220,7 +220,7 @@
 
 (defun display-html-topics (wanted)
   (when maxima::*debug-display-html-help*
-    (format *debug-io* "wanted = ~A~%" wanted))
+    (format *debug-io* "wanted = ~S~%" wanted))
   (loop for (dir entry) in wanted
 	do (display-html-help (car entry))))
   
