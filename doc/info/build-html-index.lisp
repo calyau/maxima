@@ -34,55 +34,60 @@
 	    (pregexp:pregexp-replace* code item (string spec-char)))))
   item)
 
-(defun process-one-html-file (file entry-regexp section-regexp)
+(defun process-one-html-file (file entry-regexp section-regexp fnindex-regexp)
   "Process one html file to find all the documentation entries.
   ENTRY-REGEXP is the regexp to use for find function and variable
   items.  SECTION-REGEXP is the regexp to find sections to include."
   (format *debug-io*  "Processing: ~S~%" file)
   (let ((base-name (make-pathname :name (pathname-name file)
                                   :type (pathname-type file))))
-    (with-open-file (s file :direction :input)
-      (loop for line = (read-line s nil)
-            while line
-	    do
-	       (let (match)
-		 (cond
-		   ((setf match (pregexp:pregexp-match-positions entry-regexp line))
-		    (let ((item-id (subseq line
-					   (car (elt match 1))
-					   (cdr (elt match 1))))
-			  item)
-		      ;; Remove "005f" which texinfo adds before every "_".
-		      #+nil
-		      (format t "item-id = ~A~%" item-id)
-                      (setf item
-			    (pregexp:pregexp-replace* "005f" item-id ""))
-		      (setf item (handle-special-chars item))
-                      #+nil
-                      (format t "match = ~S ~A~%" match item)
-		      (when (gethash item *html-index*)
-			(format t "Already added entry ~S ~S: ~S~%"
+    (flet ((add-entry (item item-id file line)
+	     ;; Add entry to the hash table.  Check if the entry
+	     ;; already exists and print a message.  Presumably, this
+	     ;; shouldn't happen, so warn if it does.
+	     (when (gethash item *html-index*)
+	       (format t "Already added entry ~S ~S: ~S~%"
 				item (gethash item *html-index*)
 				line))
-                      (setf (gethash item
-                                     *html-index*)
-			    (cons base-name item-id))))
-		   ((setf match (pregexp:pregexp-match-positions section-regexp line))
-		    (let ((item-id (subseq line
-					   (car (elt match 1))
-					   (cdr (elt match 1))))
-			  (item (subseq line
-					(car (elt match 2))
-					(cdr (elt match 2)))))
-		      #+nil
-		      (format t "section item = ~A~%" item)
-		      (when (gethash item *html-index*)
-			(format t "Already added section ~S ~S: ~S~%"
-				item
-				(gethash item *html-index*)
-				line))
-		      (setf (gethash item *html-index*)
-			    (cons base-name item-id))))))))))
+	     (setf (gethash item *html-index*)
+		   (cons file item-id))))
+	     
+      (with-open-file (s file :direction :input)
+	(loop for line = (read-line s nil)
+              while line
+	      do
+		 (let (match)
+		   (cond
+		     ((setf match (pregexp:pregexp-match-positions entry-regexp line))
+		      (let ((item-id (subseq line
+					     (car (elt match 1))
+					     (cdr (elt match 1))))
+			    item)
+			;; Remove "005f" which texinfo adds before every "_".
+			#+nil
+			(format t "item-id = ~A~%" item-id)
+			(setf item
+			      (pregexp:pregexp-replace* "005f" item-id ""))
+			(setf item (handle-special-chars item))
+			#+nil
+			(format t "match = ~S ~A~%" match item)
+			(add-entry item item-id base-name line)))
+		     ((setf match (pregexp:pregexp-match-positions section-regexp line))
+		      (let ((item-id (subseq line
+					     (car (elt match 1))
+					     (cdr (elt match 1))))
+			    (item (subseq line
+					  (car (elt match 2))
+					  (cdr (elt match 2)))))
+			#+nil
+			(format t "section item = ~A~%" item)
+			(add-entry item item-id base-name line)))
+		     ((setf match (pregexp:pregexp-match-positions fnindex-regexp line))
+		      (let* ((item-id (subseq line
+					      (car (elt match 1))
+					      (cdr (elt match 1))))
+			     (item (pregexp::pregexp-replace* "-" item-id " ")))
+			(add-entry item item-id base-name line))))))))))
 
 ;; Run this build a hash table from the topic to the HTML file
 ;; containing the documentation.  The single argument DIR should be a
@@ -104,9 +109,19 @@
   ;;
   ;; where <heading> is the heading we want, and <id> is the id we can
   ;; use to link to this item.
+  ;;
+  ;; fnindex-regexp searches for id's that are associated with
+  ;; @fnindex.  These look like
+  ;;
+  ;;   <span id="index-<id>"></span>
+  ;;
+  ;; all on one line.  The <id> is is the id we can use to link to
+  ;; this item.
   (let ((entry-regexp (pregexp:pregexp "<dt id=\"index-([^\"]+)\""))
 	(section-regexp
-	  (pregexp:pregexp "<span id=\"\([^\"]+\)\">.*<h3 class=\"section\">[0-9.,]+ *\(.*\)<")))
+	  (pregexp:pregexp "<span id=\"\([^\"]+\)\">.*<h3 class=\"section\">[0-9.,]+ *\(.*\)<"))
+	(fnindex-regexp
+	  (pregexp:pregexp "<span id=\"index-\([^\"]+\)\"></span>$")))
     ;; Get a list of the files in the directory.  Remove all the ones
     ;; that don't start with "maxima".  Then sort them all in
     ;; numerical order.
@@ -143,7 +158,7 @@
 	;; We want to ignore maxima_singlepage.html for now.
 	(unless (string-equal (pathname-name file)
                               "maxima_singlepage")
-	  (process-one-html-file file entry-regexp section-regexp))))))
+	  (process-one-html-file file entry-regexp section-regexp fnindex-regexp))))))
 
 (defun build-and-dump-html-index (dir)
   (build-html-index dir)
