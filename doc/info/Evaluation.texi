@@ -13,9 +13,7 @@
 @c -----------------------------------------------------------------------------
 @anchor{quote}
 @deffn {Operator} '
-@ifinfo
 @fnindex Quote operator
-@end ifinfo
 
 The single quote operator @code{'} prevents evaluation.
 
@@ -204,9 +202,7 @@ quote.
 @c -----------------------------------------------------------------------------
 @anchor{quote-quote}
 @deffn {Operator} ''
-@ifinfo
 @fnindex Quote-quote operator
-@end ifinfo
 
 The quote-quote operator @code{'@w{}'} (two single quote marks) modifies
 evaluation in input expressions.
