@@ -1,0 +1,10 @@
+
+(mk:defsystem nelder_mead
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "contrib" "nelder_mead")
+  :source-extension "lisp"
+  :components
+  ((:file "defpackage")
+   (:file "la.lisp")
+   (:file "neldermead.lisp")
+   (:file "nm-maxima.lisp")))

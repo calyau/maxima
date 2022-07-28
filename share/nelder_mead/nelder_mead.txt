@@ -1,0 +1,22 @@
+
+
+Nelder-Mead minimization method
+
+Postby andrejv » Tue Jun 16, 2009 7:03 am
+This package contains the Nelder-Mead minimization method.
+
+The method was written in lisp by Mario S. Mommer (http://prxq.wordpress.com/2006/11/05/grid-restrained-nelder-mead/) and is available under the MIT license.
+
+This package requires Maxima version 5.18.2.
+
+    (%i1) load("nelder_mead/nelder_mead.mac")$
+    (%i2) nelder_mead(if x<0 then -x else x^2, [x], [4]);
+    (%o2)                     [x = 9.536387892694628e-11]
+    (%i3) f(x) := if x<0 then -x else x^2$
+    (%i4) nelder_mead(f, [x], [4]);
+    (%o4)                     [x = 9.536387892694628e-11]
+    (%i5) nelder_mead(f(x), [x], [4]);
+    (%o5)                     [x = 9.536387892694628e-11]
+    (%i6) nelder_mead(x^4+y^4-2*x*y-4*x-3*y, [x,y], [2,2]);
+    (%o6)           [x = 1.157212489168102, y = 1.099342680267472]
+

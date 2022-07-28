@@ -19,4 +19,4 @@ $(sharefiles)
 
 EXTRA_DIST = $(genericdirDATA)
 
-SUBDIRS = contrib logic draw
+SUBDIRS = contrib logic draw nelder_mead

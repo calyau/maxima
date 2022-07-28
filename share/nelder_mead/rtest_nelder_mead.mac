@@ -1,0 +1,19 @@
+(if errcatch (fundef (nelder_mead)) = []
+     then load ("nelder_mead"),
+ 0);
+0;
+
+nelder_mead(if x<0 then -x else x^2, [x], [4]);
+[x = 9.536387892694628e-11];
+
+(f(x) := if x<0 then -x else x^2, 0);
+0;
+
+nelder_mead(f, [x], [4]);
+[x = 9.536387892694628e-11];
+
+nelder_mead(f(x), [x], [4]);
+[x = 9.536387892694628e-11];
+
+nelder_mead(x^4+y^4-2*x*y-4*x-3*y, [x,y], [2,2]);
+[x = 1.157212489168102, y = 1.099342680267472];

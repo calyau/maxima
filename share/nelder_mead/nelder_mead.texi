@@ -1,0 +1,90 @@
+\input texinfo
+
+@setfilename nelder_mead.info
+@settitle Package nelder_mead
+
+@ifinfo
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@dircategory Mathematics/Maxima
+@direntry
+* Package nelder_mead: (maxima)Maxima share package implementing the Nelder-Mead minimization algorithm
+@end direntry
+
+@node Top, Introduction to package nelder_mead, (dir), (dir)
+@top
+@menu
+* Introduction to package nelder_mead::
+* Definitions for package nelder_mead::
+* Function and variable index::
+@end menu
+@chapter Package nelder_mead
+
+@node Introduction to package nelder_mead, Definitions for package nelder_mead, Top, Top
+@section Introduction to package nelder_mead
+
+Package @code{nelder_mead} implements the Nelder-Mead minimization algorithm [1],
+also known as the polytope or amoeba method.
+
+The Nelder-Mead algorithm is a derivative-free minimization algorithm;
+only evaluations of the objective function are required.
+
+@code{nelder_mead} implements the "grid-restrained" Nelder-Mead algorithm published by A. Bürmen et al. [2],
+and implemented in Common Lisp by Mario S. Mommer.
+Thanks to Andrej Vodopivec for the Maxima interface to the Common Lisp code.
+
+References
+
+[1] J.A. Nelder and R. Mead, "A simplex method for function
+    minimization," The Computer Journal, vol. 7, pp. 308-313, 1965.
+
+[2] A. Bürmen, J. Puhan and T. Tuma, "Grid Restrained Nelder-Mead
+    Algorithm", Computational Optimization and Applications, vol.
+    34, no. 3, pp. 359 - 375, 2006.
+
+@node Definitions for package nelder_mead, Function and variable index, Introduction to package nelder_mead, Top
+@section Definitions for package nelder_mead
+
+@deffn {Function} nelder_mead (@var{obj}, @var{vars}, @var{init})
+
+Returns an approximate minimum of the objective function @var{obj},
+as a function of the variables @var{vars},
+starting at the initial point @var{init}.
+
+The objective function may be discontinuous,
+but if it is continuous,
+the algorithm ("grid-restrained" Nelder-Mead)
+is provably convergent.
+The objective function need not be differentiable;
+derivatives are not computed, not even approximately.
+
+Examples:
+
+@c ===beg===
+@c load ("nelder_mead") $
+@c nelder_mead (if x<0 then -x else x^2, [x], [4]);
+@c f(x) := if x < 0 then -x else x^2 $
+@c nelder_mead (f, [x], [4]);
+@c nelder_mead (x^4 + y^4 - 2*x*y - 4*x - 3*y, [x, y], [2, 2]);
+@c ===end===
+@example
+(%i1) load ("nelder_mead") $
+(%i2) nelder_mead (if x<0 then -x else x^2, [x], [4]);
+(%o2)              [x = 9.536387892694628E-11]
+(%i3) f(x) := if x < 0 then -x else x^2 $
+(%i4) nelder_mead (f, [x], [4]);
+(%o4)              [x = 9.536387892694628E-11]
+(%i5) nelder_mead (x^4 + y^4 - 2*x*y - 4*x - 3*y, [x, y], [2, 2]);
+(%o5)    [x = 1.157212489168102, y = 1.099342680267472]
+@end example
+@end deffn
+
+@node Function and variable index,  , Definitions for package nelder_mead, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
