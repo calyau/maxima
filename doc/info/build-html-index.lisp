@@ -91,6 +91,11 @@
 					      (car (elt match 1))
 					      (cdr (elt match 1))))
 			     (item (pregexp::pregexp-replace* "-" item-id " ")))
+			;; However if the item ends in digits, we
+			;; replaced too many "-" with spaces.  So if
+			;; it ends with a space followed by digits, we
+			;; need to replace the space with "-" again.
+			(setf item (pregexp::pregexp-replace* " \(\\d+\)$" item "-\\1"))
 			(setf item (handle-special-chars item))
 			(add-entry item item-id base-name line))))))))))
 
