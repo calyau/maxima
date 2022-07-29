@@ -677,7 +677,7 @@ maxima-index.lisp: build_index.pl maxima.info
 # Really depends on all the individual html files, but let's assume
 # that if maxima_toc.html is done, we have all the remaining html
 # files.
-maxima-index-html.lisp : maxima_toc.html
+maxima-index-html.lisp : maxima_toc.html build-html-index.lisp
 	../../maxima-local --batch-lisp=build-html-index.lisp
 
 DOLLAR_SIGN = $$
