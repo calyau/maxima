@@ -3132,7 +3132,7 @@ integrate(z^(v-1)*(%e^(a*z^r))^u,z);
  * We get the most simple result only for a real argument x.
  */
 integrate((%e^(a*x^r))^u/x,x),gamma_expand:true,logcontract;
-expintegral_ei(a*u*x^r)/r;
+(%e^(a*x^r))^u*%e^(-a*u*x^r)*expintegral_ei(a*u*x^r)/r;
 
 /* Problem 572: NEW 2-1 */
 integrate(z^n*(%e^(a*z^2))^u,z);
@@ -3168,7 +3168,7 @@ integrate(z^(v-1)*(%e^(b+a*z^r))^u,z);
  * We get the most simple result only for a real argument x.
  */
 integrate((%e^(b+a*x^r))^u/x,x),gamma_expand:true,logcontract;
-%e^(b*u)*expintegral_ei(a*u*x^r)/r;
+%e^(-a*u*x^r)*(%e^(a*x^r+b))^u*expintegral_ei(a*u*x^r)/r;
 
 /* Problem 578: NEW 2-1 */
 integrate(z^n*(%e^(b+a*z^2))^u,z),ratsimp;
