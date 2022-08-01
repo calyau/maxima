@@ -14,8 +14,8 @@
 # wxWidgets version => use an older wxWidgets version when compiling an installer
 # with the last wxMaxima release.
 if(USE_WXMAXIMA_GIT)
-    set(WXWIDGETSVERSION "3.1.7")
-    set(WXWIDGETS_MD5 "3b1ab66988a31803be3f5dd46634efb0")
+    set(WXWIDGETSVERSION "3.2.0")
+    set(WXWIDGETS_MD5 "4e3b34a952f487255d5c52644ff3249f")
 else()
     set(WXWIDGETSVERSION "3.1.4")
     set(WXWIDGETS_MD5 "47eaa907b3923bc5d6938bd5cf35b901")
