@@ -344,8 +344,12 @@ the Bessel function is expanded.
 
 The scaled modified Bessel function of the first kind of order
 @math{v} and argument @math{z}.  That is,
-m4_math(<<<{\rm scaled\_bessel\_i}(v,z) = e^{-|z|} I_v(z).>>>,
-<<<scaled_bessel_i(v,z) = exp(-abs(z)) * bessel_i(v,z).>>>) This function is particularly useful
+
+m4_displaymath(
+<<<{\rm scaled\_bessel\_i}(v,z) = e^{-|z|} I_v(z).>>>,
+<<<scaled_bessel_i(v,z) = exp(-abs(z)) * bessel_i(v,z).>>>)
+
+This function is particularly useful
 for calculating m4_math(<<<I_v(z)>>>,<<<bessel_i>>>) for large @math{z}, which is large.
 However, maxima does not otherwise know much about this function.  For
 symbolic work, it is probably preferable to work with the expression
