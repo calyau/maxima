@@ -455,7 +455,16 @@ m4_displaymath(
 <<<{d^2 y\over dx^2} - xy = 0>>>,
 <<<@math{diff (y(x), x, 2) - x y(x) = 0}>>>)
 
-are m4_math(<<<y = {\rm Ai}(x)>>>,<<<@math{y = Ai(x)}>>>) and m4_math(<<<y = {\rm Bi}(x)>>>,<<<@math{y = Bi(x)}>>>) 
+are m4_math(<<<y = {\rm Ai}(x)>>>,<<<@math{y = Ai(x)}>>>) and m4_math(<<<y = {\rm Bi}(x).>>>,<<<@math{y = Bi(x).}>>>) 
+
+These two solutions are oscillatory for @math{x < 0}.  m4_math({\rm Ai}(x), @math{Ai(x)}) is
+the solution subject to the condition that m4_math(y\rightarrow 0,
+@math{y->0}) as m4_math(<<<x\rightarrow\infty,>>>, <<<@math{x ->
+inf,}>>>) and m4_math({\rm Bi}(x), @math{Bi(x)}) is
+the second solution with the
+same amplitude as m4_math({\rm Ai}(x),@math{Ai(x)}) as m4_math(x\rightarrow-\infty,@math{x->minf}) which differs in phase
+by m4_math(\pi/2.,@math{%pi/2.})  Also, m4_math({\rm Bi}(x),@math{Bi(x)}) is unbounded
+as m4_math(x\rightarrow \infty., @math{x->inf.})
 
 
 If the argument @math{x} is a real or complex floating point 
