@@ -139,12 +139,12 @@ that governs the distribution of Maxima.
 @comment  node-name,  next,  previous,  up
 
 @section Functions and Variables for Elliptic Functions
+See @urlaands{Section 6.12, 569} and @urldlmf{22.2} for more
+information.
 
 @anchor{jacobi_sn}
 @deffn {Function} jacobi_sn (@var{u}, @var{m})
-The Jacobian elliptic function
-m4_math(<<<{\rm sn}(u,m).>>>,
-<<<sn(u,m).>>>)
+The Jacobian elliptic function m4_mathdot(<<<{\rm sn}(u,m)>>>, <<<sn(u,m)>>>)
 
 
 @opencatbox{Categories:}
@@ -154,7 +154,7 @@ m4_math(<<<{\rm sn}(u,m).>>>,
 
 @anchor{jacobi_cn}
 @deffn {Function} jacobi_cn (@var{u}, @var{m})
-The Jacobian elliptic function @math{cn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm cn}(u,m)>>>, <<<cn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -163,7 +163,7 @@ The Jacobian elliptic function @math{cn(u,m)}.
 
 @anchor{jacobi_dn}
 @deffn {Function} jacobi_dn (@var{u}, @var{m})
-The Jacobian elliptic function @math{dn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm dn}(u,m)>>>, <<<dn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -172,7 +172,8 @@ The Jacobian elliptic function @math{dn(u,m)}.
 
 @anchor{jacobi_ns}
 @deffn {Function} jacobi_ns (@var{u}, @var{m})
-The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm ns}(u,m) = 1/{\rm
+sn}(u,m)>>>, <<<ns(u,m) = 1/sn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -181,7 +182,8 @@ The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
 
 @anchor{jacobi_sc}
 @deffn {Function} jacobi_sc (@var{u}, @var{m})
-The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm sc}(u,m) = {\rm
+sn}(u,m)/{\rm cn}(u,m)>>>, <<<sc(u,m) = sn(u,m)/cn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -190,7 +192,8 @@ The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 
 @anchor{jacobi_sd}
 @deffn {Function} jacobi_sd (@var{u}, @var{m})
-The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
+The Jacobian elliptic function m4_mathdot({\rm sd}(u,m) = {\rm
+sn}(u,m)/{\rm dn}(u,m), <<<sd(u,m) = sn(u,m)/dn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -199,7 +202,7 @@ The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 
 @anchor{jacobi_nc}
 @deffn {Function} jacobi_nc (@var{u}, @var{m})
-The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm nc}(u,m) = 1/{\rm cn}(u,m)>>>, <<<nc(u,m) = 1/cn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -208,7 +211,8 @@ The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
 
 @anchor{jacobi_cs}
 @deffn {Function} jacobi_cs (@var{u}, @var{m})
-The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm cs}(u,m) = {\rm
+cn}(u,m)/{\rm sn}(u,m)>>>, <<<cs(u,m) = cn(u,m)/sn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -217,7 +221,7 @@ The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 
 @anchor{jacobi_cd}
 @deffn {Function} jacobi_cd (@var{u}, @var{m})
-The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm cd}(u,m) = {\rm cn}(u,m)/{\rm dn}(u,m)>>>, <<<cd(u,m) = cn(u,m)/dn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -226,7 +230,8 @@ The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 
 @anchor{jacobi_nd}
 @deffn {Function} jacobi_nd (@var{u}, @var{m})
-The Jacobian elliptic function @math{nd(u,m) = 1/dn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm nd}(u,m) = 1/{\rm dn}(u,m)>>>,
+<<<nd(u,m) = 1/dn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -235,7 +240,8 @@ The Jacobian elliptic function @math{nd(u,m) = 1/dn(u,m)}.
 
 @anchor{jacobi_ds}
 @deffn {Function} jacobi_ds (@var{u}, @var{m})
-The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm ds}(u,m) =
+{\rm dn}(u,m)/{\rm sn}(u,m)>>>, <<<ds(u,m) = dn(u,m)/sn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -244,7 +250,8 @@ The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 
 @anchor{jacobi_dc}
 @deffn {Function} jacobi_dc (@var{u}, @var{m})
-The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
+The Jacobian elliptic function m4_mathdot(<<<{\rm dc}(u,m) =
+{\rm dn}(u,m)/{\rm cn}(u,m)>>>, <<<dc(u,m) = dn(u,m)/cn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -253,7 +260,7 @@ The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 
 @anchor{inverse_jacobi_sn}
 @deffn {Function} inverse_jacobi_sn (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{sn(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm sn}(u,m)>>>, <<<sn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -262,7 +269,7 @@ The inverse of the Jacobian elliptic function @math{sn(u,m)}.
 
 @anchor{inverse_jacobi_cn}
 @deffn {Function} inverse_jacobi_cn (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{cn(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm cn}(u,m)>>>, <<<cn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -271,7 +278,7 @@ The inverse of the Jacobian elliptic function @math{cn(u,m)}.
 
 @anchor{inverse_jacobi_dn}
 @deffn {Function} inverse_jacobi_dn (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{dn(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm dn}(u,m)>>>, <<<dn(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -280,7 +287,7 @@ The inverse of the Jacobian elliptic function @math{dn(u,m)}.
 
 @anchor{inverse_jacobi_ns}
 @deffn {Function} inverse_jacobi_ns (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{ns(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm ns}(u,m)>>>, <<<ns(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -289,7 +296,7 @@ The inverse of the Jacobian elliptic function @math{ns(u,m)}.
 
 @anchor{inverse_jacobi_sc}
 @deffn {Function} inverse_jacobi_sc (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{sc(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm sc}(u,m)>>>, <<<sc(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -298,7 +305,7 @@ The inverse of the Jacobian elliptic function @math{sc(u,m)}.
 
 @anchor{inverse_jacobi_sd}
 @deffn {Function} inverse_jacobi_sd (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{sd(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm sd}(u,m)>>>, <<<sd(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -307,7 +314,7 @@ The inverse of the Jacobian elliptic function @math{sd(u,m)}.
 
 @anchor{inverse_jacobi_nc}
 @deffn {Function} inverse_jacobi_nc (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{nc(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm nc}(u,m)>>>, <<<nc(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -316,7 +323,7 @@ The inverse of the Jacobian elliptic function @math{nc(u,m)}.
 
 @anchor{inverse_jacobi_cs}
 @deffn {Function} inverse_jacobi_cs (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{cs(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm cs}(u,m)>>>, <<<cs(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -325,7 +332,7 @@ The inverse of the Jacobian elliptic function @math{cs(u,m)}.
 
 @anchor{inverse_jacobi_cd}
 @deffn {Function} inverse_jacobi_cd (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{cd(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm cd}(u,m)>>>, <<<cd(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -334,7 +341,7 @@ The inverse of the Jacobian elliptic function @math{cd(u,m)}.
 
 @anchor{inverse_jacobi_nd}
 @deffn {Function} inverse_jacobi_nd (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{nd(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm nd}(u,m)>>>, <<<nd(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -343,7 +350,7 @@ The inverse of the Jacobian elliptic function @math{nd(u,m)}.
 
 @anchor{inverse_jacobi_ds}
 @deffn {Function} inverse_jacobi_ds (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{ds(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm ds}(u,m)>>>, <<<ds(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -352,7 +359,7 @@ The inverse of the Jacobian elliptic function @math{ds(u,m)}.
 
 @anchor{inverse_jacobi_dc}
 @deffn {Function} inverse_jacobi_dc (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function @math{dc(u,m)}.
+The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm dc}(u,m)>>>, <<<dc(u,m)>>>)
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
@@ -409,13 +416,12 @@ m4_displaymath(
 <<<@math{elliptic_eu(u, m) = integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}>>>
 )
 
-where
-m4_math(
+where m4_mathdot(
 <<<\tau = {\rm sn}(u,m)>>>
 ,
 <<<tau = sn(u,m)>>>
 )
-.
+
 
 This is related to @code{elliptic_e} by
 
