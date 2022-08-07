@@ -41,7 +41,7 @@ m4_define(<<<m4_math>>>,
 @math{$1}
 @end ifhtml
 @ifinfo
-$2
+@math{$2}
 @end ifinfo
 @tex
 $m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)$
