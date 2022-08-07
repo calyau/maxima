@@ -8,7 +8,7 @@
 @c Define an m4 macro for the NormalRV function that is used below.
 @c Can't use @macro because m4 is processed too late for this to work.
 m4_define(<<<m4_Normal_RV>>>,
-m4_math(<<<{\it Normal}($1, $2)>>>, <<<@math{Normal($1, $2)}>>>))
+m4_math(<<<{\it Normal}($1, $2)>>>, <<<Normal($1, $2)>>>))
 
 @c Define the function student t to denote Student's t random variable
 m4_define(<<<m4_Student_T_RV>>>,
@@ -16,92 +16,92 @@ m4_define(<<<m4_Student_T_RV>>>,
 
 @c Define noncentral Student's t RV
 m4_define(<<<m4_Noncentral_T_RV>>>,
-m4_math(<<<{\it nc\_t}($1, $2)>>>,<<<@math{nc_t($1, $2)}>>>))
+m4_math(<<<{\it nc\_t}($1, $2)>>>,<<<nc_t($1, $2)>>>))
 
 @c Define Chi^2(n), the chi-squared random variate function.
 m4_define(<<<m4_Chi2_RV>>>,
-m4_math(<<<\chi^2($1)>>>, <<<@math{Chi^2($2)}>>>))
+m4_math(<<<\chi^2($1)>>>, <<<Chi^2($2)>>>))
 
 @c Define the Gamma RV
 m4_define(<<<m4_Gamma_RV>>>,
-m4_math(<<<\Gamma\left($1,$2\right)>>>, <<<@math{Gamma($1,$2)}>>>))
+m4_math(<<<\Gamma\left($1,$2\right)>>>, <<<Gamma($1,$2)>>>))
 
 @c Define the noncentral chi-squared RV
 m4_define(<<<m4_noncentral_chi2_RV>>>,
-m4_math(<<<{\it nc\_Chi}^2($1,$2)>>>, <<<@math{nc_Chi^2($1,$2)}>>>))
+m4_math(<<<{\it nc\_Chi}^2($1,$2)>>>, <<<nc_Chi^2($1,$2)>>>))
 
 @c Define the exponential RV
 m4_define(<<<m4_Exponential_RV>>>,
-m4_math(<<<{\it Exponential}($1)>>>, <<<@math{Exponential($1)}>>>))
+m4_math(<<<{\it Exponential}($1)>>>, <<<Exponential($1)>>>))
 
 @c Define the Weibull RV
 m4_define(<<<m4_Weibull_RV>>>,
-m4_math(<<<{\it Weibull}($1,$2)>>>, <<<@math{Weibull($1,$2)}>>>))
+m4_math(<<<{\it Weibull}($1,$2)>>>, <<<Weibull($1,$2)>>>))
 
 @c Define lognormal RV
 m4_define(<<<m4_Lognormal_RV>>>,
-m4_math(<<<{\it Lognormal}($1,$2)>>>,<<<@math{Lognormal($1,$2)}>>>))
+m4_math(<<<{\it Lognormal}($1,$2)>>>,<<<Lognormal($1,$2)>>>))
 
 @c Define beta RV
 m4_define(<<<m4_Beta_RV>>>,
-m4_math(<<<{\it Beta}($1,$2)>>>,<<<@math{Beta($1,$2)}>>>))
+m4_math(<<<{\it Beta}($1,$2)>>>,<<<Beta($1,$2)>>>))
 
 @c Define continuous uniform RV
 m4_define(<<<m4_Continuous_Uniform_RV>>>,
 m4_math(<<<{\it
-ContinuousUniform}($1,$2)>>>,<<<@math{ContinuousUniform($1,$2)}>>>))
+ContinuousUniform}($1,$2)>>>,<<<ContinuousUniform($1,$2)>>>))
 
 @c Define logistic RV
 m4_define(<<<m4_Logistic_RV>>>,
-m4_math(<<<{\it Logistic}($1,$2)>>>,<<<<@math{Logistice($1,$2)}>>>))
+m4_math(<<<{\it Logistic}($1,$2)>>>,<<<<Logistice($1,$2)>>>))
 
 @c Define pareto RV
 m4_define(<<<m4_Pareto_RV>>>,
-m4_math(<<<{\it Pareto}($1,$2)>>>,<<<@math{Pareto($1,$2)}>>>))
+m4_math(<<<{\it Pareto}($1,$2)>>>,<<<Pareto($1,$2)>>>))
 
 @c Define Rayleigh RV
 m4_define(<<<m4_Rayleigh_RV>>>,
-m4_math(<<<{\it Rayleigh}($1)>>>,<<<@math{Rayleigh($1)}>>>))
+m4_math(<<<{\it Rayleigh}($1)>>>,<<<Rayleigh($1)>>>))
 
 @c Define Laplace RV
 m4_define(<<<m4_Laplace_RV>>>,
-m4_math(<<<{\it Laplace}($1,$2)>>>,<<<@math{Laplace($1,$2)}>>>))
+m4_math(<<<{\it Laplace}($1,$2)>>>,<<<Laplace($1,$2)>>>))
 
 @c Define Cauchy RV
 m4_define(<<<m4_Cauchy_RV>>>,
-m4_math(<<<{\it Cauchy}($1,$2)>>>,<<<@math{Cauchy($1,$2)}>>>))
+m4_math(<<<{\it Cauchy}($1,$2)>>>,<<<Cauchy($1,$2)>>>))
 
 @c Define Gumbel RV
 m4_define(<<<m4_Gumbel_RV>>>,
-m4_math(<<<{\it Gumbel}($1,$2)>>>,<<<@math{Gumbel($1,$2)}>>>))
+m4_math(<<<{\it Gumbel}($1,$2)>>>,<<<Gumbel($1,$2)>>>))
 
 @c Define Binomial RV
 m4_define(<<<m4_Binomial_RV>>>,
-m4_math(<<<{\it Binomial}($1,$2)>>>,<<<@math{Binomial($1,$2)}>>>))
+m4_math(<<<{\it Binomial}($1,$2)>>>,<<<Binomial($1,$2)>>>))
 
 @c Define Poisson RV
 m4_define(<<<m4_Poisson_RV>>>,
-m4_math(<<<{\it Poisson}($1)>>>,<<<@math{Poisson($1)}>>>))
+m4_math(<<<{\it Poisson}($1)>>>,<<<Poisson($1)>>>))
 
 @c Define Bernoulli RV
 m4_define(<<<m4_Bernoulli_RV>>>,
-m4_math(<<<{\it Bernoulli}($1)>>>,<<<@math{Bernoulli($1)}>>>))
+m4_math(<<<{\it Bernoulli}($1)>>>,<<<Bernoulli($1)>>>))
 
 @c Define Geometric RV
 m4_define(<<<m4_Geometric_RV>>>,
-m4_math(<<<{\it Geometric}($1)>>>,<<<@math{Geometric($1)}>>>))
+m4_math(<<<{\it Geometric}($1)>>>,<<<Geometric($1)>>>))
 
 @c Define Discrete Uniform RV
 m4_define(<<<m4_DiscreteUniform_RV>>>,
-m4_math(<<<{\it DiscreteUniform}($1)>>>,<<<@math{DiscreteUniform($1)}>>>))
+m4_math(<<<{\it DiscreteUniform}($1)>>>,<<<DiscreteUniform($1)>>>))
 
 @c Define Hypergeometric RV
 m4_define(<<<m4_Hypergeometric_RV>>>,
-m4_math(<<<{\it Hypergeometric}($1,$2,$3)>>>,<<<@math{Hypergeometric($1,$2,$3)}>>>))
+m4_math(<<<{\it Hypergeometric}($1,$2,$3)>>>,<<<Hypergeometric($1,$2,$3)>>>))
 
 @c Define Negative Binomial RV
 m4_define(<<<m4_NegativeBinomial_RV>>>,
-m4_math(<<<{\it NegativeBinomial}($1,$2)>>>,<<<@math{NegativeBinomial($1,$2)}>>>))
+m4_math(<<<{\it NegativeBinomial}($1,$2)>>>,<<<NegativeBinomial($1,$2)>>>))
 
 
 @node Introduction to distrib, Functions and Variables for continuous distributions
@@ -126,7 +126,7 @@ m4_displaymath(
                        minf
 @end example
 >>>)
-which equals the probability m4_math(<<<{\rm Pr}(X \le x)>>>, <<<@math{Pr(X <= x)}>>>).
+which equals the probability m4_math(<<<{\rm Pr}(X \le x)>>>, <<<Pr(X <= x)>>>).
 
 The @var{mean} value is a localization parameter and is defined as
 m4_displaymath(
@@ -159,7 +159,7 @@ m4_displaymath(
 @end example
 >>>)
 which is a positive real number. The square root of the variance is
-the @var{standard deviation}, m4_math(<<<D[x]=\sqrt{V[X]}>>>, <<<@math{D[X]=sqrt(V[X])}>>>), and it is another measure of variation.
+the @var{standard deviation}, m4_math(<<<D[x]=\sqrt{V[X]}>>>, <<<D[X]=sqrt(V[X])>>>), and it is another measure of variation.
 
 The @var{skewness coefficient} is a measure of non-symmetry,
 m4_displaymath(
@@ -637,7 +637,7 @@ F(x,n) = [
 @end example
 >>>)
 
-where m4_math(<<<t = n/(n+x^2)>>>, <<<@math{t = n/(n+x^2)}>>>) and m4_math(<<<I_t(a,b)>>>, <<<@math{I_t(a,b)}>>>) is the
+where m4_math(<<<t = n/(n+x^2)>>>, <<<t = n/(n+x^2)>>>) and m4_math(<<<I_t(a,b)>>>, <<<I_t(a,b)>>>) is the
 @ref{beta_incomplete_regularized} function.
 
 @c ===beg===
@@ -1099,7 +1099,7 @@ Returns the skewness coefficient of a noncentral Student random variable m4_Nonc
 @c is just cut-n-pasted from maxima's terminal output.
 If @math{U} is a non-central Student's @math{t} random variable with
 @math{n} degrees of freedom and a noncentrality parameter m4_math(\mu,
-@math{mu}), the skewness is
+mu), the skewness is
 m4_displaymath(
 <<<\eqalign{
 SK[U] &= 
@@ -1150,7 +1150,7 @@ Returns the kurtosis coefficient of a noncentral Student random variable m4_Nonc
 
 If @math{U} is a non-central Student's @math{t} random variable with
 @math{n} degrees of freedom and a noncentrality parameter m4_math(\mu,
-@math{mu}), the kurtosis is
+mu), the kurtosis is
 
 @c The formula we see can be basically derived by computing
 @c (kurtosis_noncentral_student_t(n,mu)+3)*var_noncentral_student_t(n,mu)^2,
@@ -1236,8 +1236,8 @@ To make use of this function, write first @code{load("distrib")}.
 @node Chi-squared Random Variable, Noncentral Chi-squared Random Variable, Noncentral Student's t Random Variable, Functions and Variables for continuous distributions
 @subsection Chi-squared Random Variable
 
-Let m4_math(<<<X_1, X_2, \ldots, X_n>>>, <<<@math{X_1, X_2, ...,
-X_k}>>>) be independent and identically distributed m4_Normal_RV(0,1) variables.  Then
+Let m4_math(<<<X_1, X_2, \ldots, X_n>>>, <<<X_1, X_2, ...,
+X_k>>>) be independent and identically distributed m4_Normal_RV(0,1) variables.  Then
 m4_displaymath(
 <<<X^2 = \sum_{i=1}^n X_i^2>>>,
 <<<@math{X^2 = sum(X_i^2, i, 1, n)}>>>)
@@ -1572,7 +1572,7 @@ To make use of this function, write first @code{load("distrib")}.
 @node Noncentral Chi-squared Random Variable, F Random Variable, Chi-squared Random Variable, Functions and Variables for continuous distributions
 @subsection Noncentral Chi-squared Random Variable
 
-Let m4_math(<<<X_1, X_2, ..., X_n>>>, <<<@math{X[1], X[2], ..., X[n]}>>>) be @math{n} 
+Let m4_math(<<<X_1, X_2, ..., X_n>>>, <<<X[1], X[2], ..., X[n]>>>) be @math{n} 
 independent normally distributed random variables with
 means m4_math(\mu_k, mu[k]) and unit variances.  Then the random variable
 
@@ -1595,7 +1595,7 @@ noncentral m4_math(\chi^2, Chi-square) random
 variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter @math{ncp>=0}. To 
 make use of this function, write first @code{load("distrib")}.
 
-For @math{x < 0}, the pdf is 0, and for m4_math(x \ge 0, @math{x >= 0}) the pdf is
+For @math{x < 0}, the pdf is 0, and for m4_math(x \ge 0, x >= 0) the pdf is
 m4_displaymath(
 <<<f(x; n, \lambda) =
 {1\over 2}e^{-(x+\lambda)/2} \left(x\over

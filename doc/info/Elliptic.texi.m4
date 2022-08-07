@@ -144,7 +144,7 @@ that governs the distribution of Maxima.
 @deffn {Function} jacobi_sn (@var{u}, @var{m})
 The Jacobian elliptic function
 m4_math(<<<{\rm sn}(u,m).>>>,
-<<<@math{sn(u,m).}>>>)
+<<<sn(u,m).>>>)
 
 
 @opencatbox{Categories:}
@@ -413,7 +413,7 @@ where
 m4_math(
 <<<\tau = {\rm sn}(u,m)>>>
 ,
-<<<@math{tau = sn(u,m)}>>>
+<<<tau = sn(u,m)>>>
 )
 .
 
