@@ -1625,7 +1625,7 @@ matrix inverse, if it exists.
 Calculates the matrix exponential
 m4_math(
 <<<e^{M\cdot V}>>>,
-<<<@math{e^(M*V)}>>>,
+<<<e^(M*V)>>>,
 <<<e^{MV}>>>)
 @c @ifnotinfo
 @c @tex
