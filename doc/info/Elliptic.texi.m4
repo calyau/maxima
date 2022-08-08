@@ -17,14 +17,13 @@ Maxima includes support for Jacobian elliptic functions and for
 complete and incomplete elliptic integrals.  This includes symbolic
 manipulation of these functions and numerical evaluation as well.
 Definitions of these functions and many of their properties can by
-found in Abramowitz and Stegun, Chapter 16--17.  As much as possible,
-we use the definitions and relationships given there.
+found in Abramowitz and Stegun, @urlaands{Chapter 16, 567} and
+@urlaands{Chapter 17., 587}  See also @urldlmf{22.2}.  As much as possible,
+we use the definitions and relationships given in Abramowitz and Stegun.
 
 In particular, all elliptic functions and integrals use the parameter
 @math{m} instead of the modulus @math{k} or the modular angle
-@math{\alpha}.  This is one area where we differ from Abramowitz and
-Stegun who use the modular angle for the elliptic functions.  The
-following relationships are true:
+@math{\alpha}.  The following relationships are true:
 
 m4_displaymath(
 <<<\eqalign{
@@ -37,6 +36,10 @@ k &= \sin\alpha
 @math{k = sin(alpha)}>>>
 )
 
+Note that Abramowitz and Stegun uses the notation m4_math(<<<{\rm
+sn}(u|m)>>>, <<<sn(u|m)>>>) where we use m4_math(<<<{\rm
+sn}(u,m)>>>, <<<sn(u,m)>>>) instead.  The DLMF uses modulus @math{k}
+instead of the parameter @math{m}.
 
 The elliptic functions and integrals are primarily intended to support
 symbolic computation.  Therefore, most of derivatives of the functions
