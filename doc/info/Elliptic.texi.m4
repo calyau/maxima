@@ -421,7 +421,7 @@ m4_displaymath(
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
 cs}(u,m)>>>, <<<cs(u,m)>>>) It can also be written (@urldlmf{22.15.E23}):
 m4_displaymath(
-{\rm inverse\_jacobi\_cs}(u, m) = \int_x^{\infty} {dt\over \sqrt{(1+t^2)(t^2+(1-m))}},
+{\rm inverse\_jacobi\_cs}(u, m) = \int_u^{\infty} {dt\over \sqrt{(1+t^2)(t^2+(1-m))}},
 @example
                              inf
                             /
