@@ -264,7 +264,7 @@ The Jacobian elliptic function m4_mathdot(<<<{\rm dc}(u,m) =
 @anchor{inverse_jacobi_sn}
 @deffn {Function} inverse_jacobi_sn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-sn}(u,m)>>>, <<<sn(u,m)>>>)  It can also be written (@urldlmf{22.15.E12}):
+sn}(u,m)>>>, <<<sn(u,m)>>>)  For m4_mathcomma(-1\le u \le 1, -1 <= u <= 1) it can also be written (@urldlmf{22.15.E12}):
 m4_displaymath(
 {\rm inverse\_jacobi\_sn}(u, m) = \int_0^u {dt\over \sqrt{(1-t^2)(1-mt^2)}},
 @example
@@ -286,7 +286,7 @@ m4_displaymath(
 @anchor{inverse_jacobi_cn}
 @deffn {Function} inverse_jacobi_cn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-cn}(u,m)>>>, <<<cn(u,m)>>>)  It can also be written (@urldlmf{22.15.E13}):
+cn}(u,m)>>>, <<<cn(u,m)>>>)  For m4_mathcomma(-1\le u \le 1, -1 <= u <= 1) it can also be written (@urldlmf{22.15.E13}):
 m4_displaymath(
 {\rm inverse\_jacobi\_cn}(u, m) = \int_u^1 {dt\over \sqrt{(1-t^2)(1-m+mt^2)}},
 @example
@@ -308,7 +308,8 @@ m4_displaymath(
 @anchor{inverse_jacobi_dn}
 @deffn {Function} inverse_jacobi_dn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-dn}(u,m)>>>, <<<dn(u,m)>>>) It can also be written (@urldlmf{22.15.E14}):
+dn}(u,m)>>>, <<<dn(u,m)>>>) For m4_mathcomma(\sqrt{1-m}\le u \le 1,
+sqrt(1-m) <= u <= 1) it can also be written (@urldlmf{22.15.E14}):
 m4_displaymath(
 {\rm inverse\_jacobi\_dn}(u, m) = \int_u^1 {dt\over \sqrt{(1-t^2)(t^2-(1-m))}},
 @example
@@ -331,7 +332,7 @@ m4_displaymath(
 @anchor{inverse_jacobi_ns}
 @deffn {Function} inverse_jacobi_ns (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-ns}(u,m)>>>, <<<ns(u,m)>>>) It can also be written (@urldlmf{22.15.E121}):
+ns}(u,m)>>>, <<<ns(u,m)>>>) For m4_mathcomma(1 \le u, 1 <= u) it can also be written (@urldlmf{22.15.E121}):
 m4_displaymath(
 {\rm inverse\_jacobi\_ns}(u, m) = \int_u^{\infty} {dt\over \sqrt{(1-t^2)(t^2-m)}},
 @example
@@ -353,7 +354,7 @@ m4_displaymath(
 @anchor{inverse_jacobi_sc}
 @deffn {Function} inverse_jacobi_sc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-sc}(u,m)>>>, <<<sc(u,m)>>>) It can also be written (@urldlmf{22.15.E20}):
+sc}(u,m)>>>, <<<sc(u,m)>>>) For all @math{u} it can also be written (@urldlmf{22.15.E20}):
 m4_displaymath(
 {\rm inverse\_jacobi\_sc}(u, m) = \int_0^u {dt\over \sqrt{(1+t^2)(1+(1-m)t^2)}},
 @example
@@ -375,7 +376,8 @@ m4_displaymath(
 @anchor{inverse_jacobi_sd}
 @deffn {Function} inverse_jacobi_sd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-sd}(u,m)>>>, <<<sd(u,m)>>>) It can also be written (@urldlmf{22.15.E16}):
+sd}(u,m)>>>, <<<sd(u,m)>>>) For m4_mathcomma(-1/\sqrt{1-m}\le u \le
+1/\sqrt{1-m}, -1/sqrt(1-m) <= 1/sqrt(1-m)) it can also be written (@urldlmf{22.15.E16}):
 m4_displaymath(
 {\rm inverse\_jacobi\_sd}(u, m) = \int_0^u {dt\over \sqrt{(1-(1-m)t^2)(1+mt^2)}},
 @example
@@ -397,7 +399,7 @@ m4_displaymath(
 @anchor{inverse_jacobi_nc}
 @deffn {Function} inverse_jacobi_nc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-nc}(u,m)>>>, <<<nc(u,m)>>>) It can also be written (@urldlmf{22.15.E19}):
+nc}(u,m)>>>, <<<nc(u,m)>>>) For m4_mathcomma(1\le u, 1 <= u) it can also be written (@urldlmf{22.15.E19}):
 m4_displaymath(
 {\rm inverse\_jacobi\_nc}(u, m) = \int_1^u {dt\over \sqrt{(t^2-1)(m+(1-m)t^2)}},
 @example
@@ -419,7 +421,7 @@ m4_displaymath(
 @anchor{inverse_jacobi_cs}
 @deffn {Function} inverse_jacobi_cs (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-cs}(u,m)>>>, <<<cs(u,m)>>>) It can also be written (@urldlmf{22.15.E23}):
+cs}(u,m)>>>, <<<cs(u,m)>>>) For all @math{u} it can also be written (@urldlmf{22.15.E23}):
 m4_displaymath(
 {\rm inverse\_jacobi\_cs}(u, m) = \int_u^{\infty} {dt\over \sqrt{(1+t^2)(t^2+(1-m))}},
 @example
@@ -442,7 +444,8 @@ m4_displaymath(
 @anchor{inverse_jacobi_cd}
 @deffn {Function} inverse_jacobi_cd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-cd}(u,m)>>>, <<<cd(u,m)>>>) It can also be written (@urldlmf{22.15.E15}):
+cd}(u,m)>>>, <<<cd(u,m)>>>) For m4_mathcomma(-1\le u \le 1, -1 <= u <=
+1) it can also be written (@urldlmf{22.15.E15}):
 m4_displaymath(
 {\rm inverse\_jacobi\_cd}(u, m) = \int_u^1 {dt\over \sqrt{(1-t^2)(1-mt^2)}},
 @example
@@ -465,7 +468,8 @@ m4_displaymath(
 @anchor{inverse_jacobi_nd}
 @deffn {Function} inverse_jacobi_nd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-nd}(u,m)>>>, <<<nd(u,m)>>>) It can also be written (@urldlmf{22.15.E17}):
+nd}(u,m)>>>, <<<nd(u,m)>>>) For m4_mathcomma(1\le u \le 1/\sqrt{1-m},
+1 <= u <= 1/sqrt(1-m)) it can also be written (@urldlmf{22.15.E17}):
 m4_displaymath(
 {\rm inverse\_jacobi\_nd}(u, m) = \int_1^u {dt\over \sqrt{(t^2-1)(1-(1-m)t^2)}},
 @example
@@ -488,7 +492,8 @@ m4_displaymath(
 @anchor{inverse_jacobi_ds}
 @deffn {Function} inverse_jacobi_ds (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-ds}(u,m)>>>, <<<ds(u,m)>>>) It can also be written (@urldlmf{22.15.E22}):
+ds}(u,m)>>>, <<<ds(u,m)>>>) For m4_mathcomma(\sqrt{1-m}\le u,
+sqrt(1-m) <= u) it can also be written (@urldlmf{22.15.E22}):
 m4_displaymath(
 {\rm inverse\_jacobi\_ds}(u, m) = \int_u^{\infty} {dt\over \sqrt{(t^2+m)(t^2-(1-m))}},
 @example
@@ -511,7 +516,7 @@ m4_displaymath(
 @anchor{inverse_jacobi_dc}
 @deffn {Function} inverse_jacobi_dc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function m4_mathdot(<<<{\rm
-dc}(u,m)>>>, <<<dc(u,m)>>>) It can also be written (@urldlmf{22.15.E18}):
+dc}(u,m)>>>, <<<dc(u,m)>>>) For m4_mathcomma(1 \le u, 1 <= u) it can also be written (@urldlmf{22.15.E18}):
 m4_displaymath(
 {\rm inverse\_jacobi\_dc}(u, m) = \int_1^u {dt\over \sqrt{(t^2-1)(t^2-m)}},
 @example
