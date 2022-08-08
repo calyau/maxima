@@ -52,15 +52,15 @@ m4_dnl Like m4_math, but automatically add a dot at the end of the
 m4_dnl equation to end a sentence.  If you place a dot after m4_math(), there's
 m4_dnl an extra space in the output that looks weird.  This is analogous to mrefdot.
 m4_define(<<<m4_mathdot>>>,
-m4_ifelse(<<<#$>>>, <<<3>>>,
+<<<m4_ifelse(<<<$#>>>, <<<3>>>,
 m4_math(<<<<<<$1.>>>>>>, <<<<<<$2.>>>>>>, <<<<<<$3.>>>>>>),
-m4_math(<<<<<<$1.>>>>>>, <<<<<<$2.>>>>>>)))
+m4_math(<<<<<<$1.>>>>>>, <<<<<<$2.>>>>>>))>>>)
 m4_dnl
-m4_dnl Like m4_mathdo, but adds a comma at the end instead of a dot.
+m4_dnl Like m4_mathdot, but adds a comma at the end instead of a dot.
 m4_dnl Using m4_math() followed by a comma leaves an extra space that looks
 m4_dnl weird.  This is analogous to mrefcomma.
 m4_define(<<<m4_mathcomma>>>,
-<<<m4_ifelse(<<<#$>>>, <<<3>>>,
+<<<m4_ifelse(<<<$#>>>, <<<3>>>,
 m4_math(<<<<<<$1,>>>>>>, <<<<<<$2,>>>>>>, <<<<<<$3,>>>>>>),
 m4_math(<<<<<<$1,>>>>>>, <<<<<<$2,>>>>>>))>>>)
 
