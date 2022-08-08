@@ -462,7 +462,7 @@ the solution subject to the condition that m4_math(y\rightarrow 0,
 y->0) as m4_math(<<<x\rightarrow\infty,>>>, <<<x ->
 inf,>>>) and m4_math({\rm Bi}(x), Bi(x)) is
 the second solution with the
-same amplitude as m4_math({\rm Ai}(x),{Ai(x)) as m4_math(x\rightarrow-\infty,x->minf) which differs in phase
+same amplitude as m4_math({\rm Ai}(x),Ai(x)) as m4_math(x\rightarrow-\infty,x->minf) which differs in phase
 by m4_math(\pi/2.,%pi/2.)  Also, m4_math({\rm Bi}(x),Bi(x)) is unbounded
 as m4_math(x\rightarrow \infty., x->inf.)
 
