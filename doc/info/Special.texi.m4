@@ -455,16 +455,16 @@ m4_displaymath(
 <<<{d^2 y\over dx^2} - xy = 0>>>,
 <<<@math{diff (y(x), x, 2) - x y(x) = 0}>>>)
 
-are m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) and m4_math(<<<y = {\rm Bi}(x).>>>,<<<y = Bi(x).>>>) 
+are m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) and m4_mathdot(<<<y = {\rm Bi}(x)>>>,<<<y = Bi(x)>>>)
 
 These two solutions are oscillatory for @math{x < 0}.  m4_math({\rm Ai}(x), Ai(x)) is
 the solution subject to the condition that m4_math(y\rightarrow 0,
-y->0) as m4_math(<<<x\rightarrow\infty,>>>, <<<x ->
-inf,>>>) and m4_math({\rm Bi}(x), Bi(x)) is
+y->0) as m4_math(<<<x\rightarrow +\infty,>>>, <<<x ->
++inf,>>>) and m4_math({\rm Bi}(x), Bi(x)) is
 the second solution with the
 same amplitude as m4_math({\rm Ai}(x),Ai(x)) as m4_math(x\rightarrow-\infty,x->minf) which differs in phase
-by m4_math(\pi/2.,%pi/2.)  Also, m4_math({\rm Bi}(x),Bi(x)) is unbounded
-as m4_math(x\rightarrow \infty., x->inf.)
+by m4_mathdot(\pi/2,%pi/2)  Also, m4_math({\rm Bi}(x),Bi(x)) is unbounded
+as m4_mathdot(x\rightarrow +\infty, x->+inf)
 
 
 If the argument @math{x} is a real or complex floating point 
@@ -472,7 +472,7 @@ number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function m4_math(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>).  See @urlaands{eqn 10.4.2, 446}.
+The Airy function m4_mathdot(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>)  See @urlaands{eqn 10.4.2, 446}.
 
 See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
