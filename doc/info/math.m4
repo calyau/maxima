@@ -59,8 +59,8 @@ m4_dnl
 m4_dnl Like m4_mathdo, but adds a comma at the end instead of a dot.
 m4_dnl Using m4_math() followed by a comma leaves an extra space that looks
 m4_dnl weird.  This is analogous to mrefcomma.
-m4_define(<<<m4_mathcomman>>>,
-m4_ifelse(<<<#$>>>, <<<3>>>,
+m4_define(<<<m4_mathcomma>>>,
+<<<m4_ifelse(<<<#$>>>, <<<3>>>,
 m4_math(<<<<<<$1,>>>>>>, <<<<<<$2,>>>>>>, <<<<<<$3,>>>>>>),
-m4_math(<<<<<<$1,>>>>>>, <<<<<<$2,>>>>>>)))
+m4_math(<<<<<<$1,>>>>>>, <<<<<<$2,>>>>>>))>>>)
 
