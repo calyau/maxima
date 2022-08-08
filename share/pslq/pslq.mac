@@ -48,7 +48,7 @@ define_variable(identify_algebraic_degree,
 
 if get(pslq_integer_relation, version)=false
   then if load_pathname # false
-         then load (sconcat (pathname_directory (load_pathname), "/pslq_integer_relation.lisp"))
+         then load (sconcat (pathname_directory (load_pathname), "pslq_integer_relation.lisp"))
        else load ("pslq_integer_relation.lisp");
 
 identify_integer_relation(x, [threshold]) := block(
