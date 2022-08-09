@@ -637,17 +637,24 @@ if test x"${enable_build_docs}" = xtrue ; then
 fi
 dnl Check the version number.  First get the first line from
 dnl 'makeinfo --version' and extract out the version digits.
-if test x"${makeinfo_bound}" = xtrue; then
-    makeinfo_version=`expr "\`makeinfo --version | head -1\`" : '.*\(\[0-9\]\+\.\[0-9\]\+\)'`
-    echo Makeinfo version ${makeinfo_version}
-    makeinfo_major=`expr $makeinfo_version : '\(\[0-9\]\+\)'`
-    makeinfo_minor=`expr $vers : '.*\.\(\[0-9\]\+\)'`
+if test x"${makeinfo_found}" = xtrue; then
+    AC_MSG_CHECKING([if makeinfo version >= 6.8])
+    makeinfo_version=`expr "\`makeinfo --version | head -1\`" : '.*\([[0-9]]\+\.[[0-9]]\+\)'`
+    dnl echo Makeinfo version ${makeinfo_version}
+    makeinfo_major=`expr $makeinfo_version : '\([[0-9]]\+\)'`
+    makeinfo_minor=`expr $makeinfo_version : '.*\.\([[0-9]]\+\)'`
+    dnl echo major ${makeinfo_major}
+    dnl echo minor ${makeinfo_minor}
     if test $makeinfo_major -lt 6; then
 	AC_MSG_ERROR(Makeinfo major version to old; docs may not build correctly)
-    elif test $makeinfo_minor -eq 6; then
+    elif test $makeinfo_major -eq 6; then
 	if test $makeinfo_minor -lt 8; then
 	    AC_MSG_ERROR(Makeinfo version to old; docs may not build correctly)
-	fi   
+        else
+	    AC_MSG_RESULT([yes])
+	fi
+    else
+        AC_MSG_RESULT([yes])
     fi
 fi
 
