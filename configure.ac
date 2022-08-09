@@ -635,6 +635,21 @@ if test x"${enable_build_docs}" = xtrue ; then
         AC_MSG_ERROR(No makeinfo found; consider --disable-build-docs)
     fi
 fi
+dnl Check the version number.  First get the first line from
+dnl 'makeinfo --version' and extract out the version digits.
+if test x"${makeinfo_bound}" = xtrue; then
+    makeinfo_version=`expr "\`makeinfo --version | head -1\`" : '.*\(\[0-9\]\+\.\[0-9\]\+\)'`
+    echo Makeinfo version ${makeinfo_version}
+    makeinfo_major=`expr $makeinfo_version : '\(\[0-9\]\+\)'`
+    makeinfo_minor=`expr $vers : '.*\.\(\[0-9\]\+\)'`
+    if test $makeinfo_major -lt 6; then
+	AC_MSG_ERROR(Makeinfo major version to old; docs may not build correctly)
+    elif test $makeinfo_minor -eq 6; then
+	if test $makeinfo_minor -lt 8; then
+	    AC_MSG_ERROR(Makeinfo version to old; docs may not build correctly)
+	fi   
+    fi
+fi
 
 dnl languages
 AC_ARG_ENABLE(lang-de,
