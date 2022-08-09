@@ -637,6 +637,7 @@ if test x"${enable_build_docs}" = xtrue ; then
 fi
 dnl Check the version number.  First get the first line from
 dnl 'makeinfo --version' and extract out the version digits.
+makeinfo_old=false
 if test x"${makeinfo_found}" = xtrue; then
     AC_MSG_CHECKING([if makeinfo version >= 6.8])
     dnl expr is looking for something like "junk<digits>.<digits>junk"
@@ -649,15 +650,17 @@ if test x"${makeinfo_found}" = xtrue; then
     dnl echo major ${makeinfo_major}
     dnl echo minor ${makeinfo_minor}
     if test $makeinfo_major -lt 6; then
-        dnl Major version < 6, so error out
-	AC_MSG_ERROR([Makeinfo major version to old; consider --disable-build-docs])
+        dnl Major version < 6, so too old
+	makeinfo_old=true
     elif test $makeinfo_major -eq 6; then
-        dnl Major version is 6.  If the minor version is < 8, error out.
+        dnl Major version is 6.  If the minor version is < 8, too old
 	if test $makeinfo_minor -lt 8; then
-	    AC_MSG_ERROR([Makeinfo version to old; consider --disable-build-docs])
-        else
-	    AC_MSG_RESULT([${makeinfo_version}])
+	    makeinfo_old=true
 	fi
+    fi
+    if test x"{$makeinfo_old}" = xtrue; then
+	AC_MSG_ERROR([Makeinfo version (${makeinfo_version}) too old;
+	    consider --disable-build-docs])
     else
         AC_MSG_RESULT([${makeinfo_version}])
     fi
