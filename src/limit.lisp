@@ -314,11 +314,16 @@
             ((or (not (free la '%limit))
                  (not (free lb '%limit)))
              ())
-            ((and (infinityp la) (infinityp lb))
-             ; inf + minf => infinity
-             '$infinity)
             (t
-             '$und)))))
+             (let ((infa (infinityp la))
+                   (infb (infinityp lb)))
+               (cond ((and infa infb)
+                      ; inf + minf => infinity
+                      '$infinity)
+                     ((or infa infb)
+                      '$und)
+                     (t
+                      '$ind))))))))
 
 (defun limunknown (f)
   (catch 'limunknown (limunknown1 (specrepcheck f))))

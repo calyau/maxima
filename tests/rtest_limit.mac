@@ -260,7 +260,7 @@ limit( (3^(1/x) + 5^(1/x))^x, x, 0, plus);
 5;
 
 limit( (3^(1/x) + 5^(1/x))^x, x, 0);
-und;
+ind;
 
 /* [ 1852415 ] limit(sqrt(1-%e^(-x^2)), x, inf) = 0 */
 limit(sqrt(1-%e^(-x^2)), x, inf);
@@ -288,8 +288,7 @@ limit(atan2(x,-1), x, 0, plus);
 %pi;
 
 limit(atan2(x,-1), x, 0);
-und;
-/* ideally should be ind */
+ind;
 
 /* limit of atan2 - ID: 3539699 */
 limit(atan2(x^2-2,x^3-3*x), x, sqrt(2), minus);
@@ -312,7 +311,7 @@ limit(atan2(-(x^2-2), x^3-2*x), x, sqrt(2), plus);
 
 /* #3864 limit of atan2 expression */
 limit(atan2(0,1-3^x),x,0);
-und;
+ind;
 
 limit(floor(x), x, 5, minus);
 4;
@@ -355,7 +354,7 @@ limit( (log(1+x^2)-2+2*cos(x))/((sin(x))^2+2*sqrt(1-x^2)-2),x,0);
 
 /* [ 1587235 ] limit(floor(x),x,1) wrong */
 limit(floor(x),x,0);
-und;
+ind;
 
 /* [ 1885377 ] wrong limit evaluation in 5.14.0 */
 limit((3/4)^(5*n+1), n, inf);
@@ -930,3 +929,25 @@ zeta(3);
 (remove (q, noninteger),
  killcontext (ctxt));
 done;
+
+/* Bug #3926: Various limits give UND where they should give IND */
+
+limit(unit_step(x),x,0);
+ind;
+
+limit(abs(x)/x,x,0);
+ind;
+
+limit(x/abs(x),x,0);
+ind;
+
+limit(exp(1/x),x,0);
+und;
+
+/* Bug #3071: limit of expressions with signum not very powerful */
+
+limit(signum(x)^a,x,0); /* It would be better if this asked about a */
+ind;
+
+limit(signum(x)*x/sin(x),x,0);
+ind;

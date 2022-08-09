@@ -103,7 +103,7 @@ limit(signum(x),x,0,'minus);
 -1$
 
 limit(signum(x),x,0);
-und$
+ind$
 
 limit(signum(x),x,0,'plus);
 1$

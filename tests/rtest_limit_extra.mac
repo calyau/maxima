@@ -16,13 +16,13 @@ limit(log(x),x,inf);
 inf$
 
 limit(log(-2+%i*x),x,0);
-und$
+ind$
 
 limit(46*log(-2+%i*x),x,0);
-und$
+ind$
 
 limit(107+log(-2+%i*x),x,0);
-und$
+ind$
 
 limit(log(-2+%i*x),x,0,'minus);
 log(2)-%i*%pi$
@@ -99,7 +99,7 @@ limit(log(x),x,0,'plus);
 minf$
 
 limit(log(signum(x)),x,0);
-und$
+ind$
 
 limit(log(107+sin(x)),x,inf);
 und$
@@ -124,7 +124,7 @@ limit(log(-46 + %i*(exp(x)-1)),x,0,'minus);
 log(46) - %i*%pi$
 
 limit(log(-46 + %i*(exp(x)-1)),x,0);
-'und$
+ind$
 
 limit(log(-1 + %i*x*sin(1/x)),x,0,'minus);
 'und$
@@ -136,7 +136,7 @@ limit(log(-1 + %i*signum(x)),x,0,'plus);
 log(-1+%i)$
 
 limit(log(-1 + %i*signum(x)),x,0);
-und$
+ind$
 
 limit(log(-51 + %i* sin(x)), x, 0, 'plus);
 log(51)+%i*%pi$
@@ -642,7 +642,7 @@ limit(atan2(0,1-3^x),x,0,'plus);
 %pi$
 
 limit(atan2(0,1-3^x),x,0);
-und$
+ind$
 
 /* additional atan tests */
 limit(atan(x),x,-4);
@@ -676,7 +676,7 @@ limit(atan(x^2),x,inf);
 %pi/2$
 
 limit(atan(1/x),x,0);
-und$
+ind$
 
 /* #3864 limit of atan2 expression */
 limit(atan2(0,1-3^x),x,0,'minus);
