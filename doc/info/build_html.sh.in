@@ -105,8 +105,9 @@ for f in *.texi
 do
   filenamebase=`echo $f | @SED@ -e 's/^.*\///;s/\.texi//'`
   echo "(setq *filenamebase* \"$filenamebase\")"
+  echo "(setq items nil)"
   cat $f
-done | @AWK@ '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/ || /^.setq .filenamebase/)' | @SED@ -f @abs_srcdir@/extract_categories1.sed | @AWK@ -f @abs_srcdir@/extract_categories1.awk > $catprogname 
+done | @AWK@ '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/ || /^.setq .filenamebase/ || /^.setq items nil/)' | @SED@ -f @abs_srcdir@/extract_categories1.sed | @AWK@ -f @abs_srcdir@/extract_categories1.awk > $catprogname 
 
 if [ "@DEFAULTLISP@" = "gcl" ]
     then lispprog="@GCL_NAME@"
