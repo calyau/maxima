@@ -639,22 +639,27 @@ dnl Check the version number.  First get the first line from
 dnl 'makeinfo --version' and extract out the version digits.
 if test x"${makeinfo_found}" = xtrue; then
     AC_MSG_CHECKING([if makeinfo version >= 6.8])
+    dnl expr is looking for something like "junk<digits>.<digits>junk"
+    dnl and extracting out the "<digits>.<digits>"
     makeinfo_version=`expr "\`makeinfo --version | head -1\`" : '.*\([[0-9]]\+\.[[0-9]]\+\)'`
     dnl echo Makeinfo version ${makeinfo_version}
+    dnl From makeinfo_version, extract out the major and minor version numbers.
     makeinfo_major=`expr $makeinfo_version : '\([[0-9]]\+\)'`
     makeinfo_minor=`expr $makeinfo_version : '.*\.\([[0-9]]\+\)'`
     dnl echo major ${makeinfo_major}
     dnl echo minor ${makeinfo_minor}
     if test $makeinfo_major -lt 6; then
-	AC_MSG_ERROR(Makeinfo major version to old; docs may not build correctly)
+        dnl Major version < 6, so error out
+	AC_MSG_ERROR([Makeinfo major version to old; consider --disable-build-docs])
     elif test $makeinfo_major -eq 6; then
+        dnl Major version is 6.  If the minor version is < 8, error out.
 	if test $makeinfo_minor -lt 8; then
-	    AC_MSG_ERROR(Makeinfo version to old; docs may not build correctly)
+	    AC_MSG_ERROR([Makeinfo version to old; consider --disable-build-docs])
         else
-	    AC_MSG_RESULT([yes])
+	    AC_MSG_RESULT([${makeinfo_version}])
 	fi
     else
-        AC_MSG_RESULT([yes])
+        AC_MSG_RESULT([${makeinfo_version}])
     fi
 fi
 
