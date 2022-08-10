@@ -44,9 +44,9 @@ m4_define(<<<m4_math>>>,
 @ifinfo
 @math{$2}
 @end ifinfo
-@tex
-$m4_ifelse(<<<$#>>>, <<<3>>>, <<<<<<$3>>>>>>, <<<$1>>>)$
-@end tex
+@iftex
+@math{m4_ifelse(<<<$#>>>, <<<3>>>, <<<$3>>>, <<<$1>>>)}
+@end iftex
 >>>)m4_dnl
 m4_dnl
 m4_dnl m4_mathdot(jax, info) or m4_mathdot(jax, info, tex)
