@@ -176,10 +176,10 @@ here are two related limit problems. */
 
  /* #3839 limits of asin expressions */
  limit(asin(3+%i*x),x,0,plus);
- asin(3)$
+ %pi - asin(3)$
 
  limit(asin(3+%i*x),x,0,minus);
- %pi - asin(3)$
+ asin(3)$
 
 /* With the default value of lhospitallim, the calculation takes about 7 seconds.
    Arguably, it's so slow, it's a bug. So we'll locally set lhospitallim to 1.*/
