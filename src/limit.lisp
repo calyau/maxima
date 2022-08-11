@@ -299,8 +299,12 @@
 (defun both-side (exp var val &optional (preserve nil))
   (let* ((preserve-direction preserve)
          (la (toplevel-$limit exp var val '$plus)) lb)
+    ; Immediately propagate an und without trying the
+    ; other direction
     (when (eq la '$und) (return-from both-side '$und))
     (setf lb (toplevel-$limit exp var val '$minus))
+    ; Immediately propagate an und
+    (when (eq lb '$und) (return-from both-side '$und))
     (let ((ra (ridofab la))
           (rb (ridofab lb)))
       (cond ((eq t (meqp ra rb))

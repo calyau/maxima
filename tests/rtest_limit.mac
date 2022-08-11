@@ -944,6 +944,12 @@ ind;
 limit(exp(1/x),x,0);
 und;
 
+limit(exp(1/x)*sin(1/x),x,0);
+und;
+
+limit(exp(-1/x)*sin(1/x),x,0);
+und;
+
 /* Bug #3071: limit of expressions with signum not very powerful */
 
 limit(signum(x)^a,x,0); /* It would be better if this asked about a */
