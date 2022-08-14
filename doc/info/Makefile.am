@@ -677,7 +677,14 @@ maxima-index.lisp: build_index.pl maxima.info
 # Really depends on all the individual html files, but let's assume
 # that if maxima_toc.html is done, we have all the remaining html
 # files.
+#
+# First we find all the files that we don't want to have to process.
+# This includes the indices, maxima_singlepage.html and any other html
+# file that doesn't start with "maxima".
 maxima-index-html.lisp : maxima_toc.html build-html-index.lisp
+	grep -l '<title>\(Function and Variable Index\|Documentation Cat\)' *.html > html-exceptions.txt
+	echo "maxima_singlepage.html" >> html-exceptions.txt
+	ls *.html | grep -v "^maxima" >> html-exceptions.txt
 	../../maxima-local --batch-lisp=build-html-index.lisp
 
 DOLLAR_SIGN = $$

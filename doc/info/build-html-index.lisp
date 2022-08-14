@@ -136,16 +136,16 @@
     ;; that don't start with "maxima".  Then sort them all in
     ;; numerical order.
     (let ((files (directory dir)))
-      ;; First, remove "maxima_singlepage.html"
-      (setf files (remove-if #'(lambda (name)
-				 (string-equal name "maxima_singlepage"))
-			     files
-			     :key #'pathname-name))
-      ;; Now remove any that don't start with "maxima"
-      (setf files (remove-if-not #'(lambda (name)
-				     (string-equal "maxima" name :end2 (min (length name) 6)))
-				 files
-				 :key #'pathname-name))
+      ;; First, look at any files in html-exceptions.txt and remove them.
+      (with-open-file (s "html-exceptions.txt" :direction :input :if-does-not-exist nil)
+	(when s
+	  (loop for filename = (read-line s nil nil)
+		while filename
+		do
+		   (format t "Skipping ~S~%" filename)
+		   (setf files (remove (pathname-name filename) files
+				       :test #'equal
+				       :key #'pathname-name)))))
       ;; Now sort them in numerical order.
       (setf files
 	    (sort files #'<
