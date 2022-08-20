@@ -364,7 +364,7 @@ limit(-%e^x/x, x, inf);
 minf;
 
 /* [ 2083561 ] Limit of the Wallis product */
-limit((%pi*4^N*N!^2)/(2*2^(2*N)*gamma(N+1/2)*gamma(N+3/2)), N, inf);
+radcan(limit((%pi*4^N*N!^2)/(2*2^(2*N)*gamma(N+1/2)*gamma(N+3/2)), N, inf));
 %pi/2;
 
 /* wrong limit(log(gamma(x+1))/x,x,0) - ID: 2727078 */

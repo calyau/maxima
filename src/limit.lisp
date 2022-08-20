@@ -64,6 +64,14 @@
 
 (unless (boundp 'integer-info) (setq integer-info ()))
 
+;; For limits toward infinity for the gruntz code, we assume that the limit
+;; variable exceeds *large-positive-number*. This value matches the value
+;; that the limit code uses for the same purpose.
+(defmvar *large-positive-number* (expt 10 8))
+
+;; Don't ask sign questions about $ind.
+(putprop '$ind t 'internal)
+
 ;; This should be made to give more information about the error.
 ;;(DEFun DISCONT ()
 ;;       (cond (errorsw (throw 'errorsw t))
@@ -207,7 +215,7 @@
 
               ;; Resimplify in light of new assumptions.
               (setq exp (resimplify
-                          (factosimp
+			              (factosimp
                             (tansc
                               (lfibtophi
                                 (limitsimp ($expand exp 1 0) var))))))
@@ -591,8 +599,8 @@ ignoring dummy variables and array indices."
 		  (new-small (subst (m^ '$inf -1) '$zeroa
 				       (subst (m^ '$minf -1) '$zerob small))))
 	          (simpinf new-small)))))
+			
     
-
 ;;;*I* INDICATES: T => USE LIMIT1,THINK, NIL => USE SIMPLIMIT.
 (defun limit (exp var val *i*)
   (cond
@@ -2907,11 +2915,11 @@ ignoring dummy variables and array indices."
 (defun in-domain-of-atan (z)
   (setq z (trisplit z)) ; split z into real and imaginary parts
   (let ((x (car z)) (y (cdr z))) ;z = x+%i*y
-    (or
-      (eq t (mnqp x 0)) ; x # 0
-      (and
-	     (eq t (mgrp -1 y))    ; y < -1
-	     (eq t (mgrp y 1)))))) ; y > 1
+      (not 
+       (and
+          (eq t (meqp x 0)) ;Re(z) = 0
+          (or (eq t (mgqp -1 y)) ;-1 >= Im(z)
+              (eq t (mgqp y 1))))))) ; Im(z) >= 1
 
 (defun simplim%atan (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)))
@@ -3071,21 +3079,35 @@ ignoring dummy variables and array indices."
 (defun simplim%asin (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
  	  (cond ((member lim '($zeroa $zerob)) lim) ;asin(zeoroa/b) = zeroa/b
+	        ((member lim '($minf '$inf '$infinity)) '$infinity)
+			((eq lim '$ind) '$ind) ;asin(ind)=ind 
+			((eq lim '$und) '$und) ;asin(und)=und
 			((in-domain-of-asin lim) ;direct substitution
 				(ftake '%asin lim))
-			((member lim '($und $ind $inf $minf $infinity)) ;boundary cases
-			'$und)	
 			(t 
 			  (setq e (trisplit (cadr e))) ;overwrite e!
 			  (setq dir (behavior (cdr e) x pt))
-			  (setq lim-sgn ($csign lim))
+			  (setq lim-sgn ($csign (car e))) ;lim-sgn = sign limit(Re(e))
 			  (cond 			  
 			  	((eql dir 0)
 				  	(throw 'limit t)) ;unable to find behavior of imaginary part
-		        ;; for the values of asin on the branch cuts, see DLMF 4.23.20 & 4.23.21
-			    ((or (eq '$pos lim-sgn) (eq '$neg lim-sgn))
-					;; continuous from above
-					(if (eql dir 1) (ftake '%asin lim) (sub '$%pi (ftake '%asin lim))))
+
+		        ;; For the values of asin on the branch cuts, see DLMF 4.23.20 & 4.23.21
+				;; Diagram of the values of asin just above and below the branch cuts
+				;; 
+				;;  asin(x)                           pi - asin(x) 
+				;;................ -1 ....0.... 1  ...............
+                ;; -pi - asin(x)                        asin(x)
+				;;
+				;; Let's start in northwest and rotate counterclockwise:
+				((and (eq '$neg lim-sgn) (eq dir 1))
+					(ftake '%asin lim))
+				((and (eq '$pos lim-sgn) (eq dir 1))
+					(sub '$%pi (ftake '%asin lim)))
+				((and (eq '$pos lim-sgn) (eq dir -1))
+					(ftake '%asin lim))
+				((and (eq '$neg lim-sgn) (eq dir -1))
+				    (sub (mul -1 '$%pi) (ftake '%asin lim)))
 				(t  (throw 'limit t))))))) ; unable to find sign of real part of lim.
 (setf (get '%asin 'simplim%function) #'simplim%asin)
 
@@ -3574,6 +3596,11 @@ ignoring dummy variables and array indices."
          ans)))
 
 ;; This function is for internal use in $limit.
+
+;; The function gruntz1 standardizes the limit point to inf and the limit variable
+;; to a gensym. Since the limit point is possibly altered by this function, we
+;; need to make the appropriate assumptions on the limit variable. This is done
+;; in a supcontext.
 (defun gruntz1 (exp var val &rest rest)
   (cond ((> (length rest) 1)
 	 (merror (intl:gettext "gruntz: too many arguments; expected just 3 or 4"))))
@@ -3582,7 +3609,7 @@ ignoring dummy variables and array indices."
 	(dir (car rest)))
 	(putprop newvar t 'internal); keep var from appearing in questions to user	
     (cond ((eq val '$inf)
-	   (setq newvar var))
+	   (setq exp (maxima-substitute newvar var exp)))
 	  ((eq val '$minf)
 	   (setq exp (maxima-substitute (m* -1 newvar) var exp)))
 	  ((eq val '$zeroa)
@@ -3594,7 +3621,16 @@ ignoring dummy variables and array indices."
 	  ((eq dir '$minus)
 	   (setq exp (maxima-substitute (m+ val (m// -1 newvar)) var exp)))
 	  (t (merror (intl:gettext "gruntz: direction must be 'plus' or 'minus'; found: ~M") dir)))
-    (limitinf exp newvar)))
+	  (let ((cx ($supcontext)))
+	   	    (unwind-protect
+		 	  (progn
+				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* newvar)) ; *large-positive-number* < newvar
+				  (mfuncall '$assume (ftake 'mlessp 0 'lim-epsilon)) ; 0 < lim-epsilon
+				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* 'prin-inf)) ; *large-positive-number* < prin-inf
+				  (mfuncall '$activate cx) ;not sure this is needed, but OK	
+				  (setq exp (sratsimp exp)) ;simplify in new context
+				  (limitinf exp newvar)) ;compute & return limit
+			($killcontext cx))))) ;kill context & forget all new facts.	  
 
 ;; substitute y for x in exp
 ;; similar to maxima-substitute but does not simplify result
