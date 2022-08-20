@@ -1122,23 +1122,23 @@ ignoring dummy variables and array indices."
 ;; would risk creating an infinite loop.
 
 ;; This function special cases sums, products, and powers. It declines to use 
-;; direct subsitution on any expression whose main operator has a simplim%function 
+;; direct substitution on any expression whose main operator has a simplim%function 
 ;; function. Generally, limits of functions that have a simplim%function should be 
 ;; handled by those specialized functions, not by simplimsubst. Having said this, 
 ;; it's OK for simplimsubst to special case an operator and do direct substitution 
 ;; when its OK. The cases of log, cosine, and sine happen often enough that these
 ;; functions are special cased.
 
-;; Possibly  simplimsubst should decline to do direct substituion on functions 
+;; Possibly  simplimsubst should decline to do direct substitution on functions 
 ;; that have a limit function, for example inverse_jacobi_ns.
 
-;; For all other kinds of expressions, this function assumes that if substiution 
+;; For all other kinds of expressions, this function assumes that if substitution 
 ;; doesn't result in an error (division by zero, for example), the function
 ;; is continuous at the limit point. That's dodgy. This dodginess underscores the
-;; need to define a simplim%function functions that are not continous on their 
+;; need to define a simplim%function functions that are not continuous on their 
 ;; domains. 
 
-;; This function sometimes recieves unsimplifed expressions. Maybe they should be
+;; This function sometimes receives an un-simplified expression. Maybe they should be
 ;; simplified, maybe not. 
 
 ;; Locally setting $numer and $%enumer to nil keeps some limits, for example
@@ -1151,7 +1151,7 @@ ignoring dummy variables and array indices."
 	    (($numberp e) e)
 		;; When e is a mapatom, substitute v for var and return.
 		(($mapatom e) ($substitute v var e))
-	    ;; Special case mexpt expressions. Decline direct subsitution for 
+	    ;; Special case mexpt expressions. Decline direct substitution for 
 		;; extended reals. 
 		((and (mexptp e) (not (extended-real-p v)))
 		   (let ((x (simplimsubst v (second e)))
@@ -1163,7 +1163,7 @@ ignoring dummy variables and array indices."
 		            (or (off-negative-real-axisp x) (integerp n)))
 		   	     (ftake 'mexpt x n) nil)))
         ;; Special case product and sum expressions. Again, we decline direct 
-		;; subsitution for extended reals. 
+		;; substitution for extended reals. 
         ((and (or (mplusp e) (mtimesp e)) (not (extended-real-p v)))
 		  (setq ee (mapcar #'(lambda(q) (simplimsubst v q)) (cdr e)))
 		  (if (some #'(lambda (q) (eq q nil)) ee) nil
@@ -1173,7 +1173,7 @@ ignoring dummy variables and array indices."
         ((and (or (mexptp e) (mplusp e) (mtimesp e)) (extended-real-p v))
 	  	 nil)
 	    ;; Special case log expressions--possibly the log case happens
-		;; often enough to make this worthwile.
+		;; often enough to make this worthwhile.
         ((and (consp e) (consp (car e)) (eq '%log (caar e)))
 		  (let ((w (simplimsubst v (cadr e))))
 		    (if (and w (off-negative-real-axisp w)) (ftake '%log w) nil))) 
@@ -2932,12 +2932,12 @@ ignoring dummy variables and array indices."
 ;; Taylor and Gruntz cannot handle the discontinuity at atan(0, -1)
 
 ;; When possible, we want to evaluate the limit of an atan2 expression using 
-;; direct substituion--that produces, I think, the least surprising values. 
+;; direct substitution--that produces, I think, the least surprising values. 
 
 ;; The general simplifier catches atan2(0,0) and it transforms atan2(minf or inf,X)
 ;; and atan2(X, minf or inf) into an atan expression, but it doesn't catch 
 ;; atan2(X, zerob or zeroa) or atan2(zerob or zeroa, X). For the other extended 
-;; real (ind,und, or infinity) arguments, the general simplifer gives sign errors.
+;; real (ind,und, or infinity) arguments, the general simplifier gives sign errors.
 
 (defun simplim%atan2 (e v pt)
      (let ((y (second e)) (x (third e)) (xlim) (ylim) (xlim-z) (ylim-z) (q))
@@ -3071,7 +3071,7 @@ ignoring dummy variables and array indices."
 (defun simplim%asin (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
  	  (cond ((member lim '($zeroa $zerob)) lim) ;asin(zeoroa/b) = zeroa/b
-			((in-domain-of-asin lim) ;direct subsititution
+			((in-domain-of-asin lim) ;direct substitution
 				(ftake '%asin lim))
 			((member lim '($und $ind $inf $minf $infinity)) ;boundary cases
 			'$und)	
@@ -3091,7 +3091,7 @@ ignoring dummy variables and array indices."
 
 (defun simplim%acos (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
- 	  (cond ((in-domain-of-asin lim) ;direct subsititution
+ 	  (cond ((in-domain-of-asin lim) ;direct substitution
 				(ftake '%acos lim))
 			((member lim '($und $ind $inf $minf $infinity)) ;boundary cases
 			 '$und)	
@@ -3355,7 +3355,7 @@ ignoring dummy variables and array indices."
 		  var))
 	(t (tay-error "mrv not implemented" exp))))
 
-;; takes two lists of expresions, f and g, and limit variable var.
+;; takes two lists of expressions, f and g, and limit variable var.
 ;; members in each list are assumed to be in same MRV equivalence
 ;; class.  returns MRV set of the union of the inputs - either f or g
 ;; or the union of f and g.
