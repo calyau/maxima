@@ -430,14 +430,14 @@ block([domain : 'complex],limit(2/5*((3/4)^m - 1)*(a - 10) + 1/5*(3*(3/4)^m + 2)
  0$
 
  /* #2898 limit of continuous --> und */
- (e : log(x)^2+2*gammalog(x)-%pi^2/6+%gamma^2,0);
+ (e : log(x)^2+2*%gamma*log(x)-%pi^2/6+%gamma^2,0);
  0$
 
  tlimit(e,x,1);
- -(%pi^2-6*%gamma^2)/6$
+ -((%pi^2-6*%gamma^2)/6)$
 
  limit(e,x,1);
- -(%pi^2-6*%gamma^2)/6$
+ %gamma^2-%pi^2/6$
 
 /* #2877 Limits behave incorrectly when applied to derivatives */
 (dg: diff(g(x), x),0);
