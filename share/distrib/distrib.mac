@@ -105,11 +105,9 @@ cdf_normal(x,m,s) :=
 quantile_normal(q,m,s) := 
    if maybe(s > 0 and q >= 0 and q <= 1) = false
      then error("quantile_normal: illegal parameters")
-     else if sign(q) = 'zero
-            then 'minf
-          elseif sign(q-1) = 'zero
-            then 'inf
-            else m + sqrt(2)*s*inverse_erf(2*q-1) $
+     else if equal(q, 0) then minf
+          elseif equal(q, 1) then inf
+          else m + sqrt(2)*s*inverse_erf(2*q-1) $
 
 mean_normal(m,s) := 
    if maybe(s > 0) = false
@@ -508,11 +506,10 @@ cdf_lognormal(x,m,s) :=
 quantile_lognormal(q,m,s) :=
    if maybe(s > 0 and q >= 0 and q <= 1) = false
      then error("quantile_lognormal: check input parameters")
-   elseif sign(q)='zero
-     then 0
-   elseif sign(q-1)='zero
-     then 'inf
-     else exp(m + sqrt(2)*s*inverse_erf(2*q-1)) $
+   else
+     if equal (q, 0) then 0
+     elseif equal (q, 1) then inf
+       else exp(m + sqrt(2)*s*inverse_erf(2*q-1)) $
 
 mean_lognormal(m,s) :=
    if maybe(s > 0) = false
@@ -565,11 +562,10 @@ cdf_gamma(x,a,b) :=
 quantile_gamma(q,a,b) :=
    if maybe(a > 0 and b >0 and q >= 0 and q <= 1) = false
      then error("quantile_gamma: check input parameters")
-   elseif sign(q)='zero
-     then 0
-   elseif sign(q-1)='zero
-     then 'inf
-     else /* approximate procedure */
+   else
+     if equal (q, 0) then 0
+     elseif equal (q, 1) then inf
+       else /* approximate procedure */
           block([fq: float(q), fa: float(a)],
             if numberp(fq) and numberp(fa)
               then(if fq = 0.0 then return(0),
@@ -629,11 +625,10 @@ cdf_beta(x,a,b) :=
 quantile_beta(q,a,b) :=
    if maybe(a > 0 and b >0 and q >= 0 and q <= 1) = false
      then error("quantile_beta: check input parameters")
-   elseif sign(q)='zero
-     then 0
-   elseif sign(q-1)='zero
-     then 1
-     else block([fq: float(q), fa: float(a), fb: float(b)],
+   else
+     if equal (q, 0) then 0
+     elseif equal (q, 1) then 1
+       else block([fq: float(q), fa: float(a), fb: float(b)],
           if numberp(fq) and numberp(fa) and numberp(fb)
             then(if fq = 0.0 then return(0),
                  if fq = 1.0 then return(1),
@@ -690,11 +685,10 @@ cdf_continuous_uniform(x,a,b) :=
 quantile_continuous_uniform(q,a,b) :=
    if maybe(b - a > 0 and q >= 0 and q <= 1) = false
      then error("quantile_continuous_uniform: check input parameters")
-   elseif sign(q)='zero
-     then a
-   elseif sign(q-1)='zero
-     then b
-     else a + q * (b-a) $
+   else
+     if equal (q, 0) then a
+     elseif equal (q, 1) then b
+       else a + q * (b-a) $
 
 mean_continuous_uniform(a,b) :=
    if maybe(b - a > 0) = false
@@ -750,11 +744,10 @@ cdf_logistic(x,a,b) :=
 quantile_logistic(q,a,b) :=
    if maybe(b > 0 and q >= 0 and q <= 1) = false
      then error("quantile_logistic: check input parameters")
-   elseif sign(q)='zero
-     then 'minf
-   elseif sign(q-1)='zero
-     then 'inf
-     else a - b * log(1/q-1) $
+   else
+     if equal (q, 0) then minf
+     elseif equal (q, 1) then inf
+       else a - b * log(1/q-1) $
 
 mean_logistic(a,b) :=
    if maybe(b > 0) = false
@@ -809,11 +802,10 @@ cdf_pareto(x,a,b) :=
 quantile_pareto(q,a,b) :=
    if maybe(a > 0 and b > 0 and q >= 0 and q <= 1) = false
      then error("quantile_pareto: check input parameters")
-   elseif sign(q)='zero
-     then b
-   elseif sign(q-1)='zero
-     then 'inf
-     else b / (1-q)^(1/a) $
+   else
+     if equal (q, 0) then b
+     elseif equal (q, 1) then inf
+       else b / (1-q)^(1/a) $
 
 mean_pareto(a,b) :=
    if maybe(a > 1) = false
@@ -882,11 +874,10 @@ cdf_weibull(x,a,b) :=
 quantile_weibull(q,a,b) :=
    if maybe(a > 0 and b > 0 and q >= 0 and q <= 1) = false
      then error("quantile_weibull: check input parameters")
-   elseif sign(q)='zero
-     then 0
-   elseif sign(q-1)='zero
-     then 'inf
-     else b * (-log(1-q))^(1/a) $
+   else
+     if equal (q, 0) then 0
+     elseif equal (q, 1) then inf
+       else b * (-log(1-q))^(1/a) $
 
 mean_weibull(a,b) :=
    if maybe(a > 0 and b > 0) = false
@@ -982,11 +973,10 @@ cdf_laplace(x,a,b) :=
 quantile_laplace(q,a,b) :=
    if maybe(b > 0 and q >= 0 and q <= 1) = false
      then error("quantile_laplace: check input parameters")
-   elseif sign(q)='zero
-     then 'minf
-   elseif sign(q-1)='zero
-     then 'inf
-     else a - b * signum(2*q-1) * log(1 - signum(2*q-1) * (2*q-1))$
+   else
+     if equal (q, 0) then minf
+     elseif equal (q, 1) then inf
+       else a - b * signum(2*q-1) * log(1 - signum(2*q-1) * (2*q-1))$
 
 mean_laplace(a,b) :=
    if maybe(b > 0) = false
@@ -1044,11 +1034,10 @@ cdf_cauchy(x,a,b) :=
 quantile_cauchy(q,a,b) :=
    if maybe(b > 0 and q >= 0 and q <= 1) = false
      then error("quantile_cauchy: check input parameters")
-   elseif sign(q)='zero
-     then 'minf
-   elseif sign(q-1)='zero
-     then 'inf
-     else a + b * tan(%pi * (q - 1/2)) $
+   else
+     if equal (q, 0) then minf
+     elseif equal (q, 1) then inf
+       else a + b * tan(%pi * (q - 1/2)) $
 
 /* Note: integrals for Cauchy moments are divergent */
 
@@ -1083,11 +1072,10 @@ cdf_gumbel(x,a,b) :=
 quantile_gumbel(q,a,b) :=
    if maybe(b > 0 and q >= 0 and q <= 1) = false
      then error("quantile_gumbel: check input parameters")
-   elseif sign(q)='zero
-     then 'minf
-   elseif sign(q-1)='zero
-     then 'inf
-     else a - b * log(-log(q)) $
+   else
+     if equal (q, 0) then minf
+     elseif equal (q, 1) then inf
+       else a - b * log(-log(q)) $
 
 mean_gumbel(a,b) :=
    if maybe(b > 0) = false
@@ -1140,13 +1128,14 @@ pdf_binomial(x,n,p) :=
   /* when n is not an integer, R returns NaN, we throw an error */
   elseif maybe(n>=0)=false or numberp(n) and n-floor(n) > 0
      then error("pdf_binomial: n must be a positive integer")
-  elseif sign(x) = 'neg or sign(n-x) = 'neg or numberp(x) and x-floor(x) > 0
-     then 0
-  elseif sign(p) = 'zero
-     then kron_delta(x,0)
-  elseif sign(1-p) = 'zero
-     then kron_delta(x,n)
-     else binomial(n,x)*p^x*(1-p)^(n-x) $
+  else
+    if equal (p, 0)
+      then kron_delta(x,0)
+    elseif equal (p, 1)
+      then kron_delta(x,n)
+    elseif x < 0 or x > n or x-floor(x) > 0
+      then 0
+      else binomial(n,x)*p^x*(1-p)^(n-x) $
 
 /* R: pbinom(x,n,p) */
 cdf_binomial(x,n,p):=
@@ -1154,10 +1143,9 @@ cdf_binomial(x,n,p):=
      then error("cdf_binomial: p must be a probability")
   elseif maybe(n>=0)=false or numberp(n) and n-floor(n) > 0
      then error("cdf_binomial: n must be a positive integer")
-  elseif sign(x) = 'neg
-     then 0
-  elseif member(sign(x-n),['pos,'pz,'zero])
-     then 1
+  else
+     if x < 0 then 0
+     elseif x >= n then 1
      else beta_incomplete_regularized(n-floor(x),floor(x)+1,1-p) $
 
 /* R: qbinom(q,n,p) */
@@ -1168,14 +1156,12 @@ quantile_binomial(q,n,p):=
      then error("quantile_binomial: q must be a probability")
   elseif maybe(n>=0)=false or numberp(n) and n-floor(n) > 0
      then error("quantile_binomial: n must be a positive integer")
-  elseif sign(q) = 'zero
-     then 0
-  elseif sign(1-q) = 'zero
-     then n
-  elseif float(q) <= float((1-p)^n)
-     then 0
-  elseif numberp(float(q)) and numberp(float(n)) and numberp(float(p))
-    then /* partition method */
+  else
+    if equal (q, 0) then 0
+    elseif equal (q, 1) then n
+    elseif float(q) <= float((1-p)^n) then 0
+    elseif numberp(float(q)) and numberp(float(n)) and numberp(float(p))
+      then /* partition method */
          block([a:0, b:n, m],
            while (b-a>1) do (
              m: 0.5*(a+b),
@@ -1241,19 +1227,18 @@ random_binomial(n,p,[num]) :=
 pdf_poisson(x,m) :=
   if maybe(m >= 0) = false
      then error("pdf_poisson: m must be positive")
-  elseif sign(m) = 'zero
-     then kron_delta(0,x)
-  elseif sign(x) = 'neg or numberp(x) and x-floor(x) > 0
-     then 0
-     else exp(-m)*m^x/x! $
+  else
+    if equal (m, 0) then kron_delta(0,x)
+    elseif x < 0 or numberp(x) and x-floor(x) > 0 then 0
+      else exp(-m)*m^x/x! $
 
 /* R: ppois(x,m) */
 cdf_poisson(x,m):=
   if maybe(m >= 0) = false
      then error("cdf_poisson: m must be positive")
-  elseif sign(x) = 'neg
-     then 0
-     else gamma_incomplete_regularized(floor(x)+1, m) $
+  else
+    if x < 0 then 0
+    else gamma_incomplete_regularized(floor(x)+1, m) $
 
 /* R: qpois(q,m) */
 quantile_poisson(q,m):=
@@ -1261,14 +1246,12 @@ quantile_poisson(q,m):=
      then error("quantile_poisson: m must be positive")
   elseif maybe(q >= 0 and q <= 1) = false
      then error("quantile_poisson: q must be a probability")
-  elseif sign(m)='zero
-     then 0
-  elseif member(sign(q-exp(-m)),['nz,'neg,'zero])
-     then 0
-  elseif sign(1-q)='zero
-     then 'inf
-  elseif numberp(float(q)) and numberp(float(m))
-    then /* partition method */
+  else
+    if equal (m, 0) then 0
+    elseif q <= exp(- m) then 0
+    elseif equal (q, 1) then inf
+    elseif numberp(float(q)) and numberp(float(m))
+      then /* partition method */
          block([a, b:1.0,mm],
            while (cdf_poisson(b,m) < q) do b : 2.0*b,
            a: b/2.0,
@@ -1324,13 +1307,11 @@ random_poisson(m,[num]) :=
 pdf_bernoulli(x,p) :=
   if maybe(p >= 0 and p <= 1) = false
      then error("pdf_bernoulli: p must be a probability")
-  elseif sign(x) = 'neg or sign(1-x) = 'neg or numberp(x) and x-floor(x) > 0
-     then 0
-  elseif sign(p) = 'zero
-     then kron_delta(x,0)
-  elseif sign(1-p) = 'zero
-     then kron_delta(x,1)
-     else p^x*(1-p)^(1-x) $
+  else
+    if x < 0 or x > 1 or numberp(x) and x-floor(x) > 0 then 0
+    elseif equal (p, 0) then kron_delta(x,0)
+    elseif equal (p, 1) then kron_delta(x,1)
+      else p^x*(1-p)^(1-x) $
 
 cdf_bernoulli(x,p):= cdf_binomial(x,1,p)$
 
@@ -1369,21 +1350,21 @@ random_bernoulli(p,[num]) :=
 pdf_geometric(x,p) :=
   if maybe(p > 0 and p <= 1) = false
      then error("pdf_geometric: p must be a non zero probability")
-  elseif sign(p-1) = 'zero
-     then if sign(x) = 'zero then 1 else 0
-  elseif sign(x) = 'neg or numberp(x) and x-floor(x) > 0
-     then 0
-     else p*(1-p)^x $
+  else
+    if equal (p, 1)
+      then if equal (x, 0) then 1 else 0
+    elseif x < 0 or numberp(x) and x-floor(x) > 0 then 0
+      else p*(1-p)^x $
 
 /* R: pgeom(q,p) */
 cdf_geometric(x,p) :=
   if maybe(p > 0 and p <= 1) = false
      then error("cdf_geometric: p must be a non zero probability")
-  elseif sign(p-1) = 'zero
-     then if member(sign(x), ['zero, 'pos, 'pz]) then 1 else 0
-  elseif sign(x) = 'neg
-     then 0
-     else 1-(1-p)^(floor(x)+1) $
+  else
+    if equal (p, 1)
+      then if x >= 0 then 1 else 0
+    elseif x < 0 then 0
+      else 1-(1-p)^(floor(x)+1) $
 
 /* R: qgeom(q,p) */
 quantile_geometric(q,p) :=
@@ -1391,13 +1372,11 @@ quantile_geometric(q,p) :=
      then error("quantile_geometric: p must be a non zero probability")
   elseif maybe(q >= 0 and q <= 1) = false
      then error("quantile_geometric: q must be a probability")
-  elseif sign(q-1) = 'zero
-     then 'inf
-  elseif sign(q) = 'zero
-     then 0
-  elseif sign(p-1) = 'zero
-     then 1
-     else ceiling(log(1-q)/log(1-p)-1) $
+  else
+    if equal (q, 1) then inf
+    elseif equal (q, 0) then 0
+    elseif equal (p, 1) then 1
+      else ceiling(log(1-q)/log(1-p)-1) $
 
 mean_geometric(p) :=
   if maybe(p > 0 and p <= 1) = false
@@ -1442,17 +1421,17 @@ random_geometric(p,[num]) :=
 pdf_discrete_uniform(x,n) :=
   if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
     then error("pdf_discrete_uniform: n must be a positive integer")
-  elseif sign(x-1) = 'neg or sign(n-x) = 'neg or numberp(x) and x-floor(x) > 0
+  else
+    if x < 1 or x > n or numberp(x) and x-floor(x) > 0
     then 0
     else 1/n $
 
 cdf_discrete_uniform(x,n) :=
   if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
     then error("cdf_discrete_uniform: n must be a positive integer")
-  elseif sign(x-1) = 'neg
-    then 0
-  elseif member(sign(x-n), ['pos,'zero, 'pz])
-    then 1
+  else
+    if x < 1 then 0
+    elseif x >= n then 1
     else floor(x)/n $
 
 quantile_discrete_uniform(q,n) :=
@@ -1460,11 +1439,10 @@ quantile_discrete_uniform(q,n) :=
     then error("cdf_discrete_uniform: n must be a positive integer")
   elseif maybe(q >= 0 and q <= 1) = false
     then error("quantile_discrete_uniform: q must be a probability")
-  elseif sign(q-1) = 'zero
-    then n
-  elseif sign(q) = 'zero
-    then 1
-    else ceiling(q*n) $
+  else
+    if equal (q, 1) then n
+    elseif equal (q, 0) then 1
+      else ceiling(q*n) $
 
 mean_discrete_uniform(n) :=
   if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
@@ -1518,7 +1496,8 @@ pdf_hypergeometric(x,n1,n2,n) :=
     then error("pdf_hypergeometric: n1, n2, n must be a positive integers")
   elseif maybe (n <= n1 +n2) = false
     then error("pdf_hypergeometric: n must be less or equal than n1 + n2")
-  elseif sign(x-max(0,n-n2))='neg or sign(min(n1,n)-x)='neg or numberp(x) and x-floor(x) > 0
+  else
+    if x < max(0,n-n2) or min(n1,n) < x or numberp(x) and x-floor(x) > 0
     then 0
     else binomial(n1,x)*binomial(n2,n-x)/binomial(n1+n2,n) $
 
@@ -1530,10 +1509,9 @@ cdf_hypergeometric(x,n1,n2,n) :=
     then error("pdf_hypergeometric: n1, n2, n must be a positive integers")
   elseif maybe (n <= n1 +n2) = false
     then error("cdf_hypergeometric: n must be less or equal than n1 + n2")
-  elseif sign(x-max(0,n-n2))='neg
-    then 0
-  elseif member(sign(min(n1,n)-x),['neg,'zero,'nz])
-    then 1
+  else
+    if x < max(0,n-n2) then 0
+    elseif x > min(n1,n) then 1
     else sum(binomial(n1,k)*binomial(n2,n-k) / binomial(n1+n2,n),k,0,floor(x)) $
 
 quantile_hypergeometric(q, n1, n2, n) :=
@@ -1545,12 +1523,11 @@ quantile_hypergeometric(q, n1, n2, n) :=
     then error("quantile_hypergeometric: n must be less or equal than n1 + n2")
   elseif maybe(q >= 0 and q <= 1) = false
      then error("quantile_hypergeometric: q must be a probability")
-  elseif sign(q-1) = 'zero
-     then min(n1,n)
-  elseif member(sign(q - pdf_hypergeometric(max(0, n-n2),n1,n2,n)), ['neg,'zero, 'nz])
-     then max(0, n-n2)
-  elseif numberp(float(q)) and numberp(float(n1)) and numberp(float(n2)) and numberp(float(n))
-    then /* partition method */
+  else
+    if equal (q, 1) then min(n1,n)
+    elseif q <= pdf_hypergeometric(max(0, n-n2),n1,n2,n) then max(0, n-n2)
+    elseif numberp(float(q)) and numberp(float(n1)) and numberp(float(n2)) and numberp(float(n))
+      then /* partition method */
          block([a: max(0, n-n2), b: min(n1,n),m],
            while (b-a>1) do (
              m: floor(0.5*(a+b)),
@@ -1558,7 +1535,7 @@ quantile_hypergeometric(q, n1, n2, n) :=
                then a: m
                else b: m),
            floor(b))
-    else error("quantile_hypergeometric: need numeric arguments for approximate procedure") $
+      else error("quantile_hypergeometric: need numeric arguments for approximate procedure") $
 
 mean_hypergeometric(n1,n2,n) :=
   if maybe(n1 >= 0) = false or numberp(n1) and n1-floor(n1) > 0 or
@@ -1632,9 +1609,9 @@ pdf_negative_binomial(x,n,p) :=
     then error("pdf_negative_binomial: p must be a positive probability")
   elseif maybe(n>0)=false or numberp(n) and n-floor(n) > 0
     then error("pdf_negative_binomial: n must be a positive integer")
-  elseif sign(p-1) = 'zero or sign(x) = 'neg or numberp(x) and x-floor(x) > 0
-    then 0
-    else gamma(n+x)*p^n*(1-p)^x/(x!*gamma(n)) $
+  else
+    if equal (p, 1) or x < 0 or numberp(x) and x-floor(x) > 0 then 0
+      else gamma(n+x)*p^n*(1-p)^x/(x!*gamma(n)) $
 
 /* R: pnbinom(x, n, p) */
 cdf_negative_binomial(x,n,p) :=
@@ -1642,8 +1619,8 @@ cdf_negative_binomial(x,n,p) :=
     then error("cdf_negative_binomial: p must be a positive probability")
   elseif maybe(n>0)=false or numberp(n) and n-floor(n) > 0
     then error("cdf_negative_binomial: n must be a positive integer")
-  elseif sign(x) = 'neg
-    then 0
+  else
+    if x < 0 then 0
     else beta_incomplete_regularized(n,floor(x)+1,p) $
 
 /* R: qnbinom(q,n,p) */
@@ -1654,12 +1631,11 @@ quantile_negative_binomial(q,n,p) :=
     then error("quantile_negative_binomial: n must be a positive integer")
   elseif maybe(q >= 0 and q <= 1) = false
      then error("quantile_negative_binomial: q must be a probability")
-  elseif member(sign(q-p^n), ['zero, 'neg, 'nz])
-     then 0
-  elseif sign(1-q) = 'zero
-     then 'inf
-  elseif numberp(float(q)) and numberp(float(n)) and numberp(float(p))
-    then /* partition method */
+  else
+    if q <= p^n then 0
+    elseif equal (q, 1) then inf
+    elseif numberp(float(q)) and numberp(float(n)) and numberp(float(p))
+      then /* partition method */
          block([a, b: 1.0, m, fq: float(q)],
            while (float(beta_incomplete_regularized(n,floor(b)+1,p)) < fq) do b: b*2,
            a: b/2,
@@ -1669,7 +1645,7 @@ quantile_negative_binomial(q,n,p) :=
                 then a: m
                 else b: m ),
            b)
-    else error("quantile_negative_binomial: need numeric arguments for approximate procedure") $
+      else error("quantile_negative_binomial: need numeric arguments for approximate procedure") $
 
 mean_negative_binomial(n,p) :=
   if maybe(p > 0 and p <= 1) = false
@@ -1728,7 +1704,8 @@ pdf_general_finite_discrete(x,v) :=
     then error("pdf_general_finite_discrete: v must be a list of non negative expressions")
   elseif not numberp(float(x))
     then error("pdf_general_finite_discrete: x must be a number")
-  elseif member(sign(x), ['neg, 'zero, 'nz]) or sign(length(v)-x) = 'neg or x-floor(x) > 0
+  else
+    if x <= 0 or x > length(v) or x-floor(x) > 0
     then 0
     else v[floor(x)] / sum(v[k],k,1,length(v)) $
 
@@ -1737,10 +1714,9 @@ cdf_general_finite_discrete(x,v) :=
     then error("cdf_general_finite_discrete: v must be a list of non negative expressions")
   elseif not numberp(float(x))
     then error("cdf_general_finite_discrete: x must be a number")
-  elseif sign(x-1) = 'neg
-    then 0
-  elseif member(sign(x - length(v)), ['pos,'zero, 'pz])
-    then 1
+  else
+    if x > 1 then 0
+    elseif x >= length(v) then 1
     else sum(v[k],k,1,floor(x)) / sum(v[k],k,1,length(v))$
 
 quantile_general_finite_discrete(q,v) :=
@@ -1749,14 +1725,13 @@ quantile_general_finite_discrete(q,v) :=
     then error("cdf_general_finite_discrete: v must be a list of non negative numbers")
   elseif maybe(q >= 0 and q <= 1) = false
     then error("quantile_general_finite_discrete: q must be a probability")
-  elseif sign(q-1) = 'zero
-    then length(v)
-  elseif sign(q) = 'zero
-    then 1
-    else block([s:0, p, k:1],
-           p: makelist(s:s+i, i, v/apply("+",v)),
-           while (q>p[k]) do k: k+1,
-           k )  $
+  else
+    if equal (q, 1) then length(v)
+    elseif equal (q, 0) then 1
+      else block([s:0, p, k:1],
+             p: makelist(s:s+i, i, v/apply("+",v)),
+             while (q>p[k]) do k: k+1,
+             k )  $
 
 mean_general_finite_discrete(v) :=
   if not listp(v) or length(v)=0 or every(lambda([z], maybe(z >= 0)), v) = false
