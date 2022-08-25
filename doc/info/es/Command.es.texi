@@ -107,7 +107,7 @@ son:
    functions      arrays         macros
    rules          aliases        dependencies 
    gradefs        props          let_rule_packages
-   structures     namespaces  
+   structures
 @end verbatim
 
 @subheading Borrado y reiniciación

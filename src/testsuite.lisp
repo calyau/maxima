@@ -289,9 +289,6 @@
     "rtest_wilcoxon"
     "rtest_bitwise"
     "rtest_gf"
-    ((mlist simp) "rtest_namespaces"
-     #+(or clisp sbcl ccl cmucl ecl)
-     ((mlist simp) 7))
     "rtest_arag"
     ((mlist simp) "rtest_pdiff"
      #-(or ccl cmucl ecl sbcl gcl clisp)

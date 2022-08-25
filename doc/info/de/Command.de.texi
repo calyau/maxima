@@ -109,7 +109,7 @@ Weitere Informationslisten, die in anderen Kapiteln erl@"autert werden, sind:
    functions      arrays         macros
    rules          aliases        dependencies 
    gradefs        props          let_rule_packages
-   structures     namespaces  
+   structures
 @end verbatim
 
 @subheading L@"oschen und R@"ucksetzen
