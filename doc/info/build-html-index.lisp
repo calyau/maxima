@@ -29,10 +29,11 @@
   (dolist (spec-char '(#\% #\$ #\? #\. #\< #\> #\#
 		       #\= #\: #\* #\- #\\ #\^ #\+ #\/ #\'
 		       #\( #\)))
-    (let ((code (string-downcase
-		 (format nil "_~4,'0x" (char-code spec-char)))))
+    (let ((code (pregexp:pregexp-quote
+		 (string-downcase
+		  (format nil "_~4,'0x" (char-code spec-char))))))
       (setf item
-	    (pregexp:pregexp-replace* code item (string spec-char)))))
+	    (pregexp:pregexp-replace* code item (pregexp:pregexp-quote (string spec-char))))))
   item)
 
 (defun process-one-html-file (file entry-regexp section-regexp fnindex-regexp)
