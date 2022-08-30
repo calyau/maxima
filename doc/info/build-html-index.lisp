@@ -1,4 +1,4 @@
-(in-package #:maxima)
+(in-package :maxima)
 
 (defvar *html-index*
   (make-hash-table :test #'equal)
