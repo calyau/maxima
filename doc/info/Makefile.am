@@ -682,9 +682,6 @@ maxima-index.lisp: build_index.pl maxima.info
 # This includes the indices, maxima_singlepage.html and any other html
 # file that doesn't start with "maxima".
 maxima-index-html.lisp : maxima_toc.html build-html-index.lisp
-	grep -l '<title>\(Function and Variable Index\|Documentation Cat\)' *.html > html-exceptions.txt
-	echo "maxima_singlepage.html" >> html-exceptions.txt
-	ls *.html | grep -v "^maxima" >> html-exceptions.txt
 	../../maxima-local --batch-lisp=build-html-index.lisp
 
 DOLLAR_SIGN = $$

@@ -100,6 +100,19 @@
 			(setf item (handle-special-chars item))
 			(add-entry item item-id base-name line))))))))))
 
+(let ((maxima_nnn-pattern (pregexp:pregexp "^maxima_[0-9][0-9]*$")))
+  (defun maxima_nnn-p (f)
+    (pregexp:pregexp-match maxima_nnn-pattern f)))
+
+;; Similar to grep -l: returns F-PATH if file contains CONTENT-PATTERN, otherwise NIL.
+
+(defun grep-l (content-pattern f-path)
+  (with-open-file (s f-path)
+    (loop for line = (read-line s nil)
+          while line
+            do (when (pregexp:pregexp-match content-pattern line)
+                 (return f-path)))))
+
 ;; Run this build a hash table from the topic to the HTML file
 ;; containing the documentation.  The single argument DIR should be a
 ;; directory that contains the html files to be searched for the
@@ -133,20 +146,26 @@
 	  (pregexp:pregexp "<span id=\"\([^\"]+\)\">.*<h3 class=\"section\">[0-9.,]+ *\(.*\)<"))
 	(fnindex-regexp
 	  (pregexp:pregexp "<span id=\"index-\([^\"]+\)\"></span>$")))
-    ;; Get a list of the files in the directory.  Remove all the ones
-    ;; that don't start with "maxima".  Then sort them all in
-    ;; numerical order.
+
     (let ((files (directory dir)))
-      ;; First, look at any files in html-exceptions.txt and remove them.
-      (with-open-file (s "html-exceptions.txt" :direction :input :if-does-not-exist nil)
-	(when s
-	  (loop for filename = (read-line s nil nil)
-		while filename
-		do
-		   (format t "Skipping ~S~%" filename)
-		   (setf files (remove (pathname-name filename) files
-				       :test #'equal
-				       :key #'pathname-name)))))
+
+      ;; Ensure that the call to SORT below succeeds:
+      ;; the only allowable names are "maxima_toc.html", "maxima.html", or "maxima_nnn.html",
+      ;; where nnn is an integer;
+      ;; also, if a file with an otherwise-allowable name is function and variable index,
+      ;; or a list of documentation categories, exclude it too.
+
+      (setf files (remove-if-not #'(lambda (f-path) 
+                                     (let ((f-name (pathname-name f-path)))
+                                       #+nil (format t "BUILD-HTML-INDEX: F-PATH = ~a, F-NAME = ~a.~%" f-path f-name)
+                                       (or
+                                         (string-equal f-name "maxima_toc")
+                                         (string-equal f-name "maxima")
+                                         (and 
+                                           (maxima_nnn-p f-name)
+                                           (not (grep-l "<title>(Function and Variable Index|Documentation Cat)" f-path)))
+                                         (format t "BUILD-HTML-INDEX: omit ''~a''.~%" f-path)))) files))
+
       ;; Now sort them in numerical order.
       (setf files
 	    (sort files #'<

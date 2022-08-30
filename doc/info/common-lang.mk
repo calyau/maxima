@@ -1,6 +1,6 @@
 info_TEXINFOS = maxima.texi
 
-all-local: maxima-index.lisp maxima_toc.html
+all-local: maxima-index.lisp maxima-index-html.lisp maxima_toc.html
 
 maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
@@ -13,9 +13,6 @@ maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 # This includes the indices, maxima_singlepage.html and any other html
 # file that doesn't start with "maxima".
 maxima-index-html.lisp : maxima_toc.html
-	grep -l '<title>\(Function and Variable Index\|Documentation Cat\)' *.html > html-exceptions.txt
-	echo "maxima_singlepage.html" >> html-exceptions.txt
-	ls *.html | grep -v "^maxima" >> html-exceptions.txt
 	../../../maxima-local --batch-lisp=../build-html-index.lisp
 
 maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
