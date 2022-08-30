@@ -1092,6 +1092,18 @@ covariant indices and @var{n} contravariant indices.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{dispsym}
+@deffn {Function} dispsym (@var{tensor}, @var{m}, @var{n})
+Displays all of the defined symmetries from @var{tensor} which has @var{m}
+covariant indices and @var{n} contravariant indices. See @code{decsym}
+for an example.
+
+@opencatbox{Categories:}
+@category{Package itensor}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{canform}
 @deffn {Function} canform @
 @fname{canform} (@var{expr}) @
