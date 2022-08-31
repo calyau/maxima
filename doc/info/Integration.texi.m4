@@ -1831,7 +1831,7 @@ extrapolation (de Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
 @code{quad_qagp} computes the integral
 
 m4_displaymath(
-<<<\int_a^b {f(x) \, dx>>>,
+<<<\int_a^b f(x) \, dx>>>,
 <<<@math{integrate (f(x), x, a, b)}>>>)
 
 The function to be integrated is @math{f(x)}, with
