@@ -639,7 +639,7 @@ if test x"${enable_build_docs}" = xtrue ; then
     dnl 'makeinfo --version' and extract out the version digits.
     makeinfo_old=false
     if test x"${makeinfo_found}" = xtrue; then
-	AC_MSG_CHECKING([if makeinfo version >= 6.8])
+	AC_MSG_CHECKING([if makeinfo version >= 5.1])
 	dnl expr is looking for something like "junk<digits>.<digits>junk"
 	dnl and extracting out the "<digits>.<digits>"
 	makeinfo_version=`expr "\`makeinfo --version | head -1\`" : '.*\([[0-9]]\+\.[[0-9]]\+\)'`
@@ -649,12 +649,12 @@ if test x"${enable_build_docs}" = xtrue ; then
 	makeinfo_minor=`expr $makeinfo_version : '.*\.\([[0-9]]\+\)'`
 	dnl echo major ${makeinfo_major}
 	dnl echo minor ${makeinfo_minor}
-	if test $makeinfo_major -lt 6; then
-	    dnl Major version < 6, so too old
+	if test $makeinfo_major -lt 5; then
+	    dnl Major version < 5, so too old
 	    makeinfo_old=true
-	elif test $makeinfo_major -eq 6; then
-	    dnl Major version is 6.  If the minor version is < 8, too old
-	    if test $makeinfo_minor -lt 8; then
+	elif test $makeinfo_major -eq 5; then
+	    dnl Major version is 5.  If the minor version is < 1, too old
+	    if test $makeinfo_minor -lt 1; then
 		makeinfo_old=true
 	    fi
 	fi
