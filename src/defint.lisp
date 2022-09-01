@@ -3359,13 +3359,12 @@ in the interval of integration.")
 	   ;; %i.
 	   (let* ((den-conj (maxima-substitute (m- '$%i) '$%i denom))
 		  (num ($num exp))
-		  (new-denom (sratsimp (m* denom den-conj))))
-	     ;; If the new denominator still contains %i, just give
-	     ;; up.  Otherwise, multiply the numerator by the
-	     ;; conjugate and divide by the new denominator.
-	     (if (among '$%i new-denom)
+		  (new-denom (sratsimp (m* denom den-conj)))
+		  (new-exp (sratsimp (m// (m* num den-conj) new-denom))))
+	     ;; If the new denominator still contains %i, just give up.
+	     (if (among '$%i ($denom new-exp))
 		 exp
-		 (setq exp (m// (m* num den-conj) new-denom)))))
+		 new-exp)))
 	  (t exp))))
 
 ;;; LL and UL must be real otherwise this routine return $UNKNOWN.

@@ -344,7 +344,7 @@ integrate((x-%i)/((x-2*%i)*(x^2+1)),x,minf,inf);
 /* p. 64 */
 /* Tests ztoinf and zmtorat */
 integrate((x-%i)/((x-2*%i)*(x^2+1)),x,0,inf);
-(6*%i*log(2)+6*%pi)/18;
+(2*%i*log(2)+2*%pi)/6;
 
 /* 
  * p. 67 
@@ -1930,6 +1930,21 @@ block ([t1, t2, I_defint_numerical, I_defint_FTC],
                 return(true))
           else printf (true, "re: #3718, can't confirm antiderivative on (~f, ~f), keep trying.~%", t1, t2)));
 true;
+
+/* Bug #4018: defint(foo,,0,inf) lisp error when denom(foo) contains %i */
+
+defint(1/((x+%i/2)*(x+1)),x,0,inf);
+((2*%i+4)*log(2)+(1-2*%i)*%pi)/5;
+
+defint(1/((x+%i)*(x/2+1)),x,0,inf);
+((2*%i+4)*log(2)+(1-2*%i)*%pi)/5;
+
+defint(1/((x+%i/2)*(x-%i)),x,minf,inf);
+(4*%pi)/3;
+
+block ([g_poles: subst(phi=%pi/3, exp(%i * [phi, -phi, %pi-phi, %pi+phi]))],
+  defint(1/apply("*", makelist(w - pole, pole, g_poles)), w, 0, inf));
+%pi/(2*sqrt(3));
 
 /* SF bug #3810: "integrate error \"not of type FIXNUM\" for integrand with floats in it"
  * The following 20 cases are derived from the example shown in the bug report;
