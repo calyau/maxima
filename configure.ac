@@ -663,6 +663,18 @@ if test x"${enable_build_docs}" = xtrue ; then
 	else
 	    AC_MSG_RESULT([${makeinfo_version}])
 	fi
+	dnl If the makeinfo version is older than 6.8, we need to
+	dnl include MathJax ourselves when building the HTML files.
+	if test $makeinfo_major -gt 6; then
+	    dnl Nothing needed
+ 	elif test $makeinfo_major -eq 6; then
+	     dnl If it's less than 6.8 we need to include MathJax
+	     if test $makeinfo_minor -lt 8; then
+                 dnl Need to include Mathjax
+		 NEED_MATHJAX='<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>'
+		 AC_SUBST(NEED_MATHJAX)
+             fi
+	fi
     fi
 fi
 
