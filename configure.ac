@@ -667,6 +667,7 @@ if test x"${enable_build_docs}" = xtrue ; then
 	dnl include MathJax ourselves when building the HTML files.
 	if test $makeinfo_major -gt 6; then
 	    dnl Nothing needed
+	    true
  	elif test $makeinfo_major -eq 6; then
 	     dnl If it's less than 6.8 we need to include MathJax
 	     if test $makeinfo_minor -lt 8; then
