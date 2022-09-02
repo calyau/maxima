@@ -164,7 +164,9 @@
                                          (and 
                                            (maxima_nnn-p f-name)
                                            (not (grep-l "<title>(Function and Variable Index|Documentation Cat)" f-path)))
-                                         (format t "BUILD-HTML-INDEX: omit ''~a''.~%" f-path)))) files))
+                                         (format t "BUILD-HTML-INDEX: omit ~S.~%"
+						 (namestring f-path)))))
+				 files))
 
       ;; Now sort them in numerical order.
       (setf files
