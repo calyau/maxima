@@ -5,6 +5,11 @@ m4_dnl Change the quote characters to something that isn't likely to
 m4_dnl show up in the manual.
 m4_changequote(`<<<', `>>>')m4_dnl
 m4_dnl
+m4_dnl If makeinfo is too old, we don't have @displaymath, so we'll
+m4_dnl have to use something else.
+m4_define(<<<m4_no_displaymath>>>,
+@NO_DISPLAYMATH@)
+m4_dnl
 m4_dnl For writing formulas suitable for various output formats.  For
 m4_dnl simplicity two or three arguments are required:
 m4_dnl
@@ -20,12 +25,15 @@ m4_dnl
 m4_dnl Be careful not to leave extra blank lines; TeX may complain about the
 m4_dnl blank lines.
 m4_define(<<<m4_displaymath>>>, 
-<<<
-@ifhtml
-@displaymath
+<<<@html
+m4_ifelse(m4_no_displaymath(), <<<true>>>,
+<<<$$
 $1
-@end displaymath
-@end ifhtml
+$$>>>,
+<<<@displaymath
+$1
+@end displaymath>>>)
+@end html
 @ifinfo
 $2
 @end ifinfo

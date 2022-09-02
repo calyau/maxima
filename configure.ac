@@ -671,9 +671,13 @@ if test x"${enable_build_docs}" = xtrue ; then
  	elif test $makeinfo_major -eq 6; then
 	     dnl If it's less than 6.8 we need to include MathJax
 	     if test $makeinfo_minor -lt 8; then
-                 dnl Need to include Mathjax
+                 dnl Need to include Mathjax.
 		 NEED_MATHJAX='<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>'
+		 dnl This also means that makeinfo doesn't support
+		 dnl @displaymath, so we need to do something else.
+		 NO_DISPLAYMATH='true'
 		 AC_SUBST(NEED_MATHJAX)
+		 AC_SUBST(NO_DISPLAYMATH)
              fi
 	fi
     fi
@@ -1262,6 +1266,7 @@ doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 desktopintegration/Makefile \
 doc/info/category-macros.texi \
 doc/info/texi2html.init \
+doc/info/math.m4 \
 doc/info/figures/Makefile \
 doc/info/de/Makefile \
 doc/info/de/include-maxima.texi \
