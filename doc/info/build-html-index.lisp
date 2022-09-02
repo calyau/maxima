@@ -163,7 +163,8 @@
                                          (string-equal f-name "maxima")
                                          (and 
                                            (maxima_nnn-p f-name)
-                                           (not (grep-l "<title>(Function and Variable Index|Documentation Cat)" f-path)))
+                                           #+nil
+					   (not (grep-l "<title>(Function and Variable Index|Documentation Cat)" f-path)))
                                          (format t "BUILD-HTML-INDEX: omit ~S.~%"
 						 (namestring f-path)))))
 				 files))
@@ -186,6 +187,17 @@
 				    (if (> (length name) 7)
 					(parse-integer (subseq name 7))
 					0)))))))
+      ;; Check if the last 2 files contain the indices.  If they do,
+      ;; we can ignore them.  We do want to ignore these, but if we're
+      ;; wrong, it's not terrible.  We just waste time scanning files
+      ;; that won't have anything to include in the index.
+      (format t "Looking for indices~%")
+      (dolist (file (last files 2))
+	(when (grep-l "<title>(Function and Variable Index|Documentation Cat)" file)
+	  (format t "BUILD-HTML-INDEX: omit ~S.~%"
+		  (namestring file))
+	  (setf files (remove file files))))
+
       (dolist (file files)
 	;; We want to ignore maxima_singlepage.html for now.
 	(unless (string-equal (pathname-name file)
