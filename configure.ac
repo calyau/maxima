@@ -663,22 +663,29 @@ if test x"${enable_build_docs}" = xtrue ; then
 	else
 	    AC_MSG_RESULT([${makeinfo_version}])
 	fi
+
 	dnl If the makeinfo version is older than 6.8, we need to
 	dnl include MathJax ourselves when building the HTML files.
+	need_mathjax=false
 	if test $makeinfo_major -gt 6; then
 	    dnl Nothing needed
 	    true
  	elif test $makeinfo_major -eq 6; then
-	     dnl If it's less than 6.8 we need to include MathJax
-	     if test $makeinfo_minor -lt 8; then
-                 dnl Need to include Mathjax.
-		 NEED_MATHJAX='<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>'
-		 dnl This also means that makeinfo doesn't support
-		 dnl @displaymath, so we need to do something else.
-		 NO_DISPLAYMATH='true'
-		 AC_SUBST(NEED_MATHJAX)
-		 AC_SUBST(NO_DISPLAYMATH)
-             fi
+	    dnl If it's less than 6.8 we need to include MathJax
+	    if test $makeinfo_minor -lt 8; then
+	    	 need_mathjax=true
+	    fi
+	else
+	     need_mathjax=true
+	fi
+	if test x"${need_mathjax}" = xtrue; then
+            dnl Need to include Mathjax.
+	    NEED_MATHJAX='<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>'
+	    dnl This also means that makeinfo doesn't support
+	    dnl @displaymath, so we need to do something else.
+	    NO_DISPLAYMATH='true'
+	    AC_SUBST(NEED_MATHJAX)
+	    AC_SUBST(NO_DISPLAYMATH)
 	fi
     fi
 fi
