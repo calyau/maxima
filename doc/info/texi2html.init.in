@@ -1,4 +1,6 @@
-$options->{"EXTRA_HEAD"} = '<link rel="icon" href="figures/favicon.ico"> <script src="https://polyfill.io/v3/polyfill.min.js?features=es6>"></script>';
+$options->{"EXTRA_HEAD"} = '<link rel="icon" href="figures/favicon.ico">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6>"></script>
+@NEED_MATHJAX@';
 
 # Make the output file names consist of the base name followed by a number.
 use strict;
