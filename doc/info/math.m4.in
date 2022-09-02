@@ -8,7 +8,7 @@ m4_dnl
 m4_dnl If makeinfo is too old, we don't have @displaymath, so we'll
 m4_dnl have to use something else.
 m4_define(<<<m4_no_displaymath>>>,
-@NO_DISPLAYMATH@)
+@NO_DISPLAYMATH@)m4_dnl
 m4_dnl
 m4_dnl For writing formulas suitable for various output formats.  For
 m4_dnl simplicity two or three arguments are required:
