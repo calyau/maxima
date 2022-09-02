@@ -46,9 +46,11 @@ m4_dnl m4_math(jax, info) or m4_math(jax, info, tex)
 m4_dnl Like m4_displaymath, but this is meant for inline math equations.
 m4_define(<<<m4_math>>>, 
 <<<
-@ifhtml
-@math{$1}
-@end ifhtml
+@html
+m4_ifelse(m4_no_displaymath(), <<<true>>>,
+<<<\($1\)>>>,
+<<<@math{$1}>>>)
+@end html
 @ifinfo
 @math{$2}
 @end ifinfo
