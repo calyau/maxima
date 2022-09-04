@@ -29,57 +29,25 @@ summation.
 Given a hypergeometric term @math{F_k} in @math{k} we want to find its hypergeometric
 anti-difference, that is, a hypergeometric term @math{f_k} such that
 
-@tex
-$$F_k = f_{k+1} - f_k.$$
-@end tex
-@ifnottex
-@math{F_k = f_(k+1) - f_k}.
-@end ifnottex
+m4_displaymath(
+<<<F_k = f_{k+1} - f_k.>>>,
+<<<@math{F_k = f_(k+1) - f_k}.>>>)
 
 @subsection The definite summation problem
 
 @code{zeilberger} implements Zeilberger's algorithm for definite hypergeometric summation.
-Given a proper hypergeometric term (in @math{n} and @math{k})
-@tex
-$F_{n,k}$
-@end tex
-@ifnottex
-@math{F_(n,k)}
-@end ifnottex
-and a positive integer @math{d} we want to find a @math{d}-th order linear
-recurrence with polynomial coefficients (in @math{n}) for
-@tex
-$F_{n,k}$
-@end tex
-@ifnottex
-@math{F_(n,k)}
-@end ifnottex
-and a rational function @math{R} in @math{n} and @math{k} such that
+Given a proper hypergeometric term (in @math{n} and @math{k}) m4_math(<<<F_{n,k}>>>,<<<@math{F_(n,k)}>>>) and
+a positive integer @math{d} we want to find a @math{d}-th order linear
+recurrence with polynomial coefficients (in @math{n}) for m4_math(<<<F_{n,k}>>>,<<<@math{F_(n,k)}>>>) and
+a rational function @math{R} in @math{n} and @math{k} such that
 
-@tex
-$$a_0 \, F_{n,k} + \ldots + a_d \, F_{n+d}, ~ k = \Delta_K \left(R\left(n,k\right) F_{n,k}\right),$$
-@end tex
-@ifnottex
-@math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_k(R(n,k) F_(n,k))},
-@end ifnottex
-
-@tex
-\noindent
-@end tex
-where
-@tex
-$\Delta_k$
-@end tex
-@ifnottex
-@math{Delta_k}
-@end ifnottex
-is the @math{k}-forward difference operator, i.e.,
-@tex
-$\Delta_k \left(t_k\right) \equiv t_{k+1} - t_k$.
-@end tex
-@ifnottex
-@math{Delta_k(t_k) := t_(k+1) - t_k}.
-@end ifnottex
+m4_displaymath(
+<<<a_0 \, F_{n,k} + \ldots + a_d \, F_{n+d}, ~ k = \Delta_K \left(R\left(n,k\right) F_{n,k}\right),>>>,
+<<<@math{a_0 F_(n,k) + ... + a_d F_(n+d,k} = Delta_k(R(n,k) F_(n,k))},>>>)
+where m4_math(\Delta_k, @math{Delta_k}) is the @math{k}-forward difference
+operator, i.e., m4_mathdot(
+<<<\Delta_k \left(t_k\right) \equiv t_{k+1} - t_k>>>,
+<<<@math{Delta_k(t_k) := t_(k+1) - t_k}>>>)
 
 @subsection Verbosity levels
 
@@ -121,14 +89,8 @@ Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 @anchor{Gosper}
 @deffn {Function} Gosper (@math{F_k}, @var{k})
 Returns the rational certificate @math{R(k)} for @math{F_k}, that is,
-a rational function such that
-@tex
-$F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k$,
-@end tex
-@ifnottex
-@math{F_k = R(k+1) F_(k+1) - R(k) F_k},
-@end ifnottex
-if it exists.
+a rational function such
+that m4_mathcomma(<<<F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k>>>,<<<@math{F_k = R(k+1) F_(k+1) - R(k) F_k}>>>) if it exists.
 Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
 @opencatbox{Categories:}
