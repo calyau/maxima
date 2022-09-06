@@ -708,3 +708,33 @@ errcatch (gf_set_data ("wtf"));
 
 block ([?errorsw : true], errcatch (log (0)));
 [];
+
+/* Try to verify that autoloading a Maxima function doesn't interfere with VARLIST.
+ * The one known example is this integral, which gives different results depending on
+ * whether trigsimp is loaded already or not.
+ *
+ * At present (2022-09-05), Maxima returns an incorrect result for this integral.
+ * At this point, verify only that the result is consistent.
+ *
+ * Probably a more contrived example would be better here -- if ever the integral
+ * is changed so it doesn't call trigsimp, this test won't verify autoloading behavior.
+ */
+
+(kill (x, functions),
+ ii: 'integrate(sin(x)*atan2(sin(x), cos(x)), x, -%pi, %pi),
+ 0);
+0;
+
+(result1: ev (ii, nouns),
+ /* remember result but don't test it -- at present (2022-09-05) it is incorrect */
+ 0);
+0;
+
+(result2: ev (ii, nouns),
+ is (result2 = result1));
+true;
+
+(kill (functions), /* make it necessary to reload trigsimp */
+ result3: ev (ii, nouns),
+ is (result3 = result2));
+true;

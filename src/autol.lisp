@@ -15,16 +15,11 @@
 				    $system)))
     (and tem #-sbcl (load tem) #+sbcl (with-compilation-unit nil (load tem)))))
 
-(defmfun $aload_mac (file &aux *load-verbose* tem)
-  (let (($system  (list  '(mlist)
-			 #+kcl (concatenate 'string si::*system-directory*
-					    "../{src,share,share1,sharem}/foo.{mc,mac}"))))
-    (declare (special $system))
-    (setq tem ($file_search1 file '((mlist)
-				    $file_search_maxima
-				    $system)))
-    (and tem ($load tem))))
-
+(defmfun $aload_mac (file)
+  (let ((tem ($file_search1 file '((mlist) $file_search_maxima))))
+    (when tem
+      (with-open-file (in-stream tem)
+        (batchload-stream in-stream :autoloading-p t)))))
 
 ;;for defun,defmfun
 (defun autof (fun file)

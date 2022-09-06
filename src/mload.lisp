@@ -66,7 +66,7 @@
       (with-open-file (in-stream filename)
         (batchload-stream in-stream)))))
 
-(defun batchload-stream (in-stream)
+(defun batchload-stream (in-stream &key autoloading-p)
   (let ($load_pathname)
     (let*
       ((noevalargs nil)
@@ -76,6 +76,10 @@
         (if stream-truename
           (setq $load_pathname (cl:namestring stream-truename))
           (format nil "~A" in-stream)))
+       ;; If we arrived here from autoloading, call MEVAL instead of MEVAL*
+       ;; since MEVAL* is intended to be called from the interpreter top level;
+       ;; MEVAL* modifies global state, resetting VARLIST and calling CLEARSIGN.
+       (meval-fcn (symbol-function (if autoloading-p 'meval 'meval*)))
        (expr nil))
       (declare (special *prompt-on-read-hang*))
       (when $loadprint
@@ -85,7 +89,7 @@
       (loop while (and
                     (setq  expr (let (*prompt-on-read-hang*) (mread in-stream nil)))
                     (consp expr))
-            do (meval* (third expr)))
+            do (funcall meval-fcn (third expr)))
       in-stream-string-rep)))
 
 ;;returns appropriate error or existing pathname.
