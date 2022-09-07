@@ -10,16 +10,8 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-# Currently wxMaxima's development version contains fixes for the most recent
-# wxWidgets version => use an older wxWidgets version when compiling an installer
-# with the last wxMaxima release.
-if(USE_WXMAXIMA_GIT)
-    set(WXWIDGETSVERSION "3.2.0")
-    set(WXWIDGETS_MD5 "4e3b34a952f487255d5c52644ff3249f")
-else()
-    set(WXWIDGETSVERSION "3.1.4")
-    set(WXWIDGETS_MD5 "47eaa907b3923bc5d6938bd5cf35b901")
-endif()
+set(WXWIDGETSVERSION "3.2.0")
+set(WXWIDGETS_MD5 "4e3b34a952f487255d5c52644ff3249f")
 set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
 
 # Build wxWidgets static library (required for wxMaxima)
@@ -36,4 +28,4 @@ externalproject_add(wxwidgets
 )
 
 # Install wxWidgets locale files only.
-INSTALL(DIRECTORY "${CMAKE_BINARY_DIR}/wxwidgets-installroot/usr/local/share/" DESTINATION share/ COMPONENT wxMaxima)
+install(DIRECTORY "${CMAKE_BINARY_DIR}/wxwidgets-installroot/usr/local/share/" DESTINATION share/ COMPONENT wxMaxima)
