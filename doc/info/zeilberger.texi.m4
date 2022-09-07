@@ -43,7 +43,7 @@ a rational function @math{R} in @math{n} and @math{k} such that
 
 m4_displaymath(
 <<<a_0 \, F_{n,k} + \ldots + a_d \, F_{n+d}, ~ k = \Delta_K \left(R\left(n,k\right) F_{n,k}\right),>>>,
-<<<@math{a_0 F_(n,k) + ... + a_d F_(n+d,k} = Delta_k(R(n,k) F_(n,k))},>>>)
+<<<@math{a_0 F_(n,k) + ... + a_d F_(n+d,k) = Delta_k(R(n,k) F_(n,k))},>>>)
 where m4_math(\Delta_k, @math{Delta_k}) is the @math{k}-forward difference
 operator, i.e., m4_mathdot(
 <<<\Delta_k \left(t_k\right) \equiv t_{k+1} - t_k>>>,
