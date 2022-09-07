@@ -10,24 +10,24 @@
 @code{fmin_cobyla} is a Common Lisp translation (via @code{f2cl}) of the
 Fortran constrained optimization routine COBYLA by Powell[1][2][3].  
 
-COBYLA minimizes an objective function F(X) subject to M inequality
-constraints of the form @code{g(X) >= 0} on X, where X is a vector of
-variables that has N components.
+COBYLA minimizes an objective function @math{F(X)} subject to @math{M} inequality
+constraints of the form m4_math(g(X) \ge 0, @math{g(X) >= 0}) on @math{X},
+where @math{X} is a vector of variables that has @math{N} components.
 
-Equality constraints g(X)=0 can often be implemented by a pair of inequality 
-constraints @code{g(X)>=0} and @code{-g(X)>= 0}.  Maxima's interface to COBYLA
+Equality constraints @math{g(X) = 0} can often be implemented by a pair of inequality 
+constraints m4_math(g(X) \ge 0, @math{g(X)>=0}) and m4_mathdot(-g(X) \ge 0, @math{-g(X)>= 0})  Maxima's interface to COBYLA
 allows equality constraints and internally converts the equality
 constraints to a pair of inequality constraints.
 
 The algorithm employs linear approximations to the
 objective and constraint functions, the approximations being formed by
-linear interpolation at N+1 points in the space of the variables.
+linear interpolation at @math{N+1} points in the space of the variables.
 The interpolation points are regarded as vertices of a simplex. The
-parameter RHO controls the size of the simplex and it is reduced
-automatically from RHOBEG to RHOEND. For each RHO the subroutine tries
+parameter @var{RHO} controls the size of the simplex and it is reduced
+automatically from @var{RHOBEG} to @var{RHOEND}. For each @var{RHO} the subroutine tries
 to achieve a good vector of variables for the current size, and then
-RHO is reduced until the value RHOEND is reached. Therefore, RHOBEG and
-RHOEND should be set to reasonable initial changes to and the required   
+@var{RHO} is reduced until the value @var{RHOEND} is reached. Therefore, @var{RHOBEG} and
+@var{RHOEND} should be set to reasonable initial changes to and the required   
 accuracy in the variables respectively, but this accuracy should be
 viewed as a subject for experimentation because it is not guaranteed.
 The routine treats each constraint individually when calculating
@@ -73,11 +73,10 @@ The optional arguments recognized are:
 @item constraints
 List of inequality and equality constraints that must be satisfied by
 @var{X}.  The inequality constraints must be actual inequalities of
-the form @code{g(@var{X}) >= h(@var{X})} or @code{g(@var{X}) <=
-h(@var{X})}.  The equality constraints must be of the form
-@code{g(@var{X}) = h(@var{X})}. 
+the form m4_math(g(X) \ge h(X), @math{g(@var{X}) >= h(@var{X})}) or m4_mathdot(g(X) \le h(X), @math{g(@var{X}) <= h(@var{X})})  The equality constraints must be of the
+form m4_mathdot(g(X) = h(X), @math{g(@var{X}) = h(@var{X})}) 
 @item rhobeg
-Initial value of the internal RHO variable which controls 
+Initial value of the internal @var{RHO} variable which controls 
 the size of simplex.  (Defaults to 1.0)
 @item rhoend 
 The desired final value rho parameter.  It is approximately
@@ -155,8 +154,19 @@ See @mref{fmin_cobyla} for more information.
 @node Examples for cobyla, , Functions and Variables for cobyla, cobyla-pkg
 @section Examples for cobyla
 
-Minimize x1*x2 with @code{1-x1^2-x2^2 >= 0}.  
-The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
+Minimize m4_math(x_1 x_2, @math{x_1 x_2}) with m4_mathdot(1-x_1^2-x_2^2 \ge 0, @math{1-x1^2-x2^2 >= 0})  
+The theoretical solution is
+m4_displaymath(
+<<<\eqalign{
+x_1 &= {1\over \sqrt{2}} \cr
+x_2 &= -{1\over \sqrt{2}}
+}>>>,
+<<<
+@math{x_1 = 1/sqrt(2)}
+
+@math{x_2 = -1/sqrt(2)}
+>>>
+)
 
 @c ===beg===
 @c load("fmin_cobyla")$
@@ -177,8 +187,9 @@ The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
        - 0.49999999999926, [[-1.999955756559757e-12],[]], 66]
 @end example
 
-Here is the same example but the constraint is @math{x1^2+x2^2 <= -1}
-which is impossible over the reals.
+Here is the same example but the constraint
+is m4_math(x_1^2+x_2^2 \le -1, @math{x1^2+x2^2 <= -1}) which
+is impossible over the reals.
 
 @example
 @group
