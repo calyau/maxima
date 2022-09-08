@@ -666,7 +666,7 @@ all-local: html maxima.info maxima-index.lisp maxima-index-html.lisp
 infoname = maxima
 include $(top_srcdir)/common-info.mk
 maxima.info : maxima.texi $(maxima_TEXINFOS)
-	-$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) \
+	$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) \
 	  --split-size=1000000 $(srcdir)/maxima.texi
 
 html: maxima_toc.html
