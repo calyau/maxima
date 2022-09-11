@@ -706,11 +706,8 @@ When one changes, the other does too."
   ;; Set up $browser for displaying help in browser.
   (cond ((and (boundp '*autoconf-windows*)
 	      (string-equal *autoconf-windows* "true"))
-	 ;; Default to using msedge which should be available on all
-	 ;; recent Windows systems.  Ideally, we should figure out how
-	 ;; to start the user's default browser for this, but I (rtoy)
-	 ;; don't know how to do that.
-	 (setf $browser "start msedge -url ~A"))
+	 ;; Starts the default browser on Windows.
+	 (setf $browser "start ~A"))
 	((boundp '*autoconf-host*)
 	 ;; Determine what kind of OS we're using from the host and
 	 ;; set up the default browser appropriately.

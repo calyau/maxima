@@ -246,7 +246,7 @@ values:
 Help is displayed as plain text sent to a terminal.  This is the default.
 @item html
 Help is displayed using a browser to display the HTML version of the
-manual.  See
+manual.
 @item frontend
 Help is displayed using the frontend's help system.  If no frontend is
 running then an error is signaled.  For example, wxMaxima and xmaxima
@@ -268,19 +268,21 @@ See also @mrefcomma{browser} and @mrefdot{url_base}
 @defvr {Option variable} browser
 
 This specifies the command to use to open an HTML file.  This is a
-format string of the form @code{<cmd> ~a} where @code{~a} is replaced
+format string of the form @code{<cmd> ~A} where @code{~A} is replaced
 by the URL of the HTML file and @code{<cmd>} is some program that
 takes an arg and opens up a browser to the given URL.
 
-On windows, the default setting is @code{"start msedge -url ~A"},
-which uses MS Edge to display the html file.  You may replace
-@code{msedge} with @code{firefox}, @code{chrome}, or @code{iexplore}
-if you want to use Firefox, Chrome, or Internet Explorer,
-respectively, instead.  (Currently Maxima is not able to determine the
-default browser, so it defaults to MS Edge.)
+On windows, the default setting is @code{"start ~a"},
+which uses the default browser to display the html file.  You may replace
+it with e.g. @code{start firefox ~A}, @code{start chrome ~A} or @code{start iexplore ~A}
+if you want to use Firefox, Chrome, or Internet Explorer
+instead of the default browser.
 
 On other OSes, the user's default browser should be used
-automatically.
+automatically (using @code{xdg-open} on Linux/Unix and @code{open} on MacOS).
+You can also set the @code{browser} variable to use
+a non default browser, e.g.
+@code{browser:"firefox '~A'";} or @code{browser:"chromium '~A'";}
 
 See also @mrefcomma{output_format_for_help} and @mrefdot{url_base}
 
