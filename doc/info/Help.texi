@@ -298,7 +298,7 @@ See also @mrefcomma{output_format_for_help} and @mrefdot{url_base}
 When displaying help using a browser, @code{url_base} defines the URL
 to use.  It defaults to a @code{file://} path pointing to the
 directory containing the html files for documentation.  However, you
-could use @code{localhost:8080/} or some other URL that has the HTML
+could use @code{http://localhost:8080/} or some other URL that has the HTML
 help files.  But this requires those URLs to have exactly the same
 HTML files in the info directory because a table is needed to
 translate a topic to the appropriate location in an html file.
