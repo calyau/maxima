@@ -272,7 +272,7 @@ format string of the form @code{<cmd> ~A} where @code{~A} is replaced
 by the URL of the HTML file and @code{<cmd>} is some program that
 takes an arg and opens up a browser to the given URL.
 
-On windows, the default setting is @code{"start ~a"},
+On windows, the default setting is @code{"start ~A"},
 which uses the default browser to display the html file.  You may replace
 it with e.g. @code{start firefox ~A}, @code{start chrome ~A} or @code{start iexplore ~A}
 if you want to use Firefox, Chrome, or Internet Explorer
