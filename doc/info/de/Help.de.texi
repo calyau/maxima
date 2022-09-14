@@ -167,6 +167,80 @@ Enter space-separated numbers, `all' or `none': 2 3
 @end example
 @end deffn
 
+
+@anchor{output_format_for_help}
+@defvr {Optionsvariable} output_format_for_help
+Standardwert: @code{text}
+
+@code{output_format_for_help} gibt an, wie @code{describe} die Hilfe darstellt.
+
+@code{output_format_for_help} kann auf folgende Werte gesetzt werden:
+@table @code
+@item text
+Die Hilfe wird als Text am Terminal dargestellt. Das ist der Standard.
+@item html
+Die Hilfe wird mit einem Browser als HTML Version des Handbuchs dargestellt.
+@item frontend
+Die Hilfe wird mit dem Hilfesystem des Frontends dargestellt. Wenn kein Frontend
+verwendet wird, wird ein Fehler ausgegeben. Frontends sind beispielsweise wxMaxima oder Xmaxima.
+@end table
+
+Andere Werte sind Fehler.
+
+Siehe auch @mref{browser} und @mrefdot{url_base}
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@anchor{browser}
+@defvr {Optionsvariable} browser
+
+Damit wird das Browserkommando angegeben, mit dem die HTML Dateien dargestellt werden.
+Der String hat die Form @code{<cmd> ~A} wobei @code{~A} mit der URL ersetzt wird und @code{<cmd>}
+ist das Programm, das die URL im Argument im Browser darstellt.
+
+
+Auf Windows ist der Standardwert @code{"start ~A"},
+was den Default-Browser öffnet.  Das kann beispielsweise durch @code{start firefox ~A}, @code{start chrome ~A}
+oder @code{start iexplore ~A} ersetzt werden, um andere Browser als den Standardbrowser zu verwenden.
+
+
+Unter anderen Betriebssystemen wird der Standardbrowser automatisch verwendet
+(unter Verwendung von @code{xdg-open} unter Linux/Unix und @code{open} auf MacOS).
+Die @code{browser} variable kann auf einen Nicht-Default-Browser gesetzt werden, z.B.
+@code{browser:"firefox '~A'";} oder @code{browser:"chromium '~A'";}
+
+Siehe auch @mref{output_format_for_help} und @mrefdot{url_base}
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@anchor{url_base}
+@defvr {Optionsvariable} url_base
+
+Wenn die Hilfe mit einem Webbrowser dargestellt wird, definiert @code{url_base}
+die zu verwendende URL. Der Standardwert ist eine @code{file://} URL, die
+zum Directory mit den HTML-Dateien zeigt.
+Man könnte z.B. auch @code{http://localhost:8080/} oder andere URLs
+verwenden, wo die Hilfe abrufbar ist. Achtung: Diese URL muß exakt
+dieselben HTML-Dateien enthalten, die aus dem Maxima-Sourcecode
+gebaut werden; eine Tabelle wird verwendet, um aus einem Thema
+die richtige Position in einer HTML-Datei zu finden.
+
+Siehe auch @mref{output_format_for_help} und @mrefdot{browser}.
+
+@opencatbox{Categories:}
+@category{Help}
+@category{Global variables}
+@closecatbox
+@end defvr
+
 @c --- 14.02.2011 DK -----------------------------------------------------------
 @anchor{example}
 @deffn  {Funktion} example (@var{topic})
