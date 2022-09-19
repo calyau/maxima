@@ -27,9 +27,19 @@ polynomial with variables in @var{varlist}.  The coefficients must be
 real numbers.
 
 The optional keyword arguments provide some control over the
-algorithm.  @var{epsbig} is the local error tolerance allowed by the
-path tracker, defaulting to 1e-4.  @var{epssml} is the accuracy
-desired for the final solution, defaulting to 1d-14.. @var{iflg1},
+algorithm.
+
+@table @var
+@item epsbig
+is the local error tolerance allowed by the
+path tracker, defaulting to 1e-4.
+@item epssml
+is the accuracy
+desired for the final solution, defaulting to 1d-14.
+@item numrr
+is the number of multiples of 1000 steps that will be tried
+before abandoning a path.
+@item iflg1
 defaulting to 0, controls the algorithm as follows:
 @table @code
 @item 0
@@ -42,6 +52,7 @@ If scaling but no projective transformation is to be used.
 If no scaling but projective transformation is to be used.
 @item 11
 If both scaling and projective transformation are to be used.
+@end table
 @end table
 
 @code{hompack_polsys} returns a list.  The elements of the list are:
@@ -77,7 +88,7 @@ error should be thrown before @code{polsys} is called.)
 The roots of the system of equations.  This is in the same format as
 @code{solve} would return.
 @item iflg2
-Information on how the path for the m'th root terminated:
+A list containing information on how the path for the m'th root terminated:
 @table @code
 @item 1
 Normal return
@@ -104,18 +115,19 @@ stringent.
 Illegal input parameters, a fatal error.
 @end table
 @item lambda
-The final lambda value for the m-th root, where lambda is the
+A list of the final lambda value for the m-th root, where lambda is the
 continuation parameter.
 @item arclen
-The arc length of the m-th root.
+A list of the arc length of the m-th root.
 @item nfe
-The number of jacobian matrix evaluations required to track the m-th
+A list of the number of jacobian matrix evaluations required to track the m-th
 root.
 @end table
 
 @example
-(%i1) hompack_polsys([x1^2-1, x2^2-2],[x1,x2]);
-(%o1) [0,
+(%i1) load(hompack)$
+(%i2) hompack_polsys([x1^2-1, x2^2-2],[x1,x2]);
+(%o2) [0,
        [[x1 = (-1.354505666901954e-16*%i)-0.9999999999999999,
          x2 = 3.52147935979316e-16*%i-1.414213562373095],
         [x1 = 1.0-5.536432658639868e-18*%i,
@@ -131,8 +143,8 @@ root.
 
 The analytical solution can be obtained with solve:
 @example
-(%i2) solve([x1^2-1, x2^2-2],[x1,x2]);
-(%o2) [[x1 = 1,x2 = -sqrt(2)],[x1 = 1,x2 = sqrt(2)],[x1 = -1,x2 = -sqrt(2)],
+(%i1) solve([x1^2-1, x2^2-2],[x1,x2]);
+(%o1) [[x1 = 1,x2 = -sqrt(2)],[x1 = 1,x2 = sqrt(2)],[x1 = -1,x2 = -sqrt(2)],
         [x1 = -1,x2 = sqrt(2)]]
 @end example
 We see that @code{hompack_polsys} returned the correct answer except
