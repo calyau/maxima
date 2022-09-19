@@ -38,7 +38,7 @@ is the accuracy
 desired for the final solution, defaulting to 1d-14.
 @item numrr
 is the number of multiples of 1000 steps that will be tried
-before abandoning a path.
+before abandoning a path, defaulting to 10.
 @item iflg1
 defaulting to 0, controls the algorithm as follows:
 @table @code
