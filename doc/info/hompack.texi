@@ -29,7 +29,7 @@ real numbers.
 The optional keyword arguments provide some control over the
 algorithm.
 
-@table @var
+@table @code
 @item epsbig
 is the local error tolerance allowed by the
 path tracker, defaulting to 1e-4.
