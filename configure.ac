@@ -661,7 +661,7 @@ if test x"${enable_build_docs}" = xtrue ; then
 	if test x"${makeinfo_old}" = xtrue; then
 	    AC_MSG_ERROR([Makeinfo version (${makeinfo_version}) too old; consider --disable-build-docs])
 	else
-	    AC_MSG_RESULT([${makeinfo_version}])
+	    AC_MSG_RESULT([${makeinfo_version} (6.8 or later preferred)])
 	fi
 
 	dnl If the makeinfo version is older than 6.8, we need to
