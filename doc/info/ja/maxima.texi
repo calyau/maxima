@@ -4,6 +4,7 @@
 @setfilename  maxima.info
 @include include-maxima.texi
 
+@c Include documentation categories
 @ifhtml
 @node Documentation Categories, , Function and Variable Index
 @chapter Documentation Categories
