@@ -2,4 +2,5 @@
 @setfilename  maxima.info
 @finalout
 @include include-maxima.texi
+
 @bye

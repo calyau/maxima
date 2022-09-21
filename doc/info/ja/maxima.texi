@@ -3,4 +3,10 @@
 @documentlanguage ja
 @setfilename  maxima.info
 @include include-maxima.texi
+
+@ifhtml
+@node Documentation Categories, , Function and Variable Index
+@chapter Documentation Categories
+@c Documentation categories section gets filled in by the script build_html.sh
+@end ifhtml
 @bye

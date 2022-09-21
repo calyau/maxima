@@ -3,5 +3,11 @@
 @documentencoding UTF-8
 @documentlanguage de
 @include include-maxima.texi
-@bye
 
+@c Include documentation categories
+@ifhtml
+@node Documentation Categories, , Index der Variablen und Funktionen
+@chapter Documentation Categories
+@c Documentation categories section gets filled in by the script build_html.sh
+@end ifhtml
+@bye

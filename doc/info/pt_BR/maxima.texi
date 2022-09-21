@@ -22,6 +22,7 @@
 @set mail <maxima at math dot utexas dot edu>
 @settitle Manual do Maxima
 @include include-maxima.texi
+
 @bye
 
 

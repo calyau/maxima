@@ -43,7 +43,21 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
+@include dlmf-ref-macros.texi
 @include category-macros.texi
+@c Undefine the category stuff because it's not currently working
+@c Make category stuff do nothing because it's not currently working
+@ifhtml
+@unmacro opencatbox
+@unmacro category
+@unmacro closecatbox
+@macro opencatbox {label}
+@end macro
+@macro category {name}
+@end macro
+@macro closecatbox {}
+@end macro
+@end ifhtml
 
 @titlepage
 @sp 10
