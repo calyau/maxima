@@ -595,6 +595,7 @@ h^n \in I \}$.@*
 
 @end deffn
 
+@anchor{poly_gcd}
 @deffn {Функция} poly_gcd (@var{poly1}, @var{poly2}, @var{varlist})
 Возвращает наибольший общий делитель многочленов @var{poly1} и @var{poly2}.
 

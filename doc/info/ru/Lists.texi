@@ -48,6 +48,7 @@ Maxima тоже имеет свои собственные списки, кот�
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
+@anchor{append}
 @deffn {Функция} append (@var{list_1}, ..., @var{list_n})
 Возвращает новый список элементов @var{list_1} с последующими элементами @var{list_2} и т.д.  
 @code{append} работает и с выражениями общего вида, например, @code{append (f(a,b), f(c,d,e));} дает
@@ -356,6 +357,7 @@ x is not numeric.
 @closecatbox
 @end deffn
 
+@anchor{listarith}
 @defvr {Управляющая переменная} listarith
 Значение по умолчанию: @code{true}
 Если равна @code{false}, то все арифметические операции со списками не работают.
@@ -519,6 +521,7 @@ x is not numeric.
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@anchor{reverse}
 @deffn {Функция} reverse (@var{list})
 Изменяет порядок членов @var{list} (но не сами члены) на обратный.  
 Функция @code{reverse} также работает с выражениями общего вида,

@@ -379,6 +379,7 @@
 
 @c NEEDS CLARIFICATION
 @c VERY IMPORTANT !!
+@anchor{ev}
 @deffn {Функция} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 Вычисляет выражение @var{expr} в окружении определяемом аргументами
 @var{arg_1}, ..., @var{arg_n}.  Данные аргументы могут быть
@@ -576,6 +577,7 @@ Solution
 @closecatbox
 @end deffn
 
+@anchor{evflag}
 @defvr {Свойство} evflag
 Если символ @var{x} имеет свойство @code{evflag},
 то выражения @code{ev(@var{expr}, @var{x})} и @code{@var{expr}, @var{x}}
@@ -682,6 +684,7 @@ Solution
 @closecatbox
 @end defvr
 
+@anchor{evfun}
 @defvr {Свойство} evfun
 Если функция @var{F} имеет свойство @code{evfun},
 то выражения @code{ev(@var{expr}, @var{F})} и @code{@var{expr}, @var{F}}

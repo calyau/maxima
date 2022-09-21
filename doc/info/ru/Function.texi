@@ -468,6 +468,7 @@ block ([x: 1], expr1, ..., exprn)
 @node Функции и переменные для определения функций,  , Макросы, Определение функций
 @section Функции и переменные для определения функций
 
+@anchor{apply}
 @deffn {Функция} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
 Составляет и вычисляет выражение @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 
@@ -706,6 +707,7 @@ Improper name or value in functional position.
 
 @end deffn
 
+@anchor{define}
 @deffn {Функция} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
 @deffnx {Функция} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
 @deffnx {Функция} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})

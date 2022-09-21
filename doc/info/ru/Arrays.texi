@@ -547,6 +547,7 @@
 @end deffn
 
 @c NEEDS CLARIFICATION
+@anchor{make_array}
 @deffn {Функция} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
 Создает и возвращает Lisp-массив.  @var{type} может быть
 @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} или

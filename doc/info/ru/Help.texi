@@ -296,6 +296,7 @@ _
 
 @end deffn
 
+@anchor{describe}
 @deffn {Функция} describe (@var{string})
 @deffnx {Функция} describe (@var{string}, exact)
 @deffnx {Функция} describe (@var{string}, inexact)

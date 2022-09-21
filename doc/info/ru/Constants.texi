@@ -70,6 +70,7 @@
 @closecatbox
 @end defvr
 
+@anchor{inf}
 @defvr {Константа} inf
 @ifinfo
 @vrindex Вещественная бесконечность
@@ -92,6 +93,7 @@
 @closecatbox
 @end defvr
 
+@anchor{minf}
 @defvr {Константа} minf
 @ifinfo
 @vrindex Минус бесконечность

@@ -433,6 +433,7 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 
 @c NEEDS CLARIFICATION
 @c THIS ITEM IS IMPORTANT
+@anchor{map}
 @deffn {Функция} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Возвращает выражение, с оператором верхнего уровня таким же как у выражений 
 @var{expr_1}, ..., @var{expr_n} но аргументы которого являются результатами 

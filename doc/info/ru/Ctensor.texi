@@ -763,6 +763,7 @@ np  = (fri  - %i fri ) / sqrt(2)
 @closecatbox
 @end deffn
 
+@anchor{psi}
 @deffn {Функция} psi (@var{dis})
 Вычисляет пять коэффициентов Ньюмана-Пенроуза @code{psi[0]}...@code{psi[4]}.
 Если @code{psi} равен @code{true}, эти коэффициенты печатаются на

@@ -23,6 +23,7 @@
 @closecatbox
 @end defvr
 
+@anchor{limit}
 @deffn {Функция} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
 @deffnx {Функция} limit (@var{expr}, @var{x}, @var{val})
 @deffnx {Функция} limit (@var{expr})

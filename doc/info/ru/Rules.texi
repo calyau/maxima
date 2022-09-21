@@ -969,6 +969,7 @@ bb aa partitions `product'
 @end deffn
 
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
+@anchor{tellsimp}
 @deffn {Функция} tellsimp (@var{pattern}, @var{replacement})
 аналогична @code{tellsimpafter}, но добавляет
 новую информацию о правилах до уже существующей. Таким образом, сначала

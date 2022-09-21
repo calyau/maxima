@@ -488,6 +488,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 @closecatbox
 @end deffn
 
+@anchor{concat}
 @deffn {Функция} concat (@var{arg_1}, @var{arg_2}, ...)
 Сцепляет свои аргументы. Аргументы должны быть атомами.
 Возвращаемое значение является символом, если первый аргумент -- символ, и строкой
@@ -538,6 +539,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 @end deffn
 
+@anchor{sconcat}
 @deffn {Функция} sconcat (@var{arg_1}, @var{arg_2}, ...)
 
 Сцепляет аргументы в строки. В отличии от @code{concat}, аргументы не обязаны
@@ -899,6 +901,7 @@ file_search_maxima: append (file_search_maxima,
 
 @end deffn
 
+@anchor{grind}
 @deffn {Функция} grind (@var{expr})
 @deffnx {Управляющая переменная} grind
 Функция @code{grind} выводит @var{expr} в консоль в форме
@@ -1552,6 +1555,7 @@ Enter an expression:
 
 @end deffn
 
+@anchor{reveal}
 @deffn {Функция} reveal (@var{expr}, @var{depth})
 Замещает части выражения @var{expr} заданного уровня вложенности @var{depth}
 кратким описанием.
@@ -1751,6 +1755,7 @@ Enter an expression:
 
 @end defvr
 
+@anchor{string}
 @deffn {Функция} string (@var{expr})
 Преобразовывает @code{expr} в линейное представление,
 как оно было бы введено с клавиатуры.
@@ -1764,6 +1769,7 @@ Enter an expression:
 
 @end deffn
 
+@anchor{stringdisp}
 @defvr {Управляющая переменная} stringdisp
 Значение по умолчанию: @code{false}
 
@@ -1802,6 +1808,7 @@ Enter an expression:
 
 @end defvr
 
+@anchor{stringout}
 @deffn {Функция} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 @deffnx {Функция} stringout (@var{filename}, [@var{m}, @var{n}])
 @deffnx {Функция} stringout (@var{filename}, input)

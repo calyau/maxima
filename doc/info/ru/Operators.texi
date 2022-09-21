@@ -966,6 +966,7 @@ x is equal to 1234 - 1729 w
 
 @end deffn
 
+@anchor{:=}
 @deffn {Оператор} :=
 @ifinfo
 @fnindex Определение функции
@@ -1279,6 +1280,7 @@ x is equal to 1234 - 1729 w
 
 @end deffn
 
+@anchor{abs}
 @deffn {Функция} abs (@var{expr})
 Возвращает абсолютное значение @var{expr} (модуль выражения). 
 Если @var{expr} - комплексное, возвращается комплексный модуль @var{expr}.
@@ -1863,6 +1865,7 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
+@anchor{fullmap}
 @deffn {Функция} fullmap (@var{f}, @var{expr_1}, ...)
 Аналогично @code{map}, но @code{fullmap} продолжает процедуру распространения 
 для всех подвыражений до тех пор, пока основные операторы более не остаются теми же самыми.
@@ -1894,6 +1897,7 @@ $$\left \lfloor a \right \rfloor$$
 
 @end deffn
 
+@anchor{fullmapl}
 @deffn {Функция} fullmapl (@var{f}, @var{list_1}, ...)
 Аналогично @code{fullmap}, но @code{fullmapl} только распространяется на
 списки и матрицы.
@@ -2513,6 +2517,7 @@ reverse(uf))
 
 @end deffn
 
+@anchor{sqrt}
 @deffn {Функция} sqrt (@var{x})
 Квадратный корень @var{x}. Внутренне представляется как
 @code{@var{x}^(1/2)}.  См. также @code{rootscontract}.
@@ -2603,6 +2608,7 @@ reverse(uf))
 @end defvr
 
 @c NEEDS CLARIFICATION, MORE EXAMPLES
+@anchor{subst}
 @deffn {Функция} subst (@var{a}, @var{b}, @var{c})
 Делает подстановку @var{a} для @var{b} в @var{c}.  
 @var{b} должен быть атомом или полным подвыражением в @var{c}.  Например, @code{x+y+z} есть полное

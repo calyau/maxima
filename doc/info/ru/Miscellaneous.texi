@@ -471,6 +471,7 @@ Maxima).
 @end deffn
 
 @c NEEDS EXAMPLES
+@anchor{rncombine}
 @deffn {Функция} rncombine (@var{expr})
 Преобразует выражение @var{expr}, комбинируя слагаемые @var{expr}, имеющие
 одинаковые знаменатели или знаменатели отличающиеся только на числовой множитель.

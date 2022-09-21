@@ -292,6 +292,7 @@ Maxima лишь проверяет, просматривается ли явно
 @closecatbox
 @end defvr
 
+@anchor{cos}
 @deffn {Функция} cos (@var{x})
  - Косинус.
 
@@ -300,6 +301,7 @@ Maxima лишь проверяет, просматривается ли явно
 @closecatbox
 @end deffn
 
+@anchor{cosh}
 @deffn {Функция} cosh (@var{x})
  - Ареакосинус (гиперболический арккосинус).
 
@@ -405,6 +407,7 @@ Maxima лишь проверяет, просматривается ли явно
 @closecatbox
 @end deffn
 
+@anchor{sin}
 @deffn {Функция} sin (@var{x})
  - Синус.
 
@@ -413,6 +416,7 @@ Maxima лишь проверяет, просматривается ли явно
 @closecatbox
 @end deffn
 
+@anchor{sinh}
 @deffn {Функция} sinh (@var{x})
  - Гиперболический синус.
 
@@ -438,6 +442,7 @@ Maxima лишь проверяет, просматривается ли явно
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+@anchor{trigexpand}
 @deffn {Функция} trigexpand (@var{expr})
 Раскрывает тригонометрические и гиперболические функции суммы или произведения углов в
 @var{expr}. Для получения лучших результатов нужно сначала раскрыть @var{expr}. Для

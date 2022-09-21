@@ -771,6 +771,7 @@ Incorrect syntax: @@ is not an infix operator
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
 @c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
+@anchor{declare}
 @deffn {Функция} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
 Присваивает атому или списку атомов @var{a_i} свойство или список свойств @var{p_i}.
 Когда @var{a_i} и/или @var{p_i} есть списки,
@@ -1274,6 +1275,7 @@ aa unbound variable
 @end deffn
 
 @c PROBABLY MORE TO BE SAID HERE
+@anchor{exp}
 @deffn {Функция} exp (@var{x})
 Представляет собой экспоненциальную функцию.
 Все экземпляры @code{exp (@var{x})} при вводе упрощаются до @code{%e^@var{x}}.
@@ -1512,6 +1514,7 @@ aa unbound variable
 
 @end deffn
 
+@anchor{infix}
 @deffn {Функция} infix (@var{op})
 @deffnx {Функция} infix (@var{op}, @var{lbp}, @var{rbp})
 @deffnx {Функция} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
@@ -2185,6 +2188,7 @@ if x ## y then
 
 @end defvr
 
+@anchor{pickapart}
 @deffn {Функция} pickapart (@var{expr}, @var{n})
 Присваивает меткам промежуточных выражений все подвыражения 
 @var{expr} глубины @var{n} (целое число).

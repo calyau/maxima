@@ -40,6 +40,7 @@
 @end deffn
 
 
+@anchor{desolve}
 @deffn {Функция} desolve (@var{eqn}, @var{x})
 @deffnx {Функция} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
 Функция @code{desolve} решает линейные системы обыкновенных дифференциальных уравнений
@@ -144,6 +145,7 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @closecatbox
 @end deffn
 
+@anchor{ode2}
 @deffn {Функция} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
 
 Функция @code{ode2} решает обыкновенное дифференциальное уравнение (ОДУ)
