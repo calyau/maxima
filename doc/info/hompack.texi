@@ -124,6 +124,7 @@ A list of the number of jacobian matrix evaluations required to track the m-th
 root.
 @end table
 
+Here are some examples of using @code{hompack_polsys}.
 @example
 (%i1) load(hompack)$
 (%i2) hompack_polsys([x1^2-1, x2^2-2],[x1,x2]);
@@ -183,6 +184,3 @@ convert the system of polynomials into one polynomial for which
 @c mode: texinfo
 @c TeX-master: "include-maxima"
 @c End: 
-
-
-
