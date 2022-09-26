@@ -14,6 +14,8 @@ maxima-index.lisp
 maxima-index-html.lisp
 category-macros.texi
 
+math.m4
+cobyla.texi
 Constants.texi
 Elliptic.texi
 Integration.texi
