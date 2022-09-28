@@ -170,6 +170,10 @@ Compiled analytical Jacobian of the equations
 
 See also @mrefdot{dlsode_step}
 
+@opencatbox{Categories:}
+@category{Package odepack}
+@closecatbox
+
 @end deffn
 
 @anchor{dlsode_step}
@@ -249,5 +253,9 @@ Actual length used for integer work array
 @end table
 
 See also @mrefdot{dlsode_init}
+
+@opencatbox{Categories:}
+@category{Package odepack}
+@closecatbox
 
 @end deffn

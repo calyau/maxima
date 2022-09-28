@@ -87,6 +87,10 @@ is possible.
        3.534491794847031e-21, 5]
 @end example
 
+@opencatbox{Categories:}
+@category{Package minpack}
+@closecatbox
+
 @end deffn
 
 @anchor{minpack_solve}
@@ -143,6 +147,10 @@ In this particular case, we can solve this analytically:
 (%o3)       [[x1 = 0, x2 = 0, x3 = 0, x4 = 0]] 
 @end example
 and we see that the numerical solution is quite close the analytical one.
+
+@opencatbox{Categories:}
+@category{Package minpack}
+@closecatbox
 
 @end deffn
 

@@ -178,6 +178,11 @@ Note that @code{hompack_polsys} can sometimes be very slow.  Perhaps
 @code{solve} can be used.  Or perhaps @code{eliminate} can be used to
 convert the system of polynomials into one polynomial for which
 @code{allroots} can find all the roots.
+
+@opencatbox{Categories:}
+@category{Package hompack}
+@closecatbox
+
 @end deffn
 
 @c Local Variables: 
