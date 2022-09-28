@@ -39,16 +39,25 @@
 
 ;; CMUCL needs because when maxima reaches EOF, it calls BYE, not $QUIT.
 
-(defun bye ()
-  #+(or cmu scl clisp) (ext:quit)
-  #+sbcl               (sb-ext:quit)
-  #+allegro            (excl:exit 0 :quiet t)
-  #+(or mcl openmcl)   (ccl:quit)
-  #+gcl                (system::quit)
-  #+ecl                (si:quit)
+(defun bye (&optional (exit-code 0))
+  (declare (ignorable exit-code))
+  #+scl       (ext:quit)
+  #+clisp              (ext:quit exit-code)
+  #+sbcl               (sb-ext:quit :unix-status exit-code)
+  #+allegro            (excl:exit exit-code :quiet t)
+  #+(or mcl openmcl)   (ccl:quit exit-code)
+  #+gcl                (system::quit exit-code)
+  #+ecl                (si:quit exit-code)
   #+lispworks          (lispworks:quit)
   #+abcl               (cl-user::quit)
   #+kcl                (lisp::bye)
+  #+cmucl
+  (handler-case (ext:quit nil exit-code)
+    ;; Only the most recent versions of cmucl support an exit code.
+    ;; If it doesn't, we get a program error (wrong number of args),
+    ;; so catch that and just call quit without the arg.
+    (program-error ()
+      (ext:quit)))
   )
 
 

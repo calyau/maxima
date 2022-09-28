@@ -843,10 +843,16 @@ Default value: @code{_}
 
 @c -----------------------------------------------------------------------------
 @anchor{quit}
-@deffn {Function} quit ()
+@deffn {Function} quit ([@var{exit-code}])
 
 Terminates the Maxima session.  Note that the function must be invoked as
 @code{quit();} or @code{quit()$}, not @code{quit} by itself.
+@code{quit} supports returning an exit code to the shell for Lisps and
+OSes that support exit codes.  The default exit code is 0 (usually
+indicating no errors encountered).  Thus @code{quit(1)} indicates to the
+shell that maxima exited with some kind of failure.  This is useful in
+scripts where maxima can indicate to the shell that maxima failed to
+compute something or some other bad thing happened.
 
 To stop a lengthy computation, type @code{control-C}.  The default action is to
 return to the Maxima prompt.  If @code{*debugger-hook*} is @code{nil},

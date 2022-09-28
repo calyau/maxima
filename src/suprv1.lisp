@@ -839,9 +839,11 @@
       (incf thistime (- (get-internal-run-time) tim))))
 
 
-(defmfun $quit ()
+(defmfun $quit (&optional (exit-code 0))
+  "Quit Maxima with an optional exit code for Lisps and systems that
+  support exit codes."
   (princ *maxima-epilog*)
-  (bye)
+  (bye exit-code)
   (mtell (intl:gettext "quit: No known quit function for this Lisp.~%")))
 
 ;; File-processing stuff.
