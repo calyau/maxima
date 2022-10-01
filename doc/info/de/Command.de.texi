@@ -825,9 +825,18 @@ nach einer Unterbrechung, wie zum Beispiel durch das Kommando @mrefdot{break}
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{quit}
-@deffn {Funktion} quit ()
+@deffn {Funktion} quit ([@var{returnwert}])
 
-Das Kommando @code{quit()} beendet eine Maxima-Sitzung.
+Die Funktion @code{quit()} beendet eine Maxima-Sitzung.
+Die Funktion muss als @code{quit();} oder @code{quit()$}, nicht @code{quit} allein
+aufgerufen werden.
+@code{quit} kann einen Returnwert retournieren, wenn der Lisp-Compiler und das
+Betriebssystem Returnwerte unterstützt.
+Standardmässig wird der Wert 0 retourniert (meist als kein Fehler interptetiert).
+@code{quit(1)} könnte der Shell daher einen Fehler anzeigen.
+Das kann für Skripte nützlich sein, wo Maxima dadurch anzeigen kann,
+dass Maxima irgendwas nicht berechnen konnte oder ein sonstiger Fehler
+aufgetreten ist.
 
 Mit der Tastatureingabe @kbd{control-c} oder @code{Strg-c} kann in der Konsole
 die Verarbeitung abgebrochen werden.  Stan@-dard@-m@"a@ss{}ig wird die
