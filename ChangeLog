@@ -24,7 +24,7 @@ Changes in Xmaxima:
 
 Changes in the Windows installer:
 ---------------------------------
- * Update SBCL.
+ * Update SBCL and wxWidgets.
  * Compile a recent texinfo for building the installer. Maxima now needs
    texinfo 6.8, but 6.7 is included in the usual build machines for
    nightly builds, etc.
