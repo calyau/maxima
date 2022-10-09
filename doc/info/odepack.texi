@@ -38,7 +38,7 @@ References:
 @subsection Getting Started with ODEPACK
 
 Of the eight variants of the solver, Maxima currently only has an
-interface the @code{dlsode}.
+interface to @code{dlsode}.
 
 Let's say we have this system of equations to solve:
 @example
@@ -48,8 +48,8 @@ Let's say we have this system of equations to solve:
   dy2/dt = -f1 - f3
   dy3/dt = f3
 @end example
-The independent variable is t; the  dependent variables are y1, y2,
-and y3, 
+The independent variable is @math{t}; the  dependent variables are @math{y1}, @math{y2},
+and @math{y3}, 
 
 To start the solution, set up the differential equations to solved:
 @example
@@ -60,7 +60,7 @@ f2: -f1 - f3$
 fex: [f1, f2, f3];
 @end example
 
-Initialize the solver, where we have selected method 21
+Initialize the solver, where we have selected method 21:
 @example
 (%i6) state : dlsode_init(fex, ['t,y1,y2,y3], 21);
 (%o6) [[f, #<Function "LAMBDA ($T $Y1 $Y2 $Y3)" @{49DAC061@}>], 
@@ -80,7 +80,7 @@ Now that the algorithm has been initialized we can compute solutions
 to the differential equation, using the @var{state} returned above.
 
 For this example, we want to compute the solution at times
-@code{0.4*10^k} for k from 0 to 11, with the initial values of 1, 0, 0
+@code{0.4*10^k} for @math{k} from 0 to 11, with the initial values of 1, 0, 0
 for the dependent variables and with a relative tolerance of 1d-4 and
 absolute tolerances of 1e-6, 1e-10, and 1d-6 for the dependent
 variables.
@@ -168,7 +168,8 @@ Lisp array holding the integer-valued work vector.
 Compiled analytical Jacobian of the equations
 @end table
 
-See also @mrefdot{dlsode_step}
+See also @mrefdot{dlsode_step}  @xref{Getting Started with ODEPACK} for
+an example of usage.
 
 @opencatbox{Categories:}
 @category{Package odepack}
@@ -252,7 +253,8 @@ Actual length used for integer work array
 @end table
 @end table
 
-See also @mrefdot{dlsode_init}
+See also @mrefdot{dlsode_init}  @xref{Getting Started with ODEPACK} for
+an example of usage.
 
 @opencatbox{Categories:}
 @category{Package odepack}
