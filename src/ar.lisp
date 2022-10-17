@@ -22,10 +22,18 @@
   generator
   content)
 
+(deftype marray ()
+  `(or cl:array hash-table mgenarray))
+
+(defun marrayp (x)
+  (typep x 'marray))
+
 (defun marray-type (x)
-  (cond ((arrayp x) 'array)
-        ((hash-table-p x) 'hash-table)
-        ((eq (type-of x) 'mgenarray) (mgenarray-type x))))
+  ;; XXX: should this be etypecase? -rss
+  (typecase x
+    (cl:array   'array)
+    (hash-table 'hash-table)
+    (mgenarray  (mgenarray-type x))))
 
 (defmfun $make_array (type &rest diml)
   (let ((ltype (assoc type '(($float . flonum)
@@ -91,7 +99,7 @@
         (msize-atom (format nil "{Lisp Array: ~A}" x) l r))))
 
 (defun marray-check (a)
-  (if (arrayp a)
+  (if (marrayp a)
       (case (marray-type a)
 	(($fixnum $float) a)
 	(($any) (mgenarray-content a))
