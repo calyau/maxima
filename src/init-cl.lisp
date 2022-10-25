@@ -34,11 +34,13 @@
 (defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
 (defvar *default-maxima-initmac* "maxima-init.mac"
-  "Default maxima mac init file if none specified by the user")
+  "Default maxima mac init file if none specified by the user.  This
+  file is looked for only in the maxima userdir.")
 (defvar *maxima-initmac* nil
   "User-specified mac init file, if supplied")
 (defvar *default-maxima-initlisp* "maxima-init.lisp"
-  "Default maxima lisp init file if none specified by the user")
+  "Default maxima lisp init file if none specified by the user.  This
+  file is looked for only in the maxima userdir")
 (defvar *maxima-initlisp* nil
   "User-specified- lisp init file, if supplied")
 (defvar *maxima-load-init-files* t
