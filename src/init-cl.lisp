@@ -510,20 +510,20 @@ When one changes, the other does too."
 			   :action #'(lambda (file)
 				       (setf *maxima-initmac* (concatenate 'string file ".mac"))
 				       (setf *maxima-initlisp* (concatenate 'string file ".lisp")))
-			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~a)"
+			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~s)"
 						(subseq *default-maxima-initmac* 0
 							(- (length *default-maxima-initmac*) 4))))
  	   (make-cl-option :names '("--init-mac")
 			   :argument "<file>"
 			   :action #'(lambda (file)
 				       (setf *maxima-initmac* file))
-			   :help-string (format nil "Set the name of the Maxima initialization file (default is ~a)"
-						*maxima-initmac*))
+			   :help-string (format nil "Set the name of the Maxima initialization file (default is ~s)"
+						*default-maxima-initmac*))
  	   (make-cl-option :names '("--init-lisp")
 			   :argument "<file>"
 			   :action #'(lambda (file)
 				       (setf *maxima-initlisp* file))
-			   :help-string (format nil "Set the name of the Lisp initialization file (default is ~a)" *maxima-initlisp*))
+			   :help-string (format nil "Set the name of the Lisp initialization file (default is ~s)" *default-maxima-initlisp*))
 	   (make-cl-option :names '("-l" "--lisp")
 			   :argument "<lisp>"
 			   :action nil
