@@ -33,8 +33,14 @@
 (defvar *maxima-htmldir*)
 (defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
-(defvar *maxima-initmac* "maxima-init.mac")
-(defvar *maxima-initlisp* "maxima-init.lisp")
+(defvar *default-maxima-initmac* "maxima-init.mac"
+  "Default maxima mac init file if none specified by the user")
+(defvar *maxima-initmac* nil
+  "User-specified mac init file, if supplied")
+(defvar *default-maxima-initlisp* "maxima-init.lisp"
+  "Default maxima lisp init file if none specified by the user")
+(defvar *maxima-initlisp* nil
+  "User-specified- lisp init file, if supplied")
 (defvar *maxima-load-init-files* t
   "When non-NIL, the init files are not loaded.")
 (defvar *maxima-tempdir*)
@@ -503,8 +509,8 @@ When one changes, the other does too."
 				       (setf *maxima-initmac* (concatenate 'string file ".mac"))
 				       (setf *maxima-initlisp* (concatenate 'string file ".lisp")))
 			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~a)"
-						(subseq *maxima-initmac* 0
-							(- (length *maxima-initmac*) 4))))
+						(subseq *default-maxima-initmac* 0
+							(- (length *default-maxima-initmac*) 4))))
  	   (make-cl-option :names '("--init-mac")
 			   :argument "<file>"
 			   :action #'(lambda (file)
