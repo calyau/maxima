@@ -1,0 +1,56 @@
+/* formQ0: Evaluate trace-free decomposition of a symmetric tensor.
+ *
+ * Usage: Q0(Q);
+ *
+ * parameters: Q: itensor expression
+ *
+ * Given the tensor Q that is fully symmetric in all indices, this
+ * function returns the corresponding STF tensor.
+ *
+ * Side effects: None.
+ *
+ * Example:
+ *
+ * (%i1) load("formQ0.mac")$
+ * (%i2) load(itensor)$
+ * (%i3) dim:3$
+ * (%i4) decsym(g,0,2,[],[sym(all)])$
+ * (%i5) imetric(g)$
+ * (%i6) flipflag:true$
+ * (%i7) defcon(Q,Q,Q)$
+ * (%i8) decsym(Q,0,3,[],[sym(all)])$
+ * (%i9) ishow(canform('kdels([a,b,c],[j,k,l])*Q0(Q([],[a,b,c]))))$
+ *                                          %1  %2 %3      j k l
+ *                                       3 Q   g      kdels
+ *              %1 %2 %3      j k l                        %1 %2 %3
+ * (%t9)       Q         kdels         - --------------------------
+ *                            %1 %2 %3               5
+ *
+ * (c) 2021 Viktor T. Toth (https://www.vttoth.com/)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ */
+
+Q0(_Q):=block
+([_a,_k,_i,_j,_l,_g],
+  _a:indices(_Q)[1],
+  _k:length(_a),
+  _g:ev(imetric),
+  _Q+canform(contract(sum(
+    (-1/2)^_p*(dim+2*_k-2*(_p+2))!!/_p!/(_k-2*_p)!/(dim+2*_k-4)!!
+    *canform(contract(expand(
+    kdels(makelist(concat('_i,_j),_j,1,_k),_a)
+    *prod(_g([],[concat('_i,2*_i-1),
+    concat('_i,2*_i)])*_g([concat('_j,2*_i-1),concat('_j,2*_i)]),_i,1,_p)
+    *sublis(makelist(_a[_l]=(flatten([makelist(concat('_j,_i),_i,1,2*_p),
+    makelist(concat('_i,_i),_i,2*_p+1,_k)]))[_l],_l,1,_k),_Q)))),
+  _p,1,_k/2)))
+)$
