@@ -1230,7 +1230,7 @@
                          (take '(%log) (inv logarg))))
                (mul -1 (take '(%log) (mul -1 logarg)))))
          (%expintegral_ei
-          ($expintegral_ei logarg))
+          (take '(%expintegral_ei) logarg))
          ($expintegral_trig
           (add (take '(%expintegral_ci) (mul '$%i logarg))
                (mul -1 '$%i (take '(%expintegral_si) (mul '$%i logarg)))

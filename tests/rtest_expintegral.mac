@@ -712,6 +712,12 @@ expintegral_shi(z);
 expintegral_chi(z);
 (-log(z)+log(-z)+gamma_incomplete(0,z)+gamma_incomplete(0,-z))/-2;
 
+expintrep: expintegral_ei;
+expintegral_ei;
+
+expintegral_li(x);
+expintegral_ei(log(x));
+
 expintrep:false;
 false;
 
