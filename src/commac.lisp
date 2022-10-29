@@ -281,16 +281,17 @@ values")
 ;;sample usage
 ;;(defun foo a (show a )(show (listify a)) (show (arg 3)))
 
-(defmacro defun-maclisp (function &body  rest &aux .n.)
-  (cond ((and (car rest) (symbolp (car rest)))
-	 ;;old maclisp narg syntax
-	 (setq .n. (car rest))
-	 (setf (car rest)
-	       `(&rest narg-rest-argument &aux (, .n. (length narg-rest-argument))))))
+(defmacro defun-maclisp (function &body body &aux .n.)
+  (when (typep body '(cons symbol))
+    ;;old maclisp narg syntax
+    (setq .n. (car body))
+    (setf body
+          (cons `(&rest narg-rest-argument &aux (, .n. (length narg-rest-argument)))
+                (cdr body))))
   `(progn
     ;; I (rtoy) think we can consider all defmfun's as translated functions.
     (defprop ,function t translated)
-    (defun ,function . ,rest)))
+    (defun ,function . ,body)))
 
 (defun exploden (symb)
   (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
