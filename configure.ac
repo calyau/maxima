@@ -640,43 +640,39 @@ if test x"${enable_build_docs}" = xtrue ; then
     makeinfo_old=false
     if test x"${makeinfo_found}" = xtrue; then
 	AC_MSG_CHECKING([if makeinfo version >= 5.1])
-	dnl expr is looking for something like "junk<digits>.<digits>junk"
-	dnl and extracting out the "<digits>.<digits>"
-	makeinfo_version=`expr "\`makeinfo --version | head -1\`" : '.*\([[0-9]]\+\.[[0-9]]\+\)'`
+	dnl expr is looking for something like "junk<digits-or-dots>"
+	dnl assuming that the end of the version string contains the
+	dnl version number consisting of digits separated by a period.
+	dnl This allows for version numbers like 6.8.90.
+	makeinfo_version_string=`expr "\`makeinfo --version | head -1\`" : '.* \([[.0-9]]\+\)'`
 	dnl echo Makeinfo version ${makeinfo_version}
-	dnl From makeinfo_version, extract out the major and minor version numbers.
-	makeinfo_major=`expr $makeinfo_version : '\([[0-9]]\+\)'`
-	makeinfo_minor=`expr $makeinfo_version : '.*\.\([[0-9]]\+\)'`
+
+	dnl From makeinfo_version, extract out the major and minor
+	dnl version numbers.  We only need the major and minor version
+	dnl numbers.
+	makeinfo_major=`expr $makeinfo_version_string : '\([[0-9]]\+\)'`
+	makeinfo_minor=`expr $makeinfo_version_string : '[[0-9]]\+\.\([[0-9]]\+\)'`
 	dnl echo major ${makeinfo_major}
 	dnl echo minor ${makeinfo_minor}
-	if test $makeinfo_major -lt 5; then
-	    dnl Major version < 5, so too old
-	    makeinfo_old=true
-	elif test $makeinfo_major -eq 5; then
-	    dnl Major version is 5.  If the minor version is < 1, too old
-	    if test $makeinfo_minor -lt 1; then
-		makeinfo_old=true
-	    fi
-	fi
-	if test x"${makeinfo_old}" = xtrue; then
-	    AC_MSG_ERROR([Makeinfo version (${makeinfo_version}) too old; consider --disable-build-docs])
+
+	dnl Create a numerical version number by multiplying the major
+	dnl version by 100 and adding the minor version.  This assumes
+	dnl the minor version is always less than or equal to 99.
+	makeinfo_version=`expr ${makeinfo_major} \* 100 \+ ${makeinfo_minor}`
+	
+	dnl If version is older than 5.1, it's too old for generating
+	dnl maxima docs.
+	if test ${makeinfo_version} -lt 501; then
+	    AC_MSG_ERROR([Makeinfo version (${makeinfo_version_string}) too old; consider --disable-build-docs])
 	else
-	    AC_MSG_RESULT([${makeinfo_version} (6.8 or later preferred)])
+            AC_MSG_RESULT([${makeinfo_version_string} (6.8 or later preferred)])
 	fi
 
 	dnl If the makeinfo version is older than 6.8, we need to
 	dnl include MathJax ourselves when building the HTML files.
 	need_mathjax=false
-	if test $makeinfo_major -gt 6; then
-	    dnl Nothing needed
-	    true
- 	elif test $makeinfo_major -eq 6; then
-	    dnl If it's less than 6.8 we need to include MathJax
-	    if test $makeinfo_minor -lt 8; then
-	    	 need_mathjax=true
-	    fi
-	else
-	     need_mathjax=true
+	if test ${makeinfo_version} -lt 608; then
+	    need_mathjax=true
 	fi
 	if test x"${need_mathjax}" = xtrue; then
             dnl Need to include Mathjax.
