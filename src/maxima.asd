@@ -564,6 +564,9 @@
                                      (:file "expintegral")
                                      (:file "gamma")
 				     (:file "mstuff")))
+               (:module polynomial :pathname ""
+                        :components
+                        ((:file "polynomialp")))
 	       (:module poisson-series :pathname ""
 			:depends-on (compatibility-macros)
 			:components ((:file "pois2") 
