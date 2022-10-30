@@ -31,7 +31,7 @@
 
 (defun maxima-dump ()
   #+clisp (ext:saveinitmem "binary-clisp/maxima.mem" :init-function (function cl-user::run))
-  #+sbcl (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core" :toplevel #'cl-user::run)
+  #+sbcl (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core" :toplevel (symbol-function 'cl-user::run))
   #+gcl (si:save-system "binary-gcl/maxima")
   #+cmu (extensions:save-lisp "binary-cmucl/maxima.core" :init-function 'cl-user::run)
   #+scl (extensions:save-lisp "binary-scl/maxima.core" :init-function 'cl-user::run)
