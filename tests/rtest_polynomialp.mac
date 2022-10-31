@@ -43,6 +43,9 @@ true$
 polynomialp((1+x)^a,[x], 'constantp);
 false$
 
+polynomialp(sin(p)*x^2+cos(p)*y^2-q,[x,y], lambda([ex],freeof(x,y,ex)));
+true$
+
 /* Bug #3543: bug with polynomialp */
 
 block ([z : factor (x[1])],
