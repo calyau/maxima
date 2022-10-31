@@ -1095,7 +1095,7 @@ covariant indices and @var{n} contravariant indices.
 @anchor{dispsym}
 @deffn {Function} dispsym (@var{tensor}, @var{m}, @var{n})
 Displays all of the defined symmetries from @var{tensor} which has @var{m}
-covariant indices and @var{n} contravariant indices. See @code{decsym}
+covariant indices and @var{n} contravariant indices. See @mref{decsym}
 for an example.
 
 @opencatbox{Categories:}
