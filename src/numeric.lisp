@@ -1120,8 +1120,7 @@
 
 (defmethod acosh ((x bigfloat))
   (let* ((r (real-value x))
-	 (value (maxima::mevalp `((maxima::%acosh maxima::simp)
-				  ,r))))
+	 (value (maxima::meval `((maxima::%acosh maxima::simp) ,r))))
     (if (maxima::bigfloatp value)
 	(make-instance 'bigfloat :real value)
 	(make-instance 'complex-bigfloat
@@ -1144,10 +1143,10 @@
 		  (to res))))
 	   (let ((max-op (intern (concatenate 'string "$" (string name)) '#:maxima)))
 	     `(defmethod ,name ((a complex-bigfloat))
-		;; We should do something better than calling mevalp
+		;; We should do something better than calling meval
 		(let* ((arg (maxima::add (real-value a)
 					 (maxima::mul 'maxima::$%i (imag-value a))))
-		       (result (maxima::mevalp `((,',max-op maxima::simp) ,arg))))
+		       (result (maxima::meval `((,',max-op maxima::simp) ,arg))))
 		  (to result)))))))
   (frob exp)
   (frob sin)
@@ -1170,10 +1169,10 @@
 		 :real (maxima::bcons (maxima::fpatan (cdr (real-value a))))))
 
 (defmethod one-arg-atan ((a complex-bigfloat))
-  ;; We should do something better than calling mevalp
+  ;; We should do something better than calling meval
   (let* ((arg (maxima::add (real-value a)
 			   (maxima::mul 'maxima::$%i (imag-value a))))
-	 (result (maxima::mevalp `((maxima::%atan maxima::simp) ,arg))))
+	 (result (maxima::meval `((maxima::%atan maxima::simp) ,arg))))
     (make-instance 'complex-bigfloat
 		   :real (maxima::$realpart result)
 		   :imag (maxima::$imagpart result))))
