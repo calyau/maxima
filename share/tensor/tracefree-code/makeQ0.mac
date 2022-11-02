@@ -1,0 +1,92 @@
+/* makeQ0: Generate trace-free decomposition of a symmetric tensor.
+ *
+ * Usage: makeQ0(N, [d, g, Q]);
+ *
+ * parameters: N: rank of the tensor to be decomposed (integer, >1)
+ *             d (optional): Number of dimensions (can be symbolic)
+ *             g (optional): Name of the metric (default: n)
+ *             Q (optional): Name of the tensor
+ *
+ * Given the rank-d contravariant tensor Q that is fully symmetric
+ * in all indices, this program defines the itensor components of Q0,
+ * its trace-free decomposition.
+ *
+ * Side effects: 1) loads itensor; 2) redefines imetric and dim,
+ * 3) defines symmetry properties for the metric and Q, 4) defines
+ * contraction properties for Q and Qa, and 5) defines the itensor
+ * components for Qa and Q0.
+ *
+ * Example:
+ *
+ * (%i1) load("makeQ0.mac");
+ * (%o1)                             makeQ0.mac
+ * (%i2) makeQ0(2,3);
+ * (%o2)                                done
+ * (%i3) ishow(Q0([],[a,b]))$
+ *                                            a b
+ *                                   a b   Q n
+ * (%t3)                            Q    - ------
+ *                                           3
+ * (%i4) makeQ0(3,n,g,T);
+ * (%o4)                                done
+ * (%i5) ishow(T0([],[a,b,c]))$
+ *                       a b  c       a  b c      a c  b
+ *                    2 g    T     2 T  g      2 g    T     a b c
+ * (%t5)           (- ---------) - --------- - --------- + T
+ *                     2 n + 4      2 n + 4     2 n + 4
+ *
+ * (c) 2021 Viktor T. Toth (https://www.vttoth.com/)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ */
+
+makeQ0(N,[L]):=block
+(
+ [AI,II,I3,E,i,j,a,q,q0],
+ if not get('makeQ0,'version) then
+ (
+  put('makeQ0,'20210720,'version),
+  load(itensor)
+ ),
+ if not integerp(N) or N < 2 then
+   return("makeQ0: first argument must be an integer greater than 1!"),
+ if length(L)>2 then (q:L[3],q0:concat(L[3],"0"),a:concat(L[3],"a"))
+                else (q:Q,q0:Q0,a:Qa),
+ if length(L)>1 then imetric(L[2]) else imetric(n),
+ if length(L)>0 then dim:L[1] else dim:'d,
+ decsym(imetric,2,0,[sym(all)],[]),
+ decsym(imetric,0,2,[],[sym(all)]),
+ defcon(a,a,a),
+ defcon(q,q,q),
+ for i from 2 thru N-2 do
+ (
+  decsym(a,i,0,[sym(all)],[]),
+  decsym(a,0,i,[],[sym(all)]),
+  decsym(q,i,0,[sym(all)],[]),
+  decsym(q,0,i,[],[sym(all)])
+ ),
+ remcomps(a),
+ AI:makelist(eval_string(concat("a",i)),i,1,N),
+ II:makelist(eval_string(concat("i",i)),i,1,N),
+ I3:makelist(eval_string(concat("i",i)),i,3,N),
+ E:makelist(0,i,0,(N+1)/2),
+ E[1]:(canform(contract(expand(kdels(II,AI)*ev(imetric)([],[i1,i2])*a([],I3))))),
+ for i thru N-1 step 2 do (
+  E[(i+3)/2]:(canform(contract(contract(expand(E[(i+1)/2]*
+              ev(imetric)([AI[i],AI[i+1]]))))))
+ ),
+ if evenp(N) then components(a([],[]),rhs(solve(q([],[])=E[N/2+1],a([],[]))[1])),
+ for i from N+(if evenp(N) then -1 else 0) thru 3 step -2 do
+  components(a([],makelist(AI[j],j,i,N)),
+             rhs(solve(q([],makelist(AI[j],j,i,N))=ev(E[(i+1)/2],a),
+                       a([],makelist(AI[j],j,i,N)))[1])),
+ components(q0([],AI),q([],AI)-ev(E[1],a))
+)$

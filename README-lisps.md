@@ -77,7 +77,7 @@ typically depends on the following libraries:
  * libunistring
 
 
-CMUCL <https://www.cons.org/cmucl/>
+CMUCL <https://cmucl.org/>
 ----------------------------------
 
 CMUCL is a fast option for Maxima on platforms where it is

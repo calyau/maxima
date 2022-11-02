@@ -351,5 +351,13 @@ niceindices(powerseries(log(1-a*x), x, 0));
 niceindices(powerseries(log(1-z*exp(-4)), z, 0));
 -sum(exp(-4*i)*z^i/i, i, 1, inf)$
 
+/* verify power series for lambert_w */
+
+ps: niceindices (powerseries (lambert_w(x), x, 0));
+-'sum(i^(i - 1)*(-1)^i*x^i/i!, i, 1, inf);
+
+(subst (inf = 5, ps), ev (%%, nouns));
+x - x^2 + 3*x^3/2 - 8*x^4/3 + 125*x^5/24;
+
 (kill(all), 0);
 0$

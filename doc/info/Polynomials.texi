@@ -1813,6 +1813,19 @@ Polynomials with two variables:
 (%o2)                         true
 @end example
 
+Polynomial in one variable and accepting any expression free of @code{x} as a coefficient.
+
+@c ===beg===
+@c polynomialp (a*x^2 + b*x + c, [x]);
+@c polynomialp (a*x^2 + b*x + c, [x], lambda([ex], freeof(x, ex)));
+@c ===end===
+@example
+(%i1) polynomialp (a*x^2 + b*x + c, [x]);
+(%o1)                         false
+(%i2) polynomialp (a*x^2 + b*x + c, [x], lambda([ex], freeof(x, ex)));
+(%o2)                         true
+@end example
+
 @opencatbox{Categories:}
 @category{Predicate functions}
 @category{Polynomials}

@@ -1072,3 +1072,13 @@ integration / differentiation variable."))
       ((mexpt) sp2var ((mplus) ((mtimes) 2 *index) 1)))
      *index 0 $inf)
   sp2)
+
+ ;; Lambert W function principal branch
+ (defprop %lambert_w
+    ((%sum)
+     ((mtimes) ((mexpt) -1 *index)
+	  ((mexpt) -1 1)
+	 ((mexpt) *index ( (mplus) *index -1))
+	 ((mexpt) ((mfactorial) *index) -1) ((mexpt) sp2var *index))
+     *index 1 $inf)
+  sp2)

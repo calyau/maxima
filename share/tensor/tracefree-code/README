@@ -1,0 +1,16 @@
+Programs in this folder contain code extracted from Appendices A, B, and C of:
+
+    Efficient trace-free decomposition of symmetric tensors of arbitrary rank.
+    Viktor T. Toth, Slava G. Turyshev.
+    https://arxiv.org/abs/2109.11743
+
+
+ * makeQ0.mac: function makeQ0 from Appendix A
+
+ * makeQ0-example.mac: example from Appendix B using makeQ0
+
+ * formQ0.mac: function formQ0 from Appendix C
+
+ * formQ0-example.mac: examples from Appendix C using formQ0
+
+ * formQ0-examples-additional.mac: additional examples using formQ0

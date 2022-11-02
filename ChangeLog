@@ -13,6 +13,11 @@ Changes in core:
    This suppresses the startup messages from ABCL, so that e.g. the Maxima
    option --quiet *is* quiet.
  * Fix command line options for Maxima with ABCL.
+ * Functions that return lambda expressions with free variables are
+   now translated correctly.  Previously many of these lambda expressions
+   would cause internal errors when called.
+ * Array functions and subscripted functions can now be translated.
+   Previously these would fail to translate with no explanation.
 
 Changes in share:
 -----------------
@@ -31,6 +36,13 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
+ * \#545: multivar taylor gives 1^2
+ * \#608: taylor(x^a,[x],0,1) unsimplified
+ * \#3071: limit of expressions with signum not very powerful
+ * \#3926: Various limits give UND where they should give IND
+ * \#3998: Lisp error when parser encounters eof in a comment
+ * \#4018: defint(foo,,0,inf) lisp error when denom(foo) contains %i
+ * \#4036: prederror affects bigfloat calculations
 
 Unnumbered bugs fixed:
 ---------------------

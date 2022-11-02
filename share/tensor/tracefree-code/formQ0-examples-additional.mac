@@ -1,0 +1,20 @@
+load("formQ0.mac")$
+load(itensor)$
+dim:3$
+decsym(g,0,2,[],[sym(all)])$
+imetric(g)$
+flipflag:true$
+defcon(x,x,r2)$
+components(r2([],[]),r^2)$
+showtime: true $
+ishow(canform('kdels([a,b,c],[j,k,l])*Q0(x([],[a])*x([],[b])*x([],[c]))))$
+time3: time(%);
+ishow(canform('kdels([a,b,c,d],[j,k,l,m])*Q0(x([],[a])*x([],[b])*x([],[c])*x([],[d]))))$
+time4: time(%);
+ishow(canform('kdels([a,b,c,d,e],[j,k,l,m,n])*Q0(x([],[a])*x([],[b])*x([],[c])*x([],[d])*x([],[e]))))$
+time5: time(%);
+ishow(canform('kdels([a,b,c,d,e,f],[j,k,l,m,n,o])*Q0(x([],[a])*x([],[b])*x([],[c])*x([],[d])*x([],[e])*x([],[f]))))$
+time6: time(%);
+ishow(canform('kdels([a,b,c,d,e,f,h],[j,k,l,m,n,o,p])*Q0(x([],[a])*x([],[b])*x([],[c])*x([],[d])*x([],[e])*x([],[f])*x([],[h]))))$
+time7: time(%);
+[time3, time4, time5, time6, time7];

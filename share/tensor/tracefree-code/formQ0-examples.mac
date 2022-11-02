@@ -1,0 +1,30 @@
+load("formQ0.mac")$
+load(itensor)$
+dim:3$
+decsym(g,0,2,[],[sym(all)])$
+imetric(g)$
+flipflag:true$
+defcon(x,x,r2)$
+components(r2([],[]),r^2)$
+ishow(canform('kdels([a,b,c],[j,k,l])*Q0(x([],[a])*x([],[b])*x([],[c]))))$
+/* output shown in paper:
+                                         %1  %2 %3      j k l     2
+                                      3 x   g      kdels         r
+           %1  %2  %3      j k l                        %1 %2 %3
+(%t9)     x   x   x   kdels         - -----------------------------
+                           %1 %2 %3                 5
+ */
+ishow(canform('kdels([a,b,c,d],[j,k,l,m])
+                     *Q0(x([],[a])*x([],[b])*x([],[c])*x([],[d]))))$
+/* output shown in paper:
+          %1 %2  %3 %4      j k l m      4
+       3 g      g      kdels            r
+                            %1 %2 %3 %4
+(%t10) -----------------------------------
+                       35
+           %1  %2  %3 %4      j k l m      2
+        6 x   x   g      kdels            r
+                              %1 %2 %3 %4       %1  %2  %3  %4      j k l m
+      - ------------------------------------ + x   x   x   x   kdels
+                         7                                          %1 %2 %3 %4
+ */

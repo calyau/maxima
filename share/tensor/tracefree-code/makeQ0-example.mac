@@ -1,0 +1,31 @@
+load("makeQ0.mac")$
+makeQ0(3,3,g,T)$
+components(T([],[c]),g([a,b],[])*T([],[a,b,c]))$
+EQ:T0([],[a,b,c])$
+EQ:EQ,T$
+EQ:subst(T0[a][b,c],'T0[a,b,c],ic_convert('T0([],[a,b,c])=EQ))$
+lg:ident(3)$
+ug:ident(3)$
+dim:3$
+T0:[0,0,0]$
+for i thru dim do T0[i]:zeromatrix(dim,dim)$
+for i thru 3 do for j thru 3 do for k thru 3 do T[i,j,k]:0$
+T[3,3,3]:m*z^3$
+ev(EQ)$
+T0:factor(T0);
+/* output shown in paper:
+                                                      [      3                 ]
+        [                 3 ]  [ 0    0       0    ]  [   m z                  ]
+        [              m z  ]  [                   ]  [ - ----    0       0    ]
+        [   0     0  - ---- ]  [                 3 ]  [    5                   ]
+        [               5   ]  [              m z  ]  [                        ]
+        [                   ]  [ 0    0     - ---- ]  [              3         ]
+(%o15) [[   0     0    0    ], [               5   ], [           m z          ]]
+        [                   ]  [                   ]  [   0     - ----    0    ]
+        [      3            ]  [         3         ]  [            5           ]
+        [   m z             ]  [      m z          ]  [                        ]
+        [ - ----  0    0    ]  [ 0  - ----    0    ]  [                      3 ]
+        [    5              ]  [       5           ]  [                 2 m z  ]
+                                                      [   0       0     ------ ]
+                                                      [                   5    ]
+ */
