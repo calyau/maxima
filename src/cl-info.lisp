@@ -63,10 +63,7 @@
 
 (defun load-primary-index ()
   (declare (special maxima::*maxima-lang-subdir* maxima::*maxima-infodir*))
-  ;; Load the index, but make sure we use a sensible *read-base*.
-  ;; See bug 1951964.  GCL doesn't seem to have
-  ;; with-standard-io-syntax.  Is just binding *read-base* enough?  Is
-  ;; with-standard-io-syntax too much for what we want?
+  ;; Is with-standard-io-syntax too much for what we want?
   (let*
       ((subdir-bit (or maxima::*maxima-lang-subdir* "."))
        (path-to-index (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index.lisp"))
@@ -82,18 +79,10 @@
 				 maxima::*maxima-htmldir*)))
 			     
     (handler-case
-	#-gcl
       (with-standard-io-syntax (load path-to-index))
-      #+gcl
-      (let ((*read-base* 10.)) (load path-to-index))
       (error (condition) (warn (intl:gettext (format nil "~&Maxima is unable to set up the help system.~&(Details: CL-INFO::LOAD-PRIMARY-INDEX: ~a)~&" condition)))))
     (handler-case
-	#-gcl
-      (with-standard-io-syntax
-	(load path-to-html-index))
-      #+gcl
-      (let ((*read-base* 10.))
-	(load path-to-html-index))
+	(with-standard-io-syntax (load path-to-html-index))
       (error (condition) (warn (intl:gettext (format nil "~&Maxima is unable to set up the help system.~&(Details: CL-INFO::LOAD-PRIMARY-INDEX: ~a)~&" condition)))))))
 
   
@@ -236,21 +225,17 @@
      (char-count (caddr value))
      (text (make-string char-count))
      (path+filename (merge-pathnames (make-pathname :name filename) dir-name)))
-    (with-open-file (in path+filename :direction :input)
-      (unless (plusp byte-offset)
-	;; If byte-offset isn't positive there must be some error in
-	;; the index.  Return nil and let the caller deal with it.
-	(return-from read-info-text nil))
-      (file-position in byte-offset)
-      (#-gcl read-sequence
-       #+gcl gcl-read-sequence
-       text in :start 0 :end char-count))
-    text))
-
-#+gcl
-(defun gcl-read-sequence (s in &key (start 0) (end nil))
-  (dotimes (i (- end start))
-    (setf (aref s i) (read-char in))))
+    (handler-case
+	(with-open-file (in path+filename :direction :input)
+			(unless (plusp byte-offset)
+			  ;; If byte-offset isn't positive there must be some error in
+			  ;; the index.  Return nil and let the caller deal with it.
+			  (return-from read-info-text nil))
+			(file-position in byte-offset)
+			(read-sequence text in :start 0 :end char-count)
+			text)
+      (error () (maxima::merror "Cannot find documentation for `~M': missing info file ~M~%"
+	                     (car parameters) (namestring path+filename))))))
 
 ; --------------- build help topic indices ---------------
 
