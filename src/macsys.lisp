@@ -539,18 +539,18 @@ DESTINATION is an actual stream (rather than nil for a string)."
     ;; exists.  A user-specified init file is searched in the search
     ;; paths.
     (flet
-	((load-init-file (loader user-init default-init)
+	((load-init-file (loader default-init)
 	   (let ((init-file
-		   (or user-init
-		       (combine-path *maxima-userdir* default-init))))
+		   (combine-path *maxima-userdir* default-init)))
+	     (format *debug-io* "Init-file: ~S~%" init-file)
 	     (when (and *maxima-load-init-files*
-			(or user-init
-			    (file-exists-p init-file)))
+			(file-exists-p init-file))
+	       (format *debug-io* "Loading ~S~%" init-file)
 	       (funcall loader init-file)))))
       ;; Catch errors from $load or $batchload which can throw to 'macsyma-quit.
       (catch 'macsyma-quit
-	(load-init-file #'$load *maxima-initlisp* *default-maxima-initlisp*)
-	(load-init-file #'$batchload *maxima-initmac* *default-maxima-initmac*)))
+	(load-init-file #'$load *default-maxima-initlisp*)
+	(load-init-file #'$batchload *default-maxima-initmac*)))
 
     (catch 'quit-to-lisp
       (in-package :maxima)
