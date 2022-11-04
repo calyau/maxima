@@ -33,16 +33,12 @@
 (defvar *maxima-htmldir*)
 (defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
-(defvar *default-maxima-initmac* "maxima-init.mac"
-  "Default maxima mac init file if none specified by the user.  This
+(defvar *maxima-initmac* "maxima-init.mac"
+    "Default maxima mac init file if none specified by the user.  This
   file is looked for only in the maxima userdir.")
-(defvar *maxima-initmac* nil
-  "User-specified mac init file, if supplied")
-(defvar *default-maxima-initlisp* "maxima-init.lisp"
+(defvar *maxima-initlisp* "maxima-init.lisp"
   "Default maxima lisp init file if none specified by the user.  This
   file is looked for only in the maxima userdir")
-(defvar *maxima-initlisp* nil
-  "User-specified- lisp init file, if supplied")
 (defvar *maxima-load-init-files* t
   "When non-NIL, the init files are not loaded.")
 (defvar *maxima-tempdir*)
@@ -527,13 +523,13 @@ When one changes, the other does too."
 						 f base))
 					base)))
 				 (let ((base-name (get-base-name file)))
-				   (setf *default-maxima-initmac*
+				   (setf *maxima-initmac*
 					 (concatenate 'string base-name ".mac"))
-				   (setf *default-maxima-initlisp*
+				   (setf *maxima-initlisp*
 					 (concatenate 'string base-name ".lisp")))))
 			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~s.)  Any directory parts or extensions are removed.  The resulting file is only searched for in userdir (see --userdir option)."
-						(subseq *default-maxima-initmac* 0
-							(- (length *default-maxima-initmac*) 4))))
+						(subseq *maxima-initmac* 0
+							(- (length *maxima-initmac*) 4))))
  	   #+nil
 	   (make-cl-option :names '("--init-mac")
 			   :argument "<file>"
