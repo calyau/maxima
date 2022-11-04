@@ -542,15 +542,13 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	((load-init-file (loader default-init)
 	   (let ((init-file
 		   (combine-path *maxima-userdir* default-init)))
-	     (format *debug-io* "Init-file: ~S~%" init-file)
 	     (when (and *maxima-load-init-files*
 			(file-exists-p init-file))
-	       (format *debug-io* "Loading ~S~%" init-file)
 	       (funcall loader init-file)))))
       ;; Catch errors from $load or $batchload which can throw to 'macsyma-quit.
       (catch 'macsyma-quit
-	(load-init-file #'$load *default-maxima-initlisp*)
-	(load-init-file #'$batchload *default-maxima-initmac*)))
+	(load-init-file #'$load *maxima-initlisp*)
+	(load-init-file #'$batchload *maxima-initmac*)))
 
     (catch 'quit-to-lisp
       (in-package :maxima)
