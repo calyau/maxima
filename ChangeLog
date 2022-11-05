@@ -3,9 +3,15 @@ Maxima 5.46-post change log
 
 New items in core:
 ------------------
+ * function powerseries: power series for function lambert_w
+   (thanks to Dimiter Prodanov)
 
 New items in share:
 -------------------
+ * package pslq: PSLQ algorithm for finding integer relations
+   among inexact numbers (thanks to Andrej Vodopivec)
+ * package nelder_mead: Nelder-Mead algorithm for minimization without
+   derivatives (thanks to Mario S. Mommer and Andrej Vodopivec)
 
 Changes in core:
 ----------------
@@ -21,8 +27,13 @@ Changes in core:
 
 Changes in share:
 -----------------
- * contrib_ode: Fix name of Clairaut differential equation
+ * package contrib_ode: Fix name of Clairaut differential equation
    in code and documentation.  Was misspelled as Clairault.
+ * package tensor: commit code from Toth & Turyshev paper for trace-free
+   decomposition, for time and memory assessments
+ * package namespaces: expunge this package, moved to Github
+ * package ezunits: derive units for diff, integrate, and 'at'
+ * function mnewton: optional argument for the Jacobian
 
 Changes in Xmaxima:
 -------------------
@@ -40,13 +51,19 @@ Bug fixes for numbered bugs:
  * \#608: taylor(x^a,[x],0,1) unsimplified
  * \#3026: missing info files not well-handled
  * \#3071: limit of expressions with signum not very powerful
+ * \#3834: abconvtest undocumented and possibly unused
  * \#3926: Various limits give UND where they should give IND
+ * \#3972: gcl only: Autocompletion inverts command case
+ * \#3985: integrate(sin(x*cos(x)), x), risch; causes unlimited recursion
  * \#3998: Lisp error when parser encounters eof in a comment
  * \#4018: defint(foo,,0,inf) lisp error when denom(foo) contains %i
  * \#4036: prederror affects bigfloat calculations
 
 Unnumbered bugs fixed:
 ---------------------
+ * commit 7a7114c: avoid call to undefined function expintegral_ei
+ * commit fe1d8cf: avoid clobbering global state when autoloading
+ * commit 70a5f78: expunge calls to 'sign' in share package distrib
 
 Documentation:
 --------------
