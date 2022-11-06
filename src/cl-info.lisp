@@ -227,15 +227,15 @@
      (path+filename (merge-pathnames (make-pathname :name filename) dir-name)))
     (handler-case
 	(with-open-file (in path+filename :direction :input)
-			(unless (plusp byte-offset)
-			  ;; If byte-offset isn't positive there must be some error in
-			  ;; the index.  Return nil and let the caller deal with it.
-			  (return-from read-info-text nil))
-			(file-position in byte-offset)
-			(read-sequence text in :start 0 :end char-count)
-			text)
+	  (unless (plusp byte-offset)
+	    ;; If byte-offset isn't positive there must be some error in
+	    ;; the index.  Return nil and let the caller deal with it.
+	    (return-from read-info-text nil))
+	  (file-position in byte-offset)
+	  (read-sequence text in :start 0 :end char-count)
+	  text)
       (error () (maxima::merror "Cannot find documentation for `~M': missing info file ~M~%"
-	                     (car parameters) (namestring path+filename))))))
+				(car parameters) (namestring path+filename))))))
 
 ; --------------- build help topic indices ---------------
 
