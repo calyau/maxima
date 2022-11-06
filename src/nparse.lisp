@@ -14,11 +14,38 @@
 
 (load-macsyma-macros defcal mopers)
 
+(defvar *ascii-space-chars-for-maxima* '(#\tab #\space #\linefeed #\return #\page #\newline))
+
+(defvar *unicode-space-chars-for-maxima*
+    #-(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) nil
+    #+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics))
+      ;; Adapted from the list given by: https://jkorpela.fi/chars/spaces.html
+      ;; omitting SPACE, OGHAM SPACE MARK, MONGOLIAN VOWEL SEPARATOR, and IDEOGRAPHIC SPACE.
+      ;; Use #\Uxxxx or #\U+xxxx syntax instead of names,
+      ;; which are not recognized by some implementations which can otherwise handle Unicode.
+      ;; On the other hand, Allegro doesn't recognize the hex codes; it only wants names. Oh well.
+      '(
+        #-(or clisp abcl (and allegro ics)) #\U+00A0 #+(or clisp abcl) #\U00A0 #+(and allegro ics) #\NO-BREAK_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2000 #+(or clisp abcl) #\U2000 #+(and allegro ics) #\EN_QUAD
+        #-(or clisp abcl (and allegro ics)) #\U+2001 #+(or clisp abcl) #\U2001 #+(and allegro ics) #\EM_QUAD
+        #-(or clisp abcl (and allegro ics)) #\U+2002 #+(or clisp abcl) #\U2002 #+(and allegro ics) #\EN_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2003 #+(or clisp abcl) #\U2003 #+(and allegro ics) #\EM_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2004 #+(or clisp abcl) #\U2004 #+(and allegro ics) #\THREE-PER-EM_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2005 #+(or clisp abcl) #\U2005 #+(and allegro ics) #\FOUR-PER-EM_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2006 #+(or clisp abcl) #\U2006 #+(and allegro ics) #\SIX-PER-EM_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2007 #+(or clisp abcl) #\U2007 #+(and allegro ics) #\FIGURE_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2008 #+(or clisp abcl) #\U2008 #+(and allegro ics) #\PUNCTUATION_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+2009 #+(or clisp abcl) #\U2009 #+(and allegro ics) #\THIN_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+200A #+(or clisp abcl) #\U200A #+(and allegro ics) #\HAIR_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+200B #+(or clisp abcl) #\U200B #+(and allegro ics) #\ZERO_WIDTH_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+202F #+(or clisp abcl) #\U202F #+(and allegro ics) #\NARROW_NO-BREAK_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+205F #+(or clisp abcl) #\U205F #+(and allegro ics) #\MEDIUM_MATHEMATICAL_SPACE
+        #-(or clisp abcl (and allegro ics)) #\U+FEFF #+(or clisp abcl) #\UFEFF #+(and allegro ics) #\ZERO_WIDTH_NO-BREAK_SPACE
+        ))
+
+(defmvar *whitespace-chars* (append *ascii-space-chars-for-maxima* *unicode-space-chars-for-maxima*))
+
 (defmvar *alphabet* (list #\_ #\%))
-(defmvar *whitespace-chars*
-         '(#\tab #\space #\linefeed #\return #\page #\newline
-           #+(or (and unicode (not lispworks))
-                 sb-unicode openmcl-unicode-strings) #\no-break_space))
 
 (defun alphabetp (n)
   (and (characterp n)
