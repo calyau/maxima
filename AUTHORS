@@ -456,7 +456,7 @@ Marek Rychlik
 
 Starting with version 5.9.0, Maxima uses mk::defsystem and (slightly
 modified) run-lisp from the Common Lisp Open Code Collection,
-<http://clocc.sourceforge.net>.
+<https://clocc.sourceforge.net>.
 
 The nregex code was written by Lawrence E. Freil.
 

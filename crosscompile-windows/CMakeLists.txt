@@ -147,7 +147,7 @@ if(Git_FOUND)
 endif()
 
 # download URLs
-set(CLISP_URL "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
+set(CLISP_URL "https://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
 
 
 # Where are libgcc and libstdc++?
