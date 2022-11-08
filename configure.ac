@@ -848,7 +848,7 @@ GCCVER=undefined
 if test x${xmaxima_exe} = xtrue ; then
   GCCVER=`gcc -dumpversion`
   dnl http://tclkits.rkeene.org/fossil/wiki?name=Downloads
-  dnl and http://www.tcl.tk/starkits/
+  dnl and https://www.tcl.tk/starkits/
   TCLKITSH=/c/programs/star/tclkitsh-8.6.3-win32-ix86.exe
   TCLKIT_RUNTIME=/c/programs/star/tclkit-8.6.3-win32-ix86.exe
   SDXKIT=/c/programs/star/sdx.kit

@@ -133,7 +133,7 @@ typically depends on:
  * gcc
 
 
-SBCL <http://www.sbcl.org>
+SBCL <https://www.sbcl.org>
 --------------------------
 
 SBCL is a fork of CMUCL which differs in some minor details,

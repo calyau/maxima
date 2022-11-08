@@ -14,11 +14,35 @@
 
 (load-macsyma-macros defcal mopers)
 
+(defvar *ascii-space-chars-for-maxima* '(#\tab #\space #\linefeed #\return #\page #\newline))
+
+(defvar *unicode-space-chars-for-maxima*
+    #-(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) nil
+    #+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics))
+      ;; Adapted from the list given by: https://jkorpela.fi/chars/spaces.html
+      ;; omitting SPACE, OGHAM SPACE MARK, MONGOLIAN VOWEL SEPARATOR, and IDEOGRAPHIC SPACE.
+      '(
+        #.(code-char #x00A0) ;; NO-BREAK SPACE
+        #.(code-char #x2000) ;; EN QUAD
+        #.(code-char #x2001) ;; EM QUAD
+        #.(code-char #x2002) ;; EN SPACE
+        #.(code-char #x2003) ;; EM SPACE
+        #.(code-char #x2004) ;; THREE-PER-EM SPACE
+        #.(code-char #x2005) ;; FOUR-PER-EM SPACE
+        #.(code-char #x2006) ;; SIX-PER-EM SPACE
+        #.(code-char #x2007) ;; FIGURE SPACE
+        #.(code-char #x2008) ;; PUNCTUATION SPACE
+        #.(code-char #x2009) ;; THIN SPACE
+        #.(code-char #x200A) ;; HAIR SPACE
+        #.(code-char #x200B) ;; ZERO WIDTH SPACE
+        #.(code-char #x202F) ;; NARROW NO-BREAK SPACE
+        #.(code-char #x205F) ;; MEDIUM MATHEMATICAL SPACE
+        #.(code-char #xFEFF) ;; ZERO WIDTH NO-BREAK SPACE
+        ))
+
+(defmvar *whitespace-chars* (append *ascii-space-chars-for-maxima* *unicode-space-chars-for-maxima*))
+
 (defmvar *alphabet* (list #\_ #\%))
-(defmvar *whitespace-chars*
-         '(#\tab #\space #\linefeed #\return #\page #\newline
-           #+(or (and unicode (not lispworks))
-                 sb-unicode openmcl-unicode-strings) #\no-break_space))
 
 (defun alphabetp (n)
   (and (characterp n)

@@ -38,10 +38,10 @@ set documentation "One can use different LISP (the programming language, in whic
 
 Currently this Windows installer supports:
 - CLISP (http://www.clisp.org)
-- SBCL (http://www.sbcl.org).
+- SBCL (https://www.sbcl.org).
 "
 
-if {$abcl == 1} { append documentation "- ABCL (http://www.abcl.org)" }
+if {$abcl == 1} { append documentation "- ABCL (https://www.abcl.org)" }
 
 append documentation "
 Which Lisp you select, may depend on your needs:

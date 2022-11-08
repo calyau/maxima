@@ -738,3 +738,25 @@ true;
  result3: ev (ii, nouns),
  is (result3 = result2));
 true;
+
+/* SF bug #4035: "Invisible characters should work better" */
+
+/* from the bug report */
+
+errcatch (parse_string ("ex: ​23;"));
+[ex: 23];
+
+/* other examples */
+
+ibase: 16.;
+16.;
+
+/* these are the codes for the space characters mentioned in src/nparse.lisp */
+(space_chars: map (unicode, [ 00A0, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 200A, 200B, 202F, 205F, 0FEFF ]),
+ ibase: 10.);
+10.;
+
+(nn: makelist (100 + i, i, 1, length (space_chars)),
+ apply (sconcat, flatten (append (["[", 100], map (lambda ([s, n], [",", s, n]), space_chars, nn), ["];"]))),
+ parse_string (%%));
+''(cons (100, nn));

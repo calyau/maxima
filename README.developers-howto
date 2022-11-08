@@ -382,6 +382,6 @@
     windows installers containing wxMaxima and maxima are usually
     published within hours of the new Maxima release the wxMaxima
     developers beg to be informed in advance about the planned release
-    date. Filing a ticket at http://wxmaxima-developers.github.com/wxmaxima/
+    date. Filing a ticket at https://github.com/wxMaxima-developers/wxmaxima/issues
     or sending the project maintainer an email should be sufficient
     for this task.

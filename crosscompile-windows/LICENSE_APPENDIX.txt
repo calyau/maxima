@@ -12,7 +12,7 @@ The following projects are included in the installer:
   Website: http://clisp.org
   License: https://sourceforge.net/p/clisp/clisp/ci/default/tree/COPYRIGHT
 * SBCL
-  Website: http://www.sbcl.org
+  Website: https://www.sbcl.org
   License: https://sourceforge.net/p/sbcl/sbcl/ci/master/tree/COPYING
 * ABCL (maybe)
   Website: https://www.abcl.org

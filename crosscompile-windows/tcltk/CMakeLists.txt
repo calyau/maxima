@@ -16,8 +16,8 @@ set(TKVERSION  "8.6.12")
 set(TCL_MD5 "87ea890821d2221f2ab5157bc5eb885f")
 set(TK_MD5  "1d6dcf6120356e3d211e056dff5e462a")
 
-set(TCL_URL "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
-set(TK_URL  "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
+set(TCL_URL "https://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
+set(TK_URL  "https://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 
 if(BUILD_64BIT)
     set(CONFIGURE64BIT "--enable-64bit")
