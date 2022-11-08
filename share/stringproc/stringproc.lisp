@@ -61,15 +61,11 @@ See comments to $adjust_external_format below for a detailed description.
 ;; find the right value for *parse-utf-8-input*
 ;;
 (defun init-*parse-utf-8-input* ()
-  #+unix (progn
+  #+unix
+  (progn
     #+gcl t
-    ;; should not be needed:
-    #+cmucl (and 
-              (not (boundp 'maxima::$wxplot_size)) ;; we are not in wxMaxima (terminal, Xmaxima)
-              (not (search "UTF"                   ;; and the external format is not utf-8
-                           (format nil "~s" (stream-external-format *standard-output*)) ;; input remains 'default'
-                           :test 'string-equal ))) 
-    #- (or gcl cmucl) nil ) 
+    #-(or gcl) nil
+    )
   #-unix (progn
     #+gcl (boundp 'maxima::$wxplot_size)  ;; we are in wxMaxima
     #+ccl nil

@@ -728,6 +728,7 @@ When one changes, the other does too."
     ;; utf-8.  The handler-bind is needed in case the filename
     ;; encoding was already set to something else; we forcibly change
     ;; it to utf-8. (Is that right?)
+    (setf stream:*default-external-format* :utf-8)
     (stream:set-system-external-format :utf-8 :utf-8))
   #+clisp
   (ignore-errors
