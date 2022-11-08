@@ -47,10 +47,6 @@ See comments to $adjust_external_format below for a detailed description.
 ;; adjust the external format where necessary and possible
 ;;
 #-gcl (eval-when (:load-toplevel :execute)
-  #+cmucl 
-    (unless (or (eq (stream-external-format *standard-input*) :utf-8) 
-                (eq (stream-external-format *standard-output*) :utf-8) ) 
-      (stream:set-system-external-format :utf-8) )
   ;;
   #+ (and clisp (not unix))
     (when (boundp 'maxima::$wxplot_size)
