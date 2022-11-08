@@ -76,28 +76,9 @@
     (let ((help-string (cl-option-help-string opt))
 	  (names (cl-option-names opt))
 	  (arg (cl-option-argument opt)))
-      #-gcl
-      (let ((*print-right-margin* 80))
-	;; Print out the options neatly, wrapping if needed.
-	;;
-	;; This format string is a pprint-logical-block ("~@<...~:>").
-	;; The per-line prefix "~@<    ~;" print some space before each line.     
-	;;
-	;; The body, "~{~A~^, ~:_~}", takes a list and prints out each
-	;; element followed by ", ", except the last which leaves off
-	;; the ", ".  If necessary, a newline is inserted ("~:_").
-	;;
-	;; There is no suffix ("~;~:>").
-	(format t "~@<    ~;~{~A~^, ~:_~}~;~:>"
-		(mapcar #'(lambda (name)
-			    (cl-option-description name arg))
-			names)))
-      #+gcl
-      (format t "    ~{~A~^, ~}"
-	      (mapcar #'(lambda (name)
-			  (cl-option-description name arg))
-		      names))
-
+      (format t "    ~a" (cl-option-description (first names) arg))
+      (dolist (name (rest names))
+	(format t ", ~a" (cl-option-description name arg)))
       (terpri)
       (when help-string
 	(print-help-string help-string))
