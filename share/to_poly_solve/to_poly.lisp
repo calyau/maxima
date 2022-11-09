@@ -1,6 +1,6 @@
 ;;  Author Barton Willis
 ;;  University of Nebraska at Kearney
-;;  Copyright (C) 2006, 2007, 2008, 2009 Barton Willis
+;;  Copyright (C) 2006, 2007, 2008, 2009, 2022 Barton Willis
 
 ;;  This program is free software; you can redistribute it and/or modify 
 ;;  it under the terms of the GNU General Public License as published by	 
@@ -50,7 +50,7 @@
     (if (eq vars 'convert-all-vars) (setq vars ($cons 1 ($listofvars p))))
     
     (if (not ($listp vars))
-	(merror "The second argument to 'to_poly' must be a list"))
+	(merror (intl:gettext "The second argument to 'to_poly' must be a list")))
     
     (cond (($member 1 vars) 
 	   (setq convert-cnst t)
@@ -63,7 +63,7 @@
     ;; Thus transform a = b into a - b.
     (setq p (mapcar 'meqhk p))
 
-    ;; Extract the deomominators of p and require them to not vanish.
+    ;; Extract the denominators of p and require them to not vanish.
     ;; Replace the list p by a list of the numerators.
     (setq q (mapcar '$ratdenom p))
     (setq p (mapcar '$ratnumer p))
@@ -116,8 +116,9 @@
 	  
 	   (setq n (nth 2 p))
 	   (setq b (nth 1 p)) 
-	   (cond ((and (integerp n) (> n 0))
-		  (list p nil nil nil))
+	   (cond 
+	      ((and (integerp n) (> n 0))
+		      (list p nil nil nil))
 
 		 (($ratnump n)
 		  (setq b (to-polynomial b vars convert-cnst))
@@ -127,22 +128,12 @@
 		  (setq b (first b))
 		  (setq nv (new-gentemp 'general))
 		  (cond ((or (mgrp n 0) (mnump b))
-			 (let ((q) (r) (rr))
-			   (setq q (take '($floor) n))
-			   (setq r (sub n q))
-			   (setq rr ($denom r))
-			   (push (take '(mleqp) (take '($parg) nv) (div '$%pi rr)) inequal)
-			   (push (take '(mlessp) (div '$%pi (neg rr)) (take '($parg) nv)) inequal)
-			   (push (take '(mequal) (power b ($num r)) (power nv ($denom r))) subs)
-			   (push (take '(mequal) p nv) np-subs)
-			   (list (mul nv (power b q))  subs inequal np-subs)))
-		
-			;   (push (take '(mleqp) (take '($parg) nv) (mul n '$%pi)) inequal)
-			;   (push (take '(mlessp) (mul -1 '$%pi n) (take '($parg) nv)) inequal)
-			;   (push (take '(mequal) (power b ($num n)) (power nv ($denom n))) subs)
-			;   (push (take '(mequal) p nv) np-subs)
-			;   (list nv subs inequal np-subs)))
-
+            (push (ftake 'mequal b (ftake 'mexpt nv ($denom n))) subs)
+			(let ((ph (ftake '$parg nv)) (angle (div '$%pi ($denom n))))
+				(push (ftake 'mlessp (neg angle) ph) inequal)
+				(push (ftake 'mleqp ph angle) inequal))
+			(push (ftake 'mequal p (ftake 'mexpt nv ($num n))) np-subs)
+			(list (ftake 'mexpt nv ($num n)) subs inequal np-subs))
 			(t
 			 (setq n (neg n))
 			 (push (take '(mequal) 1 (mul (power nv ($denom n)) (power b ($num n)))) subs)
@@ -150,8 +141,7 @@
 			 (push (take '(mleqp) (mul -1 '$%pi n) (take '($parg) nv)) inequal)
 			 (push (take '(mnotequal) nv 0) inequal)
 			 (list nv subs inequal np-subs))))
-			 
-		 (t (merror "Nonalgebraic argument given to 'to_poly'"))))
+		 (t (merror (intl:gettext "Nonalgebraic argument given to 'to_poly'")))))
 
 	  ((op-equalp p 'mabs)
 	   (setq b (to-polynomial (first (margs p)) vars convert-cnst))
@@ -179,8 +169,8 @@
 	     (setq inequal (append inequal (third q)))
 	     (setq np-subs (append np-subs (fourth q)))
 	     (setq vars ($append vars ($listofvars `((mlist) ,@subs))))
-	     
 	     (setq p (mapcar #'(lambda (s) (list-subst np-subs s)) p)))
+	  
 	   (list acc subs inequal np-subs))
 
 	  ((mplusp p)
@@ -199,7 +189,7 @@
 	   (list acc subs inequal np-subs))
 
 
-	  (t (merror "Nonalgebraic argument given to 'to_poly'")))))
+	  (t (merror (intl:gettext "Nonalgebraic argument given to 'to_poly'"))))))
 
 
 #|
@@ -232,7 +222,7 @@ to eliminate.
 (defun require-maxima-variable (x context-string)
   (setq x (ratdisrep x))
   (if (maxima-variable-p x) x
-    (merror "Function ~:M expects a symbol, instead found ~:M" context-string x)))
+    (merror (intl:gettext "Function ~:M expects a symbol, instead found ~:M") context-string x)))
 
 ;; Simplify a polynomial equation p = 0 by 
 
@@ -257,17 +247,17 @@ to eliminate.
       (progn
 	(setq eqs (mapcar #'(lambda (s) ($ratexpand (meqhk s))) (margs eqs)))
 	(setq eqs (margs (opapply '$set eqs))))
-    (merror "The first argument to 'eliminate_using' must be a list or a set"))
+    (merror (intl:gettext "The first argument to 'eliminate_using' must be a list or a set")))
 
   (setq x (require-maxima-variable x "$eliminate_using"))
   
   (if (not (every #'(lambda (s) ($polynomialp s `((mlist) ,x) 
 					      `((lambda) ((mlist) s) (($freeof) ,x s)))) eqs))
-      (merror "The first argument to 'eliminate_using' must be a set or list of polynomials"))
+      (merror (intl:gettext "The first argument to 'eliminate_using' must be a set or list of polynomials")))
 
   (setq eq ($ratexpand (meqhk eq)))
   (if (not ($polynomialp eq `((mlist) ,x) `((lambda) ((mlist) s) (($freeof) ,x s))))
-      (merror "The second argument to 'eliminate_using' must be a polynomial"))
+      (merror (intl:gettext "The second argument to 'eliminate_using' must be a polynomial")))
    
   (setq eqs (mapcar #'suppress-multiple-zeros eqs))
   (setq eq (suppress-multiple-zeros eq))
@@ -294,7 +284,7 @@ to eliminate.
 	 (simplify `(($max) ,@(mapcar #'(lambda (s) (degree-upper-bound s vars)) (margs p)))))
 
 	((apply '$freeof (append vars (list p))) 0)
-	(t (merror "Nonpolynomial argument given to degree-upper-bound"))))
+	(t (merror (intl:gettext "Nonpolynomial argument given to degree-upper-bound")))))
 
 (defun unk-eliminate (eqs vars &optional (pivots nil))
    (let ((ni) (n-min nil) (xeqs `(($set))) (pivot-var) (pivot-eq) (acc `(($set))) ($ratfac nil))
@@ -335,17 +325,17 @@ to eliminate.
       (progn
 	(setq eqs (mapcar #'(lambda (s) ($ratexpand (suppress-multiple-zeros (meqhk s)))) (margs eqs)))
 	(setq eqs (margs (opapply '$set eqs))))
-    (merror "The first argument to 'elim' must be a list or a set"))
+    (merror (intl:gettext "The first argument to 'elim' must be a list or a set")))
   
   (setq x (margs (cond (($listp x) ($setify x))
 		       (($setp x) x)
-		       (t (merror "The second argument to 'elim' must be a list or a set")))))
+		       (t (merror (intl:gettext "The second argument to 'elim' must be a list or a set"))))))
   
   (setq x (mapcar #'(lambda (s) (require-maxima-variable s "$elim")) x)) 
   
   (setq x (opapply 'mlist x))
   (if (not (every #'(lambda (s) ($polynomialp s x `((lambda) ((mlist) s) (($lfreeof) ,x s)))) eqs))
-      (merror "Each member of the first argument to 'elim' must be a polynomial"))
+      (merror (intl:gettext "Each member of the first argument to 'elim' must be a polynomial")))
 
   (setq x (margs x))
   (opapply 'mlist (mapcar #'(lambda (s) (opapply 'mlist s)) (unk-eliminate eqs x))))

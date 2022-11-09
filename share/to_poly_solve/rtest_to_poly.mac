@@ -80,21 +80,26 @@ expand(to_poly((x-1)*(x-sqrt(2))*(x-sqrt(3)),[x]));
 first(first(elim_allbut(first(to_poly((x-1)*(x-sqrt(2))*(x-sqrt(3)),[x,1])),[x])));
 (x^2-3)*(x^3-x^2-2*x+2)$
 
+/* regression tests for #4043 bug in to_poly */
+first(nicedummies(to_poly((3^(3/2)+5)^(1/3)-(3^(3/2)-5)^(1/3),[1])));
+[%g2-%g1,%g0^3+5=%g2^3,%g0^3-5=%g1^3,3=%g0^2]$
 
+factor(first(elim_allbut(first(to_poly(z-(3^(3/2)+5)^(1/3)+(3^(3/2)-5)^(1/3),[1,z])),[z])));
+[(z^3-4)*(z^6-80*z^3-128)*(z^6-26*z^3+250)*(z^6+10*z^3-2)]$
 
+/* more tests*/
+nicedummies(to_poly(z-2^(1/2),[z,1]));
+[[z-%g0,2=%g0^2],[parg(%g0)<=%pi/2,-%pi/2<parg(%g0)],[]]$
 
+nicedummies(to_poly(z-107*2^(1/2),[z,1]));
+[[z-107*%g0,2=%g0^2],[parg(%g0)<=%pi/2,-%pi/2<parg(%g0)],[]]$
 
+nicedummies(to_poly(z - sqrt(2) - sqrt(3),[z,1]));
+[[z-%g1-%g0,3=%g1^2,2=%g0^2],[parg(%g1)<=%pi/2,-%pi/2<parg(%g1),parg(%g0)<=%pi/2,-%pi/2<parg(%g0)],[]]$
 
+first(nicedummies(to_poly(z - sqrt(2) - sqrt(3),[z,1])));
+[z-%g1-%g0,3=%g1^2,2=%g0^2]$
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* make sure we didn't make assigments or assumptions */
+[values,facts()];
+[[],[]]$
