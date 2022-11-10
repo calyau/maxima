@@ -20,7 +20,8 @@
     #-(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) nil
     #+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics))
       ;; Adapted from the list given by: https://jkorpela.fi/chars/spaces.html
-      ;; omitting SPACE, OGHAM SPACE MARK, MONGOLIAN VOWEL SEPARATOR, and IDEOGRAPHIC SPACE.
+      ;; omitting SPACE, OGHAM SPACE MARK, MONGOLIAN VOWEL SEPARATOR, IDEOGRAPHIC SPACE,
+      ;; and ZERO WIDTH NO-BREAK SPACE.
       '(
         #.(code-char #x00A0) ;; NO-BREAK SPACE
         #.(code-char #x2000) ;; EN QUAD
@@ -37,7 +38,6 @@
         #.(code-char #x200B) ;; ZERO WIDTH SPACE
         #.(code-char #x202F) ;; NARROW NO-BREAK SPACE
         #.(code-char #x205F) ;; MEDIUM MATHEMATICAL SPACE
-        #.(code-char #xFEFF) ;; ZERO WIDTH NO-BREAK SPACE
         ))
 
 (defmvar *whitespace-chars* (append *ascii-space-chars-for-maxima* *unicode-space-chars-for-maxima*))
