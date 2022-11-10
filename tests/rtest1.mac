@@ -743,6 +743,7 @@ true;
 
 /* from the bug report */
 
+/* string in this next example has U+200B (ZERO WIDTH SPACE) before "23" */
 errcatch (parse_string ("ex: ​23;"));
 [ex: 23];
 
