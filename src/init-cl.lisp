@@ -33,8 +33,12 @@
 (defvar *maxima-htmldir*)
 (defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
-(defvar *maxima-initmac* "maxima-init.mac")
-(defvar *maxima-initlisp* "maxima-init.lisp")
+(defvar *maxima-initmac* "maxima-init.mac"
+    "Default maxima mac init file if none specified by the user.  This
+  file is looked for only in the maxima userdir.")
+(defvar *maxima-initlisp* "maxima-init.lisp"
+  "Default maxima lisp init file if none specified by the user.  This
+  file is looked for only in the maxima userdir")
 (defvar *maxima-load-init-files* t
   "When non-NIL, the init files are not loaded.")
 (defvar *maxima-tempdir*)
@@ -499,23 +503,46 @@ When one changes, the other does too."
 			   :help-string "Use  <directory> for user directory (default is %USERPROFILE%/maxima for Windows, and $HOME/.maxima for other operating systems).")
  	   (make-cl-option :names '("--init")
 			   :argument "<file>"
-			   :action #'(lambda (file)
-				       (setf *maxima-initmac* (concatenate 'string file ".mac"))
-				       (setf *maxima-initlisp* (concatenate 'string file ".lisp")))
-			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~a)"
+			   :action
+			   #'(lambda (file)
+			       (flet
+				   ((get-base-name (f)
+				      ;; Strip off everything before
+				      ;; the last "/" (or "\").  Then
+				      ;; strip off everything after
+				      ;; the last dot.
+				      (let* ((dot (position #\. f :from-end t))
+					     (dir (position-if
+						   #'(lambda (c)
+						       (member c '(#\/ #\\)))
+						   f
+						   :from-end t))
+					     (base (subseq f (if dir (1+ dir) 0) dot)))
+					(when (or dot dir)
+					  (mtell (intl:gettext "Warning: Using basename ~S for init files instead of ~S" )
+						 base f))
+					base)))
+				 (let ((base-name (get-base-name file)))
+				   (setf *maxima-initmac*
+					 (concatenate 'string base-name ".mac"))
+				   (setf *maxima-initlisp*
+					 (concatenate 'string base-name ".lisp")))))
+			   :help-string (format nil "Set the base name of the Maxima & Lisp initialization files (default is ~s.)  The last extension and any directory parts are removed to form the base name.  The resulting files, <base>.mac and <base>.lisp are only searched for in userdir (see --userdir option).  This may be specified for than once, but only the last is used."
 						(subseq *maxima-initmac* 0
 							(- (length *maxima-initmac*) 4))))
- 	   (make-cl-option :names '("--init-mac")
+ 	   #+nil
+	   (make-cl-option :names '("--init-mac")
 			   :argument "<file>"
 			   :action #'(lambda (file)
 				       (setf *maxima-initmac* file))
-			   :help-string (format nil "Set the name of the Maxima initialization file (default is ~a)"
-						*maxima-initmac*))
- 	   (make-cl-option :names '("--init-lisp")
+			   :help-string (format nil "Set the name of the Maxima initialization file (default is ~s)"
+						*default-maxima-initmac*))
+ 	   #+nil
+	   (make-cl-option :names '("--init-lisp")
 			   :argument "<file>"
 			   :action #'(lambda (file)
 				       (setf *maxima-initlisp* file))
-			   :help-string (format nil "Set the name of the Lisp initialization file (default is ~a)" *maxima-initlisp*))
+			   :help-string (format nil "Set the name of the Lisp initialization file (default is ~s)" *default-maxima-initlisp*))
 	   (make-cl-option :names '("-l" "--lisp")
 			   :argument "<lisp>"
 			   :action nil
@@ -527,14 +554,20 @@ When one changes, the other does too."
 	   ;; --preload-lisp is left for backward compatibility.  We
 	   ;; no longer distinguish between mac and lisp files.  Any
 	   ;; file type that $LOAD supports is acceptable.
-	   (make-cl-option :names '("-p" "--preload" "--preload-lisp")
+	   ;; "--init-mac" and "--init-lisp" are now also (deprecated)
+	   ;; aliases for --preload.
+	   (make-cl-option :names '("-p" "--preload" "--preload-lisp" "--init-mac" "--init-lisp")
 			   :argument "<file>"
 			   :action #'(lambda (file)
 				       ($load file))
-			   :help-string "Preload <file>, which may be any file time accepted by Maxima's LOAD function.
-        This will be searched for in the locations given by file_search_maxima
-        and file_search_lisp.  This can be specified multiple times to load
-        multiple files.")
+			   :help-string
+        "Preload <file>, which may be any file time accepted by
+        Maxima's LOAD function.  The <file> is loaded before any other
+        system initialization is done.  This will be searched for in
+        the locations given by file_search_maxima and
+        file_search_lisp.  This can be specified multiple times to
+        load multiple files. The equivalent options --preload-lisp,
+        --init-mac, and --init-lisp are deprecated.")
 	   (make-cl-option :names '("-q" "--quiet")
 			   :action #'(lambda ()
 				       (declare (special *maxima-quiet*))
