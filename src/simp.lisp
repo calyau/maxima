@@ -914,9 +914,9 @@
 	       (t
 		(setq b (expt a (- b)))
 		(*red 1 b)))))
-    (if (float-inf-p result)	;; needed for gcl - no trap of overflow
-	(signal 'floating-point-overflow)
-      result)))
+    (when (float-inf-p result)	;; needed for gcl - no trap of overflow
+      (signal 'floating-point-overflow))
+    result))
     
 
 ;;;-----------------------------------------------------------------------------
