@@ -2690,6 +2690,13 @@ block ([translate : false, l1, l2],
          pr (not not (x >  1)),
          pr (not not (x >= 1)),
 
+         pr (x = 1),
+         pr (x # 1),
+         pr (not (x = 1)),
+         pr (not (x # 1)),
+         pr (not not (x = 1)),
+         pr (not not (x # 1)),
+
          pr (equal (x, 1)),
          pr (notequal (x, 1)),
          pr (not equal (x, 1)),

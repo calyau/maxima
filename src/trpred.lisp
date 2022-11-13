@@ -204,6 +204,9 @@
               `(eql ,arg1 ,arg2)
               `(like ,arg1 ,arg2)))))
 
+(defun trp-mnotequal (form)
+  (translate-predicate `((mnot) ((mequal) ,@(cdr form)))))
+
 (defun trp-$equality (args lisp-op max-op)
   (let* ((arg1 (translate (car args)))
          (arg2 (translate (cadr args)))
@@ -220,16 +223,6 @@
 
 (defun trp-$notequal (form)
   (trp-$equality (cdr form) '/= 'mnqp))
-
-;; Logical not for predicates.  Do the expected thing, except return
-(defun trp-not (val)
-  (case val
-    ((t) nil)
-    ((nil) t)
-    (otherwise val)))
-
-(defun trp-mnotequal (form)
-  (cons '$any (list 'trp-not (cdr (trp-mequal form)))))
 
 ;;; sigh, i have to copy a lot of the $assume function too.
 
