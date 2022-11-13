@@ -170,31 +170,24 @@
 
 (defvar *number-types* '($float $number $fixnum ))
 
-(defun trp-mgreaterp (form) 
-  (let (mode arg1 arg2)
-    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
-	  mode (*union-mode (car arg1) (car arg2)))
-    (cond ((or (eq '$fixnum mode) (eq '$float mode)
-	       (and (member (car arg1) *number-types* :test #'eq)
-		    (member (car arg2) *number-types* :test #'eq)))
-	   `($boolean . (> ,(dconv arg1 mode) ,(dconv arg2 mode))))
-	  ((eq '$number mode)
-	   `($boolean . (> ,(cdr arg1) ,(cdr arg2))))
-	  ('else
-	   (wrap-pred `(mgrp ,(dconvx arg1) ,(dconvx arg2)) nil)))))
- 
-(defun trp-mlessp (form) 
-  (let (mode arg1 arg2)
-    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
-	  mode (*union-mode (car arg1) (car arg2)))
-    (cond ((or (eq '$fixnum mode) (eq '$float mode)
-	       (and (member (car arg1) *number-types* :test #'eq)
-		    (member (car arg2) *number-types* :test #'eq)))
-	   `($boolean . (< ,(dconv arg1 mode) ,(dconv arg2 mode))))
-	  ((eq '$number mode)
-	   `($boolean . (< ,(cdr arg1) ,(cdr arg2))))
-	  ('else
-	   (wrap-pred `(mlsp ,(dconvx arg1) ,(dconvx arg2)) nil)))))
+(defun trp-inequality (args lisp-op max-op)
+  (let* ((arg1 (translate (car args)))
+         (arg2 (translate (cadr args)))
+         (mode (*union-mode (car arg1) (car arg2))))
+    (cond ((or (member mode '($fixnum $float) :test #'eq)
+               (and (member (car arg1) *number-types* :test #'eq)
+                    (member (car arg2) *number-types* :test #'eq)))
+           `($boolean . (,lisp-op ,(dconv arg1 mode) ,(dconv arg2 mode))))
+          ((eq '$number mode)
+           `($boolean . (,lisp-op ,(cdr arg1) ,(cdr arg2))))
+          (t
+           (wrap-pred `(,max-op ,(dconvx arg1) ,(dconvx arg2)) nil)))))
+
+(defun trp-mlessp (form)
+  (trp-inequality (cdr form) '< 'mlsp))
+
+(defun trp-mgreaterp (form)
+  (trp-inequality (cdr form) '> 'mgrp))
 
 (defun trp-mequal (form) 
   (destructuring-let (((mode1 . arg1) (translate (cadr form)))
