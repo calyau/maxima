@@ -204,16 +204,22 @@
               `(eql ,arg1 ,arg2)
               `(like ,arg1 ,arg2)))))
 
+(defun trp-$equality (args lisp-op max-op)
+  (let* ((arg1 (translate (car args)))
+         (arg2 (translate (cadr args)))
+         (mode (*union-mode (car arg1) (car arg2))))
+    (cond ((member mode '($fixnum $float) :test #'eq)
+           `($boolean . (,lisp-op ,(dconv arg1 mode) ,(dconv arg2 mode))))
+          ((eq '$number mode)
+           `($any . (,max-op ,(cdr arg1) ,(cdr arg2))))
+          (t
+           (wrap-pred `(,max-op ,(dconvx arg1) ,(dconvx arg2)) nil)))))
+
 (defun trp-$equal (form) 
-  (let (mode arg1 arg2) 
-    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
-	  mode (*union-mode (car arg1) (car arg2)))
-    (cond ((or (eq '$fixnum mode) (eq '$float mode))
-	   `($boolean . (= ,(dconv arg1 mode) ,(dconv arg2 mode))))
-	  ((eq '$number mode)
-	   `($any . (meqp ,(cdr arg1) ,(cdr arg2))))
-	  ('else
-	   (wrap-pred `(meqp ,(dconvx arg1) ,(dconvx arg2)) nil)))))
+  (trp-$equality (cdr form) '= 'meqp))
+
+(defun trp-$notequal (form)
+  (trp-$equality (cdr form) '/= 'mnqp))
 
 ;; Logical not for predicates.  Do the expected thing, except return
 (defun trp-not (val)
@@ -221,9 +227,6 @@
     ((t) nil)
     ((nil) t)
     (otherwise val)))
-
-(defun trp-$notequal (form)
-  (cons '$any (list 'trp-not (cdr (trp-$equal form)))))
 
 (defun trp-mnotequal (form)
   (cons '$any (list 'trp-not (cdr (trp-mequal form)))))
