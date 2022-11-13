@@ -3059,6 +3059,82 @@ true;
 (kill (pred, foo), 0);
 0;
 
+block ([translate : false, l1, l2],
+  local (test),
+
+  /* I really want push(x,a) below in foo, bar and baz,
+   * but the translation of the push special form just
+   * punts to MEVAL.  I want the loop bodies translated
+   * better than that, especially in baz, so just do
+   * a:cons(x,a) everywhere here.
+   */
+
+  foo () :=
+    [block ([a : []],
+       for x : 1 thru 5 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x > 3 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 10 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x > 10 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 unless x < 3 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 unless x > 3 do a : cons (x, a),
+       a)],
+
+  bar (p) :=
+    [block ([a : []],
+       for x : 1 thru 5 while p do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 and p do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 or p do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 10 or 'z do a : cons (x, a),
+       a)],
+
+  baz () :=
+    [block ([a : []],
+       for x : 1 thru 5 do a : cons (if x then x else false, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 do a : cons (if x then x else false, a),
+       a)],
+
+  test () :=
+    block ([res : []],
+      push (foo (), res),
+      for p in [true, false] do
+        push (bar (p), res),
+      push (baz (), res),
+      push (errcatch (bar ('z)), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar, baz),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar, baz), 0);
+0;
+
 
 
 
