@@ -2669,6 +2669,59 @@ true;
 (kill (foo, bar), 0);
 0;
 
+block ([translate : false, l1, l2],
+  local (test, make_fun),
+
+  make_fun (name, pr) ::=
+    buildq ([name, pr],
+      name (x) :=
+        [pr (x <  1),
+         pr (x <= 1),
+         pr (x >  1),
+         pr (x >= 1),
+
+         pr (not (x <  1)),
+         pr (not (x <= 1)),
+         pr (not (x >  1)),
+         pr (not (x >= 1)),
+
+         pr (not not (x <  1)),
+         pr (not not (x <= 1)),
+         pr (not not (x >  1)),
+         pr (not not (x >= 1))]),
+
+  make_fun (foo, is),
+  make_fun (bar, maybe),
+
+  test () :=
+    block ([res : []],
+      block ([prederror : true],
+        push (errcatch (foo ('z)), res)),
+      block ([prederror : false,
+              l : [0, 0.0, 0.0b0,
+                   1, 1.0, 1.0b0,
+                   2, 2.0, 2.0b0,
+                   %i, 1.0 * %i, 1.0b0 * %i,
+                   2 * %i, 2.0 * %i, 2.0b0 * %i,
+                   true, false,
+                   'z, 'z ()]],
+        for x in l do (
+          push (foo (x), res),
+          push (bar (x), res))),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar), 0);
+0;
+
 
 
 

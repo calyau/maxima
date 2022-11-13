@@ -189,6 +189,13 @@
 (defun trp-mgreaterp (form)
   (trp-inequality (cdr form) '> 'mgrp))
 
+(defun trp-mgeqp (form)
+  (trp-inequality (cdr form) '>= 'mgqp))
+
+(defun trp-mleqp (form)
+  ; No mlqp in sight
+  (translate-predicate `((mgeqp) ,@(reverse (cdr form)))))
+
 (defun trp-mequal (form) 
   (destructuring-let (((mode1 . arg1) (translate (cadr form)))
                       ((mode2 . arg2) (translate (caddr form))))
@@ -220,12 +227,6 @@
 
 (defun trp-mnotequal (form)
   (cons '$any (list 'trp-not (cdr (trp-mequal form)))))
-
-(defun trp-mgeqp (form)
-  (cons '$any (list 'trp-not (cdr (trp-mlessp form)))))
-
-(defun trp-mleqp (form)
-  (cons '$any (list 'trp-not (cdr (trp-mgreaterp form)))))
 
 ;;; sigh, i have to copy a lot of the $assume function too.
 
