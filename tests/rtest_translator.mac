@@ -2240,6 +2240,51 @@ block ([l1, l2,
 (kill (foo, bar, baz, quux), 0);
 0;
 
+/* The translator was not correctly determining the mode of expressions
+ * when a boolean mode was involved.
+ *
+ * It was easy to get lisp errors.
+ */
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo () :=
+    [  1 + if true then 0,
+       1 + if true then 0.0,
+     1.0 + if true then 0,
+     1.0 + if true then 0.0,
+
+       1 + if false then 0,
+       1 + if false then 0.0,
+     1.0 + if false then 0,
+     1.0 + if false then 0.0],
+
+  bar (x) :=
+    [  1 + if x then 0,
+       1 + if x then 0.0,
+     1.0 + if x then 0,
+     1.0 + if x then 0.0],
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        push (foo (), res),
+        for x in [true, false] do
+          push (bar (x), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar), 0);
+0;
+
 
 
 
