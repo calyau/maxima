@@ -295,7 +295,11 @@
 	 (cond ((eq 'mnot (caar pat)) (is-mnot_tr (cadr pat) error?))
 	       ((eq 'mand (caar pat)) (is-mand_tr (cdr pat) error?))
 	       (t (is-mor_tr (cdr pat) error?))))
-	(t (mevalp2 pat (caar pat) (cadr pat) (caddr pat)))))
+	(t
+	 (let ((ans (mevalp2 pat (caar pat) (cadr pat) (caddr pat))))
+	   (if (typep ans 'boolean)
+	       ans
+	       pat)))))
 
 (defun is-mnot_tr (pred error?)
   (setq pred (mevalp_tr pred error?))
