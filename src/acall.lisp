@@ -272,22 +272,27 @@
 ;;; better to simply modify the code in COMPAR! However, mumble...
 ;;; Anyway, be careful of changes to COMPAR that break this code.
 
+(defun boole-check (form error?)
+  ; We check for booleans quickly, otherwise go for the database.
+  (if (typep form 'boolean)
+      form
+      (let ((ans (mevalp_tr form error?)))
+        (if (typep ans 'boolean)
+            ans
+            '$unknown))))
+
 (defun is-boole-check (form)
-  (cond ((null form) nil)
-	((eq form t) t)
-	(t
-	 ;; We check for T and NIL quickly, otherwise go for the database.
-	 (mevalp_tr form $prederror))))
+  (boole-check form $prederror))
 
 (defun maybe-boole-check (form)
-  (mevalp_tr form nil))
+  (boole-check form nil))
 
 (defun mevalp_tr (pat error?)
   (let ((ans (mevalp1_tr pat error?)))
     (cond ((typep ans 'boolean) ans)
 	  (error?
 	   (pre-err pat))
-	  ('else '$unknown))))
+	  (t ans))))
 
 (defun mevalp1_tr (pat error?)
   (cond ((atom pat) pat)
