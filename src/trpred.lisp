@@ -12,7 +12,7 @@
 
 (macsyma-module trpred)
 
-; $is or $maybe
+; $is, $maybe or mcond
 (defvar wrap-a-pred '$is)
 
 (defun wrap-pred (form &optional (evalp t))

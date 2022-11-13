@@ -304,6 +304,15 @@
 (setf (get '$maybe 'tr-boole-verify) '$maybe-boole-verify)
 (setf (get '$maybe 'tr-boole-eval) '$maybe-boole-eval)
 
+(defun mcond-boole-verify (form)
+  (boole-verify form $prederror nil))
+
+(defun mcond-boole-eval (form)
+  (boole-eval form $prederror nil))
+
+(setf (get 'mcond 'tr-boole-verify) 'mcond-boole-verify)
+(setf (get 'mcond 'tr-boole-eval) 'mcond-boole-eval)
+
 (defun mevalp_tr (pat error?)
   (boole-verify (mevalp1_tr pat error?) error? nil))
 
