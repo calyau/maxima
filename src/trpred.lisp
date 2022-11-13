@@ -19,7 +19,7 @@
 
 (def%tr $is (form)
   (let ((wrap-an-is 'is-boole-check))
-    (cons '$boolean (translate-predicate (cadr form)))))
+    (cons '$any (translate-predicate (cadr form)))))
 
 (def%tr $maybe (form)
   (let ((wrap-an-is 'maybe-boole-check))
