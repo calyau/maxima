@@ -12,13 +12,18 @@
 
 (macsyma-module trpred)
 
-(defvar wrap-an-is 'is-boole-check "How to verify booleans")
+; $is or $maybe
+(defvar wrap-a-pred '$is)
 
-(defun wrap-an-is (exp)
-  (cons '$any (list wrap-an-is exp)))
+(defun wrap-pred (form &optional (evalp t))
+  (let ((boole-fun (get wrap-a-pred
+                        (if evalp
+                            'tr-boole-eval
+                            'tr-boole-verify))))
+    (cons '$any `(,boole-fun ,form))))
 
-(defun tr-is/maybe (boole-check form)
-  (let* ((wrap-an-is boole-check)
+(defun tr-is/maybe (wrap-type form)
+  (let* ((wrap-a-pred wrap-type)
          (tr (translate-predicate form)))
     (destructuring-bind (mode . tr-form) tr
       (if (eq mode '$boolean)
@@ -26,10 +31,10 @@
           (cons '$any tr-form)))))
 
 (def%tr $is (form)
-  (tr-is/maybe 'is-boole-check (cadr form)))
+  (tr-is/maybe '$is (cadr form)))
 
 (def%tr $maybe (form)
-  (tr-is/maybe 'maybe-boole-check (cadr form)))
+  (tr-is/maybe '$maybe (cadr form)))
 
 ;;; these don't have an imperitive predicate semantics outside of
 ;;; being used in MNOT, MAND, MOR, MCOND, $IS.
@@ -87,7 +92,7 @@
     (destructuring-bind (mode . exp) tr
       (if (eq mode '$boolean)
           tr
-          (wrap-an-is exp)))))
+          (wrap-pred exp)))))
 
 (defun trp-mnot (form) 
   (setq form (cdr (translate-predicate (cadr form))))
@@ -133,7 +138,7 @@
 	  ((eq '$number mode)
 	   `($boolean . (> ,(cdr arg1) ,(cdr arg2))))
 	  ('else
-	   (wrap-an-is `(mgrp ,(dconvx arg1) ,(dconvx arg2)))))))
+	   (wrap-pred `(mgrp ,(dconvx arg1) ,(dconvx arg2)) nil)))))
  
 (defun trp-mlessp (form) 
   (let (mode arg1 arg2)
@@ -146,7 +151,7 @@
 	  ((eq '$number mode)
 	   `($boolean . (< ,(cdr arg1) ,(cdr arg2))))
 	  ('else
-	   (wrap-an-is `(mlsp ,(dconvx arg1) ,(dconvx arg2)))))))
+	   (wrap-pred `(mlsp ,(dconvx arg1) ,(dconvx arg2)) nil)))))
 
 (defun trp-mequal (form) 
   (destructuring-let (((mode1 . arg1) (translate (cadr form)))
@@ -165,7 +170,7 @@
 	  ((eq '$number mode)
 	   `($any . (meqp ,(cdr arg1) ,(cdr arg2))))
 	  ('else
-	   (wrap-an-is `(meqp ,(dconvx arg1) ,(dconvx arg2)))))))
+	   (wrap-pred `(meqp ,(dconvx arg1) ,(dconvx arg2)) nil)))))
 
 ;; Logical not for predicates.  Do the expected thing, except return
 (defun trp-not (val)

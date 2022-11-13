@@ -267,27 +267,45 @@
 ;;; result, which is wrong, not to mention being incompatible with
 ;;; the interpreter.
 
-(defun boole-check (form error?)
-  ; We check for booleans quickly, otherwise go for the database.
+(defun boole-verify (form error? $unknown?)
+  (cond ((typep form 'boolean)
+         form)
+        (error?
+         (pre-err form))
+        ($unknown?
+         '$unknown)
+        (t
+         form)))
+
+(defun boole-eval (form error? $unknown?)
   (if (typep form 'boolean)
       form
       (let ((ans (mevalp_tr form error?)))
-        (if (typep ans 'boolean)
+        (if (or (typep ans 'boolean)
+                (not $unknown?))
             ans
             '$unknown))))
 
-(defun is-boole-check (form)
-  (boole-check form $prederror))
+(defun $is-boole-verify (form)
+  (boole-verify form $prederror t))
 
-(defun maybe-boole-check (form)
-  (boole-check form nil))
+(defun $is-boole-eval (form)
+  (boole-eval form $prederror t))
+
+(setf (get '$is 'tr-boole-verify) '$is-boole-verify)
+(setf (get '$is 'tr-boole-eval) '$is-boole-eval)
+
+(defun $maybe-boole-verify (form)
+  (boole-verify form nil t))
+
+(defun $maybe-boole-eval (form)
+  (boole-eval form nil t))
+
+(setf (get '$maybe 'tr-boole-verify) '$maybe-boole-verify)
+(setf (get '$maybe 'tr-boole-eval) '$maybe-boole-eval)
 
 (defun mevalp_tr (pat error?)
-  (let ((ans (mevalp1_tr pat error?)))
-    (cond ((typep ans 'boolean) ans)
-	  (error?
-	   (pre-err pat))
-	  (t ans))))
+  (boole-verify (mevalp1_tr pat error?) error? nil))
 
 (defun mevalp1_tr (pat error?)
   (cond ((atom pat) pat)
