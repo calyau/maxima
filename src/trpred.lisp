@@ -17,13 +17,19 @@
 (defun wrap-an-is (exp)
   (cons '$any (list wrap-an-is exp)))
 
+(defun tr-is/maybe (boole-check form)
+  (let* ((wrap-an-is boole-check)
+         (tr (translate-predicate form)))
+    (destructuring-bind (mode . tr-form) tr
+      (if (eq mode '$boolean)
+          tr
+          (cons '$any tr-form)))))
+
 (def%tr $is (form)
-  (let ((wrap-an-is 'is-boole-check))
-    (cons '$any (cdr (translate-predicate (cadr form))))))
+  (tr-is/maybe 'is-boole-check (cadr form)))
 
 (def%tr $maybe (form)
-  (let ((wrap-an-is 'maybe-boole-check))
-    (cons '$any (cdr (translate-predicate (cadr form))))))
+  (tr-is/maybe 'maybe-boole-check (cadr form)))
 
 ;;; these don't have an imperitive predicate semantics outside of
 ;;; being used in MNOT, MAND, MOR, MCOND, $IS.
