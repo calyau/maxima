@@ -1,5 +1,5 @@
 ;; A Maxima ring structure
-;; Copyright (C) 2005, 2007, 2021, Barton Willis
+;; Copyright (C) 2005, 2007, 2021, 2022 Barton Willis
 
 ;; Barton Willis
 ;; Department of Mathematics
@@ -24,8 +24,9 @@
 ;; Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
 ;; Boston, MA  02110-1301, USA.
 
-;; Let's have version numbers 1,2,3,...
+(in-package :maxima)
 
+;; Let's have version numbers 1,2,3,...
 (eval-when (:compile-toplevel :load-toplevel :execute)
   ($put '$mring 1 '$version))
 
@@ -40,6 +41,22 @@
 
 ;; Description of the mring fields:
 
+;; For floating point numbers (both real and complex), the lu_factor code uses
+;; partial pivoting. Thus lu_factor needs to be able to compare the magnitudes.
+;; Thus we include a function `great` in the mring structure. The function 'great`
+;; is always supposed be be called on the magnitude of a ring element.
+
+;; For nonordered fields (such as generalring) where partial pivoting isn't needed,
+;; we can define
+;;   :great #'(lambda (a b) (declare (ignore a)) (eq t (meqp b 0)))
+;; This inhibits row swapping unless it is absolutely needed to avoid dividing
+;; by zero.
+
+;; The function coerce-to-lisp-float is only used by lu_factor to estimate the 
+;; matrix condition number. This is only important for the floating point case. 
+;; Setting :coerce-to-lisp-float to nil inhibits estimating the matrix condition 
+;; number. Except for matrices of floating point numbers, it's best to set 
+;;coerce-to-lisp-float to nil.
 (defstruct mring
   name
   coerce-to-lisp-float
@@ -72,7 +89,7 @@
     (get ringname 'ring)
     (merror (intl:gettext "The ~:M argument of the function '~:M' must be the name of a ring") pos fun)))
 
-
+;; flonum-epsilon is defined in clmacs
 (defparameter *floatfield*
   (make-mring
    :name '$floatfield
@@ -89,20 +106,32 @@
    :psqrt #'(lambda (s) (if (>= s 0) (cl:sqrt s) nil))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
-   :fzerop #'(lambda (s)  (< (abs s) (* 4 flonum-epsilon))) 
+   :fzerop #'(lambda (s)  (< (abs s) (* 4 flonum-epsilon)))
    :adjoint #'cl:identity
    :mring-to-maxima #'cl:identity
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($float s))
-			(if (floatp s) s (merror (intl:gettext "Unable to convert ~:M to a long float") s)))))
+			(if (floatp s) s (merror (intl:gettext "Unable to convert ~:M to a float") s)))))
 
 (setf (get '$floatfield 'ring) *floatfield*)
+
+(defun coerce-expr-to-clcomplex (ex)
+  (let* (($numer t)
+         ($float t)         
+         (split (risplit ex))
+         ;; convert int, rat, and bfloat to float
+         (re ($float (car split)))
+         (im ($float (cdr split))))
+    (declare (special $numer $float))
+    (if (and (floatp re) (floatp im))
+        (complex re im)
+      (merror (intl:gettext "Unable to convert ~:M to a complex float") ex))))
 
 (defparameter *complexfield*
   (make-mring
    :name '$complexfield
    :coerce-to-lisp-float #'cl:identity
-   :abs #'abs
+   :abs #'cl:abs
    :great #'>
    :add #'+
    :div #'/
@@ -116,25 +145,30 @@
    :mult-id #'(lambda () 1.0)
    :fzerop #'(lambda (s) (< (abs s) (* 4 flonum-epsilon)))
    :adjoint #'cl:conjugate
-   :mring-to-maxima #'(lambda (s) (add (realpart s) (mult '$%i (imagpart s)))) ;; was complexify
-   :maxima-to-mring #'(lambda (s) 
-			(progn 
-			  (setq s (coerce-expr-to-clcomplex ($rectform (meval s))))
-			  (if (complexp s)
-			      s
-			      (merror (intl:gettext "Unable to convert ~:M to a complex long float") s))))))
-
-(defun coerce-expr-to-clcomplex (s)
-  (complex (funcall (coerce-float-fun ($realpart s))) (funcall (coerce-float-fun ($imagpart s)))))
+   :mring-to-maxima #'(lambda (s) (add (realpart s) (mul '$%i (imagpart s)))) ;; was complexify
+   :maxima-to-mring #'coerce-expr-to-clcomplex))
 
 (setf (get '$complexfield 'ring) *complexfield*)
 
+(defun rational-square-root (z)
+  (let ((re (realpart z)) (im (imagpart z)) (q))
+    (setq re (div ($num re) ($denom re)))
+    (setq im (div ($num im) ($denom im)))
+    (setq q (risplit (ftake '%sqrt (add re (mul '$%i im)))))
+    (setq re (car q)
+          im (cdr q))
+    (cond ((and ($ratnump re) ($ratnump im))
+           (complex (/ ($num re) ($denom re)) 
+                    (/ ($num im) ($denom im))))
+          (t nil))))
+
+;; We allow both real and complex rational numbers.
 (defparameter *rationalfield*
   (make-mring
-   :name '$rationalfield 
-   :coerce-to-lisp-float #'(lambda (s) ($float s))
-   :abs #'abs
-   :great #'>
+   :name '$rationalfield
+   :coerce-to-lisp-float nil
+   :abs #'cl:abs
+   :great #'(lambda (a b) (declare (ignore a)) (eql b 0))
    :add #'+
    :div #'/
    :rdiv #'/
@@ -142,30 +176,33 @@
    :mult #'*
    :sub #'-
    :negate #'-
-   :psqrt #'(lambda (s) (let ((x))
-			  (cond ((>= s 0)
-				 (setq x (isqrt (numerator s)))
-				 (setq x (/ x (isqrt (denominator s))))
-				 (if (= s (* x x)) x nil))
-				(t nil))))
+   :psqrt #'rational-square-root
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
-   :fzerop #'(lambda (s) (= s 0))
+   :fzerop #'(lambda (s) (eql s 0))
    :adjoint #'cl:identity
-   :mring-to-maxima #'(lambda (s) (simplify `((rat) ,(numerator s) ,(denominator s))))
+   :mring-to-maxima #'(lambda (s) 
+      (let ((re (realpart s))
+            (im (imagpart s)))
+          (add (div (numerator re) (denominator re))
+               (mul '$%i (div (numerator im) (denominator im))))))
    :maxima-to-mring 
    #'(lambda (s) 
-       (if (or (floatp s) ($bfloatp s)) (setq s ($rationalize s)))
-       (if ($ratnump s) (if (integerp s) s (/ ($num s) ($denom s)))
-	 (merror (intl:gettext "Unable to convert ~:M to a rational number") s)))))
-
+        (setq s ($rationalize s))
+        (let* ((z (trisplit s))
+               (re (car z))
+               (im (cdr z)))
+       (if (and ($ratnump re) ($ratnump im))
+         (complex (/ ($num re) ($denom re)) 
+                  (/ ($num im) ($denom im)))
+        (merror (intl:gettext "Unable to convert ~:M to a rational number") s))))))
 (setf (get '$rationalfield 'ring) *rationalfield*)
 
 (defparameter *crering*
   (make-mring
    :name '$crering
    :coerce-to-lisp-float nil
-   :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
+   :abs #'$cabs
    :great #'(lambda (a b) (declare (ignore a)) (eq t (meqp b 0)))
    :add #'add
    :div #'div
@@ -173,13 +210,13 @@
    :reciprocal #'(lambda (s) (div 1 s))
    :mult #'mult
    :sub #'sub
-   :negate #'(lambda (s) (mult -1 s))
-   :psqrt #'(lambda (s) (if (member (csign ($ratdisrep s)) `($pos $pz $zero)) (take '(%sqrt) s) nil))
+   :negate #'(lambda (s) (mul -1 s))
+   :psqrt #'(lambda (s) (ftake 'mexpt s (div 1 2)))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (eq t (meqp s 0)))
-   :adjoint #'(lambda (s) (take '($conjugate) s))
-   :mring-to-maxima #'(lambda (s) s)
+   :adjoint #'(lambda (s) (ftake '$conjugate s))
+   :mring-to-maxima #'cl:identity
    :maxima-to-mring #'(lambda (s) ($rat s))))
 		
 (setf (get '$crering 'ring) *crering*)
@@ -188,22 +225,22 @@
   (make-mring
    :name '$generalring
    :coerce-to-lisp-float nil
-   :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
+   :abs #'$cabs
    :great #'(lambda (a b) (declare (ignore a)) (eq t (meqp b 0)))
    :add #'(lambda (a b) (add a b))
    :div #'(lambda (a b) (div a b))
    :rdiv #'(lambda (a b) (div a b))
    :reciprocal #'(lambda (s) (div 1 s))
-   :mult #'(lambda (a b) (mult a b))
+   :mult #'(lambda (a b) (mul a b))
    :sub #'(lambda (a b) (sub a b))
-   :negate #'(lambda (a) (mult -1 a))
-   :psqrt #'(lambda (s) (if (member (csign s) `($pos $pz $zero)) (take '(%sqrt) s) nil))
+   :negate #'(lambda (a) (mul -1 a))
+   :psqrt #'(lambda (s) (ftake 'mexpt s (div 1 2)))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
-   :fzerop #'(lambda (s) (eq t (meqp (sratsimp s) 0)))
-   :adjoint #'(lambda (s) (take '($conjugate) s))
-   :mring-to-maxima #'(lambda (s) s)
-   :maxima-to-mring #'(lambda (s) s)))
+   :fzerop #'(lambda (s) (eq t (meqp s 0)))
+   :adjoint #'(lambda (s) (ftake '$conjugate s))
+   :mring-to-maxima #'cl:identity
+   :maxima-to-mring #'cl:identity))
 
 (setf (get '$generalring 'ring) *generalring*)
 
@@ -214,24 +251,24 @@
 			     (setq s ($rectform ($float s)))
 			     (complex ($realpart s) ($imagpart s)))
    
-   :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
+   :abs #'$cabs
    :great #'mgrp
    :add #'(lambda (a b) ($rectform (add a b)))
    :div #'(lambda (a b) ($rectform (div a b)))
    :rdiv #'(lambda (a b) ($rectform (div a b)))
    :reciprocal #'(lambda (s) (div 1 s))
-   :mult #'(lambda (a b) ($rectform (mult a b)))
+   :mult #'(lambda (a b) ($rectform (mul a b)))
    :sub #'(lambda (a b) ($rectform (sub a b)))
-   :negate #'(lambda (a) (mult -1 a))
-   :psqrt #'(lambda (s) (if (mlsp s 0) nil (take '(%sqrt) s)))
+   :negate #'(lambda (a) (mul -1 a))
+   :psqrt #'(lambda (s) (if (mlsp s 0) nil (ftake '%sqrt s)))
    :add-id #'(lambda () bigfloatzero)
    :mult-id #'(lambda () bigfloatone)
    :fzerop #'(lambda (s) (like s bigfloatzero))
    :adjoint #'cl:identity
-   :mring-to-maxima #'(lambda (s) s)
+   :mring-to-maxima #'cl:identity
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($rectform ($bfloat s)))
-			(if (or (eq s '$%i) (complex-number-p s 'bigfloat-or-number-p)) s
+			(if (complex-number-p s #'bigfloat-or-number-p) s
 				(merror (intl:gettext "Unable to convert matrix entry to a big float"))))))
 
 (setf (get '$bigfloatfield 'ring) *bigfloatfield*)
@@ -374,7 +411,7 @@
   (make-mring
    :name '$noncommutingring
    :coerce-to-lisp-float nil
-   :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
+   :abs #'$cabs
    :great #'(lambda (a b) (declare (ignore a)) (not (invertible-matrixp b '$noncommutingring)))
    :add #'(lambda (a b) (add a b))
    :div #'(lambda (a b) (progn
@@ -405,7 +442,7 @@
 
 
    :sub #'(lambda (a b) (sub a b))
-   :negate #'(lambda (a) (mult -1 a))
+   :negate #'(lambda (a) (mul -1 a))
    :add-id #'(lambda () 0)
    :psqrt #'(lambda (s) (take '(%sqrt) s))
    :mult-id #'(lambda () 1)
@@ -453,5 +490,5 @@
 	  (t (merror (intl:gettext "Unable to evaluate ~:M in the ring '~:M'") e (mring-name fld))))))
   
 (defmspec $ringeval (e)
-  (let ((fld (get (or (car (member (nth 2 e) $%mrings)) '$generalring) 'ring)))
+  (let ((fld (get (or (car (member (meval (nth 2 e)) $%mrings)) '$generalring) 'ring)))
     (funcall (mring-mring-to-maxima fld) (ring-eval (nth 1 e) fld))))
