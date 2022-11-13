@@ -266,11 +266,6 @@
 ;;; to call the function IS because double-evaluation will then
 ;;; result, which is wrong, not to mention being incompatible with
 ;;; the interpreter.
-;;;
-;;; This code is taken from the COMPAR module, and altered such that calls to
-;;; the macsyma evaluator do not take place. It would be a lot
-;;; better to simply modify the code in COMPAR! However, mumble...
-;;; Anyway, be careful of changes to COMPAR that break this code.
 
 (defun boole-check (form error?)
   ; We check for booleans quickly, otherwise go for the database.
@@ -297,42 +292,15 @@
 (defun mevalp1_tr (pat error?)
   (cond ((atom pat) pat)
 	((member (caar pat) '(mnot mand mor) :test #'eq)
-	 (cond ((eq 'mnot (caar pat)) (is-mnot_tr (cadr pat) error?))
-	       ((eq 'mand (caar pat)) (is-mand_tr (cdr pat) error?))
-	       (t (is-mor_tr (cdr pat) error?))))
+	 (flet ((pred-eval (o) (mevalp_tr o error?)))
+	   (cond ((eq 'mnot (caar pat)) (is-mnot #'pred-eval (cadr pat)))
+	         ((eq 'mand (caar pat)) (is-mand #'pred-eval (cdr pat)))
+	         (t (is-mor #'pred-eval (cdr pat))))))
 	(t
 	 (let ((ans (mevalp2 pat (caar pat) (cadr pat) (caddr pat))))
 	   (if (typep ans 'boolean)
 	       ans
 	       pat)))))
-
-(defun is-mnot_tr (pred error?)
-  (setq pred (mevalp_tr pred error?))
-  (cond ((eq t pred) nil)
-	((not pred))
-	(t (pred-reverse pred))))
-
-(defun is-mand_tr (pl error?)
-  (do ((dummy) (npl))
-      ((null pl) (cond ((null npl))
-		       ((null (cdr npl)) (car npl))
-		       (t (cons '(mand) (nreverse npl)))))
-    (setq dummy (mevalp_tr (car pl) error?)
-	  pl (cdr pl))
-    (cond ((eq t dummy))
-	  ((null dummy) (return nil))
-	  (t (setq npl (cons dummy npl))))))
-
-(defun is-mor_tr (pl error?)
-  (do ((dummy) (npl))
-      ((null pl) (cond ((null npl) nil)
-		       ((null (cdr npl)) (car npl))
-		       (t (cons '(mor) (nreverse npl)))))
-    (setq dummy (mevalp_tr (car pl) error?)
-	  pl (cdr pl))
-    (cond ((eq t dummy) (return t))
-	  ((null dummy))
-	  (t (setq npl (cons dummy npl))))))
 
 ;; Some functions for even faster calling of arrays.
 
