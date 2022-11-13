@@ -1133,7 +1133,7 @@ APPLY means like APPLY.")
   (prog (dummy mode nl) 
      (setq dummy (translate (caddr form)) 
 	   mode (car dummy) 
-	   nl (list dummy (translate-predicate (cadr form))))
+	   nl (list dummy (cdr (translate-predicate (cadr form)))))
      (do ((l (cdddr form) (cddr l))) ((null l))
        ; Optimize the else-if case: if we're at the else case at the end
        ; and the body is just another conditional, then we just continue
@@ -1147,7 +1147,7 @@ APPLY means like APPLY.")
        (setq dummy (translate (cadr l)) 
 	     mode (*union-mode mode (car dummy)) 
 	     nl (cons dummy
-		      (cons (translate-predicate (car l))
+		      (cons (cdr (translate-predicate (car l)))
 			    nl))))
      ; We leave off the final clause if the condition is true
      ; and the consequent is false.
@@ -1199,14 +1199,14 @@ APPLY means like APPLY.")
 	     (declvalue var (*union-mode (car init) (car next)) t))
 	    (t
 	     (warn-mode var varmode (*union-mode (car init) (car next)))))
-      (setq test (translate-predicate
-		  (list '(mor)
-			(cond ((null (cadr (cddddr form)))  nil)
-			      ((and (cadddr form)
-				    (mnegp ($numfactor (simplify (cadddr form)))))
-			       (list '(mlessp) var (cadr (cddddr form))))
-			      (t (list '(mgreaterp) var (cadr (cddddr form)))))
-			(caddr (cddddr form)))))
+      (setq test (cdr (translate-predicate
+		      (list '(mor)
+			    (cond ((null (cadr (cddddr form)))  nil)
+				  ((and (cadddr form)
+					(mnegp ($numfactor (simplify (cadddr form)))))
+				   (list '(mlessp) var (cadr (cddddr form))))
+				  (t (list '(mgreaterp) var (cadr (cddddr form)))))
+			    (caddr (cddddr form))))))
       (setq action (translate (cadddr (cddddr form)))
 	    mode (cond ((null returns) '$any)
 		       (t return-mode)))
