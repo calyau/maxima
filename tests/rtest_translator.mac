@@ -2574,6 +2574,101 @@ true;
 (kill (foo), 0);
 0;
 
+block ([translate : false, l1, l2],
+  local (test, make_fun),
+
+  make_fun (name, pr) ::=
+    buildq ([name, pr],
+      name (x, y) :=
+        [pr (x),
+         pr (not x),
+         pr (not not x),
+         pr (not not not x),
+
+         pr (y),
+         pr (not y),
+         pr (not not y),
+         pr (not not not y),
+
+         pr (x and y),
+         pr (x or y),
+         pr (not (x and y)),
+         pr (not (x or y)),
+         pr (not not (x and y)),
+         pr (not not (x or y)),
+         pr (not not not (x and y)),
+         pr (not not not (x or y)),
+
+         pr (x and not y),
+         pr (x or not y),
+         pr (x and not not y),
+         pr (x or not not y),
+         pr (not (x and not y)),
+         pr (not (x or not y)),
+         pr (not (x and not not y)),
+         pr (not (x or not not y)),
+
+         pr (not x and y),
+         pr (not x or y),
+         pr (not not x and y),
+         pr (not not x or y),
+         pr (not (not x and y)),
+         pr (not (not x or y)),
+         pr (not (not not x and y)),
+         pr (not (not not x or y)),
+
+         pr (not x and not y),
+         pr (not x or not y),
+         pr (not (not x and not y)),
+         pr (not (not x or not y)),
+
+         pr (x > 1),
+         pr (not x > 1),
+         pr (x > 1 and y),
+         pr (x > 1 or y),
+         pr (x > 1 and not y),
+         pr (x > 1 or not y),
+         pr (not x > 1 and y),
+         pr (not x > 1 or y),
+         pr (not x > 1 and not y),
+         pr (not x > 1 or not y),
+
+         pr (y <= 1),
+         pr (not y <= 1),
+         pr (x and y <= 1),
+         pr (x or y <= 1),
+         pr (x and not y <= 1),
+         pr (x or not y <= 1),
+         pr (not x and y <= 1),
+         pr (not x or y <= 1),
+         pr (not x and not y <= 1),
+         pr (not x or not y <= 1)]),
+
+  make_fun (foo, is),
+  make_fun (bar, maybe),
+
+  test () :=
+    block ([prederror : false,
+            l : [true, false, 1, 2.0, 'q, 'q ()],
+            res : []],
+      for x in l do
+        for y in l do (
+          push (foo (x, y), res),
+          push (bar (x, y), res)),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar), 0);
+0;
+
 
 
 

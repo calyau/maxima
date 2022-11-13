@@ -94,36 +94,79 @@
           tr
           (wrap-pred exp)))))
 
+(defmacro mnot_tr (operand)
+  `(is-mnot #'identity ,operand))
+
 (defun trp-mnot (form) 
-  (setq form (cdr (translate-predicate (cadr form))))
-  (cond ((not form)
-         (cons '$boolean t))
-        ((eq t form)
-         (cons '$boolean nil))
-        ((and (not (atom form)) (eq (car form) 'not))
-         (cons '$any (cadr form)))
-        (t
-         (cons '$any (list 'not form)))))
+  (let ((exp (cadr form)))
+    (cond ((not exp)
+           (cons '$boolean t))
+          ((eq t exp)
+           (cons '$boolean nil))
+          ((and (not (atom exp)) (eq (caar exp) 'mnot))
+           (translate-predicate (cadr exp)))
+          (t
+           (destructuring-bind (mode . operand) (translate-predicate exp)
+             (if (eq mode '$boolean)
+                 (cons mode (list 'not operand))
+                 (wrap-pred (list 'mnot_tr operand) nil)))))))
 
-(defun trp-mand (form) 
-  (setq form (mapcar (lambda (x) (cdr (translate-predicate x))) (cdr form)))
-  (do ((l form (cdr l)) (nl))
-      ((null l) (cons '$any (cons 'and (nreverse nl))))
-    (cond ((car l) (setq nl (cons (car l) nl)))
-          (t (return (cons '$any (cons 'and (nreverse (cons nil nl)))))))))
+(defun mand/mor_tr (mop operands top bot)
+  (let ((val (tr-gensym))
+        (ext (tr-gensym)))
+    `(let ((,val nil)
+           (,ext '()))
+       ,(reduce (lambda (x acc)
+                  `(cond ((eq (setq ,val ,x) ,bot)
+                          ,bot)
+                         (t
+                          (unless (eq ,val ,top)
+                            (push ,val ,ext))
+                          ,acc)))
+                operands
+                :from-end t
+                :initial-value
+                  `(cond ((null ,ext)
+                          ,top)
+                         ((null (cdr ,ext))
+                          (car ,ext))
+                         (t
+                          (cons '(,mop) (nreverse ,ext))))))))
 
-(defun trp-mor (form) 
-  (setq form (mapcar (lambda (x) (cdr (translate-predicate x))) (cdr form)))
-  (do ((l form (cdr l)) (nl))
-      ((null l)
-       (cond (nl
-              (cond ((null (cdr nl))
-                     (cons '$any (car nl)))
-                    (t
-                     (cons '$any (cons 'or (nreverse nl))))))
-             (t
-              (cons '$boolean nil))))
-    (cond ((car l) (setq nl (cons (car l) nl))))))
+(defmacro mand_tr (&rest operands)
+  (mand/mor_tr 'mand operands t nil))
+
+(defmacro mor_tr (&rest operands)
+  (mand/mor_tr 'mor operands nil t))
+
+(defun simplify-mand/mor-operands_tr (operands top bot)
+  (loop for o in operands unless (eq o top) collect o until (eq o bot)))
+
+(defun map-trp (l)
+  (reduce (lambda (x a)
+            (destructuring-bind (mode . body) (translate-predicate x)
+              (cons (*union-mode (car a) mode) (cons body (cdr a)))))
+          l
+          :from-end t
+          :initial-value (cons nil '())))
+
+(defun trp-mand/mor (operands lisp-op max-op top bot)
+  (let ((operands (simplify-mand/mor-operands_tr operands top bot)))
+    (cond ((null operands)
+           (cons '$boolean top))
+          ((null (cdr operands))
+           (trp-with-boolean-convert (car operands)))
+          (t
+           (destructuring-bind (mode . tr-operands) (map-trp operands)
+             (if (eq mode '$boolean)
+                 (cons mode (cons lisp-op tr-operands))
+                 (wrap-pred (cons max-op tr-operands) nil)))))))
+
+(defun trp-mand (form)
+  (trp-mand/mor (cdr form) 'and 'mand_tr t nil))
+
+(defun trp-mor (form)
+  (trp-mand/mor (cdr form) 'or 'mor_tr nil t))
 
 (defvar *number-types* '($float $number $fixnum ))
 
