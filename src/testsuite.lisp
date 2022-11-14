@@ -168,53 +168,10 @@
     "rtest_lsquares"
     "rtest_pytranslate"
 
-    ;; These tests of diff eq code mostly fail.
-    ;; Probably it's just a matter of loading the
-    ;; appropriate package or packages for each test.
-
-    ;; "rtest_ode1_abel"
-    ;; "rtest_ode1_riccati"
-    ;; "rtest_sym"
-    ;; "rtest_sym2"
-    ;; "rtestode_kamke_1_1"
-    ;; "rtestode_kamke_1_2"
-    ;; "rtestode_kamke_1_3"
-    ;; "rtestode_kamke_1_4"
-    ;; "rtestode_kamke_1_5"
-    ;; "rtestode_kamke_1_6"
-    ;; "rtestode_murphy_1_1"
-    ;; "rtestode_murphy_1_2"
-    ;; "rtestode_murphy_1_3"
-    ;; "rtestode_murphy_1_4"
-    ;; "rtestode_murphy_1_5"
-    ;; "rtestode_murphy_1_6"
-    ;; "rtestode_murphy_2_1"
-    ;; "rtestode_murphy_2_2"
-    ;; "rtestode_murphy_2_3"
-    ;; "rtestode_murphy_2_4"
-    ;; "rtestode_murphy_2_5"
-    ;; "rtestode_kamke_1_1.mac"
-    ;; "rtestode_kamke_1_2.mac"
-    ;; "rtestode_kamke_1_3.mac"
-    ;; "rtestode_kamke_1_4.mac" 
-    ;; "rtestode_kamke_1_5.mac"
-    ;; ((mlist simp) "rtestode_kamke_1_6.mac"
-    ;;  ((mlist simp)  20))   ; OK - testsuite issues
-    ;; "rtestode_kamke_2_1.mac"
-    ;; ((mlist simp) "rtestode_kamke_2_2.mac"
-    ;;  ((mlist simp) 132 )) ; OK - testsuite issues
-    ;; ((mlist simp) "rtestode_kamke_2_3.mac"
-    ;;  ((mlist simp) 83 107)) ; OK - testsuite issues
-    ;; "rtestode_kamke_2_4.mac"
-    ;; "rtestode_kamke_2_5.mac"
-    ;; "rtest_sym.mac" 
-    ;; "rtest_sym2.mac"
-    ;; ((mlist simp) "rtest_ode1_riccati.mac"
-    ;;  (mlist simp 138)) ; OK - testsuite issues
-    ;; ((mlist simp) "rtest_ode1_abel.mac"
-    ;;  (mlist simp 45)) ; OK - testsuite issues
-    ;; "rtestode_odelin.mac"
-    ;; "rtestode_utils.mac"
+    ;; Omit tests in share/contrib/diffequations/tests.
+    ;; To run those tests: load ("setup_tests.mac");
+    ;; and then: run_testsuite ();
+    ;; (setup_tests assigns the list of ODE tests to testsuite_files)
 
     "rtest_odelin"
     "rtestezunits"

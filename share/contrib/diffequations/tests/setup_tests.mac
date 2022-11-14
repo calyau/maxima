@@ -31,7 +31,7 @@ testsuite_files:[ \
   "rtestode_odelin", \
   "rtestode_utils" \
   ];
-file_search_tests:["$$$.{fas,lisp,lsp,mac,mc,wxm}"];
+push (sconcat (pathname_directory (load_pathname), "$$$.mac"), file_search_tests);
 load('pdiff);
 use_pdiff:false;
 load('contrib_ode);
