@@ -12,18 +12,29 @@
 
 (macsyma-module trpred)
 
-(defvar wrap-an-is 'is-boole-check "How to verify booleans")
+; $is, $maybe or mcond
+(defvar wrap-a-pred '$is)
 
-(defun wrap-an-is (exp)
-  (list wrap-an-is exp))
+(defun wrap-pred (form &optional (evalp t))
+  (let ((boole-fun (get wrap-a-pred
+                        (if evalp
+                            'tr-boole-eval
+                            'tr-boole-verify))))
+    (cons '$any `(,boole-fun ,form))))
+
+(defun tr-is/maybe (wrap-type form)
+  (let* ((wrap-a-pred wrap-type)
+         (tr (translate-predicate form)))
+    (destructuring-bind (mode . tr-form) tr
+      (if (eq mode '$boolean)
+          tr
+          (cons '$any tr-form)))))
 
 (def%tr $is (form)
-  (let ((wrap-an-is 'is-boole-check))
-    (cons '$boolean (translate-predicate (cadr form)))))
+  (tr-is/maybe '$is (cadr form)))
 
 (def%tr $maybe (form)
-  (let ((wrap-an-is 'maybe-boole-check))
-    (cons '$any (translate-predicate (cadr form)))))
+  (tr-is/maybe '$maybe (cadr form)))
 
 ;;; these don't have an imperitive predicate semantics outside of
 ;;; being used in MNOT, MAND, MOR, MCOND, $IS.
@@ -51,7 +62,6 @@
 ;;; special-forms need to do targeting.
 
 (defun translate-predicate (form)
-  ;; N.B. This returns s-exp, not (<mode> . <s-exp>)
   (cond ((atom form) (trp-with-boolean-convert form))
 	((eq 'mnot (caar form)) (trp-mnot form))
 	((eq 'mand (caar form)) (trp-mand form))
@@ -68,98 +78,151 @@
 	 ;; it was a pain not to have this case working, so I just
 	 ;; patched it in. Lets try not to lazily patch in every
 	 ;; special form in macsyma!
-	 `(progn ,@(tr-args (nreverse (cdr (reverse (cdr form)))))
-	   ,(translate-predicate (car (last (cdr form))))))
+	 (let ((exprs (cdr form)))
+	   (destructuring-bind (mode . last)
+	       (translate-predicate (car (last exprs)))
+	     (cons mode
+		   `(progn
+		      ,@(tr-args (butlast exprs))
+		      ,last)))))
 	(t (trp-with-boolean-convert form))))
 
 (defun trp-with-boolean-convert (form)
-  (destructuring-bind (mode . exp) (translate form)
-    (if (eq mode '$boolean)
-        exp
-        (wrap-an-is exp))))
+  (let ((tr (translate form)))
+    (destructuring-bind (mode . exp) tr
+      (if (eq mode '$boolean)
+          tr
+          (wrap-pred exp)))))
+
+(defmacro mnot_tr (operand)
+  `(is-mnot #'identity ,operand))
 
 (defun trp-mnot (form) 
-  (setq form (translate-predicate (cadr form)))
-  (cond ((not form) t)
-	((eq t form) nil)
-	((and (not (atom form)) (eq (car form) 'not)) (cadr form))
-	(t (list 'not form))))
+  (let ((exp (cadr form)))
+    (cond ((not exp)
+           (cons '$boolean t))
+          ((eq t exp)
+           (cons '$boolean nil))
+          ((and (not (atom exp)) (eq (caar exp) 'mnot))
+           (translate-predicate (cadr exp)))
+          (t
+           (destructuring-bind (mode . operand) (translate-predicate exp)
+             (if (eq mode '$boolean)
+                 (cons mode (list 'not operand))
+                 (wrap-pred (list 'mnot_tr operand) nil)))))))
 
-(defun trp-mand (form) 
-  (setq form (mapcar #'translate-predicate (cdr form)))
-  (do ((l form (cdr l)) (nl))
-      ((null l) (cons 'and (nreverse nl)))
-    (cond ((car l) (setq nl (cons (car l) nl)))
-	  (t (return (cons 'and (nreverse (cons nil nl))))))))
+(defun mand/mor_tr (mop operands top bot)
+  (let ((val (tr-gensym))
+        (ext (tr-gensym)))
+    `(let ((,val nil)
+           (,ext '()))
+       ,(reduce (lambda (x acc)
+                  `(cond ((eq (setq ,val ,x) ,bot)
+                          ,bot)
+                         (t
+                          (unless (eq ,val ,top)
+                            (push ,val ,ext))
+                          ,acc)))
+                operands
+                :from-end t
+                :initial-value
+                  `(cond ((null ,ext)
+                          ,top)
+                         ((null (cdr ,ext))
+                          (car ,ext))
+                         (t
+                          (cons '(,mop) (nreverse ,ext))))))))
 
-(defun trp-mor (form) 
-  (setq form (mapcar #'translate-predicate (cdr form)))
-  (do ((l form (cdr l)) (nl))
-      ((null l) (cond (nl (cond ((null (cdr nl))(car nl))
-				(t (cons 'or (nreverse nl)))))))
-    (cond ((car l) (setq nl (cons (car l) nl))))))
+(defmacro mand_tr (&rest operands)
+  (mand/mor_tr 'mand operands t nil))
+
+(defmacro mor_tr (&rest operands)
+  (mand/mor_tr 'mor operands nil t))
+
+(defun simplify-mand/mor-operands_tr (operands top bot)
+  (loop for o in operands unless (eq o top) collect o until (eq o bot)))
+
+(defun map-trp (l)
+  (reduce (lambda (x a)
+            (destructuring-bind (mode . body) (translate-predicate x)
+              (cons (*union-mode (car a) mode) (cons body (cdr a)))))
+          l
+          :from-end t
+          :initial-value (cons nil '())))
+
+(defun trp-mand/mor (operands lisp-op max-op top bot)
+  (let ((operands (simplify-mand/mor-operands_tr operands top bot)))
+    (cond ((null operands)
+           (cons '$boolean top))
+          ((null (cdr operands))
+           (trp-with-boolean-convert (car operands)))
+          (t
+           (destructuring-bind (mode . tr-operands) (map-trp operands)
+             (if (eq mode '$boolean)
+                 (cons mode (cons lisp-op tr-operands))
+                 (wrap-pred (cons max-op tr-operands) nil)))))))
+
+(defun trp-mand (form)
+  (trp-mand/mor (cdr form) 'and 'mand_tr t nil))
+
+(defun trp-mor (form)
+  (trp-mand/mor (cdr form) 'or 'mor_tr nil t))
 
 (defvar *number-types* '($float $number $fixnum ))
 
-(defun trp-mgreaterp (form) 
-  (let (mode arg1 arg2)
-    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
-	  mode (*union-mode (car arg1) (car arg2)))
-    (cond ((or (eq '$fixnum mode) (eq '$float mode)
-	       (and (member (car arg1) *number-types* :test #'eq)
-		    (member (car arg2) *number-types* :test #'eq)))
-	   `(> ,(dconv arg1 mode) ,(dconv arg2 mode)))
-	  ((eq '$number mode) `(> ,(cdr arg1) ,(cdr arg2)))
-	  ('else
-	   (wrap-an-is `(mgrp ,(dconvx arg1) ,(dconvx arg2)))))))
- 
-(defun trp-mlessp (form) 
-  (let (mode arg1 arg2)
-    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
-	  mode (*union-mode (car arg1) (car arg2)))
-    (cond ((or (eq '$fixnum mode) (eq '$float mode)
-	       (and (member (car arg1) *number-types* :test #'eq)
-		    (member (car arg2) *number-types* :test #'eq)))
-	   `(< ,(dconv arg1 mode) ,(dconv arg2 mode)))
-	  ((eq '$number mode) `(< ,(cdr arg1) ,(cdr arg2)))
-	  ('else
-	   (wrap-an-is `(mlsp ,(dconvx arg1) ,(dconvx arg2)))))))
+(defun trp-inequality (args lisp-op max-op)
+  (let* ((arg1 (translate (car args)))
+         (arg2 (translate (cadr args)))
+         (mode (*union-mode (car arg1) (car arg2))))
+    (cond ((or (member mode '($fixnum $float) :test #'eq)
+               (and (member (car arg1) *number-types* :test #'eq)
+                    (member (car arg2) *number-types* :test #'eq)))
+           `($boolean . (,lisp-op ,(dconv arg1 mode) ,(dconv arg2 mode))))
+          ((eq '$number mode)
+           `($boolean . (,lisp-op ,(cdr arg1) ,(cdr arg2))))
+          (t
+           (wrap-pred `(,max-op ,(dconvx arg1) ,(dconvx arg2)) nil)))))
+
+(defun trp-mlessp (form)
+  (trp-inequality (cdr form) '< 'mlsp))
+
+(defun trp-mgreaterp (form)
+  (trp-inequality (cdr form) '> 'mgrp))
+
+(defun trp-mgeqp (form)
+  (trp-inequality (cdr form) '>= 'mgqp))
+
+(defun trp-mleqp (form)
+  ; No mlqp in sight
+  (translate-predicate `((mgeqp) ,@(reverse (cdr form)))))
 
 (defun trp-mequal (form) 
   (destructuring-let (((mode1 . arg1) (translate (cadr form)))
                       ((mode2 . arg2) (translate (caddr form))))
-    (if (and (covers '$number mode1) (covers '$number mode2))
-        `(eql ,arg1 ,arg2)
-        `(like ,arg1 ,arg2))))
-
-(defun trp-$equal (form) 
-  (let (mode arg1 arg2) 
-    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
-	  mode (*union-mode (car arg1) (car arg2)))
-    (cond ((or (eq '$fixnum mode) (eq '$float mode))
-	   `(= ,(dconv arg1 mode) ,(dconv arg2 mode)))
-	  ((eq '$number mode) `(meqp ,(cdr arg1) ,(cdr arg2)))
-	  ('else
-	   (wrap-an-is `(meqp ,(dconvx arg1) ,(dconvx arg2)))))))
-
-;; Logical not for predicates.  Do the expected thing, except return
-(defun trp-not (val)
-  (case val
-    ((t) nil)
-    ((nil) t)
-    (otherwise val)))
-
-(defun trp-$notequal (form)
-  (list 'trp-not (trp-$equal form)))
+    (cons '$boolean
+          (if (and (covers '$number mode1) (covers '$number mode2))
+              `(eql ,arg1 ,arg2)
+              `(like ,arg1 ,arg2)))))
 
 (defun trp-mnotequal (form)
-  (list 'trp-not (trp-mequal form)))
+  (translate-predicate `((mnot) ((mequal) ,@(cdr form)))))
 
-(defun trp-mgeqp (form)
-  (list 'trp-not (trp-mlessp form)))
+(defun trp-$equality (args lisp-op max-op)
+  (let* ((arg1 (translate (car args)))
+         (arg2 (translate (cadr args)))
+         (mode (*union-mode (car arg1) (car arg2))))
+    (cond ((member mode '($fixnum $float) :test #'eq)
+           `($boolean . (,lisp-op ,(dconv arg1 mode) ,(dconv arg2 mode))))
+          ((eq '$number mode)
+           `($any . (,max-op ,(cdr arg1) ,(cdr arg2))))
+          (t
+           (wrap-pred `(,max-op ,(dconvx arg1) ,(dconvx arg2)) nil)))))
 
-(defun trp-mleqp (form)
-  (list 'trp-not (trp-mgreaterp form)))
+(defun trp-$equal (form) 
+  (trp-$equality (cdr form) '= 'meqp))
+
+(defun trp-$notequal (form)
+  (trp-$equality (cdr form) '/= 'mnqp))
 
 ;;; sigh, i have to copy a lot of the $assume function too.
 

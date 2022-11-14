@@ -1127,63 +1127,61 @@ APPLY means like APPLY.")
 	   (warn-meval form)
 	   (punt-to-meval form)))))
 
-
+(defun mcond-eval-symbols-tr (form)
+  (mcond-eval-symbols #'maybe-msymeval form))
 
 (def%tr mcond (form) 
-  (prog (dummy mode nl) 
-     (setq dummy (translate (caddr form)) 
-	   mode (car dummy) 
-	   nl (list dummy (translate-predicate (cadr form))))
-     (do ((l (cdddr form) (cddr l))) ((null l))
-       ; Optimize the else-if case: if we're at the else case at the end
-       ; and the body is just another conditional, then we just continue
-       ; directly with the clauses of the inner conditional instead of
-       ; nesting.
-       (when (and (null (cddr l))
-		  (eq (car l) t)
-		  (consp (cadr l))
-		  (eq (caaadr l) 'mcond))
-	 (setq l (cdadr l)))
-       (setq dummy (translate (cadr l)) 
-	     mode (*union-mode mode (car dummy)) 
-	     nl (cons dummy
-		      (cons (translate-predicate (car l))
-			    nl))))
-     ; We leave off the final clause if the condition is true
-     ; and the consequent is false.
-     (when (and (eq t (cadr nl)) (null (cdar nl)))
-       (setq nl (cddr nl)))
-     (setq form nil)
-     (do ((l nl (cddr l))) ((null l))
-       (setq form
-             (cons (cons (cadr l)
-                         (cond ((and (not (atom (cdar l)))
-                                     (cddar l)
-                                     (eq (cadar l) 'progn))
-                                (nreverse 
-                                 (cons (dconv (cons (caar l)
-                                                    (car (reverse (cddar l))))
-                                              mode)
-                                       (cdr (reverse (cddar l))))))
-                               ((and (equal (cdar l) (cadr l))
-                                     (atom (cdar l))) nil)
-                               (t (list (cdr (car l))))))
-                   form)))
-     ;; Wrap (LET (($PREDERROR T)) ...) around translation of MCOND.
-     ;; Nested MCOND expressions (e.g. if x > 0 then if y > 0 then ...)
-     ;; will therefore yield nested (LET (($PREDERROR T)) ... (LET (($PREDERROR T)) ...)).
-     ;; I suppose only the topmost one is needed, but there is very little harm
-     ;; in the redundant ones, so I'll let it stand.
-     (return (cons mode (list 'let '(($prederror t)) (cons 'cond form))))))
-
-
+  (let ((g (tr-gensym))
+        (nl nil)
+        (mode nil))
+    (do ((l (cdr form) (cddr l))) ((null l))
+      ; Optimize the else-if case: if we're at the else case at the end
+      ; and the body is just another conditional, then we just continue
+      ; directly with the clauses of the inner conditional instead of
+      ; nesting.
+      (when (and (null (cddr l))
+                 (eq (car l) t)
+                 (consp (cadr l))
+                 (eq (caaadr l) 'mcond))
+        (setq l (cdadr l)))
+      (let ((wrap-a-pred 'mcond))
+        (declare (special wrap-a-pred))
+        (destructuring-let (((pred-mode . pred-tr) (translate-predicate (car l)))
+                            ((body-mode . body-tr) (translate (cadr l))))
+          (setq mode (*union-mode mode body-mode))
+          (if (eq pred-mode '$boolean)
+              (setq nl (list* body-tr pred-tr nl))
+              (setq nl (list* `(list* '(mcond) ,g (mapcar #'mcond-eval-symbols-tr ',(cdr l)))
+                              `(not (null ,g))
+                              body-tr
+                              `(eq t (setq ,g ,pred-tr))
+                              nl))))))
+    ; We leave off the final clause if the condition is true
+    ; and the consequent is false.
+    (when (and (eq t (cadr nl)) (null (car nl)))
+      (setq nl (cddr nl)))
+    (setq form nil)
+    (do ((l nl (cddr l))) ((null l))
+      (setq form
+            (cons (cons (cadr l)
+                        (cond ((and (not (atom (car l)))
+                                    (cdr l)
+                                    (eq (caar l) 'progn))
+                               (cdar l))
+                              ((and (equal (car l) (cadr l))
+                                    (atom (car l))) nil)
+                              (t (list (car l)))))
+                  form)))
+    (if (among g form)
+        (cons '$any `(let (,g) (cond ,@form)))
+        (cons mode `(cond ,@form)))))
 
 ;; The MDO and MDOIN translators should be changed to use the TR-LAMBDA.
 ;; Perhaps a mere expansion into an MPROG would be best.
 
 (def%tr mdo (form)
   (let (returns assigns return-mode (inside-mprog t) need-prog?)
-    (let (mode var init next test action varmode)
+    (let (mode var init next test-form action varmode)
       (setq var (cond ((cadr form)) (t 'mdo)))
       (tbind var)
       (setq init (if (caddr form) (translate (caddr form)) '($fixnum . 1)))
@@ -1199,20 +1197,24 @@ APPLY means like APPLY.")
 	     (declvalue var (*union-mode (car init) (car next)) t))
 	    (t
 	     (warn-mode var varmode (*union-mode (car init) (car next)))))
-      (setq test (translate-predicate
-		  (list '(mor)
-			(cond ((null (cadr (cddddr form)))  nil)
-			      ((and (cadddr form)
-				    (mnegp ($numfactor (simplify (cadddr form)))))
-			       (list '(mlessp) var (cadr (cddddr form))))
-			      (t (list '(mgreaterp) var (cadr (cddddr form)))))
-			(caddr (cddddr form)))))
+      (destructuring-bind (test-mode . test-pred)
+          (translate-predicate
+              (list '(mor)
+                    (cond ((null (cadr (cddddr form)))  nil)
+                          ((and (cadddr form)
+                                (mnegp ($numfactor (simplify (cadddr form)))))
+                           (list '(mlessp) var (cadr (cddddr form))))
+                          (t (list '(mgreaterp) var (cadr (cddddr form)))))
+                    (caddr (cddddr form))))
+        (if (eq test-mode '$boolean)
+            (setq test-form test-pred)
+            (setq test-form `(let (($prederror t)) ,test-pred))))
       (setq action (translate (cadddr (cddddr form)))
 	    mode (cond ((null returns) '$any)
 		       (t return-mode)))
       (setq var (tunbind (cond ((cadr form)) (t 'mdo))))
       `(,mode do ((,var ,(cdr init) ,(cdr next)))
-	      (,test '$done) . ((declare (special ,var)) .
+	      (,test-form '$done) . ((declare (special ,var)) .
 	      ,(cond ((atom (cdr action)) nil)
 		     ((eq 'progn (cadr action)) (cddr action))
 		     (t (list (cdr action)))))))))
@@ -1328,6 +1330,8 @@ APPLY means like APPLY.")
   (cond ((eq mode1 mode2) mode1)
 	((null mode1) mode2)
 	((null mode2) mode1)
+	((eq '$boolean mode1) '$any)
+	((eq '$boolean mode2) '$any)
 	((member mode2 *$any-modes* :test #'eq) '$any)
 	((member mode1 *$any-modes* :test #'eq) '$any)
 	((eq '$fixnum mode1) mode2)

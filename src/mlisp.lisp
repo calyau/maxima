@@ -2235,15 +2235,18 @@ wrapper for this."
   (do ((u form (cddr u)) (v))
       ((null u) nil)
     (cond ((eq (setq v (mevalp (car u))) t) (return (meval (cadr u))))
-	  (v (return (list* '(mcond) v (mapcar #'meval-atoms (cdr u))))))))
+          (v (return (list* '(mcond) v
+                            (mapcar (lambda (x) (mcond-eval-symbols #'meval1 x))
+                                    (cdr u))))))))
 
-(defun meval-atoms (form)
-  (cond ((atom form) (meval1 form))
+(defun mcond-eval-symbols (ev form)
+  (cond ((symbolp form) (funcall ev form))
+	((atom form) form)
 	((eq (caar form) 'mquote) (cadr form))
 	((and (getl (caar form) '(mfexpr*))
 	      (not (member (caar form) '(mcond mand mor mnot mprogn mdo mdoin) :test #'eq)))
 	 form)
-	(t (recur-apply #'meval-atoms form))))
+	(t (recur-apply (lambda (x) (mcond-eval-symbols ev x)) form))))
 
 (defmspec mdo (form)
   (setq form (cdr form))

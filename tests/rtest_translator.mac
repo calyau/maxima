@@ -703,6 +703,7 @@ define_variable (zorble, 0, fixnum);
 0;
 
 /* SF bug #3412: "Bug when translating functions that contain an \"if\" (in my case an implicit if)" */
+/* Bug #4008: translator and prederror */
 
 (f(x):=if cabs(1/(x+1)) < 1 then 1/(x+1) else 1,
  f(x + %i*y));
@@ -711,8 +712,15 @@ if 1/sqrt(y^2+(x+1)^2) < 1 then 1/(%i*y+x+1) else 1;
 makelist (f(xy[1] + %i*xy[2]), xy, [[0, 0], [0, 1], [1, 1], [1, 0], [0, 2], [2, 2], [2, 0]]);
 [1, 1/(%i+1), 1/(%i+2), 1/2, 1/(2*%i+1), 1/(2*%i+3), 1/3]$
 
-(compile_or_lose (f),
- errcatch (f(x + %i*y)));
+compile_or_lose (f);
+[f];
+
+block ([prederror : false],
+  f(x + %i*y));
+if 1 - 1/sqrt(y^2+(x+1)^2) > 0 then 1/(%i*y+x+1) else 1;
+
+block ([prederror : true],
+  errcatch (f(x + %i*y)));
 [];
 
 '(f(x + %i*y));
@@ -753,7 +761,12 @@ makelist (f(xy[1] + %i*xy[2]), xy, [[0, 0], [0, 1], [1, 1], [1, 0], [0, 2], [2, 
  map (g, aa, bb, cc));
 [3/2,9/8,false,3/4,false,0,5,false,-4,9/8,13/2,31/4]$
 
-errcatch (g(1, 1, z));
+block ([prederror : false],
+  g (1, 1, z));
+''(if 2 - z > 0 then (if 1 > z then (if 1 > z then z + 2 elseif 1 > z / 2 then -z else -z) else 1/2));
+
+block ([prederror : true],
+  errcatch (g (1, 1, z)));
 [];
 
 /* SF bug #3556: "5.43.0 translate / compile error"
@@ -785,7 +798,12 @@ true;
 [f(y, 2), f(y, -2)];
 [[y^2, 4*y^2, 9*y^2], [false, false, false]];
 
-errcatch (f(10, n));
+block ([prederror : false],
+  f(10, n));
+''([if n > 0 then 10^n, if n > 0 then 20^n, if n > 0 then 30^n]);
+
+block ([prederror : true],
+  errcatch (f(10, n)));
 [];
 
 /* apply2 was translated incorrectly for several years.  applyb2
@@ -2238,6 +2256,883 @@ block ([l1, l2,
  true];
 
 (kill (foo, bar, baz, quux), 0);
+0;
+
+/* The translator was not correctly determining the mode of expressions
+ * when a boolean mode was involved.
+ *
+ * It was easy to get lisp errors.
+ */
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo () :=
+    [  1 + if true then 0,
+       1 + if true then 0.0,
+     1.0 + if true then 0,
+     1.0 + if true then 0.0,
+
+       1 + if false then 0,
+       1 + if false then 0.0,
+     1.0 + if false then 0,
+     1.0 + if false then 0.0],
+
+  bar (x) :=
+    [  1 + if x then 0,
+       1 + if x then 0.0,
+     1.0 + if x then 0,
+     1.0 + if x then 0.0],
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        push (foo (), res),
+        for x in [true, false] do
+          push (bar (x), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar), 0);
+0;
+
+/*
+ * Bug #4008: translator and prederror
+ */
+
+(kill (pred, foo, bar, x, r), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo (n, q, x) :=
+    [if true then q + r,
+     if false then q + r,
+
+     if x then q,
+     if not x then q,
+     if not not x then q,
+     if not not not x then q,
+
+     n + if x then q + r,
+     n + if not x then q + r,
+     n + if not not x then q + r,
+     n + if not not not x then q + r],
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        for n in [1, 1.0, %i, 1.0 * %i] do
+          for q in [1, 1.0, %i, 1.0 * %i, 'z] do
+            for x in [true, false] do
+              push (foo (n, q, x), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo (x, y) :=
+    block ([q : 'z],
+      [if "and" () then q else r,
+       if "and" (x) then q else r,
+       if "and" (y) then q else r,
+       if x and y then q else r,
+       if not x and y then q else r,
+       if x and not y then q else r,
+       if not x and not y then q else r,
+       if not (x and y) then q else r,
+       if not (not x and y) then q else r,
+       if not (x and not y) then q else r,
+       if not (not x and not y) then q else r,
+
+       if "or" () then q else r,
+       if "or" (x) then q else r,
+       if "or" (y) then q else r,
+       if x or y then q else r,
+       if not x or y then q else r,
+       if x or not y then q else r,
+       if not x or not y then q else r,
+       if not (x or y) then q else r,
+       if not (not x or y) then q else r,
+       if not (x or not y) then q else r,
+       if not (not x or not y) then q else r]),
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        for x in [true, false] do
+          for y in [true, false] do
+            push (foo (x, y), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test, make_fun),
+
+  make_fun (name, pr) ::=
+    buildq ([name, pr],
+      name (x, y) :=
+        block ([q : 'z],
+          [pr ("and" ()),
+           pr ("and" (x)),
+           pr ("and" (y)),
+           pr (x and y),
+           pr (not x and y),
+           pr (x and not y),
+           pr (not x and not y),
+           pr (not (x and y)),
+           pr (not (not x and y)),
+           pr (not (x and not y)),
+           pr (not (not x and not y)),
+
+           pr ("or" ()),
+           pr ("or" (x)),
+           pr ("or" (y)),
+           pr (x or y),
+           pr (not x or y),
+           pr (x or not y),
+           pr (not x or not y),
+           pr (not (x or y)),
+           pr (not (not x or y)),
+           pr (not (x or not y)),
+           pr (not (not x or not y))])),
+
+  make_fun (foo, is),
+  make_fun (bar, maybe),
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        for x in [true, false] do
+          for y in [true, false] do (
+            push (foo (x, y), res),
+            push (bar (x, y), res)),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  pred (a, b) := equal (a, b),
+
+  foo (x, y) :=
+    block ([q : 'z],
+      [if x < y then q else r,
+       if not (x < y) then q else r,
+       if x <= y then q else r,
+       if not (x <= y) then q else r,
+       if x > y then q else r,
+       if not (x > y) then q else r,
+       if x >= y then q else r,
+       if not (x >= y) then q else r,
+
+       if x = y then q else r,
+       if x # y then q else r,
+       if not (x = y) then q else r,
+       if not (x # y) then q else r,
+       if not not (x = y) then q else r,
+       if not not (x # y) then q else r,
+       if not not not (x = y) then q else r,
+       if not not not (x # y) then q else r,
+
+       if equal (x, y) then q else r,
+       if notequal (x, y) then q else r,
+       if not equal (x, y) then q else r,
+       if not not equal (x, y) then q else r,
+       if not notequal (x, y) then q else r,
+       if not not not equal (x, y) then q else r,
+       if not not notequal (x, y) then q else r,
+
+       if pred (x, y) then q else r,
+       if not pred (x, y) then q else r,
+       if not not pred (x, y) then q else r,
+       if not not not pred (x, y) then q else r]),
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        for x in [1, 2] do
+          for y in [1, 2] do
+            push (foo (x, y), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (pred, foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (pred, foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test, make_fun),
+
+  pred (a, b) := equal (a, b),
+
+  make_fun (name, pr) ::=
+    buildq ([name, pr],
+      name (x, y) :=
+        block ([q : 'z],
+          [pr (x = y),
+           pr (x # y),
+           pr (not (x = y)),
+           pr (not (x # y)),
+           pr (not not (x = y)),
+           pr (not not (x # y)),
+           pr (not not not (x = y)),
+           pr (not not not (x # y)),
+
+           pr (equal (x, y)),
+           pr (not equal (x, y)),
+           pr (notequal (x, y)),
+           pr (not not equal (x, y)),
+           pr (not notequal (x, y)),
+           pr (not not not equal (x, y)),
+           pr (not not notequal (x, y)),
+
+           pr (pred (x, y)),
+           pr (not pred (x, y)),
+           pr (not not pred (x, y)),
+           pr (not not not pred (x, y))])),
+
+  make_fun (foo, is),
+  make_fun (bar, maybe),
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        for x in [1, 2] do
+          for y in [1, 2] do (
+            push (foo (x, y), res),
+            push (bar (x, y), res)),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (pred, foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (pred, foo, bar), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo (x, q) :=
+    [if (1, 2, q, x) then q else r,
+     if not (1, 2, q, x) then q else r,
+     if (1, 2, q, not x) then q else r],
+
+  test () :=
+    block ([res : []],
+      for prederror in [true, false] do
+        for x in [true, false] do
+          push (foo (x, 17), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test, make_fun),
+
+  make_fun (name, pr) ::=
+    buildq ([name, pr],
+      name (x, y) :=
+        [pr (x),
+         pr (not x),
+         pr (not not x),
+         pr (not not not x),
+
+         pr (y),
+         pr (not y),
+         pr (not not y),
+         pr (not not not y),
+
+         pr (x and y),
+         pr (x or y),
+         pr (not (x and y)),
+         pr (not (x or y)),
+         pr (not not (x and y)),
+         pr (not not (x or y)),
+         pr (not not not (x and y)),
+         pr (not not not (x or y)),
+
+         pr (x and not y),
+         pr (x or not y),
+         pr (x and not not y),
+         pr (x or not not y),
+         pr (not (x and not y)),
+         pr (not (x or not y)),
+         pr (not (x and not not y)),
+         pr (not (x or not not y)),
+
+         pr (not x and y),
+         pr (not x or y),
+         pr (not not x and y),
+         pr (not not x or y),
+         pr (not (not x and y)),
+         pr (not (not x or y)),
+         pr (not (not not x and y)),
+         pr (not (not not x or y)),
+
+         pr (not x and not y),
+         pr (not x or not y),
+         pr (not (not x and not y)),
+         pr (not (not x or not y)),
+
+         pr (x > 1),
+         pr (not x > 1),
+         pr (x > 1 and y),
+         pr (x > 1 or y),
+         pr (x > 1 and not y),
+         pr (x > 1 or not y),
+         pr (not x > 1 and y),
+         pr (not x > 1 or y),
+         pr (not x > 1 and not y),
+         pr (not x > 1 or not y),
+
+         pr (y <= 1),
+         pr (not y <= 1),
+         pr (x and y <= 1),
+         pr (x or y <= 1),
+         pr (x and not y <= 1),
+         pr (x or not y <= 1),
+         pr (not x and y <= 1),
+         pr (not x or y <= 1),
+         pr (not x and not y <= 1),
+         pr (not x or not y <= 1)]),
+
+  make_fun (foo, is),
+  make_fun (bar, maybe),
+
+  test () :=
+    block ([prederror : false,
+            l : [true, false, 1, 2.0, 'q, 'q ()],
+            res : []],
+      for x in l do
+        for y in l do (
+          push (foo (x, y), res),
+          push (bar (x, y), res)),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test, make_fun),
+
+  make_fun (name, pr) ::=
+    buildq ([name, pr],
+      name (x) :=
+        [pr (x <  1),
+         pr (x <= 1),
+         pr (x >  1),
+         pr (x >= 1),
+
+         pr (not (x <  1)),
+         pr (not (x <= 1)),
+         pr (not (x >  1)),
+         pr (not (x >= 1)),
+
+         pr (not not (x <  1)),
+         pr (not not (x <= 1)),
+         pr (not not (x >  1)),
+         pr (not not (x >= 1)),
+
+         pr (x = 1),
+         pr (x # 1),
+         pr (not (x = 1)),
+         pr (not (x # 1)),
+         pr (not not (x = 1)),
+         pr (not not (x # 1)),
+
+         pr (equal (x, 1)),
+         pr (notequal (x, 1)),
+         pr (not equal (x, 1)),
+         pr (not notequal (x, 1)),
+         pr (not not equal (x, 1)),
+         pr (not not notequal (x, 1))]),
+
+  make_fun (foo, is),
+  make_fun (bar, maybe),
+
+  test () :=
+    block ([res : []],
+      block ([prederror : true],
+        push (errcatch (foo ('z)), res)),
+      block ([prederror : false,
+              l : [0, 0.0, 0.0b0,
+                   1, 1.0, 1.0b0,
+                   2, 2.0, 2.0b0,
+                   %i, 1.0 * %i, 1.0b0 * %i,
+                   2 * %i, 2.0 * %i, 2.0b0 * %i,
+                   true, false,
+                   'z, 'z ()]],
+        for x in l do (
+          push (foo (x), res),
+          push (bar (x), res))),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo (x, q, prederror) :=
+    block ([r],
+      [if x then 0,
+       if not x then 0,
+       if not not x then 0,
+       if not not not x then 0,
+       if x then q + r,
+       if not x then q + r,
+       if not not x then q + r,
+       if not not not x then q + r,
+       if x then 1 else 2,
+       if not x then 1 else 2,
+       if not not x then 1 else 2,
+       if not not not x then 1 else 2,
+       if x then x else q + r,
+       if not x then x else q + r,
+       if not not x then x else q + r,
+       if not not not x then x else q + r,
+       if x = 1 then x else q + r,
+       if x # 1 then x else q + r,
+       if not x = 1 then x else q + r,
+       if not x # 1 then x else q + r,
+       if not not x = 1 then x else q + r,
+       if not not x # 1 then x else q + r,
+       if not not not x = 1 then x else q + r,
+       if not not not x # 1 then x else q + r]),
+
+  test () :=
+    block ([l : [true, false, 1, 2.0, 3.0b0, 'z, 'z ()],
+            res : []],
+      push (errcatch (foo (1, 2, true)), res),
+      for x in l do
+        for q in l do
+          push (foo (x, q, false), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (rewritehack, eqhack, test),
+
+  /* Take a relational expr and potentially rewrite it in some
+   * equivalent way, e.g.  x<1  =>  1-x>0
+   */
+  rewritehack (r) :=
+    eval_string_lisp ("(apply #'mevalp2 $r (mop $r) (margs $r))")[1],
+
+  /* Translated code can produce relational exprs that are in a
+   * different, but equivalent, form compared to the exprs produce
+   * by interpreted code.
+   *
+   * Compare two conditionals by requiring that everything matches
+   * exactly, except possibly the first (only) test.  The tests
+   * should match exactly after applying rewritehack to them.
+   */
+  eqhack (interp, transl) :=
+    if atom (interp) or atom (transl) or op (interp) # "if" or op (transl) # "if" then
+      is (interp = transl)
+    else
+      is (rest (interp) = rest (transl)
+          and
+          rewritehack (first (interp)) = rewritehack (first (transl))),
+
+  foo (x) :=
+    block ([r],
+      [if x <  1 then x else r,
+       if x <= 1 then x else r,
+       if x >  1 then x else r,
+       if x >= 1 then x else r,
+
+       if not (x <  1) then x else r,
+       if not (x <= 1) then x else r,
+       if not (x >  1) then x else r,
+       if not (x >= 1) then x else r,
+
+       if not not (x <  1) then x else r,
+       if not not (x <= 1) then x else r,
+       if not not (x >  1) then x else r,
+       if not not (x >= 1) then x else r,
+
+       if x = 1 then x else r,
+       if x # 1 then x else r,
+       if not (x = 1) then x else r,
+       if not (x # 1) then x else r,
+       if not not (x = 1) then x else r,
+       if not not (x # 1) then x else r,
+
+       if equal (x, 1) then x else r,
+       if notequal (x, 1) then x else r,
+       if not equal (x, 1) then x else r,
+       if not notequal (x, 1) then x else r,
+       if not not equal (x, 1) then x else r,
+       if not not notequal (x, 1) then x else r]),
+
+  test () :=
+    block ([res : []],
+      block ([prederror : true],
+        push (errcatch (foo ('z)), res)),
+      block ([prederror : false,
+              l : [0, 0.0, 0.0b0,
+                   1, 1.0, 1.0b0,
+                   2, 2.0, 2.0b0,
+                       %i, 1.0 * %i, 1.0b0 * %i,
+                   2 * %i, 2.0 * %i, 2.0b0 * %i,
+                   true, false,
+                   'z, 'z ()]],
+        for x in l do
+          res : append (foo (x), res)),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  every (eqhack, l1, l2));
+true;
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo (x, y, z) :=
+    block ([r],
+      [if x >  0 and y >  0 and z >  0 then x + y = z else r,
+       if x >  0 or  y >  0 or  z >  0 then x + y = z else r,
+       if x >= 1 and y >= 1 and z >= 1 then x + y = z else r,
+       if x >= 1 or  y >= 1 or  z >= 1 then x + y = z else r,
+       if x <= 2 and y <= 2 and z <= 2 then x + y = z else r,
+       if x <= 2 or  y <= 2 or  z <= 2 then x + y = z else r,
+       if x <  3 and y <  3 and z <  3 then x + y = z else r,
+       if x <  3 or  y <  3 or  z <  3 then x + y = z else r]),
+
+  test () :=
+    block ([l : [1, 2.0, 3.0b0, %i],
+            res : []],
+      for x in l do
+        for y in l do
+          for z in l do
+            push (foo (x, y, z), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo (p, x, y, z) :=
+    (modedeclare (p, boolean, x, fixnum, y, flonum, z, number),
+      block ([r],
+        [if p and x >  0 and y >  0 and z >  0 then x + y - z else r,
+         if p or  x >  0 or  y >  0 or  z >  0 then x + y - z else r,
+         if p and x >= 1 and y >= 1 and z >= 1 then x + y - z else r,
+         if p or  x >= 1 or  y >= 1 or  z >= 1 then x + y - z else r,
+         if p and x <= 2 and y <= 2 and z <= 2 then x + y - z else r,
+         if p or  x <= 2 or  y <= 2 or  z <= 2 then x + y - z else r,
+         if p and x <  3 and y <  3 and z <  3 then x + y - z else r,
+         if p or  x <  3 or  y <  3 or  z <  3 then x + y - z else r,
+
+         if p and x >  y and y >  z and z >  3 then x + y + z else r,
+         if p or  x >  y or  y >  z or  z >  3 then x + y + z else r,
+         if p and x >= y and y >= z and z >= 2 then x + y + z else r,
+         if p or  x >= y or  y >= z or  z >= 2 then x + y + z else r,
+         if p and x <= y and y <= z and z <= 1 then x + y + z else r,
+         if p or  x <= y or  y <= z or  z <= 1 then x + y + z else r,
+         if p and x <  y and y <  z and z <  0 then x + y + z else r,
+         if p or  x <  y or  y <  z or  z <  0 then x + y + z else r])),
+
+  test () :=
+    block ([bool : [true, false],
+            fixl : [0, 1, 2, 3, 4],
+            flol : [0.0, 1.0, 2.0, 3.0, 4.0],
+            numl : [0, 1.0, 2, 3.0, 4],
+            res : []],
+      for p in bool do
+        for x in fixl do
+          for y in flol do
+            for z in numl do
+              push (foo (p, x, y, z), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, p, x, y, z), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  foo (p, x, y, z) :=
+    block ([r],
+      [if p and x and y and z then x + y = z else r,
+       if p or  x or  y or  z then x + y = z else r,
+
+       if p and equal (x, 1) and equal (y, 1) and equal (z, 1) then x + y = z else r,
+       if p or  equal (x, 1) or  equal (y, 1) or  equal (z, 1) then x + y = z else r,
+
+       if not p and not equal (x, 1) and not equal (y, 1) and not equal (z, 1) then x + y = z else r,
+       if not p or  not equal (x, 1) or  not equal (y, 1) or  not equal (z, 1) then x + y = z else r,
+
+       if p and notequal (x, 1) and notequal (y, 1) and notequal (z, 1) then x + y = z else r,
+       if p or  notequal (x, 1) or  notequal (y, 1) or  notequal (z, 1) then x + y = z else r,
+
+       if not p and not notequal (x, 1) and not notequal (y, 1) and not notequal (z, 1) then x + y = z else r,
+       if not p or  not notequal (x, 1) or  not notequal (y, 1) or  not notequal (z, 1) then x + y = z else r]),
+
+  test () :=
+    block ([prederror : false,
+            l : [true, false, 1, 2.0, 3.0b0, %i, 'z, 'z ()],
+            res : []],
+      for p in [true, false] do
+        for x in l do
+          for y in l do
+            for z in l do
+              push (foo (p, x, y, z), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  pred (a, b) := equal (a, b),
+
+  foo (x, q) :=
+    block ([r, var1, var2, v1 : 'var1, v2 : 'var2],
+      [if pred (x, 1) then x,
+       if not pred (x, 1) then x,
+       if pred (x, 1) or pred (x, 2) then x,
+       if pred (x, 1) then x else q + r,
+       if not pred (x, 1) then x else q + r,
+       if pred (x, 1) or pred (x, 2) then x else q + r,
+       if pred (x, 1) then f (x + q) elseif pred (x, 2) then g (x + q) elseif pred (x, q) then v1 :: r * x else var1 : q * r,
+       if pred (x, 1) then f (x + q) else if pred (x, 2) then g (x + q) else if pred (x, q) then v2 :: r * x else var2 : q * r,
+       if pred (x, 1) and q then f (x + q) elseif pred (x, 2) or q then g (x + q) elseif not pred (x, q) then v1 :: r * x else var1 : q * r,
+       if pred (x, 1) and q then f (x + q) else if pred (x, 2) or q then g (x + q) else if not pred (x, q) then v2 :: r * x else var2 : q * r,
+       if pred (x, 1) and not q then f (x + q) elseif pred (x, 2) or not q then g (x + q) elseif not pred (x, q) then v1 :: r * x else var1 : q * r,
+       if pred (x, 1) and not q then f (x + q) else if pred (x, 2) or not q then g (x + q) else if not pred (x, q) then v2 :: r * x else var2 : q * r]),
+
+  test () :=
+    block ([res : []],
+      block ([prederror : false],
+        push (errcatch (foo (true, false)), res)),
+      block ([prederror : false,
+              l : [true, false, 1, 2.0, 3.0b0, %i, 'z, 'z ()]],
+        for x in l do
+          for q in l do
+            push (foo (x, q), res)),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (pred, foo),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (pred, foo), 0);
+0;
+
+block ([translate : false, l1, l2],
+  local (test),
+
+  /* I really want push(x,a) below in foo, bar and baz,
+   * but the translation of the push special form just
+   * punts to MEVAL.  I want the loop bodies translated
+   * better than that, especially in baz, so just do
+   * a:cons(x,a) everywhere here.
+   */
+
+  foo () :=
+    [block ([a : []],
+       for x : 1 thru 5 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x > 3 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 10 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x > 10 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 unless x < 3 do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 unless x > 3 do a : cons (x, a),
+       a)],
+
+  bar (p) :=
+    [block ([a : []],
+       for x : 1 thru 5 while p do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 and p do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 or p do a : cons (x, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 10 or 'z do a : cons (x, a),
+       a)],
+
+  baz () :=
+    [block ([a : []],
+       for x : 1 thru 5 do a : cons (if x then x else false, a),
+       a),
+     block ([a : []],
+       for x : 1 thru 5 while x < 3 do a : cons (if x then x else false, a),
+       a)],
+
+  test () :=
+    block ([res : []],
+      push (foo (), res),
+      for p in [true, false] do
+        push (bar (p), res),
+      push (baz (), res),
+      push (errcatch (bar ('z)), res),
+      res),
+
+  l1 : test (),
+
+  translate_or_lose (foo, bar, baz),
+
+  l2 : test (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo, bar, baz), 0);
 0;
 
 
