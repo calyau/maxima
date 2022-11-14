@@ -9,7 +9,7 @@ TEST_FILES = \
 	rtestode_kamke_1_4.mac rtestode_kamke_1_5.mac rtestode_kamke_1_6.mac \
 	rtestode_kamke_2_1.mac rtestode_kamke_2_2.mac rtestode_kamke_2_3.mac \
 	rtestode_kamke_2_4.mac rtestode_kamke_2_5.mac \
-	rtest_sym.mac rtest_sym2.mac \
+	rtest_ode_sym.mac rtest_ode_sym2.mac \
 	rtest_ode1_riccati.mac rtest_ode1_abel.mac \
 	rtestode_odelin.mac rtestode_utils.mac
 

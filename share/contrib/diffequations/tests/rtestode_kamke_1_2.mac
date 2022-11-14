@@ -193,7 +193,7 @@ solve(ans[1],y);
 [method,ode_check(eqn,%[1])];
 [genhom,0];
 
-/* 120  Error return from ode1_lie - symmetries exist, see rtest_sym.mac */
+/* 120  Error return from ode1_lie - symmetries exist, see rtest_ode_sym.mac */
 /* (pn_(120),ans:contrib_ode(eqn:x*'diff(y,x)-y*(x*log(x^2/y)+2),y,x)); */
 
 /* 121 */

@@ -5,8 +5,8 @@ local maxima.
 README
 Makefile 
 testsuite.lisp            - Driver adapted from tests/testsuite.lisp
-rtest_sym.mac             - unit tests for ode1_lie.mac functions
-rtest_sym2.mac            - unit tests for ode1_lie.mac functions
+rtest_ode_sym.mac         - unit tests for ode1_lie.mac functions
+rtest_ode_sym2.mac        - unit tests for ode1_lie.mac functions
 rtest_ode1_riccati.mac    - unit tests for ode1_riccati.mac functions
 rtest_ode1_abel.mac       - unit tests for ode1_abel.mac functions
 rtestode_murphy_1_1.mac   - ODEs   1 - 100 from Murphy Appendix A.1
