@@ -7,6 +7,7 @@
 ;; This software has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+(in-package :maxima)
 ($put '$lu 3 '$version)
 	
 ;; Return the i,j entry of the Maxima matrix m. The rows of m have been permuted according
@@ -302,7 +303,7 @@
   (let ((OK t) (n))
       (cond (($matrixp mat)
               (setq n ($matrix_size mat))
-              (cond ((not (eql ($first n) ($second n))) ;nonsquare matrices aren't invertiable
+              (cond ((not (eql ($first n) ($second n))) ;nonsquare matrices aren't invertible
                  nil)
               (t    
                 (setq mat (fourth ($get_lu_factors ($lu_factor mat fld))))
