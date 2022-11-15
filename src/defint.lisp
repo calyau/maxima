@@ -128,7 +128,7 @@
 		      sn* sd* leadcoef checkfactors
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
-		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
+		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
 		      factors rlm*
 		      $trigexpandplus $trigexpandtimes
@@ -182,7 +182,7 @@ in the interval of integration.")
 ;; KEYHOLE, and POLELIST.
 (defvar *semirat* nil)
 
-(defmfun $defint (exp var ll ul)
+(defmfun $defint (exp var *ll* *ul*)
 
   ;; Distribute $defint over equations, lists, and matrices.
   (cond ((mbagp exp)
@@ -190,7 +190,7 @@ in the interval of integration.")
            (simplify
              (cons (car exp)
                    (mapcar #'(lambda (e)
-                               (simplify ($defint e var ll ul)))
+                               (simplify ($defint e var *ll* *ul*)))
                            (cdr exp)))))))
 
   (let ((*global-defint-assumptions* ())
@@ -200,7 +200,7 @@ in the interval of integration.")
 	   (let ((*defint-assumptions* ())  (*def2* ())  (*rad-poly-recur* ())
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var var)
-		 (orig-ll ll)  (orig-ul ul)
+		 (orig-ll *ll*)  (orig-ul *ul*)
 		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  ; (limitp t)
 		 (rp-polylogp ())
                  ($%edispflag nil) ; to get internal representation
@@ -209,24 +209,24 @@ in the interval of integration.")
 	     (make-global-assumptions) ;sets *global-defint-assumptions*
 	     (setq exp (ratdisrep exp))
 	     (setq var (ratdisrep var))
-	     (setq ll (ratdisrep ll))
-	     (setq ul (ratdisrep ul))
+	     (setq *ll* (ratdisrep *ll*))
+	     (setq *ul* (ratdisrep *ul*))
 	     (cond (($constantp var)
 		    (merror (intl:gettext "defint: variable of integration cannot be a constant; found ~M") var))
 		   (($subvarp var)  (setq var (gensym))
 		    (setq exp ($substitute var orig-var exp))))
 	     (cond ((not (atom var))
 		    (merror (intl:gettext "defint: variable of integration must be a simple or subscripted variable.~%defint: found ~M") var))
-		   ((or (among var ul)
-			(among var ll))
+		   ((or (among var *ul*)
+			(among var *ll*))
 		    (setq var (gensym))
 		    (setq exp ($substitute var orig-var exp))))
-             (unless (lenient-extended-realp ll)
-               (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
-             (unless (lenient-extended-realp ul)
-               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ul))
+             (unless (lenient-extended-realp *ll*)
+               (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") *ll*))
+             (unless (lenient-extended-realp *ul*)
+               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") *ul*))
 
-	     (cond ((setq ans (defint exp var ll ul))
+	     (cond ((setq ans (defint exp var *ll* *ul*))
 		    (setq ans (subst orig-var var ans))
 		    (cond ((atom ans)  ans)
 			  ((and (free ans '%limit)
@@ -241,14 +241,14 @@ in the interval of integration.")
 		   (t `((%integrate) ,orig-exp ,orig-var ,orig-ll ,orig-ul))))
 	(forget-global-assumptions)))))
 
-(defun eezz (exp ll ul)
+(defun eezz (exp *ll* *ul*)
   (cond ((or (polyinx exp var nil)
 	     (catch 'pin%ex (pin%ex exp)))
 	 (setq exp (antideriv exp))
 	 ;; If antideriv can't do it, returns nil
 	 ;; use limit to evaluate every answer returned by antideriv.
 	 (cond ((null exp) nil)
-	       (t (intsubs exp ll ul))))))
+	       (t (intsubs exp *ll* *ul*))))))
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr var)
@@ -334,8 +334,8 @@ in the interval of integration.")
 (defun intcv (nv flag)
   (let ((d (bx**n+a nv))
 	(*roots ())  (*failures ())  ($breakup ()))
-    (cond ((and (eq ul '$inf)
-		(equal ll 0)
+    (cond ((and (eq *ul* '$inf)
+		(equal *ll* 0)
 		(equal (cadr d) 1)) ())
 	  ((eq var 'yx)		; new var cannot be same as old var
 	   ())
@@ -362,10 +362,10 @@ in the interval of integration.")
 			       (do* ((roots *roots (cddr roots))
 				     (root (caddar roots) (caddar roots)))
 				    ((null root) nil)
-				    (if (and (or (real-infinityp ll)
-						 (test-inverse nv var root 'yx ll))
-					     (or (real-infinityp ul)
-						 (test-inverse nv var root 'yx ul)))
+				    (if (and (or (real-infinityp *ll*)
+						 (test-inverse nv var root 'yx *ll*))
+					     (or (real-infinityp *ul*)
+						 (test-inverse nv var root 'yx *ul*)))
 					(return root))))
 			 (cond (flag (intcv2 d nv))
 			       (t (intcv1 d nv))))
@@ -385,12 +385,12 @@ in the interval of integration.")
 ;; converts limits of integration to values for new variable 'yx
 (defun intcv2 (d nv)
   (intcv3 d nv)
-  (and (cond ((and (zerop1 (m+ ll ul))
+  (and (cond ((and (zerop1 (m+ *ll* *ul*))
 		   (evenfn nv var))
 	      (setq exp1 (m* 2 exp1)
 		    *ll1* (limcp nv var 0 '$plus)))
-	     (t (setq *ll1* (limcp nv var ll '$plus))))
-       (setq *ul1* (limcp nv var ul '$minus))))
+	     (t (setq *ll1* (limcp nv var *ll* '$plus))))
+       (setq *ul1* (limcp nv var *ul* '$minus))))
 
 ;; wrapper around limit, returns nil if 
 ;; limit not found (nounform returned), or undefined ($und or $ind)
@@ -413,7 +413,7 @@ in the interval of integration.")
   (m* (sdiff d newvar)
       (subst d var exp)))
   
-(defun defint (exp var ll ul)
+(defun defint (exp var *ll* *ul*)
   (let ((old-assumptions *defint-assumptions*)  
         (*current-assumptions* ())
         (limitp t))
@@ -426,20 +426,20 @@ in the interval of integration.")
 		  (loopstop* 0)
 		  ;; D (not used? -- cwh)
 		  ans nn* dn* nd* $noprincipal)
-	      (cond ((setq ans (defint-list exp var ll ul))
+	      (cond ((setq ans (defint-list exp var *ll* *ul*))
 		     (return ans))
 		    ((or (zerop1 exp)
-			 (alike1 ul ll))
+			 (alike1 *ul* *ll*))
 		     (return 0.))
 		    ((not (among var exp))
-		     (cond ((or (member ul '($inf $minf) :test #'eq)
-				(member ll '($inf $minf) :test #'eq))
+		     (cond ((or (member *ul* '($inf $minf) :test #'eq)
+				(member *ll* '($inf $minf) :test #'eq))
 			    (diverg))
-			   (t (setq ans (m* exp (m+ ul (m- ll))))
+			   (t (setq ans (m* exp (m+ *ul* (m- *ll*))))
 			      (return ans))))
                     ;; Look for integrals which involve log and exp functions.
                     ;; Maxima has a special algorithm to get general results.
-                    ((and (setq ans (defint-log-exp exp var ll ul)))
+                    ((and (setq ans (defint-log-exp exp var *ll* *ul*)))
                      (return ans)))
 	      (let* ((exp (rmconst1 exp))
 		     (c (car exp))
@@ -461,48 +461,48 @@ in the interval of integration.")
 		       ;; Well, there's at least one existing result which requires
 		       ;; logabs = true in RISCHINT, so try to make a minimal change here instead.
 		       (cond ((setq ans (let ($logabs) (antideriv exp)))
-			      (setq ans (intsubs ans ll ul))
+			      (setq ans (intsubs ans *ll* *ul*))
 			      (return (cond (ans (m* c ans)) (t nil))))
 			     (t (return nil)))))
 		(setq exp (tansc exp))
-		(cond ((setq  ans (initial-analysis exp var ll ul))
+		(cond ((setq  ans (initial-analysis exp var *ll* *ul*))
 		       (return (m* c ans))))
 		(return nil))))
       (restore-defint-assumptions old-assumptions *current-assumptions*))))
 
-(defun defint-list (exp var ll ul)
+(defun defint-list (exp var *ll* *ul*)
   (cond ((mbagp exp)
 	 (let ((ans (cons (car exp)
 			  (mapcar
 			   #'(lambda (sub-exp)
-			       (defint sub-exp var ll ul))
+			       (defint sub-exp var *ll* *ul*))
 			   (cdr exp)))))
 	   (cond (ans (simplify ans))
 		 (t nil))))
 	(t nil)))
 
-(defun initial-analysis (exp var ll ul)
+(defun initial-analysis (exp var *ll* *ul*)
   (let ((pole (cond ((not $intanalysis)
 		     '$no)		;don't do any checking.
-		    (t (poles-in-interval exp var ll ul)))))
+		    (t (poles-in-interval exp var *ll* *ul*)))))
     (cond ((eq pole '$no)
 	   (cond ((and (oddfn exp var)
-		       (or (and (eq ll '$minf)
-				(eq ul '$inf))
-			   (eq ($sign (m+ ll ul))
+		       (or (and (eq *ll* '$minf)
+				(eq *ul* '$inf))
+			   (eq ($sign (m+ *ll* *ul*))
 			       '$zero)))  0)
-		 (t (parse-integrand exp var ll ul))))
+		 (t (parse-integrand exp var *ll* *ul*))))
 	  ((eq pole '$unknown)  ())
-	  (t (principal-value-integral exp var ll ul pole)))))
+	  (t (principal-value-integral exp var *ll* *ul* pole)))))
 
-(defun parse-integrand (exp var ll ul)
+(defun parse-integrand (exp var *ll* *ul*)
   (let (ans)
-    (cond ((setq ans (eezz exp ll ul))  ans)
+    (cond ((setq ans (eezz exp *ll* *ul*))  ans)
 	  ((and (ratp exp var)
-		(setq ans (method-by-limits exp var ll ul)))  ans)
+		(setq ans (method-by-limits exp var *ll* *ul*)))  ans)
 	  ((and (mplusp exp)
 		(setq ans (intbyterm exp t)))  ans)
-	  ((setq ans (method-by-limits exp var ll ul))  ans)
+	  ((setq ans (method-by-limits exp var *ll* *ul*))  ans)
 	  (t ()))))
 
 (defun rmconst1 (e)
@@ -511,44 +511,44 @@ in the interval of integration.")
 	(t (cons e 1))))
 
 
-(defun method-by-limits (exp var ll ul)
+(defun method-by-limits (exp var *ll* *ul*)
   (let ((old-assumptions *defint-assumptions*))
     (setq *current-assumptions* (make-defint-assumptions 'noask))
     ;;Should be a PROG inside of unwind-protect, but Multics has a compiler
     ;;bug wrt. and I want to test this code now.
     (unwind-protect
-	 (cond ((and (and (eq ul '$inf)
-			  (eq ll '$minf))
+	 (cond ((and (and (eq *ul* '$inf)
+			  (eq *ll* '$minf))
 		     (mtoinf exp var)))
-	       ((and (and (eq ul '$inf)
-			  (equal ll 0.))
+	       ((and (and (eq *ul* '$inf)
+			  (equal *ll* 0.))
 		     (ztoinf exp var)))
-;;;This seems((and (and (eq ul '$inf)
-;;;fairly losing	(setq exp (subin (m+ ll var) exp))
-;;;			(setq ll 0.))
+;;;This seems((and (and (eq *ul* '$inf)
+;;;fairly losing	(setq exp (subin (m+ *ll* var) exp))
+;;;			(setq *ll* 0.))
 ;;;		   (ztoinf exp var)))
-	       ((and (equal ll 0.)
-		     (freeof var ul)
-		     (eq ($asksign ul) '$pos)
+	       ((and (equal *ll* 0.)
+		     (freeof var *ul*)
+		     (eq ($asksign *ul*) '$pos)
 		     (zto1 exp)))
-	       ;;	     ((and (and (equal ul 1.)
-	       ;;			(equal ll 0.))  (zto1 exp)))
-	       (t (dintegrate exp var ll ul)))
+	       ;;	     ((and (and (equal *ul* 1.)
+	       ;;			(equal *ll* 0.))  (zto1 exp)))
+	       (t (dintegrate exp var *ll* *ul*)))
       (restore-defint-assumptions old-assumptions *defint-assumptions*))))
 
 
-(defun dintegrate (exp var ll ul)
+(defun dintegrate (exp var *ll* *ul*)
   (let ((ans nil) (arg nil) (*scflag* nil)
 	(*dflag nil) ($%emode t))
 ;;;NOT COMPLETE for sin's and cos's.
     (cond ((and (not *sin-cos-recur*)
 		(oscip exp)
 		(setq *scflag* t)
-		(intsc1 ll ul exp)))
+		(intsc1 *ll* *ul* exp)))
 	  ((and (not *rad-poly-recur*)
 		(notinvolve exp '(%log))
 		(not (%einvolve exp))
-		(method-radical-poly exp var ll ul)))
+		(method-radical-poly exp var *ll* *ul*)))
 	  ((and (not (equal *dintlog-recur* 2.))
 		(setq arg (involve exp '(%log)))
 		(dintlog exp arg)))
@@ -569,42 +569,42 @@ in the interval of integration.")
 	  ;; Well, there's at least one existing result which requires
 	  ;; logabs = true in RISCHINT, so try to make a minimal change here instead.
 	  ((setq ans (let ($logabs) (antideriv exp)))
-	   (intsubs ans ll ul))
+	   (intsubs ans *ll* *ul*))
 	  (t nil))))
 
-(defun method-radical-poly (exp var ll ul)
+(defun method-radical-poly (exp var *ll* *ul*)
 ;;;Recursion stopper
   (let ((*rad-poly-recur* t)		;recursion stopper
 	(result ()))
     (cond ((and (sinintp exp var)
 		(setq result (antideriv exp))
-		(intsubs result ll ul)))
+		(intsubs result *ll* *ul*)))
 	  ((and (ratp exp var)
 		(setq result (ratfnt exp))))
 	  ((and (not *scflag*)
-		(not (eq ul '$inf))
+		(not (eq *ul* '$inf))
 		(radicalp exp var)
 		(kindp34)
 		(setq result (cv exp))))
 	  (t ()))))
 
-(defun principal-value-integral (exp var ll ul poles)
+(defun principal-value-integral (exp var *ll* *ul* poles)
   (let ((anti-deriv ()))
     (cond ((not (null (setq anti-deriv (antideriv exp))))
 	   (cond ((not (null poles))
 		  (order-limits 'ask)
-		  (cond ((take-principal anti-deriv ll ul poles))
+		  (cond ((take-principal anti-deriv *ll* *ul* poles))
 			(t ()))))))))
 
 ;; adds up integrals of ranges between each pair of poles.
 ;; checks if whole thing is divergent as limits of integration approach poles.
-(defun take-principal (anti-deriv ll ul poles &aux ans merged-list)
+(defun take-principal (anti-deriv *ll* *ul* poles &aux ans merged-list)
   ;;; calling $logcontract causes antiderivative of 1/(1-x^5) to blow up
   ;;  (setq anti-deriv (cond ((involve anti-deriv '(%log))
   ;;			  ($logcontract anti-deriv))
   ;;			 (t anti-deriv)))
   (setq ans 0.)
-  (setq merged-list (interval-list poles ll ul))
+  (setq merged-list (interval-list poles *ll* *ul*))
   (do ((current-pole (cdr merged-list) (cdr current-pole))
        (previous-pole merged-list (cdr previous-pole)))
       ((null current-pole)  t)
@@ -623,21 +623,21 @@ in the interval of integration.")
 	 (diverg))
 	(t (principal) ans)))
 
-(defun interval-list (pole-list ll ul)
+(defun interval-list (pole-list *ll* *ul*)
   (let ((first (car (first pole-list)))
 	(last (caar (last pole-list))))
-    (cond ((eq ul last)
-	   (if (eq ul '$inf)
+    (cond ((eq *ul* last)
+	   (if (eq *ul* '$inf)
 	       (setq pole-list (subst 'prin-inf '$inf pole-list))))
-	  (t (if (eq ul '$inf)
-		 (setq ul 'prin-inf))
-	     (setq pole-list (append pole-list (list (cons ul 'ignored))))))
-    (cond ((eq ll first)
-	   (if (eq ll '$minf)
+	  (t (if (eq *ul* '$inf)
+		 (setq *ul* 'prin-inf))
+	     (setq pole-list (append pole-list (list (cons *ul* 'ignored))))))
+    (cond ((eq *ll* first)
+	   (if (eq *ll* '$minf)
 	       (setq pole-list (subst (m- 'prin-inf) '$minf pole-list))))
-	  (t (if (eq ll '$minf)
-		 (setq ll (m- 'prin-inf)))
-	     (setq pole-list (append (list (cons ll 'ignored)) pole-list)))))
+	  (t (if (eq *ll* '$minf)
+		 (setq *ll* (m- 'prin-inf)))
+	     (setq pole-list (append (list (cons *ll* 'ignored)) pole-list)))))
   pole-list)
 
 ;; Assumes EXP is a rational expression with no polynomial part and
@@ -647,7 +647,7 @@ in the interval of integration.")
 ;;
 ;; (I'm guessing CV means Change Variable here.)
 (defun cv (exp)
-  (if (not (or (real-infinityp ll) (real-infinityp ul)))
+  (if (not (or (real-infinityp *ll*) (real-infinityp *ul*)))
       ;; FIXME!  This is a hack.  We apply the transformation with
       ;; symbolic limits and then substitute the actual limits later.
       ;; That way method-by-limits (usually?) sees a simpler
@@ -656,17 +656,17 @@ in the interval of integration.")
       ;; See Bugs 938235 and 941457.  These fail because $FACTOR is
       ;; unable to factor the transformed result.  This needs more
       ;; work (in other places).
-      (let ((trans (integrand-changevar (m// (m+t 'll (m*t 'ul 'yx))
+      (let ((trans (integrand-changevar (m// (m+t '*ll* (m*t '*ul* 'yx))
 					     (m+t 1. 'yx))
 					'yx exp var)))
 	;; If the limit is a number, use $substitute so we simplify
 	;; the result.  Do we really want to do this?
-	(setf trans (if (mnump ll)
-			($substitute ll 'll trans)
-			(subst ll 'll trans)))
-	(setf trans (if (mnump ul)
-			($substitute ul 'ul trans)
-			(subst ul 'ul trans)))
+	(setf trans (if (mnump *ll*)
+			($substitute *ll* '*ll* trans)
+			(subst *ll* '*ll* trans)))
+	(setf trans (if (mnump *ul*)
+			($substitute *ul* '*ul* trans)
+			(subst *ul* '*ul* trans)))
 	(method-by-limits trans 'yx 0. '$inf))
       ()))
 
@@ -684,22 +684,22 @@ in the interval of integration.")
 
       (cond ((equal 0. (car e))
 	     ;; No polynomial part
-	     (let ((ans (try-antideriv exp ll ul)))
+	     (let ((ans (try-antideriv exp *ll* *ul*)))
 	       (if ans
 		   ans
 		   (cv exp))))
 	    ((equal 0. (cdr e))
 	     ;; Only polynomial part
-	     (eezz (car e) ll ul))
+	     (eezz (car e) *ll* *ul*))
 	    (t
 	     ;; A non-zero quotient and remainder.  Combine the results
 	     ;; together.
-	     (let ((ans (try-antideriv (m// (cdr e) dn*) ll ul)))
+	     (let ((ans (try-antideriv (m// (cdr e) dn*) *ll* *ul*)))
 	       (cond (ans
-		      (m+t (eezz (car e) ll ul)
+		      (m+t (eezz (car e) *ll* *ul*)
 			   ans))
 		     (t
-		      (m+t (eezz (car e) ll ul)
+		      (m+t (eezz (car e) *ll* *ul*)
 			   (cv (m// (cdr e) dn*)))))))))))
 
 ;; I think this takes a rational expression E, and finds the
@@ -720,13 +720,13 @@ in the interval of integration.")
 	   (let ((ans (catch 'divergent
 			(andmapcar #'(lambda (new-exp)
 				       (let ((*def2* t))
-					 (defint new-exp var ll ul)))
+					 (defint new-exp var *ll* *ul*)))
 				   (cdr exp)))))
 	     (cond ((null ans) nil)
 		   ((eq ans 'divergent)
 		    (let ((*nodiverg nil))
 		      (cond ((setq ans (antideriv saved-exp))
-			     (intsubs ans ll ul))
+			     (intsubs ans *ll* *ul*))
 			    (t nil))))
 		   (t (sratsimp (m+l ans))))))
 ;;;If leadop isn't plus don't do anything.
@@ -735,15 +735,15 @@ in the interval of integration.")
 (defun kindp34 nil
   (numden exp)
   (let* ((d dn*)
-	 (a (cond ((and (zerop1 ($limit d var ll '$plus))
-			(eq (limit-pole (m+ exp (m+ (m- ll) var))
-					var ll '$plus)
+	 (a (cond ((and (zerop1 ($limit d var *ll* '$plus))
+			(eq (limit-pole (m+ exp (m+ (m- *ll*) var))
+					var *ll* '$plus)
 			    '$yes))
 		   t)
 		  (t nil)))
-	 (b (cond ((and (zerop1 ($limit d var ul '$minus))
-			(eq (limit-pole (m+ exp (m+ ul (m- var)))
-					var ul '$minus)
+	 (b (cond ((and (zerop1 ($limit d var *ul* '$minus))
+			(eq (limit-pole (m+ exp (m+ *ul* (m- var)))
+					var *ul* '$minus)
 			    '$yes))
 		   t)
 		  (t nil))))
@@ -757,25 +757,25 @@ in the interval of integration.")
   (cond ((null (order-limits ask-or-not))  ())
 	(t (mapc 'forget *defint-assumptions*)
 	   (setq *defint-assumptions* ())
-	   (let ((sign-ll (cond ((eq ll '$inf)  '$pos)
-				((eq ll '$minf) '$neg)
-				(t ($sign ($limit ll)))))
-		 (sign-ul (cond ((eq ul '$inf)  '$pos)
-				((eq ul '$minf)  '$neg)
-				(t ($sign ($limit ul)))))
-		 (sign-ul-ll (cond ((and (eq ul '$inf)
-					 (not (eq ll '$inf)))  '$pos)
-				   ((and (eq ul '$minf)
-					 (not (eq ll '$minf)))  '$neg)
-				   (t ($sign ($limit (m+ ul (m- ll))))))))
+	   (let ((sign-ll (cond ((eq *ll* '$inf)  '$pos)
+				((eq *ll* '$minf) '$neg)
+				(t ($sign ($limit *ll*)))))
+		 (sign-ul (cond ((eq *ul* '$inf)  '$pos)
+				((eq *ul* '$minf)  '$neg)
+				(t ($sign ($limit *ul*)))))
+		 (sign-ul-ll (cond ((and (eq *ul* '$inf)
+					 (not (eq *ll* '$inf)))  '$pos)
+				   ((and (eq *ul* '$minf)
+					 (not (eq *ll* '$minf)))  '$neg)
+				   (t ($sign ($limit (m+ *ul* (m- *ll*))))))))
 	     (cond ((eq sign-ul-ll '$pos)
 		    (setq *defint-assumptions*
-			  `(,(assume `((mgreaterp) ,var ,ll))
-			    ,(assume `((mgreaterp) ,ul ,var)))))
+			  `(,(assume `((mgreaterp) ,var ,*ll*))
+			    ,(assume `((mgreaterp) ,*ul* ,var)))))
 		   ((eq sign-ul-ll '$neg)
 		    (setq *defint-assumptions*
-			  `(,(assume `((mgreaterp) ,var ,ul))
-			    ,(assume `((mgreaterp) ,ll ,var))))))
+			  `(,(assume `((mgreaterp) ,var ,*ul*))
+			    ,(assume `((mgreaterp) ,*ll* ,var))))))
 	     (cond ((and (eq sign-ll '$pos)
 			 (eq sign-ul '$pos))
 		    (setq *defint-assumptions*
@@ -828,56 +828,56 @@ in the interval of integration.")
 	   (i-$remove `(,(cadar llist) ,(caddar llist)))))))
 
 (defun order-limits (ask-or-not)
-  (cond ((or (not (equal ($imagpart ll) 0))
-	     (not (equal ($imagpart ul) 0)))  ())
-	(t (cond ((alike1 ll (m*t -1 '$inf))
-		  (setq ll '$minf)))
-	   (cond ((alike1 ul (m*t -1 '$inf))
-		  (setq ul '$minf)))
-	   (cond ((alike1 ll (m*t -1 '$minf))
-		  (setq ll '$inf)))
-	   (cond ((alike1 ul (m*t -1 '$minf))
-		  (setq ul '$inf)))
-	   (cond ((eq ll ul)
-		  ; We have minf <= ll = ul <= inf
+  (cond ((or (not (equal ($imagpart *ll*) 0))
+	     (not (equal ($imagpart *ul*) 0)))  ())
+	(t (cond ((alike1 *ll* (m*t -1 '$inf))
+		  (setq *ll* '$minf)))
+	   (cond ((alike1 *ul* (m*t -1 '$inf))
+		  (setq *ul* '$minf)))
+	   (cond ((alike1 *ll* (m*t -1 '$minf))
+		  (setq *ll* '$inf)))
+	   (cond ((alike1 *ul* (m*t -1 '$minf))
+		  (setq *ul* '$inf)))
+	   (cond ((eq *ll* *ul*)
+		  ; We have minf <= *ll* = *ul* <= inf
 		  )
-		 ((eq ul '$inf)
-		  ; We have minf <= ll < ul = inf
+		 ((eq *ul* '$inf)
+		  ; We have minf <= *ll* < *ul* = inf
 		  )
-		 ((eq ll '$minf)
-		  ; We have minf = ll < ul < inf
+		 ((eq *ll* '$minf)
+		  ; We have minf = *ll* < *ul* < inf
 		  ;
 		  ; Now substitute
 		  ;
 		  ;   var -> -var
-		  ;   ll  -> -ul
-		  ;   ul  -> inf
+		  ;   *ll*  -> -*ul*
+		  ;   *ul*  -> inf
 		  ;
-		  ; so that minf < ll < ul = inf
+		  ; so that minf < *ll* < *ul* = inf
 		  (setq exp (subin (m- var) exp))
-		  (setq ll (m- ul))
-		  (setq ul '$inf))
-		 ((or (eq ll '$inf)
+		  (setq *ll* (m- *ul*))
+		  (setq *ul* '$inf))
+		 ((or (eq *ll* '$inf)
 		      (equal (complm ask-or-not) -1))
-		  ; We have minf <= ul < ll
+		  ; We have minf <= *ul* < *ll*
 		  ;
 		  ; Now substitute
 		  ;
 		  ;   exp  -> -exp
-		  ;   ll  <-> ul
+		  ;   *ll*  <-> *ul*
 		  ;
-		  ; so that minf <= ll < ul
+		  ; so that minf <= *ll* < *ul*
 		  (setq exp (m- exp))
-		  (rotatef ll ul)))
+		  (rotatef *ll* *ul*)))
 	   t)))
 
 (defun complm (ask-or-not)
   (let ((askflag (cond ((eq ask-or-not 'ask)  t)
 		       (t nil)))
 	(a ()))
-    (cond ((alike1 ul ll)  0.)
-	  ((eq (setq a (cond (askflag ($asksign ($limit (m+t ul (m- ll)))))
-			     (t ($sign ($limit (m+t ul (m- ll)))))))
+    (cond ((alike1 *ul* *ll*)  0.)
+	  ((eq (setq a (cond (askflag ($asksign ($limit (m+t *ul* (m- *ll*)))))
+			     (t ($sign ($limit (m+t *ul* (m- *ll*)))))))
 	       '$pos)
 	   1.)
 	  ((eq a '$neg)  -1)
@@ -929,10 +929,10 @@ in the interval of integration.")
 	 (m*l (mapcar #'discontinuities-denom (cdr exp))))))
 
 ;; returns list of places where exp might be discontinuous in var.
-;; list begins with ll and ends with ul, and include any values between
-;; ll and ul.
+;; list begins with *ll* and ends with *ul*, and include any values between
+;; *ll* and *ul*.
 ;; return '$no or '$unknown if no discontinuities found.
-(defun discontinuities-in-interval (exp var ll ul)
+(defun discontinuities-in-interval (exp var *ll* *ul*)
   (let* ((denom (discontinuities-denom exp))
 	 (roots (real-roots denom var)))
     (cond ((eq roots '$failure)
@@ -943,13 +943,13 @@ in the interval of integration.")
 		  (pole-list nil))
 		 ((null dummy)
 		  (cond (pole-list
-			 (append (list ll)
+			 (append (list *ll*)
 				 (sortgreat pole-list)
-				 (list ul)))
+				 (list *ul*)))
 			(t '$no)))
 		 (let ((soltn (caar dummy)))
 		   ;; (multiplicity (cdar dummy)) ;; not used
-		   (if (strictly-in-interval soltn ll ul)
+		   (if (strictly-in-interval soltn *ll* *ul*)
 		       (push soltn pole-list))))))))
 
 
@@ -965,8 +965,8 @@ in the interval of integration.")
 		   (t (same-sheet-subs e a b)))))))
 
 ;; Try easy substitutions.  Return NIL if we can't.
-(defun easy-subs (e ll ul)
-  (cond ((or (infinityp ll) (infinityp ul))
+(defun easy-subs (e *ll* *ul*)
+  (cond ((or (infinityp *ll*) (infinityp *ul*))
 	 ;; Infinite limits aren't easy
 	 nil)
 	(t
@@ -988,8 +988,8 @@ in the interval of integration.")
 		;;
 		;; So just try to substitute the limits into the
 		;; expression.  If no errors are produced, we're done.
-		(let ((ll-val (no-err-sub ll e))
-		      (ul-val (no-err-sub ul e)))
+		(let ((ll-val (no-err-sub *ll* e))
+		      (ul-val (no-err-sub *ul* e)))
 		  (cond ((or (eq ll-val t)
                              (eq ul-val t))
                          ;; no-err-sub has returned T. An error was catched.
@@ -999,12 +999,12 @@ in the interval of integration.")
 			(t nil))))
 	       (t nil)))))
 
-(defun limit-subs (e ll ul)
+(defun limit-subs (e *ll* *ul*)
   (cond ((involve e '(%atan %gamma_incomplete %expintegral_ei))
 	 ())	; functions with discontinuities
 	(t (setq e ($multthru e))
-	   (let ((a1 ($limit e var ll '$plus))
-		 (a2 ($limit e var ul '$minus)))
+	   (let ((a1 ($limit e var *ll* '$plus))
+		 (a2 ($limit e var *ul* '$minus)))
 	     (combine-ll-ans-ul-ans a1 a2)))))
 
 ;; check for divergent integral
@@ -1020,7 +1020,7 @@ in the interval of integration.")
 	(t (m- a2 a1))))
 
 ;;;This function works only on things with ATAN's in them now.
-(defun same-sheet-subs (exp ll ul &aux ll-ans ul-ans)
+(defun same-sheet-subs (exp *ll* *ul* &aux ll-ans ul-ans)
   ;; POLES-IN-INTERVAL doesn't know about the poles of tan(x).  Call
   ;; trigsimp to convert tan into sin/cos, which POLES-IN-INTERVAL
   ;; knows how to handle.
@@ -1033,21 +1033,21 @@ in the interval of integration.")
   ;; XXX Should the result try to convert sin/cos back into tan?  (A
   ;; call to trigreduce would do it, among other things.)
   (let* ((exp (mfuncall '$trigsimp exp))
-	 (poles (atan-poles exp ll ul)))
+	 (poles (atan-poles exp *ll* *ul*)))
     ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......)
     ;;We can then use $SUBSTITUTE
-    (setq ll-ans (limcp exp var ll '$plus))
+    (setq ll-ans (limcp exp var *ll* '$plus))
     (setq exp (sratsimp ($substitute poles exp)))
-    (setq ul-ans (limcp exp var ul '$minus))
+    (setq ul-ans (limcp exp var *ul* '$minus))
     (if (and ll-ans 
 	     ul-ans)
 	(combine-ll-ans-ul-ans ll-ans ul-ans)
       nil)))
 
-(defun atan-poles (exp ll ul)
-  `((mlist) ,@(atan-pole1 exp ll ul)))
+(defun atan-poles (exp *ll* *ul*)
+  `((mlist) ,@(atan-pole1 exp *ll* *ul*)))
 
-(defun atan-pole1 (exp ll ul &aux ipart)
+(defun atan-pole1 (exp *ll* *ul* &aux ipart)
   (cond
     ((mapatom exp)  ())
     ((matanp exp)	 ;neglect multiplicity and '$unknowns for now.
@@ -1056,14 +1056,14 @@ in the interval of integration.")
        ((not (equal (sratsimp ipart) 0))  ())
        (t (let ((pole (poles-in-interval (let (($algebraic t))
 					   (sratsimp (cadr exp)))
-					 var ll ul)))
+					 var *ll* *ul*)))
 	    (cond ((and pole (not (or (eq pole '$unknown)
 				      (eq pole '$no))))
 		   (do ((l pole (cdr l)) (llist ()))
 		       ((null l)  llist)
 		     (cond
-		       ((zerop1 (m- (caar l) ll)) t)  ; don't worry about discontinuity
- 		       ((zerop1 (m- (caar l) ul)) t)  ;  at boundary of integration
+		       ((zerop1 (m- (caar l) *ll*)) t)  ; don't worry about discontinuity
+ 		       ((zerop1 (m- (caar l) *ul*)) t)  ;  at boundary of integration
 		       (t (let ((low-lim ($limit (cadr exp) var (caar l) '$minus))
 				(up-lim ($limit (cadr exp) var (caar l) '$plus)))
 			    (cond ((and (not (eq low-lim up-lim))
@@ -1077,7 +1077,7 @@ in the interval of integration.")
     (t (do ((l (cdr exp) (cdr l))
 	    (llist ()))
 	   ((null l)  llist)
-	 (setq llist (append llist (atan-pole1 (car l) ll ul)))))))
+	 (setq llist (append llist (atan-pole1 (car l) *ll* *ul*)))))))
 
 (defun difapply (n d s fn1)
   (prog (k m r $noprincipal)
@@ -1801,7 +1801,7 @@ in the interval of integration.")
                                        k)
                                 (power var n))))
 	    (m* mult
-		`((%integrate) ,integrand ,var ,ll ,ul)))))))
+		`((%integrate) ,integrand ,var ,*ll* ,*ul*)))))))
 
 ;; integrate(sin(x)^n/x^2,x,0,inf) = pi/2*binomial(n-3/2,n-1).
 ;; Express in terms of Gamma functions, though.
@@ -2130,7 +2130,7 @@ in the interval of integration.")
 
 ;;;Is careful about substitution of limits where the denominator may be zero
 ;;;because of various assumptions made.
-(defun sin-cos-intsubs (exp var ll ul)
+(defun sin-cos-intsubs (exp var *ll* *ul*)
   (cond ((mplusp exp)
 	 (let ((l (mapcar #'sin-cos-intsubs1 (cdr exp))))
 	   (if (not (some #'null l))
@@ -2142,18 +2142,18 @@ in the interval of integration.")
 	 (denom (pdis (cddr rat-exp))))
     (cond ((equal ($csign denom) '$zero)
 	   '$und)
-	  (t (try-intsubs exp ll ul)))))
+	  (t (try-intsubs exp *ll* *ul*)))))
 
-(defun try-intsubs (exp ll ul)
+(defun try-intsubs (exp *ll* *ul*)
   (let* ((*nodiverg t)
-	 (ans (catch 'divergent (intsubs exp ll ul))))
+	 (ans (catch 'divergent (intsubs exp *ll* *ul*))))
     (if (eq ans 'divergent)
 	nil
       ans)))
 
-(defun try-defint (exp var ll ul)
+(defun try-defint (exp var *ll* *ul*)
   (let* ((*nodiverg t)
-	 (ans (catch 'divergent (defint exp var ll ul))))
+	 (ans (catch 'divergent (defint exp var *ll* *ul*))))
     (if (eq ans 'divergent)
 	nil
       ans)))
@@ -2292,7 +2292,7 @@ in the interval of integration.")
 		 (not (eq ($asksign m) '$neg)))
 	(setq e (m//t e (list '(mexpt) log m)))
 	(cond
-	  ((eq ul '$inf)
+	  ((eq *ul* '$inf)
 	   (multiple-value-bind (kk s d r cc)
 	       (batap-inf e)
 	     ;; We have i(x^kk/(d+cc*x^r)^s,x,0,inf) =
@@ -2326,9 +2326,9 @@ in the interval of integration.")
 		   (m//t
 		    (m*t
 		     (m^t (m-t b) (m1-t l))
-		     (m^t ul (m*t n (m1-t l)))
+		     (m^t *ul* (m*t n (m1-t l)))
 		     (m^t n (m-t (m1+t m)))
-		     ($at ($diff (m*t (m^t ul (m*t n var))
+		     ($at ($diff (m*t (m^t *ul* (m*t n var))
 				      (list '($beta) var l))
 				 var m)
 			  (list '(mequal) var k/n)))
@@ -2354,7 +2354,7 @@ in the interval of integration.")
 	(when (and (freeof var k)
 		   (freeof var n)
 		   (freeof var l)
-		   (alike1 a (m-t (m*t b (m^t ul n))))
+		   (alike1 a (m-t (m*t b (m^t *ul* n))))
 		   (eq ($asksign b) '$neg)
 		   (eq ($asksign (setq k (m1+t k))) '$pos)
 		   (eq ($asksign (setq l (m1+t l))) '$pos)
@@ -2396,9 +2396,9 @@ in the interval of integration.")
 
 ;; Handles beta integrals.
 (defun batapp (e)
-  (cond ((not (or (equal ll 0)
-		  (eq ll '$minf)))
-	 (setq e (subin (m+ ll var) e))))
+  (cond ((not (or (equal *ll* 0)
+		  (eq *ll* '$minf)))
+	 (setq e (subin (m+ *ll* var) e))))
   (multiple-value-bind (k c)
       (bata0 e)
     (cond ((null k)
@@ -2454,14 +2454,14 @@ in the interval of integration.")
       (m* '$%pi result))))
 
 
-(defun logx1 (exp ll ul)
+(defun logx1 (exp *ll* *ul*)
   (let ((arg nil))
     (cond
       ((and (notinvolve exp '(%sin %cos %tan %atan %asin %acos))
 	    (setq arg (involve exp '(%log))))
        (cond ((eq arg var)
-	      (cond ((ratgreaterp 1. ll)
-		     (cond ((not (eq ul '$inf))
+	      (cond ((ratgreaterp 1. *ll*)
+		     (cond ((not (eq *ul* '$inf))
 			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,var))))
 			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,var)))))))
 	     (t (intcv arg nil)))))))
@@ -2696,7 +2696,7 @@ in the interval of integration.")
   (let ((new-p (subst (list '(%log) var) var p))
 	(new-pe (subst var 'z* (catch 'pin%ex (pin%ex pe))))
 	(new-d (subst var 'z* (catch 'pin%ex (pin%ex d)))))
-    (defint (div (div (mul new-p new-pe) new-d) var) var 0 ul)))
+    (defint (div (div (mul new-p new-pe) new-d) var) var 0 *ul*)))
 
 ;; This implements Wang's algorithm in Chapter 5.2, pp. 98-100.
 ;;
@@ -2929,14 +2929,14 @@ in the interval of integration.")
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp var)     ;To be moved higher in the code.
 		(setq ans (antideriv exp))
-		(setq ans (intsubs ans ll ul)))
+		(setq ans (intsubs ans *ll* *ul*)))
 	   ;; If we can integrate it directly, do so and take the
 	   ;; appropriate limits.
 	   )
 	  ((setq ans (funclogor%e exp))
 	   ;; ans is the list (f(x) exp(k*x)).
-	   (cond ((and (equal ll 0.)
-		       (eq ul '$inf))
+	   (cond ((and (equal *ll* 0.)
+		       (eq *ul* '$inf))
 		  ;; Use the substitution s + 1 = exp(k*x).  The
 		  ;; integral becomes integrate(f(s+1)/(s+1),s,0,inf)
 		  (setq ans (m+t -1 (cadr ans))))
@@ -2951,8 +2951,8 @@ in the interval of integration.")
 (defun dintlog (exp arg)
   (let ((*dintlog-recur* (1+ *dintlog-recur*))) ;recursion stopper
     (prog (ans d)
-       (cond ((and (eq ul '$inf)
-		   (equal ll 0.)
+       (cond ((and (eq *ul* '$inf)
+		   (equal *ll* 0.)
 		   (eq arg var)
 		   (equal 1 (sratsimp (m// exp (m* (m- (subin (m^t var -1)
 							       exp))
@@ -2960,13 +2960,13 @@ in the interval of integration.")
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
-             ((and (setq ans (let (($gamma_expand t)) (logx1 exp ll ul)))
+             ((and (setq ans (let (($gamma_expand t)) (logx1 exp *ll* *ul*)))
 		   (free ans '%limit))
 	      (return ans))
 	     ((setq ans (antideriv exp))
 	      ;; It's easy if we have the antiderivative.
 	      ;; but intsubs sometimes gives results containing %limit
-	      (return (intsubs ans ll ul))))
+	      (return (intsubs ans *ll* *ul*))))
        ;; Ok, the easy cases didn't work.  We now try integration by
        ;; parts.  Set ANS to f(x).
        (setq ans (m// exp `((%log) ,arg)))
@@ -2977,7 +2977,7 @@ in the interval of integration.")
 		   (equal 0. (no-err-sub 0. ans))
 		   (setq d (let ((*def2* t))
 			     (defint (m* ans (m^t var '*z*))
-				 var ll ul))))
+				 var *ll* *ul*))))
 	      ;; The arg of the log function is the same as the
 	      ;; integration variable.  We can do something a little
 	      ;; simpler than integration by parts.  We have something
@@ -2990,7 +2990,7 @@ in the interval of integration.")
 	      ;; f(x)*x^z, then we differentiate the result and
 	      ;; evaluate it at z = 0.
 	      (return (derivat '*z* 1. d 0.)))
-	     ((setq ans (dintbypart `((%log) ,arg) ans ll ul))
+	     ((setq ans (dintbypart `((%log) ,arg) ans *ll* *ul*))
 	      ;; Try integration by parts.
 	      (return ans))))))
 
@@ -3368,10 +3368,10 @@ in the interval of integration.")
 	  (t exp))))
 
 ;;; LL and UL must be real otherwise this routine return $UNKNOWN.
-;;; Returns $no $unknown or a list of poles in the interval (ll ul)
+;;; Returns $no $unknown or a list of poles in the interval (*ll* *ul*)
 ;;; for exp w.r.t. var.
 ;;; Form of list ((pole . multiplicity) (pole1 . multiplicity) ....)
-(defun poles-in-interval (exp var ll ul)
+(defun poles-in-interval (exp var *ll* *ul*)
   (let* ((denom (cond ((mplusp exp)
 		       ($denom (sratsimp exp)))
 		      ((and (mexptp exp)
@@ -3380,8 +3380,8 @@ in the interval of integration.")
 		       (m^ (cadr exp) (m- (caddr exp))))
 		      (t ($denom exp))))
 	 (roots (real-roots denom var))
-	 (ll-pole (limit-pole exp var ll '$plus))
-	 (ul-pole (limit-pole exp var ul '$minus)))
+	 (ll-pole (limit-pole exp var *ll* '$plus))
+	 (ul-pole (limit-pole exp var *ul* '$minus)))
     (cond ((or (eq roots '$failure)
 	       (null ll-pole)
 	       (null ul-pole))   '$unknown)
@@ -3396,17 +3396,17 @@ in the interval of integration.")
 		    (setq roots ())))
 	     (do ((dummy roots (cdr dummy))
 		  (pole-list (cond ((not (eq ll-pole '$no))
-				    `((,ll . 1)))
+				    `((,*ll* . 1)))
 				   (t nil))))
 		 ((null dummy)
 		  (cond ((not (eq ul-pole '$no))
-			 (sort-poles (push `(,ul . 1) pole-list)))
+			 (sort-poles (push `(,*ul* . 1) pole-list)))
 			((not (null pole-list))
 			 (sort-poles pole-list))
 			(t '$no)))
 	       (let* ((soltn (caar dummy))
 		      ;; (multiplicity (cdar dummy)) (not used? -- cwh)
-		      (root-in-ll-ul (in-interval soltn ll ul)))
+		      (root-in-ll-ul (in-interval soltn *ll* *ul*)))
 		 (cond ((eq root-in-ll-ul '$no) '$no)
 		       ((eq root-in-ll-ul '$yes)
 			(let ((lim-ans (is-a-pole exp soltn)))
@@ -3481,27 +3481,27 @@ in the interval of integration.")
 		  'epsilon))
 	     'epsilon 0 '$plus))
 
-(defun in-interval (place ll ul)
-  ;; real values for ll and ul; place can be imaginary.
-  (let ((order (ask-greateq ul ll)))
+(defun in-interval (place *ll* *ul*)
+  ;; real values for *ll* and *ul*; place can be imaginary.
+  (let ((order (ask-greateq *ul* *ll*)))
     (cond ((eq order '$yes))
-	  ((eq order '$no) (let ((temp ul)) (setq ul ll ll temp)))
+	  ((eq order '$no) (let ((temp *ul*)) (setq *ul* *ll* *ll* temp)))
 	  (t (merror (intl:gettext "defint: failed to order limits of integration:~%~M")
-		     (list '(mlist simp) ll ul)))))
+		     (list '(mlist simp) *ll* *ul*)))))
   (if (not (equal ($imagpart place) 0))
       '$no
-      (let ((lesseq-ul (ask-greateq ul place))
-	    (greateq-ll (ask-greateq place ll)))
+      (let ((lesseq-ul (ask-greateq *ul* place))
+	    (greateq-ll (ask-greateq place *ll*)))
 	(if (and (eq lesseq-ul '$yes) (eq greateq-ll '$yes)) '$yes '$no))))
 
 ;; returns true or nil
-(defun strictly-in-interval (place ll ul)
-  ;; real values for ll and ul; place can be imaginary.
+(defun strictly-in-interval (place *ll* *ul*)
+  ;; real values for *ll* and *ul*; place can be imaginary.
   (and (equal ($imagpart place) 0)
-       (or (eq ul '$inf) 
-	   (eq ($asksign (m+ ul (m- place))) '$pos))
-       (or (eq ll '$minf) 
-	   (eq ($asksign (m+ place (m- ll))) '$pos))))
+       (or (eq *ul* '$inf) 
+	   (eq ($asksign (m+ *ul* (m- place))) '$pos))
+       (or (eq *ll* '$minf) 
+	   (eq ($asksign (m+ place (m- *ll*))) '$pos))))
 
 (defun real-roots (exp var)
   (let (($solvetrigwarn (cond (defintdebug t) ;Rest of the code for
@@ -3668,7 +3668,7 @@ in the interval of integration.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun defint-log-exp (expr var ll ul)
+(defun defint-log-exp (expr var *ll* *ul*)
   (let ((x nil)
         (result nil)
         (var1 (gensym)))
@@ -3681,7 +3681,7 @@ in the interval of integration.")
                 *global-defint-assumptions*))
 
     (cond
-      ((and (eq ul '$inf)
+      ((and (eq *ul* '$inf)
             (setq x (m2-log-exp-1 expr)))
        ;; The integrand matches the cases 1 and 2.
        (let ((c (cdras 'c x))
@@ -3697,7 +3697,7 @@ in the interval of integration.")
            (format t "~&   : m = ~A~%" m)
            (format t "~&   : s = ~A~%" s))
 
-         (cond ((and (zerop1 ll)
+         (cond ((and (zerop1 *ll*)
                      (integerp m)
                      (>= m 0)
                      (not (eq ($sign s) '$zero))
@@ -3711,7 +3711,7 @@ in the interval of integration.")
                                (list '(mequal)
                                      var1
                                      (div (add w 1) s))))))
-             ((and (member ($sign ll) '($pos $pz))
+             ((and (member ($sign *ll*) '($pos $pz))
                    (integerp m)
                    (or (= m 0) (= m 1))	; Exclude m>1, because Maxima can not
                                         ; derivate the involved hypergeometric
@@ -3722,9 +3722,9 @@ in the interval of integration.")
                             (eq ($sign (div (add 1 w) s)) '$pos))))
               ;; Case 2: Generated by the Incomplete Gamma function.
 	      (let ((f (if (eq ($sign s) '$pos)
-			   (list '(%gamma_incomplete) var1 (power ll s))
+			   (list '(%gamma_incomplete) var1 (power *ll* s))
 			   (sub (list '(%gamma) var1)
-				(list '(%gamma_incomplete) var1 (power ll s))))))
+				(list '(%gamma_incomplete) var1 (power *ll* s))))))
 		(setq result 
 		      (mul c
 			   (simplify (list '(%signum) s))
@@ -3733,8 +3733,8 @@ in the interval of integration.")
 				(list '(mequal) var1 (div (add 1 w) s)))))))
                (t 
                 (setq result nil)))))
-      ((and (zerop1 ll)
-            (onep1 ul)
+      ((and (zerop1 *ll*)
+            (onep1 *ul*)
             (setq x (m2-log-exp-2 expr)))
        ;; Case 3: Generated by the Beta function.
        (let ((c (cdras 'c x))
