@@ -5,6 +5,12 @@ New items in core:
 ------------------
  * function powerseries: power series for function lambert_w
    (thanks to Dimiter Prodanov)
+ * --init option strips any directories and the last extension from the
+   given value.  This value is used as the basename instead of
+   "maxima-init" for the name of the init file.  This is an incompatible
+   change.
+ * --init-mac and --init-lisp are now (deprecated) aliases for --preload.
+   This is an incompatible change.
 
 New items in share:
 -------------------
@@ -69,8 +75,9 @@ Unnumbered bugs fixed:
 Documentation:
 --------------
  * Help can use html docs instead of displaying help to the terminal.
-   This is enabled by setting describe_uses_html to true; it defaults
-   to false.
+   This is enabled by setting output_format_for_help to 'html; it defaults
+   to 'text.  Use 'frontend to display help using Xmaxima, wxMaxima or
+   other frontends.
 
 Build system:
 -------------
