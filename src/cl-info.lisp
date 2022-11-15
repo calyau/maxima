@@ -87,6 +87,7 @@
 
   
 (defun info-exact (x)
+  (setq x (strip-quotes x))
   (let ((exact-matches (exact-topic-match x)))
     (if (not (some-exact x exact-matches))
       (progn
@@ -126,6 +127,7 @@
       (find-regex-matches regex2 defn-table))))
 
 (defun info-inexact (x)
+  (setq x (strip-quotes x))
   (let ((inexact-matches (inexact-topic-match x)))
     (when inexact-matches
       (display-items inexact-matches))
@@ -196,6 +198,17 @@
     (append
       (find-regex-matches topic section-table)
       (find-regex-matches topic defn-table))))
+
+;; If S is enclosed in single quotes or double quotes,
+;; return the quoted string.
+(defun strip-quotes (s)
+  (let ((n (length s)))
+    (if (<= n 2) s ;; incidentally return "" or '' verbatim
+      (let ((first-char (aref s 0)) (last-char (aref s (1- n))))
+        (if (or (and (eql first-char #\') (eql last-char #\'))
+                (and (eql first-char #\") (eql last-char #\")))
+          (subseq s 1 (1- n))
+          s)))))
 
 (defun regex-sanitize (s)
   "Precede any regex special characters with a backslash."
