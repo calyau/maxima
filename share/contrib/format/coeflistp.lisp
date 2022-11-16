@@ -403,7 +403,7 @@
 	((eq test t) (values list nil))
 	(t  (let ((pass nil)(fail nil))
 	      (dolist (item list)
-		(if (is-boole-check (mapply test (cddr item) '$partition_test))
+		(if ($is-boole-eval (mapply test (cddr item) '$partition_test))
 		    (push item pass)
 		    (push item fail)))
 	      (values (nreverse pass)(nreverse fail))))))

@@ -1418,7 +1418,7 @@
 
     ; build 2d arrays: x, y and boolean
     (labels ((fun (xx yy)  ; evaluates boolean expression
-                  (is-boole-check 
+                  ($is-boole-eval
                     (simplify
                       ($substitute
                         (list '(mlist)
