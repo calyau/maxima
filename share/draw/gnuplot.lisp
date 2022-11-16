@@ -1418,13 +1418,14 @@
 
     ; build 2d arrays: x, y and boolean
     (labels ((fun (xx yy)  ; evaluates boolean expression
-                  ($is-boole-eval
-                    (simplify
-                      ($substitute
-                        (list '(mlist)
-                              (list '(mequal) x-var xx)
-                              (list '(mequal) y-var yy))
-                        ineq))))
+                  (let (($prederror t))
+                    ($is-boole-eval
+                      (simplify
+                        ($substitute
+                          (list '(mlist)
+                                (list '(mequal) x-var xx)
+                                (list '(mequal) y-var yy))
+                          ineq)))))
              (bipart (xx1 yy1 xx2 yy2) ; bipartition, (xx1, yy1) => T, (xx2, yy2) => NIL
                      (let ((xm (* 0.5 (+ xx1 xx2)))
                            (ym (* 0.5 (+ yy1 yy2))))
