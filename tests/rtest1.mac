@@ -753,7 +753,7 @@ ibase: 16.;
 16.;
 
 /* these are the codes for the space characters mentioned in src/nparse.lisp */
-(space_chars: map (unicode, [ 00A0, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 200A, 200B, 202F, 205F, 0FEFF ]),
+(space_chars: map (unicode, [ 00A0, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 200A, 200B, 202F, 205F ]),
  ibase: 10.);
 10.;
 

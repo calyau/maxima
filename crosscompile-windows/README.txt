@@ -3,7 +3,7 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-x86-64 cmake nsis wine automake texinfo texlive texlive-plain-generic texlive-xetex rsync p7zip-full g++ gettext python3 tcl pandoc po4a
+apt-get install g++-mingw-w64-x86-64 cmake nsis wine automake texlive texlive-plain-generic texlive-xetex rsync p7zip-full g++ gettext python3 tcl pandoc po4a
 
 The Mingw compiler comes in two flavors for threading (win32 and posix threads).
 wxMaxima requires posix threads, so you must reconfigure mingw and select the posix

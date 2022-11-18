@@ -138,7 +138,7 @@
 (def-formatter $%if (expr &rest predicates)
   ($format_piece expr (do ((ps predicates (cdr ps))
 			   (i 1 (1+ i)))
-			  ((or (null ps)(is-boole-check (mfuncall (car ps) expr))) i))))
+			  ((or (null ps)($is-boole-eval (mfuncall (car ps) expr))) i))))
 
 (def-formatter ($%expr $%expression)(expr)	; format arguments/operands
   (when ($atom expr)
@@ -213,7 +213,7 @@
 
 (def-formatter $%match (expr predicate)
   (labels ((rec (xpr)
-	     (cond ((is-boole-check (mfuncall predicate xpr))(format-w/o-subtemplates xpr))
+	     (cond (($is-boole-eval (mfuncall predicate xpr))(format-w/o-subtemplates xpr))
 		   ((atom xpr) xpr)
 		   (t (recur-apply #'rec xpr)))))
     (rec expr)))

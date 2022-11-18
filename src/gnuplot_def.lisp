@@ -483,7 +483,7 @@
                 (t (format dest "set zeroaxis~%")))))
         ;; title and labels
         (when (getf plot-options :title)
-          (format dest "set title ~s~%" (getf plot-options :title)))
+          (format dest "set title \"~a\"~%" (getf plot-options :title)))
         (when (getf plot-options :label)
           (dolist (label (getf plot-options :label))
             (when (and (listp label) (= (length label) 4))

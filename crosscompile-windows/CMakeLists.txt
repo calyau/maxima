@@ -230,14 +230,14 @@ externalproject_add(maxima
   DEPENDS clisp sbcl tcl tk texinfo ${ABCL_DEPENDS}
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
-            COMMAND ${CMAKE_COMMAND} -E env PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
+            COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk
-        COMMAND LANG=C ${CMAKE_COMMAND} -E env PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} $(MAKE)
-        COMMAND LANG=C ${CMAKE_COMMAND} -E env PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} $(MAKE) pdf
-  INSTALL_COMMAND LANG=C $(MAKE) install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
-          COMMAND LANG=C $(MAKE) extradocinstall DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
+        COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE)
+        COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) pdf
+  INSTALL_COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
+          COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) extradocinstall DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
 
 option(STRIP_HELPERPROGRAMS "Strip the included helper programs (winkill, winkill_lib, maxima_longnames)." YES)
