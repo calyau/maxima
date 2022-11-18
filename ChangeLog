@@ -65,7 +65,8 @@ Bug fixes for numbered bugs:
  * \#4008: translator and prederror
  * \#4018: defint(foo,,0,inf) lisp error when denom(foo) contains %i
  * \#4036: prederror affects bigfloat calculations
-
+ * \#4043 bug in to_poly
+ 
 Unnumbered bugs fixed:
 ---------------------
  * commit 7a7114c: avoid call to undefined function expintegral_ei
