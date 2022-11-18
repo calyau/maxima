@@ -251,7 +251,7 @@
      #-(or ccl cmucl ecl sbcl gcl clisp)
      ((mlist simp) 62))
     ((mlist simp) "rtest_to_poly"
-     #-(or ccl cmucl sbcl gcl ecl clisp)
+     #-(or abcl ccl cmucl sbcl gcl ecl clisp)
      ((mlist simp) 13 14 15 16 17 18 19 20 25))
 ;; Tested with acl 10.1
     ((mlist simp) "rtestprintf"
@@ -289,10 +289,12 @@
      #+clisp
      ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322)
      #+gcl
-     ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322)
+     ((mlist simp) 64 74 80 116 140 141 168 184 212 242 245 322)
      #+cmucl
      ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322)
      #+ecl
+     ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322)
+     #+sbcl
      ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322)
      #+ccl
      ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322))
