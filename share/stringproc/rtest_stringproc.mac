@@ -90,6 +90,18 @@ parse_string (".25b-1");
 parse_string ("foo");
 foo$
 
+parse_string ("foo;");
+foo$
+
+parse_string ("foo$;$;");
+foo$
+
+parse_string ("\"semicolon ; string\"");
+"semicolon ; string"$
+
+parse_string ("\"dollar $ string\"");
+"dollar $ string"$
+
 parse_string ("[2]");
 [2];
 

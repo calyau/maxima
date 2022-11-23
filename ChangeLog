@@ -61,6 +61,7 @@ Bug fixes for numbered bugs:
  * \#3926: Various limits give UND where they should give IND
  * \#3972: gcl only: Autocompletion inverts command case
  * \#3985: integrate(sin(x*cos(x)), x), risch; causes unlimited recursion
+ * \#3996: parse_string fails to parse string which contains semicolon
  * \#3998: Lisp error when parser encounters eof in a comment
  * \#4008: translator and prederror
  * \#4018: defint(foo,,0,inf) lisp error when denom(foo) contains %i
