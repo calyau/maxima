@@ -153,7 +153,7 @@
 	     ))
    (:module globals :source-pathname ""
     :components
-    (:file "globals"))
+    ((:file "globals")))
    (:module intl :source-pathname ""
 	    :components
 	    (

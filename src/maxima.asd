@@ -31,9 +31,9 @@
     :components (#-gcl(:file "maxima-package")
 		 #+ecl (:file "ecl-port")
 		 (:file "autoconf-variables" :depends-on ("maxima-package"))))
-   (:module globals :source-pathname ""
+   (:module globals :pathname ""
     :components
-    (:file "globals"))
+    ((:file "globals")))
    (:module intl :pathname ""
     :components
     (
@@ -54,9 +54,11 @@
    (:module compatibility-macros1 :pathname ""
     :components ((:file "generr")
 		 (:file "clmacs")))
+   (:module defmfun :pathname ""
+    :components
+    ((:file "defmfun-check")))
    (:module compatibility-macros :pathname ""
     :components (#+gcl (:file "gcl-compat")
-		 (:file "defmfun-check")
                  (:file "commac")))
    (:module prerequisites :pathname ""
     :components ((:file "mormac") 
