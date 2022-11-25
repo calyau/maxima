@@ -117,7 +117,7 @@
 	  exptrlsw factlist featurel fmaplvl
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
-	  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
+	  implicit-real in-p inratsimp inside-mprog
 	  integerl *islinp* limit-answers limitp linel
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
@@ -125,7 +125,7 @@
 	  need-prog? negprods negsums nn* noevalargs nonintegerl
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
-	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
+	  realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sign-imag-errp simplimplus-problems
 	  *small-primes* sqrt3//2 $stringdisp substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique

@@ -158,14 +158,6 @@
 					;If this switch is () then RPART returns ATAN's
 					;instead of ATAN2's
 
-(declare-top (special infinities real-infinities infinitesimals))
-
-;;These are really defined in LIMIT but DEFINT uses them also.
-(cond ((not (boundp 'infinities))
-       (setq infinities '($inf $minf $infinity))
-       (setq real-infinities '($inf $minf))
-       (setq infinitesimals '($zeroa $zerob))))
-
 (defmvar $intanalysis t
   "When @code{true}, definite integration tries to find poles in the integrand 
 in the interval of integration.")

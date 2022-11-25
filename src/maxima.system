@@ -151,6 +151,9 @@
 	     #-(or ecl abcl lispworks) (:private-file "autoconf-variables")
 	     #+(or ecl abcl lispworks) (:file "autoconf-variables")
 	     ))
+   (:module globals :source-pathname ""
+    :components
+    (:file "globals"))
    (:module intl :source-pathname ""
 	    :components
 	    (
@@ -168,6 +171,7 @@
 	    :components
 	    ((:file "sloop")))
    (:module declarations :source-pathname ""
+	    :depends-on ("globals")
 	    :components
 	    ((:file "lmdcls")))
    (:module destructuring-let :source-pathname ""
@@ -204,7 +208,7 @@
 	    :components
 	    ((:file "getopt")))
    (:module fundamental-macros :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "defcal")
 	     (:file "maxmac")))
@@ -633,7 +637,7 @@
 	    ((:file "option")
 	     (:file "macdes")))
    (:module algebraic-database :source-pathname ""
-	    :depends-on ("defmfun" "compatibility-macros1")
+	    :depends-on ("globals" "defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "inmis")
 	     (:file "db")
@@ -650,7 +654,7 @@
 	    :depends-on ("defmfun")
 	    :components ((:file "hayat")))
    (:module definite-integration :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "defint")
 	     (:file "residu")))
@@ -684,7 +688,7 @@
 	     (:file "matrun")
 	     (:file "nisimp")))
    (:module limits :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components ((:file "tlimit")
 			 (:file "limit")))
    (:module solve :source-pathname ""
@@ -702,7 +706,7 @@
 	    ((:file "mtrace")
 	     (:file "mdebug")))
    (:module miscellaneous :source-pathname ""
-	    :depends-on ("defmfun" "pattern-matching" "compatibility-macros1")
+	    :depends-on ("globals" "defmfun" "pattern-matching" "compatibility-macros1")
 	    :components
 	    ((:file "scs")
 	     (:file "asum")

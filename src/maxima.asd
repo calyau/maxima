@@ -31,6 +31,9 @@
 			:components (#-gcl(:file "maxima-package")
 					  #+ecl (:file "ecl-port")
 					  (:file "autoconf-variables" :depends-on ("maxima-package"))))
+	       (:module globals :source-pathname ""
+		:components
+		(:file "globals"))
            (:module intl :pathname ""
             :components (
               ;; Some versions of CMUCL already
@@ -45,6 +48,7 @@
 	       (:module sloop :pathname ""
 			:components ((:file "sloop")))
                (:module declarations :pathname ""
+			:depends-on (globals)
                         :components ((:file "lmdcls"))) 
                (:module destructuring-let :pathname ""
                         :components ((:file "letmac")))
@@ -69,7 +73,7 @@
 			:depends-on (getopt compatibility-macros)
 			:components ((:file "command-line")))
                (:module fundamental-macros :pathname ""
-                        :depends-on (compatibility-macros)
+                        :depends-on (globals defmfun compatibility-macros)
                         :components ((:file "defcal") 
                                      (:file "maxmac")))
                (:module utility-macros :pathname ""
@@ -495,7 +499,7 @@
 			:components ((:file "option")
 				     (:file "macdes")))
 	       (:module algebraic-database :pathname ""
-			:depends-on (compatibility-macros)
+			:depends-on (globals defmfun compatibility-macros)
 			:components ((:file "inmis") 
 				     (:file "db") 
 				     (:file "compar") 
@@ -509,7 +513,7 @@
 			:depends-on (rat-macros compatibility-macros)
 			:components ((:file "hayat")))
 	       (:module definite-integration :pathname ""
-			:depends-on (compatibility-macros)
+			:depends-on (globals defmfun compatibility-macros)
 			:components ((:file "defint") 
 				     (:file "residu")))
 	       (:module special-functions :pathname ""
@@ -526,7 +530,7 @@
 				     (:file "newinv") 
 				     (:file "newdet")))
 	       (:module limits :pathname ""
-			:depends-on (compatibility-macros)
+			:depends-on (globals defmfun compatibility-macros)
 			:components ((:file "tlimit") 
 				     (:file "limit")))
 	       (:module solve :pathname ""
@@ -542,7 +546,7 @@
 			:components ((:file "mtrace")
 				     (:file "mdebug")))
 	       (:module miscellaneous :pathname ""
-			:depends-on (compatibility-macros)
+			:depends-on (globals defmfun compatibility-macros)
 			:components ((:file "scs") 
 				     (:file "asum") 
 				     (:file "fortra") 
