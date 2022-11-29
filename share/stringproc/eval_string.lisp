@@ -54,12 +54,9 @@
   (let ((*mread-prompt* ""))
     (third (mread *parse-string-input-stream*)) ))
 
-;; (ENSURE-TERMINATOR S)  -- if the string S does not contain dollar sign `$' or semicolon `;'
-;; then append a dollar sign to the end of S.
+;; (ENSURE-TERMINATOR S)  --  always concatenate a dollar sign `$' to the end of S.
+;; Always concatenating a terminator is not a problem for PARSE-STRING since it only
+;; parses the first expression in a string.
 
 (defun ensure-terminator (s)
-  (cond
-    ((or (search "$" s :test #'char-equal) (search ";" s :test #'char-equal))
-     s)
-    (t
-      (concatenate 'string s "$"))))
+  (concatenate 'string s "$"))
