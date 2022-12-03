@@ -469,22 +469,16 @@ relational knowledge is contained in the default context GLOBAL.")
 	 the EXPAND command."
   fixnum
   see-also ($maxnegex $expop $expand)
+  ;; Check assignment to be a positive integer
   :properties ((assign posintegerset)))
-
-;; Check assignment to be a positive integer
-#+nil
-(putprop '$maxposex 'posintegerset 'assign)
 
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by
 	 the EXPAND command."
   fixnum
   see-also ($maxposex $expon $expand)
+  ;; Check assignment to be a positive integer
   :properties ((assign posintegerset)))
-
-;; Check assignment to be a positive integer
-#+nil
-(putprop '$maxnegex 'posintegerset 'assign)
 
 (defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
 (defmvar $grindswitch nil)
@@ -587,8 +581,6 @@ relational knowledge is contained in the default context GLOBAL.")
    stack overflows. Set to zero to deactivate."
   fixnum
   :properties ((assign posintegerset)))
-#+nil
-(putprop '$factor_max_degree 'posintegerset 'assign)
 
 (defmvar $factor_max_degree_print_warning t
   "Print a warning message when a polynomial is not factored because its
@@ -606,22 +598,13 @@ relational knowledge is contained in the default context GLOBAL.")
   "The name of the default rule package used by `let' and `letsimp'"
   :properties ((assign let-rule-setter)))
 
-#+nil
-(putprop '$default_let_rule_package 'let-rule-setter 'assign)
-
 (defmvar $current_let_rule_package '$default_let_rule_package
   "The name of the current rule package used by `let' and `letsimp'"
   :properties ((assign let-rule-setter)))
 
-#+nil
-(putprop '$current_let_rule_package 'let-rule-setter 'assign)
-
 (defmvar $let_rule_packages '((mlist) $default_let_rule_package)
   "The names of the various let rule simplification packages"
   :properties ((assign let-rule-setter)))
-
-#+nil
-(putprop '$let_rule_packages 'let-rule-setter 'assign)
 
 ;;------------------------------------------------------------------------
 ;; From risch.lisp
