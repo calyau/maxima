@@ -41,11 +41,13 @@ values")
   ;; Supported options:
   ;; no-reset:  Don't reset the variable to the initial value
   ;; fixnum, boolean:  Declaim the variable to have that type.
-  (let ((maybe-reset 
+  (let ((maybe-reset
+	  ;; Default is to reset the variable to it's initial value.
 	  `((unless (gethash ',var *variable-initial-values*)
 	      (setf (gethash ',var *variable-initial-values*)
 		    ,val))))
-	maybe-declare-type)
+	maybe-declare-type
+	maybe-set-props)
 
     (do ((opts options (rest opts)))
 	((null opts))
@@ -54,11 +56,24 @@ values")
 	 ;; Don't reset the value
 	 (setf maybe-reset nil))
 	((fixnum boolean)
-	 `((declaim (type ,(car opts) ,var))))))
+	 (setf maybe-declare-type
+	       `((declaim (type ,(car opts) ,var)))))
+	(in-core
+	 ;; Ignore this
+	 )
+	((:properties properties)
+	 (setf maybe-set-props
+	       (mapcar #'(lambda (o)
+			   (destructuring-bind (ind val)
+			       o
+			     `(putprop ',var ',val ',ind)))
+		       (second opts)))
+	 (setf opts (rest opts)))))
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
-       (defvar ,var ,val ,doc))))
+       (defvar ,var ,val ,doc)
+       ,@maybe-set-props)))
 
 (defun putprop (sym val  indic)
   (if (consp sym)
@@ -455,18 +470,22 @@ relational knowledge is contained in the default context GLOBAL.")
   "The largest positive exponent which will be expanded by
 	 the EXPAND command."
   fixnum
-  see-also ($maxnegex $expop $expand))
+  see-also ($maxnegex $expop $expand)
+  :properties ((assign posintegerset)))
 
 ;; Check assignment to be a positive integer
+#+nil
 (putprop '$maxposex 'posintegerset 'assign)
 
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by
 	 the EXPAND command."
   fixnum
-  see-also ($maxposex $expon $expand))
+  see-also ($maxposex $expon $expand)
+  :properties ((assign posintegerset)))
 
 ;; Check assignment to be a positive integer
+#+nil
 (putprop '$maxnegex 'posintegerset 'assign)
 
 (defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
@@ -568,7 +587,9 @@ relational knowledge is contained in the default context GLOBAL.")
   "If set to an integer n, some potentially large (many factors) polynomials
    of degree > n won't be factored, preventing huge memory allocations and
    stack overflows. Set to zero to deactivate."
-  fixnum)
+  fixnum
+  :properties ((assign posintegerset)))
+#+nil
 (putprop '$factor_max_degree 'posintegerset 'assign)
 
 (defmvar $factor_max_degree_print_warning t
@@ -584,18 +605,24 @@ relational knowledge is contained in the default context GLOBAL.")
 (defmvar $letrat nil) 
 
 (defmvar $default_let_rule_package '$default_let_rule_package
-  "The name of the default rule package used by `let' and `letsimp'")
+  "The name of the default rule package used by `let' and `letsimp'"
+  :properties ((assign let-rule-setter)))
 
+#+nil
 (putprop '$default_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $current_let_rule_package '$default_let_rule_package
-  "The name of the current rule package used by `let' and `letsimp'")
+  "The name of the current rule package used by `let' and `letsimp'"
+  :properties ((assign let-rule-setter)))
 
+#+nil
 (putprop '$current_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $let_rule_packages '((mlist) $default_let_rule_package)
-  "The names of the various let rule simplification packages")
+  "The names of the various let rule simplification packages"
+  :properties ((assign let-rule-setter)))
 
+#+nil
 (putprop '$let_rule_packages 'let-rule-setter 'assign)
 
 ;;------------------------------------------------------------------------
