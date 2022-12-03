@@ -46,7 +46,9 @@
 	   (setf maybe-reset nil))
 	  ((fixnum boolean)
 	   (setf maybe-declare-type `((declaim (type ,opt ,var)))))
-	  (:properties
+	  ((:properties properties)
+	   ;; :PROPERTIES is preferred.  PROPERTIES is deprecated and
+	   ;; should be updated to :PROPERTIES.
 	   (setf maybe-set-properties
 		 (mapcar #'(lambda (prop)
 			     (destructuring-bind (indicator val)
@@ -610,11 +612,11 @@
 
 (defmvar $current_let_rule_package '$default_let_rule_package
   "The name of the current rule package used by `let' and `letsimp'"
-  :properties ((assign let-rule-setter)))
+  properties ((assign let-rule-setter)))
 
 (defmvar $let_rule_packages '((mlist) $default_let_rule_package)
   "The names of the various let rule simplification packages"
-  :properties ((assign let-rule-setter)))
+  properties ((assign let-rule-setter)))
 
 ;;------------------------------------------------------------------------
 ;; From risch.lisp
