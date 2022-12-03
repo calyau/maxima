@@ -71,7 +71,7 @@ values")
 			     `(putprop ',var ',val ',ind)))
 		       (second opts)))
 	 (setf opts (rest opts)))
-	((see-also modified-commands setting-predicate)
+	((see-also modified-commands setting-predicate setting-list)
 	 ;; Not yet supported, but we need to skip over the following
 	 ;; item too which is the parameter for this option.
 	 (setf opts (rest opts)))))
