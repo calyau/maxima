@@ -51,6 +51,8 @@ values")
 
     (do ((opts options (rest opts)))
 	((null opts))
+      ;;#+nil
+      (format t "opts = ~S~%" opts)
       (case (car opts)
 	(no-reset
 	 ;; Don't reset the value
@@ -61,13 +63,17 @@ values")
 	(in-core
 	 ;; Ignore this
 	 )
-	((:properties properties)
+	(:properties
 	 (setf maybe-set-props
 	       (mapcar #'(lambda (o)
 			   (destructuring-bind (ind val)
 			       o
 			     `(putprop ',var ',val ',ind)))
 		       (second opts)))
+	 (setf opts (rest opts)))
+	((see-also modified-commands setting-predicate)
+	 ;; Not yet supported, but we need to skip over the following
+	 ;; item too which is the parameter for this option.
 	 (setf opts (rest opts)))))
     `(progn
        ,@maybe-reset
@@ -693,7 +699,8 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (defmvar $listconstvars nil
   "Causes LISTOFVARS to include %E, %PI, %I, and any variables declared
    constant in the list it returns if they appear in exp.  The default is
-   to omit these." boolean see-also $listofvars)
+   to omit these."
+  boolean see-also $listofvars)
 
 (defmvar $listdummyvars t)
 ;;------------------------------------------------------------------------
