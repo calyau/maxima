@@ -47,8 +47,6 @@ values")
 	  ((fixnum boolean)
 	   (setf maybe-declare-type `((declaim (type ,opt ,var)))))
 	  ((:properties properties)
-	   ;; :PROPERTIES is preferred.  PROPERTIES is deprecated and
-	   ;; should be updated to :PROPERTIES.
 	   (setf maybe-set-properties
 		 (mapcar #'(lambda (prop)
 			     (destructuring-bind (indicator val)
