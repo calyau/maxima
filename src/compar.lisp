@@ -21,20 +21,7 @@
 
 (defvar %initiallearnflag)
 
-(defvar $context '$global
-  "Whenever a user assumes a new fact, it is placed in the context
-named as the current value of the variable CONTEXT.  Similarly, FORGET
-references the current value of CONTEXT.  To add or DELETE a fact from a
-different context, one must bind CONTEXT to the intended context and then
-perform the desired additions or deletions.  The context specified by the
-value of CONTEXT is automatically activated.  All of MACSYMA's built-in
-relational knowledge is contained in the default context GLOBAL.")
 
-(defvar $contexts '((mlist) $global)
-  "A list of the currently active contexts.")
-
-(defvar $activecontexts '((mlist))
-  "A list of the currently activated contexts")
 
 (defmvar sign-imag-errp t
   "If T errors out in case COMPAR meets up with an imaginary quantity.
@@ -49,12 +36,7 @@ relational knowledge is contained in the default context GLOBAL.")
 (defvar *complexsign* nil
   "If T, COMPAR works in a complex mode.")
 
-(defmvar $prederror nil)
-(defmvar $signbfloat t)
-(defmvar $askexp)
 (defmvar limitp)
-(defmvar $assume_pos nil)
-(defmvar $assume_pos_pred nil)
 
 (defmvar factored nil)
 
@@ -326,7 +308,7 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defun maybe-simplifya-protected (x z)
   (let ((errcatch t) ($errormsg nil))
-    (declare (special errcatch $errormsg))
+    (declare (special errcatch))
     (ignore-errors (maybe-simplifya x z) x)))
 
 (defun simp-$is (x yy z)
@@ -1123,7 +1105,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
    (progn
      (dotimes (i (array-total-size p))
        (let ((z (let ($ratprint)
-		  (declare (special $ratprint))
 		  (meqp (row-major-aref p i) (row-major-aref q i)))))
 	 (cond ((eq z nil) (return-from array-meqp nil))
 	       ((eq z t))
@@ -1137,7 +1118,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (and
    (alike1 (mfuncall '$arrayinfo p) (mfuncall '$arrayinfo q))
    (let ($ratprint)
-     (declare (special $ratprint))
      (meqp ($listarray p) ($listarray q)))))
 
 (defun list-meqp (p q)
@@ -1608,7 +1588,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun factor-if-small (x)
   (if (< (conssize x) 51.)
       (let ($ratprint)
-	(declare (special $ratprint))
 	(factor x)) x))
 
 (defun sign-mexpt (x)
@@ -2381,7 +2360,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; whose numerical value we know.
 (defun unknown-atoms (x)
   (let (($listconstvars t))
-    (declare (special $listconstvars))
     (remove-if (lambda (sym) (mget sym '$numer))
                (cdr ($listofvars x)))))
 
@@ -2513,7 +2491,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun symbols (x)
   (let (($listconstvars %initiallearnflag))
-    (declare (special $listconstvars))
     (cdr ($listofvars x))))
 
 ;; %initiallearnflag is only necessary so that %PI, %E, etc. can be LEARNed.

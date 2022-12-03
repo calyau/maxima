@@ -392,8 +392,6 @@
 	;((and $trigsign (mminusp* y)) (ftake* '%asech (neg y)))
 	(t (give-up))))
 
-(declare-top (special $trigexpandplus $trigexpandtimes))
-
 (defmfun $trigexpand (e)
   (cond ((atom e) e)
 	((specrepp e) ($trigexpand (specdisrep e)))

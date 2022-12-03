@@ -33,7 +33,7 @@
 
 (declare-top (special n nx ix))
 
-(declare-top (special $linenum $dispflag $linechar $wise $fool))
+(declare-top (special $wise $fool))
 
 (defvar *tmarrays* nil)
 

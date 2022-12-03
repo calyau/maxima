@@ -831,14 +831,6 @@
 (defmacro def-mheader (op header) `(defprop ,op ,header mheader))
 
 
-(defmvar $parsewindow 10.
-	 "The maximum number of 'lexical tokens' that are printed out on
-each side of the error-point when a syntax (parsing) MAXIMA-ERROR occurs.  This
-option is especially useful on slow terminals.  Setting it to -1 causes the
-entire input string to be printed out when an MAXIMA-ERROR occurs."
-	 fixnum)
-
-
 ;;;; Misplaced definitions
 
 (defmacro def-operatorp ()

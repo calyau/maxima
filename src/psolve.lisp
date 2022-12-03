@@ -12,17 +12,17 @@
 
 (macsyma-module psolve)
 
-(declare-top (special mult *roots *failures $solvefactors))
-(declare-top (special expsumsplit $dispflag checkfactors *g
+(declare-top (special mult *roots *failures))
+(declare-top (special expsumsplit checkfactors *g
 		      $algebraic equations ;List of E-labels
-		      *power *varb *flg $derivsubst
-		      $%emode genvar genpairs varlist broken-not-freeof
+		      *power *varb *flg
+		      genvar genpairs varlist broken-not-freeof
 		      mult    ;Some crock which tracks multiplicities.
 		      *roots ;alternating list of solutions and multiplicities
 		      *failures	;alternating list of equations and multiplicities
-		      *myvar $listconstvars
-		      *has*var *var $dontfactor
-		      $keepfloat $ratfac
+		      *myvar
+		      *has*var *var
+		      $keepfloat
 		      xm* xn* mul*))
 
 (defmvar flag4 nil)

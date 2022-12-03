@@ -14,18 +14,7 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special errorsw $demoivre 1//2 -1//2))
-
-(defmvar $%piargs t)
-(defmvar $%iargs t)
-(defmvar $triginverses t)
-(defmvar $trigexpand nil)
-(defmvar $trigexpandplus t)
-(defmvar $trigexpandtimes t)
-(defmvar $trigsign t)
-(defmvar $exponentialize nil)
-(defmvar $logarc nil)
-(defmvar $halfangles nil)
+(declare-top (special errorsw 1//2 -1//2))
 
 ;; Simplified shortcuts for constant expressions.
 (defvar %pi//4 '((mtimes simp) ((rat simp) 1 4.) $%pi))

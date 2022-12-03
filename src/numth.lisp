@@ -16,7 +16,7 @@
 
 (macsyma-module numth)
 
-(declare-top (special $intfaclim modulus))
+(declare-top (special modulus))
 
 (load-macsyma-macros rzmac)
 

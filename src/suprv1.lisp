@@ -22,15 +22,15 @@
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special bindlist loclist errset *mopl*
-		       $values $functions $arrays $gradefs $dependencies
-		       $rules $props $ratvars
+		       $values $functions $arrays
+		       $rules $props
 		       varlist genvar
-		       $gensumnum checkfactors $features featurel
-		       tellratlist $dontfactor
-		       dispflag savefile $%% $error
-		       opers *ratweights $ratweights
+		       checkfactors $features featurel
+		       tellratlist
+		       dispflag savefile $%%
+		       opers *ratweights
 		       $stringdisp $lispdisp
-		       transp $contexts $setcheck $macros autoload))
+		       transp $macros autoload))
 
 (defvar thistime 0)
 (defvar *refchkl* nil)
@@ -44,49 +44,11 @@
 (defvar *in-translate-file* nil)
 (defvar *linelabel* nil)
 
-(defmvar $disptime nil)
-(defmvar $strdisp t)
-(defmvar $grind nil)
-(defmvar $backtrace '$backtrace)
-(defmvar $debugmode nil)
-(defmvar $poislim 5)
-(defmvar $loadprint nil)
-(defmvar $nolabels nil)
-(defmvar $aliases '((mlist simp)))
-
-(defmvar $infolists
-  '((mlist simp) $labels $values $functions $macros $arrays
-                 $myoptions $props $aliases $rules $gradefs
-                 $dependencies $let_rule_packages $structures))
-
-(defmvar $labels (list '(mlist simp)))
-(defmvar $dispflag t)
-
-(defmvar $% '$% "The last out-line computed, corresponds to lisp *"
-	 no-reset)
-
-(defmvar $inchar '$%i
-  "The alphabetic prefix of the names of expressions typed by the user.")
-
-(defmvar $outchar '$%o
-  "The alphabetic prefix of the names of expressions returned by the system.")
-
-(defmvar $linechar '$%t
-  "The alphabetic prefix of the names of intermediate displayed expressions.")
-
-(defmvar $linenum 1 "the line number of the last expression."
-	 fixnum no-reset)
-
-(defmvar $file_output_append nil
-  "Flag to tell file-writing functions whether to append or clobber the output file.")
 
 ;; This version of meval* makes sure, that the facts from the global variable
 ;; *local-signs* are cleared with a call to clearsign. The facts are added by
 ;; asksign and friends. The function meval* is only used for top level
 ;; evaluations.  For other cases the function meval can be used.
-
-(defmvar $ratvarswitch t) ; If T, start an evaluation with a fresh list VARLIST.
-
 (defun meval* (expr)
   ;; Make sure that clearsign is called after the evaluation.
   (unwind-protect
@@ -468,7 +430,6 @@
 	(cadr (reverse l)))))
 
 (defmspec $playback (x)
-  (declare (special $showtime))
   (setq x (cdr x))
   (prog (l l1 l2 numbp slowp nostringp inputp timep grindp inchar largp)
      (setq inchar (getlabcharn $inchar)) ; Only the 1st alphabetic char. of $INCHAR is tested

@@ -14,10 +14,10 @@
 
 (declare-top (special opers $packagefile
 		      aaaaa errset lessorder greatorder indlist
-		      $labels $aliases varlist *mopl* $props
-		      $infolists $features featurel savefile $gradefs
+		      varlist *mopl* $props
+		      $features featurel savefile
 		      $values $functions $arrays
-		      $contexts context $activecontexts))
+		      context))
 
 (defmvar $packagefile nil)
 (defvar indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers

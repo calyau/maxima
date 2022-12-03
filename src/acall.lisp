@@ -174,8 +174,6 @@
 	(t
 	 (list-ref (list-ref l `(,(car indexl))) (cdr indexl)))))
 
-(declare-top (special $dispflag))
-
 (defun display-for-tr (labelsp equationsp &rest argl)
   (declare (special *linelabel*))
   (do ((argl argl (cdr argl))

@@ -14,12 +14,12 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special $algebraic varlist ss *y* f $factorflag modulus
+(declare-top (special varlist ss *y* f modulus
 		      genvar *alpha *x* *p *max *var *res *chk *l
-		      $ratfac u* $ratwtlvl *ratweights $ratweights))
+		      u* *ratweights))
 
 (declare-top (special xv bigf1 bigf2
-		      gcd $factorflag))
+		      gcd))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
 ;;	(GCD, X/GCD, Y/GCD)
@@ -469,7 +469,7 @@
       ((null q)))
   p)
 
-(declare-top (special wtsofar xweight $ratwtlvl v *x*))
+(declare-top (special wtsofar xweight v *x*))
 
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
@@ -616,7 +616,7 @@
 				    ans)))))
      (go a)))
 
-(declare-top (special y genvar $savefactors checkfactors
+(declare-top (special y genvar checkfactors
 		      exp var x $factorflag $ratfac
 		      ratform
 		      wholepart parnumer varlist n))
@@ -707,7 +707,7 @@
 
 (declare-top (unspecial x))
 
-(declare-top (special $pfeformat varlist $factorflag m v dosimp))
+(declare-top (special varlist $factorflag m v dosimp))
 
 (defmfun $pfet (m)
   (prog (listov $pfeformat varlist $factorflag)

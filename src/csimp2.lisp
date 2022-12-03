@@ -633,7 +633,7 @@
 		 (merror (intl:gettext "gamma: overflow in GAMMAFLOAT."))
 		 result))))))
 
-(declare-top (special $numer $trigsign))
+(declare-top (special $numer))
 
 (defmfun $zeromatrix (m n) ($ematrix m n 0 1 1))
 
@@ -658,8 +658,6 @@
   (do ((n n (1- n))
        (l nil (cons (ncons '(mlist simp)) l)))
       ((= n 0) l)))
-
-(declare-top (special $ratmx))
 
 (defmfun $coefmatrix (eql varl) (coefmatrix eql varl nil))
 
@@ -794,9 +792,8 @@
        (list (add2 (m* a c1) (m* c b1))
 	     (mul2 d b1)))))
 
-(declare-top (special $globalsolve $backsubst $dispflag
-		      $linsolve_params $%rnum_list ax *linelabel* $linechar 
-		      $linenum *mosesflag))
+(declare-top (special ax *linelabel* 
+		      *mosesflag))
 
 (defun xrutout (ax n m varl ind)
   (let (($linsolve_params (and $backsubst $linsolve_params)))

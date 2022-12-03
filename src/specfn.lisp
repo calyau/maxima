@@ -26,7 +26,7 @@
 
 ;; subtitle polylogarithm routines
 
-(declare-top (special $zerobern tlist %e-val))
+(declare-top (special tlist %e-val))
 
 (defun lisimp (expr vestigial z)
   (declare (ignore vestigial))

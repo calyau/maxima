@@ -32,20 +32,14 @@
 ;;in an effort to reduce extraneous solutions, or Reducing to a linear
 ;;equation before taking resultants.
 
-(declare-top (special $algdelta $ratepsilon $algepsilon $keepfloat
-		     varlist genvar *roots *failures $ratprint $numer $ratfac
-		     $solvefactors $dispflag $breakup
-		     *tvarxlist* errorsw $programmode *ivar* errset $polyfactor
-		     bindlist loclist $float $infeval))
+(declare-top (special $algdelta
+		     varlist genvar *roots *failures
+		     *tvarxlist* errorsw *ivar* errset $polyfactor
+		     bindlist loclist))
 
 ;;note if $algepsilon is too large you may lose some roots.
 
 (defmvar $algdelta 1e-5 )
-
-(defmvar $%rnum_list '((mlist))
-  "Upon exit from ALGSYS this is bound to a list of the %RNUMS
-	 which where introduced into the expression. Useful for mapping
-	 over and using as an argument to SUBST.")
 
 (defmvar $realonly nil "If t only real solutions are returned.")
 

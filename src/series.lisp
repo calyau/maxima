@@ -12,10 +12,11 @@
 
 (macsyma-module series)
 
-(declare-top (special var *n *a *m *c *index $cauchysum *gcd*
-		      nn* dn* $ratsimpexpons *infsumsimp *roots *failures
+(declare-top (special var *n *a *m *c *index *gcd*
+		      nn* dn* *infsumsimp *roots *failures
 		      *ratexp *var usexp $verbose ans *trigred
-		      *form indl *noexpand $ratexpand))
+		      *form indl *noexpand
+		      $ratfac))
 
 (load-macsyma-macros rzmac)
 

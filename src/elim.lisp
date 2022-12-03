@@ -7,7 +7,6 @@
 	(l ($length eqns))
 	(flag nil)
 	($dispflag nil))
-    (declare (special $dispflag))
     (unless (and ($listp eqns) ($listp vars))
       (merror (intl:gettext "eliminate: arguments must both be lists.")))
     (when (> ($length vars) l)

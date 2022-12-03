@@ -18,7 +18,7 @@
 
 (declare-top (special intbs* alflag var dosimp alc $myoptions
 		      vlist scanmapp radlist expsumsplit *ratsimp* mplc*
-		      $ratsimpexpons $expop $expon $negdistrib $gcd))
+		      $negdistrib $gcd))
 
 (defmvar genvar nil
   "List of gensyms used to point to kernels from within polynomials.
@@ -34,20 +34,7 @@
 
 (defmvar factorresimp nil "If `t' resimplifies factor(x-y) to x-y")
 
-;; User level global variables.
-
-(defmvar $keepfloat nil  "If `t' floating point coeffs are not converted to rationals")
-(defmvar $factorflag nil "If `t' constant factor of polynomial is also factored")
-(defmvar $dontfactor '((mlist)))
-(defmvar $norepeat t)
-(defmvar $ratweights '((mlist simp)))
-
-(defmvar $ratfac nil "If `t' cre-forms are kept factored")
-(defmvar $algebraic nil)
-(defmvar $ratvars '((mlist simp)))
-(defmvar $facexpand t)
-
-(declare-top (special evp $infeval))
+(declare-top (special evp))
 
 (defun mrateval (x)
   (let ((varlist (caddar x)))
@@ -855,14 +842,6 @@
        (putprop g p 'tellrat))
      (return (rget g))))
 
-;;  Any program which calls RATF on
-;;  a floating point number but does not wish to see "RAT replaced ..."
-;;  message, must bind $RATPRINT to NIL.
-
-(defmvar $ratprint t)
-
-(defmvar $ratepsilon 2e-15)
-
 ;; This control of conversion from float to rational appears to be explained
 ;; nowhere. - RJF
 
@@ -949,10 +928,6 @@
 	(t (do ((l () (cons (pdisrep* (pdisrep (cadr p)) (pdisrep! (car p) var)) l))
 		(p p (cddr p)))
 	       ((null p) (nreverse l))))))
-
-;; IF $RATEXPAND IS TRUE, (X+1)*(Y+1) WILL DISPLAY AS
-;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
-(defmvar $ratexpand nil)
 
 (defmfun $ratexpand (x)
   (if (mbagp x)

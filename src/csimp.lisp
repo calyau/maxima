@@ -12,20 +12,15 @@
 
 (macsyma-module csimp)
 
-(declare-top (special rsn* $factlim $exponentialize
-		      var varlist genvar $%emode $ratprint
+(declare-top (special rsn* $factlim
+		      var varlist genvar $ratprint
 		      nn* dn* $errexp sqrt3//2 -sqrt3//2
-		      $demoivre errorsw $keepfloat $ratfac))
+		      errorsw))
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst plogabs))
+(declare-top (special  plogabs))
 
-(defmvar $demoivre nil)
-(defmvar $nointegrate nil)
-(defmvar $lhospitallim 4)
-(defmvar $tlimswitch t)
-(defmvar $limsubst nil)
 (defvar rsn* nil)
 (defvar plogabs nil)
 
@@ -35,8 +30,6 @@
 (defvar half%pi '((mtimes) ((rat simp) 1 2) $%pi))
 (defvar %pi2 '((mtimes) 2 $%pi))
 (defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
-
-(defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
 
 (loop for (a b) on
        '(%sin %asin %cos %acos %tan %atan

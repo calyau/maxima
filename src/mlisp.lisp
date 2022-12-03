@@ -23,15 +23,14 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special derivflag derivlist $labels $values $functions $arrays 
-                      $rules $gradefs $dependencies $aliases
-		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
+(declare-top (special derivflag derivlist $values $functions $arrays 
+                      $rules $dependencies
+		      $myoptions $props genvar
 		      $numer *mdebug* *refchkl*
-		      $norepeat $detout $doallmxops $doscmxops opers
+		      opers
 		      *mopl* *alphabet* $%% %e-val
-		      $macros linel $ratfac $ratwtlvl
-		      $partswitch *gcdl*
-		      *builtin-$props* $infolists))
+		      $macros linel
+		      *builtin-$props*))
 
 (declare-top (unspecial args))
 
@@ -65,18 +64,6 @@ or if apply is being used are printed.")
     $integervalued))
 
 (defmvar $features (cons '(mlist simp) (append featurel nil)))
-(defmvar $%enumer nil)
-(defmvar $float nil)
-(defmvar $refcheck nil)
-(defmvar $translate nil)
-(defmvar $transrun t)
-(defmvar $savedef t)
-(defmvar $maperror t)
-(defmvar $optionset nil)
-(defmvar $setcheckbreak nil)
-(defmvar $infeval nil)
-(defmvar $piece '$piece)
-(defmvar $setval '$setval)
 
 ;; These three variables are what get stuck in array slots as magic
 ;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
@@ -91,8 +78,6 @@ or if apply is being used are printed.")
 (defmvar munbindp nil
   "Used for safely `munbind'ing incorrectly-bound variables."
   no-reset)
-
-(defmvar $setcheck nil)
 
 (mapc #'(lambda (x) (setf (symbol-value x) (ncons '(mlist simp))))
       '($values $functions $macros $arrays $myoptions $rules $props))
@@ -1856,10 +1841,6 @@ wrapper for this."
 
 (defmfun $show_hash_array (x)
   (maphash #'(lambda (k v) (format t "~%~A-->~A" k v)) x))
-
-;; If this is T then arrays are stored in the value cell,
-;; whereas if it is false they are stored in the function cell
-(defmvar $use_fast_arrays nil)
 
 (defun arrstore (l r)
 	 (let ((fun (caar l)) ary sub (lispsub 0) hashl mqapplyp)

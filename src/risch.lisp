@@ -15,19 +15,15 @@
 (load-macsyma-macros rzmac ratmac)
 
 (declare-top (special parnumer pardenom logptdx wholepart
-                      $ratalgdenom expexpflag $logsimp switch1 degree cary
-                      $ratfac $logexpand ratform genvar *var var rootfactor
-                      expint $keepfloat trigint operator $exponentialize $gcd
-                      $logarc changevp klth r s beta gamma b mainvar expflag
+                      expexpflag switch1 degree cary
+                      ratform genvar *var var rootfactor
+                      expint trigint operator $gcd
+                      changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch varlist nogood genvar
-                      $erfflag $liflag rischp $factorflag alphar m
-                      genpairs hypertrigint *mosesflag *exp y $algebraic
+                      rischp $factorflag alphar m
+                      genpairs hypertrigint *mosesflag *exp y
                       implicit-real $%e_to_numlog generate-atan2
                       context rp-polylogp *in-risch-p*))
-
-(defmvar $liflag t "Controls whether `risch' generates polylogs")
-
-(defmvar $erfflag t "Controls whether `risch' generates `erfs'")
 
 (defvar changevp t "When nil prevents changevar hack")
 

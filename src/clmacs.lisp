@@ -200,11 +200,6 @@
 
 ;;actually this was for lists too.
 
-(defun putprop (sym val  indic)
-  (if (consp sym)
-      (setf (getf (cdr sym) indic) val)
-      (setf (get sym indic) val)))
-
 (defmacro defprop (sym val indic)
   (if (eq indic 'expr)
       `(setf (symbol-function ',sym) #',val)

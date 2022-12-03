@@ -19,7 +19,7 @@
 (macsyma-module outmis)
 
 
-(declare-top (special $exptisolate $labels $dispflag errorsw))
+(declare-top (special $exptisolate errorsw))
 
 (defmvar $exptisolate nil)
 (defmvar $isolate_wrt_times nil)
@@ -119,8 +119,7 @@
 		   ((eq (caar e) 'mplus) (cons u (nreverse v)))
 		   (t (cons u v)))))))
 
-(declare-top (special atvars munbound $props $gradefs $features opers
-		      $contexts $activecontexts $aliases))
+(declare-top (special atvars munbound $props $features opers))
 
 (defmspec $properties (x)
   (setq x (getopr (fexprcheck x)))
@@ -319,7 +318,7 @@
 			    (ncons (car i)))
 		    ret))))
 
-(declare-top (special $programmode *roots *failures varlist genvar $ratfac))
+(declare-top (special *roots *failures varlist genvar))
 
 (defmfun $changevar (expr trans nvar ovar)
   (let ($ratfac)
@@ -432,7 +431,7 @@
 		     varlist nvarlist)
 	    (rdis (cdr expr))))))
 
-(declare-top (special $listconstvars facfun))
+(declare-top (special facfun))
 
 (defmfun $factorsum (e)
   (factorsum0 e '$factor))

@@ -12,8 +12,8 @@
 
 (macsyma-module nrat4)
 
-(declare-top (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag
-		      $logsimp *v *var radcanp))
+(declare-top (special *exp *exp2 *radsubst *loglist $radsubstflag
+		      *v *var radcanp))
 
 (defmvar $radsubstflag nil
   "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")

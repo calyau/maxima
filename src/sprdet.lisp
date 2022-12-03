@@ -14,7 +14,7 @@
 
 ;; THIS IS THE NEW DETERMINANT PACKAGE
 
-(declare-top (special x *ptr* *ptc* *blk* $ratmx ml* *detsign* rzl*))
+(declare-top (special x *ptr* *ptc* *blk* ml* *detsign* rzl*))
 
 (defun sprdet (ax n)
   (declare (fixnum n))

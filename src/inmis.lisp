@@ -13,13 +13,6 @@
 
 (declare-top (special listofvars))
 
-(defmvar $listconstvars nil
-  "Causes LISTOFVARS to include %E, %PI, %I, and any variables declared
-   constant in the list it returns if they appear in exp.  The default is
-   to omit these." boolean see-also $listofvars)
-
-(defmvar $listdummyvars t)
-
 (defmfun $unknown (f) (catch 'unknown (unknown (specrepcheck f))))
 
 (defun unknown (f)

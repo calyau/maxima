@@ -49,7 +49,6 @@
         (apply #'$invert args)))))
 
 (defun invert-via-$invert_by_lu (m &optional (field-name (if $ratmx '$crering '$generalring)))
-  (declare (special $ratmx $detout))
   ;; Call functions from package linearalgebra via MFUNCALL to autoload them if necessary.
   (if $detout
     (let*

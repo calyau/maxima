@@ -16,8 +16,6 @@
 
 (defvar *subexp* (make-array 64 :initial-element nil))
 
-(defmvar $optimprefix '$%)
-
 (defmvar $optimwarn t "warns if `optimize' encounters a special form.")
 
 ;; $OPTIMIZE takes a Macsyma expression and returns a BLOCK form which is

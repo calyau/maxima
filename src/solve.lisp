@@ -14,57 +14,16 @@
 
 (load-macsyma-macros ratmac strmac)
 
-(declare-top (special expsumsplit $dispflag checkfactors *g
-		      $algebraic equations ;List of E-labels
-		      *power *varb *flg $derivsubst
-		      $%emode genvar genpairs varlist broken-not-freeof
+(declare-top (special expsumsplit checkfactors *g
+		      equations ;List of E-labels
+		      *power *varb *flg
+		      genvar genpairs varlist broken-not-freeof
 		      mult    ;Some crock which tracks multiplicities.
 		      *roots ;alternating list of solutions and multiplicities
 		      *failures	;alternating list of equations and multiplicities
-		      *myvar $listconstvars
-		      *has*var *var $dontfactor
-		      $keepfloat $ratfac
+		      *myvar
+		      *has*var *var
 		      xm* xn* mul*))
-
-(defmvar $breakup t
-  "Causes solutions to cubic and quartic equations to be expressed in
-	 terms of common subexpressions.")
-
-(defmvar $multiplicities '$not_set_yet
-  "Set to a list of the multiplicities of the individual solutions
-	 returned by SOLVE, REALROOTS, or ALLROOTS.")
-
-(defmvar $linsolvewarn t
-  "Needs to be documented.")
-
-(defmvar $programmode t
-  "Causes SOLVE to return its answers explicitly as elements
-	 in a list rather than printing E-labels.")
-
-(defmvar $solvedecomposes t
-  "Causes `solve' to use `polydecomp' in attempting to solve polynomials.")
-
-(defmvar $solveexplicit nil
-  "Causes `solve' to return implicit solutions i.e. of the form F(x)=0.")
-
-(defmvar $solvefactors t
-  "If T, then SOLVE will try to factor the expression.  The FALSE
-	 setting may be desired in zl-SOME cases where factoring is not
-	 necessary.")
-
-(defmvar $solvenullwarn t
-  "Causes the user will be warned if SOLVE is called with either a
-	 null equation list or a null variable list.  For example,
-	 SOLVE([],[]); would print two warning messages and return [].")
-
-(defmvar $solvetrigwarn t
-  "Causes SOLVE to print a warning message when it is uses
-	 inverse trigonometric functions to solve an equation,
-	 thereby losing solutions.")
-
-(defmvar $solveradcan nil
-  "SOLVE will use RADCAN which will make SOLVE slower but will allow
-	 certain problems containing exponentials and logs to be solved.")
 
 ;; Utility macros
 
