@@ -2396,8 +2396,8 @@ wrapper for this."
 
 ;; evfun properties
 (mapc #'(lambda (x) (putprop x t 'evfun))
-      '($radcan $factor $ratsimp $trigreduce $logcontract
-	$rootscontract $bfloat $fullratsimp $rectform $polarform))
+      '($radcan $factor $ratsimp $trigexpand $trigreduce $logcontract
+	$rootscontract $bfloat $ratexpand $fullratsimp $rectform $polarform))
 
 ;; evflag properties
 (mapc #'(lambda (x) (putprop x t 'evflag))

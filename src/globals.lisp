@@ -98,7 +98,7 @@
 (defmvar $trigexpand nil
   "If true, causes expansion of all expressions containing sin's and
   cos's occurring subsequently."
-  :properties ((evflag t) (evfun t)))
+  :properties ((evflag t)))
 (defmvar $trigexpandplus t)
 (defmvar $trigexpandtimes t)
 (defmvar $trigsign t)
@@ -602,12 +602,7 @@
 
 ;; IF $RATEXPAND IS TRUE, (X+1)*(Y+1) WILL DISPLAY AS
 ;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
-(defmvar $ratexpand nil
-  "If 'true' will cause CRE expressions to be fully expanded when they
-  are converted back to general form or displayed, while if it is
-  'false' then they will be put into a recursive form.  See also
-  'ratsimp'"
-  :properties ((evfun t)))
+(defmvar $ratexpand nil)
 
 
 ;;------------------------------------------------------------------------
