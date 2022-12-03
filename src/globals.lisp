@@ -7,40 +7,30 @@
 
 (in-package "MAXIMA")
 
-(defvar *reset-var* t)
-
 (defvar *variable-initial-values* (make-hash-table)
   "Hash table containing all Maxima defmvar variables and their initial
 values")
 
-#+nil
 (defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
-  "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
-  ;; Supported options:
-  ;; no-reset:  Don't reset the variable to the initial value
-  ;; fixnum, boolean:  Declaim the variable to have that type.
-  (let* ((maybe-reset (unless (find 'no-reset options)
-			`((unless (gethash ',var *variable-initial-values*)
-			    (setf (gethash ',var *variable-initial-values*)
-				  ,val)))))
-	 (maybe-declare-type
-	   ;; Do we really want to declaim the variable with the
-	   ;; specified type?
-	   (let ((maybe-type (find-if #'(lambda (x)
-					  (member x '(fixnum boolean)))
-				      options)))
-	     (when maybe-type
-	       `((declaim (type ,maybe-type ,var)))))))
-    `(progn
-       ,@maybe-reset
-       ,@maybe-declare-type
-       (defvar ,var ,val ,doc))))
+  "Define a Maxima variable VAR that is user-visible.  It is
+  initialized to the value VAL.  An associated documentation string
+  can be supplied in DOC.  OPTIONS contains a list of options that can
+  be applied to the variable.
 
-(defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
-  "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
-  ;; Supported options:
-  ;; no-reset:  Don't reset the variable to the initial value
-  ;; fixnum, boolean:  Declaim the variable to have that type.
+  The valid options are:
+
+    NO-RESET        - If given, the variable will not be reset.
+    FIXNUM, BOOLEAN - The variable is declared to have this type.
+    :PROPERTIES     - A list of properties to be applied for this variable.
+
+  The list of properties has the form ((ind1 val1) (ind2 val2) ...)
+  where IND1 is the name of the property and VAL1 is the value
+  associated with the property.
+
+  Other options that are recognized but ignored: IN-CORE, SEE-ALSO,
+  MODIFIED-COMMANDS, SETTING-PREDICATE, SETTING-LIST.  For any other
+  options, a warning is produced.
+"
   (let ((maybe-reset
 	  ;; Default is to reset the variable to it's initial value.
 	  `((unless (gethash ',var *variable-initial-values*)
@@ -90,7 +80,6 @@ values")
       (setf (get sym indic) val)))
 
 ;;; Declare user-visible special variables.
-;;; Most of these come from lmdcls.lisp
 
 ;;------------------------------------------------------------------------
 ;; From limit.lisp
