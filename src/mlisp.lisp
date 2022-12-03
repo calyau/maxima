@@ -2401,7 +2401,12 @@ wrapper for this."
 
 ;; evflag properties
 (mapc #'(lambda (x) (putprop x t 'evflag))
-      '($exptisolate $isolate_wrt_times))
+      '($exponentialize $%emode $demoivre $logexpand $logarc
+	$radexpand $keepfloat $listarith $float $ratsimpexpons $ratmx
+	$simp $simpsum $simpproduct $algebraic $ratalgdenom $factorflag $ratfac
+	$infeval $%enumer $programmode $lognegint $logabs $letrat
+	$halfangles $exptisolate $isolate_wrt_times $sumexpand
+	$cauchysum $numer_pbranch $m1pbranch $dotscrules $trigexpand))
 
 ;;; Float constants, to 2048 bits of precision.
 ;;; (EXP 1)
