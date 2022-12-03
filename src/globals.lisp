@@ -13,23 +13,11 @@
   "Hash table containing all Maxima defmvar variables and their initial
 values")
 
-(defmacro defmvar (var &optional (val nil) (doc nil) &rest options)
-  "Declare VAR to be a Maxima variable that is exposed to the user.
-  The variable is initialized (once) to VAL, and the it is given a
-  docstring of DOC.  
-
-  Any following items are options for the variable:
-
-    NO-RESET        - Do not reset the value of this variable when reset() is
-                      called.
-    FIXNUM, BOOLEAN - Declaim the variable to have this type.
-    :PROPERTIES     - A list properties to be assigned to the variable
-
-  The list of properties has the form ((ind1 val1) (ind2 val2) ...)
-  where the the property IND1 is assigned the value VAL1, and so on.
-
-  Any other options are ignored.
-"
+(defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
+  "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
+  ;; Supported options:
+  ;; no-reset:  Don't reset the variable to the initial value
+  ;; fixnum, boolean:  Declaim the variable to have that type.
   (let* ((maybe-reset (unless (find 'no-reset options)
 			`((unless (gethash ',var *variable-initial-values*)
 			    (setf (gethash ',var *variable-initial-values*)
@@ -41,20 +29,11 @@ values")
 					  (member x '(fixnum boolean)))
 				      options)))
 	     (when maybe-type
-	       `((declaim (type ,maybe-type ,var))))))
-	 (maybe-set-properties
-	   (let ((maybe-properties (member :properties options)))
-	     (mapcar #'(lambda (prop)
-			 (destructuring-bind (indicator val)
-			     prop
-			   `(putprop ',var ',val ',indicator)))
-		     (second maybe-properties)))))
-
+	       `((declaim (type ,maybe-type ,var)))))))
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
-       (defvar ,var ,val ,doc)
-       ,@maybe-set-properties)))
+       (defvar ,var ,val ,doc))))
 
 (defun putprop (sym val  indic)
   (if (consp sym)
@@ -451,18 +430,19 @@ relational knowledge is contained in the default context GLOBAL.")
   "The largest positive exponent which will be expanded by
 	 the EXPAND command."
   fixnum
-  see-also ($maxnegex $expop $expand)
-  ;; Check assignment to be a positive integer
-  :properties ((assign posintegerset)))
+  see-also ($maxnegex $expop $expand))
 
+;; Check assignment to be a positive integer
+(putprop '$maxposex 'posintegerset 'assign)
 
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by
 	 the EXPAND command."
   fixnum
-  see-also ($maxposex $expon $expand)
-  ;; Check assignment to be a positive integer
-  :properties ((assign posintegerset)))
+  see-also ($maxposex $expon $expand))
+
+;; Check assignment to be a positive integer
+(putprop '$maxnegex 'posintegerset 'assign)
 
 (defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
 (defmvar $grindswitch nil)
@@ -563,8 +543,8 @@ relational knowledge is contained in the default context GLOBAL.")
   "If set to an integer n, some potentially large (many factors) polynomials
    of degree > n won't be factored, preventing huge memory allocations and
    stack overflows. Set to zero to deactivate."
-  fixnum
-  :properties ((assign posintegerset)))
+  fixnum)
+(putprop '$factor_max_degree 'posintegerset 'assign)
 
 (defmvar $factor_max_degree_print_warning t
   "Print a warning message when a polynomial is not factored because its
@@ -579,16 +559,19 @@ relational knowledge is contained in the default context GLOBAL.")
 (defmvar $letrat nil) 
 
 (defmvar $default_let_rule_package '$default_let_rule_package
-    "The name of the default rule package used by `let' and `letsimp'"
-    :properties ((assign let-rule-setter)))
+  "The name of the default rule package used by `let' and `letsimp'")
+
+(putprop '$default_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $current_let_rule_package '$default_let_rule_package
-    "The name of the current rule package used by `let' and `letsimp'"
-    properties ((assign let-rule-setter)))
+  "The name of the current rule package used by `let' and `letsimp'")
+
+(putprop '$current_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $let_rule_packages '((mlist) $default_let_rule_package)
-    "The names of the various let rule simplification packages"
-    properties ((assign let-rule-setter)))
+  "The names of the various let rule simplification packages")
+
+(putprop '$let_rule_packages 'let-rule-setter 'assign)
 
 ;;------------------------------------------------------------------------
 ;; From risch.lisp
