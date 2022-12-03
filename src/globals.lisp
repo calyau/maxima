@@ -13,6 +13,7 @@
   "Hash table containing all Maxima defmvar variables and their initial
 values")
 
+#+nil
 (defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
   "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
   ;; Supported options:
@@ -30,6 +31,30 @@ values")
 				      options)))
 	     (when maybe-type
 	       `((declaim (type ,maybe-type ,var)))))))
+    `(progn
+       ,@maybe-reset
+       ,@maybe-declare-type
+       (defvar ,var ,val ,doc))))
+
+(defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
+  "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
+  ;; Supported options:
+  ;; no-reset:  Don't reset the variable to the initial value
+  ;; fixnum, boolean:  Declaim the variable to have that type.
+  (let ((maybe-reset 
+	  `((unless (gethash ',var *variable-initial-values*)
+	      (setf (gethash ',var *variable-initial-values*)
+		    ,val))))
+	maybe-declare-type)
+
+    (do ((opts options (rest opts)))
+	((null opts))
+      (case (car opts)
+	(no-reset
+	 ;; Don't reset the value
+	 (setf maybe-reset nil))
+	((fixnum boolean)
+	 `((declaim (type ,(car opts) ,var))))))
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
