@@ -13,15 +13,14 @@
   "Hash table containing all Maxima defmvar variables and their initial
 values")
 
-(defmacro defmvar (var &rest val-and-doc)
+(defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
   "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
-  (cond ((> (length val-and-doc) 2)
-	 (setq val-and-doc (list (car val-and-doc) (second val-and-doc)))))
+  (declare (ignorable options))
   `(progn
     (unless (gethash ',var *variable-initial-values*)
       (setf (gethash ',var *variable-initial-values*)
-	    ,(first val-and-doc)))
-    (defvar ,var ,@val-and-doc)))
+	    ,val))
+    (defvar ,var ,val ,doc)))
 
 (defun putprop (sym val  indic)
   (if (consp sym)
