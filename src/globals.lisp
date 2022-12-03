@@ -51,7 +51,7 @@ values")
 
     (do ((opts options (rest opts)))
 	((null opts))
-      ;;#+nil
+      #+nil
       (format t "opts = ~S~%" opts)
       (case (car opts)
 	(no-reset
@@ -74,7 +74,10 @@ values")
 	((see-also modified-commands setting-predicate setting-list)
 	 ;; Not yet supported, but we need to skip over the following
 	 ;; item too which is the parameter for this option.
-	 (setf opts (rest opts)))))
+	 (setf opts (rest opts)))
+	(t
+	 (warn "Ignoring unknown defmvar option for ~S: ~S"
+	       var (car opts)))))
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
