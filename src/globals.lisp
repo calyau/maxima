@@ -114,8 +114,14 @@ values")
 (defmvar $strdisp t)
 (defmvar $grind nil)
 (defmvar $backtrace '$backtrace)
-(defmvar $debugmode nil)
-(defmvar $poislim 5)
+(defmvar $debugmode nil
+  "When 'true', Maxima will start the Maxima debugger when a Maxima
+  error occurs"
+  :properties ((assign debugmode1)))
+(defmvar $poislim 5
+  "Determines the domain of the coefficients in the arguments of the
+  trig functions."
+  :properties ((assign poislim1)))
 (defmvar $loadprint nil)
 (defmvar $nolabels nil)
 (defmvar $aliases '((mlist simp)))
@@ -236,7 +242,8 @@ will accurately represent the bigfloat.")
 
 (defmvar $fpprec $maxfpprintprec
   "Number of decimal digits of precision to use when creating new bigfloats.
-One extra decimal digit in actual representation for rounding purposes.")
+One extra decimal digit in actual representation for rounding purposes."
+  :properties ((assign fpprec1)))
 
 ;;------------------------------------------------------------------------
 ;; From solve.lisp
