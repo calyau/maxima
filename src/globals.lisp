@@ -15,12 +15,25 @@ values")
 
 (defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
   "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
-  (declare (ignorable options))
-  `(progn
-    (unless (gethash ',var *variable-initial-values*)
-      (setf (gethash ',var *variable-initial-values*)
-	    ,val))
-    (defvar ,var ,val ,doc)))
+  ;; Supported options:
+  ;; no-reset:  Don't reset the variable to the initial value
+  ;; fixnum, boolean:  Declaim the variable to have that type.
+  (let* ((maybe-reset (unless (find 'no-reset options)
+			`((unless (gethash ',var *variable-initial-values*)
+			    (setf (gethash ',var *variable-initial-values*)
+				  ,val)))))
+	 (maybe-declare-type
+	   ;; Do we really want to declaim the variable with the
+	   ;; specified type?
+	   (let ((maybe-type (find-if #'(lambda (x)
+					  (member x '(fixnum boolean)))
+				      options)))
+	     (when maybe-type
+	       `((declaim (type ,maybe-type ,var)))))))
+    `(progn
+       ,@maybe-reset
+       ,@maybe-declare-type
+       (defvar ,var ,val ,doc))))
 
 (defun putprop (sym val  indic)
   (if (consp sym)
@@ -355,8 +368,9 @@ relational knowledge is contained in the default context GLOBAL.")
 
 ;; DO NOT change this to a DEFMVAR.  This breaks the testsuite,
 ;; presumably because the values get reset when reset() is done.
-(defvar $activecontexts '((mlist))
-  "A list of the currently activated contexts")
+(defmvar $activecontexts '((mlist))
+  "A list of the currently activated contexts"
+  no-reset)
 
 
 ;;------------------------------------------------------------------------
