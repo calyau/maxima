@@ -30,37 +30,26 @@ values")
 
   Any other options are ignored.
 "
-  (let ((maybe-reset
-	  ;; By default, defmvars are resettable
-	  `((unless (gethash ',var *variable-initial-values*)
-	      (setf (gethash ',var *variable-initial-values*)
-		    ,val))))
-	maybe-declare-type
-	maybe-set-properties)
-    (do ((opts options (rest opts)))
-	((null opts))
-      (let ((opt (car opts)))
-	(ecase opt
-	  (no-reset
-	   ;; Don't reset the variable
-	   (setf maybe-reset nil))
-	  ((fixnum boolean)
-	   (setf maybe-declare-type `((declaim (type ,opt ,var)))))
-	  ((:properties properties)
-	   (setf maybe-set-properties
-		 (mapcar #'(lambda (prop)
-			     (destructuring-bind (indicator val)
-				 prop
-			       `(putprop ',var ',val ',indicator)))
-			 (second opts)))
-	   ;; Skip over the property list
-	   (setf opts (rest opts)))
-	  (in-core
-	   ;; Do nothing
-	   )
-	  ((see-also modified-commands setting-predicate setting-list)
-	   ;; Just skip over these and the following item
-	   (setf opts (rest opts))))))
+  (let* ((maybe-reset (unless (find 'no-reset options)
+			`((unless (gethash ',var *variable-initial-values*)
+			    (setf (gethash ',var *variable-initial-values*)
+				  ,val)))))
+	 (maybe-declare-type
+	   ;; Do we really want to declaim the variable with the
+	   ;; specified type?
+	   (let ((maybe-type (find-if #'(lambda (x)
+					  (member x '(fixnum boolean)))
+				      options)))
+	     (when maybe-type
+	       `((declaim (type ,maybe-type ,var))))))
+	 (maybe-set-properties
+	   (let ((maybe-properties (member :properties options)))
+	     (mapcar #'(lambda (prop)
+			 (destructuring-bind (indicator val)
+			     prop
+			   `(putprop ',var ',val ',indicator)))
+		     (second maybe-properties)))))
+
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
