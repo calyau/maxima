@@ -28,7 +28,7 @@
 		       checkfactors $features featurel
 		       tellratlist
 		       dispflag savefile $%%
-		       opers *ratweights
+		       *ratweights
 		       $stringdisp $lispdisp
 		       transp $macros autoload))
 

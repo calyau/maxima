@@ -87,7 +87,7 @@
 	  %e-val %p%i %pi-val %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *in *in-compile*
 	  *in-translate-file* *inv* *min* *mx*
-	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
+	  *n *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  adn* aexprp algnotexact
@@ -106,7 +106,7 @@
 	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist
 	  need-prog? negprods negsums nn*
-	  opers opers-list outargs1 outargs2
+	  opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw sign-imag-errp simplimplus-problems

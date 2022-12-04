@@ -442,6 +442,11 @@
 (defmvar $simpsum nil)
 (defmvar $simpproduct nil)
 
+;; linear operator stuff
+
+(defparameter *opers-list '(($linear . linearize1)))
+(defparameter  opers (list '$linear))
+
 ;;------------------------------------------------------------------------
 ;; From compar.lisp
 (defmvar $context '$global

@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special opers *a *n $factlim sum *i *opers-list opers-list makef $factorial_expand))
+(declare-top (special *a *n $factlim sum *i opers-list makef $factorial_expand))
 
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
@@ -762,9 +762,6 @@
   (m* e q (m- (m+ a 1) b)))
 
 ;; linear operator stuff
-
-(defparameter *opers-list '(($linear . linearize1)))
-(defparameter  opers (list '$linear))
 
 (defun oper-apply (e z)
   (cond ((null opers-list)

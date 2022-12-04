@@ -12,7 +12,7 @@
 
 (macsyma-module dskfn)
 
-(declare-top (special opers $packagefile
+(declare-top (special $packagefile
 		      aaaaa errset lessorder greatorder indlist
 		      varlist *mopl* $props
 		      savefile
