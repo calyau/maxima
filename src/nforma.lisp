@@ -12,7 +12,7 @@
 
 (macsyma-module nforma)
 
-(declare-top (special 1//2 -1//2 in-p))
+(declare-top (special in-p))
 
 (defmvar $negsumdispflag t)
 

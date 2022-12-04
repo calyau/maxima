@@ -14,7 +14,7 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special errorsw 1//2 -1//2))
+(declare-top (special errorsw))
 
 ;;; Arithmetic utilities.
 
