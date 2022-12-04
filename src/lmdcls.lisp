@@ -93,7 +93,7 @@
 	  adn* aexprp algnotexact
 	  alpha aryp assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
-	  bindlist *mdebug*
+	  *mdebug*
 	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  errorsw evarrp evp expandflag expandp
@@ -102,9 +102,9 @@
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
 	  integerl *islinp* limit-answers limitp linel
-	  *linelabel* local loclist maplp mdop
+	  *linelabel* local maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
-	  mplc* mprogp mproplist mspeclist msump munbindp
+	  mplc* mprogp mproplist msump munbindp
 	  need-prog? negprods negsums nn* noevalargs nonintegerl
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp

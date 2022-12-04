@@ -34,9 +34,6 @@ or if apply is being used are printed.")
 
 (declare-top (unspecial args))
 
-(defvar mspeclist nil)
-(defvar bindlist nil)
-(defvar loclist nil)
 (defvar mproplist nil)
 (defvar *nounl* nil)
 (defvar scanmapp nil)
@@ -461,7 +458,6 @@ used tels quels, without calling MEVAL.
 If FNNAME is non-NIL, it designates a function call frame.
 This function does not handle errors properly, use the MBIND
 wrapper for this."
-  (declare (special bindlist mspeclist))
   (do ((vars lamvars (cdr vars))
        (args fnargs (cdr args)))
       ((cond ((and vars args) nil)
@@ -495,7 +491,6 @@ wrapper for this."
   "Error-handling wrapper around MBIND-DOIT."
   (handler-case
       (let ((old-bindlist bindlist) win)
-	(declare (special bindlist))
         ;; At this point store the value of $errormsg in a global. The macro
         ;; with-$error sets the value of $errormsg to NIL, but we need the
         ;; actual value in the routine mbind-doit.

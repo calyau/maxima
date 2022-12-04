@@ -607,6 +607,9 @@
 ;; whereas if it is false they are stored in the function cell
 (defmvar $use_fast_arrays nil)
 
+(defvar mspeclist nil)
+(defvar bindlist nil)
+(defvar loclist nil)
 
 
 ;;------------------------------------------------------------------------

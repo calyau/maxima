@@ -411,7 +411,7 @@
 ;; (Think about PROGV and SETF and BINDF. If the trace object where
 ;; a closure, then we want to fluid bind instance variables.)
 
-(declare-top (special errcatch bindlist loclist))
+(declare-top (special errcatch))
 
 (defmacro macsyma-errset (form &aux (ret (gensym)))
   `(let ((errcatch (cons bindlist loclist)) ,ret)

@@ -21,7 +21,7 @@
   (setq old-ibase *read-base* old-base *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
-(declare-top  (special bindlist loclist errset *mopl*
+(declare-top  (special errset *mopl*
 		       $values $functions $arrays
 		       $rules $props
 		       varlist genvar
