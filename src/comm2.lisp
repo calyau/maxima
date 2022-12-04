@@ -648,8 +648,6 @@
 
 ;;;; MAPF
 
-(declare-top (special scanmapp))
-
 (defmspec $scanmap (l)
   (let ((scanmapp t))
     (resimplify (apply #'scanmap1 (mmapev l)))))

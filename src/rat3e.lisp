@@ -17,7 +17,7 @@
 ;;	by the rest of the functions.
 
 (declare-top (special intbs* alflag var dosimp alc $myoptions
-		      vlist scanmapp radlist expsumsplit *ratsimp* mplc*
+		      vlist radlist expsumsplit *ratsimp* mplc*
 		      $negdistrib $gcd))
 
 (defmvar genvar nil
@@ -33,8 +33,6 @@
 (defvar *ratsimp* nil)
 
 (defmvar factorresimp nil "If `t' resimplifies factor(x-y) to x-y")
-
-(declare-top (special evp))
 
 (defun mrateval (x)
   (let ((varlist (caddar x)))

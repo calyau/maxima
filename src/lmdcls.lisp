@@ -91,25 +91,25 @@
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  adn* aexprp algnotexact
-	  alpha aryp assigns *atp* atvars
+	  alpha assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  *mdebug*
 	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
-	  errorsw evarrp evp expandflag expandp
-	  exptrlsw factlist featurel fmaplvl
+	  errorsw evarrp expandflag expandp
+	  exptrlsw factlist featurel
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
 	  integerl *islinp* limit-answers limitp linel
-	  *linelabel* local maplp mdop
+	  *linelabel* local mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
-	  mplc* mprogp mproplist msump munbindp
+	  mplc* mprogp mproplist munbindp
 	  need-prog? negprods negsums nn* noevalargs nonintegerl
-	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
+	  *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
-	  rulesw scanmapp sign-imag-errp simplimplus-problems
+	  rulesw sign-imag-errp simplimplus-problems
 	  *small-primes* substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp

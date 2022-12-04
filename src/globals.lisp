@@ -610,6 +610,13 @@
 (defvar mspeclist nil)
 (defvar bindlist nil)
 (defvar loclist nil)
+(defvar *nounl* nil)
+(defvar scanmapp nil)
+(defvar maplp nil)
+(defvar evp nil)
+(defvar fmaplvl 0)
+(defvar aryp nil)
+(defvar msump nil)
 
 
 ;;------------------------------------------------------------------------

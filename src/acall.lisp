@@ -248,8 +248,6 @@
   (let ((a (get var 'assign)))
     (if a (funcall a var val))))
 
-(declare-top (special maplp))
-
 (defun maplist_tr (fun  l1 &rest l)
   (setq l (cons l1 (copy-list l)))
   (simplify (let ((maplp t) res)

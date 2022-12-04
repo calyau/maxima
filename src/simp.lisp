@@ -14,7 +14,6 @@
 
 (declare-top (special rulesw *inv* substp limitp
 		      prods negprods sums negsums
-		      *nounl*
 		      $ratprint
 		      $float
 		      bigfloatzero bigfloatone
