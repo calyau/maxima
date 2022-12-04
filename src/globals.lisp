@@ -600,6 +600,14 @@
 
 (defmvar $ratvarswitch t) ; If T, start an evaluation with a fresh list VARLIST.
 
+(defvar *refchkl* nil)
+(defvar *mdebug* nil)
+(defvar errcatch nil)
+(defvar lessorder nil)
+(defvar greatorder nil)
+(defvar *in-translate-file* nil)
+(defvar *linelabel* nil)
+
 ;;------------------------------------------------------------------------
 ;; From simp.lisp
 ;; Switches dealing with expansion.

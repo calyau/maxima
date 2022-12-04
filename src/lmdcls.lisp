@@ -86,14 +86,13 @@
 	  $values $vect_cross
 	  %e-val %p%i %pi-val %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *in *in-compile*
-	  *in-translate-file* *inv* *min* *mx*
+	  *inv* *min* *mx*
 	  *n *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  adn* aexprp algnotexact
 	  alpha assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
-	  *mdebug*
 	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  errorsw expandflag expandp
@@ -102,13 +101,13 @@
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
 	  *islinp* limit-answers limitp linel
-	  *linelabel* local mdop
+	  local mdop
 	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist
 	  need-prog? negprods negsums nn*
 	  opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
-	  realonlyratnum *refchkl* return-mode returns rulefcnl
+	  realonlyratnum return-mode returns rulefcnl
 	  rulesw sign-imag-errp simplimplus-problems
 	  *small-primes* substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique

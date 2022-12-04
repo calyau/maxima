@@ -861,8 +861,6 @@
 
 ;;;; ALIAS
 
-(declare-top (special greatorder lessorder))
-
 (defmspec $ordergreat (l)
   (if greatorder (merror (intl:gettext "ordergreat: reordering is not allowed.")))
   (makorder (setq greatorder (reverse (cdr l))) '_))

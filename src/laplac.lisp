@@ -14,7 +14,7 @@
 
 (declare-top (special var
 		      checkfactors
-                      errcatch $errormsg))
+                      $errormsg))
 
 ;;; The properties NOUN and VERB give correct linear display
 

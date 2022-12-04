@@ -174,7 +174,6 @@
 	 (list-ref (list-ref l `(,(car indexl))) (cdr indexl)))))
 
 (defun display-for-tr (labelsp equationsp &rest argl)
-  (declare (special *linelabel*))
   (do ((argl argl (cdr argl))
        (lablist nil)
        (tim 0))
