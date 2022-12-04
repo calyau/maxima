@@ -104,7 +104,7 @@
 	  integerl *islinp* limit-answers limitp linel
 	  *linelabel* local mdop
 	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
-	  mplc* mprogp mproplist munbindp
+	  mplc* mprogp mproplist
 	  need-prog? negprods negsums nn* nonintegerl
 	  opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp

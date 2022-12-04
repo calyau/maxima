@@ -746,6 +746,20 @@
 
 (defmvar $features (cons '(mlist simp) (append featurel nil)))
 
+;; These three variables are what get stuck in array slots as magic
+;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
+;; respectively.
+
+(defvar munbound '|#####|)
+
+(defvar fixunbound most-negative-fixnum)
+
+(defvar flounbound most-negative-flonum)
+
+(defmvar munbindp nil
+  "Used for safely `munbind'ing incorrectly-bound variables."
+  no-reset)
+
 
 ;;------------------------------------------------------------------------
 ;; From rat3c.lisp

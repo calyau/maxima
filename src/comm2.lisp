@@ -131,7 +131,7 @@
 ;;;; AT
 
 ;;dummy-variable-operators is defined in COMM, which uses it inside of SUBST1.
-(declare-top (special atvars *atp* munbound dummy-variable-operators))
+(declare-top (special atvars *atp* dummy-variable-operators))
 
 (defmfun $atvalue (exp eqs val)
   (let (dl vl fun)
