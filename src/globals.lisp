@@ -684,6 +684,7 @@
   fixnum
   :properties ((assign msetchk)))
 
+(defmvar *alphabet* (list #\_ #\%))
 
 ;;------------------------------------------------------------------------
 ;; From nforma

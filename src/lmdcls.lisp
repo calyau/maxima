@@ -91,7 +91,7 @@
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  adn* aexprp algnotexact
-	  alpha *alphabet* aryp assigns *atp* atvars
+	  alpha aryp assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
 	  defined_variables defintdebug derivlist

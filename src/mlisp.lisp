@@ -28,7 +28,7 @@ or if apply is being used are printed.")
 		      $myoptions $props genvar
 		      $numer *mdebug* *refchkl*
 		      opers
-		      *mopl* *alphabet* $%% %e-val
+		      *mopl* $%% %e-val
 		      $macros linel
 		      *builtin-$props*))
 
