@@ -10,8 +10,8 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(TEXINFOVERSION "7.0")
-set(TEXINFO_MD5 "c9bda68c809e3afe67f1fbcd7c3d9fd3")
+set(TEXINFOVERSION "7.0.1")
+set(TEXINFO_MD5 "545e6fdb23f5c7923c057187aa19f9f4")
 set(TEXINFO_URL "https://ftp.gnu.org/gnu/texinfo/texinfo-${TEXINFOVERSION}.tar.xz")
 
 # Build texinfo
