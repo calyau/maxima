@@ -1117,15 +1117,14 @@ wrapper for this."
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-      '(($linel msetchk) (*read-base* msetchk) (*print-base* msetchk) (modulus msetchk)
-	($infolists neverset) ($trace neverset) ($ratweights msetchk)
-	($ratvars msetchk) ($setcheck msetchk) ($gcd msetchk)
-	($dotassoc msetchk) ($ratwtlvl msetchk) ($ratfac msetchk)
-	($all neverset) ($numer numerset) ($fortindent msetchk)
-	($gensumnum msetchk) ($genindex msetchk) ($fpprintprec msetchk)
-	($floatwidth msetchk) ($parsewindow msetchk) ($optimprefix msetchk)))
+      '((*read-base* msetchk) (*print-base* msetchk) (modulus msetchk)
+	($all neverset) ($fortindent msetchk)
+	($floatwidth msetchk)))
 
 (defun msetchk (x y)
+  "Check that the variable X and be assigned the value Y.  If the
+  assignment is invalid, signal an error.  Otherwise, it is assumed
+  the assumed the assignment is valid." 
   (cond ((member x '(*read-base* *print-base*) :test #'eq)
 	 (unless (typep y '(integer 2 36))
 	   (mseterr x y)))

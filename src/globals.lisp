@@ -164,7 +164,8 @@
   "Causes a non-commutative product to be considered associative, so
   that A . (B . C) is simplified to A . B . C.  If this flag is off,
   dot is taken to be right associative, i.e.  A . B . C is simplified
-  to A . (B . C).")
+  to A . (B . C)."
+  :properties ((assign msetchk)))
 
 (defmvar $doallmxops t
   "Causes all operations relating to matrices (and lists) to be
@@ -241,7 +242,8 @@
 (defmvar $fpprintprec 0
   "Controls the number of significant digits printed for floats.  If
   0, then full precision is used."
-  fixnum)
+  fixnum
+  :properties ((assign msetchk)))
 
 (defmvar $maxfpprintprec (ceiling (log (expt 2 (float-digits 1d0)) 10d0))
   "The maximum number of significant digits printed for floats.")
@@ -311,13 +313,15 @@
   If it is set to FALSE then the index will consist only of GENINDEX
   with no numeric suffix."
   modified-commands '$sum
-  setting-predicate #'(lambda (x) (or (null x) (integerp x))))
+  setting-predicate #'(lambda (x) (or (null x) (integerp x)))
+  :properties ((assign msetchk)))
 
 (defmvar $genindex '$i
   "The alphabetic prefix used to generate the next variable of
   summation when necessary."
   modified-commands '$sum
-  setting-predicate #'symbolp)
+  setting-predicate #'symbolp
+  :properties ((assign msetchk)))
 
 (defmvar $zerobern t)
 (defmvar $simpsum nil)
@@ -363,7 +367,8 @@
   numerical arguments to be evaluated in floating point.  It causes
   variables in an expression which have been given NUMERVALs to be
   replaced by their values.  It also turns on the FLOAT switch."
-  see-also ($numerval $float))
+  see-also ($numerval $float)
+  :properties ((assign numerset)))
 
 (defmvar $simp t "Enables simplification.")
 
@@ -418,7 +423,10 @@
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-(defmvar $linel 79.)
+(defmvar $linel 79.
+  "The assumed width (in characters) of the console display for the
+  purpose of displaying expressions"
+  :properties ((assign msetchk)))
 
 ;; DO NOT change this to a DEFMVAR.  This breaks the testsuite,
 ;; presumably because the values get reset when reset() is done.
@@ -440,7 +448,9 @@
 (defmvar $infolists
   '((mlist simp) $labels $values $functions $macros $arrays
                  $myoptions $props $aliases $rules $gradefs
-                 $dependencies $let_rule_packages $structures))
+    $dependencies $let_rule_packages $structures)
+  "A list of the names of all of the information lists in Maxima."
+  :properties ((assign neverset)))
 
 (defmvar $labels (list '(mlist simp)))
 (defmvar $dispflag t)
@@ -530,11 +540,18 @@
 (defmvar $factorflag nil "If `t' constant factor of polynomial is also factored")
 (defmvar $dontfactor '((mlist)))
 (defmvar $norepeat t)
-(defmvar $ratweights '((mlist simp)))
+(defmvar $ratweights '((mlist simp))
+  "The list of weights assigned by 'ratweight"
+  :properties ((assign msetchk)))
 (defmvar $algebraic nil)
-(defmvar $ratvars '((mlist simp)))
+(defmvar $ratvars '((mlist simp))
+  "A list of the arguments of the function 'ratvars' when it was called
+  most recently.  Each call to the function 'ratvars' resets the list"
+  :properties ((assign msetchk)))
 (defmvar $facexpand t)
-(defmvar $ratfac nil "If `t' cre-forms are kept factored")
+(defmvar $ratfac nil
+  "If `t' cre-forms are kept factored"
+  :properties ((assign msetchk)))
 
 
 ;;  Any program which calls RATF on
@@ -574,7 +591,13 @@
 (defmvar $infeval nil)
 (defmvar $piece '$piece)
 (defmvar $setval '$setval)
-(defmvar $setcheck nil)
+(defmvar $setcheck nil
+  "This contains a list of variables (which can be subscripted). Maxima
+  prints a message whenever the variables, or subscripted occurrences
+  of them, are bound with the ordinary assignment operator ':', the
+  '::' assignment operator, or function argument binding, but not the
+  function assignment ':=' nor the macro assignment '::=' operators"
+  :properties ((assign msetchk)))
 ;; If this is T then arrays are stored in the value cell,
 ;; whereas if it is false they are stored in the function cell
 (defmvar $use_fast_arrays nil)
@@ -586,7 +609,10 @@
 ;; List of GCD algorithms.  Default one is first.
 (defvar *gcdl* '($spmod $subres $ez $red $mod $algebraic))
 
-(defmvar $gcd (car *gcdl*))		;Sparse Modular
+(defmvar $gcd (car *gcdl*) ;Sparse Modular
+  "The default GCD algorithm to use for evaluating GCDs."
+  :properties ((assign msetchk)))
+
 
 
 ;;------------------------------------------------------------------------
@@ -635,7 +661,9 @@
 
 ;;------------------------------------------------------------------------
 ;; From optim.lisp
-(defmvar $optimprefix '$%)
+(defmvar $optimprefix '$%
+  "The prefix used for generated symbols by the 'optimize' command."
+  :properties ((assign msetchk)))
 
 ;;------------------------------------------------------------------------
 ;; From nparse.lisp
@@ -645,7 +673,8 @@
   This option is especially useful on slow terminals.  Setting it to
   -1 causes the entire input string to be printed out when an
   MAXIMA-ERROR occurs."
-  fixnum)
+  fixnum
+  :properties ((assign msetchk)))
 
 
 ;;------------------------------------------------------------------------
@@ -660,7 +689,10 @@
 
 ;;------------------------------------------------------------------------
 ;; From rat3b.lisp
-(defmvar $ratwtlvl nil) 
+(defmvar $ratwtlvl nil
+  "Used in combination with the 'ratweight' function to control the
+  truncation of canonical rational expressions (CRE)"
+  :properties ((assign msetchk)))
 (defmvar $ratalgdenom t)       ;If T then denominator is rationalized.
 
 ;;------------------------------------------------------------------------
@@ -696,7 +728,9 @@
 
 ;;------------------------------------------------------------------------
 ;; From mtrace.lisp
-(defmvar $trace (list '(mlist)) "List of functions actively traced")
+(defmvar $trace (list '(mlist))
+  "List of functions actively traced"
+  :properties ((assign neverset)))
 
 ;;------------------------------------------------------------------------
 ;; From inmis.lisp
