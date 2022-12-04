@@ -86,11 +86,11 @@
 	  $values $vect_cross
 	  %e-val %p%i %pi-val %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *in *in-compile*
-	  *in-translate-file* *inv* *irreds *min* *mx*
+	  *in-translate-file* *inv* *min* *mx*
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
-	  adn* aexprp algfac* algnotexact
+	  adn* aexprp algnotexact
 	  alpha *alphabet* aryp assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
@@ -102,7 +102,7 @@
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
 	  integerl *islinp* limit-answers limitp linel
-	  *linelabel* local loclist low* maplp mdop
+	  *linelabel* local loclist maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist mspeclist msump munbindp
 	  need-prog? negprods negsums nn* noevalargs nonintegerl
