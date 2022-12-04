@@ -637,6 +637,9 @@
   degree is larger than $factor_max_degree?"
   boolean)
 
+(defmvar *irreds nil)
+(defmvar algfac* nil)
+(defmvar low* nil)
 
 ;;------------------------------------------------------------------------
 ;; From nisimp.lisp

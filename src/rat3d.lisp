@@ -22,10 +22,6 @@
 ;;There really do seem to be two such variables...
 (declare-top (special alpha *alpha gauss genvar minpoly*))
 
-(defmvar *irreds nil)
-(defmvar algfac* nil)
-(defmvar low* nil)
-
 (defun listovars (q)
   (cond ((pcoefp q) nil)
 	(t (let ((ans nil))
