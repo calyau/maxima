@@ -53,7 +53,7 @@
 	  $doscmxplus
 	  $errexp $error_size $error_syms
 	  $exptisolate
-	  $features $file_search
+	  $file_search
 	  $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $functions $gammalim
@@ -97,7 +97,7 @@
 	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  errorsw expandflag expandp
-	  exptrlsw featurel
+	  exptrlsw
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog

@@ -41,13 +41,6 @@ or if apply is being used are printed.")
 (defvar aexprp nil)
 (defvar dsksetp nil)
 (defvar rulefcnl nil)
-(defvar featurel
-  '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
-    $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
-    $commutative $lassociative $rassociative $symmetric $antisymmetric
-    $integervalued))
-
-(defmvar $features (cons '(mlist simp) (append featurel nil)))
 
 ;; These three variables are what get stuck in array slots as magic
 ;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays

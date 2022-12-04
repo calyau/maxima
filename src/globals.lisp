@@ -623,6 +623,13 @@
 (defvar *nounsflag* nil)
 (defvar transp nil)
 (defvar noevalargs nil)
+(defvar featurel
+  '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
+    $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
+    $commutative $lassociative $rassociative $symmetric $antisymmetric
+    $integervalued))
+
+(defmvar $features (cons '(mlist simp) (append featurel nil)))
 
 
 ;;------------------------------------------------------------------------
