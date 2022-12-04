@@ -162,16 +162,6 @@ in the interval of integration.")
 
 (defmvar defintdebug () "If true Defint prints out debugging information")
 
-(defmvar integerl nil
-  "An integer-list for non-atoms found out to be `integer's")
-
-(defmvar nonintegerl nil
-  "A non-integer-list for non-atoms found out to be `noninteger's")
-
-;; Not really sure what this is meant to do, but it's used by MTORAT,
-;; KEYHOLE, and POLELIST.
-(defvar *semirat* nil)
-
 (defmfun $defint (exp var *ll* *ul*)
 
   ;; Distribute $defint over equations, lists, and matrices.

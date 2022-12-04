@@ -101,11 +101,11 @@
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
-	  integerl *islinp* limit-answers limitp linel
+	  *islinp* limit-answers limitp linel
 	  *linelabel* local mdop
 	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist
-	  need-prog? negprods negsums nn* nonintegerl
+	  need-prog? negprods negsums nn*
 	  opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
