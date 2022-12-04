@@ -47,7 +47,7 @@
 	(no-reset
 	 ;; Don't reset the value
 	 (setf maybe-reset nil))
-	((fixnum boolean)
+	((fixnum boolean string)
 	 (setf maybe-declare-type
 	       `((declaim (type ,(car opts) ,var)))))
 	(in-core
