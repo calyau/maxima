@@ -380,6 +380,11 @@
 
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
 
+(defvar rischp nil)
+(defvar rp-polylogp nil)
+(defvar wflag nil)
+(defvar derivflag nil)
+(defvar *zexptsimp? nil)
 
 ;;------------------------------------------------------------------------
 ;; From comm.lisp

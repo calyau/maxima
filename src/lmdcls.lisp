@@ -89,12 +89,12 @@
 	  *in-translate-file* *inv* *irreds *min* *mx*
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
-	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
+	  *warned-mode-vars* *warned-un-declared-vars* |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
 	  alpha *alphabet* aryp assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
-	  defined_variables defintdebug derivflag derivlist
+	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  errorsw evarrp evp expandflag expandp
 	  exptrlsw factlist featurel fmaplvl
@@ -113,7 +113,7 @@
 	  *small-primes* sqrt3//2 substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
-	  tstack varlist wflag
+	  tstack varlist
 	  $cflength *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable

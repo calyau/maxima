@@ -29,7 +29,7 @@
 
 (declare-top (special errorsw origval low*
 		      *indicator half%pi nn* dn* numer denom exp var val varlist
-		      *zexptsimp? taylored logcombed
+		      taylored logcombed
 		      lhp? lhcount genvar
 		      loginprod? a context limit-assumptions
 		      limit-top limitp integer-info old-integer-info))

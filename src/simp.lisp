@@ -54,17 +54,12 @@
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
 
-(defvar rischp nil)
-(defvar rp-polylogp nil)
-(defvar wflag nil)
 (defvar expandp nil)
 (defvar timesinp nil)
 (defvar %e-val (mget '$%e '$numer))
 (defvar %pi-val (mget '$%pi '$numer))
-(defvar derivflag nil)
 (defvar exptrlsw nil)
 (defvar expandflag nil)
-(defvar *zexptsimp? nil)
 (defvar *const* 0)
 
 (defprop mnctimes t associative)
