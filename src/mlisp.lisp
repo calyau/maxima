@@ -40,12 +40,6 @@ or if apply is being used are printed.")
 (defvar mlocp nil)
 (defvar aexprp nil)
 (defvar dsksetp nil)
-(defvar evarrp nil)
-(defvar factlist nil)
-(defvar mfexprp t)
-(defvar *nounsflag* nil)
-(defvar transp nil)
-(defvar noevalargs nil)
 (defvar rulefcnl nil)
 (defvar featurel
   '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex

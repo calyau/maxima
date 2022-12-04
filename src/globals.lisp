@@ -617,6 +617,12 @@
 (defvar fmaplvl 0)
 (defvar aryp nil)
 (defvar msump nil)
+(defvar evarrp nil)
+(defvar factlist nil)
+(defvar mfexprp t)
+(defvar *nounsflag* nil)
+(defvar transp nil)
+(defvar noevalargs nil)
 
 
 ;;------------------------------------------------------------------------

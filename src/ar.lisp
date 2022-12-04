@@ -12,7 +12,7 @@
 
 (macsyma-module ar)
 
-(declare-top (special evarrp munbound flounbound fixunbound))
+(declare-top (special munbound flounbound fixunbound))
 
 (defstruct (mgenarray (:conc-name mgenarray-))
   aref

@@ -96,17 +96,17 @@
 	  *mdebug*
 	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
-	  errorsw evarrp expandflag expandp
-	  exptrlsw factlist featurel
+	  errorsw expandflag expandp
+	  exptrlsw featurel
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
 	  integerl *islinp* limit-answers limitp linel
 	  *linelabel* local mdop
-	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
+	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist munbindp
-	  need-prog? negprods negsums nn* noevalargs nonintegerl
-	  *nounsflag* opers opers-list outargs1 outargs2
+	  need-prog? negprods negsums nn* nonintegerl
+	  opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw sign-imag-errp simplimplus-problems
