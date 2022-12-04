@@ -23,67 +23,29 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special derivflag derivlist $values $functions $arrays 
+(declare-top (special derivlist $values $functions $arrays 
                       $rules $dependencies
 		      $myoptions $props genvar
-		      $numer *mdebug* *refchkl*
+		      $numer
 		      opers
-		      *mopl* *alphabet* $%% %e-val
+		      *mopl* $%% %e-val
 		      $macros linel
 		      *builtin-$props*))
 
 (declare-top (unspecial args))
 
-(defvar mspeclist nil)
-(defvar bindlist nil)
-(defvar loclist nil)
 (defvar mproplist nil)
-(defvar *nounl* nil)
-(defvar scanmapp nil)
-(defvar maplp nil)
 (defvar mprogp nil)
-(defvar evp nil)
 (defvar mdop nil)
 (defvar mlocp nil)
 (defvar aexprp nil)
-(defvar fmaplvl 0)
 (defvar dsksetp nil)
-(defvar aryp nil)
-(defvar msump nil)
-(defvar evarrp nil)
-(defvar factlist nil)
-(defvar mfexprp t)
-(defvar *nounsflag* nil)
-(defvar transp nil)
-(defvar noevalargs nil)
 (defvar rulefcnl nil)
-(defvar featurel
-  '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
-    $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
-    $commutative $lassociative $rassociative $symmetric $antisymmetric
-    $integervalued))
-
-(defmvar $features (cons '(mlist simp) (append featurel nil)))
-
-;; These three variables are what get stuck in array slots as magic
-;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
-;; respectively.
-
-(defvar munbound '|#####|)
-
-(defvar fixunbound most-negative-fixnum)
-
-(defvar flounbound most-negative-flonum)
-
-(defmvar munbindp nil
-  "Used for safely `munbind'ing incorrectly-bound variables."
-  no-reset)
 
 (mapc #'(lambda (x) (setf (symbol-value x) (ncons '(mlist simp))))
       '($values $functions $macros $arrays $myoptions $rules $props))
 
 (defun mapply1 (fn args fnname form)
-  (declare (special aryp))
   (cond ((atom fn)
 	 (cond ((functionp fn)
 		(apply fn args))
@@ -221,7 +183,6 @@ is EQ to FNNAME if the latter is non-NIL."
     (setq $%% (meval (car body)))))
 
 (defun mqapply1 (form)
-  (declare (special aryp))
   (destructuring-let (((fn . argl) (cdr form)) (aexprp))
     (unless (mquotep fn) (setq fn (meval fn)))
     (cond ((atom fn)
@@ -250,7 +211,7 @@ is EQ to FNNAME if the latter is non-NIL."
 (defvar *last-meval1-form* nil)
 
 (defun meval1 (form)
-  (declare (special *nounl* *break-points* *break-step*))
+  (declare (special *break-points* *break-step*))
   (cond
     ((atom form)
      (prog (val)
@@ -461,7 +422,6 @@ used tels quels, without calling MEVAL.
 If FNNAME is non-NIL, it designates a function call frame.
 This function does not handle errors properly, use the MBIND
 wrapper for this."
-  (declare (special bindlist mspeclist))
   (do ((vars lamvars (cdr vars))
        (args fnargs (cdr args)))
       ((cond ((and vars args) nil)
@@ -495,7 +455,6 @@ wrapper for this."
   "Error-handling wrapper around MBIND-DOIT."
   (handler-case
       (let ((old-bindlist bindlist) win)
-	(declare (special bindlist))
         ;; At this point store the value of $errormsg in a global. The macro
         ;; with-$error sets the value of $errormsg to NIL, but we need the
         ;; actual value in the routine mbind-doit.

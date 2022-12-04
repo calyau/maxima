@@ -63,7 +63,6 @@
 ;; No attempt is made to handle variables declare with DEFVAR or by other means.
 
 (defun maybe-reset (key val actually-reset reset-verbose)
-  (declare (special munbindp))
   ; MAYBE DEFMVAR VALUES SHOULD ONLY BE MAXIMA EXPRESSIONS ??
   (let ((non-maxima (and (consp val) (not (consp (car val))))))
     (when

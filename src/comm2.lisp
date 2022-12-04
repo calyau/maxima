@@ -131,7 +131,7 @@
 ;;;; AT
 
 ;;dummy-variable-operators is defined in COMM, which uses it inside of SUBST1.
-(declare-top (special atvars *atp* munbound dummy-variable-operators))
+(declare-top (special atvars *atp* dummy-variable-operators))
 
 (defmfun $atvalue (exp eqs val)
   (let (dl vl fun)
@@ -648,8 +648,6 @@
 
 ;;;; MAPF
 
-(declare-top (special scanmapp))
-
 (defmspec $scanmap (l)
   (let ((scanmapp t))
     (resimplify (apply #'scanmap1 (mmapev l)))))
@@ -862,8 +860,6 @@
 				  (cons '(mlist simp) (mapcar #'1- (cdr ary1)))))))))))
 
 ;;;; ALIAS
-
-(declare-top (special greatorder lessorder))
 
 (defmspec $ordergreat (l)
   (if greatorder (merror (intl:gettext "ordergreat: reordering is not allowed.")))

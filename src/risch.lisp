@@ -20,7 +20,7 @@
                       expint trigint operator $gcd
                       changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch varlist nogood genvar
-                      rischp $factorflag alphar m
+                      $factorflag alphar m
                       genpairs hypertrigint *mosesflag *exp y
                       implicit-real $%e_to_numlog generate-atan2
                       context rp-polylogp *in-risch-p*))

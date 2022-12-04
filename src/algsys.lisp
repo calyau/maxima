@@ -34,8 +34,7 @@
 
 (declare-top (special $algdelta
 		     varlist genvar *roots *failures
-		     *tvarxlist* errorsw *ivar* errset $polyfactor
-		     bindlist loclist))
+		     *tvarxlist* errorsw *ivar* errset $polyfactor))
 
 ;;note if $algepsilon is too large you may lose some roots.
 

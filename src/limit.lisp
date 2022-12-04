@@ -27,9 +27,9 @@
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
-(declare-top (special errorsw origval low*
+(declare-top (special errorsw origval
 		      *indicator half%pi nn* dn* numer denom exp var val varlist
-		      *zexptsimp? taylored logcombed
+		      taylored logcombed
 		      lhp? lhcount genvar
 		      loginprod? a context limit-assumptions
 		      limit-top limitp integer-info old-integer-info))
@@ -1108,7 +1108,6 @@ ignoring dummy variables and array indices."
 	(errcatch t)
 	;; Don't print any error messages
 	($errormsg nil))
-    (declare (special errcatch))
     ;; Should we just use IGNORE-ERRORS instead HANDLER-CASE here?  I
     ;; (rtoy) am choosing the latter so that unexpected errors will
     ;; actually show up instead of being silently discarded.

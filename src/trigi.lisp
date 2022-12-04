@@ -14,17 +14,7 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special errorsw 1//2 -1//2))
-
-;; Simplified shortcuts for constant expressions.
-(defvar %pi//4 '((mtimes simp) ((rat simp) 1 4.) $%pi))
-(defvar %pi//2 '((mtimes simp) ((rat simp) 1 2) $%pi))
-(defvar sqrt3//2 '((mtimes simp)
-                   ((rat simp) 1 2) 
-                   ((mexpt simp) 3 ((rat simp) 1 2))))
-(defvar -sqrt3//2 '((mtimes simp)
-                    ((rat simp) -1 2)
-                    ((mexpt simp) 3 ((rat simp) 1 2))))
+(declare-top (special errorsw))
 
 ;;; Arithmetic utilities.
 

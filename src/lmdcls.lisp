@@ -53,7 +53,7 @@
 	  $doscmxplus
 	  $errexp $error_size $error_syms
 	  $exptisolate
-	  $features $file_search
+	  $file_search
 	  $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $functions $gammalim
@@ -84,36 +84,35 @@
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable
 	  $values $vect_cross
-	  %e-val %p%i %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
+	  %e-val %p%i %pi-val %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *in *in-compile*
-	  *in-translate-file* *inv* *irreds *min* *mx*
-	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
+	  *inv* *min* *mx*
+	  *n *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
-	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
-	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
-	  alpha *alphabet* aryp assigns *atp* atvars
+	  *warned-mode-vars* *warned-un-declared-vars*
+	  adn* aexprp algnotexact
+	  alpha assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
-	  bindlist *mdebug*
-	  defined_variables defintdebug derivflag derivlist
+	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
-	  errorsw evarrp evp expandflag expandp
-	  exptrlsw factlist featurel fmaplvl
+	  errorsw expandflag expandp
+	  exptrlsw
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
-	  integerl *islinp* limit-answers limitp linel
-	  *linelabel* local loclist low* maplp mdop
-	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
-	  mplc* mprogp mproplist mspeclist msump munbindp
-	  need-prog? negprods negsums nn* noevalargs nonintegerl
-	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
+	  *islinp* limit-answers limitp linel
+	  local mdop
+	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
+	  mplc* mprogp mproplist
+	  need-prog? negprods negsums nn*
+	  opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
-	  realonlyratnum *refchkl* return-mode returns rulefcnl
-	  rulesw scanmapp sign-imag-errp simplimplus-problems
-	  *small-primes* sqrt3//2 substp
+	  realonlyratnum return-mode returns rulefcnl
+	  rulesw sign-imag-errp simplimplus-problems
+	  *small-primes* substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
-	  tstack varlist wflag
+	  tstack varlist
 	  $cflength *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable

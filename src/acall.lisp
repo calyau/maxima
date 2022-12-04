@@ -36,7 +36,6 @@
 ;;; ((MQAPPLY ARRAY) X Y) is a strange form, meaning (X)[Y].
 
 (defun marrayref (aarray ind1 &rest inds)
-  (declare (special fixunbound flounbound))
   (typecase aarray
     (cl:array
      (case (array-element-type aarray)
@@ -175,7 +174,6 @@
 	 (list-ref (list-ref l `(,(car indexl))) (cdr indexl)))))
 
 (defun display-for-tr (labelsp equationsp &rest argl)
-  (declare (special *linelabel*))
   (do ((argl argl (cdr argl))
        (lablist nil)
        (tim 0))
@@ -247,8 +245,6 @@
 (defun assign-check (var val)
   (let ((a (get var 'assign)))
     (if a (funcall a var val))))
-
-(declare-top (special maplp))
 
 (defun maplist_tr (fun  l1 &rest l)
   (setq l (cons l1 (copy-list l)))

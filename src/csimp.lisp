@@ -14,7 +14,7 @@
 
 (declare-top (special rsn* $factlim
 		      var varlist genvar $ratprint
-		      nn* dn* $errexp sqrt3//2 -sqrt3//2
+		      nn* dn* $errexp
 		      errorsw))
 
 (load-macsyma-macros rzmac)

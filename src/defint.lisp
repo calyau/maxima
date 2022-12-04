@@ -142,7 +142,7 @@
 					;impvar
 	     (special *roots *failures
 		      $breakup $%emode
-		      dosimp context rp-polylogp
+		      dosimp context
 		      %p%i half%pi %pi2 half%pi3 varlist genvar
 		      errorsw
 		      limitp $algebraic
@@ -161,16 +161,6 @@
 in the interval of integration.")
 
 (defmvar defintdebug () "If true Defint prints out debugging information")
-
-(defmvar integerl nil
-  "An integer-list for non-atoms found out to be `integer's")
-
-(defmvar nonintegerl nil
-  "A non-integer-list for non-atoms found out to be `noninteger's")
-
-;; Not really sure what this is meant to do, but it's used by MTORAT,
-;; KEYHOLE, and POLELIST.
-(defvar *semirat* nil)
 
 (defmfun $defint (exp var *ll* *ul*)
 

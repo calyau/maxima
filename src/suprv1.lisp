@@ -21,28 +21,21 @@
   (setq old-ibase *read-base* old-base *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
-(declare-top  (special bindlist loclist errset *mopl*
+(declare-top  (special errset *mopl*
 		       $values $functions $arrays
 		       $rules $props
 		       varlist genvar
 		       checkfactors $features featurel
 		       tellratlist
 		       dispflag savefile $%%
-		       opers *ratweights
+		       *ratweights
 		       $stringdisp $lispdisp
 		       transp $macros autoload))
 
 (defvar thistime 0)
-(defvar *refchkl* nil)
-(defvar *mdebug* nil)
-(defvar errcatch nil)
 (defvar mcatch nil)
 (defvar brklvl -1)
 (defvar allbutl nil)
-(defvar lessorder nil)
-(defvar greatorder nil)
-(defvar *in-translate-file* nil)
-(defvar *linelabel* nil)
 
 
 ;; This version of meval* makes sure, that the facts from the global variable

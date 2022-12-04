@@ -15,16 +15,12 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 4.
 ;;	IT INCLUDES THE POLYNOMIAL FACTORING ROUTINES.
 
-(declare-top (special *min* *mx* *odr* nn* scanmapp *checkagain adn*))
+(declare-top (special *min* *mx* *odr* nn* *checkagain adn*))
 
 (declare-top (special $ratfac))
 
 ;;There really do seem to be two such variables...
 (declare-top (special alpha *alpha gauss genvar minpoly*))
-
-(defmvar *irreds nil)
-(defmvar algfac* nil)
-(defmvar low* nil)
 
 (defun listovars (q)
   (cond ((pcoefp q) nil)
