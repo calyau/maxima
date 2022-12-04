@@ -84,13 +84,13 @@
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable
 	  $values $vect_cross
-	  %e-val %p%i %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
+	  %e-val %p%i %pi-val %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *in *in-compile*
 	  *in-translate-file* *inv* *irreds *min* *mx*
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* |-1//2|
-	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
+	  |1//2| adn* aexprp algfac* algnotexact
 	  alpha *alphabet* aryp assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
@@ -110,7 +110,7 @@
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sign-imag-errp simplimplus-problems
-	  *small-primes* sqrt3//2 substp
+	  *small-primes* substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack varlist
