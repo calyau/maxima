@@ -99,7 +99,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   ;; them and continue, via *debugger-hook*.
   (rat-error-to-merror (meval* x)))
 
-(declare-top (special *mread-prompt*  $file_search_demo))
+(declare-top (special *mread-prompt*))
 
 (defvar accumulated-time 0.0)
 

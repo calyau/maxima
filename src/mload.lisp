@@ -12,8 +12,6 @@
 (in-package :maxima)
 (macsyma-module mload)
 
-(declare-top (special $file_search_lisp $file_search_maxima $file_search_demo))
-
 (defun load-and-tell (filename)
   (loadfile filename t ;; means this is a lisp-level call, not user-level.
 	    $loadprint))
