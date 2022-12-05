@@ -1,7 +1,5 @@
 (in-package :maxima)
 
-(defvar errset nil)
-
 ;; Here is the desired behavior of errset:
 ;;
 ;; (let ((errset t)) (errset (+ 2 'a)))      ;==> signals error
