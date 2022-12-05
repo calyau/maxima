@@ -12,8 +12,6 @@
 
 (macsyma-module nforma)
 
-(declare-top (special in-p))
-
 (defmvar $negsumdispflag t)
 
 (setq in-p nil)

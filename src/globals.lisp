@@ -520,6 +520,10 @@
 (defvar *atp* nil)    ; When T, prevents substitution from applying to vars 
                       ; bound by %sum, %product, %integrate, %limit
 
+(defvar atvars '($@1 $@2 $@3 $@4))
+(defvar in-p nil)
+(defvar substp nil)
+
 ;;------------------------------------------------------------------------
 ;; From displa.lisp
 (defmvar $ttyoff nil)

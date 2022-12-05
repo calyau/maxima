@@ -14,8 +14,7 @@
 
 (declare-top (special $props derivlist
 		      $linenum *linelabel* nn* dn*
-		      atvars $errexp
-		      in-p substp
+		      $errexp
 		      dummy-variable-operators))
 
 ;; op and opr properties
@@ -64,10 +63,6 @@
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'op))
       '((mqapply $subvar) (bigfloat $bfloat)))
-
-(defvar atvars '($@1 $@2 $@3 $@4))
-(defvar in-p nil)
-(defvar substp nil)
 
 (defmvar $vect_cross nil
   "If TRUE allows DIFF(X~Y,T) to work where ~ is defined in

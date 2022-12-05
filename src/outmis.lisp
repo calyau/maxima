@@ -119,7 +119,7 @@
 		   ((eq (caar e) 'mplus) (cons u (nreverse v)))
 		   (t (cons u v)))))))
 
-(declare-top (special atvars $props))
+(declare-top (special$props))
 
 (defmspec $properties (x)
   (setq x (getopr (fexprcheck x)))

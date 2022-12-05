@@ -99,7 +99,7 @@
 	  exptrlsw
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
-	  implicit-real in-p inratsimp inside-mprog
+	  implicit-real inratsimp inside-mprog
 	  limit-answers limitp linel
 	  local mdop
 	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
@@ -109,7 +109,7 @@
 	  preserve-direction prods radcanp
 	  realonlyratnum return-mode returns rulefcnl
 	  rulesw sign-imag-errp simplimplus-problems
-	  *small-primes* substp
+	  *small-primes*
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack varlist

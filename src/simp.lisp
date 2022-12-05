@@ -12,7 +12,7 @@
 
 (macsyma-module simp)
 
-(declare-top (special rulesw *inv* substp limitp
+(declare-top (special rulesw *inv* limitp
 		      prods negprods sums negsums
 		      $ratprint
 		      $float
