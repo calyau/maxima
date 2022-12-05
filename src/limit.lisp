@@ -27,12 +27,12 @@
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
-(declare-top (special errorsw origval
-		      *indicator nn* dn* numer denom exp var val
-		      taylored logcombed
-		      lhp? lhcount
-		      loginprod? a context limit-assumptions
-		      limit-top limitp integer-info old-integer-info))
+(declare-top (special errorsw origval $lhospitallim low*
+		      *indicator half%pi nn* dn* numer denom exp var val varlist
+		      *zexptsimp? $tlimswitch $logarc taylored logcombed
+		      $exponentialize lhp? lhcount $ratfac genvar
+		      loginprod? $limsubst $logabs a context limit-assumptions
+		      limit-top limitp integer-info old-integer-info $keepfloat $logexpand))
 
 (defconstant +behavior-count+ 4)
 (defvar *behavior-count-now*)
@@ -126,7 +126,7 @@
 	($%e_to_numlog nil)
 	(limit-top t))
     (declare (special limit-assumptions old-integer-info
-		      limit-top))
+		      $keepfloat limit-top))
     (unless limitp
       (setq old-integer-info integer-info)
       (setq integer-info ()))
@@ -1108,6 +1108,7 @@ ignoring dummy variables and array indices."
 	(errcatch t)
 	;; Don't print any error messages
 	($errormsg nil))
+    (declare (special errcatch))
     ;; Should we just use IGNORE-ERRORS instead HANDLER-CASE here?  I
     ;; (rtoy) am choosing the latter so that unexpected errors will
     ;; actually show up instead of being silently discarded.
@@ -3318,7 +3319,7 @@ ignoring dummy variables and array indices."
 	(t (some #'%einvolve (cdr e)))))
 
 (declare-top (unspecial *indicator nn* dn* exp var val origval taylored
-			$tlimswitch logcombed lhp? lhcount))
+			$tlimswitch logcombed lhp? lhcount $ratfac))
 
 
 ;; GRUNTZ ALGORITHM

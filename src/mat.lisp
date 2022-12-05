@@ -14,14 +14,21 @@
 
 ;; this is the mat package
 
-(declare-top (special *ech* *tri* equations
-		      mul* $nolabels *det*
-		      xm* xn* ax))
+(declare-top (special *ech* *tri* $algebraic $multiplicities equations
+		      mul* $dispflag $nolabels *det*
+		      xm* xn* varlist ax *linelabel*))
 
 ;;these are arrays.
 (defvar *row*)
 (defvar *col*)
 (defvar *colinv*)
+
+(defmvar $globalsolve nil)
+(defmvar $sparse nil)
+(defmvar $backsubst t)
+
+(defmvar *rank* nil)
+(defmvar *inv* nil)
 
 (defun solcoef (m *c varl flag)
   (prog (cc answer leftover)
@@ -105,10 +112,14 @@
 
 (defvar *mosesflag nil)
 
+(defmvar $%rnum 0)
+
 (defun make-param ()
   (let ((param (intern (format nil "~A~D" '$%r (incf $%rnum)))))
     (tuchus $%rnum_list param)
     param))
+
+(defmvar $linsolve_params t "`linsolve' generates %Rnums")
 
 (defun ith (x n)
   (if (atom x) nil (nth (1- n) x)))

@@ -124,26 +124,29 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special *def2* pcprntd *mtoinf*
+(declare-top (special *def2* pcprntd *mtoinf* rsn*
 		      sn* sd* leadcoef checkfactors
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
 		      factors rlm*
-		      *scflag*
+		      $trigexpandplus $trigexpandtimes
+		      plogabs *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
 ;;;rsn* is in comdenom. does a ratsimp of numerator.
 					;expvar
-	     (special $intanalysis $noprincipal)
+	     (special $intanalysis $noprincipal $nointegrate)
 					;impvar
-	     (special *roots *failures
-		      $breakup $%emode
-		      dosimp context
-		      errorsw
+	     (special $solveradcan $solvetrigwarn *roots *failures
+		      $logabs $tlimswitch $maxposex $maxnegex
+		      $trigsign $savefactors $radexpand $breakup $%emode
+		      $float $exptsubst dosimp context rp-polylogp
+		      %p%i half%pi %pi2 half%pi3 varlist genvar
+		      $domain $m1pbranch errorsw
 		      limitp $algebraic
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
@@ -160,6 +163,16 @@
 in the interval of integration.")
 
 (defmvar defintdebug () "If true Defint prints out debugging information")
+
+(defmvar integerl nil
+  "An integer-list for non-atoms found out to be `integer's")
+
+(defmvar nonintegerl nil
+  "A non-integer-list for non-atoms found out to be `noninteger's")
+
+;; Not really sure what this is meant to do, but it's used by MTORAT,
+;; KEYHOLE, and POLELIST.
+(defvar *semirat* nil)
 
 (defmfun $defint (exp var *ll* *ul*)
 

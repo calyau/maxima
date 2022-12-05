@@ -115,28 +115,46 @@
 
 (declare-top
  (special vlist
+	  varlist		;List of all the variables occurring in a power
+				;series, the power series variables at the end
+	  genvar		;The list of gensyms corresponding to varlist
 	  modulus		;
 	  *a*			;Temporary special
+	  silent-taylor-flag	;If true indicates that errors will be
+				;returned via a throw to TAY-ERR
 	  tlist			;An association list which contains the
 				;relevant information for the expansion which
 				;is passed in at toplevel invocation.
+	  $float		;Indicates whether to convert rational numbers
+				;to floating point numbers.
+	  $keepfloat		;When true retains floatin point numbers
+				;internal to Taylor.
+	  $radexpand		;
 	  log-1			;What log(-1) should be log(-1) or pi*i.
 	  log%i			;Similarly for log(i)
 	  exact-poly		;Inicates whether polynomials are to be
 				;considered exact or not.  True within SRF,
 				;false within TAYLOR.
 	  tvars			;
+	  half%pi		;Has pi/2 to save space.
 	  const-exp-funs	;
 	  tay-const-expand	;For rediculousness like csch(log(x))
+	  $exponentialize	;which we do by exponentiation.
 	  tay-pole-expand	;
 	  trigdisp		;
 	  last-exp		;last-expression through taylor2
+	  $taylordepth		;
+	  $ratexpand		;
+	  genpairs		;List of dotted pairs
+	  ps-bmt-disrep		;
 	  ivars			;Pairlist if gensym and disreped version
 	  key-vars		;Pairlist of gensym and key var (for searching
 				;TLIST)
+	  $algebraic		;
 	  *psacirc		;
 	  *pscirc		;
 	  full-log		;
+	  $logarc		;
 	  trunclist		;
 	  *within-srf?*		;flag for in srf
 	  mainvar-datum		;
@@ -153,7 +171,7 @@
 				; suppress the message that TAYLOR is assumming
 				; an expression to be zero.
 	; 0p-funord lexp-non0	; referenced only in commented-out code, so comment out here too
-	$simp)
+	$zerobern $simp)
  )				;Don't want to see closed compilation notes.
 
 (defmvar $psexpand ()

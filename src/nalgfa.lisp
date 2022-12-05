@@ -13,7 +13,7 @@
 (macsyma-module nalgfa)
 
 (declare-top (special vlist *nosplitf *algvar *denom *num *ans
-		      $nalgfac alpha))
+		      algfac* $nalgfac alpha))
 
 (load-macsyma-macros rzmac ratmac)
 
@@ -177,6 +177,8 @@
     (cons '(mtimes)
 	  (cons (rdis (ratreduce *num *denom))
 		(mapcar 'pdis f)))))
+
+(declare-top (special adn*)) ;also redefine fact5 to call nalgfac correctly
 
 (defun nalgfac (p mp)
   (let ((*num 1) (*denom 1) (*ans) (algfac*) ($nalgfac)

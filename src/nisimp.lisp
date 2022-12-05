@@ -17,7 +17,26 @@
 ;;;property list of atoms
 ;;;except for the top level programs all program names have the prefix NIS
 
-(declare-top (special nistree nisrules nisflag)) 
+(declare-top (special nistree nisrules nisflag $ratexpand varlist $ratfac)) 
+
+(defmvar $letvarsimp nil)
+
+(defmvar $letrat nil) 
+
+(defmvar $default_let_rule_package '$default_let_rule_package
+  "The name of the default rule package used by `let' and `letsimp'")
+
+(putprop '$default_let_rule_package 'let-rule-setter 'assign)
+
+(defmvar $current_let_rule_package '$default_let_rule_package
+  "The name of the current rule package used by `let' and `letsimp'")
+
+(putprop '$current_let_rule_package 'let-rule-setter 'assign)
+
+(defmvar $let_rule_packages '((mlist) $default_let_rule_package)
+  "The names of the various let rule simplification packages")
+
+(putprop '$let_rule_packages 'let-rule-setter 'assign)
 
 (setq nisrules nil nistree nil) 
 

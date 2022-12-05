@@ -12,14 +12,37 @@
 
 (macsyma-module simp)
 
-(declare-top (special rulesw *inv* limitp
+(declare-top (special rulesw *inv* substp limitp
 		      prods negprods sums negsums
-		      $ratprint
-		      $float
-		      bigfloatzero bigfloatone
-		      opers-list *opers-list *n
-		      *out *in radcanp
+		      $scalarmatrixp *nounl*
+		      $keepfloat $ratprint
+		      $demoivre $float
+		      bigfloatzero bigfloatone $assumescalar
+		      opers-list *opers-list $dontfactor *n
+		      *out *in varlist genvar $factorflag radcanp
                       *builtin-numeric-constants*))
+
+;; General purpose simplification and conversion switches.
+
+(defmvar $negdistrib t
+  "Causes negations to be distributed over sums, e.g. -(A+B) is
+	 simplified to -A-B.")
+
+(defmvar $numer nil
+  "Causes SOME mathematical functions (including exponentiation)
+	 with numerical arguments to be evaluated in floating point.
+	 It causes variables in an expression which have been given
+	 NUMERVALs to be replaced by their values.  It also turns
+	 on the FLOAT switch."
+  see-also ($numerval $float))
+
+(defmvar $simp t "Enables simplification.")
+
+(defmvar $sumexpand nil
+  "If TRUE, products of sums and exponentiated sums go into nested
+	 sums.")
+
+(defmvar $numer_pbranch nil)
 
 ;; Switches dealing with matrices and non-commutative multiplication.
 
@@ -39,6 +62,40 @@
 
 (defmvar $mx0simp t)
 
+;; Switches dealing with expansion.
+
+(defmvar $expop 0
+  "The largest positive exponent which will be automatically
+	 expanded.  (X+1)^3 will be automatically expanded if
+	 EXPOP is greater than or equal to 3."
+  fixnum
+  see-also ($expon $maxposex $expand))
+
+(defmvar $expon 0
+  "The largest negative exponent which will be automatically
+	 expanded.  (X+1)^(-3) will be automatically expanded if
+	 EXPON is greater than or equal to 3."
+  fixnum
+  see-also ($expop $maxnegex $expand))
+
+(defmvar $maxposex 1000.
+  "The largest positive exponent which will be expanded by
+	 the EXPAND command."
+  fixnum
+  see-also ($maxnegex $expop $expand))
+
+;; Check assignment to be a positive integer
+(putprop '$maxposex 'posintegerset 'assign)
+
+(defmvar $maxnegex 1000.
+  "The largest negative exponent which will be expanded by
+	 the EXPAND command."
+  fixnum
+  see-also ($maxposex $expon $expand))
+
+;; Check assignment to be a positive integer
+(putprop '$maxnegex 'posintegerset 'assign)
+
 ;; Lisp level variables
 
 (defmvar dosimp nil
@@ -52,13 +109,39 @@
 
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
+(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
+(defmvar $grindswitch nil)
+(defmvar $algepsilon 100000000)
+(defmvar $true t)
+(defmvar $false nil)
+(defmvar $on t)
+(defmvar $off nil)
+(defmvar $logabs nil)
+(defmvar $limitdomain '$complex)
+(defmvar $listarith t)
+(defmvar $domain '$real)
+(defmvar $m1pbranch nil)
+(defmvar $%e_to_numlog nil)
+(defmvar $%emode t)
+(defmvar $lognegint nil)
+(defmvar $ratsimpexpons nil)
+(defmvar $logexpand t) ; Possible values are T, $ALL and $SUPER
+(defmvar $radexpand t)
+(defmvar $subnumsimp nil)
+(defmvar $logsimp t)
+(defmvar $distribute_over t) ; If T, functions are distributed over bags.
 
+(defvar rischp nil)
+(defvar rp-polylogp nil)
+(defvar wflag nil)
 (defvar expandp nil)
 (defvar timesinp nil)
 (defvar %e-val (mget '$%e '$numer))
 (defvar %pi-val (mget '$%pi '$numer))
+(defvar derivflag nil)
 (defvar exptrlsw nil)
 (defvar expandflag nil)
+(defvar *zexptsimp? nil)
 (defvar *const* 0)
 
 (defprop mnctimes t associative)
@@ -3436,7 +3519,7 @@
 ;; SININT is now an out-of-core file on MC, and this code is needed in-core
 ;; because of the various calls to it. - BMT & JPG
 
-(declare-top (special var ratform context))
+(declare-top (special var $ratfac ratform context))
 
 (defmfun $integrate (expr x &optional lo hi)
   (declare (special *in-risch-p*))

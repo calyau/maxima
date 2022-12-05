@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var nn* dn* sign
+(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim sign
                       $beta_expand))
 
 (defmvar $gammalim 10000
@@ -633,7 +633,7 @@
 		 (merror (intl:gettext "gamma: overflow in GAMMAFLOAT."))
 		 result))))))
 
-(declare-top (special $numer))
+(declare-top (special $numer $trigsign))
 
 (defmfun $zeromatrix (m n) ($ematrix m n 0 1 1))
 
@@ -658,6 +658,8 @@
   (do ((n n (1- n))
        (l nil (cons (ncons '(mlist simp)) l)))
       ((= n 0) l)))
+
+(declare-top (special $ratmx))
 
 (defmfun $coefmatrix (eql varl) (coefmatrix eql varl nil))
 
@@ -731,7 +733,7 @@
        (setq vector (nconc vector (ncons (meval (retrieve prompt nil))))))
      (go iloop)))
 
-(declare-top (special sn* sd*))
+(declare-top (special sn* sd* rsn*))
 
 (defmfun $xthru (e)
   (cond ((atom e) e)
@@ -792,8 +794,9 @@
        (list (add2 (m* a c1) (m* c b1))
 	     (mul2 d b1)))))
 
-(declare-top (special ax
-		      *mosesflag))
+(declare-top (special $globalsolve $backsubst $dispflag
+		      $linsolve_params $%rnum_list ax *linelabel* $linechar 
+		      $linenum *mosesflag))
 
 (defun xrutout (ax n m varl ind)
   (let (($linsolve_params (and $backsubst $linsolve_params)))

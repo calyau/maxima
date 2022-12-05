@@ -178,7 +178,6 @@
 	    :components
 	    ((:file "letmac")))
    (:module compatibility-macros1 :source-pathname ""
-	    :depends-on ("globals")
 	    :components
 	    ((:file "generr")
 	     (:file "clmacs")))
@@ -227,13 +226,13 @@
 	     (:file "displm")
 	     (:file "safe-recursion")))
    (:module rat-macros :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "ratmac")
 	     (:file "mhayat")))
    #+gcl (:file "optimize")		; jfa check this
    (:module utilities :source-pathname ""
-	    :depends-on ("globals" "defmfun" "utility-macros")
+	    :depends-on ("defmfun" "utility-macros")
 	    :components
 	    ((:file "opers")
 	     (:file "utils")
@@ -245,12 +244,12 @@
 	     (:file "outmis")
 	     (:file "ar")))
    (:module commands :source-pathname ""
-	    :depends-on ("globals" "defmfun" "compatibility-macros1")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "comm")
 	     (:file "comm2")))
    (:module evaluator :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "mlisp")
 	     (:file "mmacro")
@@ -538,7 +537,7 @@
 		       )
 		      )))
    (:module simplification :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "simp")
 	     (:file "float")
@@ -556,7 +555,7 @@
 	    :depends-on ("defmfun")
 	    :components ((:file "server")))
    (:module i-o :source-pathname ""
-	    :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1")
+	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
 	    ((:file "macsys")
 	     (:file "testsuite")
@@ -564,7 +563,7 @@
 	     (:file "suprv1")
 	     (:file "dskfn")))
    (:module factoring :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "lesfac")
 	     (:file "factor")
@@ -573,11 +572,11 @@
 	     (:file "ufact")
 	     (:file "result")))
    (:module ifactor :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "ifactor")))
    (:module rational-functions :source-pathname ""
-	    :depends-on ("globals" "defmfun" "rat-macros" "other-macros" "compatibility-macros1")
+	    :depends-on ("defmfun" "rat-macros" "other-macros" "compatibility-macros1")
 	    :components
 	    ((:file "rat3a")
 	     (:file "rat3b")
@@ -587,7 +586,7 @@
 	     (:file "nrat4")
 	     (:file "ratout")))
    (:module maxima-language-compiler :source-pathname ""
-	    :depends-on ("globals" "defmfun" "maxima-language-compiler-macros")
+	    :depends-on ("defmfun" "maxima-language-compiler-macros")
 	    :components
 	    ((:file "transl")
 	     (:file "transs")
@@ -609,7 +608,7 @@
 	     (:file "trprop")
 	     (:file "mdefun")))
    (:module numerical-functions :source-pathname ""
-	    :depends-on ("globals" "defmfun" "trigonometry" "algebraic-database" "utility-macros")
+	    :depends-on ("defmfun" "trigonometry" "algebraic-database" "utility-macros")
 	    :components
 	    ((:file "bessel")
 	     (:file "ellipt")
@@ -618,22 +617,22 @@
 	     (:file "plasma")
 	     (:file "intpol")))
    (:module reader :source-pathname ""
-	    :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1")
+	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
 	    ((:file "nparse")))
    (:module display :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "displa")
 	     (:file "nforma")
 	     (:file "grind")))
    (:module gcd :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "spgcd")
 	     (:file "ezgcd")))
    (:module documentation :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "option")
 	     (:file "macdes")))
@@ -646,13 +645,13 @@
 	     (:file "askp"))		;does this belong here?
 	    )
    (:module integration :source-pathname ""
-	    :depends-on ("globals" "defmfun" "pattern-matching")
+	    :depends-on ("defmfun" "pattern-matching")
 	    :components
 	    ((:file "sinint")
 	     (:file "sin")
 	     (:file "risch")))
    (:module taylor-series :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components ((:file "hayat")))
    (:module definite-integration :source-pathname ""
 	    :depends-on ("globals" "defmfun")
@@ -660,29 +659,29 @@
 	    ((:file "defint")
 	     (:file "residu")))
    (:module trigonometry :source-pathname ""
-	    :depends-on ("globals" "pattern-matching" "defmfun")
+	    :depends-on ("pattern-matching" "defmfun")
 	    :components
 	    ((:file "trigi")
 	     (:file "trigo")
 	     (:file "trgred")))
    (:module special-functions :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "specfn")))
    (:module matrix-algebra :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "mat")
 	     (:file "linnew")
 	     (:file "matrix")))
    (:module determinants :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "sprdet")
 	     (:file "newinv")
 	     (:file "newdet")))
    (:module pattern-matching :source-pathname ""
-	    :depends-on ("globals" "defmfun" "compatibility-macros1")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "schatc")
 	     (:file "matcom")
@@ -693,7 +692,7 @@
 	    :components ((:file "tlimit")
 			 (:file "limit")))
    (:module solve :source-pathname ""
-	    :depends-on ("globals" "defmfun" "compatibility-macros1")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "solve")
 	     (:file "psolve")
@@ -702,7 +701,7 @@
 	     (:file "polyrz")
 	     (:file "cpoly")))
    (:module debugging :source-pathname ""
-	    :depends-on ("globals" "defmfun" "compatibility-macros1")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "mtrace")
 	     (:file "mdebug")))
@@ -740,7 +739,7 @@
 	    ((:file "pois2")
 	     (:file "pois3")))
    (:module translated-packages :source-pathname ""
-	    :depends-on ("globals" "maxima-language-compiler-macros"
+	    :depends-on ("maxima-language-compiler-macros"
 			 "compatibility-macros1"
 			 "defmfun")
 	    :components

@@ -12,7 +12,7 @@
 
 (macsyma-module sumcon)
 
-(declare-top (special $niceindicespref))
+(declare-top (special $genindex $niceindicespref $sumexpand))
 
 (defmfun $sumcontract (e)	       ; e is assumed to be simplified
   (cond ((atom e) e)

@@ -14,6 +14,10 @@
 (in-package :maxima)
 ;;(macsyma-module ellipt)
 
+(defvar 3//2 '((rat simp) 3 2))
+(defvar 1//2 '((rat simp) 1 2))
+(defvar -1//2 '((rat simp) -1 2))
+
 ;;;
 ;;; Jacobian elliptic functions and elliptic integrals.
 ;;;

@@ -12,12 +12,12 @@
 
 (macsyma-module dskfn)
 
-(declare-top (special $packagefile
-		      aaaaa errset indlist
-		      *mopl* $props
-		      savefile
+(declare-top (special opers $packagefile
+		      aaaaa errset lessorder greatorder indlist
+		      $labels $aliases varlist *mopl* $props
+		      $infolists $features featurel savefile $gradefs
 		      $values $functions $arrays
-		      context))
+		      $contexts context $activecontexts))
 
 (defmvar $packagefile nil)
 (defvar indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers

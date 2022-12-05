@@ -21,6 +21,9 @@
 ;;; their own arrays.  The algorithm seems to benefit be taking are
 ;;; mre 0.01 times the published values.
 
+(declare-top (special $partswitch $keepfloat $demoivre $listconstvars
+		      $algebraic $ratfac $programmode))
+
 (declare-top (special *logbas* *infin* *are* *mre* *cr* *ci* *sr* *si*
 		      *tr* *ti* *zr* *zi* *n* *nn* *bool*
 		      *conv* *pvr* *pvi* *polysc* *polysc1*))

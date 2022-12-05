@@ -33,7 +33,7 @@
 
 (declare-top (special n nx ix))
 
-(declare-top (special $wise $fool))
+(declare-top (special $linenum $dispflag $linechar $wise $fool))
 
 (defvar *tmarrays* nil)
 
@@ -149,7 +149,7 @@
 	(return (list (car ind) (nconc subindx (cdr ind))))
 	(setq subindx (nconc subindx (list (car ind)))))))
 
-(declare-top (special vlist))
+(declare-top (special vlist varlist genvar))
 
 (defun tmratconv (bbb n m)
   (prog (ccc)

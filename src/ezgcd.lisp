@@ -12,7 +12,7 @@
 
 (macsyma-module ezgcd)
 
-(declare-top (special lcprod svals svars oldsvars oldsvals
+(declare-top (special genvar lcprod svals svars oldsvars oldsvals
 		      valflag $gcd pl0 d0 degd0 var
 		      many* tempprime ovarlist valist modulus
 		      zl *prime plim nn* ne nn*-1 dlp

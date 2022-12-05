@@ -12,9 +12,9 @@
 
 (macsyma-module laplac)
 
-(declare-top (special var
-		      checkfactors
-                      $errormsg))
+(declare-top (special var $savefactors
+		      checkfactors $ratfac $keepfloat *nounl* *nounsflag*
+                      errcatch $errormsg))
 
 ;;; The properties NOUN and VERB give correct linear display
 
@@ -695,7 +695,7 @@
 	1
 	t))))
 
-(declare-top (special ratform ils ilt))
+(declare-top (special varlist ratform ils ilt))
 
 (defmfun $ilt (exp ils ilt)
  ;;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
@@ -932,5 +932,5 @@
 	1
 	nil))))
 
-(declare-top (unspecial ils ilt q ratform var
+(declare-top (unspecial ils ilt *nounl* q ratform var
 			varlist z))

@@ -13,7 +13,7 @@
 
 ;;;; DIFF2
 
-(declare-top (special $props))
+(declare-top (special $props $dotdistrib))
 
 (defun diffint (e x)
   (let (a)
@@ -131,7 +131,7 @@
 ;;;; AT
 
 ;;dummy-variable-operators is defined in COMM, which uses it inside of SUBST1.
-(declare-top (special dummy-variable-operators))
+(declare-top (special atvars *atp* munbound dummy-variable-operators))
 
 (defmfun $atvalue (exp eqs val)
   (let (dl vl fun)
@@ -250,7 +250,7 @@
                     (atvarschk vl)
                     (substitutel vl atvars (caddar atvalues)))))))
 
-(declare-top (special $ratfac))
+(declare-top (special $ratfac genvar varlist $keepfloat))
 
 (defmvar $logconcoeffp nil)
 
@@ -391,6 +391,10 @@
 
 ;;;; RTCON
 
+(declare-top (special $radexpand $domain))
+
+(defmvar $rootsconmode t)
+
 (defmfun $rootscontract (e)	       ; E is assumed to be simplified
   (let ((radpe (and $radexpand (not (eq $radexpand '$all)) (eq $domain '$real)))
 	($radexpand nil))
@@ -493,6 +497,8 @@
 	(t 1)))
 
 ;;;; ATAN2
+
+(declare-top (special $numer $logarc $trigsign))
 
 ;; atan2 distributes over lists, matrices, and equations
 (defprop $atan2 (mlist $matrix mequal) distribute_over)
@@ -647,6 +653,8 @@
 	(t (recur-apply #'(lambda (x) (rembox1 x label)) e))))
 
 ;;;; MAPF
+
+(declare-top (special scanmapp))
 
 (defmspec $scanmap (l)
   (let ((scanmapp t))
@@ -860,6 +868,8 @@
 				  (cons '(mlist simp) (mapcar #'1- (cdr ary1)))))))))))
 
 ;;;; ALIAS
+
+(declare-top (special greatorder lessorder))
 
 (defmspec $ordergreat (l)
   (if greatorder (merror (intl:gettext "ordergreat: reordering is not allowed.")))

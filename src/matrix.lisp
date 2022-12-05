@@ -13,11 +13,16 @@
 (macsyma-module matrix)
 
 (declare-top (special *ech* *tri* *inv*
-		      mdl vlist mul* top* *det*
-		      header
-		      *rank* *mat*))
+		      mdl $detout vlist mul* top* *det* genvar $ratfac
+		      varlist header $scalarmatrixp $sparse
+		      $algebraic *rank* *mat*))
 
+(defmvar $detout nil)
 (defmvar top* nil)
+(defmvar $ratmx nil)
+(defmvar $matrix_element_mult "*")  ;;; Else, most useful when "."
+(defmvar $matrix_element_add "+")
+(defmvar $matrix_element_transpose nil)
 
 (defvar *mat*)
 

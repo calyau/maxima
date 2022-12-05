@@ -13,9 +13,11 @@
 (macsyma-module combin)
 
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
-		      *n $cflength *a* *a $prevfib $next_lucas
-		      *infsumsimp *times *plus sum usum
-		      $prederror))
+		      $zerobern *n $cflength *a* *a $prevfib $next_lucas
+		      *infsumsimp *times *plus sum usum makef
+		      varlist genvar $sumsplitfact $ratfac $simpsum
+		      $prederror $listarith
+		      $ratprint $zeta%pi $bftorat))
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
@@ -1391,6 +1393,8 @@
   (setq l (cdr l))
   (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) nil :evaluate-summand t))
 
+(declare-top (special $ratsimpexpons))
+
 ;; Is this guy actually looking at the value of its middle arg?
 
 (defun simpprod (x y z)
@@ -1476,7 +1480,7 @@
 	     (subst *i (caddr e) e)))
 	(t (recur-apply #'susum1 e))))
 
-(declare-top (special *p* *var* *x*))
+(declare-top (special varlist genvar $factorflag $ratfac *p* *var* *x*))
 
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))

@@ -103,6 +103,20 @@ When one changes, the other does too."
 	#+ecl "ecl"
 	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks ecl) "unknownlisp")
 
+(defvar $file_search_lisp nil
+  "Directories to search for Lisp source code.")
+
+(defvar $file_search_maxima nil
+  "Directories to search for Maxima source code.")
+
+(defvar $file_search_demo nil
+  "Directories to search for demos.")
+
+(defvar $file_search_usage nil)
+
+(defvar $file_search_tests nil
+  "Directories to search for maxima test suite")
+
 (defun maxima-parse-dirstring (str)
   (let ((sep "/"))
     (if (position (character "\\") str)

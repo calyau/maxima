@@ -14,10 +14,12 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special *a *n sum *i opers-list $factorial_expand))
+(declare-top (special opers *a *n $factlim sum msump *i *opers-list opers-list $ratsimpexpons makef $factorial_expand))
 
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
+
+(defmvar $zeta%pi t)
 
 ;; polynomial predicates and other such things
 
@@ -55,6 +57,11 @@
 	      (eq (caar x) 'mexpt))
 	 (cond ((and (free (caddr x) var) (eq (cadr x) var))
 		(and fl (setq *n (caddr x) *a 1)) t)))))
+
+;; factorial stuff
+
+(defmvar $factlim 100000) ; set to a big integer which will work (not -1)
+(defvar makef nil)
 
 (defmfun $genfact (&rest l)
   (cons '(%genfact) l))
@@ -359,12 +366,41 @@
 
 ;; sum begins
 
+(defmvar $cauchysum nil
+  "When multiplying together sums with INF as their upper limit, 
+causes the Cauchy product to be used rather than the usual product.
+In the Cauchy product the index of the inner summation is a function of 
+the index of the outer one rather than varying independently."
+  modified-commands '$sum)
+
+(defmvar $gensumnum 0
+  "The numeric suffix used to generate the next variable of
+summation.  If it is set to FALSE then the index will consist only of
+GENINDEX with no numeric suffix."
+  modified-commands '$sum
+  setting-predicate #'(lambda (x) (or (null x) (integerp x))))
+
+(defmvar $genindex '$i
+  "The alphabetic prefix used to generate the next variable of
+summation when necessary."
+  modified-commands '$sum
+  setting-predicate #'symbolp)
+
+(defmvar $zerobern t)
+(defmvar $simpsum nil)
+(defmvar $simpproduct nil)
+
 (defvar *infsumsimp t)
 
 ;; These variables should be initialized where they belong.
 
+(defmvar $cflength 1)
+(defmvar $taylordepth 3)
 (defmvar $maxtaydiff 4)
+(defmvar $verbose nil)
 (defvar *trunclist nil)
+(defvar ps-bmt-disrep t)
+(defvar silent-taylor-flag nil)
 
 (defmacro sum-arg (sum)
   `(cadr ,sum))
@@ -750,6 +786,9 @@
   (m* e q (m- (m+ a 1) b)))
 
 ;; linear operator stuff
+
+(defparameter *opers-list '(($linear . linearize1)))
+(defparameter  opers (list '$linear))
 
 (defun oper-apply (e z)
   (cond ((null opers-list)

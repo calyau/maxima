@@ -14,10 +14,10 @@
 
 (load-macsyma-macros ratmac)
 
-(declare-top (special checkfactors
-		      exp var
-		      ratform rootfactor pardenom 
-		      wholepart parnumer logptdx switch1))
+(declare-top (special genvar checkfactors
+		      exp var $factorflag $logabs $expop $expon
+		      $keepfloat ratform rootfactor pardenom $algebraic
+		      wholepart parnumer varlist logptdx switch1))
 
 (defun rootfac (q)
   (prog (nthdq nthdq1 simproots ans n-loops)

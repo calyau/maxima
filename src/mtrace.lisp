@@ -12,7 +12,7 @@
 
 (macsyma-module mtrace)
 
-(declare-top (special $functions trace-allp))
+(declare-top (special $functions $transrun trace-allp))
 
 ;;; a reasonable trace capability for macsyma users.
 ;;; 8:10pm  Saturday, 10 January 1981 -GJC.
@@ -185,6 +185,8 @@
       `(mget ,x 'trace-oldfun)))
 
 ;;; User interface functions.
+
+(defmvar $trace (list '(mlist)) "List of functions actively traced")
 
 (defun mlistcan-$all (fun llist default)
   "totally random utility function"
@@ -410,6 +412,8 @@
 ;; We really want to (BINDF (TRACE-LEVEL FUN) (1+ (TRACE-LEVEL FUN)) ...)
 ;; (Think about PROGV and SETF and BINDF. If the trace object where
 ;; a closure, then we want to fluid bind instance variables.)
+
+(declare-top (special errcatch bindlist loclist))
 
 (defmacro macsyma-errset (form &aux (ret (gensym)))
   `(let ((errcatch (cons bindlist loclist)) ,ret)

@@ -14,8 +14,8 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special $breakup $noprincipal
-		      leadcoef var *roots *failures nn*
+(declare-top (special $breakup $noprincipal varlist
+		      leadcoef var *roots *failures wflag nn*
 		      sn* sd* genvar dn* zn))
 
 

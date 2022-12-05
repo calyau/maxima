@@ -13,6 +13,7 @@
 (macsyma-module fortra)
 
 (declare-top (special *lb* *rb*	 ;Used for communication with MSTRING.
+		      $loadprint ;If NIL, no load message gets printed.
 		      1//2 -1//2))
 
 (defmvar $fortspaces nil

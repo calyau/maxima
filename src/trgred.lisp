@@ -12,7 +12,7 @@
 
 (macsyma-module trgred)
 
-(declare-top (special var ans *trigred *noexpand *lin))
+(declare-top (special var $verbose ans *trigred *noexpand *lin half%pi))
 
 (load-macsyma-macros rzmac)
 

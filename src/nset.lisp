@@ -1295,6 +1295,7 @@
 
 (defun ignore-errors-mfuncall (f x)
   (let ((errcatch t))
+    (declare (special errcatch))
     (errset (mfuncall f x))))
 
 (defmfun $every (f &rest x)

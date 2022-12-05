@@ -12,7 +12,7 @@
 
 (macsyma-module grind)
 
-(declare-top (special lop rop *grind-charlist* chrps linel))
+(declare-top (special lop rop *grind-charlist* chrps $aliases linel))
 
 (defun chrct* () (- linel chrps))
 

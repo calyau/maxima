@@ -16,7 +16,9 @@
 
 (macsyma-module hyp)
 
-(declare-top (special var *par* checkcoefsignlist
+(declare-top (special $true $false))
+
+(declare-top (special var *par* checkcoefsignlist $exponentialize
                       $radexpand))
 
 (defvar *debug-hyp* nil)

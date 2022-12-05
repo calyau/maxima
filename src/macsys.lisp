@@ -14,6 +14,14 @@
 
 (macsyma-module system)
 
+(defmvar $showtime nil
+  "When T, the computation time is printed with each output expression.")
+
+;;; Standard Kinds of Input Prompts
+
+(defmvar $prompt '_
+  "Prompt symbol of the demo function, playback, and the Maxima break loop.")
+
 
 ;; A prefix and suffix that are wrapped around every prompt that Maxima
 ;; emits. This is designed for use with text-based interfaces that drive Maxima
@@ -99,7 +107,10 @@ DESTINATION is an actual stream (rather than nil for a string)."
   ;; them and continue, via *debugger-hook*.
   (rat-error-to-merror (meval* x)))
 
-(declare-top (special *mread-prompt*))
+(defmvar $_ '$_ "last thing read in, corresponds to lisp +")
+(defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
+
+(declare-top (special *mread-prompt*  $file_search_demo))
 
 (defvar accumulated-time 0.0)
 

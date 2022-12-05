@@ -20,9 +20,9 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special $radexpand ans arcpart coef
+(declare-top (special $radexpand $%e_to_numlog ans arcpart coef
 		      aa powerlist *a* *b* k stack e w y expres arg var
-		      *powerl* *c* *d* exp))
+		      *powerl* *c* *d* exp varlist genvar $liflag $opsubst))
 
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")

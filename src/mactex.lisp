@@ -56,7 +56,7 @@
 ;; in case a file-name is supplied, the output will be sent
 ;; (perhaps appended) to that file.
 
-(declare-top (special lop rop))
+(declare-top (special lop rop $labels $inchar))
 
 (defvar *tex-environment-default* '("$$" . "$$"))
 

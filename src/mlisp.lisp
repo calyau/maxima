@@ -23,29 +23,82 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special derivlist $values $functions $arrays 
-                      $rules $dependencies
-		      $myoptions $props
-		      $numer
-		      opers
-		      *mopl* $%% %e-val
-		      $macros linel
-		      *builtin-$props*))
+(declare-top (special derivflag derivlist $labels $values $functions $arrays 
+                      $rules $gradefs $dependencies $aliases
+		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
+		      $numer *mdebug* *refchkl*
+		      $norepeat $detout $doallmxops $doscmxops opers
+		      *mopl* *alphabet* $%% %e-val
+		      $macros linel $ratfac $ratwtlvl
+		      $partswitch *gcdl*
+		      *builtin-$props* $infolists))
 
 (declare-top (unspecial args))
 
+(defvar mspeclist nil)
+(defvar bindlist nil)
+(defvar loclist nil)
 (defvar mproplist nil)
+(defvar *nounl* nil)
+(defvar scanmapp nil)
+(defvar maplp nil)
 (defvar mprogp nil)
+(defvar evp nil)
 (defvar mdop nil)
 (defvar mlocp nil)
 (defvar aexprp nil)
+(defvar fmaplvl 0)
 (defvar dsksetp nil)
+(defvar aryp nil)
+(defvar msump nil)
+(defvar evarrp nil)
+(defvar factlist nil)
+(defvar mfexprp t)
+(defvar *nounsflag* nil)
+(defvar transp nil)
+(defvar noevalargs nil)
 (defvar rulefcnl nil)
+(defvar featurel
+  '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
+    $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
+    $commutative $lassociative $rassociative $symmetric $antisymmetric
+    $integervalued))
+
+(defmvar $features (cons '(mlist simp) (append featurel nil)))
+(defmvar $%enumer nil)
+(defmvar $float nil)
+(defmvar $refcheck nil)
+(defmvar $translate nil)
+(defmvar $transrun t)
+(defmvar $savedef t)
+(defmvar $maperror t)
+(defmvar $optionset nil)
+(defmvar $setcheckbreak nil)
+(defmvar $infeval nil)
+(defmvar $piece '$piece)
+(defmvar $setval '$setval)
+
+;; These three variables are what get stuck in array slots as magic
+;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
+;; respectively.
+
+(defvar munbound '|#####|)
+
+(defvar fixunbound most-negative-fixnum)
+
+(defvar flounbound most-negative-flonum)
+
+(defmvar munbindp nil
+  "Used for safely `munbind'ing incorrectly-bound variables."
+  no-reset)
+
+(defmvar $setcheck nil)
 
 (mapc #'(lambda (x) (setf (symbol-value x) (ncons '(mlist simp))))
       '($values $functions $macros $arrays $myoptions $rules $props))
 
 (defun mapply1 (fn args fnname form)
+  (declare (special aryp))
   (cond ((atom fn)
 	 (cond ((functionp fn)
 		(apply fn args))
@@ -183,6 +236,7 @@ is EQ to FNNAME if the latter is non-NIL."
     (setq $%% (meval (car body)))))
 
 (defun mqapply1 (form)
+  (declare (special aryp))
   (destructuring-let (((fn . argl) (cdr form)) (aexprp))
     (unless (mquotep fn) (setq fn (meval fn)))
     (cond ((atom fn)
@@ -211,7 +265,7 @@ is EQ to FNNAME if the latter is non-NIL."
 (defvar *last-meval1-form* nil)
 
 (defun meval1 (form)
-  (declare (special *break-points* *break-step*))
+  (declare (special *nounl* *break-points* *break-step*))
   (cond
     ((atom form)
      (prog (val)
@@ -422,6 +476,7 @@ used tels quels, without calling MEVAL.
 If FNNAME is non-NIL, it designates a function call frame.
 This function does not handle errors properly, use the MBIND
 wrapper for this."
+  (declare (special bindlist mspeclist))
   (do ((vars lamvars (cdr vars))
        (args fnargs (cdr args)))
       ((cond ((and vars args) nil)
@@ -455,6 +510,7 @@ wrapper for this."
   "Error-handling wrapper around MBIND-DOIT."
   (handler-case
       (let ((old-bindlist bindlist) win)
+	(declare (special bindlist))
         ;; At this point store the value of $errormsg in a global. The macro
         ;; with-$error sets the value of $errormsg to NIL, but we need the
         ;; actual value in the routine mbind-doit.
@@ -1076,14 +1132,15 @@ wrapper for this."
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-      '((*read-base* msetchk) (*print-base* msetchk) (modulus msetchk)
-	($all neverset) ($fortindent msetchk)
-	($floatwidth msetchk)))
+      '(($linel msetchk) (*read-base* msetchk) (*print-base* msetchk) (modulus msetchk)
+	($infolists neverset) ($trace neverset) ($ratweights msetchk)
+	($ratvars msetchk) ($setcheck msetchk) ($gcd msetchk)
+	($dotassoc msetchk) ($ratwtlvl msetchk) ($ratfac msetchk)
+	($all neverset) ($numer numerset) ($fortindent msetchk)
+	($gensumnum msetchk) ($genindex msetchk) ($fpprintprec msetchk)
+	($floatwidth msetchk) ($parsewindow msetchk) ($optimprefix msetchk)))
 
 (defun msetchk (x y)
-  "Check that the variable X and be assigned the value Y.  If the
-  assignment is invalid, signal an error.  Otherwise, it is assumed
-  the assumed the assignment is valid." 
   (cond ((member x '(*read-base* *print-base*) :test #'eq)
 	 (unless (typep y '(integer 2 36))
 	   (mseterr x y)))
@@ -1799,6 +1856,10 @@ wrapper for this."
 
 (defmfun $show_hash_array (x)
   (maphash #'(lambda (k v) (format t "~%~A-->~A" k v)) x))
+
+;; If this is T then arrays are stored in the value cell,
+;; whereas if it is false they are stored in the function cell
+(defmvar $use_fast_arrays nil)
 
 (defun arrstore (l r)
 	 (let ((fun (caar l)) ary sub (lispsub 0) hashl mqapplyp)

@@ -15,12 +15,31 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 4.
 ;;	IT INCLUDES THE POLYNOMIAL FACTORING ROUTINES.
 
-(declare-top (special *min* *mx* *odr* nn* *checkagain))
+(declare-top (special *min* *mx* *odr* nn* scanmapp *checkagain adn*))
 
-(declare-top (special $ratfac))
+(declare-top (special $factorflag $dontfactor $algebraic $ratfac))
 
 ;;There really do seem to be two such variables...
-(declare-top (special alpha *alpha gauss minpoly*))
+(declare-top (special alpha *alpha gauss genvar minpoly*))
+
+(defmvar *irreds nil)
+(defmvar algfac* nil)
+(defmvar low* nil)
+
+(defmvar $intfaclim t)
+(defmvar $berlefact t)
+
+(defmvar $factor_max_degree 1000
+  "If set to an integer n, some potentially large (many factors) polynomials
+   of degree > n won't be factored, preventing huge memory allocations and
+   stack overflows. Set to zero to deactivate."
+  fixnum)
+(putprop '$factor_max_degree 'posintegerset 'assign)
+
+(defmvar $factor_max_degree_print_warning t
+  "Print a warning message when a polynomial is not factored because its
+   degree is larger than $factor_max_degree?"
+  boolean)
 
 (defun listovars (q)
   (cond ((pcoefp q) nil)
@@ -169,6 +188,8 @@
 	(t (cons (truncate (car x) modulus)
 		 (cons (pmodroot (cadr x))
 		       (pmodroot1 (cddr x)))))))
+
+(defmvar $savefactors nil "If t factors of ratreped forms will be saved")
 
 (defvar checkfactors () "List of saved factors")
 

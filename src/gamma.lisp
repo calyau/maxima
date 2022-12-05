@@ -73,7 +73,7 @@
 
 (in-package :maxima)
 
-(declare-top (special $gamma_expand))
+(declare-top (special $factlim $gamma_expand))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
