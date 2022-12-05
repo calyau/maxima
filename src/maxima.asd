@@ -496,8 +496,7 @@
 		 (:file "ezgcd")))
    (:module documentation :pathname ""
     :depends-on (compatibility-macros)
-    :components ((:file "option")
-		 (:file "macdes")))
+    :components ((:file "macdes")))
    (:module algebraic-database :pathname ""
     :depends-on (globals defmfun compatibility-macros)
     :components ((:file "inmis") 
