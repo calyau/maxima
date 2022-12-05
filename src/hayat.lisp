@@ -117,8 +117,6 @@
  (special vlist
 	  modulus		;
 	  *a*			;Temporary special
-	  silent-taylor-flag	;If true indicates that errors will be
-				;returned via a throw to TAY-ERR
 	  tlist			;An association list which contains the
 				;relevant information for the expansion which
 				;is passed in at toplevel invocation.
@@ -134,8 +132,6 @@
 	  tay-pole-expand	;
 	  trigdisp		;
 	  last-exp		;last-expression through taylor2
-	  $taylordepth		;
-	  ps-bmt-disrep		;
 	  ivars			;Pairlist if gensym and disreped version
 	  key-vars		;Pairlist of gensym and key var (for searching
 				;TLIST)

@@ -14,9 +14,8 @@
 
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
 		      *n $cflength *a* *a $prevfib $next_lucas
-		      *infsumsimp *times *plus sum usum makef
-		      $prederror
-		      $zeta%pi))
+		      *infsumsimp *times *plus sum usum
+		      $prederror))
 
 (load-macsyma-macros mhayat rzmac ratmac)
 

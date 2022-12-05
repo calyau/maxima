@@ -113,9 +113,9 @@
 	  sums timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack
-	  $cflength *trunclist $taylordepth
-	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
-	  silent-taylor-flag $define_variable
+	  *trunclist
+	  $maxtaydiff $psexpand
+	  $define_variable
 	  ))
 
 (declaim (declaration unspecial))

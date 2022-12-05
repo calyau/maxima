@@ -447,6 +447,22 @@
 (defparameter *opers-list '(($linear . linearize1)))
 (defparameter  opers (list '$linear))
 
+(defmvar $cflength 1)
+(defmvar $taylordepth 3)
+(defmvar $verbose nil)
+(defvar ps-bmt-disrep t)
+(defvar silent-taylor-flag nil
+  ;; comment from hayat.lisp
+  "If true indicates that errors will be returned via a throw to
+  TAY-ERR")
+(defmvar $zeta%pi t)
+;; factorial stuff
+
+(defmvar $factlim 100000) ; set to a big integer which will work (not -1)
+(defvar makef nil)
+
+
+
 ;;------------------------------------------------------------------------
 ;; From compar.lisp
 (defmvar $context '$global

@@ -14,12 +14,10 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special *a *n $factlim sum *i opers-list makef $factorial_expand))
+(declare-top (special *a *n sum *i opers-list $factorial_expand))
 
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
-
-(defmvar $zeta%pi t)
 
 ;; polynomial predicates and other such things
 
@@ -57,11 +55,6 @@
 	      (eq (caar x) 'mexpt))
 	 (cond ((and (free (caddr x) var) (eq (cadr x) var))
 		(and fl (setq *n (caddr x) *a 1)) t)))))
-
-;; factorial stuff
-
-(defmvar $factlim 100000) ; set to a big integer which will work (not -1)
-(defvar makef nil)
 
 (defmfun $genfact (&rest l)
   (cons '(%genfact) l))
@@ -370,13 +363,8 @@
 
 ;; These variables should be initialized where they belong.
 
-(defmvar $cflength 1)
-(defmvar $taylordepth 3)
 (defmvar $maxtaydiff 4)
-(defmvar $verbose nil)
 (defvar *trunclist nil)
-(defvar ps-bmt-disrep t)
-(defvar silent-taylor-flag nil)
 
 (defmacro sum-arg (sum)
   `(cadr ,sum))

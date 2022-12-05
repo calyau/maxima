@@ -12,7 +12,7 @@
 
 (macsyma-module csimp)
 
-(declare-top (special rsn* $factlim
+(declare-top (special rsn*
 		      var $ratprint
 		      nn* dn* $errexp
 		      errorsw))
