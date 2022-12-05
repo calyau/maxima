@@ -57,6 +57,11 @@ Bug fixes for numbered bugs:
  * \#608: taylor(x^a,[x],0,1) unsimplified
  * \#3026: missing info files not well-handled
  * \#3071: limit of expressions with signum not very powerful
+ * \#3136: gruntz(atan2(x^2-2,x^3-2*x),x,sqrt(2),minus) => atan2(0,0) undefined 
+ * \#3279: limit incorrect with domain:complex
+ * \#3280: gruntz incorrect limit
+ * \#3415: limit doesn't check for zero coefficients in limit((a*x+1)/(a*x+2),x,inf)
+ * \#3592: Wrong limit
  * \#3834: abconvtest undocumented and possibly unused
  * \#3926: Various limits give UND where they should give IND
  * \#3972: gcl only: Autocompletion inverts command case
@@ -66,14 +71,14 @@ Bug fixes for numbered bugs:
  * \#4008: translator and prederror
  * \#4018: defint(foo,,0,inf) lisp error when denom(foo) contains %i
  * \#4036: prederror affects bigfloat calculations
- * \#4043 bug in to_poly
+ * \#4043: bug in to_poly
  
 Unnumbered bugs fixed:
 ---------------------
  * commit 7a7114c: avoid call to undefined function expintegral_ei
  * commit fe1d8cf: avoid clobbering global state when autoloading
  * commit 70a5f78: expunge calls to 'sign' in share package distrib
-
+ * commit 37f222: allow limits of fib expressions
 Documentation:
 --------------
  * Help can use html docs instead of displaying help to the terminal.
