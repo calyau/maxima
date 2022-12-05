@@ -59,7 +59,6 @@
 ;; If expr is of the form a*var1+b where a is freeof var1
 ;; then (a . b) is returned else nil.
 (defun islinear (expr var1)
-  (declare (special *islinp*))
   (let ((a (let ((*islinp* t))
              (sdiff expr var1))))
     (if (freeof var1 a)

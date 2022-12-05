@@ -516,6 +516,10 @@
 (defmvar $gradefs '((mlist simp)))
 (defmvar $dependencies '((mlist simp)))
 
+(defvar *islinp* nil) ; When T, sdiff is called from the function islinear.
+(defvar *atp* nil)    ; When T, prevents substitution from applying to vars 
+                      ; bound by %sum, %product, %integrate, %limit
+
 ;;------------------------------------------------------------------------
 ;; From displa.lisp
 (defmvar $ttyoff nil)
@@ -947,7 +951,7 @@
 (defvar *semirat* nil)
 
 ;;------------------------------------------------------------------------
-;; From init-cl
+;; From init-cl.lisp
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
 

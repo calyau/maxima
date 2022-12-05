@@ -91,7 +91,7 @@
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  adn* aexprp algnotexact
-	  alpha assigns *atp* atvars
+	  alpha assigns atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
@@ -100,7 +100,7 @@
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
-	  *islinp* limit-answers limitp linel
+	  limit-answers limitp linel
 	  local mdop
 	  meta-prop-l meta-prop-p minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist
