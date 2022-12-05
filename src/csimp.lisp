@@ -12,7 +12,7 @@
 
 (macsyma-module csimp)
 
-(declare-top (special rsn* $factlim $exponentialize
+(declare-top (special rsn* $exponentialize
 		      var varlist genvar $%emode $ratprint
 		      nn* dn* $errexp sqrt3//2 -sqrt3//2
 		      $demoivre errorsw $keepfloat $ratfac))

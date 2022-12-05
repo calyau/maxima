@@ -48,7 +48,7 @@
 	  $%rnum $absboxchar $activecontexts $algebraic $algexact
 	  $aliases $arrays $askexp $assumescalar $backsubst $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
-	  $breakup $cauchysum $compgrind $context
+	  $breakup $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package $demoivre $dependencies $derivabbrev
 	  $derivsubst $detout $dispflag $display2d
@@ -62,7 +62,7 @@
 	  $float $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
-	  $genindex $gensumnum $globalsolve $gradefs $halfangles $homog_hack
+	  $globalsolve $gradefs $halfangles $homog_hack
 	  $inchar $infeval $inflag $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum $linel

@@ -25,7 +25,7 @@
 		       $values $functions $arrays $gradefs $dependencies
 		       $rules $props $ratvars
 		       varlist genvar
-		       $gensumnum checkfactors $features featurel
+		       checkfactors $features featurel
 		       tellratlist $dontfactor
 		       dispflag savefile $%% $error
 		       opers *ratweights $ratweights
