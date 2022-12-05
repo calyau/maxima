@@ -17,7 +17,7 @@
 ;; ANSWER IS IN RATIONAL FORM.
 ;; RJF  5/2/73
 
-(declare-top (special vlist varlist genvar))
+(declare-top (special vlist))
 
 ;;these are general type arrays
 

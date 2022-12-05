@@ -14,7 +14,7 @@
 
 (declare-top (special $packagefile
 		      aaaaa errset indlist
-		      varlist *mopl* $props
+		      *mopl* $props
 		      savefile
 		      $values $functions $arrays
 		      context))

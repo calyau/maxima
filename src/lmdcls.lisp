@@ -85,9 +85,9 @@
 	  $tr_warn_undefined_variable
 	  $values $vect_cross
 	  %e-val %p%i %pi-val %pi2 *$any-modes*
-	  *alpha *const* *fnewvarsw *in *in-compile*
+	  *alpha *const* *in *in-compile*
 	  *inv* *min* *mx*
-	  *n *out *ratweights *tr-warn-break* *transl-backtrace*
+	  *n *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  adn* aexprp algnotexact
@@ -98,7 +98,7 @@
 	  errorsw expandflag expandp
 	  exptrlsw
 	  fourth%pi fr-factor gauss
-	  generate-atan2 genpairs genvar half%pi half%pi3
+	  generate-atan2 half%pi half%pi3
 	  implicit-real inratsimp inside-mprog
 	  limit-answers limitp linel
 	  local mdop
@@ -112,7 +112,7 @@
 	  *small-primes*
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
-	  tstack varlist
+	  tstack
 	  $cflength *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable

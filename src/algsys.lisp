@@ -33,7 +33,7 @@
 ;;equation before taking resultants.
 
 (declare-top (special $algdelta
-		     varlist genvar *roots *failures
+		     *roots *failures
 		     *tvarxlist* errorsw *ivar* errset $polyfactor))
 
 ;;note if $algepsilon is too large you may lose some roots.

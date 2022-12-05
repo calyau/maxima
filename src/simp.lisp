@@ -18,7 +18,7 @@
 		      $float
 		      bigfloatzero bigfloatone
 		      opers-list *opers-list *n
-		      *out *in varlist genvar radcanp
+		      *out *in radcanp
                       *builtin-numeric-constants*))
 
 ;; Switches dealing with matrices and non-commutative multiplication.

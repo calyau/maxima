@@ -15,7 +15,6 @@
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
 		      *n $cflength *a* *a $prevfib $next_lucas
 		      *infsumsimp *times *plus sum usum makef
-		      varlist genvar
 		      $prederror
 		      $zeta%pi))
 
@@ -1478,7 +1477,7 @@
 	     (subst *i (caddr e) e)))
 	(t (recur-apply #'susum1 e))))
 
-(declare-top (special varlist genvar *p* *var* *x*))
+(declare-top (special *p* *var* *x*))
 
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))

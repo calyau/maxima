@@ -20,7 +20,7 @@
 (declare-top (special $ratfac))
 
 ;;There really do seem to be two such variables...
-(declare-top (special alpha *alpha gauss genvar minpoly*))
+(declare-top (special alpha *alpha gauss minpoly*))
 
 (defun listovars (q)
   (cond ((pcoefp q) nil)

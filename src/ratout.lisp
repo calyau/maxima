@@ -14,9 +14,9 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special varlist ss *y* f modulus
-		      genvar *alpha *x* *p *max *var *res *chk *l
-		      u* *ratweights))
+(declare-top (special ss *y* f modulus
+		      *alpha *x* *p *max *var *res *chk *l
+		      u*))
 
 (declare-top (special xv bigf1 bigf2
 		      gcd))
@@ -616,7 +616,7 @@
 				    ans)))))
      (go a)))
 
-(declare-top (special y genvar checkfactors
+(declare-top (special y checkfactors
 		      exp var x $factorflag $ratfac
 		      ratform
 		      wholepart parnumer varlist n))
@@ -688,7 +688,7 @@
 ;; FURTHERMORE, X IS ASSUMED TO BE AN ATOM OR A SINGLE ITEM ON
 ;; VARLIST.  E.G. X MIGHT BE SIN(U), BUT NOT 2*SIN(U).
 
-(declare-top (special varlist genvar x))
+(declare-top (special x))
 
 (defmfun $ratdiff (p x)
   (if ($ratp p)
@@ -707,7 +707,7 @@
 
 (declare-top (unspecial x))
 
-(declare-top (special varlist $factorflag m v dosimp))
+(declare-top (special $factorflag m v dosimp))
 
 (defmfun $pfet (m)
   (prog (listov $pfeformat varlist $factorflag)

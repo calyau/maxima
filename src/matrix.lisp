@@ -13,8 +13,8 @@
 (macsyma-module matrix)
 
 (declare-top (special *ech* *tri* *inv*
-		      mdl vlist mul* top* *det* genvar
-		      varlist header
+		      mdl vlist mul* top* *det*
+		      header
 		      *rank* *mat*))
 
 (defmvar top* nil)

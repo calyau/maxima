@@ -24,11 +24,9 @@
 (declare-top  (special errset *mopl*
 		       $values $functions $arrays
 		       $rules $props
-		       varlist genvar
 		       checkfactors $features featurel
 		       tellratlist
 		       dispflag savefile $%%
-		       *ratweights
 		       $stringdisp $lispdisp
 		       transp $macros autoload))
 

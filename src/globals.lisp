@@ -707,6 +707,15 @@
 ;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
 (defmvar $ratexpand nil)
 
+(defmvar genvar nil
+  "List of gensyms used to point to kernels from within polynomials.
+	 The values cell and property lists of these symbols are used to
+	 store various information.")
+
+(defmvar genpairs nil)
+(defmvar varlist nil "List of kernels")
+(defmvar *fnewvarsw nil)
+(defmvar *ratweights nil)
 
 ;;------------------------------------------------------------------------
 ;; From merror.lisp

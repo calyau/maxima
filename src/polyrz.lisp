@@ -12,9 +12,7 @@
 
 (macsyma-module polyrz)
 
-(declare-top (special varlist
-		      genvar
-		      equations
+(declare-top (special equations
 		      ))
 
 (load-macsyma-macros ratmac)

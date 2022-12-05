@@ -143,7 +143,7 @@
 	     (special *roots *failures
 		      $breakup $%emode
 		      dosimp context
-		      %p%i half%pi %pi2 half%pi3 varlist genvar
+		      %p%i half%pi %pi2 half%pi3
 		      errorsw
 		      limitp $algebraic
 		      ;;LIMITP T Causes $ASKSIGN to do special things

@@ -20,15 +20,6 @@
 		      vlist radlist expsumsplit *ratsimp* mplc*
 		      $negdistrib $gcd))
 
-(defmvar genvar nil
-  "List of gensyms used to point to kernels from within polynomials.
-	 The values cell and property lists of these symbols are used to
-	 store various information.")
-
-(defmvar genpairs nil)
-(defmvar varlist nil "List of kernels")
-(defmvar *fnewvarsw nil)
-(defmvar *ratweights nil)
 
 (defvar *ratsimp* nil)
 
