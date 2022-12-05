@@ -215,10 +215,11 @@
 
               ;; Resimplify in light of new assumptions.
               (setq exp (resimplify
+			             (extra-simp
 			              (factosimp
                             (tansc
                               (lfibtophi
-                                (limitsimp ($expand exp 1 0) var))))))
+                                (limitsimp ($expand exp 1 0) var)))))))
 
 	      (if (not (or (real-epsilonp val)		;; if direction of limit not specified
 			   (infinityp val)))
@@ -342,6 +343,8 @@
 
 (defun limunknown1 (f)
   (cond ((mapatom f) nil)
+     ;; special pass for fib(X). What else?
+    ((and (consp f) (eq '$fib (caar f))) nil)
 	((or (not (safe-get (caar f) 'operators))
 	     (member (caar f) '(%sum %product mncexpt) :test #'eq)
 	     ;;Special function code here i.e. for li[2](x).
@@ -1498,7 +1501,7 @@ ignoring dummy variables and array indices."
                  ;; (gave up without finding a limit). It's also possible that it will
                  ;; return something containing UND. We treat that as a failure too.
                  (when (and ans (freeof '$und ans))
-                   (m* const ans)))))))
+                   (sratsimp (m* const ans))))))))
 
 ;; Try to compute the limit of a quotient NUM/DEN, trying to massage the input
 ;; into a convenient form for LIMIT on the way.
@@ -1696,13 +1699,11 @@ ignoring dummy variables and array indices."
 
 ;; if term goes to non-zero constant, replace with constant
 (defun lhsimp (term var val)
-  (cond ((atom term)  term)
+  (cond (($mapatom term) term)
 	(t
 	 (let ((term-value (ridofab (limit term var val 'think))))
-	   (cond ((not (member term-value
-			       '($inf $minf $und $ind $infinity 0)))
-		  term-value)
-		 (t term))))))
+	   (if (and (not (member term-value '($inf $minf $und $ind $infinity)))
+	            (eq t (mnqp term-value 0))) term-value term)))))
 
 (defun bylog (expo bas)
   (simplimexpt '$%e
@@ -3595,6 +3596,30 @@ ignoring dummy variables and array indices."
              `(($gruntz simp) ,expr ,var ,val))
          ans)))
 
+;; Additional simplifications for the limit function. Specifically:
+;;   (a) replace every mapatom that is declared to be zero by zero 
+;;   (b) dispatch radcan on expressions of the form (positive integer)^XXX
+;; The mechanism (a) isn't perfect--if a+b is declared to zero, it doesn't
+;; simplify a+b+c to c, for example.
+
+;; For efficiency, the functionality of factosimp, tansc, lfibtophi, 
+;; and limitsimp should be incorporated into extra-simp. 
+(defun extra-simp (e)
+   (cond (($subvarp e) e) ;return e
+	     ((extended-real-p e) e) ;we don't want to call sign on ind, so catch this
+		 (($mapatom e) ;if e is declared zero, return 0; otherwise e
+		     (if (eq '$zero ($csign e)) 0 e))
+         ;; dispatch radcan on (positive integer)^Y
+         ((and (mexptp e) (integerp (cadr e))) ;;; (> (cadr e) 0))
+		     ($radcan (ftake 'mexpt (cadr e) (extra-simp (caddr e)))))
+	     (($subvarp (mop e)) ;subscripted function
+		     (subfunmake 
+		      (subfunname e) 
+			  (mapcar #'extra-simp (subfunsubs e)) 
+			  (mapcar #'extra-simp (subfunargs e))))
+		 (t
+		     (simplifya (cons (list (caar e)) (mapcar #'extra-simp (cdr e))) t))))
+
 ;; This function is for internal use in $limit.
 
 ;; The function gruntz1 standardizes the limit point to inf and the limit variable
@@ -3623,14 +3648,15 @@ ignoring dummy variables and array indices."
 	  (t (merror (intl:gettext "gruntz: direction must be 'plus' or 'minus'; found: ~M") dir)))
 	  (let ((cx ($supcontext)))
 	   	    (unwind-protect
-		 	  (progn
+ 	         (progn
 				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* newvar)) ; *large-positive-number* < newvar
-				  (mfuncall '$assume (ftake 'mlessp 0 'lim-epsilon)) ; 0 < lim-epsilon
+                  (mfuncall '$assume (ftake 'mlessp 0 'lim-epsilon)) ; 0 < lim-epsilon
 				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* 'prin-inf)) ; *large-positive-number* < prin-inf
 				  (mfuncall '$activate cx) ;not sure this is needed, but OK	
-				  (setq exp (sratsimp exp)) ;simplify in new context
+				  (setq exp (resimplify exp)) ;simplify in new context
+				  (setq exp (extra-simp (sratsimp exp))) ;additional simplifications
 				  (limitinf exp newvar)) ;compute & return limit
-			($killcontext cx))))) ;kill context & forget all new facts.	  
+			($killcontext cx))))) ;kill context & forget all new facts.	 			
 
 ;; substitute y for x in exp
 ;; similar to maxima-substitute but does not simplify result
