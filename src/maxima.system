@@ -634,8 +634,7 @@
    (:module documentation :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "option")
-	     (:file "macdes")))
+	    ((:file "macdes")))
    (:module algebraic-database :source-pathname ""
 	    :depends-on ("globals" "defmfun" "compatibility-macros1")
 	    :components
