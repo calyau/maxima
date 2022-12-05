@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var %p%i plogabs half%pi nn* dn* sign
+(declare-top (special var nn* dn* sign
                       $beta_expand))
 
 (defmvar $gammalim 10000
@@ -731,7 +731,7 @@
        (setq vector (nconc vector (ncons (meval (retrieve prompt nil))))))
      (go iloop)))
 
-(declare-top (special sn* sd* rsn*))
+(declare-top (special sn* sd*))
 
 (defmfun $xthru (e)
   (cond ((atom e) e)

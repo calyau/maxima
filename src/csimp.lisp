@@ -12,24 +12,11 @@
 
 (macsyma-module csimp)
 
-(declare-top (special rsn*
-		      var $ratprint
+(declare-top (special var $ratprint
 		      nn* dn* $errexp
 		      errorsw))
 
 (load-macsyma-macros rzmac)
-
-(declare-top (special  plogabs))
-
-(defvar rsn* nil)
-(defvar plogabs nil)
-
-;; Simplified shortcuts of constant expressions involving %pi.
-(defvar %p%i '((mtimes) $%i $%pi))
-(defvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi))
-(defvar half%pi '((mtimes) ((rat simp) 1 2) $%pi))
-(defvar %pi2 '((mtimes) 2 $%pi))
-(defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
 
 (loop for (a b) on
        '(%sin %asin %cos %acos %tan %atan

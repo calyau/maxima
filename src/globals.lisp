@@ -522,6 +522,16 @@
 (defvar derivflag nil)
 (defvar *zexptsimp? nil)
 
+(defvar rsn* nil)
+(defvar plogabs nil)
+
+;; Simplified shortcuts of constant expressions involving %pi.
+(defvar %p%i '((mtimes) $%i $%pi))
+(defvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi))
+(defvar half%pi '((mtimes) ((rat simp) 1 2) $%pi))
+(defvar %pi2 '((mtimes) 2 $%pi))
+(defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
+
 ;;------------------------------------------------------------------------
 ;; From comm.lisp
 (defmvar $exptsubst nil)

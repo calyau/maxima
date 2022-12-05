@@ -84,7 +84,7 @@
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable
 	  $values $vect_cross
-	  %e-val %p%i %pi-val %pi2 *$any-modes*
+	  %e-val i %pi-val *$any-modes*
 	  *alpha *const* *in *in-compile*
 	  *inv* *min* *mx*
 	  *n *out *tr-warn-break* *transl-backtrace*
@@ -97,8 +97,8 @@
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  errorsw expandflag expandp
 	  exptrlsw
-	  fourth%pi fr-factor gauss
-	  generate-atan2 half%pi half%pi3
+	  fr-factor gauss
+	  generate-atan2
 	  implicit-real inratsimp inside-mprog
 	  limit-answers limitp linel
 	  local mdop

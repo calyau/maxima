@@ -124,14 +124,14 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special *def2* pcprntd *mtoinf* rsn*
+(declare-top (special *def2* pcprntd *mtoinf*
 		      sn* sd* leadcoef checkfactors
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
 		      factors rlm*
-		      plogabs *scflag*
+		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
 		      *current-assumptions*
@@ -143,7 +143,6 @@
 	     (special *roots *failures
 		      $breakup $%emode
 		      dosimp context
-		      %p%i half%pi %pi2 half%pi3
 		      errorsw
 		      limitp $algebraic
 		      ;;LIMITP T Causes $ASKSIGN to do special things
