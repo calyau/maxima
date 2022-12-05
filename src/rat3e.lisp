@@ -56,8 +56,6 @@
          ($taytorat x))
         (t ($rat x))))
 
-(defmvar tellratlist nil)
-
 (defun tellratdisp (x)
   (pdisrep+ (trdisp1 (cdr x) (car x))))
 
@@ -186,8 +184,6 @@
 	(t (factoralg p))))
 
 (declare-top (special var))
-
-(defmvar adn* 1 "common denom for algebraic coefficients")
 
 (defun factoralg (p)
   (prog (alc ans adn* $gcd)

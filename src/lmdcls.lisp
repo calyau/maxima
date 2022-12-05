@@ -90,7 +90,7 @@
 	  *n *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
-	  adn* aexprp algnotexact
+	  aexprp algnotexact
 	  alpha assigns atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  defined_variables defintdebug derivlist
@@ -110,7 +110,7 @@
 	  realonlyratnum return-mode returns rulefcnl
 	  rulesw sign-imag-errp simplimplus-problems
 	  *small-primes*
-	  sums tellratlist timesinp tr-abort tr-progret tr-unique
+	  sums timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack
 	  $cflength *trunclist $taylordepth

@@ -25,7 +25,6 @@
 		       $values $functions $arrays
 		       $rules $props
 		       checkfactors $features featurel
-		       tellratlist
 		       dispflag savefile $%%
 		       $stringdisp $lispdisp
 		       transp $macros autoload))

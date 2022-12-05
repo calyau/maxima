@@ -717,6 +717,9 @@
 (defmvar *fnewvarsw nil)
 (defmvar *ratweights nil)
 
+(defmvar adn* 1 "common denom for algebraic coefficients")
+(defmvar tellratlist nil)
+
 ;;------------------------------------------------------------------------
 ;; From merror.lisp
 (defmvar $error `((mlist simp) "No error.")

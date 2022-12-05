@@ -178,8 +178,6 @@
 	  (cons (rdis (ratreduce *num *denom))
 		(mapcar 'pdis f)))))
 
-(declare-top (special adn*)) ;also redefine fact5 to call nalgfac correctly
-
 (defun nalgfac (p mp)
   (let ((*num 1) (*denom 1) (*ans) (algfac*) ($nalgfac)
 	($algebraic t) ($gcd '$algebraic))
