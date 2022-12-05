@@ -533,7 +533,7 @@
     :components ((:file "tlimit") 
 		 (:file "limit")))
    (:module solve :pathname ""
-    :depends-on (compatibility-macros)
+    :depends-on (globals compatibility-macros)
     :components ((:file "solve") 
 		 (:file "psolve") 
 		 (:file "algsys") 

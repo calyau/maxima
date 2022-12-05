@@ -795,7 +795,7 @@
 	     (mul2 d b1)))))
 
 (declare-top (special $globalsolve $backsubst $dispflag
-		      $linsolve_params $%rnum_list ax *linelabel* $linechar 
+		      $linsolve_params ax *linelabel* $linechar 
 		      $linenum *mosesflag))
 
 (defun xrutout (ax n m varl ind)

@@ -42,11 +42,6 @@
 
 (defmvar $algdelta 1e-5 )
 
-(defmvar $%rnum_list '((mlist))
-  "Upon exit from ALGSYS this is bound to a list of the %RNUMS
-	 which where introduced into the expression. Useful for mapping
-	 over and using as an argument to SUBST.")
-
 (defmvar $realonly nil "If t only real solutions are returned.")
 
 (defmvar realonlyratnum nil
