@@ -49,10 +49,8 @@ relational knowledge is contained in the default context GLOBAL.")
 (defvar *complexsign* nil
   "If T, COMPAR works in a complex mode.")
 
-(defmvar $prederror nil)
 (defmvar $signbfloat t)
 (defmvar $askexp)
-(defmvar limitp)
 (defmvar $assume_pos nil)
 (defmvar $assume_pos_pred nil)
 

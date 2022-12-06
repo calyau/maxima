@@ -76,7 +76,7 @@
 	  $negsumdispflag $nolabels $norepeat $noundisp $numer
 	  $numer_pbranch $optimprefix $optionset $outchar
 	  $parsewindow $pfeformat $piece $pointbound
-	  $poislim $powerdisp $prederror $programmode $props
+	  $poislim $powerdisp $programmode $props
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
@@ -118,7 +118,7 @@
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real inratsimp inside-mprog
-	  integerl limit-answers limitp linel
+	  integerl limit-answers linel
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
 	  mplc* mprogp mproplist mspeclist msump munbindp

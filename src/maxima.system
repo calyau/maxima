@@ -586,7 +586,7 @@
 	     (:file "nrat4")
 	     (:file "ratout")))
    (:module maxima-language-compiler :source-pathname ""
-	    :depends-on ("defmfun" "maxima-language-compiler-macros")
+	    :depends-on ("globals" "defmfun" "maxima-language-compiler-macros")
 	    :components
 	    ((:file "transl")
 	     (:file "transs")

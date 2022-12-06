@@ -16,7 +16,7 @@
 		      *n *a* *a $prevfib $next_lucas
 		      *times *plus sum usum
 		      varlist genvar $sumsplitfact $ratfac
-		      $prederror $listarith
+		      $listarith
 		      $ratprint $zeta%pi $bftorat))
 
 (load-macsyma-macros mhayat rzmac ratmac)

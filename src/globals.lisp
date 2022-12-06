@@ -342,5 +342,9 @@ summation when necessary."
 (defvar dummy-variable-operators '(%product %sum %laplace %integrate %limit %at))
 
 ;;------------------------------------------------------------------------
+;; From compar.lisp
+(defmvar $prederror nil)
+(defmvar limitp)
 
+;;------------------------------------------------------------------------
 
