@@ -1705,7 +1705,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
       (getopr op))))
 
 (defun op-setup (op)
-  (declare (special *mopl*))
   (let ((dummy (or (get op 'op)
                    (coerce (string* op) 'string))))
     (putprop op    dummy 'op )

@@ -13,7 +13,7 @@
 (macsyma-module comm)
 
 (declare-top (special $linechar $nolabels $piece $dispflag
-		      $gradefs $props $dependencies derivflag derivlist
+		      $props derivflag derivlist
 		      $linenum *linelabel* nn* dn*
 		      $powerdisp atvars $errexp $dotdistrib
 		      $subnumsimp $transrun in-p substp $sqrtdispflag
@@ -41,10 +41,6 @@
     (and (symbolp x) (remprop x 'opr))
     (and (stringp x) (remhash x *opr-table*))))
 
-;; Store built-in operators, which get additional properties.
-;; These operators aren't killed by the function kill-operator.
-(defvar *mopl* nil)
-
 ;; This business about operator properties is terrible --
 ;; this stuff should be in src/nparse.lisp, and it should be split up
 ;; for each operator. Extra points for making it declarative.
@@ -66,8 +62,6 @@
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'op))
       '((mqapply $subvar) (bigfloat $bfloat)))
 
-(defvar $gradefs '((mlist simp)))
-(defvar $dependencies '((mlist simp)))
 (defvar atvars '($@1 $@2 $@3 $@4))
 (defvar in-p nil)
 (defvar substp nil)

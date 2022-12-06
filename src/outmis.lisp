@@ -119,7 +119,7 @@
 		   ((eq (caar e) 'mplus) (cons u (nreverse v)))
 		   (t (cons u v)))))))
 
-(declare-top (special atvars munbound $props $gradefs $features opers
+(declare-top (special atvars munbound $props $features opers
 		      $contexts $activecontexts $aliases))
 
 (defmspec $properties (x)

@@ -232,7 +232,7 @@
 	     (:file "mhayat")))
    #+gcl (:file "optimize")		; jfa check this
    (:module utilities :source-pathname ""
-	    :depends-on ("defmfun" "utility-macros")
+	    :depends-on ("globals" "defmfun" "utility-macros")
 	    :components
 	    ((:file "opers")
 	     (:file "utils")
@@ -555,7 +555,7 @@
 	    :depends-on ("defmfun")
 	    :components ((:file "server")))
    (:module i-o :source-pathname ""
-	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
+	    :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
 	    ((:file "macsys")
 	     (:file "testsuite")
@@ -617,7 +617,7 @@
 	     (:file "plasma")
 	     (:file "intpol")))
    (:module reader :source-pathname ""
-	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
+	    :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
 	    ((:file "nparse")))
    (:module display :source-pathname ""

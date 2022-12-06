@@ -50,7 +50,7 @@
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
 	  $breakup $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
-	  $default_let_rule_package $demoivre $dependencies $derivabbrev
+	  $default_let_rule_package $demoivre $derivabbrev
 	  $detout $dispflag $display2d
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
@@ -62,7 +62,7 @@
 	  $float $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
-	  $globalsolve $gradefs $halfangles $homog_hack
+	  $globalsolve $halfangles $homog_hack
 	  $inchar $infeval $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum $linel
@@ -120,7 +120,7 @@
 	  implicit-real in-p inratsimp inside-mprog
 	  integerl limit-answers limitp linel
 	  *linelabel* local loclist low* maplp mdop
-	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
+	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
 	  mplc* mprogp mproplist mspeclist msump munbindp
 	  need-prog? negprods negsums nn* noevalargs nonintegerl
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2

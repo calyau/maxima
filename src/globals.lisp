@@ -328,6 +328,14 @@ summation when necessary."
   "When T, prevents substitution from applying to vars ; bound by %sum,
   %product, %integrate, %limit")
 
+;; Store built-in operators, which get additional properties.
+;; These operators aren't killed by the function kill-operator.
+(defvar *mopl* nil)
+
+(defvar $gradefs '((mlist simp)))
+(defvar $dependencies '((mlist simp)))
+
+
 ;;------------------------------------------------------------------------
 
 
