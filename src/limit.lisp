@@ -3588,7 +3588,6 @@ ignoring dummy variables and array indices."
     (setq ans
           (catch 'taylor-catch
             (let ((silent-taylor-flag t))
-              (declare (special silent-taylor-flag))
               (gruntz1 expr var val dir))))
      (if (or (null ans) (eq ans t))
          (if dir

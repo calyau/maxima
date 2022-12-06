@@ -363,11 +363,9 @@
 
 ;; These variables should be initialized where they belong.
 
-;; maxtaydiff doesn't appear to used anywhere.
+;; FIXME: maxtaydiff and *trunclist don't appear to used anywhere.
 (defmvar $maxtaydiff 4)
 (defvar *trunclist nil)
-(defvar ps-bmt-disrep t)
-(defvar silent-taylor-flag nil)
 
 (defmacro sum-arg (sum)
   `(cadr ,sum))

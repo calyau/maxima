@@ -133,7 +133,7 @@
 	  tstack varlist wflag
 	  *trunclist
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
-	  silent-taylor-flag $define_variable $infolists
+	  $define_variable $infolists
 	  $factor_max_degree $factor_max_degree_print_warning))
 
 (declaim (declaration unspecial))

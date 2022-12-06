@@ -304,4 +304,10 @@ summation when necessary."
 (defmvar $taylordepth 3)
 (defmvar $verbose nil)
 
+(defvar ps-bmt-disrep t)
+(defvar silent-taylor-flag nil
+  ;; From comment in hayat.lisp
+  "If true indicates that errors will be returned via a throw to
+  TAY-ERR")
+
 ;;------------------------------------------------------------------------

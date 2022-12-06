@@ -120,8 +120,6 @@
 	  genvar		;The list of gensyms corresponding to varlist
 	  modulus		;
 	  *a*			;Temporary special
-	  silent-taylor-flag	;If true indicates that errors will be
-				;returned via a throw to TAY-ERR
 	  tlist			;An association list which contains the
 				;relevant information for the expansion which
 				;is passed in at toplevel invocation.
