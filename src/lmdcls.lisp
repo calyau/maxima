@@ -86,7 +86,7 @@
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn $sparse
 	  $sqrtdispflag $stardisp $sublis_apply_lambda
-	  $subnumsimp $sumexpand $sumsplitfact
+	  $subnumsimp $sumexpand
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $trace $trace_break_arg $trace_max_indent

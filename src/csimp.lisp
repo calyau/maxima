@@ -19,8 +19,6 @@
 
 (load-macsyma-macros rzmac)
 
-(defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
-
 (loop for (a b) on
        '(%sin %asin %cos %acos %tan %atan
 	 %cot %acot %sec %asec %csc %acsc

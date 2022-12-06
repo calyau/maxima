@@ -15,7 +15,7 @@
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
 		      *n *a* *a $prevfib $next_lucas
 		      *times *plus sum usum
-		      varlist genvar $sumsplitfact $ratfac
+		      varlist genvar $ratfac
 		      $listarith
 		      $ratprint $zeta%pi $bftorat))
 

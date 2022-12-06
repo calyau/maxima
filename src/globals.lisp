@@ -379,5 +379,7 @@ summation when necessary."
 (defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi)
   "3/2*%pi")
 
+(defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
+
 ;;------------------------------------------------------------------------
 
