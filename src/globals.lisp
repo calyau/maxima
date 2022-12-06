@@ -294,5 +294,6 @@ summation when necessary."
   modified-commands '$sum
   setting-predicate #'symbolp)
 
+(defmvar $zerobern t)
 
 ;;------------------------------------------------------------------------

@@ -361,7 +361,6 @@
 
 ;; sum begins
 
-(defmvar $zerobern t)
 (defmvar $simpsum nil)
 (defmvar $simpproduct nil)
 
