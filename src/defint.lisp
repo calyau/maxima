@@ -124,7 +124,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special *def2* pcprntd *mtoinf* rsn*
+(declare-top (special *def2* pcprntd *mtoinf*
 		      sn* sd* leadcoef checkfactors
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
@@ -132,7 +132,7 @@
 		      loopstop* var nn* nd* dn* p*
 		      factors rlm*
 		      $trigexpandplus $trigexpandtimes
-		      plogabs *scflag*
+		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
 		      *current-assumptions*

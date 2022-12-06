@@ -12,17 +12,12 @@
 
 (macsyma-module csimp)
 
-(declare-top (special rsn* $exponentialize
+(declare-top (special $exponentialize
 		      var varlist genvar $%emode $ratprint
 		      nn* dn* $errexp sqrt3//2 -sqrt3//2
 		      errorsw $keepfloat $ratfac))
 
 (load-macsyma-macros rzmac)
-
-(declare-top (special plogabs))
-
-(defvar rsn* nil)
-(defvar plogabs nil)
 
 ;; Simplified shortcuts of constant expressions involving %pi.
 (defvar %p%i '((mtimes) $%i $%pi))

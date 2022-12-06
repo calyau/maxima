@@ -364,5 +364,8 @@ summation when necessary."
 (defmvar $tlimswitch t)
 (defmvar $limsubst nil)
 
+(defvar rsn* nil)
+(defvar plogabs nil)
+
 ;;------------------------------------------------------------------------
 
