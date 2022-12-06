@@ -367,5 +367,17 @@ summation when necessary."
 (defvar rsn* nil)
 (defvar plogabs nil)
 
+;; Simplified shortcuts of constant expressions involving %pi.
+(defvar %p%i '((mtimes) $%i $%pi)
+  "%pi*%i")
+(defvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi)
+  "%pi/4")
+(defvar half%pi '((mtimes) ((rat simp) 1 2) $%pi)
+  "%pi/2")
+(defvar %pi2 '((mtimes) 2 $%pi)
+  "2*%pi")
+(defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi)
+  "3/2*%pi")
+
 ;;------------------------------------------------------------------------
 

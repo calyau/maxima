@@ -134,7 +134,6 @@
 				;considered exact or not.  True within SRF,
 				;false within TAYLOR.
 	  tvars			;
-	  half%pi		;Has pi/2 to save space.
 	  const-exp-funs	;
 	  tay-const-expand	;For rediculousness like csch(log(x))
 	  $exponentialize	;which we do by exponentiation.

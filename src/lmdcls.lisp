@@ -101,7 +101,7 @@
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
 	  $use_fast_arrays $values $vect_cross
-	  %e-val %p%i %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
+	  %e-val %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *gcdl* *in *in-compile*
 	  *in-translate-file* *inv* *irreds *min* *mx*
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
@@ -115,8 +115,8 @@
 	  derivsimp displayp dn* dosimp dsksetp
 	  errorsw evarrp evp expandflag expandp
 	  exptrlsw factlist featurel fmaplvl
-	  fourth%pi fr-factor gauss
-	  generate-atan2 genpairs genvar half%pi half%pi3
+	  fr-factor gauss
+	  generate-atan2 genpairs genvar
 	  implicit-real inratsimp inside-mprog
 	  integerl limit-answers linel
 	  *linelabel* local loclist low* maplp mdop

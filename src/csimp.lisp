@@ -19,13 +19,6 @@
 
 (load-macsyma-macros rzmac)
 
-;; Simplified shortcuts of constant expressions involving %pi.
-(defvar %p%i '((mtimes) $%i $%pi))
-(defvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi))
-(defvar half%pi '((mtimes) ((rat simp) 1 2) $%pi))
-(defvar %pi2 '((mtimes) 2 $%pi))
-(defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
-
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
 
 (loop for (a b) on
