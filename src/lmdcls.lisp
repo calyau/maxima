@@ -108,7 +108,7 @@
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
-	  alpha *alphabet* aryp assigns atvars
+	  alpha *alphabet* aryp assigns
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
 	  defined_variables defintdebug derivflag derivlist
@@ -117,7 +117,7 @@
 	  exptrlsw factlist featurel fmaplvl
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
-	  implicit-real in-p inratsimp inside-mprog
+	  implicit-real inratsimp inside-mprog
 	  integerl limit-answers limitp linel
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
@@ -127,7 +127,7 @@
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sign-imag-errp simplimplus-problems
-	  *small-primes* sqrt3//2 $stringdisp substp
+	  *small-primes* sqrt3//2 $stringdisp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack varlist wflag

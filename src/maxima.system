@@ -621,7 +621,7 @@
 	    :components
 	    ((:file "nparse")))
    (:module display :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "displa")
 	     (:file "nforma")

@@ -335,6 +335,9 @@ summation when necessary."
 (defvar $gradefs '((mlist simp)))
 (defvar $dependencies '((mlist simp)))
 
+(defvar atvars '($@1 $@2 $@3 $@4))
+(defvar in-p nil)
+(defvar substp nil)
 
 ;;------------------------------------------------------------------------
 
