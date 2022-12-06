@@ -658,7 +658,7 @@
 	    ((:file "defint")
 	     (:file "residu")))
    (:module trigonometry :source-pathname ""
-	    :depends-on ("pattern-matching" "defmfun")
+	    :depends-on ("globals" "pattern-matching" "defmfun")
 	    :components
 	    ((:file "trigi")
 	     (:file "trigo")

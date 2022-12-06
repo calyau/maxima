@@ -300,5 +300,8 @@ summation when necessary."
 
 (defvar *infsumsimp t)
 
+(defmvar $cflength 1)
+(defmvar $taylordepth 3)
+(defmvar $verbose nil)
 
 ;;------------------------------------------------------------------------

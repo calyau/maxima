@@ -363,10 +363,8 @@
 
 ;; These variables should be initialized where they belong.
 
-(defmvar $cflength 1)
-(defmvar $taylordepth 3)
+;; maxtaydiff doesn't appear to used anywhere.
 (defmvar $maxtaydiff 4)
-(defmvar $verbose nil)
 (defvar *trunclist nil)
 (defvar ps-bmt-disrep t)
 (defvar silent-taylor-flag nil)

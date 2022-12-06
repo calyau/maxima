@@ -14,7 +14,7 @@
 
 (declare-top (special var *n *a *m *c *index *gcd*
 		      nn* dn* $ratsimpexpons *roots *failures
-		      *ratexp *var usexp $verbose ans *trigred
+		      *ratexp *var usexp ans *trigred
 		      *form indl *noexpand $ratexpand))
 
 (load-macsyma-macros rzmac)

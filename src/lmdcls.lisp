@@ -131,7 +131,7 @@
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack varlist wflag
-	  $cflength *trunclist $taylordepth
+	  *trunclist
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable $infolists
 	  $factor_max_degree $factor_max_degree_print_warning))
