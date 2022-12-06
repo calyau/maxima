@@ -164,10 +164,6 @@ in the interval of integration.")
 
 (defmvar defintdebug () "If true Defint prints out debugging information")
 
-;; Not really sure what this is meant to do, but it's used by MTORAT,
-;; KEYHOLE, and POLELIST.
-(defvar *semirat* nil)
-
 (defmfun $defint (exp var *ll* *ul*)
 
   ;; Distribute $defint over equations, lists, and matrices.
