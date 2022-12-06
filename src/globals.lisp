@@ -352,4 +352,9 @@ summation when necessary."
   "When T factor the polynomial over the real or complex numbers.")
 
 ;;------------------------------------------------------------------------
+;; From csimp2.lisp
+(defmvar $gamma_expand nil
+  "Expand gamma(z+n) for n an integer when T.") 
+
+;;------------------------------------------------------------------------
 

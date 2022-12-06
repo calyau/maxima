@@ -73,8 +73,6 @@
 
 (in-package :maxima)
 
-(declare-top (special $gamma_expand))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmvar $factorial_expand nil)
