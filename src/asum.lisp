@@ -361,7 +361,6 @@
 
 ;; sum begins
 
-(defmvar $simpsum nil)
 (defmvar $simpproduct nil)
 
 (defvar *infsumsimp t)

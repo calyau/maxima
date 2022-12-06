@@ -82,7 +82,7 @@
           $ratweights
 	  $ratwtlvl $realonly $refcheck $resultant $rmxchar $rootsconmode
 	  $rules $savedef $savefactors $scalarmatrixp $setcheck
-	  $setcheckbreak $setval $showtime $signbfloat $simp $simpsum
+	  $setcheckbreak $setval $showtime $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn $sparse
 	  $sqrtdispflag $stardisp $sublis_apply_lambda

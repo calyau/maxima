@@ -295,5 +295,6 @@ summation when necessary."
   setting-predicate #'symbolp)
 
 (defmvar $zerobern t)
+(defmvar $simpsum nil)
 
 ;;------------------------------------------------------------------------
