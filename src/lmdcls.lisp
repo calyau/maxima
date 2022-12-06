@@ -118,11 +118,11 @@
 	  fr-factor gauss
 	  generate-atan2 genpairs genvar
 	  implicit-real inratsimp inside-mprog
-	  integerl limit-answers linel
+	  limit-answers linel
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
 	  mplc* mprogp mproplist mspeclist msump munbindp
-	  need-prog? negprods negsums nn* noevalargs nonintegerl
+	  need-prog? negprods negsums nn* noevalargs
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl

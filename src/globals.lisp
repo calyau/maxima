@@ -382,4 +382,11 @@ summation when necessary."
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
 
 ;;------------------------------------------------------------------------
+;; From defint.lisp
+(defmvar integerl nil
+  "An integer-list for non-atoms found out to be `integer's")
 
+(defmvar nonintegerl nil
+  "A non-integer-list for non-atoms found out to be `noninteger's")
+
+;;------------------------------------------------------------------------
