@@ -50,8 +50,8 @@
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
 	  $breakup $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
-	  $default_let_rule_package $derivabbrev
-	  $detout $dispflag $display2d
+	  $default_let_rule_package
+	  $detout $dispflag
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
@@ -66,7 +66,7 @@
 	  $inchar $infeval $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum $linel
-	  $linsolvewarn $linsolve_params $lispdisp $listarith $listconstvars
+	  $linsolvewarn $linsolve_params $listarith $listconstvars
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
 	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
 	  $matrix_element_add $matrix_element_mult $matrix_element_transpose
@@ -127,7 +127,7 @@
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sign-imag-errp simplimplus-problems
-	  *small-primes* sqrt3//2 $stringdisp
+	  *small-primes* sqrt3//2
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack varlist wflag

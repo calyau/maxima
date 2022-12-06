@@ -394,3 +394,22 @@ summation when necessary."
 (defvar *semirat* nil)
 
 ;;------------------------------------------------------------------------
+;; From displa.lisp
+(defmvar $ttyoff nil)
+
+(defmvar $display2d t
+  "Causes equations to be drawn in two dimensions.  Otherwise, drawn
+	 linearly.")
+
+(defmvar $lispdisp nil
+  "Causes symbols not having $ as the first character in their pnames
+	 to be preceded with a ? when displayed.")
+
+(defmvar $derivabbrev nil)
+
+(defmvar $stringdisp nil
+  "Causes strings to be bracketed in double quotes when displayed.
+	 Normally this is off, but is turned on when a procedure definition is
+	 being displayed.")
+
+;;------------------------------------------------------------------------
