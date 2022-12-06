@@ -15,17 +15,12 @@
 (declare-top (special rsn* $exponentialize
 		      var varlist genvar $%emode $ratprint
 		      nn* dn* $errexp sqrt3//2 -sqrt3//2
-		      $demoivre errorsw $keepfloat $ratfac))
+		      errorsw $keepfloat $ratfac))
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst plogabs))
+(declare-top (special plogabs))
 
-(defmvar $demoivre nil)
-(defmvar $nointegrate nil)
-(defmvar $lhospitallim 4)
-(defmvar $tlimswitch t)
-(defmvar $limsubst nil)
 (defvar rsn* nil)
 (defvar plogabs nil)
 

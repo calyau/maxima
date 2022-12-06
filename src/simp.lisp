@@ -16,7 +16,7 @@
 		      prods negprods sums negsums
 		      $scalarmatrixp *nounl*
 		      $keepfloat $ratprint
-		      $demoivre $float
+		      $float
 		      bigfloatzero bigfloatone $assumescalar
 		      opers-list *opers-list $dontfactor *n
 		      *out *in varlist genvar $factorflag radcanp

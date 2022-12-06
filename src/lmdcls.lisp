@@ -50,7 +50,7 @@
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
 	  $breakup $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
-	  $default_let_rule_package $demoivre $derivabbrev
+	  $default_let_rule_package $derivabbrev
 	  $detout $dispflag $display2d
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops

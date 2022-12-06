@@ -357,4 +357,12 @@ summation when necessary."
   "Expand gamma(z+n) for n an integer when T.") 
 
 ;;------------------------------------------------------------------------
+;; From csimp.lisp
+(defmvar $demoivre nil)
+(defmvar $nointegrate nil)
+(defmvar $lhospitallim 4)
+(defmvar $tlimswitch t)
+(defmvar $limsubst nil)
+
+;;------------------------------------------------------------------------
 

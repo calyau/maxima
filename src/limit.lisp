@@ -27,11 +27,11 @@
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
-(declare-top (special errorsw origval $lhospitallim low*
+(declare-top (special errorsw origval low*
 		      *indicator half%pi nn* dn* numer denom exp var val varlist
-		      *zexptsimp? $tlimswitch $logarc taylored logcombed
+		      *zexptsimp? $logarc taylored logcombed
 		      $exponentialize lhp? lhcount $ratfac genvar
-		      loginprod? $limsubst $logabs a context limit-assumptions
+		      loginprod? $logabs a context limit-assumptions
 		      limit-top integer-info old-integer-info $keepfloat $logexpand))
 
 (defconstant +behavior-count+ 4)
