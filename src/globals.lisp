@@ -347,4 +347,9 @@ summation when necessary."
 (defmvar limitp)
 
 ;;------------------------------------------------------------------------
+;; From cpoly.lisp
+(defmvar $polyfactor nil
+  "When T factor the polynomial over the real or complex numbers.")
+
+;;------------------------------------------------------------------------
 

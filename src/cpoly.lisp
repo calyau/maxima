@@ -34,9 +34,6 @@
 (declare-top (special *u* *v* *a* *b* *c* *d* *a1* *a3* *a7* *e* *f* *g* *h*
 		      *szr* *szi* *lzr* *lzi* *nz* *ui* *vi* *s*))
 
-(defmvar $polyfactor nil
-  "When T factor the polynomial over the real or complex numbers.")
-
 (defmfun $allroots (expr)
   (prog (degree *nn* var res $partswitch $keepfloat $demoivre $listconstvars
 	 $algebraic complex $ratfac den expr1)
