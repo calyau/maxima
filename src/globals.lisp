@@ -339,6 +339,8 @@ summation when necessary."
 (defvar in-p nil)
 (defvar substp nil)
 
+(defvar dummy-variable-operators '(%product %sum %laplace %integrate %limit %at))
+
 ;;------------------------------------------------------------------------
 
 

@@ -154,9 +154,6 @@
 
 ;;Remainder of page is update from F302 --gsb
 
-;;Used in COMM2 (AT), limit, and below.
-(defvar dummy-variable-operators '(%product %sum %laplace %integrate %limit %at))
-
 (defun subst1 (x y z)			; Y is an atom
   (cond ((atom z) (if (equal y z) x z))
 	((specrepp z) (subst1 x y (specdisrep z)))

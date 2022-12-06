@@ -210,7 +210,6 @@
 		 (or (zfree (car l) x) (return () ))))))
 
 (defun mfree (exp varl)
-  (declare (special dummy-variable-operators))
    (cond ((atom exp) (not (member exp varl :test #'eq)))
 	 ((eq (caar exp) 'mrat)
 	  (do ((l (mrat-varlist exp) (cdr l)))

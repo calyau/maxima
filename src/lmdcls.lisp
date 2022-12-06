@@ -112,7 +112,7 @@
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
 	  defined_variables defintdebug derivflag derivlist
-	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
+	  derivsimp displayp dn* dosimp dsksetp
 	  errorsw evarrp evp expandflag expandp
 	  exptrlsw factlist featurel fmaplvl
 	  fourth%pi fr-factor gauss
