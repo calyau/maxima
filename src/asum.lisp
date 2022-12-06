@@ -361,10 +361,6 @@
 
 ;; sum begins
 
-(defmvar $simpproduct nil)
-
-(defvar *infsumsimp t)
-
 ;; These variables should be initialized where they belong.
 
 (defmvar $cflength 1)

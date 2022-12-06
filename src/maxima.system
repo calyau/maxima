@@ -249,7 +249,7 @@
 	    ((:file "comm")
 	     (:file "comm2")))
    (:module evaluator :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "mlisp")
 	     (:file "mmacro")
@@ -650,7 +650,7 @@
 	     (:file "sin")
 	     (:file "risch")))
    (:module taylor-series :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components ((:file "hayat")))
    (:module definite-integration :source-pathname ""
 	    :depends-on ("globals" "defmfun")
@@ -664,7 +664,7 @@
 	     (:file "trigo")
 	     (:file "trgred")))
    (:module special-functions :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "specfn")))
    (:module matrix-algebra :source-pathname ""

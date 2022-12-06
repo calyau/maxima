@@ -13,7 +13,7 @@
 (macsyma-module series)
 
 (declare-top (special var *n *a *m *c *index *gcd*
-		      nn* dn* $ratsimpexpons *infsumsimp *roots *failures
+		      nn* dn* $ratsimpexpons *roots *failures
 		      *ratexp *var usexp $verbose ans *trigred
 		      *form indl *noexpand $ratexpand))
 

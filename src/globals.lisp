@@ -296,5 +296,9 @@ summation when necessary."
 
 (defmvar $zerobern t)
 (defmvar $simpsum nil)
+(defmvar $simpproduct nil)
+
+(defvar *infsumsimp t)
+
 
 ;;------------------------------------------------------------------------
