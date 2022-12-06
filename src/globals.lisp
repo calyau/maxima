@@ -322,6 +322,12 @@ summation when necessary."
 (defmvar $derivsubst nil)
 (defmvar $opsubst t)
 
+(defvar *islinp* nil
+  "When T, sdiff is called from the function islinear")
+(defvar *atp* nil
+  "When T, prevents substitution from applying to vars ; bound by %sum,
+  %product, %integrate, %limit")
+
 ;;------------------------------------------------------------------------
 
 

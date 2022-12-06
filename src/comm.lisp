@@ -19,10 +19,6 @@
 		      $subnumsimp $transrun in-p substp $sqrtdispflag
 		      $pfeformat dummy-variable-operators))
 
-(defvar *islinp* nil) ; When T, sdiff is called from the function islinear.
-(defvar *atp* nil)    ; When T, prevents substitution from applying to vars 
-                      ; bound by %sum, %product, %integrate, %limit
-
 ;; op and opr properties
 
 (defvar *opr-table* (make-hash-table :test #'equal))

@@ -108,7 +108,7 @@
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
-	  alpha *alphabet* aryp assigns *atp* atvars
+	  alpha *alphabet* aryp assigns atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
 	  defined_variables defintdebug derivflag derivlist
@@ -118,7 +118,7 @@
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p inratsimp inside-mprog
-	  integerl *islinp* limit-answers limitp linel
+	  integerl limit-answers limitp linel
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist mspeclist msump munbindp

@@ -537,7 +537,7 @@
 		       )
 		      )))
    (:module simplification :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "simp")
 	     (:file "float")
