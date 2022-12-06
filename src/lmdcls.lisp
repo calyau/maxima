@@ -51,19 +51,19 @@
 	  $breakup $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package $demoivre $dependencies $derivabbrev
-	  $derivsubst $detout $dispflag $display2d
+	  $detout $dispflag $display2d
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
 	  $dotconstrules $dotdistrib $dotexptsimp $dotident $dotscrules
 	  $erfflag $errexp $error $error_size $error_syms $expon
-	  $exponentialize $expop $exptdispflag $exptisolate $exptsubst
+	  $exponentialize $expop $exptdispflag $exptisolate
 	  $facexpand $factorflag $features $file_search
 	  $float $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
 	  $globalsolve $gradefs $halfangles $homog_hack
-	  $inchar $infeval $inflag $intfaclim
+	  $inchar $infeval $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum $linel
 	  $linsolvewarn $linsolve_params $lispdisp $listarith $listconstvars
@@ -74,8 +74,8 @@
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
 	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
 	  $negsumdispflag $nolabels $norepeat $noundisp $numer
-	  $numer_pbranch $opsubst $optimprefix $optionset $outchar
-	  $parsewindow $partswitch $pfeformat $piece $pointbound
+	  $numer_pbranch $optimprefix $optionset $outchar
+	  $parsewindow $pfeformat $piece $pointbound
 	  $poislim $powerdisp $prederror $programmode $props
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch

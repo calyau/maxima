@@ -315,5 +315,13 @@ summation when necessary."
 (defmvar $rootsconmode t)
 
 ;;------------------------------------------------------------------------
+;; From comm.lisp
+(defmvar $exptsubst nil)
+(defmvar $partswitch nil)
+(defmvar $inflag nil)
+(defmvar $derivsubst nil)
+(defmvar $opsubst t)
+
+;;------------------------------------------------------------------------
 
 

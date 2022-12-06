@@ -15,7 +15,7 @@
 (declare-top (special mult *roots *failures $solvefactors))
 (declare-top (special expsumsplit $dispflag checkfactors *g
 		      $algebraic equations ;List of E-labels
-		      *power *varb *flg $derivsubst
+		      *power *varb *flg
 		      $%emode genvar genpairs varlist broken-not-freeof
 		      mult    ;Some crock which tracks multiplicities.
 		      *roots ;alternating list of solutions and multiplicities
