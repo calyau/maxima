@@ -244,7 +244,7 @@
 	     (:file "outmis")
 	     (:file "ar")))
    (:module commands :source-pathname ""
-	    :depends-on ("defmfun" "compatibility-macros1")
+	    :depends-on ("globals" "defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "comm")
 	     (:file "comm2")))

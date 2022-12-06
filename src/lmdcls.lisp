@@ -80,7 +80,7 @@
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
-	  $ratwtlvl $realonly $refcheck $resultant $rmxchar $rootsconmode
+	  $ratwtlvl $realonly $refcheck $resultant $rmxchar
 	  $rules $savedef $savefactors $scalarmatrixp $setcheck
 	  $setcheckbreak $setval $showtime $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
