@@ -425,3 +425,5 @@ summation when necessary."
 (defvar *display-labels-p* t)
 
 ;;------------------------------------------------------------------------
+;; From dskfn.lisp
+(defmvar $packagefile nil)
