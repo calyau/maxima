@@ -17,7 +17,7 @@
 		      $scalarmatrixp *nounl*
 		      $keepfloat $ratprint
 		      $float
-		      bigfloatzero bigfloatone $assumescalar
+		      bigfloatzero $assumescalar
 		      opers-list *opers-list $dontfactor *n
 		      *out *in varlist genvar $factorflag radcanp
                       *builtin-numeric-constants*))

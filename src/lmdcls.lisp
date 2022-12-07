@@ -109,7 +109,6 @@
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
 	  alpha *alphabet* aryp assigns
-	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
 	  defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp

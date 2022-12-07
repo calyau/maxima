@@ -32,58 +32,6 @@
     #-gcl (:compile-toplevel :load-toplevel :execute)
     (defconstant +machine-fixnum-precision+ (integer-length most-positive-fixnum)))
 
-;; External variables
-
-(defmvar $float2bf t
-  "If TRUE, no MAXIMA-ERROR message is printed when a floating point number is
-converted to a bigfloat number.")
-
-(defmvar $bftorat nil
-  "Controls the conversion of bigfloat numbers to rational numbers.  If
-FALSE, RATEPSILON will be used to control the conversion (this results in
-relatively small rational numbers).  If TRUE, the rational number generated
-will accurately represent the bigfloat.")
-
-(defmvar $bftrunc t
-  "If TRUE, printing of bigfloat numbers will truncate trailing zeroes.
-  Otherwise, all trailing zeroes are printed.")
-
-(defmvar $fpprintprec 0
-  "Controls the number of significant digits printed for floats.  If
-  0, then full precision is used."
-  fixnum)
-
-(defmvar $maxfpprintprec (ceiling (log (expt 2 (float-digits 1.0)) 10.0))
-  "The maximum number of significant digits printed for floats.")
-
-(defmvar $fpprec $maxfpprintprec
-  "Number of decimal digits of precision to use when creating new bigfloats.
-One extra decimal digit in actual representation for rounding purposes.")
-
-(defmvar bigfloatzero '((bigfloat simp 56.) 0 0)
-  "Bigfloat representation of 0" in-core)
-
-(defmvar bigfloatone  '((bigfloat simp 56.) #.(expt 2 55.) 1)
-  "Bigfloat representation of 1" in-core)
-
-(defmvar bfhalf	      '((bigfloat simp 56.) #.(expt 2 55.) 0)
-  "Bigfloat representation of 1/2")
-
-(defmvar bfmhalf      '((bigfloat simp 56.) #.(- (expt 2 55.)) 0)
-  "Bigfloat representation of -1/2")
-
-(defmvar bigfloat%e   '((bigfloat simp 56.) 48968212118944587. 2)
-  "Bigfloat representation of %E")
-
-(defmvar bigfloat%pi  '((bigfloat simp 56.) 56593902016227522. 2)
-  "Bigfloat representation of %pi")
-
-(defmvar bigfloat%gamma '((bigfloat simp 56.) 41592772053807304. 0)
-  "Bigfloat representation of %gamma")
-
-(defmvar bigfloat_log2 '((bigfloat simp 56.) 49946518145322874. 0)
-  "Bigfloat representation of log(2)")
-
 ;; Internal specials
 
 ;; Number of bits of precision in the mantissa of newly created bigfloats.
