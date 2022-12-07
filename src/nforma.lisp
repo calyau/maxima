@@ -14,11 +14,7 @@
 
 (declare-top (special 1//2 -1//2 ))
 
-(defmvar $powerdisp nil)
-(defmvar $pfeformat nil)
-(defmvar $%edispflag nil)
 (defmvar $exptdispflag t)
-(defmvar $sqrtdispflag t)
 (defmvar $negsumdispflag t)
 
 (setq in-p nil)

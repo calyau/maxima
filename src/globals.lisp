@@ -663,4 +663,10 @@ is no need to rely on the setting of this switch.")
 (defvar *maxima-testsdir*)
 
 ;;------------------------------------------------------------------------
+;; From nforma.lisp
+(defmvar $powerdisp nil)
+(defmvar $pfeformat nil)
+(defmvar $%edispflag nil)
+(defmvar $sqrtdispflag t)
 
+;;------------------------------------------------------------------------

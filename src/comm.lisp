@@ -15,9 +15,9 @@
 (declare-top (special $linechar $nolabels $dispflag
 		      $props derivflag derivlist
 		      $linenum *linelabel* nn* dn*
-		      $powerdisp $errexp $dotdistrib
-		      $subnumsimp $sqrtdispflag
-		      $pfeformat dummy-variable-operators))
+		      $errexp $dotdistrib
+		      $subnumsimp
+		      dummy-variable-operators))
 
 ;; op and opr properties
 

@@ -707,7 +707,7 @@
 
 (declare-top (unspecial x))
 
-(declare-top (special $pfeformat varlist $factorflag m v dosimp))
+(declare-top (special varlist $factorflag m v dosimp))
 
 (defmfun $pfet (m)
   (prog (listov $pfeformat varlist $factorflag)

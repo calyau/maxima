@@ -44,7 +44,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $% $%% $%edispflag $%emode $%e_to_numlog $%iargs $%piargs
+	  $% $%% $%emode $%e_to_numlog $%iargs $%piargs
 	  $%rnum $absboxchar $activecontexts $algebraic $algexact
 	  $aliases $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
@@ -75,8 +75,8 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
 	  $negsumdispflag $nolabels $norepeat $noundisp $numer
 	  $numer_pbranch $optimprefix $optionset $outchar
-	  $parsewindow $pfeformat $pointbound
-	  $poislim $powerdisp $programmode $props
+	  $parsewindow $pointbound
+	  $poislim $programmode $props
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
@@ -85,7 +85,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
-	  $sqrtdispflag $stardisp $sublis_apply_lambda
+	  $stardisp $sublis_apply_lambda
 	  $subnumsimp $sumexpand
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
