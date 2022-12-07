@@ -51,7 +51,7 @@
 	  $breakup $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package
-	  $detout $dispflag
+	  $dispflag
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
@@ -69,7 +69,7 @@
 	  $linsolvewarn $linsolve_params $listarith
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
 	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
-	  $matrix_element_add $matrix_element_mult $matrix_element_transpose
+	  $matrix_element_transpose
 	  $maxapplydepth $maxapplyheight $maxnegex $maxposex
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
 	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib

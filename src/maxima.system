@@ -674,7 +674,7 @@
 	     (:file "linnew")
 	     (:file "matrix")))
    (:module determinants :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "sprdet")
 	     (:file "newinv")

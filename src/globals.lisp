@@ -515,3 +515,10 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defmvar $backsubst t)
 
 ;;------------------------------------------------------------------------
+;; From matrix.lisp
+(defmvar $detout nil)
+(defmvar $ratmx nil)
+(defmvar $matrix_element_mult "*")  ;;; Else, most useful when "."
+(defmvar $matrix_element_add "+")
+
+;;------------------------------------------------------------------------
