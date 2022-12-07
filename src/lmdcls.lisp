@@ -77,10 +77,10 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $numer_pbranch $optimprefix $optionset $outchar
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
-	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
+	  $radexpand $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
-	  $ratwtlvl $realonly $refcheck $resultant $rmxchar
+	  $realonly $refcheck $resultant $rmxchar
 	  $rules $savefactors
 	  $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn

@@ -17,9 +17,6 @@
 
 (declare-top (special $algebraic $ratfac $keepfloat))
 
-(defmvar $ratwtlvl nil) 
-(defmvar $ratalgdenom t)       ;If T then denominator is rationalized.
-
 (defun ralgp (r) (or (palgp (car r)) (palgp (cdr r))))
 
 (defun palgp (poly)

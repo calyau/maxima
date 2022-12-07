@@ -670,3 +670,8 @@ is no need to rely on the setting of this switch.")
 (defmvar $sqrtdispflag t)
 
 ;;------------------------------------------------------------------------
+;; From rat3b.lisp
+(defmvar $ratwtlvl nil) 
+(defmvar $ratalgdenom t)       ;If T then denominator is rationalized.
+
+;;------------------------------------------------------------------------
