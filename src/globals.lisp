@@ -639,4 +639,13 @@ is no need to rely on the setting of this switch.")
 ;; whereas if it is false they are stored in the function cell
 (defmvar $use_fast_arrays nil)
 
+(defvar bindlist nil)
+(defvar loclist nil)
+(defvar *nounl* nil)
+(defvar scanmapp nil)
+(defvar maplp nil)
+(defvar evp nil)
+(defvar mlocp nil)
+(defvar fmaplvl 0)
+
 ;;------------------------------------------------------------------------
