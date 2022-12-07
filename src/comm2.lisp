@@ -130,8 +130,6 @@
 
 ;;;; AT
 
-(declare-top (special munbound))
-
 (defmfun $atvalue (exp eqs val)
   (let (dl vl fun)
     (cond ((notloreq eqs) (improper-arg-err eqs '$atvalue))

@@ -54,7 +54,7 @@
 (defvar max-bfloat-log2 bigfloat_log2)
 
 
-(declare-top (special *cancelled $float $bfloat $ratprint $ratepsilon $domain $m1pbranch))
+(declare-top (special *cancelled $bfloat $ratprint $ratepsilon $domain $m1pbranch))
 
 ;; Representation of a Bigfloat:  ((BIGFLOAT SIMP precision) mantissa exponent)
 ;; precision -- number of bits of precision in the mantissa.

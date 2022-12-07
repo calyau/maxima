@@ -1,4 +1,4 @@
-;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
+n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;     The data in this file contains enhancments.                    ;;;;;
 ;;;                                                                    ;;;;;
@@ -44,7 +44,7 @@
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $% $%% $%edispflag $%emode $%enumer $%e_to_numlog $%iargs $%piargs
+	  $% $%% $%edispflag $%emode $%e_to_numlog $%iargs $%piargs
 	  $%rnum $absboxchar $activecontexts $algebraic $algexact
 	  $aliases $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
@@ -58,12 +58,12 @@
 	  $dotconstrules $dotident
 	  $erfflag $errexp $error_size $error_syms $expon
 	  $exponentialize $expop $exptdispflag $exptisolate
-	  $facexpand $factorflag $features $file_search
-	  $float $float2bf $floatformat $floatfrac $floatint
+	  $facexpand $factorflag $file_search
+	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
 	  $halfangles $homog_hack
-	  $inchar $infeval $intfaclim
+	  $inchar $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum
 	  $linsolvewarn $linsolve_params $listarith
@@ -75,14 +75,14 @@
 	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
 	  $negsumdispflag $nolabels $norepeat $noundisp $numer
 	  $numer_pbranch $optimprefix $optionset $outchar
-	  $parsewindow $pfeformat $piece $pointbound
+	  $parsewindow $pfeformat $pointbound
 	  $poislim $powerdisp $programmode $props
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
 	  $ratwtlvl $realonly $refcheck $resultant $rmxchar
-	  $rules $savedef $savefactors $setcheck
-	  $setcheckbreak $setval $signbfloat $simp
+	  $rules $savefactors
+	  $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
 	  $sqrtdispflag $stardisp $sublis_apply_lambda
@@ -90,7 +90,7 @@
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $trace $trace_break_arg $trace_max_indent
-	  $trace_safety $translate $transrun
+	  $trace_safety $transrun
 	  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
 	  $trigsign $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
@@ -100,7 +100,7 @@
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
-	  $use_fast_arrays $values $vect_cross
+	  $values $vect_cross
 	  %e-val %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *gcdl* *in *in-compile*
 	  *in-translate-file* *inv* *irreds *min* *mx*
@@ -113,14 +113,14 @@
 	  defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp
 	  errorsw evarrp evp expandflag expandp
-	  exptrlsw factlist featurel fmaplvl
+	  exptrlsw factlist fmaplvl
 	  fr-factor gauss
 	  generate-atan2 genpairs genvar
 	  implicit-real inratsimp inside-mprog
 	  limit-answers
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
-	  mplc* mprogp mproplist mspeclist msump munbindp
+	  mplc* mprogp mproplist mspeclist msump
 	  need-prog? negprods negsums nn* noevalargs
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp

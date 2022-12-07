@@ -123,8 +123,6 @@
 	  tlist			;An association list which contains the
 				;relevant information for the expansion which
 				;is passed in at toplevel invocation.
-	  $float		;Indicates whether to convert rational numbers
-				;to floating point numbers.
 	  $keepfloat		;When true retains floatin point numbers
 				;internal to Taylor.
 	  $radexpand		;

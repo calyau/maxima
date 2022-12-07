@@ -15,7 +15,7 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 2.
 ;;	IT INCLUDES RATIONAL FUNCTIONS ONLY.
 
-(declare-top (special $algebraic $ratfac $keepfloat $float))
+(declare-top (special $algebraic $ratfac $keepfloat))
 
 (defmvar $ratwtlvl nil) 
 (defmvar $ratalgdenom t)       ;If T then denominator is rationalized.

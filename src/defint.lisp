@@ -144,7 +144,7 @@
 	     (special $solveradcan $solvetrigwarn *roots *failures
 		      $logabs $maxposex $maxnegex
 		      $trigsign $savefactors $radexpand $breakup $%emode
-		      $float $exptsubst dosimp context rp-polylogp
+		      $exptsubst dosimp context rp-polylogp
 		      varlist genvar
 		      $domain $m1pbranch errorsw
 		      $algebraic

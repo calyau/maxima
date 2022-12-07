@@ -47,7 +47,7 @@
 (defmvar $ratvars '((mlist simp)))
 (defmvar $facexpand t)
 
-(declare-top (special evp $infeval))
+(declare-top (special evp))
 
 (defun mrateval (x)
   (let ((varlist (caddar x)))
