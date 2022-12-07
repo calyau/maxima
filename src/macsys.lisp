@@ -14,9 +14,6 @@
 
 (macsyma-module system)
 
-(defmvar $showtime nil
-  "When T, the computation time is printed with each output expression.")
-
 ;;; Standard Kinds of Input Prompts
 
 (defmvar $prompt '_
@@ -105,9 +102,6 @@ DESTINATION is an actual stream (rather than nil for a string)."
   ;; Other random errors get to the lisp debugger, which is normally set to print
   ;; them and continue, via *debugger-hook*.
   (rat-error-to-merror (meval* x)))
-
-(defmvar $_ '$_ "last thing read in, corresponds to lisp +")
-(defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
 
 (declare-top (special *mread-prompt*  $file_search_demo))
 

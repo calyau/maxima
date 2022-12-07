@@ -501,3 +501,11 @@ One extra decimal digit in actual representation for rounding purposes.")
    to omit these." boolean see-also $listofvars)
 
 ;;------------------------------------------------------------------------
+;; From macsys.lisp
+(defmvar $showtime nil
+  "When T, the computation time is printed with each output expression.")
+
+(defmvar $_ '$_ "last thing read in, corresponds to lisp +")
+(defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
+
+

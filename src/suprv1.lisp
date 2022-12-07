@@ -468,7 +468,6 @@
 	(cadr (reverse l)))))
 
 (defmspec $playback (x)
-  (declare (special $showtime))
   (setq x (cdr x))
   (prog (l l1 l2 numbp slowp nostringp inputp timep grindp inchar largp)
      (setq inchar (getlabcharn $inchar)) ; Only the 1st alphabetic char. of $INCHAR is tested
