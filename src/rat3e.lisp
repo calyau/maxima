@@ -17,7 +17,7 @@
 ;;	by the rest of the functions.
 
 (declare-top (special intbs* alflag var dosimp alc $myoptions
-		      vlist scanmapp radlist expsumsplit *ratsimp* mplc*
+		      vlist radlist expsumsplit *ratsimp* mplc*
 		      $ratsimpexpons $expop $expon $negdistrib $gcd))
 
 (defmvar genvar nil
@@ -46,8 +46,6 @@
 (defmvar $algebraic nil)
 (defmvar $ratvars '((mlist simp)))
 (defmvar $facexpand t)
-
-(declare-top (special evp))
 
 (defun mrateval (x)
   (let ((varlist (caddar x)))
