@@ -480,3 +480,9 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defmvar bigfloat_log2 '((bigfloat simp 56.) 49946518145322874. 0)
   "Bigfloat representation of log(2)")
 
+;; Number of bits of precision in the mantissa of newly created bigfloats.
+;; FPPREC = ($FPPREC+1)*(Log base 2 of 10)
+
+(defvar fpprec)
+
+;;------------------------------------------------------------------------

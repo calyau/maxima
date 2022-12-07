@@ -34,11 +34,6 @@
 
 ;; Internal specials
 
-;; Number of bits of precision in the mantissa of newly created bigfloats.
-;; FPPREC = ($FPPREC+1)*(Log base 2 of 10)
-
-(defvar fpprec)
-
 ;; FPROUND uses this to return a second value, i.e. it sets it before
 ;; returning.  This number represents the number of binary digits its input
 ;; bignum had to be shifted right to be aligned into the mantissa.  For
@@ -52,6 +47,7 @@
 
 (defvar *decfp nil)
 
+;; FIXME:  These don't appear to be used anywhere.  Remove these.
 (defvar max-bfloat-%pi bigfloat%pi)
 (defvar max-bfloat-%e  bigfloat%e)
 (defvar max-bfloat-%gamma bigfloat%gamma)
