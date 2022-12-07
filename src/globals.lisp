@@ -486,3 +486,10 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defvar fpprec)
 
 ;;------------------------------------------------------------------------
+;; From gamma.lisp
+(defmvar $factorial_expand nil)
+(defmvar $beta_expand nil)
+
+(defmvar $hypergeometric_representation nil
+  "When T a transformation to a hypergeometric representation is done.")
+

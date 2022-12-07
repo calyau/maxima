@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special opers *a *n sum msump *i *opers-list opers-list $ratsimpexpons $factorial_expand))
+(declare-top (special opers *a *n sum msump *i *opers-list opers-list $ratsimpexpons))
 
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))

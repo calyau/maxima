@@ -75,17 +75,11 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmvar $factorial_expand nil)
-(defmvar $beta_expand nil)
-
 (defmvar $erf_representation nil
   "When T erfc, erfi and erf_generalized are transformed to erf.")
 
 (defmvar $erf_%iargs nil
   "When T erf and erfi simplifies for an imaginary argument.")
-
-(defmvar $hypergeometric_representation nil
-  "When T a transformation to a hypergeometric representation is done.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; The following functions test if numerical evaluation has to be done.
