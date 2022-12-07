@@ -14,7 +14,7 @@
 
 (declare-top (special *ech* *tri* *inv*
 		      mdl $detout vlist mul* top* *det* genvar $ratfac
-		      varlist header $scalarmatrixp $sparse
+		      varlist header $scalarmatrixp
 		      $algebraic *rank* *mat*))
 
 (defmvar $detout nil)

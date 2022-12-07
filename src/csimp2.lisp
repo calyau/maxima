@@ -790,7 +790,7 @@
        (list (add2 (m* a c1) (m* c b1))
 	     (mul2 d b1)))))
 
-(declare-top (special $globalsolve $backsubst $dispflag
+(declare-top (special $dispflag
 		      $linsolve_params ax *linelabel* $linechar 
 		      $linenum *mosesflag))
 
