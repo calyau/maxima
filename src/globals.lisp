@@ -48,7 +48,22 @@
          ;; Don't reset the value
          (setf maybe-reset nil))
         ((fixnum boolean string flonum)
-         (setf maybe-declare-type
+	 ;; Don't declare the types yet.  There are testsuite failures
+	 ;; with sbcl that some things declared fixnum aren't assigned
+	 ;; fixnum values.  Some are clearly bugs in the code where we
+	 ;; do things like
+	 ;;
+	 ;;  (let ($expop ...)
+	 ;;    (setq $expop 0))
+	 ;;
+	 ;; Some known such variables: $expop, $fpprintprec (in ev
+	 ;; statements), $factors_only, $expon,
+	 ;;
+	 ;; We should also note that when this is fixed, we should
+	 ;; also add an 'assign property to verify that only fixnums,
+	 ;; etc., are allowed.
+         #+nil
+	 (setf maybe-declare-type
                `((declaim (type ,(car opts) ,var)))))
         (in-core
          ;; Ignore this
