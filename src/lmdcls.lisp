@@ -56,7 +56,7 @@
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
 	  $dotconstrules $dotdistrib $dotexptsimp $dotident $dotscrules
-	  $erfflag $errexp $error $error_size $error_syms $expon
+	  $erfflag $errexp $error_size $error_syms $expon
 	  $exponentialize $expop $exptdispflag $exptisolate
 	  $facexpand $factorflag $features $file_search
 	  $float $float2bf $floatformat $floatfrac $floatint

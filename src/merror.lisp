@@ -15,14 +15,6 @@
 ;;; Macsyma error signalling. 
 ;;; 2:08pm  Tuesday, 30 June 1981 George Carrette.
 
-(defmvar $error `((mlist simp) "No error.")
-  "During an MAXIMA-ERROR break this is bound to a list
-  of the arguments to the call to MAXIMA-ERROR, with the message
-  text in a compact format.")
-
-(defmvar $errormsg 't
-  "If `false' then no maxima-error message is printed!")
-
 (defmfun $error (&rest l)
   "Signals a Maxima user error."
   (apply #'merror (fstringc l)))
