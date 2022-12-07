@@ -14,7 +14,7 @@
 
 (declare-top (special var $savefactors
 		      checkfactors $ratfac $keepfloat *nounl* *nounsflag*
-                      errcatch $errormsg))
+                      errcatch))
 
 ;;; The properties NOUN and VERB give correct linear display
 
