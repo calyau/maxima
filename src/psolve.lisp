@@ -20,7 +20,7 @@
 		      mult    ;Some crock which tracks multiplicities.
 		      *roots ;alternating list of solutions and multiplicities
 		      *failures	;alternating list of equations and multiplicities
-		      *myvar $listconstvars
+		      *myvar
 		      *has*var *var $dontfactor
 		      $keepfloat $ratfac
 		      xm* xn* mul*))

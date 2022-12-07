@@ -493,3 +493,11 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defmvar $hypergeometric_representation nil
   "When T a transformation to a hypergeometric representation is done.")
 
+;;------------------------------------------------------------------------
+;; From inmis.lisp
+(defmvar $listconstvars nil
+  "Causes LISTOFVARS to include %E, %PI, %I, and any variables declared
+   constant in the list it returns if they appear in exp.  The default is
+   to omit these." boolean see-also $listofvars)
+
+;;------------------------------------------------------------------------

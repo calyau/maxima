@@ -432,7 +432,7 @@
 		     varlist nvarlist)
 	    (rdis (cdr expr))))))
 
-(declare-top (special $listconstvars facfun))
+(declare-top (special facfun))
 
 (defmfun $factorsum (e)
   (factorsum0 e '$factor))
