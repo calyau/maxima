@@ -429,7 +429,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 ;; Declare a build_info structure, then remove it from the list of user-defined structures.
 (defstruct1 '((%build_info) $version $timestamp $host $lisp_name $lisp_version
 	      $maxima_userdir $maxima_tempdir $maxima_objdir $maxima_frontend $maxima_frontend_version))
-(let nil (declare (special $structures))
+(let nil
   (setq $structures (cons '(mlist) (remove-if #'(lambda (x) (eq (caar x) '%build_info)) (cdr $structures)))))
 
 (defvar *maxima-build-info* nil)

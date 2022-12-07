@@ -36,7 +36,6 @@
 ;;; ((MQAPPLY ARRAY) X Y) is a strange form, meaning (X)[Y].
 
 (defun marrayref (aarray ind1 &rest inds)
-  (declare (special fixunbound flounbound))
   (typecase aarray
     (cl:array
      (case (array-element-type aarray)

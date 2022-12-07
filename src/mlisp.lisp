@@ -64,22 +64,6 @@ or if apply is being used are printed.")
 (defmvar $setcheckbreak nil)
 (defmvar $setval '$setval)
 
-;; These three variables are what get stuck in array slots as magic
-;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
-;; respectively.
-
-(defvar munbound '|#####|)
-
-(defvar fixunbound most-negative-fixnum)
-
-(defvar flounbound most-negative-flonum)
-
-(defmvar munbindp nil
-  "Used for safely `munbind'ing incorrectly-bound variables."
-  no-reset)
-
-(defmvar $setcheck nil)
-
 (mapc #'(lambda (x) (setf (symbol-value x) (ncons '(mlist simp))))
       '($values $functions $macros $arrays $myoptions $rules $props))
 
@@ -137,12 +121,6 @@ or if apply is being used are printed.")
 (defun mevalargs (args)
   (cond (noevalargs (setq noevalargs nil) args)
 	(t (mapcar #'meval args))))
-
-;;Function Call stack each element is
-;; (fname . bindlist) where bindlist was the value at time of entry.
-;; So you can use this to compute what the bindings were at any
-;; function call.
-(defvar *mlambda-call-stack* (make-array 30 :fill-pointer 0 :adjustable t ))
 
 ;;; The frame info for a function call consists of 5 consecutive
 ;;; entries in *MLAMBDA-CALL-STACK*.  I call the topmost object of
@@ -790,8 +768,6 @@ wrapper for this."
 
 (defmspec $defstruct (L)
   `((mlist) ,@(mapcar 'defstruct1 (cdr L))))
-
-(defvar $structures '((mlist)))
 
 (defun defstruct-translate (form)
   (let ((translated-args (mapcar #'translate (cdr form))))
@@ -1842,9 +1818,6 @@ wrapper for this."
 (defmfun $show_hash_array (x)
   (maphash #'(lambda (k v) (format t "~%~A-->~A" k v)) x))
 
-;; If this is T then arrays are stored in the value cell,
-;; whereas if it is false they are stored in the function cell
-(defmvar $use_fast_arrays nil)
 
 (defun arrstore (l r)
 	 (let ((fun (caar l)) ary sub (lispsub 0) hashl mqapplyp)

@@ -81,8 +81,8 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
 	  $ratwtlvl $realonly $refcheck $resultant $rmxchar
-	  $rules $savefactors $setcheck
-	  $setcheckbreak $setval $signbfloat $simp
+	  $rules $savefactors
+	  $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
 	  $sqrtdispflag $stardisp $sublis_apply_lambda
@@ -100,7 +100,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
-	  $use_fast_arrays $values $vect_cross
+	  $values $vect_cross
 	  %e-val %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *gcdl* *in *in-compile*
 	  *in-translate-file* *inv* *irreds *min* *mx*
@@ -120,7 +120,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  limit-answers
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
-	  mplc* mprogp mproplist mspeclist msump munbindp
+	  mplc* mprogp mproplist mspeclist msump
 	  need-prog? negprods negsums nn* noevalargs
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
