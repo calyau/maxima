@@ -668,7 +668,7 @@
 	    :components
 	    ((:file "specfn")))
    (:module matrix-algebra :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "mat")
 	     (:file "linnew")

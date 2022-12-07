@@ -23,9 +23,6 @@
 (defvar *col*)
 (defvar *colinv*)
 
-(defmvar $globalsolve nil)
-(defmvar $sparse nil)
-(defmvar $backsubst t)
 
 (defmvar *rank* nil)
 (defmvar *inv* nil)

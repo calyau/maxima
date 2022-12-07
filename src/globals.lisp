@@ -508,4 +508,10 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defmvar $_ '$_ "last thing read in, corresponds to lisp +")
 (defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
 
+;;------------------------------------------------------------------------
+;; From mat.lisp
+(defmvar $globalsolve nil)
+(defmvar $sparse nil)
+(defmvar $backsubst t)
 
+;;------------------------------------------------------------------------
