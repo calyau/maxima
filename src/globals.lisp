@@ -594,3 +594,23 @@ is no need to rely on the setting of this switch.")
   "If `false' then no maxima-error message is printed!")
 
 ;;------------------------------------------------------------------------
+;; From mlisp.lisp
+(defvar featurel
+  '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
+    $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
+    $commutative $lassociative $rassociative $symmetric $antisymmetric
+    $integervalued))
+
+(defmvar $features (cons '(mlist simp) (append featurel nil)))
+(defmvar $%enumer nil)
+(defmvar $float nil
+  ;; From hayat.lisp
+  "Indicates whether to convert rational numbers to floating point
+  numbers.")
+(defmvar $translate nil)
+(defmvar $transrun t)
+(defmvar $savedef t)
+(defmvar $infeval nil)
+(defmvar $piece '$piece)
+
+;;------------------------------------------------------------------------

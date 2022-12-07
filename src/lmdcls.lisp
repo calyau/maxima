@@ -44,7 +44,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $% $%% $%edispflag $%emode $%enumer $%e_to_numlog $%iargs $%piargs
+	  $% $%% $%edispflag $%emode $%e_to_numlog $%iargs $%piargs
 	  $%rnum $absboxchar $activecontexts $algebraic $algexact
 	  $aliases $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
@@ -58,12 +58,12 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $dotconstrules $dotident
 	  $erfflag $error_size $error_syms $expon
 	  $exponentialize $expop $exptdispflag $exptisolate
-	  $facexpand $factorflag $features $file_search
-	  $float $float2bf $floatformat $floatfrac $floatint
+	  $facexpand $factorflag $file_search
+	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
 	  $halfangles $homog_hack
-	  $inchar $infeval $intfaclim
+	  $inchar $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum
 	  $linsolvewarn $linsolve_params $listarith
@@ -75,13 +75,13 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
 	  $negsumdispflag $nolabels $norepeat $noundisp $numer
 	  $numer_pbranch $optimprefix $optionset $outchar
-	  $parsewindow $pfeformat $piece $pointbound
+	  $parsewindow $pfeformat $pointbound
 	  $poislim $powerdisp $programmode $props
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
 	  $ratwtlvl $realonly $refcheck $resultant $rmxchar
-	  $rules $savedef $savefactors $setcheck
+	  $rules $savefactors $setcheck
 	  $setcheckbreak $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
@@ -90,7 +90,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $trace $trace_break_arg $trace_max_indent
-	  $trace_safety $translate $transrun
+	  $trace_safety $transrun
 	  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
 	  $trigsign $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
@@ -113,7 +113,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp
 	  errorsw evarrp evp expandflag expandp
-	  exptrlsw factlist featurel fmaplvl
+	  exptrlsw factlist fmaplvl
 	  fr-factor gauss
 	  generate-atan2 genpairs genvar
 	  implicit-real inratsimp inside-mprog

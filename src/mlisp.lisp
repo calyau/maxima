@@ -58,24 +58,10 @@ or if apply is being used are printed.")
 (defvar transp nil)
 (defvar noevalargs nil)
 (defvar rulefcnl nil)
-(defvar featurel
-  '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
-    $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
-    $commutative $lassociative $rassociative $symmetric $antisymmetric
-    $integervalued))
-
-(defmvar $features (cons '(mlist simp) (append featurel nil)))
-(defmvar $%enumer nil)
-(defmvar $float nil)
 (defmvar $refcheck nil)
-(defmvar $translate nil)
-(defmvar $transrun t)
-(defmvar $savedef t)
 (defmvar $maperror t)
 (defmvar $optionset nil)
 (defmvar $setcheckbreak nil)
-(defmvar $infeval nil)
-(defmvar $piece '$piece)
 (defmvar $setval '$setval)
 
 ;; These three variables are what get stuck in array slots as magic

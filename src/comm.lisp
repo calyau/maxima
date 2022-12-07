@@ -12,11 +12,11 @@
 
 (macsyma-module comm)
 
-(declare-top (special $linechar $nolabels $piece $dispflag
+(declare-top (special $linechar $nolabels $dispflag
 		      $props derivflag derivlist
 		      $linenum *linelabel* nn* dn*
 		      $powerdisp $errexp $dotdistrib
-		      $subnumsimp $transrun $sqrtdispflag
+		      $subnumsimp $sqrtdispflag
 		      $pfeformat dummy-variable-operators))
 
 ;; op and opr properties

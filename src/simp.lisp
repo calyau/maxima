@@ -16,7 +16,6 @@
 		      prods negprods sums negsums
 		      *nounl*
 		      $keepfloat $ratprint
-		      $float
 		      bigfloatzero
 		      opers-list *opers-list $dontfactor *n
 		      *out *in varlist genvar $factorflag radcanp
