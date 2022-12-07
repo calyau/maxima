@@ -13,7 +13,7 @@
 
 ;;;; DIFF2
 
-(declare-top (special $props $dotdistrib))
+(declare-top (special $props))
 
 (defun diffint (e x)
   (let (a)

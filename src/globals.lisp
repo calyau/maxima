@@ -522,3 +522,51 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defmvar $matrix_element_add "+")
 
 ;;------------------------------------------------------------------------
+;; From mdot.lisp
+(defmvar $dotscrules nil
+  "Causes a non-commutative product of a scalar and another term to
+be simplified to a commutative product.  Scalars and constants are carried
+to the front of the expression.")
+
+(defmvar $dotdistrib nil
+  "Causes every non-commutative product to be expanded each time it
+is simplified, i.e.  A . (B + C) will simplify to A . B + A . C.")
+
+(defmvar $dotexptsimp t "Causes A . A to be simplified to A ^^ 2.")
+
+(defmvar $dotassoc t
+  "Causes a non-commutative product to be considered associative, so
+that A . (B . C) is simplified to A . B . C.  If this flag is off, dot is
+taken to be right associative, i.e.  A . B . C is simplified to A . (B . C).")
+
+(defmvar $doallmxops t
+  "Causes all operations relating to matrices (and lists) to be
+carried out.  For example, the product of two matrices will actually be
+computed rather than simply being returned.  Turning on this switch
+effectively turns on the following three.")
+
+(defmvar $domxmxops t "Causes matrix-matrix operations to be carried out.")
+
+(defmvar $doscmxops nil "Causes scalar-matrix operations to be carried out.")
+
+(defmvar $scalarmatrixp t
+  "Causes a square matrix of dimension one to be converted to a
+scalar, i.e. its only element.")
+
+(defmvar $assumescalar t
+  "This governs whether unknown expressions 'exp' are assumed to behave
+like scalars for combinations of the form 'exp op matrix' where op is one of
+{+, *, ^, .}.  It has three settings:
+
+FALSE -- such expressions behave like non-scalars.
+TRUE  -- such expressions behave like scalars only for the commutative
+	 operators but not for non-commutative multiplication.
+ALL   -- such expressions will behave like scalars for all operators
+	 listed above.
+
+Note:  This switch is primarily for the benefit of old code.  If possible,
+you should declare your variables to be SCALAR or NONSCALAR so that there
+is no need to rely on the setting of this switch.")
+
+
+;;------------------------------------------------------------------------

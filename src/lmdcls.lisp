@@ -46,16 +46,16 @@
 (declaim (special
 	  $% $%% $%edispflag $%emode $%enumer $%e_to_numlog $%iargs $%piargs
 	  $%rnum $absboxchar $activecontexts $algebraic $algexact
-	  $aliases $arrays $askexp $assumescalar $berlefact
+	  $aliases $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
 	  $breakup $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package
 	  $dispflag
-	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
-	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
-	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
-	  $dotconstrules $dotdistrib $dotexptsimp $dotident $dotscrules
+	  $display_format_internal $domain $domxexpt $domxmxops
+	  $domxnctimes $domxplus $domxtimes $dontfactor
+	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
+	  $dotconstrules $dotident
 	  $erfflag $errexp $error $error_size $error_syms $expon
 	  $exponentialize $expop $exptdispflag $exptisolate
 	  $facexpand $factorflag $features $file_search
@@ -81,7 +81,7 @@
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
 	  $ratwtlvl $realonly $refcheck $resultant $rmxchar
-	  $rules $savedef $savefactors $scalarmatrixp $setcheck
+	  $rules $savedef $savefactors $setcheck
 	  $setcheckbreak $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
