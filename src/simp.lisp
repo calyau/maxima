@@ -14,7 +14,6 @@
 
 (declare-top (special rulesw *inv*
 		      prods negprods sums negsums
-		      *nounl*
 		      $keepfloat $ratprint
 		      bigfloatzero
 		      opers-list *opers-list $dontfactor *n

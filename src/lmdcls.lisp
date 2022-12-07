@@ -108,27 +108,27 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
-	  alpha *alphabet* aryp assigns
-	  bindlist *mdebug*
+	  alpha *alphabet* assigns
+	  *mdebug*
 	  defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp
-	  errorsw evarrp evp expandflag expandp
-	  exptrlsw factlist fmaplvl
+	  errorsw expandflag expandp
+	  exptrlsw
 	  fr-factor gauss
 	  generate-atan2 genpairs genvar
 	  implicit-real inratsimp inside-mprog
 	  limit-answers
-	  *linelabel* local loclist low* maplp mdop
-	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
-	  mplc* mprogp mproplist mspeclist msump
-	  need-prog? negprods negsums nn* noevalargs
-	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
+	  *linelabel* local low* maplp mdop
+	  meta-prop-l meta-prop-p mfexprp minpoly* mm* modulus
+	  mplc* mprogp mproplist mspeclist
+	  need-prog? negprods negsums nn*
+	  *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
-	  rulesw scanmapp sign-imag-errp simplimplus-problems
+	  rulesw sign-imag-errp simplimplus-problems
 	  *small-primes* sqrt3//2
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
-	  transl-file translate-time-evalables transp
+	  transl-file translate-time-evalables
 	  tstack varlist wflag
 	  *trunclist
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
