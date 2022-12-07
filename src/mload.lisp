@@ -54,9 +54,6 @@
     (probe-file stream)
     (error () nil)))
 
-(defmvar $load_pathname nil
-  "The full pathname of the file being loaded")
-
 (defmfun $batchload (filename-or-stream &aux (*mread-prompt* ""))
   (declare (special *mread-prompt*))
   (if (streamp filename-or-stream)
@@ -640,8 +637,6 @@
        (if (eq tem 'eof) (return t))
        (princ tem))
     (namestring file)))
-
-(defvar *maxima-testsdir*)
 
 (defun intersect-tests (tests)
   ;; If TESTS is non-NIL, we assume it's a Maxima list of (maxima)
