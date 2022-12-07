@@ -764,7 +764,6 @@
     (if lablist (nconc lablist (cons (elabel ans) nil)))
     (setq tim (get-internal-run-time))
     (let ((*display-labels-p* (not (null lablist))))
-      (declare (special *display-labels-p*))
       (displa (list '(mlabel) (if lablist *linelabel*) ans)))
     (mterpri)
     (timeorg tim)))

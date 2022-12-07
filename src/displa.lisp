@@ -16,8 +16,6 @@
 
 (load-macsyma-macros displm)
 
-(declare-top (special $linel))
-
 (defmvar $stardisp nil
   "Causes factors of products to be separated by * when displayed.")
 
@@ -36,14 +34,6 @@
 (defmvar $absboxchar "!" "Character used for drawing absolute value signs and 'evaluation at' signs.")
 (defmvar $lmxchar "["  "Character used for drawing the left edge of a matrix.")
 (defmvar $rmxchar "]"  "Character used for drawing the right edge of a matrix.")
-
-;; These variables are bound within Macsyma Listeners since they are different
-;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
-;; top level.  The size of TOP-WINDOW is wired in here.
-
-(defmvar $linel 79.)
-(defvar linel 79.)
-(defvar ttyheight 24.)
 
 (defvar linearray (make-array 80. :initial-element nil))
 
@@ -235,8 +225,6 @@
                  depth (+ d-base (max (+ d00 h00) (+ d10 h10))))))
        (update-heights height depth)
        (return result))))
-
-(defmvar $known_index_properties '((mlist) $presubscript $presuperscript $postsubscript $postsuperscript))
 
 (defun dimension-indices (base-symbol indices)
   (let
@@ -1234,8 +1222,6 @@
 (displa-def mlabel dim-mlabel 0 0)
 (displa-def %mlabel dim-mlabel 0 0)
 (setf (get 'mlabel 'wxxml) 'wxxml-mlable) ;; backwards-compatibility for wxMaxima
-
-(defvar *display-labels-p* t)
 
 (defun dim-mlabel (form result)
   (prog (dummy (w 0) (h 0) (d 0))

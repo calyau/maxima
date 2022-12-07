@@ -757,7 +757,7 @@
 	     (:file "xmaxima_def")
              (:file "geomview_def")))
    (:module final :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    ;; These are not compiled, for whatever reason, except on ecl:
 	    ;; On ECL all runtime alterations to the system (i.e from repl)
 	    ;; at runtime are not part of the final executable if they aren't.

@@ -202,7 +202,6 @@
 	  (setf (symbol-value *linelabel*) ans)))
       (setq tim (get-internal-run-time))
       (let ((*display-labels-p* (not (null lablist))))
-	(declare (special *display-labels-p*))
 	(displa `((mlabel) ,(cond (labelsp *linelabel*)) ,ans)))
       (mterpri)
       (timeorg tim))))

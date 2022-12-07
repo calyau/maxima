@@ -15,8 +15,6 @@
 (declare-top
  ;; evaluate for declarations
  (special
-  linel			;Width of screen.
-  ttyheight		;Height of screen.
 
   width height depth maxht maxdp level size lop rop break right
   bkpt bkptwd bkptht bkptdp bkptlevel bkptout lines 

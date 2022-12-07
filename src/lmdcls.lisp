@@ -65,7 +65,7 @@
 	  $globalsolve $halfangles $homog_hack
 	  $inchar $infeval $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
-	  $let_rule_packages $liflag $linechar $linenum $linel
+	  $let_rule_packages $liflag $linechar $linenum
 	  $linsolvewarn $linsolve_params $listarith $listconstvars
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
 	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
@@ -118,7 +118,7 @@
 	  fr-factor gauss
 	  generate-atan2 genpairs genvar
 	  implicit-real inratsimp inside-mprog
-	  limit-answers linel
+	  limit-answers
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus
 	  mplc* mprogp mproplist mspeclist msump munbindp

@@ -83,7 +83,6 @@ DESTINATION is an actual stream (rather than nil for a string)."
 ;;  I guess we're still failing miserably, but unfortunately MFORMAT/AFORMAT
 ;;  don't deal correctly with ~M plus a string output stream.
 (defun main-prompt ()
-  (declare (special *display-labels-p*))
   (if *display-labels-p*
       (format-prompt nil "(~A~A) "
                      (print-invert-case (stripdollar $inchar))

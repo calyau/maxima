@@ -12,7 +12,7 @@
 
 (macsyma-module grind)
 
-(declare-top (special lop rop *grind-charlist* chrps $aliases linel))
+(declare-top (special lop rop *grind-charlist* chrps $aliases))
 
 (defun chrct* () (- linel chrps))
 
@@ -280,7 +280,6 @@
 (defprop mlabel msize-mlabel grind)
 
 (defun msize-mlabel (x l r)
-  (declare (special *display-labels-p*))
   (if *display-labels-p*
       (setq l (cons (msize (cadr x) (list #\( ) (list #\) #\ ) nil nil) l)))
   (msize (caddr x) l r lop rop))

@@ -607,7 +607,7 @@ When one changes, the other does too."
 			   "Display the default installed version.")
 	   (make-cl-option :names '("--very-quiet")
 			   :action #'(lambda ()
-				       (declare (special *maxima-quiet* *display-labels-p*))
+				       (declare (special *maxima-quiet*))
 				       (setq *maxima-quiet* t *display-labels-p* nil))
 			   :help-string "Suppress expression labels and Maxima start-up message.")
 	   (make-cl-option :names '("-X" "--lisp-options")

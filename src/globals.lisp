@@ -412,4 +412,16 @@ summation when necessary."
 	 Normally this is off, but is turned on when a procedure definition is
 	 being displayed.")
 
+;; These three variables are bound within Macsyma Listeners since they are different
+;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
+;; top level.  The size of TOP-WINDOW is wired in here.
+
+(defmvar $linel 79.)
+(defvar linel 79.)
+(defvar ttyheight 24.)
+
+(defmvar $known_index_properties '((mlist) $presubscript $presuperscript $postsubscript $postsuperscript))
+
+(defvar *display-labels-p* t)
+
 ;;------------------------------------------------------------------------
