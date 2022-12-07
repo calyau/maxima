@@ -324,7 +324,6 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defun maybe-simplifya-protected (x z)
   (let ((errcatch t) ($errormsg nil))
-    (declare (special errcatch $errormsg))
     (ignore-errors (maybe-simplifya x z) x)))
 
 (defun simp-$is (x yy z)

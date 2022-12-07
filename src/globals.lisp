@@ -583,5 +583,14 @@ Note:  This switch is primarily for the benefit of old code.  If possible,
 you should declare your variables to be SCALAR or NONSCALAR so that there
 is no need to rely on the setting of this switch.")
 
+;;------------------------------------------------------------------------
+;; From merror.lisp
+(defmvar $error `((mlist simp) "No error.")
+  "During an MAXIMA-ERROR break this is bound to a list
+  of the arguments to the call to MAXIMA-ERROR, with the message
+  text in a compact format.")
+
+(defmvar $errormsg 't
+  "If `false' then no maxima-error message is printed!")
 
 ;;------------------------------------------------------------------------
