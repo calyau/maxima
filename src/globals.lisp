@@ -656,3 +656,11 @@ is no need to rely on the setting of this switch.")
 (defvar noevalargs nil)
 
 ;;------------------------------------------------------------------------
+;; From mload.lisp
+(defmvar $load_pathname nil
+  "The full pathname of the file being loaded")
+
+(defvar *maxima-testsdir*)
+
+;;------------------------------------------------------------------------
+
