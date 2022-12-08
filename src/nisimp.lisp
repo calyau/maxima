@@ -17,7 +17,7 @@
 ;;;property list of atoms
 ;;;except for the top level programs all program names have the prefix NIS
 
-(declare-top (special nistree nisrules nisflag $ratexpand varlist $ratfac)) 
+(declare-top (special nistree nisrules nisflag $ratexpand varlist)) 
 
 (defmvar $letvarsimp nil)
 

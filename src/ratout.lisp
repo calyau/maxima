@@ -16,7 +16,7 @@
 
 (declare-top (special varlist ss *y* f modulus
 		      genvar *alpha *x* *p *max *var *res *chk *l
-		      $ratfac u* *ratweights))
+		      u* *ratweights))
 
 (declare-top (special xv bigf1 bigf2
 		      gcd))
