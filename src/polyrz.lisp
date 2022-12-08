@@ -14,7 +14,7 @@
 
 (declare-top (special $programmode varlist
 		      $ratprint genvar
-		      equations $rootsepsilon
+		      equations $ratfac $rootsepsilon
 		      $multiplicities))
 
 (load-macsyma-macros ratmac)

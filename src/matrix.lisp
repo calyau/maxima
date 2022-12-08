@@ -13,7 +13,7 @@
 (macsyma-module matrix)
 
 (declare-top (special *ech* *tri* *inv*
-		      mdl $detout vlist mul* top* *det* genvar
+		      mdl $detout vlist mul* top* *det* genvar $ratfac
 		      varlist header
 		      *rank* *mat*))
 

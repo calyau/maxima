@@ -36,6 +36,7 @@
 
 ;; User level global variables.
 
+(defmvar $ratfac nil "If `t' cre-forms are kept factored")
 (defmvar $ratvars '((mlist simp)))
 (defmvar $facexpand t)
 

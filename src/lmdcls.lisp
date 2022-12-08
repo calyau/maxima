@@ -78,7 +78,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
 	  $radexpand $ratdenomdivide $ratepsilon $ratexpand
-          $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
+          $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
 	  $realonly $refcheck $resultant $rmxchar
 	  $rules
 	  $setval $signbfloat $simp

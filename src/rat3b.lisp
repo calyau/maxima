@@ -15,6 +15,8 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 2.
 ;;	IT INCLUDES RATIONAL FUNCTIONS ONLY.
 
+(declare-top (special $ratfac))
+
 (defun ralgp (r) (or (palgp (car r)) (palgp (cdr r))))
 
 (defun palgp (poly)
