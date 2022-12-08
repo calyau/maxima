@@ -17,7 +17,7 @@
 		      $ratprint
 		      bigfloatzero
 		      opers-list *opers-list *n
-		      *out *in varlist genvar radcanp
+		      *out *in varlist radcanp
                       *builtin-numeric-constants*))
 
 ;; General purpose simplification and conversion switches.

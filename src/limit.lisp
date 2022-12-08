@@ -30,7 +30,7 @@
 (declare-top (special errorsw origval
 		      *indicator nn* dn* numer denom exp var val varlist
 		      *zexptsimp? $logarc taylored logcombed
-		      $exponentialize lhp? lhcount genvar
+		      $exponentialize lhp? lhcount
 		      loginprod? $logabs a context limit-assumptions
 		      limit-top integer-info old-integer-info $logexpand))
 

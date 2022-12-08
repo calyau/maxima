@@ -145,7 +145,7 @@
 		      $logabs $maxposex $maxnegex
 		      $trigsign $radexpand $breakup $%emode
 		      $exptsubst dosimp context rp-polylogp
-		      varlist genvar
+		      varlist
 		      $domain $m1pbranch errorsw
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf

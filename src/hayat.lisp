@@ -117,7 +117,6 @@
  (special vlist
 	  varlist		;List of all the variables occurring in a power
 				;series, the power series variables at the end
-	  genvar		;The list of gensyms corresponding to varlist
 	  modulus		;
 	  *a*			;Temporary special
 	  tlist			;An association list which contains the
@@ -137,7 +136,6 @@
 	  trigdisp		;
 	  last-exp		;last-expression through taylor2
 	  $ratexpand		;
-	  genpairs		;List of dotted pairs
 	  ps-bmt-disrep		;
 	  ivars			;Pairlist if gensym and disreped version
 	  key-vars		;Pairlist of gensym and key var (for searching

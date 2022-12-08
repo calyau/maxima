@@ -16,7 +16,7 @@
 
 (macsyma-module spgcd)
 
-(declare-top (special modulus genvar *alpha *which-factor*))
+(declare-top (special modulus *alpha *which-factor*))
 
 (load-macsyma-macros ratmac)
 

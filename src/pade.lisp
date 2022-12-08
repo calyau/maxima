@@ -12,7 +12,7 @@
 
 (macsyma-module pade)
 
-(declare-top (special varlist genvar tlist))
+(declare-top (special varlist tlist))
 
 (load-macsyma-macros rzmac mhayat ratmac)
 

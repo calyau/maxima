@@ -114,7 +114,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  errorsw expandflag expandp
 	  exptrlsw
 	  fr-factor gauss
-	  generate-atan2 genpairs genvar
+	  generate-atan2
 	  implicit-real inratsimp inside-mprog
 	  limit-answers
 	  *linelabel* local maplp mdop

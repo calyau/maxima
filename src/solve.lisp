@@ -17,7 +17,7 @@
 (declare-top (special expsumsplit $dispflag checkfactors *g
 		      equations ;List of E-labels
 		      *power *varb *flg
-		      $%emode genvar genpairs varlist broken-not-freeof
+		      $%emode varlist broken-not-freeof
 		      mult    ;Some crock which tracks multiplicities.
 		      *roots ;alternating list of solutions and multiplicities
 		      *failures	;alternating list of equations and multiplicities

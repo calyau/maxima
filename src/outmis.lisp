@@ -319,7 +319,7 @@
 			    (ncons (car i)))
 		    ret))))
 
-(declare-top (special $programmode *roots *failures varlist genvar))
+(declare-top (special $programmode *roots *failures varlist))
 
 (defmfun $changevar (expr trans nvar ovar)
   (let ($ratfac)

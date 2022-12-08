@@ -712,4 +712,10 @@ is no need to rely on the setting of this switch.")
 (defmvar $ratvars '((mlist simp)))
 (defmvar $facexpand t)
 
+(defmvar genvar nil
+  "List of gensyms used to point to kernels from within polynomials.
+	 The values cell and property lists of these symbols are used to
+	 store various information.")
+
+(defmvar genpairs nil)
 ;;------------------------------------------------------------------------

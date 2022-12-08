@@ -24,7 +24,7 @@
 (declare-top  (special errset
 		       $values $functions $arrays
 		       $rules $props $ratvars
-		       varlist genvar
+		       varlist
 		       checkfactors $features featurel
 		       tellratlist
 		       dispflag savefile $%%

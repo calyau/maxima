@@ -25,7 +25,7 @@ or if apply is being used are printed.")
   
 (declare-top (special derivflag derivlist $labels $values $functions $arrays 
                       $rules $aliases
-		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
+		      $myoptions $props $maxposex $maxnegex $expop $expon
 		      $numer *mdebug* *refchkl*
 		      opers
 		      *alphabet* $%% %e-val
