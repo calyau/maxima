@@ -576,7 +576,7 @@
 	    :components
 	    ((:file "ifactor")))
    (:module rational-functions :source-pathname ""
-	    :depends-on ("globals" "defmfun" "rat-macros" "other-macros" "compatibility-macros1")
+	    :depends-on ("globals" "defmfun" "rat-macros" "other-macros" "compatibility-macros1" "ifactor")
 	    :components
 	    ((:file "rat3a")
 	     (:file "rat3b")

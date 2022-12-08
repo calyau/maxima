@@ -675,3 +675,10 @@ is no need to rely on the setting of this switch.")
 (defmvar $ratalgdenom t)       ;If T then denominator is rationalized.
 
 ;;------------------------------------------------------------------------
+;; From rat3c
+;; List of GCD algorithms.  Default one is first.
+(defmvar *gcdl* '($spmod $subres $ez $red $mod $algebraic))
+
+(defmvar $gcd (car *gcdl*))		;Sparse Modular
+
+;;------------------------------------------------------------------------
