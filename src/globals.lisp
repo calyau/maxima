@@ -706,3 +706,4 @@ is no need to rely on the setting of this switch.")
 (defmvar $ratweights '((mlist simp)))
 
 (defmvar $algebraic nil)
+(defmvar $ratfac nil "If `t' cre-forms are kept factored")

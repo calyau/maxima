@@ -3517,7 +3517,7 @@
 ;; SININT is now an out-of-core file on MC, and this code is needed in-core
 ;; because of the various calls to it. - BMT & JPG
 
-(declare-top (special var $ratfac ratform context))
+(declare-top (special var ratform context))
 
 (defmfun $integrate (expr x &optional lo hi)
   (declare (special *in-risch-p*))
