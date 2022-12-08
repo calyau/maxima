@@ -77,7 +77,7 @@
 	  $numer_pbranch $optimprefix $optionset $outchar
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
-	  $radexpand $ratdenomdivide $ratexpand
+	  $radexpand $ratdenomdivide
           $ratmx $ratsimpexpons $ratvarswitch
 	  $realonly $refcheck $resultant $rmxchar
 	  $rules

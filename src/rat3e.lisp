@@ -915,10 +915,6 @@
 		(p p (cddr p)))
 	       ((null p) (nreverse l))))))
 
-;; IF $RATEXPAND IS TRUE, (X+1)*(Y+1) WILL DISPLAY AS
-;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
-(defmvar $ratexpand nil)
-
 (defmfun $ratexpand (x)
   (if (mbagp x)
       (cons (car x) (mapcar '$ratexpand (cdr x)))

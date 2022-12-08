@@ -734,4 +734,8 @@ is no need to rely on the setting of this switch.")
 
 (defmvar $ratepsilon 2d-15)
 
+;; IF $RATEXPAND IS TRUE, (X+1)*(Y+1) WILL DISPLAY AS
+;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
+(defmvar $ratexpand nil)
+
 ;;------------------------------------------------------------------------
