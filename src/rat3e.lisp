@@ -34,11 +34,6 @@
 
 (defmvar factorresimp nil "If `t' resimplifies factor(x-y) to x-y")
 
-;; User level global variables.
-
-(defmvar $ratvars '((mlist simp)))
-(defmvar $facexpand t)
-
 (defun mrateval (x)
   (let ((varlist (caddar x)))
     (cond ((and evp $infeval) (meval ($ratdisrep x)))

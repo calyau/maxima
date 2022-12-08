@@ -699,6 +699,8 @@ is no need to rely on the setting of this switch.")
 
 ;;------------------------------------------------------------------------
 ;; From rat3e.lisp
+
+;; User level global variables.
 (defmvar $keepfloat nil  "If `t' floating point coeffs are not converted to rationals")
 (defmvar $factorflag nil "If `t' constant factor of polynomial is also factored")
 (defmvar $dontfactor '((mlist)))
@@ -707,3 +709,7 @@ is no need to rely on the setting of this switch.")
 
 (defmvar $algebraic nil)
 (defmvar $ratfac nil "If `t' cre-forms are kept factored")
+(defmvar $ratvars '((mlist simp)))
+(defmvar $facexpand t)
+
+;;------------------------------------------------------------------------

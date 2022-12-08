@@ -58,7 +58,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $dotconstrules $dotident
 	  $erfflag $errexp $error_size $error_syms $expon
 	  $exponentialize $expop $exptdispflag $exptisolate
-	  $facexpand $file_search
+	  $file_search
 	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
@@ -78,7 +78,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
 	  $radexpand $ratdenomdivide $ratepsilon $ratexpand
-          $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
+          $ratmx $ratprint $ratsimpexpons $ratvarswitch
 	  $realonly $refcheck $resultant $rmxchar
 	  $rules
 	  $setval $signbfloat $simp
