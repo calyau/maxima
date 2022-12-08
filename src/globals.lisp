@@ -718,4 +718,20 @@ is no need to rely on the setting of this switch.")
 	 store various information.")
 
 (defmvar genpairs nil)
+
+(defmvar *fnewvarsw nil)
+(defmvar *ratweights nil)
+
+(defmvar tellratlist nil)
+
+(defmvar adn* 1 "common denom for algebraic coefficients")
+
+;;  Any program which calls RATF on
+;;  a floating point number but does not wish to see "RAT replaced ..."
+;;  message, must bind $RATPRINT to NIL.
+
+(defmvar $ratprint t)
+
+(defmvar $ratepsilon 2d-15)
+
 ;;------------------------------------------------------------------------

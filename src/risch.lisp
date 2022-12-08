@@ -1004,8 +1004,6 @@
 					 (make-poly (p-var p) exp 1)))))))
 
 
-(declare-top (special *fnewvarsw))
-
 (defun intsetup (exp *var)
   (prog (varlist clist $factorflag dlist genpairs old y z $ratfac $keepfloat
 	 *fnewvarsw)

@@ -16,7 +16,7 @@
 
 (declare-top (special varlist ss *y* f modulus
 		      *alpha *x* *p *max *var *res *chk *l
-		      u* *ratweights))
+		      u*))
 
 (declare-top (special xv bigf1 bigf2
 		      gcd))

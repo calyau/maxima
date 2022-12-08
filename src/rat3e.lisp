@@ -21,8 +21,6 @@
 		      $ratsimpexpons $expop $expon $negdistrib $gcd))
 
 (defmvar varlist nil "List of kernels")
-(defmvar *fnewvarsw nil)
-(defmvar *ratweights nil)
 
 (defvar *ratsimp* nil)
 
@@ -58,8 +56,6 @@
               (member 'trunc (cdar x) :test #'eq))
          ($taytorat x))
         (t ($rat x))))
-
-(defmvar tellratlist nil)
 
 (defun tellratdisp (x)
   (pdisrep+ (trdisp1 (cdr x) (car x))))
@@ -189,8 +185,6 @@
 	(t (factoralg p))))
 
 (declare-top (special var))
-
-(defmvar adn* 1 "common denom for algebraic coefficients")
 
 (defun factoralg (p)
   (prog (alc ans adn* $gcd)
@@ -833,14 +827,6 @@
        (algordset p genvar)
        (putprop g p 'tellrat))
      (return (rget g))))
-
-;;  Any program which calls RATF on
-;;  a floating point number but does not wish to see "RAT replaced ..."
-;;  message, must bind $RATPRINT to NIL.
-
-(defmvar $ratprint t)
-
-(defmvar $ratepsilon 2e-15)
 
 ;; This control of conversion from float to rational appears to be explained
 ;; nowhere. - RJF

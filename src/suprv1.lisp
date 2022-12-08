@@ -26,7 +26,6 @@
 		       $rules $props $ratvars
 		       varlist
 		       checkfactors $features featurel
-		       tellratlist
 		       dispflag savefile $%%
 		       opers *ratweights
 		       $stringdisp $lispdisp

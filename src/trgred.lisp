@@ -59,7 +59,7 @@
   (let ((*trigred t)
         (*noexpand t)
         $trigexpand $verbose $ratprint)
-    (declare (special $trigexpand *trigred $ratprint))
+    (declare (special $trigexpand *trigred))
     (gcdred (sp1 exp))))
 
 ;; The first pass in power series expansion (used by $powerseries in

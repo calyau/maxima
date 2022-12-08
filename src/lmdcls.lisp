@@ -77,8 +77,8 @@
 	  $numer_pbranch $optimprefix $optionset $outchar
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
-	  $radexpand $ratdenomdivide $ratepsilon $ratexpand
-          $ratmx $ratprint $ratsimpexpons $ratvarswitch
+	  $radexpand $ratdenomdivide $ratexpand
+          $ratmx $ratsimpexpons $ratvarswitch
 	  $realonly $refcheck $resultant $rmxchar
 	  $rules
 	  $setval $signbfloat $simp
@@ -101,12 +101,12 @@
 	  $tr_warn_undefined_variable $ttyoff
 	  $values $vect_cross
 	  %e-val %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
-	  *alpha *const* *fnewvarsw *gcdl* *in *in-compile*
+	  *alpha *const* *gcdl* *in *in-compile*
 	  *in-translate-file* *inv* *irreds *min* *mx*
-	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
+	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
-	  -sqrt3//2 |1//2| adn* aexprp algnotexact
+	  -sqrt3//2 |1//2| aexprp algnotexact
 	  alpha *alphabet* assigns
 	  *mdebug*
 	  defined_variables defintdebug derivflag derivlist
@@ -126,7 +126,7 @@
 	  realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw sign-imag-errp simplimplus-problems
 	  *small-primes* sqrt3//2
-	  sums tellratlist timesinp tr-abort tr-progret tr-unique
+	  sums timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables
 	  tstack varlist wflag
 	  *trunclist
