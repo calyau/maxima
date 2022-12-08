@@ -11,7 +11,7 @@
   "Hash table containing all Maxima defmvar variables and their
   initial values")
 
-(defmacro defmvar (var &optional (val nil valp) (doc nil docp) &rest options)
+(defmacro defmvar (var &optional val doc &rest options)
   "Define a Maxima variable VAR that is user-visible.  It is
   initialized to the value VAL.  An associated documentation string
   can be supplied in DOC.  OPTIONS contains a list of options that can
