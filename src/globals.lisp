@@ -675,10 +675,26 @@ is no need to rely on the setting of this switch.")
 (defmvar $ratalgdenom t)       ;If T then denominator is rationalized.
 
 ;;------------------------------------------------------------------------
-;; From rat3c
+;; From rat3c.lisp
 ;; List of GCD algorithms.  Default one is first.
 (defmvar *gcdl* '($spmod $subres $ez $red $mod $algebraic))
 
 (defmvar $gcd (car *gcdl*))		;Sparse Modular
+
+;;------------------------------------------------------------------------
+;; From rat3d.lisp
+(defmvar algfac* nil)
+(defmvar low* nil)
+(defmvar $intfaclim t)
+(defmvar $factor_max_degree 1000
+  "If set to an integer n, some potentially large (many factors) polynomials
+   of degree > n won't be factored, preventing huge memory allocations and
+   stack overflows. Set to zero to deactivate."
+  fixnum)
+(putprop '$factor_max_degree 'posintegerset 'assign)
+
+(defmvar $savefactors nil "If t factors of ratreped forms will be saved")
+
+(defvar checkfactors () "List of saved factors")
 
 ;;------------------------------------------------------------------------

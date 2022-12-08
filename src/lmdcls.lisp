@@ -63,7 +63,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
 	  $halfangles $homog_hack
-	  $inchar $intfaclim
+	  $inchar
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum
 	  $linsolvewarn $linsolve_params $listarith
@@ -81,7 +81,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
           $ratweights
 	  $realonly $refcheck $resultant $rmxchar
-	  $rules $savefactors
+	  $rules
 	  $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
@@ -107,7 +107,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
-	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
+	  -sqrt3//2 |1//2| adn* aexprp algnotexact
 	  alpha *alphabet* assigns
 	  *mdebug*
 	  defined_variables defintdebug derivflag derivlist
@@ -118,7 +118,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  generate-atan2 genpairs genvar
 	  implicit-real inratsimp inside-mprog
 	  limit-answers
-	  *linelabel* local low* maplp mdop
+	  *linelabel* local maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm* modulus
 	  mplc* mprogp mproplist mspeclist
 	  need-prog? negprods negsums nn*
@@ -133,6 +133,6 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  *trunclist
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  $define_variable $infolists
-	  $factor_max_degree $factor_max_degree_print_warning))
+	  $factor_max_degree_print_warning))
 
 (declaim (declaration unspecial))

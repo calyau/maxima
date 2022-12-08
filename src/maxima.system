@@ -563,7 +563,7 @@
 	     (:file "suprv1")
 	     (:file "dskfn")))
    (:module factoring :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "lesfac")
 	     (:file "factor")
@@ -627,7 +627,7 @@
 	     (:file "nforma")
 	     (:file "grind")))
    (:module gcd :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("globals" "defmfun")
 	    :components
 	    ((:file "spgcd")
 	     (:file "ezgcd")))

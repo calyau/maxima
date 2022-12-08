@@ -12,7 +12,7 @@
 
 (macsyma-module laplac)
 
-(declare-top (special var $savefactors
+(declare-top (special var
 		      checkfactors $ratfac $keepfloat *nounsflag*
                       errcatch))
 

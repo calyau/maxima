@@ -143,7 +143,7 @@
 					;impvar
 	     (special $solveradcan $solvetrigwarn *roots *failures
 		      $logabs $maxposex $maxnegex
-		      $trigsign $savefactors $radexpand $breakup $%emode
+		      $trigsign $radexpand $breakup $%emode
 		      $exptsubst dosimp context rp-polylogp
 		      varlist genvar
 		      $domain $m1pbranch errorsw

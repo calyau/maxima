@@ -616,7 +616,7 @@
 				    ans)))))
      (go a)))
 
-(declare-top (special y genvar $savefactors checkfactors
+(declare-top (special y genvar checkfactors
 		      exp var x $factorflag $ratfac
 		      ratform
 		      wholepart parnumer varlist n))
