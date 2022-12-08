@@ -16,7 +16,7 @@
 
 (declare-top (special genvar checkfactors
 		      exp var $logabs $expop $expon
-		      ratform rootfactor pardenom $algebraic
+		      ratform rootfactor pardenom
 		      wholepart parnumer varlist logptdx switch1))
 
 (defun rootfac (q)

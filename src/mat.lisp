@@ -14,7 +14,7 @@
 
 ;; this is the mat package
 
-(declare-top (special *ech* *tri* $algebraic $multiplicities equations
+(declare-top (special *ech* *tri* $multiplicities equations
 		      mul* $dispflag $nolabels *det*
 		      xm* xn* varlist ax *linelabel*))
 

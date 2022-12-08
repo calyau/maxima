@@ -147,7 +147,6 @@
 		      $exptsubst dosimp context rp-polylogp
 		      varlist genvar
 		      $domain $m1pbranch errorsw
-		      $algebraic
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
 		      ;;take realpart and imagpart.

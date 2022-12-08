@@ -705,3 +705,4 @@ is no need to rely on the setting of this switch.")
 (defmvar $norepeat t)
 (defmvar $ratweights '((mlist simp)))
 
+(defmvar $algebraic nil)

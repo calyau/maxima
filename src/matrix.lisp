@@ -15,7 +15,7 @@
 (declare-top (special *ech* *tri* *inv*
 		      mdl $detout vlist mul* top* *det* genvar $ratfac
 		      varlist header
-		      $algebraic *rank* *mat*))
+		      *rank* *mat*))
 
 (defmvar top* nil)
 (defmvar $matrix_element_transpose nil)

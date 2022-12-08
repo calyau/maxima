@@ -45,7 +45,7 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 
 (declaim (special
 	  $% $%% $%emode $%e_to_numlog $%iargs $%piargs
-	  $%rnum $absboxchar $activecontexts $algebraic $algexact
+	  $%rnum $absboxchar $activecontexts $algexact
 	  $aliases $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
 	  $breakup $compgrind $context

@@ -14,7 +14,7 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special $algebraic varlist ss *y* f modulus
+(declare-top (special varlist ss *y* f modulus
 		      genvar *alpha *x* *p *max *var *res *chk *l
 		      $ratfac u* *ratweights))
 
