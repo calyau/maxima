@@ -247,7 +247,7 @@
                     (atvarschk vl)
                     (substitutel vl atvars (caddar atvalues)))))))
 
-(declare-top (special $ratfac genvar varlist $keepfloat))
+(declare-top (special $ratfac genvar varlist))
 
 (defmvar $logconcoeffp nil)
 

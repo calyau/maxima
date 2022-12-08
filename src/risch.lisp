@@ -17,10 +17,10 @@
 (declare-top (special parnumer pardenom logptdx wholepart
                       expexpflag $logsimp switch1 degree cary
                       $ratfac $logexpand ratform genvar *var var rootfactor
-                      expint $keepfloat trigint operator $exponentialize $gcd
+                      expint trigint operator $exponentialize $gcd
                       $logarc changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch varlist nogood genvar
-                      $erfflag $liflag rischp $factorflag alphar m
+                      $erfflag $liflag rischp alphar m
                       genpairs hypertrigint *mosesflag *exp y $algebraic
                       implicit-real $%e_to_numlog generate-atan2
                       context rp-polylogp *in-risch-p*))

@@ -12,7 +12,7 @@
 
 (macsyma-module result)
 
-(declare-top (special varlist genvar $ratfac $keepfloat modulus *alpha xv))
+(declare-top (special varlist genvar $ratfac modulus *alpha xv))
 
 (load-macsyma-macros ratmac)
 

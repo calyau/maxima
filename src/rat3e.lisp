@@ -36,12 +36,6 @@
 
 ;; User level global variables.
 
-(defmvar $keepfloat nil  "If `t' floating point coeffs are not converted to rationals")
-(defmvar $factorflag nil "If `t' constant factor of polynomial is also factored")
-(defmvar $dontfactor '((mlist)))
-(defmvar $norepeat t)
-(defmvar $ratweights '((mlist simp)))
-
 (defmvar $ratfac nil "If `t' cre-forms are kept factored")
 (defmvar $algebraic nil)
 (defmvar $ratvars '((mlist simp)))

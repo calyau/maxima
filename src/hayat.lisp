@@ -123,8 +123,6 @@
 	  tlist			;An association list which contains the
 				;relevant information for the expansion which
 				;is passed in at toplevel invocation.
-	  $keepfloat		;When true retains floatin point numbers
-				;internal to Taylor.
 	  $radexpand		;
 	  log-1			;What log(-1) should be log(-1) or pi*i.
 	  log%i			;Similarly for log(i)

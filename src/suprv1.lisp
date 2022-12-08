@@ -26,9 +26,9 @@
 		       $rules $props $ratvars
 		       varlist genvar
 		       checkfactors $features featurel
-		       tellratlist $dontfactor
+		       tellratlist
 		       dispflag savefile $%%
-		       opers *ratweights $ratweights
+		       opers *ratweights
 		       $stringdisp $lispdisp
 		       transp $contexts $macros autoload))
 

@@ -21,8 +21,8 @@
 		      *roots ;alternating list of solutions and multiplicities
 		      *failures	;alternating list of equations and multiplicities
 		      *myvar
-		      *has*var *var $dontfactor
-		      $keepfloat $ratfac
+		      *has*var *var
+		      $ratfac
 		      xm* xn* mul*))
 
 (defmvar flag4 nil)

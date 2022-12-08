@@ -27,7 +27,7 @@ or if apply is being used are printed.")
                       $rules $aliases
 		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
 		      $numer *mdebug* *refchkl*
-		      $norepeat opers
+		      opers
 		      *alphabet* $%% %e-val
 		      $macros linel $ratfac $ratwtlvl
 		      *gcdl*

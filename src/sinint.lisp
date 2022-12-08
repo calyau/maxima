@@ -15,8 +15,8 @@
 (load-macsyma-macros ratmac)
 
 (declare-top (special genvar checkfactors
-		      exp var $factorflag $logabs $expop $expon
-		      $keepfloat ratform rootfactor pardenom $algebraic
+		      exp var $logabs $expop $expon
+		      ratform rootfactor pardenom $algebraic
 		      wholepart parnumer varlist logptdx switch1))
 
 (defun rootfac (q)

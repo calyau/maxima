@@ -14,12 +14,12 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special $algebraic varlist ss *y* f $factorflag modulus
+(declare-top (special $algebraic varlist ss *y* f modulus
 		      genvar *alpha *x* *p *max *var *res *chk *l
-		      $ratfac u* *ratweights $ratweights))
+		      $ratfac u* *ratweights))
 
 (declare-top (special xv bigf1 bigf2
-		      gcd $factorflag))
+		      gcd))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
 ;;	(GCD, X/GCD, Y/GCD)

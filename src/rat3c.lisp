@@ -15,7 +15,7 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 3.
 ;;	IT INCLUDES THE GCD ROUTINES AND THEIR SUPPORTING FUNCTIONS
 
-(declare-top (special $keepfloat $algebraic $ratfac genvar))
+(declare-top (special $algebraic $ratfac genvar))
 
 (defun cgcd (a b)
   (cond (modulus 1)

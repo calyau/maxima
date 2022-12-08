@@ -32,7 +32,7 @@
 		      *zexptsimp? $logarc taylored logcombed
 		      $exponentialize lhp? lhcount $ratfac genvar
 		      loginprod? $logabs a context limit-assumptions
-		      limit-top integer-info old-integer-info $keepfloat $logexpand))
+		      limit-top integer-info old-integer-info $logexpand))
 
 (defconstant +behavior-count+ 4)
 (defvar *behavior-count-now*)
@@ -126,7 +126,7 @@
 	($%e_to_numlog nil)
 	(limit-top t))
     (declare (special limit-assumptions old-integer-info
-		      $keepfloat limit-top))
+		      limit-top))
     (unless limitp
       (setq old-integer-info integer-info)
       (setq integer-info ()))

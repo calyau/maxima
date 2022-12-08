@@ -53,18 +53,18 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $default_let_rule_package
 	  $dispflag
 	  $display_format_internal $domain $domxexpt $domxmxops
-	  $domxnctimes $domxplus $domxtimes $dontfactor
+	  $domxnctimes $domxplus $domxtimes
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
 	  $dotconstrules $dotident
 	  $erfflag $errexp $error_size $error_syms $expon
 	  $exponentialize $expop $exptdispflag $exptisolate
-	  $facexpand $factorflag $file_search
+	  $facexpand $file_search
 	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
 	  $halfangles $homog_hack
 	  $inchar
-	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
+	  $isolate_wrt_times $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum
 	  $linsolvewarn $linsolve_params $listarith
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
@@ -73,13 +73,12 @@ n;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 8 -*- ;;;;;
 	  $maxapplydepth $maxapplyheight $maxnegex $maxposex
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
 	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
-	  $negsumdispflag $nolabels $norepeat $noundisp $numer
+	  $negsumdispflag $nolabels $noundisp $numer
 	  $numer_pbranch $optimprefix $optionset $outchar
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
 	  $radexpand $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
-          $ratweights
 	  $realonly $refcheck $resultant $rmxchar
 	  $rules
 	  $setval $signbfloat $simp
