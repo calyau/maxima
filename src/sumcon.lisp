@@ -12,8 +12,6 @@
 
 (macsyma-module sumcon)
 
-(declare-top (special $niceindicespref))
-
 (defmfun $sumcontract (e)	       ; e is assumed to be simplified
   (cond ((atom e) e)
 	((eq (caar e) 'mplus)
@@ -117,10 +115,6 @@
 		   '(t t t t))
 	   t))
     (cons new-sum extracted)))
-
-(defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n))
-
-(putprop '$niceindicespref 'assign-nonempty-list 'assign)
 
 (defun assign-nonempty-list (n v)
   (declare (ignore n))

@@ -867,3 +867,9 @@ is no need to rely on the setting of this switch.")
 
 
 ;;------------------------------------------------------------------------
+;; From sumcon.lisp
+(defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n))
+
+(putprop '$niceindicespref 'assign-nonempty-list 'assign)
+
+;;------------------------------------------------------------------------
