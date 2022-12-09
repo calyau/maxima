@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var varlist nn* dn* sign))
+(declare-top (special var nn* dn* sign))
 
 (defmvar $gammalim 10000
   "Controls simplification of gamma for rational number arguments.")

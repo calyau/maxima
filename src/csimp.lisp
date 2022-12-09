@@ -13,7 +13,7 @@
 (macsyma-module csimp)
 
 (declare-top (special $exponentialize
-		      var varlist genvar $%emode $ratprint
+		      var genvar $%emode $ratprint
 		      nn* dn* $errexp sqrt3//2 -sqrt3//2
 		      errorsw))
 

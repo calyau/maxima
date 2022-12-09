@@ -12,7 +12,7 @@
 
 (macsyma-module polyrz)
 
-(declare-top (special $programmode varlist
+(declare-top (special $programmode
 		      equations $rootsepsilon
 		      $multiplicities))
 

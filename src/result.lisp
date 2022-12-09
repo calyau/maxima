@@ -12,7 +12,7 @@
 
 (macsyma-module result)
 
-(declare-top (special varlist modulus *alpha xv))
+(declare-top (special modulus *alpha xv))
 
 (load-macsyma-macros ratmac)
 

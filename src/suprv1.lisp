@@ -24,7 +24,6 @@
 (declare-top  (special errset
 		       $values $functions $arrays
 		       $rules $props $ratvars
-		       varlist
 		       checkfactors $features featurel
 		       dispflag savefile $%%
 		       opers *ratweights

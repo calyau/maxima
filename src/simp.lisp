@@ -16,7 +16,7 @@
 		      prods negprods sums negsums
 		      bigfloatzero
 		      opers-list *opers-list *n
-		      *out *in varlist radcanp
+		      *out *in radcanp
                       *builtin-numeric-constants*))
 
 ;; General purpose simplification and conversion switches.

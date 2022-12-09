@@ -14,7 +14,7 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special varlist ss *y* f modulus
+(declare-top (special ss *y* f modulus
 		      *alpha *x* *p *max *var *res *chk *l
 		      u*))
 
@@ -688,7 +688,7 @@
 ;; FURTHERMORE, X IS ASSUMED TO BE AN ATOM OR A SINGLE ITEM ON
 ;; VARLIST.  E.G. X MIGHT BE SIN(U), BUT NOT 2*SIN(U).
 
-(declare-top (special varlist x))
+(declare-top (special x))
 
 (defmfun $ratdiff (p x)
   (if ($ratp p)

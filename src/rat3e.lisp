@@ -20,8 +20,6 @@
 		      vlist radlist expsumsplit *ratsimp* mplc*
 		      $ratsimpexpons $expop $expon $negdistrib $gcd))
 
-(defmvar varlist nil "List of kernels")
-
 (defvar *ratsimp* nil)
 
 (defmvar factorresimp nil "If `t' resimplifies factor(x-y) to x-y")

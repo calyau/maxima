@@ -14,7 +14,7 @@
 
 (declare-top (special *ech* *tri* *inv*
 		      mdl $detout vlist mul* top* *det*
-		      varlist header
+		      header
 		      *rank* *mat*))
 
 (defmvar top* nil)

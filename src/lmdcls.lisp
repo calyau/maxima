@@ -128,7 +128,7 @@
 	  *small-primes* sqrt3//2
 	  sums timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables
-	  tstack varlist wflag
+	  tstack wflag
 	  *trunclist
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  $define_variable $infolists

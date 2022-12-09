@@ -247,8 +247,6 @@
                     (atvarschk vl)
                     (substitutel vl atvars (caddar atvalues)))))))
 
-(declare-top (special varlist))
-
 (defmvar $logconcoeffp nil)
 
 (defmfun $logcontract (e)

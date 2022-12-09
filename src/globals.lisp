@@ -738,4 +738,6 @@ is no need to rely on the setting of this switch.")
 ;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
 (defmvar $ratexpand nil)
 
+(defmvar varlist nil "List of kernels")
+
 ;;------------------------------------------------------------------------

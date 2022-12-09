@@ -115,8 +115,6 @@
 
 (declare-top
  (special vlist
-	  varlist		;List of all the variables occurring in a power
-				;series, the power series variables at the end
 	  modulus		;
 	  *a*			;Temporary special
 	  tlist			;An association list which contains the

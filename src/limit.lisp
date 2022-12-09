@@ -28,7 +28,7 @@
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
 (declare-top (special errorsw origval
-		      *indicator nn* dn* numer denom exp var val varlist
+		      *indicator nn* dn* numer denom exp var val
 		      *zexptsimp? $logarc taylored logcombed
 		      $exponentialize lhp? lhcount
 		      loginprod? $logabs a context limit-assumptions

@@ -19,7 +19,7 @@
                       $logexpand ratform *var var rootfactor
                       expint trigint operator $exponentialize $gcd
                       $logarc changevp klth r s beta gamma b mainvar expflag
-                      expstuff liflag intvar switch varlist nogood
+                      expstuff liflag intvar switch nogood
                       $erfflag $liflag rischp alphar m
                       hypertrigint *mosesflag *exp y
                       implicit-real $%e_to_numlog generate-atan2

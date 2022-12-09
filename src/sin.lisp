@@ -22,7 +22,7 @@
 
 (declare-top (special $radexpand $%e_to_numlog ans arcpart coef
 		      aa powerlist *a* *b* k stack e w y expres arg var
-		      *powerl* *c* *d* exp varlist $liflag))
+		      *powerl* *c* *d* exp $liflag))
 
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
