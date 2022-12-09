@@ -56,8 +56,8 @@
 	  $domxnctimes $domxplus $domxtimes
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
 	  $dotconstrules $dotident
-	  $erfflag $errexp $error_size $error_syms $expon
-	  $exponentialize $expop $exptdispflag $exptisolate
+	  $erfflag $errexp $error_size $error_syms
+	  $exponentialize $exptdispflag $exptisolate
 	  $file_search
 	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
@@ -70,7 +70,7 @@
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
 	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
 	  $matrix_element_transpose
-	  $maxapplydepth $maxapplyheight $maxnegex $maxposex
+	  $maxapplydepth $maxapplyheight
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
 	  $multiplicities $mx0simp $myoptions $nalgfac
 	  $negsumdispflag $nolabels $noundisp

@@ -37,40 +37,6 @@
 
 (defmvar $mx0simp t)
 
-;; Switches dealing with expansion.
-
-(defmvar $expop 0
-  "The largest positive exponent which will be automatically
-	 expanded.  (X+1)^3 will be automatically expanded if
-	 EXPOP is greater than or equal to 3."
-  fixnum
-  see-also ($expon $maxposex $expand))
-
-(defmvar $expon 0
-  "The largest negative exponent which will be automatically
-	 expanded.  (X+1)^(-3) will be automatically expanded if
-	 EXPON is greater than or equal to 3."
-  fixnum
-  see-also ($expop $maxnegex $expand))
-
-(defmvar $maxposex 1000.
-  "The largest positive exponent which will be expanded by
-	 the EXPAND command."
-  fixnum
-  see-also ($maxnegex $expop $expand))
-
-;; Check assignment to be a positive integer
-(putprop '$maxposex 'posintegerset 'assign)
-
-(defmvar $maxnegex 1000.
-  "The largest negative exponent which will be expanded by
-	 the EXPAND command."
-  fixnum
-  see-also ($maxposex $expon $expand))
-
-;; Check assignment to be a positive integer
-(putprop '$maxnegex 'posintegerset 'assign)
-
 ;; Lisp level variables
 
 (defmvar dosimp nil

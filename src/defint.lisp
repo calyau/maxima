@@ -142,7 +142,7 @@
 	     (special $intanalysis $noprincipal)
 					;impvar
 	     (special $solveradcan $solvetrigwarn *roots *failures
-		      $logabs $maxposex $maxnegex
+		      $logabs
 		      $trigsign $radexpand $breakup $%emode
 		      $exptsubst dosimp context rp-polylogp
 		      $domain $m1pbranch errorsw

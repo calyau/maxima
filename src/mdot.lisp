@@ -40,7 +40,7 @@ simplified to  a commutative product.")
 
 ;; Specials defined elsewhere.
 
-(declare-top (special $expop $expon	; Controls behavior of EXPAND
+(declare-top (special 
 		      errorsw))
 
 ;; The operators "." and "^^" distribute over equations.
