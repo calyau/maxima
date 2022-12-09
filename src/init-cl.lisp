@@ -595,9 +595,6 @@ When one changes, the other does too."
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
 
-;; A list of temporary files that can be deleted on leaving maxima
-(defvar *temp-files-list* (make-hash-table :test 'equal))
-
 ;; Delete all files *temp-files-list* contains.
 (defun delete-temp-files ()
   (maphash #'(lambda(filename param)

@@ -998,4 +998,8 @@ is no need to rely on the setting of this switch.")
 (defvar *maxima-lang-subdir* nil)
 (defvar $maxima_frontend nil "The frontend maxima is used with.")
 (defvar $maxima_frontend_version nil "The version of the maxima frontend.")
+
+;; A list of temporary files that can be deleted on leaving maxima
+(defvar *temp-files-list* (make-hash-table :test 'equal))
+
 ;;------------------------------------------------------------------------
