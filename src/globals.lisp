@@ -745,3 +745,7 @@ is no need to rely on the setting of this switch.")
 (defmvar $resultant '$subres "Designates which resultant algorithm")
 
 ;;------------------------------------------------------------------------
+;; From risch.lisp
+(defmvar $liflag t "Controls whether `risch' generates polylogs")
+
+;;------------------------------------------------------------------------

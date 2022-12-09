@@ -20,12 +20,10 @@
                       expint trigint operator $exponentialize $gcd
                       $logarc changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch nogood
-                      $erfflag $liflag rischp alphar m
+                      $erfflag rischp alphar m
                       hypertrigint *mosesflag *exp y
                       implicit-real $%e_to_numlog generate-atan2
                       context rp-polylogp *in-risch-p*))
-
-(defmvar $liflag t "Controls whether `risch' generates polylogs")
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
 

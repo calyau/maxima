@@ -65,7 +65,7 @@
 	  $halfangles $homog_hack
 	  $inchar
 	  $isolate_wrt_times $labels $leftjust $letrat $letvarsimp
-	  $let_rule_packages $liflag $linechar $linenum
+	  $let_rule_packages $linechar $linenum
 	  $linsolvewarn $linsolve_params $listarith
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
 	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
