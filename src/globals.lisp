@@ -830,4 +830,10 @@ is no need to rely on the setting of this switch.")
 (defmvar $radexpand t)
 (defmvar $subnumsimp nil)
 (defmvar $logsimp t)
+
+(defvar rischp nil)
+(defvar rp-polylogp nil)
+(defvar wflag nil)
+(defvar derivflag nil)
+(defvar *zexptsimp? nil)
 ;;------------------------------------------------------------------------

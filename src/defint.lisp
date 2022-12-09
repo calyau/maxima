@@ -143,7 +143,7 @@
 					;impvar
 	     (special $solveradcan $solvetrigwarn *roots *failures
 		      $trigsign $breakup
-		      $exptsubst context rp-polylogp
+		      $exptsubst context
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
 		      ;;take realpart and imagpart.

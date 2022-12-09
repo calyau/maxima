@@ -29,7 +29,7 @@
 
 (declare-top (special origval
 		      *indicator nn* dn* numer denom exp var val
-		      *zexptsimp? $logarc taylored logcombed
+		      $logarc taylored logcombed
 		      $exponentialize lhp? lhcount
 		      loginprod? a context limit-assumptions
 		      limit-top integer-info old-integer-info))

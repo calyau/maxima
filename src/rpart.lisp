@@ -20,8 +20,8 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special $radexpand rp-polylogp
-		      $logarc rischp $keepfloat))
+(declare-top (special $radexpand
+		      $logarc $keepfloat))
 
 (defmvar implicit-real nil "If t RPART assumes radicals and logs
 	 of real quantities are real and doesn't ask sign questions")
