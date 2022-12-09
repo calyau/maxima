@@ -185,7 +185,7 @@
 	    :components
 	    ((:file "defmfun-check")))
    (:module compatibility-macros :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    (#+gcl (:file "gcl-compat")
 		   (:file "commac")))
@@ -218,7 +218,7 @@
 	    ((:file "mopers")
 	     (:file "mforma")))
    (:module other-macros :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "mrgmac")
 	     (:file "rzmac")
