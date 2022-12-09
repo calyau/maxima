@@ -23,8 +23,6 @@
 
 (in-package :maxima)
 
-(declaim (special *flonum-op*))
-
 ;; Airy Ai function 
 (defmfun $airy_ai (z)
   "Airy function Ai(z)"

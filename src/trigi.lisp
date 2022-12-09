@@ -49,19 +49,6 @@
 (defun domain-error (x f)
   (merror (intl:gettext "~A: argument ~:M isn't in the domain of ~A.") f (complexify x) f))
 
-;; Build hash tables '*flonum-op*' and '*big-float-op*' that map Maxima
-;; function names to their corresponding Lisp functions.
-
-(defvar *flonum-op* (make-hash-table :size 64)
-  "Hash table mapping a maxima function to a corresponding Lisp
-  function to evaluate the maxima function numerically with
-  flonum precision.")
-
-(defvar *big-float-op* (make-hash-table)
-  "Hash table mapping a maxima function to a corresponding Lisp
-  function to evaluate the maxima function numerically with
-  big-float precision.")
-  
 ;; Some Lisp implementations goof up branch cuts for ASIN, ACOS, and/or ATANH.
 ;; Here are definitions which have the right branch cuts
 ;; (assuming LOG, PHASE, and SQRT have the right branch cuts).

@@ -16,7 +16,6 @@
 ;;; some floating point translations. with tricks.
 
 (defun translate-with-flonum-op (form can-branch-p)
-  (declare (special *flonum-op*))
   (let ((arg (translate (cadr form)))
         (lisp-function (gethash (caar form) *flonum-op*)))
     (if (and (eq (car arg) '$float)

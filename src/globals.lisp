@@ -935,4 +935,17 @@ is no need to rely on the setting of this switch.")
                     ((rat simp) -1 2)
                     ((mexpt simp) 3 ((rat simp) 1 2))))
 
+;; Build hash tables '*flonum-op*' and '*big-float-op*' that map Maxima
+;; function names to their corresponding Lisp functions.
+
+(defvar *flonum-op* (make-hash-table :size 64)
+  "Hash table mapping a maxima function to a corresponding Lisp
+  function to evaluate the maxima function numerically with
+  flonum precision.")
+
+(defvar *big-float-op* (make-hash-table)
+  "Hash table mapping a maxima function to a corresponding Lisp
+  function to evaluate the maxima function numerically with
+  big-float precision.")
+  
 ;;------------------------------------------------------------------------
