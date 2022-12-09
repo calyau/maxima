@@ -491,7 +491,7 @@
 
 ;;;; ATAN2
 
-(declare-top (special $numer $logarc $trigsign))
+(declare-top (special $logarc $trigsign))
 
 ;; atan2 distributes over lists, matrices, and equations
 (defprop $atan2 (mlist $matrix mequal) distribute_over)

@@ -19,28 +19,6 @@
 		      *out *in radcanp
                       *builtin-numeric-constants*))
 
-;; General purpose simplification and conversion switches.
-
-(defmvar $negdistrib t
-  "Causes negations to be distributed over sums, e.g. -(A+B) is
-	 simplified to -A-B.")
-
-(defmvar $numer nil
-  "Causes SOME mathematical functions (including exponentiation)
-	 with numerical arguments to be evaluated in floating point.
-	 It causes variables in an expression which have been given
-	 NUMERVALs to be replaced by their values.  It also turns
-	 on the FLOAT switch."
-  see-also ($numerval $float))
-
-(defmvar $simp t "Enables simplification.")
-
-(defmvar $sumexpand nil
-  "If TRUE, products of sums and exponentiated sums go into nested
-	 sums.")
-
-(defmvar $numer_pbranch nil)
-
 ;; Switches dealing with matrices and non-commutative multiplication.
 
 (defmvar $doscmxplus nil

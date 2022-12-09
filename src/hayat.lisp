@@ -157,7 +157,7 @@
 				; suppress the message that TAYLOR is assumming
 				; an expression to be zero.
 	; 0p-funord lexp-non0	; referenced only in commented-out code, so comment out here too
-	$simp)
+	)
  )				;Don't want to see closed compilation notes.
 
 (defmvar $psexpand ()

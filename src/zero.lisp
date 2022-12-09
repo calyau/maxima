@@ -12,8 +12,6 @@
 
 (macsyma-module zero)
 
-(declare-top (special $numer))
-
 (defmfun $zeroequiv (exp var)
   (declare (special var ))
   (prog (r s v varlist genvar)

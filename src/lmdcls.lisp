@@ -72,20 +72,20 @@
 	  $matrix_element_transpose
 	  $maxapplydepth $maxapplyheight $maxnegex $maxposex
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
-	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
-	  $negsumdispflag $nolabels $noundisp $numer
-	  $numer_pbranch $optimprefix $optionset $outchar
+	  $multiplicities $mx0simp $myoptions $nalgfac
+	  $negsumdispflag $nolabels $noundisp
+	  $optimprefix $optionset $outchar
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
 	  $radexpand $ratdenomdivide
           $ratmx $ratsimpexpons $ratvarswitch
 	  $realonly $refcheck $rmxchar
 	  $rules
-	  $setval $signbfloat $simp
+	  $setval $signbfloat
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
 	  $stardisp $sublis_apply_lambda
-	  $subnumsimp $sumexpand
+	  $subnumsimp
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $trace $trace_break_arg $trace_max_indent

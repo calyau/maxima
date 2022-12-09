@@ -59,8 +59,6 @@
   (cond ((null terms) 0)
 	(t (simplifya `((mplus) . ,terms) simp-flag))))
 
-(declare-top (special $negdistrib))
-
 (defun neg (x)
   (cond ((numberp x) (- x))
 	(t (let (($negdistrib t))

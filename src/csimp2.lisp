@@ -201,7 +201,7 @@
 
 ;;; Implementation of the Beta function
 
-(declare-top (special $numer $gammalim))
+(declare-top (special $gammalim))
 
 (defmvar $beta_args_sum_to_integer nil)
 
@@ -629,7 +629,7 @@
 		 (merror (intl:gettext "gamma: overflow in GAMMAFLOAT."))
 		 result))))))
 
-(declare-top (special $numer $trigsign))
+(declare-top (special $trigsign))
 
 (defmfun $zeromatrix (m n) ($ematrix m n 0 1 1))
 
