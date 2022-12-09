@@ -48,7 +48,7 @@
 	  $%rnum $absboxchar $activecontexts $algexact
 	  $aliases $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
-	  $breakup $compgrind $context
+	  $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package
 	  $dispflag
@@ -72,18 +72,18 @@
 	  $matrix_element_transpose
 	  $maxapplydepth $maxapplyheight
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
-	  $multiplicities $mx0simp $myoptions $nalgfac
+	  $mx0simp $myoptions $nalgfac
 	  $negsumdispflag $nolabels $noundisp
 	  $optimprefix $optionset $outchar
 	  $parsewindow $pointbound
-	  $poislim $programmode $props
+	  $poislim $props
 	  $ratdenomdivide
           $ratmx $ratvarswitch
 	  $realonly $refcheck $rmxchar
 	  $rules
 	  $setval $signbfloat
-	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
-	  $solveradcan $solvetrigwarn
+	  $solvedecomposes $solveexplicit $solvenullwarn
+	  $solvetrigwarn
 	  $stardisp $sublis_apply_lambda
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue

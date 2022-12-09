@@ -34,8 +34,8 @@
 
 (declare-top (special $algdelta
 		     *roots *failures $ratprint
-		     $solvefactors $dispflag $breakup
-		     *tvarxlist* $programmode *ivar* errset))
+		     $dispflag
+		     *tvarxlist* *ivar* errset))
 
 ;;note if $algepsilon is too large you may lose some roots.
 

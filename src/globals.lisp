@@ -836,4 +836,34 @@ is no need to rely on the setting of this switch.")
 (defvar wflag nil)
 (defvar derivflag nil)
 (defvar *zexptsimp? nil)
+
+;;------------------------------------------------------------------------
+;; From solve.lisp
+(defmvar $breakup t
+  "Causes solutions to cubic and quartic equations to be expressed in
+	 terms of common subexpressions.")
+
+(defmvar $multiplicities '$not_set_yet
+  "Set to a list of the multiplicities of the individual solutions
+	 returned by SOLVE, REALROOTS, or ALLROOTS.")
+
+(defmvar $programmode t
+  "Causes SOLVE to return its answers explicitly as elements
+	 in a list rather than printing E-labels.")
+
+(defmvar $solvefactors t
+  "If T, then SOLVE will try to factor the expression.  The FALSE
+	 setting may be desired in zl-SOME cases where factoring is not
+	 necessary.")
+
+(defmvar $solvetrigwarn t
+  "Causes SOLVE to print a warning message when it is uses
+	 inverse trigonometric functions to solve an equation,
+	 thereby losing solutions.")
+
+(defmvar $solveradcan nil
+  "SOLVE will use RADCAN which will make SOLVE slower but will allow
+	 certain problems containing exponentials and logs to be solved.")
+
+
 ;;------------------------------------------------------------------------

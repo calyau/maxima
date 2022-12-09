@@ -12,9 +12,7 @@
 
 (macsyma-module polyrz)
 
-(declare-top (special $programmode
-		      equations
-		      $multiplicities))
+(declare-top (special equations))
 
 (load-macsyma-macros ratmac)
 
