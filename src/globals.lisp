@@ -741,3 +741,7 @@ is no need to rely on the setting of this switch.")
 (defmvar varlist nil "List of kernels")
 
 ;;------------------------------------------------------------------------
+;; From result.lisp
+(defmvar $resultant '$subres "Designates which resultant algorithm")
+
+;;------------------------------------------------------------------------

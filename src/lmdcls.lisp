@@ -79,7 +79,7 @@
 	  $poislim $programmode $props
 	  $radexpand $ratdenomdivide
           $ratmx $ratsimpexpons $ratvarswitch
-	  $realonly $refcheck $resultant $rmxchar
+	  $realonly $refcheck $rmxchar
 	  $rules
 	  $setval $signbfloat $simp
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
