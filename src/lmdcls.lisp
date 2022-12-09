@@ -45,9 +45,9 @@
 
 (declaim (special
 	  $%%
-	  $%rnum $absboxchar $activecontexts $algexact
+	  $absboxchar $activecontexts $algexact
 	  $arrays $askexp $berlefact
-	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
+	  $beta_args_sum_to_integer $bftrunc $boxchar
 	  $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package
@@ -60,7 +60,7 @@
 	  $file_search
 	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
-	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
+	  $fortspaces $fpprec $fpprintprec $functions $gammalim
 	  $homog_hack
 	  $isolate_wrt_times $leftjust $letrat $letvarsimp
 	  $let_rule_packages
@@ -96,7 +96,7 @@
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
 	  $values $vect_cross
-	  %pi-val %pi2 *$any-modes*
+	  %pi-val *$any-modes*
 	  *alpha *const* *gcdl* *in *in-compile*
 	  *inv* *irreds *min* *mx*
 	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
