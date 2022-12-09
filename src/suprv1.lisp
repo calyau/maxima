@@ -28,7 +28,7 @@
 		       dispflag savefile $%%
 		       opers *ratweights
 		       $stringdisp $lispdisp
-		       transp $contexts $macros autoload))
+		       transp $macros autoload))
 
 (defvar thistime 0)
 (defvar mcatch nil)

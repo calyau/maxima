@@ -45,11 +45,11 @@
 
 (declaim (special
 	  $%%
-	  $absboxchar $activecontexts $algexact
+	  $absboxchar $algexact
 	  $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftrunc $boxchar
-	  $compgrind $context
-	  $contexts $current_let_rule_package $debugmode
+	  $compgrind
+	  $current_let_rule_package $debugmode
 	  $default_let_rule_package
 	  $display_format_internal $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes

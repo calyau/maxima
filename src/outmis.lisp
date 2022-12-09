@@ -120,7 +120,7 @@
 		   (t (cons u v)))))))
 
 (declare-top (special $props opers
-		      $contexts $activecontexts $aliases))
+		      $aliases))
 
 (defmspec $properties (x)
   (setq x (getopr (fexprcheck x)))

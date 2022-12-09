@@ -17,7 +17,7 @@
 		      $props
 		      savefile
 		      $values $functions $arrays
-		      $contexts context $activecontexts))
+		      context))
 
 (defvar indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
                   special autoload assign mode))

@@ -358,6 +358,24 @@ summation when necessary."
 
 ;;------------------------------------------------------------------------
 ;; From compar.lisp
+(defvar $context '$global
+  "Whenever a user assumes a new fact, it is placed in the context
+named as the current value of the variable CONTEXT.  Similarly, FORGET
+references the current value of CONTEXT.  To add or DELETE a fact from a
+different context, one must bind CONTEXT to the intended context and then
+perform the desired additions or deletions.  The context specified by the
+value of CONTEXT is automatically activated.  All of MACSYMA's built-in
+relational knowledge is contained in the default context GLOBAL.")
+
+(defvar $contexts '((mlist) $global)
+  "A list of the currently active contexts.")
+
+(defvar $activecontexts '((mlist))
+  "A list of the currently activated contexts")
+
+(defvar *complexsign* nil
+  "If T, COMPAR works in a complex mode.")
+
 (defmvar $prederror nil)
 (defmvar limitp)
 
