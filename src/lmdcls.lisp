@@ -44,7 +44,7 @@
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $%% $%iargs $%piargs
+	  $%%
 	  $%rnum $absboxchar $activecontexts $algexact
 	  $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
@@ -56,16 +56,16 @@
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
 	  $dotconstrules $dotident
 	  $erfflag $errexp $error_size $error_syms
-	  $exponentialize $exptdispflag $exptisolate
+	  $exptdispflag $exptisolate
 	  $file_search
 	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
-	  $halfangles $homog_hack
+	  $homog_hack
 	  $isolate_wrt_times $leftjust $letrat $letvarsimp
 	  $let_rule_packages
 	  $linsolvewarn $linsolve_params
-	  $lmxchar $logarc $logconcoeffp $lognegint
+	  $lmxchar $logconcoeffp $lognegint
 	  $macroexpansion $macros $maperror $mapprint
 	  $matrix_element_transpose
 	  $maxapplydepth $maxapplyheight
@@ -87,8 +87,7 @@
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $trace $trace_break_arg $trace_max_indent
 	  $trace_safety $transrun
-	  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
-	  $trigsign $tr_array_as_ref $tr_bound_function_applyp
+	  $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
 	  $tr_function_call_default $tr_numer
 	  $tr_optimize_max_loop

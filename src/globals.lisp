@@ -911,4 +911,19 @@ is no need to rely on the setting of this switch.")
 (defvar greatorder nil)
 (defvar *in-translate-file* nil)
 (defvar *linelabel* nil)
+
+;;------------------------------------------------------------------------
+;; From trigi.lisp
+(defmvar $%piargs t)
+(defmvar $%iargs t)
+(defmvar $triginverses t)
+(defmvar $trigexpand nil)
+(defmvar $trigexpandplus t)
+(defmvar $trigexpandtimes t)
+(defmvar $trigsign t)
+(defmvar $exponentialize nil)
+(defmvar $logarc nil)
+(defmvar $halfangles nil)
+
+
 ;;------------------------------------------------------------------------

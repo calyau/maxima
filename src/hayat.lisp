@@ -128,7 +128,6 @@
 	  tvars			;
 	  const-exp-funs	;
 	  tay-const-expand	;For rediculousness like csch(log(x))
-	  $exponentialize	;which we do by exponentiation.
 	  tay-pole-expand	;
 	  trigdisp		;
 	  last-exp		;last-expression through taylor2
@@ -139,7 +138,6 @@
 	  *psacirc		;
 	  *pscirc		;
 	  full-log		;
-	  $logarc		;
 	  trunclist		;
 	  *within-srf?*		;flag for in srf
 	  mainvar-datum		;

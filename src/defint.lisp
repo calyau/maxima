@@ -131,7 +131,6 @@
 		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
 		      factors rlm*
-		      $trigexpandplus $trigexpandtimes
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
@@ -142,7 +141,6 @@
 	     (special $intanalysis $noprincipal)
 					;impvar
 	     (special *roots *failures
-		      $trigsign
 		      $exptsubst context
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
@@ -2797,7 +2795,6 @@ in the interval of integration.")
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
 ;; exp(x) with 'z*.  That is, basically return f(z*).
 (defun pin%ex (exp)
-  (declare (special $exponentialize))
   (pin%ex0 (cond ((notinvolve exp '(%sinh %cosh %tanh))
 		  exp)
 		 (t

@@ -16,17 +16,6 @@
 
 (declare-top (special 1//2 -1//2))
 
-(defmvar $%piargs t)
-(defmvar $%iargs t)
-(defmvar $triginverses t)
-(defmvar $trigexpand nil)
-(defmvar $trigexpandplus t)
-(defmvar $trigexpandtimes t)
-(defmvar $trigsign t)
-(defmvar $exponentialize nil)
-(defmvar $logarc nil)
-(defmvar $halfangles nil)
-
 ;; Simplified shortcuts for constant expressions.
 (defvar %pi//4 '((mtimes simp) ((rat simp) 1 4.) $%pi))
 (defvar %pi//2 '((mtimes simp) ((rat simp) 1 2) $%pi))
