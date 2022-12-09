@@ -16,7 +16,7 @@
 
 (declare-top (special *ech* *tri* equations
 		      mul* *det*
-		      xm* xn* ax *linelabel*))
+		      xm* xn* ax))
 
 ;;these are arrays.
 (defvar *row*)

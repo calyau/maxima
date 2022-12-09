@@ -1197,7 +1197,6 @@
   (let ((errset nil)
 	(errcatch (cons bindlist loclist))
 	(*mdebug* nil))
-    (declare (special errcatch))
     (let ((result (errset (funcall thunk))))
       (labels ((bad-number-p (num)
 		 (if (complexp num)

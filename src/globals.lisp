@@ -904,4 +904,11 @@ is no need to rely on the setting of this switch.")
 (defmvar $file_output_append nil
   "Flag to tell file-writing functions whether to append or clobber the output file.")
 
+(defvar *refchkl* nil)
+(defvar *mdebug* nil)
+(defvar errcatch nil)
+(defvar lessorder nil)
+(defvar greatorder nil)
+(defvar *in-translate-file* nil)
+(defvar *linelabel* nil)
 ;;------------------------------------------------------------------------

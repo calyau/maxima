@@ -1111,7 +1111,6 @@ ignoring dummy variables and array indices."
 	(errcatch t)
 	;; Don't print any error messages
 	($errormsg nil))
-    (declare (special errcatch))
     ;; Should we just use IGNORE-ERRORS instead HANDLER-CASE here?  I
     ;; (rtoy) am choosing the latter so that unexpected errors will
     ;; actually show up instead of being silently discarded.

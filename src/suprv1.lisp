@@ -31,16 +31,9 @@
 		       transp $contexts $macros autoload))
 
 (defvar thistime 0)
-(defvar *refchkl* nil)
-(defvar *mdebug* nil)
-(defvar errcatch nil)
 (defvar mcatch nil)
 (defvar brklvl -1)
 (defvar allbutl nil)
-(defvar lessorder nil)
-(defvar greatorder nil)
-(defvar *in-translate-file* nil)
-(defvar *linelabel* nil)
 
 (defmvar $disptime nil)
 (defmvar $strdisp t)

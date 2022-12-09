@@ -26,7 +26,7 @@ or if apply is being used are printed.")
 (declare-top (special derivlist $values $functions $arrays 
                       $rules
 		      $myoptions $props
-		      $numer *mdebug* *refchkl*
+		      $numer
 		      opers
 		      *alphabet* $%%
 		      $macros linel $ratwtlvl

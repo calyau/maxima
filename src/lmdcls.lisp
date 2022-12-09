@@ -99,13 +99,12 @@
 	  $values $vect_cross
 	  %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
 	  *alpha *const* *gcdl* *in *in-compile*
-	  *in-translate-file* *inv* *irreds *min* *mx*
+	  *inv* *irreds *min* *mx*
 	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* |-1//2|
 	  -sqrt3//2 |1//2| aexprp algnotexact
 	  alpha *alphabet* assigns
-	  *mdebug*
 	  defined_variables defintdebug derivlist
 	  derivsimp displayp dn* dsksetp
 	  expandflag expandp
@@ -114,13 +113,13 @@
 	  generate-atan2
 	  implicit-real inratsimp inside-mprog
 	  limit-answers
-	  *linelabel* local maplp mdop
+	  local maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm* modulus
 	  mplc* mprogp mproplist mspeclist
 	  need-prog? negprods negsums nn*
 	  *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods radcanp
-	  realonlyratnum *refchkl* return-mode returns rulefcnl
+	  realonlyratnum return-mode returns rulefcnl
 	  rulesw sign-imag-errp simplimplus-problems
 	  *small-primes* sqrt3//2
 	  sums timesinp tr-abort tr-progret tr-unique
