@@ -44,7 +44,7 @@
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $% $%% $%emode $%e_to_numlog $%iargs $%piargs
+	  $% $%% $%iargs $%piargs
 	  $%rnum $absboxchar $activecontexts $algexact
 	  $aliases $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
@@ -52,7 +52,7 @@
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package
 	  $dispflag
-	  $display_format_internal $domain $domxexpt $domxmxops
+	  $display_format_internal $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
 	  $dotconstrules $dotident
@@ -66,9 +66,9 @@
 	  $inchar
 	  $isolate_wrt_times $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $linechar $linenum
-	  $linsolvewarn $linsolve_params $listarith
+	  $linsolvewarn $linsolve_params
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
-	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
+	  $logsimp $macroexpansion $macros $maperror $mapprint
 	  $matrix_element_transpose
 	  $maxapplydepth $maxapplyheight
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp

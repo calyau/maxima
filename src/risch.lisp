@@ -22,7 +22,7 @@
                       expstuff liflag intvar switch nogood
                       $erfflag rischp alphar m
                       hypertrigint *mosesflag *exp y
-                      implicit-real $%e_to_numlog generate-atan2
+                      implicit-real generate-atan2
                       context rp-polylogp *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")

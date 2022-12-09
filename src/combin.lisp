@@ -15,7 +15,6 @@
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
 		      *n *a* *a $prevfib $next_lucas
 		      *times *plus sum usum
-		      $listarith
 		      $ratprint $zeta%pi $bftorat))
 
 (load-macsyma-macros mhayat rzmac ratmac)

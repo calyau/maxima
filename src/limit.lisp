@@ -31,7 +31,7 @@
 		      *indicator nn* dn* numer denom exp var val
 		      *zexptsimp? $logarc taylored logcombed
 		      $exponentialize lhp? lhcount
-		      loginprod? $logabs a context limit-assumptions
+		      loginprod? a context limit-assumptions
 		      limit-top integer-info old-integer-info $logexpand))
 
 (defconstant +behavior-count+ 4)

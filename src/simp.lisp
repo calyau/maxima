@@ -40,20 +40,10 @@
 ;; Lisp level variables
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
-(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
 (defmvar $grindswitch nil)
-(defmvar $algepsilon 100000000)
-(defmvar $true t)
-(defmvar $false nil)
 (defmvar $on t)
 (defmvar $off nil)
-(defmvar $logabs nil)
 (defmvar $limitdomain '$complex)
-(defmvar $listarith t)
-(defmvar $domain '$real)
-(defmvar $m1pbranch nil)
-(defmvar $%e_to_numlog nil)
-(defmvar $%emode t)
 (defmvar $lognegint nil)
 (defmvar $ratsimpexpons nil)
 (defmvar $logexpand t) ; Possible values are T, $ALL and $SUPER

@@ -16,8 +16,6 @@
 
 (macsyma-module hyp)
 
-(declare-top (special $true $false))
-
 (declare-top (special var *par* checkcoefsignlist $exponentialize
                       $radexpand))
 

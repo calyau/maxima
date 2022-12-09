@@ -142,10 +142,8 @@
 	     (special $intanalysis $noprincipal)
 					;impvar
 	     (special $solveradcan $solvetrigwarn *roots *failures
-		      $logabs
-		      $trigsign $radexpand $breakup $%emode
+		      $trigsign $radexpand $breakup
 		      $exptsubst context rp-polylogp
-		      $domain $m1pbranch
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
 		      ;;take realpart and imagpart.

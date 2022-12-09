@@ -815,4 +815,14 @@ is no need to rely on the setting of this switch.")
 	 rather than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
 	 MAXIMA-ERROR signalling.")
 
+(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1d-7)
+(defmvar $algepsilon 100000000)
+(defmvar $true t)
+(defmvar $false nil)
+(defmvar $logabs nil)
+(defmvar $listarith t)
+(defmvar $domain '$real)
+(defmvar $m1pbranch nil)
+(defmvar $%e_to_numlog nil)
+(defmvar $%emode t)
 ;;------------------------------------------------------------------------
