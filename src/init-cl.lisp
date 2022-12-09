@@ -23,30 +23,14 @@
 ;;; shell scripts, batch scripts and environment variables.
 ;;; jfa 02/07/04
 
-(defvar *maxima-prefix*)
 (defvar *maxima-topdir*)        ;; top-level installation or build directory
 (defvar *maxima-imagesdir*)
 (defvar *maxima-sharedir*)
 (defvar *maxima-srcdir*)
 (defvar *maxima-docdir*)
-(defvar *maxima-infodir*)
-(defvar *maxima-htmldir*)
 (defvar *maxima-layout-autotools*)
-(defvar *maxima-userdir*)
-(defvar *maxima-initmac* "maxima-init.mac"
-    "Default maxima mac init file if none specified by the user.  This
-  file is looked for only in the maxima userdir.")
-(defvar *maxima-initlisp* "maxima-init.lisp"
-  "Default maxima lisp init file if none specified by the user.  This
-  file is looked for only in the maxima userdir")
-(defvar *maxima-load-init-files* t
-  "When non-NIL, the init files are not loaded.")
-(defvar *maxima-tempdir*)
-(defvar *maxima-lang-subdir* nil)
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
-(defvar $maxima_frontend nil "The frontend maxima is used with.")
-(defvar $maxima_frontend_version nil "The version of the maxima frontend.")
 
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (defmacro def-lisp-shadow (root-name)

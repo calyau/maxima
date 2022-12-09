@@ -519,7 +519,6 @@ DESTINATION is an actual stream (rather than nil for a string)."
 (defvar *maxima-run-string* nil)
 
 (defun macsyma-top-level (&optional (input-stream *standard-input*) batch-flag)
-  (declare (special *maxima-initmac* *maxima-initlisp* *maxima-load-init-files*))
   (let ((*package* (find-package :maxima)))
     (if *maxima-started*
 	(format t (intl:gettext "Maxima restarted.~%"))

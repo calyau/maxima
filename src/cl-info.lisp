@@ -62,7 +62,6 @@
   (format nil "~{~A~^/~}" list))
 
 (defun load-primary-index ()
-  (declare (special maxima::*maxima-lang-subdir* maxima::*maxima-infodir*))
   ;; Is with-standard-io-syntax too much for what we want?
   (let*
       ((subdir-bit (or maxima::*maxima-lang-subdir* "."))

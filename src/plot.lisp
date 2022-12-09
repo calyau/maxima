@@ -64,7 +64,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 (defun coerce-float (x) ($float (meval* x)))
 
 (defvar *maxima-plotdir* "")
-(declare-top (special *maxima-tempdir* *maxima-prefix*))
 
 ;; *ROT* AND FRIENDS ($ROT, $ROTATE_PTS, $ROTATE_LIST) CAN PROBABLY GO AWAY !!
 ;; THEY ARE UNDOCUMENTED AND UNUSED !!
