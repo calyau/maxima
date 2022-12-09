@@ -275,10 +275,9 @@
 ;;------------------------------------------------------------------------
 ;; From algsys.lisp
 (defmvar $%rnum_list '((mlist))
-  "Upon exit from ALGSYS this is bound to a list of the %RNUMS
-	 which where introduced into the expression. Useful for mapping
-	 over and using as an argument to SUBST.")
-
+  "Upon exit from ALGSYS this is bound to a list of the %RNUMS which
+  where introduced into the expression. Useful for mapping over and
+  using as an argument to SUBST.") 
 ;;------------------------------------------------------------------------
 ;; From asum.lisp
 (defmvar $zeta%pi t)
@@ -289,23 +288,23 @@
 (defvar makef nil)
 
 (defmvar $cauchysum nil
-  "When multiplying together sums with INF as their upper limit, 
-causes the Cauchy product to be used rather than the usual product.
-In the Cauchy product the index of the inner summation is a function of 
-the index of the outer one rather than varying independently."
+  "When multiplying together sums with INF as their upper limit, causes
+  the Cauchy product to be used rather than the usual product. In the
+  Cauchy product the index of the inner summation is a function of the
+  index of the outer one rather than varying independently."
   modified-commands '$sum)
 
 ;; sum begins
 (defmvar $gensumnum 0
-  "The numeric suffix used to generate the next variable of
-summation.  If it is set to FALSE then the index will consist only of
-GENINDEX with no numeric suffix."
+  "The numeric suffix used to generate the next variable of summation.
+  If it is set to FALSE then the index will consist only of GENINDEX
+  with no numeric suffix."
   modified-commands '$sum
   setting-predicate #'(lambda (x) (or (null x) (integerp x))))
 
 (defmvar $genindex '$i
-  "The alphabetic prefix used to generate the next variable of
-summation when necessary."
+  "The alphabetic prefix used to generate the next variable of summation
+  when necessary."
   modified-commands '$sum
   setting-predicate #'symbolp)
 
@@ -359,13 +358,14 @@ summation when necessary."
 ;;------------------------------------------------------------------------
 ;; From compar.lisp
 (defvar $context '$global
-  "Whenever a user assumes a new fact, it is placed in the context
-named as the current value of the variable CONTEXT.  Similarly, FORGET
-references the current value of CONTEXT.  To add or DELETE a fact from a
-different context, one must bind CONTEXT to the intended context and then
-perform the desired additions or deletions.  The context specified by the
-value of CONTEXT is automatically activated.  All of MACSYMA's built-in
-relational knowledge is contained in the default context GLOBAL.")
+  "Whenever a user assumes a new fact, it is placed in the context named
+  as the current value of the variable CONTEXT.  Similarly, FORGET
+  references the current value of CONTEXT.  To add or DELETE a fact
+  from a different context, one must bind CONTEXT to the intended
+  context and then perform the desired additions or deletions.  The
+  context specified by the value of CONTEXT is automatically
+  activated.  All of MACSYMA's built-in relational knowledge is
+  contained in the default context GLOBAL.")
 
 (defvar $contexts '((mlist) $global)
   "A list of the currently active contexts.")
@@ -432,18 +432,18 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defmvar $display2d t
   "Causes equations to be drawn in two dimensions.  Otherwise, drawn
-	 linearly.")
+  linearly.")
 
 (defmvar $lispdisp nil
-  "Causes symbols not having $ as the first character in their pnames
-	 to be preceded with a ? when displayed.")
+  "Causes symbols not having $ as the first character in their pnames to
+  be preceded with a ? when displayed.")
 
 (defmvar $derivabbrev nil)
 
 (defmvar $stringdisp nil
   "Causes strings to be bracketed in double quotes when displayed.
-	 Normally this is off, but is turned on when a procedure definition is
-	 being displayed.")
+  Normally this is off, but is turned on when a procedure definition
+  is being displayed.")
 
 ;; These three variables are bound within Macsyma Listeners since they are different
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
@@ -464,14 +464,14 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;------------------------------------------------------------------------
 ;; From float.lisp
 (defmvar $float2bf t
-  "If TRUE, no MAXIMA-ERROR message is printed when a floating point number is
-converted to a bigfloat number.")
+  "If TRUE, no MAXIMA-ERROR message is printed when a floating point
+  number is converted to a bigfloat number.")
 
 (defmvar $bftorat nil
   "Controls the conversion of bigfloat numbers to rational numbers.  If
-FALSE, RATEPSILON will be used to control the conversion (this results in
-relatively small rational numbers).  If TRUE, the rational number generated
-will accurately represent the bigfloat.")
+  FALSE, RATEPSILON will be used to control the conversion (this
+  results in relatively small rational numbers).  If TRUE, the
+  rational number generated will accurately represent the bigfloat.")
 
 (defmvar $bftrunc t
   "If TRUE, printing of bigfloat numbers will truncate trailing zeroes.
@@ -486,14 +486,17 @@ will accurately represent the bigfloat.")
   "The maximum number of significant digits printed for floats.")
 
 (defmvar $fpprec $maxfpprintprec
-  "Number of decimal digits of precision to use when creating new bigfloats.
-One extra decimal digit in actual representation for rounding purposes.")
+  "Number of decimal digits of precision to use when creating new
+  bigfloats. One extra decimal digit in actual representation for
+  rounding purposes.")
 
 (defmvar bigfloatzero '((bigfloat simp 56.) 0 0)
-  "Bigfloat representation of 0" in-core)
+  "Bigfloat representation of 0"
+  in-core)
 
 (defmvar bigfloatone  '((bigfloat simp 56.) #.(expt 2 55.) 1)
-  "Bigfloat representation of 1" in-core)
+  "Bigfloat representation of 1"
+  in-core)
 
 (defmvar bfhalf	      '((bigfloat simp 56.) #.(expt 2 55.) 0)
   "Bigfloat representation of 1/2")
@@ -530,16 +533,18 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; From inmis.lisp
 (defmvar $listconstvars nil
   "Causes LISTOFVARS to include %E, %PI, %I, and any variables declared
-   constant in the list it returns if they appear in exp.  The default is
-   to omit these." boolean see-also $listofvars)
+  constant in the list it returns if they appear in exp.  The default
+  is to omit these." boolean see-also $listofvars)
 
 ;;------------------------------------------------------------------------
 ;; From macsys.lisp
 (defmvar $showtime nil
   "When T, the computation time is printed with each output expression.")
 
-(defmvar $_ '$_ "last thing read in, corresponds to lisp +")
-(defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
+(defmvar $_ '$_
+  "last thing read in, corresponds to lisp +")
+(defmvar $__ '$__
+  "thing read in which will be evaluated, corresponds to -")
 
 ;;------------------------------------------------------------------------
 ;; From mat.lisp
@@ -557,56 +562,58 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;------------------------------------------------------------------------
 ;; From mdot.lisp
 (defmvar $dotscrules nil
-  "Causes a non-commutative product of a scalar and another term to
-be simplified to a commutative product.  Scalars and constants are carried
-to the front of the expression.")
+  "Causes a non-commutative product of a scalar and another term to be
+  simplified to a commutative product.  Scalars and constants are
+  carried to the front of the expression.")
 
 (defmvar $dotdistrib nil
-  "Causes every non-commutative product to be expanded each time it
-is simplified, i.e.  A . (B + C) will simplify to A . B + A . C.")
+  "Causes every non-commutative product to be expanded each time it is
+  simplified, i.e.  A . (B + C) will simplify to A . B + A . C.")
 
 (defmvar $dotexptsimp t "Causes A . A to be simplified to A ^^ 2.")
 
 (defmvar $dotassoc t
   "Causes a non-commutative product to be considered associative, so
-that A . (B . C) is simplified to A . B . C.  If this flag is off, dot is
-taken to be right associative, i.e.  A . B . C is simplified to A . (B . C).")
+  that A . (B . C) is simplified to A . B . C.  If this flag is off,
+  dot is taken to be right associative, i.e.  A . B . C is simplified
+  to A . (B . C).")
 
 (defmvar $doallmxops t
-  "Causes all operations relating to matrices (and lists) to be
-carried out.  For example, the product of two matrices will actually be
-computed rather than simply being returned.  Turning on this switch
-effectively turns on the following three.")
+  "Causes all operations relating to matrices (and lists) to be carried
+  out.  For example, the product of two matrices will actually be
+  computed rather than simply being returned.  Turning on this switch
+  effectively turns on the following three.")
 
 (defmvar $domxmxops t "Causes matrix-matrix operations to be carried out.")
 
 (defmvar $doscmxops nil "Causes scalar-matrix operations to be carried out.")
 
 (defmvar $scalarmatrixp t
-  "Causes a square matrix of dimension one to be converted to a
-scalar, i.e. its only element.")
+  "Causes a square matrix of dimension one to be converted to a scalar,
+  i.e. its only element.")
 
 (defmvar $assumescalar t
-  "This governs whether unknown expressions 'exp' are assumed to behave
-like scalars for combinations of the form 'exp op matrix' where op is one of
-{+, *, ^, .}.  It has three settings:
+  "This governs whether unknown expressions 'exp' are assumed to
+  behave like scalars for combinations of the form 'exp op matrix'
+  where op is one of {+, *, ^, .}.  It has three settings:
 
-FALSE -- such expressions behave like non-scalars.
-TRUE  -- such expressions behave like scalars only for the commutative
-	 operators but not for non-commutative multiplication.
-ALL   -- such expressions will behave like scalars for all operators
-	 listed above.
+  FALSE -- such expressions behave like non-scalars.
+  TRUE  -- such expressions behave like scalars only for the commutative
+	   operators but not for non-commutative multiplication.
+  ALL   -- such expressions will behave like scalars for all operators
+	   listed above.
 
-Note:  This switch is primarily for the benefit of old code.  If possible,
-you should declare your variables to be SCALAR or NONSCALAR so that there
-is no need to rely on the setting of this switch.")
+  Note: This switch is primarily for the benefit of old code.  If
+  possible, you should declare your variables to be SCALAR or
+  NONSCALAR so that there is no need to rely on the setting of this
+  switch.")
 
 ;;------------------------------------------------------------------------
 ;; From merror.lisp
 (defmvar $error `((mlist simp) "No error.")
-  "During an MAXIMA-ERROR break this is bound to a list
-  of the arguments to the call to MAXIMA-ERROR, with the message
-  text in a compact format.")
+  "During an MAXIMA-ERROR break this is bound to a list of the
+  arguments to the call to MAXIMA-ERROR, with the message text in a
+  compact format.")
 
 (defmvar $errormsg 't
   "If `false' then no maxima-error message is printed!")
@@ -705,9 +712,9 @@ is no need to rely on the setting of this switch.")
 (defmvar low* nil)
 (defmvar $intfaclim t)
 (defmvar $factor_max_degree 1000
-  "If set to an integer n, some potentially large (many factors) polynomials
-   of degree > n won't be factored, preventing huge memory allocations and
-   stack overflows. Set to zero to deactivate."
+  "If set to an integer n, some potentially large (many factors)
+  polynomials of degree > n won't be factored, preventing huge memory
+  allocations and stack overflows. Set to zero to deactivate."
   fixnum)
 (putprop '$factor_max_degree 'posintegerset 'assign)
 
@@ -732,8 +739,8 @@ is no need to rely on the setting of this switch.")
 
 (defmvar genvar nil
   "List of gensyms used to point to kernels from within polynomials.
-	 The values cell and property lists of these symbols are used to
-	 store various information.")
+  The values cell and property lists of these symbols are used to
+  store various information.")
 
 (defmvar genpairs nil)
 
@@ -742,7 +749,8 @@ is no need to rely on the setting of this switch.")
 
 (defmvar tellratlist nil)
 
-(defmvar adn* 1 "common denom for algebraic coefficients")
+(defmvar adn* 1
+  "common denom for algebraic coefficients")
 
 ;;  Any program which calls RATF on
 ;;  a floating point number but does not wish to see "RAT replaced ..."
@@ -756,15 +764,18 @@ is no need to rely on the setting of this switch.")
 ;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
 (defmvar $ratexpand nil)
 
-(defmvar varlist nil "List of kernels")
+(defmvar varlist nil
+  "List of kernels")
 
 ;;------------------------------------------------------------------------
 ;; From result.lisp
-(defmvar $resultant '$subres "Designates which resultant algorithm")
+(defmvar $resultant '$subres
+  "Designates which resultant algorithm")
 
 ;;------------------------------------------------------------------------
 ;; From risch.lisp
-(defmvar $liflag t "Controls whether `risch' generates polylogs")
+(defmvar $liflag t
+  "Controls whether `risch' generates polylogs")
 
 ;;------------------------------------------------------------------------
 ;; From simp.lisp
@@ -772,50 +783,49 @@ is no need to rely on the setting of this switch.")
 
 (defmvar $negdistrib t
   "Causes negations to be distributed over sums, e.g. -(A+B) is
-	 simplified to -A-B.")
+  simplified to -A-B.")
 
 (defmvar $numer nil
-  "Causes SOME mathematical functions (including exponentiation)
-	 with numerical arguments to be evaluated in floating point.
-	 It causes variables in an expression which have been given
-	 NUMERVALs to be replaced by their values.  It also turns
-	 on the FLOAT switch."
+  "Causes SOME mathematical functions (including exponentiation) with
+  numerical arguments to be evaluated in floating point.  It causes
+  variables in an expression which have been given NUMERVALs to be
+  replaced by their values.  It also turns on the FLOAT switch."
   see-also ($numerval $float))
 
 (defmvar $simp t "Enables simplification.")
 
 (defmvar $sumexpand nil
   "If TRUE, products of sums and exponentiated sums go into nested
-	 sums.")
+  sums.")
 
 (defmvar $numer_pbranch nil)
 
 ;; Switches dealing with expansion.
 (defmvar $expop 0
   "The largest positive exponent which will be automatically
-	 expanded.  (X+1)^3 will be automatically expanded if
-	 EXPOP is greater than or equal to 3."
+  expanded.  (X+1)^3 will be automatically expanded if EXPOP is
+  greater than or equal to 3."
   fixnum
   see-also ($expon $maxposex $expand))
 
 (defmvar $expon 0
   "The largest negative exponent which will be automatically
-	 expanded.  (X+1)^(-3) will be automatically expanded if
-	 EXPON is greater than or equal to 3."
+  expanded.  (X+1)^(-3) will be automatically expanded if EXPON is
+  greater than or equal to 3."
   fixnum
   see-also ($expop $maxnegex $expand))
 
 (defmvar $maxposex 1000.
-  "The largest positive exponent which will be expanded by
-	 the EXPAND command."
+  "The largest positive exponent which will be expanded by the EXPAND
+  command."
   fixnum
   see-also ($maxnegex $expop $expand))
 ;; Check assignment to be a positive integer
 (putprop '$maxposex 'posintegerset 'assign)
 
 (defmvar $maxnegex 1000.
-  "The largest negative exponent which will be expanded by
-	 the EXPAND command."
+  "The largest negative exponent which will be expanded by the EXPAND
+  command."
   fixnum
   see-also ($maxposex $expon $expand))
 
@@ -824,14 +834,14 @@ is no need to rely on the setting of this switch.")
 
 ;; Lisp level variables
 (defmvar dosimp nil
-  "Causes SIMP flags to be ignored.  $EXPAND works by binding
-	 $EXPOP to $MAXPOSEX, $EXPON to $MAXNEGEX, and DOSIMP to T.")
+  "Causes SIMP flags to be ignored.  $EXPAND works by binding $EXPOP to
+  $MAXPOSEX, $EXPON to $MAXNEGEX, and DOSIMP to T.")
 
 
 (defmvar errorsw nil
-  "Causes a throw to the tag ERRORSW when certain errors occur
-	 rather than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
-	 MAXIMA-ERROR signalling.")
+  "Causes a throw to the tag ERRORSW when certain errors occur rather
+  than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
+  MAXIMA-ERROR signalling.")
 
 (defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1d-7)
 (defmvar $algepsilon 100000000)
@@ -859,29 +869,29 @@ is no need to rely on the setting of this switch.")
 ;; From solve.lisp
 (defmvar $breakup t
   "Causes solutions to cubic and quartic equations to be expressed in
-	 terms of common subexpressions.")
+  terms of common subexpressions.")
 
 (defmvar $multiplicities '$not_set_yet
   "Set to a list of the multiplicities of the individual solutions
-	 returned by SOLVE, REALROOTS, or ALLROOTS.")
+  returned by SOLVE, REALROOTS, or ALLROOTS.")
 
 (defmvar $programmode t
-  "Causes SOLVE to return its answers explicitly as elements
-	 in a list rather than printing E-labels.")
+  "Causes SOLVE to return its answers explicitly as elements in a list
+  rather than printing E-labels.")
 
 (defmvar $solvefactors t
   "If T, then SOLVE will try to factor the expression.  The FALSE
-	 setting may be desired in zl-SOME cases where factoring is not
-	 necessary.")
+  setting may be desired in zl-SOME cases where factoring is not
+  necessary.")
 
 (defmvar $solvetrigwarn t
-  "Causes SOLVE to print a warning message when it is uses
-	 inverse trigonometric functions to solve an equation,
-	 thereby losing solutions.")
+  "Causes SOLVE to print a warning message when it is uses inverse
+  trigonometric functions to solve an equation, thereby losing
+  solutions.")
 
 (defmvar $solveradcan nil
   "SOLVE will use RADCAN which will make SOLVE slower but will allow
-	 certain problems containing exponentials and logs to be solved.")
+  certain problems containing exponentials and logs to be solved.")
 
 
 ;;------------------------------------------------------------------------
@@ -904,23 +914,28 @@ is no need to rely on the setting of this switch.")
 (defmvar $labels (list '(mlist simp)))
 (defmvar $dispflag t)
 
-(defmvar $% '$% "The last out-line computed, corresponds to lisp *"
-	 no-reset)
+(defmvar $% '$%
+  "The last out-line computed, corresponds to lisp *"
+  no-reset)
 
 (defmvar $inchar '$%i
   "The alphabetic prefix of the names of expressions typed by the user.")
 
 (defmvar $outchar '$%o
-  "The alphabetic prefix of the names of expressions returned by the system.")
+  "The alphabetic prefix of the names of expressions returned by the
+  system.")
 
 (defmvar $linechar '$%t
-  "The alphabetic prefix of the names of intermediate displayed expressions.")
+  "The alphabetic prefix of the names of intermediate displayed
+  expressions.")
 
-(defmvar $linenum 1 "the line number of the last expression."
-	 fixnum no-reset)
+(defmvar $linenum 1
+  "the line number of the last expression."
+  fixnum no-reset)
 
 (defmvar $file_output_append nil
-  "Flag to tell file-writing functions whether to append or clobber the output file.")
+  "Flag to tell file-writing functions whether to append or clobber the
+  output file.")
 
 (defvar *refchkl* nil)
 (defvar *mdebug* nil)
@@ -957,14 +972,13 @@ is no need to rely on the setting of this switch.")
 ;; function names to their corresponding Lisp functions.
 
 (defvar *flonum-op* (make-hash-table :size 64)
-  "Hash table mapping a maxima function to a corresponding Lisp
-  function to evaluate the maxima function numerically with
-  flonum precision.")
+  "Hash table mapping a maxima function to a corresponding Lisp function
+  to evaluate the maxima function numerically with flonum precision.")
 
 (defvar *big-float-op* (make-hash-table)
-  "Hash table mapping a maxima function to a corresponding Lisp
-  function to evaluate the maxima function numerically with
-  big-float precision.")
+  "Hash table mapping a maxima function to a corresponding Lisp function
+  to evaluate the maxima function numerically with big-float
+  precision.")
   
 ;;------------------------------------------------------------------------
 ;; From init-cl.lisp
@@ -987,7 +1001,7 @@ is no need to rely on the setting of this switch.")
 (defvar *maxima-htmldir*)
 (defvar *maxima-userdir*)
 (defvar *maxima-initmac* "maxima-init.mac"
-    "Default maxima mac init file if none specified by the user.  This
+  "Default maxima mac init file if none specified by the user.  This
   file is looked for only in the maxima userdir.")
 (defvar *maxima-initlisp* "maxima-init.lisp"
   "Default maxima lisp init file if none specified by the user.  This
@@ -996,8 +1010,10 @@ is no need to rely on the setting of this switch.")
   "When non-NIL, the init files are not loaded.")
 (defvar *maxima-tempdir*)
 (defvar *maxima-lang-subdir* nil)
-(defvar $maxima_frontend nil "The frontend maxima is used with.")
-(defvar $maxima_frontend_version nil "The version of the maxima frontend.")
+(defvar $maxima_frontend nil
+  "The frontend maxima is used with.")
+(defvar $maxima_frontend_version nil
+  "The version of the maxima frontend.")
 
 ;; A list of temporary files that can be deleted on leaving maxima
 (defvar *temp-files-list* (make-hash-table :test 'equal))
