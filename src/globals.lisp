@@ -967,3 +967,19 @@ is no need to rely on the setting of this switch.")
   big-float precision.")
   
 ;;------------------------------------------------------------------------
+;; From init-cl.lisp
+(defvar $file_search_lisp nil
+  "Directories to search for Lisp source code.")
+
+(defvar $file_search_maxima nil
+  "Directories to search for Maxima source code.")
+
+(defvar $file_search_demo nil
+  "Directories to search for demos.")
+
+(defvar $file_search_usage nil)
+
+(defvar $file_search_tests nil
+  "Directories to search for maxima test suite")
+
+;;------------------------------------------------------------------------

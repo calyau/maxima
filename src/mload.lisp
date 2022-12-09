@@ -12,8 +12,6 @@
 (in-package :maxima)
 (macsyma-module mload)
 
-(declare-top (special $file_search_lisp $file_search_maxima $file_search_demo))
-
 (defun load-and-tell (filename)
   (loadfile filename t ;; means this is a lisp-level call, not user-level.
 	    $loadprint))
@@ -712,7 +710,6 @@
   share_tests          Whether to include the share testsuite or not
   debug                Set to enable some debugging prints.
 "
-  (declare (special $file_search_tests))
   (enable-some-lisp-warnings)
   (let ((test-file)
 	(expected-failures)
