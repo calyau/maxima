@@ -15,8 +15,8 @@
 (load-macsyma-macros rzmac ratmac)
 
 (declare-top (special parnumer pardenom logptdx wholepart
-                      expexpflag $logsimp switch1 degree cary
-                      $logexpand ratform *var var rootfactor
+                      expexpflag switch1 degree cary
+                      ratform *var var rootfactor
                       expint trigint operator $exponentialize $gcd
                       $logarc changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch nogood

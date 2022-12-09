@@ -32,7 +32,7 @@
 		      *zexptsimp? $logarc taylored logcombed
 		      $exponentialize lhp? lhcount
 		      loginprod? a context limit-assumptions
-		      limit-top integer-info old-integer-info $logexpand))
+		      limit-top integer-info old-integer-info))
 
 (defconstant +behavior-count+ 4)
 (defvar *behavior-count-now*)

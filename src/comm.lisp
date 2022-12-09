@@ -16,7 +16,6 @@
 		      $props derivflag derivlist
 		      $linenum *linelabel* nn* dn*
 		      $errexp $dotdistrib
-		      $subnumsimp
 		      dummy-variable-operators))
 
 ;; op and opr properties

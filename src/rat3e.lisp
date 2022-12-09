@@ -18,7 +18,7 @@
 
 (declare-top (special intbs* alflag var alc $myoptions
 		      vlist radlist expsumsplit *ratsimp* mplc*
-		      $ratsimpexpons $expop $expon $gcd))
+		      $expop $expon $gcd))
 
 (defvar *ratsimp* nil)
 

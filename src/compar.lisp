@@ -902,7 +902,6 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defun asksign1 ($askexp)
   (let ($radexpand)
-    (declare (special $radexpand))
     (sign1 $askexp))
   (cond
     ((has-int-symbols $askexp) '$pnz)

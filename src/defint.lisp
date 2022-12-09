@@ -142,7 +142,7 @@
 	     (special $intanalysis $noprincipal)
 					;impvar
 	     (special $solveradcan $solvetrigwarn *roots *failures
-		      $trigsign $radexpand $breakup
+		      $trigsign $breakup
 		      $exptsubst context rp-polylogp
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf

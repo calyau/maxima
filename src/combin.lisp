@@ -1391,8 +1391,6 @@
   (setq l (cdr l))
   (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) nil :evaluate-summand t))
 
-(declare-top (special $ratsimpexpons))
-
 ;; Is this guy actually looking at the value of its middle arg?
 
 (defun simpprod (x y z)

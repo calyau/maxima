@@ -30,7 +30,7 @@
   (let ((checkcoefsignlist nil)
 	(*globalcareflag* nil)
 	($radexpand t))
-    (declare (special checkcoefsignlist *globalcareflag* $radexpand))
+    (declare (special checkcoefsignlist *globalcareflag*))
     (intir-ref funct x)))
 
 (defun intir-ref (fun x)

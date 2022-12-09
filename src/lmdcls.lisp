@@ -67,8 +67,8 @@
 	  $isolate_wrt_times $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $linechar $linenum
 	  $linsolvewarn $linsolve_params
-	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
-	  $logsimp $macroexpansion $macros $maperror $mapprint
+	  $lmxchar $logarc $logconcoeffp $lognegint
+	  $macroexpansion $macros $maperror $mapprint
 	  $matrix_element_transpose
 	  $maxapplydepth $maxapplyheight
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
@@ -77,15 +77,14 @@
 	  $optimprefix $optionset $outchar
 	  $parsewindow $pointbound
 	  $poislim $programmode $props
-	  $radexpand $ratdenomdivide
-          $ratmx $ratsimpexpons $ratvarswitch
+	  $ratdenomdivide
+          $ratmx $ratvarswitch
 	  $realonly $refcheck $rmxchar
 	  $rules
 	  $setval $signbfloat
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn
 	  $stardisp $sublis_apply_lambda
-	  $subnumsimp
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $trace $trace_break_arg $trace_max_indent
