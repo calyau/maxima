@@ -38,11 +38,6 @@ simplified to  a commutative product.")
 
 (defmvar $dotident 1 "The value to be returned by X^^0.")
 
-;; Specials defined elsewhere.
-
-(declare-top (special 
-		      errorsw))
-
 ;; The operators "." and "^^" distribute over equations.
 
 (defprop mnctimes (mequal) distribute_over)

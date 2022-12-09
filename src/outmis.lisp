@@ -19,7 +19,7 @@
 (macsyma-module outmis)
 
 
-(declare-top (special $exptisolate $labels $dispflag errorsw))
+(declare-top (special $exptisolate $labels $dispflag))
 
 (defmvar $exptisolate nil)
 (defmvar $isolate_wrt_times nil)

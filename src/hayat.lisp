@@ -3020,14 +3020,12 @@
 
 (defun no-sing-err (x)			;; try to catch all singularities
   (let ((errorsw t))
-    (declare (special errorsw))
     (let ((ans (catch 'errorsw (eval x))))
       (if (eq ans t) (unfam-sing-err) ans))))
 
 ;; evaluate deriv at location var=pt
 (defun eval-deriv (deriv var pt)
   (let ((errorsw t))
-    (declare (special errorsw))
     (let ((ans (no-sing-err `(meval '(($at) ,deriv ((mequal) ,var ,pt))))))
       ans)))
 

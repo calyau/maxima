@@ -804,5 +804,15 @@ is no need to rely on the setting of this switch.")
 ;; Check assignment to be a positive integer
 (putprop '$maxnegex 'posintegerset 'assign)
 
+;; Lisp level variables
+(defmvar dosimp nil
+  "Causes SIMP flags to be ignored.  $EXPAND works by binding
+	 $EXPOP to $MAXPOSEX, $EXPON to $MAXNEGEX, and DOSIMP to T.")
+
+
+(defmvar errorsw nil
+  "Causes a throw to the tag ERRORSW when certain errors occur
+	 rather than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
+	 MAXIMA-ERROR signalling.")
 
 ;;------------------------------------------------------------------------

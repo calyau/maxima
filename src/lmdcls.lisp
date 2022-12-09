@@ -110,8 +110,8 @@
 	  alpha *alphabet* assigns
 	  *mdebug*
 	  defined_variables defintdebug derivflag derivlist
-	  derivsimp displayp dn* dosimp dsksetp
-	  errorsw expandflag expandp
+	  derivsimp displayp dn* dsksetp
+	  expandflag expandp
 	  exptrlsw
 	  fr-factor gauss
 	  generate-atan2

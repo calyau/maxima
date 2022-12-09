@@ -28,7 +28,7 @@
 (declare-top (special *stop* trl* *xn sharpcont subvar1 anotype invc fctc
 		      subval1 var mcflag alcinv *ab* monic* intbs*
 		      *prime *g* modulu* plim listelm many* *inl3
-		      *sharpa *sharpb limk split* alc ind p l dosimp *odr*
+		      *sharpa *sharpb limk split* alc ind p l *odr*
 		      *i* mcflag elm ne res fact1 fact2 subvar
 		      subval ovarlist valist dlp nn* df1 df2 dn* fcs* uu*))
 

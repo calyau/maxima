@@ -14,7 +14,7 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special errorsw 1//2 -1//2))
+(declare-top (special 1//2 -1//2))
 
 (defmvar $%piargs t)
 (defmvar $%iargs t)

@@ -27,7 +27,7 @@
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
-(declare-top (special errorsw origval
+(declare-top (special origval
 		      *indicator nn* dn* numer denom exp var val
 		      *zexptsimp? $logarc taylored logcombed
 		      $exponentialize lhp? lhcount

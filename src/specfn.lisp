@@ -258,7 +258,6 @@
 
 
 (defun pole-err (exp)
-  (declare (special errorsw))
   (cond (errorsw (throw 'errorsw t))
 	(t (merror (intl:gettext "Pole encountered in: ~M") exp))))
 

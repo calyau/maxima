@@ -144,8 +144,8 @@
 	     (special $solveradcan $solvetrigwarn *roots *failures
 		      $logabs
 		      $trigsign $radexpand $breakup $%emode
-		      $exptsubst dosimp context rp-polylogp
-		      $domain $m1pbranch errorsw
+		      $exptsubst context rp-polylogp
+		      $domain $m1pbranch
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
 		      ;;take realpart and imagpart.
@@ -297,7 +297,6 @@ in the interval of integration.")
 	  (if (among '%limit ans) nil ans)))))
 
 (defun limit-no-err (&rest argvec)
-  (declare (special errorsw))
   (let ((errorsw t) (ans nil))
     (setq ans (catch 'errorsw (apply #'$limit argvec)))
     (if (eq ans t) nil ans)))

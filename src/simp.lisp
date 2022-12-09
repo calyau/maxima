@@ -38,16 +38,6 @@
 (defmvar $mx0simp t)
 
 ;; Lisp level variables
-
-(defmvar dosimp nil
-  "Causes SIMP flags to be ignored.  $EXPAND works by binding
-	 $EXPOP to $MAXPOSEX, $EXPON to $MAXNEGEX, and DOSIMP to T.")
-
-(defmvar errorsw nil
-  "Causes a throw to the tag ERRORSW when certain errors occur
-	 rather than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
-	 MAXIMA-ERROR signalling.")
-
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
 (defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1e-7)
