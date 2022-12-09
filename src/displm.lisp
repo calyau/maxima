@@ -19,7 +19,7 @@
   width height depth maxht maxdp level size lop rop break right
   bkpt bkptwd bkptht bkptdp bkptlevel bkptout lines 
   oldrow oldcol
-  mratp $aliases))
+  mratp))
 
 ;;; macros for the DISPLA package.
 
