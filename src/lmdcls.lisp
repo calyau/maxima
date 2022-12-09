@@ -44,14 +44,13 @@
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $% $%% $%iargs $%piargs
+	  $%% $%iargs $%piargs
 	  $%rnum $absboxchar $activecontexts $algexact
-	  $aliases $arrays $askexp $berlefact
+	  $arrays $askexp $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
 	  $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package
-	  $dispflag
 	  $display_format_internal $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
@@ -63,9 +62,8 @@
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
 	  $halfangles $homog_hack
-	  $inchar
-	  $isolate_wrt_times $labels $leftjust $letrat $letvarsimp
-	  $let_rule_packages $linechar $linenum
+	  $isolate_wrt_times $leftjust $letrat $letvarsimp
+	  $let_rule_packages
 	  $linsolvewarn $linsolve_params
 	  $lmxchar $logarc $logconcoeffp $lognegint
 	  $macroexpansion $macros $maperror $mapprint
@@ -73,8 +71,8 @@
 	  $maxapplydepth $maxapplyheight
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
 	  $mx0simp $myoptions $nalgfac
-	  $negsumdispflag $nolabels $noundisp
-	  $optimprefix $optionset $outchar
+	  $negsumdispflag $noundisp
+	  $optimprefix $optionset
 	  $parsewindow $pointbound
 	  $poislim $props
 	  $ratdenomdivide
@@ -130,7 +128,7 @@
 	  tstack
 	  *trunclist
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
-	  $define_variable $infolists
+	  $define_variable
 	  $factor_max_degree_print_warning))
 
 (declaim (declaration unspecial))

@@ -48,35 +48,6 @@
 (defmvar $backtrace '$backtrace)
 (defmvar $debugmode nil)
 (defmvar $poislim 5)
-(defmvar $loadprint nil)
-(defmvar $nolabels nil)
-(defmvar $aliases '((mlist simp)))
-
-(defmvar $infolists
-  '((mlist simp) $labels $values $functions $macros $arrays
-                 $myoptions $props $aliases $rules $gradefs
-                 $dependencies $let_rule_packages $structures))
-
-(defmvar $labels (list '(mlist simp)))
-(defmvar $dispflag t)
-
-(defmvar $% '$% "The last out-line computed, corresponds to lisp *"
-	 no-reset)
-
-(defmvar $inchar '$%i
-  "The alphabetic prefix of the names of expressions typed by the user.")
-
-(defmvar $outchar '$%o
-  "The alphabetic prefix of the names of expressions returned by the system.")
-
-(defmvar $linechar '$%t
-  "The alphabetic prefix of the names of intermediate displayed expressions.")
-
-(defmvar $linenum 1 "the line number of the last expression."
-	 fixnum no-reset)
-
-(defmvar $file_output_append nil
-  "Flag to tell file-writing functions whether to append or clobber the output file.")
 
 ;; This version of meval* makes sure, that the facts from the global variable
 ;; *local-signs* are cleared with a call to clearsign. The facts are added by

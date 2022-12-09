@@ -788,9 +788,8 @@
        (list (add2 (m* a c1) (m* c b1))
 	     (mul2 d b1)))))
 
-(declare-top (special $dispflag
-		      $linsolve_params ax *linelabel* $linechar 
-		      $linenum *mosesflag))
+(declare-top (special $linsolve_params ax *linelabel*
+		      *mosesflag))
 
 (defun xrutout (ax n m varl ind)
   (let (($linsolve_params (and $backsubst $linsolve_params)))

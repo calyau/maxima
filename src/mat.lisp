@@ -15,7 +15,7 @@
 ;; this is the mat package
 
 (declare-top (special *ech* *tri* equations
-		      mul* $dispflag $nolabels *det*
+		      mul* *det*
 		      xm* xn* ax *linelabel*))
 
 ;;these are arrays.

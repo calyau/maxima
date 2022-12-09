@@ -14,8 +14,8 @@
 
 (declare-top (special opers
 		      aaaaa errset lessorder greatorder indlist
-		      $labels $aliases $props
-		      $infolists savefile
+		      $props
+		      savefile
 		      $values $functions $arrays
 		      $contexts context $activecontexts))
 
