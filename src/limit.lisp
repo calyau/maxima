@@ -3608,7 +3608,7 @@ ignoring dummy variables and array indices."
 		 (($mapatom e) ;if e is declared zero, return 0; otherwise e
 		     (if (eq '$zero ($csign e)) 0 e))
          ;; dispatch radcan on (positive integer)^Y
-         ((and (mexptp e) (integerp (cadr e))) ;;; (> (cadr e) 0))
+         ((and (mexptp e) (integerp (cadr e)) (> (cadr e) 0))
 		     ($radcan (ftake 'mexpt (cadr e) (extra-simp (caddr e)))))
 	     (($subvarp (mop e)) ;subscripted function
 		     (subfunmake 
