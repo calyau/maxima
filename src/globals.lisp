@@ -77,12 +77,10 @@
                              `(putprop ',var ',val ',ind)))
                        (second opts)))
          (setf opts (rest opts)))
-	((:setting-predicate setting-predicate)
+	(:setting-predicate
 	 ;; A :SETTING-PREDICATE is a function (symbol or lambda) of
 	 ;; one arg specifying the value that variable is to be set
 	 ;; to.  It should return non-NIL if the value is valid.
-	 ;;
-	 ;; SETTING-PREDICATE is allowed, but :SETTING-PREDICATE is preferred.
 	 ;;
 	 ;; WARNING: Do not also have a :properties item with an
 	 ;; 'assign property.  Currently this takes precedence.
@@ -92,6 +90,7 @@
 			(mseterr var val)))))
 	   (setf maybe-predicate
 		 `((putprop ',var ,assign-func 'assign))))
+	 ;; Skip over the predicate function.
 	 (setf opts (rest opts)))
         ((see-also modified-commands setting-list)
          ;; Not yet supported, but we need to skip over the following
