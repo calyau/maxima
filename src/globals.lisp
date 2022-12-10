@@ -37,7 +37,8 @@
               (setf (gethash ',var *variable-initial-values*)
                     ,val))))
         maybe-declare-type
-        maybe-set-props)
+        maybe-set-props
+	maybe-predicate)
 
     (do ((opts options (rest opts)))
         ((null opts))
@@ -68,7 +69,7 @@
         (in-core
          ;; Ignore this
          )
-       (:properties
+	(:properties
          (setf maybe-set-props
                (mapcar #'(lambda (o)
                            (destructuring-bind (ind val)
@@ -76,7 +77,23 @@
                              `(putprop ',var ',val ',ind)))
                        (second opts)))
          (setf opts (rest opts)))
-        ((see-also modified-commands setting-predicate setting-list)
+	((:setting-predicate setting-predicate)
+	 ;; A :SETTING-PREDICATE is a function (symbol or lambda) of
+	 ;; one arg specifying the value that variable is to be set
+	 ;; to.  It should return non-NIL if the value is valid.
+	 ;;
+	 ;; SETTING-PREDICATE is allowed, but :SETTING-PREDICATE is preferred.
+	 ;;
+	 ;; WARNING: Do not also have a :properties item with an
+	 ;; 'assign property.  Currently this takes precedence.
+	 (let ((assign-func
+		 `#'(lambda (var val)
+		     (unless (funcall ,(second opts) val)
+			(mseterr var val)))))
+	   (setf maybe-predicate
+		 `((putprop ',var ,assign-func 'assign))))
+	 (setf opts (rest opts)))
+        ((see-also modified-commands setting-list)
          ;; Not yet supported, but we need to skip over the following
          ;; item too which is the parameter for this option.
          (setf opts (rest opts)))
@@ -87,7 +104,8 @@
        ,@maybe-reset
        ,@maybe-declare-type
        (defvar ,var ,val ,doc)
-       ,@maybe-set-props)))
+       ,@maybe-set-props
+       ,@maybe-predicate)))
 
 (defun putprop (sym val  indic)
   (if (consp sym)
@@ -300,13 +318,13 @@
   If it is set to FALSE then the index will consist only of GENINDEX
   with no numeric suffix."
   modified-commands '$sum
-  setting-predicate #'(lambda (x) (or (null x) (integerp x))))
+  :setting-predicate #'(lambda (x) (or (null x) (and (integerp x) (>= x 0)))))
 
 (defmvar $genindex '$i
   "The alphabetic prefix used to generate the next variable of summation
   when necessary."
   modified-commands '$sum
-  setting-predicate #'symbolp)
+  :setting-predicate #'symbolp)
 
 (defmvar $zerobern t)
 (defmvar $simpsum nil)
