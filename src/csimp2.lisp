@@ -786,7 +786,7 @@
        (list (add2 (m* a c1) (m* c b1))
 	     (mul2 d b1)))))
 
-(declare-top (special $linsolve_params ax
+(declare-top (special ax
 		      *mosesflag))
 
 (defun xrutout (ax n m varl ind)

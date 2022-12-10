@@ -64,7 +64,7 @@
 	  $homog_hack
 	  $isolate_wrt_times $leftjust $letrat $letvarsimp
 	  $let_rule_packages
-	  $linsolvewarn $linsolve_params
+	  $linsolvewarn
 	  $lmxchar $logconcoeffp $lognegint
 	  $macroexpansion $macros $maperror $mapprint
 	  $matrix_element_transpose

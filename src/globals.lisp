@@ -552,6 +552,11 @@
 (defmvar $sparse nil)
 (defmvar $backsubst t)
 
+(defmvar $%rnum 0)
+
+(defmvar $linsolve_params t
+  "`linsolve' generates %Rnums")
+
 ;;------------------------------------------------------------------------
 ;; From matrix.lisp
 (defmvar $detout nil)

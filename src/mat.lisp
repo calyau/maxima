@@ -109,14 +109,10 @@
 
 (defvar *mosesflag nil)
 
-(defmvar $%rnum 0)
-
 (defun make-param ()
   (let ((param (intern (format nil "~A~D" '$%r (incf $%rnum)))))
     (tuchus $%rnum_list param)
     param))
-
-(defmvar $linsolve_params t "`linsolve' generates %Rnums")
 
 (defun ith (x n)
   (if (atom x) nil (nth (1- n) x)))
