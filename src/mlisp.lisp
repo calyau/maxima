@@ -1099,7 +1099,7 @@ wrapper for this."
 		(mseterr x y))
 	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
 	       ((and (eq x '$fpprintprec) (or (< y 0) (= y 1))) (mseterr x y))))
-	((member x '($genindex $optimprefix) :test #'eq) (if (not (symbolp y)) (mseterr x y)))
+	((member x '($optimprefix) :test #'eq) (if (not (symbolp y)) (mseterr x y)))
 	((eq x '$dotassoc) (cput 'mnctimes y 'associative))
 	((eq x 'modulus)
 	 (cond ((null y))
