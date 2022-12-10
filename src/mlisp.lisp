@@ -1079,14 +1079,14 @@ wrapper for this."
 	($ratvars msetchk) ($setcheck msetchk) ($gcd msetchk)
 	($dotassoc msetchk) ($ratwtlvl msetchk) ($ratfac msetchk)
 	($all neverset) ($numer numerset) ($fortindent msetchk)
-	($gensumnum msetchk) ($genindex msetchk) ($fpprintprec msetchk)
+	($fpprintprec msetchk)
 	($floatwidth msetchk) ($parsewindow msetchk) ($optimprefix msetchk)))
 
 (defun msetchk (x y)
   (cond ((member x '(*read-base* *print-base*) :test #'eq)
 	 (unless (typep y '(integer 2 36))
 	   (mseterr x y)))
-	((member x '($linel $fortindent $gensumnum $fpprintprec $floatwidth
+	((member x '($linel $fortindent $fpprintprec $floatwidth
 		   $parsewindow) :test #'eq)
 	 (if (not (fixnump y)) (mseterr x y))
          (if (eq x '$linel)
@@ -1095,7 +1095,7 @@ wrapper for this."
                     (mseterr x y))
                    (t
                     (setq linel y))))
-	 (cond ((and (member x '($fortindent $gensumnum $floatwidth) :test #'eq) (< y 0))
+	 (cond ((and (member x '($fortindent $floatwidth) :test #'eq) (< y 0))
 		(mseterr x y))
 	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
 	       ((and (eq x '$fpprintprec) (or (< y 0) (= y 1))) (mseterr x y))))
