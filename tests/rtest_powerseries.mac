@@ -359,5 +359,12 @@ ps: niceindices (powerseries (lambert_w(x), x, 0));
 (subst (inf = 5, ps), ev (%%, nouns));
 x - x^2 + 3*x^3/2 - 8*x^4/3 + 125*x^5/24;
 
+/* Test that gensumnum:false works */
+gensumnum:false;
+false;
+
+powerseries(log(1+x),x,0);
+-'sum(((-1)^i*x^i)/i,i,1,inf);
+
 (kill(all), 0);
 0$

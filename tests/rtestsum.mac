@@ -888,6 +888,21 @@ niceindices (sum (sum (1/(foo + foo0), foo, 1, n), foo0, 1, m));
 (reset (niceindicespref), 0);
 0;
 
+/* Test assignments to gensumnum and genindex */
+errcatch (gensumnum:-5);
+[];
+errcatch(genindex:4);
+[];
+gensumnum:false;
+false;
+genindex:'zot;
+'zot;
+
+(reset(gensumnum), gensumnum);
+0;
+(reset(genindex), genindex);
+'i;
+
 /* Tests for bashindices, which used to not transform all indices in nested
  * sums and products (only the outermost)
  */
