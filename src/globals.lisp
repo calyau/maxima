@@ -309,7 +309,8 @@
   the Cauchy product to be used rather than the usual product. In the
   Cauchy product the index of the inner summation is a function of the
   index of the outer one rather than varying independently."
-  modified-commands '$sum)
+  modified-commands '$sum
+  :properties ((evflag t)))
 
 ;; sum begins
 (defmvar $gensumnum 0
@@ -326,8 +327,12 @@
   :setting-predicate #'symbolp)
 
 (defmvar $zerobern t)
-(defmvar $simpsum nil)
-(defmvar $simpproduct nil)
+(defmvar $simpsum nil
+  nil
+  :properties ((evflag t)))
+(defmvar $simpproduct nil
+  nil
+  :properties ((evflag t)))
 
 (defvar *infsumsimp t)
 
@@ -408,7 +413,9 @@
 
 ;;------------------------------------------------------------------------
 ;; From csimp.lisp
-(defmvar $demoivre nil)
+(defmvar $demoivre nil
+  nil
+  :properties ((evflag t)))
 (defmvar $nointegrate nil)
 (defmvar $lhospitallim 4)
 (defmvar $tlimswitch t)
@@ -577,7 +584,9 @@
 ;;------------------------------------------------------------------------
 ;; From matrix.lisp
 (defmvar $detout nil)
-(defmvar $ratmx nil)
+(defmvar $ratmx nil
+  nil
+  :properties ((evflag t)))
 (defmvar $matrix_element_mult "*")  ;;; Else, most useful when "."
 (defmvar $matrix_element_add "+")
 
@@ -586,7 +595,8 @@
 (defmvar $dotscrules nil
   "Causes a non-commutative product of a scalar and another term to be
   simplified to a commutative product.  Scalars and constants are
-  carried to the front of the expression.")
+  carried to the front of the expression."
+  :properties ((evflag t)))
 
 (defmvar $dotdistrib nil
   "Causes every non-commutative product to be expanded each time it is
@@ -649,15 +659,20 @@
     $integervalued))
 
 (defmvar $features (cons '(mlist simp) (append featurel nil)))
-(defmvar $%enumer nil)
+(defmvar $%enumer nil
+  nil
+  :properties ((evflag t)))
 (defmvar $float nil
   ;; From hayat.lisp
   "Indicates whether to convert rational numbers to floating point
-  numbers.")
+  numbers."
+  :properties ((evflag t)))
 (defmvar $translate nil)
 (defmvar $transrun t)
 (defmvar $savedef t)
-(defmvar $infeval nil)
+(defmvar $infeval nil
+  nil
+  :properties ((evflag t)))
 (defmvar $piece '$piece)
 
 ;; These three variables are what get stuck in array slots as magic
@@ -719,7 +734,9 @@
 ;;------------------------------------------------------------------------
 ;; From rat3b.lisp
 (defmvar $ratwtlvl nil) 
-(defmvar $ratalgdenom t)       ;If T then denominator is rationalized.
+(defmvar $ratalgdenom t        ;If T then denominator is rationalized.
+  nil
+  :properties ((evflag t)))
 
 ;;------------------------------------------------------------------------
 ;; From rat3c.lisp
@@ -748,14 +765,22 @@
 ;; From rat3e.lisp
 
 ;; User level global variables.
-(defmvar $keepfloat nil  "If `t' floating point coeffs are not converted to rationals")
-(defmvar $factorflag nil "If `t' constant factor of polynomial is also factored")
+(defmvar $keepfloat nil
+  "If `t' floating point coeffs are not converted to rationals"
+  :properties ((evflag t)))
+(defmvar $factorflag nil
+  "If `t' constant factor of polynomial is also factored"
+  :properties ((evflag t)))
 (defmvar $dontfactor '((mlist)))
 (defmvar $norepeat t)
 (defmvar $ratweights '((mlist simp)))
 
-(defmvar $algebraic nil)
-(defmvar $ratfac nil "If `t' cre-forms are kept factored")
+(defmvar $algebraic nil
+  nil
+  :properties ((evflag t)))
+(defmvar $ratfac nil
+  "If `t' cre-forms are kept factored"
+  :properties ((evflag t)))
 (defmvar $ratvars '((mlist simp)))
 (defmvar $facexpand t)
 
@@ -814,13 +839,18 @@
   replaced by their values.  It also turns on the FLOAT switch."
   see-also ($numerval $float))
 
-(defmvar $simp t "Enables simplification.")
+(defmvar $simp t
+  "Enables simplification."
+  :properties ((evflag t)))
 
 (defmvar $sumexpand nil
   "If TRUE, products of sums and exponentiated sums go into nested
-  sums.")
+  sums."
+  :properties ((evflag t)))
 
-(defmvar $numer_pbranch nil)
+(defmvar $numer_pbranch nil
+  nil
+  :properties ((evflag t)))
 
 ;; Switches dealing with expansion.
 (defmvar $expop 0
@@ -869,15 +899,29 @@
 (defmvar $algepsilon 100000000)
 (defmvar $true t)
 (defmvar $false nil)
-(defmvar $logabs nil)
-(defmvar $listarith t)
+(defmvar $logabs nil
+  nil
+  :properties ((evflag t)))
+(defmvar $listarith t
+  nil
+  :properties ((evflag t)))
 (defmvar $domain '$real)
-(defmvar $m1pbranch nil)
+(defmvar $m1pbranch nil
+  nil
+  :properties ((evflag t)))
 (defmvar $%e_to_numlog nil)
-(defmvar $%emode t)
-(defmvar $ratsimpexpons nil)
-(defmvar $logexpand t) ; Possible values are T, $ALL and $SUPER
-(defmvar $radexpand t)
+(defmvar $%emode t
+  nil
+  :properties ((evflag t)))
+(defmvar $ratsimpexpons nil
+  nil
+  :properties ((evflag t)))
+(defmvar $logexpand t ; Possible values are T, $ALL and $SUPER
+  nil
+  :properties ((evflag t))) 
+(defmvar $radexpand t
+  nil
+  :properties ((evflag t)))
 (defmvar $subnumsimp nil)
 (defmvar $logsimp t)
 
@@ -899,7 +943,8 @@
 
 (defmvar $programmode t
   "Causes SOLVE to return its answers explicitly as elements in a list
-  rather than printing E-labels.")
+  rather than printing E-labels."
+  :properties ((evflag t)))
 
 (defmvar $solvefactors t
   "If T, then SOLVE will try to factor the expression.  The FALSE
@@ -972,13 +1017,21 @@
 (defmvar $%piargs t)
 (defmvar $%iargs t)
 (defmvar $triginverses t)
-(defmvar $trigexpand nil)
+(defmvar $trigexpand nil
+  nil
+  :properties ((evflag t)))
 (defmvar $trigexpandplus t)
 (defmvar $trigexpandtimes t)
 (defmvar $trigsign t)
-(defmvar $exponentialize nil)
-(defmvar $logarc nil)
-(defmvar $halfangles nil)
+(defmvar $exponentialize nil
+  nil
+  :properties ((evflag t)))
+(defmvar $logarc nil
+  nil
+  :properties ((evflag t)))
+(defmvar $halfangles nil
+  nil
+  :properties ((evflag t)))
 
 ;; Simplified shortcuts for constant expressions.
 (defvar %pi//4 '((mtimes simp) ((rat simp) 1 4.) $%pi))
