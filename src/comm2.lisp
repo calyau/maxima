@@ -643,7 +643,7 @@
 
 ;;;; MAPF
 
-(defmspec $scanmap (l)
+(defmspec ($scanmap :properties ((evok t))) (l)
   (let ((scanmapp t))
     (resimplify (apply #'scanmap1 (mmapev l)))))
 

@@ -1039,10 +1039,6 @@ wrapper for this."
 	 (mevalatoms (mmacroexpand exp)))
 	(t (cons (car exp) (mapcar #'mevalatoms (cdr exp))))))
 
-;; evok properties
-(mapc #'(lambda (x) (putprop x t 'evok))
-      '($map $maplist $fullmap $matrixmap $fullmapl $outermap $scanmap $apply))
-
 (defun evfunmake (fun exp)
   (if (msetqp exp)
       (list (car exp) (cadr exp) (evfunmake fun (caddr exp)))
@@ -1152,7 +1148,7 @@ wrapper for this."
     (badfunchk (cadr l) op nil)
     (cons op (mapcar #'meval (cddr l)))))
 
-(defmspec $map (l)
+(defmspec ($map :properties ((evok t))) (l)
   (apply #'map1 (mmapev l)))
 
 (defun-maclisp map1 n
@@ -1174,7 +1170,7 @@ wrapper for this."
 			 (t (merror (intl:gettext "map: arguments must have same main operator; found: ~M, ~M") op (mop (first argl)))))
 		   (mcons-op-args op (apply #'mmapcar (cons (arg 1) cdrl)))))))
 
-(defmspec $maplist (l)
+(defmspec ($maplist :properties ((evok t))) (l)
   (let ((maplp t) res)
     (setq res (apply #'map1 (mmapev l)))
     (cond ((atom res) (list '(mlist) res))
@@ -1209,7 +1205,7 @@ wrapper for this."
 (defmfun $mapatom (x)
   (if (mapatom (specrepcheck x)) t))
 
-(defmspec $fullmap (l)
+(defmspec ($fullmap :properties ((evok t))) (l)
   (setq l (mmapev l))
   (fmap1 (car l) (cdr l) nil))
 
@@ -1257,11 +1253,11 @@ wrapper for this."
 	      (t (if $mapprint (mtell (intl:gettext "fullmap: calling 'apply'.~%")))
 		 (return (funcer fn argl)))))))
 
-(defmspec $matrixmap (l)
+(defmspec ($matrixmap :properties ((evok t))) (l)
   (let ((fmaplvl 2))
     (apply #'fmapl1 (mmapev l))))
 
-(defmspec $fullmapl (l)
+(defmspec ($fullmapl :properties ((evok t))) (l)
   (apply #'fmapl1 (mmapev l)))
 
 (defun fmapl1 (fun &rest args)
@@ -1281,7 +1277,7 @@ wrapper for this."
 	argl
 	(cons header (cdr argl)))))
 
-(defmfun $outermap (x y &rest z)
+(defmfun ($outermap :properties ((evok t))) (x y &rest z)
   (if z
     (apply #'outermap1 x y z)
     (fmapl1 x y)))
@@ -2090,7 +2086,7 @@ wrapper for this."
 (defun mapply (a b c)
   (mapply1 a b c nil))
 
-(defmfun $apply (fun arg)
+(defmfun ($apply :properties ((evok t))) (fun arg)
   (unless ($listp arg)
     (merror (intl:gettext "apply: second argument must be a list; found: ~M") arg))
   (let ((fun-opr (getopr fun)))

@@ -111,9 +111,23 @@
 (defmacro hot-coef (p)
   `(pdis (caddr (cadr (rat-no-ratfac ,p)))))
 
-(defmacro defmspec (function . rest)
-  `(progn
-     (defun-prop (,function mfexpr*) ,@rest)))
+(defmacro defmspec (name-or-list &rest rest)
+  ;; NAME-OR-LIST is either a symbol or a list.  If a symbol, then
+  ;; it's the name of the function.  If a list it must be of the form
+  ;; (function :properties plist) where plist is a list of properties
+  ;; that should be set for this function.  The format of plist is the
+  ;; same as for defmvar :properties.
+  (destructuring-bind (function &key properties)
+      (if (symbolp name-or-list)
+	  (list name-or-list)
+	  name-or-list)
+    `(progn
+       (defun-prop (,function mfexpr*) ,@rest)
+       ,@(mapcar #'(lambda (p)
+		     (destructuring-bind (ind val)
+			 p
+		       `(putprop ',function ',val ',ind)))
+		 properties))))
 
 ;; Setf hacking.
 
