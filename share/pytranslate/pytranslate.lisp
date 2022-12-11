@@ -338,6 +338,7 @@
 						(symbol ,*maxima-variables-dictionary-name*)))))))))
 
 (defun mprogn-to-ir (form &optional (func-args '()))
+  (declare (ignore func-args))
   (let ((func_name (symbol-to-ir (gensym "$BLOCK"))))
     (setf *ir-forms-to-append*
                         (cons `(func-def
@@ -630,6 +631,7 @@
 	  (ir-to-python (cadr form) indentation-level)))
 
 (defun cond-else-to-python (form indentation-level)
+  (declare (ignore form indentation-level))
   (format nil "else:"))
 
 (defun cond-elif-to-python (form indentation-level)
@@ -661,6 +663,7 @@
 	  (ir-to-python (caddr form) indentation-level)))
 
 (defun del-to-python (form indentation-level)
+  (declare (ignore indentation-level))
   (format nil "del ~a"
 	  (ir-to-python (cadr form))))
 
@@ -672,21 +675,25 @@
 	   (cddr form))))
 
 (defun string-to-python (form indentation-level)
+  (declare (ignore indentation-level))
   (format nil "~c~a~c"
 	  #\"
 	  (cadr form)
 	  #\"))
   
 (defun assign-to-python (form indentation-level)
+  (declare (ignore indentation-level))
   (format nil "~a = ~a"
 	  (ir-to-python (cadr form))
 	  (ir-to-python (caddr form))))
 
 (defun asterisk-to-python (form indentation-level)
+  (declare (ignore indentation-level))
   (format nil "*~a"
 	  (ir-to-python (cadr form))))
 
 (defun symbol-to-python (form indentation-level)
+  (declare (ignore indentation-level))
   (cadr form))
 
 (defun op-no-bracket-template (op)
@@ -739,6 +746,7 @@
 	   (cdr form))))
 
 (defun num-to-python (form indentation-level)
+  (declare (ignore indentation-level))
   (cond ((eql 0 (clast form)) (ir-to-python (cadr form)))
 	(t "1j")))
 
