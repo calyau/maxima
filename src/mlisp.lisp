@@ -1070,13 +1070,9 @@ wrapper for this."
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-      '(($linel msetchk) (*read-base* msetchk) (*print-base* msetchk) (modulus msetchk)
-	($infolists neverset) ($trace neverset) ($ratweights msetchk)
-	($ratvars msetchk) ($setcheck msetchk) ($gcd msetchk)
-	($dotassoc msetchk) ($ratwtlvl msetchk) ($ratfac msetchk)
-	($all neverset) ($numer numerset) ($fortindent msetchk)
-	($fpprintprec msetchk)
-	($floatwidth msetchk) ($parsewindow msetchk) ($optimprefix msetchk)))
+      '((*read-base* msetchk) (*print-base* msetchk)
+	($all neverset)
+	($floatwidth msetchk)))
 
 (defun msetchk (x y)
   (cond ((member x '(*read-base* *print-base*) :test #'eq)

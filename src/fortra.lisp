@@ -24,7 +24,8 @@
   "The number of spaces (beyond 6) to indent Fortran statements as they
    are printed."
   fixnum
-  modified-commands '$fortran)
+  modified-commands '$fortran
+  :properties ((assign msetchk)))
 
 (defmvar $fortfloat nil "Something JPG is working on.")
 

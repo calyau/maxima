@@ -16,7 +16,9 @@
 
 (defvar *subexp* (make-array 64 :initial-element nil))
 
-(defmvar $optimprefix '$%)
+(defmvar $optimprefix '$%
+  nil
+  :properties ((assign msetchk)))
 
 (defmvar $optimwarn t "warns if `optimize' encounters a special form.")
 

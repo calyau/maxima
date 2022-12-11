@@ -836,7 +836,8 @@
 each side of the error-point when a syntax (parsing) MAXIMA-ERROR occurs.  This
 option is especially useful on slow terminals.  Setting it to -1 causes the
 entire input string to be printed out when an MAXIMA-ERROR occurs."
-	 fixnum)
+  fixnum
+  :properties ((assign msetchk)))
 
 
 ;;;; Misplaced definitions

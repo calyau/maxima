@@ -473,7 +473,9 @@
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-(defmvar $linel 79.)
+(defmvar $linel 79.
+  nil
+  :properties ((assign msetchk)))
 (defvar linel 79.)
 (defvar ttyheight 24.)
 
@@ -504,7 +506,8 @@
 (defmvar $fpprintprec 0
   "Controls the number of significant digits printed for floats.  If
   0, then full precision is used."
-  fixnum)
+  fixnum
+  :properties ((assign msetchk)))
 
 (defmvar $maxfpprintprec (ceiling (log (expt 2 (float-digits 1.0)) 10.0))
   "The maximum number of significant digits printed for floats.")
@@ -608,7 +611,8 @@
   "Causes a non-commutative product to be considered associative, so
   that A . (B . C) is simplified to A . B . C.  If this flag is off,
   dot is taken to be right associative, i.e.  A . B . C is simplified
-  to A . (B . C).")
+  to A . (B . C)."
+  :properties ((assign msetchk)))
 
 (defmvar $doallmxops t
   "Causes all operations relating to matrices (and lists) to be carried
@@ -687,7 +691,9 @@
   "Used for safely `munbind'ing incorrectly-bound variables."
   no-reset)
 
-(defmvar $setcheck nil)
+(defmvar $setcheck nil
+  nil
+  :properties ((assign msetchk)))
 
 ;;Function Call stack each element is
 ;; (fname . bindlist) where bindlist was the value at time of entry.
@@ -733,7 +739,9 @@
 
 ;;------------------------------------------------------------------------
 ;; From rat3b.lisp
-(defmvar $ratwtlvl nil) 
+(defmvar $ratwtlvl nil
+  nil
+  :properties ((assign msetchk))) 
 (defmvar $ratalgdenom t        ;If T then denominator is rationalized.
   nil
   :properties ((evflag t)))
@@ -743,7 +751,9 @@
 ;; List of GCD algorithms.  Default one is first.
 (defmvar *gcdl* '($spmod $subres $ez $red $mod $algebraic))
 
-(defmvar $gcd (car *gcdl*))		;Sparse Modular
+(defmvar $gcd (car *gcdl*)		;Sparse Modular
+  nil
+  :properties ((assign msetchk)))
 
 ;;------------------------------------------------------------------------
 ;; From rat3d.lisp
@@ -773,15 +783,20 @@
   :properties ((evflag t)))
 (defmvar $dontfactor '((mlist)))
 (defmvar $norepeat t)
-(defmvar $ratweights '((mlist simp)))
+(defmvar $ratweights '((mlist simp))
+  nil
+  :properties ((assign msetchk)))
 
 (defmvar $algebraic nil
   nil
   :properties ((evflag t)))
 (defmvar $ratfac nil
   "If `t' cre-forms are kept factored"
-  :properties ((evflag t)))
-(defmvar $ratvars '((mlist simp)))
+  :properties ((evflag t)
+	       (assign msetchk)))
+(defmvar $ratvars '((mlist simp))
+  nil
+  :properties ((assign msetchk)))
 (defmvar $facexpand t)
 
 (defmvar genvar nil
@@ -837,7 +852,8 @@
   numerical arguments to be evaluated in floating point.  It causes
   variables in an expression which have been given NUMERVALs to be
   replaced by their values.  It also turns on the FLOAT switch."
-  see-also ($numerval $float))
+  see-also ($numerval $float)
+  :properties ((assign numerset)))
 
 (defmvar $simp t
   "Enables simplification."
@@ -976,8 +992,9 @@
 (defmvar $infolists
   '((mlist simp) $labels $values $functions $macros $arrays
                  $myoptions $props $aliases $rules $gradefs
-                 $dependencies $let_rule_packages $structures))
-
+                 $dependencies $let_rule_packages $structures)
+  nil
+  :properties ((assign neverset)))
 (defmvar $labels (list '(mlist simp)))
 (defmvar $dispflag t)
 

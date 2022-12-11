@@ -25,7 +25,9 @@
 
 ;; Global variables referenced throughout the rational function package.
 
-(defmvar modulus nil "Global switch for doing modular arithmetic")
+(defmvar modulus nil
+  "Global switch for doing modular arithmetic"
+  :properties ((assign msetchk)))
 
 ;; CQUOTIENT
 ;;

@@ -186,7 +186,9 @@
 
 ;;; User interface functions.
 
-(defmvar $trace (list '(mlist)) "List of functions actively traced")
+(defmvar $trace (list '(mlist))
+  "List of functions actively traced"
+  :properties ((assign neverset)))
 
 (defun mlistcan-$all (fun llist default)
   "totally random utility function"
