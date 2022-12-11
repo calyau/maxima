@@ -249,7 +249,7 @@
 
 (defmvar $logconcoeffp nil)
 
-(defmfun $logcontract (e)
+(defmfun ($logcontract :properties ((evfun t))) (e)
   (lgcreciprocal (logcon e))) ; E is assumed to be simplified.
 
 (defun logcon (e)
@@ -386,7 +386,7 @@
 
 ;;;; RTCON
 
-(defmfun $rootscontract (e)	       ; E is assumed to be simplified
+(defmfun ($rootscontract :properties ((evfun t))) (e)	       ; E is assumed to be simplified
   (let ((radpe (and $radexpand (not (eq $radexpand '$all)) (eq $domain '$real)))
 	($radexpand nil))
     (rtcon e radpe)))

@@ -55,7 +55,7 @@
 ;;	*NOEXPAND	indicates that trig functions of sums of
 ;;			angles are not to be used.
 
-(defmfun $trigreduce (exp &optional (var '*novar))
+(defmfun ($trigreduce :properties ((evfun t))) (exp &optional (var '*novar))
   (let ((*trigred t)
         (*noexpand t)
         $trigexpand $verbose $ratprint)

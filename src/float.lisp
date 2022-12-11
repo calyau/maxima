@@ -718,7 +718,7 @@
 (defun bcons (s)
   `((bigfloat simp ,fpprec) . ,s))
 
-(defmfun $bfloat (x)
+(defmfun ($bfloat :properties ((evfun t))) (x)
   (let (y)
     (cond ((bigfloatp x))
 	  ((or (numberp x)

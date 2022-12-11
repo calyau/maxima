@@ -90,13 +90,13 @@
 
 ;;; Rectform gives a result of the form a+b*%i.
 
-(defmfun $rectform (xx)
+(defmfun ($rectform :properties ((evfun t))) (xx)
   (let ((ris (trisplit xx)))
     (add (car ris) (mul (cdr ris) '$%i))))
 
 ;;; Polarform gives a result of the form a*%e^(%i*b).
 
-(defmfun $polarform (xx)
+(defmfun ($polarform :properties ((evfun t))) (xx)
   (cond ((mbagp xx)
 	 (cons (car xx) (mapcar #'$polarform (cdr xx))))
 	(t

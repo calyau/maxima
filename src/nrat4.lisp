@@ -418,7 +418,7 @@
 
 ;; subtitle radcan
 
-(defmfun $radcan (exp)
+(defmfun ($radcan :properties ((evfun t))) (exp)
   (cond ((mbagp exp) (cons (car exp) (mapcar '$radcan (cdr exp))))
 	(t (let (($ratsimpexpons t))
 	     (simplify (let (($expop 0) ($expon 0))
