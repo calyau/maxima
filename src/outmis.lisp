@@ -21,8 +21,12 @@
 
 (declare-top (special $exptisolate))
 
-(defmvar $exptisolate nil)
-(defmvar $isolate_wrt_times nil)
+(defmvar $exptisolate nil
+  nil
+  :properties ((evflag t)))
+(defmvar $isolate_wrt_times nil
+  nil
+  :properties ((evflag t)))
 
 (defmfun $isolate (e *xvar)
   (iso1 e (getopr *xvar)))

@@ -44,7 +44,9 @@
 (defmvar $on t)
 (defmvar $off nil)
 (defmvar $limitdomain '$complex)
-(defmvar $lognegint nil)
+(defmvar $lognegint nil
+  nil
+  :properties ((evflag t)))
 (defmvar $distribute_over t) ; If T, functions are distributed over bags.
 
 (defvar expandp nil)

@@ -21,7 +21,9 @@
 
 (defmvar $letvarsimp nil)
 
-(defmvar $letrat nil) 
+(defmvar $letrat nil
+  nil
+  :properties ((evflag t))) 
 
 (defmvar $default_let_rule_package '$default_let_rule_package
   "The name of the default rule package used by `let' and `letsimp'")
