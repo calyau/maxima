@@ -10,7 +10,7 @@
 (defparameter *autoconf-datadir* "@expanded_datadir@")
 (defparameter *autoconf-infodir* "@expanded_infodir@")
 (defparameter *autoconf-host* "@host@")
-;; This variable is kept for backwards compatibiliy reasons:
+;; This variable is kept for backwards compatibility reasons:
 ;; We seem to be in the fortunate position that we sometimes need to check for windows.
 ;; But at least until dec 2015 we didn't need to check for a specific windows flavour.
 (defparameter *autoconf-win32* "@win32@")

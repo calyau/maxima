@@ -2095,7 +2095,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; positive real numbers predicate
 (defun realpositivep (x) (or (and (realp x) (> x 0)) nil))
 
-;; posible values for the axes option
+;; possible values for the axes option
 (defun axesoptionp (o) (if (member o '($x $y $solid)) t nil))
 
 ;; the 13 possibilities for the point types
@@ -2799,7 +2799,7 @@ Several functions depending on the two variables v1 and v2:
 ;; Given a Maxima list with 3 elements, checks whether it represents a function
 ;; defined in a 2-dimensional domain or a parametric representation of a
 ;; 3-dimensional surface, depending on two parameters.
-;; The return value will be a Maxima list if the test is succesfull or nil
+;; The return value will be a Maxima list if the test is successful or nil
 ;; otherwise.
 ;; In the case of a function and a 2D domain, it returns the domain, validated.
 ;; When it is a parametric representation it returns an empty Maxima list.

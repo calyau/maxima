@@ -84,7 +84,7 @@
 ;;; Squaring both sides
 ;;;     X + Y = A + B + 2 sqrt(AB)           (4.10)
 ;;;
-;;; One way to satify this is to set X=A+B and Y^2=4AB
+;;; One way to satisfy this is to set X=A+B and Y^2=4AB
 ;;;
 ;;; Also have
 ;;;     sqrt(X-Y) = sqrt(A) - sqrt(B)          (4.11)

@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -104,7 +104,7 @@
 (defmfun $load (filename)
   "This is the generic file loading function.
   LOAD(filename) will either BATCHLOAD or LOADFILE the file,
-  depending on wether the file contains Macsyma, Lisp, or Compiled
+  depending on whether the file contains Macsyma, Lisp, or Compiled
   code. The file specifications default such that a compiled file
   is searched for first, then a lisp file, and finally a macsyma batch
   file. This command is designed to provide maximum utility and

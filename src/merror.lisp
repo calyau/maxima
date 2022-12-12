@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -118,7 +118,7 @@
   (format t "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
-  "Symbols to bind the too-large `maxima-error' expresssions to")
+  "Symbols to bind the too-large `maxima-error' expressions to")
 
 (putprop '$error_syms 'assign-symbols 'assign)
 

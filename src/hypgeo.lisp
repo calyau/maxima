@@ -2479,7 +2479,7 @@
      ((coeffpp) (c equal 0)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Algorithm 2.4: Laplace transfom of the Whittaker function
+;;; Algorithm 2.4: Laplace transform of the Whittaker function
 ;;;
 ;;; Test for Whittaker W function.  Simplify this if possible, or
 ;;; convert to Whittaker M function.
@@ -2544,7 +2544,7 @@
                                         (add *par* (div a 2)))))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Algorithm 2.5: Laplace transfom of bessel_k(0,a*t)
+;;; Algorithm 2.5: Laplace transform of bessel_k(0,a*t)
 ;;;
 ;;; The general algorithm handles the Bessel K function for an order |v|<1.
 ;;; but does not include the special case v=0. Return the Laplace transform:

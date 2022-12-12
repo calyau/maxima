@@ -1,6 +1,6 @@
 ;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -2157,7 +2157,7 @@ in the interval of integration.")
       (t ()))))
 
 (defun real-branch (exponent value)
-  ;; Says wether (m^t value exponent) has at least one real branch.
+  ;; Says whether (m^t value exponent) has at least one real branch.
   ;; Only works for values of 1 and -1 now.  Returns $yes $no
   ;; $unknown.
   (cond ((equal value 1.)

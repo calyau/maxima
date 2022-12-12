@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -481,7 +481,7 @@
 ;;;	Implementation Notes ....
 ;;;
 ;;;	JPG	Chars like ^A, ^B, ... get left around after interrupts and
-;;;		should be thrown away by the scanner if not used as editting
+;;;		should be thrown away by the scanner if not used as editing
 ;;;		commands.
 ;;;
 ;;;	KMP	There is RBP stuff in DISPLA, too. Probably this sort of

@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -21,7 +21,7 @@
 ;;; LDISPLAY(X) gives X=10 of course. Sometimes it evaluates to get
 ;;; the left hand side, and sometimes it doesn't. It has its own
 ;;; private fucking version of the macsyma evaluator.
-;;; To see multiple evaluation lossage in the interperter, try
+;;; To see multiple evaluation lossage in the interpreter, try
 ;;; these: LDISPLAY(F(PRINT("FOOBAR")))$
 
 
@@ -57,7 +57,7 @@
 ;;; arguments to functions twice. Here I only evaluate non-atomic
 ;;; things once, and make sure that the order of evaluation is
 ;;; pretty much correct. I say "pretty much" because MAKE-VALUES
-;;; does the optmization of not generating a temporary for a variable.
+;;; does the optimization of not generating a temporary for a variable.
 ;;; DISPLAY(FOO(Z,Z:35)) will loose because the second argument will
 ;;; be evaluated first. I don't seriously expect anyone to find this
 ;;; bug.
