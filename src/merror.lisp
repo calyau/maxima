@@ -175,13 +175,7 @@
     (fresh-line))
   '$done)
 
-(defun read-only-assign (var val)
-  (if munbindp
-      'munbindp
-      (merror (intl:gettext "assignment: attempting to assign read-only variable ~:M the value ~M") var val)))
-
-
-(defprop $error read-only-assign  assign)
+(defprop $error neverset assign)
 
 ;; RAT-ERROR (function)
 ;;

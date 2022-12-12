@@ -1122,11 +1122,13 @@ wrapper for this."
   (declare (ignore assign-var))
   (mset '$float y))
 
+;; Variables that are read-only and should never changed by the user.
+;; This is a possible value for the 'assign property.
 (defun neverset (x assign-val)
-  (declare (ignore assign-val))
   (if munbindp 
       'munbindp 
-      (merror (intl:gettext "assignment: cannot assign to ~:M") x)))
+      (merror (intl:gettext "assignment: attempting to assign read-only variable ~:M the value ~M")
+	      x assign-val)))
 
 ;; Check assignment to be a positive integer including zero
 (defun posintegerset (x y)
