@@ -1084,6 +1084,7 @@ wrapper for this."
 	((eq x '$ratfac)
 	 (if (and y $ratwtlvl)
 	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))
+	#+nil
 	((eq x '$ratweights)
 	 (cond ((not ($listp y)) (mseterr x y))
 	       ((null (cdr y)) (kill1 '$ratweights))

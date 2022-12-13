@@ -807,7 +807,14 @@
 (defmvar $norepeat t)
 (defmvar $ratweights '((mlist simp))
   nil
-  :properties ((assign 'msetchk)))
+  :properties ((assign
+		#'(lambda (name val)
+		    (cond ((not ($listp val))
+			   (mseterr name val))
+			  ((null (cdr val))
+			   (kill1 '$ratweights))
+			  (t
+			   (apply #'$ratweight (cdr val))))))))
 
 (defmvar $algebraic nil
   nil
