@@ -511,7 +511,13 @@
   "Controls the number of significant digits printed for floats.  If
   0, then full precision is used."
   fixnum
-  :properties ((assign msetchk)))
+  ;;:properties ((assign msetchk))
+  :setting-predicate #'(lambda (val)
+			 ;; $fpprintprec must be a non-negative fixnum
+			 ;; and also cannot be equal to 1.
+			 (and (fixnump val)
+			      (>= val 0)
+			      (/= val 1))))
 
 (defmvar $maxfpprintprec (ceiling (log (expt 2 (float-digits 1.0)) 10.0))
   "The maximum number of significant digits printed for floats.")
