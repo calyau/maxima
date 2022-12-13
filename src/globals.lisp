@@ -812,10 +812,14 @@
 (defmvar $algebraic nil
   nil
   :properties ((evflag t)))
+
 (defmvar $ratfac nil
   "If `t' cre-forms are kept factored"
   :properties ((evflag t)
-	       (assign 'msetchk)))
+	       (assign #'(lambda (name val)
+			   (when (and val $ratwtlvl)
+			       (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time.")))))))
+
 (defmvar $ratvars '((mlist simp))
   nil
   :properties ((assign #'(lambda (name val)

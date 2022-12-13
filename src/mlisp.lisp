@@ -1080,6 +1080,7 @@ wrapper for this."
 	#+nil
 	((eq x '$ratvars)
 	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
+	#+nil
 	((eq x '$ratfac)
 	 (if (and y $ratwtlvl)
 	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))
