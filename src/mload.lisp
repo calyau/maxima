@@ -603,7 +603,7 @@
 
 (defun save-linenumbers (&key (c-lines t) d-lines (from 1) (below $linenum) a-list
 			 (file  "/tmp/lines")
-			 &aux input-symbol (linel 79))
+			 &aux input-symbol ($linel 79))
   (cond ((null a-list) (setq a-list (loop for i from from below below collecting i))))
   (with-open-file (st file :direction :output)
     (format st "/* -*- Mode: MACSYMA; Package: MACSYMA -*- */")

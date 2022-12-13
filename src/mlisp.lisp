@@ -29,7 +29,7 @@ or if apply is being used are printed.")
 		      $numer
 		      opers
 		      *alphabet* $%%
-		      $macros linel $ratwtlvl
+		      $macros $ratwtlvl
 		      *gcdl*
 		      *builtin-$props*))
 
@@ -1084,9 +1084,7 @@ wrapper for this."
          (if (eq x '$linel)
              (cond ((not (and (> y 0)         ; at least one char per line
                               (< y 1000001))) ; arbitrary chosen big value
-                    (mseterr x y))
-                   (t
-                    (setq linel y))))
+                    (mseterr x y))))
 	 (cond ((and (member x '($fortindent $floatwidth) :test #'eq) (< y 0))
 		(mseterr x y))
 	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))

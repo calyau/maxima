@@ -476,7 +476,6 @@
 (defmvar $linel 79.
   nil
   :properties ((assign msetchk)))
-(defvar linel 79.)
 (defvar ttyheight 24.)
 
 (defmvar $known_index_properties '((mlist) $presubscript $presuperscript $postsubscript $postsuperscript))
