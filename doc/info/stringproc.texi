@@ -2056,7 +2056,7 @@ return the corresponding list of @var{len} octets.
 
 The computation of the returned value is described in @code{RFC 3447}, 
 appendix @code{B.2.1 MGF1}. 
-@code{SHA1} ist used as hash function, i.e. the randomness of the computed number 
+@code{SHA1} is used as hash function, i.e. the randomness of the computed number
 relies on the randomness of @code{SHA1} hashes.
 
 Example:

@@ -4,7 +4,7 @@ Maxima \- Eine Common Lisp Version von MACSYMA, einem Programm f\(:ur symbolisch
 .LP
 Rmaxima \- Eine Version von Maxima, die Befehls-Autovervollst\(:andigung beherrscht.
 .LP
-Xmaxima \- Eine Version von Maxima mit einem einfachen graphischen Benutzerinterface.
+Xmaxima \- Eine Version von Maxima mit einer einfachen graphischen Benutzerinterface.
 
 .SH "SYNTAX" 
 .B maxima
@@ -294,7 +294,7 @@ Maxima Hilfs-Skripte.
 .SH UMGEBUNGSVARIABLEN
 .TP
 \fBMAXIMA_USERDIR\fR
-Directory f\(:ur benutzerspezifische Einstellgungsdateien.
+Directory f\(:ur benutzerspezifische Einstellungsdateien.
 Der standardm\(:assige Suchpfad von Maxima beinhaltet \fBMAXIMA_USERDIR\fR.
 Standardwert: \fB$HOME/.maxima\fR.
 .TP
