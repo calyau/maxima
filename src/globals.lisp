@@ -475,7 +475,12 @@
 
 (defmvar $linel 79.
   nil
-  :properties ((assign msetchk)))
+  ;;:properties ((assign msetchk))
+  :setting-predicate #'(lambda (val)
+			 ;; The value must be fixnum within range.
+			 ;; The upper limit was arbitrarily chosen.
+			 (and (fixnump val)
+			      (< 0 val 1000001))))
 (defvar ttyheight 24.)
 
 (defmvar $known_index_properties '((mlist) $presubscript $presuperscript $postsubscript $postsuperscript))

@@ -1078,10 +1078,11 @@ wrapper for this."
   (cond ((member x '(*read-base* *print-base*) :test #'eq)
 	 (unless (typep y '(integer 2 36))
 	   (mseterr x y)))
-	((member x '($linel $fortindent $fpprintprec $floatwidth
+	((member x '(#+nil $linel $fortindent $fpprintprec $floatwidth
 		   $parsewindow) :test #'eq)
 	 (if (not (fixnump y)) (mseterr x y))
-         (if (eq x '$linel)
+         #+nil
+	 (if (eq x '$linel)
              (cond ((not (and (> y 0)         ; at least one char per line
                               (< y 1000001))) ; arbitrary chosen big value
                     (mseterr x y))))
