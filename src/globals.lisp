@@ -692,8 +692,20 @@
   no-reset)
 
 (defmvar $setcheck nil
-  nil
-  :properties ((assign msetchk)))
+  "If 'setcheck' is set to a list of variables (which can be
+  subscripted), Maxima prints a message whenever the variables, or
+  subscripted occurrences of them, are bound with the ordinary
+  assignment operator ':', the '::' assignment operator, or function
+  argument binding, but not the function assignment ':=' nor the macro
+  assignment '::=' operators.  The message comprises the name of the
+  variable and the value it is bound to.
+
+  'setcheck' may be set to 'all' or 'true' thereby including all
+  variables."
+  :setting-predicate #'(lambda (val)
+			 (or ($listp val)
+			     (member val '($all t nil))))
+  )
 
 ;;Function Call stack each element is
 ;; (fname . bindlist) where bindlist was the value at time of entry.
@@ -753,7 +765,10 @@
 
 (defmvar $gcd (car *gcdl*)		;Sparse Modular
   nil
-  :properties ((assign msetchk)))
+  ;;:properties ((assign msetchk))
+  :setting-predicate #(lambda (val)
+		       (or (null val)
+			   (member val *gcdl*))))
 
 ;;------------------------------------------------------------------------
 ;; From rat3d.lisp

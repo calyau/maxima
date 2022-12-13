@@ -1101,8 +1101,10 @@ wrapper for this."
 	        (if (not (primep y))
 	            (mtell (intl:gettext "warning: assigning ~:M, a non-prime, to 'modulus'~&") y)))
 	       (t (mseterr x y))))
+	#+nil
 	((eq x '$setcheck)
 	 (if (not (or (member y '($all t nil) :test #'eq) ($listp y))) (mseterr x y)))
+	#+nil
 	((eq x '$gcd) (if (not (or (null y) (member y *gcdl* :test #'eq))) (mseterr x y)))
 	((eq x '$ratvars)
 	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
