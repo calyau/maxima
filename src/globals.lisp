@@ -766,9 +766,9 @@
 (defmvar $gcd (car *gcdl*)		;Sparse Modular
   nil
   ;;:properties ((assign msetchk))
-  :setting-predicate #(lambda (val)
-		       (or (null val)
-			   (member val *gcdl*))))
+  :setting-predicate #'(lambda (val)
+			 (or (null val)
+			     (member val *gcdl*))))
 
 ;;------------------------------------------------------------------------
 ;; From rat3d.lisp
