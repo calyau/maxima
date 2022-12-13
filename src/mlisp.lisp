@@ -1077,6 +1077,7 @@ wrapper for this."
   (cond ((member x '(*read-base* *print-base*) :test #'eq)
 	 (unless (typep y '(integer 2 36))
 	   (mseterr x y)))
+	#+nil
 	((eq x '$ratvars)
 	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
 	((eq x '$ratfac)

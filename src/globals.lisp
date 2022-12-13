@@ -74,7 +74,7 @@
                (mapcar #'(lambda (o)
                            (destructuring-bind (ind val)
                                o
-                             `(putprop ',var ',val ',ind)))
+                             `(putprop ',var ,val ',ind)))
                        (second opts)))
          (setf opts (rest opts)))
 	(:setting-predicate
@@ -620,7 +620,7 @@
   that A . (B . C) is simplified to A . B . C.  If this flag is off,
   dot is taken to be right associative, i.e.  A . B . C is simplified
   to A . (B . C)."
-  :properties ((assign msetchk)))
+  :properties ((assign 'msetchk)))
 
 (defmvar $doallmxops t
   "Causes all operations relating to matrices (and lists) to be carried
@@ -761,7 +761,7 @@
 ;; From rat3b.lisp
 (defmvar $ratwtlvl nil
   nil
-  :properties ((assign msetchk))) 
+  :properties ((assign 'msetchk))) 
 (defmvar $ratalgdenom t        ;If T then denominator is rationalized.
   nil
   :properties ((evflag t)))
@@ -807,7 +807,7 @@
 (defmvar $norepeat t)
 (defmvar $ratweights '((mlist simp))
   nil
-  :properties ((assign msetchk)))
+  :properties ((assign 'msetchk)))
 
 (defmvar $algebraic nil
   nil
@@ -815,10 +815,14 @@
 (defmvar $ratfac nil
   "If `t' cre-forms are kept factored"
   :properties ((evflag t)
-	       (assign msetchk)))
+	       (assign 'msetchk)))
 (defmvar $ratvars '((mlist simp))
   nil
-  :properties ((assign msetchk)))
+  :properties ((assign #'(lambda (name val)
+			   (if ($listp val)
+			       (apply #'$ratvars (cdr val))
+			       (mseterr name val))))))
+
 (defmvar $facexpand t)
 
 (defmvar genvar nil
@@ -875,7 +879,7 @@
   variables in an expression which have been given NUMERVALs to be
   replaced by their values.  It also turns on the FLOAT switch."
   see-also ($numerval $float)
-  :properties ((assign numerset)))
+  :properties ((assign 'numerset)))
 
 (defmvar $simp t
   "Enables simplification."
@@ -1016,7 +1020,7 @@
                  $myoptions $props $aliases $rules $gradefs
                  $dependencies $let_rule_packages $structures)
   nil
-  :properties ((assign neverset)))
+  :properties ((assign 'neverset)))
 (defmvar $labels (list '(mlist simp)))
 (defmvar $dispflag t)
 

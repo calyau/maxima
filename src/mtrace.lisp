@@ -188,7 +188,7 @@
 
 (defmvar $trace (list '(mlist))
   "List of functions actively traced"
-  :properties ((assign neverset)))
+  :properties ((assign 'neverset)))
 
 (defun mlistcan-$all (fun llist default)
   "totally random utility function"
