@@ -475,7 +475,6 @@
 
 (defmvar $linel 79.
   nil
-  ;;:properties ((assign msetchk))
   :setting-predicate #'(lambda (val)
 			 ;; The value must be fixnum within range.
 			 ;; The upper limit was arbitrarily chosen.
@@ -511,7 +510,6 @@
   "Controls the number of significant digits printed for floats.  If
   0, then full precision is used."
   fixnum
-  ;;:properties ((assign msetchk))
   :setting-predicate #'(lambda (val)
 			 ;; $fpprintprec must be a non-negative fixnum
 			 ;; and also cannot be equal to 1.
@@ -775,7 +773,6 @@
 
 (defmvar $gcd (car *gcdl*)		;Sparse Modular
   nil
-  ;;:properties ((assign msetchk))
   :setting-predicate #'(lambda (val)
 			 (or (null val)
 			     (member val *gcdl*))))

@@ -25,7 +25,6 @@
    are printed."
   fixnum
   modified-commands '$fortran
-  ;;:properties ((assign msetchk))
   :setting-predicate #'(lambda (val)
 			 ;; The value must be non-negative fixnum
 			 (and (fixnump val)

@@ -1071,43 +1071,12 @@ wrapper for this."
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
       '((*read-base* msetchk) (*print-base* msetchk)
-	($all neverset)
-	($floatwidth msetchk)))
+	($all neverset)))
 
 (defun msetchk (x y)
   (cond ((member x '(*read-base* *print-base*) :test #'eq)
 	 (unless (typep y '(integer 2 36))
 	   (mseterr x y)))
-	((member x '(#+nil $linel #+nil $fortindent #+nil $fpprintprec $floatwidth
-		   $parsewindow) :test #'eq)
-	 (if (not (fixnump y)) (mseterr x y))
-         #+nil
-	 (if (eq x '$linel)
-             (cond ((not (and (> y 0)         ; at least one char per line
-                              (< y 1000001))) ; arbitrary chosen big value
-                    (mseterr x y))))
-	 (cond ((and (member x '(#+nil $fortindent $floatwidth) :test #'eq) (< y 0))
-		(mseterr x y))
-	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
-	       #+nil
-	       ((and (eq x '$fpprintprec) (or (< y 0) (= y 1))) (mseterr x y))))
-	#+nil
-	((member x '($optimprefix) :test #'eq) (if (not (symbolp y)) (mseterr x y)))
-	((eq x '$dotassoc) (cput 'mnctimes y 'associative))
-	#+nil
-	((eq x 'modulus)
-	 (cond ((null y))
-	       ((and (integerp y) (plusp y))
-	        ;; modulus must be an integer > 0. Give a warning if not
-	        ;; a prime number.
-	        (if (not (primep y))
-	            (mtell (intl:gettext "warning: assigning ~:M, a non-prime, to 'modulus'~&") y)))
-	       (t (mseterr x y))))
-	#+nil
-	((eq x '$setcheck)
-	 (if (not (or (member y '($all t nil) :test #'eq) ($listp y))) (mseterr x y)))
-	#+nil
-	((eq x '$gcd) (if (not (or (null y) (member y *gcdl* :test #'eq))) (mseterr x y)))
 	((eq x '$ratvars)
 	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
 	((eq x '$ratfac)

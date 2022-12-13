@@ -27,7 +27,6 @@
 
 (defmvar modulus nil
   "Global switch for doing modular arithmetic"
-  ;;:properties ((assign msetchk))
   :setting-predicate
   #'(lambda (val)
       ;; The modulus must be $false, or a positive integer.  If the
