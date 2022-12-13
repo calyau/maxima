@@ -1091,6 +1091,7 @@ wrapper for this."
 	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
 	       #+nil
 	       ((and (eq x '$fpprintprec) (or (< y 0) (= y 1))) (mseterr x y))))
+	#+nil
 	((member x '($optimprefix) :test #'eq) (if (not (symbolp y)) (mseterr x y)))
 	((eq x '$dotassoc) (cput 'mnctimes y 'associative))
 	#+nil

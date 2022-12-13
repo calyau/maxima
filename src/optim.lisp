@@ -18,7 +18,8 @@
 
 (defmvar $optimprefix '$%
   nil
-  :properties ((assign msetchk)))
+  ;;:properties ((assign msetchk))
+  :setting-predicate #'symbolp)
 
 (defmvar $optimwarn t "warns if `optimize' encounters a special form.")
 
