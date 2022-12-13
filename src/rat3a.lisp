@@ -27,7 +27,19 @@
 
 (defmvar modulus nil
   "Global switch for doing modular arithmetic"
-  :properties ((assign msetchk)))
+  ;;:properties ((assign msetchk))
+  :setting-predicate
+  #'(lambda (val)
+      ;; The modulus must be $false, or a positive integer.  If the
+      ;; value is a positive integer, print a warning if it is not
+      ;; prime.
+      (or (null val)
+	  (and (integerp val) (plusp val)
+	       (prog1 t
+		 (unless (primep val)
+		   (mtell
+		    (intl:gettexT "Warning: assigning ~:M, a non-prime, to 'modulus'~&")
+		    val)))))))
 
 ;; CQUOTIENT
 ;;
