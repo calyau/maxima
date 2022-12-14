@@ -946,6 +946,7 @@
   "If `t' cre-forms are kept factored"
   :properties ((evflag t)
 	       (assign #'(lambda (name val)
+			   (declare (ignore name val))
 			   (when (and val $ratwtlvl)
 			       (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time.")))))))
 
