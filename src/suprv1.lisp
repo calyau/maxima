@@ -605,6 +605,18 @@
 	($modulus modulus)
 	($mode_declare $modedeclare)))
 
+;; Validate values assigned to $ibase and $obase, which are aliased to
+;; *read-base* and *print-base*, respectively, above.
+(putprop '*read-base* #'(lambda (name val)
+			  (unless (typep val '(integer 2 36))
+			    (mseterr name val)))
+	 'assign)
+
+(putprop '*print-base* #'(lambda (name val)
+			  (unless (typep val '(integer 2 36))
+			    (mseterr name val)))
+	 'assign)
+
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias))
       '(($ratcoeff $ratcoef) ($ratnum $ratnumer) ($true t)
         ($derivative $diff) ($prod $product)

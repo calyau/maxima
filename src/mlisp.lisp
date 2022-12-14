@@ -1070,11 +1070,11 @@ wrapper for this."
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-      '((*read-base* msetchk) (*print-base* msetchk)
-	($all neverset)))
+      '(($all neverset)))
 
 (defun msetchk (x y)
-  (cond ((member x '(*read-base* *print-base*) :test #'eq)
+  (cond #+nil
+	((member x '(*read-base* *print-base*) :test #'eq)
 	 (unless (typep y '(integer 2 36))
 	   (mseterr x y)))
 	#+nil
