@@ -49,10 +49,6 @@ or if apply is being used are printed.")
 (defmvar $setcheckbreak nil)
 (defmvar $setval '$setval)
 
-#+nil
-(mapc #'(lambda (x) (setf (symbol-value x) (ncons '(mlist simp))))
-      '($values $functions $macros $arrays $myoptions $rules $props))
-
 (defun mapply1 (fn args fnname form)
   (cond ((atom fn)
 	 (cond ((functionp fn)
