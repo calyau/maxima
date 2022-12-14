@@ -1090,7 +1090,7 @@ wrapper for this."
   (if (or (not (integerp y))
           (not (>= y 0)))
       (merror
-        (intl:gettext "assignment: '~:M must be a positive integer. Found: ~:M")
+        (intl:gettext "assignment: '~:M must be a non-negative integer. Found: ~:M")
         x y)))
 
 (defun mmapev (l)

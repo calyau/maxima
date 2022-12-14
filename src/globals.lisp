@@ -793,8 +793,8 @@
   "If set to an integer n, some potentially large (many factors)
   polynomials of degree > n won't be factored, preventing huge memory
   allocations and stack overflows. Set to zero to deactivate."
-  fixnum)
-(putprop '$factor_max_degree 'posintegerset 'assign)
+  fixnum
+  :properties ((assign 'posintegerset)))
 
 (defmvar $savefactors nil "If t factors of ratreped forms will be saved")
 
@@ -931,18 +931,17 @@
   "The largest positive exponent which will be expanded by the EXPAND
   command."
   fixnum
-  see-also ($maxnegex $expop $expand))
-;; Check assignment to be a positive integer
-(putprop '$maxposex 'posintegerset 'assign)
+  see-also ($maxnegex $expop $expand)
+  ;; Check assignment to be a positive integer
+  :properties ((assign 'posintegerset)))
 
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by the EXPAND
   command."
   fixnum
-  see-also ($maxposex $expon $expand))
-
-;; Check assignment to be a positive integer
-(putprop '$maxnegex 'posintegerset 'assign)
+  see-also ($maxposex $expon $expand)
+  ;; Check assignment to be a positive integer
+  :properties ((assign 'posintegerset)))
 
 ;; Lisp level variables
 (defmvar dosimp nil
@@ -1023,9 +1022,9 @@
 
 ;;------------------------------------------------------------------------
 ;; From sumcon.lisp
-(defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n))
-
-(putprop '$niceindicespref 'assign-nonempty-list 'assign)
+(defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n)
+  nil
+  :properties ((assign 'assign-nonempty-list)))
 
 ;;------------------------------------------------------------------------
 ;; From suprv1.lisp
