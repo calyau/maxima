@@ -620,7 +620,9 @@
   that A . (B . C) is simplified to A . B . C.  If this flag is off,
   dot is taken to be right associative, i.e.  A . B . C is simplified
   to A . (B . C)."
-  :properties ((assign 'msetchk)))
+  :properties ((assign #'(lambda (name val)
+			   (declare (ignore name))
+			   (cput 'mnctimes val 'associative)))))
 
 (defmvar $doallmxops t
   "Causes all operations relating to matrices (and lists) to be carried
