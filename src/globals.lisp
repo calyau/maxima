@@ -297,11 +297,15 @@
   using as an argument to SUBST.") 
 ;;------------------------------------------------------------------------
 ;; From asum.lisp
-(defmvar $zeta%pi t)
+(defmvar $zeta%pi t
+  "When true, 'zeta' returns an expression proportional to '%pi^n' for
+  even integer 'n'.")
 
 ;; factorial stuff
 
-(defmvar $factlim 100000) ; set to a big integer which will work (not -1)
+(defmvar $factlim 100000 ; set to a big integer which will work (not -1)
+  "specifies the highest factorial which is automatically expanded.  If
+  it is -1 then all integers are expanded.") 
 (defvar makef nil)
 
 (defmvar $cauchysum nil
@@ -326,19 +330,29 @@
   modified-commands '$sum
   :setting-predicate #'symbolp)
 
-(defmvar $zerobern t)
+(defmvar $zerobern t
+  "when false, 'bern' excludes the Bernoulli numbers and 'euler'
+  excludes the Euler numbers which are equal to zero.")
 (defmvar $simpsum nil
-  nil
+  "When true, the result of a 'sum' is simplified. This simplification
+  may sometimes be able to produce a closed form."
   :properties ((evflag t)))
 (defmvar $simpproduct nil
-  nil
+  "When true, the result of a 'product' is simplified.  This
+  simplification may sometimes be able to produce a closed form."
   :properties ((evflag t)))
 
 (defvar *infsumsimp t)
 
-(defmvar $cflength 1)
-(defmvar $taylordepth 3)
-(defmvar $verbose nil)
+(defmvar $cflength 1
+  "Controls the number of terms of the continued fraction the function
+  'cf' will give, as the value 'cflength' times the period.")
+(defmvar $taylordepth 3
+  "If there are still no nonzero terms, 'taylor' doubles the degree of
+  the expansion of '<g>(<x>)' so long as the degree of the expansion
+  is less than or equal to '<n> 2^taylordepth'.")
+(defmvar $verbose nil
+  "When true, 'powerseries' prints progress messages.")
 
 (defvar ps-bmt-disrep t)
 (defvar silent-taylor-flag nil
@@ -348,7 +362,9 @@
 
 ;;------------------------------------------------------------------------
 ;; From comm2.lisp
-(defmvar $rootsconmode t)
+(defmvar $rootsconmode t
+  "Governs the behavior of the 'rootscontract' command. See
+  'rootscontract' for details.")
 
 ;;------------------------------------------------------------------------
 ;; From comm.lisp
