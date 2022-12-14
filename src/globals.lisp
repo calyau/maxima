@@ -761,7 +761,12 @@
 ;; From rat3b.lisp
 (defmvar $ratwtlvl nil
   nil
-  :properties ((assign 'msetchk))) 
+  :properties ((assign #'(lambda (name val)
+			   (when (and val (not (fixnump val)))
+			     (mseterr name val))
+			   (when (and val $ratfac)
+			     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time.")))))))
+
 (defmvar $ratalgdenom t        ;If T then denominator is rationalized.
   nil
   :properties ((evflag t)))

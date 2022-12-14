@@ -1089,6 +1089,7 @@ wrapper for this."
 	 (cond ((not ($listp y)) (mseterr x y))
 	       ((null (cdr y)) (kill1 '$ratweights))
 	       (t (apply #'$ratweight (cdr y)))))
+	#+nil
 	((eq x '$ratwtlvl)
 	 (if (and y (not (fixnump y))) (mseterr x y))
 	 (if (and y $ratfac)
