@@ -116,13 +116,6 @@
 	   t))
     (cons new-sum extracted)))
 
-(defun assign-nonempty-list (n v)
-  (declare (ignore n))
-  (unless (and ($listp v) (not ($emptyp v)))
-    (merror
-      (intl:gettext "niceindicespref: value must be a nonempty list; found: ~:M")
-      v)))
-
 (defun get-free-index (llist &optional i)
   (or (do ((try-list (cdr $niceindicespref) (cdr try-list)))
 	  ((null try-list))
