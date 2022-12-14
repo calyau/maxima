@@ -249,7 +249,7 @@
 	    ((:file "comm")
 	     (:file "comm2")))
    (:module evaluator :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("globals" "defmfun" "utility-macros")
 	    :components
 	    ((:file "mlisp")
 	     (:file "mmacro")
