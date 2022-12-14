@@ -368,11 +368,21 @@
 
 ;;------------------------------------------------------------------------
 ;; From comm.lisp
-(defmvar $exptsubst nil)
-(defmvar $partswitch nil)
-(defmvar $inflag nil)
-(defmvar $derivsubst nil)
-(defmvar $opsubst t)
+(defmvar $exptsubst nil
+  "When 'true', permits substitutions such as 'y' for '%e^x' in
+  '%e^(a*x)'.")
+(defmvar $partswitch nil
+  "When true, 'end' is returned when a selected part of an expression
+  doesn't exist, otherwise an error message is given.")
+(defmvar $inflag nil
+  "When true, functions for part extraction inspect the internal form of
+  'expr'.")
+(defmvar $derivsubst nil
+  "When true, a non-syntactic substitution such as 'subst (x, 'diff (y,
+  t), 'diff (y, t, 2))' yields ''diff (x, t)'.")
+(defmvar $opsubst t
+  "When false, 'subst' does not attempt to substitute into the operator
+  of an expression.")
 
 (defvar *islinp* nil
   "When T, sdiff is called from the function islinear")
@@ -414,7 +424,10 @@
 (defvar *complexsign* nil
   "If T, COMPAR works in a complex mode.")
 
-(defmvar $prederror nil)
+(defmvar $prederror nil
+  "When true, an error message is displayed whenever the predicate of an
+  'if' statement or an 'is' function fails to evaluate to either
+  'true' or 'false'.")
 (defmvar limitp)
 
 ;;------------------------------------------------------------------------
@@ -430,12 +443,18 @@
 ;;------------------------------------------------------------------------
 ;; From csimp.lisp
 (defmvar $demoivre nil
-  nil
+  "When true, complex exponentials are converted into equivalent
+  expressions in terms of circular functions."
   :properties ((evflag t)))
 (defmvar $nointegrate nil)
-(defmvar $lhospitallim 4)
-(defmvar $tlimswitch t)
-(defmvar $limsubst nil)
+(defmvar $lhospitallim 4
+  "The maximum number of times L'Hospital's rule is used in 'limit'.")
+(defmvar $tlimswitch t
+  "When true, the 'limit' command will use a Taylor series expansion if
+  the limit of the input expression cannot be computed directly.")
+(defmvar $limsubst nil
+  "When false, prevents 'limit' from attempting substitutions on unknown
+  forms.")
 
 (defvar rsn* nil)
 (defvar plogabs nil)
@@ -452,7 +471,8 @@
 (defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi)
   "3/2*%pi")
 
-(defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
+(defmvar $sumsplitfact t
+  "When false, 'minfactorial' is applied after a 'factcomb'.")
 
 ;;------------------------------------------------------------------------
 ;; From defint.lisp
@@ -468,7 +488,8 @@
 
 ;;------------------------------------------------------------------------
 ;; From displa.lisp
-(defmvar $ttyoff nil)
+(defmvar $ttyoff nil
+  "When true, output expressions are not displayed.")
 
 (defmvar $display2d t
   "Causes equations to be drawn in two dimensions.  Otherwise, drawn
@@ -478,7 +499,10 @@
   "Causes symbols not having $ as the first character in their pnames to
   be preceded with a ? when displayed.")
 
-(defmvar $derivabbrev nil)
+(defmvar $derivabbrev nil
+  "When true, symbolic derivatives (that is, 'diff' nouns) are displayed
+  as subscripts.  Otherwise, derivatives are displayed in the Leibniz
+  notation 'dy/dx'.")
 
 (defmvar $stringdisp nil
   "Causes strings to be bracketed in double quotes when displayed.
@@ -490,7 +514,8 @@
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
 (defmvar $linel 79.
-  nil
+  "The assumed width (in characters) of the console display for the
+  purpose of displaying expressions."
   :setting-predicate #'(lambda (val)
 			 ;; The value must be fixnum within range.
 			 ;; The upper limit was arbitrarily chosen.
@@ -504,7 +529,11 @@
 
 ;;------------------------------------------------------------------------
 ;; From dskfn.lisp
-(defmvar $packagefile nil)
+(defmvar $packagefile nil
+  "When true, prevent information from being added to Maxima's
+  information-lists (e.g.  'values', 'functions') except where
+  necessary when the file is loaded in.  Useful for package designers
+  who use 'save' or 'translate' to create packages (files).")
 
 ;;------------------------------------------------------------------------
 ;; From float.lisp
@@ -574,8 +603,12 @@
 
 ;;------------------------------------------------------------------------
 ;; From gamma.lisp
-(defmvar $factorial_expand nil)
-(defmvar $beta_expand nil)
+(defmvar $factorial_expand nil
+  "Controls the simplification of expressions like '(n+1)!', where 'n'
+  is an integer.  See 'factorial'.")
+(defmvar $beta_expand nil
+  "When true, 'beta(a,b)' and related functions are expanded for
+  arguments like a+n or a-n, where n is an integer.")
 
 (defmvar $hypergeometric_representation nil
   "When T a transformation to a hypergeometric representation is done.")
@@ -599,23 +632,49 @@
 
 ;;------------------------------------------------------------------------
 ;; From mat.lisp
-(defmvar $globalsolve nil)
-(defmvar $sparse nil)
-(defmvar $backsubst t)
+(defmvar $globalsolve nil
+  "When true, solved-for variables are assigned the solution values
+  found by 'linsolve', and by 'solve' when solving two or more linear
+  equations.")
+(defmvar $sparse nil
+  "When true and if 'ratmx' is 'true', then 'determinant' will use
+  special routines for computing sparse determinants.")
+(defmvar $backsubst t
+  "When false, prevents back substitution in 'linsolve' after the
+  equations have been triangularized.")
 
-(defmvar $%rnum 0)
+(defmvar $%rnum 0
+  "The counter for the '%r' variables introduced in solutions by 'solve'
+  and 'algsys'.")
 
 (defmvar $linsolve_params t
-  "`linsolve' generates %Rnums")
+  "When true, 'linsolve' also generates the '%r' symbols used to
+  represent arbitrary parameters described in the manual under
+  'algsys'.")
 
 ;;------------------------------------------------------------------------
 ;; From matrix.lisp
-(defmvar $detout nil)
+(defmvar $detout nil
+  "When true, the determinant of a matrix whose inverse is computed is
+  factored out of the inverse.")
 (defmvar $ratmx nil
-  nil
+  "When 'ratmx' is 'false', determinant and matrix addition,
+  subtraction, and multiplication are performed in the representation
+  of the matrix elements and cause the result of matrix inversion to
+  be left in general representation.
+
+  When 'ratmx' is 'true', the 4 operations mentioned above are
+  performed in CRE form and the result of matrix inverse is in CRE
+  form."
   :properties ((evflag t)))
-(defmvar $matrix_element_mult "*")  ;;; Else, most useful when "."
-(defmvar $matrix_element_add "+")
+(defmvar $matrix_element_mult "*"
+  "The operation invoked in place of multiplication in a matrix
+  multiplication.  'matrix_element_mult' can be assigned any binary
+  operator.")
+(defmvar $matrix_element_add "+"
+  "the operation invoked in place of addition in a matrix
+  multiplication.  'matrix_element_add' can be assigned any n-ary
+  operator.")
 
 ;;------------------------------------------------------------------------
 ;; From mdot.lisp
@@ -688,22 +747,33 @@
     $commutative $lassociative $rassociative $symmetric $antisymmetric
     $integervalued))
 
-(defmvar $features (cons '(mlist simp) (append featurel nil)))
+(defmvar $features (cons '(mlist simp) (append featurel nil))
+  "A list of mathematical features which are mathematical preoperties of
+  functions and variables.")
 (defmvar $%enumer nil
-  nil
+  "When true, '%e' is replaced by its numeric value 2.718... whenever
+  'numer' is 'true'."
   :properties ((evflag t)))
 (defmvar $float nil
-  ;; From hayat.lisp
-  "Indicates whether to convert rational numbers to floating point
-  numbers."
+  "Causes non-integral rational numbers and bigfloat numbers to be
+  converted to floating point."
   :properties ((evflag t)))
-(defmvar $translate nil)
-(defmvar $transrun t)
-(defmvar $savedef t)
+(defmvar $translate nil
+  "Causes automatic translation of a user's function to Lisp.")
+(defmvar $transrun t
+  "When false, the interpreted version of all functions to be
+  run (provided they are still around) rather than the translated
+  version.")
+(defmvar $savedef t
+  "When true, the Maxima version of a user function is preserved when
+  the function is translated.  This permits the definition to be
+  displayed by 'dispfun' and allows the function to be edited.")
 (defmvar $infeval nil
-  nil
+  "When true, Enables \"infinite evaluation\" mode.  'ev' repeatedly
+  evaluates an expression until it stops changing."
   :properties ((evflag t)))
-(defmvar $piece '$piece)
+(defmvar $piece '$piece
+  "Holds the last expression selected when using the 'part' functions.")
 
 ;; These three variables are what get stuck in array slots as magic
 ;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
@@ -740,13 +810,16 @@
 (defvar *mlambda-call-stack* (make-array 30 :fill-pointer 0 :adjustable t ))
 
 (defmvar $structures '((mlist simp))
-  nil
+  "The list of user-defined structures defined by 'defstruct'."
   no-reset
   :properties ((assign 'neverset)))
 
 ;; If this is T then arrays are stored in the value cell,
 ;; whereas if it is false they are stored in the function cell
-(defmvar $use_fast_arrays nil)
+(defmvar $use_fast_arrays nil
+  "When true, arrays declared by 'array' are values instead of
+  properties, and undeclared arrays ('hashed arrays') are implemented
+  as Lisp hashed arrays.")
 
 (defvar bindlist nil)
 (defvar loclist nil)
@@ -773,15 +846,25 @@
 
 ;;------------------------------------------------------------------------
 ;; From nforma.lisp
-(defmvar $powerdisp nil)
-(defmvar $pfeformat nil)
-(defmvar $%edispflag nil)
-(defmvar $sqrtdispflag t)
+(defmvar $powerdisp nil
+  "When true, a sum is displayed with its terms in order of increasing
+  power.")
+(defmvar $pfeformat nil
+  "When true, a ratio of integers is displayed with the solidus (forward
+  slash) character, and an integer denominator 'n' is displayed as a
+  leading multiplicative term '1/n'.")
+(defmvar $%edispflag nil
+  "When true, Maxima displays '%e' to a negative exponent as a
+  quotient.")
+(defmvar $sqrtdispflag t
+  "When false, causes 'sqrt' to display with exponent 1/2.")
 
 ;;------------------------------------------------------------------------
 ;; From rat3b.lisp
 (defmvar $ratwtlvl nil
-  nil
+  "'ratwtlvl' is used in combination with the 'ratweight' function to
+  control the truncation of canonical rational expressions (CRE). For
+  the default value of 'false', no truncation occurs."
   :properties ((assign #'(lambda (name val)
 			   (when (and val (not (fixnump val)))
 			     (mseterr name val))
@@ -789,7 +872,8 @@
 			     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time.")))))))
 
 (defmvar $ratalgdenom t        ;If T then denominator is rationalized.
-  nil
+  "When true, allows rationalization of denominators with respect to
+  radicals to take effect."
   :properties ((evflag t)))
 
 ;;------------------------------------------------------------------------
@@ -798,7 +882,9 @@
 (defmvar *gcdl* '($spmod $subres $ez $red $mod $algebraic))
 
 (defmvar $gcd (car *gcdl*)		;Sparse Modular
-  nil
+  "The default GCD algorithm.  If false, the GCD is prevented from being
+  taken when expressions are converted to canonical rational
+  expression (CRE) form."
   :setting-predicate #'(lambda (val)
 			 (or (null val)
 			     (member val *gcdl*))))
@@ -807,7 +893,13 @@
 ;; From rat3d.lisp
 (defmvar algfac* nil)
 (defmvar low* nil)
-(defmvar $intfaclim t)
+(defmvar $intfaclim t
+  "If 'true', maxima will give up factorization of integers if no factor
+  is found after trial divisions and Pollard's rho method and
+  factorization will not be complete.
+
+  When 'intfaclim' is 'false' (this is the case when the user calls
+  'factor' explicitly), complete factorization will be attempted.")
 (defmvar $factor_max_degree 1000
   "If set to an integer n, some potentially large (many factors)
   polynomials of degree > n won't be factored, preventing huge memory
@@ -829,10 +921,11 @@
 (defmvar $factorflag nil
   "If `t' constant factor of polynomial is also factored"
   :properties ((evflag t)))
-(defmvar $dontfactor '((mlist)))
+(defmvar $dontfactor '((mlist))
+  "A list of variables with respect to which factoring is not to occur.")
 (defmvar $norepeat t)
 (defmvar $ratweights '((mlist simp))
-  nil
+  "The list of weights assigned by 'ratweight'."
   :properties ((assign
 		#'(lambda (name val)
 		    (cond ((not ($listp val))
@@ -843,7 +936,8 @@
 			   (apply #'$ratweight (cdr val))))))))
 
 (defmvar $algebraic nil
-  nil
+  "Set to 'true' in order for the simplification of algebraic integers
+  to take effect."
   :properties ((evflag t)))
 
 (defmvar $ratfac nil
@@ -854,13 +948,17 @@
 			       (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time.")))))))
 
 (defmvar $ratvars '((mlist simp))
-  nil
+  "A list of the arguments of the function 'ratvars' when it was called
+  most recently.  Each call to the function 'ratvars' resets the
+  list."
   :properties ((assign #'(lambda (name val)
 			   (if ($listp val)
 			       (apply #'$ratvars (cdr val))
 			       (mseterr name val))))))
 
-(defmvar $facexpand t)
+(defmvar $facexpand t
+  "Controls whether the irreducible factors returned by 'factor' are in
+  expanded (the default) or recursive (normal CRE) form.")
 
 (defmvar genvar nil
   "List of gensyms used to point to kernels from within polynomials.
@@ -881,13 +979,20 @@
 ;;  a floating point number but does not wish to see "RAT replaced ..."
 ;;  message, must bind $RATPRINT to NIL.
 
-(defmvar $ratprint t)
+(defmvar $ratprint t
+  "When true, a message informing the user of the conversion of floating
+  point numbers to rational numbers is displayed.")
 
-(defmvar $ratepsilon 2d-15)
+(defmvar $ratepsilon 2d-15
+  "The tolerance used in the conversion of floating point numbers to
+  rational numbers, when the option variable 'bftorat' has the value
+  'false'.")
 
 ;; IF $RATEXPAND IS TRUE, (X+1)*(Y+1) WILL DISPLAY AS
 ;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
-(defmvar $ratexpand nil)
+(defmvar $ratexpand nil
+  "Controls some simplifications of radicals.  See user manual for
+  complicated rules.")
 
 (defmvar varlist nil
   "List of kernels")
@@ -928,7 +1033,10 @@
   :properties ((evflag t)))
 
 (defmvar $numer_pbranch nil
-  nil
+  "When true and the exponent is a floating point number or the option
+  variable 'numer' is 'true' too, Maxima evaluates the numerical
+  result using the principal branch.  Otherwise a simplified, but not
+  an evaluated result is returned."
   :properties ((evflag t)))
 
 ;; Switches dealing with expansion.
@@ -973,26 +1081,38 @@
   than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
   MAXIMA-ERROR signalling.")
 
-(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1d-7)
+(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1d-7
+  "The tolerance which establishes the confidence interval for the
+  roots found by the 'realroots' function.")
 (defmvar $algepsilon 100000000)
 (defmvar $true t)
 (defmvar $false nil)
 (defmvar $logabs nil
-  nil
+  "When true, indefinite integration where logs are generated,
+  e.g. 'integrate(1/x,x) produces answers in terms of log(...) instead
+  of log(abs(...))." 
   :properties ((evflag t)))
 (defmvar $listarith t
-  nil
+  "If 'false' causes any arithmetic operations with lists to be
+  suppressed; when 'true', list-matrix operations are contagious
+  causing lists to be converted to matrices yielding a result which is
+  always a matrix."
   :properties ((evflag t)))
 (defmvar $domain '$real)
 (defmvar $m1pbranch nil
-  nil
+  "When true, the principal branch for -1 to a power is returned,
+  depending on whether 'domain' is real or complex."
   :properties ((evflag t)))
-(defmvar $%e_to_numlog nil)
+(defmvar $%e_to_numlog nil
+  "When 'true', 'r' some rational number, and 'x' some
+  expression,'%e^(r*log(x))' will be simplified into 'x^r'.")
 (defmvar $%emode t
-  nil
+  "When '%emode' is 'true', '%e^(%pi %i x)' is simplified. See the user
+  manual for more details."
   :properties ((evflag t)))
 (defmvar $ratsimpexpons nil
-  nil
+  "When true, 'ratsimp' is applied to the exponents of expressions
+  during simplification."
   :properties ((evflag t)))
 (defmvar $logexpand t ; Possible values are T, $ALL and $SUPER
   nil
