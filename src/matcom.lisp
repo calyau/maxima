@@ -14,7 +14,7 @@
 
 ;; This is the Match Compiler.
 
-(declare-top (special $rules $props boundlist reflist topreflist program))
+(declare-top (special boundlist reflist topreflist program))
 
 (defmvar $announce_rules_firing nil)
 

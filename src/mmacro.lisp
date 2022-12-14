@@ -16,9 +16,6 @@
 ;;                        MMACROEXPANDED, MMACROEXPAND and MMACROEXPAND1
 
 
-(declare-top (special $macros $functions))
-
- 
 ;; $MACROS declared in jpg;mlisp >
 
 

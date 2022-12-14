@@ -23,7 +23,7 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special derivlist $values $functions $arrays 
+(declare-top (special derivlist
                       $rules
 		      $myoptions $props
 		      $numer

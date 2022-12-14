@@ -12,7 +12,7 @@
 
 (macsyma-module mtrace)
 
-(declare-top (special $functions trace-allp))
+(declare-top (special trace-allp))
 
 ;;; a reasonable trace capability for macsyma users.
 ;;; 8:10pm  Saturday, 10 January 1981 -GJC.

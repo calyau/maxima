@@ -46,7 +46,7 @@
 (declaim (special
 	  $%%
 	  $absboxchar $algexact
-	  $arrays $askexp $berlefact
+	  $askexp $berlefact
 	  $beta_args_sum_to_integer $bftrunc $boxchar
 	  $compgrind
 	  $current_let_rule_package $debugmode
@@ -60,25 +60,23 @@
 	  $file_search
 	  $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
-	  $fortspaces $fpprec $fpprintprec $functions $gammalim
+	  $fortspaces $fpprec $fpprintprec $gammalim
 	  $homog_hack
 	  $isolate_wrt_times $leftjust $letrat $letvarsimp
-	  $let_rule_packages
-	  $linsolvewarn
+o	  $linsolvewarn
 	  $lmxchar $logconcoeffp $lognegint
-	  $macroexpansion $macros $maperror $mapprint
+	  $macroexpansion $maperror $mapprint
 	  $matrix_element_transpose
 	  $maxapplydepth $maxapplyheight
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
-	  $mx0simp $myoptions $nalgfac
+	  $mx0simp $nalgfac
 	  $negsumdispflag $noundisp
 	  $optimprefix $optionset
 	  $parsewindow $pointbound
-	  $poislim $props
+	  $poislim
 	  $ratdenomdivide
           $ratmx $ratvarswitch
 	  $realonly $refcheck $rmxchar
-	  $rules
 	  $setval $signbfloat
 	  $solvedecomposes $solveexplicit $solvenullwarn
 	  $solvetrigwarn
@@ -95,7 +93,7 @@
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
-	  $values $vect_cross
+	  $vect_cross
 	  %pi-val *$any-modes*
 	  *alpha *const* *gcdl* *in *in-compile*
 	  *inv* *irreds *min* *mx*

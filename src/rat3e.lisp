@@ -16,7 +16,7 @@
 ;;	It includes the conversion and top-level routines used
 ;;	by the rest of the functions.
 
-(declare-top (special intbs* alflag var alc $myoptions
+(declare-top (special intbs* alflag var alc
 		      vlist radlist expsumsplit *ratsimp* mplc*))
 
 (defvar *ratsimp* nil)

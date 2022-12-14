@@ -13,8 +13,6 @@
 
 ;;;; DIFF2
 
-(declare-top (special $props))
-
 (defun diffint (e x)
   (let (a)
     (cond ((null (cdddr e))

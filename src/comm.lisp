@@ -12,7 +12,7 @@
 
 (macsyma-module comm)
 
-(declare-top (special $props derivlist
+(declare-top (special derivlist
 		      *linelabel* nn* dn*
 		      $errexp $dotdistrib
 		      dummy-variable-operators))

@@ -14,7 +14,7 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special success $props))
+(declare-top (special success))
 
 (defvar *debug-compar* nil
   "Enables debugging code for this file.")

@@ -22,13 +22,12 @@
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
-		       $values $functions $arrays
-		       $rules $props $ratvars
+		       $ratvars
 		       checkfactors $features featurel
 		       dispflag savefile $%%
 		       opers *ratweights
 		       $stringdisp $lispdisp
-		       transp $macros autoload))
+		       transp autoload))
 
 (defvar thistime 0)
 (defvar mcatch nil)

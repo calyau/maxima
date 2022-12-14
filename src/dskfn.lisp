@@ -14,9 +14,7 @@
 
 (declare-top (special opers
 		      aaaaa errset indlist
-		      $props
 		      savefile
-		      $values $functions $arrays
 		      context))
 
 (defvar indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
