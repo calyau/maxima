@@ -874,6 +874,7 @@
 	($current_let_rule_package let-rule-setter)
 	($let_rule_packages let-rule-setter)))
 
+#+nil
 (mapc #'(lambda (x) (putprop x 'neverset 'assign)) (cdr $infolists))
 
 (defprop $contexts neverset assign)

@@ -723,7 +723,10 @@
 ;; function call.
 (defvar *mlambda-call-stack* (make-array 30 :fill-pointer 0 :adjustable t ))
 
-(defvar $structures '((mlist)))
+(defmvar $structures '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
 
 ;; If this is T then arrays are stored in the value cell,
 ;; whereas if it is false they are stored in the function cell
@@ -1040,13 +1043,73 @@
 (defmvar $nolabels nil)
 (defmvar $aliases '((mlist simp)))
 
+;; Define $infolist variables here and set up the initial value and
+;; properties.
+(defmvar $labels (list '(mlist simp))
+  nil
+  :properties ((assign 'neverset)))
+
+(defmvar $values '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $functions '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $macros '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $arrays '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+
+(defmvar $myoptions '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $props '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $aliases '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $rules '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $gradefs '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $dependencies '((mlist simp))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
+
+(defmvar $let_rule_packages '((mlist) $default_let_rule_package)
+  "The names of the various let rule simplification packages"
+  :properties ((assign 'let-rule-setter)))
+
 (defmvar $infolists
   '((mlist simp) $labels $values $functions $macros $arrays
                  $myoptions $props $aliases $rules $gradefs
                  $dependencies $let_rule_packages $structures)
   nil
   :properties ((assign 'neverset)))
-(defmvar $labels (list '(mlist simp)))
 (defmvar $dispflag t)
 
 (defmvar $% '$%
