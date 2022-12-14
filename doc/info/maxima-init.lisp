@@ -1,7 +1,7 @@
 
 ;; Default linel value for Maxima manual is 65
 
-(progn (msetchk '$linel 65) (setq $linel 65))
+(mset '$linel 65)
 
 (setf *prompt-prefix* "")
 #-gcl (setf *prompt-suffix* "")
