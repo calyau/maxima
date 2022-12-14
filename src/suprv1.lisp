@@ -22,11 +22,9 @@
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
-		       $ratvars
 		       checkfactors $features featurel
 		       dispflag savefile $%%
 		       opers *ratweights
-		       $stringdisp $lispdisp
 		       transp autoload))
 
 (defvar thistime 0)
