@@ -1043,7 +1043,7 @@
 (defmvar $nolabels nil)
 (defmvar $aliases '((mlist simp)))
 
-;; Define $infolist variables here and set up the initial value and
+;; Define $infolists variables here and set up the initial value and
 ;; properties.
 (defmvar $labels (list '(mlist simp))
   nil
@@ -1068,7 +1068,6 @@
   nil
   no-reset
   :properties ((assign 'neverset)))
-
 
 (defmvar $myoptions '((mlist simp))
   nil
