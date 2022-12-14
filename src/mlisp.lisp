@@ -1072,29 +1072,7 @@ wrapper for this."
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
       '(($all neverset)))
 
-(defun msetchk (x y)
-  (cond #+nil
-	((member x '(*read-base* *print-base*) :test #'eq)
-	 (unless (typep y '(integer 2 36))
-	   (mseterr x y)))
-	#+nil
-	((eq x '$ratvars)
-	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
-	#+nil
-	((eq x '$ratfac)
-	 (if (and y $ratwtlvl)
-	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))
-	#+nil
-	((eq x '$ratweights)
-	 (cond ((not ($listp y)) (mseterr x y))
-	       ((null (cdr y)) (kill1 '$ratweights))
-	       (t (apply #'$ratweight (cdr y)))))
-	#+nil
-	((eq x '$ratwtlvl)
-	 (if (and y (not (fixnump y))) (mseterr x y))
-	 (if (and y $ratfac)
-	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))))
-
+;; When $numer is set, also set $float to the same value.
 (defun numerset (assign-var y)
   (declare (ignore assign-var))
   (mset '$float y))
