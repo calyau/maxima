@@ -1115,13 +1115,18 @@
   during simplification."
   :properties ((evflag t)))
 (defmvar $logexpand t ; Possible values are T, $ALL and $SUPER
-  nil
+  "Controls how logs are expanded.  See the user manual."
   :properties ((evflag t))) 
 (defmvar $radexpand t
-  nil
+  "Controls some simplification of radicals.  See the user manual."
   :properties ((evflag t)))
-(defmvar $subnumsimp nil)
-(defmvar $logsimp t)
+(defmvar $subnumsimp nil
+  "When true, the functions 'subst' and 'psubst' can substitute a
+  subscripted variable 'f[x]' with a number, when only the symbol 'f'
+  is given.")
+(defmvar $logsimp t
+  "If 'false' then no simplification of '%e' to a power containing
+  'log''s is done.")
 
 (defvar rischp nil)
 (defvar rp-polylogp nil)
@@ -1175,48 +1180,70 @@
 
 ;;------------------------------------------------------------------------
 ;; From suprv1.lisp
-(defmvar $loadprint nil)
-(defmvar $nolabels nil)
-(defmvar $aliases '((mlist simp)))
+(defmvar $loadprint nil
+  "Controls whether to print a message when a file is loaded.")
+(defmvar $nolabels nil
+  "When 'true', input and output result labels ('%i' and '%o',
+  respectively) are displayed, but the labels are not bound to
+  results, and the labels are not appended to the 'labels' list.
+  Since labels are not bound to results, garbage collection can
+  recover the memory taken up by the results.")
 
 ;; Define $infolists variables here and set up the initial value and
 ;; properties.
 (defmvar $labels (list '(mlist simp))
-  nil
+  "The list of input, output, and intermediate expression labels,
+  including all previous labels if 'inchar', 'outchar', or 'linechar'
+  were redefined."
   :properties ((assign 'neverset)))
 
 (defmvar $values '((mlist simp))
-  nil
+  "The list of all bound user variables (not Maxima options or
+  switches).  The list comprises symbols bound by ':', or '::'."
   no-reset
   :properties ((assign 'neverset)))
 
 (defmvar $functions '((mlist simp))
-  nil
+  "The list of ordinary Maxima functions in the current session.  An
+  ordinary function is a function constructed by 'define' or ':=' and
+  called with parentheses '()'."
   no-reset
   :properties ((assign 'neverset)))
 
 (defmvar $macros '((mlist simp))
-  nil
+  "The list of user-defined macro functions.  The macro function
+  definition operator '::=' puts a new macro function onto this list."
   no-reset
   :properties ((assign 'neverset)))
 
 (defmvar $arrays '((mlist simp))
-  nil
+  "The list of arrays that have been allocated.  These comprise arrays
+  declared by 'array', 'hashed arrays' that can be constructed by
+  implicit definition (assigning something to an element that isn't
+  yet declared as a list or an array), and 'memoizing functions'
+  defined by ':=' and 'define'.  Arrays defined by 'make_array' are
+  not included."
   no-reset
   :properties ((assign 'neverset)))
 
 (defmvar $myoptions '((mlist simp))
-  nil
+  "The list of all options ever reset by the user, whether or not they
+  get reset to their default value."
   no-reset
   :properties ((assign 'neverset)))
 
 (defmvar $props '((mlist simp))
-  nil
+  "The list of atoms which have any property other than those explicitly
+  mentioned in 'infolists', such as specified by 'atvalue',
+  'matchdeclare', etc., as well as properties specified in the
+  'declare' function."
   no-reset
   :properties ((assign 'neverset)))
 
 (defmvar $aliases '((mlist simp))
-  nil
+  "The list of atoms which have a user defined alias (set up by the
+  'alias', 'ordergreat', 'orderless' functions or by declaring the
+  atom a 'noun' with 'declare'."
   no-reset
   :properties ((assign 'neverset)))
 
@@ -1226,12 +1253,16 @@
   :properties ((assign 'neverset)))
 
 (defmvar $gradefs '((mlist simp))
-  nil
+  "The list of the functions for which partial derivatives have been
+  defined by 'gradef'."
   no-reset
   :properties ((assign 'neverset)))
 
 (defmvar $dependencies '((mlist simp))
-  nil
+  "The list of atoms which have functional dependencies, assigned by
+  'depends', the function 'dependencies', or 'gradef'.  The
+  'dependencies' list is cumulative: each call to 'depends',
+  'dependencies', or 'gradef' appends additional items."
   no-reset
   :properties ((assign 'neverset)))
 
@@ -1243,7 +1274,7 @@
   '((mlist simp) $labels $values $functions $macros $arrays
                  $myoptions $props $aliases $rules $gradefs
                  $dependencies $let_rule_packages $structures)
-  nil
+  "The list of the names of all of the information lists in Maxima."
   :properties ((assign 'neverset)))
 (defmvar $dispflag t)
 
