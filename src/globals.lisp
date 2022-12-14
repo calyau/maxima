@@ -1294,7 +1294,7 @@
   expressions.")
 
 (defmvar $linenum 1
-  "the line number of the last expression."
+  "The line number of the last expression."
   fixnum no-reset)
 
 (defmvar $file_output_append nil
@@ -1311,23 +1311,42 @@
 
 ;;------------------------------------------------------------------------
 ;; From trigi.lisp
-(defmvar $%piargs t)
-(defmvar $%iargs t)
-(defmvar $triginverses t)
+(defmvar $%piargs t
+  "When true, trigonometric functions are simplified to algebraic
+  constants when the argument is an integer multiple of %pi, %pi/2,
+  %pi/3, %pi/4, or %pi/6.")
+(defmvar $%iargs t
+  "When true, trigonometric functions are simplified to hyperbolic
+  functions when the argument is apparently a multiple of the
+  imaginary unit %i.")
+(defmvar $triginverses t
+  "Controls the simplification of the composition of trigonometric and
+  hyperbolic functions with their inverse functions.")
 (defmvar $trigexpand nil
-  nil
+  "If 'true' causes expansion of all expressions containing sin's and
+  cos's occurring subsequently."
   :properties ((evflag t)))
-(defmvar $trigexpandplus t)
-(defmvar $trigexpandtimes t)
-(defmvar $trigsign t)
+(defmvar $trigexpandplus t
+  "Controls the \"sum\" rule for 'trigexpand', expansion of sums (e.g.
+  'sin(x + y)') will take place only if 'trigexpandplus' is 'true'.")
+(defmvar $trigexpandtimes t
+  "Controls the \"product\" rule for 'trigexpand', expansion of
+  products (e.g.  'sin(2 x)') will take place only if
+  'trigexpandtimes' is 'true'.")
+(defmvar $trigsign t
+  "When true, permits simplification of negative arguments to
+  trigonometric functions.")
 (defmvar $exponentialize nil
-  nil
+  "When true, all circular and hyperbolic functions are converted to
+  exponential form."
   :properties ((evflag t)))
 (defmvar $logarc nil
-  nil
+  "When true, inverse circular and hyperbolic functions are replaced by
+  equivalent logarithmic functions."
   :properties ((evflag t)))
 (defmvar $halfangles nil
-  nil
+  "When true, trigonometric functions of arguments '<expr>/2' are
+  simplified to functions of <expr>."
   :properties ((evflag t)))
 
 ;; Simplified shortcuts for constant expressions.
