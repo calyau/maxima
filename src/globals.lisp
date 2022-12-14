@@ -1025,14 +1025,14 @@
 (defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n)
   "The list from which 'niceindices' takes the names of indices for sums
   and properties."
-  :products ((assign #'(lambda (name val)
-			   ;; The value must be a nonempty list
-			   (unless (and ($listp val)
-					(not ($emptyp val)))
-			     (merror
-			      (intl:gettext "~M: value must be a nonempty list of symbols; found: ~:M")
-			      name val)))
-		       )))
+  ::properties ((assign #'(lambda (name val)
+			    ;; The value must be a nonempty list
+			    (unless (and ($listp val)
+					 (not ($emptyp val)))
+			      (merror
+			       (intl:gettext "~M: value must be a nonempty list of symbols; found: ~:M")
+			       name val)))
+			)))
 
 ;;------------------------------------------------------------------------
 ;; From suprv1.lisp
