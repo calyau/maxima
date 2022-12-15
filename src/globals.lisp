@@ -869,7 +869,7 @@
 			   ;; Forward declaration
 			   (declare (special $ratfac))
 			   (when (and val (not (fixnump val)))
-			     (mseterr name val))
+			     (mseterr name val "must be an integer"))
 			   (when (and val $ratfac)
 			     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time.")))))))
 
@@ -931,7 +931,7 @@
   :properties ((assign
 		#'(lambda (name val)
 		    (cond ((not ($listp val))
-			   (mseterr name val))
+			   (mseterr name val "must be a list"))
 			  ((null (cdr val))
 			   (kill1 '$ratweights))
 			  (t
@@ -957,7 +957,7 @@
   :properties ((assign #'(lambda (name val)
 			   (if ($listp val)
 			       (apply #'$ratvars (cdr val))
-			       (mseterr name val))))))
+			       (mseterr name val "must be a list"))))))
 
 (defmvar $facexpand t
   "Controls whether the irreducible factors returned by 'factor' are in

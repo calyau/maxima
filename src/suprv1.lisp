@@ -606,12 +606,12 @@
 ;; *read-base* and *print-base*, respectively, above.
 (putprop '*read-base* #'(lambda (name val)
 			  (unless (typep val '(integer 2 36))
-			    (mseterr name val)))
+			    (mseterr name val "must be an integer between 2 and 36, inclusive")))
 	 'assign)
 
 (putprop '*print-base* #'(lambda (name val)
 			  (unless (typep val '(integer 2 36))
-			    (mseterr name val)))
+			    (mseterr name val "must be an integer between 2 and 36, inclusive")))
 	 'assign)
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias))

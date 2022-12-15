@@ -1060,10 +1060,20 @@ wrapper for this."
 (defmfun $subvarp (x)
   (and (not (atom x)) (member 'array (cdar x) :test #'eq) t))
 
-(defun mseterr (x y)
+;; Print a message that the assignment to NAME with the value VAL
+;; failed.  If REASON is given, print it out as the reason for the
+;; failure.  For example
+;;
+;;   (mseterr '$foo -1 "must be non-negative") =>
+;;   "assignment: cannot assign -1 to foo: must be non-negative"
+;; 
+(defun mseterr (name val &optional reason)
   (if munbindp
       'munbindp
-      (merror (intl:gettext "assignment: cannot assign ~M to ~:M") y x)))
+      (if reason
+	  (merror (intl:gettext "assignment: cannot assign ~M to ~:M: ~M.")
+		  val name reason)
+	  (merror (intl:gettext "assignment: cannot assign ~M to ~:M.") val name))))
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
