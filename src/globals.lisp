@@ -80,14 +80,19 @@
 	(:setting-predicate
 	 ;; A :SETTING-PREDICATE is a function (symbol or lambda) of
 	 ;; one arg specifying the value that variable is to be set
-	 ;; to.  It should return non-NIL if the value is valid.
+	 ;; to.  It should return non-NIL if the value is valid.  An
+	 ;; optional second value may be returned.  This is a string
+	 ;; that can be used as the reason arg for MSETERR to explain
+	 ;; why the setting failed.
 	 ;;
 	 ;; WARNING: Do not also have a :properties item with an
 	 ;; 'assign property.  Currently this takes precedence.
 	 (let ((assign-func
 		 `#'(lambda (var val)
-		     (unless (funcall ,(second opts) val)
-			(mseterr var val)))))
+		      (multiple-value-bind (ok reason)
+			  (funcall ,(second opts) val)
+			(unless ok
+			  (mseterr var val reason))))))
 	   (setf maybe-predicate
 		 `((putprop ',var ,assign-func 'assign))))
 	 ;; Skip over the predicate function.
@@ -322,7 +327,11 @@
   If it is set to FALSE then the index will consist only of GENINDEX
   with no numeric suffix."
   modified-commands '$sum
-  :setting-predicate #'(lambda (x) (or (null x) (and (integerp x) (>= x 0)))))
+  :setting-predicate #'(lambda (x)
+			 (values (or (null x)
+				     (and (integerp x)
+					  (>= x 0)))
+				 "must be false or a non-negative integer")))
 
 (defmvar $genindex '$i
   "The alphabetic prefix used to generate the next variable of summation
@@ -519,8 +528,9 @@
   :setting-predicate #'(lambda (val)
 			 ;; The value must be fixnum within range.
 			 ;; The upper limit was arbitrarily chosen.
-			 (and (fixnump val)
-			      (< 0 val 1000001))))
+			 (values (and (fixnump val)
+				      (< 0 val 1000001))
+				 "must be an integer between 0 and 1000001, exclusive")))
 (defvar ttyheight 24.)
 
 (defmvar $known_index_properties '((mlist) $presubscript $presuperscript $postsubscript $postsuperscript))
@@ -558,9 +568,10 @@
   :setting-predicate #'(lambda (val)
 			 ;; $fpprintprec must be a non-negative fixnum
 			 ;; and also cannot be equal to 1.
-			 (and (fixnump val)
-			      (>= val 0)
-			      (/= val 1))))
+			 (values (and (fixnump val)
+				      (>= val 0)
+				      (/= val 1))
+				 "must be a non-negative integer and not equal to -1")))
 
 (defmvar $maxfpprintprec (ceiling (log (expt 2 (float-digits 1.0)) 10.0))
   "The maximum number of significant digits printed for floats.")
@@ -799,9 +810,10 @@
   'setcheck' may be set to 'all' or 'true' thereby including all
   variables."
   :setting-predicate #'(lambda (val)
-			 (or ($listp val)
-			     (member val '($all t nil))))
-  )
+			 (values (or ($listp val)
+				     (member val '($all t nil)))
+				 "must be a list or one of all, true, or false")))
+
 
 ;;Function Call stack each element is
 ;; (fname . bindlist) where bindlist was the value at time of entry.
@@ -1126,7 +1138,8 @@
   :setting-predicate #'(lambda (val)
 			 ;; $radexpand can only be set to $all, $true,
 			 ;; or $false.
-			 (member val '($all t nil))))
+			 (values (member val '($all t nil))
+				 "must be one of all, true, or false")))
 (defmvar $subnumsimp nil
   "When true, the functions 'subst' and 'psubst' can substitute a
   subscripted variable 'f[x]' with a number, when only the symbol 'f'
