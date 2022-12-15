@@ -1096,7 +1096,7 @@
   than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
   MAXIMA-ERROR signalling.")
 
-(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1d-7
+(defmvar $rootsepsilon 1d-7
   "The tolerance which establishes the confidence interval for the
   roots found by the 'realroots' function.")
 (defmvar $algepsilon 100000000)
@@ -1189,20 +1189,20 @@
 (defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n)
   "The list from which 'niceindices' takes the names of indices for sums
   and properties."
-  ::properties ((assign #'(lambda (name val)
-			    ;; The value must be a nonempty list
-			    ;; consisting of symbols.  While
-			    ;; niceindices can handle subscripted
-			    ;; variables, sum and product cannot, so
-			    ;; for now we'll restrict the possible
-			    ;; values to be simple symbols.
-			    (unless (and ($listp val)
-					 (not ($emptyp val))
-					 (every '$symbolp (cdr val)))
-			      (merror
-			       (intl:gettext "~M: value must be a nonempty list of symbols; found: ~:M")
-			       name val)))
-			)))
+  :properties ((assign #'(lambda (name val)
+			   ;; The value must be a nonempty list
+			   ;; consisting of symbols.  While
+			   ;; niceindices can handle subscripted
+			   ;; variables, sum and product cannot, so
+			   ;; for now we'll restrict the possible
+			   ;; values to be simple symbols.
+			   (unless (and ($listp val)
+					(not ($emptyp val))
+					(every '$symbolp (cdr val)))
+			     (merror
+			      (intl:gettext "~M: value must be a nonempty list of symbols; found: ~:M")
+			      name val)))
+		       )))
 
 ;;------------------------------------------------------------------------
 ;; From suprv1.lisp
