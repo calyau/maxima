@@ -592,7 +592,7 @@ wrapper for this."
 		  (merror (intl:gettext "assignment: cannot assign to ~M") x)))
 	    (let ((f (get x 'assign)))
 	      (if (and f (or (not (eq x y))
-			     (member f '(neverset read-only-assign) :test #'eq)))
+			     (member f '(neverset) :test #'eq)))
 		  (if (eq (funcall f x y) 'munbindp) (return nil))))
 	    (cond ((and (not (boundp x))
 			(not dsksetp))
