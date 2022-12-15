@@ -1122,7 +1122,11 @@
   :properties ((evflag t))) 
 (defmvar $radexpand t
   "Controls some simplification of radicals.  See the user manual."
-  :properties ((evflag t)))
+  :properties ((evflag t))
+  :setting-predicate #'(lambda (val)
+			 ;; $radexpand can only be set to $all, $true,
+			 ;; or $false.
+			 (member val '($all t nil))))
 (defmvar $subnumsimp nil
   "When true, the functions 'subst' and 'psubst' can substitute a
   subscripted variable 'f[x]' with a number, when only the symbol 'f'
@@ -1174,8 +1178,14 @@
   and properties."
   ::properties ((assign #'(lambda (name val)
 			    ;; The value must be a nonempty list
+			    ;; consisting of symbols.  While
+			    ;; niceindices can handle subscripted
+			    ;; variables, sum and product cannot, so
+			    ;; for now we'll restrict the possible
+			    ;; values to be simple symbols.
 			    (unless (and ($listp val)
-					 (not ($emptyp val)))
+					 (not ($emptyp val))
+					 (every '$symbolp (cdr val)))
 			      (merror
 			       (intl:gettext "~M: value must be a nonempty list of symbols; found: ~:M")
 			       name val)))
