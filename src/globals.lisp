@@ -19,17 +19,25 @@
 
   The valid options are:
 
-    NO-RESET        - If given, the variable will not be reset.
-    FIXNUM, BOOLEAN - The variable is declared to have this type.
-    :PROPERTIES     - A list of properties to be applied for this variable.
+    NO-RESET
+        - If given, the variable will not be reset.
+    FIXNUM, BOOLEAN, STRING, FLONUM
+        - The type of variable.  Currently ignored.
+    :PROPERTIES
+        - A list of properties to be applied for this variable.  It is
+          a list of lists.  Each sublist is a list of the property and
+          the value to be assigned to the property.
+    :SETTING-PREDICATE
+        - A function of one argument that returns NIL if the given
+          value is not a valid value for the variable.
 
   The list of properties has the form ((ind1 val1) (ind2 val2) ...)
   where IND1 is the name of the property and VAL1 is the value
   associated with the property.
 
   Other options that are recognized but ignored: IN-CORE, SEE-ALSO,
-  MODIFIED-COMMANDS, SETTING-PREDICATE, SETTING-LIST.  For any other
-  options, a warning is produced.
+  MODIFIED-COMMANDS, SETTING-LIST.  For any other options, a warning
+  is produced.
 "
   (let ((maybe-reset
           ;; Default is to reset the variable to it's initial value.
