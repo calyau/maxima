@@ -865,7 +865,7 @@
   than the printing of a message.  Kludgy MAXIMA-SUBSTITUTE for
   MAXIMA-ERROR signalling.")
 
-(defmvar $rootsepsilon #+gcl (float 1/10000000) #-gcl 1d-7)
+(defmvar $rootsepsilon 1d-7)
 (defmvar $algepsilon 100000000)
 (defmvar $true t)
 (defmvar $false nil)
