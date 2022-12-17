@@ -558,14 +558,12 @@ APPLY means like APPLY.")
 		 ((member '$compile whens :test #'eq)
 		  ;; strictly for the knowledgeable user.
 		  `(eval-when
-		       #+gcl (compile)
-		       #-gcl (:compile-toplevel)
+		       (:compile-toplevel)
 		       ,@(mapcar 'translate-macexpr-toplevel body))))))
 	((member (caar form) translate-time-evalables :test #'eq)
 	 (meval1 form)
 	 `(eval-when
-	      #+gcl (compile load eval)
-	      #-gcl (:compile-toplevel :load-toplevel :execute)
+	      (:compile-toplevel :load-toplevel :execute)
 	      (meval* ',form)))
 	((member  (caar form) '(mdefine mdefmacro) :test #'eq)
 	 (let ((name (caaadr form))

@@ -57,8 +57,7 @@
 				  ;; so that the rest of the translation gronks this.
 				  (putprop var 'assign-mode-check 'assign))
 			      `($any . (eval-when
-					   #+gcl (compile load eval)
-					   #-gcl (:compile-toplevel :load-toplevel :execute)
+					   (:compile-toplevel :load-toplevel :execute)
 					   (meval* ',mode-form)
 					   ,(if (not (eq mode '$any))
 						`(defprop ,var assign-mode-check assign))

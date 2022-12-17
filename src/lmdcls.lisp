@@ -23,9 +23,8 @@
 
 (defmacro declare-top (&rest decl-specs)
   `(eval-when
-    ,(cond (*macro-file*  #+gcl '(compile eval load)
-			  #-gcl '(:compile-toplevel :load-toplevel :execute) )
-	   (t #+gcl '(eval compile) #-gcl '(:compile-toplevel :execute)))
+    ,(cond (*macro-file*  '(:compile-toplevel :load-toplevel :execute) )
+	   (t '(:compile-toplevel :execute)))
     ,@(loop for v in decl-specs
 	     unless (member (car v) '(special unspecial)) nconc nil
 	     else

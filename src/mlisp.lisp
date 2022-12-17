@@ -13,8 +13,7 @@
 (macsyma-module mlisp)
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
+    (:compile-toplevel :execute)
 
     (defvar *old-read-base* *read-base*)
     (setq *read-base* 10.))
@@ -2387,7 +2386,6 @@ wrapper for this."
 (defprop quote cadr mfexpr*)		; Needed by MATCOM/MATRUN.
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
+    (:compile-toplevel :execute)
 
     (setq  *read-base* *old-read-base*))

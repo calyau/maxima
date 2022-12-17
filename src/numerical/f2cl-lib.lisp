@@ -9,8 +9,7 @@
   "$Id: macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (:compile-toplevel :load-toplevel :execute)
     (proclaim '(special *verbose*)))
 ;;----------------------------------------------------------------------------
 (defvar *check-array-bounds* nil
@@ -340,8 +339,7 @@ is not included")
 
 ;; macro for a lisp equivalent of Fortran assigned GOTOs
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:load-toplevel :compile-toplevel :execute)
+    (:load-toplevel :compile-toplevel :execute)
 (defun make-label (n) 
   (read-from-string (concatenate 'string (symbol-name :label) (princ-to-string n))))
 

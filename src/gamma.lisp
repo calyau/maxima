@@ -2285,8 +2285,7 @@
 ;;; Generalized Erf is antisymmetric Erf(z1,z2) = - Erf(z2,z1)
 
 (eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
+    (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
       (meval '(($declare) %erf_generalized $antisymmetric))
       ;; Let's remove built-in symbols from list for user-defined properties.
@@ -3258,8 +3257,7 @@
 ;;; Beta is symmetric beta(a,b) = beta(b,a)
 
 (eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
+    (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
       (meval '(($declare) $beta $symmetric))
       ;; Let's remove built-in symbols from list for user-defined properties.

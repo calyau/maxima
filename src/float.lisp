@@ -28,8 +28,7 @@
 ;; file so they can be accessible to all Macsyma files.
 
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (:compile-toplevel :load-toplevel :execute)
     (defconstant +machine-fixnum-precision+ (integer-length most-positive-fixnum)))
 
 ;; Internal specials
@@ -2450,6 +2449,5 @@
 	    (bcons (fproot x 2))))))
 
 (eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
+    (:load-toplevel :execute)
     (fpprec1 nil $fpprec))		; Set up user's precision

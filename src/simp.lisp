@@ -61,8 +61,7 @@
 ;; Local functions should not be simplified. Various lisps 
 ;; use various names for the list structure defining these:
 (eval-when
-    #+gcl (load)
-    #-gcl (:load-toplevel)
+    (:load-toplevel)
   (eval '(let* ((x 1)
 		(z #'(lambda () 3)))
 	  (dolist (y (list x z))
@@ -832,8 +831,7 @@
 
 ;; This constant is only needed in the file float.lisp.
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (:compile-toplevel :load-toplevel :execute)
     (defconstant machine-mantissa-precision (float-digits 1.0)))
 
 (defun fpcofrat (ratno)

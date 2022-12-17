@@ -16,8 +16,7 @@
 ;;stuff is in system.lisp for the lispm and nil friends.--wfs
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
+    (:compile-toplevel :execute)
   (setq old-ibase *read-base* old-base *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
@@ -867,6 +866,5 @@
 (defprop $contexts neverset assign)
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
+    (:compile-toplevel :execute)
     (setq *print-base* old-base *read-base* old-ibase))

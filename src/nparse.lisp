@@ -650,8 +650,7 @@
 ;;;
 
 (eval-when
-  #+gcl (eval compile load)
-  #-gcl (:execute :compile-toplevel :load-toplevel)
+  (:execute :compile-toplevel :load-toplevel)
   (defmacro def-nud-equiv (op equiv)
     (list 'putprop (list 'quote op) (list 'function equiv)
           (list 'quote 'nud)))
