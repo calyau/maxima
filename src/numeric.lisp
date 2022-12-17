@@ -225,21 +225,8 @@
      
 ;;; REALP
 
-;; GCL doesn't have the REAL class!  But since a real is a rational or
-;; float, we can fake it by defining methods on rationals and floats
-;; for gcl.
-#-gcl
 (defmethod realp ((x cl:real))
   t)
-
-#+gcl
-(progn
-  (defmethod realp ((x cl:rational))
-    t)
-  (defmethod realp ((x cl:float))
-    t)
-  )
-  
 
 (defmethod realp ((x bigfloat))
   t)
@@ -1177,22 +1164,8 @@
 		   :real (maxima::$realpart result)
 		   :imag (maxima::$imagpart result))))
 
-;; Really want type real, but gcl doesn't like that.  Define methods for rational and float
-#-gcl
 (defmethod two-arg-atan ((a real) (b real))
   (cl:atan a b))
-
-#+gcl
-(progn
-  (defmethod two-arg-atan ((a cl:float) (b cl:float))
-    (cl:atan a b))
-  (defmethod two-arg-atan ((a cl:rational) (b cl:rational))
-    (cl:atan a b))
-  (defmethod two-arg-atan ((a cl:float) (b cl:rational))
-    (cl:atan a b))
-  (defmethod two-arg-atan ((a cl:rational) (b cl:float))
-    (cl:atan a b))
-  )
 
 (defmethod two-arg-atan ((a bigfloat) (b bigfloat))
   (make-instance 'bigfloat
@@ -1323,40 +1296,16 @@
     (if (< (car nlist) result)
 	(setq result (car nlist)))))
 
-;; We really want a real type, but gcl doesn't like it, so use number
-;; instead.
-#-gcl
 (defmethod one-arg-complex ((a real))
   (cl:complex a))
-
-#+gcl
-(progn
-(defmethod one-arg-complex ((a cl:float))
-  (cl:complex a))
-(defmethod one-arg-complex ((a cl:rational))
-  (cl:complex a))
-)
 
 (defmethod one-arg-complex ((a bigfloat))
   (make-instance 'complex-bigfloat
 		 :real (real-value a)
 		 :imag (intofp 0)))
 
-#-gcl
 (defmethod two-arg-complex ((a real) (b real))
   (cl:complex a b))
-
-#+gcl
-(progn
-(defmethod two-arg-complex ((a cl:float) (b cl:float))
-  (cl:complex a b))
-(defmethod two-arg-complex ((a cl:rational) (b cl:rational))
-  (cl:complex a b))
-(defmethod two-arg-complex ((a cl:float) (b cl:rational))
-  (cl:complex a b))
-(defmethod two-arg-complex ((a cl:rational) (b cl:float))
-  (cl:complex a b))
-)
 
 (defmethod two-arg-complex ((a bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
@@ -1778,23 +1727,6 @@
 	    (third r)
 	    (bigfloat (signum (second r))))))
 
-;; GCL doesn't have a REAL class!
-#+gcl
-(progn
-(defmethod float ((x cl:float) (y cl:float))
-  (cl:float x y))
-
-(defmethod float ((x cl:rational) (y cl:float))
-  (cl:float x y))
-
-(defmethod float ((x cl:float) (y bigfloat))
-  (bigfloat x))
-
-(defmethod float ((x cl:rational) (y bigfloat))
-  (bigfloat x))
-)
-
-#-gcl
 (progn
 (defmethod float ((x real) (y cl:float))
   (cl:float x y))
@@ -1879,17 +1811,8 @@
   (let ((r (slot-value x 'real)))
     (third (first r))))
 
-#-gcl
 (defmethod rational ((x real))
   (cl:rational x))
-
-#+gcl
-(progn
-(defmethod rational ((x cl:float))
-  (cl:rational x))
-(defmethod rational ((x cl:rational))
-  (cl:rational x))
-)
 
 (defmethod rational ((x bigfloat))
   (destructuring-bind ((marker simp prec) mantissa exp)
@@ -1897,18 +1820,8 @@
     (declare (ignore marker simp))
     (* mantissa (expt 2 (- exp prec)))))
 
-#-gcl
 (defmethod rationalize ((x real))
   (cl:rationalize x))
-
-#+gcl
-(progn
-(defmethod rationalize ((x cl:float))
-  (cl:rationalize x))
-(defmethod rationalize ((x cl:rational))
-  (cl:rationalize x))
-)
-
 
 ;;; This routine taken from CMUCL, which, in turn is a routine from
 ;;; CLISP, which is GPL.
