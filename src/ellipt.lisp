@@ -50,7 +50,7 @@
 ;; cn(100,.7) > 1e10.  This is clearly not right since |cn| <= 1.
 ;;
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 (declaim (inline descending-transform ascending-transform))
 
@@ -1873,7 +1873,7 @@ first kind:
       ((%sin) ((mtimes) 2 z))))))
   grad)
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 ;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
 ;; integrals from http://www.getnet.com/~cherry/elliptbf3.mac.
 ;;

@@ -677,7 +677,7 @@
 	 (dotimes (k maxiter w)
             (setq w (- ln-z (log (- w)))))))))
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 ;; Approximate Lambert W(k,z) for k=1 and k=-1 near branch point z=-1/%e
 ;; using power series in y=-sqrt(2*%e*z+2)

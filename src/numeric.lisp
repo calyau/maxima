@@ -13,7 +13,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (setf lisp::*enable-package-locked-errors* nil))
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 (defun intofp (re)
   ;; Kind of like Maxima's INTOFP, but we only handle numeric types.
