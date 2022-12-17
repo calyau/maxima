@@ -35,6 +35,11 @@
 
 (putprop '$current_let_rule_package 'let-rule-setter 'assign)
 
+(defmvar $let_rule_packages '((mlist) $default_let_rule_package)
+  "The names of the various let rule simplification packages")
+
+(putprop '$let_rule_packages 'let-rule-setter 'assign)
+
 (setq nisrules nil nistree nil) 
 
 (defun let-rule-setter (var val)
