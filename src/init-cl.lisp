@@ -841,9 +841,6 @@ When one changes, the other does too."
 
 (defun maxima-load-pathname-directory ()
   "Return the directory part of *load-pathname*."
-  (let ((path #-gcl *load-pathname*
-              ;; Accommodate standard and nonstandard definitions of *LOAD-PATHNAME* in GCL.
-              ;; This can go away someday when nonstandard GCL's (<= 2.6.12) are ancient history.
-              #+gcl (symbol-value (or (find-symbol "*LOAD-PATHNAME*" :sys) (find-symbol "*LOAD-PATHNAME*" :common-lisp)))))
+  (let ((path *load-pathname*))
     (make-pathname :directory (pathname-directory path)
                    :device (pathname-device path))))
