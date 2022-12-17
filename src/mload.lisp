@@ -400,8 +400,7 @@
 		 (if (streamp *collect-errors*) *collect-errors*
 		   (handler-case
 		       (open (alter-pathname filename :type "ERR") :direction :output :if-exists :supersede)
-		     #-gcl (file-error () nil)
-		     #+gcl (cl::error () nil))))
+		     (file-error () nil))))
 	   (when error-log
 	     (format t (intl:gettext "~%batch: write error log to ~a") error-log)
 	     (format error-log (intl:gettext "~%/* Maxima error log from tests in ~A") filename)
