@@ -852,7 +852,10 @@
 (defvar transp nil)
 (defvar noevalargs nil)
 
-(defvar $structures '((mlist)))
+(defmvar $structures '((mlist))
+  nil
+  no-reset
+  :properties ((assign 'neverset)))
 
 ;;------------------------------------------------------------------------
 ;; From mload.lisp
