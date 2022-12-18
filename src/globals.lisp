@@ -119,6 +119,25 @@
        ,@maybe-set-props
        ,@maybe-predicate)))
 
+;; For the symbol SYM, add to the plist the property INDIC with a
+;; value of VAL.
+;;
+;; Some known INDIC properties
+;;
+;;   ASSIGN
+;;       When a variable is assigned (in maxima), the 'assign property
+;;       is used to check whether the value to be assigned is valid.
+;;       The value can be anything that can be funcall'ed.  If it
+;;       returns, then the assignment proceeds.  Thus, if the value is
+;;       invalid, an error must be signaled.
+;;   EVFLAG
+;;       When a symbol <x> has this property, expressions 'ev(<expr>,
+;;       <x>)' and '<expr>, <x>' are equivalent to 'ev(<expr>,
+;;       <x>=true)'.  See the user manual for more details.
+;;   SYSCONST
+;;       When true, it denotes that the symbol is a constant and
+;;       cannot be changed by the user.  This includes things like
+;;       $%pi, $%e, $inf, $minf, $true, and $false.
 (defun putprop (sym val  indic)
   (if (consp sym)
       (setf (getf (cdr sym) indic) val)
