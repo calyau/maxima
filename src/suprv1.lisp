@@ -869,8 +869,10 @@
 	($fpprec fpprec1) ($poislim poislim1)
 	($default_let_rule_package let-rule-setter)
 	($current_let_rule_package let-rule-setter)
+	#+nil
 	($let_rule_packages let-rule-setter)))
 
+#+nil
 (mapc #'(lambda (x) (putprop x 'neverset 'assign)) (cdr $infolists))
 
 (defprop $contexts neverset assign)
