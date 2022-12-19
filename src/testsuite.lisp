@@ -291,7 +291,7 @@
      #+(or clisp gcl)  ((mlist simp) 15 64)
      #+ecl ((mlist simp) 12 58 64)
      #+sbcl ((mlist simp) 15 64)
-     #+cmucl ((mlist simp) 15 64))
+     #+cmucl ((mlist simp) 12 58 64))
     ((mlist simp) "rtest_nfloat"
      #-(or gcl)
      ((mlist simp) 25))
