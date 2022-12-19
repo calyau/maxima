@@ -51,7 +51,7 @@
 	  $compgrind
 	  $current_let_rule_package $debugmode
 	  $default_let_rule_package
-	  $display_format_internal $domxexpt $domxmxops
+	  $display_format_internal $domxexpt
 	  $domxnctimes $domxplus $domxtimes
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
 	  $dotconstrules $dotident
@@ -63,7 +63,7 @@
 	  $fortspaces $fpprec $fpprintprec $gammalim
 	  $homog_hack
 	  $isolate_wrt_times $leftjust $letrat $letvarsimp
-o	  $linsolvewarn
+	  $linsolvewarn
 	  $lmxchar $logconcoeffp $lognegint
 	  $macroexpansion $maperror $mapprint
 	  $matrix_element_transpose
