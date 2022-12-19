@@ -430,9 +430,6 @@
 ;; These operators aren't killed by the function kill-operator.
 (defvar *mopl* nil)
 
-(defvar $gradefs '((mlist simp)))
-(defvar $dependencies '((mlist simp)))
-
 (defvar atvars '($@1 $@2 $@3 $@4))
 (defvar in-p nil)
 (defvar substp nil)
