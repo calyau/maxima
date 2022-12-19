@@ -866,11 +866,9 @@
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
       '(($debugmode debugmode1)
-	($fpprec fpprec1) ($poislim poislim1)
+	($poislim poislim1)
 	($default_let_rule_package let-rule-setter)
 	($current_let_rule_package let-rule-setter)))
-
-(defprop $contexts neverset assign)
 
 (eval-when
     #+gcl (compile eval)

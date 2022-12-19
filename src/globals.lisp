@@ -451,8 +451,10 @@
   activated.  All of MACSYMA's built-in relational knowledge is
   contained in the default context GLOBAL.")
 
-(defvar $contexts '((mlist) $global)
-  "A list of the currently active contexts.")
+(defmvar $contexts '((mlist) $global)
+  "A list of the currently active contexts."
+  no-reset
+  :properties ((assign 'neverset)))
 
 (defvar $activecontexts '((mlist))
   "A list of the currently activated contexts")
@@ -606,7 +608,8 @@
 (defmvar $fpprec $maxfpprintprec
   "Number of decimal digits of precision to use when creating new
   bigfloats. One extra decimal digit in actual representation for
-  rounding purposes.")
+  rounding purposes."
+  :properties ((assign 'fpprec1)))
 
 (defmvar bigfloatzero '((bigfloat simp 56.) 0 0)
   "Bigfloat representation of 0"
