@@ -19,9 +19,7 @@
 	 #+allegro ((mlist simp) 11 13))
         "rtestnset" 
         ((mlist simp) "rtest1"
-	 ;; 115 sometimes fails on ECL 16.1.2 on AMD 64/Ubuntu.
-	 #+ecl ((mlist simp) 115 183 185 186)
-	 #-ecl ((mlist simp) 183 185 186))
+	 ((mlist simp) 183 185 186))
         ((mlist simp) "rtest1a" ((mlist simp) 33))
         ((mlist simp) "rtest2" ((mlist simp) 86 95))
 	"rtest4"
@@ -35,7 +33,7 @@
 	;; 45 sporadically fails in all tested ECL versions (15.3.7-16.1.3)
 	;; 43 fails in ECL up to version 15.3.7
         ((mlist simp) "rtest6"
-	 #+ecl ((mlist simp) 43 45 46))
+	 #+ecl ((mlist simp) 46))
         "rtest6a"
 	"rtest6b"
 	"rtest7"
@@ -53,8 +51,7 @@
 	;; and sporadically in 201, 234, 249, 250, 251, 252, 267, 297, 298, 312, 315
 	;; and 319
 	;; ECL 13.5.1 sporadically fails in 233
-	((mlist simp) "rtest14"
-	 #+ecl ((mlist simp) 145 201 233 234 249 250 251 252 267 297 298 307 310 312 315 319))
+	((mlist simp) "rtest14")
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
@@ -63,14 +60,13 @@
 	;; Test 50 still sometimes fails in ecl 16.1.2
         ((mlist simp) "rtest16"
 	 #-(or ecl allegro) ((mlist simp) 524 525)
-	 #+ecl ((mlist simp) 50 524 525 561)
+	 #+ecl ((mlist simp) 524 525)
 	 #+allegro ((mlist simp) 50 241 524 525))
         "rtestode"
 	"rtestode_zp"
         ((mlist simp) "rtest3" ((mlist simp) 146))
 	;; ECL 16.1.2 still fails in #104
-	((mlist simp) "rtest8"
-	 #+ecl ((mlist simp) 104))
+	((mlist simp) "rtest8")
         "rtest12"
         "rexamples"
         ((mlist simp) "rtesthyp"
