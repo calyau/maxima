@@ -58,7 +58,6 @@
 	  $erfflag $errexp $error_size $error_syms
 	  $exptdispflag $exptisolate
 	  $file_search
-	  $float2bf
 	  $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $gammalim
 	  $homog_hack
