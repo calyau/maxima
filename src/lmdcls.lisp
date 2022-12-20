@@ -58,8 +58,8 @@
 	  $erfflag $errexp $error_size $error_syms
 	  $exptdispflag $exptisolate
 	  $file_search
-	  $float2bf $floatformat $floatfrac $floatint
-	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
+	  $float2bf
+	  $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $gammalim
 	  $homog_hack
 	  $isolate_wrt_times $leftjust $letrat $letvarsimp
