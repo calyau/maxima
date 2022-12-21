@@ -959,12 +959,7 @@ is not included")
    
 ;; Map Fortran logical unit numbers to Lisp streams
 
-#-gcl
 (defparameter *lun-hash*
-  (make-hash-table))
-
-#+gcl
-(defvar *lun-hash*
   (make-hash-table))
 
 (defun lun->stream (lun &optional readp)
