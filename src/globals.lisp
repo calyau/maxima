@@ -1339,6 +1339,11 @@
   "The last out-line computed, corresponds to lisp *"
   no-reset)
 
+(defmvar $%% '$%%
+  "In compound statements, namely 'block', 'lambda', or '(<s_1>,
+  ...,<s_n>)', '%%' is the value of the previous statement."
+  no-reset)
+
 (defmvar $inchar '$%i
   "The alphabetic prefix of the names of expressions typed by the user.")
 

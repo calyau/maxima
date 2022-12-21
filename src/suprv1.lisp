@@ -23,7 +23,7 @@
 
 (declare-top  (special errset
 		       checkfactors $features featurel
-		       dispflag savefile $%%
+		       dispflag savefile
 		       opers *ratweights
 		       transp autoload))
 

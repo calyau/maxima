@@ -44,7 +44,6 @@
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $%%
 	  $absboxchar $algexact
 	  $askexp $berlefact
 	  $beta_args_sum_to_integer $bftrunc $boxchar
