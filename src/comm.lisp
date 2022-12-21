@@ -383,7 +383,6 @@
 	     (add2lnc (cons (cons (caar z) nil) (cdr z)) $gradefs) z))))
 
 (defmfun $diff (&rest args)
-  #-gcl
   (declare (dynamic-extent args))
   (let (derivlist)
     (deriv args)))
@@ -736,7 +735,6 @@
   (disp1 (cdr form) t t))
 
 (defmfun $ldisp (&rest args)
-  #-gcl
   (declare (dynamic-extent args))
   (disp1 args t nil))
 
@@ -744,7 +742,6 @@
   (disp1 (cdr form) nil t))
 
 (defmfun $disp (&rest args)
-  #-gcl
   (declare (dynamic-extent args))
   (disp1 args nil nil))
 
@@ -826,12 +823,10 @@
       (alike1 ($op expr) oplist)))
 
 (defmfun $part (&rest args)
-  #-gcl
   (declare (dynamic-extent args))
   (mpart args nil nil $inflag '$part))
 
 (defmfun $inpart (&rest args)
-  #-gcl
   (declare (dynamic-extent args))
   (mpart args nil nil t '$inpart))
 

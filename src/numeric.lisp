@@ -823,7 +823,7 @@
 (defun = (number &rest more-numbers)
   "Returns T if all of its arguments are numerically equal, NIL otherwise."
   (declare (optimize (safety 2))
-	   #-gcl (dynamic-extent more-numbers))
+	   (dynamic-extent more-numbers))
   (do ((nlist more-numbers (cdr nlist)))
       ((atom nlist) t)
     (declare (list nlist))
@@ -833,7 +833,7 @@
 (defun /= (number &rest more-numbers)
   "Returns T if no two of its arguments are numerically equal, NIL otherwise."
   (declare (optimize (safety 2))
-	   #-gcl (dynamic-extent more-numbers))
+	   (dynamic-extent more-numbers))
   (do* ((head number (car nlist))
 	(nlist more-numbers (cdr nlist)))
        ((atom nlist) t)
@@ -864,7 +864,7 @@
 	    (defun ,op (number &rest more-numbers)
 	      "Returns T if its arguments are in strictly increasing order, NIL otherwise."
 	      (declare (optimize (safety 2))
-		       #-gcl (dynamic-extent more-numbers))
+		       (dynamic-extent more-numbers))
 	      (do* ((n number (car nlist))
 		    (nlist more-numbers (cdr nlist)))
 		   ((atom nlist) t)
@@ -1279,7 +1279,7 @@
 (defun max (number &rest more-numbers)
   "Returns the greatest of its arguments."
   (declare (optimize (safety 2)) (type (or real bigfloat) number)
-	   #-gcl (dynamic-extent more-numbers))
+	   (dynamic-extent more-numbers))
   (dolist (real more-numbers)
     (when (> real number)
       (setq number real)))
@@ -1288,7 +1288,7 @@
 (defun min (number &rest more-numbers)
   "Returns the least of its arguments."
   (declare (optimize (safety 2)) (type (or real bigfloat) number)
-	   #-gcl (dynamic-extent more-numbers))
+	   (dynamic-extent more-numbers))
   (do ((nlist more-numbers (cdr nlist))
        (result (the (or real bigfloat) number)))
       ((null nlist) (return result))
