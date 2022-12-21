@@ -1472,3 +1472,32 @@
 (defvar *temp-files-list* (make-hash-table :test 'equal))
 
 ;;------------------------------------------------------------------------
+;; From macdes.lisp
+(defmvar $browser "firefox '~a'"
+  "Browser to use for displaying the documentation.  This may be
+  initialized on startup to an OS-specific value.  It must contain
+  exactly one ~a which will be replaced by the url.")
+
+(defmvar $url_base "localhost:8080"
+  "Base URL where the HTML doc may be found.  This can be a file path
+  like \"file:///<path>\" or a web server like \"localhost:8080\" or
+  some other web server.
+
+  This may be initialized on startup to a file path where the html
+  files can be found.")
+
+(defmvar $output_format_for_help '$text
+  "The output format for help.  It should be one of the values '$text,
+  '$html, '$frontend.  The default is '$text which causes the help to
+  be sent to the terminal as plain text.  '$html opens a browser to
+  the page for the help.  '$frontend assumes that some frontend will
+  provide the necessary function to display help appropriately for the
+  frontend."
+  :properties ((assign 'set-output-format-for-help)))
+
+(defvar *help-display-function*
+  'display-text-topics
+  "A symbol naming the function used to display help, as determined
+  from $output_format_for_help.")
+
+;;------------------------------------------------------------------------
