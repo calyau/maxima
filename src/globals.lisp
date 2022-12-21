@@ -1501,3 +1501,21 @@
   from $output_format_for_help.")
 
 ;;------------------------------------------------------------------------
+(defmvar $maxima_userdir nil
+  "Names a directory which Maxima searches to find Maxima and Lisp
+  files."
+  ;; $maxima_userdir is aliased to *maxima-userdir* so that when one
+  ;; changes, the other does too.
+  :properties ((assign 'shadow-string-assignment)
+	       (lisp-shadow '*maxima-userdir*)))
+
+(defmvar $maxima_tempdir nil
+  "Names the directory in which Maxima creates some temporary files."
+  :properties ((assign 'shadow-string-assignment)
+	       (lisp-shadow '*maxima-tempdir*)))
+
+(defmvar $maxima_objdir nil
+  "Names the directory where fasl files are written to."
+  :properties ((assign 'shadow-string-assignment)
+	       (lisp-shadow '*maxima-objdir*)))
+;;------------------------------------------------------------------------

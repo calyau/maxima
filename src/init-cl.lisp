@@ -32,22 +32,6 @@
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
-(eval-when (:load-toplevel :compile-toplevel :execute)
-  (defmacro def-lisp-shadow (root-name)
-    "Create a maxima variable $root_name that is an alias for the lisp name *root-name*.
-When one changes, the other does too."
-    (let ((maxima-name (intern (concatenate 'string "$"
-					    (substitute #\_ #\- (string root-name)))))
-	  (lisp-name (intern (concatenate 'string "*" (string root-name) "*"))))
-      `(progn
-	 (defmvar ,maxima-name)
-	 (putprop ',maxima-name 'shadow-string-assignment 'assign)
-	 (putprop ',maxima-name ',lisp-name 'lisp-shadow)))))
-
-(def-lisp-shadow maxima-tempdir)
-(def-lisp-shadow maxima-userdir)
-(def-lisp-shadow maxima-objdir)
-
 (defun shadow-string-assignment (var value)
   (cond
     ((stringp value)
