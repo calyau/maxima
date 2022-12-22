@@ -56,7 +56,6 @@
 	  $dotconstrules $dotident
 	  $erfflag $errexp $error_size $error_syms
 	  $exptdispflag $exptisolate
-	  $file_search
 	  $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $gammalim
 	  $homog_hack
