@@ -46,7 +46,7 @@
 (declaim (special
 	  $absboxchar $algexact
 	  $askexp $berlefact
-	  $beta_args_sum_to_integer $bftrunc $boxchar
+	  $beta_args_sum_to_integer $boxchar
 	  $compgrind
 	  $current_let_rule_package $debugmode
 	  $default_let_rule_package
