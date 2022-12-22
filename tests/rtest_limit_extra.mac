@@ -657,7 +657,7 @@ limit(atan(x),x,0,plus);
 limit(atan(x),x,-2.0);
 -1.10714871779409$
 
-block([fpprec : 32], is(limit(atan(x),x,bfloat(sqrt(2))) = atan(bfloat(sqrt(2)))));
+block([fpprec : 32], float_approx_equal(limit(atan(x),x,bfloat(sqrt(2))), atan(bfloat(sqrt(2)))));
 true$
 
 is(limit(atan(x),x,float(sqrt(2))) = atan(float(sqrt(2))));
