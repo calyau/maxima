@@ -44,9 +44,7 @@
 ;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
-	  $beta_args_sum_to_integer $boxchar
-	  $compgrind
-	  $current_let_rule_package $debugmode
+	  $current_let_rule_package
 	  $default_let_rule_package
 	  $display_format_internal $domxexpt
 	  $domxnctimes $domxplus $domxtimes
