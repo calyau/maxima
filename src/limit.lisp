@@ -3166,13 +3166,14 @@ ignoring dummy variables and array indices."
   (let ((n (car (subfunsubs expr))) (e (car (subfunargs expr))))
     (cond ((freeof x n)
 	   (setq e (limit e x pt 'think))
-	   (cond ((and (eq e '$minf) (eql n 2))
+	   (cond ((and (eq e '$minf) (integerp n) (>= n 2))
 		  '$minf)
-		 ((and (eq e '$inf) (eql n 2))
+		 ((and (eq e '$inf) (integerp n) (>= n 2))
 		  '$infinity)
-		 ((or (eql (ridofab e) 1) (off-one-to-inf e))
+		 ((or (eql (ridofab e) 1) (and (off-one-to-inf e) (not (member e '($inf $minf)))))
 		  ;; Limit of li[s](1) can be evaluated by just
 		  ;; substituting in 1.
+		  ;; Same for li[s](x) when x is < 1.
 		  (subftake '$li (list n) (list e)))
 		 (t (throw 'limit nil))))
 	  ;; Claim ignorance when order depends on limit variable.	
