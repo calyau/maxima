@@ -17,8 +17,6 @@
 
 (declare-top (special *odr* nn* *checkagain))
 
-(declare-top (special $dontfactor))
-
 ;;There really do seem to be two such variables...
 (declare-top (special alpha *alpha gauss minpoly*))
 
