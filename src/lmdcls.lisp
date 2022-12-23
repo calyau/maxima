@@ -69,7 +69,7 @@
 	  defined_variables derivlist
 	  dn*
 	  gauss
-	  local maplp
+	  local
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm* modulus
 	  mplc* mspeclist
 	  need-prog? nn*
