@@ -20,7 +20,7 @@
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch nogood
-                      $erfflag alphar m
+                      alphar m
                       hypertrigint *mosesflag *exp y
                       implicit-real generate-atan2
                       context *in-risch-p*))
