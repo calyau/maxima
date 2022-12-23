@@ -3170,7 +3170,7 @@ ignoring dummy variables and array indices."
 		  '$minf)
 		 ((and (eq e '$inf) (integerp n) (>= n 2))
 		  '$infinity)
-		 ((or (eql (ridofab e) 1) (and (off-one-to-inf e) (not (member e '($inf $minf)))))
+		 ((or (eql (ridofab e) 1) (and (not (extended-real-p e)) (off-one-to-inf e)))
 		  ;; Limit of li[s](1) can be evaluated by just
 		  ;; substituting in 1.
 		  ;; Same for li[s](x) when x is < 1.
