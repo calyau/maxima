@@ -28,7 +28,6 @@ or if apply is being used are printed.")
 		      $myoptions $props
 		      $numer
 		      opers
-		      *alphabet*
 		      $macros $ratwtlvl
 		      *gcdl*
 		      *builtin-$props*))

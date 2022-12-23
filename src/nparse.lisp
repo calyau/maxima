@@ -42,8 +42,6 @@
 
 (defmvar *whitespace-chars* (append *ascii-space-chars-for-maxima* *unicode-space-chars-for-maxima*))
 
-(defmvar *alphabet* (list #\_ #\%))
-
 (defun alphabetp (n)
   (and (characterp n)
        (or (alpha-char-p n) #+gcl(>= (char-code n) 128)

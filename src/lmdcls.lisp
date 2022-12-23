@@ -66,7 +66,7 @@
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* |-1//2|
 	  |1//2|
-	  alpha *alphabet*
+	  alpha
 	  defined_variables derivlist
 	  dn*
 	  gauss
