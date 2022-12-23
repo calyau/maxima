@@ -65,17 +65,15 @@
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
-	  *alpha *const* *gcdl* *in *in-compile*
-	  *inv* *irreds *min* *mx*
+	  *alpha *gcdl* *in
+	  *inv* *min* *mx*
 	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* |-1//2|
-	  |1//2| aexprp algnotexact
-	  alpha *alphabet* assigns
-	  defined_variables defintdebug derivlist
-	  derivsimp displayp dn* dsksetp
-	  expandflag expandp
-	  exptrlsw
+	  |1//2|
+	  alpha *alphabet*
+	  defined_variables derivlist
+	  dn*
 	  fr-factor gauss
 	  generate-atan2
 	  implicit-real inratsimp inside-mprog
