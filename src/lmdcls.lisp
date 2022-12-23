@@ -52,14 +52,9 @@
 	  $maperror
 	  $maxapplyheight
 	  $nalgfac
-	  $optimprefix $optionset
-	  $parsewindow $pointbound
-	  $poislim
-	  $ratdenomdivide
-          $ratmx $ratvarswitch
-	  $realonly $refcheck $rmxchar
-	  $setval $signbfloat
-	  $solvedecomposes $solveexplicit $solvenullwarn
+	  $parsewindow
+          $ratmx
+	  $rmxchar
 	  $solvetrigwarn
 	  $stardisp $sublis_apply_lambda
 	  $taylor_logexpand
