@@ -56,11 +56,7 @@
           $ratmx
 	  $rmxchar
 	  $solvetrigwarn
-	  $stardisp $sublis_apply_lambda
-	  $taylor_logexpand
-	  $taylor_truncate_polynomials $timer $timer_devalue
-	  $trace $trace_break_arg $trace_max_indent
-	  $trace_safety $transrun
+	  $transrun
 	  $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
 	  $tr_function_call_default $tr_numer
@@ -69,8 +65,6 @@
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
-	  $vect_cross
-	  %pi-val *$any-modes*
 	  *alpha *const* *gcdl* *in *in-compile*
 	  *inv* *irreds *min* *mx*
 	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
