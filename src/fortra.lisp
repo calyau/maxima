@@ -13,7 +13,7 @@
 (macsyma-module fortra)
 
 (declare-top (special *lb* *rb*	 ;Used for communication with MSTRING.
-		      1//2 -1//2))
+		      ))
 
 (defmvar $fortspaces nil
   "If T, Fortran card images are filled out to 80 columns using spaces."

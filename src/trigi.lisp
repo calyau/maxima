@@ -14,8 +14,6 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special 1//2 -1//2))
-
 ;;; Arithmetic utilities.
 
 (defun sqrt1-x^2 (x)

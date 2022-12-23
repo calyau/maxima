@@ -64,8 +64,7 @@
 	  *inv* *min* *mx*
 	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
-	  *warned-mode-vars* *warned-un-declared-vars* |-1//2|
-	  |1//2|
+	  *warned-mode-vars* *warned-un-declared-vars*
 	  alpha
 	  defined_variables derivlist
 	  dn*
