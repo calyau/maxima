@@ -69,8 +69,6 @@
 	  defined_variables derivlist
 	  dn*
 	  gauss
-	  generate-atan2
-	  implicit-real
 	  local maplp
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm* modulus
 	  mplc* mspeclist

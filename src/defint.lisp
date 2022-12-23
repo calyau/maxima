@@ -148,9 +148,7 @@
 		      integer-info
 		      ;;If LIMITP is non-null ask-integer conses
 		      ;;its assumptions onto this list.
-		      generate-atan2))
-					;If this switch is () then RPART returns ATAN's
-					;instead of ATAN2's
+		      ))
 
 (defmvar $intanalysis t
   "When @code{true}, definite integration tries to find poles in the integrand 

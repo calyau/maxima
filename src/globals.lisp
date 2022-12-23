@@ -1544,3 +1544,16 @@
 (defvar -1//2 '((rat simp) -1 2))
 
 ;;------------------------------------------------------------------------
+;; From rpart.lisp
+
+;; generate-atan2 is set to nil when doing integration to avoid
+;; generating discontinuities that defint can't handle.
+(defmvar generate-atan2 t
+  "Controls whether RPART will generate ATAN's or ATAN2's, default is to
+  make ATAN2's")
+
+(defmvar implicit-real nil
+  "If t RPART assumes radicals and logs of real quantities are real and
+  doesn't ask sign questions")
+
+;;------------------------------------------------------------------------

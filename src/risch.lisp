@@ -22,7 +22,6 @@
                       expstuff liflag intvar switch nogood
                       alphar m
                       hypertrigint *mosesflag *exp y
-                      implicit-real generate-atan2
                       context *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
