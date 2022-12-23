@@ -77,11 +77,10 @@
 	  radcanp
 	  return-mode returns
 	  rulesw sign-imag-errp
-	  *small-primes*
 	  sums tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables
 	  tstack
-	  $verbose ps-bmt-disrep
+	  ps-bmt-disrep
 	  $define_variable))
 
 (declaim (declaration unspecial))
