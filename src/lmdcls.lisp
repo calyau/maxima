@@ -45,8 +45,6 @@
 ;;; or for some specials declared in the macro files, eg displm.
 
 (declaim (special
-	  $current_let_rule_package
-	  $default_let_rule_package
 	  $errexp
 	  $fortfloat
 	  $fpprec $fpprintprec

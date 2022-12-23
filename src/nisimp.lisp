@@ -25,16 +25,6 @@
   nil
   :properties ((evflag t))) 
 
-(defmvar $default_let_rule_package '$default_let_rule_package
-  "The name of the default rule package used by `let' and `letsimp'")
-
-(putprop '$default_let_rule_package 'let-rule-setter 'assign)
-
-(defmvar $current_let_rule_package '$default_let_rule_package
-  "The name of the current rule package used by `let' and `letsimp'")
-
-(putprop '$current_let_rule_package 'let-rule-setter 'assign)
-
 (setq nisrules nil nistree nil) 
 
 (defun let-rule-setter (var val)

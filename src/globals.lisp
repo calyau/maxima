@@ -1519,3 +1519,13 @@
   :properties ((assign 'shadow-string-assignment)
 	       (lisp-shadow '*maxima-objdir*)))
 ;;------------------------------------------------------------------------
+;; From nisimp
+(defmvar $default_let_rule_package '$default_let_rule_package
+  "The name of the default rule package used by `let' and `letsimp'"
+  :properties ((assign 'let-rule-setter)))
+
+(defmvar $current_let_rule_package '$default_let_rule_package
+  "The name of the current rule package used by `let' and `letsimp'"
+  :properties ((assign 'let-rule-setter)))
+
+;;------------------------------------------------------------------------
