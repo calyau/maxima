@@ -65,7 +65,7 @@
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
-	  *alpha *gcdl* *in
+	  *alpha *gcdl* *in *in-compile*
 	  *inv* *min* *mx*
 	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
@@ -74,25 +74,22 @@
 	  alpha *alphabet*
 	  defined_variables derivlist
 	  dn*
-	  fr-factor gauss
+	  gauss
 	  generate-atan2
-	  implicit-real inratsimp inside-mprog
-	  limit-answers
-	  local maplp mdop
+	  implicit-real
+	  local maplp
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm* modulus
-	  mplc* mprogp mproplist mspeclist
-	  need-prog? negprods negsums nn*
+	  mplc* mspeclist
+	  need-prog? nn*
 	  *nounsflag* opers opers-list outargs1 outargs2
-	  preserve-direction prods radcanp
-	  realonlyratnum return-mode returns rulefcnl
-	  rulesw sign-imag-errp simplimplus-problems
+	  radcanp
+	  return-mode returns
+	  rulesw sign-imag-errp
 	  *small-primes*
-	  sums timesinp tr-abort tr-progret tr-unique
+	  sums tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables
 	  tstack
-	  *trunclist
-	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
-	  $define_variable
-	  $factor_max_degree_print_warning))
+	  $verbose ps-bmt-disrep
+	  $define_variable))
 
 (declaim (declaration unspecial))
