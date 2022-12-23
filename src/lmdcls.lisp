@@ -46,10 +46,6 @@
 (declaim (special
 	  $current_let_rule_package
 	  $default_let_rule_package
-	  $display_format_internal $domxexpt
-	  $domxnctimes $domxplus $domxtimes
-	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp
-	  $dotconstrules $dotident
 	  $erfflag $errexp $error_size $error_syms
 	  $exptdispflag $exptisolate
 	  $fortfloat $fortindent
