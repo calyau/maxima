@@ -47,7 +47,6 @@
 (declaim (special
 	  $errexp
 	  $fortfloat
-	  $fpprec $fpprintprec
 	  $maperror
 	  $maxapplyheight
 	  $nalgfac
