@@ -50,9 +50,7 @@
 	  $maperror
 	  $maxapplyheight
 	  $parsewindow
-          $ratmx
 	  $rmxchar
-	  $solvetrigwarn
 	  $transrun
 	  $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
@@ -62,7 +60,7 @@
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
-	  *alpha *gcdl* *in *in-compile*
+	  *alpha *in *in-compile*
 	  *inv* *min* *mx*
 	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
