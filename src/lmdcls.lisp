@@ -49,14 +49,9 @@
 	  $errexp
 	  $fortfloat
 	  $fpprec $fpprintprec
-	  $linsolvewarn
-	  $lmxchar $logconcoeffp $lognegint
-	  $macroexpansion $maperror $mapprint
-	  $matrix_element_transpose
-	  $maxapplydepth $maxapplyheight
-	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
-	  $mx0simp $nalgfac
-	  $negsumdispflag $noundisp
+	  $maperror
+	  $maxapplyheight
+	  $nalgfac
 	  $optimprefix $optionset
 	  $parsewindow $pointbound
 	  $poislim
