@@ -46,12 +46,9 @@
 (declaim (special
 	  $current_let_rule_package
 	  $default_let_rule_package
-	  $erfflag $errexp $error_size $error_syms
-	  $exptdispflag $exptisolate
-	  $fortfloat $fortindent
-	  $fortspaces $fpprec $fpprintprec $gammalim
-	  $homog_hack
-	  $isolate_wrt_times $leftjust $letrat $letvarsimp
+	  $errexp
+	  $fortfloat
+	  $fpprec $fpprintprec
 	  $linsolvewarn
 	  $lmxchar $logconcoeffp $lognegint
 	  $macroexpansion $maperror $mapprint
