@@ -14,7 +14,7 @@
 
 (declare-top (special derivlist
 		      *linelabel* nn* dn*
-		      $errexp $dotdistrib
+		      $errexp
 		      dummy-variable-operators))
 
 ;; op and opr properties
