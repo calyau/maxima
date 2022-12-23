@@ -1529,3 +1529,8 @@
   :properties ((assign 'let-rule-setter)))
 
 ;;------------------------------------------------------------------------
+;; From factor.lisp
+(defmvar $nalgfac t
+  "If t use bmt's algebraic factoring algorithm")
+
+;;------------------------------------------------------------------------

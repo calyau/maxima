@@ -49,7 +49,6 @@
 	  $fortfloat
 	  $maperror
 	  $maxapplyheight
-	  $nalgfac
 	  $parsewindow
           $ratmx
 	  $rmxchar
