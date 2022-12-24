@@ -476,7 +476,7 @@
 				    ((or (eql sgn '$neg) (eql sgn '$pn)) '$pn)
 				    (t '$pnz)))))
 
-(putprop '%gamma #'gamma-sign 'sign-function)
+(putprop '%gamma 'gamma-sign 'sign-function)
 
 (defun gamma (y) ;;; numerical evaluation for 0 < y < 1
   (prog (sum coefs)

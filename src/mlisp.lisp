@@ -762,7 +762,7 @@ wrapper for this."
   (putprop (caar z) (initializersmostly z) 'defstruct-default)
   (setf (get (caar z) 'dimension) 'dimension-defstruct)
   (nconc $structures (list (get (caar z) 'defstruct-default)))
-  (setf (get (caar z) 'translate) #'defstruct-translate)
+  (setf (get (caar z) 'translate) 'defstruct-translate)
   (get (caar z) 'defstruct-default))
 
 (defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)

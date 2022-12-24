@@ -65,7 +65,7 @@
   (cond ((floatp z) (airy-ai-real z))
 	((complexp z) (airy-ai-complex z))))
 
-(setf (gethash '%airy_ai *flonum-op*) #'airy-ai)
+(setf (gethash '%airy_ai *flonum-op*) 'airy-ai)
 
 (defun simplim%airy_ai (expr var val)
   ; Look for the limit of the argument
@@ -131,7 +131,7 @@
   (cond ((floatp z) (airy-dai-real z))
 	((complexp z) (airy-dai-complex z))))
 
-(setf (gethash '%airy_dai *flonum-op*) #'airy-dai)
+(setf (gethash '%airy_dai *flonum-op*) 'airy-dai)
 
 (defun simplim%airy_dai (expr var val)
   ; Look for the limit of the argument
@@ -223,7 +223,7 @@
   (cond ((floatp z) (airy-bi-real z))
 	((complexp z) (airy-bi-complex z))))
 
-(setf (gethash '%airy_bi *flonum-op*) #'airy-bi)
+(setf (gethash '%airy_bi *flonum-op*) 'airy-bi)
 
 (defun simplim%airy_bi (expr var val)
   ; Look for the limit of the argument
@@ -290,7 +290,7 @@
   (cond ((floatp z) (airy-dbi-real z))
 	((complexp z) (airy-dbi-complex z))))
 
-(setf (gethash '%airy_dbi *flonum-op*) #'airy-dbi)
+(setf (gethash '%airy_dbi *flonum-op*) 'airy-dbi)
 
 (defun simplim%airy_dbi (expr var val)
   ; Look for the limit of the argument

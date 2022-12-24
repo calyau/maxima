@@ -48,7 +48,7 @@
 	   (cons (div a r) (div b r)))
 	  (t (cons (take '(%realpart) x) (take '(%imagpart) x)))))) ;nothing known
 
-(setf (get '%signum 'risplit-function) #'risplit-signum)
+(setf (get '%signum 'risplit-function) 'risplit-signum)
 
 (defun simp-realpart (expr z simpflag)
   (oneargcheck expr)

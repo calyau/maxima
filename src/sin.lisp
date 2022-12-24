@@ -684,32 +684,32 @@
 ;; Define the antiderivative of tan(x), taking logabs into account.
 (defun integrate-tan (x)
   (log-or-logabs (take '(%sec) x)))
-(putprop '%tan `((x) ,#'integrate-tan) 'integral)
+(putprop '%tan `((x) ,'integrate-tan) 'integral)
 
 ;; ... the same for csc(x) ...
 (defun integrate-csc (x)
   (mul -1 (log-or-logabs (add (take '(%csc) x) (take '(%cot) x)))))
-(putprop '%csc `((x) ,#'integrate-csc) 'integral)
+(putprop '%csc `((x) ,'integrate-csc) 'integral)
 
 ;; ... the same for sec(x) ...
 (defun integrate-sec (x)
   (log-or-logabs (add (take '(%sec) x) (take '(%tan) x))))
-(putprop '%sec `((x) ,#'integrate-sec) 'integral)
+(putprop '%sec `((x) ,'integrate-sec) 'integral)
 
 ;; ... the same for cot(x) ...
 (defun integrate-cot (x)
   (log-or-logabs (take '(%sin) x)))
-(putprop '%cot `((x) ,#'integrate-cot) 'integral)
+(putprop '%cot `((x) ,'integrate-cot) 'integral)
 
 ;; ... the same for coth(x) ...
 (defun integrate-coth (x)
   (log-or-logabs (take '(%sinh) x)))
-(putprop '%coth `((x) ,#'integrate-coth) 'integral)
+(putprop '%coth `((x) ,'integrate-coth) 'integral)
 
 ;; ... the same for csch(x) ...
 (defun integrate-csch (x)
   (log-or-logabs (take '(%tanh) (mul '((rat simp) 1 2) x))))
-(putprop '%csch `((x) ,#'integrate-csch) 'integral)
+(putprop '%csch `((x) ,'integrate-csch) 'integral)
 
 ;; integrate(x^n,x) = if n # -1 then x^(n+1)/(n+1) else log-or-logabs(x).
 (defun integrate-mexpt-1 (x n)
@@ -724,7 +724,7 @@
 (defun integrate-mexpt-2 (a x)
   (div (take '(mexpt) a x) (take '(%log) a)))
 
-(putprop 'mexpt `((x n) ,#'integrate-mexpt-1 ,#'integrate-mexpt-2) 'integral)
+(putprop 'mexpt `((x n) ,'integrate-mexpt-1 ,'integrate-mexpt-2) 'integral)
 
 (defun rat10 (ex)
   (cond ((freevar ex) t)

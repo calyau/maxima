@@ -765,4 +765,4 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
       (mul z (take '($hypergeometric) (append a '(1)) (append b '(2)) z))
       (mul prod_b-1 (inv prod_a-1) (take '($hypergeometric) a-1 b-1 z)))))
 
-(putprop '$hypergeometric `((a b z) nil nil ,#'hyp-integral-3) 'integral)
+(putprop '$hypergeometric `((a b z) nil nil ,'hyp-integral-3) 'integral)

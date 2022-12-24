@@ -2809,13 +2809,13 @@ ignoring dummy variables and array indices."
              (cond  ((or (eql dir 1) (eql dir -1))
 	                  (add (ftake '%log (mul -1 arglim)) (mul dir '$%i '$%pi)))
 	                (t (throw 'limit nil))))))) ;do a nounform return
-(setf (get '%log 'simplim%function)  #'simplimln)
-(setf (get '%plog 'simplim%function)  #'simplimln)
+(setf (get '%log 'simplim%function) 'simplimln)
+(setf (get '%plog 'simplim%function) 'simplimln)
 
 (defun simplim%limit (e x pt)
 	(declare (ignore e x pt))
 	(throw 'limit t))
-(setf (get '%limit 'simplim%function) #'simplim%limit)
+(setf (get '%limit 'simplim%function) 'simplim%limit)
 
 (defun simplim%unit_step (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
@@ -2828,14 +2828,14 @@ ignoring dummy variables and array indices."
 			  ((eq t (mgrp 0 lim)) 0)
 			  ((eq t (mgrp lim 0)) 1)
 			  (t '$ind))))
-(setf (get '$unit_step 'simplim%function) #'simplim%unit_step)
+(setf (get '$unit_step 'simplim%function) 'simplim%unit_step)
 
 (defun simplim%conjugate (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
 		(cond ((off-negative-real-axisp lim)
 				(ftake '$conjugate lim))
               (t (throw 'limit nil)))))
-(setf (get '$conjugate 'simplim%function)  #'simplim%conjugate)
+(setf (get '$conjugate 'simplim%function)  'simplim%conjugate)
 
 (defun simplim%imagpart (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
@@ -2843,8 +2843,8 @@ ignoring dummy variables and array indices."
 	         ((eq lim '$ind) 0)
 			 ((eq lim '$infinity) (throw 'limit nil))
 			 (t (mfuncall '$imagpart lim)))))
-(setf (get '$imagpart 'simplim%function)  #'simplim%imagpart)	  
-(setf (get '%imagpart 'simplim%function)  #'simplim%imagpart)
+(setf (get '$imagpart 'simplim%function) 'simplim%imagpart)
+(setf (get '%imagpart 'simplim%function) 'simplim%imagpart)
 
 (defun simplim%realpart (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
@@ -2852,8 +2852,8 @@ ignoring dummy variables and array indices."
 	         ((eq lim '$ind) '$ind)
 			 ((eq lim '$infinity) (throw 'limit nil))
 			 (t  (mfuncall '$realpart lim)))))
-(setf (get '$realpart 'simplim%function)  #'simplim%realpart)
-(setf (get '%realpart 'simplim%function)  #'simplim%realpart)
+(setf (get '$realpart 'simplim%function) 'simplim%realpart)
+(setf (get '%realpart 'simplim%function) 'simplim%realpart)
 ;;; Limit of the Factorial function
 
 (defun simplimfact (expr var val)
@@ -2882,7 +2882,7 @@ ignoring dummy variables and array indices."
           (t
            ;; Call simplifier to get value at the limit of the argument.
            (simplify (list '(mfactorial) arglim))))))
-(setf (get 'mfactorial 'simplim%function) #'simplimfact)
+(setf (get 'mfactorial 'simplim%function) 'simplimfact)
 
 (defun simplim%erf-%tanh (fn arg)
   (let ((arglim (limit arg var val 'think))
@@ -2930,7 +2930,7 @@ ignoring dummy variables and array indices."
 		  ((in-domain-of-atan (ridofab lim)) ; direct substitution
 			  (ftake '%atan (ridofab lim)))
 	    (t (limit ($logarc e) x pt 'think)))))
-(setf (get '%atan 'simplim%function) #'simplim%atan)
+(setf (get '%atan 'simplim%function) 'simplim%atan)
 
 (defmvar extended-reals 
 	(append infinitesimals infinities (list '$und '$ind)))
@@ -2988,7 +2988,7 @@ ignoring dummy variables and array indices."
 			 	        (ftake '$atan2 ylim-z xlim-z))
 			(t
 				(throw 'limit nil)))))
-(setf (get '$atan2 'simplim%function) #'simplim%atan2)
+(setf (get '$atan2 'simplim%function) 'simplim%atan2)
 
 (defun simplimsch (sch arg)
   (cond ((real-infinityp arg)
@@ -3109,7 +3109,7 @@ ignoring dummy variables and array indices."
 				((and (eq '$neg lim-sgn) (eq dir -1))
 				    (sub (mul -1 '$%pi) (ftake '%asin lim)))
 				(t  (throw 'limit t))))))) ; unable to find sign of real part of lim.
-(setf (get '%asin 'simplim%function) #'simplim%asin)
+(setf (get '%asin 'simplim%function) 'simplim%asin)
 
 (defun simplim%acos (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
@@ -3130,7 +3130,7 @@ ignoring dummy variables and array indices."
 					;; continuous from above
 					(if (eql dir 1) (ftake '%acos lim) (sub (mul 2 '$%pi) (ftake '%acos lim))))
 				(t  (throw 'limit t))))))) ; unable to find sign of real part of lim.
-(setf (get '%acos 'simplim%function) #'simplim%acos)
+(setf (get '%acos 'simplim%function) 'simplim%acos)
 
 ;; Limit of an %integrate expression. For a definite integral
 ;; integrate(ee,var,a,b), when ee is free of the limit variable
@@ -3151,7 +3151,7 @@ ignoring dummy variables and array indices."
 			    (throw 'limit t)))
             (t
                 (throw 'limit t)))))
-(setf (get '%integrate 'simplim%function) #'simplim%integrate)
+(setf (get '%integrate 'simplim%function) 'simplim%integrate)
 
 (defun subftake (op subarg arg)
   (simplifya (subfunmake op subarg arg) t))
@@ -3179,8 +3179,8 @@ ignoring dummy variables and array indices."
 	  ;; Claim ignorance when order depends on limit variable.	
 	  (t (throw 'limit nil)))))
 
-(setf (get '$li 'simplim%function) #'simplim%li)
-(setf (get '%li 'simplim%function) #'simplim%li)
+(setf (get '$li 'simplim%function) 'simplim%li)
+(setf (get '%li 'simplim%function) 'simplim%li)
 
 (defun simplim$psi (order arg val)
   (if (and (not (equal (length order) 1))
@@ -3250,7 +3250,7 @@ ignoring dummy variables and array indices."
 		     (setq sgn (mnqp e 0))
 			 (cond ((eq t sgn) (ftake '%signum e))
 			 	   (t (throw 'limit nil))))))) ; don't know
-(setf (get '%signum 'simplim%function) #'simplim%signum)
+(setf (get '%signum 'simplim%function) 'simplim%signum)
 
 ;; more functions for limit to handle
 

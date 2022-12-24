@@ -238,8 +238,8 @@
   (let ((f (take '($ceiling) x)))
     (mul f (div 1 2) (add 1 (mul 2 x) (neg f)))))
 
-(putprop '$floor `((x) ,#'floor-integral) 'integral)
-(putprop '$ceiling `((x) ,#'ceiling-integral) 'integral)
+(putprop '$floor `((x) ,'floor-integral) 'integral)
+(putprop '$ceiling `((x) ,'ceiling-integral) 'integral)
 
 (defprop $ceiling simp-ceiling operators)
 
@@ -358,7 +358,7 @@
 
 (defprop %round simp-round operators)
 (setf (get '%round 'integer-valued) t)
-(setf (get '%round 'reflection-rule) #'odd-function-reflect)
+(setf (get '%round 'reflection-rule) 'odd-function-reflect)
 (setf (get '$round 'alias) '%round)
 (setf (get '$round 'verb) '%round)
 (setf (get '%round 'noun) '$round)
@@ -410,7 +410,7 @@
 
 (defprop %truncate simp-truncate operators)
 (setf (get '%truncate 'integer-valued) t)
-(setf (get '%truncate 'reflection-rule) #'odd-function-reflect)
+(setf (get '%truncate 'reflection-rule) 'odd-function-reflect)
 (setf (get '$truncate 'alias) '%truncate)
 (setf (get '$truncate 'verb) '%truncate)
 (setf (get '%truncate 'noun) '$truncate)
@@ -453,9 +453,9 @@
 		(let ((q (take '($mod) x a)))
 		   (div (add (mul q q) (mul -1 a q) (mul a x)) 2)))
 
-(putprop '%signum (list (list 'x) #'signum-integral) 'integral)
-(putprop '$unit_step (list (list 'x) #'unit-step-integral) 'integral)
+(putprop '%signum (list (list 'x) 'signum-integral) 'integral)
+(putprop '$unit_step (list (list 'x) 'unit-step-integral) 'integral)
 
 ;; integrate(mod(x,a),a) doesn't have representation in terms of functions
 ;; known to Maxima, I think. (Barton Willis, 2020).
-(putprop '$mod (list (list 'x 'y) #'mod-integral nil) 'integral)
+(putprop '$mod (list (list 'x 'y) 'mod-integral nil) 'integral)

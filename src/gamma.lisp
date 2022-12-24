@@ -1801,7 +1801,7 @@
 (defun log-gamma-integral (x)
   (take '(mqapply) (take '($psi) -2) x))
 
-(putprop '%log_gamma (list (list 'x) #'log-gamma-integral) 'integral)
+(putprop '%log_gamma (list (list 'x) 'log-gamma-integral) 'integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -159,10 +159,10 @@
 (setf (get 'mmacroexpanded 'formatter) 
   #'(lambda(form)(nformat (caddr form))))
 
-(setf (get 'mplus 'formatter)  #'form-mplus)
-(setf (get 'mtimes 'formatter)  #'form-mtimes)
-(setf (get 'mexpt 'formatter)  #'form-mexpt)
-(setf (get 'mrat 'formatter)  #'form-mrat)
+(setf (get 'mplus 'formatter) 'form-mplus)
+(setf (get 'mtimes 'formatter) 'form-mtimes)
+(setf (get 'mexpt 'formatter) 'form-mexpt)
+(setf (get 'mrat 'formatter) 'form-mrat)
 (setf (get 'mpois 'formatter)  #'(lambda(form)(nformat ($outofpois form))))
 
 (setf (get 'bigfloat 'formatter)  

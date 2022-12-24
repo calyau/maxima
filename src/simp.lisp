@@ -1560,7 +1560,7 @@
 (defun abs-integral (x)
   (mul (div 1 2) x (take '(mabs) x)))
 
-(putprop 'mabs `((x) ,#'abs-integral) 'integral)
+(putprop 'mabs `((x) ,'abs-integral) 'integral)
 
 ;; I (rtoy) think this does some simple optimizations of x * y.
 (defun testt (x)
