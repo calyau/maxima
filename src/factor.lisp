@@ -49,10 +49,6 @@
 (defmvar alpha nil)
 ;(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37. 41. 43. 47. 53. 59. 61.))
 
-;; External specials
-
-(defmvar $nalgfac t "If t use bmt's algebraic factoring algorithm")
-
 (defun primcyclo (n)
   (let ((*g* (gensym "PRIMCYCLO-"))
 	(nl (loop for (c e) on (cfactorw n) by #'cddr

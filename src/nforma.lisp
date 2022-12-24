@@ -12,8 +12,6 @@
 
 (macsyma-module nforma)
 
-(declare-top (special 1//2 -1//2 ))
-
 (defmvar $exptdispflag t)
 (defmvar $negsumdispflag t)
 

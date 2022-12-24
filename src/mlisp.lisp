@@ -28,7 +28,6 @@ or if apply is being used are printed.")
 		      $myoptions $props
 		      $numer
 		      opers
-		      *alphabet*
 		      $macros $ratwtlvl
 		      *gcdl*
 		      *builtin-$props*))
@@ -48,9 +47,6 @@ or if apply is being used are printed.")
 (defmvar $optionset nil)
 (defmvar $setcheckbreak nil)
 (defmvar $setval '$setval)
-
-(mapc #'(lambda (x) (setf (symbol-value x) (ncons '(mlist simp))))
-      '($values $functions $macros $arrays $myoptions $rules $props))
 
 (defun mapply1 (fn args fnname form)
   (cond ((atom fn)
