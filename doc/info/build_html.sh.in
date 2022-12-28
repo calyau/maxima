@@ -30,14 +30,14 @@ then
     language=en
     languagedir=@abs_srcdir@
     languagedestdir=$pwd
-    texiinitfile=$pwd/texi2html.init
+    texiinitfile=$pwd/@TEXI2HTML@
 else
     languagedir=@abs_srcdir@/$language
     languagedestdir=$pwd
     if [ "$language" = "pt_BR" ]
     then language=pt
     fi
-    texiinitfile=$pwd/../texi2html.init
+    texiinitfile=$pwd/../@TEXI2HTML@
 fi
 
 echo "$0: abs_srcdir=@abs_srcdir@, pwd=$pwd, language=$language, languagedir=$languagedir, texiinitfile=$texiinitfile"
