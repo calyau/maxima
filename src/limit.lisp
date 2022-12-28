@@ -1370,8 +1370,16 @@ ignoring dummy variables and array indices."
       (car (last n))))
 
 (defun behavior (exp var val)		; returns either -1, 0, 1.
-  (if (= *behavior-count-now* +behavior-count+)
-      0
+  (cond
+	;; Shortcut for constants.
+	((freeof var exp)
+	  0)
+	;; Shortcut for the variable itself.
+	((eq exp var)
+	  (if (member val '($zeroa $minf) :test #'eq) 1 -1))
+	((= *behavior-count-now* +behavior-count+)
+      0)
+	(t
       (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign)
 	(cond ((real-infinityp val)
 	       (setq val (cond ((eq val '$inf) '$zeroa)
@@ -1391,7 +1399,17 @@ ignoring dummy variables and array indices."
 		    (equal (getsignl (caddr exp)) 1))
 	       (let ((bas (cadr exp)) (expo (caddr exp)))
 		 (behavior-expt bas expo)))
-	      (t (behavior-by-diff exp var val))))))
+		  ;; erf, sinh and tanh are monotonic, so their behavior is equal
+		  ;; to the behavior of their arguments.
+		  ((member (caar exp) '(%erf %sinh %tanh) :test #'eq)
+			(behavior (cadr exp) var val))
+		  ;; cosh is an even function and monotonically increasing on the right.
+		  ((eq (caar exp) '%cosh)
+			(* (if (member val '($zeroa $minf) :test #'eq) 1 -1)
+			  (behavior (cadr exp) var val)))
+		  ;; Note: More functions could be added here.
+		  ;; Ideally, use properties defined on the functions.
+	      (t (behavior-by-diff exp var val)))))))
 
 (defun behavior-expt (bas expo)
   (let ((behavior (behavior bas var val)))

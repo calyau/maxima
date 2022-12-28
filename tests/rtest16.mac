@@ -2836,3 +2836,12 @@ makelist(limit(diff(log(tan(%pi/2*tanh(x))), x), x, inf), simpfun, ['identity, l
 
 limit(tan(%pi/2*tanh(x)+1), x, inf);
 -cot(1);
+
+[limit(cot(%pi*tanh(x)), x, inf), limit(cot(%pi*tanh(x)), x, minf)];
+[minf, inf];
+
+[limit(tan(%pi/2*tanh(x)), x, inf), limit(tan(%pi/2*tanh(x)), x, minf)];
+[inf, minf];
+
+[limit(cot(%pi/2*tanh(x)), x, inf), limit(cot(%pi/2*tanh(x)), x, minf)];
+[0, 0];
