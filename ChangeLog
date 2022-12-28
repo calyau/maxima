@@ -55,6 +55,7 @@ Bug fixes for numbered bugs:
 ----------------------------
  * \#545: multivar taylor gives 1^2
  * \#608: taylor(x^a,[x],0,1) unsimplified
+ * \#1743: limit of trig expression
  * \#3026: missing info files not well-handled
  * \#3071: limit of expressions with signum not very powerful
  * \#3136: gruntz(atan2(x^2-2,x^3-2*x),x,sqrt(2),minus) => atan2(0,0) undefined 

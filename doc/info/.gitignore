@@ -39,6 +39,7 @@ zeilberger.texi
 *chm
 bin
 texi2html.init
+texi2html-7.init
 build_html.sh
 tmp_html
 extract_categories.sh
