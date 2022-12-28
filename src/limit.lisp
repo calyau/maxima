@@ -1451,11 +1451,18 @@ ignoring dummy variables and array indices."
   (let ((num ($num exp)) (denom ($denom exp)))
     (cond ((equal denom 1) 0)	      ;Could be hacked more from here.
 	  ((freeof var num) (- (behavior denom var val)))
-	  (t (let ((num-behav (behavior num var val))
-		   (denom-behav (behavior denom var val)))
-	       (cond ((or (= num-behav 0) (= denom-behav 0)) 0)
-		     ((= num-behav denom-behav) 1)
-		     (t -1)))))))
+	  ;; The following code basically assumes that
+	  ;; behavior(p(x) / q(x)) = behavior(p(x)) * behavior(q(x)),
+	  ;; which is incorrect.
+	  ;; Example: p(x) = x - 1, q(x) = x
+	  ;; Both increase at x = 0, but p(x) / q(x) decreases at x = 0.
+	  ;; The incorrect code has been commented out. That didn't break any tests.
+;;	  (t (let ((num-behav (behavior num var val))
+;;		   (denom-behav (behavior denom var val)))
+;;	       (cond ((or (= num-behav 0) (= denom-behav 0)) 0)
+;;		     ((= num-behav denom-behav) 1)
+;;		     (t -1)))))))
+	  (t 0))))
 
 (defun try-lhospital (n d ind)
   ;;Make one catch for the whole bunch of lhospital trials.
