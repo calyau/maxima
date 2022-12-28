@@ -3016,33 +3016,49 @@ ignoring dummy variables and array indices."
 		   fn))))
 
 (defun simplim%tan (arg)
-  (let ((arg1 (ridofab (limit arg var val 'think))))
-    (cond
-      ((member arg1 '($inf $minf $infinity $ind $und) :test #'eq)  '$und)
-      ((pip arg1)
-       (let ((c (trigred (pip arg1))))
-	 (cond ((not (equal ($imagpart arg1) 0)) '$infinity)
-	       ((and (eq (caar c) 'rat)
-		     (equal (caddr c) 2)
-		     (> (cadr c) 0))
-		(setq arg1 (behavior arg var val))
-		(cond ((= arg1 1) '$inf)
-		      ((= arg1 -1) '$minf)
-		      (t '$und)))
-	       ((and (eq (caar c) 'rat)
-		     (equal (caddr c) 2)
-		     (< (cadr c) 0))
-		(setq arg1 (behavior arg var val))
-		(cond ((= arg1 1) '$minf)
-		      ((= arg1 -1) '$inf)
-		      (t '$und)))
-	       (t (throw 'limit ())))))
-      ((equal arg1 0)
-       (setq arg1 (behavior arg var val))
-       (cond ((equal arg1 1) '$zeroa)
-	     ((equal arg1 -1) '$zerob)
-	     (t 0)))
-      (t (simp-%tan (list '(%tan) arg1) 1 nil)))))
+  (let ((arglim (limit arg var val 'think)))
+	(cond
+	  ((member arglim '($inf $minf $ind) :test #'eq)
+		'$ind)
+	  ((member arglim '($und $infinity) :test #'eq)
+		(throw 'limit nil))
+	  (t
+		;; Write the limit of the argument as c*%pi + rest.
+		(let*
+		  ((c (or (pip arglim) 0))
+		   (rest (sratsimp (m- arglim (m* '$%pi c))))
+		   (hit-zero)
+		   (hit-pole nil))
+		  ;; Check if tan(x) has a zero or pole at x=arglim.
+		  ;; zero: tan(n*%pi + 0*)
+		  ;; pole: tan((2*n+1)*%pi/2 + 0*)
+		  ;; 0* can be $zeroa, $zerob or 0.
+		  (if (and (member rest '(0 $zeroa $zerob) :test #'equal)
+				   (or (setq hit-zero (integerp c))
+					   (setq hit-pole (and (ratnump c) (equal (caddr c) 2)))))
+			;; This is a zero or a pole.
+			;; Determine on which side of the zero/pole we are.
+			;; If rest is $zeroa or $zerob, use that.
+			;; Otherwise (rest = 0), try to determine the side
+			;; using the behavior of the argument.
+			(let
+			  ((side (cond ((eq rest '$zeroa) 1)
+						   ((eq rest '$zerob) -1)
+						   (t (behavior arg var val)))))
+			  (if hit-zero
+				;; For a zero, if we don't know the side, just return 0.
+				(cond
+				  ((equal side 1) '$zeroa)
+				  ((equal side -1) '$zerob)
+				  (t 0))
+				;; For a pole, we need to know the side.
+				;; Otherwise, we can't determine the limit.
+				(cond
+				  ((equal side 1) '$minf)
+				  ((equal side -1) '$inf)
+				  (t (throw 'limit t)))))
+			;; No zero or pole - substitute in the limit of the argument.
+			(take '(%tan) (ridofab arglim))))))))
 
 (defun simplim%asinh (arg)
   (cond ((member arg '($inf $minf $zeroa $zerob $ind $und) :test #'eq)

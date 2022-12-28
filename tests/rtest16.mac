@@ -2823,3 +2823,16 @@ limit(li[n](x), x, -inf);
 
 limit(li[2](sin(x)), x, inf);
 'limit(li[2](sin(x)), x, inf);
+
+/* Bug #4048: "An incorrect limit" */
+
+makelist(limit(diff(log(tan(%pi/2*tanh(x))), x), x, inf), simpfun, ['identity, lambda([e], trigreduce(trigsimp(trigreduce(e)))), 'exponentialize, 'trigreduce, 'trigrat]);
+[2, 2, 2, 2, 2];
+
+/* Bug 4064: "Simple limit triggers Lisp error '1 is not of type LIST'" */
+
+[limit(tan(%pi*tanh(x)), x, inf), limit(tan(%pi*tanh(x)), x, minf)];
+[0, 0];
+
+limit(tan(%pi/2*tanh(x)+1), x, inf);
+-cot(1);
