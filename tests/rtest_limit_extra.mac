@@ -507,7 +507,7 @@ limit(x*floor(1/x),x,0);
  0$
 
  limit(e,z,0);
- -(2*sin(x))/((4*cos(x)^2+4)*sin(x)^2+cos(x)^2+1)$
+ (4*sin(x))/(cos(4*x)+3*cos(2*x)-8)$
 
  (remvalue(e,dg,lim),0);
  0$

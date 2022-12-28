@@ -1318,6 +1318,7 @@ ignoring dummy variables and array indices."
 ;; this function is responsible for the following bug:
 ;; limit(x^2 + %i*x, x, inf)  -> inf	(should be infinity)
 (defun ratlim (e)
+  (setq e (sratsimp ($trigreduce e)))
   (cond ((member val '($inf $infinity) :test #'eq)
 	 (setq e (maxima-substitute (m^t 'x -1) var e)))
 	((eq val '$minf)
