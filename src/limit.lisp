@@ -1432,6 +1432,7 @@ ignoring dummy variables and array indices."
 (defun behavior-numden (exp var val)
   (let ((num ($num exp)) (denom ($denom exp)))
     (cond ((equal denom 1) 0)	      ;Could be hacked more from here.
+	  ((freeof var num) (- (behavior denom var val)))
 	  (t (let ((num-behav (behavior num var val))
 		   (denom-behav (behavior denom var val)))
 	       (cond ((or (= num-behav 0) (= denom-behav 0)) 0)
