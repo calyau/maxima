@@ -279,7 +279,7 @@ Examples:
 @c -----------------------------------------------------------------------------
 
 Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>},
-@code{#}, and @code{notequal}.  See @code{if} for a description of conditional
+@code{#}, and @code{notequal}.  @xref{if} for a description of conditional
 expressions.
 
 @c -----------------------------------------------------------------------------
