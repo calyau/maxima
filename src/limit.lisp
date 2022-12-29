@@ -1404,9 +1404,9 @@ ignoring dummy variables and array indices."
 		   (behavior (cdr pair) var val))
 		  ;; Handle f(x)^c for the case f(0) = 0 and c > 0
 		  ;; (probably other cases could be handled, too)
-	      ((and (=0 (no-err-sub (ridofab val) exp))
-		    (mexptp exp)
+	      ((and (mexptp exp)
 		    (free (caddr exp) var)
+		    (=0 (no-err-sub (ridofab val) exp))
 		    (equal (getsignl (caddr exp)) 1)
 			(not (equal 0 (setq ans (behavior-expt (cadr exp) (caddr exp))))))
 		   ans)
@@ -1440,6 +1440,18 @@ ignoring dummy variables and array indices."
 			  (behavior (cadr exp) var val)))
 		  ;; Note: More functions could be added here.
 		  ;; Ideally, use properties defined on the functions.
+		  ;; Handle log(f(x)) for f(0) = 0:
+		  ;; If behavior(f(x)) = 1, then behavior(log(f(x))) = 1
+		  ((and (mlogp exp)
+			(=0 (no-err-sub (ridofab val) (cadr exp)))
+			(equal 1 (behavior (cadr exp) var val)))
+		   1)
+		  ;; Handle log(f(x)) for f(0) > 0:
+		  ;; behavior(log(f(x))) = behavior(f(x))
+		  ((and (mlogp exp)
+			(not (equal t (setq ans (no-err-sub (ridofab val) (cadr exp)))))
+			(equal 1 (getsignl ans)))
+		   (behavior (cadr exp) var val))
 		  ;; Try to determine the behavior by taking the derivative.
 	      ((not (equal 0 (setq ans (behavior-by-diff exp var val))))
 		   ans)
