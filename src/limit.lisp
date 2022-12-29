@@ -1435,9 +1435,9 @@ ignoring dummy variables and array indices."
 		  ((member (caar exp) '(%erf %sinh %tanh) :test #'eq)
 			(behavior (cadr exp) var val))
 		  ;; cosh is an even function and monotonically increasing on the right.
-		  ((eq (caar exp) '%cosh)
-			(* (if (member val '($zeroa $minf) :test #'eq) 1 -1)
-			  (behavior (cadr exp) var val)))
+		  ((and (eq (caar exp) '%cosh)
+			(member (setq sign (getsignl (cadr exp))) '(-1 1) :test #'equal))
+		   (* sign (behavior (cadr exp) var val)))
 		  ;; Note: More functions could be added here.
 		  ;; Ideally, use properties defined on the functions.
 		  ;; Handle log(f(x)) for f(0) = 0:
