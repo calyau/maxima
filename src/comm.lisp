@@ -13,8 +13,7 @@
 (macsyma-module comm)
 
 (declare-top (special derivlist
-		      *linelabel* nn* dn*
-		      $errexp))
+		      *linelabel* nn* dn*))
 
 ;; op and opr properties
 

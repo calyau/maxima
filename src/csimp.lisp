@@ -14,7 +14,7 @@
 
 (declare-top (special $exponentialize
 		      var genvar $ratprint
-		      nn* dn* $errexp
+		      nn* dn*
 		      errorsw))
 
 (load-macsyma-macros rzmac)
