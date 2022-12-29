@@ -1242,7 +1242,12 @@
   Since labels are not bound to results, garbage collection can
   recover the memory taken up by the results.")
 
-(defmvar $aliases '((mlist simp))
+;; For each of the variables below ($aliases to $dependencies), create
+;; a new list as the initial value instead of '((mlist simp)).  Ecl
+;; can and will coalesce these to be the same list, and this causes
+;; problems if one of the variables is destructively modified in
+;; place.
+(defmvar $aliases (list '(mlist simp))
   "The list of atoms which have a user defined alias (set up by the
   'alias', 'ordergreat', 'orderless' functions or by declaring the
   atom a 'noun' with 'declare'."
@@ -1257,26 +1262,26 @@
   were redefined."
   :properties ((assign 'neverset)))
 
-(defmvar $values '((mlist simp))
+(defmvar $values (list '(mlist simp))
   "The list of all bound user variables (not Maxima options or
   switches).  The list comprises symbols bound by ':', or '::'."
   no-reset
   :properties ((assign 'neverset)))
 
-(defmvar $functions '((mlist simp))
+(defmvar $functions (list '(mlist simp))
   "The list of ordinary Maxima functions in the current session.  An
   ordinary function is a function constructed by 'define' or ':=' and
   called with parentheses '()'."
   no-reset
   :properties ((assign 'neverset)))
 
-(defmvar $macros '((mlist simp))
+(defmvar $macros (list '(mlist simp))
   "The list of user-defined macro functions.  The macro function
   definition operator '::=' puts a new macro function onto this list."
   no-reset
   :properties ((assign 'neverset)))
 
-(defmvar $arrays '((mlist simp))
+(defmvar $arrays (list '(mlist simp))
   "The list of arrays that have been allocated.  These comprise arrays
   declared by 'array', 'hashed arrays' that can be constructed by
   implicit definition (assigning something to an element that isn't
@@ -1287,13 +1292,13 @@
   :properties ((assign 'neverset)))
 
 
-(defmvar $myoptions '((mlist simp))
+(defmvar $myoptions (list '(mlist simp))
   "The list of all options ever reset by the user, whether or not they
   get reset to their default value."
   no-reset
   :properties ((assign 'neverset)))
 
-(defmvar $props '((mlist simp))
+(defmvar $props (list '(mlist simp))
   "The list of atoms which have any property other than those explicitly
   mentioned in 'infolists', such as specified by 'atvalue',
   'matchdeclare', etc., as well as properties specified in the
@@ -1301,18 +1306,18 @@
   no-reset
   :properties ((assign 'neverset)))
 
-(defmvar $rules '((mlist simp))
+(defmvar $rules (list '(mlist simp))
   nil
   no-reset
   :properties ((assign 'neverset)))
 
-(defmvar $gradefs '((mlist simp))
+(defmvar $gradefs (list '(mlist simp))
   "The list of the functions for which partial derivatives have been
   defined by 'gradef'."
   no-reset
   :properties ((assign 'neverset)))
 
-(defmvar $dependencies '((mlist simp))
+(defmvar $dependencies (list '(mlist simp))
   "The list of atoms which have functional dependencies, assigned by
   'depends', the function 'dependencies', or 'gradef'.  The
   'dependencies' list is cumulative: each call to 'depends',
