@@ -1414,6 +1414,21 @@ ignoring dummy variables and array indices."
 		  ;; behavior(1 / f(x)) = -behavior(f(x))
 		  ((equal ($num exp) 1)
 			(- (behavior ($denom exp) var val)))
+		  ;; Handle c^f(x) for c > 1:
+		  ;; behavior(c^f(x)) = behavior(f(x))
+		  ((and (mexptp exp)
+			(free (cadr exp) var)
+			(equal 1 (getsignl (m- (cadr exp) 1)))
+			(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
+		   ans)
+		  ;; Handle c^f(x) for 0 < c < 1:
+		  ;; behavior(c^f(x)) = -behavior(f(x))
+		  ((and (mexptp exp)
+			(free (cadr exp) var)
+			(equal 1 (getsignl (cadr exp)))
+			(equal -1 (getsignl (m- (cadr exp) 1)))
+			(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
+		   (- ans))
 		  ;; erf, sinh and tanh are monotonic, so their behavior is equal
 		  ;; to the behavior of their arguments.
 		  ;; behavior(monotonic(f(x))) = behavior(f(x))
