@@ -1402,7 +1402,7 @@ ignoring dummy variables and array indices."
 			(prog2 (setq pair (partition exp var 0))
 			(not (equal (car pair) 0))))
 		   (behavior (cdr pair) var val))
-		  ;; Handle f(x)^c for the case f(0) = 0
+		  ;; Handle f(x)^c for the case f(0) = 0 and c > 0
 		  ;; (probably other cases could be handled, too)
 	      ((and (=0 (no-err-sub (ridofab val) exp))
 		    (mexptp exp)
