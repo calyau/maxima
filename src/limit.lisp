@@ -1381,7 +1381,7 @@ ignoring dummy variables and array indices."
 	((= *behavior-count-now* +behavior-count+)
       0)
 	(t
-      (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign)
+      (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign ans)
 	(cond ((real-infinityp val)
 	       (setq val (cond ((eq val '$inf) '$zeroa)
 			       ((eq val '$minf) '$zerob)))
@@ -1407,9 +1407,9 @@ ignoring dummy variables and array indices."
 	      ((and (=0 (no-err-sub (ridofab val) exp))
 		    (mexptp exp)
 		    (free (caddr exp) var)
-		    (equal (getsignl (caddr exp)) 1))
-	       (let ((bas (cadr exp)) (expo (caddr exp)))
-		 (behavior-expt bas expo)))
+		    (equal (getsignl (caddr exp)) 1)
+			(not (equal 0 (setq ans (behavior-expt (cadr exp) (caddr exp))))))
+		   ans)
 		  ;; Handle 1 / f(x):
 		  ;; behavior(1 / f(x)) = -behavior(f(x))
 		  ((equal ($num exp) 1)
@@ -1425,8 +1425,10 @@ ignoring dummy variables and array indices."
 			  (behavior (cadr exp) var val)))
 		  ;; Note: More functions could be added here.
 		  ;; Ideally, use properties defined on the functions.
-		  ;; Finally, try to determine the behavior by taking the derivative.
-	      (t (behavior-by-diff exp var val)))))))
+		  ;; Try to determine the behavior by taking the derivative.
+	      ((not (equal 0 (setq ans (behavior-by-diff exp var val))))
+		   ans)
+		  (t 0))))))
 
 (defun behavior-expt (bas expo)
   (let ((behavior (behavior bas var val)))
