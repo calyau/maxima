@@ -1443,7 +1443,7 @@ ignoring dummy variables and array indices."
 
 (defun behavior-by-diff (exp var val)
   (cond ((not (or (eq val '$zeroa) (eq val '$zerob))) 0)
-	(t (let ((old-val val) (old-exp exp))
+	(t (let ((old-val val))
 	     (setq val (ridofab val))
 	     (do ((ct 0 (1+ ct))
 		  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
