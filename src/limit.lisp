@@ -1387,21 +1387,36 @@ ignoring dummy variables and array indices."
 			       ((eq val '$minf) '$zerob)))
 	       (setq exp (sratsimp (subin (m^ var -1) exp)))))
 	(cond ((eq val '$infinity) 0) ; Needs more hacking for complex.
+		  ;; Pull out constant factors with known signs from a product:
+		  ;; behavior(c * f(x)) = signum(c) * behavior(f(x))
 	      ((and (mtimesp exp)
 		    (prog2 (setq pair (partition exp var 1))
-			(not (mtimesp (cdr pair)))))
+			(not (equal (car pair) 1))))
 	       (setq sign (getsignl (car pair)))
 	       (if (not (fixnump sign))
 		   0
 		   (mul sign (behavior (cdr pair) var val))))
+		  ;; Pull out constant terms from a sum:
+		  ;; behavior(c + f(x)) = behavior(f(x))
+		  ((and (mplusp exp)
+			(prog2 (setq pair (partition exp var 0))
+			(not (equal (car pair) 0))))
+		   (behavior (cdr pair) var val))
+		  ;; Handle f(x)^c for the case f(0) = 0
+		  ;; (probably other cases could be handled, too)
 	      ((and (=0 (no-err-sub (ridofab val) exp))
 		    (mexptp exp)
 		    (free (caddr exp) var)
 		    (equal (getsignl (caddr exp)) 1))
 	       (let ((bas (cadr exp)) (expo (caddr exp)))
 		 (behavior-expt bas expo)))
+		  ;; Handle 1 / f(x):
+		  ;; behavior(1 / f(x)) = -behavior(f(x))
+		  ((equal ($num exp) 1)
+			(- (behavior ($denom exp) var val)))
 		  ;; erf, sinh and tanh are monotonic, so their behavior is equal
 		  ;; to the behavior of their arguments.
+		  ;; behavior(monotonic(f(x))) = behavior(f(x))
 		  ((member (caar exp) '(%erf %sinh %tanh) :test #'eq)
 			(behavior (cadr exp) var val))
 		  ;; cosh is an even function and monotonically increasing on the right.
@@ -1410,6 +1425,7 @@ ignoring dummy variables and array indices."
 			  (behavior (cadr exp) var val)))
 		  ;; Note: More functions could be added here.
 		  ;; Ideally, use properties defined on the functions.
+		  ;; Finally, try to determine the behavior by taking the derivative.
 	      (t (behavior-by-diff exp var val)))))))
 
 (defun behavior-expt (bas expo)
@@ -1438,7 +1454,7 @@ ignoring dummy variables and array indices."
 	       (setq ans (no-err-sub val exp)) ;Why not do an EVENFN and ODDFN
 					;test here.
 	       (cond ((eq ans t)
-		      (return (behavior-numden old-exp var old-val)))
+		      (return 0))
 		     ((=0 ans) ())	;Do it again.
 		     (t (setq ans (getsignl ans))
 			(cond (n (return ans))
@@ -1447,23 +1463,6 @@ ignoring dummy variables and array indices."
 			      ((equal ans -1)
 			       (return (if (eq old-val '$zeroa) -1 1)))
 			      (t (return 0))))))))))
-
-(defun behavior-numden (exp var val)
-  (let ((num ($num exp)) (denom ($denom exp)))
-    (cond ((equal denom 1) 0)	      ;Could be hacked more from here.
-	  ((freeof var num) (- (behavior denom var val)))
-	  ;; The following code basically assumes that
-	  ;; behavior(p(x) / q(x)) = behavior(p(x)) * behavior(q(x)),
-	  ;; which is incorrect.
-	  ;; Example: p(x) = x - 1, q(x) = x
-	  ;; Both increase at x = 0, but p(x) / q(x) decreases at x = 0.
-	  ;; The incorrect code has been commented out. That didn't break any tests.
-;;	  (t (let ((num-behav (behavior num var val))
-;;		   (denom-behav (behavior denom var val)))
-;;	       (cond ((or (= num-behav 0) (= denom-behav 0)) 0)
-;;		     ((= num-behav denom-behav) 1)
-;;		     (t -1)))))))
-	  (t 0))))
 
 (defun try-lhospital (n d ind)
   ;;Make one catch for the whole bunch of lhospital trials.
