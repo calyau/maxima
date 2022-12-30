@@ -1549,6 +1549,8 @@
 (defmvar $nalgfac t
   "If t use bmt's algebraic factoring algorithm")
 
+(defmvar mplc* nil)
+
 ;;------------------------------------------------------------------------
 ;; From nparse.lisp
 (defvar *alphabet* (list #\_ #\%))

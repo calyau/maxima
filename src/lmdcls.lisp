@@ -67,7 +67,7 @@
 	  gauss
 	  local
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm*
-	  mplc* mspeclist
+	  mspeclist
 	  need-prog? nn*
 	  opers-list outargs1 outargs2
 	  return-mode returns

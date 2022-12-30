@@ -17,7 +17,7 @@
 ;;	by the rest of the functions.
 
 (declare-top (special intbs* alflag var alc
-		      vlist radlist expsumsplit *ratsimp* mplc*))
+		      vlist radlist expsumsplit *ratsimp*))
 
 (defvar *ratsimp* nil)
 
