@@ -21,11 +21,6 @@
 
 (defvar %initiallearnflag)
 
-(defmvar sign-imag-errp t
-  "If T errors out in case COMPAR meets up with an imaginary quantity.
-	  If NIL THROWs in that case."
-  no-reset)
-
 (defmvar complexsign nil
   "If T, COMPAR attempts to work in a complex mode.
 	  This scheme is only very partially developed at this time."

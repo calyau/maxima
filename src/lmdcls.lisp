@@ -71,7 +71,7 @@
 	  need-prog? nn*
 	  opers opers-list outargs1 outargs2
 	  return-mode returns
-	  rulesw sign-imag-errp
+	  rulesw
 	  sums tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables
 	  tstack

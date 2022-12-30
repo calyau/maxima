@@ -465,6 +465,11 @@
   'true' or 'false'.")
 (defmvar limitp)
 
+(defmvar sign-imag-errp t
+  "If T errors out in case COMPAR meets up with an imaginary
+  quantity. If NIL THROWs in that case."
+  no-reset)
+
 ;;------------------------------------------------------------------------
 ;; From cpoly.lisp
 (defmvar $polyfactor nil
