@@ -69,7 +69,7 @@
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm*
 	  mplc* mspeclist
 	  need-prog? nn*
-	  *nounsflag* opers opers-list outargs1 outargs2
+	  opers opers-list outargs1 outargs2
 	  return-mode returns
 	  rulesw sign-imag-errp
 	  sums tr-abort tr-progret tr-unique
