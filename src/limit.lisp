@@ -1468,7 +1468,21 @@ ignoring dummy variables and array indices."
 	  ;; Try to determine the behavior by taking the derivative.
 	  ((not (equal 0 (setq ans (behavior-by-diff exp var val))))
 	   ans)
+	  ;; If exp is a sum and all terms have the same behavior, return that.
+	  ;; The sum of increasing functions is increasing.
+	  ;; The sum of decreasing functions is decreasing.
+	  ((and (mplusp exp)
+		(not (equal 0 (setq ans (behavior-all-same exp var val)))))
+	   ans)
 	  (t 0))))))
+
+(defun behavior-all-same (exp var val)
+  (let* ((exps (cdr exp)) (first-behavior (behavior (first exps) var val)))
+	(if (or (equal first-behavior 0)
+			(not (every #'(lambda (exp) (equal (behavior exp var val) first-behavior))
+						(rest exps))))
+	  0
+	  first-behavior)))
 
 (defun behavior-expt (bas expo)
   (let ((behavior (behavior bas var val)))
