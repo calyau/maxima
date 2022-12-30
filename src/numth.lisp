@@ -16,8 +16,6 @@
 
 (macsyma-module numth)
 
-(declare-top (special modulus))
-
 (load-macsyma-macros rzmac)
 
 ;;; Sum of divisors and Totient functions

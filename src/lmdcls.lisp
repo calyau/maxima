@@ -66,7 +66,7 @@
 	  dn*
 	  gauss
 	  local
-	  meta-prop-l meta-prop-p mfexprp minpoly* mm* modulus
+	  meta-prop-l meta-prop-p mfexprp minpoly* mm*
 	  mplc* mspeclist
 	  need-prog? nn*
 	  *nounsflag* opers opers-list outargs1 outargs2

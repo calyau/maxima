@@ -14,7 +14,7 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special ss *y* f modulus
+(declare-top (special ss *y* f
 		      *alpha *x* *p *max *var *res *chk *l
 		      u*))
 
