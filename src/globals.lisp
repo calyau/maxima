@@ -772,7 +772,8 @@
 (defmvar $error `((mlist simp) "No error.")
   "During an MAXIMA-ERROR break this is bound to a list of the
   arguments to the call to MAXIMA-ERROR, with the message text in a
-  compact format.")
+  compact format."
+  :properties ((assign 'neverset)))
 
 (defmvar $errormsg 't
   "If `false' then no maxima-error message is printed!")

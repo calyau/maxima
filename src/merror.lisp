@@ -118,9 +118,8 @@
   (format t "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
-  "Symbols to bind the too-large `maxima-error' expressions to")
-
-(putprop '$error_syms 'assign-symbols 'assign)
+  "Symbols to bind the too-large `maxima-error' expressions to"
+  :properties ((assign 'assign-symbols)))
 
 (defun assign-symbols (var val)
   (if (not (and ($listp val)
@@ -174,8 +173,6 @@
 		 )))
     (fresh-line))
   '$done)
-
-(defprop $error neverset assign)
 
 ;; RAT-ERROR (function)
 ;;

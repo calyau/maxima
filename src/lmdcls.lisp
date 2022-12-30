@@ -45,11 +45,8 @@
 ;;; or for some specials declared in the macro files, eg displm.
 
 (declaim (special
-	  $errexp
-	  $fortfloat
 	  $maperror
 	  $maxapplyheight
-	  $parsewindow
 	  $rmxchar
 	  $transrun
 	  $tr_array_as_ref $tr_bound_function_applyp
