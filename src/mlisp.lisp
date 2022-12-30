@@ -26,7 +26,6 @@ or if apply is being used are printed.")
 (declare-top (special derivlist
                       $rules
 		      $myoptions $props
-		      $numer
 		      $macros $ratwtlvl
 		      *gcdl*
 		      *builtin-$props*))
