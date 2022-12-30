@@ -30,8 +30,6 @@
 			 (and (fixnump val)
 			      (>= val 0))))
 
-(defmvar $fortfloat nil "Something JPG is working on.")
-
 ;; This function is called from Macsyma toplevel.  If the argument is a
 ;; symbol, and the symbol is bound to a matrix or list, then the value is printed
 ;; using an array assignment notation.

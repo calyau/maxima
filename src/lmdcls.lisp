@@ -45,7 +45,6 @@
 ;;; or for some specials declared in the macro files, eg displm.
 
 (declaim (special
-	  $fortfloat
 	  $maperror
 	  $maxapplyheight
 	  $parsewindow
