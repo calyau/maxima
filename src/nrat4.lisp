@@ -13,7 +13,7 @@
 (macsyma-module nrat4)
 
 (declare-top (special *exp *exp2 *radsubst *loglist $radsubstflag
-		      *v *var radcanp))
+		      *v *var))
 
 (defmvar $radsubstflag nil
   "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")
@@ -28,8 +28,6 @@
 (defun rdis* (x) `((mrat simp ,varlist ,genvar) . ,x))
 
 (defun rform (x) (cdr (ratf x)))
-
-(setq radcanp nil)
 
 (defmfun $ratcoef (e x &optional (n 1))
   (ratcoeff e x n)) ; The spelling "ratcoeff" is nicer.

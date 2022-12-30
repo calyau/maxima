@@ -16,7 +16,7 @@
 		      prods negprods sums negsums
 		      bigfloatzero
 		      opers-list *opers-list *n
-		      *out *in radcanp
+		      *out *in
                       *builtin-numeric-constants*))
 
 ;; Switches dealing with matrices and non-commutative multiplication.

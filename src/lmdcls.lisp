@@ -70,7 +70,6 @@
 	  mplc* mspeclist
 	  need-prog? nn*
 	  *nounsflag* opers opers-list outargs1 outargs2
-	  radcanp
 	  return-mode returns
 	  rulesw sign-imag-errp
 	  sums tr-abort tr-progret tr-unique
