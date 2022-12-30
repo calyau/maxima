@@ -396,6 +396,11 @@
   "If true indicates that errors will be returned via a throw to
   TAY-ERR")
 
+;; linear operator stuff
+(defparameter *opers-list '(($linear . linearize1)))
+
+(defparameter  opers (list '$linear))
+
 ;;------------------------------------------------------------------------
 ;; From comm2.lisp
 (defmvar $rootsconmode t

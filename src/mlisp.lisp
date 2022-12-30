@@ -27,7 +27,6 @@ or if apply is being used are printed.")
                       $rules
 		      $myoptions $props
 		      $numer
-		      opers
 		      $macros $ratwtlvl
 		      *gcdl*
 		      *builtin-$props*))

@@ -58,7 +58,7 @@
 	  $tr_warn_undefined_variable $ttyoff
 	  *alpha *in *in-compile*
 	  *inv* *min* *mx*
-	  *n *opers-list *out *tr-warn-break* *transl-backtrace*
+	  *n *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  alpha
@@ -69,7 +69,7 @@
 	  meta-prop-l meta-prop-p mfexprp minpoly* mm*
 	  mplc* mspeclist
 	  need-prog? nn*
-	  opers opers-list outargs1 outargs2
+	  opers-list outargs1 outargs2
 	  return-mode returns
 	  rulesw
 	  sums tr-abort tr-progret tr-unique

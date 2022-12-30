@@ -12,8 +12,7 @@
 
 (macsyma-module dskfn)
 
-(declare-top (special opers
-		      aaaaa errset indlist
+(declare-top (special aaaaa errset indlist
 		      savefile
 		      context))
 
