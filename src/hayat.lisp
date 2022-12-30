@@ -115,7 +115,6 @@
 
 (declare-top
  (special vlist
-	  modulus		;
 	  *a*			;Temporary special
 	  tlist			;An association list which contains the
 				;relevant information for the expansion which

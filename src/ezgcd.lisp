@@ -14,7 +14,7 @@
 
 (declare-top (special lcprod svals svars oldsvars oldsvals
 		      valflag $gcd pl0 d0 degd0 var
-		      many* tempprime ovarlist valist modulus
+		      many* tempprime ovarlist valist
 		      zl *prime plim nn* ne nn*-1 dlp
 		      ez1skip svalsl nsvals
 		      lc1 oldlc limk *alpha))

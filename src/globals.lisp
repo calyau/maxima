@@ -1653,3 +1653,23 @@
     9949 9967 9973)
   "List of small primes")
 
+;;------------------------------------------------------------------------
+;; From rat3a.lisp
+;; Global variables referenced throughout the rational function package.
+
+(defmvar modulus nil
+  "Global switch for doing modular arithmetic"
+  :setting-predicate
+  #'(lambda (val)
+      ;; The modulus must be $false, or a positive integer.  If the
+      ;; value is a positive integer, print a warning if it is not
+      ;; prime.
+      (or (null val)
+	  (and (integerp val) (plusp val)
+	       (prog1 t
+		 (unless (primep val)
+		   (mtell
+		    (intl:gettext "Warning: assigning ~:M, a non-prime, to 'modulus'~&")
+		    val)))))))
+
+;;------------------------------------------------------------------------
