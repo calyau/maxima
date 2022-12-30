@@ -1370,92 +1370,105 @@ ignoring dummy variables and array indices."
       n
       (car (last n))))
 
-(defun behavior (exp var val)		; returns either -1, 0, 1.
+;; This function tries to determine the increasing/decreasing
+;; behavior of an expression exp with respect to some variable var.
+;; val determines the mode:
+;; - $zeroa: From "positive zero" towards the right
+;; - $zerob: From "negative zero" towards the left
+;; - $inf:   From "positive infinity" towards the left
+;; - $minf:  From "negative infinity" towards the right
+;; Return values are -1 (decreasing), +1 (increasing) or 0 (don't know).
+(defun behavior (exp var val)
   (cond
+	((not (member val '($zeroa $zerob $inf $minf)))
+	  0)
 	;; Shortcut for constants.
 	((freeof var exp)
 	  0)
 	;; Shortcut for the variable itself.
 	((eq exp var)
 	  (if (member val '($zeroa $minf) :test #'eq) 1 -1))
+	;; This limits the recursion depth of the function.
 	((= *behavior-count-now* +behavior-count+)
       0)
 	(t
       (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign ans)
+	;; $inf/$minf is handled by substituting 1/var for var
+	;; and setting val to $zeroa/$zerob.
 	(cond ((real-infinityp val)
 	       (setq val (cond ((eq val '$inf) '$zeroa)
 			       ((eq val '$minf) '$zerob)))
 	       (setq exp (sratsimp (subin (m^ var -1) exp)))))
-	(cond ((eq val '$infinity) 0) ; Needs more hacking for complex.
-		  ;; Pull out constant factors with known signs from a product:
-		  ;; behavior(c * f(x)) = signum(c) * behavior(f(x))
-	      ((and (mtimesp exp)
-		    (prog2 (setq pair (partition exp var 1))
-			(not (equal (car pair) 1))))
-	       (setq sign (getsignl (car pair)))
-	       (if (not (fixnump sign))
-		   0
-		   (mul sign (behavior (cdr pair) var val))))
-		  ;; Pull out constant terms from a sum:
-		  ;; behavior(c + f(x)) = behavior(f(x))
-		  ((and (mplusp exp)
-			(prog2 (setq pair (partition exp var 0))
-			(not (equal (car pair) 0))))
-		   (behavior (cdr pair) var val))
-		  ;; Handle f(x)^c for the case f(0) = 0 and c > 0
-		  ;; (probably other cases could be handled, too)
-	      ((and (mexptp exp)
-		    (free (caddr exp) var)
-		    (=0 (no-err-sub (ridofab val) exp))
-		    (equal (getsignl (caddr exp)) 1)
-			(not (equal 0 (setq ans (behavior-expt (cadr exp) (caddr exp))))))
-		   ans)
-		  ;; Handle 1 / f(x):
-		  ;; behavior(1 / f(x)) = -behavior(f(x))
-		  ((equal ($num exp) 1)
-			(- (behavior ($denom exp) var val)))
-		  ;; Handle c^f(x) for c > 1:
-		  ;; behavior(c^f(x)) = behavior(f(x))
-		  ((and (mexptp exp)
-			(free (cadr exp) var)
-			(equal 1 (getsignl (m- (cadr exp) 1)))
-			(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
-		   ans)
-		  ;; Handle c^f(x) for 0 < c < 1:
-		  ;; behavior(c^f(x)) = -behavior(f(x))
-		  ((and (mexptp exp)
-			(free (cadr exp) var)
-			(equal 1 (getsignl (cadr exp)))
-			(equal -1 (getsignl (m- (cadr exp) 1)))
-			(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
-		   (- ans))
-		  ;; erf, sinh and tanh are monotonic, so their behavior is equal
-		  ;; to the behavior of their arguments.
-		  ;; behavior(monotonic(f(x))) = behavior(f(x))
-		  ((member (caar exp) '(%erf %sinh %tanh) :test #'eq)
-			(behavior (cadr exp) var val))
-		  ;; cosh is an even function and monotonically increasing on the right.
-		  ((and (eq (caar exp) '%cosh)
-			(member (setq sign (getsignl (cadr exp))) '(-1 1) :test #'equal))
-		   (* sign (behavior (cadr exp) var val)))
-		  ;; Note: More functions could be added here.
-		  ;; Ideally, use properties defined on the functions.
-		  ;; Handle log(f(x)) for f(0) = 0:
-		  ;; If behavior(f(x)) = 1, then behavior(log(f(x))) = 1
-		  ((and (mlogp exp)
-			(=0 (no-err-sub (ridofab val) (cadr exp)))
-			(equal 1 (behavior (cadr exp) var val)))
-		   1)
-		  ;; Handle log(f(x)) for f(0) > 0:
-		  ;; behavior(log(f(x))) = behavior(f(x))
-		  ((and (mlogp exp)
-			(not (equal t (setq ans (no-err-sub (ridofab val) (cadr exp)))))
-			(equal 1 (getsignl ans)))
-		   (behavior (cadr exp) var val))
-		  ;; Try to determine the behavior by taking the derivative.
-	      ((not (equal 0 (setq ans (behavior-by-diff exp var val))))
-		   ans)
-		  (t 0))))))
+	(cond
+	  ;; Pull out constant factors with known signs from a product:
+	  ;; behavior(c * f(x)) = signum(c) * behavior(f(x))
+	  ((and (mtimesp exp)
+		(prog2 (setq pair (partition exp var 1))
+		(not (equal (car pair) 1))))
+	   (setq sign (getsignl (car pair)))
+	   (if (not (fixnump sign))
+	   0
+	   (mul sign (behavior (cdr pair) var val))))
+	  ;; Pull out constant terms from a sum:
+	  ;; behavior(c + f(x)) = behavior(f(x))
+	  ((and (mplusp exp)
+		(prog2 (setq pair (partition exp var 0))
+		(not (equal (car pair) 0))))
+	   (behavior (cdr pair) var val))
+	  ;; Handle f(x)^c for the case f(0) = 0 and c > 0
+	  ;; (probably other cases could be handled, too)
+	  ((and (mexptp exp)
+		(free (caddr exp) var)
+		(=0 (no-err-sub 0 exp))
+		(equal (getsignl (caddr exp)) 1)
+		(not (equal 0 (setq ans (behavior-expt (cadr exp) (caddr exp))))))
+	   ans)
+	  ;; Handle 1 / f(x):
+	  ;; behavior(1 / f(x)) = -behavior(f(x))
+	  ((equal ($num exp) 1)
+		(- (behavior ($denom exp) var val)))
+	  ;; Handle c^f(x) for c > 1:
+	  ;; behavior(c^f(x)) = behavior(f(x))
+	  ((and (mexptp exp)
+		(free (cadr exp) var)
+		(equal 1 (getsignl (m- (cadr exp) 1)))
+		(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
+	   ans)
+	  ;; Handle c^f(x) for 0 < c < 1:
+	  ;; behavior(c^f(x)) = -behavior(f(x))
+	  ((and (mexptp exp)
+		(free (cadr exp) var)
+		(equal 1 (getsignl (cadr exp)))
+		(equal -1 (getsignl (m- (cadr exp) 1)))
+		(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
+	   (- ans))
+	  ;; erf, sinh and tanh are monotonic, so their behavior is equal
+	  ;; to the behavior of their arguments.
+	  ;; behavior(monotonic(f(x))) = behavior(f(x))
+	  ((member (caar exp) '(%erf %sinh %tanh) :test #'eq)
+		(behavior (cadr exp) var val))
+	  ;; cosh is an even function and monotonically increasing on the right.
+	  ((and (eq (caar exp) '%cosh)
+		(member (setq sign (getsignl (cadr exp))) '(-1 1) :test #'equal))
+	   (* sign (behavior (cadr exp) var val)))
+	  ;; Note: More functions could be added here.
+	  ;; Ideally, use properties defined on the functions.
+	  ;; Handle log(f(x)) for f(0) = 0:
+	  ;; If behavior(f(x)) = 1, then behavior(log(f(x))) = 1
+	  ((and (mlogp exp)
+		(=0 (no-err-sub 0 (cadr exp)))
+		(equal 1 (behavior (cadr exp) var val)))
+	   1)
+	  ;; Handle log(f(x)) for f(0) > 0:
+	  ;; behavior(log(f(x))) = behavior(f(x))
+	  ((and (mlogp exp)
+		(not (equal t (setq ans (no-err-sub 0 (cadr exp)))))
+		(equal 1 (getsignl ans)))
+	   (behavior (cadr exp) var val))
+	  ;; Try to determine the behavior by taking the derivative.
+	  ((not (equal 0 (setq ans (behavior-by-diff exp var val))))
+	   ans)
+	  (t 0))))))
 
 (defun behavior-expt (bas expo)
   (let ((behavior (behavior bas var val)))
@@ -1471,27 +1484,24 @@ ignoring dummy variables and array indices."
 	  (t 0))))
 
 (defun behavior-by-diff (exp var val)
-  (cond ((not (or (eq val '$zeroa) (eq val '$zerob))) 0)
-	(t (let ((old-val val))
-	     (setq val (ridofab val))
-	     (do ((ct 0 (1+ ct))
-		  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
-		  (n () (not n))
-		  (ans ()))	; This do wins by a return.
-		 ((> ct 1) 0)	; This loop used to run up to 5 times,
-		 ;; but the size of some expressions would blow up.
-	       (setq ans (no-err-sub val exp)) ;Why not do an EVENFN and ODDFN
-					;test here.
-	       (cond ((eq ans t)
-		      (return 0))
-		     ((=0 ans) ())	;Do it again.
-		     (t (setq ans (getsignl ans))
-			(cond (n (return ans))
-			      ((equal ans 1)
-			       (return (if (eq old-val '$zeroa) 1 -1)))
-			      ((equal ans -1)
-			       (return (if (eq old-val '$zeroa) -1 1)))
-			      (t (return 0))))))))))
+ (do ((ct 0 (1+ ct))
+  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
+  (n () (not n))
+  (ans ()))	; This do wins by a return.
+ ((> ct 1) 0)	; This loop used to run up to 5 times,
+ ;; but the size of some expressions would blow up.
+   (setq ans (no-err-sub 0 exp)) ;Why not do an EVENFN and ODDFN
+			;test here.
+   (cond ((eq ans t)
+	  (return 0))
+	 ((=0 ans) ())	;Do it again.
+	 (t (setq ans (getsignl ans))
+	(cond (n (return ans))
+		  ((equal ans 1)
+		   (return (if (eq val '$zeroa) 1 -1)))
+		  ((equal ans -1)
+		   (return (if (eq val '$zeroa) -1 1)))
+		  (t (return 0)))))))
 
 (defun try-lhospital (n d ind)
   ;;Make one catch for the whole bunch of lhospital trials.
