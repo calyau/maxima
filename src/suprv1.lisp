@@ -599,7 +599,6 @@
 	($go mgo) ($signum %signum)
 	($return mreturn) ($factorial mfactorial)
 	($ibase *read-base*) ($obase *print-base*)
-	($modulus modulus)
 	($mode_declare $modedeclare)))
 
 ;; Validate values assigned to $ibase and $obase, which are aliased to

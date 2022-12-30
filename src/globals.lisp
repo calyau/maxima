@@ -1672,4 +1672,14 @@
 		    (intl:gettext "Warning: assigning ~:M, a non-prime, to 'modulus'~&")
 		    val)))))))
 
+;; $modulus is aliased to modulus and vice-versa.  Setting one, sets
+;; the other to the corresponding value.  MODULUS is used in Lisp
+;; code; $MODULUS isn't and appears to be the Maxima interface to
+;; MODULUS.
+;;
+;; FIXME: We should probably replace MODULUS with $MODULUS in the lisp
+;; code and remove these aliases.
+(putprop '$modulus 'modulus 'alias)
+(putprop 'modulus '$modulus 'reversealias)
+
 ;;------------------------------------------------------------------------
