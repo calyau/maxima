@@ -47,7 +47,6 @@
 (declaim (special
 	  $maperror
 	  $maxapplyheight
-	  $parsewindow
 	  $rmxchar
 	  $transrun
 	  $tr_array_as_ref $tr_bound_function_applyp
