@@ -1389,8 +1389,9 @@ ignoring dummy variables and array indices."
 	((eq exp var)
 	  (if (member val '($zeroa $minf) :test #'eq) 1 -1))
 	;; This limits the recursion depth of the function.
+	;; Before giving up, always try behavior-by-diff, which doesn't recurse.
 	((= *behavior-count-now* +behavior-count+)
-      0)
+      (behavior-by-diff exp var val))
 	(t
       (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign ans)
 	;; $inf/$minf is handled by substituting 1/var for var
@@ -1442,15 +1443,16 @@ ignoring dummy variables and array indices."
 		(equal -1 (getsignl (m- (cadr exp) 1)))
 		(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
 	   (- ans))
-	  ;; erf, sinh and tanh are monotonic, so their behavior is equal
-	  ;; to the behavior of their arguments.
-	  ;; behavior(monotonic(f(x))) = behavior(f(x))
-	  ((member (caar exp) '(%erf %sinh %tanh) :test #'eq)
+	  ;; atan, erf, sinh and tanh are monotonically increasing,
+	  ;; so their behavior is equal to the behavior of their arguments.
+	  ;; behavior(monotonically_increasing(f(x))) = behavior(f(x))
+	  ((member (caar exp) '(%atan %erf %sinh %tanh) :test #'eq)
 		(behavior (cadr exp) var val))
-	  ;; cosh is an even function and monotonically increasing on the right.
-	  ((and (eq (caar exp) '%cosh)
-		(member (setq sign (getsignl (cadr exp))) '(-1 1) :test #'equal))
-	   (* sign (behavior (cadr exp) var val)))
+	  ;; Similarly, acot is monotonically decreasing left and right of x = 0.
+	  ;; The singularity doesn't matter for our purposes.
+	  ;; behavior(monotonically_decreasing(f(x))) = -behavior(f(x))
+	  ((eq (caar exp) '%acot)
+		(- (behavior (cadr exp) var val)))
 	  ;; Note: More functions could be added here.
 	  ;; Ideally, use properties defined on the functions.
 	  ;; Handle log(f(x)) for f(0) = 0:
@@ -1459,12 +1461,6 @@ ignoring dummy variables and array indices."
 		(=0 (no-err-sub 0 (cadr exp)))
 		(equal 1 (behavior (cadr exp) var val)))
 	   1)
-	  ;; Handle log(f(x)) for f(0) > 0:
-	  ;; behavior(log(f(x))) = behavior(f(x))
-	  ((and (mlogp exp)
-		(not (equal t (setq ans (no-err-sub 0 (cadr exp)))))
-		(equal 1 (getsignl ans)))
-	   (behavior (cadr exp) var val))
 	  ;; Try to determine the behavior by taking the derivative.
 	  ((not (equal 0 (setq ans (behavior-by-diff exp var val))))
 	   ans)
