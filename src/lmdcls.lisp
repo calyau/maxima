@@ -47,7 +47,6 @@
 (declaim (special
 	  $maperror
 	  $maxapplyheight
-	  $rmxchar
 	  $transrun
 	  $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
