@@ -450,20 +450,26 @@ DESTINATION is an actual stream (rather than nil for a string)."
           '$new
           `((%build_info)
             ,*autoconf-version*
-            ,(format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d" year month day hour minute seconds)
+            ,(format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d"
+		     year month day hour minute seconds)
             ,*autoconf-host*
-            ,#+sbcl (ensure-readably-printable-string (lisp-implementation-type)) #-sbcl (lisp-implementation-type)
-            ,#+sbcl (ensure-readably-printable-string (lisp-implementation-version)) #-sbcl (lisp-implementation-version)
+            ,(ensure-readably-printable-string (lisp-implementation-type))
+            ,(ensure-readably-printable-string (lisp-implementation-version))
 	    ,$maxima_userdir
 	    ,$maxima_tempdir
 	    ,$maxima_objdir
 	    ,$maxima_frontend
 	    ,$maxima_frontend_version))))))
 
-;; SBCL base strings aren't readably printable.
-;; Attempt a work-around. Yes, this is terribly ugly.
-#+sbcl (defun ensure-readably-printable-string (x)
-  (coerce x `(simple-array character (,(length x)))))
+;; SBCL base strings aren't readably printable.  Attempt a work-around
+;; by coercing the string to be an array of characters instead of
+;; base-chars. Yes, this is terribly ugly.  For other Lisps, we can
+;; just return the arg.
+(defun ensure-readably-printable-string (x)
+  #+sbcl
+  (coerce x '(simple-array character (*)))
+  #-sbcl
+  x)
 
 (defun dimension-build-info (form result)
   (declare (special bkptht bkptdp lines break))
