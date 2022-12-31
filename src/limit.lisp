@@ -3101,15 +3101,14 @@ ignoring dummy variables and array indices."
 		(let*
 		  ((c (or (pip arglim) 0))
 		   (rest (sratsimp (m- arglim (m* '$%pi c))))
-		   (hit-zero)
-		   (hit-pole nil))
+		   (hit-zero))
 		  ;; Check if tan(x) has a zero or pole at x=arglim.
 		  ;; zero: tan(n*%pi + 0*)
 		  ;; pole: tan((2*n+1)*%pi/2 + 0*)
 		  ;; 0* can be $zeroa, $zerob or 0.
 		  (if (and (member rest '(0 $zeroa $zerob) :test #'equal)
 				   (or (setq hit-zero (integerp c))
-					   (setq hit-pole (and (ratnump c) (equal (caddr c) 2)))))
+					   (and (ratnump c) (equal (caddr c) 2))))
 			;; This is a zero or a pole.
 			;; Determine on which side of the zero/pole we are.
 			;; If rest is $zeroa or $zerob, use that.
