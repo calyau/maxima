@@ -24,9 +24,6 @@
 (defvar *colinv*)
 
 
-(defmvar *rank* nil)
-(defmvar *inv* nil)
-
 (defun solcoef (m *c varl flag)
   (prog (cc answer leftover)
      (setq cc (cdr (ratrep* *c)))

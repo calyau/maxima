@@ -12,10 +12,10 @@
 
 (macsyma-module matrix)
 
-(declare-top (special *ech* *tri* *inv*
+(declare-top (special *ech* *tri*
 		      mdl $detout vlist mul* top* *det*
 		      header
-		      *rank* *mat*))
+		      *mat*))
 
 (defmvar top* nil)
 (defmvar $matrix_element_transpose nil)

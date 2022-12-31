@@ -12,7 +12,7 @@
 
 (macsyma-module simp)
 
-(declare-top (special rulesw *inv*
+(declare-top (special rulesw
 		      prods negprods sums negsums
 		      bigfloatzero
 		      opers-list *n

@@ -700,6 +700,9 @@
   represent arbitrary parameters described in the manual under
   'algsys'.")
 
+(defmvar *rank* nil)
+(defmvar *inv* nil)
+
 ;;------------------------------------------------------------------------
 ;; From matrix.lisp
 (defmvar $detout nil
