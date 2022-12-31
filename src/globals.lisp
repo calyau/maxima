@@ -1549,7 +1549,12 @@
 (defmvar $nalgfac t
   "If t use bmt's algebraic factoring algorithm")
 
+(defmvar gauss nil)
+(defmvar *min* nil)
+(defmvar *mx* nil)
+(defmvar minpoly* nil)
 (defmvar mplc* nil)
+(defmvar mm* 1)
 
 ;;------------------------------------------------------------------------
 ;; From nparse.lisp

@@ -57,16 +57,15 @@
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable $ttyoff
 	  *alpha *in *in-compile*
-	  *inv* *min* *mx*
+	  *inv*
 	  *n *out *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  alpha
 	  defined_variables derivlist
 	  dn*
-	  gauss
 	  local
-	  meta-prop-l meta-prop-p mfexprp minpoly* mm*
+	  meta-prop-l meta-prop-p mfexprp
 	  mspeclist
 	  need-prog? nn*
 	  opers-list outargs1 outargs2

@@ -40,11 +40,6 @@
 
 ;; Internal specials
 
-(defmvar gauss nil)
-(defmvar *min* nil)
-(defmvar *mx* nil)
-(defmvar minpoly* nil)
-(defmvar mm* 1)
 (defmvar alpha nil)
 ;(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37. 41. 43. 47. 53. 59. 61.))
 

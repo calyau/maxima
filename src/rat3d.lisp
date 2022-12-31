@@ -18,7 +18,7 @@
 (declare-top (special *odr* nn* *checkagain))
 
 ;;There really do seem to be two such variables...
-(declare-top (special alpha *alpha gauss minpoly*))
+(declare-top (special alpha *alpha))
 
 (defmvar *irreds nil)
 
