@@ -3085,7 +3085,11 @@
    ;; internal var and likewise shouldn't be displayed.
    (cond ((or (rczerop n) (null var) (equal var 1)) 1)
 	 ((equal n (rcone)) var)
-	 ((and ps-bmt-disrep (mexptp var) (equal (caddr var) -1))
+	 ((and (mexptp var) (equal (caddr var) -1))
+	  ;; This used to be conditioned on ps-bmt-disrep which was
+	  ;; always true.  But I (rtoy) can't find a case where it
+	  ;; would have made a difference.  The testsuite doesn't have
+	  ;; any examples.
 	  (psdisrep^ (e- n) (cadr var)))
 	 ('t `((mexpt ratsimp) ,var ,(edisrep n)))))
 

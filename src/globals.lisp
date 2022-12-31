@@ -390,10 +390,6 @@
 (defmvar $verbose nil
   "When true, 'powerseries' prints progress messages.")
 
-;; ps-bmt-disrep appears to be used in exactly one place: psdisrep^ in
-;; hayat.lisp.  I (rtoy) don't know what this is used for; it's always
-;; T.
-(defvar ps-bmt-disrep t)
 (defvar silent-taylor-flag nil
   ;; From comment in hayat.lisp
   "If true indicates that errors will be returned via a throw to
