@@ -14,7 +14,6 @@
 
 (declare-top (special rulesw
 		      prods negprods sums negsums
-		      bigfloatzero
 		      opers-list *n
 		      *out *in
                       *builtin-numeric-constants*))
