@@ -73,7 +73,6 @@
 	  sums tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables
 	  tstack
-	  ps-bmt-disrep
 	  $define_variable))
 
 (declaim (declaration unspecial))
