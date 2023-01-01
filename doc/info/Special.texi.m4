@@ -94,6 +94,10 @@ m4_displaymath(
 
 although the infinite series is not used for computations.
 
+When @code{besselexpand} is @code{true}, @code{bessel_j} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
@@ -119,6 +123,10 @@ m4_displaymath(
 
 when @math{v} is not an integer.  When @math{v} is an integer @math{n},
 the limit as @math{v} approaches @math{n} is taken.
+
+When @code{besselexpand} is @code{true}, @code{bessel_y} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
 
 @opencatbox{Categories:}
 @category{Bessel functions}
@@ -150,6 +158,11 @@ m4_displaymath(
 
 although the infinite series is not used for computations.
 
+When @code{besselexpand} is @code{true}, @code{bessel_i} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
+
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
@@ -175,6 +188,11 @@ m4_displaymath(
 
 when @math{v} is not an integer.  If @math{v} is an integer @math{n},
 then the limit as @math{v} approaches @math{n} is taken.
+
+When @code{besselexpand} is @code{true}, @code{bessel_k} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
 
 @opencatbox{Categories:}
 @category{Bessel functions}
