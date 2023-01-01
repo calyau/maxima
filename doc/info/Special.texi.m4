@@ -465,16 +465,15 @@ negative integer, the limit must be used.
 @c -----------------------------------------------------------------------------
 
 The Airy functions m4_math(<<<{\rm Ai}(x)>>>,<<<Ai(x)>>>) and m4_math(<<<{\rm Bi}(x)>>>,<<<Bi(x)>>>) are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, @urlaands{Section 10.4, 446}. 
+@i{Handbook of Mathematical Functions}, @urlaands{Section 10.4, 446} and @urldlmf{9}.
 
-The two linearly independent solutions of the Airy differential equation:
+The Airy differential equation is:
 
 m4_displaymath(
 <<<{d^2 y\over dx^2} - xy = 0>>>,
 <<<@math{diff (y(x), x, 2) - x y(x) = 0}>>>)
 
-are m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) and m4_mathdot(<<<y = {\rm Bi}(x)>>>,<<<y = Bi(x)>>>)
-
+The numerically satisfactory pair of solutions (@urldlmf{9.2#T1}) on the real line are m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) and m4_mathdot(<<<y = {\rm Bi}(x)>>>,<<<y = Bi(x)>>>)
 These two solutions are oscillatory for @math{x < 0}.  m4_math({\rm Ai}(x), Ai(x)) is
 the solution subject to the condition that m4_math(y\rightarrow 0,
 y->0) as m4_math(<<<x\rightarrow +\infty,>>>, <<<x ->
@@ -490,7 +489,7 @@ number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function m4_mathdot(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>)  See @urlaands{eqn 10.4.2, 446}.
+The Airy function m4_mathdot(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>)  See @urlaands{eqn 10.4.2, 446} and @urldlmf{9}.
 
 See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
@@ -520,7 +519,7 @@ See @mrefdot{airy_ai}
 @c -----------------------------------------------------------------------------
 @anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
-The Airy function m4_math(<<<{\rm Bi}(x)>>>, Bi(x)).  See @urlaands{eqn 10.4.3, 446}.
+The Airy function m4_math(<<<{\rm Bi}(x)>>>, Bi(x)).  See @urlaands{eqn 10.4.3, 446} and  @urldlmf{9}.
 
 See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 
