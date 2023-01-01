@@ -2055,7 +2055,7 @@ m4_displaymath(
 
 (@urlaands{eqn 12.2.1, 498}) and (@urldlmf{11.2.E2}).
 
-When @code{besselexpand} is @code{true}, @code{struve_h} is expanded in terms
+When @code{besselexpand} is @code{true}, @code{struve_l} is expanded in terms
 of elementary functions when the order @math{v} is half of an odd integer. 
 See @mrefdot{besselexpand}
 
