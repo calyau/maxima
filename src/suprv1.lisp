@@ -15,10 +15,17 @@
 ;;apply, and tried to eliminate any / quoting.  Most of the relevant
 ;;stuff is in system.lisp for the lispm and nil friends.--wfs
 
+;; It would probably be better to bind *print-base* and *read-base* as
+;; needed in various functions instead of doing it this way with
+;; *old-ibase* and *old-base*.  There are already some cases where
+;; *print-base* is bound in various functions.
+(defvar *old-ibase*)
+(defvar *old-base*)
+
 (eval-when
     #+gcl (compile eval)
     #-gcl (:compile-toplevel :execute)
-  (setq old-ibase *read-base* old-base *print-base*)
+  (setq *old-ibase* *read-base* *old-base* *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
@@ -870,4 +877,4 @@
 (eval-when
     #+gcl (compile eval)
     #-gcl (:compile-toplevel :execute)
-    (setq *print-base* old-base *read-base* old-ibase))
+    (setq *print-base* *old-base* *read-base* *old-ibase*))
