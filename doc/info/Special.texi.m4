@@ -222,7 +222,7 @@ bigfloat precision is not supported.
 
 When @code{besselexpand} is @code{true}, @code{hankel_1} is expanded in terms
 of elementary functions when the order @math{v} is half of an odd integer. 
-See @code{besselexpand}.
+See @mrefdot{besselexpand}
 
 Maxima knows the derivative of @code{hankel_1} wrt the argument @math{z}.
 
@@ -310,7 +310,7 @@ bigfloat precision is not supported.
 
 When @code{besselexpand} is @code{true}, @code{hankel_2} is expanded in terms
 of elementary functions when the order @math{v} is half of an odd integer. 
-See @code{besselexpand}.
+See @mrefdot{besselexpand}
 
 Maxima knows the derivative of @code{hankel_2} wrt the argument @math{z}.
 
@@ -328,8 +328,9 @@ For examples see @code{hankel_1}.
 Default value: @code{false}
 
 @c REPHRASE
-Controls expansion of the Bessel functions when the order is half of
-an odd integer.  In this case, the Bessel functions can be expanded
+Controls expansion of the Bessel, Hankel and Struve functions
+when the order is half of
+an odd integer.  In this case, the functions can be expanded
 in terms of other elementary functions.  When @code{besselexpand} is @code{true},
 the Bessel function is expanded.
 
