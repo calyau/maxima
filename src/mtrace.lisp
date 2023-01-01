@@ -671,10 +671,11 @@
 
 ;;; I/O cruft
 
-(defmvar $trace_max_indent 15. "max number of spaces it will go right" fixnum)
-
-(putprop '$trace_max_indent 'assign-mode-check 'assign)
-(putprop '$trace_max_indent '$fixnum 'mode)
+(defmvar $trace_max_indent 15.
+  "max number of spaces it will go right"
+  fixnum
+  :properties ((assign 'assign-mode-check)
+	       (mode '$fixnum)))
 
 (defun-prop (spaceout dimension) (form result)
   (dimension-string (make-list (cadr form) :initial-element #\space) result))
