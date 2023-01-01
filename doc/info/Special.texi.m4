@@ -509,7 +509,7 @@ m4_displaymath(
 <<<{\rm airy\_dai}(x) = {d\over dx}{\rm Ai}(x)>>>,
 <<<@math{airy_dai(x) = diff(airy_ai(x),x)>>>}) 
 
-See @mrefdot{airy_ai}.
+See @mrefdot{airy_ai}
 
 @opencatbox{Categories:}
 @category{Airy functions}
