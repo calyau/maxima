@@ -1795,7 +1795,8 @@ non-negative integer.
 @end deffn
 
 @deffn {Function} expintegral_si (@var{z})
-The Exponential Integral Si(z) (@urlaands{eqn 5.2.1, 231}) defined as
+The Exponential Integral Si(z) (@urlaands{eqn 5.2.1, 231}
+and @urldlmf{6.2#E9}) defined as
 
 m4_displaymath(
 <<<{\rm Si}(z) = \int_0^z {\sin t \over t} dt>>>,
@@ -1808,7 +1809,8 @@ m4_displaymath(
 @end deffn
 
 @deffn {Function} expintegral_ci (@var{z})
-The Exponential Integral Ci(z) (@urlaands{eqn 5.2.2, 231}) defined as
+The Exponential Integral Ci(z) (@urlaands{eqn 5.2.2, 231}
+and @urldlmf{6.2#E13}) defined as
 
 m4_displaymath(
 <<<{\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt>>>,
@@ -1823,7 +1825,8 @@ with m4_math(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>).
 @end deffn
 
 @deffn {Function} expintegral_shi (@var{z})
-The Exponential Integral Shi(z) (@urlaands{eqn 5.2.3, 231}) defined as
+The Exponential Integral Shi(z) (@urlaands{eqn 5.2.3, 231}
+and @urldlmf{6.2#E15}) defined as
 
 m4_displaymath(
 <<<{\rm Shi}(z) = \int_0^z {\sinh t \over t} dt>>>,
@@ -1836,7 +1839,8 @@ m4_displaymath(
 @end deffn
 
 @deffn {Function} expintegral_chi (@var{z})
-The Exponential Integral Chi(z) (@urlaands{eqn 5.2.4, 231}) defined as
+The Exponential Integral Chi(z) (@urlaands{eqn 5.2.4, 231}
+and @urldlmf{6.2#E16}) defined as
 
 m4_displaymath(
 <<<{\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt>>>,
