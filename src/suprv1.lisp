@@ -36,8 +36,12 @@
 (defmvar $strdisp t)
 (defmvar $grind nil)
 (defmvar $backtrace '$backtrace)
-(defmvar $debugmode nil)
-(defmvar $poislim 5)
+(defmvar $debugmode nil
+  nil
+  :properties ((assign 'debugmode1)))
+(defmvar $poislim 5
+  nil
+  :properties ((assign 'poislim1)))
 
 ;; This version of meval* makes sure, that the facts from the global variable
 ;; *local-signs* are cleared with a call to clearsign. The facts are added by
@@ -862,10 +866,6 @@
 
 (defprop $diff %derivative verb)
 (defprop %derivative $diff noun)
-
-(mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-      '(($debugmode debugmode1)
-	($poislim poislim1)))
 
 (eval-when
     #+gcl (compile eval)
