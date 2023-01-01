@@ -2031,6 +2031,10 @@ m4_displaymath(
 
 (@urlaands{eqn 12.1.3, 496}) and (@urldlmf{11.2.E1}).
 
+When @code{besselexpand} is @code{true}, @code{struve_h} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2045,6 +2049,10 @@ m4_displaymath(
 <<<@math{struve_l(v,z) = %i*exp(-%i*v*%pi/2)*struve_h(v,z)}>>>)
 
 (@urlaands{eqn 12.2.1, 498}) and (@urldlmf{11.2.E2}).
+
+When @code{besselexpand} is @code{true}, @code{struve_h} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
 
 @opencatbox{Categories:}
 @category{Special functions}
