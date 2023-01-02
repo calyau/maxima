@@ -783,8 +783,8 @@ See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
 and @code{erfc}.
 
-Also see the related functions @code{gamma_incomplete_regularized} and
-@code{gamma_incomplete_generalized}.
+Also see the related functions @mref{gamma_incomplete_regularized} and
+@mref{gamma_incomplete_generalized}.
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -809,10 +809,10 @@ gamma_incomplete_regularized(a, z) =
 >>>)
 
 See also @mref{gamma_expand} for controlling how
-@code{gamma_incomplete} is expressed in terms of elementary functions
+@mref{gamma_incomplete} is expressed in terms of elementary functions
 and @mrefdot{erfc}
 
-Also see @code{gamma_incomplete}.
+Also see @mref{gamma_incomplete}.
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -821,6 +821,7 @@ Also see @code{gamma_incomplete}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gamma_incomplete_generalized}
 @deffn {Function} gamma_incomplete_generalized (@var{a}, @var{z1}, @var{z1})
 
 The generalized incomplete gamma function.
@@ -839,7 +840,7 @@ gamma_incomplete_generalized(a, z1, z2) =
 @end example
 >>>)
 
-Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
+Also see @mref{gamma_incomplete} and @mref{gamma_incomplete_regularized}.
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -853,10 +854,10 @@ Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
 @defvr {Option variable} gamma_expand
 Default value: @code{false}
 
-@code{gamma_expand} controls expansion of @code{gamma_incomplete}.
+@code{gamma_expand} controls expansion of @mref{gamma_incomplete}.
 When @code{gamma_expand} is @code{true}, @code{gamma_incomplete(v,z)}
 is expanded in terms of
-@code{z}, @code{exp(z)}, and @code{gamma_incomplete} or @code{erfc(z)} when possible.
+@code{z}, @code{exp(z)}, and @mref{gamma_incomplete} or @mref{erfc} when possible.
 
 @example
 (%i1) gamma_incomplete(2,z);
@@ -1730,6 +1731,7 @@ The Exponential Integral and related functions are defined in
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, @urlaands{Chapter 5, 228}.
 
+@anchor{expintegral_e1}
 @deffn {Function} expintegral_e1 (@var{z})
 The Exponential Integral E1(z) defined as
 
@@ -1794,6 +1796,7 @@ non-negative integer.
 @closecatbox
 @end deffn
 
+@anchor{expintegral_si}
 @deffn {Function} expintegral_si (@var{z})
 The Exponential Integral Si(z) (@urlaands{eqn 5.2.1, 231}
 and @urldlmf{6.2#E9}) defined as
@@ -1808,6 +1811,7 @@ m4_displaymath(
 @closecatbox
 @end deffn
 
+@anchor{expintegral_ci}
 @deffn {Function} expintegral_ci (@var{z})
 The Exponential Integral Ci(z) (@urlaands{eqn 5.2.2, 231}
 and @urldlmf{6.2#E13}) defined as
@@ -1824,6 +1828,7 @@ with m4_math(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>).
 @closecatbox
 @end deffn
 
+@anchor{expintegral_shi}
 @deffn {Function} expintegral_shi (@var{z})
 The Exponential Integral Shi(z) (@urlaands{eqn 5.2.3, 231}
 and @urldlmf{6.2#E15}) defined as
@@ -1838,6 +1843,7 @@ m4_displaymath(
 @closecatbox
 @end deffn
 
+@anchor{expintegral_chi}
 @deffn {Function} expintegral_chi (@var{z})
 The Exponential Integral Chi(z) (@urlaands{eqn 5.2.4, 231}
 and @urldlmf{6.2#E16}) defined as
@@ -1869,8 +1875,8 @@ Possible values for @code{expintrep} are @code{false},
 @code{false} means that the representation is not changed.  Other
 values indicate the representation is to be changed to use the
 function specified where @code{expintegral_trig} means
-@code{expintegral_si}, @code{expintegral_ci}, and @code{expintegral_hyp}
-means @code{expintegral_shi} or @code{expintegral_chi}.
+@mref{expintegral_si}, @mref{expintegral_ci}; and @code{expintegral_hyp}
+means @mref{expintegral_shi} or @mref{expintegral_chi}.
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -2278,8 +2284,8 @@ ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
                                s
 @end example
 
-Results when using the expansion of @code{gamma_incomplete} and when changing 
-the representation to @code{expintegral_e1}:
+Results when using the expansion of @mref{gamma_incomplete} and when changing 
+the representation to @mref{expintegral_e1}:
 
 @example
 (%i10) assume(s>0)$
