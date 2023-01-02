@@ -650,7 +650,7 @@ and bigfloat precision.
 
 @code{gamma} has mirror symmetry.
 
-When @code{gamma_expand} is @code{true}, Maxima expands @code{gamma} for 
+When @mref{gamma_expand} is @code{true}, Maxima expands @code{gamma} for 
 arguments @code{z+n} and @code{z-n} where @code{n} is an integer.
 
 Maxima knows the derivative of @code{gamma}.
@@ -692,7 +692,7 @@ Numerical evaluation for real and complex values:
 (%o7)                  gamma(conjugate(z))
 @end example
 
-Maxima expands @code{gamma(z+n)} and @code{gamma(z-n)}, when @code{gamma_expand} 
+Maxima expands @code{gamma(z+n)} and @code{gamma(z-n)}, when @mref{gamma_expand} 
 is @code{true}:
 
 @example
