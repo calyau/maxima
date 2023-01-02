@@ -375,7 +375,7 @@
      (cond ((dontfactor (car p)) (return (list p)))
 	   ((and (not (zerop $factor_max_degree)) (> (apply 'max (pdegreevector p)) $factor_max_degree))
 		 (when $factor_max_degree_print_warning
-		   (mformat t "Refusing to factor polynomial ~M because its degree exceeds factor_max_degree (~M)~%" (pdis p) $factor_max_degree))
+		   (mtell (intl:gettext "Refusing to factor polynomial ~M because its degree exceeds factor_max_degree (~M)~%") (pdis p) $factor_max_degree))
 		 (return (list p)))
 	   ((onevarp p)
 	    (cond ((setq factors (factxn+-1 p))
