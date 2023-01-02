@@ -954,7 +954,7 @@ argument. The exception is for @var{a=-n}, @var{n} a positive integer
 and @var{b} a positive integer with @code{b<=n}, it is possible to define an
 analytic continuation. Maxima gives for this case a result.
 
-When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
+When @mref{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
 @code{beta(a-n,b)} or @code{beta(a,b+n)} and @code{beta(a,b-n)} with @code{n} 
 an integer are simplified.
 
@@ -1014,7 +1014,7 @@ The possible results, when one of the arguments is a negative integer:
 @end example
 
 @code{beta(a+n,b)} or @code{beta(a-n,b)} with @code{n} an integer simplifies when 
-@code{beta_expand} is @code{true}:
+@mref{beta_expand} is @code{true}:
 
 @example
 (%i6) beta_expand:true$
@@ -1154,7 +1154,7 @@ Maxima evaluates @code{beta_incomplete} numerically for real and complex values
 in float or bigfloat precision. For the numerical evaluation an expansion of the 
 incomplete beta function in continued fractions is used.
 
-When the option variable @code{beta_expand} is @code{true}, Maxima expands
+When the option variable @mref{beta_expand} is @code{true}, Maxima expands
 expressions like @code{beta_incomplete(a+n,b,z)} and
 @code{beta_incomplete(a-n,b,z)} where n is a positive integer.
 
@@ -1243,7 +1243,7 @@ Results for more general complex arguments:
 (%i16) 
 @end example
 
-Expansion, when @code{beta_expand} is @code{true}:
+Expansion, when @mref{beta_expand} is @code{true}:
 
 @example
 (%i23) beta_incomplete(a+1,b,z),beta_expand:true;
@@ -1321,7 +1321,7 @@ the specific value 0. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<realp
 Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
 arguments in float and bigfloat precision.
 
-When @code{beta_expand} is @code{true}, Maxima expands 
+When @mref{beta_expand} is @code{true}, Maxima expands 
 @code{beta_incomplete_regularized} for arguments @math{a+n} or @math{a-n}, 
 where n is an integer.
 
@@ -1373,7 +1373,7 @@ precision:
 (%o12)      2.8653674999354036142b-1 %i - 1.2299596333468400163b-1
 @end example
 
-Expansion, when @code{beta_expand} is @code{true}:
+Expansion, when @mref{beta_expand} is @code{true}:
 
 @example
 (%i13) beta_incomplete_regularized(a+1,b,z);
@@ -1454,7 +1454,7 @@ expression with @code{beta} and @code{beta_incomplete}.
 Maxima evaluates @code{beta_incomplete_regularized} for real and complex values 
 in float and bigfloat precision.
 
-When @code{beta_expand} is @code{true}, Maxima expands 
+When @mref{beta_expand} is @code{true}, Maxima expands 
 @code{beta_incomplete_generalized} for @math{a+n} and @math{a-n}, @var{n} a 
 positive integer.
 
@@ -1527,7 +1527,7 @@ Numerical evaluation for complex arguments in float or bigfloat precision:
 @end example
 
 Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when 
-@code{beta_expand} is @code{true}: 
+@mref{beta_expand} is @code{true}: 
 
 @example
 (%i14) beta_expand:true$
@@ -1571,6 +1571,7 @@ Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
 @closecatbox
 @end deffn
 
+@anchor{beta_expand}
 @defvr {Option variable} beta_expand
 Default value: false
 
