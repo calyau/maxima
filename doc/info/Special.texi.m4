@@ -1012,7 +1012,7 @@ The possible results, when one of the arguments is a negative integer:
                                     3  6    3
 @end example
 
-@code{beta(a+n,b)} or @code{beta(a-n)} with @code{n} an integer simplifies when 
+@code{beta(a+n,b)} or @code{beta(a-n,b)} with @code{n} an integer simplifies when 
 @code{beta_expand} is @code{true}:
 
 @example
