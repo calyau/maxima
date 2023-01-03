@@ -196,6 +196,11 @@
 	    ((:file "mormac")
 	     (:file "compat")))
    (:module maxima-language-compiler-macros :source-pathname ""
+	    ;; Should depend on transl to get special var tr-abort,
+	    ;; but making this depend on maxima-language-compiler to
+	    ;; get transl.lisp doesn't work.  It results in a compiler
+	    ;; error about maxima::$local being an unknown block.  I
+	    ;; (rtoy) didn't investigate further.
 	    :depends-on ("defmfun")
 	    :components
 	    ((:file "transm")))
@@ -590,15 +595,21 @@
    (:module maxima-language-compiler :source-pathname ""
 	    :depends-on ("globals" "defmfun" "maxima-language-compiler-macros")
 	    :components
-	    ((:file "transl")
-	     (:file "transs")
+	    ((:file "transl"
+		    :depends-on ("transl"))
+	     (:file "transs"
+		    :depends-on ("transl"))
 	     (:file "trans1")
-	     (:file "trans2")
-	     (:file "trans3")
+	     (:file "trans2"
+		    :depends-on ("transl"))
+	     (:file "trans3"
+		    :depends-on ("transl"))
 	     (:file "trans4")
-	     (:file "trans5")
+	     (:file "trans5"
+		    :depends-on ("transl"))
 	     (:file "transf")
-	     (:file "troper")
+	     (:file "troper"
+		    :depends-on ("transl"))
 	     (:file "trutil")
 	     (:file "trmode")
 	     (:file "trdata")
