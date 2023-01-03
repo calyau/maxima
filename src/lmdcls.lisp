@@ -63,7 +63,6 @@
 	  return-mode returns
 	  rulesw
 	  sums
-	  transl-file
 	  $define_variable))
 
 (declaim (declaration unspecial))
