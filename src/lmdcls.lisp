@@ -47,7 +47,6 @@
 (declaim (special
 	  $maperror
 	  $maxapplyheight
-	  $tr_float_can_branch_complex
 	  $ttyoff
 	  *alpha *in *in-compile*
 	  *n *out *tr-warn-break* *transl-backtrace*
