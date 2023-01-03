@@ -43,13 +43,17 @@ To use the @code{graphs} package, first load it with @code{load("graphs")}.
 
 Creates a new graph on the set of vertices @var{v_list} and with edges @var{e_list}.
 
-@var{v_list} is a list of vertices (@code{[v1, v2,..., vn]}) or a
-list of vertices together with vertex labels (@code{[[v1,l1], [v2,l2],..., [vn,ln]]}).
+@var{v_list} is a list of vertices @code{[v1, v2, ..., vn]} or a
+list of vertices together with vertex labels @code{[[v1, l1], [v2 ,l2], ..., [vn, ln]]}.
+A vertex may be any integer,
+and @var{v_list} may contain vertices in any order.
+A label may be any Maxima expression,
+and two or more vertices may have the same label.
 
 @var{n} is the number of vertices. Vertices will be identified by integers from 0 to n-1.
 
-@var{e_list} is a list of edges (@code{[e1, e2,..., em]}) or a list of
-edges together with edge-weights (@code{[[e1, w1], ..., [em, wm]]}).
+@var{e_list} is a list of edges @code{[e1, e2,..., em]} or a list of
+edges together with edge-weights @code{[[e1, w1], ..., [em, wm]]}.
 
 If @var{directed} is not @code{false}, a directed graph will be returned.
 
@@ -468,9 +472,14 @@ Returns the line graph of the graph @var{g}.
 
 Creates a graph using a predicate function @var{f}.
 
-@var{vrt} is a list/set of vertices or an integer. If @var{vrt} is an
-integer, then vertices of the graph will be integers from 1 to
-@var{vrt}.
+@var{vrt} is a list or set of vertices, or an integer.
+
+When @var{vrt} is a list or set,
+its elements may be any integers,
+and, if a list, may be listed in any order.
+
+When @var{vrt} is an integer,
+vertices of the graph will be integers from 1 to @var{vrt}.
 
 @var{f} is a predicate function. Two vertices @var{a} and @var{b} will
 be connected if @code{f(a,b)=true}.
@@ -1189,17 +1198,91 @@ Example:
 @deffn {Function} get_vertex_label (@var{v}, @var{gr})
 Returns the label of the vertex @var{v} in the graph @var{gr}.
 
+If no label is assigned to vertex @var{v},
+@code{get_vertex_label} returns @code{false}.
+
+Example:
+@c ===beg===
+@c load("graphs")$
+@c g: create_graph([[0, "Zero"], [1, "One"], 2, 3], [])$
+@c get_vertex_label(0, g);
+@c get_vertex_label(2, g);
+@c ===end===
+@example
+(%i1) load("graphs")$
+(%i2) g: create_graph([[0, "Zero"], [1, "One"], 2, 3], [])$
+(%i3) get_vertex_label(0, g);
+(%o3)                         Zero
+(%i4) get_vertex_label(2, g);
+(%o4)                         false
+@end example
+
+@opencatbox{Categories:}
+@category{Package graphs}
+@category{Package graphs - properties}
+@closecatbox
+@end deffn
+
+@anchor{get_unique_vertex_by_label}
+@deffn {Function} get_unique_vertex_by_label (@var{l}, @var{gr})
+Returns the unique vertex which has the label @var{l} in graph @var{gr}.
+
+If there is no such vertex,
+@code{get_unique_vertex_by_label} returns @code{false}.
+
+If there are two or more vertices with label @var{l},
+@code{get_unique_vertex_by_label} reports an error.
+
 Example:
 @c ===beg===
 @c load ("graphs")$
-@c g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
-@c get_vertex_label(0, g);
+@c g: create_graph ([[0, "Zero"], [1, "One"], [2, "Other"], [3, "Other"]], []) $
+@c get_unique_vertex_by_label ("Zero", g);
+@c get_unique_vertex_by_label ("Two", g);
+@c errcatch (get_unique_vertex_by_label ("Other", g));
 @c ===end===
 @example
 (%i1) load ("graphs")$
-(%i2) g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
-(%i3) get_vertex_label(0, g);
-(%o3)                         Zero
+(%i2) g: create_graph ([[0, "Zero"], [1, "One"], [2, "Other"], [3, "Other"]], []) $
+(%i3) get_unique_vertex_by_label ("Zero", g);
+(%o3)                           0
+(%i4) get_unique_vertex_by_label ("Two", g);
+(%o4)                         false
+(%i5) errcatch (get_unique_vertex_by_label ("Other", g));
+get_unique_vertex_by_label: two or more vertices have the same label "Other"
+(%o5)                          []
+@end example
+
+@opencatbox{Categories:}
+@category{Package graphs}
+@category{Package graphs - properties}
+@closecatbox
+@end deffn
+
+@anchor{get_all_vertices_by_label}
+@deffn {Function} get_all_vertices_by_label (@var{l}, @var{gr})
+Returns all vertices, if any, which have the label @var{l} in graph @var{gr}.
+
+If there are no such vertices,
+@code{get_all_vertices_by_label} returns an empty list @code{[]}.
+
+Example:
+@c ===beg===
+@c load ("graphs")$
+@c g: create_graph ([[0, "Zero"], [1, "One"], [2, "Other"], [3, "Other"]], []) $
+@c get_all_vertices_by_label ("Zero", g);
+@c get_all_vertices_by_label ("Two", g);
+@c get_all_vertices_by_label ("Other", g);
+@c ===end===
+@example
+(%i1) load ("graphs")$
+(%i2) g: create_graph ([[0, "Zero"], [1, "One"], [2, "Other"], [3, "Other"]], []) $
+(%i3) get_all_vertices_by_label ("Zero", g);
+(%o3)                          [0]
+(%i4) get_all_vertices_by_label ("Two", g);
+(%o4)                          []
+(%i5) get_all_vertices_by_label ("Other", g);
+(%o5)                        [2, 3]
 @end example
 
 @opencatbox{Categories:}
@@ -2279,23 +2362,31 @@ Example:
 @deffn {Function} set_vertex_label (@var{v}, @var{l}, @var{gr})
 Assigns the label @var{l} to the vertex @var{v} in the graph @var{gr}.
 
+A label may be any Maxima expression,
+and two or more vertices may have the same label.
+
 Example:
 @c ===beg===
 @c load ("graphs")$
-@c g : create_graph([[1, "One"], [2, "Two"]], [[1,2]])$
+@c g : create_graph([[1, "One"], [2, "Two"]], [[1, 2]])$
 @c get_vertex_label(1, g);
 @c set_vertex_label(1, "oNE", g);
 @c get_vertex_label(1, g);
+@c h : create_graph([[11, x], [22, y], [33, x + y]], [[11, 33], [22, 33]]) $
+@c get_vertex_label (33, h);
 @c ===end===
 @example
 (%i1) load ("graphs")$
-(%i2) g : create_graph([[1, "One"], [2, "Two"]], [[1,2]])$
+(%i2) g : create_graph([[1, "One"], [2, "Two"]], [[1, 2]])$
 (%i3) get_vertex_label(1, g);
 (%o3)                          One
 (%i4) set_vertex_label(1, "oNE", g);
 (%o4)                         done
 (%i5) get_vertex_label(1, g);
 (%o5)                          oNE
+(%i6) h : create_graph([[11, x], [22, y], [33, x + y]], [[11, 33], [22, 33]]) $
+(%i7) get_vertex_label (33, h);
+(%o7)                         y + x
 @end example
 
 @opencatbox{Categories:}
@@ -2720,6 +2811,8 @@ Adjacencies:
 @anchor{add_vertices}
 @deffn {Function} add_vertices (@var{v_list}, @var{gr})
 Adds all vertices in the list @var{v_list} to the graph @var{gr}.
+A vertex may be any integer,
+and @var{v_list} may contain vertices in any order.
 
 @opencatbox{Categories:}
 @category{Package graphs}
