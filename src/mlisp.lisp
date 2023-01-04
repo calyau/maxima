@@ -38,11 +38,33 @@ or if apply is being used are printed.")
 (defvar aexprp nil)
 (defvar dsksetp nil)
 (defvar rulefcnl nil)
-(defmvar $refcheck nil)
-(defmvar $maperror t)
-(defmvar $optionset nil)
-(defmvar $setcheckbreak nil)
-(defmvar $setval '$setval)
+
+(defmvar $refcheck nil
+  "When true, Maxima prints a message each time a bound variable is used
+  for the first time in a computation.")
+
+(defmvar $maperror t
+  "When false, all of the mapping functions such as 'map(<f>, <expr_1>,
+  <expr_2>, ...)` (1) stop when they finish going down the shortest
+  <expr_i> if not all of the <expr_i> are of the same length and (2)
+  apply <f> to [<expr_1>, <expr_2>, ...] if the <expr_i> are not all
+  the same type of object.  When true, an error message is displayed
+  for the above two cases.")
+
+(defmvar $optionset nil
+  "When true, Maxima prints out a message whenever a Maxima option is
+  reset.")
+
+(defmvar $setcheckbreak nil
+  "When true, Maxima will present a break prompt whenever a variable on
+  the 'setcheck' list is assigned a new value.  The break occurs
+  before the assignment is carried out.  At this point, 'setval' holds
+  the value to which the variable is about to be assigned.  Hence, one
+  may assign a different value by assigning to 'setval'.")
+
+(defmvar $setval '$setval
+  "Holds the value to which a variable is about to be set when a
+  'setcheckbreak' occurs.")
 
 (defun mapply1 (fn args fnname form)
   (cond ((atom fn)
