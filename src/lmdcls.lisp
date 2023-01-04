@@ -56,9 +56,9 @@
 	  local
 	  meta-prop-l meta-prop-p mfexprp
 	  mspeclist
-	  need-prog? nn*
+	  nn*
 	  opers-list outargs1 outargs2
-	  return-mode returns
+	  returns
 	  rulesw
 	  sums
 	  $define_variable))
