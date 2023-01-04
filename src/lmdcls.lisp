@@ -50,8 +50,6 @@
 	  $ttyoff
 	  *alpha *in *in-compile*
 	  *n *out
-	  *warned-fexprs*
-	  *warned-mode-vars* *warned-un-declared-vars*
 	  alpha
 	  defined_variables derivlist
 	  dn*
