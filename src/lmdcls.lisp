@@ -49,7 +49,7 @@
 	  $maxapplyheight
 	  $ttyoff
 	  *alpha *in *in-compile*
-	  *n *out *tr-warn-break* *transl-backtrace*
+	  *n *out
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars*
 	  alpha
