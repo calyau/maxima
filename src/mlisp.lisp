@@ -32,13 +32,11 @@ or if apply is being used are printed.")
 
 (declare-top (unspecial args))
 
-(defvar mspeclist nil)
 (defvar mproplist nil)
 (defvar mprogp nil)
 (defvar mdop nil)
 (defvar aexprp nil)
 (defvar dsksetp nil)
-(defvar mfexprp t)
 (defvar rulefcnl nil)
 (defmvar $refcheck nil)
 (defmvar $maperror t)
@@ -414,7 +412,7 @@ used tels quels, without calling MEVAL.
 If FNNAME is non-NIL, it designates a function call frame.
 This function does not handle errors properly, use the MBIND
 wrapper for this."
-  (declare (special bindlist mspeclist))
+  (declare (special bindlist))
   (do ((vars lamvars (cdr vars))
        (args fnargs (cdr args)))
       ((cond ((and vars args) nil)

@@ -889,6 +889,8 @@
   no-reset
   :properties ((assign 'neverset)))
 
+(defvar mspeclist nil)
+(defvar mfexprp t)
 ;;------------------------------------------------------------------------
 ;; From mload.lisp
 (defmvar $load_pathname nil
