@@ -1379,6 +1379,13 @@ ignoring dummy variables and array indices."
 ;; - $minf:  From "negative infinity" towards the right
 ;; Return values are -1 (decreasing), +1 (increasing) or 0 (don't know).
 (defun behavior (exp var val)
+  ;; $inf/$minf is handled by substituting 1/var for var
+  ;; and setting val to $zeroa/$zerob.
+  (cond ((real-infinityp val)
+		 (setq val (cond
+					 ((eq val '$inf) '$zeroa)
+					 ((eq val '$minf) '$zerob))
+			   exp (sratsimp (subin (m^ var -1) exp)))))
   (cond
 	((not (member val '($zeroa $zerob $inf $minf)))
 	  0)
@@ -1394,12 +1401,6 @@ ignoring dummy variables and array indices."
       (behavior-by-diff exp var val))
 	(t
       (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign ans)
-	;; $inf/$minf is handled by substituting 1/var for var
-	;; and setting val to $zeroa/$zerob.
-	(cond ((real-infinityp val)
-	       (setq val (cond ((eq val '$inf) '$zeroa)
-			       ((eq val '$minf) '$zerob)))
-	       (setq exp (sratsimp (subin (m^ var -1) exp)))))
 	(cond
 	  ;; Pull out constant factors with known signs from a product:
 	  ;; behavior(c * f(x)) = signum(c) * behavior(f(x))
