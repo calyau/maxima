@@ -47,7 +47,6 @@
 (declaim (special
 	  $maperror
 	  $maxapplyheight
-	  $ttyoff
 	  *alpha *in *in-compile*
 	  *n *out
 	  alpha
