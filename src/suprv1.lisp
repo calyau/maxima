@@ -44,10 +44,20 @@
 (defmvar $grind nil)
 (defmvar $backtrace '$backtrace)
 (defmvar $debugmode nil
-  nil
-  :properties ((assign 'debugmode1)))
+  "When 'debugmode' is 'true', Maxima will start the Maxima debugger
+  when a Maxima error occurs.
+
+  When 'debugmode' is 'lisp', Maxima will start the Lisp debugger when
+  a Maxima error occurs.
+
+  In either case, enabling 'debugmode' will not catch Lisp errors."
+ :properties ((assign 'debugmode1)))
+
 (defmvar $poislim 5
-  nil
+  "Determines the domain of the coefficients in the arguments of the
+  trig functions.  The initial value of 5 corresponds to the interval
+  [-2^(5-1)+1,2^(5-1)], or [-15,16], but it can be set to [-2^(n-1)+1,
+  2^(n-1)]."
   :properties ((assign 'poislim1)))
 
 ;; This version of meval* makes sure, that the facts from the global variable
