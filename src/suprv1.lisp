@@ -40,8 +40,14 @@
 (defvar allbutl nil)
 
 (defmvar $strdisp t)
-(defmvar $grind nil)
+
+(defmvar $grind nil
+  "When the variable 'grind' is 'true', the output of 'string' and
+  'stringout' has the same format as that of 'grind'; otherwise no
+  attempt is made to specially format the output of those functions.")
+
 (defmvar $backtrace '$backtrace)
+
 (defmvar $debugmode nil
   "When 'debugmode' is 'true', Maxima will start the Maxima debugger
   when a Maxima error occurs.
