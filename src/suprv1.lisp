@@ -39,7 +39,6 @@
 (defvar brklvl -1)
 (defvar allbutl nil)
 
-(defmvar $disptime nil)
 (defmvar $strdisp t)
 (defmvar $grind nil)
 (defmvar $backtrace '$backtrace)
