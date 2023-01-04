@@ -47,31 +47,18 @@
 (declaim (special
 	  $maperror
 	  $maxapplyheight
-	  $tr_array_as_ref $tr_bound_function_applyp
-	  $tr_file_tty_messagesp $tr_float_can_branch_complex
-	  $tr_function_call_default $tr_numer
-	  $tr_optimize_max_loop
-	  $tr_state_vars
-	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
-	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
-	  $tr_warn_undefined_variable $ttyoff
 	  *alpha *in *in-compile*
-	  *n *out *tr-warn-break* *transl-backtrace*
-	  *transl-debug* *warned-fexprs*
-	  *warned-mode-vars* *warned-un-declared-vars*
+	  *n *out
 	  alpha
 	  defined_variables derivlist
 	  dn*
 	  local
-	  meta-prop-l meta-prop-p mfexprp
-	  mspeclist
-	  need-prog? nn*
+	  meta-prop-l meta-prop-p
+	  nn*
 	  opers-list outargs1 outargs2
-	  return-mode returns
+	  returns
 	  rulesw
-	  sums tr-abort tr-progret tr-unique
-	  transl-file translate-time-evalables
-	  tstack
+	  sums
 	  $define_variable))
 
 (declaim (declaration unspecial))
