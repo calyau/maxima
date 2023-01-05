@@ -595,8 +595,7 @@
    (:module maxima-language-compiler :source-pathname ""
 	    :depends-on ("globals" "defmfun" "maxima-language-compiler-macros")
 	    :components
-	    ((:file "transl"
-		    :depends-on ("transl"))
+	    ((:file "transl")
 	     (:file "transs"
 		    :depends-on ("transl"))
 	     (:file "trans1")
