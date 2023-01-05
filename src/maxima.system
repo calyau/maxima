@@ -603,7 +603,8 @@
 		    :depends-on ("transl"))
 	     (:file "trans3"
 		    :depends-on ("transl"))
-	     (:file "trans4")
+	     (:file "trans4"
+		    :depends-on ("trprop"))
 	     (:file "trans5"
 		    :depends-on ("transl"))
 	     (:file "transf")

@@ -53,7 +53,6 @@
 	  defined_variables derivlist
 	  dn*
 	  local
-	  meta-prop-l meta-prop-p
 	  nn*
 	  opers-list outargs1 outargs2
 	  returns
