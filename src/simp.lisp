@@ -12,8 +12,8 @@
 
 (macsyma-module simp)
 
-(declare-top (special rulesw
-		      prods negprods sums negsums
+(declare-top (special *rulesw*
+		      *prods* *negprods* *sums* *negsums*
 		      opers-list *n
 		      *out *in))
 
@@ -1751,7 +1751,7 @@
 ;;  to be raised within the product.
 
 (defun tms (factor power product &aux tem)
-  (let ((rulesw nil)
+  (let ((*rulesw* nil)
 	(z nil))
     (when (mplusp product) (setq product (list '(mtimes simp) product)))
     (cond ((zerop1 factor)
@@ -1772,12 +1772,12 @@
 	   (do ((factor-list (cdr factor) (cdr factor-list)))
 	       ((or (null factor-list) (zerop1 product))  product)
 	     (setq z (timesin (car factor-list) (cdr product) power))
-	     (when rulesw
-	       (setq rulesw nil)
+	     (when *rulesw*
+	       (setq *rulesw* nil)
 	       (setq product (tms-format-product z)))))
 	  (t
 	   (setq z (timesin factor (cdr product) power))
-	   (if rulesw
+	   (if *rulesw*
 	       (tms-format-product z)
 	       product)))))
 
@@ -2128,7 +2128,7 @@
 		      1 t)))))
 
 (defun simpexpt (x y z)
-  (prog (gr pot check res rulesw w mlpgr mlppot)
+  (prog (gr pot check res *rulesw* w mlpgr mlppot)
      (setq check x)
      (cond (z (setq gr (cadr x) pot (caddr x)) (go cont)))
      (twoargcheck x)
@@ -2302,8 +2302,8 @@
                          (cond ((not (onep1 rad))
                                 (setq rad
                                       (testt (tms rad 1 (cons '(mtimes) res))))
-                                (cond (rulesw
-                                       (setq rulesw nil res (cdr rad))))))
+                                (cond (*rulesw*
+                                       (setq *rulesw* nil res (cdr rad))))))
                          (eqtest (testt (cons '(mtimes) res)) check))))
                ;; Check with $csign to be more complete. This prevents wrong 
                ;; simplifications like sqrt(-z^2)->%i*sqrt(z^2) for z complex.
@@ -2321,7 +2321,7 @@
                      (t
                       (setq w (testt (tms (simplifya (list '(mexpt) w pot) t)
                                           1 (cons '(mtimes) res))))))
-               (cond (rulesw (setq rulesw nil res (cdr w))))))
+               (cond (*rulesw* (setq *rulesw* nil res (cdr w))))))
      
   start
      (cond ((and (cdr res) (onep1 (car res)) (ratnump (cadr res)))
@@ -2336,7 +2336,7 @@
             (setq y (list '(mexpt) (car gr) pot)))
            (t (setq y (list '(mexpt simp) (car gr) pot))))
      (setq w (testt (tms (simplifya y t) 1 (cons '(mtimes) res))))
-     (cond (rulesw (setq rulesw nil res (cdr w))))
+     (cond (*rulesw* (setq *rulesw* nil res (cdr w))))
      (go start)
      
   retno
@@ -2560,7 +2560,7 @@
                                  (rplacd fm (cddr fm))
                                  ;; Multiply the factors of the base with
                                  ;; the list of all remaining products.
-                                 (setq rulesw t)
+                                 (setq *rulesw* t)
                                  (return (muln (nconc y (cdar x)) t)))
                                 (t (return (rplaca (cdr fm) (car x))))))
                          (t
@@ -2821,7 +2821,7 @@
             (return (rplaca (cdr fm) x)))
            (t
             (rplacd fm (cddr fm))
-            (setq rulesw t)
+            (setq *rulesw* t)
             (return (muln (cons x y) t))))
   const
      (rplacd fm (cddr fm))
@@ -2832,7 +2832,7 @@
      (return (cond ((eq z temp)
                     (cdr z))
                    (t
-                    (setq rulesw t) z)))
+                    (setq *rulesw* t) z)))
   del
      (return (rplacd fm (cddr fm)))
   %i
@@ -3288,65 +3288,65 @@
    loop
    (setq l (cdr l))
    (cond ((null l)
-	  (setq prods (nreverse prods)
-		negprods (nreverse negprods)
-		sums (nreverse sums)
-		negsums (nreverse negsums))
+	  (setq *prods* (nreverse *prods*)
+		*negprods* (nreverse *negprods*)
+		*sums* (nreverse *sums*)
+		*negsums* (nreverse *negsums*))
 	  (return nil))
 	 ((atom (car l))
-	  (push (car l) prods))
+	  (push (car l) *prods*))
 	 ((eq (caaar l) 'rat)
 	  (unless (equal (cadar l) 1)
-	    (push (cadar l) prods))
-	  (push (caddar l) negprods))
+	    (push (cadar l) *prods*))
+	  (push (caddar l) *negprods*))
 	 ((eq (caaar l) 'mplus)
-	  (push (car l) sums))
+	  (push (car l) *sums*))
 	 ((and (eq (caaar l) 'mexpt)
 	       (equal (caddar l) -1) (mplusp (cadar l)))
-	  (push (cadar l) negsums))
+	  (push (cadar l) *negsums*))
 	 ((and (eq (caaar l) 'mexpt)
 	       (let ((expandp t))
 		 (mminusp (caddar l))))
 	  (push (if (equal (caddar l) -1)
 		    (cadar l)
 		    (list (caar l) (cadar l) (neg (caddar l))))
-		negprods))
+		*negprods*))
 	 (t
-	  (push (car l) prods)))
+	  (push (car l) *prods*)))
    (go loop)))
 
 (defun expandtimes (a)
-  (prog (prods negprods sums negsums expsums expnegsums)
+  (prog (*prods* *negprods* *sums* *negsums* expsums expnegsums)
      (genexpands a)
-     (setq prods (cond ((null prods) 1)
-		       ((null (cdr prods)) (car prods))
-		       (t (cons '(mtimes simp) prods))))
-     (setq negprods (cond ((null negprods) 1)
-			  ((null (cdr negprods)) (car negprods))
-			  (t (cons '(mtimes simp) negprods))))
-     (cond ((null sums) (go down))
-	   (t (setq expsums (car sums))
+     (setq *prods* (cond ((null *prods*) 1)
+		       ((null (cdr *prods*)) (car *prods*))
+		       (t (cons '(mtimes simp) *prods*))))
+     (setq *negprods* (cond ((null *negprods*) 1)
+			  ((null (cdr *negprods*)) (car *negprods*))
+			  (t (cons '(mtimes simp) *negprods*))))
+     (cond ((null *sums*) (go down))
+	   (t (setq expsums (car *sums*))
 	      (mapc #'(lambda (c)
 			(setq expsums (expandsums expsums c)))
-		    (cdr sums))))
-     (setq prods (cond ((equal prods 1) expsums)
-		       (t (expandterms prods (fixexpand expsums)))))
-     down (cond ((null negsums)
-		 (cond ((equal 1 negprods) (return prods))
-		       ((mplusp prods)
-		        (return (expandterms (power negprods -1) (cdr prods))))
+		    (cdr *sums*))))
+     (setq *prods* (cond ((equal *prods* 1) expsums)
+		       (t (expandterms *prods* (fixexpand expsums)))))
+     down (cond ((null *negsums*)
+		 (cond ((equal 1 *negprods*) (return *prods*))
+		       ((mplusp *prods*)
+		        (return (expandterms (power *negprods* -1) (cdr *prods*))))
 		       (t (return (let ((expandflag t))
-				    (mul2 prods (power negprods -1)))))))
+				    (mul2 *prods* (power *negprods* -1)))))))
 		(t
-		 (setq expnegsums (car negsums))
+		 (setq expnegsums (car *negsums*))
 		 (mapc #'(lambda (c)
 			   (setq expnegsums (expandsums expnegsums c)))
-		       (cdr negsums))))
-     (setq expnegsums (expandterms negprods (fixexpand expnegsums)))
-     (return (if (mplusp prods)
-		 (expandterms (inv expnegsums) (cdr prods))
+		       (cdr *negsums*))))
+     (setq expnegsums (expandterms *negprods* (fixexpand expnegsums)))
+     (return (if (mplusp *prods*)
+		 (expandterms (inv expnegsums) (cdr *prods*))
 		 (let ((expandflag t))
-		   (mul2 prods (inv expnegsums)))))))
+		   (mul2 *prods* (inv expnegsums)))))))
 
 (defun expand1 (exp $expop $expon)
   (unless (and (integerp $expop) (> $expop -1))
