@@ -16,8 +16,6 @@
 ;;; can be found in MAXSRC;TRANS5 >.  Be sure to check on those
 ;;; if any semantic changes are made.
 
-(declare-top (special $maxapplyheight $maxapplydepth))
-
 ;;  $MAXAPPLYDEPTH is the maximum depth within an expression to which
 ;;  APPLYi will delve.  If $MAXAPPLYDEPTH is 0, it is applied only to 
 ;;  top level.

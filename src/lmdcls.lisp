@@ -45,8 +45,6 @@
 ;;; or for some specials declared in the macro files, eg displm.
 
 (declaim (special
-	  $maperror
-	  $maxapplyheight
 	  *alpha *in *in-compile*
 	  *n *out
 	  alpha
