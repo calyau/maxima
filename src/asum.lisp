@@ -16,6 +16,22 @@
 
 (declare-top (special *a *n sum *i opers-list))
 
+(defmvar $opproperties
+    (list* '(mlist simp)
+	   ;; This list was obtained by using an existing version of
+	   ;; maxima and printing out the value.  It can also be
+	   ;; obtained by examining the code below to see what is
+	   ;; placed on the OPER variable.
+	   '($linear $additive $multiplicative $outative $evenfun $oddfun
+	     $commutative $symmetric $antisymmetric $nary $lassociative $rassociative))
+  "List of the special operator properties recognized by the Maxima simplifier."
+  ;; Don't reset this.  (This was originally a defparameter which
+  ;; wouldn't get reset.)
+  no-reset
+  ;; We probably don't want the user to modify this except via
+  ;; define_opproperty.
+  :properties ((assign 'neverset)))
+  
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
 
@@ -1060,4 +1076,5 @@
 		  (nconc (reverse (total-nary (car l))) ans)
 		  (cons (car l) ans)))))
 
+#+nil
 (defparameter $opproperties (cons '(mlist simp) (reverse opers)))
