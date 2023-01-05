@@ -1075,6 +1075,3 @@
     (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
 		  (nconc (reverse (total-nary (car l))) ans)
 		  (cons (car l) ans)))))
-
-#+nil
-(defparameter $opproperties (cons '(mlist simp) (reverse opers)))
