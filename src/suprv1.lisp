@@ -777,7 +777,7 @@
 (defmacro errcatch (form)
   `(let ((errcatch (cons bindlist loclist))
          (*mdebug* nil))
-     (declare (special errcatch *mdebug*))
+     (declare (special errcatch))
      (handler-case (list (with-errcatch-tag-$errors ,form))
        (maxima-$error ()
          ; If this was signaled by MERROR, then it has already handled
