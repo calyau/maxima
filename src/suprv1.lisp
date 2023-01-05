@@ -404,11 +404,14 @@
 	     (member rule l :test #'equal) op))))
 
 (defmfun $debugmode (x)
-  (setq $debugmode x)
-  (debugmode1 nil x))
+  (debugmode1 nil x)
+  (setq $debugmode x))
 
 (defun debugmode1 (assign-var y)
-  (declare (ignore assign-var))
+  ;; The user manual says $debugmode has one of three values: false
+  ;; (NIL), true (T), or lisp ($lisp).  Enforce that.
+  (unless (member y '(nil t $lisp))
+    (mseterr assign-var y "Must be one of false, true, or lisp"))
   (setq *mdebug* y))
 
 (defun errlfun1 (mpdls)
