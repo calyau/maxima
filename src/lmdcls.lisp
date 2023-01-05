@@ -57,7 +57,6 @@
 	  nn*
 	  opers-list outargs1 outargs2
 	  returns
-	  rulesw
 	  sums
 	  $define_variable))
 
