@@ -57,7 +57,6 @@
 	  nn*
 	  opers-list outargs1 outargs2
 	  returns
-	  sums
 	  $define_variable))
 
 (declaim (declaration unspecial))
