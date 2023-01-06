@@ -421,7 +421,7 @@
   (setq subl (car subl))
   (if (or (not (integerp subl)) (< subl -1))
       (tay-err "Unable to expand at a subscript in")
-      (prog ((e 0) (sf-sign 0) npw *last*)
+      (prog ((e 0) (sf-sign 0) npw sf-last)
 	 (declare (fixnum e) (fixnum sf-sign))
 	 (setq npw (/ (float (car pw)) (float (cdr pw))))
 	 (setq
@@ -432,7 +432,7 @@
 			 (if (> 0.0 npw) ()
 			     `(((0 . 1)
 				. ,(prep1 '((mtimes) -1 $%gamma)))))))
-		  (t (setq *last* (factorial subl))
+		  (t (setq sf-last (factorial subl))
 		     `(((,(- (1+ subl)) . 1)
 			,(* (expt -1 (1+ subl))
 				(factorial subl)) . 1))))
@@ -442,18 +442,18 @@
 	 (if (> e npw) (return l)
 	     (rplacd (last l)
 		     `(((,e . 1)
-			. ,(rctimes (rcplygam e sf-sign subl *last*)
+			. ,(rctimes (rcplygam e sf-sign subl sf-last)
 				    (prep1 ($zeta (+ (1+ subl) e))))))))
 	 (go a))))
 
-(defun rcplygam (k sf-sign subl *last*)
+(defun rcplygam (k sf-sign subl sf-last)
   (declare (fixnum k) )
   (cond ((= subl -1) (cons sf-sign k))
 	((= subl 0) (cons sf-sign 1))
 	(t (prog1
-	       (cons (* sf-sign *last*) 1)
-	     (setq *last*
-		   (quot (* *last* (+ subl (1+ k)))
+	       (cons (* sf-sign sf-last) 1)
+	     (setq sf-last
+		   (quot (* sf-last (+ subl (1+ k)))
 			 (1+ k)))))))
 
 (defun plygam-ord (subl)
