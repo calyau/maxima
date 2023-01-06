@@ -41,7 +41,7 @@ contract(%,[x,y,z]);
 
 expand(direct([z^2-e1*z+e2,z^2-f1*z+f2],z,b*v+a*u,[[u,v],[a,b]]));
 /* The docs have here z instead of y, but the code (in direct.lisp)
-   shows that y is alway used as dummy variable for the resulting
+   shows that y is always used as dummy variable for the resulting
    polynomial.  So this is a typo in the docs. */
 y^2-e1*f1*y-4*e2*f2+e1^2*f2+e2*f1^2$
 /* The other examples for `direct' are ok. */

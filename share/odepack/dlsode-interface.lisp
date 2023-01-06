@@ -98,7 +98,7 @@
 ;;                -4 - Repeated error test failures
 ;;                -5 - Repeated convergence failures (perhaps bad
 ;;                     Jacobian or wrong choice of mf or tolerances)
-;;                -6 - Error weight becase zero during problem
+;;                -6 - Error weight because zero during problem
 ;;                     (solution component i vanishded and atol(i) = 0.
 ;;     info   - association list of various bits of information:
 ;;                n_steps      - total steps taken thus far

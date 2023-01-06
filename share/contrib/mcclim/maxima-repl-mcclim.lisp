@@ -65,7 +65,7 @@
       (clear-linearray))))
 
 ;; Set this to #'clim-display2d to use 2D stream I/O instead of just
-;; outputing a string.  Otherwise, set it to nil
+;; outputting a string.  Otherwise, set it to nil
 (setf *alt-display2d* #'clim-display2d)
 
 (defun clim-output (result w)

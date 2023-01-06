@@ -58,7 +58,7 @@ usage:
 
 plot2d([discrete,sierpinskiale(n)],[gnuplot_curve_styles,["with points pointsize .05"]])$
 
-where  n is great enougth, n=10000 or greater */
+where  n is great enough, n=10000 or greater */
 
 trian(xx):=block([x:xx[1],y:xx[2]],[[.5*x,.5*y],[.5*x+1,.5*y],[.5*x,.5*y+1]])$
 sierpinskiale(n):=block([sal:[],var:[random(1.0),random(1.0)] ], 
@@ -70,7 +70,7 @@ usage:
 
 plot2d([discrete,treefale(n)],[gnuplot_curve_styles,["with points pointsize .05"]])$
 
-with n great enougth; n=10000 or greater */
+with n great enough; n=10000 or greater */
 
 
 /* c30, s30 are the values corresponding to cos(30) and sin(30) and .75 contraction*/ 
@@ -92,7 +92,7 @@ usage:
 
 plot2d([discrete,fernfale(n)],[gnuplot_curve_styles,["with points pointsize .05"]])$
 
-with n great enougth; n=10000 or greater */
+with n great enough; n=10000 or greater */
 
 
 fernf(xx):=block([x:xx[1],y:xx[2]],[[0.,.16*y],[.85*x+.04*y,-.04*x+.85*y+1.6],

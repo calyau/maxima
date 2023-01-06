@@ -56,7 +56,7 @@
 ;;; A variable list consists of a list of variables, simple expressions and specs like
 ;;;   OPERATOR(fcn) or OPERATOR(fcn,...) represents ALL calls to fcn in the expression.
 ;;;   MATCH(fcn,arg..) represents subexpressions of expression which pass FCN(subexpr,args..)
-;;; Instanciating the variable list involves replacing those special cases with those
+;;; Instantiating the variable list involves replacing those special cases with those
 ;;; subexpressions of the relevant expression which pass the test.
 ;;;;******************************************************************************************
 
@@ -223,7 +223,7 @@
 ;;;     sine_list: [[c,m_1,...],[c',m_1',...]....]
 ;;;     cosine_list: " "
 ;;;
-;;; Use POISSON Series facilities to contruct coefficient list.
+;;; Use POISSON Series facilities to construct coefficient list.
 ;;;  1) Find maximum multiples for each variable and ensure that the poisson series
 ;;;     parameters can accommodate the expression.
 ;;;  2) use INTOPOIS to convert to POISSON representation.

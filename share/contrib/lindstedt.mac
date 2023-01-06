@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 second(l):=first(rest(l));
 
 /* This routine finds the dependent and independent variables in a
-   equation by finding derivitives and looking at the variables in them. */
+   equation by finding derivatives and looking at the variables in them. */
 LindstedtFindDiffVars(exp):=block([dvars:[],ivars:[],d:part('diff(x,y),0),p],
    scanmap(
       lambda([x],
@@ -49,7 +49,7 @@ LindstedtFindDiffVars(exp):=block([dvars:[],ivars:[],d:part('diff(x,y),0),p],
    [dvars,ivars]);
 
 /* This routine will process the equation eq as follows.
-   First derivitives will be replaced by zp, second derivitives with z2p,
+   First derivatives will be replaced by zp, second derivatives with z2p,
    and the dependent variable with z.  The independent variable will be
    replaced by T. */
 LindstedtProcessEquation(eq, dvar, ivar, z, zp, z2p, T):=block(

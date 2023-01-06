@@ -39,7 +39,7 @@
    (%o6)           ab:07:ac:bb:1e:49:68:01:93:7a:df:a7:72:42:4b:f7
 
    Note that in case the string contains German umlauts or other non-ASCII 
-   characters the md5 checksum is platform dependend.
+   characters the md5 checksum is platform dependent.
    
    To check the md5sum of a *small* file the file can be streamed into a string.
 

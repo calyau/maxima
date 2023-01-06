@@ -74,7 +74,7 @@ inner(_f,_g):= block([_a,_b:[],_r],
       for i:1 thru dim do (_b:endcons(ratcoef(_a,basis[i]),_b)),
       _r:_b | _g);
 
-/*Lie[_f1](_g1)    Lie differntial operator*/
+/*Lie[_f1](_g1)    Lie differential operator*/
 Lie(_f1,_g1):=d(inner(_g1,_f1))+inner(d(_g1),_f1);
 
 

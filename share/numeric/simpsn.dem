@@ -13,7 +13,7 @@ load("[sharem]autolo")$
 /* Macro's allow the user to extend the compiler's ability
    to open-compile constructs which takes arguments which
    are functional in nature. Of course, some languages don't
-   even allow contructs to take functional arguments. */
+   even allow constructs to take functional arguments. */
 
 /* Rectangle rule. */
 

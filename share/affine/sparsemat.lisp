@@ -1603,7 +1603,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;;after our row and to the remaining columns" Note that the previous
 ;;pivot column does not occur anyway.  Eventually we end up with a set
 ;;of rows which span the same lattice as the original, but which are
-;;clearly independent over the rationals.  Therfore the number of them
+;;clearly independent over the rationals.  Therefore the number of them
 ;;must be correct and they must be a basis.
 
 ;;   Alternateley we could take our row and choose some column say j.
@@ -1862,7 +1862,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
   ($zerop (mod b a)))
 
 (defun sp-find-good-column-to-pivot (sp-mat  &aux the-gcd)
-  "Trys to find a column where the gcd is equal to the entry of the pivot-row
+  "Tries to find a column where the gcd is equal to the entry of the pivot-row
    without changing the pivot row"
   (loop for ii below (length (the cl:array (sp-pivot-row sp-mat))) by 2
 	when (aref (sp-pivot-row sp-mat) ii)

@@ -1268,7 +1268,7 @@
 ;    (setq *poly-simplifications* (grobner-basis-remember basis)))
 
 
-;;to try to implemememnt not checking twice and timing out.
+;;to try to implemement not checking twice and timing out.
 (defremember grobner-basis-remember (basis &aux tem answ)
   (setq   answ (catch 'took-too-long
 		(setq tem  (grobner-basis basis))))
@@ -1349,7 +1349,7 @@
 ;							      (ldata-eqns (first v)))
 ;							cc))
 ;				 (setq list-ld (delete (first v) list-ld))
-;				 (format t "~%Deleting reduntant component")
+;				 (format t "~%Deleting redundant component")
 ;				 (des (first v))
 ;				 (format t "~%Because of ")
 ;				 (show (list unit cont))
@@ -1388,7 +1388,7 @@
 ;			  (cond ((or unit
 ;				     cont)
 ;				 (setq list-ld (delete (first v) list-ld))
-;				 (format t "~%Deleting reduntant component")
+;				 (format t "~%Deleting redundant component")
 ;				 (des (first v))
 ;				 (format t "~%Because of ")
 ;				 (show (list unit cont))

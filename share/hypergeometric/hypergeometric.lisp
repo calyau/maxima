@@ -387,7 +387,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
       (values f er))
      ;; ma or mb negative integers--that causes trouble for most of the A&S 15.3.4--15.3.9 
      ;; transformations--let's quickly dispatch hypergeometric-float-eval; also dispatch
-     ;; hypergeometric-float-eval when the tranformation is "none" (with adjust-parameters
+     ;; hypergeometric-float-eval when the transformation is "none" (with adjust-parameters
      ;; is false!
 
      ((or (equal region "none") (and (integerp ma) (<= ma 0)) (and (integerp mb) (<= mb 0))

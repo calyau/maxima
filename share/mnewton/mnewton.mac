@@ -43,7 +43,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
-newtonepsilon:10.0^(-16/2)$ /* Default vaule is 10.0^-8 */
+newtonepsilon:10.0^(-16/2)$ /* Default value is 10.0^-8 */
 newtonmaxiter:50$
 newtondebug:false$
 

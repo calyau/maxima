@@ -83,7 +83,7 @@ non-signum expression on each subinterval; for example
  (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
  (%o1) log(11)+log(2)
 @end example
-@c the example above creates a much more complex function in current Maxima?? Left the old result, perhaps I have done someting wrong...
+@c the example above creates a much more complex function in current Maxima?? Left the old result, perhaps I have done something wrong...
 
 Finally, @code{abs_integrate} is able to determine antiderivatives of @emph{some}
 functions of the form @math{F(x, |x - a|)}; examples

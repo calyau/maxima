@@ -311,7 +311,7 @@ Form of the Output
 
 The output of all functions of the library is a Maxima expression. 
 Maxima uses brakets "[", "]" to describe couples and lists
-(e.g. an open inteval (a,b) is described by a couple
+(e.g. an open interval (a,b) is described by a couple
 containing the ends, which in Maxima is "[a,b]")
 
 
@@ -984,7 +984,7 @@ Main functions
 
 - certificate(pol,var)
 INPUT : polynomial in var
-OPTINAL PARAMETERS: 
+OPTIONAL PARAMETERS:
 - if 3 parameters are used, the third parameter specifies the interval;
 - if 4 parameters are used they are interpreted as the left and right end of the interval;
 OUTPUT : list of local "certificates" of positivity/negativity

@@ -30,7 +30,7 @@
 
    (%i1) load("elliptic_curves")$
    
-   ec2 ist part of the elliptic_curve package.
+   ec2 is part of the elliptic_curve package.
    
    (%i3) a: 1$
    (%i4) b: 1$

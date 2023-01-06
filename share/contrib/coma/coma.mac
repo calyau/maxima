@@ -57,7 +57,7 @@
 /* ======================================================================= */
 
 disp("coma v.2.1 (Wilhelm Haager, 2019-05-21)")$
-load("draw");  /* not necessary any more but benefical (2013-11-16) */
+load("draw");  /* not necessary any more but beneficial (2013-11-16) */
 
 /* ======================================================================= */
 /* Some functions to avoid really weird errors (2018-02-24,2018-03-05)     */
@@ -1178,7 +1178,7 @@ block([res,dt],
              if length(res)=1 then res[1] else res)$
 
 /* ----------------------------------------------------------------------- */
-/* npartfrac - Partial fraction expansion with numeric coefficents         */
+/* npartfrac - Partial fraction expansion with numeric coefficients        */
 /* ----------------------------------------------------------------------- */
 npartfrac(G):=
 block([polyfactor:true,ratprint:false],
@@ -1441,7 +1441,7 @@ block([h1,h2:[],h],
 /* ----------------------------------------------------------------------- */
 /* regan - regression analysis                  (Wilhelm Haager 8.11.2014) */
 /* ----------------------------------------------------------------------- */
-/* f ... list of funtions                                                  */
+/* f ... list of functions                                                 */
 /* p ... list of points                                                    */
 /* ----------------------------------------------------------------------- */
 regan(p,f):=
@@ -1782,7 +1782,7 @@ if (not atom(f) and member(op(f),['explicit,'points,'implicit,'parametric,
 /*       f = 0 ... only global options are processed                       */
 /*       f = 1 ... options are processed, but no functions                 */
 /* defs ... default options for a routine                                  */
-/* opts ... explicitely given options for a routine                        */
+/* opts ... explicitly given options for a routine                         */
 /* ----------------------------------------------------------------------- */
 _COMA_ppo(f,defs,opts):=
 block(

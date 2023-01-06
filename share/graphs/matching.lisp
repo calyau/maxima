@@ -90,7 +90,7 @@
 			     (push u new1)
 			     (setf (gethash u prev) v)))))
 
-	       ;; chech for augmenting path
+	       ;; check for augmenting path
 	       (loop for v in bu while (null x) do
 		    (unless (null (gethash v prev))
 		      (setq x v)))
@@ -153,7 +153,7 @@
 
 ;;;;;;;;;;;
 ;;
-;; set partiton using hash-tales
+;; set partition using hash-tales
 ;;
 
 (defun main-vertex (v sp)

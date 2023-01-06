@@ -245,7 +245,7 @@ besFsimp(ex,F,Fsub) := block([arglist,ords,ord2,max,min,s,t,u,m,n,x,e:ex],
   argset:equiv_classes(argset,lambda([x,y],
     (second(x)=second(y)) and integerp(ratsimp(first(x)-first(y))))),
 
-  /* Iterate over each equivalance class */
+  /* Iterate over each equivalence class */
 
   for s in argset do (
     x:second(first(s)),  /* The common argument for s */
@@ -360,7 +360,7 @@ expintegral_e_simplify(ex) := block( [argset],
   argset:equiv_classes(argset,
            lambda([x,y], integerp(x[1]-y[1]) and (second(x)=second(y)))),
 
-  /* Iterate over each equivalance class */
+  /* Iterate over each equivalence class */
   for s in argset do block( [z, ords],
     z:second(first(s)),  /* The common argument for s */
     ords:map('first,s),  /* List of orders */

@@ -26,7 +26,7 @@ check_prec(app,exact,prec):=is(abs(cbfloat((app-exact)/exact))<10^(-prec))$
 fpprec:16;
 16$
 /* the next two tests are not genuine regression tests; they are
-here to check that a new implentation is functionally equivalent
+here to check that a new implementation is functionally equivalent
 to the old one */
 levin_u_sum(1/n^2,n,1,10);
 3899836039/2370816000$

@@ -304,7 +304,7 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 		unitlistusename :: append(ev(unitlistusename),[tempentry]))))))
    );
 
-/* This function creats a list of all defined units */
+/* This function creates a list of all defined units */
 makeallunitslist() := block([i,j,k,b,allunitslisttemp],
     allunitslisttemp : [],
     modedeclare([i,j,k], fixnum),

@@ -26,9 +26,9 @@ will give
 	
 (3) In the lisp input rep.  the symbol $t is a variable t and
 will become a fortran variable t.  On the other hand
-the list symbolc t will be treated as the logical constrant true
+the list symbolc t will be treated as the logical constant true
 (resulting from true at vaxima top level for example) and will
-become the frotran quantitie .true. or the C quantitie 1.
+become the fortran quantitie .true. or the C quantitie 1.
 
 
 A data statement is added to gentran to generate fortran data

@@ -56,12 +56,12 @@ this J() is defined and used to define antidifferential operator antid().
                                  INTRODUCTION    
 
 There is two way for starting. 
-One way is load("diff_form.mac"). This mean to use no grobal coords,basis others.
+One way is load("diff_form.mac"). This mean to use no global coords,basis others.
 As it were clean start. All work may be done in f_star() or fstar_with_clf().
 you  can change coords freely.
 Other way is batch("new_cartan_test4.bat").This mean to use global coords,basis.
-But to change coords locally is allways possible in f_star() or fstar_with_clf().
-A example of this grobal way is seen in lorentz_example.txt 
+But to change coords locally is always possible in f_star() or fstar_with_clf().
+A example of this global way is seen in lorentz_example.txt
 
 It is important for using this package well that we awake to distinction between
 global variables and local variables. for example
@@ -73,13 +73,13 @@ fstar_with_clf(new coordinates,representing standered coordinate with new one,ca
 
 now basis is[Dx,Dy,Dz],norm_table,scale_factor ,all this local. but  r:x^2+y^2+z^2 is not 
 local,only r is global. (%i22) format(%,%poly(Dx,Dy,Dz),factor);
-after this,if foget that r was global,
+after this,if forget that r was global,
 (%i23) fstar_with_clf([r,phi,th],[r*sin(th)*cos(phi),r*sin(th)*sin(phi),r*cos(th)],
 d(x)@d(y)@d(z)));
 error #0: f_star(newcoords=[z^2+y^2+x^2,phi,th],.......
 so (%i24) kill(r); then (%i23) is OK.
 nest2([d,h_st,d],f*d(x)) is equal d(h_st(d(f*d(x))))
-d(x) is equal Dx,so Dx@Dy is d(x)@d(y),but internaly in d(x)@d(y) exterior derivative are done.
+d(x) is equal Dx,so Dx@Dy is d(x)@d(y),but internally in d(x)@d(y) exterior derivative are done.
 
 ALL files
 diff_form.mac one initial file ,(only local coordinate environment)

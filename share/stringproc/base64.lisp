@@ -38,7 +38,7 @@
    (%o5)            [66, 6F, 6F, 20, 62, 61, 72, 20, 62, 61, 7A]
    
    Note that if the string contains umlauts the base64 string is platform 
-   dependend. But in every case the decoded string is equal to the original.
+   dependent. But in every case the decoded string is equal to the original.
 
 |#
 

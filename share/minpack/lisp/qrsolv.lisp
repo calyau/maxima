@@ -234,7 +234,7 @@
                          (* cos qtbpj)))
                 (setf (f2cl-lib:fref wa-%data% (k) ((1 n)) wa-%offset%) temp)
                 '""
-                '"           accumulate the tranformation in the row of s."
+                '"           accumulate the transformation in the row of s."
                 '""
                 (setf kp1 (f2cl-lib:int-add k 1))
                 (if (< n kp1) (go label70))

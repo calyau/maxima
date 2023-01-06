@@ -490,7 +490,7 @@ TIME= 142 MSEC.
 TIME= 1 MSEC.
 (D123)                             [D, L]
 
-(C124) /*  GRAD is a global varible bound by STAP to the
+(C124) /*  GRAD is a global variable bound by STAP to the
 symbolic expression for the gradient, and DECSLKMULTS is bound to the
 variables that the gradient is taken with respect to, in the order
 of their components in GRAD.  Thus, -405/4 points in, making the
