@@ -407,7 +407,7 @@
 ;; These routines are specially coded to be as fast as possible given the
 ;; current $TAYLOR; too bad they have to be so ugly.
 
-(declare-top (special var *last*))
+(declare-top (special var))
 
 (defun expgam-fun (pw temp)
   (setq temp (get-datum (get-key-var (car var))))
@@ -421,7 +421,7 @@
   (setq subl (car subl))
   (if (or (not (integerp subl)) (< subl -1))
       (tay-err "Unable to expand at a subscript in")
-      (prog ((e 0) (sf-sign 0) npw)
+      (prog ((e 0) (sf-sign 0) npw *last*)
 	 (declare (fixnum e) (fixnum sf-sign))
 	 (setq npw (/ (float (car pw)) (float (cdr pw))))
 	 (setq
@@ -442,11 +442,11 @@
 	 (if (> e npw) (return l)
 	     (rplacd (last l)
 		     `(((,e . 1)
-			. ,(rctimes (rcplygam e sf-sign subl)
+			. ,(rctimes (rcplygam e sf-sign subl *last*)
 				    (prep1 ($zeta (+ (1+ subl) e))))))))
 	 (go a))))
 
-(defun rcplygam (k sf-sign subl)
+(defun rcplygam (k sf-sign subl *last*)
   (declare (fixnum k) )
   (cond ((= subl -1) (cons sf-sign k))
 	((= subl 0) (cons sf-sign 1))
@@ -514,7 +514,7 @@
 	       (tsprsum `((mexpt) ,(m+t a '%%taylor-index%%) ,(- (1+ sub)))
 			`(%%taylor-index%% 0 ,(- (1+ const))) '%sum))))))))
 
-(declare-top (unspecial var *last*))
+(declare-top (unspecial var))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Lambert W function
