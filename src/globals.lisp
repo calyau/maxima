@@ -1709,4 +1709,27 @@
 (defvar radcanp nil)
 
 ;;------------------------------------------------------------------------
+;; From specfn.lisp
+;;
+;; For these variables, specfn.lisp doesn't explicitly make them
+;; defvars, but does set the symbol value for these and declares them
+;; special.  Since these are user-visible vars defined in the manual,
+;; let's make it explicit.
+(defmvar $maxpsiposint 20
+  "The largest positive value for which 'psi[n](x)'will try to compute
+  an exact value.")
 
+(defmvar $maxpsinegint -10
+  "The most negative value for which 'psi[n](x)' will try to compute an
+  exact value.  That is if <x> is less than 'maxnegint', 'psi[n](<x>)'
+  will not return simplified answer, even if it could.")
+
+(defmvar $maxpsifracnum 6
+  "Let <x> be a rational number less than one of the form 'p/q'.  If 'p'
+  is greater than 'maxpsifracnum', then 'psi[<n>](<x>)' will not try
+  to return a simplified value.")
+
+(defmvar $maxpsifracdenom 6
+  "Let <x> be a rational number less than one of the form 'p/q'.  If 'q'
+  is greater than 'maxpsifracdenom', then 'psi[<n>](<x>)' will not try
+  to return a simplified value.")

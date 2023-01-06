@@ -262,8 +262,6 @@
 	(t (merror (intl:gettext "Pole encountered in: ~M") exp))))
 
 
-(declare-top (special $maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom))
-
 (defprop $psi psisimp specsimp)
 
 ;; Integral of psi function psi[n](x)
@@ -278,11 +276,6 @@
 	(t `((mqapply) (($psi array) ((mplus) -1 ,n)) ,x))))
       (t nil))))
      'integral)
-
-(mapcar #'(lambda (var val)
-	    (and (not (boundp var)) (setf (symbol-value var) val)))
-	'($maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom)
-	'(20. -10. 6 6))
 
 (defun psisimp (expr a z)
   (let ((s (simpcheck (car (subfunsubs expr)) z)))
