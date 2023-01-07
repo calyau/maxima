@@ -995,7 +995,7 @@ The beta function is defined as
 m4_displaymath(
 <<<{\rm B}(a, b) = {{\Gamma(a) \Gamma(b)}\over{\Gamma(a+b)}}>>>,
 <<<@math{gamma(a) gamma(b)/gamma(a+b)}>>>)
-(@urlaands{eqn 6.2.1, 258}).
+(@urldlmf{5.12.E1} and @urlaands{eqn 6.2.1, 258}).
 
 Maxima simplifies the beta function for positive integers and rational 
 numbers, which sum to an integer. When @code{beta_args_sum_to_integer} is 
@@ -1130,7 +1130,8 @@ The derivative of the beta function wrt @code{a}:
 @c -----------------------------------------------------------------------------
 @deffn {Function} beta_incomplete (@var{a}, @var{b}, @var{z})
 
-The basic definition of the incomplete beta function (@urlaands{eqn 6.6.1, 263}) is
+The basic definition of the incomplete beta function
+(@urldlmf{8.17.E1} and @urlaands{eqn 6.6.1, 263}) is
 
 m4_displaymath(
 <<<{\rm B}_z(a,b) = \int_0^z t^{a-1}(1-t)^{b-1}\; dt>>>,
@@ -1342,7 +1343,8 @@ Derivative and integral for @code{beta_incomplete}:
 @anchor{beta_incomplete_regularized}
 @deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
 
-The regularized incomplete beta function (@urlaands{eqn 6.6.2, 263}), defined as
+The regularized incomplete beta function (@urldlmf{8.17.E2} and
+@urlaands{eqn 6.6.2, 263}), defined as 
 
 m4_displaymath(
 <<<I_z(a,b) = {{\rm B}_z(a,b)\over {\rm B}(a,b)}>>>,
