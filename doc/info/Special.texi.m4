@@ -574,6 +574,15 @@ Bigfloat version of the factorial (shifted gamma)
 function.  The second argument is how many digits to retain and return,
 it's a good idea to request a couple of extra.
 
+@example
+(%i1) bffac(1/2,16);
+(%o1)                        8.862269254527584b-1
+(%i2) (1/2)!,numer;
+(%o2)                          0.886226925452758
+(%i3) bffac(1/2,32);
+(%o3)                 8.862269254527580136490837416707b-1
+@end example
+
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @category{Numerical evaluation}
@@ -585,10 +594,11 @@ it's a good idea to request a couple of extra.
 @deffn  {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
 @deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
 
-@code{bfpsi} is the polygamma function of real argument @var{z} and integer
-order @var{n}.  @code{bfpsi0} is the digamma function.
-@code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to
-@code{bfpsi (0, @var{z}, @var{fpprec})}.
+@code{bfpsi} is the polygamma function of real argument @var{z} and
+integer order @var{n}.  @xref{polygamma, psi} for further
+information.  @code{bfpsi0} is the digamma function.
+@code{bfpsi0(@var{z}, @var{fpprec})} is equivalent to @code{bfpsi(0,
+@var{z}, @var{fpprec})}.
 
 These functions return bigfloat values.
 @var{fpprec} is the bigfloat precision of the return value.
@@ -596,6 +606,21 @@ These functions return bigfloat values.
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
 @c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
+
+@example
+(%i1) bfpsi0(1/3, 15);
+(%o1)                        - 3.13203378002081b0
+(%i2) bfpsi0(1/3, 32);
+(%o2)                - 3.1320337800208063229964190742873b0
+(%i3) bfpsi(0,1/3,32);
+(%o3)                - 3.1320337800208063229964190742873b0
+(%i4) psi[0](1/3);
+                          3 log(3)       %pi
+(%o4)                  (- --------) - --------- - %gamma
+                             2        2 sqrt(3)
+(%i5) float(%);
+(%o5)                         - 3.132033780020806
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -609,6 +634,13 @@ These functions return bigfloat values.
 Complex bigfloat factorial.
 
 @code{load ("bffac")} loads this function.
+
+@example
+(%i1) cbffac(1+%i,16);
+(%o1)           3.430658398165453b-1 %i + 6.529654964201666b-1
+(%i2) (1+%i)!,numer;
+(%o2)             0.3430658398165453 %i + 0.6529654964201667
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -726,6 +758,15 @@ The Euler-Mascheroni constant is @code{%gamma}.
 @deffn {Function} log_gamma (@var{z})
 
 The natural logarithm of the gamma function.
+
+@example
+(%i1) gamma(6);
+(%o1)                                 120
+(%i2) log_gamma(6);
+(%o2)                              log(120)
+(%i3) log_gamma(0.5);
+(%o3)                         0.5723649429247004
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -928,6 +969,19 @@ Transforms instances of binomial, factorial, and beta
 functions in @var{expr} into gamma functions.
 
 See also @mrefdot{makefact}
+
+@example
+(%i1) makegamma(binomial(n,k));
+                                 gamma(n + 1)
+(%o1)                    -----------------------------
+                         gamma(k + 1) gamma(n - k + 1)
+(%i2) makegamma(x!);
+(%o2)                            gamma(x + 1)
+(%i3) makegamma(beta(a,b));
+                               gamma(a) gamma(b)
+(%o3)                          -----------------
+                                 gamma(b + a)
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -1579,6 +1633,8 @@ When @code{beta_expand} is @code{true}, @code{beta(a,b)} and related
 functions are expanded for arguments like @math{a+n} or @math{a-n}, 
 where @math{n} is an integer.
 
+@xref{beta} for examples.
+
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @category{Simplification flags and variables}
@@ -1591,6 +1647,8 @@ Default value: false
 When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies 
 @code{beta(a,b)}, when the arguments @var{a} and @var{b} sum to an integer.
 
+@xref{beta} for examples.
+
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @category{Simplification flags and variables}
@@ -1602,6 +1660,7 @@ When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
 @c @deffn {Function} psi (@var{x})
 @c @deffnx {Function} psi [@var{n}](@var{x})
+@anchor{polygamma}
 @deffn {Function} psi [@var{n}](@var{x})
 
 @c The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
@@ -1801,6 +1860,19 @@ Transforms instances of binomial, gamma, and beta
 functions in @var{expr} into factorials.
 
 See also @mrefdot{makegamma}
+
+@example
+(%i1) makefact(binomial(n,k));
+                                      n!
+(%o1)                             -----------
+                                  k! (n - k)!
+(%i2) makefact(gamma(x));
+(%o2)                              (x - 1)!
+(%i3) makefact(beta(a,b));
+                               (a - 1)! (b - 1)!
+(%o3)                          -----------------
+                                 (b + a - 1)!
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
