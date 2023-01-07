@@ -1612,19 +1612,39 @@ m4_displaymath(
 Thus, @code{psi[0](@var{x})} is the first derivative,
 @code{psi[1](@var{x})} is the second derivative, etc.
 
-Maxima does not know how, in general, to compute a numerical value of
-@code{psi}, but it can compute some exact values for rational args.
-Several variables control what range of rational args @code{psi} will
-return an exact value, if possible.  See @mref{maxpsiposint},
-@mref{maxpsinegint}, @mref{maxpsifracnum}, and @mrefdot{maxpsifracdenom}
-That is, @var{x} must lie between @code{maxpsinegint} and
-@code{maxpsiposint}.  If the absolute value of the fractional part of
-@var{x} is rational and has a numerator less than @code{maxpsifracnum}
-and has a denominator less than @code{maxpsifracdenom}, @code{psi}
-will return an exact value.
+Maxima can compute some exact values for rational args as well for
+float and bfloat args.  Several variables control what range of
+rational args m4_math(<<<\psi_n(x)>>>,<<<psi[n](x)>>>)) will return an
+exact value, if possible.  See @mref{maxpsiposint},
+@mref{maxpsinegint}, @mref{maxpsifracnum}, and
+@mrefdot{maxpsifracdenom} That is, @math{x} must lie between
+@code{maxpsinegint} and @code{maxpsiposint}.  If the absolute value of
+the fractional part of @math{x} is rational and has a numerator less
+than @code{maxpsifracnum} and has a denominator less than
+@code{maxpsifracdenom}, m4_math(<<<\psi_0(x)>>>,<<<psi[0](x)>>>) will
+return an exact value.
 
 The function @mref{bfpsi} in the @code{bffac} package can compute
 numerical values.
+
+@example
+(%i1) psi[0](.25);
+(%o1)                        - 4.227453533376265
+(%i2) psi[0](1/4);
+                                        %pi
+(%o2)                    (- 3 log(2)) - --- - %gamma
+                                         2
+(%i3) float(%);
+(%o3)                        - 4.227453533376265
+(%i4) psi[2](0.75);
+(%o4)                        - 5.30263321633764
+(%i5) psi[2](3/4);
+                                   1         3
+(%o5)                         psi (-) + 4 %pi
+                                 2 4
+(%i6) float(%);
+(%o6)                        - 5.30263321633764
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
