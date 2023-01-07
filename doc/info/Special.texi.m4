@@ -653,7 +653,7 @@ Complex bigfloat factorial.
 @anchor{gamma}
 @deffn {Function} gamma (@var{z})
 
-The basic definition of the gamma function (@urlaands{eqn 6.1.1, 255}) is
+The basic definition of the gamma function (@urldlmf{5.2.E1} and @urlaands{eqn 6.1.1, 255}) is
 
 m4_displaymath(
 <<<\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}>>>,
@@ -777,7 +777,7 @@ The natural logarithm of the gamma function.
 @c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete_lower (@var{a}, @var{z})
 
-The lower incomplete gamma function (@urlaands{eqn 6.5.2, 260}):
+The lower incomplete gamma function (@urldlmf{8.2.E1} and @urlaands{eqn 6.5.2, 260}):
 
 m4_displaymath(
 <<<\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}>>>,
@@ -804,7 +804,7 @@ See also @mref{gamma_incomplete} (upper incomplete gamma function).
 @anchor{gamma_incomplete}
 @deffn {Function} gamma_incomplete (@var{a}, @var{z})
 
-The incomplete upper gamma function (@urlaands{eqn 6.5.3, 260}):
+The incomplete upper gamma function (@urldlmf{8.2.E2} and @urlaands{eqn 6.5.3, 260}):
 
 m4_displaymath(
 <<<\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}>>>,
@@ -837,7 +837,7 @@ Also see the related functions @mref{gamma_incomplete_regularized} and
 @anchor{gamma_incomplete_regularized}
 @deffn {Function} gamma_incomplete_regularized (@var{a}, @var{z})
 
-The regularized incomplete upper gamma function (@urlaands{eqn 6.5.1, 260}):
+The regularized incomplete upper gamma function (@urldlmf{8.2.E4}):
 
 m4_displaymath(
 <<<Q\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}>>>,
