@@ -1615,15 +1615,15 @@ Thus, @code{psi[0](@var{x})} is the first derivative,
 Maxima does not know how, in general, to compute a numerical value of
 @code{psi}, but it can compute some exact values for rational args.
 Several variables control what range of rational args @code{psi} will
-return an exact value, if possible.  See @code{maxpsiposint},
-@code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracdenom}.
+return an exact value, if possible.  See @mref{maxpsiposint},
+@mref{maxpsinegint}, @mref{maxpsifracnum}, and @mrefdot{maxpsifracdenom}
 That is, @var{x} must lie between @code{maxpsinegint} and
 @code{maxpsiposint}.  If the absolute value of the fractional part of
 @var{x} is rational and has a numerator less than @code{maxpsifracnum}
 and has a denominator less than @code{maxpsifracdenom}, @code{psi}
 will return an exact value.
 
-The function @code{bfpsi} in the @code{bffac} package can compute
+The function @mref{bfpsi} in the @code{bffac} package can compute
 numerical values.
 
 @opencatbox{Categories:}
@@ -1631,11 +1631,31 @@ numerical values.
 @closecatbox
 @end deffn
 
+@anchor{maxpsiposint}
 @defvr {Option variable} maxpsiposint
 Default value: 20
 
-@code{maxpsiposint} is the largest positive value for which
-@code{psi[n](x)} will try to compute an exact value.
+@code{maxpsiposint} is the largest positive integer value for
+which m4_math(<<<\psi_n(m)>>>,<<<psi[n](x)>>>) gives an exact value for
+rational @math{x}.
+
+@example
+(%i1) psi[0](20);
+                             275295799
+(%o1)                        --------- - %gamma
+                             77597520
+(%i2) psi[0](21);
+(%o2)                             psi (21)
+                                     0
+(%i3) psi[2](20);
+                      1683118856778495358491487
+(%o3)              2 (------------------------- - zeta(3))
+                      1401731326612193601024000
+(%i4) psi[2](21);
+(%o4)                            psi (21)
+                                      2
+
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -1643,27 +1663,73 @@ Default value: 20
 
 @end defvr
 
+@anchor{maxpsinegint}
 @defvr {Option variable} maxpsinegint
 Default value: -10
 
-@code{maxpsinegint} is the most negative value for which
-@code{psi[n](x)} will try to compute an exact value.  That is if
-@var{x} is less than @code{maxnegint}, @code{psi[n](@var{x})} will not
+@code{maxpsinegint} is the most negative value for
+which m4_math(<<<\psi_0(x)>>>,<<<psi[0](x)>>>) will try to compute an exact
+value for rational @math{x}.  That is if @math{x} is less than
+@code{maxpsinegint}, m4_math(<<<\psi_n(x)>>>,<<<psi[n](x)>>>) will not
 return simplified answer, even if it could.
 
+@example
+(%i1) psi[0](-100/9);
+                                        100
+(%o1)                            psi (- ---)
+                                    0    9
+(%i2) psi[0](-100/11);
+                         100 %pi         1     5231385863539
+(%o2)            %pi cot(-------) + psi (--) + -------------
+                           11          0 11    381905105400
+
+(%i3) psi[2](-100/9);
+                                        100
+(%o3)                            psi (- ---)
+                                    2    9
+(%i4) psi[2](-100/11);
+           3     100 %pi     2 100 %pi         1
+(%o4) 2 %pi  cot(-------) csc (-------) + psi (--)
+                   11            11          2 11
+                                         74191313259470963498957651385614962459
+                                       + --------------------------------------
+                                          27850718060013605318710152732000000
+@end example
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @closecatbox
 
 @end defvr
 
+@anchor{maxpsifracnum}
 @defvr {Option variable} maxpsifracnum
 Default value: 6
 
-Let @var{x} be a rational number less than one of the form @code{p/q}.
-If @code{p} is greater than @code{maxpsifracnum}, then
-@code{psi[@var{n}](@var{x})} will not try to return a simplified
-value.
+Let @math{x} be a rational number of the form @math{p/q}.
+If @math{p} is greater than @code{maxpsifracnum},
+then m4_math(<<<\psi_0(x)>>>,<<<@code{psi[0](x)}>>>) will not try to
+return a simplified value.
+
+@example
+(%i1) psi[0](3/4);
+                                        %pi
+(%o1)                    (- 3 log(2)) + --- - %gamma
+                                         2
+(%i2) psi[2](3/4);
+                                   1         3
+(%o2)                         psi (-) + 4 %pi
+                                 2 4
+(%i3) maxpsifracnum:2;
+(%o3)                                 2
+(%i4) psi[0](3/4);
+                                        3
+(%o4)                              psi (-)
+                                      0 4
+(%i5) psi[2](3/4);
+                                   1         3
+(%o5)                         psi (-) + 4 %pi
+                                 2 4
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -1671,13 +1737,35 @@ value.
 
 @end defvr
 
+@anchor{maxpsifracdenom}
 @defvr {Option variable} maxpsifracdenom
 Default value: 6
 
-Let @var{x} be a rational number less than one of the form @code{p/q}.
-If @code{q} is greater than @code{maxpsifracdenom}, then
-@code{psi[@var{n}](@var{x})} will not try to return a simplified
-value.
+Let @math{x} be a rational number of the form @math{p/q}.
+If @math{q} is greater than @code{maxpsifracdenom},
+then m4_math(<<<\psi_0(x)>>>,<<<@code{psi[@var{0}](@var{x})}>>>) will
+not try to return a simplified value.
+
+@example
+(%i1) psi[0](3/4);
+                                        %pi
+(%o1)                    (- 3 log(2)) + --- - %gamma
+                                         2
+(%i2) psi[2](3/4);
+                                   1         3
+(%o2)                         psi (-) + 4 %pi
+                                 2 4
+(%i3) maxpsifracdenom:2;
+(%o3)                                 2
+(%i4) psi[0](3/4);
+                                        3
+(%o4)                              psi (-)
+                                      0 4
+(%i5) psi[2](3/4);
+                                   1         3
+(%o5)                         psi (-) + 4 %pi
+                                 2 4
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
