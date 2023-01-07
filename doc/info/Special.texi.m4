@@ -1664,23 +1664,24 @@ When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies
 @deffn {Function} psi [@var{n}](@var{x})
 
 @c The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
-@code{psi[n](x)} is defined by
+@code{psi[n](x)} is the polygamma function (@urldlmf{5.2E2},
+@urldlmf{5.15}, @urlaands{eqn 6.3.1, 258} and @urlaands{eqn 6.4.1, 260}) defined by
 m4_displaymath(
-<<<\psi_n(x) = {d^{n+1}\over{dx^{n+1}}} \log\Gamma(x)>>>,
+<<<\psi^{(n)}(x) = {d^{n+1}\over{dx^{n+1}}} \log\Gamma(x)>>>,
 <<<@math{diff(log(gamma(x)), x, n+1)}>>>)
 Thus, @code{psi[0](@var{x})} is the first derivative,
 @code{psi[1](@var{x})} is the second derivative, etc.
 
 Maxima can compute some exact values for rational args as well for
 float and bfloat args.  Several variables control what range of
-rational args m4_math(<<<\psi_n(x)>>>,<<<psi[n](x)>>>)) will return an
+rational args m4_math(<<<\psi^{(n)}(x)>>>,<<<psi[n](x)>>>)) will return an
 exact value, if possible.  See @mref{maxpsiposint},
 @mref{maxpsinegint}, @mref{maxpsifracnum}, and
 @mrefdot{maxpsifracdenom} That is, @math{x} must lie between
 @code{maxpsinegint} and @code{maxpsiposint}.  If the absolute value of
 the fractional part of @math{x} is rational and has a numerator less
 than @code{maxpsifracnum} and has a denominator less than
-@code{maxpsifracdenom}, m4_math(<<<\psi_0(x)>>>,<<<psi[0](x)>>>) will
+@code{maxpsifracdenom}, m4_math(<<<\psi^{(0)}(x)>>>,<<<psi[0](x)>>>) will
 return an exact value.
 
 The function @mref{bfpsi} in the @code{bffac} package can compute
@@ -1715,7 +1716,7 @@ numerical values.
 Default value: 20
 
 @code{maxpsiposint} is the largest positive integer value for
-which m4_math(<<<\psi_n(m)>>>,<<<psi[n](x)>>>) gives an exact value for
+which m4_math(<<<\psi^{(n)}(m)>>>,<<<psi[n](x)>>>) gives an exact value for
 rational @math{x}.
 
 @example
@@ -1747,9 +1748,9 @@ rational @math{x}.
 Default value: -10
 
 @code{maxpsinegint} is the most negative value for
-which m4_math(<<<\psi_0(x)>>>,<<<psi[0](x)>>>) will try to compute an exact
+which m4_math(<<<\psi^{(0)}(x)>>>,<<<psi[0](x)>>>) will try to compute an exact
 value for rational @math{x}.  That is if @math{x} is less than
-@code{maxpsinegint}, m4_math(<<<\psi_n(x)>>>,<<<psi[n](x)>>>) will not
+@code{maxpsinegint}, m4_math(<<<\psi^{(n)}(x)>>>,<<<psi[n](x)>>>) will not
 return simplified answer, even if it could.
 
 @example
@@ -1786,7 +1787,7 @@ Default value: 6
 
 Let @math{x} be a rational number of the form @math{p/q}.
 If @math{p} is greater than @code{maxpsifracnum},
-then m4_math(<<<\psi_0(x)>>>,<<<@code{psi[0](x)}>>>) will not try to
+then m4_math(<<<\psi^{(0)}(x)>>>,<<<@code{psi[0](x)}>>>) will not try to
 return a simplified value.
 
 @example
@@ -1822,7 +1823,7 @@ Default value: 6
 
 Let @math{x} be a rational number of the form @math{p/q}.
 If @math{q} is greater than @code{maxpsifracdenom},
-then m4_math(<<<\psi_0(x)>>>,<<<@code{psi[@var{0}](@var{x})}>>>) will
+then m4_math(<<<\psi^{(0)}(x)>>>,<<<@code{psi[@var{0}](@var{x})}>>>) will
 not try to return a simplified value.
 
 @example
