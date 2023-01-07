@@ -1889,7 +1889,7 @@ Returns the numerical factor multiplying the expression
 @var{expr}, which should be a single term.
 
 @c WHY IS content MENTIONED IN THIS CONTEXT ??
-@code{content} returns the greatest common divisor (gcd) of all terms in a sum.
+@mref{content} returns the greatest common divisor (gcd) of all terms in a sum.
 
 @example
 (%i1) gamma (7/2);
