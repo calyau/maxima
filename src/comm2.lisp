@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -12,8 +12,6 @@
 (macsyma-module comm2)
 
 ;;;; DIFF2
-
-(declare-top (special $props))
 
 (defun diffint (e x)
   (let (a)
@@ -249,7 +247,7 @@
 
 (defmvar $logconcoeffp nil)
 
-(defmfun $logcontract (e)
+(defmfun ($logcontract :properties ((evfun t))) (e)
   (lgcreciprocal (logcon e))) ; E is assumed to be simplified.
 
 (defun logcon (e)
@@ -386,7 +384,7 @@
 
 ;;;; RTCON
 
-(defmfun $rootscontract (e)	       ; E is assumed to be simplified
+(defmfun ($rootscontract :properties ((evfun t))) (e)	       ; E is assumed to be simplified
   (let ((radpe (and $radexpand (not (eq $radexpand '$all)) (eq $domain '$real)))
 	($radexpand nil))
     (rtcon e radpe)))
@@ -643,7 +641,7 @@
 
 ;;;; MAPF
 
-(defmspec $scanmap (l)
+(defmspec ($scanmap :properties ((evok t))) (l)
   (let ((scanmapp t))
     (resimplify (apply #'scanmap1 (mmapev l)))))
 

@@ -184,7 +184,9 @@ backslash.  Numerals which are the second or later characters need not be
 preceded by a backslash.
 
 The alphabetic characters are initially @code{%}, @code{_},
-and all characters for which the Lisp function ALPHA-CHAR-P returns @code{true}.
+and all characters for which the Lisp function
+@url{http://www.lispworks.com/documentation/HyperSpec/Body/f_alpha_.htm,
+@code{ALPHA-CHAR-P}} returns @code{true}.
 Characters may be declared alphabetic by the @code{declare} function.
 If so declared, they need not be preceded by a backslash in an identifier.
 
@@ -277,7 +279,7 @@ Examples:
 @c -----------------------------------------------------------------------------
 
 Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>},
-@code{#}, and @code{notequal}.  See @code{if} for a description of conditional
+@code{#}, and @code{notequal}.  @xref{if} for a description of conditional
 expressions.
 
 @c -----------------------------------------------------------------------------

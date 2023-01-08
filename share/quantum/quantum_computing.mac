@@ -111,7 +111,7 @@ qubits([b]) := block([l],
    case the matrix will act on qubits i through i+mu-1.
    When U acts on only one qubit (mu = 1), and no more arguments are
    given, the matrix will act in all of the qubits. If more arguments
-   are given, they should be diferent integer numbers between 1 and
+   are given, they should be different integer numbers between 1 and
    nq, and the matrix will act in the qubits corresponding to those
    numbers.
    U can be a symbol representing one of the predefined matrices.

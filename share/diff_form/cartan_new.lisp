@@ -130,7 +130,7 @@ $ext101 (($coeff simp) $ext103 (($basis simp array) $i)))
 (add2lnc (quote (($&) $f $g)) $functions) 
 (defprop %& $& noun)
 
-;;exterior differntial operator
+;;exterior differential operator
 (mdefprop $d ((lambda) 
 	      ((mlist) $f) 
 	      (($sum simp) 
@@ -142,7 +142,7 @@ $ext101 (($coeff simp) $ext103 (($basis simp array) $i)))
 
 (add2lnc (quote (($d2) $f)) $functions)
 
-;;clifford differntial operator
+;;clifford differential operator
 (mdefprop $d_c ((lambda) 
 	      ((mlist) $f) 
 	      (($sum simp) 

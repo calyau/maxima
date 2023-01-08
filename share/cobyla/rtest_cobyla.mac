@@ -260,7 +260,7 @@ die(6);
  * The number of cars the left cities 1, 2, and 4 is known.  The
  * number of cars that travelled the highway segment from 2 to 3 is
  * also known, and finally it is known that at least a certain number
- * travelled the 5 to 3 segment.  Given this inofrmation, we want to
+ * travelled the 5 to 3 segment.  Given this information, we want to
  * know the most likely number (fraction) of cars that travelled
  * between each pair of cities on that day.  This is the 5x5 matrix C
  * = [c[i,j]] where c[i,i] represents the fraction of cars that left

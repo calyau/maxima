@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -12,7 +12,7 @@
 
 (macsyma-module mtrace)
 
-(declare-top (special $functions trace-allp))
+(declare-top (special trace-allp))
 
 ;;; a reasonable trace capability for macsyma users.
 ;;; 8:10pm  Saturday, 10 January 1981 -GJC.
@@ -185,7 +185,9 @@
 
 ;;; User interface functions.
 
-(defmvar $trace (list '(mlist)) "List of functions actively traced")
+(defmvar $trace (list '(mlist))
+  "List of functions actively traced"
+  :properties ((assign 'neverset)))
 
 (defun mlistcan-$all (fun llist default)
   "totally random utility function"
@@ -668,10 +670,11 @@
 
 ;;; I/O cruft
 
-(defmvar $trace_max_indent 15. "max number of spaces it will go right" fixnum)
-
-(putprop '$trace_max_indent 'assign-mode-check 'assign)
-(putprop '$trace_max_indent '$fixnum 'mode)
+(defmvar $trace_max_indent 15.
+  "max number of spaces it will go right"
+  fixnum
+  :properties ((assign 'assign-mode-check)
+	       (mode '$fixnum)))
 
 (defun-prop (spaceout dimension) (form result)
   (dimension-string (make-list (cadr form) :initial-element #\space) result))

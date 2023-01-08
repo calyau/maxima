@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -41,8 +41,6 @@
         ))
 
 (defmvar *whitespace-chars* (append *ascii-space-chars-for-maxima* *unicode-space-chars-for-maxima*))
-
-(defmvar *alphabet* (list #\_ #\%))
 
 (defun alphabetp (n)
   (and (characterp n)
@@ -481,7 +479,7 @@
 ;;;	Implementation Notes ....
 ;;;
 ;;;	JPG	Chars like ^A, ^B, ... get left around after interrupts and
-;;;		should be thrown away by the scanner if not used as editting
+;;;		should be thrown away by the scanner if not used as editing
 ;;;		commands.
 ;;;
 ;;;	KMP	There is RBP stuff in DISPLA, too. Probably this sort of
@@ -828,15 +826,6 @@
 (defun mheader (op) (add-lineinfo (or (safe-get op 'mheader) (ncons op))))
 
 (defmacro def-mheader (op header) `(defprop ,op ,header mheader))
-
-
-(defmvar $parsewindow 10.
-	 "The maximum number of 'lexical tokens' that are printed out on
-each side of the error-point when a syntax (parsing) MAXIMA-ERROR occurs.  This
-option is especially useful on slow terminals.  Setting it to -1 causes the
-entire input string to be printed out when an MAXIMA-ERROR occurs."
-	 fixnum)
-
 
 ;;;; Misplaced definitions
 

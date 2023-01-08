@@ -320,7 +320,7 @@
          (t
            (list '($conjugate simp) (simplifya (cons (list '%derivative) z) t)))))
           
-(setf (get '%derivative 'conjugate-function) #'conjugate-derivative)     
+(setf (get '%derivative 'conjugate-function) 'conjugate-derivative)     
   
 ;; When a function maps "everything" into the reals, put real-valued on the
 ;; property list of the function name. This duplicates some knowledge that

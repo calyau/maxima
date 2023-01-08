@@ -299,7 +299,7 @@ would possibly speed the code.
   (op) (atom-hash (make-hash-table :test #'eq :size 8)))
 
   (setq l (margs l))
-  ;; simplfy and flatten
+  ;; simplify and flatten
     (dolist (li l)
     	(setq li (simplifya li z))
      ;; When numer is true, simplifya converts %pi & %phi to their binary64 value,

@@ -376,6 +376,29 @@
 		  (graph-vertex-labels gr)
 		  (digraph-vertex-labels gr))))
 
+(defmfun $get_unique_vertex_by_label (l gr)
+  (unless (stringp l) (merror (intl:gettext "get_unique_vertex_by_label: first argument must be a string; found ~M") l))
+  (require-graph-or-digraph 'get_unique_vertex_by_label 2 gr)
+  (get-unique-vertex-by-label l gr))
+
+(defun get-unique-vertex-by-label (l gr)
+  (let ((vv (get-all-vertices-by-label l gr)))
+    (cond 
+      ((null vv) nil)
+      ((= (length vv) 1) (first vv))
+      (t (merror (intl:gettext "get_unique_vertex_by_label: two or more vertices have the same label ~:M") l)))))
+
+(defun get-all-vertices-by-label (l gr)
+  (let (vv)
+    (maphash (lambda (v l1) (when (string= l1 l) (push v vv)))
+             (if (graph-p gr) (graph-vertex-labels gr) (digraph-vertex-labels gr)))
+    (sort vv '<)))
+  
+(defmfun $get_all_vertices_by_label (l gr)
+  (unless (stringp l) (merror (intl:gettext "get_all_vertices_by_label: first argument must be a string; found ~M") l))
+  (require-graph-or-digraph 'get_all_vertices_by_label 2 gr)
+  (cons '(mlist) (get-all-vertices-by-label l gr)))
+
 (defmfun $clear_vertex_label (v gr)
   (require-vertex 'clear_vertex_label 1 v)
   (require-graph-or-digraph 'clear_vertex_label 2 gr)

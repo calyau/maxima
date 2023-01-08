@@ -110,7 +110,7 @@
 
 
 
-;;      mPr_engine is a kernel fuction for this program. It checks whether
+;;      mPr_engine is a kernel function for this program. It checks whether
 ;;an argument "mexpress" is an atom or expression. Then it will assign
 ;;a proper function to the expression or just print if it is an atom.
 ;;This is an applied object-oriented programming technique.
@@ -150,7 +150,7 @@
 ;;; the size of the output for purposes of allowing the TeX file to
 ;;; have a reasonable line-length. tprinc will break it at a space 
 ;;; once it crosses a threshold.
-;;; this has nothign to do with breaking the resulting equations.
+;;; this has nothing to do with breaking the resulting equations.
  
 ;-      arg:    chstr -  string or number to princ
 ;-      scheme: This function keeps track of the current location
@@ -234,7 +234,7 @@
 
 (defun mPr-rbp (x) (cond ((get x 'mPr-rbp)) (t (rbp x))))
 
-;; reduce lbp and rbp value for mtimes to get less parentesis
+;; reduce lbp and rbp value for mtimes to get less parenthesis
 (defun $lessparen ()
   (setf (get 'mtimes 'mPr-lbp) '110)
   (setf (get 'mtimes 'mPr-rbp) '110)
@@ -287,7 +287,7 @@
     (mPr_engine (car l) lop rop)
     (when (not (lastelementp l)) (tprinc "<mo>,</mo>"))))
 
-;;      mPr-at is a function to handel at(..) function 
+;;      mPr-at is a function to handle at(..) function
 ;;
 (defun mPr-at (mexpress)
   (row-begin "<mrow>") ;;(tprinc "<mrow>")
@@ -414,7 +414,7 @@
 		 )
 		 ))))))))
         
-;; this fuction is adopted the main idea form macTeX from Prof. Richard
+;; this function is adopted the main idea form macTeX from Prof. Richard
 ;; Fateman in the mPr-mexpt
 ;;
 ;; insert left-angle-brackets for mncexpt. a^<n> is how a^^n looks.
@@ -725,7 +725,7 @@
   (mPr_engine (cadr mexpress) 'mparen 'mparen)
   (tprinc "</msqrt>"))
     
-;;      This function taks care both sum(exp,ind,lo,hi) and 
+;;      This function takes care both sum(exp,ind,lo,hi) and
 ;; product(exp,ind,lo,hi)
 ;;ind
 ;;low

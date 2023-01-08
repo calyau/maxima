@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -1318,6 +1318,7 @@ ignoring dummy variables and array indices."
 ;; this function is responsible for the following bug:
 ;; limit(x^2 + %i*x, x, inf)  -> inf	(should be infinity)
 (defun ratlim (e)
+  (setq e (sratsimp ($trigreduce e)))
   (cond ((member val '($inf $infinity) :test #'eq)
 	 (setq e (maxima-substitute (m^t 'x -1) var e)))
 	((eq val '$minf)
@@ -1369,29 +1370,116 @@ ignoring dummy variables and array indices."
       n
       (car (last n))))
 
-(defun behavior (exp var val)		; returns either -1, 0, 1.
-  (if (= *behavior-count-now* +behavior-count+)
-      0
-      (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign)
-	(cond ((real-infinityp val)
-	       (setq val (cond ((eq val '$inf) '$zeroa)
-			       ((eq val '$minf) '$zerob)))
-	       (setq exp (sratsimp (subin (m^ var -1) exp)))))
-	(cond ((eq val '$infinity) 0) ; Needs more hacking for complex.
-	      ((and (mtimesp exp)
-		    (prog2 (setq pair (partition exp var 1))
-			(not (mtimesp (cdr pair)))))
-	       (setq sign (getsignl (car pair)))
-	       (if (not (fixnump sign))
-		   0
-		   (mul sign (behavior (cdr pair) var val))))
-	      ((and (=0 (no-err-sub (ridofab val) exp))
-		    (mexptp exp)
-		    (free (caddr exp) var)
-		    (equal (getsignl (caddr exp)) 1))
-	       (let ((bas (cadr exp)) (expo (caddr exp)))
-		 (behavior-expt bas expo)))
-	      (t (behavior-by-diff exp var val))))))
+;; This function tries to determine the increasing/decreasing
+;; behavior of an expression exp with respect to some variable var.
+;; val determines the mode:
+;; - $zeroa: From "positive zero" towards the right
+;; - $zerob: From "negative zero" towards the left
+;; - $inf:   From "positive infinity" towards the left
+;; - $minf:  From "negative infinity" towards the right
+;; Return values are -1 (decreasing), +1 (increasing) or 0 (don't know).
+(defun behavior (exp var val)
+  ;; $inf/$minf is handled by substituting 1/var for var
+  ;; and setting val to $zeroa/$zerob.
+  (cond ((real-infinityp val)
+		 (setq val (cond
+					 ((eq val '$inf) '$zeroa)
+					 ((eq val '$minf) '$zerob))
+			   exp (sratsimp (subin (m^ var -1) exp)))))
+  (cond
+	((not (member val '($zeroa $zerob $inf $minf)))
+	  0)
+	;; Shortcut for constants.
+	((freeof var exp)
+	  0)
+	;; Shortcut for the variable itself.
+	((eq exp var)
+	  (if (member val '($zeroa $minf) :test #'eq) 1 -1))
+	;; This limits the recursion depth of the function.
+	;; Before giving up, always try behavior-by-diff, which doesn't recurse.
+	((= *behavior-count-now* +behavior-count+)
+      (behavior-by-diff exp var val))
+	(t
+      (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign ans)
+	(cond
+	  ;; Pull out constant factors with known signs from a product:
+	  ;; behavior(c * f(x)) = signum(c) * behavior(f(x))
+	  ((and (mtimesp exp)
+		(prog2 (setq pair (partition exp var 1))
+		(not (equal (car pair) 1))))
+	   (setq sign (getsignl (car pair)))
+	   (if (not (fixnump sign))
+	   0
+	   (mul sign (behavior (cdr pair) var val))))
+	  ;; Pull out constant terms from a sum:
+	  ;; behavior(c + f(x)) = behavior(f(x))
+	  ((and (mplusp exp)
+		(prog2 (setq pair (partition exp var 0))
+		(not (equal (car pair) 0))))
+	   (behavior (cdr pair) var val))
+	  ;; Handle f(x)^c for the case f(0) = 0 and c > 0
+	  ;; (probably other cases could be handled, too)
+	  ((and (mexptp exp)
+		(free (caddr exp) var)
+		(=0 (no-err-sub 0 exp))
+		(equal (getsignl (caddr exp)) 1)
+		(not (equal 0 (setq ans (behavior-expt (cadr exp) (caddr exp))))))
+	   ans)
+	  ;; Handle 1 / f(x):
+	  ;; behavior(1 / f(x)) = -behavior(f(x))
+	  ((equal ($num exp) 1)
+		(- (behavior ($denom exp) var val)))
+	  ;; Handle c^f(x) for c > 1:
+	  ;; behavior(c^f(x)) = behavior(f(x))
+	  ((and (mexptp exp)
+		(free (cadr exp) var)
+		(equal 1 (getsignl (m- (cadr exp) 1)))
+		(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
+	   ans)
+	  ;; Handle c^f(x) for 0 < c < 1:
+	  ;; behavior(c^f(x)) = -behavior(f(x))
+	  ((and (mexptp exp)
+		(free (cadr exp) var)
+		(equal 1 (getsignl (cadr exp)))
+		(equal -1 (getsignl (m- (cadr exp) 1)))
+		(not (equal 0 (setq ans (behavior (caddr exp) var val)))))
+	   (- ans))
+	  ;; atan, erf, sinh and tanh are monotonically increasing,
+	  ;; so their behavior is equal to the behavior of their arguments.
+	  ;; behavior(monotonically_increasing(f(x))) = behavior(f(x))
+	  ((member (caar exp) '(%atan %erf %sinh %tanh) :test #'eq)
+		(behavior (cadr exp) var val))
+	  ;; Similarly, acot is monotonically decreasing left and right of x = 0.
+	  ;; The singularity doesn't matter for our purposes.
+	  ;; behavior(monotonically_decreasing(f(x))) = -behavior(f(x))
+	  ((eq (caar exp) '%acot)
+		(- (behavior (cadr exp) var val)))
+	  ;; Note: More functions could be added here.
+	  ;; Ideally, use properties defined on the functions.
+	  ;; Handle log(f(x)) for f(0) = 0:
+	  ;; If behavior(f(x)) = 1, then behavior(log(f(x))) = 1
+	  ((and (mlogp exp)
+		(=0 (no-err-sub 0 (cadr exp)))
+		(equal 1 (behavior (cadr exp) var val)))
+	   1)
+	  ;; Try to determine the behavior by taking the derivative.
+	  ((not (equal 0 (setq ans (behavior-by-diff exp var val))))
+	   ans)
+	  ;; If exp is a sum and all terms have the same behavior, return that.
+	  ;; The sum of increasing functions is increasing.
+	  ;; The sum of decreasing functions is decreasing.
+	  ((and (mplusp exp)
+		(not (equal 0 (setq ans (behavior-all-same exp var val)))))
+	   ans)
+	  (t 0))))))
+
+(defun behavior-all-same (exp var val)
+  (let* ((exps (cdr exp)) (first-behavior (behavior (first exps) var val)))
+	(if (or (equal first-behavior 0)
+			(not (every #'(lambda (exp) (equal (behavior exp var val) first-behavior))
+						(rest exps))))
+	  0
+	  first-behavior)))
 
 (defun behavior-expt (bas expo)
   (let ((behavior (behavior bas var val)))
@@ -1407,36 +1495,24 @@ ignoring dummy variables and array indices."
 	  (t 0))))
 
 (defun behavior-by-diff (exp var val)
-  (cond ((not (or (eq val '$zeroa) (eq val '$zerob))) 0)
-	(t (let ((old-val val) (old-exp exp))
-	     (setq val (ridofab val))
-	     (do ((ct 0 (1+ ct))
-		  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
-		  (n () (not n))
-		  (ans ()))	; This do wins by a return.
-		 ((> ct 1) 0)	; This loop used to run up to 5 times,
-		 ;; but the size of some expressions would blow up.
-	       (setq ans (no-err-sub val exp)) ;Why not do an EVENFN and ODDFN
-					;test here.
-	       (cond ((eq ans t)
-		      (return (behavior-numden old-exp var old-val)))
-		     ((=0 ans) ())	;Do it again.
-		     (t (setq ans (getsignl ans))
-			(cond (n (return ans))
-			      ((equal ans 1)
-			       (return (if (eq old-val '$zeroa) 1 -1)))
-			      ((equal ans -1)
-			       (return (if (eq old-val '$zeroa) -1 1)))
-			      (t (return 0))))))))))
-
-(defun behavior-numden (exp var val)
-  (let ((num ($num exp)) (denom ($denom exp)))
-    (cond ((equal denom 1) 0)	      ;Could be hacked more from here.
-	  (t (let ((num-behav (behavior num var val))
-		   (denom-behav (behavior denom var val)))
-	       (cond ((or (= num-behav 0) (= denom-behav 0)) 0)
-		     ((= num-behav denom-behav) 1)
-		     (t -1)))))))
+ (do ((ct 0 (1+ ct))
+  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
+  (n () (not n))
+  (ans ()))	; This do wins by a return.
+ ((> ct 1) 0)	; This loop used to run up to 5 times,
+ ;; but the size of some expressions would blow up.
+   (setq ans (no-err-sub 0 exp)) ;Why not do an EVENFN and ODDFN
+			;test here.
+   (cond ((eq ans t)
+	  (return 0))
+	 ((=0 ans) ())	;Do it again.
+	 (t (setq ans (getsignl ans))
+	(cond (n (return ans))
+		  ((equal ans 1)
+		   (return (if (eq val '$zeroa) 1 -1)))
+		  ((equal ans -1)
+		   (return (if (eq val '$zeroa) -1 1)))
+		  (t (return 0)))))))
 
 (defun try-lhospital (n d ind)
   ;;Make one catch for the whole bunch of lhospital trials.
@@ -1739,11 +1815,11 @@ ignoring dummy variables and array indices."
                                    (ratnump el)
                                    (evenp (caddr el))) 0)
                                (t bl)))
-                        ((and (equal (getsignl el) 1)
-                            (eq bl '$zeroa)) bl)
+                        ((equal (getsignl el) 1)
+                            (if (eq bl '$zeroa) bl 0))
                         ((equal (getsignl el) 0)
                          1)
-                        (t 0)))))
+                        (t (throw 'limit t))))))
         ((eq bl '$infinity)
          (cond ((zerop2 el) (bylog expo bas))
                ((eq el '$minf) 0)
@@ -2809,13 +2885,13 @@ ignoring dummy variables and array indices."
              (cond  ((or (eql dir 1) (eql dir -1))
 	                  (add (ftake '%log (mul -1 arglim)) (mul dir '$%i '$%pi)))
 	                (t (throw 'limit nil))))))) ;do a nounform return
-(setf (get '%log 'simplim%function)  #'simplimln)
-(setf (get '%plog 'simplim%function)  #'simplimln)
+(setf (get '%log 'simplim%function) 'simplimln)
+(setf (get '%plog 'simplim%function) 'simplimln)
 
 (defun simplim%limit (e x pt)
 	(declare (ignore e x pt))
 	(throw 'limit t))
-(setf (get '%limit 'simplim%function) #'simplim%limit)
+(setf (get '%limit 'simplim%function) 'simplim%limit)
 
 (defun simplim%unit_step (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
@@ -2828,14 +2904,14 @@ ignoring dummy variables and array indices."
 			  ((eq t (mgrp 0 lim)) 0)
 			  ((eq t (mgrp lim 0)) 1)
 			  (t '$ind))))
-(setf (get '$unit_step 'simplim%function) #'simplim%unit_step)
+(setf (get '$unit_step 'simplim%function) 'simplim%unit_step)
 
 (defun simplim%conjugate (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
 		(cond ((off-negative-real-axisp lim)
 				(ftake '$conjugate lim))
               (t (throw 'limit nil)))))
-(setf (get '$conjugate 'simplim%function)  #'simplim%conjugate)
+(setf (get '$conjugate 'simplim%function)  'simplim%conjugate)
 
 (defun simplim%imagpart (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
@@ -2843,8 +2919,8 @@ ignoring dummy variables and array indices."
 	         ((eq lim '$ind) 0)
 			 ((eq lim '$infinity) (throw 'limit nil))
 			 (t (mfuncall '$imagpart lim)))))
-(setf (get '$imagpart 'simplim%function)  #'simplim%imagpart)	  
-(setf (get '%imagpart 'simplim%function)  #'simplim%imagpart)
+(setf (get '$imagpart 'simplim%function) 'simplim%imagpart)
+(setf (get '%imagpart 'simplim%function) 'simplim%imagpart)
 
 (defun simplim%realpart (e var val)
 	(let ((lim (limit (cadr e) var val 'think)))
@@ -2852,8 +2928,8 @@ ignoring dummy variables and array indices."
 	         ((eq lim '$ind) '$ind)
 			 ((eq lim '$infinity) (throw 'limit nil))
 			 (t  (mfuncall '$realpart lim)))))
-(setf (get '$realpart 'simplim%function)  #'simplim%realpart)
-(setf (get '%realpart 'simplim%function)  #'simplim%realpart)
+(setf (get '$realpart 'simplim%function) 'simplim%realpart)
+(setf (get '%realpart 'simplim%function) 'simplim%realpart)
 ;;; Limit of the Factorial function
 
 (defun simplimfact (expr var val)
@@ -2882,7 +2958,7 @@ ignoring dummy variables and array indices."
           (t
            ;; Call simplifier to get value at the limit of the argument.
            (simplify (list '(mfactorial) arglim))))))
-(setf (get 'mfactorial 'simplim%function) #'simplimfact)
+(setf (get 'mfactorial 'simplim%function) 'simplimfact)
 
 (defun simplim%erf-%tanh (fn arg)
   (let ((arglim (limit arg var val 'think))
@@ -2930,7 +3006,7 @@ ignoring dummy variables and array indices."
 		  ((in-domain-of-atan (ridofab lim)) ; direct substitution
 			  (ftake '%atan (ridofab lim)))
 	    (t (limit ($logarc e) x pt 'think)))))
-(setf (get '%atan 'simplim%function) #'simplim%atan)
+(setf (get '%atan 'simplim%function) 'simplim%atan)
 
 (defmvar extended-reals 
 	(append infinitesimals infinities (list '$und '$ind)))
@@ -2988,7 +3064,7 @@ ignoring dummy variables and array indices."
 			 	        (ftake '$atan2 ylim-z xlim-z))
 			(t
 				(throw 'limit nil)))))
-(setf (get '$atan2 'simplim%function) #'simplim%atan2)
+(setf (get '$atan2 'simplim%function) 'simplim%atan2)
 
 (defun simplimsch (sch arg)
   (cond ((real-infinityp arg)
@@ -3015,33 +3091,48 @@ ignoring dummy variables and array indices."
 		   fn))))
 
 (defun simplim%tan (arg)
-  (let ((arg1 (ridofab (limit arg var val 'think))))
-    (cond
-      ((member arg1 '($inf $minf $infinity $ind $und) :test #'eq)  '$und)
-      ((pip arg1)
-       (let ((c (trigred (pip arg1))))
-	 (cond ((not (equal ($imagpart arg1) 0)) '$infinity)
-	       ((and (eq (caar c) 'rat)
-		     (equal (caddr c) 2)
-		     (> (cadr c) 0))
-		(setq arg1 (behavior arg var val))
-		(cond ((= arg1 1) '$inf)
-		      ((= arg1 -1) '$minf)
-		      (t '$und)))
-	       ((and (eq (caar c) 'rat)
-		     (equal (caddr c) 2)
-		     (< (cadr c) 0))
-		(setq arg1 (behavior arg var val))
-		(cond ((= arg1 1) '$minf)
-		      ((= arg1 -1) '$inf)
-		      (t '$und)))
-	       (t (throw 'limit ())))))
-      ((equal arg1 0)
-       (setq arg1 (behavior arg var val))
-       (cond ((equal arg1 1) '$zeroa)
-	     ((equal arg1 -1) '$zerob)
-	     (t 0)))
-      (t (simp-%tan (list '(%tan) arg1) 1 nil)))))
+  (let ((arglim (limit arg var val 'think)))
+	(cond
+	  ((member arglim '($inf $minf $ind) :test #'eq)
+		'$ind)
+	  ((member arglim '($und $infinity) :test #'eq)
+		(throw 'limit nil))
+	  (t
+		;; Write the limit of the argument as c*%pi + rest.
+		(let*
+		  ((c (or (pip arglim) 0))
+		   (rest (sratsimp (m- arglim (m* '$%pi c))))
+		   (hit-zero))
+		  ;; Check if tan(x) has a zero or pole at x=arglim.
+		  ;; zero: tan(n*%pi + 0*)
+		  ;; pole: tan((2*n+1)*%pi/2 + 0*)
+		  ;; 0* can be $zeroa, $zerob or 0.
+		  (if (and (member rest '(0 $zeroa $zerob) :test #'equal)
+				   (or (setq hit-zero (integerp c))
+					   (and (ratnump c) (equal (caddr c) 2))))
+			;; This is a zero or a pole.
+			;; Determine on which side of the zero/pole we are.
+			;; If rest is $zeroa or $zerob, use that.
+			;; Otherwise (rest = 0), try to determine the side
+			;; using the behavior of the argument.
+			(let
+			  ((side (cond ((eq rest '$zeroa) 1)
+						   ((eq rest '$zerob) -1)
+						   (t (behavior arg var val)))))
+			  (if hit-zero
+				;; For a zero, if we don't know the side, just return 0.
+				(cond
+				  ((equal side 1) '$zeroa)
+				  ((equal side -1) '$zerob)
+				  (t 0))
+				;; For a pole, we need to know the side.
+				;; Otherwise, we can't determine the limit.
+				(cond
+				  ((equal side 1) '$minf)
+				  ((equal side -1) '$inf)
+				  (t (throw 'limit t)))))
+			;; No zero or pole - substitute in the limit of the argument.
+			(take '(%tan) (ridofab arglim))))))))
 
 (defun simplim%asinh (arg)
   (cond ((member arg '($inf $minf $zeroa $zerob $ind $und) :test #'eq)
@@ -3109,7 +3200,7 @@ ignoring dummy variables and array indices."
 				((and (eq '$neg lim-sgn) (eq dir -1))
 				    (sub (mul -1 '$%pi) (ftake '%asin lim)))
 				(t  (throw 'limit t))))))) ; unable to find sign of real part of lim.
-(setf (get '%asin 'simplim%function) #'simplim%asin)
+(setf (get '%asin 'simplim%function) 'simplim%asin)
 
 (defun simplim%acos (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
@@ -3130,7 +3221,7 @@ ignoring dummy variables and array indices."
 					;; continuous from above
 					(if (eql dir 1) (ftake '%acos lim) (sub (mul 2 '$%pi) (ftake '%acos lim))))
 				(t  (throw 'limit t))))))) ; unable to find sign of real part of lim.
-(setf (get '%acos 'simplim%function) #'simplim%acos)
+(setf (get '%acos 'simplim%function) 'simplim%acos)
 
 ;; Limit of an %integrate expression. For a definite integral
 ;; integrate(ee,var,a,b), when ee is free of the limit variable
@@ -3151,7 +3242,7 @@ ignoring dummy variables and array indices."
 			    (throw 'limit t)))
             (t
                 (throw 'limit t)))))
-(setf (get '%integrate 'simplim%function) #'simplim%integrate)
+(setf (get '%integrate 'simplim%function) 'simplim%integrate)
 
 (defun subftake (op subarg arg)
   (simplifya (subfunmake op subarg arg) t))
@@ -3166,20 +3257,21 @@ ignoring dummy variables and array indices."
   (let ((n (car (subfunsubs expr))) (e (car (subfunargs expr))))
     (cond ((freeof x n)
 	   (setq e (limit e x pt 'think))
-	   (cond ((and (eq e '$minf) (eql n 2))
+	   (cond ((and (eq e '$minf) (integerp n) (>= n 2))
 		  '$minf)
-		 ((and (eq e '$inf) (eql n 2))
+		 ((and (eq e '$inf) (integerp n) (>= n 2))
 		  '$infinity)
-		 ((or (eql (ridofab e) 1) (off-one-to-inf e))
+		 ((or (eql (ridofab e) 1) (and (not (extended-real-p e)) (off-one-to-inf e)))
 		  ;; Limit of li[s](1) can be evaluated by just
 		  ;; substituting in 1.
+		  ;; Same for li[s](x) when x is < 1.
 		  (subftake '$li (list n) (list e)))
 		 (t (throw 'limit nil))))
 	  ;; Claim ignorance when order depends on limit variable.	
 	  (t (throw 'limit nil)))))
 
-(setf (get '$li 'simplim%function) #'simplim%li)
-(setf (get '%li 'simplim%function) #'simplim%li)
+(setf (get '$li 'simplim%function) 'simplim%li)
+(setf (get '%li 'simplim%function) 'simplim%li)
 
 (defun simplim$psi (order arg val)
   (if (and (not (equal (length order) 1))
@@ -3249,7 +3341,7 @@ ignoring dummy variables and array indices."
 		     (setq sgn (mnqp e 0))
 			 (cond ((eq t sgn) (ftake '%signum e))
 			 	   (t (throw 'limit nil))))))) ; don't know
-(setf (get '%signum 'simplim%function) #'simplim%signum)
+(setf (get '%signum 'simplim%function) 'simplim%signum)
 
 ;; more functions for limit to handle
 

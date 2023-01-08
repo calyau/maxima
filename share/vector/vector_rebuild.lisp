@@ -214,7 +214,7 @@
 
 (putprop '$vector_factor t 'evfun)
 
-;; if you whish to factor out a minus sign, set this to true
+;; if you wish to factor out a minus sign, set this to true
 (defmvar $vector_factor_minus nil)
 
 (defun vector-extract-gcd (expr)

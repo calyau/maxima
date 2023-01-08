@@ -84,7 +84,7 @@
        #:random-chunk
        #:init-random-state))
 
-;; This package is for the implmentation of the BIGFLOAT routines that
+;; This package is for the implementation of the BIGFLOAT routines that
 ;; make working with Maxima's bfloat objects somewhat easier by
 ;; extending the standard CL numeric functions to work with BIGFLOAT
 ;; and COMPLEX-BIGFLOAT objects.  See src/numeric.lisp for the

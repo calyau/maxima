@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -22,10 +22,6 @@
 ;;These do not need to be special for this file and they
 ;;slow it down on lispm. We also eliminated the special
 ;;from ptimes2--wfs
-
-;; Global variables referenced throughout the rational function package.
-
-(defmvar modulus nil "Global switch for doing modular arithmetic")
 
 ;; CQUOTIENT
 ;;

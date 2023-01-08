@@ -7,7 +7,7 @@ Mathieu's equation is x''+(delta+e*cos(t))*x=0
 For given values of the parameters delta and e, either all the
 solutions are bounded (the equation is stable) or there exist
 unbounded solutions (the equation is unstable).  The regions of
-stability are separated from thos of instability by "transition
+stability are separated from those of instability by "transition
 curves".
 
 This program computes the transition curves of Mathieu's equation

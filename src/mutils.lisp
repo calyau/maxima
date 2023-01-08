@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -21,7 +21,7 @@
 ;;; This function searches for the key in the left hand side of the input list
 ;;; of the form [x,y,z...] where each of the list elements is a expression of
 ;;; a binary operand and 2 elements.  For example x=1, 2^3, [a,b] etc.
-;;; The key checked againts the first operand and and returns the second
+;;; The key checked against the first operand and and returns the second
 ;;; operand if the key is found.
 ;;; If the key is not found it either returns the default value if supplied or
 ;;; false.

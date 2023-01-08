@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -55,12 +55,18 @@
 ;;	*NOEXPAND	indicates that trig functions of sums of
 ;;			angles are not to be used.
 
-(defmfun $trigreduce (exp &optional (var '*novar))
+;; Without the check for the value of $simp, trigreduce can enter an
+;; endless loop--for example trigreduce((-1)*x). There is at least one
+;; test in the testsuite that sets simp to false and then needs to compute
+;; a limit. But the limit code calls trigreduce and the test fails. The
+;; top level check for simp seems like the best way to prevent infinite
+;; loops when simp is false.
+(defmfun ($trigreduce :properties ((evfun t))) (exp &optional (var '*novar))
   (let ((*trigred t)
         (*noexpand t)
         $trigexpand $verbose $ratprint)
     (declare (special $trigexpand *trigred))
-    (gcdred (sp1 exp))))
+    (if $simp (gcdred (sp1 exp)) exp)))
 
 ;; The first pass in power series expansion (used by $powerseries in
 ;; series.lisp), but also used by $trigreduce. Expands / reduces the expression

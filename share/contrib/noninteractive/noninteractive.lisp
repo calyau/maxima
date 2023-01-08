@@ -25,8 +25,7 @@
 ;; Maybe there should be a way to mark a function as unkillable
 ;; when it is defined. Just a thought.
 
-(defun $delete_noninteractive_stuff_from_infolists ()
-  (declare (special $values $functions))
+(defmfun $delete_noninteractive_stuff_from_infolists ()
   (setq $values (delete '|$within_MEVAL1| $values))
   (setq $functions (delete '((|$meval1|)) $functions :test #'equal))
   (setq $functions (delete '(($ENUMERATE_CASES) |$l%|) $functions :test #'equal))

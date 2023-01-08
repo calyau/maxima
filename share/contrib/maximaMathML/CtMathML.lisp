@@ -12,7 +12,7 @@
 ;;                %mc CtMathML.lsp
 ;;             which produces CtMathML.o
 ;;
-;;            load/and link into MAXIMA by MAXIMA top-level comamnd
+;;            load/and link into MAXIMA by MAXIMA top-level command
 ;;                loadfile("loadmathml.lsp");
 ;;
 ;;            Once loaded,  use the command ctmathml(expr [,file])

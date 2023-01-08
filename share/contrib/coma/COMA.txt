@@ -672,7 +672,7 @@ transfer_function(A,B,C);
 
 
 
-/* Calcualtion of the transfer function of the circuit using "impedance_chain"
+/* Calculation of the transfer function of the circuit using "impedance_chain"
 gives the same result, expectedly: */
 
 f:impedance_chain(R+s*L,1/(s*C1),2);
@@ -753,7 +753,7 @@ gain_margin(Fo);
 /* Closed-Loop System */
 
 
-/* The closed-loop transfer function can be represented exactly as an (infinite) sum - one addend for each time step. For t<T the output is 0. For a successive time step the output is just the output from Fo times the input minus the preceeding output from Fo.  */
+/* The closed-loop transfer function can be represented exactly as an (infinite) sum - one addend for each time step. For t<T the output is 0. For a successive time step the output is just the output from Fo times the input minus the preceding output from Fo.  */
 
 
 /* The number of time steps can be specified as a 2nd parameter to closed_loop (Default 5): */

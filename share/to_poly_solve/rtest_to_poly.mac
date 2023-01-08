@@ -100,6 +100,6 @@ nicedummies(to_poly(z - sqrt(2) - sqrt(3),[z,1]));
 first(nicedummies(to_poly(z - sqrt(2) - sqrt(3),[z,1])));
 [z-%g1-%g0,3=%g1^2,2=%g0^2]$
 
-/* make sure we didn't make assigments or assumptions */
+/* make sure we didn't make assignments or assumptions */
 [values,facts()];
 [[],[]]$

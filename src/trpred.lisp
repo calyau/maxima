@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -55,7 +55,7 @@
 ;;; and in a system with a limited address space too!
 ;;; NOTE: See code for IS-BOOLE-CHECK, also duplication of MRG;COMPAR.
 
-;;; Note: This TRANSLATE-PREDICATE and TRANSLATE should be combinded
+;;; Note: This TRANSLATE-PREDICATE and TRANSLATE should be combined
 ;;; to a single function which takes a second argument of the
 ;;; TARGET (mode). Targeting is a pretty basic concept in compilation
 ;;; so its surprising this was done. In order to make this change all

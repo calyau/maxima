@@ -115,7 +115,7 @@ which should yield the result:
 (5)       r' = r^3,             h' = 1
      
 2. Now you will apply your program to the problem of determining
-the stabilty of the origin in the system:
+the stability of the origin in the system:
      
 (6)       x' = -y + x^2 y,      y' = x + x^2 y
      

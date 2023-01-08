@@ -18,7 +18,7 @@ true;
 
 /* 301 Riccati */
 
-/* 304 - Abel eqn od 1st kind */
+/* 304 - Abel eqn of 1st kind */
 (pn_(304),ans:contrib_ode(eqn:(1+x^2)*'diff(y,x)=1+y^2-2*x*y*(1+y^2),y,x)); 
 false;
 

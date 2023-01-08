@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -20,9 +20,8 @@
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch nogood
-                      $erfflag alphar m
+                      alphar m
                       hypertrigint *mosesflag *exp y
-                      implicit-real generate-atan2
                       context *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")

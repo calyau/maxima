@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -104,7 +104,7 @@
 (defmfun $load (filename)
   "This is the generic file loading function.
   LOAD(filename) will either BATCHLOAD or LOADFILE the file,
-  depending on wether the file contains Macsyma, Lisp, or Compiled
+  depending on whether the file contains Macsyma, Lisp, or Compiled
   code. The file specifications default such that a compiled file
   is searched for first, then a lisp file, and finally a macsyma batch
   file. This command is designed to provide maximum utility and
@@ -602,7 +602,7 @@
 
 (defun save-linenumbers (&key (c-lines t) d-lines (from 1) (below $linenum) a-list
 			 (file  "/tmp/lines")
-			 &aux input-symbol (linel 79))
+			 &aux input-symbol ($linel 79))
   (cond ((null a-list) (setq a-list (loop for i from from below below collecting i))))
   (with-open-file (st file :direction :output)
     (format st "/* -*- Mode: MACSYMA; Package: MACSYMA -*- */")

@@ -94,6 +94,10 @@ m4_displaymath(
 
 although the infinite series is not used for computations.
 
+When @code{besselexpand} is @code{true}, @code{bessel_j} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
@@ -119,6 +123,10 @@ m4_displaymath(
 
 when @math{v} is not an integer.  When @math{v} is an integer @math{n},
 the limit as @math{v} approaches @math{n} is taken.
+
+When @code{besselexpand} is @code{true}, @code{bessel_y} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
 
 @opencatbox{Categories:}
 @category{Bessel functions}
@@ -150,6 +158,11 @@ m4_displaymath(
 
 although the infinite series is not used for computations.
 
+When @code{besselexpand} is @code{true}, @code{bessel_i} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
+
 @opencatbox{Categories:}
 @category{Bessel functions}
 @category{Special functions}
@@ -175,6 +188,11 @@ m4_displaymath(
 
 when @math{v} is not an integer.  If @math{v} is an integer @math{n},
 then the limit as @math{v} approaches @math{n} is taken.
+
+When @code{besselexpand} is @code{true}, @code{bessel_k} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
 
 @opencatbox{Categories:}
 @category{Bessel functions}
@@ -204,7 +222,7 @@ bigfloat precision is not supported.
 
 When @code{besselexpand} is @code{true}, @code{hankel_1} is expanded in terms
 of elementary functions when the order @math{v} is half of an odd integer. 
-See @code{besselexpand}.
+See @mrefdot{besselexpand}
 
 Maxima knows the derivative of @code{hankel_1} wrt the argument @math{z}.
 
@@ -292,7 +310,7 @@ bigfloat precision is not supported.
 
 When @code{besselexpand} is @code{true}, @code{hankel_2} is expanded in terms
 of elementary functions when the order @math{v} is half of an odd integer. 
-See @code{besselexpand}.
+See @mrefdot{besselexpand}
 
 Maxima knows the derivative of @code{hankel_2} wrt the argument @math{z}.
 
@@ -310,8 +328,9 @@ For examples see @code{hankel_1}.
 Default value: @code{false}
 
 @c REPHRASE
-Controls expansion of the Bessel functions when the order is half of
-an odd integer.  In this case, the Bessel functions can be expanded
+Controls expansion of the Bessel, Hankel and Struve functions
+when the order is half of
+an odd integer.  In this case, the functions can be expanded
 in terms of other elementary functions.  When @code{besselexpand} is @code{true},
 the Bessel function is expanded.
 
@@ -447,16 +466,15 @@ negative integer, the limit must be used.
 @c -----------------------------------------------------------------------------
 
 The Airy functions m4_math(<<<{\rm Ai}(x)>>>,<<<Ai(x)>>>) and m4_math(<<<{\rm Bi}(x)>>>,<<<Bi(x)>>>) are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, @urlaands{Section 10.4, 446}. 
+@i{Handbook of Mathematical Functions}, @urlaands{Section 10.4, 446} and @urldlmf{9}.
 
-The two linearly independent solutions of the Airy differential equation:
+The Airy differential equation is:
 
 m4_displaymath(
 <<<{d^2 y\over dx^2} - xy = 0>>>,
 <<<@math{diff (y(x), x, 2) - x y(x) = 0}>>>)
 
-are m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) and m4_mathdot(<<<y = {\rm Bi}(x)>>>,<<<y = Bi(x)>>>)
-
+The numerically satisfactory pair of solutions (@urldlmf{9.2#T1}) on the real line are m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) and m4_mathdot(<<<y = {\rm Bi}(x)>>>,<<<y = Bi(x)>>>)
 These two solutions are oscillatory for @math{x < 0}.  m4_math({\rm Ai}(x), Ai(x)) is
 the solution subject to the condition that m4_math(y\rightarrow 0,
 y->0) as m4_math(<<<x\rightarrow +\infty,>>>, <<<x ->
@@ -472,7 +490,7 @@ number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function m4_mathdot(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>)  See @urlaands{eqn 10.4.2, 446}.
+The Airy function m4_mathdot(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>)  See @urlaands{eqn 10.4.2, 446} and @urldlmf{9}.
 
 See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
@@ -491,7 +509,7 @@ m4_displaymath(
 <<<{\rm airy\_dai}(x) = {d\over dx}{\rm Ai}(x)>>>,
 <<<@math{airy_dai(x) = diff(airy_ai(x),x)>>>}) 
 
-See @mrefdot{airy_ai}.
+See @mrefdot{airy_ai}
 
 @opencatbox{Categories:}
 @category{Airy functions}
@@ -502,7 +520,7 @@ See @mrefdot{airy_ai}.
 @c -----------------------------------------------------------------------------
 @anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
-The Airy function m4_math(<<<{\rm Bi}(x)>>>, Bi(x)).  See @urlaands{eqn 10.4.3, 446}.
+The Airy function m4_math(<<<{\rm Bi}(x)>>>, Bi(x)).  See @urlaands{eqn 10.4.3, 446} and  @urldlmf{9}.
 
 See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 
@@ -632,7 +650,7 @@ and bigfloat precision.
 
 @code{gamma} has mirror symmetry.
 
-When @code{gamma_expand} is @code{true}, Maxima expands @code{gamma} for 
+When @mref{gamma_expand} is @code{true}, Maxima expands @code{gamma} for 
 arguments @code{z+n} and @code{z-n} where @code{n} is an integer.
 
 Maxima knows the derivative of @code{gamma}.
@@ -674,7 +692,7 @@ Numerical evaluation for real and complex values:
 (%o7)                  gamma(conjugate(z))
 @end example
 
-Maxima expands @code{gamma(z+n)} and @code{gamma(z-n)}, when @code{gamma_expand} 
+Maxima expands @code{gamma(z+n)} and @code{gamma(z-n)}, when @mref{gamma_expand} 
 is @code{true}:
 
 @example
@@ -765,8 +783,8 @@ See also @mref{gamma_expand} for controlling how
 @code{gamma_incomplete} is expressed in terms of elementary functions
 and @code{erfc}.
 
-Also see the related functions @code{gamma_incomplete_regularized} and
-@code{gamma_incomplete_generalized}.
+Also see the related functions @mref{gamma_incomplete_regularized} and
+@mref{gamma_incomplete_generalized}.
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -791,10 +809,10 @@ gamma_incomplete_regularized(a, z) =
 >>>)
 
 See also @mref{gamma_expand} for controlling how
-@code{gamma_incomplete} is expressed in terms of elementary functions
+@mref{gamma_incomplete} is expressed in terms of elementary functions
 and @mrefdot{erfc}
 
-Also see @code{gamma_incomplete}.
+Also see @mref{gamma_incomplete}.
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -803,6 +821,7 @@ Also see @code{gamma_incomplete}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gamma_incomplete_generalized}
 @deffn {Function} gamma_incomplete_generalized (@var{a}, @var{z1}, @var{z1})
 
 The generalized incomplete gamma function.
@@ -821,7 +840,7 @@ gamma_incomplete_generalized(a, z1, z2) =
 @end example
 >>>)
 
-Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
+Also see @mref{gamma_incomplete} and @mref{gamma_incomplete_regularized}.
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -835,10 +854,10 @@ Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
 @defvr {Option variable} gamma_expand
 Default value: @code{false}
 
-@code{gamma_expand} controls expansion of @code{gamma_incomplete}.
+@code{gamma_expand} controls expansion of @mref{gamma_incomplete}.
 When @code{gamma_expand} is @code{true}, @code{gamma_incomplete(v,z)}
 is expanded in terms of
-@code{z}, @code{exp(z)}, and @code{gamma_incomplete} or @code{erfc(z)} when possible.
+@code{z}, @code{exp(z)}, and @mref{gamma_incomplete} or @mref{erfc} when possible.
 
 @example
 (%i1) gamma_incomplete(2,z);
@@ -935,7 +954,7 @@ argument. The exception is for @var{a=-n}, @var{n} a positive integer
 and @var{b} a positive integer with @code{b<=n}, it is possible to define an
 analytic continuation. Maxima gives for this case a result.
 
-When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
+When @mref{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
 @code{beta(a-n,b)} or @code{beta(a,b+n)} and @code{beta(a,b-n)} with @code{n} 
 an integer are simplified.
 
@@ -994,8 +1013,8 @@ The possible results, when one of the arguments is a negative integer:
                                     3  6    3
 @end example
 
-@code{beta(a+n,b)} or @code{beta(a-n)} with @code{n} an integer simplifies when 
-@code{beta_expand} is @code{true}:
+@code{beta(a+n,b)} or @code{beta(a-n,b)} with @code{n} an integer simplifies when 
+@mref{beta_expand} is @code{true}:
 
 @example
 (%i6) beta_expand:true$
@@ -1135,7 +1154,7 @@ Maxima evaluates @code{beta_incomplete} numerically for real and complex values
 in float or bigfloat precision. For the numerical evaluation an expansion of the 
 incomplete beta function in continued fractions is used.
 
-When the option variable @code{beta_expand} is @code{true}, Maxima expands
+When the option variable @mref{beta_expand} is @code{true}, Maxima expands
 expressions like @code{beta_incomplete(a+n,b,z)} and
 @code{beta_incomplete(a-n,b,z)} where n is a positive integer.
 
@@ -1224,7 +1243,7 @@ Results for more general complex arguments:
 (%i16) 
 @end example
 
-Expansion, when @code{beta_expand} is @code{true}:
+Expansion, when @mref{beta_expand} is @code{true}:
 
 @example
 (%i23) beta_incomplete(a+1,b,z),beta_expand:true;
@@ -1302,7 +1321,7 @@ the specific value 0. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<realp
 Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
 arguments in float and bigfloat precision.
 
-When @code{beta_expand} is @code{true}, Maxima expands 
+When @mref{beta_expand} is @code{true}, Maxima expands 
 @code{beta_incomplete_regularized} for arguments @math{a+n} or @math{a-n}, 
 where n is an integer.
 
@@ -1354,7 +1373,7 @@ precision:
 (%o12)      2.8653674999354036142b-1 %i - 1.2299596333468400163b-1
 @end example
 
-Expansion, when @code{beta_expand} is @code{true}:
+Expansion, when @mref{beta_expand} is @code{true}:
 
 @example
 (%i13) beta_incomplete_regularized(a+1,b,z);
@@ -1435,7 +1454,7 @@ expression with @code{beta} and @code{beta_incomplete}.
 Maxima evaluates @code{beta_incomplete_regularized} for real and complex values 
 in float and bigfloat precision.
 
-When @code{beta_expand} is @code{true}, Maxima expands 
+When @mref{beta_expand} is @code{true}, Maxima expands 
 @code{beta_incomplete_generalized} for @math{a+n} and @math{a-n}, @var{n} a 
 positive integer.
 
@@ -1508,7 +1527,7 @@ Numerical evaluation for complex arguments in float or bigfloat precision:
 @end example
 
 Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when 
-@code{beta_expand} is @code{true}: 
+@mref{beta_expand} is @code{true}: 
 
 @example
 (%i14) beta_expand:true$
@@ -1552,6 +1571,7 @@ Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
 @closecatbox
 @end deffn
 
+@anchor{beta_expand}
 @defvr {Option variable} beta_expand
 Default value: false
 
@@ -1592,30 +1612,70 @@ m4_displaymath(
 Thus, @code{psi[0](@var{x})} is the first derivative,
 @code{psi[1](@var{x})} is the second derivative, etc.
 
-Maxima does not know how, in general, to compute a numerical value of
-@code{psi}, but it can compute some exact values for rational args.
-Several variables control what range of rational args @code{psi} will
-return an exact value, if possible.  See @code{maxpsiposint},
-@code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracdenom}.
-That is, @var{x} must lie between @code{maxpsinegint} and
-@code{maxpsiposint}.  If the absolute value of the fractional part of
-@var{x} is rational and has a numerator less than @code{maxpsifracnum}
-and has a denominator less than @code{maxpsifracdenom}, @code{psi}
-will return an exact value.
+Maxima can compute some exact values for rational args as well for
+float and bfloat args.  Several variables control what range of
+rational args m4_math(<<<\psi_n(x)>>>,<<<psi[n](x)>>>)) will return an
+exact value, if possible.  See @mref{maxpsiposint},
+@mref{maxpsinegint}, @mref{maxpsifracnum}, and
+@mrefdot{maxpsifracdenom} That is, @math{x} must lie between
+@code{maxpsinegint} and @code{maxpsiposint}.  If the absolute value of
+the fractional part of @math{x} is rational and has a numerator less
+than @code{maxpsifracnum} and has a denominator less than
+@code{maxpsifracdenom}, m4_math(<<<\psi_0(x)>>>,<<<psi[0](x)>>>) will
+return an exact value.
 
-The function @code{bfpsi} in the @code{bffac} package can compute
+The function @mref{bfpsi} in the @code{bffac} package can compute
 numerical values.
+
+@example
+(%i1) psi[0](.25);
+(%o1)                        - 4.227453533376265
+(%i2) psi[0](1/4);
+                                        %pi
+(%o2)                    (- 3 log(2)) - --- - %gamma
+                                         2
+(%i3) float(%);
+(%o3)                        - 4.227453533376265
+(%i4) psi[2](0.75);
+(%o4)                        - 5.30263321633764
+(%i5) psi[2](3/4);
+                                   1         3
+(%o5)                         psi (-) + 4 %pi
+                                 2 4
+(%i6) float(%);
+(%o6)                        - 5.30263321633764
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @closecatbox
 @end deffn
 
+@anchor{maxpsiposint}
 @defvr {Option variable} maxpsiposint
 Default value: 20
 
-@code{maxpsiposint} is the largest positive value for which
-@code{psi[n](x)} will try to compute an exact value.
+@code{maxpsiposint} is the largest positive integer value for
+which m4_math(<<<\psi_n(m)>>>,<<<psi[n](x)>>>) gives an exact value for
+rational @math{x}.
+
+@example
+(%i1) psi[0](20);
+                             275295799
+(%o1)                        --------- - %gamma
+                             77597520
+(%i2) psi[0](21);
+(%o2)                             psi (21)
+                                     0
+(%i3) psi[2](20);
+                      1683118856778495358491487
+(%o3)              2 (------------------------- - zeta(3))
+                      1401731326612193601024000
+(%i4) psi[2](21);
+(%o4)                            psi (21)
+                                      2
+
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -1623,27 +1683,73 @@ Default value: 20
 
 @end defvr
 
+@anchor{maxpsinegint}
 @defvr {Option variable} maxpsinegint
 Default value: -10
 
-@code{maxpsinegint} is the most negative value for which
-@code{psi[n](x)} will try to compute an exact value.  That is if
-@var{x} is less than @code{maxnegint}, @code{psi[n](@var{x})} will not
+@code{maxpsinegint} is the most negative value for
+which m4_math(<<<\psi_0(x)>>>,<<<psi[0](x)>>>) will try to compute an exact
+value for rational @math{x}.  That is if @math{x} is less than
+@code{maxpsinegint}, m4_math(<<<\psi_n(x)>>>,<<<psi[n](x)>>>) will not
 return simplified answer, even if it could.
 
+@example
+(%i1) psi[0](-100/9);
+                                        100
+(%o1)                            psi (- ---)
+                                    0    9
+(%i2) psi[0](-100/11);
+                         100 %pi         1     5231385863539
+(%o2)            %pi cot(-------) + psi (--) + -------------
+                           11          0 11    381905105400
+
+(%i3) psi[2](-100/9);
+                                        100
+(%o3)                            psi (- ---)
+                                    2    9
+(%i4) psi[2](-100/11);
+           3     100 %pi     2 100 %pi         1
+(%o4) 2 %pi  cot(-------) csc (-------) + psi (--)
+                   11            11          2 11
+                                         74191313259470963498957651385614962459
+                                       + --------------------------------------
+                                          27850718060013605318710152732000000
+@end example
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @closecatbox
 
 @end defvr
 
+@anchor{maxpsifracnum}
 @defvr {Option variable} maxpsifracnum
 Default value: 6
 
-Let @var{x} be a rational number less than one of the form @code{p/q}.
-If @code{p} is greater than @code{maxpsifracnum}, then
-@code{psi[@var{n}](@var{x})} will not try to return a simplified
-value.
+Let @math{x} be a rational number of the form @math{p/q}.
+If @math{p} is greater than @code{maxpsifracnum},
+then m4_math(<<<\psi_0(x)>>>,<<<@code{psi[0](x)}>>>) will not try to
+return a simplified value.
+
+@example
+(%i1) psi[0](3/4);
+                                        %pi
+(%o1)                    (- 3 log(2)) + --- - %gamma
+                                         2
+(%i2) psi[2](3/4);
+                                   1         3
+(%o2)                         psi (-) + 4 %pi
+                                 2 4
+(%i3) maxpsifracnum:2;
+(%o3)                                 2
+(%i4) psi[0](3/4);
+                                        3
+(%o4)                              psi (-)
+                                      0 4
+(%i5) psi[2](3/4);
+                                   1         3
+(%o5)                         psi (-) + 4 %pi
+                                 2 4
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -1651,13 +1757,35 @@ value.
 
 @end defvr
 
+@anchor{maxpsifracdenom}
 @defvr {Option variable} maxpsifracdenom
 Default value: 6
 
-Let @var{x} be a rational number less than one of the form @code{p/q}.
-If @code{q} is greater than @code{maxpsifracdenom}, then
-@code{psi[@var{n}](@var{x})} will not try to return a simplified
-value.
+Let @math{x} be a rational number of the form @math{p/q}.
+If @math{q} is greater than @code{maxpsifracdenom},
+then m4_math(<<<\psi_0(x)>>>,<<<@code{psi[@var{0}](@var{x})}>>>) will
+not try to return a simplified value.
+
+@example
+(%i1) psi[0](3/4);
+                                        %pi
+(%o1)                    (- 3 log(2)) + --- - %gamma
+                                         2
+(%i2) psi[2](3/4);
+                                   1         3
+(%o2)                         psi (-) + 4 %pi
+                                 2 4
+(%i3) maxpsifracdenom:2;
+(%o3)                                 2
+(%i4) psi[0](3/4);
+                                        3
+(%o4)                              psi (-)
+                                      0 4
+(%i5) psi[2](3/4);
+                                   1         3
+(%o5)                         psi (-) + 4 %pi
+                                 2 4
+@end example
 
 @opencatbox{Categories:}
 @category{Gamma and factorial functions}
@@ -1712,6 +1840,7 @@ The Exponential Integral and related functions are defined in
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, @urlaands{Chapter 5, 228}.
 
+@anchor{expintegral_e1}
 @deffn {Function} expintegral_e1 (@var{z})
 The Exponential Integral E1(z) defined as
 
@@ -1776,8 +1905,10 @@ non-negative integer.
 @closecatbox
 @end deffn
 
+@anchor{expintegral_si}
 @deffn {Function} expintegral_si (@var{z})
-The Exponential Integral Si(z) (@urlaands{eqn 5.2.1, 231}) defined as
+The Exponential Integral Si(z) (@urlaands{eqn 5.2.1, 231}
+and @urldlmf{6.2#E9}) defined as
 
 m4_displaymath(
 <<<{\rm Si}(z) = \int_0^z {\sin t \over t} dt>>>,
@@ -1789,8 +1920,10 @@ m4_displaymath(
 @closecatbox
 @end deffn
 
+@anchor{expintegral_ci}
 @deffn {Function} expintegral_ci (@var{z})
-The Exponential Integral Ci(z) (@urlaands{eqn 5.2.2, 231}) defined as
+The Exponential Integral Ci(z) (@urlaands{eqn 5.2.2, 231}
+and @urldlmf{6.2#E13}) defined as
 
 m4_displaymath(
 <<<{\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt>>>,
@@ -1804,8 +1937,10 @@ with m4_math(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>).
 @closecatbox
 @end deffn
 
+@anchor{expintegral_shi}
 @deffn {Function} expintegral_shi (@var{z})
-The Exponential Integral Shi(z) (@urlaands{eqn 5.2.3, 231}) defined as
+The Exponential Integral Shi(z) (@urlaands{eqn 5.2.3, 231}
+and @urldlmf{6.2#E15}) defined as
 
 m4_displaymath(
 <<<{\rm Shi}(z) = \int_0^z {\sinh t \over t} dt>>>,
@@ -1817,8 +1952,10 @@ m4_displaymath(
 @closecatbox
 @end deffn
 
+@anchor{expintegral_chi}
 @deffn {Function} expintegral_chi (@var{z})
-The Exponential Integral Chi(z) (@urlaands{eqn 5.2.4, 231}) defined as
+The Exponential Integral Chi(z) (@urlaands{eqn 5.2.4, 231}
+and @urldlmf{6.2#E16}) defined as
 
 m4_displaymath(
 <<<{\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt>>>,
@@ -1847,8 +1984,8 @@ Possible values for @code{expintrep} are @code{false},
 @code{false} means that the representation is not changed.  Other
 values indicate the representation is to be changed to use the
 function specified where @code{expintegral_trig} means
-@code{expintegral_si}, @code{expintegral_ci}, and @code{expintegral_hyp}
-means @code{expintegral_shi} or @code{expintegral_chi}.
+@mref{expintegral_si}, @mref{expintegral_ci}; and @code{expintegral_hyp}
+means @mref{expintegral_shi} or @mref{expintegral_chi}.
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -2014,6 +2151,10 @@ m4_displaymath(
 
 (@urlaands{eqn 12.1.3, 496}) and (@urldlmf{11.2.E1}).
 
+When @code{besselexpand} is @code{true}, @code{struve_h} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
+
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2028,6 +2169,10 @@ m4_displaymath(
 <<<@math{struve_l(v,z) = %i*exp(-%i*v*%pi/2)*struve_h(v,z)}>>>)
 
 (@urlaands{eqn 12.2.1, 498}) and (@urldlmf{11.2.E2}).
+
+When @code{besselexpand} is @code{true}, @code{struve_l} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @mrefdot{besselexpand}
 
 @opencatbox{Categories:}
 @category{Special functions}
@@ -2248,8 +2393,8 @@ ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
                                s
 @end example
 
-Results when using the expansion of @code{gamma_incomplete} and when changing 
-the representation to @code{expintegral_e1}:
+Results when using the expansion of @mref{gamma_incomplete} and when changing 
+the representation to @mref{expintegral_e1}:
 
 @example
 (%i10) assume(s>0)$

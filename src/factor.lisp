@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -40,18 +40,8 @@
 
 ;; Internal specials
 
-(defmvar gauss nil)
-(defmvar *min* nil)
-(defmvar *mx* nil)
-(defmvar minpoly* nil)
-(defmvar mplc* nil)
-(defmvar mm* 1)
 (defmvar alpha nil)
 ;(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37. 41. 43. 47. 53. 59. 61.))
-
-;; External specials
-
-(defmvar $nalgfac t "If t use bmt's algebraic factoring algorithm")
 
 (defun primcyclo (n)
   (let ((*g* (gensym "PRIMCYCLO-"))

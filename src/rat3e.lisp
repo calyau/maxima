@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -16,8 +16,8 @@
 ;;	It includes the conversion and top-level routines used
 ;;	by the rest of the functions.
 
-(declare-top (special intbs* alflag var alc $myoptions
-		      vlist radlist expsumsplit *ratsimp* mplc*))
+(declare-top (special intbs* alflag var alc
+		      vlist radlist expsumsplit *ratsimp*))
 
 (defvar *ratsimp* nil)
 
@@ -112,7 +112,7 @@
 
 (defmvar inratsimp nil)
 
-(defmfun $fullratsimp (exp &rest argl)
+(defmfun ($fullratsimp :properties ((evfun t))) (exp &rest argl)
   (prog (exp1)
      loop (setq exp1 (simplify (apply #'$ratsimp (cons exp argl))))
      (when (alike1 exp exp1) (return exp))
@@ -154,7 +154,7 @@
       (cons (car exp) (mapcar #'rat0 (cdr exp)))
       (ratf exp)))
 
-(defmfun $ratsimp (e &rest vars)
+(defmfun ($ratsimp :properties ((evfun t))) (e &rest vars)
   (cond ((not (null vars))
 	 (let (varlist)
 	   (joinvarlist vars)
@@ -219,7 +219,7 @@
   (let (($expop 0) ($expon 0) $negdistrib)
     (maxima-substitute '$%i '%i p)))
 
-(defmfun $factor (e &optional (mp nil mp?))
+(defmfun ($factor :properties ((evfun t))) (e &optional (mp nil mp?))
   (let ($intfaclim (varlist (cdr $ratvars)) genvar ans)
     (setq ans (if mp? (factor e mp) (factor e)))
     (if (and factorresimp $negdistrib
@@ -912,7 +912,7 @@
 		(p p (cddr p)))
 	       ((null p) (nreverse l))))))
 
-(defmfun $ratexpand (x)
+(defmfun ($ratexpand :properties ((evfun t))) (x)
   (if (mbagp x)
       (cons (car x) (mapcar '$ratexpand (cdr x)))
       (let (($ratexpand t) ($ratfac nil))

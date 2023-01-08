@@ -198,7 +198,7 @@
 
 ;;; random-chunk -- Internal
 ;;;
-;;; This function generaters a 32bit integer between 0 and #xffffffff
+;;; This function generates a 32bit integer between 0 and #xffffffff
 ;;; inclusive.
 ;;;
 (declaim (inline random-chunk))

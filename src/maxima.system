@@ -151,11 +151,8 @@
 	     #-(or ecl abcl lispworks) (:private-file "autoconf-variables")
 	     #+(or ecl abcl lispworks) (:file "autoconf-variables")
 	     ))
-   (:module globals :source-pathname ""
-    :components
-    ((:file "globals")))
    (:module intl :source-pathname ""
-	    :components
+	    :components 
 	    (
 	     ;; Some versions of CMUCL already
 	     ;; have a compatible version of
@@ -163,6 +160,10 @@
 	     ;; it.
 	     #+#.(cl:if (cl:and (cl:member :cmu cl:*features*) (cl:find-package '#:intl))  '(or) '(and))
 	     (:file "intl")))
+   (:module globals :source-pathname ""
+	    :depends-on ("intl")
+	    :components
+	    ((:file "globals")))
    (:module info :source-pathname ""
 	    :components
 	    ((:file "pregexp")
@@ -195,6 +196,11 @@
 	    ((:file "mormac")
 	     (:file "compat")))
    (:module maxima-language-compiler-macros :source-pathname ""
+	    ;; Should depend on transl to get special var tr-abort,
+	    ;; but making this depend on maxima-language-compiler to
+	    ;; get transl.lisp doesn't work.  It results in a compiler
+	    ;; error about maxima::$local being an unknown block.  I
+	    ;; (rtoy) didn't investigate further.
 	    :depends-on ("defmfun")
 	    :components
 	    ((:file "transm")))
@@ -249,7 +255,7 @@
 	    ((:file "comm")
 	     (:file "comm2")))
    (:module evaluator :source-pathname ""
-	    :depends-on ("globals" "defmfun")
+	    :depends-on ("globals" "defmfun" "utility-macros")
 	    :components
 	    ((:file "mlisp")
 	     (:file "mmacro")
@@ -576,7 +582,8 @@
 	    :components
 	    ((:file "ifactor")))
    (:module rational-functions :source-pathname ""
-	    :depends-on ("globals" "defmfun" "rat-macros" "other-macros" "compatibility-macros1" "ifactor")
+	    :depends-on ("globals" "defmfun" "rat-macros" "other-macros" 
+			 "compatibility-macros1" "ifactor" "factoring")
 	    :components
 	    ((:file "rat3a")
 	     (:file "rat3b")
@@ -586,17 +593,23 @@
 	     (:file "nrat4")
 	     (:file "ratout")))
    (:module maxima-language-compiler :source-pathname ""
-	    :depends-on ("globals" "defmfun" "maxima-language-compiler-macros")
+	    :depends-on ("globals" "defmfun" "maxima-language-compiler-macros" "evaluator")
 	    :components
 	    ((:file "transl")
-	     (:file "transs")
+	     (:file "transs"
+		    :depends-on ("transl"))
 	     (:file "trans1")
-	     (:file "trans2")
-	     (:file "trans3")
-	     (:file "trans4")
-	     (:file "trans5")
+	     (:file "trans2"
+		    :depends-on ("transl"))
+	     (:file "trans3"
+		    :depends-on ("transl"))
+	     (:file "trans4"
+		    :depends-on ("trprop"))
+	     (:file "trans5"
+		    :depends-on ("transl"))
 	     (:file "transf")
-	     (:file "troper")
+	     (:file "troper"
+		    :depends-on ("transl"))
 	     (:file "trutil")
 	     (:file "trmode")
 	     (:file "trdata")

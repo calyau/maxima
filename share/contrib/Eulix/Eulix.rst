@@ -41,7 +41,7 @@ Credits
 -------
 
 An essential part of `Eulix` consists of a simplified version of the FORTRAN code SEULEX which has been
-publishd in::
+published in::
 
   E. Hairer, G.Wanner
   Solving Ordinary Differential Equations II

@@ -681,7 +681,7 @@ control over their working environment.
 @c One other significant customization option available is the @code{setunitprefix}
 @c command.  Normally, abbreviations used in this package are as close to those
 @c used in standard texts as possible.  Some people, however, prefer to use those
-@c symbols for normal work and have units labeled in some other fasion.
+@c symbols for normal work and have units labeled in some other fashion.
 @c @code{setunitprefix} is provided for this case.  Here is an example of its use:
 
 @opencatbox{Categories:}

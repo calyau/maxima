@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -118,9 +118,8 @@
   (format t "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
-  "Symbols to bind the too-large `maxima-error' expresssions to")
-
-(putprop '$error_syms 'assign-symbols 'assign)
+  "Symbols to bind the too-large `maxima-error' expressions to"
+  :properties ((assign 'assign-symbols)))
 
 (defun assign-symbols (var val)
   (if (not (and ($listp val)
@@ -174,14 +173,6 @@
 		 )))
     (fresh-line))
   '$done)
-
-(defun read-only-assign (var val)
-  (if munbindp
-      'munbindp
-      (merror (intl:gettext "assignment: attempting to assign read-only variable ~:M the value ~M") var val)))
-
-
-(defprop $error read-only-assign  assign)
 
 ;; RAT-ERROR (function)
 ;;

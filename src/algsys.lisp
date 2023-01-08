@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -214,6 +214,12 @@
 						param var
 						(addmlist asolnsetl)))))))))))
 
+;; Do not remove this (and the unspecial below).  While the functions
+;; that reference *vardegs* have special declarations for it,
+;; something is missing.  If this is removed, then the testsuite fails
+;; where algsys produces the same solutions but in a different order.
+;; More troubling is that tests from rtest_odelin produces incorrect
+;; results and appears to hang somewhere after problem 57.
 (declare-top (special *vardegs*))
 
 ;;; (FINDLEASTVAR LHSL)

@@ -77,7 +77,7 @@ output. This throws an error, which is handled by resetting the
 (%i9) x;
 
 Error in *alt-display2d*.
-Messge: Condition designator ((MLABEL) $%O9 $X) is not of type
+Message: Condition designator ((MLABEL) $%O9 $X) is not of type
         (OR SYMBOL STRING FUNCTION).
 *alt-display2d* reset to nil.
  -- an error. To debug this try: debugmode(true);

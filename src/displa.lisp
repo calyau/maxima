@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -64,7 +64,7 @@
 			     (setq form (dimension form nil 'mparen 'mparen 0 0))
 			     (checkbreak form width)
 			     (output form (if (and (not $leftjust) (= 2 lines))
-					      (- linel (- width bkptout))
+					      (- $linel (- width bkptout))
 					      0)))
 			;; make sure the linearray gets cleared out.
 			(fill linearray nil))))))
@@ -142,16 +142,16 @@
   (cond ((or (and (checkfit width) (not crp)) (not break))
 	 (nreconc dummy result))
 	(t (setq width 0)
-	   (do ((l dummy) (w (- linel (- break bkptout))))
+	   (do ((l dummy) (w (- $linel (- break bkptout))))
 	       ((null l) (checkbreak result width) result)
 	     (setq dummy l l (cdr l))
 	     (cond ((char= (car dummy) #\newline)
 		    (forcebreak result width)
-		    (setq result nil w (+ linel width)))
+		    (setq result nil w (+ $linel width)))
 		   (t (incf width)
 		      (when (and (= w width) l)
 			(forcebreak (cons #\\ result) width)
-			(setq result nil w (+ linel width))
+			(setq result nil w (+ $linel width))
 			(incf width))
 		      (setq result (rplacd dummy result))))))))
 
@@ -1081,7 +1081,7 @@
 
 (defun dim-mabs (form result &aux arg bar)
   (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
-  (cond ((or (> (+ 2 width) linel) (and (= 1 height) (= 0 depth)))
+  (cond ((or (> (+ 2 width) $linel) (and (= 1 height) (= 0 depth)))
 	 (dimension-function form result))
 	(t (setq width (+ 2 width))
 	   (update-heights height depth)
@@ -1232,11 +1232,11 @@
 	   (t (setq result (cons #\space (if *display-labels-p*
 					     (dimension-paren (cadr form) result)))
 		    w (1+ width) h height d depth)))
-     (let ((level linel)) (checkbreak result w))
+     (let ((level $linel)) (checkbreak result w))
      (setq dummy (list 0 0))
      (setq result (dimension (caddr form) (cons dummy result) 'mlabel rop w right))
      (cond ((and (not $leftjust) (= 0 bkptout))
-	    (rplaca dummy (max 0 (- (truncate (- linel width) 2) w)))
+	    (rplaca dummy (max 0 (- (truncate (- $linel width) 2) w)))
 	    (setq width (+ (car dummy) width))))
      (setq width (+ w width) height (max h height) depth (max d depth))
      (return result)))
@@ -1261,13 +1261,13 @@
 		  (return form)))))))
 
 (defun checkfit (w)
-  (or (not break) (<= (- (+ w break right 1) bkptwd) linel)))
+  (or (not break) (<= (- (+ w break right 1) bkptwd) $linel)))
 
 (defun checkbreak (result w)
   (cond ((not break))
-	((> (- (setq w (+ w break)) bkptout) linel)
+	((> (- (setq w (+ w break)) bkptout) $linel)
 	 (if (or (null bkpt) (eq result bkpt))
-	     (merror (intl:gettext "display: failed to break up a long expression.~%display: change 'linel' slightly and try again.")))
+	     (merror (intl:gettext "display: failed to break up a long expression.~%display: change '$linel' slightly and try again.")))
 	 (do ((l result (cdr l)))
 	     ;; THE NEED FOR EQUAL HERE IS PROBABLY THE SYMPTOM OF A BUG IN ECL !!
 	     ;; PROBABLY RELATED TO SIDE-EFFECTS OF NRECONC, RPLACD, ETC !!
@@ -1279,7 +1279,7 @@
 	 (setq lines (1+ lines)
 	       bkpt result bkptout bkptwd bkptwd w
 	       bkptht maxht bkptdp maxdp bkptlevel level maxht 1 maxdp 0))
-	((or (null bkpt) (<= level bkptlevel) (> (truncate linel 2) (- bkptwd bkptout)))
+	((or (null bkpt) (<= level bkptlevel) (> (truncate $linel 2) (- bkptwd bkptout)))
 	 (setq bkpt result bkptwd w bkptlevel level
 	       bkptht (max maxht bkptht) bkptdp (max maxdp bkptdp) maxht 1 maxdp 0))))
 

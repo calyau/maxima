@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -14,7 +14,7 @@
 
 (declare-top (special lop rop *grind-charlist* chrps))
 
-(defun chrct* () (- linel chrps))
+(defun chrct* () (- $linel chrps))
 
 (defmspec $grind (x)
   (setq x (cdr x))
@@ -71,7 +71,7 @@
 		 (mprint (cadr x) out)
 		 (cond ((null (cddr x)) (return nil))
 		       ((and (or (atom (cadr x)) (< (caadr x) (chrct*)))
-			     (or (> (chrct*) (truncate linel 2))
+			     (or (> (chrct*) (truncate $linel 2))
 				 (atom (caddr x)) (< (caaddr x) (chrct*))))
 			(setq i chrps)
 			(mprint (caddr x) out))
@@ -101,7 +101,7 @@
 	      (strprint (cadr x))
 	      (cond ((null (cddr x)) (return nil))
 		    ((and (or (atom (cadr x)) (< (caadr x) (chrct*)))
-			  (or (> (chrct*) (truncate linel 2))
+			  (or (> (chrct*) (truncate $linel 2))
 			      (atom (caddr x)) (< (caaddr x) (chrct*))))
 		     (setq i chrps)
 		     (strprint (caddr x)))
@@ -373,7 +373,7 @@
          (setq x (cons (- (car l) (caadr l)) (cddr l)))
          (if (and (not (atom (cadr r)))
                   (not (atom (caddr r)))
-                  (< (+ (car l) (caadr r) (caaddr r)) linel))
+                  (< (+ (car l) (caadr r) (caaddr r)) $linel))
              (setq x (nconc x (list (cadr r) (caddr r)))
                    r (cons (car r) (cdddr r))))
          (cons (+ (car l) (car r)) (cons (cadr l) (cons x (cdr r)))))

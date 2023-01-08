@@ -73,7 +73,7 @@ print(eqlam),
 database:[diff(w,amp)=0,diff(w,lam)=0],
 sub:y=amp*cfun+w,
 temp1:ev(eqlam,sub,diff),
-nullans:read("do you know apriori that some taylor coefficents are zero, y/n")
+nullans:read("do you know apriori that some taylor coefficients are zero, y/n")
 )$
 
 					
@@ -127,7 +127,7 @@ an o.d.e. for zw in temp7 */
 	  derivsubst:false,
 	  temp4:ev(temp3,amp=0,lam=0,w=0),
           temp5:trigreduce(temp4),
-/*this ensures that the r.h.s. fo the d.e. temp6 is orthogonal to
+/*this ensures that the r.h.s. for the d.e. temp6 is orthogonal to
 the solution of the homogeneous equation */
 	  temp6:project(temp5),
 	  temp7:ode2(temp6,zw,x),

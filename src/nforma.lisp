@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -11,8 +11,6 @@
 (in-package :maxima)
 
 (macsyma-module nforma)
-
-(declare-top (special 1//2 -1//2 ))
 
 (defmvar $exptdispflag t)
 (defmvar $negsumdispflag t)
@@ -159,10 +157,10 @@
 (setf (get 'mmacroexpanded 'formatter) 
   #'(lambda(form)(nformat (caddr form))))
 
-(setf (get 'mplus 'formatter)  #'form-mplus)
-(setf (get 'mtimes 'formatter)  #'form-mtimes)
-(setf (get 'mexpt 'formatter)  #'form-mexpt)
-(setf (get 'mrat 'formatter)  #'form-mrat)
+(setf (get 'mplus 'formatter) 'form-mplus)
+(setf (get 'mtimes 'formatter) 'form-mtimes)
+(setf (get 'mexpt 'formatter) 'form-mexpt)
+(setf (get 'mrat 'formatter) 'form-mrat)
 (setf (get 'mpois 'formatter)  #'(lambda(form)(nformat ($outofpois form))))
 
 (setf (get 'bigfloat 'formatter)  

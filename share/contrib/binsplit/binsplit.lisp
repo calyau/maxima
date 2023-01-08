@@ -196,7 +196,7 @@
     (when (fpgreaterp x (floattofp (/ pi 4))) ;; is x > pi/4 ?
       (setq e (1- e) ;; x <-- x/2
             x/2? t ))
-    ;; now x <= pi/4 (the alogrithm needs x < 1)
+    ;; now x <= pi/4 (the algorithm needs x < 1)
     (do ((k 0 (1+ k))
          (nr 1)  
          (pos1 1 (ash pos1 1))

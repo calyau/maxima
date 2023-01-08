@@ -433,7 +433,7 @@ charsets_qics ( ps,lst,[args]):=block( [ mset,ord,qs,y],
 
 charsets_cfactor ( f,[args]):=block( [ _ind,inda,ff,i,as,ord,last],
    if length(args) = 0 then ( return ( factor ( f) )),
-   if length(args) # 2 then ( error ("inproper number of arguments"))
+   if length(args) # 2 then ( error ("improper number of arguments"))
    else (as:first(args),ord:second(args)),
    if length ( as)  < 1 then ( error ("no polynomials specified"))
    else if length ( ord)  < 1 then ( error ("no indeterminates specified"))

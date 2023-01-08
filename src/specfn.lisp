@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -262,8 +262,6 @@
 	(t (merror (intl:gettext "Pole encountered in: ~M") exp))))
 
 
-(declare-top (special $maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom))
-
 (defprop $psi psisimp specsimp)
 
 ;; Integral of psi function psi[n](x)
@@ -278,11 +276,6 @@
 	(t `((mqapply) (($psi array) ((mplus) -1 ,n)) ,x))))
       (t nil))))
      'integral)
-
-(mapcar #'(lambda (var val)
-	    (and (not (boundp var)) (setf (symbol-value var) val)))
-	'($maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom)
-	'(20. -10. 6 6))
 
 (defun psisimp (expr a z)
   (let ((s (simpcheck (car (subfunsubs expr)) z)))
@@ -407,7 +400,7 @@
 ;; These routines are specially coded to be as fast as possible given the
 ;; current $TAYLOR; too bad they have to be so ugly.
 
-(declare-top (special var subl *last* sign last-exp))
+(declare-top (special var))
 
 (defun expgam-fun (pw temp)
   (setq temp (get-datum (get-key-var (car var))))
@@ -421,8 +414,8 @@
   (setq subl (car subl))
   (if (or (not (integerp subl)) (< subl -1))
       (tay-err "Unable to expand at a subscript in")
-      (prog ((e 0) (sign 0) npw)
-	 (declare (fixnum e) (fixnum sign))
+      (prog ((e 0) (sf-sign 0) npw sf-last)
+	 (declare (fixnum e) (fixnum sf-sign))
 	 (setq npw (/ (float (car pw)) (float (cdr pw))))
 	 (setq
 	  l (cond ((= subl -1)
@@ -432,28 +425,28 @@
 			 (if (> 0.0 npw) ()
 			     `(((0 . 1)
 				. ,(prep1 '((mtimes) -1 $%gamma)))))))
-		  (t (setq *last* (factorial subl))
+		  (t (setq sf-last (factorial subl))
 		     `(((,(- (1+ subl)) . 1)
 			,(* (expt -1 (1+ subl))
 				(factorial subl)) . 1))))
 	  e (if (< subl 1) (- subl) -1)
-	  sign (if (< subl 1) -1 (expt -1 subl)))
-	 a (setq e (1+ e) sign (- sign))
+	  sf-sign (if (< subl 1) -1 (expt -1 subl)))
+	 a (setq e (1+ e) sf-sign (- sf-sign))
 	 (if (> e npw) (return l)
 	     (rplacd (last l)
 		     `(((,e . 1)
-			. ,(rctimes (rcplygam e)
+			. ,(rctimes (rcplygam e sf-sign subl sf-last)
 				    (prep1 ($zeta (+ (1+ subl) e))))))))
 	 (go a))))
 
-(defun rcplygam (k)
+(defun rcplygam (k sf-sign subl sf-last)
   (declare (fixnum k) )
-  (cond ((= subl -1) (cons sign k))
-	((= subl 0) (cons sign 1))
+  (cond ((= subl -1) (cons sf-sign k))
+	((= subl 0) (cons sf-sign 1))
 	(t (prog1
-	       (cons (* sign *last*) 1)
-	     (setq *last*
-		   (quot (* *last* (+ subl (1+ k)))
+	       (cons (* sf-sign sf-last) 1)
+	     (setq sf-last
+		   (quot (* sf-last (+ subl (1+ k)))
 			 (1+ k)))))))
 
 (defun plygam-ord (subl)
@@ -513,8 +506,6 @@
 	       (cons (* (expt -1 (1+ sub)) (factorial sub)) 1)
 	       (tsprsum `((mexpt) ,(m+t a '%%taylor-index%%) ,(- (1+ sub)))
 			`(%%taylor-index%% 0 ,(- (1+ const))) '%sum))))))))
-
-(declare-top (unspecial var subl *last* sign last-exp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Lambert W function

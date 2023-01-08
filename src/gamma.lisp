@@ -83,7 +83,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; The following functions test if numerical evaluation has to be done.
-;;; The functions should help to test for numerical evaluation more consitent
+;;; The functions should help to test for numerical evaluation more consistent
 ;;; and without complicated conditional tests including more than one or two
 ;;; arguments.
 ;;;
@@ -584,7 +584,7 @@
 		;; Nothing to do if the order is already between 0 and 1
 		(list '(%gamma_incomplete_lower simp) a z))
 	       (t
-		;; Use gamma_incomplete(a+n,z) above. and then substitue
+		;; Use gamma_incomplete(a+n,z) above. and then substitute
 		;; a=order.  This works for n positive or negative.
 		(let* ((ord (gensym))
 		       (g (simplify (list '(%gamma_incomplete_lower) (add ord n) z))))
@@ -887,7 +887,7 @@
 	      ;; Nothing to do if the order is already between 0 and 1
 	      (give-up))
 	     (t
-	      ;; Use gamma_incomplete(a+n,z) above. and then substitue
+	      ;; Use gamma_incomplete(a+n,z) above. and then substitute
 	      ;; a=order.  This works for n positive or negative.
 	      (let* ((ord (gensym))
 		     (g (simplify (list '(%gamma_incomplete) (add ord n) z))))
@@ -1757,7 +1757,7 @@
 	      (give-up))
 	     (t
 	      ;; Use gamma_incomplete_regularized(a+n,z) above. and
-	      ;; then substitue a=order.  This works for n positive or
+	      ;; then substitute a=order.  This works for n positive or
 	      ;; negative.
 	      (let* ((ord (gensym))
 		     (g (simplify (list '(%gamma_incomplete_regularized) (add ord n) z))))
@@ -1801,7 +1801,7 @@
 (defun log-gamma-integral (x)
   (take '(mqapply) (take '($psi) -2) x))
 
-(putprop '%log_gamma (list (list 'x) #'log-gamma-integral) 'integral)
+(putprop '%log_gamma (list (list 'x) 'log-gamma-integral) 'integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -115,7 +115,6 @@
 
 (declare-top
  (special vlist
-	  modulus		;
 	  *a*			;Temporary special
 	  tlist			;An association list which contains the
 				;relevant information for the expansion which
@@ -131,7 +130,6 @@
 	  tay-pole-expand	;
 	  trigdisp		;
 	  last-exp		;last-expression through taylor2
-	  ps-bmt-disrep		;
 	  ivars			;Pairlist if gensym and disreped version
 	  key-vars		;Pairlist of gensym and key var (for searching
 				;TLIST)
@@ -151,7 +149,7 @@
 	  zerolist		; A list of constant expressions which have
 				; been verified to be zero by a call to
 				; $TAYLOR_SIMPLIFIER in taylor2. It is used to
-				; suppress the message that TAYLOR is assumming
+				; suppress the message that TAYLOR is assuming
 				; an expression to be zero.
 	; 0p-funord lexp-non0	; referenced only in commented-out code, so comment out here too
 	)
@@ -171,7 +169,7 @@
 
 (defmvar $taylor_truncate_polynomials t
  "When FALSE polynomials input to TAYLOR are considered to have infinite
-  precison; otherwise (the default) they are truncated based upon the input
+  precision; otherwise (the default) they are truncated based upon the input
   truncation levels.")
 
 (defmvar $taylor_logexpand t
@@ -731,7 +729,7 @@
 	  ((mono-term? (terms p))	;; A monomial to a power
 	   (let ((s (psfind-s n)) (n-s) (x) (l (terms p)))
 	      ;; s is the numeric part of the exponent
-	      (if (floatp (car s)) ;; Perhaps we souldn't
+	      (if (floatp (car s)) ;; Perhaps we shouldn't
 		  ;; rationalize if $keepfloat is true?
 		  (setq s (maxima-rationalize (quot (car s) (cdr s)))))
 	      (setq n-s (psdiff n s)	;; the non-numeric part of exponent
@@ -3087,7 +3085,11 @@
    ;; internal var and likewise shouldn't be displayed.
    (cond ((or (rczerop n) (null var) (equal var 1)) 1)
 	 ((equal n (rcone)) var)
-	 ((and ps-bmt-disrep (mexptp var) (equal (caddr var) -1))
+	 ((and (mexptp var) (equal (caddr var) -1))
+	  ;; This used to be conditioned on ps-bmt-disrep which was
+	  ;; always true.  But I (rtoy) can't find a case where it
+	  ;; would have made a difference.  The testsuite doesn't have
+	  ;; any examples.
 	  (psdisrep^ (e- n) (cadr var)))
 	 ('t `((mexpt ratsimp) ,var ,(edisrep n)))))
 

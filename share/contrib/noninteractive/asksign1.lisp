@@ -1,11 +1,10 @@
-(defvar $e% nil)
+(defmvar $e% nil)
 
 (defmvar $no_questions t)
 
 ;; ADAPTED FROM $CATCH IN SRC/SUPRV1.LISP
 ;; CLEARSIGN CALL COPIED FROM MEVAL* IN SRC/SUPRV1.LISP
 (defun meval* ($e%)
-  (declare (special $e%))
   (let
     ((mcatch (cons bindlist loclist)))
     (prog1
@@ -55,7 +54,7 @@
 
 ;; Replaces $ASKEQUAL in src/compar.lisp
 (defvar *real-askequal* (symbol-function '$askequal))
-(defun $askequal (a b)
+(defmfun $askequal (a b)
   (if $no_questions
     ;; Throw askequal(a, b) only if askequal would actually ask the user
     ;; (i.e., askequal can't figure out the answer by itself).

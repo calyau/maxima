@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -13,7 +13,7 @@
 (macsyma-module nrat4)
 
 (declare-top (special *exp *exp2 *radsubst *loglist $radsubstflag
-		      *v *var radcanp))
+		      *v *var))
 
 (defmvar $radsubstflag nil
   "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")
@@ -28,8 +28,6 @@
 (defun rdis* (x) `((mrat simp ,varlist ,genvar) . ,x))
 
 (defun rform (x) (cdr (ratf x)))
-
-(setq radcanp nil)
 
 (defmfun $ratcoef (e x &optional (n 1))
   (ratcoeff e x n)) ; The spelling "ratcoeff" is nicer.
@@ -418,7 +416,7 @@
 
 ;; subtitle radcan
 
-(defmfun $radcan (exp)
+(defmfun ($radcan :properties ((evfun t))) (exp)
   (cond ((mbagp exp) (cons (car exp) (mapcar '$radcan (cdr exp))))
 	(t (let (($ratsimpexpons t))
 	     (simplify (let (($expop 0) ($expon 0))

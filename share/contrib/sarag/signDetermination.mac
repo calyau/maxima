@@ -20,7 +20,7 @@ comp_ceiling(x) :=
   else
      fix(x)+1;
 
-/* Uncenter the modulo reppresentation */
+/* Uncenter the modulo representation */
 /* It works for both odd and even positive integer m */
 comp_uncenter(x,m) :=
   if(x >= 0) then
@@ -729,7 +729,7 @@ thomSignsAtRoots(thomP,p,q,var) :=
     ); /* end proc */
 
 
-/* It computes the thom Encondings of p with */
+/* It computes the thom Encodings of p with */
 /* with the sign of q at each Thom Encoding */
 thomEncodingWithSigns(p,q,var) :=
   block([signDetRes],

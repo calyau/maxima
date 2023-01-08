@@ -1810,7 +1810,7 @@
         (setf lookup-table-name (car lut))
         (format str "~a~%" (cadr lut))))
 
-    ; phyton code
+    ; python code
     (format str "~a=vtk.vtkPolyData()~%" source-name)
     (format str "~a~%" (vtkpoints-code points-name source-name x y z))
     (format str "~a~%" (vtkcellarray-code cellarray-name source-name 1 
@@ -1893,7 +1893,7 @@
              (if (>= tt tmax) (setq tt tmax)) ))
     (setf result-array (make-array (length result) :initial-contents result))
 
-    ; phyton code
+    ; python code
     (format str "~a=vtk.vtkFloatArray()~%" arrayX-name)
     (format str "~a.SetName(\"~a\")~%" arrayX-name arrayX-name)
     (format str "~a=vtk.vtkFloatArray()~%" arrayY-name)
@@ -3111,7 +3111,7 @@
     (when (eql cmdstorage nil)
       (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." gfn))
 
-    ;; pull in requiered packages
+    ;; pull in required packages
     (format cmdstorage "~a~%~a~%~%~a~%~a~%~%~a~%~%"
       "#!/usr/bin/env python"
       "# -*- coding: UTF-8 -*-"

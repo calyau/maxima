@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -21,22 +21,9 @@
 
 (defmvar $letvarsimp nil)
 
-(defmvar $letrat nil) 
-
-(defmvar $default_let_rule_package '$default_let_rule_package
-  "The name of the default rule package used by `let' and `letsimp'")
-
-(putprop '$default_let_rule_package 'let-rule-setter 'assign)
-
-(defmvar $current_let_rule_package '$default_let_rule_package
-  "The name of the current rule package used by `let' and `letsimp'")
-
-(putprop '$current_let_rule_package 'let-rule-setter 'assign)
-
-(defmvar $let_rule_packages '((mlist) $default_let_rule_package)
-  "The names of the various let rule simplification packages")
-
-(putprop '$let_rule_packages 'let-rule-setter 'assign)
+(defmvar $letrat nil
+  nil
+  :properties ((evflag t))) 
 
 (setq nisrules nil nistree nil) 
 

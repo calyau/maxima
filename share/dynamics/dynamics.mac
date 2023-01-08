@@ -202,7 +202,7 @@ block
     Usage:
       ifs([r1,...,rm], [A1,...,Am], [p1,...,pm]], p0, n, [options]);
 
-    where r1,...,rm are cummulative weights for the attracting points.
+    where r1,...,rm are cumulative weights for the attracting points.
     For instance if there are 3 points with probabilities 0.2, 0.5 and
     0.3, you can use [2,7,10].
     A1,...,Am, are the matrices for the m attracting points and
@@ -225,7 +225,7 @@ block
        (if length(point[i]) # 2 then
            error("Point",point[i],"should be a list with 2 components"),
         if not numberp(prob[i]) then
-           error("Cummulative probability",prob[i],"should be a number"),
+           error("Cumulative probability",prob[i],"should be a number"),
         if not ((length(mat[i])=2) and (length(mat[i][1])=2)) then
            error("Matrix",mat[i],"should be a 2x2 matrix")),
     for i thru n do

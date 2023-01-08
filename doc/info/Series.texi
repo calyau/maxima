@@ -571,8 +571,7 @@ Default value: @code{[i, j, k, l, m, n]}
 @code{niceindicespref} is the list from which @code{niceindices}
 takes the names of indices for sums and products.
 
-The elements of @code{niceindicespref} are typically names of variables,
-although that is not enforced by @code{niceindices}.
+The elements of @code{niceindicespref} are must be names of simple variables.
 
 Example:
 

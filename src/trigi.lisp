@@ -14,8 +14,6 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special 1//2 -1//2))
-
 ;;; Arithmetic utilities.
 
 (defun sqrt1-x^2 (x)
@@ -323,34 +321,34 @@
 ;; Put the reflection rule on the property list of the exponential-like
 ;; functions.
 
-(setf (get '%cos 'reflection-rule) #'even-function-reflect)
-(setf (get '%sin 'reflection-rule) #'odd-function-reflect)
-(setf (get '%tan 'reflection-rule) #'odd-function-reflect)
-(setf (get '%sec 'reflection-rule) #'even-function-reflect)
-(setf (get '%csc 'reflection-rule) #'odd-function-reflect)
-(setf (get '%cot 'reflection-rule) #'odd-function-reflect)
+(setf (get '%cos 'reflection-rule) 'even-function-reflect)
+(setf (get '%sin 'reflection-rule) 'odd-function-reflect)
+(setf (get '%tan 'reflection-rule) 'odd-function-reflect)
+(setf (get '%sec 'reflection-rule) 'even-function-reflect)
+(setf (get '%csc 'reflection-rule) 'odd-function-reflect)
+(setf (get '%cot 'reflection-rule) 'odd-function-reflect)
 
 ;; See A&S 4.4.14--4.4.19
 
 (setf (get '%acos 'reflection-rule) #'(lambda (op x) (sub '$%pi (take (list op) (neg x)))))
-(setf (get '%asin 'reflection-rule) #'odd-function-reflect)
-(setf (get '%atan 'reflection-rule) #'odd-function-reflect)
+(setf (get '%asin 'reflection-rule) 'odd-function-reflect)
+(setf (get '%atan 'reflection-rule) 'odd-function-reflect)
 (setf (get '%asec 'reflection-rule) #'(lambda (op x) (sub '$%pi (take (list op) (neg x)))))
-(setf (get '%acsc 'reflection-rule) #'odd-function-reflect)
-(setf (get '%acot 'reflection-rule) #'odd-function-reflect)
+(setf (get '%acsc 'reflection-rule) 'odd-function-reflect)
+(setf (get '%acot 'reflection-rule) 'odd-function-reflect)
 
-(setf (get '%cosh 'reflection-rule) #'even-function-reflect)
-(setf (get '%sinh 'reflection-rule) #'odd-function-reflect)
-(setf (get '%tanh 'reflection-rule) #'odd-function-reflect)
-(setf (get '%sech 'reflection-rule) #'even-function-reflect)
-(setf (get '%csch 'reflection-rule) #'odd-function-reflect)
-(setf (get '%coth 'reflection-rule) #'odd-function-reflect)
+(setf (get '%cosh 'reflection-rule) 'even-function-reflect)
+(setf (get '%sinh 'reflection-rule) 'odd-function-reflect)
+(setf (get '%tanh 'reflection-rule) 'odd-function-reflect)
+(setf (get '%sech 'reflection-rule) 'even-function-reflect)
+(setf (get '%csch 'reflection-rule) 'odd-function-reflect)
+(setf (get '%coth 'reflection-rule) 'odd-function-reflect)
 
-(setf (get '%asinh 'reflection-rule) #'odd-function-reflect)
-(setf (get '%atanh 'reflection-rule) #'odd-function-reflect)
-(setf (get '%asech 'reflection-rule) #'even-function-reflect)
-(setf (get '%acsch 'reflection-rule) #'odd-function-reflect)
-(setf (get '%acoth 'reflection-rule) #'odd-function-reflect)
+(setf (get '%asinh 'reflection-rule) 'odd-function-reflect)
+(setf (get '%atanh 'reflection-rule) 'odd-function-reflect)
+(setf (get '%asech 'reflection-rule) 'even-function-reflect)
+(setf (get '%acsch 'reflection-rule) 'odd-function-reflect)
+(setf (get '%acoth 'reflection-rule) 'odd-function-reflect)
 
 ;; When b is nil, do not apply the reflection rule. For trigonometric like
 ;; functions, b is $trigsign.  This function uses 'great' to decide when to

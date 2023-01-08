@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -122,7 +122,7 @@
        ((mexpt) ((%gamma) ((mplus) 2 ,v)) -1) 
        ((mexpt) z ((mplus) 1 ,v))))))
 
-(putprop '%bessel_j `((v z) nil ,#'bessel-j-integral-2) 'integral)
+(putprop '%bessel_j `((v z) nil ,'bessel-j-integral-2) 'integral)
 
 ;; Support a simplim%bessel_j function to handle specific limits
 
@@ -460,7 +460,7 @@
 	  (simplify ($niceindices answer)))))))
    (t nil)))
 
-(putprop '%bessel_y `((n z) nil ,#'bessel-y-integral-2) 'integral)
+(putprop '%bessel_y `((n z) nil ,'bessel-y-integral-2) 'integral)
 
 ;; Support a simplim%bessel_y function to handle specific limits
 
@@ -796,7 +796,7 @@
            ((mexpt) ((%gamma) ((mplus) 2 ,v)) -1) 
            ((mexpt) z ((mplus) 1 ,v))))))
 
-(putprop '%bessel_i `((v z) nil ,#'bessel-i-integral-2) 'integral)
+(putprop '%bessel_i `((v z) nil ,'bessel-i-integral-2) 'integral)
 
 ;; Support a simplim%bessel_i function to handle specific limits
 
@@ -1157,7 +1157,7 @@
 	  (simplify ($niceindices answer)))))))
    (t nil)))
 
-(putprop '%bessel_k `((n z) nil ,#'bessel-k-integral-2) 'integral)
+(putprop '%bessel_k `((n z) nil ,'bessel-k-integral-2) 'integral)
 
 ;; Support a simplim%bessel_k function to handle specific limits
 

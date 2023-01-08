@@ -62,7 +62,7 @@ setup():=(/*the function setup needs the dimension n of the system of
    database:append(database,map(lambda([u],diff(u,lam)=0),w)),
    norm:afun.cfun,
    temp1:ev(eqlam,sub,diff),
-   print("do you know apriori that some taylor coefficents"),
+   print("do you know apriori that some taylor coefficients"),
 	  nullans:read(" are zero, y/n")
    )$
 
