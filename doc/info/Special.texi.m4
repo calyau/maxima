@@ -348,6 +348,27 @@ the Bessel function is expanded.
                                           z
 (%o4)                  ---------------------------------
                                    sqrt(%pi)
+(%i5) bessel_y(3/2,z);
+                                        sin(z)    cos(z)
+                    sqrt(2) sqrt(z) ((- ------) - ------)
+                                          z          2
+                                                    z
+(%o5)               -------------------------------------
+                                  sqrt(%pi)
+(%i6) bessel_i(3/2,z);
+                                      cosh(z)   sinh(z)
+                     sqrt(2) sqrt(z) (------- - -------)
+                                         z         2
+                                                  z
+(%o6)                -----------------------------------
+                                  sqrt(%pi)
+(%i7) bessel_k(3/2,z);
+                                      1        - z
+                           sqrt(%pi) (- + 1) %e
+                                      z
+(%o7)                      -----------------------
+                               sqrt(2) sqrt(z)
+
 @end example
 
 @opencatbox{Categories:}
