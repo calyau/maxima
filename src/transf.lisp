@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -12,6 +12,13 @@
 (in-package :maxima)
 
 (macsyma-module transf)
+
+(defmvar $tr_float_can_branch_complex t
+  "States whether the arc functions might return complex results. The
+arc functions are SQRT,LOG,ACOS, etc. e.g. When it is TRUE then
+ACOS(X) will be of mode ANY even if X is of mode FLOAT. When FALSE
+then ACOS(X) will be of mode FLOAT if and only if X is of mode FLOAT.")
+
 
 ;;; some floating point translations. with tricks.
 
@@ -47,13 +54,6 @@
 (def-same%tr %atan %sin)
 (def-same%tr %erf %sin)
 (def-same%tr %exp %sin)
-
-(defmvar $tr_float_can_branch_complex t
-  "States wether the arc functions might return complex
-	 results. The arc functions are SQRT,LOG,ACOS, etc.
-	 e.g. When it is TRUE then ACOS(X) will be of mode ANY even if X is
-	 of mode FLOAT. When FALSE then ACOS(X) will be of mode FLOAT
-	 if and only if X is of mode FLOAT.")
 
 (def%tr %acos (form)
   (translate-with-flonum-op form t))

@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -115,13 +115,6 @@
 		   '(t t t t))
 	   t))
     (cons new-sum extracted)))
-
-(defun assign-nonempty-list (n v)
-  (declare (ignore n))
-  (unless (and ($listp v) (not ($emptyp v)))
-    (merror
-      (intl:gettext "niceindicespref: value must be a nonempty list; found: ~:M")
-      v)))
 
 (defun get-free-index (llist &optional i)
   (or (do ((try-list (cdr $niceindicespref) (cdr try-list)))

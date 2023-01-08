@@ -87,7 +87,7 @@
    for n = 0, 1,...,floor(N/2)+1
 
    NOTE: This differs from the typical engineering definition of the
-   forward FFT, where the transfrom is often not normalized by the
+   forward FFT, where the transform is often not normalized by the
    length and the argument to exp has a negative sign.  This is
    generally considered the inverse FFT in engineering"
 

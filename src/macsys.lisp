@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -450,62 +450,54 @@ DESTINATION is an actual stream (rather than nil for a string)."
           '$new
           `((%build_info)
             ,*autoconf-version*
-            ,(format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d" year month day hour minute seconds)
+            ,(format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d"
+		     year month day hour minute seconds)
             ,*autoconf-host*
-            ,#+sbcl (ensure-readably-printable-string (lisp-implementation-type)) #-sbcl (lisp-implementation-type)
-            ,#+sbcl (ensure-readably-printable-string (lisp-implementation-version)) #-sbcl (lisp-implementation-version)
+            ,(ensure-readably-printable-string (lisp-implementation-type))
+            ,(ensure-readably-printable-string (lisp-implementation-version))
 	    ,$maxima_userdir
 	    ,$maxima_tempdir
 	    ,$maxima_objdir
 	    ,$maxima_frontend
 	    ,$maxima_frontend_version))))))
 
-;; SBCL base strings aren't readably printable.
-;; Attempt a work-around. Yes, this is terribly ugly.
-#+sbcl (defun ensure-readably-printable-string (x)
-  (coerce x `(simple-array character (,(length x)))))
+;; SBCL base strings aren't readably printable.  Attempt a work-around
+;; by coercing the string to be an array of characters instead of
+;; base-chars. Yes, this is terribly ugly.  For other Lisps, we can
+;; just return the arg.
+(defun ensure-readably-printable-string (x)
+  #+sbcl
+  (coerce x '(simple-array character (*)))
+  #-sbcl
+  x)
 
 (defun dimension-build-info (form result)
   (declare (special bkptht bkptdp lines break))
   ;; Usually the result of (MFUNCALL '$@ ...) is a string,
   ;; but ensure that output makes sense even if it is not.
-  (let
-    ((version-string (format nil (intl:gettext "Maxima version: ~a")
-       (coerce (mstring (mfuncall '$@ form '$version)) 'string)))
-     (timestamp-string (format nil (intl:gettext "Maxima build date: ~a")
-       (coerce (mstring (mfuncall '$@ form '$timestamp)) 'string)))
-     (host-string (format nil (intl:gettext "Host type: ~a")
-       (coerce (mstring (mfuncall '$@ form '$host)) 'string)))
-     (lisp-name-string (format nil (intl:gettext "Lisp implementation type: ~a")
-       (coerce (mstring (mfuncall '$@ form '$lisp_name)) 'string)))
-     (lisp-version-string (format nil (intl:gettext "Lisp implementation version: ~a")
-       (coerce (mstring (mfuncall '$@ form '$lisp_version)) 'string)))
-     (maxima-userdir-string (format nil (intl:gettext "User dir: ~a")
-       (coerce (mstring (mfuncall '$@ form '$maxima_userdir)) 'string)))
-     (maxima-tempdir-string (format nil (intl:gettext "Temp dir: ~a")
-       (coerce (mstring (mfuncall '$@ form '$maxima_tempdir)) 'string)))
-     (maxima-objdir-string (format nil (intl:gettext "Object dir: ~a")
-       (coerce (mstring (mfuncall '$@ form '$maxima_objdir)) 'string)))
-     (maxima-frontend-string (format nil (intl:gettext "Frontend: ~a")
-       (coerce (mstring (mfuncall '$@ form '$maxima_frontend)) 'string)))
-     (maxima-frontend-version-string (format nil (intl:gettext "Frontend version: ~a")
-       (coerce (mstring (mfuncall '$@ form '$maxima_frontend_version)) 'string)))
-     (bkptht 1)
-     (bkptdp 1)
-     (lines 0)
-     (break 0))
-    (forcebreak result 0)
-    (forcebreak (reverse (coerce version-string 'list)) 0)
-    (forcebreak (reverse (coerce timestamp-string 'list)) 0)
-    (forcebreak (reverse (coerce host-string 'list)) 0)
-    (forcebreak (reverse (coerce lisp-name-string 'list)) 0)
-    (forcebreak (reverse (coerce lisp-version-string 'list)) 0)
-    (forcebreak (reverse (coerce maxima-userdir-string 'list)) 0)
-    (forcebreak (reverse (coerce maxima-tempdir-string 'list)) 0)
-    (forcebreak (reverse (coerce maxima-objdir-string 'list)) 0)
-    (forcebreak (reverse (coerce maxima-frontend-string 'list)) 0)
-    (if $maxima_frontend (forcebreak (reverse (coerce maxima-frontend-version-string 'list)) 0)))
-  nil)
+  (flet ((display-item (item item-label)
+	   (let ((s (format nil
+			    "~A: ~A"
+			    (intl:gettext item-label)
+			    (coerce (mstring (mfuncall '$@ form item)) 'string))))
+	     (forcebreak (reverse (coerce s 'list)) 0))))
+    (let ((bkptht 1)
+	  (bkptdp 1)
+	  (lines 0)
+	  (break 0))
+      (forcebreak result 0)
+      (display-item '$version "Maxima-version")
+      (display-item '$timestamp "Maxima build date")
+      (display-item '$host "Host type")
+      (display-item '$lisp_name "Lisp implementation type")
+      (display-item '$lisp_version "Lisp implementation version")
+      (display-item '$maxima_userdir "User dir")
+      (display-item '$maxima_tempdir "Temp dir")
+      (display-item '$maxima_objdir "Object dir")
+      (display-item '$maxima_frontend "Frontend")
+      (when $maxima_frontend
+	(display-item '$maxima_frontend_version "Frontend version"))
+      nil)))
 
 (setf (get '%build_info 'dimension) 'dimension-build-info)
 

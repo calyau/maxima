@@ -67,7 +67,7 @@ unactivated gradient at this point to see if it points into or out of
 the feasible region: */
 ev(grad, d=15/2, l=42);
 decslkmults;
-/*  GRAD is a global varible bound by STAP to the
+/*  GRAD is a global variable bound by STAP to the
 symbolic expression for the gradient, and DECSLKMULTS is bound to the
 variables that the gradient is taken with respect to, in the order
 of their components in GRAD.  Thus, -405/4 points in, making the

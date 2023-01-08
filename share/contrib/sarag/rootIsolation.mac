@@ -494,7 +494,7 @@ refineRoot(rootInterval,pol,var) :=
   
 
 
-/* Finds an intermidiate point (already in the right order) */
+/* Finds an intermediate point (already in the right order) */
 intermidiatePoint(lhs,rhs,poly,var) :=
   if length(lhs)=1 then
     if length(rhs) = 1 then

@@ -816,24 +816,27 @@ Among other elements, conditions may comprise relational and logical operators
 as follows.
 
 @c - SEEMS LIKE THIS TABLE WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; PRESENT LOCATION IS OK I GUESS
-@c - REFORMAT THIS TABLE USING TEXINFO MARKUP (MAYBE)
-@example
-Operation            Symbol      Type
- 
-less than            <           relational infix
-less than            <=
-  or equal to                    relational infix
-equality (syntactic) =           relational infix
-negation of =        #           relational infix
-equality (value)     equal       relational function
-negation of equal    notequal    relational function
-greater than         >=
-  or equal to                    relational infix
-greater than         >           relational infix
-and                  and         logical infix
-or                   or          logical infix
-not                  not         logical prefix
-@end example
+@c I (rtoy) would prefer to use the headitem prototype text since it's
+@c easier to reason about, but currently the html output just seems to
+@c ignore that and automatically makes the column width fit the widest
+@c entry.  We use @columnfractions to fix that, but it's hard to know
+@c a priori how wide to make each column.
+@indentedblock
+@c @multitable {greater than or equal to 333} {notequal 333} {relational function}
+@multitable @columnfractions .3 .2 .3
+@headitem Operation @tab Symbol @tab Type
+@item less than                  @tab @code{<}        @tab relational infix
+@item less than or equal to      @tab @code{<=}       @tab relational infix
+@item equality (syntactic)       @tab @code{=}        @tab relational infix
+@item equality (value)           @tab @code{equal}    @tab relational function
+@item negation of equal          @tab @code{notequal} @tab relational function
+@item greater than or equal to   @tab @code{>=}       @tab relational infix
+@item greater than               @tab @code{>}        @tab relational infix
+@item and                        @tab @code{and}      @tab logical infix
+@item or                         @tab @code{or}       @tab logical infix
+@item not                        @tab @code{not}      @tab logical infix
+@end multitable
+@end indentedblock
 
 @opencatbox{Categories:}
 @category{Programming}

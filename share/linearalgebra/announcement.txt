@@ -8,7 +8,7 @@ mat_unblocker.
 (3) Added function mat_trace; a block matrix friendly function for
 the matrix trace.
 
-(4) Improved algorthim for matrix condition number estimation.
+(4) Improved algorithm for matrix condition number estimation.
 
 The new version of linalg can be downloaded from 
 http://www.unk.edu/facstaff/profiles/willisb/.

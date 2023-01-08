@@ -57,8 +57,8 @@
 	    x))
    (add 1 k)))
 	  
-(putprop '%bernstein_poly `((k n x) nil nil ,#'bernstein-integral) 'integral)
-(putprop '$bernstein_poly `((k n x) nil nil ,#'bernstein-integral) 'integral)
+(putprop '%bernstein_poly `((k n x) nil nil ,'bernstein-integral) 'integral)
+(putprop '$bernstein_poly `((k n x) nil nil ,'bernstein-integral) 'integral)
 
 (defun bernstein-poly-simp (e y z)
   (declare (ignore y))
@@ -81,7 +81,7 @@
 
 	  (t (list (list fn 'simp) k n x)))))
 	    
-(setf (get '%bernstein_poly 'operators) #'bernstein-poly-simp)
+(setf (get '%bernstein_poly 'operators) 'bernstein-poly-simp)
 
 (defprop %bernstein_poly
   ((k n x)
@@ -159,5 +159,5 @@
 
     (muln (mapcar #'(lambda (a b z) (opcons '%bernstein_poly a b z)) (margs k) (margs n) (margs x)) t)))
 
-(setf (get '%multibernstein_poly 'operators) #'multi-bernstein-poly-simp)
+(setf (get '%multibernstein_poly 'operators) 'multi-bernstein-poly-simp)
       

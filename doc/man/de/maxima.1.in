@@ -294,7 +294,7 @@ Maxima Hilfs-Skripte.
 .SH UMGEBUNGSVARIABLEN
 .TP
 \fBMAXIMA_USERDIR\fR
-Directory f\(:ur benutzerspezifische Einstellgungsdateien.
+Directory f\(:ur benutzerspezifische Einstellungsdateien.
 Der standardm\(:assige Suchpfad von Maxima beinhaltet \fBMAXIMA_USERDIR\fR.
 Standardwert: \fB$HOME/.maxima\fR.
 .TP

@@ -4,7 +4,7 @@
  * ***                                                                   *** *
  * ***                           * Solve_rec *                           *** *
  * ***                                                                   *** *
- * ***           This file implements some funtions for solving          *** *
+ * ***           This file implements some functions for solving         *** *
  * ***         recurrence equations with maxima. In particular it        *** *
  * ***           implements the Petkovsek's hyper algorithm and          *** *
  * ***       Abramov's algorithm for solving linear recurrences with     *** *

@@ -43,7 +43,7 @@
 
 
 ;; one-window multiplot: consecutive calls
-;; to draw allways plot on the same window
+;; to draw always plot on the same window
 (defvar *multiplot-is-active* nil)
 (defun $multiplot_mode (term)
   (case term
@@ -79,7 +79,7 @@
 ;; This function is called from the graphic objects constructors
 ;; (points, rectangle, etc.). When a new object is created, and if
 ;; the user hasn't especified an x or y range, ranges are computed
-;; automaticallly by calling this function. There is a trick so
+;; automatically by calling this function. There is a trick so
 ;; that object constructors know if they can modify global variables
 ;; xrange and yrange; if these lists are of length 2, it means that
 ;; it was a user selection and they can't be altered; if they are of
@@ -2732,7 +2732,7 @@
                    (3 (format nil " t '' w image"))
                    (5 (format nil " t '' w rgbimage")))
        :groups (case n
-                   (3 '((3 0)))   ; numbers are sent to gnuplot in gropus of 3, no blank lines
+                   (3 '((3 0)))   ; numbers are sent to gnuplot in groups of 3, no blank lines
                    (5 '((5 0))  ))  ; numbers in groups of 5, no blank lines
        :points (list result)) ) )
 

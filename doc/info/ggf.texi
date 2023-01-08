@@ -63,6 +63,38 @@ This function is controlled by global variables @var{GGFINFINITY} and @var{GGFCF
 
 To use this function write first @code{load("ggf")}.
 
+@c These examples are from comments in the file share/contrib/ggf.mac.
+@example
+(%i1) load("ggf");
+(%o1)       /home/toy/src/sourceforge/maxima/share/contrib/ggf.mac
+(%i2) makelist(fib(n),n,0,10);
+(%o2)                [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+(%i3) ggf(%);
+                                       x
+(%o3)                            - ----------
+                                    2
+                                   x  + x - 1
+(%i4) taylor(%,x,0,10);
+              2      3      4      5      6       7       8       9       10
+(%o4)/T/ x + x  + 2 x  + 3 x  + 5 x  + 8 x  + 13 x  + 21 x  + 34 x  + 55 x
+                                                                        + . . .
+(%i5) makelist(2*fib(n+1)-fib(n),n,0,10);
+(%o5)              [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123]
+(%i6) ggf(%);
+                                    x - 2
+(%o6)                             ----------
+                                   2
+                                  x  + x - 1
+(%i7) taylor(%,x,0,10);
+                    2      3      4       5       6       7       8       9
+(%o7)/T/ 2 + x + 3 x  + 4 x  + 7 x  + 11 x  + 18 x  + 29 x  + 47 x  + 76 x
+                                                                     10
+                                                              + 123 x   + . . .
+@end example
+
+As these examples show, the generating function does create a function
+whose Taylor series has coefficients that are the elements of the
+original list.
 @opencatbox{Categories:}
 @category{Generating functions}
 @category{Share packages}

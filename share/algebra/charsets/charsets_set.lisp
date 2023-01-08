@@ -134,7 +134,7 @@
 
 ;; charsets_xsubsetp returns true if and only if each element of the Lisp
 ;; list a is a member of the Maxima list b.  This function isn't 
-;; inteneded to be a user function; it doesn't check whether b is a 
+;; intended to be a user function; it doesn't check whether b is a
 ;; Maxima list. Notice that the empty set is a subset of every 
 ;; set.
 

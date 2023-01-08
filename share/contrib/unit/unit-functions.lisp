@@ -6,8 +6,17 @@
 
 ;; Redefining toplevel-macsyma-eval for post_eval_functions 
 ;; Define the finaleval list
-(defmvar $pre_eval_functions `((mlist)))
-(defmvar $post_eval_functions `((mlist)))
+(defmvar $pre_eval_functions `((mlist))
+  nil
+  :setting-predicate #'(lambda (val)
+			 (and ($listp val)
+			      (every 'symbolp (margs val)))))
+
+(defmvar $post_eval_functions `((mlist))
+  nil
+  :setting-predicate #'(lambda (val)
+			 (and ($listp val)
+			      (every 'symbolp (margs val)))))
 
 (defun toplevel-macsyma-eval (x)
 ;; Functional definition of toplevel-macsyma-eval
@@ -16,58 +25,6 @@
   (setq x (meval* x))
   (dolist (fi (margs $post_eval_functions) x)
     (setq x (mfuncall fi x))))
-
-
-(defmfun msetchk (x y)
-;; Redefine msetchk to protect pre_eval_functions and post_eval_functions
-;; from improper assignments
-  (cond ((member x '(*read-base* *print-base*) :test #'eq)
-	 (cond ((eq y 'roman))
-	       ((or (not (fixnump y)) (< y 2) (> y 35)) (mseterr x y))
-	       ((eq x '*read-base*))))
-	((member x '($linel $fortindent $gensumnum $fpprintprec $floatwidth
-		   $parsewindow $ttyintnum) :test #'eq)
-	 (if (not (fixnump y)) (mseterr x y))
-         (if (eq x '$linel)
-             (cond ((not (and (> y 0)       ; at least one char per line
-                              (< y 10001))) ; arbitrary chosen big value
-                    (mseterr x y))
-                   (t
-                    (setq linel y))))
-	 (cond ((and (member x '($fortindent $gensumnum $floatwidth $ttyintnum) :test #'eq) (< y 0))
-		(mseterr x y))
-	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
-	       ((and (eq x '$fpprintprec) (or (< y 0) (= y 1))) (mseterr x y))))
-	((member x '($genindex $optimprefix) :test #'eq) (if (not (symbolp y)) (mseterr x y)))
-	((eq x '$dotassoc) (cput 'mnctimes y 'associative))
-	((eq x 'modulus)
-	 (cond ((null y))
-	       ((integerp y)
-		(if (or (not (primep y)) (member y '(1 0 -1) :test #'equal))
-		    (mtell "Warning: `modulus' being set to ~:M, a non-prime.~%" y)))
-	       (t (mseterr x y))))
-	((eq x '$setcheck)
-	 (if (not (or (member y '($all t nil) :test #'eq) ($listp y))) (mseterr x y)))
-	((eq x '$gcd) (if (not (or (null y) (member y *gcdl* :test #'eq))) (mseterr x y)))
-	((eq x '$ratvars)
-	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
-	((eq x '$ratfac)
-	 (if (and y $ratwtlvl)
-	     (merror "`ratfac' and `ratwtlvl' may not both be used at the same time.")))
-	((eq x '$ratweights)
-	 (cond ((not ($listp y)) (mseterr x y))
-	       ((null (cdr y)) (kill1 '$ratweights))
-	       (t (apply #'$ratweight (cdr y)))))
-	((eq x '$ratwtlvl)
-	 (if (and y (not (fixnump y))) (mseterr x y))
-	 (if (and y $ratfac)
-	     (merror "`ratfac' and `ratwtlvl' may not both be used at the same time.")))
-	((eq x '$post_eval_functions) 
-         (if (not (and ($listp y) (every 'symbolp (margs y))))
-             (mseterr x y)))
-	((eq x '$pre_eval_functions) 
-         (if (not (and ($listp y) (every 'symbolp (margs y))))
-             (mseterr x y)))))
 
 
 (defmfun kill1 (x)

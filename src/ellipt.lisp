@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10-*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -13,10 +13,6 @@
 
 (in-package :maxima)
 ;;(macsyma-module ellipt)
-
-(defvar 3//2 '((rat simp) 3 2))
-(defvar 1//2 '((rat simp) 1 2))
-(defvar -1//2 '((rat simp) -1 2))
 
 ;;;
 ;;; Jacobian elliptic functions and elliptic integrals.
@@ -295,7 +291,7 @@
 ;;
 ;; diff(s/cn/dn, u) = -1/2*sn^2/dn^2 = -1/2*sd^2.
 ;;
-;; Interate this to get
+;; Integrate this to get
 ;;
 ;; s/cn/dn = C + -1/2*int sd^2
 ;;

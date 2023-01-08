@@ -10,7 +10,7 @@
      (6) ModeMatrix
      (7) mat_function
 
-   plus some internal utility funcions. If you make use of one of
+   plus some internal utility functions. If you make use of one of
    them, consider asking on the mailing list: we can try to make a
    more useful API and give it a sensible name (not prefixed by
    "diag_"), that we won't change.

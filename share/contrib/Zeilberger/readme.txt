@@ -76,7 +76,7 @@ either load all the ".mac" files manually or
 first edit the line of "zeilberger.mac" defining 
 the directory ("dir") containing the
 package files, then load "zeilberger.mac" 
-which will take care of loading and evalutating 
+which will take care of loading and evaluating
 all the necessary files.
 
 --------------------------------------------------------------------------
@@ -137,7 +137,7 @@ tries "parGosper" with order 1 and tries up to
 the order given by the variable MAX_ORD.
 If Zeilberger finds a solution before reaching MAX_ORD
 it stops and yields the solution in the form (*) otherwise
-it tries a higher oder.
+it tries a higher order.
 If no solution is found it outputs [].
 
 If the input is not proper hypergeometric in k and n it outputs:
@@ -164,7 +164,7 @@ AUTHOMATIC PROVERS OF RECURRENCES/IDENTITIES
 Starting with version 4.0, I have included some routines
 that produce formal simple human-readable out of the 
 output of "Gosper", "parGosper" and "Zeilberger".
-This is very simple becase the output contains a 
+This is very simple because the output contains a
 so-called "rational certificate" 
 
 Level of details in the proofs and test:
@@ -321,7 +321,7 @@ There are also verbose versions of the commands
 which are called by adding one of the following prefixes:
 
 "Summary" : just a summary at the end is shown
-"Verbose" : some information in the intermidiate steps
+"Verbose" : some information in the intermediate steps
 "VeryVerbose" : more information
 "Extra" : even more information including information on
 the linear system in Zeilberger's algorithm

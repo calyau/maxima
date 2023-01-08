@@ -3655,7 +3655,7 @@ end:
 
 # the following routine implements some heuristics for verifying the
 # irreducibilty of polynomials over algebraic function fields by
-# interger substitution
+# integer substitution
 `charsets/tsfactor` :=
 
 proc(f,as,ord,var)

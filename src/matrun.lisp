@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -15,8 +15,6 @@
 ;;; TRANSLATION properties for the FSUBRs in this file
 ;;; can be found in MAXSRC;TRANS5 >.  Be sure to check on those
 ;;; if any semantic changes are made.
-
-(declare-top (special $rules $maxapplyheight $maxapplydepth))
 
 ;;  $MAXAPPLYDEPTH is the maximum depth within an expression to which
 ;;  APPLYi will delve.  If $MAXAPPLYDEPTH is 0, it is applied only to 

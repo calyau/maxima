@@ -76,7 +76,7 @@
 ;;latter representation.
 
 ;;A common case is a set of macros whose dependence is serial followed by a set
-;;of files whose order is unimportant.  A conventient way of building that
+;;of files whose order is unimportant.  A convenient way of building that
 ;;tree is
 ;;
 ;;(let ((macros '(a b c d))
@@ -225,7 +225,7 @@ source path for joe and compile him into the object path for :uinfor"
 (setf (get :load-source-when-compile 'compile)
       (get :load-source 'load))
 
-;;should nott use :lisp anymore
+;;should not use :lisp anymore
 (setf (get :lisp 'load)
       #'(lambda (x) (error "please replace :lisp by :load-source")))
 

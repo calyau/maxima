@@ -238,7 +238,7 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
    nlv:makelist(i,i,2,mxp+1), hlv:makelist(0,mxp),
    work:makelist(0,mxp), swork:makelist(0,mxp),
    if length(WkEst) # 3 then WkEst:[1,5,1],
-   /* compute cummulative work for an extrapolation row */
+   /* compute cumulative work for an extrapolation row */
    work[1]: WkEst[2]+nlv[1]*WkEst[1]+WkEst[3],
    for l:2 thru mxp do work[l]: work[l-1]+(nlv[l]-1)*WkEst[1]+WkEst[3],
    swork[1]: 1.0e30, /* large number */
@@ -589,7 +589,7 @@ Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options]):= block(
 defstruct(Eulix_Spline_Type(t_left,t_right,NewtonPoly))$
 
 Eulix_SplineEval(t,Spls):= block([degree,d,dir,dt,SPL,Spl,TP,y],
-  /* search the interval containig t 
+  /* search the interval containing t
      assuming ODE has been integrated in positive t-direction
    */
    SPL: for Spl in Spls do (

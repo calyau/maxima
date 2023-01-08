@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -23,14 +23,6 @@
 (declare-top (special $radexpand
 		      $keepfloat))
 
-(defmvar implicit-real nil "If t RPART assumes radicals and logs
-	 of real quantities are real and doesn't ask sign questions")
-
-(defmvar generate-atan2 t "Controls whether RPART will generate ATAN's
-			or ATAN2's, default is to make ATAN2's")
-;; generate-atan2 is set to nil when doing integration to avoid
-;; generating discontinuities that defint can't handle.
-
 ;;; Realpart gives the real part of an expr.
 
 (defmfun $realpart (xx) (car (trisplit xx)))
@@ -48,7 +40,7 @@
 	   (cons (div a r) (div b r)))
 	  (t (cons (take '(%realpart) x) (take '(%imagpart) x)))))) ;nothing known
 
-(setf (get '%signum 'risplit-function) #'risplit-signum)
+(setf (get '%signum 'risplit-function) 'risplit-signum)
 
 (defun simp-realpart (expr z simpflag)
   (oneargcheck expr)
@@ -90,13 +82,13 @@
 
 ;;; Rectform gives a result of the form a+b*%i.
 
-(defmfun $rectform (xx)
+(defmfun ($rectform :properties ((evfun t))) (xx)
   (let ((ris (trisplit xx)))
     (add (car ris) (mul (cdr ris) '$%i))))
 
 ;;; Polarform gives a result of the form a*%e^(%i*b).
 
-(defmfun $polarform (xx)
+(defmfun ($polarform :properties ((evfun t))) (xx)
   (cond ((mbagp xx)
 	 (cons (car xx) (mapcar #'$polarform (cdr xx))))
 	(t

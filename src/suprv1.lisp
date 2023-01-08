@@ -15,31 +15,54 @@
 ;;apply, and tried to eliminate any / quoting.  Most of the relevant
 ;;stuff is in system.lisp for the lispm and nil friends.--wfs
 
+;; It would probably be better to bind *print-base* and *read-base* as
+;; needed in various functions instead of doing it this way with
+;; *old-ibase* and *old-base*.  There are already some cases where
+;; *print-base* is bound in various functions.
+(defvar *old-ibase*)
+(defvar *old-base*)
+
 (eval-when
     (:compile-toplevel :execute)
   (setq old-ibase *read-base* old-base *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
-		       $values $functions $arrays
-		       $rules $props $ratvars
 		       checkfactors $features featurel
-		       dispflag savefile $%%
+		       dispflag savefile
 		       opers *ratweights
-		       $stringdisp $lispdisp
-		       transp $macros autoload))
+		       transp autoload))
 
 (defvar thistime 0)
 (defvar mcatch nil)
 (defvar brklvl -1)
 (defvar allbutl nil)
 
-(defmvar $disptime nil)
 (defmvar $strdisp t)
-(defmvar $grind nil)
+
+(defmvar $grind nil
+  "When the variable 'grind' is 'true', the output of 'string' and
+  'stringout' has the same format as that of 'grind'; otherwise no
+  attempt is made to specially format the output of those functions.")
+
 (defmvar $backtrace '$backtrace)
-(defmvar $debugmode nil)
-(defmvar $poislim 5)
+
+(defmvar $debugmode nil
+  "When 'debugmode' is 'true', Maxima will start the Maxima debugger
+  when a Maxima error occurs.
+
+  When 'debugmode' is 'lisp', Maxima will start the Lisp debugger when
+  a Maxima error occurs.
+
+  In either case, enabling 'debugmode' will not catch Lisp errors."
+ :properties ((assign 'debugmode1)))
+
+(defmvar $poislim 5
+  "Determines the domain of the coefficients in the arguments of the
+  trig functions.  The initial value of 5 corresponds to the interval
+  [-2^(5-1)+1,2^(5-1)], or [-15,16], but it can be set to [-2^(n-1)+1,
+  2^(n-1)]."
+  :properties ((assign 'poislim1)))
 
 ;; This version of meval* makes sure, that the facts from the global variable
 ;; *local-signs* are cleared with a call to clearsign. The facts are added by
@@ -194,7 +217,6 @@
 (defvar *builtin-$rules* nil)
 (defvar *builtin-symbols-with-values* nil)
 (defvar *builtin-symbol-values* (make-hash-table))
-(defvar *builtin-numeric-constants* '($%e $%pi $%phi $%gamma))
 
 (defun kill1-atom (x)
   (let ((z (or (and (member x (cdr $aliases) :test #'equal) (get x 'noun)) (get x 'verb))))
@@ -381,11 +403,14 @@
 	     (member rule l :test #'equal) op))))
 
 (defmfun $debugmode (x)
-  (setq $debugmode x)
-  (debugmode1 nil x))
+  (debugmode1 nil x)
+  (setq $debugmode x))
 
 (defun debugmode1 (assign-var y)
-  (declare (ignore assign-var))
+  ;; The user manual says $debugmode has one of three values: false
+  ;; (NIL), true (T), or lisp ($lisp).  Enforce that.
+  (unless (member y '(nil t $lisp))
+    (mseterr assign-var y "Must be one of false, true, or lisp"))
   (setq *mdebug* y))
 
 (defun errlfun1 (mpdls)
@@ -601,8 +626,19 @@
 	($go mgo) ($signum %signum)
 	($return mreturn) ($factorial mfactorial)
 	($ibase *read-base*) ($obase *print-base*)
-	($modulus modulus)
 	($mode_declare $modedeclare)))
+
+;; Validate values assigned to $ibase and $obase, which are aliased to
+;; *read-base* and *print-base*, respectively, above.
+(putprop '*read-base* #'(lambda (name val)
+			  (unless (typep val '(integer 2 36))
+			    (mseterr name val "must be an integer between 2 and 36, inclusive")))
+	 'assign)
+
+(putprop '*print-base* #'(lambda (name val)
+			  (unless (typep val '(integer 2 36))
+			    (mseterr name val "must be an integer between 2 and 36, inclusive")))
+	 'assign)
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias))
       '(($ratcoeff $ratcoef) ($ratnum $ratnumer) ($true t)
@@ -743,7 +779,7 @@
 (defmacro errcatch (form)
   `(let ((errcatch (cons bindlist loclist))
          (*mdebug* nil))
-     (declare (special errcatch *mdebug*))
+     (declare (special errcatch))
      (handler-case (list (with-errcatch-tag-$errors ,form))
        (maxima-$error ()
          ; If this was signaled by MERROR, then it has already handled
@@ -853,17 +889,6 @@
 
 (defprop $diff %derivative verb)
 (defprop %derivative $diff noun)
-
-(mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-      '(($debugmode debugmode1)
-	($fpprec fpprec1) ($poislim poislim1)
-	($default_let_rule_package let-rule-setter)
-	($current_let_rule_package let-rule-setter)
-	($let_rule_packages let-rule-setter)))
-
-(mapc #'(lambda (x) (putprop x 'neverset 'assign)) (cdr $infolists))
-
-(defprop $contexts neverset assign)
 
 (eval-when
     (:compile-toplevel :execute)

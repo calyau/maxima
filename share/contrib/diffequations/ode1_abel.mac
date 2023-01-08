@@ -235,7 +235,7 @@ ode1_abel_relative_invariant_zero(f0,f1,f2,f3,y,x) := block(
 
    when invariant s3 is constant (following Schwarz)
 
-   Note: Sign of coefficents has just changed from Schwarz
+   Note: Sign of coefficients has just changed from Schwarz
 
  */
 ode1_abel_relative_invariant_nonzero(f0,f1,f2,f3,y,x) := block(

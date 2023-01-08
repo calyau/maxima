@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -14,8 +14,24 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special opers *a *n sum *i *opers-list opers-list))
+(declare-top (special *a *n sum *i opers-list))
 
+(defmvar $opproperties
+    (list* '(mlist simp)
+	   ;; This list was obtained by using an existing version of
+	   ;; maxima and printing out the value.  It can also be
+	   ;; obtained by examining the code below to see what is
+	   ;; placed on the OPER variable.
+	   '($linear $additive $multiplicative $outative $evenfun $oddfun
+	     $commutative $symmetric $antisymmetric $nary $lassociative $rassociative))
+  "List of the special operator properties recognized by the Maxima simplifier."
+  ;; Don't reset this.  (This was originally a defparameter which
+  ;; wouldn't get reset.)
+  no-reset
+  ;; We probably don't want the user to modify this except via
+  ;; define_opproperty.
+  :properties ((assign 'neverset)))
+  
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
 
@@ -754,9 +770,6 @@
 
 ;; linear operator stuff
 
-(defparameter *opers-list '(($linear . linearize1)))
-(defparameter  opers (list '$linear))
-
 (defun oper-apply (e z)
   (cond ((null opers-list)
 	 (let ((w (get (caar e) 'operators)))
@@ -1062,5 +1075,3 @@
     (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
 		  (nconc (reverse (total-nary (car l))) ans)
 		  (cons (car l) ans)))))
-
-(defparameter $opproperties (cons '(mlist simp) (reverse opers)))

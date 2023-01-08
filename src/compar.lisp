@@ -1,6 +1,6 @@
 ;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -14,17 +14,12 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special success $props))
+(declare-top (special success))
 
 (defvar *debug-compar* nil
   "Enables debugging code for this file.")
 
 (defvar %initiallearnflag)
-
-(defmvar sign-imag-errp t
-  "If T errors out in case COMPAR meets up with an imaginary quantity.
-	  If NIL THROWs in that case."
-  no-reset)
 
 (defmvar complexsign nil
   "If T, COMPAR attempts to work in a complex mode.

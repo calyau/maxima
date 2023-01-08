@@ -2,7 +2,7 @@ FAST FOURIER TRANSFORMS
 
 To load the routines do LOADFILE(FFT,FASL,DSK,SHARE);
 
-The basic funtions are:
+The basic functions are:
 	FFT --> fast fourier transform
 	IFT --> inverse fast fourier transform
 

@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -15,12 +15,10 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 4.
 ;;	IT INCLUDES THE POLYNOMIAL FACTORING ROUTINES.
 
-(declare-top (special *min* *mx* *odr* nn* *checkagain))
-
-(declare-top (special $dontfactor))
+(declare-top (special *odr* nn* *checkagain))
 
 ;;There really do seem to be two such variables...
-(declare-top (special alpha *alpha gauss minpoly*))
+(declare-top (special alpha *alpha))
 
 (defmvar *irreds nil)
 
@@ -377,7 +375,7 @@
      (cond ((dontfactor (car p)) (return (list p)))
 	   ((and (not (zerop $factor_max_degree)) (> (apply 'max (pdegreevector p)) $factor_max_degree))
 		 (when $factor_max_degree_print_warning
-		   (mformat t "Refusing to factor polynomial ~M because its degree exceeds factor_max_degree (~M)~%" (pdis p) $factor_max_degree))
+		   (mtell (intl:gettext "Refusing to factor polynomial ~M because its degree exceeds factor_max_degree (~M)~%") (pdis p) $factor_max_degree))
 		 (return (list p)))
 	   ((onevarp p)
 	    (cond ((setq factors (factxn+-1 p))

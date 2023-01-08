@@ -3,8 +3,8 @@
 linsolvewarn : false;
 
 
-/* --------------------------------------------------------------------- */ 
-/* Maxium order of the recurrence equation searched in Zeilberger's alg. */
+/* ---------------------------------------------------------------------- */
+/* Maximum order of the recurrence equation searched in Zeilberger's alg. */
 max_ord: 5;
 
 
@@ -22,7 +22,7 @@ linear_solver : linsolve;
 
 
 /* --------------------------------------------------------------------- */
-/* Numerical test through evalution and modular computation              */
+/* Numerical test through evaluation and modular computation             */
 /* Numerical test flag */
 mod_test : false;
 

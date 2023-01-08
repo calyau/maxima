@@ -324,46 +324,48 @@
           (give-up))))
       
       ((complex-float-numerical-eval-p order arg)
-       (cond
-         ((and (setq z (integer-representation-p order))
-               (plusp z))
-          ;; We have a pure real positive order and the realpart is a float 
-          ;; representation of an integer value.
-          ;; We call the routine for an integer order.
-          (let ((carg (complex ($float ($realpart arg)) 
-                               ($float ($imagpart arg)))))
-            (complexify (expintegral-e z carg))))
-         (t
-          ;; The general case, order and arg are complex or real.
-          (let ((corder (complex ($float ($realpart order)) 
-                                 ($float ($imagpart order))))
-                (carg (complex ($float ($realpart arg)) 
-                               ($float ($imagpart arg)))))
-            (complexify (frac-expintegral-e corder carg))))))
+       (let (z)
+	 (cond
+           ((and (setq z (integer-representation-p order))
+		 (plusp z))
+            ;; We have a pure real positive order and the realpart is a float 
+            ;; representation of an integer value.
+            ;; We call the routine for an integer order.
+            (let ((carg (complex ($float ($realpart arg)) 
+				 ($float ($imagpart arg)))))
+              (complexify (expintegral-e z carg))))
+           (t
+            ;; The general case, order and arg are complex or real.
+            (let ((corder (complex ($float ($realpart order)) 
+                                   ($float ($imagpart order))))
+                  (carg (complex ($float ($realpart arg)) 
+				 ($float ($imagpart arg)))))
+              (complexify (frac-expintegral-e corder carg)))))))
       
       ((complex-bigfloat-numerical-eval-p order arg)
-       (cond
-         ((and (setq z (integer-representation-p order))
-               (plusp z))
-          ;; We have a real positive order and the realpart is a Float or 
-          ;; Bigfloat representation of an integer value.
-          ;; We call the routine for an integer order.
-          (let* (($ratprint nil)
-                 (carg (add ($bfloat ($realpart arg)) 
-                            (mul '$%i ($bfloat ($imagpart arg)))))
-                 (result (bfloat-expintegral-e z carg)))
-            (add ($realpart result) 
-                 (mul '$%i ($imagpart result)))))
-         (t
-          ;; the general case, order and arg are bigfloat or complex bigfloat
-          (let* (($ratprint nil)
-                 (corder (add ($bfloat ($realpart order))
-                              (mul '$%i ($bfloat ($imagpart order)))))
-                 (carg (add ($bfloat ($realpart arg))
-                            (mul '$%i ($bfloat ($imagpart arg)))))
-                 (result (frac-bfloat-expintegral-e corder carg)))
-            (add ($realpart result)
-                 (mul '$%i ($imagpart result)))))))
+       (let (z)
+	 (cond
+           ((and (setq z (integer-representation-p order))
+		 (plusp z))
+            ;; We have a real positive order and the realpart is a Float or 
+            ;; Bigfloat representation of an integer value.
+            ;; We call the routine for an integer order.
+            (let* (($ratprint nil)
+                   (carg (add ($bfloat ($realpart arg)) 
+                              (mul '$%i ($bfloat ($imagpart arg)))))
+                   (result (bfloat-expintegral-e z carg)))
+              (add ($realpart result) 
+                   (mul '$%i ($imagpart result)))))
+           (t
+            ;; the general case, order and arg are bigfloat or complex bigfloat
+            (let* (($ratprint nil)
+                   (corder (add ($bfloat ($realpart order))
+				(mul '$%i ($bfloat ($imagpart order)))))
+                   (carg (add ($bfloat ($realpart arg))
+                              (mul '$%i ($bfloat ($imagpart arg)))))
+                   (result (frac-bfloat-expintegral-e corder carg)))
+              (add ($realpart result)
+                   (mul '$%i ($imagpart result))))))))
       
       ((and $expintexpand
             (setq ratorder (max-numeric-ratio-p order 2)))

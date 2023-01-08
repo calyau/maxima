@@ -14,7 +14,7 @@ A solution can have a number of forms:
  o  an explicit solution for the dependent variable,
  o  an implicit solution for the dependent variable,
  o  a parametric solution in terms of variable %t, or
- o  a tranformation into another ODE in variable %u.
+ o  a transformation into another ODE in variable %u.
 
 %c is used to represent the constant in the case of first order equations,
 and %k1 and %k2 the constants for second order equations.  If contrib_ode
@@ -121,14 +121,14 @@ These routines are work in progress.  I still need to:
 * Extend the FACTOR method ode1_factor to work for multiple roots.
 
 * Extend the FACTOR method ode1_factor to attempt to solve higher
-  order factors.  At present it only attemps to solve linear factors.
+  order factors.  At present it only attempts to solve linear factors.
 
 * Fix the LAGRANGE routine ode1_lagrange to prefer real roots over
   complex roots.
 
 * Add additional methods for Riccati equations.
 
-* Improve the detection of Abel equations of second kind.  The exisiting
+* Improve the detection of Abel equations of second kind.  The existing
   pattern matching is weak.
 
 * Work on the Lie symmetry group routine ode1_lie.  There are quite a

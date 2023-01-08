@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -22,34 +22,44 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special derivlist $values $functions $arrays 
-                      $rules
-		      $myoptions $props
-		      $numer
-		      opers
-		      *alphabet* $%%
-		      $macros linel $ratwtlvl
-		      *gcdl*
+(declare-top (special derivlist
 		      *builtin-$props*))
 
 (declare-top (unspecial args))
 
-(defvar mspeclist nil)
 (defvar mproplist nil)
 (defvar mprogp nil)
 (defvar mdop nil)
 (defvar aexprp nil)
 (defvar dsksetp nil)
-(defvar mfexprp t)
 (defvar rulefcnl nil)
-(defmvar $refcheck nil)
-(defmvar $maperror t)
-(defmvar $optionset nil)
-(defmvar $setcheckbreak nil)
-(defmvar $setval '$setval)
 
-(mapc #'(lambda (x) (setf (symbol-value x) (ncons '(mlist simp))))
-      '($values $functions $macros $arrays $myoptions $rules $props))
+(defmvar $refcheck nil
+  "When true, Maxima prints a message each time a bound variable is used
+  for the first time in a computation.")
+
+(defmvar $maperror t
+  "When false, all of the mapping functions such as 'map(<f>, <expr_1>,
+  <expr_2>, ...)` (1) stop when they finish going down the shortest
+  <expr_i> if not all of the <expr_i> are of the same length and (2)
+  apply <f> to [<expr_1>, <expr_2>, ...] if the <expr_i> are not all
+  the same type of object.  When true, an error message is displayed
+  for the above two cases.")
+
+(defmvar $optionset nil
+  "When true, Maxima prints out a message whenever a Maxima option is
+  reset.")
+
+(defmvar $setcheckbreak nil
+  "When true, Maxima will present a break prompt whenever a variable on
+  the 'setcheck' list is assigned a new value.  The break occurs
+  before the assignment is carried out.  At this point, 'setval' holds
+  the value to which the variable is about to be assigned.  Hence, one
+  may assign a different value by assigning to 'setval'.")
+
+(defmvar $setval '$setval
+  "Holds the value to which a variable is about to be set when a
+  'setcheckbreak' occurs.")
 
 (defun mapply1 (fn args fnname form)
   (cond ((atom fn)
@@ -419,7 +429,7 @@ used tels quels, without calling MEVAL.
 If FNNAME is non-NIL, it designates a function call frame.
 This function does not handle errors properly, use the MBIND
 wrapper for this."
-  (declare (special bindlist mspeclist))
+  (declare (special bindlist))
   (do ((vars lamvars (cdr vars))
        (args fnargs (cdr args)))
       ((cond ((and vars args) nil)
@@ -594,7 +604,7 @@ wrapper for this."
 		  (merror (intl:gettext "assignment: cannot assign to ~M") x)))
 	    (let ((f (get x 'assign)))
 	      (if (and f (or (not (eq x y))
-			     (member f '(neverset read-only-assign) :test #'eq)))
+			     (member f '(neverset) :test #'eq)))
 		  (if (eq (funcall f x y) 'munbindp) (return nil))))
 	    (cond ((and (not (boundp x))
 			(not dsksetp))
@@ -761,7 +771,7 @@ wrapper for this."
   (putprop (caar z) (initializersmostly z) 'defstruct-default)
   (setf (get (caar z) 'dimension) 'dimension-defstruct)
   (nconc $structures (list (get (caar z) 'defstruct-default)))
-  (setf (get (caar z) 'translate) #'defstruct-translate)
+  (setf (get (caar z) 'translate) 'defstruct-translate)
   (get (caar z) 'defstruct-default))
 
 (defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)
@@ -1038,10 +1048,6 @@ wrapper for this."
 	 (mevalatoms (mmacroexpand exp)))
 	(t (cons (car exp) (mapcar #'mevalatoms (cdr exp))))))
 
-;; evok properties
-(mapc #'(lambda (x) (putprop x t 'evok))
-      '($map $maplist $fullmap $matrixmap $fullmapl $outermap $scanmap $apply))
-
 (defun evfunmake (fun exp)
   (if (msetqp exp)
       (list (car exp) (cadr exp) (evfunmake fun (caddr exp)))
@@ -1066,81 +1072,44 @@ wrapper for this."
 (defmfun $subvarp (x)
   (and (not (atom x)) (member 'array (cdar x) :test #'eq) t))
 
-(defun mseterr (x y)
+;; Print a message that the assignment to NAME with the value VAL
+;; failed.  If REASON is given, print it out as the reason for the
+;; failure.  For example
+;;
+;;   (mseterr '$foo -1 "must be non-negative") =>
+;;   "assignment: cannot assign -1 to foo: must be non-negative"
+;; 
+(defun mseterr (name val &optional reason)
   (if munbindp
       'munbindp
-      (merror (intl:gettext "assignment: cannot assign ~M to ~:M") y x)))
+      (if reason
+	  (merror (intl:gettext "assignment: cannot assign ~M to ~:M: ~M.")
+		  val name reason)
+	  (merror (intl:gettext "assignment: cannot assign ~M to ~:M.") val name))))
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-      '(($linel msetchk) (*read-base* msetchk) (*print-base* msetchk) (modulus msetchk)
-	($infolists neverset) ($trace neverset) ($ratweights msetchk)
-	($ratvars msetchk) ($setcheck msetchk) ($gcd msetchk)
-	($dotassoc msetchk) ($ratwtlvl msetchk) ($ratfac msetchk)
-	($all neverset) ($numer numerset) ($fortindent msetchk)
-	($fpprintprec msetchk)
-	($floatwidth msetchk) ($parsewindow msetchk) ($optimprefix msetchk)))
+      '(($all neverset)))
 
-(defun msetchk (x y)
-  (cond ((member x '(*read-base* *print-base*) :test #'eq)
-	 (unless (typep y '(integer 2 36))
-	   (mseterr x y)))
-	((member x '($linel $fortindent $fpprintprec $floatwidth
-		   $parsewindow) :test #'eq)
-	 (if (not (fixnump y)) (mseterr x y))
-         (if (eq x '$linel)
-             (cond ((not (and (> y 0)         ; at least one char per line
-                              (< y 1000001))) ; arbitrary chosen big value
-                    (mseterr x y))
-                   (t
-                    (setq linel y))))
-	 (cond ((and (member x '($fortindent $floatwidth) :test #'eq) (< y 0))
-		(mseterr x y))
-	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
-	       ((and (eq x '$fpprintprec) (or (< y 0) (= y 1))) (mseterr x y))))
-	((member x '($optimprefix) :test #'eq) (if (not (symbolp y)) (mseterr x y)))
-	((eq x '$dotassoc) (cput 'mnctimes y 'associative))
-	((eq x 'modulus)
-	 (cond ((null y))
-	       ((and (integerp y) (plusp y))
-	        ;; modulus must be an integer > 0. Give a warning if not
-	        ;; a prime number.
-	        (if (not (primep y))
-	            (mtell (intl:gettext "warning: assigning ~:M, a non-prime, to 'modulus'~&") y)))
-	       (t (mseterr x y))))
-	((eq x '$setcheck)
-	 (if (not (or (member y '($all t nil) :test #'eq) ($listp y))) (mseterr x y)))
-	((eq x '$gcd) (if (not (or (null y) (member y *gcdl* :test #'eq))) (mseterr x y)))
-	((eq x '$ratvars)
-	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
-	((eq x '$ratfac)
-	 (if (and y $ratwtlvl)
-	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))
-	((eq x '$ratweights)
-	 (cond ((not ($listp y)) (mseterr x y))
-	       ((null (cdr y)) (kill1 '$ratweights))
-	       (t (apply #'$ratweight (cdr y)))))
-	((eq x '$ratwtlvl)
-	 (if (and y (not (fixnump y))) (mseterr x y))
-	 (if (and y $ratfac)
-	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))))
-
+;; When $numer is set, also set $float to the same value.
 (defun numerset (assign-var y)
   (declare (ignore assign-var))
   (mset '$float y))
 
+;; Variables that are read-only and should never changed by the user.
+;; This is a possible value for the 'assign property.
 (defun neverset (x assign-val)
-  (declare (ignore assign-val))
   (if munbindp 
       'munbindp 
-      (merror (intl:gettext "assignment: cannot assign to ~:M") x)))
+      (merror (intl:gettext "assignment: attempting to assign read-only variable ~:M the value ~M")
+	      x assign-val)))
 
 ;; Check assignment to be a positive integer including zero
 (defun posintegerset (x y)
   (if (or (not (integerp y))
           (not (>= y 0)))
       (merror
-        (intl:gettext "assignment: '~:M must be a positive integer. Found: ~:M")
+        (intl:gettext "assignment: '~:M must be a non-negative integer. Found: ~:M")
         x y)))
 
 (defun mmapev (l)
@@ -1151,7 +1120,7 @@ wrapper for this."
     (badfunchk (cadr l) op nil)
     (cons op (mapcar #'meval (cddr l)))))
 
-(defmspec $map (l)
+(defmspec ($map :properties ((evok t))) (l)
   (apply #'map1 (mmapev l)))
 
 (defun-maclisp map1 n
@@ -1173,7 +1142,7 @@ wrapper for this."
 			 (t (merror (intl:gettext "map: arguments must have same main operator; found: ~M, ~M") op (mop (first argl)))))
 		   (mcons-op-args op (apply #'mmapcar (cons (arg 1) cdrl)))))))
 
-(defmspec $maplist (l)
+(defmspec ($maplist :properties ((evok t))) (l)
   (let ((maplp t) res)
     (setq res (apply #'map1 (mmapev l)))
     (cond ((atom res) (list '(mlist) res))
@@ -1208,7 +1177,7 @@ wrapper for this."
 (defmfun $mapatom (x)
   (if (mapatom (specrepcheck x)) t))
 
-(defmspec $fullmap (l)
+(defmspec ($fullmap :properties ((evok t))) (l)
   (setq l (mmapev l))
   (fmap1 (car l) (cdr l) nil))
 
@@ -1256,11 +1225,11 @@ wrapper for this."
 	      (t (if $mapprint (mtell (intl:gettext "fullmap: calling 'apply'.~%")))
 		 (return (funcer fn argl)))))))
 
-(defmspec $matrixmap (l)
+(defmspec ($matrixmap :properties ((evok t))) (l)
   (let ((fmaplvl 2))
     (apply #'fmapl1 (mmapev l))))
 
-(defmspec $fullmapl (l)
+(defmspec ($fullmapl :properties ((evok t))) (l)
   (apply #'fmapl1 (mmapev l)))
 
 (defun fmapl1 (fun &rest args)
@@ -1280,7 +1249,7 @@ wrapper for this."
 	argl
 	(cons header (cdr argl)))))
 
-(defmfun $outermap (x y &rest z)
+(defmfun ($outermap :properties ((evok t))) (x y &rest z)
   (if z
     (apply #'outermap1 x y z)
     (fmapl1 x y)))
@@ -2087,7 +2056,7 @@ wrapper for this."
 (defun mapply (a b c)
   (mapply1 a b c nil))
 
-(defmfun $apply (fun arg)
+(defmfun ($apply :properties ((evok t))) (fun arg)
   (unless ($listp arg)
     (merror (intl:gettext "apply: second argument must be a list; found: ~M") arg))
   (let ((fun-opr (getopr fun)))
@@ -2331,36 +2300,43 @@ wrapper for this."
 	   (dskrat-subst x y (cdr z))
 	   z)))
 
-(defun |''MAKE-FUN| (noun-name x)
-  (simplifya (list (ncons noun-name) (resimplify x)) t))
+;; As mentioned in
+;; https://sourceforge.net/p/maxima/mailman/message/37744356/ we
+;; shouldn't need these.  However, removing these cause failures in
+;; the testsuite.
+(macrolet ((make-fun (fun noun)
+	     `(defun ,fun (x) (ftake ',noun x))))
+  (make-fun $log %log)
+  (make-fun $sin %sin)
+  (make-fun $cos %cos)
+  (make-fun $tan %tan)
+  (make-fun $cot %cot)
+  (make-fun $sec %sec)
+  (make-fun $csc %csc)
+  (make-fun $sinh %sinh)
+  (make-fun $cosh %cosh)
+  (make-fun $tanh %tanh)
+  (make-fun $coth %coth)
+  (make-fun $sech %sech)
+  (make-fun $csch %csch)
+  (make-fun $asin %asin)
+  (make-fun $acos %acos)
+  (make-fun $atan %atan)
+  (make-fun $acot %acot)
+  (make-fun $asec %asec)
+  (make-fun $acsc %acsc)
+  (make-fun $asinh %asinh)
+  (make-fun $acosh %acosh)
+  (make-fun $atanh %atanh)
+  (make-fun $acoth %acoth)
+  (make-fun $asech %asech)
+  (make-fun $acsch %acsch)
+  (make-fun $round %round)
+  (make-fun $truncate %truncate)
+  (make-fun $plog %plog)
+  (make-fun $signum %signum)
+  (make-fun $gamma %gamma))
 
-(macrolet ((|''MAKE| (fun noun)
-	     `(defun ,fun (x) (|''MAKE-FUN| ',noun x))))
-  (|''MAKE| $log %log)
-  (|''MAKE| $sin %sin) (|''MAKE| $cos %cos) (|''MAKE| $tan %tan)
-  (|''MAKE| $cot %cot) (|''MAKE| $sec %sec) (|''MAKE| $csc %csc)
-  (|''MAKE| $sinh %sinh) (|''MAKE| $cosh %cosh) (|''MAKE| $tanh %tanh)
-  (|''MAKE| $coth %coth) (|''MAKE| $sech %sech) (|''MAKE| $csch %csch)
-  (|''MAKE| $asin %asin) (|''MAKE| $acos %acos) (|''MAKE| $atan %atan)
-  (|''MAKE| $acot %acot) (|''MAKE| $asec %asec) (|''MAKE| $acsc %acsc)
-  (|''MAKE| $asinh %asinh) (|''MAKE| $acosh %acosh) (|''MAKE| $atanh %atanh)
-  (|''MAKE| $acoth %acoth) (|''MAKE| $asech %asech) (|''MAKE| $acsch %acsch)
-  (|''MAKE| $round %round) (|''MAKE| $truncate %truncate) (|''MAKE| $plog %plog)
-  (|''MAKE| $signum %signum) (|''MAKE| $gamma %gamma))
-
-;; evfun properties
-(mapc #'(lambda (x) (putprop x t 'evfun))
-      '($radcan $factor $ratsimp $trigexpand $trigreduce $logcontract
-	$rootscontract $bfloat $ratexpand $fullratsimp $rectform $polarform))
-
-;; evflag properties
-(mapc #'(lambda (x) (putprop x t 'evflag))
-      '($exponentialize $%emode $demoivre $logexpand $logarc
-	$radexpand $keepfloat $listarith $float $ratsimpexpons $ratmx
-	$simp $simpsum $simpproduct $algebraic $ratalgdenom $factorflag $ratfac
-	$infeval $%enumer $programmode $lognegint $logabs $letrat
-	$halfangles $exptisolate $isolate_wrt_times $sumexpand
-	$cauchysum $numer_pbranch $m1pbranch $dotscrules $trigexpand))
 
 ;;; Float constants, to 2048 bits of precision.
 ;;; (EXP 1)

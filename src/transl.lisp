@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -524,7 +524,7 @@ APPLY means like APPLY.")
 (defun translator-eval (x)
   (eval x))
 
-;; This basically tells the msetq def%tr to use defparameter insetad
+;; This basically tells the msetq def%tr to use defparameter instead
 ;; of setq because we're doing a setq at top-level, which isn't
 ;; specified by ANSI CL.
 (defvar *macexpr-top-level-form-p* nil)
@@ -1314,7 +1314,7 @@ APPLY means like APPLY.")
 	  (list '(mlist) . ,(mapcar 'dconvx arglist))))))
 
 
-;;; mode acessing, binding, handling. Super over-simplified.
+;;; mode accessing, binding, handling. Super over-simplified.
 
 (defun tr-class (x)
   (cond ((integerp x) '$fixnum)

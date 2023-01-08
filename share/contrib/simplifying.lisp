@@ -58,7 +58,7 @@
   (if (and (get f 'operators) (not (get f 'user-simplifying)))
       (mwarn "~M is overriding built-in simplifier for ~M" simplifier f))
   (setf (get f 'user-simplifying) simplifier)
-  (setf (get f 'operators) (if simplifier #'user-simplifying nil))
+  (setf (get f 'operators) (if simplifier 'user-simplifying nil))
   f)
 
 ;;; Create the expression fun(args...) and mark it as simplified.

@@ -589,7 +589,7 @@ sSubResTarskiQuery(1,p,var);
 
 
 /* ----------------------------------------------  */
-/* Part concering the Bezoutian (subsection 9.1.3) */
+/* Part concerning the Bezoutian (subsection 9.1.3) */
 
 /* Bezoutian (Notation 9.14) */
 bez(p,q,var,x,y) :=

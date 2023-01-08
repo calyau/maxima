@@ -19,9 +19,7 @@
 	 #+allegro ((mlist simp) 11 13))
         "rtestnset" 
         ((mlist simp) "rtest1"
-	 ;; 115 sometimes fails on ECL 16.1.2 on AMD 64/Ubuntu.
-	 #+ecl ((mlist simp) 115 183 185 186)
-	 #-ecl ((mlist simp) 183 185 186))
+	 ((mlist simp) 183 185 186))
         ((mlist simp) "rtest1a" ((mlist simp) 33))
         ((mlist simp) "rtest2" ((mlist simp) 86 95))
 	"rtest4"
@@ -35,7 +33,7 @@
 	;; 45 sporadically fails in all tested ECL versions (15.3.7-16.1.3)
 	;; 43 fails in ECL up to version 15.3.7
         ((mlist simp) "rtest6"
-	 #+ecl ((mlist simp) 43 45 46))
+	 #+ecl ((mlist simp) 46))
         "rtest6a"
 	"rtest6b"
 	"rtest7"
@@ -53,8 +51,7 @@
 	;; and sporadically in 201, 234, 249, 250, 251, 252, 267, 297, 298, 312, 315
 	;; and 319
 	;; ECL 13.5.1 sporadically fails in 233
-	((mlist simp) "rtest14"
-	 #+ecl ((mlist simp) 145 201 233 234 249 250 251 252 267 297 298 307 310 312 315 319))
+	((mlist simp) "rtest14")
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
@@ -63,14 +60,13 @@
 	;; Test 50 still sometimes fails in ecl 16.1.2
         ((mlist simp) "rtest16"
 	 #-(or ecl allegro) ((mlist simp) 524 525)
-	 #+ecl ((mlist simp) 50 524 525 561)
+	 #+ecl ((mlist simp) 524 525)
 	 #+allegro ((mlist simp) 50 241 524 525))
         "rtestode"
 	"rtestode_zp"
         ((mlist simp) "rtest3" ((mlist simp) 146))
 	;; ECL 16.1.2 still fails in #104
-	((mlist simp) "rtest8"
-	 #+ecl ((mlist simp) 104))
+	((mlist simp) "rtest8")
         "rtest12"
         "rexamples"
         ((mlist simp) "rtesthyp"
@@ -149,7 +145,7 @@
         ((mlist simp) "rtest_limit_extra" 
           ((mlist simp)  42 52 53 59 61 64 67 80 82 83 84 89 
                          94 96 98 102 104 106 108 111
-                         124 125 126 127 132 133 135 136 137 139 187))
+                         124 125 126 127 132 133 135 136 137))
         "rtest_gcd"
           ))
 
@@ -184,8 +180,6 @@
     ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
     #-allegro
     ((mlist simp) "rtest_stringproc"
-     ;; 12 fails in ECL 15.3.7, 69 in ECL 13.5.1
-     #+ecl ((mlist simp) 12 69)
      #+gcl ((mlist simp) 14))
     #-allegro "rtest_md5sum"
     "rtest_opproperties"
@@ -214,20 +208,10 @@
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
 
-    ;; Floating-point exception with ECL 16.1.2 in 4 7 8 9 10 12
-    ;; On a different computer with ECL 16.1.2 test 5 failed, too. No idea why.
-    ;; On another computer that used the same ECL version test step 15 resulted in an
-    ;; error-catch without making further information visible in the log.
-    ;; ECL 13.5.1 errored out in 7-12,14+15 and ECL 13.5.1 to 16.1.2
-    ;; are known to sporadically error out in steps 6 and 13.
-    ;;
-    ;; But ecl 16.1.3 passes all of these tests
     #-sbcl
-    ((mlist simp) "rtest_dgeqrf"
-     #+ecl ((mlist simp) 1 4 5 6 7 8 9 10 11 12 13 14 15))
+    ((mlist simp) "rtest_dgeqrf")
     #-sbcl
-    ((mlist simp) "rtest_dgesv"
-     #+ecl ((mlist simp) 1 3 4 5 6))
+    ((mlist simp) "rtest_dgesv")
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
     #-(or gcl abcl gcl)
@@ -261,8 +245,8 @@
       35 37 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 57
       58 59 66 67 68)
      #+ecl
-     ;; ECL 15.3.7 and earlier fails in 54, 66 and 70
-     ((mlist simp) 38 54 61 63 65 66 69 70)
+     ;; ECL 22.2.1 results
+     ((mlist simp) 61 63 65 69)
      #+clisp
      ((mlist simp) 27 38 61 63 65 69)
      #+gcl
@@ -303,19 +287,20 @@
      #+(or gcl abcl) ((mlist simp) 87 120)
      #-(or gcl abcl) ((mlist simp) 87))
     ((mlist simp) "rtest_sym"
-     #-(or sbcl gcl clisp cmucl) ((mlist simp) 12 15 58 64)
+     #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 12 15 58 64)
      #+(or clisp gcl)  ((mlist simp) 15 64)
+     #+ecl ((mlist simp) 12 58 64)
      #+sbcl ((mlist simp) 15 64)
-     #+cmucl ((mlist simp) 15 64))
+     #+cmucl ((mlist simp) 12 58 64))
     ((mlist simp) "rtest_nfloat"
-     #-(or ecl gcl)
+     #-(or gcl)
      ((mlist simp) 25))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
     ((mlist simp) "rtest_vect"
-     #-(or cmucl)
+     #-(or cmucl ecl)
      ((mlist simp) 4 9 10 13 16 19 20 21 24 25)
-     #+cmucl
+     #+(or cmucl ecl)
      ((mlist simp) 4 9 10 13 16 20 21 24 25))
      "rtest_antid"
      "rtest_bffac"
@@ -323,8 +308,7 @@
      "rtest_grobner"
      ((mlist simp) "rtest_finance"
       ;; Tested with acl 10.1
-      ;; ECL newer than 15.3.7 doesn't fail any more
-      #+(or gcl allegro ecl)
+      #+(or gcl allegro)
       ((mlist simp) 9 10 11))
      "rtest_fft"
      "rtest_rfft"

@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -21,8 +21,12 @@
 
 (declare-top (special $exptisolate))
 
-(defmvar $exptisolate nil)
-(defmvar $isolate_wrt_times nil)
+(defmvar $exptisolate nil
+  nil
+  :properties ((evflag t)))
+(defmvar $isolate_wrt_times nil
+  nil
+  :properties ((evflag t)))
 
 (defmfun $isolate (e *xvar)
   (iso1 e (getopr *xvar)))
@@ -118,9 +122,6 @@
 	     (cond ((eq (caar e) 'mqapply) (cons u (cons (cadr e) v)))
 		   ((eq (caar e) 'mplus) (cons u (nreverse v)))
 		   (t (cons u v)))))))
-
-(declare-top (special $props opers
-		      $aliases))
 
 (defmspec $properties (x)
   (setq x (getopr (fexprcheck x)))

@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
 ;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
 ;;;     All rights reserved                                            ;;;;;
@@ -14,7 +14,7 @@
 
 (declare-top (special lcprod svals svars oldsvars oldsvals
 		      valflag $gcd pl0 d0 degd0 var
-		      many* tempprime ovarlist valist modulus
+		      many* tempprime ovarlist valist
 		      zl *prime plim nn* ne nn*-1 dlp
 		      ez1skip svalsl nsvals
 		      lc1 oldlc limk *alpha))

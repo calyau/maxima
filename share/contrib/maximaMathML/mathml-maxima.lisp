@@ -5,7 +5,7 @@
 ;;                %mc maxima-mp.lsp
 ;;             which produces mathml-maxima.o
 ;;
-;;            load into MAXIMA by MAXIMA top-level comamnd
+;;            load into MAXIMA by MAXIMA top-level command
 ;;                loadfile("mathml-maxima.lsp");
 ;;
 ;; Author: Paul S. Wang
