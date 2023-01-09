@@ -2365,6 +2365,7 @@ m4_displaymath(
 @closecatbox
 @end deffn
 
+@anchor{erfi}
 @deffn {Function} erfi (@var{z})
 The Imaginary Error Function. 
 m4_displaymath(
@@ -2376,6 +2377,7 @@ m4_displaymath(
 @closecatbox
 @end deffn
 
+@anchor{erf_generalized}
 @deffn {Function} erf_generalized (@var{z1},@var{z2})
 Generalized Error function Erf(z1,z2):
 m4_displaymath(
@@ -2397,11 +2399,11 @@ m4_displaymath(
 
 (@urlaands{eqn 7.3.1, 300}) and (@urldlmf{7.2.E7}).
 
-The simplification @code{fresnel_c(-x) = -fresnel_c(x)} is applied when
-flag @code{trigsign} is true.
+The simplification m4_math(<<<C(-x) = -C(x)>>>, <<<@code{fresnel_c(-x) = -fresnel_c(x)}>>>) is applied when
+flag @mref{trigsign} is true.
 
-The simplification @code{fresnel_c(%i*x) =  %i*fresnel_c(x)} is applied when
-flag @code{%iargs} is true.
+The simplification m4_math(<<<C(ix) = iC(x)>>>, <<<@code{fresnel_c(%i*x) =  %i*fresnel_c(x)}>>>) is applied when
+flag @mref{%iargs} is true.
 
 See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
 @opencatbox{Categories:}
@@ -2418,11 +2420,11 @@ m4_displaymath(
 
 (@urlaands{eqn 7.3.2, 300}) and (@urldlmf{7.2.E8}).
 
-The simplification @code{fresnel_s(-x) = -fresnel_s(x)} is applied when
-flag @code{trigsign} is true.
+The simplification m4_math(<<<S(-x) = -S(x)>>>, <<<@code{fresnel_s(-x) = -fresnel_s(x)}>>>) is applied when
+flag @mref{trigsign} is true.
 
-The simplification @code{fresnel_s(%i*x) =  -%i*fresnel_s(x)} is applied when
-flag @code{%iargs} is true.
+The simplification m4_math(<<<S(ix) = iS(x)>>>, <<<@code{fresnel_s(%i*x) =  -%i*fresnel_s(x)}>>>) is applied when
+flag @mref{%iargs} is true.
 
 See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
 @opencatbox{Categories:}
@@ -2434,8 +2436,8 @@ See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
 @defvr {Option variable} erf_representation
 Default value: false
 
-When @code{true}, @code{erfc}, @code{erfi}, @code{erf_generalized}, @code{fresnel_s} 
-and @code{fresnel_c} are transformed to @code{erf}.
+When @code{true}, @mref{erfc}, @mref{erfi}, @mref{erf_generalized}, @mref{fresnel_s} 
+and @mref{fresnel_c} are transformed to @mref{erf}.
 @end defvr
 
 @anchor{hypergeometric_representation}
