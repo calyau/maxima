@@ -2734,9 +2734,9 @@ Furthermore, @code{specint} can handle the hypergeometric function
 The result may be in terms of special functions and can include unsimplified 
 hypergeometric functions.
 
-When @code{laplace} fails to find a Laplace transform, @code{specint} is called. 
-Because @code{laplace} knows more general rules for Laplace transforms, it is 
-preferable to use @code{laplace} and not @code{specint}.
+When @mref{laplace} fails to find a Laplace transform, @code{specint} is called. 
+Because @mref{laplace} knows more general rules for Laplace transforms, it is 
+preferable to use @mref{laplace} and not @code{specint}.
 
 @code{demo("hypgeo")} displays several examples of Laplace transforms computed by 
 @code{specint}.
@@ -2886,7 +2886,7 @@ is a list of the denominator parameters.
 If @code{hgfred} cannot simplify the hypergeometric function, it returns
 an expression of the form @code{%f[p,q]([a], [b], x)} where @var{p} is
 the number of elements in @var{a}, and @var{q} is the number of elements
-in @var{b}.  This is the usual @code{pFq} generalized hypergeometric
+in @var{b}.  This is the usual m4_math(<<<_pF_q>>>,<<<@code{pFq}>>>) generalized hypergeometric
 function. 
 
 @example
