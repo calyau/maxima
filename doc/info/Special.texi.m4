@@ -2345,7 +2345,8 @@ m4_displaymath(
 
 (@urlaands{eqn 7.1.1, 297}) and (@urldlmf{7.2.E1}).
 
-See also flag @mrefdot{erfflag}
+See also flag @mrefdot{erfflag}  This can also be expressed in terms
+of a hypergeometric function.  @xref{hypergeometric_representation}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2360,6 +2361,8 @@ m4_displaymath(
 
 (@urlaands{eqn 7.1.2, 297}) and (@urldlmf{7.2.E2}).
 
+This can also be expressed in terms
+of a hypergeometric function.  @xref{hypergeometric_representation}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2384,6 +2387,8 @@ m4_displaymath(
 <<<{\rm erf}(z_1, z_2) = {{2\over \sqrt{\pi}}} \int_{z_1}^{z_2} e^{-t^2}\, dt>>>,
 <<<@math{erf(z) = 2/sqrt(%pi)*integrate(exp(-t^2), t, z1, z2)}>>>)
 
+This can also be expressed in terms
+of a hypergeometric function.  @xref{hypergeometric_representation}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox
@@ -2438,6 +2443,31 @@ Default value: false
 
 When @code{true}, @mref{erfc}, @mref{erfi}, @mref{erf_generalized}, @mref{fresnel_s} 
 and @mref{fresnel_c} are transformed to @mref{erf}.
+
+@c The result for erfi looks wrong.  I (rtoy) was expecting it to be -%i*erf(%i*z).
+@example
+(%i1) erf_representation:true;
+(%o1)                                true
+(%i2) erfc(z);
+(%o2)                               erfc(z)
+(%i3) erfi(z);
+(%o3)                               erfi(z)
+(%i4) erf_generalized(z1,z2);
+(%o4)                          erf(z2) - erf(z1)
+(%i5) fresnel_c(z);
+                    sqrt(%pi) (%i + 1) z           sqrt(%pi) (1 - %i) z
+      (1 - %i) (erf(--------------------) + %i erf(--------------------))
+                             2                              2
+(%o5) -------------------------------------------------------------------
+                                       4
+(%i6) fresnel_s(z);
+                    sqrt(%pi) (%i + 1) z           sqrt(%pi) (1 - %i) z
+      (%i + 1) (erf(--------------------) - %i erf(--------------------))
+                             2                              2
+(%o6) -------------------------------------------------------------------
+                                       4
+
+@end example
 @end defvr
 
 @anchor{hypergeometric_representation}
@@ -2445,7 +2475,55 @@ and @mref{fresnel_c} are transformed to @mref{erf}.
 Default value: false
 
 Enables transformation to a Hypergeometric
-representation for @mref{fresnel_s} and @mref{fresnel_c}.
+representation for @mref{fresnel_s} and @mref{fresnel_c} and other
+error functions.
+
+@example
+(%i1) hypergeometric_representation:true;
+(%o1)                                true
+(%i2) fresnel_s(z);
+                                                      2  4
+                                     3    3  7     %pi  z    3
+                 %pi hypergeometric([-], [-, -], - -------) z
+                                     4    2  4       16
+(%o2)            ---------------------------------------------
+                                       6
+(%i3) fresnel_c(z);
+                                                    2  4
+                                   1    1  5     %pi  z
+(%o3)              hypergeometric([-], [-, -], - -------) z
+                                   4    2  4       16
+(%i4) erf(z);
+                                        1    3      2
+                      2 hypergeometric([-], [-], - z ) z
+                                        2    2
+(%o4)                 ----------------------------------
+                                  sqrt(%pi)
+(%i5) erfi(z);
+                                         1    3    2
+                       2 hypergeometric([-], [-], z ) z
+                                         2    2
+(%o5)                  --------------------------------
+                                  sqrt(%pi)
+(%i6) erfc(z);
+                                          1    3      2
+                        2 hypergeometric([-], [-], - z ) z
+                                          2    2
+(%o6)               1 - ----------------------------------
+                                    sqrt(%pi)
+(%i7) erf_generalized(z1,z2);
+                        1    3       2
+      2 hypergeometric([-], [-], - z2 ) z2
+                        2    2
+(%o7) ------------------------------------
+                   sqrt(%pi)
+                                                             1    3       2
+                                           2 hypergeometric([-], [-], - z1 ) z1
+                                                             2    2
+                                         - ------------------------------------
+                                                        sqrt(%pi)
+@end example
+
 @end defvr
 
 @node Struve Functions, Hypergeometric Functions, Error Function, Special Functions
