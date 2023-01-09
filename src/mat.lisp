@@ -14,7 +14,7 @@
 
 ;; this is the mat package
 
-(declare-top (special *ech* *tri* equations
+(declare-top (special *ech* *tri*
 		      mul* *det*
 		      xm* xn* ax))
 
@@ -431,7 +431,7 @@
 
 ;; Displays list of solutions.
 
-(defun solve2 (llist)
+(defun solve2 (llist equations)
   (setq $multiplicities nil)
   (map2c #'(lambda (equatn multipl)
 	     (setq equations
@@ -440,7 +440,8 @@
 	     (if (and (> multipl 1) $dispflag)
 		 (mtell (intl:gettext "solve: multiplicity ~A~%") multipl)))
 	 llist)
-  (setq $multiplicities (cons '(mlist simp) (nreverse $multiplicities))))
+  (values (setq $multiplicities (cons '(mlist simp) (nreverse $multiplicities)))
+	  equations))
 
 ;; Displays an expression and returns its linelabel.
 

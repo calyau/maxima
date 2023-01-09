@@ -173,8 +173,9 @@
 ;; Solve a single equation for a single unknown.
 ;; Obtains roots via solve and prints them.
 
-(defun ssolve (exp *var &aux equations multi)
-  (let (($solvetrigwarn $solvetrigwarn))
+(defun ssolve (exp *var)
+  (let (($solvetrigwarn $solvetrigwarn)
+	equations multi)
     (cond ((null *var) '$all)
 	  (t (solve exp *var 1)
 	     (cond ((not (or *roots *failures)) (make-mlist))
@@ -185,13 +186,17 @@
 							   *roots
 							   (nconc *roots *failures)))))
 		      (setq $multiplicities (make-mlist-l (nreverse multi)))))
-		   (t (when (and *failures (not $solveexplicit))
+		   (t
+		    (let (soln)
+		      (when (and *failures (not $solveexplicit))
 			(when $dispflag (mtell (intl:gettext "solve: the roots of:~%")))
-			(solve2 *failures))
+			(multiple-value-setq (soln equations)
+			  (solve2 *failures equations)))
 		      (when *roots
 			(when $dispflag (mtell (intl:gettext "solve: solution:~%")))
-			(solve2 *roots))
-		      (make-mlist-l equations)))))))
+			(multiple-value-setq (soln equations)
+			  (solve2 *roots equations)))
+		      (make-mlist-l equations))))))))
 
 ;; Solve takes three arguments, the expression to solve for zero, the variable
 ;; to solve for, and what multiplicity this solution is assumed to have (from
