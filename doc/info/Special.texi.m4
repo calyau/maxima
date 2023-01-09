@@ -1947,6 +1947,7 @@ m4_displaymath(
 with m4_math(<<<\left| \arg z \right| < \pi>>>, <<<abs(arg z) < %pi>>>). 
 (@urlaands{eqn 5.1.1, 228}) and (@urldlmf{6.2E2})
 
+This can be written in terms of other functions.  @xref{expintrep} for examples.
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @category{Special functions}
@@ -1964,6 +1965,8 @@ m4_displaymath(
 
 with @math{x} real and @math{x > 0}. (@urlaands{eqn 5.1.2, 228}) and (@urldlmf{6.2E5})
 
+This can be written in terms of other functions.  @xref{expintrep} for examples.
+
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @category{Special functions}
@@ -1978,6 +1981,8 @@ m4_displaymath(
 <<<@math{integrate(1/ln(t), t, 0, x)}>>>)
 
 with @math{x} real and @math{x > 1}. (@urlaands{eqn 5.1.3, 228}) and (@urldlmf{6.2E8})
+
+This can be written in terms of other functions.  @xref{expintrep} for examples.
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -1995,6 +2000,9 @@ m4_displaymath(
 with m4_math(<<<{\rm Re}(z) > 1>>>,<<<realpart(z) > 1>>>) and @math{n} a
 non-negative integer.
 
+For half-integral orders, this can be written in terms of @mref{erfc}
+or @mref{erf}.  @xref{expintexpand} for examples.
+
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @category{Special functions}
@@ -2009,6 +2017,8 @@ and @urldlmf{6.2#E9}) defined as
 m4_displaymath(
 <<<{\rm Si}(z) = \int_0^z {\sin t \over t} dt>>>,
 <<<@math{integrate(sin(t)/t, t, 0, z)}>>>)
+
+This can be written in terms of other functions.  @xref{expintrep} for examples.
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -2027,6 +2037,8 @@ m4_displaymath(
 
 with m4_math(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>).
 
+This can be written in terms of other functions.  @xref{expintrep} for examples.
+
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @category{Special functions}
@@ -2041,6 +2053,8 @@ and @urldlmf{6.2#E15}) defined as
 m4_displaymath(
 <<<{\rm Shi}(z) = \int_0^z {\sinh t \over t} dt>>>,
 <<<@math{integrate(sinh(t)/t, t, 0, z)}>>>)
+
+This can be written in terms of other functions.  @xref{expintrep} for examples.
 
 @opencatbox{Categories:}
 @category{Exponential Integrals}
@@ -2059,12 +2073,15 @@ m4_displaymath(
 
 with m4_math(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>).
 
+This can be written in terms of other functions.  @xref{expintrep} for examples.
+
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @category{Special functions}
 @closecatbox
 @end deffn
 
+@anchor{expintrep}
 @defvr {Option variable} expintrep
 Default value: false
 
@@ -2083,17 +2100,228 @@ function specified where @code{expintegral_trig} means
 @mref{expintegral_si}, @mref{expintegral_ci}; and @code{expintegral_hyp}
 means @mref{expintegral_shi} or @mref{expintegral_chi}.
 
+Here are some examples for @code{expintrep} set to @code{gamma_incomplete}:
+@example
+(%i1) expintrep:'gamma_incomplete;
+(%o1)                          gamma_incomplete
+(%i2) expintegral_e1(z);
+(%o2)                       gamma_incomplete(0, z)
+(%i3) expintegral_ei(z);
+(%o3)            log(z) - log(- z) - gamma_incomplete(0, - z)
+(%i4) expintegral_li(z);
+(%o4)     log(log(z)) - log(- log(z)) - gamma_incomplete(0, - log(z))
+(%i5) expintegral_e(n,z);
+                                                   n - 1
+(%o5)                  gamma_incomplete(1 - n, z) z
+(%i6) expintegral_si(z);
+(%o6) (%i ((- log(%i z)) + log(- %i z) - gamma_incomplete(0, %i z)
+                                              + gamma_incomplete(0, - %i z)))/2
+(%i7) expintegral_ci(z);
+(%o7) log(z) - (log(%i z) + log(- %i z) + gamma_incomplete(0, %i z)
+                                               + gamma_incomplete(0, - %i z))/2
+(%i8) expintegral_shi(z);
+      log(z) - log(- z) + gamma_incomplete(0, z) - gamma_incomplete(0, - z)
+(%o8) ---------------------------------------------------------------------
+                                        2
+(%i9) expintegral_chi(z);
+(%o9) 
+      (- log(z)) + log(- z) + gamma_incomplete(0, z) + gamma_incomplete(0, - z)
+    - -------------------------------------------------------------------------
+                                          2
+@end example
+
+For @code{expintrep} set to @code{expintegral_e1}:
+
+@example
+(%i1) expintrep:'expintegral_e1;
+(%o1)                           expintegral_e1
+(%i2) expintegral_ei(z);
+(%o2)               log(z) - log(- z) - expintegral_e1(- z)
+(%i3) expintegral_li(z);
+(%o3)       log(log(z)) - log(- log(z)) - expintegral_e1(- log(z))
+(%i4) expintegral_e(n,z);
+(%o4)                         expintegral_e(n, z)
+(%i5) expintegral_si(z);
+(%o5) (%i ((- log(%i z)) - expintegral_e1(%i z) + log(- %i z)
+                                                   + expintegral_e1(- %i z)))/2
+(%i6) expintegral_ci(z);
+(%o6) log(z)
+          log(- %i z) (expintegral_e1(%i z) + expintegral_e1(- %i z)) log(%i z)
+        - ---------------------------------------------------------------------
+                                            2
+(%i7) expintegral_shi(z);
+          log(z) + expintegral_e1(z) - log(- z) - expintegral_e1(- z)
+(%o7)     -----------------------------------------------------------
+                                       2
+(%i8) expintegral_chi(z);
+         (- log(z)) + expintegral_e1(z) + log(- z) + expintegral_e1(- z)
+(%o8)  - ---------------------------------------------------------------
+                                        2
+@end example
+
+For @code{expintrep} set to @code{expintegral_ei}:
+
+@example
+(%i1) expintrep:'expintegral_ei;
+(%o1)                           expintegral_ei
+(%i2) expintegral_e1(z);
+                                          1
+                         log(- z) - log(- -)
+                                          z
+(%o2)       (- log(z)) + ------------------- - expintegral_ei(- z)
+                                  2
+(%i3) expintegral_ei(z);
+(%o3)                          expintegral_ei(z)
+(%i4) expintegral_li(z);
+(%o4)                       expintegral_ei(log(z))
+(%i5) expintegral_e(n,z);
+(%o5)                         expintegral_e(n, z)
+(%i6) expintegral_si(z);
+(%o6) (%i (log(%i z) + 2 (expintegral_ei(- %i z) - expintegral_ei(%i z))
+                                                            %i          %i
+                                        - log(- %i z) + log(--) - log(- --)))/4
+                                                            z           z
+(%i7) expintegral_ci(z);
+(%o7) ((- log(%i z)) + 2 (expintegral_ei(%i z) + expintegral_ei(- %i z))
+                                                    %i          %i
+                                - log(- %i z) + log(--) + log(- --))/4 + log(z)
+                                                    z           z
+(%i8) expintegral_shi(z);
+(%o8) ((- 2 log(z)) + 2 (expintegral_ei(z) - expintegral_ei(- z)) + log(- z)
+                                                                          1
+                                                                  - log(- -))/4
+                                                                          z
+(%i9) expintegral_chi(z);
+(%o9) 
+                                                                             1
+   2 log(z) + 2 (expintegral_ei(z) + expintegral_ei(- z)) - log(- z) + log(- -)
+                                                                             z
+   ----------------------------------------------------------------------------
+                                        4
+@end example
+
+For @code{expintrep} set to @code{expintegral_li}:
+
+@example
+(%i1) expintrep:'expintegral_li;
+(%o1)                           expintegral_li
+(%i2) expintegral_e1(z);
+                                                                 1
+                                                log(- z) - log(- -)
+                               - z                               z
+(%o2)      (- expintegral_li(%e   )) - log(z) + -------------------
+                                                         2
+(%i3) expintegral_ei(z);
+                                               z
+(%o3)                         expintegral_li(%e )
+(%i4) expintegral_li(z);
+(%o4)                          expintegral_li(z)
+(%i5) expintegral_e(n,z);
+(%o5)                         expintegral_e(n, z)
+(%i6) expintegral_si(z);
+                             %i z                     - %e z    %pi signum(z)
+        %i (expintegral_li(%e    ) - expintegral_li(%e      ) - -------------)
+                                                                      2
+(%o6) - ----------------------------------------------------------------------
+                                          2
+(%i7) expintegral_ci(z);
+                        %i z                     - %i z
+       expintegral_li(%e    ) + expintegral_li(%e      )
+(%o7)  ------------------------------------------------- - signum(z) + 1
+                               2
+(%i8) expintegral_shi(z);
+                                   z                     - z
+                  expintegral_li(%e ) - expintegral_li(%e   )
+(%o8)             -------------------------------------------
+                                       2
+(%i9) expintegral_chi(z);
+                                   z                     - z
+                  expintegral_li(%e ) + expintegral_li(%e   )
+(%o9)             -------------------------------------------
+                                       2
+@end example
+
+For @code{expintrep} set to @code{expintegral_trig}:
+
+@example
+(%i1) expintrep:'expintegral_trig;
+(%o1)                          expintegral_trig
+(%i2) expintegral_e1(z);
+(%o2) log(%i z) - %i expintegral_si(%i z) - expintegral_ci(%i z) - log(z)
+(%i3) expintegral_ei(z);
+(%o3) (- log(%i z)) - %i expintegral_si(%i z) + expintegral_ci(%i z) + log(z)
+(%i4) expintegral_li(z);
+(%o4) (- log(%i log(z))) - %i expintegral_si(%i log(z))
+                                      + expintegral_ci(%i log(z)) + log(log(z))
+(%i5) expintegral_e(n,z);
+(%o5)                         expintegral_e(n, z)
+(%i6) expintegral_si(z);
+(%o6)                          expintegral_si(z)
+(%i7) expintegral_ci(z);
+(%o7)                          expintegral_ci(z)
+(%i8) expintegral_shi(z);
+(%o8)                      - %i expintegral_si(%i z)
+(%i9) expintegral_chi(z);
+(%o9)            (- log(%i z)) + expintegral_ci(%i z) + log(z)
+@end example
+
+For @code{expintrep} set to @code{expintegral_hyp}:
+
+@example
+(%i1) expintrep:'expintegral_hyp;
+(%o1)                           expintegral_hyp
+(%i2) expintegral_e1(z);
+(%o2)               expintegral_shi(z) - expintegral_chi(z)
+(%i3) expintegral_ei(z);
+(%o3)               expintegral_shi(z) + expintegral_chi(z)
+(%i4) expintegral_li(z);
+(%o4)          expintegral_shi(log(z)) + expintegral_chi(log(z))
+(%i5) expintegral_e(n,z);
+(%o5)                         expintegral_e(n, z)
+(%i6) expintegral_si(z);
+(%o6)                     - %i expintegral_shi(%i z)
+(%i7) expintegral_ci(z);
+(%o7)           (- log(%i z)) + expintegral_chi(%i z) + log(z)
+(%i8) expintegral_shi(z);
+(%o8)                         expintegral_shi(z)
+(%i9) expintegral_chi(z);
+(%o9)                         expintegral_chi(z)
+@end example
+
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @closecatbox
 @end defvr
 
+@anchor{expintexpand}
 @defvr {Option variable} expintexpand 
 Default value: false
 
 Expand @code{expintegral_e(n,z)} for half
 integral values in terms of @code{erfc} or @code{erf} and
 for positive integers in terms of @code{expintegral_ei}.
+
+@example
+(%i1) expintegral_e(1/2,z);
+                                            1
+(%o1)                         expintegral_e(-, z)
+                                            2
+(%i2) expintegral_e(1,z);
+(%o2)                         expintegral_e(1, z)
+(%i3) expintexpand:true;
+(%o3)                                true
+(%i4) expintegral_e(1/2,z);
+                            sqrt(%pi) erfc(sqrt(z))
+(%o4)                       -----------------------
+                                    sqrt(z)
+(%i5) expintegral_e(1,z);
+                               1
+                         log(- -) - log(- z)
+                               z
+(%o5)       (- log(z)) - ------------------- - expintegral_ei(- z)
+                                  2
+@end example
+
 @opencatbox{Categories:}
 @category{Exponential Integrals}
 @closecatbox
