@@ -142,7 +142,7 @@
 	 ;; that we only allow the possible values.
 	 (let ((assign-func
 		 `#'(lambda (var val)
-		      (let ((possible-values ,(second opts)))
+		      (let ((possible-values ',(second opts)))
 			(unless (member val possible-values)
 			  (mseterr var val
 				   (let ((*print-case* :downcase))
