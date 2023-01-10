@@ -2441,12 +2441,18 @@ See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
 @defvr {Option variable} erf_representation
 Default value: false
 
-When @code{true}, @mref{erfc}, @mref{erfi}, @mref{erf_generalized}, @mref{fresnel_s} 
-and @mref{fresnel_c} are transformed to @mref{erf}.
+@code{erf_representation} controls how the error functions are
+represented.  It must be set to one of @code{false}, @code{erf},
+@code{erfc}, or @code{erfi}.  When set to @code{false}, the error functions are not
+modified.  When set to @code{erf}, all error functions (@mref{erfc},
+@mref{erfi}, @mref{erf_generalized}, @mref{fresnel_s} and
+@mref{fresnel_c}) are converted to @mref{erf} functions.  Similary,
+@code{erfc} converts error functions to @mref{erfc}.  Finally
+@code{erfi} converts the functions to @mref{erfi}.
 
-@c The result for erfi looks wrong.  I (rtoy) was expecting it to be -%i*erf(%i*z).
+Converting to @mref{erf}:
 @example
-(%i1) erf_representation:true;
+(%i1) erf_representation:erf;
 (%o1)                                true
 (%i2) erfc(z);
 (%o2)                               erfc(z)
@@ -2467,6 +2473,61 @@ and @mref{fresnel_c} are transformed to @mref{erf}.
 (%o6) -------------------------------------------------------------------
                                        4
 
+@end example
+
+Converting to @mref{erfc}:
+@example
+(%i1) erf_representation:erfc;
+(%o1)                                erfc
+(%i2) erf(z);
+(%o2)                             1 - erfc(z)
+(%i3) erfc(z);
+(%o3)                               erfc(z)
+(%i4) erf_generalized(z1,z2);
+(%o4)                         erfc(z1) - erfc(z2)
+(%i5) fresnel_s(c);
+                         sqrt(%pi) (%i + 1) c
+(%o5) ((%i + 1) ((- erfc(--------------------))
+                                  2
+                                                 sqrt(%pi) (1 - %i) c
+                                  - %i (1 - erfc(--------------------)) + 1))/4
+                                                          2
+(%i6) fresnel_c(c);
+                         sqrt(%pi) (%i + 1) c
+(%o6) ((1 - %i) ((- erfc(--------------------))
+                                  2
+                                                 sqrt(%pi) (1 - %i) c
+                                  + %i (1 - erfc(--------------------)) + 1))/4
+                                                          2
+@end example
+
+Converting to @mref{erfc}:
+
+@example
+(%i1) erf_representation:erfi;
+(%o1)                                erfi
+(%i2) erf(z);
+(%o2)                           - %i erfi(%i z)
+(%i3) erfc(z);
+(%o3)                          %i erfi(%i z) + 1
+(%i4) erfi(z);
+(%o4)                               erfi(z)
+(%i5) erf_generalized(z1,z2);
+(%o5)                   %i erfi(%i z1) - %i erfi(%i z2)
+(%i6) fresnel_s(z);
+                            sqrt(%pi) %i (%i + 1) z
+(%o6) ((%i + 1) ((- %i erfi(-----------------------))
+                                       2
+                                                   sqrt(%pi) (1 - %i) %i z
+                                            - erfi(-----------------------)))/4
+                                                              2
+(%i7) fresnel_c(z);
+(%o7) 
+                   sqrt(%pi) (1 - %i) %i z            sqrt(%pi) %i (%i + 1) z
+    (1 - %i) (erfi(-----------------------) - %i erfi(-----------------------))
+                              2                                  2
+    ---------------------------------------------------------------------------
+                                         4
 @end example
 @end defvr
 
