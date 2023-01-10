@@ -76,7 +76,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmvar $erf_representation nil
-  "When T erfc, erfi and erf_generalized are transformed to erf.")
+  "When not false, error functions are transformed to erf, erfc, or erfi
+  depending on the value of $erf_representation."
+  :setting-list (nil $erf $erfc $erfi))
 
 (defmvar $erf_%iargs nil
   "When T erf and erfi simplifies for an imaginary argument.")
