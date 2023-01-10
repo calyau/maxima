@@ -30,14 +30,22 @@
     :SETTING-PREDICATE
         - A function of one argument that returns NIL if the given
           value is not a valid value for the variable.
+    :SETTING-LIST
+        - A list of values that can be assigned to the variable.  An
+          error is signaled if an attempt to assign a different value
+          is done.
 
   The list of properties has the form ((ind1 val1) (ind2 val2) ...)
   where IND1 is the name of the property and VAL1 is the value
   associated with the property.
 
   Other options that are recognized but ignored: IN-CORE, SEE-ALSO,
-  MODIFIED-COMMANDS, SETTING-LIST.  For any other options, a warning
-  is produced.
+  MODIFIED-COMMANDS.  For any other options, a warning is produced.
+
+  Do not use both :SETTING-PREDICATE and :SETTING-LIST.  Also do not
+  use a :PROPERTIES with an 'ASSIGN property.  :SETTING-PREDICATE and
+  :SETTING-LIST sets the 'ASSIGN property to implement the
+  functionality.
 "
   (let ((maybe-reset
           ;; Default is to reset the variable to it's initial value.
@@ -46,7 +54,10 @@
                     ,val))))
         maybe-declare-type
         maybe-set-props
-	maybe-predicate)
+	maybe-predicate
+	setting-predicate-p
+	setting-list-p
+	assign-property-p)
 
     (do ((opts options (rest opts)))
         ((null opts))
@@ -82,10 +93,22 @@
                (mapcar #'(lambda (o)
                            (destructuring-bind (ind val)
                                o
+			     (when (eql ind 'assign)
+			       (setf assign-property-p t))
                              `(putprop ',var ,val ',ind)))
                        (second opts)))
+	 (when assign-property-p
+	   (when setting-predicate-p
+	     (error "Cannot use 'ASSIGN property in :PROPERTIES if :SETTING-PREDICATE already specified."))
+	   (when setting-list-p
+	     (error "Cannot use 'ASSIGN property in :PROPERTIES if :SETTING-LIST already specified.")))
          (setf opts (rest opts)))
 	(:setting-predicate
+	 (when setting-list-p
+	   (error "Cannot use :SETTING-PREDICATE when :SETTING-LIST already specified."))
+	 (when assign-property-p
+	   (error "Cannot use :SETTING-PREDICATE when :PROPERTIES uses the 'ASSIGN property."))
+	 (setf setting-predicate-p t)
 	 ;; A :SETTING-PREDICATE is a function (symbol or lambda) of
 	 ;; one arg specifying the value that variable is to be set
 	 ;; to.  It should return non-NIL if the value is valid.  An
@@ -104,6 +127,30 @@
 	   (setf maybe-predicate
 		 `((putprop ',var ,assign-func 'assign))))
 	 ;; Skip over the predicate function.
+	 (setf opts (rest opts)))
+	(:setting-list
+	 (when setting-predicate-p
+	   (error "Cannot use :SETTING-LIST when :SETTING-PREDICATE already specified."))
+	 (when assign-property-p
+	   (error "Cannot use :SETTING-LIST when :PROPERTIES uses the 'ASSIGN property."))
+	 (setf setting-list-p t)
+	 ;; A :SETTING-LIST is a list of possible values that can be
+	 ;; assigned to the variable.  An error is signaled if the
+	 ;; variable is not assigned to one of these values.  This
+	 ;; could be handled with :SETTING-PREDICATE, of course.  This
+	 ;; is a convenience feature but it also makes it explicit
+	 ;; that we only allow the possible values.
+	 (let ((assign-func
+		 `#'(lambda (var val)
+		      (let ((possible-values ,(second opts)))
+			(unless (member val possible-values)
+			  (mseterr var val
+				   (let ((*print-case* :downcase))
+				     (format nil "must be one of: ~{~A~^, ~}"
+					     (mapcar #'stripdollar possible-values)))))))))
+	   (setf maybe-predicate
+		 `((putprop ',var ,assign-func 'assign))))
+	 ;; Skip over the values.
 	 (setf opts (rest opts)))
         ((see-also modified-commands setting-list)
          ;; Not yet supported, but we need to skip over the following

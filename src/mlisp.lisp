@@ -1084,9 +1084,9 @@ wrapper for this."
   (if munbindp
       'munbindp
       (if reason
-	  (merror (intl:gettext "assignment: cannot assign ~M to ~:M: ~M.")
+	  (merror (intl:gettext "assignment: cannot assign ~M to `~:M': ~M.")
 		  val name reason)
-	  (merror (intl:gettext "assignment: cannot assign ~M to ~:M.") val name))))
+	  (merror (intl:gettext "assignment: cannot assign ~M to `~:M'.") val name))))
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
