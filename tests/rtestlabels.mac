@@ -235,6 +235,24 @@ true;
  is (equal (labels, save_labels))]);
 ['[x : 3, y : 1], 3, 1, true];
 
+/*
+ * Test 5: programmode = false
+ * => solve returns list of %t labels
+ *    and each %t label is on the labels infolist
+ *    and each %t label is bound to an equation.
+ *
+ * This differs from test 2 because solve is unable to find the solution
+ * to x-tan(x).
+ */
+(programmode:false,
+ L: solve((x^2-4)*(x-tan(x)),x),
+ my_every(lambda([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), L)
+  and my_every(lambda([x], my_some(lambda([y], build2([x,y], 'y='x)), labels)), L));
+true;
+
+''L;
+[x = tan(x), x = -2, x= 2];
+
 /* Restore the status quo ante.
  */
 globalsolve: false;
