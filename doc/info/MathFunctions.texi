@@ -1381,7 +1381,7 @@ automatically expanded.  If it is -1 then all integers are expanded.
 Default value: false
 
 The option variable @code{factorial_expand} controls the simplification of 
-expressions like @code{(n+1)!}, where @code{n} is an integer.
+expressions like @code{(x+n)!}, where @code{n} is an integer.
 See @mref{factorial} for an example.
 
 @opencatbox{Categories:}
