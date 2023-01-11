@@ -2776,18 +2776,18 @@ into sines and cosines immediately, set the switch @code{trigexpand: true}.
 
 @code{trigexpand} is governed by the following global flags:
 
-@table @code
-@item trigexpand
+@table @asis
+@item @mref{trigexpand}
 If @code{true} causes expansion of all
 expressions containing sin's and cos's occurring subsequently.
-@item halfangles
+@item @mref{halfangles}
 If @code{true} causes half-angles to be simplified
 away.
-@item trigexpandplus
+@item @mref{trigexpandplus}
 Controls the "sum" rule for @code{trigexpand},
 expansion of sums (e.g. @code{sin(x + y)}) will take place only if
 @code{trigexpandplus} is @code{true}.
-@item trigexpandtimes
+@item @mref{trigexpandtimes}
 Controls the "product" rule for @code{trigexpand},
 expansion of products (e.g. @code{sin(2 x)}) will take place only if
 @code{trigexpandtimes} is @code{true}.
@@ -2823,8 +2823,8 @@ Examples:
 Default value: @code{true}
 
 @code{trigexpandplus} controls the "sum" rule for
-@code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
-@code{trigexpand} switch set to @code{true}, expansion of sums
+@mref{trigexpand}.  Thus, when the @mref{trigexpand} command is used or the
+@mref{trigexpand} switch set to @code{true}, expansion of sums
 (e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is
 @code{true}.
 
@@ -2839,8 +2839,8 @@ Default value: @code{true}
 @defvr {Option variable} trigexpandtimes
 Default value: @code{true}
 
-@code{trigexpandtimes} controls the "product" rule for @code{trigexpand}.
-Thus, when the @code{trigexpand} command is used or the @code{trigexpand}
+@code{trigexpandtimes} controls the "product" rule for @mref{trigexpand}.
+Thus, when the @mref{trigexpand} command is used or the @mref{trigexpand}
 switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
 will take place only if @code{trigexpandtimes} is @code{true}.
 
@@ -2936,8 +2936,8 @@ See also @mref{poissimp}.
 Default value: @code{true}
 
 When @code{trigsign} is @code{true}, it permits simplification of negative
-arguments to trigonometric functions.  E.g., @code{sin(-x)} will become
-@code{-sin(x)} only if @code{trigsign} is @code{true}.
+arguments to trigonometric functions.  E.g., m4_math(\sin(-x),@code{sin(-x)}) will
+become m4_math(-\sin x, @code{-sin(x)}) only if @code{trigsign} is @code{true}.
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
@@ -2968,7 +2968,7 @@ etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @c @code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @c @end ifnottex
 
-@code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
+@mref{trigreduce}, @mref{ratsimp}, and @mref{radcan} may be
 able to further simplify the result.
 
 @code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
