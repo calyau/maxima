@@ -1600,6 +1600,16 @@ first kind:
 	   (div (mul 2 (mul (add 2 (power 2 1//2))
 			    (power '$%pi (div 3 2))))
 		(power (gm (div -1 4)) 2)))
+	  ($hypergeometric_representation
+	   ;; See http://functions.wolfram.com/08.02.26.0001.01
+	   ;;
+	   ;;   elliptic_kc(z) = %pi/2*%f[2,1]([1/2,1/2],[1], z)
+	   ;;
+	   (mul (div '$%pi 2)
+		(ftake '$hypergeometric
+		       (make-mlist 1//2 1//2)
+		       (make-mlist 1)
+		       m)))
 	  (t
 	   ;; Nothing to do
 	   (give-up)))))
@@ -1669,6 +1679,16 @@ first kind:
 	   ;; Should we expand out elliptic_ec(1/2) using the above result?
 	   (mul (power 2 1//2)
 		(ftake '%elliptic_ec 1//2)))
+	  ($hypergeometric_representation
+	   ;; See http://functions.wolfram.com/08.01.26.0001.01
+	   ;;
+	   ;;   elliptic_ec(z) = %pi/2*%f[2,1]([-1/2,1/2],[1], z)
+	   ;;
+	   (mul (div '$%pi 2)
+		(ftake '$hypergeometric
+		       (make-mlist -1//2 1//2)
+		       (make-mlist 1)
+		       m)))
 	  (t
 	   ;; Nothing to do
 	   (give-up)))))
