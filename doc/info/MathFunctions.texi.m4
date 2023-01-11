@@ -2602,29 +2602,32 @@ Default value: @code{false}
 When @code{halfangles} is @code{true}, trigonometric functions of arguments 
 @code{@var{expr}/2} are simplified to functions of @var{expr}.
 
-For a real argument @var{x} in the interval @code{0 < x < 2*%pi} the sine of 
-the half-angle simplifies to a simple formula:
-
+For a real argument @math{x} in the interval
+@w{}m4_mathcomma(<<<0 \le x \lt 2\pi>>>, 0 <= x < 2*%pi)@w{} m4_math(<<<\sin{x\over 2}>>>, sin(x/2)) simplifies to a simple formula:
+m4_displaymath(
+{\sqrt{1-\cos x}\over\sqrt{2}},
 @example
                          sqrt(1 - cos(x))
                          ----------------
                              sqrt(2)
 @end example
+)
 
 A complicated factor is needed to make this formula correct for all complex 
-arguments @var{z}:
-
-@verbatim
-           realpart(z)
-     floor(-----------)
-              2 %pi
-(- 1)                   (1 - unit_step(- imagpart(z))
-
-                            realpart(z)            realpart(z)
-                      floor(-----------) - ceiling(-----------)
-                               2 %pi                  2 %pi
-                ((- 1)                                          + 1))
+arguments @math{z = x+iy}:
+m4_displaymath(
+(-1)^{\lfloor{x/(2\pi)}\rfloor}
+\left[1-\rm{unit\_step}(-y)
+\left(1+(-1)^{\lfloor{x/(2\pi)}\rfloor - \lceil{x/(2\pi)}\rceil}\right)\right]
+,
+<<<@verbatim
+              x                       x                x
+      floor(-----)            floor(-----) - ceiling(-----)
+            2 %pi                   2 %pi            2 %pi
+ (- 1)             (1 - ((- 1)                              + 1)
+                                                          unit_step(- y))
 @end verbatim
+>>>)
 
 Maxima knows this factor and similar factors for the functions @code{sin}, 
 @code{cos}, @code{sinh}, and @code{cosh}.  For special values of the argument 
