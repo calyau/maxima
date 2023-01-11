@@ -2603,7 +2603,7 @@ When @code{halfangles} is @code{true}, trigonometric functions of arguments
 @code{@var{expr}/2} are simplified to functions of @var{expr}.
 
 For a real argument @math{x} in the interval
-@w{}m4_mathcomma(<<<0 \le x \lt 2\pi>>>, 0 <= x < 2*%pi)@w{} m4_math(<<<\sin{x\over 2}>>>, sin(x/2)) simplifies to a simple formula:
+@w{}m4_mathcomma(<<<0 \le x < 2\pi>>>, 0 <= x < 2*%pi)@w{} m4_math(<<<\sin{x\over 2}>>>, sin(x/2)) simplifies to a simple formula:
 m4_displaymath(
 {\sqrt{1-\cos x}\over\sqrt{2}},
 @example
