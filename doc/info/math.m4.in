@@ -22,8 +22,9 @@ m4_dnl the arg has commas in it.
 m4_dnl 
 m4_dnl NOTE: that there's an issue if m4_math is at the beginning or end of a
 m4_dnl line.  Then an extra newline is produced.  Hence, m4_math should have
-m4_dnl a word before and after it.  For m4_displaymath, be careful not to
-m4_dnl have extra blank lines within the formula; Tex amy complain about the
+m4_dnl a word before and after it.  It can be helpful to add "@w{}" before or
+m4_dnl after m4_math.  For m4_displaymath, be careful not to have extra blank
+m4_dnl lines within the formula; Tex amy complain about the
 m4_dnl blank lines.
 m4_dnl 
 m4_dnl If m4_math is supposed to end a sentence, use m4_mathdot.  If you
