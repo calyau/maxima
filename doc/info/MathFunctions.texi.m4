@@ -2486,8 +2486,9 @@ See also @mref{atan2}.
 @anchor{atan2}
 @deffn {Function} atan2 (@var{y}, @var{x})
 
--- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi}
-to @code{%pi}.
+-- yields the value of m4_math(<<<\tan^{-1}(y/x)>>>, atan(y/x)) in the
+interval m4_math(-\pi, -%pi) to m4_math(\pi, %pi) taking into
+consideration the quadrant of the point m4_mathdot(<<<(x,y)>>>, <<<(x,y)>>>)
 
 See also @mref{atan}.
 
@@ -2517,7 +2518,7 @@ See also @mref{atan}.
 The @code{atrig1} package contains several additional simplification rules
 for inverse trigonometric functions.  Together with rules
 already known to Maxima, the following angles are fully implemented:
-@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, and @code{%pi/2}.
+@math{0}, m4_mathcomma(\pi/6,%pi/6)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} m4_mathcomma(\pi/3,%pi/3)@w{} and m4_mathdot(\pi/2,%pi/2)
 Corresponding angles in the other three quadrants are also available.
 Do @code{load("atrig1");} to use them.
 
