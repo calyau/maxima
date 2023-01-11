@@ -2509,26 +2509,6 @@ See also @mref{atan}.
 @closecatbox
 @end deffn
 
-@c IS THIS DESCRIPTION ACCURATE ??
-@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
-
-@c -----------------------------------------------------------------------------
-@anchor{atrig1}
-@defvr {Package} atrig1
-
-The @code{atrig1} package contains several additional simplification rules
-for inverse trigonometric functions.  Together with rules
-already known to Maxima, the following angles are fully implemented:
-@math{0}, m4_mathcomma(\pi/6,%pi/6)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} m4_mathcomma(\pi/3,%pi/3)@w{} and m4_mathdot(\pi/2,%pi/2)
-Corresponding angles in the other three quadrants are also available.
-Do @code{load("atrig1");} to use them.
-
-@opencatbox{Categories:}
-@category{Trigonometric functions}
-@category{Package atrig1}
-@closecatbox
-@end defvr
-
 @c -----------------------------------------------------------------------------
 @anchor{cos}
 @deffn {Function} cos (@var{x})
@@ -2595,24 +2575,6 @@ Do @code{load("atrig1");} to use them.
 @closecatbox
 @end deffn
 
-@c IS THIS DESCRIPTION ACCURATE ??
-@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
-
-@c -----------------------------------------------------------------------------
-@defvr {Package} ntrig
-
-The @code{ntrig} package contains a set of simplification rules that are
-used to simplify trigonometric function whose arguments are of the form
-@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
-@code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
-@c NEED TO LOAD THIS PACKAGE ??
-
-@opencatbox{Categories:}
-@category{Trigonometric functions}
-@category{Package ntrig}
-@closecatbox
-@end defvr
-
 @c -----------------------------------------------------------------------------
 @anchor{sec}
 @deffn {Function} sec (@var{x})
@@ -2678,6 +2640,44 @@ used to simplify trigonometric function whose arguments are of the form
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
+
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
+@anchor{atrig1}
+@defvr {Package} atrig1
+
+The @code{atrig1} package contains several additional simplification rules
+for inverse trigonometric functions.  Together with rules
+already known to Maxima, the following angles are fully implemented:
+@math{0}, m4_mathcomma(\pi/6,%pi/6)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} m4_mathcomma(\pi/3,%pi/3)@w{} and m4_mathdot(\pi/2,%pi/2)
+Corresponding angles in the other three quadrants are also available.
+Do @code{load("atrig1");} to use them.
+
+@opencatbox{Categories:}
+@category{Trigonometric functions}
+@category{Package atrig1}
+@closecatbox
+@end defvr
+
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
+@defvr {Package} ntrig
+
+The @code{ntrig} package contains a set of simplification rules that are
+used to simplify trigonometric function whose arguments are of the form
+@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
+@code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
+@c NEED TO LOAD THIS PACKAGE ??
+
+@opencatbox{Categories:}
+@category{Trigonometric functions}
+@category{Package ntrig}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{halfangles}
