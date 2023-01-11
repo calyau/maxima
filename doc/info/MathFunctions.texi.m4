@@ -1,3 +1,4 @@
+@c -*- mode: texinfo -*-
 @menu
 * Functions for Numbers::
 * Functions for Complex Numbers::
@@ -2594,88 +2595,6 @@ Do @code{load("atrig1");} to use them.
 @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@anchor{halfangles}
-@defvr {Option variable} halfangles
-Default value: @code{false}
-
-When @code{halfangles} is @code{true}, trigonometric functions of arguments 
-@code{@var{expr}/2} are simplified to functions of @var{expr}.
-
-For a real argument @math{x} in the interval
-@w{}m4_mathcomma(<<<0 \le x < 2\pi>>>, 0 <= x < 2*%pi)@w{} m4_math(<<<\sin{x\over 2}>>>, sin(x/2)) simplifies to a simple formula:
-m4_displaymath(
-{\sqrt{1-\cos x}\over\sqrt{2}},
-@example
-                         sqrt(1 - cos(x))
-                         ----------------
-                             sqrt(2)
-@end example
-)
-
-A complicated factor is needed to make this formula correct for all complex 
-arguments @math{z = x+iy}:
-m4_displaymath(
-(-1)^{\lfloor{x/(2\pi)}\rfloor}
-\left[1-\rm{unit\_step}(-y)
-\left(1+(-1)^{\lfloor{x/(2\pi)}\rfloor - \lceil{x/(2\pi)}\rceil}\right)\right]
-,
-<<<@verbatim
-              x                       x                x
-      floor(-----)            floor(-----) - ceiling(-----)
-            2 %pi                   2 %pi            2 %pi
- (- 1)             (1 - ((- 1)                              + 1)
-                                                          unit_step(- y))
-@end verbatim
->>>)
-
-Maxima knows this factor and similar factors for the functions @code{sin}, 
-@code{cos}, @code{sinh}, and @code{cosh}.  For special values of the argument 
-@math{z} these factors simplify accordingly.
-
-Examples:
-
-@c ===beg===
-@c halfangles : false$
-@c sin (x / 2);
-@c halfangles : true$
-@c sin (x / 2);
-@c assume(x>0, x<2*%pi)$
-@c sin(x / 2);
-@c ===end===
-@example
-(%i1) halfangles : false$
-@group
-(%i2) sin (x / 2);
-                                 x
-(%o2)                        sin(-)
-                                 2
-@end group
-(%i3) halfangles : true$
-@group
-(%i4) sin (x / 2);
-                            x
-                    floor(-----)
-                          2 %pi
-               (- 1)             sqrt(1 - cos(x))
-(%o4)          ----------------------------------
-                            sqrt(2)
-@end group
-(%i5) assume(x>0, x<2*%pi)$
-@group
-(%i6) sin(x / 2);
-                        sqrt(1 - cos(x))
-(%o6)                   ----------------
-                            sqrt(2)
-@end group
-@end example
-
-@opencatbox{Categories:}
-@category{Trigonometric functions}
-@category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 
@@ -2759,6 +2678,88 @@ used to simplify trigonometric function whose arguments are of the form
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{halfangles}
+@defvr {Option variable} halfangles
+Default value: @code{false}
+
+When @code{halfangles} is @code{true}, trigonometric functions of arguments 
+@code{@var{expr}/2} are simplified to functions of @var{expr}.
+
+For a real argument @math{x} in the interval
+@w{}m4_mathcomma(<<<0 \le x < 2\pi>>>, 0 <= x < 2*%pi)@w{} m4_math(<<<\sin{x\over 2}>>>, sin(x/2)) simplifies to a simple formula:
+m4_displaymath(
+{\sqrt{1-\cos x}\over\sqrt{2}},
+@example
+                         sqrt(1 - cos(x))
+                         ----------------
+                             sqrt(2)
+@end example
+)
+
+A complicated factor is needed to make this formula correct for all complex 
+arguments @math{z = x+iy}:
+m4_displaymath(
+(-1)^{\lfloor{x/(2\pi)}\rfloor}
+\left[1-\rm{unit\_step}(-y)
+\left(1+(-1)^{\lfloor{x/(2\pi)}\rfloor - \lceil{x/(2\pi)}\rceil}\right)\right]
+,
+<<<@verbatim
+              x                       x                x
+      floor(-----)            floor(-----) - ceiling(-----)
+            2 %pi                   2 %pi            2 %pi
+ (- 1)             (1 - ((- 1)                              + 1)
+                                                          unit_step(- y))
+@end verbatim
+>>>)
+
+Maxima knows this factor and similar factors for the functions @code{sin}, 
+@code{cos}, @code{sinh}, and @code{cosh}.  For special values of the argument 
+@math{z} these factors simplify accordingly.
+
+Examples:
+
+@c ===beg===
+@c halfangles : false$
+@c sin (x / 2);
+@c halfangles : true$
+@c sin (x / 2);
+@c assume(x>0, x<2*%pi)$
+@c sin(x / 2);
+@c ===end===
+@example
+(%i1) halfangles : false$
+@group
+(%i2) sin (x / 2);
+                                 x
+(%o2)                        sin(-)
+                                 2
+@end group
+(%i3) halfangles : true$
+@group
+(%i4) sin (x / 2);
+                            x
+                    floor(-----)
+                          2 %pi
+               (- 1)             sqrt(1 - cos(x))
+(%o4)          ----------------------------------
+                            sqrt(2)
+@end group
+(%i5) assume(x>0, x<2*%pi)$
+@group
+(%i6) sin(x / 2);
+                        sqrt(1 - cos(x))
+(%o6)                   ----------------
+                            sqrt(2)
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 
