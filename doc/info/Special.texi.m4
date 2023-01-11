@@ -616,7 +616,7 @@ it's a good idea to request a couple of extra.
 @deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
 
 @code{bfpsi} is the polygamma function of real argument @var{z} and
-integer order @var{n}.  @xref{polygamma, psi} for further
+integer order @var{n}.  See @ref{polygamma, psi} for further
 information.  @code{bfpsi0} is the digamma function.
 @code{bfpsi0(@var{z}, @var{fpprec})} is equivalent to @code{bfpsi(0,
 @var{z}, @var{fpprec})}.
