@@ -1956,6 +1956,21 @@
              (take '(%log) arg)
              (mul -1 (take '(%log) (mul '$%i arg)))))))
       
+    ($hypergeometric_representation
+     ;; See http://functions.wolfram.com/06.40.26.0001.01
+     ;;
+     ;; expintegral_chi(z) = z^2/4*hypergeometric([1,1],[2,2,3/2],z^2/4)
+     ;;   + log(z) + %gamma
+     ;;
+     (add
+      (mul (div (mul arg arg) 4)
+	   (ftake '$hypergeometric
+		  (make-mlist 1 1)
+		  (make-mlist 2 2 3//2)
+		  (div (mul arg arg)
+		       4)))
+      (ftake '%log arg)
+      '$%gamma))
     (t
      (give-up))))
 
