@@ -418,7 +418,21 @@
        ;; We transform to the Incomplete Gamma function.
        (mul (power arg (sub order 1))
             (take '(%gamma_incomplete) (sub 1 order) arg)))
-      
+      ($hypergeometric_representation
+       ;; See http://functions.wolfram.com/06.34.26.0002.01:
+       ;;
+       ;;   expintegral_e(v,z) = z^(v-1)*gamma(1-v)
+       ;;     - hypergeometric([1-v],[2-v], -z)
+       ;;
+       ;; But hypergeometric([1-v],[2-v],-z) gets simplified to
+       ;; hypergeometric([1],[2-v],z)*exp(-z)
+       (sub (mul (power arg (sub order 1))
+		 (ftake '%gamma (sub 1 order)))
+	    (div (ftake '$hypergeometric
+			 (make-mlist (sub 1 order))
+			 (make-mlist (sub 2 order))
+			 (neg arg))
+		 (sub 1 order))))
       (t 
        (give-up)))))
 
