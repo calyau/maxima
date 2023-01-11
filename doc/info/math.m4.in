@@ -1,3 +1,40 @@
+m4_dnl ----------------------------------------------------------------------
+m4_dnl M4 macros for expressing mathematical formulas
+m4_dnl
+m4_dnl 
+m4_dnl These macros attempt to make it easier to write mathematical formulas
+m4_dnl for Maxima's user manual so that nice TeX-style formulas can be used
+m4_dnl for html and pdf docs and plain text for info.
+m4_dnl 
+m4_dnl For displayed formulas use m4_displaymath().  For inline formulas use
+m4_dnl m4_math().
+m4_dnl 
+m4_dnl In general, each macro takes up to 3 args.  The first arg for html
+m4_dnl docs using MathJax.  The second arg is for simple text suitable for
+m4_dnl info (text) formulas, and the third arg is for TeX output.  This is
+m4_dnl optional; if not provided the first arg is used.  This occurs if the
+m4_dnl same TeX formula can be used for both MathJax and TeX.  (MathJax
+m4_dnl supports LaTeX.)
+m4_dnl 
+m4_dnl It is probably best to quote each arg to these macros like
+m4_dnl <<<foo>>> to prevent any confusion in parsing the arg, especially if
+m4_dnl the arg has commas in it.
+m4_dnl 
+m4_dnl NOTE: that there's an issue if m4_math is at the beginning or end of a
+m4_dnl line.  Then an extra newline is produced.  Hence, m4_math should have
+m4_dnl a word before and after it.  For m4_displaymath, be careful not to
+m4_dnl have extra blank lines within the formula; Tex amy complain about the
+m4_dnl blank lines.
+m4_dnl 
+m4_dnl If m4_math is supposed to end a sentence, use m4_mathdot.  If you
+m4_dnl don't then the ending period is spaced too far from the end of the
+m4_dnl equation.
+m4_dnl
+m4_dnl If you have sevaral inline formulas separated by commas, use
+m4_dnl m4_mathcomma().  Otherwise, the comma (like a period), is spaced too
+m4_dnl far from the formula.
+m4_dnl 
+m4_dnl ----------------------------------------------------------------------
 m4_dnl Maxima has an # operator, so disable comment delimiters completely so 
 m4_dnl we don't accidentally comment out text
 m4_changecom()m4_dnl
