@@ -2187,20 +2187,22 @@ Default value: @code{true}
 
 When @code{%piargs} is @code{true},
 trigonometric functions are simplified to algebraic constants
-when the argument is an integer multiple of
-@iftex
-@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
-@end iftex
-@ifnottex
-@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
-@end ifnottex
+when the argument is an integer multiple
+of m4_mathcomma(\pi,%pi)@w{} m4_mathcomma(\pi/2,%pi/2)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} or m4_mathdot(\pi/6,%pi/6)
+@c @iftex
+@c @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
+@c @end iftex
+@c @ifnottex
+@c @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
+@c @end ifnottex
 
-@iftex
-Maxima knows some identities which can be applied when @math{\pi}, etc.,
-@end iftex
-@ifnottex
-Maxima knows some identities which can be applied when @math{%pi}, etc.,
-@end ifnottex
+Maxima knows some identities which can be applied when m4_math(\pi,%pi), etc.,
+@c @iftex
+@c Maxima knows some identities which can be applied when @math{\pi}, etc.,
+@c @end iftex
+@c @ifnottex
+@c Maxima knows some identities which can be applied when @math{%pi}, etc.,
+@c @end ifnottex
 are multiplied by an integer variable (that is, a symbol declared to be
 integer).
 
@@ -2252,14 +2254,16 @@ Examples:
 @end group
 @end example
 
-@iftex
-Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by
-an integer variable.
-@end iftex
-@ifnottex
-Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by
-an integer variable.
-@end ifnottex
+Some identities are applied when m4_math(\pi,%pi) and m4_math(\pi/2,%pi/2) are
+multiplied by an integer variable.
+@c @iftex
+@c Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by
+@c an integer variable.
+@c @end iftex
+@c @ifnottex
+@c Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by
+@c an integer variable.
+@c @end ifnottex
 
 @c ===beg===
 @c declare (n, integer, m, even)$
@@ -2289,20 +2293,24 @@ Default value: @code{true}
 
 When @code{%iargs} is @code{true},
 trigonometric functions are simplified to hyperbolic functions
-@iftex
-when the argument is apparently a multiple of the imaginary unit @math{i}.
-@end iftex
-@ifnottex
-when the argument is apparently a multiple of the imaginary unit @math{%i}.
-@end ifnottex
+when the argument is apparently a multiple of the imaginary
+unit m4_mathdot(i, %i)
+@c @iftex
+@c when the argument is apparently a multiple of the imaginary unit @math{i}.
+@c @end iftex
+@c @ifnottex
+@c when the argument is apparently a multiple of the imaginary unit @math{%i}.
+@c @end ifnottex
 
 Even when the argument is demonstrably real, the simplification is applied;
-@iftex
-Maxima considers only whether the argument is a literal multiple of @math{i}.
-@end iftex
-@ifnottex
-Maxima considers only whether the argument is a literal multiple of @math{%i}.
-@end ifnottex
+Maxima considers only whether the argument is a literal multiple
+of m4_mathdot(i,%i)
+@c @iftex
+@c Maxima considers only whether the argument is a literal multiple of @math{i}.
+@c @end iftex
+@c @ifnottex
+@c Maxima considers only whether the argument is a literal multiple of @math{%i}.
+@c @end ifnottex
 
 Examples:
 
@@ -2478,8 +2486,9 @@ See also @mref{atan2}.
 @anchor{atan2}
 @deffn {Function} atan2 (@var{y}, @var{x})
 
--- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi}
-to @code{%pi}.
+-- yields the value of m4_math(<<<\tan^{-1}(y/x)>>>, atan(y/x)) in the
+interval m4_math(-\pi, -%pi) to m4_math(\pi, %pi) taking into
+consideration the quadrant of the point m4_mathdot(<<<(x,y)>>>, <<<(x,y)>>>)
 
 See also @mref{atan}.
 
@@ -2509,7 +2518,7 @@ See also @mref{atan}.
 The @code{atrig1} package contains several additional simplification rules
 for inverse trigonometric functions.  Together with rules
 already known to Maxima, the following angles are fully implemented:
-@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, and @code{%pi/2}.
+@math{0}, m4_mathcomma(\pi/6,%pi/6)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} m4_mathcomma(\pi/3,%pi/3)@w{} and m4_mathdot(\pi/2,%pi/2)
 Corresponding angles in the other three quadrants are also available.
 Do @code{load("atrig1");} to use them.
 
@@ -2593,29 +2602,32 @@ Default value: @code{false}
 When @code{halfangles} is @code{true}, trigonometric functions of arguments 
 @code{@var{expr}/2} are simplified to functions of @var{expr}.
 
-For a real argument @var{x} in the interval @code{0 < x < 2*%pi} the sine of 
-the half-angle simplifies to a simple formula:
-
+For a real argument @math{x} in the interval
+@w{}m4_mathcomma(<<<0 \le x < 2\pi>>>, 0 <= x < 2*%pi)@w{} m4_math(<<<\sin{x\over 2}>>>, sin(x/2)) simplifies to a simple formula:
+m4_displaymath(
+{\sqrt{1-\cos x}\over\sqrt{2}},
 @example
                          sqrt(1 - cos(x))
                          ----------------
                              sqrt(2)
 @end example
+)
 
 A complicated factor is needed to make this formula correct for all complex 
-arguments @var{z}:
-
-@verbatim
-           realpart(z)
-     floor(-----------)
-              2 %pi
-(- 1)                   (1 - unit_step(- imagpart(z))
-
-                            realpart(z)            realpart(z)
-                      floor(-----------) - ceiling(-----------)
-                               2 %pi                  2 %pi
-                ((- 1)                                          + 1))
+arguments @math{z = x+iy}:
+m4_displaymath(
+(-1)^{\lfloor{x/(2\pi)}\rfloor}
+\left[1-\rm{unit\_step}(-y)
+\left(1+(-1)^{\lfloor{x/(2\pi)}\rfloor - \lceil{x/(2\pi)}\rceil}\right)\right]
+,
+<<<@verbatim
+              x                       x                x
+      floor(-----)            floor(-----) - ceiling(-----)
+            2 %pi                   2 %pi            2 %pi
+ (- 1)             (1 - ((- 1)                              + 1)
+                                                          unit_step(- y))
 @end verbatim
+>>>)
 
 Maxima knows this factor and similar factors for the functions @code{sin}, 
 @code{cos}, @code{sinh}, and @code{cosh}.  For special values of the argument 
@@ -2936,23 +2948,24 @@ arguments to trigonometric functions.  E.g., @code{sin(-x)} will become
 @anchor{trigsimp}
 @deffn {Function} trigsimp (@var{expr})
 
-@iftex
-Employs the identities
-@tex
-$\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
-@end tex
-and
-@tex
-$\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
-@end tex
-to simplify expressions containing @code{tan}, @code{sec},
+
+Employs the identities m4_math(<<<\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1>>>, <<<sin(x)^2+cos(x)^2 = 1>>>) and m4_math(<<<\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1>>>, <<<cosh(x)^2-sinh(x)^2 = 1>>>) to
+@c @iftex
+@c @tex
+@c $\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
+@c @end tex
+@c and
+@c @tex
+@c $\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
+@c @end tex
+simplify expressions containing @code{tan}, @code{sec},
 etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
-@end iftex
-@ifnottex
-Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
-@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan},
-@code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
-@end ifnottex
+@c @end iftex
+@c @ifnottex
+@c Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
+@c @math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan},
+@c @code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@c @end ifnottex
 
 @code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
 able to further simplify the result.
