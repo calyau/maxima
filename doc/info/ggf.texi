@@ -65,8 +65,7 @@ To use this function write first @code{load("ggf")}.
 
 @c These examples are from comments in the file share/contrib/ggf.mac.
 @example
-(%i1) load("ggf");
-(%o1)       /home/toy/src/sourceforge/maxima/share/contrib/ggf.mac
+(%i1) load("ggf")$
 (%i2) makelist(fib(n),n,0,10);
 (%o2)                [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 (%i3) ggf(%);
