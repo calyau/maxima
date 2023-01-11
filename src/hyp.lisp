@@ -554,6 +554,7 @@
 (defun dispatch-spec-simp (arg-l1 arg-l2)
   (let  ((len1 (length arg-l1))
 	 (len2 (length arg-l2)))
+    (format t "len ~A ~A~%" len1 len2)
     (cond ((and (< len1 2)
 		(< len2 2))
 	   ;; pFq where p and q < 2.
@@ -575,6 +576,10 @@
                   (2f0polys (reverse arg-l1) (cadr arg-l1)))
                  (t
                   (fpqform arg-l1 arg-l2 var))))
+	  ((and (= len1 1)
+		(= len2 2))
+	  ;; Some 1F2 forms
+	   (simp1f2 arg-l1 arg-l2))
 	  (t
 	   ;; We don't have simplifiers for any other hypergeometric
 	   ;; function.
@@ -696,6 +701,29 @@
 ;; where M is the confluent hypergeometric function.
 (defun whitfun (k m var)
   (list '(mqapply) (list '($%m array) k m) var))
+
+(defun simp1f2 (arg-l1 arg-l2)
+  "Simplify 1F2([a], [b,c], var).  ARG-L1 is the list [a], and ARG-L2 is
+  the list [b, c].  The dependent variable is the (special variable)
+  VAR."
+  (let ((a (car arg-l1)))
+    (destructuring-bind (b c)
+	arg-l2
+      (cond
+	((and (alike1 a 1//2)
+	      (alike1 b 3//2)
+	      (alike1 c 3//2))
+	 ;; Sine integral, expintegral_si(z) = z*%f[1,2]([1/2],[3/2,3/2], -z^2/4)
+	 ;; (See http://functions.wolfram.com/06.37.26.0001.01)
+	 ;; Subst z = 2*sqrt(-y) into the above to get
+	 ;;
+	 ;;  expintegral_si(2*sqrt(-y)) = 2*%f[1,2]([1/2],[3/2,3/2], y)*sqrt(-y)
+	 ;;
+	 ;; Hence %f[1,2]([1/2],[3/2,3/2], y) = expintegral_si(2*sqrt(-y))/2/sqrt(-y)
+	 (div (ftake '%expintegral_si (mul 2 (power (neg var) 1//2)))
+	      (mul 2 (power (neg var) 1//2))))
+	(t
+	 (fpqform arg-l1 arg-l2 var))))))
 
 (defvar $trace2f1 nil
   "Enables simple tracing of simp2f1 so you can see how it decides
