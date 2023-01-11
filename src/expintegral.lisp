@@ -1279,7 +1279,25 @@
                (mul (inv -2)
                     (add (take '(%log) (inv logarg))
                          (take '(%log) logarg))))))))
-      
+    ($hypergeometric_representation
+     ;; See  http://functions.wolfram.com/06.36.26.0001.01 
+     ;;
+     ;; expintegral_li(z) = log(z)*hypergeometric([1,1],[2,2],log(z))
+     ;;   + 1/2*(log(log(z)) - log(1/log(z))) + %gamma
+     ;;
+     ;; But note that Maxima expands log(1/z) to -log(z), but this is
+     ;; not true when z is on the negative real axis.  log(-1/2) =
+     ;; -log(2) + %i*%pi, but log(-2) = log(2) + %i*%pi.  Hence,
+     ;; log(-1/2) is not -log(2).
+     (add (mul (ftake '%log arg)
+	       (ftake '$hypergeometric
+		      (make-mlist 1 1)
+		      (make-mlist 2 2)
+		      (ftake '%log arg)))
+	  (mul 1//2
+	       (sub (ftake '%log (ftake '%log arg))
+		    (ftake '%log (div 1 (ftake '%log arg)))))
+	  '$%gamma))
     (t
      (give-up))))
 
