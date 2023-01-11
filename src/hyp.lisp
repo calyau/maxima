@@ -554,7 +554,6 @@
 (defun dispatch-spec-simp (arg-l1 arg-l2)
   (let  ((len1 (length arg-l1))
 	 (len2 (length arg-l2)))
-    (format t "len ~A ~A~%" len1 len2)
     (cond ((and (< len1 2)
 		(< len2 2))
 	   ;; pFq where p and q < 2.
@@ -580,6 +579,9 @@
 		(= len2 2))
 	  ;; Some 1F2 forms
 	   (simp1f2 arg-l1 arg-l2))
+	  ((and (= len1 2)
+		(= len2 2))
+	   (simp2f2 arg-l1 arg-l2))
 	  (t
 	   ;; We don't have simplifiers for any other hypergeometric
 	   ;; function.
@@ -722,6 +724,36 @@
 	 ;; Hence %f[1,2]([1/2],[3/2,3/2], y) = expintegral_si(2*sqrt(-y))/2/sqrt(-y)
 	 (div (ftake '%expintegral_si (mul 2 (power (neg var) 1//2)))
 	      (mul 2 (power (neg var) 1//2))))
+	(t
+	 (fpqform arg-l1 arg-l2 var))))))
+
+(defun simp2f2 (arg-l1 arg-l2)
+  (destructuring-bind (a1 a2)
+      arg-l1
+    (destructuring-bind (b1 b2)
+	arg-l2
+      (cond
+	((and (= a1 1)
+	      (= a2 1)
+	      (= b1 2)
+	      (= b2 2))
+	 ;; Cosine integral
+	 ;; expintegral_ci(z) = -z^2/4*%f[2,2]([1,1],[2,2], -z^2/4) + log(z) + %gamma
+	 ;; (See http://functions.wolfram.com/06.38.26.0001.01)
+	 ;;
+	 ;; Subst z = 2*sqrt(-y) into the above to get
+	 ;;
+	 ;;   expintegral_ci(2*sqrt(-y)) =
+	 ;;     %f[2,2]([1,1],[2,2],y)*y + log(2*sqrt(-y)) + %gamma
+	 ;;
+	 ;; Hence
+	 ;;
+	 ;;   %f[2,2]([1,1],[2,2],y) =
+	 ;;     (expintegral_ci(2*sqrt(-y)) - log(2*sqrt(-y)) - %gamma)/y
+	 (div (sub (ftake '%expintegral_ci (mul 2 (power (neg var) 1//2)))
+		   (add (ftake '%log (mul 2 (power (neg var) 1//2)))
+			'$%gamma))
+	      var))
 	(t
 	 (fpqform arg-l1 arg-l2 var))))))
 
