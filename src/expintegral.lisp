@@ -968,25 +968,7 @@
              (take '(%expintegral_chi) arg)))
        (t 
         (give-up))))
-    ($hypergeometric_representation
-     ;; See http://functions.wolfram.com/06.35.26.0001.01
-     ;;
-     ;; expintegral_ei(z) = z*hypergeometric([1,1],[2,2],z)
-     ;;   + 1/2*(log(z) - log(1/z)) + %gamma
-     ;;
-     ;; But note that Maxima expands log(1/z) to -log(z), but this is
-     ;; not true when z is on the negative real axis.  log(-1/2) =
-     ;; -log(2) + %i*%pi, but log(-2) = log(2) + %i*%pi.  Hence,
-     ;; log(-1/2) is not -log(2).
-     (add (mul arg
-	       (ftake '$hypergeometric
-		      (make-mlist 1 1)
-		      (make-mlist 2 2)
-		      arg))
-	  (mul 1//2
-	       (sub (ftake '%log arg)
-		    (ftake '%log (div 1 arg))))
-	  '$%gamma))
+
     (t
      (give-up))))
 
@@ -1111,6 +1093,25 @@
                   (add (take '(%log) (inv arg))
                        (take '(%log) arg)))))))
       
+    ($hypergeometric_representation
+     ;; See http://functions.wolfram.com/06.35.26.0001.01
+     ;;
+     ;; expintegral_ei(z) = z*hypergeometric([1,1],[2,2],z)
+     ;;   + 1/2*(log(z) - log(1/z)) + %gamma
+     ;;
+     ;; But note that Maxima expands log(1/z) to -log(z), but this is
+     ;; not true when z is on the negative real axis.  log(-1/2) =
+     ;; -log(2) + %i*%pi, but log(-2) = log(2) + %i*%pi.  Hence,
+     ;; log(-1/2) is not -log(2).
+     (add (mul arg
+	       (ftake '$hypergeometric
+		      (make-mlist 1 1)
+		      (make-mlist 2 2)
+		      arg))
+	  (mul 1//2
+	       (sub (ftake '%log arg)
+		    (ftake '%log (div 1 arg))))
+	  '$%gamma))
     (t
      (give-up))))
 
