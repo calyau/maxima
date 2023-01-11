@@ -750,6 +750,11 @@
 	 ;;
 	 ;;   %f[2,2]([1,1],[2,2],y) =
 	 ;;     (expintegral_ci(2*sqrt(-y)) - log(2*sqrt(-y)) - %gamma)/y
+	 ;;
+	 ;; But see also http://functions.wolfram.com/06.35.26.0001.01
+	 ;; which shows that expintegral_ei can be written in terms of
+	 ;; %f[2,2]([1,1],[2,2],z) too.  Not sure how to choose
+	 ;; between the two representations.
 	 (div (sub (ftake '%expintegral_ci (mul 2 (power (neg var) 1//2)))
 		   (add (ftake '%log (mul 2 (power (neg var) 1//2)))
 			'$%gamma))
