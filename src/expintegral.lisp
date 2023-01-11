@@ -1428,6 +1428,17 @@
        ($expintegral_hyp
 	(mul -1 '$%i (take '(%expintegral_shi) (mul '$%i arg))))))
       
+    ($hypergeometric_representation
+     ;; See  http://functions.wolfram.com/06.37.26.0001.01
+     ;;
+     ;; expintegral_si(z) = z*hypergeometric([1/2],[3/2,3/2],-z^2/4)
+     ;;
+     (mul arg
+	  (ftake '$hypergeometric
+		 (make-mlist 1)
+		 (make-mlist 3//2 3//2)
+		 (div (mul arg arg)
+		      -4))))
     (t
      (give-up))))
 
