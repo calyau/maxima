@@ -105,7 +105,7 @@
     (let (($context '$global) (context '$global))
       (meval '(($declare) $hypergeometric $complex))))
 
-(setf (get '$hypergeometric 'conjugate-function) 'conjugate-hypergeometric)
+(setf (get '%hypergeometric 'conjugate-function) 'conjugate-hypergeometric)
 
 ;; hypergeometric(a,b,x) is entire (commutes with conjugate) when length(a) < length(b) + 1. Also
 ;; hypergeometric(a,b,x) is analytic inside the unit disk. Outside the unit disk, we need to be careful;
@@ -115,9 +115,9 @@
 (defun conjugate-hypergeometric (l)
   (let ((a (first l)) (b (second l)) (x (third l)))
     (cond ((or (< ($length a) (+ 1 ($length b))) (eq t (mgrp 1 (take '(mabs) x))))
-	   (take '($hypergeometric) (take '($conjugate) a) (take '($conjugate) b) (take '($conjugate) x)))
+	   (take '(%hypergeometric) (take '($conjugate) a) (take '($conjugate) b) (take '($conjugate) x)))
 	  (t 
-	  (list (list '$conjugate 'simp) (take '($hypergeometric) a b x))))))
+	  (list (list '$conjugate 'simp) (take '(%hypergeometric) a b x))))))
 
 (defun lenient-complex-p (e)
   (and ($freeof '$infinity '$und '$ind '$inf '$minf '$false '$true t nil e) ;; what else?
@@ -148,6 +148,7 @@
 ;; (cons '(mlist) a) messes up tellsimp rules. Say tellsimp([a], a]). Then 
 ;; (take (mlist) a) --> a, but (cons '(mlist) a) --> ((mlist) a). And that's not correct.
 
+#+nil
 (defun simp-hypergeometric (e yy z)
   (declare (ignore yy))
   (argument-length-check e 3)
@@ -234,6 +235,92 @@
 	    ;; Return a nounform.
 	    (t `(($hypergeometric simp) ,a ,b ,x)))))))
 
+(def-simplifier hypergeometric (a b x)
+  (let ((l nil) (a-len) (b-len) 
+	(hg-type nil) (dig) (return-type) ($domain '$complex))
+    
+    (cond ((or (not ($listp a)) (not ($listp b))) 
+	   (mtell "warning: The first two arguments to 'hypergeometric' must be lists.~%")
+	   (give-up))
+	  (t
+	   
+	   #+nil
+	   (setq a (mapcar #'(lambda (s) (tsimpcheck s z)) (margs a))
+		 b (mapcar #'(lambda (s) (tsimpcheck s z)) (margs b))
+		 x (tsimpcheck x z))
+
+	   ;; Delete common members of a and b. This code is taken from hyp.lisp.
+
+	   (setq l (zl-intersection a b))
+	   (setq a (del l a)
+	   	 b (del l b))
+	  
+	   ;; Check for undefined cases
+	   (setq hg-type (classify-hypergeometric a b x))
+	 	    
+	   (setq a-len (length a))
+	   (setq b-len (length b))
+
+	   ;; Sort a and b and reconvert to Maxima lists.
+
+	   (setq a (sort a '$orderlessp))
+	   (setq b (sort b '$orderlessp))
+	   (setq a (simplify (cons '(mlist) a)))
+	   (setq b (simplify (cons '(mlist) b)))
+	   
+	   ;; If constantp(x), apply rectform to x. For now, multiplication and division
+	   ;; of complex numbers doesn't always return a number in rectangular form. Let's
+	   ;; apply rectform to constants.
+
+	   (if ($constantp x) (setq x ($rectform x)))
+	   (cond 
+	    
+	     ;; Catch undefined cases and return a nounform. 
+	     ((or (eq hg-type 'undefined) 
+		  (member-if #'(lambda(s) (not (lenient-complex-p s))) (cdr a))
+		  (member-if #'(lambda(s) (not (lenient-complex-p s))) (cdr b))
+		  (not (lenient-complex-p x)))
+	      (give-up))
+	     
+	     ;; pFq([a1,...,ap], [b1,...,bq], 0) --> 1 + 0
+	     ((zerop1 x) (add 1 x))
+
+	     ;; pFq([0,a1,...,ap], [b1,...,bq], x) --> 1
+	     ((member-if 'zerop1 (margs a)) 1)
+	    	       
+	     ;; Do hypergeometric([],[],x) --> exp(x). All numerical evaluation is funneled through
+	     ;; the same entry point; the function hypergeometric-0f0 doesn't do numerical evaluation.
+	     ((and (= 0 a-len) (= 0 b-len) (hypergeometric-0f0 x)))
+
+	     ;; Do hypergeometric([a],[],x) --> 1 / (1-x)^a. 
+	     ((and (= a-len 1) (= 0 b-len) (hypergeometric-1f0 (second a) x)))
+		 		 		 
+	     ;; Try reflection identity for 1F1.
+	     ((and (= a-len 1) (= b-len 1) (hypergeometric-1f1 (second a) (second b) x hg-type)))
+		 
+	     ;; For 2F1, value at 1--nothing else.
+	     ((and (= a-len 2) (= b-len 1) (hypergeometric-2f1 (second a) (third a) (second b) x)))
+		 	
+	     ;; Try numerical evaluation; return nil on failure. This should handle IEEE float, 
+	     ;; IEEE complex float, bigfloat, and complex big float cases.
+	     ((and (setq return-type (use-float-hypergeometric-numerical-eval (margs a) (margs b) x))
+		   (setq dig (ceiling (* (if (eq return-type 'float) (float-digits 1.0) fpprec) 
+					 #.(/ (log 2) (log 10)))))
+		   (hypergeometric-float-eval (margs a) (margs b) x dig return-type)))
+	    
+	     ;; Try rational number numerical evaluation; return nil on failure. This should handle
+	     ;; rational and complex rational numerical evaluation.
+	     ((use-rational-hypergeometric-numerical-eval (margs a) (margs b) x)
+	      (rational-hypergeometric-numerical-eval (margs a) (margs b) x))
+
+	     ;; Handle all other polynomial cases; this includes the case that
+	     ;; x is a Taylor polynomial centered at zero.
+	     ((hypergeometric-poly-case (margs a) (margs b) x))
+	
+	     ;; Return a nounform.
+	     (t
+	      (give-up)))))))
+
 ;; When x isn't a float, do 0F0([],[],x) --> exp(x).
 (defun hypergeometric-0f0 (x)
   (if (use-float-hypergeometric-numerical-eval nil nil x) nil (take '(mexpt) '$%e x)))
@@ -255,7 +342,7 @@
 	((or (and (not (eq hg-type 'polynomial)) (great (neg x) x))
 	     (and (not (eq hg-type 'polynomial)) (integerp (sub b a)) (< (sub b a) 0)))
 	 (mul (take '(mexpt) '$%e x) 
-	      (take '($hypergeometric) (take '(mlist) (sub b a)) (take '(mlist) b) (neg x))))
+	      (take '(%hypergeometric) (take '(mlist) (sub b a)) (take '(mlist) b) (neg x))))
 	(t nil)))
 
 ;; Coerce x to the number type of z. The Maxima function safe_float returns a bigfloat when
@@ -720,7 +807,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 	       (q (reduce #'mul b)))
 	   (setq a (simplify (cons '(mlist) (mapcar #'(lambda (s) (add 1 s)) a))))
 	   (setq b (simplify (cons '(mlist) (mapcar #'(lambda (s) (add 1 s)) b))))
-	   (mul ($diff z x) p (div 1 q) (take '($hypergeometric) a b z))))
+	   (mul ($diff z x) p (div 1 q) (take '(%hypergeometric) a b z))))
 	(t (merror "Maxima does not know the derivatives of the hypergeometric functions with respect to the parameters"))))
 
 
@@ -762,7 +849,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
          (prod_b-1 (reduce #'mul (margs b-1)))
          (prod_a-1 (reduce #'mul (margs a-1))))
     (if (eql prod_a-1 0)
-      (mul z (take '($hypergeometric) (append a '(1)) (append b '(2)) z))
-      (mul prod_b-1 (inv prod_a-1) (take '($hypergeometric) a-1 b-1 z)))))
+      (mul z (take '(%hypergeometric) (append a '(1)) (append b '(2)) z))
+      (mul prod_b-1 (inv prod_a-1) (take '(%hypergeometric) a-1 b-1 z)))))
 
 (putprop '$hypergeometric `((a b z) nil nil ,'hyp-integral-3) 'integral)
