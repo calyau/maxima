@@ -488,6 +488,13 @@
       (complex-bigfloat-numerical-eval-p a z))
      (ftake '%gamma_incomplete_generalized a 0 z))
     ((gamma-incomplete-lower-expand a z))
+    ($hypergeometric_representation
+     ;; We make use of the fact that gamma_incomplete_lower(a,z) +
+     ;; gamma_incomplete(a,z) = gamma(a).  Thus,
+     ;; gamma_incomplete_lower(a,z) = gamma(a)-gamma_incomplete(a,z).
+     ;; And we know the hypergeometric form for gamma_incomplete.
+     (sub (ftake '%gamma a)
+	  (ftake '%gamma_incomplete a z)))
     (t
      (give-up))))
 
@@ -896,6 +903,21 @@
 		     (g (simplify (list '(%gamma_incomplete) (add ord n) z))))
 		($substitute rat-order ord g)))))))
 
+      ($hypergeometric_representation
+       ;; See http://functions.wolfram.com/06.06.26.0002.01
+       ;;
+       ;;  gamma_incomplete(a,z) = gamma(z) - z^a/a*%f[1,1]([a],[a+1},-z)
+       ;;
+       ;; However, hypergeomtric simplifies
+       ;; hypergeometric([a],[a+1],-z) to
+       ;; hypergeometric([1],[a+1],z)*exp(-z).
+       (sub (ftake '%gamma a)
+	    (mul (power z a)
+		 (div 1 a)
+		 (ftake '$hypergeometric
+			(make-mlist a)
+			(make-mlist (add 1 a))
+			(neg z)))))
       (t (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
