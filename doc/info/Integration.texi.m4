@@ -1,3 +1,4 @@
+@c -*- mode: texinfo -*-
 @menu
 * Introduction to Integration::
 * Functions and Variables for Integration::
@@ -774,6 +775,132 @@ Sometimes this will help Maxima obtain a more useful result.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{laplace}
+@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
+
+Attempts to compute the Laplace transform of @var{expr} with respect to the 
+variable @var{t} and transform parameter @var{s}.  The Laplace
+transform of the function @code{f(t)} is the one-sided transform defined by
+@ifnottex
+@example
+F(s) = integrate(f(t) * exp(-s*t), t, 0, inf)
+@end example
+@end ifnottex
+@tex
+$$F(s) = \int_0^{\infty} f(t) e^{-st} dt$$
+@end tex
+where @code{F(s)} is the transform of @code{f(t)}.
+
+@code{laplace} recognizes in @var{expr} the functions @mrefcomma{delta} @mrefcomma{exp}
+@mrefcomma{log} @mrefcomma{sin} @mrefcomma{cos} @mrefcomma{sinh} @mrefcomma{cosh} and @mrefcomma{erf}
+as well as @code{derivative}, @mrefcomma{integrate} @mrefcomma{sum} and @mrefdot{ilt} If
+laplace fails to find a transform the function @mref{specint} is called.
+@code{specint} can find the laplace transform for expressions with special
+functions like the bessel functions @mrefcomma{bessel_j} @mrefcomma{bessel_i} @dots{}
+and can handle the @mref{unit_step} function.  See also @mrefdot{specint}
+
+If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
+
+@c REPHRASE THIS
+@var{expr} may also be a linear, constant coefficient differential equation in
+which case @mref{atvalue} of the dependent variable is used.
+@c "used" -- USED HOW ??
+The required atvalue may be supplied either before or after the transform is
+computed.  Since the initial conditions must be specified at zero, if one has
+boundary conditions imposed elsewhere he can impose these on the general
+solution and eliminate the constants by solving the general solution
+for them and substituting their values back.
+
+@code{laplace} recognizes convolution integrals of the form
+@code{integrate (f(x) * g(t - x), x, 0, t)};
+other kinds of convolutions are not recognized.
+
+Functional relations must be explicitly represented in @var{expr};
+implicit relations, established by @mrefcomma{depends} are not recognized.
+That is, if @var{f} depends on @var{x} and @var{y},
+@code{f (x, y)} must appear in @var{expr}.
+
+See also @mrefcomma{ilt} the inverse Laplace transform.
+
+Examples:
+
+@c ===beg===
+@c laplace (exp (2*t + a) * sin(t) * t, t, s);
+@c laplace ('diff (f (x), x), x, s);
+@c diff (diff (delta (t), t), t);
+@c laplace (%, t, s);
+@c assume(a>0)$
+@c declare(a, integer)$
+@c laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
+@c factor(laplace(gamma_incomplete(1/2,t),t,s));
+@c assume(exp(%pi*s)>1)$
+@c laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),
+@c    simpsum;
+@c ===end===
+@example
+(%i1) laplace (exp (2*t + a) * sin(t) * t, t, s);
+                            a
+                          %e  (2 s - 4)
+(%o1)                    ---------------
+                           2           2
+                         (s  - 4 s + 5)
+(%i2) laplace ('diff (f (x), x), x, s);
+(%o2)             s laplace(f(x), x, s) - f(0)
+(%i3) diff (diff (delta (t), t), t);
+                          2
+                         d
+(%o3)                    --- (delta(t))
+                           2
+                         dt
+(%i4) laplace (%, t, s);
+                            !
+               d            !         2
+(%o4)        - -- (delta(t))!      + s  - delta(0) s
+               dt           !
+                            !t = 0
+(%i5) assume(a>0)$
+(%i6) laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
+                                              - a - 1
+                         gamma(a)   gamma(a) s
+(%o6)                    -------- - -----------------
+                            s            1     a
+                                        (- + 1)
+                                         s
+(%i7) factor(laplace(gamma_incomplete(1/2,t),t,s));
+                                              s + 1
+                      sqrt(%pi) (sqrt(s) sqrt(-----) - 1)
+                                                s
+(%o7)                 -----------------------------------
+                                3/2      s + 1
+                               s    sqrt(-----)
+                                           s
+(%i8) assume(exp(%pi*s)>1)$
+(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),
+         simpsum;
+@group
+                         %i                         %i
+              ------------------------ - ------------------------
+                              - %pi s                    - %pi s
+              (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
+(%o9)         ---------------------------------------------------
+                                       2
+@end group
+(%i9) factor(%);
+                                      %pi s
+                                    %e
+(%o9)                   -------------------------------
+                                             %pi s
+                        (s - %i) (s + %i) (%e      - 1)
+
+@end example
+
+@opencatbox{Categories:}
+@category{Laplace transform}
+@category{Differential equations}
+@closecatbox
+@end deffn
+
 @c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
@@ -924,6 +1051,122 @@ with.
 
 @opencatbox{Categories:}
 @category{Integral calculus}
+@closecatbox
+@end deffn
+
+@anchor{specint}
+@deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+
+Compute the Laplace transform of @var{expr} with respect to the variable @var{t}.
+The integrand @var{expr} may contain special functions.   The
+parameter @var{s} maybe be named something else; it is determined
+automatically, as the examples below show where @var{p} is used in
+some places.
+
+The following special functions are handled by @code{specint}: incomplete gamma 
+function, error functions (but not the error function @code{erfi}, it is easy to 
+transform @code{erfi} e.g. to the error function @code{erf}), exponential 
+integrals, bessel functions (including products of bessel functions), hankel 
+functions, hermite and the laguerre polynomials.
+
+Furthermore, @code{specint} can handle the hypergeometric function 
+@code{%f[p,q]([],[],z)}, the Whittaker function of the first kind 
+@code{%m[u,k](z)} and of the second kind @code{%w[u,k](z)}.
+
+The result may be in terms of special functions and can include unsimplified 
+hypergeometric functions.
+
+When @mref{laplace} fails to find a Laplace transform, @code{specint} is called. 
+Because @mref{laplace} knows more general rules for Laplace transforms, it is 
+preferable to use @mref{laplace} and not @code{specint}.
+
+@code{demo("hypgeo")} displays several examples of Laplace transforms computed by 
+@code{specint}.
+
+Examples:
+@c ===beg===
+@c assume (p > 0, a > 0)$
+@c specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+@c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) 
+@c               * exp(-p*t), t);
+@c ===end===
+@example
+(%i1) assume (p > 0, a > 0)$
+@group
+(%i2) specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+                           sqrt(%pi)
+(%o2)                     ------------
+                                 a 3/2
+                          2 (p + -)
+                                 4
+@end group
+@group
+(%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2))
+              * exp(-p*t), t);
+                                   - a/p
+                         sqrt(a) %e
+(%o3)                    ---------------
+                                2
+                               p
+@end group
+@end example
+
+Examples for exponential integrals:
+
+@example
+(%i4) assume(s>0,a>0,s-a>0)$
+(%i5) ratsimp(specint(%e^(a*t)
+                      *(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
+                             log(s)
+(%o5)                        ------
+                             s - a
+(%i6) logarc:true$
+
+(%i7) gamma_expand:true$
+
+radcan(specint((cos(t)*expintegral_si(t)
+                     -sin(t)*expintegral_ci(t))*%e^(-s*t),t));
+                             log(s)
+(%o8)                        ------
+                              2
+                             s  + 1
+ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
+                      -2*t*expintegral_ci(a*t))*%e^(-s*t),t));
+                               2    2
+                          log(s  + a )
+(%o9)                     ------------
+                                2
+                               s
+@end example
+
+Results when using the expansion of @mref{gamma_incomplete} and when changing 
+the representation to @mref{expintegral_e1}:
+
+@example
+(%i10) assume(s>0)$
+(%i11) specint(1/sqrt(%pi*t)*unit_step(t-k)*%e^(-s*t),t);
+                                            1
+                            gamma_incomplete(-, k s)
+                                            2
+(%o11)                      ------------------------
+                               sqrt(%pi) sqrt(s)
+
+(%i12) gamma_expand:true$
+(%i13) specint(1/sqrt(%pi*t)*unit_step(t-k)*%e^(-s*t),t);
+                              erfc(sqrt(k) sqrt(s))
+(%o13)                        ---------------------
+                                     sqrt(s)
+
+(%i14) expintrep:expintegral_e1$
+(%i15) ratsimp(specint(1/(t+a)^2*%e^(-s*t),t));
+                              a s
+                        a s %e    expintegral_e1(a s) - 1
+(%o15)                - ---------------------------------
+                                        a
+@end example
+
+@opencatbox{Categories:}
+@category{Laplace transform}
 @closecatbox
 @end deffn
 

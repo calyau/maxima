@@ -2742,153 +2742,6 @@ Both double float and big float evaluation is supported:
 @end example
 @end deffn
 
-@node Parabolic Cylinder Functions, Functions and Variables for Special Functions, Hypergeometric Functions, Special Functions
-@section  Parabolic Cylinder Functions
-
-The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, @urlaands{Chapter 19, 686}.
-
-Maxima has very limited knowledge of these functions.  They
-can be returned from function @code{hgfred}.
-
-@deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
-The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (@urlaands{eqn 19.3.1, 687}).
-
-@c See https://mathworld.wolfram.com/ParabolicCylinderFunction.html for more info.
-The solution of the Weber differential equation
-m4_displaymath(
-<<<y''(z) + \left(\nu + {1\over 2} - {1\over 4} z^2\right) y(z) = 0>>>,
-<<<diff(y(z), z, 2) + (v+1/2-z^2/4)*y(z) = 0>>>)
-has two independent solutions, one of which is m4_math(<<<D_{\nu}(z)>>>, <<<@code{parabolic_cylinder_d(v,z)}>>>), the parabolic cylinder d function.
-
-@opencatbox{Categories:}
-@category{Special functions}
-@closecatbox
-@end deffn
-
-
-
-
-@node Functions and Variables for Special Functions,  , Parabolic Cylinder Functions, Special Functions
-@section Functions and Variables for Special Functions
-
-
-@anchor{specint}
-@deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
-
-Compute the Laplace transform of @var{expr} with respect to the variable @var{t}.
-The integrand @var{expr} may contain special functions.   The
-parameter @var{s} maybe be named something else; it is determined
-automatically, as the examples below show where @var{p} is used in
-some places.
-
-The following special functions are handled by @code{specint}: incomplete gamma 
-function, error functions (but not the error function @code{erfi}, it is easy to 
-transform @code{erfi} e.g. to the error function @code{erf}), exponential 
-integrals, bessel functions (including products of bessel functions), hankel 
-functions, hermite and the laguerre polynomials.
-
-Furthermore, @code{specint} can handle the hypergeometric function 
-@code{%f[p,q]([],[],z)}, the Whittaker function of the first kind 
-@code{%m[u,k](z)} and of the second kind @code{%w[u,k](z)}.
-
-The result may be in terms of special functions and can include unsimplified 
-hypergeometric functions.
-
-When @mref{laplace} fails to find a Laplace transform, @code{specint} is called. 
-Because @mref{laplace} knows more general rules for Laplace transforms, it is 
-preferable to use @mref{laplace} and not @code{specint}.
-
-@code{demo("hypgeo")} displays several examples of Laplace transforms computed by 
-@code{specint}.
-
-Examples:
-@c ===beg===
-@c assume (p > 0, a > 0)$
-@c specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
-@c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) 
-@c               * exp(-p*t), t);
-@c ===end===
-@example
-(%i1) assume (p > 0, a > 0)$
-@group
-(%i2) specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
-                           sqrt(%pi)
-(%o2)                     ------------
-                                 a 3/2
-                          2 (p + -)
-                                 4
-@end group
-@group
-(%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2))
-              * exp(-p*t), t);
-                                   - a/p
-                         sqrt(a) %e
-(%o3)                    ---------------
-                                2
-                               p
-@end group
-@end example
-
-Examples for exponential integrals:
-
-@example
-(%i4) assume(s>0,a>0,s-a>0)$
-(%i5) ratsimp(specint(%e^(a*t)
-                      *(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
-                             log(s)
-(%o5)                        ------
-                             s - a
-(%i6) logarc:true$
-
-(%i7) gamma_expand:true$
-
-radcan(specint((cos(t)*expintegral_si(t)
-                     -sin(t)*expintegral_ci(t))*%e^(-s*t),t));
-                             log(s)
-(%o8)                        ------
-                              2
-                             s  + 1
-ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
-                      -2*t*expintegral_ci(a*t))*%e^(-s*t),t));
-                               2    2
-                          log(s  + a )
-(%o9)                     ------------
-                                2
-                               s
-@end example
-
-Results when using the expansion of @mref{gamma_incomplete} and when changing 
-the representation to @mref{expintegral_e1}:
-
-@example
-(%i10) assume(s>0)$
-(%i11) specint(1/sqrt(%pi*t)*unit_step(t-k)*%e^(-s*t),t);
-                                            1
-                            gamma_incomplete(-, k s)
-                                            2
-(%o11)                      ------------------------
-                               sqrt(%pi) sqrt(s)
-
-(%i12) gamma_expand:true$
-(%i13) specint(1/sqrt(%pi*t)*unit_step(t-k)*%e^(-s*t),t);
-                              erfc(sqrt(k) sqrt(s))
-(%o13)                        ---------------------
-                                     sqrt(s)
-
-(%i14) expintrep:expintegral_e1$
-(%i15) ratsimp(specint(1/(t+a)^2*%e^(-s*t),t));
-                              a s
-                        a s %e    expintegral_e1(a s) - 1
-(%o15)                - ---------------------------------
-                                        a
-@end example
-
-@opencatbox{Categories:}
-@category{Laplace transform}
-@closecatbox
-@end deffn
-
 @deffn {Function} hypergeometric_simp (@var{e})
 
 @code{hypergeometric_simp} simplifies hypergeometric functions
@@ -2997,6 +2850,37 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 
 @end example
 @end deffn
+
+@node Parabolic Cylinder Functions, Functions and Variables for Special Functions, Hypergeometric Functions, Special Functions
+@section  Parabolic Cylinder Functions
+
+The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, @urlaands{Chapter 19, 686}.
+
+Maxima has very limited knowledge of these functions.  They
+can be returned from function @code{hgfred}.
+
+@deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
+The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (@urlaands{eqn 19.3.1, 687}).
+
+@c See https://mathworld.wolfram.com/ParabolicCylinderFunction.html for more info.
+The solution of the Weber differential equation
+m4_displaymath(
+<<<y''(z) + \left(\nu + {1\over 2} - {1\over 4} z^2\right) y(z) = 0>>>,
+<<<diff(y(z), z, 2) + (v+1/2-z^2/4)*y(z) = 0>>>)
+has two independent solutions, one of which is m4_math(<<<D_{\nu}(z)>>>, <<<@code{parabolic_cylinder_d(v,z)}>>>), the parabolic cylinder d function.
+
+@opencatbox{Categories:}
+@category{Special functions}
+@closecatbox
+@end deffn
+
+
+
+
+@node Functions and Variables for Special Functions,  , Parabolic Cylinder Functions, Special Functions
+@section Functions and Variables for Special Functions
+
 
 @deffn {Function} lambert_w (@var{z})
 The principal branch of Lambert's W function W(z) (@urldlmf{4.13}), the solution of 
