@@ -1537,7 +1537,11 @@
                       (power z2 (add a index (- n) -1))
                       (simplify (list '($pochhammer) (sub a n) index)))
                     index 1 n))))))))
-
+      ($hypergeometric_representation
+       ;; Use the fact that gamma_incomplete_generalized(a,z1,z2) =
+       ;; gamma_incomplete(a,z1) - gamma_incomplete(a,z2).
+       (sub (ftake '%gamma_incomplete a z1)
+	    (ftake '%gamma_incomplete a z2)))
       (t (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1787,7 +1791,15 @@
 	      (let* ((ord (gensym))
 		     (g (simplify (list '(%gamma_incomplete_regularized) (add ord n) z))))
 		($substitute rat-order ord g)))))))
-      
+
+      ($hypergeometric_representation
+       ;; gamma_incomplete_regularized(a,z)
+       ;;   = gamma_incomplete(a,z)/gamma(a)
+       ;;   = (gamma(a) - gamma_incomplete_lower(a,z))/gamma(a)
+       ;;   = 1 - gamma_incomplete_lower(a,z)/gamma(a)
+       (sub 1
+	    (div (ftake '%gamma_incomplete_lower a z)
+		 (ftake '%gamma a))))
       (t (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3526,6 +3538,35 @@
                         (power z (add a (mul -1 index) -1))))
                 index 0 (sub n 1)))))))
       
+      ($hypergeometric_representation
+       ;; There are several cases to consider.
+       ;;
+       ;; For -a not an integer see
+       ;; http://functions.wolfram.com/06.19.26.0005.01
+       ;;
+       ;;   beta_incomplete(a,b,z) = z^a/a*%f[2,1]([a,1-b],[a+1],z)
+       ;;
+       ;; For -b not an integer see
+       ;; http://functions.wolfram.com/06.19.26.0007.01
+       ;;
+       ;;   beta_incomplete(a,b,z) = beta(a,b) -
+       ;;     (1-z)^b*z^a/b*%f[2,1]([1,a+b],[b+1],1-z)
+       ;;
+       ;; For a+b not a positive integer see
+       ;; http://functions.wolfram.com/06.19.26.0008.01
+       ;;
+       ;;   beta_incomplete(a,b,z) =
+       ;;     z^a*(-z)^(b-1)/(a+b-1)*%f[2,1]([1-b,-a-b+1],[-a-b+2],1/z)
+       ;;       + z^a*beta(1-a-b,a)*(-z)^(-a)
+       ;;
+       ;; We need to handle more cases here
+       (mul (div (power z a)
+		 a)
+	    (ftake '%hypergeometric
+		   (make-mlist a (sub 1 b))
+		   (make-mlist (add 1 a))
+		   z)))
+       
       (t
        (give-up)))))
 
