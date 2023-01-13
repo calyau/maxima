@@ -79,7 +79,7 @@
   "When not false, error functions are transformed to erf, erfc, or erfi
   depending on the value of $erf_representation."
   ;; Need to use the noun form of these.
-  :setting-list (nil %erf %erfc %erfi))
+  :setting-list (nil t %erf %erfc %erfi))
 
 (defmvar $erf_%iargs nil
   "When T erf and erfi simplifies for an imaginary argument.")
