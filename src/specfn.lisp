@@ -668,7 +668,7 @@
 	 (dotimes (k maxiter w)
             (setq w (- ln-z (log (- w)))))))))
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 ;; Approximate Lambert W(k,z) for k=1 and k=-1 near branch point z=-1/%e
 ;; using power series in y=-sqrt(2*%e*z+2)
@@ -764,8 +764,7 @@
 ;; k integer
 ;; z, w bigfloat: numbers
 (defun check-lambert-w-k (k w z)
-  (let ((tolerance #-gcl 1.0e-6
-                   #+gcl (cl:float 1/1000000)))
+  (let ((tolerance 1.0e-6))
   (if
      (cond 
        ;; k=-1 branch with z and w real.

@@ -23,9 +23,8 @@
 (defvar *old-base*)
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
-  (setq *old-ibase* *read-base* *old-base* *print-base*)
+    (:compile-toplevel :execute)
+  (setq old-ibase *read-base* old-base *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
@@ -892,6 +891,5 @@
 (defprop %derivative $diff noun)
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
-    (setq *print-base* *old-base* *read-base* *old-ibase*))
+    (:compile-toplevel :execute)
+    (setq *print-base* old-base *read-base* old-ibase))

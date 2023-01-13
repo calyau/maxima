@@ -651,17 +651,14 @@
       ;; so work around null TZ here.
       (if tz (decode-universal-time time-integer (- tz))
         (decode-universal-time time-integer))
-      (declare (ignore day-of-week #+gcl dst-p))
+      (declare (ignore day-of-week))
       ;; DECODE-UNIVERSAL-TIME might return a timezone offset
       ;; which is a multiple of 1/3600 but not 1/60.
       ;; We need a multiple of 1/60 because our formatted
       ;; timezone offset has only minutes and seconds.
       (if (/= (mod tz 1/60) 0)
         ($timedate time-integer (/ (round (- tz) 1/60) 60))
-        (let ((tz-offset
-	       #-gcl (if dst-p (- 1 tz) (- tz))
-	       #+gcl (- tz)	; bug in gcl https://savannah.gnu.org/bugs/?50570
-	       ))
+        (let ((tz-offset (if dst-p (- 1 tz) (- tz))))
           (multiple-value-bind
             (tz-hours tz-hour-fraction)
             (truncate tz-offset)
@@ -868,12 +865,9 @@
       ;; so work around null TZ here.
       (if tz (decode-universal-time seconds-integer (- tz))
           (decode-universal-time seconds-integer))
-      (declare (ignore day-of-week #+gcl dst-p))
+      (declare (ignore day-of-week))
       ;; HMM, CAN DECODE-UNIVERSAL-TIME RETURN TZ = NIL ??
-      (let ((tz-offset
-           #-gcl (if dst-p (- 1 tz) (- tz))
-           #+gcl (- tz)  ; bug in gcl https://savannah.gnu.org/bugs/?50570
-           ))
+      (let ((tz-offset (if dst-p (- 1 tz) (- tz))))
         (list '(mlist) year month day hours minutes (add seconds seconds-fraction) ($ratsimp tz-offset))))))
 
 ;;Some systems make everything functionp including macros:

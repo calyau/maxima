@@ -4,7 +4,7 @@
 
 ;; Gcl doesn't like equalp hashtables.
 (defvar *html-index*
-  (make-hash-table :test #-gcl #'equalp #+gcl #'equal)
+  (make-hash-table :test #'equalp)
   "Hash table for looking up which html file contains the
   documentation.  The key is the topic we're looking for and the value
   is a cons consisting of the html file and the id for the key.")

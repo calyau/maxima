@@ -29,8 +29,7 @@
 (defmvar $expand_polynomials t)
 
 (eval-when
-    #+gcl (eval compile)
-    #-gcl (:execute :compile-toplevel)
+    (:execute :compile-toplevel)
     (defmacro simp (x) `(simplifya ,x ()))
 
     ;; The macro MABS has been renamed to HYP-MABS in order to
@@ -3596,7 +3595,6 @@
     (sratsimp (maxima-substitute var s res))))
   
 (eval-when
-    #+gcl (compile)
-    #-gcl (:compile-toplevel)
+    (:compile-toplevel)
     (declare-top (unspecial var *par* checkcoefsignlist))
     )

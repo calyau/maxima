@@ -25,8 +25,7 @@
 ;; Until this is resolved, $conjugate doesn't have a msimpind property.
 
 (eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
+    (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
       (meval '(($declare) $conjugate $complex))
       ;; Let's remove built-in symbols from list for user-defined properties.

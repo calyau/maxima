@@ -66,7 +66,7 @@
      end_label
       (return (values nil nil s1r s1i s2r s2i nz nil nil iuf)))))
 
-(in-package #-gcl #:cl-user #+gcl "CL-USER")
+(in-package #:cl-user)
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (setf (gethash 'fortran-to-lisp::zs1s2 fortran-to-lisp::*f2cl-function-info*)

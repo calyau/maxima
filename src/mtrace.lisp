@@ -171,8 +171,7 @@
 ;;; Structures.
 
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (:compile-toplevel :load-toplevel :execute)
     (defmacro trace-p (x)
       `(mget ,x 'trace))
     (defmacro trace-type (x)

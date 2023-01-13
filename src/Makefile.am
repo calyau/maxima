@@ -361,7 +361,7 @@ if GCL_ALT_LINK
 	echo '(let ((com (quote (progn (defvar compiler::*gazonk-prefix* "gazonk") (defun compiler::gazonk-name (&aux tem)(dotimes (i 1000) (unless (probe-file (setq tem (merge-pathnames (format nil "~d~d.lsp" compiler::*gazonk-prefix* i))))(return-from compiler::gazonk-name (pathname tem))))(error "1000 gazonk names used already!"))(let ((compiler::*gazonk-prefix* "maxima_gazonk")(compiler::*keep-gaz* t))$(LOADDEFSYSTEM)$(DEFSYSTEMLOAD))))))(let ((si::*collect-binary-modules* t))(eval com)(let ((compiler::*default-system-p* t))(dolist (l (directory "maxima_gazonk*.lsp")) (compile-file l) (delete-file l)))(compiler::link si::*binary-modules* "binary-gcl/maxima" (format nil "~S" com) "" nil)(dolist (l (directory "maxima_gazonk*.lsp")) (delete-file l)))) (system::quit)' | $(EXECUTEGCL)
 else
 	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (system::quit)' | $(EXECUTEGCL)
-	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima") (system::quit)'  | $(EXECUTEGCL)
+	echo '(setq si::*optimize-maximum-pages* nil) $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (setq si::*optimize-maximum-pages* t) (si:save-system "binary-gcl/maxima") (system::quit)'  | $(EXECUTEGCL)
 endif
 
 gcl-depends.mk: maxima.system Makefile *.lisp
