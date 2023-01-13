@@ -573,23 +573,25 @@
 ;; simplification.  Call this in the default case for the COND.
 
 (defmacro def-simplifier (base-name-and-options lambda-list &body body)
-  (destructuring-bind (base-name &key skip-simpcheck)
+  (destructuring-bind (base-name &key (simpcheck :default))
       (if (symbolp base-name-and-options)
 	  (list base-name-and-options)
 	  base-name-and-options)
     (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
 	   (verb-name (intern (concatenate 'string "$" (string base-name))))
 	   (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
-	   (form-arg (gensym "FORM-"))
+	   (form-arg (intern "FORM"))
 	   (z-arg (intern "%%SIMPFLAG"))
 	   (unused-arg (gensym "UNUSED-"))
-	   (arg-forms (if skip-simpcheck
-			  (loop for arg in lambda-list
-				and count from 1
-				collect (list arg `(nth ,count form)))
-			  (loop for arg in lambda-list
-				and count from 1
-				collect (list arg `(simpcheck (nth ,count form) ,z-arg))))))
+	   (arg-forms (ecase simpcheck
+			(:custom
+			 (loop for arg in lambda-list
+			       and count from 1
+			       collect (list arg `(nth ,count ,form-arg))))
+			(:default
+			 (loop for arg in lambda-list
+			       and count from 1
+			       collect (list arg `(simpcheck (nth ,count ,form-arg) ,z-arg)))))))
       `(progn
 	 ;; Set up properties
 	 (defprop ,noun-name ,simp-name operators)
@@ -608,10 +610,10 @@
 	   (declare (ignore ,unused-arg)
 		    (ignorable ,z-arg))
 	   (arg-count-check ,(length lambda-list)
-			    form)
+			    ,form-arg)
 	   (let ,arg-forms
 	     (flet ((give-up ()
 		      ;; Should this also return from the function?
 		      ;; That would fit in better with giving up.
-		      (eqtest (list '(,noun-name) ,@lambda-list) form)))
+		      (eqtest (list '(,noun-name) ,@lambda-list) ,form-arg)))
 	       ,@body)))))))
