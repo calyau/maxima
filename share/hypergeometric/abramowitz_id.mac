@@ -27,7 +27,7 @@ function_identity[otherwise]:= false;
 
 /* See, for example, http://www.math.ucla.edu/~cbm/aands/page_559.htm */
 
-function_identity["15.3.3"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,success],
+function_identity["15.3.3"] : nounify('hypergeometric) = lambda([p,q,x], block([a,b,c,f,success],
     f : funmake('hypergeometric, [p,q,x]),
     success : false,
     if hypergeometric_order(p,q) = [2,1] then (
@@ -39,7 +39,7 @@ function_identity["15.3.3"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,s
         success : true)),
     multiple_values(f, success)));
  
-function_identity["15.3.4"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,success],
+function_identity["15.3.4"] : nounify('hypergeometric) = lambda([p,q,x], block([a,b,c,f,success],
     f : funmake('hypergeometric, [p,q,x]),
     success : false,
     if hypergeometric_order(p,q) = [2,1] then (
@@ -51,7 +51,7 @@ function_identity["15.3.4"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,s
         success : true)),
     multiple_values(f, success)));
    
-function_identity["15.3.5"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,success],
+function_identity["15.3.5"] : nounify('hypergeometric) = lambda([p,q,x], block([a,b,c,f,success],
     f : funmake('hypergeometric, [p,q,x]),
     success : false,
     if hypergeometric_order(p,q) = [2,1] then (
@@ -63,7 +63,7 @@ function_identity["15.3.5"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,s
         success : true)),
     multiple_values(f, success)));
 
-function_identity["15.3.6"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,success],
+function_identity["15.3.6"] : nounify('hypergeometric) = lambda([p,q,x], block([a,b,c,f,success],
     f  : funmake('hypergeometric, [p,q,x]),
     success : false,
     if hypergeometric_order(p,q) = [2,1] then (
@@ -80,7 +80,7 @@ function_identity["15.3.6"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,s
         success : true)),
     multiple_values(f, success)));
    
-function_identity["15.3.7"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,success],
+function_identity["15.3.7"] : nounify('hypergeometric) = lambda([p,q,x], block([a,b,c,f,success],
     f : funmake('hypergeometric, [p,q,x]),
     success : false,
     if hypergeometric_order(p,q) = [2,1] then (
@@ -98,7 +98,7 @@ function_identity["15.3.7"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,s
         success : true)),
     multiple_values(f, success)));
   
-function_identity["15.3.8"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,success],
+function_identity["15.3.8"] : nounify('hypergeometric) = lambda([p,q,x], block([a,b,c,f,success],
     f  : funmake('hypergeometric, [p,q,x]),
     success : false,
     if hypergeometric_order(p,q) = [2,1] then (
@@ -115,7 +115,7 @@ function_identity["15.3.8"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,s
         success : true)),
     multiple_values(f, success)));
 
-function_identity["15.3.9"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f : [], success],
+function_identity["15.3.9"] : nounify('hypergeometric) = lambda([p,q,x], block([a,b,c,f : [], success],
     f : funmake('hypergeometric, [p,q,x]),
     success : false,
     if hypergeometric_order(p,q) = [2,1] then (
@@ -145,11 +145,11 @@ function_identity["a&s13.1.3-->"] : 'hypergeometric_u = lambda([a,b,x], block([f
  
 function_identity["a&s17.3.9-->"] : nounify('elliptic_kc) = lambda([x], hypergeometric([1/2,1/2],[1],x) * %pi/2);
 
-function_identity["a&s17.3.9<--"] : 'hypergeometric = lambda([p,q,x], 
+function_identity["a&s17.3.9<--"] : nounify('hypergeometric) = lambda([p,q,x], 
     if is(equal(p , [1/2,1/2])) and is(equal(q, [1])) then (2/%pi) * elliptic_kc(x) else funmake('hypergeometric, [p,q,x]));
 
 function_identity["a&s17.3.10-->"] : nounify('elliptic_ec) = lambda([x], hypergeometric([-1/2,1/2],[1],x) * %pi/2);
 
-function_identity["a&s17.3.10<--"] : 'hypergeometric = lambda([p,q,x], 
+function_identity["a&s17.3.10<--"] : nounify('hypergeometric) = lambda([p,q,x], 
     if (p = [-1/2,1/2]) and (q = [1]) then (2/%pi) * elliptic_ec(x) else funmake('hypergeometric, [p,q,x]));
 

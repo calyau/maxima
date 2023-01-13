@@ -126,7 +126,7 @@
        (not (mrelationp e))
        (not ($member e $arrays))))
 
-(defprop $hypergeometric simp-hypergeometric operators)
+;;(defprop $hypergeometric simp-hypergeometric operators)
 
 ;; Do noncontroversial simplifications on the hypergeometric function. A user that
 ;; wants additional simplifications can use $hypergeometric_simp. The simplifications are
@@ -235,7 +235,7 @@
 	    ;; Return a nounform.
 	    (t `(($hypergeometric simp) ,a ,b ,x)))))))
 
-(def-simplifier (hypergeometric :skip-simpcheck t) (a b x)
+(def-simplifier (hypergeometric :simpcheck :custom) (a b x)
   (let ((l nil) (a-len) (b-len) 
 	(hg-type nil) (dig) (return-type) ($domain '$complex))
 
@@ -245,7 +245,7 @@
 	   
     (setq a (mapcar #'(lambda (s) (tsimpcheck s %%simpflag)) (margs a))
 	  b (mapcar #'(lambda (s) (tsimpcheck s %%simpflag)) (margs b))
-	  x (tsimpcheck x simpflag))
+	  x (tsimpcheck x %%simpflag))
 
     ;; Delete common members of a and b. This code is taken from hyp.lisp.
 
@@ -499,11 +499,16 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 
      (t
       (let ((maxima::$multiple_value_return t))
+	;; It's really important to use the verb for here because
+	;; that's what abramowitz_id is looking for.
 	(setq ff  `((maxima::%hypergeometric maxima::simp)
 		    ((maxima::mlist maxima::simp) ,ma ,mb) 
 		    ((maxima::mlist maxima::simp) ,mc) maxima::z))
-	(format t "ff = ~A~%" ff)
-	(format t "d = ~A~%" d)
+	;;#+nil
+	(progn
+	  (format t "ff = ~A~%" ff)
+	  (format t "d = ~A~%" d)
+	  (format t "region = ~A~%" region))
 	(setq f nil)
 	(while d 
 	  (setq f (if (equal region "none")
@@ -512,15 +517,17 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 	  (format t "f = ~A~%" f)
 	  (if (maxima::$second f)
 	      (setq d nil f (maxima::$first f)) (setq region (first (pop d)))))
-	
-	(maxima::displa f)
-	(maxima::displa `((maxima::mequal) maxima::z ,mx))
+
+	(progn
+	  (maxima::displa f)
+	  (maxima::displa `((maxima::mequal) maxima::z ,mx)))
 	(setq f (multiple-value-list
 		 (maxima::nfloat f `((maxima::mlist) ((maxima::mequal) maxima::z ,mx)) 
 				 digits maxima::$max_fpprec)))
-	(format t "f = ~A~%" f)
-	(format t "first f = ~A~%" (first f))
-	(format t "sec f   = ~A~%" (second f))
+	(progn
+	  (format t "f = ~A~%" f)
+	  (format t "first f = ~A~%" (first f))
+	  (format t "sec f   = ~A~%" (second f)))
 	(values (bigfloat::to (first f)) (bigfloat::to (second f))))))))
 
 ;; Let a = (a1, a2, ..., am) and b = (b1, b2, ..., bn). Approximate sum(c(k) x^k / k!,k,1,inf),
@@ -827,7 +834,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 ;; For no good reason, I'm not so fond of pFq notation. Some newer references don't use
 ;; the pFq notation.
 
-(defprop $hypergeometric tex-hypergeometric tex)
+(defprop %hypergeometric tex-hypergeometric tex)
 
 (defun tex-hypergeometric (x l r)
   (let ((p) (q) (wide-space ",\\;"))
@@ -864,4 +871,4 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
       (mul z (take '(%hypergeometric) (append a '(1)) (append b '(2)) z))
       (mul prod_b-1 (inv prod_a-1) (take '(%hypergeometric) a-1 b-1 z)))))
 
-(putprop '$hypergeometric `((a b z) nil nil ,'hyp-integral-3) 'integral)
+(putprop '%hypergeometric `((a b z) nil nil ,'hyp-integral-3) 'integral)

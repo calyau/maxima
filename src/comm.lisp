@@ -540,7 +540,7 @@
 	  ((and (get '$pderivop 'operators) (funcall 'sdiffgrad-pdiff e x)))
 
 	  ;; two line extension for hypergeometric.
-	  ((and (equal fun '$hypergeometric) (get '$hypergeometric 'operators))
+	  ((and (equal fun '%hypergeometric) (get '%hypergeometric 'operators))
 	   (funcall 'diff-hypergeometric (second e) (third e) (fourth e) x))
 
 	  ((or (eq fun 'mqapply) (null (setq grad (zl-get fun 'grad))))
