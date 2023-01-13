@@ -471,8 +471,21 @@ complex_float_approx_equal
      v = 1.25,
      v = 1.0 - 0.5*%i,
      v = 0.5*%i + 1.0,
+
      v = 1.75*%i]);
 true;
+
+/*
+ * Make sure bfallroots has the correct precision when given non-rational bfloat coefficients.
+ * Use (x-sqrt(2))*(x^2-3) as the test since we know apriori what the roots should be.
+ */
+fpprec:32;
+32;
+map(lambda([actual, expected],
+    bfloat_approx_equal(rhs(actual), expected)),
+  bfallroots(bfloat(expand((x-sqrt(2))*(x^2-3)))),
+  bfloat([sqrt(2),sqrt(3),-sqrt(3)]));
+[true, true, true];
 
 /* [ 940835 ] rectform fails with float/numer flags */
 rectform(log(-%i)),float;
