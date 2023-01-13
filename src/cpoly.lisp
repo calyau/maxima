@@ -1322,8 +1322,14 @@
      (cond ((not (= (length var) 1))
 	    (merror (intl:gettext "bfallroots: expected a polynomial in one variable; found variables ~M") `((mlist) ,@var)))
 	   ((setq var (car var))))
-     (setq expr ($rat expr '$%i var)
-	   res (reverse (car (cdddar expr))))
+     ;; It's VERY important to use this $ratepsilon so that we
+     ;; preserve the precision of the bfloats when converting them to
+     ;; rationals for $rat.  Might as well turn off printing of the
+     ;; rat messages too.
+     (let (($ratprint nil)
+	   ($ratepsilon (power 10 (- $fpprec))))
+       (setq expr ($rat expr '$%i var)
+	     res (reverse (car (cdddar expr)))))
      (do ((i (- (length res)
 		(length (caddar expr)))
 	     (1- i)))
