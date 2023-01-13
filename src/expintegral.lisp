@@ -428,7 +428,7 @@
        ;; hypergeometric([1],[2-v],z)*exp(-z)
        (sub (mul (power arg (sub order 1))
 		 (ftake '%gamma (sub 1 order)))
-	    (div (ftake '$hypergeometric
+	    (div (ftake '%hypergeometric
 			 (make-mlist (sub 1 order))
 			 (make-mlist (sub 2 order))
 			 (neg arg))
@@ -1104,7 +1104,7 @@
      ;; -log(2) + %i*%pi, but log(-2) = log(2) + %i*%pi.  Hence,
      ;; log(-1/2) is not -log(2).
      (add (mul arg
-	       (ftake '$hypergeometric
+	       (ftake '%hypergeometric
 		      (make-mlist 1 1)
 		      (make-mlist 2 2)
 		      arg))
@@ -1290,7 +1290,7 @@
      ;; -log(2) + %i*%pi, but log(-2) = log(2) + %i*%pi.  Hence,
      ;; log(-1/2) is not -log(2).
      (add (mul (ftake '%log arg)
-	       (ftake '$hypergeometric
+	       (ftake '%hypergeometric
 		      (make-mlist 1 1)
 		      (make-mlist 2 2)
 		      (ftake '%log arg)))
@@ -1434,7 +1434,7 @@
      ;; expintegral_si(z) = z*hypergeometric([1/2],[3/2,3/2],-z^2/4)
      ;;
      (mul arg
-	  (ftake '$hypergeometric
+	  (ftake '%hypergeometric
 		 (make-mlist 1//2)
 		 (make-mlist 3//2 3//2)
 		 (div (mul arg arg)
@@ -1601,7 +1601,7 @@
      ;; expintegral_shi(z) = z*hypergeometric([1/2],[3/2,3/2],z^2/4)
      ;;
      (mul arg
-	  (ftake '$hypergeometric
+	  (ftake '%hypergeometric
 		 (make-mlist 1//2)
 		 (make-mlist 3//2 3//2)
 		 (div (mul arg arg)
@@ -1779,7 +1779,7 @@
      ;;
      (add
       (mul (div (mul arg arg) -4)
-	   (ftake '$hypergeometric
+	   (ftake '%hypergeometric
 		  (make-mlist 1 1)
 		  (make-mlist 2 2 3//2)
 		  (div (mul arg arg)
@@ -1964,7 +1964,7 @@
      ;;
      (add
       (mul (div (mul arg arg) 4)
-	   (ftake '$hypergeometric
+	   (ftake '%hypergeometric
 		  (make-mlist 1 1)
 		  (make-mlist 2 2 3//2)
 		  (div (mul arg arg)

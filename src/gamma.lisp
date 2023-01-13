@@ -914,7 +914,7 @@
        (sub (ftake '%gamma a)
 	    (mul (power z a)
 		 (div 1 a)
-		 (ftake '$hypergeometric
+		 (ftake '%hypergeometric
 			(make-mlist a)
 			(make-mlist (add 1 a))
 			(neg z)))))
@@ -3172,7 +3172,7 @@
 
     ($hypergeometric_representation
       (mul (div (mul '$%pi (power z 3)) 6)
-           (take '($hypergeometric)
+           (take '(%hypergeometric)
                  (list '(mlist) (div 3 4))
                  (list '(mlist) (div 3 2) (div 7 4))
                  (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
