@@ -51,7 +51,7 @@
    (mul 
     (opcons '%binomial n k)
     (opcons 'mexpt x (add 1 k))
-    (opcons '$hypergeometric 
+    (opcons '%hypergeometric 
 	    (opcons 'mlist (add 1 k) (sub k n))
 	    (opcons 'mlist (add 2 k))
 	    x))
