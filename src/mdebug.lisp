@@ -3,8 +3,7 @@
 (declaim (optimize (safety 2) (space 3)))
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
+    (:compile-toplevel :execute)
 
     (defmacro f (op &rest args)
       `(the fixnum (,op ,@ (mapcar #'(lambda (x) `(the fixnum ,x)) args))))
@@ -85,8 +84,7 @@
     (cond (fun
 	   (setq args (cons fun args))
 					; jfa temporary hack
-	   #+gcl(evalhook args nil nil *break-env*)
-	   #-gcl(eval args)
+	   (eval args)
 	   )
 	  (t (format *debug-io* 
 	             (intl:gettext "~&~S is an undefined break command.~%")

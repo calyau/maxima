@@ -56,7 +56,7 @@
 ;;;; *************************************************************************
 
 
-(in-package #-gcl #:getopt #+gcl "GETOPT")
+(in-package #:getopt)
 
 
 (defun is-short-option (arg)

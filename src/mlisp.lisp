@@ -13,8 +13,7 @@
 (macsyma-module mlisp)
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
+    (:compile-toplevel :execute)
 
     (defvar *old-read-base* *read-base*)
     (setq *read-base* 10.))
@@ -1479,9 +1478,7 @@ wrapper for this."
       (macsyma-untrace fun))
   (when (and (get fun 'translated) (not (eq $savedef '$all)))
     (fmakunbound fun)
-    ; GCL 2.6.12 doesn't know how to set a compiler macro function with setf
-    #+gcl (si:undef-compiler-macro fun)
-    #-gcl (setf (compiler-macro-function fun) nil)
+    (setf (compiler-macro-function fun) nil)
     (let ((impl (get fun 'impl-name)))
       (when (fboundp impl)
         (fmakunbound impl)))
@@ -2363,7 +2360,6 @@ wrapper for this."
 (defprop quote cadr mfexpr*)		; Needed by MATCOM/MATRUN.
 
 (eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
+    (:compile-toplevel :execute)
 
     (setq  *read-base* *old-read-base*))

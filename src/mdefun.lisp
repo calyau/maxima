@@ -47,8 +47,7 @@
 		(t `(,name translated-mmacro))))
 
     `(eval-when
-      #+gcl (compile load eval)
-      #-gcl (:compile-toplevel :load-toplevel :execute)
+      (:compile-toplevel :load-toplevel :execute)
 
       ,@(and (not array-flag) `((remprop ',name 'translate)))
       ,@(and mode `((defprop ,name ,mode

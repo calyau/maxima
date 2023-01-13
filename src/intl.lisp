@@ -25,8 +25,7 @@
 ;;; DAMAGE.
 (in-package :intl)
 
-(eval-when #-gcl (:compile-toplevel :execute)
-	   #+gcl (compile eval)
+(eval-when (:compile-toplevel :execute)
   (defparameter intl::*default-domain* "maxima")
   (unless (and (fboundp 'intl:read-translatable-string)
 	       (eq (get-macro-character #\_)
@@ -508,8 +507,7 @@
 		     *locale*)))
 
 (defmacro textdomain (domain)
-  `(eval-when #-gcl (:compile-toplevel :execute)
-	      #+gcl (compile eval)
+  `(eval-when (:compile-toplevel :execute)
      (setf *default-domain* ,domain)))
 
 (defmacro gettext (string)
@@ -772,8 +770,7 @@
 
 
 
-(eval-when #-gcl (:compile-toplevel :execute)
-	   #+gcl (compile eval)
+(eval-when (:compile-toplevel :execute)
   (setq *default-domain* "maxima")
   (unless (and (fboundp 'intl:read-translatable-string)
 	       (eq (get-macro-character #\_)

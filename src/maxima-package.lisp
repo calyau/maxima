@@ -34,11 +34,6 @@
 
 (defpackage :maxima
   (:use :common-lisp :command-line)
-  ;; Gcl has DEFINE-COMPILER-MACRO but it's in the SYSTEM package.  So
-  ;; we shadowing import it into our package here.  (Can't just import
-  ;; because there's already a DEFINE-COMPILER-MACRO symbol.)
-  #+gcl
-  (:shadowing-import-from #:system #:define-compiler-macro)
   (:nicknames :cl-macsyma :cl-maxima :macsyma)
   (:import-from :cl-sloop #:sloop)
   (:shadow continue		 ;(macsys): part of the top-level loop
@@ -96,8 +91,6 @@
 ;; implementation.
 (defpackage bigfloat-impl
   (:use :cl)
-  #+gcl
-  (:shadowing-import-from #:system #:define-compiler-macro)
   (:shadow #:+
 	   #:-
 	   #:*
@@ -247,8 +240,6 @@
 ;; using the routines from the BIGFLOAT-IMPL.
 (defpackage bigfloat
   (:use :cl :bigfloat-impl)
-  #+gcl
-  (:shadowing-import-from #:system #:define-compiler-macro)
   ;; This list should match the SHADOWING-IMPORT-FROM list in
   ;; BIGFLOAT-IMPL.
   (:shadowing-import-from #:bigfloat-impl
@@ -357,9 +348,7 @@
 	   #:ngettext #:dngettext
            #:*translatable-dump-stream* #:*locale*
 	   #:*locale-directories*
-	   #:read-translatable-string)
-  #+gcl
-  (:shadowing-import-from #:system #:define-compiler-macro))
+	   #:read-translatable-string))
 
 ;; (getalias '$lambda) => CL:LAMBDA, which implies that Maxima parses lambda as CL:LAMBDA.
 ;; Unlocking the :common-lisp package seems to be the simplest way to avoid an error.

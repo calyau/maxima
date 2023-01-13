@@ -9,8 +9,7 @@
   "$Id: macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (:compile-toplevel :load-toplevel :execute)
     (proclaim '(special *verbose*)))
 ;;----------------------------------------------------------------------------
 (defvar *check-array-bounds* nil
@@ -340,8 +339,7 @@ is not included")
 
 ;; macro for a lisp equivalent of Fortran assigned GOTOs
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:load-toplevel :compile-toplevel :execute)
+    (:load-toplevel :compile-toplevel :execute)
 (defun make-label (n) 
   (read-from-string (concatenate 'string (symbol-name :label) (princ-to-string n))))
 
@@ -693,19 +691,19 @@ is not included")
 ;; Should we make these macros that expand directly to the appropriate
 ;; max?
 (defun max0 (x y &rest z)
-  #-gcl(declare (integer x y))
+  (declare (integer x y))
   (apply #'max x y z))
 (defun amax1 (x y &rest z)
-  #-gcl(declare (single-float x y))
+  (declare (single-float x y))
   (apply #'max x y z))
 (defun dmax1 (x y &rest z)
-  #-gcl(declare (double-float x y))
+  (declare (double-float x y))
   (apply #'max x y z))
 (defun max1 (x y &rest z)
-  #-gcl(declare (single-float x y))
+  (declare (single-float x y))
   (int (apply #'max x y z)))
 (defun amax0 (x y &rest z)
-  #-gcl(declare (type integer4 x y))
+  (declare (type integer4 x y))
   (float (apply #'max x y z) 1f0))
 
 (defun min0 (x y &rest z)
@@ -961,12 +959,7 @@ is not included")
    
 ;; Map Fortran logical unit numbers to Lisp streams
 
-#-gcl
 (defparameter *lun-hash*
-  (make-hash-table))
-
-#+gcl
-(defvar *lun-hash*
   (make-hash-table))
 
 (defun lun->stream (lun &optional readp)
@@ -1066,7 +1059,6 @@ causing all pending operations to be flushed"
 	,(if err `(unless ,result (go ,(f2cl-lib::make-label err))))
 	,(if iostat `(setf ,iostat (if ,result 0 1))))))
 
-#-gcl
 (declaim (ftype (function (t) stream) lun->stream))
 
 (defmacro fformat (dest-lun format-cilist &rest args)
