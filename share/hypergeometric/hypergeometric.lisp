@@ -235,91 +235,97 @@
 	    ;; Return a nounform.
 	    (t `(($hypergeometric simp) ,a ,b ,x)))))))
 
-(def-simplifier hypergeometric (a b x)
+(def-simplifier (hypergeometric :skip-simpcheck t) (a b x)
   (let ((l nil) (a-len) (b-len) 
 	(hg-type nil) (dig) (return-type) ($domain '$complex))
-    
-    (cond ((or (not ($listp a)) (not ($listp b))) 
-	   (mtell "warning: The first two arguments to 'hypergeometric' must be lists.~%")
-	   (give-up))
-	  (t
+
+    (unless (and($listp a) ($listp b))
+      (mtell "warning: The first two arguments to 'hypergeometric' must be lists.~%")
+      (return-from simp-%hypergeometric (give-up)))
 	   
-	   #+nil
-	   (setq a (mapcar #'(lambda (s) (tsimpcheck s z)) (margs a))
-		 b (mapcar #'(lambda (s) (tsimpcheck s z)) (margs b))
-		 x (tsimpcheck x z))
+    (setq a (mapcar #'(lambda (s) (tsimpcheck s %%simpflag)) (margs a))
+	  b (mapcar #'(lambda (s) (tsimpcheck s %%simpflag)) (margs b))
+	  x (tsimpcheck x simpflag))
 
-	   ;; Delete common members of a and b. This code is taken from hyp.lisp.
+    ;; Delete common members of a and b. This code is taken from hyp.lisp.
 
-	   (setq l (zl-intersection a b))
-	   (setq a (del l a)
-	   	 b (del l b))
+    (setq l (zl-intersection a b))
+    (setq a (del l a)
+	  b (del l b))
 	  
-	   ;; Check for undefined cases
-	   (setq hg-type (classify-hypergeometric a b x))
+    ;; Check for undefined cases
+    (setq hg-type (classify-hypergeometric a b x))
 	 	    
-	   (setq a-len (length a))
-	   (setq b-len (length b))
+    (setq a-len (length a))
+    (setq b-len (length b))
 
-	   ;; Sort a and b and reconvert to Maxima lists.
+    ;; Sort a and b and reconvert to Maxima lists.
 
-	   (setq a (sort a '$orderlessp))
-	   (setq b (sort b '$orderlessp))
-	   (setq a (simplify (cons '(mlist) a)))
-	   (setq b (simplify (cons '(mlist) b)))
+    (setq a (sort a '$orderlessp))
+    (setq b (sort b '$orderlessp))
+    (setq a (simplify (cons '(mlist) a)))
+    (setq b (simplify (cons '(mlist) b)))
 	   
-	   ;; If constantp(x), apply rectform to x. For now, multiplication and division
-	   ;; of complex numbers doesn't always return a number in rectangular form. Let's
-	   ;; apply rectform to constants.
+    ;; If constantp(x), apply rectform to x. For now, multiplication and division
+    ;; of complex numbers doesn't always return a number in rectangular form. Let's
+    ;; apply rectform to constants.
 
-	   (if ($constantp x) (setq x ($rectform x)))
-	   (cond 
+    (when ($constantp x)
+      (setq x ($rectform x)))
+    (cond 
 	    
-	     ;; Catch undefined cases and return a nounform. 
-	     ((or (eq hg-type 'undefined) 
-		  (member-if #'(lambda(s) (not (lenient-complex-p s))) (cdr a))
-		  (member-if #'(lambda(s) (not (lenient-complex-p s))) (cdr b))
-		  (not (lenient-complex-p x)))
-	      (give-up))
+      ;; Catch undefined cases and return a nounform. 
+      ((or (eq hg-type 'undefined) 
+	   (member-if #'(lambda(s) (not (lenient-complex-p s))) (cdr a))
+	   (member-if #'(lambda(s) (not (lenient-complex-p s))) (cdr b))
+	   (not (lenient-complex-p x)))
+       (give-up))
 	     
-	     ;; pFq([a1,...,ap], [b1,...,bq], 0) --> 1 + 0
-	     ((zerop1 x) (add 1 x))
+      ;; pFq([a1,...,ap], [b1,...,bq], 0) --> 1 + 0
+      ((zerop1 x)
+       (add 1 x))
 
-	     ;; pFq([0,a1,...,ap], [b1,...,bq], x) --> 1
-	     ((member-if 'zerop1 (margs a)) 1)
+      ;; pFq([0,a1,...,ap], [b1,...,bq], x) --> 1
+      ((member-if 'zerop1 (margs a))
+       1)
 	    	       
-	     ;; Do hypergeometric([],[],x) --> exp(x). All numerical evaluation is funneled through
-	     ;; the same entry point; the function hypergeometric-0f0 doesn't do numerical evaluation.
-	     ((and (= 0 a-len) (= 0 b-len) (hypergeometric-0f0 x)))
+      ;; Do hypergeometric([],[],x) --> exp(x). All numerical evaluation is funneled through
+      ;; the same entry point; the function hypergeometric-0f0 doesn't do numerical evaluation.
+      ((and (= 0 a-len) (= 0 b-len)
+	    (hypergeometric-0f0 x)))
 
-	     ;; Do hypergeometric([a],[],x) --> 1 / (1-x)^a. 
-	     ((and (= a-len 1) (= 0 b-len) (hypergeometric-1f0 (second a) x)))
+      ;; Do hypergeometric([a],[],x) --> 1 / (1-x)^a. 
+      ((and (= a-len 1) (= 0 b-len)
+	    (hypergeometric-1f0 (second a) x)))
 		 		 		 
-	     ;; Try reflection identity for 1F1.
-	     ((and (= a-len 1) (= b-len 1) (hypergeometric-1f1 (second a) (second b) x hg-type)))
+      ;; Try reflection identity for 1F1.
+      ((and (= a-len 1) (= b-len 1)
+	    (hypergeometric-1f1 (second a) (second b) x hg-type)))
 		 
-	     ;; For 2F1, value at 1--nothing else.
-	     ((and (= a-len 2) (= b-len 1) (hypergeometric-2f1 (second a) (third a) (second b) x)))
+      ;; For 2F1, value at 1--nothing else.
+      ((and (= a-len 2) (= b-len 1)
+	    (hypergeometric-2f1 (second a) (third a) (second b) x)))
 		 	
-	     ;; Try numerical evaluation; return nil on failure. This should handle IEEE float, 
-	     ;; IEEE complex float, bigfloat, and complex big float cases.
-	     ((and (setq return-type (use-float-hypergeometric-numerical-eval (margs a) (margs b) x))
-		   (setq dig (ceiling (* (if (eq return-type 'float) (float-digits 1.0) fpprec) 
-					 #.(/ (log 2) (log 10)))))
-		   (hypergeometric-float-eval (margs a) (margs b) x dig return-type)))
+      ;; Try numerical evaluation; return nil on failure. This should handle IEEE float, 
+      ;; IEEE complex float, bigfloat, and complex big float cases.
+      ((and (setq return-type (use-float-hypergeometric-numerical-eval (margs a) (margs b) x))
+	    (setq dig (ceiling (* (if (eq return-type 'float) (float-digits 1.0) fpprec) 
+				  #.(/ (log 2) (log 10)))))
+	    (hypergeometric-float-eval (margs a) (margs b) x dig return-type)))
 	    
-	     ;; Try rational number numerical evaluation; return nil on failure. This should handle
-	     ;; rational and complex rational numerical evaluation.
-	     ((use-rational-hypergeometric-numerical-eval (margs a) (margs b) x)
-	      (rational-hypergeometric-numerical-eval (margs a) (margs b) x))
+      ;; Try rational number numerical evaluation; return nil on failure. This should handle
+      ;; rational and complex rational numerical evaluation.
+      ((use-rational-hypergeometric-numerical-eval (margs a) (margs b) x)
+       (rational-hypergeometric-numerical-eval (margs a) (margs b) x))
 
-	     ;; Handle all other polynomial cases; this includes the case that
-	     ;; x is a Taylor polynomial centered at zero.
-	     ((hypergeometric-poly-case (margs a) (margs b) x))
+      ;; Handle all other polynomial cases; this includes the case that
+      ;; x is a Taylor polynomial centered at zero.
+      ((hypergeometric-poly-case (margs a) (margs b) x))
 	
-	     ;; Return a nounform.
-	     (t
-	      (give-up)))))))
+      ;; Return a nounform.
+      (t
+       (give-up)))))
+
 
 ;; When x isn't a float, do 0F0([],[],x) --> exp(x).
 (defun hypergeometric-0f0 (x)
@@ -493,22 +499,28 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 
      (t
       (let ((maxima::$multiple_value_return t))
-	(setq ff  `((maxima::$hypergeometric maxima::simp)
+	(setq ff  `((maxima::%hypergeometric maxima::simp)
 		    ((maxima::mlist maxima::simp) ,ma ,mb) 
 		    ((maxima::mlist maxima::simp) ,mc) maxima::z))
+	(format t "ff = ~A~%" ff)
+	(format t "d = ~A~%" d)
 	(setq f nil)
 	(while d 
 	  (setq f (if (equal region "none")
 		      `((maxima::multiple_values) ,ff t)
-		    (maxima::mfuncall 'maxima::$abramowitz_id ff region)))
+		      (maxima::mfuncall 'maxima::$abramowitz_id ff region)))
+	  (format t "f = ~A~%" f)
 	  (if (maxima::$second f)
 	      (setq d nil f (maxima::$first f)) (setq region (first (pop d)))))
 	
-	;;(maxima::displa f)
-	;;(maxima::displa `((maxima::mequal) maxima::z ,mx))
+	(maxima::displa f)
+	(maxima::displa `((maxima::mequal) maxima::z ,mx))
 	(setq f (multiple-value-list
 		 (maxima::nfloat f `((maxima::mlist) ((maxima::mequal) maxima::z ,mx)) 
 				 digits maxima::$max_fpprec)))
+	(format t "f = ~A~%" f)
+	(format t "first f = ~A~%" (first f))
+	(format t "sec f   = ~A~%" (second f))
 	(values (bigfloat::to (first f)) (bigfloat::to (second f))))))))
 
 ;; Let a = (a1, a2, ..., am) and b = (b1, b2, ..., bn). Approximate sum(c(k) x^k / k!,k,1,inf),

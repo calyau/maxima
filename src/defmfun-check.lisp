@@ -572,35 +572,46 @@
 ;; handle the default case of the simplifier when we can't do any
 ;; simplification.  Call this in the default case for the COND.
 
-(defmacro def-simplifier (base-name lambda-list &body body)
-  (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
-	 (verb-name (intern (concatenate 'string "$" (string base-name))))
-	 (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
-	 (z-arg (gensym "Z-"))
-	 (unused-arg (gensym "UNUSED-"))
-	 (arg-forms (loop for arg in lambda-list
-			  and count from 1
-			  collect (list arg `(simpcheck (nth ,count form) ,z-arg)))))
-    `(progn
-       ;; Set up properties
-       (defprop ,noun-name ,simp-name operators)
-       ;; The verb and alias properties are needed to make things like
-       ;; quad_qags(jacobi_sn(x,.5)...) work.
-       (defprop ,verb-name ,noun-name verb)
-       (defprop ,verb-name ,noun-name alias)
-       ;; The reversealias property is needed by grind to print out
-       ;; the right thing.  Without it, grind(jacobi_sn(x,m)) prints
-       ;; '?%jacobi_sn(x,m)".  Also needed for labels in plots which
-       ;; would show up as %jacobi_sn instead of jacobi_sn.
-       (defprop ,noun-name ,verb-name reversealias)
+(defmacro def-simplifier (base-name-and-options lambda-list &body body)
+  (destructuring-bind (base-name &key skip-simpcheck)
+      (if (symbolp base-name-and-options)
+	  (list base-name-and-options)
+	  base-name-and-options)
+    (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
+	   (verb-name (intern (concatenate 'string "$" (string base-name))))
+	   (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
+	   (form-arg (gensym "FORM-"))
+	   (z-arg (intern "%%SIMPFLAG"))
+	   (unused-arg (gensym "UNUSED-"))
+	   (arg-forms (if skip-simpcheck
+			  (loop for arg in lambda-list
+				and count from 1
+				collect (list arg `(nth ,count form)))
+			  (loop for arg in lambda-list
+				and count from 1
+				collect (list arg `(simpcheck (nth ,count form) ,z-arg))))))
+      `(progn
+	 ;; Set up properties
+	 (defprop ,noun-name ,simp-name operators)
+	 ;; The verb and alias properties are needed to make things like
+	 ;; quad_qags(jacobi_sn(x,.5)...) work.
+	 (defprop ,verb-name ,noun-name verb)
+	 (defprop ,verb-name ,noun-name alias)
+	 ;; The reversealias property is needed by grind to print out
+	 ;; the right thing.  Without it, grind(jacobi_sn(x,m)) prints
+	 ;; '?%jacobi_sn(x,m)".  Also needed for labels in plots which
+	 ;; would show up as %jacobi_sn instead of jacobi_sn.
+	 (defprop ,noun-name ,verb-name reversealias)
 
-       ;; Define the simplifier
-       (defun ,simp-name (form ,unused-arg ,z-arg)
-	 (declare (ignore ,unused-arg))
-	 (arg-count-check ,(length lambda-list) form)
-	 (let ,arg-forms
-	   (flet ((give-up ()
-		    ;; Should this also return from the function?
-		    ;; That would fit in better with giving up.
-		    (eqtest (list '(,noun-name) ,@lambda-list) form)))
-	     ,@body))))))
+	 ;; Define the simplifier
+	 (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
+	   (declare (ignore ,unused-arg)
+		    (ignorable ,z-arg))
+	   (arg-count-check ,(length lambda-list)
+			    form)
+	   (let ,arg-forms
+	     (flet ((give-up ()
+		      ;; Should this also return from the function?
+		      ;; That would fit in better with giving up.
+		      (eqtest (list '(,noun-name) ,@lambda-list) form)))
+	       ,@body)))))))
