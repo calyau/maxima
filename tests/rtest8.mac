@@ -471,7 +471,6 @@ complex_float_approx_equal
      v = 1.25,
      v = 1.0 - 0.5*%i,
      v = 0.5*%i + 1.0,
-
      v = 1.75*%i]);
 true;
 
