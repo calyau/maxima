@@ -2181,184 +2181,8 @@ for details.
 @subsection Functions and Variables for Trigonometric
 @c -----------------------------------------------------------------------------
 
-@c -----------------------------------------------------------------------------
-@anchor{%piargs}
-@defvr {Option variable} %piargs
-Default value: @code{true}
-
-When @code{%piargs} is @code{true},
-trigonometric functions are simplified to algebraic constants
-when the argument is an integer multiple
-of m4_mathcomma(\pi,%pi)@w{} m4_mathcomma(\pi/2,%pi/2)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} or m4_mathdot(\pi/6,%pi/6)
-@c @iftex
-@c @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
-@c @end iftex
-@c @ifnottex
-@c @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
-@c @end ifnottex
-
-Maxima knows some identities which can be applied when m4_math(\pi,%pi), etc.,
-@c @iftex
-@c Maxima knows some identities which can be applied when @math{\pi}, etc.,
-@c @end iftex
-@c @ifnottex
-@c Maxima knows some identities which can be applied when @math{%pi}, etc.,
-@c @end ifnottex
-are multiplied by an integer variable (that is, a symbol declared to be
-integer).
-
-Examples:
-
-@c ===beg===
-@c %piargs : false$
-@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
-@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-@c %piargs : true$
-@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
-@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
-@c        cos (sqrt(2)*%pi/3)];
-@c ===end===
-@example
-(%i1) %piargs : false$
-@group
-(%i2) [sin (%pi), sin (%pi/2), sin (%pi/3)];
-                                %pi       %pi
-(%o2)            [sin(%pi), sin(---), sin(---)]
-                                 2         3
-@end group
-@group
-(%i3) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-                      %pi       %pi       %pi
-(%o3)            [sin(---), sin(---), sin(---)]
-                       4         5         6
-@end group
-(%i4) %piargs : true$
-@group
-(%i5) [sin (%pi), sin (%pi/2), sin (%pi/3)];
-                                sqrt(3)
-(%o5)                    [0, 1, -------]
-                                   2
-@end group
-@group
-(%i6) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-                         1         %pi   1
-(%o6)                [-------, sin(---), -]
-                      sqrt(2)       5    2
-@end group
-@group
-(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
-       cos (sqrt(2)*%pi/3)];
-                1    1               sqrt(2) %pi
-(%o7)          [-, - -, sqrt(3), cos(-----------)]
-                2    2                    3
-@end group
-@end example
-
-Some identities are applied when m4_math(\pi,%pi) and m4_math(\pi/2,%pi/2) are
-multiplied by an integer variable.
-@c @iftex
-@c Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by
-@c an integer variable.
-@c @end iftex
-@c @ifnottex
-@c Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by
-@c an integer variable.
-@c @end ifnottex
-
-@c ===beg===
-@c declare (n, integer, m, even)$
-@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
-@c        cos (%pi/2 * m)];
-@c ===end===
-@example
-(%i1) declare (n, integer, m, even)$
-@group
-(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
-       cos (%pi/2 * m)];
-                                      m/2
-(%o2)                  [0, 1, 0, (- 1)   ]
-@end group
-@end example
-
-@opencatbox{Categories:}
-@category{Trigonometric functions}
-@category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{%iargs}
-@defvr {Option variable} %iargs
-Default value: @code{true}
-
-When @code{%iargs} is @code{true},
-trigonometric functions are simplified to hyperbolic functions
-when the argument is apparently a multiple of the imaginary
-unit m4_mathdot(i, %i)
-@c @iftex
-@c when the argument is apparently a multiple of the imaginary unit @math{i}.
-@c @end iftex
-@c @ifnottex
-@c when the argument is apparently a multiple of the imaginary unit @math{%i}.
-@c @end ifnottex
-
-Even when the argument is demonstrably real, the simplification is applied;
-Maxima considers only whether the argument is a literal multiple
-of m4_mathdot(i,%i)
-@c @iftex
-@c Maxima considers only whether the argument is a literal multiple of @math{i}.
-@c @end iftex
-@c @ifnottex
-@c Maxima considers only whether the argument is a literal multiple of @math{%i}.
-@c @end ifnottex
-
-Examples:
-
-@c ===beg===
-@c %iargs : false$
-@c [sin (%i * x), cos (%i * x), tan (%i * x)];
-@c %iargs : true$
-@c [sin (%i * x), cos (%i * x), tan (%i * x)];
-@c ===end===
-@example
-(%i1) %iargs : false$
-@group
-(%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
-(%o2)           [sin(%i x), cos(%i x), tan(%i x)]
-@end group
-(%i3) %iargs : true$
-@group
-(%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
-(%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
-@end group
-@end example
-
-Even when the argument is demonstrably real, the simplification is applied.
-
-@c ===beg===
-@c declare (x, imaginary)$
-@c [featurep (x, imaginary), featurep (x, real)];
-@c sin (%i * x);
-@c ===end===
-@example
-(%i1) declare (x, imaginary)$
-@group
-(%i2) [featurep (x, imaginary), featurep (x, real)];
-(%o2)                     [true, false]
-@end group
-@group
-(%i3) sin (%i * x);
-(%o3)                      %i sinh(x)
-@end group
-@end example
-
-@opencatbox{Categories:}
-@category{Trigonometric functions}
-@category{Hyperbolic functions}
-@category{Simplification flags and variables}
-@closecatbox
-@end defvr
+@node Trigonometric and Hyperbolic Functions
+@subsubsection Trigonometric and Hyperbolic Functions
 
 @c -----------------------------------------------------------------------------
 @anchor{acos}
@@ -2641,41 +2465,185 @@ See also @mref{atan}.
 @closecatbox
 @end deffn
 
-@c IS THIS DESCRIPTION ACCURATE ??
-@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 
+@node Options Controlling Simplification
+@subsubsection Options Controlling Simplification
 @c -----------------------------------------------------------------------------
-@anchor{atrig1}
-@defvr {Package} atrig1
+@anchor{%piargs}
+@defvr {Option variable} %piargs
+Default value: @code{true}
 
-The @code{atrig1} package contains several additional simplification rules
-for inverse trigonometric functions.  Together with rules
-already known to Maxima, the following angles are fully implemented:
-@math{0}, m4_mathcomma(\pi/6,%pi/6)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} m4_mathcomma(\pi/3,%pi/3)@w{} and m4_mathdot(\pi/2,%pi/2)
-Corresponding angles in the other three quadrants are also available.
-Do @code{load("atrig1");} to use them.
+When @code{%piargs} is @code{true},
+trigonometric functions are simplified to algebraic constants
+when the argument is an integer multiple
+of m4_mathcomma(\pi,%pi)@w{} m4_mathcomma(\pi/2,%pi/2)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} or m4_mathdot(\pi/6,%pi/6)
+@c @iftex
+@c @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
+@c @end iftex
+@c @ifnottex
+@c @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
+@c @end ifnottex
+
+Maxima knows some identities which can be applied when m4_math(\pi,%pi), etc.,
+@c @iftex
+@c Maxima knows some identities which can be applied when @math{\pi}, etc.,
+@c @end iftex
+@c @ifnottex
+@c Maxima knows some identities which can be applied when @math{%pi}, etc.,
+@c @end ifnottex
+are multiplied by an integer variable (that is, a symbol declared to be
+integer).
+
+Examples:
+
+@c ===beg===
+@c %piargs : false$
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c %piargs : true$
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+@c        cos (sqrt(2)*%pi/3)];
+@c ===end===
+@example
+(%i1) %piargs : false$
+@group
+(%i2) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                %pi       %pi
+(%o2)            [sin(%pi), sin(---), sin(---)]
+                                 2         3
+@end group
+@group
+(%i3) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                      %pi       %pi       %pi
+(%o3)            [sin(---), sin(---), sin(---)]
+                       4         5         6
+@end group
+(%i4) %piargs : true$
+@group
+(%i5) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                sqrt(3)
+(%o5)                    [0, 1, -------]
+                                   2
+@end group
+@group
+(%i6) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                         1         %pi   1
+(%o6)                [-------, sin(---), -]
+                      sqrt(2)       5    2
+@end group
+@group
+(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+       cos (sqrt(2)*%pi/3)];
+                1    1               sqrt(2) %pi
+(%o7)          [-, - -, sqrt(3), cos(-----------)]
+                2    2                    3
+@end group
+@end example
+
+Some identities are applied when m4_math(\pi,%pi) and m4_math(\pi/2,%pi/2) are
+multiplied by an integer variable.
+@c @iftex
+@c Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by
+@c an integer variable.
+@c @end iftex
+@c @ifnottex
+@c Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by
+@c an integer variable.
+@c @end ifnottex
+
+@c ===beg===
+@c declare (n, integer, m, even)$
+@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+@c        cos (%pi/2 * m)];
+@c ===end===
+@example
+(%i1) declare (n, integer, m, even)$
+@group
+(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+       cos (%pi/2 * m)];
+                                      m/2
+(%o2)                  [0, 1, 0, (- 1)   ]
+@end group
+@end example
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
-@category{Package atrig1}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
-@c IS THIS DESCRIPTION ACCURATE ??
-@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
-
 @c -----------------------------------------------------------------------------
-@defvr {Package} ntrig
+@anchor{%iargs}
+@defvr {Option variable} %iargs
+Default value: @code{true}
 
-The @code{ntrig} package contains a set of simplification rules that are
-used to simplify trigonometric function whose arguments are of the form
-@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
-@code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
-@c NEED TO LOAD THIS PACKAGE ??
+When @code{%iargs} is @code{true},
+trigonometric functions are simplified to hyperbolic functions
+when the argument is apparently a multiple of the imaginary
+unit m4_mathdot(i, %i)
+@c @iftex
+@c when the argument is apparently a multiple of the imaginary unit @math{i}.
+@c @end iftex
+@c @ifnottex
+@c when the argument is apparently a multiple of the imaginary unit @math{%i}.
+@c @end ifnottex
+
+Even when the argument is demonstrably real, the simplification is applied;
+Maxima considers only whether the argument is a literal multiple
+of m4_mathdot(i,%i)
+@c @iftex
+@c Maxima considers only whether the argument is a literal multiple of @math{i}.
+@c @end iftex
+@c @ifnottex
+@c Maxima considers only whether the argument is a literal multiple of @math{%i}.
+@c @end ifnottex
+
+Examples:
+
+@c ===beg===
+@c %iargs : false$
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c %iargs : true$
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c ===end===
+@example
+(%i1) %iargs : false$
+@group
+(%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o2)           [sin(%i x), cos(%i x), tan(%i x)]
+@end group
+(%i3) %iargs : true$
+@group
+(%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
+@end group
+@end example
+
+Even when the argument is demonstrably real, the simplification is applied.
+
+@c ===beg===
+@c declare (x, imaginary)$
+@c [featurep (x, imaginary), featurep (x, real)];
+@c sin (%i * x);
+@c ===end===
+@example
+(%i1) declare (x, imaginary)$
+@group
+(%i2) [featurep (x, imaginary), featurep (x, real)];
+(%o2)                     [true, false]
+@end group
+@group
+(%i3) sin (%i * x);
+(%o3)                      %i sinh(x)
+@end group
+@end example
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
-@category{Package ntrig}
+@category{Hyperbolic functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -2761,6 +2729,24 @@ Examples:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{trigsign}
+@defvr {Option variable} trigsign
+Default value: @code{true}
+
+When @code{trigsign} is @code{true}, it permits simplification of negative
+arguments to trigonometric functions.  E.g., m4_math(\sin(-x),@code{sin(-x)}) will
+become m4_math(-\sin x, @code{-sin(x)}) only if @code{trigsign} is @code{true}.
+
+@opencatbox{Categories:}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+
+@node Identities
+@subsubsection Identities
 @c NEEDS CLARIFICATION AND EXAMPLES
 
 @c -----------------------------------------------------------------------------
@@ -2931,21 +2917,6 @@ See also @mref{poissimp}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{trigsign}
-@defvr {Option variable} trigsign
-Default value: @code{true}
-
-When @code{trigsign} is @code{true}, it permits simplification of negative
-arguments to trigonometric functions.  E.g., m4_math(\sin(-x),@code{sin(-x)}) will
-become m4_math(-\sin x, @code{-sin(x)}) only if @code{trigsign} is @code{true}.
-
-@opencatbox{Categories:}
-@category{Trigonometric functions}
-@category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
 @anchor{trigsimp}
 @deffn {Function} trigsimp (@var{expr})
 
@@ -3074,6 +3045,47 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @category{Simplification functions}
 @closecatbox
 @end deffn
+
+
+@node Additional Functions
+@subsubsection Additional Functions
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
+@anchor{atrig1}
+@defvr {Package} atrig1
+
+The @code{atrig1} package contains several additional simplification rules
+for inverse trigonometric functions.  Together with rules
+already known to Maxima, the following angles are fully implemented:
+@math{0}, m4_mathcomma(\pi/6,%pi/6)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} m4_mathcomma(\pi/3,%pi/3)@w{} and m4_mathdot(\pi/2,%pi/2)
+Corresponding angles in the other three quadrants are also available.
+Do @code{load("atrig1");} to use them.
+
+@opencatbox{Categories:}
+@category{Trigonometric functions}
+@category{Package atrig1}
+@closecatbox
+@end defvr
+
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
+@defvr {Package} ntrig
+
+The @code{ntrig} package contains a set of simplification rules that are
+used to simplify trigonometric function whose arguments are of the form
+@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
+@code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
+@c NEED TO LOAD THIS PACKAGE ??
+
+@opencatbox{Categories:}
+@category{Trigonometric functions}
+@category{Package ntrig}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @page
