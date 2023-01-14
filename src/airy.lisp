@@ -47,14 +47,14 @@
     ((mtimes) 
      ((mexpt) 3 ((rat) -2 3))
      ((mexpt) ((%gamma) ((rat) 2 3)) -1)
-     (($hypergeometric) 
+     ((%hypergeometric) 
       ((mlist) ((rat) 1 3))
       ((mlist) ((rat) 2 3) ((rat) 4 3)) 
       ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
      z)
    ((mtimes) 
     ((rat) -1 4) ((mexpt) 3 ((rat) 1 6)) ((mexpt) $%pi -1) ((%gamma) ((rat) 2 3))
-    (($hypergeometric) 
+    ((%hypergeometric) 
      ((mlist) ((rat) 2 3)) 
      ((mlist) ((rat)  4 3) ((rat) 5 3))
      ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
@@ -85,18 +85,18 @@
   ;;   Ai(z) = Ai(0)*hypergeometric([],[2/3],z^3/9)
   ;;     + z*Ai'(0)*hypergeometric([],[4/3],z^3/9)
   (add (mul (ftake '%airy_ai 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 2 3))
-		   (div (power z 3)
-			9)))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 2 3))
+	     (div (power z 3)
+		  9)))
        (mul z
 	    (ftake '%airy_dai 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 4 3))
-		   (div (power z 3)
-			9)))))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 4 3))
+	     (div (power z 3)
+		  9)))))
 
 (def-simplifier airy_ai (z)
   (cond ((equal z 0)	     ; A&S 10.4.4: Ai(0) = 3^(-2/3)/gamma(2/3)
@@ -154,18 +154,18 @@
   ;;   Ai'(z) = Ai'(0)*hypergeometric([],[1/3],z^3/9)
   ;;     + z^2/2*Ai(0)*hypergeometric([],[5/3],z^3/9)
   (add (mul (ftake '%airy_dai 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 1 3))
-		   (div (power z 3)
-			9)))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 1 3))
+	     (div (power z 3)
+		  9)))
        (mul z z 1//2
 	    (ftake '%airy_ai 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 5 3))
-		   (div (power z 3)
-			9)))))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 5 3))
+	     (div (power z 3)
+		  9)))))
 
 (def-simplifier airy_dai (z)
   (cond ((equal z 0)	   ; A&S 10.4.5: Ai'(0) = -3^(-1/3)/gamma(1/3)
@@ -205,14 +205,14 @@
     ((mtimes) 
      ((mexpt) 3 ((rat) -1 6))
      ((mexpt) ((%gamma) ((rat) 2 3)) -1)
-     (($hypergeometric) 
+     ((%hypergeometric) 
       ((mlist) ((rat) 1 3))
       ((mlist) ((rat) 2 3) ((rat) 4 3)) 
       ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
      z)
    ((mtimes) 
     ((rat) 1 4) ((mexpt) 3 ((rat) 2 3)) ((mexpt) $%pi -1) ((%gamma) ((rat) 2 3))
-    (($hypergeometric) 
+    ((%hypergeometric) 
      ((mlist) ((rat) 2 3)) 
      ((mlist) ((rat)  4 3) ((rat) 5 3))
      ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
@@ -243,18 +243,18 @@
   ;;  Bi(z) = Bi(0)*hypergeometric([],[2/3],z^3/9)
   ;;    + z*Bi'(0)*hypergeometric([],[4/2],z^3/9)
   (add (mul (ftake '%airy_bi 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 2 3))
-		   (div (power z 3)
-			9)))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 2 3))
+	     (div (power z 3)
+		  9)))
        (mul z
 	    (ftake '%airy_dbi 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 4 3))
-		   (div (power z 3)
-			9)))))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 4 3))
+	     (div (power z 3)
+		  9)))))
 
 (def-simplifier airy_bi (z)
   (cond ((equal z 0) ; A&S 10.4.4: Bi(0) = sqrt(3) 3^(-2/3)/gamma(2/3)
@@ -312,18 +312,18 @@
   ;;  Bi'(z) = Bi'(0)*hypergeometric([],[1/3],z^3/9)
   ;;    + z^2/2*Bi(0)*hypergeometric([],[5/3],z^3/9)
   (add (mul (ftake '%airy_dbi 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 1 3))
-		   (div (power z 3)
-			9)))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 1 3))
+	     (div (power z 3)
+		  9)))
        (mul z z 1//2
 	    (ftake '%airy_bi 0)
-	    (ftake '$hypergeometric
-		   (list '(mlist))
-		   (list '(mlist) (div 5 3))
-		   (div (power z 3)
-			9)))))
+	    ($hypergeometric
+	     (list '(mlist))
+	     (list '(mlist) (div 5 3))
+	     (div (power z 3)
+		  9)))))
 
 (def-simplifier airy_dbi (z)
   (cond ((equal z 0) ; A&S 10.4.5: Bi'(0) = sqrt(3) 3^(-1/3)/gamma(1/3)

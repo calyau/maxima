@@ -126,6 +126,9 @@
        (not (mrelationp e))
        (not ($member e $arrays))))
 
+(defmfun $hypergeometric (a b z)
+  (ftake '%hypergeometric a b z))
+
 ;;(defprop $hypergeometric simp-hypergeometric operators)
 
 ;; Do noncontroversial simplifications on the hypergeometric function. A user that
