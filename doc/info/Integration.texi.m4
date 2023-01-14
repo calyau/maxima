@@ -782,25 +782,24 @@ Sometimes this will help Maxima obtain a more useful result.
 Attempts to compute the Laplace transform of @var{expr} with respect to the 
 variable @var{t} and transform parameter @var{s}.  The Laplace
 transform of the function @code{f(t)} is the one-sided transform defined by
-@ifnottex
+m4_displaymath(
+<<<F(s) = \int_0^{\infty} f(t) e^{-st} dt>>>,
 @example
 F(s) = integrate(f(t) * exp(-s*t), t, 0, inf)
 @end example
-@end ifnottex
-@tex
-$$F(s) = \int_0^{\infty} f(t) e^{-st} dt$$
-@end tex
-where @code{F(s)} is the transform of @code{f(t)}.
+>>>)
+
+where @math{F(s)} is the transform of @math{f(t)}, represented by @var{expr}.
 
 @code{laplace} recognizes in @var{expr} the functions @mrefcomma{delta} @mrefcomma{exp}
 @mrefcomma{log} @mrefcomma{sin} @mrefcomma{cos} @mrefcomma{sinh} @mrefcomma{cosh} and @mrefcomma{erf}
 as well as @code{derivative}, @mrefcomma{integrate} @mrefcomma{sum} and @mrefdot{ilt} If
-laplace fails to find a transform the function @mref{specint} is called.
-@code{specint} can find the laplace transform for expressions with special
+@code{laplace} fails to find a transform the function @mref{specint} is called.
+@mref{specint} can find the laplace transform for expressions with special
 functions like the bessel functions @mrefcomma{bessel_j} @mrefcomma{bessel_i} @dots{}
 and can handle the @mref{unit_step} function.  See also @mrefdot{specint}
 
-If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
+If @mref{specint} cannot find a solution too, a noun @code{laplace} is returned.
 
 @c REPHRASE THIS
 @var{expr} may also be a linear, constant coefficient differential equation in
@@ -813,13 +812,16 @@ solution and eliminate the constants by solving the general solution
 for them and substituting their values back.
 
 @code{laplace} recognizes convolution integrals of the form
-@code{integrate (f(x) * g(t - x), x, 0, t)};
-other kinds of convolutions are not recognized.
+m4_displaymath(
+<<<\int_0^t f(x) g(t-x) dx>>>,
+<<<@code{integrate (f(x) * g(t - x), x, 0, t)}>>>)
+
+Other kinds of convolutions are not recognized.
 
 Functional relations must be explicitly represented in @var{expr};
 implicit relations, established by @mrefcomma{depends} are not recognized.
-That is, if @var{f} depends on @var{x} and @var{y},
-@code{f (x, y)} must appear in @var{expr}.
+That is, if @math{f} depends on @math{x} and @math{y},
+@math{f (x, y)} must appear in @var{expr}.
 
 See also @mrefcomma{ilt} the inverse Laplace transform.
 
