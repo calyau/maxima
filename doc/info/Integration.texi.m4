@@ -784,6 +784,7 @@ variable @var{t} and transform parameter @var{s}.  The Laplace
 transform of the function @code{f(t)} is the one-sided transform defined by
 m4_displaymath(
 <<<F(s) = \int_0^{\infty} f(t) e^{-st} dt>>>,
+<<<
 @example
 F(s) = integrate(f(t) * exp(-s*t), t, 0, inf)
 @end example
@@ -814,7 +815,11 @@ for them and substituting their values back.
 @code{laplace} recognizes convolution integrals of the form
 m4_displaymath(
 <<<\int_0^t f(x) g(t-x) dx>>>,
-<<<@code{integrate (f(x) * g(t - x), x, 0, t)}>>>)
+<<<
+@example
+integrate (f(x) * g(t - x), x, 0, t)
+@end example
+>>>)
 
 Other kinds of convolutions are not recognized.
 
