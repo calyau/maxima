@@ -3,7 +3,7 @@
 * Introduction to Special Functions::
 * Bessel Functions::
 * Airy Functions::
-* Gamma and factorial Functions::
+* Gamma and Factorial Functions::
 * Exponential Integrals::
 * Error Function::
 * Struve Functions::
@@ -13,7 +13,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Special Functions, Bessel Functions, Special Functions, Special Functions
+@node Introduction to Special Functions, Bessel Functions
 @section Introduction to Special Functions
 @c -----------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ parabolic_cylinder_d (v,z)     Parabolic cylinder D function
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Bessel Functions, Airy Functions, Introduction to Special Functions, Special Functions
+@node Bessel Functions, Airy Functions, Introduction to Special Functions
 @section Bessel Functions
 @c -----------------------------------------------------------------------------
 
@@ -482,7 +482,7 @@ negative integer, the limit must be used.
 
 
 @c -----------------------------------------------------------------------------
-@node Airy Functions, Gamma and factorial Functions, Bessel Functions, Special Functions
+@node Airy Functions, Gamma and Factorial Functions, Bessel Functions
 @section Airy Functions
 @c -----------------------------------------------------------------------------
 
@@ -569,8 +569,8 @@ See @mrefcomma{airy_ai} and @mrefdot{airy_bi}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Gamma and factorial Functions, Exponential Integrals, Airy Functions, Special Functions
-@section Gamma and factorial Functions
+@node Gamma and Factorial Functions, Exponential Integrals, Airy Functions
+@section Gamma and Factorial Functions
 @c -----------------------------------------------------------------------------
 
 The gamma function and the related beta, psi and incomplete gamma 
@@ -1929,7 +1929,7 @@ Returns the numerical factor multiplying the expression
 @end deffn
 
 
-@node Exponential Integrals, Error Function, Gamma and factorial Functions, Special Functions
+@node Exponential Integrals, Error Function, Gamma and Factorial Functions
 @section Exponential Integrals
 
 The Exponential Integral and related functions are defined in
@@ -2327,7 +2327,7 @@ for positive integers in terms of @code{expintegral_ei}.
 @closecatbox
 @end defvr
 
-@node Error Function, Struve Functions, Exponential Integrals, Special Functions
+@node Error Function, Struve Functions, Exponential Integrals
 @section Error Function
 
 The Error function and related functions are defined in
@@ -2587,7 +2587,7 @@ error functions.
 
 @end defvr
 
-@node Struve Functions, Hypergeometric Functions, Error Function, Special Functions
+@node Struve Functions, Hypergeometric Functions, Error Function
 @section Struve Functions
 
 The Struve functions are defined in Abramowitz and Stegun,
@@ -2644,7 +2644,7 @@ See @mrefdot{besselexpand}
 @closecatbox
 @end deffn
 
-@node Hypergeometric Functions, Parabolic Cylinder Functions, Struve Functions, Special Functions
+@node Hypergeometric Functions, Parabolic Cylinder Functions, Struve Functions
 @section Hypergeometric Functions
 
 The Hypergeometric Functions are defined in Abramowitz and Stegun,
@@ -2851,7 +2851,7 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 @end example
 @end deffn
 
-@node Parabolic Cylinder Functions, Functions and Variables for Special Functions, Hypergeometric Functions, Special Functions
+@node Parabolic Cylinder Functions, Functions and Variables for Special Functions, Hypergeometric Functions
 @section  Parabolic Cylinder Functions
 
 The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
@@ -2878,7 +2878,7 @@ has two independent solutions, one of which is m4_math(<<<D_{\nu}(z)>>>, <<<@cod
 
 
 
-@node Functions and Variables for Special Functions,  , Parabolic Cylinder Functions, Special Functions
+@node Functions and Variables for Special Functions,  , Parabolic Cylinder Functions
 @section Functions and Variables for Special Functions
 
 
