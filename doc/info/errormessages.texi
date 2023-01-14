@@ -1,12 +1,12 @@
 @menu
-* Error messages::
-* Warning messages::
+* Error Messages::
+* Warning Messages::
 @end menu
 
 This chapter provides detailed information about the meaning of some error messages
 or on how to recover from errors.
-@node Error messages, Warning messages,,Error and warning messages
-@section Error messages
+@node Error Messages, Warning Messages
+@section Error Messages
 @menu
 * No such list element::
 * argument must be a non-atomic expression::
@@ -25,7 +25,7 @@ or on how to recover from errors.
 @end menu
 
 
-@node No such list element, argument must be a non-atomic expression, Error messages, Error messages
+@node No such list element, argument must be a non-atomic expression, Error Messages, Error Messages
 @subsection apply: no such "list" element
 One common cause for this error message is that square brackets operator
 (@code{[ ]}) was used trying to access a list element that whose element
@@ -35,7 +35,7 @@ number was @code{< 1} or @code{> length(list)}.
 @closecatbox
 
 
-@node argument must be a non-atomic expression, cannot assign to function, No such list element, Error messages
+@node argument must be a non-atomic expression, cannot assign to function, No such list element, Error Messages
 @subsection argument must be a non-atomic expression
 This normally means that a list, a set or something else that consists of more than one
 element was expected. One possible cause for this error message is a construct of the 
@@ -77,7 +77,7 @@ single-element list first:
 @closecatbox
 
 
-@node cannot assign to function, 0 to a negative exponent, argument must be a non-atomic expression, Error messages
+@node cannot assign to function, 0 to a negative exponent, argument must be a non-atomic expression, Error Messages
 @subsection assignment: cannot assign to @code{<function name>}
 Maxima supports several assignment operators. When trying to define a function
 @code{:=} has to be used.
@@ -86,7 +86,7 @@ Maxima supports several assignment operators. When trying to define a function
 @closecatbox
 
 
-@node 0 to a negative exponent, Comma is not a prefix operator, cannot assign to function, Error messages
+@node 0 to a negative exponent, Comma is not a prefix operator, cannot assign to function, Error Messages
 @subsection expt: undefined:  0 to a negative exponent.
 This message notifies about a classical division by zero error.
 @opencatbox{Categories:}
@@ -94,7 +94,7 @@ This message notifies about a classical division by zero error.
 @closecatbox
 
 
-@node Comma is not a prefix operator, Illegal use of delimiter, 0 to a negative exponent, Error messages
+@node Comma is not a prefix operator, Illegal use of delimiter, 0 to a negative exponent, Error Messages
 @subsection incorrect syntax: , is not a prefix operator
 This might be caused by a command starting with a comma (@code{,}) or by one comma
 being directly followed by another one..
@@ -103,7 +103,7 @@ being directly followed by another one..
 @closecatbox
 
 
-@node Illegal use of delimiter, loadfile failed to load, Comma is not a prefix operator, Error messages
+@node Illegal use of delimiter, loadfile failed to load, Comma is not a prefix operator, Error Messages
 @subsection incorrect syntax: Illegal use of delimiter )
 Common reasons for this error appearing are a closing parenthesis without an
 opening one or a closing parenthesis directly preceded by a comma.
@@ -112,7 +112,7 @@ opening one or a closing parenthesis directly preceded by a comma.
 @closecatbox
 
 
-@node loadfile failed to load, makelist second argument must evaluate to a number, Illegal use of delimiter, Error messages
+@node loadfile failed to load, makelist second argument must evaluate to a number, Illegal use of delimiter, Error Messages
 @subsection loadfile: failed to load @code{<filename>}
 This error message normally indicates that the file exists, but can not be read.
 If the file is present and readable there is another possible for this error
@@ -138,7 +138,7 @@ compile a package.
 @closecatbox
 
 
-@node makelist second argument must evaluate to a number, Only symbols can be bound, loadfile failed to load, Error messages
+@node makelist second argument must evaluate to a number, Only symbols can be bound, loadfile failed to load, Error Messages
 @subsection makelist: second argument must evaluate to a number
 @code{makelist} expects the second argument to be the name of the variable whose value is to
 be stepped. This time instead of the name of a still-undefined variable maxima has found
@@ -149,7 +149,7 @@ something else, possibly a list or the name of a list.
 @closecatbox
 
 
-@node Only symbols can be bound, Operators of arguments must all be the same, makelist second argument must evaluate to a number, Error messages
+@node Only symbols can be bound, Operators of arguments must all be the same, makelist second argument must evaluate to a number, Error Messages
 @subsection Only symbols can be bound
 The most probable cause for this error is that there was an attempt to either
 use a number or a variable whose numerical value is known as a loop
@@ -159,7 +159,7 @@ counter.
 @closecatbox
 
 
-@node Operators of arguments must all be the same, out of memory, Only symbols can be bound, Error messages
+@node Operators of arguments must all be the same, out of memory, Only symbols can be bound, Error Messages
 @subsection operators of arguments must all be the same
 One possible reason for this error message to appear is a try to use @mref{append} in order
 to add an equation to a list:
@@ -201,7 +201,7 @@ single-element list first:
 @closecatbox
 
 
-@node out of memory, part fell off the end, Operators of arguments must all be the same, Error messages
+@node out of memory, part fell off the end, Operators of arguments must all be the same, Error Messages
 @subsection Out of memory
 Lisp typically handles several types of memory containing at least one stack
 and a heap that contains user objects. To avoid running out of memory several
@@ -226,7 +226,7 @@ approaches might be useful:
 @closecatbox
 
 
-@node part fell off the end, undefined variable during plotting, out of memory, Error messages
+@node part fell off the end, undefined variable during plotting, out of memory, Error Messages
 @subsection part: fell off the end
 @code{part()} was used to access the @code{n}th item in something that has less than
 @code{n} items.
@@ -235,7 +235,7 @@ approaches might be useful:
 @closecatbox
 
 
-@node undefined variable during plotting, VTK is not installed, part fell off the end, Error messages
+@node undefined variable during plotting, VTK is not installed, part fell off the end, Error Messages
 @subsection undefined variable (draw or plot)
 A function could not be plotted since it still contained a variable maxima
 doesn't know the value of.
@@ -272,7 +272,7 @@ draw2d (explicit): non defined variable
 @closecatbox
 
 
-@node VTK is not installed,  , undefined variable during plotting, Error messages
+@node VTK is not installed,  , undefined variable during plotting, Error Messages
 @subsection VTK is not installed, which is required for Scene
 
 This might either mean that VTK is actually not installed - or cannot be found by
@@ -295,14 +295,14 @@ Note: The @code{scene()} command requrires VTK with TCL/TK bindings.
 @closecatbox
 
 
-@node Warning messages, ,Error messages, Error and warning messages
-@section Warning messages
+@node Warning Messages,  , Error Messages
+@section Warning Messages
 @menu
 * undefined variable during translation::
 * replaced x by y::
 @end menu
 
-@node undefined variable during translation, replaced x by y, Warning messages, Warning messages
+@node undefined variable during translation, replaced x by y, Warning Messages, Warning Messages
 @subsection Encountered undefined variable @code{<x>} in translation
 A function was compiled but the type of the variable @code{x} was not known.
 This means that the compiled command contains additional code that makes it
@@ -315,19 +315,15 @@ resolve this issue.
 @closecatbox
 
 
-@node replaced x by y, Command-line options, undefined variable during translation, Warning messages
+@node replaced x by y,  , undefined variable during translation, Warning Messages
 @subsection Rat: replaced @code{<x>} by @code{<y> = <z>}
-Floating-point numbers provide a maximum number of digits that is typically high,
-but still limited. Good examples that this limitation might be too low
-even for harmless-looking examples include 
-@uref{https://en.wikipedia.org/wiki/Wilkinson%27s_polynomial, Wilkinson's Polynomial},
-The Rump polynomial and the fact that an exact 1/10 cannot be expressed as a binary
-floating-point number. 
-In places where the floating-point error might add up or hinder terms from
-cancelling each other out maxima therefore by default replaces them with exact
-fractions.
-See also @code{ratprint}, @code{ratepsilon}, @code{bftorat}, @code{fpprintprec}
-and @code{rationalize}.
+@mref{rat} was called on an expression containing floating point
+numbers (including big floats) and @mref{keepfloat} was false.  This
+means the number was replaced by a rational number approximating the
+floating-point number.
+
+See also @mref{ratprint}, @mref{ratepsilon}, @mref{bftorat}, @mref{fpprintprec}
+and @mref{rationalize}.
 @opencatbox{Categories:}
 @category{Warning messages}
 @closecatbox

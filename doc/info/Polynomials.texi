@@ -1341,6 +1341,7 @@ the time spent factoring large integers.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{keepfloat}
 @defvr {Option variable} keepfloat
 Default value: @code{false}
 
@@ -2314,6 +2315,7 @@ Extended CRE are created by @code{taylor} and related functions.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ratprint}
 @defvr {Option variable} ratprint
 Default value: @code{true}
 
