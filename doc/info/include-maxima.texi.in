@@ -661,8 +661,7 @@ zeilberger
 * Functions and Variables for zeilberger::
 
 Understanding maxima's output
-* Error messages::
-* Warning messages::
+* Error and warning messages::
 @comment @end detailmenu
 @end menu
 

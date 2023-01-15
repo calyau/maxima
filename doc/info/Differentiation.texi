@@ -766,8 +766,7 @@ form instead of carrying out the differentiation.
 When @code{derivabbrev} is @code{true}, derivatives are displayed as subscripts.
 Otherwise, derivatives are displayed in the Leibniz notation, @code{dy/dx}.
 
-See also @mrefcomma{depends} @mrefcomma{del} @mref{derivdegree} and
-@mrefdot{derivabbrev}
+See also @mrefcomma{depends} @mrefcomma{del} @mrefcomma{derivdegree} @mrefcomma{derivabbrev} and @mrefdot{gradef}
 
 Examples:
 

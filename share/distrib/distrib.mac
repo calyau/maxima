@@ -51,15 +51,16 @@ Continuous distributions:                   Discrete distributions:
    Noncentral Student  (*noncentral_student_t)
 
 Functions:
-   Density function            (pdf_*)
-   Distribution function       (cdf_*)
-   Quantile                    (quantile_*)
-   Mean                        (mean_*)
-   Variance                    (var_*)
-   Standard deviation          (std_*)
-   Skewness coefficient        (skewness_*)
-   Kurtosis coefficient        (kurtosis_*)
-   Random variate              (random_*)
+   Density function              (pdf_*)
+   Distribution function         (cdf_*)
+   Quantile                      (quantile_*)
+   Mean                          (mean_*)
+   Variance                      (var_*)
+   Standard deviation            (std_*)
+   Skewness coefficient          (skewness_*)
+   Kurtosis coefficient          (kurtosis_*)
+   Random variate                (random_*)
+   Maximum likelihood estimates  (mle_*)
 
 For example,
    pdf_student_t(x,n) is the density function of the Student distribution
@@ -79,6 +80,8 @@ riotorto @@@ yahoo DOT com
 */
 
 put('distrib, 2, 'version) $
+
+if get ('descriptive, 'version) = false then load ("descriptive");
 
 /* Sets the random state according to the computer clock time */
 set_random_state(make_random_state(true))$
@@ -143,6 +146,13 @@ random_normal(m,s,[num]) :=
               then m + s * ?rndnormal(no)
               else error("random_normal: check sample size")) $
 
+mle_normal (x, [w]) :=
+    if x = []
+        then ['location = und, 'scale = und]
+    else
+        if w = []
+            then ['location = mean (x), 'scale = std (x)]
+            else ['location = mean (x, w[1]), 'scale = std (x, w[1])];
 
 
 /*         STUDENT DISTRIBUTION          */
@@ -542,6 +552,14 @@ random_lognormal(m,s,[num]) :=
               then exp(m + s * ?rndnormal(no))
               else error("random_lognormal: check sample size") ) $
 
+mle_lognormal (x, [w]) :=
+    if x = []
+        then ['location = und, 'scale = und]
+    else
+        if w = []
+            then ['location = mean (log (x)), 'scale = std (log (x))]
+            else ['location = mean (log (x), w[1]), 'scale = std (log (x), w[1])];
+
 
 
 /*         GAMMA DISTRIBUTION          */
@@ -921,6 +939,52 @@ random_weibull(a,b,[num]) :=
                      else b * (-map('log,makelist(random(1.0),k,1,no)))^(1.0/a)
               else error("random_weibull: check sample size")) $
 
+mle_weibull (x, [w]) :=
+    if x = []
+        then ['shape = und, 'scale = und]
+        else block ([shape, scale],
+                    w: if w = [] then 1 else w[1],
+                    shape: mle_weibull_shape (x, w),
+                    scale: mle_weibull_scale (x, shape, w),
+                    ['shape = shape, 'scale = scale]);
+
+mle_weibull_shape (x, [w]) :=
+    block ([listarith: true, shape_eq, eq1],
+           w: if w = [] then 1 else w[1],
+
+           /* The shape parameter is unchanged by rescaling x,
+            * so we could try to avoid overflow for large x and large k
+            * by rescaling; however, it's not clear what's a strategy
+            * for rescaling which works for very large and very small
+            * values at the same time. Just let it be for now.
+            */
+
+           shape_eq: lambda ([k], mean (x^k*log(x), w) / mean (x^k, w) - 1/k - mean (log(x), w)),
+
+           /* Shape equation is monotonically increasing in k; see:
+            * N. Balakrishnan and M. Kateri. "On the maximum likelihood estimation of parameters
+              of Weibull distribution based on complete and censored data,"
+            * Statistics and Probability Letters, vol. 78 (2008), pp. 2971--2975.
+            * 
+            * Shape equation is negative for sufficiently small k,
+            * evaluate at k = 1 and then step down (if positive there)
+            * or step up (if negative) to find the other end point for search interval.
+            */
+
+           eq1: shape_eq(1),
+           if eq1 = 0 then 1
+               elseif eq1 > 0
+                   then block ([k1: 1, k0: 1],
+                               while shape_eq(k0) >= 0 do k0: k0/2,
+                               find_root (shape_eq, k0, k1))
+                   else block ([k0: 1, k1: 1],
+                               while shape_eq(k1) <= 0 do k1: k1*2,
+                               find_root (shape_eq, k0, k1)));
+
+mle_weibull_scale (x, shape, [w]) :=
+    if w = []
+        then (noncentral_moment (x, shape))^(1/shape)
+        else (noncentral_moment (x, shape, w[1]))^(1/shape);
 
 
 /*          RAYLEIGH DISTRIBUTION              */

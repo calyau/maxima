@@ -45,6 +45,15 @@ inf;
 ev (foo, q = 1/7);
 sqrt(2)*inverse_erf(-5/7)+2;
 
+mle_normal ([11, 13, 17, 19, 23, 29]);
+[location = 56/3, scale = sqrt(329)/3];
+
+mle_normal ([11, 13, 13, 17, 17, 17, 19, 23, 23, 29, 29, 29]);
+[location = 20, scale = sqrt(39)];
+
+mle_normal ([11, 13, 17, 19, 23, 29], [1, 2, 3, 1, 2, 3]);
+[location = 20, scale = sqrt(39)];
+
 killcontext (mycontext);
 done;
 
@@ -165,6 +174,15 @@ inf;
 
 ev (foo, q = 2/5);
 %e^(2/10*sqrt(2)*inverse_erf(-1/5)+22/10);
+
+mle_lognormal ([exp(17), exp(13), exp(11), exp(7), exp(5)]);
+[location = 53/5, scale = 2*sqrt(114)/5];
+
+mle_lognormal ([exp(17), exp(17), exp(17), exp(13), exp(11), exp(11), exp(7), exp(7), exp(7), exp(7), exp(5)]);
+[location = 119/11, scale = 2*sqrt(582)/11];
+
+mle_lognormal ([exp(17), exp(13), exp(11), exp(7), exp(5)], [3, 1, 2, 4, 1]/11);
+[location = 119/11, scale = 2*sqrt(582)/11];
 
 
 /* gamma distribution */
@@ -297,6 +315,24 @@ if equal(q, 0) then 0 elseif equal(q, 1) then inf else ((-log(1 - q))^(1/11))/7;
 
 ev (foo, q = 3/17);
 (-log(14/17))^(1/11)/7;
+
+/* I checked this result by applying lbfgs to the negative log likelihood */
+mle_weibull ([1, 19, 17, 23, 11, 43]);
+[shape = 1.305349878443785, scale = 20.35298540894298];
+
+/* Rescaling data should yield same shape and rescaled scale */
+mle_weibull ([1, 19, 17, 23, 11, 43]/10);
+[shape = 1.305349878443785, scale = 2.035298540894298];
+
+/* I checked this result by applying lbfgs to the negative log likelihood */
+mle_weibull ([1, 1, 1, 19, 19, 17, 23, 23, 23, 23, 11, 43]);
+[shape = 1.147500774671715, scale = 17.68225583330855];
+
+mle_weibull ([1, 19, 17, 23, 11, 43], [3, 2, 1, 4, 1, 1]/12);
+[shape = 1.147500774671715, scale = 17.68225583330855];
+
+mle_weibull (10*[1, 19, 17, 23, 11, 43], [3, 2, 1, 4, 1, 1]/12);
+[shape = 1.147500774671715, scale = 176.8225583330855];
 
 
 /* rayleigh distribution is based on weibull */
