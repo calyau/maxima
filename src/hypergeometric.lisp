@@ -99,7 +99,7 @@
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
-      (meval '(($declare) $hypergeometric $complex))))
+      (meval '(($declare) %hypergeometric $complex))))
 
 (setf (get '%hypergeometric 'conjugate-function) 'conjugate-hypergeometric)
 
@@ -321,7 +321,6 @@
       ;; Return a nounform.
       (t
        (give-up)))))
-
 
 ;; When x isn't a float, do 0F0([],[],x) --> exp(x).
 (defun hypergeometric-0f0 (x)
