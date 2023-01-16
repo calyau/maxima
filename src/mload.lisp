@@ -483,11 +483,7 @@
 			    (mgrind result error-log) (format error-log " */ ")
 			    (terpri error-log)
 			    (format error-log (intl:gettext "/* Expected result: */~%"))
-			    (mgrind next-result error-log)
-			    (format error-log ";~%~%"))))))
-	    (finish-output t)
-	    (when error-log
-	      (finish-output error-log))))
+			    (mgrind next-result error-log))))))))
       (close strm))
     (setq end-run-time (get-internal-run-time))
     (setq end-real-time (get-internal-real-time))
