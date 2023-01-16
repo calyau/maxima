@@ -287,11 +287,11 @@
      #+(or gcl abcl) ((mlist simp) 87 120)
      #-(or gcl abcl) ((mlist simp) 87))
     ((mlist simp) "rtest_sym"
-     #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 12 15 58 64)
+     #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 15 64)
      #+(or clisp gcl)  ((mlist simp) 15 64)
-     #+ecl ((mlist simp) 12 58 64)
+     #+ecl ((mlist simp) 64)
      #+sbcl ((mlist simp) 15 64)
-     #+cmucl ((mlist simp) 12 58 64))
+     #+cmucl ((mlist simp) 64))
     ((mlist simp) "rtest_nfloat"
      #-(or gcl)
      ((mlist simp) 25))
