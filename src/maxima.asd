@@ -472,15 +472,6 @@
 		 (:file "trigo") 
 		 (:file "trgred")))
 
-   (:module numerical-functions :pathname ""
-    :depends-on (globals defmfun trigonometry algebraic-database utility-macros compatibility-macros)
-    :components ((:file "bessel")
-		 (:file "ellipt")
-		 (:file "airy"
-		  :depends-on ("ellipt"))
-		 (:file "plasma")
-		 (:file "intpol")))
-
    (:module reader :pathname ""
     :depends-on (globals defmfun compatibility-macros)
     :components ((:file "nparse")))
@@ -504,6 +495,15 @@
 		 (:file "db") 
 		 (:file "compar") 
 		 (:file "askp")))	;does this belong here?
+   (:module numerical-functions :pathname ""
+    :depends-on (globals defmfun trigonometry algebraic-database utility-macros compatibility-macros)
+    :components ((:file "bessel")
+		 (:file "ellipt")
+		 (:file "airy"
+		  :depends-on ("ellipt"))
+		 (:file "plasma")
+		 (:file "intpol")))
+
    (:module integration :pathname ""
     :depends-on (globals defmfun compatibility-macros)
     :components ((:file "sinint") 
@@ -584,6 +584,9 @@
      (:file "invert")
      (:file "hypgeo")
      (:file "hyp")
+     (:file "nfloat")
+     (:file "hypergeometric")
+     (:file "nfloat")
      (:file "todd-coxeter")
      (:file "mactex")
      (:file "plot")))

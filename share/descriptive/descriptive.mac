@@ -367,10 +367,39 @@ discrete_freq_array (a) := block ([u],
 
 
 /* Arithmetic mean */
-mean(x) := block([listarith:true],
-   if listofexpr(x) or matrixp(x)
-      then apply("+", args(x)) / length(x)
-      else error("Input to 'mean' must be a list of expressions or a matrix"))$
+mean (x, [w]) :=
+    block ([listarith: true, sum_w, n],
+           n: length(x),
+           [w, sum_w]: if w = [] then [1, n] else [w[1], if listp (w[1]) then lsum (w1, w1, w[1]) else n*w[1]],
+           verify_weights ('mean, w, n),
+           if listp(x) or matrixp(x)
+               then block ([e: apply ("+", w * args(x)) / sum_w],
+                           ratsimp_nonnumeric (e))
+               else error("mean: first argument must be a list or matrix; found", x));
+
+verify_weights (fn, w, n) :=
+    block ([negative_weights],
+           if listp(w)
+               then (if length(w) # n
+                         then error (fn, ": expected", n, "weights, found", length(w))
+                     elseif length (negative_weights: sublist (w, lambda ([w1], w1 < 0))) > 0
+                         then error (fn, ": expected all weights nonnegative, found", negative_weights)
+                     elseif equal (lsum (w1, w1, w), 0)
+                         then error (fn, ": expected sum of weights to be positive, found 0"))
+               else (if not (numberp (w) and equal (w, 1))
+                         then error (fn, ": weight can only be 1, if not a list; found", w)));
+  
+/* We want to return algebraic results in a standard form,
+ * but avoid replacing floats and bigfloats with rationals.
+ * keepfloat preserves floats, but not bigfloats, therefore it's necessary
+ * to inspect element by element. This is kind of terrible.
+ */
+ratsimp_nonnumeric (e) :=
+    if numberp(e)
+        then e
+    elseif listp(e)
+        then map (ratsimp_nonnumeric, e)
+        else block ([keepfloat: true], ratsimp(e));
 
 
 /* Minimum value */
@@ -409,35 +438,50 @@ range(x):=block([t],
 
 
 /* Non central moment of order m */
-noncentral_moment(x,m) := block([listarith:true],
-   if listofexpr(x) or matrixp(x)
-      then apply("+", args(x)^m) / length(x)
-      else error("Input to 'noncentral_moment' must be a list of expressions or a matrix"))$
+noncentral_moment (x, m, [w]) :=
+    block ([listarith: true],
+           if matrixp(x) or listp(x)
+               then (if matrixp(x) then x: args(x),
+                     w: if w = [] then 1 else w[1],
+                     mean (map (lambda ([x1], x1^m), x), w))
+               else error ("noncentral_moment: first argument must be a list or matrix; found", x));
 
 
 /* Central moment of order m */
-central_moment(x,m):=block([n:length(x),listarith:true,me:mean(x)],
-   if matrixp(x)
-      then apply("+",makelist((x[i]-me)^m,i,1,n)) / n
-      else if listofexpr(x)
-           then apply("+",(x-me)^m) / n
-           else error("Input to 'central_moment' must be a list of expressions or a matrix"))$
+central_moment (x, m, [w]) :=
+    block ([listarith: true, mean_x],
+           if matrixp(x) or listp(x)
+               then (if matrixp(x) then x: args(x),
+                     w: if w = [] then 1 else w[1],
+                     mean_x: mean (x, w),
+                     mean (map (lambda ([x1], (x1 - mean_x)^m), x), w))
+               else error ("central_moment: first argument must be a list or matrix; found", x));
 
 
 /* Maximum likelihood estimator of variance */
-var(x):=central_moment(x,2)$
+var (x, [w]):=
+   (w: if w = [] then 1 else w[1],
+    central_moment (x, 2, w))$
 
 
 /* Standard deviation as the root square of var */
-std(x):=block([listarith:true],sqrt(var(x)))$
+std (x, [w]) :=
+   (w: if w = [] then 1 else w[1],
+    sqrt (var (x, w)));
 
 
 /* Unbiased estimator of variance (divided by n-1) */
-var1(x):=block([n:length(x),listarith:true],var(x)*n/(n-1))$
+var1 (x, [w]):=
+    block ([n: length(x),
+           w: if w = [] then 1 else w[1]],
+           var(x, w) * n/(n - 1));
 
 
 /* Standard deviation as the root square of var1 */
-std1(x):=block([listarith:true],sqrt(var1(x)))$
+std1 (x, [w]) :=
+    block ([listarith: true],
+           w: if w = [] then 1 else w[1],
+           sqrt (var1 (x, w)))$
 
 
 /* Median */

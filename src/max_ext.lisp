@@ -388,9 +388,8 @@
 
 (setf (get '$scene 'autoload) "visualization")
 
-;;(defprop $hypergeometric simp-hypergeometric operators)
-;;(autof 'simp-%hypergeometric "hypergeometric")
-(autof '$hypergeometric "hypergeometric")
+($auto_mexpr '$abramowitz_id "abramowitz_id")
+($auto_mexpr '$hypergeometric_simp "hypergeometric_mac")
 
 (dolist (f
   '($cl_eval
