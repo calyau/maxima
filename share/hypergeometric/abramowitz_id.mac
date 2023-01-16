@@ -25,7 +25,7 @@ abramowitz_id(e, [l]) := block([sublis_apply_lambda : true, x, str],
 
 function_identity[otherwise]:= false;
 
-/* See, for example, http://www.math.ucla.edu/~cbm/aands/page_559.htm */
+/* See, for example, https://personal.math.ubc.ca/~cbm/aands/page_559.htm */
 
 function_identity["15.3.3"] : 'hypergeometric = lambda([p,q,x], block([a,b,c,f,success],
     f : funmake('hypergeometric, [p,q,x]),

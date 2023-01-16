@@ -30,59 +30,35 @@
 (in-package :maxima)
 (macsyma-module partpol)
 
-(mdefprop $tpartpol
-    ((lambda ()) ((mlist) $mpol $lvar)
-     ((mprog) (($operation)) (($tpartpol_init) $mpol $lvar)))
-    mexpr)
-(add2lnc '(($tpartpol) $mpol $lvar) $functions)
+(meval '((mdefine) (($tpartpol) $mpol $lvar)
+                   ((mprog) (($operation)) (($tpartpol_init) $mpol $lvar))))
 
-(mdefprop $p_tpartpol
-    ((lambda ()) ((mlist) $mpol $lvar)
-     ((mprog) (($operation)) (($p_tpartpol_init) $mpol $lvar)))
-    mexpr)
-(add2lnc '(($p_tpartpol) $mpol $lvar) $functions)
+(meval '((mdefine) (($p_tpartpol) $mpol $lvar)
+                   ((mprog) (($operation)) (($p_tpartpol_init) $mpol $lvar))))
 
 ; Passage d'un polynome symetrique sous la forme rat a ses partitions
-(mdefprop $partpol
-    ((lambda ()) ((mlist) $pol $lvar)
-     ((mprog) (($operation)) (($partpol_init) $pol $lvar)))
-    mexpr)
-(add2lnc '(($partpol) $pol $lvar) $functions)
+(meval '((mdefine) (($partpol) $pol $lvar)
+                   ((mprog) (($operation)) (($partpol_init) $pol $lvar))))
 
 ; CONTRACTION D'UN POLYNOME SYMETRIQUE
 
-(mdefprop $tcontract
-    ((lambda ()) ((mlist) $psym $lvar)
-     ((mprog) (($operation)) (($tcontract_init) $psym $lvar)))
-   mexpr)
-(add2lnc '(($tcontract) $psym $lvar) $functions)
+(meval '((mdefine) (($tcontract) $psym $lvar)
+                   ((mprog) (($operation)) (($tcontract_init) $psym $lvar))))
 
-(mdefprop $contract
-    ((lambda ()) ((mlist) $psym $lvar)
-     ((mprog) (($operation)) (($contract_init) $psym $lvar)))
-    mexpr)
-(add2lnc '(($contract) $psym $lvar) $functions)
+(meval '((mdefine) (($contract) $psym $lvar)
+                   ((mprog) (($operation)) (($contract_init) $psym $lvar))))
 
 ; PASSAGE D'UN POLYNOME SYMETRIQUE CONTRACTE A LA LISTE
 ; ET INVERSEMENT
 
-(mdefprop $cont2part
-    ((lambda ()) ((mlist) $pcont $lvar)
-     ((mprog) (($operation)) (($cont2part_init) $pcont $lvar)))
-    mexpr)
-(add2lnc '(($cont2part) $pcont $lvar) $functions)
+(meval '((mdefine) (($cont2part) $pcont $lvar)
+                   ((mprog) (($operation)) (($cont2part_init) $pcont $lvar))))
 
-(mdefprop $part2cont
-    ((lambda ()) ((mlist) $ppart $lvar)
-     ((mprog) (($operation)) (($part2cont_init) $ppart $lvar)))
-    mexpr)
-(add2lnc '(($part2cont) $ppart $lvar) $functions)
+(meval '((mdefine) (($part2cont) $ppart $lvar)
+                   ((mprog) (($operation)) (($part2cont_init) $ppart $lvar))))
 
-(mdefprop $explose
-    ((lambda ()) ((mlist) $pc $lvar)
-     ((mprog) (($operation)) (($explose_init) $pc $lvar)))
-   mexpr)
-(add2lnc '(($explose) $pc $lvar) $functions)
+(meval '((mdefine) (($explose) $pc $lvar)
+                   ((mprog) (($operation)) (($explose_init) $pc $lvar))))
 ;*****************************************************************************
 
 
