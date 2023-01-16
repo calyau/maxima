@@ -1380,12 +1380,10 @@
      (setq degree (cadr expr) *nn* (1+ degree))
      (setq *pr-sl* (make-array *nn* :initial-element (intofp 0)))
      (setq *pi-sl* (make-array *nn* :initial-element (intofp 0)))
-     (format t "expr1 = ~A~%" expr1)
      (or (catch 'notpoly
 	   (errset (do ((expr (cdr expr) (cddr expr)) (l) (%i (cadr res)))
 		       ((null expr))
 		     (setq l (- degree (car expr)) res (cadr expr))
-		     (format t "res = ~A~%" res)
 		     (cond ((numberp res)
 			    (setf (aref *pr-sl* l) (cdr ($bfloat res))))
 			   (t
@@ -1398,10 +1396,6 @@
 			    (setq complex t))))))
 	 ;; This should catch expressions like sin(x)-x
 	 (bf-cpoly-err expr1))
-    (format t "bfallroots: *pr-sl* =~%")
-    (map 'list #'(lambda (x)
-		   (displa (bcons x)))
-	 *pr-sl*)
      (setq *shr-sl* (make-array *nn* :initial-element (intofp 0)))
      (setq *shi-sl* (make-array *nn* :initial-element (intofp 0)))
      (setq *qpr-sl* (make-array *nn* :initial-element (intofp 0)))
@@ -1501,10 +1495,6 @@
 	(*polysc1* 0)
 	(zerok 0)
 	(conv1 t))
-    (format t "*pr-sl* =~%")
-    (map 'list #'(lambda (x)
-		   (displa (bcons x)))
-	 *pr-sl*)
     (setq *mre* *are*
 	  yy (fpminus xx))
     (do ((i degree (1- i)))
@@ -2004,9 +1994,6 @@
 	   (setq *lzr* (fpminus (fpquotient b1 a0))))
 	  (t
 	   (setq b0 (fpquotient b1 (intofp 2)))
-	   (maxima::displa (bcons a0))
-	   (maxima::displa (bcons b0))
-	   (maxima::displa (bcons c0))
 	   (cond ((not (fpgreaterp (fpabs b0) (fpabs c0)))
 		  (setq *e* a0)
 		  (and (not (fpgreaterp c0 (intofp 0)))
