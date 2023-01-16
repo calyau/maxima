@@ -9,8 +9,11 @@
 
 (in-package :maxima)
 
+#+nil
 (if (not (mget '$hypergeometric_simp 'mexpr)) ($load "hypergeometric_mac.mac"))
+#+nil
 (if (not (mget '$abramowitz_id 'mexpr)) ($load "abramowitz_id.mac"))
+#+nil
 (if (not (functionp 'simp-nfloat)) ($load "nfloat"))
 
 ;; mea culpa---for numerical evaluation of the hypergeometric functions, the
