@@ -507,7 +507,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 	(setq ff  `((maxima::%hypergeometric maxima::simp)
 		    ((maxima::mlist maxima::simp) ,ma ,mb) 
 		    ((maxima::mlist maxima::simp) ,mc) maxima::z))
-	;;#+nil
+	#+nil
 	(progn
 	  (format t "ff = ~A~%" ff)
 	  (format t "d = ~A~%" d)
@@ -517,16 +517,19 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 	  (setq f (if (equal region "none")
 		      `((maxima::multiple_values) ,ff t)
 		      (maxima::mfuncall 'maxima::$abramowitz_id ff region)))
+	  #+nil
 	  (format t "f = ~A~%" f)
 	  (if (maxima::$second f)
 	      (setq d nil f (maxima::$first f)) (setq region (first (pop d)))))
 
+	#+nil
 	(progn
 	  (maxima::displa f)
 	  (maxima::displa `((maxima::mequal) maxima::z ,mx)))
 	(setq f (multiple-value-list
 		 (maxima::nfloat f `((maxima::mlist) ((maxima::mequal) maxima::z ,mx)) 
 				 digits maxima::$max_fpprec)))
+	#+nil
 	(progn
 	  (format t "f = ~A~%" f)
 	  (format t "first f = ~A~%" (first f))
