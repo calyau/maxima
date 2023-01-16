@@ -347,13 +347,21 @@
 	      (take '(%hypergeometric) (take '(mlist) (sub b a)) (take '(mlist) b) (neg x))))
 	(t nil)))
 
+;; Convert x to a float; if float fails (say overflow), convert to a
+;; big float.
+(defun safe-float (x)
+  (handler-case
+      ($float x)
+    (error ()
+      ($bfloat x))))
+
 ;; Coerce x to the number type of z. The Maxima function safe_float returns a bigfloat when
 ;; conversion to a float fails (overflow, for example).
 (defun number-coerce (x z)
   (cond ((complex-number-p z '$bfloatp)
 	 ($bfloat x))
 	((complex-number-p z 'floatp)
-	 (mfuncall '$safe_float x))
+	 (safe-float x))
 	(t x)))
 
 ;; 2F1(a,b;c, x) -->  gamma(c) gamma(c - a - b) / (gamma(c-a) gamma (c-b)) 

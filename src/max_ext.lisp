@@ -389,7 +389,6 @@
 (setf (get '$scene 'autoload) "visualization")
 
 ($auto_mexpr '$abramowitz_id "abramowitz_id")
-($auto_mexpr '$hypergeometric_simp "hypergeometric_mac")
 
 (dolist (f
   '($cl_eval
