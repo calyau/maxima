@@ -914,10 +914,10 @@
        (sub (ftake '%gamma a)
 	    (mul (power z a)
 		 (div 1 a)
-		 ($hypergeometric
-		  (make-mlist a)
-		  (make-mlist (add 1 a))
-		  (neg z)))))
+		 (ftake '%hypergeometric
+			(make-mlist a)
+			(make-mlist (add 1 a))
+			(neg z)))))
       (t (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2102,9 +2102,10 @@
   (mul 2
        z
        (power '$%pi '((rat simp) -1 2))
-       ($hypergeometric (make-mlist 1//2)
-			(make-mlist 3//2)
-			(mul -1 (power z 2)))))
+       (ftake '%hypergeometric
+	      (make-mlist 1//2)
+	      (make-mlist 3//2)
+	      (mul -1 (power z 2)))))
 
 ;;; erf is a simplifying function
 
@@ -3170,10 +3171,10 @@
 
     ($hypergeometric_representation
       (mul (div (mul '$%pi (power z 3)) 6)
-           ($hypergeometric
-            (list '(mlist) (div 3 4))
-            (list '(mlist) (div 3 2) (div 7 4))
-            (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+           (ftake '%hypergeometric
+		  (list '(mlist) (div 3 4))
+		  (list '(mlist) (div 3 2) (div 7 4))
+		  (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
      (give-up))))
@@ -3273,10 +3274,10 @@
 
     ($hypergeometric_representation
       (mul z
-           ($hypergeometric
-            (list '(mlist) (div 1 4))
-            (list '(mlist) (div 1 2) (div 5 4))
-            (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+           (ftake '%hypergeometric
+		  (list '(mlist) (div 1 4))
+		  (list '(mlist) (div 1 2) (div 5 4))
+		  (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
 o      (give-up))))
@@ -3559,10 +3560,10 @@ o      (give-up))))
        ;; We need to handle more cases here
        (mul (div (power z a)
 		 a)
-	    ($hypergeometric
-	     (make-mlist a (sub 1 b))
-	     (make-mlist (add 1 a))
-	     z)))
+	    (ftake '%hypergeometric
+		   (make-mlist a (sub 1 b))
+		   (make-mlist (add 1 a))
+		   z)))
        
       (t
        (give-up)))))
