@@ -9,7 +9,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Functions for Numbers, Functions for Complex Numbers
+@node Functions for Numbers, Functions for Complex Numbers, Mathematical Functions, Mathematical Functions
 @section Functions for Numbers
 @c -----------------------------------------------------------------------------
 
@@ -610,7 +610,7 @@ See @mrefdot{distribute_over}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers
+@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers, Mathematical Functions
 @section Functions for Complex Numbers
 @c -----------------------------------------------------------------------------
 
@@ -1070,7 +1070,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers
+@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers, Mathematical Functions
 @section Combinatorial Functions
 @c -----------------------------------------------------------------------------
 
@@ -1498,7 +1498,7 @@ When @code{sumsplitfact} is @code{false},
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions
+@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions, Mathematical Functions
 @section Root, Exponential and Logarithmic Functions
 @c -----------------------------------------------------------------------------
 
@@ -2142,7 +2142,7 @@ The square root of @var{x}.  It is represented internally by
 
 @c -----------------------------------------------------------------------------
 @page
-@node Trigonometric Functions, Random Numbers, Root Exponential and Logarithmic Functions
+@node Trigonometric Functions, Random Numbers, Root Exponential and Logarithmic Functions, Mathematical Functions
 @section Trigonometric Functions
 @c -----------------------------------------------------------------------------
 
@@ -2181,7 +2181,7 @@ for details.
 @subsection Functions and Variables for Trigonometric
 @c -----------------------------------------------------------------------------
 
-@node Trigonometric and Hyperbolic Functions, Options Controlling Simplification, Functions and Variables for Trigonometric, Functions and Variables for Trigonometric
+@node Trigonometric and Hyperbolic Functions
 @subsubsection Trigonometric and Hyperbolic Functions
 
 @c -----------------------------------------------------------------------------
@@ -2466,7 +2466,7 @@ See also @mref{atan}.
 @end deffn
 
 
-@node Options Controlling Simplification, Explicit Simplifications USING Identities, Trigonometric and Hyperbolic Functions, Functions and Variables for Trigonometric
+@node Options Controlling Simplification
 @subsubsection Options Controlling Simplification
 @c -----------------------------------------------------------------------------
 @anchor{%piargs}
@@ -2745,8 +2745,8 @@ become m4_math(-\sin x, @code{-sin(x)}) only if @code{trigsign} is @code{true}.
 @end defvr
 
 
-@node Explicit Simplifications USING Identities, Additional Functions, Options Controlling Simplification, Functions and Variables for Trigonometric
-@subsubsection Explicit Simplifications USING Identities
+@node Explicit Simplifications Using Identities, Additional Functions, Options Controlling Simplification, Functions and Variables for Trigonometric
+@subsubsection Explicit Simplifications Using Identities
 @c NEEDS CLARIFICATION AND EXAMPLES
 
 @c -----------------------------------------------------------------------------
@@ -3047,7 +3047,7 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end deffn
 
 
-@node Additional Functions,  , Explicit Simplifications USING Identities, Functions and Variables for Trigonometric
+@node Additional Functions
 @subsubsection Additional Functions
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
@@ -3089,7 +3089,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 @c -----------------------------------------------------------------------------
 @page
-@node Random Numbers,  , Trigonometric Functions
+@node Random Numbers, , Trigonometric Functions, Mathematical Functions
 @section Random Numbers
 @c -----------------------------------------------------------------------------
 
