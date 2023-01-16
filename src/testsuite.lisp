@@ -147,7 +147,14 @@
                          94 96 98 102 104 106 108 111
                          124 125 126 127 132 133 135 136 137))
         "rtest_gcd"
-          ))
+	;; The tests that failed with abcl 1.5.0
+	((mlist simp) "rtest_hg"
+	 #+(or gcl abcl) ((mlist simp) 87 120)
+	 #-(or gcl abcl) ((mlist simp) 87))
+	((mlist simp) "rtest_nfloat"
+	 #-(or gcl)
+	 ((mlist simp) 25))
+        ))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima
@@ -282,19 +289,12 @@
      ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322)
      #+ccl
      ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322))
-    ;; The tests that failed with abcl 1.5.0
-    ((mlist simp) "rtest_hg"
-     #+(or gcl abcl) ((mlist simp) 87 120)
-     #-(or gcl abcl) ((mlist simp) 87))
     ((mlist simp) "rtest_sym"
      #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 12 15 58 64)
      #+(or clisp gcl)  ((mlist simp) 15 64)
      #+ecl ((mlist simp) 12 58 64)
      #+sbcl ((mlist simp) 15 64)
      #+cmucl ((mlist simp) 12 58 64))
-    ((mlist simp) "rtest_nfloat"
-     #-(or gcl)
-     ((mlist simp) 25))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
     ((mlist simp) "rtest_vect"
