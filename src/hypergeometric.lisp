@@ -9,13 +9,6 @@
 
 (in-package :maxima)
 
-#+nil
-(if (not (mget '$hypergeometric_simp 'mexpr)) ($load "hypergeometric_mac.mac"))
-#+nil
-(if (not (mget '$abramowitz_id 'mexpr)) ($load "abramowitz_id.mac"))
-#+nil
-(if (not (functionp 'simp-nfloat)) ($load "nfloat"))
-
 ;; mea culpa---for numerical evaluation of the hypergeometric functions, the
 ;; method uses a running error. When the error is too large, the value of fpprec
 ;; is increased and the evaluation is redone with the larger value of fpprec. 
