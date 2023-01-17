@@ -26,7 +26,7 @@ trigonometric expessions. List of functions in trigtools package:
 @item atan contract
 @end itemize
 
-@node Functions and Variables for trigtools,  , Introduction to trigtools
+@node Functions and Variables for trigtools, References, Introduction to trigtools
 @section Functions and Variables for trigtools
 
 @menu
@@ -482,12 +482,236 @@ Answer:
 m4_math(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>), where @math{a} any from @math{S}, @math{k} any integer.
 
 @end deffn
-@node trigvalue, trigeval, trigsolve, Functions and Variables for trigtools
-@subsection trigvalue
+@node trigvalue, atan_contract, trigsolve, Functions and Variables for trigtools
+@subsection trigvalue and trigeval
 
-@node trigeval, atan_contract, trigvalue, Functions and Variables for trigtools
-@subsection trigeval
+@deffn {Function} trigvalue (@var{x})
+The function trigvalue compute values of m4_mathcomma(<<<\sin
+{m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\cos
+{m\pi\over n}>>>, <<<cos(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\tan
+{m\pi\over n}>>>, <<<tan(m*%pi/n)>>>)@w{} and m4_math(<<<\cot
+{m\pi\over n}>>>, <<<cot(m*%pi/n)>>>) in radicals.
+@end deffn
 
-@node atan_contract,  , trigeval, Functions and Variables for trigtools
+@deffn {Function} trigeval (@var{x})
+The function trigeval compute values of expressions with m4_mathcomma(<<<\sin
+{m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\cos
+{m\pi\over n}>>>, <<<cos(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\tan
+{m\pi\over n}>>>, <<<tan(m*%pi/n)>>>)@w{} and m4_math(<<<\cot
+{m\pi\over n}>>>, <<<cot(m*%pi/n)>>>) in radicals.
+@end deffn
+
+Examples:
+
+1 Values of trignometric functions
+@example
+(%i1) load(trigtools)$
+(%i2) trigvalue(sin(%pi/10));
+                                  sqrt(5) - 1
+(%o2)                             -----------
+                                       4
+(%i3) trigvalue(cos(%pi/10));
+                               sqrt(sqrt(5) + 5)
+(%o3)                          -----------------
+                                      3/2
+                                     2
+(%i4) trigvalue(tan(%pi/10));
+                              sqrt(5 - 2 sqrt(5))
+(%o4)                         -------------------
+                                    sqrt(5)
+(%i5) float(%), numer;
+(%o5)                         0.3249196962329063
+(%i6) float(tan(%pi/10)), numer;
+(%o6)                         0.3249196962329063
+(%i7) trigvalue(cot(%pi/10));
+(%o7)                         sqrt(2 sqrt(5) + 5)
+(%i8) float(%), numer;
+(%o8)                          3.077683537175254
+(%i9) float(cot(%pi/10)), numer;
+(%o9)                          3.077683537175254
+(%i10) trigvalue(sin(%pi/32));
+                     sqrt(2 - sqrt(sqrt(sqrt(2) + 2) + 2))
+(%o10)               -------------------------------------
+                                       2
+(%i11) trigvalue(cos(%pi/32));
+                     sqrt(sqrt(sqrt(sqrt(2) + 2) + 2) + 2)
+(%o11)               -------------------------------------
+                                       2
+(%i12) trigvalue(cos(%pi/256));
+       sqrt(sqrt(sqrt(sqrt(sqrt(sqrt(sqrt(2) + 2) + 2) + 2) + 2) + 2) + 2)
+(%o12) -------------------------------------------------------------------
+                                        2
+(%i13) trigvalue(cos(%pi/60));
+        sqrt(sqrt(sqrt(2) sqrt(3) sqrt(sqrt(5) + 5) + sqrt(5) + 7) + 4)
+(%o13)  ---------------------------------------------------------------
+                                      3/2
+                                     2
+(%i14) trigvalue(sin(%pi/60));
+        sqrt(4 - sqrt(sqrt(2) sqrt(3) sqrt(sqrt(5) + 5) + sqrt(5) + 7))
+(%o14)  ---------------------------------------------------------------
+                                      3/2
+                                     2
+(%i15) trigvalue(sin(%pi/18));
+                                       %pi
+(%o15)                             sin(---)
+                                       18
+(%i16) trigvalue(sin(%pi/20));
+                      sqrt(4 - sqrt(2) sqrt(sqrt(5) + 5))
+(%o16)                -----------------------------------
+                                      3/2
+                                     2
+@end example
+
+2 ode example
+@example
+(%i17) load(odes)$
+(%i18) eq:'diff(y,x,5)+2*y=0;
+                                  5
+                                 d y
+(%o18)                           --- + 2 y = 0
+                                   5
+                                 dx
+(%i19) odeL(eq,y,x);
+                   1/5     4 %pi
+                - 2    cos(-----) x
+                             5           1/5     4 %pi
+(%o19) y = C5 %e                    sin(2    sin(-----) x)
+                                                   5
+           1/5     4 %pi
+        - 2    cos(-----) x
+                     5           1/5     4 %pi
+ + C4 %e                    cos(2    sin(-----) x)
+                                           5
+           1/5     2 %pi
+        - 2    cos(-----) x
+                     5           1/5     2 %pi
+ + C3 %e                    sin(2    sin(-----) x)
+                                           5
+           1/5     2 %pi
+        - 2    cos(-----) x                                  1/5
+                     5           1/5     2 %pi            - 2    x
+ + C2 %e                    cos(2    sin(-----) x) + C1 %e
+                                           5
+(%i20) sol:trigeval(%);
+                  (sqrt(5) - 1) x
+                - ---------------
+                        9/5
+                       2              sqrt(sqrt(5) + 5) x
+(%o20) y = C3 %e                  sin(-------------------)
+                                             13/10
+                                            2
+          (sqrt(5) - 1) x
+        - ---------------
+                9/5
+               2              sqrt(sqrt(5) + 5) x
+ + C2 %e                  cos(-------------------)
+                                     13/10
+                                    2
+        (sqrt(5) + 1) x
+        ---------------
+              9/5
+             2              sqrt(5 - sqrt(5)) x
+ + C5 %e                sin(-------------------)
+                                   13/10
+                                  2
+        (sqrt(5) + 1) x
+        ---------------
+              9/5                                          1/5
+             2              sqrt(5 - sqrt(5)) x         - 2    x
+ + C4 %e                cos(-------------------) + C1 %e
+                                   13/10
+                                  2
+(%i21) subst(sol,eq)$
+(%i22) ev(%, nouns)$
+(%i23) radcan(%);
+(%o23)                               0 = 0
+@end example
+
+3 n-th root of complex number
+
+Example. Find the 4-th roots of %i
+@example
+(%i24) solve(x^4=%i,x);
+                 1/8                1/8             1/8              1/8
+(%o24) [x = (- 1)    %i, x = - (- 1)   , x = - (- 1)    %i, x = (- 1)   ]
+(%i25) rectform(%);
+                   %pi        %pi                 %pi         %pi
+(%o25) [x = %i cos(---) - sin(---), x = (- %i sin(---)) - cos(---), 
+                    8          8                   8           8
+                                %pi           %pi              %pi        %pi
+                        x = sin(---) - %i cos(---), x = %i sin(---) + cos(---)]
+                                 8             8                8          8
+(%i26) trigeval(%);
+            sqrt(sqrt(2) + 2) %i   sqrt(2 - sqrt(2))
+(%o26) [x = -------------------- - -----------------, 
+                     2                     2
+       sqrt(2 - sqrt(2)) %i    sqrt(sqrt(2) + 2)
+x = (- --------------------) - -----------------, 
+                2                      2
+    sqrt(2 - sqrt(2))   sqrt(sqrt(2) + 2) %i
+x = ----------------- - --------------------, 
+            2                    2
+    sqrt(2 - sqrt(2)) %i   sqrt(sqrt(2) + 2)
+x = -------------------- + -----------------]
+             2                     2
+@end example
+
+@node atan_contract,  , trigvalue, Functions and Variables for trigtools
 @subsection atan_contract
+
+The function atan_contract(r) contracts atan functions. We
+assume: m4_mathdot(<<<|r| < {\pi\over 2}>>>, <<<abs(r)<%pi/2>>>)
+
+Examples:
+@example
+(%i1) load(trigtools)$
+@end example
+
+1.
+@example
+(%i2) atan_contract(atan(x)+atan(y));
+(%o2)                          atan(y) + atan(x)
+(%i3) assume(abs(atan(x)+atan(y))<%pi/2)$
+(%i4) atan(x)+atan(y)=atan_contract(atan(x)+atan(y));
+                                                 y + x
+(%o4)                  atan(y) + atan(x) = atan(-------)
+                                                1 - x y
+@end example
+
+2.
+@example
+(%i5) atan(1/3)+atan(1/5)+atan(1/7)+atan(1/8)$ %=atan_contract(%);
+                       1         1         1         1    %pi
+(%o6)             atan(-) + atan(-) + atan(-) + atan(-) = ---
+                       3         5         7         8     4
+@end example
+
+3.
+
+Machin's formulae
+@example
+(%i7) 4*atan(1/5)-atan(1/239)=atan_contract(4*atan(1/5)-atan(1/239));
+                                 1          1     %pi
+(%o7)                     4 atan(-) - atan(---) = ---
+                                 5         239     4
+@end example
+
+4.
+
+see @url{http://en.wikipedia.org/wiki/Machin-like_formula}
+@example
+(%i8) 12*atan(1/49)+32*atan(1/57)-5*atan(1/239)+12*atan(1/110443)$
+%=atan_contract(%);
+                1             1             1               1       %pi
+(%o9)   12 atan(--) + 32 atan(--) - 5 atan(---) + 12 atan(------) = ---
+                49            57           239            110443     4
+@end example
+
+@node References,  , Functions and Variables for trigtools
+@section References
+
+@enumerate
+@item @url{http://maxima.sourceforge.net}
+@end enumerate
+
 
