@@ -125,7 +125,7 @@ or m4_mathcomma(<<<x_1 = \tan^{-1}{3\over 4} + \cos^{-1}{2\over 5}>>>,
 @node c2trig, c2hyp, c2sin and c2cos, Functions and Variables for trigtools
 @subsection c2trig
 
-@deffn {Function} c2trig
+@deffn {Function} c2trig (@var{x})
 The function c2trig (convert to trigonometric) reduce expression with hyperbolic functions
 sinh, cosh, tanh, coth to trigonometric expression with sin, cos, tan, cot.
 
@@ -205,12 +205,283 @@ coth(x)=c2trig(coth(x));
 @node c2hyp, trigfactor, c2trig, Functions and Variables for trigtools
 @subsection c2hyp
 
+@deffn {Function} c2hyp (@var{x})
+The function c2hyp (convert to hyperbolic) convert expression with exp function
+to expression with hyperbolic functions sinh, cosh.
+
+Examples:
+
+@example
+(%i6) c2hyp(exp(x));
+(%o6)                         sinh(x) + cosh(x)
+(%i7) c2hyp(exp(x)+exp(x^2)+1);
+                       2          2
+(%o7)            sinh(x ) + cosh(x ) + sinh(x) + cosh(x) + 1
+(%i8) c2hyp(exp(x)/(2*exp(y)-3*exp(z)));
+                              sinh(x) + cosh(x)
+(%o8)           ---------------------------------------------
+                2 (sinh(y) + cosh(y)) - 3 (sinh(z) + cosh(z))
+@end example
+
+@end deffn
+
 @node trigfactor, trigsolve, c2hyp, Functions and Variables for trigtools
 @subsection trigfactor
+
+@deffn {Function} trigfactor (@var{x})
+The function trigfactor factors expresions of
+form m4_mathdot(<<<\pm \sin x \pm \cos y>>>, <<<+-sin(x)+-cos(y)>>>)
+
+Examples:
+
+1.
+@example
+(%i2) trigfactor(sin(x)+cos(x));
+                                            %pi
+(%o2)                       sqrt(2) cos(x - ---)
+                                             4
+(%i3) trigrat(%);
+(%o3)                          sin(x) + cos(x)
+@end example
+
+2.
+@example
+(%i4) trigfactor(sin(x)+cos(y));
+                           y   x   %pi      y   x   %pi
+(%o4)                2 cos(- - - + ---) cos(- + - - ---)
+                           2   2    4       2   2    4
+(%i5) trigrat(%);
+(%o5)                          cos(y) + sin(x)
+@end example
+
+3.
+@example
+(%i6) trigfactor(sin(x)-cos(3*y));
+                         3 y   x   %pi      3 y   x   %pi
+(%o6)              2 sin(--- - - + ---) sin(--- + - - ---)
+                          2    2    4        2    2    4
+(%i7) trigrat(%);
+(%o7)                         sin(x) - cos(3 y)
+@end example
+
+4.
+@example
+(%i8) trigfactor(-sin(5*x)-cos(3*y));
+                        3 y   5 x   %pi      3 y   5 x   %pi
+(%o8)           - 2 cos(--- - --- + ---) cos(--- + --- - ---)
+                         2     2     4        2     2     4
+(%i9) trigrat(%);
+(%o9)                      (- cos(3 y)) - sin(5 x)
+@end example
+
+5.
+@example 
+(%i10) sin(alpha)+sin(beta)=trigfactor(sin(alpha)+sin(beta));
+                                       beta   alpha      beta   alpha
+(%o10)  sin(beta) + sin(alpha) = 2 cos(---- - -----) sin(---- + -----)
+                                        2       2         2       2
+(%i11) trigrat(%);
+(%o78)          sin(beta) + sin(alpha) = sin(beta) + sin(alpha)
+@end example
+
+6.
+@example
+(%i12) sin(alpha)-sin(beta)=trigfactor(sin(alpha)-sin(beta));
+                                        beta   alpha      beta   alpha
+(%o12) sin(alpha) - sin(beta) = - 2 sin(---- - -----) cos(---- + -----)
+                                         2       2         2       2
+@end example
+
+7.
+@example
+(%i13) cos(alpha)+cos(beta)=trigfactor(cos(alpha)+cos(beta));
+                                       beta   alpha      beta   alpha
+(%o80)  cos(beta) + cos(alpha) = 2 cos(---- - -----) cos(---- + -----)
+                                        2       2         2       2
+@end example
+
+8.
+@example
+(%i14) cos(alpha)-cos(beta)=trigfactor(cos(alpha)-cos(beta));
+                                       beta   alpha      beta   alpha
+(%o14)  cos(alpha) - cos(beta) = 2 sin(---- - -----) sin(---- + -----)
+                                        2       2         2       2
+@end example
+
+9.
+@example
+(%i15) trigfactor(3*sin(x)+7*cos(x));
+(%o15)                        3 sin(x) + 7 cos(x)
+(%i16) c2sin(%);
+                                                 7
+(%o16)                     sqrt(58) sin(x + atan(-))
+                                                 3
+(%i17) trigexpand(%),expand;
+(%o17)                        3 sin(x) + 7 cos(x)
+@end example
+
+10.
+@example
+(%i18) trigfactor(sin(2*x));
+(%o18)                             sin(2 x)
+(%i19) trigexpand(%);
+(%o19)                          2 cos(x) sin(x)
+@end example
+
+@end deffn
 
 @node trigsolve, trigvalue, trigfactor, Functions and Variables for trigtools
 @subsection trigsolve
 
+@deffn {Function} trigsolve (@var{x})
+The function trigsolve find solutions of trigonometric equation from
+interval m4_math(<<<[a,b)>>>, <<<[a, b)>>>).
+
+Examples:
+1.
+@example
+(%i38) eq:eq:3*sin(x)+4*cos(x)=2;
+(%o38)                      3 sin(x) + 4 cos(x) = 2
+
+(%i39) wxplot2d([3*sin(x)+4*cos(x),2],[x,-%pi,%pi]);
+(%t39)
+(%o39)
+(%i40) sol:trigsolve(eq,-%pi,%pi);
+                  2 sqrt(21)   12              2 sqrt(21)   12
+(%o40)      @{atan(---------- - --), %pi - atan(---------- + --)@}
+                      5        5                   5        5
+(%i41) float(%), numer;
+(%o41)            @{- 0.5157783719341241, 1.802780589520693@}
+@end example
+
+Answ. : m4_math(<<<x = \tan^{-1}\left({2\sqrt{21}\over 5} - {12\over
+5}\right) + 2\pi k>>>, <<<x = atan((2*sqrt(21))/5-12/5)+2*%pi*k>>>);@w{}
+m4_mathcomma(<<<x = \pi - \tan^{-1}\left({2\sqrt{21}\over 5} + {12\over 5}\right) + 2\pi k>>>, <<<x=%pi-atan((2*sqrt(21))/5+12/5)+2*%pi*k>>>) @math{k} -- any integer.
+
+2.
+@example
+(%i6) eq:cos(3*x)-sin(x)=sqrt(3)*(cos(x)-sin(3*x));
+(%o6)         cos(3 x) - sin(x) = sqrt(3) (cos(x) - sin(3 x))
+@end example
+
+We have 6 solutions from [0, 2*pi].
+@example
+(%i10) trigfactor(lhs(eq))=map(trigfactor,rhs(eq));
+                   %pi            %pi                      %pi            %pi
+(%o15) - 2 sin(x + ---) sin(2 x - ---) = 2 sqrt(3) sin(x - ---) sin(2 x - ---)
+                    4              4                        4              4
+(%i11) factor(lhs(%)-rhs(%));
+                 4 x + %pi                4 x - %pi       8 x - %pi
+(%o11)  - 2 (sin(---------) + sqrt(3) sin(---------)) sin(---------)
+                     4                        4               4
+@end example
+
+Equation is equivalent to
+@example
+(%i12) L:factor(rhs(%)-lhs(%));
+                4 x + %pi                4 x - %pi       8 x - %pi
+(%o12)   2 (sin(---------) + sqrt(3) sin(---------)) sin(---------)
+                    4                        4               4
+(%i13) eq1:part(L,2)=0;
+                     4 x + %pi                4 x - %pi
+(%o13)           sin(---------) + sqrt(3) sin(---------) = 0
+                         4                        4
+(%i14) eq2:part(L,3)=0;
+                                 8 x - %pi
+(%o14)                       sin(---------) = 0
+                                     4
+(%i15) S1:trigsolve(eq1,0,2*%pi);
+                                 %pi  13 %pi
+(%o15)                         @{---, ------@}
+                                 12     12
+(%i16) S2:trigsolve(eq2,0,2*%pi);
+                           %pi  5 %pi  9 %pi  13 %pi
+(%o16)                   @{---, -----, -----, ------@}
+                            8     8      8      8
+(%i17) S:listify(union(S1,S2));
+                   %pi  %pi  5 %pi  13 %pi  9 %pi  13 %pi
+(%o17)            [---, ---, -----, ------, -----, ------]
+                   12    8     8      12      8      8
+(%i18) float(%), numer;
+(%o18) [0.2617993877991494, 0.3926990816987241, 1.963495408493621, 
+                      3.403392041388942, 3.534291735288517, 5.105088062083414]
+@end example
+
+Answer:
+m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>) where @math{a} any from @math{S}, @math{k} any integer.
+
+3.
+@example
+(%i19) eq:8*cos(x)*cos(4*x)*cos(5*x)-1=0;
+(%o19)               8 cos(x) cos(4 x) cos(5 x) - 1 = 0
+
+(%i20) trigrat(%);
+(%o20)          2 cos(10 x) + 2 cos(8 x) + 2 cos(2 x) + 1 = 0
+@end example
+
+Left side is periodic with period m4_math(<<<T=\pi>>>, <<<T=%pi>>>).
+
+We have 10 solutions from [0, pi].
+@example
+(%i22) x4:find_root(eq, x, 1.3, 1.32);
+(%o22)                        1.308996938995747
+(%i23) x5:find_root(eq, x, 1.32, 1.35);
+(%o23)                        1.346396851538483
+@end example
+
+Equation we multiply by m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>):
+
+@example
+(%i25) eq*2*sin(x)*cos(2*x);
+(%o25)     2 sin(x) cos(2 x) (8 cos(x) cos(4 x) cos(5 x) - 1) = 0
+(%i26) eq1:trigreduce(%),expand;
+(%o26)                     sin(13 x) + sin(x) = 0
+(%i27) trigfactor(lhs(eq1))=0;
+(%o27)                     2 cos(6 x) sin(7 x) = 0
+(%i28) S1:trigsolve(cos(6*x),0,%pi);
+                    %pi  %pi  5 %pi  7 %pi  3 %pi  11 %pi
+(%o28)             @{---, ---, -----, -----, -----, ------@}
+                    12    4    12     12      4      12
+(%i29) S2:trigsolve(sin(7*x),0,%pi);
+                     %pi  2 %pi  3 %pi  4 %pi  5 %pi  6 %pi
+(%o29)           @{0, ---, -----, -----, -----, -----, -----@}
+                      7     7      7      7      7      7
+@end example
+
+We remove solutions of m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) and@w{}
+m4_mathdot(<<<\cos 2x = 0>>>, <<<cos(2*x) = 0>>>)
+
+@example
+(%i30) S3:trigsolve(sin(x),0,%pi);
+(%o30)                               @{0@}
+(%i31) S4:trigsolve(cos(2*x),0,%pi);
+                                 %pi  3 %pi
+(%o31)                          @{---, -----@}
+                                  4     4
+@end example
+
+We find 10 solutions from m4_math(<<<[0, \pi]>>>,<<<[0, %pi]>>>):
+@example
+(%i32) union(S1,S2)$ setdifference(%,S3)$ setdifference(%,S4);
+         %pi  %pi  2 %pi  5 %pi  3 %pi  4 %pi  7 %pi  5 %pi  6 %pi  11 %pi
+(%o34) @{---, ---, -----, -----, -----, -----, -----, -----, -----, ------@}
+         12    7     7     12      7      7     12      7      7      12
+(%i35) S:listify(%);
+        %pi  %pi  2 %pi  5 %pi  3 %pi  4 %pi  7 %pi  5 %pi  6 %pi  11 %pi
+(%o35) [---, ---, -----, -----, -----, -----, -----, -----, -----, ------]
+        12    7     7     12      7      7     12      7      7      12
+(%i36) length(S);
+(%o36)                               10
+(%i37) float(S), numer;
+(%o37) [0.2617993877991494, 0.4487989505128276, 0.8975979010256552, 
+1.308996938995747, 1.346396851538483, 1.79519580205131, 1.832595714594046, 
+2.243994752564138, 2.692793703076966, 2.879793265790644]
+@end example
+
+Answer:
+m4_math(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>), where @math{a} any from @math{S}, @math{k} any integer.
+
+@end deffn
 @node trigvalue, trigeval, trigsolve, Functions and Variables for trigtools
 @subsection trigvalue
 
