@@ -555,7 +555,7 @@
 ;;   (defprop %foo $foo noun)
 ;;   (defprop $foo %foo alias)
 ;;   (defprop %foo $foo reversealias)
-;;   (defun simp-%foo (form #:unused-5230 #:z-5229)
+;;   (defun simp-%foo (form #:unused-5230 %%simpflag)
 ;;     (declare (ignore #:unused-5230))
 ;;     (let ((x (simpcheck (nth 1 form) #:z-5229))
 ;;           (y (simpcheck (nth 2 form) #:z-5229)))
@@ -567,6 +567,21 @@
 ;;            (foo-eval x y))
 ;;           (t
 ;;            (give-up))))))
+;;
+;; The body can reference FORM and %%SIMPFLAG.
+;;
+;; The base name can also be a lambda-list of the form (name &key
+;; (simpcheck :default)).  The NAME is the BASE-NAME of the
+;; simpiflier.  The keyword arg :SIMPCHECK supports two values:
+;; :DEFAULT and :CUSTOM, with :DEFAULT as the default.  :CUSTOM means
+;; the generated code does not call SIMPCHECK on the args, as shown
+;; above.  It is up to the body to do the necessary work.
+;;
+;; Note also that the args for the simplifier only supports a fixed
+;; set of required arguments.  Not optional or rest arguments are
+;; supported.  No checks are made for this.  If you need this, you'll
+;; have to write your own simplifier.  Use the above macro expansion
+;; to see how to define the appropriate properties for the simplifer.
 ;;
 ;; Note carefully that the expansion defines a macro GIVE-UP to
 ;; handle the default case of the simplifier when we can't do any
