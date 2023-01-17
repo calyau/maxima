@@ -20,7 +20,7 @@ trigonometric expessions. List of functions in trigtools package:
 @item trigsolve
 @item trigvalue
 @item trigeval
-@item atan contract
+@item atan_contract
 @end itemize
 
 @node Functions and Variables for trigtools, References, Introduction to trigtools
@@ -42,13 +42,13 @@ trigonometric expessions. List of functions in trigtools package:
 @anchor{c2sin}
 @deffn {Function} c2sin (@var{x})
 The function c2sin converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@math{a*cos(x)+b*sin(x)}>>>) to
-@m4_mathdot(<<<r\sin(x+\phi)>>>, <<<@math{r*sin(x+phi)}>>>)
+@w{}m4_mathdot(<<<r\sin(x+\phi)>>>, <<<@math{r*sin(x+phi)}>>>)
 @end deffn
 
 @anchor{c2cos}
 @deffn {Function} c2cos (@var{x})
 The function c2cos converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@math{ a*cos(x)+b*sin(x)}>>>) to
-m4_mathdot(<<<r\cos(x-\phi)>>>, <<<@math{r*cos(x-phi)}>>>)
+@w{}m4_mathdot(<<<r\cos(x-\phi)>>>, <<<@math{r*cos(x-phi)}>>>)
 
 @end deffn
 
@@ -112,10 +112,10 @@ Example. Solve trigonometric equation
                           5         3        4         5
 @end example
 
-Answ.: m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>),@w{}
-m4_mathcomma(<<<x_1 = \sin^{-1}{2\over 5} - \tan^{-1}{4\over 3}>>>, <<<x1 = asin(2/5)-atan(4/3)>>>)@w{}
-or m4_mathcomma(<<<x_1 = \tan^{-1}{3\over 4} + \cos^{-1}{2\over 5}>>>,
-<<<x1 = atan(3/4)+acos(2/5)>>>) for @math{k} any integer.
+Answ.: m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>)@w{}m4_mathcomma(<<<x_1 = \sin^{-1}{2\over 5} - \tan^{-1}{4\over
+3}>>>, <<<x1 = asin(2/5)-atan(4/3)>>>)or
+@w{}m4_mathcomma(<<<x_1 = \tan^{-1}{3\over 4} + \cos^{-1}{2\over 5}>>>,
+<<<x1 = atan(3/4)+acos(2/5)>>>)@w{}for @math{k} any integer.
 
 
 @node c2trig, c2hyp, c2sin and c2cos, Functions and Variables for trigtools
@@ -351,8 +351,8 @@ Examples:
 @end example
 
 Answ. : m4_math(<<<x = \tan^{-1}\left({2\sqrt{21}\over 5} - {12\over
-5}\right) + 2\pi k>>>, <<<x = atan((2*sqrt(21))/5-12/5)+2*%pi*k>>>);@w{}
-m4_mathcomma(<<<x = \pi - \tan^{-1}\left({2\sqrt{21}\over 5} + {12\over 5}\right) + 2\pi k>>>, <<<x=%pi-atan((2*sqrt(21))/5+12/5)+2*%pi*k>>>) @math{k} -- any integer.
+5}\right) + 2\pi k>>>, <<<x = atan((2*sqrt(21))/5-12/5)+2*%pi*k>>>);
+@w{}m4_mathcomma(<<<x = \pi - \tan^{-1}\left({2\sqrt{21}\over 5} + {12\over 5}\right) + 2\pi k>>>, <<<x=%pi-atan((2*sqrt(21))/5+12/5)+2*%pi*k>>>) @math{k} -- any integer.
 
 2.
 @example
@@ -403,8 +403,7 @@ Equation is equivalent to
                       3.403392041388942, 3.534291735288517, 5.105088062083414]
 @end example
 
-Answer:
-m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>) where @math{a} any from @math{S}, @math{k} any integer.
+Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a} any from @math{S}, @math{k} any integer.
 
 3.
 @example
@@ -444,8 +443,8 @@ Equation we multiply by m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>):
                       7     7      7      7      7      7
 @end example
 
-We remove solutions of m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) and@w{}
-m4_mathdot(<<<\cos 2x = 0>>>, <<<cos(2*x) = 0>>>)
+We remove solutions of m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) and
+@w{}m4_mathdot(<<<\cos 2x = 0>>>, <<<cos(2*x) = 0>>>)
 
 @example
 (%i30) S3:trigsolve(sin(x),0,%pi);
@@ -474,8 +473,7 @@ We find 10 solutions from m4_math(<<<[0, \pi]>>>,<<<[0, %pi]>>>):
 2.243994752564138, 2.692793703076966, 2.879793265790644]
 @end example
 
-Answer:
-m4_math(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>), where @math{a} any from @math{S}, @math{k} any integer.
+Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a} any from @math{S}, @math{k} any integer.
 
 @end deffn
 
