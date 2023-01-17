@@ -1,7 +1,4 @@
 @c -*- mode: texinfo -*-
-@menu
-@end menu
-
 @node Introduction to trigtools, Functions and Variables for trigtools
 @section Introduction to trigtools
 @center Trigtools Package
@@ -35,8 +32,7 @@ trigonometric expessions. List of functions in trigtools package:
 * c2hyp::
 * trigfactor::
 * trigsolve::
-* trigvalue::
-* trigeval::
+* trigvalue and trigeval::
 * atan_contract::
 @end menu
 
@@ -330,7 +326,7 @@ Examples:
 
 @end deffn
 
-@node trigsolve, trigvalue, trigfactor, Functions and Variables for trigtools
+@node trigsolve, trigvalue and trigeval, trigfactor, Functions and Variables for trigtools
 @subsection trigsolve
 
 @deffn {Function} trigsolve (@var{x})
@@ -482,7 +478,8 @@ Answer:
 m4_math(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>), where @math{a} any from @math{S}, @math{k} any integer.
 
 @end deffn
-@node trigvalue, atan_contract, trigsolve, Functions and Variables for trigtools
+
+@node trigvalue and trigeval, atan_contract, trigsolve, Functions and Variables for trigtools
 @subsection trigvalue and trigeval
 
 @deffn {Function} trigvalue (@var{x})
@@ -656,7 +653,7 @@ x = -------------------- + -----------------]
              2                     2
 @end example
 
-@node atan_contract,  , trigvalue, Functions and Variables for trigtools
+@node atan_contract,  , trigvalue and trigeval, Functions and Variables for trigtools
 @subsection atan_contract
 
 The function atan_contract(r) contracts atan functions. We
