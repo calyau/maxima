@@ -23,21 +23,21 @@ trigonometric expessions. List of functions in trigtools package:
 @item @mref{atan_contract}
 @end itemize
 
-@node Functions and Variables for trigtools, References, Introduction to trigtools
+@node Functions and Variables for trigtools, References
 @section Functions and Variables for trigtools
 
 @menu
-* c2sin and c2cos::
-* c2trig::
-* c2hyp::
-* trigfactor::
-* trigsolve::
-* trigvalue and trigeval::
-* atan_contract::
+* Convert to sin and cos::
+* Convert to Trignometric Functions::
+* Convert to Hyperbolic Functions::
+* Factor sums of sin and cos Functions::
+* Solve Trignometric Equations::
+* Evaluation of Trignometric Functions::
+* Contract atan Functions::
 @end menu
 
-@node c2sin and c2cos, c2trig, Functions and Variables for trigtools, Functions and Variables for trigtools
-@subsection c2sin and c2cos
+@node Convert to sin and cos, Convert to Trignometric Functions, Functions and Variables for trigtools, Functions and Variables for trigtools
+@subsection Convert to sin and cos
 
 @anchor{c2sin}
 @deffn {Function} c2sin (@var{x})
@@ -127,9 +127,10 @@ Answ.: m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>)@w{}m4_mathcom
 <<<x1 = atan(3/4)+acos(2/5)>>>)@w{}for @math{k} any integer.
 
 
-@node c2trig, c2hyp, c2sin and c2cos, Functions and Variables for trigtools
-@subsection c2trig
+@node Convert to Trignometric Functions, Convert to Hyperbolic Functions, Convert to sin and cos, Functions and Variables for trigtools
+@subsection Convert to Trignometric Functions
 
+@anchor{c2trig}
 @deffn {Function} c2trig (@var{x})
 The function c2trig (convert to trigonometric) reduce expression with hyperbolic functions
 sinh, cosh, tanh, coth to trigonometric expression with sin, cos, tan, cot.
@@ -211,9 +212,10 @@ coth(x)=c2trig(coth(x));
 
 @end deffn
 
-@node c2hyp, trigfactor, c2trig, Functions and Variables for trigtools
-@subsection c2hyp
+@node Convert to Hyperbolic Functions, Factor sums of sin and cos Functions, Convert to Trignometric Functions, Functions and Variables for trigtools
+@subsection Convert to Hyperbolic Functions
 
+@anchor{c2hyp}
 @deffn {Function} c2hyp (@var{x})
 The function c2hyp (convert to hyperbolic) convert expression with exp function
 to expression with hyperbolic functions sinh, cosh.
@@ -234,9 +236,10 @@ Examples:
 
 @end deffn
 
-@node trigfactor, trigsolve, c2hyp, Functions and Variables for trigtools
-@subsection trigfactor
+@node Factor sums of sin and cos Functions, Solve Trignometric Equations, Convert to Hyperbolic Functions, Functions and Variables for trigtools
+@subsection Factor sums of sin and cos Functions
 
+@anchor{trigfactor}
 @deffn {Function} trigfactor (@var{x})
 The function trigfactor factors expresions of
 form m4_mathdot(<<<\pm \sin x \pm \cos y>>>, <<<+-sin(x)+-cos(y)>>>)
@@ -347,9 +350,10 @@ Examples:
 
 @end deffn
 
-@node trigsolve, trigvalue and trigeval, trigfactor, Functions and Variables for trigtools
-@subsection trigsolve
+@node Solve Trignometric Equations, Evaluation of Trignometric Functions, Factor sums of sin and cos Functions, Functions and Variables for trigtools
+@subsection Solve Trignometric Equations
 
+@anchor{trigsolve}
 @deffn {Function} trigsolve (@var{x})
 The function trigsolve find solutions of trigonometric equation from
 interval m4_math(<<<[a,b)>>>, <<<[a, b)>>>).
@@ -520,8 +524,8 @@ Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a
 
 @end deffn
 
-@node trigvalue and trigeval, atan_contract, trigsolve, Functions and Variables for trigtools
-@subsection trigvalue and trigeval
+@node Evaluation of Trignometric Functions, Contract atan Functions, Solve Trignometric Equations, Functions and Variables for trigtools
+@subsection Evaluation of Trignometric Functions
 
 @anchor{trigvalue}
 @deffn {Function} trigvalue (@var{x})
@@ -718,9 +722,11 @@ x = -------------------- + -----------------]
 @end group
 @end example
 
-@node atan_contract,  , trigvalue and trigeval, Functions and Variables for trigtools
-@subsection atan_contract
+@node Contract atan Functions,  , Evaluation of Trignometric Functions, Functions and Variables for trigtools
+@subsection Contract atan Functions
 
+@anchor{atan_contract}
+@deffn {Function} atan_contract (@var{r})
 The function atan_contract(r) contracts atan functions. We
 assume: m4_mathdot(<<<|r| < {\pi\over 2}>>>, <<<abs(r)<%pi/2>>>)
 
@@ -768,6 +774,7 @@ see @url{http://en.wikipedia.org/wiki/Machin-like_formula}
 (%o9)   12 atan(--) + 32 atan(--) - 5 atan(---) + 12 atan(------) = ---
                 49            57           239            110443     4
 @end example
+@end deffn
 
 @node References,  , Functions and Variables for trigtools
 @section References
