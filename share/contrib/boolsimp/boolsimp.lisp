@@ -19,10 +19,6 @@
 
 (remprop 'mcond 'translate)
 
-; It's OK for MEVALATOMS to evaluate the arguments of MCOND.
-; %MCOND already has this property.
-(defprop mcond t evok)
-
 ; X is an expression of the form ((OP) B1 G1 B2 G2 B3 G3 ...)
 ; where OP is MCOND or %MCOND,
 ; and B1, B2, B3, ... are boolean expressions,
@@ -60,7 +56,7 @@
       ((eq (car conditions) t)
        (meval (car consequences)))
       (t
-        (setq consequences (mapcar 'mevalatoms consequences))
+        (setq consequences (mapcar #'(lambda (e) (mcond-eval-symbols #'meval1 e)) consequences))
         ; Burn off SIMP flag, if any, when constructing the new CAAR
         (cons `(,(car op))
               (apply 'append (mapcar #'(lambda (x y) `(,x ,y)) conditions consequences)))))))

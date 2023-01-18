@@ -906,7 +906,7 @@
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-          (($hypergeometric) (w1 free ,var) (w2 free ,var) (w3 has ,var)))
+          ((%hypergeometric) (w1 free ,var) (w2 free ,var) (w3 has ,var)))
         ((coeffpp) (a zerp)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

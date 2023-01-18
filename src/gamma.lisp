@@ -914,7 +914,7 @@
        (sub (ftake '%gamma a)
 	    (mul (power z a)
 		 (div 1 a)
-		 (ftake '$hypergeometric
+		 (ftake '%hypergeometric
 			(make-mlist a)
 			(make-mlist (add 1 a))
 			(neg z)))))
@@ -2102,10 +2102,10 @@
   (mul 2
        z
        (power '$%pi '((rat simp) -1 2))
-       (list '(%hypergeometric simp)
-             (list '(mlist simp) '((rat simp) 1 2))
-             (list '(mlist simp) '((rat simp) 3 2))
-             (mul -1 (power z 2)))))
+       (ftake '%hypergeometric
+	      (make-mlist 1//2)
+	      (make-mlist 3//2)
+	      (mul -1 (power z 2)))))
 
 ;;; erf is a simplifying function
 
@@ -3171,10 +3171,10 @@
 
     ($hypergeometric_representation
       (mul (div (mul '$%pi (power z 3)) 6)
-           (take '($hypergeometric)
-                 (list '(mlist) (div 3 4))
-                 (list '(mlist) (div 3 2) (div 7 4))
-                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+           (ftake '%hypergeometric
+		  (list '(mlist) (div 3 4))
+		  (list '(mlist) (div 3 2) (div 7 4))
+		  (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
      (give-up))))
@@ -3274,13 +3274,13 @@
 
     ($hypergeometric_representation
       (mul z
-           (take '($hypergeometric)
-                 (list '(mlist) (div 1 4))
-                 (list '(mlist) (div 1 2) (div 5 4))
-                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+           (ftake '%hypergeometric
+		  (list '(mlist) (div 1 4))
+		  (list '(mlist) (div 1 2) (div 5 4))
+		  (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
-      (give-up))))
+o      (give-up))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of the Beta function

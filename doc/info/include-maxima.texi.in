@@ -222,6 +222,7 @@ and develop DOE Macsyma, now called Maxima.
 * unit-pkg::                        Units and dimensions package.
 * wrstcse-pkg::                     Worstcase calculations for engineering.
 * zeilberger-pkg::                  Functions for hypergeometric summation.
+* trigtools-pkg::
 
 @b{Understanding maxima's output}
 * Error and warning messages::  Error and warning messages
@@ -660,6 +661,11 @@ zeilberger
 * Introduction to zeilberger::
 * Functions and Variables for zeilberger::
 
+trigtools
+* Introduction to trigtools::
+* Functions and Variables for trigtools::
+* References::
+
 Understanding maxima's output
 * Error and warning messages::
 @comment @end detailmenu
@@ -1055,6 +1061,10 @@ Understanding maxima's output
 @node zeilberger-pkg, Error and warning messages, wrstcse-pkg, Top
 @chapter zeilberger
 @include zeilberger.texi
+
+@node trigtools-pkg
+@chapter trigtools
+@include trigtools.texi
 
 @node Error and warning messages, Command-line options, zeilberger-pkg, Top
 @chapter Error and warning messages

@@ -1606,7 +1606,7 @@ first kind:
 	   ;;   elliptic_kc(z) = %pi/2*%f[2,1]([1/2,1/2],[1], z)
 	   ;;
 	   (mul (div '$%pi 2)
-		(ftake '$hypergeometric
+		(ftake '%hypergeometric
 		       (make-mlist 1//2 1//2)
 		       (make-mlist 1)
 		       m)))
@@ -1685,7 +1685,7 @@ first kind:
 	   ;;   elliptic_ec(z) = %pi/2*%f[2,1]([-1/2,1/2],[1], z)
 	   ;;
 	   (mul (div '$%pi 2)
-		(ftake '$hypergeometric
+		(ftake '%hypergeometric
 		       (make-mlist -1//2 1//2)
 		       (make-mlist 1)
 		       m)))

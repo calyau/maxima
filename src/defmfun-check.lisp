@@ -555,7 +555,7 @@
 ;;   (defprop %foo $foo noun)
 ;;   (defprop $foo %foo alias)
 ;;   (defprop %foo $foo reversealias)
-;;   (defun simp-%foo (form #:unused-5230 #:z-5229)
+;;   (defun simp-%foo (form #:unused-5230 %%simpflag)
 ;;     (declare (ignore #:unused-5230))
 ;;     (let ((x (simpcheck (nth 1 form) #:z-5229))
 ;;           (y (simpcheck (nth 2 form) #:z-5229)))
@@ -568,39 +568,67 @@
 ;;           (t
 ;;            (give-up))))))
 ;;
+;; The body can reference FORM and %%SIMPFLAG.
+;;
+;; The base name can also be a lambda-list of the form (name &key
+;; (simpcheck :default)).  The NAME is the BASE-NAME of the
+;; simpiflier.  The keyword arg :SIMPCHECK supports two values:
+;; :DEFAULT and :CUSTOM, with :DEFAULT as the default.  :CUSTOM means
+;; the generated code does not call SIMPCHECK on the args, as shown
+;; above.  It is up to the body to do the necessary work.
+;;
+;; Note also that the args for the simplifier only supports a fixed
+;; set of required arguments.  Not optional or rest arguments are
+;; supported.  No checks are made for this.  If you need this, you'll
+;; have to write your own simplifier.  Use the above macro expansion
+;; to see how to define the appropriate properties for the simplifer.
+;;
 ;; Note carefully that the expansion defines a macro GIVE-UP to
 ;; handle the default case of the simplifier when we can't do any
 ;; simplification.  Call this in the default case for the COND.
 
-(defmacro def-simplifier (base-name lambda-list &body body)
-  (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
-	 (verb-name (intern (concatenate 'string "$" (string base-name))))
-	 (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
-	 (z-arg (gensym "Z-"))
-	 (unused-arg (gensym "UNUSED-"))
-	 (arg-forms (loop for arg in lambda-list
-			  and count from 1
-			  collect (list arg `(simpcheck (nth ,count form) ,z-arg)))))
-    `(progn
-       ;; Set up properties
-       (defprop ,noun-name ,simp-name operators)
-       ;; The verb and alias properties are needed to make things like
-       ;; quad_qags(jacobi_sn(x,.5)...) work.
-       (defprop ,verb-name ,noun-name verb)
-       (defprop ,verb-name ,noun-name alias)
-       ;; The reversealias property is needed by grind to print out
-       ;; the right thing.  Without it, grind(jacobi_sn(x,m)) prints
-       ;; '?%jacobi_sn(x,m)".  Also needed for labels in plots which
-       ;; would show up as %jacobi_sn instead of jacobi_sn.
-       (defprop ,noun-name ,verb-name reversealias)
+(defmacro def-simplifier (base-name-and-options lambda-list &body body)
+  (destructuring-bind (base-name &key (simpcheck :default))
+      (if (symbolp base-name-and-options)
+	  (list base-name-and-options)
+	  base-name-and-options)
+    (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
+	   (verb-name (intern (concatenate 'string "$" (string base-name))))
+	   (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
+	   (form-arg (intern "FORM"))
+	   (z-arg (intern "%%SIMPFLAG"))
+	   (unused-arg (gensym "UNUSED-"))
+	   (arg-forms (ecase simpcheck
+			(:custom
+			 (loop for arg in lambda-list
+			       and count from 1
+			       collect (list arg `(nth ,count ,form-arg))))
+			(:default
+			 (loop for arg in lambda-list
+			       and count from 1
+			       collect (list arg `(simpcheck (nth ,count ,form-arg) ,z-arg)))))))
+      `(progn
+	 ;; Set up properties
+	 (defprop ,noun-name ,simp-name operators)
+	 ;; The verb and alias properties are needed to make things like
+	 ;; quad_qags(jacobi_sn(x,.5)...) work.
+	 (defprop ,verb-name ,noun-name verb)
+	 (defprop ,verb-name ,noun-name alias)
+	 ;; The reversealias property is needed by grind to print out
+	 ;; the right thing.  Without it, grind(jacobi_sn(x,m)) prints
+	 ;; '?%jacobi_sn(x,m)".  Also needed for labels in plots which
+	 ;; would show up as %jacobi_sn instead of jacobi_sn.
+	 (defprop ,noun-name ,verb-name reversealias)
 
-       ;; Define the simplifier
-       (defun ,simp-name (form ,unused-arg ,z-arg)
-	 (declare (ignore ,unused-arg))
-	 (arg-count-check ,(length lambda-list) form)
-	 (let ,arg-forms
-	   (flet ((give-up ()
-		    ;; Should this also return from the function?
-		    ;; That would fit in better with giving up.
-		    (eqtest (list '(,noun-name) ,@lambda-list) form)))
-	     ,@body))))))
+	 ;; Define the simplifier
+	 (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
+	   (declare (ignore ,unused-arg)
+		    (ignorable ,z-arg))
+	   (arg-count-check ,(length lambda-list)
+			    ,form-arg)
+	   (let ,arg-forms
+	     (flet ((give-up ()
+		      ;; Should this also return from the function?
+		      ;; That would fit in better with giving up.
+		      (eqtest (list '(,noun-name) ,@lambda-list) ,form-arg)))
+	       ,@body)))))))

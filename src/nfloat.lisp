@@ -268,7 +268,7 @@
 	     (list (bigfloat::to f) (* (second x) (abs df)))))
 
 	  ;; special case hypergeometric
-	  ((eq (caar e) 'maxima::$hypergeometric)
+	  ((eq (caar e) 'maxima::%hypergeometric)
 	   (running-error-hypergeometric (second e) (third e) (fourth e) subs bits))
 	   
 	  ;; special case sum.
