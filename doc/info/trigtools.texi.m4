@@ -1,8 +1,8 @@
 @c -*- mode: texinfo -*-
 @node Introduction to trigtools, Functions and Variables for trigtools
 @section Introduction to trigtools
-@center Trigtools Package
-@center Aleksas Dormarkas
+@center Trigtools Package@footnote{This is a conversion by hand of the original ``trigtools-doc.pdf'' file in ``share/contrib/trigtools'', by Raymond Toy.  See the pdf for the definitive version.}
+@center @b{Aleksas Dormarkas}
 @center @email{aleksasd873@@gmail.com}
 @center @email{aleksas.domarkas@@mif.vu.lt}
 @center December 1, 2013
