@@ -310,10 +310,12 @@ Examples:
 
 @item @w{ }
 @example 
+@group
 (%i10) sin(alpha)+sin(beta)=trigfactor(sin(alpha)+sin(beta));
                                        beta   alpha      beta   alpha
 (%o10)  sin(beta) + sin(alpha) = 2 cos(---- - -----) sin(---- + -----)
                                         2       2         2       2
+@end group
 (%i11) trigrat(%);
 (%o78)          sin(beta) + sin(alpha) = sin(beta) + sin(alpha)
 @end example
@@ -538,14 +540,18 @@ We remove solutions of m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) and
 
 We find 10 solutions from m4_math(<<<[0, \pi]>>>,<<<[0, %pi]>>>):
 @example
+@group
 (%i32) union(S1,S2)$ setdifference(%,S3)$ setdifference(%,S4);
          %pi  %pi  2 %pi  5 %pi  3 %pi  4 %pi  7 %pi  5 %pi  6 %pi  11 %pi
 (%o34) @{---, ---, -----, -----, -----, -----, -----, -----, -----, ------@}
          12    7     7     12      7      7     12      7      7      12
+@end group
+@group
 (%i35) S:listify(%);
         %pi  %pi  2 %pi  5 %pi  3 %pi  4 %pi  7 %pi  5 %pi  6 %pi  11 %pi
 (%o35) [---, ---, -----, -----, -----, -----, -----, -----, -----, ------]
         12    7     7     12      7      7     12      7      7      12
+@end group
 (%i36) length(S);
 (%o36)                               10
 (%i37) float(S), numer;
