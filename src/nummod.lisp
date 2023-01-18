@@ -35,8 +35,11 @@
   ;; Let's remove built-in symbols from list for user-defined properties.
   (setq $props (remove '$nummod $props)))
 
+;; Ideally this should be removed in favor of ftake* (in mopers.lisp),
+;; which is identical to what opcons used to do.  But some share files
+;; use this, we need to keep this until those are fixed.
 (defmacro opcons (op &rest args)
-  `(simplify (list (list ,op) ,@args)))
+  `(ftake* ,op ,@args))
 
 ;; charfun(pred) evaluates to 1 when the predicate 'pred' evaluates
 ;; to true; it evaluates to 0 when 'pred' evaluates to false; otherwise,
@@ -66,7 +69,7 @@
 	     (setq n-sum (add ei n-sum)))
 	    (t
 	     (setq o-sum (add ei o-sum)))))
-    (setq n (opcons '$floor n-sum))
+    (setq n (ftake* '$floor n-sum))
     (setq i-sum (add i-sum n))
     (setq o-sum (add o-sum (sub n-sum n)))
     (values i-sum o-sum)))
@@ -201,7 +204,7 @@
 	((maxima-integerp e) e)
 
 	(($orderlessp e (neg e))
-	 (sub 0 (opcons '$ceiling (neg e))))
+	 (sub 0 (ftake* '$ceiling (neg e))))
 
 	((and (setq e1 (mget e '$numer)) (floor e1)))
 
@@ -216,7 +219,7 @@
 	 (let ((i-sum) (o-sum))
 	   (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
 	   (setq o-sum (if (equal i-sum 0) `(($floor simp) ,o-sum)
-			 (opcons '$floor o-sum)))
+			 (ftake* '$floor o-sum)))
 	   (add i-sum o-sum)))
 
 	;; handle 0 <= e < 1 implies floor(e) = 0 and
@@ -276,12 +279,12 @@
 	((ratnump e) (ceiling (cadr e) (caddr e)))
 
 	(($bfloatp e)
-	 (sub 0 (opcons '$floor (sub 0 e))))
+	 (sub 0 (ftake* '$floor (sub 0 e))))
 
 	((maxima-integerp e) e)
 
 	(($orderlessp e (neg e))
-	 (sub* 0 (opcons '$floor (neg e))))
+	 (sub* 0 (ftake* '$floor (neg e))))
 
 	((and (setq e1 (mget e '$numer)) (ceiling e1)))
 
@@ -296,7 +299,7 @@
 	 (let ((i-sum) (o-sum))
 	   (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
 	   (setq o-sum (if (equal i-sum 0) `(($ceiling simp) ,o-sum)
-			 (opcons '$ceiling o-sum)))
+			 (ftake* '$ceiling o-sum)))
 	   (add i-sum o-sum)))
 
 	;; handle 0 < e <= 1 implies ceiling(e) = 1 and
@@ -346,11 +349,11 @@
   (let ((x (simplifya (specrepcheck (cadr e)) z))
 	(y (simplifya (specrepcheck (caddr e)) z)))
     (cond ((or (equal 0 y) (equal 0 x)) x)
-	  ((equal 1 y) (sub x (opcons '$floor x)))
+	  ((equal 1 y) (sub x (ftake* '$floor x)))
 	  ((and ($constantp x) ($constantp y))
-	   (sub x (mul y (opcons '$floor (div x y)))))
+	   (sub x (mul y (ftake* '$floor (div x y)))))
 	  ((not (equal 1 (setq e1 ($gcd x y))))
-	   (mul e1 (opcons '$mod (div x e1) (div y e1))))
+	   (mul e1 (ftake* '$mod (div x e1) (div y e1))))
 	  (t `(($mod simp) ,x ,y)))))
 
 ;; The function 'round' rounds a number to the nearest integer. For a tie, round to the
