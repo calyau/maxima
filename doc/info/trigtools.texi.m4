@@ -1,6 +1,14 @@
 @c -*- mode: texinfo -*-
-@node Introduction to trigtools, Functions and Variables for trigtools
-@center Trigtools Package@footnote{This is a conversion by hand of the original ``trigtools-doc.pdf'' file in ``share/contrib/trigtools'', by Raymond Toy.  See the pdf for the definitive version.}
+
+@menu
+* Introduction to trigtools::
+* Functions and Variables for trigtools::
+* References::
+@end menu
+
+@node Introduction to trigtools, Functions and Variables for trigtools, trigtools-pkg, trigtools-pkg
+@center @titlefont{Trigtools Package}
+@sp 2
 @center @b{Aleksas Dormarkas}
 @center @email{aleksasd873@@gmail.com}
 @center @email{aleksas.domarkas@@mif.vu.lt}
@@ -8,7 +16,7 @@
 
 @section Introduction to trigtools
 We use open-source computer algebra system(CAS) maxima 5.31.2.
-The trigtools package contains commands that help you work with
+The trigtools package@footnote{This is a conversion by hand of the original ``trigtools-doc.pdf'' file in ``share/contrib/trigtools'', by Raymond Toy.  See the pdf for the definitive version.} contains commands that help you work with
 trigonometric expessions. List of functions in trigtools package:
 
 @itemize
@@ -23,7 +31,8 @@ trigonometric expessions. List of functions in trigtools package:
 @item @mref{atan_contract}
 @end itemize
 
-@node Functions and Variables for trigtools, References
+
+@node Functions and Variables for trigtools, References, Introduction to trigtools, trigtools-pkg
 @section Functions and Variables for trigtools
 
 @menu
@@ -41,16 +50,13 @@ trigonometric expessions. List of functions in trigtools package:
 
 @anchor{c2sin}
 @deffn {Function} c2sin (@var{x})
+@anchor{c2cos}
+@deffnx {Function} c2cos (@var{x})
 The function c2sin converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@math{a*cos(x)+b*sin(x)}>>>) to
 @w{}m4_mathdot(<<<r\sin(x+\phi)>>>, <<<@math{r*sin(x+phi)}>>>)
-@end deffn
 
-@anchor{c2cos}
-@deffn {Function} c2cos (@var{x})
 The function c2cos converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@math{ a*cos(x)+b*sin(x)}>>>) to
 @w{}m4_mathdot(<<<r\cos(x-\phi)>>>, <<<@math{r*cos(x-phi)}>>>)
-
-@end deffn
 
 Examples:
 @example
@@ -62,10 +68,12 @@ Examples:
 (%i3) trigexpand(%),expand;
 (%o3)                        3 sin(x) + 4 cos(x)
 
+@group
 (%i4) c2cos(3*sin(x)-4*cos(x));
                                              3
 (%o4)                       - 5 cos(x + atan(-))
                                              4
+@end group
 @group
 (%i5) trigexpand(%),expand;
 (%o5)                        3 sin(x) - 4 cos(x)
@@ -82,17 +90,24 @@ Examples:
                                             %pi
 (%o8)                       sqrt(2) cos(x - ---)
                                              4
+@group
 (%i9) trigexpand(%),expand;
 (%o9)                          sin(x) + cos(x)
+@end group
 @end example
 
 Example. Solve trigonometric equation
 
 @example
+@group
 (%i10) eq:3*sin(x)+4*cos(x)=2;
 (%o10)                      3 sin(x) + 4 cos(x) = 2
+@end group
+
 (%i11) plot2d([3*sin(x)+4*cos(x),2],[x,-%pi,%pi]);
-@image{figures/trigtools-1,,,plot1}
+
+@center @image{figures/trigtools-1,5in,,plot1}
+
 (%i12) eq1:c2sin(lhs(eq))=2;
                                            4
 (%o35)                      5 sin(x + atan(-)) = 2
@@ -113,12 +128,11 @@ Example. Solve trigonometric equation
                                     4         5
 (%i20) float(%), numer;
 (%o20)                         1.802780589520693
-@group
+
 (%i21) sol:[x1,x2];
                           2         4        3         2
 (%o44)              [asin(-) - atan(-), atan(-) + acos(-)]
                           5         3        4         5
-@end group
 @end example
 
 Answ.: m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>)@w{}m4_mathcomma(<<<x_1 = \sin^{-1}{2\over 5} - \tan^{-1}{4\over
@@ -126,6 +140,7 @@ Answ.: m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>)@w{}m4_mathcom
 @w{}m4_mathcomma(<<<x_1 = \tan^{-1}{3\over 4} + \cos^{-1}{2\over 5}>>>,
 <<<x1 = atan(3/4)+acos(2/5)>>>)@w{}for @math{k} any integer.
 
+@end deffn
 
 @node Convert to Trignometric Functions, Convert to Hyperbolic Functions, Convert to sin and cos, Functions and Variables for trigtools
 @subsection Convert to Trignometric Functions
@@ -321,10 +336,12 @@ Examples:
 
 @item @w{ }
 @example
+@group
 (%i14) cos(alpha)-cos(beta)=trigfactor(cos(alpha)-cos(beta));
                                        beta   alpha      beta   alpha
 (%o14)  cos(alpha) - cos(beta) = 2 sin(---- - -----) sin(---- + -----)
                                         2       2         2       2
+@end group
 @end example
 
 @item @w{ }
@@ -370,7 +387,9 @@ Examples:
 (%o38)                      3 sin(x) + 4 cos(x) = 2
 
 (%i39) plot2d([3*sin(x)+4*cos(x),2],[x,-%pi,%pi]);
-@image{figures/trigtools-2,,,plot2}
+
+@center @image{figures/trigtools-2,5in,,plot2}
+
 (%o39)
 (%i40) sol:trigsolve(eq,-%pi,%pi);
                   2 sqrt(21)   12              2 sqrt(21)   12
@@ -389,15 +408,21 @@ Answ. : m4_math(<<<x = \tan^{-1}\left({2\sqrt{21}\over 5} - {12\over
 (%i6) eq:cos(3*x)-sin(x)=sqrt(3)*(cos(x)-sin(3*x));
 (%o6)         cos(3 x) - sin(x) = sqrt(3) (cos(x) - sin(3 x))
 (%i7) plot2d([lhs(eq)-rhs(eq)], [x,0,2*%pi])$
-@image{figures/trigtools-3,,,plot3}
+
+@center @image{figures/trigtools-3,5in,,plot3}
+
 @end example
 
 We have 6 solutions from [0, 2*pi].
 @example
 (%i8) plot2d([lhs(eq)-rhs(eq)], [x,0.2,0.5]);
-@image{figures/trigtools-4,,,plot4}
+
+@center @image{figures/trigtools-4,5in,,plot4}
+
 (%i9) plot2d([lhs(eq)-rhs(eq)], [x,3.3,3.6]);
-@image{figures/trigtools-5,,,plot4}
+
+@center @image{figures/trigtools-5,5in,,plot4}
+
 (%i10) trigfactor(lhs(eq))=map(trigfactor,rhs(eq));
                    %pi            %pi                      %pi            %pi
 (%o15) - 2 sin(x + ---) sin(2 x - ---) = 2 sqrt(3) sin(x - ---) sin(2 x - ---)
@@ -461,13 +486,17 @@ Left side is periodic with period m4_math(<<<T=\pi>>>, <<<T=%pi>>>).
 We have 10 solutions from [0, pi].
 @example
 (%i21) plot2d([lhs(eq),rhs(eq)],[x,0,%pi]);
-@image{figures/trigtools-6,,,plot6}
+
+@center @image{figures/trigtools-6,5in,,plot6}
+
 (%i22) x4:find_root(eq, x, 1.3, 1.32);
 (%o22)                        1.308996938995747
 (%i23) x5:find_root(eq, x, 1.32, 1.35);
 (%o23)                        1.346396851538483
 (%i24) plot2d([lhs(eq),0], [x,1.3,1.35], [gnuplot_preamble, "set grid;"]);
-@image{figures/trigtools-7,,,plot7}
+
+@center @image{figures/trigtools-7,5in,,plot7}
+
 @end example
 
 Equation we multiply by m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>):
