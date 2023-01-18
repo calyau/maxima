@@ -39,7 +39,7 @@ trigonometric expessions. List of functions in trigtools package:
 * Convert to sin and cos::
 * Convert to Trignometric Functions::
 * Convert to Hyperbolic Functions::
-* Factor sums of sin and cos Functions::
+* Factor Sums of sin and cos Functions::
 * Solve Trignometric Equations::
 * Evaluation of Trignometric Functions::
 * Contract atan Functions::
@@ -229,7 +229,7 @@ coth(x)=c2trig(coth(x));
 
 @end deffn
 
-@node Convert to Hyperbolic Functions, Factor sums of sin and cos Functions, Convert to Trignometric Functions, Functions and Variables for trigtools
+@node Convert to Hyperbolic Functions, Factor Sums of sin and cos Functions, Convert to Trignometric Functions, Functions and Variables for trigtools
 @subsection Convert to Hyperbolic Functions
 
 @anchor{c2hyp}
@@ -253,8 +253,8 @@ Examples:
 
 @end deffn
 
-@node Factor sums of sin and cos Functions, Solve Trignometric Equations, Convert to Hyperbolic Functions, Functions and Variables for trigtools
-@subsection Factor sums of sin and cos Functions
+@node Factor Sums of sin and cos Functions, Solve Trignometric Equations, Convert to Hyperbolic Functions, Functions and Variables for trigtools
+@subsection Factor Sums of sin and cos Functions
 
 @anchor{trigfactor}
 @deffn {Function} trigfactor (@var{x})
@@ -373,7 +373,7 @@ Examples:
 
 @end deffn
 
-@node Solve Trignometric Equations, Evaluation of Trignometric Functions, Factor sums of sin and cos Functions, Functions and Variables for trigtools
+@node Solve Trignometric Equations, Evaluation of Trignometric Functions, Factor Sums of sin and cos Functions, Functions and Variables for trigtools
 @subsection Solve Trignometric Equations
 
 @anchor{trigsolve}
