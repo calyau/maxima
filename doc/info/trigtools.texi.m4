@@ -1,26 +1,26 @@
 @c -*- mode: texinfo -*-
 @node Introduction to trigtools, Functions and Variables for trigtools
-@section Introduction to trigtools
 @center Trigtools Package@footnote{This is a conversion by hand of the original ``trigtools-doc.pdf'' file in ``share/contrib/trigtools'', by Raymond Toy.  See the pdf for the definitive version.}
 @center @b{Aleksas Dormarkas}
 @center @email{aleksasd873@@gmail.com}
 @center @email{aleksas.domarkas@@mif.vu.lt}
 @center December 1, 2013
 
+@section Introduction to trigtools
 We use open-source computer algebra system(CAS) maxima 5.31.2.
 The trigtools package contains commands that help you work with
 trigonometric expessions. List of functions in trigtools package:
 
 @itemize
-@item c2sin
-@item c2cos
-@item c2trig
-@item c2hyp
-@item trigfactor
-@item trigsolve
-@item trigvalue
-@item trigeval
-@item atan_contract
+@item @mref{c2sin}
+@item @mref{c2cos}
+@item @mref{c2trig}
+@item @mref{c2hyp}
+@item @mref{trigfactor}
+@item @mref{trigsolve}
+@item @mref{trigvalue}
+@item @mref{trigeval}
+@item @mref{atan_contract}
 @end itemize
 
 @node Functions and Variables for trigtools, References, Introduction to trigtools
@@ -523,6 +523,7 @@ Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a
 @node trigvalue and trigeval, atan_contract, trigsolve, Functions and Variables for trigtools
 @subsection trigvalue and trigeval
 
+@anchor{trigvalue}
 @deffn {Function} trigvalue (@var{x})
 The function trigvalue compute values of m4_mathcomma(<<<\sin
 {m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\cos
@@ -531,6 +532,7 @@ The function trigvalue compute values of m4_mathcomma(<<<\sin
 {m\pi\over n}>>>, <<<cot(m*%pi/n)>>>) in radicals.
 @end deffn
 
+@anchor{trigeval}
 @deffn {Function} trigeval (@var{x})
 The function trigeval compute values of expressions with m4_mathcomma(<<<\sin
 {m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\cos
