@@ -91,6 +91,8 @@ Example. Solve trigonometric equation
 @example
 (%i10) eq:3*sin(x)+4*cos(x)=2;
 (%o10)                      3 sin(x) + 4 cos(x) = 2
+(%i11) plot2d([3*sin(x)+4*cos(x),2],[x,-%pi,%pi]);
+@image{figures/trigtools-1,,,plot1}
 (%i12) eq1:c2sin(lhs(eq))=2;
                                            4
 (%o35)                      5 sin(x + atan(-)) = 2
@@ -358,8 +360,8 @@ Examples:
 (%i38) eq:eq:3*sin(x)+4*cos(x)=2;
 (%o38)                      3 sin(x) + 4 cos(x) = 2
 
-(%i39) wxplot2d([3*sin(x)+4*cos(x),2],[x,-%pi,%pi]);
-(%t39)
+(%i39) plot2d([3*sin(x)+4*cos(x),2],[x,-%pi,%pi]);
+@image{figures/trigtools-2,,,plot2}
 (%o39)
 (%i40) sol:trigsolve(eq,-%pi,%pi);
                   2 sqrt(21)   12              2 sqrt(21)   12
@@ -377,10 +379,16 @@ Answ. : m4_math(<<<x = \tan^{-1}\left({2\sqrt{21}\over 5} - {12\over
 @example
 (%i6) eq:cos(3*x)-sin(x)=sqrt(3)*(cos(x)-sin(3*x));
 (%o6)         cos(3 x) - sin(x) = sqrt(3) (cos(x) - sin(3 x))
+(%i7) plot2d([lhs(eq)-rhs(eq)], [x,0,2*%pi])$
+@image{figures/trigtools-3,,,plot3}
 @end example
 
 We have 6 solutions from [0, 2*pi].
 @example
+(%i8) plot2d([lhs(eq)-rhs(eq)], [x,0.2,0.5]);
+@image{figures/trigtools-4,,,plot4}
+(%i9) plot2d([lhs(eq)-rhs(eq)], [x,3.3,3.6]);
+@image{figures/trigtools-5,,,plot4}
 (%i10) trigfactor(lhs(eq))=map(trigfactor,rhs(eq));
                    %pi            %pi                      %pi            %pi
 (%o15) - 2 sin(x + ---) sin(2 x - ---) = 2 sqrt(3) sin(x - ---) sin(2 x - ---)
@@ -443,10 +451,14 @@ Left side is periodic with period m4_math(<<<T=\pi>>>, <<<T=%pi>>>).
 
 We have 10 solutions from [0, pi].
 @example
+(%i21) plot2d([lhs(eq),rhs(eq)],[x,0,%pi]);
+@image{figures/trigtools-6,,,plot6}
 (%i22) x4:find_root(eq, x, 1.3, 1.32);
 (%o22)                        1.308996938995747
 (%i23) x5:find_root(eq, x, 1.32, 1.35);
 (%o23)                        1.346396851538483
+(%i24) plot2d([lhs(eq),0], [x,1.3,1.35], [gnuplot_preamble, "set grid;"]);
+@image{figures/trigtools-7,,,plot7}
 @end example
 
 Equation we multiply by m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>):
