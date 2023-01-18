@@ -293,8 +293,7 @@
      #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 15 64)
      #+(or clisp gcl)  ((mlist simp) 15 64)
      #+ecl ((mlist simp) 64)
-     #+sbcl ((mlist simp) 15 64)
-     #+cmucl ((mlist simp) 64))
+     #+sbcl ((mlist simp) 15 64))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
     ((mlist simp) "rtest_vect"
