@@ -47,7 +47,7 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  ratpow.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
  stats.texi stirling.texi stringproc.texi to_poly_solve.texi unit.texi \
  zeilberger.texi errormessages.texi commandline-options.texi \
- pslq.texi
+ pslq.texi trigtools.texi 
 
 figurefiles = \
 figures/introduction1.png\
@@ -268,7 +268,14 @@ figures/worldmap_geomap2.png\
 figures/worldmap_geomap3.png\
 figures/worldmap_geomap4.png\
 figures/worldmap_geomap5.png\
-figures/worldmap_geomap6.png
+figures/worldmap_geomap6.png\
+figures/trigtools-1.png\
+figures/trigtools-2.png\
+figures/trigtools-3.png\
+figures/trigtools-4.png\
+figures/trigtools-5.png\
+figures/trigtools-6.png\
+figures/trigtools-7.png
 
 pdffigures = \
 figures/introduction1.pdf\
