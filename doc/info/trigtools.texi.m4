@@ -52,6 +52,7 @@ The function c2cos converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@
 
 @end deffn
 
+Examples:
 @example
 (%i1) load("trigtools")$
 (%i2) c2sin(3*sin(x)+4*cos(x));
@@ -65,12 +66,16 @@ The function c2cos converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@
                                              3
 (%o4)                       - 5 cos(x + atan(-))
                                              4
+@group
 (%i5) trigexpand(%),expand;
 (%o5)                        3 sin(x) - 4 cos(x)
+@end group
+@group
 (%i6) c2sin(sin(x)+cos(x));
                                             %pi
 (%o6)                       sqrt(2) sin(x + ---)
                                              4
+@end group
 (%i7) trigexpand(%),expand;
 (%o7)                          sin(x) + cos(x)
 (%i8) c2cos(sin(x)+cos(x));
@@ -106,10 +111,12 @@ Example. Solve trigonometric equation
                                     4         5
 (%i20) float(%), numer;
 (%o20)                         1.802780589520693
+@group
 (%i21) sol:[x1,x2];
                           2         4        3         2
 (%o44)              [asin(-) - atan(-), atan(-) + acos(-)]
                           5         3        4         5
+@end group
 @end example
 
 Answ.: m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>)@w{}m4_mathcomma(<<<x_1 = \sin^{-1}{2\over 5} - \tan^{-1}{4\over
@@ -175,12 +182,16 @@ coth(x)=c2trig(coth(x));
 @example
 (%i15) tan(a+%i*b);
 (%o15)                           tan(%i b + a)
+@group
 (%i16) trigexpand(%);
                               %i tanh(b) + tan(a)
 (%o16)                       ---------------------
                              1 - %i tan(a) tanh(b)
+@end group
+@group
 (%i17) c2trig(%);
 (%o217)                           tan(%i b + a)
+@end group
 @end example
 
 6.
@@ -242,12 +253,16 @@ Examples:
 
 2.
 @example
+@group
 (%i4) trigfactor(sin(x)+cos(y));
                            y   x   %pi      y   x   %pi
 (%o4)                2 cos(- - - + ---) cos(- + - - ---)
                            2   2    4       2   2    4
+@end group
+@group
 (%i5) trigrat(%);
 (%o5)                          cos(y) + sin(x)
+@end group
 @end example
 
 3.
@@ -308,12 +323,16 @@ Examples:
 @example
 (%i15) trigfactor(3*sin(x)+7*cos(x));
 (%o15)                        3 sin(x) + 7 cos(x)
+@group
 (%i16) c2sin(%);
                                                  7
 (%o16)                     sqrt(58) sin(x + atan(-))
                                                  3
+@end group
+@group
 (%i17) trigexpand(%),expand;
 (%o17)                        3 sin(x) + 7 cos(x)
+@end group
 @end example
 
 10.
@@ -374,18 +393,24 @@ We have 6 solutions from [0, 2*pi].
 
 Equation is equivalent to
 @example
+@group
 (%i12) L:factor(rhs(%)-lhs(%));
                 4 x + %pi                4 x - %pi       8 x - %pi
 (%o12)   2 (sin(---------) + sqrt(3) sin(---------)) sin(---------)
                     4                        4               4
+@end group
+@group
 (%i13) eq1:part(L,2)=0;
                      4 x + %pi                4 x - %pi
 (%o13)           sin(---------) + sqrt(3) sin(---------) = 0
                          4                        4
+@end group
+@group
 (%i14) eq2:part(L,3)=0;
                                  8 x - %pi
 (%o14)                       sin(---------) = 0
                                      4
+@end group
 (%i15) S1:trigsolve(eq1,0,2*%pi);
                                  %pi  13 %pi
 (%o15)                         @{---, ------@}
@@ -431,16 +456,22 @@ Equation we multiply by m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>):
 (%o25)     2 sin(x) cos(2 x) (8 cos(x) cos(4 x) cos(5 x) - 1) = 0
 (%i26) eq1:trigreduce(%),expand;
 (%o26)                     sin(13 x) + sin(x) = 0
+@group
 (%i27) trigfactor(lhs(eq1))=0;
 (%o27)                     2 cos(6 x) sin(7 x) = 0
+@end group
+@group
 (%i28) S1:trigsolve(cos(6*x),0,%pi);
                     %pi  %pi  5 %pi  7 %pi  3 %pi  11 %pi
 (%o28)             @{---, ---, -----, -----, -----, ------@}
                     12    4    12     12      4      12
+@end group
+@group
 (%i29) S2:trigsolve(sin(7*x),0,%pi);
                      %pi  2 %pi  3 %pi  4 %pi  5 %pi  6 %pi
 (%o29)           @{0, ---, -----, -----, -----, -----, -----@}
                       7     7      7      7      7      7
+@end group
 @end example
 
 We remove solutions of m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) and
@@ -501,19 +532,25 @@ Examples:
 1 Values of trignometric functions
 @example
 (%i1) load(trigtools)$
+@group
 (%i2) trigvalue(sin(%pi/10));
                                   sqrt(5) - 1
 (%o2)                             -----------
                                        4
+@end group
+@group
 (%i3) trigvalue(cos(%pi/10));
                                sqrt(sqrt(5) + 5)
 (%o3)                          -----------------
                                       3/2
                                      2
+@end group
+@group
 (%i4) trigvalue(tan(%pi/10));
                               sqrt(5 - 2 sqrt(5))
 (%o4)                         -------------------
                                     sqrt(5)
+@end group
 (%i5) float(%), numer;
 (%o5)                         0.3249196962329063
 (%i6) float(tan(%pi/10)), numer;
@@ -541,32 +578,41 @@ Examples:
 (%o13)  ---------------------------------------------------------------
                                       3/2
                                      2
+@group
 (%i14) trigvalue(sin(%pi/60));
         sqrt(4 - sqrt(sqrt(2) sqrt(3) sqrt(sqrt(5) + 5) + sqrt(5) + 7))
 (%o14)  ---------------------------------------------------------------
                                       3/2
                                      2
+@end group
+@group
 (%i15) trigvalue(sin(%pi/18));
                                        %pi
 (%o15)                             sin(---)
                                        18
+@end group
+@group
 (%i16) trigvalue(sin(%pi/20));
                       sqrt(4 - sqrt(2) sqrt(sqrt(5) + 5))
 (%o16)                -----------------------------------
                                       3/2
                                      2
+@end group
 @end example
 
 2 ode example
 @example
 (%i17) load(odes)$
+@group
 (%i18) eq:'diff(y,x,5)+2*y=0;
                                   5
                                  d y
 (%o18)                           --- + 2 y = 0
                                    5
                                  dx
+@end group
 (%i19) odeL(eq,y,x);
+@group
                    1/5     4 %pi
                 - 2    cos(-----) x
                              5           1/5     4 %pi
@@ -587,6 +633,8 @@ Examples:
                      5           1/5     2 %pi            - 2    x
  + C2 %e                    cos(2    sin(-----) x) + C1 %e
                                            5
+@end group
+@group
 (%i20) sol:trigeval(%);
                   (sqrt(5) - 1) x
                 - ---------------
@@ -616,6 +664,7 @@ Examples:
  + C4 %e                cos(-------------------) + C1 %e
                                    13/10
                                   2
+@end group
 (%i21) subst(sol,eq)$
 (%i22) ev(%, nouns)$
 (%i23) radcan(%);
@@ -629,6 +678,7 @@ Example. Find the 4-th roots of %i
 (%i24) solve(x^4=%i,x);
                  1/8                1/8             1/8              1/8
 (%o24) [x = (- 1)    %i, x = - (- 1)   , x = - (- 1)    %i, x = (- 1)   ]
+@group
 (%i25) rectform(%);
                    %pi        %pi                 %pi         %pi
 (%o25) [x = %i cos(---) - sin(---), x = (- %i sin(---)) - cos(---), 
@@ -636,6 +686,8 @@ Example. Find the 4-th roots of %i
                                 %pi           %pi              %pi        %pi
                         x = sin(---) - %i cos(---), x = %i sin(---) + cos(---)]
                                  8             8                8          8
+@end group
+@group
 (%i26) trigeval(%);
             sqrt(sqrt(2) + 2) %i   sqrt(2 - sqrt(2))
 (%o26) [x = -------------------- - -----------------, 
@@ -649,6 +701,7 @@ x = ----------------- - --------------------,
     sqrt(2 - sqrt(2)) %i   sqrt(sqrt(2) + 2)
 x = -------------------- + -----------------]
              2                     2
+@end group
 @end example
 
 @node atan_contract,  , trigvalue and trigeval, Functions and Variables for trigtools
