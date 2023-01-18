@@ -137,8 +137,9 @@ sinh, cosh, tanh, coth to trigonometric expression with sin, cos, tan, cot.
 
 Examples:
 
-1.
+@enumerate
 
+@item @w{ }
 @example
 (%i1) load(trigtools)$
 (%i2) sinh(x)=c2trig(sinh(x));
@@ -151,7 +152,7 @@ coth(x)=c2trig(coth(x));
 (%o5)                      coth(x) = %i cot(%i x)
 @end example
 
-2. see @url{http://www.math.utexas.edu/pipermail/maxima/2013/034585.html}
+@item see @url{http://www.math.utexas.edu/pipermail/maxima/2013/034585.html}
 @example
 (%i6) cos(p+q*%i);
 (%o6)                           cos(%i q + p)
@@ -161,7 +162,7 @@ coth(x)=c2trig(coth(x));
 (%o8)                           cos(%i q + p)
 @end example
 
-3.
+@item @w{ }
 @example
 (%i9) sin(a+b*%i);
 (%o9)                           sin(%i b + a)
@@ -171,7 +172,7 @@ coth(x)=c2trig(coth(x));
 (%o11)                           sin(%i b + a)
 @end example
 
-4.
+@item @w{ }
 @example
 (%i12) cos(a*%i+b*%i);
 (%o12)                         cos(%i b + %i a)
@@ -181,7 +182,7 @@ coth(x)=c2trig(coth(x));
 (%o14)                         cos(%i b + %i a)
 @end example
 
-5.
+@item @w{ }
 @example
 (%i15) tan(a+%i*b);
 (%o15)                           tan(%i b + a)
@@ -197,7 +198,7 @@ coth(x)=c2trig(coth(x));
 @end group
 @end example
 
-6.
+@item @w{ }
 
 @example
 (%i18) cot(x+%i*y);
@@ -209,6 +210,7 @@ coth(x)=c2trig(coth(x));
 (%i20) c2trig(%);
 (%o20)                           cot(%i y + x)
 @end example
+@end enumerate
 
 @end deffn
 
@@ -246,7 +248,8 @@ form m4_mathdot(<<<\pm \sin x \pm \cos y>>>, <<<+-sin(x)+-cos(y)>>>)
 
 Examples:
 
-1.
+@enumerate
+@item @w{ }
 @example
 (%i2) trigfactor(sin(x)+cos(x));
                                             %pi
@@ -256,7 +259,7 @@ Examples:
 (%o3)                          sin(x) + cos(x)
 @end example
 
-2.
+@item @w{ }
 @example
 @group
 (%i4) trigfactor(sin(x)+cos(y));
@@ -270,7 +273,7 @@ Examples:
 @end group
 @end example
 
-3.
+@item @w{ }
 @example
 (%i6) trigfactor(sin(x)-cos(3*y));
                          3 y   x   %pi      3 y   x   %pi
@@ -280,7 +283,7 @@ Examples:
 (%o7)                         sin(x) - cos(3 y)
 @end example
 
-4.
+@item @w{ }
 @example
 (%i8) trigfactor(-sin(5*x)-cos(3*y));
                         3 y   5 x   %pi      3 y   5 x   %pi
@@ -290,7 +293,7 @@ Examples:
 (%o9)                      (- cos(3 y)) - sin(5 x)
 @end example
 
-5.
+@item @w{ }
 @example 
 (%i10) sin(alpha)+sin(beta)=trigfactor(sin(alpha)+sin(beta));
                                        beta   alpha      beta   alpha
@@ -300,7 +303,7 @@ Examples:
 (%o78)          sin(beta) + sin(alpha) = sin(beta) + sin(alpha)
 @end example
 
-6.
+@item @w{ }
 @example
 (%i12) sin(alpha)-sin(beta)=trigfactor(sin(alpha)-sin(beta));
                                         beta   alpha      beta   alpha
@@ -308,7 +311,7 @@ Examples:
                                          2       2         2       2
 @end example
 
-7.
+@item @w{ }
 @example
 (%i13) cos(alpha)+cos(beta)=trigfactor(cos(alpha)+cos(beta));
                                        beta   alpha      beta   alpha
@@ -316,7 +319,7 @@ Examples:
                                         2       2         2       2
 @end example
 
-8.
+@item @w{ }
 @example
 (%i14) cos(alpha)-cos(beta)=trigfactor(cos(alpha)-cos(beta));
                                        beta   alpha      beta   alpha
@@ -324,7 +327,7 @@ Examples:
                                         2       2         2       2
 @end example
 
-9.
+@item @w{ }
 @example
 (%i15) trigfactor(3*sin(x)+7*cos(x));
 (%o15)                        3 sin(x) + 7 cos(x)
@@ -347,6 +350,7 @@ Examples:
 (%i19) trigexpand(%);
 (%o19)                          2 cos(x) sin(x)
 @end example
+@end enumerate
 
 @end deffn
 
@@ -359,7 +363,8 @@ The function trigsolve find solutions of trigonometric equation from
 interval m4_math(<<<[a,b)>>>, <<<[a, b)>>>).
 
 Examples:
-1.
+@enumerate
+@item @w{ }
 @example
 (%i38) eq:eq:3*sin(x)+4*cos(x)=2;
 (%o38)                      3 sin(x) + 4 cos(x) = 2
@@ -379,7 +384,7 @@ Answ. : m4_math(<<<x = \tan^{-1}\left({2\sqrt{21}\over 5} - {12\over
 5}\right) + 2\pi k>>>, <<<x = atan((2*sqrt(21))/5-12/5)+2*%pi*k>>>);
 @w{}m4_mathcomma(<<<x = \pi - \tan^{-1}\left({2\sqrt{21}\over 5} + {12\over 5}\right) + 2\pi k>>>, <<<x=%pi-atan((2*sqrt(21))/5+12/5)+2*%pi*k>>>) @math{k} -- any integer.
 
-2.
+@item @w{ }
 @example
 (%i6) eq:cos(3*x)-sin(x)=sqrt(3)*(cos(x)-sin(3*x));
 (%o6)         cos(3 x) - sin(x) = sqrt(3) (cos(x) - sin(3 x))
@@ -442,7 +447,7 @@ Equation is equivalent to
 
 Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a} any from @math{S}, @math{k} any integer.
 
-3.
+@item @w{ }
 @example
 (%i19) eq:8*cos(x)*cos(4*x)*cos(5*x)-1=0;
 (%o19)               8 cos(x) cos(4 x) cos(5 x) - 1 = 0
@@ -519,9 +524,9 @@ We find 10 solutions from m4_math(<<<[0, \pi]>>>,<<<[0, %pi]>>>):
 1.308996938995747, 1.346396851538483, 1.79519580205131, 1.832595714594046, 
 2.243994752564138, 2.692793703076966, 2.879793265790644]
 @end example
-
 Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a} any from @math{S}, @math{k} any integer.
 
+@end enumerate
 @end deffn
 
 @node Evaluation of Trignometric Functions, Contract atan Functions, Solve Trignometric Equations, Functions and Variables for trigtools
@@ -546,8 +551,8 @@ The function trigeval compute values of expressions with m4_mathcomma(<<<\sin
 @end deffn
 
 Examples:
-
-1 Values of trignometric functions
+@enumerate
+@item Values of trignometric functions
 @example
 (%i1) load(trigtools)$
 @group
@@ -618,7 +623,7 @@ Examples:
 @end group
 @end example
 
-2 ode example
+@item ode example
 @example
 (%i17) load(odes)$
 @group
@@ -689,7 +694,7 @@ Examples:
 (%o23)                               0 = 0
 @end example
 
-3 n-th root of complex number
+@item n-th root of complex number
 
 Example. Find the 4-th roots of %i
 @example
@@ -721,6 +726,7 @@ x = -------------------- + -----------------]
              2                     2
 @end group
 @end example
+@end enumerate
 
 @node Contract atan Functions,  , Evaluation of Trignometric Functions, Functions and Variables for trigtools
 @subsection Contract atan Functions
@@ -735,7 +741,8 @@ Examples:
 (%i1) load(trigtools)$
 @end example
 
-1.
+@enumerate
+@item @w{ }
 @example
 (%i2) atan_contract(atan(x)+atan(y));
 (%o2)                          atan(y) + atan(x)
@@ -746,7 +753,7 @@ Examples:
                                                 1 - x y
 @end example
 
-2.
+@item @w{ }
 @example
 (%i5) atan(1/3)+atan(1/5)+atan(1/7)+atan(1/8)$ %=atan_contract(%);
                        1         1         1         1    %pi
@@ -754,9 +761,7 @@ Examples:
                        3         5         7         8     4
 @end example
 
-3.
-
-Machin's formulae
+@item Machin's formulae
 @example
 (%i7) 4*atan(1/5)-atan(1/239)=atan_contract(4*atan(1/5)-atan(1/239));
                                  1          1     %pi
@@ -764,9 +769,7 @@ Machin's formulae
                                  5         239     4
 @end example
 
-4.
-
-see @url{http://en.wikipedia.org/wiki/Machin-like_formula}
+@item see @url{http://en.wikipedia.org/wiki/Machin-like_formula}
 @example
 (%i8) 12*atan(1/49)+32*atan(1/57)-5*atan(1/239)+12*atan(1/110443)$
 %=atan_contract(%);
@@ -774,6 +777,8 @@ see @url{http://en.wikipedia.org/wiki/Machin-like_formula}
 (%o9)   12 atan(--) + 32 atan(--) - 5 atan(---) + 12 atan(------) = ---
                 49            57           239            110443     4
 @end example
+@end enumerate
+
 @end deffn
 
 @node References,  , Functions and Variables for trigtools
