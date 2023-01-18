@@ -478,7 +478,7 @@ random_binomial(50,1/8,3);
 /* poisson distribution */
 
 foo: pdf_poisson (x, m);
-if equal(m, 0) then kron_delta(0, x) elseif x < 0 or (numberp(x) and x - floor(x) > 0) then 0 else exp(-m)*m^x/x!;
+if equal(m, 0) then kron_delta(0, x) elseif x < 0 or x - floor(x) > 0 then 0 else exp(-m)*m^x/x!;
 
 ev (foo, m = 0);
 kron_delta(0, x);

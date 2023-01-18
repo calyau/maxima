@@ -262,8 +262,8 @@ quantile_noncentral_student_t(q,n,ncp) :=
                     if numberp(fncp)
                       then if fncp=0.0
                              then return(quantile_student_t(fq,fn))
-                             else ?qnct(fq, fn, fncp)
-                      else error("quantile_noncentral_student_t: need numeric arguments for approximate procedure")) ) $
+                             else ?qnct(fq, fn, fncp))
+              else error("quantile_noncentral_student_t: need numeric arguments for approximate procedure") ) $
 
 mean_noncentral_student_t(n,ncp) :=
    if maybe(n > 1) = false
@@ -1293,7 +1293,7 @@ pdf_poisson(x,m) :=
      then error("pdf_poisson: m must be positive")
   else
     if equal (m, 0) then kron_delta(0,x)
-    elseif x < 0 or numberp(x) and x-floor(x) > 0 then 0
+    elseif x < 0 or x-floor(x) > 0 then 0
       else exp(-m)*m^x/x! $
 
 /* R: ppois(x,m) */
@@ -1372,7 +1372,7 @@ pdf_bernoulli(x,p) :=
   if maybe(p >= 0 and p <= 1) = false
      then error("pdf_bernoulli: p must be a probability")
   else
-    if x < 0 or x > 1 or numberp(x) and x-floor(x) > 0 then 0
+    if x < 0 or x > 1 or x-floor(x) > 0 then 0
     elseif equal (p, 0) then kron_delta(x,0)
     elseif equal (p, 1) then kron_delta(x,1)
       else p^x*(1-p)^(1-x) $
@@ -1417,7 +1417,7 @@ pdf_geometric(x,p) :=
   else
     if equal (p, 1)
       then if equal (x, 0) then 1 else 0
-    elseif x < 0 or numberp(x) and x-floor(x) > 0 then 0
+    elseif x < 0 or x-floor(x) > 0 then 0
       else p*(1-p)^x $
 
 /* R: pgeom(q,p) */
@@ -1486,12 +1486,12 @@ pdf_discrete_uniform(x,n) :=
   if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
     then error("pdf_discrete_uniform: n must be a positive integer")
   else
-    if x < 1 or x > n or numberp(x) and x-floor(x) > 0
+    if x < 1 or x > n or x-floor(x) > 0
     then 0
     else 1/n $
 
 cdf_discrete_uniform(x,n) :=
-  if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
+  if maybe(n > 0) = false or n-floor(n) > 0
     then error("cdf_discrete_uniform: n must be a positive integer")
   else
     if x < 1 then 0
@@ -1499,7 +1499,7 @@ cdf_discrete_uniform(x,n) :=
     else floor(x)/n $
 
 quantile_discrete_uniform(q,n) :=
-  if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
+  if maybe(n > 0) = false or n-floor(n) > 0
     then error("cdf_discrete_uniform: n must be a positive integer")
   elseif maybe(q >= 0 and q <= 1) = false
     then error("quantile_discrete_uniform: q must be a probability")
@@ -1509,27 +1509,27 @@ quantile_discrete_uniform(q,n) :=
       else ceiling(q*n) $
 
 mean_discrete_uniform(n) :=
-  if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
+  if maybe(n > 0) = false or n-floor(n) > 0
     then error("mean_discrete_uniform: n must be a positive integer")
     else (1+n)/2 $
 
 var_discrete_uniform(n) :=
-  if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
+  if maybe(n > 0) = false or n-floor(n) > 0
     then error("var_discrete_uniform: n must be a positive integer")
     else (n^2-1)/12 $
 
 std_discrete_uniform(n) :=
-  if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
+  if maybe(n > 0) = false or n-floor(n) > 0
     then error("std_discrete_uniform: n must be a positive integer")
     else sqrt((n^2-1)/12) $
 
 skewness_discrete_uniform(n) :=
-  if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
+  if maybe(n > 0) = false or n-floor(n) > 0
     then error("skewness_discrete_uniform: n must be a positive integer")
     else 0 $
 
 kurtosis_discrete_uniform(n) :=
-  if maybe(n > 0) = false or numberp(n) and n-floor(n) > 0
+  if maybe(n > 0) = false or n-floor(n) > 0
     then error("kurtosis_discrete_uniform: n must be a positive integer")
     else -6/5-12/(5*(n^2-1)) $
 
@@ -1561,7 +1561,7 @@ pdf_hypergeometric(x,n1,n2,n) :=
   elseif maybe (n <= n1 +n2) = false
     then error("pdf_hypergeometric: n must be less or equal than n1 + n2")
   else
-    if x < max(0,n-n2) or min(n1,n) < x or numberp(x) and x-floor(x) > 0
+    if x < max(0,n-n2) or min(n1,n) < x or x-floor(x) > 0
     then 0
     else binomial(n1,x)*binomial(n2,n-x)/binomial(n1+n2,n) $
 
@@ -1674,7 +1674,7 @@ pdf_negative_binomial(x,n,p) :=
   elseif maybe(n>0)=false or numberp(n) and n-floor(n) > 0
     then error("pdf_negative_binomial: n must be a positive integer")
   else
-    if equal (p, 1) or x < 0 or numberp(x) and x-floor(x) > 0 then 0
+    if equal (p, 1) or x < 0 or x-floor(x) > 0 then 0
       else gamma(n+x)*p^n*(1-p)^x/(x!*gamma(n)) $
 
 /* R: pnbinom(x, n, p) */
