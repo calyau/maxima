@@ -45,7 +45,7 @@
 
 (declaim (special
 	  *alpha *in *in-compile*
-	  *n *out
+	  *n
 	  alpha
 	  defined_variables derivlist
 	  dn*
