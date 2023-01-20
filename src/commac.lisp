@@ -349,10 +349,6 @@
           (cond
             ((zerop a)
              (values "~,vf" 1))
-            ;; Work around for GCL bug #47404.
-            ;; Avoid numeric comparisons with NaN, which erroneously return T.
-            #+gcl ((or (float-inf-p symb) (float-nan-p symb))
-             (return-from exploden-format-float (format nil "~a" symb)))
             ((<= 0.001 a 1e7)
              (let*
                ((integer-log10 (floor (/ (log a) #.(log 10.0))))
@@ -360,7 +356,7 @@
                (if (< scale effective-printprec)
                  (values "~,vf" (- effective-printprec scale))
                  (values "~,ve" (1- effective-printprec)))))
-            #-gcl ((or (float-inf-p symb) (float-nan-p symb))
+	    ((or (float-inf-p symb) (float-nan-p symb))
              (return-from exploden-format-float (format nil "~a" symb)))
             (t
               (values "~,ve" (1- effective-printprec))))
