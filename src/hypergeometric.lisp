@@ -299,7 +299,7 @@
 ;; Pursuant to well-established Maxima coding practices :), bigfloat
 ;; functions receive bigfloat arguments and return bigfloat values.
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 ;(import 'maxima::while) ;; <--- broken Why?
 
