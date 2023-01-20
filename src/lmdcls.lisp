@@ -50,7 +50,6 @@
 	  defined_variables derivlist
 	  local
 	  opers-list
-	  returns
 	  $define_variable))
 
 (declaim (declaration unspecial))
