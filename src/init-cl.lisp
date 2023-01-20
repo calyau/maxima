@@ -263,16 +263,6 @@
     ;; let's create it by hand as a workaround.
     #+ecl (ensure-directories-exist (concatenate 'string *maxima-objdir* "/"))
     
-    ; On Windows Vista gcc requires explicit include
-    #+gcl
-    (when (string= *autoconf-windows* "true")
-      (let ((mingw-gccver (maxima-getenv "mingw_gccver")))
-	(when mingw-gccver
-	  (setq compiler::*cc*
-		(concatenate 'string compiler::*cc* " -I\"" *maxima-prefix* "\\include\""
-			     " -I\"" *maxima-prefix* "\\lib\\gcc-lib\\mingw32\\"
-			     mingw-gccver "\\include\" ")))))
-
     ; Assign initial values for Maxima shadow variables
     (setq $maxima_userdir *maxima-userdir*)
     (setf (gethash '$maxima_userdir *variable-initial-values*) *maxima-userdir*)
