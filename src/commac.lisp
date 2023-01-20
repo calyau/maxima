@@ -457,7 +457,7 @@
   (intern (maybe-invert-string-case string) :maxima))
 
 
-#-(or gcl scl allegro)
+#-(or scl allegro)
 (let ((local-table (copy-readtable nil)))
   (setf (readtable-case local-table) :invert)
   (defun print-invert-case (sym)
@@ -480,27 +480,6 @@
 	   (let ((*readtable* local-table)
 		 (*print-case* :upcase))
 	     (princ-to-string sym))))))
-
-#+gcl
-(defun print-invert-case (sym)
-  (cond ((symbolp sym)
-	 (let* ((str (princ-to-string sym))
-		(have-upper nil)
-		(have-lower nil)
-		(converted-str
-		 (map 'string (lambda (c)
-				(cond ((upper-case-p c)
-				       (setf have-upper t)
-				       (char-downcase c))
-				      ((lower-case-p c)
-				       (setf have-lower t)
-				       (char-upcase c))
-				      (t c)))
-		      str)))
-	   (if (and have-upper have-lower)
-	       str
-	       converted-str)))
-	(t (princ-to-string sym))))
 
 (defun implode (list)
   (declare (optimize (speed 3)))
