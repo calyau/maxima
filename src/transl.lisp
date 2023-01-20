@@ -96,7 +96,7 @@
 
 (defmvar tstack nil " stack of local variable modes ")
 
-(defmvar local nil "T if a $local statement is in the body.")
+(defmvar *local* nil "T if a $local statement is in the body.")
 (defmvar tr-progret t)
 (defmvar inside-mprog nil)
 (defmvar *returns* nil "list of `translate'd return forms in the block.")
@@ -872,11 +872,11 @@ APPLY means like APPLY.")
   (punt-to-meval form))
 
 (def%tr $local (form)
-  (when local
+  (when *local*
     (tr-format (intl:gettext "error: there is already a 'local' in this block.~%"))
     (tr-abort)
     (return-from $local nil))
-  (setq local t)
+  (setq *local* t)
   ; We can't just translate to a call to MLOCAL here (which is
   ; what used to happen).  That would push onto LOCLIST and bind
   ; MLOCP at the "wrong time".  The push onto LOCLIST and the
@@ -892,7 +892,7 @@ APPLY means like APPLY.")
 		  &aux
 		  (arglist (mparams (cadr form)))
 		  (easy-assigns nil)
-		  (local nil))
+		  (*local* nil))
   ;; This function is defined to take a simple macsyma lambda expression and
   ;; return a simple lisp lambda expression. The optional TR-BODY hook
   ;; can be used for translating other special forms that do lambda binding.
@@ -906,7 +906,7 @@ APPLY means like APPLY.")
   (mapc #'tbind arglist)
   (destructuring-let* (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
 		       (local-declares (make-declares arglist t))
-		       (body (if local
+		       (body (if *local*
 				 `((let ((mlocp t))
 				     (push nil loclist)
 				     (unwind-protect

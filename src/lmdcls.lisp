@@ -48,7 +48,6 @@
 	  *n
 	  alpha
 	  defined_variables derivlist
-	  local
 	  opers-list
 	  $define_variable))
 
