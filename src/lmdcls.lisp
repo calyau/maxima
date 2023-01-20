@@ -51,7 +51,7 @@
 	  dn*
 	  local
 	  nn*
-	  opers-list outargs1 outargs2
+	  opers-list
 	  returns
 	  $define_variable))
 
