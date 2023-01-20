@@ -205,11 +205,11 @@
 		  (cdr ans)))))
 
 (defun albk (p)				;to undo monicizing subst
-  (let ((alpha (pdis alpha)) ($ratfac t))
-    (declare (special alpha))
+  (let ((*alpha* (pdis *alpha*)) ($ratfac t))
+    (declare (special *alpha*))
 	;; don't multiply them back out
-    (maxima-substitute (list '(mtimes simp) mplc* alpha) ;assumes mplc* is int
-		       alpha p)))
+    (maxima-substitute (list '(mtimes simp) mplc* *alpha*) ;assumes mplc* is int
+		       *alpha* p)))
 
 
 (defmfun $gfactor (p &aux (gauss t))
@@ -235,9 +235,9 @@
 	(genvar nil)
 	($gcd $gcd)
 	($negdistrib $negdistrib))
-    (prog (fn var mm* mplc* intbs* alflag minpoly* alpha p algfac*
+    (prog (fn var mm* mplc* intbs* alflag minpoly* *alpha* p algfac*
 	   $keepfloat $algebraic cargs)
-       (declare (special cargs fn alpha))
+       (declare (special cargs fn *alpha*))
        (unless (member $gcd *gcdl* :test #'eq)
 	 (setq $gcd (car *gcdl*)))
        (let ($ratfac)
@@ -251,19 +251,19 @@
 	 (when (mbagp p)
 	   (return (cons (car p) (mapcar #'(lambda (x) (apply #'factor (cons x cargs))) (cdr p)))))
 	 (cond (mp?
-		(setq alpha (meqhk mp))
-		(newvar alpha)
-		(setq minpoly* (cadr (ratrep* alpha)))
+		(setq *alpha* (meqhk mp))
+		(newvar *alpha*)
+		(setq minpoly* (cadr (ratrep* *alpha*)))
 		(when (or (pcoefp minpoly*)
 			  (not (univar (cdr minpoly*)))
 			  (< (cadr minpoly*) 2))
-		  (merror (intl:gettext "factor: second argument must be a nonlinear, univariate polynomial; found: ~M") alpha))
-		(setq alpha (pdis (list (car minpoly*) 1 1))
+		  (merror (intl:gettext "factor: second argument must be a nonlinear, univariate polynomial; found: ~M") *alpha*))
+		(setq *alpha* (pdis (list (car minpoly*) 1 1))
 		      mm* (cadr minpoly*))
 		(unless (equal (caddr minpoly*) 1)
 		  (setq mplc* (caddr minpoly*))
 		  (setq minpoly* (pmonz minpoly*))
-		  (setq p (maxima-substitute (div alpha mplc*) alpha p)))
+		  (setq p (maxima-substitute (div *alpha* mplc*) *alpha* p)))
 		(setq $algebraic t)
 		($tellrat(pdis minpoly*))
 		(setq algfac* t))
@@ -285,12 +285,12 @@
 	     ((atom p) (return p)))
        (and $ratfac (not $factorflag) ($ratp e) (return ($rat p)))
        (and $factorflag (mtimesp p) (mnump (cadr p))
-	    (setq alpha (factornumber (cadr p)))
-	    (cond ((alike1 alpha (cadr p)))
-		  ((mtimesp alpha)
-		   (setq p (cons (car p) (append (cdr alpha) (cddr p)))))
+	    (setq *alpha* (factornumber (cadr p)))
+	    (cond ((alike1 *alpha* (cadr p)))
+		  ((mtimesp *alpha*)
+		   (setq p (cons (car p) (append (cdr *alpha*) (cddr p)))))
 		  (t
-		   (setq p (cons (car p) (cons alpha (cddr p)))))))
+		   (setq p (cons (car p) (cons *alpha* (cddr p)))))))
        (when (null (member 'factored (car p) :test #'eq))
 	 (setq p (cons (append (car p) '(factored)) (cdr p))))
        (return p))))

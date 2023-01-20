@@ -18,7 +18,7 @@
 (declare-top (special *odr* *checkagain))
 
 ;;There really do seem to be two such variables...
-(declare-top (special alpha *alpha))
+(declare-top (special *alpha))
 
 (defmvar *irreds nil)
 
@@ -300,7 +300,7 @@
 			       (t (pfactor1 a)))))))))
 
 
-(defun ffactor (l fn &aux (alpha alpha))
+(defun ffactor (l fn &aux (*alpha* *alpha*))
   ;;  (declare (special varlist))		;i suppose...
   (prog (q)
      (cond ((and (null $factorflag) (mnump l)) (return l))
@@ -310,10 +310,10 @@
 	   ((and (not gauss)(member 'factored (cdar l) :test #'eq))(return l))
 	   ((and gauss (member 'gfactored (cdar l) :test #'eq)) (return l)))
      (newvar l)
-     (if algfac* (setq varlist (cons alpha (remove alpha varlist :test #'equal))))
+     (if algfac* (setq varlist (cons *alpha* (remove *alpha* varlist :test #'equal))))
      (setq q (ratrep* l))
      (when algfac*
-       (setq alpha (cadr (ratrep* alpha)))
+       (setq *alpha* (cadr (ratrep* *alpha*)))
        (setq minpoly* (subst (car (last genvar))
 			     (car minpoly*)
 			     minpoly*)))
