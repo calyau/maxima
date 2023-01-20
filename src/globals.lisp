@@ -1785,3 +1785,4 @@
 ;; Miscellaneous vars.
 (defvar nn*)
 (defvar dn*)
+(defvar *n)

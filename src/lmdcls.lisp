@@ -45,7 +45,6 @@
 
 (declaim (special
 	  *alpha
-	  *n
 	  alpha
 	  defined_variables derivlist
 	  opers-list

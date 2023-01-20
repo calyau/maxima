@@ -13,7 +13,7 @@
 (macsyma-module combin)
 
 (declare-top (special *mfactl *factlist donel *ans* *var*
-		      *n *a* *a $prevfib $next_lucas
+		      *a* *a $prevfib $next_lucas
 		      *times *plus sum usum
 		      $ratprint $zeta%pi $bftorat))
 
@@ -1648,5 +1648,5 @@
 	       (cons lin 1)))))
 
 (declare-top (unspecial *mfactl *factlist donel
-			*var* *ans* *n *a*
+			*var* *ans* *a*
 			*infsumsimp *times *plus sum usum makef))

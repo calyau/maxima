@@ -12,7 +12,7 @@
 
 (macsyma-module series)
 
-(declare-top (special var *n *a *m *c *index *gcd*
+(declare-top (special var *a *m *c *index *gcd*
 		      *roots *failures
 		      *ratexp *var usexp ans *trigred
 		      *form indl *noexpand))
