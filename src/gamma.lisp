@@ -3280,7 +3280,7 @@
 		  (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
-o      (give-up))))
+      (give-up))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of the Beta function
