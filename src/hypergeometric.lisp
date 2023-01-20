@@ -96,8 +96,7 @@
 ;; real valued. So declare hypergeometric to be complex.
 
 (eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
+    (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
       (meval '(($declare) %hypergeometric $complex))))
 

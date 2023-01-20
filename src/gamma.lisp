@@ -3002,8 +3002,7 @@
 
 ;;; This would be the first way to give the property of an odd function.
 ;(eval-when
-;    #+gcl (load eval)
-;    #-gcl (:load-toplevel :execute)
+;    (:load-toplevel :execute)
 ;    (let (($context '$global) (context '$global))
 ;      (meval '(($declare) %fresnel_s $oddfun))
 ;      ;; Let's remove built-in symbols from list for user-defined properties.
