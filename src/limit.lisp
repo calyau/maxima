@@ -28,7 +28,7 @@
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
 (declare-top (special origval
-		      *indicator nn* dn* numer denom exp var val
+		      *indicator numer denom exp var val
 		      taylored logcombed
 		      $exponentialize lhp? lhcount
 		      loginprod? a context limit-assumptions
@@ -3410,7 +3410,7 @@ ignoring dummy variables and array indices."
 	 (caddr e))
 	(t (some #'%einvolve (cdr e)))))
 
-(declare-top (unspecial *indicator nn* dn* exp var val origval taylored
+(declare-top (unspecial *indicator exp var val origval taylored
 			$tlimswitch logcombed lhp? lhcount))
 
 

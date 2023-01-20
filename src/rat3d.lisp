@@ -15,7 +15,7 @@
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 4.
 ;;	IT INCLUDES THE POLYNOMIAL FACTORING ROUTINES.
 
-(declare-top (special *odr* nn* *checkagain))
+(declare-top (special *odr* *checkagain))
 
 ;;There really do seem to be two such variables...
 (declare-top (special alpha *alpha))

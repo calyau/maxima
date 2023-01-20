@@ -48,9 +48,7 @@
 	  *n
 	  alpha
 	  defined_variables derivlist
-	  dn*
 	  local
-	  nn*
 	  opers-list
 	  returns
 	  $define_variable))

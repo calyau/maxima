@@ -30,7 +30,7 @@
 		      *prime *g* modulu* plim listelm many* *inl3
 		      *sharpa *sharpb limk split* alc ind p l *odr*
 		      *i* mcflag elm ne res fact1 fact2 subvar
-		      subval ovarlist valist dlp nn* df1 df2 dn* fcs* uu*))
+		      subval ovarlist valist dlp df1 df2 fcs* uu*))
 
 (defvar *afixn*)
 (defvar *fctcfixn*)

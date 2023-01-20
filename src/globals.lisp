@@ -1780,3 +1780,8 @@
   "Let <x> be a rational number less than one of the form 'p/q'.  If 'q'
   is greater than 'maxpsifracdenom', then 'psi[<n>](<x>)' will not try
   to return a simplified value.")
+
+;;------------------------------------------------------------------------
+;; Miscellaneous vars.
+(defvar nn*)
+(defvar dn*)
