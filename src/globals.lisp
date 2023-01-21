@@ -992,6 +992,18 @@
 			 (or (null val)
 			     (member val *gcdl*))))
 
+
+;; It is convenient to have the *bigprimes* be actually less than half
+;; the size of the most positive fixnum, so that arithmetic is easier.
+;;
+;; *bigprimes* and *alpha are initialized in
+;; initialize-runtime-globals instead of here because *bigprimes*
+;; needs the NEXT-PRIME function to generate the list of primes, and
+;; NEXT-PRIME isn't available yet.  Likewise, *alpha is initialized to
+;; the first element of *bigprimes*.
+(defvar *bigprimes*)
+(defmvar *alpha)
+
 ;;------------------------------------------------------------------------
 ;; From rat3d.lisp
 (defmvar algfac* nil)

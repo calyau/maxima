@@ -698,7 +698,24 @@
 	 (cond ((pregexp:pregexp-match-positions "(?:darwin)" *autoconf-host*)
 		(setf $browser "open '~A'"))
 	       ((pregexp:pregexp-match-positions "(?i:linux)" *autoconf-host*)
-		(setf $browser "xdg-open '~A'"))))))
+		(setf $browser "xdg-open '~A'")))))
+  ;; Initialize *bigprimes* here instead of globals.lisp because we
+  ;; need the NEXT-PRIME function.
+  (setf *bigprimes*
+	(loop with p = (ash most-positive-fixnum -1)
+	      repeat 20
+	      do (setq p (next-prime (1- p) -1))
+	      collect p))
+  ;; Initialize *alpha and $pointbound.  Since both of these are
+  ;; defmvars, we need to set the initial values appropriately too so
+  ;; they get reset correctly.
+  (setf *alpha (car *bigprimes*))
+  (setf (gethash '*alpha *variable-initial-values*)
+	(car *bigprimes*))
+  (setf $pointbound *alpha)
+  (setf (gethash '$pointbound *variable-initial-values*)
+	*alpha)
+  (values))
 
 (defun adjust-character-encoding ()
   #+sbcl (setf sb-impl::*default-external-format* :utf-8)

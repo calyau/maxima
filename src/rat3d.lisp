@@ -17,9 +17,6 @@
 
 (declare-top (special *odr* *checkagain))
 
-;;There really do seem to be two such variables...
-(declare-top (special *alpha))
-
 (defmvar *irreds nil)
 
 (defmvar $berlefact t)
