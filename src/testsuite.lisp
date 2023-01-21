@@ -183,15 +183,11 @@
     #-allegro
     ((mlist simp) "rtest_stringproc")
     #-allegro
-    ((mlist simp) "rtest_md5sum"
-     #+gcl ((mlist simp) 2))
+    ((mlist simp) "rtest_md5sum")
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"
     ((mlist simp) "rtest_descriptive"
-     ;; Tests that failed for gcl 2.6.14
-     #+gcl 
-     ((mlist simp) 120 131)
      ;; Tests that failed for ACL 10.1
      #+allegro
      ((mlist simp) 98 99 109 110))

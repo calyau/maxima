@@ -3024,13 +3024,14 @@
 (defun alike1 (x y)
   (cond ((eq x y))
 	((atom x)
-     (cond
-       ((stringp x)
-        (and (stringp y) (string= x y)))
-       ((vectorp x)
-        (and (vectorp y) (lisp-vector-alike1 x y)))
-       ((arrayp x)
-        (and (arrayp y) (lisp-array-alike1 x y)))
+     (if (arrayp x)
+       (cond
+         ((stringp x)
+          (and (stringp y) (string= x y)))
+         ((vectorp x)
+          (and (vectorp y) (lisp-vector-alike1 x y)))
+         (t
+           (and (arrayp y) (lisp-array-alike1 x y))))
 
     ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
     ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
@@ -3039,7 +3040,7 @@
     ;; ((maxima-undeclared-arrayp x)
     ;;  (and (maxima-undeclared-arrayp y) (maxima-undeclared-array-alike1 x y)))
 
-       (t (equal x y))))
+       (equal x y)))
 	((atom y) nil)
 	((and
 	  (not (atom (car x)))
