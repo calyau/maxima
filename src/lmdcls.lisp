@@ -44,7 +44,6 @@
 ;;; or for some specials declared in the macro files, eg displm.
 
 (declaim (special
-	  *alpha
 	  defined_variables
 	  $define_variable))
 
