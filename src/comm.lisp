@@ -12,8 +12,7 @@
 
 (macsyma-module comm)
 
-(declare-top (special derivlist
-		      *linelabel*))
+(declare-top (special *linelabel*))
 
 ;; op and opr properties
 

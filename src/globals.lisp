@@ -1787,3 +1787,4 @@
 (defvar nn*)
 (defvar dn*)
 (defvar *n)
+(defvar derivlist)
