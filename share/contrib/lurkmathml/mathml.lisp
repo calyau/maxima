@@ -327,7 +327,7 @@
 (defprop $theta "<mi>&theta;</mi> " mathmlword)
 (defprop $iota "<mi>&iota;</mi> " mathmlword)
 (defprop $kappa "<mi>&kappa;</mi> " mathmlword)
-;(defprop $lambda "<mi>&lambda;</mi> " mathmlword)
+(defprop lambda "<mi>&lambda;</mi> " mathmlword)
 (defprop $mu "<mi>&mu;</mi> " mathmlword)
 (defprop $nu "<mi>&nu;</mi> " mathmlword)
 (defprop $xi "<mi>&xi;</mi> " mathmlword)
