@@ -14,7 +14,6 @@
 
 (declare-top (special *rulesw*
 		      *prods* *negprods* *sums* *negsums*
-		      opers-list
 		      *out *in))
 
 ;; Switches dealing with matrices and non-commutative multiplication.

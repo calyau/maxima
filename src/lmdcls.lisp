@@ -46,7 +46,6 @@
 (declaim (special
 	  *alpha
 	  defined_variables
-	  opers-list
 	  $define_variable))
 
 (declaim (declaration unspecial))

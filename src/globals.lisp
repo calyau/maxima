@@ -1788,3 +1788,4 @@
 (defvar dn*)
 (defvar *n)
 (defvar derivlist)
+(defvar opers-list)
