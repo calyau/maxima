@@ -19,7 +19,8 @@
 	 #+allegro ((mlist simp) 11 13))
         "rtestnset" 
         ((mlist simp) "rtest1"
-	 ((mlist simp) 183 185 186))
+	 #+gcl ((mlist simp) 183 185 186 203 206)
+	 #-gcl ((mlist simp) 183 185 186))
         ((mlist simp) "rtest1a" ((mlist simp) 33))
         ((mlist simp) "rtest2" ((mlist simp) 86 95))
 	"rtest4"
@@ -43,8 +44,7 @@
         ((mlist simp) "rtest10" ((mlist simp) 24 25))
         ((mlist simp) "rtest11"
 	 #+allegro ((mlist simp) 136 137 158 174)
-	 #+ccl64 ((mlist simp) 158 174)
-	 #+gcl ((mlist simp) 158 174 175))
+	 #+ccl64 ((mlist simp) 158 174))
         "rtest13"
 	"rtest13s"
 	;; ECL 16.1.2 still reliably fails in #307 + #310
@@ -105,16 +105,11 @@
         ((mlist simp) "rtest_sign"
 	 ((mlist simp) 21 25 30 40 65 72 79))
         "rtest_algebraic"
-	;; Using the gcl version that is shipped with Ubuntu 16.04 (Long term Support)
-	;; test 307 of rtest_gamma results in an error-catch on i386, but not in
-	;; i64.
-	;; Unfortunately many gcl versions have the same version number so we cannot
-	;; test for the buggy version in order to get full support for the lts version.
+	;; Using the gcl version 2.6.14 the tests pass.
 	;;
 	;; On ECL 15.3.7 (but not on ECL versions from 2014 or 2016) rtest_gamma
 	;; most of the times crashes on ia32 and sometimes crashes on x64.
 	((mlist simp) "rtest_gamma"
-	 #+gcl ((mlist simp) 307)
 	 #+allegro   ((mlist simp) 48 198 663 745))
         "rtest_expintegral"
         "rtest_signum"
@@ -186,16 +181,17 @@
     "rtest_solve_rec"
     ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
     #-allegro
-    ((mlist simp) "rtest_stringproc"
-     #+gcl ((mlist simp) 14))
-    #-allegro "rtest_md5sum"
+    ((mlist simp) "rtest_stringproc")
+    #-allegro
+    ((mlist simp) "rtest_md5sum"
+     #+gcl ((mlist simp) 2))
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"
     ((mlist simp) "rtest_descriptive"
-     ;; Tests that failed for gcl 2.6.12
+     ;; Tests that failed for gcl 2.6.14
      #+gcl 
-     ((mlist simp) 98 109)
+     ((mlist simp) 120 131)
      ;; Tests that failed for ACL 10.1
      #+allegro
      ((mlist simp) 98 99 109 110))
@@ -257,7 +253,7 @@
      #+clisp
      ((mlist simp) 27 38 61 63 65 69)
      #+gcl
-     ((mlist simp) 7 29 38 39 40 47 48 61 69 70)
+     ((mlist simp) 7 29 38 39 40 48 61 70)
      ;; The tests that failed with abcl 1.5.0
      #+abcl
      ((mlist simp) 38 40 61 63 65 69)
@@ -291,15 +287,17 @@
      ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322))
     ((mlist simp) "rtest_sym"
      #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 15 64)
-     #+(or clisp gcl)  ((mlist simp) 15 64)
+     #+clisp  ((mlist simp) 15 64)
      #+ecl ((mlist simp) 64)
      #+sbcl ((mlist simp) 15 64))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
     ((mlist simp) "rtest_vect"
-     #-(or cmucl ecl)
+     #-(or cmucl gcl ecl)
      ((mlist simp) 4 9 10 13 16 19 20 21 24 25)
      #+(or cmucl ecl)
+     ((mlist simp) 4 9 10 13 16 20 21 24 25)
+     #+gcl
      ((mlist simp) 4 9 10 13 16 20 21 24 25))
      "rtest_antid"
      "rtest_bffac"
@@ -307,7 +305,7 @@
      "rtest_grobner"
      ((mlist simp) "rtest_finance"
       ;; Tested with acl 10.1
-      #+(or gcl allegro)
+      #+allegro
       ((mlist simp) 9 10 11))
      "rtest_fft"
      "rtest_rfft"
