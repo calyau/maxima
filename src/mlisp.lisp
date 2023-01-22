@@ -22,8 +22,7 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special derivlist
-		      *builtin-$props*))
+(declare-top (special *builtin-$props*))
 
 (declare-top (unspecial args))
 

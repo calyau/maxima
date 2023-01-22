@@ -44,15 +44,7 @@
 ;;; or for some specials declared in the macro files, eg displm.
 
 (declaim (special
-	  *alpha *in *in-compile*
-	  *n *out
-	  alpha
-	  defined_variables derivlist
-	  dn*
-	  local
-	  nn*
-	  opers-list outargs1 outargs2
-	  returns
+	  defined_variables
 	  $define_variable))
 
 (declaim (declaration unspecial))

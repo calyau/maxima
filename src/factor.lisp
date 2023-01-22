@@ -30,7 +30,7 @@
 		      *prime *g* modulu* plim listelm many* *inl3
 		      *sharpa *sharpb limk split* alc ind p l *odr*
 		      *i* mcflag elm ne res fact1 fact2 subvar
-		      subval ovarlist valist dlp nn* df1 df2 dn* fcs* uu*))
+		      subval ovarlist valist dlp df1 df2 fcs* uu*))
 
 (defvar *afixn*)
 (defvar *fctcfixn*)
@@ -40,7 +40,6 @@
 
 ;; Internal specials
 
-(defmvar alpha nil)
 ;(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37. 41. 43. 47. 53. 59. 61.))
 
 (defun primcyclo (n)
@@ -74,7 +73,7 @@
 	 (let* ((gauss nil) (facl (factxn+1 n)))
 	   (cond ((oddp n) facl)
 		 (t (let (($gcd '$subres)
-			  (pfac (list *g* (ash n -1) 1 0 alpha)))
+			  (pfac (list *g* (ash n -1) 1 0 *alpha*)))
 		      (mapcan #'(lambda (q) (subseq (pgcdcofacts q pfac) 0 2)) facl))))))
 	(t (let ((m 1) (nl (reverse (cfactor n))))
 	     (when (equal 2 (cadr nl))
@@ -487,7 +486,7 @@
      (cond ((null ql)(return d))
 	   ((null (cdr ql)) (return (cons u d))))
      (return (append d
-		     (cond ((or alpha (> modulus 70.))
+		     (cond ((or *alpha* (> modulus 70.))
 			    (cpbgzass ql (pmod u) (length ql)))
 			   (t (cpbg ql (pmod u) (length ql))))))))
 
@@ -511,7 +510,7 @@
      (setq b2 1)
      (setq r1 f1)
      (setq r2 (cdr ql))
-     test (cond ((or (numberp r2) (and alpha (alg r2))) (go end)))
+     test (cond ((or (numberp r2) (and *alpha* (alg r2))) (go end)))
      (setq ql (pmodquo r1 r2))
      (setq ap (pdifference a1 (ptimes (car ql) a2)))
      (setq bp (pdifference b1 (ptimes (car ql) b2)))
@@ -641,7 +640,7 @@
      (setq var (car poly) elm (listovars poly)
 	   origenvar genvar
 	   genvar (intersect genvar (if algfac*
-					(delete (car alpha) elm :test #'equal)
+					(delete (car *alpha*) elm :test #'equal)
 					elm))
 	   ovarlist (butlast genvar)	;this depends on the order of the above intersection!
 	   nn* (1+ (length ovarlist)))
@@ -667,7 +666,7 @@
      tag  (fixvl subval1 subvar1)
      (setq subval1 nil subvar1 nil)
      (fixvl0 subvar subval (reverse ovarlist))
-     (when algfac* (push (car alpha) genvar))
+     (when algfac* (push (car *alpha*) genvar))
      (setq poly (cpber3 poly p))
      (setq genvar origenvar)
      (return poly)))
@@ -1011,7 +1010,7 @@
 	    (setq linfac (car ql) uu* (caddr ql) ql (cadr ql))))
      (setq *prime modulus)
      tag0	     (cond ((eq ql 'splitcase)
-			    (setq poly(nalgfac poly (cons (car alpha) (cdr minpoly*))))
+			    (setq poly(nalgfac poly (cons (car *alpha*) (cdr minpoly*))))
 			    (setq plim *alpha *prime plim limk -1)
 			    (return poly))
 			   ((null (cdr (append linfac ql)))

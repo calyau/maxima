@@ -15,8 +15,8 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special $noprincipal
-		      leadcoef var *roots *failures nn*
-		      sn* sd* genvar dn* zn))
+		      leadcoef var *roots *failures
+		      sn* sd* genvar zn))
 
 
 ;; Compute the poles (roots) of the polynomial D and return them.

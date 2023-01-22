@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special *a *n sum *i opers-list))
+(declare-top (special *a sum *i))
 
 (defmvar $opproperties
     (list* '(mlist simp)
