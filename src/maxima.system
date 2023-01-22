@@ -610,8 +610,10 @@
 	     (:file "transf")
 	     (:file "troper"
 		    :depends-on ("transl"))
-	     (:file "trutil")
-	     (:file "trmode")
+	     (:file "trutil"
+		    :depends-on ("transl"))
+	     (:file "trmode"
+		    :depends-on ("transl"))
 	     (:file "trdata")
 	     (:file "trpred")
 	     (:file "transq")

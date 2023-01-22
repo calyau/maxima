@@ -32,10 +32,6 @@
       (mcall user-level value)))
   value)
 
-(defvar defined_variables ())
-
-(defvar $define_variable ())
-
 (def%tr $define_variable (form)	;;VAR INIT MODE.
   (cond ((> (length form) 3)
 	 (destructuring-let (((var val mode) (cdr form)))
