@@ -1005,6 +1005,25 @@ script the SCL executable is the program exec'd by that shell script.])
 fi
 
 if test x"${gcl}" = xtrue; then
+   AC_MSG_CHECKING([if gcl version >= 2.6.13])
+   dnl Check gcl version
+   GCL_VERSION=`${GCL_NAME} -eval '(princ (lisp-implementation-version))' -batch | sed 's/GCL \([[0-9.]]\+\).*/\1/'`
+   echo GCL version = $GCL_VERSION
+   gcl_major=`expr $GCL_VERSION : '\([[0-9]]\+\)'`
+   gcl_minor=`expr $GCL_VERSION : '[[0-9]]\+\.\([[0-9]]\+\)'`
+   gcl_sub=`expr $GCL_VERSION : '[[0-9]]\+\.[[0-9]]\+\.\([[0-9]]\+\)'`
+   dnl echo gcl major = $gcl_major
+   dnl echo gcl_minor = $gcl_minor
+   dnl echo gcl_sub = $gcl_sub
+   dnl Create a numerical version number
+   gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_sub}`
+
+   if test ${gcl_version} -lt 20614; then
+       AC_MSG_ERROR([GCL version ${GCL_VERSION} too old])
+   else
+       AC_MSG_RESULT([${GCL_VERSION}])
+   fi
+
    result=`"${GCL_NAME}" -batch -eval '#+ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_SUCCESS~%") #-ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_FAILURE~%")' -eval '(si::bye)'`
    retval=$?
    if test ! x"${retval}" = x"0" ; then
