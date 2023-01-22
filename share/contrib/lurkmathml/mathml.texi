@@ -1,0 +1,80 @@
+\input texinfo
+
+@setfilename mathml.info
+@settitle Package mathml
+
+@ifinfo
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@dircategory Mathematics/Maxima
+@direntry
+* Package mathml: (maxima)Maxima share package mathml to generate Presentation MathML.
+@end direntry
+
+@node Top, Definitions for package mathml, (dir), (dir)
+@top
+@menu
+* Definitions for package mathml::
+@end menu
+@chapter Package mathml
+
+@node Definitions for package mathml, Top, Top, Top
+@section Definitions for package mathml
+
+@defun mathml (@var{expr})
+@defunx mathml (@var{expr}, @var{filename})
+@defunx mathml (@var{label}, @var{filename})
+
+Convert an expression to Presentation MathML (version 2).
+
+When the first argument is a label,
+the label and its associated value are printed verbatim,
+not typeset as MathML.
+
+When the optional argument @var{filename} is supplied,
+any output will be appended to the file.
+
+@code{load("mathml");} loads this package.
+
+Examples:
+
+@example
+(%i1) load ("mathml") $
+(%i2) mathml (integrate (sin(x), x));
+<math xmlns="http://www.w3.org/1998/Math/MathML"> <mo>-</mo>
+ <mi>cos</mi> <mi>x</mi> </math>
+(%o2)                         false
+(%i3) integrate (1/(1 + x^3), x);
+                                   2 x - 1
+                2             atan(-------)
+           log(x  - x + 1)         sqrt(3)    log(x + 1)
+(%o3)   (- ---------------) + ------------- + ----------
+                  6              sqrt(3)          3
+(%i4) mathml (%o3);
+<pre>
+(%O3) (-log(x^2-x+1)/6)+atan((2*x-1)/sqrt(3))/sqrt(3)+log(x+1)/3;
+</pre>
+(%o4)                         (%o3)
+(%i5) mathml (''%o3);
+
+ <math xmlns="http://www.w3.org/1998/Math/MathML"> <mo>-</mo>
+ <mfrac><mrow><mi>log</mi> <mfenced separators=""><msup><mrow>
+ <mi>x</mi> </mrow> <mn>2</mn> </msup> <mo>-</mo> <mi>x</mi> 
+ <mo>+</mo> <mn>1</mn> </mfenced> </mrow> <mrow><mn>6</mn> 
+ </mrow></mfrac> <mo>+</mo> <mfrac><mrow><mi>arctan</mi> 
+ <mfenced separators=""><mfrac><mrow><mn>2</mn> 
+ <mspace width="thinmathspace"/><mi>x</mi> <mo>-</mo> <mn>1</mn> 
+ </mrow> <mrow><msqrt><mn>3</mn> </msqrt></mrow></mfrac> </mfenced> 
+ </mrow> <mrow><msqrt><mn>3</mn> </msqrt></mrow></mfrac> <mo>+</mo> 
+ <mfrac><mrow><mi>log</mi> <mfenced separators=""><mi>x</mi> 
+ <mo>+</mo> <mn>1</mn> </mfenced> </mrow> <mrow><mn>3</mn> 
+ </mrow></mfrac> </math>
+(%o5)                         false
+(%i6) mathml (''%o3, "/tmp/tmp.xml");
+(%o6)                         false
+@end example
+@end defun
+@bye

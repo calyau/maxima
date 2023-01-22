@@ -1,0 +1,5 @@
+foo: 3^5;
+bar: 3^5 + x^5 $
+baz: expand ((2 - a)^4) $
+baz - bar*foo;
+abc^(foo + bar + baz) $
