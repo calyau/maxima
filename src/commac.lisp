@@ -278,46 +278,20 @@
     (defun ,function . ,body)))
 
 (defun exploden (symb)
-  (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
-	   #+(and gcl (not gmp)) (tentochunksize (expt 10 big-chunk-size))
-	   string)
+  (let* (string)
     (cond ((symbolp symb)
 	   (setq string (print-invert-case symb)))
 	  ((floatp symb)
 	   (setq string (exploden-format-float symb)))
-
-      ((integerp symb)
-       ;; When obase > 10, prepend leading zero to
-       ;; ensure that output is readable as a number.
-       (let ((leading-digit (if (> *print-base* 10) #\0)))
-         (cond
-           #+(and gcl (not gmp))
-           ((bignump symb)
-            (let* ((big symb)
-                   ans rem tem
-                   (chunks
-                     (loop
-                       do (multiple-value-setq (big rem)
-                            (floor big tentochunksize))
-                       collect rem
-                       while (not (eql 0 big)))))
-              (setq chunks (nreverse chunks))
-              (setq ans (coerce (format nil "~d" (car chunks)) 'list))
-              (if (and leading-digit (not (digit-char-p (car ans) 10.)))
-                (setq ans (cons leading-digit ans)))
-              (loop for v in (cdr chunks)
-                    do (setq tem (coerce (format nil "~d" v) 'list))
-                    (loop for i below (- big-chunk-size (length tem))
-                          do (setq tem (cons #\0 tem)))
-                    (setq ans (nconc ans tem)))
-              (return-from exploden ans)))
-           (t
+	  ((integerp symb)
+	   ;; When obase > 10, prepend leading zero to
+	   ;; ensure that output is readable as a number.
+	   (let ((leading-digit (if (> *print-base* 10) #\0)))
              (setq string (format nil "~A" symb))
              (setq string (coerce string 'list))
              (if (and leading-digit (not (digit-char-p (car string) 10.)))
-               (setq string (cons leading-digit string)))
-             (return-from exploden string)))))
-
+		 (setq string (cons leading-digit string)))
+             (return-from exploden string)))
 	  (t (setq string (format nil "~A" symb))))
     (assert (stringp string))
     (coerce string 'list)))
