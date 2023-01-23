@@ -12,8 +12,6 @@
 
 (macsyma-module optim)
 
-(declare-top (unspecial args))
-
 (defvar *subexp* (make-array 64 :initial-element nil))
 
 (defmvar $optimprefix '$%

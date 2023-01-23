@@ -24,8 +24,6 @@ or if apply is being used are printed.")
   
 (declare-top (special *builtin-$props*))
 
-(declare-top (unspecial args))
-
 (defvar mproplist nil)
 (defvar mprogp nil)
 (defvar mdop nil)
