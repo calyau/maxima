@@ -1352,10 +1352,10 @@ causing all pending operations to be flushed"
   (ecase i
     (1 least-positive-normalized-double-float)
     (2 most-positive-double-float)
-    (3 #-(or gcl ecl) double-float-epsilon
-       #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105))
-    (4 (scale-float #-(or gcl ecl) double-float-epsilon
-		    #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105)
+    (3 #-ecl double-float-epsilon
+       #+ecl (scale-float (float #X10000000000001 1d0) -105))
+    (4 (scale-float #-ecl double-float-epsilon
+		    #+ecl (scale-float (float #X10000000000001 1d0) -105)
 		    1))
     (5 (log (float (float-radix 1d0) 1d0) 10d0))))
 
