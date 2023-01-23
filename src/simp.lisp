@@ -3023,14 +3023,9 @@
 (defun alike1 (x y)
   (cond ((eq x y))
 	((atom x)
-     (if (arrayp x)
-       (cond
-         ((stringp x)
-          (and (stringp y) (string= x y)))
-         ((vectorp x)
-          (and (vectorp y) (lisp-vector-alike1 x y)))
-         (t
-           (and (arrayp y) (lisp-array-alike1 x y))))
+	 (typecase x
+	   (string (when (stringp y) (string= x y)))
+	   (array (when (arrayp y) (lisp-array-alike1 x y)))
 
     ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
     ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
@@ -3039,7 +3034,8 @@
     ;; ((maxima-undeclared-arrayp x)
     ;;  (and (maxima-undeclared-arrayp y) (maxima-undeclared-array-alike1 x y)))
 
-       (equal x y)))
+	   (otherwise (equal x y))))
+
 	((atom y) nil)
 	((and
 	  (not (atom (car x)))
@@ -3054,18 +3050,18 @@
 	      (alike (cdr x) (cdr y))))))))
 
 (defun lisp-array-alike1 (x y &aux (rx (array-rank x)))
-  (flet ((el-alike1 (n)
+  (flet ((els-alike1 (n)
 	   (dotimes (i n t)
 	     (unless (alike1 (row-major-aref x i) (row-major-aref y i))
-		 (return-from el-alike1 nil)))))
+		 (return-from els-alike1 nil)))))
     (when (eql rx (array-rank y))
       (case rx
 	(1 (let ((lx (length x)))
 	     (when (eql lx (length y))
-	       (el-alike1 lx))))
+	       (els-alike1 lx))))
 	(otherwise
 	 (when (equal (array-dimensions x) (array-dimensions y))
-	   (el-alike1 (array-total-size x))))))))
+	   (els-alike1 (array-total-size x))))))))
 
 (defun maxima-declared-array-alike1 (x y)
   (lisp-array-alike1 (get (mget x 'array) 'array) (get (mget y 'array) 'array)))
