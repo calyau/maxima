@@ -248,7 +248,7 @@
      #+clisp
      ((mlist simp) 27 38 61 63 65 69)
      #+gcl
-     ((mlist simp) 7 29 38 39 40 48 61 70)
+     ((mlist simp) 7 29 38 39 40 48 61)
      ;; The tests that failed with abcl 1.5.0
      #+abcl
      ((mlist simp) 38 40 61 63 65 69)
@@ -304,8 +304,7 @@
       ((mlist simp) 9 10 11))
      "rtest_fft"
      "rtest_rfft"
-     ((mlist simp) "rtest_decfp"
-      #+gcl ((mlist simp) 1 2 3 4))
+     "rtest_decfp"
      "rtest_wrstcse"
      ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
      #-(or ecl abcl)
