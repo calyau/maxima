@@ -3020,12 +3020,28 @@
 ;; Compares two Macsyma expressions ignoring SIMP flags and all other
 ;; items in the header except for the ARRAY flag.
 
+(defun lisp-array-elements-alike1 (x y n)
+  (dotimes (i n t)
+    (unless (alike1 (row-major-aref x i) (row-major-aref y i))
+      (return-from lisp-array-elements-alike1 nil))))
+
+(defun lisp-vector-alike1 (x y)
+  (let ((lx (length x)))
+    (when (eql lx (length y))
+      (lisp-array-elements-alike1 x y lx))))
+
+(defun lisp-array-alike1 (x y)
+  (when (equal (array-dimensions x) (array-dimensions y))
+    (lisp-array-elements-alike1 x y (array-total-size x))))
+
 (defun alike1 (x y)
   (cond ((eq x y))
 	((atom x)
 	 (typecase x
 	   (string (when (stringp y) (string= x y)))
+	   (vector (when (vectorp y) (lisp-vector-alike1 x y)))
 	   (cl::array (when (arrayp y) (lisp-array-alike1 x y)))
+	   (otherwise (equal x y))))
 
     ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
     ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
@@ -3033,8 +3049,6 @@
     ;;  (and (maxima-declared-arrayp y) (maxima-declared-array-alike1 x y)))
     ;; ((maxima-undeclared-arrayp x)
     ;;  (and (maxima-undeclared-arrayp y) (maxima-undeclared-array-alike1 x y)))
-
-	   (otherwise (equal x y))))
 
 	((atom y) nil)
 	((and
@@ -3048,20 +3062,6 @@
 	  (t (and
 	      (eq (memqarr (cdar x)) (memqarr (cdar y)))
 	      (alike (cdr x) (cdr y))))))))
-
-(defun lisp-array-alike1 (x y &aux (rx (array-rank x)))
-  (flet ((els-alike1 (n)
-	   (dotimes (i n t)
-	     (unless (alike1 (row-major-aref x i) (row-major-aref y i))
-		 (return-from els-alike1 nil)))))
-    (when (eql rx (array-rank y))
-      (case rx
-	(1 (let ((lx (length x)))
-	     (when (eql lx (length y))
-	       (els-alike1 lx))))
-	(otherwise
-	 (when (equal (array-dimensions x) (array-dimensions y))
-	   (els-alike1 (array-total-size x))))))))
 
 (defun maxima-declared-array-alike1 (x y)
   (lisp-array-alike1 (get (mget x 'array) 'array) (get (mget y 'array) 'array)))
