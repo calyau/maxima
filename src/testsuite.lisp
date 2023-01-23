@@ -19,8 +19,7 @@
 	 #+allegro ((mlist simp) 11 13))
         "rtestnset" 
         ((mlist simp) "rtest1"
-	 #+gcl ((mlist simp) 183 185 186 203 206)
-	 #-gcl ((mlist simp) 183 185 186))
+	 ((mlist simp) 183 185 186))
         ((mlist simp) "rtest1a" ((mlist simp) 33))
         ((mlist simp) "rtest2" ((mlist simp) 86 95))
 	"rtest4"
