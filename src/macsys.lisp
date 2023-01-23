@@ -538,9 +538,9 @@ DESTINATION is an actual stream (rather than nil for a string)."
       (in-package :maxima)
       (loop
 	 do
-	   (catch #+kcl si::*quit-tag*
+	   (catch #+gcl si::*quit-tag*
 		  #+(or cmu scl sbcl openmcl lispworks) 'continue
-		  #-(or kcl cmu scl sbcl openmcl lispworks) nil
+		  #-(or gcl cmu scl sbcl openmcl lispworks) nil
 		  (catch 'macsyma-quit
 		    (continue :stream input-stream :batch-or-demo-flag batch-flag)
 		    (format t *maxima-epilog*)
@@ -558,7 +558,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (format t (intl:gettext "Dedicated to the memory of William Schelter.~%"))
   (format t (intl:gettext "The function bug_report() provides bug reporting information.~%")))
 
-#+kcl
+#+gcl
 (si::putprop :t 'throw-macsyma-top 'si::break-command)
 
 (defun throw-macsyma-top ()
