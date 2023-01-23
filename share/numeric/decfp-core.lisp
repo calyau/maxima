@@ -206,6 +206,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
 
 ;; overwrite this one, too
 (defun bigfloat2rat (x)
+  #+gcl(declare (notinline write-char))
   (if (decimalfpp x) (let ((k (* (cadr x)(expt 10 (caddr x)))))
 		       (list '(rat) (numerator k)(denominator k)))
     (let ()

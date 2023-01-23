@@ -15,7 +15,7 @@
 (in-package :maxima)
 
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 ;; Each member of the CL list l is a two member list (running error form).
 (defun running-error-plus (l)

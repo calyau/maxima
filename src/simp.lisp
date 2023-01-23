@@ -912,8 +912,8 @@
 		(setq b (expt a (- b)))
 		(*red 1 b)))))
     (when (float-inf-p result)	;; needed for gcl and sbcl - (sometimes) no trap of overflow
-	(error 'floating-point-overflow))
-      result))
+      (error 'floating-point-overflow))
+    result))
     
 
 ;;;-----------------------------------------------------------------------------
@@ -2358,7 +2358,7 @@
             ;; Numerically evaluate if the power is a flonum.
             (when $%emode
               (let ((val (flonum-eval '%exp pot)))
-		(if (float-inf-p val)
+		(when (float-inf-p val)
 		    ;; needed for gcl and sbcl - (sometimes) no trap of overflow
 		    (error 'floating-point-overflow))
                 (when val
@@ -3020,17 +3020,28 @@
 ;; Compares two Macsyma expressions ignoring SIMP flags and all other
 ;; items in the header except for the ARRAY flag.
 
+(defun lisp-array-elements-alike1 (x y n)
+  (dotimes (i n t)
+    (unless (alike1 (row-major-aref x i) (row-major-aref y i))
+      (return-from lisp-array-elements-alike1 nil))))
+
+(defun lisp-vector-alike1 (x y)
+  (let ((lx (length x)))
+    (when (eql lx (length y))
+      (lisp-array-elements-alike1 x y lx))))
+
+(defun lisp-array-alike1 (x y)
+  (when (equal (array-dimensions x) (array-dimensions y))
+    (lisp-array-elements-alike1 x y (array-total-size x))))
+
 (defun alike1 (x y)
   (cond ((eq x y))
 	((atom x)
-     (if (arrayp x)
-       (cond
-         ((stringp x)
-          (and (stringp y) (string= x y)))
-         ((vectorp x)
-          (and (vectorp y) (lisp-vector-alike1 x y)))
-         (t
-           (and (arrayp y) (lisp-array-alike1 x y))))
+	 (typecase x
+	   (string (when (stringp y) (string= x y)))
+	   (vector (when (vectorp y) (lisp-vector-alike1 x y)))
+	   (cl::array (when (arrayp y) (lisp-array-alike1 x y)))
+	   (otherwise (equal x y))))
 
     ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
     ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
@@ -3039,7 +3050,6 @@
     ;; ((maxima-undeclared-arrayp x)
     ;;  (and (maxima-undeclared-arrayp y) (maxima-undeclared-array-alike1 x y)))
 
-       (equal x y)))
 	((atom y) nil)
 	((and
 	  (not (atom (car x)))
@@ -3052,27 +3062,6 @@
 	  (t (and
 	      (eq (memqarr (cdar x)) (memqarr (cdar y)))
 	      (alike (cdr x) (cdr y))))))))
-
-(defun lisp-vector-alike1 (x y)
-  (let
-    ((length-x (if (array-has-fill-pointer-p x) (fill-pointer x) (length x)))
-     (length-y (if (array-has-fill-pointer-p y) (fill-pointer y) (length y))))
-    (and
-      (= length-x length-y)
-      (progn
-        (dotimes (i length-x)
-          (if (not (alike1 (aref x i) (aref y i)))
-            (return-from lisp-vector-alike1 nil)))
-        t))))
-
-(defun lisp-array-alike1 (x y)
-  (and
-    (equal (array-dimensions x) (array-dimensions y))
-    (progn
-      (dotimes (i (array-total-size x))
-	(if (not (alike1 (row-major-aref x i) (row-major-aref y i)))
-	  (return-from lisp-array-alike1 nil)))
-      t)))
 
 (defun maxima-declared-array-alike1 (x y)
   (lisp-array-alike1 (get (mget x 'array) 'array) (get (mget y 'array) 'array)))

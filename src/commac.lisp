@@ -278,46 +278,20 @@
     (defun ,function . ,body)))
 
 (defun exploden (symb)
-  (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
-	   #+(and gcl (not gmp)) (tentochunksize (expt 10 big-chunk-size))
-	   string)
+  (let* (string)
     (cond ((symbolp symb)
 	   (setq string (print-invert-case symb)))
 	  ((floatp symb)
 	   (setq string (exploden-format-float symb)))
-
-      ((integerp symb)
-       ;; When obase > 10, prepend leading zero to
-       ;; ensure that output is readable as a number.
-       (let ((leading-digit (if (> *print-base* 10) #\0)))
-         (cond
-           #+(and gcl (not gmp))
-           ((bignump symb)
-            (let* ((big symb)
-                   ans rem tem
-                   (chunks
-                     (loop
-                       do (multiple-value-setq (big rem)
-                            (floor big tentochunksize))
-                       collect rem
-                       while (not (eql 0 big)))))
-              (setq chunks (nreverse chunks))
-              (setq ans (coerce (format nil "~d" (car chunks)) 'list))
-              (if (and leading-digit (not (digit-char-p (car ans) 10.)))
-                (setq ans (cons leading-digit ans)))
-              (loop for v in (cdr chunks)
-                    do (setq tem (coerce (format nil "~d" v) 'list))
-                    (loop for i below (- big-chunk-size (length tem))
-                          do (setq tem (cons #\0 tem)))
-                    (setq ans (nconc ans tem)))
-              (return-from exploden ans)))
-           (t
+	  ((integerp symb)
+	   ;; When obase > 10, prepend leading zero to
+	   ;; ensure that output is readable as a number.
+	   (let ((leading-digit (if (> *print-base* 10) #\0)))
              (setq string (format nil "~A" symb))
              (setq string (coerce string 'list))
              (if (and leading-digit (not (digit-char-p (car string) 10.)))
-               (setq string (cons leading-digit string)))
-             (return-from exploden string)))))
-
+		 (setq string (cons leading-digit string)))
+             (return-from exploden string)))
 	  (t (setq string (format nil "~A" symb))))
     (assert (stringp string))
     (coerce string 'list)))
@@ -349,10 +323,6 @@
           (cond
             ((zerop a)
              (values "~,vf" 1))
-            ;; Work around for GCL bug #47404.
-            ;; Avoid numeric comparisons with NaN, which erroneously return T.
-            #+gcl ((or (float-inf-p symb) (float-nan-p symb))
-             (return-from exploden-format-float (format nil "~a" symb)))
             ((<= 0.001 a 1e7)
              (let*
                ((integer-log10 (floor (/ (log a) #.(log 10.0))))
@@ -360,7 +330,7 @@
                (if (< scale effective-printprec)
                  (values "~,vf" (- effective-printprec scale))
                  (values "~,ve" (1- effective-printprec)))))
-            #-gcl ((or (float-inf-p symb) (float-nan-p symb))
+	    ((or (float-inf-p symb) (float-nan-p symb))
              (return-from exploden-format-float (format nil "~a" symb)))
             (t
               (values "~,ve" (1- effective-printprec))))
@@ -461,7 +431,7 @@
   (intern (maybe-invert-string-case string) :maxima))
 
 
-#-(or gcl scl allegro)
+#-(or scl allegro)
 (let ((local-table (copy-readtable nil)))
   (setf (readtable-case local-table) :invert)
   (defun print-invert-case (sym)
@@ -484,27 +454,6 @@
 	   (let ((*readtable* local-table)
 		 (*print-case* :upcase))
 	     (princ-to-string sym))))))
-
-#+gcl
-(defun print-invert-case (sym)
-  (cond ((symbolp sym)
-	 (let* ((str (princ-to-string sym))
-		(have-upper nil)
-		(have-lower nil)
-		(converted-str
-		 (map 'string (lambda (c)
-				(cond ((upper-case-p c)
-				       (setf have-upper t)
-				       (char-downcase c))
-				      ((lower-case-p c)
-				       (setf have-lower t)
-				       (char-upcase c))
-				      (t c)))
-		      str)))
-	   (if (and have-upper have-lower)
-	       str
-	       converted-str)))
-	(t (princ-to-string sym))))
 
 (defun implode (list)
   (declare (optimize (speed 3)))
@@ -577,12 +526,6 @@
 (defvar *read-hang-prompt* "")
 
 (defun tyi-raw (&optional (stream *standard-input*) eof-option)
-  ;; Adding this extra EOF test, because the testsuite generates
-  ;; unexpected end of input-stream with Windows XP and GCL 2.6.8.
-  #+gcl
-  (when (eql (peek-char nil stream nil eof-option) eof-option)
-    (return-from tyi-raw eof-option))
-
   (let ((ch (read-char-no-hang stream nil eof-option)))
     (if ch
 	ch

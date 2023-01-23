@@ -96,8 +96,7 @@
 ;; real valued. So declare hypergeometric to be complex.
 
 (eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
+    (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
       (meval '(($declare) %hypergeometric $complex))))
 
@@ -300,7 +299,7 @@
 ;; Pursuant to well-established Maxima coding practices :), bigfloat
 ;; functions receive bigfloat arguments and return bigfloat values.
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 ;(import 'maxima::while) ;; <--- broken Why?
 
