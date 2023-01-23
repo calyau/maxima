@@ -913,8 +913,8 @@
 		(setq b (expt a (- b)))
 		(*red 1 b)))))
     (when (float-inf-p result)	;; needed for gcl and sbcl - (sometimes) no trap of overflow
-	(error 'floating-point-overflow))
-      result))
+      (error 'floating-point-overflow))
+    result))
     
 
 ;;;-----------------------------------------------------------------------------
@@ -2359,7 +2359,7 @@
             ;; Numerically evaluate if the power is a flonum.
             (when $%emode
               (let ((val (flonum-eval '%exp pot)))
-		(if (float-inf-p val)
+		(when (float-inf-p val)
 		    ;; needed for gcl and sbcl - (sometimes) no trap of overflow
 		    (error 'floating-point-overflow))
                 (when val
