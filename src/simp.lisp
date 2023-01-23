@@ -2063,7 +2063,7 @@
 	((and (numberp r1) (floatp r2) (equal r2 (float (floor r2))))
 	 (exptb (float r1) (floor r2)))
 	((or $numer (and (floatp r2) (or (plusp (num1 r1)) $numer_pbranch)))
-	 (let (y  #+kcl(r1 r1) #+kcl(r2 r2))
+	 (let (y)
 	   (cond ((minusp (setq r1 (addk 0.0 r1)))
 		  (cond ((or $numer_pbranch (eq $domain '$complex))
 		         ;; for R1<0:

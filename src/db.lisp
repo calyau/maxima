@@ -419,7 +419,7 @@
 (defun fact (fun arg val)
   (cntxt (ind (datum (list fun arg val))) context))
 
-(defun kind (x y &aux #+kcl (y y))
+(defun kind (x y)
   (setq y (datum (list 'kind x y)))
   (cntxt y context)
   (addf y x))

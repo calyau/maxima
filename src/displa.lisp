@@ -44,7 +44,7 @@
 (defvar *alt-display2d* nil)
 (defvar *alt-display1d* nil)
 
-(defun displa (form &aux #+kcl(form form))
+(defun displa (form)
   (if (not $ttyoff)
       (cond ($display2d
 	     (cond (*alt-display2d* (apply *alt-display2d* form ()))
