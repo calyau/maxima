@@ -16,29 +16,32 @@
 
 (defvar *ascii-space-chars-for-maxima* '(#\tab #\space #\linefeed #\return #\page #\newline))
 
-(defvar *unicode-space-chars-for-maxima*
-    #-(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) nil
-    #+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics))
+(defvar *unicode-space-char-codes-for-maxima*
       ;; Adapted from the list given by: https://jkorpela.fi/chars/spaces.html
       ;; omitting SPACE, OGHAM SPACE MARK, MONGOLIAN VOWEL SEPARATOR, IDEOGRAPHIC SPACE,
       ;; and ZERO WIDTH NO-BREAK SPACE.
-      '(
-        #.(code-char #x00A0) ;; NO-BREAK SPACE
-        #.(code-char #x2000) ;; EN QUAD
-        #.(code-char #x2001) ;; EM QUAD
-        #.(code-char #x2002) ;; EN SPACE
-        #.(code-char #x2003) ;; EM SPACE
-        #.(code-char #x2004) ;; THREE-PER-EM SPACE
-        #.(code-char #x2005) ;; FOUR-PER-EM SPACE
-        #.(code-char #x2006) ;; SIX-PER-EM SPACE
-        #.(code-char #x2007) ;; FIGURE SPACE
-        #.(code-char #x2008) ;; PUNCTUATION SPACE
-        #.(code-char #x2009) ;; THIN SPACE
-        #.(code-char #x200A) ;; HAIR SPACE
-        #.(code-char #x200B) ;; ZERO WIDTH SPACE
-        #.(code-char #x202F) ;; NARROW NO-BREAK SPACE
-        #.(code-char #x205F) ;; MEDIUM MATHEMATICAL SPACE
-        ))
+  '(
+    #x00A0 ;; NO-BREAK SPACE
+    #x2000 ;; EN QUAD
+    #x2001 ;; EM QUAD
+    #x2002 ;; EN SPACE
+    #x2003 ;; EM SPACE
+    #x2004 ;; THREE-PER-EM SPACE
+    #x2005 ;; FOUR-PER-EM SPACE
+    #x2006 ;; SIX-PER-EM SPACE
+    #x2007 ;; FIGURE SPACE
+    #x2008 ;; PUNCTUATION SPACE
+    #x2009 ;; THIN SPACE
+    #x200A ;; HAIR SPACE
+    #x200B ;; ZERO WIDTH SPACE
+    #x202F ;; NARROW NO-BREAK SPACE
+    #x205F ;; MEDIUM MATHEMATICAL SPACE
+    ))
+
+(defvar *unicode-space-chars-for-maxima*
+    #-(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) nil
+    #+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics))
+    (mapcar 'code-char *unicode-space-char-codes-for-maxima*))
 
 (defmvar *whitespace-chars* (append *ascii-space-chars-for-maxima* *unicode-space-chars-for-maxima*))
 
@@ -154,6 +157,24 @@
 ;;;;;                                                                    ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+gcl
+(defun gobble-whitespace (&aux (ch (parse-tyipeek)) (cd (if (eql -1 ch) 0 (char-code (the character ch)))) l i r)
+  (declare (dynamic-extent l) (fixnum r) ((integer 0 5) i) ((integer 0 255) cd))
+  (cond ((>= cd 128)
+	 (do ((j 5 (1- j))) ((or (< j 3) (zerop (logand cd (the fixnum (ash 1 (the (integer 0 5) j)))))) (setq i j))
+	   (declare ((integer 0 5) j)))
+	 (setq r (logand cd (the fixnum (1- (the fixnum (ash 1 (the (integer 0 5) i)))))) l (cons (parse-tyi) l))
+	 (do ((i i (1+ i))) ((= i 6))
+	   (declare (fixnum i))
+	   (setq ch (parse-tyi) l (cons ch l) cd (if (eql -1 ch) 0 (char-code (the character ch))) r (logior (the fixnum (ash r 6)) (logand cd #.(1- (ash 1 6))))))
+	 (if (member r *unicode-space-char-codes-for-maxima*)
+	     (gobble-whitespace)
+	     (dolist (l l) (unparse-tyi l))))
+	((member ch *whitespace-chars*)
+	 (parse-tyi)
+	 (gobble-whitespace))))
+
+#-gcl
 (defun gobble-whitespace ()
   (do ((ch (parse-tyipeek) (parse-tyipeek)))
       ((not (member ch *whitespace-chars*)))
