@@ -584,7 +584,6 @@
      (:file "invert")
      (:file "hypgeo")
      (:file "hyp")
-     (:file "nfloat")
      (:file "hypergeometric")
      (:file "nfloat")
      (:file "todd-coxeter")
