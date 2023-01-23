@@ -3025,7 +3025,7 @@
 	((atom x)
 	 (typecase x
 	   (string (when (stringp y) (string= x y)))
-	   (array (when (arrayp y) (lisp-array-alike1 x y)))
+	   (cl::array (when (arrayp y) (lisp-array-alike1 x y)))
 
     ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
     ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
