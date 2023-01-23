@@ -81,8 +81,7 @@ far degree"
 
 
 (eval-when
-    #+gcl (load)
-    #-gcl (:load-toplevel)
+    (:load-toplevel)
   (cond ((not (member 'hilbert *all-rank-functions* :test #'eq))
 	 (push 'hilbert *all-rank-functions*))))
 

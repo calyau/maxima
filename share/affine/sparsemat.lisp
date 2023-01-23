@@ -350,10 +350,9 @@
   (sp-current-row sp-mat))
 
 (eval-when
-    #+gcl (load compile eval) ;;because of symbolics bug
-    #-gcl (:load-toplevel :compile-toplevel :execute)
-    (defmacro sp-row  (sp-mat i)
-      `(aref (sp-rows ,sp-mat) ,i)))
+    (:load-toplevel :compile-toplevel :execute)
+  (defmacro sp-row  (sp-mat i)
+    `(aref (sp-rows ,sp-mat) ,i)))
 
 (defun sp-set-pivot-row (sp-mat i)
 	   (setf (sp-pivot-row-number sp-mat) i)

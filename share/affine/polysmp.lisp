@@ -436,15 +436,14 @@ substituting them to be zero."
 ;;tried using occurs-in instead of part-above-degree but wasted time...
 
 (eval-when
-    #+gcl (load compile)
-    #-gcl (:load-toplevel :compile-toplevel)
+    (:load-toplevel :compile-toplevel)
   (fmakunbound 'must-replacep)
   (defun must-replacep ( poly &aux part-above monom  replace)
 					;  (declare (values part-above monom replace))
     (loop for (seq repl) on *poly-simplifications* by #'cddr
-	   when (setq part-above (part-above-degree poly seq))
-	   do (setq monom (convert-deg-sequence-to-monomial seq) replace repl)
-	   (return 'found))
+	  when (setq part-above (part-above-degree poly seq))
+	  do (setq monom (convert-deg-sequence-to-monomial seq) replace repl)
+	  (return 'found))
     (setq *must-replace-data* (list part-above monom replace))
     (values part-above monom replace)))
 

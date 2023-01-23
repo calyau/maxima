@@ -255,10 +255,9 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
                    index 0 n))))))
 
 (eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
-    (let (($context '$global) (context '$global))
-      (meval '(($declare) $pochhammer $complex))))
+    (:load-toplevel :execute)
+  (let (($context '$global) (context '$global))
+    (meval '(($declare) $pochhammer $complex))))
 
 (defmvar $pochhammer_max_index 100)
 

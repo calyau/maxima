@@ -30,16 +30,15 @@
   (and (consp x) (consp (car x)) (equal (caar x) 'mexpt)))
 
 (eval-when
-    #+gcl (load compile eval)
-    #-gcl (:load-toplevel :compile-toplevel :execute)
-    ($load "sqfr")
-    ($load "spherodialwave")
-    ($load "kummer")
-    ($load "extrabessel")
-    ($load "lazysolver")
-    ($load "gauss")
-    ($load "functs") ;; wronskian
-    ($load "odeutils"))
+    (:load-toplevel :compile-toplevel :execute)
+  ($load "sqfr")
+  ($load "spherodialwave")
+  ($load "kummer")
+  ($load "extrabessel")
+  ($load "lazysolver")
+  ($load "gauss")
+  ($load "functs") ;; wronskian
+  ($load "odeutils"))
 
 (defun ode-polynomialp (p x)
   ($polynomialp p `((mlist) ,x) `((lambda) ((mlist) s) ($freeof ,x s))))

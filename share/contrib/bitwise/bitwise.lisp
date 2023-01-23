@@ -45,10 +45,9 @@
 
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (defvar old-ibase *read-base*)
-    (setq *read-base* 10.) )
+    (:compile-toplevel :execute)
+  (defvar old-ibase *read-base*)
+  (setq *read-base* 10.) )
 
 
 ;; I'm not sure if we should add the property 'integer-valued to these functions
@@ -441,6 +440,5 @@
 
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (setq *read-base* old-ibase) )
+    (:compile-toplevel :execute)
+  (setq *read-base* old-ibase) )

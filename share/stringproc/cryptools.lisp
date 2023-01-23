@@ -115,10 +115,9 @@
 (in-package :maxima)
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (defvar old-ibase-cryptools *read-base*)
-    (setq *read-base* 10.) )
+    (:compile-toplevel :execute)
+  (defvar old-ibase-cryptools *read-base*)
+  (setq *read-base* 10.) )
 
 
 ;; -- string-octet-conversions: --------------------------------------------- ;;
@@ -300,6 +299,5 @@
 
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (setq *read-base* old-ibase-cryptools) )
+    (:compile-toplevel :execute)
+  (setq *read-base* old-ibase-cryptools) )

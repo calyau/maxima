@@ -2274,8 +2274,7 @@ would restore the list"
 
 
 (eval-when
-    #+gcl (compile eval load)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (:compile-toplevel :load-toplevel :execute)
   (defmacro pls-opens (pls) `(sv-zopens (pls-s-var ,pls))))
 
 (defvar *reorder-eqns* t)

@@ -15,9 +15,8 @@
 ($put '$sqfr 1 '$version)
 
 (eval-when
-    #+gcl (load compile eval)
-    #-gcl (:load-toplevel :compile-toplevel :execute)
-    ($load "odeutils"))
+    (:load-toplevel :compile-toplevel :execute)
+  ($load "odeutils"))
 
 ;; If x is a symbol for a subvarp, return its general representation.
 ;; Otherwise signal an error---the argument f is the string name of

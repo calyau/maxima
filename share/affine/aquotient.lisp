@@ -8,23 +8,22 @@
 (in-package :maxima)
 
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (:compile-toplevel :load-toplevel :execute)
 
-    (defmacro p-cof (f)			;leading coefficient of f
-      `(third ,f))
+  (defmacro p-cof (f)			;leading coefficient of f
+    `(third ,f))
 
-    (defmacro p-next-term (f)
-      `(cddr ,f))
+  (defmacro p-next-term (f)
+    `(cddr ,f))
 
-    (defmacro p-deg (f)
-      `(second ,f))
+  (defmacro p-deg (f)
+    `(second ,f))
 
-    (defmacro term-cof (terms)
-      `(second ,terms))
+  (defmacro term-cof (terms)
+    `(second ,terms))
 
-    (defmacro term-deg (terms)
-      `(first ,terms)))
+  (defmacro term-deg (terms)
+    `(first ,terms)))
 
 ;;(make-poly var x)==> (list x 1 1)
 

@@ -99,10 +99,9 @@
 (in-package :maxima)
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (defvar old-ibase-sha1 *read-base*)
-    (setq *read-base* 10.) )
+    (:compile-toplevel :execute)
+  (defvar old-ibase-sha1 *read-base*)
+  (setq *read-base* 10.) )
 
 
 (declaim (inline sha-not sha+ sha-left-rotation sha-right-rotation))
@@ -352,6 +351,5 @@
 
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (setq *read-base* old-ibase-sha1) )
+    (:compile-toplevel :execute)
+  (setq *read-base* old-ibase-sha1) )

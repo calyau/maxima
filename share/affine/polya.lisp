@@ -1682,9 +1682,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (cons '(mlist simp) answer))))
 
 (eval-when
-    #+gcl (load  compile)
-    #-gcl (:load-toplevel :compile-toplevel)
-    (defvar $poly_vector (make-polynomial-vectors)))
+    (:load-toplevel :compile-toplevel)
+  (defvar $poly_vector (make-polynomial-vectors)))
 
 (defvar $type_of_entries_for_poly_vector :any-macsyma)
 

@@ -78,10 +78,9 @@
   mring-to-maxima)
 
 (eval-when 
-#-gcl (:compile-toplevel :load-toplevel :execute)
-#+gcl (compile load eval)
+    (:compile-toplevel :load-toplevel :execute)
   (defmvar $%mrings `((mlist) $floatfield $complexfield $rationalfield $crering 
-                       $generalring $bigfloatfield $runningerror $noncommutingring ))
+                      $generalring $bigfloatfield $runningerror $noncommutingring ))
   (defvar *gf-rings* '(gf-coeff-ring gf-ring ef-ring)) )
 
 (defun $require_ring (ringname pos fun)

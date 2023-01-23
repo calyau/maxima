@@ -15,9 +15,8 @@
 ($put '$lazysolver 1 '$version)
 
 (eval-when
-    #+gcl (load compile eval)
-    #-gcl (:load-toplevel :compile-toplevel :execute)
-    ($load "odeutils"))
+    (:load-toplevel :compile-toplevel :execute)
+  ($load "odeutils"))
 
 (defmvar $aalgsys_is_loquacious nil)
 

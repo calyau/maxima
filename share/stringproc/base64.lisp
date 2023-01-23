@@ -45,10 +45,9 @@
 (in-package :maxima)
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (defvar old-ibase-base64 *read-base*)
-    (setq *read-base* 10.) )
+    (:compile-toplevel :execute)
+  (defvar old-ibase-base64 *read-base*)
+  (setq *read-base* 10.) )
 
 
 (defvar *str64* "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
@@ -152,6 +151,5 @@
 
 
 (eval-when
-  #+gcl (compile eval)
-  #-gcl (:compile-toplevel :execute)
-    (setq *read-base* old-ibase-base64) )
+    (:compile-toplevel :execute)
+  (setq *read-base* old-ibase-base64) )
