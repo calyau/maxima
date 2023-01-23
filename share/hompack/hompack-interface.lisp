@@ -2,7 +2,7 @@
 
 ;; Simple Maxima interface to hompack routines
 
-(in-package #-gcl #:maxima #+gcl "MAXIMA")
+(in-package #:maxima)
 
 (defmvar $debug_hompack nil
   "Set to non-NIL to enable some debugging prints")

@@ -3,13 +3,13 @@
 ;;; Simple Maxima interface to COBYLA, Constrained Optimization BY
 ;;; Linear Approximations.
 
-(in-package #-gcl #:maxima #+gcl "MAXIMA")
+(in-package #:maxima)
 
 ;; Variable that will hold the function that calculates the function
 ;; value and the constraints.
 (defvar *calcfc*)
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 ;; COBYLA always calls CALCFC to compute the function value and the
 ;; constraint equations.  But we want to be able to specify different
@@ -19,7 +19,7 @@
   (cl:declare (cl:ignore f))
   (cl:funcall maxima::*calcfc* n m x con))
 
-(cl:in-package #-gcl #:maxima #+gcl "MAXIMA")
+(cl:in-package #:maxima)
 
 ;; The actual interface to COBYLA.  Take the inputs from maxima,
 ;; massage them into a suitable Lisp form, and call COBYLA to find the

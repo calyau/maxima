@@ -275,7 +275,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 (defun $pochhammer (x n)
   (take '($pochhammer) x n))
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 ;; Numerical evaluation of pochhammer using the bigfloat package.
 (defun pochhammer (x n)

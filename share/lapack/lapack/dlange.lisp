@@ -132,7 +132,7 @@
        end_label
         (return (values dlange nil nil nil nil nil nil))))))
 
-(in-package #-gcl #:cl-user #+gcl "CL-USER")
+(in-package #:cl-user)
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (setf (gethash 'fortran-to-lisp::dlange

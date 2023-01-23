@@ -2,7 +2,7 @@
 
 ;;; Simple Maxima interface to minpack routines
 
-(in-package #-gcl #:maxima #+gcl "MAXIMA")
+(in-package #:maxima)
 
 (defmvar $debug_minpack nil
   "Set to true to enable debugging messages from minpack routines")

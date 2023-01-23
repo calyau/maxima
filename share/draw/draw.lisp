@@ -1,4 +1,4 @@
-(in-package #-gcl #:maxima #+gcl "MAXIMA")
+(in-package #:maxima)
 
 ($put '$draw 2 '$version)
 

@@ -3,7 +3,7 @@
 ;;; Simple Maxima interface to COBYLA, Constrained Optimization BY
 ;;; Linear Approximations.
 
-(in-package #-gcl #:maxima #+gcl "MAXIMA")
+(in-package #:maxima)
 
 (defvar *debug-cobyla* nil
   "Non-Nil to enable some debugging prints in the coblya interface")

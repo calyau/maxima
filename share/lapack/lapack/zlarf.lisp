@@ -105,7 +105,7 @@
        end_label
         (return (values nil m n nil nil nil nil ldc nil))))))
 
-(in-package #-gcl #:cl-user #+gcl "CL-USER")
+(in-package #:cl-user)
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (setf (gethash 'fortran-to-lisp::zlarf fortran-to-lisp::*f2cl-function-info*)

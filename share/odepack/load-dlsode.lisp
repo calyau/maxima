@@ -1,4 +1,4 @@
-(in-package #-gcl #:maxima #+GCL "MAXIMA")
+(in-package #:maxima)
 
 #+(or)
 (progn

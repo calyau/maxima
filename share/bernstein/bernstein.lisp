@@ -22,7 +22,7 @@
 (defmvar $bernstein_explicit nil)
 
 ;; numerical (complex rational, float, or big float) evaluation of bernstein polynomials
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(in-package #:bigfloat)
 
 (defun bernstein-poly (k n x)
   (* (to (maxima::opcons 'maxima::%binomial n k)) (expt x k) (expt (- 1 x) (- n k))))

@@ -1,6 +1,6 @@
 ;;; -*- Mode: lisp -*-
 
-(in-package #-gcl #:maxima #+gcl "MAXIMA")
+(in-package #:maxima)
 
 (in-package :fftpack5)
 

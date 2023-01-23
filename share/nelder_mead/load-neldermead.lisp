@@ -1,4 +1,4 @@
-(in-package #-gcl #:maxima #+gcl "MAXIMA")
+(in-package #:maxima)
 
 #+ecl ($load "lisp-utils/defsystem.lisp")
 

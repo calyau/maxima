@@ -416,7 +416,7 @@
         (return
          (values nil nil nil nil nil dmin dmin1$ dmin2 dn dnm1 dnm2 nil))))))
 
-(in-package #-gcl #:cl-user #+gcl "CL-USER")
+(in-package #:cl-user)
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (setf (gethash 'fortran-to-lisp::dlasq5
