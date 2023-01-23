@@ -146,8 +146,7 @@
 	 #+(or gcl abcl) ((mlist simp) 87 120)
 	 #-(or gcl abcl) ((mlist simp) 87))
 	((mlist simp) "rtest_nfloat"
-	 #-(or gcl)
-	 ((mlist simp) 25))
+	 #-gcl((mlist simp) 25))
         ))
 
 ;; The list of share testsuite files. As they are given without a path
@@ -212,7 +211,7 @@
     ((mlist simp) "rtest_dgesv")
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
-    #-(or gcl abcl gcl)
+    #-abcl
     "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim"
      ((mlist simp) 146 147 148 149))
@@ -277,9 +276,7 @@
     ((mlist simp) "rtest_vect"
      #-(or cmucl gcl ecl)
      ((mlist simp) 4 9 10 13 16 19 20 21 24 25)
-     #+(or cmucl ecl)
-     ((mlist simp) 4 9 10 13 16 20 21 24 25)
-     #+gcl
+     #+(or cmucl ecl gcl)
      ((mlist simp) 4 9 10 13 16 20 21 24 25))
      "rtest_antid"
      "rtest_bffac"
