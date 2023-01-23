@@ -3049,14 +3049,19 @@
 	      (eq (memqarr (cdar x)) (memqarr (cdar y)))
 	      (alike (cdr x) (cdr y))))))))
 
-(defun lisp-array-alike1 (x y)
-  (and
-    (equal (array-dimensions x) (array-dimensions y))
-    (progn
-      (dotimes (i (array-total-size x))
-	(if (not (alike1 (row-major-aref x i) (row-major-aref y i)))
-	  (return-from lisp-array-alike1 nil)))
-      t)))
+(defun lisp-array-alike1 (x y &aux (rx (array-rank x)))
+  (flet ((el-alike1 (n)
+	   (dotimes (i n t)
+	     (unless (alike1 (row-major-aref x i) (row-major-aref y i))
+		 (return-from el-alike1 nil)))))
+    (when (eql rx (array-rank y))
+      (case rx
+	(1 (let ((lx (length x)))
+	     (when (eql lx (length y))
+	       (el-alike1 lx))))
+	(otherwise
+	 (when (equal (array-dimensions x) (array-dimensions y))
+	   (el-alike1 (array-total-size x))))))))
 
 (defun maxima-declared-array-alike1 (x y)
   (lisp-array-alike1 (get (mget x 'array) 'array) (get (mget y 'array) 'array)))
