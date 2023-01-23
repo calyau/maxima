@@ -1008,7 +1008,10 @@ if test x"${gcl}" = xtrue; then
    AC_MSG_CHECKING([if gcl version >= 2.6.13])
    dnl Check gcl version
    GCL_VERSION=`${GCL_NAME} -eval '(princ (lisp-implementation-version))' -batch | sed 's/GCL \([[0-9.]]\+\).*/\1/'`
-   echo GCL version = $GCL_VERSION
+   dnl echo GCL version = $GCL_VERSION
+   dnl Assume GCL_VERSION looks like p.q.r where p, q, and r are
+   dnl digits.  Then extract each set of digits to get the numbers to
+   dnl create a version number for comparison.
    gcl_major=`expr $GCL_VERSION : '\([[0-9]]\+\)'`
    gcl_minor=`expr $GCL_VERSION : '[[0-9]]\+\.\([[0-9]]\+\)'`
    gcl_sub=`expr $GCL_VERSION : '[[0-9]]\+\.[[0-9]]\+\.\([[0-9]]\+\)'`
