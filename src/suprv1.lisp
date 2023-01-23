@@ -24,7 +24,7 @@
 
 (eval-when
     (:compile-toplevel :execute)
-  (setq old-ibase *read-base* old-base *print-base*)
+  (setq *old-ibase* *read-base* *old-base* *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
@@ -892,4 +892,4 @@
 
 (eval-when
     (:compile-toplevel :execute)
-    (setq *print-base* old-base *read-base* old-ibase))
+    (setq *print-base* *old-base* *read-base* *old-ibase*))
