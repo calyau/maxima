@@ -6,13 +6,9 @@
 
 (defun aload (file &aux *load-verbose* tem)
   (let ((*read-base* 10.)
-	($system  (list  '(mlist)
-			 #+kcl (concatenate 'string si::*system-directory*
-					    "../src/foo.{o,lsp,lisp}"))))
+	($system  (list '(mlist))))
     (declare (special $system))
-    (setq tem ($file_search1 file '((mlist)
-				    $file_search_lisp
-				    $system)))
+    (setq tem ($file_search1 file '((mlist) $file_search_lisp $system)))
     (and tem #-sbcl (load tem) #+sbcl (with-compilation-unit nil (load tem)))))
 
 (defmfun $aload_mac (file)
