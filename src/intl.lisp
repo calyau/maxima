@@ -277,8 +277,7 @@
     (multiple-value-bind (tree end) (conditional (next))
       (unless (eq end 'end)
 	(error _"Expecting end of expression.  ~S." end))
-      (let (#-gcl
-	    (*compile-print* nil))
+      (let ((*compile-print* nil))
 	(compile nil
 		 `(lambda (n)
 		    (declare (type (unsigned-byte 32) n)
