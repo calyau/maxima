@@ -40,7 +40,6 @@
   `(let ((*readtable* (copy-readtable nil)) (*print-readably* t) *print-gensym* 
         (*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)
 	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
-    #-gcl
     (progn
       #-(or scl allegro)
       (setf (readtable-case *readtable*) :invert)
@@ -48,7 +47,7 @@
       (unless #+scl (eq ext:*case-mode* :lower)
 	      #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
 	(setf (readtable-case *readtable*) :invert))
-      (set-pprint-dispatch '(cons (member maxima::defmtrfun))
+      #-gcl(set-pprint-dispatch '(cons (member maxima::defmtrfun))
 			   #'pprint-defmtrfun))
     ,@forms))
 
