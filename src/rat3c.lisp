@@ -415,15 +415,6 @@
 	   return (ptzero)
 	   finally (return u))))
 
-;; it is convenient to have the *bigprimes* be actually less than
-;; half the size of the most positive fixnum, so that arithmetic is easier
-
-(defvar *bigprimes* (loop with p = (ash most-positive-fixnum -1) repeat 20 do
-			 (setq p (next-prime (1- p) -1))
-		       collect p))
-
-(defmvar *alpha (car *bigprimes*))
-
 (defun newprime (p)
   (do ((pl *bigprimes* (cdr pl)))
       ((null pl)

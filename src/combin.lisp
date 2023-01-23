@@ -12,8 +12,8 @@
 
 (macsyma-module combin)
 
-(declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
-		      *n *a* *a $prevfib $next_lucas
+(declare-top (special *mfactl *factlist donel *ans* *var*
+		      *a* *a $prevfib $next_lucas
 		      *times *plus sum usum
 		      $ratprint $zeta%pi $bftorat))
 
@@ -147,6 +147,7 @@
 			(mapcar #'(lambda (q) (factqsnt (car q) (cdr q))) l2))
 		  1 nil))
       (numden (car l1))
+      (format t "nn,dn = ~A, ~A~%" nn* dn*)
       (do ((l3 l2 (cdr l3))
 	   (l4))
 	  ((null l3) (setq l2 (nconc l2 (list (cons nn* dn*)))))
@@ -1646,6 +1647,6 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *mfactl *factlist donel nn* dn*
-			*var* *ans* *n *a*
+(declare-top (unspecial *mfactl *factlist donel
+			*var* *ans* *a*
 			*infsumsimp *times *plus sum usum makef))

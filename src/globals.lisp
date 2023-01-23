@@ -992,6 +992,18 @@
 			 (or (null val)
 			     (member val *gcdl*))))
 
+
+;; It is convenient to have the *bigprimes* be actually less than half
+;; the size of the most positive fixnum, so that arithmetic is easier.
+;;
+;; *bigprimes* and *alpha are initialized in
+;; initialize-runtime-globals instead of here because *bigprimes*
+;; needs the NEXT-PRIME function to generate the list of primes, and
+;; NEXT-PRIME isn't available yet.  Likewise, *alpha is initialized to
+;; the first element of *bigprimes*.
+(defvar *bigprimes*)
+(defmvar *alpha)
+
 ;;------------------------------------------------------------------------
 ;; From rat3d.lisp
 (defmvar algfac* nil)
@@ -1633,6 +1645,7 @@
 
 ;;------------------------------------------------------------------------
 ;; From ifactor.lisp
+(defmvar *alpha* nil)
 (defvar *small-primes*
   '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
     101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181
@@ -1780,3 +1793,11 @@
   "Let <x> be a rational number less than one of the form 'p/q'.  If 'q'
   is greater than 'maxpsifracdenom', then 'psi[<n>](<x>)' will not try
   to return a simplified value.")
+
+;;------------------------------------------------------------------------
+;; Miscellaneous vars.
+(defvar nn*)
+(defvar dn*)
+(defvar *n)
+(defvar derivlist)
+(defvar opers-list)

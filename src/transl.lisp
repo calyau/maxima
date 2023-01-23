@@ -96,10 +96,10 @@
 
 (defmvar tstack nil " stack of local variable modes ")
 
-(defmvar local nil "T if a $local statement is in the body.")
+(defmvar *local* nil "T if a $local statement is in the body.")
 (defmvar tr-progret t)
 (defmvar inside-mprog nil)
-(defmvar returns nil "list of `translate'd return forms in the block.")
+(defmvar *returns* nil "list of `translate'd return forms in the block.")
 (defmvar return-mode nil "the highest(?) mode of all the returns.")
 (defmvar need-prog? nil)
 (defmvar assigns nil "These are very-special variables which have a Maxima
@@ -181,8 +181,10 @@ APPLY means like APPLY.")
 (defvar tr-lambda-punt-assigns nil
   "Kludge argument to `tr-lambda' due to lack of keyword argument passing")
 
-(or (boundp '*in-compile*)
-    (setq *in-compile* nil))
+;; FIXME: AFAICT (rtoy), *in-compile* is only used in this file and no
+;; one ever changes the value of *in-compile* to anything other than
+;; NIL.  Perhaps remove this and the only other use of it below.
+(defvar *in-compile* nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -870,11 +872,11 @@ APPLY means like APPLY.")
   (punt-to-meval form))
 
 (def%tr $local (form)
-  (when local
+  (when *local*
     (tr-format (intl:gettext "error: there is already a 'local' in this block.~%"))
     (tr-abort)
     (return-from $local nil))
-  (setq local t)
+  (setq *local* t)
   ; We can't just translate to a call to MLOCAL here (which is
   ; what used to happen).  That would push onto LOCLIST and bind
   ; MLOCP at the "wrong time".  The push onto LOCLIST and the
@@ -890,7 +892,7 @@ APPLY means like APPLY.")
 		  &aux
 		  (arglist (mparams (cadr form)))
 		  (easy-assigns nil)
-		  (local nil))
+		  (*local* nil))
   ;; This function is defined to take a simple macsyma lambda expression and
   ;; return a simple lisp lambda expression. The optional TR-BODY hook
   ;; can be used for translating other special forms that do lambda binding.
@@ -904,7 +906,7 @@ APPLY means like APPLY.")
   (mapc #'tbind arglist)
   (destructuring-let* (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
 		       (local-declares (make-declares arglist t))
-		       (body (if local
+		       (body (if *local*
 				 `((let ((mlocp t))
 				     (push nil loclist)
 				     (unwind-protect
@@ -1036,7 +1038,7 @@ APPLY means like APPLY.")
 		      (inside-mprog t)
 		      (return-mode nil)
 		      (need-prog? nil)
-		      (returns nil) ;; not used but must be bound.
+		      (*returns* nil) ;; not used but must be bound.
 		      )
   (do ((l nil))
       ((null body)
@@ -1091,7 +1093,7 @@ APPLY means like APPLY.")
   (setq return-mode (if return-mode (*union-mode (car form) return-mode)
 			(car form)))
   (setq form `(return ,(cdr form)))
-  (push form returns) ;; USED by lusing MDO etc not yet re-written.
+  (push form *returns*) ;; USED by lusing MDO etc not yet re-written.
   ;; MODE here should be $PHANTOM or something.
   `($any . ,form))
 
@@ -1178,7 +1180,7 @@ APPLY means like APPLY.")
 ;; Perhaps a mere expansion into an MPROG would be best.
 
 (def%tr mdo (form)
-  (let (returns assigns return-mode (inside-mprog t) need-prog?)
+  (let (*returns* assigns return-mode (inside-mprog t) need-prog?)
     (let (mode var init next test-form action varmode)
       (setq var (cond ((cadr form)) (t 'mdo)))
       (tbind var)
@@ -1208,7 +1210,7 @@ APPLY means like APPLY.")
             (setq test-form test-pred)
             (setq test-form `(let (($prederror t)) ,test-pred))))
       (setq action (translate (cadddr (cddddr form)))
-	    mode (cond ((null returns) '$any)
+	    mode (cond ((null *returns*) '$any)
 		       (t return-mode)))
       (setq var (tunbind (cond ((cadr form)) (t 'mdo))))
       `(,mode do ((,var ,(cdr init) ,(cdr next)))
@@ -1218,7 +1220,7 @@ APPLY means like APPLY.")
 		     (t (list (cdr action)))))))))
 
 (def%tr mdoin (form)
-  (let (returns assigns return-mode (inside-mprog t) need-prog?)
+  (let (*returns* assigns return-mode (inside-mprog t) need-prog?)
     (prog (mode var init action)
        (setq var (tbind (cadr form))) (tbind 'mdo)
        (setq init (dtranslate (caddr form)))
@@ -1226,7 +1228,7 @@ APPLY means like APPLY.")
 	      (tunbind 'mdo) (tunbind (cadr form))
 	      (return (punt-to-meval `((mdoin) . ,(cdr form))))))
        (setq action (translate (cadddr (cddddr form)))
-	     mode (cond ((null returns) '$any)
+	     mode (cond ((null *returns*) '$any)
 			(t return-mode)))
        (tunbind 'mdo) (tunbind (cadr form))
        (return
