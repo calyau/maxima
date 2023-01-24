@@ -846,7 +846,7 @@ AC_ARG_ENABLE(win64-installer,
   [case "${enableval}" in
                 yes) win64_installer=true ;;
                 no) win64_installer=false ;;
-                *) AC_MSG_ERROR(bad valu ${enableval} for --enable-win64-installer) ;;
+                *) AC_MSG_ERROR(bad value ${enableval} for --enable-win64-installer) ;;
   esac],
   [win64_installer=false])
 AM_CONDITIONAL(WIN64_INSTALLER, test x$win64_installer = xtrue)
@@ -1021,7 +1021,7 @@ if test x"${gcl}" = xtrue; then
    dnl Create a numerical version number
    gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_sub}`
 
-   if test ${gcl_version} -lt 20614; then
+   if test ${gcl_version} -lt 20613; then
        AC_MSG_ERROR([GCL version ${GCL_VERSION} too old])
    else
        AC_MSG_RESULT([${GCL_VERSION}])
