@@ -39,12 +39,4 @@
 			        `(make-unspecial ',w)))
 	     else collect `(proclaim ',v))))
 
-;;; This list should contain all specials required by runtime or more
-;;; than one maxima file, except for specials defined in globals.lisp,
-;;; or for some specials declared in the macro files, eg displm.
-
-(declaim (special
-	  defined_variables
-	  $define_variable))
-
 (declaim (declaration unspecial))

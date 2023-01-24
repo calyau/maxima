@@ -181,6 +181,10 @@ APPLY means like APPLY.")
 (defvar tr-lambda-punt-assigns nil
   "Kludge argument to `tr-lambda' due to lack of keyword argument passing")
 
+(defvar defined_variables ())
+
+(defvar $define_variable ())
+
 ;; FIXME: AFAICT (rtoy), *in-compile* is only used in this file and no
 ;; one ever changes the value of *in-compile* to anything other than
 ;; NIL.  Perhaps remove this and the only other use of it below.
