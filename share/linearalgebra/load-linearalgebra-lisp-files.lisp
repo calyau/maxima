@@ -3,9 +3,6 @@
 ;; which are otherwise very voluminous (and this construct
 ;; is accepted by other CL implementations).
 
-#+gcl (unless (macro-function 'with-compilation-unit)
-	       (defmacro with-compilation-unit (a &rest b) `(progn ,@b)))
-
 (with-compilation-unit nil
     ($load "mring")
     ($load "lu")
