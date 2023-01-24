@@ -68,7 +68,7 @@ MS Windows and Unix-like systems.
 
 
 CMUCL <https://cmucl.org/>
-----------------------------------
+--------------------------
 
 CMUCL is a fast option for Maxima on platforms where it is
 available. The rmaxima front-end provides advanced line-editing
@@ -97,10 +97,12 @@ interfaces/emacs/ directory, the Emacs imaxima mode available from
 GCL <https://www.gnu.org/software/gcl/>
 ---------------------------------------
 
-GCL versions starting with 2.4.3 can be built with readline
-support, so Maxima has advanced command-line editing facilities
-when built with it. GCL produces a fast Maxima executable that
-profit from GCL's fast bignum algorithms.
+GCL >= 2.6.13 is required to build Maxima.
+
+GCL can be built with readline support, so Maxima has advanced
+command-line editing facilities when built with it.
+GCL produces a fast Maxima executable that profit from GCL's
+fast bignum algorithms.
 
 Only the ANSI-enabled version of GCL works with Maxima, i.e.,
 when GCL is built, it must be configured with the `--enable-ansi` flag,
@@ -111,6 +113,9 @@ Whether GCL is ANSI-enabled or not can be determined by
 inspecting the banner which is printed when GCL is executed;
 if ANSI-enabled, the banner should say `ANSI`.
 Also, the special variable `*FEATURES*` should include the keyword `:ANSI-CL`.
+
+On Debian based Linux distributions you can enable/disable the ANSI version using:
+dpkg-reconfigure gcl
 
 There are GCL implementations for many platforms
 including MS Windows and Unix-like systems.
