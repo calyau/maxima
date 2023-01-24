@@ -66,16 +66,6 @@ the next data packet is still being prepared.
 There are Clisp implementations for many platforms including
 MS Windows and Unix-like systems.
 
-Maxima compiled with a typical linux install of clisp 2.49.92
-typically depends on the following libraries:
-
- * libc
- * libffcall
- * libreadline
- * libsigsegv
- * libtinfo
- * libunistring
-
 
 CMUCL <https://cmucl.org/>
 ----------------------------------
@@ -90,6 +80,7 @@ CMUCL versions: 18e and 19a and later are known to work.
 There are CMUCL implementations only for Unix-like systems
 (not MS Windows).
 
+
 Scieneer Common Lisp (SCL) <https://web.archive.org/web/20171014210404/http://www.scieneer.com/scl/>
 ----------------------------------------------------------------------------------------------------
 
@@ -101,6 +92,7 @@ front end options are: Maxima emacs mode available in the
 interfaces/emacs/ directory, the Emacs imaxima mode available from
 <https://sites.google.com/site/imaximaimath/>, and TeXmacs available from
 <https://www.texmacs.org>
+
 
 GCL <https://www.gnu.org/software/gcl/>
 ---------------------------------------
@@ -123,15 +115,6 @@ Also, the special variable `*FEATURES*` should include the keyword `:ANSI-CL`.
 There are GCL implementations for many platforms
 including MS Windows and Unix-like systems.
 
-Maxima compiled using a typical linux install using gcl 2.6.12
-typically depends on:
-
- * libc
- * libgmp
- * libreadline
- * libx11
- * gcc
-
 
 SBCL <https://www.sbcl.org>
 --------------------------
@@ -144,12 +127,6 @@ GCL. For other tasks GCL is faster than SBCL.
 As SBCL doesn't use readline it is recommended to use rmaxima for using
 a command-line Maxima with SBCL. For common details of SBCL and CMUCL
 See CMUCL above.
-
-Maxima compiled using a typical Linux install using SBCL 1.4.10
-typically depends on:
-
- * libc
- * zlib
 
 
 Allegro Common Lisp <https://franz.com/products/allegro-common-lisp/>
@@ -182,11 +159,6 @@ ECL must be configured to use the C compiler, building Maxima with the
 ECL bytecode compiler is (currently) not possible.  So do **not** use the
 option `--with-cmp=no` when building ECL.
 
-Maxima compiled using a typical linux install using ecl 16.1.2
-typically only depends on:
-
- * libc
-
 
 Armed Bear Common Lisp (ABCL) <https://www.abcl.org>
 ----------------------------------------------------
@@ -196,5 +168,3 @@ That also means that it is an interpreter running in a virtual machine
 which makes it even slower than Clisp. Also Java doesn't automatically
 convert tail-recursive function calls to loops which means that in a
 few functions might run out of stack space faster than other Lisps.
-
-
