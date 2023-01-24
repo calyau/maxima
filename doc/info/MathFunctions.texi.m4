@@ -9,7 +9,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Functions for Numbers, Functions for Complex Numbers, Mathematical Functions, Mathematical Functions
+@node Functions for Numbers, Functions for Complex Numbers
 @section Functions for Numbers
 @c -----------------------------------------------------------------------------
 
@@ -610,7 +610,7 @@ See @mrefdot{distribute_over}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers, Mathematical Functions
+@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers
 @section Functions for Complex Numbers
 @c -----------------------------------------------------------------------------
 
@@ -1070,7 +1070,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers, Mathematical Functions
+@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers
 @section Combinatorial Functions
 @c -----------------------------------------------------------------------------
 
@@ -1498,7 +1498,7 @@ When @code{sumsplitfact} is @code{false},
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions, Mathematical Functions
+@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions
 @section Root, Exponential and Logarithmic Functions
 @c -----------------------------------------------------------------------------
 
@@ -2142,7 +2142,7 @@ The square root of @var{x}.  It is represented internally by
 
 @c -----------------------------------------------------------------------------
 @page
-@node Trigonometric Functions, Random Numbers, Root Exponential and Logarithmic Functions, Mathematical Functions
+@node Trigonometric Functions, Random Numbers, Root Exponential and Logarithmic Functions
 @section Trigonometric Functions
 @c -----------------------------------------------------------------------------
 
@@ -2181,7 +2181,7 @@ for details.
 @subsection Functions and Variables for Trigonometric
 @c -----------------------------------------------------------------------------
 
-@node Trigonometric and Hyperbolic Functions
+@node Trigonometric and Hyperbolic Functions, Options Controlling Simplification, Functions and Variables for Trigonometric, Functions and Variables for Trigonometric
 @subsubsection Trigonometric and Hyperbolic Functions
 
 @c -----------------------------------------------------------------------------
@@ -2466,7 +2466,7 @@ See also @mref{atan}.
 @end deffn
 
 
-@node Options Controlling Simplification
+@node Options Controlling Simplification, Explicit Simplifications Using Identities, Trigonometric and Hyperbolic Functions, Functions and Variables for Trigonometric
 @subsubsection Options Controlling Simplification
 @c -----------------------------------------------------------------------------
 @anchor{%piargs}
@@ -3047,7 +3047,7 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end deffn
 
 
-@node Additional Functions
+@node Additional Functions,  , Explicit Simplifications Using Identities, Functions and Variables for Trigonometric
 @subsubsection Additional Functions
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
@@ -3089,7 +3089,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 @c -----------------------------------------------------------------------------
 @page
-@node Random Numbers, , Trigonometric Functions, Mathematical Functions
+@node Random Numbers,  , Trigonometric Functions
 @section Random Numbers
 @c -----------------------------------------------------------------------------
 
