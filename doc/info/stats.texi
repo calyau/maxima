@@ -5,7 +5,7 @@
 * Functions and Variables for special distributions::
 @end menu
 
-@node Introduction to stats, Functions and Variables for inference_result, Top, Top
+@node Introduction to stats, Functions and Variables for inference_result, , , stats-pkg
 @section Introduction to stats
 
 
@@ -37,7 +37,7 @@ For comments, bugs or suggestions, please contact the author at
 @category{Package stats}
 @closecatbox
 
-@node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Top
+@node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, stats-pkg
 @section Functions and Variables for inference_result
 
 @anchor{inference_result}
@@ -241,7 +241,7 @@ See also @mrefcomma{inference_result} and @mrefdot{take_inference}
 
 
 
-@node Functions and Variables for stats, Functions and Variables for special distributions, Functions and Variables for inference_result, Top
+@node Functions and Variables for stats, Functions and Variables for special distributions, Functions and Variables for inference_result, stats-pkg
 @section Functions and Variables for stats
 
 
@@ -1588,7 +1588,7 @@ v_distribution, residuals, adc, aic, bic]
 
 
 
-@node Functions and Variables for special distributions, , Functions and Variables for stats, Top
+@node Functions and Variables for special distributions,  , Functions and Variables for stats, stats-pkg
 @section Functions and Variables for special distributions
 
 
