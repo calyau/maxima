@@ -5,7 +5,7 @@
 
 This chapter provides detailed information about the meaning of some error messages
 or on how to recover from errors.
-@node Error Messages, Warning Messages
+@node Error Messages, Warning Messages, , Error and warning messages
 @section Error Messages
 @menu
 * No such list element::
@@ -295,7 +295,7 @@ Note: The @code{scene()} command requrires VTK with TCL/TK bindings.
 @closecatbox
 
 
-@node Warning Messages,  , Error Messages
+@node Warning Messages,  , Error Messages, Error and warning messages
 @section Warning Messages
 @menu
 * undefined variable during translation::
