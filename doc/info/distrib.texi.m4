@@ -104,7 +104,7 @@ m4_define(<<<m4_NegativeBinomial_RV>>>,
 m4_math(<<<{\it NegativeBinomial}($1,$2)>>>,<<<NegativeBinomial($1,$2)>>>))
 
 
-@node Introduction to distrib, Functions and Variables for continuous distributions
+@node Introduction to distrib, Functions and Variables for continuous distributions, , distrib-pkg
 @section Introduction to distrib
 
 
@@ -324,7 +324,7 @@ For comments, bugs or suggestions, please contact the author at @var{'riotorto A
 
 
 
-@node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib
+@node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, distrib-pkg
 @section Functions and Variables for continuous distributions
 Maxima knows the following kinds of continuous distributions.
 
@@ -4750,7 +4750,7 @@ To make use of this function, write first @code{load("distrib")}.
 @end deffn
 
 
-@node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions
+@node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions, distrib-pkg
 @section Functions and Variables for discrete distributions
 
 Maxima knows the following kinds of discrete distributions
