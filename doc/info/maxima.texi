@@ -5,8 +5,8 @@
 
 @c Include documentation categories
 @ifhtml
-@node Documentation Categories, , Function and Variable Index
-@chapter Documentation Categories
+@node Documentation Categories, , Function and Variable Index, Top
+@appendix Documentation Categories
 @c Documentation categories section gets filled in by the script build_html.sh
 @end ifhtml
 @bye

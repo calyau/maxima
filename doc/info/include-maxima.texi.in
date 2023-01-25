@@ -1080,7 +1080,7 @@ Understanding maxima's output
 @node Function and Variable Index,  , Command-line options, Top
 @end ifnothtml
 @ifhtml
-@node Function and Variable Index,  , Command-line options, Top
+@node Function and Variable Index,  Documentation Categories, Command-line options, Top
 @end ifhtml
 @appendix Function and Variable Index
 
