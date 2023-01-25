@@ -2159,17 +2159,17 @@ The square root of @var{x}.  It is represented internally by
 Maxima has many trigonometric functions defined.  Not all trigonometric
 identities are programmed, but it is possible for the user to add many
 of them using the pattern matching capabilities of the system.  The
-trigonometric functions defined in Maxima are: @code{acos},
-@code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
-@code{acsch}, @code{asec}, @code{asech}, @code{asin},
-@code{asinh}, @code{atan}, @code{atanh}, @code{cos},
-@code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch},
-@code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan},
-and @code{tanh}.  There are a number of commands especially for
-handling trigonometric functions, see @code{trigexpand},
-@code{trigreduce}, and the switch @code{trigsign}.  Two share
+trigonometric functions defined in Maxima are: @mref{acos},
+@mref{acosh}, @mref{acot}, @mref{acoth}, @mref{acsc},
+@mref{acsch}, @mref{asec}, @mref{asech}, @mref{asin},
+@mref{asinh}, @mref{atan}, @mref{atanh}, @mref{cos},
+@mref{cosh}, @mref{cot}, @mref{coth}, @mref{csc}, @mref{csch},
+@mref{sec}, @mref{sech}, @mref{sin}, @mref{sinh}, @mref{tan},
+and @mref{tanh}.  There are a number of commands especially for
+handling trigonometric functions, see @mref{trigexpand},
+@mref{trigreduce}, and the switch @mref{trigsign}.  Two share
 packages extend the simplification rules built into Maxima,
-@code{ntrig} and @code{atrig1}.  Do @code{describe(@var{command})}
+@mref{ntrig} and @mref{atrig1}.  Do @code{describe(@var{command})}
 for details.
 
 @opencatbox{Categories:}
@@ -3080,6 +3080,7 @@ Do @code{load("atrig1");} to use them.
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 
 @c -----------------------------------------------------------------------------
+@anchor{ntrig}
 @defvr {Package} ntrig
 
 The @code{ntrig} package contains a set of simplification rules that are
