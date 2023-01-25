@@ -8,9 +8,8 @@
 
 
 
-@node Introduction to Elliptic Functions and Integrals, Functions and Variables for Elliptic Functions, , Top
+@node Introduction to Elliptic Functions and Integrals, Functions and Variables for Elliptic Functions, , Elliptic Functions
 @comment  node-name,  next,  previous,  up
-
 @section Introduction to Elliptic Functions and Integrals
 
 Maxima includes support for Jacobian elliptic functions and for
@@ -138,9 +137,8 @@ that governs the distribution of Maxima.
 @category{Elliptic functions}
 @closecatbox
 
-@node Functions and Variables for Elliptic Functions, Functions and Variables for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, Top
+@node Functions and Variables for Elliptic Functions, Functions and Variables for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, Elliptic Functions
 @comment  node-name,  next,  previous,  up
-
 @section Functions and Variables for Elliptic Functions
 See @urlaands{Section 6.12, 569} and @urldlmf{22.2} for more
 information.
@@ -537,9 +535,8 @@ m4_displaymath(
 @end deffn
 
 
-@node Functions and Variables for Elliptic Integrals, , Functions and Variables for Elliptic Functions, Top
+@node Functions and Variables for Elliptic Integrals,  , Functions and Variables for Elliptic Functions, Elliptic Functions
 @comment  node-name,  next,  previous,  up
-
 @section Functions and Variables for Elliptic Integrals
 
 @anchor{elliptic_f}
