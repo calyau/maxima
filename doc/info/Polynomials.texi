@@ -5,7 +5,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Polynomials, Functions and Variables for Polynomials
+@node Introduction to Polynomials, Functions and Variables for Polynomials, , Polynomials
 @section Introduction to Polynomials
 @c -----------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ symbol @code{/T/} follows the line label of such expressions.
 @c end concepts Polynomials
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Polynomials,  , Introduction to Polynomials
+@node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynomials
 @section Functions and Variables for Polynomials
 @c -----------------------------------------------------------------------------
 
