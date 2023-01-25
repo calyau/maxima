@@ -2181,6 +2181,13 @@ for details.
 @subsection Functions and Variables for Trigonometric
 @c -----------------------------------------------------------------------------
 
+@menu
+* Trigonometric and Hyperbolic Functions::
+* Options Controlling Simplification::
+* Explicit Simplifications Using Identities::
+* Additional Functions::
+@end menu
+
 @node Trigonometric and Hyperbolic Functions, Options Controlling Simplification, Functions and Variables for Trigonometric, Functions and Variables for Trigonometric
 @subsubsection Trigonometric and Hyperbolic Functions
 
