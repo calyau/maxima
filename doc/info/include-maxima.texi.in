@@ -127,7 +127,7 @@ and develop DOE Macsyma, now called Maxima.
 * Operators::                   Operators used in Maxima expressions.
 * Evaluation::                  Evaluating expressions.
 * Simplification::              Simplifying expressions.
-* Mathematical Functions::      Mathematical functions in Maxima.
+* Elementary Functions::        Elementary functions in Maxima.
 * Maxima's Database::           Declarations, Contexts, Facts, and Properties.
 * Plotting::                    2D and 3D graphical output.
 * File Input and Output::       File input and output.
@@ -284,7 +284,7 @@ Evaluation
 Simplification
 * Functions and Variables for Simplification::
 
-Mathematical Functions
+Elementary Functions
 * Functions for Numbers::
 * Functions for Complex Numbers::
 * Combinatorial Functions::
@@ -712,15 +712,15 @@ Understanding maxima's output
 @chapter Evaluation
 @include Evaluation.texi
 
-@node Simplification, Mathematical Functions, Evaluation, Top
+@node Simplification, Elementary Functions, Evaluation, Top
 @chapter Simplification
 @include Simplification.texi
 
-@node Mathematical Functions, Maxima's Database, Simplification, Top
-@chapter Mathematical Functions
+@node Elementary Functions, Maxima's Database, Simplification, Top
+@chapter Elementary Functions
 @include MathFunctions.texi
 
-@node Maxima's Database, Plotting, Mathematical Functions, Top
+@node Maxima's Database, Plotting, Elementary Functions, Top
 @chapter Maxima's Database
 @include Database.texi
 

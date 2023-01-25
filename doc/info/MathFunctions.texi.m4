@@ -9,7 +9,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Functions for Numbers, Functions for Complex Numbers
+@node Functions for Numbers, Functions for Complex Numbers, , Elementary Functions
 @section Functions for Numbers
 @c -----------------------------------------------------------------------------
 
@@ -610,7 +610,7 @@ See @mrefdot{distribute_over}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers
+@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers, Elementary Functions
 @section Functions for Complex Numbers
 @c -----------------------------------------------------------------------------
 
@@ -1070,7 +1070,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers
+@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers, Elementary Functions
 @section Combinatorial Functions
 @c -----------------------------------------------------------------------------
 
@@ -1498,7 +1498,7 @@ When @code{sumsplitfact} is @code{false},
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions
+@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions, Elementary Functions
 @section Root, Exponential and Logarithmic Functions
 @c -----------------------------------------------------------------------------
 
@@ -2142,7 +2142,7 @@ The square root of @var{x}.  It is represented internally by
 
 @c -----------------------------------------------------------------------------
 @page
-@node Trigonometric Functions, Random Numbers, Root Exponential and Logarithmic Functions
+@node Trigonometric Functions, Random Numbers, Root Exponential and Logarithmic Functions, Elementary Functions
 @section Trigonometric Functions
 @c -----------------------------------------------------------------------------
 
@@ -3096,7 +3096,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 @c -----------------------------------------------------------------------------
 @page
-@node Random Numbers,  , Trigonometric Functions
+@node Random Numbers,  , Trigonometric Functions, Elementary Functions
 @section Random Numbers
 @c -----------------------------------------------------------------------------
 
