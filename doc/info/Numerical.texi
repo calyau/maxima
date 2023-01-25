@@ -8,7 +8,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform
+@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform, , Numerical
 @section Introduction to fast Fourier transform
 @c -----------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ small primes.
 @c end concepts Numerical
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for fast Fourier transform, Functions and Variables for FFTPACK5, Introduction to fast Fourier transform
+@node Functions and Variables for fast Fourier transform, Functions and Variables for FFTPACK5, Introduction to fast Fourier transform, Numerical
 @section Functions and Variables for fft
 @c -----------------------------------------------------------------------------
 
@@ -448,7 +448,7 @@ bigfloat output.  This is the bigfloat version of @code{inverse_real_fft}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for FFTPACK5, Functions for numerical solution of equations, Functions and Variables for fast Fourier transform
+@node Functions and Variables for FFTPACK5, Functions for numerical solution of equations, Functions and Variables for fast Fourier transform, Numerical
 @section Functions and Variables for FFTPACK5
 @c -----------------------------------------------------------------------------
 
@@ -579,7 +579,7 @@ can be complex when @var{n} is odd.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions for numerical solution of equations, Introduction to numerical solution of differential equations, Functions and Variables for FFTPACK5
+@node Functions for numerical solution of equations, Introduction to numerical solution of differential equations, Functions and Variables for FFTPACK5, Numerical
 @section Functions for numerical solution of equations
 @c -----------------------------------------------------------------------------
 
@@ -806,7 +806,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Introduction to numerical solution of differential equations, Functions for numerical solution of differential equations, Functions for numerical solution of equations
+@node Introduction to numerical solution of differential equations, Functions for numerical solution of differential equations, Functions for numerical solution of equations, Numerical
 @section Introduction to numerical solution of differential equations
 @c -----------------------------------------------------------------------------
 
@@ -853,7 +853,7 @@ autonomous.
 
 
 @c -----------------------------------------------------------------------------
-@node Functions for numerical solution of differential equations,  , Introduction to numerical solution of differential equations
+@node Functions for numerical solution of differential equations,  , Introduction to numerical solution of differential equations, Numerical
 @section Functions for numerical solution of differential equations
 @c -----------------------------------------------------------------------------
 @anchor{plotdf}
