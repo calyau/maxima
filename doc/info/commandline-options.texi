@@ -2,7 +2,7 @@
 * Command line options::
 @end menu
 
-@node Command line options, , , 
+@node Command line options, , , Command-line options
 @section Command line options
 
 
