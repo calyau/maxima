@@ -12,7 +12,7 @@
 
 (macsyma-module trgred)
 
-(declare-top (special var ans *trigred *noexpand *lin))
+(declare-top (special var *schatc-ans* *trigred *noexpand *lin))
 
 (load-macsyma-macros rzmac)
 
@@ -465,9 +465,9 @@
 	((m^ b e))))
 
 (defun sp1expt2 (e)
-  (let* ((ans (m2 e '((mplus) ((coeffpp) (fr freevar)) ((coeffpp) (exp true)))))
-         (fr (cdr (assoc 'fr ans :test #'eq)))
-         (exp (cdr (assoc 'exp ans :test #'eq))))
+  (let* ((*schatc-ans* (m2 e '((mplus) ((coeffpp) (fr freevar)) ((coeffpp) (exp true)))))
+         (fr (cdr (assoc 'fr *schatc-ans* :test #'eq)))
+         (exp (cdr (assoc 'exp *schatc-ans* :test #'eq))))
     (cond ((equal fr 0)
 	   (m^ '$%e exp))
 	  ((m* (m^ '$%e fr) (m^ '$%e exp))))))

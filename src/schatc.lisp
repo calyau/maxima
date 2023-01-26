@@ -25,21 +25,21 @@
 ;;;; Schatchen is Yiddish for "matchmaker" and Schatchen here is a
 ;;;; pattern matching routine.
 
-(declare-top (special ans))
+(declare-top (special *schatc-ans*))
 
 (defvar *schatfactor* nil)	 ;DETERMINES WHETHER FACTORING SHOULD BE USED.
 
 (defmacro push-context ()
-  '(push nil ans))
+  '(push nil *schatc-ans*))
 
 (defmacro push-loop-context ()
-  '(rplacd ans (cons '*loop (cdr ans))))
+  '(rplacd *schatc-ans* (cons '*loop (cdr *schatc-ans*))))
 
 (defmacro preserve (z)
-  `(rplacd ans (cons (cons ,z (cdr ,z)) (cdr ans))))
+  `(rplacd *schatc-ans* (cons (cons ,z (cdr ,z)) (cdr *schatc-ans*))))
 
 (defmacro add-to (var val)
-  `(rplacd ans (cons (cons ,var ,val) (cdr ans))))
+  `(rplacd *schatc-ans* (cons (cons ,var ,val) (cdr *schatc-ans*))))
 
 (defmacro var-pat (x)
   `(atom (car ,x)))
@@ -175,12 +175,12 @@
 (defvar *splist*)
 
 (defun m2 (e p)
-  (let ((ans (list nil))
+  (let ((*schatc-ans* (list nil))
         (*splist* nil))
     (declare (special *splist*))
     (cond ((null (m1 (copy-tree e) p)) nil)
-	  ((null (cdr ans)))
-	  ((cdr ans)))))
+	  ((null (cdr *schatc-ans*)))
+	  ((cdr *schatc-ans*)))))
 
 (defun sav&del (x)
   (preserve x)
@@ -442,7 +442,7 @@
 		  (setq x (caar y)
 			z (cdar y))
 		  (setq y (cdr y)
-			ans (cdr ans))
+			*schatc-ans* (cdr *schatc-ans*))
 		  (pop-loop-context))))
 	  (t
 	   (push (cons x z) y)
@@ -478,19 +478,19 @@
 	  (t (setq z (cdr z))))))
 
 (defun restore nil
-  (do ((y (cdr ans) (cdr y)))
+  (do ((y (cdr *schatc-ans*) (cdr y)))
       ((null y) nil)
     (cond ((eq (car y) '*loop)
 	   (rplaca y (cadr y))
 	   (rplacd y (cddr y)))
 	  ((null (car y))
-	   (setq ans y)
+	   (setq *schatc-ans* y)
 	   (return nil))
 	  ((null (atom (caar y)))
 	   (rplacd (caar y) (cdar y))))))
 
 (defun restore1 nil
-  (do ((y ans) (l))			;L IS A LIST OF VAR'S NOTED
+  (do ((y *schatc-ans*) (l))			;L IS A LIST OF VAR'S NOTED
       ((null (cdr y)) t)
     (cond ((null (cadr y))		;END OF CONTEXT
 	   (rplacd y (cddr y))		;SPLICE OUT THE CONTEXT MARKER
@@ -504,7 +504,7 @@
 		 l (cons (caar y) l))))))
 
 (defun restore2 nil
-  (do ((y (cdr ans) (cdr y)))
+  (do ((y (cdr *schatc-ans*) (cdr y)))
       ((null (cdr y)) t)
     (cond ((eq (cadr y) '*loop)
 	   (rplacd y (cddr y)))
@@ -513,7 +513,7 @@
 	   (return t)))))
 
 (defun pop-loop-context nil
-  (do ((y ans))
+  (do ((y *schatc-ans*))
       ((eq (cadr y) '*loop) nil)
     (or (atom (caadr y))
 	(rplacd (caadr y) (cdadr y)))
@@ -540,7 +540,7 @@
 		    (y)))
 	   (cond ((eq (car z) 'set) (setq set t))
 		 ((eq (car z) 'uvar)
-		  (cond ((setq y (cdr (assoc (car ala) ans :test #'equal)))
+		  (cond ((setq y (cdr (assoc (car ala) *schatc-ans* :test #'equal)))
 			 (setq uvar t))))
 		 ((eq (car z) 'coeffpt)
 		  (and (eq b 'coeffpt)
@@ -590,7 +590,7 @@
   (cons exp
 	(mapcar #'(lambda (q)
 		    (cond ((atom q)
-			   (or (cdr (assoc q ans :test #'eq))
+			   (or (cdr (assoc q *schatc-ans* :test #'eq))
 			       ;; Evaluate a symbol which has a value.
 			       (and (symbolp q) (boundp q) (symbol-value q))
 			       ;; Otherwise return the symbol.
@@ -599,7 +599,7 @@
 		args)))
 
 (defun findit (a)
-  (do ((y ans) (z))
+  (do ((y *schatc-ans*) (z))
       ((or (null (cdr y)) (null (cadr y))) z)
     (cond ((eq (caadr y) a)
 	   (setq z (nconc z (list (cdadr y))))
@@ -696,4 +696,4 @@
                       (cond-body `(alist-bind ,variables ,w ,@body)))
                   `(,cond-test ,cond-body)))))))
 
-(declare-top (unspecial var ans))
+;;(declare-top (unspecial var ans))

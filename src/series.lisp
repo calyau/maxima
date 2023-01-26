@@ -14,7 +14,7 @@
 
 (declare-top (special var *a *m *c *index *gcd*
 		      *roots *failures
-		      *ratexp *var usexp ans *trigred
+		      *ratexp *var usexp *schatc-ans* *trigred
 		      *form indl *noexpand))
 
 (load-macsyma-macros rzmac)
@@ -176,7 +176,7 @@ integration / differentiation variable."))
     (multiple-value-call #'sratexpnd (numden exp))))
 
 (defun sratexpnd (n d)
-  (let ((ans (list nil))
+  (let ((*schatc-ans* (list nil))
         (*splist*)
         ;; A pattern that matches cc*(c*x^m + a)^n
         (linpat
@@ -195,7 +195,7 @@ integration / differentiation variable."))
              (cond ((poly? n var)
 		    (m// n d))
 		   ((m1 n linpat)
-		    (m// (srbinexpnd (cdr ans)) d))
+		    (m// (srbinexpnd (cdr *schatc-ans*)) d))
 		   (t
                     (powerseries-expansion-error))))
             ((smonop d var)
@@ -227,9 +227,9 @@ integration / differentiation variable."))
                       (m1 d linpat)))
              ;; We had num/den and LINPAT matched den. We need to replace cc
              ;; with num/cc and n with -n.
-             (setf (cdr (assoc 'n ans)) (m- (cdr (assoc 'n ans)))
-                   (cdr (assoc 'cc ans)) (m// n (cdr (assoc 'cc ans))))
-             (srbinexpnd (cdr ans)))
+             (setf (cdr (assoc 'n *schatc-ans*)) (m- (cdr (assoc 'n *schatc-ans*)))
+                   (cdr (assoc 'cc *schatc-ans*)) (m// n (cdr (assoc 'cc *schatc-ans*))))
+             (srbinexpnd (cdr *schatc-ans*)))
 
             (t
              ;; *RATEXP is set by RATEXPAND1, which we call to do the general
@@ -459,8 +459,8 @@ integration / differentiation variable."))
 ;; term. If we're not sure about a, it's a bit more difficult: if we know that n
 ;; is a positive integer, the sum is finite (and has at least two terms) and we
 ;; can just split off the last term. Otherwise, give up.
-(defun srbinexpnd (ans)
-  (alist-bind (n a m c cc x) ans
+(defun srbinexpnd (*schatc-ans*)
+  (alist-bind (n a m c cc x) *schatc-ans*
     (m* cc
         (if (and (integerp n) (minusp n))
             (srintegexpd (neg n) a m c)
