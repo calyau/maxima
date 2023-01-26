@@ -1797,6 +1797,12 @@
   to return a simplified value.")
 
 ;;------------------------------------------------------------------------
+;; From hypgeo.lisp
+(defvar *par* nil
+  "Parameter of Laplace transform.")
+
+(defvar *checkcoefsignlist*)
+;;------------------------------------------------------------------------
 ;; Miscellaneous vars.
 (defvar nn*)
 (defvar dn*)

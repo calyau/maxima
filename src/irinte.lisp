@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special checkcoefsignlist var zerosigntest productcase))
+(declare-top (special var zerosigntest productcase))
 
 (defun hasvar (exp) (not (freevar exp)))
 
@@ -27,10 +27,10 @@
 (defun freevnz (a) (and (freevar a) (not (equal a 0))))
 
 (defun inte (funct x)
-  (let ((checkcoefsignlist nil)
+  (let ((*checkcoefsignlist* nil)
 	(*globalcareflag* nil)
 	($radexpand t))
-    (declare (special checkcoefsignlist *globalcareflag*))
+    (declare (special *globalcareflag*))
     (intir-ref funct x)))
 
 (defun intir-ref (fun x)
@@ -581,12 +581,12 @@
 
 (defun checksigntm (expr)
   (prog (aslist quest zerosigntest productcase)
-     (setq aslist checkcoefsignlist)
+     (setq aslist *checkcoefsignlist*)
      (cond ((atom expr) (go loop)))
      (cond ((eq (caar expr) 'mtimes)(setq productcase t)))
      loop (cond ((null aslist)
-		 (setq checkcoefsignlist
-		       (append checkcoefsignlist
+		 (setq *checkcoefsignlist*
+		       (append *checkcoefsignlist*
 			       (list (cons expr
 					   (list
 					    (setq quest (checkflagandact expr)))))))

@@ -16,7 +16,7 @@
 
 (macsyma-module hyp)
 
-(declare-top (special var *par* checkcoefsignlist))
+(declare-top (special var))
 
 (defvar *debug-hyp* nil)
 
@@ -121,7 +121,7 @@
   (let (;;($radexpand '$all)
 	(var arg)
 	(*par* arg)
-	(checkcoefsignlist nil))
+	(*checkcoefsignlist* nil))
     (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
 
 (defun hgfsimp-exec (arg-l1 arg-l2 arg)
@@ -3596,5 +3596,5 @@
   
 (eval-when
     (:compile-toplevel)
-    (declare-top (unspecial var *par* checkcoefsignlist))
+    (declare-top (unspecial var))
     )

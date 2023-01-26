@@ -25,8 +25,7 @@
 
 (macsyma-module hypgeo)
 
-(declare-top (special checkcoefsignlist
-                      $expintrep))
+(declare-top (special $expintrep))
 
 (defmvar $prefer_d nil
   "When NIL express a parabolic cylinder function as hypergeometric function.")
@@ -52,8 +51,6 @@
 
 (defvar *var* nil
   "Variable of integration of Laplace transform.")
-(defvar *par* nil
-  "Parameter of Laplace transform.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -952,7 +949,7 @@
 ;;; $specint is the Maxima User function
 
 (defmfun $specint (expr var)
-  (prog ($radexpand checkcoefsignlist)
+  (prog ($radexpand *checkcoefsignlist*)
      (setq $radexpand '$all)
      (return (defintegrate expr var))))
 
