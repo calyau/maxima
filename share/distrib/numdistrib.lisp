@@ -798,7 +798,8 @@
 (defvar *rbeta-k2*)
 (defvar *rbeta-a*)
 (defvar *rbeta-b*)
-(defun rndbeta-cheng (aa bb )
+
+(defun rndbeta-cheng0 (aa bb )
   (declare (type flonum aa bb))
   (let (qsame u1 u2 v w z tt r s y genbet
         (expmax 7.0) (infnty 1.0e304))
@@ -847,9 +848,11 @@
 
            s70
            ;; Step 5
-           (if (/= aa *rbeta-a*)
-               (setf genbet (/ *rbeta-b* (+ *rbeta-b* w)))
-               (setf genbet (/ w (+ *rbeta-b* w))))
+           (if (= w infnty)
+             (setf genbet 'rndbeta-encountered-infnty)
+             (if (/= aa *rbeta-a*)
+                 (setf genbet (/ *rbeta-b* (+ *rbeta-b* w)))
+                 (setf genbet (/ w (+ *rbeta-b* w)))))
            (go s230)
 
            s100
@@ -903,12 +906,19 @@
 
            s200
            ;; Step 6
-           (if (/= aa *rbeta-a*)
-               (setf genbet (/ *rbeta-b* (+ *rbeta-b* w)))
-               (setf genbet (/ w (+ *rbeta-b* w))))
+           (if (= w infnty)
+             (setf genbet 'rndbeta-encountered-infnty)
+             (if (/= aa *rbeta-a*)
+                 (setf genbet (/ *rbeta-b* (+ *rbeta-b* w)))
+                 (setf genbet (/ w (+ *rbeta-b* w)))))
 
            s230)
         genbet))
+
+(defun rndbeta-cheng (aa bb )
+  (let (genbet)
+    (loop while (eq (setq genbet (rndbeta-cheng0 aa bb)) 'rndbeta-encountered-infnty))
+    genbet))
 
 
 ;;  The sample size ss must be a non negative integer.
