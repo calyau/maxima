@@ -81,7 +81,13 @@ riotorto @@@ yahoo DOT com
 
 put('distrib, 2, 'version) $
 
+/* This business about trying to infer whether a package is loaded is kind of terrible ...
+ * Maxima would benefit from a more organized package management system.
+ */
+
 if get ('descriptive, 'version) = false then load ("descriptive");
+
+if ?fboundp ('lbfgs) = false then load ("lbfgs");
 
 /* Sets the random state according to the computer clock time */
 set_random_state(make_random_state(true))$
@@ -498,6 +504,11 @@ random_exp(m,[num]) :=
               then ?rndexp(fm,no)
               else error("random_exp: check sample size") ) $
 
+mle_exp (x, [w]) :=
+    if x = []
+        then ['rate = und]
+        else (w: if w = [] then 1 else w[1],
+              ['rate = 1 / mean(x, w)]);
 
 
 /*         LOGNORMAL DISTRIBUTION          */
@@ -554,11 +565,11 @@ random_lognormal(m,s,[num]) :=
 
 mle_lognormal (x, [w]) :=
     if x = []
-        then ['location = und, 'scale = und]
+        then ['log_location = und, 'log_scale = und]
     else
         if w = []
-            then ['location = mean (log (x)), 'scale = std (log (x))]
-            else ['location = mean (log (x), w[1]), 'scale = std (log (x), w[1])];
+            then ['log_location = mean (log (x)), 'log_scale = std (log (x))]
+            else ['log_location = mean (log (x), w[1]), 'log_scale = std (log (x), w[1])];
 
 
 
@@ -624,6 +635,36 @@ random_gamma(a,b,[num]) :=
               then ?rndgamma(fa,fb,no)
               else error("random_gamma: check sample size") ) $
 
+mle_gamma (x, [w]) :=
+    if x = []
+        then ['shape = und, 'scale = und]
+        else block ([shape_estimate, scale_estimate],
+                    w: if w = [] then 1 else w[1],
+                    shape_estimate: mle_gamma_shape (x, w),
+                    scale_estimate: mle_gamma_scale (x, shape_estimate, w),
+                    ['shape = shape_estimate, 'scale = scale_estimate]);
+
+mle_gamma_shape_tol: 1e-8;
+
+/* Newton-Raphson iteration as described under "Maximum likelihood estimation"
+ * in https://en.wikipedia.org/wiki/Gamma_distribution
+ */
+
+mle_gamma_shape (x, [w]) :=
+    block ([s, shape, shape_update],
+           w: if w = [] then 1 else w[1],
+           s: ev (log (mean (x, w)) - mean (log (x), w), numer),
+           shape: (3 - s + sqrt ((s - 3)^2 + 24*s)) / (12*s),
+           shape_update_function: lambda ([shape], shape - (log(shape) - psi[0](shape) - s) / (1/shape - psi[1](shape))),
+           shape_update: shape_update_function (shape),
+           while abs (shape_update - shape) > mle_gamma_shape_tol
+               do [shape, shape_update]: [shape_update, shape_update_function (shape_update)],
+           shape_update);
+
+mle_gamma_scale (x, shape, [w]) :=
+    if w = []
+        then mean(x) / shape
+        else mean(x, w[1]) / shape;
 
 
 /*         BETA DISTRIBUTION          */
@@ -686,6 +727,32 @@ random_beta(a,b,[num]) :=
               then ?rndbeta(fa,fb,no)
               else error("random_beta: check sample size") ) $
 
+mle_beta (x, [w]) :=
+    if x = []
+        then ['shape_1 = und, 'shape_2 = und]
+        else block ([log_pdf, nll, fom, u, listarithm: true],
+                    w: if w = [] then 1 else w[1],
+                    log_pdf: ev (log (pdf_beta (u, shape_1, shape_2)), logexpand = super),
+                    nll: - lsum (w_log_p1, w_log_p1, w * map (lambda ([x1], subst (u = x1, log_pdf)), x)),
+                    /* rescale nll by 1/n to make problem invariant wrt number of data */
+                    fom: nll / length(x),
+                    lbfgs (fom, [shape_1, shape_2], mle_beta_initial_estimates (x, w), mle_beta_tol, mle_beta_iprint));
+
+mle_beta_tol: 1e-6;
+mle_beta_iprint: [1, 0];
+
+/* WIKIPEDIA [1] SAYS THE FOLLOWING ESTIMATES ARE VALID IF ALPHA HAT > 1 AND BETA HAT > 1,
+ * WHICH IS A LITTLE SUSPECT SINCE THE CRITERION SEEMS BETTER STATED IN TERMS OF THE INPUT FACTORS,
+ * AND ALSO IS PROBLEMATIC SINCE THERE IS NO SUGGESTION WHAT TO DO OTHERWISE.
+ * [1] https://en.wikipedia.org/wiki/Beta_distribution#Statistical_inference
+ */
+
+mle_beta_initial_estimates (x, w) :=
+    block ([G_hat_X, G_hat_1_minus_X, ab_denom],
+           G_hat_X: ev (mean (log(x), w), numer),
+           G_hat_1_minus_X: ev (mean (log (1 - x), w), numer),
+           ab_denom: 2*(1 - G_hat_X - G_hat_1_minus_X),
+           [1/2 + G_hat_X / ab_denom, 1/2 + G_hat_1_minus_X / ab_denom]);
 
 
 /*         CONTINUOUS UNIFORM DISTRIBUTION          */
