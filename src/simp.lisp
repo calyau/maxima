@@ -48,7 +48,6 @@
 
 (defvar expandp nil)
 (defvar timesinp nil)
-(defvar %e-val (mget '$%e '$numer))
 (defvar %pi-val (mget '$%pi '$numer))
 (defvar exptrlsw nil)
 (defvar expandflag nil)

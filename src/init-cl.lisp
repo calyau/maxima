@@ -689,6 +689,8 @@
 		(setf $browser "open '~A'"))
 	       ((pregexp:pregexp-match-positions "(?i:linux)" *autoconf-host*)
 		(setf $browser "xdg-open '~A'")))))
+  (setf %e-val (mget '$%e '$numer))
+
   ;; Initialize *bigprimes* here instead of globals.lisp because we
   ;; need the NEXT-PRIME function.
   (setf *bigprimes*
