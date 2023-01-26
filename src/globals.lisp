@@ -1255,6 +1255,8 @@
 (defvar derivflag nil)
 (defvar *zexptsimp? nil)
 
+;; This is initialized in initialize-runtime-globals
+(defvar %e-val)
 ;;------------------------------------------------------------------------
 ;; From solve.lisp
 (defmvar $breakup t
