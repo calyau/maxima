@@ -25,11 +25,6 @@ These programs are typically loaded via @code{load} or @code{setup_autoload}.
 @code{:lisp *maxima-sharedir*} displays the location of the share directory
 within the user's file system.
 
-@c FIXME FIXME FIXME -- WE REALLY NEED AN UP-TO-DATE LIST OF SHARE PACKAGES !!
-@code{printfile ("share.usg")} prints an out-of-date list of share packages.
-Users may find it more informative to browse the share directory using a file
-system browser.
-
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for Miscellaneous Options,  , Share, Miscellaneous Options
 @section Functions and Variables for Miscellaneous Options

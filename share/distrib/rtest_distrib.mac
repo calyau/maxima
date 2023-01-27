@@ -176,13 +176,13 @@ ev (foo, q = 2/5);
 %e^(2/10*sqrt(2)*inverse_erf(-1/5)+22/10);
 
 mle_lognormal ([exp(17), exp(13), exp(11), exp(7), exp(5)]);
-[location = 53/5, scale = 2*sqrt(114)/5];
+[log_location = 53/5, log_scale = 2*sqrt(114)/5];
 
 mle_lognormal ([exp(17), exp(17), exp(17), exp(13), exp(11), exp(11), exp(7), exp(7), exp(7), exp(7), exp(5)]);
-[location = 119/11, scale = 2*sqrt(582)/11];
+[log_location = 119/11, log_scale = 2*sqrt(582)/11];
 
 mle_lognormal ([exp(17), exp(13), exp(11), exp(7), exp(5)], [3, 1, 2, 4, 1]/11);
-[location = 119/11, scale = 2*sqrt(582)/11];
+[log_location = 119/11, log_scale = 2*sqrt(582)/11];
 
 
 /* gamma distribution */
