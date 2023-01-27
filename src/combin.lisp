@@ -12,7 +12,7 @@
 
 (macsyma-module combin)
 
-(declare-top (special *mfactl *factlist donel *ans* *var*
+(declare-top (special *mfactl donel *ans* *var*
 		      *a* *a $prevfib $next_lucas
 		      *times *plus sum usum
 		      $ratprint $zeta%pi $bftorat))
@@ -48,12 +48,14 @@
 
 (defmfun $minfactorial (e)
   (let (*mfactl *factlist)
+    (declare (special *factlist))
     (if (specrepp e) (setq e (specdisrep e)))
     (getfact e)
     (mapl #'evfac1 *factlist)
     (setq e (evfact e))))
 
 (defun evfact (e)
+  (declare (special *factlist))
   (cond ((atom e) e)
         ((eq (caar e) 'mfactorial)
          ;; Replace factorial with simplified expression from *factlist.
@@ -72,6 +74,7 @@
 	  ((adfactl e (cdr l))))))
 
 (defun getfact (e)
+  (declare (special *factlist))
   (cond ((atom e) nil)
 	((eq (caar e) 'mfactorial)
 	 (and (null (member (cadr e) *factlist :test #'equal))
@@ -1647,6 +1650,6 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *mfactl *factlist donel
+(declare-top (unspecial *mfactl donel
 			*var* *ans* *a*
 			*infsumsimp *times *plus sum usum makef))
