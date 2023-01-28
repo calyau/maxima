@@ -12,7 +12,7 @@
 
 (macsyma-module combin)
 
-(declare-top (special *mfactl donel *ans* *var*
+(declare-top (special donel *ans* *var*
 		      *a* *a $prevfib $next_lucas
 		      *times *plus sum usum
 		      $ratprint $zeta%pi $bftorat))
@@ -48,7 +48,7 @@
 
 (defmfun $minfactorial (e)
   (let (*mfactl *factlist)
-    (declare (special *factlist))
+    (declare (special *mfactl *factlist))
     (if (specrepp e) (setq e (specdisrep e)))
     (getfact e)
     (mapl #'evfac1 *factlist)
@@ -65,6 +65,7 @@
 	(t (recur-apply #'evfact e))))
 
 (defun adfactl (e l)
+  (declare (special *mfactl))
   (let (n)
     (cond ((null l) (push (list e) *mfactl))
 	  ((numberp (setq n ($ratsimp `((mplus) ,e ((mtimes) -1 ,(caar l))))))
@@ -74,7 +75,7 @@
 	  ((adfactl e (cdr l))))))
 
 (defun getfact (e)
-  (declare (special *factlist))
+  (declare (special *mfactl *factlist))
   (cond ((atom e) nil)
 	((eq (caar e) 'mfactorial)
 	 (and (null (member (cadr e) *factlist :test #'equal))
@@ -86,6 +87,7 @@
 	((mapc #'getfact (cdr e)))))
 
 (defun evfac1 (e)
+  (declare (special *mfactl))
   (do ((al *mfactl (cdr al)))
       ((member (car e) (car al) :test #'equal)
        (rplaca e
@@ -1650,6 +1652,6 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *mfactl donel
+(declare-top (unspecial donel
 			*var* *ans* *a*
 			*infsumsimp *times *plus sum usum makef))
