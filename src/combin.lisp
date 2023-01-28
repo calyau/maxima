@@ -97,7 +97,7 @@
 		           (list '(mfactorial) (caar al))))))))
 
 (defmfun $factcomb (e)
-  (let ((varlist varlist ) genvar $ratfac (ratrep (and (not (atom e)) (eq (caar e) 'mrat))))
+  (let ((varlist varlist ) $ratfac (ratrep (and (not (atom e)) (eq (caar e) 'mrat))))
     (and ratrep (setq e (ratdisrep e)))
     (setq e (factcomb e)
 	  e (cond ((atom e) e)
