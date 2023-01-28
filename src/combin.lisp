@@ -1443,7 +1443,7 @@
 	  (srrat3 (n-term l) *var*)))))
 
 
-(declare-top (special $props *i))
+(declare-top (special *i))
 
 (defmspec $deftaylor (l)
   (prog (fun series param op ops)
