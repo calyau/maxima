@@ -1488,8 +1488,6 @@
 	(t (recur-apply #'(lambda (v)
 			    (susum1 combin-i v)) e))))
 
-(declare-top (special *var*))
-
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))
 	(genvar nil)
