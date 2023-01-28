@@ -12,7 +12,7 @@
 
 (macsyma-module combin)
 
-(declare-top (special donel *ans* *var*
+(declare-top (special *ans* *var*
 		      *a* *a $prevfib $next_lucas
 		      *times *plus sum usum))
 
@@ -163,6 +163,7 @@
 
 (defun factpluscomb (e)
   (prog (donel fact indl tt)
+     (declare (special donel))
    tag (setq e (factexpand e)
 	     fact (getfactorial e))
    (or fact (return e))
@@ -189,6 +190,7 @@
 	(t ($expand e))))
 
 (defun getfactorial (e)
+  (declare (special donel))
   (cond ((atom e) nil)
 	((member (caar e) '(mplus mtimes) :test #'eq)
 	 (do ((e (cdr e) (cdr e))
@@ -280,6 +282,7 @@
 	     (setq exp (cons (cadr div) exp))))))
 
 (defun factplus1 (exp e fact)
+  (declare (special donel))
   (do ((l exp (cdr l))
        (i 2 (1+ i))
        (fpn (list '(mplus) fact 1) (list '(mplus) fact i))
@@ -1651,6 +1654,5 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial donel
-			*var* *ans* *a*
+(declare-top (unspecial *var* *ans* *a*
 			*infsumsimp *times *plus sum usum))
