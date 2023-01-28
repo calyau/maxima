@@ -1653,4 +1653,4 @@
 
 (declare-top (unspecial donel
 			*var* *ans* *a*
-			*infsumsimp *times *plus sum usum makef))
+			*infsumsimp *times *plus sum usum))
