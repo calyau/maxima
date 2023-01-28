@@ -14,8 +14,7 @@
 
 (declare-top (special donel *ans* *var*
 		      *a* *a $prevfib $next_lucas
-		      *times *plus sum usum
-		      $ratprint $zeta%pi $bftorat))
+		      *times *plus sum usum))
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
