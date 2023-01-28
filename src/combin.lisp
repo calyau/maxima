@@ -14,7 +14,7 @@
 
 (declare-top (special *ans* *var*
 		      *a* *a $prevfib $next_lucas
-		      *times *plus sum usum))
+		      sum usum))
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
@@ -1129,6 +1129,7 @@
 
 (defun simpsum2 (exp i lo hi)
   (prog (*plus *times $simpsum u)
+     (declare (special *plus *times))
      (setq *plus (list 0) *times 1)
      (when (or (and (eq hi '$inf) (eq lo '$minf))
 	       (equal 0 (m+ hi lo)))
@@ -1150,6 +1151,7 @@
 
 (defun sumsum (e *var* lo hi)
   (let (sum usum)
+    (declare (special *plus *times))
     (cond ((eq hi '$inf)
 	   (cond (*infsumsimp (isum e lo))
 		 ((setq usum (list e)))))
@@ -1655,4 +1657,4 @@
 	       (cons lin 1)))))
 
 (declare-top (unspecial *var* *ans* *a*
-			*infsumsimp *times *plus sum usum))
+			*infsumsimp sum usum))
