@@ -1658,5 +1658,4 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *var* *ans* *a*
-			*infsumsimp))
+(declare-top (unspecial *var* *ans* *a*))
