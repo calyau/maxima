@@ -1443,8 +1443,6 @@
 	  (srrat3 (n-term l) *var*)))))
 
 
-;;(declare-top (special *i))
-
 (defmspec $deftaylor (l)
   (prog (fun series param op ops)
    a	(when (null (setq l (cdr l))) (return (cons '(mlist) ops)))
@@ -1478,16 +1476,17 @@
    (push op ops)
    (go a)))
 
-(defun subsum (*i e) (susum1 e *i))
+(defun subsum (combin-i e)
+  (susum1 combin-i e))
 
-(defun susum1 (e *i)
+(defun susum1 (combin-i e)
   (cond ((atom e) e)
 	((eq (caar e) '%sum)
 	 (if (null (smonop (cadr e) 'sp2var))
 	     (merror (intl:gettext "deftaylor: argument must be a power series at 0."))
-	     (subst *i (caddr e) e)))
+	     (subst combin-i (caddr e) e)))
 	(t (recur-apply #'(lambda (v)
-			    (susum1 v *i)) e))))
+			    (susum1 combin-i v)) e))))
 
 (declare-top (special *var* *x*))
 
