@@ -1122,9 +1122,11 @@
 ;; Summation stuff
 
 (defun adsum (e)
+  (declare (special sum))
   (push (simplify e) sum))
 
 (defun adusum (e)
+  (declare (special usum))
   (push (simplify e) usum))
 
 (defun simpsum2 (exp i lo hi)
@@ -1151,7 +1153,7 @@
 
 (defun sumsum (e *var* lo hi)
   (let (sum usum)
-    (declare (special *plus *times))
+    (declare (special *plus *times usum))
     (cond ((eq hi '$inf)
 	   (cond (*infsumsimp (isum e lo))
 		 ((setq usum (list e)))))
@@ -1190,6 +1192,7 @@
 	(t)))
 
 (defun isum (e lo)
+  (declare (special sum usum))
   (cond ((isum-giveup e)
 	 (setq sum nil usum (list e)))
 	((eq (catch 'isumout (isum1 e lo)) 'divergent)
@@ -1657,4 +1660,4 @@
 	       (cons lin 1)))))
 
 (declare-top (unspecial *var* *ans* *a*
-			*infsumsimp sum usum))
+			*infsumsimp))
