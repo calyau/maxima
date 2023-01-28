@@ -1607,7 +1607,6 @@
 	  (cdr a))))
 
 (defun pdecomp* (combin-par)
-  (declare (special combin-par))
   (let ((a)
 	(l (pdecgdfrm (pfactor (pquotient combin-par *x*)))))
     (cond ((or (pdecprimep (cadr combin-par))
