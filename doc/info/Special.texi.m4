@@ -2858,8 +2858,9 @@ The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, @urlaands{Chapter 19, 686}.
 
 Maxima has very limited knowledge of these functions.  They
-can be returned from function @code{hgfred}.
+can be returned from function @mref{specint}.
 
+@anchor{parabolic_cylinder_d}
 @deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
 The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (@urlaands{eqn 19.3.1, 687}).
 
@@ -2869,6 +2870,10 @@ m4_displaymath(
 <<<y''(z) + \left(\nu + {1\over 2} - {1\over 4} z^2\right) y(z) = 0>>>,
 <<<diff(y(z), z, 2) + (v+1/2-z^2/4)*y(z) = 0>>>)
 has two independent solutions, one of which is m4_math(<<<D_{\nu}(z)>>>, <<<@code{parabolic_cylinder_d(v,z)}>>>), the parabolic cylinder d function.
+
+Function @mref{specint} can return expressions containing
+@code{parabolic_cylinder_d(v,z)} if the option variable
+@mref{prefer_d} is @code{true}.
 
 @opencatbox{Categories:}
 @category{Special functions}

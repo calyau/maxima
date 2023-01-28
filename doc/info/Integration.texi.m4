@@ -988,6 +988,54 @@ to 0.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{prefer_d}
+@defvr {Option variable} prefer_d
+Default value: @code{false}
+
+When @code{prefer_d} is @code{true}, @mref{specint} will prefer to
+express solutions using @mref{parabolic_cylinder_d} rather than
+hypergeometric functions.
+
+In the example below, the solution contains @mref{parabolic_cylinder_d}
+when @code{prefer_d} is @code{true}. 
+
+@c ===beg===
+@c assume(s>0);
+@c factor(ex:specint(%e^-(t^2/8)*exp(-s*t),t));
+@c specint(ex,t),prefer_d=true;
+@c ===end===
+@example
+@group
+(%i1) assume(s>0);
+(%o1)                               [s > 0]
+@end group
+@group
+(%i2) factor(specint(ex:%e^-(t^2/8)*exp(-s*t),t));
+                                         2
+                                      2 s
+(%o2)           - sqrt(2) sqrt(%pi) %e     (erf(sqrt(2) s) - 1)
+@end group
+@group
+(%i3) specint(ex,t),prefer_d=true;
+                                                          2
+                                                         s
+                                                         --
+                                                 s       8
+                    parabolic_cylinder_d(- 1, -------) %e
+                                              sqrt(2)
+(%o3)               ---------------------------------------
+                                    sqrt(2)
+
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Laplace transform}
+@category{Special functions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{residue}
 @deffn {Function} residue (@var{expr}, @var{z}, @var{z_0})
 
