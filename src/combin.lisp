@@ -12,8 +12,11 @@
 
 (macsyma-module combin)
 
-(declare-top (special *ans* *combin-var*
+(declare-top (special *ans*
 		      *a* *a $prevfib $next_lucas))
+
+;; This is only used in this file.  It should not be used anywhere else!
+(defvar *combin-var*)
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
@@ -1657,4 +1660,4 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *combin-var* *ans* *a*))
+(declare-top (unspecial *ans* *a*))
