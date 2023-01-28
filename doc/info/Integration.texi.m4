@@ -1129,7 +1129,9 @@ Furthermore, @code{specint} can handle the hypergeometric function
 @code{%m[u,k](z)} and of the second kind @code{%w[u,k](z)}.
 
 The result may be in terms of special functions and can include unsimplified 
-hypergeometric functions.
+hypergeometric functions.  If variable @mref{prefer_d} is @code{true}
+then the @mref{parabolic_cylinder_d} function may be used in the result
+in preference to hypergeometric functions.
 
 When @mref{laplace} fails to find a Laplace transform, @code{specint} is called. 
 Because @mref{laplace} knows more general rules for Laplace transforms, it is 
