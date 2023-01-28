@@ -1488,7 +1488,7 @@
 	(t (recur-apply #'(lambda (v)
 			    (susum1 combin-i v)) e))))
 
-(declare-top (special *var* *x*))
+(declare-top (special *var*))
 
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))
@@ -1602,17 +1602,18 @@
 
 (defun pdecomp (p *var*)
   (let ((c (ptterm (cdr p) 0))
-	(a) (*x* (list *var* 1 1)))
-    (cons (pcplus c (car (setq a (pdecomp* (pdifference p c)))))
+	(a)
+	(combin-x (list *var* 1 1)))
+    (cons (pcplus c (car (setq a (pdecomp* (pdifference p c) combin-x))))
 	  (cdr a))))
 
-(defun pdecomp* (combin-par)
+(defun pdecomp* (combin-par combin-x)
   (let ((a)
-	(l (pdecgdfrm (pfactor (pquotient combin-par *x*)))))
+	(l (pdecgdfrm (pfactor (pquotient combin-par combin-x)))))
     (cond ((or (pdecprimep (cadr combin-par))
-	       (null (setq a (pdecomp1 *x* l combin-par))))
+	       (null (setq a (pdecomp1 combin-x l combin-par))))
 	   (list combin-par))
-	  (t (append (pdecomp* (car a)) (cdr a))))))
+	  (t (append (pdecomp* (car a) combin-x) (cdr a))))))
 
 (defun pdecomp1 (prod l combin-par)
   (cond ((null l)
