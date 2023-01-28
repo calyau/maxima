@@ -1488,7 +1488,7 @@
 	     (subst *i (caddr e) e)))
 	(t (recur-apply #'susum1 e))))
 
-(declare-top (special *p* *var* *x*))
+(declare-top (special *var* *x*))
 
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))
@@ -1607,6 +1607,7 @@
 	  (cdr a))))
 
 (defun pdecomp* (*p*)
+  (declare (special *p*))
   (let ((a)
 	(l (pdecgdfrm (pfactor (pquotient *p* *x*)))))
     (cond ((or (pdecprimep (cadr *p*))
@@ -1615,6 +1616,7 @@
 	  (t (append (pdecomp* (car a)) (cdr a))))))
 
 (defun pdecomp1 (prod l)
+  (declare (special *p*))
   (cond ((null l)
 	 (and (null (equal (cadr prod) (cadr *p*)))
 	      (setq l (pdecred *p* prod *var*))
