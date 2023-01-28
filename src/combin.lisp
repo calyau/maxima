@@ -13,8 +13,7 @@
 (macsyma-module combin)
 
 (declare-top (special *ans* *var*
-		      *a* *a $prevfib $next_lucas
-		      sum usum))
+		      *a* *a $prevfib $next_lucas))
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
