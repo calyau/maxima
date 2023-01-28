@@ -1488,7 +1488,7 @@
 	     (subst *i (caddr e) e)))
 	(t (recur-apply #'susum1 e))))
 
-(declare-top (special genvar *p* *var* *x*))
+(declare-top (special *p* *var* *x*))
 
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))
