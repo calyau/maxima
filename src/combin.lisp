@@ -1008,8 +1008,6 @@
 		  (list  (- den-gg) (- num-gg)))
 		 (t(list den-gg num-gg))))))
 
-(declare-top (unspecial w))
-
 ;;(cffun '(0 1 1 0) '(0 0 0 1) '(1 2) '(1 1 1 2)) gets error
 ;;should give (3 10)
 
