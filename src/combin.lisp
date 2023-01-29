@@ -1228,6 +1228,7 @@
 	 (adusum e)
 	 nil)))
 
+#+nil
 (defun isum-giveup (e)
   (cond ((atom e) nil)
 	((eq (caar e) 'mexpt)
@@ -1239,11 +1240,31 @@
 
 (defun isum (e lo)
   (declare (special sum usum))
-  (cond ((isum-giveup e)
-	 (setq sum nil usum (list e)))
-	((eq (catch 'isumout (isum1 e lo)) 'divergent)
-	 (merror (intl:gettext "sum: sum is divergent.")))))
+  (labels
+      ((isum-giveup (e)
+	 (cond ((atom e) nil)
+	       ((eq (caar e) 'mexpt)
+		(not (or (free (cadr e) *combin-var*)
+			 (ratp (caddr e) *combin-var*))))
+	       ((member (caar e) '(mplus mtimes) :test #'eq)
+		(some #'identity (mapcar #'isum-giveup (cdr e))))
+	       (t)))
+       (isum1 (e lo)
+	 (cond ((free e *combin-var*)
+		(unless (eq (asksign e) '$zero)
+		  (throw 'isumout 'divergent)))
+	       ((ratp e *combin-var*)
+		(adsum (ipolysum e lo)))
+	       ((eq (caar e) 'mplus)
+		(mapc #'(lambda (x) (isum1 x lo)) (cdr e)))
+	       ( (isgeo e lo))
+	       ((adusum e)))))
+    (cond ((isum-giveup e)
+	   (setq sum nil usum (list e)))
+	  ((eq (catch 'isumout (isum1 e lo)) 'divergent)
+	   (merror (intl:gettext "sum: sum is divergent."))))))
 
+#+nil
 (defun isum1 (e lo)
   (cond ((free e *combin-var*)
 	 (unless (eq (asksign e) '$zero)
