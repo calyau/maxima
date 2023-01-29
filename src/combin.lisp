@@ -12,10 +12,26 @@
 
 (macsyma-module combin)
 
-(declare-top (special *mfactl *factlist donel *ans* *var*
-		      *a* *a $prevfib $next_lucas
-		      *times *plus sum usum
-		      $ratprint $zeta%pi $bftorat))
+;; It seems *a must really be special because it's referenced in this
+;; file, but is not set here.  I (rtoy) don't know what *a is intended
+;; to hold, and *a is declare special in lots of files.
+(declare-top (special *a))
+
+(defmvar $prevfib '$prevfib
+  "After calling `fib(n)`, this is equal to fib(n-1), the Fibonacci
+  number preceding the last one computed."
+  no-reset)
+
+(defmvar $next_lucas '$next_lucas
+  "After calling 'lucas(n)', this is equal to 'lucas(n+1)', the Lucas
+  number following the last returned."
+  no-reset)
+
+;; These are only used in this file.  It should not be used anywhere
+;; else!
+(defvar *combin-var*)
+(defvar *combin-ans*)
+(defvar *combin-a*)
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
@@ -48,12 +64,14 @@
 
 (defmfun $minfactorial (e)
   (let (*mfactl *factlist)
+    (declare (special *mfactl *factlist))
     (if (specrepp e) (setq e (specdisrep e)))
     (getfact e)
     (mapl #'evfac1 *factlist)
     (setq e (evfact e))))
 
 (defun evfact (e)
+  (declare (special *factlist))
   (cond ((atom e) e)
         ((eq (caar e) 'mfactorial)
          ;; Replace factorial with simplified expression from *factlist.
@@ -63,6 +81,7 @@
 	(t (recur-apply #'evfact e))))
 
 (defun adfactl (e l)
+  (declare (special *mfactl))
   (let (n)
     (cond ((null l) (push (list e) *mfactl))
 	  ((numberp (setq n ($ratsimp `((mplus) ,e ((mtimes) -1 ,(caar l))))))
@@ -72,6 +91,7 @@
 	  ((adfactl e (cdr l))))))
 
 (defun getfact (e)
+  (declare (special *mfactl *factlist))
   (cond ((atom e) nil)
 	((eq (caar e) 'mfactorial)
 	 (and (null (member (cadr e) *factlist :test #'equal))
@@ -83,6 +103,7 @@
 	((mapc #'getfact (cdr e)))))
 
 (defun evfac1 (e)
+  (declare (special *mfactl))
   (do ((al *mfactl (cdr al)))
       ((member (car e) (car al) :test #'equal)
        (rplaca e
@@ -94,7 +115,7 @@
 		           (list '(mfactorial) (caar al))))))))
 
 (defmfun $factcomb (e)
-  (let ((varlist varlist ) genvar $ratfac (ratrep (and (not (atom e)) (eq (caar e) 'mrat))))
+  (let ((varlist varlist ) $ratfac (ratrep (and (not (atom e)) (eq (caar e) 'mrat))))
     (and ratrep (setq e (ratdisrep e)))
     (setq e (factcomb e)
 	  e (cond ((atom e) e)
@@ -159,6 +180,7 @@
 
 (defun factpluscomb (e)
   (prog (donel fact indl tt)
+     (declare (special donel))
    tag (setq e (factexpand e)
 	     fact (getfactorial e))
    (or fact (return e))
@@ -185,6 +207,7 @@
 	(t ($expand e))))
 
 (defun getfactorial (e)
+  (declare (special donel))
   (cond ((atom e) nil)
 	((member (caar e) '(mplus mtimes) :test #'eq)
 	 (do ((e (cdr e) (cdr e))
@@ -276,6 +299,7 @@
 	     (setq exp (cons (cadr div) exp))))))
 
 (defun factplus1 (exp e fact)
+  (declare (special donel))
   (do ((l exp (cdr l))
        (i 2 (1+ i))
        (fpn (list '(mplus) fact 1) (list '(mplus) fact i))
@@ -354,11 +378,11 @@
   (simplify s))
 
 (defun nxtbincoef (m nom)
-  (truncate (* nom (- *a* m)) m))
+  (truncate (* nom (- *combin-a* m)) m))
 
 (defun euler (%a*)
-  (prog (nom %k e fl $zerobern *a*)
-     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *a* (1+ %a*))
+  (prog (nom %k e fl $zerobern *combin-a*)
+     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *combin-a* (1+ %a*))
      a	(cond ((zerop %k)
 	       (setq e (- e))
 	       (setf (aref *eu* (1- (ash %a* -1))) e)
@@ -403,7 +427,7 @@
   (simplify s))
 
 (defun bern (%a*)
-  (prog (nom %k bb a b $zerobern l *a*)
+  (prog (nom %k bb a b $zerobern l *combin-a*)
      (setq %k 0
 	   l (1- %a*)
 	   %a* (1+ %a*)
@@ -411,7 +435,7 @@
 	   $zerobern '$/#&
 	   a 1
 	   b 1
-	   *a* (1+ %a*))
+	   *combin-a* (1+ %a*))
      a	(cond ((= %k l)
 	       (setq bb (*red a (* -1 b %a*)))
 	       (putprop 'bern (setq %a* (1- (ash %a* -1))) 'lim)
@@ -984,8 +1008,6 @@
 		  (list  (- den-gg) (- num-gg)))
 		 (t(list den-gg num-gg))))))
 
-(declare-top (unspecial w))
-
 ;;(cffun '(0 1 1 0) '(0 0 0 1) '(1 2) '(1 1 1 2)) gets error
 ;;should give (3 10)
 
@@ -1115,13 +1137,16 @@
 ;; Summation stuff
 
 (defun adsum (e)
+  (declare (special sum))
   (push (simplify e) sum))
 
 (defun adusum (e)
+  (declare (special usum))
   (push (simplify e) usum))
 
 (defun simpsum2 (exp i lo hi)
   (prog (*plus *times $simpsum u)
+     (declare (special *plus *times))
      (setq *plus (list 0) *times 1)
      (when (or (and (eq hi '$inf) (eq lo '$minf))
 	       (equal 0 (m+ hi lo)))
@@ -1141,26 +1166,27 @@
 	   (t (return (m+l *plus))))
      (return (m+l (cons exp *plus)))))
 
-(defun sumsum (e *var* lo hi)
+(defun sumsum (e *combin-var* lo hi)
   (let (sum usum)
+    (declare (special *plus *times usum))
     (cond ((eq hi '$inf)
 	   (cond (*infsumsimp (isum e lo))
 		 ((setq usum (list e)))))
 	  ((finite-sum e 1 lo hi)))
     (cond ((eq sum nil)
-	   (return-from sumsum (list '(%sum) e *var* lo hi))))
+	   (return-from sumsum (list '(%sum) e *combin-var* lo hi))))
     (setq *plus
 	  (nconc (mapcar
 		  #'(lambda (q) (simptimes (list '(mtimes) *times q) 1 nil))
 		  sum)
 		 *plus))
-    (and usum (setq usum (list '(%sum) (simplus (cons '(plus) usum) 1 t) *var* lo hi)))))
+    (and usum (setq usum (list '(%sum) (simplus (cons '(plus) usum) 1 t) *combin-var* lo hi)))))
 
 (defun finite-sum (e y lo hi)
   (cond ((null e))
-	((free e *var*)
+	((free e *combin-var*)
 	 (adsum (m* y e (m+ hi 1 (m- lo)))))
-	((poly? e *var*)
+	((poly? e *combin-var*)
 	 (adsum (m* y (fpolysum e lo hi))))
 	((eq (caar e) '%binomial) (fbino e y lo hi))
 	((eq (caar e) 'mplus)
@@ -1174,23 +1200,24 @@
 (defun isum-giveup (e)
   (cond ((atom e) nil)
 	((eq (caar e) 'mexpt)
-	 (not (or (free (cadr e) *var*)
-		  (ratp (caddr e) *var*))))
+	 (not (or (free (cadr e) *combin-var*)
+		  (ratp (caddr e) *combin-var*))))
 	((member (caar e) '(mplus mtimes) :test #'eq)
 	 (some #'identity (mapcar #'isum-giveup (cdr e))))
 	(t)))
 
 (defun isum (e lo)
+  (declare (special sum usum))
   (cond ((isum-giveup e)
 	 (setq sum nil usum (list e)))
 	((eq (catch 'isumout (isum1 e lo)) 'divergent)
 	 (merror (intl:gettext "sum: sum is divergent.")))))
 
 (defun isum1 (e lo)
-  (cond ((free e *var*)
+  (cond ((free e *combin-var*)
 	 (unless (eq (asksign e) '$zero)
 	   (throw 'isumout 'divergent)))
-	((ratp e *var*)
+	((ratp e *combin-var*)
 	 (adsum (ipolysum e lo)))
 	((eq (caar e) 'mplus)
 	 (mapc #'(lambda (x) (isum1 x lo)) (cdr e)))
@@ -1201,7 +1228,7 @@
   (ipoly1 ($expand e) lo))
 
 (defun ipoly1 (e lo)
-  (cond ((smono e *var*)
+  (cond ((smono e *combin-var*)
 	 (ipoly2 *a *n lo (asksign (simplify (list '(mplus) *n 1)))))
 	((mplusp e)
 	 (cons '(mplus) (mapcar #'(lambda (x) (ipoly1 x lo)) (cdr e))))
@@ -1214,32 +1241,32 @@
   (unless (equal lo 1)
     (let (($simpsum t))
       (adsum `((%sum)
-               ((mtimes) ,a -1 ((mexpt) ,*var* ,n))
-               ,*var* 1 ((mplus) -1 ,lo)))))
+               ((mtimes) ,a -1 ((mexpt) ,*combin-var* ,n))
+               ,*combin-var* 1 ((mplus) -1 ,lo)))))
   (cond ((eq sign '$negative)
 	 (list '(mtimes) a ($zeta (meval (list '(mtimes) -1 n)))))
 	((throw 'isumout 'divergent))))
 
 (defun fsgeo (e y lo hi)
-  (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *var* 1) *var* e) e))))
+  (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
     (cond ((equal r 1)
            (adsum
             (list '(mtimes)
                   (list '(mplus) 1 hi (list '(mtimes) -1 lo))
-                  (maxima-substitute lo *var* e))))
-          ((free r *var*)
+                  (maxima-substitute lo *combin-var* e))))
+          ((free r *combin-var*)
 	   (adsum
 	    (list '(mtimes) y
-		  (maxima-substitute 0 *var* e)
+		  (maxima-substitute 0 *combin-var* e)
 		  (list '(mplus)
 			(list '(mexpt) r (list '(mplus) hi 1))
 			(list '(mtimes) -1 (list '(mexpt) r lo)))
 		  (list '(mexpt) (list '(mplus) r -1) -1)))))))
 
 (defun isgeo (e lo)
-  (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *var* 1) *var* e) e))))
-    (and (free r *var*)
-	 (isgeo1 (maxima-substitute lo *var* e)
+  (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
+    (and (free r *combin-var*)
+	 (isgeo1 (maxima-substitute lo *combin-var* e)
 		 r (asksign (simplify (list '(mplus) (list '(mabs) r) -1)))))))
 
 (defun isgeo1 (a r sign)
@@ -1260,8 +1287,8 @@
 ;; fpoly1 returns 1/(n+1)*(bernpoly(foo+1, n+1) - bernpoly(0, n+1)) for each power
 ;; in the polynomial e
 
-(defun fpolysum (e lo hi)			;returns *ans*
-  (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *var*)))) lo))
+(defun fpolysum (e lo hi)			;returns *combin-ans*
+  (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *combin-var*)))) lo))
 	($prederror))
     (cond ((null a) 0)
 	  ((member lo '(0 1))
@@ -1271,7 +1298,7 @@
 		 (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a)))))))
 
 (defun fpoly1 (e lo)
-  (cond ((smono e *var*)
+  (cond ((smono e *combin-var*)
 	 (fpoly2 *a *n e lo))
 	((eq (caar e) 'mplus)
 	 (cons '(mplus) (mapcar #'(lambda (x) (fpoly1 x lo)) (cdr e))))
@@ -1297,11 +1324,11 @@
 (defun fbino (e y lo hi)
   ;; e=binomial(n,d)
   (prog (n d l h)
-     ;; check that n and d are linear in *var*
-     (when (null (setq n (m2 (cadr e) (list 'n 'linear* *var*))))
+     ;; check that n and d are linear in *combin-var*
+     (when (null (setq n (m2 (cadr e) (list 'n 'linear* *combin-var*))))
        (return (adusum e)))
      (setq n (cdr (assoc 'n n :test #'eq)))
-     (when (null (setq d (m2 (caddr e) (list 'd 'linear* *var*))))
+     (when (null (setq d (m2 (caddr e) (list 'd 'linear* *combin-var*))))
        (return (adusum e)))
      (setq d (cdr (assoc 'd d :test #'eq)))
 
@@ -1340,11 +1367,11 @@
 	      (progn
 		(adsum (m* y (m^ 2 (car n))))
 		(when (member (asksign (m- (m+ h1 c) (car n))) '($zero $negative) :test #'eq)
-		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*)
-					 *var* (m+ h1 c 1) (car n) t :evaluate-summand nil))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *combin-var*)
+					 *combin-var* (m+ h1 c 1) (car n) t :evaluate-summand nil))))
 		(when (> c 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*)
-					 *var* 0 (m- c 1) t :evaluate-summand nil)))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *combin-var*)
+					 *combin-var* 0 (m- c 1) t :evaluate-summand nil)))))
 	      (adusum e))))
 
        ;; sum(binomial(b-k,k),k,0,floor(b/2))=fib(b+1)
@@ -1360,8 +1387,8 @@
 	      (progn
 		(adsum (m* y ($fib (m+ a1 1))))
 		(when (> l1 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) (m- a1 *var*) *var*)
-					 *var* 0 (m- l1 1) t :evaluate-summand nil)))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (m- a1 *combin-var*) *combin-var*)
+					 *combin-var* 0 (m- l1 1) t :evaluate-summand nil)))))
 	      (adusum e))))
 
        ;; sum(binomial(n,2*k),k,0,floor(n/2))=2^(n-1)
@@ -1378,8 +1405,8 @@
 		     (member (asksign (m- a hi)) '($zero $positive) :test #'eq))
 	    (adsum (m* y (m^ 2 (m- a 1))))
 	    (when (> l1 0)
-	      (adsum (m* -1 y (dosum (list '(%binomial) a (m+ *var* *var* r1))
-				     *var* 0 (m- l1 1) t :evaluate-summand nil)))))))
+	      (adsum (m* -1 y (dosum (list '(%binomial) a (m+ *combin-var* *combin-var* r1))
+				     *combin-var* 0 (m- l1 1) t :evaluate-summand nil)))))))
 
        ;; other sums we can't do
        (t
@@ -1417,22 +1444,20 @@
 (defun srrat2 (e)
   (if (pscoefp e) e (srrat3 (terms e) (gvar e))))
 
-(defun srrat3 (l *var*)
+(defun srrat3 (l *combin-var*)
   (cond ((null l) '(0 . 1))
 	((null (=1 (cdr (le l))))
 	 (throw 'srrat nil))
 	((null (n-term l))
-	 (rattimes (cons (list *var* (car (le l)) 1) 1)
+	 (rattimes (cons (list *combin-var* (car (le l)) 1) 1)
 		   (srrat2 (lc l))
 		   t))
 	((ratplus
-	  (rattimes (cons (list *var* (car (le l)) 1) 1)
+	  (rattimes (cons (list *combin-var* (car (le l)) 1) 1)
 		    (srrat2 (lc l))
 		    t)
-	  (srrat3 (n-term l) *var*)))))
+	  (srrat3 (n-term l) *combin-var*)))))
 
-
-(declare-top (special $props *i))
 
 (defmspec $deftaylor (l)
   (prog (fun series param op ops)
@@ -1467,38 +1492,38 @@
    (push op ops)
    (go a)))
 
-(defun subsum (*i e) (susum1 e))
+(defun subsum (combin-i e)
+  (susum1 combin-i e))
 
-(defun susum1 (e)
+(defun susum1 (combin-i e)
   (cond ((atom e) e)
 	((eq (caar e) '%sum)
 	 (if (null (smonop (cadr e) 'sp2var))
 	     (merror (intl:gettext "deftaylor: argument must be a power series at 0."))
-	     (subst *i (caddr e) e)))
-	(t (recur-apply #'susum1 e))))
-
-(declare-top (special genvar *p* *var* *x*))
+	     (subst combin-i (caddr e) e)))
+	(t (recur-apply #'(lambda (v)
+			    (susum1 combin-i v)) e))))
 
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))
 	(genvar nil)
-	*var* p den $factorflag $ratfac)
+	*combin-var* p den $factorflag $ratfac)
     (setq p (cdr (ratf (ratdisrep e)))
-	  *var* (cdr (ratf v)))
-    (cond ((or (null (cdr *var*))
-	       (null (equal (cdar *var*) '(1 1))))
+	  *combin-var* (cdr (ratf v)))
+    (cond ((or (null (cdr *combin-var*))
+	       (null (equal (cdar *combin-var*) '(1 1))))
 	   (merror (intl:gettext "polydecomp: second argument must be an atom; found ~M") v))
-	  (t (setq *var* (caar *var*))))
+	  (t (setq *combin-var* (caar *combin-var*))))
     (cond ((or (pcoefp (cdr p))
-	       (null (eq (cadr p) *var*)))
+	       (null (eq (cadr p) *combin-var*)))
 	   (setq den (cdr p)
 		 p (car p)))
 	  (t (merror (intl:gettext "polydecomp: cannot apply 'polydecomp' to a rational function."))))
     (cons '(mlist)
 	  (cond ((or (pcoefp p)
-		     (null (eq (car p) *var*)))
+		     (null (eq (car p) *combin-var*)))
 		 (list (rdis (cons p den))))
-		(t (setq p (pdecomp p *var*))
+		(t (setq p (pdecomp p *combin-var*))
 		   (do ((l
 			 (setq p (mapcar #'(lambda (q) (cons q 1)) p))
 			 (cdr l))
@@ -1507,7 +1532,7 @@
 			(cons (rdis (cons (caar p)
 					  (ptimes (cdar p) den)))
 			      (mapcar #'rdis (cdr p))))
-		     (cond ((setq a (pdecpow (car l) *var*))
+		     (cond ((setq a (pdecpow (car l) *combin-var*))
 			    (rplaca l (car a))
 			    (cond ((cdr l)
 				   (rplacd l
@@ -1522,7 +1547,7 @@
 						   (cdadr a)))
 						 (cddr l))))
 				  ((equal (cadr a)
-					  (cons (list *var* 1 1) 1)))
+					  (cons (list *combin-var* 1 1) 1)))
 				  (t (rplacd l (list (cadr a)))))))))))))
 
 
@@ -1534,12 +1559,12 @@
 ;;; It is used in the SOLVE package and as such it should have an autoload
 ;;; property
 
-(defun polydecomp (p *var*)
+(defun polydecomp (p *combin-var*)
   (let ($factorflag $ratfac)
     (cond ((or (pcoefp p)
-	       (null (eq (car p) *var*)))
+	       (null (eq (car p) *combin-var*)))
 	   (cons p nil))
-	  (t (setq p (pdecomp p *var*))
+	  (t (setq p (pdecomp p *combin-var*))
 	     (do ((l (setq p (mapcar #'(lambda (q) (cons q 1)) p))
 		     (cdr l))
 		  (a))
@@ -1547,7 +1572,7 @@
 		  (cons (cons (caar p)
 			      (cdar p))
 			(cdr p)))
-	       (cond ((setq a (pdecpow (car l) *var*))
+	       (cond ((setq a (pdecpow (car l) *combin-var*))
 		      (rplaca l (car a))
 		      (cond ((cdr l)
 			     (rplacd l
@@ -1562,13 +1587,13 @@
 					     (cdadr a)))
 					   (cddr l))))
 			    ((equal (cadr a)
-				    (cons (list *var* 1 1) 1)))
+				    (cons (list *combin-var* 1 1) 1)))
 			    (t (rplacd l (list (cadr a))))))))))))
 
 
 
-(defun pdecred (f h *var*)		;f = g(h(*var*))
-  (cond ((or (pcoefp h) (null (eq (car h) *var*))
+(defun pdecred (f h *combin-var*)		;f = g(h(*combin-var*))
+  (cond ((or (pcoefp h) (null (eq (car h) *combin-var*))
 	     (equal (cadr h) 1)
 	     (null (zerop (rem (cadr f) (cadr h))))
 	     (and (null (pzerop (caadr (setq f (pdivide f h)))))
@@ -1576,40 +1601,42 @@
 	 nil)
 	(t (do ((q (pdivide (caar f) h) (pdivide (caar q) h))
 		(i 1 (1+ i))
-		(*ans*))
+		(*combin-ans*))
 	       ((pzerop (caar q))
 		(cond ((and (equal (cdadr q) 1)
 			    (or (pcoefp (caadr q))
-				(null (eq (caar (cadr q)) *var*))))
-		       (psimp *var* (cons i (cons (caadr q) *ans*))))))
+				(null (eq (caar (cadr q)) *combin-var*))))
+		       (psimp *combin-var* (cons i (cons (caadr q) *combin-ans*))))))
 	     (cond ((and (equal (cdadr q) 1)
 			 (or (pcoefp (caadr q))
-			     (null (eq (caar (cadr q)) *var*))))
+			     (null (eq (caar (cadr q)) *combin-var*))))
 		    (and (null (pzerop (caadr q)))
-			 (setq *ans* (cons i (cons (caadr q) *ans*)))))
+			 (setq *combin-ans* (cons i (cons (caadr q) *combin-ans*)))))
 		   (t (return nil)))))))
 
-(defun pdecomp (p *var*)
+(defun pdecomp (p poly-var)
   (let ((c (ptterm (cdr p) 0))
-	(a) (*x* (list *var* 1 1)))
-    (cons (pcplus c (car (setq a (pdecomp* (pdifference p c)))))
-	  (cdr a))))
-
-(defun pdecomp* (*p*)
-  (let ((a)
-	(l (pdecgdfrm (pfactor (pquotient *p* *x*)))))
-    (cond ((or (pdecprimep (cadr *p*))
-	       (null (setq a (pdecomp1 *x* l))))
-	   (list *p*))
-	  (t (append (pdecomp* (car a)) (cdr a))))))
-
-(defun pdecomp1 (prod l)
-  (cond ((null l)
-	 (and (null (equal (cadr prod) (cadr *p*)))
-	      (setq l (pdecred *p* prod *var*))
-	      (list l prod)))
-	((pdecomp1 prod (cdr l)))
-	(t (pdecomp1 (ptimes (car l) prod) (cdr l)))))
+	(a)
+	;; CRE form of the polynomial x (with the actual variable in
+	;; poly-var).
+	(poly-x (list poly-var 1 1)))
+    (labels
+	((pdecomp1 (prod l poly)
+	   (cond ((null l)
+		  (and (null (equal (cadr prod) (cadr poly)))
+		       (setq l (pdecred poly prod poly-var))
+		       (list l prod)))
+		 ((pdecomp1 prod (cdr l) poly))
+		 (t (pdecomp1 (ptimes (car l) prod) (cdr l) poly))))
+	 (pdecomp* (poly)
+	   (let ((a)
+		 (l (pdecgdfrm (pfactor (pquotient poly poly-x)))))
+	     (cond ((or (pdecprimep (cadr poly))
+			(null (setq a (pdecomp1 poly-x l poly))))
+		    (list poly))
+		   (t (append (pdecomp* (car a)) (cdr a)))))))
+      (cons (pcplus c (car (setq a (pdecomp* (pdifference p c)))))
+	    (cdr a)))))
 
 (defun pdecgdfrm (l)			;Get list of divisors
   (do ((l (copy-list l ))
@@ -1625,19 +1652,19 @@
   (setq x (cfactorw x))
   (and (null (cddr x)) (equal (cadr x) 1)))
 
-(defun pdecpow (p *var*)
+(defun pdecpow (p *combin-var*)
   (setq p (car p))
-  (let ((p1 (pderivative p *var*))
+  (let ((p1 (pderivative p *combin-var*))
 	p2 p1p p1c a lin p2p)
     (setq p1p (oldcontent p1)
 	  p1c (car p1p) p1p (cadr p1p))
-    (setq p2 (pderivative p1 *var*))
+    (setq p2 (pderivative p1 *combin-var*))
     (setq p2p (cadr (oldcontent p2)))
     (and (setq lin (testdivide p1p p2p))
 	 (null (pcoefp lin))
-	 (eq (car lin) *var*)
+	 (eq (car lin) *combin-var*)
 	 (list (ratplus
-		(rattimes (cons (list *var* (cadr p) 1) 1)
+		(rattimes (cons (list *combin-var* (cadr p) 1) 1)
 			  (setq a (ratreduce p1c
 					     (ptimes (cadr p)
 						     (caddr lin))))
@@ -1646,7 +1673,3 @@
 			(rattimes a (cons (pexpt lin (cadr p)) 1)
 				  t)))
 	       (cons lin 1)))))
-
-(declare-top (unspecial *mfactl *factlist donel
-			*var* *ans* *a*
-			*infsumsimp *times *plus sum usum makef))
