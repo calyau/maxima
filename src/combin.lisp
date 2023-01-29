@@ -1307,27 +1307,6 @@
 	     (list '(mplus) (maxima-substitute hi 'foo a)
 		   (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a))))))))
 
-#+nil
-(defun fpoly1 (e lo)
-  (cond ((smono e *combin-var*)
-	 (fpoly2 *a *n e lo))
-	((eq (caar e) 'mplus)
-	 (cons '(mplus) (mapcar #'(lambda (x) (fpoly1 x lo)) (cdr e))))
-	(t (adusum e) 0)))
-
-#+nil
-(defun fpoly2 (a n e lo)
-  (cond ((null (and (integerp n) (> n -1))) (adusum e) 0)
-	((equal n 0)
-	 (m* (cond ((signp e lo)
-		    (m1+ 'foo))
-		   (t 'foo))
-	     a))
-	(($ratsimp
-	  (m* a (list '(rat) 1 (1+ n))
-	      (m- ($bernpoly (m+ 'foo 1) (1+ n))
-		  ($bern (1+ n))))))))
-
 ;; fbino can do these sums:
 ;;  a) sum(binomial(n,k),k,0,n) -> 2^n
 ;;  b) sum(binomial(n-k,k,k,0,n) -> fib(n+1)
