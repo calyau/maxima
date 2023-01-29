@@ -12,12 +12,13 @@
 
 (macsyma-module combin)
 
-(declare-top (special *a* *a $prevfib $next_lucas))
+(declare-top (special *a $prevfib $next_lucas))
 
 ;; These are only used in this file.  It should not be used anywhere
 ;; else!
 (defvar *combin-var*)
 (defvar *combin-ans*)
+(defvar *combin-a*)
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
@@ -364,11 +365,11 @@
   (simplify s))
 
 (defun nxtbincoef (m nom)
-  (truncate (* nom (- *a* m)) m))
+  (truncate (* nom (- *combin-a* m)) m))
 
 (defun euler (%a*)
-  (prog (nom %k e fl $zerobern *a*)
-     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *a* (1+ %a*))
+  (prog (nom %k e fl $zerobern *combin-a*)
+     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *combin-a* (1+ %a*))
      a	(cond ((zerop %k)
 	       (setq e (- e))
 	       (setf (aref *eu* (1- (ash %a* -1))) e)
@@ -413,7 +414,7 @@
   (simplify s))
 
 (defun bern (%a*)
-  (prog (nom %k bb a b $zerobern l *a*)
+  (prog (nom %k bb a b $zerobern l *combin-a*)
      (setq %k 0
 	   l (1- %a*)
 	   %a* (1+ %a*)
@@ -421,7 +422,7 @@
 	   $zerobern '$/#&
 	   a 1
 	   b 1
-	   *a* (1+ %a*))
+	   *combin-a* (1+ %a*))
      a	(cond ((= %k l)
 	       (setq bb (*red a (* -1 b %a*)))
 	       (putprop 'bern (setq %a* (1- (ash %a* -1))) 'lim)
@@ -1660,5 +1661,3 @@
 			(rattimes a (cons (pexpt lin (cadr p)) 1)
 				  t)))
 	       (cons lin 1)))))
-
-(declare-top (unspecial *a*))
