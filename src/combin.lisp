@@ -1169,19 +1169,35 @@
 (defun sumsum (e *combin-var* lo hi)
   (let (sum usum)
     (declare (special *plus *times usum))
-    (cond ((eq hi '$inf)
-	   (cond (*infsumsimp (isum e lo))
-		 ((setq usum (list e)))))
-	  ((finite-sum e 1 lo hi)))
-    (cond ((eq sum nil)
-	   (return-from sumsum (list '(%sum) e *combin-var* lo hi))))
-    (setq *plus
-	  (nconc (mapcar
-		  #'(lambda (q) (simptimes (list '(mtimes) *times q) 1 nil))
-		  sum)
-		 *plus))
-    (and usum (setq usum (list '(%sum) (simplus (cons '(plus) usum) 1 t) *combin-var* lo hi)))))
+    (labels
+	((finite-sum (e y lo hi)
+	   (cond ((null e))
+		 ((free e *combin-var*)
+		  (adsum (m* y e (m+ hi 1 (m- lo)))))
+		 ((poly? e *combin-var*)
+		  (adsum (m* y (fpolysum e lo hi))))
+		 ((eq (caar e) '%binomial) (fbino e y lo hi))
+		 ((eq (caar e) 'mplus)
+		  (mapc #'(lambda (q) (finite-sum q y lo hi)) (cdr e)))
+		 ((and (or (mtimesp e) (mexptp e) (mplusp e))
+		       (fsgeo e y lo hi)))
+		 (t
+		  (adusum e)
+		  nil))))
+      (cond ((eq hi '$inf)
+	     (cond (*infsumsimp (isum e lo))
+		   ((setq usum (list e)))))
+	    ((finite-sum e 1 lo hi)))
+      (cond ((eq sum nil)
+	     (return-from sumsum (list '(%sum) e *combin-var* lo hi))))
+      (setq *plus
+	    (nconc (mapcar
+		    #'(lambda (q) (simptimes (list '(mtimes) *times q) 1 nil))
+		    sum)
+		   *plus))
+      (and usum (setq usum (list '(%sum) (simplus (cons '(plus) usum) 1 t) *combin-var* lo hi))))))
 
+#+nil
 (defun finite-sum (e y lo hi)
   (cond ((null e))
 	((free e *combin-var*)
