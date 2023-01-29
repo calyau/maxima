@@ -1259,6 +1259,26 @@
 		(mapc #'(lambda (x) (isum1 x lo)) (cdr e)))
 	       ( (isgeo e lo))
 	       ((adusum e))))
+       (ipolysum (e lo)
+	 (ipoly1 ($expand e) lo))
+       (ipoly1 (e lo)
+	 (cond ((smono e *combin-var*)
+		(ipoly2 *a *n lo (asksign (simplify (list '(mplus) *n 1)))))
+	       ((mplusp e)
+		(cons '(mplus) (mapcar #'(lambda (x) (ipoly1 x lo)) (cdr e))))
+	       (t (adusum e)
+		  0)))
+       (ipoly2 (a n lo sign)
+	 (cond ((member (asksign lo) '($zero $negative) :test #'eq)
+		(throw 'isumout 'divergent)))
+	 (unless (equal lo 1)
+	   (let (($simpsum t))
+	     (adsum `((%sum)
+		      ((mtimes) ,a -1 ((mexpt) ,*combin-var* ,n))
+		      ,*combin-var* 1 ((mplus) -1 ,lo)))))
+	 (cond ((eq sign '$negative)
+		(list '(mtimes) a ($zeta (meval (list '(mtimes) -1 n)))))
+	       ((throw 'isumout 'divergent))))
        (isgeo (e lo)
 	 (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
 	   (and (free r *combin-var*)
@@ -1289,9 +1309,11 @@
 	( (isgeo e lo))
 	((adusum e))))
 
+#+nil
 (defun ipolysum (e lo)
   (ipoly1 ($expand e) lo))
 
+#+nil
 (defun ipoly1 (e lo)
   (cond ((smono e *combin-var*)
 	 (ipoly2 *a *n lo (asksign (simplify (list '(mplus) *n 1)))))
@@ -1300,6 +1322,7 @@
 	(t (adusum e)
 	   0)))
 
+#+nil
 (defun ipoly2 (a n lo sign)
   (cond ((member (asksign lo) '($zero $negative) :test #'eq)
 	 (throw 'isumout 'divergent)))
