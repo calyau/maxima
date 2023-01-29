@@ -1258,7 +1258,20 @@
 	       ((eq (caar e) 'mplus)
 		(mapc #'(lambda (x) (isum1 x lo)) (cdr e)))
 	       ( (isgeo e lo))
-	       ((adusum e)))))
+	       ((adusum e))))
+       (isgeo (e lo)
+	 (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
+	   (and (free r *combin-var*)
+		(isgeo1 (maxima-substitute lo *combin-var* e)
+			r (asksign (simplify (list '(mplus) (list '(mabs) r) -1)))))))
+       (isgeo1 (a r sign)
+	 (cond ((eq sign '$positive)
+		(throw 'isumout 'divergent))
+	       ((eq sign '$zero)
+		(throw 'isumout 'divergent))
+	       ((eq sign '$negative)
+		(adsum (list '(mtimes) a
+			     (list '(mexpt) (list '(mplus) 1 (list '(mtimes) -1 r)) -1)))))))
     (cond ((isum-giveup e)
 	   (setq sum nil usum (list e)))
 	  ((eq (catch 'isumout (isum1 e lo)) 'divergent)
@@ -1316,12 +1329,14 @@
 			(list '(mtimes) -1 (list '(mexpt) r lo)))
 		  (list '(mexpt) (list '(mplus) r -1) -1)))))))
 
+#+nil
 (defun isgeo (e lo)
   (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
     (and (free r *combin-var*)
 	 (isgeo1 (maxima-substitute lo *combin-var* e)
 		 r (asksign (simplify (list '(mplus) (list '(mabs) r) -1)))))))
 
+#+nil
 (defun isgeo1 (a r sign)
   (cond ((eq sign '$positive)
 	 (throw 'isumout 'divergent))
