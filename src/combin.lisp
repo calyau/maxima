@@ -1175,7 +1175,7 @@
 		 ((free e *combin-var*)
 		  (adsum (m* y e (m+ hi 1 (m- lo)))))
 		 ((poly? e *combin-var*)
-		  (adsum (m* y (fpolysum e lo hi))))
+		  (adsum (m* y (fpolysum e lo hi *combin-var*))))
 		 ((eq (caar e) '%binomial) (fbino e y lo hi))
 		 ((eq (caar e) 'mplus)
 		  (mapc #'(lambda (q) (finite-sum q y lo hi)) (cdr e)))
@@ -1319,10 +1319,10 @@
 ;; fpoly1 returns 1/(n+1)*(bernpoly(foo+1, n+1) - bernpoly(0, n+1)) for each power
 ;; in the polynomial e
 
-(defun fpolysum (e lo hi)			;returns *combin-ans*
+(defun fpolysum (e lo hi poly-var)			;returns *combin-ans*
   (labels
       ((fpoly1 (e lo)
-	 (cond ((smono e *combin-var*)
+	 (cond ((smono e poly-var)
 		(fpoly2 *a *n e lo))
 	       ((eq (caar e) 'mplus)
 		(cons '(mplus) (mapcar #'(lambda (x) (fpoly1 x lo)) (cdr e))))
@@ -1338,7 +1338,7 @@
 		 (m* a (list '(rat) 1 (1+ n))
 		     (m- ($bernpoly (m+ 'foo 1) (1+ n))
 			 ($bern (1+ n)))))))))
-    (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *combin-var*)))) lo))
+    (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e poly-var)))) lo))
 	  ($prederror))
       (cond ((null a) 0)
 	    ((member lo '(0 1))
