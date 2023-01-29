@@ -1550,12 +1550,12 @@
 ;;; It is used in the SOLVE package and as such it should have an autoload
 ;;; property
 
-(defun polydecomp (p *combin-var*)
+(defun polydecomp (p poly-var)
   (let ($factorflag $ratfac)
     (cond ((or (pcoefp p)
-	       (null (eq (car p) *combin-var*)))
+	       (null (eq (car p) poly-var)))
 	   (cons p nil))
-	  (t (setq p (pdecomp p *combin-var*))
+	  (t (setq p (pdecomp p poly-var))
 	     (do ((l (setq p (mapcar #'(lambda (q) (cons q 1)) p))
 		     (cdr l))
 		  (a))
@@ -1563,7 +1563,7 @@
 		  (cons (cons (caar p)
 			      (cdar p))
 			(cdr p)))
-	       (cond ((setq a (pdecpow (car l) *combin-var*))
+	       (cond ((setq a (pdecpow (car l) poly-var))
 		      (rplaca l (car a))
 		      (cond ((cdr l)
 			     (rplacd l
@@ -1578,7 +1578,7 @@
 					     (cdadr a)))
 					   (cddr l))))
 			    ((equal (cadr a)
-				    (cons (list *combin-var* 1 1) 1)))
+				    (cons (list poly-var 1 1) 1)))
 			    (t (rplacd l (list (cadr a))))))))))))
 
 
