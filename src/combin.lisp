@@ -12,11 +12,12 @@
 
 (macsyma-module combin)
 
-(declare-top (special *ans*
-		      *a* *a $prevfib $next_lucas))
+(declare-top (special *a* *a $prevfib $next_lucas))
 
-;; This is only used in this file.  It should not be used anywhere else!
+;; These are only used in this file.  It should not be used anywhere
+;; else!
 (defvar *combin-var*)
+(defvar *combin-ans*)
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
@@ -1274,7 +1275,7 @@
 ;; fpoly1 returns 1/(n+1)*(bernpoly(foo+1, n+1) - bernpoly(0, n+1)) for each power
 ;; in the polynomial e
 
-(defun fpolysum (e lo hi)			;returns *ans*
+(defun fpolysum (e lo hi)			;returns *combin-ans*
   (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *combin-var*)))) lo))
 	($prederror))
     (cond ((null a) 0)
@@ -1588,17 +1589,17 @@
 	 nil)
 	(t (do ((q (pdivide (caar f) h) (pdivide (caar q) h))
 		(i 1 (1+ i))
-		(*ans*))
+		(*combin-ans*))
 	       ((pzerop (caar q))
 		(cond ((and (equal (cdadr q) 1)
 			    (or (pcoefp (caadr q))
 				(null (eq (caar (cadr q)) *combin-var*))))
-		       (psimp *combin-var* (cons i (cons (caadr q) *ans*))))))
+		       (psimp *combin-var* (cons i (cons (caadr q) *combin-ans*))))))
 	     (cond ((and (equal (cdadr q) 1)
 			 (or (pcoefp (caadr q))
 			     (null (eq (caar (cadr q)) *combin-var*))))
 		    (and (null (pzerop (caadr q)))
-			 (setq *ans* (cons i (cons (caadr q) *ans*)))))
+			 (setq *combin-ans* (cons i (cons (caadr q) *combin-ans*)))))
 		   (t (return nil)))))))
 
 (defun pdecomp (p *combin-var*)
@@ -1660,4 +1661,4 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *ans* *a*))
+(declare-top (unspecial *a*))
