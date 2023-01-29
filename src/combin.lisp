@@ -1212,32 +1212,6 @@
 		   *plus))
       (and *combin-usum* (setq *combin-usum* (list '(%sum) (simplus (cons '(plus) *combin-usum*) 1 t) poly-var lo hi))))))
 
-#+nil
-(defun finite-sum (e y lo hi)
-  (cond ((null e))
-	((free e *combin-var*)
-	 (adsum (m* y e (m+ hi 1 (m- lo)))))
-	((poly? e *combin-var*)
-	 (adsum (m* y (fpolysum e lo hi))))
-	((eq (caar e) '%binomial) (fbino e y lo hi))
-	((eq (caar e) 'mplus)
-	 (mapc #'(lambda (q) (finite-sum q y lo hi)) (cdr e)))
-	((and (or (mtimesp e) (mexptp e) (mplusp e))
-	      (fsgeo e y lo hi)))
-	(t
-	 (adusum e)
-	 nil)))
-
-#+nil
-(defun isum-giveup (e)
-  (cond ((atom e) nil)
-	((eq (caar e) 'mexpt)
-	 (not (or (free (cadr e) *combin-var*)
-		  (ratp (caddr e) *combin-var*))))
-	((member (caar e) '(mplus mtimes) :test #'eq)
-	 (some #'identity (mapcar #'isum-giveup (cdr e))))
-	(t)))
-
 (defun isum (e lo poly-var)
   (declare (special *combin-sum* *combin-usum*))
   (labels
@@ -1296,79 +1270,6 @@
 	   (setq *combin-sum* nil *combin-usum* (list e)))
 	  ((eq (catch 'isumout (isum1 e lo)) 'divergent)
 	   (merror (intl:gettext "sum: sum is divergent."))))))
-
-#+nil
-(defun isum1 (e lo)
-  (cond ((free e *combin-var*)
-	 (unless (eq (asksign e) '$zero)
-	   (throw 'isumout 'divergent)))
-	((ratp e *combin-var*)
-	 (adsum (ipolysum e lo)))
-	((eq (caar e) 'mplus)
-	 (mapc #'(lambda (x) (isum1 x lo)) (cdr e)))
-	( (isgeo e lo))
-	((adusum e))))
-
-#+nil
-(defun ipolysum (e lo)
-  (ipoly1 ($expand e) lo))
-
-#+nil
-(defun ipoly1 (e lo)
-  (cond ((smono e *combin-var*)
-	 (ipoly2 *a *n lo (asksign (simplify (list '(mplus) *n 1)))))
-	((mplusp e)
-	 (cons '(mplus) (mapcar #'(lambda (x) (ipoly1 x lo)) (cdr e))))
-	(t (adusum e)
-	   0)))
-
-#+nil
-(defun ipoly2 (a n lo sign)
-  (cond ((member (asksign lo) '($zero $negative) :test #'eq)
-	 (throw 'isumout 'divergent)))
-  (unless (equal lo 1)
-    (let (($simpsum t))
-      (adsum `((%sum)
-               ((mtimes) ,a -1 ((mexpt) ,*combin-var* ,n))
-               ,*combin-var* 1 ((mplus) -1 ,lo)))))
-  (cond ((eq sign '$negative)
-	 (list '(mtimes) a ($zeta (meval (list '(mtimes) -1 n)))))
-	((throw 'isumout 'divergent))))
-
-#+nil
-(defun fsgeo (e y lo hi)
-  (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
-    (cond ((equal r 1)
-           (adsum
-            (list '(mtimes)
-                  (list '(mplus) 1 hi (list '(mtimes) -1 lo))
-                  (maxima-substitute lo *combin-var* e))))
-          ((free r *combin-var*)
-	   (adsum
-	    (list '(mtimes) y
-		  (maxima-substitute 0 *combin-var* e)
-		  (list '(mplus)
-			(list '(mexpt) r (list '(mplus) hi 1))
-			(list '(mtimes) -1 (list '(mexpt) r lo)))
-		  (list '(mexpt) (list '(mplus) r -1) -1)))))))
-
-#+nil
-(defun isgeo (e lo)
-  (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
-    (and (free r *combin-var*)
-	 (isgeo1 (maxima-substitute lo *combin-var* e)
-		 r (asksign (simplify (list '(mplus) (list '(mabs) r) -1)))))))
-
-#+nil
-(defun isgeo1 (a r sign)
-  (cond ((eq sign '$positive)
-	 (throw 'isumout 'divergent))
-	((eq sign '$zero)
-	 (throw 'isumout 'divergent))
-	((eq sign '$negative)
-	 (adsum (list '(mtimes) a
-		      (list '(mexpt) (list '(mplus) 1 (list '(mtimes) -1 r)) -1))))))
-
 
 ;; Sums of polynomials using
 ;;   bernpoly(x+1, n) - bernpoly(x, n) = n*x^(n-1)
