@@ -1347,7 +1347,7 @@
 	     (list '(mplus) (maxima-substitute hi 'foo a)
 		   (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a))))))))
 
-#+ni
+#+nil
 (defun fpoly1 (e lo)
   (cond ((smono e *combin-var*)
 	 (fpoly2 *a *n e lo))
