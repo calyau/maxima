@@ -5,7 +5,7 @@
 * Functions and Variables for special distributions::
 @end menu
 
-@node Introduction to stats, Functions and Variables for inference_result, , , stats-pkg
+@node Introduction to stats, Functions and Variables for inference_result, , stats-pkg
 @section Introduction to stats
 
 
