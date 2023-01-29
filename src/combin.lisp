@@ -1614,17 +1614,17 @@
 			 (setq *combin-ans* (cons i (cons (caadr q) *combin-ans*)))))
 		   (t (return nil)))))))
 
-(defun pdecomp (p *combin-var*)
+(defun pdecomp (p poly-var)
   (let ((c (ptterm (cdr p) 0))
 	(a)
 	;; CRE form of the polynomial x (with the actual variable in
-	;; *combin-var*).
-	(poly-x (list *combin-var* 1 1)))
+	;; poly-var).
+	(poly-x (list poly-var 1 1)))
     (labels
 	((pdecomp1 (prod l poly)
 	   (cond ((null l)
 		  (and (null (equal (cadr prod) (cadr poly)))
-		       (setq l (pdecred poly prod *combin-var*))
+		       (setq l (pdecred poly prod poly-var))
 		       (list l prod)))
 		 ((pdecomp1 prod (cdr l) poly))
 		 (t (pdecomp1 (ptimes (car l) prod) (cdr l) poly))))
