@@ -1183,7 +1183,22 @@
 		       (fsgeo e y lo hi)))
 		 (t
 		  (adusum e)
-		  nil))))
+		  nil)))
+	 (fsgeo (e y lo hi)
+	   (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
+	     (cond ((equal r 1)
+		    (adsum
+		     (list '(mtimes)
+			   (list '(mplus) 1 hi (list '(mtimes) -1 lo))
+			   (maxima-substitute lo *combin-var* e))))
+		   ((free r *combin-var*)
+		    (adsum
+		     (list '(mtimes) y
+			   (maxima-substitute 0 *combin-var* e)
+			   (list '(mplus)
+				 (list '(mexpt) r (list '(mplus) hi 1))
+				 (list '(mtimes) -1 (list '(mexpt) r lo)))
+			   (list '(mexpt) (list '(mplus) r -1) -1))))))))
       (cond ((eq hi '$inf)
 	     (cond (*infsumsimp (isum e lo))
 		   ((setq usum (list e)))))
@@ -1263,6 +1278,7 @@
 	 (list '(mtimes) a ($zeta (meval (list '(mtimes) -1 n)))))
 	((throw 'isumout 'divergent))))
 
+#+nil
 (defun fsgeo (e y lo hi)
   (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *combin-var* 1) *combin-var* e) e))))
     (cond ((equal r 1)
@@ -1304,15 +1320,34 @@
 ;; in the polynomial e
 
 (defun fpolysum (e lo hi)			;returns *combin-ans*
-  (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *combin-var*)))) lo))
-	($prederror))
-    (cond ((null a) 0)
-	  ((member lo '(0 1))
-	   (maxima-substitute hi 'foo a))
-	  (t
-	   (list '(mplus) (maxima-substitute hi 'foo a)
-		 (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a)))))))
+  (labels
+      ((fpoly1 (e lo)
+	 (cond ((smono e *combin-var*)
+		(fpoly2 *a *n e lo))
+	       ((eq (caar e) 'mplus)
+		(cons '(mplus) (mapcar #'(lambda (x) (fpoly1 x lo)) (cdr e))))
+	       (t (adusum e) 0)))
+       (fpoly2 (a n e lo)
+	 (cond ((null (and (integerp n) (> n -1))) (adusum e) 0)
+	       ((equal n 0)
+		(m* (cond ((signp e lo)
+			   (m1+ 'foo))
+			  (t 'foo))
+		    a))
+	       (($ratsimp
+		 (m* a (list '(rat) 1 (1+ n))
+		     (m- ($bernpoly (m+ 'foo 1) (1+ n))
+			 ($bern (1+ n)))))))))
+    (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *combin-var*)))) lo))
+	  ($prederror))
+      (cond ((null a) 0)
+	    ((member lo '(0 1))
+	     (maxima-substitute hi 'foo a))
+	    (t
+	     (list '(mplus) (maxima-substitute hi 'foo a)
+		   (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a))))))))
 
+#+ni
 (defun fpoly1 (e lo)
   (cond ((smono e *combin-var*)
 	 (fpoly2 *a *n e lo))
@@ -1320,6 +1355,7 @@
 	 (cons '(mplus) (mapcar #'(lambda (x) (fpoly1 x lo)) (cdr e))))
 	(t (adusum e) 0)))
 
+#+nil
 (defun fpoly2 (a n e lo)
   (cond ((null (and (integerp n) (> n -1))) (adusum e) 0)
 	((equal n 0)
