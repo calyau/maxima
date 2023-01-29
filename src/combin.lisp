@@ -12,7 +12,10 @@
 
 (macsyma-module combin)
 
-(declare-top (special *a ))
+;; It seems *a must really be special because it's referenced in this
+;; file, but is not set here.  I (rtoy) don't know what *a is intended
+;; to hold, and *a is declare special in lots of files.
+(declare-top (special *a))
 
 (defmvar $prevfib '$prevfib
   "After calling `fib(n)`, this is equal to fib(n-1), the Fibonacci
