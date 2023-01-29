@@ -1137,12 +1137,12 @@
 ;; Summation stuff
 
 (defun adsum (e)
-  (declare (special sum))
-  (push (simplify e) sum))
+  (declare (special *combin-sum*))
+  (push (simplify e) *combin-sum*))
 
 (defun adusum (e)
-  (declare (special usum))
-  (push (simplify e) usum))
+  (declare (special *combin-usum*))
+  (push (simplify e) *combin-usum*))
 
 (defun simpsum2 (exp i lo hi)
   (prog (*plus *times $simpsum u)
@@ -1167,8 +1167,8 @@
      (return (m+l (cons exp *plus)))))
 
 (defun sumsum (e *combin-var* lo hi)
-  (let (sum usum)
-    (declare (special *plus *times usum))
+  (let (*combin-sum* *combin-usum*)
+    (declare (special *plus *times *combin-sum* *combin-usum*))
     (labels
 	((finite-sum (e y lo hi)
 	   (cond ((null e))
@@ -1201,16 +1201,16 @@
 			   (list '(mexpt) (list '(mplus) r -1) -1))))))))
       (cond ((eq hi '$inf)
 	     (cond (*infsumsimp (isum e lo *combin-var*))
-		   ((setq usum (list e)))))
+		   ((setq *combin-usum* (list e)))))
 	    ((finite-sum e 1 lo hi)))
-      (cond ((eq sum nil)
+      (cond ((eq *combin-sum* nil)
 	     (return-from sumsum (list '(%sum) e *combin-var* lo hi))))
       (setq *plus
 	    (nconc (mapcar
 		    #'(lambda (q) (simptimes (list '(mtimes) *times q) 1 nil))
-		    sum)
+		    *combin-sum*)
 		   *plus))
-      (and usum (setq usum (list '(%sum) (simplus (cons '(plus) usum) 1 t) *combin-var* lo hi))))))
+      (and *combin-usum* (setq *combin-usum* (list '(%sum) (simplus (cons '(plus) *combin-usum*) 1 t) *combin-var* lo hi))))))
 
 #+nil
 (defun finite-sum (e y lo hi)
@@ -1239,7 +1239,7 @@
 	(t)))
 
 (defun isum (e lo poly-var)
-  (declare (special sum usum))
+  (declare (special *combin-sum* *combin-usum*))
   (labels
       ((isum-giveup (e)
 	 (cond ((atom e) nil)
@@ -1293,7 +1293,7 @@
 		(adsum (list '(mtimes) a
 			     (list '(mexpt) (list '(mplus) 1 (list '(mtimes) -1 r)) -1)))))))
     (cond ((isum-giveup e)
-	   (setq sum nil usum (list e)))
+	   (setq *combin-sum* nil *combin-usum* (list e)))
 	  ((eq (catch 'isumout (isum1 e lo)) 'divergent)
 	   (merror (intl:gettext "sum: sum is divergent."))))))
 
