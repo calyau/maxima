@@ -12,7 +12,17 @@
 
 (macsyma-module combin)
 
-(declare-top (special *a $prevfib $next_lucas))
+(declare-top (special *a ))
+
+(defmvar $prevfib '$prevfib
+  "After calling `fib(n)`, this is equal to fib(n-1), the Fibonacci
+  number preceding the last one computed."
+  no-reset)
+
+(defmvar $next_lucas '$next_lucas
+  "After calling 'lucas(n)', this is equal to 'lucas(n+1)', the Lucas
+  number following the last returned."
+  no-reset)
 
 ;; These are only used in this file.  It should not be used anywhere
 ;; else!
