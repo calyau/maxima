@@ -58,12 +58,49 @@
 
 (defmfun $minfactorial (e)
   (let (*mfactl *factlist)
-    (declare (special *mfactl *factlist))
-    (if (specrepp e) (setq e (specdisrep e)))
-    (getfact e)
-    (mapl #'evfac1 *factlist)
-    (setq e (evfact e))))
+    (labels
+	((evfact (e)
+	   (cond ((atom e) e)
+		 ((eq (caar e) 'mfactorial)
+		  ;; Replace factorial with simplified expression from *factlist.
+		  (simplifya (cdr (assoc (cadr e) *factlist :test #'equal)) nil))
+		 ((member  (caar e) '(%sum %derivative %integrate %product) :test #'eq)
+		  (cons (list (caar e)) (cons (evfact (cadr e)) (cddr e))))
+		 (t (recur-apply #'evfact e))))
+	 (adfactl (e l)
+	   (let (n)
+	     (cond ((null l) (push (list e) *mfactl))
+		   ((numberp (setq n ($ratsimp `((mplus) ,e ((mtimes) -1 ,(caar l))))))
+		    (cond ((plusp n)
+			   (rplacd (car l) (cons e (cdar l))))
+			  ((rplaca l (cons e (car l))))))
+		   ((adfactl e (cdr l))))))
+	 (getfact (e)
+	   (cond ((atom e) nil)
+		 ((eq (caar e) 'mfactorial)
+		  (and (null (member (cadr e) *factlist :test #'equal))
+		       (prog2
+			   (push (cadr e) *factlist)
+			   (adfactl (cadr e) *mfactl))))
+		 ((member (caar e) '(%sum %derivative %integrate %product) :test #'eq)
+		  (getfact (cadr e)))
+		 ((mapc #'getfact (cdr e)))))
+	 (evfac1 (e)
+	   (do ((al *mfactl (cdr al)))
+	       ((member (car e) (car al) :test #'equal)
+		(rplaca e
+			(cons (car e)
+			      (list '(mtimes)
+				    (gfact (car e)
+					   ($ratsimp (list '(mplus) (car e)
+							   (list '(mtimes) -1 (caar al)))) 1)
+				    (list '(mfactorial) (caar al)))))))))
+      (if (specrepp e) (setq e (specdisrep e)))
+      (getfact e)
+      (mapl #'evfac1 *factlist)
+      (setq e (evfact e)))))
 
+#+nil
 (defun evfact (e)
   (declare (special *factlist))
   (cond ((atom e) e)
@@ -74,6 +111,7 @@
 	 (cons (list (caar e)) (cons (evfact (cadr e)) (cddr e))))
 	(t (recur-apply #'evfact e))))
 
+#+nil
 (defun adfactl (e l)
   (declare (special *mfactl))
   (let (n)
@@ -84,6 +122,7 @@
 		 ((rplaca l (cons e (car l))))))
 	  ((adfactl e (cdr l))))))
 
+#+nil
 (defun getfact (e)
   (declare (special *mfactl *factlist))
   (cond ((atom e) nil)
@@ -96,6 +135,7 @@
 	 (getfact (cadr e)))
 	((mapc #'getfact (cdr e)))))
 
+#+nil
 (defun evfac1 (e)
   (declare (special *mfactl))
   (do ((al *mfactl (cdr al)))
