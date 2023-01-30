@@ -3019,10 +3019,33 @@
 ;; Compares two Macsyma expressions ignoring SIMP flags and all other
 ;; items in the header except for the ARRAY flag.
 
-(defun lisp-array-elements-alike1 (x y n)
-  (dotimes (i n t)
-    (unless (alike1 (row-major-aref x i) (row-major-aref y i))
-      (return-from lisp-array-elements-alike1 nil))))
+(defun alike1 (x y)
+  ;; Clauses are ordered based on frequency of the case
+  ;; cons, integer, and symbol are very common
+  ;; everything else is rare
+  (cond ((eq x y) t)
+        ((consp x)
+         (if (and (consp y)
+                  (not (atom (car x)))
+                  (not (atom (car y)))
+                  (eq (caar x) (caar y)))
+             (cond
+              ((eq (caar x) 'mrat) (like x y))
+              ((eq (caar x) 'mpois) (equal (cdr x) (cdr y)))
+              ((eq (memqarr (cdar x)) (memqarr (cdar y)))
+               (alike (cdr x) (cdr y)))
+              (t nil))
+           ;; (foo) and (foo) test non-alike because the car's aren't standard
+           nil))
+        ((or (symbolp x) (symbolp y)) nil)
+        ((integerp x) (and (integerp y) (= x y)))
+        ;; uncommon cases from here down
+        ((floatp x) (and (floatp y) (= x y)))
+        ((stringp x) (and (stringp y) (string= x y)))
+        ((vectorp x) (and (vectorp y) (lisp-vector-alike1 x y)))
+        ((arrayp x) (and (arrayp y) (lisp-array-alike1 x y)))
+        (t nil)
+        ))
 
 (defun lisp-vector-alike1 (x y)
   (let ((lx (length x)))
@@ -3033,34 +3056,19 @@
   (when (equal (array-dimensions x) (array-dimensions y))
     (lisp-array-elements-alike1 x y (array-total-size x))))
 
-(defun alike1 (x y)
-  (cond ((eq x y))
-	((atom x)
-	 (typecase x
-	   (string (when (stringp y) (string= x y)))
-	   (vector (when (vectorp y) (lisp-vector-alike1 x y)))
-	   (cl::array (when (arrayp y) (lisp-array-alike1 x y)))
-	   (otherwise (equal x y))))
+(defun lisp-array-elements-alike1 (x y n)
+  (dotimes (i n t)
+    (unless (alike1 (row-major-aref x i) (row-major-aref y i))
+      (return-from lisp-array-elements-alike1 nil))))
 
-    ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
-    ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
-    ;; ((maxima-declared-arrayp x)
-    ;;  (and (maxima-declared-arrayp y) (maxima-declared-array-alike1 x y)))
-    ;; ((maxima-undeclared-arrayp x)
-    ;;  (and (maxima-undeclared-arrayp y) (maxima-undeclared-array-alike1 x y)))
-
-	((atom y) nil)
-	((and
-	  (not (atom (car x)))
-	  (not (atom (car y)))
-	  (eq (caar x) (caar y)))
-         (cond
-	  ((specrepp x)
-	   ;; Punt back to LIKE, which handles specreps
-	   (like x y))
-	  (t (and
-	      (eq (memqarr (cdar x)) (memqarr (cdar y)))
-	      (alike (cdr x) (cdr y))))))))
+;; Not sure if we want to enable comparison of maxima arrays.
+;; Aside from that, add2lnc calls alike1 (via memalike) and that causes trouble.
+;; Possible code for ALIKE1 to enable such comparisons should we choose to do so:
+;;
+;; ((maxima-declared-arrayp x)
+;;  (and (maxima-declared-arrayp y) (maxima-declared-array-alike1 x y)))
+;; ((maxima-undeclared-arrayp x)
+;;  (and (maxima-undeclared-arrayp y) (maxima-undeclared-array-alike1 x y)))
 
 (defun maxima-declared-array-alike1 (x y)
   (lisp-array-alike1 (get (mget x 'array) 'array) (get (mget y 'array) 'array)))
