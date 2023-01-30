@@ -1001,7 +1001,6 @@
 
 (defun cffun (f g a b)
   (prog (c v w)
-     (declare (special v))
      a   (and (zerop (cadddr g))
 	      (zerop (caddr g))
 	      (zerop (cadr g))
@@ -1012,7 +1011,6 @@
 	  (equal (conf1 f g (1+ (car a)) (car b)) v)
 	  (equal (conf1 f g (1+ (car a)) (1+ (car b))) v)
 	  (setq g (mapcar #'(lambda (a b)
-			      (declare (special v))
 			      (- a (* v b)))
 			  f (setq f g)))
 	  (setq c (cons v c))
