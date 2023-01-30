@@ -375,8 +375,8 @@
 		 (euler (* 2 %n))))))
   (simplify s))
 
-(defun nxtbincoef (m nom)
-  (truncate (* nom (- *combin-a* m)) m))
+(defun nxtbincoef (m nom combin-a)
+  (truncate (* nom (- combin-a m)) m))
 
 (defun euler (%a*)
   (prog (nom %k e fl $zerobern *combin-a*)
@@ -386,7 +386,7 @@
 	       (setf (aref *eu* (1- (ash %a* -1))) e)
 	       (putprop '*eu* (ash %a* -1) 'lim)
 	       (return e)))
-     (setq nom (nxtbincoef (1+ (- %a* %k)) nom) %k (1- %k))
+     (setq nom (nxtbincoef (1+ (- %a* %k)) nom *combin-a*) %k (1- %k))
      (cond ((setq fl (null fl))
 	    (go a)))
      (incf e (* nom ($euler %k)))
@@ -441,7 +441,7 @@
 	       (setf (aref *bd* %a*) (caddr bb))
 	       (return bb)))
      (incf %k)
-     (setq a (+ (* b (setq nom (nxtbincoef %k nom))
+     (setq a (+ (* b (setq nom (nxtbincoef %k nom *combin-a*))
 			  (num1 (setq bb ($bern %k))))
 		   (* a (denom1 bb))))
      (setq b (* b (denom1 bb)))
