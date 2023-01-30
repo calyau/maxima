@@ -402,10 +402,6 @@ Returns the @var{n}'th Fibonacci number.
 @code{fib(0)} is equal to 0 and @code{fib(1)} equal to 1, and 
 @code{fib (-@var{n})} equal to @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
 
-After calling @code{fib},
-@code{prevfib} is equal to @code{fib(@var{n} - 1)},
-the Fibonacci number preceding the last one computed.
-
 @example
 (%i1) map (fib, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
 (%o1)           [- 3, 2, - 1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
@@ -619,19 +615,6 @@ in general, @code{lucas(@var{n}) = lucas(@var{n}-1) + lucas(@var{n}-2)}.  Also
 (%o1)    [7, - 4, 3, - 1, 2, 1, 3, 4, 7, 11, 18, 29, 47]
 @end example
 
-After calling @code{lucas}, the global variable
-@code{next_lucas} is equal to @code{lucas (@var{n} + 1)},
-the Lucas number following the last returned. The example shows 
-how Fibonacci numbers can be computed via @code{lucas} and @code{next_lucas}. 
-
-@example
-(%i1) fib_via_lucas(n) := 
-         block([lucas : lucas(n)],
-         signum(n) * (2*next_lucas - lucas)/5 )$
-(%i2) map (fib_via_lucas, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7,
-                          8]);
-(%o2)     [- 3, 2, - 1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
-@end example
 
 @opencatbox{Categories:}
 @category{Number theory}
