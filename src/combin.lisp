@@ -29,8 +29,6 @@
 
 ;; These are only used in this file.  It should not be used anywhere
 ;; else!
-#+nil
-(defvar *combin-ans*)
 (defvar *combin-a*)
 
 (load-macsyma-macros mhayat rzmac ratmac)
