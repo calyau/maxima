@@ -665,38 +665,40 @@
   (setq custom:*suppress-check-redefinition* nil)
   (setq *compile-verbose* t))
 
+(defun simple-remove-dollarsign (x)
+  "Like stripdollar, but less heavy.  Intended for use with the
+  testsuite implementation."
+  (if (symbolp x)
+      (subseq (maxima-string x) 1)
+      x))
+
 (defun intersect-tests (tests)
   ;; If TESTS is non-NIL, we assume it's a Maxima list of (maxima)
   ;; strings naming the tests we want to run.  They must match the
   ;; file names in $testsuite_files.  We ignore any items that aren't
   ;; in $testsuite_files.
-  (flet ((remove-dollarsign (x)
-	   ;; Like stripdollar, but less heavy
-	   (if (symbolp x)
-	       (subseq (maxima-string x) 1)
-	       x)))
-    (mapcar #'remove-dollarsign
-	    (cond (tests
-		   (let ((results nil))
-		     ;; Using INTERSECTION would be convenient, but
-		     ;; INTERSECTION can return the result in any
-		     ;; order, and we'd prefer that the order of the
-		     ;; tests be preserved.  CMUCL and CCL returns the
-		     ;; intersection in reverse order.  Clisp produces
-		     ;; the original order.  Fortunately, this doesn't
-		     ;; have to be very fast, so we do it very naively.
-		     (dolist (test (mapcar #'remove-dollarsign (cdr tests)))
-		       (let ((matching-test (find test (cdr $testsuite_files)
-						  :key #'(lambda (x)
-							   (maxima-string (if (listp x)
-									      (second x)
-									      x)))
-						  :test #'string=)))
-			 (when matching-test
-			   (push matching-test results))))
-		     (nreverse results)))
-		  (t
-		   (cdr $testsuite_files))))))
+  (mapcar #'simple-remove-dollarsign
+	  (cond (tests
+		 (let ((results nil))
+		   ;; Using INTERSECTION would be convenient, but
+		   ;; INTERSECTION can return the result in any
+		   ;; order, and we'd prefer that the order of the
+		   ;; tests be preserved.  CMUCL and CCL returns the
+		   ;; intersection in reverse order.  Clisp produces
+		   ;; the original order.  Fortunately, this doesn't
+		   ;; have to be very fast, so we do it very naively.
+		   (dolist (test (mapcar #'simple-remove-dollarsign (cdr tests)))
+		     (let ((matching-test (find test (cdr $testsuite_files)
+						:key #'(lambda (x)
+							 (maxima-string (if (listp x)
+									    (second x)
+									    x)))
+						:test #'string=)))
+		       (when matching-test
+			 (push matching-test results))))
+		   (nreverse results)))
+		(t
+		 (cdr $testsuite_files)))))
 
 (defun print-testsuite-summary (errs unexpected-pass error-count total-count)
   (flet
@@ -730,6 +732,30 @@
 	      error-count
 	      total-count))))
 
+(defun validate-given-tests (tests share-tests-p)
+  ;; Check the test names and print out some warnings if it
+  ;; doesn't exist, or if it does and is part of the share test
+  ;; suite, but share_tests was not set.
+  (dolist (test (mapcar #'simple-remove-dollarsign
+			(if (listp tests)
+			    (cdr tests)
+			    (list tests))))
+    (cond ((and (not share-tests-p)
+		(find test (cdr $share_testsuite_files)
+		      :key #'(lambda (x)
+			       (maxima-string (if (listp x)
+						  (second x)
+						  x)))
+		      :test #'string=))
+	   (mwarning test "is a share test, but share_tests was not set"))
+	  ((not (find test (cdr $testsuite_files)
+		      :key #'(lambda (x)
+			       (maxima-string (if (listp x)
+						  (second x)
+						  x)))
+		      :test #'string=))
+	   (mwarning "Unknown test: " test)))))
+  
 (defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug)
   "Run the testsuite.  Options are
   tests                List of tests to run
@@ -786,6 +812,9 @@
 	     filename
 	     diff
 	     upass)
+
+	(validate-given-tests tests share_tests)
+
 	(when debug
 	  (let (($stringdisp t))
 	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)
@@ -793,6 +822,11 @@
 	(when debug
 	  (let (($stringdisp t))
 	    (mformat t "tests-to-run = ~M~%" tests-to-run)))
+
+	(unless tests-to-run
+	  (mwarning "No tests to run")
+	  (return-from $run_testsuite '$done))
+
 	(flet
 	    ((testsuite ()
 	       (loop with errs = 'nil
