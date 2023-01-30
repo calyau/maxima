@@ -17,16 +17,6 @@
 ;; to hold, and *a is declare special in lots of files.
 (declare-top (special *a))
 
-(defmvar $prevfib '$prevfib
-  "After calling `fib(n)`, this is equal to fib(n-1), the Fibonacci
-  number preceding the last one computed."
-  no-reset)
-
-(defmvar $next_lucas '$next_lucas
-  "After calling 'lucas(n)', this is equal to 'lucas(n+1)', the Lucas
-  number following the last returned."
-  no-reset)
-
 (load-macsyma-macros mhayat rzmac ratmac)
 
 ;; minfactorial and factcomb stuff
@@ -738,30 +728,30 @@
   (cond ((fixnump n)
 	 (ffib n))
 	(t
-	 (setq $prevfib `(($fib) ,(add2* n -1)))
 	 `(($fib) ,n))))
 
 ;; Main routine for computing the n'th Fibonacci number where n is an
 ;; integer.
 (defun ffib (%n)
   (declare (fixnum %n))
-  (cond ((= %n -1)
-	 (setq $prevfib -1)
-	 1)
-	((zerop %n)
-	 (setq $prevfib 1)
-	 0)
-	(t
-	 (let* ((f2 (ffib (ash (logandc2 %n 1) -1))) ; f2 = fib(n/2) or fib((n-1)/2)
-		(x (+ f2 $prevfib))
-		(y (* $prevfib $prevfib))
-		(z (* f2 f2)))
-	   (setq f2 (- (* x x) y)
-		 $prevfib (+ y z))
-	   (when (oddp %n)
-	     (psetq $prevfib f2
-		    f2 (+ f2 $prevfib)))
-	   f2))))
+  (let (prevfib)
+    (cond ((= %n -1)
+	   (setq prevfib -1)
+	   1)
+	  ((zerop %n)
+	   (setq prevfib 1)
+	   0)
+	  (t
+	   (let* ((f2 (ffib (ash (logandc2 %n 1) -1))) ; f2 = fib(n/2) or fib((n-1)/2)
+		  (x (+ f2 prevfib))
+		  (y (* prevfib prevfib))
+		  (z (* f2 f2)))
+	     (setq f2 (- (* x x) y)
+		   prevfib (+ y z))
+	     (when (oddp %n)
+	       (psetq prevfib f2
+		      f2 (+ f2 prevfib)))
+	     f2)))))
 
 ;; Returns the N'th Lucas number defined by the following recursion,
 ;; where L(n) is the n'th Lucas number:
@@ -774,7 +764,6 @@
     ((fixnump n)
      (lucas n))
     (t
-     (setq $next_lucas `(($lucas) ,(add2* n 1)))
      `(($lucas) ,n))))
 
 (defun lucas (n)
@@ -790,10 +779,8 @@
         (setq x (- u w) y (+ v w (- x)) w 2) ))
     (cond 
       ((or (= 1 sign) (not (logbitp 0 n))) 
-        (setq $next_lucas y) 
         x )
       (t 
-        (setq $next_lucas (neg y)) 
         (neg x) ))))
 
 ;; continued fraction stuff
