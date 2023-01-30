@@ -29,7 +29,6 @@
 
 ;; These are only used in this file.  It should not be used anywhere
 ;; else!
-(defvar *combin-var*)
 (defvar *combin-ans*)
 (defvar *combin-a*)
 
