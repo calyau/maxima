@@ -454,26 +454,27 @@
            (when (setq res (isinop (car expr) op)) 
              (return res))))))
 
-(defun free (exp var)
-  (cond ((alike1 exp var) nil)
+(defun free (exp free-var)
+  (cond ((alike1 exp free-var) nil)
 	((atom exp) t)
 	(t
 	 (and (listp (car exp))
-	      (free (caar exp) var)
-	      (freel (cdr exp) var)))))
+	      (free (caar exp) free-var)
+	      (freel (cdr exp) free-var)))))
 
-(defun freel (l var)
+(defun freel (l free-var)
   (do ((l l (cdr l))) ((null l) t)
     (cond
-     ((atom l) (return (free l var)))	;; second element of a pair
-     ((not (free (car l) var)) (return nil)))))
+     ((atom l) (return (free l free-var)))	;; second element of a pair
+     ((not (free (car l) free-var)) (return nil)))))
 
 
-(defun freeargs (exp var)
-  (cond ((alike1 exp var) nil)
+#+nil
+(defun freeargs (exp free-var)
+  (cond ((alike1 exp free-var) nil)
 	((atom exp) t)
 	(t (do ((l (margs exp) (cdr l))) ((null l) t)
-	     (cond ((not (freeargs (car l) var)) (return nil)))))))
+	     (cond ((not (freeargs (car l) free-var)) (return nil)))))))
 
 (defun simplifya (x y)
   (cond ((not $simp) x)
