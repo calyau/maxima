@@ -29,6 +29,7 @@
 
 ;; These are only used in this file.  It should not be used anywhere
 ;; else!
+#+nil
 (defvar *combin-ans*)
 (defvar *combin-a*)
 
@@ -1794,17 +1795,17 @@
 	 nil)
 	(t (do ((q (pdivide (caar f) h) (pdivide (caar q) h))
 		(i 1 (1+ i))
-		(*combin-ans*))
+		(combin-ans))
 	       ((pzerop (caar q))
 		(cond ((and (equal (cdadr q) 1)
 			    (or (pcoefp (caadr q))
 				(null (eq (caar (cadr q)) poly-var))))
-		       (psimp poly-var (cons i (cons (caadr q) *combin-ans*))))))
+		       (psimp poly-var (cons i (cons (caadr q) combin-ans))))))
 	     (cond ((and (equal (cdadr q) 1)
 			 (or (pcoefp (caadr q))
 			     (null (eq (caar (cadr q)) poly-var))))
 		    (and (null (pzerop (caadr q)))
-			 (setq *combin-ans* (cons i (cons (caadr q) *combin-ans*)))))
+			 (setq combin-ans (cons i (cons (caadr q) combin-ans)))))
 		   (t (return nil)))))))
 
 (defun pdecomp (p poly-var)
