@@ -1332,7 +1332,6 @@
 	  (adusum e)))))
 
   (defun isum (e lo poly-var)
-    (declare (special combin-sum combin-usum))
     (labels
 	((isum-giveup (e)
 	   (cond ((atom e) nil)
