@@ -1174,7 +1174,7 @@
 
 (defun simpsum2 (exp i lo hi)
   (prog (*plus *times $simpsum u)
-     (declare (special *plus *times))
+     (declare (special *plus))
      (setq *plus (list 0) *times 1)
      (when (or (and (eq hi '$inf) (eq lo '$minf))
 	       (equal 0 (m+ hi lo)))
@@ -1188,7 +1188,7 @@
 	   ((free exp i)
 	    (return (m+l (cons (freesum exp lo hi *times) *plus))))
 
-	   ((setq exp (sumsum exp i lo hi))
+	   ((setq exp (sumsum exp i lo hi *times))
 	    (setq exp (m* *times (dosum (cadr exp) (caddr exp)
 					(cadddr exp) (cadr (cdddr exp)) t :evaluate-summand nil))))
 	   (t (return (m+l *plus))))
@@ -1389,8 +1389,8 @@
 	    ((eq (catch 'isumout (isum1 e lo)) 'divergent)
 	     (merror (intl:gettext "sum: sum is divergent."))))))
 
-  (defun sumsum (e poly-var lo hi)
-    (declare (special *plus *times))
+  (defun sumsum (e poly-var lo hi *times)
+    (declare (special *plus))
     (setf combin-sum nil)
     (setf combin-usum nil)
     (labels
