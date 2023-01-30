@@ -27,10 +27,6 @@
   number following the last returned."
   no-reset)
 
-;; These are only used in this file.  It should not be used anywhere
-;; else!
-(defvar *combin-a*)
-
 (load-macsyma-macros mhayat rzmac ratmac)
 
 ;; minfactorial and factcomb stuff
@@ -379,14 +375,14 @@
   (truncate (* nom (- combin-a m)) m))
 
 (defun euler (%a*)
-  (prog (nom %k e fl $zerobern *combin-a*)
-     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *combin-a* (1+ %a*))
+  (prog (nom %k e fl $zerobern combin-a)
+     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& combin-a (1+ %a*))
      a	(cond ((zerop %k)
 	       (setq e (- e))
 	       (setf (aref *eu* (1- (ash %a* -1))) e)
 	       (putprop '*eu* (ash %a* -1) 'lim)
 	       (return e)))
-     (setq nom (nxtbincoef (1+ (- %a* %k)) nom *combin-a*) %k (1- %k))
+     (setq nom (nxtbincoef (1+ (- %a* %k)) nom combin-a) %k (1- %k))
      (cond ((setq fl (null fl))
 	    (go a)))
      (incf e (* nom ($euler %k)))
@@ -425,7 +421,7 @@
   (simplify s))
 
 (defun bern (%a*)
-  (prog (nom %k bb a b $zerobern l *combin-a*)
+  (prog (nom %k bb a b $zerobern l combin-a)
      (setq %k 0
 	   l (1- %a*)
 	   %a* (1+ %a*)
@@ -433,7 +429,7 @@
 	   $zerobern '$/#&
 	   a 1
 	   b 1
-	   *combin-a* (1+ %a*))
+	   combin-a (1+ %a*))
      a	(cond ((= %k l)
 	       (setq bb (*red a (* -1 b %a*)))
 	       (putprop 'bern (setq %a* (1- (ash %a* -1))) 'lim)
@@ -441,7 +437,7 @@
 	       (setf (aref *bd* %a*) (caddr bb))
 	       (return bb)))
      (incf %k)
-     (setq a (+ (* b (setq nom (nxtbincoef %k nom *combin-a*))
+     (setq a (+ (* b (setq nom (nxtbincoef %k nom combin-a))
 			  (num1 (setq bb ($bern %k))))
 		   (* a (denom1 bb))))
      (setq b (* b (denom1 bb)))
