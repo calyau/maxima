@@ -46,6 +46,7 @@
 
 (defvar *expandp* nil)
 (defvar *timesinp* nil)
+#+nil
 (defvar %pi-val (mget '$%pi '$numer))
 (defvar *exptrlsw* nil)
 (defvar *expandflag* nil)
@@ -2073,7 +2074,7 @@
 		         ;; for R1<0:
 		         ;; R1^R2 = (-R1)^R2*cos(pi*R2) + i*(-R1)^R2*sin(pi*R2)
 			 (setq r2 (addk 0.0 r2))
-			 (setq y (exptrl (- r1) r2) r2 (* %pi-val r2))
+			 (setq y (exptrl (- r1) r2) r2 (* (mget '$%pi '$numer) r2))
 			 (add2 (* y (cos r2))
 			       (list '(mtimes simp) (* y (sin r2)) '$%i)))
 			(t (setq y (let ($numer $float $keepfloat $ratprint)
