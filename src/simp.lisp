@@ -49,6 +49,7 @@
 (defvar %pi-val (mget '$%pi '$numer))
 (defvar *exptrlsw* nil)
 (defvar *expandflag* nil)
+#+nil
 (defvar *const* 0)
 
 (defprop mnctimes t associative)
@@ -430,12 +431,17 @@
        (or (eq (caar x) '$matrix)
 	   (and (eq (caar x) 'mlist) $listarith))))
 
+#+nil
 (defun constfun (ign)
   (declare (ignore ign)) ; Arg ignored.  Function used for mapping down lists.
   *const*)
 
-(defun constmx (*const* x)
-  (simplifya (fmapl1 'constfun x) t))
+(defun constmx (const x)
+  (simplifya (fmapl1 #'(lambda (ign)
+			 (declare (ignore ign))
+			 const)
+		     x)
+	     t))
 
 ;;; ISINOP returns the complete subexpression with the operator OP, when the 
 ;;; operator OP is found in EXPR.
