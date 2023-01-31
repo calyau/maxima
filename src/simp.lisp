@@ -3365,6 +3365,37 @@
       (ncons a)
       (cdr a)))
 
+(defun nrthk (in nth-root)
+  (labels
+      ((nrthk1 (in nth-root)
+	 ;; Computes the NTH-ROOT of -IN
+	 (if $radexpand
+	     (mul2 (nrthk2 in nth-root) (nrthk -1 nth-root))
+	     (nrthk2 (mul2* -1 in) nth-root)))
+
+       (nrthk2 (in nth-root)
+	 ;; Computes the NTH-ROOT of IN
+	 (power* in (list '(rat) 1 nth-root))))
+    (cond ((equal in 1)
+	   1)
+	  ((equal in -1)
+	   (cond ((equal nth-root 2)
+		  '$%i)
+		 ((eq $domain '$real)
+		  (if (even nth-root)
+		      (nrthk2 -1 nth-root)
+		      -1))
+		 ($m1pbranch
+		  (let (($%emode t))
+		    (power* '$%e (list '(mtimes) (list '(rat) 1 nth-root) '$%pi '$%i))))
+		 (t
+		  (nrthk2 -1 nth-root))))
+	  ((or (and wflag (eq ($asksign in) '$neg))
+	       (and (mnump in) (equal ($sign in) '$neg)))
+	   (nrthk1 (mul2* -1 in) nth-root))
+	  (t
+	   (nrthk2 in nth-root)))))
+
 (defun simpnrt (x nth-root)
   ;; Computes the NTH-ROOT of X
   (prog (simp-in simp-out varlist genvar $factorflag $dontfactor)
@@ -3399,38 +3430,6 @@
 			    (not (or (atom simp-in)
 				     (atom (cadr simp-in))
 				     (member (caaadr simp-in) '(mplus mtimes rat))))))))))
-
-(defun nrthk (in nth-root)
-  (labels
-      ((nrthk1 (in nth-root)
-	 ;; Computes the NTH-ROOT of -IN
-	 (if $radexpand
-	     (mul2 (nrthk2 in nth-root) (nrthk -1 nth-root))
-	     (nrthk2 (mul2* -1 in) nth-root)))
-
-       (nrthk2 (in nth-root)
-	 ;; Computes the NTH-ROOT of IN
-	 (power* in (list '(rat) 1 nth-root))))
-    (cond ((equal in 1)
-	   1)
-	  ((equal in -1)
-	   (cond ((equal nth-root 2)
-		  '$%i)
-		 ((eq $domain '$real)
-		  (if (even nth-root)
-		      (nrthk2 -1 nth-root)
-		      -1))
-		 ($m1pbranch
-		  (let (($%emode t))
-		    (power* '$%e (list '(mtimes) (list '(rat) 1 nth-root) '$%pi '$%i))))
-		 (t
-		  (nrthk2 -1 nth-root))))
-	  ((or (and wflag (eq ($asksign in) '$neg))
-	       (and (mnump in) (equal ($sign in) '$neg)))
-	   (nrthk1 (mul2* -1 in) nth-root))
-	  (t
-	   (nrthk2 in nth-root)))))
-
 
 ;; The following was formerly in SININT.  This code was placed here because
 ;; SININT is now an out-of-core file on MC, and this code is needed in-core
