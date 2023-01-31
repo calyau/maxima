@@ -44,11 +44,11 @@
   :properties ((evflag t)))
 (defmvar $distribute_over t) ; If T, functions are distributed over bags.
 
-(defvar expandp nil)
-(defvar timesinp nil)
+(defvar *expandp* nil)
+(defvar *timesinp* nil)
 (defvar %pi-val (mget '$%pi '$numer))
-(defvar exptrlsw nil)
-(defvar expandflag nil)
+(defvar *exptrlsw* nil)
+(defvar *expandflag* nil)
 (defvar *const* 0)
 
 (defprop mnctimes t associative)
@@ -1670,7 +1670,7 @@
      (cond ((or (atom res)
 		(not (member (caar res) '(mexpt mtimes)))
 		(and (zerop $expop) (zerop $expon))
-		expandflag))
+		*expandflag*))
 	   ((eq (caar res) 'mtimes) (setq res (expandtimes res)))
 	   ((and (mplusp (cadr res))
 		 (fixnump (caddr res))
@@ -2001,7 +2001,7 @@
   (cond ((mnump x)
 	 (setq x (num1 x)) (cond ((plusp x) 1) ((minusp x) -1) (t 0)))
 	((atom x) 1)
-	((mplusp x) (if expandp 1 (signum1 (car (last x)))))
+	((mplusp x) (if *expandp* 1 (signum1 (car (last x)))))
 	((mtimesp x) (if (mplusp (cadr x)) 1 (signum1 (cadr x))))
 	(t 1)))
 
@@ -2109,9 +2109,9 @@
 	     (exptrl r1 (fpcofrat r2))
 	     (mul2 (exptrl -1 r2) ;; (-4.5)^(1/4) -> (4.5)^(1/4) * (-1)^(1/4)
 		   (exptrl (- r1) r2))))
-	(exptrlsw (list '(mexpt simp) r1 r2))
+	(*exptrlsw* (list '(mexpt simp) r1 r2))
 	(t
-	 (let ((exptrlsw t))
+	 (let ((*exptrlsw* t))
 	   (simptimes (list '(mtimes)
 			    (exptrl r1 (truncate (cadr r2) (caddr r2)))
 			    (let ((y (let ($keepfloat $ratprint)
@@ -2506,8 +2506,8 @@
             (setq temp (cons '(mexpt) (if check 
                                           (list (cadr x) (mult (caddr x) w))
                                           (list x w))))
-            (if (and (not timesinp) (not (eq x '$%i)))
-                (let ((timesinp t))
+            (if (and (not *timesinp*) (not (eq x '$%i)))
+                (let ((*timesinp* t))
                   (setq temp (simplifya temp t))))))
      (setq x (if (mexptp temp)
                  (cdr temp)
@@ -3350,7 +3350,7 @@
 			  (equal (caddar l) -1) (mplusp (cadar l)))
 		     (push (cadar l) simp-negsums))
 		    ((and (eq (caaar l) 'mexpt)
-			  (let ((expandp t))
+			  (let ((*expandp* t))
 			    (mminusp (caddar l))))
 		     (push (if (equal (caddar l) -1)
 			       (cadar l)
@@ -3379,7 +3379,7 @@
 		     (cond ((equal 1 simp-negprods) (return simp-prods))
 			   ((mplusp simp-prods)
 		            (return (expandterms (power simp-negprods -1) (cdr simp-prods))))
-			   (t (return (let ((expandflag t))
+			   (t (return (let ((*expandflag* t))
 					(mul2 simp-prods (power simp-negprods -1)))))))
 		    (t
 		     (setq expnegsums (car simp-negsums))
@@ -3389,7 +3389,7 @@
 	   (setq expnegsums (expandterms simp-negprods (fixexpand expnegsums)))
 	   (return (if (mplusp simp-prods)
 		       (expandterms (inv expnegsums) (cdr simp-prods))
-		       (let ((expandflag t))
+		       (let ((*expandflag* t))
 			 (mul2 simp-prods (inv expnegsums))))))))))
 
 (defun expand1 (exp $expop $expon)
