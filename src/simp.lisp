@@ -3399,34 +3399,37 @@
 				     (atom (cadr simp-in))
 				     (member (caaadr simp-in) '(mplus mtimes rat))))))))))
 
-(defun nrthk (in *n)
-  (cond ((equal in 1)
-	 1)
-	((equal in -1)
-	 (cond ((equal *n 2)
-		'$%i)
-	       ((eq $domain '$real)
-		(if (even *n)
-		    (nrthk2 -1 *n)
-		    -1))
-	       ($m1pbranch
-		(let (($%emode t))
-		  (power* '$%e (list '(mtimes) (list '(rat) 1 *n) '$%pi '$%i))))
-	       (t
-		(nrthk2 -1 *n))))
-	((or (and wflag (eq ($asksign in) '$neg))
-	     (and (mnump in) (equal ($sign in) '$neg)))
-	 (nrthk1 (mul2* -1 in) *n))
-	(t
-	 (nrthk2 in *n))))
+(defun nrthk (in nth-root)
+  (labels
+      ((nrthk1 (in nth-root)
+	 ;; computes (-IN)^(1/*N)
+	 (if $radexpand
+	     (mul2 (nrthk2 in nth-root) (nrthk -1 nth-root))
+	     (nrthk2 (mul2* -1 in) nth-root)))
 
-(defun nrthk1 (in *n)			; computes (-IN)^(1/*N)
-  (if $radexpand
-      (mul2 (nrthk2 in *n) (nrthk -1 *n))
-      (nrthk2 (mul2* -1 in) *n)))
+       (nrthk2 (in nth-root)
+	 ;; computes IN^(1/*N)
+	 (power* in (list '(rat) 1 nth-root))))
+    (cond ((equal in 1)
+	   1)
+	  ((equal in -1)
+	   (cond ((equal nth-root 2)
+		  '$%i)
+		 ((eq $domain '$real)
+		  (if (even nth-root)
+		      (nrthk2 -1 nth-root)
+		      -1))
+		 ($m1pbranch
+		  (let (($%emode t))
+		    (power* '$%e (list '(mtimes) (list '(rat) 1 nth-root) '$%pi '$%i))))
+		 (t
+		  (nrthk2 -1 nth-root))))
+	  ((or (and wflag (eq ($asksign in) '$neg))
+	       (and (mnump in) (equal ($sign in) '$neg)))
+	   (nrthk1 (mul2* -1 in) nth-root))
+	  (t
+	   (nrthk2 in nth-root)))))
 
-(defun nrthk2 (in *n)
-  (power* in (list '(rat) 1 *n)))	; computes IN^(1/*N)
 
 ;; The following was formerly in SININT.  This code was placed here because
 ;; SININT is now an out-of-core file on MC, and this code is needed in-core
