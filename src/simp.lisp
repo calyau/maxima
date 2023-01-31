@@ -12,8 +12,7 @@
 
 (macsyma-module simp)
 
-(declare-top (special *rulesw*
-		      *out *in))
+(declare-top (special *rulesw*))
 
 ;; Switches dealing with matrices and non-commutative multiplication.
 
@@ -3410,23 +3409,39 @@
 
 (defun simpnrt (x *n)			; computes X^(1/*N)
   (prog (*in *out varlist genvar $factorflag $dontfactor)
-     (setq $factorflag t)
-     (newvar x)
-     (setq x (ratrep* x))
-     (when (equal (cadr x) 0) (return 0))
-     (setq x (ratfact (cdr x) 'psqfr))
-     (simpnrt1 (mapcar #'pdis x))
-     (setq *out (if *out (muln *out nil) 1))
-     (setq *in (cond (*in
-		      (setq *in (muln *in nil))
-		      (nrthk *in *n))
-		     (t 1)))
-     (return (let (($%emode t))
-	       (simplifya (list '(mtimes) *in *out)
-			  (not (or (atom *in)
-				   (atom (cadr *in))
-				   (member (caaadr *in) '(mplus mtimes rat)))))))))
+     (labels
+	 ((simpnrt1 (x)
+	    (do ((x x (cddr x)) (y))
+		((null x))
+	      (cond ((not (equal 1 (setq y (gcd (cadr x) *n))))
+		     (push (simpnrt (list '(mexpt) (car x) (quotient (cadr x) y))
+				    (quotient *n y))
+			   *out))
+		    ((and (equal (cadr x) 1) (integerp (car x)) (plusp (car x))
+			  (setq y (pnthrootp (car x) *n)))
+		     (push y *out))
+		    (t
+		     (unless (> *n (abs (cadr x)))
+		       (push (list '(mexpt) (car x) (quotient (cadr x) *n)) *out))
+		     (push (list '(mexpt) (car x) (rem (cadr x) *n)) *in))))))
+       (setq $factorflag t)
+       (newvar x)
+       (setq x (ratrep* x))
+       (when (equal (cadr x) 0) (return 0))
+       (setq x (ratfact (cdr x) 'psqfr))
+       (simpnrt1 (mapcar #'pdis x))
+       (setq *out (if *out (muln *out nil) 1))
+       (setq *in (cond (*in
+			(setq *in (muln *in nil))
+			(nrthk *in *n))
+		       (t 1)))
+       (return (let (($%emode t))
+		 (simplifya (list '(mtimes) *in *out)
+			    (not (or (atom *in)
+				     (atom (cadr *in))
+				     (member (caaadr *in) '(mplus mtimes rat))))))))))
 
+#+nil
 (defun simpnrt1 (x)
   (do ((x x (cddr x)) (y))
       ((null x))
