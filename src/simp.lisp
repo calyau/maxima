@@ -3365,7 +3365,8 @@
       (ncons a)
       (cdr a)))
 
-(defun simpnrt (x nth-root)			; computes X^(1/*N)
+(defun simpnrt (x nth-root)
+  ;; Computes the NTH-ROOT of X
   (prog (simp-in simp-out varlist genvar $factorflag $dontfactor)
      (labels
 	 ((simpnrt1 (x)
@@ -3402,13 +3403,13 @@
 (defun nrthk (in nth-root)
   (labels
       ((nrthk1 (in nth-root)
-	 ;; computes (-IN)^(1/*N)
+	 ;; Computes the NTH-ROOT of -IN
 	 (if $radexpand
 	     (mul2 (nrthk2 in nth-root) (nrthk -1 nth-root))
 	     (nrthk2 (mul2* -1 in) nth-root)))
 
        (nrthk2 (in nth-root)
-	 ;; computes IN^(1/*N)
+	 ;; Computes the NTH-ROOT of IN
 	 (power* in (list '(rat) 1 nth-root))))
     (cond ((equal in 1)
 	   1)
