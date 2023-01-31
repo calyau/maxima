@@ -46,12 +46,8 @@
 
 (defvar *expandp* nil)
 (defvar *timesinp* nil)
-#+nil
-(defvar %pi-val (mget '$%pi '$numer))
 (defvar *exptrlsw* nil)
 (defvar *expandflag* nil)
-#+nil
-(defvar *const* 0)
 
 (defprop mnctimes t associative)
 (defprop lambda t lisp-no-simp)
@@ -432,11 +428,6 @@
        (or (eq (caar x) '$matrix)
 	   (and (eq (caar x) 'mlist) $listarith))))
 
-#+nil
-(defun constfun (ign)
-  (declare (ignore ign)) ; Arg ignored.  Function used for mapping down lists.
-  *const*)
-
 (defun constmx (const x)
   (simplifya (fmapl1 #'(lambda (ign)
 			 (declare (ignore ign))
@@ -473,13 +464,6 @@
      ((atom l) (return (free l free-var)))	;; second element of a pair
      ((not (free (car l) free-var)) (return nil)))))
 
-
-#+nil
-(defun freeargs (exp free-var)
-  (cond ((alike1 exp free-var) nil)
-	((atom exp) t)
-	(t (do ((l (margs exp) (cdr l))) ((null l) t)
-	     (cond ((not (freeargs (car l) free-var)) (return nil)))))))
 
 (defun simplifya (x y)
   (cond ((not $simp) x)
@@ -3299,39 +3283,6 @@
 	 (go loop))
 	t))
 
-#+nil
-(defun genexpands (l)
-  (prog ()
-   loop
-   (setq l (cdr l))
-   (cond ((null l)
-	  (setq *prods* (nreverse *prods*)
-		*negprods* (nreverse *negprods*)
-		*sums* (nreverse *sums*)
-		*negsums* (nreverse *negsums*))
-	  (return nil))
-	 ((atom (car l))
-	  (push (car l) *prods*))
-	 ((eq (caaar l) 'rat)
-	  (unless (equal (cadar l) 1)
-	    (push (cadar l) *prods*))
-	  (push (caddar l) *negprods*))
-	 ((eq (caaar l) 'mplus)
-	  (push (car l) *sums*))
-	 ((and (eq (caaar l) 'mexpt)
-	       (equal (caddar l) -1) (mplusp (cadar l)))
-	  (push (cadar l) *negsums*))
-	 ((and (eq (caaar l) 'mexpt)
-	       (let ((expandp t))
-		 (mminusp (caddar l))))
-	  (push (if (equal (caddar l) -1)
-		    (cadar l)
-		    (list (caar l) (cadar l) (neg (caddar l))))
-		*negprods*))
-	 (t
-	  (push (car l) *prods*)))
-   (go loop)))
-
 (defun expandtimes (a)
   (let (simp-prods simp-negprods simp-sums simp-negsums expsums expnegsums)
     (labels
@@ -3447,22 +3398,6 @@
 			    (not (or (atom simp-in)
 				     (atom (cadr simp-in))
 				     (member (caaadr simp-in) '(mplus mtimes rat))))))))))
-
-#+nil
-(defun simpnrt1 (x)
-  (do ((x x (cddr x)) (y))
-      ((null x))
-    (cond ((not (equal 1 (setq y (gcd (cadr x) *n))))
-	   (push (simpnrt (list '(mexpt) (car x) (quotient (cadr x) y))
-			  (quotient *n y))
-		 *out))
-	  ((and (equal (cadr x) 1) (integerp (car x)) (plusp (car x))
-		(setq y (pnthrootp (car x) *n)))
-	   (push y *out))
-	  (t
-	   (unless (> *n (abs (cadr x)))
-	     (push (list '(mexpt) (car x) (quotient (cadr x) *n)) *out))
-	   (push (list '(mexpt) (car x) (rem (cadr x) *n)) *in)))))
 
 (defun nrthk (in *n)
   (cond ((equal in 1)
