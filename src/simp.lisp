@@ -3432,9 +3432,9 @@
        (simpnrt1 (mapcar #'pdis x))
        (setq simp-out (if simp-out (muln simp-out nil) 1))
        (setq simp-in (cond (simp-in
-			(setq simp-in (muln simp-in nil))
-			(nrthk simp-in *n))
-		       (t 1)))
+			    (setq simp-in (muln simp-in nil))
+			    (nrthk simp-in *n))
+			   (t 1)))
        (return (let (($%emode t))
 		 (simplifya (list '(mtimes) simp-in simp-out)
 			    (not (or (atom simp-in)
