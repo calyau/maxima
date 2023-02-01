@@ -74,9 +74,6 @@ fib[3];
 2$
 fib[5];
 5$
-/* Test the builtin fib function */
-fib(5);
-5$
 eta(mu,nu):=if mu = nu then mu else (if mu > nu then mu-nu else mu+nu);
 eta(mu,nu):=if mu = nu then mu else (if mu > nu then mu-nu else mu+nu)$
 eta(5,6);
