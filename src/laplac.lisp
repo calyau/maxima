@@ -756,7 +756,7 @@
 		 (go skip)))
      (setq apart (pexpt (car factor) (cadr factor)))
      (setq bpart (car (ratqu real apart)))
-     (setq y (bprog apart bpart))
+     (setq y (bprog apart bpart var))
      skip (setq frpart
 		(cdr (ratdivide (ratti (ratnumerator num)
 				       (cdr y)
@@ -788,7 +788,7 @@
 (defun ilt1 (p q k)
   (let (z)
     (cond ((onep1 k) (ilt3 p ))
-	  (t (setq z (bprog q (pderivative q var)))
+	  (t (setq z (bprog q (pderivative q var) var))
 	     (ilt2 p k)))))
 
 
@@ -819,11 +819,11 @@
 				  t)))
 	   1
 	   t))))
-     (setq a (disrep (polcoef q 1))
-	   b (disrep (polcoef q 0)))
+     (setq a (disrep (polcoef q 1 var) ratform)
+	   b (disrep (polcoef q 0 var) ratform))
      (return
        (simptimes (list '(mtimes)
-			(disrep p)
+			(disrep p ratform)
 			(raiseup ilt k)
 			(simpexpt (list '(mexpt)
 					'$%e
@@ -847,7 +847,7 @@
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
 (defmacro coef (pol)
-  `(disrep (ratqu (polcoef (car p) ,pol) (cdr p))))
+  `(disrep (ratqu (polcoef (car p) ,pol var) (cdr p)) ratform))
 
 (defun lapsum (&rest args)
   (cons '(mplus) args))
@@ -861,25 +861,25 @@
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
 (defun ilt3 (p)
   (prog (discrim sign a c d e b1 b0 r term1 term2 degr)
-     (setq e (disrep (polcoef q 0))
-	   d (disrep (polcoef q 1))
+     (setq e (disrep (polcoef q 0 var) ratform)
+	   d (disrep (polcoef q 1 var) ratform)
 	   degr (pdegree q var))
      (and (equal degr 1)
 	  (return
 	    (simptimes (lapprod
-			(disrep p)
+			(disrep p ratform)
 			(expo d -1)
 			(expo '$%e (lapprod -1 ilt e (expo d -1))))
 		       1
 		       nil)))
-     (setq c (disrep (polcoef q 2)))
+     (setq c (disrep (polcoef q 2 var) ratform))
      (and (equal degr 2) (go quadratic))
      (and (equal degr 3) (zerop1 c) (zerop1 d)
 	  (go cubic))
-     (return (list '(%ilt) (div* (disrep p)(disrep q)) ils ilt))
-     cubic (setq  a (disrep (polcoef q 3))
+     (return (list '(%ilt) (div* (disrep p ratform)(disrep q)) ils ilt))
+     cubic (setq  a (disrep (polcoef q 3 var) ratform)
 		  r (simpnrt (div* e a) 3))
-     (setq d (div* (disrep p)(lapprod a (lapsum
+     (setq d (div* (disrep p ratform)(lapprod a (lapsum
 					 (expo ils 3)(expo '%r 3)))))
      (return (ilt0 (maxima-substitute r '%r ($partfrac d ils))))
      quadratic (setq b0 (coef 0) b1 (coef 1))
