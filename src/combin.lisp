@@ -732,9 +732,9 @@
 
 ;; Main routine for computing the n'th Fibonacci number where n is an
 ;; integer.
-(defun ffib (%n)
-  (declare (fixnum %n))
-  (let (prevfib)
+(let (prevfib)
+  (defun ffib (%n)
+    (declare (fixnum %n))
     (cond ((= %n -1)
 	   (setq prevfib -1)
 	   1)
