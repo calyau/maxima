@@ -62,7 +62,7 @@
      (setq pardenomc (cdr pardenomc))
      (go dseq)
      ok   (setq pardenomc (reverse pardenom))
-     numc (setq thebpg (bprog (car pardenomc) (car ppdenom)))
+     numc (setq thebpg (bprog (car pardenomc) (car ppdenom) var))
      (setq parnumer
 	   (cons (cdr (ratdivide (ratti frpart (cdr thebpg) t)
 				 (car pardenomc)))
@@ -101,7 +101,7 @@
      (setq arootf (car rootfactor))
      (if (zerop (pdegree arootf var)) (go reset))
      (setq deriv (pderivative arootf var))
-     (setq thebpg (bprog arootf deriv))
+     (setq thebpg (bprog arootf deriv var))
      (setq kx (1- klth))
      (setq thetop (car parnumer))
      iter (setq prod1 (ratti thetop (car thebpg) t))

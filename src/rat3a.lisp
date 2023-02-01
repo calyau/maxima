@@ -994,7 +994,7 @@
 	     (declare (special var))	;who uses this? --gsb
 	     (cond ((null p) (cons 1 q))
 		   (t (setq p (car (let ($ratalgdenom)
-				     (bprog q (cons var p)))))
+				     (bprog q (cons var p) var))))
 		      (rattimes (cons (car p) 1) (rainv (cdr p)) t)))))))
 
 (defun pexptsq (p n)

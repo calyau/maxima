@@ -255,7 +255,7 @@
 	    expint)))
 	 ((not (zerop (pdegree arootf var)))
 	  (setq deriv (spderivative arootf mainvar))
-	  (setq thebpg (bprog arootf (ratnumerator deriv)))
+	  (setq thebpg (bprog arootf (ratnumerator deriv) var))
 	  (setq thetop (car parnumer))
 	  (do ((kx (1- klth) (1- kx))) ((= kx 0))
 	    (setq prod1 (r* thetop (car thebpg)))

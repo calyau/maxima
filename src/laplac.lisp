@@ -756,7 +756,7 @@
 		 (go skip)))
      (setq apart (pexpt (car factor) (cadr factor)))
      (setq bpart (car (ratqu real apart)))
-     (setq y (bprog apart bpart))
+     (setq y (bprog apart bpart var))
      skip (setq frpart
 		(cdr (ratdivide (ratti (ratnumerator num)
 				       (cdr y)
@@ -788,7 +788,7 @@
 (defun ilt1 (p q k)
   (let (z)
     (cond ((onep1 k) (ilt3 p ))
-	  (t (setq z (bprog q (pderivative q var)))
+	  (t (setq z (bprog q (pderivative q var) var))
 	     (ilt2 p k)))))
 
 

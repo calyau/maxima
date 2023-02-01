@@ -666,7 +666,7 @@
                  do
                     (setq apart (pexpt factor multiplicity)
                           bpart (pquotient bpart apart)
-                          y (bprog apart bpart)
+                          y (bprog apart bpart var)
                           frpart (cdr (ratdivide (ratti num (cdr y) t)
                                                  apart)))
                     (push (list (ratqu frpart content) factor multiplicity)
