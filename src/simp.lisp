@@ -3436,7 +3436,7 @@
 ;; SININT is now an out-of-core file on MC, and this code is needed in-core
 ;; because of the various calls to it. - BMT & JPG
 
-(declare-top (special var ratform context))
+(declare-top (special ratform context))
 
 (defmfun $integrate (expr x &optional lo hi)
   (declare (special *in-risch-p*))
@@ -3473,8 +3473,6 @@
 	((atom (cdr r)) (cdr r))
 	((numberp (cadr r)) 1)
 	(t (cdr r))))
-
-(declare-top (special var))
 
 ;; (BPROG U V) appears to return A and B (as ((A1 . A2) B1 . B2) with A = A1/A2, B = B1/B2)
 ;; such that B/U + A/V = 1/(U*V), where U, V are polynomials represented as a list of
@@ -3559,9 +3557,6 @@
 (defun disrep (l) (cond ((equal (ratnumerator l) l)
 			 ($ratdisrep (cons ratform (cons l 1))))
 			(t ($ratdisrep (cons ratform l)))))
-
-(declare-top (unspecial var))
-
 
 ;; The following was formerly in MATRUN.  This code was placed here because
 ;; MATRUN is now an out-of-core file on MC, and this code is needed in-core
