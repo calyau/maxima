@@ -3436,8 +3436,6 @@
 ;; SININT is now an out-of-core file on MC, and this code is needed in-core
 ;; because of the various calls to it. - BMT & JPG
 
-(declare-top (special ratform))
-
 (defmfun $integrate (expr x &optional lo hi)
   (declare (special *in-risch-p* context))
   (let ($ratfac)
@@ -3554,9 +3552,10 @@
 	(t
 	 (ptterm (cdr l) n))))
 
-(defun disrep (l) (cond ((equal (ratnumerator l) l)
-			 ($ratdisrep (cons ratform (cons l 1))))
-			(t ($ratdisrep (cons ratform l)))))
+(defun disrep (l disrep-ratform)
+  (cond ((equal (ratnumerator l) l)
+	 ($ratdisrep (cons disrep-ratform (cons l 1))))
+	(t ($ratdisrep (cons disrep-ratform l)))))
 
 ;; The following was formerly in MATRUN.  This code was placed here because
 ;; MATRUN is now an out-of-core file on MC, and this code is needed in-core

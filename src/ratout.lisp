@@ -632,14 +632,14 @@
 	     (setq exp (partfrac exp var))
 	     (setq exp (cons (car exp)	;FULL DECOMP?
 			     (mapcan #'partfraca (cdr exp))))
-	     (add2* (disrep (car exp))
+	     (add2* (disrep (car exp) ratform)
 		    (cons '(mplus)
 			  (mapcar #'(lambda (l)
 				      (destructuring-let (((coef poly exp) l))
 							 (list '(mtimes)
-							       (disrep  coef)
+							       (disrep  coef ratform)
 							       (list '(mexpt)
-								     (disrep poly)
+								     (disrep poly ratform)
 								     (- exp)))))
 				  (cdr exp))))))))
 
