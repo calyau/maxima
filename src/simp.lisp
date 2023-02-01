@@ -12,7 +12,7 @@
 
 (macsyma-module simp)
 
-(declare-top (special *rulesw*))
+(defvar *rulesw*)
 
 ;; Switches dealing with matrices and non-commutative multiplication.
 
