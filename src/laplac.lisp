@@ -819,8 +819,8 @@
 				  t)))
 	   1
 	   t))))
-     (setq a (disrep (polcoef q 1))
-	   b (disrep (polcoef q 0)))
+     (setq a (disrep (polcoef q 1 var))
+	   b (disrep (polcoef q 0 var)))
      (return
        (simptimes (list '(mtimes)
 			(disrep p)
@@ -847,7 +847,7 @@
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
 (defmacro coef (pol)
-  `(disrep (ratqu (polcoef (car p) ,pol) (cdr p))))
+  `(disrep (ratqu (polcoef (car p) ,pol var) (cdr p))))
 
 (defun lapsum (&rest args)
   (cons '(mplus) args))
@@ -861,8 +861,8 @@
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
 (defun ilt3 (p)
   (prog (discrim sign a c d e b1 b0 r term1 term2 degr)
-     (setq e (disrep (polcoef q 0))
-	   d (disrep (polcoef q 1))
+     (setq e (disrep (polcoef q 0 var))
+	   d (disrep (polcoef q 1 var))
 	   degr (pdegree q var))
      (and (equal degr 1)
 	  (return
@@ -872,12 +872,12 @@
 			(expo '$%e (lapprod -1 ilt e (expo d -1))))
 		       1
 		       nil)))
-     (setq c (disrep (polcoef q 2)))
+     (setq c (disrep (polcoef q 2 var)))
      (and (equal degr 2) (go quadratic))
      (and (equal degr 3) (zerop1 c) (zerop1 d)
 	  (go cubic))
      (return (list '(%ilt) (div* (disrep p)(disrep q)) ils ilt))
-     cubic (setq  a (disrep (polcoef q 3))
+     cubic (setq  a (disrep (polcoef q 3 var))
 		  r (simpnrt (div* e a) 3))
      (setq d (div* (disrep p)(lapprod a (lapsum
 					 (expo ils 3)(expo '%r 3)))))

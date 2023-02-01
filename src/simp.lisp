@@ -3549,9 +3549,12 @@
     (cons (ratqu (ratti q gden t) fden)
 	  (ratqu r fden))))
 
-(defun polcoef (l n) (cond ((or (atom l) (pointergp var (car l)))
-			      (cond ((equal n 0) l) (t 0)))
-			     (t (ptterm (cdr l) n))))
+(defun polcoef (l n polcoef-var)
+  (cond ((or (atom l) (pointergp polcoef-var (car l)))
+	 (cond ((equal n 0) l)
+	       (t 0)))
+	(t
+	 (ptterm (cdr l) n))))
 
 (defun disrep (l) (cond ((equal (ratnumerator l) l)
 			 ($ratdisrep (cons ratform (cons l 1))))
