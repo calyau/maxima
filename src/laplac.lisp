@@ -580,26 +580,26 @@
      skip (return (list '(%laplace) fun var parm))))
 
 
-(defun lapdiff (fun var parm)
+(defun lapdiff (fun time-var parm)
 ;;;FUN IS OF THE FORM DIFF(F(T),T,N) WHERE N IS A POSITIVE INTEGER
   (prog (difflist degree frontend resultlist newdlist order arg2)
      (setq newdlist (setq difflist (copy-tree (cddr fun))))
-     (setq arg2 (list '(mequal) var 0))
+     (setq arg2 (list '(mequal) time-var 0))
      a    (cond ((null difflist)
 		 (return (cons '(%derivative)
 			       (cons (list '(%laplace)
 					   (cadr fun)
-					   var
+					   time-var
 					   parm)
 				     newdlist))))
-		((eq (car difflist) var)
+		((eq (car difflist) time-var)
 		 (setq degree (cadr difflist)
 		       difflist (cddr difflist))
 		 (go out)))
      (setq difflist (cdr (setq frontend (cdr difflist))))
      (go a)
      out  (cond ((null (posint degree))
-		 (return (list '(%laplace) fun var parm))))
+		 (return (list '(%laplace) fun time-var parm))))
      (cond (frontend (rplacd frontend difflist))
 	   (t (setq newdlist difflist)))
      (cond (newdlist (setq fun (cons '(%derivative)
@@ -611,7 +611,7 @@
      (setq resultlist
 	   (cons (list '(mtimes)
 		       (raiseup parm degree)
-		       ($at ($diff fun var order) arg2))
+		       ($at ($diff fun time-var order) arg2))
 		 resultlist))
      (incf order)
      (and (> degree 0) (go loop))
@@ -622,37 +622,37 @@
      (return (simplus (list '(mplus)
 			    (list '(mtimes)
 				  (raiseup parm order)
-				  (laplace fun var parm))
+				  (laplace fun time-var parm))
 			    (list '(mtimes)
 				  -1
 				  resultlist))
 		      1 nil))))
 
  ;;;FUN IS OF THE FORM INTEGRATE(F(X)*G(T)*H(T-X),X,0,T)
-(defun lapint (fun var parm dvar)
+(defun lapint (fun time-var parm dvar)
   (prog (newfun parm-list f var-list var-parm-list)
      (and dvar (go convolution))
      (setq dvar (cadr (setq newfun (cdr fun))))
      (and (cddr newfun)
 	  (zerop1 (caddr newfun))
-	  (eq (cadddr newfun) var)
+	  (eq (cadddr newfun) time-var)
 	  (go convolutiontest))
      notcon
      (setq newfun (cdr fun))
      (cond ((cddr newfun)
-	    (cond ((and (freeof var (caddr newfun))
-			(freeof var (cadddr newfun)))
+	    (cond ((and (freeof time-var (caddr newfun))
+			(freeof time-var (cadddr newfun)))
 		   (return (list '(%integrate)
-				 (laplace (car newfun) var parm dvar)
+				 (laplace (car newfun) time-var parm dvar)
 				 dvar
 				 (caddr newfun)
 				 (cadddr newfun))))
 		  (t (go giveup))))
 	   (t (return (list '(%integrate)
-			    (laplace (car newfun) var parm dvar)
+			    (laplace (car newfun) time-var parm dvar)
 			    dvar))))
      giveup
-     (return (list '(%laplace) fun var parm))
+     (return (list '(%laplace) fun time-var parm))
      convolutiontest
      (setq newfun ($factor (car newfun)))
      (cond ((eq (caar newfun) 'mtimes)
@@ -661,12 +661,12 @@
      gothrulist
      (cond ((freeof dvar f)
 	    (setq parm-list (cons f parm-list)))
-	   ((freeof var f) (setq var-list (cons f var-list)))
+	   ((freeof time-var f) (setq var-list (cons f var-list)))
 	   ((freeof dvar
 		    (sratsimp (maxima-substitute (list '(mplus)
-						       var
+						       time-var
 						       dvar)
-						 var
+						 time-var
 						 f)))
 	    (setq var-parm-list (cons f var-parm-list)))
 	   (t (go notcon)))
@@ -685,20 +685,20 @@
 					    var-parm-list))
 			      dvar
 			      0
-			      var))))
-	 var parm dvar)))
+			      time-var))))
+	 time-var parm dvar)))
      convolution
      (return
        (simptimes
 	(list
 	 '(mtimes)
-	 (laplace ($expand (maxima-substitute var
+	 (laplace ($expand (maxima-substitute time-var
 					      dvar
 					      (fixuprest var-list)))
-		  var parm dvar)
+		  time-var parm dvar)
 	 (laplace
 	  ($expand (maxima-substitute 0 dvar (fixuprest var-parm-list)))
-	  var parm dvar))
+	  time-var parm dvar))
 	1
 	t))))
 
