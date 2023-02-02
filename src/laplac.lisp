@@ -786,18 +786,18 @@
 
 (declare-top (special q z))
 
-(defun ilt1 (p q k ratform)
+(defun ilt1 (p q k laplac-ratform)
   (let (z)
-    (cond ((onep1 k) (ilt3 p ratform))
+    (cond ((onep1 k) (ilt3 p laplac-ratform))
 	  (t (setq z (bprog q (pderivative q var) var))
-	     (ilt2 p k ratform)))))
+	     (ilt2 p k laplac-ratform)))))
 
 
  ;;;INVERTS P(S)/Q(S)**K WHERE Q(S)  IS IRREDUCIBLE
  ;;;DOESN'T CALL ILT3 IF Q(S) IS LINEAR
-(defun ilt2 (p k ratform)
+(defun ilt2 (p k laplac-ratform)
   (prog (y a b)
-     (and (onep1 k) (return (ilt3 p ratform)))
+     (and (onep1 k) (return (ilt3 p laplac-ratform)))
      (decf k)
      (setq a (ratti p (car z) t))
      (setq b (ratti p (cdr z) t))
@@ -812,20 +812,20 @@
 	    (ilt2
 	     (cdr (ratdivide (ratplus a (ratqu (ratderivative b var) k)) y))
 	     k
-	     ratform)
+	     laplac-ratform)
 	    ($multthru (simptimes (list '(mtimes)
 					ilt
 					(power k -1)
-					(ilt2 (cdr (ratdivide b y)) k ratform))
+					(ilt2 (cdr (ratdivide b y)) k laplac-ratform))
 				  1
 				  t)))
 	   1
 	   t))))
-     (setq a (disrep (polcoef q 1 var) ratform)
-	   b (disrep (polcoef q 0 var) ratform))
+     (setq a (disrep (polcoef q 1 var) laplac-ratform)
+	   b (disrep (polcoef q 0 var) laplac-ratform))
      (return
        (simptimes (list '(mtimes)
-			(disrep p ratform)
+			(disrep p laplac-ratform)
 			(raiseup ilt k)
 			(simpexpt (list '(mexpt)
 					'$%e
@@ -861,27 +861,27 @@
   (cons '(mexpt) args))
 
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
-(defun ilt3 (p ratform)
+(defun ilt3 (p laplac-ratform)
   (prog (discrim sign a c d e b1 b0 r term1 term2 degr)
-     (setq e (disrep (polcoef q 0 var) ratform)
-	   d (disrep (polcoef q 1 var) ratform)
+     (setq e (disrep (polcoef q 0 var) laplac-ratform)
+	   d (disrep (polcoef q 1 var) laplac-ratform)
 	   degr (pdegree q var))
      (and (equal degr 1)
 	  (return
 	    (simptimes (lapprod
-			(disrep p ratform)
+			(disrep p laplac-ratform)
 			(expo d -1)
 			(expo '$%e (lapprod -1 ilt e (expo d -1))))
 		       1
 		       nil)))
-     (setq c (disrep (polcoef q 2 var) ratform))
+     (setq c (disrep (polcoef q 2 var) laplac-ratform))
      (and (equal degr 2) (go quadratic))
      (and (equal degr 3) (zerop1 c) (zerop1 d)
 	  (go cubic))
-     (return (list '(%ilt) (div* (disrep p ratform) (disrep q ratform)) ils ilt))
-     cubic (setq  a (disrep (polcoef q 3 var) ratform)
+     (return (list '(%ilt) (div* (disrep p laplac-ratform) (disrep q laplac-ratform)) ils ilt))
+     cubic (setq  a (disrep (polcoef q 3 var) laplac-ratform)
 		  r (simpnrt (div* e a) 3))
-     (setq d (div* (disrep p ratform)(lapprod a (lapsum
+     (setq d (div* (disrep p laplac-ratform)(lapprod a (lapsum
 					 (expo ils 3)(expo '%r 3)))))
      (return (ilt0 (maxima-substitute r '%r ($partfrac d ils))))
      quadratic (setq b0 (coef 0) b1 (coef 1))
