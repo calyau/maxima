@@ -693,8 +693,6 @@
 	1
 	t))))
 
-;;(declare-top (special ils ilt))
-
 (defmfun $ilt (exp ils ilt)
  ;;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
   (let (varlist ($savefactors t) checkfactors $ratfac $keepfloat)
@@ -935,5 +933,5 @@
 	  1
 	  nil)))))
 
-(declare-top (unspecial ils ilt q var
+(declare-top (unspecial q var
 			z))
