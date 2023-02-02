@@ -182,14 +182,14 @@
 		 (t
 		  (lapshift (car fun) (cdr fun) var parm)))))))
 
-(defun lapexpt (fun rest var parm)
+(defun lapexpt (fun rest time-var parm)
        ;;;HANDLES %E**(A*T+B)*REST(T), %E**(A*T**2+B*T+C),
        ;;; 1/SQRT(A*T+B), OR T**K*REST(T)
   (prog (ab base-of-fun power result)
      (setq base-of-fun (cadr fun) power (caddr fun))
      (cond
        ((and
-	 (freeof var base-of-fun)
+	 (freeof time-var base-of-fun)
 	 (setq
 	  ab
 	  (isquadraticp
@@ -200,14 +200,14 @@
 					   base-of-fun))
 			       1
 			       nil)))
-	   var)))
+	   time-var)))
 	(cond ((equal (car ab) 0) (go %e-case-lin))
 	      ((null rest) (go %e-case-quad))
 	      (t (go noluck))))
-       ((and (eq base-of-fun var) (freeof var power))
+       ((and (eq base-of-fun time-var) (freeof time-var power))
 	(go var-case))
        ((and (alike1 '((rat) -1 2) power) (null rest)
-	     (setq ab (islinear base-of-fun var)))
+	     (setq ab (islinear base-of-fun time-var)))
 	(setq result (div* (cdr ab) (car ab)))
 	(return (simptimes
 		 (list '(mtimes)
@@ -233,7 +233,7 @@
      %e-case-lin
      (setq result
       (cond
-	(rest (sratsimp ($at (laptimes rest var parm)
+	(rest (sratsimp ($at (laptimes rest time-var parm)
 			     (list '(mequal)
 				   parm
 				   (list '(mplus)
@@ -287,11 +287,11 @@
 			       (exponentiate (caddr ab))
 			       result) 1 nil))
      var-case
-     (cond ((or (null rest) (freeof var (fixuprest rest)))
+     (cond ((or (null rest) (freeof time-var (fixuprest rest)))
 	    (go var-easy-case)))
      (cond ((posint power)
 	    (return (afixsign (apply '$diff
-				     (list (laptimes rest var parm)
+				     (list (laptimes rest time-var parm)
 					   parm
 					   power))
 			      (even power))))
@@ -322,8 +322,8 @@
 					       base-of-fun
 					       (1- power))))
 				rest))
-		    var parm))
-	 (t (lapshift fun rest var parm))))))
+		    time-var parm))
+	 (t (lapshift fun rest time-var parm))))))
 
 ;;;INTEGRAL FROM A TO INFINITY OF F(X)
 (defun mydefint (f x a parm)
@@ -363,18 +363,18 @@
   (cond (signswitch funct)
 	(t (simptimes (list '(mtimes) -1 funct) 1 t))))
 
-(defun lapshift (fun rest var parm)
+(defun lapshift (fun rest time-var parm)
   (cond ((atom fun) (merror "LAPSHIFT: expected a cons, not ~M" fun))
 	((or (member 'laplace (car fun) :test #'eq) (null rest))
 	 (lapdefint (cond (rest (simptimes (cons '(mtimes)
 						 (cons fun rest)) 1 t))
 			  (t fun))
-		    var parm))
+		    time-var parm))
 	(t (laptimes (append rest
 			     (ncons (cons (append (car fun)
 						  '(laplace))
 					  (cdr fun))))
-		     var parm))))
+		     time-var parm))))
 
 ;;;COMPUTES %E**(W*B*%I)*F(S-W*A*%I) WHERE W=-1 IF SIGN IS T ELSE W=1
 (defun mostpart (f parm sign a b)
@@ -402,11 +402,11 @@
 			 1 nil))))
 
  ;;;FUN IS OF THE FORM SIN(A*T+B)*REST(T) OR COS
-(defun lapsin (fun rest trigswitch var parm)
-  (let ((ab (islinear (cadr fun) var)))
+(defun lapsin (fun rest trigswitch time-var parm)
+  (let ((ab (islinear (cadr fun) time-var)))
     (cond (ab
 	   (cond (rest
-		  (compose (laptimes rest parm var)
+		  (compose (laptimes rest parm time-var)
 			   parm
 			   trigswitch
 			   (car ab)
@@ -441,11 +441,11 @@
 			  -1))
 		   1 nil))))
 	  (t
-	   (lapshift fun rest var parm)))))
+	   (lapshift fun rest time-var parm)))))
 
  ;;;FUN IS OF THE FORM SINH(A*T+B)*REST(T) OR IS COSH
-(defun lapsinh (fun rest switch var parm)
-  (cond ((islinear (cadr fun) var)
+(defun lapsinh (fun rest switch time-var parm)
+  (cond ((islinear (cadr fun) time-var)
 	 (sratsimp
 	  (laplus
 	   (simplus
@@ -466,12 +466,12 @@
 			    switch))
 	    1
 	    nil)
-	   var parm)))
-	(t (lapshift fun rest var parm))))
+	   time-var parm)))
+	(t (lapshift fun rest time-var parm))))
 
  ;;;FUN IS OF THE FORM LOG(A*T)
-(defun laplog (fun var parm)
-  (let ((ab (islinear (cadr fun) var)))
+(defun laplog (fun time-var parm)
+  (let ((ab (islinear (cadr fun) time-var)))
     (cond ((and ab (zerop1 (cdr ab)))
 	   (simptimes (list '(mtimes)
 			    (list '(mplus)
@@ -481,7 +481,7 @@
 			    (list '(mexpt) parm -1))
 		      1 nil))
 	  (t
-	   (lapdefint fun var parm)))))
+	   (lapdefint fun time-var parm)))))
 
 (defun raiseup (fbase exponent)
   (if (equal exponent 1)
@@ -489,8 +489,8 @@
       (list '(mexpt) fbase exponent)))
 
 ;;TAKES TRANSFORM OF HSTEP(A*T+B)*F(T)
-(defun laphstep (fun rest var parm)
-  (let ((ab (islinear (cadr fun) var)))
+(defun laphstep (fun rest time-var parm)
+  (let ((ab (islinear (cadr fun) time-var)))
     (if ab
 	(let* ((a (car ab))
 	       (b (cdr ab))
@@ -499,24 +499,24 @@
 	    ($positive (if (eq (asksign offset) '$negative)
 			   (mul (exponentiate (mul offset parm))
 				(laplace (maxima-substitute
-					  (sub var offset) var
+					  (sub time-var offset) time-var
 					  (fixuprest rest))
-					 var parm))
-			 (laptimes rest var parm)))
+					 time-var parm))
+			 (laptimes rest time-var parm)))
 	    ($negative (if (eq (asksign offset) '$negative)
-			   (sub (laptimes rest var parm)
+			   (sub (laptimes rest time-var parm)
 				(mul (exponentiate (mul offset parm))
 				     (laplace (maxima-substitute
-					       (sub var offset) var
+					       (sub time-var offset) time-var
 					       (fixuprest rest))
-					      var parm)))
+					      time-var parm)))
 			 0))
-	    (t (mul fun (laptimes rest var parm)))))
-      (lapshift fun rest var parm))))
+	    (t (mul fun (laptimes rest time-var parm)))))
+      (lapshift fun rest time-var parm))))
 			  
 ;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
-(defun lapdelta (fun rest var parm)
-  (let ((ab (islinear (cadr fun) var))
+(defun lapdelta (fun rest time-var parm)
+  (let ((ab (islinear (cadr fun) time-var))
 	(sign nil)
 	(recipa nil))
     (cond (ab
@@ -526,19 +526,19 @@
 			     0)
 			    ((eq sign '$zero)
 			     (list '(mtimes)
-				   (maxima-substitute 0 var (fixuprest rest))
+				   (maxima-substitute 0 time-var (fixuprest rest))
 				   recipa))
 			    (t
 			     (list '(mtimes)
-				   (maxima-substitute (neg ab) var (fixuprest rest))
+				   (maxima-substitute (neg ab) time-var (fixuprest rest))
 				   (list '(mexpt) '$%e (cons '(mtimes) (cons parm (ncons ab))))
 				   recipa)))
 		      nil))
 	  (t
-	   (lapshift fun rest var parm)))))
+	   (lapshift fun rest time-var parm)))))
 
-(defun laperf (fun var parm)
-  (let ((ab (islinear (cadr fun) var)))
+(defun laperf (fun time-var parm)
+  (let ((ab (islinear (cadr fun) time-var)))
     (cond ((and ab (equal (cdr ab) 0))
 	   (simptimes (list '(mtimes)
 			    (div* (exponentiate (div* (list '(mexpt) parm 2)
@@ -554,13 +554,13 @@
 		      1
 		      nil))
 	  (t
-	   (lapdefint fun var parm)))))
+	   (lapdefint fun time-var parm)))))
 
-(defun lapdefint (fun var parm)
+(defun lapdefint (fun time-var parm)
   (prog (tryint mult)
      (and ($unknown fun)(go skip))
      (setq mult (simptimes (list '(mtimes) (exponentiate
-					    (list '(mtimes) -1 var parm)) fun) 1 nil))
+					    (list '(mtimes) -1 time-var parm)) fun) 1 nil))
      (with-new-context (context)
        (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
        (setq tryint
@@ -572,12 +572,12 @@
                    (errcatch t)
                    ($errormsg nil)
                    (*mdebug* nil))
-               (errset ($defint mult var 0 '$inf)))))
+               (errset ($defint mult time-var 0 '$inf)))))
      (and tryint (not (eq (and (listp (car tryint))
 			       (caaar tryint))
 			  '%integrate))
 	  (return (car tryint)))
-     skip (return (list '(%laplace) fun var parm))))
+     skip (return (list '(%laplace) fun time-var parm))))
 
 
 (defun lapdiff (fun time-var parm)
