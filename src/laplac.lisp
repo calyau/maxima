@@ -876,7 +876,7 @@
      (and (equal degr 2) (go quadratic))
      (and (equal degr 3) (zerop1 c) (zerop1 d)
 	  (go cubic))
-     (return (list '(%ilt) (div* (disrep p ratform)(disrep q)) ils ilt))
+     (return (list '(%ilt) (div* (disrep p ratform) (disrep q ratform)) ils ilt))
      cubic (setq  a (disrep (polcoef q 3 var) ratform)
 		  r (simpnrt (div* e a) 3))
      (setq d (div* (disrep p ratform)(lapprod a (lapsum
