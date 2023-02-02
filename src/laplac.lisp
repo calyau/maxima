@@ -773,7 +773,8 @@
 				       t)
 				t))
 		  (car factor)
-		  (cadr factor))
+		  (cadr factor)
+		  ratform)
 	    parnumer))
      (setq factor (cddr factor))
      (cond ((null factor)
@@ -785,18 +786,18 @@
 
 (declare-top (special q z))
 
-(defun ilt1 (p q k)
+(defun ilt1 (p q k ratform)
   (let (z)
-    (cond ((onep1 k) (ilt3 p ))
+    (cond ((onep1 k) (ilt3 p ratform))
 	  (t (setq z (bprog q (pderivative q var) var))
-	     (ilt2 p k)))))
+	     (ilt2 p k ratform)))))
 
 
  ;;;INVERTS P(S)/Q(S)**K WHERE Q(S)  IS IRREDUCIBLE
  ;;;DOESN'T CALL ILT3 IF Q(S) IS LINEAR
-(defun ilt2 (p k)
+(defun ilt2 (p k ratform)
   (prog (y a b)
-     (and (onep1 k) (return (ilt3 p)))
+     (and (onep1 k) (return (ilt3 p ratform)))
      (decf k)
      (setq a (ratti p (car z) t))
      (setq b (ratti p (cdr z) t))
@@ -810,11 +811,12 @@
 	    '(mplus)
 	    (ilt2
 	     (cdr (ratdivide (ratplus a (ratqu (ratderivative b var) k)) y))
-	     k)
+	     k
+	     ratform)
 	    ($multthru (simptimes (list '(mtimes)
 					ilt
 					(power k -1)
-					(ilt2 (cdr (ratdivide b y)) k))
+					(ilt2 (cdr (ratdivide b y)) k ratform))
 				  1
 				  t)))
 	   1
@@ -859,7 +861,7 @@
   (cons '(mexpt) args))
 
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
-(defun ilt3 (p)
+(defun ilt3 (p ratform)
   (prog (discrim sign a c d e b1 b0 r term1 term2 degr)
      (setq e (disrep (polcoef q 0 var) ratform)
 	   d (disrep (polcoef q 1 var) ratform)
