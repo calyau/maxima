@@ -693,7 +693,7 @@
 	1
 	t))))
 
-(declare-top (special ils ilt))
+;;(declare-top (special ils ilt))
 
 (defmfun $ilt (exp ils ilt)
  ;;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
@@ -711,7 +711,7 @@
 	  ((zerop1 exp) 0)
 	  ((freeof ils exp)
  	   (list '(mtimes) exp (list '($delta) ilt)))
-	  (t (ilt0 exp)))))
+	  (t (ilt0 exp ils ilt)))))
 
 (defun maxima-rationalp (le v)
   (cond ((null le))
@@ -720,7 +720,7 @@
 	(t (maxima-rationalp (cdr le) v))))
 
  ;;;THIS FUNCTION DOES THE PARTIAL FRACTION DECOMPOSITION
-(defun ilt0 (exp)
+(defun ilt0 (exp ils ilt)
   (prog (wholepart frpart num denom y content real factor
 	 apart bpart parnumer ratarg laplac-ratform)
      (and (mplusp exp)
@@ -774,7 +774,9 @@
 				t))
 		  (car factor)
 		  (cadr factor)
-		  laplac-ratform)
+		  laplac-ratform
+		  ils
+		  ilt)
 	    parnumer))
      (setq factor (cddr factor))
      (cond ((null factor)
@@ -786,18 +788,18 @@
 
 (declare-top (special q z))
 
-(defun ilt1 (p q k laplac-ratform)
+(defun ilt1 (p q k laplac-ratform ils ilt)
   (let (z)
-    (cond ((onep1 k) (ilt3 p laplac-ratform))
+    (cond ((onep1 k) (ilt3 p laplac-ratform ils ilt))
 	  (t (setq z (bprog q (pderivative q var) var))
-	     (ilt2 p k laplac-ratform)))))
+	     (ilt2 p k laplac-ratform ils ilt)))))
 
 
  ;;;INVERTS P(S)/Q(S)**K WHERE Q(S)  IS IRREDUCIBLE
  ;;;DOESN'T CALL ILT3 IF Q(S) IS LINEAR
-(defun ilt2 (p k laplac-ratform)
+(defun ilt2 (p k laplac-ratform ils ilt)
   (prog (y a b)
-     (and (onep1 k) (return (ilt3 p laplac-ratform)))
+     (and (onep1 k) (return (ilt3 p laplac-ratform ils ilt)))
      (decf k)
      (setq a (ratti p (car z) t))
      (setq b (ratti p (cdr z) t))
@@ -812,11 +814,13 @@
 	    (ilt2
 	     (cdr (ratdivide (ratplus a (ratqu (ratderivative b var) k)) y))
 	     k
-	     laplac-ratform)
+	     laplac-ratform
+	     ils
+	     ilt)
 	    ($multthru (simptimes (list '(mtimes)
 					ilt
 					(power k -1)
-					(ilt2 (cdr (ratdivide b y)) k laplac-ratform))
+					(ilt2 (cdr (ratdivide b y)) k laplac-ratform ils ilt))
 				  1
 				  t)))
 	   1
@@ -849,7 +853,7 @@
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
-(defun ilt3 (p laplac-ratform)
+(defun ilt3 (p laplac-ratform ils ilt)
   (labels
       ((coef (pol coef-ratform)
 	 (disrep (ratqu (polcoef (car p) pol var) (cdr p)) coef-ratform))
