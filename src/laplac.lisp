@@ -73,25 +73,25 @@
            (let ((op (caar fun)))
              (let ((result ; We store the result of laplace for further work.
 	       (cond ((eq op 'mplus)
-		      (laplus fun parm))
+		      (laplus fun var parm))
 		     ((eq op 'mtimes)
 		      (laptimes (cdr fun) var parm))
 		     ((eq op 'mexpt)
-		      (lapexpt fun nil parm))
+		      (lapexpt fun nil var parm))
 		     ((eq op '%sin)
-		      (lapsin fun nil nil parm))
+		      (lapsin fun nil nil var parm))
 		     ((eq op '%cos)
-		      (lapsin fun nil t parm))
+		      (lapsin fun nil t var parm))
 		     ((eq op '%sinh)
-		      (lapsinh fun nil nil parm))
+		      (lapsinh fun nil nil var parm))
 		     ((eq op '%cosh)
-		      (lapsinh fun nil t parm))
+		      (lapsinh fun nil t var parm))
 		     ((eq op '%log)
-		      (laplog fun parm))
+		      (laplog fun var parm))
 		     ((eq op '%derivative)
-		      (lapdiff fun parm))
+		      (lapdiff fun var parm))
 		     ((eq op '%integrate)
-		      (lapint fun parm dvar))
+		      (lapint fun var parm dvar))
 		     ((eq op '%sum)
 		      (list '(%sum)
 			    (laplace (cadr fun) var parm)
@@ -99,17 +99,17 @@
 			    (cadddr fun)
 			    (car (cddddr fun))))
 		     ((eq op '%erf)
-		      (laperf fun parm))
+		      (laperf fun var parm))
 		     ((and (eq op '%ilt)(eq (cadddr fun) var))
 		      (cond ((eq parm (caddr fun))(cadr fun))
 			    (t (subst parm (caddr fun)(cadr fun)))))
                      ((eq op '$delta)
-		      (lapdelta fun nil parm))
+		      (lapdelta fun nil var parm))
  		     ((member op '(%hstep $unit_step))
- 		      (laphstep fun nil parm))
+ 		      (laphstep fun nil var parm))
 		     ((setq op ($get op '$laplace))
 		      (mcall op fun var parm))
-		     (t (lapdefint fun parm)))))
+		     (t (lapdefint fun var parm)))))
               (when (isinop result '%integrate)
                 ;; Laplace has not found a result but returns a definit
                 ;; integral. This integral can contain internal integration 
@@ -143,7 +143,7 @@
            res)))
        (t result)))
 
-(defun laplus (fun parm)
+(defun laplus (fun var parm)
   (simplus (cons '(mplus) (mapcar #'(lambda (e) (laplace e var parm)) (cdr fun))) 1 t))
 
 (defun laptimes (fun var parm)
@@ -164,25 +164,25 @@
 	(t
 	 (let ((op (caaar fun)))
 	   (cond ((eq op 'mexpt)
-		  (lapexpt (car fun) (cdr fun) parm))
+		  (lapexpt (car fun) (cdr fun) var parm))
 		 ((eq op 'mplus)
-		  (laplus ($multthru (fixuprest (cdr fun)) (car fun)) parm))
+		  (laplus ($multthru (fixuprest (cdr fun)) (car fun)) var parm))
 		 ((eq op '%sin)
-		  (lapsin (car fun) (cdr fun) nil parm))
+		  (lapsin (car fun) (cdr fun) nil var parm))
 		 ((eq op '%cos)
-		  (lapsin (car fun) (cdr fun) t parm))
+		  (lapsin (car fun) (cdr fun) t var parm))
 		 ((eq op '%sinh)
-		  (lapsinh (car fun) (cdr fun) nil parm))
+		  (lapsinh (car fun) (cdr fun) nil var parm))
 		 ((eq op '%cosh)
-		  (lapsinh (car fun) (cdr fun) t parm))
+		  (lapsinh (car fun) (cdr fun) t var parm))
 		 ((eq op '$delta)
-		  (lapdelta (car fun) (cdr fun) parm))
+		  (lapdelta (car fun) (cdr fun) var parm))
  		 ((member op '(%hstep $unit_step))
- 		  (laphstep (car fun) (cdr fun) parm))
+ 		  (laphstep (car fun) (cdr fun) var parm))
 		 (t
 		  (lapshift (car fun) (cdr fun) parm)))))))
 
-(defun lapexpt (fun rest parm)
+(defun lapexpt (fun rest var parm)
        ;;;HANDLES %E**(A*T+B)*REST(T), %E**(A*T**2+B*T+C),
        ;;; 1/SQRT(A*T+B), OR T**K*REST(T)
   (prog (ab base-of-fun power result)
@@ -368,7 +368,8 @@
 	((or (member 'laplace (car fun) :test #'eq) (null rest))
 	 (lapdefint (cond (rest (simptimes (cons '(mtimes)
 						 (cons fun rest)) 1 t))
-			  (t fun)) parm))
+			  (t fun))
+		    var parm))
 	(t (laptimes (append rest
 			     (ncons (cons (append (car fun)
 						  '(laplace))
@@ -401,7 +402,7 @@
 			 1 nil))))
 
  ;;;FUN IS OF THE FORM SIN(A*T+B)*REST(T) OR COS
-(defun lapsin (fun rest trigswitch parm)
+(defun lapsin (fun rest trigswitch var parm)
   (let ((ab (islinear (cadr fun) var)))
     (cond (ab
 	   (cond (rest
@@ -443,7 +444,7 @@
 	   (lapshift fun rest parm)))))
 
  ;;;FUN IS OF THE FORM SINH(A*T+B)*REST(T) OR IS COSH
-(defun lapsinh (fun rest switch parm)
+(defun lapsinh (fun rest switch var parm)
   (cond ((islinear (cadr fun) var)
 	 (sratsimp
 	  (laplus
@@ -464,11 +465,12 @@
 				   rest)
 			    switch))
 	    1
-	    nil) parm)))
+	    nil)
+	   var parm)))
 	(t (lapshift fun rest parm))))
 
  ;;;FUN IS OF THE FORM LOG(A*T)
-(defun laplog (fun parm)
+(defun laplog (fun var parm)
   (let ((ab (islinear (cadr fun) var)))
     (cond ((and ab (zerop1 (cdr ab)))
 	   (simptimes (list '(mtimes)
@@ -479,7 +481,7 @@
 			    (list '(mexpt) parm -1))
 		      1 nil))
 	  (t
-	   (lapdefint fun parm)))))
+	   (lapdefint fun var parm)))))
 
 (defun raiseup (fbase exponent)
   (if (equal exponent 1)
@@ -487,7 +489,7 @@
       (list '(mexpt) fbase exponent)))
 
 ;;TAKES TRANSFORM OF HSTEP(A*T+B)*F(T)
-(defun laphstep (fun rest parm)
+(defun laphstep (fun rest var parm)
   (let ((ab (islinear (cadr fun) var)))
     (if ab
 	(let* ((a (car ab))
@@ -513,7 +515,7 @@
       (lapshift fun rest parm))))
 			  
 ;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
-(defun lapdelta (fun rest parm)
+(defun lapdelta (fun rest var parm)
   (let ((ab (islinear (cadr fun) var))
 	(sign nil)
 	(recipa nil))
@@ -535,7 +537,7 @@
 	  (t
 	   (lapshift fun rest parm)))))
 
-(defun laperf (fun parm)
+(defun laperf (fun var parm)
   (let ((ab (islinear (cadr fun) var)))
     (cond ((and ab (equal (cdr ab) 0))
 	   (simptimes (list '(mtimes)
@@ -552,9 +554,9 @@
 		      1
 		      nil))
 	  (t
-	   (lapdefint fun parm)))))
+	   (lapdefint fun var parm)))))
 
-(defun lapdefint (fun parm)
+(defun lapdefint (fun var parm)
   (prog (tryint mult)
      (and ($unknown fun)(go skip))
      (setq mult (simptimes (list '(mtimes) (exponentiate
@@ -578,7 +580,7 @@
      skip (return (list '(%laplace) fun var parm))))
 
 
-(defun lapdiff (fun parm)
+(defun lapdiff (fun var parm)
 ;;;FUN IS OF THE FORM DIFF(F(T),T,N) WHERE N IS A POSITIVE INTEGER
   (prog (difflist degree frontend resultlist newdlist order arg2)
      (setq newdlist (setq difflist (copy-tree (cddr fun))))
@@ -627,7 +629,7 @@
 		      1 nil))))
 
  ;;;FUN IS OF THE FORM INTEGRATE(F(X)*G(T)*H(T-X),X,0,T)
-(defun lapint (fun parm dvar)
+(defun lapint (fun var parm dvar)
   (prog (newfun parm-list f var-list var-parm-list)
      (and dvar (go convolution))
      (setq dvar (cadr (setq newfun (cdr fun))))
