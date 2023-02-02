@@ -693,7 +693,7 @@
 	1
 	t))))
 
-(declare-top (special ratform ils ilt))
+(declare-top (special ils ilt))
 
 (defmfun $ilt (exp ils ilt)
  ;;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
@@ -932,5 +932,5 @@
 	1
 	nil))))
 
-(declare-top (unspecial ils ilt q ratform var
+(declare-top (unspecial ils ilt q var
 			z))
