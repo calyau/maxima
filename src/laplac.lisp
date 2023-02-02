@@ -180,7 +180,7 @@
  		 ((member op '(%hstep $unit_step))
  		  (laphstep (car fun) (cdr fun) var parm))
 		 (t
-		  (lapshift (car fun) (cdr fun) parm)))))))
+		  (lapshift (car fun) (cdr fun) var parm)))))))
 
 (defun lapexpt (fun rest var parm)
        ;;;HANDLES %E**(A*T+B)*REST(T), %E**(A*T**2+B*T+C),
@@ -323,7 +323,7 @@
 					       (1- power))))
 				rest))
 		    var parm))
-	 (t (lapshift fun rest parm))))))
+	 (t (lapshift fun rest var parm))))))
 
 ;;;INTEGRAL FROM A TO INFINITY OF F(X)
 (defun mydefint (f x a parm)
@@ -363,7 +363,7 @@
   (cond (signswitch funct)
 	(t (simptimes (list '(mtimes) -1 funct) 1 t))))
 
-(defun lapshift (fun rest parm)
+(defun lapshift (fun rest var parm)
   (cond ((atom fun) (merror "LAPSHIFT: expected a cons, not ~M" fun))
 	((or (member 'laplace (car fun) :test #'eq) (null rest))
 	 (lapdefint (cond (rest (simptimes (cons '(mtimes)
@@ -441,7 +441,7 @@
 			  -1))
 		   1 nil))))
 	  (t
-	   (lapshift fun rest parm)))))
+	   (lapshift fun rest var parm)))))
 
  ;;;FUN IS OF THE FORM SINH(A*T+B)*REST(T) OR IS COSH
 (defun lapsinh (fun rest switch var parm)
@@ -467,7 +467,7 @@
 	    1
 	    nil)
 	   var parm)))
-	(t (lapshift fun rest parm))))
+	(t (lapshift fun rest var parm))))
 
  ;;;FUN IS OF THE FORM LOG(A*T)
 (defun laplog (fun var parm)
@@ -512,7 +512,7 @@
 					      var parm)))
 			 0))
 	    (t (mul fun (laptimes rest var parm)))))
-      (lapshift fun rest parm))))
+      (lapshift fun rest var parm))))
 			  
 ;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
 (defun lapdelta (fun rest var parm)
@@ -535,7 +535,7 @@
 				   recipa)))
 		      nil))
 	  (t
-	   (lapshift fun rest parm)))))
+	   (lapshift fun rest var parm)))))
 
 (defun laperf (fun var parm)
   (let ((ab (islinear (cadr fun) var)))
