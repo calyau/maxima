@@ -784,20 +784,18 @@
      (setq real bpart)
      (go loop)))
 
-(declare-top (special q z))
-
 (defun ilt1 (p q k laplac-ratform ils ilt)
   (let (z)
-    (cond ((onep1 k) (ilt3 p laplac-ratform ils ilt))
+    (cond ((onep1 k) (ilt3 p laplac-ratform ils ilt q))
 	  (t (setq z (bprog q (pderivative q var) var))
-	     (ilt2 p k laplac-ratform ils ilt)))))
+	     (ilt2 p k laplac-ratform ils ilt z q)))))
 
 
  ;;;INVERTS P(S)/Q(S)**K WHERE Q(S)  IS IRREDUCIBLE
  ;;;DOESN'T CALL ILT3 IF Q(S) IS LINEAR
-(defun ilt2 (p k laplac-ratform ils ilt)
+(defun ilt2 (p k laplac-ratform ils ilt z q)
   (prog (y a b)
-     (and (onep1 k) (return (ilt3 p laplac-ratform ils ilt)))
+     (and (onep1 k) (return (ilt3 p laplac-ratform ils ilt q)))
      (decf k)
      (setq a (ratti p (car z) t))
      (setq b (ratti p (cdr z) t))
@@ -814,11 +812,13 @@
 	     k
 	     laplac-ratform
 	     ils
-	     ilt)
+	     ilt
+	     z
+	     q)
 	    ($multthru (simptimes (list '(mtimes)
 					ilt
 					(power k -1)
-					(ilt2 (cdr (ratdivide b y)) k laplac-ratform ils ilt))
+					(ilt2 (cdr (ratdivide b y)) k laplac-ratform ils ilt z q))
 				  1
 				  t)))
 	   1
@@ -851,7 +851,7 @@
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
-(defun ilt3 (p laplac-ratform ils ilt)
+(defun ilt3 (p laplac-ratform ils ilt q)
   (labels
       ((coef (pol coef-ratform)
 	 (disrep (ratqu (polcoef (car p) pol var) (cdr p)) coef-ratform))
@@ -884,7 +884,7 @@
 		  r (simpnrt (div* e a) 3))
        (setq d (div* (disrep p laplac-ratform)(lapprod a (lapsum
 							  (expo ils 3)(expo '%r 3)))))
-       (return (ilt0 (maxima-substitute r '%r ($partfrac d ils))))
+       (return (ilt0 (maxima-substitute r '%r ($partfrac d ils)) ils ilt))
      quadratic (setq b0 (coef 0 laplac-ratform) b1 (coef 1 laplac-ratform))
 
        (setq discrim
@@ -933,5 +933,4 @@
 	  1
 	  nil)))))
 
-(declare-top (unspecial q var
-			z))
+(declare-top (unspecial var))
