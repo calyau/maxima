@@ -722,7 +722,7 @@
  ;;;THIS FUNCTION DOES THE PARTIAL FRACTION DECOMPOSITION
 (defun ilt0 (exp)
   (prog (wholepart frpart num denom y content real factor
-	 apart bpart parnumer ratarg ratform)
+	 apart bpart parnumer ratarg laplac-ratform)
      (and (mplusp exp)
 	  (return (simplus  (cons '(mplus)
 				  (mapcar #'(lambda (f) ($ilt f ils ilt)) (cdr exp))) 1 t)))
@@ -736,7 +736,7 @@
      (setq ratarg (ratrep* exp))
      (or (maxima-rationalp varlist ils)
 	 (return (list '(%ilt) exp ils ilt)))
-     (setq ratform (car ratarg))
+     (setq laplac-ratform (car ratarg))
      (setq denom (ratdenominator (cdr ratarg)))
      (setq frpart (pdivide (ratnumerator (cdr ratarg)) denom))
      (setq wholepart (car frpart))
@@ -774,7 +774,7 @@
 				t))
 		  (car factor)
 		  (cadr factor)
-		  ratform)
+		  laplac-ratform)
 	    parnumer))
      (setq factor (cddr factor))
      (cond ((null factor)
