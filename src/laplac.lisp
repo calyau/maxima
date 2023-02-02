@@ -848,8 +848,8 @@
 ;;(DEFUN COEF MACRO (POL) (SUBST (CADR POL) (QUOTE DEG)
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
-(defmacro coef (pol)
-  `(disrep (ratqu (polcoef (car p) ,pol var) (cdr p)) ratform))
+(defmacro coef (pol coef-ratform)
+  `(disrep (ratqu (polcoef (car p) ,pol var) (cdr p)) ,coef-ratform))
 
 (defun lapsum (&rest args)
   (cons '(mplus) args))
@@ -884,7 +884,7 @@
      (setq d (div* (disrep p laplac-ratform)(lapprod a (lapsum
 					 (expo ils 3)(expo '%r 3)))))
      (return (ilt0 (maxima-substitute r '%r ($partfrac d ils))))
-     quadratic (setq b0 (coef 0) b1 (coef 1))
+     quadratic (setq b0 (coef 0 laplac-ratform) b1 (coef 1 laplac-ratform))
 
      (setq discrim
 	   (simplus (lapsum
