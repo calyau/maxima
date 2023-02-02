@@ -43,11 +43,11 @@
 
 ;;;INITIALIZES SOME GLOBAL VARIABLES THEN CALLS THE DISPATCHING FUNCTION
 
-(defmfun $laplace (fun var parm)
+(defmfun $laplace (fun time-var parm)
   (setq fun (mratcheck fun))
   (cond ((or *nounsflag* (member '%laplace *nounl* :test #'eq))
          (setq fun (remlaplace fun))))
-   (laplace fun var parm))
+   (laplace fun time-var parm))
 
 ;;;LAMBDA BINDS SOME SPECIAL VARIABLES TO NIL AND DISPATCHES
 
@@ -120,7 +120,7 @@
 
 ;;; Check if laplace has found a result, when not try $specint.
 
-(defun check-call-to-$specint (result fun var parm)
+(defun check-call-to-$specint (result fun time-var parm)
   (cond 
     ((or (isinop result '%laplace)
          (isinop result '%limit)   ; Try $specint for incomplete results
@@ -134,7 +134,7 @@
        ;; we call $specint too.
        (with-new-context (context)
          (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
-         (setq res ($specint (mul fun (power '$%e (mul -1 var parm))) var)))
+         (setq res ($specint (mul fun (power '$%e (mul -1 time-var parm))) time-var)))
        (if (or (isinop res '%specint)  ; Both symobls are possible, that is
                (isinop res '$specint)) ; not consistent! Check it! 02/2009
            ;; $specint has not found a result.
@@ -143,44 +143,44 @@
            res)))
        (t result)))
 
-(defun laplus (fun var parm)
-  (simplus (cons '(mplus) (mapcar #'(lambda (e) (laplace e var parm)) (cdr fun))) 1 t))
+(defun laplus (fun time-var parm)
+  (simplus (cons '(mplus) (mapcar #'(lambda (e) (laplace e time-var parm)) (cdr fun))) 1 t))
 
-(defun laptimes (fun var parm)
+(defun laptimes (fun time-var parm)
        ;;;EXPECTS A LIST (PERHAPS EMPTY) OF FUNCTIONS MULTIPLIED TOGETHER WITHOUT THE MTIMES
        ;;;SEES IF IT CAN APPLY THE FIRST AS A TRANSFORMATION ON THE REST OF THE FUNCTIONS
   (cond ((null fun) (list '(mexpt) parm -1.))
-	((null (cdr fun)) (laplace (car fun) var parm))
-	((freeof var (car fun))
+	((null (cdr fun)) (laplace (car fun) time-var parm))
+	((freeof time-var (car fun))
 	 (simptimes (list '(mtimes)
 			  (car fun)
-			  (laptimes (cdr fun) var parm))
+			  (laptimes (cdr fun) time-var parm))
 		    1
 		    t))
-	((eq (car fun) var)
-	 (simptimes (list '(mtimes) -1 (sdiff (laptimes (cdr fun) var parm) parm))
+	((eq (car fun) time-var)
+	 (simptimes (list '(mtimes) -1 (sdiff (laptimes (cdr fun) time-var parm) parm))
 		    1
 		    t))
 	(t
 	 (let ((op (caaar fun)))
 	   (cond ((eq op 'mexpt)
-		  (lapexpt (car fun) (cdr fun) var parm))
+		  (lapexpt (car fun) (cdr fun) time-var parm))
 		 ((eq op 'mplus)
-		  (laplus ($multthru (fixuprest (cdr fun)) (car fun)) var parm))
+		  (laplus ($multthru (fixuprest (cdr fun)) (car fun)) time-var parm))
 		 ((eq op '%sin)
-		  (lapsin (car fun) (cdr fun) nil var parm))
+		  (lapsin (car fun) (cdr fun) nil time-var parm))
 		 ((eq op '%cos)
-		  (lapsin (car fun) (cdr fun) t var parm))
+		  (lapsin (car fun) (cdr fun) t time-var parm))
 		 ((eq op '%sinh)
-		  (lapsinh (car fun) (cdr fun) nil var parm))
+		  (lapsinh (car fun) (cdr fun) nil time-var parm))
 		 ((eq op '%cosh)
-		  (lapsinh (car fun) (cdr fun) t var parm))
+		  (lapsinh (car fun) (cdr fun) t time-var parm))
 		 ((eq op '$delta)
-		  (lapdelta (car fun) (cdr fun) var parm))
+		  (lapdelta (car fun) (cdr fun) time-var parm))
  		 ((member op '(%hstep $unit_step))
- 		  (laphstep (car fun) (cdr fun) var parm))
+ 		  (laphstep (car fun) (cdr fun) time-var parm))
 		 (t
-		  (lapshift (car fun) (cdr fun) var parm)))))))
+		  (lapshift (car fun) (cdr fun) time-var parm)))))))
 
 (defun lapexpt (fun rest time-var parm)
        ;;;HANDLES %E**(A*T+B)*REST(T), %E**(A*T**2+B*T+C),
