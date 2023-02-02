@@ -848,89 +848,88 @@
 ;;(DEFUN COEF MACRO (POL) (SUBST (CADR POL) (QUOTE DEG)
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
-(defmacro coef (pol coef-ratform)
-  `(disrep (ratqu (polcoef (car p) ,pol var) (cdr p)) ,coef-ratform))
-
-(defun lapsum (&rest args)
-  (cons '(mplus) args))
-
-(defun lapprod (&rest args)
-  (cons '(mtimes) args))
-
-(defun expo (&rest args)
-  (cons '(mexpt) args))
-
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
 (defun ilt3 (p laplac-ratform)
-  (prog (discrim sign a c d e b1 b0 r term1 term2 degr)
-     (setq e (disrep (polcoef q 0 var) laplac-ratform)
-	   d (disrep (polcoef q 1 var) laplac-ratform)
-	   degr (pdegree q var))
-     (and (equal degr 1)
-	  (return
-	    (simptimes (lapprod
-			(disrep p laplac-ratform)
-			(expo d -1)
-			(expo '$%e (lapprod -1 ilt e (expo d -1))))
-		       1
-		       nil)))
-     (setq c (disrep (polcoef q 2 var) laplac-ratform))
-     (and (equal degr 2) (go quadratic))
-     (and (equal degr 3) (zerop1 c) (zerop1 d)
-	  (go cubic))
-     (return (list '(%ilt) (div* (disrep p laplac-ratform) (disrep q laplac-ratform)) ils ilt))
+  (labels
+      ((coef (pol coef-ratform)
+	 (disrep (ratqu (polcoef (car p) pol var) (cdr p)) coef-ratform))
+       ;; FIXME: Consider replacing these 3 functions with
+       ;; make-mplus-l, make-mtimes-l, and make-expt-l.
+       (lapsum (&rest args)
+	 (cons '(mplus) args))
+       (lapprod (&rest args)
+	 (cons '(mtimes) args))
+       (expo (&rest args)
+	 (cons '(mexpt) args)))
+    (prog (discrim sign a c d e b1 b0 r term1 term2 degr)
+       (setq e (disrep (polcoef q 0 var) laplac-ratform)
+	     d (disrep (polcoef q 1 var) laplac-ratform)
+	     degr (pdegree q var))
+       (and (equal degr 1)
+	    (return
+	      (simptimes (lapprod
+			  (disrep p laplac-ratform)
+			  (expo d -1)
+			  (expo '$%e (lapprod -1 ilt e (expo d -1))))
+			 1
+			 nil)))
+       (setq c (disrep (polcoef q 2 var) laplac-ratform))
+       (and (equal degr 2) (go quadratic))
+       (and (equal degr 3) (zerop1 c) (zerop1 d)
+	    (go cubic))
+       (return (list '(%ilt) (div* (disrep p laplac-ratform) (disrep q laplac-ratform)) ils ilt))
      cubic (setq  a (disrep (polcoef q 3 var) laplac-ratform)
 		  r (simpnrt (div* e a) 3))
-     (setq d (div* (disrep p laplac-ratform)(lapprod a (lapsum
-					 (expo ils 3)(expo '%r 3)))))
-     (return (ilt0 (maxima-substitute r '%r ($partfrac d ils))))
+       (setq d (div* (disrep p laplac-ratform)(lapprod a (lapsum
+							  (expo ils 3)(expo '%r 3)))))
+       (return (ilt0 (maxima-substitute r '%r ($partfrac d ils))))
      quadratic (setq b0 (coef 0 laplac-ratform) b1 (coef 1 laplac-ratform))
 
-     (setq discrim
-	   (simplus (lapsum
-		     (lapprod 4 e c)
-		     (lapprod -1 d d))
-		    1
-		    nil))
-     (setq sign (cond ((free discrim '$%i) (asksign discrim)) (t '$positive))
-	   term1 '(%cos)
-	   term2 '(%sin))
-     (setq degr (expo '$%e (lapprod ilt d (power c -1) '((rat) -1 2))))
-     (cond ((eq sign '$zero)
-	    (return (simptimes (lapprod degr (lapsum (div* b1 c)
-						     (lapprod
-						      (div* (lapsum (lapprod 2 b0 c) (lapprod -1 b1 d))
-							    (lapprod 2 c c)) ilt))) 1 nil))
-	    )		   ((eq sign '$negative)
-	    (setq term1 '(%cosh)
-		  term2 '(%sinh)
-		  discrim (simptimes (lapprod -1 discrim) 1 t))))
-     (setq discrim (simpnrt discrim 2))
-     (setq sign
-      (simptimes
-       (lapprod
-	(lapsum
-	 (lapprod 2 b0 c)
-	 (lapprod -1 b1 d))
-	(expo discrim -1))
-       1
-       nil))
-     (setq c (power c -1))
-     (setq discrim (simptimes (lapprod
-			       discrim
-			       ilt
-			       '((rat) 1 2)
-			       c)
-			      1
-			      t))
-     (return
-       (simptimes
-	(lapprod c degr
-	 (lapsum
-	  (lapprod b1 (list term1 discrim))
-	  (lapprod sign (list term2 discrim))))
-	1
-	nil))))
+       (setq discrim
+	     (simplus (lapsum
+		       (lapprod 4 e c)
+		       (lapprod -1 d d))
+		      1
+		      nil))
+       (setq sign (cond ((free discrim '$%i) (asksign discrim)) (t '$positive))
+	     term1 '(%cos)
+	     term2 '(%sin))
+       (setq degr (expo '$%e (lapprod ilt d (power c -1) '((rat) -1 2))))
+       (cond ((eq sign '$zero)
+	      (return (simptimes (lapprod degr (lapsum (div* b1 c)
+						       (lapprod
+							(div* (lapsum (lapprod 2 b0 c) (lapprod -1 b1 d))
+							      (lapprod 2 c c)) ilt))) 1 nil))
+	      )		   ((eq sign '$negative)
+			    (setq term1 '(%cosh)
+				  term2 '(%sinh)
+				  discrim (simptimes (lapprod -1 discrim) 1 t))))
+       (setq discrim (simpnrt discrim 2))
+       (setq sign
+	     (simptimes
+	      (lapprod
+	       (lapsum
+		(lapprod 2 b0 c)
+		(lapprod -1 b1 d))
+	       (expo discrim -1))
+	      1
+	      nil))
+       (setq c (power c -1))
+       (setq discrim (simptimes (lapprod
+				 discrim
+				 ilt
+				 '((rat) 1 2)
+				 c)
+				1
+				t))
+       (return
+	 (simptimes
+	  (lapprod c degr
+		   (lapsum
+		    (lapprod b1 (list term1 discrim))
+		    (lapprod sign (list term2 discrim))))
+	  1
+	  nil)))))
 
 (declare-top (unspecial ils ilt q var
 			z))
