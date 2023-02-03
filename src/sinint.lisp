@@ -25,11 +25,12 @@
      (setq simproots (pquotient q nthdq))
      (setq ans (list (pquotient simproots (pgcd nthdq simproots))))
      (setq n-loops 0)
-     amen (cond
-            ((= n-loops $factor_max_degree)
-             (return (list q)))
-            ((or (pcoefp nthdq) (pointergp var (car nthdq)))
-             (return (reverse ans))))
+   amen
+     (cond
+       ((= n-loops $factor_max_degree)
+        (return (list q)))
+       ((or (pcoefp nthdq) (pointergp var (car nthdq)))
+        (return (reverse ans))))
      (setq nthdq1 (pgcd (pderivative nthdq var) nthdq))
      (push (pquotient (pgcd nthdq simproots) (pgcd nthdq1 simproots)) ans)
      (setq nthdq nthdq1)
@@ -57,12 +58,15 @@
 	 (return (setq parnumer (list frpart))))
      (setq pardenomc (cdr pardenom))
      (setq ppdenom (list (car pardenom)))
-     dseq (if (= (length pardenomc) 1) (go ok))
+   dseq
+     (if (= (length pardenomc) 1) (go ok))
      (setq ppdenom (cons (ptimes (car ppdenom) (car pardenomc)) ppdenom))
      (setq pardenomc (cdr pardenomc))
      (go dseq)
-     ok   (setq pardenomc (reverse pardenom))
-     numc (setq thebpg (bprog (car pardenomc) (car ppdenom) var))
+   ok
+     (setq pardenomc (reverse pardenom))
+   numc
+     (setq thebpg (bprog (car pardenomc) (car ppdenom) var))
      (setq parnumer
 	   (cons (cdr (ratdivide (ratti frpart (cdr thebpg) t)
 				 (car pardenomc)))
@@ -97,14 +101,16 @@
      (setq rootfactor (reverse rootfactor))
      (setq parnumer (reverse parnumer))
      (setq klth (length rootfactor))
-     intg (if (= klth 1) (go simp))
+   intg
+     (if (= klth 1) (go simp))
      (setq arootf (car rootfactor))
      (if (zerop (pdegree arootf var)) (go reset))
      (setq deriv (pderivative arootf var))
      (setq thebpg (bprog arootf deriv var))
      (setq kx (1- klth))
      (setq thetop (car parnumer))
-     iter (setq prod1 (ratti thetop (car thebpg) t))
+   iter
+     (setq prod1 (ratti thetop (car thebpg) t))
      (setq prod2 (ratti thetop (cdr thebpg) t))
      (setq thebot (pexpt arootf kx))
      (setq ans
@@ -119,11 +125,13 @@
 	    (go reset)))
      (setq kx (1- kx))
      (go iter)
-     reset(setq rootfactor (cdr rootfactor))
+   reset
+     (setq rootfactor (cdr rootfactor))
      (setq parnumer (cdr parnumer))
      (decf klth)
      (go intg)
-     simp (push (ratqu (car parnumer) (car rootfactor)) logptdx)
+   simp
+     (push (ratqu (car parnumer) (car rootfactor)) logptdx)
      (if (equal ans 0) (return (disrep (polyint wholepart) sinint-ratform)))
      (setq thetop
 	   (cadr (pdivide (ratnumerator ans) (ratdenominator ans))))
@@ -192,7 +200,8 @@
 	    (go efac)))
      (setq a1e (intfactor p2e))
      (if (> (length a1e) 1) (go e40))
-     efac	(setq ncc (oldcontent p1e))
+   efac
+     (setq ncc (oldcontent p1e))
      (setq p1e (cadr ncc))
      (setq dcc (oldcontent p2e))
      (setq p2e (cadr dcc))
@@ -222,16 +231,18 @@
 		   (list '(%integrate)
 			 (list '(mquotient) (disrep p1e  sinint-ratform) (disrep p2e sinint-ratform))
 			 (car (last varlist)))))
-     e10	(return (list '(mtimes)
-			      (disrep (ratti allcc
-					     (ratqu (polcoef p1e (pdegree p1e var) var)
-						    (polcoef p2e 1 var))
-					     t)
-				       sinint-ratform)
-			      (logmabs (disrep p2e sinint-ratform))))
-     e20	(setq discrim
-		      (ratdifference (cons (pexpt (polcoef p2e 1 var) 2) 1)
-				     (ratti 4 (ratti (polcoef p2e 2 var) (polcoef p2e 0 var) t) t)))
+   e10
+     (return (list '(mtimes)
+		      (disrep (ratti allcc
+				     (ratqu (polcoef p1e (pdegree p1e var) var)
+					    (polcoef p2e 1 var))
+				     t)
+			      sinint-ratform)
+		      (logmabs (disrep p2e sinint-ratform))))
+   e20
+     (setq discrim
+	      (ratdifference (cons (pexpt (polcoef p2e 1 var) 2) 1)
+			     (ratti 4 (ratti (polcoef p2e 2 var) (polcoef p2e 0 var) t) t)))
      (setq a2e (ratti (polcoef p2e (pdegree p2e var) var) 2 t))
      (setq xx (simplify (disrep discrim sinint-ratform)))
      (when (equal ($imagpart xx) 0)
@@ -261,17 +272,18 @@
 	'(mplus)
 	(list '(mtimes)
 	      (disrep (ratti allcc (ratqu (polcoef p1e (pdegree p1e var) var) a2e) t)
-		       sinint-ratform)
+		      sinint-ratform)
 	      (logmabs (disrep p2e sinint-ratform)))
 	(list
 	 '(mtimes)
 	 (list
 	  '(mquotient)
 	  (disrep (ratti allcc (ratqu (eprogratd a2e p1e p2e) a2e) t)
-		   sinint-ratform)
+		  sinint-ratform)
 	  a1e)
 	 a3e)))
-     e30	(setq a1e (ratsqrt (ratminus discrim) sinint-ratform))
+   e30
+     (setq a1e (ratsqrt (ratminus discrim) sinint-ratform))
      (setq
       repart
       (ratqu (cond ((zerop (pdegree p1e var)) (ratti a2e (polcoef p1e 0 var) t))
@@ -291,22 +303,24 @@
 			 (disrep (ratti allcc
 					(ratqu (polcoef p1e (pdegree p1e var) var) a2e)
 					t)
-				  sinint-ratform)
+				 sinint-ratform)
 			 (logmabs (disrep p2e sinint-ratform)))
 		   a3e))
-     zip	(setq
-		 p2e
-		 (ratqu
-		  (psimp
-		   (p-var p2e)
-		   (pcoefadd 2 
-			     (pexpt (ptimes 2 (polcoef p2e 2 var)) 2)
-			     (pcoefadd 1 (ptimes 4 (ptimes (polcoef p2e 2 var)
-							   (polcoef p2e 1 var)))
-				       (pcoefadd 0 (pexpt (polcoef p2e 1 var) 2) ()))))
-		  (ptimes 4 (polcoef p2e 2 var))))
+   zip
+     (setq
+	 p2e
+	 (ratqu
+	  (psimp
+	   (p-var p2e)
+	   (pcoefadd 2 
+		     (pexpt (ptimes 2 (polcoef p2e 2 var)) 2)
+		     (pcoefadd 1 (ptimes 4 (ptimes (polcoef p2e 2 var)
+						   (polcoef p2e 1 var)))
+			       (pcoefadd 0 (pexpt (polcoef p2e 1 var) 2) ()))))
+	  (ptimes 4 (polcoef p2e 2 var))))
      (return (fprog (ratti allcc (ratqu p1e p2e) t) sinint-ratform))
-     e40	(setq parnumer nil pardenom a1e switch1 t)
+   e40
+     (setq parnumer nil pardenom a1e switch1 t)
      (cprog p1e p2e)
      (setq a2e
 	   (mapcar #'(lambda (j k) (eprog (ratqu j k) sinint-ratform)) parnumer pardenom))
@@ -331,7 +345,7 @@
 	      (list '(mtimes)
 		    (disrep (ratqu (r* cont (r+ (r* a ratr ratr) (r* b ratr) c))
 				   (r* ratr ratr 3 d))
-			     sinint-ratform)
+			    sinint-ratform)
 		    (logmabs (disrep (ratpl (ratti -1 ratr t) var*) sinint-ratform)))
 	      (eprog (r* cont (ratqu (r+ (r* (r+ (r* 2 a ratr ratr)
 						 (r* -1 b ratr)
@@ -436,8 +450,8 @@
 (defun fprog (rat* sinint-ratform)
   (prog (rootfactor pardenom parnumer logptdx wholepart switch1)
      (return (addn (cons (dprog rat* sinint-ratform) (mapcar #'(lambda (p)
-							  (eprog p sinint-ratform))
-						      logptdx))
+								 (eprog p sinint-ratform))
+							     logptdx))
 		   nil))))
 
 (defun ratint (exp var)
