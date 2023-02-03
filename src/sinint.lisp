@@ -87,7 +87,7 @@
 
 (defun polyint2 (p) (cons (list var (1+ (car p)) (cadr p)) (1+ (car p))))
 
-(defun dprog (ratarg)
+(defun dprog (ratarg ratform)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans)
      (setq ans (cons 0 1))
      (if (or (pcoefp (cdr ratarg)) (pointergp var (cadr ratarg)))
@@ -237,7 +237,7 @@
        (setq sign (npask xx))
        (cond ((eq sign '$negative) (go e30))
 	     ((eq sign '$zero) (go zip))))
-     (setq a1e (ratsqrt discrim))
+     (setq a1e (ratsqrt discrim ratform))
      (setq a3e (logmabs
 		(list '(mquotient)
 		      (list '(mplus)
@@ -270,7 +270,7 @@
 		   ratform)
 	  a1e)
 	 a3e)))
-     e30	(setq a1e (ratsqrt (ratminus discrim)))
+     e30	(setq a1e (ratsqrt (ratminus discrim) ratform))
      (setq
       repart
       (ratqu (cond ((zerop (pdegree p1e var)) (ratti a2e (polcoef p1e 0 var) t))
@@ -304,7 +304,7 @@
 							   (polcoef p2e 1 var)))
 				       (pcoefadd 0 (pexpt (polcoef p2e 1 var) 2) ()))))
 		  (ptimes 4 (polcoef p2e 2 var))))
-     (return (fprog (ratti allcc (ratqu p1e p2e) t)))
+     (return (fprog (ratti allcc (ratqu p1e p2e) t) ratform))
      e40	(setq parnumer nil pardenom a1e switch1 t)
      (cprog p1e p2e)
      (setq a2e
@@ -427,11 +427,13 @@
   (do ((i 1 (1+ i))) ((= i n) t)
     (if (not (equal (polcoef e i var) 0)) (return nil))))
 
-(defun ratsqrt (a) (let (varlist) (simpnrt (disrep a ratform) 2)))
+(defun ratsqrt (a ratform)
+  (let (varlist)
+    (simpnrt (disrep a ratform) 2)))
 
-(defun fprog (rat*)
+(defun fprog (rat* ratform)
   (prog (rootfactor pardenom parnumer logptdx wholepart switch1)
-     (return (addn (cons (dprog rat*) (mapcar #'eprog logptdx)) nil))))
+     (return (addn (cons (dprog rat* ratform) (mapcar #'eprog logptdx)) nil))))
 
 (defun ratint (exp var)
   (prog (genvar checkfactors varlist ratarg ratform $keepfloat)
@@ -439,7 +441,7 @@
      (setq ratarg (ratf exp))
      (setq ratform (car ratarg))
      (setq var (caadr (ratf var)))
-     (return (fprog (cdr ratarg)))))
+     (return (fprog (cdr ratarg) ratform))))
 
 (defun intfactor (l)
   (prog ($factorflag a b)
