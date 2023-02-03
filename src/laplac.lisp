@@ -704,12 +704,13 @@
 
 (defmfun $ilt (exp ils ilt)
  ;;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
-  (let (varlist ($savefactors t) checkfactors $ratfac $keepfloat)
+  (let (varlist ($savefactors t) checkfactors $ratfac $keepfloat
+		s-var)
 		;;; MAKES ILS THE MAIN VARIABLE
     (setq varlist (list ils))
     (newvar exp)
     (orderpointer varlist)
-    (setq var (caadr (ratrep* ils)))
+    (setq s-var (caadr (ratrep* ils)))
     (cond ((and (null (atom exp))
 		(eq (caar exp) 'mequal))
 	   (list '(mequal)
@@ -718,7 +719,7 @@
 	  ((zerop1 exp) 0)
 	  ((freeof ils exp)
  	   (list '(mtimes) exp (list '($delta) ilt)))
-	  (t (ilt0 exp ils ilt var)))))
+	  (t (ilt0 exp ils ilt s-var)))))
 
 (defun maxima-rationalp (le v)
   (cond ((null le))
@@ -727,7 +728,7 @@
 	(t (maxima-rationalp (cdr le) v))))
 
  ;;;THIS FUNCTION DOES THE PARTIAL FRACTION DECOMPOSITION
-(defun ilt0 (exp ils ilt var)
+(defun ilt0 (exp ils ilt s-var)
   (prog (wholepart frpart num denom y content real factor
 	 apart bpart parnumer ratarg laplac-ratform)
      (and (mplusp exp)
@@ -763,7 +764,7 @@
 		 (go skip)))
      (setq apart (pexpt (car factor) (cadr factor)))
      (setq bpart (car (ratqu real apart)))
-     (setq y (bprog apart bpart var))
+     (setq y (bprog apart bpart s-var))
      skip (setq frpart
 		(cdr (ratdivide (ratti (ratnumerator num)
 				       (cdr y)
@@ -784,7 +785,7 @@
 		  laplac-ratform
 		  ils
 		  ilt
-		  var)
+		  s-var)
 	    parnumer))
      (setq factor (cddr factor))
      (cond ((null factor)
@@ -794,48 +795,48 @@
      (setq real bpart)
      (go loop)))
 
-(defun ilt1 (p q k laplac-ratform ils ilt var)
+(defun ilt1 (p q k laplac-ratform ils ilt s-var)
   (let (z)
-    (cond ((onep1 k) (ilt3 p laplac-ratform ils ilt q var))
-	  (t (setq z (bprog q (pderivative q var) var))
-	     (ilt2 p k laplac-ratform ils ilt z q var)))))
+    (cond ((onep1 k) (ilt3 p laplac-ratform ils ilt q s-var))
+	  (t (setq z (bprog q (pderivative q s-var) s-var))
+	     (ilt2 p k laplac-ratform ils ilt z q s-var)))))
 
 
  ;;;INVERTS P(S)/Q(S)**K WHERE Q(S)  IS IRREDUCIBLE
  ;;;DOESN'T CALL ILT3 IF Q(S) IS LINEAR
-(defun ilt2 (p k laplac-ratform ils ilt z q var)
+(defun ilt2 (p k laplac-ratform ils ilt z q s-var)
   (prog (y a b)
-     (and (onep1 k) (return (ilt3 p laplac-ratform ils ilt q var)))
+     (and (onep1 k) (return (ilt3 p laplac-ratform ils ilt q s-var)))
      (decf k)
      (setq a (ratti p (car z) t))
      (setq b (ratti p (cdr z) t))
      (setq y (pexpt q k))
      (cond
-       ((or (null (equal (pdegree q var) 1))
-	    (> (pdegree (car p) var) 0))
+       ((or (null (equal (pdegree q s-var) 1))
+	    (> (pdegree (car p) s-var) 0))
 	(return
 	  (simplus
 	   (list
 	    '(mplus)
 	    (ilt2
-	     (cdr (ratdivide (ratplus a (ratqu (ratderivative b var) k)) y))
+	     (cdr (ratdivide (ratplus a (ratqu (ratderivative b s-var) k)) y))
 	     k
 	     laplac-ratform
 	     ils
 	     ilt
 	     z
 	     q
-	     var)
+	     s-var)
 	    ($multthru (simptimes (list '(mtimes)
 					ilt
 					(power k -1)
-					(ilt2 (cdr (ratdivide b y)) k laplac-ratform ils ilt z q var))
+					(ilt2 (cdr (ratdivide b y)) k laplac-ratform ils ilt z q s-var))
 				  1
 				  t)))
 	   1
 	   t))))
-     (setq a (disrep (polcoef q 1 var) laplac-ratform)
-	   b (disrep (polcoef q 0 var) laplac-ratform))
+     (setq a (disrep (polcoef q 1 s-var) laplac-ratform)
+	   b (disrep (polcoef q 0 s-var) laplac-ratform))
      (return
        (simptimes (list '(mtimes)
 			(disrep p laplac-ratform)
@@ -862,10 +863,10 @@
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE
-(defun ilt3 (p laplac-ratform ils ilt q var)
+(defun ilt3 (p laplac-ratform ils ilt q s-var)
   (labels
       ((coef (pol coef-ratform)
-	 (disrep (ratqu (polcoef (car p) pol var) (cdr p)) coef-ratform))
+	 (disrep (ratqu (polcoef (car p) pol s-var) (cdr p)) coef-ratform))
        ;; FIXME: Consider replacing these 3 functions with
        ;; make-mplus-l, make-mtimes-l, and make-expt-l.
        (lapsum (&rest args)
@@ -875,9 +876,9 @@
        (expo (&rest args)
 	 (cons '(mexpt) args)))
     (prog (discrim sign a c d e b1 b0 r term1 term2 degr)
-       (setq e (disrep (polcoef q 0 var) laplac-ratform)
-	     d (disrep (polcoef q 1 var) laplac-ratform)
-	     degr (pdegree q var))
+       (setq e (disrep (polcoef q 0 s-var) laplac-ratform)
+	     d (disrep (polcoef q 1 s-var) laplac-ratform)
+	     degr (pdegree q s-var))
        (and (equal degr 1)
 	    (return
 	      (simptimes (lapprod
@@ -886,16 +887,16 @@
 			  (expo '$%e (lapprod -1 ilt e (expo d -1))))
 			 1
 			 nil)))
-       (setq c (disrep (polcoef q 2 var) laplac-ratform))
+       (setq c (disrep (polcoef q 2 s-var) laplac-ratform))
        (and (equal degr 2) (go quadratic))
        (and (equal degr 3) (zerop1 c) (zerop1 d)
 	    (go cubic))
        (return (list '(%ilt) (div* (disrep p laplac-ratform) (disrep q laplac-ratform)) ils ilt))
-     cubic (setq  a (disrep (polcoef q 3 var) laplac-ratform)
+     cubic (setq  a (disrep (polcoef q 3 s-var) laplac-ratform)
 		  r (simpnrt (div* e a) 3))
        (setq d (div* (disrep p laplac-ratform)(lapprod a (lapsum
 							  (expo ils 3)(expo '%r 3)))))
-       (return (ilt0 (maxima-substitute r '%r ($partfrac d ils)) ils ilt var))
+       (return (ilt0 (maxima-substitute r '%r ($partfrac d ils)) ils ilt s-var))
      quadratic (setq b0 (coef 0 laplac-ratform) b1 (coef 1 laplac-ratform))
 
        (setq discrim
