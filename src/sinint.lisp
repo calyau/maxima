@@ -174,12 +174,12 @@
     ;; Then it follows that the integral is
     ;;
     ;;    A*log(x-r)
-	;;
-	;; Note that we don't express the polynomial in terms of the
-	;; variable of integration, but in our dummy variable instead.
-	;; Using the variable of integration results in a wrong answer
-	;; when a substitution was done previously, since when the
-	;; substitution is finally undone, that modifies the polynomial.
+    ;;
+    ;; Note that we don't express the polynomial in terms of the
+    ;; variable of integration, but in our dummy variable instead.
+    ;; Using the variable of integration results in a wrong answer
+    ;; when a substitution was done previously, since when the
+    ;; substitution is finally undone, that modifies the polynomial.
     `((%lsum) ((mtimes)
 	       ,(div* (subst dummy variable ff)
 		      (subst dummy variable qprime))
