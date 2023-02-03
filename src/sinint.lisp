@@ -141,7 +141,7 @@
 
 (defvar $integrate_use_rootsof nil "Use the rootsof form for integrals when denominator does not factor")
 
-(defun integrate-use-rootsof (f q variable)
+(defun integrate-use-rootsof (f q variable ratform)
   (let ((dummy (make-param))
 	(qprime (disrep (pderivative q (p-var q)) ratform))
 	(ff (disrep f ratform))
@@ -179,7 +179,7 @@
       ,dummy
       (($rootsof) ,(subst dummy variable qq) ,dummy))))
 
-(defun eprog (p)
+(defun eprog (p ratform)
   (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg)
      (if (or (equal p 0) (equal (car p) 0)) (return 0))
      (setq p1e (ratnumerator p) p2e (ratdenominator p))
@@ -209,13 +209,14 @@
 	   ((equal deg 2) (go e20))
 	   ((and (equal deg 3) (equal (polcoef p2e 2 var) 0)
 		 (equal (polcoef p2e 1 var) 0))
-	    (return (e3prog p1e p2e allcc)))
+	    (return (e3prog p1e p2e allcc ratform)))
 	   ((and (member deg '(4 5 6) :test #'equal) (zerocoefl p2e deg))
-	    (return (enprog p1e p2e allcc deg))))
+	    (return (enprog p1e p2e allcc deg ratform))))
      (cond ((and $integrate_use_rootsof (equal (car (psqfr p2e)) p2e))
 	    (return (list '(mtimes) (disrep allcc ratform)
 			  (integrate-use-rootsof p1e p2e
-						 (car (last varlist)))))))
+						 (car (last varlist))
+						 ratform)))))
      (return (list '(mtimes)
 		   (disrep allcc ratform)
 		   (list '(%integrate)
@@ -308,11 +309,11 @@
      e40	(setq parnumer nil pardenom a1e switch1 t)
      (cprog p1e p2e)
      (setq a2e
-	   (mapcar #'(lambda (j k) (eprog (ratqu j k))) parnumer pardenom))
+	   (mapcar #'(lambda (j k) (eprog (ratqu j k) ratform)) parnumer pardenom))
      (setq switch1 nil)
      (return (cons '(mplus) a2e))))
  
-(defun e3prog (num denom cont)
+(defun e3prog (num denom cont ratform)
   (prog (a b c d e r ratr var* x)
      (setq a (polcoef num 2 var) b (polcoef num 1 var) c (polcoef num 0 var)
 	   d (polcoef denom 3 var) e (polcoef denom 0 var))
@@ -342,7 +343,8 @@
 				     (r* 3 d ratr ratr
 					 (r+ (ratti var* var* t)
 					     (ratti ratr var* t)
-					     (ratti ratr ratr t))))))
+					     (ratti ratr ratr t)))))
+		     ratform)
 	      )))))
 
 (defun eprogratd (a2e p1e p2e)
@@ -351,7 +353,7 @@
 			(polcoef p1e (pdegree p1e var) var)
 			t)))
 
-(defun enprog (num denom cont deg)
+(defun enprog (num denom cont deg ratform)
   ;; Denominator is (A*VAR^4+B) = 
   ;;   if B<0 then (SQRT(A)*VAR^2 - SQRT(-B)) (SQRT(A)*VAR^2 + SQRT(-B))
   ;;	     else
@@ -433,7 +435,10 @@
 
 (defun fprog (rat* ratform)
   (prog (rootfactor pardenom parnumer logptdx wholepart switch1)
-     (return (addn (cons (dprog rat* ratform) (mapcar #'eprog logptdx)) nil))))
+     (return (addn (cons (dprog rat* ratform) (mapcar #'(lambda (p)
+							  (eprog p ratform))
+						      logptdx))
+		   nil))))
 
 (defun ratint (exp var)
   (prog (genvar checkfactors varlist ratarg ratform $keepfloat)

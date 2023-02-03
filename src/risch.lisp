@@ -223,7 +223,9 @@
     (cons (cdr (ratrep* (dprog rat ratform)))
 	  (let ((varlist varlist)
 		(genvar (subseq genvar 0 (length varlist))))
-	    (mapcar #'eprog logptdx)))))
+	    (mapcar #'(lambda (p)
+			(eprog p ratform))
+		    logptdx)))))
 
 (defun rischlogdprog (ratarg)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans)
