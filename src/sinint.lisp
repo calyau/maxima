@@ -463,12 +463,12 @@
      (return (fprog (cdr ratarg) sinint-ratform))))
 
 (defun intfactor (l)
-  (prog ($factorflag a b)
-     (setq a (oldcontent l) b (everysecond (pfactor (cadr a))))
-     (return (if (equal (car a) 1) b (cons (car a) b)))))
-
-(defun everysecond (a)
-  (if a (cons (if (numberp (car a))
-		  (pexpt (car a) (cadr a))
-		  (car a))
-	      (everysecond (cddr a)))))
+  (labels ((everysecond (a)
+	     (if a (cons (if (numberp (car a))
+			     (pexpt (car a) (cadr a))
+			     (car a))
+			 (everysecond (cddr a))))))
+	   
+    (prog ($factorflag a b)
+       (setq a (oldcontent l) b (everysecond (pfactor (cadr a))))
+       (return (if (equal (car a) 1) b (cons (car a) b))))))
