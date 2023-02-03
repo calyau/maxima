@@ -220,10 +220,12 @@
 
 (defun rischfprog (rat)
   (let (rootfactor pardenom parnumer logptdx wholepart switch1)
-    (cons (cdr (ratrep* (dprog rat)))
+    (cons (cdr (ratrep* (dprog rat ratform)))
 	  (let ((varlist varlist)
 		(genvar (subseq genvar 0 (length varlist))))
-	    (mapcar #'eprog logptdx)))))
+	    (mapcar #'(lambda (p)
+			(eprog p ratform))
+		    logptdx)))))
 
 (defun rischlogdprog (ratarg)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans)
@@ -952,7 +954,7 @@
     (setq c (disrep (ratqu (r* (polcoef (car exparg) 0 var))
 			   (cdr exparg))
 		     ratform))
-    (setq d (ratsqrt a))
+    (setq d (ratsqrt a ratform))
     (setq a (disrep a ratform))
     (simplify `((mtimes)
 		((mtimes)
