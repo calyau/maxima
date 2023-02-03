@@ -16,7 +16,7 @@
 
 (declare-top (special checkfactors
 		      exp var
-		      ratform rootfactor pardenom
+		      rootfactor pardenom
 		      wholepart parnumer logptdx switch1))
 
 (defun rootfac (q)
