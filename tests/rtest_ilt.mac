@@ -1,0 +1,109 @@
+/*
+ * rtest_ilt.mac -- test cases for Inverse Laplace Transform.
+ */
+
+(assume(a>0), 0);
+0;
+
+/* 0 */
+ilt(0, s, t);
+0;
+
+/* constants */
+ilt(a, s, t);
+a*delta(t);
+
+ilt(1/s, s, t);
+1;
+
+ilt(7/s, s, t);
+7;
+
+/* powers */
+ilt(1/s^2, s, t);
+t;
+
+ilt(1/s^4, s, t);
+t^3/6;
+
+/* exp */
+ilt(1/(1 + s), s, t);
+exp(-t);
+
+ilt(1/(7 + s), s, t);
+exp(-7*t);
+
+ilt(1/(a + s), s, t);
+exp(-a*t);
+
+ilt(exp(-b)/(a + s), s, t);
+exp(-a*t-b);
+
+ilt(1/s/(s+a), s, t);
+1/a-exp(-a*t)/a;
+
+ilt(s/(s+a)^2, s, t);
+exp(-a*t)-a*t*exp(-a*t);
+
+
+/* sin */
+ilt(1/(1 + s^2), s, t);
+sin(t);
+
+ilt(a/(a^2 + s^2), s, t);
+sin(a*t);
+
+ilt(1/((s+b)^2+a^2), s, t);
+exp(-b*t)*sin(a*t)/a;
+
+/* cos */
+ilt(s/(1 + s^2), s, t);
+cos(t);
+
+ilt(s/(49 + s^2), s, t);
+cos(7*t);
+
+ilt(s/(a^2 + s^2), s, t);
+cos(a*t);
+
+ilt(s/((s+b)^2+a^2), s, t);
+%e^-(b*t)*(cos(a*t)-(b*sin(a*t))/a);
+
+/* sinh */
+ilt(1/(s^2 - 1), s, t);
+exp(t)/2-exp(-t)/2;
+
+ilt(a/(s^2 - a^2), s, t);
+exp(a*t)/2-exp(-a*t)/2;
+
+
+/* cosh */
+ilt(s/(s^2 - 1), s, t);
+exp(t)/2+exp(-t)/2;
+
+ilt(s/(s^2 - 49), s, t);
+exp(7*t)/2+exp(-7*t)/2;
+
+ilt(s/(s^2-a^2), s, t);
+exp(a*t)/2+exp(-a*t)/2;
+
+/* delta */
+ilt(1, s, t);
+delta(t);
+
+ilt(1/7, s, t);
+delta(t)/7;
+
+ilt(1/a, s, t);
+delta(t)/a;
+
+/* Miscellaneous rational functions */
+ilt(1/(s^3+a^3), s, t);
+%e^((a*t)/2)*(sin((sqrt(3)*a*t)/2)/(sqrt(3)*a^2)-cos((sqrt(3)*a*t)/2)/(3*a^2))
+ +%e^-(a*t)/(3*a^2)$
+
+ilt(s/(s^2+a^2)^4, s, t);
+(-(t^3*sin(a*t))/(48*a^3))+(t*sin(a*t))/(16*a^5)-(t^2*cos(a*t))/(16*a^4);
+
+forget(a > 0);
+[a > 0];
