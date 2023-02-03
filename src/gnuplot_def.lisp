@@ -68,8 +68,8 @@
 ;; The meaning of the numbers that follow the symbol are:
 ;;
 ;;   lines, linewidth, color
-;;   points, radius, color, pointtype
-;;   linespoints, linewidth, radius, color, pointtype
+;;   points, radius, color, pointtype, pointinterval
+;;   linespoints, linewidth, radius, color, pointtype, pointinterval
 ;;   dots, color
 ;;
 ;; linewidth and radius are measured in the same units and can be
@@ -112,7 +112,11 @@
          (format st " lt ~d" (gnuplot-color colors i)))
        (if (integerp (fourth style))
          (format st " pt ~d" (gnuplot-pointtypes types (fourth style)))
-         (format st " pt ~d" (gnuplot-pointtypes types i))))
+         (format st " pt ~d" (gnuplot-pointtypes types i)))
+       (if (integerp (fifth style))
+         (format st " pointinterval ~d" (fifth style))
+         (format st " pointinterval 10" ))
+         )
       ($linespoints
        (format st "with linespoints")
        (if (realp (second style))
@@ -125,8 +129,13 @@
          (format st " lt ~d" (gnuplot-color colors i)))
        (if (integerp (fifth style))
          (format st " pt ~d" (gnuplot-pointtypes types (fifth style)))
-         (format st " pt ~d" (gnuplot-pointtypes types i))))
+         (format st " pt ~d" (gnuplot-pointtypes types i)))
+       (if (integerp (sixth style))
+         (format st " pointinterval ~d" (sixth style))
+         (format st " pointinterval 10" ))
+         )
       (t (format st "with lines lt ~d" (gnuplot-color colors i))))))
+
 
 (defun gnuplot-palette (palette)
 ;; palette should be a list starting with one of the symbols: hue,

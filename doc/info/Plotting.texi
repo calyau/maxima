@@ -1676,7 +1676,7 @@ those colors might be different; for example, if you use the option
 [@var{gnuplot_term}, @var{ps}], color index 4 will correspond to black,
 instead of orange.
 
-@var{points} accepts one two or three parameters; the first parameter
+@var{points} accepts up to four parameters; the first parameter
 is the radius of the points, the second parameter is an integer that
 selects the color, using the same code used for @var{lines} and the
 third parameter is currently used only by Gnuplot and it corresponds
@@ -1684,10 +1684,12 @@ to several objects instead of points.  The default types of
 objects are: 1: filled circles, 2: open circles, 3: plus signs, 4: x,
 5: *, 6: filled squares, 7: open squares, 8: filled triangles, 9: open
 triangles, 10: filled inverted triangles, 11: open inverted triangles,
-12: filled lozenges and 13: open lozenges.
+12: filled lozenges and 13: open lozenges.  The fourth parameter is the gnuplot
+pointinterval option to control space between points.
 
-@var{linespoints} accepts up to four parameters: line width, points
-radius, color and type of object to replace the points.
+@var{linespoints} accepts up to five parameters: line width, points
+radius, color, type of object to replace the points, and the gnuplot
+pointinterval option to control space between points.
 
 See also @mref{color} and @mrefdot{point_type}
  

@@ -435,5 +435,9 @@ plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-no-bg-3.svg"]
 
 get_plot_option (gnuplot_svg_background);
 
+/* Allow an option to set the pointinterval gnuplot setting with the 6th argument of the style list. */
+
+plot2d(x^3,[x,-2,2],[style, [linespoints, 1, 1.2, 1, 1, 30]]);
+
 "FINIS" $
 
