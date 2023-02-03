@@ -12,7 +12,7 @@
 
 (macsyma-module laplac)
 
-(declare-top (special var checkfactors))
+(declare-top (special checkfactors))
 
 ;;; The properties NOUN and VERB give correct linear display
 
@@ -944,5 +944,3 @@
 		    (lapprod sign (list term2 discrim))))
 	  1
 	  nil)))))
-
-(declare-top (unspecial var))
