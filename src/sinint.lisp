@@ -460,13 +460,13 @@
 				 logptdx))
 		   nil))))
 
-(defun ratint (exp var)
+(defun ratint (exp ratint-var)
   (prog (genvar checkfactors varlist ratarg $keepfloat)
-     (setq varlist (list var))
+     (setq varlist (list ratint-var))
      (setq ratarg (ratf exp))
-     (setq sinint-ratform (car ratarg))
-     (setq var (caadr (ratf var)))
-     (return (fprog (cdr ratarg) sinint-ratform var))))
+     (let ((sinint-ratform (car ratarg))
+	   (sinint-var (caadr (ratf ratint-var))))
+       (return (fprog (cdr ratarg) sinint-ratform sinint-var)))))
 
 (defun intfactor (l)
   (labels ((everysecond (a)
