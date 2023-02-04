@@ -49,7 +49,7 @@
     (push (pexpt (car rf) n) pd))
   rootfactor)
 
-(defun cprog (top bottom)
+(defun cprog (top bottom var)
   (prog (frpart pardenomc ppdenom thebpg)
      (setq frpart (pdivide top bottom))
      (setq wholepart (car frpart))
@@ -101,7 +101,7 @@
      (if (or (pcoefp (cdr ratarg)) (pointergp var (cadr ratarg)))
 	 (return (disrep (polyint ratarg var) sinint-ratform)))
      (aprog (ratdenominator ratarg) var)
-     (cprog (ratnumerator ratarg) (ratdenominator ratarg))
+     (cprog (ratnumerator ratarg) (ratdenominator ratarg) var)
      (setq rootfactor (reverse rootfactor))
      (setq parnumer (reverse parnumer))
      (setq klth (length rootfactor))
@@ -199,7 +199,7 @@
 		(and (not (atom p2e))
 		     (eq (car (setq xx (cadr (oldcontent p2e)))) var)
 		     (member (setq deg (pdegree xx var)) '(5 6) :test #'equal)
-		     (zerocoefl xx deg)
+		     (zerocoefl xx deg var)
 		     (or (equal deg 5) (not (pminusp (car (last xx)))))))
 	    (go efac)))
      (setq a1e (intfactor p2e))
@@ -223,7 +223,7 @@
 	   ((and (equal deg 3) (equal (polcoef p2e 2 var) 0)
 		 (equal (polcoef p2e 1 var) 0))
 	    (return (e3prog p1e p2e allcc sinint-ratform var)))
-	   ((and (member deg '(4 5 6) :test #'equal) (zerocoefl p2e deg))
+	   ((and (member deg '(4 5 6) :test #'equal) (zerocoefl p2e deg var))
 	    (return (enprog p1e p2e allcc deg sinint-ratform var))))
      (cond ((and $integrate_use_rootsof (equal (car (psqfr p2e)) p2e))
 	    (return (list '(mtimes) (disrep allcc sinint-ratform)
@@ -325,7 +325,7 @@
      (return (fprog (ratti allcc (ratqu p1e p2e) t) sinint-ratform var))
    e40
      (setq parnumer nil pardenom a1e switch1 t)
-     (cprog p1e p2e)
+     (cprog p1e p2e var)
      (setq a2e
 	   (mapcar #'(lambda (j k) (eprog (ratqu j k) sinint-ratform var)) parnumer pardenom))
      (setq switch1 nil)
@@ -444,7 +444,7 @@
      ;;Needs $ALGEBRAIC NIL so next call to RATF will preserve factorization.
      (return (mul2 cont (ratint (div num denom) disvar)))))
 
-(defun zerocoefl (e n)
+(defun zerocoefl (e n var)
   (do ((i 1 (1+ i))) ((= i n) t)
     (if (not (equal (polcoef e i var) 0)) (return nil))))
 
