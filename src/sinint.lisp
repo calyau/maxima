@@ -15,7 +15,7 @@
 (load-macsyma-macros ratmac)
 
 (declare-top (special checkfactors
-		      exp var
+		      exp
 		      rootfactor pardenom
 		      wholepart parnumer logptdx switch1))
 
