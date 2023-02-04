@@ -15,7 +15,6 @@
 (load-macsyma-macros ratmac)
 
 (declare-top (special checkfactors
-		      exp
 		      rootfactor pardenom
 		      wholepart parnumer logptdx switch1))
 
@@ -460,10 +459,10 @@
 				 logptdx))
 		   nil))))
 
-(defun ratint (exp sinint-var)
+(defun ratint (sinint-exp sinint-var)
   (prog (genvar checkfactors varlist ratarg $keepfloat)
      (setq varlist (list sinint-var))
-     (setq ratarg (ratf exp))
+     (setq ratarg (ratf sinint-exp))
      (let ((sinint-ratform (car ratarg))
 	   (sinint-var (caadr (ratf sinint-var))))
        (return (fprog (cdr ratarg) sinint-ratform sinint-var)))))
