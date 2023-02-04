@@ -81,18 +81,19 @@
      (go numc)))
 
 (defun polyint (p var)
-  (ratqu (polyint1 (ratnumerator p) var)
-	 (ratdenominator p)))
-	 
-(defun polyint1 (p var)
-  (cond ((or (null p) (equal p 0)) (cons 0 1))
-	((atom p) (list var 1 p))
-	((not (numberp (car p)))
-	 (if (pointergp var (car p)) (list var 1 p) (polyint1 (cdr p) var)))
-	(t (ratplus (polyint2 p var) (polyint1 (cddr p) var)))))
+  (labels
+      ((polyint1 (p var)
+	 (cond ((or (null p) (equal p 0)) (cons 0 1))
+	       ((atom p) (list var 1 p))
+	       ((not (numberp (car p)))
+		(if (pointergp var (car p)) (list var 1 p) (polyint1 (cdr p) var)))
+	       (t (ratplus (polyint2 p var) (polyint1 (cddr p) var)))))
 
-(defun polyint2 (p var)
-  (cons (list var (1+ (car p)) (cadr p)) (1+ (car p))))
+       (polyint2 (p var)
+	 (cons (list var (1+ (car p)) (cadr p)) (1+ (car p)))))
+    (ratqu (polyint1 (ratnumerator p) var)
+	   (ratdenominator p))))
+	 
 
 (defun dprog (ratarg sinint-ratform)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans)
