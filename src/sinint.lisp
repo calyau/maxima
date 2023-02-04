@@ -19,7 +19,7 @@
 		      rootfactor pardenom
 		      wholepart parnumer logptdx switch1))
 
-(defun rootfac (q)
+(defun rootfac (q var)
   (prog (nthdq nthdq1 simproots ans n-loops)
      (setq nthdq (pgcd q (pderivative q var)))
      (setq simproots (pquotient q nthdq))
@@ -37,9 +37,9 @@
      (incf n-loops)
      (go amen)))
 
-(defun aprog (q)
+(defun aprog (q var)
   (setq q (oldcontent q))
-  (setq rootfactor (rootfac (cadr q)))
+  (setq rootfactor (rootfac (cadr q) var))
   (setq rootfactor
 	(cons (ptimes (car q) (car rootfactor)) (cdr rootfactor)))
   (do ((pd (list (car rootfactor)))
@@ -80,23 +80,26 @@
 	 (return (setq parnumer (cons frpart parnumer))))
      (go numc)))
 
-(defun polyint (p) (ratqu (polyint1 (ratnumerator p)) (ratdenominator p)))
+(defun polyint (p var)
+  (ratqu (polyint1 (ratnumerator p) var)
+	 (ratdenominator p)))
 	 
-(defun polyint1 (p)
+(defun polyint1 (p var)
   (cond ((or (null p) (equal p 0)) (cons 0 1))
 	((atom p) (list var 1 p))
 	((not (numberp (car p)))
-	 (if (pointergp var (car p)) (list var 1 p) (polyint1 (cdr p))))
-	(t (ratplus (polyint2 p) (polyint1 (cddr p))))))
+	 (if (pointergp var (car p)) (list var 1 p) (polyint1 (cdr p) var)))
+	(t (ratplus (polyint2 p var) (polyint1 (cddr p) var)))))
 
-(defun polyint2 (p) (cons (list var (1+ (car p)) (cadr p)) (1+ (car p))))
+(defun polyint2 (p var)
+  (cons (list var (1+ (car p)) (cadr p)) (1+ (car p))))
 
 (defun dprog (ratarg sinint-ratform)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans)
      (setq ans (cons 0 1))
      (if (or (pcoefp (cdr ratarg)) (pointergp var (cadr ratarg)))
-	 (return (disrep (polyint ratarg) sinint-ratform)))
-     (aprog (ratdenominator ratarg))
+	 (return (disrep (polyint ratarg var) sinint-ratform)))
+     (aprog (ratdenominator ratarg) var)
      (cprog (ratnumerator ratarg) (ratdenominator ratarg))
      (setq rootfactor (reverse rootfactor))
      (setq parnumer (reverse parnumer))
@@ -132,11 +135,11 @@
      (go intg)
    simp
      (push (ratqu (car parnumer) (car rootfactor)) logptdx)
-     (if (equal ans 0) (return (disrep (polyint wholepart) sinint-ratform)))
+     (if (equal ans 0) (return (disrep (polyint wholepart var) sinint-ratform)))
      (setq thetop
 	   (cadr (pdivide (ratnumerator ans) (ratdenominator ans))))
      (return (list '(mplus)
-		   (disrep (polyint wholepart) sinint-ratform)
+		   (disrep (polyint wholepart var) sinint-ratform)
 		   (disrep (ratqu thetop (ratdenominator ans)) sinint-ratform)))))
 
 (defun logmabs (x)

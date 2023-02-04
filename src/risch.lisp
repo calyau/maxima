@@ -233,7 +233,7 @@
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
 	    (return (rischlogpoly ratarg))))
-     (aprog (ratdenominator ratarg))
+     (aprog (ratdenominator ratarg) var)
      (cprog (ratnumerator ratarg) (ratdenominator ratarg))
      (do ((rootfactor (reverse rootfactor) (cdr rootfactor))
 	  (parnumer (reverse parnumer) (cdr parnumer))
