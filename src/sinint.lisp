@@ -113,10 +113,12 @@
 	 
 
 (defun dprog (ratarg sinint-ratform sinint-var)
-  (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans)
+  (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans
+	 sinint-logptdx)
      (setq ans (cons 0 1))
      (if (or (pcoefp (cdr ratarg)) (pointergp sinint-var (cadr ratarg)))
-	 (return (disrep (polyint ratarg sinint-var) sinint-ratform)))
+	 (return (values (disrep (polyint ratarg sinint-var) sinint-ratform)
+			 sinint-logptdx)))
      (aprog (ratdenominator ratarg) sinint-var)
      (cprog (ratnumerator ratarg) (ratdenominator ratarg) sinint-var)
      (setq rootfactor (reverse rootfactor))
@@ -145,8 +147,8 @@
 			   kx)))
      (setq thetop (cdr (ratdivide thetop thebot)))
      (cond ((= kx 1)
-	    (setq logptdx (cons (ratqu thetop arootf)
-				logptdx))
+	    (setq sinint-logptdx (cons (ratqu thetop arootf)
+				sinint-logptdx))
 	    (go reset)))
      (setq kx (1- kx))
      (go iter)
@@ -157,14 +159,16 @@
      (go intg)
    simp
      (push (ratqu (car parnumer) (car rootfactor))
-	   logptdx)
+	   sinint-logptdx)
      (if (equal ans 0)
-	 (return (disrep (polyint wholepart sinint-var) sinint-ratform)))
+	 (return (values (disrep (polyint wholepart sinint-var) sinint-ratform)
+			 sinint-logptdx)))
      (setq thetop
 	   (cadr (pdivide (ratnumerator ans) (ratdenominator ans))))
-     (return (list '(mplus)
-		   (disrep (polyint wholepart sinint-var) sinint-ratform)
-		   (disrep (ratqu thetop (ratdenominator ans)) sinint-ratform)))))
+     (return (values (list '(mplus)
+			   (disrep (polyint wholepart sinint-var) sinint-ratform)
+			   (disrep (ratqu thetop (ratdenominator ans)) sinint-ratform))
+		     sinint-logptdx))))
 
 (defun logmabs (x)
   (list '(%log) (if $logabs
@@ -525,12 +529,14 @@
     (simpnrt (disrep a sinint-ratform) 2)))
 
 (defun fprog (rat* sinint-ratform sinint-var)
-  (prog (rootfactor pardenom parnumer logptdx wholepart switch1)
-     (return (addn (cons (dprog rat* sinint-ratform sinint-var)
-			 (mapcar #'(lambda (p)
-				     (eprog p sinint-ratform sinint-var))
-				 logptdx))
-		   nil))))
+  (prog (rootfactor pardenom parnumer wholepart switch1)
+     (multiple-value-bind (dprog-ret sinint-logptdx)
+	 (dprog rat* sinint-ratform sinint-var)
+       (return (addn (cons dprog-ret
+			   (mapcar #'(lambda (p)
+				       (eprog p sinint-ratform sinint-var))
+				   sinint-logptdx))
+		     nil)))))
 
 (defun ratint (sinint-exp sinint-var)
   (prog (genvar checkfactors varlist ratarg $keepfloat)
