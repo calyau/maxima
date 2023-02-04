@@ -222,9 +222,9 @@
 	   ((equal deg 2) (go e20))
 	   ((and (equal deg 3) (equal (polcoef p2e 2 var) 0)
 		 (equal (polcoef p2e 1 var) 0))
-	    (return (e3prog p1e p2e allcc sinint-ratform)))
+	    (return (e3prog p1e p2e allcc sinint-ratform var)))
 	   ((and (member deg '(4 5 6) :test #'equal) (zerocoefl p2e deg))
-	    (return (enprog p1e p2e allcc deg sinint-ratform))))
+	    (return (enprog p1e p2e allcc deg sinint-ratform var))))
      (cond ((and $integrate_use_rootsof (equal (car (psqfr p2e)) p2e))
 	    (return (list '(mtimes) (disrep allcc sinint-ratform)
 			  (integrate-use-rootsof p1e p2e
@@ -282,7 +282,7 @@
 	 '(mtimes)
 	 (list
 	  '(mquotient)
-	  (disrep (ratti allcc (ratqu (eprogratd a2e p1e p2e) a2e) t)
+	  (disrep (ratti allcc (ratqu (eprogratd a2e p1e p2e var) a2e) t)
 		  sinint-ratform)
 	  a1e)
 	 a3e)))
@@ -291,7 +291,7 @@
      (setq
       repart
       (ratqu (cond ((zerop (pdegree p1e var)) (ratti a2e (polcoef p1e 0 var) t))
-		   (t (eprogratd a2e p1e p2e)))
+		   (t (eprogratd a2e p1e p2e var)))
 	     (polcoef p2e (pdegree p2e var) var)))
      (setq a3e (cond ((equal 0 (car repart)) 0)
 		     (t `((mtimes) ((mquotient)
@@ -331,7 +331,7 @@
      (setq switch1 nil)
      (return (cons '(mplus) a2e))))
  
-(defun e3prog (num denom cont sinint-ratform)
+(defun e3prog (num denom cont sinint-ratform var)
   (prog (a b c d e r ratr var* x)
      (setq a (polcoef num 2 var) b (polcoef num 1 var) c (polcoef num 0 var)
 	   d (polcoef denom 3 var) e (polcoef denom 0 var))
@@ -366,13 +366,13 @@
 		     var)
 	      )))))
 
-(defun eprogratd (a2e p1e p2e)
+(defun eprogratd (a2e p1e p2e var)
   (ratdifference (ratti a2e (polcoef p1e (1- (pdegree p1e var)) var) t)
 		 (ratti (polcoef p2e (1- (pdegree p2e var)) var)
 			(polcoef p1e (pdegree p1e var) var)
 			t)))
 
-(defun enprog (num denom cont deg sinint-ratform)
+(defun enprog (num denom cont deg sinint-ratform var)
   ;; Denominator is (A*VAR^4+B) = 
   ;;   if B<0 then (SQRT(A)*VAR^2 - SQRT(-B)) (SQRT(A)*VAR^2 + SQRT(-B))
   ;;	     else
