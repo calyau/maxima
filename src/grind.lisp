@@ -447,7 +447,7 @@
 
 (defprop mminus msize-mminus grind)
 (defprop mminus (#\-) strsym)
-(defprop mminus 100. rbp)
+(defprop mminus 134. rbp)
 (defprop mminus 100. lbp)
 
 (defun msize-mminus (x l r)

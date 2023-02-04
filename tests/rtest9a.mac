@@ -201,15 +201,15 @@ n x
 true;
 
 block ([powerdisp : true], verify_display_2d (diff (x^n, x),
-"   (- 1) + n
-n x          
+"   - 1 + n
+n x        
 "));
 true;
 
 block ([powerdisp : false], verify_display_1d (diff (x^n, x), "n*x^(n-1)"));
 true;
 
-block ([powerdisp : true], verify_display_1d (diff (x^n, x), "n*x^((-1)+n)"));
+block ([powerdisp : true], verify_display_1d (diff (x^n, x), "n*x^(-1+n)"));
 true;
 
 /* mailing list 2015-09-04: "Inconsistent ordering: (x+1)^2 becomes (1+x)^2, but x+1 stays x+1" */
@@ -323,3 +323,204 @@ block ([simp:false], string((3/6)*x));
 
 string (lambda ([], (2/2)*u));
 "lambda([],(2/2)*u)";
+
+/* SF bug #4090: "output formatting: -x-1 has redundant parentheses: (-x)-1" */
+
+/* copied print_string_2d from rtest3.mac */
+(print_string_2d (e) := with_default_2d_display (printf (false, "~m", e)), 0);
+0;
+
+print_string_2d (-b-a);
+"- b - a
+";
+
+string (-b-a);
+"-b-a";
+
+print_string_2d (-c-a);
+"- c - a
+";
+
+string (-c-a);
+"-c-a";
+
+print_string_2d (-c-b);
+"- c - b
+";
+
+string (-c-b);
+"-c-b";
+
+print_string_2d (-c+b+a);
+"- c + b + a
+";
+
+string (-c+b+a);
+"-c+b+a";
+
+print_string_2d (-c+b-a);
+"- c + b - a
+";
+
+string (-c+b-a);
+"-c+b-a";
+
+print_string_2d (-c-b+a);
+"- c - b + a
+";
+
+string (-c-b+a);
+"-c-b+a";
+
+print_string_2d (-c-b-a);
+"- c - b - a
+";
+
+string (-c-b-a);
+"-c-b-a";
+
+print_string_2d (-a);
+"- a
+";
+
+string (-a);
+"-a";
+
+print_string_2d (a-b);
+"a - b
+";
+
+string (a-b);
+"a-b";
+
+print_string_2d (a-c);
+"a - c
+";
+
+string (a-c);
+"a-c";
+
+print_string_2d (b-a);
+"b - a
+";
+
+string (b-a);
+"b-a";
+
+print_string_2d (b-c);
+"b - c
+";
+
+string (b-c);
+"b-c";
+
+print_string_2d (c+b-a);
+"c + b - a
+";
+
+string (c+b-a);
+"c+b-a";
+
+print_string_2d (c-a);
+"c - a
+";
+
+string (c-a);
+"c-a";
+
+print_string_2d (c-b);
+"c - b
+";
+
+string (c-b);
+"c-b";
+
+print_string_2d (c-b+a);
+"c - b + a
+";
+
+string (c-b+a);
+"c-b+a";
+
+print_string_2d (c-b-a);
+"c - b - a
+";
+
+string (c-b-a);
+"c-b-a";
+
+/* -a/b, (-a)/b, and -(a/b) all parse to the same thing,
+ * therefore we should expect all three to be displayed the same.
+ */
+
+is ((-a)/b = -a/b);
+true;
+
+is (-(a/b) = -a/b);
+true;
+
+print_string_2d (-a/b);
+"  a
+- -
+  b
+";
+
+string (-a/b);
+"-(a/b)";
+
+print_string_2d (-(a/b));
+"  a
+- -
+  b
+";
+
+string (-(a/b));
+"-(a/b)";
+
+print_string_2d ((-a)/b);
+"  a
+- -
+  b
+";
+
+string ((-a)/b);
+"-(a/b)";
+
+/* -(a + b)/c and (-(a + b))/c parse to the same thing,
+ * but -((a + b)/c) parses to something else,
+ * therefore we should expect the first two are displayed the same,
+ * and the third is something different.
+ */
+
+is ((-(a + b))/c = -(a + b)/c);
+true;
+
+is (-((a + b)/c) = -(a + b)/c);
+false;
+
+print_string_2d (-(a + b)/c);
+"- b - a
+-------
+   c
+";
+
+string (-(a + b)/c);
+"(-b-a)/c";
+
+print_string_2d ((-(a + b))/c);
+"- b - a
+-------
+   c
+";
+
+string ((-(a + b))/c);
+"(-b-a)/c";
+
+print_string_2d (-((a + b)/c));
+"  b + a
+- -----
+    c
+";
+
+string (-((a + b)/c));
+"-((b+a)/c)";

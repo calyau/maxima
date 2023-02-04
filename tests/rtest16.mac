@@ -2492,7 +2492,7 @@ string (ev (rat(1/((x-1)^(2/3)+1)), algebraic));
 "((x-1)^(1/3)*x-((x-1)^(1/3))^2-(x-1)^(1/3)+1)/(x^2-2*x+2)";
 
 string (ev (rat(x/(sqrt(x^(2/3)+1))), algebraic));
-"(sqrt(x^(2/3)+1)*x^(1/3)*x^2+((-sqrt(x^(2/3)+1)*(x^(1/3))^2)+sqrt(x^(2/3)+1))*x)/(x^2+1)";
+"(sqrt(x^(2/3)+1)*x^(1/3)*x^2+(-(sqrt(x^(2/3)+1)*(x^(1/3))^2)+sqrt(x^(2/3)+1))*x)/(x^2+1)";
 
 /* additional examples courtesy of M. Talon */
 

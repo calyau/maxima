@@ -353,7 +353,7 @@ f7 (error (), error (), error (), error ());
   1 Enter limit [0]
   1 Exit  limit 0
   1 Enter limit [(%e^-x*sin(x))/2-(%e^-x*cos(x))/2,x,0,plus]
-  1 Exit  limit -1/2
+  1 Exit  limit -(1/2)
   1 Enter limit [(%e^-x*sin(x))/2-(%e^-x*cos(x))/2,x,inf,minus]
   1 Exit  limit 0
  1 Exit  defint 1/2
