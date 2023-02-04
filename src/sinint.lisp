@@ -80,37 +80,37 @@
 	 (return (setq parnumer (cons frpart parnumer))))
      (go numc)))
 
-(defun polyint (p var)
+(defun polyint (p sinint-var)
   (labels
-      ((polyint1 (p var)
+      ((polyint1 (p sinint-var)
 	 (cond ((or (null p) (equal p 0)) (cons 0 1))
-	       ((atom p) (list var 1 p))
+	       ((atom p) (list sinint-var 1 p))
 	       ((not (numberp (car p)))
-		(if (pointergp var (car p)) (list var 1 p) (polyint1 (cdr p) var)))
-	       (t (ratplus (polyint2 p var) (polyint1 (cddr p) var)))))
+		(if (pointergp sinint-var (car p)) (list sinint-var 1 p) (polyint1 (cdr p) sinint-var)))
+	       (t (ratplus (polyint2 p sinint-var) (polyint1 (cddr p) sinint-var)))))
 
-       (polyint2 (p var)
-	 (cons (list var (1+ (car p)) (cadr p)) (1+ (car p)))))
-    (ratqu (polyint1 (ratnumerator p) var)
+       (polyint2 (p sinint-var)
+	 (cons (list sinint-var (1+ (car p)) (cadr p)) (1+ (car p)))))
+    (ratqu (polyint1 (ratnumerator p) sinint-var)
 	   (ratdenominator p))))
 	 
 
-(defun dprog (ratarg sinint-ratform var)
+(defun dprog (ratarg sinint-ratform sinint-var)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans)
      (setq ans (cons 0 1))
-     (if (or (pcoefp (cdr ratarg)) (pointergp var (cadr ratarg)))
-	 (return (disrep (polyint ratarg var) sinint-ratform)))
-     (aprog (ratdenominator ratarg) var)
-     (cprog (ratnumerator ratarg) (ratdenominator ratarg) var)
+     (if (or (pcoefp (cdr ratarg)) (pointergp sinint-var (cadr ratarg)))
+	 (return (disrep (polyint ratarg sinint-var) sinint-ratform)))
+     (aprog (ratdenominator ratarg) sinint-var)
+     (cprog (ratnumerator ratarg) (ratdenominator ratarg) sinint-var)
      (setq rootfactor (reverse rootfactor))
      (setq parnumer (reverse parnumer))
      (setq klth (length rootfactor))
    intg
      (if (= klth 1) (go simp))
      (setq arootf (car rootfactor))
-     (if (zerop (pdegree arootf var)) (go reset))
-     (setq deriv (pderivative arootf var))
-     (setq thebpg (bprog arootf deriv var))
+     (if (zerop (pdegree arootf sinint-var)) (go reset))
+     (setq deriv (pderivative arootf sinint-var))
+     (setq thebpg (bprog arootf deriv sinint-var))
      (setq kx (1- klth))
      (setq thetop (car parnumer))
    iter
@@ -121,7 +121,7 @@
 	   (ratplus ans (ratqu (ratminus prod2) (ratti kx thebot t))))
      (setq thetop
 	   (ratplus prod1
-		    (ratqu (ratreduce (pderivative (car prod2) var)
+		    (ratqu (ratreduce (pderivative (car prod2) sinint-var)
 				      (cdr prod2))
 			   kx)))
      (setq thetop (cdr (ratdivide thetop thebot)))
@@ -136,11 +136,11 @@
      (go intg)
    simp
      (push (ratqu (car parnumer) (car rootfactor)) logptdx)
-     (if (equal ans 0) (return (disrep (polyint wholepart var) sinint-ratform)))
+     (if (equal ans 0) (return (disrep (polyint wholepart sinint-var) sinint-ratform)))
      (setq thetop
 	   (cadr (pdivide (ratnumerator ans) (ratdenominator ans))))
      (return (list '(mplus)
-		   (disrep (polyint wholepart var) sinint-ratform)
+		   (disrep (polyint wholepart sinint-var) sinint-ratform)
 		   (disrep (ratqu thetop (ratdenominator ans)) sinint-ratform)))))
 
 (defun logmabs (x)
