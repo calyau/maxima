@@ -146,9 +146,9 @@
 (defun logmabs (x)
   (list '(%log) (if $logabs (simplify (list '(mabs) x)) x)))
 
-(defun npask (exp)
-  (cond ((freeof '$%i exp)
-	 (learn `((mnotequal) ,exp 0) t) (asksign exp))
+(defun npask (npask-exp)
+  (cond ((freeof '$%i npask-exp)
+	 (learn `((mnotequal) ,npask-exp 0) t) (asksign npask-exp))
 	(t '$positive)))
 
 (defvar $integrate_use_rootsof nil "Use the rootsof form for integrals when denominator does not factor")
