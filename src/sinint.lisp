@@ -19,9 +19,9 @@
 		      rootfactor pardenom
 		      wholepart parnumer logptdx switch1))
 
-(defun rootfac (q var)
+(defun rootfac (q sinint-var)
   (prog (nthdq nthdq1 simproots ans n-loops)
-     (setq nthdq (pgcd q (pderivative q var)))
+     (setq nthdq (pgcd q (pderivative q sinint-var)))
      (setq simproots (pquotient q nthdq))
      (setq ans (list (pquotient simproots (pgcd nthdq simproots))))
      (setq n-loops 0)
@@ -29,17 +29,17 @@
      (cond
        ((= n-loops $factor_max_degree)
         (return (list q)))
-       ((or (pcoefp nthdq) (pointergp var (car nthdq)))
+       ((or (pcoefp nthdq) (pointergp sinint-var (car nthdq)))
         (return (reverse ans))))
-     (setq nthdq1 (pgcd (pderivative nthdq var) nthdq))
+     (setq nthdq1 (pgcd (pderivative nthdq sinint-var) nthdq))
      (push (pquotient (pgcd nthdq simproots) (pgcd nthdq1 simproots)) ans)
      (setq nthdq nthdq1)
      (incf n-loops)
      (go amen)))
 
-(defun aprog (q var)
+(defun aprog (q sinint-var)
   (setq q (oldcontent q))
-  (setq rootfactor (rootfac (cadr q) var))
+  (setq rootfactor (rootfac (cadr q) sinint-var))
   (setq rootfactor
 	(cons (ptimes (car q) (car rootfactor)) (cdr rootfactor)))
   (do ((pd (list (car rootfactor)))
@@ -49,7 +49,7 @@
     (push (pexpt (car rf) n) pd))
   rootfactor)
 
-(defun cprog (top bottom var)
+(defun cprog (top bottom sinint-var)
   (prog (frpart pardenomc ppdenom thebpg)
      (setq frpart (pdivide top bottom))
      (setq wholepart (car frpart))
@@ -66,7 +66,7 @@
    ok
      (setq pardenomc (reverse pardenom))
    numc
-     (setq thebpg (bprog (car pardenomc) (car ppdenom) var))
+     (setq thebpg (bprog (car pardenomc) (car ppdenom) sinint-var))
      (setq parnumer
 	   (cons (cdr (ratdivide (ratti frpart (cdr thebpg) t)
 				 (car pardenomc)))
