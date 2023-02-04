@@ -80,12 +80,12 @@
 	     (improper-arg-err u fn))))
     (setq list (ncons (car x))
 	  x (cdr x))
-    (if (null (errset (dskstore x fname list)))
+    (if (null (errset (dskstore x list)))
 	(setq maxima-error t))
     (close savefile)
     (namestring (truename savefile))))
 
-(defun dskstore (x file list)
+(defun dskstore (x list)
   (do ((x x (cdr x))
        (val)
        (rename)
@@ -135,7 +135,7 @@
            (setq val (symbol-value item))
 	   (if (eq item '$context) (setq x (list* nil val (cdr x))))
 	   (dskatom item rename val)
-	   (if (not (optionp rename)) (infostore item file 'value rename)))
+	   (if (not (optionp rename)) (infostore item 'value rename)))
 	 (when (setq val (and (member item (cdr $aliases) :test #'eq) (get item 'reversealias)))
 	   (dskdefprop rename val 'reversealias)
 	   (pradd2lnc rename '$aliases)
@@ -197,7 +197,7 @@
 	   (if (member item (cdr $activecontexts) :test #'eq)
 	       (fasprint t `($activate (quote ,item))))
 	   (fasprint t `(restore-facts (quote ,val))))
-	 (mpropschk item rename file)
+	 (mpropschk item rename)
 	 (if (not (get item 'verb))
 	     (nconc list (ncons (or nitemfl (getop item)))))))))
 
@@ -240,7 +240,7 @@
   (loop for value being the hash-values of h using (hash-key key)
         collect (list key value)))
 
-(defun mpropschk (item rename file)
+(defun mpropschk (item rename)
   (do ((props (cdr (or (get item 'mprops) '(nil))) (cddr props)) (val))
       ((null props))
     (cond ((or (member (car props) '(trace trace-type trace-level trace-oldfun) :test #'eq)
@@ -252,7 +252,7 @@
 	  ((not (member (car props) '(hashar array) :test #'eq))
 	   (fasprin (list 'mdefprop rename val (car props)))
 	   (if (not (member (car props) '(mlexprp mfexprp t-mfexpr) :test #'eq))
-	       (infostore item file (car props) 
+	       (infostore item (car props) 
 			  (cond ((member (car props) '(mexpr mmacro) :test #'eq)
 				 (let ((val1 (get item 'function-mode)))
 				   (if val1 (dskdefprop rename
@@ -263,7 +263,7 @@
 				 (cons (ncons rename) val))
 				(t rename)))))
 	  (t (dskary item (list 'quote rename) val (car props))
-	     (infostore item file (car props) rename)))))
+	     (infostore item (car props) rename)))))
 
 (defun dskary (item rename val ind)
   ;; Some small forms ordinarily non-EQ for fasdump must be output
@@ -313,7 +313,7 @@
   (declare (ignore eqfl))
   (print form savefile))
 
-(defun infostore (item file flag rename)
+(defun infostore (item flag rename)
   (let ((prop (cond ((eq flag 'value)
 		     (if (member rename (cdr $labels) :test #'eq) '$labels '$values))
 		    ((eq flag 'mexpr) '$functions)
