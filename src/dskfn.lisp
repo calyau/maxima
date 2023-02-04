@@ -58,11 +58,11 @@
     (unless (stringp fname)
       (merror (intl:gettext "save: first argument must be a string; found: ~M") fname))
     (with-maxima-io-syntax ; $save stores Lisp expressions.
-      (dsksetup (cdr form) nil '$save fname))))
+      (dsksetup (cdr form) '$save fname))))
 
 (defvar *dsksetup-errset-value* t)
 
-(defun dsksetup (x storefl fn fname)
+(defun dsksetup (x fn fname)
   (let (list maxima-error (errset *dsksetup-errset-value*))
     (setq savefile
 	  (if (or (eq $file_output_append '$true) (eq $file_output_append t))
@@ -80,18 +80,17 @@
 	     (improper-arg-err u fn))))
     (setq list (ncons (car x))
 	  x (cdr x))
-    (if (null (errset (dskstore x storefl fname list)))
+    (if (null (errset (dskstore x fname list)))
 	(setq maxima-error t))
     (close savefile)
     (namestring (truename savefile))))
 
-(defun dskstore (x storefl file list)
+(defun dskstore (x file list)
   (do ((x x (cdr x))
        (val)
        (rename)
        (item)
        (alrdystrd)
-       (stfl storefl storefl)
        (nitemfl nil nil))
       ((null x))
     (cond ((setq val (listargp (car x)))
@@ -136,7 +135,7 @@
            (setq val (symbol-value item))
 	   (if (eq item '$context) (setq x (list* nil val (cdr x))))
 	   (dskatom item rename val)
-	   (if (not (optionp rename)) (infostore item file 'value stfl rename)))
+	   (if (not (optionp rename)) (infostore item file 'value rename)))
 	 (when (setq val (and (member item (cdr $aliases) :test #'eq) (get item 'reversealias)))
 	   (dskdefprop rename val 'reversealias)
 	   (pradd2lnc rename '$aliases)
@@ -198,7 +197,7 @@
 	   (if (member item (cdr $activecontexts) :test #'eq)
 	       (fasprint t `($activate (quote ,item))))
 	   (fasprint t `(restore-facts (quote ,val))))
-	 (mpropschk item rename file stfl)
+	 (mpropschk item rename file)
 	 (if (not (get item 'verb))
 	     (nconc list (ncons (or nitemfl (getop item)))))))))
 
@@ -241,7 +240,7 @@
   (loop for value being the hash-values of h using (hash-key key)
         collect (list key value)))
 
-(defun mpropschk (item rename file stfl)
+(defun mpropschk (item rename file)
   (do ((props (cdr (or (get item 'mprops) '(nil))) (cddr props)) (val))
       ((null props))
     (cond ((or (member (car props) '(trace trace-type trace-level trace-oldfun) :test #'eq)
@@ -253,7 +252,7 @@
 	  ((not (member (car props) '(hashar array) :test #'eq))
 	   (fasprin (list 'mdefprop rename val (car props)))
 	   (if (not (member (car props) '(mlexprp mfexprp t-mfexpr) :test #'eq))
-	       (infostore item file (car props) stfl
+	       (infostore item file (car props) 
 			  (cond ((member (car props) '(mexpr mmacro) :test #'eq)
 				 (let ((val1 (get item 'function-mode)))
 				   (if val1 (dskdefprop rename
@@ -264,7 +263,7 @@
 				 (cons (ncons rename) val))
 				(t rename)))))
 	  (t (dskary item (list 'quote rename) val (car props))
-	     (infostore item file (car props) stfl rename)))))
+	     (infostore item file (car props) rename)))))
 
 (defun dskary (item rename val ind)
   ;; Some small forms ordinarily non-EQ for fasdump must be output
@@ -314,25 +313,18 @@
   (declare (ignore eqfl))
   (print form savefile))
 
-(defun infostore (item file flag storefl rename)
+(defun infostore (item file flag rename)
   (let ((prop (cond ((eq flag 'value)
 		     (if (member rename (cdr $labels) :test #'eq) '$labels '$values))
 		    ((eq flag 'mexpr) '$functions)
 		    ((eq flag 'mmacro) '$macros)
 		    ((member flag '(array hashar) :test #'eq) '$arrays)
-		    ((eq flag 'depends) (setq storefl nil) '$dependencies)
-		    (t (setq storefl nil) '$props))))
+		    ((eq flag 'depends) '$dependencies)
+		    (t '$props))))
     (cond ((eq prop '$labels)
 	   (fasprin `(addlabel (quote ,rename)))
 	   (if (get item 'nodisp) (dskdefprop rename t 'nodisp)))
-	  (t (pradd2lnc rename prop)))
-    (cond (storefl
-	   (cond ((member flag '(mexpr mmacro) :test #'eq) (setq rename (caar rename)))
-		 ((eq flag 'array) (remcompary item)))
-	   (setq prop (list '(mfile) file rename))
-	   (cond ((eq flag 'value) (setf (symbol-value item) prop))
-		 ((member flag '(mexpr mmacro aexpr array hashar) :test #'eq)
-		  (mputprop item prop flag)))))))
+	  (t (pradd2lnc rename prop)))))
 
 (defun pradd2lnc (item prop)
   (if (or (null $packagefile) (not (member prop (cdr $infolists) :test #'eq))
