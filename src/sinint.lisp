@@ -95,7 +95,7 @@
 	   (ratdenominator p))))
 	 
 
-(defun dprog (ratarg sinint-ratform)
+(defun dprog (ratarg sinint-ratform var)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans)
      (setq ans (cons 0 1))
      (if (or (pcoefp (cdr ratarg)) (pointergp var (cadr ratarg)))
@@ -191,7 +191,7 @@
       ,dummy
       (($rootsof) ,(subst dummy variable qq) ,dummy))))
 
-(defun eprog (p sinint-ratform)
+(defun eprog (p sinint-ratform var)
   (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg)
      (if (or (equal p 0) (equal (car p) 0)) (return 0))
      (setq p1e (ratnumerator p) p2e (ratdenominator p))
@@ -322,12 +322,12 @@
 						   (polcoef p2e 1 var)))
 			       (pcoefadd 0 (pexpt (polcoef p2e 1 var) 2) ()))))
 	  (ptimes 4 (polcoef p2e 2 var))))
-     (return (fprog (ratti allcc (ratqu p1e p2e) t) sinint-ratform))
+     (return (fprog (ratti allcc (ratqu p1e p2e) t) sinint-ratform var))
    e40
      (setq parnumer nil pardenom a1e switch1 t)
      (cprog p1e p2e)
      (setq a2e
-	   (mapcar #'(lambda (j k) (eprog (ratqu j k) sinint-ratform)) parnumer pardenom))
+	   (mapcar #'(lambda (j k) (eprog (ratqu j k) sinint-ratform var)) parnumer pardenom))
      (setq switch1 nil)
      (return (cons '(mplus) a2e))))
  
@@ -362,7 +362,8 @@
 					 (r+ (ratti var* var* t)
 					     (ratti ratr var* t)
 					     (ratti ratr ratr t)))))
-		     sinint-ratform)
+		     sinint-ratform
+		     var)
 	      )))))
 
 (defun eprogratd (a2e p1e p2e)
@@ -451,11 +452,12 @@
   (let (varlist)
     (simpnrt (disrep a sinint-ratform) 2)))
 
-(defun fprog (rat* sinint-ratform)
+(defun fprog (rat* sinint-ratform var)
   (prog (rootfactor pardenom parnumer logptdx wholepart switch1)
-     (return (addn (cons (dprog rat* sinint-ratform) (mapcar #'(lambda (p)
-								 (eprog p sinint-ratform))
-							     logptdx))
+     (return (addn (cons (dprog rat* sinint-ratform var)
+			 (mapcar #'(lambda (p)
+				     (eprog p sinint-ratform var))
+				 logptdx))
 		   nil))))
 
 (defun ratint (exp var)
@@ -464,7 +466,7 @@
      (setq ratarg (ratf exp))
      (setq sinint-ratform (car ratarg))
      (setq var (caadr (ratf var)))
-     (return (fprog (cdr ratarg) sinint-ratform))))
+     (return (fprog (cdr ratarg) sinint-ratform var))))
 
 (defun intfactor (l)
   (labels ((everysecond (a)
