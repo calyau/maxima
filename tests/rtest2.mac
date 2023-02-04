@@ -1149,3 +1149,16 @@ block ([use_fast_arrays : false,
   [arr[3], arrayapply (arr, [3])]);
 [arr[3], arr[3]];
 
+/* SF bug #4097: "Bad string representation of integers in the first argument of `save`" */
+
+(kill (xyz),
+ xyz: 123,
+ expected_filename: sconcat (maxima_tempdir, "/tmpsave123.lisp"),
+ save (sconcat (maxima_tempdir, "/tmpsave", xyz, ".lisp"), xyz));
+''expected_filename;
+
+(kill (xyz),
+ load (expected_filename),
+ xyz);
+123;
+

@@ -52,20 +52,22 @@
     ,@forms))
 
 (defmspec $save (form)
-  (with-maxima-io-syntax ; $save stores Lisp expressions.
-    (dsksetup (cdr form) nil '$save)))
+  (when (= (length (rest form)) 0)
+    (merror (intl:gettext "save: no file name specified.")))
+  (let ((fname (meval (second form))))
+    (unless (stringp fname)
+      (merror (intl:gettext "save: first argument must be a string; found: ~M") fname))
+    (with-maxima-io-syntax ; $save stores Lisp expressions.
+      (dsksetup (cdr form) nil '$save fname))))
 
 (defvar *dsksetup-errset-value* t)
 
-(defun dsksetup (x storefl fn)
-  (let (file (fname (meval (car x))) list maxima-error (errset *dsksetup-errset-value*))
-    (unless (stringp fname)
-      (merror (intl:gettext "~a: first argument must be a string; found: ~M") fn fname))
+(defun dsksetup (x storefl fn fname)
+  (let (list maxima-error (errset *dsksetup-errset-value*))
     (setq savefile
 	  (if (or (eq $file_output_append '$true) (eq $file_output_append t))
 	      (open fname :direction :output :if-exists :append :if-does-not-exist :create)
 	      (open fname :direction :output :if-exists :supersede :if-does-not-exist :create)))
-    (setq file (list (car x)))
     (princ ";;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- " savefile)
     (terpri savefile)
     (princ "(in-package :maxima)" savefile)
@@ -78,7 +80,7 @@
 	     (improper-arg-err u fn))))
     (setq list (ncons (car x))
 	  x (cdr x))
-    (if (null (errset (dskstore x storefl file list)))
+    (if (null (errset (dskstore x storefl fname list)))
 	(setq maxima-error t))
     (close savefile)
     (namestring (truename savefile))))
