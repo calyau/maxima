@@ -452,11 +452,11 @@
   (let (varlist)
     (simpnrt (disrep a sinint-ratform) 2)))
 
-(defun fprog (rat* sinint-ratform var)
+(defun fprog (rat* sinint-ratform sinint-var)
   (prog (rootfactor pardenom parnumer logptdx wholepart switch1)
-     (return (addn (cons (dprog rat* sinint-ratform var)
+     (return (addn (cons (dprog rat* sinint-ratform sinint-var)
 			 (mapcar #'(lambda (p)
-				     (eprog p sinint-ratform var))
+				     (eprog p sinint-ratform sinint-var))
 				 logptdx))
 		   nil))))
 
