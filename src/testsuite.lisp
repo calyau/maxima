@@ -270,7 +270,6 @@
     ((mlist simp) "rtest_sym"
      #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 15 64)
      #+clisp  ((mlist simp) 15 64)
-     #+ecl ((mlist simp) 64)
      #+sbcl ((mlist simp) 15 64))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
