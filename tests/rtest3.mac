@@ -915,9 +915,10 @@ block ([linel: 65], print_string_2d ('?mlabel (a, b)));
 "(a)                             b
 ";
 
-/*
+/* SF bug #3301: "fpprintprec do not round bfloat correctly(another case)"
  * Test exponent of printed bigfloat is correct when number is rounded.
  */
+
 (fpprec:64, fpprintprec:16, done);
 done;
 
@@ -939,6 +940,41 @@ print_string_2d(0.99999999999999999999b0);
 print_string_2d(1.99999999999999999999b0);
 "2.000000000000000b0
 ";
+
+bftrunc: true;
+true;
+
+block([fpprintprec:4],string(0.9999499999b0));
+"9.999b-1";
+block([fpprintprec:4],string(0.99995b0));
+"1.0b0";
+block([fpprintprec:4],string(0.99999b0));
+"1.0b0";
+block([fpprintprec:4],string(1.0005b0));
+"1.0b0";
+block([fpprintprec:4],string(1.000499999b0));
+"1.0b0";
+block([fpprintprec:4],string(1.00050001b0));
+"1.001b0";
+     
+block([fpprintprec:10],string(0.9999999999499b0));
+"9.999999999b-1";
+block([fpprintprec:10],string(0.99999999999b0));
+"1.0b0";
+block([fpprintprec:10],string(0.999999999995b0));
+"1.0b0";
+block([fpprintprec:10],string(1.0000000005b0));
+"1.0b0";
+block([fpprintprec:10],string(1.00000000051b0));
+"1.000000001b0";
+
+block( [ bad: [], str],
+  for fpprintprec:4 thru 15 do
+    for a in [1,5,50,-1,-5] do
+       if parse_string(str: string(1+bfloat(a*10^(-fpprintprec-1)))) # 1.0b0
+       then push([fpprintprec,a,str],bad),
+  reverse(bad));
+ [];
 
 (reset(fpprec, fpprintprec), done);
 done;
