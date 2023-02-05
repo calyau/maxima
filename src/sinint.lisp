@@ -54,15 +54,15 @@
 	    pd))
     (values rootfactor sinint-pardenom)))
 
-(defun cprog (top bottom sinint-var pardenom)
+(defun cprog (top bottom sinint-var sinint-pardenom)
   (prog (frpart pardenomc ppdenom thebpg sinint-parnumer)
      (setq frpart (pdivide top bottom))
      (setq wholepart (car frpart))
      (setq frpart (cadr frpart))
-     (if (= (length pardenom) 1)
+     (if (= (length sinint-pardenom) 1)
 	 (return (list frpart)))
-     (setq pardenomc (cdr pardenom))
-     (setq ppdenom (list (car pardenom)))
+     (setq pardenomc (cdr sinint-pardenom))
+     (setq ppdenom (list (car sinint-pardenom)))
    dseq
      (if (= (length pardenomc) 1)
 	 (go ok))
@@ -71,7 +71,7 @@
      (setq pardenomc (cdr pardenomc))
      (go dseq)
    ok
-     (setq pardenomc (reverse pardenom))
+     (setq pardenomc (reverse sinint-pardenom))
    numc
      (setq thebpg (bprog (car pardenomc)
 			 (car ppdenom)
