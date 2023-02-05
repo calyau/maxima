@@ -156,7 +156,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
 ;; exponent marker |b|. The number of significant digits is controlled
 ;; by $fpprintprec.
 
-;; uses L marker instead of b.   123b0 prints 1.23L2
+;; uses L marker instead of b.   123L0 prints 1.23L2
 
 (defun decfpformat (l) 
   (if (decimalfpp l)
@@ -341,7 +341,10 @@ is (sum+1/10^50=1.0L0) ;  should be true
 	  ((eq (caar x) 'mexpt)
 	   (if (equal (cadr x) '$%e)
 	       (*fpexp (decfp2binfp (caddr x))) ;; exp(x)
-	       (exptbigfloat (decfp2binfp (cadr x)) (decfp2binfp(caddr x)))))
+	       (exptbigfloat (decfp2binfp (cadr x))
+			     (caddr x)
+			     ;;(decfp2binfp(caddr x))
+			     )))
 	  ((eq (caar x) 'mncexpt)
 	   (list '(mncexpt) ($binarybfloat (cadr x)) (caddr x)))
 	  ((eq (caar x) 'rat)
@@ -365,6 +368,8 @@ is (sum+1/10^50=1.0L0) ;  should be true
 		     (t ($binarybfloat (exponentialize (caar x) y))))
 	       (subst0 (list (ncons (caar x)) y) x)))
 	  (t (recur-apply #'$binarybfloat x)))) ;;
+
+(defun bigfloat-prec(z)(third(car z))) ;; assume ((bigfloat simp #)..) or (bigfloat simp # decimal) ...)
 
 ;; works for sin cos atan tan log ... and everything else not explicitly redefined
 
@@ -600,6 +605,27 @@ is (sum+1/10^50=1.0L0) ;  should be true
 				   (cdr a)))))
 
 ;;; taken out of nparse.lisp.
+
+#|   there is something broken in GCL Maxima.  123L0 says "incorrect syntax"
+This doesn't fix it.
+(defun scan-number-exponent (data)
+  (push (ncons (if (or (char= (parse-tyipeek) #\+)
+		       (char= (parse-tyipeek) #\-))
+		   (parse-tyi)
+		   #\+))
+	data)
+  (scan-digits data () () t))
+(defun scan-number-after-dot (data)
+  (scan-digits data '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s 
+		      ;;#\L #\l 
+		      #+cmu #\W #+cmu #\w) #'scan-number-exponent))
+
+ (defun scan-number-before-dot (data)
+  (scan-digits data '(#\. #\E #\e #\F #\f #\B #\b #\D #\d #\S #\s 
+		      #\L #\l 
+		      #+cmu #\W #+cmu #\w)
+	       #'scan-number-rest))
+|#
 (defun make-number (data)
   (setq data (nreverse data))
   ;; Maxima really wants to read in any number as a flonum
@@ -607,9 +633,15 @@ is (sum+1/10^50=1.0L0) ;  should be true
   ;; markers to the flonum-exponent-marker.
   (let ((marker (car (nth 3 data))))
     (unless (eql marker flonum-exponent-marker)
-      (when (member marker '(#\E #\F #\S #\D  #+cmu #\W))
+      (when
+	  #+ignore
+	(member marker '(#\E #\F #\S #\D #\L  #\l  #+cmu #\W)) ; breaks decimal fp
+	(member marker '(#\E #\F #\S #\D  #+cmu #\W))
         (setf (nth 3 data) (list flonum-exponent-marker)))))
-  (cond  ((equal (nth 3 data) '(#\B))
+  
+  (cond 
+
+    ((equal (nth 3 data) '(#\B))
 	 ;; (format t "~% exponent B data=~s~%" data)
 	  (let*
 	      ((*read-base* 10.)
