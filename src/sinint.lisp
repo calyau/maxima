@@ -16,7 +16,7 @@
 
 (declare-top (special checkfactors
 		      rootfactor pardenom
-		      wholepart parnumer switch1))
+		      wholepart switch1))
 
 (defun rootfac (q sinint-var)
   (prog (nthdq nthdq1 simproots ans n-loops)
