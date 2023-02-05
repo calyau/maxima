@@ -44,16 +44,17 @@
   (setq rootfactor
 	(cons (ptimes (car q) (car rootfactor))
 	      (cdr rootfactor)))
-  (do ((pd (list (car rootfactor)))
-       (rf (cdr rootfactor) (cdr rf))
-       (n 2 (1+ n)))
-      ((null rf)
-       (setq pardenom (reverse pd)))
-    (push (pexpt (car rf) n)
-	  pd))
-  rootfactor)
+  (let (sinint-pardenom)
+    (do ((pd (list (car rootfactor)))
+	 (rf (cdr rootfactor) (cdr rf))
+	 (n 2 (1+ n)))
+	((null rf)
+	 (setq sinint-pardenom (reverse pd)))
+      (push (pexpt (car rf) n)
+	    pd))
+    (values rootfactor sinint-pardenom)))
 
-(defun cprog (top bottom sinint-var)
+(defun cprog (top bottom sinint-var pardenom)
   (prog (frpart pardenomc ppdenom thebpg sinint-parnumer)
      (setq frpart (pdivide top bottom))
      (setq wholepart (car frpart))
@@ -112,15 +113,19 @@
 	   (ratdenominator p))))
 	 
 
-(defun dprog (ratarg sinint-ratform sinint-var)
+(defun dprog (ratarg sinint-ratform sinint-var sinint-pardenom)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 sinint-logptdx sinint-parnumer)
      (setq ans (cons 0 1))
      (if (or (pcoefp (cdr ratarg)) (pointergp sinint-var (cadr ratarg)))
 	 (return (values (disrep (polyint ratarg sinint-var) sinint-ratform)
 			 sinint-logptdx)))
-     (aprog (ratdenominator ratarg) sinint-var)
-     (setf sinint-parnumer (cprog (ratnumerator ratarg) (ratdenominator ratarg) sinint-var))
+     (setf sinint-pardenom
+	   (nth-value 1 (aprog (ratdenominator ratarg) sinint-var)))
+     (setf sinint-parnumer (cprog (ratnumerator ratarg)
+				  (ratdenominator ratarg)
+				  sinint-var
+				  sinint-pardenom))
      (setq rootfactor (reverse rootfactor))
      (setq sinint-parnumer (reverse sinint-parnumer))
      (setq klth (length rootfactor))
@@ -223,8 +228,9 @@
       ,dummy
       (($rootsof) ,(subst dummy variable qq) ,dummy))))
 
-(defun eprog (p sinint-ratform sinint-var)
-  (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg)
+(defun eprog (p sinint-ratform sinint-var sinint-pardenom)
+  (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg
+	 sinint-parnumer)
      (if (or (equal p 0) (equal (car p) 0))
 	 (return 0))
      (setq p1e (ratnumerator p)
@@ -259,7 +265,7 @@
 	   ((equal deg 2) (go e20))
 	   ((and (equal deg 3) (equal (polcoef p2e 2 sinint-var) 0)
 		 (equal (polcoef p2e 1 sinint-var) 0))
-	    (return (e3prog p1e p2e allcc sinint-ratform sinint-var)))
+	    (return (e3prog p1e p2e allcc sinint-ratform sinint-var sinint-pardenom)))
 	   ((and (member deg '(4 5 6) :test #'equal)
 		 (zerocoefl p2e deg sinint-var))
 	    (return (enprog p1e p2e allcc deg sinint-ratform sinint-var))))
@@ -388,17 +394,17 @@
 		    sinint-var))
    e40
      (setq sinint-parnumer nil
-	   pardenom a1e
+	   sinint-pardenom a1e
 	   switch1 t)
-     (setf sinint-parnumer (cprog p1e p2e sinint-var))
+     (setf sinint-parnumer (cprog p1e p2e sinint-var sinint-pardenom))
      (setq a2e
 	   (mapcar #'(lambda (j k)
-		       (eprog (ratqu j k) sinint-ratform sinint-var))
-		   sinint-parnumer pardenom))
+		       (eprog (ratqu j k) sinint-ratform sinint-var sinint-pardenom))
+		   sinint-parnumer sinint-pardenom))
      (setq switch1 nil)
      (return (cons '(mplus) a2e))))
  
-(defun e3prog (num denom cont sinint-ratform sinint-var)
+(defun e3prog (num denom cont sinint-ratform sinint-var pardenom)
   (prog (a b c d e r ratr var* x)
      (setq a (polcoef num 2 sinint-var)
 	   b (polcoef num 1 sinint-var)
@@ -435,7 +441,8 @@
 					     (ratti ratr var* t)
 					     (ratti ratr ratr t)))))
 		     sinint-ratform
-		     sinint-var)
+		     sinint-var
+		     pardenom)
 	      )))))
 
 (defun eprogratd (a2e p1e p2e sinint-var)
@@ -531,10 +538,10 @@
 (defun fprog (rat* sinint-ratform sinint-var)
   (prog (rootfactor pardenom wholepart switch1)
      (multiple-value-bind (dprog-ret sinint-logptdx)
-	 (dprog rat* sinint-ratform sinint-var)
+	 (dprog rat* sinint-ratform sinint-var pardenom)
        (return (addn (cons dprog-ret
 			   (mapcar #'(lambda (p)
-				       (eprog p sinint-ratform sinint-var))
+				       (eprog p sinint-ratform sinint-var pardenom))
 				   sinint-logptdx))
 		     nil)))))
 
