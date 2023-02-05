@@ -59,7 +59,7 @@
      (setq wholepart (car frpart))
      (setq frpart (cadr frpart))
      (if (= (length pardenom) 1)
-	 (return (setq sinint-parnumer (list frpart))))
+	 (return (list frpart)))
      (setq pardenomc (cdr pardenom))
      (setq ppdenom (list (car pardenom)))
    dseq
@@ -85,7 +85,7 @@
      (setq pardenomc (cdr pardenomc))
      (setq ppdenom (cdr ppdenom))
      (if (null ppdenom)
-	 (return (setq sinint-parnumer (cons frpart sinint-parnumer))))
+	 (return (cons frpart sinint-parnumer)))
      (go numc)))
 
 (defun polyint (p sinint-var)
