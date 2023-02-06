@@ -229,7 +229,7 @@
       ,dummy
       (($rootsof) ,(subst dummy variable qq) ,dummy))))
 
-(defun eprog (p sinint-ratform sinint-var)
+(defun eprog (p sinint-ratform sinint-var switch1)
   (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg
 	 sinint-parnumer sinint-pardenom)
      (if (or (equal p 0) (equal (car p) 0))
@@ -266,7 +266,7 @@
 	   ((equal deg 2) (go e20))
 	   ((and (equal deg 3) (equal (polcoef p2e 2 sinint-var) 0)
 		 (equal (polcoef p2e 1 sinint-var) 0))
-	    (return (e3prog p1e p2e allcc sinint-ratform sinint-var)))
+	    (return (e3prog p1e p2e allcc sinint-ratform sinint-var switch1)))
 	   ((and (member deg '(4 5 6) :test #'equal)
 		 (zerocoefl p2e deg sinint-var))
 	    (return (enprog p1e p2e allcc deg sinint-ratform sinint-var))))
@@ -401,12 +401,12 @@
        (cprog p1e p2e sinint-var sinint-pardenom))
      (setq a2e
 	   (mapcar #'(lambda (j k)
-		       (eprog (ratqu j k) sinint-ratform sinint-var))
+		       (eprog (ratqu j k) sinint-ratform sinint-var switch1))
 		   sinint-parnumer sinint-pardenom))
      (setq switch1 nil)
      (return (cons '(mplus) a2e))))
  
-(defun e3prog (num denom cont sinint-ratform sinint-var)
+(defun e3prog (num denom cont sinint-ratform sinint-var switch1)
   (prog (a b c d e r ratr var* x)
      (setq a (polcoef num 2 sinint-var)
 	   b (polcoef num 1 sinint-var)
@@ -443,7 +443,8 @@
 					     (ratti ratr var* t)
 					     (ratti ratr ratr t)))))
 		     sinint-ratform
-		     sinint-var)
+		     sinint-var
+		     switch1)
 	      )))))
 
 (defun eprogratd (a2e p1e p2e sinint-var)
@@ -542,7 +543,7 @@
 	 (dprog rat* sinint-ratform sinint-var)
        (return (addn (cons dprog-ret
 			   (mapcar #'(lambda (p)
-				       (eprog p sinint-ratform sinint-var))
+				       (eprog p sinint-ratform sinint-var nil))
 				   sinint-logptdx))
 		     nil)))))
 
