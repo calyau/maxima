@@ -14,7 +14,7 @@
 
 (load-macsyma-macros ratmac)
 
-(declare-top (special checkfactors switch1))
+(declare-top (special checkfactors))
 
 (defun rootfac (q sinint-var)
   (prog (nthdq nthdq1 simproots ans n-loops)
