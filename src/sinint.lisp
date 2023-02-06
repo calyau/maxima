@@ -535,7 +535,7 @@
     (simpnrt (disrep a sinint-ratform) 2)))
 
 (defun fprog (rat* sinint-ratform sinint-var)
-  (prog (rootfactor pardenom wholepart switch1)
+  (prog (rootfactor wholepart switch1)
      (multiple-value-bind (dprog-ret sinint-logptdx)
 	 (dprog rat* sinint-ratform sinint-var)
        (return (addn (cons dprog-ret
