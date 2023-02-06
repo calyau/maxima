@@ -202,13 +202,13 @@
 	 switch1 logptdx expflag expstuff expint y)
      (setq expstuff '(0 . 1))
      (cond ((eq mainvar var)
-	    (return (rischfprog exp)))
+	    (return (rischfprog exp ratform)))
 	   ((eq (get var 'leadop)
 		'mexpt)
 	    (setq expflag t)))
      (setq y (rischlogdprog exp))
      (dolist (rat logptdx)
-       (setq y (rischadd (rischlogeprog rat) y)))
+       (setq y (rischadd (rischlogeprog rat ratform) y)))
      (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar ratform) y)))
      (return (if expint (rischadd (rischexppoly expint var ratform) y)
 		 y))))
@@ -218,7 +218,7 @@
 	 (var (getrischvar)))
     (tryrisch exp mainvar ratform)))
 
-(defun rischfprog (rat)
+(defun rischfprog (rat ratform)
   (let (rootfactor pardenom parnumer logptdx wholepart switch1)
     (multiple-value-bind (dprog-ret logptdx)
 	(dprog rat ratform var)
@@ -234,7 +234,7 @@
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
-	    (return (rischlogpoly ratarg))))
+	    (return (rischlogpoly ratarg ratform))))
 
      (multiple-value-setq (rootfactor pardenom)
        (aprog (ratdenominator ratarg) var))
@@ -278,11 +278,11 @@
 	  (push (ratqu thetop arootf) logptdx))))
      (push (ratqu (car parnumer) (car rootfactor)) logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
-	    (return (rischlogpoly wholepart))))
+	    (return (rischlogpoly wholepart ratform))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
      (return (rischadd (ncons (ratqu thetop (ratdenominator ans)))
-		       (rischlogpoly wholepart)))))
+		       (rischlogpoly wholepart ratform)))))
 
 (defun gennegs (denom num numdenom)
   (cond ((null num) nil)
@@ -292,7 +292,7 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom)))))
 
-(defun rischlogeprog (p)
+(defun rischlogeprog (p ratform)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
      (setq p1e (ratnumerator p))
@@ -312,7 +312,7 @@
 			 (setq switch1 nil) ans)
 		      (setq ans (rischadd
 				 (rischlogeprog
-				  (r* allcc (ratqu (car pnum) (car pden))))
+				  (r* allcc (ratqu (car pnum) (car pden))) ratform)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
@@ -446,7 +446,7 @@
 	   (getfncoeff a form))))
 
 
-(defun rischlogpoly (exp)
+(defun rischlogpoly (exp ratform)
   (cond ((equal exp '(0 . 1)) (rischzero))
 	(expflag (push (cons 'poly exp) expint)
 		 (rischzero))
@@ -945,7 +945,7 @@
 		 (cons (r* (list expg n 1) (ratqu y p)) '(0))))))
 
 
-(defun erfarg (exparg coef)
+(defun erfarg (exparg coef ratform)
   (prog (num denom erfarg)
      (setq exparg (r- exparg))
      (unless (and (setq num (pnthrootp (ratnumerator exparg) 2))
@@ -993,7 +993,7 @@
   (prog (denom erfans num nerf)
      (desetq (num . denom) numdenom)
      (unless $erfflag (setq fails num) (go lose))
-     (if (setq erfans (erfarg arg numdenom))
+     (if (setq erfans (erfarg arg numdenom ratform))
 	 (return (list ans erfans)))
      again	(when (and (not (pcoefp denom))
 			   (null (p-red denom))
@@ -1004,7 +1004,7 @@
 		  (go again))
      (loop for (coef exparg exppoly) in (explist num arg 1)
 	    do (setq coef (ratqu coef denom)
-		     nerf (or (erfarg2 exparg coef ratform) (erfarg exparg coef)))
+		     nerf (or (erfarg2 exparg coef ratform) (erfarg exparg coef ratform)))
 	    (if nerf (push nerf erfans) (setq fails
 					      (pplus fails exppoly))))
      lose (return
