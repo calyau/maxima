@@ -599,7 +599,7 @@
 		 (setq m (car y)))))
      (setq alphar (max alphar m))
      (if (minusp alphar)
-	 (return (if flag (cxerfarg (rzero) expg n a) nil)))
+	 (return (if flag (cxerfarg (rzero) expg n a ratform) nil)))
      (cond ((not (and (equal alphar m) (not (zerop m))))
 	    (go down2)))
      (setq k (+ alphar beta -2))
@@ -619,7 +619,7 @@
      (setq y (lsa wl))
      (if (or (eq y 'singular) (eq y 'inconsistent))
 	 (cond ((null flag) (return nil))
-	       (t (return (cxerfarg (rzero) expg n a)))))
+	       (t (return (cxerfarg (rzero) expg n a ratform)))))
      (setq k 0)
      (setq lcm 0)
      (setq y (cdr y))
@@ -654,7 +654,7 @@
 		   (go loop))		;need more constraints?
 		  (t (cond
 		       ((null flag) (return nil))
-		       (t (return (cxerfarg (rzero) expg n a)))))))
+		       (t (return (cxerfarg (rzero) expg n a ratform)))))))
 	   (t (setq yalpha (ratqu yn yd))))
      (setq ytemp (r+ y (r* yalpha
 			   (cons (list mainvar alphar 1) 1) )))
@@ -678,13 +678,14 @@
 		    (equal (pdegree (car (get expg 'rischarg)) mainvar) 2)
 		    (equal (pdegree (cdr (get expg 'rischarg)) mainvar) 0))
 	       (return (list (ratqu (r* ytemp (cons (list expg n 1) 1)) p)
-			     (erfarg2 (r* n (get expg 'rischarg)) ttemp))))
+			     (erfarg2 (r* n (get expg 'rischarg)) ttemp ratform))))
 	      (t (return
 		   (cxerfarg
 		    (ratqu (r* y (cons (list expg n 1) 1)) p)
 		    expg
 		    n
-		    (ratqu tt lcm)))))))
+		    (ratqu tt lcm)
+		    ratform))))))
      (setq y ytemp)
      (setq tt ttemp)
      (go loop)))
@@ -825,7 +826,7 @@
 		 (> (- (car yy)) mu))
 	    (setq mu (- (car yy)))))
      back (if (minusp mu)
-	      (return (if flag (cxerfarg (rzero) expg n a) nil)))
+	      (return (if flag (cxerfarg (rzero) expg n a ratform) nil)))
      (cond ((> beta gamma)(go lsacall))
 	   ((= beta gamma)
 	    (go recurse)))
@@ -846,7 +847,8 @@
 	    (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
 				 expg
 				 n
-				 (ratqu tt lcm)))))
+				 (ratqu tt lcm)
+				 ratform))))
      recurse
      (setq rbeta (polcoef r beta var))
      (setq y '(0 . 1))
@@ -865,7 +867,7 @@
      (when (null ymu)
        (return (cond ((null flag) nil)
 		     (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
-					  expg n (ratqu tt lcm)))))))
+					  expg n (ratqu tt lcm) ratform))))))
      (setq y (r+ y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu)))))
      (setq tt (r- tt
 		  (r* s ymu)
@@ -880,7 +882,8 @@
        (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
 			    expg
 			    n
-			    (ratqu tt lcm)))))
+			    (ratqu tt lcm)
+			    ratform))))
      lsacall
      (setq rrmu mu)
      muloop
@@ -923,7 +926,7 @@
      (setq rarray (reverse aarray))
      (setq temp (lsa rarray))
      (when (or (eq temp 'singular) (eq temp 'inconsistent))
-       (return (if (null flag) nil (cxerfarg (rzero) expg n a))))
+       (return (if (null flag) nil (cxerfarg (rzero) expg n a ratform))))
      (setq temp (reverse  (cdr temp)))
      (setq rmu 0)
      (setq y 0)
@@ -950,7 +953,7 @@
 			     ,(disrep coef ratform)
 			     ((%erf) ,(disrep erfarg ratform))))))))
 
-(defun erfarg2 (exparg coeff &aux (var mainvar) a b c d)
+(defun erfarg2 (exparg coeff ratform &aux (var mainvar) a b c d)
   (when (and (= (pdegree (car exparg) var) 2)
 	     (eq (caar exparg) var)
 	     (risch-pconstp (cdr exparg))
@@ -979,7 +982,7 @@
 			 ((mtimes) ,b ((rat) 1 2) ((mexpt) ,d -1))))))))
 
 
-(defun cxerfarg (ans expg n numdenom &aux (arg (r* n (get expg 'rischarg)))
+(defun cxerfarg (ans expg n numdenom ratform &aux (arg (r* n (get expg 'rischarg)))
 		 (fails 0))
   (prog (denom erfans num nerf)
      (desetq (num . denom) numdenom)
@@ -995,7 +998,7 @@
 		  (go again))
      (loop for (coef exparg exppoly) in (explist num arg 1)
 	    do (setq coef (ratqu coef denom)
-		     nerf (or (erfarg2 exparg coef) (erfarg exparg coef)))
+		     nerf (or (erfarg2 exparg coef ratform) (erfarg exparg coef)))
 	    (if nerf (push nerf erfans) (setq fails
 					      (pplus fails exppoly))))
      lose (return
