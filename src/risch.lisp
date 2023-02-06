@@ -131,7 +131,7 @@
        (setq $algebraic nil)
        (setq $gcd (car *gcdl*)))
      (setq var (getrischvar))
-     (setq z (tryrisch (cdr y) mainvar))
+     (setq z (tryrisch (cdr y) mainvar ratform))
      (setf (caddr ratform) varlist)
      (setf (cadddr ratform) genvar)
      (return (cond ((atom (cdr z)) (disrep (car z) ratform))
@@ -197,7 +197,7 @@
             (meval (list '($ev) result '$nouns)))
           result))))
 
-(defun tryrisch (exp mainvar)
+(defun tryrisch (exp mainvar ratform)
   (prog (wholepart rootfactor parnumer pardenom
 	 switch1 logptdx expflag expstuff expint y)
      (setq expstuff '(0 . 1))
@@ -209,14 +209,14 @@
      (setq y (rischlogdprog exp))
      (dolist (rat logptdx)
        (setq y (rischadd (rischlogeprog rat) y)))
-     (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar) y)))
-     (return (if expint (rischadd (rischexppoly expint var) y)
+     (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar ratform) y)))
+     (return (if expint (rischadd (rischexppoly expint var ratform) y)
 		 y))))
 
-(defun tryrisch1 (exp mainvar)
+(defun tryrisch1 (exp mainvar ratform)
   (let* ((varlist (reverse (cdr (reverse varlist))))
 	 (var (getrischvar)))
-    (tryrisch exp mainvar)))
+    (tryrisch exp mainvar ratform)))
 
 (defun rischfprog (rat)
   (let (rootfactor pardenom parnumer logptdx wholepart switch1)
@@ -450,7 +450,7 @@
   (cond ((equal exp '(0 . 1)) (rischzero))
 	(expflag (push (cons 'poly exp) expint)
 		 (rischzero))
-	((not (among var exp)) (tryrisch1 exp mainvar))
+	((not (among var exp)) (tryrisch1 exp mainvar ratform))
 	(t (do ((degree (pdegree (car exp) var) (1- degree))
 		(p (car exp))
 		(den (cdr exp))
@@ -465,7 +465,7 @@
 			      (get var 'rischdiff))))
 	     (if (not (pzerop (polcoef p degree var)))
 		 (setq p (if (pcoefp p) (pzero) (psimp var (p-red p)))))
-	     (setq y (tryrisch1 ak mainvar))
+	     (setq y (tryrisch1 ak mainvar ratform))
 	     (setq cary (car y))
 	     (and (> degree 0) (setq liflag $liflag))
 	     (setq z (getfncoeff (cdr y) (get var 'rischexpr)))
@@ -534,9 +534,10 @@
 	   (rischexpvar nil flag (list f a expg n) ratform))
 	  (t (rischexplog (eq y 'mexpt) flag f a
 			  (list expg n (get var 'rischarg)
-				var (get var 'rischdiff)))))))
+				var (get var 'rischdiff))
+			  ratform)))))
 
-(defun rischexppoly (expint var)
+(defun rischexppoly (expint var ratform)
   (let (y w num denom type (ans (rischzero))
 	  (expdiff (ratqu (get var 'rischdiff) (list var 1 1))))
     (do ((expint expint (cdr expint)))
@@ -552,12 +553,12 @@
 				     (- (cadr denom))
 				     ratform)))
 	    ((or (numberp num) (not (eq (car num) var)))
-	     (setq w (tryrisch1 y mainvar)))
+	     (setq w (tryrisch1 y mainvar ratform)))
 	    (t (setq w (rischzero))
 	       (do ((num (cdr num) (cddr num))) ((null num))
 		 (cond ((equal (car num) 0)
 			(setq w (rischadd
-				 (tryrisch1 (ratqu (cadr num) denom) mainvar)
+				 (tryrisch1 (ratqu (cadr num) denom) mainvar ratform)
 				 w)))
 		       (t (setq w (rischadd (exppolycontrol
 					     t
@@ -762,7 +763,7 @@
 	(t (findflist a (cdr llist)))))
 
 
-(defun rischexplog (expexpflag flag f a l)
+(defun rischexplog (expexpflag flag f a l ratform)
   (declare (special var))
   (prog (lcm y yy m p alphar beta gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
@@ -795,7 +796,7 @@
 				       (polcoef s (1- gamma) var)))
 			       (r* (polcoef r beta var)
 				   (polcoef r beta var) ))
-			mainvar))
+			mainvar ratform))
      (setq cary (car y))
      (setq yy (getfncoeff (cdr y) (get var 'rischexpr)))
      (cond ((and (not (findint (cdr y)))
@@ -809,7 +810,7 @@
      expcase
      (cond ((not (equal beta gamma)) (go back)))
      (setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
-			mainvar))
+			mainvar ratform))
      (cond ((findint (cdr y)) (go back)))
      (setq yy (ratqu (r* -1 (car y)) eta))
      (cond ((and (equal (cdr yy) 1)
@@ -818,7 +819,7 @@
 	    (setq mu (car yy))))
      (go back)
      down1(setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
-			     mainvar))
+			     mainvar ratform))
      (setq cary (car y))
      (setq yy (getfncoeff (cdr y) (get var 'rischexpr)))
      (cond ((and (not (findint (cdr y)))
