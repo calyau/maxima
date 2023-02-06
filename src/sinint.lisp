@@ -538,14 +538,13 @@
     (simpnrt (disrep a sinint-ratform) 2)))
 
 (defun fprog (rat* sinint-ratform sinint-var)
-  (prog ()
-     (multiple-value-bind (dprog-ret sinint-logptdx)
-	 (dprog rat* sinint-ratform sinint-var)
-       (return (addn (cons dprog-ret
-			   (mapcar #'(lambda (p)
-				       (eprog p sinint-ratform sinint-var nil))
-				   sinint-logptdx))
-		     nil)))))
+  (multiple-value-bind (dprog-ret sinint-logptdx)
+      (dprog rat* sinint-ratform sinint-var)
+    (addn (cons dprog-ret
+		(mapcar #'(lambda (p)
+			    (eprog p sinint-ratform sinint-var nil))
+			sinint-logptdx))
+	  nil)))
 
 (defun ratint (sinint-exp sinint-var)
   (prog (genvar checkfactors varlist ratarg $keepfloat)
