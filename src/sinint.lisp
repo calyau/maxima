@@ -55,12 +55,12 @@
       (values sinint-rootfactor sinint-pardenom))))
 
 (defun cprog (top bottom sinint-var sinint-pardenom)
-  (prog (frpart pardenomc ppdenom thebpg sinint-parnumer)
+  (prog (frpart pardenomc ppdenom thebpg sinint-parnumer sinint-wholepart)
      (setq frpart (pdivide top bottom))
-     (setq wholepart (car frpart))
+     (setq sinint-wholepart (car frpart))
      (setq frpart (cadr frpart))
      (if (= (length sinint-pardenom) 1)
-	 (return (values (list frpart) wholepart)))
+	 (return (values (list frpart) sinint-wholepart)))
      (setq pardenomc (cdr sinint-pardenom))
      (setq ppdenom (list (car sinint-pardenom)))
    dseq
@@ -87,7 +87,7 @@
      (setq ppdenom (cdr ppdenom))
      (if (null ppdenom)
 	 (return (values (cons frpart sinint-parnumer)
-			 wholepart)))
+			 sinint-wholepart)))
      (go numc)))
 
 (defun polyint (p sinint-var)
@@ -116,14 +116,14 @@
 
 (defun dprog (ratarg sinint-ratform sinint-var)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans
-	 sinint-logptdx sinint-parnumer sinint-pardenom sinint-rootfactor wholepart)
+	 sinint-logptdx sinint-parnumer sinint-pardenom sinint-rootfactor sinint-wholepart)
      (setq ans (cons 0 1))
      (if (or (pcoefp (cdr ratarg)) (pointergp sinint-var (cadr ratarg)))
 	 (return (values (disrep (polyint ratarg sinint-var) sinint-ratform)
 			 sinint-logptdx)))
      (multiple-value-setq (sinint-rootfactor sinint-pardenom)
        (aprog (ratdenominator ratarg) sinint-var))
-     (multiple-value-setq (sinint-parnumer wholepart)
+     (multiple-value-setq (sinint-parnumer sinint-wholepart)
        (cprog (ratnumerator ratarg)
 	      (ratdenominator ratarg)
 	      sinint-var
@@ -168,12 +168,12 @@
      (push (ratqu (car sinint-parnumer) (car sinint-rootfactor))
 	   sinint-logptdx)
      (if (equal ans 0)
-	 (return (values (disrep (polyint wholepart sinint-var) sinint-ratform)
+	 (return (values (disrep (polyint sinint-wholepart sinint-var) sinint-ratform)
 			 sinint-logptdx)))
      (setq thetop
 	   (cadr (pdivide (ratnumerator ans) (ratdenominator ans))))
      (return (values (list '(mplus)
-			   (disrep (polyint wholepart sinint-var) sinint-ratform)
+			   (disrep (polyint sinint-wholepart sinint-var) sinint-ratform)
 			   (disrep (ratqu thetop (ratdenominator ans)) sinint-ratform))
 		     sinint-logptdx))))
 
@@ -398,7 +398,7 @@
      (setq sinint-parnumer nil
 	   sinint-pardenom a1e
 	   switch1 t)
-     (multiple-value-setq (sinint-parnumer wholepart)
+     (multiple-value-setq (sinint-parnumer sinint-wholepart)
        (cprog p1e p2e sinint-var sinint-pardenom))
      (setq a2e
 	   (mapcar #'(lambda (j k)
@@ -538,7 +538,7 @@
     (simpnrt (disrep a sinint-ratform) 2)))
 
 (defun fprog (rat* sinint-ratform sinint-var)
-  (prog (wholepart switch1)
+  (prog (switch1)
      (multiple-value-bind (dprog-ret sinint-logptdx)
 	 (dprog rat* sinint-ratform sinint-var)
        (return (addn (cons dprog-ret
