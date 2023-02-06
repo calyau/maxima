@@ -519,7 +519,7 @@
 			idx 0 degree t)))
 	  (t (setq nogood t) 0))))
 
-(defun exppolycontrol (flag f a expg n)
+(defun exppolycontrol (flag f a expg n ratform)
   (let (y l var (varlist varlist) (genvar genvar))
     (setq varlist (reverse (cdr (reverse varlist))))
     (setq var (getrischvar))
@@ -531,7 +531,7 @@
 			0))
 		 (t l)))
 	  ((eq y intvar)
-	   (rischexpvar nil flag (list f a expg n)))
+	   (rischexpvar nil flag (list f a expg n) ratform))
 	  (t (rischexplog (eq y 'mexpt) flag f a
 			  (list expg n (get var 'rischarg)
 				var (get var 'rischdiff)))))))
@@ -549,7 +549,8 @@
 					 expdiff)
 				     (ratqu num (caddr denom))
 				     var
-				     (- (cadr denom)))))
+				     (- (cadr denom))
+				     ratform)))
 	    ((or (numberp num) (not (eq (car num) var)))
 	     (setq w (tryrisch1 y mainvar)))
 	    (t (setq w (rischzero))
@@ -563,11 +564,12 @@
 					     (r* (car num) expdiff)
 					     (ratqu (cadr num) denom)
 					     var
-					     (car num))
+					     (car num)
+					     ratform)
 					    w)))))))
       (setq ans (rischadd w ans)))))
 
-(defun rischexpvar (expexpflag flag l)
+(defun rischexpvar (expexpflag flag l ratform)
   (prog (lcm y m p alphar beta gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd)
      (desetq (f a expg n) l)
@@ -863,7 +865,9 @@
 					       (+ beta mu)
 					       var)
 				      (r* (ratdenominator tt) rbeta))
-			       expg n))
+			       expg
+			       n
+			       ratform))
      (when (null ymu)
        (return (cond ((null flag) nil)
 		     (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
