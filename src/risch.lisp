@@ -198,7 +198,7 @@
           result))))
 
 (defun tryrisch (exp mainvar risch-ratform)
-  (prog (wholepart rootfactor parnumer pardenom
+  (prog (rootfactor parnumer pardenom
 	 switch1 logptdx expflag expstuff expint y)
      (setq expstuff '(0 . 1))
      (cond ((eq mainvar var)
@@ -219,7 +219,7 @@
     (tryrisch exp mainvar risch-ratform)))
 
 (defun rischfprog (rat risch-ratform)
-  (let (rootfactor pardenom parnumer logptdx wholepart switch1)
+  (let (rootfactor pardenom parnumer logptdx switch1)
     (multiple-value-bind (dprog-ret logptdx)
 	(dprog rat risch-ratform var)
       (cons (cdr (ratrep* dprog-ret))
@@ -230,7 +230,8 @@
 		      logptdx))))))
 
 (defun rischlogdprog (ratarg risch-ratform)
-  (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans)
+  (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans
+	 risch-wholepart)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
@@ -238,7 +239,7 @@
 
      (multiple-value-setq (rootfactor pardenom)
        (aprog (ratdenominator ratarg) var))
-     (multiple-value-setq (parnumer wholepart)
+     (multiple-value-setq (parnumer risch-wholepart)
        (cprog (ratnumerator ratarg)
 	      (ratdenominator ratarg)
 	      var
@@ -278,11 +279,11 @@
 	  (push (ratqu thetop arootf) logptdx))))
      (push (ratqu (car parnumer) (car rootfactor)) logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
-	    (return (rischlogpoly wholepart risch-ratform))))
+	    (return (rischlogpoly risch-wholepart risch-ratform))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
      (return (rischadd (ncons (ratqu thetop (ratdenominator ans)))
-		       (rischlogpoly wholepart risch-ratform)))))
+		       (rischlogpoly risch-wholepart risch-ratform)))))
 
 (defun gennegs (denom num numdenom)
   (cond ((null num) nil)
@@ -293,7 +294,8 @@
 		 (gennegs denom (cddr num) numdenom)))))
 
 (defun rischlogeprog (p risch-ratform)
-  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor)
+  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
+	 risch-wholepart)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
      (setq p1e (ratnumerator p))
      (desetq (dcc p2e) (oldcontent (ratdenominator p)))
@@ -302,7 +304,7 @@
 	    (setq parnumer nil)
 	    (setq switch1 t)
 	    (desetq (ncc p1e) (oldcontent p1e))
-	    (multiple-value-setq (parnumer wholepart)
+	    (multiple-value-setq (parnumer risch-wholepart)
 	      (cprog p1e p2e var pardenom))
 	    (setq allcc (ratqu ncc dcc))
 	    (return (do ((pnum parnumer (cdr pnum))
