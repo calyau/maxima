@@ -15,7 +15,6 @@
 (load-macsyma-macros ratmac)
 
 (declare-top (special checkfactors
-		      rootfactor
 		      wholepart switch1))
 
 (defun rootfac (q sinint-var)
@@ -536,7 +535,7 @@
     (simpnrt (disrep a sinint-ratform) 2)))
 
 (defun fprog (rat* sinint-ratform sinint-var)
-  (prog (rootfactor wholepart switch1)
+  (prog (wholepart switch1)
      (multiple-value-bind (dprog-ret sinint-logptdx)
 	 (dprog rat* sinint-ratform sinint-var)
        (return (addn (cons dprog-ret
