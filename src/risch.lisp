@@ -16,7 +16,7 @@
 
 (declare-top (special parnumer pardenom logptdx wholepart
                       expexpflag switch1 degree cary
-                      ratform *var var rootfactor
+                      *var var rootfactor
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch nogood
