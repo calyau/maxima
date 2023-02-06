@@ -15,7 +15,7 @@
 (load-macsyma-macros ratmac)
 
 (declare-top (special checkfactors
-		      rootfactor pardenom
+		      rootfactor
 		      wholepart switch1))
 
 (defun rootfac (q sinint-var)
