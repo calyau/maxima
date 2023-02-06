@@ -235,8 +235,9 @@
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
 	    (return (rischlogpoly ratarg))))
-     (setf pardenom
-	   (nth-value 1 (aprog (ratdenominator ratarg) var)))
+
+     (multiple-value-setq (rootfactor pardenom)
+       (aprog (ratdenominator ratarg) var))
      (setf parnumer (cprog (ratnumerator ratarg)
 			   (ratdenominator ratarg)
 			   var
