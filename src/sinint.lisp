@@ -230,7 +230,7 @@
 
 (defun eprog (p sinint-ratform sinint-var)
   (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg
-	 sinint-parnumer)
+	 sinint-parnumer sinint-pardenom)
      (if (or (equal p 0) (equal (car p) 0))
 	 (return 0))
      (setq p1e (ratnumerator p)
