@@ -406,7 +406,7 @@
      (setq sinint-switch1 nil)
      (return (cons '(mplus) a2e))))
  
-(defun e3prog (num denom cont sinint-ratform sinint-var switch1)
+(defun e3prog (num denom cont sinint-ratform sinint-var sinint-switch1)
   (prog (a b c d e r ratr var* x)
      (setq a (polcoef num 2 sinint-var)
 	   b (polcoef num 1 sinint-var)
@@ -444,7 +444,7 @@
 					     (ratti ratr ratr t)))))
 		     sinint-ratform
 		     sinint-var
-		     switch1)
+		     sinint-switch1)
 	      )))))
 
 (defun eprogratd (a2e p1e p2e sinint-var)
@@ -538,7 +538,7 @@
     (simpnrt (disrep a sinint-ratform) 2)))
 
 (defun fprog (rat* sinint-ratform sinint-var)
-  (prog (switch1)
+  (prog ()
      (multiple-value-bind (dprog-ret sinint-logptdx)
 	 (dprog rat* sinint-ratform sinint-var)
        (return (addn (cons dprog-ret
