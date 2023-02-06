@@ -206,7 +206,7 @@
 	   ((eq (get var 'leadop)
 		'mexpt)
 	    (setq expflag t)))
-     (setq y (rischlogdprog exp))
+     (setq y (rischlogdprog exp ratform))
      (dolist (rat logptdx)
        (setq y (rischadd (rischlogeprog rat ratform) y)))
      (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar ratform) y)))
@@ -229,7 +229,7 @@
 			  (eprog p ratform var switch1))
 		      logptdx))))))
 
-(defun rischlogdprog (ratarg)
+(defun rischlogdprog (ratarg ratform)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
