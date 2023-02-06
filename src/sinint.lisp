@@ -60,7 +60,7 @@
      (setq wholepart (car frpart))
      (setq frpart (cadr frpart))
      (if (= (length sinint-pardenom) 1)
-	 (return (list frpart)))
+	 (return (values (list frpart) wholepart)))
      (setq pardenomc (cdr sinint-pardenom))
      (setq ppdenom (list (car sinint-pardenom)))
    dseq
@@ -86,7 +86,8 @@
      (setq pardenomc (cdr pardenomc))
      (setq ppdenom (cdr ppdenom))
      (if (null ppdenom)
-	 (return (cons frpart sinint-parnumer)))
+	 (return (values (cons frpart sinint-parnumer)
+			 wholepart)))
      (go numc)))
 
 (defun polyint (p sinint-var)
@@ -115,17 +116,18 @@
 
 (defun dprog (ratarg sinint-ratform sinint-var)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans
-	 sinint-logptdx sinint-parnumer sinint-pardenom sinint-rootfactor)
+	 sinint-logptdx sinint-parnumer sinint-pardenom sinint-rootfactor wholepart)
      (setq ans (cons 0 1))
      (if (or (pcoefp (cdr ratarg)) (pointergp sinint-var (cadr ratarg)))
 	 (return (values (disrep (polyint ratarg sinint-var) sinint-ratform)
 			 sinint-logptdx)))
      (multiple-value-setq (sinint-rootfactor sinint-pardenom)
        (aprog (ratdenominator ratarg) sinint-var))
-     (setf sinint-parnumer (cprog (ratnumerator ratarg)
-				  (ratdenominator ratarg)
-				  sinint-var
-				  sinint-pardenom))
+     (multiple-value-setq (sinint-parnumer wholepart)
+       (cprog (ratnumerator ratarg)
+	      (ratdenominator ratarg)
+	      sinint-var
+	      sinint-pardenom))
      (setq sinint-rootfactor (reverse sinint-rootfactor))
      (setq sinint-parnumer (reverse sinint-parnumer))
      (setq klth (length sinint-rootfactor))
@@ -396,7 +398,8 @@
      (setq sinint-parnumer nil
 	   sinint-pardenom a1e
 	   switch1 t)
-     (setf sinint-parnumer (cprog p1e p2e sinint-var sinint-pardenom))
+     (multiple-value-setq (sinint-parnumer wholepart)
+       (cprog p1e p2e sinint-var sinint-pardenom))
      (setq a2e
 	   (mapcar #'(lambda (j k)
 		       (eprog (ratqu j k) sinint-ratform sinint-var))

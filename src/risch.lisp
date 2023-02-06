@@ -238,10 +238,11 @@
 
      (multiple-value-setq (rootfactor pardenom)
        (aprog (ratdenominator ratarg) var))
-     (setf parnumer (cprog (ratnumerator ratarg)
-			   (ratdenominator ratarg)
-			   var
-			   pardenom))
+     (multiple-value-setq (parnumer wholepart)
+       (cprog (ratnumerator ratarg)
+	      (ratdenominator ratarg)
+	      var
+	      pardenom))
      (do ((rootfactor (reverse rootfactor) (cdr rootfactor))
 	  (parnumer (reverse parnumer) (cdr parnumer))
 	  (klth (length rootfactor) (1- klth)))
@@ -301,7 +302,8 @@
 	    (setq parnumer nil)
 	    (setq switch1 t)
 	    (desetq (ncc p1e) (oldcontent p1e))
-	    (setf parnumer (cprog p1e p2e var pardenom))
+	    (multiple-value-setq (parnumer wholepart)
+	      (cprog p1e p2e var pardenom))
 	    (setq allcc (ratqu ncc dcc))
 	    (return (do ((pnum parnumer (cdr pnum))
 			 (pden pardenom (cdr pden))
