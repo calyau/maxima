@@ -229,14 +229,14 @@
       ,dummy
       (($rootsof) ,(subst dummy variable qq) ,dummy))))
 
-(defun eprog (p sinint-ratform sinint-var switch1)
+(defun eprog (p sinint-ratform sinint-var sinint-switch1)
   (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg
 	 sinint-parnumer sinint-pardenom sinint-wholepart)
      (if (or (equal p 0) (equal (car p) 0))
 	 (return 0))
      (setq p1e (ratnumerator p)
 	   p2e (ratdenominator p))
-     (cond ((or switch1
+     (cond ((or sinint-switch1
 		(and (not (atom p2e))
 		     (eq (car (setq xx (cadr (oldcontent p2e))))
 			 sinint-var)
@@ -266,7 +266,7 @@
 	   ((equal deg 2) (go e20))
 	   ((and (equal deg 3) (equal (polcoef p2e 2 sinint-var) 0)
 		 (equal (polcoef p2e 1 sinint-var) 0))
-	    (return (e3prog p1e p2e allcc sinint-ratform sinint-var switch1)))
+	    (return (e3prog p1e p2e allcc sinint-ratform sinint-var sinint-switch1)))
 	   ((and (member deg '(4 5 6) :test #'equal)
 		 (zerocoefl p2e deg sinint-var))
 	    (return (enprog p1e p2e allcc deg sinint-ratform sinint-var))))
@@ -396,14 +396,14 @@
    e40
      (setq sinint-parnumer nil
 	   sinint-pardenom a1e
-	   switch1 t)
+	   sinint-switch1 t)
      (multiple-value-setq (sinint-parnumer sinint-wholepart)
        (cprog p1e p2e sinint-var sinint-pardenom))
      (setq a2e
 	   (mapcar #'(lambda (j k)
-		       (eprog (ratqu j k) sinint-ratform sinint-var switch1))
+		       (eprog (ratqu j k) sinint-ratform sinint-var sinint-switch1))
 		   sinint-parnumer sinint-pardenom))
-     (setq switch1 nil)
+     (setq sinint-switch1 nil)
      (return (cons '(mplus) a2e))))
  
 (defun e3prog (num denom cont sinint-ratform sinint-var switch1)
