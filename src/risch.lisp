@@ -198,7 +198,7 @@
           result))))
 
 (defun tryrisch (exp mainvar risch-ratform)
-  (prog (rootfactor pardenom
+  (prog (rootfactor
 	 switch1 risch-logptdx expflag expstuff expint y)
      (setq expstuff '(0 . 1))
      (cond ((eq mainvar var)
@@ -220,7 +220,7 @@
     (tryrisch exp mainvar risch-ratform)))
 
 (defun rischfprog (rat risch-ratform)
-  (let (rootfactor pardenom switch1)
+  (let (rootfactor switch1)
     (multiple-value-bind (dprog-ret risch-logptdx)
 	(dprog rat risch-ratform var)
       (cons (cdr (ratrep* dprog-ret))
