@@ -14,8 +14,7 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special pardenom
-                      expexpflag switch1 degree cary
+(declare-top (special expexpflag switch1 degree cary
                       *var var rootfactor
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
