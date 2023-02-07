@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special expexpflag switch1 degree cary
+(declare-top (special expexpflag degree cary
                       *var var
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
@@ -197,7 +197,7 @@
           result))))
 
 (defun tryrisch (exp mainvar risch-ratform)
-  (prog (risch-switch1 risch-logptdx expflag expstuff expint y)
+  (prog (risch-logptdx expflag expstuff expint y)
      (setq expstuff '(0 . 1))
      (cond ((eq mainvar var)
 	    (return (rischfprog exp risch-ratform)))
@@ -207,7 +207,7 @@
      (multiple-value-setq (y risch-logptdx)
        (rischlogdprog exp risch-ratform))
      (dolist (rat risch-logptdx)
-       (setq y (rischadd (rischlogeprog rat risch-ratform risch-switch1) y)))
+       (setq y (rischadd (rischlogeprog rat risch-ratform nil) y)))
      (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform) y)))
      (return (if expint (rischadd (rischexppoly expint var risch-ratform) y)
 		 y))))
@@ -218,15 +218,14 @@
     (tryrisch exp mainvar risch-ratform)))
 
 (defun rischfprog (rat risch-ratform)
-  (let (risch-switch1)
-    (multiple-value-bind (dprog-ret risch-logptdx)
-	(dprog rat risch-ratform var)
-      (cons (cdr (ratrep* dprog-ret))
-	    (let ((varlist varlist)
-		  (genvar (subseq genvar 0 (length varlist))))
-	      (mapcar #'(lambda (p)
-			  (eprog p risch-ratform var risch-switch1))
-		      risch-logptdx))))))
+  (multiple-value-bind (dprog-ret risch-logptdx)
+      (dprog rat risch-ratform var)
+    (cons (cdr (ratrep* dprog-ret))
+	  (let ((varlist varlist)
+		(genvar (subseq genvar 0 (length varlist))))
+	    (mapcar #'(lambda (p)
+			(eprog p risch-ratform var))
+		    risch-logptdx)))))
 
 (defun rischlogdprog (ratarg risch-ratform)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans
