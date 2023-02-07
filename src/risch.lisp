@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special parnumer pardenom logptdx wholepart
+(declare-top (special parnumer pardenom logptdx
                       expexpflag switch1 degree cary
                       *var var rootfactor
                       expint trigint operator
