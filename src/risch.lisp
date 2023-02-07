@@ -224,7 +224,7 @@
 	  (let ((varlist varlist)
 		(genvar (subseq genvar 0 (length varlist))))
 	    (mapcar #'(lambda (p)
-			(eprog p risch-ratform var))
+			(eprog p risch-ratform var nil))
 		    risch-logptdx)))))
 
 (defun rischlogdprog (ratarg risch-ratform)
