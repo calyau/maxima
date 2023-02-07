@@ -232,7 +232,7 @@
 
 (defun rischlogdprog (ratarg risch-ratform)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans
-	 risch-wholepart risch-logptdx)
+	 risch-wholepart risch-logptdx risch-parnumer)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
@@ -240,13 +240,13 @@
 
      (multiple-value-setq (rootfactor pardenom)
        (aprog (ratdenominator ratarg) var))
-     (multiple-value-setq (parnumer risch-wholepart)
+     (multiple-value-setq (risch-parnumer risch-wholepart)
        (cprog (ratnumerator ratarg)
 	      (ratdenominator ratarg)
 	      var
 	      pardenom))
      (do ((rootfactor (reverse rootfactor) (cdr rootfactor))
-	  (parnumer (reverse parnumer) (cdr parnumer))
+	  (risch-parnumer (reverse risch-parnumer) (cdr risch-parnumer))
 	  (klth (length rootfactor) (1- klth)))
 	 ((= klth 1))
        (setq arootf (car rootfactor))
@@ -257,18 +257,18 @@
 	  (setq
 	   expint
 	   (append
-	    (cond ((and (not (atom (car parnumer)))
-			(not (atom (caar parnumer)))
-			(eq (caaar parnumer) (car arootf)))
-		   (gennegs arootf (cdaar parnumer) (cdar parnumer)))
+	    (cond ((and (not (atom (car risch-parnumer)))
+			(not (atom (caar risch-parnumer)))
+			(eq (caaar risch-parnumer) (car arootf)))
+		   (gennegs arootf (cdaar risch-parnumer) (cdar risch-parnumer)))
 		  (t (list
-		      (list 'neg (car parnumer)
+		      (list 'neg (car risch-parnumer)
 			    (car arootf) klth (cadr arootf)))))
 	    expint)))
 	 ((not (zerop (pdegree arootf var)))
 	  (setq deriv (spderivative arootf mainvar))
 	  (setq thebpg (bprog arootf (ratnumerator deriv) var))
-	  (setq thetop (car parnumer))
+	  (setq thetop (car risch-parnumer))
 	  (do ((kx (1- klth) (1- kx))) ((= kx 0))
 	    (setq prod1 (r* thetop (car thebpg)))
 	    (setq prod2 (r* thetop (cdr thebpg) (ratdenominator deriv)))
@@ -278,7 +278,7 @@
 		  (r+ prod1 (ratqu (spderivative prod2 mainvar) kx)))
 	    (setq thetop (cdr (ratdivide thetop thebot))))
 	  (push (ratqu thetop arootf) risch-logptdx))))
-     (push (ratqu (car parnumer) (car rootfactor)) risch-logptdx)
+     (push (ratqu (car risch-parnumer) (car rootfactor)) risch-logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
 	    (return (values (rischlogpoly risch-wholepart risch-ratform)
 			    risch-logptdx))))
