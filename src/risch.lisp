@@ -1060,10 +1060,14 @@
    (if (member '$%i clist :test #'eq) (setq clist (cons '$%i (delete '$%i clist :test #'equal))))
    (setq varlist (append clist
 			 (cons *var
-			       (nreverse (sort (append dlist nil) #'intgreat)))))
+			       (nreverse (sort (append dlist nil)
+					       #'(lambda (a b)
+						   (intgreat a b *var)))))))
    (orderpointer varlist)
    (setq old varlist)
-   (mapc #'intset1 (cons *var dlist))
+     (mapc #'(lambda (b)
+	       (intset1 b *var))
+	   (cons *var dlist))
    (cond ((alike old varlist) (return (ratrep* exp)))
 	 (t (go a)))))
 
@@ -1078,7 +1082,7 @@
 	((mqapplyp exp) (car (subfunargs exp)))
 	(t (cadr exp))))
 
-(defun intset1 (b)
+(defun intset1 (b *var)
   (let (e c d)
     (fnewvar
      (setq d (if (mexptp b)		;needed for radicals
@@ -1099,7 +1103,7 @@
 ;; then order by size of expression to guarantee that
 ;; any subexpressions are considered smaller.
 ;; this relation should be transitive, since it is called by sort. 
-(defun intgreat (a b)
+(defun intgreat (a b *var)
   (cond ((and (not (atom a)) (not (atom b)))
 	 (cond ((and (not (freeof '%erf a)) (freeof '%erf b)) t)
 	       ((and (not (freeof '$li a)) (freeof '$li b)) t)
@@ -1107,12 +1111,12 @@
 	       ((and (freeof '%erf a) (not (freeof '%erf b))) nil)
 	       ((> (conssize a) (conssize b)) t)
 	       ((< (conssize a) (conssize b)) nil)
-	       (t (great (resimplify (fixintgreat a))
-			 (resimplify (fixintgreat b))))))
-	(t (great (resimplify (fixintgreat a))
-		  (resimplify (fixintgreat b))))))
+	       (t (great (resimplify (fixintgreat a *var))
+			 (resimplify (fixintgreat b *var))))))
+	(t (great (resimplify (fixintgreat a *var))
+		  (resimplify (fixintgreat b *var))))))
 
-(defun fixintgreat (a)
+(defun fixintgreat (a *var)
   (subst '/_101x *var a))
 
 (declare-top (unspecial b beta cary context *exp degree gamma
