@@ -232,19 +232,19 @@
 
 (defun rischlogdprog (ratarg risch-ratform)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans
-	 risch-wholepart risch-logptdx risch-parnumer)
+	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
 	    (return (rischlogpoly ratarg risch-ratform))))
 
-     (multiple-value-setq (rootfactor pardenom)
+     (multiple-value-setq (rootfactor risch-pardenom)
        (aprog (ratdenominator ratarg) var))
      (multiple-value-setq (risch-parnumer risch-wholepart)
        (cprog (ratnumerator ratarg)
 	      (ratdenominator ratarg)
 	      var
-	      pardenom))
+	      risch-pardenom))
      (do ((rootfactor (reverse rootfactor) (cdr rootfactor))
 	  (risch-parnumer (reverse risch-parnumer) (cdr risch-parnumer))
 	  (klth (length rootfactor) (1- klth)))
