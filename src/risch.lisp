@@ -219,15 +219,15 @@
     (tryrisch exp mainvar risch-ratform)))
 
 (defun rischfprog (rat risch-ratform)
-  (let (rootfactor pardenom parnumer logptdx switch1)
-    (multiple-value-bind (dprog-ret logptdx)
+  (let (rootfactor pardenom parnumer switch1)
+    (multiple-value-bind (dprog-ret risch-logptdx)
 	(dprog rat risch-ratform var)
       (cons (cdr (ratrep* dprog-ret))
 	    (let ((varlist varlist)
 		  (genvar (subseq genvar 0 (length varlist))))
 	      (mapcar #'(lambda (p)
 			  (eprog p risch-ratform var switch1))
-		      logptdx))))))
+		      risch-logptdx))))))
 
 (defun rischlogdprog (ratarg risch-ratform)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans
