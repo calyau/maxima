@@ -294,8 +294,7 @@
 		 (gennegs denom (cddr num) numdenom)))))
 
 (defun rischlogeprog (p risch-ratform)
-  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
-	 risch-wholepart)
+  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
      (setq p1e (ratnumerator p))
      (desetq (dcc p2e) (oldcontent (ratdenominator p)))
@@ -304,7 +303,7 @@
 	    (setq parnumer nil)
 	    (setq switch1 t)
 	    (desetq (ncc p1e) (oldcontent p1e))
-	    (multiple-value-setq (parnumer risch-wholepart)
+	    (multiple-value-setq (parnumer)
 	      (cprog p1e p2e var pardenom))
 	    (setq allcc (ratqu ncc dcc))
 	    (return (do ((pnum parnumer (cdr pnum))
