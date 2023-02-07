@@ -295,16 +295,16 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom)))))
 
-(defun rischlogeprog (p risch-ratform switch1)
+(defun rischlogeprog (p risch-ratform risch-switch1)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
 	 risch-parnumer risch-pardenom)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
      (setq p1e (ratnumerator p))
      (desetq (dcc p2e) (oldcontent (ratdenominator p)))
-     (cond ((and (not switch1)
+     (cond ((and (not risch-switch1)
 		 (cdr (setq risch-pardenom (intfactor p2e))))
 	    (setq risch-parnumer nil)
-	    (setq switch1 t)
+	    (setq risch-switch1 t)
 	    (desetq (ncc p1e) (oldcontent p1e))
 	    (multiple-value-setq (risch-parnumer)
 	      (cprog p1e p2e var risch-pardenom))
@@ -313,12 +313,12 @@
 			 (pden risch-pardenom (cdr pden))
 			 (ans (rischzero)))
 			((or (null pnum) (null pden))
-			 (setq switch1 nil) ans)
+			 (setq risch-switch1 nil) ans)
 		      (setq ans (rischadd
 				 (rischlogeprog
 				  (r* allcc (ratqu (car pnum) (car pden)))
 				  risch-ratform
-				  switch1)
+				  risch-switch1)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
