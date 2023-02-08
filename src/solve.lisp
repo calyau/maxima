@@ -238,7 +238,7 @@
 		       (setq *var symbol)
 		       (setq *myvar *var))) ;keep *MYVAR up-to-date
 	      
-		(cond ($solveradcan (setq exp (radcan1 exp))
+		(cond ($solveradcan (setq exp (radcan1 exp *var))
 				    (if (atom exp) (go a))))
 	      
 		(cond ((easy-cases exp *var mult)

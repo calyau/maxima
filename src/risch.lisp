@@ -1034,10 +1034,7 @@
   (prog (varlist clist $factorflag dlist genpairs old y z $ratfac $keepfloat
 	 *fnewvarsw)
    y
-     (let ((*var risch-*var))
-       ;; radcan1 needs to have *var set!  It eventually calls
-       ;; spc0 which calls rjfsimp that needs *var.
-       (setq exp (radcan1 exp)))
+     (setq exp (radcan1 exp risch-*var))
      (fnewvar exp)
      (setq *fnewvarsw t)
    a
@@ -1103,14 +1100,13 @@
 (defun intset1 (b risch-*var)
   (let (e c d)
     (fnewvar
-     (setq d (let ((*var risch-*var))
-	       ;; radcan1 needs to have *var set!  It eventually calls
-	       ;; spc0 which calls rjfsimp that needs *var.
-	       (if (mexptp b)		;needed for radicals
-		   `((mtimes simp)
-		     ,b
-		     ,(radcan1 (sdiff (simplify (caddr b)) risch-*var)))
-		   (radcan1 (sdiff (simplify b) risch-*var))))))
+     (setq d (if (mexptp b)		;needed for radicals
+		 `((mtimes simp)
+		   ,b
+		   ,(radcan1 (sdiff (simplify (caddr b)) risch-*var)
+			     risch-*var))
+		 (radcan1 (sdiff (simplify b) risch-*var)
+			  risch-*var))))
     (setq d (ratrep* d))
     (setq c (ratrep* (leadarg b)))
     (setq e (cdr (assoc b (pair varlist genvar) :test #'equal)))
