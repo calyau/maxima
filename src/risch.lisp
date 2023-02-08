@@ -1103,7 +1103,7 @@
 ;; then order by size of expression to guarantee that
 ;; any subexpressions are considered smaller.
 ;; this relation should be transitive, since it is called by sort. 
-(defun intgreat (a b *var)
+(defun intgreat (a b risch-*var)
   (cond ((and (not (atom a)) (not (atom b)))
 	 (cond ((and (not (freeof '%erf a)) (freeof '%erf b)) t)
 	       ((and (not (freeof '$li a)) (freeof '$li b)) t)
@@ -1111,13 +1111,13 @@
 	       ((and (freeof '%erf a) (not (freeof '%erf b))) nil)
 	       ((> (conssize a) (conssize b)) t)
 	       ((< (conssize a) (conssize b)) nil)
-	       (t (great (resimplify (fixintgreat a *var))
-			 (resimplify (fixintgreat b *var))))))
-	(t (great (resimplify (fixintgreat a *var))
-		  (resimplify (fixintgreat b *var))))))
+	       (t (great (resimplify (fixintgreat a risch-*var))
+			 (resimplify (fixintgreat b risch-*var))))))
+	(t (great (resimplify (fixintgreat a risch-*var))
+		  (resimplify (fixintgreat b risch-*var))))))
 
-(defun fixintgreat (a *var)
-  (subst '/_101x *var a))
+(defun fixintgreat (a risch-*var)
+  (subst '/_101x risch-*var a))
 
 (declare-top (unspecial b beta cary context *exp degree gamma
 			klth liflag m nogood operator
