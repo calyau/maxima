@@ -247,6 +247,12 @@
           (mapcar #'(lambda (f) (cdr (draw2d f range options))) (cdr fun)))
     (when (= (count-if #'(lambda (x) x) points-lists) 0)
       (merror (intl:gettext "plot2d: nothing to plot.~%")))
+    (let ((legends-new) (legends (getf options :legend)))
+      (unless (null legends)
+        (dotimes (i (length legends))
+          (unless (null (cdr (nth i points-lists)))
+            (push (nth i legends) legends-new)))
+        (setf (getf options :legend) (reverse legends-new))))
     (setf
      (slot-value plot 'data)
      (concatenate
