@@ -124,7 +124,7 @@
 	 (setq *exp2 (cdr (ratrep* c)))
 	 ;; since *radsubst is t, both *exp and *exp2 will be radcan simplified
 	 (setq *radsubst t)
-	 (spc0)
+	 (spc0 *var)
 	 (setq b (rdis *exp) c (rdis *exp2))
 	 (setq varlist nil))
 	(progn 
@@ -420,9 +420,9 @@
   (cond ((mbagp exp) (cons (car exp) (mapcar '$radcan (cdr exp))))
 	(t (let (($ratsimpexpons t))
 	     (simplify (let (($expop 0) ($expon 0))
-			 (radcan1 (fr1 exp nil))))))))
+			 (radcan1 (fr1 exp nil) *var)))))))
 
-(defun radcan1 (*exp)
+(defun radcan1 (*exp *var)
   (cond ((atom *exp) *exp)
 	(t (let (($factorflag t) varlist genvar $ratfac $norepeat
 		 ($gcd (or $gcd (car *gcdl*)))
@@ -434,12 +434,14 @@
 		    #'(lambda (x) (cond
 				    ((atom x) x)
 				    (t (cons (car x)
-					     (mapcar 'radcan1 (cdr x))))))
+					     (mapcar #'(lambda (e)
+							 (radcan1 e *var))
+						     (cdr x))))))
 		    varlist))
-	     (spc0)
+	     (spc0 *var)
 	     (fr1 (rdis *exp) nil)))))
 
-(defun spc0 ()
+(defun spc0 (*var)
   (prog (*v *loglist)
      (if (allatoms varlist) (return nil))
      (setq varlist (mapcar #'spc1 varlist)) ;make list of logs
@@ -449,13 +451,15 @@
      (mapc #'spc4 varlist)		   ;make exponent list
      (desetq (varlist . genvar) (spc5 *v varlist genvar))
 					;find expon dependencies
-     (setq varlist (mapcar #'rjfsimp varlist)) ;restore radicals
+     (setq varlist (mapcar #'(lambda (x)
+			       (rjfsimp x *var))
+			   varlist)) ;restore radicals
      (mapc #'spc7 varlist)))		       ;simplify radicals
 
 (defun allatoms (l)
   (loop for x in l always (atom x)))
 
-(defun rjfsimp (x &aux expon)
+(defun rjfsimp (x *var &aux expon)
   (cond ((and *radsubst $radsubstflag) x)
 	((not (m$exp? (setq x (let ($logsimp) (resimplify x))))) x)
 	((mlogp (setq expon (caddr x))) (cadr expon))
@@ -593,7 +597,7 @@
      (dolist (log l)
        (setq log
 	     (cons log (goodform
-			(ratfact (rform (radcan1 (cadr log)))
+			(ratfact (rform (radcan1 (cadr log) *var))
 				 #'pfactor))))
        (cond ((equal (caadr log) -1) (push log negl))
 	     (t (push log posl))))

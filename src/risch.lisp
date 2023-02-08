@@ -15,7 +15,7 @@
 (load-macsyma-macros rzmac ratmac)
 
 (declare-top (special expexpflag degree cary
-                      *var var
+                      var
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch nogood
@@ -1030,42 +1030,61 @@
 					 (make-poly (p-var p) exp 1)))))))
 
 
-(defun intsetup (exp *var)
+(defun intsetup (exp risch-*var)
   (prog (varlist clist $factorflag dlist genpairs old y z $ratfac $keepfloat
 	 *fnewvarsw)
-   y    (setq exp (radcan1 exp))
-   (fnewvar exp)
-   (setq *fnewvarsw t)
-   a    (setq clist nil)
-   (setq dlist nil)
-   (setq z varlist)
-   up   (setq y (pop z))
-   (cond ((freeof *var y) (push y clist))
-	 ((eq y *var) nil)
-	 ((and (mexptp y)
-	       (not (eq (cadr y) '$%e)))
-	  (cond ((not (freeof *var (caddr y)))
-		 (setq dlist `((mexpt simp)
-			       $%e
-			       ,(mul2* (caddr y)
-				       `((%log) ,(cadr y)))))
-		 (setq exp (maxima-substitute dlist y exp))
-		 (setq varlist nil)  (go y))
-		((atom (caddr y))
-		 (cond ((numberp (caddr y)) (push y dlist))
-		       (t (setq operator t)(return nil))))
-		(t (push y dlist))))
-	 (t (push y dlist)))
-   (if z (go up))
-   (if (member '$%i clist :test #'eq) (setq clist (cons '$%i (delete '$%i clist :test #'equal))))
-   (setq varlist (append clist
-			 (cons *var
-			       (nreverse (sort (append dlist nil) #'intgreat)))))
-   (orderpointer varlist)
-   (setq old varlist)
-   (mapc #'intset1 (cons *var dlist))
-   (cond ((alike old varlist) (return (ratrep* exp)))
-	 (t (go a)))))
+   y
+     (setq exp (radcan1 exp risch-*var))
+     (fnewvar exp)
+     (setq *fnewvarsw t)
+   a
+     (setq clist nil)
+     (setq dlist nil)
+     (setq z varlist)
+   up
+     (setq y (pop z))
+     (cond ((freeof risch-*var y)
+	    (push y clist))
+	   ((eq y risch-*var)
+	    nil)
+	   ((and (mexptp y)
+		 (not (eq (cadr y) '$%e)))
+	    (cond ((not (freeof risch-*var (caddr y)))
+		   (setq dlist `((mexpt simp)
+				 $%e
+				 ,(mul2* (caddr y)
+					 `((%log) ,(cadr y)))))
+		   (setq exp (maxima-substitute dlist y exp))
+		   (setq varlist nil)
+		   (go y))
+		  ((atom (caddr y))
+		   (cond ((numberp (caddr y))
+			  (push y dlist))
+			 (t
+			  (setq operator t)
+			  (return nil))))
+		  (t
+		   (push y dlist))))
+	   (t
+	    (push y dlist)))
+     (if z
+	 (go up))
+     (if (member '$%i clist :test #'eq)
+	 (setq clist (cons '$%i (delete '$%i clist :test #'equal))))
+     (setq varlist (append clist
+			   (cons risch-*var
+				 (nreverse (sort (append dlist nil)
+						 #'(lambda (a b)
+						     (intgreat a b risch-*var)))))))
+     (orderpointer varlist)
+     (setq old varlist)
+     (mapc #'(lambda (b)
+	       (intset1 b risch-*var))
+	   (cons risch-*var dlist))
+     (cond ((alike old varlist)
+	    (return (prog1
+			(ratrep* exp))))
+	   (t (go a)))))
 
 (defun leadop (exp)
   (cond ((atom exp) exp)
@@ -1078,14 +1097,16 @@
 	((mqapplyp exp) (car (subfunargs exp)))
 	(t (cadr exp))))
 
-(defun intset1 (b)
+(defun intset1 (b risch-*var)
   (let (e c d)
     (fnewvar
      (setq d (if (mexptp b)		;needed for radicals
 		 `((mtimes simp)
 		   ,b
-		   ,(radcan1 (sdiff (simplify (caddr b)) *var)))
-		 (radcan1 (sdiff (simplify b) *var)))))
+		   ,(radcan1 (sdiff (simplify (caddr b)) risch-*var)
+			     risch-*var))
+		 (radcan1 (sdiff (simplify b) risch-*var)
+			  risch-*var))))
     (setq d (ratrep* d))
     (setq c (ratrep* (leadarg b)))
     (setq e (cdr (assoc b (pair varlist genvar) :test #'equal)))
@@ -1099,7 +1120,7 @@
 ;; then order by size of expression to guarantee that
 ;; any subexpressions are considered smaller.
 ;; this relation should be transitive, since it is called by sort. 
-(defun intgreat (a b)
+(defun intgreat (a b risch-*var)
   (cond ((and (not (atom a)) (not (atom b)))
 	 (cond ((and (not (freeof '%erf a)) (freeof '%erf b)) t)
 	       ((and (not (freeof '$li a)) (freeof '$li b)) t)
@@ -1107,14 +1128,14 @@
 	       ((and (freeof '%erf a) (not (freeof '%erf b))) nil)
 	       ((> (conssize a) (conssize b)) t)
 	       ((< (conssize a) (conssize b)) nil)
-	       (t (great (resimplify (fixintgreat a))
-			 (resimplify (fixintgreat b))))))
-	(t (great (resimplify (fixintgreat a))
-		  (resimplify (fixintgreat b))))))
+	       (t (great (resimplify (fixintgreat a risch-*var))
+			 (resimplify (fixintgreat b risch-*var))))))
+	(t (great (resimplify (fixintgreat a risch-*var))
+		  (resimplify (fixintgreat b risch-*var))))))
 
-(defun fixintgreat (a)
-  (subst '/_101x *var a))
+(defun fixintgreat (a risch-*var)
+  (subst '/_101x risch-*var a))
 
 (declare-top (unspecial b beta cary context *exp degree gamma
 			klth liflag m nogood operator
-			r s switch switch1 *var var  y))
+			r s switch switch1 var  y))
