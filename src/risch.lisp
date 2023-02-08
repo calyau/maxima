@@ -1030,11 +1030,14 @@
 					 (make-poly (p-var p) exp 1)))))))
 
 
-(defun intsetup (exp *var)
+(defun intsetup (exp risch-*var)
   (prog (varlist clist $factorflag dlist genpairs old y z $ratfac $keepfloat
 	 *fnewvarsw)
    y
-     (setq exp (radcan1 exp))
+     (let ((*var risch-*var))
+       ;; radcan1 needs to have *var set!  It eventually calls
+       ;; spc0 which calls rjfsimp that needs *var.
+       (setq exp (radcan1 exp)))
      (fnewvar exp)
      (setq *fnewvarsw t)
    a
@@ -1043,24 +1046,26 @@
      (setq z varlist)
    up
      (setq y (pop z))
-     (cond ((freeof *var y)
+     (cond ((freeof risch-*var y)
 	    (push y clist))
-	   ((eq y *var)
+	   ((eq y risch-*var)
 	    nil)
 	   ((and (mexptp y)
 		 (not (eq (cadr y) '$%e)))
-	    (cond ((not (freeof *var (caddr y)))
+	    (cond ((not (freeof risch-*var (caddr y)))
 		   (setq dlist `((mexpt simp)
 				 $%e
 				 ,(mul2* (caddr y)
 					 `((%log) ,(cadr y)))))
 		   (setq exp (maxima-substitute dlist y exp))
-		   (setq varlist nil)  (go y))
+		   (setq varlist nil)
+		   (go y))
 		  ((atom (caddr y))
 		   (cond ((numberp (caddr y))
 			  (push y dlist))
 			 (t
-			  (setq operator t)(return nil))))
+			  (setq operator t)
+			  (return nil))))
 		  (t
 		   (push y dlist))))
 	   (t
@@ -1070,17 +1075,18 @@
      (if (member '$%i clist :test #'eq)
 	 (setq clist (cons '$%i (delete '$%i clist :test #'equal))))
      (setq varlist (append clist
-			   (cons *var
+			   (cons risch-*var
 				 (nreverse (sort (append dlist nil)
 						 #'(lambda (a b)
-						     (intgreat a b *var)))))))
+						     (intgreat a b risch-*var)))))))
      (orderpointer varlist)
      (setq old varlist)
      (mapc #'(lambda (b)
-	       (intset1 b *var))
-	   (cons *var dlist))
+	       (intset1 b risch-*var))
+	   (cons risch-*var dlist))
      (cond ((alike old varlist)
-	    (return (ratrep* exp)))
+	    (return (prog1
+			(ratrep* exp))))
 	   (t (go a)))))
 
 (defun leadop (exp)
@@ -1097,11 +1103,14 @@
 (defun intset1 (b risch-*var)
   (let (e c d)
     (fnewvar
-     (setq d (if (mexptp b)		;needed for radicals
-		 `((mtimes simp)
-		   ,b
-		   ,(radcan1 (sdiff (simplify (caddr b)) risch-*var)))
-		 (radcan1 (sdiff (simplify b) risch-*var)))))
+     (setq d (let ((*var risch-*var))
+	       ;; radcan1 needs to have *var set!  It eventually calls
+	       ;; spc0 which calls rjfsimp that needs *var.
+	       (if (mexptp b)		;needed for radicals
+		   `((mtimes simp)
+		     ,b
+		     ,(radcan1 (sdiff (simplify (caddr b)) risch-*var)))
+		   (radcan1 (sdiff (simplify b) risch-*var))))))
     (setq d (ratrep* d))
     (setq c (ratrep* (leadarg b)))
     (setq e (cdr (assoc b (pair varlist genvar) :test #'equal)))
