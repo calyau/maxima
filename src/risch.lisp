@@ -15,7 +15,7 @@
 (load-macsyma-macros rzmac ratmac)
 
 (declare-top (special expexpflag degree cary
-                      *var var
+                      var
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
                       expstuff liflag intvar switch nogood
@@ -1138,4 +1138,4 @@
 
 (declare-top (unspecial b beta cary context *exp degree gamma
 			klth liflag m nogood operator
-			r s switch switch1 *var var  y))
+			r s switch switch1 var  y))
