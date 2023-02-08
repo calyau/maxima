@@ -34,7 +34,7 @@
 ;; elements.  risch expression is sum of CRE and remaining elements.
 (defmacro rischzero () ''((0 . 1) 0))
 
-(defun rischnoun (exp1 risch-ratform &optional (exp2 exp1 exp2p))
+(defun rischnoun (exp1 risch-ratform intvar &optional (exp2 exp1 exp2p))
   (unless exp2p (setq exp1 (rzero)))
   `(,exp1 ((%integrate) ,(disrep exp2 risch-ratform) ,intvar)))
 
@@ -330,7 +330,7 @@
      (setq my-divisor (if expflag (r- p2deriv (r* p2e expcoef)) p2deriv))
      (when (equal my-divisor '(0 . 1))
        ;; (format t "HEY RISCHLOGEPROG, FOUND ZERO DIVISOR; GIVE UP.~%")
-       (return (rischnoun p risch-ratform)))
+       (return (rischnoun p risch-ratform intvar)))
      (setq logcoef (ratqu p1e my-divisor))
      (when (risch-constp logcoef)
        (if expflag
@@ -355,7 +355,7 @@
 	       (return
 		 (list (rzero)
 		       (maxima-substitute (get var 'rischexpr) newvar new-int))))))
-     (return (rischnoun p risch-ratform))))
+     (return (rischnoun p risch-ratform intvar))))
 
 
 (defun findint (exp)
@@ -477,7 +477,8 @@
 	     (setq liflag nil)
 	     (cond ((and (> degree 0)
 			 (or nogood (findint (cdr y))))
-		    (return (rischnoun sum risch-ratform
+		    (return (rischnoun sum risch-ratform 
+				       intvar
 				       (r+ (r* ak
 					       (make-poly var degree 1))
 					   (ratqu p den))))))
@@ -1024,7 +1025,8 @@
 		(rischadd (cons ans erfans)
 			  (rischnoun (r* (ratexpt (cons (make-poly expg) 1) n)
 					 (ratqu fails (cdr numdenom)))
-				     risch-ratform))))))
+				     risch-ratform
+				     intvar))))))
 
 (defun explist (p oarg exps)
   (cond ((or (pcoefp p) (not (eq 'mexpt (get (p-var p) 'leadop))))
