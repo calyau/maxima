@@ -1094,14 +1094,14 @@
 	((mqapplyp exp) (car (subfunargs exp)))
 	(t (cadr exp))))
 
-(defun intset1 (b *var)
+(defun intset1 (b risch-*var)
   (let (e c d)
     (fnewvar
      (setq d (if (mexptp b)		;needed for radicals
 		 `((mtimes simp)
 		   ,b
-		   ,(radcan1 (sdiff (simplify (caddr b)) *var)))
-		 (radcan1 (sdiff (simplify b) *var)))))
+		   ,(radcan1 (sdiff (simplify (caddr b)) risch-*var)))
+		 (radcan1 (sdiff (simplify b) risch-*var)))))
     (setq d (ratrep* d))
     (setq c (ratrep* (leadarg b)))
     (setq e (cdr (assoc b (pair varlist genvar) :test #'equal)))
