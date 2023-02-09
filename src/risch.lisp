@@ -18,7 +18,7 @@
                       var
                       expint trigint operator
                       changevp klth r s beta gamma b mainvar expflag
-                      expstuff liflag intvar switch nogood
+                      expstuff liflag switch nogood
                       alphar m
                       hypertrigint *mosesflag *exp y
                       context *in-risch-p*))
