@@ -120,14 +120,15 @@
      (if (and (atom risch-intvar)
 	      (isinop exp risch-intvar))
 	 (go noun))
-     (rischform exp risch-intvar)
+     (setq operator (rischform exp risch-intvar))
      (cond (trigint
 	    (return (trigin1 exp risch-intvar)))
 	   (hypertrigint
 	    (return (hypertrigint1 exp risch-intvar t)))
 	   (operator
 	    (go noun)))
-     (setq y (intsetup exp risch-intvar))
+     (multiple-value-setq (y operator)
+       (intsetup exp risch-intvar))
      (if operator
 	 (go noun))
      (setq risch-ratform (car y))
@@ -181,7 +182,8 @@
 	   (t
 	    (setq operator (caar l)))))
 	(t
-	 (setq operator (caar l)))))
+	 (setq operator (caar l))))
+  operator)
 
 (defun hypertrigint1 (exp var hyperfunc)
   (let ((result (if hyperfunc
@@ -1193,7 +1195,7 @@
 			  (push y dlist))
 			 (t
 			  (setq operator t)
-			  (return nil))))
+			  (return (values nil operator)))))
 		  (t
 		   (push y dlist))))
 	   (t
@@ -1213,8 +1215,8 @@
 	       (intset1 b risch-*var))
 	   (cons risch-*var dlist))
      (cond ((alike old varlist)
-	    (return (prog1
-			(ratrep* exp))))
+	    (return (values (ratrep* exp)
+			    operator)))
 	   (t (go a)))))
 
 (defun leadop (exp)
