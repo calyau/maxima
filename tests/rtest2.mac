@@ -1153,12 +1153,15 @@ block ([use_fast_arrays : false,
 
 (kill (xyz),
  xyz: 123,
- expected_filename: sconcat (maxima_tempdir, "/tmpsave123.lisp"),
- save (sconcat (maxima_tempdir, "/tmpsave", xyz, ".lisp"), xyz));
+ expected_filename: "tmpsave123.lisp",
+ expected_path: sconcat (maxima_tempdir, "/", expected_filename),
+ save (sconcat (maxima_tempdir, "/tmpsave", xyz, ".lisp"), xyz),
+ /* call SUBSEQ to extract the filename from the path returned by 'save' */
+ ?subseq (%%, ?length (%%) - ?length (expected_filename)));
 ''expected_filename;
 
 (kill (xyz),
- load (expected_filename),
+ load (expected_path),
  xyz);
 123;
 
