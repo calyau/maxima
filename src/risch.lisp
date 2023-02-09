@@ -17,7 +17,7 @@
 (declare-top (special expexpflag degree cary
                       var
                       expint trigint operator
-                      changevp klth r s beta gamma b mainvar expflag
+                      changevp r s beta gamma b mainvar expflag
                       expstuff liflag switch nogood
                       alphar m
                       hypertrigint *mosesflag *exp y
