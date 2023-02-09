@@ -17,7 +17,7 @@
 (declare-top (special expexpflag degree cary
                       var
                       expint trigint operator
-                      changevp r s beta gamma b mainvar expflag
+                      changevp r s beta b mainvar expflag
                       expstuff switch nogood
                       alphar m
                       hypertrigint *mosesflag *exp y
@@ -1287,6 +1287,6 @@
 (defun fixintgreat (a risch-*var)
   (subst '/_101x risch-*var a))
 
-(declare-top (unspecial b beta cary context *exp degree gamma
+(declare-top (unspecial b beta cary context *exp degree
 			m nogood operator
 			r s switch switch1 var  y))
