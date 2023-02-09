@@ -18,7 +18,7 @@
                       var
                       expint trigint operator
                       changevp r s beta gamma b mainvar expflag
-                      expstuff liflag switch nogood
+                      expstuff switch nogood
                       alphar m
                       hypertrigint *mosesflag *exp y
                       context *in-risch-p*))
@@ -1283,5 +1283,5 @@
   (subst '/_101x risch-*var a))
 
 (declare-top (unspecial b beta cary context *exp degree gamma
-			liflag m nogood operator
+			m nogood operator
 			r s switch switch1 var  y))
