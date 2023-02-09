@@ -109,7 +109,7 @@
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)
                      ($logexpand t))
-  (prog ($%e_to_numlog $logsimp trigint operator y z var risch-ratform liflag
+  (prog ($%e_to_numlog $logsimp trigint operator y z var risch-ratform risch-liflag
 	 mainvar varlist genvar hypertrigint $ratfac $ratalgdenom )
      (if (specrepp exp) (setq exp (specdisrep exp)))
      (if (specrepp risch-intvar) (setq risch-intvar (specdisrep risch-intvar)))
@@ -130,7 +130,7 @@
        (setq $algebraic nil)
        (setq $gcd (car *gcdl*)))
      (setq var (getrischvar))
-     (setq z (tryrisch (cdr y) mainvar risch-ratform risch-intvar liflag))
+     (setq z (tryrisch (cdr y) mainvar risch-ratform risch-intvar risch-liflag))
      (setf (caddr risch-ratform) varlist)
      (setf (cadddr risch-ratform) genvar)
      (return (cond ((atom (cdr z)) (disrep (car z) risch-ratform))
@@ -198,7 +198,7 @@
             (meval (list '($ev) result '$nouns)))
           result))))
 
-(defun tryrisch (exp mainvar risch-ratform risch-intvar liflag)
+(defun tryrisch (exp mainvar risch-ratform risch-intvar risch-liflag)
   (prog (risch-logptdx expflag expstuff expint y)
      (setq expstuff '(0 . 1))
      (cond ((eq mainvar var)
@@ -207,17 +207,21 @@
 		'mexpt)
 	    (setq expflag t)))
      (multiple-value-setq (y risch-logptdx)
-       (rischlogdprog exp risch-ratform risch-intvar liflag))
+       (rischlogdprog exp risch-ratform risch-intvar risch-liflag))
      (dolist (rat risch-logptdx)
        (setq y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar) y)))
-     (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform risch-intvar liflag) y)))
-     (return (if expint (rischadd (rischexppoly expint var risch-ratform risch-intvar liflag) y)
+     (if varlist
+	 (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform risch-intvar risch-liflag)
+			   y)))
+     (return (if expint
+		 (rischadd (rischexppoly expint var risch-ratform risch-intvar risch-liflag)
+			   y)
 		 y))))
 
-(defun tryrisch1 (exp mainvar risch-ratform risch-intvar liflag)
+(defun tryrisch1 (exp mainvar risch-ratform risch-intvar risch-liflag)
   (let* ((varlist (reverse (cdr (reverse varlist))))
 	 (var (getrischvar)))
-    (tryrisch exp mainvar risch-ratform risch-intvar liflag)))
+    (tryrisch exp mainvar risch-ratform risch-intvar risch-liflag)))
 
 (defun rischfprog (rat risch-ratform)
   (multiple-value-bind (dprog-ret risch-logptdx)
@@ -229,14 +233,14 @@
 			(eprog p risch-ratform var nil))
 		    risch-logptdx)))))
 
-(defun rischlogdprog (ratarg risch-ratform risch-intvar liflag)
+(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag)
   (prog (arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom
 	 risch-rootfactor)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
-	    (return (rischlogpoly ratarg risch-ratform risch-intvar liflag))))
+	    (return (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag))))
 
      (multiple-value-setq (risch-rootfactor risch-pardenom)
        (aprog (ratdenominator ratarg) var))
@@ -280,12 +284,12 @@
 	  (push (ratqu thetop arootf) risch-logptdx))))
      (push (ratqu (car risch-parnumer) (car risch-rootfactor)) risch-logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
-	    (return (values (rischlogpoly risch-wholepart risch-ratform risch-intvar liflag)
+	    (return (values (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag)
 			    risch-logptdx))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
      (return (values (rischadd (ncons (ratqu thetop (ratdenominator ans)))
-			       (rischlogpoly risch-wholepart risch-ratform risch-intvar liflag))
+			       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag))
 		     risch-logptdx))))
 
 (defun gennegs (denom num numdenom risch-klth)
@@ -385,12 +389,14 @@
           (push x coef)
           (push x fn)))))
 
-(defun getfncoeff (a form risch-intvar liflag)
+(defun getfncoeff (a form risch-intvar risch-liflag)
   (cond ((null a) 0)
-	((equal (car a) 0) (getfncoeff (cdr a) form risch-intvar liflag))
+	((equal (car a) 0)
+	 (getfncoeff (cdr a) form risch-intvar risch-liflag))
 	((and (listp (car a))
-	      (eq (caaar a) 'mplus) (ratpl (getfncoeff (cdar a) form risch-intvar liflag)
-					   (getfncoeff (cdr a) form risch-intvar liflag))))
+	      (eq (caaar a) 'mplus)
+	      (ratpl (getfncoeff (cdar a) form risch-intvar risch-liflag)
+		     (getfncoeff (cdr a) form risch-intvar risch-liflag))))
 	((and (listp (car a))
 	      (eq (caaar a) 'mtimes))
 	 (multiple-value-bind (coef newfn)
@@ -408,88 +414,108 @@
            (setf (car a) (list '(mtimes) coef newfn))
 	   
 	   (setf (cdar a) (list coef newfn))
-	   (cond ((zerop1 coef) (getfncoeff (cdr a) form risch-intvar liflag))
-		 ((and (matanp newfn) (member '$%i varlist :test #'eq))
+	   (cond ((zerop1 coef)
+		  (getfncoeff (cdr a) form risch-intvar risch-liflag))
+		 ((and (matanp newfn)
+		       (member '$%i varlist :test #'eq))
 		  (let (($logarc t) ($logexpand '$all))
 		    (rplaca a ($expand (resimplify (car a)))))
-		  (getfncoeff a form risch-intvar liflag))
+		  (getfncoeff a form risch-intvar risch-liflag))
 		 ((and (alike1 (leadop newfn) (leadop form))
-                     (or (alike1 (leadarg newfn) (leadarg form))
-                        (and (mlogp newfn)
-                           (logequiv form newfn risch-intvar))))
+                       (or (alike1 (leadarg newfn) (leadarg form))
+                           (and (mlogp newfn)
+				(logequiv form newfn risch-intvar))))
 		  (ratpl (rform coef)
 			 (prog2 (rplaca a 0)
-			     (getfncoeff (cdr a) form risch-intvar liflag))))
-		 ((do ((vl varlist (cdr vl))) ((null vl))
+			     (getfncoeff (cdr a) form risch-intvar risch-liflag))))
+		 ((do ((vl varlist (cdr vl)))
+		      ((null vl))
 		    (and (not (atom (car vl)))
-                       (alike1 (leadop (car vl)) (leadop newfn))
-                       (if (mlogp newfn)
-                           (logequiv (car vl) newfn risch-intvar)
-                           (alike1 (car vl) newfn))
-                       (rplaca (cddar a) (car vl))
-                       (return nil))))
-		 ((let (vlist) (newvar1 (car a)) (null vlist))
+			 (alike1 (leadop (car vl)) (leadop newfn))
+			 (if (mlogp newfn)
+                             (logequiv (car vl) newfn risch-intvar)
+                             (alike1 (car vl) newfn))
+			 (rplaca (cddar a) (car vl))
+			 (return nil))))
+		 ((let (vlist)
+		    (newvar1 (car a))
+		    (null vlist))
 		  (setq cary
 			(ratpl (cdr (ratrep* (car a)))
 			       cary))
 		  (rplaca a 0)
-		  (getfncoeff (cdr a) form risch-intvar liflag))
-		 ((and liflag
-                     (mlogp form)
-                     (mlogp newfn))
-		  (push (dilog (cons (car a) form) risch-intvar) lians)
+		  (getfncoeff (cdr a) form risch-intvar risch-liflag))
+		 ((and risch-liflag
+                       (mlogp form)
+                       (mlogp newfn))
+		  (push (dilog (cons (car a) form) risch-intvar)
+			lians)
 		  (rplaca a 0)
-		  (getfncoeff (cdr a) form risch-intvar liflag))
-		 ((and liflag
-                     (polylogp form)
-                     (mlogp newfn)
-                     (logequiv form newfn risch-intvar))
+		  (getfncoeff (cdr a) form risch-intvar risch-liflag))
+		 ((and risch-liflag
+                       (polylogp form)
+                       (mlogp newfn)
+                       (logequiv form newfn risch-intvar))
 		  (push (mul* (cadar a) (make-li (1+ (car (subfunsubs form)))
 						 (leadarg form)))
 			lians)
 		  (rplaca a 0)
-		  (getfncoeff (cdr a) form risch-intvar liflag))
+		  (getfncoeff (cdr a) form risch-intvar risch-liflag))
 		 (t (setq nogood t) 0))))
-	(t (rplaca a (list '(mtimes) 1 (car a)))
-	   (getfncoeff a form risch-intvar liflag))))
+	(t
+	 (rplaca a (list '(mtimes) 1 (car a)))
+	 (getfncoeff a form risch-intvar risch-liflag))))
 
 
-(defun rischlogpoly (exp risch-ratform risch-intvar liflag)
-  (cond ((equal exp '(0 . 1)) (rischzero))
-	(expflag (push (cons 'poly exp) expint)
-		 (rischzero))
-	((not (among var exp)) (tryrisch1 exp mainvar risch-ratform risch-intvar liflag))
-	(t (do ((degree (pdegree (car exp) var) (1- degree))
-		(p (car exp))
-		(den (cdr exp))
-		(lians ())
-		(sum (rzero))
-		(cary (rzero))
-		(y) (z) (ak) (nogood) (lbkpl1))
-	       ((minusp degree) (cons sum (append lians (cdr y))))
-	     (setq ak (r- (ratqu (polcoef p degree var) den)
-			  (r* (cons (1+ degree) 1)
-			      cary
-			      (get var 'rischdiff))))
-	     (if (not (pzerop (polcoef p degree var)))
-		 (setq p (if (pcoefp p) (pzero) (psimp var (p-red p)))))
-	     (setq y (tryrisch1 ak mainvar risch-ratform risch-intvar liflag))
-	     (setq cary (car y))
-	     (and (> degree 0) (setq liflag $liflag))
-	     (setq z (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar liflag))
-	     (setq liflag nil)
-	     (cond ((and (> degree 0)
-			 (or nogood (findint (cdr y))))
-		    (return (rischnoun sum risch-ratform 
-				       risch-intvar
-				       (r+ (r* ak
-					       (make-poly var degree 1))
-					   (ratqu p den))))))
-	     (setq lbkpl1 (ratqu z (cons (1+ degree) 1)))
-	     (setq sum (r+ (r* lbkpl1 (make-poly var (1+ degree) 1))
-			   (r* cary (if (zerop degree) 1
-					(make-poly var degree 1)))
-			   sum))))))
+(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag)
+  (cond ((equal exp '(0 . 1))
+	 (rischzero))
+	(expflag
+	 (push (cons 'poly exp) expint)
+	 (rischzero))
+	((not (among var exp))
+	 (tryrisch1 exp mainvar risch-ratform risch-intvar risch-liflag))
+	(t
+	 (do ((degree (pdegree (car exp) var) (1- degree))
+	      (p (car exp))
+	      (den (cdr exp))
+	      (lians ())
+	      (sum (rzero))
+	      (cary (rzero))
+	      (y)
+	      (z)
+	      (ak)
+	      (nogood)
+	      (lbkpl1))
+	     ((minusp degree)
+	      (cons sum (append lians (cdr y))))
+	   (setq ak (r- (ratqu (polcoef p degree var) den)
+			(r* (cons (1+ degree) 1)
+			    cary
+			    (get var 'rischdiff))))
+	   (if (not (pzerop (polcoef p degree var)))
+	       (setq p (if (pcoefp p)
+			   (pzero)
+			   (psimp var (p-red p)))))
+	   (setq y (tryrisch1 ak mainvar risch-ratform risch-intvar risch-liflag))
+	   (setq cary (car y))
+	   (and (> degree 0)
+		(setq risch-liflag $liflag))
+	   (setq z (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag))
+	   (setq risch-liflag nil)
+	   (cond ((and (> degree 0)
+		       (or nogood
+			   (findint (cdr y))))
+		  (return (rischnoun sum risch-ratform 
+				     risch-intvar
+				     (r+ (r* ak
+					     (make-poly var degree 1))
+					 (ratqu p den))))))
+	   (setq lbkpl1 (ratqu z (cons (1+ degree) 1)))
+	   (setq sum (r+ (r* lbkpl1 (make-poly var (1+ degree) 1))
+			 (r* cary (if (zerop degree) 1
+				      (make-poly var degree 1)))
+			 sum))))))
 
 (defun make-li (sub arg)
   (subfunmake '$li (ncons sub) (ncons arg)))
@@ -529,7 +555,7 @@
 			idx 0 degree t)))
 	  (t (setq nogood t) 0))))
 
-(defun exppolycontrol (flag f a expg n risch-ratform risch-intvar liflag)
+(defun exppolycontrol (flag f a expg n risch-ratform risch-intvar risch-liflag)
   (let (y l var (varlist varlist) (genvar genvar))
     (setq varlist (reverse (cdr (reverse varlist))))
     (setq var (getrischvar))
@@ -542,17 +568,19 @@
 		 (t l)))
 	  ((eq y risch-intvar)
 	   (rischexpvar nil flag (list f a expg n) risch-ratform risch-intvar))
-	  (t (rischexplog (eq y 'mexpt) flag f a
-			  (list expg n (get var 'rischarg)
-				var (get var 'rischdiff))
-			  risch-ratform risch-intvar
-			  liflag)))))
+	  (t
+	   (rischexplog (eq y 'mexpt) flag f a
+			(list expg n (get var 'rischarg)
+			      var (get var 'rischdiff))
+			risch-ratform risch-intvar
+			risch-liflag)))))
 
-(defun rischexppoly (expint var risch-ratform risch-intvar liflag)
+(defun rischexppoly (expint var risch-ratform risch-intvar risch-liflag)
   (let (y w num denom type (ans (rischzero))
 	  (expdiff (ratqu (get var 'rischdiff) (list var 1 1))))
     (do ((expint expint (cdr expint)))
-	((null expint) ans)
+	((null expint)
+	 ans)
       (desetq (type . y) (car expint))
       (desetq (num . denom) (ratfix y))
       (cond ((eq type 'neg)
@@ -564,25 +592,29 @@
 				     (- (cadr denom))
 				     risch-ratform
 				     risch-intvar
-				     liflag)))
-	    ((or (numberp num) (not (eq (car num) var)))
-	     (setq w (tryrisch1 y mainvar risch-ratform risch-intvar liflag)))
-	    (t (setq w (rischzero))
-	       (do ((num (cdr num) (cddr num))) ((null num))
-		 (cond ((equal (car num) 0)
-			(setq w (rischadd
-				 (tryrisch1 (ratqu (cadr num) denom) mainvar risch-ratform risch-intvar liflag)
-				 w)))
-		       (t (setq w (rischadd (exppolycontrol
-					     t
-					     (r* (car num) expdiff)
-					     (ratqu (cadr num) denom)
-					     var
-					     (car num)
-					     risch-ratform
-					     risch-intvar
-					     liflag)
-					    w)))))))
+				     risch-liflag)))
+	    ((or (numberp num)
+		 (not (eq (car num) var)))
+	     (setq w (tryrisch1 y mainvar risch-ratform risch-intvar risch-liflag)))
+	    (t
+	     (setq w (rischzero))
+	     (do ((num (cdr num) (cddr num)))
+		 ((null num))
+	       (cond ((equal (car num) 0)
+		      (setq w (rischadd
+			       (tryrisch1 (ratqu (cadr num) denom) mainvar risch-ratform risch-intvar risch-liflag)
+			       w)))
+		     (t
+		      (setq w (rischadd (exppolycontrol
+					 t
+					 (r* (car num) expdiff)
+					 (ratqu (cadr num) denom)
+					 var
+					 (car num)
+					 risch-ratform
+					 risch-intvar
+					 risch-liflag)
+					w)))))))
       (setq ans (rischadd w ans)))))
 
 (defun rischexpvar (expexpflag flag l risch-ratform risch-intvar)
@@ -779,16 +811,20 @@
 	(t (findflist a (cdr llist)))))
 
 
-(defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar liflag)
+(defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar risch-liflag)
   (declare (special var))
   (prog (lcm y yy m p alphar beta gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp cary nogood vector aarray rmu rrmu rarray)
      (desetq (expg n eta logeta logdiff) l)
-     (cond ((or (pzerop a) (pzerop (car a)))
-	    (return (cond ((null flag) (rzero))
-			  (t (rischzero))))))
-     (setq p (findpr (cdr (partfrac a var)) (cdr (partfrac f var))))
+     (cond ((or (pzerop a)
+		(pzerop (car a)))
+	    (return (cond ((null flag)
+			   (rzero))
+			  (t
+			   (rischzero))))))
+     (setq p (findpr (cdr (partfrac a var))
+		     (cdr (partfrac f var))))
      (setq lcm (plcm (ratdenominator a) p))
      (setq y (ratpl (spderivative (cons 1 p) mainvar)
 		    (ratqu f p)))
@@ -799,22 +835,25 @@
      (setq beta (pdegree r var))
      (setq gamma (pdegree s var))
      (setq delta (pdegree tt var))
-     (cond (expexpflag (setq mu (max (- delta beta)
-				     (- delta gamma)))
-		       (go expcase)))
+     (cond (expexpflag
+	    (setq mu (max (- delta beta)
+			  (- delta gamma)))
+	    (go expcase)))
      (setq mu (max (- (1+ delta) beta)
 		   (- (1+ delta) gamma)))
-     (cond ((< beta gamma) (go back))
-	   ((= (1- beta) gamma) (go down1)))
+     (cond ((< beta gamma)
+	    (go back))
+	   ((= (1- beta) gamma)
+	    (go down1)))
      (setq y (tryrisch1 (ratqu (r- (r* (polcoef r (1- beta) var)
 				       (polcoef s gamma var))
 				   (r* (polcoef r beta var)
 				       (polcoef s (1- gamma) var)))
 			       (r* (polcoef r beta var)
 				   (polcoef r beta var) ))
-			mainvar risch-ratform risch-intvar liflag))
+			mainvar risch-ratform risch-intvar risch-liflag))
      (setq cary (car y))
-     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar liflag))
+     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag))
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (not (atom yy))
@@ -823,35 +862,42 @@
 		 (> (car yy) mu))
 	    (setq mu (car yy))))
      (go back)
-     expcase
-     (cond ((not (equal beta gamma)) (go back)))
+   expcase
+     (cond ((not (equal beta gamma))
+	    (go back)))
      (setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
-			mainvar risch-ratform risch-intvar liflag))
-     (cond ((findint (cdr y)) (go back)))
+			mainvar risch-ratform risch-intvar risch-liflag))
+     (cond ((findint (cdr y))
+	    (go back)))
      (setq yy (ratqu (r* -1 (car y)) eta))
      (cond ((and (equal (cdr yy) 1)
 		 (numberp (car yy))
 		 (> (car yy) mu))
 	    (setq mu (car yy))))
      (go back)
-     down1(setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
-			     mainvar risch-ratform risch-intvar liflag))
+   down1
+     (setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
+			mainvar risch-ratform risch-intvar risch-liflag))
      (setq cary (car y))
-     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar liflag))
+     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag))
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (equal (cdr yy) 1)
 		 (numberp (car yy))
 		 (> (- (car yy)) mu))
 	    (setq mu (- (car yy)))))
-     back (if (minusp mu)
-	      (return (if flag (cxerfarg (rzero) expg n a risch-ratform risch-intvar) nil)))
-     (cond ((> beta gamma)(go lsacall))
+   back
+     (if (minusp mu)
+	 (return (if flag
+		     (cxerfarg (rzero) expg n a risch-ratform risch-intvar)
+		     nil)))
+     (cond ((> beta gamma)
+	    (go lsacall))
 	   ((= beta gamma)
 	    (go recurse)))
      (setq denom (polcoef s gamma var))
      (setq y '(0 . 1))
-     linearloop
+   linearloop
      (setq ymu (ratqu (polcoef (ratnumerator tt) (+ mu gamma) var)
 		      (r* (ratdenominator tt) denom)))
      (setq y (r+ y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu) ))))
@@ -859,20 +905,25 @@
 		  (r* s ymu)
 		  (r* r (spderivative ymu mainvar))))
      (decf mu)
-     (cond  ((not (< mu 0)) (go linearloop))
-	    ((not flag) (return (if (rzerop tt) (ratqu y p) nil)))
+     (cond  ((not (< mu 0))
+	     (go linearloop))
+	    ((not flag)
+	     (return (if (rzerop tt)
+			 (ratqu y p)
+			 nil)))
 	    ((rzerop tt)
 	     (return (cons (ratqu (r* y (cons (list expg n 1) 1)) p) '(0))))
-	    (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
-				 expg
-				 n
-				 (ratqu tt lcm)
-				 risch-ratform
-				 risch-intvar))))
-     recurse
+	    (t
+	     (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
+			       expg
+			       n
+			       (ratqu tt lcm)
+			       risch-ratform
+			       risch-intvar))))
+   recurse
      (setq rbeta (polcoef r beta var))
      (setq y '(0 . 1))
-     recurseloop
+   recurseloop
      (setq f (r+ (ratqu (polcoef s gamma var) rbeta)
 		 (if expexpflag
 		     (r* mu (spderivative eta mainvar))
@@ -887,50 +938,61 @@
 			       n
 			       risch-ratform
 			       risch-intvar
-			       liflag))
+			       risch-liflag))
      (when (null ymu)
-       (return (cond ((null flag) nil)
-		     (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
-					  expg n (ratqu tt lcm) risch-ratform risch-intvar))))))
+       (return (cond ((null flag)
+		      nil)
+		     (t
+		      (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
+					expg n (ratqu tt lcm) risch-ratform risch-intvar))))))
      (setq y (r+ y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu)))))
      (setq tt (r- tt
 		  (r* s ymu)
 		  (r* r (spderivative ymu mainvar))))
      (decf mu)
      (cond
-       ((not (< mu 0)) (go recurseloop))
+       ((not (< mu 0))
+	(go recurseloop))
        ((not flag)
-	(return (cond ((rzerop tt) (ratqu y p)) (t nil))))
+	(return (cond ((rzerop tt)
+		       (ratqu y p))
+		      (t nil))))
        ((rzerop tt)
-	(return (cons (ratqu (r* y (cons (list expg n 1) 1)) p) '(0))))
-       (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
-			    expg
-			    n
-			    (ratqu tt lcm)
-			    risch-ratform
-			    risch-intvar))))
-     lsacall
+	(return (cons (ratqu (r* y (cons (list expg n 1) 1)) p)
+		      '(0))))
+       (t
+	(return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
+			  expg
+			  n
+			  (ratqu tt lcm)
+			  risch-ratform
+			  risch-intvar))))
+   lsacall
      (setq rrmu mu)
-     muloop
+   muloop
      (setq temp (r* (ratexpt (cons (list logeta 1 1) 1) (1- mu))
 		    (r+ (r* s (cons (list logeta 1 1) 1))
 			(r* mu r logdiff ))))
-     mu1  (setq vector nil)
+   mu1
+     (setq vector nil)
      (setq rmu (+ rrmu beta))
-     rmuloop
+   rmuloop
      (setq vector (cons (ratqu (polcoef (ratnumerator temp) rmu var)
 			       (ratdenominator temp)) vector))
      (decf rmu)
-     (unless (< rmu 0) (go rmuloop))
+     (unless (< rmu 0)
+       (go rmuloop))
      (decf mu)
      (setq aarray (append aarray (list (reverse vector))))
-     (cond ((not (< mu 0)) (go muloop))
-	   ((equal mu -2) (go skipmu)))
+     (cond ((not (< mu 0))
+	    (go muloop))
+	   ((equal mu -2)
+	    (go skipmu)))
      (setq temp tt)
      (go mu1)
-     skipmu
+   skipmu
      (setq rarray nil)
-     arrayloop
+   arrayloop
      (setq vector nil)
      (setq vector (mapcar 'car aarray))
      (setq aarray (mapcar 'cdr aarray))
@@ -938,27 +1000,34 @@
      (unless (null (car aarray)) (go arrayloop))
      (setq rmu (1+ rrmu))
      (setq vector nil)
-     array1loop
+   array1loop
      (setq vector (cons '(0 . 1) vector))
      (decf rmu)
      (unless (< rmu 0) (go array1loop))
      (setq aarray nil)
-     array2loop
-     (cond ((equal (car rarray) vector) nil)
-	   (t (setq aarray (cons (car rarray) aarray))))
+   array2loop
+     (cond ((equal (car rarray) vector)
+	    nil)
+	   (t
+	    (setq aarray (cons (car rarray) aarray))))
      (setq rarray (cdr rarray))
      (when rarray (go array2loop))
      (setq rarray (reverse aarray))
      (setq temp (lsa rarray))
-     (when (or (eq temp 'singular) (eq temp 'inconsistent))
-       (return (if (null flag) nil (cxerfarg (rzero) expg n a risch-ratform risch-intvar))))
+     (when (or (eq temp 'singular)
+	       (eq temp 'inconsistent))
+       (return (if (null flag)
+		   nil
+		   (cxerfarg (rzero) expg n a risch-ratform risch-intvar))))
      (setq temp (reverse  (cdr temp)))
      (setq rmu 0)
      (setq y 0)
-     l3   (setq y (r+ y (r* (car temp) (pexpt (list logeta 1 1) rmu))))
+   l3
+     (setq y (r+ y (r* (car temp) (pexpt (list logeta 1 1) rmu))))
      (setq temp (cdr temp))
      (incf rmu)
-     (unless (> rmu rrmu) (go l3))
+     (unless (> rmu rrmu)
+       (go l3))
      (return (if (null flag)
 		 (ratqu y p)
 		 (cons (r* (list expg n 1) (ratqu y p)) '(0))))))
