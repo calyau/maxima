@@ -207,7 +207,7 @@
 		'mexpt)
 	    (setq expflag t)))
      (multiple-value-setq (y risch-logptdx)
-       (rischlogdprog exp risch-ratform))
+       (rischlogdprog exp risch-ratform intvar))
      (dolist (rat risch-logptdx)
        (setq y (rischadd (rischlogeprog rat risch-ratform nil) y)))
      (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform intvar) y)))
@@ -229,14 +229,14 @@
 			(eprog p risch-ratform var nil))
 		    risch-logptdx)))))
 
-(defun rischlogdprog (ratarg risch-ratform)
+(defun rischlogdprog (ratarg risch-ratform intvar)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom
 	 risch-rootfactor)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
-	    (return (rischlogpoly ratarg risch-ratform))))
+	    (return (rischlogpoly ratarg risch-ratform intvar))))
 
      (multiple-value-setq (risch-rootfactor risch-pardenom)
        (aprog (ratdenominator ratarg) var))
@@ -280,12 +280,12 @@
 	  (push (ratqu thetop arootf) risch-logptdx))))
      (push (ratqu (car risch-parnumer) (car risch-rootfactor)) risch-logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
-	    (return (values (rischlogpoly risch-wholepart risch-ratform)
+	    (return (values (rischlogpoly risch-wholepart risch-ratform intvar)
 			    risch-logptdx))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
      (return (values (rischadd (ncons (ratqu thetop (ratdenominator ans)))
-			       (rischlogpoly risch-wholepart risch-ratform))
+			       (rischlogpoly risch-wholepart risch-ratform intvar))
 		     risch-logptdx))))
 
 (defun gennegs (denom num numdenom)
@@ -453,7 +453,7 @@
 	   (getfncoeff a form))))
 
 
-(defun rischlogpoly (exp risch-ratform)
+(defun rischlogpoly (exp risch-ratform intvar)
   (cond ((equal exp '(0 . 1)) (rischzero))
 	(expflag (push (cons 'poly exp) expint)
 		 (rischzero))
