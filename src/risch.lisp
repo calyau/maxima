@@ -230,7 +230,7 @@
 		    risch-logptdx)))))
 
 (defun rischlogdprog (ratarg risch-ratform risch-intvar)
-  (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans
+  (prog (arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom
 	 risch-rootfactor)
      (setq ans '(0 . 1))
@@ -247,8 +247,8 @@
 	      risch-pardenom))
      (do ((risch-rootfactor (reverse risch-rootfactor) (cdr risch-rootfactor))
 	  (risch-parnumer (reverse risch-parnumer) (cdr risch-parnumer))
-	  (klth (length risch-rootfactor) (1- klth)))
-	 ((= klth 1))
+	  (risch-klth (length risch-rootfactor) (1- risch-klth)))
+	 ((= risch-klth 1))
        (setq arootf (car risch-rootfactor))
        (cond
 	 ((pcoefp arootf))
@@ -260,16 +260,16 @@
 	    (cond ((and (not (atom (car risch-parnumer)))
 			(not (atom (caar risch-parnumer)))
 			(eq (caaar risch-parnumer) (car arootf)))
-		   (gennegs arootf (cdaar risch-parnumer) (cdar risch-parnumer) klth))
+		   (gennegs arootf (cdaar risch-parnumer) (cdar risch-parnumer) risch-klth))
 		  (t (list
 		      (list 'neg (car risch-parnumer)
-			    (car arootf) klth (cadr arootf)))))
+			    (car arootf) risch-klth (cadr arootf)))))
 	    expint)))
 	 ((not (zerop (pdegree arootf var)))
 	  (setq deriv (spderivative arootf mainvar))
 	  (setq thebpg (bprog arootf (ratnumerator deriv) var))
 	  (setq thetop (car risch-parnumer))
-	  (do ((kx (1- klth) (1- kx))) ((= kx 0))
+	  (do ((kx (1- risch-klth) (1- kx))) ((= kx 0))
 	    (setq prod1 (r* thetop (car thebpg)))
 	    (setq prod2 (r* thetop (cdr thebpg) (ratdenominator deriv)))
 	    (setq thebot (pexpt arootf kx))
@@ -288,13 +288,13 @@
 			       (rischlogpoly risch-wholepart risch-ratform risch-intvar))
 		     risch-logptdx))))
 
-(defun gennegs (denom num numdenom ktlh)
+(defun gennegs (denom num numdenom risch-klth)
   (cond ((null num) nil)
 	(t (cons (list 'neg (cadr num)
 		       (car denom)
-		       (- klth (car num))
+		       (- risch-klth (car num))
 		       (r* numdenom (caddr denom) ))
-		 (gennegs denom (cddr num) numdenom klth)))))
+		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
 (defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
@@ -1149,5 +1149,5 @@
   (subst '/_101x risch-*var a))
 
 (declare-top (unspecial b beta cary context *exp degree gamma
-			klth liflag m nogood operator
+			liflag m nogood operator
 			r s switch switch1 var  y))
