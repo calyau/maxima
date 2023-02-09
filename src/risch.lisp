@@ -209,7 +209,7 @@
      (multiple-value-setq (y risch-logptdx)
        (rischlogdprog exp risch-ratform intvar))
      (dolist (rat risch-logptdx)
-       (setq y (rischadd (rischlogeprog rat risch-ratform nil) y)))
+       (setq y (rischadd (rischlogeprog rat risch-ratform nil intvar) y)))
      (if varlist (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform intvar) y)))
      (return (if expint (rischadd (rischexppoly expint var risch-ratform intvar) y)
 		 y))))
@@ -296,7 +296,7 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom)))))
 
-(defun rischlogeprog (p risch-ratform risch-switch1)
+(defun rischlogeprog (p risch-ratform risch-switch1 intvar)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
 	 risch-parnumer risch-pardenom)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
@@ -319,7 +319,8 @@
 				 (rischlogeprog
 				  (r* allcc (ratqu (car pnum) (car pden)))
 				  risch-ratform
-				  risch-switch1)
+				  risch-switch1
+				  intvar)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
@@ -366,7 +367,7 @@
 	((eq (caaar exp) '%integrate) t)
 	(t (findint (cdr exp)))))
 
-(defun logequiv (fn1 fn2)
+(defun logequiv (fn1 fn2 intvar)
   (freeof intvar ($ratsimp (div* (remabs (leadarg fn1))
 				 (remabs (leadarg fn2))))))
 
@@ -377,23 +378,23 @@
 
 (declare-top (special vlist lians degree))
 
-(defun getfnsplit (l)
+(defun getfnsplit (l intvar)
   (let (coef fn)
     (dolist (x l (values (muln coef nil) (muln fn nil)))
       (if (free x intvar)
           (push x coef)
           (push x fn)))))
 
-(defun getfncoeff (a form)
+(defun getfncoeff (a form intvar)
   (cond ((null a) 0)
-	((equal (car a) 0) (getfncoeff (cdr a) form))
+	((equal (car a) 0) (getfncoeff (cdr a) form intvar))
 	((and (listp (car a))
-	      (eq (caaar a) 'mplus) (ratpl (getfncoeff (cdar a) form)
-					   (getfncoeff (cdr a) form))))
+	      (eq (caaar a) 'mplus) (ratpl (getfncoeff (cdar a) form intvar)
+					   (getfncoeff (cdr a) form intvar))))
 	((and (listp (car a))
 	      (eq (caaar a) 'mtimes))
 	 (multiple-value-bind (coef newfn)
-             (getfnsplit (cdar a))
+             (getfnsplit (cdar a) intvar)
            ;; (car a) is a mtimes expression. We insert coef and newfn as the
            ;; new arguments to the mtimes expression. This causes problems if
            ;;   (1) coef is a mtimes expression too and
@@ -407,23 +408,23 @@
            (setf (car a) (list '(mtimes) coef newfn))
 	   
 	   (setf (cdar a) (list coef newfn))
-	   (cond ((zerop1 coef) (getfncoeff (cdr a) form))
+	   (cond ((zerop1 coef) (getfncoeff (cdr a) form intvar))
 		 ((and (matanp newfn) (member '$%i varlist :test #'eq))
 		  (let (($logarc t) ($logexpand '$all))
 		    (rplaca a ($expand (resimplify (car a)))))
-		  (getfncoeff a form))
+		  (getfncoeff a form intvar))
 		 ((and (alike1 (leadop newfn) (leadop form))
                      (or (alike1 (leadarg newfn) (leadarg form))
                         (and (mlogp newfn)
-                           (logequiv form newfn))))
+                           (logequiv form newfn intvar))))
 		  (ratpl (rform coef)
 			 (prog2 (rplaca a 0)
-			     (getfncoeff (cdr a) form))))
+			     (getfncoeff (cdr a) form intvar))))
 		 ((do ((vl varlist (cdr vl))) ((null vl))
 		    (and (not (atom (car vl)))
                        (alike1 (leadop (car vl)) (leadop newfn))
                        (if (mlogp newfn)
-                           (logequiv (car vl) newfn)
+                           (logequiv (car vl) newfn intvar)
                            (alike1 (car vl) newfn))
                        (rplaca (cddar a) (car vl))
                        (return nil))))
@@ -432,25 +433,25 @@
 			(ratpl (cdr (ratrep* (car a)))
 			       cary))
 		  (rplaca a 0)
-		  (getfncoeff (cdr a) form))
+		  (getfncoeff (cdr a) form intvar))
 		 ((and liflag
                      (mlogp form)
                      (mlogp newfn))
-		  (push (dilog (cons (car a) form)) lians)
+		  (push (dilog (cons (car a) form) intvar) lians)
 		  (rplaca a 0)
-		  (getfncoeff (cdr a) form))
+		  (getfncoeff (cdr a) form intvar))
 		 ((and liflag
                      (polylogp form)
                      (mlogp newfn)
-                     (logequiv form newfn))
+                     (logequiv form newfn intvar))
 		  (push (mul* (cadar a) (make-li (1+ (car (subfunsubs form)))
 						 (leadarg form)))
 			lians)
 		  (rplaca a 0)
-		  (getfncoeff (cdr a) form))
+		  (getfncoeff (cdr a) form intvar))
 		 (t (setq nogood t) 0))))
 	(t (rplaca a (list '(mtimes) 1 (car a)))
-	   (getfncoeff a form))))
+	   (getfncoeff a form intvar))))
 
 
 (defun rischlogpoly (exp risch-ratform intvar)
@@ -475,7 +476,7 @@
 	     (setq y (tryrisch1 ak mainvar risch-ratform intvar))
 	     (setq cary (car y))
 	     (and (> degree 0) (setq liflag $liflag))
-	     (setq z (getfncoeff (cdr y) (get var 'rischexpr)))
+	     (setq z (getfncoeff (cdr y) (get var 'rischexpr) intvar))
 	     (setq liflag nil)
 	     (cond ((and (> degree 0)
 			 (or nogood (findint (cdr y))))
@@ -496,7 +497,7 @@
 ;;integrates log(ro)^degree*log(rn)' in terms of polylogs
 ;;finds constants c,d and integers j,k such that
 ;;c*ro^j+d=rn^k  If ro and rn are poly's then can assume either j=1 or k=1
-(defun dilog (l)
+(defun dilog (l intvar)
   (destructuring-let* ((((nil coef nlog) . olog) l)
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
@@ -810,7 +811,7 @@
 				   (polcoef r beta var) ))
 			mainvar risch-ratform intvar))
      (setq cary (car y))
-     (setq yy (getfncoeff (cdr y) (get var 'rischexpr)))
+     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) intvar))
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (not (atom yy))
@@ -833,7 +834,7 @@
      down1(setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
 			     mainvar risch-ratform intvar))
      (setq cary (car y))
-     (setq yy (getfncoeff (cdr y) (get var 'rischexpr)))
+     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) intvar))
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (equal (cdr yy) 1)
