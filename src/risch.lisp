@@ -636,7 +636,7 @@
       (setq ans (rischadd w ans)))))
 
 (defun rischexpvar (expexpflag flag l risch-ratform risch-intvar)
-  (prog (lcm y m p alphar beta gamma delta r s
+  (prog (lcm y m p alphar beta risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd)
      (desetq (f a expg n) l)
      (cond ((or (pzerop a) (pzerop (car a)))
@@ -653,14 +653,14 @@
      (setq s (car (r* lcm y)))
      (setq tt (car (r* a lcm)))
      (setq beta (pdegree r mainvar))
-     (setq gamma (pdegree s mainvar))
+     (setq risch-gamma (pdegree s mainvar))
      (setq delta (pdegree tt mainvar))
      (setq alphar (max (- (1+ delta) beta)
-		       (- delta gamma)))
+		       (- delta risch-gamma)))
      (setq m 0)
-     (cond ((equal (1- beta) gamma)
+     (cond ((equal (1- beta) risch-gamma)
 	    (setq y (r* -1
-			(ratqu (polcoef s gamma var)
+			(ratqu (polcoef s risch-gamma var)
 			       (polcoef r beta var))))
 	    (and (equal (cdr y) 1)
 		 (numberp (car y))
@@ -709,23 +709,28 @@
 				   0))))))
      (go l3)
    down2
-     (cond ((> (1- beta) gamma)
+     (cond ((> (1- beta) risch-gamma)
 	    (setq k (+ alphar (1- beta)))
-	    (setq denom '(ratti alphar (polcoef r beta var) t)))
-	   ((< (1- beta) gamma)
-	    (setq k (+ alphar gamma))
-	    (setq denom '(polcoef s gamma var)))
+	    (setq denom #'(lambda ()
+			    (ratti alphar (polcoef r beta var) t))))
+	   ((< (1- beta) risch-gamma)
+	    (setq k (+ alphar risch-gamma))
+	    (setq denom #'(lambda ()
+			    (polcoef s risch-gamma var))))
 	   (t
-	    (setq k (+ alphar gamma))
+	    (setq k (+ alphar risch-gamma))
 	    (setq denom
-		  '(ratpl (ratti alphar (polcoef r beta var) t)
-		    (polcoef s gamma var)))))
+		  #'(lambda ()
+		      (ratpl (ratti alphar (polcoef r beta var) t)
+			     (polcoef s risch-gamma var))))))
      (setq y 0)
    loop
      (setq yn (polcoef (ratnumerator tt) k var)
 		yd (r* (ratdenominator tt) ;DENOM MAY BE 0
-		       (cond ((zerop alphar) (polcoef s gamma var))
-			     (t (eval denom))) ))
+		       (cond ((zerop alphar)
+			      (polcoef s risch-gamma var))
+			     (t
+			      (funcall denom)))))
      (cond ((rzerop yd)
 	    (cond ((pzerop yn) (setq k (1- k) alphar (1- alphar))
 		   (go loop))		;need more constraints?
@@ -844,7 +849,7 @@
 
 (defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar risch-liflag)
   (declare (special var))
-  (prog (lcm y yy m p alphar beta gamma delta
+  (prog (lcm y yy m p alphar beta risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp cary nogood vector aarray rmu rrmu rarray)
      (desetq (expg n eta logeta logdiff) l)
@@ -864,22 +869,22 @@
      (setq s (car (r* lcm y)))
      (setq tt (car (r* a lcm)))
      (setq beta (pdegree r var))
-     (setq gamma (pdegree s var))
+     (setq risch-gamma (pdegree s var))
      (setq delta (pdegree tt var))
      (cond (expexpflag
 	    (setq mu (max (- delta beta)
-			  (- delta gamma)))
+			  (- delta risch-gamma)))
 	    (go expcase)))
      (setq mu (max (- (1+ delta) beta)
-		   (- (1+ delta) gamma)))
-     (cond ((< beta gamma)
+		   (- (1+ delta) risch-gamma)))
+     (cond ((< beta risch-gamma)
 	    (go back))
-	   ((= (1- beta) gamma)
+	   ((= (1- beta) risch-gamma)
 	    (go down1)))
      (setq y (tryrisch1 (ratqu (r- (r* (polcoef r (1- beta) var)
-				       (polcoef s gamma var))
+				       (polcoef s risch-gamma var))
 				   (r* (polcoef r beta var)
-				       (polcoef s (1- gamma) var)))
+				       (polcoef s (1- risch-gamma) var)))
 			       (r* (polcoef r beta var)
 				   (polcoef r beta var) ))
 			mainvar risch-ratform risch-intvar risch-liflag))
@@ -894,9 +899,9 @@
 	    (setq mu (car yy))))
      (go back)
    expcase
-     (cond ((not (equal beta gamma))
+     (cond ((not (equal beta risch-gamma))
 	    (go back)))
-     (setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
+     (setq y (tryrisch1 (ratqu (polcoef s risch-gamma var) (polcoef r beta var))
 			mainvar risch-ratform risch-intvar risch-liflag))
      (cond ((findint (cdr y))
 	    (go back)))
@@ -907,7 +912,7 @@
 	    (setq mu (car yy))))
      (go back)
    down1
-     (setq y (tryrisch1 (ratqu (polcoef s gamma var) (polcoef r beta var))
+     (setq y (tryrisch1 (ratqu (polcoef s risch-gamma var) (polcoef r beta var))
 			mainvar risch-ratform risch-intvar risch-liflag))
      (setq cary (car y))
      (setq yy (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag))
@@ -922,14 +927,14 @@
 	 (return (if flag
 		     (cxerfarg (rzero) expg n a risch-ratform risch-intvar)
 		     nil)))
-     (cond ((> beta gamma)
+     (cond ((> beta risch-gamma)
 	    (go lsacall))
-	   ((= beta gamma)
+	   ((= beta risch-gamma)
 	    (go recurse)))
-     (setq denom (polcoef s gamma var))
+     (setq denom (polcoef s risch-gamma var))
      (setq y '(0 . 1))
    linearloop
-     (setq ymu (ratqu (polcoef (ratnumerator tt) (+ mu gamma) var)
+     (setq ymu (ratqu (polcoef (ratnumerator tt) (+ mu risch-gamma) var)
 		      (r* (ratdenominator tt) denom)))
      (setq y (r+ y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu) ))))
      (setq tt (r- tt
@@ -955,7 +960,7 @@
      (setq rbeta (polcoef r beta var))
      (setq y '(0 . 1))
    recurseloop
-     (setq f (r+ (ratqu (polcoef s gamma var) rbeta)
+     (setq f (r+ (ratqu (polcoef s risch-gamma var) rbeta)
 		 (if expexpflag
 		     (r* mu (spderivative eta mainvar))
 		     0)))
