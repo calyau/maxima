@@ -260,7 +260,7 @@
 	    (cond ((and (not (atom (car risch-parnumer)))
 			(not (atom (caar risch-parnumer)))
 			(eq (caaar risch-parnumer) (car arootf)))
-		   (gennegs arootf (cdaar risch-parnumer) (cdar risch-parnumer)))
+		   (gennegs arootf (cdaar risch-parnumer) (cdar risch-parnumer) klth))
 		  (t (list
 		      (list 'neg (car risch-parnumer)
 			    (car arootf) klth (cadr arootf)))))
@@ -288,13 +288,13 @@
 			       (rischlogpoly risch-wholepart risch-ratform risch-intvar))
 		     risch-logptdx))))
 
-(defun gennegs (denom num numdenom)
+(defun gennegs (denom num numdenom ktlh)
   (cond ((null num) nil)
 	(t (cons (list 'neg (cadr num)
 		       (car denom)
 		       (- klth (car num))
 		       (r* numdenom (caddr denom) ))
-		 (gennegs denom (cddr num) numdenom)))))
+		 (gennegs denom (cddr num) numdenom klth)))))
 
 (defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
