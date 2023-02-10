@@ -584,7 +584,7 @@
 			0))
 		 (t l)))
 	  ((eq y risch-intvar)
-	   (rischexpvar nil flag (list f a expg n) risch-ratform risch-intvar))
+	   (rischexpvar flag (list f a expg n) risch-ratform risch-intvar))
 	  (t
 	   (rischexplog (eq y 'mexpt) flag f a
 			(list expg n (get var 'rischarg)
@@ -638,7 +638,7 @@
 					w)))))))
       (setq ans (rischadd w ans)))))
 
-(defun rischexpvar (expexpflag flag l risch-ratform risch-intvar)
+(defun rischexpvar (flag l risch-ratform risch-intvar)
   (prog (lcm y m p alphar beta risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd)
      (desetq (f a expg n) l)
