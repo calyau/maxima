@@ -20,7 +20,7 @@
                       changevp r s beta b mainvar expflag
                       expstuff switch nogood
                       alphar m
-                      hypertrigint *mosesflag *exp y
+                      hypertrigint *mosesflag y
                       context *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
@@ -1291,6 +1291,6 @@
 (defun fixintgreat (a risch-*var)
   (subst '/_101x risch-*var a))
 
-(declare-top (unspecial b beta cary context *exp
+(declare-top (unspecial b beta cary context
 			m nogood operator
 			r s switch switch1 var  y))
