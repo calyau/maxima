@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special expexpflag cary
+(declare-top (special cary
                       var
                       expint trigint operator
                       changevp r s beta b mainvar expflag
