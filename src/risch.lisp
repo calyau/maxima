@@ -17,7 +17,7 @@
 (declare-top (special cary
                       var
                       expint trigint operator
-                      changevp r s beta b mainvar expflag
+                      changevp r s b mainvar expflag
                       expstuff switch nogood
                       alphar m
                       hypertrigint *mosesflag y
@@ -639,7 +639,7 @@
       (setq ans (rischadd w ans)))))
 
 (defun rischexpvar (flag l risch-ratform risch-intvar)
-  (prog (lcm y m p alphar beta risch-gamma delta r s
+  (prog (lcm y m p alphar risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd)
      (desetq (f a expg n) l)
      (cond ((or (pzerop a) (pzerop (car a)))
@@ -852,7 +852,7 @@
 
 (defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar risch-liflag risch-degree)
   (declare (special var))
-  (prog (lcm y yy m p alphar beta risch-gamma delta
+  (prog (lcm y yy m p alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp cary nogood vector aarray rmu rrmu rarray)
      (desetq (expg n eta logeta logdiff) l)
@@ -1291,6 +1291,6 @@
 (defun fixintgreat (a risch-*var)
   (subst '/_101x risch-*var a))
 
-(declare-top (unspecial b beta cary context
+(declare-top (unspecial b cary context
 			m nogood operator
 			r s switch switch1 var  y))
