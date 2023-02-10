@@ -465,7 +465,7 @@
 		 ((and risch-liflag
                        (mlogp form)
                        (mlogp newfn))
-		  (push (dilog (cons (car a) form) risch-intvar)
+		  (push (dilog (cons (car a) form) risch-intvar degree)
 			lians)
 		  (rplaca a 0)
 		  (getfncoeff (cdr a) form risch-intvar risch-liflag))
@@ -540,7 +540,7 @@
 ;;integrates log(ro)^degree*log(rn)' in terms of polylogs
 ;;finds constants c,d and integers j,k such that
 ;;c*ro^j+d=rn^k  If ro and rn are poly's then can assume either j=1 or k=1
-(defun dilog (l risch-intvar)
+(defun dilog (l risch-intvar degree)
   (destructuring-let* ((((nil coef nlog) . olog) l)
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
