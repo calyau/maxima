@@ -1293,4 +1293,4 @@
 
 (declare-top (unspecial b cary context
 			m nogood operator
-			r s switch switch1 var  y))
+			r s switch var  y))
