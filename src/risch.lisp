@@ -196,14 +196,14 @@
           (meval (list '($ev) result '$nouns)))
         result)))
 
-(defun trigin1 (*exp var)
-  (let ((yyy (hypertrigint1 *exp var nil)))
+(defun trigin1 (risch-*exp var)
+  (let ((yyy (hypertrigint1 risch-*exp var nil)))
     (setq yyy (div ($expand ($num yyy))
 		   ($expand ($denom yyy))))
     (let ((rischp var)
 	  (rp-polylogp t)
 	  $logarc $exponentialize result)
-      (setq result (sratsimp (if (and (freeof '$%i *exp) (freeof '$li yyy))
+      (setq result (sratsimp (if (and (freeof '$%i risch-*exp) (freeof '$li yyy))
                                  ($realpart yyy)
                                  ($rectform yyy))))
       ;; The result can contain solveable integrals. Look for this case.
