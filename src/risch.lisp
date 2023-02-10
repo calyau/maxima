@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special expexpflag degree cary
+(declare-top (special expexpflag cary
                       var
                       expint trigint operator
                       changevp r s beta b mainvar expflag
@@ -1291,6 +1291,6 @@
 (defun fixintgreat (a risch-*var)
   (subst '/_101x risch-*var a))
 
-(declare-top (unspecial b beta cary context *exp degree
+(declare-top (unspecial b beta cary context *exp
 			m nogood operator
 			r s switch switch1 var  y))
