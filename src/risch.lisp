@@ -226,7 +226,7 @@
      (multiple-value-setq (y risch-logptdx)
        (rischlogdprog exp risch-ratform risch-intvar risch-liflag))
      (dolist (rat risch-logptdx)
-       (setq y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar) y)))
+       (setq y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar expstuff) y)))
      (if varlist
 	 (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform risch-intvar risch-liflag risch-degree)
 			   y)))
@@ -317,7 +317,7 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
-(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar)
+(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar expstuff)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
 	 risch-parnumer risch-pardenom)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
@@ -341,7 +341,8 @@
 				  (r* allcc (ratqu (car pnum) (car pden)))
 				  risch-ratform
 				  risch-switch1
-				  risch-intvar)
+				  risch-intvar
+				  expstuff)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
