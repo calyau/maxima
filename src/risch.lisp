@@ -216,8 +216,8 @@
           result))))
 
 (defun tryrisch (exp mainvar risch-ratform risch-intvar risch-liflag risch-degree)
-  (prog (risch-logptdx expflag expstuff expint y)
-     (setq expstuff '(0 . 1))
+  (prog (risch-logptdx expflag risch-expstuff expint y)
+     (setq risch-expstuff '(0 . 1))
      (cond ((eq mainvar var)
 	    (return (rischfprog exp risch-ratform)))
 	   ((eq (get var 'leadop)
@@ -226,9 +226,9 @@
      (multiple-value-setq (y risch-logptdx)
        (rischlogdprog exp risch-ratform risch-intvar risch-liflag))
      (dolist (rat risch-logptdx)
-       (setq y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar expstuff) y)))
+       (setq y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar risch-expstuff) y)))
      (if varlist
-	 (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform risch-intvar risch-liflag risch-degree)
+	 (setq y (rischadd (tryrisch1 risch-expstuff mainvar risch-ratform risch-intvar risch-liflag risch-degree)
 			   y)))
      (return (if expint
 		 (rischadd (rischexppoly expint var risch-ratform risch-intvar risch-liflag risch-degree)
