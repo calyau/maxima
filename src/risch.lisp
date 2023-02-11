@@ -882,7 +882,7 @@
 
 (defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar risch-liflag risch-degree)
   (declare (special var))
-  (prog (lcm y yy m p risch-alphar risch-gamma delta
+  (prog (lcm y yy risch-m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
 	 risch-beta)
@@ -1091,7 +1091,7 @@
      (setq rarray (cdr rarray))
      (when rarray (go array2loop))
      (setq rarray (reverse aarray))
-     (multiple-value-setq (temp m)
+     (multiple-value-setq (temp risch-m)
        (lsa rarray))
      (when (or (eq temp 'singular)
 	       (eq temp 'inconsistent))
