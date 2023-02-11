@@ -420,81 +420,84 @@
           (push x fn)))))
 
 (defun getfncoeff (a form risch-intvar risch-liflag risch-degree)
-  (cond ((null a) 0)
-	((equal (car a) 0)
-	 (getfncoeff (cdr a) form risch-intvar risch-liflag risch-degree))
-	((and (listp (car a))
-	      (eq (caaar a) 'mplus)
-	      (ratpl (getfncoeff (cdar a) form risch-intvar risch-liflag risch-degree)
-		     (getfncoeff (cdr a) form risch-intvar risch-liflag risch-degree))))
-	((and (listp (car a))
-	      (eq (caaar a) 'mtimes))
-	 (multiple-value-bind (coef newfn)
-             (getfnsplit (cdar a) risch-intvar)
-           ;; (car a) is a mtimes expression. We insert coef and newfn as the
-           ;; new arguments to the mtimes expression. This causes problems if
-           ;;   (1) coef is a mtimes expression too and
-           ;;   (2) (car a) has already a simp flag
-           ;; We get a nested mtimes expression, which does not simplify.
-	   ;; We comment out the following code (DK 09/2009):
-           ;; (setf (cdar a) (list coef newfn))
+  (labels
+      ((getfncoeff-impl (a)
+	 (cond ((null a) 0)
+	       ((equal (car a) 0)
+		(getfncoeff-impl (cdr a)))
+	       ((and (listp (car a))
+		     (eq (caaar a) 'mplus)
+		     (ratpl (getfncoeff-impl (cdar a))
+			    (getfncoeff-impl (cdr a)))))
+	       ((and (listp (car a))
+		     (eq (caaar a) 'mtimes))
+		(multiple-value-bind (coef newfn)
+		    (getfnsplit (cdar a) risch-intvar)
+		  ;; (car a) is a mtimes expression. We insert coef and newfn as the
+		  ;; new arguments to the mtimes expression. This causes problems if
+		  ;;   (1) coef is a mtimes expression too and
+		  ;;   (2) (car a) has already a simp flag
+		  ;; We get a nested mtimes expression, which does not sgetfncoeff-implify.
+		  ;; We comment out the following code (DK 09/2009):
+		  ;; (setf (cdar a) (list coef newfn))
 	   
-	   ;; Insert a complete mtimes expression without simpflag.
-           ;; Nested mtimes expressions simplify further.
-           (setf (car a) (list '(mtimes) coef newfn))
+		  ;; Insert a complete mtimes expression without simpflag.
+		  ;; Nested mtimes expressions sgetfncoeff-implify further.
+		  (setf (car a) (list '(mtimes) coef newfn))
 	   
-	   (setf (cdar a) (list coef newfn))
-	   (cond ((zerop1 coef)
-		  (getfncoeff (cdr a) form risch-intvar risch-liflag risch-degree))
-		 ((and (matanp newfn)
-		       (member '$%i varlist :test #'eq))
-		  (let (($logarc t) ($logexpand '$all))
-		    (rplaca a ($expand (resimplify (car a)))))
-		  (getfncoeff a form risch-intvar risch-liflag risch-degree))
-		 ((and (alike1 (leadop newfn) (leadop form))
-                       (or (alike1 (leadarg newfn) (leadarg form))
-                           (and (mlogp newfn)
-				(logequiv form newfn risch-intvar))))
-		  (ratpl (rform coef)
-			 (prog2 (rplaca a 0)
-			     (getfncoeff (cdr a) form risch-intvar risch-liflag risch-degree))))
-		 ((do ((vl varlist (cdr vl)))
-		      ((null vl))
-		    (and (not (atom (car vl)))
-			 (alike1 (leadop (car vl)) (leadop newfn))
-			 (if (mlogp newfn)
-                             (logequiv (car vl) newfn risch-intvar)
-                             (alike1 (car vl) newfn))
-			 (rplaca (cddar a) (car vl))
-			 (return nil))))
-		 ((let (vlist)
-		    (newvar1 (car a))
-		    (null vlist))
-		  (setq cary
-			(ratpl (cdr (ratrep* (car a)))
-			       cary))
-		  (rplaca a 0)
-		  (getfncoeff (cdr a) form risch-intvar risch-liflag risch-degree))
-		 ((and risch-liflag
-                       (mlogp form)
-                       (mlogp newfn))
-		  (push (dilog (cons (car a) form) risch-intvar risch-degree)
-			lians)
-		  (rplaca a 0)
-		  (getfncoeff (cdr a) form risch-intvar risch-liflag risch-degree))
-		 ((and risch-liflag
-                       (polylogp form)
-                       (mlogp newfn)
-                       (logequiv form newfn risch-intvar))
-		  (push (mul* (cadar a) (make-li (1+ (car (subfunsubs form)))
-						 (leadarg form)))
-			lians)
-		  (rplaca a 0)
-		  (getfncoeff (cdr a) form risch-intvar risch-liflag risch-degree))
-		 (t (setq nogood t) 0))))
-	(t
-	 (rplaca a (list '(mtimes) 1 (car a)))
-	 (getfncoeff a form risch-intvar risch-liflag risch-degree))))
+		  (setf (cdar a) (list coef newfn))
+		  (cond ((zerop1 coef)
+			 (getfncoeff-impl (cdr a)))
+			((and (matanp newfn)
+			      (member '$%i varlist :test #'eq))
+			 (let (($logarc t) ($logexpand '$all))
+			   (rplaca a ($expand (resgetfncoeff-implify (car a)))))
+			 (getfncoeff-impl a))
+			((and (alike1 (leadop newfn) (leadop form))
+			      (or (alike1 (leadarg newfn) (leadarg form))
+				  (and (mlogp newfn)
+				       (logequiv form newfn risch-intvar))))
+			 (ratpl (rform coef)
+				(prog2 (rplaca a 0)
+				    (getfncoeff-impl (cdr a)))))
+			((do ((vl varlist (cdr vl)))
+			     ((null vl))
+			   (and (not (atom (car vl)))
+				(alike1 (leadop (car vl)) (leadop newfn))
+				(if (mlogp newfn)
+				    (logequiv (car vl) newfn risch-intvar)
+				    (alike1 (car vl) newfn))
+				(rplaca (cddar a) (car vl))
+				(return nil))))
+			((let (vlist)
+			   (newvar1 (car a))
+			   (null vlist))
+			 (setq cary
+			       (ratpl (cdr (ratrep* (car a)))
+				      cary))
+			 (rplaca a 0)
+			 (getfncoeff-impl (cdr a)))
+			((and risch-liflag
+			      (mlogp form)
+			      (mlogp newfn))
+			 (push (dilog (cons (car a) form) risch-intvar risch-degree)
+			       lians)
+			 (rplaca a 0)
+			 (getfncoeff-impl (cdr a)))
+			((and risch-liflag
+			      (polylogp form)
+			      (mlogp newfn)
+			      (logequiv form newfn risch-intvar))
+			 (push (mul* (cadar a) (make-li (1+ (car (subfunsubs form)))
+							(leadarg form)))
+			       lians)
+			 (rplaca a 0)
+			 (getfncoeff-impl (cdr a)))
+			(t (setq nogood t) 0))))
+	       (t
+		(rplaca a (list '(mtimes) 1 (car a)))
+		(getfncoeff-impl a)))))
+    (getfncoeff-impl a)))
 
 
 (defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag)
