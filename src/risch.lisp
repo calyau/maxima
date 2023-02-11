@@ -16,11 +16,11 @@
 
 (declare-top (special cary
                       var
-                      expint trigint operator
+                      expint operator
                       changevp r s b mainvar expflag
                       switch nogood
                       alphar m
-                      hypertrigint *mosesflag y
+                      *mosesflag y
                       context *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
@@ -109,8 +109,8 @@
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)
                      ($logexpand t))
-  (prog ($%e_to_numlog $logsimp trigint operator y z var risch-ratform risch-liflag
-	 mainvar varlist genvar hypertrigint $ratfac $ratalgdenom risch-degree
+  (prog ($%e_to_numlog $logsimp operator y z var risch-ratform risch-liflag
+	 mainvar varlist genvar $ratfac $ratalgdenom risch-degree
 	 rischform-value risch-trigint risch-hypertrigint)
      (if (specrepp exp)
 	 (setq exp (specdisrep exp)))
