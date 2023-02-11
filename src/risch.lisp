@@ -814,23 +814,23 @@
 ;; by this file. -- cwh
 
 (defun lsa (mm)
-  (prog (d *mosesflag m2)
+  (prog (d *mosesflag m2 risch-m)
      (setq d (length (car mm)))
      ;; MTOA stands for MATRIX-TO-ARRAY.  An array is created and
      ;; associated functionally with the symbol *JM.  The elements
      ;; of the array are initialized from the matrix MM.
      (mtoa '*jm* (length mm) d mm)
-     (setq m (tfgeli '*jm*  (length mm) d))
-     (cond ((or (and (null (car m)) (null (cadr m)))
-		(and (car m)
-		     (> (length (car m)) (- (length mm) (1- d)))))
-	    (return (values 'singular m)))
-	   ((cadr m) (return (values 'inconsistent m))))
+     (setq risch-m (tfgeli '*jm*  (length mm) d))
+     (cond ((or (and (null (car risch-m)) (null (cadr risch-m)))
+		(and (car risch-m)
+		     (> (length (car risch-m)) (- (length mm) (1- d)))))
+	    (return (values 'singular risch-m)))
+	   ((cadr risch-m) (return (values 'inconsistent risch-m))))
      (setq *mosesflag t)
      (ptorat '*jm* (1- d) d)
      (setq m2 (xrutout '*jm* (1- d) d nil nil))
-     (setq m2 (lsafix (cdr m2) (caddr m)))
-     (return (values m2 m))))
+     (setq m2 (lsafix (cdr m2) (caddr risch-m)))
+     (return (values m2 risch-m))))
 
 (defun lsafix (l n)
   (declare (special *jm*))
