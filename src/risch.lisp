@@ -17,7 +17,6 @@
 (declare-top (special var
                       expint
                       r s b mainvar expflag
-                      switch
                       m
                       *mosesflag y
                       context *in-risch-p*))
@@ -1331,4 +1330,4 @@
 
 (declare-top (unspecial b context
 			m
-			r s switch var  y))
+			r s var  y))
