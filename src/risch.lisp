@@ -17,7 +17,7 @@
 (declare-top (special var
                       expint
                       changevp r s b mainvar expflag
-                      switch nogood
+                      switch
                       m
                       *mosesflag y
                       context *in-risch-p*))
@@ -1323,5 +1323,5 @@
   (subst '/_101x risch-*var a))
 
 (declare-top (unspecial b context
-			m nogood
+			m
 			r s switch var  y))
