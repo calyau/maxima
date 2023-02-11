@@ -17,7 +17,7 @@
 (declare-top (special var
                       expint
                       changevp r s b mainvar expflag
-                      switch nogood
+                      switch
                       m
                       *mosesflag y
                       context *in-risch-p*))
@@ -418,7 +418,7 @@
           (push x coef)
           (push x fn)))))
 
-(defun getfncoeff (a form risch-intvar risch-liflag risch-degree risch-cary)
+(defun getfncoeff (a form risch-intvar risch-liflag risch-degree risch-cary risch-nogood)
   (labels
       ((getfncoeff-impl (a)
 	 (cond ((null a) 0)
@@ -479,8 +479,10 @@
 			((and risch-liflag
 			      (mlogp form)
 			      (mlogp newfn))
-			 (push (dilog (cons (car a) form) risch-intvar risch-degree)
-			       lians)
+			 (let (res)
+			   (multiple-value-setq (res risch-nogood)
+			     (dilog (cons (car a) form) risch-intvar risch-degree risch-nogood))
+			   (push res lians))
 			 (rplaca a 0)
 			 (getfncoeff-impl (cdr a)))
 			((and risch-liflag
@@ -492,11 +494,11 @@
 			       lians)
 			 (rplaca a 0)
 			 (getfncoeff-impl (cdr a)))
-			(t (setq nogood t) 0))))
+			(t (setq risch-nogood t) 0))))
 	       (t
 		(rplaca a (list '(mtimes) 1 (car a)))
 		(getfncoeff-impl a)))))
-    (values (getfncoeff-impl a) risch-cary)))
+    (values (getfncoeff-impl a) risch-cary risch-nogood)))
 
 
 (defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag)
@@ -517,7 +519,7 @@
 	      (y)
 	      (z)
 	      (ak)
-	      (nogood)
+	      (risch-nogood)
 	      (lbkpl1))
 	     ((minusp risch-degree)
 	      (cons sum (append lians (cdr y))))
@@ -534,11 +536,13 @@
 	   (and (> risch-degree 0)
 		(setq risch-liflag $liflag))
 	   
-	   (multiple-value-setq (z risch-cary)
-	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+	   (multiple-value-setq (z risch-cary risch-nogood)
+	     (getfncoeff (cdr y)
+			 (get var 'rischexpr)
+			 risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
 	   (setq risch-liflag nil)
 	   (cond ((and (> risch-degree 0)
-		       (or nogood
+		       (or risch-nogood
 			   (findint (cdr y))))
 		  (return (rischnoun sum risch-ratform 
 				     risch-intvar
@@ -557,7 +561,7 @@
 ;;integrates log(ro)^risch-degree*log(rn)' in terms of polylogs
 ;;finds constants c,d and integers j,k such that
 ;;c*ro^j+d=rn^k  If ro and rn are poly's then can assume either j=1 or k=1
-(defun dilog (l risch-intvar risch-degree)
+(defun dilog (l risch-intvar risch-degree risch-nogood)
   (destructuring-let* ((((nil coef nlog) . olog) l)
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
@@ -577,17 +581,22 @@
 		 coef (div coef (f* j risch-degree))
 		 olog (mul j olog))))
     (desetq (rc . rd) (ratdivide rn ro))
-    (cond ((and (freeof risch-intvar (rdis rc))	;; can't use risch-constp because varlist
-		(freeof risch-intvar (rdis rd)))	;; is not set up with vars in correct order.
-	   (setq narg ($ratsimp (sub 1 (div narg (rdis rd)))))
-	   (mul* coef (power -1 (1+ risch-degree))
-		 `((mfactorial) ,risch-degree)
-		 (dosum (mul* (power -1 idx)
-			      (div* (power olog idx)
-				    `((mfactorial) ,idx))
-			      (make-li (add risch-degree (neg idx) 1) narg))
-			idx 0 risch-degree t)))
-	  (t (setq nogood t) 0))))
+    (let
+	((result
+	  (cond ((and (freeof risch-intvar (rdis rc)) ;; can't use risch-constp because varlist
+		      (freeof risch-intvar (rdis rd))) ;; is not set up with vars in correct order.
+		 (setq narg ($ratsimp (sub 1 (div narg (rdis rd)))))
+		 (mul* coef (power -1 (1+ risch-degree))
+		       `((mfactorial) ,risch-degree)
+		       (dosum (mul* (power -1 idx)
+				    (div* (power olog idx)
+					  `((mfactorial) ,idx))
+				    (make-li (add risch-degree (neg idx) 1) narg))
+			      idx 0 risch-degree t)))
+		(t
+		 (setq risch-nogood t)
+		 0))))
+      (values result risch-nogood))))
 
 (defun exppolycontrol (flag f a expg n risch-ratform risch-intvar risch-liflag risch-degree)
   (let (y l var (varlist varlist) (genvar genvar))
@@ -874,7 +883,7 @@
   (declare (special var))
   (prog (lcm y yy m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
-	 temp risch-cary nogood vector aarray rmu rrmu rarray
+	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
 	 risch-beta)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
@@ -914,10 +923,12 @@
 				   (polcoef r risch-beta var) ))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car y))
-     (multiple-value-setq (yy risch-cary)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+     (multiple-value-setq (yy risch-cary risch-nogood)
+       (getfncoeff (cdr y)
+		   (get var 'rischexpr)
+		   risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
      (cond ((and (not (findint (cdr y)))
-		 (not nogood)
+		 (not risch-nogood)
 		 (not (atom yy))
 		 (equal (cdr yy) 1)
 		 (numberp (car yy))
@@ -941,10 +952,12 @@
      (setq y (tryrisch1 (ratqu (polcoef s risch-gamma var) (polcoef r risch-beta var))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car y))
-     (multiple-value-setq (yy risch-cary)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+     (multiple-value-setq (yy risch-cary risch-nogood)
+       (getfncoeff (cdr y)
+		   (get var 'rischexpr)
+		   risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
      (cond ((and (not (findint (cdr y)))
-		 (not nogood)
+		 (not risch-nogood)
 		 (equal (cdr yy) 1)
 		 (numberp (car yy))
 		 (> (- (car yy)) mu))
@@ -1316,5 +1329,5 @@
   (subst '/_101x risch-*var a))
 
 (declare-top (unspecial b context
-			m nogood
+			m
 			r s switch var  y))
