@@ -317,7 +317,7 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
-(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar expstuff)
+(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
 	 risch-parnumer risch-pardenom)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
@@ -342,7 +342,7 @@
 				  risch-ratform
 				  risch-switch1
 				  risch-intvar
-				  expstuff)
+				  risch-expstuff)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
@@ -359,7 +359,7 @@
      (setq logcoef (ratqu p1e my-divisor))
      (when (risch-constp logcoef)
        (if expflag
-	   (setq expstuff (r- expstuff (r* expcoef logcoef))))
+	   (setq risch-expstuff (r- risch-expstuff (r* expcoef logcoef))))
        (return
 	 (list
 	  '(0 . 1)
