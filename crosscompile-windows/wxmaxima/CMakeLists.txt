@@ -10,7 +10,7 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "23.03.0")
+set(WXMAXIMAVERSION "23.02.0")
 
 set(WXMAXIMA_MD5 "6195983b0e58dbfdb2572a98def744a9")
 
