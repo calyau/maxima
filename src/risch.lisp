@@ -18,7 +18,7 @@
                       var
                       expint trigint operator
                       changevp r s b mainvar expflag
-                      expstuff switch nogood
+                      switch nogood
                       alphar m
                       hypertrigint *mosesflag y
                       context *in-risch-p*))
@@ -216,8 +216,8 @@
           result))))
 
 (defun tryrisch (exp mainvar risch-ratform risch-intvar risch-liflag risch-degree)
-  (prog (risch-logptdx expflag expstuff expint y)
-     (setq expstuff '(0 . 1))
+  (prog (risch-logptdx expflag risch-expstuff expint y)
+     (setq risch-expstuff '(0 . 1))
      (cond ((eq mainvar var)
 	    (return (rischfprog exp risch-ratform)))
 	   ((eq (get var 'leadop)
@@ -226,9 +226,9 @@
      (multiple-value-setq (y risch-logptdx)
        (rischlogdprog exp risch-ratform risch-intvar risch-liflag))
      (dolist (rat risch-logptdx)
-       (setq y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar) y)))
+       (setq y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar risch-expstuff) y)))
      (if varlist
-	 (setq y (rischadd (tryrisch1 expstuff mainvar risch-ratform risch-intvar risch-liflag risch-degree)
+	 (setq y (rischadd (tryrisch1 risch-expstuff mainvar risch-ratform risch-intvar risch-liflag risch-degree)
 			   y)))
      (return (if expint
 		 (rischadd (rischexppoly expint var risch-ratform risch-intvar risch-liflag risch-degree)
@@ -317,7 +317,7 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
-(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar)
+(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
 	 risch-parnumer risch-pardenom)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
@@ -341,7 +341,8 @@
 				  (r* allcc (ratqu (car pnum) (car pden)))
 				  risch-ratform
 				  risch-switch1
-				  risch-intvar)
+				  risch-intvar
+				  risch-expstuff)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
@@ -358,7 +359,7 @@
      (setq logcoef (ratqu p1e my-divisor))
      (when (risch-constp logcoef)
        (if expflag
-	   (setq expstuff (r- expstuff (r* expcoef logcoef))))
+	   (setq risch-expstuff (r- risch-expstuff (r* expcoef logcoef))))
        (return
 	 (list
 	  '(0 . 1)
