@@ -652,7 +652,7 @@
       (setq ans (rischadd w ans)))))
 
 (defun rischexpvar (flag l risch-ratform risch-intvar)
-  (prog (lcm y m p alphar risch-gamma delta r s
+  (prog (lcm y m p risch-alphar risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
 	 risch-beta)
      (desetq (f a expg n) l)
@@ -660,7 +660,7 @@
 	    (return (cond ((null flag) (rzero))
 			  (t (rischzero))))))
      (setq denom (ratdenominator f))
-     (multiple-value-setq (p alphar)
+     (multiple-value-setq (p risch-alphar)
        (findpr (cdr (partfrac a mainvar))
 	       (cdr (partfrac f mainvar))))
      (setq lcm (plcm (ratdenominator a) p))
@@ -673,7 +673,7 @@
      (setq risch-beta (pdegree r mainvar))
      (setq risch-gamma (pdegree s mainvar))
      (setq delta (pdegree tt mainvar))
-     (setq alphar (max (- (1+ delta) risch-beta)
+     (setq risch-alphar (max (- (1+ delta) risch-beta)
 		       (- delta risch-gamma)))
      (setq m 0)
      (cond ((equal (1- risch-beta) risch-gamma)
@@ -683,17 +683,17 @@
 	    (and (equal (cdr y) 1)
 		 (numberp (car y))
 		 (setq m (car y)))))
-     (setq alphar (max alphar m))
-     (if (minusp alphar)
+     (setq risch-alphar (max risch-alphar m))
+     (if (minusp risch-alphar)
 	 (return (if flag (cxerfarg (rzero) expg n a risch-ratform risch-intvar) nil)))
-     (cond ((not (and (equal alphar m)
+     (cond ((not (and (equal risch-alphar m)
 		      (not (zerop m))))
 	    (go down2)))
-     (setq k (+ alphar risch-beta -2))
+     (setq k (+ risch-alphar risch-beta -2))
      (setq wl nil)
    l2
      (setq wv (list (cons (polcoef tt k var) 1)))
-     (setq i alphar)
+     (setq i risch-alphar)
    l1
      (setq wv
 	   (cons (r+ (r* (cons i 1)
@@ -728,29 +728,29 @@
      (go l3)
    down2
      (cond ((> (1- risch-beta) risch-gamma)
-	    (setq k (+ alphar (1- risch-beta)))
+	    (setq k (+ risch-alphar (1- risch-beta)))
 	    (setq denom #'(lambda ()
-			    (ratti alphar (polcoef r risch-beta var) t))))
+			    (ratti risch-alphar (polcoef r risch-beta var) t))))
 	   ((< (1- risch-beta) risch-gamma)
-	    (setq k (+ alphar risch-gamma))
+	    (setq k (+ risch-alphar risch-gamma))
 	    (setq denom #'(lambda ()
 			    (polcoef s risch-gamma var))))
 	   (t
-	    (setq k (+ alphar risch-gamma))
+	    (setq k (+ risch-alphar risch-gamma))
 	    (setq denom
 		  #'(lambda ()
-		      (ratpl (ratti alphar (polcoef r risch-beta var) t)
+		      (ratpl (ratti risch-alphar (polcoef r risch-beta var) t)
 			     (polcoef s risch-gamma var))))))
      (setq y 0)
    loop
      (setq yn (polcoef (ratnumerator tt) k var)
 		yd (r* (ratdenominator tt) ;DENOM MAY BE 0
-		       (cond ((zerop alphar)
+		       (cond ((zerop risch-alphar)
 			      (polcoef s risch-gamma var))
 			     (t
 			      (funcall denom)))))
      (cond ((rzerop yd)
-	    (cond ((pzerop yn) (setq k (1- k) alphar (1- alphar))
+	    (cond ((pzerop yn) (setq k (1- k) risch-alphar (1- risch-alphar))
 		   (go loop))		;need more constraints?
 		  (t
 		   (cond
@@ -759,14 +759,14 @@
 	   (t
 	    (setq yalpha (ratqu yn yd))))
      (setq ytemp (r+ y (r* yalpha
-			   (cons (list mainvar alphar 1) 1) )))
+			   (cons (list mainvar risch-alphar 1) 1) )))
      (setq ttemp (r- tt (r* yalpha
-			    (r+ (r* s (cons (list mainvar alphar 1) 1))
-				(r* r alphar
-				    (list mainvar (1- alphar) 1))))))
+			    (r+ (r* s (cons (list mainvar risch-alphar 1) 1))
+				(r* r risch-alphar
+				    (list mainvar (1- risch-alphar) 1))))))
      (decf k)
-     (decf alphar)
-     (cond ((< alphar 0)
+     (decf risch-alphar)
+     (cond ((< risch-alphar 0)
 	    (cond
 	      ((rzerop ttemp)
 	       (cond
@@ -868,7 +868,7 @@
 
 (defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar risch-liflag risch-degree)
   (declare (special var))
-  (prog (lcm y yy m p alphar risch-gamma delta
+  (prog (lcm y yy m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp cary nogood vector aarray rmu rrmu rarray
 	 risch-beta)
@@ -879,7 +879,7 @@
 			   (rzero))
 			  (t
 			   (rischzero))))))
-     (multiple-value-setq (p alphar)
+     (multiple-value-setq (p risch-alphar)
        (findpr (cdr (partfrac a var))
 	       (cdr (partfrac f var))))
      (setq lcm (plcm (ratdenominator a) p))
