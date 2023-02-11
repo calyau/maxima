@@ -1,5 +1,5 @@
 name: maxima
-version: 5.40post
+version: 5.46.0
 summary: A full-fledged computer algebra system
 description: |
   A full featured computer algebra system,
@@ -10,13 +10,13 @@ description: |
   It comes with extensive self tests.
 
 grade: stable
-icon: ./interfaces/xmaxima/maxima-icon.svg
-base: core20
+icon: ./interfaces/xmaxima/net.sourceforge.maxima.svg
+base: core22
 confinement: strict
 
 apps:
   maxima:
-    command: maxima
+    command: usr/bin/maxima
     plugs:
      - network
      - network-bind
@@ -25,7 +25,7 @@ apps:
      - optical-drive
 
   rmaxima:
-    command: rmaxima
+    command: usr/bin/rmaxima
     plugs:
      - network
      - network-bind
@@ -34,7 +34,7 @@ apps:
      - optical-drive
 
   xmaxima:
-    command: xmaxima
+    command: usr/bin/xmaxima
     plugs:
      - network
      - home
@@ -49,6 +49,7 @@ parts:
     autotools-configure-parameters:
      - --enable-sbcl
      - --enable-clisp
+     - --prefix=/usr
     build-packages:
      - sbcl
      - clisp
@@ -67,5 +68,3 @@ parts:
      - gnuplot
     stage:
      - -usr/share/texmf/ls-R
-
-
