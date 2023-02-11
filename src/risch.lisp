@@ -720,7 +720,8 @@
      (decf k)
      (cond ((> k -1)
 	    (go l2)))
-     (setq y (lsa wl))
+     (multiple-value-setq (y m)
+       (lsa wl))
      (if (or (eq y 'singular) (eq y 'inconsistent))
 	 (cond ((null flag) (return nil))
 	       (t (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar)))))
@@ -813,7 +814,7 @@
 ;; by this file. -- cwh
 
 (defun lsa (mm)
-  (prog (d *mosesflag m m2)
+  (prog (d *mosesflag m2)
      (setq d (length (car mm)))
      ;; MTOA stands for MATRIX-TO-ARRAY.  An array is created and
      ;; associated functionally with the symbol *JM.  The elements
@@ -823,13 +824,13 @@
      (cond ((or (and (null (car m)) (null (cadr m)))
 		(and (car m)
 		     (> (length (car m)) (- (length mm) (1- d)))))
-	    (return 'singular))
-	   ((cadr m) (return 'inconsistent)))
+	    (return (values 'singular m)))
+	   ((cadr m) (return (values 'inconsistent m))))
      (setq *mosesflag t)
      (ptorat '*jm* (1- d) d)
      (setq m2 (xrutout '*jm* (1- d) d nil nil))
      (setq m2 (lsafix (cdr m2) (caddr m)))
-     (return m2)))
+     (return (values m2 m))))
 
 (defun lsafix (l n)
   (declare (special *jm*))
@@ -1090,7 +1091,8 @@
      (setq rarray (cdr rarray))
      (when rarray (go array2loop))
      (setq rarray (reverse aarray))
-     (setq temp (lsa rarray))
+     (multiple-value-setq (temp m)
+       (lsa rarray))
      (when (or (eq temp 'singular)
 	       (eq temp 'inconsistent))
        (return (if (null flag)
