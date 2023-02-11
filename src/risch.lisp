@@ -16,7 +16,7 @@
 
 (declare-top (special cary
                       var
-                      expint operator
+                      expint
                       changevp r s b mainvar expflag
                       switch nogood
                       alphar m
@@ -109,7 +109,7 @@
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)
                      ($logexpand t))
-  (prog ($%e_to_numlog $logsimp operator y z var risch-ratform risch-liflag
+  (prog ($%e_to_numlog $logsimp y z var risch-ratform risch-liflag
 	 mainvar varlist genvar $ratfac $ratalgdenom risch-degree
 	 rischform-value risch-trigint risch-hypertrigint risch-operator)
      (if (specrepp exp)
@@ -1307,5 +1307,5 @@
   (subst '/_101x risch-*var a))
 
 (declare-top (unspecial b cary context
-			m nogood operator
+			m nogood
 			r s switch var  y))
