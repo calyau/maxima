@@ -419,7 +419,7 @@
           (push x coef)
           (push x fn)))))
 
-(defun getfncoeff (a form risch-intvar risch-liflag risch-degree cary)
+(defun getfncoeff (a form risch-intvar risch-liflag risch-degree risch-cary)
   (labels
       ((getfncoeff-impl (a)
 	 (cond ((null a) 0)
@@ -472,11 +472,11 @@
 			((let (vlist)
 			   (newvar1 (car a))
 			   (null vlist))
-			 (format t "getfncoeff: cary = ~A~%" cary)
-			 (setq cary
+			 (format t "getfncoeff: risch-cary = ~A~%" risch-cary)
+			 (setq risch-cary
 			       (ratpl (cdr (ratrep* (car a)))
-				      cary))
-			 (format t "getfncoeff: new cary = ~A~%" cary)
+				      risch-cary))
+			 (format t "getfncoeff: new risch-cary = ~A~%" risch-cary)
 			 (rplaca a 0)
 			 (getfncoeff-impl (cdr a)))
 			((and risch-liflag
@@ -499,7 +499,7 @@
 	       (t
 		(rplaca a (list '(mtimes) 1 (car a)))
 		(getfncoeff-impl a)))))
-    (values (getfncoeff-impl a) cary)))
+    (values (getfncoeff-impl a) risch-cary)))
 
 
 (defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag)
