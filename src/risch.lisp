@@ -16,7 +16,7 @@
 
 (declare-top (special var
                       expint
-                      changevp r s b mainvar expflag
+                      r s b mainvar expflag
                       switch
                       m
                       *mosesflag y
@@ -24,7 +24,8 @@
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
 
-(defvar changevp t "When nil prevents changevar hack")
+(defvar *changevp* t
+  "When nil prevents changevar hack")
 
 (defmacro pair (al bl) `(mapcar #'cons ,al ,bl))
 
@@ -377,13 +378,13 @@
 	  (list '(mtimes)
 		(disrep logcoef risch-ratform)
 		(logmabs (disrep p2e risch-ratform))))))
-     (if (and expflag $liflag changevp)
+     (if (and expflag $liflag *changevp*)
 	 (let* ((newvar (gensym))
 		(new-int ($changevar
 			  `((%integrate) ,(simplify (disrep p risch-ratform)) ,risch-intvar)
 			  (sub newvar (get var 'rischexpr))
 			  newvar risch-intvar))
-		(changevp nil))		;prevents recursive changevar
+		(*changevp* nil))		;prevents recursive changevar
 	   (if (and (freeof risch-intvar new-int)
 		    (freeof '%integrate
 			    (setq new-int (rischint (sdiff new-int newvar)
