@@ -557,7 +557,7 @@
 ;;integrates log(ro)^risch-degree*log(rn)' in terms of polylogs
 ;;finds constants c,d and integers j,k such that
 ;;c*ro^j+d=rn^k  If ro and rn are poly's then can assume either j=1 or k=1
-(defun dilog (l risch-intvar risch-risch-degree)
+(defun dilog (l risch-intvar risch-degree)
   (destructuring-let* ((((nil coef nlog) . olog) l)
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
@@ -574,19 +574,19 @@
 		 narg (rdis rn)))
 	  ((and (= k 1) (> j 1))
 	   (setq ro (ratexpt ro j)
-		 coef (div coef (f* j risch-risch-degree))
+		 coef (div coef (f* j risch-degree))
 		 olog (mul j olog))))
     (desetq (rc . rd) (ratdivide rn ro))
     (cond ((and (freeof risch-intvar (rdis rc))	;; can't use risch-constp because varlist
 		(freeof risch-intvar (rdis rd)))	;; is not set up with vars in correct order.
 	   (setq narg ($ratsimp (sub 1 (div narg (rdis rd)))))
-	   (mul* coef (power -1 (1+ risch-risch-degree))
-		 `((mfactorial) ,risch-risch-degree)
+	   (mul* coef (power -1 (1+ risch-degree))
+		 `((mfactorial) ,risch-degree)
 		 (dosum (mul* (power -1 idx)
 			      (div* (power olog idx)
 				    `((mfactorial) ,idx))
-			      (make-li (add risch-risch-degree (neg idx) 1) narg))
-			idx 0 risch-risch-degree t)))
+			      (make-li (add risch-degree (neg idx) 1) narg))
+			idx 0 risch-degree t)))
 	  (t (setq nogood t) 0))))
 
 (defun exppolycontrol (flag f a expg n risch-ratform risch-intvar risch-liflag risch-degree)
