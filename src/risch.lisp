@@ -19,7 +19,7 @@
                       expint
                       changevp r s b mainvar expflag
                       switch nogood
-                      alphar m
+                      m
                       *mosesflag y
                       context *in-risch-p*))
 
