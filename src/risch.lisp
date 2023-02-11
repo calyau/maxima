@@ -419,7 +419,7 @@
           (push x coef)
           (push x fn)))))
 
-(defun getfncoeff (a form risch-intvar risch-liflag risch-degree)
+(defun getfncoeff (a form risch-intvar risch-liflag risch-degree cary)
   (labels
       ((getfncoeff-impl (a)
 	 (cond ((null a) 0)
@@ -472,9 +472,11 @@
 			((let (vlist)
 			   (newvar1 (car a))
 			   (null vlist))
+			 (format t "getfncoeff: cary = ~A~%" cary)
 			 (setq cary
 			       (ratpl (cdr (ratrep* (car a)))
 				      cary))
+			 (format t "getfncoeff: new cary = ~A~%" cary)
 			 (rplaca a 0)
 			 (getfncoeff-impl (cdr a)))
 			((and risch-liflag
@@ -497,7 +499,7 @@
 	       (t
 		(rplaca a (list '(mtimes) 1 (car a)))
 		(getfncoeff-impl a)))))
-    (getfncoeff-impl a)))
+    (values (getfncoeff-impl a) cary)))
 
 
 (defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag)
@@ -534,7 +536,11 @@
 	   (setq cary (car y))
 	   (and (> risch-degree 0)
 		(setq risch-liflag $liflag))
-	   (setq z (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree))
+	   
+	   (format t "rischlogpoly: before getfn cary = ~A~%" cary)
+	   (multiple-value-setq (z cary)
+	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree cary))
+	   (format t "rischlogpoly: after getfn cary = ~A~%" cary)
 	   (setq risch-liflag nil)
 	   (cond ((and (> risch-degree 0)
 		       (or nogood
@@ -913,7 +919,9 @@
 				   (polcoef r risch-beta var) ))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq cary (car y))
-     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree))
+     (multiple-value-setq (yy cary)
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree cary))
+     (format t "rischlogpoly: after getfn: cary = ~A" cary)
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (not (atom yy))
@@ -939,7 +947,9 @@
      (setq y (tryrisch1 (ratqu (polcoef s risch-gamma var) (polcoef r risch-beta var))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq cary (car y))
-     (setq yy (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree))
+     (multiple-value-setq (yy cary)
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree cary))
+     (format t "rischexplog: after getfn cary = ~A~%" cary)
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (equal (cdr yy) 1)
