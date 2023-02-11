@@ -665,7 +665,7 @@
       (setq ans (rischadd w ans)))))
 
 (defun rischexpvar (flag l risch-ratform risch-intvar)
-  (prog (lcm y m p risch-alphar risch-gamma delta r s
+  (prog (lcm y risch-m p risch-alphar risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
 	 risch-beta)
      (desetq (f a expg n) l)
@@ -688,19 +688,19 @@
      (setq delta (pdegree tt mainvar))
      (setq risch-alphar (max (- (1+ delta) risch-beta)
 		       (- delta risch-gamma)))
-     (setq m 0)
+     (setq risch-m 0)
      (cond ((equal (1- risch-beta) risch-gamma)
 	    (setq y (r* -1
 			(ratqu (polcoef s risch-gamma var)
 			       (polcoef r risch-beta var))))
 	    (and (equal (cdr y) 1)
 		 (numberp (car y))
-		 (setq m (car y)))))
-     (setq risch-alphar (max risch-alphar m))
+		 (setq risch-m (car y)))))
+     (setq risch-alphar (max risch-alphar risch-m))
      (if (minusp risch-alphar)
 	 (return (if flag (cxerfarg (rzero) expg n a risch-ratform risch-intvar) nil)))
-     (cond ((not (and (equal risch-alphar m)
-		      (not (zerop m))))
+     (cond ((not (and (equal risch-alphar risch-m)
+		      (not (zerop risch-m))))
 	    (go down2)))
      (setq k (+ risch-alphar risch-beta -2))
      (setq wl nil)
@@ -720,7 +720,7 @@
      (decf k)
      (cond ((> k -1)
 	    (go l2)))
-     (multiple-value-setq (y m)
+     (multiple-value-setq (y risch-m)
        (lsa wl))
      (if (or (eq y 'singular) (eq y 'inconsistent))
 	 (cond ((null flag) (return nil))
