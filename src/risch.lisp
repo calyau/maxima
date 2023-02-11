@@ -111,7 +111,7 @@
                      ($logexpand t))
   (prog ($%e_to_numlog $logsimp operator y z var risch-ratform risch-liflag
 	 mainvar varlist genvar $ratfac $ratalgdenom risch-degree
-	 rischform-value risch-trigint risch-hypertrigint)
+	 rischform-value risch-trigint risch-hypertrigint risch-operator)
      (if (specrepp exp)
 	 (setq exp (specdisrep exp)))
      (if (specrepp risch-intvar)
@@ -121,15 +121,16 @@
      (if (and (atom risch-intvar)
 	      (isinop exp risch-intvar))
 	 (go noun))
-     (multiple-value-setq (rischform-value risch-trigint risch-hypertrigint)
+     (multiple-value-setq (rischform-value risch-trigint risch-hypertrigint risch-operator)
        (rischform exp risch-intvar))
      (cond (risch-trigint
 	    (return (trigin1 exp risch-intvar)))
 	   (risch-hypertrigint
 	    (return (hypertrigint1 exp risch-intvar t)))
-	   (operator
+	   (risch-operator
 	    (go noun)))
-     (setq y (intsetup exp risch-intvar))
+     (multiple-value-setq (y risch-operator)
+       (intsetup exp risch-intvar))
      (if operator
 	 (go noun))
      (setq risch-ratform (car y))
@@ -155,7 +156,7 @@
      (return (list '(%integrate) exp risch-intvar))))
 
 (defun rischform (l risch-intvar)
-  (let (risch-trigint risch-hypertrigint)
+  (let (risch-trigint risch-hypertrigint risch-operator)
     (labels
 	((rischform-impl (l risch-intvar)
 	   (cond ((or (atom l)
@@ -166,7 +167,7 @@
 		  (if (and (integerp (car (subfunsubs l)))
 			   (signp g (car (subfunsubs l))))
 		      (rischform-impl (car (subfunargs l)) risch-intvar)
-		      (setq operator t)))
+		      (setq risch-operator t)))
 		 ((atom (caar l))
 		  (case (caar l)
 		    ((%sin %cos %tan %cot %sec %csc)
@@ -186,12 +187,13 @@
 			       (rischform-impl e risch-intvar))
 			   (cdr l)))
 		    (t
-		     (setq operator (caar l)))))
+		     (setq risch-operator (caar l)))))
 		 (t
-		  (setq operator (caar l))))))
+		  (setq risch-operator (caar l))))))
       (values (rischform-impl l risch-intvar)
 	      risch-trigint
-	      risch-hypertrigint))))
+	      risch-hypertrigint
+	      risch-operator))))
 
 (defun hypertrigint1 (exp var hyperfunc)
   (let ((result (if hyperfunc
@@ -1209,8 +1211,8 @@
 		   (cond ((numberp (caddr y))
 			  (push y dlist))
 			 (t
-			  (setq operator t)
-			  (return nil))))
+			  ;;(setq operator t)
+			  (return (values nil t)))))
 		  (t
 		   (push y dlist))))
 	   (t
@@ -1230,8 +1232,8 @@
 	       (intset1 b risch-*var))
 	   (cons risch-*var dlist))
      (cond ((alike old varlist)
-	    (return (prog1
-			(ratrep* exp))))
+	    (return (values (ratrep* exp)
+			    nil)))
 	   (t (go a)))))
 
 (defun leadop (exp)
