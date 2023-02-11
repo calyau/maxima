@@ -18,7 +18,7 @@
                       var
                       expint trigint operator
                       changevp r s b mainvar expflag
-                      expstuff switch nogood
+                      switch nogood
                       alphar m
                       hypertrigint *mosesflag y
                       context *in-risch-p*))
