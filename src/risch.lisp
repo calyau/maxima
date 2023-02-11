@@ -479,8 +479,10 @@
 			((and risch-liflag
 			      (mlogp form)
 			      (mlogp newfn))
-			 (push (dilog (cons (car a) form) risch-intvar risch-degree)
-			       lians)
+			 (let (res)
+			   (multiple-value-setq (res nogood)
+			     (dilog (cons (car a) form) risch-intvar risch-degree))
+			   (push res lians))
 			 (rplaca a 0)
 			 (getfncoeff-impl (cdr a)))
 			((and risch-liflag
