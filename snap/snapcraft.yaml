@@ -10,9 +10,10 @@ description: |
   It comes with extensive self tests.
 
 grade: stable
+icon: ./interfaces/xmaxima/maxima-icon.svg
+base: core20
 confinement: strict
-icon: interfaces/xmaxima/maxima-new.svg
- 
+
 apps:
   maxima:
     command: maxima
@@ -39,13 +40,13 @@ apps:
      - home
      - removable-media
      - optical-drive
-#    desktop: usr/share/applications/xmaxima.desktop
+    desktop: usr/share/applications/net.sourceforge.maxima.xmaxima.desktop
 
 parts:
   maxima:
     plugin: autotools
     source: .
-    configflags:
+    autotools-configure-parameters:
      - --enable-sbcl
      - --enable-clisp
     build-packages:
@@ -59,8 +60,12 @@ parts:
      - gawk
      - texlive-latex-recommended
      - tex-common
-     - python
+     - python3
     stage-packages:
      - sbcl
      - clisp
      - gnuplot
+    stage:
+     - -usr/share/texmf/ls-R
+
+
