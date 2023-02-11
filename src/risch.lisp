@@ -111,7 +111,7 @@
                      ($logexpand t))
   (prog ($%e_to_numlog $logsimp trigint operator y z var risch-ratform risch-liflag
 	 mainvar varlist genvar hypertrigint $ratfac $ratalgdenom risch-degree
-	 rischform-value)
+	 rischform-value risch-trigint risch-hypertrigint)
      (if (specrepp exp)
 	 (setq exp (specdisrep exp)))
      (if (specrepp risch-intvar)
@@ -121,11 +121,11 @@
      (if (and (atom risch-intvar)
 	      (isinop exp risch-intvar))
 	 (go noun))
-     (multiple-value-setq (rischform-value trigint hypertrigint)
+     (multiple-value-setq (rischform-value risch-trigint risch-hypertrigint)
        (rischform exp risch-intvar))
-     (cond (trigint
+     (cond (risch-trigint
 	    (return (trigin1 exp risch-intvar)))
-	   (hypertrigint
+	   (risch-hypertrigint
 	    (return (hypertrigint1 exp risch-intvar t)))
 	   (operator
 	    (go noun)))
@@ -189,7 +189,7 @@
 		     (setq operator (caar l)))))
 		 (t
 		  (setq operator (caar l))))))
-      (values (rischform1 l risch-intvar)
+      (values (rischform-impl l risch-intvar)
 	      risch-trigint
 	      risch-hypertrigint))))
 
