@@ -519,7 +519,7 @@
 	      (y)
 	      (z)
 	      (ak)
-	      (nogood)
+	      (risch-nogood)
 	      (lbkpl1))
 	     ((minusp risch-degree)
 	      (cons sum (append lians (cdr y))))
@@ -536,11 +536,11 @@
 	   (and (> risch-degree 0)
 		(setq risch-liflag $liflag))
 	   
-	   (multiple-value-setq (z risch-cary nogood)
-	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary nogood))
+	   (multiple-value-setq (z risch-cary risch-nogood)
+	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
 	   (setq risch-liflag nil)
 	   (cond ((and (> risch-degree 0)
-		       (or nogood
+		       (or risch-nogood
 			   (findint (cdr y))))
 		  (return (rischnoun sum risch-ratform 
 				     risch-intvar
@@ -881,7 +881,7 @@
   (declare (special var))
   (prog (lcm y yy m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
-	 temp risch-cary nogood vector aarray rmu rrmu rarray
+	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
 	 risch-beta)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
@@ -921,10 +921,10 @@
 				   (polcoef r risch-beta var) ))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car y))
-     (multiple-value-setq (yy risch-cary nogood)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary nogood))
+     (multiple-value-setq (yy risch-cary risch-nogood)
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
      (cond ((and (not (findint (cdr y)))
-		 (not nogood)
+		 (not risch-nogood)
 		 (not (atom yy))
 		 (equal (cdr yy) 1)
 		 (numberp (car yy))
@@ -948,10 +948,10 @@
      (setq y (tryrisch1 (ratqu (polcoef s risch-gamma var) (polcoef r risch-beta var))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car y))
-     (multiple-value-setq (yy risch-cary nogood)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary nogood))
+     (multiple-value-setq (yy risch-cary risch-nogood)
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
      (cond ((and (not (findint (cdr y)))
-		 (not nogood)
+		 (not risch-nogood)
 		 (equal (cdr yy) 1)
 		 (numberp (car yy))
 		 (> (- (car yy)) mu))
