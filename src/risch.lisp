@@ -651,7 +651,8 @@
 
 (defun rischexpvar (flag l risch-ratform risch-intvar)
   (prog (lcm y m p alphar risch-gamma delta r s
-	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd)
+	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
+	 risch-beta)
      (desetq (f a expg n) l)
      (cond ((or (pzerop a) (pzerop (car a)))
 	    (return (cond ((null flag) (rzero))
@@ -865,7 +866,8 @@
   (declare (special var))
   (prog (lcm y yy m p alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
-	 temp cary nogood vector aarray rmu rrmu rarray)
+	 temp cary nogood vector aarray rmu rrmu rarray
+	 risch-beta)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
 		(pzerop (car a)))
