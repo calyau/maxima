@@ -418,7 +418,7 @@
           (push x coef)
           (push x fn)))))
 
-(defun getfncoeff (a form risch-intvar risch-liflag risch-degree risch-cary)
+(defun getfncoeff (a form risch-intvar risch-liflag risch-degree risch-cary risch-nogood)
   (labels
       ((getfncoeff-impl (a)
 	 (cond ((null a) 0)
@@ -480,8 +480,8 @@
 			      (mlogp form)
 			      (mlogp newfn))
 			 (let (res)
-			   (multiple-value-setq (res nogood)
-			     (dilog (cons (car a) form) risch-intvar risch-degree))
+			   (multiple-value-setq (res risch-nogood)
+			     (dilog (cons (car a) form) risch-intvar risch-degree risch-nogood))
 			   (push res lians))
 			 (rplaca a 0)
 			 (getfncoeff-impl (cdr a)))
@@ -494,11 +494,11 @@
 			       lians)
 			 (rplaca a 0)
 			 (getfncoeff-impl (cdr a)))
-			(t (setq nogood t) 0))))
+			(t (setq risch-nogood t) 0))))
 	       (t
 		(rplaca a (list '(mtimes) 1 (car a)))
 		(getfncoeff-impl a)))))
-    (values (getfncoeff-impl a) risch-cary nogood)))
+    (values (getfncoeff-impl a) risch-cary risch-nogood)))
 
 
 (defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag)
@@ -537,7 +537,7 @@
 		(setq risch-liflag $liflag))
 	   
 	   (multiple-value-setq (z risch-cary nogood)
-	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary nogood))
 	   (setq risch-liflag nil)
 	   (cond ((and (> risch-degree 0)
 		       (or nogood
@@ -559,7 +559,7 @@
 ;;integrates log(ro)^risch-degree*log(rn)' in terms of polylogs
 ;;finds constants c,d and integers j,k such that
 ;;c*ro^j+d=rn^k  If ro and rn are poly's then can assume either j=1 or k=1
-(defun dilog (l risch-intvar risch-degree)
+(defun dilog (l risch-intvar risch-degree risch-nogood)
   (destructuring-let* ((((nil coef nlog) . olog) l)
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
@@ -592,9 +592,9 @@
 				    (make-li (add risch-degree (neg idx) 1) narg))
 			      idx 0 risch-degree t)))
 		(t
-		 (setq nogood t)
+		 (setq risch-nogood t)
 		 0))))
-      (values result nogood))))
+      (values result risch-nogood))))
 
 (defun exppolycontrol (flag f a expg n risch-ratform risch-intvar risch-liflag risch-degree)
   (let (y l var (varlist varlist) (genvar genvar))
@@ -922,7 +922,7 @@
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car y))
      (multiple-value-setq (yy risch-cary nogood)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary nogood))
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (not (atom yy))
@@ -949,7 +949,7 @@
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car y))
      (multiple-value-setq (yy risch-cary nogood)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary nogood))
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (equal (cdr yy) 1)
