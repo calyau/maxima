@@ -516,7 +516,7 @@
 	      (den (cdr exp))
 	      (lians ())
 	      (sum (rzero))
-	      (cary (rzero))
+	      (risch-cary (rzero))
 	      (y)
 	      (z)
 	      (ak)
@@ -526,21 +526,21 @@
 	      (cons sum (append lians (cdr y))))
 	   (setq ak (r- (ratqu (polcoef p risch-degree var) den)
 			(r* (cons (1+ risch-degree) 1)
-			    cary
+			    risch-cary
 			    (get var 'rischdiff))))
 	   (if (not (pzerop (polcoef p risch-degree var)))
 	       (setq p (if (pcoefp p)
 			   (pzero)
 			   (psimp var (p-red p)))))
 	   (setq y (tryrisch1 ak mainvar risch-ratform risch-intvar risch-liflag risch-degree))
-	   (setq cary (car y))
+	   (setq risch-cary (car y))
 	   (and (> risch-degree 0)
 		(setq risch-liflag $liflag))
 	   
-	   (format t "rischlogpoly: before getfn cary = ~A~%" cary)
-	   (multiple-value-setq (z cary)
-	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree cary))
-	   (format t "rischlogpoly: after getfn cary = ~A~%" cary)
+	   (format t "rischlogpoly: before getfn risch-cary = ~A~%" risch-cary)
+	   (multiple-value-setq (z risch-cary)
+	     (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+	   (format t "rischlogpoly: after getfn risch-cary = ~A~%" risch-cary)
 	   (setq risch-liflag nil)
 	   (cond ((and (> risch-degree 0)
 		       (or nogood
@@ -552,7 +552,7 @@
 					 (ratqu p den))))))
 	   (setq lbkpl1 (ratqu z (cons (1+ risch-degree) 1)))
 	   (setq sum (r+ (r* lbkpl1 (make-poly var (1+ risch-degree) 1))
-			 (r* cary (if (zerop risch-degree) 1
+			 (r* risch-cary (if (zerop risch-degree) 1
 				      (make-poly var risch-degree 1)))
 			 sum))))))
 
@@ -879,7 +879,7 @@
   (declare (special var))
   (prog (lcm y yy m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
-	 temp cary nogood vector aarray rmu rrmu rarray
+	 temp risch-cary nogood vector aarray rmu rrmu rarray
 	 risch-beta)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
@@ -918,10 +918,10 @@
 			       (r* (polcoef r risch-beta var)
 				   (polcoef r risch-beta var) ))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
-     (setq cary (car y))
-     (multiple-value-setq (yy cary)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree cary))
-     (format t "rischlogpoly: after getfn: cary = ~A" cary)
+     (setq risch-cary (car y))
+     (multiple-value-setq (yy risch-cary)
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+     (format t "rischlogpoly: after getfn: risch-cary = ~A" risch-cary)
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (not (atom yy))
@@ -946,10 +946,10 @@
    down1
      (setq y (tryrisch1 (ratqu (polcoef s risch-gamma var) (polcoef r risch-beta var))
 			mainvar risch-ratform risch-intvar risch-liflag risch-degree))
-     (setq cary (car y))
-     (multiple-value-setq (yy cary)
-       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree cary))
-     (format t "rischexplog: after getfn cary = ~A~%" cary)
+     (setq risch-cary (car y))
+     (multiple-value-setq (yy risch-cary)
+       (getfncoeff (cdr y) (get var 'rischexpr) risch-intvar risch-liflag risch-degree risch-cary))
+     (format t "rischexplog: after getfn risch-cary = ~A~%" risch-cary)
      (cond ((and (not (findint (cdr y)))
 		 (not nogood)
 		 (equal (cdr yy) 1)
