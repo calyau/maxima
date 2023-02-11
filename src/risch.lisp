@@ -451,7 +451,7 @@
 			((and (matanp newfn)
 			      (member '$%i varlist :test #'eq))
 			 (let (($logarc t) ($logexpand '$all))
-			   (rplaca a ($expand (resgetfncoeff-implify (car a)))))
+			   (rplaca a ($expand (resimplify (car a)))))
 			 (getfncoeff-impl a))
 			((and (alike1 (leadop newfn) (leadop form))
 			      (or (alike1 (leadarg newfn) (leadarg form))
