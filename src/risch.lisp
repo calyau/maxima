@@ -131,7 +131,7 @@
 	    (go noun)))
      (multiple-value-setq (y risch-operator)
        (intsetup exp risch-intvar))
-     (if operator
+     (if risch-operator
 	 (go noun))
      (setq risch-ratform (car y))
      (setq varlist (caddr risch-ratform))
