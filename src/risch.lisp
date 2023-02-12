@@ -620,8 +620,12 @@
 			y)))))
 
 (defun rischexppoly (expint var risch-ratform risch-intvar risch-liflag risch-degree)
-  (let (risch-y w num denom type (ans (rischzero))
-	  (expdiff (ratqu (get var 'rischdiff) (list var 1 1))))
+  (let (risch-y
+	w
+	num
+	denom type
+	(ans (rischzero))
+	(expdiff (ratqu (get var 'rischdiff) (list var 1 1))))
     (do ((expint expint (cdr expint)))
 	((null expint)
 	 ans)
