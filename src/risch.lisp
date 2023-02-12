@@ -229,7 +229,7 @@
   (prog (risch-logptdx expflag risch-expstuff expint risch-y)
      (setq risch-expstuff '(0 . 1))
      (cond ((eq mainvar var)
-	    (return (rischfprog exp risch-ratform)))
+	    (return (rischfprog exp risch-ratform var)))
 	   ((eq (get var 'leadop)
 		'mexpt)
 	    (setq expflag t)))
@@ -253,7 +253,7 @@
 	 (var (getrischvar)))
     (tryrisch exp mainvar risch-ratform risch-intvar risch-liflag risch-degree)))
 
-(defun rischfprog (rat risch-ratform)
+(defun rischfprog (rat risch-ratform var)
   (multiple-value-bind (dprog-ret risch-logptdx)
       (dprog rat risch-ratform var)
     (cons (cdr (ratrep* dprog-ret))
