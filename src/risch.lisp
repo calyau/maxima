@@ -16,7 +16,7 @@
 
 (declare-top (special var
                       expint
-                      r s b mainvar expflag
+                      r s mainvar expflag
                       *mosesflag y
                       context *in-risch-p*))
 
