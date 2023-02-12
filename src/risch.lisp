@@ -107,7 +107,7 @@
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)
                      ($logexpand t))
-  (prog ($%e_to_numlog $logsimp y z var risch-ratform risch-liflag
+  (prog ($%e_to_numlog $logsimp risch-y z var risch-ratform risch-liflag
 	 mainvar varlist genvar $ratfac $ratalgdenom risch-degree
 	 rischform-value risch-trigint risch-hypertrigint risch-operator)
      (if (specrepp exp)
@@ -127,11 +127,11 @@
 	    (return (hypertrigint1 exp risch-intvar t)))
 	   (risch-operator
 	    (go noun)))
-     (multiple-value-setq (y risch-operator)
+     (multiple-value-setq (risch-y risch-operator)
        (intsetup exp risch-intvar))
      (if risch-operator
 	 (go noun))
-     (setq risch-ratform (car y))
+     (setq risch-ratform (car risch-y))
      (setq varlist (caddr risch-ratform))
      (setq mainvar (caadr (ratf risch-intvar)))
      (setq genvar (cadddr risch-ratform))
@@ -139,7 +139,7 @@
        (setq $algebraic nil)
        (setq $gcd (car *gcdl*)))
      (setq var (getrischvar))
-     (setq z (tryrisch (cdr y) mainvar risch-ratform risch-intvar risch-liflag risch-degree))
+     (setq z (tryrisch (cdr risch-y) mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setf (caddr risch-ratform) varlist)
      (setf (cadddr risch-ratform) genvar)
      (return (cond ((atom (cdr z))
