@@ -515,13 +515,13 @@
 	      (lians ())
 	      (sum (rzero))
 	      (risch-cary (rzero))
-	      (y)
+	      (risch-y)
 	      (z)
 	      (ak)
 	      (risch-nogood)
 	      (lbkpl1))
 	     ((minusp risch-degree)
-	      (cons sum (append lians (cdr y))))
+	      (cons sum (append lians (cdr risch-y))))
 	   (setq ak (r- (ratqu (polcoef p risch-degree var) den)
 			(r* (cons (1+ risch-degree) 1)
 			    risch-cary
@@ -530,19 +530,19 @@
 	       (setq p (if (pcoefp p)
 			   (pzero)
 			   (psimp var (p-red p)))))
-	   (setq y (tryrisch1 ak mainvar risch-ratform risch-intvar risch-liflag risch-degree))
-	   (setq risch-cary (car y))
+	   (setq risch-y (tryrisch1 ak mainvar risch-ratform risch-intvar risch-liflag risch-degree))
+	   (setq risch-cary (car risch-y))
 	   (and (> risch-degree 0)
 		(setq risch-liflag $liflag))
 	   
 	   (multiple-value-setq (z risch-cary risch-nogood)
-	     (getfncoeff (cdr y)
+	     (getfncoeff (cdr risch-y)
 			 (get var 'rischexpr)
 			 risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
 	   (setq risch-liflag nil)
 	   (cond ((and (> risch-degree 0)
 		       (or risch-nogood
-			   (findint (cdr y))))
+			   (findint (cdr risch-y))))
 		  (return (rischnoun sum risch-ratform 
 				     risch-intvar
 				     (r+ (r* ak
