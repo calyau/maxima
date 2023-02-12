@@ -598,26 +598,26 @@
       (values result risch-nogood))))
 
 (defun exppolycontrol (flag f a expg n risch-ratform risch-intvar risch-liflag risch-degree)
-  (let (y l var (varlist varlist) (genvar genvar))
+  (let (risch-y l var (varlist varlist) (genvar genvar))
     (setq varlist (reverse (cdr (reverse varlist))))
     (setq var (getrischvar))
-    (setq y (get var 'leadop))
+    (setq risch-y (get var 'leadop))
     (cond ((and (not (pzerop (ratnumerator f)))
 		(risch-constp (setq l (ratqu a f))))
 	   (cond (flag		;; multiply in expg^n - n may be negative
 		  (list (r* l (ratexpt (cons (list expg 1 1) 1) n))
 			0))
 		 (t l)))
-	  ((eq y risch-intvar)
-	   (rischexpvar flag (list f a expg n) risch-ratform risch-intvar y))
+	  ((eq risch-y risch-intvar)
+	   (rischexpvar flag (list f a expg n) risch-ratform risch-intvar risch-y))
 	  (t
-	   (rischexplog (eq y 'mexpt) flag f a
+	   (rischexplog (eq risch-y 'mexpt) flag f a
 			(list expg n (get var 'rischarg)
 			      var (get var 'rischdiff))
 			risch-ratform risch-intvar
 			risch-liflag
 			risch-degree
-			y)))))
+			risch-y)))))
 
 (defun rischexppoly (expint var risch-ratform risch-intvar risch-liflag risch-degree)
   (let (risch-y
