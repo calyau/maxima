@@ -674,7 +674,8 @@
      (setq denom (ratdenominator f))
      (multiple-value-setq (p risch-alphar)
        (findpr (cdr (partfrac a mainvar))
-	       (cdr (partfrac f mainvar))))
+	       (cdr (partfrac f mainvar))
+	       y))
      (setq lcm (plcm (ratdenominator a) p))
      (setq y (ratpl (spderivative (cons 1 p) mainvar)
 		    (ratqu f p)))
@@ -843,11 +844,11 @@
     (setq ans (cons (aref *jm* 1 s) ans))))
 
 
-(defun findpr (alist flist &aux (p 1) fterm)
+(defun findpr (alist flist risch-y &aux (p 1) fterm)
   (let (risch-alphar)
     (do ((alist alist (cdr alist))) ((null alist))
       (setq fterm (findflist (cadar alist) flist))
-      (if fterm (setq flist (remove y flist :count 1 :test #'eq)))
+      (if fterm (setq flist (remove risch-y flist :count 1 :test #'eq)))
       (setq risch-alphar
 	    (cond ((null fterm) (caddar alist))
 		  ((equal (caddr fterm) 1)
@@ -894,7 +895,8 @@
 			   (rischzero))))))
      (multiple-value-setq (p risch-alphar)
        (findpr (cdr (partfrac a var))
-	       (cdr (partfrac f var))))
+	       (cdr (partfrac f var))
+	       y))
      (setq lcm (plcm (ratdenominator a) p))
      (setq y (ratpl (spderivative (cons 1 p) mainvar)
 		    (ratqu f p)))
