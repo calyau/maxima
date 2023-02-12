@@ -613,7 +613,7 @@
 			0))
 		 (t l)))
 	  ((eq risch-y risch-intvar)
-	   (rischexpvar flag (list f a expg n) risch-ratform risch-intvar risch-y))
+	   (rischexpvar flag (list f a expg n) risch-ratform risch-intvar risch-y var))
 	  (t
 	   (rischexplog (eq risch-y 'mexpt) flag f a
 			(list expg n (get var 'rischarg)
@@ -621,7 +621,8 @@
 			risch-ratform risch-intvar
 			risch-liflag
 			risch-degree
-			risch-y)))))
+			risch-y
+			var)))))
 
 (defun rischexppoly (expint var risch-ratform risch-intvar risch-liflag risch-degree)
   (let (risch-y
@@ -674,7 +675,7 @@
 					w)))))))
       (setq ans (rischadd w ans)))))
 
-(defun rischexpvar (flag l risch-ratform risch-intvar risch-y)
+(defun rischexpvar (flag l risch-ratform risch-intvar risch-y var)
   (prog (lcm risch-m p risch-alphar risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
 	 risch-beta)
@@ -905,8 +906,7 @@
 
 
 (defun rischexplog (expexpflag flag f a l
-		    risch-ratform risch-intvar risch-liflag risch-degree risch-y)
-  (declare (special var))
+		    risch-ratform risch-intvar risch-liflag risch-degree risch-y var)
   (prog (lcm yy risch-m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
