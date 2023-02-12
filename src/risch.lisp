@@ -1329,5 +1329,5 @@
 (defun fixintgreat (a risch-*var)
   (subst '/_101x risch-*var a))
 
-(declare-top (unspecial b context
+(declare-top (unspecial context
 			r s var  y))
