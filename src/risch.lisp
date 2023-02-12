@@ -16,7 +16,7 @@
 
 (declare-top (special var
                       expint
-                      r s mainvar expflag
+                      s mainvar expflag
                       *mosesflag y
                       context *in-risch-p*))
 
@@ -1330,4 +1330,4 @@
   (subst '/_101x risch-*var a))
 
 (declare-top (unspecial context
-			r s var  y))
+			s var  y))
