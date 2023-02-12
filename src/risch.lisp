@@ -17,7 +17,7 @@
 (declare-top (special var
                       expint
                       mainvar expflag
-                      *mosesflag
+                      *mosesflag y
                       context *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
@@ -1330,4 +1330,4 @@
   (subst '/_101x risch-*var a))
 
 (declare-top (unspecial context
-			var))
+			var  y))
