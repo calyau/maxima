@@ -620,13 +620,13 @@
 			y)))))
 
 (defun rischexppoly (expint var risch-ratform risch-intvar risch-liflag risch-degree)
-  (let (y w num denom type (ans (rischzero))
+  (let (risch-y w num denom type (ans (rischzero))
 	  (expdiff (ratqu (get var 'rischdiff) (list var 1 1))))
     (do ((expint expint (cdr expint)))
 	((null expint)
 	 ans)
-      (desetq (type . y) (car expint))
-      (desetq (num . denom) (ratfix y))
+      (desetq (type . risch-y) (car expint))
+      (desetq (num . denom) (ratfix risch-y))
       (cond ((eq type 'neg)
 	     (setq w (exppolycontrol t
 				     (r* (- (cadr denom))
@@ -640,7 +640,7 @@
 				     risch-degree)))
 	    ((or (numberp num)
 		 (not (eq (car num) var)))
-	     (setq w (tryrisch1 y mainvar risch-ratform risch-intvar risch-liflag risch-degree)))
+	     (setq w (tryrisch1 risch-y mainvar risch-ratform risch-intvar risch-liflag risch-degree)))
 	    (t
 	     (setq w (rischzero))
 	     (do ((num (cdr num) (cddr num)))
