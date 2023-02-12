@@ -139,7 +139,7 @@
        (setq $algebraic nil)
        (setq $gcd (car *gcdl*)))
      (setq var (getrischvar))
-     (setq z (tryrisch (cdr risch-y) mainvar risch-ratform risch-intvar risch-liflag risch-degree))
+     (setq z (tryrisch (cdr risch-y) mainvar risch-ratform risch-intvar risch-liflag risch-degree var))
      (setf (caddr risch-ratform) varlist)
      (setf (cadddr risch-ratform) genvar)
      (return (cond ((atom (cdr z))
@@ -225,7 +225,7 @@
             (meval (list '($ev) result '$nouns)))
           result))))
 
-(defun tryrisch (exp mainvar risch-ratform risch-intvar risch-liflag risch-degree)
+(defun tryrisch (exp mainvar risch-ratform risch-intvar risch-liflag risch-degree var)
   (prog (risch-logptdx expflag risch-expstuff expint risch-y)
      (setq risch-expstuff '(0 . 1))
      (cond ((eq mainvar var)
@@ -251,7 +251,7 @@
 (defun tryrisch1 (exp mainvar risch-ratform risch-intvar risch-liflag risch-degree)
   (let* ((varlist (reverse (cdr (reverse varlist))))
 	 (var (getrischvar)))
-    (tryrisch exp mainvar risch-ratform risch-intvar risch-liflag risch-degree)))
+    (tryrisch exp mainvar risch-ratform risch-intvar risch-liflag risch-degree var)))
 
 (defun rischfprog (rat risch-ratform var)
   (multiple-value-bind (dprog-ret risch-logptdx)
