@@ -664,7 +664,7 @@
 					w)))))))
       (setq ans (rischadd w ans)))))
 
-(defun rischexpvar (flag l risch-ratform risch-intvar y)
+(defun rischexpvar (flag l risch-ratform risch-intvar risch-y)
   (prog (lcm risch-m p risch-alphar risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
 	 risch-beta)
@@ -676,13 +676,13 @@
      (multiple-value-setq (p risch-alphar)
        (findpr (cdr (partfrac a mainvar))
 	       (cdr (partfrac f mainvar))
-	       y))
+	       risch-y))
      (setq lcm (plcm (ratdenominator a) p))
-     (setq y (ratpl (spderivative (cons 1 p) mainvar)
+     (setq risch-y (ratpl (spderivative (cons 1 p) mainvar)
 		    (ratqu f p)))
-     (setq lcm (plcm lcm (ratdenominator y)))
+     (setq lcm (plcm lcm (ratdenominator risch-y)))
      (setq r (car (ratqu lcm p)))
-     (setq s (car (r* lcm y)))
+     (setq s (car (r* lcm risch-y)))
      (setq tt (car (r* a lcm)))
      (setq risch-beta (pdegree r mainvar))
      (setq risch-gamma (pdegree s mainvar))
@@ -691,12 +691,12 @@
 		       (- delta risch-gamma)))
      (setq risch-m 0)
      (cond ((equal (1- risch-beta) risch-gamma)
-	    (setq y (r* -1
+	    (setq risch-y (r* -1
 			(ratqu (polcoef s risch-gamma var)
 			       (polcoef r risch-beta var))))
-	    (and (equal (cdr y) 1)
-		 (numberp (car y))
-		 (setq risch-m (car y)))))
+	    (and (equal (cdr risch-y) 1)
+		 (numberp (car risch-y))
+		 (setq risch-m (car risch-y)))))
      (setq risch-alphar (max risch-alphar risch-m))
      (if (minusp risch-alphar)
 	 (return (if flag (cxerfarg (rzero) expg n a risch-ratform risch-intvar) nil)))
@@ -721,21 +721,21 @@
      (decf k)
      (cond ((> k -1)
 	    (go l2)))
-     (multiple-value-setq (y risch-m)
+     (multiple-value-setq (risch-y risch-m)
        (lsa wl))
-     (if (or (eq y 'singular) (eq y 'inconsistent))
+     (if (or (eq risch-y 'singular) (eq risch-y 'inconsistent))
 	 (cond ((null flag) (return nil))
 	       (t (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar)))))
      (setq k 0)
      (setq lcm 0)
-     (setq y (cdr y))
+     (setq risch-y (cdr risch-y))
    l3
      (setq lcm
-	   (r+ (r* (car y) (pexpt (list mainvar 1 1) k))
+	   (r+ (r* (car risch-y) (pexpt (list mainvar 1 1) k))
 	       lcm))
      (incf k)
-     (setq y (cdr y))
-     (cond ((null y)
+     (setq risch-y (cdr risch-y))
+     (cond ((null risch-y)
 	    (return (cond ((null flag) (ratqu lcm p))
 			  (t (list (r* (ratqu lcm p)
 				       (cons (list expg n 1) 1))
@@ -756,7 +756,7 @@
 		  #'(lambda ()
 		      (ratpl (ratti risch-alphar (polcoef r risch-beta var) t)
 			     (polcoef s risch-gamma var))))))
-     (setq y 0)
+     (setq risch-y 0)
    loop
      (setq yn (polcoef (ratnumerator tt) k var)
 		yd (r* (ratdenominator tt) ;DENOM MAY BE 0
@@ -773,7 +773,7 @@
 		     (t (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar)))))))
 	   (t
 	    (setq yalpha (ratqu yn yd))))
-     (setq ytemp (r+ y (r* yalpha
+     (setq ytemp (r+ risch-y (r* yalpha
 			   (cons (list mainvar risch-alphar 1) 1) )))
      (setq ttemp (r- tt (r* yalpha
 			    (r+ (r* s (cons (list mainvar risch-alphar 1) 1))
@@ -800,13 +800,13 @@
 	      (t
 	       (return
 		 (cxerfarg
-		  (ratqu (r* y (cons (list expg n 1) 1)) p)
+		  (ratqu (r* risch-y (cons (list expg n 1) 1)) p)
 		  expg
 		  n
 		  (ratqu tt lcm)
 		  risch-ratform
 		  risch-intvar))))))
-     (setq y ytemp)
+     (setq risch-y ytemp)
      (setq tt ttemp)
      (go loop)))
 
