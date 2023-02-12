@@ -1232,7 +1232,7 @@
 
 
 (defun intsetup (exp risch-*var)
-  (prog (varlist clist $factorflag dlist genpairs old y z $ratfac $keepfloat
+  (prog (varlist clist $factorflag dlist genpairs old risch-y z $ratfac $keepfloat
 	 *fnewvarsw)
    y
      (setq exp (radcan1 exp risch-*var))
@@ -1243,31 +1243,31 @@
      (setq dlist nil)
      (setq z varlist)
    up
-     (setq y (pop z))
-     (cond ((freeof risch-*var y)
-	    (push y clist))
-	   ((eq y risch-*var)
+     (setq risch-y (pop z))
+     (cond ((freeof risch-*var risch-y)
+	    (push risch-y clist))
+	   ((eq risch-y risch-*var)
 	    nil)
-	   ((and (mexptp y)
-		 (not (eq (cadr y) '$%e)))
-	    (cond ((not (freeof risch-*var (caddr y)))
+	   ((and (mexptp risch-y)
+		 (not (eq (cadr risch-y) '$%e)))
+	    (cond ((not (freeof risch-*var (caddr risch-y)))
 		   (setq dlist `((mexpt simp)
 				 $%e
-				 ,(mul2* (caddr y)
-					 `((%log) ,(cadr y)))))
-		   (setq exp (maxima-substitute dlist y exp))
+				 ,(mul2* (caddr risch-y)
+					 `((%log) ,(cadr risch-y)))))
+		   (setq exp (maxima-substitute dlist risch-y exp))
 		   (setq varlist nil)
 		   (go y))
-		  ((atom (caddr y))
-		   (cond ((numberp (caddr y))
-			  (push y dlist))
+		  ((atom (caddr risch-y))
+		   (cond ((numberp (caddr risch-y))
+			  (push risch-y dlist))
 			 (t
 			  ;;(setq operator t)
 			  (return (values nil t)))))
 		  (t
-		   (push y dlist))))
+		   (push risch-y dlist))))
 	   (t
-	    (push y dlist)))
+	    (push risch-y dlist)))
      (if z
 	 (go up))
      (if (member '$%i clist :test #'eq)
