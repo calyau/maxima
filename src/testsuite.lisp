@@ -18,6 +18,8 @@
 	((mlist simp) "rtest_rules"
 	 #+allegro ((mlist simp) 11 13))
         "rtestnset" 
+        ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
+        #-allegro
         ((mlist simp) "rtest1"
 	 ((mlist simp) 183 185 186))
         ((mlist simp) "rtest1a" ((mlist simp) 33))
