@@ -676,7 +676,7 @@
 					w)))))))
       (setq ans (rischadd w ans)))))
 
-(defun rischexpvar (flag l risch-ratform risch-intvar risch-y var)
+(defun rischexpvar (flag l risch-ratform risch-intvar risch-y risch-var)
   (prog (lcm risch-m p risch-alphar risch-gamma delta r s
 	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd
 	 risch-beta)
@@ -704,8 +704,8 @@
      (setq risch-m 0)
      (cond ((equal (1- risch-beta) risch-gamma)
 	    (setq risch-y (r* -1
-			      (ratqu (polcoef s risch-gamma var)
-				     (polcoef r risch-beta var))))
+			      (ratqu (polcoef s risch-gamma risch-var)
+				     (polcoef r risch-beta risch-var))))
 	    (and (equal (cdr risch-y) 1)
 		 (numberp (car risch-y))
 		 (setq risch-m (car risch-y)))))
@@ -720,13 +720,13 @@
      (setq k (+ risch-alphar risch-beta -2))
      (setq wl nil)
    l2
-     (setq wv (list (cons (polcoef tt k var) 1)))
+     (setq wv (list (cons (polcoef tt k risch-var) 1)))
      (setq i risch-alphar)
    l1
      (setq wv
 	   (cons (r+ (r* (cons i 1)
-			 (polcoef r (+ k 1 (- i)) var))
-		     (cons (polcoef s (+ k (- i)) var) 1))
+			 (polcoef r (+ k 1 (- i)) risch-var))
+		     (cons (polcoef s (+ k (- i)) risch-var) 1))
 		 wv))
      (decf i)
      (cond ((> i -1)
@@ -764,23 +764,23 @@
      (cond ((> (1- risch-beta) risch-gamma)
 	    (setq k (+ risch-alphar (1- risch-beta)))
 	    (setq denom #'(lambda ()
-			    (ratti risch-alphar (polcoef r risch-beta var) t))))
+			    (ratti risch-alphar (polcoef r risch-beta risch-var) t))))
 	   ((< (1- risch-beta) risch-gamma)
 	    (setq k (+ risch-alphar risch-gamma))
 	    (setq denom #'(lambda ()
-			    (polcoef s risch-gamma var))))
+			    (polcoef s risch-gamma risch-var))))
 	   (t
 	    (setq k (+ risch-alphar risch-gamma))
 	    (setq denom
 		  #'(lambda ()
-		      (ratpl (ratti risch-alphar (polcoef r risch-beta var) t)
-			     (polcoef s risch-gamma var))))))
+		      (ratpl (ratti risch-alphar (polcoef r risch-beta risch-var) t)
+			     (polcoef s risch-gamma risch-var))))))
      (setq risch-y 0)
    loop
-     (setq yn (polcoef (ratnumerator tt) k var)
+     (setq yn (polcoef (ratnumerator tt) k risch-var)
 	   yd (r* (ratdenominator tt)	;DENOM MAY BE 0
 		  (cond ((zerop risch-alphar)
-			 (polcoef s risch-gamma var))
+			 (polcoef s risch-gamma risch-var))
 			(t
 			 (funcall denom)))))
      (cond ((rzerop yd)
