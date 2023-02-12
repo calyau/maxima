@@ -17,7 +17,7 @@
 (declare-top (special var
                       expint
                       mainvar expflag
-                      *mosesflag y
+                      *mosesflag
                       context *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
@@ -1336,5 +1336,4 @@
 (defun fixintgreat (a risch-*var)
   (subst '/_101x risch-*var a))
 
-(declare-top (unspecial context
-			var  y))
+(declare-top (unspecial context var))
