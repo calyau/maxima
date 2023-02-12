@@ -616,7 +616,8 @@
 			      var (get var 'rischdiff))
 			risch-ratform risch-intvar
 			risch-liflag
-			risch-degree)))))
+			risch-degree
+			y)))))
 
 (defun rischexppoly (expint var risch-ratform risch-intvar risch-liflag risch-degree)
   (let (y w num denom type (ans (rischzero))
@@ -880,9 +881,9 @@
 	(t (findflist a (cdr llist)))))
 
 
-(defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar risch-liflag risch-degree)
+(defun rischexplog (expexpflag flag f a l risch-ratform risch-intvar risch-liflag risch-degree y)
   (declare (special var))
-  (prog (lcm y yy risch-m p risch-alphar risch-gamma delta
+  (prog (lcm yy risch-m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
 	 risch-beta)
