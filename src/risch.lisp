@@ -623,7 +623,8 @@
 			risch-liflag
 			risch-degree
 			risch-y
-			risch-var)))))
+			risch-var
+			mainvar)))))
 
 (defun rischexppoly (expint risch-var risch-ratform risch-intvar risch-liflag risch-degree)
   (let (risch-y
@@ -907,7 +908,7 @@
 
 
 (defun rischexplog (expexpflag flag f a l
-		    risch-ratform risch-intvar risch-liflag risch-degree risch-y risch-var)
+		    risch-ratform risch-intvar risch-liflag risch-degree risch-y risch-var mainvar)
   (prog (lcm yy risch-m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
@@ -1140,7 +1141,7 @@
 		 (cons (r* (list expg n 1) (ratqu risch-y p)) '(0))))))
 
 
-(defun erfarg (exparg coef risch-ratform)
+(defun erfarg (exparg coef risch-ratform mainvar)
   (prog (num denom erfarg)
      (setq exparg (r- exparg))
      (unless (and (setq num (pnthrootp (ratnumerator exparg) 2))
@@ -1191,7 +1192,7 @@
      (unless $erfflag
        (setq fails num)
        (go lose))
-     (if (setq erfans (erfarg arg numdenom risch-ratform))
+     (if (setq erfans (erfarg arg numdenom risch-ratform mainvar))
 	 (return (list ans erfans)))
    again
      (when (and (not (pcoefp denom))
@@ -1204,7 +1205,7 @@
      (loop for (coef exparg exppoly) in (explist num arg 1)
 	   do (setq coef (ratqu coef denom)
 		    nerf (or (erfarg2 exparg coef risch-ratform risch-intvar)
-			     (erfarg exparg coef risch-ratform)))
+			     (erfarg exparg coef risch-ratform mainvar)))
 	      (if nerf
 		  (push nerf erfans)
 		  (setq fails (pplus fails exppoly))))
