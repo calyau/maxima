@@ -235,7 +235,7 @@
      (multiple-value-setq (risch-y risch-logptdx)
        (rischlogdprog exp risch-ratform risch-intvar risch-liflag risch-var))
      (dolist (rat risch-logptdx)
-       (setq risch-y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar risch-expstuff risch-var)
+       (setq risch-y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar risch-expstuff risch-var expflag)
 			       risch-y)))
      (if varlist
 	 (setq risch-y (rischadd (tryrisch1 risch-expstuff mainvar
@@ -269,7 +269,7 @@
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp risch-var (cadr ratarg)))
-	    (return (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag risch-var))))
+	    (return (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag risch-var expflag))))
 
      (multiple-value-setq (risch-rootfactor risch-pardenom)
        (aprog (ratdenominator ratarg) risch-var))
@@ -313,12 +313,12 @@
 	  (push (ratqu thetop arootf) risch-logptdx))))
      (push (ratqu (car risch-parnumer) (car risch-rootfactor)) risch-logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
-	    (return (values (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var)
+	    (return (values (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var expflag)
 			    risch-logptdx))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
      (return (values (rischadd (ncons (ratqu thetop (ratdenominator ans)))
-			       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var))
+			       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var expflag))
 		     risch-logptdx))))
 
 (defun gennegs (denom num numdenom risch-klth)
@@ -329,7 +329,7 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
-(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff risch-var)
+(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff risch-var expflag)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
 	 risch-parnumer risch-pardenom)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
@@ -355,7 +355,8 @@
 				  risch-switch1
 				  risch-intvar
 				  risch-expstuff
-				  risch-var)
+				  risch-var
+				  expflag)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
@@ -503,7 +504,7 @@
     (values (getfncoeff-impl a) risch-cary risch-nogood)))
 
 
-(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var)
+(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var expflag)
   (cond ((equal exp '(0 . 1))
 	 (rischzero))
 	(expflag
