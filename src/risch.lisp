@@ -330,7 +330,7 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
-(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff var)
+(defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff risch-var)
   (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
 	 risch-parnumer risch-pardenom)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
@@ -342,7 +342,7 @@
 	    (setq risch-switch1 t)
 	    (desetq (ncc p1e) (oldcontent p1e))
 	    (multiple-value-setq (risch-parnumer)
-	      (cprog p1e p2e var risch-pardenom))
+	      (cprog p1e p2e risch-var risch-pardenom))
 	    (setq allcc (ratqu ncc dcc))
 	    (return (do ((pnum risch-parnumer (cdr pnum))
 			 (pden risch-pardenom (cdr pden))
@@ -356,13 +356,13 @@
 				  risch-switch1
 				  risch-intvar
 				  risch-expstuff
-				  var)
+				  risch-var)
 				 ans))))))
      (when (and expflag (null (p-red p2e)))
        (push (cons 'neg p) expint)
        (return (rischzero)))
-     (if expflag (setq expcoef (r* (p-le p2e) (ratqu (get var 'rischdiff)
-						     (make-poly var)))))
+     (if expflag (setq expcoef (r* (p-le p2e) (ratqu (get risch-var 'rischdiff)
+						     (make-poly risch-var)))))
      (setq p1e (ratqu p1e (ptimes dcc (p-lc p2e)))
 	   p2e (ratqu p2e (p-lc p2e)))	;MAKE DENOM MONIC
      (setq p2deriv (spderivative p2e mainvar))
@@ -384,7 +384,7 @@
 	 (let* ((newvar (gensym))
 		(new-int ($changevar
 			  `((%integrate) ,(simplify (disrep p risch-ratform)) ,risch-intvar)
-			  (sub newvar (get var 'rischexpr))
+			  (sub newvar (get risch-var 'rischexpr))
 			  newvar risch-intvar))
 		(*changevp* nil))		;prevents recursive changevar
 	   (if (and (freeof risch-intvar new-int)
@@ -393,7 +393,7 @@
 						    newvar))))
 	       (return
 		 (list (rzero)
-		       (maxima-substitute (get var 'rischexpr) newvar new-int))))))
+		       (maxima-substitute (get risch-var 'rischexpr) newvar new-int))))))
      (return (rischnoun p risch-ratform risch-intvar))))
 
 
