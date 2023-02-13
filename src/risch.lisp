@@ -263,21 +263,21 @@
 			(eprog p risch-ratform var nil))
 		    risch-logptdx)))))
 
-(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag var)
+(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag risch-var)
   (prog (arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom
 	 risch-rootfactor)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
-		(pointergp var (cadr ratarg)))
-	    (return (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag var))))
+		(pointergp risch-var (cadr ratarg)))
+	    (return (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag risch-var))))
 
      (multiple-value-setq (risch-rootfactor risch-pardenom)
-       (aprog (ratdenominator ratarg) var))
+       (aprog (ratdenominator ratarg) risch-var))
      (multiple-value-setq (risch-parnumer risch-wholepart)
        (cprog (ratnumerator ratarg)
 	      (ratdenominator ratarg)
-	      var
+	      risch-var
 	      risch-pardenom))
      (do ((risch-rootfactor (reverse risch-rootfactor) (cdr risch-rootfactor))
 	  (risch-parnumer (reverse risch-parnumer) (cdr risch-parnumer))
@@ -299,9 +299,9 @@
 		      (list 'neg (car risch-parnumer)
 			    (car arootf) risch-klth (cadr arootf)))))
 	    expint)))
-	 ((not (zerop (pdegree arootf var)))
+	 ((not (zerop (pdegree arootf risch-var)))
 	  (setq deriv (spderivative arootf mainvar))
-	  (setq thebpg (bprog arootf (ratnumerator deriv) var))
+	  (setq thebpg (bprog arootf (ratnumerator deriv) risch-var))
 	  (setq thetop (car risch-parnumer))
 	  (do ((kx (1- risch-klth) (1- kx))) ((= kx 0))
 	    (setq prod1 (r* thetop (car thebpg)))
@@ -314,12 +314,12 @@
 	  (push (ratqu thetop arootf) risch-logptdx))))
      (push (ratqu (car risch-parnumer) (car risch-rootfactor)) risch-logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
-	    (return (values (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag var)
+	    (return (values (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var)
 			    risch-logptdx))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
      (return (values (rischadd (ncons (ratqu thetop (ratdenominator ans)))
-			       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag var))
+			       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var))
 		     risch-logptdx))))
 
 (defun gennegs (denom num numdenom risch-klth)
