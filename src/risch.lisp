@@ -14,8 +14,7 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special var
-                      expint
+(declare-top (special expint
                       mainvar expflag
                       *mosesflag
                       context *in-risch-p*))
@@ -1358,4 +1357,4 @@
 (defun fixintgreat (a risch-*var)
   (subst '/_101x risch-*var a))
 
-(declare-top (unspecial context var))
+(declare-top (unspecial context))
