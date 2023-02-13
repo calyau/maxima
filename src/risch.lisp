@@ -572,8 +572,8 @@
 		       (genvar genvar)
 		       (rn (rform narg))	;; can add new vars to varlist
 		       (ro (rform (cadr olog)))
-		       (var (caar ro))
-		       ((j . k) (ratreduce (pdegree (car rn) var) (pdegree (car ro) var)))
+		       (risch-var (caar ro))
+		       ((j . k) (ratreduce (pdegree (car rn) risch-var) (pdegree (car ro) risch-var)))
 		       (idx (gensym))
 		       (rc) (rd))
     (cond ((and (= j 1) (> k 1))
