@@ -713,7 +713,7 @@
      (setq risch-alphar (max risch-alphar risch-m))
      (if (minusp risch-alphar)
 	 (return (if flag
-		     (cxerfarg (rzero) expg n a risch-ratform risch-intvar)
+		     (cxerfarg (rzero) expg n a risch-ratform risch-intvar mainvar)
 		     nil)))
      (cond ((not (and (equal risch-alphar risch-m)
 		      (not (zerop risch-m))))
@@ -743,7 +743,7 @@
 	 (cond ((null flag)
 		(return nil))
 	       (t
-		(return (cxerfarg (rzero) expg n a risch-ratform risch-intvar)))))
+		(return (cxerfarg (rzero) expg n a risch-ratform risch-intvar mainvar)))))
      (setq k 0)
      (setq lcm 0)
      (setq risch-y (cdr risch-y))
@@ -793,7 +793,7 @@
 		     ((null flag)
 		      (return nil))
 		     (t
-		      (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar)))))))
+		      (return (cxerfarg (rzero) expg n a risch-ratform risch-intvar mainvar)))))))
 	   (t
 	    (setq yalpha (ratqu yn yd))))
      (setq ytemp (r+ risch-y (r* yalpha
@@ -831,7 +831,8 @@
 		  n
 		  (ratqu tt lcm)
 		  risch-ratform
-		  risch-intvar))))))
+		  risch-intvar
+		  mainvar))))))
      (setq risch-y ytemp)
      (setq tt ttemp)
      (go loop)))
@@ -994,7 +995,7 @@
    back
      (if (minusp mu)
 	 (return (if flag
-		     (cxerfarg (rzero) expg n a risch-ratform risch-intvar)
+		     (cxerfarg (rzero) expg n a risch-ratform risch-intvar mainvar)
 		     nil)))
      (cond ((> risch-beta risch-gamma)
 	    (go lsacall))
@@ -1024,7 +1025,8 @@
 			       n
 			       (ratqu tt lcm)
 			       risch-ratform
-			       risch-intvar))))
+			       risch-intvar
+			       mainvar))))
    recurse
      (setq rbeta (polcoef r risch-beta risch-var))
      (setq risch-y '(0 . 1))
@@ -1051,7 +1053,7 @@
 		     (t
 		      (return (cxerfarg (ratqu (r* risch-y (cons (list expg n 1) 1)) p)
 					expg n (ratqu tt lcm)
-					risch-ratform risch-intvar))))))
+					risch-ratform risch-intvar mainvar))))))
      (setq risch-y (r+ risch-y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu)))))
      (setq tt (r- tt
 		  (r* s ymu)
@@ -1073,7 +1075,8 @@
 			  n
 			  (ratqu tt lcm)
 			  risch-ratform
-			  risch-intvar))))
+			  risch-intvar
+			  mainvar))))
    lsacall
      (setq rrmu mu)
    muloop
@@ -1126,7 +1129,7 @@
 	       (eq temp 'inconsistent))
        (return (if (null flag)
 		   nil
-		   (cxerfarg (rzero) expg n a risch-ratform risch-intvar))))
+		   (cxerfarg (rzero) expg n a risch-ratform risch-intvar mainvar))))
      (setq temp (reverse  (cdr temp)))
      (setq rmu 0)
      (setq risch-y 0)
@@ -1184,7 +1187,7 @@
 			 ((mtimes) ,b ((rat) 1 2) ((mexpt) ,d -1))))))))
 
 
-(defun cxerfarg (ans expg n numdenom risch-ratform risch-intvar
+(defun cxerfarg (ans expg n numdenom risch-ratform risch-intvar mainvar
 		 &aux (arg (r* n (get expg 'rischarg)))
 		   (fails 0))
   (prog (denom erfans num nerf)
