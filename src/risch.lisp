@@ -15,7 +15,7 @@
 (load-macsyma-macros rzmac ratmac)
 
 (declare-top (special expint
-                      mainvar expflag
+                      mainvar
                       *mosesflag
                       context *in-risch-p*))
 
