@@ -1197,7 +1197,7 @@
 			   ((mtimes) ,b ((rat) 1 2) ((mexpt) ,d -1)))))))))
 
 
-(defun cxerfarg (ans expg n numdenom risch-ratform risch-intvar mainvar
+(defun cxerfarg (ans expg n numdenom risch-ratform risch-intvar risch-mainvar
 		 &aux (arg (r* n (get expg 'rischarg)))
 		   (fails 0))
   (prog (denom erfans num nerf)
@@ -1205,7 +1205,7 @@
      (unless $erfflag
        (setq fails num)
        (go lose))
-     (if (setq erfans (erfarg arg numdenom risch-ratform mainvar))
+     (if (setq erfans (erfarg arg numdenom risch-ratform risch-mainvar))
 	 (return (list ans erfans)))
    again
      (when (and (not (pcoefp denom))
@@ -1217,8 +1217,8 @@
        (go again))
      (loop for (coef exparg exppoly) in (explist num arg 1)
 	   do (setq coef (ratqu coef denom)
-		    nerf (or (erfarg2 exparg coef risch-ratform risch-intvar mainvar)
-			     (erfarg exparg coef risch-ratform mainvar)))
+		    nerf (or (erfarg2 exparg coef risch-ratform risch-intvar risch-mainvar)
+			     (erfarg exparg coef risch-ratform risch-mainvar)))
 	      (if nerf
 		  (push nerf erfans)
 		  (setq fails (pplus fails exppoly))))
