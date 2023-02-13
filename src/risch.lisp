@@ -44,12 +44,13 @@
 ;; requires variables in varlist and genvar
 ;; to be ordered as by intsetup, with var of integration ordered before
 ;; any other expressions that contain it.
-(defun risch-pconstp (p)
+(defun risch-pconstp (p mainvar)
   (or (pcoefp p) (pointergp mainvar (car p))))
 
-(defun risch-constp (r)
+(defun risch-constp (r mainvar)
   (setq r (ratfix r))
-  (and (risch-pconstp (car r)) (risch-pconstp (cdr r))))
+  (and (risch-pconstp (car r) mainvar)
+       (risch-pconstp (cdr r) mainvar)))
 
 ;; adds two risch expressions (defined above).
 (defun rischadd (x y)
@@ -372,7 +373,7 @@
        ;; (format t "HEY RISCHLOGEPROG, FOUND ZERO DIVISOR; GIVE UP.~%")
        (return (rischnoun p risch-ratform risch-intvar)))
      (setq logcoef (ratqu p1e my-divisor))
-     (when (risch-constp logcoef)
+     (when (risch-constp logcoef mainvar)
        (if risch-expflag
 	   (setq risch-expstuff (r- risch-expstuff (r* expcoef logcoef))))
        (return
@@ -609,7 +610,7 @@
     (setq risch-var (getrischvar))
     (setq risch-y (get risch-var 'leadop))
     (cond ((and (not (pzerop (ratnumerator f)))
-		(risch-constp (setq l (ratqu a f))))
+		(risch-constp (setq l (ratqu a f)) mainvar))
 	   (cond (flag		;; multiply in expg^n - n may be negative
 		  (list (r* l (ratexpt (cons (list expg 1 1) 1) n))
 			0))
@@ -820,7 +821,7 @@
 				0)))))
 	      ((null flag)
 	       (return nil))
-	      ((and (risch-constp (setq ttemp (ratqu ttemp lcm)))
+	      ((and (risch-constp (setq ttemp (ratqu ttemp lcm)) mainvar)
 		    $erfflag
 		    (equal (pdegree (car (get expg 'rischarg)) mainvar) 2)
 		    (equal (pdegree (cdr (get expg 'rischarg)) mainvar) 0))
@@ -1158,7 +1159,8 @@
        (return nil))
      (setq erfarg (cons num denom))
      (if (risch-constp
-	  (setq coef (ratqu coef (spderivative erfarg mainvar))))
+	  (setq coef (ratqu coef (spderivative erfarg mainvar)))
+	  mainvar)
 	 (return (simplify `((mtimes) ((rat) 1 2)
 			     ((mexpt) $%pi ((rat) 1 2))
 			     ,(disrep coef risch-ratform)
@@ -1167,8 +1169,8 @@
 (defun erfarg2 (exparg coeff risch-ratform risch-intvar &aux (risch-var mainvar) a b c d)
   (when (and (= (pdegree (car exparg) risch-var) 2)
 	     (eq (caar exparg) risch-var)
-	     (risch-pconstp (cdr exparg))
-	     (risch-constp coeff))
+	     (risch-pconstp (cdr exparg) mainvar)
+	     (risch-constp coeff mainvar))
     (setq a (ratqu (r* -1 (caddar exparg))
 		   (cdr exparg)))
     (setq b (disrep (ratqu (r* -1 (polcoef (car exparg) 1 risch-var))
