@@ -233,7 +233,7 @@
 		'mexpt)
 	    (setq expflag t)))
      (multiple-value-setq (risch-y risch-logptdx)
-       (rischlogdprog exp risch-ratform risch-intvar risch-liflag risch-var))
+       (rischlogdprog exp risch-ratform risch-intvar risch-liflag risch-var expflag))
      (dolist (rat risch-logptdx)
        (setq risch-y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar risch-expstuff risch-var expflag)
 			       risch-y)))
@@ -262,7 +262,7 @@
 			(eprog p risch-ratform risch-var nil))
 		    risch-logptdx)))))
 
-(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag risch-var)
+(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag risch-var expflag)
   (prog (arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom
 	 risch-rootfactor)
