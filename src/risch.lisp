@@ -689,7 +689,8 @@
      (multiple-value-setq (p risch-alphar)
        (findpr (cdr (partfrac a mainvar))
 	       (cdr (partfrac f mainvar))
-	       risch-y))
+	       risch-y
+	       mainvar))
      (setq lcm (plcm (ratdenominator a) p))
      (setq risch-y (ratpl (spderivative (cons 1 p) mainvar)
 			  (ratqu f p)))
@@ -872,7 +873,7 @@
     (setq ans (cons (aref *jm* 1 s) ans))))
 
 
-(defun findpr (alist flist risch-y &aux (p 1) fterm)
+(defun findpr (alist flist risch-y mainvar &aux (p 1) fterm)
   (let (risch-alphar)
     (do ((alist alist (cdr alist))) ((null alist))
       (setq fterm (findflist (cadar alist) flist))
@@ -880,18 +881,18 @@
       (setq risch-alphar
 	    (cond ((null fterm) (caddar alist))
 		  ((equal (caddr fterm) 1)
-		   (fpr-dif (car flist) (caddar alist)))
+		   (fpr-dif (car flist) (caddar alist) mainvar))
 		  (t (max (- (caddar alist) (caddr fterm)) 0))))
       (if (not (zerop risch-alphar))
 	  (setq p (ptimes p (pexpt (cadar alist) risch-alphar)))))
     (do ((flist flist (cdr flist)))
 	((null flist))
       (when (equal (caddar flist) 1)
-	(setq risch-alphar (fpr-dif (car flist) 0))
+	(setq risch-alphar (fpr-dif (car flist) 0 mainvar))
 	(setq p (ptimes p (pexpt (cadar flist) risch-alphar)))))
     (values p risch-alphar)))
 
-(defun fpr-dif (fterm alpha)
+(defun fpr-dif (fterm alpha mainvar)
   (destructuring-let* (((num den mult) fterm)
 		       (risch-m (spderivative den mainvar))
 		       (n))
@@ -924,7 +925,8 @@
      (multiple-value-setq (p risch-alphar)
        (findpr (cdr (partfrac a risch-var))
 	       (cdr (partfrac f risch-var))
-	       risch-y))
+	       risch-y
+	       mainvar))
      (setq lcm (plcm (ratdenominator a) p))
      (setq risch-y (ratpl (spderivative (cons 1 p) mainvar)
 			  (ratqu f p)))
