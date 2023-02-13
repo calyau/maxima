@@ -107,7 +107,7 @@
                      ;; the integrator hangs for special types of integrals
                      ;; (See bug report ID:3039452)
                      ($logexpand t))
-  (prog ($%e_to_numlog $logsimp risch-y z var risch-ratform risch-liflag
+  (prog ($%e_to_numlog $logsimp risch-y z risch-var risch-ratform risch-liflag
 	 mainvar varlist genvar $ratfac $ratalgdenom risch-degree
 	 rischform-value risch-trigint risch-hypertrigint risch-operator)
      (if (specrepp exp)
@@ -138,8 +138,8 @@
      (unless (some #'algpget varlist)
        (setq $algebraic nil)
        (setq $gcd (car *gcdl*)))
-     (setq var (getrischvar))
-     (setq z (tryrisch (cdr risch-y) mainvar risch-ratform risch-intvar risch-liflag risch-degree var))
+     (setq risch-var (getrischvar))
+     (setq z (tryrisch (cdr risch-y) mainvar risch-ratform risch-intvar risch-liflag risch-degree risch-var))
      (setf (caddr risch-ratform) varlist)
      (setf (cadddr risch-ratform) genvar)
      (return (cond ((atom (cdr z))
@@ -193,10 +193,10 @@
 	      risch-hypertrigint
 	      risch-operator))))
 
-(defun hypertrigint1 (exp var hyperfunc)
+(defun hypertrigint1 (exp risch-var hyperfunc)
   (let ((result (if hyperfunc
-                    (sinint (resimplify exp) var)
-                    (rischint (resimplify exp) var))))
+                    (sinint (resimplify exp) risch-var)
+                    (rischint (resimplify exp) risch-var))))
     ;; The result can contain solveable integrals. Look for this case.
     (if (isinop result '%integrate)
         ;; Found an integral. Evaluate the result again.
