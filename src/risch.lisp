@@ -504,16 +504,16 @@
     (values (getfncoeff-impl a) risch-cary risch-nogood)))
 
 
-(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag var)
+(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var)
   (cond ((equal exp '(0 . 1))
 	 (rischzero))
 	(expflag
 	 (push (cons 'poly exp) expint)
 	 (rischzero))
-	((not (among var exp))
+	((not (among risch-var exp))
 	 (tryrisch1 exp mainvar risch-ratform risch-intvar risch-liflag risch-degree))
 	(t
-	 (do ((risch-degree (pdegree (car exp) var) (1- risch-degree))
+	 (do ((risch-degree (pdegree (car exp) risch-var) (1- risch-degree))
 	      (p (car exp))
 	      (den (cdr exp))
 	      (lians ())
@@ -526,14 +526,14 @@
 	      (lbkpl1))
 	     ((minusp risch-degree)
 	      (cons sum (append lians (cdr risch-y))))
-	   (setq ak (r- (ratqu (polcoef p risch-degree var) den)
+	   (setq ak (r- (ratqu (polcoef p risch-degree risch-var) den)
 			(r* (cons (1+ risch-degree) 1)
 			    risch-cary
-			    (get var 'rischdiff))))
-	   (if (not (pzerop (polcoef p risch-degree var)))
+			    (get risch-var 'rischdiff))))
+	   (if (not (pzerop (polcoef p risch-degree risch-var)))
 	       (setq p (if (pcoefp p)
 			   (pzero)
-			   (psimp var (p-red p)))))
+			   (psimp risch-var (p-red p)))))
 	   (setq risch-y (tryrisch1 ak mainvar
 				    risch-ratform risch-intvar risch-liflag risch-degree))
 	   (setq risch-cary (car risch-y))
@@ -542,7 +542,7 @@
 	   
 	   (multiple-value-setq (z risch-cary risch-nogood)
 	     (getfncoeff (cdr risch-y)
-			 (get var 'rischexpr)
+			 (get risch-var 'rischexpr)
 			 risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
 	   (setq risch-liflag nil)
 	   (cond ((and (> risch-degree 0)
@@ -551,12 +551,12 @@
 		  (return (rischnoun sum risch-ratform 
 				     risch-intvar
 				     (r+ (r* ak
-					     (make-poly var risch-degree 1))
+					     (make-poly risch-var risch-degree 1))
 					 (ratqu p den))))))
 	   (setq lbkpl1 (ratqu z (cons (1+ risch-degree) 1)))
-	   (setq sum (r+ (r* lbkpl1 (make-poly var (1+ risch-degree) 1))
+	   (setq sum (r+ (r* lbkpl1 (make-poly risch-var (1+ risch-degree) 1))
 			 (r* risch-cary (if (zerop risch-degree) 1
-				      (make-poly var risch-degree 1)))
+				      (make-poly risch-var risch-degree 1)))
 			 sum))))))
 
 (defun make-li (sub arg)
