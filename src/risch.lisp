@@ -347,7 +347,7 @@
 		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
 (defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff
-		      risch-var risch-expflag risch-mainvar expint)
+		      risch-var risch-expflag risch-mainvar risch-expint)
   (labels
       ((impl (p risch-switch1)
 	 (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
@@ -375,7 +375,7 @@
 					 risch-switch1)
 					ans))))))
 	    (when (and risch-expflag (null (p-red p2e)))
-	      (push (cons 'neg p) expint)
+	      (push (cons 'neg p) risch-expint)
 	      (return (rischzero)))
 	    (if risch-expflag
 		(setq expcoef (r* (p-le p2e) (ratqu (get risch-var 'rischdiff)
@@ -417,7 +417,7 @@
 			      (maxima-substitute (get risch-var 'rischexpr) newvar new-int))))))
 	    (return (rischnoun p risch-ratform risch-intvar)))))
     (values (impl p risch-switch1)
-	    expint)))
+	    risch-expint)))
 
 
 (defun findint (exp)
