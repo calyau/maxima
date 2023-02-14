@@ -232,8 +232,8 @@
 	   ((eq (get risch-var 'leadop)
 		'mexpt)
 	    (setq risch-expflag t)))
-     (multiple-value-setq (risch-y risch-logptdx)
-       (rischlogdprog exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar))
+     (multiple-value-setq (risch-y risch-logptdx expint)
+       (rischlogdprog exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar expint))
      (dolist (rat risch-logptdx)
        (setq risch-y (rischadd (rischlogeprog rat risch-ratform nil risch-intvar risch-expstuff risch-var risch-expflag risch-mainvar)
 			       risch-y)))
@@ -262,14 +262,18 @@
 			(eprog p risch-ratform risch-var nil))
 		    risch-logptdx)))))
 
-(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar)
+(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar expint)
   (prog (arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom
-	 risch-rootfactor)
+	 risch-rootfactor rischlogpoly-value)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp risch-var (cadr ratarg)))
-	    (return (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar))))
+	    (multiple-value-setq (rischlogpoly-value expint)
+	      (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar expint))
+	    (return (values rischlogpoly-value
+			    risch-logptdx
+			    expint))))
 
      (multiple-value-setq (risch-rootfactor risch-pardenom)
        (aprog (ratdenominator ratarg) risch-var))
@@ -313,13 +317,19 @@
 	  (push (ratqu thetop arootf) risch-logptdx))))
      (push (ratqu (car risch-parnumer) (car risch-rootfactor)) risch-logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
-	    (return (values (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar)
-			    risch-logptdx))))
+	    (multiple-value-setq (rischlogpoly-value expint)
+	      (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar expint))
+	    (return (values rischlogpoly-value
+			    risch-logptdx
+			    expint))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
+     (multiple-value-setq (rischlogpoly-value expint)
+       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar expint))
      (return (values (rischadd (ncons (ratqu thetop (ratdenominator ans)))
-			       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar))
-		     risch-logptdx))))
+			       rischlogpoly-value)
+		     risch-logptdx
+		     expint))))
 
 (defun gennegs (denom num numdenom risch-klth)
   (cond ((null num) nil)
@@ -505,60 +515,63 @@
     (values (getfncoeff-impl a) risch-cary risch-nogood)))
 
 
-(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar)
-  (cond ((equal exp '(0 . 1))
-	 (rischzero))
-	(risch-expflag
-	 (push (cons 'poly exp) expint)
-	 (rischzero))
-	((not (among risch-var exp))
-	 (tryrisch1 exp risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree))
-	(t
-	 (do ((risch-degree (pdegree (car exp) risch-var) (1- risch-degree))
-	      (p (car exp))
-	      (den (cdr exp))
-	      (lians ())
-	      (sum (rzero))
-	      (risch-cary (rzero))
-	      (risch-y)
-	      (z)
-	      (ak)
-	      (risch-nogood)
-	      (lbkpl1))
-	     ((minusp risch-degree)
-	      (cons sum (append lians (cdr risch-y))))
-	   (setq ak (r- (ratqu (polcoef p risch-degree risch-var) den)
-			(r* (cons (1+ risch-degree) 1)
-			    risch-cary
-			    (get risch-var 'rischdiff))))
-	   (if (not (pzerop (polcoef p risch-degree risch-var)))
-	       (setq p (if (pcoefp p)
-			   (pzero)
-			   (psimp risch-var (p-red p)))))
-	   (setq risch-y (tryrisch1 ak risch-mainvar
-				    risch-ratform risch-intvar risch-liflag risch-degree))
-	   (setq risch-cary (car risch-y))
-	   (and (> risch-degree 0)
-		(setq risch-liflag $liflag))
+(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar expint)
+  (let
+      ((result
+	 (cond ((equal exp '(0 . 1))
+		(rischzero))
+	       (risch-expflag
+		(push (cons 'poly exp) expint)
+		(rischzero))
+	       ((not (among risch-var exp))
+		(tryrisch1 exp risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree))
+	       (t
+		(do ((risch-degree (pdegree (car exp) risch-var) (1- risch-degree))
+		     (p (car exp))
+		     (den (cdr exp))
+		     (lians ())
+		     (sum (rzero))
+		     (risch-cary (rzero))
+		     (risch-y)
+		     (z)
+		     (ak)
+		     (risch-nogood)
+		     (lbkpl1))
+		    ((minusp risch-degree)
+		     (cons sum (append lians (cdr risch-y))))
+		  (setq ak (r- (ratqu (polcoef p risch-degree risch-var) den)
+			       (r* (cons (1+ risch-degree) 1)
+				   risch-cary
+				   (get risch-var 'rischdiff))))
+		  (if (not (pzerop (polcoef p risch-degree risch-var)))
+		      (setq p (if (pcoefp p)
+				  (pzero)
+				  (psimp risch-var (p-red p)))))
+		  (setq risch-y (tryrisch1 ak risch-mainvar
+					   risch-ratform risch-intvar risch-liflag risch-degree))
+		  (setq risch-cary (car risch-y))
+		  (and (> risch-degree 0)
+		       (setq risch-liflag $liflag))
 	   
-	   (multiple-value-setq (z risch-cary risch-nogood)
-	     (getfncoeff (cdr risch-y)
-			 (get risch-var 'rischexpr)
-			 risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
-	   (setq risch-liflag nil)
-	   (cond ((and (> risch-degree 0)
-		       (or risch-nogood
-			   (findint (cdr risch-y))))
-		  (return (rischnoun sum risch-ratform 
-				     risch-intvar
-				     (r+ (r* ak
-					     (make-poly risch-var risch-degree 1))
-					 (ratqu p den))))))
-	   (setq lbkpl1 (ratqu z (cons (1+ risch-degree) 1)))
-	   (setq sum (r+ (r* lbkpl1 (make-poly risch-var (1+ risch-degree) 1))
-			 (r* risch-cary (if (zerop risch-degree) 1
-				      (make-poly risch-var risch-degree 1)))
-			 sum))))))
+		  (multiple-value-setq (z risch-cary risch-nogood)
+		    (getfncoeff (cdr risch-y)
+				(get risch-var 'rischexpr)
+				risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
+		  (setq risch-liflag nil)
+		  (cond ((and (> risch-degree 0)
+			      (or risch-nogood
+				  (findint (cdr risch-y))))
+			 (return (rischnoun sum risch-ratform 
+					    risch-intvar
+					    (r+ (r* ak
+						    (make-poly risch-var risch-degree 1))
+						(ratqu p den))))))
+		  (setq lbkpl1 (ratqu z (cons (1+ risch-degree) 1)))
+		  (setq sum (r+ (r* lbkpl1 (make-poly risch-var (1+ risch-degree) 1))
+				(r* risch-cary (if (zerop risch-degree) 1
+						   (make-poly risch-var risch-degree 1)))
+				sum)))))))
+    (values result expint)))
 
 (defun make-li (sub arg)
   (subfunmake '$li (ncons sub) (ncons arg)))
