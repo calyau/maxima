@@ -233,7 +233,7 @@
 	    (setq risch-expflag t)))
      (multiple-value-setq (risch-y risch-logptdx risch-expint)
        (rischlogdprog exp risch-ratform risch-intvar risch-liflag risch-var
-		      risch-expflag risch-mainvar risch-expint))
+		      risch-expflag risch-mainvar risch-expint risch-degree))
      (dolist (rat risch-logptdx)
        (let (rischlogeprog-value)
 	 (setq risch-y
@@ -268,7 +268,7 @@
 			(eprog p risch-ratform risch-var nil))
 		    risch-logptdx)))))
 
-(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint)
+(defun rischlogdprog (ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint risch-degree)
   (prog (arootf deriv thebpg thetop thebot prod1 prod2 ans
 	 risch-wholepart risch-logptdx risch-parnumer risch-pardenom
 	 risch-rootfactor rischlogpoly-value)
@@ -276,7 +276,7 @@
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp risch-var (cadr ratarg)))
 	    (multiple-value-setq (rischlogpoly-value risch-expint)
-	      (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint))
+	      (rischlogpoly ratarg risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint risch-degree))
 	    (return (values rischlogpoly-value
 			    risch-logptdx
 			    risch-expint))))
@@ -324,14 +324,14 @@
      (push (ratqu (car risch-parnumer) (car risch-rootfactor)) risch-logptdx)
      (cond ((or (pzerop ans) (pzerop (car ans)))
 	    (multiple-value-setq (rischlogpoly-value risch-expint)
-	      (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint))
+	      (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint risch-degree))
 	    (return (values rischlogpoly-value
 			    risch-logptdx
 			    risch-expint))))
      (setq thetop (cadr (pdivide (ratnumerator ans)
 				 (ratdenominator ans))))
      (multiple-value-setq (rischlogpoly-value risch-expint)
-       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint))
+       (rischlogpoly risch-wholepart risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint risch-degree))
      (return (values (rischadd (ncons (ratqu thetop (ratdenominator ans)))
 			       rischlogpoly-value)
 		     risch-logptdx
@@ -526,7 +526,7 @@
     (values (getfncoeff-impl a) risch-cary risch-nogood)))
 
 
-(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint)
+(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint risch-degree)
   (let
       ((result
 	 (cond ((equal exp '(0 . 1))
