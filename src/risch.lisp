@@ -14,8 +14,7 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special expint
-                      *mosesflag
+(declare-top (special *mosesflag
                       context *in-risch-p*))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
