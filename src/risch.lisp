@@ -346,78 +346,76 @@
 
 (defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff
 		      risch-var risch-expflag risch-mainvar)
-  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
-	 risch-parnumer risch-pardenom)
-     (if (or (pzerop p) (pzerop (car p)))
-	 (return (rischzero)))
-     (setq p1e (ratnumerator p))
-     (desetq (dcc p2e) (oldcontent (ratdenominator p)))
-     (cond ((and (not risch-switch1)
-		 (cdr (setq risch-pardenom (intfactor p2e))))
-	    (setq risch-parnumer nil)
-	    (setq risch-switch1 t)
-	    (desetq (ncc p1e) (oldcontent p1e))
-	    (multiple-value-setq (risch-parnumer)
-	      (cprog p1e p2e risch-var risch-pardenom))
-	    (setq allcc (ratqu ncc dcc))
-	    (return (do ((pnum risch-parnumer (cdr pnum))
-			 (pden risch-pardenom (cdr pden))
-			 (ans (rischzero)))
-			((or (null pnum) (null pden))
-			 (setq risch-switch1 nil) ans)
-		      (setq ans (rischadd
-				 (rischlogeprog
-				  (r* allcc (ratqu (car pnum) (car pden)))
-				  risch-ratform
-				  risch-switch1
-				  risch-intvar
-				  risch-expstuff
-				  risch-var
-				  risch-expflag
-				  risch-mainvar)
-				 ans))))))
-     (when (and risch-expflag (null (p-red p2e)))
-       (push (cons 'neg p) expint)
-       (return (rischzero)))
-     (if risch-expflag
-	 (setq expcoef (r* (p-le p2e) (ratqu (get risch-var 'rischdiff)
-					     (make-poly risch-var)))))
-     (setq p1e (ratqu p1e (ptimes dcc (p-lc p2e)))
-	   p2e (ratqu p2e (p-lc p2e)))	;MAKE DENOM MONIC
-     (setq p2deriv (spderivative p2e risch-mainvar))
-     (setq my-divisor (if risch-expflag
-			  (r- p2deriv (r* p2e expcoef))
-			  p2deriv))
-     (when (equal my-divisor '(0 . 1))
-       ;; (format t "HEY RISCHLOGEPROG, FOUND ZERO DIVISOR; GIVE UP.~%")
-       (return (rischnoun p risch-ratform risch-intvar)))
-     (setq logcoef (ratqu p1e my-divisor))
-     (when (risch-constp logcoef risch-mainvar)
-       (if risch-expflag
-	   (setq risch-expstuff (r- risch-expstuff (r* expcoef logcoef))))
-       (return
-	 (list
-	  '(0 . 1)
-	  (list '(mtimes)
-		(disrep logcoef risch-ratform)
-		(logmabs (disrep p2e risch-ratform))))))
-     (if (and risch-expflag
-	      $liflag
-	      *changevp*)
-	 (let* ((newvar (gensym))
-		(new-int ($changevar
-			  `((%integrate) ,(simplify (disrep p risch-ratform)) ,risch-intvar)
-			  (sub newvar (get risch-var 'rischexpr))
-			  newvar risch-intvar))
-		(*changevp* nil))		;prevents recursive changevar
-	   (if (and (freeof risch-intvar new-int)
-		    (freeof '%integrate
-			    (setq new-int (rischint (sdiff new-int newvar)
-						    newvar))))
-	       (return
-		 (list (rzero)
-		       (maxima-substitute (get risch-var 'rischexpr) newvar new-int))))))
-     (return (rischnoun p risch-ratform risch-intvar))))
+  (labels
+      ((impl (p risch-switch1)
+	 (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor
+		risch-parnumer risch-pardenom)
+	    (if (or (pzerop p) (pzerop (car p)))
+		(return (rischzero)))
+	    (setq p1e (ratnumerator p))
+	    (desetq (dcc p2e) (oldcontent (ratdenominator p)))
+	    (cond ((and (not risch-switch1)
+			(cdr (setq risch-pardenom (intfactor p2e))))
+		   (setq risch-parnumer nil)
+		   (setq risch-switch1 t)
+		   (desetq (ncc p1e) (oldcontent p1e))
+		   (multiple-value-setq (risch-parnumer)
+		     (cprog p1e p2e risch-var risch-pardenom))
+		   (setq allcc (ratqu ncc dcc))
+		   (return (do ((pnum risch-parnumer (cdr pnum))
+				(pden risch-pardenom (cdr pden))
+				(ans (rischzero)))
+			       ((or (null pnum) (null pden))
+				(setq risch-switch1 nil) ans)
+			     (setq ans (rischadd
+					(impl
+					 (r* allcc (ratqu (car pnum) (car pden)))
+					 risch-switch1)
+					ans))))))
+	    (when (and risch-expflag (null (p-red p2e)))
+	      (push (cons 'neg p) expint)
+	      (return (rischzero)))
+	    (if risch-expflag
+		(setq expcoef (r* (p-le p2e) (ratqu (get risch-var 'rischdiff)
+						    (make-poly risch-var)))))
+	    (setq p1e (ratqu p1e (ptimes dcc (p-lc p2e)))
+		  p2e (ratqu p2e (p-lc p2e))) ;MAKE DENOM MONIC
+	    (setq p2deriv (spderivative p2e risch-mainvar))
+	    (setq my-divisor (if risch-expflag
+				 (r- p2deriv (r* p2e expcoef))
+				 p2deriv))
+	    (when (equal my-divisor '(0 . 1))
+	      ;; (format t "HEY RISCHLOGEPROG, FOUND ZERO DIVISOR; GIVE UP.~%")
+	      (return (rischnoun p risch-ratform risch-intvar)))
+	    (setq logcoef (ratqu p1e my-divisor))
+	    (when (risch-constp logcoef risch-mainvar)
+	      (if risch-expflag
+		  (setq risch-expstuff (r- risch-expstuff (r* expcoef logcoef))))
+	      (return
+		(list
+		 '(0 . 1)
+		 (list '(mtimes)
+		       (disrep logcoef risch-ratform)
+		       (logmabs (disrep p2e risch-ratform))))))
+	    (if (and risch-expflag
+		     $liflag
+		     *changevp*)
+		(let* ((newvar (gensym))
+		       (new-int ($changevar
+				 `((%integrate) ,(simplify (disrep p risch-ratform)) ,risch-intvar)
+				 (sub newvar (get risch-var 'rischexpr))
+				 newvar risch-intvar))
+		       (*changevp* nil)) ;prevents recursive changevar
+		  (if (and (freeof risch-intvar new-int)
+			   (freeof '%integrate
+				   (setq new-int (rischint (sdiff new-int newvar)
+							   newvar))))
+		      (return
+			(list (rzero)
+			      (maxima-substitute (get risch-var 'rischexpr) newvar new-int))))))
+	    (return (rischnoun p risch-ratform risch-intvar)))))
+    (values (impl p risch-switch1)
+	    expint)))
 
 
 (defun findint (exp)
