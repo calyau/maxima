@@ -434,7 +434,7 @@
 	((eq (caar exp) 'mabs) (cadr exp))
 	(t exp)))
 
-(declare-top (special vlist lians risch-degree))
+(declare-top (special vlist lians))
 
 (defun getfnsplit (l risch-intvar)
   (let (coef fn)
