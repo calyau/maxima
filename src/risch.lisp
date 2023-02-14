@@ -225,30 +225,30 @@
           result))))
 
 (defun tryrisch (exp risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree risch-var)
-  (prog (risch-logptdx risch-expflag risch-expstuff expint risch-y)
+  (prog (risch-logptdx risch-expflag risch-expstuff risch-expint risch-y)
      (setq risch-expstuff '(0 . 1))
      (cond ((eq risch-mainvar risch-var)
 	    (return (rischfprog exp risch-ratform risch-var)))
 	   ((eq (get risch-var 'leadop)
 		'mexpt)
 	    (setq risch-expflag t)))
-     (multiple-value-setq (risch-y risch-logptdx expint)
+     (multiple-value-setq (risch-y risch-logptdx risch-expint)
        (rischlogdprog exp risch-ratform risch-intvar risch-liflag risch-var
-		      risch-expflag risch-mainvar expint))
+		      risch-expflag risch-mainvar risch-expint))
      (dolist (rat risch-logptdx)
        (let (rischlogeprog-value)
 	 (setq risch-y
-	       (rischadd (multiple-value-setq (rischlogeprog-value expint)
+	       (rischadd (multiple-value-setq (rischlogeprog-value risch-expint)
 			   (rischlogeprog rat risch-ratform nil risch-intvar risch-expstuff
-					  risch-var risch-expflag risch-mainvar expint))
+					  risch-var risch-expflag risch-mainvar risch-expint))
 			 risch-y))))
      (if varlist
 	 (setq risch-y (rischadd (tryrisch1 risch-expstuff risch-mainvar
 					    risch-ratform risch-intvar risch-liflag
 					    risch-degree)
 			   risch-y)))
-     (return (if expint
-		 (rischadd (rischexppoly expint risch-var
+     (return (if risch-expint
+		 (rischadd (rischexppoly risch-expint risch-var
 					 risch-ratform risch-intvar risch-liflag
 					 risch-degree risch-mainvar)
 			   risch-y)
