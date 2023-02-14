@@ -515,13 +515,13 @@
     (values (getfncoeff-impl a) risch-cary risch-nogood)))
 
 
-(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar expint)
+(defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint)
   (let
       ((result
 	 (cond ((equal exp '(0 . 1))
 		(rischzero))
 	       (risch-expflag
-		(push (cons 'poly exp) expint)
+		(push (cons 'poly exp) risch-expint)
 		(rischzero))
 	       ((not (among risch-var exp))
 		(tryrisch1 exp risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree))
@@ -571,7 +571,7 @@
 				(r* risch-cary (if (zerop risch-degree) 1
 						   (make-poly risch-var risch-degree 1)))
 				sum)))))))
-    (values result expint)))
+    (values result risch-expint)))
 
 (defun make-li (sub arg)
   (subfunmake '$li (ncons sub) (ncons arg)))
