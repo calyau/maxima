@@ -1,5 +1,5 @@
 name: maxima
-version: 5.46.0
+version: 5.46.0-1
 summary: A full-fledged computer algebra system
 description: |
   A full featured computer algebra system,
@@ -9,9 +9,12 @@ description: |
   based on the original Macsyma developed at MIT in the 1970's.
   It comes with extensive self tests.
 
+  What a snappy app cannot provide is allowing an external web browser
+  to open the offline manual it comes bundled with.
 grade: stable
 icon: ./interfaces/xmaxima/net.sourceforge.maxima.svg
 base: core22
+license: GPL-2.0+
 confinement: strict
 
 apps:
