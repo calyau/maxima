@@ -434,8 +434,6 @@
 	((eq (caar exp) 'mabs) (cadr exp))
 	(t exp)))
 
-(declare-top (special lians))
-
 (defun getfnsplit (l risch-intvar)
   (let (coef fn)
     (dolist (x l (values (muln coef nil) (muln fn nil)))
