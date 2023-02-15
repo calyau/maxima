@@ -434,7 +434,7 @@
 	((eq (caar exp) 'mabs) (cadr exp))
 	(t exp)))
 
-(declare-top (special vlist lians))
+(declare-top (special lians))
 
 (defun getfnsplit (l risch-intvar)
   (let (coef fn)
@@ -494,6 +494,8 @@
 				(rplaca (cddar a) (car vl))
 				(return nil))))
 			((let (vlist)
+			   (declare (special vlist))
+			   ;; newvar1 accesses the special var vlist.
 			   (newvar1 (car a))
 			   (null vlist))
 			 (setq risch-cary
