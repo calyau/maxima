@@ -443,7 +443,7 @@
           (push x coef)
           (push x fn)))))
 
-(defun getfncoeff (a form risch-intvar risch-liflag risch-degree risch-cary risch-nogood)
+(defun getfncoeff (a form risch-intvar risch-liflag risch-degree risch-cary risch-nogood lians)
   (labels
       ((getfncoeff-impl (a)
 	 (cond ((null a) 0)
@@ -525,7 +525,8 @@
 	       (t
 		(rplaca a (list '(mtimes) 1 (car a)))
 		(getfncoeff-impl a)))))
-    (values (getfncoeff-impl a) risch-cary risch-nogood)))
+    (values (getfncoeff-impl a) risch-cary risch-nogood
+	    lians)))
 
 
 (defun rischlogpoly (exp risch-ratform risch-intvar risch-liflag risch-var risch-expflag risch-mainvar risch-expint risch-degree)
@@ -566,10 +567,11 @@
 		  (and (> risch-degree 0)
 		       (setq risch-liflag $liflag))
 	   
-		  (multiple-value-setq (z risch-cary risch-nogood)
+		  (multiple-value-setq (z risch-cary risch-nogood lians)
 		    (getfncoeff (cdr risch-y)
 				(get risch-var 'rischexpr)
-				risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
+				risch-intvar risch-liflag risch-degree risch-cary risch-nogood
+				lians))
 		  (setq risch-liflag nil)
 		  (cond ((and (> risch-degree 0)
 			      (or risch-nogood
@@ -943,7 +945,8 @@
   (prog (lcm yy risch-m p risch-alphar risch-gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
 	 temp risch-cary risch-nogood vector aarray rmu rrmu rarray
-	 risch-beta)
+	 risch-beta
+	 lians)
      (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a)
 		(pzerop (car a)))
@@ -984,10 +987,11 @@
 					 (polcoef r risch-beta risch-var) ))
 			      risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car risch-y))
-     (multiple-value-setq (yy risch-cary risch-nogood)
+     (multiple-value-setq (yy risch-cary risch-nogood lians)
        (getfncoeff (cdr risch-y)
 		   (get risch-var 'rischexpr)
-		   risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
+		   risch-intvar risch-liflag risch-degree risch-cary risch-nogood
+		   lians))
      (cond ((and (not (findint (cdr risch-y)))
 		 (not risch-nogood)
 		 (not (atom yy))
@@ -1013,10 +1017,11 @@
      (setq risch-y (tryrisch1 (ratqu (polcoef s risch-gamma risch-var) (polcoef r risch-beta risch-var))
 			      risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree))
      (setq risch-cary (car risch-y))
-     (multiple-value-setq (yy risch-cary risch-nogood)
+     (multiple-value-setq (yy risch-cary risch-nogood lians)
        (getfncoeff (cdr risch-y)
 		   (get risch-var 'rischexpr)
-		   risch-intvar risch-liflag risch-degree risch-cary risch-nogood))
+		   risch-intvar risch-liflag risch-degree risch-cary risch-nogood
+		   lians))
      (cond ((and (not (findint (cdr risch-y)))
 		 (not risch-nogood)
 		 (equal (cdr yy) 1)
