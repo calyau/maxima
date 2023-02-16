@@ -633,11 +633,11 @@ Command      Description~%~
                                 "usage: :info :bkpt -- show breakpoints")))) 
   "Print information about item")
 
-(defmacro lisp-quiet (&rest l)
+(defmacro lisp-quiet (&rest l-lisp-quiet)
   (if (not (string= *mread-prompt* ""))
       (setq *lisp-quiet-suppressed-prompt* *mread-prompt*))
   (setq *mread-prompt* "")
-  (eval (cons 'progn l))
+  (eval (cons 'progn l-lisp-quiet))
   nil)
 
 (def-break :lisp-quiet 'lisp-quiet 
@@ -646,13 +646,13 @@ Command      Description~%~
 (def-break :lisp 'lisp-eval 
   "Evaluate the lisp form following on the line")
 
-(defmacro lisp-eval (&rest l)
+(defmacro lisp-eval (&rest l-lisp-eval)
   (if (string= *mread-prompt* "")
       (setq *mread-prompt* *lisp-quiet-suppressed-prompt*))
   
-  (dolist (v (multiple-value-list (eval (cons 'progn l))))
+  (dolist (v-lisp-eval (multiple-value-list (eval (cons 'progn l-lisp-eval))))
     (fresh-line *standard-output*)
-    (princ v)))
+    (princ v-lisp-eval)))
    
 (def-break :delete #'(lambda (&rest l) (iterate-over-bkpts l :delete) (values))
   "Delete all breakpoints, or if arguments are supplied delete the
