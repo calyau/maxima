@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
   <id>net.sourceforge.maxima.xmaxima</id>
+  <metadata_license>MIT</metadata_license>
   <project_license>GPL-2.0</project_license>
   <name>Xmaxima</name>
   <summary>A graphical user interface for Maxima, a powerful computer algebra system</summary>
