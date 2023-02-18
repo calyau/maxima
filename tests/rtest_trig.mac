@@ -650,3 +650,12 @@ pderivop(f,1)(y)^2;
 (kill (foo, x),
  trigsimp (foo(1)(x)^3));
 foo(1)(x)^3;
+
+/* maxima-discuss 2023-02-17: "acos(1) works; acos(1.0) doesn't !"
+ * bug appears to be specific to GCL versions < 2.14.
+ * more extensive tests for special cases would be terrific.
+ */
+
+[acos(1), acos(1.0), acos(1b0)];
+[0, 0.0, 0b0];
+
