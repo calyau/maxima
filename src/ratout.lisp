@@ -507,16 +507,16 @@
 	(t (psimp (car y)
 		  (wtpctimes1 x (cdr y) (pweight (car y)))))))
 
-(defun wtptimes1 (ratout-*x* y xweight)
+(defun wtptimes1 (ratout-x y xweight)
   (labels ((wtptimes2 (y)
 	     (if (null y)
 		 nil
-		 (let ((ii (+ (* xweight (+ (car ratout-*x*) (car y)))
+		 (let ((ii (+ (* xweight (+ (car ratout-x) (car y)))
 			      wtsofar)))
 		   (if (> ii $ratwtlvl)
 		       (wtptimes2 (cddr y))
-		       (pcoefadd (+ (car ratout-*x*) (car y))
-				 (wtptimes (cadr ratout-*x*) (cadr y) ii)
+		       (pcoefadd (+ (car ratout-x) (car y))
+				 (wtptimes (cadr ratout-x) (cadr y) ii)
 				 (wtptimes2 (cddr y)))))))
 
 	   (wtptimes3 (y)
@@ -525,8 +525,8 @@
 	      a1
 		(cond ((null y)
 		       (return nil)))
-		(setq e (+ (car ratout-*x*) (car y)))
-		(setq c (wtptimes (cadr y) (cadr ratout-*x*) (+ wtsofar (* xweight e))))
+		(setq e (+ (car ratout-x) (car y)))
+		(setq c (wtptimes (cadr y) (cadr ratout-x) (+ wtsofar (* xweight e))))
 		(cond ((pzerop c)
 		       (setq y (cddr y))
 		       (go a1))
@@ -566,9 +566,9 @@
 		(cond ((null y)
 		       (return nil))
 		      ((pzerop
-			(setq c (wtptimes (cadr ratout-*x*) (cadr y)
+			(setq c (wtptimes (cadr ratout-x) (cadr y)
 					  (+ wtsofar (* xweight
-							(setq e (+ (car ratout-*x*) (car y))))))))
+							(setq e (+ (car ratout-x) (car y))))))))
 		       (go d)))
 	      c
 		(cond ((and (cdr u)
@@ -580,8 +580,8 @@
        (declare (special v))
        (setq v (setq u* (wtptimes2 y)))
      a
-       (setq ratout-*x* (cddr ratout-*x*))
-       (cond ((null ratout-*x*)
+       (setq ratout-x (cddr ratout-x))
+       (cond ((null ratout-x)
 	      (return u*)))
        (wtptimes3 y)
        (go a))))
