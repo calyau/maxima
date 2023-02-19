@@ -617,7 +617,7 @@
      (go a)))
 
 (declare-top (special y checkfactors
-		      exp x $factorflag
+		      x $factorflag
 		      varlist n))
 
 (defmfun $partfrac (ratout-exp ratout-var)
@@ -676,7 +676,7 @@
                                             bpart))))
              (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial exp f n ss v xv y *chk *l *max *p
+(declare-top (unspecial f n ss v xv y *chk *l *max *p
 			*res u* *x* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
