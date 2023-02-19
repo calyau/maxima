@@ -708,6 +708,10 @@
 
 (declare-top (special varlist $factorflag m v))
 
+;; Doesn't appear to be used anywhere; git grep shows no usages.  But
+;; since it was exported as a user function ($), I (rtoy) am going to
+;; leave it here, but comment it out.
+#+nil
 (defmfun $pfet (m)
   (prog (listov $pfeformat varlist $factorflag)
      (setq $pfeformat t)
