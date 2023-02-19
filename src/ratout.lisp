@@ -508,15 +508,53 @@
 		  (wtpctimes1 x (cdr y) (pweight (car y)))))))
 
 (defun wtptimes1 (*x* y xweight)
-  (prog (u* v)
-     (declare (special v))
-     (setq v (setq u* (wtptimes2 y)))
+  (labels ((wtptimes2 (y)
+	     (if (null y)
+		 nil
+		 (let ((ii (+ (* xweight (+ (car *x*) (car y))) wtsofar)))
+		   (if (> ii $ratwtlvl)
+		       (wtptimes2 (cddr y))
+		       (pcoefadd (+ (car *x*) (car y))
+				 (wtptimes (cadr *x*) (cadr y) ii)
+				 (wtptimes2 (cddr y)))))))
+
+	   (wtptimes3 (y)
+	     (prog ((e 0) u c)
+		(declare (special v))
+	      a1   (cond ((null y) (return nil)))
+		(setq e (+ (car *x*) (car y)))
+		(setq c (wtptimes (cadr y) (cadr *x*) (+ wtsofar (* xweight e))))
+		(cond ((pzerop c) (setq y (cddr y)) (go a1))
+		      ((or (null v) (> e (car v))) (setq u* (setq v (ptptplus u* (list e c)))) (setq y (cddr y)) (go a1))
+		      ((equal e (car v))
+		       (setq c (pplus c (cadr v)))
+		       (cond ((pzerop c) (setq u* (setq v (ptptdiffer u* (list (car v) (cadr v)))))) (t (rplaca (cdr v) c)))
+		       (setq y (cddr y))
+		       (go a1)))
+	      a    (cond ((and (cddr v) (> (caddr v) e)) (setq v (cddr v)) (go a)))
+		(setq u (cdr v))
+	      b    (cond ((or (null (cdr u)) (< (cadr u) e)) (rplacd u (cons e (cons c (cdr u)))) (go e)))
+		(cond ((pzerop (setq c (pplus (caddr u) c))) (rplacd u (cdddr u)) (go d)) (t (rplaca (cddr u) c)))
+	      e    (setq u (cddr u))
+	      d    (setq y (cddr y))
+		(cond ((null y) (return nil))
+		      ((pzerop
+			(setq c (wtptimes (cadr *x*) (cadr y)
+					  (+ wtsofar (* xweight
+							(setq e (+ (car *x*) (car y))))))))
+		       (go d)))
+	      c    (cond ((and (cdr u) (> (cadr u) e)) (setq u (cddr u)) (go c)))
+		(go b))))
+    (prog (u* v)
+       (declare (special v))
+       (setq v (setq u* (wtptimes2 y)))
      a    (setq *x* (cddr *x*))
-     (cond ((null *x*) (return u*)))
-     (wtptimes3 y)
-     (go a)))
+       (cond ((null *x*) (return u*)))
+       (wtptimes3 y)
+       (go a))))
 
 
+#+nil
 (defun wtptimes2 (y)
   (if (null y)
       nil
@@ -527,6 +565,7 @@
 		      (wtptimes (cadr *x*) (cadr y) ii)
 		      (wtptimes2 (cddr y)))))))
 
+#+nil
 (defun wtptimes3 (y)
   (prog ((e 0) u c)
      (declare (special v))
