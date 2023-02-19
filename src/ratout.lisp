@@ -620,15 +620,15 @@
 		      exp var x $factorflag
 		      wholepart parnumer varlist n))
 
-(defmfun $partfrac (exp var)
+(defmfun $partfrac (exp ratout-var)
   (cond ((mbagp exp)
-	 (cons (car exp) (mapcar #'(lambda (u) ($partfrac u var)) (cdr exp))))
-	((and (atom var) (not (among var exp))) exp)
-	(t (let (($savefactors t) (checkfactors ()) (varlist (list var))
+	 (cons (car exp) (mapcar #'(lambda (u) ($partfrac u ratout-var)) (cdr exp))))
+	((and (atom ratout-var) (not (among ratout-var exp))) exp)
+	(t (let (($savefactors t) (checkfactors ()) (varlist (list ratout-var))
 		 $ratfac $algebraic $keepfloat ratform genvar)
 	     (desetq (ratform . exp) (taychk2rat exp))
-	     (setq var (caadr (ratf var)))
-	     (setq exp (partfrac exp var))
+	     (setq ratout-var (caadr (ratf ratout-var)))
+	     (setq exp (partfrac exp ratout-var))
 	     (setq exp (cons (car exp)	;FULL DECOMP?
 			     (mapcan #'partfraca (cdr exp))))
 	     (add2* (disrep (car exp) ratform)
