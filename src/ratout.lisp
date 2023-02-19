@@ -618,7 +618,6 @@
 
 (declare-top (special y checkfactors
 		      exp var x $factorflag
-		      ratform
 		      wholepart parnumer varlist n))
 
 (defmfun $partfrac (exp var)
