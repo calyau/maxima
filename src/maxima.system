@@ -659,14 +659,16 @@
 	     (:file "askp"))		;does this belong here?
 	    )
    (:module integration :source-pathname ""
-    :depends-on ("globals" "defmfun" "pattern-matching"
-			   "matrix-algebra" "miscellaneous")
+	    :depends-on ("globals" "defmfun" "pattern-matching"
+			 "matrix-algebra" "miscellaneous")
 	    :components
 	    ((:file "sinint")
 	     (:file "sin")
 	     ;; risch needs dosum (from asum.lisp) and mtoa and
 	     ;; friends (from matrix.lisp).
-	     (:file "risch")))
+	     (:file "risch")
+	     (:file "irinte")
+	     (:file "laplac")))
    (:module taylor-series :source-pathname ""
 	    :depends-on ("globals" "defmfun")
 	    :components ((:file "hayat")))
@@ -731,10 +733,8 @@
 	     (:file "optim")
 	     (:file "marray")
 	     (:file "mdot")
-	     (:file "irinte")
 	     (:file "series")
 	     (:file "numth")
-	     (:file "laplac")
 	     (:file "pade")
 	     (:file "homog")
 	     (:file "combin")
