@@ -650,22 +650,22 @@
 	((rzerop (car nc)) (cons (list (cdr nc) poly n) ans))
       (push (list (cdr nc) poly n) ans))))
 
-(defun partfrac (rat var)
+(defun partfrac (rat ratout-var)
   (destructuring-let* (((wholepart frpart) (pdivide (car rat) (cdr rat)))
 		       ((num . denom) (ratqu frpart (cdr rat))))
     (cond
       ((pzerop num) (cons wholepart nil))
-      ((or (pcoefp denom) (pointergp var (car denom))) (cons rat nil))
+      ((or (pcoefp denom) (pointergp ratout-var (car denom))) (cons rat nil))
       (t (destructuring-let (((content bpart) (oldcontent denom)))
            (let (apart y parnumer)
              (loop
                for (factor multiplicity)
                  on (pfactor bpart) by #'cddr
-               unless (zerop (pdegree factor var))
+               unless (zerop (pdegree factor ratout-var))
                  do
                     (setq apart (pexpt factor multiplicity)
                           bpart (pquotient bpart apart)
-                          y (bprog apart bpart var)
+                          y (bprog apart bpart ratout-var)
                           frpart (cdr (ratdivide (ratti num (cdr y) t)
                                                  apart)))
                     (push (list (ratqu frpart content) factor multiplicity)
