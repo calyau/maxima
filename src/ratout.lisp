@@ -618,7 +618,7 @@
 
 (declare-top (special y checkfactors
 		      exp x $factorflag
-		      wholepart parnumer varlist n))
+		      wholepart varlist n))
 
 (defmfun $partfrac (exp ratout-var)
   (cond ((mbagp exp)
@@ -657,7 +657,7 @@
       ((pzerop num) (cons wholepart nil))
       ((or (pcoefp denom) (pointergp ratout-var (car denom))) (cons rat nil))
       (t (destructuring-let (((content bpart) (oldcontent denom)))
-           (let (apart y parnumer)
+           (let (apart y ratout-parnumer)
              (loop
                for (factor multiplicity)
                  on (pfactor bpart) by #'cddr
@@ -669,12 +669,12 @@
                           frpart (cdr (ratdivide (ratti num (cdr y) t)
                                                  apart)))
                     (push (list (ratqu frpart content) factor multiplicity)
-                          parnumer)
+                          ratout-parnumer)
                     (desetq (num . content)
                             (cdr (ratdivide (ratqu (ratti num (car y) t)
                                                    content)
                                             bpart))))
-             (cons wholepart parnumer)))))))
+             (cons wholepart ratout-parnumer)))))))
 
 (declare-top (unspecial exp f n ss v xv y *chk *l *max *p
 			*res u* *x* *y*))
