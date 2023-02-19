@@ -618,7 +618,7 @@
 
 (declare-top (special y checkfactors
 		      exp x $factorflag
-		      wholepart parnumer varlist n))
+		      wholepart varlist n))
 
 (defmfun $partfrac (exp ratout-var)
   (cond ((mbagp exp)
