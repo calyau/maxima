@@ -2873,12 +2873,14 @@ or a list of labels, one for each class.
 All global @code{draw} options, except @code{xrange}, @code{yrange}, 
 and @code{xtics}, which are internally assigned by @code{histogram}.
 If you want to set your own values for these options, make use of 
-@code{histogram_description}. See examples below.
+@code{histogram_description}.
 
 @item
-The following local @ref{draw-pkg} options: @mrefcomma{key} @mrefcomma{color}
-@mrefcomma{fill_color} @mref{fill_density} and @mrefdot{line_width} See also
-@mrefdot{barsplot}
+The following local @ref{draw-pkg} options: @mrefcomma{key}
+@mrefcomma{fill_color} @mrefcomma{fill_density} and @mrefdot{line_width}
+Note that the outlines of bars,
+as well as the interior of bars when @code{fill_density} is nonzero,
+are drawn with @code{fill_color}, not @code{color}.
 
 @end itemize
 
@@ -2889,6 +2891,8 @@ See also @mrefcomma{continuous_freq}
 which, like @code{histogram},
 counts data in intervals,
 but returns the counts instead of displaying a graphic representation.
+
+See also @mrefdot{barsplot}
 
 Examples:
 
