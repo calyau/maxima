@@ -134,7 +134,7 @@
 (defun pgcdp (ratout-bigf1 ratout-bigf2 modulus)
   (labels
       ((pmodcontent (p ratout-xv)
-	 (prog (*var *chk *res *max gcd)
+	 (prog (*var *chk *res *max ratout-gcd)
 	    (setq *chk (car p))
 	    (setq *max 0)
 	    (setq *var (pnext (cdr p) nil))
@@ -157,14 +157,14 @@
 		  ((not (univar (cdr *res)))
 		   (setq *res (car (pmodcontent *res ratout-xv)))
 		   (go a2))
-		  (gcd
-		   (setq gcd (pgcdu gcd *res)))
+		  (ratout-gcd
+		   (setq ratout-gcd (pgcdu ratout-gcd *res)))
 		  (t
-		   (setq gcd *res)))
-	    (cond ((pcoefp gcd)
+		   (setq ratout-gcd *res)))
+	    (cond ((pcoefp ratout-gcd)
 		   (go ret1))
 		  ((minusp (setq *max (1- *max)))
-		   (return (list gcd (pquotient p gcd)))))
+		   (return (list ratout-gcd (pquotient p ratout-gcd)))))
 	    (go a)
 	  ret1
 	    (return (list 1 p)))))
@@ -255,10 +255,10 @@
 		     (ptimeschk (pquotient c1 c) ratout-bigf1)
 		     (ptimeschk (pquotient c2 c) ratout-bigf2))) )))
 
-(defun monicgcd (gcd x y lcf)
+(defun monicgcd (ratout-gcd x y lcf)
   (cond ((equal lcf 1)
-	 (list gcd x y))
-	(t (list (ptimes (crecip lcf) gcd)
+	 (list ratout-gcd x y))
+	(t (list (ptimes (crecip lcf) ratout-gcd)
 		 (ptimes lcf x)
 		 (ptimes lcf y)))))
 
