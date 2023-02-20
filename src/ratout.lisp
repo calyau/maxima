@@ -35,38 +35,6 @@
 	  (modulus (pgcdp x y modulus))
 	  (t (pgcdm x y)))))
 
-;;;***	PMODCONTENT COMPUTES CONTENT OF
-;;;	P IN
-;;	Z [X ] [X , X , ..., X   ]
-;;        P  V    1   2        V-1
-
-;;	PMODCONTENT OF 3*A*X IS A, IF MAINVAR IS X (=X )
-;;						      V
-
-#+nil
-(defun pmodcontent (p)
-  (prog (*var *chk *res *max gcd)
-     (setq *chk (car p))
-     (setq *max 0)
-     (setq *var (pnext (cdr p) nil))
-     (cond ((pointergp xv *chk) (go ret1))
-	   ((null *var) (return (list p 1))))
-     (pgath1 (cdr p))
-     a    (setq *res 0)
-     (pgath3 (cdr p))
-     a2   (cond ((pcoefp *res) (cond ((pzerop *res) nil)(t(go ret1))))
-		((not (eq (car *res) *chk)) (go ret1))
-		((not (univar (cdr *res)))
-		 (setq *res (car (pmodcontent *res)))
-		 (go a2))
-		(gcd (setq gcd (pgcdu gcd *res)))
-		(t (setq gcd *res)))
-     (cond ((pcoefp gcd) (go ret1))
-	   ((minusp (setq *max (1- *max)))
-	    (return (list gcd (pquotient p gcd)))))
-     (go a)
-     ret1 (return (list 1 p))))
-
 (defun pgathercoef (p *chk *res)
   (if (not (eq (car p) *chk)) 1 (pgath2 (cdr p) nil)))
 
@@ -132,6 +100,13 @@
 (defun pgcdp (ratout-bigf1 ratout-bigf2 modulus)
   (labels
       ((pmodcontent (p ratout-xv)
+	 ;;***	PMODCONTENT COMPUTES CONTENT OF
+	 ;;	P IN
+	 ;;	Z [X ] [X , X , ..., X   ]
+	 ;;        P  V    1   2        V-1
+
+	 ;;	PMODCONTENT OF 3*A*X IS A, IF MAINVAR IS X (=X )
+	 ;;						      V
 	 (prog (*var *chk *res *max ratout-gcd)
 	    (setq *chk (car p))
 	    (setq *max 0)
