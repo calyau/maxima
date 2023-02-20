@@ -15,7 +15,7 @@
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
 (declare-top (special ss *y* f
-		      *x* *p *max *var *res *chk *l
+		      *p *max *var *res *chk *l
 		      u*))
 
 (declare-top (special xv bigf1 bigf2
@@ -469,7 +469,7 @@
       ((null q)))
   p)
 
-(declare-top (special wtsofar xweight v *x*))
+(declare-top (special wtsofar xweight v))
 
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
@@ -749,7 +749,7 @@
              (cons ratout-wholepart ratout-parnumer)))))))
 
 (declare-top (unspecial f n ss v xv y *chk *l *max *p
-			*res u* *x* *y*))
+			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
 ;; ONLY ENTITY WHICH DEPENDS ON X IS X ITSELF.
