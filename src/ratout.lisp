@@ -134,12 +134,12 @@
 
 (defun pgcdp (ratout-bigf1 ratout-bigf2 modulus)
   (labels
-      ((pmodcontent (p xv)
+      ((pmodcontent (p ratout-xv)
 	 (prog (*var *chk *res *max gcd)
 	    (setq *chk (car p))
 	    (setq *max 0)
 	    (setq *var (pnext (cdr p) nil))
-	    (cond ((pointergp xv *chk) (go ret1))
+	    (cond ((pointergp ratout-xv *chk) (go ret1))
 		  ((null *var) (return (list p 1))))
 	    (pgath1 (cdr p))
 	  a    (setq *res 0)
@@ -147,7 +147,7 @@
 	  a2   (cond ((pcoefp *res) (cond ((pzerop *res) nil)(t(go ret1))))
 		     ((not (eq (car *res) *chk)) (go ret1))
 		     ((not (univar (cdr *res)))
-		      (setq *res (car (pmodcontent *res xv)))
+		      (setq *res (car (pmodcontent *res ratout-xv)))
 		      (go a2))
 		     (gcd (setq gcd (pgcdu gcd *res)))
 		     (t (setq gcd *res)))
@@ -158,7 +158,7 @@
 	  ret1 (return (list 1 p)))))
     (prog (c c1		c2		n		q
 	   h1tilde	h2tilde		gstar		h1star
-	   h2star		xv		e		b
+	   h2star	ratout-xv		e		b
 	   gbar		nubar		nu1bar		nu2bar
 	   gtilde		f1tilde		f2tilde		biggtilde
 	   degree		f1		f1f2)
@@ -167,9 +167,9 @@
 		   (univar (cdr ratout-bigf2)))
 	      (setq q (pgcdu ratout-bigf1 ratout-bigf2))
 	      (return (list q (pquotient ratout-bigf1 q) (pquotient ratout-bigf2 q)))))
-       (setq xv (car ratout-bigf1))
-       (setq ratout-bigf1 (pmodcontent ratout-bigf1 xv))
-       (setq ratout-bigf2 (pmodcontent ratout-bigf2 xv))
+       (setq ratout-xv (car ratout-bigf1))
+       (setq ratout-bigf1 (pmodcontent ratout-bigf1 ratout-xv))
+       (setq ratout-bigf2 (pmodcontent ratout-bigf2 ratout-xv))
        (setq c (pgcdu (setq c1 (car ratout-bigf1)) (setq c2 (car ratout-bigf2))))
        (setq ratout-bigf1 (cadr ratout-bigf1))
        (setq ratout-bigf2 (cadr ratout-bigf2))
@@ -180,24 +180,24 @@
 	      (setq e degree)))
        (setq b (ash modulus -1))
        (setq gbar
-	     (pgcdu (setq f1 (pgathercoef ratout-bigf1 xv 0))
+	     (pgcdu (setq f1 (pgathercoef ratout-bigf1 ratout-xv 0))
 		    (setq f1f2
-			  (pgathercoef ratout-bigf2 xv 0))))
+			  (pgathercoef ratout-bigf2 ratout-xv 0))))
        (cond ((equal 0 f1f2)
 	      (go step15a)))
-       (setq nubar (pdegree gbar xv))
-       (setq nu1bar (+ nubar (pdegree ratout-bigf1 xv)))
-       (setq nu2bar (+ nubar (pdegree ratout-bigf2 xv)))
+       (setq nubar (pdegree gbar ratout-xv))
+       (setq nu1bar (+ nubar (pdegree ratout-bigf1 ratout-xv)))
+       (setq nu2bar (+ nubar (pdegree ratout-bigf2 ratout-xv)))
        (setq f1f2 (ptimes f1 f1f2))
        (setq nubar (max nu1bar nu2bar))
      step6
        (setq b (cplus b 1))
-       (cond ((equal (pcsubst f1f2 b xv) 0)
+       (cond ((equal (pcsubst f1f2 b ratout-xv) 0)
 	      (go step6)))
        ;; Step 7
-       (setq gtilde (pcsubst gbar b xv))
-       (setq f1tilde (pcsubst ratout-bigf1 b xv))
-       (setq f2tilde (pcsubst ratout-bigf2 b xv))
+       (setq gtilde (pcsubst gbar b ratout-xv))
+       (setq f1tilde (pcsubst ratout-bigf1 b ratout-xv))
+       (setq f2tilde (pcsubst ratout-bigf2 b ratout-xv))
        (setq biggtilde
 	     (ptimeschk gtilde
 			(car (setq h2tilde (newgcd f1tilde f2tilde modulus)))))
@@ -213,7 +213,7 @@
 	      (setq e degree)))
        (setq n (1+ n))
        (cond ((equal n 1)
-	      (setq q (list xv 1 1 0 (cminus b)))
+	      (setq q (list ratout-xv 1 1 0 (cminus b)))
 	      (setq gstar biggtilde)
 	      (setq h1star h1tilde)
 	      (setq h2star h2tilde))
@@ -221,19 +221,19 @@
 	      (setq gstar (lagrange33 gstar biggtilde q b))
 	      (setq h1star (lagrange33 h1star h1tilde q b))
 	      (setq h2star (lagrange33 h2star h2tilde q b))
-	      (setq q (ptimes q (list xv 1 1 0 (cminus b))))))
+	      (setq q (ptimes q (list ratout-xv 1 1 0 (cminus b))))))
        ;; Step 12
        (cond ((not (> n nubar))
 	      (go step6)))
        ;; Step 13
-       (cond ((or (not (= nu1bar (+ (setq degree (pdegree gstar xv))
-				    (pdegree h1star xv))))
-		  (not (= nu2bar (+ degree (pdegree h2star xv)))))
+       (cond ((or (not (= nu1bar (+ (setq degree (pdegree gstar ratout-xv))
+				    (pdegree h1star ratout-xv))))
+		  (not (= nu2bar (+ degree (pdegree h2star ratout-xv)))))
 	      (setq n 0)
 	      (go step6)))
-       (setq gstar (cadr (pmodcontent gstar xv)))
+       (setq gstar (cadr (pmodcontent gstar ratout-xv)))
        ;; Step 15
-       (setq q (pgathercoef gstar xv 0))
+       (setq q (pgathercoef gstar ratout-xv 0))
        (return (monicgcd  (ptimeschk c gstar)
 			  (ptimeschk (pquotient c1 c) (pquotientchk h1star q))
 			  (ptimeschk (pquotient c2 c) (pquotientchk h2star q))
