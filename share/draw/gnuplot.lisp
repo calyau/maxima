@@ -203,9 +203,8 @@
                   " ~a w ~a ~a lw ~a lt ~a lc ~a axis ~a"
                   (make-obj-title (get-option '$key))
                   with
-                  (if (eql etype '$boxes)  ; in case of boxes, should they be filled?
-                      (format nil "fs solid ~a"
-                              (get-option '$fill_density))
+                  (if (eql etype '$boxes)  ; in case of boxes, should they be filled? Default is "not filled".
+                      (format nil "fs solid ~a" (or (get-option '$fill_density) 0))
                       "")
                   (get-option '$line_width)
                   (get-option '$line_type)
@@ -599,6 +598,7 @@
 ;; Options:
 ;;     transparent
 ;;     fill_color
+;;     fill_density
 ;;     border
 ;;     line_width
 ;;     line_type
@@ -645,8 +645,9 @@
                                          :initial-contents (append (mapcan #'list x y)
                                                                    (list (first x) (first y))) )) ) )
          ((not (get-option '$border)) ; no transparent, no border
-             (setf pltcmd (format nil " ~a w filledcurves lc ~a axis ~a"
+             (setf pltcmd (format nil " ~a w filledcurves~a lc ~a axis ~a"
                                       (make-obj-title (get-option '$key))
+                                      (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                       (hex-to-rgb (get-option '$fill_color))
                                       (axes-to-plot)))
              (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
@@ -654,8 +655,9 @@
                                          :element-type 'flonum
                                          :initial-contents (mapcan #'list x y)) ) ))
          (t ; no transparent with border
-             (setf pltcmd (list (format nil " ~a w filledcurves lc ~a axis ~a"
+             (setf pltcmd (list (format nil " ~a w filledcurves~a lc ~a axis ~a"
                                         (make-obj-title (get-option '$key))
+                                        (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                         (hex-to-rgb (get-option '$fill_color))
                                         (axes-to-plot))
                                 (format nil " t '' w l lw ~a lt ~a lc ~a axis ~a"
@@ -818,6 +820,7 @@
 ;;     nticks
 ;;     transparent
 ;;     fill_color
+;;     fill_density
 ;;     border
 ;;     line_width
 ;;     line_type
@@ -887,8 +890,9 @@
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
-           (setf pltcmd (format nil " ~a w filledcurves xy=~a,~a lc ~a axis ~a"
+           (setf pltcmd (format nil " ~a w filledcurves~a xy=~a,~a lc ~a axis ~a"
                                     (make-obj-title (get-option '$key))
+                                    (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                     fxc fyc
                                     (hex-to-rgb (get-option '$fill_color))
                                     (axes-to-plot)))
@@ -896,8 +900,9 @@
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        (t ; no transparent with border
-             (setf pltcmd (list (format nil " ~a w filledcurves xy=~a,~a lc ~a axis ~a"
+             (setf pltcmd (list (format nil " ~a w filledcurves~a xy=~a,~a lc ~a axis ~a"
                                             (make-obj-title (get-option '$key))
+                                            (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                             fxc fyc
                                             (hex-to-rgb (get-option '$fill_color))
                                             (axes-to-plot))
@@ -1052,7 +1057,7 @@
        :name 'bars
        :command (format nil " ~a w boxes fs solid ~a lw ~a lc ~a axis ~a"
                             (make-obj-title (get-option '$key))
-                            (get-option '$fill_density)
+                            (or (get-option '$fill_density) 0) ;; Default is "not filled".
                             (get-option '$line_width)
                             (hex-to-rgb (get-option '$fill_color))
                             (axes-to-plot) )
@@ -1214,6 +1219,7 @@
 ;;     color
 ;;     filled_func
 ;;     fill_color
+;;     fill_density
 ;;     key
 ;;     xaxis_secondary
 ;;     yaxis_secondary
@@ -1344,8 +1350,9 @@
              (setf result-array (make-array (length result)
                                             :element-type 'flonum 
                                             :initial-contents result))
-             (setf pltcmd (format nil " ~a w filledcurves x1 lc ~a axis ~a"
+             (setf pltcmd (format nil " ~a w filledcurves~a x1 lc ~a axis ~a"
                                       (make-obj-title (get-option '$key))
+                                      (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                       (hex-to-rgb (get-option '$fill_color))
                                       (axes-to-plot)))
              (make-gr-object
@@ -1369,8 +1376,9 @@
                           (aref result-array (incf count)) yy
                           (aref result-array (incf count)) yy2) )  ))
              (update-ranges-2d xmin xmax ymin ymax)
-             (setf pltcmd (format nil " ~a w filledcurves lc ~a axis ~a"
+             (setf pltcmd (format nil " ~a w filledcurves~a lc ~a axis ~a"
                                       (make-obj-title (get-option '$key))
+                                      (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                       (hex-to-rgb (get-option '$fill_color))
                                       (axes-to-plot)  ))
              (make-gr-object
@@ -1390,6 +1398,7 @@
 ;;     region(ineq,x-var,x-minval,x-maxval,y-var,y-minval,y-maxval)
 ;; Options:
 ;;     fill_color
+;;     fill_density
 ;;     key
 ;;     x_voxel
 ;;     y_voxel
@@ -1520,12 +1529,14 @@
 
     ; list of commands
     (setf pltcmd
-          (cons (format nil " ~a w filledcurves lc ~a axis ~a"
+          (cons (format nil " ~a w filledcurves~a lc ~a axis ~a"
                         (make-obj-title (get-option '$key))
+                        (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                         (hex-to-rgb (get-option '$fill_color))
                         (axes-to-plot))
                 (make-list (- (length pts) 1)
-                           :initial-element (format nil " t '' w filledcurves lc ~a axis ~a"
+                           :initial-element (format nil " t '' w filledcurves~a lc ~a axis ~a"
+                                              (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                               (hex-to-rgb (get-option '$fill_color))
                                               (axes-to-plot) ))))
     (update-ranges-2d xmin xmax ymin ymax)

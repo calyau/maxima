@@ -93,7 +93,7 @@
       (gethash '$background_color *gr-options*) "#ffffff"
       (gethash '$color *gr-options*)            "#0000ff" ; for lines, points, borders and labels
       (gethash '$fill_color *gr-options*)       "#ff0000" ; for filled regions
-      (gethash '$fill_density *gr-options*)     0         ; in [0,1], only for object 'bars
+      (gethash '$fill_density *gr-options*)     nil       ; if specified, must be in [0, 1]
 
       ; implicit plot options
       (gethash '$ip_grid *gr-options*)    '((mlist simp) 50 50)

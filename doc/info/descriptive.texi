@@ -289,16 +289,34 @@ Multivariate frequency table.
 @fname{continuous_freq} (@var{data}) @
 @fname{continuous_freq} (@var{data}, @var{m})
 
-The first argument of @code{continuous_freq} must be a list
-or 1-dimensional array (as created by @code{make_array}) of numbers.
-Divides the range in intervals and counts how many values
-are inside them. The second argument is optional and either
-equals the number of classes we want, 10 by default, or
-equals a list containing the class limits and the number of
-classes we want, or a list containing only the limits.
+Divides the range of @var{data} into intervals,
+and counts how many values fall into each one.
 
-If sample values are all equal, this function returns only
-one class of amplitude 2.
+A value @var{x} falls into an interval with left and right endpoints @var{a} and @var{b}
+if and only if @code{@var{x} > @var{a}} and @code{@var{x} <= @var{b}},
+except for the first (least or leftmost) interval,
+for which @code{@var{x} >= @var{a}} and @code{@var{x} <= @var{b}}.
+That is, an interval excludes its left endpoint and includes its right endpoint,
+except for the first interval, which includes both the left and right endpoints.
+
+@var{data} must be a list of numbers,
+or 1-dimensional array (as created by @code{make_array}).
+
+@var{m} is optional, and equals either the number of classes (10 by default),
+or a list of two elements (the least and greatest values to be counted),
+or a list of three elements (the least and greatest values to be counted, and the number of classes),
+or a set containing the endpoints of the class intervals.
+
+It is assumed that class intervals are contiguous.
+That is, the right endpoint of one interval is equal to the left endpoint of the next.
+
+@code{continuous_freq} returns a list of two lists.
+The first list comprises all the endpoints of the class intervals,
+concatenated into a single list.
+The second list contains the class counts for the intervals corresponding to elements of the first list.
+
+If sample values are all equal, this function returns exactly
+one class of width 2.
 
 Examples:
 
@@ -2816,54 +2834,76 @@ graphic objects.
 @fname{histogram} (@var{one_row_matrix}) @
 @fname{histogram} (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
 
-This function plots an histogram from a continuous sample.
-Sample data must be stored in a list of numbers or an one dimensional matrix.
+Constructs and displays a histogram from a data sample.
+Data must be stored as a list of numbers, or a matrix of one row or one column.
 
-Available options are:
+Optional arguments:
 
 @itemize @bullet
 
 @item
-@var{nclasses} (default, @code{10}): number of classes of the histogram, or
-a list indicating the limits of the classes and the number of them, or
-only the limits. This option also accepts bounds for varying bin widths, or
-a symbol with the name of one of the three optimal algorithms available for
-the number of classes: @code{'fd} (Freedman, D. and Diaconis, P. (1981) On the 
-histogram as a density estimator: L_2 theory. Zeitschrift f@"ur
-Wahrscheinlichkeitstheorie und verwandte Gebiete 57, 453-476.), @code{'scott}
-(Scott, D. W. (1979) On optimal and data-based histograms. Biometrika 66, 
-605-610.), and @code{'sturges} (Sturges, H. A. (1926) The choice of a class
-interval. Journal of the American Statistical Association 21, 65-66).
+@code{nclasses} (default, 10):
+the number of classes (also called bins) in the histogram,
+or a list of two numbers (the least and greatest values included in the histogram),
+or a list of three numbers (the least and greatest values included in the histogram, and the number of classes),
+or a set containing the endpoints of the class intervals,
+or a symbol specifying the name of one of three algorithms to automatically determine the number of classes:
+@code{fd} (Ref. [1]), @code{scott} (Ref. [2]), or @code{sturges} (Ref. [3]).
+
+A class interval excludes its left endpoint and includes its right endpoint,
+except for the first interval, which includes both the left and right endpoints.
+It is assumed that class intervals are contiguous.
+That is, the right endpoint of one interval is equal to the left endpoint of the next.
 
 @item
-@var{frequency} (default, @code{absolute}): indicates the scale of the
-ordinates. Possible values are:  @code{absolute}, @code{relative},  @code{percent},
-and @code{density}. With @code{density}, the histogram area has a total area of one.
+@code{frequency} (default, @code{absolute}): indicates the scale of the vertical axis.
+Possible values are:  @code{absolute} (heights of bars add up to number of data),
+@code{relative} (heights of bars add up to 1),
+@code{percent} (heights of bars add up to 100),
+and @code{density} (total area of histogram is 1).
 
 @item
-@var{htics} (default, @code{auto}): format of the histogram tics. Possible
-values are: @code{auto}, @code{endpoints}, @code{intervals}, or a list
-of labels. 
+@code{htics} (default, @code{auto}): format of tic marks on the horizontal axis.
+Possible values are: @code{auto} (tics are placed automatically),
+@code{endpoints} (tics are placed at the divisions between classes),
+@code{intervals} (classes are labeled with the corresponding intervals),
+or a list of labels, one for each class. 
 
 @item
 All global @code{draw} options, except @code{xrange}, @code{yrange}, 
 and @code{xtics}, which are internally assigned by @code{histogram}.
 If you want to set your own values for these options, make use of 
-@code{histogram_description}. See examples bellow.
+@code{histogram_description}.
 
 @item
-The following local @ref{draw-pkg} options: @mrefcomma{key} @mrefcomma{color}
-@mrefcomma{fill_color} @mref{fill_density} and @mrefdot{line_width} See also
-@mrefdot{barsplot}
+The following local @ref{draw-pkg} options: @mrefcomma{key}
+@mrefcomma{fill_color} @mrefcomma{fill_density} and @mrefdot{line_width}
+Note that the outlines of bars,
+as well as the interior of bars when @code{fill_density} is nonzero,
+are drawn with @code{fill_color}, not @code{color}.
 
 @end itemize
+
+@code{histogram} honors the global option @code{histogram_skyline}.
+When @code{histogram_skyline} is @code{true},
+@code{histogram} and @code{histogram_description} construct "skyline" plots,
+which shows the outline of the histogram bars,
+instead of drawing all the vertical segments.
+Otherwise (the default), histograms are displayed with bars showing vertical segments.
 
 There is also a function @code{wxhistogram} for creating embedded
 histograms in interfaces wxMaxima and iMaxima.
 
+See also @mrefcomma{continuous_freq}
+which, like @code{histogram},
+counts data in intervals,
+but returns the counts instead of displaying a graphic representation.
+
+See also @mrefdot{barsplot}
+
 Examples:
 
-A simple with eight classes:
+A simple histogram with eight classes:
 
 @c ===beg===
 @c load ("descriptive")$
@@ -2916,7 +2956,7 @@ Also, we introduce predefined tics:
            fill_density = 0.6)$
 @end example
 
-Bounds for varying bin widths.
+Bounds for varying class widths.
 
 @c ===beg===
 @c load ("descriptive")$
@@ -2929,7 +2969,7 @@ Bounds for varying bin widths.
 (%i3) histogram (s1, nclasses = @{0,3,6,7,11@})$
 @end example
 
-Freedmann - Diakonis robust method for optimal search of the number of classes.
+Freedman-Diaconis formula for the number of classes.
 
 @c ===beg===
 @c load ("descriptive")$
@@ -2942,6 +2982,15 @@ Freedmann - Diakonis robust method for optimal search of the number of classes.
 (%i3) histogram(s1, nclasses=fd) $
 @end example
 
+References:
+
+[1] Freedman, D., and Diaconis, P. (1981) On the histogram as a density estimator: L_2 theory.
+Zeitschrift f@"ur Wahrscheinlichkeitstheorie und verwandte Gebiete 57, 453-476.
+
+[2] Scott, D. W. (1979) On optimal and data-based histograms. Biometrika 66, 605-610.
+
+[3] Sturges, H. A. (1926) The choice of a class interval. Journal of the American Statistical Association 21, 65-66.
+
 @opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
@@ -2951,10 +3000,18 @@ Freedmann - Diakonis robust method for optimal search of the number of classes.
 @anchor{histogram_description}
 @deffn {Function} histogram_description (@dots{})
 
-Function @code{histogram_description} creates a graphic object
-suitable for creating complex scenes, together with other
-graphic objects. We make use of @code{histogram_description} for setting 
-the @code{xrange} and adding an explicit curve into the scene:
+Creates a graphic object which represents a histogram.
+Such an object is suitable for creating complex scenes together with other graphic objects,
+to be displayed by @code{draw2d}.
+
+@code{histogram_description} takes the same arguments
+as the stand-alone function @code{histogram}.
+See @mref{histogram} for more information.
+
+Example:
+
+We make use of @code{histogram_description} for setting 
+@code{xrange} and adding an explicit curve into the scene:
 
 @example
 (%i1) load ("descriptive")$
@@ -2977,6 +3034,54 @@ the @code{xrange} and adding an explicit curve into the scene:
 @category{Plotting}
 @closecatbox
 @end deffn
+
+@anchor{histogram_skyline}
+@defvr {Option variable} histogram_skyline
+Default value: @code{false}
+
+When @code{histogram_skyline} is @code{true},
+@code{histogram} and @code{histogram_description} construct "skyline" plots,
+which shows the outline of the histogram bars,
+instead of drawing all the vertical segments.
+
+The outline is drawn with the current @code{fill_color} (not the current @code{color}).
+The interior of the histogram is filled with @code{fill_color},
+but only if @code{fill_density} is nonzero.
+
+Otherwise, histograms are displayed with bars showing vertical segments.
+
+Example:
+
+Construct a skyline histogram,
+and an ordinary histogram for comparison,
+on the same plot.
+
+@example
+(%i1) load ("descriptive") $
+(%i2) L: read_list (file_search ("pidigits.data")) $
+(%i3) histogram_skyline: true $
+(%i4) skyline_hist: histogram_description (L) $
+(%i5) histogram_skyline: false $
+(%i6) ordinary_hist: histogram_description (L) $
+(%i7) draw (gr2d (skyline_hist), gr2d (ordinary_hist)) $
+@end example
+
+Continuing the preceding example.
+Set display options for @code{fill_color} and @code{fill_density}.
+
+@example
+(%i8) histogram_skyline: true $
+(%i9) skyline_hist: histogram_description (L, fill_color = blue, fill_density = 0.2) $
+(%i10) histogram_skyline: false $
+(%i11) ordinary_hist: histogram_description (L, fill_color = blue, fill_density = 0.2) $
+(%i12) draw (gr2d (skyline_hist), gr2d (ordinary_hist)) $
+@end example
+
+@opencatbox{Categories:}
+@category{Package descriptive}
+@category{Plotting}
+@closecatbox
+@end defvr
 
 @anchor{piechart}
 @deffn {Function} piechart @

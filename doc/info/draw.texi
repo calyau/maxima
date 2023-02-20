@@ -4424,7 +4424,7 @@ semi axis @var{a} and @var{b}, respectively, starting at angle @var{ang1} with a
 equal to angle @var{ang2}.
 
 This object is affected by the following @i{graphic options}: @mrefcomma{nticks} 
-@mrefcomma{transparent} @mrefcomma{fill_color} @mrefcomma{border} @code{line_width}, 
+@mrefcomma{transparent} @mrefcomma{fill_color} @mrefcomma{fill_density} @mrefcomma{border} @code{line_width}, 
 @mrefcomma{line_type} @mref{key} and @code{color}
 
 Example:
@@ -4520,7 +4520,7 @@ with variable @var{var} taking values from @var{minval} to @var{maxval}.
 
 This object is affected by the following @i{graphic options}: @mrefcomma{nticks} 
 @code{adapt_depth}, @mrefcomma{draw_realpart} @mrefcomma{line_width} @mrefcomma{line_type} @mrefcomma{key} 
-@mrefcomma{filled_func} @mref{fill_color} and @code{color}
+@mrefcomma{filled_func} @mrefcomma{fill_color} @mrefcomma{fill_density} and @code{color}
 
 Example:
 
@@ -5193,7 +5193,7 @@ the plane a polygon with vertices @code{[@var{x1}, @var{y1}]}, @code{[@var{x2},
 @var{y2}]}, etc.
 
 This object is affected by the following @i{graphic options}: @mrefcomma{transparent} 
-@mrefcomma{fill_color} @mrefcomma{border} @mrefcomma{line_width} @mrefcomma{key}
+@mrefcomma{fill_color} @mrefcomma{fill_density} @mrefcomma{border} @mrefcomma{line_width} @mrefcomma{key}
  @mref{line_type} and @code{color}.
 
 Example:
@@ -5305,7 +5305,7 @@ Plots a region on the plane defined by inequalities.
 @code{and}, @code{or}, and @mrefdot{not} The region is bounded by the rectangle
 defined by @math{[@var{minval1}, @var{maxval1}]} and @math{[@var{minval2}, @var{maxval2}]}.
 
-This object is affected by the following @i{graphic options}: @mrefcomma{fill_color} 
+This object is affected by the following @i{graphic options}: @mrefcomma{fill_color} @mrefcomma{fill_density}
 @mrefcomma{key} @mref{x_voxel} and @mrefdot{y_voxel}
 
 Example:
