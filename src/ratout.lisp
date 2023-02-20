@@ -18,8 +18,7 @@
 		      *p *max *var *res *chk *l
 		      u*))
 
-(declare-top (special xv
-		      gcd))
+(declare-top (special gcd))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
 ;;	(GCD, X/GCD, Y/GCD)
@@ -794,7 +793,7 @@
                                             bpart))))
              (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial f n ss v xv y *chk *l *max *p
+(declare-top (unspecial f n ss v y *chk *l *max *p
 			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
