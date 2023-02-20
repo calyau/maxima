@@ -916,11 +916,45 @@ wxscatterplot([desc]) := wxdraw(apply('scatterplot_description, desc)) $
 /*     - xrange                                                      */
 /*     - yrange                                                      */
 /*     - xtics                                                       */
+
+histogram_skyline: false;
+
+make_skyline (xx, yy, fill_color, fill_density) :=
+    block ([skyline_interior, skyline_initial, skyline_final, skyline_points, n: length(xx)],
+
+           skyline_interior: apply (append, makelist ([[xx[k], yy[k - 1]], [xx[k], yy[k]]], k, 2, n - 1)),
+           skyline_initial: [[xx[1], 0], [xx[1], yy[1]]],
+           skyline_final: [[xx[n], yy[n - 1]], [xx[n], 0]],
+           skyline_points: append (skyline_initial, skyline_interior, skyline_final),
+
+           ['xaxis = true,
+            'border = false,
+            'fill_color = fill_color,
+            'fill_density = fill_density,
+            polygon (skyline_points),
+            'color = fill_color,
+            'points_joined = true,
+            'point_type = 'none,
+            'points (skyline_points)]);
+
 histogram_description(m,[select]):=
-   block([fr,amp,scen,before,localopts,num_classes,v,lbels,
+   block([fr,amp,scen,before,localopts,num_classes,v,lbels, my_fill_color, my_fill_density,
           /* specific options */
-          my_nclasses:10, my_frequency:'absolute, my_htics:'auto],
-      [before, localopts]: extract_options(select,'nclasses,'frequency,'htics),
+          my_nclasses:10, my_frequency:'absolute, my_htics:'auto, histogram_bars, histogram_drawing],
+      [before, localopts]: extract_options (select, 'nclasses, 'frequency, 'htics, 'fill_color, 'fill_density),
+
+      /* This business about finding option values is kind of terrible.
+       * Ideally there would be some logic in the draw package to handle
+       * the hierarchy of option settings.
+       */
+
+      (my_fill_color: assoc ('fill_color, localopts)) # false
+          or (my_fill_color: assoc ('fill_color, get_draw_defaults ())) # false
+          or (my_fill_color: "#ff0000"), /* default from share/draw/grcommon.lisp */
+
+      (my_fill_density: assoc ('fill_density, localopts)) # false
+          or (my_fill_density: assoc ('fill_density, get_draw_defaults ())) # false
+          or (my_fill_density: 0), /* default "not filled" */
 
       for k in localopts do
         if lhs(k) = 'nclasses
@@ -1007,13 +1041,20 @@ histogram_description(m,[select]):=
 		        lbels: makelist([my_htics[k],fr[1][k]+amp[k]/2],k,1,num_classes),
 		        my_htics: xtics = makeset([a,b],[a,b],lbels) ),
 
-               scen: [before,
-                      'xrange = [first(fr[1]), last(fr[1])] + [-1,+1] * mean(amp)/2,
-                      'yrange = lmax(fr[2])*[-0.05, 1.05],
-                      my_htics,
-                      apply('bars,
-                            makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp[k]],k,1,length(fr[1])-1))])
+               histogram_bars: apply ('bars, makelist ([(fr[1][k] + fr[1][k + 1])/2, fr[2][k], amp[k]], k, 1, length (fr[1]) - 1)),
+               histogram_drawing:
+                   if histogram_skyline
+                       then make_skyline (fr[1], fr[2], my_fill_color, my_fill_density)
+                       else ['fill_color = my_fill_color, 'fill_density = my_fill_density, histogram_bars],
+
+               scen: append ([before,
+                              'xrange = [first(fr[1]), last(fr[1])] + [-1,+1] * mean(amp)/2,
+                              'yrange = lmax(fr[2])*[-0.05, 1.05],
+                              my_htics],
+                             histogram_drawing))
+
         else error("histogram: can't plot the histogram for these data") )$
+
 histogram([desc]) := draw2d(apply(histogram_description, desc)) $
 wxhistogram([desc]) := wxdraw2d(apply(histogram_description, desc)) $
 

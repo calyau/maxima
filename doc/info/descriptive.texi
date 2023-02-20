@@ -2884,6 +2884,13 @@ are drawn with @code{fill_color}, not @code{color}.
 
 @end itemize
 
+@code{histogram} honors the global option @code{histogram_skyline}.
+When @code{histogram_skyline} is @code{true},
+@code{histogram} and @code{histogram_description} construct "skyline" plots,
+which shows the outline of the histogram bars,
+instead of drawing all the vertical segments.
+Otherwise (the default), histograms are displayed with bars showing vertical segments.
+
 There is also a function @code{wxhistogram} for creating embedded
 histograms in interfaces wxMaxima and iMaxima.
 
@@ -3027,6 +3034,54 @@ We make use of @code{histogram_description} for setting
 @category{Plotting}
 @closecatbox
 @end deffn
+
+@anchor{histogram_skyline}
+@defvr {Option variable} histogram_skyline
+Default value: @code{false}
+
+When @code{histogram_skyline} is @code{true},
+@code{histogram} and @code{histogram_description} construct "skyline" plots,
+which shows the outline of the histogram bars,
+instead of drawing all the vertical segments.
+
+The outline is drawn with the current @code{fill_color} (not the current @code{color}).
+The interior of the histogram is filled with @code{fill_color},
+but only if @code{fill_density} is nonzero.
+
+Otherwise, histograms are displayed with bars showing vertical segments.
+
+Example:
+
+Construct a skyline histogram,
+and an ordinary histogram for comparison,
+on the same plot.
+
+@example
+(%i1) load ("descriptive") $
+(%i2) L: read_list (file_search ("pidigits.data")) $
+(%i3) histogram_skyline: true $
+(%i4) skyline_hist: histogram_description (L) $
+(%i5) histogram_skyline: false $
+(%i6) ordinary_hist: histogram_description (L) $
+(%i7) draw (gr2d (skyline_hist), gr2d (ordinary_hist)) $
+@end example
+
+Continuing the preceding example.
+Set display options for @code{fill_color} and @code{fill_density}.
+
+@example
+(%i8) histogram_skyline: true $
+(%i9) skyline_hist: histogram_description (L, fill_color = blue, fill_density = 0.2) $
+(%i10) histogram_skyline: false $
+(%i11) ordinary_hist: histogram_description (L, fill_color = blue, fill_density = 0.2) $
+(%i12) draw (gr2d (skyline_hist), gr2d (ordinary_hist)) $
+@end example
+
+@opencatbox{Categories:}
+@category{Package descriptive}
+@category{Plotting}
+@closecatbox
+@end defvr
 
 @anchor{piechart}
 @deffn {Function} piechart @
