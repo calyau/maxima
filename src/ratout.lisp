@@ -46,6 +46,7 @@
 ;;	PMODCONTENT OF 3*A*X IS A, IF MAINVAR IS X (=X )
 ;;						      V
 
+#+nil
 (defun pmodcontent (p)
   (prog (*var *chk *res *max gcd)
      (setq *chk (car p))
@@ -133,7 +134,7 @@
 
 (defun pgcdp (ratout-bigf1 ratout-bigf2 modulus)
   (labels
-      ((pmodcontent (p)
+      ((pmodcontent (p xv)
 	 (prog (*var *chk *res *max gcd)
 	    (setq *chk (car p))
 	    (setq *max 0)
@@ -146,7 +147,7 @@
 	  a2   (cond ((pcoefp *res) (cond ((pzerop *res) nil)(t(go ret1))))
 		     ((not (eq (car *res) *chk)) (go ret1))
 		     ((not (univar (cdr *res)))
-		      (setq *res (car (pmodcontent *res)))
+		      (setq *res (car (pmodcontent *res xv)))
 		      (go a2))
 		     (gcd (setq gcd (pgcdu gcd *res)))
 		     (t (setq gcd *res)))
@@ -167,8 +168,8 @@
 	      (setq q (pgcdu ratout-bigf1 ratout-bigf2))
 	      (return (list q (pquotient ratout-bigf1 q) (pquotient ratout-bigf2 q)))))
        (setq xv (car ratout-bigf1))
-       (setq ratout-bigf1 (pmodcontent ratout-bigf1))
-       (setq ratout-bigf2 (pmodcontent ratout-bigf2))
+       (setq ratout-bigf1 (pmodcontent ratout-bigf1 xv))
+       (setq ratout-bigf2 (pmodcontent ratout-bigf2 xv))
        (setq c (pgcdu (setq c1 (car ratout-bigf1)) (setq c2 (car ratout-bigf2))))
        (setq ratout-bigf1 (cadr ratout-bigf1))
        (setq ratout-bigf2 (cadr ratout-bigf2))
@@ -230,7 +231,7 @@
 		  (not (= nu2bar (+ degree (pdegree h2star xv)))))
 	      (setq n 0)
 	      (go step6)))
-       (setq gstar (cadr (pmodcontent gstar)))
+       (setq gstar (cadr (pmodcontent gstar xv)))
        ;; Step 15
        (setq q (pgathercoef gstar xv 0))
        (return (monicgcd  (ptimeschk c gstar)
