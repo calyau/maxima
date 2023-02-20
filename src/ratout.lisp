@@ -138,23 +138,36 @@
 	    (setq *chk (car p))
 	    (setq *max 0)
 	    (setq *var (pnext (cdr p) nil))
-	    (cond ((pointergp ratout-xv *chk) (go ret1))
-		  ((null *var) (return (list p 1))))
+	    (cond ((pointergp ratout-xv *chk)
+		   (go ret1))
+		  ((null *var)
+		   (return (list p 1))))
 	    (pgath1 (cdr p))
-	  a    (setq *res 0)
+	  a
+	    (setq *res 0)
 	    (pgath3 (cdr p))
-	  a2   (cond ((pcoefp *res) (cond ((pzerop *res) nil)(t(go ret1))))
-		     ((not (eq (car *res) *chk)) (go ret1))
-		     ((not (univar (cdr *res)))
-		      (setq *res (car (pmodcontent *res ratout-xv)))
-		      (go a2))
-		     (gcd (setq gcd (pgcdu gcd *res)))
-		     (t (setq gcd *res)))
-	    (cond ((pcoefp gcd) (go ret1))
+	  a2
+	    (cond ((pcoefp *res)
+		   (cond ((pzerop *res)
+			  nil)
+			 (t
+			  (go ret1))))
+		  ((not (eq (car *res) *chk))
+		   (go ret1))
+		  ((not (univar (cdr *res)))
+		   (setq *res (car (pmodcontent *res ratout-xv)))
+		   (go a2))
+		  (gcd
+		   (setq gcd (pgcdu gcd *res)))
+		  (t
+		   (setq gcd *res)))
+	    (cond ((pcoefp gcd)
+		   (go ret1))
 		  ((minusp (setq *max (1- *max)))
 		   (return (list gcd (pquotient p gcd)))))
 	    (go a)
-	  ret1 (return (list 1 p)))))
+	  ret1
+	    (return (list 1 p)))))
     (prog (c c1		c2		n		q
 	   h1tilde	h2tilde		gstar		h1star
 	   h2star	ratout-xv		e		b
