@@ -131,7 +131,7 @@
 
 ;;***	PGCDP CORRESPONDS TO BROWN'S ALGORITHM P
 
-(defun pgcdp (bigf1 bigf2 modulus)
+(defun pgcdp (ratout-bigf1 ratout-bigf2 modulus)
   (prog (c c1		c2		n		q
 	 h1tilde	h2tilde		gstar		h1star
 	 h2star		xv		e		b
@@ -139,36 +139,36 @@
 	 gtilde		f1tilde		f2tilde		biggtilde
 	 degree		f1		f1f2)
      (set-modulus modulus)
-     (cond ((and (univar (cdr bigf1)) (univar (cdr bigf2)))
-	    (setq q (pgcdu bigf1 bigf2))
-	    (return (list q (pquotient bigf1 q) (pquotient bigf2 q)))))
-     (setq xv (car bigf1))
-     (setq bigf1 (pmodcontent bigf1))
-     (setq bigf2 (pmodcontent bigf2))
-     (setq c (pgcdu (setq c1 (car bigf1)) (setq c2 (car bigf2))))
-     (setq bigf1 (cadr bigf1))
-     (setq bigf2 (cadr bigf2))
+     (cond ((and (univar (cdr ratout-bigf1)) (univar (cdr ratout-bigf2)))
+	    (setq q (pgcdu ratout-bigf1 ratout-bigf2))
+	    (return (list q (pquotient ratout-bigf1 q) (pquotient ratout-bigf2 q)))))
+     (setq xv (car ratout-bigf1))
+     (setq ratout-bigf1 (pmodcontent ratout-bigf1))
+     (setq ratout-bigf2 (pmodcontent ratout-bigf2))
+     (setq c (pgcdu (setq c1 (car ratout-bigf1)) (setq c2 (car ratout-bigf2))))
+     (setq ratout-bigf1 (cadr ratout-bigf1))
+     (setq ratout-bigf2 (cadr ratout-bigf2))
      (setq n 0)
-     (setq e (pdegreer bigf2))
-     (setq degree (pdegreer bigf1))
+     (setq e (pdegreer ratout-bigf2))
+     (setq degree (pdegreer ratout-bigf1))
      (cond ((vgreat e degree) (setq e degree)))
      (setq b (ash modulus -1))
      (setq gbar
-	   (pgcdu (setq f1 (pgathercoef bigf1 xv 0))
+	   (pgcdu (setq f1 (pgathercoef ratout-bigf1 xv 0))
 		  (setq f1f2
-			(pgathercoef bigf2 xv 0))))
+			(pgathercoef ratout-bigf2 xv 0))))
      (cond ((equal 0 f1f2) (go step15a)))
      (setq nubar (pdegree gbar xv))
-     (setq nu1bar (+ nubar (pdegree bigf1 xv)))
-     (setq nu2bar (+ nubar (pdegree bigf2 xv)))
+     (setq nu1bar (+ nubar (pdegree ratout-bigf1 xv)))
+     (setq nu2bar (+ nubar (pdegree ratout-bigf2 xv)))
      (setq f1f2 (ptimes f1 f1f2))
      (setq nubar (max nu1bar nu2bar))
      step6(setq b (cplus b 1))
      (cond ((equal (pcsubst f1f2 b xv) 0) (go step6)))
      ;; Step 7
      (setq gtilde (pcsubst gbar b xv))
-     (setq f1tilde (pcsubst bigf1 b xv))
-     (setq f2tilde (pcsubst bigf2 b xv))
+     (setq f1tilde (pcsubst ratout-bigf1 b xv))
+     (setq f2tilde (pcsubst ratout-bigf2 b xv))
      (setq biggtilde
 	   (ptimeschk gtilde
 		      (car (setq h2tilde (newgcd f1tilde f2tilde modulus)))))
@@ -204,8 +204,8 @@
 			(leadcoefficient gstar)))
      step15a
      (return (list c
-		   (ptimeschk (pquotient c1 c) bigf1)
-		   (ptimeschk (pquotient c2 c) bigf2))) ))
+		   (ptimeschk (pquotient c1 c) ratout-bigf1)
+		   (ptimeschk (pquotient c2 c) ratout-bigf2))) ))
 
 
 (defun monicgcd (gcd x y lcf)
@@ -217,8 +217,7 @@
 ;;***	PGCDM CORRESPONDS TO BROWN'S ALGORITHM M
 
 
-(defun pgcdm
-    (bigf1 bigf2)
+(defun pgcdm (ratout-bigf1 ratout-bigf2)
   (prog (c c1		c2		f1		f2	n
 	 e		degree		mubar		p
 	 gtilde		h1tilde		h2tilde
@@ -226,26 +225,26 @@
 	 biggtilde	q		h1star		h2star
 	 gstar		xv              gbar)
      (setq p *alpha)
-     (setq xv (car bigf1))
+     (setq xv (car ratout-bigf1))
      ;; Step 1
-     (setq f1 (pcontent bigf1))
-     (setq f2 (pcontent bigf2))
+     (setq f1 (pcontent ratout-bigf1))
+     (setq f2 (pcontent ratout-bigf2))
      (setq c (cgcd (setq c1 (car f1)) (setq c2 (car f2))))
-     (setq bigf1 (cadr f1))
-     (setq bigf2 (cadr f2))
+     (setq ratout-bigf1 (cadr f1))
+     (setq ratout-bigf2 (cadr f2))
      ;; Step 3
-     (setq f1 (leadcoefficient bigf1))
-     (setq f2 (leadcoefficient bigf2))
+     (setq f1 (leadcoefficient ratout-bigf1))
+     (setq f2 (leadcoefficient ratout-bigf2))
      (setq gbar (cgcd f1 f2))
      ;; Step 4
      (setq n 0)
-     (setq degree (pdegreer bigf1))
-     (setq e (pdegreer bigf2))
+     (setq degree (pdegreer ratout-bigf1))
+     (setq e (pdegreer ratout-bigf2))
      (cond ((vgreat e degree) (setq e degree)))
      ;; Step 5
      (setq mubar
-	   (* 2 gbar (max (maxcoefficient bigf1)
-			      (maxcoefficient bigf2))))
+	   (* 2 gbar (max (maxcoefficient ratout-bigf1)
+			      (maxcoefficient ratout-bigf2))))
      (go step6a)
      step6(setq p (newprime p))
      step6a
@@ -258,16 +257,16 @@
      (setq biggtilde
 	   (ptimeschk gtilde
 		      (car (setq h2tilde
-				 (newgcd (pmod bigf1) (pmod bigf2)
+				 (newgcd (pmod ratout-bigf1) (pmod ratout-bigf2)
 					 modulus)))))
      (cond ((pcoefp biggtilde) (setq modulus nil)
 	    (setq gstar 1)
-	    (setq h1star bigf1)
-	    (setq h2star bigf2)
+	    (setq h1star ratout-bigf1)
+	    (setq h2star ratout-bigf2)
 	    (go step15)))
      (cond ((null (cdr h2tilde))
-	    (setq h1tilde (pquotient (pmod bigf1) (car h2tilde)))
-	    (setq h2tilde (pquotient (pmod bigf2) (car h2tilde))))
+	    (setq h1tilde (pquotient (pmod ratout-bigf1) (car h2tilde)))
+	    (setq h2tilde (pquotient (pmod ratout-bigf2) (car h2tilde))))
 	   (t (setq h1tilde (cadr h2tilde))
 	      (setq h2tilde (caddr h2tilde))))
      (setq degree (pdegreer biggtilde))
