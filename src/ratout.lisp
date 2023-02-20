@@ -18,8 +18,6 @@
 		      *p *max *var *res *chk *l
 		      u*))
 
-(declare-top (special gcd))
-
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
 ;;	(GCD, X/GCD, Y/GCD)
 
