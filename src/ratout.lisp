@@ -132,93 +132,115 @@
 ;;***	PGCDP CORRESPONDS TO BROWN'S ALGORITHM P
 
 (defun pgcdp (ratout-bigf1 ratout-bigf2 modulus)
-  (prog (c c1		c2		n		q
-	 h1tilde	h2tilde		gstar		h1star
-	 h2star		xv		e		b
-	 gbar		nubar		nu1bar		nu2bar
-	 gtilde		f1tilde		f2tilde		biggtilde
-	 degree		f1		f1f2)
-     (set-modulus modulus)
-     (cond ((and (univar (cdr ratout-bigf1))
-		 (univar (cdr ratout-bigf2)))
-	    (setq q (pgcdu ratout-bigf1 ratout-bigf2))
-	    (return (list q (pquotient ratout-bigf1 q) (pquotient ratout-bigf2 q)))))
-     (setq xv (car ratout-bigf1))
-     (setq ratout-bigf1 (pmodcontent ratout-bigf1))
-     (setq ratout-bigf2 (pmodcontent ratout-bigf2))
-     (setq c (pgcdu (setq c1 (car ratout-bigf1)) (setq c2 (car ratout-bigf2))))
-     (setq ratout-bigf1 (cadr ratout-bigf1))
-     (setq ratout-bigf2 (cadr ratout-bigf2))
-     (setq n 0)
-     (setq e (pdegreer ratout-bigf2))
-     (setq degree (pdegreer ratout-bigf1))
-     (cond ((vgreat e degree)
-	    (setq e degree)))
-     (setq b (ash modulus -1))
-     (setq gbar
-	   (pgcdu (setq f1 (pgathercoef ratout-bigf1 xv 0))
-		  (setq f1f2
-			(pgathercoef ratout-bigf2 xv 0))))
-     (cond ((equal 0 f1f2)
-	    (go step15a)))
-     (setq nubar (pdegree gbar xv))
-     (setq nu1bar (+ nubar (pdegree ratout-bigf1 xv)))
-     (setq nu2bar (+ nubar (pdegree ratout-bigf2 xv)))
-     (setq f1f2 (ptimes f1 f1f2))
-     (setq nubar (max nu1bar nu2bar))
-   step6
-     (setq b (cplus b 1))
-     (cond ((equal (pcsubst f1f2 b xv) 0)
-	    (go step6)))
-     ;; Step 7
-     (setq gtilde (pcsubst gbar b xv))
-     (setq f1tilde (pcsubst ratout-bigf1 b xv))
-     (setq f2tilde (pcsubst ratout-bigf2 b xv))
-     (setq biggtilde
-	   (ptimeschk gtilde
-		      (car (setq h2tilde (newgcd f1tilde f2tilde modulus)))))
-     (cond ((pcoefp biggtilde)
-	    (go step15a)))
-     (setq h1tilde (cadr h2tilde))
-     (setq h2tilde (caddr h2tilde))
-     (setq degree (pdegreer biggtilde))
-     (cond ((vgreat degree e)
-	    (go step6))
-	   ((vgreat e degree)
-	    (setq n 0)
-	    (setq e degree)))
-     (setq n (1+ n))
-     (cond ((equal n 1)
-	    (setq q (list xv 1 1 0 (cminus b)))
-	    (setq gstar biggtilde)
-	    (setq h1star h1tilde)
-	    (setq h2star h2tilde))
-	   (t
-	    (setq gstar (lagrange33 gstar biggtilde q b))
-	    (setq h1star (lagrange33 h1star h1tilde q b))
-	    (setq h2star (lagrange33 h2star h2tilde q b))
-	    (setq q (ptimes q (list xv 1 1 0 (cminus b))))))
-     ;; Step 12
-     (cond ((not (> n nubar))
-	    (go step6)))
-     ;; Step 13
-     (cond ((or (not (= nu1bar (+ (setq degree (pdegree gstar xv))
-				  (pdegree h1star xv))))
-		(not (= nu2bar (+ degree (pdegree h2star xv)))))
-	    (setq n 0)
-	    (go step6)))
-     (setq gstar (cadr (pmodcontent gstar)))
-     ;; Step 15
-     (setq q (pgathercoef gstar xv 0))
-     (return (monicgcd  (ptimeschk c gstar)
-			(ptimeschk (pquotient c1 c) (pquotientchk h1star q))
-			(ptimeschk (pquotient c2 c) (pquotientchk h2star q))
-			(leadcoefficient gstar)))
-   step15a
-     (return (list c
-		   (ptimeschk (pquotient c1 c) ratout-bigf1)
-		   (ptimeschk (pquotient c2 c) ratout-bigf2))) ))
-
+  (labels
+      ((pmodcontent (p)
+	 (prog (*var *chk *res *max gcd)
+	    (setq *chk (car p))
+	    (setq *max 0)
+	    (setq *var (pnext (cdr p) nil))
+	    (cond ((pointergp xv *chk) (go ret1))
+		  ((null *var) (return (list p 1))))
+	    (pgath1 (cdr p))
+	  a    (setq *res 0)
+	    (pgath3 (cdr p))
+	  a2   (cond ((pcoefp *res) (cond ((pzerop *res) nil)(t(go ret1))))
+		     ((not (eq (car *res) *chk)) (go ret1))
+		     ((not (univar (cdr *res)))
+		      (setq *res (car (pmodcontent *res)))
+		      (go a2))
+		     (gcd (setq gcd (pgcdu gcd *res)))
+		     (t (setq gcd *res)))
+	    (cond ((pcoefp gcd) (go ret1))
+		  ((minusp (setq *max (1- *max)))
+		   (return (list gcd (pquotient p gcd)))))
+	    (go a)
+	  ret1 (return (list 1 p)))))
+    (prog (c c1		c2		n		q
+	   h1tilde	h2tilde		gstar		h1star
+	   h2star		xv		e		b
+	   gbar		nubar		nu1bar		nu2bar
+	   gtilde		f1tilde		f2tilde		biggtilde
+	   degree		f1		f1f2)
+       (set-modulus modulus)
+       (cond ((and (univar (cdr ratout-bigf1))
+		   (univar (cdr ratout-bigf2)))
+	      (setq q (pgcdu ratout-bigf1 ratout-bigf2))
+	      (return (list q (pquotient ratout-bigf1 q) (pquotient ratout-bigf2 q)))))
+       (setq xv (car ratout-bigf1))
+       (setq ratout-bigf1 (pmodcontent ratout-bigf1))
+       (setq ratout-bigf2 (pmodcontent ratout-bigf2))
+       (setq c (pgcdu (setq c1 (car ratout-bigf1)) (setq c2 (car ratout-bigf2))))
+       (setq ratout-bigf1 (cadr ratout-bigf1))
+       (setq ratout-bigf2 (cadr ratout-bigf2))
+       (setq n 0)
+       (setq e (pdegreer ratout-bigf2))
+       (setq degree (pdegreer ratout-bigf1))
+       (cond ((vgreat e degree)
+	      (setq e degree)))
+       (setq b (ash modulus -1))
+       (setq gbar
+	     (pgcdu (setq f1 (pgathercoef ratout-bigf1 xv 0))
+		    (setq f1f2
+			  (pgathercoef ratout-bigf2 xv 0))))
+       (cond ((equal 0 f1f2)
+	      (go step15a)))
+       (setq nubar (pdegree gbar xv))
+       (setq nu1bar (+ nubar (pdegree ratout-bigf1 xv)))
+       (setq nu2bar (+ nubar (pdegree ratout-bigf2 xv)))
+       (setq f1f2 (ptimes f1 f1f2))
+       (setq nubar (max nu1bar nu2bar))
+     step6
+       (setq b (cplus b 1))
+       (cond ((equal (pcsubst f1f2 b xv) 0)
+	      (go step6)))
+       ;; Step 7
+       (setq gtilde (pcsubst gbar b xv))
+       (setq f1tilde (pcsubst ratout-bigf1 b xv))
+       (setq f2tilde (pcsubst ratout-bigf2 b xv))
+       (setq biggtilde
+	     (ptimeschk gtilde
+			(car (setq h2tilde (newgcd f1tilde f2tilde modulus)))))
+       (cond ((pcoefp biggtilde)
+	      (go step15a)))
+       (setq h1tilde (cadr h2tilde))
+       (setq h2tilde (caddr h2tilde))
+       (setq degree (pdegreer biggtilde))
+       (cond ((vgreat degree e)
+	      (go step6))
+	     ((vgreat e degree)
+	      (setq n 0)
+	      (setq e degree)))
+       (setq n (1+ n))
+       (cond ((equal n 1)
+	      (setq q (list xv 1 1 0 (cminus b)))
+	      (setq gstar biggtilde)
+	      (setq h1star h1tilde)
+	      (setq h2star h2tilde))
+	     (t
+	      (setq gstar (lagrange33 gstar biggtilde q b))
+	      (setq h1star (lagrange33 h1star h1tilde q b))
+	      (setq h2star (lagrange33 h2star h2tilde q b))
+	      (setq q (ptimes q (list xv 1 1 0 (cminus b))))))
+       ;; Step 12
+       (cond ((not (> n nubar))
+	      (go step6)))
+       ;; Step 13
+       (cond ((or (not (= nu1bar (+ (setq degree (pdegree gstar xv))
+				    (pdegree h1star xv))))
+		  (not (= nu2bar (+ degree (pdegree h2star xv)))))
+	      (setq n 0)
+	      (go step6)))
+       (setq gstar (cadr (pmodcontent gstar)))
+       ;; Step 15
+       (setq q (pgathercoef gstar xv 0))
+       (return (monicgcd  (ptimeschk c gstar)
+			  (ptimeschk (pquotient c1 c) (pquotientchk h1star q))
+			  (ptimeschk (pquotient c2 c) (pquotientchk h2star q))
+			  (leadcoefficient gstar)))
+     step15a
+       (return (list c
+		     (ptimeschk (pquotient c1 c) ratout-bigf1)
+		     (ptimeschk (pquotient c2 c) ratout-bigf2))) )))
 
 (defun monicgcd (gcd x y lcf)
   (cond ((equal lcf 1)
