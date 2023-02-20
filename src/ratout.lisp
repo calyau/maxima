@@ -18,7 +18,7 @@
 		      *p *max *var *res *chk *l
 		      u*))
 
-(declare-top (special xv bigf1 bigf2
+(declare-top (special xv
 		      gcd))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
