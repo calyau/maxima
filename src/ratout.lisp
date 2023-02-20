@@ -259,9 +259,8 @@
 	 gtilde		h1tilde		h2tilde
 	 modulus
 	 biggtilde	q		h1star		h2star
-	 gstar		xv              gbar)
+	 gstar		gbar)
      (setq p *alpha)
-     (setq xv (car ratout-bigf1))
      ;; Step 1
      (setq f1 (pcontent ratout-bigf1))
      (setq f2 (pcontent ratout-bigf2))
