@@ -122,12 +122,24 @@
      (return (pgath3 (cddr p) ratout-*chk))))
 
 (defun pnext (ratout-x *l)
-  (pnext1 ratout-x)
-  (cond ((null *l)
-	 nil)
-	(t
-	 (car (sort *l #'pointergp)))))
+  (labels
+      ((pnext1 (ratout-x)
+	 (prog nil
+	    (cond ((null ratout-x)
+		   (return *l))
+		  ((or (pcoefp (cadr ratout-x))
+		       (member (caadr ratout-x) *l :test #'eq))
+		   nil)
+		  (t
+		   (setq *l (cons (caadr ratout-x) *l))))
+	    (return (pnext1 (cddr ratout-x))))))
+    (pnext1 ratout-x)
+    (cond ((null *l)
+	   nil)
+	  (t
+	   (car (sort *l #'pointergp))))))
 
+#+nil
 (defun pnext1 (ratout-x)
   (prog nil
      (cond ((null ratout-x)
