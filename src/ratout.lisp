@@ -47,8 +47,8 @@
 	  (t
 	   (pgcdm ratout-x ratout-y)))))
 
-(defun pgathercoef (p *chk *res)
-  (if (not (eq (car p) *chk))
+(defun pgathercoef (p ratout-*chk *res)
+  (if (not (eq (car p) ratout-*chk))
       1
       (labels
 	  ((pgath2 (p vmax)
@@ -58,13 +58,13 @@
 		      ((pcoefp (cadr p))
 		       nil)
 		      ((vgreat (setq v2 (pdegreer (cadr p))) vmax)
-		       (setq *res (psimp *chk
+		       (setq *res (psimp ratout-*chk
 					 (list (car p) (leadcoefficient (cadr p)))))
 		       (setq vmax v2))
 		      ((equal vmax v2)
 		       (setq *res
 			     (pplus *res
-				    (psimp *chk
+				    (psimp ratout-*chk
 					   (list (car p) (leadcoefficient (cadr p))))))))
 		(return (pgath2 (cddr p) vmax)))))
 	(pgath2 (cdr p) nil))))
@@ -87,17 +87,17 @@
 	   ((pcoefp (cadr p))
 	    nil)
 	   ((vgreat (setq v2 (pdegreer (cadr p))) vmax)
-	    (setq *res (psimp *chk
+	    (setq *res (psimp ratout-*chk
 			      (list (car p) (leadcoefficient (cadr p)))))
 	    (setq vmax v2))
 	   ((equal vmax v2)
 	    (setq *res
 		  (pplus *res
-			 (psimp *chk
+			 (psimp ratout-*chk
 				(list (car p) (leadcoefficient (cadr p))))))))
      (return (pgath2 (cddr p) vmax))))
 
-(defun pgath3 (p *chk)
+(defun pgath3 (p ratout-*chk)
   (prog (zz)
      (cond ((null p)
 	    (return *res))
@@ -117,9 +117,9 @@
    add
      (cond ((equal zz 0)
 	    (go ret)))
-     (setq *res (pplus *res (psimp *chk (list (car p) zz))))
+     (setq *res (pplus *res (psimp ratout-*chk (list (car p) zz))))
    ret
-     (return (pgath3 (cddr p) *chk))))
+     (return (pgath3 (cddr p) ratout-*chk))))
 
 (defun pnext (ratout-x *l)
   (pnext1 ratout-x)
@@ -174,25 +174,25 @@
 
 	 ;;	PMODCONTENT OF 3*A*X IS A, IF MAINVAR IS X (=X )
 	 ;;						      V
-	 (prog (*var *chk *res *max ratout-gcd)
-	    (setq *chk (car p))
+	 (prog (*var ratout-*chk *res *max ratout-gcd)
+	    (setq ratout-*chk (car p))
 	    (setq *max 0)
 	    (setq *var (pnext (cdr p) nil))
-	    (cond ((pointergp ratout-xv *chk)
+	    (cond ((pointergp ratout-xv ratout-*chk)
 		   (go ret1))
 		  ((null *var)
 		   (return (list p 1))))
 	    (pgath1 (cdr p))
 	  a
 	    (setq *res 0)
-	    (pgath3 (cdr p) *chk)
+	    (pgath3 (cdr p) ratout-*chk)
 	  a2
 	    (cond ((pcoefp *res)
 		   (cond ((pzerop *res)
 			  nil)
 			 (t
 			  (go ret1))))
-		  ((not (eq (car *res) *chk))
+		  ((not (eq (car *res) ratout-*chk))
 		   (go ret1))
 		  ((not (univar (cdr *res)))
 		   (setq *res (car (pmodcontent *res ratout-xv)))
