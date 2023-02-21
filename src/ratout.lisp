@@ -600,7 +600,7 @@
       ((null q)))
   p)
 
-(declare-top (special wtsofar xweight v))
+(declare-top (special wtsofar xweight))
 
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
@@ -644,83 +644,82 @@
 		(wtpctimes1 ratout-x (cdr y) (pweight (car y)))))))
 
 (defun wtptimes1 (ratout-x y xweight)
-  (labels ((wtptimes2 (y)
-	     (if (null y)
-		 nil
-		 (let ((ii (+ (* xweight (+ (car ratout-x) (car y)))
-			      wtsofar)))
-		   (if (> ii $ratwtlvl)
-		       (wtptimes2 (cddr y))
-		       (pcoefadd (+ (car ratout-x) (car y))
-				 (wtptimes (cadr ratout-x) (cadr y) ii)
-				 (wtptimes2 (cddr y)))))))
+  (let (ratout-v)
+    (labels ((wtptimes2 (y)
+	       (if (null y)
+		   nil
+		   (let ((ii (+ (* xweight (+ (car ratout-x) (car y)))
+				wtsofar)))
+		     (if (> ii $ratwtlvl)
+			 (wtptimes2 (cddr y))
+			 (pcoefadd (+ (car ratout-x) (car y))
+				   (wtptimes (cadr ratout-x) (cadr y) ii)
+				   (wtptimes2 (cddr y)))))))
 
-	   (wtptimes3 (y)
-	     (prog ((e 0) u c)
-		(declare (special v))
-	      a1
-		(cond ((null y)
-		       (return nil)))
-		(setq e (+ (car ratout-x) (car y)))
-		(setq c (wtptimes (cadr y) (cadr ratout-x) (+ wtsofar (* xweight e))))
-		(cond ((pzerop c)
-		       (setq y (cddr y))
-		       (go a1))
-		      ((or (null v)
-			   (> e (car v)))
-		       (setq u* (setq v (ptptplus u* (list e c))))
-		       (setq y (cddr y))
-		       (go a1))
-		      ((equal e (car v))
-		       (setq c (pplus c (cadr v)))
-		       (cond ((pzerop c)
-			      (setq u* (setq v (ptptdiffer u* (list (car v) (cadr v))))))
-			     (t
-			      (rplaca (cdr v) c)))
-		       (setq y (cddr y))
-		       (go a1)))
-	      a
-		(cond ((and (cddr v)
-			    (> (caddr v) e))
-		       (setq v (cddr v))
-		       (go a)))
-		(setq u (cdr v))
-	      b
-		(cond ((or (null (cdr u))
-			   (< (cadr u) e))
-		       (rplacd u (cons e (cons c (cdr u))))
-		       (go e)))
-		(cond ((pzerop (setq c (pplus (caddr u) c)))
-		       (rplacd u (cdddr u))
-		       (go d))
-		      (t
-		       (rplaca (cddr u) c)))
-	      e
-		(setq u (cddr u))
-	      d
-		(setq y (cddr y))
-		(cond ((null y)
-		       (return nil))
-		      ((pzerop
-			(setq c (wtptimes (cadr ratout-x) (cadr y)
-					  (+ wtsofar (* xweight
-							(setq e (+ (car ratout-x) (car y))))))))
-		       (go d)))
-	      c
-		(cond ((and (cdr u)
-			    (> (cadr u) e))
-		       (setq u (cddr u))
-		       (go c)))
-		(go b))))
-    (prog (u* v)
-       (declare (special v))
-       (setq v (setq u* (wtptimes2 y)))
-     a
-       (setq ratout-x (cddr ratout-x))
-       (cond ((null ratout-x)
-	      (return u*)))
-       (wtptimes3 y)
-       (go a))))
+	     (wtptimes3 (y)
+	       (prog ((e 0) u c)
+		a1
+		  (cond ((null y)
+			 (return nil)))
+		  (setq e (+ (car ratout-x) (car y)))
+		  (setq c (wtptimes (cadr y) (cadr ratout-x) (+ wtsofar (* xweight e))))
+		  (cond ((pzerop c)
+			 (setq y (cddr y))
+			 (go a1))
+			((or (null ratout-v)
+			     (> e (car ratout-v)))
+			 (setq u* (setq ratout-v (ptptplus u* (list e c))))
+			 (setq y (cddr y))
+			 (go a1))
+			((equal e (car ratout-v))
+			 (setq c (pplus c (cadr ratout-v)))
+			 (cond ((pzerop c)
+				(setq u* (setq ratout-v (ptptdiffer u* (list (car ratout-v) (cadr ratout-v))))))
+			       (t
+				(rplaca (cdr ratout-v) c)))
+			 (setq y (cddr y))
+			 (go a1)))
+		a
+		  (cond ((and (cddr ratout-v)
+			      (> (caddr ratout-v) e))
+			 (setq ratout-v (cddr ratout-v))
+			 (go a)))
+		  (setq u (cdr ratout-v))
+		b
+		  (cond ((or (null (cdr u))
+			     (< (cadr u) e))
+			 (rplacd u (cons e (cons c (cdr u))))
+			 (go e)))
+		  (cond ((pzerop (setq c (pplus (caddr u) c)))
+			 (rplacd u (cdddr u))
+			 (go d))
+			(t
+			 (rplaca (cddr u) c)))
+		e
+		  (setq u (cddr u))
+		d
+		  (setq y (cddr y))
+		  (cond ((null y)
+			 (return nil))
+			((pzerop
+			  (setq c (wtptimes (cadr ratout-x) (cadr y)
+					    (+ wtsofar (* xweight
+							  (setq e (+ (car ratout-x) (car y))))))))
+			 (go d)))
+		c
+		  (cond ((and (cdr u)
+			      (> (cadr u) e))
+			 (setq u (cddr u))
+			 (go c)))
+		  (go b))))
+      (prog (u* ratout-v)
+	 (setq ratout-v (setq u* (wtptimes2 y)))
+       a
+	 (setq ratout-x (cddr ratout-x))
+	 (cond ((null ratout-x)
+		(return u*)))
+	 (wtptimes3 y)
+	 (go a)))))
 
 (defun wtpctimes (c p)
   (cond ((pcoefp p)
@@ -865,7 +864,7 @@
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial f n ss v y *chk *l *max *p
+(declare-top (unspecial f n ss y *chk *l *max *p
 			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
