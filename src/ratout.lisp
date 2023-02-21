@@ -97,7 +97,7 @@
 				(list (car p) (leadcoefficient (cadr p))))))))
      (return (pgath2 (cddr p) vmax))))
 
-(defun pgath3 (p ratout-*chk)
+(defun pgath3 (p ratout-*chk *max)
   (prog (zz)
      (cond ((null p)
 	    (return *res))
@@ -119,7 +119,7 @@
 	    (go ret)))
      (setq *res (pplus *res (psimp ratout-*chk (list (car p) zz))))
    ret
-     (return (pgath3 (cddr p) ratout-*chk))))
+     (return (pgath3 (cddr p) ratout-*chk *max))))
 
 (defun pnext (ratout-x ratout-*l)
   (labels
@@ -197,7 +197,7 @@
 	    (pgath1 (cdr p))
 	  a
 	    (setq *res 0)
-	    (pgath3 (cdr p) ratout-*chk)
+	    (pgath3 (cdr p) ratout-*chk *max)
 	  a2
 	    (cond ((pcoefp *res)
 		   (cond ((pzerop *res)
