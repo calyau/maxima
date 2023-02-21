@@ -2267,6 +2267,7 @@
 ;; Functions are defined in format r=r(azimuth,zenith),
 ;; where, normally, azimuth is an angle in [0,2*%pi] and zenith in [0,%pi]
 (defun-checked spherical (radius azi minazi maxazi zen minzen maxzen)
+  #+sbcl (declare (notinline parametric_surface))
   (let ((grobj (parametric_surface
                      `((mtimes simp) ,radius ((%sin simp) ,zen) ((%cos simp) ,azi))
                      `((mtimes simp) ,radius ((%sin simp) ,zen) ((%sin simp) ,azi))
@@ -2298,6 +2299,7 @@
 ;; Functions are defined in format z=z(radius,azimuth), where,
 ;; normally, azimuth is an angle in [0,2*%pi] and r any real
 (defun-checked cylindrical (r z minz maxz azi minazi maxazi)
+  #+sbcl (declare (notinline parametric_surface))
   (let ((grobj (parametric_surface
                      `((mtimes simp) ,r ((%cos simp) ,azi))
                      `((mtimes simp) ,r ((%sin simp) ,azi))

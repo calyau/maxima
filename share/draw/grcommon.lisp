@@ -1362,14 +1362,16 @@
   (cond
     ((and (integerp val) (>= val -1 ))
        (setf (gethash '$point_type *gr-options*) val))
-    (t (let ((shapes '($none $dot $plus $multiply $asterisk
-                       $square $filled_square $circle $filled_circle
-                       $up_triangle $filled_up_triangle $down_triangle
-                       $filled_down_triangle $diamant $filled_diamant
-                       $sphere $cube $cylinder $cone)))
-          (if (member val shapes)
-              (setf (gethash '$point_type *gr-options*) (- (position val shapes) 1))
-              (merror "draw: illegal point type: ~M " val)))))  )
+    (t (let*
+         ((shapes '($none $dot $plus $multiply $asterisk
+                    $square $filled_square $circle $filled_circle
+                    $up_triangle $filled_up_triangle $down_triangle
+                    $filled_down_triangle $diamant $filled_diamant
+                    $sphere $cube $cylinder $cone))
+          (pos (position val shapes)))
+         (if pos
+           (setf (gethash '$point_type *gr-options*) (- pos 1))
+           (merror "draw: illegal point type: ~M " val))))))
 
 
 
