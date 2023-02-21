@@ -632,23 +632,24 @@
 	     (> wtsofar $ratwtlvl))
 	 (pzero))
 	((pcoefp ratout-x)
-	 (wtpctimes ratout-x ratout-y))
+	 (wtpctimes ratout-x ratout-y wtsofar))
 	((pcoefp ratout-y)
-	 (wtpctimes ratout-y ratout-x))
+	 (wtpctimes ratout-y ratout-x wtsofar))
 	((eq (car ratout-x) (car ratout-y))
 	 (palgsimp (car ratout-x)
 		   (wtptimes1 (cdr ratout-x)
 			      (cdr ratout-y)
-			      (pweight (car ratout-x)))
+			      (pweight (car ratout-x))
+			      wtsofar)
 		   (alg ratout-x)))
 	((pointergp (car ratout-x) (car ratout-y))
 	 (psimp (car ratout-x)
-		(wtpctimes1 ratout-y (cdr ratout-x) (pweight (car ratout-x)))))
+		(wtpctimes1 ratout-y (cdr ratout-x) (pweight (car ratout-x)) wtsofar)))
 	(t
 	 (psimp (car ratout-y)
-		(wtpctimes1 ratout-x (cdr ratout-y) (pweight (car ratout-y)))))))
+		(wtpctimes1 ratout-x (cdr ratout-y) (pweight (car ratout-y)) wtsofar)))))
 
-(defun wtptimes1 (ratout-x ratout-y ratout-xweight)
+(defun wtptimes1 (ratout-x ratout-y ratout-xweight wtsofar)
   (let (ratout-v ratout-u*)
     (labels
 	((wtptimes2 (ratout-y)
@@ -732,13 +733,13 @@
 	 (wtptimes3 ratout-y)
 	 (go a)))))
 
-(defun wtpctimes (c p)
+(defun wtpctimes (c p wtsofar)
   (cond ((pcoefp p)
 	 (ctimes c p))
 	(t
-	 (psimp (car p) (wtpctimes1 c (cdr p) (pweight (car p)))))))
+	 (psimp (car p) (wtpctimes1 c (cdr p) (pweight (car p)) wtsofar)))))
 
-(defun wtpctimes1 (c ratout-x xwt)
+(defun wtpctimes1 (c ratout-x xwt wtsofar)
   (prog (cc)
      (return
        (cond ((null ratout-x)
@@ -748,13 +749,14 @@
 				 (cadr ratout-x)
 				 (+ wtsofar (* xwt (car ratout-x)))))
 	      (cond ((pzerop cc)
-		     (wtpctimes1 c (cddr ratout-x) xwt))
+		     (wtpctimes1 c (cddr ratout-x) xwt wtsofar))
 		    (t
 		     (cons (car ratout-x)
 			   (cons cc
 				 (wtpctimes1 c
 					     (cddr ratout-x)
-					     xwt))))))))))
+					     xwt
+					     wtsofar))))))))))
 
 (defun wtpexpt (ratout-x ratout-n)
   (cond ((= ratout-n 0)
