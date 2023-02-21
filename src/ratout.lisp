@@ -650,73 +650,79 @@
 
 (defun wtptimes1 (ratout-x ratout-y xweight)
   (let (ratout-v ratout-u*)
-    (labels ((wtptimes2 (ratout-y)
-	       (if (null ratout-y)
-		   nil
-		   (let ((ii (+ (* xweight (+ (car ratout-x) (car ratout-y)))
-				wtsofar)))
-		     (if (> ii $ratwtlvl)
-			 (wtptimes2 (cddr ratout-y))
-			 (pcoefadd (+ (car ratout-x) (car ratout-y))
-				   (wtptimes (cadr ratout-x) (cadr ratout-y) ii)
-				   (wtptimes2 (cddr ratout-y)))))))
+    (labels
+	((wtptimes2 (ratout-y)
+	   (if (null ratout-y)
+	       nil
+	       (let ((ii (+ (* xweight (+ (car ratout-x) (car ratout-y)))
+			    wtsofar)))
+		 (if (> ii $ratwtlvl)
+		     (wtptimes2 (cddr ratout-y))
+		     (pcoefadd (+ (car ratout-x) (car ratout-y))
+			       (wtptimes (cadr ratout-x) (cadr ratout-y) ii)
+			       (wtptimes2 (cddr ratout-y)))))))
 
-	     (wtptimes3 (ratout-y)
-	       (prog ((e 0) u c)
-		a1
-		  (cond ((null ratout-y)
-			 (return nil)))
-		  (setq e (+ (car ratout-x) (car ratout-y)))
-		  (setq c (wtptimes (cadr ratout-y) (cadr ratout-x) (+ wtsofar (* xweight e))))
-		  (cond ((pzerop c)
-			 (setq ratout-y (cddr ratout-y))
-			 (go a1))
-			((or (null ratout-v)
-			     (> e (car ratout-v)))
-			 (setq ratout-u* (setq ratout-v (ptptplus ratout-u* (list e c))))
-			 (setq ratout-y (cddr ratout-y))
-			 (go a1))
-			((equal e (car ratout-v))
-			 (setq c (pplus c (cadr ratout-v)))
-			 (cond ((pzerop c)
-				(setq ratout-u* (setq ratout-v (ptptdiffer ratout-u* (list (car ratout-v) (cadr ratout-v))))))
-			       (t
-				(rplaca (cdr ratout-v) c)))
-			 (setq ratout-y (cddr ratout-y))
-			 (go a1)))
-		a
-		  (cond ((and (cddr ratout-v)
-			      (> (caddr ratout-v) e))
-			 (setq ratout-v (cddr ratout-v))
-			 (go a)))
-		  (setq u (cdr ratout-v))
-		b
-		  (cond ((or (null (cdr u))
-			     (< (cadr u) e))
-			 (rplacd u (cons e (cons c (cdr u))))
-			 (go e)))
-		  (cond ((pzerop (setq c (pplus (caddr u) c)))
-			 (rplacd u (cdddr u))
-			 (go d))
-			(t
-			 (rplaca (cddr u) c)))
-		e
-		  (setq u (cddr u))
-		d
-		  (setq ratout-y (cddr ratout-y))
-		  (cond ((null ratout-y)
-			 (return nil))
-			((pzerop
-			  (setq c (wtptimes (cadr ratout-x) (cadr ratout-y)
-					    (+ wtsofar (* xweight
-							  (setq e (+ (car ratout-x) (car ratout-y))))))))
-			 (go d)))
-		c
-		  (cond ((and (cdr u)
-			      (> (cadr u) e))
-			 (setq u (cddr u))
-			 (go c)))
-		  (go b))))
+	 (wtptimes3 (ratout-y)
+	   (prog ((e 0) u c)
+	    a1
+	      (cond ((null ratout-y)
+		     (return nil)))
+	      (setq e (+ (car ratout-x) (car ratout-y)))
+	      (setq c (wtptimes (cadr ratout-y)
+				(cadr ratout-x)
+				(+ wtsofar (* xweight e))))
+	      (cond ((pzerop c)
+		     (setq ratout-y (cddr ratout-y))
+		     (go a1))
+		    ((or (null ratout-v)
+			 (> e (car ratout-v)))
+		     (setq ratout-u* (setq ratout-v (ptptplus ratout-u* (list e c))))
+		     (setq ratout-y (cddr ratout-y))
+		     (go a1))
+		    ((equal e (car ratout-v))
+		     (setq c (pplus c (cadr ratout-v)))
+		     (cond ((pzerop c)
+			    (setq ratout-u*
+				  (setq ratout-v (ptptdiffer ratout-u*
+							     (list (car ratout-v)
+								   (cadr ratout-v))))))
+			   (t
+			    (rplaca (cdr ratout-v) c)))
+		     (setq ratout-y (cddr ratout-y))
+		     (go a1)))
+	    a
+	      (cond ((and (cddr ratout-v)
+			  (> (caddr ratout-v) e))
+		     (setq ratout-v (cddr ratout-v))
+		     (go a)))
+	      (setq u (cdr ratout-v))
+	    b
+	      (cond ((or (null (cdr u))
+			 (< (cadr u) e))
+		     (rplacd u (cons e (cons c (cdr u))))
+		     (go e)))
+	      (cond ((pzerop (setq c (pplus (caddr u) c)))
+		     (rplacd u (cdddr u))
+		     (go d))
+		    (t
+		     (rplaca (cddr u) c)))
+	    e
+	      (setq u (cddr u))
+	    d
+	      (setq ratout-y (cddr ratout-y))
+	      (cond ((null ratout-y)
+		     (return nil))
+		    ((pzerop
+		      (setq c (wtptimes (cadr ratout-x) (cadr ratout-y)
+					(+ wtsofar (* xweight
+						      (setq e (+ (car ratout-x) (car ratout-y))))))))
+		     (go d)))
+	    c
+	      (cond ((and (cdr u)
+			  (> (cadr u) e))
+		     (setq u (cddr u))
+		     (go c)))
+	      (go b))))
       (prog ()
 	 (setq ratout-v (setq ratout-u* (wtptimes2 ratout-y)))
        a
