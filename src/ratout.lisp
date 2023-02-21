@@ -796,7 +796,7 @@
 
 (declare-top (special y checkfactors
 		      $factorflag
-		      varlist n))
+		      varlist))
 
 (defmfun $partfrac (ratout-exp ratout-var)
   (cond ((mbagp ratout-exp)
@@ -829,10 +829,10 @@
 (defun partfraca (llist)
   (destructuring-let (((coef poly ratout-exp) llist))
     (do ((nc (ratdivide coef poly) (ratdivide (car nc) poly))
-	 (n ratout-exp (1- n))
+	 (ratout-n ratout-exp (1- ratout-n))
 	 (ans))
-	((rzerop (car nc)) (cons (list (cdr nc) poly n) ans))
-      (push (list (cdr nc) poly n) ans))))
+	((rzerop (car nc)) (cons (list (cdr nc) poly ratout-n) ans))
+      (push (list (cdr nc) poly ratout-n) ans))))
 
 (defun partfrac (rat ratout-var)
   (destructuring-let* (((ratout-wholepart frpart) (pdivide (car rat) (cdr rat)))
@@ -864,7 +864,7 @@
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial n y *chk *l *max
+(declare-top (unspecial y *chk *l *max
 			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
