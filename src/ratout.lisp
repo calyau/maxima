@@ -655,8 +655,9 @@
 				 (wtptimes (cadr ratout-x) (cadr y) ii)
 				 (wtptimes2 (cddr y)))))))
 
-	   (wtptimes3 (y v)
+	   (wtptimes3 (y)
 	     (prog ((e 0) u c)
+		(declare (special v))
 	      a1
 		(cond ((null y)
 		       (return nil)))
@@ -712,12 +713,13 @@
 		       (go c)))
 		(go b))))
     (prog (u* v)
+       (declare (special v))
        (setq v (setq u* (wtptimes2 y)))
      a
        (setq ratout-x (cddr ratout-x))
        (cond ((null ratout-x)
 	      (return u*)))
-       (wtptimes3 y v)
+       (wtptimes3 y)
        (go a))))
 
 (defun wtpctimes (c p)
