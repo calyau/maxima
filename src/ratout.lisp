@@ -898,13 +898,14 @@
 	p
 	($ratdisrep p))))
 
-(declare-top (special varlist $factorflag m v))
 
 ;; Doesn't appear to be used anywhere; git grep shows no usages.  But
 ;; since it was exported as a user function ($), I (rtoy) am going to
 ;; leave it here, but comment it out.
 #+nil
 (progn
+(declare-top (special varlist $factorflag m v))
+
 (defmfun $pfet (m)
   (prog (listov $pfeformat varlist $factorflag)
      (setq $pfeformat t)
@@ -934,6 +935,7 @@
 	       (mapcar #'(lambda (s) ($partfrac s v))
 		       (cdr m))))
 	(t ($partfrac m v))))
-)
 
 (declare-top (unspecial m v))
+)
+
