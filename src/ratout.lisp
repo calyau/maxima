@@ -14,8 +14,7 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special *y*
-		      u*))
+(declare-top (special *y*))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
 ;;	(GCD, X/GCD, Y/GCD)
@@ -650,7 +649,7 @@
 		(wtpctimes1 ratout-x (cdr ratout-y) (pweight (car ratout-y)))))))
 
 (defun wtptimes1 (ratout-x ratout-y xweight)
-  (let (ratout-v)
+  (let (ratout-v ratout-u*)
     (labels ((wtptimes2 (ratout-y)
 	       (if (null ratout-y)
 		   nil
@@ -674,13 +673,13 @@
 			 (go a1))
 			((or (null ratout-v)
 			     (> e (car ratout-v)))
-			 (setq u* (setq ratout-v (ptptplus u* (list e c))))
+			 (setq ratout-u* (setq ratout-v (ptptplus ratout-u* (list e c))))
 			 (setq ratout-y (cddr ratout-y))
 			 (go a1))
 			((equal e (car ratout-v))
 			 (setq c (pplus c (cadr ratout-v)))
 			 (cond ((pzerop c)
-				(setq u* (setq ratout-v (ptptdiffer u* (list (car ratout-v) (cadr ratout-v))))))
+				(setq ratout-u* (setq ratout-v (ptptdiffer ratout-u* (list (car ratout-v) (cadr ratout-v))))))
 			       (t
 				(rplaca (cdr ratout-v) c)))
 			 (setq ratout-y (cddr ratout-y))
@@ -718,12 +717,12 @@
 			 (setq u (cddr u))
 			 (go c)))
 		  (go b))))
-      (prog (u* ratout-v)
-	 (setq ratout-v (setq u* (wtptimes2 ratout-y)))
+      (prog (ratout-v)
+	 (setq ratout-v (setq ratout-u* (wtptimes2 ratout-y)))
        a
 	 (setq ratout-x (cddr ratout-x))
 	 (cond ((null ratout-x)
-		(return u*)))
+		(return ratout-u*)))
 	 (wtptimes3 ratout-y)
 	 (go a)))))
 
@@ -870,7 +869,7 @@
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial u* *y*))
+(declare-top (unspecial *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
 ;; ONLY ENTITY WHICH DEPENDS ON X IS X ITSELF.
