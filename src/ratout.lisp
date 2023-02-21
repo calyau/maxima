@@ -15,7 +15,7 @@
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
 (declare-top (special *y*
-		      *var *res
+		      *var
 		      u*))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
@@ -47,23 +47,23 @@
 	  (t
 	   (pgcdm ratout-x ratout-y)))))
 
-(defun pgathercoef (p ratout-*chk *res)
+(defun pgathercoef (p ratout-*chk ratout-*res)
   (if (not (eq (car p) ratout-*chk))
       1
       (labels
 	  ((pgath2 (p vmax)
 	     (prog (v2)
 		(cond ((null p)
-		       (return *res))
+		       (return ratout-*res))
 		      ((pcoefp (cadr p))
 		       nil)
 		      ((vgreat (setq v2 (pdegreer (cadr p))) vmax)
-		       (setq *res (psimp ratout-*chk
+		       (setq ratout-*res (psimp ratout-*chk
 					 (list (car p) (leadcoefficient (cadr p)))))
 		       (setq vmax v2))
 		      ((equal vmax v2)
-		       (setq *res
-			     (pplus *res
+		       (setq ratout-*res
+			     (pplus ratout-*res
 				    (psimp ratout-*chk
 					   (list (car p) (leadcoefficient (cadr p))))))))
 		(return (pgath2 (cddr p) vmax)))))
@@ -187,7 +187,7 @@
 
 	 ;;	PMODCONTENT OF 3*A*X IS A, IF MAINVAR IS X (=X )
 	 ;;						      V
-	 (prog (*var ratout-*chk *res ratout-*max ratout-gcd)
+	 (prog (*var ratout-*chk ratout-*res ratout-*max ratout-gcd)
 	    (setq ratout-*chk (car p))
 	    (setq ratout-*max 0)
 	    (setq *var (pnext (cdr p) nil))
@@ -197,12 +197,12 @@
 		   (return (list p 1))))
 	    (pgath1 (cdr p) ratout-*max)
 	  a
-	    (setq *res 0)
+	    (setq ratout-*res 0)
 	    (labels
 		((pgath3 (p ratout-*chk ratout-*max)
 		   (prog (zz)
 		      (cond ((null p)
-			     (return *res))
+			     (return ratout-*res))
 			    ((pcoefp (cadr p))
 			     (cond ((equal ratout-*max 0)
 				    (setq zz (cadr p))
@@ -219,25 +219,25 @@
 		    add
 		      (cond ((equal zz 0)
 			     (go ret)))
-		      (setq *res (pplus *res (psimp ratout-*chk (list (car p) zz))))
+		      (setq ratout-*res (pplus ratout-*res (psimp ratout-*chk (list (car p) zz))))
 		    ret
 		      (return (pgath3 (cddr p) ratout-*chk ratout-*max)))))
 	    (pgath3 (cdr p) ratout-*chk ratout-*max))
 	  a2
-	    (cond ((pcoefp *res)
-		   (cond ((pzerop *res)
+	    (cond ((pcoefp ratout-*res)
+		   (cond ((pzerop ratout-*res)
 			  nil)
 			 (t
 			  (go ret1))))
-		  ((not (eq (car *res) ratout-*chk))
+		  ((not (eq (car ratout-*res) ratout-*chk))
 		   (go ret1))
-		  ((not (univar (cdr *res)))
-		   (setq *res (car (pmodcontent *res ratout-xv)))
+		  ((not (univar (cdr ratout-*res)))
+		   (setq ratout-*res (car (pmodcontent ratout-*res ratout-xv)))
 		   (go a2))
 		  (ratout-gcd
-		   (setq ratout-gcd (pgcdu ratout-gcd *res)))
+		   (setq ratout-gcd (pgcdu ratout-gcd ratout-*res)))
 		  (t
-		   (setq ratout-gcd *res)))
+		   (setq ratout-gcd ratout-*res)))
 	    (cond ((pcoefp ratout-gcd)
 		   (go ret1))
 		  ((minusp (setq ratout-*max (1- ratout-*max)))
@@ -926,7 +926,7 @@
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial *res u* *y*))
+(declare-top (unspecial u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
 ;; ONLY ENTITY WHICH DEPENDS ON X IS X ITSELF.
