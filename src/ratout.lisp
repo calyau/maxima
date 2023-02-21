@@ -14,7 +14,7 @@
 
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
-(declare-top (special ss *y* f
+(declare-top (special *y* f
 		      *p *max *var *res *chk *l
 		      u*))
 
@@ -433,7 +433,7 @@
 		(allprods (cdr ratout-x) y)))))
 
 (defun al1 (f r len)
-  (prog (ss)
+  (prog (ratout-ss)
      (cond
        ((equal len 1)
 	(return (mapcar #'(lambda (*y*)
@@ -443,12 +443,12 @@
 	(return nil))
        (t
 	(mapc #'(lambda (*y*)
-		  (setq ss
-			(nconc ss
+		  (setq ratout-ss
+			(nconc ratout-ss
 			       (mapcar #'(lambda (z) (cons z *y*))
 				       f))))
 	      (al1 (car r) (cdr r) (1- len)))
-	(return ss)))))
+	(return ratout-ss)))))
 
 
 (defun ap1 (ratout-x l)
@@ -864,7 +864,7 @@
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial f n ss y *chk *l *max *p
+(declare-top (unspecial f n y *chk *l *max *p
 			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
