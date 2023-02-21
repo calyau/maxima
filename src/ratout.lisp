@@ -69,7 +69,7 @@
 		(return (pgath2 (cddr p) vmax)))))
 	(pgath2 (cdr p) nil))))
 
-(defun pgath1 (p)
+(defun pgath1 (p *max)
   (prog nil
      (cond ((null p)
 	    (return *max))
@@ -77,7 +77,7 @@
 	    nil)
 	   ((eq (caadr p) *var)
 	    (setq *max (max *max (cadadr p)))))
-     (return (pgath1 (cddr p)))))
+     (return (pgath1 (cddr p) *max))))
 
 #+nil
 (defun pgath2 (p vmax)
@@ -194,7 +194,7 @@
 		   (go ret1))
 		  ((null *var)
 		   (return (list p 1))))
-	    (pgath1 (cdr p))
+	    (pgath1 (cdr p) *max)
 	  a
 	    (setq *res 0)
 	    (pgath3 (cdr p) ratout-*chk *max)
