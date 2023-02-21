@@ -384,10 +384,14 @@
   (prog (maxexp i l ratout-*p factors factor)
      (setq maxexp (quotient (cadr p) 2))
      (setq i 1)
-     a    (when (> i maxexp) (return (cons p factors)))
+   a
+     (when (> i maxexp)
+       (return (cons p factors)))
      (setq l (p1 (reverse (let ((p p) (i i) ($factorflag t))
 			    (pfactor2 p i)))))
-     b    (when (null l) (go d))
+   b
+     (when (null l)
+       (go d))
      (setq *l (car l))
      (setq ratout-*p (car p))
      (ignore-rat-err
@@ -400,13 +404,16 @@
 	       (not (equal (car p) (car factor)))
 	       (not (pzerop (prem p factor))))
        (go b))
-     (cond (modulus (pmonicize (cdr factor)))
-	   ((pminusp factor) (setq factor (pminus factor))))
+     (cond (modulus
+	    (pmonicize (cdr factor)))
+	   ((pminusp factor)
+	    (setq factor (pminus factor))))
      (setq p (pquotient p factor))
      (setq maxexp (quotient (cadr p) 2))
      (setq factors (cons factor factors))
      (go a)
-     d    (incf i)
+   d
+     (incf i)
      (go a)))
 
 (defun pfactor2 (p i)
