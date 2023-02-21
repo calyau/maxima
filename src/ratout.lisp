@@ -801,7 +801,7 @@
 				  ans)))))
      (go a)))
 
-(declare-top (special y checkfactors
+(declare-top (special checkfactors
 		      $factorflag
 		      varlist))
 
@@ -852,7 +852,7 @@
        (cons rat nil))
       (t
        (destructuring-let (((content bpart) (oldcontent denom)))
-         (let (apart y ratout-parnumer)
+         (let (apart ratout-y ratout-parnumer)
            (loop
              for (factor multiplicity)
                on (pfactor bpart) by #'cddr
@@ -860,18 +860,18 @@
                do
                   (setq apart (pexpt factor multiplicity)
                         bpart (pquotient bpart apart)
-                        y (bprog apart bpart ratout-var)
-                        frpart (cdr (ratdivide (ratti num (cdr y) t)
+                        ratout-y (bprog apart bpart ratout-var)
+                        frpart (cdr (ratdivide (ratti num (cdr ratout-y) t)
                                                apart)))
                   (push (list (ratqu frpart content) factor multiplicity)
                         ratout-parnumer)
                   (desetq (num . content)
-                          (cdr (ratdivide (ratqu (ratti num (car y) t)
+                          (cdr (ratdivide (ratqu (ratti num (car ratout-y) t)
                                                  content)
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial y *chk *l *max
+(declare-top (unspecial *chk *l *max
 			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
