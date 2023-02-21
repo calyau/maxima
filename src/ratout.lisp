@@ -15,7 +15,7 @@
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
 (declare-top (special *y*
-		      *max *var *res *l
+		      *max *var *res
 		      u*))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
@@ -121,23 +121,23 @@
    ret
      (return (pgath3 (cddr p) ratout-*chk))))
 
-(defun pnext (ratout-x *l)
+(defun pnext (ratout-x ratout-*l)
   (labels
       ((pnext1 (ratout-x)
 	 (prog nil
 	    (cond ((null ratout-x)
-		   (return *l))
+		   (return ratout-*l))
 		  ((or (pcoefp (cadr ratout-x))
-		       (member (caadr ratout-x) *l :test #'eq))
+		       (member (caadr ratout-x) ratout-*l :test #'eq))
 		   nil)
 		  (t
-		   (setq *l (cons (caadr ratout-x) *l))))
+		   (setq ratout-*l (cons (caadr ratout-x) ratout-*l))))
 	    (return (pnext1 (cddr ratout-x))))))
     (pnext1 ratout-x)
-    (cond ((null *l)
+    (cond ((null ratout-*l)
 	   nil)
 	  (t
-	   (car (sort *l #'pointergp))))))
+	   (car (sort ratout-*l #'pointergp))))))
 
 #+nil
 (defun pnext1 (ratout-x)
@@ -411,7 +411,7 @@
 ;;	THE FUNCTIONS ON THIS PAGE ARE USED BY KRONECKER FACTORING
 
 (defun pkroneck (p)
-  (prog (maxexp i l ratout-*p factors factor)
+  (prog (maxexp i l ratout-*p factors factor ratout-*l)
      (setq maxexp (quotient (cadr p) 2))
      (setq i 1)
    a
@@ -422,10 +422,10 @@
    b
      (when (null l)
        (go d))
-     (setq *l (car l))
+     (setq ratout-*l (car l))
      (setq ratout-*p (car p))
      (ignore-rat-err
-       (setq factor (errset (pinterpolate *l ratout-*p))))
+       (setq factor (errset (pinterpolate ratout-*l ratout-*p))))
      (setq l (cdr l))
      (if (atom factor)
 	 (go b)
@@ -901,7 +901,7 @@
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial *l *max
+(declare-top (unspecial *max
 			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
