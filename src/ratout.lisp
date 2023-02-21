@@ -15,7 +15,7 @@
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
 (declare-top (special *y*
-		      *max *var *res *chk *l
+		      *max *var *res *l
 		      u*))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
@@ -889,7 +889,7 @@
                                           bpart))))
            (cons ratout-wholepart ratout-parnumer)))))))
 
-(declare-top (unspecial *chk *l *max
+(declare-top (unspecial *l *max
 			*res u* *y*))
 
 ;; $RATDIFF TAKES DERIVATIVES FAST.  IT ASSUMES THAT THE
