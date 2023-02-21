@@ -190,7 +190,7 @@
 	    (go a)
 	  ret1
 	    (return (list 1 p)))))
-    (prog (c c1		c2		n		q
+    (prog (c c1		c2		ratout-n		q
 	   h1tilde	h2tilde		gstar		h1star
 	   h2star	ratout-xv		e		b
 	   gbar		nubar		nu1bar		nu2bar
@@ -207,7 +207,7 @@
        (setq c (pgcdu (setq c1 (car ratout-bigf1)) (setq c2 (car ratout-bigf2))))
        (setq ratout-bigf1 (cadr ratout-bigf1))
        (setq ratout-bigf2 (cadr ratout-bigf2))
-       (setq n 0)
+       (setq ratout-n 0)
        (setq e (pdegreer ratout-bigf2))
        (setq degree (pdegreer ratout-bigf1))
        (cond ((vgreat e degree)
@@ -243,10 +243,10 @@
        (cond ((vgreat degree e)
 	      (go step6))
 	     ((vgreat e degree)
-	      (setq n 0)
+	      (setq ratout-n 0)
 	      (setq e degree)))
-       (setq n (1+ n))
-       (cond ((equal n 1)
+       (setq ratout-n (1+ ratout-n))
+       (cond ((equal ratout-n 1)
 	      (setq q (list ratout-xv 1 1 0 (cminus b)))
 	      (setq gstar biggtilde)
 	      (setq h1star h1tilde)
@@ -257,13 +257,13 @@
 	      (setq h2star (lagrange33 h2star h2tilde q b))
 	      (setq q (ptimes q (list ratout-xv 1 1 0 (cminus b))))))
        ;; Step 12
-       (cond ((not (> n nubar))
+       (cond ((not (> ratout-n nubar))
 	      (go step6)))
        ;; Step 13
        (cond ((or (not (= nu1bar (+ (setq degree (pdegree gstar ratout-xv))
 				    (pdegree h1star ratout-xv))))
 		  (not (= nu2bar (+ degree (pdegree h2star ratout-xv)))))
-	      (setq n 0)
+	      (setq ratout-n 0)
 	      (go step6)))
        (setq gstar (cadr (pmodcontent gstar ratout-xv)))
        ;; Step 15
@@ -288,7 +288,7 @@
 
 
 (defun pgcdm (ratout-bigf1 ratout-bigf2)
-  (prog (c c1		c2		f1		f2	n
+  (prog (c c1		c2		f1		f2	ratout-n
 	 e		degree		mubar		p
 	 gtilde		h1tilde		h2tilde
 	 modulus
@@ -306,7 +306,7 @@
      (setq f2 (leadcoefficient ratout-bigf2))
      (setq gbar (cgcd f1 f2))
      ;; Step 4
-     (setq n 0)
+     (setq ratout-n 0)
      (setq degree (pdegreer ratout-bigf1))
      (setq e (pdegreer ratout-bigf2))
      (cond ((vgreat e degree)
@@ -347,12 +347,12 @@
      (cond ((vgreat degree e)
 	    (go step6))
 	   ((vgreat e degree)
-	    (setq n 0)
+	    (setq ratout-n 0)
 	    (setq e degree)))
-     (setq n (1+ n))
+     (setq ratout-n (1+ ratout-n))
      ;; Step 11
      (set-modulus nil)
-     (cond ((equal n 1)
+     (cond ((equal ratout-n 1)
 	    (setq q p)
 	    (setq gstar biggtilde)
 	    (setq h1star h1tilde)
@@ -414,13 +414,13 @@
 	(t (cons (pfactor (pcsubst p i (car p)))
 		 (pfactor2 p (1- i))))))
 
-(defun rpowerset (ratout-x n)
+(defun rpowerset (ratout-x ratout-n)
   (cond ((null ratout-x)
 	 (quote (1 nil)))
 	((equal ratout-x 1)
 	 (quote (1)))
 	(t
-	 (cons 1 (ptts1 ratout-x n ratout-x)))))
+	 (cons 1 (ptts1 ratout-x ratout-n ratout-x)))))
 
 
 (defun allprods (ratout-x y)
@@ -458,11 +458,11 @@
 	 (cons (ptimes ratout-x (car l))
 	       (ap1 ratout-x (cdr l))))))
 
-(defun ptts1 (ratout-x n y)
-  (cond ((equal n 1)
+(defun ptts1 (ratout-x ratout-n y)
+  (cond ((equal ratout-n 1)
 	 (list y))
 	(t
-	 (cons y (ptts1 ratout-x (1- n) (ptimes ratout-x y))))))
+	 (cons y (ptts1 ratout-x (1- ratout-n) (ptimes ratout-x y))))))
 
 (defun p1 (l)
   (prog (a)
@@ -485,41 +485,41 @@
   (psimp var (pinterpolate1 (pinterpolate2 l 1)
 			    (- (length l) 2))))
 
-(defun pinterpolate1 (ratout-x n)
-  (pinterpolate4 (pinterpolate5 (reverse ratout-x) 1 n n)
-		 (1+ n)))
+(defun pinterpolate1 (ratout-x ratout-n)
+  (pinterpolate4 (pinterpolate5 (reverse ratout-x) 1 ratout-n ratout-n)
+		 (1+ ratout-n)))
 
-(defun pinterpolate2 (ratout-x n)
+(defun pinterpolate2 (ratout-x ratout-n)
   (cond ((null (cdr ratout-x))
 	 ratout-x)
 	(t
 	 (cons (car ratout-x)
-	       (pinterpolate2 (pinterpolate3 ratout-x n) (1+ n))))))
+	       (pinterpolate2 (pinterpolate3 ratout-x ratout-n) (1+ ratout-n))))))
 
-(defun pinterpolate3 (ratout-x n)
+(defun pinterpolate3 (ratout-x ratout-n)
   (cond ((null (cdr ratout-x))
 	 nil)
 	(t
-	 (cons (pquotient (pdifference (cadr ratout-x) (car ratout-x)) n)
-	       (pinterpolate3 (cdr ratout-x) n)))))
+	 (cons (pquotient (pdifference (cadr ratout-x) (car ratout-x)) ratout-n)
+	       (pinterpolate3 (cdr ratout-x) ratout-n)))))
 
-(defun pinterpolate4 (ratout-x n)
+(defun pinterpolate4 (ratout-x ratout-n)
   (cond ((null ratout-x)
 	 nil)
 	((pzerop (car ratout-x))
-	 (pinterpolate4 (cdr ratout-x) (1- n)))
+	 (pinterpolate4 (cdr ratout-x) (1- ratout-n)))
 	(t
-	 (cons n (cons (car ratout-x)
-		       (pinterpolate4 (cdr ratout-x) (1- n)))))))
+	 (cons ratout-n (cons (car ratout-x)
+		       (pinterpolate4 (cdr ratout-x) (1- ratout-n)))))))
 
-(defun pinterpolate5 (ratout-x i j n)
-  (cond ((> i n)
+(defun pinterpolate5 (ratout-x i j ratout-n)
+  (cond ((> i ratout-n)
 	 ratout-x)
 	(t
 	 (pinterpolate5 (cons (car ratout-x) (pinterpolate6 ratout-x i j))
 			(1+ i)
 			(1- j)
-			n))))
+			ratout-n))))
 
 (defun pinterpolate6 (ratout-x i j)
   (cond ((zerop i)
@@ -595,8 +595,8 @@
     (setq a (cons (cadr p)
 		  (cons (- (car p) d) a)))))
 
-(defun lsft (p n)
-  (do ((q p (cddr (rplaca q (+ (car q) n)))))
+(defun lsft (p ratout-n)
+  (do ((q p (cddr (rplaca q (+ (car q) ratout-n)))))
       ((null q)))
   p)
 
@@ -745,16 +745,16 @@
 					     (cddr ratout-x)
 					     xwt))))))))))
 
-(defun wtpexpt (ratout-x n)
-  (cond ((= n 0)
+(defun wtpexpt (ratout-x ratout-n)
+  (cond ((= ratout-n 0)
 	 1)
-	((= n 1)
+	((= ratout-n 1)
 	 ratout-x)
-	((evenp n)
-	 (let ((xn2 (wtpexpt ratout-x (/ n 2))))
+	((evenp ratout-n)
+	 (let ((xn2 (wtpexpt ratout-x (/ ratout-n 2))))
 	   (wtptimes xn2 xn2 0)))
 	(t
-	 (wtptimes ratout-x (wtpexpt ratout-x (1- n)) 0))))
+	 (wtptimes ratout-x (wtpexpt ratout-x (1- ratout-n)) 0))))
 
 (defmfun $horner (e &rest l)
   (let (($ratfac nil)
