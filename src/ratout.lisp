@@ -790,21 +790,21 @@
 ;; FURTHERMORE, X IS ASSUMED TO BE AN ATOM OR A SINGLE ITEM ON
 ;; VARLIST.  E.G. X MIGHT BE SIN(U), BUT NOT 2*SIN(U).
 
-(declare-top (special x))
+;;(declare-top (special x))
 
-(defmfun $ratdiff (p x)
+(defmfun $ratdiff (p ratout-x)
   (if ($ratp p)
       (setq p (minimize-varlist
 	       (if (member 'trunc (cdar p) :test #'eq) ($taytorat p) p))))
   (let ((formflag ($ratp p)) (varlist) (genvar))
-    (newvar x) (newvar p)
+    (newvar ratout-x) (newvar p)
     (or (every #'(lambda (exp)
-		     (or (alike1 x exp) (free exp x)))
+		     (or (alike1 ratout-x exp) (free exp ratout-x)))
 		 varlist)
-	(merror (intl:gettext "ratdiff: first argument must be a polynomial in ~M; found: ~M") x p))
+	(merror (intl:gettext "ratdiff: first argument must be a polynomial in ~M; found: ~M") ratout-x p))
     (setq p (ratf p))
-    (setq x (caadr (ratf x)))
-    (setq p (cons (car p) (ratderivative (cdr p) x)))
+    (setq ratout-x (caadr (ratf ratout-x)))
+    (setq p (cons (car p) (ratderivative (cdr p) ratout-x)))
     (if formflag p ($ratdisrep p))))
 
 (declare-top (unspecial x))
