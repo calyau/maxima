@@ -863,7 +863,7 @@
 			(mapcar #'(lambda (l)
 				    (destructuring-let (((coef poly ratout-exp) l))
 				      (list '(mtimes)
-	n				    (disrep  coef ratform)
+					    (disrep  coef ratform)
 					    (list '(mexpt)
 						  (disrep poly ratform)
 						  (- ratout-exp)))))
