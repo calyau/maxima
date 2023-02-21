@@ -79,49 +79,6 @@
 	    (setq ratout-*max (max ratout-*max (cadadr p)))))
      (return (pgath1 (cddr p) ratout-*max))))
 
-#+nil
-(defun pgath2 (p vmax)
-  (prog (v2)
-     (cond ((null p)
-	    (return *res))
-	   ((pcoefp (cadr p))
-	    nil)
-	   ((vgreat (setq v2 (pdegreer (cadr p))) vmax)
-	    (setq *res (psimp ratout-*chk
-			      (list (car p) (leadcoefficient (cadr p)))))
-	    (setq vmax v2))
-	   ((equal vmax v2)
-	    (setq *res
-		  (pplus *res
-			 (psimp ratout-*chk
-				(list (car p) (leadcoefficient (cadr p))))))))
-     (return (pgath2 (cddr p) vmax))))
-
-#+nil
-(defun pgath3 (p ratout-*chk ratout-*max)
-  (prog (zz)
-     (cond ((null p)
-	    (return *res))
-	   ((pcoefp (cadr p))
-	    (cond ((equal ratout-*max 0)
-		   (setq zz (cadr p))
-		   (go add))
-		  (t
-		   (go ret))))
-	   ((eq (caadr p) *var)
-	    (setq zz (ptterm (cdadr p) ratout-*max))
-	    (go add)))
-     (cond ((equal ratout-*max 0)
-	    (setq zz (cadr p)))
-	   (t
-	    (go ret)))
-   add
-     (cond ((equal zz 0)
-	    (go ret)))
-     (setq *res (pplus *res (psimp ratout-*chk (list (car p) zz))))
-   ret
-     (return (pgath3 (cddr p) ratout-*chk ratout-*max))))
-
 (defun pnext (ratout-x ratout-*l)
   (labels
       ((pnext1 (ratout-x)
@@ -139,18 +96,6 @@
 	   nil)
 	  (t
 	   (car (sort ratout-*l #'pointergp))))))
-
-#+nil
-(defun pnext1 (ratout-x)
-  (prog nil
-     (cond ((null ratout-x)
-	    (return *l))
-	   ((or (pcoefp (cadr ratout-x))
-		(member (caadr ratout-x) *l :test #'eq))
-	    nil)
-	   (t
-	    (setq *l (cons (caadr ratout-x) *l))))
-     (return (pnext1 (cddr ratout-x)))))
 
 (defun vgreat (ratout-x ratout-y)
   (cond ((null ratout-x)
