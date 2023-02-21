@@ -432,13 +432,13 @@
 	 (nconc (ap1 (car ratout-x) y)
 		(allprods (cdr ratout-x) y)))))
 
-(defun al1 (f r len)
+(defun al1 (ratout-f r len)
   (prog (ratout-ss)
      (cond
        ((equal len 1)
 	(return (mapcar #'(lambda (*y*)
 			    (cons *y* nil))
-			f)))
+			ratout-f)))
        ((null r)
 	(return nil))
        (t
@@ -446,7 +446,7 @@
 		  (setq ratout-ss
 			(nconc ratout-ss
 			       (mapcar #'(lambda (z) (cons z *y*))
-				       f))))
+				       ratout-f))))
 	      (al1 (car r) (cdr r) (1- len)))
 	(return ratout-ss)))))
 
@@ -570,20 +570,20 @@
 	 (cons (car y)
 	       (pctimes1 ratout-x (cdr y))))))
 
-(defun fptimes1 (f g)
+(defun fptimes1 (ratout-f g)
   (prog (a b c d)
-     (cond ((or (null f) (null g))
+     (cond ((or (null ratout-f) (null g))
 	    (return nil))
-	   ((null (cddr f))
-	    (return (lsft (pctimes1 (cadr f) g) (car f))))
+	   ((null (cddr ratout-f))
+	    (return (lsft (pctimes1 (cadr ratout-f) g) (car ratout-f))))
 	   ((null (cddr g))
-	    (return (lsft (pctimes1 (cadr g) f) (car g)))))
-     (setq d (ash (1+ (max (car f) (car g))) -1))
-     (setq f (halfsplit f d) g (halfsplit g d))
-     (setq a (fptimes1 (car f) (car g)))
+	    (return (lsft (pctimes1 (cadr g) ratout-f) (car g)))))
+     (setq d (ash (1+ (max (car ratout-f) (car g))) -1))
+     (setq ratout-f (halfsplit ratout-f d) g (halfsplit g d))
+     (setq a (fptimes1 (car ratout-f) (car g)))
      (setq b
-	   (fptimes1 (ptptplus (car f) (cdr f)) (ptptplus (car g) (cdr g))))
-     (setq c (fptimes1 (cdr f) (cdr g)))
+	   (fptimes1 (ptptplus (car ratout-f) (cdr ratout-f)) (ptptplus (car g) (cdr g))))
+     (setq c (fptimes1 (cdr ratout-f) (cdr g)))
      (setq b (ptptdiffer (ptptdiffer b a) c))
      (return (ptptplus (lsft a (ash d 1)) (ptptplus (lsft b d) c)))))
 
