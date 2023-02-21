@@ -720,7 +720,7 @@
      (go a)))
 
 (declare-top (special y checkfactors
-		      x $factorflag
+		      $factorflag
 		      varlist n))
 
 (defmfun $partfrac (ratout-exp ratout-var)
@@ -790,8 +790,6 @@
 ;; FURTHERMORE, X IS ASSUMED TO BE AN ATOM OR A SINGLE ITEM ON
 ;; VARLIST.  E.G. X MIGHT BE SIN(U), BUT NOT 2*SIN(U).
 
-;;(declare-top (special x))
-
 (defmfun $ratdiff (p ratout-x)
   (if ($ratp p)
       (setq p (minimize-varlist
@@ -806,8 +804,6 @@
     (setq ratout-x (caadr (ratf ratout-x)))
     (setq p (cons (car p) (ratderivative (cdr p) ratout-x)))
     (if formflag p ($ratdisrep p))))
-
-(declare-top (unspecial x))
 
 (declare-top (special varlist $factorflag m v))
 
