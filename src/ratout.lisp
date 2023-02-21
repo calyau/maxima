@@ -717,7 +717,7 @@
 			 (setq u (cddr u))
 			 (go c)))
 		  (go b))))
-      (prog (ratout-v)
+      (prog ()
 	 (setq ratout-v (setq ratout-u* (wtptimes2 ratout-y)))
        a
 	 (setq ratout-x (cddr ratout-x))
