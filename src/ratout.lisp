@@ -605,8 +605,6 @@
       ((null q)))
   p)
 
-(declare-top (special wtsofar))
-
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
 
@@ -626,37 +624,37 @@
 (defun pweight (ratout-x)
   (or (get ratout-x '$ratweight) 0))
 
-(defun wtptimes (ratout-x ratout-y wtsofar)
+(defun wtptimes (ratout-x ratout-y ratout-wtsofar)
   (cond ((or (pzerop ratout-x)
 	     (pzerop ratout-y)
-	     (> wtsofar $ratwtlvl))
+	     (> ratout-wtsofar $ratwtlvl))
 	 (pzero))
 	((pcoefp ratout-x)
-	 (wtpctimes ratout-x ratout-y wtsofar))
+	 (wtpctimes ratout-x ratout-y ratout-wtsofar))
 	((pcoefp ratout-y)
-	 (wtpctimes ratout-y ratout-x wtsofar))
+	 (wtpctimes ratout-y ratout-x ratout-wtsofar))
 	((eq (car ratout-x) (car ratout-y))
 	 (palgsimp (car ratout-x)
 		   (wtptimes1 (cdr ratout-x)
 			      (cdr ratout-y)
 			      (pweight (car ratout-x))
-			      wtsofar)
+			      ratout-wtsofar)
 		   (alg ratout-x)))
 	((pointergp (car ratout-x) (car ratout-y))
 	 (psimp (car ratout-x)
-		(wtpctimes1 ratout-y (cdr ratout-x) (pweight (car ratout-x)) wtsofar)))
+		(wtpctimes1 ratout-y (cdr ratout-x) (pweight (car ratout-x)) ratout-wtsofar)))
 	(t
 	 (psimp (car ratout-y)
-		(wtpctimes1 ratout-x (cdr ratout-y) (pweight (car ratout-y)) wtsofar)))))
+		(wtpctimes1 ratout-x (cdr ratout-y) (pweight (car ratout-y)) ratout-wtsofar)))))
 
-(defun wtptimes1 (ratout-x ratout-y ratout-xweight wtsofar)
+(defun wtptimes1 (ratout-x ratout-y ratout-xweight ratout-wtsofar)
   (let (ratout-v ratout-u*)
     (labels
 	((wtptimes2 (ratout-y)
 	   (if (null ratout-y)
 	       nil
 	       (let ((ii (+ (* ratout-xweight (+ (car ratout-x) (car ratout-y)))
-			    wtsofar)))
+			    ratout-wtsofar)))
 		 (if (> ii $ratwtlvl)
 		     (wtptimes2 (cddr ratout-y))
 		     (pcoefadd (+ (car ratout-x) (car ratout-y))
@@ -671,7 +669,7 @@
 	      (setq e (+ (car ratout-x) (car ratout-y)))
 	      (setq c (wtptimes (cadr ratout-y)
 				(cadr ratout-x)
-				(+ wtsofar (* ratout-xweight e))))
+				(+ ratout-wtsofar (* ratout-xweight e))))
 	      (cond ((pzerop c)
 		     (setq ratout-y (cddr ratout-y))
 		     (go a1))
@@ -715,7 +713,7 @@
 		     (return nil))
 		    ((pzerop
 		      (setq c (wtptimes (cadr ratout-x) (cadr ratout-y)
-					(+ wtsofar (* ratout-xweight
+					(+ ratout-wtsofar (* ratout-xweight
 						      (setq e (+ (car ratout-x) (car ratout-y))))))))
 		     (go d)))
 	    c
@@ -733,13 +731,13 @@
 	 (wtptimes3 ratout-y)
 	 (go a)))))
 
-(defun wtpctimes (c p wtsofar)
+(defun wtpctimes (c p ratout-wtsofar)
   (cond ((pcoefp p)
 	 (ctimes c p))
 	(t
-	 (psimp (car p) (wtpctimes1 c (cdr p) (pweight (car p)) wtsofar)))))
+	 (psimp (car p) (wtpctimes1 c (cdr p) (pweight (car p)) ratout-wtsofar)))))
 
-(defun wtpctimes1 (c ratout-x xwt wtsofar)
+(defun wtpctimes1 (c ratout-x xwt ratout-wtsofar)
   (prog (cc)
      (return
        (cond ((null ratout-x)
@@ -747,16 +745,16 @@
 	     (t
 	      (setq cc (wtptimes c
 				 (cadr ratout-x)
-				 (+ wtsofar (* xwt (car ratout-x)))))
+				 (+ ratout-wtsofar (* xwt (car ratout-x)))))
 	      (cond ((pzerop cc)
-		     (wtpctimes1 c (cddr ratout-x) xwt wtsofar))
+		     (wtpctimes1 c (cddr ratout-x) xwt ratout-wtsofar))
 		    (t
 		     (cons (car ratout-x)
 			   (cons cc
 				 (wtpctimes1 c
 					     (cddr ratout-x)
 					     xwt
-					     wtsofar))))))))))
+					     ratout-wtsofar))))))))))
 
 (defun wtpexpt (ratout-x ratout-n)
   (cond ((= ratout-n 0)
