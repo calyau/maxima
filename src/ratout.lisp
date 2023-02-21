@@ -605,7 +605,7 @@
       ((null q)))
   p)
 
-(declare-top (special wtsofar xweight))
+(declare-top (special wtsofar))
 
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
@@ -648,13 +648,13 @@
 	 (psimp (car ratout-y)
 		(wtpctimes1 ratout-x (cdr ratout-y) (pweight (car ratout-y)))))))
 
-(defun wtptimes1 (ratout-x ratout-y xweight)
+(defun wtptimes1 (ratout-x ratout-y ratout-xweight)
   (let (ratout-v ratout-u*)
     (labels
 	((wtptimes2 (ratout-y)
 	   (if (null ratout-y)
 	       nil
-	       (let ((ii (+ (* xweight (+ (car ratout-x) (car ratout-y)))
+	       (let ((ii (+ (* ratout-xweight (+ (car ratout-x) (car ratout-y)))
 			    wtsofar)))
 		 (if (> ii $ratwtlvl)
 		     (wtptimes2 (cddr ratout-y))
@@ -670,7 +670,7 @@
 	      (setq e (+ (car ratout-x) (car ratout-y)))
 	      (setq c (wtptimes (cadr ratout-y)
 				(cadr ratout-x)
-				(+ wtsofar (* xweight e))))
+				(+ wtsofar (* ratout-xweight e))))
 	      (cond ((pzerop c)
 		     (setq ratout-y (cddr ratout-y))
 		     (go a1))
@@ -714,7 +714,7 @@
 		     (return nil))
 		    ((pzerop
 		      (setq c (wtptimes (cadr ratout-x) (cadr ratout-y)
-					(+ wtsofar (* xweight
+					(+ wtsofar (* ratout-xweight
 						      (setq e (+ (car ratout-x) (car ratout-y))))))))
 		     (go d)))
 	    c
