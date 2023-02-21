@@ -381,7 +381,7 @@
 ;;	THE FUNCTIONS ON THIS PAGE ARE USED BY KRONECKER FACTORING
 
 (defun pkroneck (p)
-  (prog (maxexp i l *p factors factor)
+  (prog (maxexp i l ratout-*p factors factor)
      (setq maxexp (quotient (cadr p) 2))
      (setq i 1)
      a    (when (> i maxexp) (return (cons p factors)))
@@ -389,9 +389,9 @@
 			    (pfactor2 p i)))))
      b    (when (null l) (go d))
      (setq *l (car l))
-     (setq *p (car p))
+     (setq ratout-*p (car p))
      (ignore-rat-err
-       (setq factor (errset (pinterpolate *l *p))))
+       (setq factor (errset (pinterpolate *l ratout-*p))))
      (setq l (cdr l))
      (if (atom factor)
 	 (go b)
