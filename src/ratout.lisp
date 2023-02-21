@@ -15,7 +15,6 @@
 ;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
 (declare-top (special *y*
-		      *var
 		      u*))
 
 ;;	NEWGCD (X,Y) RETURNS A LIST OF THREE ITEMS,
@@ -69,15 +68,15 @@
 		(return (pgath2 (cddr p) vmax)))))
 	(pgath2 (cdr p) nil))))
 
-(defun pgath1 (p ratout-*max *var)
+(defun pgath1 (p ratout-*max ratout-*var)
   (prog nil
      (cond ((null p)
 	    (return ratout-*max))
 	   ((pcoefp (cadr p))
 	    nil)
-	   ((eq (caadr p) *var)
+	   ((eq (caadr p) ratout-*var)
 	    (setq ratout-*max (max ratout-*max (cadadr p)))))
-     (return (pgath1 (cddr p) ratout-*max *var))))
+     (return (pgath1 (cddr p) ratout-*max ratout-*var))))
 
 (defun pnext (ratout-x ratout-*l)
   (labels
@@ -132,15 +131,15 @@
 
 	 ;;	PMODCONTENT OF 3*A*X IS A, IF MAINVAR IS X (=X )
 	 ;;						      V
-	 (prog (*var ratout-*chk ratout-*res ratout-*max ratout-gcd)
+	 (prog (ratout-*var ratout-*chk ratout-*res ratout-*max ratout-gcd)
 	    (setq ratout-*chk (car p))
 	    (setq ratout-*max 0)
-	    (setq *var (pnext (cdr p) nil))
+	    (setq ratout-*var (pnext (cdr p) nil))
 	    (cond ((pointergp ratout-xv ratout-*chk)
 		   (go ret1))
-		  ((null *var)
+		  ((null ratout-*var)
 		   (return (list p 1))))
-	    (pgath1 (cdr p) ratout-*max *var)
+	    (pgath1 (cdr p) ratout-*max ratout-*var)
 	  a
 	    (setq ratout-*res 0)
 	    (labels
@@ -154,7 +153,7 @@
 				    (go add))
 				   (t
 				    (go ret))))
-			    ((eq (caadr p) *var)
+			    ((eq (caadr p) ratout-*var)
 			     (setq zz (ptterm (cdadr p) ratout-*max))
 			     (go add)))
 		      (cond ((equal ratout-*max 0)
