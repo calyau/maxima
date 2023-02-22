@@ -981,7 +981,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *gamma-incomplete-maxit* 10000)
-(defvar *gamma-incomplete-eps* (* 2 flonum-epsilon))
+(defvar *gamma-incomplete-eps* (* 2 +flonum-epsilon+))
 (defvar *gamma-incomplete-min* 1.0e-32)
 
 (defvar *gamma-radius* 1.0
@@ -2900,7 +2900,7 @@
 		   (cond ((<= (abs z) 1)
 			  (typecase z
 			    (cl:real (* maxima::*newton-epsilon-factor-float*
-					maxima::flonum-epsilon))
+					maxima::+flonum-epsilon+))
 			    (t (* maxima::*newton-epsilon-factor* (epsilon z)))))
 			 (t
 			  (* maxima::*newton-epsilon-factor* (epsilon z))))))
@@ -2935,8 +2935,8 @@
 			(let ((1-z (float (- 1 z) 0.0)))
 			  (cond ((= 1 1-z)
 				 (if (minusp (realpart z))
-				     (bf-inverse-erf (+ 1 (* 5 maxima::flonum-epsilon)))
-				     (bf-inverse-erf (- 1 (* 5 maxima::flonum-epsilon)))))
+				     (bf-inverse-erf (+ 1 (* 5 maxima::+flonum-epsilon+)))
+				     (bf-inverse-erf (- 1 (* 5 maxima::+flonum-epsilon+)))))
 				(t
 				 (bf-inverse-erf 1-z))))))
 		  (when maxima::*debug-newton*
@@ -3043,7 +3043,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *fresnel-maxit* 1000)
-(defvar *fresnel-eps*   (* 2 flonum-epsilon))
+(defvar *fresnel-eps*   (* 2 +flonum-epsilon+))
 (defvar *fresnel-min*   1e-32)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

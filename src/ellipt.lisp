@@ -1063,7 +1063,7 @@
 
 ;;;; Elliptic integrals
 
-(let ((errtol (expt (* 4 flonum-epsilon) 1/6))
+(let ((errtol (expt (* 4 +flonum-epsilon+) 1/6))
       (c1 (float 1/24))
       (c2 (float 3/44))
       (c3 (float 1/14)))
@@ -1910,7 +1910,7 @@ first kind:
   ;; increases.
   (sqrt (reduce #'min (mapcar #'(lambda (x)
 				  (if (rationalp (realpart x))
-				      maxima::flonum-epsilon
+				      maxima::+flonum-epsilon+
 				      (epsilon x)))
 			      args))))
 

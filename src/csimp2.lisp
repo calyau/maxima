@@ -570,7 +570,7 @@
        (/ (float pi)
 	  (* (- z) (sin (* (float pi) z))
 	     (gamma-lanczos (- z)))))
-      ((<= (abs z) (sqrt flonum-epsilon))
+      ((<= (abs z) (sqrt +flonum-epsilon+))
        ;; For |z| small, use Gamma(z) = Gamma(z+1)/z
        (/ (gamma-lanczos (+ 1 z))
 	  z))
@@ -610,7 +610,7 @@
 	   (/ (float (- pi))
 	      (* a (sin (* (float pi) a)))
 	      (gammafloat (- a))))
-	  ((<= a (sqrt flonum-epsilon))
+	  ((<= a (sqrt +flonum-epsilon+))
 	   ;; Use gamma(x) = gamma(1+x)/x when x is very small
 	   (/ (gammafloat (+ 1 a))
 	      a))

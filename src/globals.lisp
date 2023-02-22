@@ -294,7 +294,7 @@
 (defconstant +most-negative-flonum+ most-negative-double-float)
 (defconstant +least-positive-flonum+ least-positive-double-float)
 (defconstant +least-negative-flonum+ least-negative-double-float)
-(defconstant flonum-epsilon double-float-epsilon)
+(defconstant +flonum-epsilon+ double-float-epsilon)
 (defconstant least-positive-normalized-flonum least-positive-normalized-double-float)
 (defconstant least-negative-normalized-flonum least-negative-normalized-double-float)
 
@@ -322,7 +322,7 @@
 (defconstant +most-negative-flonum+ most-negative-long-float)
 (defconstant +least-positive-flonum+ least-positive-long-float)
 (defconstant +least-negative-flonum+ least-negative-long-float)
-(defconstant flonum-epsilon long-float-epsilon)
+(defconstant +flonum-epsilon+ long-float-epsilon)
 (defconstant least-positive-normalized-flonum least-positive-normalized-long-float)
 
 (defconstant flonum-exponent-marker #\L)
@@ -364,7 +364,7 @@
 ;; way double-doubles are represented, epsilon is actually zero
 ;; because 1+x = 1 only when x is zero.  But double-doubles only have
 ;; 106 bits of precision, so we use that as epsilon.
-(defconstant flonum-epsilon (scale-float 1w0 -106))
+(defconstant +flonum-epsilon+ (scale-float 1w0 -106))
 (defconstant least-positive-normalized-flonum (cl:float least-positive-normalized-double-float 1w0))
 
 (defconstant flonum-exponent-marker #\W)

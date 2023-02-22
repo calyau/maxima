@@ -1493,7 +1493,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
            ;; 100*flonum-epsilon is ok.
            (let ((diff (- (abs quad)
                           (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c)))))
-                 (delta (* 150 flonum-epsilon)))
+                 (delta (* 150 +flonum-epsilon+)))
              (<= diff delta))))
         (t
          ;; Something is not a number, so assume it's not smooth enough.

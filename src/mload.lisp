@@ -231,7 +231,7 @@
 ;;
 ;; Otherwise, either a or b is not a float, so return false.
 
-(defmvar $float_approx_equal_tolerance (* 8 flonum-epsilon))
+(defmvar $float_approx_equal_tolerance (* 8 +flonum-epsilon+))
 
 (defmfun $float_approx_equal (a b)
   (setq a (if (floatp a) a ($float a)))
