@@ -248,8 +248,8 @@
                 order arg))
            (t (give-up)))))
       
-      ((or (and (symbolp order) (member order infinities))
-           (and (symbolp arg) (member arg infinities)))
+      ((or (and (symbolp order) (member order *infinities*))
+           (and (symbolp arg) (member arg *infinities*)))
        ;; order or arg is one of the infinities, we return a noun form,
        ;; but we have already handled the special value inf for arg.
        (give-up))

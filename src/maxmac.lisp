@@ -88,25 +88,25 @@
 ;; package.
 
 (defmacro real-infinityp (x)
-  `(member ,x real-infinities :test #'eq))
+  `(member ,x *real-infinities* :test #'eq))
 
 (defun infinityp (x)
-  (member x infinities :test #'eq))
+  (member x *infinities* :test #'eq))
 
 (defmacro real-epsilonp (x)
-  `(member ,x infinitesimals :test #'eq))
+  `(member ,x *infinitesimals* :test #'eq))
 
 (defmacro free-epsilonp (x)
-  `(not (amongl infinitesimals ,x)))
+  `(not (amongl *infinitesimals* ,x)))
 
 (defmacro free-infp (x)
-  `(not (amongl infinities ,x)))
+  `(not (amongl *infinities* ,x)))
 
 (defmacro inf-typep (x)
-  `(car (amongl infinities ,x)))
+  `(car (amongl *infinities* ,x)))
 
 (defmacro epsilon-typep (x)
-  `(car (amongl infinitesimals ,x)))
+  `(car (amongl *infinitesimals* ,x)))
 
 (defmacro hot-coef (p)
   `(pdis (caddr (cadr (rat-no-ratfac ,p)))))

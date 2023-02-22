@@ -190,16 +190,21 @@
       (setf (getf (cdr sym) indic) val)
       (setf (get sym indic) val)))
 
-;;; Declare user-visible special variables and other global special variables.
-
-(defvar infinities '($inf $minf $infinity)
+;;------------------------------------------------------------------------
+;; From limit.lisp
+;;
+;; Declare user-visible special variables and other global special variables.
+;;
+;; Should these be defconstants?  I (rtoy) don't think they should be
+;; allowed to be changed.
+(defmvar *infinities* '($inf $minf $infinity)
   "The types of infinities recognized by Maxima.
    INFINITY is complex infinity")
 
-(defvar real-infinities '($inf $minf)
+(defmvar *real-infinities* '($inf $minf)
   "The real infinities, `inf' is positive infinity, `minf' negative infinity")
 
-(defvar infinitesimals '($zeroa $zerob)
+(defmvar *infinitesimals* '($zeroa $zerob)
   "The infinitesimals recognized by Maxima. ZEROA zero from above,
    ZEROB zero from below")
 

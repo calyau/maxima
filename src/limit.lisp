@@ -40,13 +40,16 @@
 
 (load-macsyma-macros rzmac)
 
+#+nil
 (defmvar infinities '($inf $minf $infinity)
   "The types of infinities recognized by Maxima.
    INFINITY is complex infinity")
 
+#+nil
 (defmvar real-infinities '($inf $minf)
   "The real infinities, `inf' is positive infinity, `minf' negative infinity")
 
+#+nil
 (defmvar infinitesimals '($zeroa $zerob)
   "The infinitesimals recognized by Maxima. ZEROA zero from above,
    ZEROB zero from below")
@@ -168,7 +171,7 @@
 		       ;; infinity, although perhaps this should generate the error below.
 		       (when (and (not (atom val))
 				  (some #'(lambda (x) (not (freeof x val)))
-					infinities))
+					*infinities*))
 			 (merror (intl:gettext "limit: third argument must be a finite value or one of: inf, minf, infinity; found: ~M") val))
 		       (when (eq val '$zeroa) (setq dr '$plus))
 		       (when (eq val '$zerob) (setq dr '$minus))))
@@ -566,7 +569,7 @@ ignoring dummy variables and array indices."
     (t
      (cond
        ;; When a isn't crazy, try a^b = e^(b log(a))
-       ((not (amongl (append infinitesimals infinities) base))
+       ((not (amongl (append *infinitesimals* *infinities*) base))
         (simpinf (m^ '$%e (m* exponent `((%log) ,base)))))
 
        ;; No idea. Just return what we've found so far.
@@ -3009,7 +3012,7 @@ ignoring dummy variables and array indices."
 (setf (get '%atan 'simplim%function) 'simplim%atan)
 
 (defmvar extended-reals 
-	(append infinitesimals infinities (list '$und '$ind)))
+	(append *infinitesimals* *infinities* (list '$und '$ind)))
 
 ;; Most instances of atan2 are simplified to atan expressions, but this routine 
 ;; handles tricky cases such as limit(atan2((x^2-2), x^3-2*x), x, sqrt(2), minus).

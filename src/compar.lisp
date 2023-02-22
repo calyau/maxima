@@ -1059,7 +1059,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	   (setq b (specrepcheck b))
 	   (cond ((or (like a b)) (not (member a indefinites)))
 		 ((or (member a indefinites) (member b indefinites)
-		      (member a infinities) (member b infinities)) nil)
+		      (member a *infinities*) (member b *infinities*)) nil)
 		 ((and (symbolp a) (or (eq t a) (eq nil a) (get a 'sysconst))
 		       (symbolp b) (or (eq t b) (eq nil b) (get b 'sysconst))) nil)
 		 ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b))
