@@ -12,6 +12,8 @@
 
 (macsyma-module laplac)
 
+(declare-top (special context))
+
 ;;; The properties NOUN and VERB give correct linear display
 
 (defprop $laplace %laplace verb)
