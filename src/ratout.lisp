@@ -913,43 +913,35 @@
 	($ratdisrep p))))
 
 
-;; Doesn't appear to be used anywhere; git grep shows no usages.  But
-;; since it was exported as a user function ($), I (rtoy) am going to
-;; leave it here, but comment it out.
-#+nil
-(progn
-(declare-top (special varlist $factorflag m v))
-
 (defmfun $pfet (m)
-  (prog (listov $pfeformat varlist $factorflag)
-     (setq $pfeformat t)
-     (newvar m)
-     (setq listov varlist)
-     (mapc #'(lambda (r) (setq m (pfet1 m r)))
-	   listov)
-     (setq m (simplify m))
-     (setq m (cond ((atom m) m)
-		   ((eq (caar m) 'mplus)
-		    (cons '(mplus)
-			  (mapcar #'$ratexpand (cdr m))))
-		   (t ($ratexpand m))))
-     (return (cond ((atom m) m)
-		   ((eq (caar m) 'mplus)
-		    (cons '(mplus)
-			  (mapcar #'sssqfr (cdr m))))
-		   (t (sssqfr m))))))
+  (labels
+      ((sssqfr (x)
+	 (let ((dosimp t))
+	   (simplify ($sqfr x))))
 
-(defun sssqfr (x)
-  (let ((dosimp t)) (simplify ($sqfr x))))
-
-(defun pfet1 (m v)
-  (cond ((atom m) m)
-	((eq (caar m) 'mplus)
-	 (cons '(mplus)
-	       (mapcar #'(lambda (s) ($partfrac s v))
-		       (cdr m))))
-	(t ($partfrac m v))))
-
-(declare-top (unspecial m v))
-)
+       (pfet1 (m v)
+	 (cond ((atom m) m)
+	       ((eq (caar m) 'mplus)
+		(cons '(mplus)
+		      (mapcar #'(lambda (s) ($partfrac s v))
+			      (cdr m))))
+	       (t
+		($partfrac m v)))))
+    (prog (listov $pfeformat varlist $factorflag)
+       (setq $pfeformat t)
+       (newvar m)
+       (setq listov varlist)
+       (mapc #'(lambda (r) (setq m (pfet1 m r)))
+	     listov)
+       (setq m (simplify m))
+       (setq m (cond ((atom m) m)
+		     ((eq (caar m) 'mplus)
+		      (cons '(mplus)
+			    (mapcar #'$ratexpand (cdr m))))
+		     (t ($ratexpand m))))
+       (return (cond ((atom m) m)
+		     ((eq (caar m) 'mplus)
+		      (cons '(mplus)
+			    (mapcar #'sssqfr (cdr m))))
+		     (t (sssqfr m)))))))
 
