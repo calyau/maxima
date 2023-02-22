@@ -164,7 +164,7 @@
 
 (defun cpoly-sl (degree)
   (let ((*logbas* (log 2.0))
-	(*infin* most-positive-flonum)
+	(*infin* +most-positive-flonum+)
 	(*are* flonum-epsilon)
 	(*mre* 0.0)
 	(xx (sqrt 0.5))
@@ -468,7 +468,7 @@
 
 (defun rpoly-sl (degree)
   (let ((*logbas* (log 2.0))
-	(*infin* most-positive-flonum)
+	(*infin* +most-positive-flonum+)
 	(*are* flonum-epsilon)
 	(*mre* 0.0)
 	(xx (sqrt 0.5)) ;; sqrt(0.5)
@@ -1227,7 +1227,7 @@
   (let ( ;; Log of our floating point base.  (Do we need this much accuracy?)
 	(*logbas* (fplog (intofp 2)))
 	;; "Largest" bfloat.  What should we use?
-	(*infin* (intofp most-positive-flonum))
+	(*infin* (intofp +most-positive-flonum+))
 	;; bfloat epsilon.  2^(-fpprec)
 	(*are* (bf-scale-float (intofp 2) (- fpprec)))
 	(*mre* (intofp 0))
@@ -1466,7 +1466,7 @@
 
 (defun bf-rpoly-sl (degree)
   (let ((*logbas* (fplog (intofp 2)))
-	(*infin* (intofp most-positive-flonum))
+	(*infin* (intofp +most-positive-flonum+))
 	(*are* (bf-scale-float (intofp 2) (- fpprec)))
 	(*mre* (intofp 0))
 	(xx (fproot bfhalf 2))

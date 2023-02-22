@@ -290,7 +290,7 @@
   (declare (ignorable low high))
   'double-float)
 
-(defconstant most-positive-flonum most-positive-double-float)
+(defconstant +most-positive-flonum+ most-positive-double-float)
 (defconstant most-negative-flonum most-negative-double-float)
 (defconstant least-positive-flonum least-positive-double-float)
 (defconstant least-negative-flonum least-negative-double-float)
@@ -318,7 +318,7 @@
 	(t
 	 'long-float)))
 
-(defconstant most-positive-flonum most-positive-long-float)
+(defconstant +most-positive-flonum+ most-positive-long-float)
 (defconstant most-negative-flonum most-negative-long-float)
 (defconstant least-positive-flonum least-positive-long-float)
 (defconstant least-negative-flonum least-negative-long-float)
@@ -356,7 +356,7 @@
 (defconstant most-positive-double-double-hi
   (scale-float (cl:float (1- 9007199187632128) 1d0) 944))
 
-(defconstant most-positive-flonum (cl:float most-positive-double-double-hi 1w0))
+(defconstant +most-positive-flonum+ (cl:float most-positive-double-double-hi 1w0))
 (defconstant most-negative-flonum (cl:float (- most-positive-double-double-hi 1w0)))
 (defconstant least-positive-flonum (cl:float least-positive-double-float 1w0))
 (defconstant least-negative-flonum (cl:float least-negative-double-float 1w0))
