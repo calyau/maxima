@@ -437,6 +437,11 @@
 	 (nconc (ap1 (car ratout-x) ratout-y)
 		(allprods (cdr ratout-x) ratout-y)))))
 
+;; NOTE: As best as I (rtoy) can tell, this function is never called
+;; from the testsuite (including the share testsuite).  This function
+;; can be called from pkroneck which is called from pfactorany in
+;; rat3d.lisp.  Probably best not to modify this until we have some
+;; test coverage of this function.
 (defun al1 (ratout-f r len)
   (prog (ratout-ss)
      (cond
