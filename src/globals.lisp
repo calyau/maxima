@@ -291,9 +291,9 @@
   'double-float)
 
 (defconstant +most-positive-flonum+ most-positive-double-float)
-(defconstant most-negative-flonum most-negative-double-float)
-(defconstant least-positive-flonum least-positive-double-float)
-(defconstant least-negative-flonum least-negative-double-float)
+(defconstant +most-negative-flonum+ most-negative-double-float)
+(defconstant +least-positive-flonum+ least-positive-double-float)
+(defconstant +least-negative-flonum+ least-negative-double-float)
 (defconstant flonum-epsilon double-float-epsilon)
 (defconstant least-positive-normalized-flonum least-positive-normalized-double-float)
 (defconstant least-negative-normalized-flonum least-negative-normalized-double-float)
@@ -319,9 +319,9 @@
 	 'long-float)))
 
 (defconstant +most-positive-flonum+ most-positive-long-float)
-(defconstant most-negative-flonum most-negative-long-float)
-(defconstant least-positive-flonum least-positive-long-float)
-(defconstant least-negative-flonum least-negative-long-float)
+(defconstant +most-negative-flonum+ most-negative-long-float)
+(defconstant +least-positive-flonum+ least-positive-long-float)
+(defconstant +least-negative-flonum+ least-negative-long-float)
 (defconstant flonum-epsilon long-float-epsilon)
 (defconstant least-positive-normalized-flonum least-positive-normalized-long-float)
 
@@ -357,9 +357,9 @@
   (scale-float (cl:float (1- 9007199187632128) 1d0) 944))
 
 (defconstant +most-positive-flonum+ (cl:float most-positive-double-double-hi 1w0))
-(defconstant most-negative-flonum (cl:float (- most-positive-double-double-hi 1w0)))
-(defconstant least-positive-flonum (cl:float least-positive-double-float 1w0))
-(defconstant least-negative-flonum (cl:float least-negative-double-float 1w0))
+(defconstant +most-negative-flonum+ (cl:float (- most-positive-double-double-hi 1w0)))
+(defconstant +least-positive-flonum+ (cl:float least-positive-double-float 1w0))
+(defconstant +least-negative-flonum+ (cl:float least-negative-double-float 1w0))
 ;; This is an approximation to a double-double epsilon.  Due to the
 ;; way double-doubles are represented, epsilon is actually zero
 ;; because 1+x = 1 only when x is zero.  But double-doubles only have
@@ -884,7 +884,7 @@
 
 (defvar munbound '|#####|)
 (defvar fixunbound most-negative-fixnum)
-(defvar flounbound most-negative-flonum)
+(defvar flounbound +most-negative-flonum+)
 
 (defmvar munbindp nil
   "Used for safely `munbind'ing incorrectly-bound variables."

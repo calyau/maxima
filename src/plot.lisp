@@ -421,7 +421,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($list_matrix_entries (ncmul2  $rot x)))
         ((mbagp x) (cons (car x) (mapcar '$rotate_list (cdr x))))))
 
-(defmfun $get_range (pts k &aux (z 0.0) (max most-negative-flonum) (min +most-positive-flonum+))
+(defmfun $get_range (pts k &aux (z 0.0) (max +most-negative-flonum+) (min +most-positive-flonum+))
   (declare (type flonum z max min))
   (declare (type (vector flonum) pts))
   (loop for i from k below (length pts) by 3
@@ -1731,7 +1731,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defun get-range (lis)
   (let ((ymin +most-positive-flonum+)
-        (ymax most-negative-flonum))
+        (ymax +most-negative-flonum+))
     (declare (type flonum ymin ymax))
     (do ((l lis (cddr l)))
         ((null l))
