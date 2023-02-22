@@ -810,7 +810,7 @@
 				  ans)))))
      (go a)))
 
-(declare-top (special checkfactors
+(declare-top (special *checkfactors*
 		      $factorflag
 		      varlist))
 
@@ -824,7 +824,7 @@
 	      (not (among ratout-var ratout-exp)))
 	 ratout-exp)
 	(t
-	 (let (($savefactors t) (checkfactors ()) (varlist (list ratout-var))
+	 (let (($savefactors t) (*checkfactors* ()) (varlist (list ratout-var))
 	       $ratfac $algebraic $keepfloat ratform genvar)
 	   (desetq (ratform . ratout-exp) (taychk2rat ratout-exp))
 	   (setq ratout-var (caadr (ratf ratout-var)))

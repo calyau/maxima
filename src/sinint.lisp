@@ -14,7 +14,7 @@
 
 (load-macsyma-macros ratmac)
 
-(declare-top (special checkfactors))
+(declare-top (special *checkfactors*))
 
 (defun rootfac (q sinint-var)
   (prog (nthdq nthdq1 simproots ans n-loops)
@@ -547,7 +547,7 @@
 	  nil)))
 
 (defun ratint (sinint-exp sinint-var)
-  (prog (genvar checkfactors varlist ratarg $keepfloat)
+  (prog (genvar *checkfactors* varlist ratarg $keepfloat)
      (setq varlist (list sinint-var))
      (setq ratarg (ratf sinint-exp))
      (let ((sinint-ratform (car ratarg))

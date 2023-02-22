@@ -183,8 +183,8 @@
 (defun savefactor1 (p)
   (unless (or (pcoefp p)
 	      (ptzerop (p-red p))
-	      (member p checkfactors :test #'equal))
-    (push p checkfactors)))
+	      (member p *checkfactors* :test #'equal))
+    (push p *checkfactors*)))
 
 (defun heurtrial1 (poly facs)
   (prog (h j)
@@ -389,8 +389,8 @@
      (setq factors(if (or algfac* modulus) (list p) ;SQRT(NUM. CONT OF DISC)
 		      (pfactorquad p)))
      (cond ((null factors)(go out)))
-     (when checkfactors
-       (setq factors (heurtrial factors checkfactors))
+     (when *checkfactors*
+       (setq factors (heurtrial factors *checkfactors*))
        (setq *checkagain (cdr factors)))
      out (return (nconc *irreds (mapcan (function pfactorany) factors)))))
 
@@ -399,7 +399,7 @@
 (declare-top (special *hvar *hmat))
 
 (defun pfactorany (p)
-  (cond (*checkagain (let (checkfactors) (pfactor1 p)))
+  (cond (*checkagain (let (*checkfactors*) (pfactor1 p)))
 	((and $homog_hack (not algfac*) (not (onevarp p)))
 	 (let ($homog_hack *hvar *hmat)
 	   (mapcar #'hexpand (pfactor (hreduce p)))))

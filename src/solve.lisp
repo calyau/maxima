@@ -14,7 +14,7 @@
 
 (load-macsyma-macros ratmac strmac)
 
-(declare-top (special expsumsplit checkfactors *g
+(declare-top (special expsumsplit *checkfactors* *g
 		      equations ;List of E-labels
 		      *power *varb *flg
 		      broken-not-freeof
@@ -211,7 +211,7 @@
 (defun solve (*exp *var mult &aux (genvar nil) ($derivsubst nil)
 		     (exp (float2rat (mratcheck *exp)))
 		     (*myvar *var) ($savefactors t))
-  (prog (factors *has*var genpairs $dontfactor temp symbol *g checkfactors 
+  (prog (factors *has*var genpairs $dontfactor temp symbol *g *checkfactors* 
 	 varlist expsumsplit)
      (let (($ratfac t))
        (setq exp (ratdisrep (ratf exp))))

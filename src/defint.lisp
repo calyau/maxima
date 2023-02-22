@@ -125,7 +125,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *def2* pcprntd *mtoinf*
-		      sn* sd* leadcoef checkfactors
+		      sn* sd* leadcoef *checkfactors*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
@@ -1289,7 +1289,7 @@ in the interval of integration.")
 (defun ztoinf (grand var)
   (prog (n d sn* sd* varlist
 	 s nc dc
-	 ans r $savefactors checkfactors temp test-var)
+	 ans r $savefactors *checkfactors* temp test-var)
      (setq $savefactors t sn* (setq sd* (list 1.)))
      (cond ((eq ($sign (m+ loopstop* -1))
 		'$pos)
@@ -1406,7 +1406,7 @@ in the interval of integration.")
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
 (defun mtoinf (grand var)
-  (prog (ans ans1 sd* sn* p* pe* n d s nc dc $savefactors checkfactors temp)
+  (prog (ans ans1 sd* sn* p* pe* n d s nc dc $savefactors *checkfactors* temp)
      (setq $savefactors t)
      (setq sn* (setq sd* (list 1.)))
      (cond ((eq ($sign (m+ loopstop* -1)) '$pos)

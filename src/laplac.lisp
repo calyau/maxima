@@ -716,7 +716,7 @@
 
 (defmfun $ilt (exp ils ilt)
   ;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
-  (let (varlist ($savefactors t) checkfactors $ratfac $keepfloat
+  (let (varlist ($savefactors t) *checkfactors* $ratfac $keepfloat
 		s-var)
     ;; MAKES ILS THE MAIN VARIABLE
     (setq varlist (list ils))

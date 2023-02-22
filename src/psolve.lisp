@@ -13,7 +13,7 @@
 (macsyma-module psolve)
 
 (declare-top (special mult *roots *failures))
-(declare-top (special expsumsplit checkfactors *g
+(declare-top (special expsumsplit *checkfactors* *g
 		      equations ;List of E-labels
 		      *power *varb *flg
 		      broken-not-freeof

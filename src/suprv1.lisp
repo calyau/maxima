@@ -28,7 +28,7 @@
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
-		       checkfactors $features featurel
+		       *checkfactors* $features featurel
 		       dispflag savefile
 		       opers *ratweights
 		       transp autoload))
@@ -74,7 +74,7 @@
 (defun meval* (expr)
   ;; Make sure that clearsign is called after the evaluation.
   (unwind-protect
-    (let (*refchkl* checkfactors)
+    (let (*refchkl* *checkfactors*)
       (if $ratvarswitch (setq varlist (cdr $ratvars)))
       (meval expr))
     ;; Clear the facts from asksign and friends.
@@ -317,7 +317,7 @@
 	     ((or (eq x t) (eq x '$all))
 	      (mapc #'kill1 (cdr $infolists))
 	      (setq $ratvars '((mlist simp)) varlist nil genvar nil
-		    checkfactors nil greatorder nil lessorder nil $gensumnum 0
+		    *checkfactors* nil greatorder nil lessorder nil $gensumnum 0
 		    *ratweights nil $ratweights
 		    '((mlist simp))
 		    tellratlist nil $dontfactor '((mlist)) $setcheck nil)
