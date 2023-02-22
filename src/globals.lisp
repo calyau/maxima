@@ -298,7 +298,7 @@
 (defconstant +least-positive-normalized-flonum+ least-positive-normalized-double-float)
 (defconstant +least-negative-normalized-flonum+ least-negative-normalized-double-float)
 
-(defconstant flonum-exponent-marker #\D)
+(defconstant +flonum-exponent-marker+ #\D)
 )
 
 #+flonum-long
@@ -326,7 +326,7 @@
 (defconstant +least-positive-normalized-flonum+ least-positive-normalized-long-float)
 (defconstant +least-negative-normalized-flonum+ least-negative-normalized-long-float)
 
-(defconstant flonum-exponent-marker #\L)
+(defconstant +flonum-exponent-marker+ #\L)
 
 )
 
@@ -369,7 +369,7 @@
 (defconstant +least-positive-normalized-flonum+ (cl:float least-positive-normalized-double-float 1w0))
 (defconstant +least-negative-normalized-flonum+ (cl:float least-negative-normalized-double-float 1w0))
 
-(defconstant flonum-exponent-marker #\W)
+(defconstant +flonum-exponent-marker+ #\W)
 
 )
 
