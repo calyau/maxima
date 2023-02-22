@@ -40,20 +40,6 @@
 
 (load-macsyma-macros rzmac)
 
-#+nil
-(defmvar infinities '($inf $minf $infinity)
-  "The types of infinities recognized by Maxima.
-   INFINITY is complex infinity")
-
-#+nil
-(defmvar real-infinities '($inf $minf)
-  "The real infinities, `inf' is positive infinity, `minf' negative infinity")
-
-#+nil
-(defmvar infinitesimals '($zeroa $zerob)
-  "The infinitesimals recognized by Maxima. ZEROA zero from above,
-   ZEROB zero from below")
-
 (defmvar simplimplus-problems ()
   "A list of all problems in the stack of recursive calls to simplimplus.")
 
