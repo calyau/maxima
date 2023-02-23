@@ -316,10 +316,10 @@
 ;; Conditions: 0<p<1; f>0 (degrees of freedom) ; theta>0 (non centrality param.)
 (defun qnchi2 (p df lambda)
    (let ((accu 1e-13)
-         (racc (* 8 flonum-epsilon))
-         (dbl_epsilon (* 8 flonum-epsilon))
-         (dbl_min least-positive-normalized-flonum)
-         (dbl_max most-positive-flonum)
+         (racc (* 8 +flonum-epsilon+))
+         (dbl_epsilon (* 8 +flonum-epsilon+))
+         (dbl_min +least-positive-normalized-flonum+)
+         (dbl_max +most-positive-flonum+)
          (eps 1e-11)    ; must be > accu
          (reps 1e-10)   ; relative tolerance
          (ux 1.0) (lx 1.0) (nx 1.0) (pp 1.0))
