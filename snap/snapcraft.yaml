@@ -1,5 +1,5 @@
 name: maxima
-version: 5.46.0-1
+version: 5.46.0-3
 summary: A full-fledged computer algebra system
 description: |
   A full featured computer algebra system,
@@ -12,10 +12,13 @@ description: |
   What a snappy app cannot provide is allowing an external web browser
   to open the offline manual it comes bundled with.
 grade: stable
-icon: ./interfaces/xmaxima/net.sourceforge.maxima.svg
 base: core22
 license: GPL-2.0+
 confinement: strict
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
 
 apps:
   maxima:
