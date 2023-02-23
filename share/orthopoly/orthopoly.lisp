@@ -398,7 +398,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	   (multiple-value-setq (f e)
 	     ($hypergeo21 (mul -1 n) (add n a b 1) (add a 1)
 			  (div (add 1 (mul -1 x)) 2) n))
-	   (setq e (if e (+ e (* 4 n (abs f) flonum-epsilon)) nil))
+	   (setq e (if e (+ e (* 4 n (abs f) +flonum-epsilon+)) nil))
 	   (orthopoly-return-handler d f e)))
 	(t `(($jacobi_p simp) ,n ,a ,b ,x))))
 
@@ -445,7 +445,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	   (multiple-value-setq (f e)
 	     ($hypergeo21 (mul -1 n) (add n (mul 2 a)) (add a (div 1 2))
 			  (div (add 1 (mul -1 x)) 2) n))
-	   (setq e (if e (+ e (* 4 n (abs f) flonum-epsilon)) nil))
+	   (setq e (if e (+ e (* 4 n (abs f) +flonum-epsilon+)) nil))
 	   (orthopoly-return-handler d f e)))
 	(t `(($ultraspherical simp) ,n ,a ,x))))
 
@@ -755,7 +755,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	  (t
 	   (setq d 1)
 	   (setq f `(($assoc_legendre_p simp) ,n ,m ,x))))
-    (interval-mult d f (* flonum-epsilon dx))))
+    (interval-mult d f (* +flonum-epsilon+ dx))))
 
 
 ;; For the derivative of the associated legendre p function, see
@@ -833,7 +833,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	   (setq d (pochhammer-quotient (add a 1) 1 x n))
 	   (multiple-value-setq (f e)
 	     ($hypergeo11 (mul -1 n) (add 1 a) x n))
-	   (setq e (if e (+ e (* 4 (abs f) flonum-epsilon n)) nil))
+	   (setq e (if e (+ e (* 4 (abs f) +flonum-epsilon+ n)) nil))
 	   (orthopoly-return-handler d f e)))
 	(t
 	 `(($gen_laguerre) ,n ,a ,x))))
@@ -1226,7 +1226,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
       (setq u0 u)
       (setq err (+ err (abs (* u0 (aref fs k)))))
       (incf i))
-    (values f0 (* 12 flonum-epsilon err))))
+    (values f0 (* 12 +flonum-epsilon+ err))))
     
 (defun hypergeo21-float (n b c x)
   (let ((f0) (fm1) (f) (i 0) (k) (dk) (ak) (bk) (err)
@@ -1265,7 +1265,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
       (setq u0 u)
       (incf i)
       (setq err (+ err (abs (* (aref fs k) u0)))))
-    (values f0 (* 12 flonum-epsilon err))))
+    (values f0 (* 12 +flonum-epsilon+ err))))
     
 ;; For recursion relations, see A & S 22.7 page 782. 
 

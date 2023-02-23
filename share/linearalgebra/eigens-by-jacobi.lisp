@@ -56,7 +56,7 @@
       (setq v (make-array (list n n) :initial-element zero))
       (setq d (make-array n))
 									 
-      (setq eps (if (eq fld-name '$floatfield) flonum-epsilon ($bfloat (div 1 (power 2 fpprec)))))
+      (setq eps (if (eq fld-name '$floatfield) +flonum-epsilon+ ($bfloat (div 1 (power 2 fpprec)))))
              
       (decf n)
       (loop for i from 0 to n do 

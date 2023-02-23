@@ -105,7 +105,7 @@
    :psqrt #'(lambda (s) (if (>= s 0) (cl:sqrt s) nil))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
-   :fzerop #'(lambda (s)  (< (abs s) (* 4 flonum-epsilon)))
+   :fzerop #'(lambda (s)  (< (abs s) (* 4 +flonum-epsilon+)))
    :adjoint #'cl:identity
    :mring-to-maxima #'cl:identity
    :maxima-to-mring #'(lambda (s) 
@@ -142,7 +142,7 @@
    :psqrt #'(lambda (s) (if (and (= 0 (imagpart s)) (>= (realpart s) 0)) (cl:sqrt s) nil))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
-   :fzerop #'(lambda (s) (< (abs s) (* 4 flonum-epsilon)))
+   :fzerop #'(lambda (s) (< (abs s) (* 4 +flonum-epsilon+)))
    :adjoint #'cl:conjugate
    :mring-to-maxima #'(lambda (s) (add (realpart s) (mul '$%i (imagpart s)))) ;; was complexify
    :maxima-to-mring #'coerce-expr-to-clcomplex))

@@ -84,7 +84,7 @@ estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
      (m $lbfgs_ncorrections)
      (nwork (+ (* n (+ (* 2 m) 1)) (* 2 m)))
 
-     (xtol flonum-epsilon)
+     (xtol +flonum-epsilon+)
      (iflag 0)
       
      (scache (make-array n :element-type 'flonum))
