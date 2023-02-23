@@ -377,11 +377,6 @@
 ;; From share/contrib/floatproperties.lisp
 ;;
 ;; Expose some properties of floating-point numbers to Maxima.
-(defun $float_eps ()
-  "Floating-point epsilon, basically the smallest value eps such that
-  1+eps is not equal to 1"
-  +flonum-epsilon+)
-
 (defmvar $largest_float +most-positive-flonum+
   "Largest positive floating-point number"
   :properties ((assign 'neverset)))
@@ -406,15 +401,25 @@
   "The least negative normalized floating-point number"
   :properties ((assign 'neverset)))
 
-(defun $float_bits ()
-  "The number of bits in the fraction part of a floating-point number"
-  (float-digits 0d0))
+(defun $float_eps ()
+  "Floating-point epsilon, basically the smallest value eps such that
+  1+eps is not equal to 1"
+  +flonum-epsilon+)
 
 (defun $bigfloat_eps ()
   "The bigfloat version of float_eps; the smallest bigfloat such that
   1+eps is not equal to 1."
   (let ((r ($bfloat (div 1 (expt 2 fpprec)))))
     (list (first r) (incf (second r)) (third r))))
+
+(defun $float_bits ()
+  "The number of bits in the fraction part of a floating-point number"
+  (float-digits 0d0))
+
+(defun $bigfloat_bits ()
+  "The number of bits in the fraction part of a bigfloat number.  Note
+  that this changes when $fpprec is changed, of course."
+  fpprec)
 
 ;;------------------------------------------------------------------------
 ;; From algsys.lisp
