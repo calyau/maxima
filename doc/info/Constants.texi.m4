@@ -142,6 +142,66 @@ Example:
 @closecatbox
 @end defvr
 
+
+@c -----------------------------------------------------------------------------
+@anchor{largest_float}
+@defvr {Constant} largest_float
+The most positive floating-point number in Maxima.
+
+@opencatbox{Categories:}
+@category{Constants}
+@closecatbox
+@end defvr
+
+@anchor{largest_negative_float}
+@defvr {Constant} largest_negative_float
+The most negative floating-point number in Maxima.
+
+@opencatbox{Categories:}
+@category{Constants}
+@closecatbox
+@end defvr
+
+@anchor{least_negative_float}
+@defvr {Constant} least_negative_float
+The least negative floating-point number in Maxima.  That is, the
+negative floating-point number closest to 0.
+
+@opencatbox{Categories:}
+@category{Constants}
+@closecatbox
+@end defvr
+
+@anchor{least_negative_normalized_float}
+@defvr {Constant} least_negative_normalized_float
+The least negative normalized floating-point number in Maxima.  That
+is, the negative normalized floating-point number closest to 0.
+
+@opencatbox{Categories:}
+@category{Constants}
+@closecatbox
+@end defvr
+
+@anchor{least_positive_float}
+@defvr {Constant} least_positive_float
+The least positive floating-point number in Maxima.  That is, the
+positive floating-point number closest to 0.
+
+@opencatbox{Categories:}
+@category{Constants}
+@closecatbox
+@end defvr
+
+@anchor{least_positive_normalized_float}
+@defvr {Constant} least_positive_normalized_float
+The least positive normalized floating-point number in Maxima.  That
+is, the positive normalized floating-point number closest to 0.
+
+@opencatbox{Categories:}
+@category{Constants}
+@closecatbox
+@end defvr
+
 @c -----------------------------------------------------------------------------
 @anchor{minf}
 @defvr {Constant} minf

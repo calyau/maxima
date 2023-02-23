@@ -183,6 +183,62 @@ displays as @code{1.000000000000000B0}.  Otherwise, this is displayed as
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{bigfloat_bits}
+@deffn {Function} bigfloat_bits ()
+Returns the number of bits of precision in a bigfloat number.  This
+value depends, of course, on the value of @mref{fpprec}. 
+
+@c ===beg===
+@c fpprec:16;
+@c bigfloat_bits();
+@c fpprec:32;
+@c bigfloat_bits();
+@c ===end===
+@example
+(%i1) fpprec:16;
+(%o1)                                 16
+(%i2) bigfloat_bits();
+(%o2)                                 56
+(%i3) fpprec:32;
+(%o3)                                 32
+(%i4) bigfloat_bits();
+(%o4)                                 109
+@end example
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bigfloat_eps}
+@deffn {Function} bigfloat_eps ()
+Returns the smallest bigfloat value, @code{eps}, such that
+@code{1+eps} is not equal to 1.  The value depends on @mref{fpprec},
+of course.
+
+@c ===beg===
+@c fpprec:16;
+@c bigfloat_eps();
+@c fpprec:32;
+@c bigfloat_eps();
+@c ===end===
+@example
+(%i1) fpprec:16;
+(%o1)                                 16
+(%i2) bigfloat_eps();
+(%o2)                        1.387778780781446b-17
+(%i3) fpprec:32;
+(%o3)                                 32
+(%i4) bigfloat_eps();
+(%o4)                1.5407439555097886824447823540679b-33
+@end example
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{evenp}
 @deffn {Function} evenp (@var{expr})
 
@@ -226,6 +282,27 @@ a floating point number is replaced by a bigfloat number with less precision.
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{float_bits}
+@deffn {Function} float_bits ()
+Returns the number of bits of precision of a floating-point number.
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{float_eps}
+@deffn {Function} float_eps ()
+Returns the smallest floating-point value, @code{eps}, such that
+@code{1+eps} is not equal to 1.
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{floatnump}
