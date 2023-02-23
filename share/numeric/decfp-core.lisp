@@ -632,12 +632,12 @@ This doesn't fix it.
   ;; (except when we have a bigfloat, of course!).  So convert exponent
   ;; markers to the flonum-exponent-marker.
   (let ((marker (car (nth 3 data))))
-    (unless (eql marker flonum-exponent-marker)
+    (unless (eql marker +flonum-exponent-marker+)
       (when
 	  #+ignore
 	(member marker '(#\E #\F #\S #\D #\L  #\l  #+cmu #\W)) ; breaks decimal fp
 	(member marker '(#\E #\F #\S #\D  #+cmu #\W))
-        (setf (nth 3 data) (list flonum-exponent-marker)))))
+        (setf (nth 3 data) (list +flonum-exponent-marker+)))))
   
   (cond 
 
