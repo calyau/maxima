@@ -1,6 +1,3 @@
-(load("~/maxima/ulp.lisp"), load("floatproperties"),0);
-0;
-
 unit_in_last_place(0) ;
 1 ;
 

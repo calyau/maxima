@@ -150,6 +150,7 @@
 	((mlist simp) "rtest_nfloat"
 	 #-gcl((mlist simp) 25))
 	((mlist simp) "rtest_ilt")
+	((mlist simp) "ulp_tests")
         ))
 
 ;; The list of share testsuite files. As they are given without a path
