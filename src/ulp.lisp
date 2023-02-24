@@ -1,4 +1,3 @@
-
 ;;; ULP is the Unit in the Last Place
 
 ;;; ---Definition---
@@ -13,10 +12,13 @@
 ;;;
 ;;; We assume that there is only one least-positive-flonum, so these functions
 ;;; will not work for denormalized single-precision floats for example.
+(in-package "MAXIMA")
 
-
-(defparameter most-negative-float-exponent 
-  (nth-value 1 (integer-decode-float least-positive-long-float)))
+(defconstant +most-negative-float-exponent+
+  #-cmucl
+  (nth-value 1 (integer-decode-float +least-positive-flonum+))
+  #+cmucl
+  -1126)
 
 (defun $unit_in_last_place (f)
   (cond ((integerp f) 1)
@@ -28,7 +30,7 @@
 		 (significand expon sign)
 		 (integer-decode-float f)
 	       (expt 2.0
-		     (if (and ($is_power_of_two significand) (> expon most-negative-float-exponent))
+		     (if (and ($is_power_of_two significand) (> expon +most-negative-float-exponent+))
 			 (+ expon -1)
 		       expon))))))
 	(($bfloatp f)
