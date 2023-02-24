@@ -20,44 +20,54 @@
   #+cmucl
   -1126)
 
-(defun $unit_in_last_place (f)
+(defmfun $unit_in_last_place (f)
   (cond ((integerp f) 1)
 	((ratnump f) 0)
 	((floatp f)
 	 (cond
-	  ((= f 0.0) least-positive-long-float)
-	  (t (multiple-value-bind
-		 (significand expon sign)
-		 (integer-decode-float f)
-	       (expt 2.0
-		     (if (and ($is_power_of_two significand) (> expon +most-negative-float-exponent+))
-			 (+ expon -1)
-		       expon))))))
+	   ((= f 0.0)
+	    +least-positive-flonum+)
+	   (t
+	    (multiple-value-bind (significand expon)
+		(integer-decode-float f)
+	      (expt 2d0
+		    (if (and ($is_power_of_two significand)
+			     (> expon +most-negative-float-exponent+))
+			(+ expon -1)
+			expon))))))
 	(($bfloatp f)
 	 (let ((significand (cadr f))
 	       (expon (- (caddr f) (bigfloat-prec f))))
-	   (cond ((= 0 significand) bigfloatzero) ; ULP is arbitrarily small for bigfloat 0
+	   (cond ((= 0 significand)
+		   ; ULP is arbitrarily small for bigfloat 0
+		  bigfloatzero)
 		 ;; precision of resulting bigfloat not necessarily the same as input
 		 ;; but that doesn't matter, since 2^n can be represented exactly in all
 		 ;; precisions
-		 (t (exptbigfloat ($bfloat 2)
-				  (if ($is_power_of_two (abs significand)) (+ expon -1) expon))))))
-	(t (merror (intl:gettext "~:@M: unit_in_last_place is not defined")
-		   f))))
+		 (t
+		  (exptbigfloat ($bfloat 2)
+				(if ($is_power_of_two (abs significand))
+				    (+ expon -1) expon))))))
+	(t
+	 (merror (intl:gettext "~:@M: unit_in_last_place is not defined")
+		 f))))
 
 ;;; is_power_of_two works for explicit numbers: integers, floats, bfloats, rats
 ;;; NOTE: a negative number is not a power of 2
 ;;; does NOT handle expressions (by choice)
-(defun $is_power_of_two (n)
+(defmfun $is_power_of_two (n)
   (cond ((integerp n)
 	 (and (> n 0)
 	      (= 0 (logand (abs n) (+ (abs n) -1)))))
 	((floatp n)
 	 (and (> n 0.0)
 	      ($is_power_of_two (integer-decode-float n))))
-	(($bfloatp n) ($is_power_of_two (cadr n)))
-	;; ratnums not needed for unit_in_last_place, but let's be complete
-	((ratnump n) (and (= (cadr n) 1) ($is_power_of_two (caddr n))))
-	(t (merror (intl:gettext "~:@M: is_power_of_two is only defined for numbers")
-		   n))))
+	(($bfloatp n)
+	 ($is_power_of_two (cadr n)))
+	((ratnump n)
+	 ;; ratnums not needed for unit_in_last_place, but let's be complete
+	 (and (= (cadr n) 1) ($is_power_of_two (caddr n))))
+	(t
+	 (merror (intl:gettext "~:@M: is_power_of_two is only defined for numbers")
+		 n))))
 
