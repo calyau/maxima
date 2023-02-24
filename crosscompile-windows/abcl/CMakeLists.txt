@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-set(ABCL_VERSION 1.8.0)
-set(ABCL_MD5 "4e5c6234b21097cdcaccd126c640f7f9")
+set(ABCL_VERSION 1.9.1)
+set(ABCL_MD5 "f230ca769c97420e500b6d5915263e1d")
 set(ABCL_URL "https://abcl.org/releases/${ABCL_VERSION}/abcl-bin-${ABCL_VERSION}.tar.gz")
 
 externalproject_add(abcl
