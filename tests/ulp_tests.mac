@@ -1,0 +1,102 @@
+(load("~/maxima/ulp.lisp"), load("floatproperties"),0);
+0;
+
+unit_in_last_place(0) ;
+1 ;
+
+unit_in_last_place(-534234) ;
+1 ;
+
+unit_in_last_place(2/3) ;
+0 ;
+
+unit_in_last_place(0.0b0) ;
+0.0b0 ;
+
+unit_in_last_place(0.0) ;
+4.9406564584124654e-324 ;
+
+unit_in_last_place(unit_in_last_place(0.0)*(2^53+1)) ;
+4.9406564584124654e-324 ;
+
+unit_in_last_place(unit_in_last_place(0.0)*(2^53+2)) ;
+9.88131291682494e-324 ;
+
+2*unit_in_last_place(float((0+2^52)/2^1073)) - unit_in_last_place(float((1+2^52)/2^1073)) ;
+0.0 ;
+
+unit_in_last_place(1.0)-unit_in_last_place(.9999) ;
+0.0 ;
+
+unit_in_last_place(1.0001)-2*unit_in_last_place(1.0000) ;
+0.0 ;
+
+unit_in_last_place(1.0b0)-unit_in_last_place(.9999b0) ;
+0.0b0 ;
+
+unit_in_last_place(1.0001b0)-2*unit_in_last_place(1.0000b0) ;
+0.0b0 ;
+
+2.0^1023*(2.0-unit_in_last_place(2.0)) - largest_float ;
+0.0 ;
+
+unit_in_last_place(-1.0)-unit_in_last_place(1.0) ;
+0.0 ;
+
+is_power_of_two(0) ;
+false ;
+
+is_power_of_two(1) ;
+true ;
+
+is_power_of_two(1048576) ;
+true ;
+
+is_power_of_two(1048575) ;
+false ;
+
+is_power_of_two(1048577) ;
+false ;
+
+is_power_of_two(1/256) ;
+true ;
+
+is_power_of_two(1/384) ;
+false ;
+
+is_power_of_two(0.0e0) ;
+false ;
+
+is_power_of_two(1.0e0) ;
+true ;
+
+is_power_of_two(1048576.0e0) ;
+true ;
+
+is_power_of_two(1048575.0e0) ;
+false ;
+
+is_power_of_two(1048577.0e0) ;
+false ;
+
+is_power_of_two(1/256.0e0) ;
+true ;
+
+is_power_of_two(0.0b0) ;
+false ;
+
+is_power_of_two(1.0b0) ;
+true ;
+
+is_power_of_two(1048576.0b0) ;
+true ;
+
+is_power_of_two(1048575.0b0) ;
+false ;
+
+is_power_of_two(1048577.0b0) ;
+false ;
+
+is_power_of_two(1/256.0b0) ;
+true ;
+
