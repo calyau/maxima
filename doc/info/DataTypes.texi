@@ -416,6 +416,50 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{is_power_of_two}
+@deffn {Function} is_power_of_two (@var{n})
+@code{is_power_to_two} returns @code{true} if @var{n} is a power of
+two and @code{false} otherwise.  @var{n} may be an integer, a
+rational, a float, or a big float.
+
+Some examples:
+@example
+(%i1) is_power_of_two(0);
+(%o1)                                false
+(%i2) is_power_of_two(4);
+(%o2)                                true
+(%i3) is_power_of_two(355/113);
+(%o3)                                false
+(%i4) is_power_of_two(1/32);
+(%o4)                                true
+(%i5) is_power_of_two(1048576);
+(%o5)                                true
+(%i6) is_power_of_two(1048575);
+(%o6)                                false
+(%i7) is_power_of_two(0.0);
+(%o7)                                false
+(%i8) is_power_of_two(1048576.0);
+(%o8)                                true
+(%i9) is_power_of_two(1048575.0);
+(%o9)                                false
+(%i10) is_power_of_two(1/256.0);
+(%o10)                               true
+(%i11) is_power_of_two(0b0);
+(%o11)                               false
+(%i12) is_power_of_two(1048576b0);
+(%o12)                               true
+(%i13) is_power_of_two(1048575b0);
+(%o13)                               false
+(%i14) is_power_of_two(1/256b0);
+(%o14)                               true
+@end example
+
+@opencatbox{Categories:}
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{m1pbranch}
 @defvr {Option variable} m1pbranch
 Default value: @code{false}
@@ -720,6 +764,57 @@ integers, otherwise @code{false}.
 @closecatbox
 @end deffn
 
+@anchor{unit_in_last_place}
+@deffn {Function} unit_in_last_plase (@var{n})
+
+@code{unit_in_last_place} returns a value that is the gap between
+@var{n} and the nearest other number.  See, for example,
+@url{https://people.eecs.berkeley.edu/~wkahan/LOG10HAF.TXT,
+Kahan@comma{} FOOTNOTE 1}.  @code{unit_in_last_place} supports rational numbers,
+floating-point numbers and bigfloat numbers.  For integer, the result
+is always 1, and for rational numbers the result is always 0.
+
+The examples below assume
+@url{https://en.wikipedia.org/wiki/IEEE_754,IEEE-754} arithmetic that
+supports
+@url{https://en.wikipedia.org/wiki/IEEE_754-1985#Denormalized_numbers,denormal}
+numbers.  Some lisps like @url{https://clisp.sourceforge.io/, Clisp}
+do not have denormal numbers.
+
+@example
+(%i1) unit_in_last_place(0);
+(%o1)                                  1
+(%i2) unit_in_last_place(-123);
+(%o2)                                  1
+(%i3) unit_in_last_place(2/3);
+(%o3)                                  0
+(%i4) unit_in_last_place(355/113);
+(%o4)                                  0
+(%i5) unit_in_last_place(0b0);
+(%o5)                                0.0b0
+(%i6) unit_in_last_place(0.0);
+(%o6)                       4.940656458412465e-324
+(%i7) unit_in_last_place(1.0);
+(%o7)                        1.110223024625157e-16
+(%i8) unit_in_last_place(1b0);
+(%o8)                        1.387778780781446b-17
+(%i9) unit_in_last_place(100.0);
+(%o9)                         1.4210854715202e-14
+(%i10) unit_in_last_place(100b0);
+(%o10)                       1.77635683940025b-15
+(%i11) fpprec:32;
+(%o11)                                32
+(%i12) unit_in_last_place(1b0);
+(%o12)               1.5407439555097886824447823540679b-33
+(%i13) unit_in_last_place(100b0);
+(%o13)               1.972152263052529513529321413207b-31
+@end example
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@closecatbox
+
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @page
