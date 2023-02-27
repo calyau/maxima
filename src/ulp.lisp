@@ -14,11 +14,10 @@
 ;;; will not work for denormalized single-precision floats for example.
 (in-package "MAXIMA")
 
-(defconstant +most-negative-float-exponent+
-  #-cmucl
-  (nth-value 1 (integer-decode-float +least-positive-flonum+))
-  #+cmucl
-  -1126)
+(defconstant +most-negative-normalized-float-exponent+
+  (nth-value 1 (decode-float $least_positive_normalized_float))
+  "The smallest exponent that decode-float can return for a normalized
+  number.")
 
 (defmfun $unit_in_last_place (f)
   (cond ((integerp f) 1)
@@ -26,15 +25,24 @@
 	((floatp f)
 	 (cond
 	   ((= f 0.0)
-	    +least-positive-flonum+)
+	    $least_positive_float)
 	   (t
 	    (multiple-value-bind (significand expon)
-		(integer-decode-float f)
-	      (expt 2d0
-		    (if (and ($is_power_of_two significand)
-			     (> expon +most-negative-float-exponent+))
-			(+ expon -1)
-			expon))))))
+		(decode-float f)
+	      ;; If the exponent is smaller than the smallest
+	      ;; normalized exponent, the ULP is the smallest float.
+	      ;; Otherwise, the ULP has an exponent that is
+	      ;; float-digits smaller, except when the fraction is a
+	      ;; power of two, where we have to increase the exponent
+	      ;; by 1.
+	      (if (> expon +most-negative-normalized-float-exponent+)
+		  (scale-float 0.5d0
+			       (- expon
+				  (float-digits f)
+				  (if ($is_power_of_two significand)
+				      0
+				      -1)))
+		  $least_positive_float)))))
 	(($bfloatp f)
 	 (let ((significand (cadr f))
 	       (expon (- (caddr f) (bigfloat-prec f))))
@@ -61,7 +69,7 @@
 	      (= 0 (logand (abs n) (+ (abs n) -1)))))
 	((floatp n)
 	 (and (> n 0.0)
-	      ($is_power_of_two (integer-decode-float n))))
+	      (= 0.5 (decode-float n))))
 	(($bfloatp n)
 	 ($is_power_of_two (cadr n)))
 	((ratnump n)
