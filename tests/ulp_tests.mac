@@ -10,17 +10,17 @@ unit_in_last_place(2/3) ;
 unit_in_last_place(0.0b0) ;
 0.0b0 ;
 
-unit_in_last_place(0.0) ;
-least_positive_float ;
+unit_in_last_place(0.0) - least_positive_float ;
+0.0;
 
-unit_in_last_place(2*unit_in_last_place(0.0));
-least_positive_float ;
+unit_in_last_place(2*unit_in_last_place(0.0)) - least_positive_float ;
+0.0;
 
-unit_in_last_place(unit_in_last_place(0.0)*(2^53+1)) ;
-least_positive_float ;
+unit_in_last_place(unit_in_last_place(0.0)*(2^53+1)) - least_positive_float ;
+0.0;
 
-unit_in_last_place(unit_in_last_place(0.0)*(2^53+2)) ;
-2*least_positive_float ;
+unit_in_last_place(unit_in_last_place(0.0)*(2^53+2)) - 2*least_positive_float ;
+0.0;
 
 2*unit_in_last_place(float((0+2^52)/2^1073)) - unit_in_last_place(float((1+2^52)/2^1073)) ;
 0.0 ;

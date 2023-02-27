@@ -15,7 +15,13 @@
 (in-package "MAXIMA")
 
 (defconstant +most-negative-normalized-float-exponent+
-  (nth-value 1 (decode-float $least_positive_normalized_float))
+  (let ((expo (nth-value 1 (decode-float $least_positive_normalized_float))))
+    ;; Some lisps may not have support for denormals, like Clisp.  In
+    ;; that case set the exponent to be the exponent of the smallest
+    ;; float, add the number of fraction bits, and subtract 1.
+    (if (/= $least_positive_float $least_positive_normalized_float)
+	expo
+	(+ expo (float-digits 1d0) -1)))
   "The smallest exponent that decode-float can return for a normalized
   number.")
 
