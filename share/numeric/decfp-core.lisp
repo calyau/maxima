@@ -42,7 +42,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
 ;; Reduce the number of decimal digits in a decimal bigfloat B
 ;; to the number specified
 
-(defun $decimalfptrim(B)		; B is a bigfloat
+(defmfun $decimalfptrim(B)		; B is a bigfloat
   (if (decimalfpp B)
       (cons (car B)(decimalfptrim (cdr B) t))  ;;trim excess digits
     ($bfloat B))) ;; if its binary, $bfloat should trim it
@@ -275,7 +275,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
 ;; if they are typed in as 1.2L0 etc  Or maybe if they are integers??
 
 
-(defun $bfloat (x) ;; used by too many other programs. need to replace it here
+(defmfun $bfloat (x) ;; used by too many other programs. need to replace it here
   (cond 
    ((bigfloatp x))	   ; return x, possibly changed precision
    ((numberp x)		   ;; favors decimal conversion for CL numbers
@@ -301,7 +301,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
    ;; here we return to the previous program
    (t  ($binarybfloat x))))
 
-(defun $decbfloat (x)
+(defmfun $decbfloat (x)
   (cond 
    ((decimalfpp x) 
     (if (null $rounddecimalfloats) x	; just return it
@@ -327,7 +327,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
 	(b (cdr ba)))
     (dotimes (i e (decbcons (decimalfptrim ans))) (setf ans (decfptimes ans b)))))
 
-(defun $binarybfloat (x &aux (y nil))
+(defmfun $binarybfloat (x &aux (y nil))
     (cond ((setf y (bigfloatp x)) y )
 	  ((or (numberp x)
 	       (member x '($%e $%pi $%gamma) :test #'eq))
@@ -710,7 +710,7 @@ This doesn't fix it.
 
 ;; from maxmin.lisp
 
-(defun $rationalize (e)
+(defmfun $rationalize (e)
 
   (setq e (ratdisrep e))
   (cond ((floatp e) 
@@ -760,17 +760,17 @@ rationalize(1.0L-1)-1/10		; ; should be zero
 ;; these 3 functions below are not needed .. see advise-fun-simp
 ;; for the workaround.
 #+ignore
-(defun $decfloor(f)  
+(defmfun $decfloor(f)  
   (if (decimalfpp f) (floor (* (cadr f)(expt 10 (caddr f))))
     (mfuncall '$floor f)))
 
 #+ignore
-(defun $decceiling(f)
+(defmfun $decceiling(f)
   (if (decimalfpp f)(ceiling (* (cadr f)(expt 10 (caddr f))))
     (mfuncall '$ceiling f)))
 
 #+ignore
-(defun $dectruncate(f)
+(defmfun $dectruncate(f)
   (if (decimalfpp f)(truncate (* (cadr f)(expt 10 (caddr f))))
     (mfuncall '$truncate f)))
 
@@ -790,13 +790,13 @@ rationalize(1.0L-1)-1/10		; ; should be zero
 
 (defvar *oldremainder (symbol-function '$remainder))
 
-(defun $remainder (x y)  ;; convert to rational?  remainder is always 0 in Rational Field
+(defmfun $remainder (x y)  ;; convert to rational?  remainder is always 0 in Rational Field
   (if (decimalfpp x)(setf x (bigfloat2rat x)))
   (if (decimalfpp y)(setf y (bigfloat2rat y)))
 ;  (format t "~% x=~s y=~s" x y) test
   (funcall *oldremainder x y))
       
-(defun $decimalfpp(x)(if (decimalfpp x) t nil))      
+(defmfun $decimalfpp(x)(if (decimalfpp x) t nil))      
       
 
 
