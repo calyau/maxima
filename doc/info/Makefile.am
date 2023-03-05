@@ -29,7 +29,7 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  Bugs.texi Help.texi Command.texi DataTypes.texi Constants.texi Lists.texi \
  Arrays.texi defstruct.texi Expressions.texi Operators.texi Evaluation.texi \
  Simplification.texi MathFunctions.texi Database.texi Plotting.texi \
- Input.texi Polynomials.texi Special.texi Elliptic.texi Limits.texi \
+ Input.texi Polynomials.texi extensions.texi Special.texi Elliptic.texi Limits.texi \
  Differentiation.texi Integration.texi Equations.texi Differential.texi \
  Numerical.texi Matrices.texi Affine.texi Itensor.texi Ctensor.texi \
  Atensor.texi Series.texi Number.texi Symmetries.texi Groups.texi \

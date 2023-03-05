@@ -316,6 +316,8 @@ File Input and Output
 Polynomials
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::
+* Introduction to algebraic extensions::
+* Functions and Variables for algebraic extensions::
 
 Special Functions
 * Introduction to Special Functions:: 
@@ -735,6 +737,7 @@ Understanding maxima's output
 @node Polynomials, Special Functions, File Input and Output, Top
 @chapter Polynomials
 @include Polynomials.texi
+@include extensions.texi
 
 @node Special Functions, Elliptic Functions, Polynomials, Top
 @chapter Special Functions

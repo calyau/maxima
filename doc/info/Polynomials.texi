@@ -2,6 +2,9 @@
 @menu
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::  
+* Introduction to algebraic extensions::
+* Functions and Variables for algebraic extensions::
+
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -74,7 +77,7 @@ symbol @code{/T/} follows the line label of such expressions.
 @c end concepts Polynomials
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynomials
+@node Functions and Variables for Polynomials,  Introduction to algebraic extensions, Introduction to Polynomials, Polynomials
 @section Functions and Variables for Polynomials
 @c -----------------------------------------------------------------------------
 

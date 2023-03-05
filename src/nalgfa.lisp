@@ -1,3 +1,4 @@
+
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;     The data in this file contains enhancements.                   ;;;;;
@@ -109,18 +110,20 @@
 	    ((null l))
 	  (rplaca l (pdifference (car l) (ptimes (car b) (car tv))))))))
 
-(defun algtrace (r p)
-  (cond ((eq (caar r) (car p))
-	 (ratreduce (algtrace1 (pcoefvec (car r))
-			       (cdr (pcoefvec p)))
-		    (cdr r)))
-	((ratreduce (pctimes (cadr p) (car r))
+(defun algtrace (f p)
+  (let* ((r (cadr (pdivide (car f) p))))
+    (if (or (constantp (car r))                  ; r constant 
+	    (not (eq (caar r) (car p))))          ; r constant in main var of p
+	(ratreduce (pctimes (cadr p) (car r)) (cdr r)) ; r*deg(p)
+	(ratreduce (algtrace1 (pcoefvec (car r)) (cdr (pcoefvec p)))
 		    (cdr r)))))
 
-(defmfun $algtrace (r p var)
+
+(defmfun $algtrace (f p var)
   (let ((varlist (list var))
 	(genvar nil))
-    (rdis* (algtrace (rform r) (car (rform p))))))
+    (rdis* (algtrace (rform f) (car (rform p))))))
+
 
 (defun good-form (l) ;;bad -> good
   (do ((l l (cddr l))
@@ -418,7 +421,7 @@
     (rplaca norm (primpart (car norm)))
     (putprop gvar (cdar norm) 'tellrat)
     (setq $algebraic t
-	  beta (pgcd (cadddr norm)
+	  beta (subresgcd (cadddr norm)
 		     (pvsubst (caddr norm)
 			      (car b)
 			      (cadr norm))))
@@ -427,9 +430,35 @@
 			 (rattimes (cons (- (cadddr (cdr norm))) 1)
 				   beta t)))
     (list (car norm) ;;minimal poly
-	  (pplus (make-poly a) ;;new prim elm in old guys
-		 (list (car b) 1 (- (cadddr (cdr norm)))))
+	  (pplus (make-poly (car a)) ;;new prim elm in old guys
+		 (list (car b) 1  (car (last norm))))
 	  *alpha* beta)))	;;in terms of gamma
+
+(defun $primelmt (f_b p_a c)
+  ;;p_a(a) is an irreducible polynomial in K defining an extension
+  ;;K[a] of degree n_a. Then f_b(b) is a polynomial in K[a] of degree
+  ;;n_f , which defines a new extension K[a,b]. The output is a
+  ;;polynomial of degree n_a*n_b, and the expression of its variable
+  ;;in terms of a root a of p_a and a root b of f_b.
+  ;;One assumes that p_a only depends on one variable a and f_b of two
+  ;;different variables b and a. So this works only for algebraic
+  ;;numbers, not algebraic curves.
+
+
+
+  (let* ((vla (newvar p_a))  ; ensure varlist = ($a $b)
+	 (vlf (newvar f_b))
+	 (varlist (cons (car vla) (remove (car vla) vlf)))
+	 (genvar)  ; start with a clean space of vars
+	 (genpairs)
+	 (p (cadr (ratf p_a)))          ;p_a in rat form
+	 (f (cadr (ratf f_b)))          ;f_b in rat form mainvar b
+	 (algvar (caar (newsym c)))  ;new primitive element
+	 (prim  (primelmt f p algvar)))
+    (list '(mlist) (pdis (car prim)) (pdis (cadr prim)))))
+	  ;(rdis (caddr prim)) (rdis (cadddr prim))))) ;debug alpha beta
+
+
 
 ;; discriminant of a basis
 
@@ -441,5 +470,7 @@
 
 (defun bdiscr (l minp)
   (det (mapcar #'(lambda (q1)
-		   (mapcar #'(lambda (q2) (algtrace (ptimes q1 q2) minp)) l))
-	       l)))
+		   (mapcar #'(lambda (q2)
+			       (algtrace (cons (ptimes (car q1) 
+						 (car q2)) 1)
+					 minp)) l)) l)))
