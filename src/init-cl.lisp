@@ -583,6 +583,7 @@
   "Run Maxima in its own package."
   (in-package :maxima)
   (initialize-runtime-globals)
+  (load-user-init-file)
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
     (unwind-protect
@@ -594,6 +595,24 @@
 				(macsyma-top-level input-stream batch-flag))))
       (delete-temp-files)
     )))
+
+;; If the user specified an init file, use it.  If not, use the
+;; default init file in the userdir directory, but only if it
+;; exists.  A user-specified init file is searched in the search
+;; paths.
+
+(defun load-user-init-file ()
+    (flet
+	((maybe-load-init-file (loader default-init)
+	   (let ((init-file
+		   (combine-path *maxima-userdir* default-init)))
+	     (when (and *maxima-load-init-files*
+			(file-exists-p init-file))
+	       (funcall loader init-file)))))
+      ;; Catch errors from $load or $batchload which can throw to 'macsyma-quit.
+      (catch 'macsyma-quit
+	(maybe-load-init-file #'$load *maxima-initlisp*)
+	(maybe-load-init-file #'$batchload *maxima-initmac*))))
 
 (defun initialize-runtime-globals ()
   (setf *load-verbose* nil)

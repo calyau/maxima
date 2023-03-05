@@ -518,22 +518,6 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	  (if (not *maxima-quiet*) (maxima-banner))
 	  (setq *maxima-started* t)))
     
-    ;; If the user specified an init file, use it.  If not, use the
-    ;; default init file in the userdir directory, but only if it
-    ;; exists.  A user-specified init file is searched in the search
-    ;; paths.
-    (flet
-	((load-init-file (loader default-init)
-	   (let ((init-file
-		   (combine-path *maxima-userdir* default-init)))
-	     (when (and *maxima-load-init-files*
-			(file-exists-p init-file))
-	       (funcall loader init-file)))))
-      ;; Catch errors from $load or $batchload which can throw to 'macsyma-quit.
-      (catch 'macsyma-quit
-	(load-init-file #'$load *maxima-initlisp*)
-	(load-init-file #'$batchload *maxima-initmac*)))
-
     (catch 'quit-to-lisp
       (in-package :maxima)
       (loop
