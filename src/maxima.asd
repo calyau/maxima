@@ -502,7 +502,8 @@
 		 (:file "airy"
 		  :depends-on ("ellipt"))
 		 (:file "plasma")
-		 (:file "intpol")))
+		 (:file "intpol")
+		 (:file "ulp")))
 
    (:module integration :pathname ""
     :depends-on (globals defmfun compatibility-macros)
