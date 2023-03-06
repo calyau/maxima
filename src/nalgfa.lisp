@@ -307,17 +307,17 @@
 	  (do ((polys (list p) )
 	       (nminpoly)
 	       (*nosplitf nil nil)
-	       (*alpha* (cons (make-poly (car minpoly)) 1)))
+	       (alpha (cons (make-poly (car minpoly)) 1)))
 	      ((null polys)
 	       (cons minpoly zeroes))
-	    (push *alpha* zeroes)
+	    (push alpha zeroes)
 	    (putprop (car minpoly) (cdr minpoly) 'tellrat)
 	    (rplaca polys
 		    (car
-		     (rquotient (pctimes (cdr *alpha*) (car polys))
+		     (rquotient (pctimes (cdr alpha) (car polys))
 				(pdifference
-				 (pctimes (cdr *alpha*) (pget (caar polys)))
-				 (car *alpha*)))))
+				 (pctimes (cdr alpha) (pget (caar polys)))
+				 (car alpha)))))
 	    (setq polys
 		  (mapcan
 		   #'(lambda (q)
@@ -336,7 +336,7 @@
 	      (let ((beta
 		     (plsolve (pgcd (cons (caar *nosplitf) (cdr minpoly))
 				    (exchangevar (car *nosplitf) *algvar)))))
-		(setq *alpha* (ratplus (cons (make-poly *algvar) 1)
+		(setq alpha (ratplus (cons (make-poly *algvar) 1)
 				     (rattimes (cons (- (cadr *nosplitf)) 1)
 					       beta t)))
 		(setq zeroes
@@ -417,7 +417,7 @@
   ;;a is a poly with coeff's in k(b)
   ;;gvar is new variable
   (let ((norm (sqfrnorm (cons gvar (cdr a)) b gvar))
-	(*alpha*) (beta) ($ratalgdenom t))
+	(alpha) (beta) ($ratalgdenom t))
     (rplaca norm (primpart (car norm)))
     (putprop gvar (cdar norm) 'tellrat)
     (setq $algebraic t
@@ -426,13 +426,13 @@
 			      (car b)
 			      (cadr norm))))
     (setq beta (plsolve beta)
-	  *alpha* (ratplus (cons (make-poly gvar) 1)
+	  alpha (ratplus (cons (make-poly gvar) 1)
 			 (rattimes (cons (- (cadddr (cdr norm))) 1)
 				   beta t)))
     (list (car norm) ;;minimal poly
 	  (pplus (make-poly (car a)) ;;new prim elm in old guys
 		 (list (car b) 1  (car (last norm))))
-	  *alpha* beta)))	;;in terms of gamma
+	  alpha beta)))	;;in terms of gamma
 
 (defun $primelmt (f_b p_a c)
   ;;p_a(a) is an irreducible polynomial in K defining an extension
