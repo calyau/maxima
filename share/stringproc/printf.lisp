@@ -432,8 +432,10 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
           (($numberp arg) ;; Maxima rational, bigfloat
             (setq arg ($float arg)) )
           ((and ($constantp arg) ;; %pi, sqrt(2), ...
-                ($freeof '$%i arg) (not (member arg '(t nil))) (not ($listp arg)))
-            (setq arg ($float arg)) )
+                (not (member arg '(t nil)))
+                (not ($listp arg))
+                (let ((would-be-arg ($float arg)))
+                  (and ($numberp would-be-arg) (setq arg would-be-arg)))))
           (t
             (gf-merror (intl:gettext 
               "`printf': argument can't be supplied to ~m-directive: ~m" ) spec arg )))))
