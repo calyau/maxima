@@ -454,6 +454,34 @@ with_stdout (s,
     tex('integrate(f(x)^n,x,0,inf)^4),
     tex('sum(f(x)^x,x,0,n)^4),
 
+    print ("Typesetting conjugates."),
+
+    simp: false,
+
+    declare ([x, y, z], complex),
+    declare ([a, b, c], real),
+
+    tex (conjugate (x)),
+    tex (conjugate (conjugate (x))),
+    tex (conjugate (x)^2),
+    tex (conjugate (x)^(k + 2)),
+    tex (conjugate (x^2)),
+    tex (conjugate (x + y)),
+    tex (conjugate (x + y)^m),
+    tex (conjugate (x*y)),
+    tex (conjugate (x*y)^n),
+    tex (conjugate (x/y)),
+    tex (conjugate (x/y)^k),
+    tex (conjugate ((-1)^%i)),
+    tex (conjugate (sin (x))),
+    tex (sin (conjugate (x))),
+    tex (conjugate (sin (x))^n),
+    tex (sin (conjugate (x))^n),
+    tex (conjugate (sin (x)^n)),
+    tex (sin (conjugate (x)^n)),
+
+    simp: true,
+
     print ("The end!"),
     print ("\\end{document}"));
 

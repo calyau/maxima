@@ -567,6 +567,7 @@
 	     (:file "testsuite")
 	     (:file "mload")
 	     (:file "suprv1")
+	     (:file "mactex")
 	     (:file "dskfn")))
    (:module factoring :source-pathname ""
 	    :depends-on ("globals" "defmfun")
@@ -769,7 +770,6 @@
 		    ;; be loaded first.
 		    :depends-on ("hypergeometric"))
 	     (:file "todd-coxeter")
-	     (:file "mactex")
 	     (:file "plot")))
    (:module graphics-drivers :source-pathname ""
 	    :depends-on ("defmfun")

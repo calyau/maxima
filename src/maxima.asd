@@ -413,6 +413,7 @@
                  (:file "testsuite")
                  (:file "mload") 
                  (:file "suprv1")
+                 (:file "mactex")
                  (:file "dskfn")))
    (:module factoring :pathname ""
     :depends-on (globals defmfun compatibility-macros)
@@ -588,7 +589,6 @@
      (:file "hypergeometric")
      (:file "nfloat")
      (:file "todd-coxeter")
-     (:file "mactex")
      (:file "plot")))
    (:module graphics-drivers :pathname ""
     :depends-on (compatibility-macros)

@@ -15,9 +15,20 @@
 ;; Let's remove built-in symbols from list for user-defined properties.
 (setq $props (remove '$conjugate $props))
 
-(defprop $conjugate tex-postfix tex)
-(defprop $conjugate ("^\\star") texsym)
-(defprop $conjugate 160. tex-lbp)
+(setf (get 'conjugate-superscript-star 'tex-lbp) (tex-lbp 'mexpt))
+(setf (get 'conjugate-superscript-star 'tex-rbp) (tex-rbp 'mexpt))
+
+(defun tex-conjugate (x l r)
+  ;; Punt to TeX output for MEXPT, but defeat the special case for
+  ;; powers of trig functions, e.g. sin(x)^2 which is set as sin^2 x,
+  ;; by supplying an expression which has a different operator
+  ;; (namely CONJUGATE-SUPERSCRIPT-STAR) instead of MEXPT.
+  (tex-mexpt `((conjugate-superscript-star) ,(second x) "\\ast") l r))
+
+(defprop $conjugate tex-conjugate tex)
+(defprop $conjugate 121. tex-lbp)
+(defprop $conjugate 120. tex-rbp)
+
 (defprop $conjugate simp-conjugate operators)
 
 ;; Maybe $conjugate should have a msimpind property. But with some Maxima versions,

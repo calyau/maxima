@@ -272,7 +272,7 @@
       (concatenate 'string "\\mbox{\\verb|" (string x) "|}")))
 
 ;; Read forms from file F1 and output them to F2
-(defun tex-forms (f1 f2 &aux tem (eof *mread-eof-obj*))
+(defun tex-forms (f1 f2 &aux tem (eof nil))
   (with-open-file (st f1)
     (loop while (not (eq (setq tem (mread-raw st eof)) eof))
 	   do (tex1 (third tem) f2))))
