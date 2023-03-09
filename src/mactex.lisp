@@ -60,14 +60,19 @@
 
 (defvar *tex-environment-default* '("$$" . "$$"))
 
+(defmfun $get_tex_environment_default ()
+  `((mlist) ,(car *tex-environment-default*) ,(cdr *tex-environment-default*)))
+
+(defmfun $get_tex_environment (x)
+  (if (getopr x) (setq x (getopr x)))
+  (let ((e (get-tex-environment x)))
+    `((mlist) ,(car e) ,(cdr e))))
+
 (defmfun $set_tex_environment_default (env-open env-close)
   (setq env-open ($sconcat env-open))
   (setq env-close ($sconcat env-close))
   (setq *tex-environment-default* `(,env-open . ,env-close))
   ($get_tex_environment_default))
-
-(defmfun $get_tex_environment_default ()
-  `((mlist) ,(car *tex-environment-default*) ,(cdr *tex-environment-default*)))
 
 (defmfun $set_tex_environment (x env-open env-close)
   (setq env-open ($sconcat env-open))
@@ -75,11 +80,6 @@
   (if (getopr x) (setq x (getopr x)))
   (setf (get x 'tex-environment) `(,env-open . ,env-close))
   ($get_tex_environment x))
-
-(defmfun $get_tex_environment (x)
-  (if (getopr x) (setq x (getopr x)))
-  (let ((e (get-tex-environment x)))
-    `((mlist) ,(car e) ,(cdr e))))
 
 (defun get-tex-environment (x)
   (cond
