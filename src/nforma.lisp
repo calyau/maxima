@@ -130,22 +130,15 @@
 	((null (cdar form)) (rplaca form (list (caar form) 'ratsimp)))
 	(t (mapc #'rdis1 (cdr form)))))
 
-;;(DEFMFUN NFORMAT-ALL (FORM)
-;;  (SETQ FORM (NFORMAT FORM))
-;;  (IF (OR (ATOM FORM) (EQ (CAAR FORM) 'BIGFLOAT))
-;;      FORM
-;;      (CONS (DELSIMP (CAR FORM)) (MAPCAR #'NFORMAT-ALL (CDR FORM)))))
-;;Update from F302
-;; used only in comm.lisp substitute, mpart.
 (defun nformat-all (form)
   (setq form (nformat form))
-  (if (or (atom form) (eq (caar form) 'bigfloat))
+  (if (or (atom form)
+      (member (caar form) '(bigfloat rat))) ;can't recurse over cdrs
       form
-      (cons (delsimp (car form))
-	    (if (member (caar form) '(mdo mdoin) :test #'eq)
-		(mapcar #'(lambda (u) (if u (nformat-all u))) (cdr form))
-		(mapcar #'nformat-all (cdr form))))))
-
+    (cons (delsimp (car form))
+      (if (member (caar form) '(mdo mdoin))
+          (mapcar #'(lambda (u) (if u (nformat-all u))) (cdr form))
+        (mapcar #'nformat-all (cdr form))))))
 
 ;;; we should define all the formatters in the file after the helper functions like  form-mplus
 	   
