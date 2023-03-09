@@ -4393,8 +4393,8 @@ first kind:
 	      (ftake '%elliptic_f
 		     (ftake '%asin
 			    (power (add m (mul u u))
-				   1//2)
-			    m)))
+				   1//2))
+		     m))
 	     (%inverse_jacobi_sd
 	      ;; A&S 17.4.51
 	      (ftake '%elliptic_f
