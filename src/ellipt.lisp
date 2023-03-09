@@ -1600,6 +1600,59 @@ first kind:
 	   (div (mul 2 (mul (add 2 (power 2 1//2))
 			    (power '$%pi (div 3 2))))
 		(power (gm (div -1 4)) 2)))
+	  ((or (alike1 m (div (add 2 (power 3 1//2))
+			      4))
+	       (alike1 m (add (div (power 3 1//2)
+				   4)
+			      1//2)))
+	   ;; elliptic_kc((sqrt(3)+2)/4) = sqrt(%pi)*gamma(1/3)/gamma(5/6).
+	   ;;
+	   ;; First evaluate this integral, where y = sqrt(1+t^3).
+	   ;;
+	   ;;   integrate(1/y,t,-1,inf) = integrate(1/y,t,-1,0) + integrate(1/y,t,0,inf).
+	   ;;
+	   ;; The second integral, maxima gives beta(1/6,1/3)/3.
+	   ;;
+	   ;; For the first, we can use the change of variable x=-u^(1/3) to get
+	   ;;
+	   ;;   integrate(1/sqrt(1-u)/u^(2/3),u,0,1)
+	   ;;
+	   ;; which is a beta integral that maxima can evaluate to
+	   ;; beta(1/3,1/2)/3.  Then we see the value of the initial
+	   ;; integral is
+	   ;;
+	   ;;    beta(1/6,1/3)/3 + beta(1/3,1/2)/3
+	   ;;
+	   ;; (Thanks to Guilherme Namen for this derivation on the mailing list, 2023-03-09.)
+	   ;;
+	   ;; We can simplify this expression by converting to gamma functions:
+	   ;;
+	   ;;   beta(1/6,1/3)/3 + beta(1/3,1/2)/3 = 
+	   ;;     (gamma(1/3)*(gamma(1/6)*gamma(5/6)+%pi))/(3*sqrt(%pi)*gamma(5/6));
+	   ;;
+	   ;; Using the reflection formula gamma(1-z)*gamma(z) =
+	   ;; %pi/sin(%pi*z), we can write gamma(1/6)*gamma(5/6) =
+	   ;; %pi/sin(%pi*1/6) = 2*%pi.  Finally, we have
+	   ;;
+	   ;;   sqrt(%pi)*gamma(1/3)/gamma(5/6);
+	   ;;
+	   ;; All that remains is to show that integrate(1/y,t) can be
+	   ;; written as an inverse_jacobi_cn function with modulus
+	   ;; (sqrt(3)+2)/4.
+	   ;;
+	   ;; First apply the substitution
+	   ;;
+	   ;;    s = (t+sqrt(3)+1)/(t-sqrt(3)+1).  We then have the integral
+	   ;;
+	   ;;   C*integrate(1/sqrt(s^2-1)/sqrt(s^2+4*sqrt(3)+7),s)
+	   ;;
+	   ;; where C is some constant.  From A&S 14.4.49, we can see
+	   ;; this integral is the inverse_jacobi_nc function with
+	   ;; modulus of (4*sqrt(3)+7)/(4*sqrt(3)+7+1) =
+	   ;; (sqrt(3)+2)/4.
+	   (div (mul (power '$%pi 1//2)
+		     (ftake '%gamma (div 1 3)))
+		(ftake '%gamma (div 5 6))))
 	  ($hypergeometric_representation
 	   ;; See http://functions.wolfram.com/08.02.26.0001.01
 	   ;;
