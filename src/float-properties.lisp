@@ -135,3 +135,70 @@
 	 (merror (intl:gettext "~:@M: is_power_of_two is only defined for numbers")
 		 n))))
 
+;; $scale_float(f, n)
+;;
+;;   A Maxima interface to CL:SCALE-FLOAT.  Basically compuutes f *
+;;   2^n, but this should be exact.
+(defmfun $scale_float (f n)
+  (unless (integerp n)
+    (merror (intl:gettext "scale_float: second arg must be an integer: ~M~%")
+	    n))
+  (cond
+    ((floatp f)
+     (scale-float f n))
+    (t
+     (merror (intl:gettext  "scale_float: first arg must be a float or bfloat: ~M~%")
+	     f))))
+
+;; $decode_float(f)
+;;
+;;   A Maxima interface to CL:DECODE-FLOAT which returns a list of a
+;; float, exponent, and a sign such that (* sign (scale-float float
+;; exponent)) is exactly the same number.
+;;
+;;   We differ from CL:DECODE-FLOAT in that Except we return a mantissa
+;; in the range [1, 2) instead of [0.5,1) because that's what IEEE
+;; mantissas are.  The exponent is adjusted appropriately.
+(defmfun $decode_float (f)
+  (cond
+    ((floatp f)
+     (multiple-value-bind (mant expo sign)
+	 (cl:decode-float f)
+       (make-mlist (* 2 mant)
+		   (1- expo)
+		   sign)))
+    (t
+     (merror (intl:gettext "decode_float is only defined for floats and bfloats: ~M")
+	     f))))
+
+;; $integer_decode_float(f)
+;;
+;;   A Maxima interfact to CL:INTEGER-DECODE-FLOAT which returns a
+;; list of an integer, an exponent and a sign such that (* sign
+;; (scale-float (float integer 1d0) exponent)) returns the original
+;; number.
+;;
+;;   However, there's quite a bit of variety in Lisps when returning a
+;; value for denormals (if supported).  We don't want to expose this
+;; to Maxima, so we choose to decide how to handle that.  Thus, the
+;; number of bits in the integer part is the same as (float-precision
+;; f).  If not, we scale the integer appropriately and the exponent as
+;; well.
+(defmfun $integer_decode_float (f)
+  (cond
+    ((floatp f)
+     (multiple-value-bind (int expo sign)
+	 (integer-decode-float f)
+       (let ((shift (- (integer-length int) (float-precision f))))
+	 ;; If shift > 0, we have a denormal and want to reduce the
+	 ;; number of bits in the integer part.
+	 (if (plusp shift)
+	     (make-mlist (ash int (- shift))
+			 (+ expo shift)
+			 sign)
+	     (make-mlist int
+			 expo
+			 sign)))))
+    (t
+     (merror (intl:gettext "decode_float is only defined for floats and bfloats: ~M")
+	     f))))
