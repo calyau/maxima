@@ -33,7 +33,8 @@
 		 (:file "autoconf-variables" :depends-on ("maxima-package"))))
    (:module globals :pathname ""
     :components
-    ((:file "globals")))
+    ((:file "globals")
+     (:file "ulp")))
    (:module intl :pathname ""
     :components
     (
@@ -503,8 +504,7 @@
 		 (:file "airy"
 		  :depends-on ("ellipt"))
 		 (:file "plasma")
-		 (:file "intpol")
-		 (:file "ulp")))
+		 (:file "intpol")))
 
    (:module integration :pathname ""
     :depends-on (globals defmfun compatibility-macros)

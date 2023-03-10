@@ -163,7 +163,8 @@
    (:module globals :source-pathname ""
 	    :depends-on ("intl")
 	    :components
-	    ((:file "globals")))
+	    ((:file "globals")
+	    (:file "float-properties")))
    (:module info :source-pathname ""
 	    :components
 	    ((:file "pregexp")
@@ -631,8 +632,7 @@
 	     (:file "airy"
 		    :depends-on ("ellipt"))
 	     (:file "plasma")
-	     (:file "intpol")
-	     (:file "ulp")))
+	     (:file "intpol")))
    (:module reader :source-pathname ""
 	    :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
