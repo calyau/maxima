@@ -33,8 +33,7 @@
 		 (:file "autoconf-variables" :depends-on ("maxima-package"))))
    (:module globals :pathname ""
     :components
-    ((:file "globals")
-     (:file "ulp")))
+    ((:file "globals")))
    (:module intl :pathname ""
     :components
     (
@@ -58,6 +57,10 @@
    (:module defmfun :pathname ""
     :components
     ((:file "defmfun-check")))
+   (:module float-properties :pathname ""
+    :depends-on (defmfun)
+    :components
+    ((:file "float-properties")))
    (:module compatibility-macros :pathname ""
     :components (#+gcl (:file "gcl-compat")
                  (:file "commac")))

@@ -163,8 +163,7 @@
    (:module globals :source-pathname ""
 	    :depends-on ("intl")
 	    :components
-	    ((:file "globals")
-	    (:file "float-properties")))
+	    ((:file "globals")))
    (:module info :source-pathname ""
 	    :components
 	    ((:file "pregexp")
@@ -186,6 +185,10 @@
    (:module defmfun :source-pathname ""
 	    :components
 	    ((:file "defmfun-check")))
+   (:module float-properties :source-pathname ""
+	    :depends-on ("defmfun")
+	    :components
+	    ((:file "float-properties")))
    (:module compatibility-macros :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
