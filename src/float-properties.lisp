@@ -138,7 +138,7 @@
 ;; $scale_float(f, n)
 ;;
 ;;   A Maxima interface to CL:SCALE-FLOAT.  Basically compuutes f *
-;;   2^n, but this should be exact.
+;; 2^n, but this should be exact.
 (defmfun $scale_float (f n)
   (unless (integerp n)
     (merror (intl:gettext "scale_float: second arg must be an integer: ~M~%")
@@ -146,6 +146,10 @@
   (cond
     ((floatp f)
      (scale-float f n))
+    (($bfloatp f)
+     ;; Should probably diddle the bfloat parts directly, but it's
+     ;; easier to use bigfloat:scale-float.
+     (to (bigfloat:scale-float (bigfloat:bigfloat f) n)))
     (t
      (merror (intl:gettext  "scale_float: first arg must be a float or bfloat: ~M~%")
 	     f))))
@@ -167,6 +171,12 @@
        (make-mlist (* 2 mant)
 		   (1- expo)
 		   sign)))
+    (($bfloatp f)
+     (multiple-value-bind (mant expo sign)
+	 (bigfloat:decode-float (bigfloat:bigfloat f))
+       (make-mlist (to (bigfloat:* mant 2))
+		   (1- expo)
+		   (to sign))))
     (t
      (merror (intl:gettext "decode_float is only defined for floats and bfloats: ~M")
 	     f))))
@@ -199,6 +209,12 @@
 	     (make-mlist int
 			 expo
 			 sign)))))
+    (($bfloatp f)
+     (multiple-value-bind (int expo sign)
+	 (bigfloat:integer-decode-float (bigfloat:bigfloat f))
+       (make-mlist int
+		   expo
+		   sign)))
     (t
      (merror (intl:gettext "decode_float is only defined for floats and bfloats: ~M")
 	     f))))
