@@ -269,6 +269,12 @@ decode_float is only defined for floats and bfloats: %pi
 (%o6)                               1.1e-5
 @end example
 
+This is a relatively simple interface to Common Lisp
+@url{http://www.lispworks.com/documentation/HyperSpec/Body/f_dec_fl.htm,
+decode_float}.  However we return a signficand in the range
+@code{[1,2)} instead of @code({0.5, 1)}.  The former matches
+IEEE-754.  Of course, this is extended to support bfloats.
+
 @opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
@@ -498,6 +504,12 @@ For lisps that support denormal numbers, we have the following results.
 The number of bits in the integer part decreases as the denormal
 number decreases.  Bfloat numbers do not have denormals because the
 exponent is not bounded.
+
+This is a relatively simple interface to Common Lisp
+@url{http://www.lispworks.com/documentation/HyperSpec/Body/f_dec_fl.htm,
+integer_decode_float}.  However, the integer part can vary depending
+on the Lisp implementation; we return the same value, independent of
+the Lisp implementation.  Of course, this is extended to support bfloats.
 
 @opencatbox{Categories:}
 @category{Numerical evaluation}
@@ -884,6 +896,10 @@ scale_float: first arg must be a float or bfloat: 1
 scale_float: second arg must be an integer: n
  -- an error. To debug this try: debugmode(true);
 @end example
+
+This is a relatively simple interface to Common Lisp
+@url{http://www.lispworks.com/documentation/HyperSpec/Body/f_dec_fl.htm,
+scale_float}.  Of course, this is extended to support bfloats.
 
 @end deffn
 
