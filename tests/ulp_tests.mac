@@ -100,3 +100,74 @@ false ;
 is_power_of_two(1/256.0b0) ;
 true ;
 
+decode_float(3.0);
+[1.5, 1, 1.0];
+
+decode_float(-0.25);
+[1.0, - 2, - 1.0];
+
+decode_float(3b0);
+[1.5b0, 1, 1.0b0];
+
+decode_float(-0.25b0);
+[1.0b0, - 2, - 1.0b0];
+
+decode_float(least_positive_normalized_float);
+[1.0, - 1022, 1.0];
+
+decode_float(largest_float);
+[1.9999999999999998, 1023, 1.0];
+
+/* This assumes denormals are supported .*/
+decode_float(least_positive_float);
+[1.0, - 1074, 1.0];
+
+integer_decode_float(3.0);
+[6755399441055744, - 51, 1];
+
+integer_decode_float(-0.25);
+[4503599627370496, - 54, - 1];
+
+integer_decode_float(3b0);
+[54043195528445952, - 54, 1];
+
+integer_decode_float(-0.25b0);
+[36028797018963968, - 57, - 1];
+
+integer_decode_float(least_positive_normalized_float);
+[4503599627370496, - 1074, 1];
+
+integer_decode_float(largest_float);
+[9007199254740991, 971, 1];
+
+/* This assumes denormals are supported .*/
+integer_decode_float(least_positive_float);
+[1, - 1074, 1];
+
+scale_float(1.0, 2);
+4.0;
+
+scale_float(-1.0, 2);
+-4.0;
+
+scale_float(1.0, -5000);
+0.0;
+
+/*
+ * The second scale_float was determined from integer_decode_float to
+ * get the bits, and scaled by -53 to get the final result.
+ */
+scale_float(largest_float, -1024) - scale_float(float(9007199254740991),-53);
+0.0;
+
+scale_float(1b0, 2);
+4b0;
+
+scale_float(-1b0, 2);
+-4b0;
+
+scale_float(0.125b0, 3);
+1.0b0;
+
+
+
