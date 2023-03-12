@@ -239,6 +239,42 @@ of course.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{decode_float}
+@deffn {Function} decode_float (@var{f})
+@code{decode_float} takes a float @var{f} and returns a list of three
+values that characterizes @var{f}, which must be either a @code{float}
+or @code{bfloat}.  The first value has the same type as @var{f}, but
+is a number in the range @code{[1, 2)}.  The second value is an
+exponent.  The third value is a float of the same type as @var{f} and
+has the value of 1 if @var{f} is greater than or equal to 0;
+otherwise, -1.
+
+If the returned list is @code{[mantissa, expo, sign]}, then
+@code{scale_float(mantissa, exp)*sign} is identical to @var{f}.
+
+@example
+(%i1) decode_float(4e0);
+(%o1)                            [1.0, 2, 1.0]
+(%i2) decode_float(4b0);
+(%o2)                          [1.0b0, 2, 1.0b0]
+(%i3) decode_float(%pi);
+
+decode_float is only defined for floats and bfloats: %pi
+ -- an error. To debug this try: debugmode(true);
+(%i4) decode_float(float(%pi));
+(%o4)                     [1.570796326794897, 1, 1.0]
+(%i5) decode_float(1.1e-5);
+(%o5)                        [1.441792, - 17, 1.0]
+(%i6) %[1]*2^%[2];
+(%o6)                               1.1e-5
+@end example
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{evenp}
 @deffn {Function} evenp (@var{expr})
 
@@ -412,6 +448,59 @@ Examples:
 
 @opencatbox{Categories:}
 @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{integer_decode_float}
+@deffn {Function} integer_decode_float (@var{f})
+@code{integer_decode_float} takes a float @var{f} and returns a list of three
+values that characterizes @var{f}, which must be either a @code{float}
+or @code{bfloat}.  The first value is an integer.  The second value is an
+exponent.  The third value is 1 if @var{f} is positive or zero;
+otherwise, -1.
+
+If the returned list is @code{[mantissa, expo, sign]}, then
+@code{scale_float(fl(mantissa), expo)*sign} is identical to @var{f}.
+Here, @code{fl} is either @code{float} or @code{bfloat} dependingin on
+whether @var{f} is a @code{float} or a @code{bfloat}.
+
+@example
+(%i1) integer_decode_float(4.0);
+(%o1)                     [4503599627370496, - 50, 1]
+(%i2) integer_decode_float(4b0);
+(%o2)                    [36028797018963968, - 53, 1]
+(%i3) scale_float(float(%o1[1]), %o1[2]);
+(%o3)                                 4.0
+(%i4) scale_float(bfloat(%o2[1]), %o2[2]);
+(%o4)                                4.0b0
+(%i5) integer_decode_float(4);
+
+decode_float is only defined for floats and bfloats: 4
+ -- an error. To debug this try: debugmode(true);
+(%i6) integer_decode_float(1e-7);
+(%o6)                     [7555786372591432, - 76, 1]
+(%i7) integer_decode_float(1b-7);
+(%o7)                    [60446290980731459, - 79, 1]
+(%i8) scale_float(float(%o6[1]), %o6[2]);
+(%o8)                               1.0e-7
+@end example
+
+For lisps that support denormal numbers, we have the following results.
+@example
+(%i1) integer_decode_float(least_positive_float);
+(%o1)                           [1, - 1074, 1]
+(%i2) integer_decode_float(100*least_positive_float);
+(%o2)                          [100, - 1074, 1]
+(%i3) integer_decode_float(least_positive_normalized_float);
+(%o3)                    [4503599627370496, - 1074, 1]
+@end example
+The number of bits in the integer part decreases as the denormal
+number decreases.  Bfloat numbers do not have denormals because the
+exponent is not bounded.
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
 @closecatbox
 @end deffn
 
@@ -764,6 +853,41 @@ integers, otherwise @code{false}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{scale_float}
+@deffn {Function} scale_float (@var{f}, @var{n})
+@code{scale_float} scales the float @var{f} by the value
+@code{2^@var{n}}.  This is done carefully so that no round-off every
+occurs.  If @var{f} is a float, then it is possible to underflow to 0
+or overflow, depending on the value of @var{f} and @var{n}.  Bigfloats
+cannot underflow or overflow.
+
+@example
+(%i1) scale_float(2d0, 2);
+(%o1)                                 8.0
+(%i2) scale_float(2d0, -2);
+(%o2)                                 0.5
+(%i3) scale_float(-2d0, -10);
+(%o3)                            - 0.001953125
+(%i4) scale_float(1d0, -2000);
+(%o4)                                 0.0
+(%i5) scale_float(2b0, 2);
+(%o5)                                8.0b0
+(%i6) scale_float(1b0, -2000);
+(%o6)                       8.709809816217217b-603
+(%i7) scale_float(1, 5);
+
+scale_float: first arg must be a float or bfloat: 1
+ -- an error. To debug this try: debugmode(true);
+(%i8) scale_float(1.0, n);
+
+scale_float: second arg must be an integer: n
+ -- an error. To debug this try: debugmode(true);
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{unit_in_last_place}
 @deffn {Function} unit_in_last_plase (@var{n})
 
