@@ -151,8 +151,10 @@
 	((mlist simp) "rtest_nfloat"
 	 #-gcl((mlist simp) 25))
 	((mlist simp) "rtest_ilt")
-	((mlist simp) "ulp_tests")
-        ))
+	((mlist simp) "ulp_tests"
+	 ;; Clisp doesn't have denormals
+	 #+clisp
+	 ((mlist simp) 9))))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima
