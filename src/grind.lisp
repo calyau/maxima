@@ -387,6 +387,7 @@
 
 (defprop mfactorial msize-postfix grind)
 (defprop mfactorial 160. lbp)
+(defprop mfactorial 159. rbp)
 
 (defprop mexpt msz-mexpt grind)
 (defprop mexpt 140. lbp)

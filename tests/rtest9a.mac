@@ -524,3 +524,55 @@ print_string_2d (-((a + b)/c));
 
 string (-((a + b)/c));
 "-((b+a)/c)";
+
+/* SF bug #4092: "Repeated factorial (n!)! displayed the same as double factorial n!!" */
+
+(kill (n), printf (false, "~m", (n!)!));
+"(n!)!
+";
+
+printf (false, "~a", (n!)!);
+"(n!)!";
+
+tex1 ((n!)!);
+"\\left(n!\\right)!";
+
+/* verify that "!" continues to interact correctly with other operators */
+
+(kill (m, o), 0);
+0;
+
+n! + m! + o!;
+(n!) + (m!) + (o!);
+
+(n! * m! * o!);
+(n!) * (m!) * (o!);
+
+'(n! := if n = 0 then 1 else n*(n - 1)!);
+(n!) := (if (n = 0) then 1 else (n*((n - 1)!)));
+
+'(n! : m!);
+(n!) : (m!);
+
+'(n! : m! : o!);
+(n!) : ((m!) : (o!));
+
+'(n! := m! : o!);
+(n!) := ((m!) : (o!));
+
+/* verify double factorial symbol continues to work the same */
+
+n!!;
+genfact(n, n/2, 2);
+
+n!!!;
+genfact(n, n/2, 2)!;
+
+n!!!!;
+genfact(genfact(n, n/2, 2), genfact(n, n/2, 2)/2, 2);
+
+(n!)!!;
+genfact(n!, n!/2, 2);
+
+n!!*m!!;
+genfact(m, m/2, 2)*genfact(n, n/2, 2);
