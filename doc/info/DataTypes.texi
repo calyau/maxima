@@ -462,7 +462,7 @@ otherwise, -1.
 
 If the returned list is @code{[mantissa, expo, sign]}, then
 @code{scale_float(fl(mantissa), expo)*sign} is identical to @var{f}.
-Here, @code{fl} is either @code{float} or @code{bfloat} dependingin on
+Here, @code{fl} is either @code{float} or @code{bfloat} depending on
 whether @var{f} is a @code{float} or a @code{bfloat}.
 
 @example
