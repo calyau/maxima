@@ -168,15 +168,17 @@
     ((floatp f)
      (multiple-value-bind (mant expo sign)
 	 (cl:decode-float f)
-       (make-mlist (* 2 mant)
-		   (1- expo)
-		   sign)))
+       (list '(mlist)
+	     (* 2 mant)
+	     (1- expo)
+	     sign)))
     (($bfloatp f)
      (multiple-value-bind (mant expo sign)
 	 (bigfloat:decode-float (bigfloat:bigfloat f))
-       (make-mlist (to (bigfloat:* mant 2))
-		   (1- expo)
-		   (to sign))))
+       (list '(mlist)
+	     (to (bigfloat:* mant 2))
+	     (1- expo)
+	     (to sign))))
     (t
      (merror (intl:gettext "decode_float is only defined for floats and bfloats: ~M")
 	     f))))
@@ -203,18 +205,21 @@
 	 ;; If shift > 0, we have a denormal and want to reduce the
 	 ;; number of bits in the integer part.
 	 (if (plusp shift)
-	     (make-mlist (ash int (- shift))
-			 (+ expo shift)
-			 sign)
-	     (make-mlist int
-			 expo
-			 sign)))))
+	     (list '(mlist)
+		   (ash int (- shift))
+		   (+ expo shift)
+		   sign)
+	     (list '(mlist)
+		   int
+		   expo
+		   sign)))))
     (($bfloatp f)
      (multiple-value-bind (int expo sign)
 	 (bigfloat:integer-decode-float (bigfloat:bigfloat f))
-       (make-mlist int
-		   expo
-		   sign)))
+       (list '(mlist)
+	     int
+	     expo
+	     sign)))
     (t
      (merror (intl:gettext "decode_float is only defined for floats and bfloats: ~M")
 	     f))))
