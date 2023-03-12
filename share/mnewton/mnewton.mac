@@ -47,19 +47,9 @@ newtonepsilon:10.0^(-16/2)$ /* Default value is 10.0^-8 */
 newtonmaxiter:50$
 newtondebug:false$
 
-solve_by_lu(eqs, vars, field) := block(
-    [M, b, n : length(vars), sol],
-    M : augcoefmatrix(eqs, vars),
-    b : -col(M, n+1),
-    M : submatrix(M, n+1),
-    sol : linsolve_by_lu(M, b, field),
-    map("=", vars, first(args(transpose(sol[1]))))
-)$
-
 mnewton(FuncList, VarList, GuessList, [DF]):=
-  block([nfunc, Solutions, Increments, solved:false, h, numer:numer, extra_vars,
-         i, j, k, keepfloat:true, ratprint:false, field : 'complexfield, float2bf : true],
-    local(h),
+  block([nfunc, Solutions, Increments, solved:false, extra_vars,
+         i, j, k, ratprint:false, field : 'complexfield, float2bf : true],
 
     if (not(listp(FuncList))) then FuncList: [FuncList],    
     if (not(listp(VarList))) then VarList: [VarList],    
@@ -82,7 +72,6 @@ mnewton(FuncList, VarList, GuessList, [DF]):=
     if field = 'bigfloatfield then
        FuncList : map(lambda([u], lhs(u)-rhs(u)), bfloat(FuncList))
     else (
-       numer : true,
        FuncList : map(lambda([u], lhs(u)-rhs(u)), float(FuncList))),
 
     /* Depuration of the function arguments */   
@@ -107,7 +96,7 @@ mnewton(FuncList, VarList, GuessList, [DF]):=
                 DF[i][j] : diff (FuncList[i], VarList[j]))
        else DF: DF[1],
 
-    h : makelist (h[i], i, 1, nfunc),
+    if newtondebug then print ("DEBUG: DF =", DF),
 
     if field = 'complexfield then
       GuessList: float (GuessList)
@@ -121,14 +110,16 @@ mnewton(FuncList, VarList, GuessList, [DF]):=
     for k:1 thru newtonmaxiter do (
       Solutions:map("=", VarList, GuessList),
 
-      /* Solve 0 = F(x) + DF(x) h for h.
+      /* Solve 0 = F(x) + DF(x) h for the increment h.
        */
       block
         ([DFx: subst (Solutions, DF),
-        Fx: subst (Solutions, FuncList)],
-        Increments: solve_by_lu (transpose (DFx . h + Fx)[1], h, field)),
+        Fx: subst (Solutions, FuncList),
+        linsolve_solution],
+        linsolve_solution: linsolve_by_lu (DFx, - Fx, field),
+        Increments: first (args (transpose (linsolve_solution[1])))),
 
-      GuessList:GuessList + map ('rhs, Increments),
+      GuessList: GuessList + Increments,
       if field = 'complexfield then
         GuessList: float (GuessList)
       else
@@ -139,7 +130,7 @@ mnewton(FuncList, VarList, GuessList, [DF]):=
 
       solved:true,
       for i:1 thru nfunc do
-        solved: solved and abs (rhs (Increments[i])) < newtonepsilon,
+        solved: solved and abs (Increments[i]) < newtonepsilon,
       if solved then return(0)
     ),
 
@@ -150,6 +141,9 @@ mnewton(FuncList, VarList, GuessList, [DF]):=
     ),
     Solutions:map("=", VarList, GuessList),
     if newtondebug
-       then print ("DEBUG: subst (Solutions, FuncList) =>", subst (Solutions, FuncList)),
+       then (print ("DEBUG: Solutions =", Solutions),
+             print ("DEBUG: FuncList =", FuncList),
+             print ("DEBUG: subst (Solutions, FuncList) =>", subst (Solutions, FuncList))),
+
     return([Solutions])
   )$

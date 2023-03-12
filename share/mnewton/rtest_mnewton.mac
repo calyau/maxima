@@ -1,14 +1,10 @@
-(kill(all),
-  %start : absolute_real_time(),
-  algexact : true,
-  current_fpprec : fpprec,
-  fpprec : 16,
+( kill (a, u, v, x, x1, x2, y, z),
   approx_equal(x,y,epsilon) := block(
     [vx:setify(listofvars(x)),vy:setify(listofvars(y)),prederror:true],
     if vx#vy then return(false),
     x : sort(flatten(listify(x))), y : sort(flatten(listify(y))),
     every(map(lambda([u,v],is(abs(rectform(rhs(u)-rhs(v))) < epsilon)),x,y))),
-  load("mnewton"),
+  if errcatch (fundef (mnewton)) = [] then load("mnewton"),
   0);
 0$
 
@@ -67,7 +63,7 @@ approx_equal(
 true $
 
 
-block([newtonepsilon:bfloat(newtonepsilon)],
+block([fpprec: 16, newtonepsilon:bfloat(newtonepsilon)],
   approx_equal(
     mnewton(cos(x)-%i,x,1b0),
     [[x = 1.570796326794897b0 - 8.81373587019543b-1*%i]],
@@ -148,9 +144,3 @@ block ([s: make_string_output_stream ()],
        [%%, get_output_stream_string (s)]);
 [false, "mnewton: extra variables in equations; found: z
 "];
-
-kill(all)$
-done $
-
-(reset(algexact),0);
-0$
