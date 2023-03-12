@@ -272,7 +272,7 @@ decode_float is only defined for floats and bfloats: %pi
 This is a relatively simple interface to Common Lisp
 @url{http://www.lispworks.com/documentation/HyperSpec/Body/f_dec_fl.htm,
 decode_float}.  However we return a signficand in the range
-@code{[1,2)} instead of @code({0.5, 1)}.  The former matches
+@code{[1,2)} instead of @code{[0.5, 1)}.  The former matches
 IEEE-754.  Of course, this is extended to support bfloats.
 
 @opencatbox{Categories:}
