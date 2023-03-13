@@ -1,9 +1,9 @@
-( kill (a, u, v, x, x1, x2, y, z),
+( kill (a, b, c, d, u, v, x, x1, x2, y, z),
   approx_equal(x,y,epsilon) := block(
     [vx:setify(listofvars(x)),vy:setify(listofvars(y)),prederror:true],
     if vx#vy then return(false),
     x : sort(flatten(listify(x))), y : sort(flatten(listify(y))),
-    every(map(lambda([u,v],is(abs(rectform(rhs(u)-rhs(v))) < epsilon)),x,y))),
+    every (lambda ([u, v], is (abs (rectform (rhs(u) - rhs(v))) < epsilon)), x, y)),
   if errcatch (fundef (mnewton)) = [] then load("mnewton"),
   0);
 0$
@@ -144,3 +144,65 @@ block ([s: make_string_output_stream ()],
        [%%, get_output_stream_string (s)]);
 [false, "mnewton: extra variables in equations; found: z
 "];
+
+/* verify input representation options */
+
+approx_equal (mnewton ([x^2 - y^2 - 5, x*y - 2], [x, y], [1, 1]), [[x = 2.387794404616198, y = 0.8375930507808815]], newtonepsilon);
+true;
+
+approx_equal (mnewton ([x^2 - y^2 = 5, x*y = 2], [x, y], [1, 1]), [[x = 2.387794404616198, y = 0.8375930507808815]], newtonepsilon);
+true;
+
+approx_equal (mnewton (- [x^2 - y^2 - 5, x*y - 2], [x, y], [1, 1]), [[x = 2.387794404616198, y = 0.8375930507808815]], newtonepsilon);
+true;
+
+approx_equal (mnewton ([5 = x^2 - y^2, 2 = x*y], [x, y], [1, 1]), [[x = 2.387794404616198, y = 0.8375930507808815]], newtonepsilon);
+true;
+
+approx_equal (mnewton ([x[1]^2 - x[2]^2 - 5, x[1]*x[2] - 2], [x[1], x[2]], [1, 1]), [[x[1] = 2.387794404616198, x[2] = 0.8375930507808815]], newtonepsilon);
+true;
+
+approx_equal (mnewton ([z^3 - 1], [z], [1 + %i]), [[z = 1.0]], newtonepsilon);
+true;
+
+approx_equal (mnewton ([z^3 = 1], [z], [1 + %i]), [[z = 1.0]], newtonepsilon);
+true;
+
+approx_equal (mnewton (z^3 - 1, z, 1 + %i), [[z = 1.0]], newtonepsilon);
+true;
+
+approx_equal (mnewton (z^3 = 1, z, 1 + %i), [[z = 1.0]], newtonepsilon);
+true;
+
+
+/* additional test cases */
+
+block ([eqs: [sin(%pi*(b + a)) - a^2, b^2 - %e*a], eqs1, aa: %pi, bb: 5],
+       eqs1: map ("=", eqs, subst ([a = aa, b = bb], eqs)),
+       approx_equal (mnewton (eqs1, [a, b], [1, 1]), [[a = aa, b = bb]], newtonepsilon));
+true;
+
+block ([eqs: [sqrt(b^3 + a) - a, exp(b) - a/%pi], eqs1, aa: 0, bb: 1],
+       eqs1: map ("=", eqs, subst ([a = aa, b = bb], eqs)),
+       approx_equal (mnewton (eqs1, [a, b], [1, 1]), [[a = aa, b = bb]], newtonepsilon));
+true;
+
+block ([eqs: [sqrt(b^3 + a) - a*c, exp(b) - a/%pi - c, c^2 + a - b], eqs1, aa: 0, bb: 1, cc: 2],
+       eqs1: map ("=", eqs, subst ([a = aa, b = bb, c = cc], eqs)),
+       approx_equal (mnewton (eqs1, [a, b, c], [1, 1, 1]), [[a = aa, b = bb, c = cc]], newtonepsilon));
+true;
+
+block ([eqs: [sin(%pi*(b + a)) + a^2*%i, b^2 + %e*a], eqs1, aa: %pi, bb: - 5],
+       eqs1: map ("=", eqs, subst ([a = aa, b = bb], eqs)),
+       approx_equal (mnewton (eqs1, [a, b], [%i, %i]), [[a = aa, b = bb]], newtonepsilon));
+true;
+
+block ([eqs: [sqrt(b^3 + a) - a*c + d, exp(b) - a/%pi - c*d, c^2 + a - b, b*log(d) - a*c], eqs1,
+        aa: 0.9316994624088384 - 0.4532672590238549*%i,
+        bb: 0.03715752272566857*%i + 0.07362074010484573,
+        cc: 1.778327483615696 - 0.1432737285301378*%i,
+        dd: 2.99576612219564*%i - 0.1070840677802114],
+       eqs1: map ("=", eqs, subst ([a = aa, b = bb, c = cc, d = dd], eqs)),
+       approx_equal (mnewton (eqs1, [a, b, c, d], [1, %i, 1, %i]), [[a = aa, b = bb, c = cc, d = dd]], newtonepsilon));
+true;
+

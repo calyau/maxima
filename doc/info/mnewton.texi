@@ -28,8 +28,13 @@ equations in one or more variables.
 Default value: @code{10.0^(-fpprec/2)}
 
 Precision to determine when the @code{mnewton} function has converged towards
-the solution.  If @code{newtonepsilon} is a bigfloat, then @code{mnewton}
-computations are done with bigfloats.  See also @mrefdot{mnewton}
+the solution.
+
+When @code{newtonepsilon} is a bigfloat,
+@code{mnewton} computations are done with bigfloats;
+otherwise, ordinary floats are used.
+
+See also @mrefdot{mnewton}
 
 @opencatbox{Categories:}
 @category{Package mnewton}
@@ -52,26 +57,59 @@ See also @mrefdot{mnewton}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{newtondebug}
+@defvr {Option variable} newtondebug
+Default value: @code{false}
+
+When @code{newtondebug} is @code{true}, 
+@code{mnewton} prints out debugging information while solving a problem.
+
+@opencatbox{Categories:}
+@category{Package mnewton}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{mnewton}
 @deffn {Function} mnewton @
 @fname{mnewton} (@var{FuncList}, @var{VarList}, @var{GuessList}) @
 @fname{mnewton} (@var{FuncList}, @var{VarList}, @var{GuessList}, @var{DF})
 
-Multiple nonlinear functions solution using the Newton method.
-@var{FuncList} is the list of functions to solve,
-@var{VarList} is the list of variable names, and
-@var{GuessList} is the list of initial approximations.
+Approximate solution of multiple nonlinear equations by Newton's method.
+
+@var{FuncList} is a list of functions to solve,
+@var{VarList} is a list of variable names, and
+@var{GuessList} is a list of initial approximations.
 The optional argument @var{DF} is the Jacobian matrix of the list of functions;
 if not supplied, it is calculated automatically from @var{FuncList}.
 
-The solution is returned in the same format that @code{solve()} returns.
+@var{FuncList} may be specified as a list of equations,
+in which case the function to be solved is the left-hand side of each equation minus the right-hand side.
+
+If there is only a single function, variable, and initial point,
+they may be specified as a single expression, variable, and initial value;
+they need not be lists of one element.
+
+A variable may be a simple symbol or a subscripted symbol.
+
+The solution, if any, is returned as a list of one element,
+which is a list of equations, one for each variable,
+specifying an approximate solution;
+this is the same format as returned by @code{solve}.
 If the solution is not found, @code{[]} is returned.
 
-This function is controlled by global variables @mref{newtonepsilon} and
-@mrefdot{newtonmaxiter}
+Functions and initial points may contain complex numbers,
+and solutions likewise may contain complex numbers.
+
+@code{mnewton} is governed by global variables @mref{newtonepsilon} and
+@mrefcomma{newtonmaxiter} and the global flag @mrefdot{newtondebug}
+
+@code{load("mnewton")} loads this function.
 
 See also @mrefcomma{realroots} @mrefcomma{allroots} @mref{find_root} and
 @mrefdot{newton}
+
+Examples:
 
 @example
 (%i1) load("mnewton")$
@@ -98,9 +136,6 @@ floats or bigfloats.
 (%o3) [[u = 1.066618389595406772591173b0, 
                                v = 1.552564766841786450100418b0]]
 @end example
-
-To use this function write first @code{load("mnewton")}.
-See also @mref{newtonepsilon} and @mrefdot{newtonmaxiter}
 
 @opencatbox{Categories:}
 @category{Package mnewton}
