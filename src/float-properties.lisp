@@ -5,10 +5,20 @@
 ;; Previously from share/contrib/floatproperties.lisp
 ;;
 ;; Expose some properties of floating-point numbers to Maxima.
+(defmvar $most_positive_float +most-positive-flonum+
+  "Largest positive floating-point number"
+  :properties ((assign 'neverset)))
+
+(defmvar $most_negative_float +most-negative-flonum+
+  "Most negative floating-point number"
+  :properties ((assign 'neverset)))
+  
+;; Legacy constant.  most_positive_float is preferred.
 (defmvar $largest_float +most-positive-flonum+
   "Largest positive floating-point number"
   :properties ((assign 'neverset)))
 
+;; Legacy constant.  most_negative_float is preferred.
 (defmvar $largest_negative_float +most-negative-flonum+
   "Most negative floating-point number"
   :properties ((assign 'neverset)))
