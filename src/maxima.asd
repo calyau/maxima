@@ -57,6 +57,10 @@
    (:module defmfun :pathname ""
     :components
     ((:file "defmfun-check")))
+   (:module float-properties :pathname ""
+    :depends-on (defmfun)
+    :components
+    ((:file "float-properties")))
    (:module compatibility-macros :pathname ""
     :components (#+gcl (:file "gcl-compat")
                  (:file "commac")))
@@ -503,8 +507,7 @@
 		 (:file "airy"
 		  :depends-on ("ellipt"))
 		 (:file "plasma")
-		 (:file "intpol")
-		 (:file "ulp")))
+		 (:file "intpol")))
 
    (:module integration :pathname ""
     :depends-on (globals defmfun compatibility-macros)

@@ -185,6 +185,10 @@
    (:module defmfun :source-pathname ""
 	    :components
 	    ((:file "defmfun-check")))
+   (:module float-properties :source-pathname ""
+	    :depends-on ("defmfun")
+	    :components
+	    ((:file "float-properties")))
    (:module compatibility-macros :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
@@ -631,8 +635,7 @@
 	     (:file "airy"
 		    :depends-on ("ellipt"))
 	     (:file "plasma")
-	     (:file "intpol")
-	     (:file "ulp")))
+	     (:file "intpol")))
    (:module reader :source-pathname ""
 	    :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
