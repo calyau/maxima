@@ -1,3 +1,10 @@
+/*
+ * The following tests assume the default value for fpprec; make sure
+ * it's the default
+*/
+(reset(fpprec), 0);
+0;
+
 unit_in_last_place(0) ;
 1 ;
 
