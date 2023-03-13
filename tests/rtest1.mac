@@ -661,8 +661,8 @@ false;
 
 /* check return values for float_approx_equal */
 
-(xx: [largest_negative_float, least_negative_normalized_float, least_negative_float,
-      0.0, 1.0, least_positive_float, least_positive_normalized_float, largest_float],
+(xx: [most_negative_float, least_negative_normalized_float, least_negative_float,
+      0.0, 1.0, least_positive_float, least_positive_normalized_float, most_positive_float],
  xx : unique (xx),
  if errcatch (x: 1.0/0.0) # [] then push (x, xx),
  if errcatch (x: -1.0/0.0) # [] then push (x, xx),

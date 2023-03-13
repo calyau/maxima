@@ -37,7 +37,7 @@ unit_in_last_place(1.0b0)-unit_in_last_place(.9999b0) ;
 unit_in_last_place(1.0001b0)-2*unit_in_last_place(1.0000b0) ;
 0.0b0 ;
 
-2.0^1023*(2.0-unit_in_last_place(2.0)) - largest_float ;
+2.0^1023*(2.0-unit_in_last_place(2.0)) - most_positive_float ;
 0.0 ;
 
 unit_in_last_place(-1.0)-unit_in_last_place(1.0) ;
@@ -115,7 +115,7 @@ decode_float(-0.25b0);
 decode_float(least_positive_normalized_float);
 [1.0, - 1022, 1.0];
 
-decode_float(largest_float);
+decode_float(most_positive_float);
 [1.9999999999999998, 1023, 1.0];
 
 /* This assumes denormals are supported .*/
@@ -137,7 +137,7 @@ integer_decode_float(-0.25b0);
 integer_decode_float(least_positive_normalized_float);
 [4503599627370496, - 1074, 1];
 
-integer_decode_float(largest_float);
+integer_decode_float(most_positive_float);
 [9007199254740991, 971, 1];
 
 /* This assumes denormals are supported .*/
@@ -157,7 +157,7 @@ scale_float(1.0, -5000);
  * The second scale_float was determined from integer_decode_float to
  * get the bits, and scaled by -53 to get the final result.
  */
-scale_float(largest_float, -1024) - scale_float(float(9007199254740991),-53);
+scale_float(most_positive_float, -1024) - scale_float(float(9007199254740991),-53);
 0.0;
 
 scale_float(1b0, 2);
