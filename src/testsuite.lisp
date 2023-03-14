@@ -154,7 +154,7 @@
 	((mlist simp) "ulp_tests"
 	 ;; Clisp doesn't have denormals
 	 #+clisp
-	 ((mlist simp) 9 41 48))))
+	 ((mlist simp) 10 42 49))))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima
