@@ -60,6 +60,18 @@
   that this changes when $fpprec is changed, of course."
   fpprec)
 
+(defmfun $float_precision (f)
+  "The number of bits of precision in the floating-point number F.  This
+  includes floats and bigfloats."
+  (cond ((floatp f)
+	 (float-precision f))
+	(($bfloatp f)
+	 (bigfloat-prec f))
+	(t
+	 (merror (intl:gettext "~M: expected a float or bigfloat number: ~M")
+		 '$float_precision f))))
+	 
+  
 ;;; ULP is the Unit in the Last Place
 
 ;;; ---Definition---

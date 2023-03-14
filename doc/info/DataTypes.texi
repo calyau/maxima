@@ -347,6 +347,21 @@ Returns the smallest floating-point value, @code{eps}, such that
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{float_precision}
+@deffn {Function} float_precision (@var{f})
+Returns the number of bits of precision of a floating-point number,
+which can be either a float or bigfloat.  This is basically the number
+of bits used to represent the mantissa of a floating-point number.
+For floats, this is 53 (for IEEE double-floats), but can be less when
+denormal numbers occur.  For bigfloats, this is equal to
+@mref{fpprec}, when converted from digits to bits.
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{floatnump}
 @deffn {Function} floatnump (@var{expr})
 
