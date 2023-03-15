@@ -190,6 +190,12 @@
     ((floatp f)
      (multiple-value-bind (mant expo sign)
 	 (cl:decode-float f)
+       ;; Ecl 21.2.1 has a broken decode-float for negative numbers.
+       ;; It returns 0 for the sign instead of -1.  Just unconditional
+       ;; set the sign via float-sign.  Ecl supports signed zeroes, so
+       ;; float-sign is easiest way to get the correct sign.
+       #+ecl
+       (setf sign (float-sign f))
        (list '(mlist)
 	     (* 2 mant)
 	     (1- expo)
