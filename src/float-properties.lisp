@@ -14,10 +14,6 @@
   :properties ((assign 'neverset)))
   
 ;; largest_float and largest_negative_float are deprecated constants.
-;; Define them, but make sure thye're unbound.  They're constants that
-;; can't be assigned.  Then add the bindtest property to them as well
-;; so that they produce an error message.  Add these symbols to the
-;; bindtest-messages alist to get nice error messages.
 (defmvar $largest_float nil
   "Deprecated.  Use most_positive_float"
   :deprecated-p "Use most_positive_float.")
