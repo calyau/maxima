@@ -57,7 +57,8 @@
 	maybe-predicate
 	setting-predicate-p
 	setting-list-p
-	assign-property-p)
+	assign-property-p
+	deprecated-p)
 
     (do ((opts options (rest opts)))
         ((null opts))
@@ -65,8 +66,9 @@
       (format t "opts = ~S~%" opts)
       (case (car opts)
         (no-reset
-         ;; Don't reset the value
-         (setf maybe-reset nil))
+	 (unless deprecated-p
+           ;; Don't reset the value
+           (setf maybe-reset nil)))
         ((fixnum boolean string flonum)
 	 ;; Don't declare the types yet.  There are testsuite failures
 	 ;; with sbcl that some things declared fixnum aren't assigned
@@ -89,73 +91,99 @@
          ;; Ignore this
          )
 	(:properties
-         (setf maybe-set-props
-               (mapcar #'(lambda (o)
-                           (destructuring-bind (ind val)
-                               o
-			     (when (eql ind 'assign)
-			       (setf assign-property-p t))
-                             `(putprop ',var ,val ',ind)))
-                       (second opts)))
-	 (when assign-property-p
-	   (when setting-predicate-p
-	     (error "Cannot use 'ASSIGN property in :PROPERTIES if :SETTING-PREDICATE already specified."))
-	   (when setting-list-p
-	     (error "Cannot use 'ASSIGN property in :PROPERTIES if :SETTING-LIST already specified.")))
-         (setf opts (rest opts)))
+	 (unless deprecated-p
+           (setf maybe-set-props
+		 (mapcar #'(lambda (o)
+                             (destructuring-bind (ind val)
+				 o
+			       (when (eql ind 'assign)
+				 (setf assign-property-p t))
+                               `(putprop ',var ,val ',ind)))
+			 (second opts)))
+	   (when assign-property-p
+	     (when setting-predicate-p
+	       (error "Cannot use 'ASSIGN property in :PROPERTIES if :SETTING-PREDICATE already specified."))
+	     (when setting-list-p
+	       (error "Cannot use 'ASSIGN property in :PROPERTIES if :SETTING-LIST already specified."))))
+           (setf opts (rest opts)))
 	(:setting-predicate
-	 (when setting-list-p
-	   (error "Cannot use :SETTING-PREDICATE when :SETTING-LIST already specified."))
-	 (when assign-property-p
-	   (error "Cannot use :SETTING-PREDICATE when :PROPERTIES uses the 'ASSIGN property."))
-	 (setf setting-predicate-p t)
-	 ;; A :SETTING-PREDICATE is a function (symbol or lambda) of
-	 ;; one arg specifying the value that variable is to be set
-	 ;; to.  It should return non-NIL if the value is valid.  An
-	 ;; optional second value may be returned.  This is a string
-	 ;; that can be used as the reason arg for MSETERR to explain
-	 ;; why the setting failed.
-	 ;;
-	 ;; WARNING: Do not also have a :properties item with an
-	 ;; 'assign property.  Currently this takes precedence.
-	 (let ((assign-func
-		 `#'(lambda (var val)
-		      (multiple-value-bind (ok reason)
-			  (funcall ,(second opts) val)
-			(unless ok
-			  (mseterr var val reason))))))
-	   (setf maybe-predicate
-		 `((putprop ',var ,assign-func 'assign))))
+	 (unless deprecated-p
+	   (when setting-list-p
+	     (error "Cannot use :SETTING-PREDICATE when :SETTING-LIST already specified."))
+	   (when assign-property-p
+	     (error "Cannot use :SETTING-PREDICATE when :PROPERTIES uses the 'ASSIGN property."))
+	   (setf setting-predicate-p t)
+	   ;; A :SETTING-PREDICATE is a function (symbol or lambda) of
+	   ;; one arg specifying the value that variable is to be set
+	   ;; to.  It should return non-NIL if the value is valid.  An
+	   ;; optional second value may be returned.  This is a string
+	   ;; that can be used as the reason arg for MSETERR to explain
+	   ;; why the setting failed.
+	   ;;
+	   ;; WARNING: Do not also have a :properties item with an
+	   ;; 'assign property.  Currently this takes precedence.
+	   (let ((assign-func
+		  `#'(lambda (var val)
+		       (multiple-value-bind (ok reason)
+			   (funcall ,(second opts) val)
+			 (unless ok
+			   (mseterr var val reason))))))
+	     (setf maybe-predicate
+		   `((putprop ',var ,assign-func 'assign)))))
+	 
 	 ;; Skip over the predicate function.
 	 (setf opts (rest opts)))
 	(:setting-list
-	 (when setting-predicate-p
-	   (error "Cannot use :SETTING-LIST when :SETTING-PREDICATE already specified."))
-	 (when assign-property-p
-	   (error "Cannot use :SETTING-LIST when :PROPERTIES uses the 'ASSIGN property."))
-	 (setf setting-list-p t)
-	 ;; A :SETTING-LIST is a list of possible values that can be
-	 ;; assigned to the variable.  An error is signaled if the
-	 ;; variable is not assigned to one of these values.  This
-	 ;; could be handled with :SETTING-PREDICATE, of course.  This
-	 ;; is a convenience feature but it also makes it explicit
-	 ;; that we only allow the possible values.
-	 (let ((assign-func
-		 `#'(lambda (var val)
-		      (let ((possible-values ',(second opts)))
-			(unless (member val possible-values)
-			  (mseterr var val
-				   (let ((*print-case* :downcase))
-				     (format nil "must be one of: ~{~A~^, ~}"
-					     (mapcar #'stripdollar possible-values)))))))))
-	   (setf maybe-predicate
-		 `((putprop ',var ,assign-func 'assign))))
+	 (unless deprecated-p
+	   (when setting-predicate-p
+	     (error "Cannot use :SETTING-LIST when :SETTING-PREDICATE already specified."))
+	   (when assign-property-p
+	     (error "Cannot use :SETTING-LIST when :PROPERTIES uses the 'ASSIGN property."))
+	   (setf setting-list-p t)
+	   ;; A :SETTING-LIST is a list of possible values that can be
+	   ;; assigned to the variable.  An error is signaled if the
+	   ;; variable is not assigned to one of these values.  This
+	   ;; could be handled with :SETTING-PREDICATE, of course.  This
+	   ;; is a convenience feature but it also makes it explicit
+	   ;; that we only allow the possible values.
+	   (let ((assign-func
+		  `#'(lambda (var val)
+		       (let ((possible-values ',(second opts)))
+			 (unless (member val possible-values)
+			   (mseterr var val
+				    (let ((*print-case* :downcase))
+				      (format nil "must be one of: ~{~A~^, ~}"
+					      (mapcar #'stripdollar possible-values)))))))))
+	     (setf maybe-predicate
+		   `((putprop ',var ,assign-func 'assign)))))
 	 ;; Skip over the values.
 	 (setf opts (rest opts)))
         ((see-also modified-commands setting-list)
          ;; Not yet supported, but we need to skip over the following
          ;; item too which is the parameter for this option.
          (setf opts (rest opts)))
+	(:deprecated-p
+	 ;; This overrides everything and makes the variable
+	 ;; deprecated.  This means it's unbound, and the 'bindtest
+	 ;; property is set and the 'assign property is set to
+	 ;; 'neverset.  The option is a string for the bindtest
+	 ;; message.
+	 (setf deprecated-p t
+	       maybe-reset nil
+	       maybe-declare-type nil
+	       maybe-predicate nil
+	       setting-predicate-p nil
+	       setting-list-p nil
+	       assigne-property-p nil)
+	 (setf maybe-set-props
+	       `((makunbound ',var)
+		 (putprop ',var t 'bindtest)
+		 (putprop ',var 'neverset 'assign)
+		 (setf *bindtest-messages*
+		       (acons ',var
+			      ,(second opts)
+			      *bindtest-messages*))))
+	 (setf opts (rest opts)))
         (t
          (warn "Ignoring unknown defmvar option for ~S: ~S"
                var (car opts)))))
@@ -1814,3 +1842,10 @@
 (defvar *n)
 (defvar derivlist)
 (defvar opers-list)
+
+;;------------------------------------------------------------------------
+(defvar *bindtest-messages* '()
+  "An alist whose key is a symbol and datum is a string to be used with
+  bindtest.  The string should contain exactly ~M which will be
+  replaced by the variable in the error message.  This is useful for
+  printing a deprecation message for any symbol.")

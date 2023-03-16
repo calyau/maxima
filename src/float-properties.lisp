@@ -13,15 +13,18 @@
   "Most negative floating-point number"
   :properties ((assign 'neverset)))
   
-;; Legacy constant.  most_positive_float is preferred.
-(defmvar $largest_float +most-positive-flonum+
-  "Largest positive floating-point number"
-  :properties ((assign 'neverset)))
+;; largest_float and largest_negative_float are deprecated constants.
+;; Define them, but make sure thye're unbound.  They're constants that
+;; can't be assigned.  Then add the bindtest property to them as well
+;; so that they produce an error message.  Add these symbols to the
+;; bindtest-messages alist to get nice error messages.
+(defmvar $largest_float nil
+  "Deprecated.  Use most_positive_float"
+  :deprecated-p "Deprecated constant ~M: use most_positive_float.")
 
-;; Legacy constant.  most_negative_float is preferred.
-(defmvar $largest_negative_float +most-negative-flonum+
-  "Most negative floating-point number"
-  :properties ((assign 'neverset)))
+(defmvar $largest_negative_float nil
+  "Deprecated.  Use most_negative_float"
+  :deprecated-p "Deprecated constant ~M: use most_negative_float.")
 
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (defmvar $least_positive_float +least-positive-flonum+

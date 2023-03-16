@@ -229,7 +229,9 @@ is EQ to FNNAME if the latter is non-NIL."
               (return (meval1 val)))
              ((not (boundp form))
               (if (safe-get form 'bindtest)
-                  (merror (intl:gettext "evaluation: unbound variable ~:M")
+                  (merror (intl:gettext
+			   (or (cdr (assoc form *bindtest-messages* :test 'eq))
+			       "evaluation: unbound variable ~:M"))
                           form)
                   (return form))))
        (setq val (symbol-value form))
