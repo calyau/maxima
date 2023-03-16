@@ -20,11 +20,11 @@
 ;; bindtest-messages alist to get nice error messages.
 (defmvar $largest_float nil
   "Deprecated.  Use most_positive_float"
-  :deprecated-p "Deprecated constant ~M: use most_positive_float.")
+  :deprecated-p "Use most_positive_float.")
 
 (defmvar $largest_negative_float nil
   "Deprecated.  Use most_negative_float"
-  :deprecated-p "Deprecated constant ~M: use most_negative_float.")
+  :deprecated-p "Use most_negative_float.")
 
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (defmvar $least_positive_float +least-positive-flonum+

@@ -34,6 +34,13 @@
         - A list of values that can be assigned to the variable.  An
           error is signaled if an attempt to assign a different value
           is done.
+    :DEPRECATED-P
+        - A string for a deprecation message.  This must be a simple
+          string with no ~ options.  This option overrides any other
+          options.  When the variable is used, a message is printed of
+          the form: \"Deprecated variable `<var>': <string>\" where
+          <var> is the name of this variable, and <string> is the
+          value given to :deprecated-p.
 
   The list of properties has the form ((ind1 val1) (ind2 val2) ...)
   where IND1 is the name of the property and VAL1 is the value
@@ -46,6 +53,8 @@
   use a :PROPERTIES with an 'ASSIGN property.  :SETTING-PREDICATE and
   :SETTING-LIST sets the 'ASSIGN property to implement the
   functionality.
+
+  
 "
   (let ((maybe-reset
           ;; Default is to reset the variable to it's initial value.
@@ -174,14 +183,16 @@
 	       maybe-predicate nil
 	       setting-predicate-p nil
 	       setting-list-p nil
-	       assigne-property-p nil)
+	       assign-property-p nil)
 	 (setf maybe-set-props
 	       `((makunbound ',var)
 		 (putprop ',var t 'bindtest)
 		 (putprop ',var 'neverset 'assign)
 		 (setf *bindtest-messages*
 		       (acons ',var
-			      ,(second opts)
+			      (concatenate 'string
+					   "Deprecated variable `~M': "
+					   ,(second opts))
 			      *bindtest-messages*))))
 	 (setf opts (rest opts)))
         (t
