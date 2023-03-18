@@ -637,7 +637,10 @@ Command      Description~%~
   (if (not (string= *mread-prompt* ""))
       (setq *lisp-quiet-suppressed-prompt* *mread-prompt*))
   (setq *mread-prompt* "")
-  (eval (cons 'progn l-lisp-quiet))
+  (eval (cons 'progn l-lisp-quiet)) ; eval lisp-quiet
+  (finish-output)  ; wait and finish lisp-quiet output
+  (if (string= *mread-prompt* "")   ; restore prompt for other debug functions
+      (setq *mread-prompt* *lisp-quiet-suppressed-prompt*))
   nil)
 
 (def-break :lisp-quiet 'lisp-quiet 
