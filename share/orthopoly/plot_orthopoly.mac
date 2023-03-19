@@ -1,0 +1,49 @@
+/* Generate A&S Figure 22.4 page 776 
+*/
+
+
+orthopoly_returns_intervals : false$
+
+foo : ['(ultraspherical(2,0.5,x)),
+'(ultraspherical(3,0.5,x)),
+'(ultraspherical(4,0.5,x)),
+'(ultraspherical(5,0.5,x))]$
+
+plot2d(foo,[x,-1,1])$
+
+/* Generate A&S Figure 22.5 page 777 
+*/
+
+
+foo : ['(ultraspherical(5, 0.2, x)),
+'(ultraspherical(5, 0.4, x)),
+'(ultraspherical(5, 0.6, x)),
+'(ultraspherical(5, 0.8, x)),
+'(ultraspherical(5, 1.0, x))]$
+
+plot2d(foo, [x,-0.8,0.8])$
+
+/* Generate A&S Figure 22.6 page 778
+*/
+
+foo : ['(chebyshev_t(1,x)),
+'(chebyshev_t(2,x)),
+'(chebyshev_t(3,x)),
+'(chebyshev_t(4,x)),
+'(chebyshev_t(5,x))]$
+
+
+plot2d(foo,[x,-1.0,1.0])$
+
+/* Generate A&S Figure 22.7 page 779
+*/
+
+
+foo : ['(chebyshev_u(1,x)),
+'(chebyshev_u(2,x)),
+'(chebyshev_u(3,x)),
+'(chebyshev_u(4,x)),
+'(chebyshev_u(5,x))]$
+
+
+plot2d(foo,[x,-1.0,1.0])$
