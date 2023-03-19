@@ -185,7 +185,7 @@
 	       setting-list-p nil
 	       assign-property-p nil)
 	 (setf maybe-set-props
-	       `((makunbound ',var)
+	       `((cl:makunbound ',var)
 		 (putprop ',var t 'bindtest)
 		 (putprop ',var 'neverset 'assign)
 		 (setf *bindtest-messages*
