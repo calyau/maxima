@@ -50,14 +50,14 @@
   (let ((r ($bfloat (div 1 (expt 2 fpprec)))))
     (list (first r) (incf (second r)) (third r))))
 
-(defun $float_bits ()
+(defmfun $float_bits ()
   "The number of bits in the fraction part of a floating-point number"
-  (float-digits 0d0))
+  (merror (intl:gettext "float_bits is deprecated; use float_precision.")))
 
-(defun $bigfloat_bits ()
+(defmfun $bigfloat_bits ()
   "The number of bits in the fraction part of a bigfloat number.  Note
   that this changes when $fpprec is changed, of course."
-  fpprec)
+  (merror (intl:gettext "bfloat_bits is deprecated; use float_precision.")))
 
 (defmfun $float_precision (f)
   "The number of bits of precision in the floating-point number F.  This
