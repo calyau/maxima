@@ -164,12 +164,15 @@
 	 (list '(%gamma) (list '(mplus) 1 (makegamma1 (cadr e)))))
 
 	;; Begin code copied from orthopoly/orthopoly-init.lisp
-	;; Do pochhammer(x,n) ==> gamma(x+n)/gamma(x).
+	;; Do pochhammer(x,n) ==> gamma(x+n)/gamma(x),
+    ;; but not if x is a negative integer or zero.
 
 	((eq (caar e) '$pochhammer)
 	 (let ((x (makegamma1 (nth 1 e)))
 	       (n (makegamma1 (nth 2 e))))
-	   (div (take '(%gamma) (add x n)) (take '(%gamma) x))))
+	  (if (and (integerp x) (<= x 0))
+        e
+	    (div (take '(%gamma) (add x n)) (take '(%gamma) x)))))
 	 
 	;; (gamma(x/z+1)*z^floor(y))/gamma(x/z-floor(y)+1)
 

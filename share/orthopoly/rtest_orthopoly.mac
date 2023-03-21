@@ -1722,11 +1722,20 @@ foo : map (lambda ([a, b], is (a = b)), foo1, foo2),
 check_true_list (foo));
 ''test_name;
 
-(reset (orthopoly_returns_intervals),
-
-
-print("orthopoly version = ", get('orthopoly,'version)),
-print("errors found = ", errors_found),
-print("number of tests passed =", length(tests_pass)),
-0);
+(reset (orthopoly_returns_intervals), 0);
 0;
+
+/* verify that makegamma doesn't create undefined gamma(n) for n <= 0 */
+
+(kill (n, k),
+ makegamma (pochhammer (n, k)));
+gamma (n + k) / gamma (n);
+
+makegamma (pochhammer (3, k));
+gamma (k + 3) / gamma (3);
+
+makegamma (pochhammer (0, k));
+pochhammer (0, k);
+
+makegamma (pochhammer (-3, k));
+pochhammer (-3, k);
