@@ -230,10 +230,31 @@ is EQ to FNNAME if the latter is non-NIL."
              ((not (boundp form))
 	      (let ((bindtest-value (safe-get form 'bindtest)))
 		(cond ((eq bindtest-value :deprecated)
-		       (destructuring-bind (msg . val)
-			   (cdr (assoc form *bindtest-messages* :test 'eq))
-			 (mwarning (aformat nil (intl:gettext msg) form))
-			 (set form val)))
+		       ;; Variable is deprecated.  Print a warning,
+		       ;; and set the value of the variable so it can
+		       ;; still be used.
+		       ;;
+		       ;; TODO?  Should we now remove the 'bindtest
+		       ;; property and also the entry in
+		       ;; *bindtest-messages*?  It doesn't usually
+		       ;; matter, since we won't reach this again,
+		       ;; unless someone goes and makes the variable
+		       ;; unbound.  Not changing this allows for
+		       ;; easier debugging by just manually making the
+		       ;; variable unbound again.
+		       (let ((info (cdr (assoc form *bindtest-deprecation-messages* :test 'eq))))
+			 ;; Just throw an error if something is messed
+			 ;; up with deprecation.
+			 (unless info
+			   (merror
+			    (intl:gettext "Internal error: Deprecated variable ~M but no corresponding information found.")
+			    form))
+			 ;; Extract the info, and issue the warning,
+			 ;; and bind the value to the variable.
+			 (destructuring-bind (msg . val)
+			     info
+			   (mwarning (aformat nil (intl:gettext msg) form))
+			   (set form val))))
 		      (bindtest-value
                        (merror (intl:gettext "evaluation: unbound variable ~:M")
                                form))
