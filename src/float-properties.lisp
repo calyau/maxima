@@ -14,11 +14,11 @@
   :properties ((assign 'neverset)))
   
 ;; largest_float and largest_negative_float are deprecated constants.
-(defmvar $largest_float nil
+(defmvar $largest_float $most_positive_float
   "Deprecated.  Use most_positive_float"
   :deprecated-p "Use most_positive_float.")
 
-(defmvar $largest_negative_float nil
+(defmvar $largest_negative_float $most_negative_float
   "Deprecated.  Use most_negative_float"
   :deprecated-p "Use most_negative_float.")
 
