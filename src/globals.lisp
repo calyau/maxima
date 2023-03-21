@@ -46,8 +46,8 @@
           An example of usage:
 
             (defmvar $foo foo-value
-              "Docstring for deprecated foo."
-              :deprecated-p "Use bar instead")
+              \"Docstring for deprecated foo.\"
+              :deprecated-p \"Use bar instead\")
 
   The list of properties has the form ((ind1 val1) (ind2 val2) ...)
   where IND1 is the name of the property and VAL1 is the value
