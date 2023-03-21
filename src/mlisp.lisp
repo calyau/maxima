@@ -228,12 +228,18 @@ is EQ to FNNAME if the latter is non-NIL."
                    (or (not (eq form '$%e)) $%enumer))
               (return (meval1 val)))
              ((not (boundp form))
-              (if (safe-get form 'bindtest)
-                  (merror (intl:gettext
-			   (or (cdr (assoc form *bindtest-messages* :test 'eq))
-			       "evaluation: unbound variable ~:M"))
-                          form)
-                  (return form))))
+	      (let ((bindtest-value (safe-get form 'bindtest)))
+		(cond ((eq bindtest-value :deprecated)
+		       (destructuring-bind (msg . val)
+			   (cdr (assoc form *bindtest-messages* :test 'eq))
+			 (mwarning (aformat nil (intl:gettext msg) form))
+			 (set form val)))
+		      (bindtest-value
+                       (merror (intl:gettext "evaluation: unbound variable ~:M")
+                               form))
+		      (t
+                       (return form)))))
+	     )
        (setq val (symbol-value form))
        (when (and $refcheck
                   (member form (cdr $values) :test #'eq)

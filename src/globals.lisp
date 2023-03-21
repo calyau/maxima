@@ -35,12 +35,12 @@
           error is signaled if an attempt to assign a different value
           is done.
     :DEPRECATED-P
-        - A string for a deprecation message.  This must be a simple
-          string with no ~ options.  This option overrides any other
-          options.  When the variable is used, a message is printed of
-          the form: \"Deprecated variable `<var>': <string>\" where
-          <var> is the name of this variable, and <string> is the
-          value given to :deprecated-p.
+        - A string to be printed when this deprecated variable is
+          used.  A warning is printed once when first used. This
+          option overrides any other options.  When the variable is
+          used, a message is printed of the form: \"Deprecated
+          variable `<var>': <string>\" where <var> is the name of this
+          variable, and <string> is the value given to :deprecated-p.
 
   The list of properties has the form ((ind1 val1) (ind2 val2) ...)
   where IND1 is the name of the property and VAL1 is the value
@@ -186,13 +186,15 @@
 	       assign-property-p nil)
 	 (setf maybe-set-props
 	       `((cl:makunbound ',var)
-		 (putprop ',var t 'bindtest)
+		 (putprop ',var :deprecated 'bindtest)
 		 (putprop ',var 'neverset 'assign)
 		 (setf *bindtest-messages*
 		       (acons ',var
-			      (concatenate 'string
-					   "Deprecated variable `~M': "
-					   ,(second opts))
+			      (cons 
+			       (concatenate 'string
+					    "Deprecated variable `~M': "
+					    ,(second opts))
+			       ,val)
 			      *bindtest-messages*))))
 	 (setf opts (rest opts)))
         (t
