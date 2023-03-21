@@ -49,7 +49,7 @@
 	   tanh cosh sinh tan  ;(trigi): same, could remove from trigi
 	   break		     ; special variable in displa.lisp
 	   gcd				; special in rat module
-	   #+(and sbcl sb-package-locks) makunbound)
+	   )
   #+gcl
   (:import-from :system
 		;; Faster modular arithmetic.

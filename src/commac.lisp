@@ -824,8 +824,3 @@
 ;; variables.
 (deff break #'cl:break)
 (deff gcd #'cl:gcd)
-
-#+(and sbcl sb-package-locks)
-(defun makunbound (sym)
-  (sb-ext:without-package-locks
-      (cl:makunbound sym)))
