@@ -865,13 +865,13 @@ The polynomials m4_math(<<<U_n(x)>>>,<<<chebyshev_u(n,x)>>>) can be written in t
 
 m4_displaymath(
 <<<U_n(x) = (n+1)\; {_{2}F_{1}}\left(-n, n+2; {3\over 2}; {1-x\over 2}\right)>>>,
-<<<cheybshev_u(n,x) = (n+1)*hypergeometric([-n,n+1],[3/2],(1-x)/2)>>>)
+<<<chebyshev_u(n,x) = (n+1)*hypergeometric([-n,n+1],[3/2],(1-x)/2)>>>)
 
 The polynomials can also be defined in terms of the sum
 
 m4_displaymath(
 <<<U_n(x) = \sum_{r=0}^{\lfloor n/2 \rfloor} (-1)^r {n-r \choose r} (2x)^{n-2r}>>>,
-<<<cheybshev_u(n,x) = sum((-1)^r*binomial(n-r,r)*(2*x)^(n-2*r), r, 0, floor(n/2))>>>)
+<<<chebyshev_u(n,x) = sum((-1)^r*binomial(n-r,r)*(2*x)^(n-2*r), r, 0, floor(n/2))>>>)
 
 or the Rodrigues formula
 
