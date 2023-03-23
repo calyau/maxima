@@ -39,11 +39,12 @@
   #+allegro (excl:make-directory dir)
   #+clisp (ext:make-directory dir)
   #+cmu (unix:unix-mkdir (directory-namestring dir) #o777)
+  #+gcl (si::mkdir dir)
   #+lispworks (system:make-directory dir)
   #+sbcl (sb-unix:unix-mkdir (directory-namestring (sb-ext:native-pathname dir)) #o777)
   #+ccl (ensure-directories-exist dir)
   #+ecl (ensure-directories-exist dir)
-  #-(or allegro clisp cmu lispworks sbcl ccl ecl)
+  #-(or allegro clisp cmu gcl lispworks sbcl ccl ecl)
   (error 'not-implemented :proc (list 'mkdir dir)))
   
 ; tested with clisp, ccl, sbcl, ecl
