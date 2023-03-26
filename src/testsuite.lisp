@@ -161,6 +161,7 @@
 ;; can actually find these files. (file_search_maxima is a good choice.)
 (defparameter $share_testsuite_files
   '((mlist simp)
+    "rtest_orthopoly"
     "rtest_pslq"
     "rtestflatten"
     "rtest_z_transform"
