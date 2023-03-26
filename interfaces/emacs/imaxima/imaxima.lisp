@@ -44,6 +44,7 @@
 
 (setq $maxima_frontend "imaxima")
 (setq $maxima_frontend_version *autoconf-version*)
+(setq $maxima_frontend_bugreportinfo "imaxima is part of maxima.")
 
 (defvar *windows-OS* (string= *autoconf-windows* "true"))
 (defmvar $wxplot_size '((mlist simp) 400 250))

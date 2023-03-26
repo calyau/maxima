@@ -11,6 +11,8 @@ New items in core:
    change.
  * --init-mac and --init-lisp are now (deprecated) aliases for --preload.
    This is an incompatible change.
+ * The variable $maxima_frontend_bugreportinfo allows the frontend to
+   tell bug_report() how to report frontend bugs.
 
 New items in share:
 -------------------

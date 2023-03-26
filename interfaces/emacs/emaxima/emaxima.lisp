@@ -6,6 +6,7 @@
 
 (setq $maxima_frontend "emaxima")
 (setq $maxima_frontend_version *autoconf-version*)
+(setq $maxima_frontend_bugreportinfo "emaxima is part of maxima.")
 
 (declare-top (special lop rop $gcprint $inchar))
 

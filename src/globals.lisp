@@ -1602,6 +1602,8 @@
   "The frontend maxima is used with.")
 (defvar $maxima_frontend_version nil
   "The version of the maxima frontend.")
+(defvar $maxima_frontend_bugreportinfo nil
+  "The bug report info the maxima frontend comes with.")
 
 ;; A list of temporary files that can be deleted on leaving maxima
 (defvar *temp-files-list* (make-hash-table :test 'equal))

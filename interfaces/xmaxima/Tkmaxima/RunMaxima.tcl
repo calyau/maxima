@@ -355,6 +355,7 @@ proc runOneMaxima { win } {
     fileevent $sock readable  [list maximaFilter $win $sock]
     sendMaxima $win ":lisp-quiet (setq \$maxima_frontend \"Xmaxima\")\n"
     sendMaxima $win ":lisp-quiet (setq \$maxima_frontend_version *autoconf-version*)\n"
+    sendMaxima $win ":lisp-quiet (setq \$maxima_frontend_bugreportinfo \"XMaxima is part of maxima.\")\n"
     return $res
 
 }

@@ -414,9 +414,23 @@ DESTINATION is an actual stream (rather than nil for a string)."
     ($batch tem	'$demo)))
 
 (defmfun $bug_report ()
-  (format t (intl:gettext "~%Please report bugs to:~%"))
+  (if $maxima_frontend
+      (format t (intl:gettext
+		 "~%Please report bugs in maxima, the tool that does the actual maths, to:~%"))
+      (format t (intl:gettext "~%Please report bugs to:~%")))
   (format t "    https://sourceforge.net/p/maxima/bugs~%")
   (format t (intl:gettext "To report a bug, you must have a Sourceforge account.~%"))
+  (if $maxima_frontend
+      (progn
+	(format t
+		(intl:gettext
+		 "~%Bugs affecting UI and display should be reported to the frontend's homepage.~%")
+		(if $maxima_frontend_bugreportinfo
+		    (format t (intl:gettext "The front end provides the following info:~%~a~%")
+			    $maxima_frontend_bugreportinfo)
+		    (format t (intl:gettext
+			       "The front end doesn't provide any additional bug report info.~%"))
+		    ))))
   (format t (intl:gettext "Please include the following information with your bug report:~%"))
   (format t "-------------------------------------------------------------~%")
   ; Display the 2D-formatted build information
