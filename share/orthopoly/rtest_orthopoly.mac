@@ -1928,3 +1928,8 @@ printf(false,"~m",define(f(),spherical_harmonic(n,m,x,y)));
 f() := Y (x, y)
         n
 "$
+
+/* verify TeX output for gen_laguerre */
+
+tex1 (gen_laguerre (n, a, x));
+"L_{n}^{\\left(a\\right)}\\left(x\\right)";

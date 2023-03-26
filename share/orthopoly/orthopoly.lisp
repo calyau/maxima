@@ -853,7 +853,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 (defprop $gen_laguerre tex-gen-laguerre tex)
 
 (defun tex-gen-laguerre (x l r)
-  (tex-sub-and-super-scripted-function "L" `(0) nil `(1) t 1 x l r))
+  (tex-sub-and-super-scripted-function "L" `(0) nil `(1) t 2 x l r))
 
 (setf (get '$gen_laguerre 'dimension) 'dimension-gen-laguerre)
 
