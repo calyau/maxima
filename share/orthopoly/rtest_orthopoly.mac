@@ -1933,3 +1933,33 @@ f() := Y (x, y)
 
 tex1 (gen_laguerre (n, a, x));
 "L_{n}^{\\left(a\\right)}\\left(x\\right)";
+
+/* SF bug #3631: "gen_laguerre returns 0 to a negative exponent"
+ * to check results, implement recurrence copied from:
+ * https://en.wikipedia.org/wiki/Laguerre_polynomials#Generalized_Laguerre_polynomials
+ */
+
+(kill (L),
+ L[0](a, x) := 1,
+ L[1](a, x) := 1 + a - x,
+ L[k](a, x) := ((2*k - 1 + a - x)*L[k - 1](a, x) - (k - 1 + a)*L[k - 2](a, x))/k,
+ check_gen_laguerre (actual, expected) :=
+    if ratsimp (actual - expected) = 0 then true
+        else failed_gen_laguerre ('actual = actual, 'expected = expected),
+ 0);
+0;
+
+check_gen_laguerre (gen_laguerre (1, -1, x), L[1](-1, x));
+true;
+
+check_gen_laguerre (gen_laguerre (2, -2, x), L[2](-2, x));
+true;
+
+makelist (check_gen_laguerre (gen_laguerre (1, a, x), L[1](a, x)), a, -2, 1);
+[true, true, true, true];
+
+makelist (check_gen_laguerre (gen_laguerre (2, a, x), L[2](a, x)), a, -3, 1);
+[true, true, true, true, true];
+
+makelist (check_gen_laguerre (gen_laguerre (3, a, x), L[3](a, x)),  a, -4, 1);
+[true, true, true, true, true, true];

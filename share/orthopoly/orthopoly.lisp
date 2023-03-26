@@ -827,6 +827,13 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 ;;     binomial(n+a,n) = pochhammer(a+1,n)/pochhammer(1,n)
 
 (defun $gen_laguerre (n a x)
+  (if (and (integerp a) (integerp n) (<= (- n) a) (< a 0))
+    ;; For (- n) <= a < 0, avoid problems with (a + k) in denominator of unsimplified expression.
+    (let ((a-gensym (gensym "a")))
+      ($ratsimp ($substitute a a-gensym ($ratsimp (gen_laguerre-1 n a-gensym x)))))
+    (gen_laguerre-1 n a x)))
+
+(defun gen_laguerre-1 (n a x)
   (cond ((use-hypergeo n x)
 	 (let ((f) (d) (e))
 	   ;(setq d (div ($pochhammer (add a 1) n) ($pochhammer 1 n)))
