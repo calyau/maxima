@@ -275,7 +275,7 @@
 ;; used when printing out error messages for incorrect number of
 ;; arguments.
 
-(defmacro defun-checked-form ((name impl-name) lambda-list &body body)
+(defmacro defun-checked-form ((name impl-name &key deprecated-p) lambda-list &body body)
   ;; Carefully check the number of arguments and print a nice message
   ;; if the number doesn't match the expected number.
   (multiple-value-bind (required-args
@@ -333,7 +333,8 @@
 				     (if (consp x)
 					 (car x)
 					 x)))))
-		       keyword-args))))
+		       keyword-args)))
+	   (warning-done-var (gensym "WARNING-DONE-")))
 
       (multiple-value-bind (forms decls doc-string)
 	  (parse-body body nil t)
@@ -347,58 +348,64 @@
 		 (declare (ignorable %%pretty-fname))
 		 ,@forms)))
 
-	   (defun ,name (&rest ,args)
-	     ,@doc-string
-	     (let ((,nargs (length ,args)))
-	       (declare (ignorable ,nargs))
-	       ,@(cond
-		   ((or restp keywords-present-p)
-		    ;; When a rest arg is given, there's no upper
-		    ;; limit to the number of args.  Just check that
-		    ;; we have enough args to satisfy the required
-		    ;; args.
-		    (unless (null required-args)
-		      `((when (< ,nargs ,required-len)
+	   (let ,(when deprecated-p `((,warning-done-var nil)))
+	     (defun ,name (&rest ,args)
+	       ,@doc-string
+	       ,@(when deprecated-p
+		   `((unless ,warning-done-var
+		       (setf ,warning-done-var t)
+		       (mwarning (aformat nil (intl:gettext "~M is deprecated; use ~M.")
+					  ',name ',deprecated-p)))))
+	       (let ((,nargs (length ,args)))
+		 (declare (ignorable ,nargs))
+		 ,@(cond
+		     ((or restp keywords-present-p)
+		      ;; When a rest arg is given, there's no upper
+		      ;; limit to the number of args.  Just check that
+		      ;; we have enough args to satisfy the required
+		      ;; args.
+		      (unless (null required-args)
+			`((when (< ,nargs ,required-len)
+			    (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+				    ',pretty-fname
+				    ,required-len
+				    ,nargs
+				    (list* '(mlist) ,args))))))
+		     (optional-args
+		      ;; There are optional args (but no rest
+		      ;; arg). Verify that we don't have too many args,
+		      ;; and that we still have all the required args.
+		      `(
+			(when (> ,nargs ,(+ required-len optional-len))
+			  (merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
+				  ',pretty-fname
+				  ,(+ required-len optional-len)
+				  ,nargs
+				  (list* '(mlist) ,args)))
+			(when (< ,nargs ,required-len)
 			  (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
 				  ',pretty-fname
 				  ,required-len
 				  ,nargs
+				  (list* '(mlist) ,args)))))
+		     (t
+		      ;; We only have required args.
+		      `((unless (= ,nargs ,required-len)
+			  (merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
+				  ',pretty-fname
+				  ,required-len
+				  ,nargs
 				  (list* '(mlist) ,args))))))
-		   (optional-args
-		    ;; There are optional args (but no rest
-		    ;; arg). Verify that we don't have too many args,
-		    ;; and that we still have all the required args.
-		    `(
-		      (when (> ,nargs ,(+ required-len optional-len))
-			(merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
-				',pretty-fname
-				,(+ required-len optional-len)
-				,nargs
-				(list* '(mlist) ,args)))
-		      (when (< ,nargs ,required-len)
-			(merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
-				',pretty-fname
-				,required-len
-				,nargs
-				(list* '(mlist) ,args)))))
-		   (t
-		    ;; We only have required args.
-		    `((unless (= ,nargs ,required-len)
-			(merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
-				',pretty-fname
-				,required-len
-				,nargs
-				(list* '(mlist) ,args))))))
-	       ,(cond
-		  (keywords-present-p
-		   `(apply #',impl-name
-			   (append 
-			    (subseq ,args 0 ,required-len)
-			    (defmfun-keywords ',pretty-fname
-				(nthcdr ,required-len ,args)
-			      ',maxima-keywords))))
-		  (t
-		   `(apply #',impl-name ,args)))))
+		 ,(cond
+		    (keywords-present-p
+		     `(apply #',impl-name
+			     (append 
+			      (subseq ,args 0 ,required-len)
+			      (defmfun-keywords ',pretty-fname
+				  (nthcdr ,required-len ,args)
+				',maxima-keywords))))
+		    (t
+		     `(apply #',impl-name ,args))))))
 	   ,(cond
 	      (keywords-present-p
 	       `(define-compiler-macro ,name (&rest ,rest-name)
@@ -451,7 +458,7 @@
   ;;
   ;; is the same as (defmfun $polarform (xx) ...) but adds
   ;; (putprop '$polarform t 'evfun)
-  (destructuring-bind (name &key properties)
+  (destructuring-bind (name &key properties deprecated-p)
       (if (symbolp name-maybe-prop)
 	  (list name-maybe-prop)
 	  name-maybe-prop)
@@ -498,7 +505,7 @@
            (unless (char= #\$ (aref (string name) 0))
 	     (warn "First character of function name must start with $: ~S~%" name))
 	   `(progn
-	      (defun-checked-form (,name ,impl-name) ,lambda-list
+	      (defun-checked-form (,name ,impl-name :deprecated-p ,deprecated-p) ,lambda-list
 		,@body)
 	      ,@(add-props)
 	      ,@(func-props)
