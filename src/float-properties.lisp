@@ -50,25 +50,23 @@
   (let ((r ($bfloat (div 1 (expt 2 fpprec)))))
     (list (first r) (incf (second r)) (third r))))
 
-(let ((error-done nil))
+(let ((warning-done nil))
   (defmfun $float_bits ()
     "The number of bits in the fraction part of a floating-point number."
     ;; Throw an error only on the first call.
-    (unless error-done
-      (merror (intl:gettext "float_bits is deprecated; use float_precision.")))
-    ;; If the user resumes from the debugger, return a useful value.
-    (setf error-done t)
+    (unless warning-done
+      (setf warning-done t)
+      (mwarning (intl:gettext "float_bits is deprecated; use float_precision.")))
     (float-digits 0d0)))
 
-(let ((error-done nil))
+(let ((warning-done nil))
   (defmfun $bigfloat_bits ()
     "The number of bits in the fraction part of a bigfloat number.  Note
     that this changes when $fpprec is changed, of course."
     ;; Throw an error only on the first call.
-    (unless error-done
-      (merror (intl:gettext "bfloat_bits is deprecated; use float_precision.")))
-    ;; If the user resumes from the debugger, return a useful value.
-    (setf error-done t)
+    (unless warning-done
+      (setf warning-done t)
+      (mwarning (intl:gettext "bfloat_bits is deprecated; use float_precision.")))
     fpprec))
 
 (defmfun $float_precision (f)
