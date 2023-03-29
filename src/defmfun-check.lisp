@@ -263,6 +263,16 @@
 ;; NAME.  A compiler-macro is also defined so that Lisp calls of NAME
 ;; get automatically converted to IMPL.
 ;;
+;; If the keyword :DEPRECATED-P is also specified, then the function
+;; is deprecated which causes a warning to be printed once when the
+;; function NAME is called the first time.  The value of :DEPRECATED-P
+;; is a symbol naming the function that should be used instead.
+;;
+;; For example:
+;;
+;;   (defun-checked-form ($foo foo-impl :deprecated-p $bar) ...)
+;;
+;;
 ;; The lambda-list supports &optional and &rest args.  Keyword args
 ;; (&key) are also supported.  Maxima keyword args (a=b) are converted
 ;; to Lisp keywords appropriately.  Unrecognized keywords signal a
@@ -449,15 +459,26 @@
 (defmacro defmfun (name-maybe-prop lambda-list &body body)
   ;; NAME-MAYBE-PROP can be either a symbol or a list.  If a symbol,
   ;; it's just the name of the function to be defined.  If a list, it
-  ;; must have the form (name :properties prop-list) where NAME is the
-  ;; name of the function and PROP-LIST is a list of lists denoting
-  ;; properties that are set for this function.  Each element of the
-  ;; list must be of the form (PROPERTY VALUE).
+  ;; must have the form (name &keyword :properties :deprecated-p)
+  ;; where NAME is the name of the function to be defined.  The
+  ;; keyword args control what is generated.  The value of :PROPERTIES
+  ;; is a list of lists denoting properties that are set for this
+  ;; function.  Each element of the list must be of the form (PROPERTY
+  ;; VALUE).  The value of :DEPRECATED-P is a symbol (unquoted) naming
+  ;; the function that should be used instead of this function because
+  ;; this function is deprecated.
   ;;
-  ;; (defmfun ($polarform :properties ((evfun t))) (xx) ...)
+  ;;   (defmfun ($polarform :properties ((evfun t))) (xx) ...)
   ;;
   ;; is the same as (defmfun $polarform (xx) ...) but adds
   ;; (putprop '$polarform t 'evfun)
+  ;;
+  ;; For deprecated functions:
+  ;;
+  ;;   (defmfun ($foo :deprecated-p $bar) () ...)
+  ;;
+  ;; This will print a message stating that "foo" is deprecated and to
+  ;; use "bar" instead.
   (destructuring-bind (name &key properties deprecated-p)
       (if (symbolp name-maybe-prop)
 	  (list name-maybe-prop)
