@@ -699,27 +699,29 @@
 
 ;;;; GENMAT
 
+;; GENMATRIX is improved in order to save time when creating a large matrix.
+;; see SF bug #4056
+
 (defmfun $genmatrix (a i2 &optional (j2 i2) (i1 1) (j1 i1))
-  (let ((f) (l (ncons '($matrix))))
+  (let* ((f)
+         (s (if $simp '(simp) nil))
+         (mat (cons '$matrix s))
+         (ml (cons 'mlist s)))
     (setq f (if (or (symbolp a) (hash-table-p a) (arrayp a))
-		#'(lambda (i j) (meval (list (list a 'array) i j)))
-	      #'(lambda (i j) (mfuncall a i j))))
-    
+                #'(lambda (i j) (meval (list (list a 'array) i j)))
+              #'(lambda (i j) (mfuncall a i j))))
+
     (if (notevery #'fixnump (list i2 j2 i1 j1))
-      (merror (intl:gettext "genmatrix: bounds must be integers; found ~M, ~M, ~M, ~M") i2 j2 i1 j1))
- 	 
+        (merror (intl:gettext "genmatrix: bounds must be integers; found ~M, ~M, ~M, ~M") i2 j2 i1 j1))
+
     (if (or (> i1 i2) (> j1 j2))
-      (merror (intl:gettext "genmatrix: upper bounds must be greater than or equal to lower bounds; found ~M, ~M, ~M, ~M") i2 j2 i1 j1))
- 	 
-    (dotimes (i (1+ (- i2 i1)))
-      (nconc l (ncons (ncons '(mlist)))))
-    (do ((i i1 (1+ i))
-	 (l (cdr l) (cdr l)))
-	((> i i2))
-      (do ((j j1 (1+ j)))
-	  ((> j j2))
-	(nconc (car l) (ncons (funcall f i j)))))
-    l))
+        (merror (intl:gettext "genmatrix: upper bounds must be greater than or equal to lower bounds; found ~M, ~M, ~M, ~M") i2 j2 i1 j1))
+
+    (cons mat
+          (loop for i from i1 to i2
+                collect (cons ml
+                              (loop for j from j1 to j2
+                                    collect (funcall f i j)))))))
 
 ; Execute deep copy for copymatrix and copylist.
 ; Resolves SF bug report [ 1224960 ] sideeffect with copylist.

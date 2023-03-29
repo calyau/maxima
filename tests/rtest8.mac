@@ -908,3 +908,14 @@ sublist (makelist (block ([u: random(0.5) + 0.5, u2],
  reset (%rnum),
  solve ([(- a*n2) - a*n1 - 2*a, sqrt(a)*sqrt(- c)*(n2 - n1), b*n4 + n3 + b*n2 + b*n1 + b + 1], [n1,n2,n3,n4]));
 [[n1 = - 1, n2 = - 1, n3 = (1 - %r1)*b - 1, n4 = %r1]];
+
+/* GENMATRIX is improved in order to save time when creating a large matrix.
+ * it is related to SF bug #4056 "Cannot create very large data array"
+ */
+
+(kill(a), array(a,fixnum,2,2), a[1,1]:%e, a[2,2]:%pi, genmatrix(a,2,2));
+matrix([%e,0],[0,%pi]);
+genmatrix(lambda([i,j],j-i),3,3);
+matrix([0,1,2],[-1,0,1],[-2,-1,0]);
+(kill(B),genmatrix(B,2));
+matrix([B[1,1],B[1,2]],[B[2,1],B[2,2]]);
