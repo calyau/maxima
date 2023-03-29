@@ -247,6 +247,7 @@
 (defun gnuplot-terminal-and-file (plot-options)
   (let ((gstrings
          (if (getf plot-options :gnuplot_strings) "enhanced" "noenhanced"))
+        (gnuplot-svg-background (getf plot-options :gnuplot_svg_background))
         terminal-command out-file (preserve-file t))
   (cond
     ((getf plot-options :svg_file)
@@ -254,7 +255,7 @@
          (setq terminal-command
                (getf plot-options :gnuplot_svg_term_command))
          (setq terminal-command
-               (format nil "set term svg font \",14\" ~a" gstrings)))
+               (format nil "set term svg font \",14\" ~a~@[ background '~a'~]" gstrings gnuplot-svg-background)))
      (setq out-file (getf plot-options :svg_file)))
     ((getf plot-options :png_file)
      (if (getf plot-options :gnuplot_png_term_command)

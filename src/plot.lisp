@@ -85,6 +85,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     :palette (((mlist) $gradient $green $cyan $blue $violet)
               ((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
                $orange $red $brown $black))   
+    :gnuplot_svg_background "white"
     :gnuplot_preamble "" :gnuplot_term $default))
 
 (defvar $plot_options 
@@ -272,6 +273,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           ($gnuplot_out_file :gnuplot_out_file)
           ($gnuplot_pm3d :gnuplot_pm3d)
           ($gnuplot_strings :gnuplot_strings)
+          ($gnuplot_svg_background :gnuplot_svg_background)
           ($gnuplot_preamble :gnuplot_preamble)
           ($gnuplot_postamble :gnuplot_postamble)
           ($gnuplot_pdf_term_command :gnuplot_pdf_term_command)
@@ -2009,6 +2011,9 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($gnuplot_strings
           (setf (getf options :gnuplot_strings)
                 (check-option-boole (cdr opt))))
+         ($gnuplot_svg_background
+          (setf (getf options :gnuplot_svg_background)
+                (check-option-b (cdr opt) #'stringp "a string" 1)))
          ($gnuplot_preamble
           (setf (getf options :gnuplot_preamble)
                 (check-option (cdr opt) #'stringp "a string" 1)))
@@ -2065,6 +2070,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($gnuplot_4_0 (setf (getf options :gnuplot_4_0) t))
          ($gnuplot_pm3d (setf (getf options :gnuplot_pm3d) t))
          ($gnuplot_strings (setf (getf options :gnuplot_strings) t))
+         ($gnuplot_svg_background (setf (getf options :gnuplot_svg_background) t))
          ($noaxes (setf (getf options :axes) nil))
          ($nobox (setf (getf options :box) nil))
          ($nocolor_bar (setf (getf options :color_bar) nil))
@@ -2084,6 +2090,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($noytics (setf (getf options :ytics) nil))
          ($noztics (setf (getf options :ztics) nil))
          ($nognuplot_strings (setf (getf options :gnuplot_strings) nil))
+         ($nognuplot_svg_background (setf (getf options :gnuplot_svg_background) nil))
          (t
           (merror (intl:gettext "Unknown plot option \"~M\".") opt))))))
   options)

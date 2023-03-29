@@ -2233,6 +2233,31 @@ not treat any characters as formatting characters.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{gnuplot_svg_background}
+@defvr {Plot option} gnuplot_svg_background @*
+
+    [gnuplot_svg_background, @var{color}] @*
+    nognuplot_svg_background
+
+Specify the background color for SVG image output.
+@var{color} must be a string which specifies a color name recognized by Gnuplot,
+or an RGB triple of the form @code{"#xxxxxx"} where @code{x} is a hexadecimal digit.
+The default value is @code{"white"}.
+
+When the value of @code{gnuplot_svg_background} is @code{false},
+the background is the default determined by Gnuplot.
+At present (April 2023),
+the Gnuplot default is to specify the background in SVG output as @code{"none"}.
+
+@code{nognuplot_svg_background}, specified by itself without a value,
+is equivalent to @code{[gnuplot_svg_background, false]}.
+
+@opencatbox{Categories:}
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{gnuplot_svg_term_command}
 @defvr {Plot option} gnuplot_svg_term_command [gnuplot_svg_term_command, @var{command}]
 

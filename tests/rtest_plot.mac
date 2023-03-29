@@ -408,5 +408,28 @@ plot2d ([[discrete, [1, 2, 3, 4], [1, 1/2, 1/3, 1/4]], [discrete, [1, 2, 3, 4], 
 
 plot2d ([[discrete, [1, 2, 3, 4], [1, 1/2, 1/3, 1/4]], [discrete, [1, 2, 3, 4], [1/%e, 1/%pi, 1/%phi, 1/%gamma]]], [legend, "baz_1", "baz_2"], [gnuplot_strings, true]);
 
+/* gnuplot_svg_background */
+
+get_plot_option (gnuplot_svg_background);
+
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-white.svg"]);
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-no-bg-1.svg"], nognuplot_svg_background);
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-gray.svg"], [gnuplot_svg_background, "gray"]);
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-ffeedd-1.svg"], [gnuplot_svg_background, "#FFEEDD"]);
+
+get_plot_option (gnuplot_svg_background);
+set_plot_option ([gnuplot_svg_background, "yellow"]);
+
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-yellow.svg"]);
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-no-bg-2.svg"], nognuplot_svg_background);
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-ffeedd-2.svg"], [gnuplot_svg_background, "#FFEEDD"]);
+
+get_plot_option (gnuplot_svg_background);
+set_plot_option ([gnuplot_svg_background, false]);
+
+plot2d ([discrete, [1, 2, 3], [4, 5, 6]], [svg_file, "./tmp-svg-bg-no-bg-3.svg"]);
+
+get_plot_option (gnuplot_svg_background);
+
 "FINIS" $
 
