@@ -1,0 +1,138 @@
+(kill(all),load("facexp"),0);
+0;
+
+/* verify that result is expanded wrt e and f, and factored wrt other variables */
+
+(exp1:d*e*f^2+c*e*f^2+(-d)*e+c*e+b*c*d+a*c*d, facsum_exp1: facsum(exp1,e,f));
+(d+c)*e*f^2-(d-c)*e+(b+a)*c*d;
+
+is (equal (facsum_exp1, exp1));
+true;
+
+/* verify that result is expanded wrt c and d, and that coefficients of c and d terms are expanded wrt u and v */
+
+(exp2:c*d*(x*y*z+w*y*z+u*v^2*z+(-u)*z+u*v^2*y+u*y)+d*e*f^2+c*e*f^2+(-d)*e+c*e+b*c*d, facsum_exp2: facsum(exp2,c,d,[u,v]));
+c*d*(u*v^2*(z+y)-u*(z-y)+x*y*z+w*y*z+b)+c*e*(f^2+1)+d*e*(f-1)*(f+1);
+
+is (equal (facsum_exp2, exp2));
+true;
+
+/* verify that result is same for arguments in a different order */
+
+facsum(exp2,[u,v],c,d);
+c*d*(u*v^2*(z+y)-u*(z-y)+x*y*z+w*y*z+b)+c*e*(f^2+1)+d*e*(f-1)*(f+1);
+
+/* verify that result is same for arguments in a different order */
+
+facsum(exp2,c,[u],d,[v]);
+c*d*(u*v^2*(z+y)-u*(z-y)+x*y*z+w*y*z+b)+c*e*(f^2+1)+d*e*(f-1)*(f+1);
+
+/* verify result with nested arguments */
+
+(exp3:c*d*q*x*y*z+2*c*d*m*p*x*y*z+c*d*m*n*x*y*z+c*d*q*w*y*z+2*c*d*m*p*w*y*z+c*d*m*n*w*y*z+c*d*q*u*v^2*z+2*c*d*m*p*u*v^2*z+c*d*m*n*u*v^2*z
+                 +(-c)*d*q*u*z+(-2)*c*d*m*p*u*z+(-c)*d*m*n*u*z+c*d*u*v^2*y+c*d*u*y+d*e*f^2+c*e*f^2+(-d)*e+c*e+b*c*d,
+ facsum_exp3: facsum(exp3,c,d,[u,v,[z,[m]]]));
+c*d*(u*v^2*((q+m*(2*p+n))*z+y)+u*((-q-m*(2*p+n))*z+y)+(q*(x+w)+m*(2*p+n)*(x+w))*y*z+b)+c*e*(f^2+1)+d*e*(f-1)*(f+1);
+
+is (equal (facsum_exp3, exp3));
+true;
+
+/* verify result with nonatomic argument */
+
+(exp4:subst(log(m+n),c,exp2), facsum_exp4: facsum(exp4,log(m+n),[e,f]));
+log(n+m)*(d*(x*y*z+w*y*z+u*v^2*z-u*z+u*v^2*y+u*y+b)+e*f^2+e)+d*e*f^2-d*e;
+
+is (equal (facsum_exp4, exp4));
+true;
+
+(exp5:x+a . b*(c+d)+b . a*(d+c)+log(a*b)*2*(c+d)+log(a/b)*2*(d+c),exp5_factored:factor(exp5));
+x+2*log(a*b)*d+b . a*d+2*log(a/b)*d+a . b*d+2*log(a*b)*c+b . a*c+2*log(a/b)*c+a . b*c;
+
+/* verify result with operator(...) argument */
+
+facsum_exp5_factored:facsum(exp5_factored,operator(log,"."));
+x+2*log(a*b)*(d+c)+b . a*(d+c)+2*log(a/b)*(d+c)+a . b*(d+c);
+
+is (equal (facsum_exp5_factored, exp5_factored));
+true;
+
+is(facsum_exp5_factored = exp5);
+true;
+
+facsum(exp5_factored,operator(log),operator("."));
+x+2*log(a*b)*(d+c)+b . a*(d+c)+2*log(a/b)*(d+c)+a . b*(d+c);
+
+(exp6:exp5*2*(e+(h+f)*e . f),exp6_expanded:expand(exp6));
+2*e . f*h*x+2*e . f*f*x+2*e*x+4*log(a*b)*d*e . f*h+2*b . a*d*e . f*h+4*log(a/b)*d*e . f*h+2*a . b*d*e . f*h+4*log(a*b)*c*e . f*h
+           +2*b . a*c*e . f*h+4*log(a/b)*c*e . f*h+2*a . b*c*e . f*h+4*log(a*b)*d*e . f*f+2*b . a*d*e . f*f+4*log(a/b)*d*e . f*f
+           +2*a . b*d*e . f*f+4*log(a*b)*c*e . f*f+2*b . a*c*e . f*f+4*log(a/b)*c*e . f*f+2*a . b*c*e . f*f+4*log(a*b)*d*e+2*b . a*d*e
+           +4*log(a/b)*d*e+2*a . b*d*e+4*log(a*b)*c*e+2*b . a*c*e+4*log(a/b)*c*e+2*a . b*c*e;
+
+/* verify factorfacsum */
+
+factorfacsum_exp6_expanded:factorfacsum(exp6_expanded,operator(".",log));
+2*(e . f*(h+f)+e)*(x+2*log(a*b)*(d+c)+b . a*(d+c)+2*log(a/b)*(d+c)+a . b*(d+c));
+
+is(factorfacsum_exp6_expanded = exp6);
+true;
+
+/* verify facsum with nextlayerfactor */
+
+(exp7:f*h+f*g+(-2)*c*d*f^2+2*c*d*e^2,ev(facsum(exp7,c,[e]),nextlayerfactor:true));
+f*(h+g)-2*c*d*(f-e)*(f+e);
+
+facsum(exp7,c,[e]);
+f*(h+g)+c*(2*d*e^2-2*d*f^2);
+
+facsum(exp7,c,'nextlayerfactor,[e]);
+f*(h+g)-2*c*d*(f-e)*(f+e);
+
+(exp8:-2*c*d*f^2*h^2*l^2+f*h^2*l^2+(-4)*c*d*f^2*h^2*k*l+2*f*h^2*k*l+(-4)*c*d*f^2*g*h*l+2*f*g*h*l+(-2)*c*d*f^2*h^2*k^2+f*h^2*k^2
+                        +(-4)*c*d*f^2*g*h*k+2*f*g*h*k+(-2)*c*d*f^2*g^2+f*g^2+2*c*d*e^2,facsum(exp8,c,'nextlayerfactor,[f]));
+f*(h*l+h*k+g)^2-2*c*d*(f*(h*l+h*k+g)-e)*(f*(h*l+h*k+g)+e);
+
+facsum(exp8,c,[f,'nextlayerfactor]);
+c*(2*d*e^2-2*d*f^2*(h*l+h*k+g)^2)+f*(h*l+h*k+g)^2;
+
+(exp1/(c*(e+f)+d*e),facsum(exp1/(c*(e+f)+d*e),e,f,[c,d]));
+((d+c)*e*f^2+(c-d)*e+(b+a)*c*d)/(c*f+(d+c)*e);
+
+/* verify facsum with facsum_combine */
+
+ev(facsum(exp1/(c*(e+f)+d*e),e,f,[c,d]),facsum_combine:false);
+((d+c)*e*f^2)/(c*f+(d+c)*e)+((c-d)*e)/(c*f+(d+c)*e)+((b+a)*c*d)/(c*f+(d+c)*e);
+
+/* verify facsum with "automatic" property */
+
+get('facsum,'automatic);
+nonumfactor;
+
+put('facsum,'sqfr,'automatic);
+sqfr;
+
+facsum(exp2,c,d,[u,v]);
+c*d*(u*v^2*(z+y)-u*(z-y)+(x+w)*y*z+b)+c*e*(f^2+1)+d*e*(f^2-1);
+
+(declare(sqfr,noun),facsum(exp2,c,d,[u,v]));
+c*d*(sqfr(sqfr(sqfr((x+w)*y*z)+sqfr(b)+sqfr(0)))+u*v^2*sqfr(z+y)+u*sqfr(sqfr(sqfr(sqfr(-z)+sqfr(y)))))
+ +c*sqfr(sqfr(sqfr(e*f^2+e)))+d*sqfr(e*f^2-e);
+
+put('facsum,'nonumfactor,'automatic);
+nonumfactor;
+
+/* verify collectterms */
+
+(exp9:a*u+b,exp10:c*u+d,collectterms(exp9+exp10,u));
+(c+a)*u+d+b;
+
+(e*u^2+f/u+b+d,exp11:expand(%%+exp10*u),collectterms(exp11,u));
+(e+c)*u^2+d*u+f/u+d+b;
+
+(u^2*v+exp11+subst(v,u,exp11),collectterms(%%,u,v));
+(e+c)*v^2+u^2*v+d*v+f/v+(e+c)*u^2+d*u+f/u+2*d+2*b;
+
+collectterms(exp2,c,d,[u,v]);
+c*d*(u*v^2*(z+y)+x*y*z+w*y*z+u*(y-z)+b)+c*(e*f^2+e)+d*(e*f^2-e);
+
+collectterms(exp5_factored,operator(log,"."));
+x+log(a*b)*(2*d+2*c)+log(a/b)*(2*d+2*c)+b . a*(d+c)+a . b*(d+c);
