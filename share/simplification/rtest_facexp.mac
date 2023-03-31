@@ -136,3 +136,29 @@ c*d*(u*v^2*(z+y)+x*y*z+w*y*z+u*(y-z)+b)+c*(e*f^2+e)+d*(e*f^2-e);
 
 collectterms(exp5_factored,operator(log,"."));
 x+log(a*b)*(2*d+2*c)+log(a/b)*(2*d+2*c)+b . a*(d+c)+a . b*(d+c);
+
+/* SF bug #4118: facsum + operator(".") + dotdistrib:true + GCL = FAIL */
+
+block ([dotdistrib: true],
+       facsum(l1 . sum(bra(n+1) . a . ket(n) . l2, n, 1, 64), [l1,l2], operator(".")));
+l1 . bra(65) . a . ket(64) . l2+l1 . bra(64) . a . ket(63) . l2+l1 . bra(63) . a . ket(62) . l2+l1 . bra(62) . a . ket(61) . l2
+                               +l1 . bra(61) . a . ket(60) . l2+l1 . bra(60) . a . ket(59) . l2+l1 . bra(59) . a . ket(58) . l2
+                               +l1 . bra(58) . a . ket(57) . l2+l1 . bra(57) . a . ket(56) . l2+l1 . bra(56) . a . ket(55) . l2
+                               +l1 . bra(55) . a . ket(54) . l2+l1 . bra(54) . a . ket(53) . l2+l1 . bra(53) . a . ket(52) . l2
+                               +l1 . bra(52) . a . ket(51) . l2+l1 . bra(51) . a . ket(50) . l2+l1 . bra(50) . a . ket(49) . l2
+                               +l1 . bra(49) . a . ket(48) . l2+l1 . bra(48) . a . ket(47) . l2+l1 . bra(47) . a . ket(46) . l2
+                               +l1 . bra(46) . a . ket(45) . l2+l1 . bra(45) . a . ket(44) . l2+l1 . bra(44) . a . ket(43) . l2
+                               +l1 . bra(43) . a . ket(42) . l2+l1 . bra(42) . a . ket(41) . l2+l1 . bra(41) . a . ket(40) . l2
+                               +l1 . bra(40) . a . ket(39) . l2+l1 . bra(39) . a . ket(38) . l2+l1 . bra(38) . a . ket(37) . l2
+                               +l1 . bra(37) . a . ket(36) . l2+l1 . bra(36) . a . ket(35) . l2+l1 . bra(35) . a . ket(34) . l2
+                               +l1 . bra(34) . a . ket(33) . l2+l1 . bra(33) . a . ket(32) . l2+l1 . bra(32) . a . ket(31) . l2
+                               +l1 . bra(31) . a . ket(30) . l2+l1 . bra(30) . a . ket(29) . l2+l1 . bra(29) . a . ket(28) . l2
+                               +l1 . bra(28) . a . ket(27) . l2+l1 . bra(27) . a . ket(26) . l2+l1 . bra(26) . a . ket(25) . l2
+                               +l1 . bra(25) . a . ket(24) . l2+l1 . bra(24) . a . ket(23) . l2+l1 . bra(23) . a . ket(22) . l2
+                               +l1 . bra(22) . a . ket(21) . l2+l1 . bra(21) . a . ket(20) . l2+l1 . bra(20) . a . ket(19) . l2
+                               +l1 . bra(19) . a . ket(18) . l2+l1 . bra(18) . a . ket(17) . l2+l1 . bra(17) . a . ket(16) . l2
+                               +l1 . bra(16) . a . ket(15) . l2+l1 . bra(15) . a . ket(14) . l2+l1 . bra(14) . a . ket(13) . l2
+                               +l1 . bra(13) . a . ket(12) . l2+l1 . bra(12) . a . ket(11) . l2+l1 . bra(11) . a . ket(10) . l2
+                               +l1 . bra(10) . a . ket(9) . l2+l1 . bra(9) . a . ket(8) . l2+l1 . bra(8) . a . ket(7) . l2
+                               +l1 . bra(7) . a . ket(6) . l2+l1 . bra(6) . a . ket(5) . l2+l1 . bra(5) . a . ket(4) . l2
+                               +l1 . bra(4) . a . ket(3) . l2+l1 . bra(3) . a . ket(2) . l2+l1 . bra(2) . a . ket(1) . l2;

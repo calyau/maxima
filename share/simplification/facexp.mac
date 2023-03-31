@@ -105,8 +105,8 @@ facsuml(arglist):=block(
   [argdum:rest(arglist),argdum2:[],ratfac:false],
   /* DECLARE([ARGDUM,ARGDUM2],SPECIAL), */
   setlist(argsplit(farglist,argdum),'argdum,'argdum2),
-  facexpl(cons(apply('ratsimp,cons(farglist,argdum:ratsimp(argdum))),
-               argdum))))$
+  block ([ratvars: append (ratvars, argdum: ratsimp (argdum))],
+         facexpl (cons (ratsimp (farglist), argdum))))) $
 
 /* Functions mainly for internal use */
 
