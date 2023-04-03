@@ -1305,3 +1305,65 @@ unknown;
 (reset (),
  killcontext (mycontext));
 done;
+
+/* SF bug #4120: is("foo"<3) gives internal error */
+
+block ([prederror: false], is("foo"<3));
+false;
+
+errcatch (block ([prederror: true], is("foo"<3)));
+[];
+
+block ([prederror: false], is(3 < "foo"));
+false;
+
+errcatch (block ([prederror: true], is(3 < "foo")));
+[];
+
+block ([prederror: false],
+       kill (foo),
+       [is ("foo" < 3), is ("foo" < foo), is ("foo" < sin (foo))]);
+[false, false, false];
+
+block ([prederror: true],
+       [errcatch (is ("foo" < 3)), errcatch (is ("foo" < foo)), errcatch (is ("foo" < sin (foo)))]);
+[[], [], []];
+
+block ([prederror: false], is("foo"<=3));
+false;
+
+errcatch (block ([prederror: true], is("foo"<=3)));
+[];
+
+block ([prederror: false], is(3 <= "foo"));
+false;
+
+errcatch (block ([prederror: true], is(3 <= "foo")));
+[];
+
+block ([prederror: false],
+       [is ("foo" <= 3), is ("foo" <= foo), is ("foo" <= sin (foo))]);
+[false, false, false];
+
+block ([prederror: true],
+       [errcatch (is ("foo" <= 3)), errcatch (is ("foo" <= foo)), errcatch (is ("foo" <= sin (foo)))]);
+[[], [], []];
+
+block ([prederror: false],
+       [is ("abc" > "ab"), is ("abc" > "abc"), is ("abc" > "abcd")]);
+[true, false, false];
+
+block ([prederror: true],
+       [is ("abc" > "ab"), is ("abc" > "abc"), is ("abc" > "abcd")]);
+[true, false, false];
+
+block ([prederror: false],
+       [is ("abc" >= "ab"), is ("abc" >= "abc"), is ("abc" >= "abcd")]);
+[true, true, false];
+
+block ([prederror: true],
+       [is ("abc" >= "ab"), is ("abc" >= "abc"), is ("abc" >= "abcd")]);
+[true, true, false];
+
+block ([prederror: false], sort (["xyz", "xy", "vwxy", "vw", "uvwxyz", "uv"], ">"));
+["xyz", "xy", "vwxy", "vw", "uvwxyz", "uv"];

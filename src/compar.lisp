@@ -1151,7 +1151,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (if (every #'(lambda (s) (eq nil (meqp bk s))) a) (throw 'done t)))
     (throw 'done nil)))
 
-(defun mgrp (a b)
+;; MGRP-GENERAL applies when sign of A - B (possibly complex) makes sense.
+
+(defun mgrp-general (a b)
   (let ((*complexsign* t))
     (setq a (sub a b))
     (let ((sgn (csign a)))
@@ -1160,10 +1162,20 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	    ((member sgn '($neg $zero $nz) :test #'eq) nil)
 	    (t `((mgreaterp) ,a 0))))))
 
+(defun mgrp (a b)
+  (cond
+    ((or (stringp a) (stringp b))
+     (if (and (stringp a) (stringp b)) (not (null (string< b a)))
+       (when $prederror
+         (merror (intl:gettext "greater than: arguments are incomparable; found: ~:M, ~:M") a b))))
+     (t (mgrp-general a b))))
+
 (defun mlsp (x y)
   (mgrp y x))
 
-(defun mgqp (a b)
+;; MGQP-GENERAL applies when sign of A - B (possibly complex) makes sense.
+
+(defun mgqp-general (a b)
   (let ((*complexsign* t))
     (setq a (sub a b))
     (let ((sgn (csign a)))
@@ -1171,6 +1183,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	    ((eq sgn t) nil) ;; csign thinks a - b isn't real
 	    ((eq sgn '$neg) nil)
 	    (t `((mgeqp) ,a 0))))))
+
+(defun mgqp (a b)
+  (cond
+    ((or (stringp a) (stringp b))
+     (if (and (stringp a) (stringp b)) (not (null (string<= b a)))
+       (when $prederror
+         (merror (intl:gettext "greater than or equal: arguments are incomparable; found: ~:M, ~:M") a b))))
+     (t (mgqp-general a b))))
 
 (defun mnqp (x y)
   (let ((b (meqp x y)))
