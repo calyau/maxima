@@ -20,8 +20,9 @@ endif()
 set(CMAKE_C_COMPILER   ${HOST}-gcc)
 set(CMAKE_CXX_COMPILER ${HOST}-g++)
 set(CMAKE_RC_COMPILER  ${HOST}-windres)
-project(maxima)
+
 cmake_minimum_required(VERSION 3.10)
+project(maxima)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/ ${CMAKE_BINARY_DIR}/)
 
@@ -171,6 +172,15 @@ if(SEVENZIP_EXE)
     message(STATUS "Found 7z at ${SEVENZIP_EXE}")
 else()
     message(FATAL_ERROR "7z not found. It is required for crosscompiling Maxima.")
+endif()
+
+# Avoid warnings in CMake >= 3.24:
+# FIXME: Policy OLD is needed for texinfo, it does not build with the policy NEW
+# But policy OLD is deprecated and may be removed in future CMake versions, see:
+# https://cmake.org/cmake/help/latest/policy/CMP0135.html
+# Hopefully texinfo solves that issue.
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.24)
+    cmake_policy(SET CMP0135 OLD)
 endif()
 
 include(ExternalProject)
