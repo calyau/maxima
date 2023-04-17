@@ -33,11 +33,7 @@
                  ,@(and (boundp '*autoconf-lisp-only-build*)
                         (symbol-value '*autoconf-lisp-only-build*)
                         (list (list '(mlist simp) 80))))
-	;; 46 = ECL bug #437: mishandling float format
-	;; 45 sporadically fails in all tested ECL versions (15.3.7-16.1.3)
-	;; 43 fails in ECL up to version 15.3.7
-        ((mlist simp) "rtest6"
-	 #+ecl ((mlist simp) 46))
+        "rtest6"
         "rtest6a"
 	"rtest6b"
 	"rtest7"
@@ -62,9 +58,9 @@
 	;; bug #329. Fixed post-16.1.3.
 	;; Test 50 still sometimes fails in ecl 16.1.2
         ((mlist simp) "rtest16"
-	 #-(or ecl allegro) ((mlist simp) 524 525)
-	 #+ecl ((mlist simp) 524 525)
-	 #+allegro ((mlist simp) 50 241 524 525))
+	 #-(or ecl allegro) ((mlist simp) 525 526)
+	 #+ecl ((mlist simp) 525 526)
+	 #+allegro ((mlist simp) 50 242 525 526))
         "rtestode"
 	"rtestode_zp"
         ((mlist simp) "rtest3" ((mlist simp) 146))

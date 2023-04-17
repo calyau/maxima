@@ -402,7 +402,8 @@ For ordinary floating point numbers,
 when @code{fpprintprec} has a value between 2 and 16 (inclusive),
 the number of digits printed is equal to @code{fpprintprec}.
 Otherwise, @code{fpprintprec} is 0, or greater than 16,
-and the number of digits printed is 16.
+and the number is printed "readably":
+that is, it is printed with sufficient digits to exactly reconstruct the number on input.
 
 For bigfloat numbers,
 when @code{fpprintprec} has a value between 2 and @code{fpprec} (inclusive),

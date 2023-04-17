@@ -299,13 +299,52 @@
 (defvar *exploden-strip-float-zeros* t) ;; NIL => allow trailing zeros
 
 (defun exploden-format-float (symb)
-  (declare (special $maxfpprintprec))
-  (let ((a (abs symb))
-        string
-        (effective-printprec (if (or (= $fpprintprec 0)
-                                     (> $fpprintprec $maxfpprintprec))
-                                 $maxfpprintprec
-                                 $fpprintprec)))
+  (if (or (= $fpprintprec 0) (> $fpprintprec 16.))
+    (exploden-format-float-readably symb)
+    (exploden-format-float-pretty symb)))
+
+(defun exploden-format-float-readably (x)
+  (let ((*print-readably* t))
+    (let ((s (prin1-to-string x)))
+      ;; Skip the fix up unless we know it's needed for the Lisp implementation.
+      #+(or clisp abcl) (fix-up-exponent-in-place s)
+      #+ecl (insert-zero-before-exponent s)
+      #-(or clisp abcl ecl) s)))
+
+;; (1) If string looks like "n.nnnD0" or "n.nnnd0", return just "n.nnn".
+;; (2) Otherwise, replace #\D or #\d (if present) with #\E or #\e, respectively.
+;; (3) Otherwise, return S unchanged.
+
+(defun fix-up-exponent-in-place (s)
+  (let ((n (length s)) i)
+    (if (> n 2)
+      (cond
+        ((and (or (eql (aref s (- n 2)) #\D) (eql (aref s (- n 2)) #\d)) (eql (aref s (- n 1)) #\0))
+         (subseq s 0 (- n 2)))
+        ((setq i (position #\D s))
+         (setf (aref s i) #\E)
+         s)
+        ((setq i (position #\d s))
+         (setf (aref s i) #\e)
+         s)
+        (t s))
+      s)))
+
+;; Replace "nnnn.Ennn" or "nnn.ennn" with "nnn.0Ennn" or nnn.0ennn", respectively.
+;; (Decimal immediately before exponent without intervening digits is
+;; explicitly allowed by CLHS; see Section 2.3.1, "Numbers as Tokens".
+
+(defun insert-zero-before-exponent (s)
+  (let ((n (length s)) (i (position #\. s)))
+    (if (and i (< i (1- n)))
+      (let ((c (aref s (1+ i))))
+        (if (or (eql c #\E) (eql c #\e))
+          (concatenate 'string (subseq s 0 (1+ i)) "0" (subseq s (1+ i) n))
+          s))
+    s)))
+
+(defun exploden-format-float-pretty (symb)
+  (let ((a (abs symb)) string)
     ;; When printing out something for Fortran, we want to be
     ;; sure to print the exponent marker so that Fortran
     ;; knows what kind of number it is.  It turns out that
@@ -327,13 +366,13 @@
              (let*
                ((integer-log10 (floor (/ (log a) #.(log 10.0))))
                 (scale (1+ integer-log10)))
-               (if (< scale effective-printprec)
-                 (values "~,vf" (- effective-printprec scale))
-                 (values "~,ve" (1- effective-printprec)))))
+               (if (< scale $fpprintprec)
+                 (values "~,vf" (- $fpprintprec scale))
+                 (values "~,ve" (1- $fpprintprec)))))
 	    ((or (float-inf-p symb) (float-nan-p symb))
-             (return-from exploden-format-float (format nil "~a" symb)))
+             (return-from exploden-format-float-pretty (format nil "~a" symb)))
             (t
-              (values "~,ve" (1- effective-printprec))))
+              (values "~,ve" (1- $fpprintprec))))
 
           ;; Call FORMAT using format string chosen above.
           (setq string (format nil form digits a))

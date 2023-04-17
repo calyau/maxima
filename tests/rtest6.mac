@@ -160,14 +160,40 @@ string (25.0);
 string(1/16.0);
 "0.0625";
 
-(string(2e7), %% = "2.0e+7" or %% = "2.0E+7" or %%);
+(string(2e7), %% = "2.0e+7" or %% = "2.0E+7" or %% = "2.0e7" or %% = "2.0E7" or %%);
 true;
 
 (string(2e-7), %% = "2.0e-7" or %% = "2.0E-7" or %%);
 true;
 
-(string(12345000000.0), %% = "1.2345e+10" or %% = "1.2345E+10" or %%);
+(string(12345000000.0), %% = "1.2345e+10" or %% = "1.2345E+10" or %% = "1.2345e10" or %% = "1.2345E10" or %%);
 true;
 
 (string(1/1024.0), %% = "9.765625e-4" or %% = "9.765625E-4" or %%);
+true;
+
+/* SF bug #4107: "least_positive_float doesn't print/read correctly in float/bfloat" */
+
+(reset (fpprintprec), 0);
+0;
+
+is (parse_string (string (most_positive_float)) = most_positive_float);
+true;
+
+is (parse_string (string (least_positive_float)) = least_positive_float);
+true;
+
+is (parse_string (string (least_positive_normalized_float)) = least_positive_normalized_float);
+true;
+
+is (parse_string (string (most_negative_float)) = most_negative_float);
+true;
+
+is (parse_string (string (least_negative_float)) = least_negative_float);
+true;
+
+is (parse_string (string (least_negative_normalized_float)) = least_negative_normalized_float);
+true;
+
+is (parse_string (string (float_eps ())) = float_eps ());
 true;
