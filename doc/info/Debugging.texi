@@ -193,6 +193,11 @@ Return to the Maxima prompt (from any debugger level) without
 completing the computation
 @end table 
 
+@c Document the issue reported as https://sourceforge.net/p/maxima/bugs/4086/
+
+Note: Keyword commands must (currently) start at the beginning of a line.
+Not even a single space character is allow before the colon.
+
 @opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
