@@ -196,7 +196,7 @@ completing the computation
 @c Document the issue reported as https://sourceforge.net/p/maxima/bugs/4086/
 
 Note: Keyword commands must (currently) start at the beginning of a line.
-Not even a single space character is allow before the colon.
+Not even a single space character is allowed before the colon.
 
 @opencatbox{Categories:}
 @category{Debugging}
