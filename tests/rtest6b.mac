@@ -98,7 +98,7 @@ if bar = map (lambda ([s], ssubst ("ln", "log", s)), foo) then true else bar;
 true;
 
 /* there's no user-level interface for this, and :lisp isn't recognized in test scripts, so ... */
-block([simp:false], ?nconc(?\*tex\-mexpt\-trig\-like\-fns\*, ?list(log)), 0);
+block([simp:false], ?\*tex\-mexpt\-trig\-like\-fns\*: ?cons(log, ?\*tex\-mexpt\-trig\-like\-fns\*), 0);
 0;
 
 baz: map (tex1, [log(x), log(x+1), log(x)^n]);
@@ -108,6 +108,13 @@ baz: map (tex1, [log(x), log(x+1), log(x)^n]);
 
 map (lambda ([s], ssubst ("ln", "tan", s)), map (tex1, [tan(x), tan(x+1), tan(x)^n]));
 ''baz;
+
+/* restore TeX properties */
+
+(kill (log),
+ ?pop (?\*tex\-mexpt\-trig\-like\-fns\*),
+ 0);
+0;
 
 (reset (), 0);
 0;
