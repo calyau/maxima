@@ -289,3 +289,20 @@ if equal(m,-1)
 integrate (1/(a*x^2 + b), x);
 if a*b < 0 then log((2*a*x-2*sqrt(-a*b))/(2*a*x+2*sqrt(-a*b)))/(2*sqrt(-a*b))
 elseif a*b > 0 then atan(a*x/sqrt(a*b))/sqrt(a*b)$
+
+/* mailing list 2020-06-06: "Question regarding asksign" */
+
+kill (a, s, t);
+done;
+
+ilt(1/(s**2+a*s+2),s,t);
+if a^2-8 < 0 then (2*%e^-((a*t)/2)*sin((sqrt(8-a^2)*t)/2))/sqrt(8-a^2)
+elseif equal(a^2-8,0) then t*%e^-((a*t)/2) elseif a^2-8 > 0
+then (2*%e^-((a*t)/2)*sinh((sqrt(a^2-8)*t)/2))/sqrt(a^2-8);
+
+/* expected failure due to assume weakness; see SF bug #3640 */
+
+ilt(1/(s**2+a*s+1),s,t);
+if (a-2)*(a+2) < 0 then (2*%e^-((a*t)/2)*sin((sqrt(4-a^2)*t)/2))/sqrt(4-a^2)
+elseif equal((a-2)*(a+2),0) then t*%e^-((a*t)/2)
+elseif (a-2)*(a+2) > 0 then (2*%e^-((a*t)/2)*sinh((sqrt(a^2-4)*t)/2))/sqrt(a^2-4);
