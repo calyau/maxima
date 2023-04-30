@@ -1138,15 +1138,17 @@
 ;; F must take 1 argument (an expression which has operator OP)
 ;; and must return a string (the TeX output).
 
-(defun make-maxima-tex-glue (op f)
+(defun make-maxima-tex-glue (op f previous-f)
   (let
-    ((glue-f (gensym))
-     (f-body `(append l
-                      (list
-                        (let ((f-x (mfuncall ',f x)))
-                          (if (stringp f-x) f-x
-                            (merror (intl:gettext "tex: function ~s did not return a string.~%") ($sconcat ',f)))))
-                      r)))
+    ((glue-f (gensym "TEX-GLUE-"))
+     (f-body `(let ((f-x (mfuncall ',f x)))
+                (cond ((stringp f-x) (append l (list f-x) r))
+                  ((null f-x)
+                   (if ',previous-f
+                     (funcall ',previous-f x l r)
+                     (tex-function x l r nil)))
+                  (t (merror (intl:gettext "tex: function ~s returned something other than a string or 'false'.~%") ($sconcat ',f)))))
+              ))
     (setf (symbol-function glue-f) (coerce `(lambda (x l r) ,f-body) 'function))
     (setf (get op 'tex) glue-f))
   f)
@@ -1188,7 +1190,7 @@
          (progn
            (when (get e 'texsym) (putprop e (list s0) 'texsym))
            (putprop e s0 'texword))
-         (make-maxima-tex-glue e s0)))) ;; assigns TEX property
+         (make-maxima-tex-glue e s0 (get e 'tex))))) ;; assigns TEX property
 	((eq tx '$matchfix)
 	 (putprop e 'tex-matchfix 'tex)
 	 (cond ((< (length s) 2)

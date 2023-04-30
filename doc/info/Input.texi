@@ -965,8 +965,11 @@ the string @var{s} into the TeX output in place of @var{a}.
 
 @code{texput (@var{a}, @var{f})} causes the @code{tex} function to call the
 function @var{f} to generate TeX output.  @var{f} must accept one argument,
-which is an expression which has operator @var{a}, and must return a string
-(the TeX output).  @var{f} may call @code{tex1} to generate TeX output for the
+which is an expression which has operator @var{a},
+and must return either a string (the TeX output) or @code{false},
+indicating that the TeX function in effect when @code{texput} is called
+should handle the expression.
+@var{f} may call @code{tex1} to generate TeX output for the
 arguments of the input expression.
 
 @code{texput (@var{a}, @var{s}, @var{operator_type})}, where @var{operator_type}
