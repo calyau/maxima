@@ -539,6 +539,7 @@
 (defprop $tau "\\tau" texword)
 (defprop $upsilon "\\upsilon" texword)
 (defprop $phi "\\varphi" texword)
+(defprop $%phi "\\varphi" texword)
 (defprop $chi "\\chi" texword)
 (defprop $psi "\\psi" texword)
 (defprop $omega "\\omega" texword)
