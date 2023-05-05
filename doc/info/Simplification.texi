@@ -256,7 +256,7 @@ Example:
 If @code{declare(h,antisymmetric)} is done, this tells the simplifier that
 @code{h} is antisymmetric.  E.g.  @code{h(x,z,y)} will simplify to 
 @code{- h(x, y, z)}.  That is, it will give (-1)^n times the result given by
-@code{symmetric} or @code{commutative}, where n is the number of interchanges
+@mref{symmetric} or @mrefcomma{commutative} where n is the number of interchanges
 of two arguments necessary to convert it to that form.
 
 Examples:
@@ -353,7 +353,7 @@ Example:
 
 If @code{declare(h, commutative)} is done, this tells the simplifier that
 @code{h} is a commutative function.  E.g.  @code{h(x, z, y)} will simplify to
-@code{h(x, y, z)}.  This is the same as @code{symmetric}.
+@code{h(x, y, z)}.  This is the same as @mrefdot{symmetric}
 
 Example:
 
@@ -473,7 +473,7 @@ Default value: @code{true}
 @code{distribute_over} controls the mapping of functions over bags like lists, 
 matrices, and equations.  At this time not all Maxima functions have this 
 property.  It is possible to look up this property with the command
-@code{properties}.
+@mrefdot{properties}.
 
 The mapping of functions is switched off, when setting @code{distribute_over} 
 to the value @code{false}.
@@ -907,6 +907,8 @@ less than n.
 left-associative.  E.g., @code{g (g (a, b), g (c, d))} will simplify to
 @code{g (g (g (a, b), c), d)}.
 
+See also @mrefdot{rassociative}
+
 @opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
@@ -925,7 +927,7 @@ One of Maxima's operator properties.  For univariate @code{f} so
 declared, "expansion" @code{f(x + y)} yields @code{f(x) + f(y)},
 @code{f(a*x)} yields @code{a*f(x)} takes
 place where @code{a} is a "constant".  For functions of two or more arguments,
-"linearity" is defined to be as in the case of @code{sum} or @code{integrate},
+"linearity" is defined to be as in the case of @mref{sum} or @mrefcomma{integrate}
 i.e., @code{f (a*x + b, x)} yields @code{a*f(x,x) + b*f(1,x)}
 for @code{a} and @code{b} free of @code{x}.
 
@@ -956,7 +958,7 @@ Example:
 @end group
 @end example
 
-@code{linear} is equivalent to @code{additive} and @code{outative}.
+@code{linear} is equivalent to @mref{additive} and @mrefdot{outative}
 See also @mrefdot{opproperties}
 
 Example:
@@ -1263,7 +1265,7 @@ Example:
 @code{opproperties} is the list of the special operator properties recognized
 by the Maxima simplifier.
 
-Items are added to the @code{opproperties} list by the function @code{define_opproperty}.
+Items are added to the @code{opproperties} list by the function @mrefdot{define_opproperty}
 
 Example:
 
@@ -1307,7 +1309,7 @@ Therefore @var{simplifier_fn} must be able to carry out its simplification
 without making use of the general simplifier.
 
 @code{define_opproperty} appends @var{property_name} to the
-global list @code{opproperties}.
+global list @mrefdot{opproperties}
 
 @code{define_opproperty} returns @code{done}.
 
@@ -1368,11 +1370,11 @@ and factors that are not and the constant factors will be pulled out.  E.g.,
 Non-atomic constant factors will not be pulled out.
 @item
 If @code{f} is a function of 2 or more arguments, outativity is defined as in
-the case of @code{sum} or @code{integrate}, i.e., @code{f (a*g(x), x)} will
+the case of @mref{sum} or @mrefcomma{integrate} i.e., @code{f (a*g(x), x)} will
 simplify to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 @end enumerate
 
-@code{sum}, @code{integrate}, and @code{limit} are all @code{outative}.
+@mrefcomma{sum} @mrefcomma{integrate} and @mref{limit} are all @code{outative}.
 
 Example:
 
@@ -1518,6 +1520,8 @@ Note that @code{domain} only matters when @code{radexpand} is @code{true}.
 simplifier that @code{g} is right-associative.  E.g.,
 @code{g(g(a, b), g(c, d))} simplifies to @code{g(a, g(b, g(c, d)))}.
 
+See also @mrefdot{lassociative}
+
 @opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
@@ -1627,7 +1631,7 @@ assignment has occurred during the evaluation phase of the expression.
 simplifier that @code{h} is a symmetric function.  E.g., @code{h (x, z, y)} 
 simplifies to @code{h (x, y, z)}.
 
-@code{commutative} is synonymous with @code{symmetric}.
+@mref{commutative} is synonymous with @code{symmetric}.
 
 @opencatbox{Categories:}
 @category{Declarations and inferences}
