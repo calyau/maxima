@@ -32,6 +32,18 @@
 ($put '$gnuplot 1 '$version); to be removed in the future
 (defvar $draw_version 2)
 
+(defun extrema-over-finite-floats-list (x)
+  (let ((xmax most-negative-double-float) (xmin most-positive-double-float))
+    (loop for x1 in x
+          do (when (and (realp x1) (not (float-inf-p x1)) (not (float-nan-p x1)))
+               (when (< x1 xmin) (setq xmin x1))
+               (when (> x1 xmax) (setq xmax x1))))
+    (values xmin xmax)))
+
+
+(defun finite-real-p (x)
+  (and (realp x) (not (float-nan-p x)) (not (float-inf-p x))))
+
 
 (defun write-font-type ()
    (if (and (string= (get-option '$font) "") (not (eql (get-option '$font_size) 10)))
@@ -106,17 +118,17 @@
    (update-range '$zrange zmin zmax))
 
 (defmacro check-extremes-x ()
-  '(when (numberp xx)
+  '(when (finite-real-p xx)
     (when (< xx xmin) (setf xmin xx))
     (when (> xx xmax) (setf xmax xx))))
 
 (defmacro check-extremes-y ()
-  '(when (numberp yy)
+  '(when (finite-real-p yy)
     (when (< yy ymin) (setf ymin yy))
     (when (> yy ymax) (setf ymax yy))))
 
 (defmacro check-extremes-z ()
-  '(when (numberp zz)
+  '(when (finite-real-p zz)
     (when (< zz zmin) (setf zmin zz))
     (when (> zz zmax) (setf zmax zz))))
 
@@ -305,7 +317,7 @@
             (setf n (cadr dim))
             (setf twocolumns nil))
          (t (merror "draw (points2d): bad 2d array input format")))
-      (setf pts (make-array (* 2 n) :element-type 'flonum))
+      (setf pts (make-array (* 2 n) :element-type 'any))
       (loop for k below n do
          (if twocolumns
             (setf xx ($float (aref arg k 0))
@@ -337,10 +349,10 @@
                (= (length dim) 1))  ; y format
             (setf n (car dim))
             (setf x (make-array n
-                                :element-type 'flonum
+                                :element-type 'any
                                 :initial-contents (loop for k from 1 to n collect ($float k)) ))
             (setf y (make-array n
-                                :element-type 'flonum
+                                :element-type 'any
                                 :initial-contents (loop for k below n collect ($float (aref arg1 k))))))
          ((and (arrayp arg2)   ; xx yy format
                (= (length dim) 1)
@@ -349,7 +361,7 @@
             (setf x arg1
                   y arg2))
          (t (merror "draw (points2d): bad 1d array input format")))
-      (setf pts (make-array (* 2 n) :element-type 'flonum))
+      (setf pts (make-array (* 2 n) :element-type 'any))
       (loop for k below n do
          (setf xx ($float (aref x k))
                yy ($float (aref y k)))
@@ -407,12 +419,9 @@
                      y (map 'list #'$float (cdaddr arg1))))
             (t (merror "draw (points2d): incorrect input format")))
       (transform-lists 2)
-      (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
-            xmax ($tree_reduce 'max (cons '(mlist simp) x))
-            ymin ($tree_reduce 'min (cons '(mlist simp) y))
-            ymax ($tree_reduce 'max (cons '(mlist simp) y)) )
-      (setf pts (make-array (* 2 (length x)) :element-type 'flonum
-                                             :initial-contents (mapcan #'list x y)))
+      (multiple-value-setq (xmin xmax) (extrema-over-finite-floats-list x))
+      (multiple-value-setq (ymin ymax) (extrema-over-finite-floats-list y))
+      (setf pts (make-array (* 2 (length x)) :initial-contents (mapcan #'list x y)))
       ;; update x-y ranges if necessary
       (update-ranges-2d xmin xmax ymin ymax)
       (make-gr-object
@@ -3514,12 +3523,12 @@
                      ; code related to draw_realpart
                      (cond
                        (non-numeric-region
-                         (when (numberp (aref coordinates 1))
+                         (when (and (finite-real-p (aref coordinates 0)) (finite-real-p (aref coordinates 1)))
                            (setf non-numeric-region nil)
                            (write-subarray coordinates datastorage) ))
                        (t
                          (cond
-                           ((numberp (aref coordinates 1))
+                           ((and (finite-real-p (aref coordinates 0)) (finite-real-p (aref coordinates 1)))
                              (write-subarray coordinates datastorage))
                            (t
                              (setf non-numeric-region t)
