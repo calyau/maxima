@@ -698,7 +698,7 @@ execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx))
 0;
 
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy1)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (transpose (matrix (xx, yy1))), title = "points(matrix), 2 columns"), 0);
-10;
+0;
 
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx1)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy1)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (xx1, yy1), title = "points(flat-list, flat-list)"), 0);
 0;
@@ -719,7 +719,7 @@ execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx1)
 0;
 
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx1)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy1)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (transpose (matrix (xx1, yy1))), title = "points(matrix), 2 columns"), 0);
-10;
+0;
 
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx2)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (xx2, yy), title = "points(flat-list, flat-list)"), 0);
 0;
@@ -761,7 +761,7 @@ execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx))
 0;
 
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy2)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (transpose (matrix (xx, yy2))), title = "points(matrix), 2 columns"), 0);
-10;
+0;
 
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx2)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy2)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (xx2, yy2), title = "points(flat-list, flat-list)"), 0);
 0;
@@ -782,7 +782,7 @@ execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx2)
 0;
 
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx2)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy2)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (transpose (matrix (xx2, yy2))), title = "points(matrix), 2 columns"), 0);
-10;
+0;
 
 block ([L: flatten (rest (arrayinfo (draw_tests), 2)), linel: 1000],
        with_stdout (sconcat (maxima_tempdir, "/draw-tests-summary.txt"),

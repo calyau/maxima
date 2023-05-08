@@ -317,7 +317,7 @@
             (setf n (cadr dim))
             (setf twocolumns nil))
          (t (merror "draw (points2d): bad 2d array input format")))
-      (setf pts (make-array (* 2 n) :element-type 'any))
+      (setf pts (make-array (* 2 n) :element-type t))
       (loop for k below n do
          (if twocolumns
             (setf xx ($float (aref arg k 0))
@@ -349,10 +349,10 @@
                (= (length dim) 1))  ; y format
             (setf n (car dim))
             (setf x (make-array n
-                                :element-type 'any
+                                :element-type t
                                 :initial-contents (loop for k from 1 to n collect ($float k)) ))
             (setf y (make-array n
-                                :element-type 'any
+                                :element-type t
                                 :initial-contents (loop for k below n collect ($float (aref arg1 k))))))
          ((and (arrayp arg2)   ; xx yy format
                (= (length dim) 1)
@@ -361,7 +361,7 @@
             (setf x arg1
                   y arg2))
          (t (merror "draw (points2d): bad 1d array input format")))
-      (setf pts (make-array (* 2 n) :element-type 'any))
+      (setf pts (make-array (* 2 n) :element-type t))
       (loop for k below n do
          (setf xx ($float (aref x k))
                yy ($float (aref y k)))
