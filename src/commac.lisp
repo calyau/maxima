@@ -300,16 +300,22 @@
 
 (defun exploden-format-float (symb)
   (if (or (= $fpprintprec 0) (> $fpprintprec 16.))
-    (exploden-format-float-readably symb)
+    (exploden-format-float-readably-except-special-values symb)
     (exploden-format-float-pretty symb)))
 
-(defun exploden-format-float-readably (x)
-  (let ((*print-readably* t))
-    (let ((s (prin1-to-string x)))
-      ;; Skip the fix up unless we know it's needed for the Lisp implementation.
-      #+(or clisp abcl) (fix-up-exponent-in-place s)
-      #+ecl (insert-zero-before-exponent s)
-      #-(or clisp abcl ecl) s)))
+;; Return a readable string, EXCEPT for not-a-number and infinity, if present;
+;; for those, return a probably-nonreadable string.
+;; This avoids an error from SBCL about trying to readably print those values.
+
+(defun exploden-format-float-readably-except-special-values (x)
+  (if (or (float-inf-p x) (float-nan-p x))
+    (format nil "~a" x)
+    (let ((*print-readably* t))
+      (let ((s (prin1-to-string x)))
+        ;; Skip the fix up unless we know it's needed for the Lisp implementation.
+        #+(or clisp abcl) (fix-up-exponent-in-place s)
+        #+ecl (insert-zero-before-exponent s)
+        #-(or clisp abcl ecl) s))))
 
 ;; (1) If string looks like "n.nnnD0" or "n.nnnd0", return just "n.nnn".
 ;; (2) Otherwise, replace #\D or #\d (if present) with #\E or #\e, respectively.
@@ -332,7 +338,7 @@
 
 ;; Replace "nnnn.Ennn" or "nnn.ennn" with "nnn.0Ennn" or nnn.0ennn", respectively.
 ;; (Decimal immediately before exponent without intervening digits is
-;; explicitly allowed by CLHS; see Section 2.3.1, "Numbers as Tokens".
+;; explicitly allowed by CLHS; see Section 2.3.1, "Numbers as Tokens".)
 
 (defun insert-zero-before-exponent (s)
   (let ((n (length s)) (i (position #\. s)))
