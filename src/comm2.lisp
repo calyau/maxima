@@ -703,10 +703,7 @@
 ;; see SF bug #4056
 
 (defmfun $genmatrix (a i2 &optional (j2 i2) (i1 1) (j1 i1))
-  (let* ((f)
-         (s (if $simp '(simp) nil))
-         (mat (cons '$matrix s))
-         (ml (cons 'mlist s)))
+  (let ((f))
     (setq f (if (or (symbolp a) (hash-table-p a) (arrayp a))
                 #'(lambda (i j) (meval (list (list a 'array) i j)))
               #'(lambda (i j) (mfuncall a i j))))
@@ -717,9 +714,9 @@
     (if (or (> i1 i2) (> j1 j2))
         (merror (intl:gettext "genmatrix: upper bounds must be greater than or equal to lower bounds; found ~M, ~M, ~M, ~M") i2 j2 i1 j1))
 
-    (cons mat
+    (cons '($matrix)
           (loop for i from i1 to i2
-                collect (cons ml
+                collect (cons '(mlist)
                               (loop for j from j1 to j2
                                     collect (funcall f i j)))))))
 
