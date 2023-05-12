@@ -1081,6 +1081,8 @@ ignoring dummy variables and array indices."
 				(t e))))
 	((and (eq (caar e) 'mqapply)		;; polylogarithm
 	      (eq (subfunname e) '$li)
+	      (let ((arglim (limit (car (subfunargs e)) var val 'think)))
+		(or (eq arglim '$inf) (eq arglim '$minf)))
 	      (integerp (car (subfunsubs e))))
 	 (li-asymptotic-expansion (m- (car (subfunsubs e)) 1) 
 				   (car (subfunsubs e))

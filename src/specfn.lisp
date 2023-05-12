@@ -156,13 +156,16 @@
 ;; equation 11.1
 (defun li-asymptotic-expansion (pw s z)
   (m+l (loop for k from 0 to pw collect
-	     (m* (m^ -1 k)
-		 (m- 1 (m^ 2 (m- 1 (m* 2 k))))
-		 (m^ (m* 2 '$%pi) (m* 2 k))
-		 (m// ($bern (m* 2 k))
-		      `((mfactorial) ,(m* 2 k)))
-		 (m// (m^ `((%log) ,(m- z)) (m- 2 (m* 2 k))) 
-		      ($gamma (m+ s 1 (m* -2 k))))))))
+	     (if (and ($integerp k)
+		      (mgqp 0 (m+ s 1 (m* -2 k) )))
+		 0 ;; gamma in denominator below is infinite, this term is 0
+		 (m* (m^ -1 k)
+		     (m- 1 (m^ 2 (m- 1 (m* 2 k))))
+		     (m^ (m* 2 '$%pi) (m* 2 k))
+		     (m// ($bern (m* 2 k))
+			  `((mfactorial) ,(m* 2 k)))
+		     (m// (m^ `((%log) ,(m- z)) (m- s (m* 2 k)))
+			  ($gamma (m+ s 1 (m* -2 k)))))))))
 
 ;; Numerical evaluation for Chebyschev expansions of the first kind
 
