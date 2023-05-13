@@ -37,15 +37,19 @@
 ;; integers, and raise a RAT-ERROR if A is not divisible by B. If either A or B
 ;; is a float then the division is done in floating point. Floats can get as far
 ;; as the rational function code if $KEEPFLOAT is true.
-(defun cquotient (a b)
-  (cond ((equal a 0) 0)
-	((null modulus)
-         (if (or (floatp a) (floatp b)
-                 (zerop (rem a b)))
-             (/ a b)
-             (rat-error "CQUOTIENT: quotient is not exact")))
-	(t (ctimes a (crecip b)))))
 
+;; Before May 2023, this code used (rem a b) along with (/ a b) instead of
+;; just (floor a b). For Clozure CL the floor method is faster.
+(defun cquotient (a b)
+  (cond ((eql a 0) 0) ;not sure this is OK--what if b=0 too?
+        ((null modulus)
+           (cond ((or (floatp a) (floatp b)) (/ a b)) ;not sure about floats here!
+                 (t
+                  (multiple-value-bind (q r) (floor a b)
+                   ;; when the remainder vanishes, return the quotient; else rat-error.
+                   (if (eql 0 r) q (rat-error "CQUOTIENT: quotient is not exact"))))))
+        (t
+           (ctimes a (crecip b)))))
 ;; ALG
 ;;
 ;; Get any value stored on the tellrat property of (car l). Returns NIL if L
