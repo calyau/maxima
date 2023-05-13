@@ -122,6 +122,15 @@
   `(simplifya (list (list ,name) ,@args)
 	      nil))
 
+;; Apply a function f to a list of its arguments 'args' and simplify the result. Assume
+;; that the list args is simplified.
+(defmacro fapply (f args)
+	`(simplifya (cons (list ,f) ,args) t))
+
+;; Same as fapply, but don't assume that the list of arguments is simplified.
+(defmacro fapply* (f args)
+	`(simplifya (cons (list ,f) ,args) nil))        
+
 (declaim (inline simplify))
 (defun simplify (x)
   (simplifya x nil))
