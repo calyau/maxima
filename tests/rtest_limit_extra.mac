@@ -775,6 +775,13 @@ limit(fib(x+1)/fib(x),x,inf);
 limit(fib(x+2)/fib(x),x,inf);
 %phi+1$
 
+/* #4029 limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0) --> ind */
+limit(cos(1/x)^2 + sin(1/x)^2,x,0);
+1$
+
+limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0);
+2$
+
 facts();
 []$
 

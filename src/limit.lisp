@@ -640,18 +640,33 @@ ignoring dummy variables and array indices."
 				 (cdr exp)))
 		   exp))))
 
-(defun sin-sq-cos-sq-sub (exp)		;Hack ... Hack
-  (let ((arg (involve exp '(%sin %cos))))
-    (cond
-      ((null arg) exp)
-      (t (let ((new-exp ($substitute (m+t 1 (m- (m^t `((%sin simp) ,arg) 2)))
-                                     (m^t `((%cos simp) ,arg) 2)
-                                     ($substitute
-                                      (m+t 1 (m- (m^t `((%cos simp) ,arg) 2)))
-                                      (m^t `((%sin simp) ,arg) 2)
-                                      exp))))
-	   (cond ((not (involve new-exp '(%sin %cos)))  new-exp)
-		 (t exp)))))))
+(defun gather-args-of (e fn x) 
+   (cond (($mapatom e) nil)        
+         ((and (eq fn (caar e)) (not (freeof x e))) (cdr e))
+          (t 
+            (reduce #'append (mapcar #'(lambda (q) (gather-args-of q fn x)) (cdr e))))))
+
+;; When X depends on x, replace cos(X)^2 + sin(X)^2 by 1 
+ (defun sin-sq-cos-sq-sub (e &optional (x var))
+    (let ((ccc nil) (z) (ee))
+      (cond (($mapatom e) e)
+            ((mplusp e)
+                (setq ccc (gather-args-of e '%cos x))
+                  (dolist (g ccc)
+                    (setq z (gensym))
+                    (setq ee (maxima-substitute z (power (ftake '%cos g) 2) e))
+                    (setq ee (maxima-substitute (sub 1 z) (power (ftake '%sin g) 2) ee))
+                    (when (freeof z (sratsimp ee))
+                        (setq e ee)))
+                e)
+            ;; maybe this isn't needed, but I think it's not wrong.
+            ((eq 'mqapply (caar e))
+              (subftake (caar (second e))
+                 (mapcar #'(lambda (q) (sin-sq-cos-sq-sub q x)) (subfunsubs e))
+                 (mapcar #'(lambda (q) (sin-sq-cos-sq-sub q x)) (subfunargs e)))) 
+            ;; map sin-sq-cos-sq-sub over the args
+            (t 
+             (fapply (caar e) (mapcar #'(lambda (q) (sin-sq-cos-sq-sub q x)) (cdr e)))))))
 
 (defun expand-trigs (x var)
   (cond ((atom x) x)
