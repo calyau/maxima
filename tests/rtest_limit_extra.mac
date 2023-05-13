@@ -782,8 +782,237 @@ limit(cos(1/x)^2 + sin(1/x)^2,x,0);
 limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0);
 2$
 
+block([ans], assume(a > 0),ans : limit(sin(x)^(a),x,inf),forget(a > 0), ans);
+ind$
+
+block([ans], assume(a > 0),ans : limit(sin(x)^(-a),x,inf),forget(a > 0), ans);
+und$
+
+limit((2+sin(x))^(-9),x,inf);
+ind$
+
+limit((2+sin(x))^(9),x,inf);
+ind$
+
+/* #4099 gruntz called on algebraic */
+gruntz(((9*x)^(1/3)-3)/(sqrt(3+x)-sqrt(2*x)),x,3,plus);
+(-2^(3/2)/sqrt(3))$
+
+/* This bug is mentioned in the tlimit source code, but I don't think it's reported.*/
+tlimit(2^n/n^5,n,inf);
+inf$
+
+/* #3927 tlimit(exp(x)/x^5,x,inf) = 0 */
+tlimit(exp(x)/x^5,x,inf);
+inf$
+
+block([lhospitallim : 8], tlimit(exp(x)/x^5,x,inf));
+inf$
+
+block([lhospitallim : 1], tlimit(exp(x)/x^5,x,inf));
+inf$
+
+block([lhospitallim : 1], tlimit(exp(x)/x^46,x,inf));
+inf$
+
+block([lhospitallim : 1], tlimit(exp(x)/x^107,x,inf));
+inf$
+
+/* See #3932 inconsistent limit results with trig */
+(QQ: (-rr*csc(rr)^2)+%pi*csc(rr)^2+cot(rr)-%pi/rr^2,0);
+0$
+
+limit(QQ,rr,0);
+%pi/3$
+
+limit(trigsimp(QQ),rr,0);
+%pi/3$
+
+limit(map('trigsimp,QQ),rr,0);
+%pi/3$
+
+(remvalue(QQ),0);
+0$
+
+/* #3903 A limit toward infinity gives a nounform */
+limit((sin(x)+x)/sqrt(x*(2*sin(x)+2*cos(x))+2*x^2+1),x,inf);
+1/sqrt(2)$
+
+tlimit((sin(x)+x)/sqrt(x*(2*sin(x)+2*cos(x))+2*x^2+1),x,inf);
+1/sqrt(2)$
+
+gruntz((sin(x)+x)/sqrt(x*(2*sin(x)+2*cos(x))+2*x^2+1),x,inf);
+1/sqrt(2)$
+
+/* #3826 limit returns temp variable expression */
+
+block([ans], assume(q > 0), ans : limit(x^q/(a*x^q- 1),x,inf), forget(q > 0),ans);
+1/a$
+
+block([ans], assume(q > 0), ans : tlimit(x^q/(a*x^q- 1),x,inf), forget(q > 0),ans);
+1/a$
+
+block([ans], assume(q > 0), ans : gruntz(x^q/(a*x^q- 1),x,inf), forget(q > 0),ans);
+1/a$
+
+/* #3393 limit/tlimit give wrong result */
+limit(log(log(x + exp(log(x) * log(log(x))))) / log(log(log(exp(x) + x))), x, inf);
+1$
+
+tlimit(log(log(x + exp(log(x) * log(log(x))))) / log(log(log(exp(x) + x))), x, inf);
+1$
+
+gruntz(log(log(x + exp(log(x) * log(log(x))))) / log(log(log(exp(x) + x))), x, inf);
+1$
+
+/* #2561 limit(log(x^2),x,-20) gives 2*log(-20) */
+block([logexpand : false], limit(log(x^2),x,-20));
+log(400)$
+
+block([logexpand : false], tlimit(log(x^2),x,-20));
+log(400)$
+
+block([logexpand : false], gruntz(log(x^2),x,-20,minus));
+log(400)$
+
+/* #2389 incorect limit
+Commented out for now becuase it calls asksign when it should not
+block([ans],
+  assume(k>2),
+  declare(k,integer),
+  ans : limit(((t+1)^k-t^k-k*t^(k-1)-(k*(k-1)/2)*t^(k-2))/t^(k-3),t,inf),
+  forget(k>2),
+  forget(k,integer),
+  ans);
+  */
+
+/* #2273 limit gives the wrong answer
+  (This bug was fixed long ago, but I'm not sure there was a rtest for it.) */
+ limit((sqrt(t^2+4)*(((t+2/t^2)^2+4)^(3/2)-(t+2/t^2)^3-4*(t+2/t^2)))/
+    (sqrt((t+2/t^2)^2+4)*((t^2+4)^(3/2)-t^3-4*t)),t,inf);
+ 1$
+
+ tlimit((sqrt(t^2+4)*(((t+2/t^2)^2+4)^(3/2)-(t+2/t^2)^3-4*(t+2/t^2)))/
+    (sqrt((t+2/t^2)^2+4)*((t^2+4)^(3/2)-t^3-4*t)),t,inf);
+ 1$
+
+ gruntz((sqrt(t^2+4)*(((t+2/t^2)^2+4)^(3/2)-(t+2/t^2)^3-4*(t+2/t^2)))/
+    (sqrt((t+2/t^2)^2+4)*((t^2+4)^(3/2)-t^3-4*t)),t,inf);
+ 1$
+
+/* #4109 Limits of polylogarithms */
+limit(li[2](x)/log(-x)^2,x,inf);
+-(1/2)$
+
+limit(li[3](x)/log(-x)^3,x,inf);
+-(1/6)$
+
+ limit(li[2](x),x,%e/2);
+ li[2](%e/2)$
+
+ /* #4108 limit code & nondefault value of taylor_logexpand */
+ block([taylor_logexpand : false], limit((1/%pi*(atan(n/%pi)+%pi/2))^n,n,inf));
+ %e^-1$
+
+ block([taylor_logexpand : true], limit((1/%pi*(atan(n/%pi)+%pi/2))^n,n,inf));
+ %e^-1$
+
+ /* #4103 limit(acot(x),x,0) should be IND (not UND) */
+ limit(acot(x),x,0);
+ ind$
+
+ /* #4087 limit((%i+1)^a/(2^(a/2)),a,inf) => 0 (wrong) */
+ limit((%i+1)^a*2^(-a/2),a,inf);
+ ind$
+
+ limit((%i+1)^(2*a)*2^-a,a,inf);
+ ind$
+
+/* #4085 limit((2-%i)^a/a!,a,inf) */
+ errcatch(limit((2-%i)^a/a!,a,inf));
+ [0]$
+
+ /* #4081 limit((2+sin(x))^(-2),x,inf) --> und */
+ limit((2+sin(x))^(-2),x,inf);
+ ind$
+
+ /* #4073 limit(log(sin(x)+9),x,inf) --> und could be ind */
+ limit(log(sin(x)+9),x,inf);
+ ind$
+
+ /*#4029 limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0) --> ind */
+ limit(cos(1/x)^2 + sin(1/x)^2,x,0);
+ 1$
+
+ limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0);
+ 2$
+
+ /* #4024 integrate(x*sin(x)*exp(-x^2),x,0, inf) */
+  integrate(x*sin(x)*exp(-x^2),x,minf, inf);
+  (%e^(-1/4)*sqrt(%pi))/2$
+
+/* #4021 limit(inf^(2+1/inf)) should be inf */
+limit(inf^(2+1/inf));
+inf$
+
+/* #4020 various limit bugs with exp(%i*x) */
+limit(x*exp(%i*x),x,inf);
+infinity$
+
+limit(x+x*exp(%i*x),x,inf);
+infinity$
+
+limit(1+x*exp(%i*x),x,inf); 
+infinity$
+
+limit(sin(x) + x*cos(x),x,inf);
+und$
+
+/* #4004 a cosine of arcsin limit that is evaluated incorrectly */
+block([ans],
+   declare(m, integer),
+   assume(equal(cos((4 * %pi * m + %pi)/2), 0)),
+   ans : limit(cos((4*m + 1) * asin(1/sqrt(x^2 + 1)))/abs(x), x, 0),
+   remove(m,integer),
+   forget(equal(cos((4 * %pi * m + %pi)/2), 0)),
+   ans);
+4*m + 1$
+
+/* Also mentioned in #4004 */
+block([ans],
+  assume(equal(a,0)),
+  ans : limit(a/x + 1, x, 0),
+  forget(equal(a,0)),
+  ans);
+1$
+
+block([ans],
+  assume(equal(a,0)),
+  ans : limit(a*x + 1, x, inf),
+  forget(equal(a,0)),
+  ans);
+1$
+
+block([ans],
+  assume(equal(a,0)),
+  ans : limit((2*x + a)/(x + a), x, 0),
+  forget(equal(a,0)),
+  ans);
+2$
+
+/* #4003 limit bug with on-default values for ratsimpexpons and ratfac */
+block([ratsimpexpons : true, ratfac : true], 
+  limit(2/5*((3/4)^m - 1)*(a - 10) + 1/5*(3*(3/4)^m + 2)*a, m, inf));
+4$
+
+/* #4001 limit(sin(x)/x + sin(x) + cos(x),x,inf) = 0 */
+limit(sin(x)/x + sin(x) + cos(x),x,inf);
+ind$
+
+/* Did any facts or contexts leak?*/
 facts();
 []$
 
 contexts;
 [initial,global]$
+
