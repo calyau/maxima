@@ -503,7 +503,9 @@
 	   (make-cl-option :names '("-p" "--preload" "--preload-lisp" "--init-mac" "--init-lisp")
 			   :argument "<file>"
 			   :action #'(lambda (file)
-				       ($load file))
+				       ;; $loadprint T so we can see the file being loaded.
+				       (let (($loadprint t))
+				       ($load file)))
 			   :help-string
         "Preload <file>, which may be any file time accepted by
         Maxima's LOAD function.  The <file> is loaded before any other
@@ -583,13 +585,13 @@
   "Run Maxima in its own package."
   (in-package :maxima)
   (initialize-runtime-globals)
-  (load-user-init-file)
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
     (unwind-protect
 	(catch 'to-lisp
 	  (setf (values input-stream batch-flag)
 		(process-maxima-args input-stream batch-flag))
+	  (load-user-init-file)
 	  (loop
 	   (with-simple-restart (macsyma-quit "Maxima top-level")
 				(macsyma-top-level input-stream batch-flag))))
@@ -608,6 +610,7 @@
 		   (combine-path *maxima-userdir* default-init)))
 	     (when (and *maxima-load-init-files*
 			(file-exists-p init-file))
+	       (format t "Loading ~A~%" init-file)
 	       (funcall loader init-file)))))
       ;; Catch errors from $load or $batchload which can throw to 'macsyma-quit.
       (catch 'macsyma-quit
