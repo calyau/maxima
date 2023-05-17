@@ -1584,7 +1584,7 @@ first kind:
 	       args
 	     (to (bigfloat::bf-elliptic-k (bigfloat:to ($bfloat m))))))
 	  ((zerop1 m)
-	   '((mtimes) ((rat) 1 2) $%pi))
+	   (mul 1//2 '$%pi))
 	  ((alike1 m 1//2)
 	   ;; http://functions.wolfram.com/EllipticIntegrals/EllipticK/03/01/
 	   ;;
