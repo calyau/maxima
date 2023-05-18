@@ -67,18 +67,53 @@ Bug fixes for numbered bugs:
  * \#3592: Wrong limit
  * \#3834: abconvtest undocumented and possibly unused
  * \#3926: Various limits give UND where they should give IND
+ * \#3953 Pressing q necessary to continue when plot2d output to svg
+ * \#3956 expand(1/((sqrt(2)-1)*(sqrt(2)+1))) => 1/1 (unsimplified)
+ * \#3963 trace doesn't detect calls to functions defined by DEFMFUN in Lisp code
+ * \#3958 plot2d with multiple discrete plots fails
+ * \#3959 plot2d + Gnuplot 4 with `plot title noenhanced`
+ * \#3965 maxima --list-avail fails with GCL, but works with ECL and SBCL
+ * \#3966 li[s](1) should be zeta(s) (with conditions on s)
+ * \#3967 elliptic_e(5*%pi/4,1) inconsistent with numerical evaluation
+ * \#3968 zeta(-r) should use analytic continuation?
+ * \#3970 draw does not do adequate argument checking
  * \#3972: gcl only: Autocompletion inverts command case
+ * \#3982 tex complains about Unicode character in symbol
+ * \#3984 limit for und + something yields something instead of und
  * \#3985: integrate(sin(x*cos(x)), x), risch; causes unlimited recursion
+ * \#3992 Add word to Integration.texi
  * \#3996: parse_string fails to parse string which contains semicolon
  * \#3998: Lisp error when parser encounters eof in a comment
  * \#4008: translator and prederror
  * \#4018: defint(foo,,0,inf) lisp error when denom(foo) contains %i
+ * \#4029 limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0) --> ind
+ * \#4035 Invisible characters should work better
  * \#4036: prederror affects bigfloat calculations
  * \#4043: bug in to_poly
+ * \#4045 Different results for integration in Maxima 5.45.1 and 5.46.0
+ * \#4046 plot2d legend option shows the wrong label in the list 
+ * \#4048 An incorrect limit
  * \#4050: Maxima can't handle limits of Fibonacci expressions
+ * \#4056 Cannot create very large data array
+ * \#4060 Wrong limit of -3*li[3](-%e^x)+3*x*li[2](-%e^x)+x^3 at x -> inf
+ * \#4061 2.0^1024 gives "false" on second try
+ * \#4062 limit(li[3](x), x, inf) gives li[3](inf)
+ * \#4064 Simple limit triggers Lisp error "1 is not of type LIST"
+ * \#4077 Replace opcons with ftake*
+ * \#4084 Error in [lin]solve with orderless called before
  * \#4088: maxima variable prefer_d undocumented
+ * \#4089 Specvar ans in schatc
+ * \#4090 output formatting: -x-1 has redundant parentheses: (-x)-1
+ * \#4092 Repeated factorial (n!)! displayed the same as double factorial n!!
  * \#4094 Build warning in share: grep: warning: stray \ before #
  * \#4029 limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0) --> ind
+ * \#4097 Bad string representation of integers in the first argument of `save`
+ * \#4107 least_positive_float doesn't print/read correctly in float/bfloat
+ * \#4109 Limits of polylogarithms
+ * \#4112 Double superscript in tex(conjugate(z))^2
+ * \#4118 facsum + operator(".") + dotdistrib:true + GCL = FAIL
+ * \#4119 ECL fails decode_float(-0.25) test
+ * \#4120 is("foo"<3) gives internal error
 Unnumbered bugs fixed:
 ---------------------
  * commit 7a7114c: avoid call to undefined function expintegral_ei
