@@ -22,25 +22,21 @@ but it has been reported that autodetection can fail.
 Comparison of execution times (in seconds)
 ------------------------------------------
 
-This is the result of the `run_testsuite()` function for
-Maxima 5.36.0 as reported on the Maxima mailing list:
+As of 2023-05-18 the `run_testsuite()` function needed the
+following times for these different Lisp versions and produced
+so many testsuite failures:
 
-### 64 Bit (Gentoo Linux):
+### Ubuntu 20.04, 64 bit
 
-    gcl-2.6.12    152
-    sbcl-1.2.10   155
-    ccl-1.10      313
-    ecl-15.3.7    559
-    clisp-2.49   1060
-
-### 32 Bit (Gentoo Linux)
-
-    sbcl-1.2.10  170
-    gcl-2.6.12   177
-    cmucl-20e    253
-    ccl-1.10     293
-    ecl-15.3.7   556
-    clisp-2.49   844
+    Lisp            run time (real)   testsuite failures
+    sbcl-2.3.0        85              none
+    gcl-2.6.14       160              none
+    cmucl-21d        209              none
+    ccl-1.12.1       291              none
+    acl-10.1         372              183
+    ecl-21.2.1       546              none
+    clisp-2.49.92    853              1
+    abcl-1.9.1      1320              10
 
 
 Clisp <http://clisp.org>
