@@ -22,9 +22,9 @@ but it has been reported that autodetection can fail.
 Comparison of execution times (in seconds)
 ------------------------------------------
 
-As of 2023-05-18 the `run_testsuite()` function needed the
-following times for these different Lisp versions and produced
-so many testsuite failures:
+As of 2023-05-18 (using the current development version of Maxima)
+the `run_testsuite()` function needed the following times for
+these different Lisp versions and produced so many testsuite failures:
 
 ### Ubuntu 20.04, 64 bit
 
