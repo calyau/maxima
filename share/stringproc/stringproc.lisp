@@ -332,8 +332,9 @@ See comments to $adjust_external_format below for a detailed description.
     (t ;; get encoding:
       #+ (or ecl ccl gcl) :utf-8 ;; ignored by GCL
       #+sbcl sb-impl::*default-external-format*
-      #- (or ecl ccl gcl sbcl) (stream-external-format *standard-output*) )))
-                          ;; cmucl: format of *standard-input* remains 'default' when changed to utf-8
+      #+cmucl stream:*default-external-format*
+      #- (or ecl ccl gcl sbcl cmucl) (stream-external-format *standard-output*) )))
+
 
 (defun is-ignored (enc name adds)
   (format t "`~a': The argument ~s is ignored. Enter~%" name 
