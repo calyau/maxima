@@ -424,7 +424,8 @@ TODO: Comments on Xmaxima in Windows.
 (defun $adjust_external_format () 
   #+ccl
   (progn
-    #+unix (format t "The external format is utf-8 and has not been changed.~%")
+    #+unix
+    (format t "The external format is utf-8 and has not been changed.~%")
     #-unix
     (let ((ef (stream-external-format *standard-input*)))
       (format t "The external format is ~a and has not been changed.~%" ef)
@@ -505,7 +506,7 @@ TODO: Comments on Xmaxima in Windows.
        (format t "The external format is ~a~%and has not been changed.~%" ef) )))
   ;;
   #-(or ccl clisp cmucl ecl gcl sbcl) ;; all others
-  (format t "Please file a report if adjusting the external format seems necessary.~%") )
+    (format t "Please file a report if adjusting the external format seems necessary.~%") )
 
 
 (defun use-cp (name id) 
