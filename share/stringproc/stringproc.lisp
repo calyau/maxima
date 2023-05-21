@@ -282,58 +282,75 @@ See comments to $adjust_external_format below for a detailed description.
 (defun get-encoding (enc name) 
   (cond
     (enc ;; set encoding:
-      (unless (stringp enc) 
-        (gf-merror (intl:gettext 
-          "`~m': the optional second argument must be a string." ) name ))
+     (unless (stringp enc) 
+       (gf-merror (intl:gettext 
+		   "`~m': the optional second argument must be a string." ) name ))
 
-      ;; All Lisps must recognize :default, per CLHS.
-      (when (string= enc "DEFAULT") (return-from get-encoding :default))
+     ;; All Lisps must recognize :default, per CLHS.
+     (when (string= enc "DEFAULT")
+       (return-from get-encoding :default))
 
-      (setq enc (intern (string-upcase enc) :keyword))
-      ;;
-      #+ccl (progn
-        #+unix enc
-        #-unix (cond 
-          ((boundp 'maxima::$wxplot_size) enc)
-          (t (is-ignored enc name "to get some help") 
-             :utf-8 )))
-      ;;
-      #+clisp (progn
-        #+unix (ext:make-encoding :charset (symbol-name enc) :line-terminator :unix)
-        #-unix (let ((ef (stream-external-format *standard-input*)))
-          (cond 
-            ((search "UTF" (format nil "~s" ef) :test 'string-equal)
-              (ext:make-encoding :charset (symbol-name enc) :line-terminator :dos) )
-            (t (is-ignored enc name "to enable the encoding argument")
-               ef ))))
-      ;;
-      #+cmucl (progn
-        #+unix (let ((ef (stream-external-format *standard-output*))) ;; input format remains 'default'
-          (cond 
-            ((check-encoding enc) enc)
-            (t (is-ignored enc name "to enable the encoding argument") 
-               ef )))
-        #-unix enc )
-      ;;
-      #+gcl (format t "`~a': GCL ignores the argument ~s.~%" name 
-        (string-downcase (symbol-name enc)) )
-      ;;
-      #+sbcl (progn
-        #+unix enc
-        #-unix (let ((ef (stream-external-format *standard-input*)))
-          (cond 
-            ((eq ef :cp1252) 
-              (is-ignored enc name "to enable the encoding argument")
-              ef )
-            (t enc) )))
-      ;;
-      #- (or ccl clisp cmucl gcl sbcl) enc ) ;; ECL and others
-      ;;
+     (setq enc (intern (string-upcase enc) :keyword))
+     ;;
+     #+ccl
+     (progn
+       #+unix enc
+       #-unix
+       (cond 
+         ((boundp 'maxima::$wxplot_size) enc)
+         (t (is-ignored enc name "to get some help") 
+            :utf-8 )))
+     ;;
+     #+clisp
+     (progn
+       #+unix
+       (ext:make-encoding :charset (symbol-name enc) :line-terminator :unix)
+       #-unix
+       (let ((ef (stream-external-format *standard-input*)))
+         (cond 
+           ((search "UTF" (format nil "~s" ef) :test 'string-equal)
+            (ext:make-encoding :charset (symbol-name enc) :line-terminator :dos) )
+           (t (is-ignored enc name "to enable the encoding argument")
+              ef))))
+     ;;
+     #+cmucl
+     (progn
+       #+unix
+       (let ((ef (stream-external-format *standard-output*))) ;; input format remains 'default'
+         (cond 
+           ((check-encoding enc) enc)
+           (t (is-ignored enc name "to enable the encoding argument") 
+              ef)))
+       #-unix
+       enc)
+     ;;
+     #+gcl
+     (format t "`~a': GCL ignores the argument ~s.~%" name 
+             (string-downcase (symbol-name enc)) )
+     ;;
+     #+sbcl
+     (progn
+       #+unix enc
+       #-unix
+       (let ((ef (stream-external-format *standard-input*)))
+         (cond 
+           ((eq ef :cp1252) 
+            (is-ignored enc name "to enable the encoding argument")
+            ef)
+           (t enc))))
+     ;;
+     #-(or ccl clisp cmucl gcl sbcl)
+     enc) ;; ECL and others
+    ;;
     (t ;; get encoding:
-      #+ (or ecl ccl gcl) :utf-8 ;; ignored by GCL
-      #+sbcl sb-impl::*default-external-format*
-      #+cmucl stream:*default-external-format*
-      #- (or ecl ccl gcl sbcl cmucl) (stream-external-format *standard-output*) )))
+     #+ (or ecl ccl gcl)
+     :utf-8 ;; ignored by GCL
+     #+sbcl
+     sb-impl::*default-external-format*
+     #+cmucl
+     stream:*default-external-format*
+     #-(or ecl ccl gcl sbcl cmucl)
+     (stream-external-format *standard-output*))))
 
 
 (defun is-ignored (enc name adds)
@@ -405,81 +422,90 @@ TODO: Comments on Xmaxima in Windows.
 |#
 
 (defun $adjust_external_format () 
-  #+ccl (progn
+  #+ccl
+  (progn
     #+unix (format t "The external format is utf-8 and has not been changed.~%")
-    #-unix (let ((ef (stream-external-format *standard-input*)))
+    #-unix
+    (let ((ef (stream-external-format *standard-input*)))
       (format t "The external format is ~a and has not been changed.~%" ef)
       (unless (boundp 'maxima::$wxplot_size)
         (format t "Command line: The external format is settable by an option in~%~a~%"
-          (combine-path *maxima-prefix* "bin" "maxima.bat") )
+		(combine-path *maxima-prefix* "bin" "maxima.bat") )
         (format t "Change the line~%set lisp_options=~%to~%") 
         (format t "set lisp_options=-K :iso-8859-1~%") 
         (format t "(cp850 and cp1252 are not supported by CCL.)~%")
         (use-cp "iso-8859-1" 28591) )))
   ;;
-  #+clisp (let ((ef (stream-external-format *standard-input*)))
-    #-unix (cond 
+  #+clisp
+  (let ((ef (stream-external-format *standard-input*)))
+    #-unix
+    (cond 
       ((search "UTF" (format nil "~s" ef) :test 'string-equal)
-        (format t "The external format is ~a.~%and has not been changed.~%" ef) )
+       (format t "The external format is ~a.~%and has not been changed.~%" ef) )
       ((boundp 'maxima::$wxplot_size)
-        ;; this should not happen
-        ;; format should be adjusted when loading stringproc.lisp
-        (format t "The external format has been changed to ~a~%"
-          (setf custom:*terminal-encoding* 
-            (ext:make-encoding :charset (symbol-name :utf-8) :line-terminator :dos) ))
-        (format t "for this session only. For a permanent change put the lines~%")
-        (format t "(setf custom:*terminal-encoding*~%")
-        (format t "  (ext:make-encoding :charset (symbol-name :utf-8) :line-terminator :dos) )~%")
-        (format t "into the init file .clisprc in your home directory. ")
-        (format t "The file is probably~%~a~%" (combine-path *maxima-tempdir* ".clisprc"))
-        (setq *parse-utf-8-input* nil)
-        t )
+       ;; this should not happen
+       ;; format should be adjusted when loading stringproc.lisp
+       (format t "The external format has been changed to ~a~%"
+               (setf custom:*terminal-encoding* 
+		     (ext:make-encoding :charset (symbol-name :utf-8) :line-terminator :dos) ))
+       (format t "for this session only. For a permanent change put the lines~%")
+       (format t "(setf custom:*terminal-encoding*~%")
+       (format t "  (ext:make-encoding :charset (symbol-name :utf-8) :line-terminator :dos) )~%")
+       (format t "into the init file .clisprc in your home directory. ")
+       (format t "The file is probably~%~a~%" (combine-path *maxima-tempdir* ".clisprc"))
+       (setq *parse-utf-8-input* nil)
+       t )
       (t
-        (format t "The external format is ~a~%and has not been changed.~%" ef)
-        (use-cp "cp1252" 1252) )) 
-    #+unix (format t "The external format is ~a~%and has not been changed.~%" ef) )
+       (format t "The external format is ~a~%and has not been changed.~%" ef)
+       (use-cp "cp1252" 1252) )) 
+    #+unix
+    (format t "The external format is ~a~%and has not been changed.~%" ef) )
   ;;
-  #+cmucl (let ((ef (stream-external-format *standard-output*))) ;; format of ..
-    (cond                             ;; .. *standard-input* might be 'default'
+  #+cmucl
+  (let ((ef (stream-external-format *standard-output*))) ;; format of ..
+    (cond ;; .. *standard-input* might be 'default'
       ((eq ef :utf-8) 
-        (format t "The external format is ~a~%and has not been changed.~%" ef) )
+       (format t "The external format is ~a~%and has not been changed.~%" ef) )
       (t ;; this should not happen
-         ;; format should be adjusted when loading stringproc.lisp
-        (format t "The external format has been changed to utf-8~%")
-        (format t "for this session only. For a permanent change put the line~%")
-        (format t "(stream:set-system-external-format :utf-8)~%")
-        (format t "into the init file .cmucl-init in your home directory. ")   
-        (format t "The file is probably~%~a~%" (combine-path *maxima-tempdir* ".cmucl-init"))
-        (setq *parse-utf-8-input* nil)
-        (stream:set-system-external-format :utf-8) ))) ;; returns t
+       ;; format should be adjusted when loading stringproc.lisp
+       (format t "The external format has been changed to utf-8~%")
+       (format t "for this session only. For a permanent change put the line~%")
+       (format t "(stream:set-system-external-format :utf-8)~%")
+       (format t "into the init file .cmucl-init in your home directory. ")   
+       (format t "The file is probably~%~a~%" (combine-path *maxima-tempdir* ".cmucl-init"))
+       (setq *parse-utf-8-input* nil)
+       (stream:set-system-external-format :utf-8) ))) ;; returns t
   ;;
   #+ecl
-    (format t "The external format is ~a~%and has not been changed.~%"
-      (stream-external-format *standard-input*) )
+  (format t "The external format is ~a~%and has not been changed.~%"
+	  (stream-external-format *standard-input*) )
   ;;
-  #+gcl (progn
+  #+gcl
+  (progn
     (format t "There is no settable external format.~%")
-    #-unix (use-cp "cp1252" 1252) )
+    #-unix
+    (use-cp "cp1252" 1252) )
   ;;
-  #+sbcl (let ((ef (stream-external-format *standard-input*)))
+  #+sbcl
+  (let ((ef (stream-external-format *standard-input*)))
     (cond
       ((eq ef :cp1252)
-        (let ((path (sb-impl::userinit-pathname))
-              (cmd "(setf sb-impl::*default-external-format* :utf-8)") )
-          (with-open-file (stream 
-                           path 
-                           :direction :output 
-                           :if-exists :append 
-                           :if-does-not-exist :create ) 
-            (format stream "~a~%" cmd) )
-          (format t "The external format is cp1252 and has not been changed.~%")
-          (format t "The line~%~a~%has been appended to the init file~%~a~%" cmd path)
-          (format t "Please restart Maxima to change the external format to utf-8.~%") ))
+       (let ((path (sb-impl::userinit-pathname))
+             (cmd "(setf sb-impl::*default-external-format* :utf-8)") )
+         (with-open-file (stream 
+                          path 
+                          :direction :output 
+                          :if-exists :append 
+                          :if-does-not-exist :create ) 
+           (format stream "~a~%" cmd) )
+         (format t "The external format is cp1252 and has not been changed.~%")
+         (format t "The line~%~a~%has been appended to the init file~%~a~%" cmd path)
+         (format t "Please restart Maxima to change the external format to utf-8.~%") ))
       (t
-        (format t "The external format is ~a~%and has not been changed.~%" ef) )))
+       (format t "The external format is ~a~%and has not been changed.~%" ef) )))
   ;;
-  #- (or ccl clisp cmucl ecl gcl sbcl) ;; all others
-    (format t "Please file a report if adjusting the external format seems necessary.~%") )
+  #-(or ccl clisp cmucl ecl gcl sbcl) ;; all others
+  (format t "Please file a report if adjusting the external format seems necessary.~%") )
 
 
 (defun use-cp (name id) 
