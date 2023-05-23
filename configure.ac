@@ -887,25 +887,32 @@ if test x"${explicit_lisp}" = xfalse ; then
   	if test x"${clisp_found}" = xtrue ; then
   		clisp=true
 		lisps_enabled="${lisps_enabled} clisp"
-  	elif test x"${gcl_found}" = xtrue ; then
+	fi
+  	if test x"${gcl_found}" = xtrue ; then
 		gcl=true
 		lisps_enabled="${lisps_enabled} gcl"
-	elif test x"${cmucl_found}" = xtrue ; then
+	fi
+	if test x"${cmucl_found}" = xtrue ; then
 		cmucl=true
 		lisps_enabled="${lisps_enabled} cmucl"
-	elif test x"${scl_found}" = xtrue ; then
+	fi
+	if test x"${scl_found}" = xtrue ; then
 		scl=true
 		lisps_enabled="${lisps_enabled} scl"
-	elif test x"${sbcl_found}" = xtrue ; then
+	fi
+	if test x"${sbcl_found}" = xtrue ; then
 	   	sbcl=true
 		lisps_enabled="${lisps_enabled} sbcl"
-	elif test x"${acl_found}" = xtrue ; then
+	fi
+	if test x"${acl_found}" = xtrue ; then
 		acl=true
 		lisps_enabled="${lisps_enabled} acl"
-	elif test x"${ecl_found}" = xtrue ; then
+	fi
+	if test x"${ecl_found}" = xtrue ; then
 		ecl=true
 		lisps_enabled="${lisps_enabled} ecl"
-	else
+	fi
+	if test x"${lisps_enabled}" = x; then
 		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${scl_default_name}(SCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL),${ecl_default_name}(ECL)] were found in PATH)
 	fi
 fi
