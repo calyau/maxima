@@ -1474,7 +1474,7 @@ first kind:
 		 (t
 		  (merror (intl:gettext "elliptic_f: elliptic_f(~:M, ~:M) is undefined.")
 					phi m))))
-	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
+	  ((alike1 phi (div '$%pi 2))
 	   ;; Complete elliptic integral
 	   (ftake '%elliptic_kc m))
 	  (t
@@ -1518,7 +1518,7 @@ first kind:
 		  (mul 2
 		       (mul mult-pi
 			    (ftake '%elliptic_ec m))))))
-	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
+	  ((alike1 phi (div '$%pi 2))
 	   ;; Complete elliptic integral
 	   (ftake '%elliptic_ec m))
 	  ((and ($numberp phi)
@@ -1695,7 +1695,7 @@ first kind:
 	     (to (bigfloat::bf-elliptic-ec (bigfloat:to ($bfloat m))))))
 	  ;; Some special cases we know about.
 	  ((zerop1 m)
-	   '((mtimes) ((rat) 1 2) $%pi))
+	   (div '$%pi 2))
 	  ((onep1 m)
 	   1)
 	  ((alike1 m 1//2)
