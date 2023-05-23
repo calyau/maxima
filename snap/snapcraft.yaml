@@ -46,6 +46,10 @@ apps:
      - home
      - removable-media
      - optical-drive
+     - desktop
+     - desktop-legacy
+     - wayland
+     - x11
     desktop: usr/share/applications/net.sourceforge.maxima.xmaxima.desktop
 
 parts:
@@ -53,24 +57,41 @@ parts:
     plugin: autotools
     source: .
     autotools-configure-parameters:
-     - --enable-sbcl
-     - --enable-clisp
-     - --prefix=/usr
+       - --prefix=/usr
+       - --enable-clisp
+       - --enable-sbcl
     build-packages:
-     - sbcl
-     - clisp
-     - texinfo
-     - libreadline-dev
-     - locales
-     - automake
-     - autoconf
-     - gawk
-     - texlive-latex-recommended
-     - tex-common
-     - python3
+     - to arm64,amd64,armhf:
+       - clisp
+       - texinfo
+       - libreadline-dev
+       - locales
+       - automake
+       - autoconf
+       - gawk
+       - texlive-latex-recommended
+       - tex-common
+       - python3
+       - sbcl
+     - else:
+       - clisp
+       - texinfo
+       - libreadline-dev
+       - locales
+       - automake
+       - autoconf
+       - gawk
+       - texlive-latex-recommended
+       - tex-common
+       - python3
+       - sbcl
     stage-packages:
-     - sbcl
-     - clisp
-     - gnuplot
+     - to arm64,amd64,armhf:
+       - clisp
+       - gnuplot
+       - sbcl
+     - else:
+       - clisp
+       - gnuplot
     stage:
      - -usr/share/texmf/ls-R
