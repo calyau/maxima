@@ -34,6 +34,63 @@ Example:
 @node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec-pkg
 @section Functions and Variables for solve_rec
 
+@anchor{harmonic_number}
+@deffn {Function} harmonic_number (@var{x})
+When @var{x} is positive integer @math{n}, @code{harmonic_number} is
+the @math{n}'th harmonic number.  More generally,
+@code{harmonic_number(x) = psi[0](x+1) + %gamma}.  (See @ref{polygamma}).
+
+@c ===beg===
+@c load("simplify_sum")$
+@c harmonic_number(5);
+@c sum(1/k, k, 1, 5);
+@c float(harmonic_number(sqrt(2)));
+@c float(psi[0](1+sqrt(2)))+%gamma;
+@c ===end===
+@example
+(%i1) load("simplify_sum")$
+@group
+(%i2) harmonic_number(5);
+                               137
+(%o2)                          ---
+                               60
+@end group
+@group
+(%i3) sum(1/k, k, 1, 5);
+                               137
+(%o3)                          ---
+                               60
+@end group
+@group
+(%i4) float(harmonic_number(sqrt(2)));
+(%o4)              %gamma + 0.6601971549171388
+@end group
+@group
+(%i5) float(psi[0](1+sqrt(2)))+%gamma;
+(%o5)              %gamma + 0.6601971549171388
+@end group
+@end example
+@end deffn
+
+@anchor{harmonic_to_psi}
+@deffn {Function} harmonic_to_psi (@var{x})
+Converts expressions with @code{harmonic_number} to the equivalent
+expression involving @code{psi[0]} (see @ref{polygamma}).
+
+@c ===beg===
+@c load("simplify_sum")$
+@c harmonic_to_psi(harmonic_number(sqrt(2)));
+@c ===end===
+@example
+(%i1) load("simplify_sum")$
+@group
+(%i2) harmonic_to_psi(harmonic_number(sqrt(2)));
+(%o2)              psi (sqrt(2) + 1) + %gamma
+                      0
+@end group
+@end example
+@end deffn
+
 @anchor{reduce_order}
 @deffn {Function} reduce_order (@var{rec}, @var{sol}, @var{var})
 
@@ -131,7 +188,7 @@ Example:
 @example
 (%i1) load("simplify_sum")$
 @group
-(%i2) sum(binomial(n+k,k)/2^k,k,1,n)+sum(binomial(2*n,2*k),k,1,n);
+(%i2) sum(binomial(n+k,k)/2^k, k, 1, n) + sum(binomial(2*n, 2*k), k, 1,n);
         n                          n
        ====                       ====
        \     binomial(n + k, k)   \
