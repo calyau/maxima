@@ -142,7 +142,6 @@ Example:
 @end group
 @group
 (%i3) simplify_sum(%);
-
                          2 n - 1    n
 (%o3)                   2        + 2  - 2
 @end group
