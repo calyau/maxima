@@ -32,6 +32,8 @@ Changes in core:
    would cause internal errors when called.
  * Array functions and subscripted functions can now be translated.
    Previously these would fail to translate with no explanation.
+ * configure: If the user doesn't specify a specific lisp maxima is compiled
+   with all suitable lisp compilers.
 
 Changes in share:
 -----------------
