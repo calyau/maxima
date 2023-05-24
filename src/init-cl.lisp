@@ -218,32 +218,36 @@
     (sanitize-string *autoconf-version*)))
 
 (defun compute-subdirs-list (dir)
-  (format t "Finding subdirs of ~S~%" dir)
+  "Find all subdirectories in DIR and return them in a list.  The list
+  is sorted in lexicographic order.  Various subdiretories like '.git'
+  and 'binary' are excluded from the list."
   (let* ((dirpath (concatenate 'string dir "/"))
 	 #+gcl
 	 (dir-len (1+ (length dir)))
-	 (wild-dir (concatenate 'string dirpath "/**/")))
-
-    (format t "wild dir ~S~%" (pathname wild-dir))
-    (remove-if #'(lambda (p)
-		   (equalp (namestring p) ""))
-	       ;; Put the directories in lexicographical order.  Some
-	       ;; lisps already do this in DIRECTORY, but it isn't
-	       ;; terrible to do this again.
-	       (stable-sort (mapcar #'(lambda (d)
-					;; Gcl has a broken enough-namestring.
-					#-gcl
-					(enough-namestring d dirpath)
-					#+gcl
-					(subseq (namestring d) dir-len))
-				    (remove-if #'(lambda (p)
-						   ;; Remove any ".git" or "binary" directories.
-						   (let ((d (pathname-directory p)))
-						     (or (member ".git" d :test #'equal)
-							 (member "binary" d :test #'equal))))
-					       (directory wild-dir)))
-			    #'string<=
-			    :key #'namestring))))
+	 (wild-dir (concatenate 'string dirpath "/**/"))
+	 (subdirs
+	   (remove-if #'(lambda (p)
+			  (equalp (namestring p) ""))
+		      ;; Put the directories in lexicographical order.  Some
+		      ;; lisps already do this in DIRECTORY, but it isn't
+		      ;; terrible to do this again.
+		      (stable-sort (mapcar #'(lambda (d)
+					       ;; Gcl has a broken enough-namestring.
+					       #-gcl
+					       (enough-namestring d dirpath)
+					       #+gcl
+					       (subseq (namestring d) dir-len))
+					   (remove-if #'(lambda (p)
+							  ;; Remove any ".git" or "binary" directories.
+							  (let ((d (pathname-directory p)))
+							    (or (member ".git" d :test #'equal)
+								(member "binary" d :test #'equal))))
+						      (directory wild-dir)))
+				   #'string<=))))
+    (format t "Adding ~D subdirectories of ~S to search path.~%"
+	    (length subdirs)
+	    dir)
+    subdirs))
 
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
