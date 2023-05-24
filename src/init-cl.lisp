@@ -106,12 +106,12 @@
     (setq *maxima-topdir*    (combine-path datadir package-version))
     (setq *maxima-imagesdir* (combine-path libdir package-version binary-subdirectory))
     (setq *maxima-sharedir*  (combine-path datadir package-version "share"))
-    (setq *maxima-srcdir*    (combine-path datadir package-version "src"))
-    (setq *maxima-demodir*   (combine-path datadir package-version "demo"))
-    (setq *maxima-testsdir*  (combine-path datadir package-version "tests"))
-    (setq *maxima-docdir*    (combine-path datadir package-version "doc"))
+    (setq *maxima-srcdir*    (combine-path datadir package-version "src" "/"))
+    (setq *maxima-demodir*   (combine-path datadir package-version "demo" "/"))
+    (setq *maxima-testsdir*  (combine-path datadir package-version "tests" "/"))
+    (setq *maxima-docdir*    (combine-path datadir package-version "doc" "/"))
     (setq *maxima-infodir*   infodir)
-    (setq *maxima-htmldir*   (combine-path datadir package-version "doc" "html"))
+    (setq *maxima-htmldir*   (combine-path datadir package-version "doc" "html" "/"))
     (setq *maxima-plotdir*   (combine-path libexecdir package-version))))
 
 (defun set-pathnames-without-autoconf (maxima-prefix-env maxima-docprefix-env)
@@ -123,15 +123,15 @@
     (setq *maxima-topdir*    maxima-prefix)
     (setq *maxima-imagesdir* (combine-path maxima-prefix "src" binary-subdirectory))
     (setq *maxima-sharedir*  (combine-path maxima-prefix "share"))
-    (setq *maxima-srcdir*    (combine-path maxima-prefix "src"))
-    (setq *maxima-demodir*   (combine-path maxima-prefix "demo"))
-    (setq *maxima-testsdir*  (combine-path maxima-prefix "tests"))
+    (setq *maxima-srcdir*    (combine-path maxima-prefix "src" "/"))
+    (setq *maxima-demodir*   (combine-path maxima-prefix "demo" "/"))
+    (setq *maxima-testsdir*  (combine-path maxima-prefix "tests" "/"))
     (let ((maxima-doc-prefix (if maxima-docprefix-env
 				maxima-docprefix-env
 			        maxima-prefix)))
-      (setq *maxima-docdir*    (combine-path maxima-doc-prefix "doc"))
-      (setq *maxima-infodir*   (combine-path maxima-doc-prefix "doc" "info"))
-      (setq *maxima-htmldir*   (combine-path maxima-doc-prefix "doc" "html")))
+      (setq *maxima-docdir*    (combine-path maxima-doc-prefix "doc" "/"))
+      (setq *maxima-infodir*   (combine-path maxima-doc-prefix "doc" "info" "/"))
+      (setq *maxima-htmldir*   (combine-path maxima-doc-prefix "doc" "html" "/")))
     (setq *maxima-plotdir*   (combine-path maxima-prefix "plotting"))))
 
 (defun default-userdir ()
@@ -217,6 +217,27 @@
   (defun maxima-version1 ()
     (sanitize-string *autoconf-version*)))
 
+(defun compute-subdirs-list (dir)
+  (format t "Finding subdirs of ~S~%" dir)
+  (let* ((dirpath (concatenate 'string dir "/"))
+	 #+gcl
+	 (dir-len (length dir))
+	 (wild-dir (concatenate 'string dirpath "/**/")))
+
+    (format t "wild dir ~S~%" (pathname wild-dir))
+    (mapcar #'(lambda (d)
+		;; Gcl has a broken enough-namestring.
+		#-gcl
+		(enough-namestring d dirpath)
+		#+gcl
+		(subseq (namestring d) dir-len))
+	    (remove-if #'(lambda (p)
+			   ;; Remove any .git directories
+			   (let ((d (pathname-directory p)))
+			     (or (member ".git" d :test #'equal)
+				 (member "binary" d :test #'equal))))
+		       (directory wild-dir)))))
+
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
@@ -287,10 +308,12 @@
 	 (lisp+maxima-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp,mac,mc,wxm}"))
 	 (demo-patterns "$$$.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "$$.{usg,texi}")
-	 (share-subdirs-list (share-subdirs-list))
+	 (share-subdirs-list (compute-subdirs-list *maxima-sharedir*))
 	 ;; Smash the list of share subdirs into a string of the form
 	 ;; "{affine,algebra,...,vector}" .
-	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list)))
+	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list))
+	 (maxima-userdir-subdirs
+	   (format nil "{~{~A~^,~}}" (compute-subdirs-list *maxima-userdir*))))
 
     (setq $file_search_lisp
 	  (list '(mlist)
@@ -298,6 +321,7 @@
 		;; there should be a separate directory for compiled
 		;; lisp code. jfa 04/11/02
 		(combine-path *maxima-userdir* lisp-patterns)
+		(combine-path *maxima-userdir* maxima-userdir-subdirs lisp-patterns)
 		(combine-path *maxima-sharedir* lisp-patterns)
 		(combine-path *maxima-sharedir* share-subdirs lisp-patterns)
 		(combine-path *maxima-srcdir* lisp-patterns)
@@ -305,6 +329,7 @@
     (setq $file_search_maxima
 	  (list '(mlist)
 		(combine-path *maxima-userdir* maxima-patterns)
+		(combine-path *maxima-userdir* maxima-userdir-subdirs maxima-patterns)
 		(combine-path *maxima-sharedir* maxima-patterns)
 		(combine-path *maxima-sharedir* share-subdirs maxima-patterns)
         (combine-path *maxima-topdir* maxima-patterns)))
