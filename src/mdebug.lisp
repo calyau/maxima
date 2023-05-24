@@ -640,7 +640,9 @@ Command      Description~%~
   (eval (cons 'progn l-lisp-quiet)) ; eval lisp-quiet
   (finish-output)  ; wait and finish lisp-quiet output
   (if (string= *mread-prompt* "")   ; restore prompt for other debug functions
-      (setq *mread-prompt* *lisp-quiet-suppressed-prompt*))
+      (format-prompt t nil "(~A~A) "
+                     (print-invert-case (stripdollar $inchar))
+                     $linenum))
   nil)
 
 (def-break :lisp-quiet 'lisp-quiet 
