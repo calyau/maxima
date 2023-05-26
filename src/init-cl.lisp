@@ -225,26 +225,45 @@
 	 #+gcl
 	 (dir-len (1+ (length dir)))
 	 (wild-dir (concatenate 'string dirpath "/**/"))
-	 (subdirs
-	   (remove-if #'(lambda (p)
-			  (equalp (namestring p) ""))
-		      ;; Put the directories in lexicographical order.  Some
-		      ;; lisps already do this in DIRECTORY, but it isn't
-		      ;; terrible to do this again.
-		      (stable-sort (mapcar #'(lambda (d)
-					       ;; Gcl has a broken enough-namestring.
-					       #-gcl
-					       (enough-namestring d dirpath)
-					       #+gcl
-					       (subseq (namestring d) dir-len))
-					   (remove-if #'(lambda (p)
-							  ;; Remove any ".git" or "binary" directories.
-							  (let ((d (pathname-directory p)))
-							    (or (member ".git" d :test #'equal)
-								(member "binary" d :test #'equal)
-								(member "fortran" d :test #'equal))))
-						      (directory wild-dir)))
-				   #'string<=))))
+	 (subdirs (directory wild-dir)))
+    (setf subdirs
+	  ;; Put the directories in lexicographical order.  Some
+	  ;; lisps already do this in DIRECTORY, but it isn't
+	  ;; terrible to do this again.
+	  (stable-sort
+	   (mapcar #'(lambda (d)
+		       ;; Strip off the leading part of
+		       ;; the path.  Gcl has a broken
+		       ;; enough-namestring,
+		       #-gcl
+		       (enough-namestring d dirpath)
+		       #+gcl
+		       (subseq (namestring d) dir-len))
+		   (remove-if #'(lambda (p)
+				  ;; If any directory has a
+				  ;; subdirectory named ".git",
+				  ;; "binary", or "fortran", we want
+				  ;; to exclude that directory from
+				  ;; our list.  These aren't places
+				  ;; where we should be looking for
+				  ;; maxima or lisp files.
+				  (let ((d (pathname-directory p)))
+				    (or (member ".git" d :test #'equal)
+					(member "binary" d :test #'equal)
+					(member "fortran" d :test #'equal))))
+			      subdirs))
+	   #'string<=))
+    ;; Remove any empty names.  There should only one, and it
+    ;; should be the first, but lets get rid of them all, just in case.
+    (setf subdirs (remove-if #'(lambda (p)
+				 (equalp (namestring p) ""))
+			     subdirs))
+    ;; Finally, remove the trailing "/" from each directory.
+    (setf subdirs (mapcar #'(lambda (s)
+			      (let ((len (length s)))
+				(when (member (aref s (1- len)) '(#\/ #\\))
+				  (subseq s 0 (1- (length s))))))
+			  subdirs))
     (format t "Adding ~D subdirectories of ~S to search path.~%"
 	    (length subdirs)
 	    dir)
