@@ -219,8 +219,8 @@
 
 (defun compute-subdirs-list (dir)
   "Find all subdirectories in DIR and return them in a list.  The list
-  is sorted in lexicographic order.  Various subdiretories like '.git'
-  and 'binary' are excluded from the list."
+  is sorted in lexicographic order.  Various subdiretories like '.git',
+  'fortran', and 'binary' are excluded from the list."
   (let* ((dirpath (concatenate 'string dir "/"))
 	 #+gcl
 	 (dir-len (1+ (length dir)))
@@ -241,7 +241,8 @@
 							  ;; Remove any ".git" or "binary" directories.
 							  (let ((d (pathname-directory p)))
 							    (or (member ".git" d :test #'equal)
-								(member "binary" d :test #'equal))))
+								(member "binary" d :test #'equal)
+								(member "fortran" d :test #'equal))))
 						      (directory wild-dir)))
 				   #'string<=))))
     (format t "Adding ~D subdirectories of ~S to search path.~%"
