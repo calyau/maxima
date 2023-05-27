@@ -362,6 +362,34 @@ denormal numbers occur.  For bigfloats, this is equal to
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{float_sign}
+@deffn {Function} float_sign (@var{f})
+Returns the sign of @var{f}.  It is @math{+1} or @math{-1} of the smae
+type as @var{f}.  It is an error if @var{f} is not a float or
+bigfloat.  Note that some lisps do not support signed zeros for
+floating-point numbers.  Bigfloats do not support signed zeroes.  The
+examples below assume signed zeroes are supported.
+@example
+(%i1) float_sign(1.0);
+(%o1)                                 1.0
+(%i2) float_sign(-5.0);
+(%o2)                                - 1.0
+(%i3) float_sign(-0.0);
+(%o3)                                - 1.0
+(%i4) float_sign(1b0);
+(%o4)                                1.0b0
+(%i5) float_sign(-5b0);
+(%o5)                               - 1.0b0
+(%o6) float_sign(-0b0);
+(%o6)                                1.0b0
+(%i7) float_sign(%pi);
+
+float_sign is only defined for floats and bfloats: %pi
+ -- an error. To debug this try: debugmode(true);
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{floatnump}
 @deffn {Function} floatnump (@var{expr})
 
