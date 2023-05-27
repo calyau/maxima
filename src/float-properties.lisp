@@ -250,3 +250,17 @@
     (t
      (merror (intl:gettext "decode_float is only defined for floats and bfloats: ~M")
 	     f))))
+
+(defmfun $float_sign (f)
+  "The sign of the float F, which can either be a float or bigfloat.
+  The sign is +1 or -1 depending on the sign of F.  It has the same
+  type as F.  Note: some lisps do not support signed floating-point
+  zeroes."
+  (cond
+    ((floatp f)
+     (float-sign f))
+    (($bfloatp f)
+     (to (bigfloat:float-sign (bigfloat:bigfloat f))))
+    (t
+     (merror (intl:gettext "float_sign is only defined for floats and bfloats: ~M")
+	     f))))
