@@ -46,7 +46,7 @@ includerfile=include-maxima.texi
 
 # Extract all filenames that are included using @include commands in the order
 # they are included
-includedfiles=`@AWK@ '/^[[:space:]]*@include/ { print $NF; }' $includerfile`
+includedfiles=`@EGREP@ '^[[:space:]]*@include' $includerfile | @AWK@ '{ print $NF; }'`
 
 # If output dir exists, remove it so we start clean
 if [ -d tmp_html ]; then
