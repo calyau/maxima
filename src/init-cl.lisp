@@ -224,7 +224,7 @@
   provided to specify other directory names that should be excluded.
   It should be a list of strings for the directory names to exclude."
 
-  (let* ((dirpath (pathname (concatenate 'string dir "/")))
+  (let* ((dirpath (concatenate 'string dir "/"))
 	 #+gcl
 	 (dir-len (1+ (length dir)))
 	 (wild-dir (concatenate 'string dirpath "/**/"))
