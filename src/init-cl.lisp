@@ -217,42 +217,45 @@
   (defun maxima-version1 ()
     (sanitize-string *autoconf-version*)))
 
-(defun compute-subdirs-list (dir)
+(defun compute-subdirs-list (dir &key exclude-dirs)
   "Find all subdirectories in DIR and return them in a list.  The list
-  is sorted in lexicographic order.  Various subdiretories like '.git',
-  'fortran', and 'binary' are excluded from the list."
-  (let* ((dirpath (concatenate 'string dir "/"))
+  is sorted in lexicographic order.  A directory with the name
+  \".git\" is always excluded.  The keyword arg EXCLUDE-DIRS can be
+  provided to specify other directory names that should be excluded.
+  It should be a list of strings for the directory names to exclude."
+
+  (let* ((dirpath (pathname (concatenate 'string dir "/")))
 	 #+gcl
 	 (dir-len (1+ (length dir)))
 	 (wild-dir (concatenate 'string dirpath "/**/"))
 	 (subdirs (directory wild-dir)))
-    (setf subdirs
-	  ;; Put the directories in lexicographical order.  Some
-	  ;; lisps already do this in DIRECTORY, but it isn't
-	  ;; terrible to do this again.
-	  (stable-sort
-	   (mapcar #'(lambda (d)
-		       ;; Strip off the leading part of
-		       ;; the path.  Gcl has a broken
-		       ;; enough-namestring,
-		       #-gcl
-		       (enough-namestring d dirpath)
-		       #+gcl
-		       (subseq (namestring d) dir-len))
-		   (remove-if #'(lambda (p)
-				  ;; If any directory has a
-				  ;; subdirectory named ".git",
-				  ;; "binary", or "fortran", we want
-				  ;; to exclude that directory from
-				  ;; our list.  These aren't places
-				  ;; where we should be looking for
-				  ;; maxima or lisp files.
-				  (let ((d (pathname-directory p)))
-				    (or (member ".git" d :test #'equal)
-					(member "binary" d :test #'equal)
-					(member "fortran" d :test #'equal))))
-			      subdirs))
-	   #'string<=))
+    (flet ((exclude-dir-p (path)
+	     ;; If any directory has a subdirectory named ".git", we
+	     ;; want to exclude that directory from our list.  These
+	     ;; aren't places where we should be looking for maxima or
+	     ;; lisp files.  In addition, any directory with a name
+	     ;; that matches anything in EXLUDE-DIRS is also excluded.
+	     (let ((dir (cdr (pathname-directory path))))
+	       (or (member ".git" dir :test #'equal)
+		   (some #'(lambda (ex)
+			     (member ex dir :test #'equal))
+			 exclude-dirs)))))
+      (setf subdirs
+	    ;; Put the directories in lexicographical order.  Some
+	    ;; lisps already do this in DIRECTORY, but it isn't
+	    ;; terrible to do this again.
+	    (stable-sort
+	     (mapcar #'(lambda (d)
+			 ;; Strip off the leading part of
+			 ;; the path.  Gcl has a broken
+			 ;; enough-namestring,
+			 #-gcl
+			 (enough-namestring d dirpath)
+			 #+gcl
+			 (subseq (namestring d) dir-len))
+		     (remove-if #'exclude-dir-p
+				subdirs))
+	     #'string<=)))
     ;; Remove any empty names.  There should only one, and it
     ;; should be the first, but lets get rid of them all, just in case.
     (setf subdirs (remove-if #'(lambda (p)
@@ -339,12 +342,14 @@
 	 (lisp+maxima-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp,mac,mc,wxm}"))
 	 (demo-patterns "$$$.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "$$.{usg,texi}")
-	 (share-subdirs-list (compute-subdirs-list *maxima-sharedir*))
+	 (share-subdirs-list (compute-subdirs-list *maxima-sharedir*
+						   :exclude-dirs '("binary" "fortran")))
 	 ;; Smash the list of share subdirs into a string of the form
 	 ;; "{affine,algebra,...,vector}" .
 	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list))
 	 (maxima-userdir-subdirs
-	   (format nil "{~{~A~^,~}}" (compute-subdirs-list *maxima-userdir*))))
+	   (format nil "{~{~A~^,~}}" (compute-subdirs-list *maxima-userdir*
+							   :exclude-dirs '("binary")))))
 
     (setq $file_search_lisp
 	  (list '(mlist)
