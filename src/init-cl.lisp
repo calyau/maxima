@@ -229,33 +229,40 @@
 	 (dir-len (1+ (length dir)))
 	 (wild-dir (concatenate 'string dirpath "/**/"))
 	 (subdirs (directory wild-dir)))
-    (flet ((exclude-dir-p (path)
-	     ;; If any directory has a subdirectory named ".git", we
-	     ;; want to exclude that directory from our list.  These
-	     ;; aren't places where we should be looking for maxima or
-	     ;; lisp files.  In addition, any directory with a name
-	     ;; that matches anything in EXLUDE-DIRS is also excluded.
-	     (let ((dir (cdr (pathname-directory path))))
-	       (or (member ".git" dir :test #'equal)
-		   (some #'(lambda (ex)
-			     (member ex dir :test #'equal))
-			 exclude-dirs)))))
-      (setf subdirs
-	    ;; Put the directories in lexicographical order.  Some
-	    ;; lisps already do this in DIRECTORY, but it isn't
-	    ;; terrible to do this again.
-	    (stable-sort
-	     (mapcar #'(lambda (d)
-			 ;; Strip off the leading part of
-			 ;; the path.  Gcl has a broken
-			 ;; enough-namestring,
-			 #-gcl
-			 (enough-namestring d dirpath)
-			 #+gcl
-			 (subseq (namestring d) dir-len))
-		     (remove-if #'exclude-dir-p
-				subdirs))
-	     #'string<=)))
+    (setf subdirs
+	  ;; Put the directories in lexicographical order.  Some
+	  ;; lisps already do this in DIRECTORY, but it isn't
+	  ;; terrible to do this again.
+	  (stable-sort
+	   (mapcar #'(lambda (d)
+		       ;; Strip off the leading part of
+		       ;; the path.  Gcl has a broken
+		       ;; enough-namestring,
+		       #-gcl
+		       (enough-namestring d dirpath)
+		       #+gcl
+		       (subseq (namestring d) dir-len))
+		   subdirs)
+      	   #'string<=))
+    (setf subdirs
+	  (remove-if
+	   #'(lambda (path)
+	       ;; If any directory has a subdirectory named starting
+	       ;; with ".", we want to exclude that directory from our
+	       ;; list.  These aren't hidden directories (on unix)
+	       ;; where we should not be looking for maxima or lisp
+	       ;; files.  In addition, any directory with a name that
+	       ;; matches anything in EXLUDE-DIRS is also excluded.
+	       (let ((dir (cdr (pathname-directory path))))
+		 (or (find-if #'(lambda (d)
+				  (when (plusp (length d))
+				    (char-equal #\. (aref d 0))))
+			      dir)
+		     (some #'(lambda (ex)
+			       (member ex dir :test #'equal))
+			   exclude-dirs))))
+	   subdirs))
+      
     ;; Remove any empty names.  There should only one, and it
     ;; should be the first, but lets get rid of them all, just in case.
     (setf subdirs (remove-if #'(lambda (p)
