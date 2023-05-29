@@ -80,7 +80,6 @@ parts:
        - texlive-latex-recommended
        - tex-common
        - python3
-       - sbcl
     stage-packages:
      - to arm64,amd64,armhf:
        - clisp
