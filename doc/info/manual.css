@@ -13,7 +13,7 @@ div.titlebox {border: none; padding-top: 1em; padding-bottom: 1em;
 div.synopsisbox {
     border: none; padding-top: 1em; padding-bottom: 1em; padding-left: 2em;
     padding-right: 2em; background: rgb(255,220,255);}
-pre.example {border: 1px solid rgb(180,180,180); padding-top: 1em;
+pre.example, pre.example-preformatted {border: 1px solid rgb(180,180,180); padding-top: 1em;
     padding-bottom: 1em; padding-left: 1em; padding-right: 1em;
     background-color: rgb(238,238,255)}
 div.spacerbox {border: none; padding-top: 2em; padding-bottom: 2em}
