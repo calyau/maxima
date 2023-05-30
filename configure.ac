@@ -888,9 +888,24 @@ if test x"${explicit_lisp}" = xfalse ; then
   		clisp=true
 		lisps_enabled="${lisps_enabled} clisp"
 	fi
-  	if test x"${gcl_found}" = xtrue ; then
-		gcl=true
-		lisps_enabled="${lisps_enabled} gcl"
+	if test x"${gcl_found}" = xtrue ; then
+	   AC_MSG_CHECKING([if gcl version >= 2.6.13])
+	   dnl	     Check gcl version
+	   GCL_VERSION=`${GCL_NAME} -eval '(princ (lisp-implementation-version))' -batch | sed 's/GCL \([[0-9.]]\+\).*/\1/'`
+	´  dnl echo GCL version = $GCL_VERSION
+	   dnl Assume GCL_VERSION looks like p.q.r where p, q, and r are
+	   dnl digits.	Then extract each set of digits to get the numbers to
+	   dnl create a version number for comparison.
+	   gcl_major=`expr $GCL_VERSION : '\([[0-9]]\+\)'`
+	   gcl_minor=`expr $GCL_VERSION : '[[0-9]]\+\.\([[0-9]]\+\)'`
+	   gcl_sub=`expr $GCL_VERSION : '[[0-9]]\+\.[[0-9]]\+\.\([[0-9]]\+\)'`
+	   gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_sub}`
+	   if test ${gcl_version} -lt 20613; then
+		   AC_MSG_RESULT([GCL autodetected, but its version ${GCL_VERSION} is too old])
+	   else
+		   gcl=true
+		   lisps_enabled="${lisps_enabled} gcl"
+	   fi
 	fi
 	if test x"${cmucl_found}" = xtrue ; then
 		cmucl=true
