@@ -34,7 +34,19 @@ Changes in core:
    Previously these would fail to translate with no explanation.
  * configure: If the user doesn't specify a specific lisp maxima is compiled
    with all suitable lisp compilers.
-
+ * --no-init now actually inhibits load if the user init files.
+ * Init files that are loaded are now printed on startup
+ * Add functions and variables for inspecting floating point properties
+   * Variables:  `most_positive_float`, `most_negative_float`, `least_positive_float`, `least_positive_normalized_float`, `least_negative_float`
+   * Functions: `float_eps`, `bitfloat_eps`, `float_precision`, `unit_in_last_place`, `is_power_of_two`, `scale_float`, `decode_float`, `integer_decode_float`
+ * Simplify `elliptic_kc((sqrt(3)+2)/4)`
+ * Fix bug in converting `inverse_jacobi_ds` to `elliptic_f`.
+ * bfallroots with integer coefficients was not returning roots with the specified precision.
+ * Add hypergeometric representations for `elliptic_ec`, `elliptic_kc`, `expintegral_chi`, `expintegral_ci`, `expintegral_shi`, `expintegral_si`, `expintegral_li`, `expintegral_ei`, `expintegral_e`
+ * `hgfred` can simplify some 2F2 functions to `expintegral_ci`.
+ * `hgfred` can simplify some 1F2 functions to `expintegral_si`.
+ * Reject invalid values for `debugmode`.
+ * `disp_time` variable removed because it was undocumented and didn't actually do anything.
 Changes in share:
 -----------------
  * package contrib_ode: Fix name of Clairaut differential equation
@@ -44,6 +56,8 @@ Changes in share:
  * package namespaces: expunge this package, moved to Github
  * package ezunits: derive units for diff, integrate, and 'at'
  * function mnewton: optional argument for the Jacobian
+ * Document `harmonic_number` and `harmonic_to_psi` functions from `simplify_sum`.
+ 
 
 Changes in Xmaxima:
 -------------------
@@ -127,7 +141,12 @@ Documentation:
    This is enabled by setting output_format_for_help to 'html; it defaults
    to 'text.  Use 'frontend to display help using Xmaxima, wxMaxima or
    other frontends.
-
+ * Add documentation for trigtools to the manual.
+ * Some reordering of the trig functions in the manual.
+ * Some renaming of sections in the manual to be more explicit.
+ * Add more cross references.
+ * Add more examples for `erf_representation`, `hypergeometric_representation`, `expintrep`, `expintexpand`, `besselexpand`
+ * Add examples for the ggf package.
 Build system:
 -------------
 
