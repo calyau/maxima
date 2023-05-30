@@ -20,6 +20,7 @@ New items in share:
    among inexact numbers (thanks to Andrej Vodopivec)
  * package nelder_mead: Nelder-Mead algorithm for minimization without
    derivatives (thanks to Mario S. Mommer and Andrej Vodopivec)
+ * package decfp: exact decimal floats (thanks to Richard J. Fateman)
 
 Changes in core:
 ----------------
@@ -47,6 +48,12 @@ Changes in core:
  * `hgfred` can simplify some 1F2 functions to `expintegral_si`.
  * Reject invalid values for `debugmode`.
  * `disp_time` variable removed because it was undocumented and didn't actually do anything.
+ * Floats are displayed readably by default (fpprintprec = 0)
+ * Function `texput`: punt to previously defined TeX output function
+   when `false` is returned
+ * Strings are comparable under "<", "<=", ">=", ">"
+ * Function `plot2d`: new option `gnuplot_svg_background`
+
 Changes in share:
 -----------------
  * package contrib_ode: Fix name of Clairaut differential equation
@@ -56,7 +63,14 @@ Changes in share:
  * package namespaces: expunge this package, moved to Github
  * package ezunits: derive units for diff, integrate, and 'at'
  * function mnewton: optional argument for the Jacobian
+ * function mnewton: revise mnewton for greater simplicity and speed
  * Document `harmonic_number` and `harmonic_to_psi` functions from `simplify_sum`.
+ * package draw: allow points(...) to contain nonnumeric (including non-finite floats) data
+ * package draw: honor fill_density in errors, polygon, ellipse, bars, explicit, and region
+ * package descriptive: implementation of skyline (outline) histogram
+ * package descriptive: optional weight argument recognized by mean, var, std, and other functions
+ * package distrib: maximum likelihood estimators (`mle_something`) for several distributions
+ * package graphs: new functions `get_unique_vertex_by_label` and `get_all_vertices_by_label`
  
 
 Changes in Xmaxima:
@@ -81,7 +95,9 @@ Bug fixes for numbered bugs:
  * \#3280: gruntz incorrect limit
  * \#3415: limit doesn't check for zero coefficients in limit((a*x+1)/(a*x+2),x,inf)
  * \#3592: Wrong limit
+ * \#3631: gen_laguerre returns 0 to a negative exponent
  * \#3834: abconvtest undocumented and possibly unused
+ * \#3848: ratsubst error ZEROP: ((MMINUS) 1) is not a number
  * \#3926: Various limits give UND where they should give IND
  * \#3953 Pressing q necessary to continue when plot2d output to svg
  * \#3956 expand(1/((sqrt(2)-1)*(sqrt(2)+1))) => 1/1 (unsimplified)
@@ -124,17 +140,21 @@ Bug fixes for numbered bugs:
  * \#4094 Build warning in share: grep: warning: stray \ before #
  * \#4029 limit(cos(1/x)^2 + sin(1/x)^2 + cos(x),x,0) --> ind
  * \#4097 Bad string representation of integers in the first argument of `save`
+ * \#4100 On macOS, building Maxima has some issues
  * \#4107 least_positive_float doesn't print/read correctly in float/bfloat
  * \#4109 Limits of polylogarithms
  * \#4112 Double superscript in tex(conjugate(z))^2
  * \#4118 facsum + operator(".") + dotdistrib:true + GCL = FAIL
  * \#4119 ECL fails decode_float(-0.25) test
  * \#4120 is("foo"<3) gives internal error
+
 Unnumbered bugs fixed:
 ---------------------
  * commit 7a7114c: avoid call to undefined function expintegral_ei
  * commit fe1d8cf: avoid clobbering global state when autoloading
  * commit 70a5f78: expunge calls to 'sign' in share package distrib
+ * commit 7bc968a: in printf, be more consistent about non-numeric argument for ~e, ~f, and ~g
+
 Documentation:
 --------------
  * Help can use html docs instead of displaying help to the terminal.
@@ -147,6 +167,7 @@ Documentation:
  * Add more cross references.
  * Add more examples for `erf_representation`, `hypergeometric_representation`, `expintrep`, `expintexpand`, `besselexpand`
  * Add examples for the ggf package.
+
 Build system:
 -------------
 
