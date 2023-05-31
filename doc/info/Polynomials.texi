@@ -2960,3 +2960,4 @@ Removes @code{tellrat} properties from @var{x_1}, @dots{}, @var{x_n}.
 @closecatbox
 @end deffn
 
+@include extensions.texi

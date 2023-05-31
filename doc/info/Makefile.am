@@ -739,12 +739,12 @@ clean-html:
 	rm -f $(wildcard maxima*.html) \
 	      $(wildcard $(addprefix $(srcdir),maxima*.html))
 
-EXTRA_DIST = manual.css texi2html.init maxima.texi \
+EXTRA_DIST = manual.css texi2html.init maxima.texi dlmf-ref-macros.texi \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
     create_index build_index.pl maxima-index.lisp maxima-index-html.lisp docdraw.mac \
     extract_categories1.awk extract_categories1.sed check_tab fix_tab \
     figures/Makefile.am figures/Makefile.in figures/README \
-    maxima-init.lisp README.update_examples \
+    maxima-init.lisp README.update_examples maxima-index-html.lisp build-html-index.lisp \
     figures/orthopoly1.ps.gz figures/plotdf1.ps.gz figures/plotdf2.ps.gz figures/plotdf3.ps.gz figures/plotdf4.ps.gz figures/plotdf5.ps.gz figures/plotdf6.ps.gz
 
 check_texinfo:
