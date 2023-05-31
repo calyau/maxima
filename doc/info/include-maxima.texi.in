@@ -737,7 +737,6 @@ Understanding maxima's output
 @node Polynomials, Special Functions, File Input and Output, Top
 @chapter Polynomials
 @include Polynomials.texi
-@include extensions.texi
 
 @node Special Functions, Elliptic Functions, Polynomials, Top
 @chapter Special Functions
