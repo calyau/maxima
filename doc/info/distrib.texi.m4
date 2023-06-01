@@ -2835,7 +2835,7 @@ The implemented algorithm is a combination of two procedures, depending on the v
 
 For m4_math(<<<a \ge 1>>>, <<<a >= 1>>>), Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
-For m4_math(<<<0 \lt a \lt 1>>>, <<<0 < a < 1>>>), Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, , poisson and binomial cdf_tributions}. Computing, 12, 223-246.
+For m4_math(<<<0 \lt a \lt 1>>>, <<<0 < a < 1>>>), Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, , poisson and binomial distributions}. Computing, 12, 223-246.
 
 To make use of this function, write first @code{load("distrib")}.
 
