@@ -2835,7 +2835,7 @@ The implemented algorithm is a combination of two procedures, depending on the v
 
 For m4_math(<<<a \ge 1>>>, <<<a >= 1>>>), Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
-For m4_math(<<<0 \lt a \lt 1>>>, <<<0 < a < 1>>>), Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, , poisson and binomial distributions}. Computing, 12, 223-246.
+For m4_math(<<<0 \lt a \lt 1>>>, <<<0 < a < 1>>>, <<<0 < a < 1>>>), Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, , poisson and binomial distributions}. Computing, 12, 223-246.
 
 To make use of this function, write first @code{load("distrib")}.
 
@@ -3082,7 +3082,7 @@ interval @math{[a,b]} and is zero elsewhere.
 
 @anchor{pdf_continuous_uniform}
 @deffn {Function} pdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
 
 The pdf
 m4_displaymath(
@@ -3110,7 +3110,7 @@ and is 0 otherwise.
 
 @anchor{cdf_continuous_uniform}
 @deffn {Function} cdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -3138,7 +3138,7 @@ F(x,a,b) = [ (x-a)/(b-a)    for a <= x <= b
 
 @anchor{quantile_continuous_uniform}
 @deffn {Function} quantile_continuous_uniform (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>); in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>); in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3149,7 +3149,7 @@ Returns the @var{q}-quantile of a m4_Continuous_Uniform_RV(a,b) random variable,
 
 @anchor{mean_continuous_uniform}
 @deffn {Function} mean_continuous_uniform (@var{a},@var{b})
-Returns the mean of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -3171,7 +3171,7 @@ m4_displaymath(
 
 @anchor{var_continuous_uniform}
 @deffn {Function} var_continuous_uniform (@var{a},@var{b})
-Returns the variance of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -3193,7 +3193,7 @@ m4_displaymath(
 
 @anchor{std_continuous_uniform}
 @deffn {Function} std_continuous_uniform (@var{a},@var{b})
-Returns the standard deviation of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -3216,7 +3216,7 @@ m4_displaymath(
 
 @anchor{skewness_continuous_uniform}
 @deffn {Function} skewness_continuous_uniform (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -3236,7 +3236,7 @@ m4_displaymath(
 
 @anchor{kurtosis_continuous_uniform}
 @deffn {Function} kurtosis_continuous_uniform (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -3258,7 +3258,7 @@ m4_displaymath(
 @deffn {Function} random_continuous_uniform (@var{a},@var{b}) @
 @fname{random_continuous_uniform} (@var{a},@var{b},@var{n})
 
-Returns a m4_Continuous_Uniform_RV(a,b) random variate, with m4_math(<<<a \lt b>>>, <<<a < b>>>). Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a m4_Continuous_Uniform_RV(a,b) random variate, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
@@ -5716,7 +5716,7 @@ m4_displaymath(
 
 @anchor{quantile_geometric}
 @deffn {Function} quantile_geometric (@var{q},@var{p})
-Returns the @var{q}-quantile of a m4_Geometric_RV(p) random variable, with m4_math(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>);
+Returns the @var{q}-quantile of a m4_Geometric_RV(p) random variable, with m4_math(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>, <<<0 < p <= 1>>>);
 in other words, this is the inverse of @code{cdf_geometric}.
 Argument @var{q} must be an element of @math{[0,1]}.
 
@@ -5871,7 +5871,7 @@ m4_displaymath(
 @fname{random_geometric} (@var{p},@var{n})
 
 @code{random_geometric(@var{p})} returns one random sample from a m4_Geometric_RV(p) distribution,
-with m4_math(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>).
+with m4_math(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>, <<<0 < p \le 1>>>).
 
 @code{random_geometric(@var{p}, @var{n})} returns a list of @var{n} random samples.
 
