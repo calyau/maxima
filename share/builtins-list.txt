@@ -324,7 +324,6 @@ chebyshev_t
 chebyshev_u
 check_overlaps
 checkdiv
-chinese
 cholesky
 christof
 chromatic_index
@@ -2288,6 +2287,7 @@ snowmap
 snub_cube_graph
 snub_dodecahedron_graph
 solve
+solve_congruences
 solve_rec
 solve_rec_rat
 solvedecomposes

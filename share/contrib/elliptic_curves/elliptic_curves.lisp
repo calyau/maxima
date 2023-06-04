@@ -1623,8 +1623,8 @@
     (dolist (h h2) (setq l2 (ec-combine h l2)))
     (setq m1 (apply #'* (car l1))
           m2 (apply #'* (car l2))
-          c1 (mapcar #'(lambda (l) (car (chinese l (car l1)))) (cadr l1))
-          c2 (mapcar #'(lambda (l) (car (chinese l (car l2)))) (cadr l2)) )
+          c1 (mapcar #'(lambda (l) (car (solve-congruences l (car l1)))) (cadr l1))
+          c2 (mapcar #'(lambda (l) (car (solve-congruences l (car l2)))) (cadr l2)) )
     (values c1 n1 m1 c2 n2 m2) ))
 ;;
 (defun ec-combine-init (l)
@@ -1640,7 +1640,7 @@
 ;;
 (defun ec-mueller-10-4 (elkies atkin p) 
   (let* ((cm3 (if elkies ;; elkies should always be non-null: (trace mod 2) is an elkies
-                (chinese (mapcar #'caadr elkies) (mapcar #'car elkies))
+                (solve-congruences (mapcar #'caadr elkies) (mapcar #'car elkies))
                 (list 0 1) ))
          (c3 (car cm3))
          (m3 (cadr cm3))

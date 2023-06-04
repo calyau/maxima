@@ -126,8 +126,8 @@ returning.  @code{burn} invokes the approximation for even integers @code{n >
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{chinese}
-@deffn {Function} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
+@anchor{solve_congruences}
+@deffn {Function} solve_congruences ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
 
 Solves the system of congruences @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
 The remainders @var{r_n} may be arbitrary integers while the moduli @var{m_n} have to be 
@@ -142,10 +142,10 @@ positive and pairwise coprime integers.
 (%o3)                         685124877004
 (%i4) rems : map(lambda([z], mod(x, z)), mods);
 (%o4)                       [4, 568, 54, 624]
-(%i5) chinese(rems, mods);
+(%i5) solve_congruences(rems, mods);
 (%o5)                         685124877004
-(%i6) chinese([1, 2], [3, n]);
-(%o6)                    chinese([1, 2], [3, n])
+(%i6) solve_congruences([1, 2], [3, n]);
+(%o6)               solve_congruences([1, 2], [3, n])
 (%i7) %, n = 4;
 (%o7)                              10
 @end example
@@ -1307,7 +1307,7 @@ the top left corner, just like in table @code{T9}.
                              [ 7  5  1  8  4  2 ]
                              [                  ]
                              [ 8  7  5  4  2  1 ]
-(%i3) T36_4: matrixmap(lambda([x], chinese([0,x],[4,9])), T9);
+(%i3) T36_4: matrixmap(lambda([x], solve_congruences([0,x],[4,9])), T9);
                           [ 28  20  4   32  16  8  ]
                           [                        ]
                           [ 20  4   8   28  32  16 ]
@@ -1401,7 +1401,7 @@ and its identity @code{36} is computed via CRT.
                          [ 54  18  27  9   45  36 ]
 (%i3) zn_nth_root(27,3,m);
 (%o3)                           [27, 45, 54]
-(%i4) id7:1$  id63_9: chinese([id7,0],[7,9]);
+(%i4) id7:1$  id63_9: solve_congruences([id7,0],[7,9]);
 (%o5)                                36
 @end example
 
@@ -1569,7 +1569,7 @@ There are corresponding mappings for primitive roots, n-th roots, etc..
 (%o4)                         [ 0  0  0  0 ]
 (%i5) G5: [1,2,3,4];
 (%o6)                          [1, 2, 3, 4]
-(%i6) G10_2: map(lambda([x], chinese([0,x],[2,5])), G5);
+(%i6) G10_2: map(lambda([x], solve_congruences([0,x],[2,5])), G5);
 (%o6)                          [6, 2, 8, 4]
 (%i7) G10: map(lambda([x], power_mod(3, zn_log(x,2,5), 10)), G5);
 (%o7)                          [1, 3, 7, 9]
