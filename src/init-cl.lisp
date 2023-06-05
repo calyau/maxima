@@ -649,10 +649,137 @@
 			 (delete-file file)))))
 	   *temp-files-list*))
 
+(defvar *text-topics* nil
+  "All available text topics")
+
+(defvar *html-topics* nil
+  "All available html topics")
+
+(defvar *extra-html-entries* nil
+  "Full list of all the HTML entries that are not in the text entries.
+  Ideally should be empty.")
+
+(defvar *missing-html-entries* nil
+  "Full list of all the text entries that are not the the HTML entries.
+  Ideally should be empty.")
+
+;; This might be rather slow.  Perhaps an alternative solution is to
+;; leave these alone and have $hdescribe encode any special characters
+;; before looking them up.  Since ? only used occasionally, we don't
+;; incur the cost here and move it to ? where the impact is lower.
+;;
+;; However, a test run where this function was removed made virtually
+;; no difference in runtime (with cmucl).  (31.97 sec with and 31.62
+;; sec without; well within timing noise probably.)  Note, however,
+;; that this file is not normally compiled before running, but earlier
+;; tests showed that compiling didn't make much difference either.  I
+;; think this is because most of the cost is in pregexp, which is
+;; compiled.
+
+;; spec-chars-string are the special characters that texinfo converted
+;; to lower-case hex digits representing the char-code of the
+;; character.
+(let* ((spec-chars-string "_.%$?,<>#=:;*-^+/'()[]!@|`~\\")
+       (regexp-quoted (map 'list
+			   #'(lambda (c)
+			       ;; Bug in pregexp?  If we pregexp-quote
+			       ;; "$" (to "\\$"), when we try to
+			       ;; replace the match with "\\$", we end
+			       ;; up with an empty string.  So don't
+			       ;; quote this character.
+			       (if (char= c #\$)
+				   (string c)
+				   (pregexp:pregexp-quote (string c))))
+			   spec-chars-string))
+       (codes (map 'list #'(lambda (spec-char)
+			     (pregexp:pregexp-quote
+			      (string-downcase
+			       (format nil "_~4,'0x" (char-code spec-char)))))
+		   spec-chars-string)))
+  (defun handle-special-chars (item)
+    "Handle special encoded characters in HTML file.  Texinfo encodes
+    special characters to hexadecimal form and this needs to be undone
+    so we know what the actual character is when looking up the
+    documentation."
+    (loop for code in codes
+	  and replacement in regexp-quoted
+	  ;; Exit early if there are not "_" characters left in the topic
+	  while (find #\_ item :test #'char=)
+	  do (setf item
+		     (pregexp:pregexp-replace* code item
+					       replacement)))
+    item))
+
+(let ((fixup-regexp (pregexp:pregexp "-\([[:digit:]]\)")))
+  (defun get-html-topics ()
+    ;; Find all the HTML entries and place in a list.
+    ;;
+    ;; The html topics have entries like "labels-1".  This corresponds
+    ;; to the text topic "labels <1>".  For consistency, replace
+    ;; "labels-1" with "labels <1>".
+    ;;
+    ;; We also need to convert things like "_0021_0021" to "!!", where
+    ;; "_0021" is the hex code for the character #\!.
+    (setf *html-topics*
+	  (loop for topic being the hash-keys of cl-info::*html-index*
+		for fixed-topic = (pregexp:pregexp-replace fixup-regexp topic " <\\1>")
+		for fixed-chars = (handle-special-chars fixed-topic)
+		collect fixed-chars))))
+
+(defun get-text-topics ()
+  ;; Find all the text entries and place in a list.
+  (setf *text-topics* nil)
+  (maphash #'(lambda (k v)
+	       (declare (ignore k))
+	       (dolist (table v)
+		 (loop for topic being the hash-keys of table
+		       do (push topic *text-topics*))))
+	   cl-info::*info-tables*))
+
+(defun verify-html-index ()
+  (format t "Verifying html index~%")
+  (get-html-topics)
+  (get-text-topics)
+  
+  ;; The text entries are the source of truth about documentation.
+  ;; Print out differences between the html entries and the text
+  ;; entries.
+  (unless (= (length *html-topics*) (length *text-topics*))
+    (mwarning (format nil
+		      (intl:gettext "Number of HTML entries (~A) does not text entries (~A)~%")
+		      (length *html-topics*) (length *text-topics*))))
+  ;; If the set of topics differs between HTML and text, print out
+  ;; the differences.
+  (setf *extra-html-entries*
+	(set-difference *html-topics* *text-topics* :test #'string-equal))
+  (setf *missing-html-entries*
+	(set-difference *text-topics* *html-topics* :test #'string-equal))
+  (flet
+      ((maybe-print-warning (prefix-msg diffs)
+	 (let ((max-display-length 20))
+	   (when diffs
+	     (let* ((extra-count (length diffs))
+		    (message
+		      (with-output-to-string (s)
+			(format s
+				"~D ~A: ~{~S~^ ~}"
+				(length diffs)
+				prefix-msg
+				(subseq diffs 0 max-display-length))
+			(when (> extra-count max-display-length)
+			  (format s "... plus ~D more" (- extra-count max-display-length)))
+			(format s "~%"))))
+	       (mwarning message))))))
+    (maybe-print-warning (intl:gettext "HTML entries not in text entries")
+			 *extra-html-entries*)
+    (maybe-print-warning (intl:gettext "Text entries not in HTML entries")
+			 *missing-html-entries*)))
+
 (defun cl-user::run ()
   "Run Maxima in its own package."
   (in-package :maxima)
   (initialize-runtime-globals)
+  (verify-html-index)
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
     (unwind-protect
