@@ -269,8 +269,11 @@
       (setf (gethash dir-name *info-tables*) (list t1 t2)))))
 
 (defun load-html-index (entries)
+  (format t "HTML entries: ~D~%" (length entries))
   (dolist (entry entries)
     (destructuring-bind (item path id)
 	entry
-      (setf (gethash item *html-index*) (cons path id)))))
+      (format t "LOAD: ~S -> ~S ~S~%" item path id)
+      (setf (gethash item *html-index*) (cons path id))))
+  (format t "HTML hash-table count: ~D~%" (hash-table-count *html-index*)))
 
