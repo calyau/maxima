@@ -17,11 +17,9 @@
 @c -----------------------------------------------------------------------------
 @anchor{%e}
 @defvr {Constant} %e
-@ifinfo
 @vrindex e
 @vrindex Euler's number
 @vrindex Base of natural logarithm
-@end ifinfo
 
 @code{%e} represents the base of the natural logarithm, also known as Euler's
 number.  The numeric value of @code{%e} is the double-precision floating-point
@@ -35,10 +33,8 @@ value 2.718281828459045d0.  (See @urlaands{eqn 4.1.16, 67}, @urlaands{4.1.17, 67
 @c -----------------------------------------------------------------------------
 @anchor{%i}
 @defvr {Constant} %i
-@ifinfo
 @vrindex i
 @vrindex Imaginary unit
-@end ifinfo
 
 @code{%i} represents the imaginary unit, m4_math(\sqrt{-1}, sqrt(- 1)).
 
@@ -62,9 +58,7 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 @c -----------------------------------------------------------------------------
 @anchor{%gamma}
 @defvr {Constant} %gamma
-@ifinfo
 @vrindex Euler-Mascheroni constant
-@end ifinfo
 
 The Euler-Mascheroni constant, 0.5772156649015329.... It is defined by (@urlaands{eqn 6.1.3, 255} and @urldlmf{5.2.ii})
 m4_displaymath(
@@ -91,9 +85,7 @@ m4_displaymath(
 @c -----------------------------------------------------------------------------
 @anchor{ind}
 @defvr {Constant} ind
-@ifinfo
 @vrindex Indeterminate
-@end ifinfo
 
 @code{ind} represents a bounded, indefinite result.
 
@@ -117,9 +109,7 @@ Example:
 @c -----------------------------------------------------------------------------
 @anchor{inf}
 @defvr {Constant} inf
-@ifinfo
 @vrindex Real infinity
-@end ifinfo
 
 @code{inf} represents real positive infinity.
 
@@ -131,9 +121,7 @@ Example:
 @c -----------------------------------------------------------------------------
 @anchor{infinity}
 @defvr {Constant}  infinity
-@ifinfo
 @vrindex Complex infinity
-@end ifinfo
 
 @code{infinity} represents complex infinity.
 
@@ -199,10 +187,8 @@ approximately 2.22507e-308.
 @c -----------------------------------------------------------------------------
 @anchor{minf}
 @defvr {Constant} minf
-@ifinfo
 @vrindex Minus infinity
 @vrindex Negative infinity
-@end ifinfo
 
 @code{minf} represents real minus (i.e., negative) infinity.
 
@@ -236,10 +222,8 @@ approximately 1.797693e+308.
 @c -----------------------------------------------------------------------------
 @anchor{%phi}
 @defvr {Constant} %phi
-@ifinfo
 @vrindex phi
 @vrindex Golden mean
-@end ifinfo
 
 @code{%phi} represents the so-called @i{golden mean}, m4_math((1+\sqrt{5})/2, (1 + sqrt(5))/2).
 The numeric value of @code{%phi} is the double-precision floating-point value
@@ -318,9 +302,7 @@ After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 @c -----------------------------------------------------------------------------
 @anchor{%pi}
 @defvr {Constant} %pi
-@ifinfo
 @vrindex pi
-@end ifinfo
 
 @code{%pi} represents the ratio of the perimeter of a circle to its diameter.
 The numeric value of @code{%pi} is the double-precision floating-point value
@@ -346,9 +328,7 @@ Maxima implements @code{true} by the value @code{T} in Lisp.
 @c -----------------------------------------------------------------------------
 @anchor{und}
 @defvr {Constant} und
-@ifinfo
 @vrindex Undefined
-@end ifinfo
 
 @code{und} represents an undefined result.
 
