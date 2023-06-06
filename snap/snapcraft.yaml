@@ -57,6 +57,8 @@ parts:
   maxima:
     plugin: autotools
     source: .
+    autotools-configure-parameters:
+       - --prefix=/usr
     build-packages:
      - to arm64,amd64,armhf:
        - clisp
