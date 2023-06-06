@@ -57,12 +57,11 @@
   (format *debug-io*  "Processing: ~S~%" file)
   (let ((base-name (make-pathname :name (pathname-name file)
                                   :type (pathname-type file))))
-    (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
-      (with-open-file (s file :direction :input)
-	(loop for line = (read-line s nil)
-              while line
-	      do
-		 (process-line line matcher))))))
+    (with-open-file (s file :direction :input)
+      (loop for line = (read-line s nil)
+            while line
+	    do
+	       (process-line line matcher)))))
 
 (defun process-toc-line (line matcher)
   (multiple-value-bind (item item-id file line)
@@ -106,13 +105,16 @@
   (let* ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"(maxima_[^\"]+)\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<"))
 	 (match (pregexp:pregexp-match regexp line)))
     (when match
-      (format t "match: ~S: ~A~%" match line)
+      ;;(format t "match: ~S: ~A~%" match line)
       (destructuring-bind (whole file item)
 	  match
 	(declare (ignore whole))
 	;; Replace "&rsquo;" with "'"
 	(when (find #\& item :test #'char=)
 	  (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
+	(format *log-file* "TOC: ~S -> ~S~%" item file)
+	(when (gethash item *html-section-index*)
+	  (format t "Duplicate section index key: ~S: ~S~%" item file))
 	(setf (gethash item *html-section-index*)
 	      (cons file ""))))))
 
@@ -174,13 +176,20 @@
 			(namestring file))
 		(return file)))))
 
-      (process-one-html-file index-file #'match-entries)
-      (handle-special-cases)
-      (process-toc "maxima_toc.html" #'match-toc)
-      (format t "html-section-index len: ~D~%" (hash-table-count *html-section-index*))
-      (maphash #'(lambda (k v)
-		   (setf (gethash k *html-index*) v))
-	       *html-section-index*))))
+      (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
+
+	(process-one-html-file index-file #'match-entries)
+	(handle-special-cases)
+	(process-toc "maxima_toc.html" #'match-toc)
+	(format t "html-section-index len: ~D~%" (hash-table-count *html-section-index*))
+	(maphash #'(lambda (k v)
+		     (when (gethash k *html-index*)
+		       (warning "TOC entry ~S already exists in html index with value ~S~%"
+				k (gethash *html-index*)))
+		     (setf (gethash k *html-index*) v))
+		 *html-section-index*)
+	(format t "Intro: ~S~%"
+		(gethash "Introduction to Simplification" *html-index*))))))
 
 (defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
