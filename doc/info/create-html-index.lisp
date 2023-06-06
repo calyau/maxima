@@ -64,15 +64,33 @@
 	      do
 		 (process-line line matcher))))))
 
+(defun process-toc-line (line matcher)
+  (multiple-value-bind (item item-id file line)
+      (funcall matcher line)))
+
+(defun process-toc (file matcher)
+  (format *debug-io*  "Processing: ~S~%" file)
+  (with-open-file (s file :direction :input)
+    (loop for line = (read-line s nil)
+              while line
+	      do
+		 (process-toc-line line matcher))))
+
 (defun handle-special-cases ()
   ;; These HTML topics need special handling because we didn't quite
   ;; process them correctly previously.
-  (when (gethash "Quote quote operator" *html-index*)
-    (setf (gethash "Quote-quote operator" *html-index*)
-	  (gethash "Quote quote operator" *html-index*))
-    (remhash "Quote quote operator" *html-index*))
+  (flet ((update-entry (old new)
+	   (when (gethash old *html-index*)
+	     (setf (gethash new *html-index*)
+		   (gethash old *html-index*))
+	     (remhash old *html-index*))))
+    (update-entry "Quote quote operator" "Quote-quote operator")
 
-  (remhash "Assignment operator (evaluates left hand side)" *html-index*))
+    (update-entry "Assignment operator (evaluates left hand side)"
+		  "Assignment operator (evaluates left-hand side)")
+
+    (update-entry "Euler Mascheroni constant"
+		  "Euler-Mascheroni constant")))
 
 (defun match-entries (line)
   (let ((href (pregexp:pregexp "<a href=\"(maxima_[[:digit:]]+\.html)#index-([^\"]*)\">"))
@@ -83,6 +101,20 @@
 	  match
 	(declare (ignore whole))
 	(values item-id item-id file line)))))
+
+(defun match-toc (line)
+  (let* ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"(maxima_[^\"]+)\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<"))
+	 (match (pregexp:pregexp-match regexp line)))
+    (when match
+      (format t "match: ~S: ~A~%" match line)
+      (destructuring-bind (whole file item)
+	  match
+	(declare (ignore whole))
+	;; Replace "&rsquo;" with "'"
+	(when (find #\& item :test #'char=)
+	  (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
+	(setf (gethash item *html-section-index*)
+	      (cons file ""))))))
 
 ;; Run this build a hash table from the topic to the HTML file
 ;; containing the documentation.  The single argument DIR should be a
@@ -144,6 +176,8 @@
 
       (process-one-html-file index-file #'match-entries)
       (handle-special-cases)
+      (process-toc "maxima_toc.html" #'match-toc)
+      (format t "html-section-index len: ~D~%" (hash-table-count *html-section-index*))
       (maphash #'(lambda (k v)
 		   (setf (gethash k *html-index*) v))
 	       *html-section-index*))))
