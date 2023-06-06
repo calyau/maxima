@@ -188,6 +188,9 @@
     (maphash #'(lambda (k v)
 		 (push (list k (namestring (car v)) (cdr v)) entries))
 	     *html-index*)
+    (format t "Intro: ~S~%"
+		(gethash "Introduction to Simplification" *html-index*))
+    (format t "HTML index has ~D entries~%" (hash-table-count *html-index*))
     (with-open-file (s "maxima-index-html.lisp"
 		       :direction :output
 		       :if-exists :supersede)
