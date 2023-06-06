@@ -32,6 +32,8 @@
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
+(defvar *verify-html-index* nil)
+
 (defun shadow-string-assignment (var value)
   (cond
     ((stringp value)
@@ -567,6 +569,10 @@
 			   :action #'(lambda ()
 				       (setf *maxima-load-init-files* nil))
 			   :help-string "Do not load the init file(s) on startup")
+	   (make-cl-option :names '("--verify-html-index")
+			   :action #'(lambda ()
+				       (setf *verify-html-index* t))
+			   :help-string "Verify set of html topics is consistent with text topics")
 			   ))
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
@@ -652,11 +658,14 @@
     ;;
     ;; We also need to convert things like "_0021_0021" to "!!", where
     ;; "_0021" is the hex code for the character #\!.
+    (format t "Get html topics: table size ~D~%" (hash-table-count cl-info::*html-index*))
     (setf *html-topics*
 	  (loop for topic being the hash-keys of cl-info::*html-index*
 		for fixed-topic = (pregexp:pregexp-replace fixup-regexp topic " <\\1>")
 		for fixed-chars = (handle-special-chars fixed-topic)
-		collect fixed-chars))))
+		collect fixed-chars
+		do (format t "topic: ~S~%" topic)))
+    (format t "html topic length ~D~%" (length *html-topics*))))
 
 (defun get-text-topics ()
   ;; Find all the text entries and place in a list.
@@ -678,14 +687,14 @@
   ;; entries.
   (unless (= (length *html-topics*) (length *text-topics*))
     (mwarning (format nil
-		      (intl:gettext "Number of HTML entries (~A) does not text entries (~A)~%")
+		      (intl:gettext "Number of HTML entries (~A) does not matchtext entries (~A)~%")
 		      (length *html-topics*) (length *text-topics*))))
   ;; If the set of topics differs between HTML and text, print out
   ;; the differences.
   (setf *extra-html-entries*
-	(set-difference *html-topics* *text-topics* :test #'string-equal))
+	(set-difference *html-topics* *text-topics* :test #'string=))
   (setf *missing-html-entries*
-	(set-difference *text-topics* *html-topics* :test #'string-equal))
+	(set-difference *text-topics* *html-topics* :test #'string=))
   (flet
       ((maybe-print-warning (prefix-msg diffs)
 	 (let ((max-display-length 20))
@@ -711,13 +720,14 @@
   "Run Maxima in its own package."
   (in-package :maxima)
   (initialize-runtime-globals)
-  (verify-html-index)
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
     (unwind-protect
 	(catch 'to-lisp
 	  (setf (values input-stream batch-flag)
 		(process-maxima-args input-stream batch-flag))
+	  (when *verify-html-index*
+	    (verify-html-index))
 	  (load-user-init-file)
 	  (loop
 	   (with-simple-restart (macsyma-quit "Maxima top-level")
