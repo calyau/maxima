@@ -181,6 +181,7 @@
 	(process-one-html-file index-file #'match-entries)
 	(handle-special-cases)
 	(process-toc "maxima_toc.html" #'match-toc)
+	(format t "html index len:         ~D~%" (hash-table-count *html-index*))
 	(format t "html-section-index len: ~D~%" (hash-table-count *html-section-index*))
 	(maphash #'(lambda (k v)
 		     (when (gethash k *html-index*)
@@ -188,6 +189,7 @@
 				k (gethash *html-index*)))
 		     (setf (gethash k *html-index*) v))
 		 *html-section-index*)
+	(format t "Final index count:      ~D~%" (hash-table-count *html-index*))
 	(format t "Intro: ~S~%"
 		(gethash "Introduction to Simplification" *html-index*))))))
 
