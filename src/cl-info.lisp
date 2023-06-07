@@ -4,7 +4,7 @@
 
 ;; Gcl doesn't like equalp hashtables.
 (defvar *html-index*
-  (make-hash-table :test #'equalp)
+  (make-hash-table :test #'equal)
   "Hash table for looking up which html file contains the
   documentation.  The key is the topic we're looking for and the value
   is a cons consisting of the html file and the id for the key.")
@@ -269,11 +269,34 @@
       (setf (gethash dir-name *info-tables*) (list t1 t2)))))
 
 (defun load-html-index (entries)
+  (clrhash *html-index*)
   (format t "HTML entries: ~D~%" (length entries))
+  #+nil
   (dolist (entry entries)
     (destructuring-bind (item path id)
 	entry
-      (format t "LOAD: ~S -> ~S ~S~%" item path id)
-      (setf (gethash item *html-index*) (cons path id))))
-  (format t "HTML hash-table count: ~D~%" (hash-table-count *html-index*)))
+      (setf (gethash item *html-index*) (cons path id))
+      (format t "LOAD: ~D: ~S -> ~S ~S~%" (hash-table-count *html-index*) item path id)))
+  (loop for entry in entries
+	for count from 1
+	do
+	   (destructuring-bind (item path id)
+	       entry
+	     (setf (gethash item *html-index*) (cons path id))
+	     (format t "LOAD: ~D: ~D: ~S -> ~S ~S~%"
+		     count (hash-table-count *html-index*) item path id)))
+  (format t "HTML hash-table count: ~D~%" (hash-table-count *html-index*))
+  (dolist (entry entries)
+    (unless (gethash (first entry) *html-index*)
+      (format t "Hash table missing ~D~%" (gethash (first entry) *html-index*))))
+  (let ((table-keys
+	  (loop for key being the hash-keys of *html-index*
+		collect key))
+	(entry-keys
+	  (loop for entry in entries
+		collect (first entry))))
+    (format t "entries - table-entries: ~S~%"
+	    (set-difference entry-keys table-keys :test #'string=))
+    (format t "table-entries - entries: ~S~%"
+	    (set-difference table-keys entry-keys  :test #'string=))))
 
