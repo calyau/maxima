@@ -727,12 +727,20 @@
     ;; We also need to convert things like "_0021_0021" to "!!", where
     ;; "_0021" is the hex code for the character #\!.
     (format t "Get html topics: table size ~D~%" (hash-table-count cl-info::*html-index*))
+    #+nil
     (setf *html-topics*
 	  (loop for topic being the hash-keys of cl-info::*html-index*
 		for fixed-topic = (pregexp:pregexp-replace fixup-regexp topic " <\\1>")
 		for fixed-chars = (handle-special-chars fixed-topic)
 		collect fixed-chars
 		do (format t "topic: ~S~%" topic)))
+    (setf *html-topics* nil)
+    (maphash #'(lambda (k v)
+		 (declare (ignore v))
+		 (let ((topic (handle-special-chars
+			       (pregexp:pregexp-replace fixup-regexp k " <\\1>"))))
+		   (push topic *html-topics*)))
+	     cl-info::*html-index*)
     (format t "html topic length ~D~%" (length *html-topics*))))
 
 (defun get-text-topics ()
@@ -925,7 +933,8 @@
     ;; encoding was already set to something else; we forcibly change
     ;; it to utf-8. (Is that right?)
     (setf stream:*default-external-format* :utf-8)
-    (stream:set-system-external-format :utf-8 :utf-8))
+    (stream:set-system-external-format :utf-8 :utf-8)
+    (setf ext:*default-external-format* :utf-8))
   #+clisp
   (ignore-errors
     (progn (setf custom:*default-file-encoding*
