@@ -755,6 +755,11 @@
 
 (defun verify-html-index ()
   (format t "Verifying html index~%")
+  ;; Make sure the hash table has the correct test!  This is important.
+  (unless (eql (hash-table-test cl-info::*html-index*) 'equal)
+    (mwarning (format nil
+		      (intl:gettext "HTML index hash table test must be `equal not ~S~%")
+		      (hash-table-test cl-info::*html-index*))))
   (get-html-topics)
   (get-text-topics)
   
