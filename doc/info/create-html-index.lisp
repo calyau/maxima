@@ -66,18 +66,6 @@
 	    do
 	       (process-line line matcher replace-dash-p)))))
 
-(defun process-toc-line (line matcher)
-  (multiple-value-bind (item item-id file line)
-      (funcall matcher line)))
-
-(defun process-toc (file matcher)
-  (format *debug-io*  "Processing: ~S~%" file)
-  (with-open-file (s file :direction :input)
-    (loop for line = (read-line s nil)
-              while line
-	      do
-		 (process-toc-line line matcher))))
-
 (defun handle-special-cases ()
   ;; These HTML topics need special handling because we didn't quite
   ;; process them correctly previously because we accidentally changed
@@ -186,7 +174,6 @@
       (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
 
 	(process-one-html-file index-file #'match-entries t)
-	;;(process-toc "maxima_toc.html" #'match-toc)
 	(handle-special-cases)
 	(process-one-html-file "maxima_toc.html" #'match-toc nil)
 	(format t "html index len:         ~D~%" (hash-table-count *html-index*))
@@ -194,8 +181,8 @@
 	;; Add the entries found from the TOC to the index
 	(maphash #'(lambda (k v)
 		     (when (gethash k *html-index*)
-		       (warning "TOC entry ~S already exists in html index with value ~S~%"
-				k (gethash k *html-index*)))
+		       (warn "TOC entry ~S already exists in html index with value ~S~%"
+			     k (gethash k *html-index*)))
 		     (setf (gethash k *html-index*) v))
 		 *html-section-index*)
 	(format t "Final index count:      ~D~%" (hash-table-count *html-index*))))))
