@@ -7,9 +7,11 @@
   is the html file containing the documentation for the topic.")
 
 (defvar *html-section-index*
-  (make-hash-table :test #'equal))
+  (make-hash-table :test #'equal)
+  "Hash table for entries found from the table of contents.  These are
+  all the subsection entries in the table of contents.")
 
-(defvar *log-file*)
+(defvar *log-file* nil)
 
 (let ((maxima_nnn-pattern (pregexp:pregexp "^maxima_[0-9][0-9]*$")))
   (defun maxima_nnn-p (f)
@@ -77,7 +79,8 @@
 
 (defun handle-special-cases ()
   ;; These HTML topics need special handling because we didn't quite
-  ;; process them correctly previously.
+  ;; process them correctly previously because we accidentally changed
+  ;; #\- to #\space.
   (flet ((update-entry (old new)
 	   (when (gethash old *html-index*)
 	     (setf (gethash new *html-index*)
@@ -183,15 +186,14 @@
 	(process-toc "maxima_toc.html" #'match-toc)
 	(format t "html index len:         ~D~%" (hash-table-count *html-index*))
 	(format t "html-section-index len: ~D~%" (hash-table-count *html-section-index*))
+	;; Add the entries found from the TOC to the index
 	(maphash #'(lambda (k v)
 		     (when (gethash k *html-index*)
 		       (warning "TOC entry ~S already exists in html index with value ~S~%"
-				k (gethash *html-index*)))
+				k (gethash k *html-index*)))
 		     (setf (gethash k *html-index*) v))
 		 *html-section-index*)
-	(format t "Final index count:      ~D~%" (hash-table-count *html-index*))
-	(format t "Intro: ~S~%"
-		(gethash "Introduction to Simplification" *html-index*))))))
+	(format t "Final index count:      ~D~%" (hash-table-count *html-index*))))))
 
 (defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
