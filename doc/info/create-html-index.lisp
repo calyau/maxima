@@ -91,15 +91,7 @@
 		     ("Assignment operator (evaluates left hand side)"
 		      "Assignment operator (evaluates left-hand side)")
 		     ("Euler Mascheroni constant"
-		      "Euler-Mascheroni constant")
-		     ("Functions and Variables for plain text input and output"
-		      "Functions and Variables for plain-text input and output")
-		     ("Functions and Variables for alt display"
-		      "Functions and Variables for alt-display")
-		     ("Functions and Variables for engineering format"
-		      "Functions and Variables for engineering-format")
-		     ("Introduction to alt display"
-		      "Introduction to alt-display")))
+		      "Euler-Mascheroni constant")))
       (destructuring-bind (old new)
 	  items
 	(update-entry old new)))))
