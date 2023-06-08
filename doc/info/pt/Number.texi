@@ -510,7 +510,7 @@ Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @var{n} é um
 número compostro e se esse teste retornar @code{true}, @var{n} é um número primo
 com grande probabilidade.
 
-Para @var{n} menor que 341550071728321 uma versão deterministra do teste de 
+Para @var{n} menor que 3317044064679887385961981 uma versão deterministra do teste de 
 Miller-Rabin é usada. Se @code{primep (n)} retornar @code{true}, então @var{n} é um
 número primo.
 

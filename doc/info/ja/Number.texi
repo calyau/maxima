@@ -663,12 +663,12 @@ Graham, Knuth, Patashnik著の「コンピュータの数学」の3.4節を参�
 @var{n}は合成数であり、
 もし@code{true}を返すなら、@var{n}は非常に高い確立で素数です。
 
-341550071728321より小さな@var{n}に対して、
+3317044064679887385961981より小さな@var{n}に対して、
 Miller-Rabinのテストの決定的バージョンが使われます。
 もし@code{primep (@var{n})}が@code{true}を返すなら、
 @var{n}は素数です。
 
-341550071728321よりの大きな@var{n}に対して、
+3317044064679887385961981よりの大きな@var{n}に対して、
 @code{primep}は、
 @code{primep_number_of_tests}個のMiller-Rabinの疑似素数テストと
 1つのLucasの疑似素数テストを使います。
