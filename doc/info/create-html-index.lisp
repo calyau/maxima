@@ -26,7 +26,7 @@
             do (when (pregexp:pregexp-match content-pattern line)
                  (return f-path)))))
 
-(defun add-entry (item item-id file line)
+(defun add-entry (item item-id file line replace-dash-p)
   ;; Add entry to the hash table.
   ;;
   ;; Replace any special chars that texinfo has encoded.
@@ -35,7 +35,8 @@
   ;; Replace "-" with space, but only if "-" is not followed by a
   ;; digit.  "foo-1" is the info index named "foo <1>", so we don't
   ;; want to change that.
-  (setf item (pregexp:pregexp-replace* "-([^[:digit:]])" item " \\1"))
+  (when replace-dash-p
+    (setf item (pregexp:pregexp-replace* "-([^[:digit:]])" item " \\1")))
 
   ;; Check if the entry already exists and print
   ;; a message.  Presumably, this shouldn't happen, so warn if it
@@ -49,13 +50,13 @@
   (setf (gethash item *html-index*)
 	(cons file item-id)))
 
-(defun process-line (line matcher)
+(defun process-line (line matcher replace-dash-p)
   (multiple-value-bind (item item-id file line)
       (funcall matcher line)
     (when item
-      (add-entry item item-id file line))))
+      (add-entry item item-id file line replace-dash-p))))
 
-(defun process-one-html-file (file matcher)
+(defun process-one-html-file (file matcher replace-dash-p)
   (format *debug-io*  "Processing: ~S~%" file)
   (let ((base-name (make-pathname :name (pathname-name file)
                                   :type (pathname-type file))))
@@ -63,7 +64,7 @@
       (loop for line = (read-line s nil)
             while line
 	    do
-	       (process-line line matcher)))))
+	       (process-line line matcher replace-dash-p)))))
 
 (defun process-toc-line (line matcher)
   (multiple-value-bind (item item-id file line)
@@ -86,13 +87,22 @@
 	     (setf (gethash new *html-index*)
 		   (gethash old *html-index*))
 	     (remhash old *html-index*))))
-    (update-entry "Quote quote operator" "Quote-quote operator")
-
-    (update-entry "Assignment operator (evaluates left hand side)"
-		  "Assignment operator (evaluates left-hand side)")
-
-    (update-entry "Euler Mascheroni constant"
-		  "Euler-Mascheroni constant")))
+    (dolist (items '(("Quote quote operator" "Quote-quote operator")
+		     ("Assignment operator (evaluates left hand side)"
+		      "Assignment operator (evaluates left-hand side)")
+		     ("Euler Mascheroni constant"
+		      "Euler-Mascheroni constant")
+		     ("Functions and Variables for plain text input and output"
+		      "Functions and Variables for plain-text input and output")
+		     ("Functions and Variables for alt display"
+		      "Functions and Variables for alt-display")
+		     ("Functions and Variables for engineering format"
+		      "Functions and Variables for engineering-format")
+		     ("Introduction to alt display"
+		      "Introduction to alt-display")))
+      (destructuring-bind (old new)
+	  items
+	(update-entry old new)))))
 
 (defun match-entries (line)
   (let ((href (pregexp:pregexp "<a href=\"(maxima_[[:digit:]]+\.html)#index-([^\"]*)\">"))
@@ -118,6 +128,8 @@
 	(format *log-file* "TOC: ~S -> ~S~%" item file)
 	(when (gethash item *html-section-index*)
 	  (format t "Duplicate section index key: ~S: ~S~%" item file))
+	(values item "" file line)
+	#+nil
 	(setf (gethash item *html-section-index*)
 	      (cons file ""))))))
 
@@ -181,9 +193,10 @@
 
       (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
 
-	(process-one-html-file index-file #'match-entries)
+	(process-one-html-file index-file #'match-entries t)
+	;;(process-toc "maxima_toc.html" #'match-toc)
 	(handle-special-cases)
-	(process-toc "maxima_toc.html" #'match-toc)
+	(process-one-html-file "maxima_toc.html" #'match-toc nil)
 	(format t "html index len:         ~D~%" (hash-table-count *html-index*))
 	(format t "html-section-index len: ~D~%" (hash-table-count *html-section-index*))
 	;; Add the entries found from the TOC to the index
