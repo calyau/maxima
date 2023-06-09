@@ -97,6 +97,7 @@
 	  ;; Replace "&rsquo;" with "'"
 	  (when (find #\& item :test #'char=)
 	    (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
+
 	  (format *log-file* "TOC: ~S -> ~S~%" item file)
 
 	  (values item "" file line))))))
@@ -147,10 +148,10 @@
     ;; Check if the last 2 files to see if one of them contains the
     ;; function and variable index we want.  Return the first one that
     ;; matches.
-    (format t "Looking for indices~%")
+    (format t "Looking for function and variable index~%")
     (dolist (file (last files 2))
       (when (grep-l "<title>(Function and Variable Index)" file)
-	(format t "BUILD-HTML-INDEX:  Function index: ~S.~%"
+	(format t "Function index: ~S.~%"
 		(namestring file))
 	(return-from find-index-file file)))))
   
@@ -168,9 +169,7 @@
 
       (process-one-html-file index-file #'match-entries t)
       (handle-special-cases)
-      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil)
-      (format t "html index len:         ~D~%" (hash-table-count *html-index*))
-      (format t "Final index count:      ~D~%" (hash-table-count *html-index*)))))
+      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil))))
 
 (defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
@@ -179,6 +178,9 @@
 		 (push (list k (namestring (car v)) (cdr v)) entries))
 	     *html-index*)
     (format t "HTML index has ~D entries~%" (hash-table-count *html-index*))
+    ;; Hash table can't be empty unless we screwed up somewhere.
+    (assert (plusp (hash-table-count *html-index*)))
+
     (with-open-file (s "maxima-index-html.lisp"
 		       :direction :output
 		       :if-exists :supersede)
