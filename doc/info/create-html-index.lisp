@@ -1,5 +1,12 @@
 (in-package :maxima)
 
+(defvar *texinfo-version-string* nil
+  "The texinfo version string used to generate the HTML files.")
+
+(defvar *texinfo-version* nil
+  "The texinfo version arranged as an integer.  Version 7.0.3 is
+  represented as 70003.")
+
 (defvar *html-index*
   (make-hash-table :test #'equal)
   "Hash table for looking up which html file contains the
@@ -98,14 +105,18 @@
 	  items
 	(update-entry old new)))
 
-    ;; With texinfo 7.0.3, some entries in HTML use an apostrophe
-    ;; (U+27) character, but the info file uses
-    ;; Right_Single_Quotation_Mark (U+2019).  Convert these only for
-    ;; the cases we know this is a problem.
-    (dolist (item '("Euler's number"
-		    "Introduction to Maxima's Database"))
-      (update-entry item
-		    (pregexp::pregexp-replace* "'" item (string (code-char #x2019)))))))
+    ;; This is messy.  Texinfo 6.8 uses plain apostrophes in the info
+    ;; file.  But with texinfo 7.0.3, some entries in HTML use an
+    ;; apostrophe (U+27) character, but the info file uses
+    ;; Right_Single_Quotation_Mark (U+2019).  And apparently, the next version of Texinfo will not.
+    ;;
+    ;; Convert these only for the cases we know this is a problem.
+    (when (and *texinfo-version*
+	       (= *texinfo-version* 70003))
+      (dolist (item '("Euler's number"
+		      "Introduction to Maxima's Database"))
+	(update-entry item
+		      (pregexp::pregexp-replace* "'" item (string (code-char #x2019))))))))
 
 ;; Find entries from the function and variable index.  An example of
 ;; what we're looking for:
@@ -184,6 +195,40 @@
 		(namestring file))
 	(return-from find-index-file file)))))
   
+(defun get-texinfo-version (file)
+  "Get the texinfo version from FILE"
+  (let ((version-line
+	  (with-open-file (f file :direction :input)
+	    ;; Texinfo write a comment line containing the version number of
+	    ;; the texinfo used to build the html file.  It's at the
+	    ;; beginnning so search just the first 5 lines or so.
+	    (loop for count from 1 to 5
+		  for line = (read-line f nil) then (read-line f nil)
+		  when (and line (search "Created by GNU Texinfo" line))
+		    return line))))
+    (unless version-line
+      (warn "Could not find GNU Texinfo version in ~S~%" file)
+      (return-from get-texinfo-version))
+    (setf *texinfo-version-string*
+	  (second (pregexp:pregexp-match "GNU Texinfo \(.*?\)," version-line)))
+    (when *texinfo-version-string*
+      (let ((posn 0)
+	    (len (length *texinfo-version-string*))
+	    (version 0))
+	(dotimes (k 3)
+	  (cond
+	    ((<= posn len)
+	     (multiple-value-bind (digits end)
+		 (parse-integer *texinfo-version-string*
+				:start posn
+				:junk-allowed t)
+	       (when digits
+		 (setf version (+ digits (* version 100))))
+	       (setf posn (1+ end))))
+	    (t
+	     (setf version (* version 100)))))
+	(setf *texinfo-version* version)))))
+
 (defun build-html-index (dir)
   (clrhash *html-index*)
   (let ((index-file (find-index-file dir)))
@@ -192,6 +237,8 @@
 
     (with-open-file (*log-file* "build-html-index.log"
 				:direction :output :if-exists :supersede)
+      (get-texinfo-version (truename "maxima_toc.html"))
+      (format t "Texinfo Version ~A: ~D~%" *texinfo-version-string* *texinfo-version*)
       (process-one-html-file index-file #'match-entries t "Add")
       (process-one-html-file (truename "maxima_toc.html") #'match-toc nil "TOC")
       (handle-special-cases))))
