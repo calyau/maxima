@@ -360,8 +360,8 @@
     (mwarning (format nil
 		      (intl:gettext "HTML index hash table test must be `equal not ~S~%")
 		      (hash-table-test cl-info::*html-index*))))
-  (time (get-html-topics))
-  (time (get-text-topics))
+  (get-html-topics)
+  (get-text-topics)
   
   ;; The text entries are the source of truth about documentation.
   ;; Print out differences between the html entries and the text
@@ -372,12 +372,10 @@
 		      (length *html-topics*) (length *text-topics*))))
   ;; If the set of topics differs between HTML and text, print out
   ;; the differences.
-  (time
-   (progn
-     (setf *extra-html-entries*
-	   (set-difference *html-topics* *text-topics* :test #'string=))
-     (setf *missing-html-entries*
-	   (set-difference *text-topics* *html-topics* :test #'string=))))
+  (setf *extra-html-entries*
+	(set-difference *html-topics* *text-topics* :test #'string=))
+  (setf *missing-html-entries*
+	(set-difference *text-topics* *html-topics* :test #'string=))
   (flet
       ((maybe-print-warning (prefix-msg diffs)
 	 (let ((max-display-length 20))
@@ -394,10 +392,8 @@
 			  (format s "... plus ~D more" (- extra-count max-display-length)))
 			(format s "~%"))))
 	       (mwarning message))))))
-    (time
     (maybe-print-warning (intl:gettext "HTML entries not in text entries")
-			 *extra-html-entries*))
-    (time
+			 *extra-html-entries*)
     (maybe-print-warning (intl:gettext "Text entries not in HTML entries")
-			 *missing-html-entries*))))
+			 *missing-html-entries*)))
 
