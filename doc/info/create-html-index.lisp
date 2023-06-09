@@ -140,6 +140,10 @@
 (defun find-index-file (dir)
   "Find the name of HTML file containing the function and variable
   index."
+  (let ((f-a-v-i (merge-pathnames "Function-and-Variable-Index.html"
+				  dir)))
+    (when (probe-file f-a-v-i)
+      (return-from find-index-file f-a-v-i)))
   (let ((files (directory dir)))
     ;; Keep just the files of the form "maxima_nnn", where "nnn" are
     ;; digits.  These are the only files that can contain the function
