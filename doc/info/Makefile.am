@@ -689,7 +689,7 @@ maxima-index.lisp: build_index.pl maxima.info
 # This includes the indices, maxima_singlepage.html and any other html
 # file that doesn't start with "maxima".
 maxima-index-html.lisp : maxima_toc.html create-html-index.lisp
-	../../maxima-local --preload=create-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
+	../../maxima-local --no-init --preload=create-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
 
 DOLLAR_SIGN = $$
 
