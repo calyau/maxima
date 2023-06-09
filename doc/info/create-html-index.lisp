@@ -58,13 +58,11 @@
 
 (defun process-one-html-file (file matcher replace-dash-p)
   (format *debug-io*  "Processing: ~S~%" file)
-  (let ((base-name (make-pathname :name (pathname-name file)
-                                  :type (pathname-type file))))
-    (with-open-file (s file :direction :input)
-      (loop for line = (read-line s nil)
-            while line
-	    do
-	       (process-line line matcher replace-dash-p)))))
+  (with-open-file (s file :direction :input)
+    (loop for line = (read-line s nil)
+          while line
+	  do
+	     (process-line line matcher replace-dash-p))))
 
 (defun handle-special-cases ()
   ;; These HTML topics need special handling because we didn't quite
@@ -106,6 +104,7 @@
 	(when (find #\& item :test #'char=)
 	  (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
 	(format *log-file* "TOC: ~S -> ~S~%" item file)
+	#+nil
 	(when (gethash item *html-section-index*)
 	  (format t "Duplicate section index key: ~S: ~S~%" item file))
 	(values item "" file line)
@@ -113,12 +112,7 @@
 	(setf (gethash item *html-section-index*)
 	      (cons file ""))))))
 
-;; Run this build a hash table from the topic to the HTML file
-;; containing the documentation.  The single argument DIR should be a
-;; directory that contains the html files to be searched for the
-;; topics.  For exapmle it can be "<maxima-dir>/doc/info/*.html"
-(defun build-html-index (dir)
-  (clrhash *html-index*)
+(defun find-index-file (dir)
   (let ((files (directory dir)))
 
     ;; Ensure that the call to SORT below succeeds:
@@ -127,6 +121,7 @@
     ;; also, if a file with an otherwise-allowable name is function and variable index,
     ;; or a list of documentation categories, exclude it too.
 
+    #+nil
     (setf files (remove-if-not #'(lambda (f-path) 
                                    (let ((f-name (pathname-name f-path)))
                                      #+nil (format t "BUILD-HTML-INDEX: F-PATH = ~a, F-NAME = ~a.~%" f-path f-name)
@@ -140,52 +135,60 @@
                                       (format t "BUILD-HTML-INDEX: omit ~S.~%"
 					      (namestring f-path)))))
 			       files))
+    ;; Keep just the files of the form "maxima_nnn", where "nnn" are
+    ;; digits.  These are the only files that can contain the function
+    ;; and variable index that we want.
+    (setf files (remove-if-not
+		 #'(lambda (path-name)
+		     (maxima_nnn-p path-name))
+		 files
+		 :key #'pathname-name))
 
     ;; Now sort them in numerical order.
     (setf files
 	  (sort files #'<
 		:key #'(lambda (p)
 			 (let ((name (pathname-name p)))
-			   (cond ((string-equal name "maxima_toc")
-				  ;; maxima_toc.html is first
-				  -1)
-				 ((string-equal name "maxima")
-				  ;; maxima.html is second.
-				  0)
-				 (t
-				  ;; Everything else is the number
-				  ;; in the file name, which starts
-				  ;; with 1.
-				  (if (> (length name) 7)
-				      (parse-integer (subseq name 7))
-				      0)))))))
-    ;; Check if the last 2 files contain the indices.  If they do,
-    ;; we can ignore them.  We do want to ignore these, but if we're
-    ;; wrong, it's not terrible.  We just waste time scanning files
-    ;; that won't have anything to include in the index.
+			   ;; Everything else is the number in the
+			   ;; file name, which starts with 1.
+			   (if (> (length name) 7)
+			       (parse-integer (subseq name 7))
+			       0)))))
+
+    ;; Check if the last 2 files to see if one of them contains the
+    ;; function and variable index we want.  Return the first one that
+    ;; matches.
     (format t "Looking for indices~%")
-    (let ((index-file
-	    (dolist (file (last files 2))
-	      (when (grep-l "<title>(Function and Variable Index)" file)
-		(format t "BUILD-HTML-INDEX:  Function index: ~S.~%"
-			(namestring file))
-		(return file)))))
+    (dolist (file (last files 2))
+      (when (grep-l "<title>(Function and Variable Index)" file)
+	(format t "BUILD-HTML-INDEX:  Function index: ~S.~%"
+		(namestring file))
+	(return-from find-index-file file)))))
+  
+;; Run this build a hash table from the topic to the HTML file
+;; containing the documentation.  The single argument DIR should be a
+;; directory that contains the html files to be searched for the
+;; topics.  For exapmle it can be "<maxima-dir>/doc/info/*.html"
+(defun build-html-index (dir)
+  (clrhash *html-index*)
+  (let ((index-file (find-index-file dir)))
+    (unless index-file
+      (error "Could not find HTML file containing the function and variable index."))
 
-      (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
+    (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
 
-	(process-one-html-file index-file #'match-entries t)
-	(handle-special-cases)
-	(process-one-html-file "maxima_toc.html" #'match-toc nil)
-	(format t "html index len:         ~D~%" (hash-table-count *html-index*))
-	(format t "html-section-index len: ~D~%" (hash-table-count *html-section-index*))
-	;; Add the entries found from the TOC to the index
-	(maphash #'(lambda (k v)
-		     (when (gethash k *html-index*)
-		       (warn "TOC entry ~S already exists in html index with value ~S~%"
-			     k (gethash k *html-index*)))
-		     (setf (gethash k *html-index*) v))
-		 *html-section-index*)
-	(format t "Final index count:      ~D~%" (hash-table-count *html-index*))))))
+      (process-one-html-file index-file #'match-entries t)
+      (handle-special-cases)
+      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil)
+      (format t "html index len:         ~D~%" (hash-table-count *html-index*))
+      ;; Add the entries found from the TOC to the index
+      (maphash #'(lambda (k v)
+		   (when (gethash k *html-index*)
+		     (warn "TOC entry ~S already exists in html index with value ~S~%"
+			   k (gethash k *html-index*)))
+		   (setf (gethash k *html-index*) v))
+	       *html-section-index*)
+      (format t "Final index count:      ~D~%" (hash-table-count *html-index*)))))
 
 (defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
@@ -193,8 +196,6 @@
     (maphash #'(lambda (k v)
 		 (push (list k (namestring (car v)) (cdr v)) entries))
 	     *html-index*)
-    (format t "Intro: ~S~%"
-		(gethash "Introduction to Simplification" *html-index*))
     (format t "HTML index has ~D entries~%" (hash-table-count *html-index*))
     (with-open-file (s "maxima-index-html.lisp"
 		       :direction :output
