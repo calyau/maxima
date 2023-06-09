@@ -660,6 +660,7 @@
     ;;
     ;; We also need to convert things like "_0021_0021" to "!!", where
     ;; "_0021" is the hex code for the character #\!.
+    #+nil
     (format t "Get html topics: table size ~D~%" (hash-table-count cl-info::*html-index*))
     #+nil
     (setf *html-topics*
@@ -675,6 +676,7 @@
 			       (pregexp:pregexp-replace fixup-regexp k " <\\1>"))))
 		   (push topic *html-topics*)))
 	     cl-info::*html-index*)
+    #+nil
     (format t "html topic length ~D~%" (length *html-topics*))))
 
 (defun get-text-topics ()
@@ -688,7 +690,6 @@
 	   cl-info::*info-tables*))
 
 (defun verify-html-index ()
-  (format t "Verifying html index~%")
   ;; Make sure the hash table has the correct test!  This is important.
   (unless (eql (hash-table-test cl-info::*html-index*) 'equal)
     (mwarning (format nil
