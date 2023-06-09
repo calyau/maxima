@@ -32,7 +32,9 @@
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
-(defvar *verify-html-index* nil)
+(defvar *verify-html-index* nil
+  "If non-NIL, verify the contents of the html index versus the text
+  index.  Set via the command-line option --verify-html-index.")
 
 (defun shadow-string-assignment (var value)
   (cond
@@ -640,7 +642,7 @@
 	   (make-cl-option :names '("--verify-html-index")
 			   :action #'(lambda ()
 				       (setf *verify-html-index* t))
-			   :help-string "Verify set of html topics is consistent with text topics")
+			   :help-string "Verify set of html topics is consistent with text topics.")
 			   ))
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
@@ -768,7 +770,7 @@
   ;; entries.
   (unless (= (length *html-topics*) (length *text-topics*))
     (mwarning (format nil
-		      (intl:gettext "Number of HTML entries (~A) does not matchtext entries (~A)~%")
+		      (intl:gettext "Number of HTML entries (~A) does not matc htext entries (~A)~%")
 		      (length *html-topics*) (length *text-topics*))))
   ;; If the set of topics differs between HTML and text, print out
   ;; the differences.
@@ -784,7 +786,7 @@
 		    (message
 		      (with-output-to-string (s)
 			(format s
-				"~D ~A: ~{~S~^ ~}"
+				"~D ~A:~% ~{~S~^ ~}"
 				(length diffs)
 				prefix-msg
 				(subseq diffs 0 max-display-length))
