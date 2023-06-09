@@ -6,11 +6,6 @@
   documentation.  The key is the topic we're looking for and the value
   is the html file containing the documentation for the topic.")
 
-(defvar *html-section-index*
-  (make-hash-table :test #'equal)
-  "Hash table for entries found from the table of contents.  These are
-  all the subsection entries in the table of contents.")
-
 (defvar *log-file* nil)
 
 (let ((maxima_nnn-pattern (pregexp:pregexp "^maxima_[0-9][0-9]*$")))
@@ -104,13 +99,8 @@
 	(when (find #\& item :test #'char=)
 	  (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
 	(format *log-file* "TOC: ~S -> ~S~%" item file)
-	#+nil
-	(when (gethash item *html-section-index*)
-	  (format t "Duplicate section index key: ~S: ~S~%" item file))
-	(values item "" file line)
-	#+nil
-	(setf (gethash item *html-section-index*)
-	      (cons file ""))))))
+
+	(values item "" file line)))))
 
 (defun find-index-file (dir)
   (let ((files (directory dir)))
