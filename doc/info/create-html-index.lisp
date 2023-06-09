@@ -77,30 +77,29 @@
 	  items
 	(update-entry old new)))))
 
-(defun match-entries (line)
-  (let ((href (pregexp:pregexp "<a href=\"(maxima_[[:digit:]]+\.html)#index-([^\"]*)\">"))
-	match)
-    (setf match (pregexp:pregexp-match href line))
-    (when match
-      (destructuring-bind (whole file item-id)
-	  match
-	(declare (ignore whole))
-	(values item-id item-id file line)))))
+(let ((href (pregexp:pregexp "<a href=\"(maxima_[[:digit:]]+\.html)#index-([^\"]*)\">")))
+  (defun match-entries (line)
+    (let ((match (pregexp:pregexp-match href line)))
+      (when match
+	(destructuring-bind (whole file item-id)
+	    match
+	  (declare (ignore whole))
+	  (values item-id item-id file line))))))
 
-(defun match-toc (line)
-  (let* ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"(maxima_[^\"]+)\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<"))
-	 (match (pregexp:pregexp-match regexp line)))
-    (when match
-      ;;(format t "match: ~S: ~A~%" match line)
-      (destructuring-bind (whole file item)
-	  match
-	(declare (ignore whole))
-	;; Replace "&rsquo;" with "'"
-	(when (find #\& item :test #'char=)
-	  (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
-	(format *log-file* "TOC: ~S -> ~S~%" item file)
+(let ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"(maxima_[^\"]+)\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<")))
+  (defun match-toc (line)
+    (let ((match (pregexp:pregexp-match regexp line)))
+      (when match
+	;;(format t "match: ~S: ~A~%" match line)
+	(destructuring-bind (whole file item)
+	    match
+	  (declare (ignore whole))
+	  ;; Replace "&rsquo;" with "'"
+	  (when (find #\& item :test #'char=)
+	    (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
+	  (format *log-file* "TOC: ~S -> ~S~%" item file)
 
-	(values item "" file line)))))
+	  (values item "" file line))))))
 
 (defun find-index-file (dir)
   (let ((files (directory dir)))
@@ -171,13 +170,6 @@
       (handle-special-cases)
       (process-one-html-file (truename "maxima_toc.html") #'match-toc nil)
       (format t "html index len:         ~D~%" (hash-table-count *html-index*))
-      ;; Add the entries found from the TOC to the index
-      (maphash #'(lambda (k v)
-		   (when (gethash k *html-index*)
-		     (warn "TOC entry ~S already exists in html index with value ~S~%"
-			   k (gethash k *html-index*)))
-		   (setf (gethash k *html-index*) v))
-	       *html-section-index*)
       (format t "Final index count:      ~D~%" (hash-table-count *html-index*)))))
 
 (defmfun $build_and_dump_html_index (dir)
