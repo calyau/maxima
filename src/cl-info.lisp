@@ -283,8 +283,10 @@
 	   (destructuring-bind (item path id)
 	       entry
 	     (setf (gethash item *html-index*) (cons path id))
+	     #+nil
 	     (format t "LOAD: ~D: ~D: ~S -> ~S ~S~%"
 		     count (hash-table-count *html-index*) item path id)))
+  #+nil
   (format t "HTML hash-table count: ~D~%" (hash-table-count *html-index*))
   (dolist (entry entries)
     (unless (gethash (first entry) *html-index*)
