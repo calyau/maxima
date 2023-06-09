@@ -270,35 +270,11 @@
 
 (defun load-html-index (entries)
   (clrhash *html-index*)
-  (format t "HTML entries: ~D~%" (length entries))
-  #+nil
+  ;; Go through the entries and add it to the html index hashtable.
+  ;; Each entry is a list of 3 items: the item key for the hash table,
+  ;; the path to the html file containing the item we're interested in
+  ;; and the html id for the item.
   (dolist (entry entries)
     (destructuring-bind (item path id)
 	entry
-      (setf (gethash item *html-index*) (cons path id))
-      (format t "LOAD: ~D: ~S -> ~S ~S~%" (hash-table-count *html-index*) item path id)))
-  (loop for entry in entries
-	for count from 1
-	do
-	   (destructuring-bind (item path id)
-	       entry
-	     (setf (gethash item *html-index*) (cons path id))
-	     #+nil
-	     (format t "LOAD: ~D: ~D: ~S -> ~S ~S~%"
-		     count (hash-table-count *html-index*) item path id)))
-  #+nil
-  (format t "HTML hash-table count: ~D~%" (hash-table-count *html-index*))
-  (dolist (entry entries)
-    (unless (gethash (first entry) *html-index*)
-      (format t "Hash table missing ~D~%" (gethash (first entry) *html-index*))))
-  (let ((table-keys
-	  (loop for key being the hash-keys of *html-index*
-		collect key))
-	(entry-keys
-	  (loop for entry in entries
-		collect (first entry))))
-    (format t "entries - table-entries: ~S~%"
-	    (set-difference entry-keys table-keys :test #'string=))
-    (format t "table-entries - entries: ~S~%"
-	    (set-difference table-keys entry-keys  :test #'string=))))
-
+      (setf (gethash item *html-index*) (cons path id)))))
