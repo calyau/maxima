@@ -21,7 +21,7 @@
             do (when (pregexp:pregexp-match content-pattern line)
                  (return f-path)))))
 
-(defun add-entry (item item-id file line replace-dash-p)
+(defun add-entry (item item-id file line &key replace-dash-p prefix)
   ;; Add entry to the hash table.
   ;;
   ;; Replace any special chars that texinfo has encoded.
@@ -40,24 +40,28 @@
     (format t "Already added entry ~S ~S: ~S~%"
 	    item (gethash item *html-index*)
 	    line))
-  (format *log-file* "Add: ~S -> ~S ~S~%"
-	  item file item-id)
+  (format *log-file* "~A: ~S -> ~S ~S~%"
+	  prefix item file item-id)
   (setf (gethash item *html-index*)
 	(cons file item-id)))
 
-(defun process-line (line matcher replace-dash-p)
+(defun process-line (line matcher &key replace-dash-p (prefix "Add:"))
   (multiple-value-bind (item item-id file line)
       (funcall matcher line)
     (when item
-      (add-entry item item-id file line replace-dash-p))))
+      (add-entry item item-id file line
+		 :replace-dash-p replace-dash-p
+		 :prefix prefix))))
 
-(defun process-one-html-file (file matcher replace-dash-p)
+(defun process-one-html-file (file matcher replace-dash-p prefix)
   (format *debug-io*  "Processing: ~S~%" file)
   (with-open-file (s file :direction :input)
     (loop for line = (read-line s nil)
           while line
 	  do
-	     (process-line line matcher replace-dash-p))))
+	     (process-line line matcher
+			   :replace-dash-p replace-dash-p
+			   :prefix prefix))))
 
 (defun handle-special-cases ()
   ;; These HTML topics need special handling because we didn't quite
@@ -167,9 +171,9 @@
 
     (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
 
-      (process-one-html-file index-file #'match-entries t)
+      (process-one-html-file index-file #'match-entries t "Add")
       (handle-special-cases)
-      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil))))
+      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil "TOC"))))
 
 (defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
