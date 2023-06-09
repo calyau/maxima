@@ -281,7 +281,7 @@ Each solution has the form
 @end ifnottex
 
 
-@node General global variables
+@node General global variables, Variables related to the modular test, Functions and Variables for zeilberger
 @section General global variables
 
 @anchor{MAX_ORD}
