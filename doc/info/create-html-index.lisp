@@ -96,7 +96,16 @@
 		      "Euler-Mascheroni constant")))
       (destructuring-bind (old new)
 	  items
-	(update-entry old new)))))
+	(update-entry old new)))
+
+    ;; With texinfo 7.0.3, some entries in HTML use an apostrophe
+    ;; (U+27) character, but the info file uses
+    ;; Right_Single_Quotation_Mark (U+2019).  Convert these only for
+    ;; the cases we know this is a problem.
+    (dolist (item '("Euler's number"
+		    "Introduction to Maxima's Database"))
+      (update-entry item
+		    (pregexp::pregexp-replace* "'" item (string (code-char #x2019)))))))
 
 ;; Find entries from the function and variable index.  An example of
 ;; what we're looking for:
@@ -184,8 +193,8 @@
     (with-open-file (*log-file* "build-html-index.log"
 				:direction :output :if-exists :supersede)
       (process-one-html-file index-file #'match-entries t "Add")
-      (handle-special-cases)
-      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil "TOC"))))
+      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil "TOC")
+      (handle-special-cases))))
 
 ;; Run this to build a hash table from the topic to the HTML file
 ;; containing the documentation.  The single argument DIR should be a
