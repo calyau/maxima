@@ -138,28 +138,9 @@
 	  (values item "" file line))))))
 
 (defun find-index-file (dir)
+  "Find the name of HTML file containing the function and variable
+  index."
   (let ((files (directory dir)))
-
-    ;; Ensure that the call to SORT below succeeds:
-    ;; the only allowable names are "maxima_toc.html", "maxima.html", or "maxima_nnn.html",
-    ;; where nnn is an integer;
-    ;; also, if a file with an otherwise-allowable name is function and variable index,
-    ;; or a list of documentation categories, exclude it too.
-
-    #+nil
-    (setf files (remove-if-not #'(lambda (f-path) 
-                                   (let ((f-name (pathname-name f-path)))
-                                     #+nil (format t "BUILD-HTML-INDEX: F-PATH = ~a, F-NAME = ~a.~%" f-path f-name)
-                                     (or
-                                      (string-equal f-name "maxima_toc")
-                                      (string-equal f-name "maxima")
-                                      (and 
-                                       (maxima_nnn-p f-name)
-                                       #+nil
-				       (not (grep-l "<title>(Function and Variable Index|Documentation Cat)" f-path)))
-                                      (format t "BUILD-HTML-INDEX: omit ~S.~%"
-					      (namestring f-path)))))
-			       files))
     ;; Keep just the files of the form "maxima_nnn", where "nnn" are
     ;; digits.  These are the only files that can contain the function
     ;; and variable index that we want.
@@ -190,22 +171,22 @@
 		(namestring file))
 	(return-from find-index-file file)))))
   
-;; Run this build a hash table from the topic to the HTML file
-;; containing the documentation.  The single argument DIR should be a
-;; directory that contains the html files to be searched for the
-;; topics.  For exapmle it can be "<maxima-dir>/doc/info/*.html"
 (defun build-html-index (dir)
   (clrhash *html-index*)
   (let ((index-file (find-index-file dir)))
     (unless index-file
       (error "Could not find HTML file containing the function and variable index."))
 
-    (with-open-file (*log-file* "build-html-index.log" :direction :output :if-exists :supersede)
-
+    (with-open-file (*log-file* "build-html-index.log"
+				:direction :output :if-exists :supersede)
       (process-one-html-file index-file #'match-entries t "Add")
       (handle-special-cases)
       (process-one-html-file (truename "maxima_toc.html") #'match-toc nil "TOC"))))
 
+;; Run this to build a hash table from the topic to the HTML file
+;; containing the documentation.  The single argument DIR should be a
+;; directory that contains the html files to be searched for the
+;; topics.  For exapmle it can be "<maxima-dir>/doc/info/*.html"
 (defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
   (let (entries)
