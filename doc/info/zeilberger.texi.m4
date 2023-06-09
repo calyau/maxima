@@ -281,7 +281,7 @@ Each solution has the form
 @end ifnottex
 
 
-
+@node General global variables
 @section General global variables
 
 @anchor{MAX_ORD}
@@ -365,6 +365,7 @@ which have certificate equal to zero, or all coefficients equal to zero.
 
 @end defvr
 
+@node Variables related to the modular test
 @section Variables related to the modular test
 
 @anchor{mod_test}
