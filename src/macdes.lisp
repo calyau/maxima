@@ -321,27 +321,16 @@
 					       replacement)))
     item))
 
-(let ((fixup-regexp (pregexp:pregexp "-\([[:digit:]]\)")))
-  (defun get-html-topics ()
-    ;; Find all the HTML entries and place in a list.
-    ;;
-    ;; The html topics have entries like "labels-1".  This corresponds
-    ;; to the text topic "labels <1>".  For consistency, replace
-    ;; "labels-1" with "labels <1>".
-    ;;
-    ;; We also need to convert things like "_0021_0021" to "!!", where
-    ;; "_0021" is the hex code for the character #\!.
-    #+nil
-    (format t "Get html topics: table size ~D~%" (hash-table-count cl-info::*html-index*))
+(defun get-html-topics ()
+  ;; Find all the HTML entries and place in a list.
+  #+nil
+  (format t "Get html topics: table size ~D~%" (hash-table-count cl-info::*html-index*))
 
-    (setf *html-topics* nil)
-    (maphash #'(lambda (k v)
-		 (declare (ignore v))
-		 (let ((topic (handle-special-chars k)))
-		   (push topic *html-topics*)))
-	     cl-info::*html-index*)
-    #+nil
-    (format t "html topic length ~D~%" (length *html-topics*))))
+  (setf *html-topics*
+	(loop for topic being the hash-keys of cl-info::*html-index*
+	      collect topic))
+  #+nil
+  (format t "html topic length ~D~%" (length *html-topics*)))
 
 (defun get-text-topics ()
   ;; Find all the text entries and place in a list.
