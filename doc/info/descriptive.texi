@@ -738,26 +738,72 @@ Add a constant column and remove the third variable.
 
 @anchor{mean}
 @deffn {Function} mean @
-@fname{mean} (@var{list}) @
-@fname{mean} (@var{matrix})
+@fname{mean} (@var{x}) @
+@fname{mean} (@var{x}, @var{w})
 
-This is the sample mean, defined as
+Computes the sample mean of @var{x}, which must be a list or matrix.
+When @var{x} is a list,
+the result is a scalar value or expression.
+When @var{x} is a matrix,
+the result is a list,
+with one element per column of @var{x}.
+
+@var{w} is an optional per-datum weight.
+@var{w} must either be 1, in which case every datum @var{x[i]} is given equal weight,
+or a list of the same length as @var{x},
+in which case the weight for @var{x[i]} is given by @var{w[i]}.
+The elements of @var{w} must be nonnegative and not all zero.
+It is not required that they sum to 1.
+
+The unweighted sample mean is defined as
 @ifnottex
 @example
-                       n
-                     ====
-             _   1   \
-             x = -    >    x
-                 n   /      i
-                     ====
-                     i = 1
+                     n
+                    ====
+             _   1  \
+             x = -   >    x
+                 n  /      i
+                    ====
+                    i = 1
 @end example
 @end ifnottex
 @tex
 $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 @end tex
 
-Example:
+The weighted sample mean is defined as
+@ifnottex
+@example
+                     n
+                    ====
+             _   1  \
+             x = -   >    w  x
+                 S  /      i  i
+                    ====
+                    i = 1
+@end example
+@end ifnottex
+@tex
+$${\bar{x}={1\over{S}}{\sum_{i=1}^{n}{w_{i} x_{i}}}}$$
+@end tex
+
+where @var{S} is the sum of the weights,
+@ifnottex
+@example
+                   n
+                  ====
+                  \
+             S =   >    w
+                  /      i
+                  ====
+                  i = 1
+@end example
+@end ifnottex
+@tex
+$${S={\sum_{i=1}^{n}{w_{i}}}}$$
+@end tex
+
+Examples:
 
 @c ===beg===
 @c load ("descriptive")$
@@ -766,6 +812,8 @@ Example:
 @c %, numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c mean (s2);
+@c mean ([a, b, c, d], [1, 2, 3, 4]);
+@c mean (matrix ([p, q, r], [s, t, u]), [vv, ww]);
 @c ===end===
 @example
 (%i1) load ("descriptive")$
