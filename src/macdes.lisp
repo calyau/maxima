@@ -374,9 +374,10 @@
   ;; If the set of topics differs between HTML and text, print out
   ;; the differences.
   (setf *extra-html-entries*
-	(set-difference *html-topics* *text-topics* :test #'string=))
+	(set-difference *html-topics* *text-topics* :test #'equal))
   (setf *missing-html-entries*
-	(set-difference *text-topics* *html-topics* :test #'string=))
+	(set-difference *text-topics* *html-topics* :test #'equal))
+
   (flet
       ((maybe-print-warning (prefix-msg diffs)
 	 (let ((max-display-length 20))
