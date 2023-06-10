@@ -357,27 +357,16 @@
   ;; The text entries are the source of truth about documentation.
   ;; Print out differences between the html entries and the text
   ;; entries.
-  #+nil
-  (unless (= (length *html-topics*) (length *text-topics*))
-    (mwarning (format nil
-		      (intl:gettext "Number of HTML entries (~A) does not matc htext entries (~A)~%")
-		      (length *html-topics*) (length *text-topics*))))
   (unless (= (hash-table-count cl-info::*html-index*)
 	     (hash-table-count *text-topics*))
     (mwarning
      (format nil
-	     (intl:gettext "Number of HTML entries (~A) does not matc htext entries (~A)~%")
+	     (intl:gettext "Number of HTML entries (~A) does not match text entries (~A)~%")
 	     (hash-table-count cl-info::*html-index*)
 	     (hash-table-count *text-topics*))))
 		      
   ;; If the set of topics differs between HTML and text, print out
   ;; the differences.
-  #+nil
-  (progn
-    (setf *extra-html-entries*
-	  (set-difference *html-topics* *text-topics* :test #'equal))
-    (setf *missing-html-entries*
-	  (set-difference *text-topics* *html-topics* :test #'equal)))
   (maphash #'(lambda (k v)
 	       (declare (ignore v))
 	       (unless (gethash k *text-topics*)
