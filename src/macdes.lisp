@@ -389,20 +389,28 @@
 		 (push k *missing-html-entries*)))
 	   *text-topics*)
 
+  (format *debug-io* "*** set diff done~%")
+  (format *debug-io* "*** ~D extra-html-entries: ~S~%"
+	  (length *extra-html-entries*)
+	  *extra-html-entries*)
+  (format *debug-io* "*** ~D missing-html-entries: ~S~%"
+	  (length *missing-html-entries*)
+	  *missing-html-entries*)
   (flet
       ((maybe-print-warning (prefix-msg diffs)
 	 (let ((max-display-length 20))
 	   (when diffs
-	     (let* ((extra-count (length diffs))
+	     (let* ((diff-length (length diffs))
+		    (displayed-length (min diff-length max-display-length))
 		    (message
 		      (with-output-to-string (s)
 			(format s
 				"~D ~A:~% ~{~S~^ ~}"
 				(length diffs)
 				prefix-msg
-				(subseq diffs 0 max-display-length))
-			(when (> extra-count max-display-length)
-			  (format s "... plus ~D more" (- extra-count max-display-length)))
+				(subseq diffs 0 displayed-length))
+			(when (> diff-length max-display-length)
+			  (format s "... plus ~D more" (- diff-length max-display-length)))
 			(format s "~%"))))
 	       (mwarning message))))))
     (maybe-print-warning (intl:gettext "HTML entries not in text entries")
