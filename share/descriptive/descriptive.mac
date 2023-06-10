@@ -670,19 +670,28 @@ cdf_empirical(x,[var]):=
 
 
 /* Covariance matrix */
-cov(x):=block([n:length(x),dim,m,xi,sum],
-	if not matrixp(x)
-		then error("cov: the argument is not a matrix")
-		else (m:matrix(mean(x)),
-		      dim:length(x[1]),
-		      sum:zeromatrix(dim,dim),
-		      for i:1 thru n do(
-			xi:matrix(x[i]),
-			sum:sum+transpose(xi).xi),
-		      sum/n - transpose(m).m)  )$
+cov(x, [w]):=block([n:length(x),dim,m,xi,sum, sum_w],
+    w: if w = [] then 1 else w[1],
+    verify_weights ('cov, w, n),
+    if not matrixp(x)
+        then error("cov: the argument is not a matrix")
+        else (m:matrix(mean(x, w)),
+              dim:length(x[1]),
+              sum:zeromatrix(dim,dim),
+              sum_w: 0,
+              for i:1 thru n do
+                  block ([w_i: if w = 1 then 1 else w[i]],
+                         xi:matrix(x[i]),
+                         sum:sum+w_i*transpose(xi).xi,
+                         sum_w: sum_w + w_i),
+              sum/sum_w - transpose(m).m)  )$
 
 
-/* Covariance matrix (divided by n-1). The argument x must be a matrix */
+/* Covariance matrix (divided by n-1). The argument x must be a matrix.
+ *
+ * I don't see a sensible way to generalize cov1 when weights are given,
+ * so cov1 doesn't take w as an optional argument, even though cov does.
+ */
 cov1(x):=block([n:length(x)], cov(x)*n/(n-1))$
 
 
@@ -737,6 +746,11 @@ global_variances(x,[select]):=
 /*   'data='true: x stores sampled data and the covariance matrix 'cov1'    */
 /*        must be computed; if false, x is the covariance matrix and 'cov1' */
 /*        is not recalculated.                                              */
+
+/* cor calls cov1 to compute covariance, and cov1 doesn't take w as an
+ * optional argument (see comment above), so neither does cor.
+ */
+
 cor(x,[select]):=
  block([m,s,d,defaults,options],
     
