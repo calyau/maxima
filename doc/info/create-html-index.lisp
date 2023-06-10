@@ -111,6 +111,9 @@
     ;; Right_Single_Quotation_Mark (U+2019).  And apparently, the next version of Texinfo will not.
     ;;
     ;; Convert these only for the cases we know this is a problem.
+    ;;
+    ;; This current implementation will very likely not work with gcl
+    ;; only supports 8-bit characters.
     (when (and *texinfo-version*
 	       (= *texinfo-version* 70003))
       (dolist (item '("Euler's number"
