@@ -40,11 +40,19 @@
   ;; Replace any special chars that texinfo has encoded.
   (setf item (handle-special-chars item))
 
-  ;; Replace "-" with space, but only if "-" is not followed by a
-  ;; digit.  "foo-1" is the info index named "foo <1>", so we don't
-  ;; want to change that.  This isn't perfect.  See HANDLE-SPECIAL-CASES.
-  (when replace-dash-p
-    (setf item (pregexp:pregexp-replace* "-([^[:digit:]])" item " \\1")))
+  (let ((posn-of-dash (position #\- item)))
+    (when (and posn-of-dash (< posn-of-dash (1- (length item))))
+      (cond
+	((digit-char-p (aref item (1+ posn-of-dash)))
+	 ;; We have something like "ztics-1".  This is the info entry
+	 ;; named "ztics <1>", so rename the item appropriately.
+	  (setf item (pregexp:pregexp-replace "-([[:digit:]])" item " <\\1>")))
+	(replace-dash-p
+	 ;; Replace "-" with a space (if requested).  The HTML output
+	 ;; puts "-" where spaces were originally in the texi name.
+	 ;; But this isn't perfect.  See HANDLE-SPECIAL-CASES where we
+	 ;; shouldn't have done this.
+	 (setf item (pregexp:pregexp-replace* "-([^[:digit:]])" item " \\1"))))))
 
   ;; Check if the entry already exists and print a message.  This
   ;; shouldn't happen, so print a message if it does.
