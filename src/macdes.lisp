@@ -337,8 +337,7 @@
     (setf *html-topics* nil)
     (maphash #'(lambda (k v)
 		 (declare (ignore v))
-		 (let ((topic (handle-special-chars
-			       (pregexp:pregexp-replace fixup-regexp k " <\\1>"))))
+		 (let ((topic (handle-special-chars k)))
 		   (push topic *html-topics*)))
 	     cl-info::*html-index*)
     #+nil
