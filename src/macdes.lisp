@@ -260,7 +260,8 @@
 ;;;; Verification of the HTML index.  Use command-line option
 ;;;; --verify-html-index to perform this verification.
 
-(defvar *text-topics* nil
+(defvar *text-topics*
+  (make-hash-table :test #'equal)
   "All available text topics")
 
 (defvar *html-topics* nil
@@ -334,15 +335,16 @@
 
 (defun get-text-topics ()
   ;; Find all the text entries and place in a list.
-  (setf *text-topics* nil)
+  (clrhash *text-topics*)
   (maphash #'(lambda (k v)
 	       (declare (ignore k))
 	       (dolist (table v)
 		 (loop for topic being the hash-keys of table
-		       do (push topic *text-topics*))))
+		       ;; We don't care what the value is.
+		       do (setf (gethash topic *text-topics*) t))))
 	   cl-info::*info-tables*))
 
-(defun verify-html-index ()
+(defun verify-html-index-impl ()
   ;; Make sure the hash table has the correct test!  This is important.
   (unless (eql (hash-table-test cl-info::*html-index*) #-clisp 'equal
 						       #+clisp 'ext:fasthash-equal)
@@ -355,16 +357,37 @@
   ;; The text entries are the source of truth about documentation.
   ;; Print out differences between the html entries and the text
   ;; entries.
+  #+nil
   (unless (= (length *html-topics*) (length *text-topics*))
     (mwarning (format nil
 		      (intl:gettext "Number of HTML entries (~A) does not matc htext entries (~A)~%")
 		      (length *html-topics*) (length *text-topics*))))
+  (unless (= (hash-table-count cl-info::*html-index*)
+	     (hash-table-count *text-topics*))
+    (mwarning
+     (format nil
+	     (intl:gettext "Number of HTML entries (~A) does not matc htext entries (~A)~%")
+	     (hash-table-count cl-info::*html-index*)
+	     (hash-table-count *text-topics*))))
+		      
   ;; If the set of topics differs between HTML and text, print out
   ;; the differences.
-  (setf *extra-html-entries*
-	(set-difference *html-topics* *text-topics* :test #'equal))
-  (setf *missing-html-entries*
-	(set-difference *text-topics* *html-topics* :test #'equal))
+  #+nil
+  (progn
+    (setf *extra-html-entries*
+	  (set-difference *html-topics* *text-topics* :test #'equal))
+    (setf *missing-html-entries*
+	  (set-difference *text-topics* *html-topics* :test #'equal)))
+  (maphash #'(lambda (k v)
+	       (declare (ignore v))
+	       (unless (gethash k *text-topics*)
+		 (push k *extra-html-entries*)))
+	   cl-info::*html-index*)
+  (maphash #'(lambda (k v)
+	       (declare (ignore v))
+	       (unless (gethash k cl-info::*html-index*)
+		 (push k *missing-html-entries*)))
+	   *text-topics*)
 
   (flet
       ((maybe-print-warning (prefix-msg diffs)
@@ -386,4 +409,7 @@
 			 *extra-html-entries*)
     (maybe-print-warning (intl:gettext "Text entries not in HTML entries")
 			 *missing-html-entries*)))
+
+(defun verify-html-index ()
+  (time (verify-html-index-impl)))
 
