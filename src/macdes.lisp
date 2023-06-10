@@ -389,13 +389,6 @@
 		 (push k *missing-html-entries*)))
 	   *text-topics*)
 
-  (format *debug-io* "*** set diff done~%")
-  (format *debug-io* "*** ~D extra-html-entries: ~S~%"
-	  (length *extra-html-entries*)
-	  *extra-html-entries*)
-  (format *debug-io* "*** ~D missing-html-entries: ~S~%"
-	  (length *missing-html-entries*)
-	  *missing-html-entries*)
   (flet
       ((maybe-print-warning (prefix-msg diffs)
 	 (let ((max-display-length 20))
