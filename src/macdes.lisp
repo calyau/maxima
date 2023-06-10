@@ -161,7 +161,7 @@
 	     ;; the HTML doc for it.  For simplicity, we'll use
 	     ;; pregexp to replace " <n>" with "-n".
 	     (pregexp:pregexp-replace fixup-regexp topic "-\\1")))
-      (let* ((topic (fixup-topic ($sconcat x)))
+      (let* ((topic ($sconcat x))
              (found-it (gethash topic cl-info::*html-index*)))
 	(when *debug-display-html-help*
 	  (format *debug-io* "topic = ~S~%" topic)
