@@ -367,16 +367,15 @@
 		      
   ;; If the set of topics differs between HTML and text, print out
   ;; the differences.
-  (maphash #'(lambda (k v)
-	       (declare (ignore v))
-	       (unless (gethash k *text-topics*)
-		 (push k *extra-html-entries*)))
-	   cl-info::*html-index*)
-  (maphash #'(lambda (k v)
-	       (declare (ignore v))
-	       (unless (gethash k cl-info::*html-index*)
-		 (push k *missing-html-entries*)))
-	   *text-topics*)
+  (setf *extra-html-entries*
+	(loop for key being the hash-keys of cl-info::*html-index*
+	      unless (gethash key *text-topics*)
+		collect key))
+
+  (setf *missing-html-entries*
+	(loop for key being the hash-keys of *text-topics*
+	      unless (gethash key cl-info::*html-index*)
+		collect key))
 
   (flet
       ((maybe-print-warning (prefix-msg diffs)
