@@ -493,7 +493,8 @@
 		 (:file "ezgcd")))
    (:module documentation :pathname ""
     :depends-on (globals defmfun compatibility-macros)
-    :components ((:file "macdes")))
+    :components ((:file "macdes")
+		 (:file "verify-html-index")))
    (:module algebraic-database :pathname ""
     :depends-on (globals defmfun compatibility-macros)
     :components ((:file "inmis") 
