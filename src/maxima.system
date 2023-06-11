@@ -654,7 +654,8 @@
    (:module documentation :source-pathname ""
 	    :depends-on ("globals" "defmfun")
 	    :components
-	    ((:file "macdes")))
+	    ((:file "macdes")
+	     (:file "verify-html-index")))
    (:module algebraic-database :source-pathname ""
 	    :depends-on ("globals" "defmfun" "compatibility-macros1")
 	    :components
