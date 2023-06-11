@@ -15,9 +15,9 @@
 string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")
 
 if(BUILD_64BIT)
-    set(GNUPLOTVERSION "5.4.7")
+    set(GNUPLOTVERSION "5.4.8")
     string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")
-    set(GNUPLOT_MD5 "7ee9d67ebb8844e3f0c1e9fa857d73a1")
+    set(GNUPLOT_MD5 "b732e1c3a63180306b9a6bd6c6ebf02c")
     set(GNUPLOT_URL "https://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win64-mingw.7z")
 else()
     set(GNUPLOTVERSION "5.2.7")

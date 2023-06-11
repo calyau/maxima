@@ -619,11 +619,11 @@ o @code{false} según el caso.
 Cuando el resultado de @code{primep (@var{n})} es @code{false}, @var{n} es un
 número compuesto, y si es @code{true}, @var{n} es primo con alta probabilidad.
 
-Si @var{n} es menor que 341550071728321, se utiliza una versión 
+Si @var{n} es menor que 3317044064679887385961981, se utiliza una versión 
 determinística de la prueba de Miller-Rabin. En tal caso,
 si @code{primep (@var{n})} devuelve @code{true}, entonces @var{n} es un número primo.
 
-Para @var{n} mayor que 341550071728321 @code{primep} realiza 
+Para @var{n} mayor que 3317044064679887385961981 @code{primep} realiza 
 @code{primep_number_of_tests} pruebas de seudo-primalidad de Miller-Rabin y una 
 prueba de seudo-primalidad de Lucas. La probabilidad de que un número compuesto 
 @var{n} pase una prueba de Miller-Rabin es menor que 1/4. Con el valor por defecto de 

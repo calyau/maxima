@@ -15,7 +15,12 @@ grade: stable
 base: core22
 license: GPL-2.0+
 confinement: strict
-
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
+  - build-on: ppc64el
+  - build-on: s390x
 apps:
   maxima:
     command: usr/bin/maxima
@@ -54,8 +59,6 @@ parts:
     source: .
     autotools-configure-parameters:
        - --prefix=/usr
-       - --enable-clisp
-       - --enable-sbcl
     build-packages:
      - to arm64,amd64,armhf:
        - clisp

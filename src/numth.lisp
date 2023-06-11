@@ -495,6 +495,10 @@
 ;;
 ;; Chinese Remainder Theorem
 ;;
+
+(defmfun ($chinese :deprecated-p $solve_congruences) (&rest a)
+  (apply '$solve_congruences a))
+
 (defmfun $solve_congruences (rems mods &optional (return-lcm? nil)) 
   (cond 
     ((not (and ($listp rems) ($listp mods)))
