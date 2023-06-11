@@ -427,8 +427,11 @@ The first argument may be an array.
 
 @anchor{discrete_freq}
 @deffn {Function} discrete_freq (@var{data})
+
 Counts absolute frequencies in discrete samples, both numeric and categorical. Its unique argument is a list,
 or 1-dimensional array (as created by @code{make_array}).
+
+Examples:
 
 @c ===beg===
 @c load ("descriptive")$
@@ -445,7 +448,8 @@ or 1-dimensional array (as created by @code{make_array}).
 @end group
 @end example
 
-The first list gives the sample values and the second their absolute frequencies. Commands @code{? col} and @code{? transpose} should help you to understand the last input.
+In the return value,
+the first list gives the sample values, and the second, their absolute frequencies.
 
 The argument may be an array.
 
@@ -511,12 +515,14 @@ divides each component by the corresponding standard deviation.
 This is a sort of variant of the Maxima @code{submatrix} function.
 The first argument is the data matrix, the second is a predicate function
 and optional additional arguments are the numbers of the columns to be taken.
-Its behaviour is better understood with examples.
+
+Examples:
 
 These are multivariate records in which the wind speed
 in the first meteorological station were greater than 18.
 See that in the lambda expression the @var{i}-th component is
 referred to as @code{v[i]}.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -542,6 +548,7 @@ components of those records with wind speeds greater or equal than 16
 in station number 1 and less than 25 knots in station number 4. The sample
 contains only data from stations 1, 2 and 5. In this case,
 the predicate function is defined as an ordinary Maxima function.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -567,6 +574,7 @@ the predicate function is defined as an ordinary Maxima function.
 Here is an example with the categorical variables of @code{biomed.data}.
 We want the records corresponding to those patients in group @code{B}
 who are older than 38 years.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
@@ -598,6 +606,7 @@ who are older than 38 years.
 @end example
 
 Probably, the statistical analysis will involve only the blood measures,
+
 @c ===beg===
 @c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
@@ -629,6 +638,7 @@ Probably, the statistical analysis will involve only the blood measures,
 @end example
 
 This is the multivariate mean of @code{s3},
+
 @c ===beg===
 @c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
@@ -649,6 +659,7 @@ This is the multivariate mean of @code{s3},
 @end example
 
 Here, the first component is meaningless, since @code{A} and @code{B} are categorical, the second component is the mean age of individuals in rational form, and the fourth and last values exhibit some strange behaviour. This is because symbol @code{NA} is used here to indicate @var{non available} data, and the two means are nonsense. A possible solution would be to take out from the matrix those rows with @code{NA} symbols, although this deserves some loss of information.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
@@ -1050,10 +1061,11 @@ The non central moment of order @math{k}, defined as
 $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 @end tex
 
-Example:
+Examples:
 
 Input is a list.
 The first noncentral moment is equal to the sample mean.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
@@ -1075,6 +1087,7 @@ The first noncentral moment is equal to the sample mean.
 
 Input is a matrix.
 Calculation of the fifth noncentral moment for each column.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -1122,10 +1135,11 @@ The central moment of order @math{k}, defined as
 $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 @end tex
 
-Example:
+Examples:
 
 Input is a list.
 The second central moment is equal to the sample variance.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
@@ -1147,6 +1161,7 @@ The second central moment is equal to the sample variance.
 
 Input is a matrix.
 Calculation of the third central moment.
+
 @c ===end===
 @c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -1181,7 +1196,10 @@ See also functions @mref{central_moment} and @mrefdot{mean}
 @fname{cv} (@var{list}) @
 @fname{cv} (@var{matrix})
 
-The variation coefficient is the quotient between the sample standard deviation (@mref{std}) and the @mrefcomma{mean}
+Returns the variation coefficient,
+defined as the sample standard deviation @mref{std} divided by the @mrefdot{mean}
+
+Examples:
 
 @c ===beg===
 @c load ("descriptive")$
@@ -1224,6 +1242,8 @@ When the argument is a matrix, @mref{smin} returns
 a list containing the minimum values of the columns,
 which are associated to statistical variables.
 
+Examples:
+
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
@@ -1263,6 +1283,8 @@ This is the maximum value of the sample @var{list}.
 When the argument is a matrix, @mref{smax} returns
 a list containing the maximum values of the columns,
 which are associated to statistical variables.
+
+Examples:
 
 @c ===beg===
 @c load ("descriptive")$
@@ -1339,7 +1361,7 @@ Example:
 This is the @var{p}-quantile, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
 Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @ref{descriptive-pkg}
 
-Example:
+Examples:
 
 Input is a list. First and third quartiles are computed.
 
@@ -1425,10 +1447,17 @@ See also function @mrefdot{quantile}
 
 @anchor{qrange}
 @deffn {Function} qrange @
-@fname{qrange} (@var{list}) @
-@fname{qrange} (@var{matrix})
+@fname{qrange} (@var{x})
 
-The interquartilic range is the difference between the third and first quartiles, @code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
+Returns the interquartile range,
+defined as the difference between the third and first quartiles:
+@code{quantile(@var{x}, 3/4) - quantile(@var{x}, 1/4)}
+
+@var{x} must be a list or matrix.
+When @var{x} is a matrix,
+@code{qrange} returns the interquartile range for each column.
+
+Examples:
 
 @c ===beg===
 @c load ("descriptive")$
@@ -2046,6 +2075,7 @@ Empirical distribution function.
 
 @anchor{cov}
 @deffn {Function} cov (@var{matrix})
+
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
 @example
@@ -2102,6 +2132,7 @@ See also function @mrefdot{cov1}
 
 @anchor{cov1}
 @deffn {Function} cov1 (@var{matrix})
+
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
 @example
@@ -2188,7 +2219,9 @@ in which case the covariance matrix @code{cov1} must be calculated, or not, and 
 matrix (symmetric) must be given, instead of the data.
 @end itemize
 
-Example:
+Examples:
+
+Calculate the @code{global_variances} from sample data.
 
 @c ===beg===
 @c load ("descriptive")$
@@ -2249,7 +2282,7 @@ in which case the covariance matrix @code{cov1} must be calculated, or not, and 
 matrix (symmetric) must be given, instead of the data.
 @end itemize
 
-Example:
+Examples:
 
 @c ===beg===
 @c load ("descriptive")$
@@ -2275,7 +2308,7 @@ Example:
 @end group
 @end example
 
-Calculate de correlation matrix from the covariance matrix.
+Calculate the correlation matrix from the covariance matrix.
 
 @c ===beg===
 @c load ("descriptive")$
@@ -2514,7 +2547,7 @@ variance.
         xtics  = setify(makelist([concat("PC",k),k], k, p))) $
 @end example
 
-In case de covariance matrix is known, it can be passed to the function,
+In case the covariance matrix is known, it can be passed to the function,
 but option @code{data=false} must be used.
 
 @example
@@ -3176,7 +3209,7 @@ but only if @code{fill_density} is nonzero.
 
 Otherwise, histograms are displayed with bars showing vertical segments.
 
-Example:
+Examples:
 
 Construct a skyline histogram,
 and an ordinary histogram for comparison,
