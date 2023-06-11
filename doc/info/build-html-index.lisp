@@ -205,6 +205,25 @@
 		(namestring file))
 	(return-from find-index-file file)))))
   
+(defun parse-texinfo-version (string)
+  (when string
+    (let ((posn 0)
+	  (len (length string))
+	  (version 0))
+      (dotimes (k 3)
+	(cond
+	  ((<= posn len)
+	   (multiple-value-bind (digits end)
+	       (parse-integer string
+			      :start posn
+			      :junk-allowed t)
+	     (setf version (+ (or digits 0)
+			      (* version 100)))
+	     (setf posn (1+ end))))
+	  (t
+	   (setf version (* version 100)))))
+      version)))
+
 (defun get-texinfo-version (file)
   "Get the texinfo version from FILE"
   (let ((version-line
@@ -221,23 +240,8 @@
       (return-from get-texinfo-version))
     (setf *texinfo-version-string*
 	  (second (pregexp:pregexp-match "GNU Texinfo \(.*?\)," version-line)))
-    (when *texinfo-version-string*
-      (let ((posn 0)
-	    (len (length *texinfo-version-string*))
-	    (version 0))
-	(dotimes (k 3)
-	  (cond
-	    ((<= posn len)
-	     (multiple-value-bind (digits end)
-		 (parse-integer *texinfo-version-string*
-				:start posn
-				:junk-allowed t)
-	       (when digits
-		 (setf version (+ digits (* version 100))))
-	       (setf posn (1+ end))))
-	    (t
-	     (setf version (* version 100)))))
-	(setf *texinfo-version* version)))))
+    (setf *texinfo-version*
+	  (parse-texinfo-version *texinfo-version-string*))))
 
 (defun build-html-index (dir)
   (clrhash *html-index*)
