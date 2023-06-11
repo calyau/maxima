@@ -821,15 +821,12 @@ $${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 
 Examples:
 
+Sample mean of a list.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean (s1);
-@c %, numer;
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c mean (s2);
-@c mean ([a, b, c, d], [1, 2, 3, 4]);
-@c mean (matrix ([p, q, r], [s, t, u]), [vv, ww]);
 @c ===end===
 @example
 (%i1) load ("descriptive")$
@@ -840,15 +837,61 @@ Examples:
 (%o3)                          ---
                                100
 @end group
+@end example
+
+Sample mean of each column of a matrix.
+
+@c ===beg===
+@c load ("descriptive")$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c mean (s2);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i4) %, numer;
-(%o4)                         4.71
-@end group
-(%i5) s2 : read_matrix (file_search ("wind.data"))$
-@group
-(%i6) mean (s2);
-(%o6) [9.9485, 10.160700000000004, 10.868499999999997, 
+(%i3) mean (s2);
+(%o3) [9.9485, 10.160700000000004, 10.868499999999997, 
                           15.716600000000001, 14.844100000000001]
+@end group
+@end example
+
+Weighted sample mean of a list.
+
+@c ===beg===
+@c load ("descriptive")$
+@c mean ([a, b, c, d], [1, 2, 3, 4]);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+@group
+(%i2) mean ([a, b, c, d], [1, 2, 3, 4]);
+                       4 d + 3 c + 2 b + a
+(%o2)                  -------------------
+                               10
+@end group
+@end example
+
+Weighted sample mean of each column of a matrix.
+
+@c ===beg===
+@c load ("descriptive")$
+@c mm: matrix ([p, q, r], [s, t, u]);
+@c mean (mm, [vv, ww]);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+@group
+(%i2) mm: matrix ([p, q, r], [s, t, u]);
+                           [ p  q  r ]
+(%o2)                      [         ]
+                           [ s  t  u ]
+@end group
+@group
+(%i3) mean (mm, [vv, ww]);
+              s ww + p vv  t ww + q vv  u ww + r vv
+(%o3)        [-----------, -----------, -----------]
+                ww + vv      ww + vv      ww + vv
 @end group
 @end example
 
@@ -937,6 +980,8 @@ $${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 
 Example:
 
+Sample variance of a list.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
@@ -948,6 +993,66 @@ Example:
 @group
 (%i3) var (s1), numer;
 (%o3)                   8.425899999999999
+@end group
+@end example
+
+Sample variance of each column of a matrix.
+
+@c ===beg===
+@c load ("descriptive")$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c var (s2);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i3) var (s2);
+(%o3) [17.22190675000001, 14.987736510000005, 
+       15.475728749999998, 32.17651044000001, 24.423076190000007]
+@end group
+@end example
+
+Weighted sample variance of a list.
+
+@c ===beg===
+@c load ("descriptive")$
+@c var ([a - b, a, a + b], [3, 5, 7]);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+@group
+(%i2) var ([a - b, a, a + b], [3, 5, 7]);
+                                  2
+                             134 b
+(%o2)                        ------
+                              225
+@end group
+@end example
+
+Weighted sample variance of each column of a matrix.
+
+@c ===beg===
+@c load ("descriptive")$
+@c mm: matrix ([a - b, c - d], [a, c], [a + b, c + d]);
+@c var (mm, [3, 5, 7]);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+@group
+(%i2) mm: matrix ([a - b, c - d], [a, c], [a + b, c + d]);
+                        [ a - b  c - d ]
+                        [              ]
+(%o2)                   [   a      c   ]
+                        [              ]
+                        [ b + a  d + c ]
+@end group
+@group
+(%i3) var (mm, [3, 5, 7]);
+                              2       2
+                         134 b   134 d
+(%o3)                   [------, ------]
+                          225     225
 @end group
 @end example
 
@@ -1041,12 +1146,12 @@ it is not required that they sum to 1.
 
 Example:
 
+Sample standard deviation of a list.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std (s1), numer;
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c std (s2);
 @c ===end===
 @example
 (%i1) load ("descriptive")$
@@ -1055,10 +1160,21 @@ Example:
 (%i3) std (s1), numer;
 (%o3)                  2.9027400848164135
 @end group
-(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@end example
+
+Sample standard deviation of each column of a matrix.
+
+@c ===beg===
+@c load ("descriptive")$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c std (s2);
+@c ===end===
+@example
+(%i1) load ("descriptive")$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i5) std (s2);
-(%o5) [4.149928523480858, 3.8713998127292415, 
+(%i3) std (s2);
+(%o3) [4.149928523480858, 3.8713998127292415, 
         3.9339202775348663, 5.672434260526957, 4.941970881136392]
 @end group
 @end example
@@ -1190,7 +1306,7 @@ $${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 
 Examples:
 
-Input is a list.
+First noncentral moment of a list.
 The first noncentral moment is equal to the sample mean.
 
 @c ===beg===
@@ -1212,8 +1328,7 @@ The first noncentral moment is equal to the sample mean.
 @end group
 @end example
 
-Input is a matrix.
-Calculation of the fifth noncentral moment for each column.
+Fifth noncentral moment of each column of a matrix.
 
 @c ===beg===
 @c load ("descriptive")$
@@ -1317,7 +1432,7 @@ $${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 
 Examples:
 
-Input is a list.
+Second central moment of a list.
 The second central moment is equal to the sample variance.
 
 @c ===beg===
@@ -1339,8 +1454,7 @@ The second central moment is equal to the sample variance.
 @end group
 @end example
 
-Input is a matrix.
-Calculation of the third central moment.
+Third central moment of each column of a matrix.
 
 @c ===end===
 @c load ("descriptive")$
