@@ -344,7 +344,7 @@
 		       do (setf (gethash topic *text-topics*) t))))
 	   cl-info::*info-tables*))
 
-(defun verify-html-index-impl ()
+(defun verify-html-index ()
   ;; Make sure the hash table has the correct test!  This is important.
   (unless (eql (hash-table-test cl-info::*html-index*) #-clisp 'equal
 						       #+clisp 'ext:fasthash-equal)
@@ -397,8 +397,16 @@
     (maybe-print-warning (intl:gettext "HTML entries not in text entries")
 			 *extra-html-entries*)
     (maybe-print-warning (intl:gettext "Text entries not in HTML entries")
-			 *missing-html-entries*)))
+			 *missing-html-entries*))
+  ;; Return true if there a no extra or missing entries.
+  (not (or *extra-html-entries* *missing-html-entries*)))
 
-(defun verify-html-index ()
-  (time (verify-html-index-impl)))
-
+;; Undocumented Maxima function to verify the HTML index so it can be
+;; easily run from the REPL.  Mostly for debugging.  The optional arg
+;; TIMEP will call TIME to show how long it took to run the
+;; verification.  This is also for debugging in case the time seems to
+;; have gotten too long on startup.
+(defmfun $verify_html_index (&optional timep)
+  (if timep
+      (time (verify-html-index))
+      (verify-html-index)))
