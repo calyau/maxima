@@ -27,10 +27,16 @@
   "Full list of all the text entries that are not the the HTML entries.
   Ideally should be empty.")
 
+;; NOTE: This function should only be called by build-html-index.lisp
+;; to build the html index.  build-html-index.lisp isn't compiled and
+;; this function might be slow without being compiled so leave it here
+;; so that it's compiled.
+;;
 ;; This might be rather slow.  Perhaps an alternative solution is to
 ;; leave these alone and have $hdescribe encode any special characters
-;; before looking them up.  Since ? only used occasionally, we don't
-;; incur the cost here and move it to ? where the impact is lower.
+;; before looking them up.  Since "?" is only used occasionally, we
+;; don't incur the cost here and move it to "?" where the impact is
+;; lower.
 ;;
 ;; However, a test run where this function was removed made virtually
 ;; no difference in runtime (with cmucl).  (31.97 sec with and 31.62
