@@ -2254,9 +2254,27 @@ Empirical distribution function.
 
 
 @anchor{cov}
-@deffn {Function} cov (@var{matrix})
+@deffn {Function} cov @
+@fname{cov} (@var{X}) @
+@fname{cov} (@var{X}, @var{w})
 
-The covariance matrix of the multivariate sample, defined as
+Returns the sample covariance matrix.
+@var{X} must be a matrix.
+
+The sample covariance matrix has the same number of rows and columns,
+both equal to the number of columns of @var{X};
+each diagonal element @var{X[i, i]} is equal to the sample variance of the @var{i}'th column,
+and each off-diagonal element @var{X[i, j]} is equal to the sample covariance of the @var{i}'th and @var{j}'th columns.
+
+@var{w} is an optional per-datum weight.
+@var{w} must either be 1, in which case every datum @var{X[i]} is given equal weight,
+or a list of the same length as @var{X},
+in which case the weight for @var{X[i]} is given by @var{w[i]}.
+The elements of @var{w} must be nonnegative and not all zero;
+it is not required that they sum to 1.
+
+The unweighted sample covariance is defined as
+
 @ifnottex
 @example
 @group
@@ -2273,7 +2291,44 @@ The covariance matrix of the multivariate sample, defined as
 @tex
 $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
-where @math{X_j} is the @math{j}-th row of the sample matrix.
+
+where @var{X[j]} is the @var{j}'th row of the sample matrix.
+
+The weighted sample covariance is defined as
+
+@ifnottex
+@example
+@group
+              n
+             ====
+          1  \           _        _
+      S = -   >    w  (X  - X) (X  - X)'
+          Z  /      j   j        j
+             ====
+             j = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${S={1\over{Z}}{\sum_{j=1}^{n}{w_j \left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
+@end tex
+
+where @var{Z} is the sum of the weights,
+
+@ifnottex
+@example
+                   n
+                  ====
+                  \
+             Z =   >    w
+                  /      i
+                  ====
+                  i = 1
+@end example
+@end ifnottex
+@tex
+$${Z={\sum_{i=1}^{n}{w_{i}}}}$$
+@end tex
 
 Example:
 
