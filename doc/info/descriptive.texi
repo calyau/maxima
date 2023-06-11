@@ -428,7 +428,7 @@ The first argument may be an array.
 @anchor{discrete_freq}
 @deffn {Function} discrete_freq (@var{data})
 
-Counts absolute frequencies in discrete samples, both numeric and categorical. Its unique argument is a list,
+Counts absolute frequencies in discrete samples, both numeric and categorical. Its sole argument is a list,
 or 1-dimensional array (as created by @code{make_array}).
 
 Examples:
@@ -3734,7 +3734,7 @@ graphic objects.
 
 Plots stem and leaf diagrams.
 
-Unique available option is:
+The only available option is:
 
 @itemize @bullet
 
