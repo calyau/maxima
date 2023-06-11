@@ -752,21 +752,21 @@ Add a constant column and remove the third variable.
 @fname{mean} (@var{x}) @
 @fname{mean} (@var{x}, @var{w})
 
-Computes the sample mean of @var{x}, which must be a list or matrix.
 When @var{x} is a list,
-the result is a scalar value or expression.
+@code{mean} returns the sample mean of @var{x}.
+
 When @var{x} is a matrix,
-the result is a list,
-with one element per column of @var{x}.
+@code{mean} returns a list comprising the sample mean of each column.
 
 @var{w} is an optional per-datum weight.
 @var{w} must either be 1, in which case every datum @var{x[i]} is given equal weight,
 or a list of the same length as @var{x},
 in which case the weight for @var{x[i]} is given by @var{w[i]}.
-The elements of @var{w} must be nonnegative and not all zero.
-It is not required that they sum to 1.
+The elements of @var{w} must be nonnegative and not all zero;
+it is not required that they sum to 1.
 
 The unweighted sample mean is defined as
+
 @ifnottex
 @example
                      n
@@ -783,35 +783,37 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 @end tex
 
 The weighted sample mean is defined as
+
 @ifnottex
 @example
                      n
                     ====
              _   1  \
              x = -   >    w  x
-                 S  /      i  i
+                 Z  /      i  i
                     ====
                     i = 1
 @end example
 @end ifnottex
 @tex
-$${\bar{x}={1\over{S}}{\sum_{i=1}^{n}{w_{i} x_{i}}}}$$
+$${\bar{x}={1\over{Z}}{\sum_{i=1}^{n}{w_{i} x_{i}}}}$$
 @end tex
 
-where @var{S} is the sum of the weights,
+where @var{Z} is the sum of the weights,
+
 @ifnottex
 @example
                    n
                   ====
                   \
-             S =   >    w
+             Z =   >    w
                   /      i
                   ====
                   i = 1
 @end example
 @end ifnottex
 @tex
-$${S={\sum_{i=1}^{n}{w_{i}}}}$$
+$${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 @end tex
 
 Examples:
@@ -856,25 +858,75 @@ Examples:
 
 @anchor{var}
 @deffn {Function} var @
-@fname{var} (@var{list}) @
-@fname{var} (@var{matrix})
+@fname{var} (@var{x}) @
+@fname{var} (@var{x}, @var{w})
 
-This is the sample variance, defined as
+When @var{x} is a list,
+@code{var} returns the sample variance of @var{x}.
+
+When @var{x} is a matrix,
+@code{var} returns a list comprising the sample variance of each column.
+
+@var{w} is an optional per-datum weight.
+@var{w} must either be 1, in which case every datum @var{x[i]} is given equal weight,
+or a list of the same length as @var{x},
+in which case the weight for @var{x[i]} is given by @var{w[i]}.
+The elements of @var{w} must be nonnegative and not all zero;
+it is not required that they sum to 1.
+
+The unweighted sample variance is defined as
+
 @ifnottex
 @example
 @group
-                     n
-                   ====
-           2   1   \          _ 2
-          s  = -    >    (x - x)
-               n   /       i
-                   ====
-                   i = 1
+                    n
+                  ====
+           2   1  \          _ 2
+          s  = -   >    (x - x)
+               n  /       i
+                  ====
+                  i = 1
 @end group
 @end example
 @end ifnottex
 @tex
 $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
+@end tex
+
+The weighted sample variance is defined as
+
+@ifnottex
+@example
+@group
+                    n
+                  ====
+           2   1  \             _ 2
+          s  = -   >    w  (x - x)
+               Z  /      i   i
+                  ====
+                  i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1}\over{Z}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
+@end tex
+
+where @var{Z} is the sum of the weights,
+
+@ifnottex
+@example
+                   n
+                  ====
+                  \
+             Z =   >    w
+                  /      i
+                  ====
+                  i = 1
+@end example
+@end ifnottex
+@tex
+$${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 @end tex
 
 Example:
@@ -960,10 +1012,23 @@ See also function @mrefdot{var}
 
 @anchor{std}
 @deffn {Function} std @
-@fname{std} (@var{list}) @
-@fname{std} (@var{matrix})
+@fname{std} (@var{x}) @
+@fname{std} (@var{x}, @var{w})
 
-This is the square root of the function @code{var}, the variance with denominator @math{n}.
+When @var{x} is a list,
+@code{std} returns the sample standard deviation of @var{x},
+which is defined as the square root of the sample variance,
+as computed by @code{var}.
+
+When @var{x} is a matrix,
+@code{std} returns a list comprising the sample standard deviation of each column.
+
+@var{w} is an optional per-datum weight.
+@var{w} must either be 1, in which case every datum @var{x[i]} is given equal weight,
+or a list of the same length as @var{x},
+in which case the weight for @var{x[i]} is given by @var{w[i]}.
+The elements of @var{w} must be nonnegative and not all zero;
+it is not required that they sum to 1.
 
 Example:
 
@@ -1040,25 +1105,75 @@ See also functions @mref{var1} and @mrefdot{std}
 
 @anchor{noncentral_moment}
 @deffn {Function} noncentral_moment @
-@fname{noncentral_moment} (@var{list}, @var{k}) @
-@fname{noncentral_moment} (@var{matrix}, @var{k})
+@fname{noncentral_moment} (@var{x}, @var{k}) @
+@fname{noncentral_moment} (@var{x}, @var{k}, @var{w})
 
-The non central moment of order @math{k}, defined as
+When @var{x} is a list,
+@code{noncentral_moment} returns the noncentral moment of order @var{k} of @var{x}.
+
+When @var{x} is a matrix,
+@code{noncentral_moment} returns a list comprising the noncentral moment of order @var{k} of each column.
+
+@var{w} is an optional per-datum weight.
+@var{w} must either be 1, in which case every datum @var{x[i]} is given equal weight,
+or a list of the same length as @var{x},
+in which case the weight for @var{x[i]} is given by @var{w[i]}.
+The elements of @var{w} must be nonnegative and not all zero;
+it is not required that they sum to 1.
+
+The unweighted noncentral moment of order @var{k} is defined as
+
 @ifnottex
 @example
 @group
-                       n
-                     ====
-                 1   \      k
-                 -    >    x
-                 n   /      i
-                     ====
-                     i = 1
+                     n
+                    ====
+                 1  \      k
+                 -   >    x
+                 n  /      i
+                    ====
+                    i = 1
 @end group
 @end example
 @end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
+@end tex
+
+The weighted noncentral moment of order @var{k} is defined as
+
+@ifnottex
+@example
+@group
+                     n
+                    ====
+                 1  \         k
+                 -   >    w  x
+                 Z  /      i  i
+                    ====
+                    i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{Z}}{\sum_{i=1}^{n}{w_{i} x_{i}^k}}}$$
+@end tex
+
+where @var{Z} is the sum of the weights,
+
+@ifnottex
+@example
+                   n
+                  ====
+                  \
+             Z =   >    w
+                  /      i
+                  ====
+                  i = 1
+@end example
+@end ifnottex
+@tex
+$${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 @end tex
 
 Examples:
@@ -1114,25 +1229,75 @@ See also function @mrefdot{central_moment}
 
 @anchor{central_moment}
 @deffn {Function} central_moment @
-@fname{central_moment} (@var{list}, @var{k}) @
-@fname{central_moment} (@var{matrix}, @var{k})
+@fname{central_moment} (@var{x}, @var{k}) @
+@fname{central_moment} (@var{x}, @var{k}, @var{w})
 
-The central moment of order @math{k}, defined as
+When @var{x} is a list,
+@code{central_moment} returns the central moment of order @var{k} of @var{x}.
+
+When @var{x} is a matrix,
+@code{central_moment} returns a list comprising the central moment of order @var{k} of each column.
+
+@var{w} is an optional per-datum weight.
+@var{w} must either be 1, in which case every datum @var{x[i]} is given equal weight,
+or a list of the same length as @var{x},
+in which case the weight for @var{x[i]} is given by @var{w[i]}.
+The elements of @var{w} must be nonnegative and not all zero;
+it is not required that they sum to 1.
+
+The unweighted central moment of order @var{k} is defined as
+
 @ifnottex
 @example
 @group
-                    n
-                  ====
-              1   \          _ k
-              -    >    (x - x)
-              n   /       i
-                  ====
-                  i = 1
+                  n
+                 ====
+              1  \          _ k
+              -   >    (x - x)
+              n  /       i
+                 ====
+                 i = 1
 @end group
 @end example
 @end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
+@end tex
+
+The weighted central moment of order @var{k} is defined as
+
+@ifnottex
+@example
+@group
+                  n
+                 ====
+              1  \             _ k
+              -   >    w  (x - x)
+              Z  /      i   i
+                 ====
+                 i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{Z}}{\sum_{i=1}^{n}{w_{i} (x_{i}-\bar{x})^k}}}$$
+@end tex
+
+where @var{Z} is the sum of the weights,
+
+@ifnottex
+@example
+                   n
+                  ====
+                  \
+             Z =   >    w
+                  /      i
+                  ====
+                  i = 1
+@end example
+@end ifnottex
+@tex
+$${Z={\sum_{i=1}^{n}{w_{i}}}}$$
 @end tex
 
 Examples:
