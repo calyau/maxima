@@ -685,11 +685,14 @@ maxima-index.lisp: build_index.pl maxima.info
 # that if maxima_toc.html is done, we have all the remaining html
 # files.
 #
-# First we find all the files that we don't want to have to process.
-# This includes the indices, maxima_singlepage.html and any other html
-# file that doesn't start with "maxima".
+# Load build-html-index.lisp and run the builder to create
+# maxima-index-html.lisp.  In a clean directory, there won't be a
+# maxima-index-html.lisp, so we don't want to try to verify the html
+# index to prevent spurious warnings.  Then after it's done, run
+# maxima to verify the index.
 maxima-index-html.lisp : maxima_toc.html build-html-index.lisp
-	../../maxima-local --no-init --preload=build-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
+	../../maxima-local --no-init --no-verify-html-index --preload=build-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
+	../../maxima-local --no-init --batch-string="quit();"
 
 DOLLAR_SIGN = $$
 
