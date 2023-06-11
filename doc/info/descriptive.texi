@@ -752,6 +752,9 @@ Add a constant column and remove the third variable.
 @fname{mean} (@var{x}) @
 @fname{mean} (@var{x}, @var{w})
 
+Returns the sample mean.
+@var{x} must be a list or matrix.
+
 When @var{x} is a list,
 @code{mean} returns the sample mean of @var{x}.
 
@@ -860,6 +863,9 @@ Examples:
 @deffn {Function} var @
 @fname{var} (@var{x}) @
 @fname{var} (@var{x}, @var{w})
+
+Returns the sample variance.
+@var{x} must be a list or matrix.
 
 When @var{x} is a list,
 @code{var} returns the sample variance of @var{x}.
@@ -1015,6 +1021,9 @@ See also function @mrefdot{var}
 @fname{std} (@var{x}) @
 @fname{std} (@var{x}, @var{w})
 
+Returns the sample standard deviation.
+@var{x} must be a list or matrix.
+
 When @var{x} is a list,
 @code{std} returns the sample standard deviation of @var{x},
 which is defined as the square root of the sample variance,
@@ -1107,6 +1116,9 @@ See also functions @mref{var1} and @mrefdot{std}
 @deffn {Function} noncentral_moment @
 @fname{noncentral_moment} (@var{x}, @var{k}) @
 @fname{noncentral_moment} (@var{x}, @var{k}, @var{w})
+
+Returns the noncentral moment of order @var{k}.
+@var{x} must be a list or matrix.
 
 When @var{x} is a list,
 @code{noncentral_moment} returns the noncentral moment of order @var{k} of @var{x}.
@@ -1231,6 +1243,9 @@ See also function @mrefdot{central_moment}
 @deffn {Function} central_moment @
 @fname{central_moment} (@var{x}, @var{k}) @
 @fname{central_moment} (@var{x}, @var{k}, @var{w})
+
+Returns the central moment of order @var{k}.
+@var{x} must be a list or matrix.
 
 When @var{x} is a list,
 @code{central_moment} returns the central moment of order @var{k} of @var{x}.
