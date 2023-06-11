@@ -975,10 +975,21 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 
 Example:
 
+Input is a list.
+The first noncentral moment is equal to the sample mean.
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c noncentral_moment (s1, 1), numer; /* the mean */
+@c noncentral_moment (s1, 1), numer;
+@c mean (s1), numer;
+@c ===end===
+@example
+@end example
+
+Input is a matrix.
+Calculation of the fifth noncentral moment for each column.
+@c ===beg===
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c noncentral_moment (s2, 5);
 @c ===end===
@@ -1033,10 +1044,21 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 Example:
 
+Input is a list.
+The second central moment is equal to the sample variance.
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c central_moment (s1, 2), numer; /* the variance */
+@c central_moment (s1, 2), numer;
+@c var (s1), numer;
+@c ===end===
+@example
+@end example
+
+Input is a matrix.
+Calculation of the third central moment.
+@c ===end===
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c central_moment (s2, 3);
 @c ===end===
@@ -1229,11 +1251,20 @@ Although there are several definitions for the sample quantile (Hyndman, R. J., 
 
 Example:
 
+Input is a list. First and third quartiles are computed.
+
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c /* 1st and 3rd quartiles */ 
-@c          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+@c [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+@c ===end===
+@example
+@end example
+
+Input is a matrix. First quartile is computed for each column.
+
+@c ===beg===
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quantile (s2, 1/4);
 @c ===end===
@@ -1946,13 +1977,13 @@ Example:
 @c ===beg===
 @c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprintprec : 7$  /* change precision for pretty output */
+@c fpprintprec : 7$
 @c cov (s2);
 @c ===end===
 @example
 (%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
-(%i3) fpprintprec : 7$  /* change precision for pretty output */
+(%i3) fpprintprec : 7$
 @group
 (%i4) cov (s2);
       [ 17.22191  13.61811  14.37217  19.39624  15.42162 ]
@@ -2002,13 +2033,13 @@ Example:
 @c ===beg===
 @c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprintprec : 7$ /* change precision for pretty output */
+@c fpprintprec : 7$
 @c cov1 (s2);
 @c ===end===
 @example
 (%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
-(%i3) fpprintprec : 7$ /* change precision for pretty output */
+(%i3) fpprintprec : 7$
 @group
 (%i4) cov1 (s2);
       [ 17.39587  13.75567  14.51734  19.59216  15.5774  ]
@@ -2265,16 +2296,16 @@ Example:
 @c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
-@c fpprintprec : 5$ /* for pretty output */
-@c z[1];  /* precision matrix */
-@c z[2];  /* multiple correlation vector */
-@c z[3];  /* partial correlation matrix */
+@c fpprintprec : 5$
+@c precision_matrix: z[1];
+@c multiple_correlation_vector: z[2];
+@c partial_correlation_matrix: z[3];
 @c ===end===
 @example
 (%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) z : list_correlations (s2)$
-(%i4) fpprintprec : 5$ /* for pretty output */
+(%i4) fpprintprec : 5$
 @group
 (%i5) z[1];  /* precision matrix */
       [  .38486   - .13856   - .15626   - .10239    .031179  ]
@@ -2974,7 +3005,7 @@ Freedman-Diaconis formula for the number of classes.
 @c ===beg===
 @c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram histogram(s1, nclasses=fd) $
+@c histogram(s1, nclasses=fd) $
 @c ===end===
 @example
 (%i1) load ("descriptive")$
