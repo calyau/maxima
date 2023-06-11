@@ -228,18 +228,22 @@ Univariate frequency table.
 @c ===end===
 @example
 (%i1) load ("descriptive")$
+@group
 (%i2) sam1: build_sample([[6,1], [j,2], [2,1]]);
-                       [ 6 ]
-                       [   ]
-                       [ j ]
-(%o2)                  [   ]
-                       [ j ]
-                       [   ]
-                       [ 2 ]
+                              [ 6 ]
+                              [   ]
+                              [ j ]
+(%o2)                         [   ]
+                              [ j ]
+                              [   ]
+                              [ 2 ]
+@end group
+@group
 (%i3) mean(sam1);
-                      2 j + 8
-(%o3)                [-------]
-                         4
+                              j + 4
+(%o3)                        [-----]
+                                2
+@end group
 (%i4) barsplot(sam1) $
 @end example
 
@@ -253,27 +257,31 @@ Multivariate frequency table.
 @c ===end===
 @example
 (%i1) load ("descriptive")$
+@group
 (%i2) sam2: build_sample([[6,3,1], [5,6,2], [u,2,1],[6,8,2]]) ;
-                           [ 6  3 ]
-                           [      ]
-                           [ 5  6 ]
-                           [      ]
-                           [ 5  6 ]
-(%o2)                      [      ]
-                           [ u  2 ]
-                           [      ]
-                           [ 6  8 ]
-                           [      ]
-                           [ 6  8 ]
+                            [ 6  3 ]
+                            [      ]
+                            [ 5  6 ]
+                            [      ]
+                            [ 5  6 ]
+(%o2)                       [      ]
+                            [ u  2 ]
+                            [      ]
+                            [ 6  8 ]
+                            [      ]
+                            [ 6  8 ]
+@end group
+@group
 (%i3) cov(sam2);
-       [   2                 2                            ]
-       [  u  + 158   (u + 28)     2 u + 174   11 (u + 28) ]
-       [  -------- - ---------    --------- - ----------- ]
-(%o3)  [     6          36            6           12      ]
-       [                                                  ]
-       [ 2 u + 174   11 (u + 28)            21            ]
-       [ --------- - -----------            --            ]
-       [     6           12                 4             ]
+      [   2                 2                            ]
+      [  u  + 158   (u + 28)     2 u + 174   11 (u + 28) ]
+      [  -------- - ---------    --------- - ----------- ]
+(%o3) [     6          36            6           12      ]
+      [                                                  ]
+      [ 2 u + 174   11 (u + 28)            21            ]
+      [ --------- - -----------            --            ]
+      [     6           12                 4             ]
+@end group
 (%i4) barsplot(sam2, grouping=stacked) $
 @end example
 
@@ -333,8 +341,12 @@ the interval @code{[0, 1.8]}, 24 digits in @code{(1.8, 3.6]}, and so on.
 @example
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) continuous_freq (s1, 5);
-(%o3) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
+               9  18  27  36
+(%o3)     [[0, -, --, --, --, 9], [16, 24, 18, 17, 25]]
+               5  5   5   5
+@end group
 @end example
 
 Optional argument indicates we want 7 classes with limits
@@ -348,8 +360,10 @@ Optional argument indicates we want 7 classes with limits
 @example
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) continuous_freq (s1, [-2,12,7]);
 (%o3) [[- 2, 0, 2, 4, 6, 8, 10, 12], [8, 20, 22, 17, 20, 13, 0]]
+@end group
 @end example
 
 Optional argument indicates we want the default number of classes with limits
@@ -363,11 +377,13 @@ Optional argument indicates we want the default number of classes with limits
 @example
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) continuous_freq (s1, [-2,12]);
-                3  4  11  18     32  39  46  53
-(%o3)  [[- 2, - -, -, --, --, 5, --, --, --, --, 12], 
-                5  5  5   5      5   5   5   5
-               [0, 8, 20, 12, 18, 9, 8, 25, 0, 0]]
+               3  4  11  18     32  39  46  53
+(%o3) [[- 2, - -, -, --, --, 5, --, --, --, --, 12], 
+               5  5  5   5      5   5   5   5
+                              [0, 8, 20, 12, 18, 9, 8, 25, 0, 0]]
+@end group
 @end example
 
 The first argument may be an array.
@@ -383,17 +399,23 @@ The first argument may be an array.
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) a1 : make_array (fixnum, length (s1)) $
+@group
 (%i4) fillarray (a1, s1);
-(%o4) @{Lisp Array: 
-#(3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 \
-5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9
-  2 3 0 7 8 1 6 4 0 6 2 8 6 2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 \
-1 1 7 0 6 7)@}
+(%o4) @{Lisp Array: #(3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2\
+ 6 4 3 3 8 3 2 7 9 5
+               0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7\
+ 4 9 4 4 5 9 2
+               3 0 7 8 1 6 4 0 6 2 8 6 2 0 8 9 9 8 6 2 8 0 3 4 8\
+ 2 5 3 4 2 1 1
+               7 0 6 7)@}
+@end group
+@group
 (%i5) continuous_freq (a1);
            9   9  27  18  9  27  63  36  81
 (%o5) [[0, --, -, --, --, -, --, --, --, --, 9], 
            10  5  10  5   2  5   10  5   10
                              [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -438,15 +460,21 @@ The argument may be an array.
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) a1 : make_array (fixnum, length (s1)) $
+@group
 (%i4) fillarray (a1, s1);
-(%o4) @{Lisp Array: 
-#(3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 \
-5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9
-  2 3 0 7 8 1 6 4 0 6 2 8 6 2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 \
-1 1 7 0 6 7)@}
+(%o4) @{Lisp Array: #(3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2\
+ 6 4 3 3 8 3 2 7 9 5
+               0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7\
+ 4 9 4 4 5 9 2
+               3 0 7 8 1 6 4 0 6 2 8 6 2 0 8 9 9 8 6 2 8 0 3 4 8\
+ 2 5 3 4 2 1 1
+               7 0 6 7)@}
+@end group
+@group
 (%i5) discrete_freq (a1);
 (%o5) [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
                              [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -581,7 +609,7 @@ Probably, the statistical analysis will involve only the blood measures,
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) subsample (s3, lambda([v], v[1] = B and v[2] > 38),
-                 3, 4, 5, 6);
+           3, 4, 5, 6);
                    [ 28.0  102.3  17.1  146 ]
                    [                        ]
                    [ 21.0  92.4   10.3  197 ]
@@ -611,11 +639,11 @@ This is the multivariate mean of @code{s3},
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) mean (s3);
-       65 B + 35 A  317          6 NA + 8144.999999999999
-(%o3) [-----------, ---, 87.178, ------------------------, 
-           100      10                     100
+       13 B + 7 A  317
+(%o3) [----------, ---, 87.178, 0.06 NA + 81.44999999999999, 
+           20      10
                                                     3 NA + 19587
-                                            18.123, ------------]
+                                18.122999999999998, ------------]
                                                         100
 @end group
 @end example
@@ -755,7 +783,8 @@ Example:
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i6) mean (s2);
-(%o6)     [9.9485, 10.1607, 10.8685, 15.7166, 14.8441]
+(%o6) [9.9485, 10.160700000000004, 10.868499999999997, 
+                          15.716600000000001, 14.844100000000001]
 @end group
 @end example
 
@@ -856,8 +885,8 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) var1 (s2);
-(%o5) [17.39586540404041, 15.13912778787879, 15.63204924242424, 
-                            32.50152569696971, 24.66977392929294]
+(%o5) [17.395865404040414, 15.139127787878794, 
+       15.632049242424243, 32.50152569696971, 24.669773929292937]
 @end group
 @end example
 
@@ -891,13 +920,13 @@ Example:
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) std (s1), numer;
-(%o3)                   2.902740084816414
+(%o3)                  2.9027400848164135
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) std (s2);
-(%o5) [4.149928523480858, 3.871399812729241, 3.933920277534866, 
-                            5.672434260526957, 4.941970881136392]
+(%o5) [4.149928523480858, 3.8713998127292415, 
+        3.9339202775348663, 5.672434260526957, 4.941970881136392]
 @end group
 @end example
 
@@ -936,8 +965,8 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) std1 (s2);
-(%o5) [4.170835096721089, 3.89090320978032, 3.953738641137555, 
-                            5.701010936401517, 4.966867617451963]
+(%o5) [4.170835096721089, 3.8909032097803196, 
+        3.9537386411375555, 5.701010936401517, 4.966867617451963]
 @end group
 @end example
 
@@ -984,6 +1013,16 @@ The first noncentral moment is equal to the sample mean.
 @c mean (s1), numer;
 @c ===end===
 @example
+(%i1) load ("descriptive")$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) noncentral_moment (s1, 1), numer;
+(%o3)                         4.71
+@end group
+@group
+(%i4) mean (s1), numer;
+(%o4)                         4.71
+@end group
 @end example
 
 Input is a matrix.
@@ -995,18 +1034,11 @@ Calculation of the fifth noncentral moment for each column.
 @c ===end===
 @example
 (%i1) load ("descriptive")$
-(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i3) noncentral_moment (s1, 1), numer; /* the mean */
-(%o3)                         4.71
-@end group
-@group
-(%i5) s2 : read_matrix (file_search ("wind.data"))$
-@end group
-@group
-(%i6) noncentral_moment (s2, 5);
-(%o6) [319793.8724761505, 320532.1923892463,
-      391249.5621381556, 2502278.205988911, 1691881.797742255]
+(%i3) noncentral_moment (s2, 5);
+(%o3) [319793.87247615046, 320532.19238924625, 
+       391249.56213815557, 2502278.205988911, 1691881.7977422548]
 @end group
 @end example
 
@@ -1053,6 +1085,16 @@ The second central moment is equal to the sample variance.
 @c var (s1), numer;
 @c ===end===
 @example
+(%i1) load ("descriptive")$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) central_moment (s1, 2), numer;
+(%o3)                   8.425899999999999
+@end group
+@group
+(%i4) var (s1), numer;
+(%o4)                   8.425899999999999
+@end group
 @end example
 
 Input is a matrix.
@@ -1105,13 +1147,13 @@ The variation coefficient is the quotient between the sample standard deviation 
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) cv (s1), numer;
-(%o3)                   .6193977819764815
+(%o3)                  0.6162930116383044
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) cv (s2);
-(%o5) [.4192426091090204, .3829365309260502, 0.363779605385983, 
-                            .3627381836021478, .3346021393989506]
+(%o5) [0.4171411291632767, 0.38101703748061055, 
+      0.3619561372346568, 0.3609199356430116, 0.3329249251309538]
 @end group
 @end example
 
@@ -1230,7 +1272,7 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) range (s2);
-(%o5)          [19.67, 20.96, 17.37, 24.38, 22.46]
+(%o5)   [19.67, 20.96, 17.369999999999997, 24.38, 22.46]
 @end group
 @end example
 
@@ -1259,6 +1301,12 @@ Input is a list. First and third quartiles are computed.
 @c [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 @c ===end===
 @example
+(%i1) load ("descriptive")$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+(%o3)                      [2.0, 7.25]
+@end group
 @end example
 
 Input is a matrix. First quartile is computed for each column.
@@ -1270,16 +1318,10 @@ Input is a matrix. First quartile is computed for each column.
 @c ===end===
 @example
 (%i1) load ("descriptive")$
-(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i3) /* 1st and 3rd quartiles */
-         [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
-(%o3)                      [2.0, 7.25]
-@end group
-(%i4) s2 : read_matrix (file_search ("wind.data"))$
-@group
-(%i5) quantile (s2, 1/4);
-(%o5)    [7.2575, 7.477500000000001, 7.82, 11.28, 11.48]
+(%i3) quantile (s2, 1/4);
+(%o3)    [7.2575, 7.477500000000001, 7.82, 11.28, 11.48]
 @end group
 @end example
 
@@ -1318,7 +1360,7 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) median (s2);
-(%o5)         [10.06, 9.855, 10.73, 15.48, 14.105]
+(%o5)   [10.059999999999999, 9.855, 10.73, 15.48, 14.105]
 @end group
 @end example
 
@@ -1417,8 +1459,8 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) mean_deviation (s2);
-(%o5) [3.287959999999999, 3.075342, 3.23907, 4.715664000000001, 
-                                               4.028546000000002]
+(%o5) [3.2879599999999987, 3.075342, 3.2390700000000003, 
+                            4.715664000000001, 4.028546000000002]
 @end group
 @end example
 
@@ -1476,7 +1518,7 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) median_deviation (s2);
-(%o5)           [2.75, 2.755, 3.08, 4.315, 3.31]
+(%o5) [2.75, 2.7550000000000003, 3.08, 4.315, 3.3099999999999996]
 @end group
 @end example
 
@@ -1528,13 +1570,13 @@ Example:
 (%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @group
 (%i3) harmonic_mean (y), numer;
-(%o3)                   3.901858027632205
+(%o3)                  3.9018580276322052
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) harmonic_mean (s2);
 (%o5) [6.948015590052786, 7.391967752360356, 9.055658197151745, 
-                            13.44199028193692, 13.01439145898509]
+                           13.441990281936924, 13.01439145898509]
 @end group
 @end example
 
@@ -1590,8 +1632,8 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) geometric_mean (s2);
-(%o5) [8.82476274347979, 9.22652604739361, 10.0442675714889, 
-                            14.61274126349021, 13.96184163444275]
+(%o5) [8.82476274347979, 9.22652604739361, 10.044267571488904, 
+                           14.612741263490207, 13.96184163444275]
 @end group
 @end example
 
@@ -1646,8 +1688,9 @@ Example:
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) kurtosis (s2);
-(%o5) [- .2715445622195385, 0.119998784429451, 
-     - .4275233490482861, - .6405361979019522, - .4952382132352935]
+(%o5) [- 0.2715445622195385, 0.119998784429451, 
+- 0.42752334904828615, - 0.6405361979019522, 
+- 0.4952382132352935]
 @end group
 @end example
 
@@ -1697,13 +1740,13 @@ Example:
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) skewness (s1), numer;
-(%o3)                  .009196180476450424
+(%o3)                 0.009196180476450424
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) skewness (s2);
-(%o5) [.1580509020000978, .2926379232061854, .09242174416107717, 
-                            .2059984348148687, .2142520248890831]
+(%o5) [0.1580509020000978, 0.2926379232061854, 
+   0.09242174416107717, 0.20599843481486865, 0.21425202488908313]
 @end group
 @end example
 
@@ -1751,13 +1794,13 @@ Example:
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) pearson_skewness (s1), numer;
-(%o3)                   .2159484029093895
+(%o3)                  0.21594840290938955
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) pearson_skewness (s2);
-(%o5) [- .08019976629211892, .2357036272952649, 
-         .1050904062491204, .1245042340592368, .4464181795804519]
+(%o5) [- 0.08019976629211892, 0.2357036272952649, 
+   0.10509040624912039, 0.12450423405923679, 0.44641817958045193]
 @end group
 @end example
 
@@ -1807,13 +1850,13 @@ Example:
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) quartile_skewness (s1), numer;
-(%o3)                  .04761904761904762
+(%o3)                 0.047619047619047616
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i5) quartile_skewness (s2);
-(%o5) [- 0.0408542246982353, .1467025572005382, 
-       0.0336239103362392, .03780068728522298, .2105263157894735]
+(%o5) [- 0.040854224698235304, 0.14670255720053824, 
+   0.033623910336239196, 0.03780068728522298, 0.2105263157894735]
 @end group
 @end example
 
@@ -1859,16 +1902,16 @@ Sample as a list of pairs.
                        charfun((3 <= x) and (x < 8))
 (%o2) charfun(x < 0) + -----------------------------
                                      2
-                3 charfun((2 <= x) and (x < 3))
-              + ------------------------------- 
-                               4
-              + charfun((0 <= x) and (x < 2))
+   3 charfun((2 <= x) and (x < 3))
+ + -------------------------------
+                  4
+ + charfun((0 <= x) and (x < 2))
 @end group
 (%i3) load ("draw")$
 @group
 (%i4) draw2d(
-        line_width = 3, grid = true,
-        explicit(S, x, -0.1, 10))$
+  line_width = 3, grid = true,
+  explicit(S, x, -0.1, 10))$
 @end group
 @end example
 
@@ -1884,9 +1927,9 @@ Estimate survival probabilities.
 (%i2) S(t):= ''(km([[2,1], [3,1], [5,0], [8,1]], t)) $
 @group
 (%i3) S(6);
-                            1
-(%o3)                       -
-                            2
+                                1
+(%o3)                           -
+                                2
 @end group
 @end example
 
@@ -1928,20 +1971,22 @@ Empirical distribution function.
 @group
 (%i2) F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
 (%o2) F(x) := (charfun(x >= 9) + charfun(x >= 8)
-               + 3 charfun(x >= 7) + charfun(x >= 5)
-               + 2 charfun(x >= 3) + charfun(x >= 1))/9
+ + 3 charfun(x >= 7) + charfun(x >= 5) + 2 charfun(x >= 3)
+ + charfun(x >= 1))/9
 @end group
 @group
 (%i3) F(6);
-                           4
-(%o3)                      -
-                           9
+                                4
+(%o3)                           -
+                                9
 @end group
 (%i4) load("draw")$
+@group
 (%i5) draw2d(
-        line_width = 3,
-        grid       = true,
-        explicit(F(z), z, -2, 12)) $
+   line_width = 3,
+   grid       = true,
+   explicit(F(z), z, -2, 12)) $
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2107,8 +2152,8 @@ Example:
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) global_variances (s2);
-(%o3) [105.338342060606, 21.06766841212119, 12874.34690469686, 
-         113.4651792608501, 6.636590811800795, 2.576158149609762]
+(%o3) [105.33834206060595, 21.06766841212119, 12874.34690469686, 
+       113.46517926085015, 6.636590811800794, 2.5761581496097623]
 @end group
 @end example
 
@@ -2126,8 +2171,8 @@ Calculate the @code{global_variances} from the covariance matrix.
 (%i3) s : cov1 (s2)$
 @group
 (%i4) global_variances (s, data=false);
-(%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
-         113.4651792608501, 6.636590811800795, 2.576158149609762]
+(%o4) [105.33834206060595, 21.06766841212119, 12874.34690469686, 
+       113.46517926085015, 6.636590811800794, 2.5761581496097623]
 @end group
 @end example
 
@@ -2170,15 +2215,15 @@ Example:
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i4) cor (s2);
-      [   1.0     .8476339  .8803515  .8239624  .7519506 ]
-      [                                                  ]
-      [ .8476339    1.0     .8735834  .6902622  0.782502 ]
-      [                                                  ]
-(%o4) [ .8803515  .8735834    1.0     .7764065  .8323358 ]
-      [                                                  ]
-      [ .8239624  .6902622  .7764065    1.0     .7293848 ]
-      [                                                  ]
-      [ .7519506  0.782502  .8323358  .7293848    1.0    ]
+      [    1.0     0.8476339  0.8803515  0.8239624  0.7519506 ]
+      [                                                       ]
+      [ 0.8476339     1.0     0.8735834  0.6902622  0.782502  ]
+      [                                                       ]
+(%o4) [ 0.8803515  0.8735834     1.0     0.7764065  0.8323358 ]
+      [                                                       ]
+      [ 0.8239624  0.6902622  0.7764065     1.0     0.7293848 ]
+      [                                                       ]
+      [ 0.7519506  0.782502   0.8323358  0.7293848     1.0    ]
 @end group
 @end example
 
@@ -2198,15 +2243,15 @@ Calculate de correlation matrix from the covariance matrix.
 (%i4) s : cov1 (s2)$
 @group
 (%i5) cor (s, data=false); /* this is faster */
-      [   1.0     .8476339  .8803515  .8239624  .7519506 ]
-      [                                                  ]
-      [ .8476339    1.0     .8735834  .6902622  0.782502 ]
-      [                                                  ]
-(%o5) [ .8803515  .8735834    1.0     .7764065  .8323358 ]
-      [                                                  ]
-      [ .8239624  .6902622  .7764065    1.0     .7293848 ]
-      [                                                  ]
-      [ .7519506  0.782502  .8323358  .7293848    1.0    ]
+      [    1.0     0.8476339  0.8803515  0.8239624  0.7519506 ]
+      [                                                       ]
+      [ 0.8476339     1.0     0.8735834  0.6902622  0.782502  ]
+      [                                                       ]
+(%o5) [ 0.8803515  0.8735834     1.0     0.7764065  0.8323358 ]
+      [                                                       ]
+      [ 0.8239624  0.6902622  0.7764065     1.0     0.7293848 ]
+      [                                                       ]
+      [ 0.7519506  0.782502   0.8323358  0.7293848     1.0    ]
 @end group
 @end example
 
@@ -2307,32 +2352,33 @@ Example:
 (%i3) z : list_correlations (s2)$
 (%i4) fpprintprec : 5$
 @group
-(%i5) z[1];  /* precision matrix */
-      [  .38486   - .13856   - .15626   - .10239    .031179  ]
-      [                                                      ]
-      [ - .13856   .34107    - .15233    .038447   - .052842 ]
-      [                                                      ]
-(%o5) [ - .15626  - .15233    .47296    - .024816  - .10054  ]
-      [                                                      ]
-      [ - .10239   .038447   - .024816   .10937    - .034033 ]
-      [                                                      ]
-      [ .031179   - .052842  - .10054   - .034033   .14834   ]
+(%i5) precision_matrix: z[1];
+(%o5) 
+    [  0.38486   - 0.13856   - 0.15626   - 0.10239    0.031179  ]
+    [                                                           ]
+    [ - 0.13856   0.34107    - 0.15233    0.038447   - 0.052842 ]
+    [                                                           ]
+    [ - 0.15626  - 0.15233    0.47296    - 0.024816  - 0.10054  ]
+    [                                                           ]
+    [ - 0.10239   0.038447   - 0.024816   0.10937    - 0.034033 ]
+    [                                                           ]
+    [ 0.031179   - 0.052842  - 0.10054   - 0.034033   0.14834   ]
 @end group
 @group
-(%i6) z[2];  /* multiple correlation vector */
-(%o6)      [.85063, .80634, .86474, .71867, .72675]
+(%i6) multiple_correlation_vector: z[2];
+(%o6)     [0.85063, 0.80634, 0.86474, 0.71867, 0.72675]
 @end group
 @group
-(%i7) z[3];  /* partial correlation matrix */
-      [  - 1.0     .38244   .36627   .49908   - .13049 ]
-      [                                                ]
-      [  .38244    - 1.0    .37927  - .19907   .23492  ]
-      [                                                ]
-(%o7) [  .36627    .37927   - 1.0    .10911    .37956  ]
-      [                                                ]
-      [  .49908   - .19907  .10911   - 1.0     .26719  ]
-      [                                                ]
-      [ - .13049   .23492   .37956   .26719    - 1.0   ]
+(%i7) partial_correlation_matrix: z[3];
+      [   - 1.0     0.38244   0.36627   0.49908   - 0.13049 ]
+      [                                                     ]
+      [  0.38244     - 1.0    0.37927  - 0.19907   0.23492  ]
+      [                                                     ]
+(%o7) [  0.36627    0.37927    - 1.0    0.10911    0.37956  ]
+      [                                                     ]
+      [  0.49908   - 0.19907  0.10911    - 1.0     0.26719  ]
+      [                                                     ]
+      [ - 0.13049   0.23492   0.37956   0.26719     - 1.0   ]
 @end group
 @end example
 
@@ -2545,11 +2591,11 @@ Univariate sample in matrix form. Absolute frequencies.
 (%i2) m : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) barsplot(
-        col(m,2),
-        title        = "Ages",
-        xlabel       = "years",
-        box_width    = 1/2,
-        fill_density = 3/4)$
+  col(m,2),
+  title        = "Ages",
+  xlabel       = "years",
+  box_width    = 1/2,
+  fill_density = 3/4)$
 @end group
 @end example
 
@@ -2574,12 +2620,12 @@ relative frequencies and user declared colors.
 (%i3) l2:makelist(random(10),k,1,100)$
 @group
 (%i4) barsplot(
-        l1,l2,
-        box_width    = 1,
-        fill_density = 1,
-        bars_colors  = [black, grey],
-        frequency = relative,
-        sample_keys = ["A", "B"])$
+   l1,l2,
+   box_width = 1,
+   fill_density = 1,
+   bars_colors = [black, grey],
+   frequency = relative,
+   sample_keys = ["A", "B"])$
 @end group
 @end example
 
@@ -2602,15 +2648,15 @@ Four non numeric samples of equal size.
 (%i1) load ("descriptive")$
 @group
 (%i2) barsplot(
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        title  = "Asking for something to four groups",
-        ylabel = "# of individuals",
-        groups_gap   = 3,
-        fill_density = 0.5,
-        ordering     = ordergreatp)$
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  title      = "Asking for something to four groups",
+  ylabel     = "# of individuals",
+  groups_gap = 3,
+  fill_density = 0.5,
+  ordering = ordergreatp)$
 @end group
 @end example
 
@@ -2633,15 +2679,15 @@ Stacked bars.
 (%i1) load ("descriptive")$
 @group
 (%i2) barsplot(
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
-        title  = "Asking for something to four groups",
-        ylabel = "# of individuals",
-        grouping     = stacked,
-        fill_density = 0.5,
-        ordering     = ordergreatp)$
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+  title      = "Asking for something to four groups",
+  ylabel     = "# of individuals",
+  grouping   = stacked,
+  fill_density = 0.5,
+  ordering = ordergreatp)$
 @end group
 @end example
 
@@ -2766,11 +2812,11 @@ Box-and-whisker diagram from a multivariate sample.
 (%i2) s2 : read_matrix(file_search("wind.data"))$
 @group
 (%i3) boxplot(s2,
-        box_width  = 0.2,
-        title      = "Windspeed in knots",
-        xlabel     = "Stations",
-        color      = red,
-        line_width = 2)$
+  box_width  = 0.2,
+  title      = "Windspeed in knots",
+  xlabel     = "Stations",
+  color      = red,
+  line_width = 2)$
 @end group
 @end example
 
@@ -2788,9 +2834,9 @@ Box-and-whisker diagram from three samples of different sizes.
 (%i1) load ("descriptive")$
 @group
 (%i2) A :
-       [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
-        [8, 10, 7, 9, 12, 8, 10],
-        [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
+ [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
+  [8, 10, 7, 9, 12, 8, 10],
+  [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
 @end group
 (%i3) boxplot (A, box_orientation = horizontal)$
 @end example
@@ -2814,26 +2860,23 @@ Option @var{range} can be used to handle outliers.
 @c        background_color = light_gray),
 @c     xtics = {["Low",1],["Medium",2],["High",3]}) $
 @c ===end===
-
 @example
-(%i1) load ("descriptive")$
-(%i2) B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
-          [10, 8, 12, 8, 11, 9, 20],
-          [23, 17, 19, 7, 22, 19]] $
 @group
-(%i3) boxplot (B, range=1)$
-(%i4) boxplot (B, range=1.5, box_orientation = horizontal)$
-@end group
-@group
-(%i5) draw2d(
-        boxplot_description(
-          B,
-          range            = 1.5,
-          line_width       = 3,
-          outliers_size    = 2,
-          color            = red,
-          background_color = light_gray),
-        xtics = @{["Low",1],["Medium",2],["High",3]@}) $
+(%i1)  load ("descriptive")$
+ B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
+     [10, 8, 12, 8, 11, 9, 20],
+     [23, 17, 19, 7, 22, 19]] $
+ boxplot (B, range=1)$
+ boxplot (B, range=1.5, box_orientation = horizontal)$
+ draw2d(
+    boxplot_description(
+       B,
+       range            = 1.5,
+       line_width       = 3,
+       outliers_size    = 2,
+       color            = red,
+       background_color = light_gray),
+    xtics = @{["Low",1],["Medium",2],["High",3]@}) $
 @end group
 @end example
 
@@ -2951,14 +2994,16 @@ A simple histogram with eight classes:
 @example
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) histogram (
-           s1,
-           nclasses     = 8,
-           title        = "pi digits",
-           xlabel       = "digits",
-           ylabel       = "Absolute frequency",
-           fill_color   = grey,
-           fill_density = 0.6)$
+     s1,
+     nclasses     = 8,
+     title        = "pi digits",
+     xlabel       = "digits",
+     ylabel       = "Absolute frequency",
+     fill_color   = grey,
+     fill_density = 0.6)$
+@end group
 @end example
 
 Setting the limits of the histogram to -2 and 12, with 3 classes.
@@ -2978,13 +3023,15 @@ Also, we introduce predefined tics:
 @example
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) histogram (
-           s1,
-           nclasses     = [-2,12,3],
-           htics        = ["A", "B", "C"],
-           terminal     = png,
-           fill_color   = "#23afa0",
-           fill_density = 0.6)$
+     s1,
+     nclasses     = [-2,12,3],
+     htics        = ["A", "B", "C"],
+     terminal     = png,
+     fill_color   = "#23afa0",
+     fill_density = 0.6)$
+@end group
 @end example
 
 Bounds for varying class widths.
@@ -3170,11 +3217,13 @@ Example:
 @example
 (%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) piechart(
-        s1,
-        xrange  = [-1.1, 1.3],
-        yrange  = [-1.1, 1.1],
-        title   = "Digit frequencies in pi")$
+  s1,
+  xrange = [-1.1, 1.3],
+  yrange = [-1.1, 1.1],
+  title  = "Digit frequencies in pi")$
+@end group
 @end example
 
 See also function @mrefdot{barsplot}
@@ -3231,10 +3280,10 @@ Univariate scatter diagram from a simulated Gaussian sample.
 (%i2) load ("distrib")$
 @group
 (%i3) scatterplot(
-        random_normal(0,1,200),
-        xaxis      = true,
-        point_size = 2,
-        dimensions = [600,150])$
+  random_normal(0,1,200),
+  xaxis      = true,
+  point_size = 2,
+  dimensions = [600,150])$
 @end group
 @end example
 
@@ -3255,11 +3304,11 @@ Two dimensional scatter plot.
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) scatterplot(
-       submatrix(s2, 1,2,3),
-       title      = "Data from stations #4 and #5",
-       point_type = diamant,
-       point_size = 2,
-       color      = blue)$
+ submatrix(s2, 1,2,3),
+ title      = "Data from stations #4 and #5",
+ point_type = diamant,
+ point_size = 2,
+ color      = blue)$
 @end group
 @end example
 
@@ -3294,12 +3343,12 @@ Five dimensional scatter plot, with five classes histograms.
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) scatterplot(
-        s2,
-        nclasses     = 5,
-        frequency    = relative,
-        fill_color   = blue,
-        fill_density = 0.3,
-        xtics        = 5)$
+  s2,
+  nclasses     = 5,
+  frequency    = relative,
+  fill_color   = blue,
+  fill_density = 0.3,
+  xtics        = 5)$
 @end group
 @end example
 
