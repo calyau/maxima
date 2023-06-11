@@ -668,7 +668,7 @@
 	  (setf (values input-stream batch-flag)
 		(process-maxima-args input-stream batch-flag))
 	  (when *verify-html-index*
-	    (verify-html-index))
+	    ($verify_html_index))
 	  (load-user-init-file)
 	  (loop
 	   (with-simple-restart (macsyma-quit "Maxima top-level")
