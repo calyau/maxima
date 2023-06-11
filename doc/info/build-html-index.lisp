@@ -1,3 +1,13 @@
+;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Build an index of all the relevant links in the HTML version of
+;;; the manual so that it can be used via help instead of the text
+;;; version.
+;;;
+;;; Copyright (C) 2023 Raymond Toy
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (in-package :maxima)
 
 (defvar *texinfo-version-string* nil
@@ -251,26 +261,23 @@
 
     (with-open-file (*log-file* "build-html-index.log"
 				:direction :output :if-exists :supersede)
-      (get-texinfo-version (truename "maxima_toc.html"))
-      (format t "Texinfo Version ~A: ~D~%" *texinfo-version-string* *texinfo-version*)
-      (process-one-html-file index-file #'match-entries t "Add")
-      (process-one-html-file (truename "maxima_toc.html") #'match-toc nil "TOC")
-      (handle-special-cases))))
+      (let ((toc-path (merge-pathnames "maxima_toc.html" dir)))
+	(get-texinfo-version toc-path)
+	(format t "Texinfo Version ~A: ~D~%" *texinfo-version-string* *texinfo-version*)
+	(process-one-html-file index-file #'match-entries t "Add")
+	(process-one-html-file toc-path #'match-toc nil "TOC")
+	(handle-special-cases)))))
 
 ;; Run this to build a hash table from the topic to the HTML file
 ;; containing the documentation.  The single argument DIR should be a
 ;; directory that contains the html files to be searched for the
-;; topics.  For exapmle it can be "<maxima-dir>/doc/info/*.html"
+;; topics.  For example it can be "<maxima-dir>/doc/info/*.html"
 (defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
   (let (entries)
     (maphash #'(lambda (k v)
 		 (push (list k (namestring (car v)) (cdr v)) entries))
 	     *html-index*)
-    (format t "HTML index has ~D entries~%" (hash-table-count *html-index*))
-    ;; Hash table can't be empty unless we screwed up somewhere.
-    (assert (plusp (hash-table-count *html-index*)))
-
     (with-open-file (s "maxima-index-html.lisp"
 		       :direction :output
 		       :if-exists :supersede)
@@ -300,6 +307,10 @@
 
 	  (pprint `(let ((cl-info::html-index ',entries))
 		     (cl-info::load-html-index cl-info::html-index))
-		  s))))))
+		  s))))
+    (format t "HTML index has ~D entries~%" (hash-table-count *html-index*))
+    ;; Hash table can't be empty unless we screwed up somewhere.
+    (assert (plusp (hash-table-count *html-index*)))
+    (plusp (hash-table-count *html-index*))))
 
 ;;(build-and-dump-html-index "./*.html")
