@@ -688,8 +688,8 @@ maxima-index.lisp: build_index.pl maxima.info
 # First we find all the files that we don't want to have to process.
 # This includes the indices, maxima_singlepage.html and any other html
 # file that doesn't start with "maxima".
-maxima-index-html.lisp : maxima_toc.html create-html-index.lisp
-	../../maxima-local --no-init --preload=create-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
+maxima-index-html.lisp : maxima_toc.html build-html-index.lisp
+	../../maxima-local --no-init --preload=build-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
 
 DOLLAR_SIGN = $$
 
