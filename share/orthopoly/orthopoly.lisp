@@ -254,11 +254,6 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
                         (power x index))
                    index 0 n))))))
 
-(eval-when
-    (:load-toplevel :execute)
-  (let (($context '$global) (context '$global))
-    (meval '(($declare) $pochhammer $complex))))
-
 (defmvar $pochhammer_max_index 100)
 
 ;; This disallows noninteger assignments to $pochhammer_max_index.
