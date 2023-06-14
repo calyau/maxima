@@ -2277,8 +2277,8 @@ definition is used, otherwise the second, "geometric" definition will
 be applied.
 
 @anchor{~}
-@defvr {Operator} ~
 @fnindex Wedge product
+@defvr {Operator} ~
 
 The wedge product operator is denoted by the tilde @code{~}. This is
 a binary operator. Its arguments should be expressions involving scalars,
@@ -2321,8 +2321,8 @@ The behavior of the wedge product operator is controlled by the
 
 @c -----------------------------------------------------------------------------
 @anchor{|}
-@defvr {Operator} |
 @fnindex Contraction with a vector
+@defvr {Operator} |
 
 The vertical bar @code{|} denotes the "contraction with a vector" binary
 operation. When a totally antisymmetric covariant tensor is contracted

@@ -1076,8 +1076,8 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{!!}
-@deffn {Operator} !!
 @fnindex Double factorial
+@deffn {Operator} !!
 
 The double factorial operator.
 

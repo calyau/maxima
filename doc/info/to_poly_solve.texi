@@ -14,8 +14,8 @@ Barton Willis (Professor of Mathematics, University of Nebraska at
 Kearney) wrote the @code{to_poly} and @code{to_poly_solve} packages and the
 English language user documentation for these packages.
 
-@deffn {Operator} %and
 @fnindex Logical conjunction
+@deffn {Operator} %and
 
 The operator @code{%and} is a simplifying nonshort-circuited logical
 conjunction.  Maxima simplifies an @code{%and} expression to either true,
@@ -106,8 +106,8 @@ might be merged into other Maxima functions.
 
 @end deffn
 
-@deffn {Operator} %if (@var{bool}, @var{a}, @var{b})
 @fnindex conditional evaluation
+@deffn {Operator} %if (@var{bool}, @var{a}, @var{b})
 
 The operator @code{%if} is a simplifying conditional.  The
 @i{conditional} @var{bool} should be boolean-valued.  When the
@@ -159,8 +159,8 @@ other Maxima functions.
 
 @end deffn
   
-@deffn {Operator} %or
 @fnindex Logical disjunction
+@deffn {Operator} %or
 
 The operator @code{%or} is a simplifying nonshort-circuited logical
 disjunction.  Maxima simplifies an @code{%or} expression to either
