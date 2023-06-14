@@ -260,8 +260,8 @@ _
 
 @c -----------------------------------------------------------------------------
 @anchor{%th}
-@deffn {Function} %th (@var{i})
 @fnindex N'th previous output
+@deffn {Function} %th (@var{i})
 
 The value of the @var{i}'th previous output expression.  That is, if the next
 expression to be computed is the @var{n}'th output, @code{%th (@var{m})} is the
@@ -299,8 +299,8 @@ output expressions.
 
 @c -----------------------------------------------------------------------------
 @anchor{?}
-@deffn {Special symbol} ?
 @fnindex Fetch documentation
+@deffn {Special symbol} ?
 
 As prefix to a function or variable name, @code{?} signifies that the name is a
 Lisp name, not a Maxima name.  For example, @code{?round} signifies the Lisp
@@ -319,8 +319,8 @@ request for documentation.  See also @mrefdot{describe}
 
 @c -----------------------------------------------------------------------------
 @anchor{??}
-@deffn {Special symbol} ??
 @fnindex Fetch documentation (inexact search)
+@deffn {Special symbol} ??
 
 The notation @code{?? word} (@code{??} followed a word, separated by whitespace)
 is equivalent to @code{describe("word", inexact)}.  The question mark must occur
@@ -335,8 +335,8 @@ for documentation.  See also @mrefdot{describe}
 
 @c -----------------------------------------------------------------------------
 @anchor{$}
-@deffn {Input terminator} $
 @fnindex Input terminator (without display)
+@deffn {Input terminator} $
 
 The dollar sign @code{$} terminates an input expression,
 and the most recent output @code{%} and an output label, e.g. @code{%o1},
@@ -366,7 +366,6 @@ Example:
 @c -----------------------------------------------------------------------------
 @anchor{;}
 @deffn {Input terminator} ;
-@fnindex Input terminator (with display)
 
 The semicolon @code{;} terminates an input expression,
 and the resulting output is displayed.

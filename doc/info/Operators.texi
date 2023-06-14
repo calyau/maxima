@@ -446,8 +446,8 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{^^}
-@deffn {Operator} ^^
 @fnindex Noncommutative exponentiation
+@deffn {Operator} ^^
 
 Noncommutative exponentiation operator.
 @code{^^} is the exponentiation operator corresponding to noncommutative
@@ -480,7 +480,6 @@ Examples:
 @c -----------------------------------------------------------------------------
 @anchor{.}
 @deffn {Operator} .
-@fnindex Noncommutative multiplication
 
 The dot operator, for matrix (non-commutative) multiplication.
 When @code{"."} is used in this way, spaces should be left on both sides of
@@ -612,8 +611,8 @@ values, although the arguments of relational expressions are evaluated.
 
 @c -----------------------------------------------------------------------------
 @anchor{and}
-@deffn {Operator} and
 @fnindex Logical conjunction
+@deffn {Operator} and
 
 The logical conjunction operator.  @code{and} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
@@ -644,8 +643,8 @@ accepted, and the result is a Boolean expression.
 
 @c -----------------------------------------------------------------------------
 @anchor{not}
-@deffn {Operator} not
 @fnindex Logical negation
+@deffn {Operator} not
 
 The logical negation operator.  @code{not} is a prefix operator;
 its operand is a Boolean expression, and its result is a Boolean value.
@@ -667,8 +666,8 @@ and the result is a Boolean expression.
 
 @c -----------------------------------------------------------------------------
 @anchor{or}
-@deffn {Operator} or
 @fnindex Logical disjunction
+@deffn {Operator} or
 
 The logical disjunction operator.  @code{or} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
@@ -702,8 +701,8 @@ due to the treatment of indeterminate operands.
 
 @c -----------------------------------------------------------------------------
 @anchor{#}
-@deffn {Operator} #
 @fnindex Not equal (syntactic inequality)
+@deffn {Operator} #
 
 Represents the negation of syntactic equality @mrefdot{=}
 
@@ -744,9 +743,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{=}
-@deffn {Operator} =
 @fnindex Equation operator
 @fnindex Equal (syntactic equality)
+@deffn {Operator} =
 
 The equation operator.
 
@@ -888,8 +887,8 @@ Because @code{not @var{expr}} causes evaluation of @var{expr},
 
 @c -----------------------------------------------------------------------------
 @anchor{:}
-@deffn {Operator} :
 @fnindex Assignment operator
+@deffn {Operator} :
 
 Assignment operator.
 
@@ -1017,8 +1016,8 @@ The values of @code{a} and @code{b} are exchanged in this example.
 @c -----------------------------------------------------------------------------
 @need 900
 @anchor{::}
-@deffn {Operator} ::
 @fnindex Assignment operator (evaluates left-hand side)
+@deffn {Operator} ::
 
 Assignment operator.
 
@@ -1064,8 +1063,8 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{::=}
-@deffn {Operator} ::=
 @fnindex Macro function definition operator
+@deffn {Operator} ::=
 
 Macro function definition operator.
 @code{::=} defines a function (called a "macro" for historical reasons) which
@@ -1177,8 +1176,8 @@ x is equal to 1234 - 1729 w
 
 @c -----------------------------------------------------------------------------
 @anchor{:=}
-@deffn {Operator} :=
 @fnindex Function definition operator
+@deffn {Operator} :=
 
 The function definition operator.
 
