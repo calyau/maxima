@@ -67,7 +67,7 @@ x : 374599943;
 rems : map(lambda([z], mod(x, z)), mods);
 [621, 647, 258];
 
-chinese(rems, mods);
+solve_congruences(rems, mods);
 374599943;
 
 (remvalue(p,fs,g,a,n,mods,x,rems), 0);

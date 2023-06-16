@@ -4,7 +4,7 @@
 
 ;; Gcl doesn't like equalp hashtables.
 (defvar *html-index*
-  (make-hash-table :test #'equalp)
+  (make-hash-table :test #'equal)
   "Hash table for looking up which html file contains the
   documentation.  The key is the topic we're looking for and the value
   is a cons consisting of the html file and the id for the key.")
@@ -269,8 +269,12 @@
       (setf (gethash dir-name *info-tables*) (list t1 t2)))))
 
 (defun load-html-index (entries)
+  (clrhash *html-index*)
+  ;; Go through the entries and add it to the html index hashtable.
+  ;; Each entry is a list of 3 items: the item key for the hash table,
+  ;; the path to the html file containing the item we're interested in
+  ;; and the html id for the item.
   (dolist (entry entries)
     (destructuring-bind (item path id)
 	entry
       (setf (gethash item *html-index*) (cons path id)))))
-

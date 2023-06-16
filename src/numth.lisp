@@ -293,7 +293,7 @@
 ;; Maxima functions in (Z/nZ)*
 ;; 
 ;; zn_order, zn_primroot_p, zn_primroot, zn_log, 
-;; chinese, zn_characteristic_factors, zn_factor_generators, zn_nth_root,
+;; solve_congruences, zn_characteristic_factors, zn_factor_generators, zn_nth_root,
 ;; zn_add_table, zn_mult_table, zn_power_table 
 ;;
 ;; 2012 - 2020, Volker van Nek  
@@ -495,29 +495,33 @@
 ;;
 ;; Chinese Remainder Theorem
 ;;
-(defmfun $chinese (rems mods &optional (return-lcm? nil)) 
+
+(defmfun ($chinese :deprecated-p $solve_congruences) (&rest a)
+  (apply '$solve_congruences a))
+
+(defmfun $solve_congruences (rems mods &optional (return-lcm? nil)) 
   (cond 
     ((not (and ($listp rems) ($listp mods)))
-      (list '($chinese) rems mods) )
+      (list '($solve_congruences) rems mods) )
     ((let ((lr ($length rems)) (lm ($length mods)))
        (or (= 0 lr) (= 0 lm) (/= lr lm)) )
       (gf-merror (intl:gettext
-        "Unsuitable arguments to `chinese': ~m ~m" ) rems mods ))
+        "Unsuitable arguments to `solve_congruences': ~m ~m" ) rems mods ))
     ((notevery #'integerp (setq rems (cdr rems)))
-      (list '($chinese) (cons '(mlist simp) rems) mods) )
+      (list '($solve_congruences) (cons '(mlist simp) rems) mods) )
     ((notevery #'integerp (setq mods (cdr mods)))
-      (list '($chinese) (cons '(mlist simp) rems) (cons '(mlist simp) mods)) )
+      (list '($solve_congruences) (cons '(mlist simp) rems) (cons '(mlist simp) mods)) )
     ((eql return-lcm? '$lcm)
-      (cons '(mlist simp) (chinese rems mods)) )
+      (cons '(mlist simp) (solve-congruences rems mods)) )
     (t
-      (car (chinese rems mods)) )))
+      (car (solve-congruences rems mods)) )))
 ;;
-(defun chinese (rems mods)
+(defun solve-congruences (rems mods)
   (if (= 1 (length mods)) 
     (list (car rems) (car mods))
     (let ((rp (car rems))
           (p  (car mods))
-          (rq-q (chinese (cdr rems) (cdr mods))) )
+          (rq-q (solve-congruences (cdr rems) (cdr mods))) )
       (when rq-q
         (let* ((rq (car rq-q))
                (q (cadr rq-q))
@@ -613,7 +617,7 @@
         (when (/= k e1) (setq acc (power-mod acc p n))) )
       (push (expt p e) mods)
       (push xp dlogs) )
-    (car (chinese dlogs mods)) )) ;; Find x (mod ord) with x = xp (mod p^e) for all p,e.
+    (car (solve-congruences dlogs mods)) )) ;; Find x (mod ord) with x = xp (mod p^e) for all p,e.
 
 ;; baby-steps-giant-steps:
 
@@ -927,7 +931,7 @@
       (setq res rt) ;; n is a prime power
       (setq qs (nreverse qs)
             rems (zn-distrib-lists (nreverse rts))
-            res (mapcar #'(lambda (rs) (car (chinese rs qs))) rems) ))
+            res (mapcar #'(lambda (rs) (car (solve-congruences rs qs))) rems) ))
     (sort res #'<) ))
 
 ;; return all possible combinations containing one entry per list:
@@ -4601,7 +4605,7 @@
             (when (/= k e1) (setq acc (gf-pow acc p red))) )
           (push (expt p e) mods)
           (push xp dlogs) )
-        (car (chinese dlogs mods)) ))))
+        (car (solve-congruences dlogs mods)) ))))
 
 ;; iteration for Pollard rho:  b = g^y * a^z in each step
 

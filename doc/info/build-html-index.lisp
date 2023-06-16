@@ -1,4 +1,21 @@
+;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Build an index of all the relevant links in the HTML version of
+;;; the manual so that it can be used via help instead of the text
+;;; version.
+;;;
+;;; Copyright (C) 2023 Raymond Toy
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (in-package :maxima)
+
+(defvar *texinfo-version-string* nil
+  "The texinfo version string used to generate the HTML files.")
+
+(defvar *texinfo-version* nil
+  "The texinfo version arranged as an integer.  Version 7.0.3 is
+  represented as 70003.")
 
 (defvar *html-index*
   (make-hash-table :test #'equal)
@@ -6,205 +23,256 @@
   documentation.  The key is the topic we're looking for and the value
   is the html file containing the documentation for the topic.")
 
-
-;; This might be rather slow.  Perhaps an alternative solution is to
-;; leave these alone and have $hdescribe encode any special characters
-;; before looking them up.  Since ? only used occasionally, we don't
-;; incur the cost here and move it to ? where the impact is lower.
-;;
-;; However, a test run where this function was removed made virtually
-;; no difference in runtime (with cmucl).  (31.97 sec with and 31.62
-;; sec without; well within timing noise probably.)  Note, however,
-;; that this file is not normally compiled before running, but earlier
-;; tests showed that compiling didn't make much difference either.  I
-;; think this is because most of the cost is in pregexp, which is
-;; compiled.
-(defun handle-special-chars (item)
-  "Handle special encoded characters in HTML file.  Texinfo encodes
-  special characters to hexadecimal form and this needs to be undone
-  so we know what the actual character is when looking up the
-  documentation."
-  ;; This is probably not the best way to do this.  Regexp searches
-  ;; are probably pretty expensive.
-  (dolist (spec-char '(#\% #\$ #\? #\. #\< #\> #\#
-		       #\= #\: #\* #\- #\\ #\^ #\+ #\/ #\'
-		       #\( #\)))
-    (let ((code (pregexp:pregexp-quote
-		 (string-downcase
-		  (format nil "_~4,'0x" (char-code spec-char))))))
-      (setf item
-	    (pregexp:pregexp-replace* code item (pregexp:pregexp-quote (string spec-char))))))
-  item)
-
-(defun process-one-html-file (file entry-regexp section-regexp fnindex-regexp)
-  "Process one html file to find all the documentation entries.
-  ENTRY-REGEXP is the regexp to use for find function and variable
-  items.  SECTION-REGEXP is the regexp to find sections to include."
-  (format *debug-io*  "Processing: ~S~%" file)
-  (let ((base-name (make-pathname :name (pathname-name file)
-                                  :type (pathname-type file))))
-    (flet ((add-entry (item item-id file line)
-	     ;; Add entry to the hash table.
-	     ;;
-	     ;; Replace any special chars that texinfo has encoded.
-	     (setf item (handle-special-chars item))
-
-	     ;; Check if the entry already exists and print a message.
-	     ;; Presumably, this shouldn't happen, so warn if it does.
-	     (when (gethash item *html-index*)
-	       (format t "Already added entry ~S ~S: ~S~%"
-				item (gethash item *html-index*)
-				line))
-	     (setf (gethash item *html-index*)
-		   (cons file item-id))))
-	     
-      (with-open-file (s file :direction :input)
-	(loop for line = (read-line s nil)
-              while line
-	      do
-		 (let (match)
-		   (cond
-		     ((setf match (pregexp:pregexp-match-positions entry-regexp line))
-		      (let ((item-id (subseq line
-					     (car (elt match 1))
-					     (cdr (elt match 1))))
-			    item)
-			;; Remove "005f" which texinfo adds before every "_".
-			#+nil
-			(format t "item-id = ~A~%" item-id)
-			(setf item
-			      (pregexp:pregexp-replace* "005f" item-id ""))
-			#+nil
-			(format t "match = ~S ~A~%" match item)
-			(add-entry item item-id base-name line)))
-		     ((setf match (pregexp:pregexp-match-positions section-regexp line))
-		      (let ((item-id (subseq line
-					     (car (elt match 1))
-					     (cdr (elt match 1))))
-			    (item (subseq line
-					  (car (elt match 2))
-					  (cdr (elt match 2)))))
-			#+nil
-			(format t "section item = ~A~%" item)
-			(add-entry item item-id base-name line)))
-		     ((setf match (pregexp:pregexp-match-positions fnindex-regexp line))
-		      (let* ((item-id (subseq line
-					      (car (elt match 1))
-					      (cdr (elt match 1))))
-			     (item (pregexp::pregexp-replace* "-" item-id " ")))
-			;; However if the item ends in digits, we
-			;; replaced too many "-" with spaces.  So if
-			;; it ends with a space followed by digits, we
-			;; need to replace the space with "-" again.
-			(setf item (pregexp::pregexp-replace* " \(\\d+\)$" item "-\\1"))
-			(setf item (handle-special-chars item))
-			(add-entry item item-id base-name line))))))))))
+(defvar *log-file* nil
+  "Log file containing info for each entry that is added to the index
+  table.")
 
 (let ((maxima_nnn-pattern (pregexp:pregexp "^maxima_[0-9][0-9]*$")))
   (defun maxima_nnn-p (f)
+    "Determine if F is a pathname-name that looks like
+    \"maxima_<digits>\".  Return non-NIL if so."
     (pregexp:pregexp-match maxima_nnn-pattern f)))
 
-;; Similar to grep -l: returns F-PATH if file contains CONTENT-PATTERN, otherwise NIL.
-
 (defun grep-l (content-pattern f-path)
+  "Similar to grep -l: returns F-PATH if file contains CONTENT-PATTERN, otherwise NIL."
   (with-open-file (s f-path)
     (loop for line = (read-line s nil)
           while line
             do (when (pregexp:pregexp-match content-pattern line)
                  (return f-path)))))
 
-;; Run this build a hash table from the topic to the HTML file
-;; containing the documentation.  The single argument DIR should be a
-;; directory that contains the html files to be searched for the
-;; topics.  For exapmle it can be "<maxima-dir>/doc/info/*.html"
+(defun add-entry (item item-id file line &key replace-dash-p prefix)
+  "Add entry to the html hash table.  ITEM is the key, FILE is the html
+  file where this item is found, ITEM-ID is the html id of this item.
+  LINE is the line where this was found and is used for information if
+  a duplicate key was found."
+
+  ;; Replace any special chars that texinfo has encoded.
+  (setf item (handle-special-chars item))
+
+  (when (find #\- item)
+    (when replace-dash-p
+      ;; Replace "-" with a space (if requested).  The HTML output
+      ;; puts "-" where spaces were originally in the texi name.
+      ;; But this isn't perfect.  See HANDLE-SPECIAL-CASES where we
+      ;; shouldn't have done this.
+      (setf item (pregexp:pregexp-replace* "-([^[:digit:]])" item " \\1")))
+      
+    ;; Now replace things like "ztics-1" with "ztics <1>".  The
+    ;; former is the HTML index item for the info item with the
+    ;; latter name.
+    (setf item (pregexp:pregexp-replace "-([[:digit:]])" item " <\\1>")))
+
+  ;; Check if the entry already exists and print a message.  This
+  ;; shouldn't happen, so print a message if it does.
+  (when (gethash item *html-index*)
+    (format t "Already added entry ~S ~S: ~S~%"
+	    item (gethash item *html-index*)
+	    line))
+  (format *log-file* "~A: ~S -> ~S ~S~%"
+	  prefix item file item-id)
+
+  (setf (gethash item *html-index*)
+	(cons file item-id)))
+
+(defun process-line (line matcher &key replace-dash-p (prefix "Add:"))
+  "Process the LINE using the function MATCHER to determine if this line
+  contains something interesting to add to the index. REPLACE-DASH-P
+  and PREFIX are passed to ADD-ENTRY."
+  (multiple-value-bind (item item-id file line)
+      (funcall matcher line)
+    (when item
+      (add-entry item item-id file line
+		 :replace-dash-p replace-dash-p
+		 :prefix prefix))))
+
+(defun process-one-html-file (file matcher replace-dash-p prefix)
+  "Process one html file named FILE using MATCHER to determine matches.
+  REPLACE-DASH-P and PREFIX are passed to PROCESS-LINE which will
+  handle these."
+  (format *debug-io*  "Processing: ~S~%" file)
+  (with-open-file (s file :direction :input)
+    (loop for line = (read-line s nil)
+          while line
+	  do
+	     (process-line line matcher
+			   :replace-dash-p replace-dash-p
+			   :prefix prefix))))
+
+(defun handle-special-cases ()
+  "These HTML topics need special handling because we didn't quite
+  process them correctly previously because we accidentally changed
+  #\- to #\space."
+  (flet ((update-entry (old new)
+	   ;; Set the new index entry with the value of the old index
+	   ;; entry and remove the old entry from the index.
+	   (when (gethash old *html-index*)
+	     (setf (gethash new *html-index*)
+		   (gethash old *html-index*))
+	     (remhash old *html-index*))))
+    ;; List of special cases.  The car of each item is the index entry
+    ;; that should not have had the hyphen replaced.  The cdr is what
+    ;; it should be.
+    (dolist (items '(("Quote quote operator" "Quote-quote operator")
+		     ("Assignment operator (evaluates left hand side)"
+		      "Assignment operator (evaluates left-hand side)")
+		     ("Euler Mascheroni constant"
+		      "Euler-Mascheroni constant")))
+      (destructuring-bind (old new)
+	  items
+	(update-entry old new)))
+
+    ;; This is messy.  Texinfo 6.8 uses plain apostrophes in the info
+    ;; file.  But with texinfo 7.0.3, some entries in HTML use an
+    ;; apostrophe (U+27) character, but the info file uses
+    ;; Right_Single_Quotation_Mark (U+2019).  And apparently, the next version of Texinfo will not.
+    ;;
+    ;; Convert these only for the cases we know this is a problem.
+    ;;
+    ;; This current implementation will very likely not work with gcl
+    ;; only supports 8-bit characters.
+    (when (and *texinfo-version*
+	       (= *texinfo-version* 70003))
+      (dolist (item '("Euler's number"
+		      "Introduction to Maxima's Database"))
+	(update-entry item
+		      (pregexp::pregexp-replace* "'" item (string (code-char #x2019))))))))
+
+;; Find entries from the function and variable index.  An example of
+;; what we're looking for:
+;;
+;;   <a href="maxima_55.html#index-asinh">
+;;
+;; We extract the file name and the stuff after "#index-" which is the
+;; html id that we need.  It's also the key we need for the hash
+;; table.
+(let ((href (pregexp:pregexp "<a href=\"(maxima_[[:digit:]]+\.html)#index-([^\"]*)\">")))
+  (defun match-entries (line)
+    (let ((match (pregexp:pregexp-match href line)))
+      (when match
+	(destructuring-bind (whole file item-id)
+	    match
+	  (declare (ignore whole))
+	  (values item-id item-id file line))))))
+
+;; Find entries from the TOC.  An example of what we're looking for:
+;;
+;;  <a id="toc-Bessel-Functions-1" href="maxima_14.html#Bessel-Functions">15.2 Bessel Functions</a>
+;;
+;; We extract the file name and then the title of the subsection.
+;; Further subsections are ignored.
+(let ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"(maxima_[^\"]+)\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<")))
+  (defun match-toc (line)
+    (let ((match (pregexp:pregexp-match regexp line)))
+      (when match
+	;;(format t "match: ~S: ~A~%" match line)
+	(destructuring-bind (whole file item)
+	    match
+	  (declare (ignore whole))
+	  ;; Replace "&rsquo;" with "'"
+	  (when (find #\& item :test #'char=)
+	    (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
+
+	  (format *log-file* "TOC: ~S -> ~S~%" item file)
+
+	  (values item "" file line))))))
+
+(defun find-index-file (dir)
+  "Find the name of HTML file containing the function and variable
+  index."
+  (let ((f-a-v-i (merge-pathnames "Function-and-Variable-Index.html"
+				  dir)))
+    (when (probe-file f-a-v-i)
+      (return-from find-index-file f-a-v-i)))
+  (let ((files (directory dir)))
+    ;; Keep just the files of the form "maxima_nnn", where "nnn" are
+    ;; digits.  These are the only files that can contain the function
+    ;; and variable index that we want.
+    (setf files (remove-if-not
+		 #'(lambda (path-name)
+		     (maxima_nnn-p path-name))
+		 files
+		 :key #'pathname-name))
+
+    ;; Now sort them in numerical order.
+    (setf files
+	  (sort files #'<
+		:key #'(lambda (p)
+			 (let ((name (pathname-name p)))
+			   ;; Everything else is the number in the
+			   ;; file name, which starts with 1.
+			   (if (> (length name) 7)
+			       (parse-integer (subseq name 7))
+			       0)))))
+
+    ;; Check if the last 2 files to see if one of them contains the
+    ;; function and variable index we want.  Return the first one that
+    ;; matches.
+    (format t "Looking for function and variable index~%")
+    (dolist (file (last files 2))
+      (when (grep-l "<title>(Function and Variable Index)" file)
+	(format t "Function index: ~S.~%"
+		(namestring file))
+	(return-from find-index-file file)))))
+  
+(defun parse-texinfo-version (string)
+  (when string
+    (let ((posn 0)
+	  (len (length string))
+	  (version 0))
+      (dotimes (k 3)
+	(cond
+	  ((<= posn len)
+	   (multiple-value-bind (digits end)
+	       (parse-integer string
+			      :start posn
+			      :junk-allowed t)
+	     (setf version (+ (or digits 0)
+			      (* version 100)))
+	     (setf posn (1+ end))))
+	  (t
+	   (setf version (* version 100)))))
+      version)))
+
+(defun get-texinfo-version (file)
+  "Get the texinfo version from FILE"
+  (let ((version-line
+	  (with-open-file (f file :direction :input)
+	    ;; Texinfo write a comment line containing the version number of
+	    ;; the texinfo used to build the html file.  It's at the
+	    ;; beginnning so search just the first 5 lines or so.
+	    (loop for count from 1 to 5
+		  for line = (read-line f nil) then (read-line f nil)
+		  when (and line (search "Created by GNU Texinfo" line))
+		    return line))))
+    (unless version-line
+      (warn "Could not find GNU Texinfo version in ~S~%" file)
+      (return-from get-texinfo-version))
+    (setf *texinfo-version-string*
+	  (second (pregexp:pregexp-match "GNU Texinfo \(.*?\)," version-line)))
+    (setf *texinfo-version*
+	  (parse-texinfo-version *texinfo-version-string*))))
+
 (defun build-html-index (dir)
   (clrhash *html-index*)
-  ;; entry-regexp searches for entries for functions and variables.
-  ;; We're looking for something like
-  ;;
-  ;;   <dt id="index-<foo>"
-  ;;
-  ;; and extracting "foo".
-  ;;
-  ;; section-regexp searches for section headings so we can get to
-  ;; things like "Functions and Variables for...".  We're looking for
-  ;;
-  ;;   <span id="<id>">...<h3 class="section">12.2 <heading><
-  ;;
-  ;; where <heading> is the heading we want, and <id> is the id we can
-  ;; use to link to this item.
-  ;;
-  ;; fnindex-regexp searches for id's that are associated with
-  ;; @fnindex.  These look like
-  ;;
-  ;;   <span id="index-<id>"></span>
-  ;;
-  ;; all on one line.  The <id> is is the id we can use to link to
-  ;; this item.
-  (let ((entry-regexp (pregexp:pregexp "<dt id=\"index-([^\"]+)\""))
-	(section-regexp
-	  (pregexp:pregexp "<span id=\"\([^\"]+\)\">.*<h3 class=\"section\">[0-9.,]+ *\(.*\)<"))
-	(fnindex-regexp
-	  (pregexp:pregexp "<span id=\"index-\([^\"]+\)\"></span>$")))
+  (let ((index-file (find-index-file dir)))
+    (unless index-file
+      (error "Could not find HTML file containing the function and variable index."))
 
-    (let ((files (directory dir)))
+    (with-open-file (*log-file* "build-html-index.log"
+				:direction :output :if-exists :supersede)
+      (let ((toc-path (merge-pathnames "maxima_toc.html" dir)))
+	(get-texinfo-version toc-path)
+	(format t "Texinfo Version ~A: ~D~%" *texinfo-version-string* *texinfo-version*)
+	(process-one-html-file index-file #'match-entries t "Add")
+	(process-one-html-file toc-path #'match-toc nil "TOC")
+	(handle-special-cases)))))
 
-      ;; Ensure that the call to SORT below succeeds:
-      ;; the only allowable names are "maxima_toc.html", "maxima.html", or "maxima_nnn.html",
-      ;; where nnn is an integer;
-      ;; also, if a file with an otherwise-allowable name is function and variable index,
-      ;; or a list of documentation categories, exclude it too.
-
-      (setf files (remove-if-not #'(lambda (f-path) 
-                                     (let ((f-name (pathname-name f-path)))
-                                       #+nil (format t "BUILD-HTML-INDEX: F-PATH = ~a, F-NAME = ~a.~%" f-path f-name)
-                                       (or
-                                         (string-equal f-name "maxima_toc")
-                                         (string-equal f-name "maxima")
-                                         (and 
-                                           (maxima_nnn-p f-name)
-                                           #+nil
-					   (not (grep-l "<title>(Function and Variable Index|Documentation Cat)" f-path)))
-                                         (format t "BUILD-HTML-INDEX: omit ~S.~%"
-						 (namestring f-path)))))
-				 files))
-
-      ;; Now sort them in numerical order.
-      (setf files
-	    (sort files #'<
-		  :key #'(lambda (p)
-			   (let ((name (pathname-name p)))
-			     (cond ((string-equal name "maxima_toc")
-				    ;; maxima_toc.html is first
-				    -1)
-				   ((string-equal name "maxima")
-				    ;; maxima.html is second.
-				    0)
-				   (t
-				    ;; Everything else is the number
-				    ;; in the file name, which starts
-				    ;; with 1.
-				    (if (> (length name) 7)
-					(parse-integer (subseq name 7))
-					0)))))))
-      ;; Check if the last 2 files contain the indices.  If they do,
-      ;; we can ignore them.  We do want to ignore these, but if we're
-      ;; wrong, it's not terrible.  We just waste time scanning files
-      ;; that won't have anything to include in the index.
-      (format t "Looking for indices~%")
-      (dolist (file (last files 2))
-	(when (grep-l "<title>(Function and Variable Index|Documentation Cat)" file)
-	  (format t "BUILD-HTML-INDEX: omit ~S.~%"
-		  (namestring file))
-	  (setf files (remove file files))))
-
-      (dolist (file files)
-	;; We want to ignore maxima_singlepage.html for now.
-	(unless (string-equal (pathname-name file)
-                              "maxima_singlepage")
-	  (process-one-html-file file entry-regexp section-regexp fnindex-regexp))))))
-
-(defun build-and-dump-html-index (dir)
+;; Run this to build a hash table from the topic to the HTML file
+;; containing the documentation.  The single argument DIR should be a
+;; directory that contains the html files to be searched for the
+;; topics.  For example it can be "<maxima-dir>/doc/info/*.html"
+(defmfun $build_and_dump_html_index (dir)
   (build-html-index dir)
   (let (entries)
     (maphash #'(lambda (k v)
@@ -239,6 +307,10 @@
 
 	  (pprint `(let ((cl-info::html-index ',entries))
 		     (cl-info::load-html-index cl-info::html-index))
-		  s))))))
+		  s))))
+    (format t "HTML index has ~D entries~%" (hash-table-count *html-index*))
+    ;; Hash table can't be empty unless we screwed up somewhere.
+    (assert (plusp (hash-table-count *html-index*)))
+    (plusp (hash-table-count *html-index*))))
 
-(build-and-dump-html-index "./*.html")
+;;(build-and-dump-html-index "./*.html")

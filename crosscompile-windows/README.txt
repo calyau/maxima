@@ -1,9 +1,12 @@
 Crosscompiling Maxima for Windows
 =================================
 
-On a Ubuntu/Debian System just install some tools for crosscompiling:
+On a Ubuntu/Debian System enable the 32bit support and install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-x86-64 cmake nsis wine automake texlive texlive-plain-generic texlive-xetex rsync p7zip-full g++ gettext python3 tcl pandoc po4a
+dpkg --add-architecture i386
+
+apt-get install g++-mingw-w64-x86-64 cmake nsis wine wine64 automake texlive texlive-plain-generic texlive-xetex rsync p7zip-full g++ gettext python3 tcl pandoc po4a wine32 libgcc-s1:i386 libstdc++6:i386 bsdutils
+
 
 The Mingw compiler comes in two flavors for threading (win32 and posix threads).
 wxMaxima requires posix threads, so you must reconfigure mingw and select the posix
@@ -11,8 +14,6 @@ version, on Debian/Ubuntu Linux using:
 update-alternatives --config x86_64-w64-mingw32-g++
 update-alternatives --config x86_64-w64-mingw32-gcc
 
-You will need CMake >= 3.10, if that is not included in your distribution,
-download a recent CMake from https://cmake.org/files/
 
 Then you can extract the Maxima sourcecode or clone the git repository
 and start the crosscompiling-process:
@@ -35,7 +36,6 @@ installer for Maxima is generated.
 
 This should work (at least) on Ubuntu and Debian (I hope on other
 Linux-Distributions too...).
-(if you want you may even omit the first "make")
 
 Instead of "make clean" just remove everything in the build directory.
 
@@ -60,6 +60,11 @@ In case a new release of a software is released (and no new patches are needed),
 it should be sufficient to just increase the version number and MD5-checksum
 for the new release in CMakeLists.txt.
 
+The build step of Maxima needs some sort of 'terminal access', so it will *not* work
+as cron job or a non-interactive shell.
+For an automated run on Github (see below), this can be solved by building
+Maxima using 'script', which seems to simulate the terminal access.
+See the Github workflows referenced below.
 
 Building a 32 bit installer
 ===========================
@@ -68,13 +73,21 @@ By default a 64 bit installer will be generated.
 If you want to crosscompile a 32 bit installer, install the 32 bit
 crosscompiler package (i686-w64-mingw32-g++) - and reconfigure it
 for posix threads.
-It might be necessary to add the i386 architecture:
-https://wiki.debian.org/Multiarch/HOWTO
 
 Then use the following commands to build a 32 bit installer:
 cmake -DBUILD_64BIT=NO ..
 make
 make package
+
+
+Example with Github actions
+===========================
+
+If you want to see every required step and how it works:
+On Github there is a repository, where I set up everything which is
+needed to crosscompile Maxima using Github Workflows (currently
+using an Ubuntu 22.04).
+https://github.com/daute/maxima-crosscompilation/
 
 
 Installing the package

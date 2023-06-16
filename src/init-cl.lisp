@@ -32,6 +32,10 @@
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
+(defvar *verify-html-index* t
+  "If non-NIL, verify the contents of the html index versus the text
+  index.  Set via the command-line option --no-verify-html-index.")
+
 (defun shadow-string-assignment (var value)
   (cond
     ((stringp value)
@@ -567,6 +571,10 @@
 			   :action #'(lambda ()
 				       (setf *maxima-load-init-files* nil))
 			   :help-string "Do not load the init file(s) on startup")
+	   (make-cl-option :names '("--no-verify-html-index")
+			   :action #'(lambda ()
+				       (setf *verify-html-index* nil))
+			   :help-string "Do not verify on startup that the set of html topics is consistent with text topics.")
 			   ))
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
@@ -591,6 +599,8 @@
 	(catch 'to-lisp
 	  (setf (values input-stream batch-flag)
 		(process-maxima-args input-stream batch-flag))
+	  (when *verify-html-index*
+	    ($verify_html_index))
 	  (load-user-init-file)
 	  (loop
 	   (with-simple-restart (macsyma-quit "Maxima top-level")
@@ -720,7 +730,8 @@
     ;; encoding was already set to something else; we forcibly change
     ;; it to utf-8. (Is that right?)
     (setf stream:*default-external-format* :utf-8)
-    (stream:set-system-external-format :utf-8 :utf-8))
+    (stream:set-system-external-format :utf-8 :utf-8)
+    (setf ext:*default-external-format* :utf-8))
   #+clisp
   (ignore-errors
     (progn (setf custom:*default-file-encoding*
