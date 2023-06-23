@@ -251,12 +251,12 @@
     (setf subdirs
 	  (remove-if
 	   #'(lambda (path)
-	       ;; If any directory has a subdirectory named starting
+	       ;; If any directory has a subdirectory name starting
 	       ;; with ".", we want to exclude that directory from our
-	       ;; list.  These aren't hidden directories (on unix)
+	       ;; list.  These are hidden directories (on unix)
 	       ;; where we should not be looking for maxima or lisp
 	       ;; files.  In addition, any directory with a name that
-	       ;; matches anything in EXLUDE-DIRS is also excluded.
+	       ;; matches anything in EXCLUDE-DIRS is also excluded.
 	       (let ((dir (cdr (pathname-directory path))))
 		 (or (find-if #'(lambda (d)
 				  (when (plusp (length d))
