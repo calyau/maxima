@@ -141,20 +141,20 @@
 ;; Find entries from the function and variable index.  An example of
 ;; what we're looking for:
 ;;
-;;   <a href="maxima_55.html#index-asinh">
+;;   <a href="Elementary-Functions.html#index-asinh">
 ;;
-;; We extract the file name and the stuff after "#index-" which is the
-;; html id that we need.  It's also the key we need for the hash
-;; table.
-(let ((href (pregexp:pregexp "<a href=\"([[:alnum:]-_]+\.html)#index-([^\"]*)\">")))
+;; We extract the file name and the stuff starting with "#index-".
+;; That is the item-id we want to use for the link (without the "#"),
+;; and the stuff after "#index-" is the id topic we need.
+(let ((href (pregexp:pregexp "<a href=\"([[:alnum:]-_]+\.html)#(index-([^\"]*))\">")))
   (defun match-entries (line)
     (let ((match (pregexp:pregexp-match href line)))
       (when match
 	(format t "match:~%~S~%" match)
-	(destructuring-bind (whole file item-id)
+	(destructuring-bind (whole file item-id id)
 	    match
 	  (declare (ignore whole))
-	  (values item-id item-id file line))))))
+	  (values id item-id file line))))))
 
 ;; Find entries from the TOC.  An example of what we're looking for:
 ;;
