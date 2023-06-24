@@ -146,10 +146,11 @@
 ;; We extract the file name and the stuff after "#index-" which is the
 ;; html id that we need.  It's also the key we need for the hash
 ;; table.
-(let ((href (pregexp:pregexp "<a href=\"(maxima_[[:digit:]]+\.html)#index-([^\"]*)\">")))
+(let ((href (pregexp:pregexp "<a href=\"([[:alnum:]-_]+\.html)#index-([^\"]*)\">")))
   (defun match-entries (line)
     (let ((match (pregexp:pregexp-match href line)))
       (when match
+	(format t "match:~%~S~%" match)
 	(destructuring-bind (whole file item-id)
 	    match
 	  (declare (ignore whole))
@@ -157,25 +158,27 @@
 
 ;; Find entries from the TOC.  An example of what we're looking for:
 ;;
-;;  <a id="toc-Bessel-Functions-1" href="maxima_14.html#Bessel-Functions">15.2 Bessel Functions</a>
+;;  <a id="toc-Bessel-Functions-1" href="Special-Functions.html#Bessel-Functions">15.2 Bessel Functions</a></li>
 ;;
-;; We extract the file name and then the title of the subsection.
+;; We extract the file name, "Special-Functions.html" and the id,
+;; "Bessel-Functions" and then the title of the subsection, without
+;; the section numbers, "Bessel Functions".  
 ;; Further subsections are ignored.
-(let ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"(maxima_[^\"]+)\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<")))
+(let ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"([^#\"]+)(#([^\"]+))\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<")))
   (defun match-toc (line)
     (let ((match (pregexp:pregexp-match regexp line)))
       (when match
-	;;(format t "match: ~S: ~A~%" match line)
-	(destructuring-bind (whole file item)
+	(format t "match: ~S: ~A~%" match line)
+	(destructuring-bind (whole file item# id item)
 	    match
-	  (declare (ignore whole))
+	  (declare (ignore whole item#))
 	  ;; Replace "&rsquo;" with "'"
 	  (when (find #\& item :test #'char=)
 	    (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
 
 	  (format *log-file* "TOC: ~S -> ~S~%" item file)
 
-	  (values item "" file line))))))
+	  (values item id file line))))))
 
 (defun find-index-file (dir)
   "Find the name of HTML file containing the function and variable
@@ -261,7 +264,7 @@
 
     (with-open-file (*log-file* "build-html-index.log"
 				:direction :output :if-exists :supersede)
-      (let ((toc-path (merge-pathnames "maxima_toc.html" dir)))
+      (let ((toc-path (merge-pathnames "index.html" dir)))
 	(get-texinfo-version toc-path)
 	(format t "Texinfo Version ~A: ~D~%" *texinfo-version-string* *texinfo-version*)
 	(process-one-html-file index-file #'match-entries t "Add")

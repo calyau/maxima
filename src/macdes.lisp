@@ -164,7 +164,7 @@
 				$url_base
 				"/"
 				(namestring base-name)
-				"#index-"
+				"#"
 				id))
 	      command)
 	  (when *debug-display-html-help*
