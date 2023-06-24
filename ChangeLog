@@ -19,6 +19,7 @@ Changes in Xmaxima:
 Changes in the Windows installer:
 ---------------------------------
  * Update Gnuplot
+ * Update ABCL
 
 Bug fixes for numbered bugs:
 ----------------------------
