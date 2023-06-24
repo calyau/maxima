@@ -668,14 +668,7 @@ if test x"${enable_build_docs}" = xtrue ; then
             AC_MSG_RESULT([${makeinfo_version_string} (6.8 or later preferred)])
 	fi
 
-	dnl Makeinfo version 7.0 and later needs a different init
-	dnl file.  Figure which one to use, and also substitute this
-	dnl value in build_html.sh.in.
-	if test ${makeinfo_version} -ge 700; then
-	    TEXI2HTML=texi2html-7.init
-	else
-	    TEXI2HTML=texi2html.init
-	fi
+        TEXI2HTML=texi2html.init
         AC_SUBST(TEXI2HTML)
 
 	dnl If the makeinfo version is older than 6.8, we need to
