@@ -143,14 +143,14 @@
 ;;
 ;;   <a href="Elementary-Functions.html#index-asinh">
 ;;
-;; We extract the file name and the stuff starting with "#index-".
-;; That is the item-id we want to use for the link (without the "#"),
-;; and the stuff after "#index-" is the id topic we need.
-(let ((href (pregexp:pregexp "<a href=\"([[:alnum:]-_]+\.html)#(index-([^\"]*))\">")))
+;; We extract the file name, "Elementary-Functions.html", and the
+;; stuff starting with "#index-".  This gives the item-id,
+;; "index-asinh" that we want to use for the link (without the "#"),
+;; and the stuff after "#index-", "asinh" is the id topic we need.
+(let ((href (pregexp:pregexp "<a href=\"([[:alnum:]_-]+\.html)#(index-([^\"]*))\">")))
   (defun match-entries (line)
     (let ((match (pregexp:pregexp-match href line)))
       (when match
-	(format t "match:~%~S~%" match)
 	(destructuring-bind (whole file item-id id)
 	    match
 	  (declare (ignore whole))
@@ -168,7 +168,6 @@
   (defun match-toc (line)
     (let ((match (pregexp:pregexp-match regexp line)))
       (when match
-	(format t "match: ~S: ~A~%" match line)
 	(destructuring-bind (whole file item# id item)
 	    match
 	  (declare (ignore whole item#))
