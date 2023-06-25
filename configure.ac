@@ -628,7 +628,7 @@ AC_ARG_ENABLE(build-docs,
 
 AM_CONDITIONAL(ENABLE_BUILD_DOCS, test x$enable_build_docs = xtrue)
 
-AC_ARG_VAR([MAKEINFO], [The path to the 'makeinfo' executable to use'])
+AC_ARG_VAR([MAKEINFO], [The path to the 'makeinfo' executable to use])
 AC_PATH_PROG([MAKEINFO], [makeinfo])
 makeinfo_found=true
 if test -z "$MAKEINFO"; then
