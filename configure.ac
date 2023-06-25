@@ -642,7 +642,6 @@ Or disable building of the docs using
   ./configure --disable-build-docs
 ])
 fi
-dnl AC_CHECK_PROG(makeinfo_found,$MAKEINFO,true,false)
 
 if test x"${enable_build_docs}" = xtrue ; then
     if test x"${makeinfo_found}" = xfalse ; then
