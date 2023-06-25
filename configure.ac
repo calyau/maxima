@@ -671,10 +671,11 @@ if test x"${enable_build_docs}" = xtrue ; then
         TEXI2HTML=texi2html.init
         AC_SUBST(TEXI2HTML)
 
-	dnl If the makeinfo version is older than 6.8, we need to
-	dnl include MathJax ourselves when building the HTML files.
+	dnl If the makeinfo version is older than or equal to 6.8, we
+	dnl need to include MathJax ourselves when building the HTML
+	dnl files.
 	need_mathjax=false
-	if test ${makeinfo_version} -lt 608; then
+	if test ${makeinfo_version} -le 608; then
 	    need_mathjax=true
 	fi
 	if test x"${need_mathjax}" = xtrue; then
@@ -1316,7 +1317,6 @@ doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 desktopintegration/Makefile \
 doc/info/category-macros.texi \
 doc/info/texi2html.init \
-doc/info/texi2html-7.init \
 doc/info/math.m4 \
 doc/info/figures/Makefile \
 doc/info/de/Makefile \
