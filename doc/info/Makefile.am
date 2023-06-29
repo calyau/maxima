@@ -37,7 +37,7 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  Program.texi Debugging.texi alt-display.texi asympa.texi \
  augmented_lagrangian.texi bitwise.texi bernstein.texi bode.texi celine.texi \
  clebsch_gordan.texi combinatorics.texi odepack.texi \
- cobyla.texi contrib_ode.texi descriptive.texi diag.texi distrib.texi \
+ cobyla.texi colnew.texi contrib_ode.texi descriptive.texi diag.texi distrib.texi \
  draw.texi drawdf.texi dynamics.texi engineering-format.texi \
  wrstcse.texi ezunits.texi f90.texi finance.texi fractals.texi gentran.texi \
  ggf.texi graphs.texi grobner.texi hompack.texi impdiff.texi interpol.texi \
