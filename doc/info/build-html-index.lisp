@@ -123,16 +123,17 @@
 	(update-entry old new)))
 
     ;; This is messy.  Texinfo 6.8 uses plain apostrophes in the info
-    ;; file.  But with texinfo 7.0.3, some entries in HTML use an
+    ;; file.  But with texinfo 7.0.[23], some entries in HTML use an
     ;; apostrophe (U+27) character, but the info file uses
-    ;; Right_Single_Quotation_Mark (U+2019).  And apparently, the next version of Texinfo will not.
+    ;; Right_Single_Quotation_Mark (U+2019).  And apparently, the next
+    ;; version of Texinfo will not.
     ;;
     ;; Convert these only for the cases we know this is a problem.
     ;;
     ;; This current implementation will very likely not work with gcl
     ;; only supports 8-bit characters.
     (when (and *texinfo-version*
-	       (= *texinfo-version* 70003))
+	       (>= *texinfo-version* 70002))
       (dolist (item '("Euler's number"
 		      "Introduction to Maxima's Database"))
 	(update-entry item
@@ -164,7 +165,7 @@
 ;; "Bessel-Functions" and then the title of the subsection, without
 ;; the section numbers, "Bessel Functions".  
 ;; Further subsections are ignored.
-(let ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"([^#\"]+)(#([^\"]+))\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)<")))
+(let ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"([^#\"]+)(#([^\"]+))\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)</a>")))
   (defun match-toc (line)
     (let ((match (pregexp:pregexp-match regexp line)))
       (when match
