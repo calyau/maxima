@@ -1,0 +1,52 @@
+/* colnew-ex2.mac
+
+  Generate figure for colnew example 1
+
+*/
+
+load("colnew.mac")$
+load("prob2.mac")$
+
+/* Function to generate list of n+1 equally spaced values */
+xlist(xmin,xmax,n):=block([dx:(xmax-xmin)/n],makelist(i,i,0,n)*dx+xmin)$
+X: xlist(aleft,aright,500)$
+
+/* First run: No initial approx provided */
+ipar[9] : 0;
+
+[iflag, fspace, ispace] :
+colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+ fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, dummy)$
+
+/* Generate solution values */
+ans:colnew_appsln(X,4,fspace,ispace)$
+
+/* List of first variable */
+z1:maplist(first,ans)$
+
+/* Second run: initial approx provided */
+ipar[9] : 1;
+
+[iflag, fspace, ispace] :
+colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+ fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, solutn)$
+
+/* Generate solution values */
+ans:colnew_appsln(X,4,fspace,ispace)$
+
+/* List of first variable */
+z2:maplist(first,ans)$
+
+plot2d([[discrete,X,z1],[discrete,X,z2]],
+  [legend,"Solution I","Solution II"],
+  [xlabel, "x"],
+  [ylabel, "φ(x)"],
+  [pdf_file,"./figures/colnew-ex2.pdf"]);
+
+plot2d([[discrete,X,z1],[discrete,X,z2]],
+  [legend,"Solution I","Solution II"],
+  [xlabel, "x"],
+  [ylabel, "φ(x)"],
+  [png_file,"./figures/colnew-ex2.png"]);
