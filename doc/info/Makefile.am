@@ -739,8 +739,8 @@ clean-info:
 	rm -f maxima.fns
 
 clean-html:
-	rm -f $(wildcard maxima*.html) \
-	      $(wildcard $(addprefix $(srcdir),maxima*.html))
+	rm -f $(wildcard *.html) \
+	      $(wildcard $(addprefix $(srcdir),*.html))
 
 EXTRA_DIST = manual.css texi2html.init maxima.texi dlmf-ref-macros.texi \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
