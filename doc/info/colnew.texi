@@ -1,0 +1,1867 @@
+@menu
+* Introduction to colnew::
+* Functions and Variables for colnew::
+* Examples for colnew::
+* References for colnew::
+@end menu
+
+@node Introduction to colnew, Functions and Variables for colnew, colnew-pkg, colnew-pkg
+@section Introduction to colnew
+
+@var{colnew} solves mixed-order systems of boundary-value problems (BVPs)
+in ordinary differential equations(ODEs).  It is a Common Lisp translation
+(via @var{f2cl}) of the Fortran routine COLNEW (Bader&Ascher 1987).
+
+The method uses collocation at Gaussian points and interpolation using
+basis functions. Approximate solutions are computed on a sequence
+of automatically selected meshes until a user-specified set of tolerances
+is satisfied. A damped Newton's method is used for the nonlinear iteration.
+
+COLNEW has some advanced features:
+
+@itemize
+
+@item @b{Continuation:}
+Most iterative  numerical solvers require an initial guess. There are
+parameter dependent problems that have an obvious solution for a special
+value of the parameter  
+(for example a coupling constant vanishes).  One can then slowly
+vary the parameter, solving the problem numerically
+using as a guess the previous solution, until one gets into a strong
+coupling regime, hence the name continuation.
+Sometimes an
+artificial parameter is introduced to allow the use of continuation.
+
+@item @b{Singularities:}
+Another interesting feature of COLNEW is that one can manage singularities
+in the differential equation by setting interior
+"boundary points" on the singularities. This is because the differential
+equation is only imposed in the interior of the intervals, but the solution
+is checked for continuity and continuity of the derivative
+on the boundary of the intervals.
+
+@item @b{Stiff differential equations:}
+COLNEW is can be used for solving some stiff differential equations due to
+the use of adaptive meshes.
+
+@end itemize
+
+The maxima interface to COLNEW exposes the full power and complexity
+of the Fortran 77 implementation.
+
+COLNEW is a modification of the package COLSYS (Ascher 1981a,b).
+It incorporates a new basis
+representation replacing B-splines, and improvements for
+the linear and nonlinear algebraic equation solvers.
+The package can be referenced as either COLNEW or COLSYS.
+
+Many practical problems that are not in the standard form accepted by COLNEW
+can be converted into this form.  See (Asher&Russell 1981).
+
+@opencatbox{Categories:}
+@category{Numerical methods}
+@category{Differential equations}
+@category{Share packages}
+@category{Package colnew}
+@closecatbox
+
+@node Functions and Variables for colnew, Examples for colnew, Introduction to colnew, colnew-pkg
+@section Functions and Variables for colnew
+
+@anchor{colnew_expert}
+@deffn {Function} colnew_expert @
+@fname{colnew_expert} (@var{ncomp}, @var{m}, @var{aleft}, @var{aright}, @var{zeta}, @var{ipar}, @var{ltol}, @
+@var{tol}, @var{fixpnt}, @var{ispace}, @var{fspace}, @var{iflag}, @
+@var{fsub}, @var{dfsub}, @var{gsub}, @var{dgsub}, @var{guess})
+
+@var{colnew_expert} solves mixed-order systems of boundary-value problems (BVPs) in ordinary
+differential equations (ODEs) using a numerical collocation method.
+
+@var{colnew_expert} returns the list [@var{iflag}, @var{fspace}, @var{ispace}].
+@var{iflag} is an error flag.  Lists @var{fspace} and @var{ispace} contain the
+state of the solution 
+and can be: used by @mref{colnew_appsln} to calculate solution values
+at arbitrary points in the solution domain; and passed back to @var{colnew_expert} to restart the solution process
+with different arguments. 
+
+The function arguments are:
+
+@table @code
+
+@item ncomp
+Number of differential equations   (ncomp ≤ 20)
+
+@item m
+Integer list of length @var{ncomp}.  m[j] is the order of the j-th
+differential equation, with @math{1 ≤ m[j] ≤ 4}
+and @math{mstar = sum(m[j]) ≤ 40}.
+
+@item aleft
+Left end of interval
+
+@item aright
+Right end of interval
+
+@item zeta
+Real list of length @var{mstar}.  zeta[j] is the 
+j-th boundary or side condition point. The list zeta
+must be ordered, 
+with  zeta[j] ≤ zeta[j+1]. All side condition
+points must be mesh points in all meshes used,
+see description of ipar[11] and fixpnt below.
+
+@item ipar
+A integer list of length 11.  The parameters in ipar are:
+
+@itemize
+  @item @var{ipar[1]}
+    @itemize
+    @item 0, if the problem is linear
+    @item 1, if the problem is nonlinear
+  @end itemize
+  
+  @item @var{ipar[2]} ( = k )@*
+  Number of collocation points per subinterval , where
+  @math{max(m[i]) ≤ k ≤ 7}.@*
+  If @var{ipar[2]}=0 then colnew sets  k = max(max(m[i])+1, 5-max(m[i]))
+  
+  @item @var{ipar[3]}  ( = n )@*
+  Number of subintervals in the initial mesh.@*
+  If @var{ipar[3]} = 0 then colnew arbitrarily sets n = 5.
+  
+  @item @var{ipar[4]} ( = ntol )@*
+  Number of solution and derivative tolerances.@*
+  Require  0 < @var{ntol}  ≤ @var{mstar}.
+  
+  @item @var{ipar[5]}  ( = ndimf )@*
+  The length of list @var{fspace}. Its size provides a constraint on @var{nmax}.
+  Choose ipar[5] according to the formula
+  @math{ipar[5] ≥ nmax*nsizef} 
+  where
+  @math{ nsizef = 4 + 3 * mstar + (5+kd) * kdm + (2*mstar-nrec) * 2*mstar}. 
+  
+  @item @var{ipar[6]} ( = ndimi )@*
+  The length of list @var{ispace}. Its size provides a constraint on @var{nmax}, the maximum
+  number of subintervals.  Choose @var{ipar[6]} according to the formula
+  @math{ipar[6] ≥ nmax*nsizei}
+  where
+  @math{nsizei = 3 + kdm}
+  with
+    @math{kdm = kd + mstar}@*
+    @math{kd = k * ncomp}@*
+    @math{nrec = number of right end boundary conditions}.
+  
+  @item @var{ipar[7]} ( = iprint )@*
+  output control
+  @itemize
+    @item -1, for full diagnostic printout
+    @item 0, for selected printout
+    @item 1, for no printout
+  @end itemize
+  
+  @item @var{ipar[8]} ( = iread )@*
+    @itemize
+    @item 0, causes colnew to generate a uniform initial mesh.
+    @item 1,
+     if the initial mesh is provided by the user.  it
+     is defined in fspace as follows:  the mesh
+     aleft=x[1]<x[2]< ... <x[n]<x[n+1]=aright
+     will occupy  fspace[1], ..., fspace[n+1]. the
+     user needs to supply only the interior mesh
+     points  fspace[j] = x[j], j = 2, ..., n.
+   @item 2,
+     if the initial mesh is supplied by the user
+     as with @var{ipar[8]}=1, and in addition no adaptive
+     mesh selection is to be done.
+   @end itemize
+   
+  @item @var{ipar[9]}  ( = iguess )
+  @itemize
+    @item 0,
+        if no initial guess for the solution is provided
+    @item 1,
+        if an initial guess is provided by the user
+        in subroutine guess.
+    @item 2,
+        if an initial mesh and approximate solution
+        coefficients are provided by the user in @var{fspace}.
+        (the former and new mesh are the same).
+    @item 3,
+        if a former mesh and approximate solution
+        coefficients are provided by the user in @var{fspace},
+        and the new mesh is to be taken twice as coarse;
+        i.e.,every second point from the former mesh.
+    @item 4,
+        if in addition to a former initial mesh and
+        approximate solution coefficients, a new mesh
+        is provided in @var{fspace} as well.
+       (see description of output for further details
+        on iguess = 2, 3, and 4.)
+  @end itemize
+  
+  @item @var{ipar[10]}
+  @itemize
+    @item 0, if the problem is regular
+    @item 1, if the first relax factor is =rstart, and the
+        nonlinear iteration does not rely on past covergence
+        (use for an extra sensitive nonlinear problem only).
+    @item 2, if we are to return immediately upon  (a) two
+        successive nonconvergences, or  (b) after obtaining
+        error estimate for the first time.
+    @end itemize
+    
+    @item @var{ipar[11]} ( = nfxpnt , the dimension of fixpnt)@*
+    The number of fixed points in the mesh other than @var{aleft}
+    and @var{aright}. 
+    The code requires that all side condition points
+    other than @var{aleft} and @var{aright} (see description of
+    @var{zeta}) must be included as fixed points in @var{fixpnt}.
+  @end itemize
+
+
+@item ltol
+A list of length @var{ntol=ipar[4]}. @var{ltol[j]=k} specifies
+that the j-th tolerance in @var{tol} controls the error
+in the k-th component of z(u).
+
+The list @var{ltol} must be ordered with
+@math{1 ≤ ltol[1] < ltol[2] <  ... < ltol[ntol] ≤ mstar}.
+
+@item tol
+An list of length @var{ntol=ipar[4]}. @var{tol[j]} is the
+error tolerance on the ltol[j]-th component
+of z(u).
+
+Thus, the code attempts to satisfy
+for j=1,...,ntol on each subinterval
+@math{abs(z(v)-z(u))[k] ≤ tol(j)*abs(z(u))[k]+tol(j)}
+if v(x) is the approximate solution vector.
+
+@item fixpnt
+An list of length @var{ipar[11]}. It contains the points, other than
+@var{aleft} and @var{aright}, which are to be included in every mesh.
+All side condition points other than @var{aleft} and @var{aright}
+(see @var{zeta}) be included as fixed points in @var{fixpnt}.
+
+@item ispace
+An integer work list of length @var{ipar[6]}.
+
+@item fspace
+A real work list of length @var{ipar[5]}.
+
+@item  fsub
+@var{fsub} is a function f(x,z1,...,z[mstar]) which realizes
+the system of ODEs.
+
+It returns a list of @var{ncomp} values, one for each ODE.
+Each value is the highest order
+derivative in each ode in terms of of x,z1,...,z[mstar] .
+
+@item dfsub
+@var{dfsub} is a function df(x,z1,...,z[mstar]) for evaluating
+the Jacobian of f.
+
+@item gsub
+Name of subroutine gsub(i,z1,z2,...,z[mstar]) for evaluating the i-th
+component of the boundary value function g(z1,...,z[mstar]).
+The independent variable x is not an argument of g.  The value
+@var{x=zeta[i]} must be substituted in advance.
+
+
+@item dgsub
+Name of subroutine dgsub(i,z1,...,z[mstar]) for evaluating the
+i-th row of the Jacobian of g(z1,...,z[mstar]).
+
+@item guess
+Name of subroutine to evaluate the initial
+approximation for  (u(x)) and for dmval(u(x))= vector
+of the mj-th derivatives of u(x).
+This subroutine is needed only if using @var{ipar(9)} = 1.
+
+@end table
+
+The return value of @var{colnew_expert} is the list
+@var{[iflag, fspace, ispace]}, where:
+
+@table @code
+
+@item iflag
+The mode of return from @var{colnew_expert}.
+  @itemize
+    @item
+    = 1 for normal return
+    @item
+    = 0 if the collocation matrix is singular.
+    @item
+    = -1 if the expected no. of subintervals exceeds storage specifications.
+    @item
+    = -2 if the nonlinear iteration has not converged.
+    @item
+    = -3 if there is an input data error.
+  @end itemize
+
+@item fspace
+A list of floats of length @var{ipar[5]}.
+
+@item ispace
+A list of integers of length @var{ipar[6]}.
+
+@end table
+
+@mref{colnew_appsln} uses @var{fspace} and @var{ispace} to calculate solution values
+at arbitrary points.  The lists can also be used to restart the solution process
+with modified meshes and parameters.
+
+@opencatbox{Categories:}
+@category{Numerical methods}
+@category{Differential equations}
+@category{Package colnew}
+@closecatbox
+
+@end deffn
+
+
+@anchor{colnew_appsln}
+@deffn {Function} colnew_appsln @
+@fname{colnew_appsln} (@var{x}, @var{zlen}, @var{fspace}, @var{ispace})
+
+Return a list of solution values from @mref{colnew_expert} results.
+
+The function arguments are:
+
+@table @code
+
+@item x
+List of x-coordinates to calculate solution.
+@item zlen
+@var{mstar}, the length of the solution list z
+@item fspace
+List @var{fspace} returned from @mrefdot{colnew_expert}
+@item ispace
+List @var{ispace} returned from @mrefdot{colnew_expert}
+@end table
+
+@opencatbox{Categories:}
+@category{Numerical methods}
+@category{Differential equations}
+@category{Package colnew}
+@closecatbox
+
+@end deffn
+
+
+@node Examples for colnew, References for colnew, Functions and Variables for colnew, colnew-pkg
+@section Examples for colnew
+
+COLNEW is best learned by example.
+
+@subsection Example 1: A uniformly loaded beam of variable stiffness
+
+The problem describes a uniformly loaded beam of variable stiffness, simply supported at both ends.
+
+The problem from (Gawain&Bell 1978) and is Example 1 from (Ascher 1981a).
+The maxima code is in file share/colnew/prob1.mac and a Fortran implementation
+is in share/colnew/ex1. 
+
+@noindent The differential equation is
+
+@center @math{(x^3 u'@w{}')'@w{}' = x^3 u'@w{}'@w{}'@w{}' + 6 x^2 u'@w{}'@w{}' + 6x u'@w{}' = 1} over @math{1 ≤ x  ≤ 2}
+
+@noindent with boundary conditions
+
+@center @math{u(1) = 0, u'@w{}'(1) = 0, u(2) = 0, u'@w{}'(2) = 0}
+
+@noindent The exact solution is
+
+@center @math{u(x) = (1/4) (10 ln(2) - 3) (1-x) + (1/2) (1/x + (3+x) ln(x) - x)}
+
+@noindent There is @var{nconc} = 1 differential equation of fourth order. The list of orders
+@var{m} = [4] and @var{mstar} = sum(m[j]) = 4.
+
+@noindent The unknown vector of length @var{mstar} is
+
+@center @math{z(x) = [z_1(x),z_2(x),z_3(x),z_4(x)]}
+
+@center @math{=[u(x),u'(x),u'@w{}'(x),u'@w{}'@w{}'(x)]}.
+
+@noindent The differential equation is expressed as
+
+@center @math{u'@w{}'@w{}'@w{}'(x) = F(x,z_1,z_2,z_3,z_4) = 1 - 6 x^2 z_3 - 6x z_2}
+
+There are @var{mstar=4} boundary conditions. They are given by a
+function @math{G(z_1,z_2,z_3,z_4)} that returns a list of length mstar.
+The j-th boundary condition applies at @var{x = zeta[j]} and is satisfied
+when @var{g[j] = 0}.  We have
+
+@c The {xxxxxx} set the column widths
+@multitable {xxxxxxxxx} {xxxxxxxxx} {xxxxxxxxxx} {xxxxxxxxx}
+@headitem j@ @ @ @tab zeta[j]@  @tab Condition@  @tab g[j]
+@item 1
+@tab 1.0
+@tab @math{u=0}
+@tab @math{z_1}
+@item 2
+@tab 1.0
+@tab @math{u'@w{}'=0}
+@tab @math{z_3}
+@item 3
+@tab 2.0
+@tab @math{u=0}
+@tab @math{z_1}
+@item 4
+@tab 2.0
+@tab @math{u'@w{}'=0}
+@tab @math{z_3}
+@end multitable
+
+giving  @math{zeta = [1.0,1,0,2.0,2.0]}
+and @math{G(z_1,z_2,z_3,z_4) = [z_1, z_3, z_1, z_3]}.
+
+The Jacobians @var{df} and @var{dg} of @var{f} and @var{g} respectively
+are determined symbolically.
+
+The solution uses the default five collocation points per subinterval
+and the first mesh contains only one subinterval.
+The maximum error magnitude in the approximate solution is evaluated at 100 equidistant points
+by function @mref{colnew_appsln} using the results returned by COLNEW and
+compared to the estimates from the code.
+
+@c ===beg===
+@c load("colnew")$
+@c
+@c /* One differential equation of order 4 */
+@c  m : [4];
+@c
+@c /* Location of boundary conditions */
+@c  zeta : float([1,1,2,2]);
+@c
+@c /* Set up parameter array.  Use defaults for all except as shown */
+@c  ipar : makelist(0,k,1,11);
+@c /* initial mesh size */
+@c  ipar[3] : 1$
+@c /* number of tolerances */
+@c  ipar[4] : 2$
+@c /* size of real work array */
+@c  ipar[5] : 2000$
+@c /* size of integer work array */
+@c  ipar[6] : 200$
+@c
+@c /* Two error tolerances (on u and its second derivative) */
+@c  ltol : [1, 3];
+@c tol : [1d-7, 1d-7];
+@c
+@c /* Real work array */
+@c  fspace : makelist(0d0, k, 1, ipar[5])$
+@c /* Integer work array */
+@c  ispace : makelist(0, k, 1, ipar[6])$
+@c /* no internal fixed points */
+@c  fixpnt : []$
+@c
+@c /* Define the equations */
+@c  fsub(x, z1, z2, z3, z4) := [(1-6*x^2*z4-6*x*z3)/x^3];
+@c df : jacobian(fsub(x,z1, z2, z3, z4),[z1,z2,z3,z4]);
+@c define(dfsub(x, z1, z2, z3, z4), df);
+@c
+@c g(z1, z2, z3, z4) := [z1, z3, z1, z3];
+@c gsub(i, z1, z2, z3, z4) :=
+@c  subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], g(z1, z2, z3, z4)[i]);
+@c
+@c dg:jacobian(g(z1, z2, z3, z4), [z1,z2,z3,z4]);
+@c dgsub(i, z1, z2, z3, z4) :=
+@c  subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], row(dg, i)[1]);
+@c
+@c /* Exact solution */
+@c   exact(x) := [.25*(10.*log(2.)-3.)*(1.-x) + .5*(1./x+(3.+x)*log(x)-x),
+@c              -.25*(10.*log(2.)-3.) + .5*(-1./x/x+log(x)+(3.+x)/x-1.),
+@c              .5*(2./x**3+1./x-3./x/x),
+@c              .5*(-6./x**4-1./x/x+6./x**3)]$
+@c
+@c [iflag, fspace, ispace] :
+@c  colnew_expert(1, m, 1d0, 2d0, zeta, ipar, ltol, tol, fixpnt, ispace, fspace,
+@c              0, fsub, dfsub, gsub, dgsub, dummy)$
+@c 
+@c /* Calculate the error at 101 points using the known exact solution */
+@c  block([x : 1,
+@c        err : makelist(0d0, k, 1, 4), 
+@c        j],
+@c   for j : 1 thru 101 do
+@c     block([],
+@c       zval : colnew_appsln([x], 4, fspace, ispace)[1],
+@c       u : float(exact(x)),
+@c       err : map(lambda([a,b], max(a,b)), err, abs(u-zval)),
+@c       x : x + 0.01),
+@c   print("The exact errors are:"),
+@c   printf(true, "   ~{ ~11,4e~}~%", err));
+@c ===end===
+@example
+@group
+(%i1) load("colnew")$
+
+@end group
+@group
+(%i2) /* One differential equation of order 4 */
+ m : [4];
+
+(%o2)                          [4]
+@end group
+@group
+(%i3) /* Location of boundary conditions */
+ zeta : float([1,1,2,2]);
+
+(%o3)                 [1.0, 1.0, 2.0, 2.0]
+@end group
+@group
+(%i4) /* Set up parameter array.  Use defaults for all except as shown */
+ ipar : makelist(0,k,1,11);
+(%o4)           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+@end group
+@group
+(%i5) /* initial mesh size */
+ ipar[3] : 1$
+@end group
+@group
+(%i6) /* number of tolerances */
+ ipar[4] : 2$
+@end group
+@group
+(%i7) /* size of real work array */
+ ipar[5] : 2000$
+@end group
+@group
+(%i8) /* size of integer work array */
+ ipar[6] : 200$
+
+@end group
+@group
+(%i9) /* Two error tolerances (on u and its second derivative) */
+ ltol : [1, 3];
+(%o9)                        [1, 3]
+@end group
+@group
+(%i10) tol : [1d-7, 1d-7];
+
+(%o10)                  [1.0e-7, 1.0e-7]
+@end group
+@group
+(%i11) /* Real work array */
+ fspace : makelist(0d0, k, 1, ipar[5])$
+@end group
+@group
+(%i12) /* Integer work array */
+ ispace : makelist(0, k, 1, ipar[6])$
+@end group
+@group
+(%i13) /* no internal fixed points */
+ fixpnt : []$
+
+@end group
+@group
+(%i14) /* Define the equations */
+ fsub(x, z1, z2, z3, z4) := [(1-6*x^2*z4-6*x*z3)/x^3];
+                                          2
+                                   1 - 6 x  z4 + (- 6) x z3
+(%o14) fsub(x, z1, z2, z3, z4) := [------------------------]
+                                               3
+                                              x
+@end group
+@group
+(%i15) df : jacobian(fsub(x,z1, z2, z3, z4),[z1,z2,z3,z4]);
+                       [         6     6 ]
+(%o15)                 [ 0  0  - --  - - ]
+                       [          2    x ]
+                       [         x       ]
+@end group
+@group
+(%i16) define(dfsub(x, z1, z2, z3, z4), df);
+
+                                     [         6     6 ]
+(%o16)   dfsub(x, z1, z2, z3, z4) := [ 0  0  - --  - - ]
+                                     [          2    x ]
+                                     [         x       ]
+@end group
+@group
+(%i17) g(z1, z2, z3, z4) := [z1, z3, z1, z3];
+(%o17)        g(z1, z2, z3, z4) := [z1, z3, z1, z3]
+@end group
+@group
+(%i18) gsub(i, z1, z2, z3, z4) :=
+ subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], g(z1, z2, z3, z4)[i]);
+
+(%o18) gsub(i, z1, z2, z3, z4) := 
+subst(['z1 = z1, 'z2 = z2, 'z3 = z3, 'z4 = z4], 
+g(z1, z2, z3, z4) )
+                 i
+@end group
+@group
+(%i19) dg:jacobian(g(z1, z2, z3, z4), [z1,z2,z3,z4]);
+                         [ 1  0  0  0 ]
+                         [            ]
+                         [ 0  0  1  0 ]
+(%o19)                   [            ]
+                         [ 1  0  0  0 ]
+                         [            ]
+                         [ 0  0  1  0 ]
+@end group
+@group
+(%i20) dgsub(i, z1, z2, z3, z4) :=
+ subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], row(dg, i)[1]);
+
+(%o20) dgsub(i, z1, z2, z3, z4) := 
+     subst(['z1 = z1, 'z2 = z2, 'z3 = z3, 'z4 = z4], row(dg, i) )
+                                                               1
+@end group
+@group
+(%i21) /* Exact solution */
+  exact(x) := [.25*(10.*log(2.)-3.)*(1.-x) + .5*(1./x+(3.+x)*log(x)-x),
+             -.25*(10.*log(2.)-3.) + .5*(-1./x/x+log(x)+(3.+x)/x-1.),
+             .5*(2./x**3+1./x-3./x/x),
+             .5*(-6./x**4-1./x/x+6./x**3)]$
+
+@end group
+@group
+(%i22) [iflag, fspace, ispace] :
+ colnew_expert(1, m, 1d0, 2d0, zeta, ipar, ltol, tol, fixpnt, ispace, fspace,
+             0, fsub, dfsub, gsub, dgsub, dummy)$
+
+
+ VERSION *COLNEW* OF COLSYS .    
+
+
+ THE MAXIMUM NUMBER OF SUBINTERVALS IS MIN (  12 (ALLOWED FROM FSPACE),  16 (ALLOWED FROM ISPACE) )
+
+ THE NEW MESH (OF    1 SUBINTERVALS), 
+    1.000000    2.000000
+
+ THE NEW MESH (OF    2 SUBINTERVALS), 
+    1.000000    1.500000    2.000000
+
+ THE NEW MESH (OF    4 SUBINTERVALS), 
+    1.000000    1.250000    1.500000    1.750000    2.000000
+@end group
+@group
+(%i23) /* Calculate the error at 101 points using the known exact solution */
+ block([x : 1,
+       err : makelist(0d0, k, 1, 4),
+       j],
+  for j : 1 thru 101 do
+    block([],
+      zval : colnew_appsln([x], 4, fspace, ispace)[1],
+      u : float(exact(x)),
+      err : map(lambda([a,b], max(a,b)), err, abs(u-zval)),
+      x : x + 0.01),
+  print("The exact errors are:"),
+  printf(true, "   ~@{ ~11,4e~@}~%", err));
+The exact errors are: 
+     1.7389E-10   6.2679E-9   2.1843E-7   9.5743E-6
+(%o23)                        false
+@end group
+@end example
+
+@subsection Example 2: Deformation of a spherical cap
+
+These equations describe the small finite deformation of a thin shallow
+spherical cap of constant thickness subject to a quadratically varying
+axisymmetric external pressure distribution superimposed on a uniform
+internal pressure distribution.
+The problem is described in (Parker&Wan 1984) and is Example 2
+from (Ascher 1981a).
+The maxima code is in file share/colnew/prob2.mac and a Fortran
+implementation is in share/colnew/ex2.
+
+There are two nonlinear differential equations
+for @math{φ} and @math{ψ} over @math{0 < x < 1}.
+
+@math{
+(ε^4/μ)[φ'@w{}' + (1/x) φ' - (1/x^2) φ] + ψ (1-φ/x) - φ = - γ x (1-(1/2)x^2)
+}
+
+@math{ μ [ψ'@w{}' + (1/x) ψ' - (1/x^2)ψ] - φ(1-φ/(2x)) = 0 }
+
+subject to boundary conditions
+@math{φ = 0} and @math{x ψ' - 0.3 ψ + 0.7 x = 0} at x=0 and x=1.
+
+
+For @math{ε = μ = 0.01}, two solutions exists.  These are obtained by
+starting the
+nonlinear iteration from two different guesses to the solution:
+initially with the default initial
+guess; and secondly, with the initial conditions given by the
+function @var{solutn}.
+
+There are @var{nconc} = 2 differential equations of second order.
+The list of orders @var{m} = [2,2] and
+@var{mstar} = sum(m[i]) = 4.
+
+The vector of unknowns of length @var{mstar}=4 is
+@math{z(x) = [ φ(x), φ'(x), ψ(x), ψ'(x)]}.
+
+The differential equation is expressed as
+
+@math{[φ'@w{}'(x), ψ'@w{}'(x)]}
+
+@math{=F(x,z_1,z_2,z_3,z_4)}
+
+@math{=[z_1/x^2 - z_2/x + (z_1-z_3 (1-z_1/x) - γ x (1-x^2/2))/(ε^4/μ),
+z_3/x^2 - z_4/x + z_1 (1-z_1/(2x))/μ]}
+
+
+There are four boundary conditions given by list @math{zeta}
+and function @math{G(z_1,z_2,z_3,z_4)}.
+
+@multitable @columnfractions 0.1 0.1 0.4 0.4
+@headitem j@ @ @ @tab zeta[j] @tab Condition @tab g[j]
+@item 1
+@tab 0.0
+@tab @math{φ = 0}
+@tab @math{z_1}
+@item 2
+@tab 0.0
+@tab @math{x ψ' - 0.3 ψ + 0.7 x = 0}
+@tab @math{z_3}
+@item 3
+@tab 1.0
+@tab @math{φ = 0}
+@tab @math{z_1}
+@item 4
+@tab 1.0
+@tab @math{x ψ' - 0.3 ψ + 0.7 x = 0}
+@tab @math{z_4 - 0.3@ z_3 + 0.7}
+@end multitable
+
+giving @math{zeta=[0.0,0.0,1.0,1.0]} and 
+@math{G(z_1,z_2,z_3,z_4)=[z_1, z_3, z_1, z_4-0.3*z_3+0.7]}
+
+Note that @var{x} is not an argument of function @var{G}.  The 
+value of @var{x=zeta[j]} must be substituted.
+
+@c ===beg===
+@c load("colnew")$
+@c
+@c /* Define constants */
+@c  gamma : 1.1;
+@c eps : 0.01;
+@c dmu : eps;
+@c eps4mu : eps^4/dmu;
+@c xt : sqrt(2*(gamma-1)/gamma);
+@c /* Number of differential equations */
+@c  ncomp : 2;
+@c /* Orders */
+@c  m : [2, 2];
+@c
+@c /* Interval ends */
+@c  aleft : 0.0;
+@c aright : 1.0;
+@c
+@c /* Locations of side conditions */
+@c  zeta : float([0, 0, 1, 1])$
+@c /* Set up parameter array.  */
+@c  ipar : makelist(0,k,1,11);
+@c /* Non-linear prob */
+@c  ipar[1] : 1;
+@c /* 4 collocation points per subinterval */
+@c  ipar[2] : 4;
+@c /* Initial uniform mesh of 10 subintervals */
+@c  ipar[3] : 10;
+@c ipar[8] : 0;
+@c /* Size of fspace, ispace */
+@c  ipar[5] : 40000;
+@c ipar[6] : 2500;
+@c /* No output */
+@c  ipar[7] : 1;
+@c /* No initial approx is provided */
+@c  ipar[9] : 0;
+@c /* Regular problem */
+@c  ipar[10] : 0;
+@c /* No fixed points in mesh */
+@c  ipar[11] : 0;
+@c /* Tolerances on all components */
+@c  ipar[4] : 4;
+@c
+@c /* Two error tolerances (on u and its second derivative */
+@c  ltol : [1, 2, 3, 4];
+@c tol : [1d-5, 1d-5, 1d-5, 1d-5];
+@c
+@c fspace : makelist(0d0, k, 1, ipar[5])$
+@c ispace : makelist(0, k, 1, ipar[6])$
+@c fixpnt : []$
+@c
+@c /* Define the equations */
+@c  fsub(x, z1, z2, z3, z4) :=
+@c  [z1/x/x - z2/x + (z1-z3*(1-z1/x) - gamma*x*(1-x*x/2))/eps4mu,
+@c   z3/x/x - z4/x + z1*(1-z1/2/x)/dmu];
+@c
+@c df : jacobian(fsub(x,z1, z2, z3, z4),[z1,z2,z3,z4]);
+@c dfsub(x, z1, z2, z3, z4) := 
+@c   subst(['x=x,'z1=z1,'z2=z2,'z3=z3,'z4=z4], df);
+@c
+@c g(z1, z2, z3, z4) := [z1, z3, z1, z4 - 0.3*z3 + .7];
+@c gsub(i, z1, z2, z3, z4) :=
+@c     subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], g(z1, z2, z3, z4)[i]);
+@c 
+@c dg:jacobian(g(z1, z2, z3, z4), [z1,z2,z3,z4]);
+@c dgsub(i, z1, z2, z3, z4) := subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], row(dg, i)[1]);
+@c
+@c /* Initial approximation function for second run */
+@c  solutn(x) :=
+@c  block([cons : gamma*x*(1-0.5*x*x),
+@c        dcons : gamma*(1-1.5*x*x),
+@c        d2cons : -3*gamma*x],
+@c   if is(x > xt) then
+@c     [[0, 0, -cons, -dcons],
+@c      [0, -d2cons]]
+@c   else
+@c     [[2*x, 2, -2*x + cons, -2 + dcons],
+@c      [0, d2cons]]);
+@c
+@c /* First run with default initial guess */
+@c  [iflag, fspace, ispace] :
+@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol, fixpnt, ispace, fspace,
+@c  0, fsub, dfsub, gsub, dgsub, dummy)$
+@c
+@c /* Check return status iflag, 1 = success */
+@c  iflag;
+@c
+@c /* Print values of solution at x = 0,.05,...,1 */
+@c  x : 0;
+@c for j : 1 thru 21 do
+@c  block([],
+@c    zval : colnew_appsln([x], 4, fspace, ispace)[1],
+@c    printf(true, "~5,2f  ~{~15,5e~}~%", x, zval),
+@c    x : x + 0.05);
+@c
+@c /* Second run with initial guess */
+@c  ipar[9] : 1;
+@c [iflag, fspace, ispace] :
+@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol, fixpnt, ispace, fspace,
+@c  0, fsub, dfsub, gsub, dgsub, solutn)$
+@c
+@c /* Check return status iflag, 1 = success */
+@c  iflag;
+@c
+@c /* Print values of solution at x = 0,.05,...,1 */
+@c  x : 0;
+@c for j : 1 thru 21 do
+@c  block([],
+@c    zval : colnew_appsln([x], 4, fspace, ispace)[1],
+@c    printf(true, "~5,2f  ~{~15,5e~}~%", x, zval),
+@c    x : x + 0.05);
+@c ===end===
+@example
+@group
+(%i1) load("colnew")$
+
+@end group
+@group
+(%i2) /* Define constants */
+ gamma : 1.1;
+(%o2)                          1.1
+@end group
+@group
+(%i3) eps : 0.01;
+(%o3)                         0.01
+@end group
+@group
+(%i4) dmu : eps;
+(%o4)                         0.01
+@end group
+@group
+(%i5) eps4mu : eps^4/dmu;
+(%o5)                        1.0e-6
+@end group
+@group
+(%i6) xt : sqrt(2*(gamma-1)/gamma);
+(%o6)                  0.42640143271122105
+@end group
+@group
+(%i7) /* Number of differential equations */
+ ncomp : 2;
+(%o7)                           2
+@end group
+@group
+(%i8) /* Orders */
+ m : [2, 2];
+
+(%o8)                        [2, 2]
+@end group
+@group
+(%i9) /* Interval ends */
+ aleft : 0.0;
+(%o9)                          0.0
+@end group
+@group
+(%i10) aright : 1.0;
+
+(%o10)                         1.0
+@end group
+@group
+(%i11) /* Locations of side conditions */
+ zeta : float([0, 0, 1, 1])$
+@end group
+@group
+(%i12) /* Set up parameter array.  */
+ ipar : makelist(0,k,1,11);
+(%o12)          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+@end group
+@group
+(%i13) /* Non-linear prob */
+ ipar[1] : 1;
+(%o13)                          1
+@end group
+@group
+(%i14) /* 4 collocation points per subinterval */
+ ipar[2] : 4;
+(%o14)                          4
+@end group
+@group
+(%i15) /* Initial uniform mesh of 10 subintervals */
+ ipar[3] : 10;
+(%o15)                         10
+@end group
+@group
+(%i16) ipar[8] : 0;
+(%o16)                          0
+@end group
+@group
+(%i17) /* Size of fspace, ispace */
+ ipar[5] : 40000;
+(%o17)                        40000
+@end group
+@group
+(%i18) ipar[6] : 2500;
+(%o18)                        2500
+@end group
+@group
+(%i19) /* No output */
+ ipar[7] : 1;
+(%o19)                          1
+@end group
+@group
+(%i20) /* No initial approx is provided */
+ ipar[9] : 0;
+(%o20)                          0
+@end group
+@group
+(%i21) /* Regular problem */
+ ipar[10] : 0;
+(%o21)                          0
+@end group
+@group
+(%i22) /* No fixed points in mesh */
+ ipar[11] : 0;
+(%o22)                          0
+@end group
+@group
+(%i23) /* Tolerances on all components */
+ ipar[4] : 4;
+
+(%o23)                          4
+@end group
+@group
+(%i24) /* Two error tolerances (on u and its second derivative */
+ ltol : [1, 2, 3, 4];
+(%o24)                    [1, 2, 3, 4]
+@end group
+@group
+(%i25) tol : [1d-5, 1d-5, 1d-5, 1d-5];
+
+(%o25)          [1.0e-5, 1.0e-5, 1.0e-5, 1.0e-5]
+@end group
+(%i26) fspace : makelist(0d0, k, 1, ipar[5])$
+(%i27) ispace : makelist(0, k, 1, ipar[6])$
+@group
+(%i28) fixpnt : []$
+
+@end group
+@group
+(%i29) /* Define the equations */
+ fsub(x, z1, z2, z3, z4) :=
+ [z1/x/x - z2/x + (z1-z3*(1-z1/x) - gamma*x*(1-x*x/2))/eps4mu,
+  z3/x/x - z4/x + z1*(1-z1/2/x)/dmu];
+
+(%o29) fsub(x, z1, z2, z3, z4) := 
+ z1                     z1                     x x
+ --        z1 - z3 (1 - --) + (- gamma) x (1 - ---)
+ x    z2                x                       2
+[-- - -- + ----------------------------------------, 
+ x    x                     eps4mu
+                  z1
+                  --
+z3                2
+--        z1 (1 - --)
+x    z4           x
+-- - -- + -----------]
+x    x        dmu
+@end group
+@group
+(%i30) df : jacobian(fsub(x,z1, z2, z3, z4),[z1,z2,z3,z4]);
+(%o30) 
+      [             z3        1      1             z1           ]
+      [  1000000.0 (-- + 1) + --   - -  1000000.0 (-- - 1)   0  ]
+      [             x          2     x             x            ]
+      [                       x                                 ]
+      [                                                         ]
+      [            z1     50.0 z1               1             1 ]
+      [ 100.0 (1 - ---) - -------   0           --          - - ]
+      [            2 x       x                   2            x ]
+      [                                         x               ]
+@end group
+@group
+(%i31) dfsub(x, z1, z2, z3, z4) :=
+  subst(['x=x,'z1=z1,'z2=z2,'z3=z3,'z4=z4], df);
+
+(%o31) dfsub(x, z1, z2, z3, z4) := 
+      subst(['x = x, 'z1 = z1, 'z2 = z2, 'z3 = z3, 'z4 = z4], df)
+@end group
+@group
+(%i32) g(z1, z2, z3, z4) := [z1, z3, z1, z4 - 0.3*z3 + .7];
+(%o32) g(z1, z2, z3, z4) := [z1, z3, z1, z4 - 0.3 z3 + 0.7]
+@end group
+@group
+(%i33) gsub(i, z1, z2, z3, z4) :=
+    subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], g(z1, z2, z3, z4)[i]);
+
+(%o33) gsub(i, z1, z2, z3, z4) := 
+subst(['z1 = z1, 'z2 = z2, 'z3 = z3, 'z4 = z4], 
+g(z1, z2, z3, z4) )
+                 i
+@end group
+@group
+(%i34) dg:jacobian(g(z1, z2, z3, z4), [z1,z2,z3,z4]);
+                       [ 1  0    0    0 ]
+                       [                ]
+                       [ 0  0    1    0 ]
+(%o34)                 [                ]
+                       [ 1  0    0    0 ]
+                       [                ]
+                       [ 0  0  - 0.3  1 ]
+@end group
+@group
+(%i35) dgsub(i, z1, z2, z3, z4) := subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], row(dg, i)[1]);
+
+(%o35) dgsub(i, z1, z2, z3, z4) := 
+     subst(['z1 = z1, 'z2 = z2, 'z3 = z3, 'z4 = z4], row(dg, i) )
+                                                               1
+@end group
+@group
+(%i36) /* Initial approximation function for second run */
+ solutn(x) :=
+ block([cons : gamma*x*(1-0.5*x*x),
+       dcons : gamma*(1-1.5*x*x),
+       d2cons : -3*gamma*x],
+  if is(x > xt) then
+    [[0, 0, -cons, -dcons],
+     [0, -d2cons]]
+  else
+    [[2*x, 2, -2*x + cons, -2 + dcons],
+     [0, d2cons]]);
+
+(%o36) solutn(x) := block([cons : gamma x (1 - 0.5 x x), 
+dcons : gamma (1 - 1.5 x x), d2cons : - 3 gamma x], 
+if is(x > xt) then [[0, 0, - cons, - dcons], [0, - d2cons]]
+ else [[2 x, 2, - 2 x + cons, - 2 + dcons], [0, d2cons]])
+@end group
+@group
+(%i37) /* First run with default initial guess */
+ [iflag, fspace, ispace] :
+ colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol, fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, dummy)$
+
+@end group
+@group
+(%i38) /* Check return status iflag, 1 = success */
+ iflag;
+
+(%o38)                          1
+@end group
+@group
+(%i39) /* Print values of solution at x = 0,.05,...,1 */
+ x : 0;
+(%o39)                          0
+@end group
+@group
+(%i40) for j : 1 thru 21 do
+ block([],
+   zval : colnew_appsln([x], 4, fspace, ispace)[1],
+   printf(true, "~5,2f  ~@{~15,5e~@}~%", x, zval),
+   x : x + 0.05);
+
+ 0.00       0.00000E+0     4.73042E-2   -3.39927E-32    -1.10497E+0
+ 0.05       2.36520E-3     4.73037E-2    -5.51761E-2    -1.10064E+0
+ 0.10       4.73037E-3     4.73030E-2    -1.09919E-1    -1.08765E+0
+ 0.15       7.09551E-3     4.73030E-2    -1.63796E-1    -1.06600E+0
+ 0.20       9.46069E-3     4.73039E-2    -2.16375E-1    -1.03569E+0
+ 0.25       1.18259E-2     4.73040E-2    -2.67221E-1    -9.96720E-1
+ 0.30       1.41911E-2     4.73020E-2    -3.15902E-1    -9.49092E-1
+ 0.35       1.65562E-2     4.72980E-2    -3.61986E-1    -8.92804E-1
+ 0.40       1.89215E-2     4.72993E-2    -4.05038E-1    -8.27857E-1
+ 0.45       2.12850E-2     4.72138E-2    -4.44627E-1    -7.54252E-1
+ 0.50       2.36370E-2     4.67629E-2    -4.80320E-1    -6.72014E-1
+ 0.55       2.59431E-2     4.51902E-2    -5.11686E-1    -5.81260E-1
+ 0.60       2.81093E-2     4.07535E-2    -5.38310E-1    -4.82374E-1
+ 0.65       2.99126E-2     2.98538E-2    -5.59805E-1    -3.76416E-1
+ 0.70       3.08743E-2     5.53985E-3    -5.75875E-1    -2.65952E-1
+ 0.75       3.00326E-2    -4.51680E-2    -5.86417E-1    -1.56670E-1
+ 0.80       2.55239E-2    -1.46617E-1    -5.91753E-1    -6.04539E-2
+ 0.85       1.37512E-2    -3.46952E-1    -5.93069E-1    -1.40102E-3
+ 0.90      -1.25155E-2    -7.52826E-1    -5.93303E-1    -2.86234E-2
+ 0.95      -6.94274E-2    -1.65084E+0    -5.99062E-1    -2.48115E-1
+ 1.00      2.64233E-14     1.19263E+2    -6.25420E-1    -8.87626E-1
+(%o40)                        done
+@end group
+@group
+(%i41) /* Second run with initial guess */
+ ipar[9] : 1;
+(%o41)                          1
+@end group
+@group
+(%i42) [iflag, fspace, ispace] :
+ colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol, fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, solutn)$
+
+@end group
+@group
+(%i43) /* Check return status iflag, 1 = success */
+ iflag;
+
+(%o43)                          1
+@end group
+@group
+(%i44) /* Print values of solution at x = 0,.05,...,1 */
+ x : 0;
+(%o44)                          0
+@end group
+@group
+(%i45) for j : 1 thru 21 do
+ block([],
+   zval : colnew_appsln([x], 4, fspace, ispace)[1],
+   printf(true, "~5,2f  ~@{~15,5e~@}~%", x, zval),
+   x : x + 0.05);
+ 0.00       0.00000E+0     2.04139E+0     0.00000E+0    -9.03975E-1
+ 0.05       1.02070E-1     2.04139E+0    -4.52648E-2    -9.07936E-1
+ 0.10       2.04139E-1     2.04139E+0    -9.09256E-2    -9.19819E-1
+ 0.15       3.06209E-1     2.04140E+0    -1.37379E-1    -9.39624E-1
+ 0.20       4.08279E-1     2.04141E+0    -1.85020E-1    -9.67352E-1
+ 0.25       5.10351E-1     2.04152E+0    -2.34246E-1    -1.00301E+0
+ 0.30       6.12448E-1     2.04303E+0    -2.85454E-1    -1.04663E+0
+ 0.35       7.15276E-1     2.10661E+0    -3.39053E-1    -1.09916E+0
+ 0.40       8.32131E-1    -2.45181E-1    -3.96124E-1    -1.20544E+0
+ 0.45       1.77510E-2    -3.57554E+0    -4.45400E-1    -7.13543E-1
+ 0.50       2.25122E-2     1.23608E-1    -4.80360E-1    -6.70074E-1
+ 0.55       2.58693E-2     4.85257E-2    -5.11692E-1    -5.81075E-1
+ 0.60       2.80994E-2     4.11112E-2    -5.38311E-1    -4.82343E-1
+ 0.65       2.99107E-2     2.99116E-2    -5.59805E-1    -3.76409E-1
+ 0.70       3.08739E-2     5.55200E-3    -5.75875E-1    -2.65950E-1
+ 0.75       3.00325E-2    -4.51649E-2    -5.86417E-1    -1.56669E-1
+ 0.80       2.55239E-2    -1.46616E-1    -5.91753E-1    -6.04538E-2
+ 0.85       1.37512E-2    -3.46952E-1    -5.93069E-1    -1.40094E-3
+ 0.90      -1.25155E-2    -7.52826E-1    -5.93303E-1    -2.86233E-2
+ 0.95      -6.94274E-2    -1.65084E+0    -5.99062E-1    -2.48115E-1
+ 1.00      2.65413E-14     1.19263E+2    -6.25420E-1    -8.87626E-1
+(%o45)                        done
+@end group
+@end example
+
+Columns 1 (x) and 2 (@math{φ}) of the two sets of results above can be compared with
+Figure 1 in (Ascher 1981a).
+
+@subsection Example 3: Rotating flow of viscous incompressible fluid
+
+Example 3 from (Ascher 1981a) describes the velocities in the
+boundary layer produced by the rotating flow of a viscous incompressible
+fluid over a stationary infinite disk (Gawain&Bell 1978).
+
+The solution uses a number of techniques to obtain convergence.
+Refer to (Ascher 1981a) for details.
+
+The code is in directory share/colnew.  The maxima code is in file
+prob3.mac.  The reference Fortran implementation is in directory ex3. 
+
+
+@subsection Example 4: Quantum Neumann equation
+
+A more sophisticated example is (Bellon&Talon 2005),
+which deals with singularities in the
+solution domain, provides an initial quess to the solution
+and uses continuation to solve the system of non-linear
+differential equations.
+
+The code is in directory share/colnew.  The maxima code is in file
+prob4.mac.  The Fortran
+implementation is in directory ex4. 
+
+
+@subsection Example 5: Simple example of continuation 
+
+This example (Ascher et al, 1995, Example 9.2) solves a numerically
+difficult boundary value problem using continuation.
+
+@noindent The linear differential equation is @*
+@math{ε u'@w{}' + x u' = -ε π^2 cos(πx) - (πx) sin(πx)}
+with @math{-1 < x < 1} and @math{0 < ε ≪ 1}
+
+with boundary conditions @math{u(-1)=-2} and @math{u(1)=0}
+
+@noindent The exact solution is
+@math{u(x) = cos(πx) + erf(x/sqrt(2ε))/erf(1/sqrt(2ε))}
+
+When @math{ε} is small the solution has a rapid transition near @math{x=0}
+and is difficult to solve numerically.  COLNEW is able to solve the
+problem for directly for @math{ε=1.0e-6}, but here we will use
+continuation to solve it succesively for
+@math{ε=[1e-2,1e-3,1e-4,1e-5,1e-6]}.
+
+There is @var{nconc} = 1 differential equation of second order.
+The list of orders
+@var{m} = [2] and @var{mstar} = sum(m[j]) = 2.
+
+The unknown vector of length @var{mstar} is
+@math{z(x) = [z_1(x),z_2(x)] = [u(x),u'(x)]}.
+
+The differential equation is expressed as 
+@math{u'@w{}'(x) = F(x,z_1,z_2) = [-(x/ε)z_2 - π^2cos(πx) - (πx/ε)sin(πx)]}
+
+There are @var{mstar=2} boundary conditions. They are given by a
+function @math{G(z_1,z_2)} that returns a list of length mstar.
+The j-th boundary condition applies at @var{x = zeta[j]} and is satisfied
+when @var{g[j] = 0}.  We have
+
+@multitable {xxxxxxxxx} {xxxxxxxxx} {xxxxxxxxxx} {xxxxxxxxx}
+@headitem j@ @ @ @tab zeta[j]@  @tab Condition@  @tab g[j]
+@item 1
+@tab -1.0
+@tab @math{u=-2}
+@tab @math{z_1+2}
+@item 2
+@tab 1.0
+@tab @math{u=0}
+@tab @math{z_1}
+@end multitable
+
+giving  @math{zeta = [-1.0,1,0]}
+and @math{G(z_1,z_2) = [z_1+2, z_1]}.
+
+The Jacobians @var{df} and @var{dg} of @var{f} and @var{g} respectively
+are determined symbolically.
+
+The ODE will be solved for multiple values of @math{ε}.  The functions
+@var{fsub}, @var{dfsub}, @var{gsub} and @var{dgsub} are defined
+before @var{e} is set, so that it can be changed in the program.
+
+
+@c ===beg===
+@c load("colnew")$
+@c
+@c kill(e,x,z1,z2)$
+@c
+@c /* Exact solution */
+@c  exact(x):=cos(%pi*x)+erf(x/sqrt(2*e))/erf(1/sqrt(2*e))$
+@c
+@c /* Define the equations.  Do this before e is defined */
+@c  f: [-(x/e)*z2 - %pi^2*cos(%pi*x) - (%pi*x/e)*sin(%pi*x)];
+@c
+@c define(fsub(x,z1,z2),f);
+@c
+@c df: jacobian(f,[z1,z2]);
+@c
+@c define(dfsub(x,z1,z2),df);
+@c
+@c /* Build the functions gsub and dgsub
+@c    Use define and buildq to remove dependence on g and dg */
+@c  g: [z1+2,z1];
+@c
+@c define(gsub(i,z1,z2),buildq([g],g[i]));
+@c
+@c dg: jacobian(g,[z1,z2]);
+@c
+@c define(
+@c   dgsub(i,z1,z2),
+@c   buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
+@c
+@c /* Define constant epsilon */
+@c  e : 0.01$
+@c /* Number of differential equations */
+@c  ncomp : 1$
+@c /* Orders */
+@c  m : [2]$
+@c
+@c /* Interval ends */
+@c  aleft  : -1.0$
+@c aright :  1.0$
+@c
+@c /* Locations of side conditions */
+@c  zeta : float([-1, 1])$
+@c /* Set up parameter array.  */
+@c  ipar : makelist(0,k,1,11)$
+@c /* linear prob */
+@c  ipar[1] : 0$
+@c /* 5 collocation points per subinterval */
+@c  ipar[2] : 5$
+@c /* Initial uniform mesh of 1 subintervals */
+@c  ipar[3] : 1$
+@c ipar[8] : 0$
+@c /* Size of fspace, ispace */
+@c  ipar[5] : 10000$
+@c ipar[6] :  1000$
+@c /* Selected output */
+@c  ipar[7] : 0$
+@c /* No initial guess is provided */
+@c  ipar[9] : 0$
+@c /* Regular problem */
+@c  ipar[10] : 0$
+@c /* No fixed points in mesh */
+@c  ipar[11] : 0$
+@c /* Tolerances on two components */
+@c  ipar[4] : 2$
+@c 
+@c /* Two error tolerances (on u and its derivative)
+@c    Relatively large tolerances to keep the example small */
+@c  ltol : [1, 2]$
+@c tol : [1e-3, 1e-3]$
+@c 
+@c fspace : makelist(0e0, k, 1, ipar[5])$
+@c ispace : makelist(0, k, 1, ipar[6])$
+@c fixpnt : []$
+@c 
+@c /* First run with default initial guess.
+@c    Returns iflag. 1 = success */
+@c  ([iflag, fspace, ispace] :
+@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+@c  fixpnt, ispace, fspace,
+@c  0, fsub, dfsub, gsub, dgsub, dummy), iflag);
+@c
+@c /* Use previous solution as initial guess and every second point
+@c    from previous mesh as initial mesh */
+@c  ipar[9] : 3$
+@c
+@c /* Use mesh size from previous solution */
+@c  ipar[3] : ispace[1];
+@c /* New value of e */
+@c  e : 1e-3$
+@c /* First continuation run */
+@c  ([iflag, fspace, ispace] :
+@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+@c  fixpnt, ispace, fspace,
+@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+@c
+@c /* Suppress output */
+@c  ipar[7]:1$
+@c
+@c e : 1e-4$
+@c ipar[3] : ispace[1];
+@c ([iflag, fspace, ispace] :
+@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+@c  fixpnt, ispace, fspace,
+@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+@c
+@c e : 1e-5$
+@c ipar[3] : ispace[1];
+@c ([iflag, fspace, ispace] :
+@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+@c  fixpnt, ispace, fspace,
+@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+@c
+@c /* Full output */
+@c  ipar[7]:-1$
+@c
+@c e : 1e-6$
+@c ipar[3] : ispace[1];
+@c ([iflag, fspace, ispace] :
+@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+@c  fixpnt, ispace, fspace,
+@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+@c
+@c ===end===
+@example
+@group
+(%i1) load("colnew")$
+
+@end group
+@group
+(%i2) kill(e,x,z1,z2)$
+
+@end group
+@group
+(%i3) /* Exact solution */
+ exact(x):=cos(%pi*x)+erf(x/sqrt(2*e))/erf(1/sqrt(2*e))$
+
+@end group
+@group
+(%i4) /* Define the equations.  Do this before e is defined */
+ f: [-(x/e)*z2 - %pi^2*cos(%pi*x) - (%pi*x/e)*sin(%pi*x)];
+
+             x z2   %pi x sin(%pi x)      2
+(%o4)     [- ---- - ---------------- - %pi  cos(%pi x)]
+              e            e
+@end group
+@group
+(%i5) define(fsub(x,z1,z2),f);
+
+                            x z2   %pi x sin(%pi x)
+(%o5) fsub(x, z1, z2) := [- ---- - ----------------
+                             e            e
+                                                    2
+                                               - %pi  cos(%pi x)]
+@end group
+@group
+(%i6) df: jacobian(f,[z1,z2]);
+
+                           [      x ]
+(%o6)                      [ 0  - - ]
+                           [      e ]
+@end group
+@group
+(%i7) define(dfsub(x,z1,z2),df);
+
+                                     [      x ]
+(%o7)            dfsub(x, z1, z2) := [ 0  - - ]
+                                     [      e ]
+@end group
+@group
+(%i8) /* Build the functions gsub and dgsub
+   Use define and buildq to remove dependence on g and dg */
+ g: [z1+2,z1];
+
+(%o8)                     [z1 + 2, z1]
+@end group
+@group
+(%i9) define(gsub(i,z1,z2),buildq([g],g[i]));
+
+(%o9)           gsub(i, z1, z2) := [z1 + 2, z1]
+                                               i
+@end group
+@group
+(%i10) dg: jacobian(g,[z1,z2]);
+
+                            [ 1  0 ]
+(%o10)                      [      ]
+                            [ 1  0 ]
+@end group
+@group
+(%i11) define(
+  dgsub(i,z1,z2),
+  buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
+
+(%o11) dgsub(i, z1, z2) := block([dg : [[1, 0], [1, 0]]], dg )
+                                                            i
+@end group
+@group
+(%i12) /* Define constant epsilon */
+ e : 0.01$
+@end group
+@group
+(%i13) /* Number of differential equations */
+ ncomp : 1$
+@end group
+@group
+(%i14) /* Orders */
+ m : [2]$
+
+@end group
+@group
+(%i15) /* Interval ends */
+ aleft  : -1.0$
+@end group
+@group
+(%i16) aright :  1.0$
+
+@end group
+@group
+(%i17) /* Locations of side conditions */
+ zeta : float([-1, 1])$
+@end group
+@group
+(%i18) /* Set up parameter array.  */
+ ipar : makelist(0,k,1,11)$
+@end group
+@group
+(%i19) /* linear prob */
+ ipar[1] : 0$
+@end group
+@group
+(%i20) /* 5 collocation points per subinterval */
+ ipar[2] : 5$
+@end group
+@group
+(%i21) /* Initial uniform mesh of 1 subintervals */
+ ipar[3] : 1$
+@end group
+(%i22) ipar[8] : 0$
+@group
+(%i23) /* Size of fspace, ispace */
+ ipar[5] : 10000$
+@end group
+(%i24) ipar[6] :  1000$
+@group
+(%i25) /* Selected output */
+ ipar[7] : 0$
+@end group
+@group
+(%i26) /* No initial guess is provided */
+ ipar[9] : 0$
+@end group
+@group
+(%i27) /* Regular problem */
+ ipar[10] : 0$
+@end group
+@group
+(%i28) /* No fixed points in mesh */
+ ipar[11] : 0$
+@end group
+@group
+(%i29) /* Tolerances on two components */
+ ipar[4] : 2$
+
+@end group
+@group
+(%i30) /* Two error tolerances (on u and its derivative)
+   Relatively large tolerances to keep the example small */
+ ltol : [1, 2]$
+@end group
+@group
+(%i31) tol : [1e-3, 1e-3]$
+
+@end group
+(%i32) fspace : makelist(0e0, k, 1, ipar[5])$
+(%i33) ispace : makelist(0, k, 1, ipar[6])$
+@group
+(%i34) fixpnt : []$
+
+@end group
+@group
+(%i35) /* First run with default initial guess.
+   Returns iflag. 1 = success */
+ ([iflag, fspace, ispace] :
+ colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+ fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, dummy), iflag);
+
+
+ VERSION *COLNEW* OF COLSYS .    
+
+
+ THE MAXIMUM NUMBER OF SUBINTERVALS IS MIN ( 108 (ALLOWED FROM FSPACE),  99 (ALLOWED FROM ISPACE) )
+
+ THE NEW MESH (OF    1 SUBINTERVALS), 
+   -1.000000    1.000000
+
+ THE NEW MESH (OF    2 SUBINTERVALS), 
+   -1.000000    0.000000    1.000000
+
+ THE NEW MESH (OF    4 SUBINTERVALS), 
+   -1.000000   -0.500000    0.000000    0.500000    1.000000
+
+ THE NEW MESH (OF    8 SUBINTERVALS), 
+   -1.000000   -0.750000   -0.500000   -0.250000    0.000000    0.250000    0.500000    0.750000
+    1.000000
+(%o35)                          1
+@end group
+@group
+(%i36) /* Use previous solution as initial guess and every second point
+   from previous mesh as initial mesh */
+ ipar[9] : 3$
+
+@end group
+@group
+(%i37) /* Use mesh size from previous solution */
+ ipar[3] : ispace[1];
+(%o37)                          8
+@end group
+@group
+(%i38) /* New value of e */
+ e : 1e-3$
+@end group
+@group
+(%i39) /* First continuation run */
+ ([iflag, fspace, ispace] :
+ colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+ fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+
+
+ VERSION *COLNEW* OF COLSYS .    
+
+
+ THE MAXIMUM NUMBER OF SUBINTERVALS IS MIN ( 108 (ALLOWED FROM FSPACE),  99 (ALLOWED FROM ISPACE) )
+
+ THE FORMER MESH (OF    8 SUBINTERVALS),
+   -1.000000   -0.750000   -0.500000   -0.250000    0.000000    0.250000    0.500000    0.750000
+    1.000000
+
+ THE NEW MESH (OF    4 SUBINTERVALS), 
+   -1.000000   -0.500000    0.000000    0.500000    1.000000
+
+ THE NEW MESH (OF    8 SUBINTERVALS), 
+   -1.000000   -0.750000   -0.500000   -0.250000    0.000000    0.250000    0.500000    0.750000
+    1.000000
+
+ THE NEW MESH (OF   16 SUBINTERVALS), 
+   -1.000000   -0.875000   -0.750000   -0.625000   -0.500000   -0.375000   -0.250000   -0.125000
+    0.000000    0.125000    0.250000    0.375000    0.500000    0.625000    0.750000    0.875000
+    1.000000
+
+ THE NEW MESH (OF    8 SUBINTERVALS), 
+   -1.000000   -0.527955   -0.201971   -0.062469    0.044798    0.160968    0.264621    0.540204
+    1.000000
+
+ THE NEW MESH (OF   16 SUBINTERVALS), 
+   -1.000000   -0.763977   -0.527955   -0.364963   -0.201971   -0.132220   -0.062469   -0.008836
+    0.044798    0.102883    0.160968    0.212795    0.264621    0.402412    0.540204    0.770102
+    1.000000
+(%o39)                          1
+@end group
+@group
+(%i40) /* Suppress output */
+ ipar[7]:1$
+
+@end group
+(%i41) e : 1e-4$
+@group
+(%i42) ipar[3] : ispace[1];
+(%o42)                         16
+@end group
+@group
+(%i43) ([iflag, fspace, ispace] :
+ colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+ fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+
+(%o43)                          1
+@end group
+(%i44) e : 1e-5$
+@group
+(%i45) ipar[3] : ispace[1];
+(%o45)                         32
+@end group
+@group
+(%i46) ([iflag, fspace, ispace] :
+ colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+ fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+
+(%o46)                          1
+@end group
+@group
+(%i47) /* Full output */
+ ipar[7]:-1$
+
+@end group
+(%i48) e : 1e-6$
+@group
+(%i49) ipar[3] : ispace[1];
+(%o49)                         64
+@end group
+@group
+(%i50) ([iflag, fspace, ispace] :
+ colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+ fixpnt, ispace, fspace,
+ 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
+
+
+ VERSION *COLNEW* OF COLSYS .    
+
+
+
+
+
+ THE NUMBER OF (LINEAR) DIFF EQNS IS   1
+ THEIR ORDERS ARE  2
+ SIDE CONDITION POINTS ZETA -1.000000  1.000000 NUMBER OF COLLOC PTS PER INTERVAL IS  5
+ COMPONENTS OF Z REQUIRING TOLERANCES -        1         2  CORRESPONDING ERROR TOLERANCES -        0.10D-02  0.10D-02 INITIAL MESH(ES) AND Z,DMZ PROVIDED BY USER
+ THE MAXIMUM NUMBER OF SUBINTERVALS IS MIN ( 108 (ALLOWED FROM FSPACE),  99 (ALLOWED FROM ISPACE) )
+
+ THE FORMER MESH (OF   64 SUBINTERVALS),
+   -1.000000   -0.966259   -0.932518   -0.898777   -0.865036   -0.827183   -0.789330   -0.751478
+   -0.713625   -0.673457   -0.633290   -0.593122   -0.552954   -0.512066   -0.471178   -0.430290
+   -0.389402   -0.349306   -0.309209   -0.269113   -0.229016   -0.194752   -0.160487   -0.126223
+   -0.091958   -0.072970   -0.053982   -0.034993   -0.016005   -0.013889   -0.011773   -0.009657
+   -0.007541   -0.006015   -0.004488   -0.002962   -0.001436    0.001281    0.003998    0.006715
+    0.009431    0.011237    0.013043    0.014849    0.016654    0.018495    0.020335    0.022175
+    0.024015    0.027140    0.030264    0.033388    0.036513    0.044167    0.051821    0.059475
+    0.067129    0.101024    0.134918    0.168813    0.202707    0.402030    0.601354    0.800677
+    1.000000
+
+ THE NEW MESH (OF   32 SUBINTERVALS), 
+   -1.000000   -0.932518   -0.865036   -0.789330   -0.713625   -0.633290   -0.552954   -0.471178
+   -0.389402   -0.309209   -0.229016   -0.160487   -0.091958   -0.053982   -0.016005   -0.011773
+   -0.007541   -0.004488   -0.001436    0.003998    0.009431    0.013043    0.016654    0.020335
+    0.024015    0.030264    0.036513    0.051821    0.067129    0.134918    0.202707    0.601354
+    1.000000
+ MESH VALUES FOR Z( 1),
+  -0.2000000D+01 -0.1977612D+01 -0.1911450D+01 -0.1788864D+01 -0.1621865D+01 -0.1406611D+01 -0.1165595D+01 -0.9095779D+00
+ -0.6594962D+00 -0.4358638D+00 -0.2478486D+00 -0.1244319D+00 -0.4144102D-01 -0.1434572D-01 -0.1263919D-02 -0.6836459D-03
+ -0.2825259D-03 -0.8873240D-05  0.1537803D+00  0.2010604D+01  0.1998821D+01  0.1999281D+01  0.1998601D+01  0.1997971D+01
+  0.1997151D+01  0.1995486D+01  0.1993427D+01  0.1986778D+01  0.1977844D+01  0.1911509D+01  0.1803989D+01  0.6869416D+00
+  0.0000000D+00
+ MESH VALUES FOR Z( 2),
+  -0.1028379D-02  0.6620719D+00  0.1291456D+01  0.1931753D+01  0.2459225D+01  0.2871197D+01  0.3097185D+01  0.3129760D+01
+  0.2952823D+01  0.2594996D+01  0.2069236D+01  0.1518735D+01  0.8939655D+00  0.5313087D+00  0.1567545D+00  0.1193868D+00
+  0.5983039D-01  0.4692038D+00  0.2897650D+03 -0.4516956D+02  0.6962431D+01 -0.1705624D+01  0.3465356D+00 -0.4112061D+00
+ -0.1360622D+00 -0.3687461D+00 -0.3067825D+00 -0.5574205D+00 -0.6125247D+00 -0.1336764D+01 -0.1823682D+01 -0.3028168D+01
+  0.4444428D-01
+
+ MESH SELECTION INFO,
+ DEGREE OF EQUIDISTRIBUTION =  0.28608 PREDICTION FOR REQUIRED N =      58
+
+ THE NEW MESH (OF   29 SUBINTERVALS), 
+   -1.000000   -0.848490   -0.660059   -0.445848   -0.231214   -0.069133   -0.011281   -0.005700
+   -0.003031   -0.000270    0.004208    0.007497    0.010695    0.013644    0.016204    0.018967
+    0.022054    0.025719    0.029825    0.036412    0.045015    0.055707    0.076504    0.101207
+    0.125909    0.191059    0.311963    0.437807    0.563651    1.000000
+ MESH VALUES FOR Z( 1),
+  -0.2000000D+01 -0.1888843D+01 -0.1481917D+01 -0.8306948D+00 -0.2524161D+00 -0.2349296D-01 -0.6271907D-03 -0.1662173D-03
+  0.2354980D-02  0.7865582D+00  0.1999933D+01  0.1999722D+01  0.1999436D+01  0.1999082D+01  0.1998705D+01  0.1998225D+01
+  0.1997601D+01  0.1996738D+01  0.1995614D+01  0.1993464D+01  0.1990017D+01  0.1984725D+01  0.1971256D+01  0.1949878D+01
+  0.1922782D+01  0.1825206D+01  0.1556972D+01  0.1194144D+01  0.8013631D+00  0.0000000D+00
+ MESH VALUES FOR Z( 2),
+   0.8402272D-02  0.1431110D+01  0.2761126D+01  0.3087827D+01  0.2094965D+01  0.6685184D+00  0.1201142D+00  0.2179470D-01
+  0.7979797D+01  0.7687676D+03 -0.1305534D+00 -0.7057592D-01 -0.1059555D+00 -0.1345374D+00 -0.1598739D+00 -0.1870855D+00
+ -0.2174926D+00 -0.2535609D+00 -0.2939318D+00 -0.3585905D+00 -0.4427978D+00 -0.5470069D+00 -0.7478192D+00 -0.9821264D+00
+ -0.1210523D+01 -0.1774470D+01 -0.2609191D+01 -0.3081818D+01 -0.3078991D+01 -0.7112482D-04
+
+ THE NEW MESH (OF   58 SUBINTERVALS), 
+   -1.000000   -0.924245   -0.848490   -0.754275   -0.660059   -0.552954   -0.445848   -0.338531
+   -0.231214   -0.150173   -0.069133   -0.040207   -0.011281   -0.008490   -0.005700   -0.004365
+   -0.003031   -0.001651   -0.000270    0.001969    0.004208    0.005853    0.007497    0.009096
+    0.010695    0.012169    0.013644    0.014924    0.016204    0.017586    0.018967    0.020511
+    0.022054    0.023887    0.025719    0.027772    0.029825    0.033119    0.036412    0.040713
+    0.045015    0.050361    0.055707    0.066106    0.076504    0.088856    0.101207    0.113558
+    0.125909    0.158484    0.191059    0.251511    0.311963    0.374885    0.437807    0.500729
+    0.563651    0.781826    1.000000
+ MESH VALUES FOR Z( 1),
+  -0.2000000D+01 -0.1971813D+01 -0.1888843D+01 -0.1716539D+01 -0.1481917D+01 -0.1165592D+01 -0.8306948D+00 -0.5142065D+00
+ -0.2524161D+00 -0.1092411D+00 -0.2349283D-01 -0.7967029D-02 -0.6279265D-03 -0.3557000D-03 -0.1602968D-03 -0.8137693D-04
+  0.2392130D-02  0.9881690D-01  0.7871035D+00  0.1951060D+01  0.1999883D+01  0.1999831D+01  0.1999723D+01  0.1999592D+01
+  0.1999436D+01  0.1999269D+01  0.1999082D+01  0.1998901D+01  0.1998705D+01  0.1998474D+01  0.1998225D+01  0.1997925D+01
+  0.1997601D+01  0.1997186D+01  0.1996738D+01  0.1996196D+01  0.1995614D+01  0.1994592D+01  0.1993464D+01  0.1991831D+01
+  0.1990017D+01  0.1987510D+01  0.1984725D+01  0.1978512D+01  0.1971256D+01  0.1961291D+01  0.1949878D+01  0.1937036D+01
+  0.1922782D+01  0.1878591D+01  0.1825206D+01  0.1703742D+01  0.1556972D+01  0.1383017D+01  0.1194144D+01  0.9977088D+00
+  0.8013631D+00  0.2258434D+00  0.0000000D+00
+ MESH VALUES FOR Z( 2),
+   0.2289632D-06  0.7406337D+00  0.1439516D+01  0.2191409D+01  0.2752716D+01  0.3098221D+01  0.3096240D+01  0.2745983D+01
+  0.2086544D+01  0.1427779D+01  0.6769661D+00  0.3957729D+00  0.1113146D+00  0.8378294D-01  0.5630101D-01  0.1009983D+00
+  0.8102681D+01  0.2043604D+03  0.7693146D+03  0.1147436D+03  0.8783034D-01 -0.5786973D-01 -0.7398530D-01 -0.8976101D-01
+ -0.1055339D+00 -0.1200762D+00 -0.1346160D+00 -0.1472380D+00 -0.1598575D+00 -0.1734755D+00 -0.1870902D+00 -0.2022929D+00
+ -0.2174907D+00 -0.2355302D+00 -0.2535618D+00 -0.2737522D+00 -0.2939312D+00 -0.3262786D+00 -0.3585909D+00 -0.4007308D+00
+ -0.4427975D+00 -0.4949722D+00 -0.5470072D+00 -0.6477587D+00 -0.7478189D+00 -0.8656243D+00 -0.9821267D+00 -0.1097150D+01
+ -0.1210522D+01 -0.1500346D+01 -0.1774470D+01 -0.2231961D+01 -0.2609191D+01 -0.2902019D+01 -0.3081818D+01 -0.3141584D+01
+ -0.3078991D+01 -0.1988611D+01  0.9290877D-06
+
+ THE ESTIMATED ERRORS ARE,
+ U( 1) -  0.3877D-04  0.1743D+00
+
+ MESH SELECTION INFO,
+ DEGREE OF EQUIDISTRIBUTION =  0.15975 PREDICTION FOR REQUIRED N =      15
+
+ THE NEW MESH (OF   29 SUBINTERVALS), 
+   -1.000000   -0.818992   -0.571578   -0.266770   -0.055314   -0.008359   -0.005444   -0.004552
+   -0.003988   -0.003510   -0.003032   -0.002539   -0.002047   -0.001515   -0.000823   -0.000100
+    0.000746    0.001592    0.002366    0.003081    0.003797    0.004505    0.005203    0.005910
+    0.006729    0.007639    0.011119    0.270945    0.636622    1.000000
+ MESH VALUES FOR Z( 1),
+  -0.2000000D+01 -0.1842627D+01 -0.1222978D+01 -0.3311116D+00 -0.1506089D-01 -0.3448122D-03 -0.1462116D-03 -0.9696045D-04
+ -0.1174975D-04  0.3875386D-03  0.2383643D-02  0.1107577D-01  0.4068536D-01  0.1298652D+00  0.4107293D+00  0.9206674D+00
+  0.1544543D+01  0.1888670D+01  0.1981984D+01  0.1997892D+01  0.1999782D+01  0.1999893D+01  0.1999866D+01  0.1999828D+01
+  0.1999777D+01  0.1999712D+01  0.1999390D+01  0.1659083D+01  0.5838472D+00  0.0000000D+00
+ MESH VALUES FOR Z( 2),
+   0.2226834D-04  0.1691717D+01  0.3062524D+01  0.2335331D+01  0.5431995D+00  0.8247905D-01  0.5402174D-01  0.7015337D-01
+  0.3205080D+00  0.1720676D+01  0.8076993D+01  0.3177696D+02  0.9830390D+02  0.2534161D+03  0.5688625D+03  0.7939383D+03
+  0.6039129D+03  0.2245694D+03  0.4856234D+02  0.6892718D+01  0.5538449D+00 -0.1318486D-01 -0.5029781D-01 -0.5830636D-01
+ -0.6640618D-01 -0.7538716D-01 -0.1097131D+00 -0.2362702D+01 -0.2856670D+01  0.1625124D-04
+
+ THE NEW MESH (OF   58 SUBINTERVALS), 
+   -1.000000   -0.909496   -0.818992   -0.695285   -0.571578   -0.419174   -0.266770   -0.161042
+   -0.055314   -0.031837   -0.008359   -0.006902   -0.005444   -0.004998   -0.004552   -0.004270
+   -0.003988   -0.003749   -0.003510   -0.003271   -0.003032   -0.002786   -0.002539   -0.002293
+   -0.002047   -0.001781   -0.001515   -0.001169   -0.000823   -0.000461   -0.000100    0.000323
+    0.000746    0.001169    0.001592    0.001979    0.002366    0.002724    0.003081    0.003439
+    0.003797    0.004151    0.004505    0.004854    0.005203    0.005557    0.005910    0.006319
+    0.006729    0.007184    0.007639    0.009379    0.011119    0.141032    0.270945    0.453783
+    0.636622    0.818311    1.000000
+ MESH VALUES FOR Z( 1),
+  -0.2000000D+01 -0.1959851D+01 -0.1842627D+01 -0.1575738D+01 -0.1222978D+01 -0.7487977D+00 -0.3311116D+00 -0.1252755D+00
+ -0.1506089D-01 -0.4997644D-02 -0.3448106D-03 -0.2350566D-03 -0.1462116D-03 -0.1227050D-03 -0.9696050D-04 -0.7042852D-04
+ -0.1174980D-04  0.1083494D-03  0.3875385D-03  0.1019043D-02  0.2383643D-02  0.5303402D-02  0.1107577D-01  0.2182760D-01
+  0.4068536D-01  0.7497027D-01  0.1298652D+00  0.2425593D+00  0.4107293D+00  0.6447265D+00  0.9206674D+00  0.1253592D+01
+  0.1544543D+01  0.1757721D+01  0.1888670D+01  0.1952173D+01  0.1981984D+01  0.1993505D+01  0.1997892D+01  0.1999358D+01
+  0.1999782D+01  0.1999882D+01  0.1999893D+01  0.1999883D+01  0.1999866D+01  0.1999848D+01  0.1999828D+01  0.1999803D+01
+  0.1999777D+01  0.1999745D+01  0.1999712D+01  0.1999566D+01  0.1999390D+01  0.1903442D+01  0.1659083D+01  0.1144684D+01
+  0.5838472D+00  0.1585272D+00  0.0000000D+00
+ MESH VALUES FOR Z( 2),
+   0.1844136D-07  0.8812508D+00  0.1691739D+01  0.2568675D+01  0.3062499D+01  0.3040856D+01  0.2335343D+01  0.1522481D+01
+  0.5431863D+00  0.3136926D+00  0.8249312D-01  0.6811175D-01  0.5402225D-01  0.5232806D-01  0.7015340D-01  0.1297808D+00
+  0.3205080D+00  0.7454305D+00  0.1720676D+01  0.3822347D+01  0.8076993D+01  0.1650474D+02  0.3177696D+02  0.5760750D+02
+  0.9830391D+02  0.1635128D+03  0.2534161D+03  0.4030993D+03  0.5688625D+03  0.7174219D+03  0.7939383D+03  0.7572340D+03
+  0.6039129D+03  0.4027327D+03  0.2245694D+03  0.1125522D+03  0.4856234D+02  0.1952506D+02  0.6892717D+01  0.2123037D+01
+  0.5538451D+00  0.1038240D+00 -0.1318451D-01 -0.4180300D-01 -0.5029773D-01 -0.5468208D-01 -0.5830635D-01 -0.6236505D-01
+ -0.6640618D-01 -0.7089680D-01 -0.7538716D-01 -0.9255149D-01 -0.1097131D+00 -0.1346831D+01 -0.2362699D+01 -0.3108537D+01
+ -0.2856634D+01 -0.1697401D+01  0.2022193D-06
+
+ THE ESTIMATED ERRORS ARE,
+ U( 1) -  0.1988D-08  0.5268D-04
+(%o50)                          1
+@end group
+@end example
+
+@node References for colnew, , Examples for colnew, colnew-pkg
+@section References for colnew
+
+
+(Gawain&Bell 1978) T. H. Gawain and R. E. Ball,
+   Improved Finite Difference Formulas for Boundary Value Problems,
+   International Journal for Numerical Methods in Engineering 12, no. 7 (1978)
+   1151–60.
+   @url{https://doi.org/10.1002/nme.1620120706, doi:10.1002/nme.1620120706}
+
+(Ascher 1979a) U. Ascher, J. Christiansen and R. D. Russell,
+    A collocation solver for mixed order systems of boundary value problems,
+    Math. Comp. 33 (1979), 659-679,
+    @url{https:/doi.org/10.1090/S0025-5718-1979-0521281-7,
+    doi:10.1090/S0025-5718-1979-0521281-7}
+
+(Ascher 1979b) U. Ascher, J. Christiansen and R. D. Russell,
+    COLSYS - a collocation code for boundary value problems,
+    in @i{Codes for boundary-value problems in ordinary differential equations},
+    Lecture Notes in Computer Science 76, Springer Verlag,
+    B. Childs et. al. (eds.) (1979), 164-185,
+    ISBN 978-3-540-09554-5
+
+(Ascher 1981a) U. Ascher, J. Christiansen and R. D. Russell,
+    Collocation software for boundary-value odes,
+    ACM Trans. Math Software 7 (1981), 209-222.
+    @url{https:/doi.org/10.1145/355945.355950,
+    doi:10.1145/355945.355950}
+
+(Ascher 1981b) U. Ascher, U., J. Christiansen, and R. D. Russell.
+   ‘Algorithm 569: COLSYS: Collocation Software for Boundary-Value ODEs [D2]’.
+   ACM Transactions on Mathematical Software 7, no. 2 (June 1981): 223–29.
+   @url{https:/doi.org/10.1145/355945.355951,
+   doi:10.1145/355945.355951}
+
+(Asher&Russell 1981) U. Ascher and R. D. Russell.
+   ‘Reformulation of Boundary Value Problems into “Standard” Form’.
+   SIAM Review 23, no. 2 (April 1981), 238–54,
+   @url{https:/doi.org/10.1137/1023039, doi:10.1137/1023039}
+
+(Parker&Wan 1984) David F. Parker and Frederic Y. M. Wan,
+  ‘Finite Polar Dimpling of Shallow Caps Under Sub-Buckling Axisymmetric
+  Pressure Distributions’.
+  SIAM Journal on Applied Mathematics 44, no. 2 (April 1984): 301–26,
+  @url{https://doi.org/10.1137/0144022, doi:10.1137/0144022}
+
+(Bader&Ascher 1987) G. Bader and U. Ascher,
+    A new basis implementation for a mixed order boundary value ode solver,
+    SIAM J. Scient. Stat. Comput. (1987), 483-500,
+    @url{https://doi.org/10.1137/0908047, doi:10.1137/0908047}
+
+(Ascher et al, 1995) Uri M. Ascher, Robert M. M. Mattheij,
+   and Robert D. Russell.
+   Numerical Solution of Boundary Value Problems for Ordinary Differential
+   Equations.
+   Classics in Applied Mathematics 13, SIAM, (1995),
+   ISBN 978-0-89871-354-1
+
+(Bellon&Talon 2005) Spectrum of the quantum Neumann model,
+   Physics Letters A, Volume 337, Issues 4–6, pp 360-368,
+   @url{https://doi.org/10.1016/j.physleta.2005.02.002,
+   doi:10.1016/j.physleta.2005.02.002}
+   @url{https://arxiv.org/abs/hep-th/0407005,arXiv:hep-th/0407005}
