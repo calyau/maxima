@@ -1868,7 +1868,8 @@ before @var{e} is set, so that it can be changed in the program.
    Classics in Applied Mathematics 13, SIAM, (1995),
    ISBN 978-0-89871-354-1
 
-(Bellon&Talon 2005) Spectrum of the quantum Neumann model,
+(Bellon&Talon 2005) M. Bellon, M. Talon,
+   Spectrum of the quantum Neumann model,
    Physics Letters A, Volume 337, Issues 4–6, pp 360-368,
    @url{https://doi.org/10.1016/j.physleta.2005.02.002,
    doi:10.1016/j.physleta.2005.02.002}
