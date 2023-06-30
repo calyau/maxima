@@ -676,13 +676,13 @@ maxima.info : maxima.texi $(maxima_TEXINFOS)
 	$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) \
 	  --split-size=1000000 $(srcdir)/maxima.texi
 
-html: maxima_toc.html
+html: index.html
 
 maxima-index.lisp: build_index.pl maxima.info
 	/usr/bin/env perl $^ ':crlf' > $@
 
 # Really depends on all the individual html files, but let's assume
-# that if maxima_toc.html is done, we have all the remaining html
+# that if index.html is done, we have all the remaining html
 # files.
 #
 # Load build-html-index.lisp and run the builder to create
@@ -690,16 +690,16 @@ maxima-index.lisp: build_index.pl maxima.info
 # maxima-index-html.lisp, so we don't want to try to verify the html
 # index to prevent spurious warnings.  Then after it's done, run
 # maxima to verify the index.
-maxima-index-html.lisp : maxima_toc.html build-html-index.lisp
+maxima-index-html.lisp : index.html build-html-index.lisp
 	../../maxima-local --no-init --no-verify-html-index --preload=build-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
 	../../maxima-local --no-init --batch-string="quit();"
 
 DOLLAR_SIGN = $$
 
-maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css texi2html.init
+maxima_singlepage.html index.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css texi2html.init
 	./build_html.sh
 
-maxima.epub: maxima_toc.html
+maxima.epub: maxima_singlepage.html
 	ebook-convert maxima_singlepage.html maxima.epub --breadth-first "--title=Maxima @manual_version@ Manual" "--authors=Maxima Team" --language=en
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
