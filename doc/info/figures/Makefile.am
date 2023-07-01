@@ -305,13 +305,16 @@ plotting23.png plotting23.pdf\
 plotting24.png plotting24.pdf\
 plotting25.png plotting25.pdf\
 plotting26.png plotting26.pdf\
-colnew-ex2.png colnew-ex2.pdf
+colnew-ex2.png colnew-ex2.pdf\
+colnew-ex5.png colnew-ex5.pdf
 
 # draw_color2.png and draw_color2.pdf aren't automatically remade since the png terminal
 # doesn't support transparency
 
 colnew-ex2.pdf: colnew-ex2.mac ../docdraw.mac
 colnew-ex2.png: colnew-ex2.mac ../docdraw.mac
+colnew-ex5.pdf: colnew-ex5.mac ../docdraw.mac
+colnew-ex5.png: colnew-ex5.mac ../docdraw.mac
 plotting26.pdf: plotting26.mac ../docdraw.mac
 plotting26.png: plotting26.mac ../docdraw.mac
 plotting25.pdf: plotting25.mac ../docdraw.mac

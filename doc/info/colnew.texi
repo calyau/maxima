@@ -1810,6 +1810,16 @@ before @var{e} is set, so that it can be changed in the program.
 @end group
 @end example
 
+@ifnotinfo
+The figure below shows the solution for
+@math{ε=[10^{-2},10^{-3},10^{-4},10^{-5},10^{-6}]}.
+
+@image{figures/colnew-ex5,8cm}
+@end ifnotinfo
+
+
+
+
 @node References for colnew, , Examples for colnew, colnew-pkg
 @section References for colnew
 
