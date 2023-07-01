@@ -1203,14 +1203,14 @@ implementation is in directory ex4.
 This example (Ascher et al, 1995, Example 9.2) solves a numerically
 difficult boundary value problem using continuation.
 
-@noindent The linear differential equation is @*
-@math{ε u'@w{}' + x u' = -ε π^2 cos(πx) - (πx) sin(πx)}
-with @math{-1 < x < 1} and @math{0 < ε ≪ 1}
+@noindent The linear differential equation is
+@center @math{ε u'@w{}' + x u' = -ε π^2 cos(πx) - (πx) sin(πx)}, @math{-1 < x < 1}
 
-with boundary conditions @math{u(-1)=-2} and @math{u(1)=0}
+@noindent with boundary conditions
+@center @math{u(-1)=-2} and @math{u(1)=0}
 
 @noindent The exact solution is
-@math{u(x) = cos(πx) + erf(x/sqrt(2ε))/erf(1/sqrt(2ε))}
+@center @math{u(x) = cos(πx) + erf(x/sqrt(2ε))/erf(1/sqrt(2ε))}
 
 When @math{ε} is small the solution has a rapid transition near @math{x=0}
 and is difficult to solve numerically.  COLNEW is able to solve the
@@ -1226,7 +1226,7 @@ The unknown vector of length @var{mstar} is
 @math{z(x) = [z_1(x),z_2(x)] = [u(x),u'(x)]}.
 
 The differential equation is expressed as 
-@math{u'@w{}'(x) = F(x,z_1,z_2) = [-(x/ε)z_2 - π^2cos(πx) - (πx/ε)sin(πx)]}
+@math{[u'@w{}'(x)] = F(x,z_1,z_2) = [-(x/ε)z_2 - π^2cos(πx) - (πx/ε)sin(πx)]}
 
 There are @var{mstar=2} boundary conditions. They are given by a
 function @math{G(z_1,z_2)} that returns a list of length mstar.
@@ -1258,39 +1258,31 @@ before @var{e} is set, so that it can be changed in the program.
 
 @c ===beg===
 @c load("colnew")$
-@c 
 @c kill(e,x,z1,z2)$
-@c 
 @c /* Exact solution */
 @c  exact(x):=cos(%pi*x)+erf(x/sqrt(2*e))/erf(1/sqrt(2*e))$
-@c 
 @c /* Define the equations.  Do this before e is defined */
 @c  f: [-(x/e)*z2 - %pi^2*cos(%pi*x) - (%pi*x/e)*sin(%pi*x)];
 @c define(fsub(x,z1,z2),f);
 @c df: jacobian(f,[z1,z2]);
 @c define(dfsub(x,z1,z2),df);
-@c 
 @c /* Build the functions gsub and dgsub
 @c    Use define and buildq to remove dependence on g and dg */
 @c  g: [z1+2,z1];
 @c define(gsub(i,z1,z2),buildq([g],g[i]));
 @c dg: jacobian(g,[z1,z2]);
 @c define(
-@c   dgsub(i,z1,z2),
-@c   buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
-@c 
+@c  dgsub(i,z1,z2),
+@c  buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
 @c /* Define constant epsilon */
 @c  e : 0.01$
-@c 
 @c /* Number of differential equations */
 @c  ncomp : 1$
 @c /* Orders */
 @c  m : [2]$
-@c 
 @c /* Interval ends */
-@c  aleft  : -1.0$
-@c aright :  1.0$
-@c 
+@c  aleft:-1.0$
+@c aright:1.0$
 @c /* Locations of side conditions */
 @c  zeta : float([-1, 1])$
 @c /* Set up parameter array.  */
@@ -1315,47 +1307,38 @@ before @var{e} is set, so that it can be changed in the program.
 @c  ipar[11] : 0$
 @c /* Tolerances on two components */
 @c  ipar[4] : 2$
-@c 
 @c /* Two error tolerances (on u and its derivative)
 @c    Relatively large tolerances to keep the example small */
 @c  ltol : [1, 2]$
 @c tol : [1e-4, 1e-4]$
-@c 
 @c fspace : makelist(0e0, k, 1, ipar[5])$
 @c ispace : makelist(0, k, 1, ipar[6])$
 @c fixpnt : []$
-@c 
 @c /* First run with default initial guess.
 @c    Returns iflag. 1 = success */
 @c  ([iflag, fspace, ispace] :
 @c   colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
 @c   fixpnt, ispace, fspace,
 @c   0, fsub, dfsub, gsub, dgsub, dummy),
-@c   if (iflag#1) then error("On return from colnew_expert: iflag # 1"),
+@c   if (iflag#1) then error("On return from colnew_expert: iflag = ",iflag),
 @c   iflag);
-@c 
 @c /* Function to generate equally spaced list of values */
 @c  xlist(xmin,xmax,n):=block([dx:(xmax-xmin)/n],makelist(i,i,0,n)*dx+xmin)$
-@c 
 @c /* x values for solution.  Cluster around x=0 */
 @c  X: xlist(aleft,aright,500)$
-@c 
 @c /* Generate solution values for z1=u(x) */
 @c  ans:colnew_appsln(X,2,fspace,ispace)$
 @c z:maplist(first,ans)$
 @c Z:[z]$
-@c 
 @c /* Compare with exact solution and report */
 @c  y:float(map(exact,X))$
 @c maxerror:apply(max,abs(y-z));
 @c printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
 @c   e,iflag,ispace[1],maxerror);
-@c 
 @c /* Now use continuation to solve for progressively smaller e
 @c    Use previous solution as initial guess and every second point
 @c    from previous mesh as initial mesh */
 @c  ipar[9] : 3$
-@c 
 @c /* Run COLNEW using continuation for new value of e
 @c    Set new mesh size ipar[3] from previous size ispace[1]
 @c    Push list of values of z1=u(x) on to list Z */
@@ -1365,7 +1348,7 @@ before @var{e} is set, so that it can be changed in the program.
 @c   [iflag, fspace, ispace]:
 @c      colnew_expert(ncomp,m,aleft,aright,zeta,ipar,ltol,tol,fixpnt,
 @c      ispace,fspace,0,fsub,dfsub,gsub,dgsub,dummy),
-@c   if (iflag#1) then error("On return from colnew_expert: iflag # 1"),
+@c   if (iflag#1) then error("On return from colnew_expert: iflag =",iflag),
 @c   ans:colnew_appsln(X,2,fspace,ispace),
 @c   z:maplist(first,ans),
 @c   push(z,Z),
@@ -1375,12 +1358,9 @@ before @var{e} is set, so that it can be changed in the program.
 @c     e,iflag,ispace[1],maxerror),
 @c   iflag
 @c  )$
-@c 
 @c for e_ in [1e-3,1e-4,1e-5,1e-6] do run_it(e_)$
-@c 
 @c /* Z is list of solutions z1 = u(x).  Restore order. */
 @c  Z:reverse(Z)$
-@c 
 @c /* Plot z1=u(x) for each value of e
 @c  plot2d([
 @c   [discrete,X,Z[1]], [discrete,X,Z[2]], [discrete,X,Z[3]],
@@ -1391,18 +1371,11 @@ before @var{e} is set, so that it can be changed in the program.
 @c  done$
 @c ===end===
 @example
-@group
 (%i1) load("colnew")$
-
-@end group
-@group
 (%i2) kill(e,x,z1,z2)$
-
-@end group
 @group
 (%i3) /* Exact solution */
  exact(x):=cos(%pi*x)+erf(x/sqrt(2*e))/erf(1/sqrt(2*e))$
-
 @end group
 @group
 (%i4) /* Define the equations.  Do this before e is defined */
@@ -1427,7 +1400,6 @@ before @var{e} is set, so that it can be changed in the program.
 @end group
 @group
 (%i7) define(dfsub(x,z1,z2),df);
-
                                      [      x ]
 (%o7)            dfsub(x, z1, z2) := [ 0  - - ]
                                      [      e ]
@@ -1451,16 +1423,14 @@ before @var{e} is set, so that it can be changed in the program.
 @end group
 @group
 (%i11) define(
-  dgsub(i,z1,z2),
-  buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
-
+ dgsub(i,z1,z2),
+ buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
 (%o11) dgsub(i, z1, z2) := block([dg : [[1, 0], [1, 0]]], dg )
                                                             i
 @end group
 @group
 (%i12) /* Define constant epsilon */
  e : 0.01$
-
 @end group
 @group
 (%i13) /* Number of differential equations */
@@ -1469,16 +1439,12 @@ before @var{e} is set, so that it can be changed in the program.
 @group
 (%i14) /* Orders */
  m : [2]$
-
 @end group
 @group
 (%i15) /* Interval ends */
- aleft  : -1.0$
+ aleft:-1.0$
 @end group
-@group
-(%i16) aright :  1.0$
-
-@end group
+(%i16) aright:1.0$
 @group
 (%i17) /* Locations of side conditions */
  zeta : float([-1, 1])$
@@ -1524,23 +1490,16 @@ before @var{e} is set, so that it can be changed in the program.
 @group
 (%i29) /* Tolerances on two components */
  ipar[4] : 2$
-
 @end group
 @group
 (%i30) /* Two error tolerances (on u and its derivative)
    Relatively large tolerances to keep the example small */
  ltol : [1, 2]$
 @end group
-@group
 (%i31) tol : [1e-4, 1e-4]$
-
-@end group
 (%i32) fspace : makelist(0e0, k, 1, ipar[5])$
 (%i33) ispace : makelist(0, k, 1, ipar[6])$
-@group
 (%i34) fixpnt : []$
-
-@end group
 @group
 (%i35) /* First run with default initial guess.
    Returns iflag. 1 = success */
@@ -1548,30 +1507,24 @@ before @var{e} is set, so that it can be changed in the program.
   colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
   fixpnt, ispace, fspace,
   0, fsub, dfsub, gsub, dgsub, dummy),
-  if (iflag#1) then error("On return from colnew_expert: iflag # 1"),
+  if (iflag#1) then error("On return from colnew_expert: iflag = ",iflag),
   iflag);
-
 (%o35)                          1
 @end group
 @group
 (%i36) /* Function to generate equally spaced list of values */
  xlist(xmin,xmax,n):=block([dx:(xmax-xmin)/n],makelist(i,i,0,n)*dx+xmin)$
-
 @end group
 @group
 (%i37) /* x values for solution.  Cluster around x=0 */
  X: xlist(aleft,aright,500)$
-
 @end group
 @group
 (%i38) /* Generate solution values for z1=u(x) */
  ans:colnew_appsln(X,2,fspace,ispace)$
 @end group
 (%i39) z:maplist(first,ans)$
-@group
 (%i40) Z:[z]$
-
-@end group
 @group
 (%i41) /* Compare with exact solution and report */
  y:float(map(exact,X))$
@@ -1583,7 +1536,6 @@ before @var{e} is set, so that it can be changed in the program.
 @group
 (%i43) printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
   e,iflag,ispace[1],maxerror);
-
  e: 1.000E-2  iflag   1  Mesh size  16  max error 6.881E-7
 (%o43)                        false
 @end group
@@ -1592,7 +1544,6 @@ before @var{e} is set, so that it can be changed in the program.
    Use previous solution as initial guess and every second point
    from previous mesh as initial mesh */
  ipar[9] : 3$
-
 @end group
 @group
 (%i45) /* Run COLNEW using continuation for new value of e
@@ -1604,7 +1555,7 @@ before @var{e} is set, so that it can be changed in the program.
   [iflag, fspace, ispace]:
      colnew_expert(ncomp,m,aleft,aright,zeta,ipar,ltol,tol,fixpnt,
      ispace,fspace,0,fsub,dfsub,gsub,dgsub,dummy),
-  if (iflag#1) then error("On return from colnew_expert: iflag # 1"),
+  if (iflag#1) then error("On return from colnew_expert: iflag =",iflag),
   ans:colnew_appsln(X,2,fspace,ispace),
   z:maplist(first,ans),
   push(z,Z),
@@ -1614,11 +1565,9 @@ before @var{e} is set, so that it can be changed in the program.
     e,iflag,ispace[1],maxerror),
   iflag
  )$
-
 @end group
 @group
 (%i46) for e_ in [1e-3,1e-4,1e-5,1e-6] do run_it(e_)$
-
  e: 1.000E-3  iflag   1  Mesh size  20  max error 3.217E-7
  e: 1.000E-4  iflag   1  Mesh size  40  max error 3.835E-7
  e: 1.000E-5  iflag   1  Mesh size  38  max error 8.690E-9
@@ -1627,7 +1576,6 @@ before @var{e} is set, so that it can be changed in the program.
 @group
 (%i47) /* Z is list of solutions z1 = u(x).  Restore order. */
  Z:reverse(Z)$
-
 @end group
 @group
 (%i48) /* Plot z1=u(x) for each value of e
