@@ -1203,14 +1203,14 @@ implementation is in directory ex4.
 This example (Ascher et al, 1995, Example 9.2) solves a numerically
 difficult boundary value problem using continuation.
 
-@noindent The linear differential equation is @*
-@math{ε u'@w{}' + x u' = -ε π^2 cos(πx) - (πx) sin(πx)}
-with @math{-1 < x < 1} and @math{0 < ε ≪ 1}
+@noindent The linear differential equation is
+@center @math{ε u'@w{}' + x u' = -ε π^2 cos(πx) - (πx) sin(πx)}, @math{-1 < x < 1}
 
-with boundary conditions @math{u(-1)=-2} and @math{u(1)=0}
+@noindent with boundary conditions
+@center @math{u(-1)=-2} and @math{u(1)=0}
 
 @noindent The exact solution is
-@math{u(x) = cos(πx) + erf(x/sqrt(2ε))/erf(1/sqrt(2ε))}
+@center @math{u(x) = cos(πx) + erf(x/sqrt(2ε))/erf(1/sqrt(2ε))}
 
 When @math{ε} is small the solution has a rapid transition near @math{x=0}
 and is difficult to solve numerically.  COLNEW is able to solve the
@@ -1226,7 +1226,7 @@ The unknown vector of length @var{mstar} is
 @math{z(x) = [z_1(x),z_2(x)] = [u(x),u'(x)]}.
 
 The differential equation is expressed as 
-@math{u'@w{}'(x) = F(x,z_1,z_2) = [-(x/ε)z_2 - π^2cos(πx) - (πx/ε)sin(πx)]}
+@math{[u'@w{}'(x)] = F(x,z_1,z_2) = [-(x/ε)z_2 - π^2cos(πx) - (πx/ε)sin(πx)]}
 
 There are @var{mstar=2} boundary conditions. They are given by a
 function @math{G(z_1,z_2)} that returns a list of length mstar.
@@ -1258,44 +1258,31 @@ before @var{e} is set, so that it can be changed in the program.
 
 @c ===beg===
 @c load("colnew")$
-@c
 @c kill(e,x,z1,z2)$
-@c
 @c /* Exact solution */
 @c  exact(x):=cos(%pi*x)+erf(x/sqrt(2*e))/erf(1/sqrt(2*e))$
-@c
 @c /* Define the equations.  Do this before e is defined */
 @c  f: [-(x/e)*z2 - %pi^2*cos(%pi*x) - (%pi*x/e)*sin(%pi*x)];
-@c
 @c define(fsub(x,z1,z2),f);
-@c
 @c df: jacobian(f,[z1,z2]);
-@c
 @c define(dfsub(x,z1,z2),df);
-@c
 @c /* Build the functions gsub and dgsub
 @c    Use define and buildq to remove dependence on g and dg */
 @c  g: [z1+2,z1];
-@c
 @c define(gsub(i,z1,z2),buildq([g],g[i]));
-@c
 @c dg: jacobian(g,[z1,z2]);
-@c
 @c define(
-@c   dgsub(i,z1,z2),
-@c   buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
-@c
+@c  dgsub(i,z1,z2),
+@c  buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
 @c /* Define constant epsilon */
 @c  e : 0.01$
 @c /* Number of differential equations */
 @c  ncomp : 1$
 @c /* Orders */
 @c  m : [2]$
-@c
 @c /* Interval ends */
-@c  aleft  : -1.0$
-@c aright :  1.0$
-@c
+@c  aleft:-1.0$
+@c aright:1.0$
 @c /* Locations of side conditions */
 @c  zeta : float([-1, 1])$
 @c /* Set up parameter array.  */
@@ -1310,8 +1297,8 @@ before @var{e} is set, so that it can be changed in the program.
 @c /* Size of fspace, ispace */
 @c  ipar[5] : 10000$
 @c ipar[6] :  1000$
-@c /* Selected output */
-@c  ipar[7] : 0$
+@c /* No output.  Don't do this for development. */
+@c  ipar[7]:1$
 @c /* No initial guess is provided */
 @c  ipar[9] : 0$
 @c /* Regular problem */
@@ -1320,90 +1307,85 @@ before @var{e} is set, so that it can be changed in the program.
 @c  ipar[11] : 0$
 @c /* Tolerances on two components */
 @c  ipar[4] : 2$
-@c 
 @c /* Two error tolerances (on u and its derivative)
 @c    Relatively large tolerances to keep the example small */
 @c  ltol : [1, 2]$
-@c tol : [1e-3, 1e-3]$
-@c 
+@c tol : [1e-4, 1e-4]$
 @c fspace : makelist(0e0, k, 1, ipar[5])$
 @c ispace : makelist(0, k, 1, ipar[6])$
 @c fixpnt : []$
-@c 
 @c /* First run with default initial guess.
 @c    Returns iflag. 1 = success */
 @c  ([iflag, fspace, ispace] :
-@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
-@c  fixpnt, ispace, fspace,
-@c  0, fsub, dfsub, gsub, dgsub, dummy), iflag);
-@c
-@c /* Use previous solution as initial guess and every second point
+@c   colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+@c   fixpnt, ispace, fspace,
+@c   0, fsub, dfsub, gsub, dgsub, dummy),
+@c   if (iflag#1) then error("On return from colnew_expert: iflag = ",iflag),
+@c   iflag);
+@c /* Function to generate equally spaced list of values */
+@c  xlist(xmin,xmax,n):=block([dx:(xmax-xmin)/n],makelist(i,i,0,n)*dx+xmin)$
+@c /* x values for solution.  Cluster around x=0 */
+@c  X: xlist(aleft,aright,500)$
+@c /* Generate solution values for z1=u(x) */
+@c  ans:colnew_appsln(X,2,fspace,ispace)$
+@c z:maplist(first,ans)$
+@c Z:[z]$
+@c /* Compare with exact solution and report */
+@c  y:float(map(exact,X))$
+@c maxerror:apply(max,abs(y-z));
+@c printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
+@c   e,iflag,ispace[1],maxerror);
+@c /* Now use continuation to solve for progressively smaller e
+@c    Use previous solution as initial guess and every second point
 @c    from previous mesh as initial mesh */
 @c  ipar[9] : 3$
-@c
-@c /* Use mesh size from previous solution */
-@c  ipar[3] : ispace[1];
-@c /* New value of e */
-@c  e : 1e-3$
-@c /* First continuation run */
-@c  ([iflag, fspace, ispace] :
-@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
-@c  fixpnt, ispace, fspace,
-@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-@c
-@c /* Suppress output */
-@c  ipar[7]:1$
-@c
-@c e : 1e-4$
-@c ipar[3] : ispace[1];
-@c ([iflag, fspace, ispace] :
-@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
-@c  fixpnt, ispace, fspace,
-@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-@c
-@c e : 1e-5$
-@c ipar[3] : ispace[1];
-@c ([iflag, fspace, ispace] :
-@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
-@c  fixpnt, ispace, fspace,
-@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-@c
-@c /* Full output */
-@c  ipar[7]:-1$
-@c
-@c e : 1e-6$
-@c ipar[3] : ispace[1];
-@c ([iflag, fspace, ispace] :
-@c  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
-@c  fixpnt, ispace, fspace,
-@c  0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-@c
+@c /* Run COLNEW using continuation for new value of e
+@c    Set new mesh size ipar[3] from previous size ispace[1]
+@c    Push list of values of z1=u(x) on to list Z */
+@c  run_it(e_):=block(
+@c   e:e_,
+@c   ipar[3]:ispace[1],
+@c   [iflag, fspace, ispace]:
+@c      colnew_expert(ncomp,m,aleft,aright,zeta,ipar,ltol,tol,fixpnt,
+@c      ispace,fspace,0,fsub,dfsub,gsub,dgsub,dummy),
+@c   if (iflag#1) then error("On return from colnew_expert: iflag =",iflag),
+@c   ans:colnew_appsln(X,2,fspace,ispace),
+@c   z:maplist(first,ans),
+@c   push(z,Z),
+@c   y:float(map(exact,X)),
+@c   maxerror:apply(max,abs(y-z)),
+@c   printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
+@c     e,iflag,ispace[1],maxerror),
+@c   iflag
+@c  )$
+@c for e_ in [1e-3,1e-4,1e-5,1e-6] do run_it(e_)$
+@c /* Z is list of solutions z1 = u(x).  Restore order. */
+@c  Z:reverse(Z)$
+@c /* Plot z1=u(x) for each value of e
+@c  plot2d([
+@c   [discrete,X,Z[1]], [discrete,X,Z[2]], [discrete,X,Z[3]],
+@c   [discrete,X,Z[4]], [discrete,X,Z[5]]],
+@c   [legend,"e=1e-2","e=1e-3","e=1e-4","e=1e-5","e=1e-6"],
+@c   [xlabel,"x"],[ylabel,"u(x)"],
+@c   [png_file,"./colnew-ex5.png"]); */
+@c  done$
 @c ===end===
 @example
-@group
 (%i1) load("colnew")$
-
-@end group
-@group
 (%i2) kill(e,x,z1,z2)$
-
-@end group
 @group
 (%i3) /* Exact solution */
  exact(x):=cos(%pi*x)+erf(x/sqrt(2*e))/erf(1/sqrt(2*e))$
-
 @end group
 @group
 (%i4) /* Define the equations.  Do this before e is defined */
  f: [-(x/e)*z2 - %pi^2*cos(%pi*x) - (%pi*x/e)*sin(%pi*x)];
-
              x z2   %pi x sin(%pi x)      2
 (%o4)     [- ---- - ---------------- - %pi  cos(%pi x)]
               e            e
 @end group
 @group
 (%i5) define(fsub(x,z1,z2),f);
-
                             x z2   %pi x sin(%pi x)
 (%o5) fsub(x, z1, z2) := [- ---- - ----------------
                              e            e
@@ -1412,14 +1394,12 @@ before @var{e} is set, so that it can be changed in the program.
 @end group
 @group
 (%i6) df: jacobian(f,[z1,z2]);
-
                            [      x ]
 (%o6)                      [ 0  - - ]
                            [      e ]
 @end group
 @group
 (%i7) define(dfsub(x,z1,z2),df);
-
                                      [      x ]
 (%o7)            dfsub(x, z1, z2) := [ 0  - - ]
                                      [      e ]
@@ -1428,27 +1408,23 @@ before @var{e} is set, so that it can be changed in the program.
 (%i8) /* Build the functions gsub and dgsub
    Use define and buildq to remove dependence on g and dg */
  g: [z1+2,z1];
-
 (%o8)                     [z1 + 2, z1]
 @end group
 @group
 (%i9) define(gsub(i,z1,z2),buildq([g],g[i]));
-
 (%o9)           gsub(i, z1, z2) := [z1 + 2, z1]
                                                i
 @end group
 @group
 (%i10) dg: jacobian(g,[z1,z2]);
-
                             [ 1  0 ]
 (%o10)                      [      ]
                             [ 1  0 ]
 @end group
 @group
 (%i11) define(
-  dgsub(i,z1,z2),
-  buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
-
+ dgsub(i,z1,z2),
+ buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
 (%o11) dgsub(i, z1, z2) := block([dg : [[1, 0], [1, 0]]], dg )
                                                             i
 @end group
@@ -1463,16 +1439,12 @@ before @var{e} is set, so that it can be changed in the program.
 @group
 (%i14) /* Orders */
  m : [2]$
-
 @end group
 @group
 (%i15) /* Interval ends */
- aleft  : -1.0$
+ aleft:-1.0$
 @end group
-@group
-(%i16) aright :  1.0$
-
-@end group
+(%i16) aright:1.0$
 @group
 (%i17) /* Locations of side conditions */
  zeta : float([-1, 1])$
@@ -1500,8 +1472,8 @@ before @var{e} is set, so that it can be changed in the program.
 @end group
 (%i24) ipar[6] :  1000$
 @group
-(%i25) /* Selected output */
- ipar[7] : 0$
+(%i25) /* No output.  Don't do this for development. */
+ ipar[7]:1$
 @end group
 @group
 (%i26) /* No initial guess is provided */
@@ -1518,297 +1490,114 @@ before @var{e} is set, so that it can be changed in the program.
 @group
 (%i29) /* Tolerances on two components */
  ipar[4] : 2$
-
 @end group
 @group
 (%i30) /* Two error tolerances (on u and its derivative)
    Relatively large tolerances to keep the example small */
  ltol : [1, 2]$
 @end group
-@group
-(%i31) tol : [1e-3, 1e-3]$
-
-@end group
+(%i31) tol : [1e-4, 1e-4]$
 (%i32) fspace : makelist(0e0, k, 1, ipar[5])$
 (%i33) ispace : makelist(0, k, 1, ipar[6])$
-@group
 (%i34) fixpnt : []$
-
-@end group
 @group
 (%i35) /* First run with default initial guess.
    Returns iflag. 1 = success */
  ([iflag, fspace, ispace] :
- colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
- fixpnt, ispace, fspace,
- 0, fsub, dfsub, gsub, dgsub, dummy), iflag);
-
-
- VERSION *COLNEW* OF COLSYS .    
-
-
- THE MAXIMUM NUMBER OF SUBINTERVALS IS MIN ( 108 (ALLOWED FROM FSPACE),  99 (ALLOWED FROM ISPACE) )
-
- THE NEW MESH (OF    1 SUBINTERVALS), 
-   -1.000000    1.000000
-
- THE NEW MESH (OF    2 SUBINTERVALS), 
-   -1.000000    0.000000    1.000000
-
- THE NEW MESH (OF    4 SUBINTERVALS), 
-   -1.000000   -0.500000    0.000000    0.500000    1.000000
-
- THE NEW MESH (OF    8 SUBINTERVALS), 
-   -1.000000   -0.750000   -0.500000   -0.250000    0.000000    0.250000    0.500000    0.750000
-    1.000000
+  colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+  fixpnt, ispace, fspace,
+  0, fsub, dfsub, gsub, dgsub, dummy),
+  if (iflag#1) then error("On return from colnew_expert: iflag = ",iflag),
+  iflag);
 (%o35)                          1
 @end group
 @group
-(%i36) /* Use previous solution as initial guess and every second point
+(%i36) /* Function to generate equally spaced list of values */
+ xlist(xmin,xmax,n):=block([dx:(xmax-xmin)/n],makelist(i,i,0,n)*dx+xmin)$
+@end group
+@group
+(%i37) /* x values for solution.  Cluster around x=0 */
+ X: xlist(aleft,aright,500)$
+@end group
+@group
+(%i38) /* Generate solution values for z1=u(x) */
+ ans:colnew_appsln(X,2,fspace,ispace)$
+@end group
+(%i39) z:maplist(first,ans)$
+(%i40) Z:[z]$
+@group
+(%i41) /* Compare with exact solution and report */
+ y:float(map(exact,X))$
+@end group
+@group
+(%i42) maxerror:apply(max,abs(y-z));
+(%o42)                6.881499912125832e-7
+@end group
+@group
+(%i43) printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
+  e,iflag,ispace[1],maxerror);
+ e: 1.000E-2  iflag   1  Mesh size  16  max error 6.881E-7
+(%o43)                        false
+@end group
+@group
+(%i44) /* Now use continuation to solve for progressively smaller e
+   Use previous solution as initial guess and every second point
    from previous mesh as initial mesh */
  ipar[9] : 3$
-
 @end group
 @group
-(%i37) /* Use mesh size from previous solution */
- ipar[3] : ispace[1];
-(%o37)                          8
+(%i45) /* Run COLNEW using continuation for new value of e
+   Set new mesh size ipar[3] from previous size ispace[1]
+   Push list of values of z1=u(x) on to list Z */
+ run_it(e_):=block(
+  e:e_,
+  ipar[3]:ispace[1],
+  [iflag, fspace, ispace]:
+     colnew_expert(ncomp,m,aleft,aright,zeta,ipar,ltol,tol,fixpnt,
+     ispace,fspace,0,fsub,dfsub,gsub,dgsub,dummy),
+  if (iflag#1) then error("On return from colnew_expert: iflag =",iflag),
+  ans:colnew_appsln(X,2,fspace,ispace),
+  z:maplist(first,ans),
+  push(z,Z),
+  y:float(map(exact,X)),
+  maxerror:apply(max,abs(y-z)),
+  printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
+    e,iflag,ispace[1],maxerror),
+  iflag
+ )$
 @end group
 @group
-(%i38) /* New value of e */
- e : 1e-3$
+(%i46) for e_ in [1e-3,1e-4,1e-5,1e-6] do run_it(e_)$
+ e: 1.000E-3  iflag   1  Mesh size  20  max error 3.217E-7
+ e: 1.000E-4  iflag   1  Mesh size  40  max error 3.835E-7
+ e: 1.000E-5  iflag   1  Mesh size  38  max error 8.690E-9
+ e: 1.000E-6  iflag   1  Mesh size  60  max error 6.313E-7
 @end group
 @group
-(%i39) /* First continuation run */
- ([iflag, fspace, ispace] :
- colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
- fixpnt, ispace, fspace,
- 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-
-
- VERSION *COLNEW* OF COLSYS .    
-
-
- THE MAXIMUM NUMBER OF SUBINTERVALS IS MIN ( 108 (ALLOWED FROM FSPACE),  99 (ALLOWED FROM ISPACE) )
-
- THE FORMER MESH (OF    8 SUBINTERVALS),
-   -1.000000   -0.750000   -0.500000   -0.250000    0.000000    0.250000    0.500000    0.750000
-    1.000000
-
- THE NEW MESH (OF    4 SUBINTERVALS), 
-   -1.000000   -0.500000    0.000000    0.500000    1.000000
-
- THE NEW MESH (OF    8 SUBINTERVALS), 
-   -1.000000   -0.750000   -0.500000   -0.250000    0.000000    0.250000    0.500000    0.750000
-    1.000000
-
- THE NEW MESH (OF   16 SUBINTERVALS), 
-   -1.000000   -0.875000   -0.750000   -0.625000   -0.500000   -0.375000   -0.250000   -0.125000
-    0.000000    0.125000    0.250000    0.375000    0.500000    0.625000    0.750000    0.875000
-    1.000000
-
- THE NEW MESH (OF    8 SUBINTERVALS), 
-   -1.000000   -0.527955   -0.201971   -0.062469    0.044798    0.160968    0.264621    0.540204
-    1.000000
-
- THE NEW MESH (OF   16 SUBINTERVALS), 
-   -1.000000   -0.763977   -0.527955   -0.364963   -0.201971   -0.132220   -0.062469   -0.008836
-    0.044798    0.102883    0.160968    0.212795    0.264621    0.402412    0.540204    0.770102
-    1.000000
-(%o39)                          1
+(%i47) /* Z is list of solutions z1 = u(x).  Restore order. */
+ Z:reverse(Z)$
 @end group
 @group
-(%i40) /* Suppress output */
- ipar[7]:1$
-
-@end group
-(%i41) e : 1e-4$
-@group
-(%i42) ipar[3] : ispace[1];
-(%o42)                         16
-@end group
-@group
-(%i43) ([iflag, fspace, ispace] :
- colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
- fixpnt, ispace, fspace,
- 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-
-(%o43)                          1
-@end group
-(%i44) e : 1e-5$
-@group
-(%i45) ipar[3] : ispace[1];
-(%o45)                         32
-@end group
-@group
-(%i46) ([iflag, fspace, ispace] :
- colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
- fixpnt, ispace, fspace,
- 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-
-(%o46)                          1
-@end group
-@group
-(%i47) /* Full output */
- ipar[7]:-1$
-
-@end group
-(%i48) e : 1e-6$
-@group
-(%i49) ipar[3] : ispace[1];
-(%o49)                         64
-@end group
-@group
-(%i50) ([iflag, fspace, ispace] :
- colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
- fixpnt, ispace, fspace,
- 0, fsub, dfsub, gsub, dgsub, dummy),iflag);
-
-
- VERSION *COLNEW* OF COLSYS .    
-
-
-
-
-
- THE NUMBER OF (LINEAR) DIFF EQNS IS   1
- THEIR ORDERS ARE  2
- SIDE CONDITION POINTS ZETA -1.000000  1.000000 NUMBER OF COLLOC PTS PER INTERVAL IS  5
- COMPONENTS OF Z REQUIRING TOLERANCES -        1         2  CORRESPONDING ERROR TOLERANCES -        0.10D-02  0.10D-02 INITIAL MESH(ES) AND Z,DMZ PROVIDED BY USER
- THE MAXIMUM NUMBER OF SUBINTERVALS IS MIN ( 108 (ALLOWED FROM FSPACE),  99 (ALLOWED FROM ISPACE) )
-
- THE FORMER MESH (OF   64 SUBINTERVALS),
-   -1.000000   -0.966259   -0.932518   -0.898777   -0.865036   -0.827183   -0.789330   -0.751478
-   -0.713625   -0.673457   -0.633290   -0.593122   -0.552954   -0.512066   -0.471178   -0.430290
-   -0.389402   -0.349306   -0.309209   -0.269113   -0.229016   -0.194752   -0.160487   -0.126223
-   -0.091958   -0.072970   -0.053982   -0.034993   -0.016005   -0.013889   -0.011773   -0.009657
-   -0.007541   -0.006015   -0.004488   -0.002962   -0.001436    0.001281    0.003998    0.006715
-    0.009431    0.011237    0.013043    0.014849    0.016654    0.018495    0.020335    0.022175
-    0.024015    0.027140    0.030264    0.033388    0.036513    0.044167    0.051821    0.059475
-    0.067129    0.101024    0.134918    0.168813    0.202707    0.402030    0.601354    0.800677
-    1.000000
-
- THE NEW MESH (OF   32 SUBINTERVALS), 
-   -1.000000   -0.932518   -0.865036   -0.789330   -0.713625   -0.633290   -0.552954   -0.471178
-   -0.389402   -0.309209   -0.229016   -0.160487   -0.091958   -0.053982   -0.016005   -0.011773
-   -0.007541   -0.004488   -0.001436    0.003998    0.009431    0.013043    0.016654    0.020335
-    0.024015    0.030264    0.036513    0.051821    0.067129    0.134918    0.202707    0.601354
-    1.000000
- MESH VALUES FOR Z( 1),
-  -0.2000000D+01 -0.1977612D+01 -0.1911450D+01 -0.1788864D+01 -0.1621865D+01 -0.1406611D+01 -0.1165595D+01 -0.9095779D+00
- -0.6594962D+00 -0.4358638D+00 -0.2478486D+00 -0.1244319D+00 -0.4144102D-01 -0.1434572D-01 -0.1263919D-02 -0.6836459D-03
- -0.2825259D-03 -0.8873240D-05  0.1537803D+00  0.2010604D+01  0.1998821D+01  0.1999281D+01  0.1998601D+01  0.1997971D+01
-  0.1997151D+01  0.1995486D+01  0.1993427D+01  0.1986778D+01  0.1977844D+01  0.1911509D+01  0.1803989D+01  0.6869416D+00
-  0.0000000D+00
- MESH VALUES FOR Z( 2),
-  -0.1028379D-02  0.6620719D+00  0.1291456D+01  0.1931753D+01  0.2459225D+01  0.2871197D+01  0.3097185D+01  0.3129760D+01
-  0.2952823D+01  0.2594996D+01  0.2069236D+01  0.1518735D+01  0.8939655D+00  0.5313087D+00  0.1567545D+00  0.1193868D+00
-  0.5983039D-01  0.4692038D+00  0.2897650D+03 -0.4516956D+02  0.6962431D+01 -0.1705624D+01  0.3465356D+00 -0.4112061D+00
- -0.1360622D+00 -0.3687461D+00 -0.3067825D+00 -0.5574205D+00 -0.6125247D+00 -0.1336764D+01 -0.1823682D+01 -0.3028168D+01
-  0.4444428D-01
-
- MESH SELECTION INFO,
- DEGREE OF EQUIDISTRIBUTION =  0.28608 PREDICTION FOR REQUIRED N =      58
-
- THE NEW MESH (OF   29 SUBINTERVALS), 
-   -1.000000   -0.848490   -0.660059   -0.445848   -0.231214   -0.069133   -0.011281   -0.005700
-   -0.003031   -0.000270    0.004208    0.007497    0.010695    0.013644    0.016204    0.018967
-    0.022054    0.025719    0.029825    0.036412    0.045015    0.055707    0.076504    0.101207
-    0.125909    0.191059    0.311963    0.437807    0.563651    1.000000
- MESH VALUES FOR Z( 1),
-  -0.2000000D+01 -0.1888843D+01 -0.1481917D+01 -0.8306948D+00 -0.2524161D+00 -0.2349296D-01 -0.6271907D-03 -0.1662173D-03
-  0.2354980D-02  0.7865582D+00  0.1999933D+01  0.1999722D+01  0.1999436D+01  0.1999082D+01  0.1998705D+01  0.1998225D+01
-  0.1997601D+01  0.1996738D+01  0.1995614D+01  0.1993464D+01  0.1990017D+01  0.1984725D+01  0.1971256D+01  0.1949878D+01
-  0.1922782D+01  0.1825206D+01  0.1556972D+01  0.1194144D+01  0.8013631D+00  0.0000000D+00
- MESH VALUES FOR Z( 2),
-   0.8402272D-02  0.1431110D+01  0.2761126D+01  0.3087827D+01  0.2094965D+01  0.6685184D+00  0.1201142D+00  0.2179470D-01
-  0.7979797D+01  0.7687676D+03 -0.1305534D+00 -0.7057592D-01 -0.1059555D+00 -0.1345374D+00 -0.1598739D+00 -0.1870855D+00
- -0.2174926D+00 -0.2535609D+00 -0.2939318D+00 -0.3585905D+00 -0.4427978D+00 -0.5470069D+00 -0.7478192D+00 -0.9821264D+00
- -0.1210523D+01 -0.1774470D+01 -0.2609191D+01 -0.3081818D+01 -0.3078991D+01 -0.7112482D-04
-
- THE NEW MESH (OF   58 SUBINTERVALS), 
-   -1.000000   -0.924245   -0.848490   -0.754275   -0.660059   -0.552954   -0.445848   -0.338531
-   -0.231214   -0.150173   -0.069133   -0.040207   -0.011281   -0.008490   -0.005700   -0.004365
-   -0.003031   -0.001651   -0.000270    0.001969    0.004208    0.005853    0.007497    0.009096
-    0.010695    0.012169    0.013644    0.014924    0.016204    0.017586    0.018967    0.020511
-    0.022054    0.023887    0.025719    0.027772    0.029825    0.033119    0.036412    0.040713
-    0.045015    0.050361    0.055707    0.066106    0.076504    0.088856    0.101207    0.113558
-    0.125909    0.158484    0.191059    0.251511    0.311963    0.374885    0.437807    0.500729
-    0.563651    0.781826    1.000000
- MESH VALUES FOR Z( 1),
-  -0.2000000D+01 -0.1971813D+01 -0.1888843D+01 -0.1716539D+01 -0.1481917D+01 -0.1165592D+01 -0.8306948D+00 -0.5142065D+00
- -0.2524161D+00 -0.1092411D+00 -0.2349283D-01 -0.7967029D-02 -0.6279265D-03 -0.3557000D-03 -0.1602968D-03 -0.8137693D-04
-  0.2392130D-02  0.9881690D-01  0.7871035D+00  0.1951060D+01  0.1999883D+01  0.1999831D+01  0.1999723D+01  0.1999592D+01
-  0.1999436D+01  0.1999269D+01  0.1999082D+01  0.1998901D+01  0.1998705D+01  0.1998474D+01  0.1998225D+01  0.1997925D+01
-  0.1997601D+01  0.1997186D+01  0.1996738D+01  0.1996196D+01  0.1995614D+01  0.1994592D+01  0.1993464D+01  0.1991831D+01
-  0.1990017D+01  0.1987510D+01  0.1984725D+01  0.1978512D+01  0.1971256D+01  0.1961291D+01  0.1949878D+01  0.1937036D+01
-  0.1922782D+01  0.1878591D+01  0.1825206D+01  0.1703742D+01  0.1556972D+01  0.1383017D+01  0.1194144D+01  0.9977088D+00
-  0.8013631D+00  0.2258434D+00  0.0000000D+00
- MESH VALUES FOR Z( 2),
-   0.2289632D-06  0.7406337D+00  0.1439516D+01  0.2191409D+01  0.2752716D+01  0.3098221D+01  0.3096240D+01  0.2745983D+01
-  0.2086544D+01  0.1427779D+01  0.6769661D+00  0.3957729D+00  0.1113146D+00  0.8378294D-01  0.5630101D-01  0.1009983D+00
-  0.8102681D+01  0.2043604D+03  0.7693146D+03  0.1147436D+03  0.8783034D-01 -0.5786973D-01 -0.7398530D-01 -0.8976101D-01
- -0.1055339D+00 -0.1200762D+00 -0.1346160D+00 -0.1472380D+00 -0.1598575D+00 -0.1734755D+00 -0.1870902D+00 -0.2022929D+00
- -0.2174907D+00 -0.2355302D+00 -0.2535618D+00 -0.2737522D+00 -0.2939312D+00 -0.3262786D+00 -0.3585909D+00 -0.4007308D+00
- -0.4427975D+00 -0.4949722D+00 -0.5470072D+00 -0.6477587D+00 -0.7478189D+00 -0.8656243D+00 -0.9821267D+00 -0.1097150D+01
- -0.1210522D+01 -0.1500346D+01 -0.1774470D+01 -0.2231961D+01 -0.2609191D+01 -0.2902019D+01 -0.3081818D+01 -0.3141584D+01
- -0.3078991D+01 -0.1988611D+01  0.9290877D-06
-
- THE ESTIMATED ERRORS ARE,
- U( 1) -  0.3877D-04  0.1743D+00
-
- MESH SELECTION INFO,
- DEGREE OF EQUIDISTRIBUTION =  0.15975 PREDICTION FOR REQUIRED N =      15
-
- THE NEW MESH (OF   29 SUBINTERVALS), 
-   -1.000000   -0.818992   -0.571578   -0.266770   -0.055314   -0.008359   -0.005444   -0.004552
-   -0.003988   -0.003510   -0.003032   -0.002539   -0.002047   -0.001515   -0.000823   -0.000100
-    0.000746    0.001592    0.002366    0.003081    0.003797    0.004505    0.005203    0.005910
-    0.006729    0.007639    0.011119    0.270945    0.636622    1.000000
- MESH VALUES FOR Z( 1),
-  -0.2000000D+01 -0.1842627D+01 -0.1222978D+01 -0.3311116D+00 -0.1506089D-01 -0.3448122D-03 -0.1462116D-03 -0.9696045D-04
- -0.1174975D-04  0.3875386D-03  0.2383643D-02  0.1107577D-01  0.4068536D-01  0.1298652D+00  0.4107293D+00  0.9206674D+00
-  0.1544543D+01  0.1888670D+01  0.1981984D+01  0.1997892D+01  0.1999782D+01  0.1999893D+01  0.1999866D+01  0.1999828D+01
-  0.1999777D+01  0.1999712D+01  0.1999390D+01  0.1659083D+01  0.5838472D+00  0.0000000D+00
- MESH VALUES FOR Z( 2),
-   0.2226834D-04  0.1691717D+01  0.3062524D+01  0.2335331D+01  0.5431995D+00  0.8247905D-01  0.5402174D-01  0.7015337D-01
-  0.3205080D+00  0.1720676D+01  0.8076993D+01  0.3177696D+02  0.9830390D+02  0.2534161D+03  0.5688625D+03  0.7939383D+03
-  0.6039129D+03  0.2245694D+03  0.4856234D+02  0.6892718D+01  0.5538449D+00 -0.1318486D-01 -0.5029781D-01 -0.5830636D-01
- -0.6640618D-01 -0.7538716D-01 -0.1097131D+00 -0.2362702D+01 -0.2856670D+01  0.1625124D-04
-
- THE NEW MESH (OF   58 SUBINTERVALS), 
-   -1.000000   -0.909496   -0.818992   -0.695285   -0.571578   -0.419174   -0.266770   -0.161042
-   -0.055314   -0.031837   -0.008359   -0.006902   -0.005444   -0.004998   -0.004552   -0.004270
-   -0.003988   -0.003749   -0.003510   -0.003271   -0.003032   -0.002786   -0.002539   -0.002293
-   -0.002047   -0.001781   -0.001515   -0.001169   -0.000823   -0.000461   -0.000100    0.000323
-    0.000746    0.001169    0.001592    0.001979    0.002366    0.002724    0.003081    0.003439
-    0.003797    0.004151    0.004505    0.004854    0.005203    0.005557    0.005910    0.006319
-    0.006729    0.007184    0.007639    0.009379    0.011119    0.141032    0.270945    0.453783
-    0.636622    0.818311    1.000000
- MESH VALUES FOR Z( 1),
-  -0.2000000D+01 -0.1959851D+01 -0.1842627D+01 -0.1575738D+01 -0.1222978D+01 -0.7487977D+00 -0.3311116D+00 -0.1252755D+00
- -0.1506089D-01 -0.4997644D-02 -0.3448106D-03 -0.2350566D-03 -0.1462116D-03 -0.1227050D-03 -0.9696050D-04 -0.7042852D-04
- -0.1174980D-04  0.1083494D-03  0.3875385D-03  0.1019043D-02  0.2383643D-02  0.5303402D-02  0.1107577D-01  0.2182760D-01
-  0.4068536D-01  0.7497027D-01  0.1298652D+00  0.2425593D+00  0.4107293D+00  0.6447265D+00  0.9206674D+00  0.1253592D+01
-  0.1544543D+01  0.1757721D+01  0.1888670D+01  0.1952173D+01  0.1981984D+01  0.1993505D+01  0.1997892D+01  0.1999358D+01
-  0.1999782D+01  0.1999882D+01  0.1999893D+01  0.1999883D+01  0.1999866D+01  0.1999848D+01  0.1999828D+01  0.1999803D+01
-  0.1999777D+01  0.1999745D+01  0.1999712D+01  0.1999566D+01  0.1999390D+01  0.1903442D+01  0.1659083D+01  0.1144684D+01
-  0.5838472D+00  0.1585272D+00  0.0000000D+00
- MESH VALUES FOR Z( 2),
-   0.1844136D-07  0.8812508D+00  0.1691739D+01  0.2568675D+01  0.3062499D+01  0.3040856D+01  0.2335343D+01  0.1522481D+01
-  0.5431863D+00  0.3136926D+00  0.8249312D-01  0.6811175D-01  0.5402225D-01  0.5232806D-01  0.7015340D-01  0.1297808D+00
-  0.3205080D+00  0.7454305D+00  0.1720676D+01  0.3822347D+01  0.8076993D+01  0.1650474D+02  0.3177696D+02  0.5760750D+02
-  0.9830391D+02  0.1635128D+03  0.2534161D+03  0.4030993D+03  0.5688625D+03  0.7174219D+03  0.7939383D+03  0.7572340D+03
-  0.6039129D+03  0.4027327D+03  0.2245694D+03  0.1125522D+03  0.4856234D+02  0.1952506D+02  0.6892717D+01  0.2123037D+01
-  0.5538451D+00  0.1038240D+00 -0.1318451D-01 -0.4180300D-01 -0.5029773D-01 -0.5468208D-01 -0.5830635D-01 -0.6236505D-01
- -0.6640618D-01 -0.7089680D-01 -0.7538716D-01 -0.9255149D-01 -0.1097131D+00 -0.1346831D+01 -0.2362699D+01 -0.3108537D+01
- -0.2856634D+01 -0.1697401D+01  0.2022193D-06
-
- THE ESTIMATED ERRORS ARE,
- U( 1) -  0.1988D-08  0.5268D-04
-(%o50)                          1
+(%i48) /* Plot z1=u(x) for each value of e
+ plot2d([
+  [discrete,X,Z[1]], [discrete,X,Z[2]], [discrete,X,Z[3]],
+  [discrete,X,Z[4]], [discrete,X,Z[5]]],
+  [legend,"e=1e-2","e=1e-3","e=1e-4","e=1e-5","e=1e-6"],
+  [xlabel,"x"],[ylabel,"u(x)"],
+  [png_file,"./colnew-ex5.png"]); */
+ done$
 @end group
 @end example
+
+@ifnotinfo
+The figure below shows the solution for
+@math{ε=[10^{-2},10^{-3},10^{-4},10^{-5},10^{-6}]}.
+
+@image{figures/colnew-ex5,8cm}
+@end ifnotinfo
+
+
+
 
 @node References for colnew, , Examples for colnew, colnew-pkg
 @section References for colnew
