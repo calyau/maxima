@@ -712,7 +712,7 @@ include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
 genericdirDATA = $(figurefiles)
 
-htmlname = maxima
+htmlname = *
 htmlinstdir = $(dochtmldir)
 include $(top_srcdir)/common-html.mk
 

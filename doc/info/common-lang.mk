@@ -1,18 +1,18 @@
 info_TEXINFOS = maxima.texi
 
-all-local: maxima-index.lisp maxima-index-html.lisp maxima_toc.html
+all-local: maxima-index.lisp maxima-index-html.lisp index.html
 
 maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 # Really depends on all the individual html files, but let's assume
-# that if maxima_toc.html is done, we have all the remaining html
+# that if index.html is done, we have all the remaining html
 # files.
 #
 # First we find all the files that we don't want to have to process.
 # This includes the indices, maxima_singlepage.html and any other html
 # file that doesn't start with "maxima".
-maxima-index-html.lisp : maxima_toc.html
+maxima-index-html.lisp : index.html
 	../../../maxima-local --batch-lisp=../build-html-index.lisp
 
 maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
