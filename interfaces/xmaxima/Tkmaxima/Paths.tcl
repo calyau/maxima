@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-04-06 13:58:37 villate"            #
+#     Time-stamp: "2023-07-03 21:06:45 toy"            #
 ############################################################
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
@@ -247,15 +247,15 @@ proc setMaxDir {} {
     if {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) info]]]} {
 	# 5.6 and down
 	set maxima_priv(pReferenceToc) \
-	    [file join $dir maxima_toc.html]
+	    [file join $dir index.html]
     } elseif {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) doc]]]} {
 	# 5.9 and up
 	# first choose the HTML documentation
 	if { $maxima_priv(maxima_lang_subdir) != "" && \
-	     [file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
-	    set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+	     [file exists [file join $dir html $maxima_priv(maxima_lang_subdir) index.html] ] } {
+	    set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) index.html]
 	} else {
-	    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+	    set maxima_priv(pReferenceToc) [file join $dir html index.html]
 	}
 	# if the platform is Windows and Maxima is running localized, try the following help files
 	# if they exist:
@@ -268,13 +268,13 @@ proc setMaxDir {} {
 		if {[file exists [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm] ] } {
 		    set maxima_priv(pReferenceToc) [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm]
 		} else {
-		    if {[file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
-			set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+		    if {[file exists [file join $dir html $maxima_priv(maxima_lang_subdir) index.html] ] } {
+			set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) index.html]
 		    } else {
 			if {[file exists [file join $dir chm maxima.chm] ] } {
 			    set maxima_priv(pReferenceToc) [file join $dir chm maxima.chm]
 			} else {
-			    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+			    set maxima_priv(pReferenceToc) [file join $dir html index.html]
 			}
 		    }
 		}
@@ -282,16 +282,16 @@ proc setMaxDir {} {
 		if {[file exists [file join $dir chm maxima.chm] ] } {
 		    set maxima_priv(pReferenceToc) [file join $dir chm maxima.chm]
 		} else {
-		    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+		    set maxima_priv(pReferenceToc) [file join $dir html index.html]
 		}
 	    }
 	} else {
 	    # Platform != windows, just choose the HTML documentation
 	    if { $maxima_priv(maxima_lang_subdir) != "" && \
-		[file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
-		set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+		[file exists [file join $dir html $maxima_priv(maxima_lang_subdir) index.html] ] } {
+		set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) index.html]
 	    } else {
-		set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+		set maxima_priv(pReferenceToc) [file join $dir html index.html]
 	    }
 	}
     } else {
