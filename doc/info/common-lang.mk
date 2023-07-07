@@ -15,7 +15,7 @@ maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 maxima-index-html.lisp : index.html
 	../../../maxima-local --batch-lisp=../build-html-index.lisp
 
-maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
+maxima_singlepage.html index.html: maxima.texi $(maxima_TEXINFOS)
 	../build_html.sh -l $(lang)
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)
@@ -41,7 +41,7 @@ clean-html:
 	rm -f maxima*.html
 	rm -f maxima_singlepage.html
 
-EXTRA_DIST = maxima-index.lisp maxima-index-html.lisp $(genericdirDATA) maxima_toc.html
+EXTRA_DIST = maxima-index.lisp maxima-index-html.lisp $(genericdirDATA) index.html
 
 
 install-info-am: $(INFO_DEPS) maxima-index.lisp maxima-index-html.lisp
