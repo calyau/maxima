@@ -379,31 +379,6 @@
 	($euler u)
 	(eqtest (list '($euler) u) x))))
 
-#+nil
-(defmfun $bern (s)
-  (setq s
-	(let ((%n 0) $float)
-	  (cond ((or (not (fixnump s)) (< s 0)) (list '($bern) s))
-		((= (setq %n s) 0) 1)
-		((= %n 1) '((rat) -1 2))
-		((= %n 2) '((rat) 1 6))
-		($zerobern
-		 (cond ((oddp %n) 0)
-		       ((null (> (setq %n (1- (ash %n -1))) (get 'bern 'lim)))
-			(list '(rat) (aref *bn* %n) (aref *bd* %n)))
-		       ((eq $zerobern '$/#&) (bern  (* 2 (1+ %n))))
-		       (t
-			(setq *bn* (adjust-array *bn* (setq %n (1+ %n))))
-			(setq *bd* (adjust-array *bd* %n))
-			(bern  (* 2 %n)))))
-		((null (> %n (get 'bern 'lim)))
-		 (list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
-		(t
-		 (setq *bn* (adjust-array *bn* (1+ %n)))
-		 (setq *bd* (adjust-array *bd* (1+ %n)))
-		 (bern (* 2 (1- %n)))))))
-  (simplify s))
-
 (defun bern (%a*)
   (prog (nom %k bb a b $zerobern l combin-a)
      (setq %k 0
@@ -428,15 +403,7 @@
      (setq a (*red a b) b (denom1 a) a (num1 a))
      (go a)))
 
-#+nil
-(defun simpbern (x vestigial z)
-  (declare (ignore vestigial))
-  (oneargcheck x)
-  (let ((u (simpcheck (cadr x) z)))
-    (if (and (fixnump u) (not (< u 0)))
-	($bern u)
-	(eqtest (list '($bern) u) x))))
-
+;; bern - the n'th Bernoulli number for integer u.
 (def-simplifier bern (u)
   (flet
       (($bern (s)

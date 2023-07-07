@@ -82,8 +82,6 @@
 	($beta simpbeta) (%sum simpsum) (%binomial simpbinocoef)
 	(%plog simpplog) (%product simpprod) (%genfact simpgfact)
 	($atan2 simpatan2) ($matrix simpmatrix) (%matrix simpmatrix)
-	#+nil
-	($bern simpbern)
 	($euler simpeuler)))
 
 (defprop $li lisimp specsimp)
