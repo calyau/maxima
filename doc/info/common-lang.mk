@@ -38,8 +38,7 @@ clean-info:
 	rm -f maxima-index-html.lisp
 
 clean-html:
-	rm -f maxima*.html
-	rm -f maxima_singlepage.html
+	rm -f *.html
 
 EXTRA_DIST = maxima-index.lisp maxima-index-html.lisp $(genericdirDATA) index.html
 
