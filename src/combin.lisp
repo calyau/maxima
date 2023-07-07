@@ -427,6 +427,7 @@
      (setq a (*red a b) b (denom1 a) a (num1 a))
      (go a)))
 
+#+nil
 (defun simpbern (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
@@ -434,6 +435,11 @@
     (if (and (fixnump u) (not (< u 0)))
 	($bern u)
 	(eqtest (list '($bern) u) x))))
+
+(def-simplifier bern (u)
+  (if (and (fixnump u) (not (< u 0)))
+      ($bern u)
+      (give-up)))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Bernoulli polynomials
