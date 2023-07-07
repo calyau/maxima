@@ -379,6 +379,7 @@
 	($euler u)
 	(eqtest (list '($euler) u) x))))
 
+#+nil
 (defmfun $bern (s)
   (setq s
 	(let ((%n 0) $float)
@@ -437,9 +438,33 @@
 	(eqtest (list '($bern) u) x))))
 
 (def-simplifier bern (u)
-  (if (and (fixnump u) (not (< u 0)))
-      ($bern u)
-      (give-up)))
+  (flet
+      (($bern (s)
+	 (setq s
+	       (let ((%n 0) $float)
+		 (cond ((or (not (fixnump s)) (< s 0)) (list '($bern) s))
+		       ((= (setq %n s) 0) 1)
+		       ((= %n 1) '((rat) -1 2))
+		       ((= %n 2) '((rat) 1 6))
+		       ($zerobern
+			(cond ((oddp %n) 0)
+			      ((null (> (setq %n (1- (ash %n -1))) (get 'bern 'lim)))
+			       (list '(rat) (aref *bn* %n) (aref *bd* %n)))
+			      ((eq $zerobern '$/#&) (bern  (* 2 (1+ %n))))
+			      (t
+			       (setq *bn* (adjust-array *bn* (setq %n (1+ %n))))
+			       (setq *bd* (adjust-array *bd* %n))
+			       (bern  (* 2 %n)))))
+		       ((null (> %n (get 'bern 'lim)))
+			(list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
+		       (t
+			(setq *bn* (adjust-array *bn* (1+ %n)))
+			(setq *bd* (adjust-array *bd* (1+ %n)))
+			(bern (* 2 (1- %n)))))))
+	 (simplify s)))
+    (if (and (fixnump u) (not (< u 0)))
+	($bern u)
+	(give-up))))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Bernoulli polynomials
