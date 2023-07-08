@@ -24,7 +24,7 @@
 ;;; Implementation of the plog function
 
 (def-simplifier plog (x)
-  (prog (varlist dd y)
+  (prog (varlist dd y z)
      (cond ((equal 0 x)
 	    (merror (intl:gettext "plog: plog(0) is undefined.")))
 	   ((among var x)	;This is used in DEFINT. 1/19/81. -JIM
@@ -124,43 +124,39 @@
 
 ;;; Implementation of the Binomial coefficient
 
-;; Verb function for the Binomial coefficient
-#+nil
-(defmfun $binomial (x y)
-  (simplify (list '(%binomial) x y)))
-
 ;; Binomial has Mirror symmetry
 (defprop %binomial t commutes-with-conjugate)
 
 (def-simplifier binomial (u v)
-  (cond ((integerp v)
-	 (cond ((minusp v)
-		(if (and (integerp u) (minusp u) (< v u))
-		    (bincomp u (- u v))
-		    0))
-	       ((or (zerop v) (equal u v)) 1)
-	       ((and (integerp u) (not (minusp u)))
-		(bincomp u (min v (- u v))))
-	       (t (bincomp u v))))
-        ((integerp (setq y (sub u v)))
-         (cond ((zerop1 y)
-                ;; u and v are equal, simplify not if argument can be negative
-                (if (member ($csign u) '($pnz $pn $neg $nz))
-                    (give-up)
-                    (bincomp u y)))
-               (t (bincomp u y))))
-        ((complex-float-numerical-eval-p u v)
-         ;; Numercial evaluation for real and complex floating point numbers.
-         (let (($numer t) ($float t))
+  (let (y)
+    (cond ((integerp v)
+	   (cond ((minusp v)
+		  (if (and (integerp u) (minusp u) (< v u))
+		      (bincomp u (- u v))
+		      0))
+		 ((or (zerop v) (equal u v)) 1)
+		 ((and (integerp u) (not (minusp u)))
+		  (bincomp u (min v (- u v))))
+		 (t (bincomp u v))))
+          ((integerp (setq y (sub u v)))
+           (cond ((zerop1 y)
+                  ;; u and v are equal, simplify not if argument can be negative
+                  (if (member ($csign u) '($pnz $pn $neg $nz))
+                      (give-up)
+                      (bincomp u y)))
+		 (t (bincomp u y))))
+          ((complex-float-numerical-eval-p u v)
+           ;; Numercial evaluation for real and complex floating point numbers.
+           (let (($numer t) ($float t))
+             ($rectform
+              ($float 
+               ($makegamma (list '(%binomial) ($float u) ($float v)))))))
+          ((complex-bigfloat-numerical-eval-p u v)
+           ;; Numerical evaluation for real and complex bigfloat numbers.
            ($rectform
-            ($float 
-             ($makegamma (list '(%binomial) ($float u) ($float v)))))))
-        ((complex-bigfloat-numerical-eval-p u v)
-         ;; Numerical evaluation for real and complex bigfloat numbers.
-         ($rectform
-          ($bfloat
-           ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
-        (t (give-up))))
+            ($bfloat
+             ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
+          (t (give-up)))))
 
 (defun bincomp (u v) 
   (cond ((minusp v) 0)
