@@ -481,7 +481,7 @@
 	 (do ((l (cdr e) (cdr l)) (c 0 (+ c ($nterms (car l)))))
 	     ((null l) c)))
 	((and (eq (caar e) 'mexpt) (integerp (caddr e)) (plusp (caddr e)))
-	 ($binomial (+ (caddr e) ($nterms (cadr e)) -1) (caddr e)))
+	 (ftake '%binomial (+ (caddr e) ($nterms (cadr e)) -1) (caddr e)))
 	((specrepp e) ($nterms (specdisrep e)))
 	(t 1)))
 
