@@ -335,26 +335,6 @@
 (putprop '*eu* 11 'lim)
 (putprop 'bern 16 'lim)
 
-#+nil
-(defmfun $euler (s)
-  (setq s
-	(let ((%n 0) $float)
-	  (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
-		((zerop (setq %n s)) 1)
-		($zerobern
-		 (cond ((oddp %n) 0)
-		       ((null (> (ash %n -1) (get '*eu* 'lim)))
-			(aref *eu* (1- (ash %n -1))))
-		       ((eq $zerobern '%$/#&)
-			(euler %n))
-		       ((setq *eu* (adjust-array *eu* (1+ (ash %n -1))))
-			(euler %n))))
-		((<= %n (get '*eu* 'lim))
-		 (aref *eu* (1- %n)))
-		((setq *eu* (adjust-array *eu* (1+ %n)))
-		 (euler (* 2 %n))))))
-  (simplify s))
-
 (defun nxtbincoef (m nom combin-a)
   (truncate (* nom (- combin-a m)) m))
 
@@ -371,15 +351,6 @@
 	    (go a)))
      (incf e (* nom ($euler %k)))
      (go a)))
-
-#+nil
-(defun simpeuler (x vestigial z)
-  (declare (ignore vestigial))
-  (oneargcheck x)
-  (let ((u (simpcheck (cadr x) z)))
-    (if (and (fixnump u) (>= u 0))
-	($euler u)
-	(eqtest (list '($euler) u) x))))
 
 (def-simplifier euler (u)
   (flet
