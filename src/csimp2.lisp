@@ -126,42 +126,6 @@
 ;; Binomial has Mirror symmetry
 (defprop %binomial t commutes-with-conjugate)
 
-#+nil
-(defun simpbinocoef (x vestigial z)
-  (declare (ignore vestigial))
-  (twoargcheck x)
-  (let ((u (simpcheck (cadr x) z))
-	(v (simpcheck (caddr x) z))
-	(y))
-    (cond ((integerp v)
-	   (cond ((minusp v)
-		  (if (and (integerp u) (minusp u) (< v u))
-		      (bincomp u (- u v))
-		      0))
-		 ((or (zerop v) (equal u v)) 1)
-		 ((and (integerp u) (not (minusp u)))
-		  (bincomp u (min v (- u v))))
-		 (t (bincomp u v))))
-          ((integerp (setq y (sub u v)))
-           (cond ((zerop1 y)
-                  ;; u and v are equal, simplify not if argument can be negative
-                  (if (member ($csign u) '($pnz $pn $neg $nz))
-                      (eqtest (list '(%binomial) u v) x)
-                      (bincomp u y)))
-                 (t (bincomp u y))))
-          ((complex-float-numerical-eval-p u v)
-           ;; Numercial evaluation for real and complex floating point numbers.
-           (let (($numer t) ($float t))
-             ($rectform
-               ($float 
-                 ($makegamma (list '(%binomial) ($float u) ($float v)))))))
-          ((complex-bigfloat-numerical-eval-p u v)
-           ;; Numerical evaluation for real and complex bigfloat numbers.
-           ($rectform
-             ($bfloat
-               ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
-          (t (eqtest (list '(%binomial) u v) x)))))
-
 (def-simplifier binomial (u v)
   (cond ((integerp v)
 	 (cond ((minusp v)
