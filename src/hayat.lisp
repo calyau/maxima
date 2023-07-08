@@ -1776,7 +1776,7 @@
 		   (t (setq fact (e// fact (e* e (e1- e)))
 			    sign (e* chng sign))
 		      (add-term lt-l e (e* (e* sign fact)
-					   (prep1 ($euler (rcdisrep e)))))
+					   (prep1 (ftake '%euler (rcdisrep e)))))
 		      (setq lt-l (n-term lt-l))))
 	     (go a)))
 

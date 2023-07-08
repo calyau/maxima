@@ -335,6 +335,7 @@
 (putprop '*eu* 11 'lim)
 (putprop 'bern 16 'lim)
 
+#+nil
 (defmfun $euler (s)
   (setq s
 	(let ((%n 0) $float)
@@ -371,6 +372,7 @@
      (incf e (* nom ($euler %k)))
      (go a)))
 
+#+nil
 (defun simpeuler (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
@@ -378,6 +380,30 @@
     (if (and (fixnump u) (>= u 0))
 	($euler u)
 	(eqtest (list '($euler) u) x))))
+
+(def-simplifier euler (u)
+  (flet
+      (($euler (s)
+	 (setq s
+	       (let ((%n 0) $float)
+		 (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
+		       ((zerop (setq %n s)) 1)
+		       ($zerobern
+			(cond ((oddp %n) 0)
+			      ((null (> (ash %n -1) (get '*eu* 'lim)))
+			       (aref *eu* (1- (ash %n -1))))
+			      ((eq $zerobern '%$/#&)
+			       (euler %n))
+			      ((setq *eu* (adjust-array *eu* (1+ (ash %n -1))))
+			       (euler %n))))
+		       ((<= %n (get '*eu* 'lim))
+			(aref *eu* (1- %n)))
+		       ((setq *eu* (adjust-array *eu* (1+ %n)))
+			(euler (* 2 %n))))))
+	 (simplify s)))
+  (if (and (fixnump u) (>= u 0))
+	($euler u)
+	(give-up))))
 
 (defun bern (%a*)
   (prog (nom %k bb a b $zerobern l combin-a)
@@ -495,7 +521,7 @@
                                (power y n))
                            nil)
                      (cons (mul (binocomp n k)
-                                ($euler k)
+                                (ftake '%euler k)
                                 (power 2 (mul -1 k))
                                 (if (and (zerop1 (setq y (sub x (div 1 2))))
                                          (= n k))

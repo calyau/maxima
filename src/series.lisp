@@ -989,7 +989,7 @@ integration / differentiation variable."))
 (defprop %sec
     ((%sum) ((mtimes) ((mexpt) -1 *index)
 	     ((mexpt) ((mfactorial) ((mtimes) 2 *index)) -1)
-	     (($euler) ((mtimes) 2 *index))
+	     ((%euler) ((mtimes) 2 *index))
 	     ((mexpt) sp2var ((mtimes) 2 *index)))
      *index 0 $inf)
   sp2)
@@ -1039,7 +1039,7 @@ integration / differentiation variable."))
 
 (defprop %sech 
     ((%sum)
-     ((mtimes) (($euler) ((mtimes) 2 *index))
+     ((mtimes) ((%euler) ((mtimes) 2 *index))
       ((mexpt) ((mfactorial) ((mtimes) 2 *index)) -1)
       ((mexpt) sp2var ((mtimes) 2 *index)))
      *index 0 $inf)
