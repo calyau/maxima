@@ -488,8 +488,9 @@
 ;;;; ATAN2
 
 ;; atan2 distributes over lists, matrices, and equations
-(defprop $atan2 (mlist $matrix mequal) distribute_over)
+(defprop %atan2 (mlist $matrix mequal) distribute_over)
 
+#+nil
 (defun simpatan2 (expr vestigial z)     ; atan2(y,x) ~ atan(y/x)
   (declare (ignore vestigial))
   (twoargcheck expr)
@@ -548,7 +549,7 @@
           ($logarc
            (logarc '%atan2 (list ($logarc y) ($logarc x))))
           ((and $trigsign (eq t (mminusp y)))
-           (neg (take '($atan2) (neg y) x)))
+           (neg (take '(%atan2) (neg y) x)))
           ;; atan2(y,x) = atan(y/x) + pi sign(y) (1-sign(x))/2
           ((eq signx '$pos)
            (take '(%atan) (div y x)))
@@ -561,6 +562,74 @@
            ;; assume(equal(x,0)) atan2(x,x) simplifies via the alike1 case above
            (merror (intl:gettext "atan2: atan2(0,0) is undefined.")))
           (t (eqtest (list '($atan2) y x) expr)))))
+
+(def-simplifier atan2 (y x)
+  (let (signy signx)
+    (cond ((and (zerop1 y) (zerop1 x))
+           (merror (intl:gettext "atan2: atan2(0,0) is undefined.")))
+          (;; float contagion
+           (and (or (numberp x) (ratnump x)) ; both numbers
+                (or (numberp y) (ratnump y)) ; ... but not bigfloats
+                (or $numer (floatp x) (floatp y))) ; at least one float
+           (atan ($float y) ($float x)))
+          (;; bfloat contagion
+           (and (mnump x)
+                (mnump y)
+                (or ($bfloatp x) ($bfloatp y)))	; at least one bfloat
+           (setq x ($bfloat x)
+                 y ($bfloat y))
+           (*fpatan y (list x)))
+          ;; Simplifify infinities
+          ((or (eq x '$inf)
+               (alike1 x '((mtimes) -1 $minf)))
+           ;; Simplify atan2(y,inf) -> 0
+           0)
+          ((or (eq x '$minf)
+               (alike1 x '((mtimes) -1 $inf)))
+           ;; Simplify atan2(y,minf) -> %pi for realpart(y)>=0 or 
+           ;; -%pi for realpart(y)<0. When sign of y unknwon, return noun form.
+           (cond ((member (setq signy ($sign ($realpart x))) '($pos $pz $zero)) 
+                  '$%pi)
+                 ((eq signy '$neg) (mul -1 '$%pi))
+                 (t (give-up))))
+          ((or (eq y '$inf)
+               (alike1 y '((mtimes) -1 $minf)))
+           ;; Simplify atan2(inf,x) -> %pi/2
+           (div '$%pi 2))
+          ((or (eq y '$minf)
+               (alike1 y '((mtimes -1 $inf))))
+           ;; Simplify atan2(minf,x) -> -%pi/2
+           (div '$%pi -2))
+          ((and (free x '$%i) (setq signx ($sign x))
+                (free y '$%i) (setq signy ($sign y))
+                (cond ((zerop1 y)
+                       (cond ((eq signx '$neg) '$%pi)
+                             ((member signx '($pos $pz)) 0)))
+                      ((zerop1 x)
+                       (cond ((eq signy '$neg) (div '$%pi -2))
+                             ((member signy '($pos $pz)) (div '$%pi 2))))
+                      ((alike1 y x)
+                       (cond ((eq signx '$neg) (mul -3 (div '$%pi 4)))
+                             ((member signx '($pos $pz)) (div '$%pi 4))))
+                      ((alike1 y (mul -1 x))
+                       (cond ((eq signx '$neg) (mul 3 (div '$%pi 4)))
+                             ((member signx '($pos $pz)) (div '$%pi -4)))))))
+          ($logarc
+           (logarc '%atan2 (list ($logarc y) ($logarc x))))
+          ((and $trigsign (eq t (mminusp y)))
+           (neg (take '(%atan2) (neg y) x)))
+          ;; atan2(y,x) = atan(y/x) + pi sign(y) (1-sign(x))/2
+          ((eq signx '$pos)
+           (take '(%atan) (div y x)))
+          ((and (eq signx '$neg)
+                (member (setq signy ($csign y)) '($pos $neg) :test #'eq))
+           (add (take '(%atan) (div y x))
+                (porm (eq signy '$pos) '$%pi)))
+          ((and (eq signx '$zero) (eq signy '$zero))
+           ;; Unfortunately, we'll rarely get here.  For example,
+           ;; assume(equal(x,0)) atan2(x,x) simplifies via the alike1 case above
+           (merror (intl:gettext "atan2: atan2(0,0) is undefined.")))
+          (t (give-up)))))
 
 ;;;; ARITHF
 

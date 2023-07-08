@@ -390,7 +390,7 @@
             (return (mul2* const (integrate1 (cdr exp)))))
            
            ;; Convert atan2(a,b) to atan(a/b) and try again.
-           ((setq w (isinop exp '$atan2))
+           ((setq w (isinop exp '%atan2))
             (setq exp
                   (maxima-substitute (take '(%atan) (div (cadr w) (caddr w)))
                                      w

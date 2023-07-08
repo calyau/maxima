@@ -3067,10 +3067,10 @@ ignoring dummy variables and array indices."
 		    ;; to check that xlim-z & ylim-z are real too.
 		    ((and (lenient-realp xlim-z) (lenient-realp ylim-z)
 				  (or (eq t (mnqp ylim-z 0)) (eq t (mgrp xlim-z 0))))
-			 	        (ftake '$atan2 ylim-z xlim-z))
+			 	        (ftake '%atan2 ylim-z xlim-z))
 			(t
 				(throw 'limit nil)))))
-(setf (get '$atan2 'simplim%function) 'simplim%atan2)
+(setf (get '%atan2 'simplim%function) 'simplim%atan2)
 
 (defun simplimsch (sch arg)
   (cond ((real-infinityp arg)
