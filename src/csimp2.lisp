@@ -23,6 +23,7 @@
 
 ;;; Implementation of the plog function
 
+#+nil
 (defun simpplog (x vestigial z)
   (declare (ignore vestigial))
   (prog (varlist dd check y)
@@ -67,6 +68,50 @@
 					  (list '(mtimes) y z)) 1 nil)
 			    (list '(mtimes) y '((rat) 1 2) '$%i '$%pi)))))))
      (return (eqtest (list '(%plog) x) check))))
+
+(def-simplifier plog (x)
+  (prog (varlist dd y)
+     (cond ((equal 0 x)
+	    (merror (intl:gettext "plog: plog(0) is undefined.")))
+	   ((among var x)	;This is used in DEFINT. 1/19/81. -JIM
+	    (return (give-up))))
+     (newvar x)
+     (cond
+       ((and (member '$%i varlist)
+	     (not (some #'(lambda (v)
+			    (and (atom v) (not (eq v '$%i))))
+			varlist)))
+	(setq dd (trisplit x))
+	(cond ((setq z (patan (car dd) (cdr dd)))
+	       (return (add2* (simpln (list '(%log) 
+					    (simpexpt (list '(mexpt)
+							    ($expand (list '(mplus)
+									   (list '(mexpt) (car dd) 2)
+									   (list '(mexpt) (cdr dd) 2)))
+							    '((rat) 1 2))
+						      1 nil))
+				      1 t)
+			      (list '(mtimes) z '$%i))))))
+       ((and (free x '$%i) (eq ($sign x) '$pnz))
+	(return (give-up)))
+       ((and (equal ($imagpart x) 0) (setq y ($asksign x)))
+	(cond ((eq y '$pos) (return (simpln (list '(%log) x) 1 t)))
+	      ((and plogabs (eq y '$neg))
+	       (return (simpln (list '(%log) (list '(mtimes) -1 x)) 1 nil)))
+	      ((eq y '$neg)
+	       (return (add2 %p%i
+			     (simpln (list '(%log) (list '(mtimes) -1 x)) 1 nil))))
+	      (t (merror (intl:gettext "plog: plog(0) is undefined.")))))
+       ((and (equal ($imagpart (setq z (div* x '$%i))) 0)
+	     (setq y ($asksign z)))
+	(cond
+	  ((equal y '$zero) (merror (intl:gettext "plog: plog(0) is undefined.")))
+	  (t (cond ((eq y '$pos) (setq y 1))
+		   ((eq y '$neg) (setq y -1)))
+	     (return (add2* (simpln (list '(%log)
+					  (list '(mtimes) y z)) 1 nil)
+			    (list '(mtimes) y '((rat) 1 2) '$%i '$%pi)))))))
+     (return (give-up))))
 
 (defun patan (r i)
   (let (($numer $numer))

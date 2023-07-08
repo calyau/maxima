@@ -80,7 +80,9 @@
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
 	(mqapply simpmqapply) (%gamma simpgamma)
 	($beta simpbeta) (%sum simpsum)
-	(%plog simpplog) (%product simpprod) (%genfact simpgfact)
+	#+nil
+	(%plog simpplog)
+	(%product simpprod) (%genfact simpgfact)
 	($atan2 simpatan2) ($matrix simpmatrix) (%matrix simpmatrix)))
 
 (defprop $li lisimp specsimp)
