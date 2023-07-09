@@ -82,7 +82,7 @@
 	(mqapply simpmqapply) (%gamma simpgamma)
 	($beta simpbeta) (%sum simpsum)
 	(%product simpprod) (%genfact simpgfact)
-	($atan2 simpatan2) ($matrix simpmatrix) (%matrix simpmatrix)))
+	($matrix simpmatrix) (%matrix simpmatrix)))
 
 (defprop $li lisimp specsimp)
 (defprop $psi psisimp specsimp)

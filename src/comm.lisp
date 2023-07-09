@@ -650,7 +650,7 @@
 		 ((mexpt) $%e ((mtimes) -1 ((mexpt) x 2)))))
 	  )))
 
-(defprop $atan2 ((x y) ((mtimes) y ((mexpt) ((mplus) ((mexpt) x 2) ((mexpt) y 2)) -1))
+(defprop %atan2 ((x y) ((mtimes) y ((mexpt) ((mplus) ((mexpt) x 2) ((mexpt) y 2)) -1))
 		 ((mtimes) -1 x ((mexpt) ((mplus) ((mexpt) x 2) ((mexpt) y 2)) -1)))
   grad)
 

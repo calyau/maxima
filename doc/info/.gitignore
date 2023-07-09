@@ -16,6 +16,7 @@ category-macros.texi
 
 math.m4
 cobyla.texi
+colnew.texi
 Constants.texi
 Elliptic.texi
 Integration.texi

@@ -349,7 +349,7 @@
      (setq nom (nxtbincoef (1+ (- %a* %k)) nom combin-a) %k (1- %k))
      (cond ((setq fl (null fl))
 	    (go a)))
-     (incf e (* nom ($euler %k)))
+     (incf e (* nom (ftake '%euler %k)))
      (go a)))
 
 (def-simplifier euler (u)

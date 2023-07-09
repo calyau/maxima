@@ -488,25 +488,21 @@
 ;;;; ATAN2
 
 ;; atan2 distributes over lists, matrices, and equations
-(defprop $atan2 (mlist $matrix mequal) distribute_over)
+(defprop %atan2 (mlist $matrix mequal) distribute_over)
 
-(defun simpatan2 (expr vestigial z)     ; atan2(y,x) ~ atan(y/x)
-  (declare (ignore vestigial))
-  (twoargcheck expr)
-  (let (y x signy signx)
-    (setq y (simpcheck (cadr expr) z)
-          x (simpcheck (caddr expr) z))
+(def-simplifier atan2 (y x)
+  (let (signy signx)
     (cond ((and (zerop1 y) (zerop1 x))
            (merror (intl:gettext "atan2: atan2(0,0) is undefined.")))
-          ( ;; float contagion
-           (and (or (numberp x) (ratnump x))       ; both numbers
-                (or (numberp y) (ratnump y))       ; ... but not bigfloats
+          (;; float contagion
+           (and (or (numberp x) (ratnump x)) ; both numbers
+                (or (numberp y) (ratnump y)) ; ... but not bigfloats
                 (or $numer (floatp x) (floatp y))) ; at least one float
            (atan ($float y) ($float x)))
-          ( ;; bfloat contagion
+          (;; bfloat contagion
            (and (mnump x)
                 (mnump y)
-                (or ($bfloatp x) ($bfloatp y)))    ; at least one bfloat
+                (or ($bfloatp x) ($bfloatp y)))	; at least one bfloat
            (setq x ($bfloat x)
                  y ($bfloat y))
            (*fpatan y (list x)))
@@ -522,7 +518,7 @@
            (cond ((member (setq signy ($sign ($realpart x))) '($pos $pz $zero)) 
                   '$%pi)
                  ((eq signy '$neg) (mul -1 '$%pi))
-                 (t (eqtest (list '($atan2) y x) expr))))
+                 (t (give-up))))
           ((or (eq y '$inf)
                (alike1 y '((mtimes) -1 $minf)))
            ;; Simplify atan2(inf,x) -> %pi/2
@@ -548,7 +544,7 @@
           ($logarc
            (logarc '%atan2 (list ($logarc y) ($logarc x))))
           ((and $trigsign (eq t (mminusp y)))
-           (neg (take '($atan2) (neg y) x)))
+           (neg (take '(%atan2) (neg y) x)))
           ;; atan2(y,x) = atan(y/x) + pi sign(y) (1-sign(x))/2
           ((eq signx '$pos)
            (take '(%atan) (div y x)))
@@ -560,7 +556,7 @@
            ;; Unfortunately, we'll rarely get here.  For example,
            ;; assume(equal(x,0)) atan2(x,x) simplifies via the alike1 case above
            (merror (intl:gettext "atan2: atan2(0,0) is undefined.")))
-          (t (eqtest (list '($atan2) y x) expr)))))
+          (t (give-up)))))
 
 ;;;; ARITHF
 
