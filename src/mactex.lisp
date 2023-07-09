@@ -883,7 +883,7 @@
 
 
 ;; I WONDER IF ALL BUILT-IN FUNCTIONS SHOULD BE SET IN ROMAN TYPE
-(defprop $atan2 "{\\rm atan2}" texword)
+(defprop %atan2 "{\\rm atan2}" texword)
 
 ;; JM 09/01 expand and re-order to follow table of "log-like" functions,
 ;; see table in Lamport, 2nd edition, 1994, p. 44, table 3.9.
