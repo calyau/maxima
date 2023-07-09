@@ -584,17 +584,12 @@
 	    (return
 	      (simptimes (list '(mtimes)
 			       (list '(mexpt) n q)
-			       (simp-%gamma (list '(%gamma)
-						(list '(rat) m n))
-					  1
-					  nil)
+			       (ftake* '%gamma (list '(rat) m n))
 			       (list '(mexpt) (gammac m n q) -1))
 			 1
 			 nil))))
      (return (m* (gammac m n q)
-		 (simp-%gamma (list '(%gamma)
-				  (list '(rat) (rem m n) n))
-			    1 nil)
+		 (ftake* '%gamma (list '(rat) (rem m n) n))
 		 (m^ n (- q))))))
 
 (defun gammac (m n q)
