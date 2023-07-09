@@ -371,6 +371,7 @@
 
 ;;; Implementation of the Gamma function
 
+#+nil
 (defun simpgamma (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
@@ -462,6 +463,94 @@
            (gammared j))
 	  (t (eqtest (list '(%gamma) j) x)))))
 
+(def-simplifier gamma (j)
+  (cond ((and (floatp j)
+	      (or (zerop j)
+                  (and (< j 0)
+		       (zerop (nth-value 1 (truncate j))))))
+         (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
+        ((float-numerical-eval-p j) (gammafloat ($float j)))
+        ((and ($bfloatp j)
+	      (or (zerop1 j)
+                  (and (eq ($sign j) '$neg)
+		       (zerop1 (sub j ($truncate j))))))
+         (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
+        ((bigfloat-numerical-eval-p j) 
+         ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
+         ;; and an argument up to about 500.0 the accuracy of the result is
+         ;; better than 10^(-$fpprec).
+	 (let ((z (bigfloat:to ($bfloat j))))
+	   (cond
+	     ((bigfloat:<= (bigfloat:abs z) (bigfloat:sqrt (bigfloat:epsilon z)))
+	      ;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
+	      (div (mfuncall '$bffac
+			     ($bfloat j)
+			     (+ $fpprec 4))
+		   ($bfloat j)))
+	     (t
+	      (let ((result (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4))))
+		;; bigfloatp will round the result to the correct fpprec
+		(bigfloatp result))))))
+	((complex-float-numerical-eval-p j)
+         (complexify (gamma-lanczos (complex ($float ($realpart j))
+                                             ($float ($imagpart j))))))
+        ((complex-bigfloat-numerical-eval-p j)
+	 (let ((z (bigfloat:to ($bfloat j))))
+	   (cond
+	     ((bigfloat:<= (bigfloat:abs z)
+			   (bigfloat:sqrt (bigfloat:epsilon z)))
+	      ;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
+	      (to (bigfloat:/ (bigfloat:to (mfuncall '$cbffac 
+						     (to z)
+						     (+ $fpprec 4)))
+			      z)))
+	     (t
+	      ;; Adding 4 digits in the call to cbffac. See comment above.
+	      (let ((result
+		      (mfuncall '$cbffac 
+				(add -1 ($bfloat ($realpart j)) 
+				     (mul '$%i ($bfloat ($imagpart j))))
+				(+ $fpprec 4))))
+		(add (bigfloatp ($realpart result))
+		     (mul '$%i (bigfloatp ($imagpart result)))))))))
+        ((taylorize (mop form) (cadr form)))
+        ((eq j '$inf) '$inf) ; Simplify to $inf to be more consistent.
+        ((and $gamma_expand
+	      (mplusp j) 
+	      (integerp (cadr j)))
+         ;; Expand gamma(z+n) for n an integer.
+         (let ((n (cadr j))
+	       (z (simplify (cons '(mplus) (cddr j)))))
+           (cond 
+             ((> n 0)
+	      (mul (simplify (list '($pochhammer) z n))
+                   (simplify (list '(%gamma) z))))
+             ((< n 0)
+	      (setq n (- n))
+	      (div (mul (power -1 n) (simplify (list '(%gamma) z)))
+                   ;; We factor to get the order (z-1)*(z-2)*...
+                   ;; and not (1-z)*(2-z)*... 
+                   ($factor
+                    (simplify (list '($pochhammer) (sub 1 z) n))))))))
+	((integerp j)
+	 (cond ((> j 0)
+                (cond ((<= j $factlim)
+		       ;; Positive integer less than $factlim. Evaluate.
+		       (simplify (list '(mfactorial) (1- j))))
+		      ;; Positive integer greater $factlim. Noun form.
+		      (t (give-up))))
+	       ;; Negative integer. Throw a Maxima error.
+	       (errorsw (throw 'errorsw t))
+	       (t (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))))
+	((alike1 j '((rat) 1 2))
+	 (list '(mexpt simp) '$%pi j))
+        ((and (mnump j)
+	      (ratgreaterp $gammalim (simplify (list '(mabs) j)))
+	      (or (ratgreaterp j 1) (ratgreaterp 0 j)))
+         ;; Expand for rational numbers less than $gammalim.
+         (gammared j))
+	(t (give-up))))
+
 ;; A sign function for gamma(x); when x > 0 return pos; when x < 0 or x > 0, return pn;
 ;;; otherwise, return pnz (that is, nothing known).
 (defun gamma-sign (x)
@@ -495,7 +584,7 @@
 	    (return
 	      (simptimes (list '(mtimes)
 			       (list '(mexpt) n q)
-			       (simpgamma (list '(%gamma)
+			       (simp-%gamma (list '(%gamma)
 						(list '(rat) m n))
 					  1
 					  nil)
@@ -503,7 +592,7 @@
 			 1
 			 nil))))
      (return (m* (gammac m n q)
-		 (simpgamma (list '(%gamma)
+		 (simp-%gamma (list '(%gamma)
 				  (list '(rat) (rem m n) n))
 			    1 nil)
 		 (m^ n (- q))))))

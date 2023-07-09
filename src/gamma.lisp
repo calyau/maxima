@@ -509,7 +509,7 @@
 	 ;; positive integer.  Since gamma_incomplete_lower(a,z) =
 	 ;; gamma(a) - gamma_incomplete(a,z), use gamma_incomplete to
 	 ;; get the result.
-	 (sub (simpgamma (list '(%gamma) a) 1 nil)
+	 (sub (simp-%gamma (list '(%gamma) a) 1 nil)
 	      (take '(%gamma_incomplete) a z)))
 	((and $gamma_expand (alike1 a 1//2))
 	 ;; A&S 6.5.12:
@@ -538,13 +538,13 @@
 	       (mul
 		(power z a)
 		(power '$%e (mul -1 z))
-		(let ((gamma-a+n (simpgamma (list '(%gamma) (add a n)) 1 nil))
+		(let ((gamma-a+n (simp-%gamma (list '(%gamma) (add a n)) 1 nil))
 		      (index (gensumindex))
 		      ($simpsum t))
 		  (simpsum1
 		   (mul
 		    (div gamma-a+n
-			 (simpgamma (list '(%gamma) (add a index 1)) 1 nil))
+			 (simp-%gamma (list '(%gamma) (add a index 1)) 1 nil))
 		    (power z index))
 		   index 0 (add n -1))))))
 	     ((< n 0)
@@ -562,7 +562,7 @@
 	      ;;   g(a-n,z) = gamma(a-n)/gamma(a)*g(a,z)
 	      ;;     + z^(a-1)*exp(-z)
 	      ;;       * sum(gamma(a-n)/gamma(a-k)*z^(-k),k,0,n-1)
-	      (let ((gamma-a-n (simpgamma (list '(%gamma) (sub a n)) 1 nil))
+	      (let ((gamma-a-n (simp-%gamma (list '(%gamma) (sub a n)) 1 nil))
 		    (index (gensumindex))
 		    ($simpsum t))
 		(add
@@ -576,7 +576,7 @@
 		  (simpsum1
 		   (mul
 		    (div gamma-a-n
-			 (simpgamma (list '(%gamma) (sub a index)) 1 nil))
+			 (simp-%gamma (list '(%gamma) (sub a index)) 1 nil))
 		    (power z (mul -1 index)))
 		   index 0 (add n -1)))))))))
 	((and $gamma_expand (consp a) (eq 'rat (caar a))
@@ -833,12 +833,12 @@
 	     (mul
 	      (power '$%e (mul -1 z))
 	      (power z a)
-	      (let ((gamma-a+n (simpgamma (list '(%gamma) (add a n)) 1 nil))
+	      (let ((gamma-a+n (simp-%gamma (list '(%gamma) (add a n)) 1 nil))
 		    (index (gensumindex)))
 		(simpsum1
 		 (mul
 		  (div gamma-a+n
-		       (simpgamma (list '(%gamma) (add a index 1)) 1 nil))
+		       (simp-%gamma (list '(%gamma) (add a index 1)) 1 nil))
 		  (power z index))
 		 index 0 (add n -1))))))
            ((< n 0)
