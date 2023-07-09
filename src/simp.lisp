@@ -72,8 +72,6 @@
 (mapc #'(lambda (x) (setf (get (first x) 'operators) (second x)))
       '((mplus simplus) (mtimes simptimes) (mncexpt simpncexpt)
 	(mminus simpmin)
-	#+nil
-	(%gamma simpgamma)
 	(mfactorial simpfact)
 	(mnctimes simpnct) (mquotient simpquot) (mexpt simpexpt)
         (%derivative simpderiv)
@@ -81,8 +79,6 @@
 	(%integrate simpinteg) (%limit simp-limit) 
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
 	(mqapply simpmqapply)
-	#+nil
-	(%gamma simpgamma)
 	($beta simpbeta) (%sum simpsum)
 	(%product simpprod) (%genfact simpgfact)
 	($matrix simpmatrix) (%matrix simpmatrix)))
