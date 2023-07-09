@@ -79,10 +79,9 @@
 	(%integrate simpinteg) (%limit simp-limit) 
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
 	(mqapply simpmqapply) (%gamma simpgamma)
-	($beta simpbeta) (%sum simpsum) (%binomial simpbinocoef)
-	(%plog simpplog) (%product simpprod) (%genfact simpgfact)
-	($atan2 simpatan2) ($matrix simpmatrix) (%matrix simpmatrix)
-	($bern simpbern) ($euler simpeuler)))
+	($beta simpbeta) (%sum simpsum)
+	(%product simpprod) (%genfact simpgfact)
+	($matrix simpmatrix) (%matrix simpmatrix)))
 
 (defprop $li lisimp specsimp)
 (defprop $psi psisimp specsimp)

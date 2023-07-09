@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Documentation, Functions and Variables for Help
+@node Documentation, Functions and Variables for Help, , Help
 @section Documentation
 @c -----------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ and additional output.
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Help,  , Documentation
+@node Functions and Variables for Help,  , Documentation, Help
 @section Functions and Variables for Help
 @c -----------------------------------------------------------------------------
 

@@ -724,11 +724,9 @@
 	    (mapcar
 	     #'(lambda (a b)
 		 (cond ((equal b 0) 1)
-		       (t (max (* (simpbinocoef (list '(%binocoef)
-						      a
-						      (ash a -1))
-						1
-						t)
+		       (t (max (* (ftake '%binomial
+					 a
+					 (ash a -1))
 				  (expt b (ash a -1)))
 			       (expt b a)))))
 	     v

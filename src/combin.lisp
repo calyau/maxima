@@ -335,25 +335,6 @@
 (putprop '*eu* 11 'lim)
 (putprop 'bern 16 'lim)
 
-(defmfun $euler (s)
-  (setq s
-	(let ((%n 0) $float)
-	  (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
-		((zerop (setq %n s)) 1)
-		($zerobern
-		 (cond ((oddp %n) 0)
-		       ((null (> (ash %n -1) (get '*eu* 'lim)))
-			(aref *eu* (1- (ash %n -1))))
-		       ((eq $zerobern '%$/#&)
-			(euler %n))
-		       ((setq *eu* (adjust-array *eu* (1+ (ash %n -1))))
-			(euler %n))))
-		((<= %n (get '*eu* 'lim))
-		 (aref *eu* (1- %n)))
-		((setq *eu* (adjust-array *eu* (1+ %n)))
-		 (euler (* 2 %n))))))
-  (simplify s))
-
 (defun nxtbincoef (m nom combin-a)
   (truncate (* nom (- combin-a m)) m))
 
@@ -368,40 +349,32 @@
      (setq nom (nxtbincoef (1+ (- %a* %k)) nom combin-a) %k (1- %k))
      (cond ((setq fl (null fl))
 	    (go a)))
-     (incf e (* nom ($euler %k)))
+     (incf e (* nom (ftake '%euler %k)))
      (go a)))
 
-(defun simpeuler (x vestigial z)
-  (declare (ignore vestigial))
-  (oneargcheck x)
-  (let ((u (simpcheck (cadr x) z)))
-    (if (and (fixnump u) (>= u 0))
+(def-simplifier euler (u)
+  (flet
+      (($euler (s)
+	 (setq s
+	       (let ((%n 0) $float)
+		 (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
+		       ((zerop (setq %n s)) 1)
+		       ($zerobern
+			(cond ((oddp %n) 0)
+			      ((null (> (ash %n -1) (get '*eu* 'lim)))
+			       (aref *eu* (1- (ash %n -1))))
+			      ((eq $zerobern '%$/#&)
+			       (euler %n))
+			      ((setq *eu* (adjust-array *eu* (1+ (ash %n -1))))
+			       (euler %n))))
+		       ((<= %n (get '*eu* 'lim))
+			(aref *eu* (1- %n)))
+		       ((setq *eu* (adjust-array *eu* (1+ %n)))
+			(euler (* 2 %n))))))
+	 (simplify s)))
+  (if (and (fixnump u) (>= u 0))
 	($euler u)
-	(eqtest (list '($euler) u) x))))
-
-(defmfun $bern (s)
-  (setq s
-	(let ((%n 0) $float)
-	  (cond ((or (not (fixnump s)) (< s 0)) (list '($bern) s))
-		((= (setq %n s) 0) 1)
-		((= %n 1) '((rat) -1 2))
-		((= %n 2) '((rat) 1 6))
-		($zerobern
-		 (cond ((oddp %n) 0)
-		       ((null (> (setq %n (1- (ash %n -1))) (get 'bern 'lim)))
-			(list '(rat) (aref *bn* %n) (aref *bd* %n)))
-		       ((eq $zerobern '$/#&) (bern  (* 2 (1+ %n))))
-		       (t
-			(setq *bn* (adjust-array *bn* (setq %n (1+ %n))))
-			(setq *bd* (adjust-array *bd* %n))
-			(bern  (* 2 %n)))))
-		((null (> %n (get 'bern 'lim)))
-		 (list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
-		(t
-		 (setq *bn* (adjust-array *bn* (1+ %n)))
-		 (setq *bd* (adjust-array *bd* (1+ %n)))
-		 (bern (* 2 (1- %n)))))))
-  (simplify s))
+	(give-up))))
 
 (defun bern (%a*)
   (prog (nom %k bb a b $zerobern l combin-a)
@@ -421,19 +394,41 @@
 	       (return bb)))
      (incf %k)
      (setq a (+ (* b (setq nom (nxtbincoef %k nom combin-a))
-			  (num1 (setq bb ($bern %k))))
+			  (num1 (setq bb (ftake '%bern %k))))
 		   (* a (denom1 bb))))
      (setq b (* b (denom1 bb)))
      (setq a (*red a b) b (denom1 a) a (num1 a))
      (go a)))
 
-(defun simpbern (x vestigial z)
-  (declare (ignore vestigial))
-  (oneargcheck x)
-  (let ((u (simpcheck (cadr x) z)))
+;; bern - the n'th Bernoulli number for integer u.
+(def-simplifier bern (u)
+  (flet
+      (($bern (s)
+	 (setq s
+	       (let ((%n 0) $float)
+		 (cond ((or (not (fixnump s)) (< s 0)) (list '($bern) s))
+		       ((= (setq %n s) 0) 1)
+		       ((= %n 1) '((rat) -1 2))
+		       ((= %n 2) '((rat) 1 6))
+		       ($zerobern
+			(cond ((oddp %n) 0)
+			      ((null (> (setq %n (1- (ash %n -1))) (get 'bern 'lim)))
+			       (list '(rat) (aref *bn* %n) (aref *bd* %n)))
+			      ((eq $zerobern '$/#&) (bern  (* 2 (1+ %n))))
+			      (t
+			       (setq *bn* (adjust-array *bn* (setq %n (1+ %n))))
+			       (setq *bd* (adjust-array *bd* %n))
+			       (bern  (* 2 %n)))))
+		       ((null (> %n (get 'bern 'lim)))
+			(list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
+		       (t
+			(setq *bn* (adjust-array *bn* (1+ %n)))
+			(setq *bd* (adjust-array *bd* (1+ %n)))
+			(bern (* 2 (1- %n)))))))
+	 (simplify s)))
     (if (and (fixnump u) (not (< u 0)))
 	($bern u)
-	(eqtest (list '($bern) u) x))))
+	(give-up))))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Bernoulli polynomials
@@ -462,7 +457,7 @@
 	                       (power x %n))
 	                   nil)
 	             (cons (mul (binocomp %n %k)
-	                        ($bern %k)
+	                        (ftake '%bern %k)
 	                        (if (and (= %n %k) (zerop1 x))
 	                            (add 1 x)
 	                            (power x (- %n %k))))
@@ -497,7 +492,7 @@
                                (power y n))
                            nil)
                      (cons (mul (binocomp n k)
-                                ($euler k)
+                                (ftake '%euler k)
                                 (power 2 (mul -1 k))
                                 (if (and (zerop1 (setq y (sub x (div 1 2))))
                                          (= n k))
@@ -576,7 +571,7 @@
         (cond ((> z 1)
                (give-up))
               ((setq z (sub 1 z))
-               (mul -1 (div ($bern z) z)))))
+               (mul -1 (div (ftake '%bern z) z)))))
        ((minusp z) 0)
        ((not $zeta%pi)
 	(give-up))
@@ -584,7 +579,7 @@
             (mul (power '$%pi z)
                  (mul (div (power 2 (1- z)) 
                            (take '(mfactorial) z))
-                      (take '(mabs) ($bern z))))))))
+                      (take '(mabs) (ftake '%bern z))))))))
     ((and (mnegp z))
      ;; z is a negative number.  We can use the relationship (A&S
      ;; 23.2.6):
@@ -1160,7 +1155,7 @@
 		 (($ratsimp
 		   (m* a (list '(rat) 1 (1+ n))
 		       (m- ($bernpoly (m+ 'foo 1) (1+ n))
-			   ($bern (1+ n)))))))))
+			   (ftake '%bern (1+ n)))))))))
       (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e poly-var)))) lo))
 	    ($prederror))
 	(cond ((null a) 0)

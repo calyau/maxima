@@ -1748,7 +1748,7 @@
 			    sign (e* chng sign))
 		      (add-term lt-l e (e* (e* sign fact)
 					   (e* (prep1
-						($bern (rcdisrep (e1+ e))))
+						(ftake '%bern (rcdisrep (e1+ e))))
 					       (e* pow (e1- pow)))))
 		      (setq lt-l (n-term lt-l))))
 	     (go a)))
@@ -1763,7 +1763,7 @@
 			    sign (e* chng sign))
 		      (add-term lt-l e (e* (e* sign fact)
 					   (e* (prep1
-						($bern (rcdisrep (e1+ e))))
+						(ftake '%bern (rcdisrep (e1+ e))))
 					       (e+ pow plus))))
 		      (setq lt-l (n-term lt-l))))
 	     (go a)))
@@ -1776,7 +1776,7 @@
 		   (t (setq fact (e// fact (e* e (e1- e)))
 			    sign (e* chng sign))
 		      (add-term lt-l e (e* (e* sign fact)
-					   (prep1 ($euler (rcdisrep e)))))
+					   (prep1 (ftake '%euler (rcdisrep e)))))
 		      (setq lt-l (n-term lt-l))))
 	     (go a)))
 

@@ -16,7 +16,7 @@
 (defmfun $logarc (exp)
   (cond ((atom exp) exp)
 	((arcp (caar exp)) (logarc (caar exp) ($logarc (cadr exp))))
-	((eq (caar exp) '$atan2)
+	((eq (caar exp) '%atan2)
 	 (logarc '%atan2 (list ($logarc (second exp)) ($logarc (third exp)))))
 	(t (recur-apply #'$logarc exp))))
 

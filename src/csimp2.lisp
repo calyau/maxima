@@ -23,15 +23,12 @@
 
 ;;; Implementation of the plog function
 
-(defun simpplog (x vestigial z)
-  (declare (ignore vestigial))
-  (prog (varlist dd check y)
-     (oneargcheck x)
-     (setq check x)
-     (setq x (simpcheck (cadr x) z))
-     (cond ((equal 0 x) (merror (intl:gettext "plog: plog(0) is undefined.")))
+(def-simplifier plog (x)
+  (prog (varlist dd y z)
+     (cond ((equal 0 x)
+	    (merror (intl:gettext "plog: plog(0) is undefined.")))
 	   ((among var x)	;This is used in DEFINT. 1/19/81. -JIM
-	    (return (eqtest (list '(%plog) x) check))))
+	    (return (give-up))))
      (newvar x)
      (cond
        ((and (member '$%i varlist)
@@ -45,12 +42,17 @@
 							    ($expand (list '(mplus)
 									   (list '(mexpt) (car dd) 2)
 									   (list '(mexpt) (cdr dd) 2)))
-							    '((rat) 1 2)) 1 nil)) 1 t)
+							    '((rat) 1 2))
+						      1 nil))
+				      1 t)
 			      (list '(mtimes) z '$%i))))))
-       ((and (free x '$%i) (eq ($sign x) '$pnz))
-	(return (eqtest (list '(%plog) x) check)))
-       ((and (equal ($imagpart x) 0) (setq y ($asksign x)))
-	(cond ((eq y '$pos) (return (simpln (list '(%log) x) 1 t)))
+       ((and (free x '$%i)
+	     (eq ($sign x) '$pnz))
+	(return (give-up)))
+       ((and (equal ($imagpart x) 0)
+	     (setq y ($asksign x)))
+	(cond ((eq y '$pos)
+	       (return (simpln (list '(%log) x) 1 t)))
 	      ((and plogabs (eq y '$neg))
 	       (return (simpln (list '(%log) (list '(mtimes) -1 x)) 1 nil)))
 	      ((eq y '$neg)
@@ -60,13 +62,17 @@
        ((and (equal ($imagpart (setq z (div* x '$%i))) 0)
 	     (setq y ($asksign z)))
 	(cond
-	  ((equal y '$zero) (merror (intl:gettext "plog: plog(0) is undefined.")))
-	  (t (cond ((eq y '$pos) (setq y 1))
-		   ((eq y '$neg) (setq y -1)))
+	  ((equal y '$zero)
+	   (merror (intl:gettext "plog: plog(0) is undefined.")))
+	  (t (cond ((eq y '$pos)
+		    (setq y 1))
+		   ((eq y '$neg)
+		    (setq y -1)))
 	     (return (add2* (simpln (list '(%log)
-					  (list '(mtimes) y z)) 1 nil)
+					  (list '(mtimes) y z))
+				    1 nil)
 			    (list '(mtimes) y '((rat) 1 2) '$%i '$%pi)))))))
-     (return (eqtest (list '(%plog) x) check))))
+     (return (give-up))))
 
 (defun patan (r i)
   (let (($numer $numer))
@@ -118,19 +124,11 @@
 
 ;;; Implementation of the Binomial coefficient
 
-;; Verb function for the Binomial coefficient
-(defmfun $binomial (x y)
-  (simplify (list '(%binomial) x y)))
-
 ;; Binomial has Mirror symmetry
 (defprop %binomial t commutes-with-conjugate)
 
-(defun simpbinocoef (x vestigial z)
-  (declare (ignore vestigial))
-  (twoargcheck x)
-  (let ((u (simpcheck (cadr x) z))
-	(v (simpcheck (caddr x) z))
-	(y))
+(def-simplifier binomial (u v)
+  (let (y)
     (cond ((integerp v)
 	   (cond ((minusp v)
 		  (if (and (integerp u) (minusp u) (< v u))
@@ -144,21 +142,21 @@
            (cond ((zerop1 y)
                   ;; u and v are equal, simplify not if argument can be negative
                   (if (member ($csign u) '($pnz $pn $neg $nz))
-                      (eqtest (list '(%binomial) u v) x)
+                      (give-up)
                       (bincomp u y)))
-                 (t (bincomp u y))))
+		 (t (bincomp u y))))
           ((complex-float-numerical-eval-p u v)
            ;; Numercial evaluation for real and complex floating point numbers.
            (let (($numer t) ($float t))
              ($rectform
-               ($float 
-                 ($makegamma (list '(%binomial) ($float u) ($float v)))))))
+              ($float 
+               ($makegamma (list '(%binomial) ($float u) ($float v)))))))
           ((complex-bigfloat-numerical-eval-p u v)
            ;; Numerical evaluation for real and complex bigfloat numbers.
            ($rectform
-             ($bfloat
-               ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
-          (t (eqtest (list '(%binomial) u v) x)))))
+            ($bfloat
+             ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
+          (t (give-up)))))
 
 (defun bincomp (u v) 
   (cond ((minusp v) 0)

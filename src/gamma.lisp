@@ -1992,7 +1992,7 @@
          (setq m (mul m (add z ii -2) (add z ii -1)))
          (setq x (div
                    (add x
-                        (div ($bern (+ k (- ii) 2))
+                        (div (ftake '%bern (+ k (- ii) 2))
                              (* (+ k (- ii) 1) (+ k (- ii) 2))))
                    y)))
        (add
@@ -2041,7 +2041,7 @@
          (setq x ($rectform
                    (div
                      (add x 
-                       (div ($bern (+ k (- ii) 2))
+                       (div (ftake '%bern (+ k (- ii) 2))
                             (* (+ k (- ii) 1) (+ k (- ii) 2))))
                    y))))
        ($rectform

@@ -390,7 +390,7 @@
             (return (mul2* const (integrate1 (cdr exp)))))
            
            ;; Convert atan2(a,b) to atan(a/b) and try again.
-           ((setq w (isinop exp '$atan2))
+           ((setq w (isinop exp '%atan2))
             (setq exp
                   (maxima-substitute (take '(%atan) (div (cadr w) (caddr w)))
                                      w
@@ -2513,7 +2513,7 @@
          (mfuncall '$sum
                    (mul
                     (power 2 (sub index n))
-                    ($binomial n index)
+                    (ftake '%binomial n index)
                     ($gamma_incomplete
                      (div (add index 1) 2)
                      (mul
@@ -2579,8 +2579,8 @@
                             (mul
                              (power -1 (sub index1 index2))
                              (power 4 index1)
-                             ($binomial index1 index2)
-                             ($binomial n index1)
+                             (ftake '%binomial index1 index2)
+                             (ftake '%binomial n index1)
                              ($log d)
                              (power (mul a ($log d)) (sub (mul 2 n) (add index1 index2)))
                              (power
@@ -2866,7 +2866,7 @@
         (mfuncall '$sum
                   (mul
                    (power 2 (sub index n))
-                   ($binomial n index)
+                   (ftake '%binomial n index)
                    (power
                     (add (mul -1 d ($log a)) (mul -1 f ($log h)))
                     (sub n index))
@@ -2984,8 +2984,8 @@
              (dosum
               (mul (power -1 (sub index1 index2))
                    (power 4 index1)
-                   ($binomial index1 index2)
-                   ($binomial n index1)
+                   (ftake '%binomial index1 index2)
+                   (ftake '%binomial n index1)
                    (power (add (mul b ($log a)) (mul c ($log h)))
                           (sub (mul 2 n) (add index1 index2)))
                    (power (add (mul b ($log a))

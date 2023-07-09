@@ -162,7 +162,7 @@
 		 (m* (m^ -1 k)
 		     (m- 1 (m^ 2 (m- 1 (m* 2 k))))
 		     (m^ (m* 2 '$%pi) (m* 2 k))
-		     (m// ($bern (m* 2 k))
+		     (m// (ftake '%bern (m* 2 k))
 			  `((mfactorial) ,(m* 2 k)))
 		     (m// (m^ `((%log) ,(m- z)) (m- s (m* 2 k)))
 			  ($gamma (m+ s 1 (m* -2 k)))))))))
