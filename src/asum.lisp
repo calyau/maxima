@@ -356,29 +356,6 @@
 		e)))
 	(t (recur-apply #'makegamma1 e))))
 
-#+nil
-(defun simpgfact (x vestigial z)
-  (declare (ignore vestigial))
-  (arg-count-check 3 x)
-  (setq z (mapcar #'(lambda (q) (simpcheck q z)) (cdr x)))
-  (let ((a (car z)) (b (take '($floor) (cadr z))) (c (caddr z)))
-    (cond ((and (fixnump a)
-                (fixnump b)
-                (fixnump c))
-           (if (and (> a -1)
-                    (> b -1) 
-                    (or (<= c a) (= b 0))
-                    (<= b (/ a c)))
-             (gfact a b c)
-             (merror (intl:gettext "genfact: generalized factorial not defined for given arguments."))))
-	  (t (eqtest (list '(%genfact) a
-			   (if (and (not (atom b))
-				    (eq (caar b) '$floor))
-			       (cadr b)
-			     b)
-			   c)
-		     x)))))
-
 (def-simplifier genfact (x y z)
   (let ((a x)
 	(b (take '($floor) y))
@@ -390,21 +367,20 @@
                     (> b -1) 
                     (or (<= c a) (= b 0))
                     (<= b (/ a c)))
-             (gfact a b c)
-             (merror (intl:gettext "genfact: generalized factorial not defined for given arguments."))))
+               (gfact a b c)
+               (merror (intl:gettext "genfact: generalized factorial not defined for given arguments."))))
 	  (t
 	   ;; We want to give up, but can't use GIVE-UP because we
 	   ;; want to return a result with args that are different
 	   ;; from the original.  In particular, we want the floor of
 	   ;; y if y was real number.  Otherwise, we leave it.
-	   (format t "b = ~A~%" b)
 	   (eqtest (list '(%genfact) a
-			   (if (and (not (atom b))
-				    (eq (caar b) '$floor))
-			       (cadr b)
+			 (if (and (not (atom b))
+				  (eq (caar b) '$floor))
+			     (cadr b)
 			     b)
-			   c)
-		     form)))))
+			 c)
+		   form)))))
 
 ;; sum begins
 
