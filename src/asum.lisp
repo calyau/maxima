@@ -374,6 +374,13 @@
 	   ;; want to return a result with args that are different
 	   ;; from the original.  In particular, we want the floor of
 	   ;; y if y was real number.  Otherwise, we leave it.
+	   (give-up a
+		    (if (and (not (atom b))
+				  (eq (caar b) '$floor))
+			     (cadr b)
+			     b)
+		    c)
+	   #+nil
 	   (eqtest (list '(%genfact) a
 			 (if (and (not (atom b))
 				  (eq (caar b) '$floor))
