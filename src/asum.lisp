@@ -74,10 +74,6 @@
 
 ;; factorial stuff
 
-#+nil
-(defmfun $genfact (&rest l)
-  (cons '(%genfact) l))
-
 (defun gfact (n %m i)
   (cond ((minusp %m) (improper-arg-err %m '$genfact))
 	((= %m 0) 1)
@@ -371,24 +367,16 @@
                (gfact a b c)
                (merror (intl:gettext "genfact: generalized factorial not defined for given arguments."))))
 	  (t
-	   ;; We want to give up, but can't use GIVE-UP because we
-	   ;; want to return a result with args that are different
-	   ;; from the original.  In particular, we want the floor of
-	   ;; y if y was real number.  Otherwise, we leave it.
+	   ;; Give up, we want to return a result with args that are
+	   ;; different from the original.  In particular, we want the
+	   ;; floor of y if y was real number.  Otherwise, we leave
+	   ;; it.
 	   (give-up a
 		    (if (and (not (atom b))
 				  (eq (caar b) '$floor))
 			     (cadr b)
 			     b)
-		    c)
-	   #+nil
-	   (eqtest (list '(%genfact) a
-			 (if (and (not (atom b))
-				  (eq (caar b) '$floor))
-			     (cadr b)
-			     b)
-			 c)
-		   form)))))
+		    c)))))
 
 ;; sum begins
 
