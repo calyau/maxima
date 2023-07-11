@@ -74,13 +74,7 @@ C        X = 0,1,2, ..., L.                                             MAN  610
         WRITE (6,99998)                                                 MAN  650
         NP1 = EL + 1.5                                                  MAN  660
         DO 20 III=1,NP1                                                 MAN  670
-c          CALL APPROX(III, X, Z, FSPACE(IS6), FSPACE(1), ISPACE(1),      MAN  680
-c     *     FSPACE(IS5), ISPACE(2), NCOMP, M, ISPACE(4), 1, DM, 0)       MAN  690
-
-c Not sure if this is the correct replacement for the above call.           
-           call approx(iii, x, z, a, fspace(is6), fspace(1), ispace(1),
-     $          fspace(is5), fspace(is4), ispace(2), ispace(3),
-     $          ispace(5), ispace(8), ispace(4), 1, dm, 0)
+          call appsln(x,z,fspace,ispace)
           XL = X*EL                                                     MAN  700
           Z(2) = Z(2)/EL                                                MAN  710
           Z(4) = Z(4)/EL                                                MAN  720
