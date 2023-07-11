@@ -4,8 +4,7 @@
    U. Ascher, J. Christiansen and R. D. Russell,
    Collocation software for boundary-value odes,
    ACM Trans. Math Software 7 (1981), 209-222.
-   @url{https:/doi.org/10.1145/355945.355950,
-   doi:10.1145/355945.355950}
+   doi:10.1145/355945.355950
 */
 
 /* Define constants */

@@ -7,8 +7,7 @@ C  Reference:
 C   U. Ascher, J. Christiansen and R. D. Russell,
 C   Collocation software for boundary-value odes,
 C   ACM Trans. Math Software 7 (1981), 209-222.
-C   @url{https:/doi.org/10.1145/355945.355950,
-C   doi:10.1145/355945.355950}
+C   doi:10.1145/355945.355950
 C                                                                       MAN   50
       implicit real*8 (a-h, o-z)
       REAL*8 FSPACE(2000), ZETA(4), TOL(2), Z(4), U(4), ERR(4)            MAN   60
