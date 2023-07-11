@@ -74,6 +74,7 @@
 
 ;; factorial stuff
 
+#+nil
 (defmfun $genfact (&rest l)
   (cons '(%genfact) l))
 

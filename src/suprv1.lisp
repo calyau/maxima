@@ -876,7 +876,7 @@
 
 (dolist (l '($sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
 	     $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
-	     $acosh $atanh $acsch $asech $acoth $gamma $genfact $del))
+	     $acosh $atanh $acsch $asech $acoth $gamma #+nil $genfact $del))
   (let ((x ($nounify l)))
     (putprop l x 'alias)
     (putprop x l 'reversealias)))
