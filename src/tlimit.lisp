@@ -10,6 +10,8 @@
 
 (in-package :maxima)
 
+(declare-top (special taylored))
+
 (macsyma-module tlimit)
 
 (load-macsyma-macros rzmac)
@@ -26,28 +28,52 @@
     (declare (special limit-using-taylor))
     ($ldefint exp var ll ul)))
 
-(defun tlimp (expr)		; TO BE EXPANDED TO BE SMARTER (MAYBE)
-  (declare (ignore expr))
-  t)
+;; Taylor cannot handle conjugate, ceiling, floor, unit_step, or signum 
+;; expressions, so let's tell tlimit to *not* try. We also disallow 
+;; expressions containing $ind.
+(defun tlimp (e)		
+  (not (amongl '($conjugate $floor $ceiling $ind $unit_step %signum) e)))
 
-;; compute limit of exp by finding its taylor series expansion.
-;; asks for $lhospitallim terms of taylor series.
-;; this is an arbitrary limit: with default value $lhospitallim = 4,
-;;  tlimit(2^n/n^5, n, inf)  =>  0
-(defun taylim (exp var val *i*)
-  (prog (ex)
-     (setq ex (catch 'taylor-catch
-		(let ((silent-taylor-flag t))
-		  ($taylor exp var (ridofab val) $lhospitallim))))
-     (or ex (return (cond ((eq *i* t)
-			   (limit1 exp var val))
-			  ((eq *i* 'think)
-			   (if (member (caar exp) '(mtimes mexpt) :test #'eq)
-			       (limit1 exp var val)
-			       (simplimit exp var val)))
-			  (t
-			   (simplimit exp var val)))))
-     (return
-       (let ((taylored t))
-	 (declare (special taylored))
-	 (limit (simplify ($ratdisrep ex)) var val 'think)))))
+;; Dispatch Taylor, but recurse on the order until either the recursion
+;; depth is 15 or the Taylor polynomial is nonzero. When Taylor 
+;; fails to find a nonzero Taylor polynomial or the recursion depth is
+;; too great, return nil.
+
+;; This recursion on the order attempts to handle limits such as 
+;; tlimit(2^n/n^5, n, inf) correctly. 
+
+;; We set up a reasonable environment for calling taylor. Arguably, setting
+;; these option variables is overly removes the users ability to adjust these
+;; option variables. When $taylor_logexpand is true, taylor does some
+;; principal branch violating transformations, so we set it to nil.
+
+;; I know of no compelling reason for defaulting the taylor order to 
+;; lhospitallim, but this is documented in the user documentation). 
+
+(defun tlimit-taylor (e x pt n &optional (d 0))
+	(let ((ee 0) 
+	      (silent-taylor-flag t) 
+	      ($taylordepth 8)
+		  ($taylor_logexpand nil)
+		  ($taylor_simplifier #'sratsimp))
+        (setq ee (ratdisrep (catch 'taylor-catch ($taylor e x pt n))))
+		(cond ((and ee (not (alike1 ee 0))) ee)
+			  ;; When taylor returns zero and the depth d is less than 16, 
+			  ;; declare a do-over; otherwise return nil.
+              ((and ee (< d 16))
+			    (tlimit-taylor e x pt (* 4 (max 1 n)) (+ d 1)))
+			  (t nil))))
+
+;; Previously when the taylor series failed, there was code for deciding
+;; whether to call limit1 or simplimit. The choice depended on the last
+;; argument to taylim (previously named *i*) and the main operator of the 
+;; expression. This code dispenses with this logic and dispatches limit1
+;; when Maxima is unable to find the taylor polynomial. This change orphans 
+;; the last argument of taylim.
+(defun taylim (e var val flag)
+    (declare (ignore flag))
+	(let ((et nil))
+	  (when (tlimp e)
+		 (setq e (stirling0 e))
+	     (setq et (tlimit-taylor e var (ridofab val) $lhospitallim 0)))
+	  (if et (let ((taylored t)) (limit et var val 'think)) (limit1 e var val))))
