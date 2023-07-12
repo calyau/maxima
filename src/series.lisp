@@ -471,7 +471,7 @@ integration / differentiation variable."))
                    (m// (m* (m^ var (m* m *index))
                             (m^ c *index)
                             (m^ a (m- n *index)))
-                        (m* (list '(%beta) (m- n (m1- *index)) (m1+ *index))
+                        (m* (ftake* '%beta (m- n (m1- *index)) (m1+ *index))
                             (m1+ n)))))
               (cond
                 ((eq sgn-n '$zero) 1)

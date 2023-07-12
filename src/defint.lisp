@@ -2288,7 +2288,7 @@ in the interval of integration.")
 	   (multiple-value-bind
 		 (k/n l n b) (batap-new e)
 	     (when k/n
-	       (let ((beta (simplify (list '(%beta) k/n l)))
+	       (let ((beta (ftake* '%beta k/n l))
 		     (m (if (eq ($asksign m) '$zero) 0 m)))
 		 ;; The result looks like B(k/n,l) ( ... ).
 		 ;; Perhaps, we should just $factor, instead of

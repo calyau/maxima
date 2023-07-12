@@ -359,10 +359,10 @@
   (if (plusp n)
       (mul (simplify (list '($pochhammer) u n))
            (power (simplify (list '($pochhammer) (add u v) n)) -1)
-           (simplify (list '(%beta) u v)))
+           (ftake* '%beta u v))
       (mul (simplify (list '($pochhammer) (add u v n) (- n)))
            (power (simplify (list '($pochhammer) (add u n) (- n))) -1)
-           (simplify (list '(%beta) u v)))))
+           (ftake* '%beta u v))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
