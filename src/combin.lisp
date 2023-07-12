@@ -35,7 +35,7 @@
 			  -1)))))
 	((eq (caar e) '%gamma)
 	 (list '(mfactorial) (list '(mplus) -1 (makefact1 (cadr e)))))
-	((eq (caar e) '$beta)
+	((eq (caar e) '%beta)
 	 (makefact1 (subst (cadr e) 'x
 			   (subst (caddr e) 'y
 				  '((mtimes) ((%gamma) x)

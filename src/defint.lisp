@@ -2171,7 +2171,7 @@ in the interval of integration.")
 ;; Compute beta((m+1)/2,(n+1)/2)/2.
 (defun bygamma (m n)
   (let ((one-half (m//t 1. 2.)))
-    (m* one-half `(($beta) ,(m* one-half (m+t 1. m))
+    (m* one-half `((%beta) ,(m* one-half (m+t 1. m))
 		   ,(m* one-half (m+t 1. n))))))
 
 ;;Seems like Guys who call this don't agree on what it should return.
@@ -2278,7 +2278,7 @@ in the interval of integration.")
 		      (m (if (eq ($asksign m) '$zero)
 			     0
 			     m)))
-	       (let ((res (div `(($beta) ,aa ,bb)
+	       (let ((res (div `((%beta) ,aa ,bb)
 			       (mul (m^t cc aa)
 				    (m^t d bb)
 				    r))))
@@ -2288,7 +2288,7 @@ in the interval of integration.")
 	   (multiple-value-bind
 		 (k/n l n b) (batap-new e)
 	     (when k/n
-	       (let ((beta (simplify (list '($beta) k/n l)))
+	       (let ((beta (simplify (list '(%beta) k/n l)))
 		     (m (if (eq ($asksign m) '$zero) 0 m)))
 		 ;; The result looks like B(k/n,l) ( ... ).
 		 ;; Perhaps, we should just $factor, instead of
@@ -2302,7 +2302,7 @@ in the interval of integration.")
 		     (m^t *ul* (m*t n (m1-t l)))
 		     (m^t n (m-t (m1+t m)))
 		     ($at ($diff (m*t (m^t *ul* (m*t n var))
-				      (list '($beta) var l))
+				      (list '(%beta) var l))
 				 var m)
 			  (list '(mequal) var k/n)))
 		    beta))))))))))))
@@ -2388,7 +2388,7 @@ in the interval of integration.")
 			  (eq ($asksign (m* d c))
 			      '$pos))
 		 (setq l (m+ l (m*t -1 new-k)))
-		 (m// `(($beta) ,new-k ,l)
+		 (m// `((%beta) ,new-k ,l)
 		      (mul* al (m^ c new-k) (m^ d l))))))))))
 
 
@@ -3733,7 +3733,7 @@ in the interval of integration.")
                      (eq ($sign (add 1 s)) '$pos))
                 (setq result 
                       (mul c
-                           ($at ($diff ($at ($diff (list '($beta) var1 var2) 
+                           ($at ($diff ($at ($diff (list '(%beta) var1 var2) 
                                                    var2 m)
                                             (list '(mequal) var2 (add 1 s)))
                                        var1 n)

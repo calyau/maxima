@@ -79,7 +79,9 @@
 	(%integrate simpinteg) (%limit simp-limit) 
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
 	(mqapply simpmqapply)
-	($beta simpbeta) (%sum simpsum)
+	#+nil
+	($beta simpbeta)
+	(%sum simpsum)
 	(%product simpprod)
 	($matrix simpmatrix) (%matrix simpmatrix)))
 

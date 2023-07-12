@@ -491,7 +491,7 @@
 	 (cond ((or (atom (cadr e)) (member 'array (cdaadr e) :test #'eq)) (chainrule e x))
 	       ((freel (cddr e) x) (diff%deriv (cons (sdiff (cadr e) x) (cddr e))))
 	       (t (diff%deriv (list e x 1)))))
-	((member (caar e) '(%binomial $beta) :test #'eq)
+	((member (caar e) '(%binomial %beta) :test #'eq)
 	 (let ((efact ($makefact e)))
 	   (mul2 (factor (sdiff efact x)) (div e efact))))
 	((eq (caar e) '%integrate) (diffint e x))

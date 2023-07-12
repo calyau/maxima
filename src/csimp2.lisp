@@ -201,8 +201,9 @@
 (defmvar $beta_args_sum_to_integer nil)
 
 ;;; The Beta function has mirror symmetry
-(defprop $beta t commutes-with-conjugate)
+(defprop %beta t commutes-with-conjugate)
 
+#+nil
 (defun simpbeta (x vestigial z &aux check)
   (declare (ignore vestigial))
   (twoargcheck x)
@@ -344,6 +345,144 @@
                   
 	  (t (eqtest (list '($beta) u v) check)))))
 
+(def-simplifier beta (u v)
+  (let (x)
+    (cond ((or (zerop1 u) (zerop1 v))
+           (if errorsw 
+               (throw 'errorsw t) 
+               (merror 
+		(intl:gettext "beta: expected nonzero arguments; found ~M, ~M")
+		u v)))
+
+          ;; Check for numerical evaluation in float precision
+      	  ((complex-float-numerical-eval-p u v)
+           (cond
+             ;; We use gamma(u)*gamma(v)/gamma(u+v) for numerical evaluation.
+             ;; Therefore u, v or u+v can not be a negative integer or a
+             ;; floating point representation of a negative integer.
+             ((and (or (not (numberp u))
+                       (> u 0)
+                       (not (= (nth-value 1 (truncate u)) 0)))
+		   (and (or (not (numberp v))
+			    (> v 0)
+			    (not (= (nth-value 1 (truncate v)) 0)))
+			(and (or (not (numberp (add u v)))
+				 (> (add v u) 0)
+				 (not (= (nth-value 1 ($truncate (add u v))) 0))))))
+	      ($rectform 
+	       (power ($float '$%e)
+	              (add ($log_gamma ($float u))
+                           ($log_gamma ($float v))
+                           (mul -1 ($log_gamma ($float (add u v))))))))
+             ((or (and (numberp u)
+                       (> u 0)
+                       (= (nth-value 1 (truncate u)) 0)
+                       (not (and (mnump v)
+				 (eq ($sign (sub ($truncate v) v)) '$zero)
+				 (eq ($sign v) '$neg)
+				 (eq ($sign (add u v)) '$pos)))
+                       (setq u (truncate u)))
+                  (and (numberp v)
+                       (> v 0)
+                       (= (nth-value 1 (truncate u)) 0)
+                       (not (and (mnump u)
+				 (eq ($sign (sub ($truncate u) u)) '$zero)
+				 (eq ($sign u) '$neg)
+				 (eq ($sign (add u v)) '$pos)))
+                       (setq v (truncate v))))
+              ;; One value is representing a negative integer, the other a
+              ;; positive integer and the sum is negative. Expand.
+              ($rectform ($float (beta-expand-integer u v))))
+             (t
+              (give-up))))
+
+          ;; Check for numerical evaluation in bigfloat precision
+          ((complex-bigfloat-numerical-eval-p u v)
+           (let (($ratprint nil))
+             (cond
+               ((and (or (not (mnump u))
+			 (eq ($sign u) '$pos)
+			 (not (eq ($sign (sub ($truncate u) u)) '$zero)))
+                     (or (not (mnump v))
+			 (eq ($sign v) '$pos)
+			 (not (eq ($sign (sub ($truncate v) v)) '$zero)))
+                     (or (not (mnump (add u v)))
+			 (eq ($sign (add u v)) '$pos)
+			 (not (eq ($sign (sub ($truncate (add u v))
+                                              (add u v)))
+                                  '$zero))))
+		($rectform 
+		 (power ($bfloat'$%e)
+			(add ($log_gamma ($bfloat u))
+                             ($log_gamma ($bfloat v))
+                             (mul -1 ($log_gamma ($bfloat (add u v))))))))
+               ((or (and (mnump u)
+			 (eq ($sign u) '$pos)
+			 (eq ($sign (sub ($truncate u) u)) '$zero)
+			 (not (and (mnump v)
+				   (eq ($sign (sub ($truncate v) v)) '$zero)
+				   (eq ($sign v) '$neg)
+				   (eq ($sign (add u v)) '$pos)))
+			 (setq u ($truncate u)))
+                    (and (mnump v)
+			 (eq ($sign v) '$pos)
+			 (eq ($sign (sub ($truncate v) v)) '$zero)
+			 (not (and (mnump u)
+				   (eq ($sign (sub ($truncate u) u)) '$zero)
+				   (eq ($sign u) '$neg)
+				   (eq ($sign (add u v)) '$pos)))
+			 (setq v ($truncate v))))
+		($rectform ($bfloat (beta-expand-integer u v))))
+               (t
+		(give-up)))))
+
+      	  ((or (and (and (integerp u)
+			 (plusp u))
+	            (not (and (mnump v)
+	                      (eq ($sign (sub ($truncate v) v)) '$zero)
+      	                      (eq ($sign v) '$neg)
+	                      (eq ($sign (add u v)) '$pos))))
+	       (and (and (integerp v) 
+			 (plusp v))
+                    (not (and (mnump u)
+                              (eq ($sign (sub ($truncate u) u)) '$zero)
+                              (eq ($sign u) '$neg)
+                              (eq ($sign (add u v)) '$pos)))))
+           ;; Expand for a positive integer. But not if the other argument is 
+           ;; a negative integer and the sum of the integers is not negative.
+           (beta-expand-integer u v))
+
+;;; At this point both integers are negative. This code does not work for
+;;; negative integers. The factorial function is not defined.
+					;	  ((and (integerp u) (integerp v))
+					;	   (mul2* (div* (list '(mfactorial) (1- u))
+					;			(list '(mfactorial) (+ u v -1)))
+					;		  (list '(mfactorial) (1- v))))
+
+	  ((or (and (ratnump u) (ratnump v) (integerp (setq x (addk u v))))
+	       (and $beta_args_sum_to_integer
+		    (integerp (setq x (expand1 (add2 u v) 1 1)))))
+	   (let ((w (if (symbolp v) v u)))
+	     (div* (mul2* '$%pi
+			  (list '(%binomial)
+				(add2 (1- x) (neg w))
+				(1- x)))
+		   `((%sin) ((mtimes) ,w $%pi)))))
+          
+          ((and $beta_expand (mplusp u) (integerp (cadr u)))
+           ;; Expand beta(a+n,b) where n is an integer.
+           (let ((n (cadr u))
+		 (u (simplify (cons '(mplus) (cddr u)))))
+             (beta-expand-add-integer n u v)))
+          
+          ((and $beta_expand (mplusp v) (integerp (cadr v)))
+           ;; Expand beta(a,b+n) where n is an integer.
+           (let ((n (cadr v))
+		 (v (simplify (cons '(mplus) (cddr v)))))
+             (beta-expand-add-integer n v u)))
+                  
+	  (t (give-up)))))
+
 (defun beta-expand-integer (u v)
   ;; One of the arguments is a positive integer. Do an expansion.
   ;; BUT for a negative integer as second argument the expansion is only
@@ -362,10 +501,10 @@
   (if (plusp n)
       (mul (simplify (list '($pochhammer) u n))
            (power (simplify (list '($pochhammer) (add u v) n)) -1)
-           (simplify (list '($beta) u v)))
+           (simplify (list '(%beta) u v)))
       (mul (simplify (list '($pochhammer) (add u v n) (- n)))
            (power (simplify (list '($pochhammer) (add u n) (- n))) -1)
-           (simplify (list '($beta) u v)))))
+           (simplify (list '(%beta) u v)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
