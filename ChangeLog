@@ -6,6 +6,7 @@ New items in core:
 
 New items in share:
 -------------------
+ * New example share/colnew/prob5.mac
 
 Changes in core:
 ----------------
@@ -23,12 +24,15 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
+ * \#4154: Some info nodes have bad headers (and no "Up"s)
 
 Unnumbered bugs fixed:
 ---------------------
 
 Documentation:
 --------------
+ * Document colnew share package
+ * \#4154: Some info nodes have bad headers (and no "Up"s)
 
 Build system:
 -------------

@@ -27,11 +27,11 @@
   "Log file containing info for each entry that is added to the index
   table.")
 
-(defun texinfo-version-number (major minor &optional patch)
+(defun texinfo-version-number (major minor &optional (patch 0))
   "Convert the major, minor, and patch to an integer."
   (+ (* 10000 major)
      (* 100 minor)
-     (and patch patch)))
+     patch))
 
 (let ((maxima_nnn-pattern (pregexp:pregexp "^maxima_[0-9][0-9]*$")))
   (defun maxima_nnn-p (f)

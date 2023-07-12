@@ -3,6 +3,12 @@ C----------------------------------------------------------------       MAN   20
 C                                                                       MAN   30
 C  PROBLEM 2 - SEE COMPANION PAPER                                      MAN   40
 C                                                                       MAN   50
+C  Reference:
+C   U. Ascher, J. Christiansen and R. D. Russell,
+C   Collocation software for boundary-value odes,
+C   ACM Trans. Math Software 7 (1981), 209-222.
+C   doi:10.1145/355945.355950
+C
       implicit real*8 (a-h, o-z)
       REAL*8 ZETA(4), FSPACE(40000), TOL(4), Z(4)                         MAN   60
       INTEGER M(2), IPAR(11), ISPACE(2500), LTOL(4)                     MAN   70

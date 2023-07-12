@@ -23,15 +23,12 @@
 
 ;;; Implementation of the plog function
 
-(defun simpplog (x vestigial z)
-  (declare (ignore vestigial))
-  (prog (varlist dd check y)
-     (oneargcheck x)
-     (setq check x)
-     (setq x (simpcheck (cadr x) z))
-     (cond ((equal 0 x) (merror (intl:gettext "plog: plog(0) is undefined.")))
+(def-simplifier plog (x)
+  (prog (varlist dd y z)
+     (cond ((equal 0 x)
+	    (merror (intl:gettext "plog: plog(0) is undefined.")))
 	   ((among var x)	;This is used in DEFINT. 1/19/81. -JIM
-	    (return (eqtest (list '(%plog) x) check))))
+	    (return (give-up))))
      (newvar x)
      (cond
        ((and (member '$%i varlist)
@@ -40,33 +37,39 @@
 			varlist)))
 	(setq dd (trisplit x))
 	(cond ((setq z (patan (car dd) (cdr dd)))
-	       (return (add2* (simpln (list '(%log) 
-					    (simpexpt (list '(mexpt)
-							    ($expand (list '(mplus)
-									   (list '(mexpt) (car dd) 2)
-									   (list '(mexpt) (cdr dd) 2)))
-							    '((rat) 1 2)) 1 nil)) 1 t)
+	       (return (add2* (ftake '%log 
+				     (simpexpt (list '(mexpt)
+						     ($expand (list '(mplus)
+								    (list '(mexpt) (car dd) 2)
+								    (list '(mexpt) (cdr dd) 2)))
+						     '((rat) 1 2))
+					       1 nil))
 			      (list '(mtimes) z '$%i))))))
-       ((and (free x '$%i) (eq ($sign x) '$pnz))
-	(return (eqtest (list '(%plog) x) check)))
-       ((and (equal ($imagpart x) 0) (setq y ($asksign x)))
-	(cond ((eq y '$pos) (return (simpln (list '(%log) x) 1 t)))
+       ((and (free x '$%i)
+	     (eq ($sign x) '$pnz))
+	(return (give-up)))
+       ((and (equal ($imagpart x) 0)
+	     (setq y ($asksign x)))
+	(cond ((eq y '$pos)
+	       (return (ftake '%log x)))
 	      ((and plogabs (eq y '$neg))
-	       (return (simpln (list '(%log) (list '(mtimes) -1 x)) 1 nil)))
+	       (return (ftake '%log (list '(mtimes) -1 x))))
 	      ((eq y '$neg)
 	       (return (add2 %p%i
-			     (simpln (list '(%log) (list '(mtimes) -1 x)) 1 nil))))
+			     (ftake '%log (list '(mtimes) -1 x)))))
 	      (t (merror (intl:gettext "plog: plog(0) is undefined.")))))
        ((and (equal ($imagpart (setq z (div* x '$%i))) 0)
 	     (setq y ($asksign z)))
 	(cond
-	  ((equal y '$zero) (merror (intl:gettext "plog: plog(0) is undefined.")))
-	  (t (cond ((eq y '$pos) (setq y 1))
-		   ((eq y '$neg) (setq y -1)))
-	     (return (add2* (simpln (list '(%log)
-					  (list '(mtimes) y z)) 1 nil)
+	  ((equal y '$zero)
+	   (merror (intl:gettext "plog: plog(0) is undefined.")))
+	  (t (cond ((eq y '$pos)
+		    (setq y 1))
+		   ((eq y '$neg)
+		    (setq y -1)))
+	     (return (add2* (ftake '%log (list '(mtimes) y z))
 			    (list '(mtimes) y '((rat) 1 2) '$%i '$%pi)))))))
-     (return (eqtest (list '(%plog) x) check))))
+     (return (give-up))))
 
 (defun patan (r i)
   (let (($numer $numer))
@@ -118,19 +121,11 @@
 
 ;;; Implementation of the Binomial coefficient
 
-;; Verb function for the Binomial coefficient
-(defmfun $binomial (x y)
-  (simplify (list '(%binomial) x y)))
-
 ;; Binomial has Mirror symmetry
 (defprop %binomial t commutes-with-conjugate)
 
-(defun simpbinocoef (x vestigial z)
-  (declare (ignore vestigial))
-  (twoargcheck x)
-  (let ((u (simpcheck (cadr x) z))
-	(v (simpcheck (caddr x) z))
-	(y))
+(def-simplifier binomial (u v)
+  (let (y)
     (cond ((integerp v)
 	   (cond ((minusp v)
 		  (if (and (integerp u) (minusp u) (< v u))
@@ -144,21 +139,21 @@
            (cond ((zerop1 y)
                   ;; u and v are equal, simplify not if argument can be negative
                   (if (member ($csign u) '($pnz $pn $neg $nz))
-                      (eqtest (list '(%binomial) u v) x)
+                      (give-up)
                       (bincomp u y)))
-                 (t (bincomp u y))))
+		 (t (bincomp u y))))
           ((complex-float-numerical-eval-p u v)
            ;; Numercial evaluation for real and complex floating point numbers.
            (let (($numer t) ($float t))
              ($rectform
-               ($float 
-                 ($makegamma (list '(%binomial) ($float u) ($float v)))))))
+              ($float 
+               ($makegamma (list '(%binomial) ($float u) ($float v)))))))
           ((complex-bigfloat-numerical-eval-p u v)
            ;; Numerical evaluation for real and complex bigfloat numbers.
            ($rectform
-             ($bfloat
-               ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
-          (t (eqtest (list '(%binomial) u v) x)))))
+            ($bfloat
+             ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
+          (t (give-up)))))
 
 (defun bincomp (u v) 
   (cond ((minusp v) 0)
@@ -206,19 +201,16 @@
 (defmvar $beta_args_sum_to_integer nil)
 
 ;;; The Beta function has mirror symmetry
-(defprop $beta t commutes-with-conjugate)
+(defprop %beta t commutes-with-conjugate)
 
-(defun simpbeta (x vestigial z &aux check)
-  (declare (ignore vestigial))
-  (twoargcheck x)
-  (setq check x)
-  (let ((u (simpcheck (cadr x) z)) (v (simpcheck (caddr x) z)))
+(def-simplifier beta (u v)
+  (let (x)
     (cond ((or (zerop1 u) (zerop1 v))
            (if errorsw 
                (throw 'errorsw t) 
                (merror 
-                 (intl:gettext "beta: expected nonzero arguments; found ~M, ~M")
-                               u v)))
+		(intl:gettext "beta: expected nonzero arguments; found ~M, ~M")
+		u v)))
 
           ;; Check for numerical evaluation in float precision
       	  ((complex-float-numerical-eval-p u v)
@@ -229,87 +221,87 @@
              ((and (or (not (numberp u))
                        (> u 0)
                        (not (= (nth-value 1 (truncate u)) 0)))
-              (and (or (not (numberp v))
-                       (> v 0)
-                       (not (= (nth-value 1 (truncate v)) 0)))
-              (and (or (not (numberp (add u v)))
-                       (> (add v u) 0)
-                       (not (= (nth-value 1 ($truncate (add u v))) 0))))))
+		   (and (or (not (numberp v))
+			    (> v 0)
+			    (not (= (nth-value 1 (truncate v)) 0)))
+			(and (or (not (numberp (add u v)))
+				 (> (add v u) 0)
+				 (not (= (nth-value 1 ($truncate (add u v))) 0))))))
 	      ($rectform 
-	        (power ($float '$%e)
-	               (add ($log_gamma ($float u))
-                            ($log_gamma ($float v))
-                            (mul -1 ($log_gamma ($float (add u v))))))))
+	       (power ($float '$%e)
+	              (add ($log_gamma ($float u))
+                           ($log_gamma ($float v))
+                           (mul -1 ($log_gamma ($float (add u v))))))))
              ((or (and (numberp u)
                        (> u 0)
                        (= (nth-value 1 (truncate u)) 0)
                        (not (and (mnump v)
-                                 (eq ($sign (sub ($truncate v) v)) '$zero)
-                                 (eq ($sign v) '$neg)
-                                 (eq ($sign (add u v)) '$pos)))
+				 (eq ($sign (sub ($truncate v) v)) '$zero)
+				 (eq ($sign v) '$neg)
+				 (eq ($sign (add u v)) '$pos)))
                        (setq u (truncate u)))
                   (and (numberp v)
                        (> v 0)
                        (= (nth-value 1 (truncate u)) 0)
                        (not (and (mnump u)
-                                 (eq ($sign (sub ($truncate u) u)) '$zero)
-                                 (eq ($sign u) '$neg)
-                                 (eq ($sign (add u v)) '$pos)))
+				 (eq ($sign (sub ($truncate u) u)) '$zero)
+				 (eq ($sign u) '$neg)
+				 (eq ($sign (add u v)) '$pos)))
                        (setq v (truncate v))))
               ;; One value is representing a negative integer, the other a
               ;; positive integer and the sum is negative. Expand.
               ($rectform ($float (beta-expand-integer u v))))
              (t
-               (eqtest (list '($beta) u v) check))))
+              (give-up))))
 
           ;; Check for numerical evaluation in bigfloat precision
           ((complex-bigfloat-numerical-eval-p u v)
            (let (($ratprint nil))
              (cond
                ((and (or (not (mnump u))
-                         (eq ($sign u) '$pos)
-                         (not (eq ($sign (sub ($truncate u) u)) '$zero)))
+			 (eq ($sign u) '$pos)
+			 (not (eq ($sign (sub ($truncate u) u)) '$zero)))
                      (or (not (mnump v))
-                         (eq ($sign v) '$pos)
-                         (not (eq ($sign (sub ($truncate v) v)) '$zero)))
+			 (eq ($sign v) '$pos)
+			 (not (eq ($sign (sub ($truncate v) v)) '$zero)))
                      (or (not (mnump (add u v)))
-                         (eq ($sign (add u v)) '$pos)
-                         (not (eq ($sign (sub ($truncate (add u v))
+			 (eq ($sign (add u v)) '$pos)
+			 (not (eq ($sign (sub ($truncate (add u v))
                                               (add u v)))
                                   '$zero))))
-                ($rectform 
-                  (power ($bfloat'$%e)
-                         (add ($log_gamma ($bfloat u))
-                              ($log_gamma ($bfloat v))
-                              (mul -1 ($log_gamma ($bfloat (add u v))))))))
+		($rectform 
+		 (power ($bfloat'$%e)
+			(add ($log_gamma ($bfloat u))
+                             ($log_gamma ($bfloat v))
+                             (mul -1 ($log_gamma ($bfloat (add u v))))))))
                ((or (and (mnump u)
-                         (eq ($sign u) '$pos)
-                         (eq ($sign (sub ($truncate u) u)) '$zero)
-                         (not (and (mnump v)
-                              (eq ($sign (sub ($truncate v) v)) '$zero)
-                              (eq ($sign v) '$neg)
-                              (eq ($sign (add u v)) '$pos)))
-                         (setq u ($truncate u)))
+			 (eq ($sign u) '$pos)
+			 (eq ($sign (sub ($truncate u) u)) '$zero)
+			 (not (and (mnump v)
+				   (eq ($sign (sub ($truncate v) v)) '$zero)
+				   (eq ($sign v) '$neg)
+				   (eq ($sign (add u v)) '$pos)))
+			 (setq u ($truncate u)))
                     (and (mnump v)
-                         (eq ($sign v) '$pos)
-                         (eq ($sign (sub ($truncate v) v)) '$zero)
-                         (not (and (mnump u)
-                              (eq ($sign (sub ($truncate u) u)) '$zero)
-                              (eq ($sign u) '$neg)
-                              (eq ($sign (add u v)) '$pos)))
-                         (setq v ($truncate v))))
-                ($rectform ($bfloat (beta-expand-integer u v))))
+			 (eq ($sign v) '$pos)
+			 (eq ($sign (sub ($truncate v) v)) '$zero)
+			 (not (and (mnump u)
+				   (eq ($sign (sub ($truncate u) u)) '$zero)
+				   (eq ($sign u) '$neg)
+				   (eq ($sign (add u v)) '$pos)))
+			 (setq v ($truncate v))))
+		($rectform ($bfloat (beta-expand-integer u v))))
                (t
-                 (eqtest (list '($beta) u v) check)))))
+		(give-up)))))
 
       	  ((or (and (and (integerp u)
-	                 (plusp u))
+			 (plusp u))
 	            (not (and (mnump v)
 	                      (eq ($sign (sub ($truncate v) v)) '$zero)
       	                      (eq ($sign v) '$neg)
 	                      (eq ($sign (add u v)) '$pos))))
 	       (and (and (integerp v) 
-	                 (plusp v))
+			 (plusp v))
                     (not (and (mnump u)
                               (eq ($sign (sub ($truncate u) u)) '$zero)
                               (eq ($sign u) '$neg)
@@ -320,10 +312,10 @@
 
 ;;; At this point both integers are negative. This code does not work for
 ;;; negative integers. The factorial function is not defined.
-;	  ((and (integerp u) (integerp v))
-;	   (mul2* (div* (list '(mfactorial) (1- u))
-;			(list '(mfactorial) (+ u v -1)))
-;		  (list '(mfactorial) (1- v))))
+					;	  ((and (integerp u) (integerp v))
+					;	   (mul2* (div* (list '(mfactorial) (1- u))
+					;			(list '(mfactorial) (+ u v -1)))
+					;		  (list '(mfactorial) (1- v))))
 
 	  ((or (and (ratnump u) (ratnump v) (integerp (setq x (addk u v))))
 	       (and $beta_args_sum_to_integer
@@ -338,16 +330,16 @@
           ((and $beta_expand (mplusp u) (integerp (cadr u)))
            ;; Expand beta(a+n,b) where n is an integer.
            (let ((n (cadr u))
-                 (u (simplify (cons '(mplus) (cddr u)))))
+		 (u (simplify (cons '(mplus) (cddr u)))))
              (beta-expand-add-integer n u v)))
           
           ((and $beta_expand (mplusp v) (integerp (cadr v)))
            ;; Expand beta(a,b+n) where n is an integer.
            (let ((n (cadr v))
-                 (v (simplify (cons '(mplus) (cddr v)))))
+		 (v (simplify (cons '(mplus) (cddr v)))))
              (beta-expand-add-integer n v u)))
                   
-	  (t (eqtest (list '($beta) u v) check)))))
+	  (t (give-up)))))
 
 (defun beta-expand-integer (u v)
   ;; One of the arguments is a positive integer. Do an expansion.
@@ -367,105 +359,102 @@
   (if (plusp n)
       (mul (simplify (list '($pochhammer) u n))
            (power (simplify (list '($pochhammer) (add u v) n)) -1)
-           (simplify (list '($beta) u v)))
+           (ftake* '%beta u v))
       (mul (simplify (list '($pochhammer) (add u v n) (- n)))
            (power (simplify (list '($pochhammer) (add u n) (- n))) -1)
-           (simplify (list '($beta) u v)))))
+           (ftake* '%beta u v))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Implementation of the Gamma function
 
-(defun simpgamma (x vestigial z)
-  (declare (ignore vestigial))
-  (oneargcheck x)
-  (let ((j (simpcheck (cadr x) z)))
-    (cond ((and (floatp j)
-                (or (zerop j)
-                    (and (< j 0)
-                         (zerop (nth-value 1 (truncate j))))))
-           (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
-          ((float-numerical-eval-p j) (gammafloat ($float j)))
-          ((and ($bfloatp j)
-                (or (zerop1 j)
-                    (and (eq ($sign j) '$neg)
-                         (zerop1 (sub j ($truncate j))))))
-           (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
-          ((bigfloat-numerical-eval-p j) 
-           ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
-           ;; and an argument up to about 500.0 the accuracy of the result is
-           ;; better than 10^(-$fpprec).
-	   (let ((z (bigfloat:to ($bfloat j))))
-	     (cond
-	       ((bigfloat:<= (bigfloat:abs z) (bigfloat:sqrt (bigfloat:epsilon z)))
-		;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
-		(div (mfuncall '$bffac
-			       ($bfloat j)
-			       (+ $fpprec 4))
-		     ($bfloat j)))
-	       (t
-		(let ((result (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4))))
-		  ;; bigfloatp will round the result to the correct fpprec
-		  (bigfloatp result))))))
-	  ((complex-float-numerical-eval-p j)
-           (complexify (gamma-lanczos (complex ($float ($realpart j))
-                                               ($float ($imagpart j))))))
-          ((complex-bigfloat-numerical-eval-p j)
-	   (let ((z (bigfloat:to ($bfloat j))))
-	     (cond
-	       ((bigfloat:<= (bigfloat:abs z)
-			     (bigfloat:sqrt (bigfloat:epsilon z)))
-		;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
-		(to (bigfloat:/ (bigfloat:to (mfuncall '$cbffac 
-						       (to z)
-						       (+ $fpprec 4)))
-				z)))
-	       (t
-		;; Adding 4 digits in the call to cbffac. See comment above.
-		(let ((result
-		       (mfuncall '$cbffac 
-				 (add -1 ($bfloat ($realpart j)) 
-				      (mul '$%i ($bfloat ($imagpart j))))
-				 (+ $fpprec 4))))
-		  (add (bigfloatp ($realpart result))
-		       (mul '$%i (bigfloatp ($imagpart result)))))))))
-          ((taylorize (mop x) (cadr x)))
-          ((eq j '$inf) '$inf) ; Simplify to $inf to be more consistent.
-          ((and $gamma_expand
-                (mplusp j) 
-                (integerp (cadr j)))
-           ;; Expand gamma(z+n) for n an integer.
-           (let ((n (cadr j))
-                 (z (simplify (cons '(mplus) (cddr j)))))
-             (cond 
-               ((> n 0)
-                (mul (simplify (list '($pochhammer) z n))
-                     (simplify (list '(%gamma) z))))
-               ((< n 0)
-                (setq n (- n))
-                (div (mul (power -1 n) (simplify (list '(%gamma) z)))
-                     ;; We factor to get the order (z-1)*(z-2)*...
-                     ;; and not (1-z)*(2-z)*... 
-                     ($factor
-                       (simplify (list '($pochhammer) (sub 1 z) n))))))))
-	  ((integerp j)
-	   (cond ((> j 0)
-                  (cond ((<= j $factlim)
-                         ;; Positive integer less than $factlim. Evaluate.
-                         (simplify (list '(mfactorial) (1- j))))
-                         ;; Positive integer greater $factlim. Noun form.
-                        (t (eqtest (list '(%gamma) j) x))))
-                 ;; Negative integer. Throw a Maxima error.
-		 (errorsw (throw 'errorsw t))
-		 (t (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))))
-	  ((alike1 j '((rat) 1 2))
-	   (list '(mexpt simp) '$%pi j))
-          ((and (mnump j)
-                (ratgreaterp $gammalim (simplify (list '(mabs) j)))
-                (or (ratgreaterp j 1) (ratgreaterp 0 j)))
-           ;; Expand for rational numbers less than $gammalim.
-           (gammared j))
-	  (t (eqtest (list '(%gamma) j) x)))))
+(def-simplifier gamma (j)
+  (cond ((and (floatp j)
+	      (or (zerop j)
+                  (and (< j 0)
+		       (zerop (nth-value 1 (truncate j))))))
+         (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
+        ((float-numerical-eval-p j) (gammafloat ($float j)))
+        ((and ($bfloatp j)
+	      (or (zerop1 j)
+                  (and (eq ($sign j) '$neg)
+		       (zerop1 (sub j ($truncate j))))))
+         (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
+        ((bigfloat-numerical-eval-p j) 
+         ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
+         ;; and an argument up to about 500.0 the accuracy of the result is
+         ;; better than 10^(-$fpprec).
+	 (let ((z (bigfloat:to ($bfloat j))))
+	   (cond
+	     ((bigfloat:<= (bigfloat:abs z) (bigfloat:sqrt (bigfloat:epsilon z)))
+	      ;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
+	      (div (mfuncall '$bffac
+			     ($bfloat j)
+			     (+ $fpprec 4))
+		   ($bfloat j)))
+	     (t
+	      (let ((result (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4))))
+		;; bigfloatp will round the result to the correct fpprec
+		(bigfloatp result))))))
+	((complex-float-numerical-eval-p j)
+         (complexify (gamma-lanczos (complex ($float ($realpart j))
+                                             ($float ($imagpart j))))))
+        ((complex-bigfloat-numerical-eval-p j)
+	 (let ((z (bigfloat:to ($bfloat j))))
+	   (cond
+	     ((bigfloat:<= (bigfloat:abs z)
+			   (bigfloat:sqrt (bigfloat:epsilon z)))
+	      ;; For small z, use gamma(z) = gamma(z+1)/z = z!/z
+	      (to (bigfloat:/ (bigfloat:to (mfuncall '$cbffac 
+						     (to z)
+						     (+ $fpprec 4)))
+			      z)))
+	     (t
+	      ;; Adding 4 digits in the call to cbffac. See comment above.
+	      (let ((result
+		      (mfuncall '$cbffac 
+				(add -1 ($bfloat ($realpart j)) 
+				     (mul '$%i ($bfloat ($imagpart j))))
+				(+ $fpprec 4))))
+		(add (bigfloatp ($realpart result))
+		     (mul '$%i (bigfloatp ($imagpart result)))))))))
+        ((taylorize (mop form) (cadr form)))
+        ((eq j '$inf) '$inf) ; Simplify to $inf to be more consistent.
+        ((and $gamma_expand
+	      (mplusp j) 
+	      (integerp (cadr j)))
+         ;; Expand gamma(z+n) for n an integer.
+         (let ((n (cadr j))
+	       (z (simplify (cons '(mplus) (cddr j)))))
+           (cond 
+             ((> n 0)
+	      (mul (simplify (list '($pochhammer) z n))
+                   (simplify (list '(%gamma) z))))
+             ((< n 0)
+	      (setq n (- n))
+	      (div (mul (power -1 n) (simplify (list '(%gamma) z)))
+                   ;; We factor to get the order (z-1)*(z-2)*...
+                   ;; and not (1-z)*(2-z)*... 
+                   ($factor
+                    (simplify (list '($pochhammer) (sub 1 z) n))))))))
+	((integerp j)
+	 (cond ((> j 0)
+                (cond ((<= j $factlim)
+		       ;; Positive integer less than $factlim. Evaluate.
+		       (simplify (list '(mfactorial) (1- j))))
+		      ;; Positive integer greater $factlim. Noun form.
+		      (t (give-up))))
+	       ;; Negative integer. Throw a Maxima error.
+	       (errorsw (throw 'errorsw t))
+	       (t (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))))
+	((alike1 j '((rat) 1 2))
+	 (list '(mexpt simp) '$%pi j))
+        ((and (mnump j)
+	      (ratgreaterp $gammalim (simplify (list '(mabs) j)))
+	      (or (ratgreaterp j 1) (ratgreaterp 0 j)))
+         ;; Expand for rational numbers less than $gammalim.
+         (gammared j))
+	(t (give-up))))
 
 ;; A sign function for gamma(x); when x > 0 return pos; when x < 0 or x > 0, return pn;
 ;;; otherwise, return pnz (that is, nothing known).
@@ -500,17 +489,12 @@
 	    (return
 	      (simptimes (list '(mtimes)
 			       (list '(mexpt) n q)
-			       (simpgamma (list '(%gamma)
-						(list '(rat) m n))
-					  1
-					  nil)
+			       (ftake* '%gamma (list '(rat) m n))
 			       (list '(mexpt) (gammac m n q) -1))
 			 1
 			 nil))))
      (return (m* (gammac m n q)
-		 (simpgamma (list '(%gamma)
-				  (list '(rat) (rem m n) n))
-			    1 nil)
+		 (ftake* '%gamma (list '(rat) (rem m n) n))
 		 (m^ n (- q))))))
 
 (defun gammac (m n q)

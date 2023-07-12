@@ -215,4 +215,4 @@
   (let ((x (translate (car form))) (y (translate (cadr form))))
     (if (eq '$float (*union-mode (car x) (car y)))
 	`($float atan ,(dconv-$float x) ,(dconv-$float y))
-	`($any simplify (list '($atan2) ,(cdr x) ,(cdr y))))))
+	`($any simplify (list '(%atan2) ,(cdr x) ,(cdr y))))))

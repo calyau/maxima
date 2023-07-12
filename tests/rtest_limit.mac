@@ -841,13 +841,11 @@ limit(log(1 + exp(x)), x, 0, plus), numer;
  */
 
 integrate(x^3/(exp(x)-1),x,0,inf);
-'limit(6*li[4](%e^x)-6*x*li[3](%e^x)+3*x^2*li[2](%e^x)+x^3*log(1-%e^x)-x^4/4,
-       x,inf,minus) -%pi^4/15$
+-((15*log(-1)^4+30*%pi^2*log(-1)^2+7*%pi^4)/60)-%pi^4/15$
 
-integrate(x^3/(exp(x)-1),x,0,inf), numer;
-'limit(6.0*li[4](%e^x)-6.0*x*li[3](%e^x)+3.0*x^2*li[2](%e^x)
-                      +1.0*x^3*log(1-%e^x)-0.25*x^4,x,inf,minus)
- -6.49393940226683$
+
+block([numer : true,ratprint : false], integrate(x^3/(exp(x)-1),x,0,inf));
+ 6.493939402266837$
 
 /* #3142 limit((x^(1/x) - 1)*sqrt(x), x, inf) => inf */
 limit((x^(1/x) - 1)*sqrt(x), x, inf);

@@ -874,9 +874,9 @@
         (t
          (merror (intl:gettext "sstatus: unknown argument: ~M") keyword))))
 
-(dolist (l '($sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
+(dolist (l '($sin $cos $tan  $sec $csc $cot $sinh $cosh
 	     $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
-	     $acosh $atanh $acsch $asech $acoth $binomial $gamma $genfact $del))
+	     $acosh $atanh $acsch $asech $acoth $del))
   (let ((x ($nounify l)))
     (putprop l x 'alias)
     (putprop x l 'reversealias)))

@@ -644,9 +644,12 @@ ignoring dummy variables and array indices."
    (cond (($mapatom e) nil)        
          ((and (eq fn (caar e)) (not (freeof x e))) (cdr e))
           (t 
-            (reduce #'append (mapcar #'(lambda (q) (gather-args-of q fn x)) (cdr e))))))
+        	(remove-duplicates (reduce #'append 
+			 (mapcar #'(lambda (q) 
+			     (gather-args-of q fn x)) (cdr e))) :test #'alike1))))
 
-;; When X depends on x, replace cos(X)^2 + sin(X)^2 by 1 
+;; Replace every subexpression of e of the form cos(X)^2 + sin(X)^2, where X 
+;; depends on x, by 1.
  (defun sin-sq-cos-sq-sub (e &optional (x var))
     (let ((ccc nil) (z) (ee))
       (cond (($mapatom e) e)
@@ -659,7 +662,7 @@ ignoring dummy variables and array indices."
                     (when (freeof z (sratsimp ee))
                         (setq e ee)))
                 e)
-            ;; maybe this isn't needed, but I think it's not wrong.
+            ;; maybe this isn't needed, but it's not wrong.
             ((eq 'mqapply (caar e))
               (subftake (caar (second e))
                  (mapcar #'(lambda (q) (sin-sq-cos-sq-sub q x)) (subfunsubs e))
@@ -3067,10 +3070,10 @@ ignoring dummy variables and array indices."
 		    ;; to check that xlim-z & ylim-z are real too.
 		    ((and (lenient-realp xlim-z) (lenient-realp ylim-z)
 				  (or (eq t (mnqp ylim-z 0)) (eq t (mgrp xlim-z 0))))
-			 	        (ftake '$atan2 ylim-z xlim-z))
+			 	        (ftake '%atan2 ylim-z xlim-z))
 			(t
 				(throw 'limit nil)))))
-(setf (get '$atan2 'simplim%function) 'simplim%atan2)
+(setf (get '%atan2 'simplim%function) 'simplim%atan2)
 
 (defun simplimsch (sch arg)
   (cond ((real-infinityp arg)

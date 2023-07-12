@@ -3,6 +3,12 @@ C----------------------------------------------------------------       MAN   20
 C                                                                       MAN   30
 C  PROBLEM 3 - SEE COMPANION PAPER                                      MAN   40
 C                                                                       MAN   50
+C  Reference:
+C   U. Ascher, J. Christiansen and R. D. Russell,
+C   Collocation software for boundary-value odes,
+C   ACM Trans. Math Software 7 (1981), 209-222.
+C   doi:10.1145/355945.355950
+C
       implicit real*8 (a-h, o-z)
       REAL*8 ZETA(5), FSPACE(40000), TOL(2), SVAL(3), ELVAL(3)            MAN   60
       INTEGER M(2), ISPACE(2500), LTOL(2), IPAR(11)                     MAN   70
@@ -68,13 +74,7 @@ C        X = 0,1,2, ..., L.                                             MAN  610
         WRITE (6,99998)                                                 MAN  650
         NP1 = EL + 1.5                                                  MAN  660
         DO 20 III=1,NP1                                                 MAN  670
-c          CALL APPROX(III, X, Z, FSPACE(IS6), FSPACE(1), ISPACE(1),      MAN  680
-c     *     FSPACE(IS5), ISPACE(2), NCOMP, M, ISPACE(4), 1, DM, 0)       MAN  690
-
-c Not sure if this is the correct replacement for the above call.           
-           call approx(iii, x, z, a, fspace(is6), fspace(1), ispace(1),
-     $          fspace(is5), fspace(is4), ispace(2), ispace(3),
-     $          ispace(5), ispace(8), ispace(4), 1, dm, 0)
+          call appsln(x,z,fspace,ispace)
           XL = X*EL                                                     MAN  700
           Z(2) = Z(2)/EL                                                MAN  710
           Z(4) = Z(4)/EL                                                MAN  720

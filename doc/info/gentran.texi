@@ -6,7 +6,7 @@
 * Gentran Evaluation Forms::
 @end menu
 
-@node Introduction to Gentran, Functions for Gentran, gentran-pkg
+@node Introduction to Gentran, Functions for Gentran, gentran-pkg, gentran-pkg
 @section Introduction to Gentran
 
 Original Authors Barbara Gates and Paul Wang

@@ -203,7 +203,7 @@
 (setf (gethash 'maxima::$cabs *running-error-op*) 'running-error-abs)
 (setf (gethash 'maxima::$conjugate *running-error-op*) 'running-error-conjugate)
 (setf (gethash 'maxima::mfactorial *running-error-op*) 'running-error-factorial)
-(setf (gethash 'maxima::$atan2 *running-error-op*) 'running-error-atan2)
+(setf (gethash 'maxima::%atan2 *running-error-op*) 'running-error-atan2)
 (setf (gethash 'maxima::$realpart *running-error-op*) 'running-error-realpart)
 (setf (gethash 'maxima::$imagpart *running-error-op*) 'running-error-imagpart)
 

@@ -163,8 +163,8 @@ limit(x^2*(gamma(1/x) - (x - %gamma + (6*%gamma^2+%pi^2)/(12*x))),x,inf);
 errcatch( limit(gamma(1/x)/gamma(x),x,0,plus));
 ['inf]$
 
-errcatch( limit(gamma(x)/gamma(1/x),x,0,plus));
-[0]$
+limit(gamma(x)/gamma(1/x),x,0,plus);
+0$
 
 /* #3842 limit(atan(x),x,%i) --> error. That was determined to be a non-bug, but
 here are two related limit problems. */
@@ -1009,9 +1009,29 @@ block([ratsimpexpons : true, ratfac : true],
 limit(sin(x)/x + sin(x) + cos(x),x,inf);
 ind$
 
-/* Did any facts or contexts leak?*/
+/* #4151 limit bug as x tend to inf for trigonometric expressions */
+limit((4*x^3+2*x^2*sin(x)+1)/(x+1)^2 - 4*x,x,inf);
+ind$
+
+limit(expand((4*x^3+2*x^2*sin(x)+1)/(x+1)^2 - 4*x),x,inf);
+ind$
+
+/* #4137 simplimplus bugs */
+limit(3^x * cos(x) + sin(x),x,inf);
+und$
+
+limit(3^x * cos(x) + 2^x,x,inf);
+und$
+
+ errcatch(limit(3^x + (9+%i)^x,x,inf));
+ [infinity]$
+
+/* Did any facts, values, or contexts leak?*/
 facts();
 []$
+
+(remvalue(X),0);
+0$
 
 contexts;
 [initial,global]$
