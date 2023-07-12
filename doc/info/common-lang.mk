@@ -13,7 +13,7 @@ maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 # This includes the indices, maxima_singlepage.html and any other html
 # file that doesn't start with "maxima".
 maxima-index-html.lisp : index.html
-	../../../maxima-local --batch-lisp=../build-html-index.lisp
+	../../../maxima-local --no-init --batch-lisp=../build-html-index.lisp
 
 maxima_singlepage.html index.html: maxima.texi $(maxima_TEXINFOS)
 	../build_html.sh -l $(lang)
