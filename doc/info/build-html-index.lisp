@@ -180,16 +180,35 @@
 	  (declare (ignore whole item#))
 	  ;; Replace "&rsquo;" with "'"
 	  (when (find #\& item :test #'char=)
-	    (setf item (pregexp:pregexp-replace* "&rsquo;" item (string (code-char #x27)))))
+	    (dolist (replacement '(("&rsquo;" #x27)
+				   ("&uuml;" 252)
+				   ("&Uuml;" 220)))
+	      (destructuring-bind (html-entity char-code)
+		  replacement
+		(setf item (pregexp:pregexp-replace* html-entity item (string (code-char char-code)))))))
 
 	  (format *log-file* "TOC: ~S -> ~S~%" item file)
 
 	  (values item id file line))))))
 
-(defun find-index-file (dir)
+(defparameter *index-file-name*
+  (make-hash-table :test 'equal)
+  "Hash table whose key is the lang and whose value is a list of the
+  file name of function and variable index and the title of the
+  index.")
+
+;; Setup the hashtable.  The default (English) is the empty string.
+(dolist (entry 
+	 '(("" "Function-and-Variable-Index.html" "Function and Variable Index")
+	   ("de" "Index-der-Variablen-und-Funktionen.html" "Index der Variablen und Funktionen")))
+  (destructuring-bind (key &rest value)
+      entry
+    (setf (gethash key *index-file-name*) value)))
+
+(defun find-index-file (dir lang)
   "Find the name of HTML file containing the function and variable
   index."
-  (let ((f-a-v-i (merge-pathnames "Function-and-Variable-Index.html"
+  (let ((f-a-v-i (merge-pathnames (first (gethash lang *index-file-name*))
 				  dir)))
     (when (probe-file f-a-v-i)
       (return-from find-index-file f-a-v-i)))
@@ -217,12 +236,14 @@
     ;; Check if the last 2 files to see if one of them contains the
     ;; function and variable index we want.  Return the first one that
     ;; matches.
-    (format t "Looking for function and variable index~%")
-    (dolist (file (last files 2))
-      (when (grep-l "<title>(Function and Variable Index)" file)
-	(format t "Function index: ~S.~%"
-		(namestring file))
-	(return-from find-index-file file)))))
+    (let* ((title (second (gethash lang *index-file-name*)))
+	   (search-item (format nil "<title>~A" title)))
+      (format t "Looking for function and variable index: ~A~%" title)
+      (dolist (file (last files 2))
+	(when (grep-l search-item file)
+	  (format t "Function index: ~S.~%"
+		  (namestring file))
+	  (return-from find-index-file file))))))
 
 ;; Parse the texinfo version string.  It should look something like
 ;; "M.m.p", where M and m are a sequence of (base 10) digits and ".p"
@@ -261,9 +282,9 @@
     (setf *texinfo-version*
 	  (parse-texinfo-version *texinfo-version-string*))))
 
-(defun build-html-index (dir)
+(defun build-html-index (dir lang)
   (clrhash *html-index*)
-  (let ((index-file (find-index-file dir)))
+  (let ((index-file (find-index-file dir lang)))
     (unless index-file
       (error "Could not find HTML file containing the function and variable index."))
 
@@ -280,8 +301,8 @@
 ;; containing the documentation.  The single argument DIR should be a
 ;; directory that contains the html files to be searched for the
 ;; topics.  For example it can be "<maxima-dir>/doc/info/*.html"
-(defmfun $build_and_dump_html_index (dir)
-  (build-html-index dir)
+(defmfun $build_and_dump_html_index (dir &optional lang)
+  (build-html-index dir lang)
   (let (entries)
     (maphash #'(lambda (k v)
 		 (push (list k (namestring (car v)) (cdr v)) entries))

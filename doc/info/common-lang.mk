@@ -9,13 +9,16 @@ maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 # that if index.html is done, we have all the remaining html
 # files.
 #
-# First we find all the files that we don't want to have to process.
-# This includes the indices, maxima_singlepage.html and any other html
-# file that doesn't start with "maxima".
-maxima-index-html.lisp : index.html
-	../../../maxima-local --no-init --batch-lisp=../build-html-index.lisp
+# Load build-html-index.lisp and run the builder to create
+# maxima-index-html.lisp.  In a clean directory, there won't be a
+# maxima-index-html.lisp, so we don't want to try to verify the html
+# index to prevent spurious warnings.  Then after it's done, run
+# maxima to verify the index.
+maxima-index-html.lisp : index.html $(top_srcdir)/doc/info/build-html-index.lisp
+	MAXIMA_LANG_SUBDIR=$(lang) $(top_srcdir)/maxima-local --no-init --no-verify-html-index --preload=$(top_srcdir)/doc/info/build-html-index.lisp --batch-string='build_and_dump_html_index("./*.html", "$(lang)");'
+	MAXIMA_LANG_SUBDIR=$(lang) $(top_srcdir)/maxima-local --no-init --batch-string="quit();"
 
-maxima_singlepage.html index.html: maxima.texi $(maxima_TEXINFOS)
+maxima_singlepage.html index.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css texi2html.init
 	../build_html.sh -l $(lang)
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)
