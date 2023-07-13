@@ -541,7 +541,7 @@
 ;; See also http://en.wikipedia.org/wiki/Lambert's_W_function
 
 (defmfun $lambert_w (z)
-  (simplify (list '(%lambert_w) (resimplify z))))
+  (ftake* '%lambert_w z))
 
 ;;; Set properties to give full support to the parser and display
 (defprop $lambert_w %lambert_w alias)
@@ -795,7 +795,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $generalized_lambert_w (k z)
-  (simplify (list '(%generalized_lambert_w) (resimplify k) (resimplify z))))
+  (ftake* %generalized_lambert_w k z))
 
 ;;; Set properties to give full support to the parser and display
 (defprop $generalized_lambert_w %generalized_lambert_w alias)
