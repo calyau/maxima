@@ -178,14 +178,28 @@
 	(destructuring-bind (whole file item# id item)
 	    match
 	  (declare (ignore whole item#))
-	  ;; Replace "&rsquo;" with "'"
 	  (when (find #\& item :test #'char=)
-	    (dolist (replacement '(("&rsquo;" #x27)
+	    ;; Replace HTML entities with the corresponding char.
+	    ;; See, for example,
+	    ;; https://lilith.fisica.ufmg.br/~wag/TRANSF/codehtml.html
+	    ;;
+	    ;; Perhaps we should use the language to reduce the number
+	    ;; of calls to pregexp?
+	    (dolist (replacement '(("&rsquo;" #x27) ; Right single-quote -> apostrophe
+				   ;; From the de manual
 				   ("&uuml;" 252)
-				   ("&Uuml;" 220)))
+				   ("&Uuml;" 220)
+				   ("&auml;" 228)
+				   ;; From the pt manual
+				   ("&ccedil;" 231)
+				   ("&atilde;" 227)
+				   ("&oacute;" 243)
+				   ))
 	      (destructuring-bind (html-entity char-code)
 		  replacement
-		(setf item (pregexp:pregexp-replace* html-entity item (string (code-char char-code)))))))
+		(setf item (pregexp:pregexp-replace* html-entity
+						     item
+						     (string (code-char char-code)))))))
 
 	  (format *log-file* "TOC: ~S -> ~S~%" item file)
 
@@ -200,15 +214,25 @@
 ;; Setup the hashtable.  The default (English) is the empty string.
 (dolist (entry 
 	 '(("" "Function-and-Variable-Index.html" "Function and Variable Index")
-	   ("de" "Index-der-Variablen-und-Funktionen.html" "Index der Variablen und Funktionen")))
+	   ("de" "Index-der-Variablen-und-Funktionen.html" "Index der Variablen und Funktionen")
+	   ("pt" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")
+	   ("es" "Indice-de-Funciones-y-Variables.html" "Índice de Funciones y Variables")))
   (destructuring-bind (key &rest value)
       entry
     (setf (gethash key *index-file-name*) value)))
 
+(defun get-index-file-name (lang)
+  (first (gethash lang *index-file-name*)))
+
+(defun get-index-title (lang)
+  (second (gethash lang *index-file-name*)))
+
 (defun find-index-file (dir lang)
   "Find the name of HTML file containing the function and variable
   index."
-  (let ((f-a-v-i (merge-pathnames (first (gethash lang *index-file-name*))
+  (unless (gethash lang *index-file-name*)
+    (merror "Unknown or unsupported language for HTML help: ~A" lang))
+  (let ((f-a-v-i (merge-pathnames (get-index-file-name lang)
 				  dir)))
     (when (probe-file f-a-v-i)
       (return-from find-index-file f-a-v-i)))
@@ -236,7 +260,7 @@
     ;; Check if the last 2 files to see if one of them contains the
     ;; function and variable index we want.  Return the first one that
     ;; matches.
-    (let* ((title (second (gethash lang *index-file-name*)))
+    (let* ((title (get-index-title lang))
 	   (search-item (format nil "<title>~A" title)))
       (format t "Looking for function and variable index: ~A~%" title)
       (dolist (file (last files 2))
@@ -300,8 +324,10 @@
 ;; Run this to build a hash table from the topic to the HTML file
 ;; containing the documentation.  The single argument DIR should be a
 ;; directory that contains the html files to be searched for the
-;; topics.  For example it can be "<maxima-dir>/doc/info/*.html"
-(defmfun $build_and_dump_html_index (dir &optional lang)
+;; topics.  For example it can be "<maxima-dir>/doc/info/*.html".  The
+;; LANG arg specifies the language to use.  For English, either leave
+;; the argument out, or use "".
+(defmfun $build_and_dump_html_index (dir &optional (lang ""))
   (build-html-index dir lang)
   (let (entries)
     (maphash #'(lambda (k v)
