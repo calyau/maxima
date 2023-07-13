@@ -534,7 +534,7 @@
 ;; Berlin, 2003, 780-789. DOI 10.1007/3-540-44839-X_82
 ;; http://homepages.physik.uni-muenchen.de/~Winitzki/papers/
 ;;
-;; Darko Verebic, 
+;; Darko Veberič, 
 ;; Having Fun with Lambert W(x) Function
 ;; arXiv:1003.1628v1, March 2010, http://arxiv.org/abs/1003.1628
 ;;
@@ -653,7 +653,7 @@
 ;; Approximate k=-1 branch of Lambert's W function over -1/e < z < 0. 
 ;; W(z) is real, so we ensure the starting guess for Halley iteration 
 ;; is also real.
-;; Verebic (2010)
+;; Veberič (2010)
 (defun init-lambert-w-minus1 (z)
   (cond 
     ((not (realp z)) 
@@ -679,7 +679,7 @@
 ;;   for im(z) >= 0, approximates k=-1  branch
 ;;
 ;; Corless et al (1996) (4.22)
-;; Verebic (2010)
+;; Veberič (2010)
 ;;
 ;; z is a real or complex bigfloat: 
 (defun lambert-branch-approx (z)
