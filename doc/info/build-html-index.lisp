@@ -194,6 +194,9 @@
 				   ("&ccedil;" 231)
 				   ("&atilde;" 227)
 				   ("&oacute;" 243)
+				   ;; From the pt_BR manual
+				   ("&aacute;" 225)
+				   ("&ouml;" 246)
 				   ))
 	      (destructuring-bind (html-entity char-code)
 		  replacement
@@ -216,7 +219,8 @@
 	 '(("" "Function-and-Variable-Index.html" "Function and Variable Index")
 	   ("de" "Index-der-Variablen-und-Funktionen.html" "Index der Variablen und Funktionen")
 	   ("pt" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")
-	   ("es" "Indice-de-Funciones-y-Variables.html" "Índice de Funciones y Variables")))
+	   ("es" "Indice-de-Funciones-y-Variables.html" "Índice de Funciones y Variables")
+	   ("pt_BR" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")))
   (destructuring-bind (key &rest value)
       entry
     (setf (gethash key *index-file-name*) value)))
