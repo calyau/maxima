@@ -201,15 +201,15 @@
 	      ;; Assumptions are forgotten upon exit.
 	      (unless (= lenargs 1)
 		(limit-context var val dr))
-
-              ;; Resimplify in light of new assumptions.
-              (setq exp (resimplify
-			             (extra-simp
-			              (factosimp
-                            (tansc
-                              (lfibtophi
-                                (limitsimp ($expand exp 1 0) var)))))))
-
+            ;; Resimplify in light of new assumptions. Changing ($expand exp 1 0)
+			;; to ($expand exp 0 0) results in a bad testsuite failure for
+			;; (assume(a>2), limit(integrate(t/log(t),t,2,a)/a,a,inf)) and
+			;; some testsuite results that are more messy.
+            (setq exp (resimplify 
+			          ($minfactorial
+			          (extra-simp 
+					  ($expand exp 1 0)))))
+           
 	      (if (not (or (real-epsilonp val)		;; if direction of limit not specified
 			   (infinityp val)))
 		  (setq ans (both-side exp var val))	;; compute from both sides
@@ -342,6 +342,15 @@
 	 (if (not (free f var)) (throw 'limunknown t)))
 	(t (mapc #'limunknown1 (cdr f)) nil)))
 
+;; The functionality of this code has been blended into extra-simp. But 
+;; there are some differences: (a) when e depends on the global var, this 
+;; code converts *every* gamma function into a factorial, but extra-simp only 
+;; converts subexpressions of the form gamma(X), where X depends on var to 
+;; factorial form (b) this code dispatches minfactorial, but extra-simp 
+;; doesn't.
+
+;; The function factosimp is not called by the limit code or by any 
+;; code in source.
 (defun factosimp(e)
   (if (involve e '(%gamma)) (setq e ($makefact e)))
   (cond ((involve e '(mfactorial))
@@ -622,7 +631,6 @@ ignoring dummy variables and array indices."
 
 (defun limitsimp (exp var)
   (limitsimp-expt (sin-sq-cos-sq-sub exp) var))
-;;Hack for sin(x)^2+cos(x)^2.
 
 ;; if var appears in base and power of expt,
 ;; push var into power of of expt
@@ -644,9 +652,12 @@ ignoring dummy variables and array indices."
    (cond (($mapatom e) nil)        
          ((and (eq fn (caar e)) (not (freeof x e))) (cdr e))
           (t 
-            (reduce #'append (mapcar #'(lambda (q) (gather-args-of q fn x)) (cdr e))))))
+        	(remove-duplicates (reduce #'append 
+			 (mapcar #'(lambda (q) 
+			     (gather-args-of q fn x)) (cdr e))) :test #'alike1))))
 
-;; When X depends on x, replace cos(X)^2 + sin(X)^2 by 1 
+;; Replace every subexpression of e of the form cos(X)^2 + sin(X)^2, where X 
+;; depends on x, by 1.
  (defun sin-sq-cos-sq-sub (e &optional (x var))
     (let ((ccc nil) (z) (ee))
       (cond (($mapatom e) e)
@@ -659,7 +670,7 @@ ignoring dummy variables and array indices."
                     (when (freeof z (sratsimp ee))
                         (setq e ee)))
                 e)
-            ;; maybe this isn't needed, but I think it's not wrong.
+            ;; maybe this isn't needed, but it's not wrong.
             ((eq 'mqapply (caar e))
               (subftake (caar (second e))
                  (mapcar #'(lambda (q) (sin-sq-cos-sq-sub q x)) (subfunsubs e))
@@ -683,7 +694,10 @@ ignoring dummy variables and array indices."
 				       (expand-trigs x var))
 				   (cdr x)))))))
 
-
+;; The functionality of tansc has been blended into extra-simp, so we
+;; could orphan tansc. But extra-simp does more than tansc and tansc is 
+;; called by the definite integration code and by the limit code. So we'll
+;; not orphan tansc.
 (defun tansc (e)
   (cond ((not (involve e
 		       '(%cot %csc %binomial
@@ -693,7 +707,7 @@ ignoring dummy variables and array indices."
 			 %jacobi_ns %jacobi_nc %jacobi_cs
 			 %jacobi_ds %jacobi_dc)))
 	 e)
-	(t ($ratsimp (tansc1 e)))))
+	(t (sratsimp (tansc1 e)))))
 
 (defun tansc1 (e &aux tem)
   (cond ((atom e) e)
@@ -771,24 +785,13 @@ ignoring dummy variables and array indices."
                 (throw 'lhospital nil)))
          (return (limit2 n dn var val))))))
 
-(defun /#alike (e f)
-  (if (alike1 e f)
-      t
-      (let ((deriv (sdiff (m// e f) var)))
-        (cond ((=0 deriv) t)
-              ((=0 ($ratsimp deriv)) t)
-              (t nil)))))
-
-;; The standard /#alike function is possibly somewhat inefficient. Here is
-;; a possible replacement:
 
 ;; If e/f is free of var (a special), return true. This code 
 ;; assumes that f is not zero. First, we test if e & f
 ;; are alike--this check is relatively fast; second, we check
 ;; if e/f is free of var.
-
-;;(defun /#alike (e f) 
-;;	(or (alike1 e f) (freeof var (sratsimp (div e f)))))
+(defun /#alike (e f) 
+	(or (alike1 e f) (freeof var (sratsimp (div e f)))))
 
 (defun limit2 (n dn var val)
   (prog (n1 d1 lim-sign gcp sheur-ans)
@@ -1083,16 +1086,25 @@ ignoring dummy variables and array indices."
    (cond ((atom e) e)
 	((and (setq e (cons (car e) (mapcar 'stirling0 (cdr e))))
 	      nil))
-	((and (eq (caar e) '%gamma)
-	      (eq (limit (cadr e) var val 'think) '$inf))
-	 (stirling (cadr e)))
+	((eq (caar e) '%gamma)
+	   (let ((ans (limit (cadr e) var val 'think)))
+	      (cond ((memq ans '($inf $minf $infinity))
+	              (stirling (cadr e)))
+				((eq ans '$zeroa)
+				  (add (div 1 (cadr e)) (mul -1 '$%gamma) (mul '$janet (cadr e))))
+				((and (integerp ans) (< ans 0))
+				 (div (if (oddp ans) -1 1)
+				      (mul (ftake 'mfactorial (mul -1 ans)) (sub (cadr e) ans))))
+				(t (ftake '%gamma (cadr e))))))
+
 	((eq (caar e) 'mfactorial)
 		(let ((n (limit (cadr e) var val 'think)))
 	 	  (cond ((eq n '$inf)
-		          (m* (cadr e) (stirling (cadr e))))
+				  (stirling (add 1 (cadr e))))
 		        ((and (integerp n) (< n 0))
-		   		  (setq n (mul -1 n))
-		          (div (power -1 n) (mul (ftake 'mfactorial n) (add var n))))
+                  (setq n (mul -1 n))
+		          (div (if (oddp n) 1 -1) 
+				      (mul (ftake 'mfactorial (sub n 1)) (add var n))))
 				(t e))))
 	((and (eq (caar e) 'mqapply)		;; polylogarithm
 	      (eq (subfunname e) '$li)
@@ -2098,46 +2110,99 @@ ignoring dummy variables and array indices."
 
 ;;;PUT CODE HERE TO ELIMINATE FAKE SINGULARITIES??
 
+;; At one time when simplimplus1 failed to find a limit, this function 
+;; applied ratsimp and tried again. This scheme didn't fix any testsuite 
+;; bugs and it slowed the code, so I removed it (Barton Willis, July 2023).
 (defun simplimplus (exp)
-  (cond ((memalike exp simplimplus-problems)
-	 (throw 'limit t))
-	(t (unwind-protect
-		(progn (push exp simplimplus-problems)
+  (cond ((memalike exp simplimplus-problems) (throw 'limit t))
+	    (t (unwind-protect
+		     (progn (push exp simplimplus-problems)
 		       (let ((ans (catch 'limit (simplimplus1 exp))))
-			 (cond ((or (eq ans ())
-				    (eq ans t)
-				    (among '%limit ans))
-				(let ((new-exp (sratsimp exp)))
-				  (cond ((not (alike1 exp new-exp))
-					 (setq ans
-					       (limit new-exp var val 'think))))
-				  (cond ((or (eq ans ())
-					     (eq ans t))
-					 (throw 'limit t))
-					(t ans))))
-			       (t ans))))
-	     (pop simplimplus-problems)))))
+			      (if (or (eq ans nil) (eq ans t) (among '%limit ans))
+			        (throw 'limit t) (resimp-extra-simp ans))))
+	         (pop simplimplus-problems)))))
 
 (defun simplimplus1 (exp)
-  (prog (sum y infl infinityl minfl indl undl)
-     (setq sum 0.)
-     (do ((exp (cdr exp) (cdr exp)) (f))
-	 ((or y (null exp)) nil)
+  (prog (sum y infl infinityl minfl indl undl zerobl zeroal ans r)
+      (do ((exp (cdr exp) (cdr exp)) (f))
+	 ((null exp) nil)
        (setq f (limit (car exp) var val 'think))
-       (cond ((null f)
-	      (throw 'limit t))
+       (cond ((null f) (throw 'limit t))
 	     ((eq f '$und) (push (car exp) undl))
-	     ((not (member f '($inf $minf $infinity $ind) :test #'eq))
-	      (setq sum (m+ sum f)))
+		 ((eq f '$zerob) (push (car exp) zerobl))
+		 ((eq f '$zeroa) (push (car exp) zeroal))
 	     ((eq f '$ind)  (push (car exp) indl))
-	     (infinityl (throw 'limit t))
-;;;Don't know what to do with an '$infinity and an $inf or $minf
 	     ((eq f '$inf)  (push (car exp) infl))
 	     ((eq f '$minf)  (push (car exp) minfl))
-	     ((eq f '$infinity)
-	      (cond ((or infl minfl)
-		     (throw 'limit t))
-		    (t (push (car exp) infinityl))))))
+	     ((eq f '$infinity) (push (car exp) infinityl))
+		 (t  (push f sum))))
+
+    ;; When there are two or more infinity terms, we dispatch gruntz1 on
+	;; the rectangular form of their sum. When gruntz1 is able to find the
+	;; limit, we modify the lists infinityl, minfl, ... accordingly.
+    (when (and infinityl (cdr infinityl) (not (among '$li (cons '(mlist) infinityl))))
+	   (setq ans (risplit (fapply 'mplus infinityl)))
+	  
+	   (let ((re (car ans)) (im (cdr ans)))
+	   	 (setq re (car (errcatch (gruntz1 re var val))))
+		 (setq im (car (errcatch (gruntz1 im var val))))
+		 (setq r
+		     (cond ((or (null re) (null im)) nil)
+			       ((infinityp im) '$infinity)
+				   ((infinityp re) re)
+				   (t (add re (mul '$%i im))))))
+	   (cond ((eq r '$infinity) (list (fapply 'mplus infinityl)))
+			 ((eq r nil) (throw 'limit t))
+			 (t 
+			   (setq infinityl nil)
+	           (cond ((eq r '$zerob) (push ans zerobl))
+			         ((eq r '$zeroa) (push ans zeroal))
+			         ((eq r '$ind) (push ans indl))
+			         ((eq r '$und) (push ans undl))
+			         ((eq r '$minf) (push ans minfl))
+					 ((eq r '$inf) (push ans infl))
+					 (t (push r sum))))))
+					 
+	;; Unfortunately, this code does not handle the case of one or more
+	;; infinity terms and either a minf or inf term. So we throw an error.
+	(when (and infinityl (or minfl infl))
+	  (throw 'limit t))
+
+	;; Blend the zerob, zeroa, and sum terms. When there are both zerob
+	;; and zeroa terms, ignore them. When preserve-direction is true and
+	;; there are zerob terms, push zerob into the sum terms. And do the same
+	;; for zeroa. After that, add the terms in the list sum.
+	 (when (and preserve-direction zerobl (null zeroal)) 
+	 	(push '$zerob sum))
+     (when (and preserve-direction zeroal (null zerobl)) 
+	 	(push '$zeroa sum))
+
+     ;; When indl has two or more members, we attempt to condense the 
+	 ;; ind terms into a single term.
+	 (when (and indl (cdr indl))
+        ;; Use factor to attempt to condense the ind terms
+		;; into a finite term. This is needed for cases such as
+		;; limit(cos(1/x)*sin(x)-sin(x),x,inf). When there is only
+		;; one ind term, set ans to ind.
+		(setq ans ($factor (fapply 'mplus indl)))
+		(setq r (if (mplusp ans) nil (limit ans var val 'think)))
+		(cond ((eq r '$zerob)
+		        (push ans zerobl)
+				(setq indl nil))
+			  ((eq r '$zeroa)
+		        (push ans zeroal)
+				(setq indl nil))
+			  ((eq r '$ind) (setq indl (list ans)))
+			  ((eq r '$und) 
+			    (setq indl nil)
+				(push ans undl))
+			  ((or (eq r '$minf) (eq r '$inf) (eq r '$infinity))
+			    (throw 'limit t))
+			  ((eq r nil))
+			  (t (push r sum))))
+	 ;; Add the members of the list sum.
+	 (setq sum (fapply 'mplus sum))
+
      (cond (undl
 	    (if (or infl minfl indl infinityl)
 		(setq infinityl (append undl infinityl)); x^2 + x*sin(x)
@@ -2151,16 +2216,8 @@ ignoring dummy variables and array indices."
 	   (t (cond ((null infinityl)
 		     (cond (infl (cond ((null minfl) (return '$inf))
 				       (t (go oon))))
-			   (minfl (return '$minf))
-                           ((> (length indl) 1)
-                            ;; At this point we have a sum of '$ind. We factor 
-                            ;; the sum and try again. This way we get the limit 
-                            ;; of expressions like (a-b)*ind, where (a-b)--> 0.
-                            (cond ((not (alike1 (setq y ($factorsum exp)) exp))
-                                   (return (limit y var val 'think)))
-                                  (t
-                                   (return '$ind))))		       
-			   (t (return '$ind))))
+			        (minfl (return '$minf))
+                    (indl (return '$ind))))
 		    (t (setq infl (append infl infinityl))))))
 
      oon  (setq y (m+l (append minfl infl)))
@@ -2177,6 +2234,7 @@ ignoring dummy variables and array indices."
      (cond ((or (eq y ())
 		(eq y t))  (return ()))
 	   ((infinityp y)  (return y))
+	   (indl (return '$ind))
 	   (t (return (m+ sum y))))))
 
 ;; Limit n/d, using heuristics on the order of growth.
@@ -2645,6 +2703,8 @@ ignoring dummy variables and array indices."
 	(t (list 'gen term))))
 
 ;; log reduce - returns log of s1
+;; When s1 is not of the form a^b, this code doesn't return log(s1). 
+;; Running the testsuite does send non exptp expressions to this function.
 (defun logred (s1)
   (or (and (eq (cadr s1) '$%e) (caddr s1))
       (m* (caddr s1) `((%log) ,(cadr s1)))))
@@ -2695,6 +2755,8 @@ ignoring dummy variables and array indices."
 				 e))
 	  expl))
 
+;; We could replace pwtaylor with a call to (tlimit-taylor exp var l terms).
+;; Other than eliminating clutter, I know of no advantages to doing so.
 (defun pwtaylor (exp var l terms)
   (prog (coef ans c mc)
      (cond ((=0 terms) (return nil)) ((=0 l) (setq mc t)))
@@ -3067,10 +3129,10 @@ ignoring dummy variables and array indices."
 		    ;; to check that xlim-z & ylim-z are real too.
 		    ((and (lenient-realp xlim-z) (lenient-realp ylim-z)
 				  (or (eq t (mnqp ylim-z 0)) (eq t (mgrp xlim-z 0))))
-			 	        (ftake '$atan2 ylim-z xlim-z))
+			 	        (ftake '%atan2 ylim-z xlim-z))
 			(t
 				(throw 'limit nil)))))
-(setf (get '$atan2 'simplim%function) 'simplim%atan2)
+(setf (get '%atan2 'simplim%function) 'simplim%atan2)
 
 (defun simplimsch (sch arg)
   (cond ((real-infinityp arg)
@@ -3695,12 +3757,28 @@ ignoring dummy variables and array indices."
 ;; Additional simplifications for the limit function. Specifically:
 ;;   (a) replace every mapatom that is declared to be zero by zero 
 ;;   (b) dispatch radcan on expressions of the form (positive integer)^XXX
+;;   (c) log(negative number) --> log(-negative number) + %i*%pi
+;;   (d) apply cos(X)^2 + sin(X)^2 --> 1, when X depends on var
+;;   (e) convert, gamma functions, binomial coefficients, and beta functions to
+;;       factorial form
+;;   (f) do some reciprocial function transformations; for example 
+;;       csc(X) --> 1/sin(X)
+;;   (g) do transformations similar to acsc(X) --> asin(1/X).
+;;   (h) convert fibonacci functions to power form.
 ;; The mechanism (a) isn't perfect--if a+b is declared to zero, it doesn't
 ;; simplify a+b+c to c, for example.
 
-;; For efficiency, the functionality of factosimp, tansc, lfibtophi, 
-;; and limitsimp should be incorporated into extra-simp. 
+;; This should be moved to the jacobi function code. And likely, we should
+;; set the reciprocal property for the other jacobi functions.
+(mapcar #'(lambda (q) (setf (get (car q) 'recip) (cdr q)))
+'((%jacobi_nc . %jacobi_cn)
+  (%jacobi_ns . %jacobi_sn)
+  (%jacobi_cs . %jacobi_sc)
+  (%jacobi_ds . %jacobi_sd)
+  (%jacobi_dc . %jacobi_cd)))
+   
 (defun extra-simp (e)
+   (let ((var-present (not (freeof var e))))
    (cond (($subvarp e) e) ;return e
 	     ((extended-real-p e) e) ;we don't want to call sign on ind, so catch this
 		 (($mapatom e) ;if e is declared zero, return 0; otherwise e
@@ -3708,13 +3786,54 @@ ignoring dummy variables and array indices."
          ;; dispatch radcan on (positive integer)^Y
          ((and (mexptp e) (integerp (cadr e)) (> (cadr e) 0))
 		     ($radcan (ftake 'mexpt (cadr e) (extra-simp (caddr e)))))
+		 ;; log(negative number) --> log(-negative number) + %i*%pi. This is
+		 ;; needed for a nice result for integrate(x^3/(exp(x)-1),x,0,inf), for
+		 ;; example.
+		 ((and (eq '%log (caar e)) ($numberp (cadr e)) (eq t (mgrp 0 (cadr e))))
+		 	(add (ftake '%log (mul -1 (cadr e))) (mul '$%i '$%pi)))
+		 ;; When e isn't freeof var and e is a sum, map extra-simp over the
+		 ;; summands, add the results, and apply sin-sq-cos-sq-sub. 
+		 ((and var-present (mplusp e))
+		   (sin-sq-cos-sq-sub (fapply 'mplus (mapcar #'extra-simp (cdr e))) var))
+         ;; Convert gamma functions to factorials. Eventually, we should convert
+		 ;; factorials to gamma functions, I think (BW).
+		 ((and var-present (eq '%gamma (caar e)))
+		   (ftake 'mfactorial (extra-simp (sub (cadr e) 1))))
+         ;; Exponentialize the hyperbolic functions. It might be nicer to not do 
+		 ;; this, but without this we get an error for limit(diff(log(tan(%pi/2*tanh(x))),x),x,inf).
+		 ((and var-present (member (caar e) (list '%sinh '%cosh '%tanh '%sech '%csch '%coth)))
+		 	(extra-simp ($exponentialize e)))
+         ;; When X depends on var, apply reciprocal function identities such as
+		 ;; csc(X) --> 1/sin(X). Specifially, do this for operators '%sec, '%csc, 
+		 ;; '%cot, '%jacobi_nc, '%jacobi_ns, %jacobi_cs, %jacobi_ds, and %jacobi_dc. 
+		 ;; Since the hyperbolics are exponentialized, we don't do this for the 
+		 ;; hyperbolics.
+		 ((and var-present (member (caar e) 
+		    (list '%sec '%csc '%cot '%jacobi_nc '%jacobi_ns '%jacobi_cs '%jacobi_ds '%jacobi_dc)))
+		  (div 1 (fapply (get (caar e) 'recip) (mapcar #'extra-simp (cdr e)))))
+		 ;; When X or Y depends on var, convert binomial(X,Y) to factorial form.
+		 ;; Same for beta(x,y). Again, I think it would be better to convert to
+		 ;; gamma function form.
+		 ((and var-present (member (caar e) (list '%binomial '%beta)))
+		  (extra-simp ($makefact e)))
+         ;; When X depends on var, do acsc(X) --> asin(1/X). Do the same
+		 ;; for asec, acot, acsch, asech, and acoth.
+		 ((and var-present (member (caar e) '(%acsc %asec %acot %acsch %asech %acoth)))
+		  (ftake (get (get (get (caar e) '$inverse) 'recip) '$inverse) 
+		     (div 1 (extra-simp (cadr e)))))
+         ;; When X depends on var, convert fib(X) to its power form.
+		 ((and var-present (eq '$fib (caar e)))
+		  (extra-simp ($fibtophi e)))		  
 	     (($subvarp (mop e)) ;subscripted function
 		     (subfunmake 
 		      (subfunname e) 
 			  (mapcar #'extra-simp (subfunsubs e)) 
 			  (mapcar #'extra-simp (subfunargs e))))
-		 (t
-		     (simplifya (cons (list (caar e)) (mapcar #'extra-simp (cdr e))) t))))
+		 (t (fapply (caar e) (mapcar #'extra-simp (cdr e)))))))
+
+;; Call extra-simp followed by a call to resimplify. This is analogus to 
+;; sratsimp.
+(defun resimp-extra-simp (e) (resimplify (extra-simp e)))
 
 ;; This function is for internal use in $limit.
 
@@ -3750,7 +3869,7 @@ ignoring dummy variables and array indices."
 				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* 'prin-inf)) ; *large-positive-number* < prin-inf
 				  (mfuncall '$activate cx) ;not sure this is needed, but OK	
 				  (setq exp (resimplify exp)) ;simplify in new context
-				  (setq exp (extra-simp (sratsimp exp))) ;additional simplifications
+                  (setq exp (resimp-extra-simp (sratsimp exp))) ;additional simplifications
 				  (limitinf exp newvar)) ;compute & return limit
 			($killcontext cx))))) ;kill context & forget all new facts.	 			
 

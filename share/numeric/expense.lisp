@@ -128,7 +128,7 @@
                     (+ $cost_hyper_trig ($expense (cadr x))))
                    ((member opr '(%cos %log %sin) :test #'eq)
                     (+ $cost_sin_cos_log ($expense (cadr x))))
-                   ((eq opr '$atan2)
+                   ((eq opr '%atan2)
                     (+ $cost_hyper_trig ($expense (cadr x)) ($expense (caddr x))))
                    (t
                     (mformat nil "Beware: ~M is not in function base of EXPENSE~%" opr)

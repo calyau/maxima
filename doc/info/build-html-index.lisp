@@ -27,6 +27,12 @@
   "Log file containing info for each entry that is added to the index
   table.")
 
+(defun texinfo-version-number (major minor &optional (patch 0))
+  "Convert the major, minor, and patch to an integer."
+  (+ (* 10000 major)
+     (* 100 minor)
+     patch))
+
 (let ((maxima_nnn-pattern (pregexp:pregexp "^maxima_[0-9][0-9]*$")))
   (defun maxima_nnn-p (f)
     "Determine if F is a pathname-name that looks like
@@ -132,7 +138,7 @@
     ;; This current implementation will very likely not work with gcl
     ;; only supports 8-bit characters.
     (when (and *texinfo-version*
-	       (= *texinfo-version* 70003))
+	       (>= *texinfo-version* (texinfo-version-number 7 0 2)))
       (dolist (item '("Euler's number"
 		      "Introduction to Maxima's Database"))
 	(update-entry item
@@ -214,31 +220,30 @@
 	(format t "Function index: ~S.~%"
 		(namestring file))
 	(return-from find-index-file file)))))
-  
+
+;; Parse the texinfo version string.  It should look something like
+;; "M.m.p", where M and m are a sequence of (base 10) digits and ".p"
+;; is the optional patch version.
 (defun parse-texinfo-version (string)
   (when string
     (let ((posn 0)
 	  (len (length string))
-	  (version 0))
+	  version)
       (dotimes (k 3)
-	(cond
-	  ((<= posn len)
-	   (multiple-value-bind (digits end)
-	       (parse-integer string
-			      :start posn
-			      :junk-allowed t)
-	     (setf version (+ (or digits 0)
-			      (* version 100)))
-	     (setf posn (1+ end))))
-	  (t
-	   (setf version (* version 100)))))
-      version)))
+	(when (<= posn len)
+	  (multiple-value-bind (digits end)
+	      (parse-integer string
+			     :start posn
+			     :junk-allowed t)
+	    (push digits version)
+	    (setf posn (1+ end)))))
+      (apply #'texinfo-version-number (nreverse version)))))
 
 (defun get-texinfo-version (file)
   "Get the texinfo version from FILE"
   (let ((version-line
 	  (with-open-file (f file :direction :input)
-	    ;; Texinfo write a comment line containing the version number of
+	    ;; Texinfo writes a comment line containing the version number of
 	    ;; the texinfo used to build the html file.  It's at the
 	    ;; beginnning so search just the first 5 lines or so.
 	    (loop for count from 1 to 5

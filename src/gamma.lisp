@@ -509,7 +509,7 @@
 	 ;; positive integer.  Since gamma_incomplete_lower(a,z) =
 	 ;; gamma(a) - gamma_incomplete(a,z), use gamma_incomplete to
 	 ;; get the result.
-	 (sub (simpgamma (list '(%gamma) a) 1 nil)
+	 (sub (ftake* '%gamma a)
 	      (take '(%gamma_incomplete) a z)))
 	((and $gamma_expand (alike1 a 1//2))
 	 ;; A&S 6.5.12:
@@ -538,13 +538,13 @@
 	       (mul
 		(power z a)
 		(power '$%e (mul -1 z))
-		(let ((gamma-a+n (simpgamma (list '(%gamma) (add a n)) 1 nil))
+		(let ((gamma-a+n (ftake* '%gamma (add a n)))
 		      (index (gensumindex))
 		      ($simpsum t))
 		  (simpsum1
 		   (mul
 		    (div gamma-a+n
-			 (simpgamma (list '(%gamma) (add a index 1)) 1 nil))
+			 (ftake* '%gamma (add a index 1)))
 		    (power z index))
 		   index 0 (add n -1))))))
 	     ((< n 0)
@@ -562,7 +562,7 @@
 	      ;;   g(a-n,z) = gamma(a-n)/gamma(a)*g(a,z)
 	      ;;     + z^(a-1)*exp(-z)
 	      ;;       * sum(gamma(a-n)/gamma(a-k)*z^(-k),k,0,n-1)
-	      (let ((gamma-a-n (simpgamma (list '(%gamma) (sub a n)) 1 nil))
+	      (let ((gamma-a-n (ftake* '%gamma (sub a n)))
 		    (index (gensumindex))
 		    ($simpsum t))
 		(add
@@ -576,7 +576,7 @@
 		  (simpsum1
 		   (mul
 		    (div gamma-a-n
-			 (simpgamma (list '(%gamma) (sub a index)) 1 nil))
+			 (ftake* '%gamma (sub a index)))
 		    (power z (mul -1 index)))
 		   index 0 (add n -1)))))))))
 	((and $gamma_expand (consp a) (eq 'rat (caar a))
@@ -833,12 +833,12 @@
 	     (mul
 	      (power '$%e (mul -1 z))
 	      (power z a)
-	      (let ((gamma-a+n (simpgamma (list '(%gamma) (add a n)) 1 nil))
+	      (let ((gamma-a+n (ftake* '%gamma (add a n)))
 		    (index (gensumindex)))
 		(simpsum1
 		 (mul
 		  (div gamma-a+n
-		       (simpgamma (list '(%gamma) (add a index 1)) 1 nil))
+		       (ftake* '%gamma (add a index 1)))
 		  (power z index))
 		 index 0 (add n -1))))))
            ((< n 0)
@@ -1992,7 +1992,7 @@
          (setq m (mul m (add z ii -2) (add z ii -1)))
          (setq x (div
                    (add x
-                        (div ($bern (+ k (- ii) 2))
+                        (div (ftake '%bern (+ k (- ii) 2))
                              (* (+ k (- ii) 1) (+ k (- ii) 2))))
                    y)))
        (add
@@ -2041,7 +2041,7 @@
          (setq x ($rectform
                    (div
                      (add x 
-                       (div ($bern (+ k (- ii) 2))
+                       (div (ftake '%bern (+ k (- ii) 2))
                             (* (+ k (- ii) 1) (+ k (- ii) 2))))
                    y))))
        ($rectform
@@ -3295,9 +3295,9 @@
 (eval-when
     (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
-      (meval '(($declare) $beta $symmetric))
+      (meval '(($declare) %beta $symmetric))
       ;; Let's remove built-in symbols from list for user-defined properties.
-      (setq $props (remove '$beta $props))))
+      (setq $props (remove '%beta $props))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -3331,7 +3331,7 @@
    ;; Derivative wrt b
    ((mplus)
       ((mtimes) 
-         (($beta) a b)
+         ((%beta) a b)
          ((mplus) 
             ((mqapply) (($psi array) 0) b)
             ((mtimes) -1 ((mqapply) (($psi array) 0) ((mplus) a b)))))
@@ -3392,11 +3392,11 @@
        ;; If we have to evaluate numerically preserve the type.
        (cond
          ((complex-float-numerical-eval-p a b z)
-          (simplify (list '($beta) ($float a) ($float b))))
+          (ftake* '%beta ($float a) ($float b)))
          ((complex-bigfloat-numerical-eval-p a b z)
-          (simplify (list '($beta) ($bfloat a) ($bfloat b))))
+          (ftake* '%beta ($bfloat a) ($bfloat b)))
          (t
-          (simplify (list '($beta) a b)))))
+          (ftake* '%beta a b))))
       
       ((or (zerop1 a)
            (and (integer-representation-p a)
@@ -3444,7 +3444,7 @@
                 (plusp a)))
        ;; Expand for b a positive integer and a not a negative integer.
        (mul
-         (simplify (list '($beta) a b))
+         (ftake* '%beta a b)
          (power z a)
          (let ((index (gensumindex)))
            (simpsum1
@@ -3458,7 +3458,7 @@
       ((and (integerp a) (plusp a))
        ;; Expand for a a positive integer.
        (mul
-         (simplify (list '($beta) a b))
+         (ftake* '%beta a b)
          (sub 1
            (mul
              (power (sub 1 z) b)
@@ -3587,7 +3587,7 @@
          '$pos)
      ($rectform
        (sub
-         (simplify (list '($beta) a b))
+         (ftake* '%beta a b)
          (to (numeric-beta-incomplete b a (sub 1.0 z))))))
     (t
       (to (numeric-beta-incomplete a b z)))))
@@ -3811,7 +3811,7 @@
       ((and (onep1 z2) (or (not (mnump a)) (not (mnump b)) (not (mnump z1))))
        (let ((sgn ($sign ($realpart b))))
          (cond ((member sgn '($pos $pz)) 
-                (sub (simplify (list '($beta) a b))
+                (sub (ftake* '%beta a b)
                      (ftake '%beta_incomplete a b z1)))
                (t 
                 (give-up)))))
@@ -3820,7 +3820,7 @@
        (let ((sgn ($sign ($realpart b))))
          (cond ((member sgn '($pos $pz)) 
                 (sub (ftake '%beta_incomplete a b z2) 
-                     (simplify (list '($beta) a b))))
+                     (ftake* '%beta a b)))
                (t 
                 (give-up)))))
 
@@ -3841,7 +3841,7 @@
 
       ((and (integerp a) (plusp a))
        (mul
-         (simplify (list '($beta) a b))
+         (ftake* '%beta a b)
          (sub
            (mul
              (power (sub 1 z1) b)
@@ -3866,7 +3866,7 @@
 
       ((and (integerp b) (plusp b))
        (mul
-         (simplify (list '($beta) a b))
+         (ftake* '%beta a b)
          (sub
            (mul
              (power z2 a)
@@ -3998,7 +3998,7 @@
          ((mexpt) ((mplus) 1 ((mtimes) -1 z)) b)))
    ;; The derivative wrt z
    ((mtimes) 
-      ((mexpt) (($beta) a b) -1)
+      ((mexpt) ((%beta) a b) -1)
       ((mexpt) ((mplus) 1 ((mtimes) -1 z)) ((mplus) -1 b))
       ((mexpt) z ((mplus) -1 a))))
   grad)
@@ -4063,7 +4063,7 @@
          ((and (integer-representation-p b) (<= b (- a)))
          ;;       Does $beta_incomplete or simpbeta underflow in this case?
           (div (ftake '%beta_incomplete a b z)
-               (simplify (list '($beta) a b))))
+               (ftake* '%beta a b)))
          (t 
           1)))
 
@@ -4073,7 +4073,7 @@
        (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0)))
               beta ibeta )
          (setq a ($float a) b ($float b))
-         (if (or (< ($abs (setq beta (simplify (list '($beta) a b)))) 1e-307) 
+         (if (or (< ($abs (setq beta (ftake* '%beta a b))) 1e-307) 
                  (< ($abs (setq ibeta (beta-incomplete a b ($float z)))) 1e-307) )
            ;; In case of underflow (see bug #2999) or precision loss use bigfloats 
            ;; and emporarily give some extra precision but avoid fpprec dependency.
@@ -4088,17 +4088,17 @@
          (setq a ($bfloat a) b ($bfloat b))
          ($rectform 
            (div (beta-incomplete a b ($bfloat z))
-                (simplify (list '($beta) a b))))))
+                (ftake* '%beta a b)))))
 
       ;; Check for argument simplifications and transformations
 
       ((and (integerp b) (plusp b))
        (div (ftake '%beta_incomplete a b z)
-            (simplify (list '($beta) a b))))
+            (ftake* '%beta a b)))
 
       ((and (integerp a) (plusp a))
        (div (ftake '%beta_incomplete a b z)
-            (simplify (list '($beta) a b))))
+            (ftake* '%beta a b)))
 
       ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
        (let ((n (cadr a))
@@ -4107,7 +4107,7 @@
            (take '(%beta_incomplete_regularized) a b z)
            (mul
              (power (add a b n -1) -1)
-             (power (simplify (list '($beta) (add a n) b)) -1)
+             (power (ftake* '%beta (add a n) b) -1)
              (let ((index (gensumindex)))
                (simpsum1
                  (mul
@@ -4129,7 +4129,7 @@
            (take '(%beta_incomplete_regularized) a b z)
            (mul
              (power (add a b -1) -1)
-             (power (simplify (list '($beta) a b)) -1)
+             (power (ftake* '%beta a b) -1)
              (let ((index (gensumindex)))
                (simpsum1
                  (mul

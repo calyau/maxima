@@ -1590,3 +1590,9 @@ integrate(1/(x^8+x+1),x,0,1);
 
 integrate(1/(1+s^7),s,0,%pi);
 'integrate(1/(1+s^7),s,0,%pi);
+
+/*
+ * SF bug #4153: rectform(atan2(1,1+%i)) signals Lisp error
+ */
+rectform(atan2(1,1+%i));
+atan(2)/2-(%i*log(5))/4;

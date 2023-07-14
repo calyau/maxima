@@ -162,7 +162,7 @@
 		 (m* (m^ -1 k)
 		     (m- 1 (m^ 2 (m- 1 (m* 2 k))))
 		     (m^ (m* 2 '$%pi) (m* 2 k))
-		     (m// ($bern (m* 2 k))
+		     (m// (ftake '%bern (m* 2 k))
 			  `((mfactorial) ,(m* 2 k)))
 		     (m// (m^ `((%log) ,(m- z)) (m- s (m* 2 k)))
 			  ($gamma (m+ s 1 (m* -2 k)))))))))
@@ -534,14 +534,14 @@
 ;; Berlin, 2003, 780-789. DOI 10.1007/3-540-44839-X_82
 ;; http://homepages.physik.uni-muenchen.de/~Winitzki/papers/
 ;;
-;; Darko Verebic, 
+;; Darko Veberič, 
 ;; Having Fun with Lambert W(x) Function
 ;; arXiv:1003.1628v1, March 2010, http://arxiv.org/abs/1003.1628
 ;;
 ;; See also http://en.wikipedia.org/wiki/Lambert's_W_function
 
 (defmfun $lambert_w (z)
-  (simplify (list '(%lambert_w) (resimplify z))))
+  (ftake* '%lambert_w z))
 
 ;;; Set properties to give full support to the parser and display
 (defprop $lambert_w %lambert_w alias)
@@ -653,7 +653,7 @@
 ;; Approximate k=-1 branch of Lambert's W function over -1/e < z < 0. 
 ;; W(z) is real, so we ensure the starting guess for Halley iteration 
 ;; is also real.
-;; Verebic (2010)
+;; Veberič (2010)
 (defun init-lambert-w-minus1 (z)
   (cond 
     ((not (realp z)) 
@@ -679,7 +679,7 @@
 ;;   for im(z) >= 0, approximates k=-1  branch
 ;;
 ;; Corless et al (1996) (4.22)
-;; Verebic (2010)
+;; Veberič (2010)
 ;;
 ;; z is a real or complex bigfloat: 
 (defun lambert-branch-approx (z)
@@ -795,7 +795,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $generalized_lambert_w (k z)
-  (simplify (list '(%generalized_lambert_w) (resimplify k) (resimplify z))))
+  (ftake* '%generalized_lambert_w k z))
 
 ;;; Set properties to give full support to the parser and display
 (defprop $generalized_lambert_w %generalized_lambert_w alias)

@@ -1,0 +1,164 @@
+/* This example (Ascher et al, 1995, Example 9.2) solves a numerically
+   difficult boundary value problem using continuation.
+
+Reference:
+  Uri M. Ascher, Robert M. M. Mattheij and Robert D. Russell.
+  Numerical Solution of Boundary Value Problems for Ordinary
+  Differential Equations. Classics in Applied Mathematics 13, SIAM, (1995),
+  ISBN 978-0-89871-354-1
+
+The linear differential equation is
+
+    e u''(x) + x u'(x) = -e %pi^2* cos(%pi x) - (%pi x) sin(%pi x)
+
+with -1 < x < 1 and 0 < e <= 1
+
+and boundary conditions u(-1)=-2 and u(1)=0
+
+The exact solution is
+    u(x) = cos(%pi x) + erf(x/sqrt(2 e))/erf(1/sqrt(2 e))
+
+When e is small the solution has a rapid transition near x=0
+and is difficult to solve numerically.  COLNEW is able to solve the
+problem for directly for e=1.0e-6, but here we will use
+continuation to solve it successively for e=[1e-2,1e-3,1e-4,1e-5,1e-6].
+
+The mesh and solution from the previous step is used as the initial
+estimates for the next step.
+
+*/
+
+load("colnew")$
+
+kill(e,x,z1,z2)$
+
+/* Exact solution */
+exact(x):=cos(%pi*x)+erf(x/sqrt(2*e))/erf(1/sqrt(2*e))$
+
+/* Define the equations.  Do this before e is defined */
+f: [-(x/e)*z2 - %pi^2*cos(%pi*x) - (%pi*x/e)*sin(%pi*x)];
+define(fsub(x,z1,z2),f);
+df: jacobian(f,[z1,z2]);
+define(dfsub(x,z1,z2),df);
+
+/* Build the functions gsub and dgsub
+   Use define and buildq to remove dependence on g and dg */
+g: [z1+2,z1];
+define(gsub(i,z1,z2),buildq([g],g[i]));
+dg: jacobian(g,[z1,z2]);
+define(
+  dgsub(i,z1,z2),
+  buildq([val:makelist(dg[i],i,1,length(dg))],block([dg:val],dg[i])));
+
+/* Define constant epsilon */
+e : 0.01$
+
+/* Number of differential equations */
+ncomp : 1$
+/* Orders */
+m : [2]$
+
+/* Interval ends */
+aleft  : -1.0$
+aright :  1.0$
+
+/* Locations of side conditions */
+zeta : float([-1, 1])$
+/* Set up parameter array.  */
+ipar : makelist(0,k,1,11)$
+/* linear prob */
+ipar[1] : 0$
+/* 5 collocation points per subinterval */
+ipar[2] : 5$
+/* Initial uniform mesh of 1 subintervals */
+ipar[3] : 1$
+ipar[8] : 0$
+/* Size of fspace, ispace */
+ipar[5] : 10000$
+ipar[6] :  1000$
+/* Minimal output */
+ipar[7]:0$
+/* No initial guess is provided */
+ipar[9] : 0$
+/* Regular problem */
+ipar[10] : 0$
+/* No fixed points in mesh */
+ipar[11] : 0$
+/* Tolerances on two components */
+ipar[4] : 2$
+
+/* Two error tolerances (on u and its derivative)
+   Relatively large tolerances to keep the example small */
+ltol : [1, 2]$
+tol : [1e-4, 1e-4]$
+
+fspace : makelist(0e0, k, 1, ipar[5])$
+ispace : makelist(0, k, 1, ipar[6])$
+fixpnt : []$
+
+/* First run with default initial guess.
+   Returns iflag. 1 = success */
+([iflag, fspace, ispace] :
+colnew_expert(ncomp, m, aleft, aright, zeta, ipar, ltol, tol,
+fixpnt, ispace, fspace,
+0, fsub, dfsub, gsub, dgsub, dummy), iflag);
+
+/* iflag=1 on success */
+if (iflag#1) then error("On return from colnew_expert: iflag # 1");
+
+/* Function to generate equally spaced list of values */
+xlist(xmin,xmax,n):=block([dx:(xmax-xmin)/n],makelist(i,i,0,n)*dx+xmin)$
+
+/* x values for solution.  Cluster around x=0 */
+X: xlist(aleft,aright,500)$
+
+/* Generate solution values for z1=u(x) */
+ans:colnew_appsln(X,2,fspace,ispace)$
+z:maplist(first,ans)$
+Z:[z]$
+
+/* Compare with exact solution and report */
+y:float(map(exact,X))$
+maxerror:apply(max,abs(y-z));
+printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
+  e,iflag,ispace[1],maxerror);
+
+/* Now use continuation to solve for progressively smaller e
+   Use previous solution as initial guess and every second point
+   from previous mesh as initial mesh */
+ipar[9] : 3$
+
+/* Run COLNEW using continuation for new value of e
+   Set new mesh size ipar[3] from previous size ispace[1]
+   Push list of values of z1=u(x) on to list Z */
+run_it(e_):=block(
+  e:e_,
+  ipar[3]:ispace[1],
+  [iflag, fspace, ispace]:
+     colnew_expert(ncomp,m,aleft,aright,zeta,ipar,ltol,tol,fixpnt,
+     ispace,fspace,0,fsub,dfsub,gsub,dgsub,dummy),
+  if (iflag#1) then error("On return from colnew_expert: iflag # 1"),
+  ans:colnew_appsln(X,2,fspace,ispace),
+  z:maplist(first,ans),
+  push(z,Z),
+  y:float(map(exact,X)),
+  maxerror:apply(max,abs(y-z)),
+  printf(true," e: ~8,3e  iflag ~3d  Mesh size ~3d  max error ~8,3e~%",
+    e,iflag,ispace[1],maxerror),
+  iflag
+);
+
+for e_ in [1e-3,1e-4,1e-5,1e-6] do run_it(e_);
+
+/* Z is list of solutions z1 = u(x).  Restore order. */
+Z:reverse(Z)$
+
+/* Plot z1=u(x) for each value of e*/
+/*
+plot2d([
+  [discrete,X,Z[1]], [discrete,X,Z[2]], [discrete,X,Z[3]],
+  [discrete,X,Z[4]], [discrete,X,Z[5]]],
+  [legend,"e=1e-2","e=1e-3","e=1e-4","e=1e-5","e=1e-6"],
+  [xlabel,"x"],[ylabel,"u(x)"],
+  [png_file,"./colnew-ex5.png"]);
+*/

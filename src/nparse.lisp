@@ -1282,7 +1282,7 @@
 ;No RPOS
 (def-mheader	|$!| (mfactorial))
 
-(def-mheader |$!!| ($genfact))
+(def-mheader |$!!| (%genfact))
 
 (def-led (|$!!| 160.) (op left)
   (list '$expr

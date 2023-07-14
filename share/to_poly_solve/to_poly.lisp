@@ -510,7 +510,7 @@ to eliminate.
 	  
 	  ;; For a complex number, use atan2
 	  ((complex-number-p e '$constantp) 
-	   (take '($atan2) ($imagpart e) ($realpart e)))
+	   (ftake '%atan2 ($imagpart e) ($realpart e)))
 	  
 	  ;; off the negative real axis, parg(conjugate(x)) = -parg(x)
 	  ((and (op-equalp e '$conjugate) (off-negative-real-axisp e))

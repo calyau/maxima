@@ -160,11 +160,11 @@ limit(x^2*(gamma(1/x) - (x - %gamma + (6*%gamma^2+%pi^2)/(12*x))),x,inf);
 -((4*zeta(3)+%gamma*%pi^2+2*%gamma^3)/12)$
 
 /* #3846 limit gives quotient by zero error */
-errcatch( limit(gamma(1/x)/gamma(x),x,0,plus));
-['inf]$
+limit(gamma(1/x)/gamma(x),x,0,plus);
+inf$
 
-errcatch( limit(gamma(x)/gamma(1/x),x,0,plus));
-[0]$
+limit(gamma(x)/gamma(1/x),x,0,plus);
+0$
 
 /* #3842 limit(atan(x),x,%i) --> error. That was determined to be a non-bug, but
 here are two related limit problems. */
@@ -184,7 +184,7 @@ here are two related limit problems. */
 /* With the default value of lhospitallim, the calculation takes about 7 seconds.
    Arguably, it's so slow, it's a bug. So we'll locally set lhospitallim to 1.*/
  block([lhospitallim : 1], limit(rectform(asin(3+%i*x)),x,0,'plus));
- -((%i*log(17-3*2^(5/2))-%pi)/2)$
+ %pi/2-(%i*log(17-3*2^(5/2)))/2$
 
 block([lhospitallim : 1], limit(rectform(asin(3+%i*x)),x,0,'minus));
 %pi/2-%i*log(2^(3/2)+3)$
@@ -423,7 +423,7 @@ block([domain : 'complex],limit(2/5*((3/4)^m - 1)*(a - 10) + 1/5*(3*(3/4)^m + 2)
 
  /* #2953 limit loops endlessly */
  limit((a/x^b + (1-a)/y^b)^(-1/b),b,0);
- %e^((1-a)*log(y)+a*log(x))$
+ %e^(a*log(x)-(a-1)*log(y))$
 
  /* #2899 Limit that once worked is broken */
  limit((1+sqrt(n+1))^(-n-1)/(1+sqrt(n))^(-n),n,inf);
@@ -684,7 +684,7 @@ limit(atan2(0,1-3^x),x,0,'minus);
 
 /* #3895 limit */
 limit((x^x-a^a)/(x-a), x, a);
-a^a*(log(a)+1)$
+a^a*log(a)+a^a$
 
 limit((x^x-2^2)/(x-2), x, 2);
 4*log(2)+4$
@@ -724,7 +724,7 @@ log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
 
 /* #2953 limit loops endlessly */
 limit((a/x^b + (1-a)/y^b)^(-1/b),b,0);
-%e^((1-a)*log(y)+a*log(x))$
+ %e^(a*log(x)-(a-1)*log(y))$
 
 /* #2706 Limit runs forever, never returning (simplified bug) */
 block([ans1,ans2, ans3],
@@ -1009,9 +1009,55 @@ block([ratsimpexpons : true, ratfac : true],
 limit(sin(x)/x + sin(x) + cos(x),x,inf);
 ind$
 
-/* Did any facts or contexts leak?*/
+/* #4151 limit bug as x tend to inf for trigonometric expressions */
+limit((4*x^3+2*x^2*sin(x)+1)/(x+1)^2 - 4*x,x,inf);
+ind$
+
+limit(expand((4*x^3+2*x^2*sin(x)+1)/(x+1)^2 - 4*x),x,inf);
+ind$
+
+/* #4137 simplimplus bugs */
+limit(3^x * cos(x) + sin(x),x,inf);
+und$
+
+limit(3^x * cos(x) + 2^x,x,inf);
+und$
+
+ errcatch(limit(3^x + (9+%i)^x,x,inf));
+ [infinity]$
+
+/* See mailing list https://sourceforge.net/p/maxima/mailman/message/37868153/ */
+integrate(tan(x)^(1/3)/(cos(x)+sin(x))^2,x,0,%pi/2);
+%pi/(2*sqrt(3))+%pi/(2*3^(3/2))$
+
+/* #4147 integrate(log(sin(x))/cos(x),x,0,%pi/2) */
+ integrate(log(sin(x))/cos(x),x,0,%pi/2);
+  -(%pi^2/8)$
+
+/* #4138 limit((1+1/x)^x,x,6/5) is "und" in complex domain */
+ block([domain : 'complex], limit((1+1/x)^x,x,6/5)); 
+ 11^(6/5)/6^(6/5)$
+
+ /* #4133 limit(abs(cos(a*x)),x,inf) */
+ (assume(a < 0), ans : limit(abs(cos(a*x)),x,inf), forget(a < 0), ans);
+ ind$
+
+(assume(equal(a,0)), ans : limit(abs(cos(a*x)),x,inf), forget(equal(a,0)), ans);
+ 1$
+
+ (assume(a > 0), ans : limit(abs(cos(a*x)),x,inf), forget(a > 0), ans);
+ ind$
+
+  /* #4103 limit(acot(x),x,0) should be IND (not UND) */
+ limit(acot(x),x,0);
+ ind$
+
+/* Did any facts, values, or contexts leak?*/
 facts();
 []$
+
+(remvalue(X),0);
+0$
 
 contexts;
 [initial,global]$

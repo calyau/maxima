@@ -206,13 +206,13 @@ fi
 TEXIOPT="$FORCE --html -c OUTPUT_ENCODING_NAME=UTF-8 -e 10000 --document-lang=$language -I . -I $languagedir -I ../.. --css-include=@abs_srcdir@/manual.css -I @abs_srcdir@/figures --init-file $texiinitfile ${SET_HTML_MATH}"
 # Show the commands. 
 set -x
-makeinfo $FORCE --split=chapter --no-node-files --output="$languagedestdir" $TEXIOPT maxima.texi
+@MAKEINFO@ $FORCE --split=chapter --no-node-files --output="$languagedestdir" $TEXIOPT maxima.texi
 rc=$?
 if [ $rc -ne 0 ]; then
     echo Failed to build multi-page html docs
     exit $rc
 fi    
-makeinfo $FORCE --no-split --output="$languagedestdir/maxima_singlepage.html" $TEXIOPT maxima.texi
+@MAKEINFO@ $FORCE --no-split --output="$languagedestdir/maxima_singlepage.html" $TEXIOPT maxima.texi
 rc=$?
 if [ $rc -ne 0 ]; then
     echo Failed to build single page html doc

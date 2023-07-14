@@ -1,0 +1,20 @@
+/* colnew-ex2.mac
+
+  Generate figure for colnew example 5
+
+*/
+
+load("prob5.mac")$
+plot2d([
+  [discrete,X,Z[1]], [discrete,X,Z[2]], [discrete,X,Z[3]],
+  [discrete,X,Z[4]], [discrete,X,Z[5]]],
+  [legend,"e=1e-2","e=1e-3","e=1e-4","e=1e-5","e=1e-6"],
+  [xlabel,"x"],[ylabel,"u(x)"],
+  [pdf_file,"./figures/colnew-ex5.pdf"]);
+  
+plot2d([
+  [discrete,X,Z[1]], [discrete,X,Z[2]], [discrete,X,Z[3]],
+  [discrete,X,Z[4]], [discrete,X,Z[5]]],
+  [legend,"e=1e-2","e=1e-3","e=1e-4","e=1e-5","e=1e-6"],
+  [xlabel,"x"],[ylabel,"u(x)"],
+  [png_file,"./figures/colnew-ex5.png"]);

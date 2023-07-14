@@ -628,7 +628,20 @@ AC_ARG_ENABLE(build-docs,
 
 AM_CONDITIONAL(ENABLE_BUILD_DOCS, test x$enable_build_docs = xtrue)
 
-AC_CHECK_PROG(makeinfo_found,makeinfo,true,false)
+AC_ARG_VAR([MAKEINFO], [The path to the 'makeinfo' executable to use])
+AC_PATH_PROG([MAKEINFO], [makeinfo])
+makeinfo_found=true
+if test -z "$MAKEINFO"; then
+  makeinfo_found=false
+  AC_MSG_ERROR(
+[makeinfo not found; Maxima needs makeinfo to build docs.
+If you have makeinfo installed somewhere not in PATH,
+specify where it is by using
+  ./configure MAKEINFO=/path/to/makinfo
+Or disable building of the docs using
+  ./configure --disable-build-docs
+])
+fi
 
 if test x"${enable_build_docs}" = xtrue ; then
     if test x"${makeinfo_found}" = xfalse ; then
@@ -644,7 +657,7 @@ if test x"${enable_build_docs}" = xtrue ; then
 	dnl assuming that the end of the version string contains the
 	dnl version number consisting of digits separated by a period.
 	dnl This allows for version numbers like 6.8.90.
-	makeinfo_version_string=`expr "\`makeinfo --version | head -1\`" : '.* \([[.0-9]]\+\)'`
+	makeinfo_version_string=`expr "\`$MAKEINFO --version | head -1\`" : '.* \([[.0-9]]\+\)'`
 	dnl echo Makeinfo version ${makeinfo_version}
 
 	dnl From makeinfo_version, extract out the major and minor
