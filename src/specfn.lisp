@@ -795,7 +795,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $generalized_lambert_w (k z)
-  (ftake* %generalized_lambert_w k z))
+  (ftake* '%generalized_lambert_w k z))
 
 ;;; Set properties to give full support to the parser and display
 (defprop $generalized_lambert_w %generalized_lambert_w alias)
