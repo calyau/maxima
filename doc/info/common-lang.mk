@@ -28,7 +28,10 @@ maxima.pdf: maxima.texi $(maxima_TEXINFOS)
 
 include $(top_srcdir)/common.mk
 
-htmlname = maxima
+# The basename for the html files for the manual.  Since we don't
+# rename the html files, the html file names can basically have any
+# name.
+htmlname = *
 htmlinstdir = $(dochtmldir)$(langsdir)
 include $(top_srcdir)/common-html.mk
 
