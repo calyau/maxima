@@ -841,7 +841,7 @@ limit(log(1 + exp(x)), x, 0, plus), numer;
  */
 
 integrate(x^3/(exp(x)-1),x,0,inf);
--((15*log(-1)^4+30*%pi^2*log(-1)^2+7*%pi^4)/60)-%pi^4/15$
+%pi^4/15$
 
 
 block([numer : true,ratprint : false], integrate(x^3/(exp(x)-1),x,0,inf));

@@ -439,7 +439,7 @@ test_sum(
   false,
   [],
   %pi^2/6);
--((log(-1)^2 + %pi^2)/2);
+0;
 
 
 test_sum(

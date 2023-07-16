@@ -11,10 +11,7 @@
  */
 
 integrate(log(1-x)*log(1+x)/(1+x),x,0,1);
--((7*zeta(3))/8)-(-(2*zeta(3))+(log(-(1/2))-log(-1))*log(2)^2
-                                    +(%pi^2*log(2))/3)
-                       /2-log(2)^3/6+(%pi^2*log(2))/12$
-
+-((7*zeta(3))/8)-(-(2*zeta(3))-log(2)^3+(%pi^2*log(2))/3)/2-log(2)^3/6+(%pi^2*log(2))/12$
 
 integrate(abs(x),x);
 (x*abs(x))/2$
@@ -596,7 +593,7 @@ integrate(log(abs(sin(x))),x);
                     +2*%i*x*atan2(sin(x),cos(x)+1) -2*%i*x*atan2(sin(x),1-cos(x))-2*%i*li[2](%e^(%i*x))-2*%i*li[2](-%e^(%i*x))-%i*x^2)/2$
 
 integrate(log(abs(sin(x))),x,0,%pi/2);
-(8*%i*li[2](%i)+8*%i*li[2](-%i)-4*%pi*log(2)+%i*%pi^2)/8-%i*%pi^2/12$
+%i*li[2](%i)+%i*li[2](-%i)-(%pi*log(2))/2+(%i*%pi^2)/24$
 
 /* Tests for January 2015 extensions. */
 
@@ -809,7 +806,7 @@ integrate(abs(cos(x)),x,0,%pi);
 
 /* #2853 abs_integrate hangs after encountering log(0) */
  ii : integrate(log(abs(sin(x))), x, 0, %pi/2);
- (8*%i*li[2](%i)+8*%i*li[2](-%i)-4*%pi*log(2)+%i*%pi^2)/8-(%i*%pi^2)/12$
+  %i*li[2](%i)+%i*li[2](-%i)-(%pi*log(2))/2+(%i*%pi^2)/24$
 
  ratsubst(-%pi^2/24, li[2](%i) +  li[2](-%i) , ii);
  -(%pi*log(2))/2$
@@ -820,9 +817,7 @@ integrate(abs(cos(x)),x,0,%pi);
 
  /* #2815 abs_integrate leads to infinite recursion */
   integrate(log(1-x)*log(1+x)/(1+x),x,0,1);
-  -((7*zeta(3))/8)-(-(2*zeta(3))+(log(-(1/2))-log(-1))*log(2)^2
-                                    +(%pi^2*log(2))/3)
-                       /2-log(2)^3/6+(%pi^2*log(2))/12$
+  -((7*zeta(3))/8)-(-(2*zeta(3))-log(2)^3+(%pi^2*log(2))/3)/2-log(2)^3/6+(%pi^2*log(2))/12$
 
 /* #2814 abs_integrate: integration of x*ceiling(x) */
   expand(integrate(x*ceiling(x),x));

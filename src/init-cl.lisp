@@ -221,6 +221,68 @@
   (defun maxima-version1 ()
     (sanitize-string *autoconf-version*)))
 
+(defun compute-subdirs-list (dir &key exclude-dirs)
+  "Find all subdirectories in DIR and return them in a list.  The list
+  is sorted in lexicographic order.  A directory with the name
+  \".git\" is always excluded.  The keyword arg EXCLUDE-DIRS can be
+  provided to specify other directory names that should be excluded.
+  It should be a list of strings for the directory names to exclude."
+
+  (let* ((dirpath (concatenate 'string dir "/"))
+	 #+gcl
+	 (dir-len (1+ (length dir)))
+	 (wild-dir (concatenate 'string dirpath "/**/"))
+	 (subdirs (directory wild-dir)))
+    (setf subdirs
+	  ;; Put the directories in lexicographical order.  Some
+	  ;; lisps already do this in DIRECTORY, but it isn't
+	  ;; terrible to do this again.
+	  (stable-sort
+	   (mapcar #'(lambda (d)
+		       ;; Strip off the leading part of
+		       ;; the path.  Gcl has a broken
+		       ;; enough-namestring,
+		       #-gcl
+		       (enough-namestring d dirpath)
+		       #+gcl
+		       (subseq (namestring d) dir-len))
+		   subdirs)
+      	   #'string<=))
+    (setf subdirs
+	  (remove-if
+	   #'(lambda (path)
+	       ;; If any directory has a subdirectory name starting
+	       ;; with ".", we want to exclude that directory from our
+	       ;; list.  These are hidden directories (on unix)
+	       ;; where we should not be looking for maxima or lisp
+	       ;; files.  In addition, any directory with a name that
+	       ;; matches anything in EXCLUDE-DIRS is also excluded.
+	       (let ((dir (cdr (pathname-directory path))))
+		 (or (find-if #'(lambda (d)
+				  (when (plusp (length d))
+				    (char-equal #\. (aref d 0))))
+			      dir)
+		     (some #'(lambda (ex)
+			       (member ex dir :test #'equal))
+			   exclude-dirs))))
+	   subdirs))
+      
+    ;; Remove any empty names.  There should only one, and it
+    ;; should be the first, but lets get rid of them all, just in case.
+    (setf subdirs (remove-if #'(lambda (p)
+				 (equalp (namestring p) ""))
+			     subdirs))
+    ;; Finally, remove the trailing "/" from each directory.
+    (setf subdirs (mapcar #'(lambda (s)
+			      (let ((len (length s)))
+				(when (member (aref s (1- len)) '(#\/ #\\))
+				  (subseq s 0 (1- (length s))))))
+			  subdirs))
+    (format t "Adding ~D subdirectories of ~S to search path.~%"
+	    (length subdirs)
+	    dir)
+    subdirs))
+
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
@@ -291,10 +353,14 @@
 	 (lisp+maxima-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp,mac,mc,wxm}"))
 	 (demo-patterns "$$$.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "$$.{usg,texi}")
-	 (share-subdirs-list (share-subdirs-list))
+	 (share-subdirs-list (compute-subdirs-list *maxima-sharedir*
+						   :exclude-dirs '("binary" "fortran")))
 	 ;; Smash the list of share subdirs into a string of the form
 	 ;; "{affine,algebra,...,vector}" .
-	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list)))
+	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list))
+	 (maxima-userdir-subdirs
+	   (format nil "{~{~A~^,~}}" (compute-subdirs-list *maxima-userdir*
+							   :exclude-dirs '("binary")))))
 
     (setq $file_search_lisp
 	  (list '(mlist)
@@ -302,6 +368,7 @@
 		;; there should be a separate directory for compiled
 		;; lisp code. jfa 04/11/02
 		(combine-path *maxima-userdir* lisp-patterns)
+		(combine-path *maxima-userdir* maxima-userdir-subdirs lisp-patterns)
 		(combine-path *maxima-sharedir* lisp-patterns)
 		(combine-path *maxima-sharedir* share-subdirs lisp-patterns)
 		(combine-path *maxima-srcdir* lisp-patterns)
@@ -309,6 +376,7 @@
     (setq $file_search_maxima
 	  (list '(mlist)
 		(combine-path *maxima-userdir* maxima-patterns)
+		(combine-path *maxima-userdir* maxima-userdir-subdirs maxima-patterns)
 		(combine-path *maxima-sharedir* maxima-patterns)
 		(combine-path *maxima-sharedir* share-subdirs maxima-patterns)
         (combine-path *maxima-topdir* maxima-patterns)))
