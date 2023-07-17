@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-04 12:05:13 villate"            #
+#     Time-stamp: "2023-07-17 09:51:29 villate"            #
 ############################################################
 
 proc zoomConsole {f} {
@@ -251,7 +251,7 @@ proc vMAXAddSystemMenu {fr text} {
     .menu add cascade -label [mc "Help"] -menu $m -underline 0
 
     # Xmaxima manual
-    set xmaximahelpfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima.html]
+    set xmaximahelpfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html index.html]
     set xmaximahelpfile [file normalize $xmaximahelpfile]
     if {[file isfile $xmaximahelpfile]} {
 	set xstate normal
