@@ -362,36 +362,80 @@
 	   (format nil "{~{~A~^,~}}" (compute-subdirs-list *maxima-userdir*
 							   :exclude-dirs '("binary")))))
 
-    (setq $file_search_lisp
-	  (list '(mlist)
-		;; actually, this entry is not correct.
-		;; there should be a separate directory for compiled
-		;; lisp code. jfa 04/11/02
-		(combine-path *maxima-userdir* lisp-patterns)
-		(combine-path *maxima-userdir* maxima-userdir-subdirs lisp-patterns)
-		(combine-path *maxima-sharedir* lisp-patterns)
-		(combine-path *maxima-sharedir* share-subdirs lisp-patterns)
-		(combine-path *maxima-srcdir* lisp-patterns)
-        (combine-path *maxima-topdir* lisp-patterns)))
-    (setq $file_search_maxima
-	  (list '(mlist)
-		(combine-path *maxima-userdir* maxima-patterns)
-		(combine-path *maxima-userdir* maxima-userdir-subdirs maxima-patterns)
-		(combine-path *maxima-sharedir* maxima-patterns)
-		(combine-path *maxima-sharedir* share-subdirs maxima-patterns)
-        (combine-path *maxima-topdir* maxima-patterns)))
-    (setq $file_search_demo
-	  (list '(mlist)
-		(combine-path *maxima-sharedir* demo-patterns)
-		(combine-path *maxima-sharedir* share-subdirs demo-patterns)
-		(combine-path *maxima-demodir* demo-patterns)))
-    (setq $file_search_usage
-	  (list '(mlist)
-		(combine-path *maxima-sharedir* usage-patterns)
-		(combine-path *maxima-sharedir* share-subdirs usage-patterns)
-		(combine-path *maxima-docdir* usage-patterns)))
-    (setq $file_search_tests
-	  `((mlist) ,(combine-path *maxima-testsdir* lisp+maxima-patterns)))
+    #+nil
+    (progn
+      (setq $file_search_lisp
+	    (list '(mlist)
+		  ;; actually, this entry is not correct.
+		  ;; there should be a separate directory for compiled
+		  ;; lisp code. jfa 04/11/02
+		  (combine-path *maxima-userdir* lisp-patterns)
+		  (combine-path *maxima-userdir* maxima-userdir-subdirs lisp-patterns)
+		  (combine-path *maxima-sharedir* lisp-patterns)
+		  (combine-path *maxima-sharedir* share-subdirs lisp-patterns)
+		  (combine-path *maxima-srcdir* lisp-patterns)
+		  (combine-path *maxima-topdir* lisp-patterns)))
+      (setq $file_search_maxima
+	    (list '(mlist)
+		  (combine-path *maxima-userdir* maxima-patterns)
+		  (combine-path *maxima-userdir* maxima-userdir-subdirs maxima-patterns)
+		  (combine-path *maxima-sharedir* maxima-patterns)
+		  (combine-path *maxima-sharedir* share-subdirs maxima-patterns)
+		  (combine-path *maxima-topdir* maxima-patterns)))
+      (setq $file_search_demo
+	    (list '(mlist)
+		  (combine-path *maxima-sharedir* demo-patterns)
+		  (combine-path *maxima-sharedir* share-subdirs demo-patterns)
+		  (combine-path *maxima-demodir* demo-patterns)))
+      (setq $file_search_usage
+	    (list '(mlist)
+		  (combine-path *maxima-sharedir* usage-patterns)
+		  (combine-path *maxima-sharedir* share-subdirs usage-patterns)
+		  (combine-path *maxima-docdir* usage-patterns)))
+      (setq $file_search_tests
+	    `((mlist) ,(combine-path *maxima-testsdir* lisp+maxima-patterns))))
+
+    (flet ((build-search-path (dirs extensions)
+	     (let (search-path)
+	       (dolist (dir dirs)
+		 (dolist (ext extensions)
+		   (push (combine-path dir (concatenate 'string "*." ext)) search-path)))
+	       (make-mlist-l (nreverse search-path)))))
+      (setf $file_search_lisp
+	    (build-search-path (list (combine-path *maxima-userdir* "**")
+				     (combine-path *maxima-sharedir* "**")
+				     *maxima-srcdir*
+				     *maxima-topdir*)
+			       (list ext "lisp" "lsp")))
+      (setf $file_search_maxima
+	    (build-search-path (list (combine-path *maxima-userdir* "**")
+				     (combine-path *maxima-sharedir* "**")
+				     *maxima-srcdir*
+				     *maxima-topdir*)
+			       '("mac"
+				 "wxm"
+				 "mc")))
+      (setf $file_search_demo
+	    (build-search-path (list (combine-path *maxima-sharedir* "**")
+				     *maxima-demodir*)
+			       '("dem"
+				 "dm1"
+				 "dm2"
+				 "dm3"
+				 "dmt")))
+      (setf $file_search_usage
+	    (build-search-path (list (combine-path *maxima-sharedir* "**")
+				     *maxima-docdir*)
+			       '("usg"
+				 "texi")))
+      (setf $file_search_tests
+	    (build-search-path (list *maxima-testsdir*)
+			       (list ext
+				     "lisp"
+				     "lsp"
+				     "mac"
+				     "wxm"
+				     "mc"))))
 
     ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory
     ;; with some data really exists.  If not this probably means that required

@@ -572,6 +572,7 @@
 (defun apparently-a-directory-p (path)
   (eq (pathname-name path) nil))
 
+#+nil
 (defun new-file-search (name template)
   (cond ((file-exists-p name))
 	((atom template)
@@ -585,7 +586,14 @@
 	 (let ((temp nil))
 	   (loop for v in template
 		 when (setq temp (new-file-search name v))
-		 do (return temp))))))
+		   do (return temp))))))
+
+(defun new-file-search (name template)
+  (let ((filename (pathname name)))
+    (dolist (path template)
+      (let ((pathname (directory (merge-pathnames filename path))))
+	(when pathname
+	  (return-from new-file-search (first pathname)))))))
 
 (defun new-file-search1 (name begin lis)
   (cond ((null lis)
