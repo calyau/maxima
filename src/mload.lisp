@@ -599,17 +599,26 @@
 	(t
 	 (let ((filename (pathname name)))
 	   (dolist (path template)
-	     (let ((pathname (directory (merge-pathnames filename path))))
+	     (let ((pathnames (directory (merge-pathnames filename path))))
 	       (when *debug-new-file-search*
 		 (format *debug-io* "wildpath ~S~%" (merge-pathnames filename path)))
-	       (when pathname
+	       (when pathnames
 		 ;; We MUST sort the results in alphabetical order
 		 ;; because that's how the old search paths were
 		 ;; sorted.
-		 (setf pathname (sort pathname #'string< :key #'namestring))
+		 (setf pathnames (sort pathnames #'string< :key #'namestring))
 		 (when *debug-new-file-search*
-		   (format *debug-io* "pathname = ~S~%" pathname))
-		 (return-from new-file-search (namestring (first pathname))))))))))
+		   (format *debug-io* "pathname = ~S~%" pathnames))
+		 ;; If more than one path is returned, print a warning
+		 ;; that we're selecting the first file.  Print all
+		 ;; the matches too so the user knows.
+		 (unless (= 1 (length pathnames))
+		   (mwarning
+		    (format nil
+			    "More than file matches.  Selecting the first file from:~
+~%~{  ~A~^~%~}~%"
+			    (mapcar #'namestring pathnames))))
+		 (return-from new-file-search (namestring (first pathnames))))))))))
 
 #+nil
 (defun new-file-search1 (name begin lis)
