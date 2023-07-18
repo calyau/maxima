@@ -572,6 +572,15 @@
 (defun apparently-a-directory-p (path)
   (eq (pathname-name path) nil))
 
+;; We keep these here in case we want to optimize the search.  To
+;; speed things up, we might want to support search lists like
+;; "share/**/*.{mac,wxm,mc}" so that we only descend the directory
+;; once.  Then we would take the list of paths and try to match the
+;; one with the given extensions.
+;;
+;; Currently, the search list is ["share/**/*.mac", "share/**/*.wxm",
+;; "share/**/*.mc"].  Thus to find "foo.mc", we end up doing a
+;; directory 3 times.
 #+nil
 (defun new-file-search (name template)
   (cond ((file-exists-p name))
