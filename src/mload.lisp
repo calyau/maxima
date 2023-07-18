@@ -638,7 +638,7 @@
 		 (unless (= 1 (length pathnames))
 		   (mwarning
 		    (format nil
-			    "More than file matches.  Selecting the first file from:~
+			    "More than one file matches.  Selecting the first file from:~
 ~%~{  ~A~^~%~}~%"
 			    (mapcar #'namestring pathnames))))
 		 (return-from new-file-search (namestring (first pathnames))))))))))
