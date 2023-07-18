@@ -226,7 +226,7 @@
   $file_search_demo, $file_search_usage, and $file_search_test."
   (let* ((ext (pathname-type (compile-file-pathname "foo.lisp")))
 	 (lisp-patterns (list ext "lisp"))
-	 (maxima-patterns '("mac" "wxm" "mc"))
+	 (maxima-patterns '("mac" "wxm"))
 	 (lisp+maxima-patterns (append lisp-patterns maxima-patterns))
 	 (demo-patterns '("dem"))
 	 (usage-patterns '("usg")))
