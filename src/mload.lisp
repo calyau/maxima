@@ -588,6 +588,8 @@
 		 when (setq temp (new-file-search name v))
 		   do (return temp))))))
 
+(defvar *debug-new-file-search* nil)
+
 ;; Search for a file named NAME.  If the file exists, return it.
 ;; Otherwise, TEMPLATE is a list of wildcard paths to be searched for
 ;; the NAME.  Each entry in TEMPLATE should be a Lisp wildcard
@@ -598,9 +600,18 @@
 	 (let ((filename (pathname name)))
 	   (dolist (path template)
 	     (let ((pathname (directory (merge-pathnames filename path))))
+	       (when *debug-new-file-search*
+		 (format *debug-io* "wildpath ~S~%" (merge-pathnames filename path)))
 	       (when pathname
+		 ;; We MUST sort the results in alphabetical order
+		 ;; because that's how the old search paths were
+		 ;; sorted.
+		 (setf pathname (sort pathname #'string< :key #'namestring))
+		 (when *debug-new-file-search*
+		   (format *debug-io* "pathname = ~S~%" pathname))
 		 (return-from new-file-search (namestring (first pathname))))))))))
 
+#+nil
 (defun new-file-search1 (name begin lis)
   (cond ((null lis)
 	 (let ((file (namestring ($filename_merge begin name))))
