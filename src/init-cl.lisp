@@ -221,60 +221,9 @@
   (defun maxima-version1 ()
     (sanitize-string *autoconf-version*)))
 
-(defun set-pathnames ()
-  (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
-	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
-	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
-	(maxima-docprefix-env (maxima-getenv "MAXIMA_DOC_PREFIX"))
-	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR"))
-	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR"))
-	(maxima-htmldir-env (maxima-getenv "MAXIMA_HTMLDIR")))
-    ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
-    (unless maxima-prefix-env
-      (setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
-    (if maxima-prefix-env
-	(setq *maxima-prefix* maxima-prefix-env)
-	(setq *maxima-prefix* (maxima-parse-dirstring *autoconf-prefix*)))
-    (if maxima-layout-autotools-env
-	(setq *maxima-layout-autotools*
-	      (string-equal maxima-layout-autotools-env "true"))
-	(setq *maxima-layout-autotools*
-	      (string-equal *maxima-default-layout-autotools* "true")))
-    (if *maxima-layout-autotools*
-	(set-pathnames-with-autoconf maxima-prefix-env maxima-docprefix-env)
-	(set-pathnames-without-autoconf maxima-prefix-env maxima-docprefix-env))
-    (if maxima-userdir-env
-	(setq *maxima-userdir* (maxima-parse-dirstring maxima-userdir-env))
-	(setq *maxima-userdir* (default-userdir)))
-    (if maxima-tempdir-env
-	(setq *maxima-tempdir* (maxima-parse-dirstring maxima-tempdir-env))
-	(setq *maxima-tempdir* (default-tempdir)))
-    ;; Default *MAXIMA-OBJDIR* is <userdir>/binary/binary-<foo>lisp,
-    ;; because userdir is almost surely writable, and we don't want to clutter up
-    ;; random directories with Maxima stuff.
-    ;; Append binary-<foo>lisp whether objdir is the default or obtained from environment.
-    (setq *maxima-objdir*
-          (concatenate 'string
-                       (if maxima-objdir-env
-                         (maxima-parse-dirstring maxima-objdir-env)
-                         (concatenate 'string *maxima-userdir* "/binary"))
-                       "/" (maxima-version1) "/" *maxima-lispname* "/" (lisp-implementation-version1)))
-
-    (when maxima-htmldir-env
-      (setq *maxima-htmldir* (combine-path (maxima-parse-dirstring maxima-htmldir-env) "doc" "info")))
-
-    ;; On ECL the testbench fails mysteriously if this directory doesn't exist =>
-    ;; let's create it by hand as a workaround.
-    #+ecl (ensure-directories-exist (concatenate 'string *maxima-objdir* "/"))
-    
-    ; Assign initial values for Maxima shadow variables
-    (setq $maxima_userdir *maxima-userdir*)
-    (setf (gethash '$maxima_userdir *variable-initial-values*) *maxima-userdir*)
-    (setq $maxima_tempdir *maxima-tempdir*)
-    (setf (gethash '$maxima_tempdir *variable-initial-values*) *maxima-tempdir*)
-    (setq $maxima_objdir *maxima-objdir*)
-    (setf (gethash '$maxima_objdir *variable-initial-values*) *maxima-objdir*))
-
+(defun setup-search-lists ()
+  "Set up the default values for $file_search_lisp, $file_search_maxima,
+  $file_search_demo, $file_search_usage, and $file_search_test."
   (let* ((ext (pathname-type (compile-file-pathname "foo.lisp")))
 	 (lisp-patterns (list ext "lisp"))
 	 (maxima-patterns '("mac" "wxm" "mc"))
@@ -358,14 +307,70 @@
 	    #+nil
 	    (build-search-list (list *maxima-testsdir*)
 			       lisp+maxima-patterns)
-	    (build-search-list (list (list *maxima-testsdir* lisp+maxima-patterns)))))
+	    (build-search-list (list (list *maxima-testsdir* lisp+maxima-patterns)))))))
+  
+(defun set-pathnames ()
+  (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
+	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
+	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
+	(maxima-docprefix-env (maxima-getenv "MAXIMA_DOC_PREFIX"))
+	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR"))
+	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR"))
+	(maxima-htmldir-env (maxima-getenv "MAXIMA_HTMLDIR")))
+    ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
+    (unless maxima-prefix-env
+      (setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
+    (if maxima-prefix-env
+	(setq *maxima-prefix* maxima-prefix-env)
+	(setq *maxima-prefix* (maxima-parse-dirstring *autoconf-prefix*)))
+    (if maxima-layout-autotools-env
+	(setq *maxima-layout-autotools*
+	      (string-equal maxima-layout-autotools-env "true"))
+	(setq *maxima-layout-autotools*
+	      (string-equal *maxima-default-layout-autotools* "true")))
+    (if *maxima-layout-autotools*
+	(set-pathnames-with-autoconf maxima-prefix-env maxima-docprefix-env)
+	(set-pathnames-without-autoconf maxima-prefix-env maxima-docprefix-env))
+    (if maxima-userdir-env
+	(setq *maxima-userdir* (maxima-parse-dirstring maxima-userdir-env))
+	(setq *maxima-userdir* (default-userdir)))
+    (if maxima-tempdir-env
+	(setq *maxima-tempdir* (maxima-parse-dirstring maxima-tempdir-env))
+	(setq *maxima-tempdir* (default-tempdir)))
+    ;; Default *MAXIMA-OBJDIR* is <userdir>/binary/binary-<foo>lisp,
+    ;; because userdir is almost surely writable, and we don't want to clutter up
+    ;; random directories with Maxima stuff.
+    ;; Append binary-<foo>lisp whether objdir is the default or obtained from environment.
+    (setq *maxima-objdir*
+          (concatenate 'string
+                       (if maxima-objdir-env
+                         (maxima-parse-dirstring maxima-objdir-env)
+                         (concatenate 'string *maxima-userdir* "/binary"))
+                       "/" (maxima-version1) "/" *maxima-lispname* "/" (lisp-implementation-version1)))
 
-      ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory
-      ;; with some data really exists.  If not this probably means that required
-      ;; language pack wasn't installed and we reset *maxima-lang-subdir* to nil.
-      (when (and *maxima-lang-subdir*
-		 (not (probe-file (combine-path *maxima-infodir* *maxima-lang-subdir* "maxima-index.lisp"))))
-	(setq *maxima-lang-subdir* nil))))
+    (when maxima-htmldir-env
+      (setq *maxima-htmldir* (combine-path (maxima-parse-dirstring maxima-htmldir-env) "doc" "info")))
+
+    ;; On ECL the testbench fails mysteriously if this directory doesn't exist =>
+    ;; let's create it by hand as a workaround.
+    #+ecl (ensure-directories-exist (concatenate 'string *maxima-objdir* "/"))
+    
+    ; Assign initial values for Maxima shadow variables
+    (setq $maxima_userdir *maxima-userdir*)
+    (setf (gethash '$maxima_userdir *variable-initial-values*) *maxima-userdir*)
+    (setq $maxima_tempdir *maxima-tempdir*)
+    (setf (gethash '$maxima_tempdir *variable-initial-values*) *maxima-tempdir*)
+    (setq $maxima_objdir *maxima-objdir*)
+    (setf (gethash '$maxima_objdir *variable-initial-values*) *maxima-objdir*))
+
+  (setup-search-lists)
+
+  ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory
+  ;; with some data really exists.  If not this probably means that required
+  ;; language pack wasn't installed and we reset *maxima-lang-subdir* to nil.
+  (when (and *maxima-lang-subdir*
+	     (not (probe-file (combine-path *maxima-infodir* *maxima-lang-subdir* "maxima-index.lisp"))))
+    (setq *maxima-lang-subdir* nil)))
 
 (defun get-dirs (path &aux (ns (namestring path)))
   (directory (concatenate 'string
