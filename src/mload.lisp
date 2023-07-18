@@ -588,12 +588,18 @@
 		 when (setq temp (new-file-search name v))
 		   do (return temp))))))
 
+;; Search for a file named NAME.  If the file exists, return it.
+;; Otherwise, TEMPLATE is a list of wildcard paths to be searched for
+;; the NAME.  Each entry in TEMPLATE should be a Lisp wildcard
+;; pathname.
 (defun new-file-search (name template)
-  (let ((filename (pathname name)))
-    (dolist (path template)
-      (let ((pathname (directory (merge-pathnames filename path))))
-	(when pathname
-	  (return-from new-file-search (first pathname)))))))
+  (cond ((file-exists-p name))
+	(t
+	 (let ((filename (pathname name)))
+	   (dolist (path template)
+	     (let ((pathname (directory (merge-pathnames filename path))))
+	       (when pathname
+		 (return-from new-file-search (namestring (first pathname))))))))))
 
 (defun new-file-search1 (name begin lis)
   (cond ((null lis)
