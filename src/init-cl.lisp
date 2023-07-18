@@ -221,69 +221,6 @@
   (defun maxima-version1 ()
     (sanitize-string *autoconf-version*)))
 
-#+nil
-(defun compute-subdirs-list (dir &key exclude-dirs)
-  "Find all subdirectories in DIR and return them in a list.  The list
-  is sorted in lexicographic order.  A directory with the name
-  \".git\" is always excluded.  The keyword arg EXCLUDE-DIRS can be
-  provided to specify other directory names that should be excluded.
-  It should be a list of strings for the directory names to exclude."
-
-  (let* ((dirpath (concatenate 'string dir "/"))
-	 #+gcl
-	 (dir-len (1+ (length dir)))
-	 (wild-dir (concatenate 'string dirpath "/**/"))
-	 (subdirs (directory wild-dir)))
-    (setf subdirs
-	  ;; Put the directories in lexicographical order.  Some
-	  ;; lisps already do this in DIRECTORY, but it isn't
-	  ;; terrible to do this again.
-	  (stable-sort
-	   (mapcar #'(lambda (d)
-		       ;; Strip off the leading part of
-		       ;; the path.  Gcl has a broken
-		       ;; enough-namestring,
-		       #-gcl
-		       (enough-namestring d dirpath)
-		       #+gcl
-		       (subseq (namestring d) dir-len))
-		   subdirs)
-      	   #'string<=))
-    (setf subdirs
-	  (remove-if
-	   #'(lambda (path)
-	       ;; If any directory has a subdirectory name starting
-	       ;; with ".", we want to exclude that directory from our
-	       ;; list.  These are hidden directories (on unix)
-	       ;; where we should not be looking for maxima or lisp
-	       ;; files.  In addition, any directory with a name that
-	       ;; matches anything in EXCLUDE-DIRS is also excluded.
-	       (let ((dir (cdr (pathname-directory path))))
-		 (or (find-if #'(lambda (d)
-				  (when (plusp (length d))
-				    (char-equal #\. (aref d 0))))
-			      dir)
-		     (some #'(lambda (ex)
-			       (member ex dir :test #'equal))
-			   exclude-dirs))))
-	   subdirs))
-      
-    ;; Remove any empty names.  There should only one, and it
-    ;; should be the first, but lets get rid of them all, just in case.
-    (setf subdirs (remove-if #'(lambda (p)
-				 (equalp (namestring p) ""))
-			     subdirs))
-    ;; Finally, remove the trailing "/" from each directory.
-    (setf subdirs (mapcar #'(lambda (s)
-			      (let ((len (length s)))
-				(when (member (aref s (1- len)) '(#\/ #\\))
-				  (subseq s 0 (1- (length s))))))
-			  subdirs))
-    (format t "Adding ~D subdirectories of ~S to search path.~%"
-	    (length subdirs)
-	    dir)
-    subdirs))
-
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
@@ -343,80 +280,45 @@
 	 (maxima-patterns '("mac" "wxm" "mc"))
 	 (lisp+maxima-patterns (append lisp-patterns maxima-patterns))
 	 (demo-patterns '("dem" "dm1" "dm2" "dm3" "dmt"))
-	 (usage-patterns '("usg" "texi"))
-	 #+nil
-	 (share-subdirs-list (compute-subdirs-list *maxima-sharedir*
-						   :exclude-dirs '("binary" "fortran")))
-	 ;; Smash the list of share subdirs into a string of the form
-	 ;; "{affine,algebra,...,vector}" .
-	 #+nil
-	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list))
-	 #+nil
-	 (maxima-userdir-subdirs
-	   (format nil "{~{~A~^,~}}" (compute-subdirs-list *maxima-userdir*
-							   :exclude-dirs '("binary")))))
+	 (usage-patterns '("usg" "texi")))
 
-    #+nil
-    (progn
-      (setq $file_search_lisp
-	    (list '(mlist)
-		  ;; actually, this entry is not correct.
-		  ;; there should be a separate directory for compiled
-		  ;; lisp code. jfa 04/11/02
-		  (combine-path *maxima-userdir* lisp-patterns)
-		  (combine-path *maxima-userdir* maxima-userdir-subdirs lisp-patterns)
-		  (combine-path *maxima-sharedir* lisp-patterns)
-		  (combine-path *maxima-sharedir* share-subdirs lisp-patterns)
-		  (combine-path *maxima-srcdir* lisp-patterns)
-		  (combine-path *maxima-topdir* lisp-patterns)))
-      (setq $file_search_maxima
-	    (list '(mlist)
-		  (combine-path *maxima-userdir* maxima-patterns)
-		  (combine-path *maxima-userdir* maxima-userdir-subdirs maxima-patterns)
-		  (combine-path *maxima-sharedir* maxima-patterns)
-		  (combine-path *maxima-sharedir* share-subdirs maxima-patterns)
-		  (combine-path *maxima-topdir* maxima-patterns)))
-      (setq $file_search_demo
-	    (list '(mlist)
-		  (combine-path *maxima-sharedir* demo-patterns)
-		  (combine-path *maxima-sharedir* share-subdirs demo-patterns)
-		  (combine-path *maxima-demodir* demo-patterns)))
-      (setq $file_search_usage
-	    (list '(mlist)
-		  (combine-path *maxima-sharedir* usage-patterns)
-		  (combine-path *maxima-sharedir* share-subdirs usage-patterns)
-		  (combine-path *maxima-docdir* usage-patterns)))
-      (setq $file_search_tests
-	    `((mlist) ,(combine-path *maxima-testsdir* lisp+maxima-patterns))))
-
-    (flet ((build-search-path (dirs extensions)
+    (flet ((build-search-list (dirs extensions)
+	     ;; Creates the search list by adding "*.ext", where "ext"
+	     ;; is an element of EXTENSIONS, to each directory from
+	     ;; DIRS.  The resulting search list is a maxima list
+	     ;; consisting of Lisp wildcard pathnames that matches
+	     ;; files with the given extensions.  The order of the
+	     ;; extensions is important since that will be the order
+	     ;; that will be searched for files with that extension.
+	     ;; The directories will be searched in the order given.
 	     (let (search-path)
 	       (dolist (dir dirs)
 		 (dolist (ext extensions)
-		   (push (combine-path dir (concatenate 'string "*." ext)) search-path)))
+		   (push (combine-path dir (concatenate 'string "*." ext))
+			 search-path)))
 	       (make-mlist-l (nreverse search-path)))))
       (setf $file_search_lisp
-	    (build-search-path (list (combine-path *maxima-userdir* "**")
+	    (build-search-list (list (combine-path *maxima-userdir* "**")
 				     (combine-path *maxima-sharedir* "**")
 				     *maxima-srcdir*
 				     *maxima-topdir*)
 			       lisp-patterns))
       (setf $file_search_maxima
-	    (build-search-path (list (combine-path *maxima-userdir* "**")
+	    (build-search-list (list (combine-path *maxima-userdir* "**")
 				     (combine-path *maxima-sharedir* "**")
 				     *maxima-srcdir*
 				     *maxima-topdir*)
 			       maxima-patterns))
       (setf $file_search_demo
-	    (build-search-path (list (combine-path *maxima-sharedir* "**")
+	    (build-search-list (list (combine-path *maxima-sharedir* "**")
 				     *maxima-demodir*)
 			       demo-patterns))
       (setf $file_search_usage
-	    (build-search-path (list (combine-path *maxima-sharedir* "**")
+	    (build-search-list (list (combine-path *maxima-sharedir* "**")
 				     *maxima-docdir*)
 			       usage-patterns))
       (setf $file_search_tests
-	    (build-search-path (list *maxima-testsdir*)
+	    (build-search-list (list *maxima-testsdir*)
 			       lisp+maxima-patterns)))
 
     ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory
