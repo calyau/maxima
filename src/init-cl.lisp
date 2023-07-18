@@ -221,6 +221,7 @@
   (defun maxima-version1 ()
     (sanitize-string *autoconf-version*)))
 
+#+nil
 (defun compute-subdirs-list (dir &key exclude-dirs)
   "Find all subdirectories in DIR and return them in a list.  The list
   is sorted in lexicographic order.  A directory with the name
@@ -348,20 +349,10 @@
               #+abcl "abcl"
 	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks ecl abcl)
 	      "")
-	 #+nil
-	 (lisp-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp}"))
 	 (lisp-patterns (list ext "lisp" "lsp"))
-	 #+nil
-	 (maxima-patterns "$$$.{mac,mc,wxm}")
 	 (maxima-patterns '("mac" "wxm" "mc"))
-	 #+nil
-	 (lisp+maxima-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp,mac,mc,wxm}"))
 	 (lisp+maxima-patterns (append lisp-patterns maxima-patterns))
-	 #+nil
-	 (demo-patterns "$$$.{dem,dm1,dm2,dm3,dmt}")
 	 (demo-patterns '("dem" "dm1" "dm2" "dm3" "dmt"))
-	 #+nil
-	 (usage-patterns "$$.{usg,texi}")
 	 (usage-patterns '("usg" "texi"))
 	 #+nil
 	 (share-subdirs-list (compute-subdirs-list *maxima-sharedir*
