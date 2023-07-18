@@ -2,12 +2,12 @@
  * when opening a stream to be supplied to batch or batchload.
  * e.g. S: openr("foo.mac", "CP1252"); batch(S); close(S);
  *
- * The batch files foo-<encoding>.mac and foo-<encoding>.UTF-8.mac
+ * The batch files foo-<encoding>.mac and foo-<encoding>-UTF-8.mac
  * contain strings which are assigned to the variable foo_string.
  * All four instances of foo_string (batch and batchload, <encoding> and UTF-8)
  * should be identical.
  *
- * foo-<encoding>.UTF-8.mac is the same as foo-<encoding>.mac,
+ * foo-<encoding>-UTF-8.mac is the same as foo-<encoding>.mac,
  * after passing it through a character conversion program
  * (I think it was iconv but I don't remember for sure).
  */
@@ -26,7 +26,7 @@
                 then printf (true, "rtest_encodings: recognized ~s.", e)
                 else printf (true, "rtest_encodings: recognized ~s (an alias of ~s).~%", e, ee1),
             foo_name: printf (false, "foo-~a.mac", ee1),
-            foo_UTF8_name: printf (false, "foo-~a.UTF-8.mac", ee1),
+            foo_UTF8_name: printf (false, "foo-~a-UTF-8.mac", ee1),
             kill (foo_string),
             mystream: openr (file_search (foo_name), e),
             batchload (mystream),

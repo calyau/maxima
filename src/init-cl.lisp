@@ -338,17 +338,7 @@
     (setq $maxima_objdir *maxima-objdir*)
     (setf (gethash '$maxima_objdir *variable-initial-values*) *maxima-objdir*))
 
-  (let* ((ext #+gcl "o"
-	      #+(or cmu scl) (c::backend-fasl-file-type c::*target-backend*)
-	      #+sbcl "fasl"
-	      #+clisp "fas"
-	      #+allegro "fasl"
-	      #+openmcl (pathname-type ccl::*.fasl-pathname*)
-	      #+lispworks (pathname-type (compile-file-pathname "foo.lisp"))
-	      #+ecl "fas"
-              #+abcl "abcl"
-	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks ecl abcl)
-	      "")
+  (let* ((ext (pathname-type (compile-file-pathname "foo.lisp")))
 	 (lisp-patterns (list ext "lisp" "lsp"))
 	 (maxima-patterns '("mac" "wxm" "mc"))
 	 (lisp+maxima-patterns (append lisp-patterns maxima-patterns))
