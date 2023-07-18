@@ -348,16 +348,29 @@
               #+abcl "abcl"
 	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks ecl abcl)
 	      "")
+	 #+nil
 	 (lisp-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp}"))
+	 (lisp-patterns (list ext "lisp" "lsp"))
+	 #+nil
 	 (maxima-patterns "$$$.{mac,mc,wxm}")
+	 (maxima-patterns '("mac" "wxm" "mc"))
+	 #+nil
 	 (lisp+maxima-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp,mac,mc,wxm}"))
+	 (lisp+maxima-patterns (append lisp-patterns maxima-patterns))
+	 #+nil
 	 (demo-patterns "$$$.{dem,dm1,dm2,dm3,dmt}")
+	 (demo-patterns '("dem" "dm1" "dm2" "dm3" "dmt"))
+	 #+nil
 	 (usage-patterns "$$.{usg,texi}")
+	 (usage-patterns '("usg" "texi"))
+	 #+nil
 	 (share-subdirs-list (compute-subdirs-list *maxima-sharedir*
 						   :exclude-dirs '("binary" "fortran")))
 	 ;; Smash the list of share subdirs into a string of the form
 	 ;; "{affine,algebra,...,vector}" .
+	 #+nil
 	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list))
+	 #+nil
 	 (maxima-userdir-subdirs
 	   (format nil "{~{~A~^,~}}" (compute-subdirs-list *maxima-userdir*
 							   :exclude-dirs '("binary")))))
@@ -406,36 +419,24 @@
 				     (combine-path *maxima-sharedir* "**")
 				     *maxima-srcdir*
 				     *maxima-topdir*)
-			       (list ext "lisp" "lsp")))
+			       lisp-patterns))
       (setf $file_search_maxima
 	    (build-search-path (list (combine-path *maxima-userdir* "**")
 				     (combine-path *maxima-sharedir* "**")
 				     *maxima-srcdir*
 				     *maxima-topdir*)
-			       '("mac"
-				 "wxm"
-				 "mc")))
+			       maxima-patterns))
       (setf $file_search_demo
 	    (build-search-path (list (combine-path *maxima-sharedir* "**")
 				     *maxima-demodir*)
-			       '("dem"
-				 "dm1"
-				 "dm2"
-				 "dm3"
-				 "dmt")))
+			       demo-patterns))
       (setf $file_search_usage
 	    (build-search-path (list (combine-path *maxima-sharedir* "**")
 				     *maxima-docdir*)
-			       '("usg"
-				 "texi")))
+			       usage-patterns))
       (setf $file_search_tests
 	    (build-search-path (list *maxima-testsdir*)
-			       (list ext
-				     "lisp"
-				     "lsp"
-				     "mac"
-				     "wxm"
-				     "mc"))))
+			       lisp+maxima-patterns)))
 
     ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory
     ;; with some data really exists.  If not this probably means that required
