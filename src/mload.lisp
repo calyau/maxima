@@ -588,6 +588,20 @@
 		 when (setq temp (new-file-search name v))
 		   do (return temp))))))
 
+#+nil
+(defun new-file-search1 (name begin lis)
+  (cond ((null lis)
+	 (let ((file (namestring ($filename_merge begin name))))
+	   (if (file-exists-p file) file nil)))
+	((atom (car lis))
+	 (new-file-search1 name
+			   (if begin
+			       ($sconcat begin (car lis)) (car lis))
+			   (cdr lis)))
+	(t (loop for v in (car lis) with tem
+		  when (setq tem  (new-file-search1 name begin (cons v (cdr lis))))
+		  do (return tem)))))
+
 (defvar *debug-new-file-search* nil)
 
 ;; Search for a file named NAME.  If the file exists, return it.
@@ -619,20 +633,6 @@
 ~%~{  ~A~^~%~}~%"
 			    (mapcar #'namestring pathnames))))
 		 (return-from new-file-search (namestring (first pathnames))))))))))
-
-#+nil
-(defun new-file-search1 (name begin lis)
-  (cond ((null lis)
-	 (let ((file (namestring ($filename_merge begin name))))
-	   (if (file-exists-p file) file nil)))
-	((atom (car lis))
-	 (new-file-search1 name
-			   (if begin
-			       ($sconcat begin (car lis)) (car lis))
-			   (cdr lis)))
-	(t (loop for v in (car lis) with tem
-		  when (setq tem  (new-file-search1 name begin (cons v (cdr lis))))
-		  do (return tem)))))
 
 (defun save-linenumbers (&key (c-lines t) d-lines (from 1) (below $linenum) a-list
 			 (file  "/tmp/lines")
