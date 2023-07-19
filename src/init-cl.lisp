@@ -231,23 +231,7 @@
 	 (demo-patterns '("dem"))
 	 (usage-patterns '("usg")))
 
-    (flet (#+nil
-	   (build-search-list (dirs extensions)
-	     ;; Creates the search list by adding "*.ext", where "ext"
-	     ;; is an element of EXTENSIONS, to each directory from
-	     ;; DIRS.  The resulting search list is a maxima list
-	     ;; consisting of Lisp wildcard pathnames that matches
-	     ;; files with the given extensions.  The order of the
-	     ;; extensions is important since that will be the order
-	     ;; that will be searched for files with that extension.
-	     ;; The directories will be searched in the order given.
-	     (let (search-path)
-	       (dolist (dir dirs)
-		 (dolist (ext extensions)
-		   (push (combine-path dir (concatenate 'string "*." ext))
-			 search-path)))
-	       (make-mlist-l (nreverse search-path))))
-	   (build-search-list (path-info)
+    (flet ((build-search-list (path-info)
 	     (let (search-path)
 	       (dolist (info path-info)
 		 (destructuring-bind (dir extensions)
@@ -258,12 +242,6 @@
 	       (make-mlist-l (nreverse search-path)))))
 
       (setf $file_search_lisp
-	    #+nil
-	    (build-search-list (list (combine-path *maxima-userdir* "**")
-				     (combine-path *maxima-sharedir* "**")
-				     *maxima-srcdir*
-				     *maxima-topdir*)
-			       lisp-patterns)
 	    (build-search-list (list (list (combine-path *maxima-userdir* "**")
 					   lisp-patterns)
 				     (list (combine-path *maxima-sharedir* "**")
@@ -272,12 +250,6 @@
 				     (list *maxima-srcdir* lisp-patterns)
 				     (list *maxima-topdir* lisp-patterns))))
       (setf $file_search_maxima
-	    #+nil
-	    (build-search-list (list (combine-path *maxima-userdir* "**")
-				     (combine-path *maxima-sharedir* "**")
-				     *maxima-srcdir*
-				     *maxima-topdir*)
-			       maxima-patterns)
 	    (build-search-list (list (list (combine-path *maxima-userdir* "**")
 					   maxima-patterns)
 				     (list (combine-path *maxima-sharedir* "**")
@@ -288,25 +260,14 @@
 				     (list *maxima-topdir*
 					   '("mac")))))
       (setf $file_search_demo
-	    #+nil
-	    (build-search-list (list (combine-path *maxima-sharedir* "**")
-				     *maxima-demodir*)
-			       demo-patterns)
 	    (build-search-list (list (list (combine-path *maxima-sharedir* "**")
 					   demo-patterns)
 				     (list *maxima-demodir* demo-patterns))))
       (setf $file_search_usage
-	    #+nil
-	    (build-search-list (list (combine-path *maxima-sharedir* "**")
-				     *maxima-docdir*)
-			       usage-patterns)
 	    (build-search-list (list (list (combine-path *maxima-sharedir* "**")
 					   usage-patterns)
 				     (list *maxima-docdir* usage-patterns))))
       (setf $file_search_tests
-	    #+nil
-	    (build-search-list (list *maxima-testsdir*)
-			       lisp+maxima-patterns)
 	    (build-search-list (list (list *maxima-testsdir* lisp+maxima-patterns)))))))
   
 (defun set-pathnames ()
