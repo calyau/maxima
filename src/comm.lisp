@@ -1202,6 +1202,9 @@
 (defmfun $float (e)
   (cond ((numberp e)
 	 (let ((e1 (float e))) (if (float-inf-p e1) (signal 'floating-point-overflow) e1)))
+	((eq e '$%i)
+	 ;; Handle %i specially.
+	 (mul 1.0 '$%i))
 	((and (symbolp e) (mget e '$numer)))
 	((or (atom e) (member 'array (cdar e) :test #'eq)) e)
 	((eq (caar e) 'rat) (fpcofrat e))
