@@ -3,7 +3,7 @@
 * Functions and Variables for wrstcse::
 @end menu
 
-@node Introduction to wrstcse, Functions and Variables for wrstcse, wrstcse-pkg, wrstcse-pkg
+@node Introduction to wrstcse, Functions and Variables for wrstcse, Package wrstcse, Package wrstcse
 @section Introduction to wrstcse
 
 @code{wrstcse} is a naive go at interval arithmetics is powerful enough to
@@ -27,7 +27,7 @@ will make both parameters tolerate in the same way.
 @category{Package wrstcse}
 @closecatbox
 
-@node Functions and Variables for wrstcse, , Introduction to wrstcse, wrstcse-pkg
+@node Functions and Variables for wrstcse, , Introduction to wrstcse, Package wrstcse
 @section Functions and Variables for wrstcse
 
 @anchor{wc_typicalvalues}

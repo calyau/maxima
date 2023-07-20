@@ -4,7 +4,7 @@
 * Functions and Variables for Affine::
 @end menu
 
-@node Introduction to Affine, Functions and Variables for Affine, Affine, Affine
+@node Introduction to Affine, Functions and Variables for Affine, Package affine, Package affine
 @section Introduction to Affine
 
 @code{affine} is a package to work with groups of polynomials.
@@ -17,7 +17,7 @@
 @closecatbox
 
 
-@node Functions and Variables for Affine,  , Introduction to Affine, Affine
+@node Functions and Variables for Affine,  , Introduction to Affine, Package affine
 @section Functions and Variables for Affine
 
 @anchor{fast_linsolve}

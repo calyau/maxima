@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to lsquares, Functions and Variables for lsquares, lsquares-pkg, lsquares-pkg
+@node Introduction to lsquares, Functions and Variables for lsquares, Package lsquares, Package lsquares
 @section Introduction to lsquares
 @c -----------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ to estimate parameters for a model from numerical data.
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for lsquares,  , Introduction to lsquares, lsquares-pkg
+@node Functions and Variables for lsquares,  , Introduction to lsquares, Package lsquares
 @section Functions and Variables for lsquares
 @c -----------------------------------------------------------------------------
 

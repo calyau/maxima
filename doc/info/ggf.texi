@@ -2,7 +2,7 @@
 * Functions and Variables for ggf::
 @end menu
 
-@node Functions and Variables for ggf,  , ggf-pkg, ggf-pkg
+@node Functions and Variables for ggf,  , Package ggf, Package ggf
 @section Functions and Variables for ggf
 
 @defvr {Option variable} GGFINFINITY

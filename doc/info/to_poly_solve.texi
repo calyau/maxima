@@ -2,7 +2,7 @@
 * Functions and Variables for to_poly_solve::
 @end menu
 
-@node Functions and Variables for to_poly_solve,  , to_poly_solve-pkg, to_poly_solve-pkg
+@node Functions and Variables for to_poly_solve,  , Package to_poly_solve, Package to_poly_solve
 @section Functions and Variables for to_poly_solve
 
 The packages @code{to_poly} and @code{to_poly_solve} are experimental;

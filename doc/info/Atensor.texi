@@ -3,7 +3,7 @@
 * Functions and Variables for atensor::
 @end menu
 
-@node Introduction to atensor, Functions and Variables for atensor, atensor, atensor
+@node Introduction to atensor, Functions and Variables for atensor, Package atensor, Package atensor
 @section Introduction to atensor
 
 @code{atensor} is an algebraic tensor manipulation package. To use @code{atensor},
@@ -117,7 +117,7 @@ simplifications.
 @closecatbox
 
 @c end concepts atensor
-@node Functions and Variables for atensor,  , Introduction to atensor, atensor
+@node Functions and Variables for atensor,  , Introduction to atensor, Package atensor
 
 @section Functions and Variables for atensor
 

@@ -3,7 +3,7 @@
 * Functions and Variables for lbfgs::
 @end menu
 
-@node Introduction to lbfgs, Functions and Variables for lbfgs, , lbfgs-pkg
+@node Introduction to lbfgs, Functions and Variables for lbfgs, , Package lbfgs
 @section Introduction to lbfgs
 
 @code{lbfgs} is an implementation of the L-BFGS algorithm [1]
@@ -30,7 +30,7 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @category{Package lbfgs}
 @closecatbox
 
-@node Functions and Variables for lbfgs,  , Introduction to lbfgs, lbfgs-pkg
+@node Functions and Variables for lbfgs,  , Introduction to lbfgs, Package lbfgs
 @section Functions and Variables for lbfgs
 
 @anchor{lbfgs_func}

@@ -5,7 +5,7 @@
 * Functions and Variables for Symmetries::
 @end menu
 
-@node Introduction to Symmetries, Functions and Variables for Symmetries, Symmetries, Symmetries
+@node Introduction to Symmetries, Functions and Variables for Symmetries, Package sym, Package sym
 @section Introduction to Symmetries
 
 @code{sym} is a package for working with symmetric groups of polynomials.
@@ -74,7 +74,7 @@ Springer-Verlag, New York Berlin, 308-320, 1989.
 @closecatbox
 
 
-@node Functions and Variables for Symmetries,  , Introduction to Symmetries, Symmetries
+@node Functions and Variables for Symmetries,  , Introduction to Symmetries, Package sym
 @section Functions and Variables for Symmetries
 
 

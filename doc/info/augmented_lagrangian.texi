@@ -2,7 +2,7 @@
 * Functions and Variables for augmented_lagrangian::
 @end menu
 
-@node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian-pkg, augmented_lagrangian-pkg
+@node Functions and Variables for augmented_lagrangian,  , Package augmented_lagrangian, Package augmented_lagrangian
 @section Functions and Variables for augmented_lagrangian
 
 @anchor{augmented_lagrangian_method}
@@ -47,7 +47,7 @@ which is a quasi-Newton algorithm.
 
 @code{load("augmented_lagrangian")} loads this function.
 
-See also @ref{lbfgs-pkg}
+See also @ref{Package lbfgs}
 
 References:
 

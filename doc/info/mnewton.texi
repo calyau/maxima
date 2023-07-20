@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to mnewton, Functions and Variables for mnewton, mnewton-pkg, mnewton-pkg
+@node Introduction to mnewton, Functions and Variables for mnewton, Package mnewton, Package mnewton
 @section Introduction to mnewton
 @c -----------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ equations in one or more variables.
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for mnewton,  , Introduction to mnewton, mnewton-pkg
+@node Functions and Variables for mnewton,  , Introduction to mnewton, Package mnewton
 @section Functions and Variables for mnewton
 @c -----------------------------------------------------------------------------
 

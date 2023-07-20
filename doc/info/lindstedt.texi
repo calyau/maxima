@@ -2,7 +2,7 @@
 * Functions and Variables for lindstedt::
 @end menu
 
-@node Functions and Variables for lindstedt,  , lindstedt-pkg, lindstedt-pkg
+@node Functions and Variables for lindstedt,  , Package lindstedt, Package lindstedt
 @section Functions and Variables for lindstedt
 
 

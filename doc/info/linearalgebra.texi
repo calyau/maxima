@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to linearalgebra, Functions and Variables for linearalgebra, , linearalgebra-pkg
+@node Introduction to linearalgebra, Functions and Variables for linearalgebra, Package linearalgebra, Package linearalgebra
 @section Introduction to linearalgebra
 @c -----------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @need 800
-@node Functions and Variables for linearalgebra,  , Introduction to linearalgebra, linearalgebra-pkg
+@node Functions and Variables for linearalgebra,  , Introduction to linearalgebra, Package linearalgebra
 @section Functions and Variables for linearalgebra
 @c -----------------------------------------------------------------------------
 

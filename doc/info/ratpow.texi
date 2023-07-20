@@ -27,7 +27,7 @@ For information about CREs see also @mrefcomma{rat} @mref{ratdisrep} and
 * Functions and Variables for ratpow::
 @end menu
 
-@node Functions and Variables for ratpow, , , ratpow-pkg
+@node Functions and Variables for ratpow, , , Package ratpow
 @section Functions and Variables for ratpow
 
 

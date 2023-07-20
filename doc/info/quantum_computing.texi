@@ -1,9 +1,9 @@
 @menu
-* Package quantum_computing::
+* Introduction to quantum_computing::
 * Functions and Variables for Quantum_Computing::       
 @end menu
 
-@node Package quantum_computing, Functions and Variables for Quantum_Computing, quantum_computing-pkg, quantum_computing-pkg
+@node Introduction to quantum_computing, Functions and Variables for Quantum_Computing, Package quantum_computing, Package quantum_computing
 @section Package quantum_computing
 
 The @code{quantum_computing} package provides several functions to
@@ -27,7 +27,7 @@ This is an additional package that must be loaded with
 @category{Package quantum_computing}
 @closecatbox
 
-@node Functions and Variables for Quantum_Computing,  , Package quantum_computing, quantum_computing-pkg
+@node Functions and Variables for Quantum_Computing,  , Introduction to quantum_computing, Package quantum_computing
 @section Functions and Variables for Quantum_Computing
 
 @anchor{binlist}

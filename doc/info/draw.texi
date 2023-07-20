@@ -5,11 +5,8 @@
 * Functions and Variables for worldmap::
 @end menu
 
-
-
-@node Introduction to draw, Functions and Variables for draw, draw-pkg, draw-pkg
+@node Introduction to draw, Functions and Variables for draw, Package draw, Package draw
 @section Introduction to draw
-
 
 @code{draw} is a Maxima-Gnuplot and a Maxima-VTK interface.
 
@@ -64,7 +61,7 @@ replacements for draw that do the same as @mrefcomma{draw} @mref{draw2d} and
 @mref{draw3d} but embed the resulting plot in the worksheet.
 
 If you want to use VTK with draw, you need VTK with the Python interface installed
-(the @ref{dynamics-pkg} uses VTK with the TCL interface!) and set the variable:
+(the @ref{Package dynamics} uses VTK with the TCL interface!) and set the variable:
 
 @code{draw_renderer: 'vtk $}
 
@@ -75,7 +72,7 @@ If you want to use VTK with draw, you need VTK with the Python interface install
 @closecatbox
 
 
-@node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw-pkg
+@node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, Package draw
 @section Functions and Variables for draw
 
 
@@ -5491,7 +5488,7 @@ When @code{draw_renderer} is set to @code{'vtk}, the VTK interface is used for d
 
 
 
-@node Functions and Variables for pictures, Functions and Variables for worldmap, Functions and Variables for draw, draw-pkg
+@node Functions and Variables for pictures, Functions and Variables for worldmap, Functions and Variables for draw, Package draw
 @section Functions and Variables for pictures
 
 
@@ -5693,16 +5690,10 @@ Example:
 
 @end deffn
 
-
-
-
-
-@node Functions and Variables for worldmap,  , Functions and Variables for pictures, draw-pkg
+@node Functions and Variables for worldmap,  , Functions and Variables for pictures, Package draw
 @section Functions and Variables for worldmap
 
 @subsection Variables and Functions
-
-
 
 @anchor{boundaries_array}
 @defvr {Global variable} boundaries_array

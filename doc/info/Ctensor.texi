@@ -3,7 +3,7 @@
 * Functions and Variables for ctensor::
 @end menu
 
-@node Introduction to ctensor, Functions and Variables for ctensor, ctensor, ctensor
+@node Introduction to ctensor, Functions and Variables for ctensor, Package ctensor, Package ctensor
 @section Introduction to ctensor
 
 @code{ctensor} is a component tensor manipulation package.  To use the @code{ctensor}
@@ -125,7 +125,7 @@ y;
 @closecatbox
 
 @c end concepts ctensor
-@node Functions and Variables for ctensor,  , Introduction to ctensor, ctensor
+@node Functions and Variables for ctensor,  , Introduction to ctensor, Package ctensor
 
 @section Functions and Variables for ctensor
 

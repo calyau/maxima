@@ -2,7 +2,7 @@
 * Functions and Variables for Bernstein::
 @end menu
 
-@node Functions and Variables for Bernstein,  , Bernstein-pkg, Bernstein-pkg
+@node Functions and Variables for Bernstein,  , Package bernstein, Package bernstein
 @section Functions and Variables for Bernstein
 
 @anchor{bernstein_poly}

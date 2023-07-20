@@ -4,7 +4,7 @@
 * Functions and Variables for orthogonal polynomials::
 @end menu
 
-@node Introduction to orthogonal polynomials, Functions and Variables for orthogonal polynomials, orthopoly-pkg, orthopoly-pkg
+@node Introduction to orthogonal polynomials, Functions and Variables for orthogonal polynomials, Package orthopoly, Package orthopoly
 @section Introduction to orthogonal polynomials
 
 @code{orthopoly} is a package for symbolic and numerical evaluation of
@@ -687,7 +687,7 @@ and the associated Legendre function of the second kind. Numerically,
 the half-integer Bessel functions are evaluated using the SLATEC code.
 
 
-@node Functions and Variables for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly-pkg
+@node Functions and Variables for orthogonal polynomials,  , Introduction to orthogonal polynomials, Package orthopoly
 @section Functions and Variables for orthogonal polynomials
 
 @anchor{assoc_legendre_p}

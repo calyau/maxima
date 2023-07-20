@@ -6,7 +6,7 @@
 * References::
 @end menu
 
-@node Introduction to trigtools, Functions and Variables for trigtools, trigtools-pkg, trigtools-pkg
+@node Introduction to trigtools, Functions and Variables for trigtools, Package trigtools, Package trigtools
 @center @titlefont{Trigtools Package}
 @sp 2
 @center @b{Aleksas Dormarkas}
@@ -32,7 +32,7 @@ trigonometric expessions. List of functions in trigtools package:
 @end itemize
 
 
-@node Functions and Variables for trigtools, References, Introduction to trigtools, trigtools-pkg
+@node Functions and Variables for trigtools, References, Introduction to trigtools, Package trigtools
 @section Functions and Variables for trigtools
 
 @menu
@@ -816,7 +816,7 @@ Examples:
 
 @end deffn
 
-@node References,  , Functions and Variables for trigtools
+@node References,  , Functions and Variables for trigtools, Package trigtools
 @section References
 
 @enumerate

@@ -5,7 +5,7 @@
 * References for colnew::
 @end menu
 
-@node Introduction to colnew, Functions and Variables for colnew, colnew-pkg, colnew-pkg
+@node Introduction to colnew, Functions and Variables for colnew, Package colnew, Package colnew
 @section Introduction to colnew
 
 @var{colnew} solves mixed-order systems of boundary-value problems (BVPs)
@@ -65,7 +65,7 @@ can be converted into this form.  See (Asher&Russell 1981).
 @category{Package colnew}
 @closecatbox
 
-@node Functions and Variables for colnew, Examples for colnew, Introduction to colnew, colnew-pkg
+@node Functions and Variables for colnew, Examples for colnew, Introduction to colnew, Package colnew
 @section Functions and Variables for colnew
 
 @anchor{colnew_expert}
@@ -350,7 +350,7 @@ List @var{ispace} returned from @mrefdot{colnew_expert}
 @end deffn
 
 
-@node Examples for colnew, References for colnew, Functions and Variables for colnew, colnew-pkg
+@node Examples for colnew, References for colnew, Functions and Variables for colnew, Package colnew
 @section Examples for colnew
 
 COLNEW is best learned by example.
@@ -1599,7 +1599,7 @@ The figure below shows the solution for
 
 
 
-@node References for colnew, , Examples for colnew, colnew-pkg
+@node References for colnew, , Examples for colnew, Package colnew
 @section References for colnew
 
 

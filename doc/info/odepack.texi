@@ -6,7 +6,7 @@
 * Functions and Variables for odepack::  
 @end menu
 
-@node Introduction to ODEPACK, Getting Started with ODEPACK, numericalio-pkg, odepack-pkg
+@node Introduction to ODEPACK, Getting Started with ODEPACK, Package numericalio, Package odepack
 @section Introduction to ODEPACK
 
 @quotation
@@ -34,7 +34,7 @@ References:
 @category{Package odepack}
 @closecatbox
 
-@node Getting Started with ODEPACK, Functions and Variables for odepack, Introduction to ODEPACK, odepack-pkg
+@node Getting Started with ODEPACK, Functions and Variables for odepack, Introduction to ODEPACK, Package odepack
 @subsection Getting Started with ODEPACK
 
 Of the eight variants of the solver, Maxima currently only has an
@@ -120,7 +120,7 @@ At t =   4.0000e+10   y =  -7.170563e-08 -2.868225e-13  1.000000e+00
 @end example
 
 
-@node Functions and Variables for odepack, operatingsystem-pkg, Getting Started with ODEPACK, odepack-pkg
+@node Functions and Variables for odepack, , Getting Started with ODEPACK, Package odepack
 @section Functions and Variables for odepack
 
 @anchor{dlsode_init}

@@ -5,9 +5,8 @@
 * Functions and Variables for special distributions::
 @end menu
 
-@node Introduction to stats, Functions and Variables for inference_result, , stats-pkg
+@node Introduction to stats, Functions and Variables for inference_result, , Package stats
 @section Introduction to stats
-
 
 Package @code{stats} contains a set of classical statistical inference and
 hypothesis testing procedures.
@@ -37,7 +36,7 @@ For comments, bugs or suggestions, please contact the author at
 @category{Package stats}
 @closecatbox
 
-@node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, stats-pkg
+@node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Package stats
 @section Functions and Variables for inference_result
 
 @anchor{inference_result}
@@ -103,11 +102,6 @@ See also @mrefdot{take_inference}
 
 @end deffn
 
-
-
-
-
-
 @anchor{inferencep}
 @deffn {Function} inferencep (@var{obj})
 
@@ -119,11 +113,6 @@ Returns @code{true} or @code{false}, depending on whether @var{obj} is an
 @closecatbox
 
 @end deffn
-
-
-
-
-
 
 @anchor{items_inference}
 @deffn {Function} items_inference (@var{obj})
@@ -157,12 +146,6 @@ of all items, no matter they are displayed or not.
 @closecatbox
 
 @end deffn
-
-
-
-
-
-
 
 @anchor{take_inference}
 @deffn {Function} take_inference @
@@ -233,17 +216,8 @@ See also @mrefcomma{inference_result} and @mrefdot{take_inference}
 
 @end deffn
 
-
-
-
-
-
-
-
-
-@node Functions and Variables for stats, Functions and Variables for special distributions, Functions and Variables for inference_result, stats-pkg
+@node Functions and Variables for stats, Functions and Variables for special distributions, Functions and Variables for inference_result, Package stats
 @section Functions and Variables for stats
-
 
 @anchor{stats_numer}
 @defvr {Option variable} stats_numer
@@ -259,8 +233,6 @@ results are given in symbolic and rational format.
 @closecatbox
 
 @end defvr
-
-
 
 @anchor{test_mean}
 @deffn {Function} test_mean @
@@ -407,12 +379,6 @@ this procedure should be applied to large samples.
 @closecatbox
 
 @end deffn
-
-
-
-
-
-
 
 @anchor{test_means_difference}
 @deffn {Function} test_means_difference @
@@ -677,12 +643,6 @@ is equal to or greater than 200.
 
 @end deffn
 
-
-
-
-
-
-
 @anchor{test_variance_ratio}
 @deffn {Function} test_variance_ratio @
 @fname{test_variance_ratio} (@var{x1}, @var{x2}) @
@@ -791,9 +751,6 @@ against the alternative that the first is greater than the second.
 @closecatbox
 
 @end deffn
-
-
-
 
 @anchor{test_proportion}
 @deffn {Function} test_proportion @
@@ -1378,12 +1335,6 @@ normal approximation. The alternative hypothesis is
 
 @end deffn
 
-
-
-
-
-
-
 @anchor{test_normality}
 @deffn {Function} test_normality (@var{x})
 
@@ -1583,14 +1534,8 @@ v_distribution, residuals, adc, aic, bic]
 
 @end deffn
 
-
-
-
-
-
-@node Functions and Variables for special distributions,  , Functions and Variables for stats, stats-pkg
+@node Functions and Variables for special distributions,  , Functions and Variables for stats, Package stats
 @section Functions and Variables for special distributions
-
 
 @anchor{pdf_signed_rank}
 @deffn {Function} pdf_signed_rank (@var{x}, @var{n})

@@ -1,9 +1,9 @@
 @menu
-* Package combinatorics::
+* Introduction to combinatorics::
 * Functions and Variables for Combinatorics::       
 @end menu
 
-@node Package combinatorics, Functions and Variables for Combinatorics, combinatorics-pkg, combinatorics-pkg
+@node Introduction to combinatorics, Functions and Variables for Combinatorics, Package combinatorics, Package combinatorics
 @section Package combinatorics
 
 The @code{combinatorics} package provides several functions to work with
@@ -45,7 +45,7 @@ with the command @code{load("combinatorics")}.
 @category{Package combinatorics}
 @closecatbox
 
-@node Functions and Variables for Combinatorics,  , Package combinatorics, combinatorics-pkg
+@node Functions and Variables for Combinatorics,  , Introduction to combinatorics, Package combinatorics
 @section Functions and Variables for Combinatorics
 
 @anchor{apply_cycles}

@@ -8,7 +8,7 @@
 * Package scifac::
 @end menu
 
-@node Introduction to simplification, Package absimp, simplification-pkg, simplification-pkg
+@node Introduction to simplification, Package absimp, Package simplification, Package simplification
 @section Introduction to simplification
 
 The directory @code{maxima/share/simplification} contains several scripts
@@ -17,7 +17,7 @@ and also some functions not related to simplification.
 
 @c Adapted from absimp.usg ----------------------
 
-@node Package absimp, Package facexp, Introduction to simplification, simplification-pkg
+@node Package absimp, Package facexp, Introduction to simplification, Package simplification
 @section Package absimp
 
 The @code{absimp} package contains pattern-matching rules that
@@ -77,7 +77,7 @@ Examples:
 @c I HAVE NO IDEA WHAT THESE FUNCTIONS DO.
 @c ALL OF THESE ITEMS NEED TO BE HEAVILY REVISED
 @c (ASSUMING THIS PACKAGE IS SOMETHING WE WANT TO INVEST TIME IN)
-@node Package facexp, Package functs, Package absimp, simplification-pkg
+@node Package facexp, Package functs, Package absimp, Package simplification
 @section Package facexp
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
@@ -273,7 +273,7 @@ Example:
 @c Adapted from functs.usg ----------------------
 
 @c conjugate already described in doc/info/Matrices.texi
-@node Package functs, Package ineq, Package facexp, simplification-pkg
+@node Package functs, Package ineq, Package facexp, Package simplification
 @section Package functs
 
 @opencatbox{Categories:}
@@ -664,7 +664,7 @@ To use this function write first @code{load("functs")}.
 
 @c Adapted from ineq.usg ----------------------
 @c THIS PACKAGE IS INTERESTING BUT THIS TEXT NEEDS WORK AND EXAMPLES
-@node Package ineq, Package rducon, Package functs, simplification-pkg
+@node Package ineq, Package rducon, Package functs, Package simplification
 @section Package ineq
 
 The @code{ineq} package contains simplification rules
@@ -803,7 +803,7 @@ or @code{disprule ("*rule2")} to display the definition of the second multiplica
 
 @c Adapted from rducon.usg ----------------------
 @c THIS IS AN INTERESTING FUNCTION BUT THIS TEXT NEEDS WORK AND EXAMPLES
-@node Package rducon, Package scifac, Package ineq, simplification-pkg
+@node Package rducon, Package scifac, Package ineq, Package simplification
 @section Package rducon
 
 @opencatbox{Categories:}
@@ -858,7 +858,7 @@ symbols to represent each constant subexpression found by @code{reduce_consts}.
 @c rncomb.usg: "rncombine" already in doc/info/Miscellaneous.texi
 
 @c Adapted from scifac.usg ----------------------
-@node Package scifac, , Package rducon, simplification-pkg
+@node Package scifac, , Package rducon, Package simplification
 @section Package scifac
 
 @opencatbox{Categories:}

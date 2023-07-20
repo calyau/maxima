@@ -2,7 +2,7 @@
 * Functions and Variables for romberg::
 @end menu
 
-@node Functions and Variables for romberg, , , romberg-pkg
+@node Functions and Variables for romberg, , Package romberg, Package romberg
 @section Functions and Variables for romberg
 
 @anchor{romberg_function}

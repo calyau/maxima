@@ -9,13 +9,13 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to itensor, Functions and Variables for itensor, itensor, itensor
+@node Introduction to itensor, Functions and Variables for itensor, Package itensor, Package itensor
 @section Introduction to itensor
 @c -----------------------------------------------------------------------------
 
 Maxima implements symbolic tensor manipulation of two distinct types:
-component tensor manipulation (@code{ctensor} package) and indicial tensor
-manipulation (@code{itensor} package).
+component tensor manipulation (package @code{ctensor}) and indicial tensor
+manipulation (package @code{itensor}).
 
 Nota bene: Please see the note on 'new tensor notation' below.
 
@@ -271,7 +271,7 @@ specify the name of the metric, and perform some simple calculations.
 @c end concepts itensor
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for itensor,  , Introduction to itensor, itensor
+@node Functions and Variables for itensor,  , Introduction to itensor, Package itensor
 @section Functions and Variables for itensor
 @subsection Managing indexed objects
 @c -----------------------------------------------------------------------------

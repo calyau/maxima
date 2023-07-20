@@ -3,7 +3,7 @@
 * Functions and Variables for drawdf::
 @end menu
 
-@node Introduction to drawdf, Functions and Variables for drawdf, drawdf-pkg, drawdf-pkg
+@node Introduction to drawdf, Functions and Variables for drawdf, Package drawdf, Package drawdf
 @section Introduction to drawdf
 
 The function @code{drawdf} draws the direction field of a first-order
@@ -69,7 +69,7 @@ equation into a system of two autonomous equations.
 @closecatbox
 
 
-@node Functions and Variables for drawdf,  , Introduction to drawdf, drawdf-pkg
+@node Functions and Variables for drawdf,  , Introduction to drawdf, Package drawdf
 @section Functions and Variables for drawdf
 
 @subsection Functions

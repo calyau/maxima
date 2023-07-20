@@ -3,7 +3,7 @@
 * Functions and Variables for hompack::  
 @end menu
 
-@node Introduction to hompack, Functions and Variables for hompack, , hompack-pkg
+@node Introduction to hompack, Functions and Variables for hompack, , Package hompack
 @section Introduction to hompack
 
 @code{Hompack} is a Common Lisp translation (via @code{f2cl}) of the
@@ -15,7 +15,7 @@ Fortran library HOMPACK, as obtained from Netlib.
 @category{Package hompack}
 @closecatbox
 
-@node Functions and Variables for hompack,  , Introduction to hompack, hompack-pkg
+@node Functions and Variables for hompack,  , Introduction to hompack, Package hompack
 @section Functions and Variables for hompack
 
 @anchor{hompack_polsys}
