@@ -639,7 +639,7 @@
 	 ;; Define the noun function
 	 (defun ,verb-name (,@lambda-list)
 	   (ftake ',noun-name ,@lambda-list))
-	
+
 	 ;; Set up properties
 	 (defprop ,noun-name ,simp-name operators)
 	 ;; The verb and alias properties are needed to make things like
