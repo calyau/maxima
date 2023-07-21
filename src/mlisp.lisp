@@ -2329,6 +2329,7 @@ wrapper for this."
 ;; def-simplifier now defines these verb functions automatically.  The
 ;; only ones are are functions that aren't defined by a
 ;; def-simplifier.
+#+nil
 (macrolet ((make-fun (fun noun)
 	     `(defun ,fun (x) (ftake ',noun x))))
   (make-fun $round %round)
