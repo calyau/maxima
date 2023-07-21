@@ -365,7 +365,7 @@ which have certificate equal to zero, or all coefficients equal to zero.
 
 @end defvr
 
-@node Variables related to the modular test
+@node Variables related to the modular test, , General global variables
 @section Variables related to the modular test
 
 @anchor{mod_test}

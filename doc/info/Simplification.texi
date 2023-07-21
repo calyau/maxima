@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Simplification, Functions and Variables for Simplification, Package sym , Package sym
+@node Introduction to Simplification, Functions and Variables for Simplification, Simplification , Simplification
 @section Introduction to Simplification
 @c -----------------------------------------------------------------------------
 
