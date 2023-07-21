@@ -2332,6 +2332,7 @@ wrapper for this."
 ;; the testsuite.
 (macrolet ((make-fun (fun noun)
 	     `(defun ,fun (x) (ftake ',noun x))))
+#||
   (make-fun $log %log)
   (make-fun $sin %sin)
   (make-fun $cos %cos)
@@ -2357,10 +2358,13 @@ wrapper for this."
   (make-fun $acoth %acoth)
   (make-fun $asech %asech)
   (make-fun $acsch %acsch)
+||#
   (make-fun $round %round)
   (make-fun $truncate %truncate)
+  #+nl
   (make-fun $plog %plog)
   (make-fun $signum %signum)
+  #+nil
   (make-fun $gamma %gamma))
 
 
