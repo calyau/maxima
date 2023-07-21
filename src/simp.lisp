@@ -1996,6 +1996,7 @@
 
 (defprop %signum (mlist $matrix mequal) distribute_over)
 
+#+nil
 (defun simpsignum (e y z)
   (declare (ignore y))
   (oneargcheck e)
@@ -2024,6 +2025,39 @@
 	
 		 ;; nounform return
 		 (t (eqtest (list '(%signum) x) e)))))))
+
+(def-simplifier signum (x)
+  (let (sgn)
+    (cond ((complex-number-p x #'mnump)
+	   (if (complex-number-p x #'$ratnump) ;; nonfloat complex
+	       (if (zerop1 x)
+		   0
+		   ($rectform (div x ($cabs x))))
+	       (maxima::to (bigfloat::signum (bigfloat::to x)))))
+		   
+	  ;; idempotent: signum(signum(z)) = signum(z).
+	  ((and (consp x)
+		(consp (car x))
+		(eq '%signum (mop x)))
+	   x)
+		   
+	  (t
+	   (setq sgn ($csign x))
+	   (cond ((eq sgn '$neg) -1)
+		 ((eq sgn '$zero) 0)
+		 ((eq sgn '$pos) 1)
+
+		 ;; multiplicative: signum(ab) = signum(a) * signum(b).
+		 ((mtimesp x)
+		  (muln (mapcar #'(lambda (s) (take '(%signum) s)) (margs x))
+			t))
+
+		 ;; Reflection rule: signum(-x) --> -signum(x).
+		 ((great (neg x) x)
+		  (neg (take '(%signum) (neg x))))
+	
+		 ;; nounform return
+		 (t (give-up)))))))
 
 (defun exptrl (r1 r2)
   (cond ((equal r2 1) r1)
