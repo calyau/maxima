@@ -2326,46 +2326,14 @@ wrapper for this."
 	   (dskrat-subst x y (cdr z))
 	   z)))
 
-;; As mentioned in
-;; https://sourceforge.net/p/maxima/mailman/message/37744356/ we
-;; shouldn't need these.  However, removing these cause failures in
-;; the testsuite.
+;; def-simplifier now defines these verb functions automatically.  The
+;; only ones are are functions that aren't defined by a
+;; def-simplifier.
 (macrolet ((make-fun (fun noun)
 	     `(defun ,fun (x) (ftake ',noun x))))
-#||
-  (make-fun $log %log)
-  (make-fun $sin %sin)
-  (make-fun $cos %cos)
-  (make-fun $tan %tan)
-  (make-fun $cot %cot)
-  (make-fun $sec %sec)
-  (make-fun $csc %csc)
-  (make-fun $sinh %sinh)
-  (make-fun $cosh %cosh)
-  (make-fun $tanh %tanh)
-  (make-fun $coth %coth)
-  (make-fun $sech %sech)
-  (make-fun $csch %csch)
-  (make-fun $asin %asin)
-  (make-fun $acos %acos)
-  (make-fun $atan %atan)
-  (make-fun $acot %acot)
-  (make-fun $asec %asec)
-  (make-fun $acsc %acsc)
-  (make-fun $asinh %asinh)
-  (make-fun $acosh %acosh)
-  (make-fun $atanh %atanh)
-  (make-fun $acoth %acoth)
-  (make-fun $asech %asech)
-  (make-fun $acsch %acsch)
-||#
   (make-fun $round %round)
   (make-fun $truncate %truncate)
-  #+nl
-  (make-fun $plog %plog)
-  (make-fun $signum %signum)
-  #+nil
-  (make-fun $gamma %gamma))
+  (make-fun $signum %signum))
 
 
 ;;; Float constants, to 2048 bits of precision.
