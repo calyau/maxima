@@ -636,10 +636,8 @@
 			       and count from 1
 			       collect (list arg `(simpcheck (nth ,count ,form-arg) ,z-arg)))))))
       `(progn
-	 ;; Define the noun function.  Since it's so short, make in
-	 ;; inline too.
-	 (declaim (inline ,verb-name))
-	 (defun ,verb-name (,@lambda-list)
+	 ;; Define the noun function.
+	 (defmfun ,verb-name (,@lambda-list)
 	   (ftake ',noun-name ,@lambda-list))
 
 	 ;; Set up properties
