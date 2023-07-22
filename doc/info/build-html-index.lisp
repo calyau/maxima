@@ -311,6 +311,9 @@
 	  (parse-texinfo-version *texinfo-version-string*))))
 
 (defun find-toc-file (dir)
+  ;; List of possible filenames that contain the table of contents.
+  ;; The first is used by texinfo 6.8 and later.  The second is used
+  ;; by texinfo 5.1.  Return the first one found.
   (dolist (toc '("index.html" "maxima_0.html"))
     (let ((toc-path (merge-pathnames toc dir)))
       (when (probe-file toc-path)
