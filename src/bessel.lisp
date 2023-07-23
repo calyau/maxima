@@ -47,9 +47,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $bessel_j (v z)
-  (simplify (list '(%bessel_j) v z)))
-
 ;; Bessel J distributes over lists, matrices, and equations
 
 (defprop %bessel_j (mlist $matrix mequal) distribute_over)
@@ -378,9 +375,6 @@
 ;;; Implementation of the Bessel Y function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmfun $bessel_y (v z)
-  (simplify (list '(%bessel_y) v z)))
 
 ;; Bessel Y distributes over lists, matrices, and equations
 
@@ -724,9 +718,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $bessel_i (v z)
-  (simplify (list '(%bessel_i) v z)))
-
 ;; Bessel I distributes over lists, matrices, and equations
 
 (defprop %bessel_i (mlist $matrix mequal) distribute_over)
@@ -1064,9 +1055,6 @@
 ;;; Implementation of the Bessel K function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmfun $bessel_k (v z)
-  (simplify (list '(%bessel_k) v z)))
 
 ;; Bessel K distributes over lists, matrices, and equations
 
@@ -1684,9 +1672,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $hankel_1 (v z)
-  (simplify (list '(%hankel_1) v z)))
-
 ;; hankel_1 distributes over lists, matrices, and equations
 
 (defprop %hankel_1 (mlist $matrix mequal) distribute_over)
@@ -1778,9 +1763,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $hankel_2 (v z)
-  (simplify (list '(%hankel_2) v z)))
-
 ;; hankel_2 distributes over lists, matrices, and equations
 
 (defprop %hankel_2 (mlist $matrix mequal) distribute_over)
@@ -1871,9 +1853,6 @@
 ;;; Implementation of Struve H function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmfun $struve_h (v z)
-  (simplify (list '(%struve_h) v z)))
 
 ;; struve_h distributes over lists, matrices, and equations
 
@@ -2115,9 +2094,6 @@
 ;;; Implementation of Struve L function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmfun $struve_l (v z)
-  (simplify (list '(%struve_l) v z)))
 
 ;; struve_l distributes over lists, matrices, and equations
 

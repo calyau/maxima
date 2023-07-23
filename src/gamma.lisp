@@ -343,11 +343,6 @@
 
 (defvar *debug-gamma* nil)
 
-;; TODO:  This is currently called by integrate-exp-special in sin.lisp.
-;; Need to fix that before this can be removed.
-(defmfun $gamma_incomplete (a z)
-  (simplify (list '(%gamma_incomplete) a z)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -2056,13 +2051,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; TODO: This is called by simp-expintegral-e in expintegral.lisp.
-;; Can't remove this until that is fixed.
-(defmfun $erf (z)
-  (simplify (list '(%erf) z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;; erf has mirror symmetry
 
 (defprop %erf t commutes-with-conjugate)
@@ -2438,13 +2426,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; TODO: called by simp-expintegral-e in expintegral.lisp.  Need to
-;; keep this around until that is fixed.
-(defmfun $erfc (z)
-  (simplify (list '(%erfc) z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defprop %erfc t commutes-with-conjugate)
 
 ;;; Complementary Error function distributes over bags
@@ -2545,13 +2526,6 @@
 ;;;
 ;;; Implementation of the Imaginary Error function Erfi(z)
 ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; TODO: Called by integrate-exp-special in sin.lisp.  That needs to
-;; be fixed before this can be removed.
-(defmfun $erfi (z)
-  (simplify (list '(%erfi) z)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; erfi has mirror symmetry

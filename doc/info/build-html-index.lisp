@@ -265,7 +265,7 @@
     ;; function and variable index we want.  Return the first one that
     ;; matches.
     (let* ((title (get-index-title lang))
-	   (search-item (format nil "<title>~A" title)))
+	   (search-item (format nil "<title>.*~A" title)))
       (format t "Looking for function and variable index: ~A~%" title)
       (dolist (file (last files 2))
 	(when (grep-l search-item file)
@@ -310,6 +310,15 @@
     (setf *texinfo-version*
 	  (parse-texinfo-version *texinfo-version-string*))))
 
+(defun find-toc-file (dir)
+  ;; List of possible filenames that contain the table of contents.
+  ;; The first is used by texinfo 6.8 and later.  The second is used
+  ;; by texinfo 5.1.  Return the first one found.
+  (dolist (toc '("index.html" "maxima_0.html"))
+    (let ((toc-path (merge-pathnames toc dir)))
+      (when (probe-file toc-path)
+	(return-from find-toc-file toc-path)))))
+
 (defun build-html-index (dir lang)
   (clrhash *html-index*)
   (let ((index-file (find-index-file dir lang)))
@@ -318,7 +327,7 @@
 
     (with-open-file (*log-file* "build-html-index.log"
 				:direction :output :if-exists :supersede)
-      (let ((toc-path (merge-pathnames "index.html" dir)))
+      (let ((toc-path (find-toc-file dir)))
 	(get-texinfo-version toc-path)
 	(format t "Texinfo Version ~A: ~D~%" *texinfo-version-string* *texinfo-version*)
 	(process-one-html-file index-file #'match-entries t "Add")
