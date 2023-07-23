@@ -3,7 +3,7 @@
 * Functions and Variables for pslq::
 @end menu
 
-@node Introduction to pslq, Functions and Variables for pslq, pslq-pkg, pslq-pkg
+@node Introduction to pslq, Functions and Variables for pslq, Package pslq, Package pslq
 @section Introduction to pslq
 
 Package @code{pslq} contains two functions.
@@ -15,7 +15,7 @@ an exact equivalent for an inexact number (float or bigfloat).
 integer coefficients such that a linear combination of inexact numbers
 is approximately zero.
 
-@node Functions and Variables for pslq, , Introduction to pslq, pslq-pkg
+@node Functions and Variables for pslq, , Introduction to pslq, Package pslq
 @section Functions and Variables for pslq
 
 @anchor{guess_exact_value}

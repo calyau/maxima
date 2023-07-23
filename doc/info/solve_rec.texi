@@ -3,7 +3,7 @@
 * Functions and Variables for solve_rec::
 @end menu
 
-@node Introduction to solve_rec, Functions and Variables for solve_rec, solve_rec-pkg, solve_rec-pkg
+@node Introduction to solve_rec, Functions and Variables for solve_rec, Package solve_rec, Package solve_rec
 @section Introduction to solve_rec
 
 @code{solve_rec} is a package for solving linear recurrences with polynomial
@@ -31,7 +31,7 @@ Example:
 @category{Package solve_rec}
 @closecatbox
 
-@node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec-pkg
+@node Functions and Variables for solve_rec,  , Introduction to solve_rec, Package solve_rec
 @section Functions and Variables for solve_rec
 
 @anchor{harmonic_number}

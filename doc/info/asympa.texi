@@ -3,7 +3,7 @@
 * Functions and variables for asympa::
 @end menu
 
-@node Introduction to asympa, Functions and variables for asympa, asympa-pkg, asympa-pkg
+@node Introduction to asympa, Functions and variables for asympa, Package asympa, Package asympa
 @section Introduction to asympa
 
 @anchor{asympa}
@@ -20,7 +20,7 @@ numerical analysis.
 @closecatbox
 @end deffn
 
-@node Functions and variables for asympa, ,Introduction to asympa, asympa-pkg
+@node Functions and variables for asympa, ,Introduction to asympa, Package asympa
 @section Functions and variables for asympa
 
 @c No contents yet.

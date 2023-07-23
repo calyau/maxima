@@ -3,7 +3,7 @@
 * Functions and Variables for finance::
 @end menu
 
-@node Introduction to finance, Functions and Variables for finance, finance-pkg, finance-pkg
+@node Introduction to finance, Functions and Variables for finance, Package finance, Package finance
 @section Introduction to finance
 
 This is the Finance Package (Ver 0.1).
@@ -19,7 +19,7 @@ package, you have to load it writing @code{load("finance")$}.
 
 Author: Nicolas Guarin Zapata.
 
-@node Functions and Variables for finance,  , Introduction to finance, finance-pkg
+@node Functions and Variables for finance,  , Introduction to finance, Package finance
 @section Functions and Variables for finance
 
 

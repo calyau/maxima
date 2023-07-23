@@ -2,7 +2,7 @@
 * Functions and Variables for bode::
 @end menu
 
-@node Functions and Variables for bode,  , bode-pkg, bode-pkg
+@node Functions and Variables for bode,  , Package bode, Package bode
 @section Functions and Variables for bode
 
 

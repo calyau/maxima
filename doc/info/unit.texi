@@ -3,7 +3,7 @@
 * Functions and Variables for Units::
 @end menu
 
-@node Introduction to Units, Functions and Variables for Units, unit-pkg, unit-pkg
+@node Introduction to Units, Functions and Variables for Units, Package unit, Package unit
 @section Introduction to Units
 
 The @emph{unit} package enables the user to convert between arbitrary
@@ -81,7 +81,7 @@ units.
 @closecatbox
 
 
-@node Functions and Variables for Units,  , Introduction to Units, unit-pkg
+@node Functions and Variables for Units,  , Introduction to Units, Package unit
 @section Functions and Variables for Units
 
 @anchor{setunits}

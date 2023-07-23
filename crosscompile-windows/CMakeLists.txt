@@ -248,8 +248,11 @@ externalproject_add(maxima
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
             COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
+  # src/specfn.lisp contains an unicode char (in a comment) since commit e762c5ee
+  # it seems Clisp (on Windows) cant handle this, replace it...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk
+        COMMAND sed -i s+č+c+g src/specfn.lisp
         COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE)
         COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) pdf
   INSTALL_COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/

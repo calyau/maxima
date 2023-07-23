@@ -2,7 +2,7 @@
 * Functions and Variables for diag::
 @end menu
 
-@node Functions and Variables for diag,  , diag-pkg, diag-pkg
+@node Functions and Variables for diag,  , Package diag, Package diag
 @section Functions and Variables for diag
 
 

@@ -5,7 +5,7 @@ three.
 * Functions and Variables for engineering-format::
 @end menu
 
-@node Functions and Variables for engineering-format, , engineering-format-pkg, engineering-format-pkg
+@node Functions and Variables for engineering-format, , Package engineering-format, Package engineering-format
 @section Functions and Variables for engineering-format
 
 @c -----------------------------------------------------------------------------

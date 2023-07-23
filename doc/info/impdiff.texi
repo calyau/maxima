@@ -2,7 +2,7 @@
 * Functions and Variables for impdiff::
 @end menu
 
-@node Functions and Variables for impdiff,  , impdiff-pkg, impdiff-pkg
+@node Functions and Variables for impdiff,  , Package impdiff, Package impdiff
 @section Functions and Variables for impdiff
 
 @anchor{implicit_derivative}

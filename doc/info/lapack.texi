@@ -3,7 +3,7 @@
 * Functions and Variables for lapack::
 @end menu
 
-@node Introduction to lapack, Functions and Variables for lapack, lapack-pkg, lapack-pkg
+@node Introduction to lapack, Functions and Variables for lapack, Package lapack, Package lapack
 @section Introduction to lapack
 
 @code{lapack} is a Common Lisp translation (via the program @code{f2cl}) of the Fortran library LAPACK,
@@ -16,7 +16,7 @@ as obtained from the SLATEC project.
 @closecatbox
 
 
-@node Functions and Variables for lapack, , Introduction to lapack, lapack-pkg
+@node Functions and Variables for lapack, , Introduction to lapack, Package lapack
 @section Functions and Variables for lapack
 
 @anchor{dgeev}

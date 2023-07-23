@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Simplification, Functions and Variables for Simplification,  , Simplification
+@node Introduction to Simplification, Functions and Variables for Simplification, Simplification , Simplification
 @section Introduction to Simplification
 @c -----------------------------------------------------------------------------
 
@@ -189,7 +189,7 @@ Over the years (Maxima/Macsyma's origins date back to about 1966!) users have
 contributed numerous application packages and tools to extend or alter its 
 functional behavior. Various non-standard and "share" packages exist to modify 
 or extend simplification as well. You are invited to look into this more 
-experimental material where work is still in progress @xref{simplification-pkg}.
+experimental material where work is still in progress @xref{Package simplification}.
 
 The following appended material is optional on a first reading, and reading it 
 is not necessary for productive use of Maxima. It is for the curious user who 

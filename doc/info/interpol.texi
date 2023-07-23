@@ -3,7 +3,7 @@
 * Functions and Variables for interpol::
 @end menu
 
-@node Introduction to interpol, Functions and Variables for interpol, interpol-pkg, interpol-pkg
+@node Introduction to interpol, Functions and Variables for interpol, Package interpol, Package interpol
 @section Introduction to interpol
 
 Package @code{interpol} defines the Lagrangian, the linear and the cubic 
@@ -17,7 +17,7 @@ For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT x
 @category{Package interpol}
 @closecatbox
 
-@node Functions and Variables for interpol,  , Introduction to interpol, interpol-pkg
+@node Functions and Variables for interpol,  , Introduction to interpol, Package interpol
 @section Functions and Variables for interpol
 
 
@@ -406,7 +406,7 @@ There is one option to fit specific needs:
 @code{'varname}, default @code{'x}, is the name of the independent variable.
 @end itemize
 
-See also @mrefcomma{lagrange}  @mrefcomma{linearinterpol}  @mrefcomma{cspline}  @mrefcomma{minpack_lsquares}  and @ref{lbfgs-pkg}
+See also @mrefcomma{lagrange}  @mrefcomma{linearinterpol}  @mrefcomma{cspline}  @mrefcomma{minpack_lsquares}  and @ref{Package lbfgs}
 
 Examples:
 

@@ -1,9 +1,9 @@
 @menu
-* Package f90::
+* Functions for f90::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Package f90,  , f90-pkg, f90-pkg
+@node Functions for f90,  , Package f90, Package f90
 @section Package f90
 
 @opencatbox{Categories:}

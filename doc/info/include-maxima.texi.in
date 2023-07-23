@@ -145,13 +145,13 @@ and develop DOE Macsyma, now called Maxima.
 * Numerical::                   Numerical integration, Fourier
                                 transforms, Equations, ODE's, etc.
 * Matrices and Linear Algebra:: Matrix operations.
-* Affine::                      
-* itensor::                     Indicial Tensor Manipulation.
-* ctensor::                     Component Tensor Manipulation.
-* atensor::                     Algebraic Tensor Manipulation.
+* Package affine::              Working with groups of polynomials.
+* Package itensor::             Indicial Tensor Manipulation.
+* Package ctensor::             Component Tensor Manipulation.
+* Package atensor::             Algebraic Tensor Manipulation.
 * Sums Products and Series::    Sums, Products, Taylor and power series.
 * Number Theory::               Number theory.
-* Symmetries::                  
+* Package sym::                 Working with symmetric groups of polynomials.
 * Groups::                      Abstract algebra.
 
 @b{Advanced facilities and programming}
@@ -164,66 +164,66 @@ and develop DOE Macsyma, now called Maxima.
 * Program Flow::                Defining Maxima programs.
 * Debugging::                   Debugging Maxima programs.
 
-@b{Additional packages}
-* alt-display-pkg::                 Alternative display package.
-* asympa-pkg::                      Asymptotic analysis package.
-* augmented_lagrangian-pkg::        augmented_lagrangian package.
-* Bernstein-pkg::                   Bernstein polynomials.
-* bitwise-pkg::                     Manipulate bits of integers.
-* bode-pkg::                        Bode gain and phase plots.
-* celine-pkg::                      Sister Celine's method 
-* clebsch_gordan-pkg::              Clebsch-Gordan and Wigner coefficients
-* cobyla-pkg::                      Nonlinear optimization with inequality constraints.
-* colnew-pkg::                      Numerical solution of boundary value problems for ODEs
-* combinatorics-pkg::               Functions to work with permutations.
-* contrib_ode-pkg::                 Additional routines for ODEs
-* descriptive-pkg::                 Descriptive statistics.
-* diag-pkg::                        Jordan matrices.
-* distrib-pkg::                     Probability distributions.
-* draw-pkg::                        A Maxima-Gnuplot interface.
-* drawdf-pkg::                      Direction fields with Gnuplot.
-* dynamics-pkg::                    3D visualization, animations and dynamical systems.
-* engineering-format-pkg::          Display floats as a*10^b with b mod 3 = 0.
-* ezunits-pkg::                     Dimensional quantities.
-* f90-pkg::                         Maxima to fortran translator.
-* finance-pkg::                     Financial package.
-* fractals-pkg::                    Fractals.
-* gentran-pkg::                     Gentran
-* ggf-pkg::                         Generating function of sequences.
-* graphs-pkg::                      Graph theory package.
-* grobner-pkg::                     Functions for working with Groebner bases.
-* hompack-pkg::                     HOMPACK solver for systems of polynomial equations.
-* impdiff-pkg::                     Implicit derivatives.
-* interpol-pkg::                    Interpolation package.
-* lapack-pkg::                      LAPACK functions for linear algebra.
-* lbfgs-pkg::                       L-BFGS unconstrained minimization package.
-* lindstedt-pkg::                   Lindstedt package.
-* linearalgebra-pkg::               Functions for linear algebra.
-* lsquares-pkg::                    Least squares.
-* makeOrders-pkg::                  Polynomial utility.
-* minpack-pkg::                     MINPACK functions for minimization and roots
-* mnewton-pkg::                     Newton's method.
-* numericalio-pkg::                 Reading and writing files.
-* odepack-pkg::                     Numerical ODE solver
-* operatingsystem-pkg::             Common operating system tasks (create/remove dirs+files,...).
-* opsubst-pkg::                     Substitutions utility.
-* orthopoly-pkg::                   Orthogonal polynomials.
-* pslq-pkg::                        PSLQ algorithm for integer relations among inexact numbers
-* pytranslate::                     Maxima to Python Translation
-* quantum_computing-pkg::           Quantum computing circuits simulator.
-* ratpow-pkg::                      Determine the coefficients of polynoms.
-* romberg-pkg::                     Romberg method for numerical integration.
-* simplex-pkg::                     Linear programming.
-* simplification-pkg::              Simplification rules and functions.
-* solve_rec-pkg::                   Linear recurrences.
-* stats-pkg::                       Statistical inference package.
-* stirling-pkg::                    Stirling formula.
-* stringproc-pkg::                  String processing.
-* to_poly_solve-pkg::               to_poly_solve package.
-* unit-pkg::                        Units and dimensions package.
-* wrstcse-pkg::                     Worstcase calculations for engineering.
-* zeilberger-pkg::                  Functions for hypergeometric summation.
-* trigtools-pkg::
+@b{packages}
+* Package alt-display::            Alternative display.
+* Package asympa::                 Asymptotic analysis.
+* Package augmented_lagrangian::   Augmented Lagrangian.
+* Package bernstein::              Bernstein polynomials.
+* Package bitwise::                Manipulate bits of integers.
+* Package bode::                   Bode gain and phase plots.
+* Package celine::                 Sister Celine's method 
+* Package clebsch_gordan::         Clebsch-Gordan and Wigner coefficients
+* Package cobyla::                 Nonlinear optimization with inequality constraints.
+* Package colnew::                 Numerical solution of boundary value problems for ODEs
+* Package combinatorics::          Functions to work with permutations.
+* Package contrib_ode::            Additional routines for ODEs
+* Package descriptive::            Descriptive statistics.
+* Package diag::                   Jordan matrices.
+* Package distrib::                Probability distributions.
+* Package draw::                   A Maxima-Gnuplot interface.
+* Package drawdf::                 Direction fields with Gnuplot.
+* Package dynamics::               3D visualization, animations and dynamical systems.
+* Package engineering-format::     Display floats as a*10^b with b mod 3 = 0.
+* Package ezunits::                Dimensional quantities.
+* Package f90::                    Maxima to fortran translator.
+* Package finance::                Financial.
+* Package fractals::               Fractals.
+* Package gentran::                Generator of foreign computer-language code. 
+* Package ggf::                    Generating function of sequences.
+* Package graphs::                 Graph theory.
+* Package grobner::                Functions for working with Groebner bases.
+* Package hompack::                HOMPACK solver for systems of polynomial equations.
+* Package impdiff::                Implicit derivatives.
+* Package interpol::               Interpolation.
+* Package lapack::                 LAPACK functions for linear algebra.
+* Package lbfgs::                  L-BFGS unconstrained minimization.
+* Package lindstedt::              Lindstedt.
+* Package linearalgebra::          Functions for linear algebra.
+* Package lsquares::               Least squares.
+* Package makeOrders::             Polynomial utility.
+* Package minpack::                MINPACK functions for minimization and roots
+* Package mnewton::                Newton's method to solve equations.
+* Package numericalio::            Reading and writing files.
+* Package odepack::                Numerical ODE solver
+* Package operatingsystem::        Common operating system tasks (create/remove dirs+files,...).
+* Package opsubst::                Substitutions utility.
+* Package orthopoly::              Orthogonal polynomials.
+* Package pslq::                   PSLQ algorithm for integer relations among inexact numbers
+* Package pytranslate::            Maxima to Python Translation
+* Package quantum_computing::      Quantum computing circuits simulator.
+* Package ratpow::                 Determine the coefficients of polynoms.
+* Package romberg::                Romberg method for numerical integration.
+* Package simplex::                Linear programming.
+* Package simplification::         Simplification rules and functions.
+* Package solve_rec::              Linear recurrences.
+* Package stats::                  Statistical inference.
+* Package stirling::               Stirling formula.
+* Package stringproc::             String processing.
+* Package to_poly_solve::          An improved  version of solve.
+* Package trigtools::              Manipulation of trigonometric expressions.
+* Package unit::                   Units and dimensions.
+* Package wrstcse::                Worst-case calculations for engineering.
+* Package zeilberger::             Functions for hypergeometric summation.
 
 @b{Understanding maxima's output}
 * Error and warning messages::  Error and warning messages
@@ -368,19 +368,19 @@ Matrices and Linear Algebra
 * eigen::
 * Functions and Variables for Matrices and Linear Algebra::  
 
-Affine
+Package affine
 * Introduction to Affine::
 * Functions and Variables for Affine::      
 
-itensor
+Package itensor
 * Introduction to itensor::      
 * Functions and Variables for itensor::      
 
-ctensor
+Package ctensor
 * Introduction to ctensor::     
 * Functions and Variables for ctensor::     
 
-atensor
+Package atensor
 * Introduction to atensor::     
 * Functions and Variables for atensor::     
 
@@ -394,7 +394,7 @@ Sums, Products, and Series
 Number Theory
 * Functions and Variables for Number Theory::  
 
-Symmetries
+Package sym
 * Introduction to Symmetries::
 * Functions and Variables for Symmetries::  
 
@@ -434,202 +434,202 @@ Program Flow
 Debugging
 * Functions and Variables for Debugging::   
 
-alt-display
+Package alt-display
 * Introduction to alt-display::
 * Functions and Variables for alt-display::
 
-asympa
+Package asympa
 * Introduction to asympa::
 * Functions and variables for asympa::
 
-augmented_lagrangian
+Package augmented_lagrangian
 * Functions and Variables for augmented_lagrangian::
 
-Bernstein
+Package bernstein
 * Functions and Variables for Bernstein::
 
-Bitwise
+Package bitwise
 * Functions and Variables for bitwise::
 
-bode
+Package bode
 * Functions and Variables for bode::
 
-clebsch_gordan
+Package clebsch_gordan
 * Functions and Variables for clebsch_gordan::
 
-cobyla
+Package cobyla
 * Introduction to cobyla::
 * Functions and Variables for cobyla::
 * Examples for cobyla::
 
-colnew
+Package colnew
 * Introduction to colnew::
 * Functions and Variables for colnew::
 * Examples for colnew::
 
-combinatorics
-* Package combinatorics::       
+Package combinatorics
+* Introduction to combinatorics::       
 * Functions and Variables for Combinatorics::       
 
-contrib_ode
+Package contrib_ode
 * Introduction to contrib_ode::
 * Functions and Variables for contrib_ode::
 * Possible improvements to contrib_ode::
 * Test cases for contrib_ode::
 * References for contrib_ode::
 
-descriptive
+Package descriptive
 * Introduction to descriptive::
 * Functions and Variables for data manipulation::
 * Functions and Variables for descriptive statistics::
 * Functions and Variables for statistical graphs::
 
-diag
+Package diag
 * Functions and Variables for diag::
 
-distrib
+Package distrib
 * Introduction to distrib::
 * Functions and Variables for continuous distributions::
 * Functions and Variables for discrete distributions::
 
-draw
+Package draw
 * Introduction to draw::
 * Functions and Variables for draw::
 * Functions and Variables for pictures::
 * Functions and Variables for worldmap::
 
-drawdf
+Package drawdf
 * Introduction to drawdf::
 * Functions and Variables for drawdf::
 
-dynamics
+Package dynamics
 * The dynamics package::
 * Graphical analysis of discrete dynamical systems::
 * Visualization with VTK::
 
-ezunits
+Package ezunits
 * Introduction to ezunits::
 * Introduction to physical_constants::
 * Functions and Variables for ezunits::
 
-f90
-* Package f90::
+Package f90
+* Functions for f90::
 
-finance
+Package finance
 * Introduction to finance::
 * Functions and Variables for finance::
 
-fractals
+Package fractals
 * Introduction to fractals::
 * Definitions for IFS fractals::
 * Definitions for complex fractals::
 * Definitions for Koch snowflakes::
 * Definitions for Peano maps::
 
-gentran
+Package gentran
 * Introduction to Gentran::
 * Functions for Gentran::
 * Gentran Mode Switches::
 * Gentran Option Variables::
 * Gentran Evaluation Forms::
 
-ggf
+Package ggf
 * Functions and Variables for ggf::
 
-graphs
+Package graphs
 * Introduction to graphs::
 * Functions and Variables for graphs::
 
-grobner
+Package grobner
 * Introduction to grobner::
 * Functions and Variables for grobner::
 
-hompack
+Package hompack
 * Introduction to hompack::
 * Functions and Variables for hompack::
 
-impdiff
+Package impdiff
 * Functions and Variables for impdiff::
 
-interpol
+Package interpol
 * Introduction to interpol::
 * Functions and Variables for interpol::
 
-lapack
+Package lapack
 * Introduction to lapack::
 * Functions and Variables for lapack::
 
-lbfgs
+Package lbfgs
 * Introduction to lbfgs::
 * Functions and Variables for lbfgs::
 
-lindstedt
+Package lindstedt
 * Functions and Variables for lindstedt::
 
-linearalgebra
+Package linearalgebra
 * Introduction to linearalgebra::
 * Functions and Variables for linearalgebra::
 
-lsquares
+Package lsquares
 * Introduction to lsquares::
 * Functions and Variables for lsquares::
 
-makeOrders
+Package makeOrders
 * Functions and Variables for makeOrders::
 
-minpack
+Package minpack
 * Introduction to minpack::
 * Functions and Variables for minpack::
 
-mnewton
+Package mnewton
 * Introduction to mnewton::
 * Functions and Variables for mnewton::
 
-numericalio
+Package numericalio
 * Introduction to numericalio::
 * Functions and Variables for plain-text input and output::
 * Functions and Variables for binary input and output::
 
-odepack
+Package odepack
 * Introduction to ODEPACK::
 * Functions and Variables for odepack::  
 
-operatingsystem
+Package operatingsystem
 * Introduction to operatingsystem::
 * Directory operations::
 * Environment operations::
 
-opsubst
+Package opsubst
 * Functions and Variables for opsubst::
 
-orthopoly
+Package orthopoly
 * Introduction to orthogonal polynomials::
 * Functions and Variables for orthogonal polynomials::
 
-pslq
+Package pslq
 * Introduction to pslq::
 * Functions and Variables for pslq::
 
-pytranslate
+Package pytranslate
 * Introduction to pytranslate::
 * Functions in pytranslate::
 * Extending pytranslate::
 
-quantum_computing
-* Package quantum_computing::
+Package quantum_computing
+* Introduction to quantum_computing::
 * Functions and Variables for Quantum_Computing::       
 
-ratpow
+Package ratpow
 * Functions and Variables for ratpow::
 
-romberg
+Package romberg
 * Functions and Variables for romberg::
 
-simplex
+Package simplex
 * Introduction to simplex::
 * Functions and Variables for simplex::
 
-simplification
+Package simplification
 * Introduction to simplification::
 * Package absimp::
 * Package facexp::
@@ -638,41 +638,41 @@ simplification
 * Package rducon::
 * Package scifac::
 
-solve_rec
+Package solve_rec
 * Introduction to solve_rec::
 * Functions and Variables for solve_rec::
 
-stats
+Package stats
 * Introduction to stats::
 * Functions and Variables for inference_result::
 * Functions and Variables for stats::
 * Functions and Variables for special distributions::
 
-stirling
+Package stirling
 * Functions and Variables for stirling::
 
-stringproc
+Package stringproc
 * Introduction to String Processing::
 * String Input and Output::
 * Characters::
 * String Processing::
 * Octets and Utilities for Cryptography::
 
-to_poly_solve
+Package to_poly_solve
 * Functions and Variables for to_poly_solve::
 
-unit
-* Introduction to Units::       
-* Functions and Variables for Units::
-
-zeilberger
-* Introduction to zeilberger::
-* Functions and Variables for zeilberger::
-
-trigtools
+Package trigtools
 * Introduction to trigtools::
 * Functions and Variables for trigtools::
 * References::
+
+Package unit
+* Introduction to Units::       
+* Functions and Variables for Units::
+
+Package zeilberger
+* Introduction to zeilberger::
+* Functions and Variables for zeilberger::
 
 Understanding maxima's output
 * Error and warning messages::
@@ -778,39 +778,39 @@ Understanding maxima's output
 @chapter Numerical
 @include Numerical.texi
 
-@node Matrices and Linear Algebra, Affine, Numerical, Top
+@node Matrices and Linear Algebra, Package affine, Numerical, Top
 @chapter Matrices and Linear Algebra
 @include Matrices.texi
 
-@node Affine, itensor, Matrices and Linear Algebra, Top
-@chapter Affine
+@node Package affine, Package itensor, Matrices and Linear Algebra, Top
+@chapter Package affine
 @include Affine.texi
 
-@node itensor, ctensor, Affine, Top
-@chapter itensor
+@node Package itensor, Package ctensor, Package affine, Top
+@chapter Package itensor
 @include Itensor.texi
 
-@node ctensor, atensor, itensor, Top
-@chapter ctensor
+@node Package ctensor, Package atensor, Package itensor, Top
+@chapter Package ctensor
 @include Ctensor.texi
 
-@node atensor, Sums Products and Series, ctensor, Top
-@chapter atensor
+@node Package atensor, Sums Products and Series, Package ctensor, Top
+@chapter Package atensor
 @include Atensor.texi
 
-@node Sums Products and Series, Number Theory, atensor, Top
+@node Sums Products and Series, Number Theory, Package atensor, Top
 @chapter Sums, Products, and Series
 @include Series.texi
 
-@node Number Theory, Symmetries, Sums Products and Series, Top
+@node Number Theory, Package sym, Sums Products and Series, Top
 @chapter Number Theory
 @include Number.texi
 
-@node Symmetries, Groups, Number Theory, Top
-@chapter Symmetries
+@node Package sym, Groups, Number Theory, Top
+@chapter Package sym
 @include Symmetries.texi
 
-@node Groups, Runtime Environment, Symmetries, Top
+@node Groups, Runtime Environment, Package sym, Top
 @chapter Groups
 @include Groups.texi
 
@@ -838,247 +838,247 @@ Understanding maxima's output
 @chapter Program Flow
 @include Program.texi
 
-@node Debugging, alt-display-pkg, Program Flow, Top
+@node Debugging, Package alt-display, Program Flow, Top
 @chapter Debugging
 @include Debugging.texi
 
-@node alt-display-pkg, asympa-pkg, Debugging, Top
-@chapter alt-display
+@node Package alt-display, Package asympa, Debugging, Top
+@chapter Package alt-display
 @include alt-display.texi
 
-@node asympa-pkg, augmented_lagrangian-pkg, alt-display-pkg, Top
-@chapter asympa
+@node Package asympa, Package augmented_lagrangian, Package alt-display, Top
+@chapter Package asympa
 @include asympa.texi
 
-@node augmented_lagrangian-pkg, Bernstein-pkg, asympa-pkg, Top
-@chapter augmented_lagrangian
+@node Package augmented_lagrangian, Package bernstein, Package asympa, Top
+@chapter Package augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node Bernstein-pkg, bitwise-pkg, augmented_lagrangian-pkg, Top
-@chapter Bernstein
+@node Package bernstein, Package bitwise, Package augmented_lagrangian, Top
+@chapter Package bernstein
 @include bernstein.texi
 
-@node bitwise-pkg, bode-pkg, Bernstein-pkg, Top
-@chapter bitwise
+@node Package bitwise, Package bode, Package bernstein, Top
+@chapter Package bitwise
 @include bitwise.texi
 
-@node bode-pkg, celine-pkg, bitwise-pkg, Top
-@chapter bode
+@node Package bode, Package celine, Package bitwise, Top
+@chapter Package bode
 @include bode.texi
 
-@node celine-pkg, clebsch_gordan-pkg, bode-pkg, Top
-@chapter celine
+@node Package celine, Package clebsch_gordan, Package bode, Top
+@chapter Package celine
 @include celine.texi
 
-@node clebsch_gordan-pkg, cobyla-pkg, celine-pkg, Top
-@chapter clebsch_gordan
+@node Package clebsch_gordan, Package cobyla, Package celine, Top
+@chapter Package clebsch_gordan
 @include clebsch_gordan.texi
 
-@node cobyla-pkg, colnew-pkg, clebsch_gordan-pkg, Top
-@chapter cobyla
+@node Package cobyla, Package colnew, Package clebsch_gordan, Top
+@chapter Package cobyla
 @include cobyla.texi
 
-@node colnew-pkg, combinatorics-pkg, cobyla-pkg, Top
-@chapter colnew
+@node Package colnew, Package combinatorics, Package cobyla, Top
+@chapter Package colnew
 @include colnew.texi
 
-@node combinatorics-pkg, contrib_ode-pkg, colnew-pkg, Top
-@chapter combinatorics
+@node Package combinatorics, Package contrib_ode, Package colnew, Top
+@chapter Package combinatorics
 @include combinatorics.texi
 
-@node contrib_ode-pkg, descriptive-pkg, combinatorics-pkg, Top
-@chapter contrib_ode
+@node Package contrib_ode, Package descriptive, Package combinatorics, Top
+@chapter Package contrib_ode
 @include contrib_ode.texi
 
-@node descriptive-pkg, diag-pkg, contrib_ode-pkg, Top
-@chapter descriptive
+@node Package descriptive, Package diag, Package contrib_ode, Top
+@chapter Package descriptive
 @include descriptive.texi
 
-@node diag-pkg, distrib-pkg, descriptive-pkg, Top
-@chapter diag
+@node Package diag, Package distrib, Package descriptive, Top
+@chapter Package diag
 @include diag.texi
 
-@node distrib-pkg, draw-pkg, diag-pkg, Top
-@chapter distrib
+@node Package distrib, Package draw, Package diag, Top
+@chapter Package distrib
 @include distrib.texi
 
-@node draw-pkg, drawdf-pkg, distrib-pkg, Top
-@chapter draw
+@node Package draw, Package drawdf, Package distrib, Top
+@chapter Package draw
 @include draw.texi
 
-@node drawdf-pkg, dynamics-pkg, draw-pkg, Top
-@chapter drawdf
+@node Package drawdf, Package dynamics, Package draw, Top
+@chapter Package drawdf
 @include drawdf.texi
 
-@node dynamics-pkg, engineering-format-pkg, drawdf-pkg, Top
-@chapter dynamics
+@node Package dynamics, Package engineering-format, Package drawdf, Top
+@chapter Package dynamics
 @include dynamics.texi
 
-@node engineering-format-pkg, ezunits-pkg, dynamics-pkg, Top
-@chapter engineering-format
+@node Package engineering-format, Package ezunits, Package dynamics, Top
+@chapter Package engineering-format
 @include engineering-format.texi
 
-@node ezunits-pkg, f90-pkg, engineering-format-pkg, Top
-@chapter ezunits
+@node Package ezunits, Package f90, Package engineering-format, Top
+@chapter Package ezunits
 @include ezunits.texi
 
-@node f90-pkg, finance-pkg, ezunits-pkg, Top
-@chapter f90
+@node Package f90, Package finance, Package ezunits, Top
+@chapter Package f90
 @include f90.texi
 
-@node finance-pkg, fractals-pkg, f90-pkg, Top
-@chapter finance
+@node Package finance, Package fractals, Package f90, Top
+@chapter Package finance
 @include finance.texi
 
-@node fractals-pkg, gentran-pkg, finance-pkg, Top
-@chapter fractals
+@node Package fractals, Package gentran, Package finance, Top
+@chapter Package fractals
 @include fractals.texi
 
-@node gentran-pkg, ggf-pkg, fractals-pkg, Top
-@chapter Gentran
+@node Package gentran, Package ggf, Package fractals, Top
+@chapter Package gentran
 @include gentran.texi
 
-@node ggf-pkg, graphs-pkg, gentran-pkg, Top
-@chapter ggf
+@node Package ggf, Package graphs, Package gentran, Top
+@chapter Package ggf
 @include ggf.texi
 
-@node graphs-pkg, grobner-pkg, ggf-pkg, Top
-@chapter graphs
+@node Package graphs, Package grobner, Package ggf, Top
+@chapter Package graphs
 @include graphs.texi
 
-@node grobner-pkg, hompack-pkg, graphs-pkg, Top
-@chapter grobner
+@node Package grobner, Package hompack, Package graphs, Top
+@chapter Package grobner
 @include grobner.texi
 
-@node hompack-pkg, impdiff-pkg, grobner-pkg, Top
-@chapter hompack
+@node Package hompack, Package impdiff, Package grobner, Top
+@chapter Package hompack
 @include hompack.texi
 
-@node impdiff-pkg, interpol-pkg, hompack-pkg, Top
-@chapter impdiff
+@node Package impdiff, Package interpol, Package hompack, Top
+@chapter Package impdiff
 @include impdiff.texi
 
-@node interpol-pkg, lapack-pkg, impdiff-pkg, Top
-@chapter interpol
+@node Package interpol, Package lapack, Package impdiff, Top
+@chapter Package interpol
 @include interpol.texi
 
-@node lapack-pkg, lbfgs-pkg, interpol-pkg, Top
-@chapter lapack
+@node Package lapack, Package lbfgs, Package interpol, Top
+@chapter Package lapack
 @include lapack.texi
 
-@node lbfgs-pkg, lindstedt-pkg, lapack-pkg, Top
-@chapter lbfgs
+@node Package lbfgs, Package lindstedt, Package lapack, Top
+@chapter Package lbfgs
 @include lbfgs.texi
 
-@node lindstedt-pkg, linearalgebra-pkg, lbfgs-pkg, Top
-@chapter lindstedt
+@node Package lindstedt, Package linearalgebra, Package lbfgs, Top
+@chapter Package lindstedt
 @include lindstedt.texi
 
-@node linearalgebra-pkg, lsquares-pkg, lindstedt-pkg, Top
-@chapter linearalgebra
+@node Package linearalgebra, Package lsquares, Package lindstedt, Top
+@chapter Package linearalgebra
 @include linearalgebra.texi
 
-@node lsquares-pkg, minpack-pkg, linearalgebra-pkg, Top
-@chapter lsquares
+@node Package lsquares, Package minpack, Package linearalgebra, Top
+@chapter Package lsquares
 @include lsquares.texi
 
-@node minpack-pkg, makeOrders-pkg, lsquares-pkg, Top
-@chapter minpack
+@node Package minpack, Package makeOrders, Package lsquares, Top
+@chapter Package minpack
 @include minpack.texi
 
-@node makeOrders-pkg, mnewton-pkg, minpack-pkg, Top
-@chapter makeOrders
+@node Package makeOrders, Package mnewton, Package minpack, Top
+@chapter Package makeOrders
 @include makeOrders.texi
 
-@node mnewton-pkg, numericalio-pkg, makeOrders-pkg, Top
-@chapter mnewton
+@node Package mnewton, Package numericalio, Package makeOrders, Top
+@chapter Package mnewton
 @include mnewton.texi
 
-@node numericalio-pkg, odepack-pkg, mnewton-pkg, Top
-@chapter numericalio
+@node Package numericalio, Package odepack, Package mnewton, Top
+@chapter Package numericalio
 @include numericalio.texi
 
-@node odepack-pkg, operatingsystem-pkg, numericalio-pkg, Top
-@chapter odepack
+@node Package odepack, Package operatingsystem, Package numericalio, Top
+@chapter Package odepack
 @include odepack.texi
 
-@node operatingsystem-pkg, opsubst-pkg, odepack-pkg, Top
-@chapter operatingsystem
+@node Package operatingsystem, Package opsubst, Package odepack, Top
+@chapter Package operatingsystem
 @include operatingsystem.texi
 
-@node opsubst-pkg, orthopoly-pkg, operatingsystem-pkg, Top
-@chapter opsubst
+@node Package opsubst, Package orthopoly, Package operatingsystem, Top
+@chapter Package opsubst
 @include opsubst.texi
 
-@node orthopoly-pkg, pslq-pkg, opsubst-pkg, Top
-@chapter orthopoly
+@node Package orthopoly, Package pslq, Package opsubst, Top
+@chapter Package orthopoly
 @include orthopoly.texi
 
-@node pslq-pkg, pytranslate, orthopoly-pkg, Top
-@chapter pslq
+@node Package pslq, Package pytranslate, Package orthopoly, Top
+@chapter Package pslq
 @include pslq.texi
 
-@node pytranslate, quantum_computing-pkg, pslq-pkg, Top
-@chapter pytranslate
+@node Package pytranslate, Package quantum_computing, Package pslq, Top
+@chapter Package pytranslate
 @include pytranslate.texi
 
-@node quantum_computing-pkg, ratpow-pkg, pytranslate, Top
-@chapter quantum_computing-pkg
+@node Package quantum_computing, Package ratpow, Package pytranslate, Top
+@chapter Package quantum_computing
 @include quantum_computing.texi
 
-@node ratpow-pkg, romberg-pkg, quantum_computing-pkg, Top
-@chapter ratpow
+@node Package ratpow, Package romberg, Package quantum_computing, Top
+@chapter Package ratpow
 @include ratpow.texi
 
-@node romberg-pkg, simplex-pkg, ratpow-pkg, Top
-@chapter romberg
+@node Package romberg, Package simplex, Package ratpow, Top
+@chapter Package romberg
 @include romberg.texi
 
-@node simplex-pkg, simplification-pkg, romberg-pkg, Top
-@chapter simplex
+@node Package simplex, Package simplification, Package romberg, Top
+@chapter Package simplex
 @include simplex.texi
 
-@node simplification-pkg, solve_rec-pkg, simplex-pkg, Top
-@chapter simplification
+@node Package simplification, Package solve_rec, Package simplex, Top
+@chapter Package simplification
 @include simplifications.texi
 
-@node solve_rec-pkg, stats-pkg, simplification-pkg, Top
-@chapter solve_rec
+@node Package solve_rec, Package stats, Package simplification, Top
+@chapter Package solve_rec
 @include solve_rec.texi
 
-@node stats-pkg, stirling-pkg, solve_rec-pkg, Top
-@chapter stats
+@node Package stats, Package stirling, Package solve_rec, Top
+@chapter Package stats
 @include stats.texi
 
-@node stirling-pkg, stringproc-pkg, stats-pkg, Top
-@chapter stirling
+@node Package stirling, Package stringproc, Package stats, Top
+@chapter Package stirling
 @include stirling.texi
 
-@node stringproc-pkg, to_poly_solve-pkg, stirling-pkg, Top
-@chapter stringproc
+@node Package stringproc, Package to_poly_solve, Package stirling, Top
+@chapter Package stringproc
 @include stringproc.texi
 
-@node to_poly_solve-pkg, unit-pkg, stringproc-pkg, Top
-@chapter to_poly_solve
+@node Package to_poly_solve, Package trigtools, Package stringproc, Top
+@chapter Package to_poly_solve
 @include to_poly_solve.texi
 
-@node unit-pkg, wrstcse-pkg, to_poly_solve-pkg, Top
-@chapter unit
-@include unit.texi
-
-@node wrstcse-pkg, zeilberger-pkg, unit-pkg, Top
-@chapter wrstcse
-@include wrstcse.texi
-
-@node zeilberger-pkg, Error and warning messages, wrstcse-pkg, Top
-@chapter zeilberger
-@include zeilberger.texi
-
-@node trigtools-pkg
-@chapter trigtools
+@node Package trigtools, Package unit, Package to_poly_solve, Top
+@chapter Package trigtools
 @include trigtools.texi
 
-@node Error and warning messages, Command-line options, zeilberger-pkg, Top
+@node Package unit, Package wrstcse, Package trigtools, Top
+@chapter Package unit
+@include unit.texi
+
+@node Package wrstcse, Package zeilberger, Package unit, Top
+@chapter Package wrstcse
+@include wrstcse.texi
+
+@node Package zeilberger, Error and warning messages, Package wrstcse, Top
+@chapter Package zeilberger
+@include zeilberger.texi
+
+@node Error and warning messages, Command-line options, Package zeilberger, Top
 @chapter Error and warning messages
 @include errormessages.texi
 

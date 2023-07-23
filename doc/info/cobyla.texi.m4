@@ -4,7 +4,7 @@
 * Examples for cobyla::  
 @end menu
 
-@node Introduction to cobyla, Functions and Variables for cobyla, cobyla-pkg, cobyla-pkg
+@node Introduction to cobyla, Functions and Variables for cobyla, Package cobyla, Package cobyla
 @section Introduction to cobyla
 
 @code{fmin_cobyla} is a Common Lisp translation (via @code{f2cl}) of the
@@ -51,7 +51,7 @@ References:
 @category{Package cobyla}
 @closecatbox
 
-@node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, cobyla-pkg
+@node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, Package cobyla
 @section Functions and Variables for cobyla
 
 @anchor{fmin_cobyla}
@@ -151,7 +151,7 @@ See @mref{fmin_cobyla} for more information.
 
 @end deffn
 
-@node Examples for cobyla, , Functions and Variables for cobyla, cobyla-pkg
+@node Examples for cobyla, , Functions and Variables for cobyla, Package cobyla
 @section Examples for cobyla
 
 Minimize m4_math(x_1 x_2, @math{x_1 x_2}) with m4_mathdot(1-x_1^2-x_2^2 \ge 0, @math{1-x1^2-x2^2 >= 0})  

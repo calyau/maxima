@@ -3,7 +3,7 @@
 * Functions and Variables for simplex::
 @end menu
 
-@node Introduction to simplex, Functions and Variables for simplex, simplex-pkg, simplex-pkg
+@node Introduction to simplex, Functions and Variables for simplex, Package simplex, Package simplex
 @section Introduction to simplex
 
 @code{simplex} is a package for linear optimization using the simplex algorithm.
@@ -95,7 +95,7 @@ sc50a          -6.4575077059E+01
 share2b        -4.1573224074E+02
 @end example
 
-@node Functions and Variables for simplex,  , Introduction to simplex, simplex-pkg
+@node Functions and Variables for simplex,  , Introduction to simplex, Package simplex
 @section Functions and Variables for simplex
 
 @anchor{epsilon_lp}

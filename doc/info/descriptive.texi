@@ -5,7 +5,7 @@
 * Functions and Variables for statistical graphs::
 @end menu
 
-@node Introduction to descriptive, Functions and Variables for data manipulation, descriptive-pkg, descriptive-pkg
+@node Introduction to descriptive, Functions and Variables for data manipulation, Package descriptive, Package descriptive
 @section Introduction to descriptive
 
 Package @code{descriptive} contains a set of functions for 
@@ -199,7 +199,7 @@ One must take care when working with categorical data. In the next example, symb
 @category{Package descriptive}
 @closecatbox
 
-@node Functions and Variables for data manipulation, Functions and Variables for descriptive statistics, Introduction to descriptive, descriptive-pkg
+@node Functions and Variables for data manipulation, Functions and Variables for descriptive statistics, Introduction to descriptive, Package descriptive
 @section Functions and Variables for data manipulation
 
 
@@ -742,7 +742,7 @@ Add a constant column and remove the third variable.
 
 
 
-@node Functions and Variables for descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for data manipulation, descriptive-pkg
+@node Functions and Variables for descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for data manipulation, Package descriptive
 @section Functions and Variables for descriptive statistics
 
 
@@ -1653,7 +1653,7 @@ Example:
 @fname{quantile} (@var{matrix}, @var{p})
 
 This is the @var{p}-quantile, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
-Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @ref{descriptive-pkg}
+Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @ref{Package descriptive}
 
 Examples:
 
@@ -2931,7 +2931,7 @@ but option @code{data=false} must be used.
 
 
 
-@node Functions and Variables for statistical graphs,  , Functions and Variables for descriptive statistics, descriptive-pkg
+@node Functions and Variables for statistical graphs,  , Functions and Variables for descriptive statistics, Package descriptive
 @section Functions and Variables for statistical graphs
 
 
@@ -2991,7 +2991,7 @@ If you want to set your own values for this option or want to build
 complex scenes, make use of @code{barsplot_description}. See example below.
 
 @item
-The following local @ref{draw-pkg} options: @mrefcomma{key} @mrefcomma{color_draw}
+The following local @ref{Package draw} options: @mrefcomma{key} @mrefcomma{color_draw}
 @mrefcomma{fill_color} @mref{fill_density} and @mrefdot{line_width}
 See also
 @mrefdot{barsplot}
@@ -3121,7 +3121,7 @@ Stacked bars.
 @end group
 @end example
 
-For bars diagrams related options, see @mref{barsplot} of package @ref{draw-pkg}
+For bars diagrams related options, see @mref{barsplot} of package @ref{Package draw}
 See also functions @mref{histogram} and @mrefdot{piechart}
 
 @opencatbox{Categories:}
@@ -3380,7 +3380,7 @@ If you want to set your own values for these options, make use of
 @code{histogram_description}.
 
 @item
-The following local @ref{draw-pkg} options: @mrefcomma{key}
+The following local @ref{Package draw} options: @mrefcomma{key}
 @mrefcomma{fill_color} @mrefcomma{fill_density} and @mrefdot{line_width}
 Note that the outlines of bars,
 as well as the interior of bars when @code{fill_density} is nonzero,

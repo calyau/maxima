@@ -4,7 +4,7 @@
 * Functions and Variables for ezunits::
 @end menu
 
-@node Introduction to ezunits, Introduction to physical_constants, ezunits-pkg, ezunits-pkg
+@node Introduction to ezunits, Introduction to physical_constants, Package ezunits, Package ezunits
 @section Introduction to ezunits
 
 @code{ezunits} is a package for working with dimensional quantities,
@@ -89,7 +89,7 @@ but other fundamental dimensions and units can be declared.
 @category{Package ezunits}
 @closecatbox
 
-@node Introduction to physical_constants, Functions and Variables for ezunits, Introduction to ezunits, ezunits-pkg
+@node Introduction to physical_constants, Functions and Variables for ezunits, Introduction to ezunits, Package ezunits
 @section Introduction to physical_constants
 
 @anchor{physical_constants}
@@ -288,7 +288,7 @@ Computing conversions to base units; may take a moment.
 @category{Package physical_constants}
 @closecatbox
 
-@node Functions and Variables for ezunits, , Introduction to physical_constants, ezunits-pkg
+@node Functions and Variables for ezunits, , Introduction to physical_constants, Package ezunits
 @section Functions and Variables for ezunits
 
 @deffn {Operator} `

@@ -8,7 +8,7 @@
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Introduction to String Processing, String Input and Output, stringproc-pkg, stringproc-pkg
+@node Introduction to String Processing, String Input and Output, Package stringproc, Package stringproc
 @section Introduction to String Processing
 
 The package @code{stringproc} contains functions for processing strings 
@@ -118,7 +118,7 @@ finally parsed by @ref{parse_string}.
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node String Input and Output, Characters, Introduction to String Processing, stringproc-pkg
+@node String Input and Output, Characters, Introduction to String Processing, Package stringproc
 @section String Input and Output
 
 Example: Formatted printing to a file.
@@ -667,7 +667,7 @@ GNU/Linux
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Characters, String Processing, String Input and Output, stringproc-pkg
+@node Characters, String Processing, String Input and Output, Package stringproc
 @section Characters
 
 Characters are strings of length 1.
@@ -1238,7 +1238,7 @@ Examples: See @ref{unicode_to_utf8}.
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node String Processing, Octets and Utilities for Cryptography, Characters, stringproc-pkg
+@node String Processing, Octets and Utilities for Cryptography, Characters, Package stringproc
 @section String Processing
 
 Position indices in strings are 1-indexed like in Maxima lists. 
@@ -1877,7 +1877,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Octets and Utilities for Cryptography,  , String Processing, stringproc-pkg
+@node Octets and Utilities for Cryptography,  , String Processing, Package stringproc
 @section Octets and Utilities for Cryptography
 
 @c -----------------------------------------------------------------------------

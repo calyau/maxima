@@ -6,7 +6,7 @@
 * Gentran Evaluation Forms::
 @end menu
 
-@node Introduction to Gentran, Functions for Gentran, gentran-pkg, gentran-pkg
+@node Introduction to Gentran, Functions for Gentran, Package gentran, Package gentran
 @section Introduction to Gentran
 
 Original Authors Barbara Gates and Paul Wang
@@ -17,7 +17,7 @@ Gentran can translate mathematical expressions, iteration loops,
 conditional branching statements, data type information, function
 definitions, matrtices and arrays, and more.
 
-@node Functions for Gentran, Gentran Mode Switches, Introduction to Gentran, gentran-pkg
+@node Functions for Gentran, Gentran Mode Switches, Introduction to Gentran, Package gentran
 @section Functions for Gentran
 
 @deffn {Function} gentran (@var{stmt1}, @var{stmt2}, ... , @var{stmtn} , @var{[f1, f2, ... , fm]})
@@ -183,7 +183,7 @@ Turns on the mode switch @emph{sw}.
 Turns the given switch, @emph{sw}, off.
 @end deffn
 
-@node Gentran Mode Switches, Gentran Option Variables, Functions for Gentran, gentran-pkg
+@node Gentran Mode Switches, Gentran Option Variables, Functions for Gentran, Package gentran
 @section Gentran Mode Switches
 
 @defvr {Option variable} fortran
@@ -221,7 +221,7 @@ executable fortran code). Therefore the gendecs flag is turned off
 during processing of templates by @strong{gentranin}.
 @end defvr
 
-@node Gentran Option Variables, Gentran Evaluation Forms, Gentran Mode Switches, gentran-pkg
+@node Gentran Option Variables, Gentran Evaluation Forms, Gentran Mode Switches, Package gentran
 @section Gentran Option Variables
 
 @defvr {Option variable} gentranlang
@@ -451,7 +451,7 @@ device and does not carry out any complex calculations.
 
 @end defvr
 
-@node Gentran Evaluation Forms, , Gentran Option Variables, gentran-pkg
+@node Gentran Evaluation Forms, , Gentran Option Variables, Package gentran
 @section Gentran Evaluation Forms
 
 The following special functions can be included in Maxima statements

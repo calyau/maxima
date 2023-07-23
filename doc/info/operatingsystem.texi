@@ -5,13 +5,13 @@
 * Environment operations::
 @end menu
 
-@node Introduction to operatingsystem, Directory operations, operatingsystem-pkg, operatingsystem-pkg
+@node Introduction to operatingsystem, Directory operations, Package operatingsystem, Package operatingsystem
 @section Introduction to operatingsystem
 
 Package @code{operatingsystem} contains functions for operatingsystem-tasks, like file system operations.
 
 
-@node Directory operations, File operations, Introduction to operatingsystem, operatingsystem-pkg
+@node Directory operations, File operations, Introduction to operatingsystem, Package operatingsystem
 @section Directory operations
 
 
@@ -48,7 +48,7 @@ Examples:
 (%i5) rmdir("testdirectory")$
 @end example
 
-@node File operations, Environment operations, Directory operations, operatingsystem-pkg
+@node File operations, Environment operations, Directory operations, Package operatingsystem
 @section File operations
 
 
@@ -68,7 +68,7 @@ deletes file @var{file1}
 @end deffn
 
 
-@node Environment operations, , File operations, operatingsystem-pkg
+@node Environment operations, , File operations, Package operatingsystem
 @section Environment operations
 
 

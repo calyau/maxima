@@ -237,7 +237,7 @@ When @code{gensumnum} is @code{false}, an automatically-generated index is only
 
 See also @mrefcomma{lsum} @mrefcomma{sumcontract} @mrefcomma{intosum}
 @mrefcomma{bashindices} @mrefcomma{niceindices}
-@mrefcomma{nouns} @mrefcomma{evflag} and @ref{zeilberger-pkg}
+@mrefcomma{nouns} @mrefcomma{evflag} and @ref{Package zeilberger}
 
 Examples:
 

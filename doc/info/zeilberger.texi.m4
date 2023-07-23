@@ -3,7 +3,7 @@
 * Functions and Variables for zeilberger::
 @end menu
 
-@node Introduction to zeilberger, Functions and Variables for zeilberger, zeilberger-pkg, zeilberger-pkg
+@node Introduction to zeilberger, Functions and Variables for zeilberger, Package zeilberger, Package zeilberger
 @section Introduction to zeilberger
 
 @code{zeilberger} is an implementation of Zeilberger's algorithm
@@ -71,7 +71,7 @@ For example:@*
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger-pkg
+@node Functions and Variables for zeilberger, , Introduction to zeilberger, Package zeilberger
 @section Functions and Variables for zeilberger
 
 @anchor{AntiDifference}
@@ -365,7 +365,7 @@ which have certificate equal to zero, or all coefficients equal to zero.
 
 @end defvr
 
-@node Variables related to the modular test
+@node Variables related to the modular test, , General global variables
 @section Variables related to the modular test
 
 @anchor{mod_test}

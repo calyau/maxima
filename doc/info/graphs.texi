@@ -3,7 +3,7 @@
 * Functions and Variables for graphs::
 @end menu
 
-@node Introduction to graphs, Functions and Variables for graphs, graphs-pkg, graphs-pkg
+@node Introduction to graphs, Functions and Variables for graphs, Package graphs, Package graphs
 @section Introduction to graphs
 
 The @code{graphs} package provides graph and digraph data structure for
@@ -30,7 +30,7 @@ To use the @code{graphs} package, first load it with @code{load("graphs")}.
 @category{Package graphs}
 @closecatbox
 
-@node Functions and Variables for graphs, , Introduction to graphs, graphs-pkg
+@node Functions and Variables for graphs, , Introduction to graphs, Package graphs
 @section Functions and Variables for graphs
 
 @subsection Building graphs
@@ -3063,7 +3063,7 @@ Returns a list of graphs from the file @var{fl} in the sparse6 format.
 @fname{draw_graph} (@var{graph}) @
 @fname{draw_graph} (@var{graph}, @var{option1}, ..., @var{optionk})
 
-Draws the graph using the @ref{draw-pkg} package.
+Draws the graph using the @ref{Package draw} package.
 
 The algorithm used to position vertices is specified by the optional
 argument @var{program}. The default value is

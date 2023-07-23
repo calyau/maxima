@@ -2326,44 +2326,6 @@ wrapper for this."
 	   (dskrat-subst x y (cdr z))
 	   z)))
 
-;; As mentioned in
-;; https://sourceforge.net/p/maxima/mailman/message/37744356/ we
-;; shouldn't need these.  However, removing these cause failures in
-;; the testsuite.
-(macrolet ((make-fun (fun noun)
-	     `(defun ,fun (x) (ftake ',noun x))))
-  (make-fun $log %log)
-  (make-fun $sin %sin)
-  (make-fun $cos %cos)
-  (make-fun $tan %tan)
-  (make-fun $cot %cot)
-  (make-fun $sec %sec)
-  (make-fun $csc %csc)
-  (make-fun $sinh %sinh)
-  (make-fun $cosh %cosh)
-  (make-fun $tanh %tanh)
-  (make-fun $coth %coth)
-  (make-fun $sech %sech)
-  (make-fun $csch %csch)
-  (make-fun $asin %asin)
-  (make-fun $acos %acos)
-  (make-fun $atan %atan)
-  (make-fun $acot %acot)
-  (make-fun $asec %asec)
-  (make-fun $acsc %acsc)
-  (make-fun $asinh %asinh)
-  (make-fun $acosh %acosh)
-  (make-fun $atanh %atanh)
-  (make-fun $acoth %acoth)
-  (make-fun $asech %asech)
-  (make-fun $acsch %acsch)
-  (make-fun $round %round)
-  (make-fun $truncate %truncate)
-  (make-fun $plog %plog)
-  (make-fun $signum %signum)
-  (make-fun $gamma %gamma))
-
-
 ;;; Float constants, to 2048 bits of precision.
 ;;; (EXP 1)
 (mdefprop $%e     2.7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274274663919320030599218174135966290435729003342952605956307381323286279434907632338298807531952510190115738341879307021540891499348841675092447614606680822648001684774118537423454424371075390777449920695517027618386062613313845830007520449338265602976067371132007093287091274437470472306969772093101416928368190255151086574637721112523897844250569536967707854499699679468644549059879316368892300987931277361782154249992295763514822082698951936680331825288693984964651058209392398294887933203625094431173012381970684161404

@@ -511,9 +511,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $zeta (z)
-  (simplify (list '(%zeta) z)))
-
 ;;; The Riemann Zeta function has mirror symmetry
 
 (defprop %zeta t commutes-with-conjugate)

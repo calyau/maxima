@@ -5,7 +5,7 @@
 @end menu
 
 @anchor{numericalio}
-@node Introduction to numericalio, Functions and Variables for plain-text input and output, mnewton-pkg, numericalio-pkg
+@node Introduction to numericalio, Functions and Variables for plain-text input and output, Package numericalio, Package numericalio
 @section Introduction to numericalio
 
 @code{numericalio} is a collection of functions to read and write files and streams.
@@ -95,7 +95,7 @@ The effect of reading such values with @code{numericalio} is undefined.
 @code{numericalio} includes functions to open a stream for reading or writing a stream of bytes.
 
 
-@node Functions and Variables for plain-text input and output, Functions and Variables for binary input and output, Introduction to numericalio, numericalio-pkg
+@node Functions and Variables for plain-text input and output, Functions and Variables for binary input and output, Introduction to numericalio, Package numericalio
 @section Functions and Variables for plain-text input and output
 
 @anchor{read_matrix}
@@ -308,7 +308,7 @@ See also @mref{openw} and @mrefdot{read_matrix}
 
 @end deffn
 
-@node Functions and Variables for binary input and output, , Functions and Variables for plain-text input and output, numericalio-pkg
+@node Functions and Variables for binary input and output, , Functions and Variables for plain-text input and output, Package numericalio
 @section Functions and Variables for binary input and output
 
 @anchor{assume_external_byte_order}

@@ -24,9 +24,6 @@
 (in-package :maxima)
 
 ;; Airy Ai function 
-(defmfun $airy_ai (z)
-  "Airy function Ai(z)"
-  (simplify (list '(%airy_ai) (resimplify z))))
 
 (defprop %airy_ai simplim%airy_ai simplim%function)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
@@ -113,10 +110,6 @@
 
 
 ;; Derivative dAi/dz of Airy function Ai(z)
-(defmfun $airy_dai (z)
-  "Derivative dAi/dz of Airy function Ai(z)"
-  (simplify (list '(%airy_dai) (resimplify z))))
-
 (defprop %airy_dai simplim%airy_dai simplim%function)
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
 (defprop %airy_dai ((z) ((%airy_ai) z)) integral)
@@ -180,11 +173,6 @@
 	($hypergeometric_representation
 	 (airy-dai-hypergeometric z))
 	(t (give-up))))
-
-;; Airy Bi function 
-(defmfun $airy_bi (z)
-  "Airy function Bi(z)"
-  (simplify (list '(%airy_bi) (resimplify z))))
 
 (defprop %airy_bi simplim%airy_bi simplim%function)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
@@ -272,10 +260,6 @@
 
 
 ;; Derivative dBi/dz of Airy function Bi(z)
-(defmfun $airy_dbi (z)
-  "Derivative dBi/dz of Airy function Bi(z)"
-  (simplify (list '(%airy_dbi) (resimplify z))))
-
 (defprop %airy_dbi simplim%airy_dbi simplim%function)
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
 (defprop %airy_dbi ((z) ((%airy_bi) z)) integral)

@@ -359,36 +359,44 @@
 ;; The function 'round' rounds a number to the nearest integer. For a tie, round to the
 ;; nearest even integer.
 
-(defprop %round simp-round operators)
+;; This property is important to get round(round(x)) => round(x).
 (setf (get '%round 'integer-valued) t)
 (setf (get '%round 'reflection-rule) 'odd-function-reflect)
-(setf (get '$round 'alias) '%round)
-(setf (get '$round 'verb) '%round)
-(setf (get '%round 'noun) '$round)
-
 ;; round distributes over lists, matrices, and equations.
 (setf (get '%round 'distribute_over) '(mlist $matrix mequal))
 
-(defun simp-round (e yy z)
-  (oneargcheck e)
-  (setq yy (caar e)) ;; find a use for the otherwise unused YY.
-  (setq e (simplifya (specrepcheck (second e)) z))
-  (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
-	((member e '($inf $minf $und $ind) :test #'eq) e)
-	((eq e '$zerob) 0)
-	((eq e '$zeroa) 0)
+(def-simplifier round (e)
+  (cond (($featurep e '$integer)
+	 ;; takes care of round(round(x)) --> round(x).
+	 e)
+	((member e '($inf $minf $und $ind) :test #'eq)
+	 e)
+	((eq e '$zerob)
+	 0)
+	((eq e '$zeroa)
+	 0)
 	(t
 	 (let* ((lb (take '($floor) e))
 		(ub (take '($ceiling) e))
 		(sgn (csign (sub (sub ub e) (sub e lb)))))
-	   (cond ((eq sgn t) `((,yy simp) ,e))
-		 ((eq sgn '$neg) ub)
-		 ((eq sgn '$pos) lb)
-		 ((alike lb ub) lb) ;; For floats that are integers, this can happen. Maybe featurep should catch this.
-		 ((and (eq sgn '$zero) ($featurep lb '$even)) lb)
-		 ((and (eq sgn '$zero) ($featurep ub '$even)) ub)
-		 ((apply-reflection-simp yy e t))
-		 (t `((,yy simp) ,e)))))))
+	   (cond ((eq sgn t)
+		  (give-up))
+		 ((eq sgn '$neg)
+		  ub)
+		 ((eq sgn '$pos)
+		  lb)
+		 ((alike lb ub)
+		  ;; For floats that are integers, this can
+		  ;; happen. Maybe featurep should catch this.
+		  lb)
+		 ((and (eq sgn '$zero)
+		       ($featurep lb '$even))
+		  lb)
+		 ((and (eq sgn '$zero)
+		       ($featurep ub '$even))
+		  ub)
+		 ((apply-reflection-simp (mop form) e t))
+		 (t (give-up)))))))
 
 (defprop %round simplim%round simplim%function)
 
@@ -411,30 +419,33 @@
 
 ;; Round a number towards zero.
 
-(defprop %truncate simp-truncate operators)
+
+;; This property is important to get truncate(truncate(x)) =>
+;; truncate(x).
 (setf (get '%truncate 'integer-valued) t)
 (setf (get '%truncate 'reflection-rule) 'odd-function-reflect)
-(setf (get '$truncate 'alias) '%truncate)
-(setf (get '$truncate 'verb) '%truncate)
-(setf (get '%truncate 'noun) '$truncate)
 
 ;; truncate distributes over lists, matrices, and equations.
 (setf (get '%truncate 'distribute_over) '(mlist $matrix mequal))
 
-(defun simp-truncate (e yy z)
-  (oneargcheck e)
-  (setq yy (caar e)) ;; find a use for the otherwise unused YY.
-  (setq e (simplifya (specrepcheck (second e)) z))
-  (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
-	((member e '($inf $minf $und $ind) :test #'eq) e)
-	((eq e '$zerob) 0)
-	((eq e '$zeroa) 0)
+(def-simplifier truncate (e)
+  (cond (($featurep e '$integer)
+	 ;; takes care of truncate(truncate(x)) --> truncate(x).
+	 e)
+	((member e '($inf $minf $und $ind) :test #'eq)
+	 e)
+	((eq e '$zerob)
+	 0)
+	((eq e '$zeroa)
+	 0)
 	(t
 	 (let ((sgn (csign e)))
-	   (cond ((member sgn '($neg $nz) :test #'eq) (take '($ceiling) e))
-		 ((member sgn '($zero $pz $pos) :test #'eq) (take '($floor) e))
-		 ((apply-reflection-simp yy e t))
-		 (t `((,yy simp) ,e)))))))
+	   (cond ((member sgn '($neg $nz) :test #'eq)
+		  (take '($ceiling) e))
+		 ((member sgn '($zero $pz $pos) :test #'eq)
+		  (take '($floor) e))
+		 ((apply-reflection-simp (mop form) e t))
+		 (t (give-up)))))))
 
 ;;; integration for signum, unit_step, and mod.
 

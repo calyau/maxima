@@ -720,6 +720,9 @@
 (defmfun ($bfloat :properties ((evfun t))) (x)
   (let (y)
     (cond ((bigfloatp x))
+	  ((eq x '$%i)
+	   ;; Handle %i specially.
+	   (mul ($bfloat 1) '$%i))
 	  ((or (numberp x)
 	       (member x '($%e $%pi $%gamma) :test #'eq))
 	   (bcons (intofp x)))
