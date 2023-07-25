@@ -240,3 +240,10 @@ generalized_lambert_w(-1, 0.5);
 
 bfloat(generalized_lambert_w(-1, 1/2));
 generalized_lambert_w(-1, 0.5b0);
+
+float(generalized_lambert_w(-3/2, 1/2));
+generalized_lambert_w(-1.5, 0.5);
+
+bfloat(generalized_lambert_w(-3/2, 1/2));
+generalized_lambert_w(-1.5b0, 0.5b0);
+
