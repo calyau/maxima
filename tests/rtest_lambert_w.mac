@@ -232,3 +232,11 @@ integrate(generalized_lambert_w(n,x),x);
 (fpprec:oldfpprec, kill(oldfpprec), done);
 done;
 
+/*
+ * Bug 4156: float of generalized_lambert_w doesn't work
+ */
+float(generalized_lambert_w(-1, 1/2));
+generalized_lambert_w(-1, 0.5);
+
+bfloat(generalized_lambert_w(-1, 1/2));
+generalized_lambert_w(-1, 0.5b0);
