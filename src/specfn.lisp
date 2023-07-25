@@ -794,14 +794,17 @@
 ;;; Generalized Lambert W function
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $generalized_lambert_w (k z)
   (ftake* '%generalized_lambert_w k z))
 
 ;;; Set properties to give full support to the parser and display
+#+nil
+(progn
 (defprop $generalized_lambert_w %generalized_lambert_w alias)
 (defprop $generalized_lambert_w %generalized_lambert_w verb)
 (defprop %generalized_lambert_w $generalized_lambert_w reversealias)
-(defprop %generalized_lambert_w $generalized_lambert_w noun)
+(defprop %generalized_lambert_w $generalized_lambert_w noun))
 
 ;;; lambert_w is a simplifying function
 (defprop %generalized_lambert_w simp-generalized-lambertw operators)
@@ -829,6 +832,7 @@
     ((mexpt) ((%generalized_lambert_w) k x) -1)))
   integral)
 
+#+nil
 (defun simp-generalized-lambertw (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -850,6 +854,33 @@
      ((and (integerp k) (complex-bigfloat-numerical-eval-p x))
       (to (bigfloat::lambert-w-k k (bigfloat:to x))))
      (t (list '(%generalized_lambert_w simp) k x)))))
+
+(def-simplifier generalized_lambert_w (k x)
+  (flet ((test-for-integer (arg)
+	   (let* ((new-arg (bigfloat:to arg))
+		  (arg-truncate (bigfloat:truncate new-arg)))
+	     (when (bigfloat:= arg-truncate new-arg)
+	       arg-truncate))))
+    (cond
+      ;; Numerical evaluation for real or complex x
+      ((complex-float-numerical-eval-p k x)
+       ;; x may be an integer.  eg "generalized_lambert_w(0,1),numer;"
+       (let ((k-int (test-for-integer k)))
+	 (cond (k-int
+		(if (integerp x) 
+		    (to (bigfloat::lambert-w-k k-int (bigfloat:to ($float x))))
+		    (to (bigfloat::lambert-w-k k-int (bigfloat:to x)))))
+	       (t
+		(give-up)))))
+      ;; Numerical evaluation for real or complex bigfloat x
+      ((complex-bigfloat-numerical-eval-p k x)
+       (let ((k-int (test-for-integer k)))
+	 (cond (k-int
+		(to (bigfloat::lambert-w-k k-int (bigfloat:to x))))
+	       (t
+		(give-up)))))
+      (t
+       (give-up)))))
 
 (in-package "BIGFLOAT")
 
