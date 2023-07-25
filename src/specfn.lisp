@@ -834,6 +834,11 @@
   (twoargcheck expr)
   (let ((k (simpcheck (cadr expr) z))
         (x (simpcheck (caddr expr) z)))
+    (let ((k-truncate (truncate k)))
+      ;; If k is numerically an integer, make it an actual integer
+      ;; instead of, say, a float that is an integer.
+      (when (= k k-truncate)
+	  (setf k k-truncate)))
     (cond
      ;; Numerical evaluation for real or complex x
      ((and (integerp k) (complex-float-numerical-eval-p x))
