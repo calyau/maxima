@@ -794,20 +794,6 @@
 ;;; Generalized Lambert W function
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $generalized_lambert_w (k z)
-  (ftake* '%generalized_lambert_w k z))
-
-;;; Set properties to give full support to the parser and display
-#+nil
-(progn
-(defprop $generalized_lambert_w %generalized_lambert_w alias)
-(defprop $generalized_lambert_w %generalized_lambert_w verb)
-(defprop %generalized_lambert_w $generalized_lambert_w reversealias)
-(defprop %generalized_lambert_w $generalized_lambert_w noun))
-
-;;; lambert_w is a simplifying function
-(defprop %generalized_lambert_w simp-generalized-lambertw operators)
 
 ;;; Derivative of lambert_w
 (defprop %generalized_lambert_w
@@ -832,31 +818,11 @@
     ((mexpt) ((%generalized_lambert_w) k x) -1)))
   integral)
 
-#+nil
-(defun simp-generalized-lambertw (expr ignored z)
-  (declare (ignore ignored))
-  (twoargcheck expr)
-  (let ((k (simpcheck (cadr expr) z))
-        (x (simpcheck (caddr expr) z)))
-    (let* ((k-truncate (bigfloat:truncate (bigfloat:to k))))
-      ;; If k is numerically an integer, make it an actual integer
-      ;; instead of, say, a float that is an integer.
-      (when (bigfloat:= (bigfloat:to k) k-truncate)
-	  (setf k k-truncate)))
-    (cond
-     ;; Numerical evaluation for real or complex x
-     ((and (integerp k) (complex-float-numerical-eval-p x))
-       ;; x may be an integer.  eg "generalized_lambert_w(0,1),numer;"
-       (if (integerp x) 
-	   (to (bigfloat::lambert-w-k k (bigfloat:to ($float x))))
-	   (to (bigfloat::lambert-w-k k (bigfloat:to x)))))
-     ;; Numerical evaluation for real or complex bigfloat x
-     ((and (integerp k) (complex-bigfloat-numerical-eval-p x))
-      (to (bigfloat::lambert-w-k k (bigfloat:to x))))
-     (t (list '(%generalized_lambert_w simp) k x)))))
-
 (def-simplifier generalized_lambert_w (k x)
   (flet ((test-for-integer (arg)
+	   ;; The ARG must be some kind of number acceptable to
+	   ;; BIGFLOAT:TO.  If ARG is numerically equal to an integer,
+	   ;; return the integer value.  Otherwise, return NIL.
 	   (let* ((new-arg (bigfloat:to arg))
 		  (arg-truncate (bigfloat:truncate new-arg)))
 	     (when (bigfloat:= arg-truncate new-arg)
@@ -865,6 +831,7 @@
       ;; Numerical evaluation for real or complex x
       ((complex-float-numerical-eval-p k x)
        ;; x may be an integer.  eg "generalized_lambert_w(0,1),numer;"
+       ;; Also, we can only evaluate this if k is equal to an integer.
        (let ((k-int (test-for-integer k)))
 	 (cond (k-int
 		(if (integerp x) 
