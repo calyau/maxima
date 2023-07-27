@@ -86,9 +86,9 @@
       :depends-on ("xerfft" "xercon" "mcstf1"))
      (:file "costmi"
       :depends-on ("xerfft" "rfftmi"))
-     (:file "factor")
+     (:file "fftpack5_factor")
      (:file "mcfti1"
-      :depends-on ("tables" "factor"))
+      :depends-on ("tables" "fftpack5_factor"))
      (:file "mcsqb1"
       :depends-on ("rfftmb" "xerfft"))
      (:file "mcsqf1"
