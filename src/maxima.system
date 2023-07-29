@@ -796,5 +796,4 @@
 	     ;; build possible), but not compiled (which means
 	     ;; that with ECL or ABCL it won't end up in the final image)
 	     ;; => no out-of-tree build for ECL.
-	     (:file "share-subdirs")
 	     (:file "init-cl")))))
