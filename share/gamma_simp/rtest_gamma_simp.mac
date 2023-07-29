@@ -1,0 +1,575 @@
+
+/* 22 July 2022
+
+Tests adapted from SymPy; see https://github.com/sympy/sympy/blob/master/sympy/simplify/tests/test_gammasimp.py 
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  a. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+  b. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  c. Neither the name of SymPy nor the names of its contributors
+     may be used to endorse or promote products derived from this software
+     without specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+--------------------------------------------------------------------------------
+
+Patches that were taken from the Diofant project (https://github.com/diofant/diofant)
+are licensed as:
+
+Copyright (c) 2006-2018 SymPy Development Team,
+              2013-2022 Sergey B Kirpichev
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  a. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+  b. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  c. Neither the name of Diofant or SymPy nor the names of its contributors
+     may be used to endorse or promote products derived from this software
+     without specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+*/
+/* Let's attempt to limit the number of failures that are due to the value
+   of various option variables. */
+(load("gamma_simp"),%piargs : true, ratfac : true, domain : real,m1pbranch : false, 
+radsubstflag : false, reset(float_approx_equal_tolerance), 0);
+0$
+
+gamma_simp(gamma(x));
+gamma(x)$
+
+gamma_simp(gamma(x + 1)/x);
+gamma(x)$
+
+gamma_simp(gamma(x)/(x - 1));
+gamma(x - 1)$
+
+gamma_simp(x*gamma(x));
+gamma(x + 1)$
+
+gamma_simp((x + 1)*gamma(x + 1));
+gamma(x + 2)$
+
+gamma_simp(gamma(x + y)*(x + y));
+gamma(x + y + 1)$
+
+gamma_simp(x/gamma(x + 1));
+1/gamma(x)$
+
+gamma_simp((x + 1)^2/gamma(x + 2));
+(x + 1)/gamma(x + 1)$
+
+/* Another answer is x*(x+2)*gamma(x). Let's be happy with (x+2)*gamma(x+1) */
+gamma_simp(x*gamma(x) + gamma(x + 3)/(x + 2));
+(x+2)*gamma(x+1)$
+
+gamma_simp(gamma(2*x)*x);
+gamma(2*x + 1)/2$
+
+gamma_simp(gamma(2*x)/(x - 1/2));
+2*gamma(2*x - 1)$
+
+gamma_simp(gamma(x)*gamma(1 - x));
+%pi/sin(%pi*x)$
+
+gamma_simp(gamma(x)*gamma(-x));
+-(%pi/(x*sin(%pi*x)))$
+
+gamma_simp(1/gamma(x + 3)/gamma(1 - x));
+sin(%pi*x)/(%pi*x^3+3*%pi*x^2+2*%pi*x)$
+
+gamma_simp((n + 2)!);
+(n+2)!$
+
+gamma_simp(makegamma((n+2)!));
+gamma(n+3)$
+
+gamma_simp(binomial(n, k));
+(binomial(n,k))$
+
+gamma_simp(makegamma(binomial(n, k)));
+gamma(n+1)/(gamma(k+1)*gamma(n-k+1))$
+
+gamma_simp(gamma(x)*gamma(x + 1/2)*gamma(y)/gamma(x + y));
+2^(-2*x + 1)*sqrt(%pi)*gamma(2*x)*gamma(y)/gamma(x + y)$
+
+gamma_simp(1/gamma(x)/gamma(x - 1/3)/gamma(x + 1/3)); 
+3^(3*x - 3/2)/(2*%pi*gamma(3*x - 1))$
+
+gamma_simp(gamma(1/2 + x/2)*gamma(1 + x/2)/gamma(1 + x)/sqrt(%pi)*2**x);
+1$
+
+gamma_simp(gamma(-1/4)*gamma(-3/4));
+16*sqrt(2)*%pi/3$
+
+gamma_simp(gamma(2*x)/gamma(x));
+(2^(2*x-1)*gamma((2*x+1)/2))/sqrt(%pi)$
+
+(e : (-gamma(k)*gamma(k + 2) + gamma(k + 1)^2)/gamma(k)^2,0);
+0$
+
+gamma_simp(e);
+-k$
+
+gamma_simp(1/e);
+-1/k$
+
+(e : (gamma(x) + gamma(x + 1))/gamma(x),0);
+0$
+
+gamma_simp(e);
+x + 1$
+
+gamma_simp(1/e);
+1/(x + 1)$
+
+(e : (gamma(x) + gamma(x + 2))*(gamma(x - 1) + gamma(x))/gamma(x),0);
+0$
+
+/*Apparently, SymPy simplifies this to (x^2 + x + 1)*gamma(x + 1)/(x - 1).
+But Maxima gives gamma(x-1)*x*(x^2+x+1). I think Maxima's answer is better. 
+Guess: the difference is due to a fluke in the order of the matching.*/
+gamma_simp(e);
+gamma(x-1)*x*(x^2+x+1)$
+
+(e : (-gamma(k)*gamma(k + 2) + gamma(k + 1)^2)/gamma(k)^2,0);
+0$
+
+gamma_simp(e^2);
+k^2$
+
+gamma_simp(e^2/gamma(k + 1));
+k/gamma(k)$
+
+gamma_simp(gamma(2*k)/gamma(k)*gamma(k + 1/2+1/3)*gamma(k + 1/2+2/3));
+sqrt(%pi)*3^(-3*k-1)*2^(2*k)*gamma((6*k+3)/2)$
+
+gamma_simp(makegamma((x + 1)*factorial(x)/gamma(y)));
+gamma(x + 2)/gamma(y)$
+
+gamma_simp(pochhammer(x + n, k)*binomial(n, k));
+pochhammer(x + n, k)*binomial(n, k)$
+
+/* SymPy apparently gives a split rule splitting on the sign of n+x. */
+gamma_simp(makegamma(pochhammer(x + n, k)*binomial(n, k)));
+gamma(n + 1)*gamma(k + n + x)/(gamma(k + 1)*gamma(n + x)*gamma(-k + n + 1))$
+
+/* I'm lost here:
+    A, B = symbols('A B', commutative=False)
+    assert gamma_simp(e*B*A) == gamma_simp(e)*B*A
+*/
+
+/* The setting of algebraic alters the solution a bit */
+block([algebraic : false], gamma_simp(gamma(2*k)/gamma(k)*gamma(-k - 1/2)));
+-((%pi*2^(2*k))/((2*sqrt(%pi)*k+sqrt(%pi))*sin((2*%pi*k+%pi)/2)))$
+
+gamma_simp(gamma(k)*gamma(k + 1/3)*gamma(k + 2/3)/gamma(k*3/2));
+sqrt(%pi)*3^(1/2-3*k)*2^(3*k)*gamma((3*k+1)/2)$
+
+gamma_simp(gamma(1/4)/gamma(5/4));
+4$
+
+gamma_simp(binomial(n + 2, k + 1/2));
+binomial(n + 2, k + 1/2)$
+
+gamma_simp(makegamma(binomial(n + 2, k + 1/2)));
+gamma(n+3)/(gamma((2*k+3)/2)*gamma((2*n-2*k+5)/2))$
+
+gamma_simp(binomial(n + 2, k + 2.0));
+binomial(n + 2, k + 2.0)$
+
+/* The function ratsubst does not respect the value of keepfloat--this
+   is its documented behavior. The gamma_simp code is a heavy user of
+   ratsubst--fixing this bug likely isn't worthwhile. */
+gamma_simp(makegamma(binomial(n + 2, k + 2.0)));
+gamma(n + 3)/(gamma(k + 3.0)*gamma(-k + n + 1))$
+
+gamma_simp(binomial(0, x));
+binomial(0, x)$
+
+gamma_simp(makegamma(binomial(0, x)));
+sin(%pi*x)/(%pi*x)$
+
+(e : gamma(n + 1/3)*gamma(n + 2/3),0);
+0$
+
+gamma_simp(e);
+gamma((3*n+1)/3)*gamma((3*n+2)/3)$
+
+gamma_simp(gamma(4*n + 1/2)/gamma(2*n - 3/4));
+((8*n-3)*2^(4*n-5/2)*gamma((8*n+3)/4))/sqrt(%pi)$
+
+(e : gamma(exp(i)),0);
+0$
+
+gamma_simp(e);
+gamma(exp(i))$
+
+(e : gamma(m + 3),0);
+0$
+
+gamma_simp(e);
+ gamma(m + 3)$
+
+(e : gamma(m + 1)/(gamma(i + 1)*gamma(-i + m + 1)),0);
+0$
+
+gamma_simp(e);
+gamma(m + 1)/(gamma(i + 1)*gamma(-i + m + 1))$
+
+(declare(p,integer), assume(p>0),0);
+0$
+
+gamma_simp(gamma(-p + 4));
+gamma(-p + 4)$
+
+/* End of tests from SymPy*/
+
+gamma_simp(2/3);
+2/3$
+
+gamma_simp(-2/3);
+-2/3$
+
+gamma_simp(1.3);
+1.3$
+
+gamma_simp(1.3b9);
+1.3b9$
+
+gamma_simp([%pi,%e,%phi,minf,-inf,inf]);
+[%pi,%e,%phi,minf,-inf,inf]$
+
+gamma_simp(x+1/2);
+x+1/2$
+
+gamma_simp(sin(a+y)-z);
+sin(a+y)-z$
+
+(X : gamma_simp(x*gamma(x)) - x*gamma(x),0);
+0$
+
+makelist(subst(x=k/5,X),k,1,16);
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]$
+
+gamma_simp(%pi*x*gamma(x));
+%pi*gamma(x+1)$
+
+gamma_simp((a+1/2)*gamma(a+1/2));
+gamma((2*a+3)/2)$
+
+gamma_simp((2*a+1)*gamma(a+1/2))/2;
+gamma((2*a+3)/2)$
+
+gamma_simp(7*x*gamma(x));
+7*gamma(x+1)$
+
+gamma_simp(32*x^2*gamma(x));
+32*x*gamma(x+1)$
+
+gamma_simp(32*x^2*gamma(x) - 32*x*gamma(x+1));
+0$
+
+gamma_simp(x^2*gamma(x)^2/8 - gamma(x+1)^2/8);
+0$
+
+gamma_simp(gamma(2*x)/gamma(x)- (2^(2*x -1) * gamma(x+1/2) / sqrt(%pi)));
+0$
+
+gamma_simp(sqrt(%pi)*2^(2*x+2)*gamma(x)*gamma(x+1)*gamma((2*x+3)/2)-2*%pi*gamma(x)*gamma(2*x+2));
+0$
+
+gamma_simp(sqrt(%pi)*2^(2*x)*gamma(x)*gamma(x+1)*gamma((2*x+1)/2)-2*%pi*gamma(2*x)*gamma(x+1));
+0$
+
+/*See: #2118 scanmap(minfactorial,a!) infinite loop. This bug has been fixed.  */
+scanmap(factorial_simp,a!) ;
+a!$
+
+/*See: #920 minfactorial doesn't look inside "!". When factorial_expand is true,
+the factorial code simplifies the input to n!. OK, but minfactorial cannot
+do this simplify this to n! when factorial_expand is false.  */
+block([factorial_expand : false],factorial_simp((n!/(n-1)!)!));
+n!$
+
+/* See bug #1. */
+gamma_simp(x/gamma(x+1));
+1/gamma(x)$
+
+gamma_simp(%pi*x*(x+1/2)*(x+3/2)*gamma((2*x+1)/2));
+%pi*x*gamma((2*x+5)/2)$
+
+gamma_simp(%pi*x*(x+1/2)*(x+3/2)*gamma(x+1/2));
+%pi*x*gamma((2*x+5)/2)$
+
+gamma_simp(%pi*x*(x+1/28)*(x+3/2)*gamma(x+1/2));
+(%pi*x*(2*x+3)*(28*x+1)*gamma((2*x+1)/2))/56$
+
+gamma_simp(x/gamma(x+1) - 1/gamma(x));
+0$
+
+gamma_simp(gamma(2*x+1)/2 - x*gamma(2*x));
+0$
+
+gamma_simp((2^(2*x-1)*gamma(x+1/2))/sqrt(%pi) - gamma(2*x)/gamma(x));
+0$
+
+gamma_simp((gamma(x)*gamma(2*(x+1)))/(gamma(2*x)*gamma(x+1)));
+2*(2*x+1)$
+
+gamma_simp(gamma(x^2)/(x^2-1));
+gamma(x^2-1)$
+
+gamma_simp(gamma(2*x)/(2*x-1));
+gamma(2*x-1)$
+
+gamma_simp(gamma(2*x)/(x-1/2));
+2*gamma(2*x-1)$
+
+gamma_simp(gamma(1/2 + %i)*gamma(1/2 - %i));
+%pi/cosh(%pi)$
+
+gamma_simp(gamma(1/2 + %i*y)*gamma(1/2 - %i*y));
+%pi/cosh(%pi*y)$
+
+gamma_simp(gamma(%i*y)*gamma(- %i*y));
+%pi/(y*sinh(%pi*y))$
+
+(f(z,b,n) := product(gamma(z + (b+k)/n),k,0,n-1),0);
+0$
+
+gamma_simp(f(x,-1,2));
+sqrt(%pi)*2^(2-2*x)*gamma(2*x-1)$
+
+gamma_simp(f(x,1/8,2));
+sqrt(%pi)*2^(7/8-2*x)*gamma((16*x+1)/8)$
+
+gamma_simp(f(x,1/8,12));
+%pi^(11/2)*2^(25/4-24*x)*3^(3/8-12*x)*gamma((96*x+1)/8)$
+
+float_approx_equal(subst(x=2.3, gamma_simp(f(x,1/8,2))) , subst(x=2.3, f(x,1/8,2)));
+true$
+
+float_approx_equal(subst(x=2.3, gamma_simp(f(x,1/8,4))) , subst(x=2.3, f(x,1/8,4)));
+true$
+
+float_approx_equal(subst(x=1.3, gamma_simp(f(x,2,6))) , subst(x=1.3, f(x,2,6)));
+true$
+
+/* Bug #2:  misses simplification for gamma(1/2-x) * gamma(1/2+x) #2 */
+gamma_simp(gamma(1/2-x) * gamma(1/2+x));
+-(%pi/sin((2*%pi*x-%pi)/2))$
+
+gamma_simp(1/(x*gamma(x)));
+1/gamma(x+1)$
+
+/* Bug #5:  gamma_simp(gamma(%i * a)*gamma(-%i*a)) #5 */
+gamma_simp(gamma(%i * a)*gamma(-%i*a));
+%pi/(a*sinh(%pi*a))$
+
+/* See https://mathematica.stackexchange.com/questions/124546/to-what-extent-can-one-simplify-these-products-of-gamma-functions 
+The denominator of the result vanishes when n=-1 and when n=-3/2. But the input
+isn't defined for either n=-1 or n=-3/2, so I say this is OK.*/
+
+factorial_simp((1/10)*(23 + 10*n)*(1 + n)!*(2 + n)!*(1 + 2*n)!*(3 + 2*n)!*((1/10)*(7 + 10*n))!*
+  ((1/10)*(9 + 10*n))!*((1/10)*(11 + 10*n))!*((1/10)*(13 + 10*n))!*((1/10)*(17 + 10*n))!*
+  ((1/10)*(19 + 10*n))!*((1/10)*(21 + 10*n))!);
+  %pi*(n+1)^3*(n+2)*(10*n+23)*5^(-5*n-9)*2^(4*n+5)*n!^4*((2*n+3)/2-1)!*
+  ((10*n+17)/2-1)!*((10*n+27)/10-1)!*((10*n+29)/10-1)!*((10*n+31)/10-1)!$
+
+/* This test takes a long time. But it did reveal a bug in gamma_simp (that has
+   been fixed). So let's keep it.*/
+  (xxx : gamma(1/2 + k)*gamma(7/10 + k)*gamma(9/10 + k)*gamma(1 + k)^6*
+  gamma(11/10 + k)*gamma(13/10 + k)*gamma(3/2 + k)*gamma(17/10 + k)*
+  gamma(19/10 + k)*gamma(21/10 + k)*gamma(23/10 + k)*gamma(5/2 + k)*
+  gamma(13/5 + k)*gamma(27/10 + k)*gamma(29/10 + k)*gamma(3 + k)*
+  gamma(31/10 + k)*gamma(33/10 + k)*gamma(7/2 + k)*gamma(18/5 + k)*
+  gamma(37/10 + k)*gamma(39/10 + k)*gamma(41/10 + k)*gamma(43/10 + k)*
+  gamma(9/2 + k)*gamma(23/5 + k)*gamma(47/10 + k)*gamma(49/10 + k)*
+  gamma(51/10 + k)*gamma(53/10 + k)*gamma(28/5 + k), yyy : gamma_simp(xxx),0);
+  0$
+
+factor(yyy);
+(%pi^10*(k+1)*(k+2)*(2*k+1)^4*(2*k+3)^3*(2*k+5)^2*(2*k+7)*
+(5*k+13)^3*(5*k+18)^2*(5*k+23)*(10*k+7)^4*(10*k+9)^4*(10*k+11)^4*
+(10*k+13)^4*(10*k+17)^3*(10*k+19)^3*(10*k+21)^3*(10*k+23)^3*(10*k+27)^2*
+(10*k+29)^2*(10*k+31)^2*(10*k+33)^2*(10*k+37)*(10*k+39)*(10*k+41)*(10*k+43)*
+5^(-25*k-56)*gamma(k+1)^7*gamma((5*(2*k+1))/2)^5*gamma((5*k+13)/5)^4)/
+(1099511627776)$
+
+trigrat(gamma_simp(subst(k=1,xxx/yyy)));
+1$
+
+gamma_simp(subst(k=3/8,xxx/yyy));
+1$
+
+block([float_approx_equal_tolerance : float(1/2^48)], 
+   float_approx_equal(subst(k=3/8,xxx), subst(k=3/8,yyy)));
+true$
+
+
+/*See: https://math.stackexchange.com/questions/237775/how-is-this-expression-with-the-gamma-function-simplify */
+gamma_simp(gamma(a+b)*gamma(a+1)/(gamma(a)*gamma(a+b+1)));
+a/(b+a)$
+
+/*See: https://mathematica.stackexchange.com/questions/164504/simplify-fraction-of-gamma-functions  */
+gamma_simp(sqrt(gamma(2*n)/gamma(2*n+3)));
+1/(2*sqrt(n*(2*n^2+3*n+1)))$
+
+/*See: https://resources.wolframcloud.com/FunctionRepository/resources/GammaSimplify  */
+gamma_simp(gamma(z-1)+gamma(z));
+gamma(z-1)*z$
+
+/* From rtest_gamma */
+minfactorial(factorial(factorial(n)/factorial(n-1)));
+factorial(factorial(n)/factorial(n-1));
+
+/* From rtest10 */
+minfactorial(n!/(n+1)!);
+1/(n+1)$
+
+/* pochhammer tests */
+
+(cntx : newcontext(), activate(cntx), declare(m,integer),declare(k,integer), declare(n,integer),declare(N,integer), 0);
+0$
+
+gamma_simp(makegamma(pochhammer(a,n) = (a+n-1)* pochhammer(a-1,n)/(a-1)));
+gamma(n+a)/gamma(a)=gamma(n+a)/gamma(a)$
+
+gamma_simp(makegamma(pochhammer(a,n) = (a/(a+n))* pochhammer(a+1,n)));
+gamma(n+a)/gamma(a)=gamma(n+a)/gamma(a)$
+
+gamma_simp(makegamma(pochhammer(a,n) = (a + n-1)* pochhammer(a,n-1)));
+gamma(n+a)/gamma(a)=gamma(n+a)/gamma(a)$
+
+gamma_simp(makegamma(pochhammer(a,n) = pochhammer(a,n+1)/(a+n)));
+gamma(n+a)/gamma(a)=gamma(n+a)/gamma(a)$
+
+/* DLMF: http://dlmf.nist.gov/5.2.E7 . A better answer is 
+   pochhammer(a,2*n)=pochhammer(a,2*n)$*/
+gamma_simp(makegamma(pochhammer(a,2*n) = 2^(2*n) * pochhammer(a/2,n) * pochhammer((a+1)/2,n)));
+gamma(2*n+a)/gamma(a)=gamma(2*n+a)/gamma(a)$
+
+/* DLMF: http://dlmf.nist.gov/5.2.E8 . A better answer is 
+ pochhammer(a,2*n+1)=pochhammer(a,2*n+1)$ */
+gamma_simp(makegamma(pochhammer(a,2*n+1) = 2^(2*n+1) * pochhammer(a/2,n+1) * pochhammer((a+1)/2,n)));
+gamma(2*n+a+1)/gamma(a)=gamma(2*n+a+1)/gamma(a)$
+
+/* See https://math.stackexchange.com/questions/656505/an-identity-involving-the-pochhammer-symbol 
+Also see bug: gamma_simp not idempotent #6 */
+
+(xxx : (6*x)!/(3*x)! = ( 1728^x * pochhammer(1/6,x)*pochhammer(1/2,x) * pochhammer(5/6,x)),0);
+0$
+
+gamma_simp(makegamma(xxx));
+(2^(6*x)*gamma((6*x+1)/2))/sqrt(%pi)=(1728^x*gamma((6*x+1)/2))/(sqrt(%pi)*3^(3*x))$
+
+is(gamma_simp(makegamma(xxx)) = gamma_simp(gamma_simp(makegamma(xxx))));
+true$
+
+gamma_simp(makegamma((6*n)!/(3*n)! =( 1728^n * pochhammer(1/6,n)*pochhammer(1/2,n) 
+* pochhammer(5/6,n))));
+(2^(6*n)*gamma((6*n+1)/2))/sqrt(%pi)=(1728^n*gamma((6*n+1)/2))/(sqrt(%pi)*3^(3*n))$
+
+/* end pochhammer tests */
+
+/* binomial coefficient identities  */
+gamma_simp(makegamma(binomial(n,k) - (n/k)* binomial(n-1,k-1)));
+0$
+
+gamma_simp(makegamma(k*binomial(n,k)  = n * binomial(n-1,k-1)));
+gamma(n+1)/(gamma(k)*gamma(n-k+1))=gamma(n+1)/(gamma(k)*gamma(n-k+1))$
+
+gamma_simp(gamma(1/2 + %i*3/8)*gamma(1/2-%i*3/8));
+%pi/cosh((3*%pi)/8)$
+
+/* Tests from Ray Rodgers */
+is(gamma_simp(makegamma(pochhammer(a+n,n) = pochhammer(a,2*n)/pochhammer(a,n))));
+true$
+
+is(gamma_simp(makegamma(pochhammer(k*n+a,n) = pochhammer(a,(k+1)*n)/pochhammer(a,k*n))));
+true$
+
+/* gamma_simp doesn't yield a canonical form for this case, but it does 
+simplify the difference to zero.*/
+
+featurep(n,'integer);
+true$
+
+trigexpand(expand(gamma_simp(makegamma(pochhammer(a-n,n) - pochhammer(1-a,n)*(-1)^n))));
+0$
+
+/* Same story for this case. But this case needs a final expand--OK*/
+trigexpand(expand(gamma_simp(makegamma( pochhammer(a-k*n,n) - (-1)^n*pochhammer((1-a),k*n)/pochhammer(1-a,(k-1)*n)))));
+0$
+
+trigexpand(expand(gamma_simp(makegamma(1/pochhammer(a-n,n)  - (-1)^n/pochhammer(1-a,n)))));
+0$
+
+/* and more tests */
+
+factorial_simp((1100*(23/10)!*(27/10)!*(29/10)!*(31/10)!)/(8091*(17/10)!*(19/10)!*(21/10)!*(33/10)!));
+1$
+
+(xxx : gamma(4*n+1/2)/gamma(2*n-3/4),0);
+0$
+
+float_approx_equal(subst(n=1.07,xxx), subst(n=1.07,gamma_simp(xxx)));
+true$
+
+gamma_simp(xxx - gamma_simp(xxx));
+0$
+
+/* Clean up */
+(remvalue(X,e,xxx,yyy),killcontext(cntx), remvalue(cntx), 0);
+0$
+
+/* This test is fragile. But it does check if the gamma_simp code introduces
+any extraneous global variables */
+values;
+[nextlayerfactor, facsum_combine]$
+
+/* Did gamma_simp introduce any new contexts?*/
+contexts;
+[initial,global]$
+
+(reset(radsubstflag,ratfac,domain,m1pbranch,%piargs),0);
+0$
+

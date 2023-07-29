@@ -1,0 +1,61 @@
+
+/* Author: Barton Willis, copyright 2022
+
+Maxima code for simplifying expressions that involve sums of psi functions.
+
+See LICENSE.md for licensing information.*/
+
+/* We need the function gatherargs--it's in "opsubst." */
+load("opsubst");
+load("gamma_simp");
+load("isequal.lisp");
+
+/* This function is inflag sensitive. */
+mtimesp(e) := not mapatom(e) and part(e,0) = "*";
+mplusp(e) := not mapatom(e) and part(e,0) = "+";
+
+mysubst(new,old,e) := block([inflag : true, q, prederror : false,listconstvars : false],
+ 
+  if mapatom(e) then (
+	print(is(equal(e,old))),
+	if equal(e,old)=true then new else e)
+
+  elseif isequal(e,old) then new 
+  
+  elseif mtimesp(e) then (
+	q : apply('divide, append([e, old], listofvars(old))),
+	if equal(second(q),0) then (
+		new*mysubst(new,old,first(q)))
+	 else e)
+
+  elseif mplusp(e) then (
+	q : apply('divide, append([e, old], listofvars(old))),
+	if lfreeof(listofvars(old),second(q)) then (
+		first(q)*new + second(q))
+	else e)
+  else map(lambda([s], mysubst(new, old, s)), e));
+
+make_psi_sum_id(g) := buildq([g,x : gensym(), k : gensym(),n : gensym()],
+    lambda([x,n], -g(x) + sum(1/(x+k),k,0,n-1) = g(x+n)));
+
+psi_simp(e) := block([a,g : gensym(),n,fn,id],
+	  e : opsubst(g, psi[0],e),
+	  a : map('first, gatherargs(e,g)),
+	  for ak in a do (
+	    for bk in a do (
+	        n : ratsimp(ak-bk),
+			/* see http://dlmf.nist.gov/5.5.E2 */
+	        if featurep(n,'integer) and n > 0 then (
+                fn : make_psi_sum_id(g),
+                id : fn(bk,n),
+	            e : mysubst(lhs(id),rhs(id), e)),
+
+			/* see http://dlmf.nist.gov/5.5.E8 */
+			if featurep(2*n,'integer) and n > 0 then (
+				e : mysubst(2*log(2) + 2*g(ak), g(ak)+g(bk),e)),
+			n : ratsimp(ak+bk),
+
+			/* see http://dlmf.nist.gov/5.5.E4 */
+			if featurep(n,'integer) and n = 1 and gamma_simp_complexity(ak) < gamma_simp_complexity(bk) then (
+				e : mysubst(g(ak)+%pi/tan(%pi*ak), g(bk),e)))),
+	  opsubst(psi[0],g, e));

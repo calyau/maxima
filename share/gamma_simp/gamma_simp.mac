@@ -1,0 +1,192 @@
+/* Author: Barton Willis, copyright 2022
+
+Maxima code for simplifying expressions that involve products of
+gamma functions.
+
+See LICENSE.md for licensing information.
+*/
+ 
+ /* The CL translator suggests adding the following: */
+ eval_when(translate,declare_translated(gamma_arg_increase,gamma_arg_decrease,
+         gamma_product_simp,homogenize_gamma,gamma_magnitude_simp))$
+
+/* Load opsubst so we can use gatherargs. */
+ load("opsubst");
+
+/* This function is inflag sensitive. */
+mtimesp(e) := not mapatom(e) and part(e,0) = "*";
+
+  /* Return a lambda form that generates the Gauss gamma function 
+ product identity; see http://dlmf.nist.gov/5.5.E6 */
+ make_gamma_product_id() := buildq([x : gensym(), k : gensym(),n : gensym()],
+    lambda([x,n], prod(gamma(x+k/n),k,0,n-1) = gamma(n*x)/((2*%pi)^((1-n)/2)*n^(n*x-1/2))));
+
+/* Apply ratsimp only to the arguments of gamma. Doing this is an effort to allow
+   ratsubst to make more matches to gamma expressions without dispatching 
+   ratsimp on the entire expression.*/
+ratsimp_gamma_args(e) := block([keepfloat : true],
+  if mapatom(e) then e
+  elseif inpart(e,0) = 'gamma then gamma(ratsimp(first(e)))
+  else map('ratsimp_gamma_args, e));
+
+ /* The functions gamma_simp and factorial_simp are the only two user level 
+functions in this file. 
+
+The function ratsubst does not respect the value of keepfloat--this
+is its documented behavior. The gamma_simp code is a heavy user of
+ratsubst--fixing this bugs that are a result of ratsubst converting
+floats to rationals likely isn't worthwhile. The local assignments
+keepfloat : true don't prevent all float to rational conversions.
+
+When radsubstflag is true, apparently ratsubst sometimes introduces some 
+complex exponentials--as far as I know, the answers are OK, just messy.
+Instead of limiting a users freedom by locally setting radsubstflag to
+false, I'm going to make that setting in the rtest_gamma_simp.*/
+
+gamma_simp(e) := block([prederror : false, opsubst : true,keepfloat : true, 
+   inflag : true],
+  e : ratsimp_gamma_args(e),
+  e : homogenize_gamma(e),
+  e : subst("*" = lambda([[q]], gamma_magnitude_simp(xreduce("*",q))),e),
+  e : gamma_product_simp(e),
+  e : facsum_gamma_terms(e),
+  e : gamma_arg_increase(gamma_arg_decrease(e)));
+
+/* This function simplifies a product of two or more gamma functions. */
+ gamma_product_simp(e) := block([a,N,id,ee,dn,fn,keepfloat : true],
+    ee : e,    
+    a : map('first, gatherargs(e,'gamma)),
+    N : length(a),
+
+   /* Do gamma(X) gamma(n-X) ==> pochhammer(1-X,n-1) %pi/sin(%pi X), when
+       n is a declared integer and X isn't a declared integer. */
+    for ak in a do (
+        for bk in a do (
+        dn : ratsimp(ak+bk),
+        if featurep(dn,'integer) and dn >= 0 and (not featurep(ak,'integer)) then (
+            e : ratsubst(pochhammer(1-ak, dn-1) *%pi/(sin(%pi*ak)),
+                gamma(ak)*gamma(bk),e)))),
+    
+    /* Do prod(gamma(x+k/n),k,0,n-1) ==> gamma(n*x)/((2*%pi)^((1-n)/2)*n^(n*x-1/2))
+    */
+    fn : make_gamma_product_id(),
+    for ak in a do (
+       for n : 2 thru N do (
+          id : ratsimp(fn(ak,n)),
+          e : ratsubst(rhs(id), lhs(id), e))),
+  
+   /* Do gamma(2*x+n)/gamma(x) = pochhammer(2*x,n)*gamma(x+1/2)/(sqrt(%pi)*2^(1-2x)) 
+      I think we only want to do this when n is an explict, not declared integer. 
+      Otherwise pochhammer(2*x,n)*gamma(x+1/2) is effectively a product of two
+      gamma functions, and that's not really a simplification. So we'll test
+      for an integer using integerp, not featurep.*/
+    for ak in a do (
+       for bk in a do (
+         dn : ratsimp(ak-2*bk),
+         if integerp(dn) then (
+            e : ratsubst(pochhammer(2*bk,dn)*gamma(bk+1/2)/(sqrt(%pi)*2^(1-2*bk)),
+                         gamma(ak)/gamma(bk),e)))),
+    
+    /* When the expression has changed, recurse; otherwise return e.*/
+    ee : factor(ee),   
+    if is(factor(e) # ee) then gamma_product_simp(homogenize_gamma(e)) else e)$
+
+/* When n is a declared positive integer and the expression e involves both
+   gamma(X+n) and gamma(X), do gamma(X+n) ==> pochhammer(X,n) gamma(X).
+   The expansion of the pochhammer term is controlled by the option variable
+   pochhammer_max_index (default 100). If the expression e changes after finishing
+   the double loop, recurse.
+
+   Each time a match to gamma(X+n) & gamma(X) is detected, dispatch facsum on the
+   result. Unfortunately, subsequent processing sometimes expands the factorization
+   done by facsum.*/
+
+homogenize_gamma(e) := block([a,ee : e, keepfloat : true],
+   a : map('first, gatherargs(e,'gamma)),
+   for ak in a do (
+      for bk in a do (
+         if featurep(ratsimp(ak-bk),'integer) and ak-bk > 0 then (
+            e : ratsubst(pochhammer(bk,ak-bk)*gamma(bk), gamma(ak),e),
+            e : facsum(e,gamma(bk))))),
+      if is(e # ee) then homogenize_gamma(e) else e)$ 
+
+/* See http://dlmf.nist.gov/5.4.E3 and http://dlmf.nist.gov/5.4.E4: 
+    gamma(1/2 + %i*y)*gamma(1/2-%i*y) = %pi/cosh(%pi*y) 
+    gamma(%iy)*gamma(-%i*y) = %pi/(y * (sinh(%pi * y))) */
+    
+gamma_magnitude_simp(e) :=  block([a, ee : e, y],
+   a : map('first, gatherargs(e,'gamma)),
+   for ak in a do (
+      for bk in a do (
+         if equal(ak+bk,1) and equal(realpart(ak),1/2) then (
+            e : ratsubst((%pi/cosh(%pi*imagpart(ak))), gamma(ak)*gamma(bk),e)),
+         
+         if equal(ak,-bk) and equal(realpart(ak),0) and equal(realpart(bk),0) then (
+            y : imagpart(ak),
+            e : ratsubst(%pi/(y * (sinh(%pi * y))), gamma(ak)*gamma(bk),e)))),        
+      if is(e # ee) then gamma_magnitude_simp(e) else e)$
+
+/* Apply facsum to e with respect to all gamma terms. */
+facsum_gamma_terms(e) := block([a],
+  a : map('first, gatherargs(e,'gamma)),
+  a : map('gamma, a),
+  if emptyp(a) then e else (
+     buildq([z : a], lambda([x], facsum(x,splice(z))))(e)));
+
+linearp(e,x) :=  
+  polynomialp(e,[x], lambda([q],freeof(x,q)), lambda([q], is(q<=1))) and 
+  lopow(e,x)=1;
+
+/* Do X*gamma(X) ==> gamma(X+1). Repeat until there are no more such terms. 
+   See http://dlmf.nist.gov/5.5.E1 
+   
+   To match to X*gamma(X), we divide by the numerical coefficient of X. 
+   This allows matchings to, for example, x*gamma(2*x).  The linearity check is 
+   supposed to prevent substitutions such as (x+5)*gamma(x) ==> gamma(x+1)+5*gamma(x). 
+   This result isn't wrong, but it's not what we want, I think. */
+
+gamma_arg_increase(e) := block([a, ee : e, es, g : gensym(),nf,inflag : false],
+  if mapatom(e) then e
+  elseif mtimesp(e) then (
+     a : map('first, gatherargs(e,'gamma)),
+     for ak in a do (
+        nf : if numberp(ak) then 1 else numfactor(ak),
+        es : ratsubst(g/nf, ratsimp(ak/nf)*gamma(ak),e),   
+        if linearp(es,g) then (
+         e : ratsubst(gamma(ratsimp(ak+1)),g,es),
+         e : factor(e))),
+      if is(e # ee) then gamma_arg_increase(e) else e)
+  else map('gamma_arg_increase, e)); 
+ 
+
+/* A measure of the complexity of an expression.*/
+gamma_simp_complexity(e) := block([],
+ if mapatom(e) then 1 else xreduce("+", map('gamma_simp_complexity, args(e))));
+
+/* Do gamma(X)/(X-1) ==> gamma(X-1). Repeat until there are no more
+   such terms. */
+
+gamma_arg_decrease(e) := block([a, ee : e,ea],
+  if mapatom(e) then e
+  elseif mtimesp(e) then (
+     a : map('first, gatherargs(e,'gamma)),
+     for ak in a do (
+        ea : ratsubst((ak-1)*gamma(ak-1), gamma(ak),e),
+        ea : factor(ea),
+        if gamma_simp_complexity(ea) <= gamma_simp_complexity(e) then (
+         e : ea)),      
+      if is(e # ee) then gamma_arg_decrease(e) else e)
+  else map('gamma_arg_decrease, e)); 
+
+/* Convert factorials to gamma functions, dispatch gamma_simp, and finally
+   convert gamma functions back to factorial form. The gamma functions that
+   are in the input are protected from participating the the simplification process.
+   We do this by substituting a gensym for gamma. After converting back to factorials, 
+   this substitution is reverted.*/         
+factorial_simp(e) := block([g : gensym(),opsubst : true, keepfloat : true],
+  e : subst('gamma = lambda([x], g(x)),e),
+  e : subst("!" = lambda([q], gamma(q+1)),e),
+  e : gamma_simp(e),
+  e : makefact(e),
+  subst(g = lambda([x], gamma(x)),e));
+
