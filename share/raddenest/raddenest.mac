@@ -1,0 +1,1060 @@
+/* vim: set ft=maxima softtabstop=4 shiftwidth=4 expandtab: */
+
+/*
+Most of the code in this Maxima package is a rather direct port of Sympy's
+denesting code:
+http://docs.sympy.org/1.0/_modules/sympy/simplify/sqrtdenest.html
+http://docs.sympy.org/1.0/_modules/sympy/simplify/radsimp.html
+The code is licensed under the GPL-compatible "3-clause BSD license".
+*/
+
+/**************************************************************************
+Copyright (c) 2006-2017 SymPy Development Team (original code)
+Copyright (c) 2017 Gilles Schintgen (Maxima port and extensions)
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  a. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+  b. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  c. Neither the name of SymPy nor the names of its contributors
+     may be used to endorse or promote products derived from this software
+     without specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+**************************************************************************/
+
+/*
+RADDENEST
+
+This package denests different classes of expressions with nested
+roots. Most of the algorithms are specific to square roots, but some
+handle higher roots.
+
+The implemented algorithms are documented in the following articles:
+
+[1] Allan Borodin, Ronald Fagin, John E. Hopcroft, and Martin Tompa:
+    "Decreasing the Nesting Depth of Expressions Involving Square Roots"
+    J. Symbolic Computation (1985) 1, 169-188
+    http://researcher.watson.ibm.com/researcher/files/us-fagin/symb85.pdf
+
+[2] David J. Jeffrey and Albert D. Rich:
+    "Symplifying Square Roots of Square Roots by Denesting"
+    in "Computer Algebra Systems: A Practical Guide",
+    M.J. Wester, Ed., Wiley 1999
+    http://www.cybertester.com/data/denest.pdf
+
+[3] Thomas J. Osler:
+    "Cardan Polynomials and the Reduction of Radicals"
+    Mathematics Magazine 74(1), Feb. 2001
+    http://www.rowan.edu/open/depts/math/osler/mathmag026-032.pdf
+
+[4] Mascha Honsbeek:
+    "Radical Extensions and Galois Groups", Chapter 3
+    (PhD Thesis)
+    http://www.math.kun.nl/~bosma/students/honsbeek/M_Honsbeek_thesis.pdf
+
+As such, the raddenest function should be able to denest some or all
+of the denestable expressions of the following types:
+
+* square roots of sums of (multiple) unnested square roots
+    (_sqrtdenest_rec)
+
+* expressions of the form sqrt(a + b*sqrt(r)) that denest using square
+    roots can be denested numerically or symbolically
+    (_sqrt_symbolic_denest)
+
+* expressions of the form sqrt(a + b*sqrt(r)) where a, b, and r are
+    linear combinations of square roots of positive rationals
+    (_sqrt_biquadratic_denest)
+
+* expressions of the form sqrt(a + b*sqrt(r)) that can be denested
+    using fourth roots
+
+* n-th roots of a+b*sqrt(r)
+    (_rad_denest_cardano)
+
+* square roots of a sum of two cube roots
+    (_rad_denest_ramanujan)
+
+
+INTERPRETATION OF RADICAL EXPRESSIONS
+
+In general a^(1/n) has n different values.
+
+However Maxima always simplifies such numeric expressions for positive
+real 'a' and for negative real 'a' in case of a square root:
+    sqrt(-4)=2*%i, 8^(1/3)=2
+This is independent of the global 'domain' variable.
+
+With domain=complex Maxima no longer simplifies a^(1/n) for negative
+real 'a'. It will only factor out (-1)^(1/n) which is then treated
+according to the global variable m1pbranch. It also no longer simplifies
+sqrt(x^2).
+
+Raddenest should give results that are consistent with the above.
+
+Example:
+    (2-sqrt(5))^(1/3) = 1/2-sqrt(5)/2
+This denesting is only performed when domain=real and the cube root
+is interpreted as a real-valued function over the reals.
+
+
+IMPLEMENTATION NOTES
+
+Functions whose names begin with an underscore are internal helper
+functions. As such the only user-level function is the main command
+"raddenest".
+
+raddenest and _raddenest0 are relatively simple wrapper functions that
+apply the various algorithm functions to the given expression and its
+subexpressions.
+
+POSSIBLE IMPROVEMENTS AND FURTHER READING
+
+[5] Richard Zippel:
+    "Simplification of Expressions Involving Radicals"
+    J. Symbolic Computation (1985) 1, 189-210
+    http://www.sciencedirect.com/science/article/pii/S0747717185800146
+
+[6] Susan Landau:
+    "Simplification of Nested Radicals"
+    1993
+    https://www.researchgate.net/publication/2629046_Simplification_of_Nested_Radicals
+
+[7] Johannes Blömer:
+    "Simplifying Expressions Involving Radicals"
+    PhD Thesis, 1993
+    http://www.cs.nyu.edu/exact/pap/rootBounds/sumOfSqrts/bloemerThesis.pdf
+*/
+
+/*
+Helper functions
+*/
+
+_sqrtp(expr):=block(
+/*  Returns true iff expr is a literal square root,
+    i.e. radicand^(1/2).
+*/
+    [inflag:true],
+    not atom(expr) and op(expr)="^" and args(expr)[2]=1/2
+)$
+_sqrtpowerp(expr):=block(
+/*  Returns true iff expr can be interpreted as a square root.
+    Maxima automatically simplifies sqrt(125) to 5^(3/2).
+    Negative exponents are rejected.
+*/
+    [inflag:true],
+    not atom(expr) and op(expr)="^" and denom(args(expr)[2])=2
+        and num(args(expr)[2])>0
+)$
+
+_algebraicp(p):=block(
+/*  Returns true if p is comprised only of rationals or
+    square(!) roots of rationals and algebraic operations. */
+    [inflag:true],
+    if ratnump(p) then return(true)
+    elseif atom(p) then return(false)
+    elseif op(p)="^" then
+        ((args(p)[2]=-1 or denom(args(p)[2])=2)
+             and _algebraicp(args(p)[1]))
+    else
+        (operatorp(p,["+","*"])
+            and apply("and",map('_algebraicp,args(p))))
+)$
+
+_sqrt_depth(p):=block(
+/*  Returns the maximum nesting depth of any square root argument of p,
+    where p is an algebraic expression as defined by _algebraicp.
+
+    Neither of these square roots contains any other square roots
+    so the depth is 1:
+    (%i1)   _sqrt_depth(1 + sqrt(2)*(1 + sqrt(3)));
+    (%o1)   1
+    The sqrt(3) is contained within a square root so the depth is 2:
+    (%i2)   _sqrt_depth(1 + sqrt(2)*sqrt(1 + sqrt(3)));
+    (%o2)   2
+*/
+    [inflag:true],
+    if atom(p) or ratnump(p) then return(0)
+    elseif (op(p)="+" or op(p)="*")
+        then apply('max,maplist('_sqrt_depth,p))
+    elseif _sqrtpowerp(p)
+        then _sqrt_depth(args(p)[1])+1
+    else 0
+)$
+
+_complexity(p):=block(
+/*  Returns a complexity measure of a given expression p.
+    It's similar to _sqrt_depth but increases with any nesting
+    of radicals (not only square roots) and penalize sums
+    of radicals by adding up individual complexities.
+    See [2] for more details.
+    It is used as a secondary recursion termination criterion
+    (after _sqrt_depth) in some algorithms.
+*/
+    [inflag:true,e],
+    if atom(p) or ratnump(p) then return(0)
+    elseif (op(p)="+")
+        then map('_complexity,p)
+    elseif (op(p)="*")
+        then apply('max,maplist('_complexity,p))
+    elseif op(p)="^"
+        and ratnump(e:args(p)[2])
+        and denom(e)#1
+        then _complexity(args(p)[1])+1
+    else 0
+)$
+
+_sqrtcontract0(prod):= block(
+/*  Contracts _all_ square roots in a given term/quotient.
+    
+    Maxima's built-in commands sometimes have difficulties
+    handling quotients with square roots in the denominator.
+    Forcing them to contract allows for easier simplification.
+
+    (%i1)   sqrt(2)/(7*sqrt(27));
+    (%o1)   sqrt(2)/(7*3^(3/2))
+    (%i2)   _sqrtcontract(%);
+    (%o2)   sqrt(6)/63
+*/
+    [inflag:true,rootsconmode:false,r,e,rad:1],
+    if atom(prod) or op(prod)#"*" then return(prod),
+    for f in args(prod) do (
+       if not atom(f) and op(f)="^" then (
+            [r,e]: args(f),
+            if integerp(r) and ratnump(e) and e<0 and denom(e)=2
+                then rad: rad*r
+        )
+    ),
+    rootscontract(num(prod)*sqrt(rad))/rootscontract(denom(prod)*sqrt(rad))
+)$
+_sqrtcontract(expr):= scanmap('_sqrtcontract0,expr)$
+
+
+/*  _subsets(n)
+    Returns all possible subsets of the set (0, 1, ..., n-1) except the
+    empty set, listed in reversed lexicographical order according to binary
+    representation, so that the case of the fourth root is treated last.
+    Example:
+    (%i1)   _subsets(3);
+    (%o2)   [[1,0,0],[0,1,0],[1,1,0],[0,0,1],[1,0,1],[0,1,1],[1,1,1]]
+*/
+_ss(n):= if n=1 then [[0],[1]] else
+    block([r:_ss(n-1)],
+        apply('append, map(lambda([z], [cons(0,z),cons(1,z)]),r)));
+_subsets(n):=rest(_ss(n));
+
+
+_splitcoef(p):= block(
+/*  Splits a given term p in two factors:
+    a rational coefficient and the remaining factors.
+    The return value is a list.
+    Note: 7^(3/2) is handled as 7*sqrt(7),
+    contrary to maxima's default.
+    Also: 15/sqrt(2) -> 15/2*sqrt(2)
+*/
+    [inflag:true,c,base,expt,r,spl],
+    /* single rational number */
+    if ratnump(p) then return([p,1]),
+    p: _sqrtcontract(p),
+    /*  single power that can be read as a sqrt
+        e.g. 5^(13/2) -> [5^13, sqrt(5)]
+             2^(-3/2) -> [1/4, sqrt(2)] */
+    if not atom(p) and op(p)="^" and ratnump(base:args(p)[1])
+        and ratnump(expt:args(p)[2]) and denom(expt)=2
+    then (
+        if expt>0 then
+            return([base^quotient(num(expt),2), sqrt(base)])
+        else
+            return([base^quotient(num(expt)-2,2), sqrt(base)])
+    )
+    /*  product with ratnum as first factor.
+        check if second factor is a power -> recurse.
+        this handles e.g. 3*5^(3/2) */
+    elseif not atom(p) and op(p)="*" and ratnump(c:first(args(p))) 
+        then (
+            r: rest(p),
+            if not atom(r) and op(r)="^" then (
+                spl:_splitcoef(r),
+                return([c*spl[1], spl[2]])
+            )
+            else return([c,r])
+    )
+    else return([1,p])
+)$
+
+_sqrt_match(p):=block(
+/*  Returns [a, b, r] for _sqrt_match(a + b*sqrt(r)) where, in addition to
+    matching, sqrt(r) also has then maximal _sqrt_depth among addends of p.
+    If p can't be matched, the return value is false.
+
+    Example:
+    (%o1)   _sqrt_match(2*sqrt(sqrt(5)+1)+sqrt(2)*sqrt(3)+sqrt(2)+1);
+    (%o2)   [sqrt(2)*sqrt(3)+sqrt(2)+1,2,sqrt(5)+1]
+*/
+    [inflag: true, p:expand(p), res,pargs,v,nmax,depth,
+        ar,i,r,b,bv,rv,a1,b1,x2,x2args,a],
+    if numberp(p) then res:[p,0,0]
+    elseif not atom(p) and op(p)="+" then (
+        pargs:args(p),
+        /* handle "trivial" case without nested radicals: */
+        if apply("and",maplist(lambda([x],ratnump(x)and x>0),pargs^2))
+        then return(reverse(_split_surds(p))),
+        /*  to make the process canonical, the argument is included in the tuple
+            so when the max is selected, it will be the largest arg having a
+            given depth */
+        v: makelist([_sqrt_depth(pargs[i]),pargs[i],i], i, 1, length(pargs)),
+        nmax:v[1],
+        for da in v do (
+            if  da[1]>nmax[1] 
+                or (da[1]=nmax[1] and ordergreatp(da[2],nmax[2]))
+            then nmax:da
+        ),
+        if nmax[1]=0 then res:false
+        else (
+            /* select r (term with max. depth)*/
+            [depth, ar, i]: nmax,
+            r: pargs[i],
+            pargs: delete(r,pargs),
+            v: delete(nmax,v),
+            b: 1,
+            /* if product, keep only factor with max. depth for r,
+                other factors will be part of coefficient b */
+            if not atom(r) and op(r)="*" then (
+                bv:[],
+                rv:[],
+                for x in args(r) do (
+                    if _sqrt_depth(x)<depth then bv:endcons(x,bv)
+                    else rv:endcons(x,rv)
+                ),
+                b: apply("*",bv),
+                r: apply("*",rv)
+            ),
+            /* collect terms containing r */
+            a1:[],
+            b1:[b],
+            for x in v do (
+                if x[1]<depth then a1:endcons(x[2],a1)
+                else (
+                    x2: x[2],
+                    if x2=r then b1:endcons(1,b1)
+                    else (
+                        if not atom(x2) and op(x2)="*" then (
+                            x2args: args(x2),
+                            if member(r,x2args) then (
+                                x2args: delete(r,x2args,1),
+                                x2args: apply("*",x2args),
+                                push(x2args,b1)
+                            )
+                      else a1:endcons(x[2],a1)
+                        )
+                        else a1:endcons(x[2],a1)
+                    )
+                )
+            ), /* for */
+            a: apply("+",a1),
+            b: apply("+",b1),
+            res: [a, b, r^2]
+        )
+    )
+    else (
+        [b, r]: _split_coef(p),
+        if _sqrtp(r) then res:[0,b,r^2]
+        else res:false
+    ),
+    return(res)
+)$
+
+_split_gcd(a):= block(
+/*  Splits the list of integers a into two lists of integers, a1 and a2,
+    such that a1 have some common divisor and the integers in a2
+    are not divisible by g=gcd(a1).
+    The result is returned as [g, a1, a2].
+
+    Example:
+
+    (%i1)   _split_gcd(55, 35, 22, 14, 77, 10);
+    (%o2)   [5, [55, 35, 10], [22, 14, 77]]
+*/
+    [g:first(a), g1, b1:[], b2:[]],
+    push(g,b1),
+    for x in rest(a) do (
+        g1: gcd(g,x),
+        if g1=1 then push(x,b2)
+        else (g:g1, push(x,b1))
+    ),
+    [g,reverse(b1),reverse(b2)]
+)$
+
+_split_surds(expr):= block(
+/*  Splits an expression with terms whose squares are rationals
+    into a sum of terms whose surds squared have gcd equal to g
+    and a sum of terms with surds squared prime with g.
+
+    Example:
+
+    (%i1)   _split_surds(3*sqrt(3)+sqrt(5)/7+sqrt(6)+sqrt(10)+sqrt(15))
+    (%o1)   [3, sqrt(2) + sqrt(5) + 3, sqrt(5)/7 + sqrt(10)]
+*/
+    [inflag:false,ar,coeff_muls,surds:[],g,b1,b2,g2,g1,b1n:[],c,s,s1,a1v:[],a2v:[],a,b],
+    ar: args(rootscontract(expr)),
+    coeff_muls: maplist('_splitcoef,ar),
+    for cs in coeff_muls do
+        if _sqrtp(cs[2]) then push(cs[2]^2,surds),
+    [g, b1, b2] : _split_gcd(sort(surds)),
+    g2: g,
+    if b2=[] and length(b1)>=2 then (
+        for x in b1 do if x#g then b1n:endcons(x/g, b1n),
+        /* only a common factor has been factored; split again */
+        [g1, b1n, b2] : _split_gcd(b1n),
+        g2: g*g1
+    ),
+    for cs in coeff_muls do (
+        [c, s]: cs,
+        if _sqrtp(s) then (
+            s1: first(args(s)),
+            if member(s1,b1)
+            then a1v:endcons(c*sqrt(s1/g2),a1v)
+            else a2v:endcons(c*s,a2v)
+        )
+     else a2v:endcons(c*s,a2v)
+    ),
+    a: apply("+",a1v),
+    b: apply("+",a2v),
+    [g2,a,b]
+)$
+
+/*
+Denesting functions
+*/
+
+raddenest(expr, [max_iter]):= block(
+/*  Denests sqrts in an expression that contain other square roots
+    if possible, otherwise returns the expr unchanged.
+*/
+    [algebraic:true, rootsconmode:false, z,res],
+    if max_iter=[] then max_iter: 3
+    else max_iter: max_iter[1],
+    res: for i:1 thru max_iter do (
+        z: _sqrtcontract(_raddenest0(expr)),
+        if expr=z then
+            return(expr),
+        expr: z
+    ),
+    if res#done then return(res)
+    else return(expr)
+)$
+
+_raddenest0(expr):= block(
+/*  Returns expr after (recursively) denesting its arguments.   */
+    [inflag:true,algebraic:true,ar,ret,radicand,ex],
+    if _sqrtpowerp(expr) then (
+        /* expr could be of the form ( )^(n/2) */
+        radicand: expand(ratsimp(args(expr)[1])),
+        ex: 2*args(expr)[2],
+        if not atom(radicand) and op(radicand)="+" then (
+            ar: args(radicand),
+            if length(ar)>2 and apply("and",maplist('integerp,ar^2)) then (
+                ret: catch(_sqrtdenest_rec(sqrt(radicand))),
+                if ret#"raddenestStopIteration" then
+                    return(ret^ex)
+            ),
+            if length(ar)=2 and ratnump(ar[1]^3) and ratnump(ar[2]^3) then (
+                ret: _rad_denest_ramanujan(sqrt(radicand)),
+                if ret#false then
+                    return(ret^ex)
+            ),
+            radicand: maplist('_raddenest0,ar),
+            radicand: expand(apply("+",radicand))
+        ),
+        return(_sqrtdenest1(sqrt(radicand),true)^ex)
+    )
+    elseif not atom(expr) and op(expr)="^"
+    /* try Cardano polynomials for (a+b*sqrt(r))^(m/n) */
+        and ratnump(ex:args(expr)[2])
+        and not atom(radicand:args(expr)[1])
+        and op(radicand)="+"
+        and length(ar:args(radicand))=2
+        and apply("and",maplist(lambda([x],ratnump(x)and x>0),ar^2))
+    then return(_rad_denest_cardano(expr))
+    elseif not atom(expr) and op(expr)="^" and evenp(denom(ex:args(expr)[2]))
+        /*  Some fourth roots denest in two steps
+            e.g.    (19601-3465*2^(5/2))^(7/4)
+                ->  (99-35*2^(3/2))^(7/2)
+                ->  (5*sqrt(2)-7)^7
+            This is only useful if the global nesting depth
+            indeed decreases, but this is not checked by the
+            current code.
+            (Same behaviour as sqdnst.mac) */
+    then (
+            radicand: expand(ratsimp(args(expr)[1])),
+            ex: 2*args(expr)[2],
+            return(_raddenest0(sqrt(radicand))^ex)
+    )
+    elseif not atom(expr) then (
+        inflag:false,
+        if op(expr)="/"
+	    then return(_raddenest0(args(expr)[1])/_raddenest0(args(expr)[2]))
+            else return(map('_raddenest0,expr))
+    ),
+    return(expr)
+)$
+
+_sqrtdenest_rec(expr):= block(
+/*  Helper that denests the square root of three or more surds.
+
+    It returns the denested expression; if it cannot be denested it
+    throws raddenestStopIteration
+
+    Algorithm: expr.base is in the extension Q_m = Q(sqrt(r_1),..,sqrt(r_k));
+    split expr.base = a + b*sqrt(r_k), where `a` and `b` are on
+    Q_(m-1) = Q(sqrt(r_1),..,sqrt(r_(k-1))); then a^2 - b^2*r_k is
+    on Q_(m-1); denest sqrt(a^2 - b^2*r_k) and so on.
+
+    See [1], section 6.
+
+    Examples
+    ========
+
+    (%i1)   _sqrtdenest_rec(sqrt(-72*sqrt(2) + 158*sqrt(5) + 498));
+    (%o1)   (-sqrt(10))+9*sqrt(5)+sqrt(2)+9
+    (%i2)   w:-6*sqrt(55)-6*sqrt(35)-2*sqrt(22)-2*sqrt(14)
+                +2*sqrt(77)+6*sqrt(10)+65$
+    (%i3)   _sqrtdenest_rec(sqrt(w));
+    (%o3)   (-sqrt(11))-sqrt(7)+3*sqrt(5)+sqrt(2)
+*/
+    [algebraic:true,inflag:true, g,a,b,c2,a1,b1,c2_1,c_1,d_1,c,ac,d,r,f],
+    if atom(expr) or op(expr)#"^" then
+        return(raddenest(expr)),
+    if (r:args(expr)[1]) < 0 then
+        return(%i*_sqrtdenest_rec(sqrt(-r))),
+    [g,a,b]: _split_surds(r),
+    a: a*sqrt(g),
+    if a<b then [a,b]:[b,a],
+    c2: rootscontract(expand(a^2-b^2)),
+    if not atom(c2) and length(args(c2)) > 2 then (
+        [g,a1,b1]: _split_surds(c2),
+        a1: a1*sqrt(g),
+        if a1<b1 then [a1,b1]:[b1,a1],
+        c2_1: rootscontract(expand(a1^2-b1^2)),
+        c_1: _sqrtdenest_rec(sqrt(c2_1)),
+        d_1: _sqrtdenest_rec(sqrt(a1+c_1)),
+        f: _sqrtcontract(expand(ratsimp(b1/d_1))),
+        c: expand(d_1*sqrt(2)/2+f*sqrt(2)/2)
+    )
+    else c: _sqrtdenest1(sqrt(c2),true),
+    if _sqrt_depth(c)>1 then
+        throw("raddenestStopIteration"),
+    ac: rootscontract(a+c),
+    /* check for end of recursion */
+    if not atom(ac) and length(args(ac)) >= length(args(expr))
+        and _complexity(ac)>=_complexity(args(expr)[1])
+            then throw("raddenestStopIteration"),
+    d: raddenest(sqrt(ac)),
+    if _sqrt_depth(d) > 1
+        then throw("raddenestStopIteration"),
+    r: rootscontract(expand(ratsimp(b/d))),
+    r: rootscontract(ratsimp(expand(d*sqrt(2)+r*sqrt(2))/2)),
+    return(expand(r))
+)$
+
+_sqrtdenest1(expr, denester):= block(
+/*  Return denested expr after denesting with simpler
+    methods or, that failing, using the denester.
+    'denester' is a boolean indicating if _denester
+    should be called.
+*/
+    [inflag:true, algebraic: true, a,val,b,r,d2,z,dr2,dr,res,av0],
+    if not _sqrtp(expr) then return(expr),
+    a: args(expr)[1], /*radicand*/
+    if atom(a) then return(expr),
+    val: _sqrt_match(a),
+    if val=false then return(expr),
+    [a,b,r]: val,
+    /* try a quick numeric denesting */
+    d2: rootscontract(expand(a^2-b^2*r)),
+    if ratnump(d2) then(
+        if d2>0 then (
+            z: _sqrt_numeric_denest(a,b,r,d2),
+            if z#false then return(z)
+        )
+        else (
+            /* fourth root case, e.g.
+                sqrtdenest(sqrt(3+2*sqrt(3)))
+                    -> sqrt(2)*3^(1/4)/2+sqrt(2)*3^(3/4)/2 */
+            dr2: expand(-d2*r),
+            dr: sqrt(dr2),
+            if ratnump(dr) then (
+                z: _sqrt_numeric_denest(expand(b*r),a,r,dr2),
+                if z#false then return(expand(ratsimp(z/r^(1/4))))
+            )
+        )
+    )
+    else (
+        z: _sqrt_symbolic_denest(a,b,r),
+        if z#false then return(z)
+    ),
+    if not denester or not _algebraicp(expr) then
+        return(expr),
+    res: _sqrt_biquadratic_denest(expr,a,b,r,d2),
+    if res#false then return(res),
+    /* now call the denester */
+    av0: [a,b,r,d2],
+    z: _denester([expr^2], av0, 0, _sqrt_depth(expr))[1],
+    /* denester has side-effect on av0! */
+    if av0[2]=false then return(expr),
+    if z#false then (
+        if _sqrt_depth(z)=_sqrt_depth(expr)
+            and _complexity(z)>=_complexity(expr)
+                then return(expr)
+        else return(z)
+    ),
+    return(expr)    
+)$
+
+_sqrt_symbolic_denest(a,b,r):= block(
+/*  Given an expression, sqrt(a + b*sqrt(r)), return the denested
+    expression or false.
+
+    Algorithm 1:
+    Check if the standard denesting formula with d2=a^2-b^2*r
+    can the applied, i.e. check if d2=a^2-b^2*r is a square.
+    For a+b*sqrt(r) = (c+d*sqrt(r))^2, a=c^2+b^2*r and
+    a^2-b^2*r = d^4*r^2-2*c*d^2*r+c^4, quadratic in r.
+    -> Compute the discriminant.
+    a and r must be positive; hence denesting depends on the
+    facts database.
+
+    Algorithm 2 (Sympy):
+    If r = ra + rb*sqrt(rr), try replacing sqrt(rr) in 'a' with
+    (y^2 - ra)/rb, and if the result is a quadratic, ca*y^2 + cb*y + cc, and
+    (cb + b)^2 - 4*ca*cc is 0, then sqrt(a + b*sqrt(r)) can be rewritten as
+    sqrt(ca*(sqrt(r) + (cb + b)/(2*ca))^2).
+
+    Examples (alg. 1):
+    ==================
+    (%i2) raddenest(sqrt(9*y+6*x^2*sqrt(y)+x^4));
+    (%o2)                    sqrt(9*y + 6*x^2  sqrt(y) + x^4)
+    (%i3) assume(y>0)$
+    (%i4) raddenest(sqrt(9*y+6*x^2*sqrt(y)+x^4));
+    (%o4)                           3* sqrt(y) + x^2
+
+    Examples (alg. 2):
+    ==================
+
+    (%i1)   [a,b,r]: [16-2*sqrt(29), 2, -10*sqrt(29)+55]$
+    (%i2)   _sqrt_symbolic_denest(a, b, r);
+    (%o2)   sqrt(-2*sqrt(29) + 11) + sqrt(5)
+
+    If the expression is numeric, it will be simplified:
+
+    (%i3)   w: sqrt(sqrt(sqrt(3) + 1) + 1) + 1 + sqrt(2)$
+    (%i4)   [a,b,r]: _sqrt_match(expand(w^2))$
+    (%i5)   _sqrt_symbolic_denest(a,b,r);
+    (%o5)   sqrt(sqrt(sqrt(3)+1)+1)+sqrt(2)+1
+
+    Otherwise, it will be simplified depending on the value of
+    the global "domain" variable:
+
+    (%i6)   w: sqrt(expand((sqrt(1-sqrt(x))-1)^2));
+    (%o6)   sqrt(-sqrt(x)-2*sqrt(1-sqrt(x))+2)
+    (%i7)   [a,b,r]: _sqrt_match(w^2)$
+    (%i8)   _sqrt_symbolic_denest(a,b,r), domain:'real;
+    (%o8)   abs(sqrt(1-sqrt(x))-1)
+    (%i9)   _sqrt_symbolic_denest(a,b,r), domain:'complex;
+    (%o9)   sqrt((sqrt(1-sqrt(x))-1)^2)
+*/
+    [algebraic:true, rval,ra,rb,rr,y,newd2,newa,ca,cb,cc,z,cont,d2,d,s],
+    supcontext(cont),
+    y: gensym(),
+    assume(y>0),
+    /* make sure a and r are positive */
+    if not (is(r>=0)=true and is(ratsubst(y,r,a)>=0)=true)
+        then go(tryalg2),
+    d2: ratsubst(y,r,a^2-b^2*r),
+    if hipow(d2,y)=2 then (
+        [ca,cb,cc]: [ratcoef(d2,y,2),ratcoef(d2,y,1),ratcoef(d2,y,0)],
+        if is(equal(cb^2-4*ca*cc,0)) then (
+            /* Discriminant is 0, polynomial d2 can be factored
+               as a perfect square. Extract a sqrt. */
+            d: ratsimp(sqrt(ca)*(r+cb/(2*ca))),
+            /* If b is of constant sign (>=0 or <=0), a denesting
+            should not be rejected simply because b could be zero
+            for isolated values of the involved variables. */
+            assume(not equal(b,0)),
+            s: signum(b),
+            if not (integerp(s) and s#0 and ratnump(sqrt(ca)))
+                then go(tryalg2),
+            z: sqrt(a/2+d/2)+signum(b)*sqrt(a/2-d/2),
+            z: ratsimp(z),
+            killcontext(cont),
+            return(sqrt(z^2))
+        )
+    ),
+    tryalg2,
+    rval: _sqrt_match(r),
+    if rval=false then (
+        killcontext(cont),
+        return(false)
+    ),
+    [ra,rb,rr]: rval,
+    if rb#0 then (
+        newa: subst((y^2-ra)/rb,sqrt(rr),a),
+        if hipow(newa,y)=2 then (
+            [ca,cb,cc]: [ratcoef(newa,y,2),ratcoef(newa,y,1),ratcoef(newa,y,0)],
+            cb: cb+b,
+            if is(equal(cb^2-4*ca*cc,0))=true then (
+                z: sqrt(ca*(sqrt(r)+cb/(2*ca))^2),
+                if constantp(z) then z: rootscontract(expand(z)),
+                killcontext(cont),
+                return(z)
+            )
+        )
+    ),
+    killcontext(cont),
+    return(false)
+)$
+
+_sqrt_numeric_denest(a,b,r,d2):=block(
+/*  Helper that denest expr = a + b*sqrt(r),
+    with d2 = a^2 - b^2*r > 0
+    or returns false if not denested.
+*/
+    [algebraic:true, depthr,d,vad,vad1],
+    depthr: _sqrt_depth(r),
+    d: sqrt(d2),
+    vad: a+d,
+    /* _sqrt_depth(res) <= _sqrt_depth(vad) + 1
+       _sqrt_depth(expr) = depthr + 2
+       There is denesting if _sqrt_depth(vad)+1 < depthr + 2;
+     If vad^2 is a rational there is a fourth root */
+    if _sqrt_depth(vad) < depthr + 1 or ratnump(vad^2) then (
+        vad1: ratsimp(1/vad),
+        return(expand(sqrt(vad/2)+signum(b)*sqrt(b^2*r*vad1/2)))
+    ) else return(false)
+)$
+
+_sqrt_biquadratic_denest(expr,a,b,r,d2):= block(
+/*  denest expr = sqrt(a + b*sqrt(r))
+    where a, b, r are linear combinations of square roots of
+    positive rationals on the rationals (SQRR) and r > 0, b != 0,
+    d2 = a^2 - b^2*r > 0
+
+    If it cannot denest it returns false.
+
+    ALGORITHM
+    Search for a solution A of type SQRR of the biquadratic equation
+    4*A^4 - 4*a*A^2 + b^2*r = 0                               (1)
+    sqd = sqrt(a^2 - b^2*r)
+    Choosing the sqrt to be positive, the possible solutions are
+    A = sqrt(a/2 +/- sqd/2)
+    Since a, b, r are SQRR, then a^2 - b^2*r is a SQRR,
+    so if sqd can be denested, it is done by
+    _sqrtdenest_rec, and the result is a SQRR.
+    Similarly for A.
+
+    Examples of solutions (in both cases a and sqd are positive):
+
+      Example of expr with solution sqrt(a/2 + sqd/2) but not
+      solution sqrt(a/2 - sqd/2):
+      expr: sqrt(-sqrt(15) - sqrt(2)*sqrt(-sqrt(5) + 5) - sqrt(3) + 8);
+      a: -sqrt(15) - sqrt(3) + 8;
+      sqd = -2*sqrt(5) - 2 + 4*sqrt(3)
+
+      Example of expr with solution sqrt(a/2 - sqd/2) but not
+      solution sqrt(a/2 + sqd/2):
+      w: 2 + sqrt(2) + sqrt(3) + (1 + sqrt(3))*sqrt(2 + sqrt(2) + 5*sqrt(3))
+      expr: sqrt(expand(w^2))
+      a: 4*sqrt(6) + 8*sqrt(2) + 47 + 28*sqrt(3)
+      sqd: 29 + 20*sqrt(3)
+
+    Define B = b/(2*A); eq.(1) implies a = A^2 + B^2*r; then
+    expr^2 = a + b*sqrt(r) = (A + B*sqrt(r))^2
+
+    Examples
+    ========
+    (%i1)   z: sqrt((2*sqrt(2) + 4)*sqrt(2 + sqrt(2)) + 5*sqrt(2) + 8)$
+            [a,b,r] : _sqrt_match(z^2)$
+            d2: a^2 - b^2*r$
+            _sqrt_biquadratic_denest(z, a, b, r, d2);
+    (%o1)   sqrt(2) + sqrt(sqrt(2) + 2) + 2
+*/
+    [inflag:true, algebraic:true, res,y2,sqd,x1,x2,A,B,z],
+    if r<=0 or d2<0 or b=0 or _sqrt_depth(args(expr)[1])<2 then
+        return(false),
+    /* check that all terms in the linear combinations a, b, r
+        have integer square */
+    res: for x in [a,b,r] do (
+        if atom(x) or op(x)#"+" then x: [x],
+        res: for y in args(x) do (
+            y2: y^2,
+            if not integerp(y2) or y2<=0 then
+                return(false)
+        ),
+        if res#done then return(false)
+    ),
+    if res#done then return(false),
+    /*sqd: expand(raddenest(sqrt(ratsimp(d2)))), */
+    sqd: raddenest(sqrt(d2)),
+    if _sqrt_depth(sqd)>1 then
+        return(false),
+    [x1,x2]: [a/2+sqd/2, a/2-sqd/2],
+    /* look for a solution A with depth 1 */
+    res: for x in [x1,x2] do (
+        A: raddenest(sqrt(x)), 
+        if not _sqrt_depth(A)>1 then (
+            B: b/(2*A),
+            B: ratsimp(rootscontract(expand(ratsimp(B)))),
+            z: A+B*sqrt(r),
+            if z<0 then z: -z,
+            return(expand(z))
+        )
+    ),
+    if res#done then return(res)
+    else return(false)
+)$
+
+_denester(nested,av0,h,max_depth_level):= block(
+/*  Denests a list of expressions that contain nested square roots.
+
+        nested: list of radicands (no top level sqrt!)
+        av0: [a,b,r,d2] (a+b*sqrt(r) and d2=a^2-b^2*r)
+        h: recursion counter, starts at 0
+        max_depth_level: nesting depth
+
+    Algorithm based on [1].
+
+    It is assumed that all of the elements of 'nested' share the same
+    bottom-level radicand. (This is stated in the paper, on page 177, in
+    the paragraph immediately preceding the algorithm.)
+
+    When evaluating all of the arguments in parallel, the bottom-level
+    radicand only needs to be denested once. This means that calling
+    _denester with x arguments results in a recursive invocation with x+1
+    arguments; hence _denester has polynomial complexity.
+
+    However, if the arguments were evaluated separately, each call would
+    result in two recursive invocations, and the algorithm would have
+    exponential complexity.
+
+    This is discussed in the paper in the middle paragraph of page 179.
+
+    The return value is [denested, subset] where subset corresponds
+    to the subset of terms that led to the denesting.
+    Otherwise [false,false] is returned.
+*/
+    [algebraic:true,p,sqp,R,vals,nested2,d,f,df,v,vad,sqvad,sqvad1,s2,FR,s,res],
+    if h>max_depth_level
+	then return([false, false]),
+    if av0[2]=false
+	then return([false, false]),
+    if (av0[1]=false and apply("and", maplist('numberp,nested))) then (
+        /* no arguments are nested */
+        res: for f in _subsets(length(nested)) do (
+            /* test subset 'f' of nested */
+            p:[],
+            for i:1 thru length(nested) do (
+                if f[i]=1 then push(nested[i],p)
+            ),
+            p: expand(apply("*",p)),
+            if apply("+",f)>1 and last(f)=1 then
+                p: -p,
+            sqp: sqrt(p),
+            if ratnump(sqp) then (
+                /* Got a perfect square so return its sqrt */
+                return([sqp,f])
+            )
+        ),
+ if res#done then return(res)
+        else       /* ... otherwise, return the radicand
+        from the previous invocation. */
+        return([sqrt(last(nested)), makelist(0,length(nested))])
+    )
+    else (
+        R: false,
+        if av0[1]#false then (
+            vals: [[av0[1],av0[2]]],
+            R: av0[3],
+            nested2: [av0[4],R],
+            av0[1]: false
+        )
+        else (
+            vals: maplist('_sqrt_match,nested),
+            vals: sublist(vals,lambda([x],x#false)),
+            res: for v in vals do (
+                /* if b=0, r is not defined */
+                if v[3]#0 then (
+                    if R#false then (
+                        if R#v[3] then (
+                            av0[2]: false,
+                            return([false,false])
+                        )
+                    )
+                    else R: v[3]
+                )
+            ),
+            if res#done then return(res),
+            if R=false then
+                /* return the radicand of the previous invocation */
+                return([sqrt(last(nested)), makelist(0,length(nested))]),
+            nested2: makelist(expand(v[1]^2)-expand(R*v[2]^2),v,vals),
+            nested2: endcons(R,nested2)   
+        ),
+        [d,f]: _denester(nested2,av0,h+1,max_depth_level),
+        if f=false then return([false,false]),
+        if not member(1,makelist(f[i],i,1,length(nested))) then (
+            v: last(vals),
+            return([sqrt(v[1]+expand(v[2]*d)), f])
+        )
+        else (
+            p: [],
+            for i:1 thru length(nested) do (
+                if f[i]=1 then push(nested[i],p)
+            ),
+            p: apply("*",p),
+            v: _sqrt_match(p),
+            if member(1,f)
+                and sublist_indices(f,lambda([x],x=1))[1] < length(nested)
+                and f[length(nested)]=1
+            then (
+                v[1]: -v[1],
+                v[2]: -v[2]
+            ),
+            if f[length(nested)+1]=0 then (
+                /* solution denests with square roots */
+                vad: expand(v[1]+d),
+             if vad<=0 then
+                    /* return the radicand from the previous invocation */
+                    return([sqrt(last(nested)), makelist(0,length(nested))]),
+                if not (_sqrt_depth(vad) <= _sqrt_depth(R)+1
+                        or nump((vad)^2)) then (
+                    av0[2]: false,
+                    return([false,false])
+                ),
+                sqvad: _sqrtdenest1(sqrt(vad), false),
+                if not (_sqrt_depth(sqvad) <= _sqrt_depth(R)+1) then (
+                    av0[2]: false,
+                    return([false,false])
+                ),
+                sqvad1: ratsimp(1/sqvad),
+                res: _sqrtcontract(expand(sqvad*sqrt(2)/2 + v[2]*sqrt(R)*sqvad1*sqrt(2)/2)),
+                return([res,f])        
+            )
+            else (
+                /* Solution requires a fourth root */
+                s2: expand(v[2]*R) + d,
+                if s2 <= 0 then
+                    return([sqrt(last(nested)), makelist(0,length(nested))]),
+                FR: expand(R)^(1/4),
+                s: sqrt(s2),
+                return([expand(s/(sqrt(2)*FR)+v[1]*FR/(sqrt(2)*s)), f])
+            )
+        )
+    )
+)$
+
+_cardano_poly(n,c,x):= block(
+/*  "Cardano" polynomials as defined in [3] */
+    [poly,poly1,poly2],
+    poly2: rat('x),         /* degree n-2 */
+    poly1: rat('x^2-2*c),   /* degree n-1 */
+    if n=1 then return(poly2)
+    elseif n=2 then return(poly1),
+    for i:3 thru n do (
+        poly: 'x*poly1-c*poly2,
+        poly2: poly1,
+        poly1: poly
+    ),
+    poly
+)$
+
+_rad_denest_cardano(expr):= block(
+/*  Denests expr=(a+b*sqrt(r))^(m/n) using
+    Cardano polynomials. See [3] for details. */
+    [a,b,r,m,n,divs,d,c,p,s,em,res,sig,x,
+        ratprint:false,bftorat:false,fpprec:50,ratepsilon:1e-40],
+    [a,b,r]: _sqrt_match(args(expr)[1]),
+    m: num(args(expr)[2]),
+    n: denom(args(expr)[2]),
+    /* keep sign; reinterpret as a+sqrt(b) as in ref. article */
+    sig: signum(b),
+    b: b^2*r,
+    divs: reverse(rest(listify(divisors(n)))),
+    /* check each divisor of the radical's index */
+    res:while divs#[] do (
+        d: pop(divs),
+        c:(a^2-b)^(1/d),
+        if ratnump(c) then (
+            /* expr can be denested if p has a rational root
+               equal to s. In order to avoid excessive numeric
+               evaluations of the polynomial a single rational
+               candidate is checked. This candidate is a rational
+               approximation of s. The given values for fpprec
+               and ratepsilon are heuristic in nature. */
+            p: _cardano_poly(d,c,x)-2*a,
+            p: horner(p*denom(p)),
+            s: rat(bfloat((a+sqrt(b))^(1/d)+(a-sqrt(b))^(1/d))),
+            if subst(s,x,p)=0 then
+                return(ratsimp((s+sig*sqrt(s^2-4*c))/2)^(d/n))
+        )
+    ),
+    if res#done then return(expand(res^m))
+    else return(expr)
+)$
+
+_rad_denest_ramanujan(expr):= block(
+/*  Denest expr=sqrt(alpha^(1/3)+beta^(1/3)) using the results
+    of [4], Chapter 3. If expr can't be denested, return false.
+    alpha and beta must be rationals; parameter checking must
+    be done by the calling function. */
+    [inflag:true,alpha,beta,c,Fba,t,l:[],s,tt,res],
+    [alpha,beta]: (args(args(expr)[1]))^3,
+    /*  If domain=complex, Maxima interprets a^(1/3) with a>0
+        as the real branch of the cube root, but leaves the
+        expression untouched if a<0. */
+    if domain='complex and (alpha<0 or beta<0) then return(false),
+    /*  The perfect cube case can be trivially denested
+        but this code segment should, in fact, not be reached
+        since the simplifier already handles this case. */
+    if ratnump(c:(beta/alpha)^(1/3)) then
+            return(sqrt(alpha^(1/3)*sqrt(1+c))),
+    Fba: t^4+4*t^3+8*beta/alpha*t-4*beta/alpha,
+    Fba: multthru(denom(4*beta/alpha),Fba),
+    /* apply the rational root theorem to the polynomial Fba */
+    for n in divisors(coeff(Fba,t,0)) do
+        for m in divisors(coeff(Fba,t,4)) do (
+            push(n/m,l),
+            push(-n/m,l)
+        ),
+    l: setify(l),
+    s: for i in l do (
+        if subst(i,t,Fba)=0 then return(i)
+    ),
+    if s=done then return(false),
+    tt: beta-s^3*alpha,
+    /*  Sign: either alpha^(1/3)+beta^(1/3) is positive, then
+        so is its sqrt, or alpha^(1/3)+beta^(1/3) is negative,
+        then its sqrt is %i times a positive real.
+        Both cases are treated correctly by the formula below. */
+    res: sqrt(1/tt)*abs(-1/2*s^2*(alpha^2)^(1/3)
+                    +s*(alpha*beta)^(1/3)+(beta^2)^(1/3)),
+    return(ratsimp(res))
+)$
+

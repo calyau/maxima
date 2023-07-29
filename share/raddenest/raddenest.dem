@@ -1,0 +1,22 @@
+/* These demo commands are also included in the testsuite. */
+
+raddenest(sqrt(2*sqrt(6)+5));
+
+sqrt(sqrt(2*sqrt(7)+5)+3);
+raddenest(%);
+
+sqrt(sqrt(16+2*sqrt(55-10*sqrt(29))-2*sqrt(29))-sqrt(5));
+raddenest(%);
+
+sqrt(2+(6*sqrt(11))/11+(2*sqrt(22))/11+(6*sqrt(2))/11);
+raddenest(%);
+
+sqrt(1+1/(7+4*sqrt(3)));
+raddenest(%);
+
+sqrt(expand((1+sqrt(3+sqrt(x+2)))^2));
+raddenest(%);
+
+raddenest(sqrt(5^(1/3)-4^(1/3)));
+
+raddenest((41-29*sqrt(2))^(1/5));

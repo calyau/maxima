@@ -1,0 +1,228 @@
+@anchor{raddenest}
+@deffn {Function} raddenest (@var{expr})
+Denests different classes of nested radical expressions appearing as
+subexpressions in @var{expr}. Most of the implemented algorithms are specific
+to square roots, but some handle higher roots.
+
+@code{raddenest} is able to denest some or all of the denestable
+expressions of the following types:
+
+@enumerate
+@item
+square roots of sums of multiple unnested square roots;
+@item
+@iftex
+@tex
+$\sqrt{a+b\sqrt{r}}$
+@end tex
+@end iftex
+@ifnottex
+@math{sqrt(a + b*sqrt(r))}
+@end ifnottex
+where @var{a}, @var{b}, and @var{r} are linear
+combinations of square roots of positive rationals;
+@item
+expressions of the general form
+@iftex
+@tex
+$\sqrt{a+b\sqrt{r}}$
+@end tex
+@end iftex
+@ifnottex
+@math{sqrt(a + b*sqrt(r))}
+@end ifnottex
+are denested numerically (using square roots or fourth roots) or, in some
+cases, symbolically (assumptions allowing);
+@item
+@iftex
+@tex
+$(a+b\sqrt{r})^{1\over n}$
+@end tex
+@end iftex
+@ifnottex
+@math{(a+b*sqrt(r))^(1/n)}
+@end ifnottex
+with rational @var{a}, @var{b}, @var{r} (@var{r} positive) and integer
+@var{n};
+@item
+@iftex
+@tex
+$\sqrt{a^{1\over3}+b^{1\over3}}$
+@end tex
+@end iftex
+@ifnottex
+@math{sqrt(a^(1/3)+b^(1/3))}
+@end ifnottex
+with rational @var{a} and @var{b}.
+@end enumerate
+
+In particular, all expressions denested by @mref{sqrtdenest} are also denested
+by @code{raddenest}.
+
+Interpretation of radical expressions:
+
+The results given by @code{raddenest} are consistent with Maxima's default interpretation for
+@var{n}-th roots of a real:
+
+@itemize
+@item
+@iftex
+@tex
+$a^{1\over n}$
+@end tex
+@end iftex
+@ifnottex
+@math{a^(1/n)}
+@end ifnottex
+with positive @var{a} corresponds to the positive real branch;
+@item
+@iftex
+@tex
+$\sqrt{a}$
+@end tex
+@end iftex
+@ifnottex
+@math{sqrt(a)}
+@end ifnottex
+with negative @var{a} corresponds to
+@iftex
+@tex
+$i\sqrt{-a}$
+@end tex
+@end iftex
+@ifnottex
+@math{%i*sqrt(-a)}
+@end ifnottex
+;
+@item
+@iftex
+@tex
+$a^{1\over3}$
+@end tex
+@end iftex
+@ifnottex
+@math{a^(1/3)}
+@end ifnottex
+with negative @var{a} is interpreted using the real branch of
+the cube root if @code{@var{domain}=real}; with @code{@var{domain}=complex}
+subexpressions involving roots other than square roots are left unchanged.
+@end itemize
+
+Examples:
+@c ===beg===
+@c load (raddenest)$
+@c sqrt(sqrt(16+2*sqrt(55-10*sqrt(29))-2*sqrt(29))-sqrt(5))$
+@c raddenest(%);
+@c sqrt(1+1/(7+4*sqrt(3)));
+@c raddenest(%);
+@c sqrt(8*sqrt(2)+2*sqrt(5)-18);
+@c raddenest(%);
+@c raddenest(sqrt(5^(1/3)-4^(1/3)));
+@c raddenest((41-29*sqrt(2))^(1/5));
+@c assume(y>0)$
+@c raddenest(sqrt(9*y+6*x^2*sqrt(y)+x^4));
+@c a: (2-sqrt(5))^(1/3)$
+@c raddenest(a);
+@c raddenest(a), domain:'complex;
+@c ===end===
+@example
+(%i1) load (raddenest)$
+(%i2) sqrt(sqrt(16+2*sqrt(55-10*sqrt(29))-2*sqrt(29))-sqrt(5))$
+@group
+(%i3) raddenest(%);
+                                       1/4
+(%o3)                 (11 - 2 sqrt(29))
+@end group
+@group
+(%i4) sqrt(1+1/(7+4*sqrt(3)));
+                                1
+(%o4)                sqrt(------------- + 1)
+                          4 sqrt(3) + 7
+@end group
+@group
+(%i5) raddenest(%);
+(%o5)                   sqrt(6) - sqrt(2)
+@end group
+@group
+(%i6) sqrt(8*sqrt(2)+2*sqrt(5)-18);
+                                     7/2
+(%o6)              sqrt(2 sqrt(5) + 2    - 18)
+@end group
+@group
+(%i7) raddenest(%);
+(%o7)       ((- sqrt(10)) + sqrt(5) + sqrt(2) + 1) %i
+@end group
+@group
+(%i8) raddenest(sqrt(5^(1/3)-4^(1/3)));
+                         1/3      1/3    1/3
+                    (- 25   ) + 20    + 2
+(%o8)               ------------------------
+                               3
+@end group
+@group
+(%i9) raddenest((41-29*sqrt(2))^(1/5));
+(%o9)                      1 - sqrt(2)
+@end group
+(%i10) assume(y>0)$
+@group
+(%i11) raddenest(sqrt(9*y+6*x^2*sqrt(y)+x^4));
+                                      2
+(%o11)                   3 sqrt(y) + x
+@end group
+(%i12) a: (2-sqrt(5))^(1/3)$
+@group
+(%i13) raddenest(a);
+                           1   sqrt(5)
+(%o13)                     - - -------
+                           2      2
+@end group
+@group
+(%i14) raddenest(a), domain:'complex;
+                                     1/3
+(%o14)                  (2 - sqrt(5))
+@end group
+@end example
+
+Limitations:
+
+@code{raddenest} may in some cases only lower the index of a root without
+actually decreasing the absolute nesting depth of @var{expr}:
+@c ===beg===
+@c load (raddenest)$
+@c raddenest((5*sqrt(2)+7)^(1/6));
+@c ===end===
+@example
+(%i1) load (raddenest)$
+@group
+(%i2) raddenest((5*sqrt(2)+7)^(1/6));
+(%o2)                   sqrt(sqrt(2) + 1)
+@end group
+@end example
+
+References:
+
+@enumerate
+@item
+Allan Borodin, Ronald Fagin, John E. Hopcroft, and Martin Tompa:@*
+@cite{Decreasing the Nesting Depth of Expressions Involving Square Roots}@*
+J. Symbolic Computation (1985) 1, 169-188@*
+@url{http://researcher.watson.ibm.com/researcher/files/us-fagin/symb85.pdf}
+@item
+David J. Jeffrey and Albert D. Rich:@*
+@cite{Symplifying Square Roots of Square Roots by Denesting}@*
+in @cite{Computer Algebra Systems: A Practical Guide}@*
+M.J. Wester, Ed., Wiley 1999@*
+@url{http://www.cybertester.com/data/denest.pdf}
+@item
+Thomas J. Osler:
+@cite{Cardan Polynomials and the Reduction of Radicals}@*
+Mathematics Magazine 74(1), Feb. 2001@*
+@url{http://www.rowan.edu/open/depts/math/osler/mathmag026-032.pdf}
+@item
+Mascha Honsbeek:
+@cite{Radical Extensions and Galois Groups}, Chapter 3
+(PhD Thesis)@*
+@url{http://www.math.kun.nl/~bosma/students/honsbeek/M_Honsbeek_thesis.pdf}
+@item
+SymPy @code{sqrtdenest()} @url{http://www.sympy.org}
+@end enumerate
