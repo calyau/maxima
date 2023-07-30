@@ -7,9 +7,11 @@ New items in core:
 New items in share:
 -------------------
  * New example share/colnew/prob5.mac
+ * Add raddenest radical denesting function
 
 Changes in core:
 ----------------
+ * Add rtest_raddenest to share_testsuite_files
 
 Changes in share:
 -----------------

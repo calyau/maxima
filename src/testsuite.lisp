@@ -312,5 +312,5 @@
       ;; Tested with acl 10.1
       #+allegro
       ((mlist simp) 1 6 8 10 12 14))
-     )
+     "rtest_raddenest")
     )
