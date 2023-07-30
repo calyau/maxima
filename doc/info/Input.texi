@@ -335,15 +335,15 @@ The user can modify these variables, either to replace the default values or to
 append additional directories.  For example,
 
 @example
-file_search_maxima: ["/usr/local/foo/###.mac",
-    "/usr/local/bar/###.mac"]$
+file_search_maxima: ["/usr/local/foo/*.mac",
+    "/usr/local/bar/*.mac"]$
 @end example
 
 replaces the default value of @code{file_search_maxima}, while
 
 @example
 file_search_maxima: append (file_search_maxima,
-    ["/usr/local/foo/###.mac", "/usr/local/bar/###.mac"])$
+    ["/usr/local/foo/*.mac", "/usr/local/bar/*.mac"])$
 @end example
 
 appends two additional directories.  It may be convenient to put such an
@@ -351,20 +351,28 @@ expression in the file @code{maxima-init.mac} so that the file search path is
 assigned automatically when Maxima starts.
 See also @ref{Introduction for Runtime Environment}.
 
-Multiple filename extensions and multiple paths can be specified by special 
-``wildcard'' constructions.  The string @code{###} expands into the sought-after
-name, while a comma-separated list enclosed in curly braces
-@code{@{foo,bar,baz@}} expands into multiple strings.  For example, supposing
-the sought-after name is @code{neumann},
+Each element of the search list is a Common Lisp wildcard pathname.
+Briefly, a wildcard filename looks like @code{"*.lisp"}, which matches
+any filename with an extension of @code{"lisp"}.  A directory
+component of @code{*} matches any directory in the current directory,
+and @code{**} matches any directory and subdirectories in the current
+directory.
 
-@example
-"/home/@{wfs,gcj@}/###.@{lisp,mac@}"
-@end example
+So, @code{file_search_maxima} includes
+@code{"/home/username/.maxima/**/*.mac"}.  This means look in all
+subdirectories of @code{"/home/username/.maxima/"} for files with
+extension @code{"mac"}.  This includes subdirectories of
+subdirectories.  Thus, @code{load("file")} will find
+@code{"/home/username/.maxima/dir1/subdir1/file.mac"}.
 
-@flushleft
-expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
-@code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
-@end flushleft
+To only search for a single level of subdirectories, use
+@code{"/home/username/.maxima/*/*.mac"}.  This means Maxima will not
+find the file @code{"/home/username/.maxima/dir1/subdir1/file.mac"}
+when Maxima tries to, say, @code{load("file")}.
+
+Further information about Common Lisp pathnames maybe be found in
+@url{http://www.lispworks.com/documentation/HyperSpec/Body/19_b.htm,
+CLHS Section 19.2: Pathnames}.
 
 @opencatbox{Categories:}
 @category{File input}
