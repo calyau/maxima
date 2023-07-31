@@ -23,6 +23,7 @@ Changes in the Windows installer:
 ---------------------------------
  * Update Gnuplot
  * Update ABCL
+ * Update wxMaxima
 
 Bug fixes for numbered bugs:
 ----------------------------
