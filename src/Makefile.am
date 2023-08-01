@@ -521,7 +521,6 @@ endif
 	cp $(srcdir)/autol.lisp binary-abcl
 	cp $(srcdir)/init-cl.lisp binary-abcl
 	cp $(srcdir)/max_ext.lisp binary-abcl
-	cp share-subdirs.lisp binary-abcl
 	cp autoconf-variables.lisp binary-abcl
 	cp $(ABCL_JAR) binary-abcl/abcl.jar
 	cp $(srcdir)/../lisp-utils/defsystem.lisp binary-abcl
