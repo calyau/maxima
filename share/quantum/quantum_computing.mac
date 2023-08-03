@@ -2,7 +2,7 @@
    Quantum Computing Simulator for Maxima
    Copyright (C) 2021 Jaime E. Villate
 
-   Time-stamp: "2022-03-19 13:52:00 villate"
+   Time-stamp: "2023-08-03 08:43:43 villate"
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -345,6 +345,6 @@ qmatrix[Z]: matrix([1,0],[0,-1])$
 qmatrix[H]: matrix([1,1],[1,-1])/sqrt(2)$
 qmatrix[S]: matrix([1,0],[0,%i])$
 qmatrix[T]: matrix([1,0],[0,exp(%i*%pi/4)])$
-Rx(ang) :=  matrix([cos(ang/2),-%i*sin(ang/2)],[%i*sin(ang/2),cos(ang/2)])$
+Rx(ang) :=  matrix([cos(ang/2),-%i*sin(ang/2)],[-%i*sin(ang/2),cos(ang/2)])$
 Ry(ang) :=  matrix([cos(ang/2),-sin(ang/2)],[sin(ang/2),cos(ang/2)])$
 Rz(ang) :=  matrix([cos(ang/2)-%i*sin(ang/2),0],[0,cos(ang/2)+%i*sin(ang/2)])$
