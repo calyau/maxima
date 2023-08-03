@@ -1085,7 +1085,7 @@ ignoring dummy variables and array indices."
 	      (cond ((memq ans '($inf $minf $infinity))
 	              (stirling (cadr e)))
 				((eq ans '$zeroa)
-				  (add (div 1 (cadr e)) (mul -1 '$%gamma) (mul '$janet (cadr e))))
+				  (add (div 1 (cadr e)) (mul -1 '$%gamma)))
 				((and (integerp ans) (< ans 0))
 				 (div (if (oddp ans) -1 1)
 				      (mul (ftake 'mfactorial (mul -1 ans)) (sub (cadr e) ans))))
