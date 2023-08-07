@@ -299,7 +299,6 @@
       ((mlist simp) 9 10 11))
      "rtest_fft"
      "rtest_rfft"
-     "rtest_decfp"
      "rtest_wrstcse"
      ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
      #-(or ecl abcl)
@@ -312,5 +311,8 @@
       ;; Tested with acl 10.1
       #+allegro
       ((mlist simp) 1 6 8 10 12 14))
-     ((mlist simp) "rtest_raddenest" ((mlist simp) 121)))
-    )
+    ((mlist simp) "rtest_raddenest" ((mlist simp) 121))
+    ;; This test must be last (for now).  It breaks raddenest, at
+    ;; least.  See bug #4170.
+    "rtest_decfp"
+    ))
