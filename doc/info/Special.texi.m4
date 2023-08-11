@@ -562,8 +562,8 @@ See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 @anchor{airy_dai}
 @deffn {Function} airy_dai (@var{x})
 The derivative of the Airy function 
-m4_math(<<<{\rm Ai}(x)>>>,Ai(x))
-:
+m4_mathpunc(<<<:>>>,<<<{\rm Ai}(x)>>>,<<<Ai(x)>>>)
+
 
 m4_displaymath(
 <<<{\rm airy\_dai}(x) = {d\over dx}{\rm Ai}(x)>>>,
@@ -596,8 +596,8 @@ See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 @anchor{airy_dbi}
 @deffn {Function} airy_dbi (@var{x})
 The derivative of the Airy function 
-m4_math(<<<{\rm Bi}(x)>>>, Bi(x)>>>)
-:
+m4_mathpunc(<<<:>>>,<<<{\rm Bi}(x)>>>, <<<Bi(x)>>>)
+
 
 m4_displaymath(
 <<<{\rm airy\_dbi}(x) = {d\over dx}{\rm Bi}(x)>>>,

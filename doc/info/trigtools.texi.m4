@@ -520,8 +520,8 @@ We have 10 solutions from [0, pi].
 @end example
 
 Equation we multiply by 
-m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>)
-:
+m4_mathpunc(:, <<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>)
+
 
 @example
 (%i25) eq*2*sin(x)*cos(2*x);
@@ -561,8 +561,8 @@ m4_mathdot(<<<\cos 2x = 0>>>, <<<cos(2*x) = 0>>>)
 @end example
 
 We find 10 solutions from 
-m4_math(<<<[0, \pi]>>>,<<<[0, %pi]>>>)
-:
+m4_mathpunc(:,<<<[0, \pi]>>>,<<<[0, %pi]>>>)
+
 @example
 @group
 (%i32) union(S1,S2)$ setdifference(%,S3)$ setdifference(%,S4);
