@@ -390,7 +390,9 @@ m4_displaymath(
 <<<scaled_bessel_i(v,z) = exp(-abs(z)) * bessel_i(v,z).>>>)
 
 This function is particularly useful
-for calculating m4_math(<<<I_v(z)>>>,<<<bessel_i>>>) for large @math{z}, which is large.
+for calculating
+m4_math(<<<I_v(z)>>>,<<<bessel_i>>>) 
+for large @math{z}, which is large.
 However, maxima does not otherwise know much about this function.  For
 symbolic work, it is probably preferable to work with the expression
 @code{exp(-abs(z))*bessel_i(v, z)}.
@@ -425,7 +427,9 @@ Identical to @code{scaled_bessel_i(1,z)}.
 @c -----------------------------------------------------------------------------
 @anchor{%s}
 @deffn {Function} %s [@var{u},@var{v}] (@var{z}) 
-Lommel's little m4_math(<<<s_{\mu,\nu}(z)>>>, <<<s[u,v](z)>>>) function.  
+Lommel's little
+m4_math(<<<s_{\mu,\nu}(z)>>>, <<<s[u,v](z)>>>) 
+function.  
 (@urldlmf{11.9.E3})(G&R 8.570.1).
 
 This Lommel function is the particular solution of the inhomogeneous
@@ -455,13 +459,19 @@ m4_displaymath(
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} slommel [@var{u},@var{v}] (@var{z}) 
-Lommel's big m4_math(<<<S_{\mu,\nu}(z)>>>, <<<S[u,v](z)>>>) function.  
+Lommel's big
+m4_math(<<<S_{\mu,\nu}(z)>>>, <<<S[u,v](z)>>>)
+function.  
 (@urldlmf{11.9.E5})(G&R 8.570.2).
 
 Lommels big S function is another particular solution of the
 inhomogeneous Bessel differential equation
 (@pxref{%s}) defined for all values
-of m4_math(\mu, u) and m4_math(\nu, v), where
+of
+m4_math(\mu, u)
+and
+m4_mathcomma(\nu, v) 
+where
 
 m4_displaymath(
 <<<\eqalign{
@@ -471,7 +481,9 @@ S_{\mu,\nu}(z) = s_{\mu,\nu}(z) + 2^{\mu-1} & \Gamma\left({\mu\over 2} + {\nu\ov
 <<<@math{slommel[u,v](z) = %s[u,v](z) + 2^(u-1)*gamma(u/2+v/2+1/2)*gamma(u/2-v/2+1/2)
 * (sin(1/2*(u-v)*%pi)*bessel_j(v,z) - cos(1/2*(u-v)*%pi)*bessel_y(v,z))}>>>)
 
-When m4_math(<<<\mu\pm \nu>>>, u+/-v)) is an odd
+When
+m4_math(<<<\mu\pm \nu>>>, u+/-v)
+is an odd
 negative integer, the limit must be used.
 
 @opencatbox{Categories:}
@@ -486,7 +498,11 @@ negative integer, the limit must be used.
 @section Airy Functions
 @c -----------------------------------------------------------------------------
 
-The Airy functions m4_math(<<<{\rm Ai}(x)>>>,<<<Ai(x)>>>) and m4_math(<<<{\rm Bi}(x)>>>,<<<Bi(x)>>>) are defined in Abramowitz and Stegun,
+The Airy functions
+m4_math(<<<{\rm Ai}(x)>>>,<<<Ai(x)>>>) 
+and 
+m4_math(<<<{\rm Bi}(x)>>>,<<<Bi(x)>>>) 
+are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, @urlaands{Section 10.4, 446} and @urldlmf{9}.
 
 The Airy differential equation is:
@@ -495,15 +511,34 @@ m4_displaymath(
 <<<{d^2 y\over dx^2} - xy = 0>>>,
 <<<@math{diff (y(x), x, 2) - x y(x) = 0}>>>)
 
-The numerically satisfactory pair of solutions (@urldlmf{9.2#T1}) on the real line are m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) and m4_mathdot(<<<y = {\rm Bi}(x)>>>,<<<y = Bi(x)>>>)
-These two solutions are oscillatory for @math{x < 0}.  m4_math({\rm Ai}(x), Ai(x)) is
-the solution subject to the condition that m4_math(y\rightarrow 0,
-y->0) as m4_math(<<<x\rightarrow +\infty,>>>, <<<x ->
-+inf,>>>) and m4_math({\rm Bi}(x), Bi(x)) is
+The numerically satisfactory pair of solutions (@urldlmf{9.2#T1}) on
+the real line are 
+m4_math(<<<y = {\rm Ai}(x)>>>,<<<y = Ai(x)>>>) 
+and 
+m4_mathdot(<<<y = {\rm Bi}(x)>>>,<<<y = Bi(x)>>>)
+These two solutions are oscillatory for @math{x < 0}.  
+m4_math({\rm Ai}(x), Ai(x)) 
+is
+the solution subject to the condition that 
+m4_math(y\rightarrow 0, y->0) 
+as 
+m4_math(<<<x\rightarrow +\infty,>>>, <<<x -> +inf,>>>)
+and 
+m4_math({\rm Bi}(x), Bi(x))
+is
 the second solution with the
-same amplitude as m4_math({\rm Ai}(x),Ai(x)) as m4_math(x\rightarrow-\infty,x->minf) which differs in phase
-by m4_mathdot(\pi/2,%pi/2)  Also, m4_math({\rm Bi}(x),Bi(x)) is unbounded
-as m4_mathdot(x\rightarrow +\infty, x->+inf)
+same amplitude as 
+m4_math({\rm Ai}(x),Ai(x)) 
+as 
+m4_math(x\rightarrow-\infty,x->minf) 
+which differs in phase
+by 
+m4_mathdot(\pi/2,%pi/2)
+Also, 
+m4_math({\rm Bi}(x),Bi(x))
+is unbounded
+as 
+m4_mathdot(x\rightarrow +\infty, x->+inf)
 
 
 If the argument @math{x} is a real or complex floating point 
@@ -511,7 +546,9 @@ number, the numerical value of the function is returned.
 
 @anchor{airy_ai}
 @deffn {Function} airy_ai (@var{x})
-The Airy function m4_mathdot(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>)  See @urlaands{eqn 10.4.2, 446} and @urldlmf{9}.
+The Airy function 
+m4_mathdot(<<<{\rm Ai}(x)>>>, <<<Ai(x)>>>)
+See @urlaands{eqn 10.4.2, 446} and @urldlmf{9}.
 
 See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 
@@ -524,7 +561,9 @@ See also @mrefcomma{airy_bi} @mrefcomma{airy_dai} and @mrefdot{airy_dbi}
 @c -----------------------------------------------------------------------------
 @anchor{airy_dai}
 @deffn {Function} airy_dai (@var{x})
-The derivative of the Airy function m4_math(<<<{\rm Ai}(x)>>>,Ai(x)):
+The derivative of the Airy function 
+m4_math(<<<{\rm Ai}(x)>>>,Ai(x))
+:
 
 m4_displaymath(
 <<<{\rm airy\_dai}(x) = {d\over dx}{\rm Ai}(x)>>>,
@@ -541,7 +580,9 @@ See @mrefdot{airy_ai}
 @c -----------------------------------------------------------------------------
 @anchor{airy_bi}
 @deffn {Function} airy_bi (@var{x})
-The Airy function m4_math(<<<{\rm Bi}(x)>>>, Bi(x)).  See @urlaands{eqn 10.4.3, 446} and  @urldlmf{9}.
+The Airy function 
+m4_mathdot(<<<{\rm Bi}(x)>>>, Bi(x))
+See @urlaands{eqn 10.4.3, 446} and  @urldlmf{9}.
 
 See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 
@@ -554,7 +595,9 @@ See @mrefcomma{airy_ai} and @mrefdot{airy_dbi}
 @c -----------------------------------------------------------------------------
 @anchor{airy_dbi}
 @deffn {Function} airy_dbi (@var{x})
-The derivative of the Airy function m4_math(<<<{\rm Bi}(x)>>>, Bi(x)>>>):
+The derivative of the Airy function 
+m4_math(<<<{\rm Bi}(x)>>>, Bi(x)>>>)
+:
 
 m4_displaymath(
 <<<{\rm airy\_dbi}(x) = {d\over dx}{\rm Bi}(x)>>>,
@@ -690,7 +733,9 @@ m4_displaymath(
 
 Maxima simplifies @code{gamma} for positive integer and positive and negative 
 rational numbers. For half integral values the result is a rational number
-times m4_math(<<<\sqrt{\pi}>>>,<<<sqrt(%pi)>>>). The simplification for integer values is controlled by 
+times 
+m4_mathdot(<<<\sqrt{\pi}>>>,<<<sqrt(%pi)>>>)
+The simplification for integer values is controlled by 
 @code{factlim}. For integers greater than @code{factlim} the numerical result of 
 the factorial function, which is used to calculate @code{gamma}, will overflow. 
 The simplification for rational numbers is controlled by @code{gammalim} to 
@@ -1180,7 +1225,12 @@ m4_displaymath(
 @c @end group
 @c @end example
 
-This definition is possible for m4_math(<<<{\rm Re}(a) > 0>>>, <<<realpart(a)>0>>>) and m4_math(<<<{\rm Re}(b) > 0>>>, <<<realpart(b)>0>>>) and m4_math(<<<|z| < 1>>>, <<<abs(z)<1>>>).
+This definition is possible for 
+m4_math(<<<{\rm Re}(a) > 0>>>, <<<realpart(a)>0>>>) 
+and 
+m4_math(<<<{\rm Re}(b) > 0>>>, <<<realpart(b)>0>>>) 
+and 
+m4_mathdot(<<<|z| < 1>>>, <<<abs(z)<1>>>)
 For other values the incomplete beta function can be 
 defined through a generalized hypergeometric function:
 
@@ -1191,7 +1241,10 @@ defined through a generalized hypergeometric function:
 (See @url{https://functions.wolfram.com/GammaBetaErf/Beta3/} for a complete definition of the incomplete beta
 function.)
 
-For negative integers @math{a = -n} and positive integers @math{b=m} with m4_math(<<<m \le n>>>, <<<m<=n>>>) the incomplete beta function is defined through
+For negative integers @math{a = -n} and positive integers @math{b=m}
+with 
+m4_math(<<<m \le n>>>, <<<m<=n>>>) 
+the incomplete beta function is defined through
 
 m4_displaymath(
 <<<z^{n-1}\sum_{k=0}^{m-1} {{(1-m)_k z^k} \over {k! (n-k)}}>>>,
@@ -1222,8 +1275,11 @@ For @var{a} a positive integer, @code{beta_incomplete} simplifies for any
 argument @var{b} and @var{z} and for @var{b} a positive integer for any 
 argument @var{a} and @var{z}, with the exception of @var{a} a negative integer.
 
-For @math{z=0} and m4_math(<<<{\rm Re}(a) > 0>>>, <<<realpart(a)>0>>>), @code{beta_incomplete} has the 
-specific value zero. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<realpart(b)>0>>>), 
+For @math{z=0} and 
+m4_mathcomma(<<<{\rm Re}(a) > 0>>>, <<<realpart(a)>0>>>)
+@code{beta_incomplete} has the 
+specific value zero. For @math{z=1} and 
+m4_mathcomma(<<<{\rm Re}(b) > 0>>>, <<<realpart(b)>0>>>)
 @code{beta_incomplete} simplifies to the beta function @code{beta(a,b)}.
 
 Maxima evaluates @code{beta_incomplete} numerically for real and complex values 
@@ -1390,9 +1446,11 @@ As for @code{beta_incomplete} this definition is not complete. See
 @code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
 integer.
 
-For @math{z=0} and m4_math(<<<{\rm Re}(a)>0>>>, <<<realpart(a) > 0>>>),
+For @math{z=0} and 
+m4_mathcomma(<<<{\rm Re}(a)>0>>>, <<<realpart(a) > 0>>>)
 @code{beta_incomplete_regularized} has 
-the specific value 0. For @math{z=1} and m4_math(<<<{\rm Re}(b) > 0>>>, <<<realpart(b)>0>>>), 
+the specific value 0. For @math{z=1} and 
+m4_mathcomma(<<<{\rm Re}(b) > 0>>>, <<<realpart(b)>0>>>) 
 @code{beta_incomplete_regularized} simplifies to 1.
 
 Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
@@ -1523,9 +1581,21 @@ m4_displaymath(
 Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b} 
 a positive integer.
 
-For m4_math(<<<{\rm Re}(a) > 0>>>, <<<realpart(a)>0>>>) and m4_math(z_1 = 0, z1=0) or m4_math(z_2 = 0, z2=0), Maxima simplifies
+For 
+m4_math(<<<{\rm Re}(a) > 0>>>, <<<realpart(a)>0>>>) 
+and 
+m4_math(z_1 = 0, z1=0)
+or 
+m4_mathcomma(z_2 = 0, z2=0)
+Maxima simplifies
 @code{beta_incomplete_generalized} to @code{beta_incomplete}.
-For m4_math({\rm Re}(b) > 0, realpart(b)>0) and m4_math(z_1 = 1, z1=1) or m4_math(z_2 = 1, z2=1), Maxima simplifies to an 
+For 
+m4_math({\rm Re}(b) > 0, realpart(b)>0) 
+and 
+m4_math(z_1 = 1, z1=1) 
+or 
+m4_mathcomma(z_2 = 1, z2=1) 
+Maxima simplifies to an 
 expression with @code{beta} and @code{beta_incomplete}.
 
 Maxima evaluates @code{beta_incomplete_regularized} for real and complex values 
@@ -1697,14 +1767,18 @@ Thus, @code{psi[0](@var{x})} is the first derivative,
 
 Maxima can compute some exact values for rational args as well for
 float and bfloat args.  Several variables control what range of
-rational args m4_math(<<<\psi^{(n)}(x)>>>,<<<psi[n](x)>>>)) will return an
+rational args 
+m4_math(<<<\psi^{(n)}(x)>>>,<<<psi[n](x)>>>) 
+will return an
 exact value, if possible.  See @mref{maxpsiposint},
 @mref{maxpsinegint}, @mref{maxpsifracnum}, and
 @mrefdot{maxpsifracdenom} That is, @math{x} must lie between
 @code{maxpsinegint} and @code{maxpsiposint}.  If the absolute value of
 the fractional part of @math{x} is rational and has a numerator less
 than @code{maxpsifracnum} and has a denominator less than
-@code{maxpsifracdenom}, m4_math(<<<\psi^{(0)}(x)>>>,<<<psi[0](x)>>>) will
+@code{maxpsifracdenom}, 
+m4_math(<<<\psi^{(0)}(x)>>>,<<<psi[0](x)>>>) 
+will
 return an exact value.
 
 The function @mref{bfpsi} in the @code{bffac} package can compute
@@ -1739,7 +1813,9 @@ numerical values.
 Default value: 20
 
 @code{maxpsiposint} is the largest positive integer value for
-which m4_math(<<<\psi^{(n)}(m)>>>,<<<psi[n](x)>>>) gives an exact value for
+which 
+m4_math(<<<\psi^{(n)}(m)>>>,<<<psi[n](x)>>>)
+gives an exact value for
 rational @math{x}.
 
 @example
@@ -1771,9 +1847,13 @@ rational @math{x}.
 Default value: -10
 
 @code{maxpsinegint} is the most negative value for
-which m4_math(<<<\psi^{(0)}(x)>>>,<<<psi[0](x)>>>) will try to compute an exact
+which 
+m4_math(<<<\psi^{(0)}(x)>>>,<<<psi[0](x)>>>) 
+will try to compute an exact
 value for rational @math{x}.  That is if @math{x} is less than
-@code{maxpsinegint}, m4_math(<<<\psi^{(n)}(x)>>>,<<<psi[n](x)>>>) will not
+@code{maxpsinegint}, 
+m4_math(<<<\psi^{(n)}(x)>>>,<<<psi[n](x)>>>) 
+will not
 return simplified answer, even if it could.
 
 @example
@@ -1810,7 +1890,9 @@ Default value: 6
 
 Let @math{x} be a rational number of the form @math{p/q}.
 If @math{p} is greater than @code{maxpsifracnum},
-then m4_math(<<<\psi^{(0)}(x)>>>,<<<@code{psi[0](x)}>>>) will not try to
+then 
+m4_math(<<<\psi^{(0)}(x)>>>,<<<@code{psi[0](x)}>>>) 
+will not try to
 return a simplified value.
 
 @example
@@ -1846,7 +1928,9 @@ Default value: 6
 
 Let @math{x} be a rational number of the form @math{p/q}.
 If @math{q} is greater than @code{maxpsifracdenom},
-then m4_math(<<<\psi^{(0)}(x)>>>,<<<@code{psi[@var{0}](@var{x})}>>>) will
+then 
+m4_math(<<<\psi^{(0)}(x)>>>,<<<@code{psi[@var{0}](@var{x})}>>>) 
+will
 not try to return a simplified value.
 
 @example
@@ -1944,7 +2028,8 @@ m4_displaymath(
 <<<E_1(z) = \int_z^\infty {e^{-t} \over t} dt>>>,
 <<<@math{integrate(exp(-t)/t, t, z, inf)}>>>)
 
-with m4_math(<<<\left| \arg z \right| < \pi>>>, <<<abs(arg z) < %pi>>>). 
+with 
+m4_mathdot(<<<\left| \arg z \right| < \pi>>>, <<<abs(arg z) < %pi>>>)
 (@urlaands{eqn 5.1.1, 228}) and (@urldlmf{6.2E2})
 
 This can be written in terms of other functions.  @xref{expintrep} for examples.
@@ -1997,7 +2082,9 @@ The Exponential Integral En(z) (@urlaands{eqn 5.1.4, 228}) defined as
 m4_displaymath(
 <<<E_n(z) = \int_1^\infty {e^{-zt} \over t^n} dt>>>,
 <<<@math{integrate(exp(-z*t)/t^n, t, 1, inf)}>>>)
-with m4_math(<<<{\rm Re}(z) > 1>>>,<<<realpart(z) > 1>>>) and @math{n} a
+with 
+m4_math(<<<{\rm Re}(z) > 1>>>,<<<realpart(z) > 1>>>) 
+and @math{n} a
 non-negative integer.
 
 For half-integral orders, this can be written in terms of @mref{erfc}
@@ -2035,7 +2122,8 @@ m4_displaymath(
 <<<{\rm Ci}(z) = \gamma + \log z + \int_0^z {{\cos t - 1} \over t} dt>>>,
 <<<@math{%gamma + log(z) + integrate((cos(t) - 1)/t, t, 0, z)}>>>)
 
-with m4_math(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>).
+with 
+m4_mathdot(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>)
 
 This can be written in terms of other functions.  @xref{expintrep} for examples.
 
@@ -2071,7 +2159,8 @@ m4_displaymath(
 <<<{\rm Chi}(z) = \gamma + \log z + \int_0^z {{\cosh t - 1} \over t} dt>>>,
 <<<@math{%gamma + log(z) + integrate((cosh(t) - 1)/t, t, 0, z)}>>>)
 
-with m4_math(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>).
+with 
+m4_mathdot(<<<|\arg z| < \pi>>>, <<<abs(arg z) < %pi>>>)
 
 This can be written in terms of other functions.  @xref{expintrep} for examples.
 
@@ -2404,10 +2493,14 @@ m4_displaymath(
 
 (@urlaands{eqn 7.3.1, 300}) and (@urldlmf{7.2.E7}).
 
-The simplification m4_math(<<<C(-x) = -C(x)>>>, <<<@code{fresnel_c(-x) = -fresnel_c(x)}>>>) is applied when
+The simplification 
+m4_math(<<<C(-x) = -C(x)>>>, <<<@code{fresnel_c(-x) = -fresnel_c(x)}>>>) 
+is applied when
 flag @mref{trigsign} is true.
 
-The simplification m4_math(<<<C(ix) = iC(x)>>>, <<<@code{fresnel_c(%i*x) =  %i*fresnel_c(x)}>>>) is applied when
+The simplification 
+m4_math(<<<C(ix) = iC(x)>>>, <<<@code{fresnel_c(%i*x) = %i*fresnel_c(x)}>>>) 
+is applied when
 flag @mref{%iargs} is true.
 
 See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
@@ -2425,10 +2518,14 @@ m4_displaymath(
 
 (@urlaands{eqn 7.3.2, 300}) and (@urldlmf{7.2.E8}).
 
-The simplification m4_math(<<<S(-x) = -S(x)>>>, <<<@code{fresnel_s(-x) = -fresnel_s(x)}>>>) is applied when
+The simplification 
+m4_math(<<<S(-x) = -S(x)>>>, <<<@code{fresnel_s(-x) = -fresnel_s(x)}>>>) 
+is applied when
 flag @mref{trigsign} is true.
 
-The simplification m4_math(<<<S(ix) = iS(x)>>>, <<<@code{fresnel_s(%i*x) =  -%i*fresnel_s(x)}>>>) is applied when
+The simplification 
+m4_math(<<<S(ix) = iS(x)>>>, <<<@code{fresnel_s(%i*x) = -%i*fresnel_s(x)}>>>) 
+is applied when
 flag @mref{%iargs} is true.
 
 See flags @mref{erf_representation} and @mref{hypergeometric_representation}.
@@ -2592,7 +2689,9 @@ error functions.
 
 The Struve functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, @urlaands{Chapter 12, 496} and (@urldlmf{11}).
-The Struve Function m4_math(<<<{\bf H}_{\nu}(z)>>>,<<<H[v](z)>>>) is a particular solution
+The Struve Function 
+m4_math(<<<{\bf H}_{\nu}(z)>>>,<<<H[v](z)>>>) 
+is a particular solution
 of the differential equation:
 m4_displaymath(
 <<<z^2 {d^2 w \over dz^2} + z {dw \over dz} + (z^2-\nu^2)w =
@@ -2607,7 +2706,9 @@ m4_displaymath(
 @c -----------------------------------------------------------------------------
 @anchor{struve_h}
 @deffn {Function} struve_h (@var{v}, @var{z})
-The Struve Function H of order m4_math(<<<\nu>>>, v) and argument @math{z}:
+The Struve Function H of order 
+m4_math(<<<\nu>>>, v) 
+and argument @math{z}:
 
 m4_displaymath(
 <<<{\bf H}_{\nu}(z) = \left({z\over 2}\right)^{\nu+1}
@@ -2628,7 +2729,9 @@ See @mrefdot{besselexpand}
 @c -----------------------------------------------------------------------------
 @anchor{struve_l}
 @deffn {Function} struve_l (@var{v}, @var{z})
-The Modified Struve Function L of order m4_math(<<<\nu>>>, v) and argument @math{z}:
+The Modified Struve Function L of order 
+m4_math(<<<\nu>>>, v) 
+and argument @math{z}:
 m4_displaymath(
 <<<{\bf L}_{\nu}(z) = -ie^{-{i\nu\pi\over 2}} {\bf H}_{\nu}(iz)>>>,
 <<<@math{struve_l(v,z) = %i*exp(-%i*v*%pi/2)*struve_h(v,z)}>>>)
@@ -2689,7 +2792,9 @@ where @math{U(a,b,z)} is Kummer's second solution of the confluent hypergeometri
 
 
 @deffn {Function} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
-The m4_math(<<<_{p}F_{q}(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>,<<<pFq(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>) hypergeometric function,
+The 
+m4_math(<<<_{p}F_{q}(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>,<<<pFq(a_1,a_2,...,a_p;b_1,b_2,...,b_q;z)>>>) 
+hypergeometric function,
 where @var{a} a list of length @var{p} and 
 @var{b} a list of length @var{q}.
 @opencatbox{Categories:}
@@ -2800,7 +2905,9 @@ is a list of the denominator parameters.
 If @code{hgfred} cannot simplify the hypergeometric function, it returns
 an expression of the form @code{%f[p,q]([a], [b], x)} where @var{p} is
 the number of elements in @var{a}, and @var{q} is the number of elements
-in @var{b}.  This is the usual m4_math(<<<_pF_q>>>,<<<@code{pFq}>>>) generalized hypergeometric
+in @var{b}.  This is the usual 
+m4_math(<<<_pF_q>>>,<<<@code{pFq}>>>) 
+generalized hypergeometric
 function. 
 
 @example
@@ -2869,7 +2976,9 @@ The solution of the Weber differential equation
 m4_displaymath(
 <<<y''(z) + \left(\nu + {1\over 2} - {1\over 4} z^2\right) y(z) = 0>>>,
 <<<diff(y(z), z, 2) + (v+1/2-z^2/4)*y(z) = 0>>>)
-has two independent solutions, one of which is m4_math(<<<D_{\nu}(z)>>>, <<<@code{parabolic_cylinder_d(v,z)}>>>), the parabolic cylinder d function.
+has two independent solutions, one of which is 
+m4_mathcomma(<<<D_{\nu}(z)>>>, <<<@code{parabolic_cylinder_d(v,z)}>>>) 
+the parabolic cylinder d function.
 
 Function @mref{specint} can return expressions containing
 @code{parabolic_cylinder_d(v,z)} if the option variable
@@ -2899,11 +3008,16 @@ m4_displaymath(
 
 @deffn {Function} generalized_lambert_w (@var{k}, @var{z})
 The @var{k}-th branch of Lambert's W function W(z) (@urldlmf{4.13}), the solution
-of m4_math(<<<z=W(z)e^{W(z)}>>>,z = W(z) * exp(W(z))).
+of 
+m4_mathdot(<<<z=W(z)e^{W(z)}>>>,z = W(z) * exp(W(z)))
 
-The principal branch, denoted m4_math(W_p(z),Wp(z)) in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
+The principal branch, denoted 
+m4_math(W_p(z),Wp(z)) 
+in DLMF, is @code{lambert_w(z) = generalized_lambert_w(0,z)}.
 
-The other branch with real values, denoted m4_math(W_m(z), Wm(z)) in DLMF, is @code{generalized_lambert_w(-1,z)}.
+The other branch with real values, denoted 
+m4_math(W_m(z), Wm(z)) 
+in DLMF, is @code{generalized_lambert_w(-1,z)}.
 @opencatbox{Categories:}
 @category{Special functions}
 @closecatbox

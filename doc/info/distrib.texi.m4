@@ -126,7 +126,8 @@ m4_displaymath(
                        minf
 @end example
 >>>)
-which equals the probability m4_math(<<<{\rm Pr}(X \le x)>>>, <<<Pr(X <= x)>>>).
+which equals the probability 
+m4_mathdot(<<<{\rm Pr}(X \le x)>>>, <<<Pr(X <= x)>>>)
 
 The @var{mean} value is a localization parameter and is defined as
 m4_displaymath(
@@ -159,7 +160,9 @@ m4_displaymath(
 @end example
 >>>)
 which is a positive real number. The square root of the variance is
-the @var{standard deviation}, m4_math(<<<D[x]=\sqrt{V[X]}>>>, <<<D[X]=sqrt(V[X])>>>), and it is another measure of variation.
+the @var{standard deviation}, 
+m4_mathcomma(<<<D[x]=\sqrt{V[X]}>>>, <<<D[X]=sqrt(V[X])>>>) 
+and it is another measure of variation.
 
 The @var{skewness coefficient} is a measure of non-symmetry,
 m4_displaymath(
@@ -353,12 +356,16 @@ Maxima knows the following kinds of continuous distributions.
 @subsection Normal Random Variable
 
 Normal random variables (also called Gaussian) is denoted
-by m4_Normal_RV(m, s) where
+by 
+m4_Normal_RV(m, s) 
+where
 @math{m} is the mean and @math{s > 0} is the standard deviation.
 
 @anchor{pdf_normal}
 @deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the density function of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -385,7 +392,9 @@ m4_displaymath(
 
 @anchor{cdf_normal}
 @deffn {Function} cdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a m4_Normal_RV(m,s) random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
 The cdf can be written analytically:
 m4_displaymath(
@@ -427,7 +436,9 @@ See also @mrefdot{erf}
 
 @anchor{quantile_normal}
 @deffn {Function} quantile_normal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a m4_Normal_RV(m,s) random variable, with @math{s>0}; in other words, this is the inverse of @mrefdot{cdf_normal} Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}; in other words, this is the inverse of @mrefdot{cdf_normal} Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -457,7 +468,9 @@ Returns the @var{q}-quantile of a m4_Normal_RV(m,s) random variable, with @math{
 
 @anchor{mean_normal}
 @deffn {Function} mean_normal (@var{m},@var{s})
-Returns the mean of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -477,7 +490,9 @@ m4_displaymath(
 
 @anchor{var_normal}
 @deffn {Function} var_normal (@var{m},@var{s})
-Returns the variance of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -497,7 +512,9 @@ m4_displaymath(
 
 @anchor{std_normal}
 @deffn {Function} std_normal (@var{m},@var{s})
-Returns the standard deviation of a m4_Normal_RV(m,s) random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -517,7 +534,9 @@ m4_displaymath(
 
 @anchor{skewness_normal}
 @deffn {Function} skewness_normal (@var{m},@var{s})
-Returns the skewness coefficient of a m4_Normal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -536,7 +555,9 @@ m4_displaymath(
 
 @anchor{kurtosis_normal}
 @deffn {Function} kurtosis_normal (@var{m},@var{s})
-Returns the kurtosis coefficient of a m4_Normal_RV(m,s) random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Normal_RV(m,s) 
+random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -559,7 +580,9 @@ m4_displaymath(
 @deffn {Function} random_normal (@var{m},@var{s}) @
 @fname{random_normal} (@var{m},@var{s},@var{n})
 
-Returns a m4_Normal_RV(m,s) random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Normal_RV(m,s) 
+random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is an implementation of the Box-Mueller algorithm, as described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
@@ -576,10 +599,16 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection Student's t Random Variable
 
 
-Student's t random variable is denoted by m4_Student_T_RV(n) where
+Student's t random variable is denoted by 
+m4_Student_T_RV(n) 
+where
 @math{n} is the degrees of freedom with @math{n > 0}.  If @math{Z} is
-a m4_Normal_RV(0,1) variable and @math{V} is an
-independent m4_math(\chi^2, chi^2) random variable with @math{n} degress of
+a 
+m4_Normal_RV(0,1) 
+variable and @math{V} is an
+independent 
+m4_math(\chi^2, chi^2) 
+random variable with @math{n} degress of
 freedom, then
 
 m4_displaymath(
@@ -590,7 +619,10 @@ has a Student's @math{t}-distribution with @math{n} degrees of freedom.
 
 @anchor{pdf_student_t}
 @deffn {Function} pdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the density function of a Student random variable m4_Student_T_RV(n), with @math{n>0} degrees of freedom. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a Student
+random variable 
+m4_Student_T_RV(n)
+, with @math{n>0} degrees of freedom. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -619,7 +651,10 @@ m4_displaymath(
 
 @anchor{cdf_student_t}
 @deffn {Function} cdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Student random variable m4_Student_T_RV(n), with @math{n>0} degrees of freedom.
+Returns the value at @var{x} of the distribution function of a Student
+random variable 
+m4_Student_T_RV(n)
+, with @math{n>0} degrees of freedom.
 
 The cdf is
 m4_displaymath(
@@ -637,7 +672,11 @@ F(x,n) = [
 @end example
 >>>)
 
-where m4_math(<<<t = n/(n+x^2)>>>, <<<t = n/(n+x^2)>>>) and m4_math(<<<I_t(a,b)>>>, <<<I_t(a,b)>>>) is the
+where 
+m4_math(<<<t = n/(n+x^2)>>>, <<<t = n/(n+x^2)>>>) 
+and 
+m4_math(<<<I_t(a,b)>>>, <<<I_t(a,b)>>>) 
+is the
 @ref{beta_incomplete_regularized} function.
 
 @c ===beg===
@@ -670,7 +709,9 @@ where m4_math(<<<t = n/(n+x^2)>>>, <<<t = n/(n+x^2)>>>) and m4_math(<<<I_t(a,b)>
 
 @anchor{quantile_student_t}
 @deffn {Function} quantile_student_t (@var{q},@var{n})
-Returns the @var{q}-quantile of a Student random variable m4_Student_T_RV(n), with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a Student random variable 
+m4_Student_T_RV(n)
+, with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -681,7 +722,9 @@ Returns the @var{q}-quantile of a Student random variable m4_Student_T_RV(n), wi
 
 @anchor{mean_student_t}
 @deffn {Function} mean_student_t (@var{n})
-Returns the mean of a Student random variable m4_Student_T_RV(n), with @math{n>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a Student random variable 
+m4_Student_T_RV(n)
+, with @math{n>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -700,7 +743,9 @@ m4_displaymath(
 
 @anchor{var_student_t}
 @deffn {Function} var_student_t (@var{n})
-Returns the variance of a Student random variable m4_Student_T_RV(n), with @math{n>2}.
+Returns the variance of a Student random variable 
+m4_Student_T_RV(n)
+, with @math{n>2}.
 
 The variance is
 m4_displaymath(
@@ -736,7 +781,9 @@ m4_displaymath(
 
 @anchor{std_student_t}
 @deffn {Function} std_student_t (@var{n})
-Returns the standard deviation of a Student random variable m4_Student_T_RV(n), with @math{n>2}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a Student random variable 
+m4_Student_T_RV(n)
+, with @math{n>2}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -759,7 +806,9 @@ m4_displaymath(
 
 @anchor{skewness_student_t}
 @deffn {Function} skewness_student_t (@var{n})
-Returns the skewness coefficient of a Student random variable m4_Student_T_RV(n), with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a Student random variable 
+m4_Student_T_RV(n)
+, with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -779,7 +828,9 @@ m4_displaymath(
 
 @anchor{kurtosis_student_t}
 @deffn {Function} kurtosis_student_t (@var{n})
-Returns the kurtosis coefficient of a Student random variable m4_Student_T_RV(n), with @math{n>4}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a Student random variable 
+m4_Student_T_RV(n)
+, with @math{n>4}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -803,12 +854,20 @@ m4_displaymath(
 @deffn {Function} random_student_t (@var{n}) @
 @fname{random_student_t} (@var{n},@var{m})
 
-Returns a Student random variate m4_Student_T_RV(n), with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a Student random variate 
+m4_Student_T_RV(n)
+, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @math{Z} is a
-normal random variable m4_Normal_RV(0,1) and @math{S^2} is
-a m4_math(\chi^2, chi squared) random variable with @math{n} degrees of
-freedom, m4_Chi2_RV(n), then
+normal random variable 
+m4_Normal_RV(0,1) 
+and @math{S^2} is
+a 
+m4_math(\chi^2, chi squared) 
+random variable with @math{n} degrees of
+freedom, 
+m4_Chi2_RV(n)
+, then
 
 m4_displaymath(
 <<<X={{Z}\over{\sqrt{{S^2}\over{n}}}}>>>,
@@ -822,7 +881,9 @@ m4_displaymath(
                      \  n   /
 @end example
 >>>)
-is a Student random variable with @math{n} degrees of freedom, m4_Student_T_RV(n).
+is a Student random variable with @math{n} degrees of freedom, 
+m4_Student_T_RV(n)
+.
 
 To make use of this function, write first @code{load("distrib")}.
 
@@ -840,8 +901,12 @@ Let @math{ncp} be the non-centrality parameter, @math{n} be the
 degrees of freedom for the non-central Student's @math{t} random
 variable.
 
-Then let @math{X} be a m4_Normal_RV(n,ncp) and @math{S^2} be an independent m4_math(\chi^2,
-chi squared) random variable with @math{n} degrees of freedom, the
+Then let @math{X} be a 
+m4_Normal_RV(n,ncp) 
+and @math{S^2} be an
+independent 
+m4_math(\chi^2, chi squared) 
+random variable with @math{n} degrees of freedom, the
 random variable
 m4_displaymath(
 <<<U = {X \over \sqrt{S^2\over n}}>>>,
@@ -852,7 +917,10 @@ parameter @math{ncp}.
 
 @anchor{pdf_noncentral_student_t}
 @deffn {Function} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the density function of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a noncentral
+Student random variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -903,7 +971,9 @@ B_n(x;\mu) &= {\sqrt{2}\mu x \over \sqrt{x^2+n}} {\Gamma\left({n\over
                                        2
 @end example
 >>>)
-and m4_math(\mu, mu) is the non-centrality parameter @math{ncp}.
+and 
+m4_math(\mu, mu) 
+is the non-centrality parameter @math{ncp}.
 
 Sometimes an extra work is necessary to get the final result.
 
@@ -954,7 +1024,10 @@ rat: replaced 160.6269176184973 by 178374907/1110492 = 160.626917618497
 
 @anchor{cdf_noncentral_student_t}
 @deffn {Function} cdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. This function has no closed form and it is numerically computed.
+Returns the value at @var{x} of the distribution function of a
+noncentral Student random variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. This function has no closed form and it is numerically computed.
 
 @c ===beg===
 @c load ("distrib")$
@@ -977,7 +1050,9 @@ Returns the value at @var{x} of the distribution function of a noncentral Studen
 
 @anchor{quantile_noncentral_student_t}
 @deffn {Function} quantile_noncentral_student_t (@var{q},@var{n},@var{ncp})
-Returns the @var{q}-quantile of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}; in other words, this is the inverse of @code{cdf_noncentral_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a noncentral Student random variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}; in other words, this is the inverse of @code{cdf_noncentral_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -988,7 +1063,9 @@ Returns the @var{q}-quantile of a noncentral Student random variable m4_Noncentr
 
 @anchor{mean_noncentral_student_t}
 @deffn {Function} mean_noncentral_student_t (@var{n},@var{ncp})
-Returns the mean of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a noncentral Student random variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -1006,7 +1083,9 @@ E[X] =    -----------------------
 @end example
 >>>)
 
-where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
+where 
+m4_math(\mu, mu) 
+is the noncentrality parameter @math{ncp}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -1035,7 +1114,9 @@ where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
 
 @anchor{var_noncentral_student_t}
 @deffn {Function} var_noncentral_student_t (@var{n},@var{ncp})
-Returns the variance of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a noncentral Student random variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -1053,7 +1134,9 @@ V[X] =   ------------ - --------------------
 @end example
 >>>)
 
-where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
+where 
+m4_math(\mu, mu) 
+is the noncentrality parameter @math{ncp}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1064,7 +1147,9 @@ where m4_math(\mu, mu) is the noncentrality parameter @math{ncp}.
 
 @anchor{std_noncentral_student_t}
 @deffn {Function} std_noncentral_student_t (@var{n},@var{ncp})
-Returns the standard deviation of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a noncentral Student random variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -1092,14 +1177,18 @@ D[X] =   sqrt(------------ - --------------------)
 
 @anchor{skewness_noncentral_student_t}
 @deffn {Function} skewness_noncentral_student_t (@var{n},@var{ncp})
-Returns the skewness coefficient of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>3} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a noncentral Student random
+variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>3} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 @c The TeX form is obtained from
 @c tex(skewness_noncentral_student_t(n,mu)).  Likewise the info form
 @c is just cut-n-pasted from maxima's terminal output.
 If @math{U} is a non-central Student's @math{t} random variable with
-@math{n} degrees of freedom and a noncentrality parameter m4_math(\mu,
-mu), the skewness is
+@math{n} degrees of freedom and a noncentrality parameter 
+m4_mathcomma(\mu, mu) 
+the skewness is
 m4_displaymath(
 <<<\eqalign{
 SK[U] &= 
@@ -1146,11 +1235,15 @@ SK[U] =
 
 @anchor{kurtosis_noncentral_student_t}
 @deffn {Function} kurtosis_noncentral_student_t (@var{n},@var{ncp})
-Returns the kurtosis coefficient of a noncentral Student random variable m4_Noncentral_T_RV(n,ncp), with @math{n>4} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a noncentral Student random
+variable 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>4} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load("distrib")}.
 
 If @math{U} is a non-central Student's @math{t} random variable with
-@math{n} degrees of freedom and a noncentrality parameter m4_math(\mu,
-mu), the kurtosis is
+@math{n} degrees of freedom and a noncentrality parameter 
+m4_mathcomma(\mu, mu) 
+the kurtosis is
 
 @c The formula we see can be basically derived by computing
 @c (kurtosis_noncentral_student_t(n,mu)+3)*var_noncentral_student_t(n,mu)^2,
@@ -1204,11 +1297,19 @@ KU[U] =
 @deffn {Function} random_noncentral_student_t (@var{n},@var{ncp}) @
 @fname{random_noncentral_student_t} (@var{n},@var{ncp},@var{m})
 
-Returns a noncentral Student random variate m4_Noncentral_T_RV(n,ncp), with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a noncentral Student random variate 
+m4_Noncentral_T_RV(n,ncp)
+, with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @var{X} is a
-normal random variable m4_Normal_RV(ncp,1) and @math{S^2} is
-a m4_math(\chi^2, chi square) random variable with @var{n} degrees of freedom, m4_Chi2_RV(n), then
+normal random variable 
+m4_Normal_RV(ncp,1) 
+and @math{S^2} is
+a 
+m4_math(\chi^2, chi square) 
+random variable with @var{n} degrees of freedom, 
+m4_Chi2_RV(n)
+, then
 m4_displaymath(
 <<<U={{X}\over{\sqrt{{S^2}\over{n}}}}>>>,
 <<<
@@ -1221,7 +1322,10 @@ m4_displaymath(
                      \  n   /
 @end example
 >>>)
-is a noncentral Student random variable with @math{n} degrees of freedom and noncentrality parameter @math{ncp}, m4_Noncentral_T_RV(n,ncp).
+is a noncentral Student random variable with @math{n} degrees of
+freedom and noncentrality parameter @math{ncp}, 
+m4_Noncentral_T_RV(n,ncp)
+.
 
 To make use of this function, write first @code{load("distrib")}.
 
@@ -1236,8 +1340,12 @@ To make use of this function, write first @code{load("distrib")}.
 @node Chi-squared Random Variable, Noncentral Chi-squared Random Variable, Noncentral Student's t Random Variable, Functions and Variables for continuous distributions
 @subsection Chi-squared Random Variable
 
-Let m4_math(<<<X_1, X_2, \ldots, X_n>>>, <<<X_1, X_2, ...,
-X_k>>>) be independent and identically distributed m4_Normal_RV(0,1) variables.  Then
+Let 
+m4_math(<<<X_1, X_2, \ldots, X_n>>>, <<<X_1, X_2, ...,
+X_k>>>) 
+be independent and identically distributed 
+m4_Normal_RV(0,1) 
+variables.  Then
 m4_displaymath(
 <<<X^2 = \sum_{i=1}^n X_i^2>>>,
 <<<@math{X^2 = sum(X_i^2, i, 1, n)}>>>)
@@ -1247,8 +1355,15 @@ freedom.
 
 @anchor{pdf_chi2}
 @deffn {Function} pdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the density function of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
-The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+Returns the value at @var{x} of the density function of a Chi-square
+random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}.
+The 
+m4_Chi2_RV(n) 
+random variable is equivalent to the 
+m4_Gamma_RV(n/2,2)
+.
 
 The pdf is
 
@@ -1300,7 +1415,10 @@ m4_displaymath(
 
 @anchor{cdf_chi2}
 @deffn {Function} cdf_chi2 (@var{x},@var{n})
-Returns the value at @math{x} of the distribution function of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
+Returns the value at @math{x} of the distribution function of a
+Chi-square random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}.
 
 The cdf is
 m4_displaymath(
@@ -1348,7 +1466,9 @@ where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 
 @anchor{quantile_chi2}
 @deffn {Function} quantile_chi2 (@var{q},@var{n})
-Returns the @var{q}-quantile of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of a Chi-square random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
 This function has no closed form and it is numerically computed.
 
@@ -1373,9 +1493,15 @@ This function has no closed form and it is numerically computed.
 
 @anchor{mean_chi2}
 @deffn {Function} mean_chi2 (@var{n})
-Returns the mean of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
+Returns the mean of a Chi-square random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}.
 
-The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+The 
+m4_Chi2_RV(n) 
+random variable is equivalent to the 
+m4_Gamma_RV(n/2,2)
+.
 
 The mean is
 m4_displaymath(
@@ -1407,9 +1533,15 @@ m4_displaymath(
 
 @anchor{var_chi2}
 @deffn {Function} var_chi2 (@var{n})
-Returns the variance of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
+Returns the variance of a Chi-square random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}.
 
-The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+The 
+m4_Chi2_RV(n) 
+random variable is equivalent to the 
+m4_Gamma_RV(n/2,2)
+.
 
 The variance is
 m4_displaymath(
@@ -1441,9 +1573,15 @@ m4_displaymath(
 
 @anchor{std_chi2}
 @deffn {Function} std_chi2 (@var{n})
-Returns the standard deviation of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
+Returns the standard deviation of a Chi-square random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}.
 
-The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+The 
+m4_Chi2_RV(n) 
+random variable is equivalent to the 
+m4_Gamma_RV(n/2,2)
+.
 
 The standard deviation is
 m4_displaymath(
@@ -1475,9 +1613,15 @@ m4_displaymath(
 
 @anchor{skewness_chi2}
 @deffn {Function} skewness_chi2 (@var{n})
-Returns the skewness coefficient of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
+Returns the skewness coefficient of a Chi-square random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}.
 
-The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+The 
+m4_Chi2_RV(n) 
+random variable is equivalent to the 
+m4_Gamma_RV(n/2,2)
+.
 
 The skewness coefficient is
 m4_displaymath(
@@ -1515,9 +1659,15 @@ m4_displaymath(
 
 @anchor{kurtosis_chi2}
 @deffn {Function} kurtosis_chi2 (@var{n})
-Returns the kurtosis coefficient of a Chi-square random variable m4_Chi2_RV(n), with @math{n>0}.
+Returns the kurtosis coefficient of a Chi-square random variable 
+m4_Chi2_RV(n)
+, with @math{n>0}.
 
-The m4_Chi2_RV(n) random variable is equivalent to the m4_Gamma_RV(n/2,2).
+The 
+m4_Chi2_RV(n) 
+random variable is equivalent to the 
+m4_Gamma_RV(n/2,2)
+.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -1555,7 +1705,9 @@ m4_displaymath(
 @deffn {Function} random_chi2 (@var{n}) @
 @fname{random_chi2} (@var{n},@var{m})
 
-Returns a Chi-square random variate m4_Chi2_RV(n), with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a Chi-square random variate 
+m4_Chi2_RV(n)
+, with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The simulation is based on the Ahrens-Cheng algorithm. See @code{random_gamma} for details.
 
@@ -1572,15 +1724,21 @@ To make use of this function, write first @code{load("distrib")}.
 @node Noncentral Chi-squared Random Variable, F Random Variable, Chi-squared Random Variable, Functions and Variables for continuous distributions
 @subsection Noncentral Chi-squared Random Variable
 
-Let m4_math(<<<X_1, X_2, ..., X_n>>>, <<<X[1], X[2], ..., X[n]>>>) be @math{n} 
+Let 
+m4_math(<<<X_1, X_2, ..., X_n>>>, <<<X[1], X[2], ..., X[n]>>>) 
+be @math{n} 
 independent normally distributed random variables with
-means m4_math(\mu_k, mu[k]) and unit variances.  Then the random variable
+means 
+m4_math(\mu_k, mu[k]) 
+and unit variances.  Then the random variable
 
 m4_displaymath(
 <<<\sum_{k=1}^n X_k^2>>>,
 <<<@math{sum(X[k]^2, k, 1, n)}>>>)
 
-has a noncentral m4_math(\chi^2, chi-squared) distribution.  The
+has a noncentral 
+m4_math(\chi^2, chi-squared)
+distribution.  The
 number of degrees of freedom is @math{n}, and the noncentrality
 parameter is defined by
 
@@ -1591,11 +1749,20 @@ m4_displaymath(
 @anchor{pdf_noncentral_chi2}
 @deffn {Function} pdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
 Returns the value at @math{x} of the density function of a 
-noncentral m4_math(\chi^2, Chi-square) random
-variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>). To 
+noncentral 
+m4_math(\chi^2, Chi-square) 
+random
+variable 
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality
+parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>) 
+To 
 make use of this function, write first @code{load("distrib")}.
 
-For @math{x < 0}, the pdf is 0, and for m4_math(x \ge 0, x >= 0) the pdf is
+For @math{x < 0}, the pdf is 0, and for 
+m4_math(x \ge 0, x >= 0) 
+the pdf is
 m4_displaymath(
 <<<f(x; n, \lambda) =
 {1\over 2}e^{-(x+\lambda)/2} \left(x\over
@@ -1623,7 +1790,13 @@ m4_displaymath(
 
 @anchor{cdf_noncentral_chi2}
 @deffn {Function} cdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a
+noncentral Chi-square random variable 
+m4_noncentral_chi2(n,ncp)
+, with
+@math{n>0} and noncentrality parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1634,7 +1807,13 @@ Returns the value at @var{x} of the distribution function of a noncentral Chi-sq
 
 @anchor{quantile_noncentral_chi2}
 @deffn {Function} quantile_noncentral_chi2 (@var{q},@var{n},@var{ncp})
-Returns the @var{q}-quantile of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>); in other words, this is the inverse of @code{cdf_noncentral_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of a noncentral Chi-square random
+variable 
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality
+parameter 
+m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>)
+; in other words, this is the inverse of @code{cdf_noncentral_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
 This function has no closed form and it is numerically computed.
 
@@ -1647,7 +1826,10 @@ This function has no closed form and it is numerically computed.
 
 @anchor{mean_noncentral_chi2}
 @deffn {Function} mean_noncentral_chi2 (@var{n},@var{ncp})
-Returns the mean of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>).
+Returns the mean of a noncentral Chi-square random variable
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>)
 
 The mean is
 m4_displaymath(
@@ -1658,7 +1840,9 @@ m4_displaymath(
 @end example
 >>>)
 @ifnotinfo
-where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+where 
+m4_math(\mu) 
+is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
 
 
@@ -1671,7 +1855,10 @@ where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 
 @anchor{var_noncentral_chi2}
 @deffn {Function} var_noncentral_chi2 (@var{n},@var{ncp})
-Returns the variance of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>).
+Returns the variance of a noncentral Chi-square random variable
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>)
 
 The variance is
 m4_displaymath(
@@ -1682,7 +1869,9 @@ m4_displaymath(
 @end example
 >>>)
 @ifnotinfo
-where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+where 
+m4_math(\mu) 
+is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
 
 @opencatbox{Categories:}
@@ -1694,7 +1883,12 @@ where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 
 @anchor{std_noncentral_chi2}
 @deffn {Function} std_noncentral_chi2 (@var{n},@var{ncp})
-Returns the standard deviation of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>).
+Returns the standard deviation of a noncentral Chi-square random
+variable 
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality
+parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>)
 
 The standard deviation is
 m4_displaymath(
@@ -1705,7 +1899,9 @@ m4_displaymath(
 @end example
 >>>)
 @ifnotinfo
-where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+where 
+m4_math(\mu) 
+is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -1716,7 +1912,12 @@ where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 
 @anchor{skewness_noncentral_chi2}
 @deffn {Function} skewness_noncentral_chi2 (@var{n},@var{ncp})
-Returns the skewness coefficient of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>).
+Returns the skewness coefficient of a noncentral Chi-square random
+variable
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality
+parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>)
 
 The skewness coefficient is
 m4_displaymath(
@@ -1732,7 +1933,9 @@ m4_displaymath(
 @end example
 >>>)
 @ifnotinfo
-where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+where 
+m4_math(\mu) 
+is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
 
 
@@ -1745,7 +1948,12 @@ where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 
 @anchor{kurtosis_noncentral_chi2}
 @deffn {Function} kurtosis_noncentral_chi2 (@var{n},@var{ncp})
-Returns the kurtosis coefficient of a noncentral Chi-square random variable m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>).
+Returns the kurtosis coefficient of a noncentral Chi-square random
+variable
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality
+parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>)
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -1759,7 +1967,9 @@ m4_displaymath(
 @end example
 >>>)
 @ifnotinfo
-where m4_math(\mu) is the noncentrality parameter @var{ncp}.
+where 
+m4_math(\mu) 
+is the noncentrality parameter @var{ncp}.
 @end ifnotinfo
 
 @opencatbox{Categories:}
@@ -1773,7 +1983,11 @@ where m4_math(\mu) is the noncentrality parameter @var{ncp}.
 @deffn {Function} random_noncentral_chi2 (@var{n},@var{ncp}) @
 @fname{random_noncentral_chi2} (@var{n},@var{ncp},@var{m})
 
-Returns a noncentral Chi-square random variate m4_noncentral_chi2(n,ncp), with @math{n>0} and noncentrality parameter m4_math(<<<ncp \ge 0>>>, <<<ncp >= 0>>>). Calling @code{random_noncentral_chi2} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a noncentral Chi-square random variate
+m4_noncentral_chi2(n,ncp)
+, with @math{n>0} and noncentrality parameter 
+m4_mathdot(<<<ncp \ge 0>>>, <<<ncp >= 0>>>) 
+Calling @code{random_noncentral_chi2} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 To make use of this function, write first @code{load("distrib")}.
 
@@ -1790,7 +2004,9 @@ To make use of this function, write first @code{load("distrib")}.
 @subsection F Random Variable
 
 Let @math{S_1} and @math{S_2} be independent random variables with
-a m4_math(\chi^2, chi-squared) distribution with degrees of freedom
+a 
+m4_math(\chi^2, chi-squared) 
+distribution with degrees of freedom
 @math{n} and @math{m}, respectively.  Then
 m4_displaymath(
 <<<F = {S_1/n \over S_2/m}>>>,
@@ -1861,7 +2077,9 @@ m4_displaymath(
 <<<z = {n\over mx+n}>>>,
 <<<>>>)
 
-and m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized}
+and 
+m4_math(I_z(a,b)) 
+is the @ref{beta_incomplete_regularized}
 function.
 @end ifnotinfo
 @c ===beg===
@@ -2031,7 +2249,10 @@ m4_displaymath(
 
 Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
 
-The simulation algorithm is based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a m4_Chi2_RV(n) random variable, then
+The simulation algorithm is based on the fact that if @var{X} is a
+@math{Chi^2(m)} random variable and @math{Y} is a 
+m4_Chi2_RV(n) 
+random variable, then
 m4_displaymath(
 <<<F={{n X}\over{m Y}}>>>,
 <<<
@@ -2062,9 +2283,15 @@ continuously and independently at a constant average rate.
 
 @anchor{pdf_exp}
 @deffn {Function} pdf_exp (@var{x},@var{m})
-Returns the value at @var{x} of the density function of an m4_Exponential_RV(m) random variable, with @math{m>0}.
+Returns the value at @var{x} of the density function of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m) 
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 The pdf is
 m4_displaymath(
@@ -2103,9 +2330,15 @@ f(x, m) = [
 
 @anchor{cdf_exp}
 @deffn {Function} cdf_exp (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of an m4_Exponential_RV(m) random variable, with @math{m>0}.
+Returns the value at @var{x} of the distribution function of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m) 
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 The cdf is
 m4_displaymath(
@@ -2143,9 +2376,15 @@ F(x,n) = [
 
 @anchor{quantile_exp}
 @deffn {Function} quantile_exp (@var{q},@var{m})
-Returns the @var{q}-quantile of an m4_Exponential_RV(m) random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m) 
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 @c ===beg===
 @c load ("distrib")$
@@ -2175,9 +2414,15 @@ The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/
 
 @anchor{mean_exp}
 @deffn {Function} mean_exp (@var{m})
-Returns the mean of an m4_Exponential_RV(m) random variable, with @math{m>0}.
+Returns the mean of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m) 
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 The mean is
 m4_displaymath(
@@ -2213,9 +2458,15 @@ m4_displaymath(
 
 @anchor{var_exp}
 @deffn {Function} var_exp (@var{m})
-Returns the variance of an m4_Exponential_RV(m) random variable, with @math{m>0}.
+Returns the variance of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m) 
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 The variance is
 m4_displaymath(
@@ -2253,9 +2504,15 @@ m4_displaymath(
 
 @anchor{std_exp}
 @deffn {Function} std_exp (@var{m})
-Returns the standard deviation of an m4_Exponential_RV(m) random variable, with @math{m>0}.
+Returns the standard deviation of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m) 
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 The standard deviation is
 m4_displaymath(
@@ -2291,9 +2548,15 @@ m4_displaymath(
 
 @anchor{skewness_exp}
 @deffn {Function} skewness_exp (@var{m})
-Returns the skewness coefficient of an m4_Exponential_RV(m) random variable, with @math{m>0}.
+Returns the skewness coefficient of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m) 
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 The skewness coefficient is
 m4_displaymath(
@@ -2325,9 +2588,15 @@ m4_displaymath(
 
 @anchor{kurtosis_exp}
 @deffn {Function} kurtosis_exp (@var{m})
-Returns the kurtosis coefficient of an m4_Exponential_RV(m) random variable, with @math{m>0}.
+Returns the kurtosis coefficient of an 
+m4_Exponential_RV(m) 
+random variable, with @math{m>0}.
 
-The m4_Exponential_RV(m) random variable is equivalent to the m4_Weibull_RV(1,1/m).
+The 
+m4_Exponential_RV(m)
+random variable is equivalent to the 
+m4_Weibull_RV(1,1/m)
+.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -2361,7 +2630,9 @@ m4_displaymath(
 @deffn {Function} random_exp (@var{m}) @
 @fname{random_exp} (@var{m},@var{k})
 
-Returns an m4_Exponential_RV(m) random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
+Returns an 
+m4_Exponential_RV(m) 
+random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
 
 The simulation algorithm is based on the general inverse method.
 
@@ -2383,7 +2654,9 @@ variable whose logarithm is normally distributed.
 
 @anchor{pdf_lognormal}
 @deffn {Function} pdf_lognormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the density function of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -2418,7 +2691,9 @@ m4_displaymath(
 
 @anchor{cdf_lognormal}
 @deffn {Function} cdf_lognormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
 The cdf is
 m4_displaymath(
@@ -2466,7 +2741,9 @@ See also @mrefdot{erf}
 
 @anchor{quantile_lognormal}
 @deffn {Function} quantile_lognormal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @c ===beg===
 @c load ("distrib")$
@@ -2495,7 +2772,9 @@ Returns the @var{q}-quantile of a m4_Lognormal_RV(m,s) random variable, with @ma
 
 @anchor{mean_lognormal}
 @deffn {Function} mean_lognormal (@var{m},@var{s})
-Returns the mean of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -2520,7 +2799,9 @@ m4_displaymath(
 
 @anchor{var_lognormal}
 @deffn {Function} var_lognormal (@var{m},@var{s})
-Returns the variance of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -2542,7 +2823,9 @@ m4_displaymath(
 
 @anchor{std_lognormal}
 @deffn {Function} std_lognormal (@var{m},@var{s})
-Returns the standard deviation of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -2568,7 +2851,9 @@ m4_displaymath(
 
 @anchor{skewness_lognormal}
 @deffn {Function} skewness_lognormal (@var{m},@var{s})
-Returns the skewness coefficient of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -2590,7 +2875,9 @@ m4_displaymath(
 
 @anchor{kurtosis_lognormal}
 @deffn {Function} kurtosis_lognormal (@var{m},@var{s})
-Returns the kurtosis coefficient of a m4_Lognormal_RV(m,s) random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Lognormal_RV(m,s) 
+random variable, with @math{s>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -2616,7 +2903,9 @@ m4_displaymath(
 @deffn {Function} random_lognormal (@var{m},@var{s}) @
 @fname{random_lognormal} (@var{m},@var{s},@var{n})
 
-Returns a m4_Lognormal_RV(m,s) random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Lognormal_RV(m,s) 
+random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 Log-normal variates are simulated by means of random normal variates. See @code{random_normal} for details.
 
@@ -2639,7 +2928,9 @@ scale for the first and second parameters of the distribution.
 
 @anchor{pdf_gamma}
 @deffn {Function} pdf_gamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The shape parameter is @math{a}, and the scale parameter is @math{b}.
 
@@ -2665,7 +2956,9 @@ m4_displaymath(
 
 @anchor{cdf_gamma}
 @deffn {Function} cdf_gamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. 
+Returns the value at @var{x} of the distribution function of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}. 
 
 The cdf is
 m4_displaymath(
@@ -2711,7 +3004,9 @@ where @math{Q(a,z)} is the @ref{gamma_incomplete_regularized} function.
 
 @anchor{quantile_gamma}
 @deffn {Function} quantile_gamma (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_gamma}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_gamma}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2722,7 +3017,9 @@ Returns the @var{q}-quantile of a m4_Gamma_RV(a,b) random variable, with @math{a
 
 @anchor{mean_gamma}
 @deffn {Function} mean_gamma (@var{a},@var{b})
-Returns the mean of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -2742,7 +3039,9 @@ m4_displaymath(
 
 @anchor{var_gamma}
 @deffn {Function} var_gamma (@var{a},@var{b})
-Returns the variance of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -2762,7 +3061,9 @@ m4_displaymath(
 
 @anchor{std_gamma}
 @deffn {Function} std_gamma (@var{a},@var{b})
-Returns the standard deviation of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -2782,7 +3083,9 @@ m4_displaymath(
 
 @anchor{skewness_gamma}
 @deffn {Function} skewness_gamma (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -2804,7 +3107,9 @@ m4_displaymath(
 
 @anchor{kurtosis_gamma}
 @deffn {Function} kurtosis_gamma (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Gamma_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Gamma_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -2829,13 +3134,19 @@ m4_displaymath(
 @deffn {Function} random_gamma (@var{a},@var{b}) @
 @fname{random_gamma} (@var{a},@var{b},@var{n})
 
-Returns a m4_Gamma_RV(a,b) random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Gamma_RV(a,b) 
+random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is a combination of two procedures, depending on the value of parameter @var{a}:
 
-For m4_math(<<<a \ge 1>>>, <<<a >= 1>>>), Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
+For 
+m4_mathcomma(<<<a \ge 1>>>, <<<a >= 1>>>)
+Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
-For m4_math(<<<0 \lt a \lt 1>>>, <<<0 < a < 1>>>, <<<0 < a < 1>>>), Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, , poisson and binomial distributions}. Computing, 12, 223-246.
+For 
+m4_mathcomma(<<<0 \lt a \lt 1>>>, <<<0 < a < 1>>>, <<<0 < a < 1>>>)
+Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, , poisson and binomial distributions}. Computing, 12, 223-246.
 
 To make use of this function, write first @code{load("distrib")}.
 
@@ -2856,7 +3167,9 @@ and @math{b}.
 
 @anchor{pdf_beta}
 @deffn {Function} pdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -2888,7 +3201,9 @@ m4_displaymath(
 
 @anchor{cdf_beta}
 @deffn {Function} cdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}.
 
 The cdf is
 m4_displaymath(
@@ -2935,7 +3250,9 @@ F(x, a, b) = [ beta_incomplete_regularized(a, b, x)  for 0 <= x <= 1
 
 @anchor{quantile_beta}
 @deffn {Function} quantile_beta (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_beta}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_beta}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -2946,7 +3263,9 @@ Returns the @var{q}-quantile of a m4_Beta_RV(a,b) random variable, with @math{a,
 
 @anchor{mean_beta}
 @deffn {Function} mean_beta (@var{a},@var{b})
-Returns the mean of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -2968,7 +3287,9 @@ m4_displaymath(
 
 @anchor{var_beta}
 @deffn {Function} var_beta (@var{a},@var{b})
-Returns the variance of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -2990,7 +3311,9 @@ m4_displaymath(
 
 @anchor{std_beta}
 @deffn {Function} std_beta (@var{a},@var{b})
-Returns the standard deviation of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -3014,7 +3337,9 @@ m4_displaymath(
 
 @anchor{skewness_beta}
 @deffn {Function} skewness_beta (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -3035,7 +3360,9 @@ m4_displaymath(
 
 @anchor{kurtosis_beta}
 @deffn {Function} kurtosis_beta (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Beta_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Beta_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -3061,7 +3388,9 @@ ab(a+b+2)(a+b+3)} - 3>>>,
 @deffn {Function} random_beta (@var{a},@var{b}) @
 @fname{random_beta} (@var{a},@var{b},@var{n})
 
-Returns a m4_Beta_RV(a,b) random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Beta_RV(a,b) 
+random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is defined in Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
 
@@ -3082,7 +3411,11 @@ interval @math{[a,b]} and is zero elsewhere.
 
 @anchor{pdf_continuous_uniform}
 @deffn {Function} pdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a
+m4_Continuous_Uniform_RV(a,b) 
+random variable, with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 The pdf
 m4_displaymath(
@@ -3110,7 +3443,11 @@ and is 0 otherwise.
 
 @anchor{cdf_continuous_uniform}
 @deffn {Function} cdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a
+m4_Continuous_Uniform_RV(a,b) 
+random variable, with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -3138,7 +3475,12 @@ F(x,a,b) = [ (x-a)/(b-a)    for a <= x <= b
 
 @anchor{quantile_continuous_uniform}
 @deffn {Function} quantile_continuous_uniform (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>); in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Continuous_Uniform_RV(a,b) 
+random
+variable, with 
+m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>)
+; in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3149,7 +3491,12 @@ Returns the @var{q}-quantile of a m4_Continuous_Uniform_RV(a,b) random variable,
 
 @anchor{mean_continuous_uniform}
 @deffn {Function} mean_continuous_uniform (@var{a},@var{b})
-Returns the mean of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Continuous_Uniform_RV(a,b) 
+random variable,
+with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -3171,7 +3518,12 @@ m4_displaymath(
 
 @anchor{var_continuous_uniform}
 @deffn {Function} var_continuous_uniform (@var{a},@var{b})
-Returns the variance of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Continuous_Uniform_RV(a,b) 
+random
+variable, with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -3193,7 +3545,11 @@ m4_displaymath(
 
 @anchor{std_continuous_uniform}
 @deffn {Function} std_continuous_uniform (@var{a},@var{b})
-Returns the standard deviation of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Continuous_Uniform_RV(a,b)
+random variable, with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -3216,7 +3572,11 @@ m4_displaymath(
 
 @anchor{skewness_continuous_uniform}
 @deffn {Function} skewness_continuous_uniform (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Continuous_Uniform_RV(a,b)
+random variable, with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -3236,7 +3596,11 @@ m4_displaymath(
 
 @anchor{kurtosis_continuous_uniform}
 @deffn {Function} kurtosis_continuous_uniform (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Continuous_Uniform_RV(a,b) random variable, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Continuous_Uniform_RV(a,b)
+random variable, with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -3258,7 +3622,11 @@ m4_displaymath(
 @deffn {Function} random_continuous_uniform (@var{a},@var{b}) @
 @fname{random_continuous_uniform} (@var{a},@var{b},@var{n})
 
-Returns a m4_Continuous_Uniform_RV(a,b) random variate, with m4_math(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>). Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Continuous_Uniform_RV(a,b) 
+random variate, with 
+m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
+Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
@@ -3280,7 +3648,9 @@ it's cumulative distribution function is the logistic function.
 
 @anchor{pdf_logistic}
 @deffn {Function} pdf_logistic (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Logistic_RV(a,b) 
+random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 @math{a} is the location parameter and @math{b} is the scale
 parameter.
@@ -3310,7 +3680,9 @@ m4_displaymath(
 
 @anchor{cdf_logistic}
 @deffn {Function} cdf_logistic (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Logistic_RV(a,b) 
+random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -3335,7 +3707,9 @@ m4_displaymath(
 
 @anchor{quantile_logistic}
 @deffn {Function} quantile_logistic (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Logistic_RV(a,b) random variable , with @math{b>0}; in other words, this is the inverse of @code{cdf_logistic}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Logistic_RV(a,b) 
+random variable , with @math{b>0}; in other words, this is the inverse of @code{cdf_logistic}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3346,7 +3720,9 @@ Returns the @var{q}-quantile of a m4_Logistic_RV(a,b) random variable , with @ma
 
 @anchor{mean_logistic}
 @deffn {Function} mean_logistic (@var{a},@var{b})
-Returns the mean of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Logistic_RV(a,b) 
+random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -3366,7 +3742,9 @@ m4_displaymath(
 
 @anchor{var_logistic}
 @deffn {Function} var_logistic (@var{a},@var{b})
-Returns the variance of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Logistic_RV(a,b) 
+random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -3390,7 +3768,9 @@ m4_displaymath(
 
 @anchor{std_logistic}
 @deffn {Function} std_logistic (@var{a},@var{b})
-Returns the standard deviation of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Logistic_RV(a,b) 
+random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -3412,7 +3792,9 @@ m4_displaymath(
 
 @anchor{skewness_logistic}
 @deffn {Function} skewness_logistic (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Logistic_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -3432,7 +3814,9 @@ m4_displaymath(
 
 @anchor{kurtosis_logistic}
 @deffn {Function} kurtosis_logistic (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Logistic_RV(a,b) random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Logistic_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -3456,7 +3840,9 @@ m4_displaymath(
 @deffn {Function} random_logistic (@var{a},@var{b}) @
 @fname{random_logistic} (@var{a},@var{b},@var{n})
 
-Returns a m4_Logistic_RV(a,b) random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Logistic_RV(a,b) 
+random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -3475,7 +3861,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{pdf_pareto}
 @deffn {Function} pdf_pareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Pareto_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -3502,7 +3890,9 @@ f(x, a, b) = [
 
 @anchor{cdf_pareto}
 @deffn {Function} cdf_pareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Pareto_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -3527,7 +3917,9 @@ F(x, a, b) = [
 
 @anchor{quantile_pareto}
 @deffn {Function} quantile_pareto (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Pareto_RV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_pareto}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_pareto}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3538,7 +3930,9 @@ Returns the @var{q}-quantile of a m4_Pareto_RV(a,b) random variable, with @math{
 
 @anchor{mean_pareto}
 @deffn {Function} mean_pareto (@var{a},@var{b})
-Returns the mean of a m4_Pareto_RV(a,b) random variable, with @math{a>1,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a>1,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -3554,7 +3948,9 @@ m4_displaymath(
 
 @anchor{var_pareto}
 @deffn {Function} var_pareto (@var{a},@var{b})
-Returns the variance of a m4_Pareto_RV(a,b) random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -3577,7 +3973,9 @@ m4_displaymath(
 
 @anchor{std_pareto}
 @deffn {Function} std_pareto (@var{a},@var{b})
-Returns the standard deviation of a m4_Pareto_RV(a,b) random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -3602,7 +4000,9 @@ m4_displaymath(
 
 @anchor{skewness_pareto}
 @deffn {Function} skewness_pareto (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Pareto_RV(a,b) random variable, with @math{a>3,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a>3,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -3624,7 +4024,9 @@ m4_displaymath(
 
 @anchor{kurtosis_pareto}
 @deffn {Function} kurtosis_pareto (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Pareto_RV(a,b) random variable, with @math{a>4,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Pareto_RV(a,b) 
+random variable, with @math{a>4,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -3650,7 +4052,9 @@ m4_displaymath(
 @deffn {Function} random_pareto (@var{a},@var{b}) @
 @fname{random_pareto} (@var{a},@var{b},@var{n})
 
-Returns a m4_Pareto_RV(a,b) random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Pareto_RV(a,b) 
+random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -3669,7 +4073,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{pdf_weibull}
 @deffn {Function} pdf_weibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -3701,7 +4107,9 @@ f(x, a, b) = [
 
 @anchor{cdf_weibull}
 @deffn {Function} cdf_weibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -3726,7 +4134,9 @@ F(x, a, b) = [
 
 @anchor{quantile_weibull}
 @deffn {Function} quantile_weibull (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_weibull}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_weibull}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -3737,7 +4147,9 @@ Returns the @var{q}-quantile of a m4_Weibull_RV(a,b) random variable, with @math
 
 @anchor{mean_weibull}
 @deffn {Function} mean_weibull (@var{a},@var{b})
-Returns the mean of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -3759,7 +4171,9 @@ m4_displaymath(
 
 @anchor{var_weibull}
 @deffn {Function} var_weibull (@var{a},@var{b})
-Returns the variance of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -3781,7 +4195,9 @@ m4_displaymath(
 
 @anchor{std_weibull}
 @deffn {Function} std_weibull (@var{a},@var{b})
-Returns the standard deviation of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -3805,7 +4221,9 @@ m4_displaymath(
 
 @anchor{skewness_weibull}
 @deffn {Function} skewness_weibull (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -3838,7 +4256,9 @@ SK[X] = ------------------------------------------------------------
 
 @anchor{kurtosis_weibull}
 @deffn {Function} kurtosis_weibull (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Weibull_RV(a,b) random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Weibull_RV(a,b) 
+random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -3864,7 +4284,8 @@ m4_displaymath(
 @end example
 >>>)
 @ifnotinfo
-where m4_math(\Gamma_k = \Gamma\left(1+k/a\right)).
+where 
+m4_mathdot(\Gamma_k = \Gamma\left(1+k/a\right))
 @end ifnotinfo
 
 @opencatbox{Categories:}
@@ -3878,7 +4299,9 @@ where m4_math(\Gamma_k = \Gamma\left(1+k/a\right)).
 @deffn {Function} random_weibull (@var{a},@var{b}) @
 @fname{random_weibull} (@var{a},@var{b},@var{n})
 
-Returns a m4_Weibull_RV(a,b) random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Weibull_RV(a,b) 
+random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -3896,14 +4319,22 @@ To make use of this function, write first @code{load("distrib")}.
 @node Rayleigh Random Variable, Laplace Random Variable, Weibull Random Variable, Functions and Variables for continuous distributions
 @subsection Rayleigh Random Variable
 
-The @emph{Rayleigh} distribution coincides with the m4_math(\chi^2,
-chi-squared) distribution with two degrees of freedom.
+The @emph{Rayleigh} distribution coincides with the 
+m4_math(\chi^2,
+chi-squared) 
+distribution with two degrees of freedom.
 
 @anchor{pdf_rayleigh}
 @deffn {Function} pdf_rayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the density function of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
+Returns the value at @var{x} of the density function of a 
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 The pdf is
 m4_displaymath(
@@ -3942,9 +4373,15 @@ f(x, b) = [
 
 @anchor{cdf_rayleigh}
 @deffn {Function} cdf_rayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 The cdf is
 m4_displaymath(
@@ -3983,9 +4420,15 @@ F(x, b) = [
 
 @anchor{quantile_rayleigh}
 @deffn {Function} quantile_rayleigh (@var{q},@var{b})
-Returns the @var{q}-quantile of a m4_Rayleigh_RV(b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
+Returns the @var{q}-quantile of a 
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 @c ===beg===
 @c load ("distrib")$
@@ -4010,9 +4453,15 @@ The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
 
 @anchor{mean_rayleigh}
 @deffn {Function} mean_rayleigh (@var{b})
-Returns the mean of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
+Returns the mean of a 
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 The mean is
 m4_displaymath(
@@ -4048,9 +4497,15 @@ m4_displaymath(
 
 @anchor{var_rayleigh}
 @deffn {Function} var_rayleigh (@var{b})
-Returns the variance of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
+Returns the variance of a 
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 The variance is
 m4_displaymath(
@@ -4092,9 +4547,15 @@ m4_displaymath(
 
 @anchor{std_rayleigh}
 @deffn {Function} std_rayleigh (@var{b})
-Returns the standard deviation of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
+Returns the standard deviation of a 
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 The standard deviation is
 m4_displaymath(
@@ -4134,9 +4595,15 @@ m4_displaymath(
 
 @anchor{skewness_rayleigh}
 @deffn {Function} skewness_rayleigh (@var{b})
-Returns the skewness coefficient of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
+Returns the skewness coefficient of a
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 The skewness coefficient is
 m4_displaymath(
@@ -4182,9 +4649,15 @@ m4_displaymath(
 
 @anchor{kurtosis_rayleigh}
 @deffn {Function} kurtosis_rayleigh (@var{b})
-Returns the kurtosis coefficient of a m4_Rayleigh_RV(b) random variable, with @math{b>0}.
+Returns the kurtosis coefficient of a
+m4_Rayleigh_RV(b) 
+random variable, with @math{b>0}.
 
-The m4_Rayleigh_RV(b) random variable is equivalent to the m4_Weibull_RV(2,1/b).
+The 
+m4_Rayleigh_RV(b) 
+random variable is equivalent to the 
+m4_Weibull_RV(2,1/b)
+.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -4232,7 +4705,9 @@ m4_displaymath(
 @deffn {Function} random_rayleigh (@var{b}) @
 @fname{random_rayleigh} (@var{b},@var{n})
 
-Returns a m4_Rayleigh_RV(b) random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Rayleigh_RV(b) 
+random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -4257,7 +4732,9 @@ distributions spliced back to back.
 
 @anchor{pdf_laplace}
 @deffn {Function} pdf_laplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 Here, @math{a} is the location parameter (or mean), and @math{b} is
 the scale parameter, related to the variance.
@@ -4285,7 +4762,9 @@ m4_displaymath(
 
 @anchor{cdf_laplace}
 @deffn {Function} cdf_laplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -4311,7 +4790,9 @@ F(x, a, b) = [
 
 @anchor{quantile_laplace}
 @deffn {Function} quantile_laplace (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Laplace_RV(a,b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_laplace}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_laplace}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4322,7 +4803,9 @@ Returns the @var{q}-quantile of a m4_Laplace_RV(a,b) random variable, with @math
 
 @anchor{mean_laplace}
 @deffn {Function} mean_laplace (@var{a},@var{b})
-Returns the mean of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -4342,7 +4825,9 @@ m4_displaymath(
 
 @anchor{var_laplace}
 @deffn {Function} var_laplace (@var{a},@var{b})
-Returns the variance of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -4363,7 +4848,9 @@ m4_displaymath(
 
 @anchor{std_laplace}
 @deffn {Function} std_laplace (@var{a},@var{b})
-Returns the standard deviation of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -4383,7 +4870,9 @@ m4_displaymath(
 
 @anchor{skewness_laplace}
 @deffn {Function} skewness_laplace (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -4403,7 +4892,9 @@ m4_displaymath(
 
 @anchor{kurtosis_laplace}
 @deffn {Function} kurtosis_laplace (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Laplace_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Laplace_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -4425,7 +4916,9 @@ m4_displaymath(
 @deffn {Function} random_laplace (@var{a},@var{b}) @
 @fname{random_laplace} (@var{a},@var{b},@var{n})
 
-Returns a m4_Laplace_RV(a,b) random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Laplace_RV(a,b) 
+random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -4453,7 +4946,9 @@ distribution.  The integrals do not converge in this case.
 
 @anchor{pdf_cauchy}
 @deffn {Function} pdf_cauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Cauchy_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Cauchy_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -4475,7 +4970,9 @@ m4_displaymath(
 
 @anchor{cdf_cauchy}
 @deffn {Function} cdf_cauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Cauchy_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Cauchy_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -4498,7 +4995,9 @@ m4_displaymath(
 
 @anchor{quantile_cauchy}
 @deffn {Function} quantile_cauchy (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Cauchy_RV(a,b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_cauchy}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Cauchy_RV(a,b) 
+random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_cauchy}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4511,7 +5010,9 @@ Returns the @var{q}-quantile of a m4_Cauchy_RV(a,b) random variable, with @math{
 @deffn {Function} random_cauchy (@var{a},@var{b}) @
 @fname{random_cauchy} (@var{a},@var{b},@var{n})
 
-Returns a m4_Cauchy_RV(a,b) random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Cauchy_RV(a,b) 
+random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -4531,7 +5032,9 @@ To make use of this function, write first @code{load("distrib")}.
 
 @anchor{pdf_gumbel}
 @deffn {Function} pdf_gumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the density function of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -4558,7 +5061,9 @@ m4_displaymath(
 
 @anchor{cdf_gumbel}
 @deffn {Function} cdf_gumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -4581,7 +5086,9 @@ m4_displaymath(
 
 @anchor{quantile_gumbel}
 @deffn {Function} quantile_gumbel (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_gumbel}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_gumbel}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -4592,7 +5099,9 @@ Returns the @var{q}-quantile of a m4_Gumbel_RV(a,b) random variable, with @math{
 
 @anchor{mean_gumbel}
 @deffn {Function} mean_gumbel (@var{a},@var{b})
-Returns the mean of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}.
+Returns the mean of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}.
 
 The mean is
 m4_displaymath(
@@ -4625,7 +5134,9 @@ where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @m
 
 @anchor{var_gumbel}
 @deffn {Function} var_gumbel (@var{a},@var{b})
-Returns the variance of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -4648,7 +5159,9 @@ m4_displaymath(
 
 @anchor{std_gumbel}
 @deffn {Function} std_gumbel (@var{a},@var{b})
-Returns the standard deviation of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -4670,7 +5183,9 @@ m4_displaymath(
 
 @anchor{skewness_gumbel}
 @deffn {Function} skewness_gumbel (@var{a},@var{b})
-Returns the skewness coefficient of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}.
+Returns the skewness coefficient of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -4711,7 +5226,9 @@ where @code{zeta} stands for the Riemann's zeta function.
 
 @anchor{kurtosis_gumbel}
 @deffn {Function} kurtosis_gumbel (@var{a},@var{b})
-Returns the kurtosis coefficient of a m4_Gumbel_RV(a,b) random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Gumbel_RV(a,b) 
+random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -4736,7 +5253,9 @@ m4_displaymath(
 @deffn {Function} random_gumbel (@var{a},@var{b}) @
 @fname{random_gumbel} (@var{a},@var{b},@var{n})
 
-Returns a m4_Gumbel_RV(a,b) random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Gumbel_RV(a,b) 
+random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is based on the general inverse method.
 
@@ -4969,7 +5488,9 @@ distribution.
 
 @anchor{pdf_binomial}
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the probability function of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -4990,7 +5511,9 @@ m4_displaymath(
 
 @anchor{cdf_binomial}
 @deffn {Function} cdf_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer.
+Returns the value at @var{x} of the distribution function of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer.
 
 The cdf is
 m4_displaymath(
@@ -5002,7 +5525,9 @@ F(x, n, p) = beta_incomplete_regularized(n - floor(x), floor(x) + 1,
 @end example
 >>>)
 @ifnotinfo
-where m4_math(I_z(a,b)) is the @ref{beta_incomplete_regularized}
+where 
+m4_math(I_z(a,b)) 
+is the @ref{beta_incomplete_regularized}
 function.
 @end ifnotinfo
 
@@ -5035,7 +5560,9 @@ function.
 
 @anchor{quantile_binomial}
 @deffn {Function} quantile_binomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5046,7 +5573,9 @@ Returns the @var{q}-quantile of a m4_Binomial_RV(n,p) random variable, with @mat
 
 @anchor{mean_binomial}
 @deffn {Function} mean_binomial (@var{n},@var{p})
-Returns the mean of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -5067,7 +5596,9 @@ m4_displaymath(
 
 @anchor{var_binomial}
 @deffn {Function} var_binomial (@var{n},@var{p})
-Returns the variance of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -5087,7 +5618,9 @@ m4_displaymath(
 
 @anchor{std_binomial}
 @deffn {Function} std_binomial (@var{n},@var{p})
-Returns the standard deviation of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -5107,7 +5640,9 @@ m4_displaymath(
 
 @anchor{skewness_binomial}
 @deffn {Function} skewness_binomial (@var{n},@var{p})
-Returns the skewness coefficient of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -5130,7 +5665,9 @@ m4_displaymath(
 
 @anchor{kurtosis_binomial}
 @deffn {Function} kurtosis_binomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a m4_Binomial_RV(n,p) random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Binomial_RV(n,p) 
+random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -5155,7 +5692,9 @@ m4_displaymath(
 @deffn {Function} random_binomial (@var{n},@var{p}) @
 @fname{random_binomial} (@var{n},@var{p},@var{m})
 
-Returns a m4_Binomial_RV(n,p) random variate, with @math{0 \leq p \leq 1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a 
+m4_Binomial_RV(n,p) 
+random variate, with @math{0 \leq p \leq 1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the one described in Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
@@ -5179,7 +5718,9 @@ rate.
 
 @anchor{pdf_poisson}
 @deffn {Function} pdf_poisson (@var{x},@var{m})
-Returns the value at @var{x} of the probability function of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a 
+m4_Poisson_RV(m) 
+random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -5203,7 +5744,9 @@ m4_displaymath(
 
 @anchor{cdf_poisson}
 @deffn {Function} cdf_poisson (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of a m4_Poisson_RV(m) random variable, with @math{m>0}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Poisson_RV(m) 
+random variable, with @math{m>0}.
 
 The cdf is
 m4_displaymath(
@@ -5244,7 +5787,9 @@ function.
 
 @anchor{quantile_poisson}
 @deffn {Function} quantile_poisson (@var{q},@var{m})
-Returns the @var{q}-quantile of a m4_Poisson_RV(m) random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_poisson}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Poisson_RV(m) 
+random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_poisson}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5255,7 +5800,9 @@ Returns the @var{q}-quantile of a m4_Poisson_RV(m) random variable, with @math{m
 
 @anchor{mean_poisson}
 @deffn {Function} mean_poisson (@var{m})
-Returns the mean of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_Poisson_RV(m) 
+random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -5275,7 +5822,9 @@ m4_displaymath(
 
 @anchor{var_poisson}
 @deffn {Function} var_poisson (@var{m})
-Returns the variance of a m4_Poisson_RV(m) random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_Poisson_RV(m) 
+random variable, with  @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -5295,7 +5844,9 @@ m4_displaymath(
 
 @anchor{std_poisson}
 @deffn {Function} std_poisson (@var{m})
-Returns the standard deviation of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Poisson_RV(m) 
+random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -5315,7 +5866,9 @@ m4_displaymath(
 
 @anchor{skewness_poisson}
 @deffn {Function} skewness_poisson (@var{m})
-Returns the skewness coefficient of a m4_Poisson_RV(m) random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Poisson_RV(m) 
+random variable, with @math{m>0}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness is
 m4_displaymath(
@@ -5362,7 +5915,9 @@ m4_displaymath(
 @deffn {Function} random_poisson (@var{m}) @
 @fname{random_poisson} (@var{m},@var{n})
 
-Returns a m4_Poisson_RV(m) random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Poisson_RV(m) 
+random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 The implemented algorithm is the one described in Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
 
@@ -5382,13 +5937,21 @@ The @emph{Bernoulli distribution} is a discrete probability
 distribution which takes on two values, 0 and 1.  The value 1 occurs
 with probability @math{p}, and 0 occurs with probabilty @math{1-p}.
 
-It is equivalent to the m4_Binomial_RV(1,p) distribution (@pxref{Binomial Random Variable})
+It is equivalent to the 
+m4_Binomial_RV(1,p) 
+distribution (@pxref{Binomial Random Variable})
 
 @anchor{pdf_bernoulli}
 @deffn {Function} pdf_bernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the probability function of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
+Returns the value at @var{x} of the probability function of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}.
 
-The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+The 
+m4_Bernoulli_RV(p) 
+random variable is equivalent to the 
+m4_Binomial_RV(1,p)
+.
 
 The mean is
 m4_displaymath(
@@ -5422,7 +5985,9 @@ m4_displaymath(
 
 @anchor{cdf_bernoulli}
 @deffn {Function} cdf_bernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -5444,7 +6009,9 @@ m4_displaymath(
 
 @anchor{quantile_bernoulli}
 @deffn {Function} quantile_bernoulli (@var{q},@var{p})
-Returns the @var{q}-quantile of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}; in other words, this is the inverse of @code{cdf_bernoulli}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}; in other words, this is the inverse of @code{cdf_bernoulli}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5455,9 +6022,15 @@ Returns the @var{q}-quantile of a m4_Bernoulli_RV(p) random variable, with @math
 
 @anchor{mean_bernoulli}
 @deffn {Function} mean_bernoulli (@var{p})
-Returns the mean of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
+Returns the mean of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}.
 
-The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+The 
+m4_Bernoulli_RV(p) 
+random variable is equivalent to the 
+m4_Binomial_RV(1,p)
+.
 
 The mean is
 m4_displaymath(
@@ -5489,9 +6062,15 @@ m4_displaymath(
 
 @anchor{var_bernoulli}
 @deffn {Function} var_bernoulli (@var{p})
-Returns the variance of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
+Returns the variance of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}.
 
-The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+The 
+m4_Bernoulli_RV(p) 
+random variable is equivalent to the 
+m4_Binomial_RV(1,p)
+.
 
 The variance is
 m4_displaymath(
@@ -5523,9 +6102,15 @@ m4_displaymath(
 
 @anchor{std_bernoulli}
 @deffn {Function} std_bernoulli (@var{p})
-Returns the standard deviation of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
+Returns the standard deviation of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}.
 
-The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+The 
+m4_Bernoulli_RV(p) 
+random variable is equivalent to the
+m4_Binomial_RV(1,p)
+.
 
 The standard deviation is
 m4_displaymath(
@@ -5558,9 +6143,15 @@ m4_displaymath(
 
 @anchor{skewness_bernoulli}
 @deffn {Function} skewness_bernoulli (@var{p})
-Returns the skewness coefficient of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
+Returns the skewness coefficient of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}.
 
-The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+The 
+m4_Bernoulli_RV(p)
+random variable is equivalent to the 
+m4_Binomial_RV(1,p)
+.
 
 The skewness coefficient is
 m4_displaymath(
@@ -5597,9 +6188,15 @@ m4_displaymath(
 
 @anchor{kurtosis_bernoulli}
 @deffn {Function} kurtosis_bernoulli (@var{p})
-Returns the kurtosis coefficient of a m4_Bernoulli_RV(p) random variable, with @math{0 \leq p \leq 1}.
+Returns the kurtosis coefficient of a 
+m4_Bernoulli_RV(p) 
+random variable, with @math{0 \leq p \leq 1}.
 
-The m4_Bernoulli_RV(p) random variable is equivalent to the m4_Binomial_RV(1,p).
+The 
+m4_Bernoulli_RV(p) 
+random variable is equivalent to the 
+m4_Binomial_RV(1,p)
+.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -5638,7 +6235,9 @@ m4_displaymath(
 @deffn {Function} random_bernoulli (@var{p}) @
 @fname{random_bernoulli} (@var{p},@var{n})
 
-Returns a m4_Bernoulli_RV(p) random variate, with @math{0 \leq p \leq 1}. Calling @code{random_bernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Returns a 
+m4_Bernoulli_RV(p) 
+random variate, with @math{0 \leq p \leq 1}. Calling @code{random_bernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
@@ -5660,11 +6259,15 @@ Bernoulli trials that fail before the first success.
 
 Consider flipping a biased coin where heads occurs with probablity
 @math{p}.   Then the probability of @math{k-1} tails in a row followed
-by heads is given by the m4_Geometric_RV(p) distribution.
+by heads is given by the 
+m4_Geometric_RV(p) 
+distribution.
 
 @anchor{pdf_geometric}
 @deffn {Function} pdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the probability function of a m4_Geometric_RV(p) random variable, with
+Returns the value at @var{x} of the probability function of a 
+m4_Geometric_RV(p) 
+random variable, with
 @math{0 < p \leq 1}
 
 The pdf is
@@ -5691,7 +6294,9 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{cdf_geometric}
 @deffn {Function} cdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a m4_Geometric_RV(p) random variable, with
+Returns the value at @var{x} of the distribution function of a 
+m4_Geometric_RV(p) 
+random variable, with
 @math{0 < p \leq  1}
 
 The cdf is
@@ -5716,7 +6321,12 @@ m4_displaymath(
 
 @anchor{quantile_geometric}
 @deffn {Function} quantile_geometric (@var{q},@var{p})
-Returns the @var{q}-quantile of a m4_Geometric_RV(p) random variable, with m4_math(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>, <<<0 < p <= 1>>>);
+Returns the @var{q}-quantile of a 
+m4_Geometric_RV(p) 
+random variable,
+with 
+m4_math(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>, <<<0 < p <= 1>>>)
+;
 in other words, this is the inverse of @code{cdf_geometric}.
 Argument @var{q} must be an element of @math{[0,1]}.
 
@@ -5734,7 +6344,9 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{mean_geometric}
 @deffn {Function} mean_geometric (@var{p})
-Returns the mean of a m4_Geometric_RV(p) random variable, with
+Returns the mean of a 
+m4_Geometric_RV(p) 
+random variable, with
 @math{0 < p \leq 1}.
 
 The mean is
@@ -5763,7 +6375,9 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{var_geometric}
 @deffn {Function} var_geometric (@var{p})
-Returns the variance of a m4_Geometric_RV(p) random variable, with
+Returns the variance of a 
+m4_Geometric_RV(p) 
+random variable, with
 @math{0 < p \leq 1}.
 
 The variance is
@@ -5790,7 +6404,9 @@ m4_displaymath(
 
 @anchor{std_geometric}
 @deffn {Function} std_geometric (@var{p})
-Returns the standard deviation of a m4_Geometric_RV(p) random variable, with
+Returns the standard deviation of a 
+m4_Geometric_RV(p) 
+random variable, with
 @math{0 < p \leq 1}.
 
 m4_displaymath(
@@ -5815,7 +6431,9 @@ m4_displaymath(
 
 @anchor{skewness_geometric}
 @deffn {Function} skewness_geometric (@var{p})
-Returns the skewness coefficient of a m4_Geometric_RV(p) random variable, with
+Returns the skewness coefficient of a 
+m4_Geometric_RV(p) 
+random variable, with
 @math{0 < p \leq 1}.
 
 The skewness coefficient is
@@ -5841,7 +6459,9 @@ m4_displaymath(
 
 @anchor{kurtosis_geometric}
 @deffn {Function} kurtosis_geometric (@var{p})
-Returns the kurtosis coefficient of a geometric random variable  m4_Geometric_RV(p), with
+Returns the kurtosis coefficient of a geometric random variable  
+m4_Geometric_RV(p)
+, with
 @math{0 < p \leq 1}.
 
 The kurtosis coefficient is
@@ -5870,8 +6490,11 @@ m4_displaymath(
 @deffn {Function} random_geometric (@var{p}) @
 @fname{random_geometric} (@var{p},@var{n})
 
-@code{random_geometric(@var{p})} returns one random sample from a m4_Geometric_RV(p) distribution,
-with m4_math(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>, <<<0 < p \le 1>>>).
+@code{random_geometric(@var{p})} returns one random sample from a 
+m4_Geometric_RV(p) 
+distribution,
+with 
+m4_mathdot(<<<0 \lt p \le 1>>>, <<<0 < p <= 1>>>, <<<0 < p \le 1>>>)
 
 @code{random_geometric(@var{p}, @var{n})} returns a list of @var{n} random samples.
 
@@ -5898,11 +6521,15 @@ distribution where a finite number of values are equally likely to
 occur.  The values are @math{1,2,3,...,n}.
 
 For example throwing a fair die of 6 sides numbered 1 through 6
-follows a m4_DiscreteUniform_RV(1/6) distribution.
+follows a 
+m4_DiscreteUniform_RV(1/6) 
+distribution.
 
 @anchor{pdf_discrete_uniform}
 @deffn {Function} pdf_discrete_uniform (@var{x},@var{n})
-Returns the value at @var{x} of the probability function of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -5925,7 +6552,9 @@ m4_displaymath(
 
 @anchor{cdf_discrete_uniform}
 @deffn {Function} cdf_discrete_uniform (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The cdf is
 m4_displaymath(
@@ -5948,7 +6577,9 @@ m4_displaymath(
 
 @anchor{quantile_discrete_uniform}
 @deffn {Function} quantile_discrete_uniform (@var{q},@var{n})
-Returns the @var{q}-quantile of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{cdf_discrete_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{cdf_discrete_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -5959,7 +6590,9 @@ Returns the @var{q}-quantile of a m4_DiscreteUniform_RV(n) random variable, with
 
 @anchor{mean_discrete_uniform}
 @deffn {Function} mean_discrete_uniform (@var{n})
-Returns the mean of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -5982,7 +6615,9 @@ m4_displaymath(
 
 @anchor{var_discrete_uniform}
 @deffn {Function} var_discrete_uniform (@var{n})
-Returns the variance of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -6006,7 +6641,9 @@ m4_displaymath(
 
 @anchor{std_discrete_uniform}
 @deffn {Function} std_discrete_uniform (@var{n})
-Returns the standard deviation of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -6030,7 +6667,9 @@ m4_displaymath(
 
 @anchor{skewness_discrete_uniform}
 @deffn {Function} skewness_discrete_uniform (@var{n})
-Returns the skewness coefficient of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -6050,7 +6689,9 @@ m4_displaymath(
 
 @anchor{kurtosis_discrete_uniform}
 @deffn {Function} kurtosis_discrete_uniform (@var{n})
-Returns the kurtosis coefficient of a m4_DiscreteUniform_RV(n) random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_DiscreteUniform_RV(n) 
+random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -6076,7 +6717,9 @@ m4_displaymath(
 @deffn {Function} random_discrete_uniform (@var{n}) @
 @fname{random_discrete_uniform} (@var{n},@var{m})
 
-Returns a m4_DiscreteUniform_RV(n) random variate, with @math{n} a strictly positive integer. Calling @code{random_discrete_uniform} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a 
+m4_DiscreteUniform_RV(n) 
+random variate, with @math{n} a strictly positive integer. Calling @code{random_discrete_uniform} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
@@ -6103,7 +6746,8 @@ objects are from class @math{A}.  Of course @math{n \leq n_1 + n_2}.
 
 @anchor{pdf_hypergeometric}
 @deffn {Function} pdf_hypergeometric (@var{x},@var{n_1},@var{n_2},@var{n})
-Returns the value at @var{x} of the probability function of a m4_Hypergeometric_RV(n1,n2,n)
+Returns the value at @var{x} of the probability function of a 
+m4_Hypergeometric_RV(n1,n2,n)
 random variable, with @math{n_1}, @math{n_2} and @math{n} non negative
 integers and @math{n\leq n_1+n_2}.
 Being @math{n_1} the number of objects of class A, @math{n_2} the number of objects of class B, and
@@ -6134,7 +6778,8 @@ m4_displaymath(
 
 @anchor{cdf_hypergeometric}
 @deffn {Function} cdf_hypergeometric (@var{x},@var{n_1},@var{n_2},@var{n})
-Returns the value at @var{x} of the distribution function of a m4_Hypergeometric_RV(n1,n2,n) 
+Returns the value at @var{x} of the distribution function of a 
+m4_Hypergeometric_RV(n1,n2,n) 
 random variable, with @math{n_1}, @math{n_2} and @math{n} non negative
 integers and @math{n\leq n_1+n_2}. 
 See @code{pdf_hypergeometric} for a more complete description.
@@ -6169,7 +6814,9 @@ m4_displaymath(
 
 @anchor{quantile_hypergeometric}
 @deffn {Function} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
-Returns the @var{q}-quantile of a m4_Hypergeometric_RV(n1,n2,n) random
+Returns the @var{q}-quantile of a 
+m4_Hypergeometric_RV(n1,n2,n) 
+random
 variable, with @var{n1}, @var{n2} and @var{n} non negative integers
 and @math{n\leq n1+n2}; in other words, this is the inverse of @code{cdf_hypergeometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
@@ -6182,7 +6829,9 @@ and @math{n\leq n1+n2}; in other words, this is the inverse of @code{cdf_hyperge
 
 @anchor{mean_hypergeometric}
 @deffn {Function} mean_hypergeometric (@var{n_1},@var{n_2},@var{n})
-Returns the mean of a discrete uniform random variable m4_Hypergeometric_RV(n_1,n_2,n), with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n_1+n_2}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a discrete uniform random variable 
+m4_Hypergeometric_RV(n_1,n_2,n)
+, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n_1+n_2}. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -6206,8 +6855,11 @@ m4_displaymath(
 
 @anchor{var_hypergeometric}
 @deffn {Function} var_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the variance of a hypergeometric  random variable m4_Hypergeometric_RV(n_1,n_2,n),
-with @math{n_1}, @math{n_2} and @math{n} non negative integers and m4_math(<<<n \le n_1 + n_2>>>, <<<n <= n_1 + n_2>>>).
+Returns the variance of a hypergeometric  random variable 
+m4_Hypergeometric_RV(n_1,n_2,n)
+,
+with @math{n_1}, @math{n_2} and @math{n} non negative integers and 
+m4_mathdot(<<<n \le n_1 + n_2>>>, <<<n <= n_1 + n_2>>>)
 To make use of this function, write first @code{load("distrib")}.
 
 The variance is
@@ -6234,7 +6886,9 @@ m4_displaymath(
 
 @anchor{std_hypergeometric}
 @deffn {Function} std_hypergeometric (@var{n_1},@var{n_2},@var{n})
-Returns the standard deviation of a m4_Hypergeometric_RV(n_1,n_2,n) random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n_1+n_2}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_Hypergeometric_RV(n_1,n_2,n)
+random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n_1+n_2}. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -6259,7 +6913,9 @@ m4_displaymath(
 
 @anchor{skewness_hypergeometric}
 @deffn {Function} skewness_hypergeometric (@var{n_1},@var{n_2},@var{n})
-Returns the skewness coefficient of a m4_Hypergeometric_RV(n1,n2,n) random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n1+n2}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_Hypergeometric_RV(n1,n2,n) 
+random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n1+n2}. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -6286,7 +6942,9 @@ SK[X] = -------------------------------------------------------------
 
 @anchor{kurtosis_hypergeometric}
 @deffn {Function} kurtosis_hypergeometric (@var{n_1},@var{n_2},@var{n})
-Returns the kurtosis coefficient of a m4_Hypergeometric_RV(n_1,n_2,n) random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n1+n2}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_Hypergeometric_RV(n_1,n_2,n) 
+random variable, with @math{n_1}, @math{n_2} and @math{n} non negative integers and @math{n\leq n1+n2}. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -6320,7 +6978,8 @@ KU[X] = ((n_2 + n_1 - 1) (n_2 + n_1)
 @end example
 >>>)
 @ifnotinfo
-where m4_math(C(k) = n_1+n_2-k).
+where 
+m4_mathdot(C(k) = n_1+n_2-k)
 @end ifnotinfo
 
 @opencatbox{Categories:}
@@ -6334,8 +6993,11 @@ where m4_math(C(k) = n_1+n_2-k).
 @deffn {Function} random_hypergeometric (@var{n1},@var{n2},@var{n}) @
 @fname{random_hypergeometric} (@var{n1},@var{n2},@var{n},@var{m})
 
-Returns a m4_Hypergeometric_RV(n1,n2,n) random variate,
-with @var{n1}, @var{n2} and @var{n} non negative integers and m4_math(<<<n \le n_1 + n_2>>>, <<<n <= n_1 + n_2>>>).
+Returns a 
+m4_Hypergeometric_RV(n1,n2,n) 
+random variate,
+with @var{n1}, @var{n2} and @var{n} non negative integers and 
+m4_mathdot(<<<n \le n_1 + n_2>>>, <<<n <= n_1 + n_2>>>)
 Calling @code{random_hypergeometric} with a fourth argument @var{m}, a random sample of size @var{m} will be simulated.
 
 Algorithm described in Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
@@ -6358,11 +7020,15 @@ each trial has two outcomes called ``success'' and ``failure'' where
 ``success'' occurs with probablity @math{p} and ``failure'' with
 probability @math{1-p}.  We observe the sequence until a predefined
 number @math{r} of sucesses have occurred.  Then the number of
-failures seen will have a m4_NegativeBinomial_RV(r, p) distribution.
+failures seen will have a 
+m4_NegativeBinomial_RV(r, p) 
+distribution.
 
 @anchor{pdf_negative_binomial}
 @deffn {Function} pdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the probability function of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 The pdf is
 m4_displaymath(
@@ -6386,7 +7052,9 @@ m4_displaymath(
 
 @anchor{cdf_negative_binomial}
 @deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number.
+Returns the value at @var{x} of the distribution function of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number.
 
 The cdf is
 m4_displaymath(
@@ -6397,7 +7065,9 @@ m4_displaymath(
 @end example
 >>>)
 @ifnotinfo
-where m4_math(I_p(a,b)) is the @ref{beta_incomplete_regularized} function.
+where 
+m4_math(I_p(a,b)) 
+is the @ref{beta_incomplete_regularized} function.
 @end ifnotinfo
 
 @c ===beg===
@@ -6423,7 +7093,9 @@ where m4_math(I_p(a,b)) is the @ref{beta_incomplete_regularized} function.
 
 @anchor{quantile_negative_binomial}
 @deffn {Function} quantile_negative_binomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
 
 @opencatbox{Categories:}
 @category{Package distrib}
@@ -6434,7 +7106,9 @@ Returns the @var{q}-quantile of a m4_NegativeBinomial_RV(n,p) random variable, w
 
 @anchor{mean_negative_binomial}
 @deffn {Function} mean_negative_binomial (@var{n},@var{p})
-Returns the mean of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 The mean is
 m4_displaymath(
@@ -6456,7 +7130,9 @@ m4_displaymath(
 
 @anchor{var_negative_binomial}
 @deffn {Function} var_negative_binomial (@var{n},@var{p})
-Returns the variance of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 The variance is
 m4_displaymath(
@@ -6479,7 +7155,9 @@ m4_displaymath(
 
 @anchor{std_negative_binomial}
 @deffn {Function} std_negative_binomial (@var{n},@var{p})
-Returns the standard deviation of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 The standard deviation is
 m4_displaymath(
@@ -6501,7 +7179,9 @@ m4_displaymath(
 
 @anchor{skewness_negative_binomial}
 @deffn {Function} skewness_negative_binomial (@var{n},@var{p})
-Returns the skewness coefficient of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 The skewness coefficient is
 m4_displaymath(
@@ -6523,7 +7203,9 @@ m4_displaymath(
 
 @anchor{kurtosis_negative_binomial}
 @deffn {Function} kurtosis_negative_binomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a m4_NegativeBinomial_RV(n,p) random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a 
+m4_NegativeBinomial_RV(n,p) 
+random variable, with @math{0 < p \leq 1} and @math{n} a positive number. To make use of this function, write first @code{load("distrib")}.
 
 The kurtosis coefficient is
 m4_displaymath(
@@ -6549,7 +7231,9 @@ m4_displaymath(
 @deffn {Function} random_negative_binomial (@var{n},@var{p}) @
 @fname{random_negative_binomial} (@var{n},@var{p},@var{m})
 
-Returns a m4_NegativeBinomial_RV(n,p) random variate, with @math{0 < p \leq 1} and @math{n} a positive number. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a 
+m4_NegativeBinomial_RV(n,p) 
+random variate, with @math{0 < p \leq 1} and @math{n} a positive number. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 Algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 

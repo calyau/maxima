@@ -1301,8 +1301,14 @@ then the same strategy as in @code{quad_qags} is applied.
 
 @item @mref{quad_qawo}
 
-Integration of m4_math(<<<\cos(\omega x) f(x)>>>,<<<@math{cos(omega x) f(x)}>>>) or m4_math(<<<\sin(\omega x) f(x)>>>,<<<@math{sin(omega x) f(x)}>>>) over a
-finite interval, where m4_math(\omega, @math{omega}) is a constant.
+Integration of 
+m4_math(<<<\cos(\omega x) f(x)>>>,<<<@math{cos(omega x) f(x)}>>>) 
+or 
+m4_math(<<<\sin(\omega x) f(x)>>>,<<<@math{sin(omega x) f(x)}>>>) 
+over a
+finite interval, where 
+m4_math(\omega, @math{omega}) 
+is a constant.
 The rule evaluation component is based on the modified Clenshaw-Curtis
 technique.  @mref{quad_qawo} applies adaptive subdivision with extrapolation,
 similar to @mrefdot{quad_qags}
@@ -1314,10 +1320,23 @@ finite intervals, and convergence acceleration by means of the Epsilon algorithm
 (Wynn, 1956) is applied to the series of the integral contributions.
 
 @item @mref{quad_qaws}
-Integration of m4_math(w(x)f(x), @math{w(x) f(x)}) over a finite interval @math{[a, b]}, where
-@math{w} is a function of the form m4_math((x-a)^\alpha (b-x)^\beta v(x), @math{(x - a)^alpha (b - x)^beta v(x)}) and
-@math{v(x)} is 1 or m4_math(\log(x-a), @math{log(x - a)}) or m4_math(\log(b-x), @math{log(b - x)}) or
-m4_math(\log(x-a)\log(b-x), @math{log(x - a) log(b - x)}), and m4_math(\alpha > -1, @math{alpha > -1}) and m4_math(\beta > -1, @math{beta > -1}).
+Integration of 
+m4_math(w(x)f(x), @math{w(x) f(x)}) 
+over a finite interval @math{[a, b]}, where
+@math{w} is a function of the form 
+m4_math((x-a)^\alpha (b-x)^\beta v(x), @math{(x - a)^alpha (b -
+x)^beta v(x)}) 
+and
+@math{v(x)} is 1 or 
+m4_math(\log(x-a), @math{log(x - a)}) 
+or 
+m4_math(\log(b-x), @math{log(b - x)}) 
+or
+m4_mathcomma(\log(x-a)\log(b-x), @math{log(x - a) log(b - x)}) 
+and 
+m4_math(\alpha > -1, @math{alpha > -1}) 
+and 
+m4_mathdot(\beta > -1, @math{beta > -1})
 
 A globally adaptive subdivision strategy is applied, with modified
 Clenshaw-Curtis integration on the subintervals which contain @math{a}
@@ -1890,8 +1909,14 @@ Examples:
 @fname{quad_qawo} (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}]) @
 @fname{quad_qawo} (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
-Integration of m4_math(<<<\cos(\omega x) f(x)>>>,<<<@math{cos (omega x) f(x)}>>>) or m4_math(<<<\sin(\omega x)>>>, <<<@math{sin (omega x) f(x)}>>>) over a finite interval,
-where m4_math(\omega, @math{omega}) is a constant.
+Integration of 
+m4_math(<<<\cos(\omega x) f(x)>>>,<<<@math{cos (omega x) f(x)}>>>) 
+or 
+m4_math(<<<\sin(\omega x)>>>, <<<@math{sin (omega x) f(x)}>>>) 
+over a finite interval,
+where 
+m4_math(\omega, @math{omega}) 
+is a constant.
 The rule evaluation component is based on the modified
 Clenshaw-Curtis technique.  @code{quad_qawo} applies adaptive subdivision with
 extrapolation, similar to @code{quad_qags}.

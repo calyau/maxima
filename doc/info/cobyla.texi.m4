@@ -11,11 +11,17 @@
 Fortran constrained optimization routine COBYLA by Powell[1][2][3].  
 
 COBYLA minimizes an objective function @math{F(X)} subject to @math{M} inequality
-constraints of the form m4_math(g(X) \ge 0, @math{g(X) >= 0}) on @math{X},
+constraints of the form 
+m4_math(g(X) \ge 0, @math{g(X) >= 0}) 
+on @math{X},
 where @math{X} is a vector of variables that has @math{N} components.
 
 Equality constraints @math{g(X) = 0} can often be implemented by a pair of inequality 
-constraints m4_math(g(X) \ge 0, @math{g(X)>=0}) and m4_mathdot(-g(X) \ge 0, @math{-g(X)>= 0})  Maxima's interface to COBYLA
+constraints 
+m4_math(g(X) \ge 0, @math{g(X)>=0}) 
+and 
+m4_mathdot(-g(X) \ge 0, @math{-g(X)>= 0})  
+Maxima's interface to COBYLA
 allows equality constraints and internally converts the equality
 constraints to a pair of inequality constraints.
 
@@ -73,8 +79,13 @@ The optional arguments recognized are:
 @item constraints
 List of inequality and equality constraints that must be satisfied by
 @var{X}.  The inequality constraints must be actual inequalities of
-the form m4_math(g(X) \ge h(X), @math{g(@var{X}) >= h(@var{X})}) or m4_mathdot(g(X) \le h(X), @math{g(@var{X}) <= h(@var{X})})  The equality constraints must be of the
-form m4_mathdot(g(X) = h(X), @math{g(@var{X}) = h(@var{X})}) 
+the form 
+m4_math(g(X) \ge h(X), @math{g(@var{X}) >= h(@var{X})}) 
+or 
+m4_mathdot(g(X) \le h(X), @math{g(@var{X}) <= h(@var{X})})  
+The equality constraints must be of the
+form 
+m4_mathdot(g(X) = h(X), @math{g(@var{X}) = h(@var{X})}) 
 @item rhobeg
 Initial value of the internal @var{RHO} variable which controls 
 the size of simplex.  (Defaults to 1.0)
@@ -154,7 +165,10 @@ See @mref{fmin_cobyla} for more information.
 @node Examples for cobyla, , Functions and Variables for cobyla, Package cobyla
 @section Examples for cobyla
 
-Minimize m4_math(x_1 x_2, @math{x_1 x_2}) with m4_mathdot(1-x_1^2-x_2^2 \ge 0, @math{1-x1^2-x2^2 >= 0})  
+Minimize 
+m4_math(x_1 x_2, @math{x_1 x_2}) 
+with 
+m4_mathdot(1-x_1^2-x_2^2 \ge 0, @math{1-x1^2-x2^2 >= 0})  
 The theoretical solution is
 m4_displaymath(
 <<<\eqalign{
@@ -188,7 +202,9 @@ x_2 &= -{1\over \sqrt{2}}
 @end example
 
 Here is the same example but the constraint
-is m4_math(x_1^2+x_2^2 \le -1, @math{x1^2+x2^2 <= -1}) which
+is 
+m4_math(x_1^2+x_2^2 \le -1, @math{x1^2+x2^2 <= -1}) 
+which
 is impossible over the reals.
 
 @example
