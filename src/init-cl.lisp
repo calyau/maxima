@@ -262,6 +262,9 @@
                                      #+ecl
                                      (list (combine-path *maxima-sharedir* "contrib" "**")
                                            '("mac"))
+                                     #+ecl
+                                     (list (combine-path *maxima-sharedir* "simplex" "**")
+                                           '("mac"))
 				     (list *maxima-srcdir*
 					   '("mac"))
 				     (list *maxima-topdir*
