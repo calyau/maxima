@@ -2318,9 +2318,15 @@ See also @mref{atan2}.
 @anchor{atan2}
 @deffn {Function} atan2 (@var{y}, @var{x})
 
--- yields the value of m4_math(<<<\tan^{-1}(y/x)>>>, atan(y/x)) in the
-interval m4_math(-\pi, -%pi) to m4_math(\pi, %pi) taking into
-consideration the quadrant of the point m4_mathdot(<<<(x,y)>>>, <<<(x,y)>>>)
+-- yields the value of
+m4_math(<<<\tan^{-1}(y/x)>>>, atan(y/x))
+in the interval
+m4_math(-\pi, -%pi)
+to
+m4_math(\pi, %pi)
+taking into
+consideration the quadrant of the point 
+m4_mathdot(<<<(x,y)>>>, <<<(x,y)>>>)
 
 See also @mref{atan}.
 
@@ -2483,7 +2489,12 @@ Default value: @code{true}
 When @code{%piargs} is @code{true},
 trigonometric functions are simplified to algebraic constants
 when the argument is an integer multiple
-of m4_mathcomma(\pi,%pi)@w{} m4_mathcomma(\pi/2,%pi/2)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} or m4_mathdot(\pi/6,%pi/6)
+of
+m4_mathcomma(\pi,%pi)
+m4_mathcomma(\pi/2,%pi/2)
+m4_mathcomma(\pi/4,%pi/4)
+or
+m4_mathdot(\pi/6,%pi/6)
 @c @iftex
 @c @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
 @c @end iftex
@@ -2491,7 +2502,9 @@ of m4_mathcomma(\pi,%pi)@w{} m4_mathcomma(\pi/2,%pi/2)@w{} m4_mathcomma(\pi/4,%p
 @c @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
 @c @end ifnottex
 
-Maxima knows some identities which can be applied when m4_math(\pi,%pi), etc.,
+Maxima knows some identities which can be applied when
+m4_mathcomma(\pi,%pi)
+etc.,
 @c @iftex
 @c Maxima knows some identities which can be applied when @math{\pi}, etc.,
 @c @end iftex
@@ -2549,7 +2562,11 @@ Examples:
 @end group
 @end example
 
-Some identities are applied when m4_math(\pi,%pi) and m4_math(\pi/2,%pi/2) are
+Some identities are applied when 
+m4_math(\pi,%pi)
+and 
+m4_math(\pi/2,%pi/2)
+are
 multiplied by an integer variable.
 @c @iftex
 @c Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by
@@ -2589,7 +2606,8 @@ Default value: @code{true}
 When @code{%iargs} is @code{true},
 trigonometric functions are simplified to hyperbolic functions
 when the argument is apparently a multiple of the imaginary
-unit m4_mathdot(i, %i)
+unit 
+m4_mathdot(i, %i)
 @c @iftex
 @c when the argument is apparently a multiple of the imaginary unit @math{i}.
 @c @end iftex
@@ -2599,7 +2617,8 @@ unit m4_mathdot(i, %i)
 
 Even when the argument is demonstrably real, the simplification is applied;
 Maxima considers only whether the argument is a literal multiple
-of m4_mathdot(i,%i)
+of 
+m4_mathdot(i,%i)
 @c @iftex
 @c Maxima considers only whether the argument is a literal multiple of @math{i}.
 @c @end iftex
@@ -2663,7 +2682,9 @@ When @code{halfangles} is @code{true}, trigonometric functions of arguments
 @code{@var{expr}/2} are simplified to functions of @var{expr}.
 
 For a real argument @math{x} in the interval
-@w{}m4_mathcomma(<<<0 \le x < 2\pi>>>, 0 <= x < 2*%pi)@w{} m4_math(<<<\sin{x\over 2}>>>, sin(x/2)) simplifies to a simple formula:
+m4_mathcomma(<<<0 \le x < 2\pi>>>, 0 <= x < 2*%pi)
+m4_math(<<<\sin{x\over 2}>>>, sin(x/2))
+simplifies to a simple formula:
 m4_displaymath(
 {\sqrt{1-\cos x}\over\sqrt{2}},
 @example
@@ -2742,8 +2763,12 @@ Examples:
 Default value: @code{true}
 
 When @code{trigsign} is @code{true}, it permits simplification of negative
-arguments to trigonometric functions.  E.g., m4_math(\sin(-x),@code{sin(-x)}) will
-become m4_math(-\sin x, @code{-sin(x)}) only if @code{trigsign} is @code{true}.
+arguments to trigonometric functions.  E.g., 
+m4_math(\sin(-x),@code{sin(-x)}) 
+will
+become 
+m4_math(-\sin x, @code{-sin(x)})
+only if @code{trigsign} is @code{true}.
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
@@ -2928,7 +2953,13 @@ See also @mref{poissimp}.
 @deffn {Function} trigsimp (@var{expr})
 
 
-Employs the identities m4_math(<<<\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1>>>, <<<sin(x)^2+cos(x)^2 = 1>>>) and m4_math(<<<\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1>>>, <<<cosh(x)^2-sinh(x)^2 = 1>>>) to
+Employs the identities
+m4_math(<<<\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1>>>,
+<<<sin(x)^2+cos(x)^2 = 1>>>)
+and 
+m4_math(<<<\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1>>>,
+<<<cosh(x)^2-sinh(x)^2 = 1>>>)
+to
 @c @iftex
 @c @tex
 @c $\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
@@ -3066,7 +3097,12 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 The @code{atrig1} package contains several additional simplification rules
 for inverse trigonometric functions.  Together with rules
 already known to Maxima, the following angles are fully implemented:
-@math{0}, m4_mathcomma(\pi/6,%pi/6)@w{} m4_mathcomma(\pi/4,%pi/4)@w{} m4_mathcomma(\pi/3,%pi/3)@w{} and m4_mathdot(\pi/2,%pi/2)
+@math{0},
+m4_mathcomma(\pi/6,%pi/6)
+m4_mathcomma(\pi/4,%pi/4)
+m4_mathcomma(\pi/3,%pi/3)
+and
+m4_mathdot(\pi/2,%pi/2)
 Corresponding angles in the other three quadrants are also available.
 Do @code{load("atrig1");} to use them.
 

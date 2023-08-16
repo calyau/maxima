@@ -255,6 +255,16 @@
 				     (list (combine-path *maxima-sharedir* "**")
 					   ;; sharedir should only have mac files.
 					   '("mac"))
+                                     ;; See
+                                     ;; https://sourceforge.net/p/maxima/bugs/4174/.
+                                     ;; This is a work around so that
+                                     ;; we can load zeilberger on ecl.
+                                     #+ecl
+                                     (list (combine-path *maxima-sharedir* "contrib" "**")
+                                           '("mac"))
+                                     #+ecl
+                                     (list (combine-path *maxima-sharedir* "simplex" "**")
+                                           '("mac"))
 				     (list *maxima-srcdir*
 					   '("mac"))
 				     (list *maxima-topdir*

@@ -693,13 +693,17 @@ the half-integer Bessel functions are evaluated using the SLATEC code.
 @anchor{assoc_legendre_p}
 @deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
 The associated Legendre function of the first kind of degree @math{n} and
-order @math{m}, m4_math(<<<P_{n}^{m}(z)>>>,<<<assoc_legendre_p(n,m,z)>>>), is a solution of the differential equation:
+order @math{m}, 
+m4_mathcomma(<<<P_{n}^{m}(z)>>>,<<<assoc_legendre_p(n,m,z)>>>)
+is a solution of the differential equation:
 
 m4_displaymath(
 <<<(1-z^2){d^2 w\over dz^2} - 2z{dw\over dz} + \left[n(n+1)-{m^2\over 1-z^2}\right] w = 0>>>,
 <<<(1-z^2)*diff(w,z,2) - 2*z*diff(w,z) + (n*(n+1)-m^2/(1-z^2))*w = 0>>>)
 
-This is related to the Legendre polynomial, m4_math(<<<P_n(x)>>>, <<<legendre_p(n,x)>>>) via
+This is related to the Legendre polynomial, 
+m4_math(<<<P_n(x)>>>, <<<legendre_p(n,x)>>>)
+via
 
 m4_displaymath(
 <<<P_n^m(x) = (-1)^m\left(1-x^2\right)^{m/2} {d^m\over dx^m} P_n(x)>>>,
@@ -748,7 +752,9 @@ Some examples:
 @anchor{assoc_legendre_q}
 @deffn {Function} assoc_legendre_q (@var{n}, @var{m}, @var{x})
 The associated Legendre function of the second kind of degree @math{n}
-and order @math{m}, m4_math(<<<Q_{n}^{m}(z)>>>,<<<assoc_legendre_q(n,m,z)>>>), is a solution of the differential equation:
+and order @math{m}, 
+m4_mathcomma(<<<Q_{n}^{m}(z)>>>,<<<assoc_legendre_q(n,m,z)>>>) 
+is a solution of the differential equation:
 
 m4_displaymath(
 <<<(1-z^2){d^2 w\over dz^2} - 2z{dw\over dz} + \left[n(n+1)-{m^2\over 1-z^2}\right] w = 0>>>,
@@ -793,11 +799,14 @@ Some examples:
 
 @anchor{chebyshev_t}
 @deffn {Function} chebyshev_t (@var{n}, @var{x})
-The Chebyshev polynomial of the first kind of degree @math{n}, m4_math(<<<T_n(x).>>>,<<<chebyshev_t(n,x).>>>)
+The Chebyshev polynomial of the first kind of degree @math{n}, 
+m4_math(<<<T_n(x).>>>,<<<chebyshev_t(n,x).>>>)
 
 Reference: @urlaands{eqn 22.5.47, 779}.
 
-The polynomials m4_math(<<<T_n(x)>>>,<<<chebyshev_t(n,x)>>>) can be written in terms of a hypergeometric function:
+The polynomials 
+m4_math(<<<T_n(x)>>>,<<<chebyshev_t(n,x)>>>) 
+can be written in terms of a hypergeometric function:
 
 m4_displaymath(
 <<<T_n(x) = {_{2}}F_{1}\left(-n, n; {1\over 2}; {1-x\over 2}\right)>>>,
@@ -857,11 +866,14 @@ Some examples:
 
 @anchor{chebyshev_u}
 @deffn {Function} chebyshev_u (@var{n}, @var{x})
-The Chebyshev polynomial of the second kind of degree @math{n}, m4_math(<<<U_n(x)>>>,<<<chebyshev_u(n,x)>>>).
+The Chebyshev polynomial of the second kind of degree @math{n}, 
+m4_mathdot(<<<U_n(x)>>>,<<<chebyshev_u(n,x)>>>)
 
 Reference: @urlaands{eqn 22.5.48,779}.
 
-The polynomials m4_math(<<<U_n(x)>>>,<<<chebyshev_u(n,x)>>>) can be written in terms of a hypergeometric function:
+The polynomials 
+m4_math(<<<U_n(x)>>>,<<<chebyshev_u(n,x)>>>) 
+can be written in terms of a hypergeometric function:
 
 m4_displaymath(
 <<<U_n(x) = (n+1)\; {_{2}F_{1}}\left(-n, n+2; {3\over 2}; {1-x\over 2}\right)>>>,
@@ -922,7 +934,8 @@ w(x) &= \sqrt{1-x^2} \cr
 
 @anchor{gen_laguerre}
 @deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
-The generalized Laguerre polynomial of degree @math{n}, m4_math(<<<L_n^{(\alpha)}(x)>>>,<<<gen_laguerre(n,a,x)>>>).
+The generalized Laguerre polynomial of degree @math{n}, 
+m4_mathdot(<<<L_n^{(\alpha)}(x)>>>,<<<gen_laguerre(n,a,x)>>>)
 
 These can be defined by
 
@@ -992,7 +1005,8 @@ Some examples:
 
 @anchor{hermite}
 @deffn {Function} hermite (@var{n}, @var{x})
-The Hermite polynomial of degree @math{n}, m4_math(<<<H_n(x)>>>,<<<hermite(n,x)>>>).
+The Hermite polynomial of degree @math{n}, 
+m4_mathdot(<<<H_n(x)>>>,<<<hermite(n,x)>>>)
 
 These polynomials may be defined by a hypergeometric function
 
@@ -1073,12 +1087,16 @@ Return @code{true} if the input is an interval and return false if it isn't.
 
 @anchor{jacobi_p}
 @deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
-The Jacobi polynomial, m4_math(<<<P_n^{(a,b)}(x)>>>, <<<jacobi_p(n,a,b,x)>>>).
+The Jacobi polynomial, 
+m4_mathdot(<<<P_n^{(a,b)}(x)>>>, <<<jacobi_p(n,a,b,x)>>>)
 
 The Jacobi polynomials are actually defined for all
 @math{a} and @math{b}; however, the Jacobi polynomial
 weight @math{(1 - x)^a (1 + x)^b} isn't integrable
-for m4_math(<<<a \le -1>>>, <<<a <= -1>>>) or m4_math(<<<b \le -1>>>, <<<b <= -1>>>). 
+for 
+m4_math(<<<a \le -1>>>, <<<a <= -1>>>) 
+or 
+m4_mathdot(<<<b \le -1>>>, <<<b <= -1>>>) 
 
 Reference: @urlaands{eqn 22.5.42,779}.
 
@@ -1128,7 +1146,9 @@ Some examples:
 
 @anchor{laguerre}
 @deffn {Function} laguerre (@var{n}, @var{x})
-The Laguerre polynomial, m4_math(<<<L_n(x)>>>,<<<laguerre(n,x)>>>) of degree @math{n}.
+The Laguerre polynomial, 
+m4_math(<<<L_n(x)>>>,<<<laguerre(n,x)>>>) 
+of degree @math{n}.
 
 Reference: @urlaands{eqn 22.5.16, 778} and @urlaands{eqn 22.5.54, 780}.
 
@@ -1179,7 +1199,9 @@ Some examples:
 
 @anchor{legendre_p}
 @deffn {Function} legendre_p (@var{n}, @var{x})
-The Legendre polynomial of the first kind, m4_math(P_n(x),legendre(n,x)), of degree @math{n}.
+The Legendre polynomial of the first kind, 
+m4_mathcomma(P_n(x),legendre(n,x)) 
+of degree @math{n}.
 
 Reference: @urlaands{eqn 22.5.50, 779} and @urlaands{eqn 22.5.51, 779}.
 
@@ -1247,11 +1269,15 @@ Some examples:
 
 @anchor{legendre_q}
 @deffn {Function} legendre_q (@var{n}, @var{x})
-The Legendre function of the second kind, m4_math(<<<Q_n(x)>>>, <<<legendre_q(n,x)>>>) of degree @math{n}.
+The Legendre function of the second kind, 
+m4_math(<<<Q_n(x)>>>, <<<legendre_q(n,x)>>>) 
+of degree @math{n}.
 
 Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
 
-These are related to m4_math(<<<Q_n^m(x)>>>,<<<assoc_legendre_q(n,m,x)>>>) by
+These are related to 
+m4_math(<<<Q_n^m(x)>>>,<<<assoc_legendre_q(n,m,x)>>>) 
+by
 
 m4_displaymath(
 <<<Q_n(x) = Q_n^0(x)>>>,
@@ -1387,15 +1413,27 @@ signals an error.
 
 @anchor{pochhammer}
 @deffn {Function} pochhammer (@var{x}, @var{n})
-The Pochhammer symbol, m4_math(<<<(x)_n>>>, <<<pochhammer(x,n)>>>). (See @urlaands{eqn 6.1.22, 256} and @urldlmf{5.2.iii}).
+The Pochhammer symbol, 
+m4_mathdot(<<<(x)_n>>>, <<<pochhammer(x,n)>>>)
+(See @urlaands{eqn 6.1.22, 256} and @urldlmf{5.2.iii}).
 
 For nonnegative
 integers @var{n} with @code{@var{n} <= pochhammer_max_index}, the
-expression m4_math(<<<(x)_n>>>, <<<pochhammer(x, n)>>>) evaluates to the
-product m4_math(<<<x(x+1)(x+2)\cdots(x+n-1)>>>, <<<x (x + 1) (x + 2) ... (x + n - 1)>>>) when m4_math(<<<n > 0>>>, n > 0) and
+expression 
+m4_math(<<<(x)_n>>>, <<<pochhammer(x, n)>>>) 
+evaluates to the
+product 
+m4_math(<<<x(x+1)(x+2)\cdots(x+n-1)>>>, <<<x (x + 1) (x + 2) ... (x +
+n - 1)>>>) 
+when
+m4_math(<<<n > 0>>>, n > 0) 
+and
 to 1 when @math{n = 0}.
-For negative @math{n}, m4_math(<<<(x)_n>>>, <<<pochhammer (x, n)>>>) is
-defined as m4_math(<<<(-1)^n/(1-x)_{-n}.>>>, <<<(-1)^n / pochhammer (1 - x, -n).>>>)
+For negative @math{n}, 
+m4_math(<<<(x)_n>>>, <<<pochhammer (x, n)>>>) 
+is
+defined as 
+m4_math(<<<(-1)^n/(1-x)_{-n}.>>>, <<<(-1)^n / pochhammer (1 - x, -n).>>>)
 Thus
 
 @c ===beg===
@@ -1474,7 +1512,8 @@ Reference: @urlaands{eqn 6.1.16,256}.
 
 @anchor{spherical_bessel_j}
 @deffn {Function} spherical_bessel_j (@var{n}, @var{x})
-The spherical Bessel function of the first kind, m4_math(<<<j_n(x).>>>, <<<spherical_bessel_j(n,x).>>>)
+The spherical Bessel function of the first kind, 
+m4_math(<<<j_n(x).>>>, <<<spherical_bessel_j(n,x).>>>)
 
 Reference: @urlaands{eqn 10.1.8, 437} and @urlaands{eqn 10.1.15, 439}.
 
@@ -1525,7 +1564,8 @@ Some examples:
 
 @anchor{spherical_bessel_y}
 @deffn {Function} spherical_bessel_y (@var{n}, @var{x})
-The spherical Bessel function of the second kind, m4_math(<<<y_n(x).>>>, <<<<spherical_bessel_y(n,x).>>>)
+The spherical Bessel function of the second kind, 
+m4_math(<<<y_n(x).>>>, <<<<spherical_bessel_y(n,x).>>>)
 
 Reference: @urlaands{eqn 10.1.9, 437} and @urlaands{eqn 10.1.15, 439}.
 
@@ -1576,7 +1616,8 @@ m4_displaymath(
 @anchor{spherical_hankel1}
 @deffn {Function} spherical_hankel1 (@var{n}, @var{x})
 The spherical Hankel function of the
-first kind, m4_math(<<<h_n^{(1)}(x).>>>, <<<spherical_hankel1(n,x).>>>)
+first kind, 
+m4_math(<<<h_n^{(1)}(x).>>>, <<<spherical_hankel1(n,x).>>>)
 
 Reference: @urlaands{eqn 10.1.36,439}.
 
@@ -1596,7 +1637,8 @@ m4_displaymath(
 @anchor{spherical_hankel2}
 @deffn {Function} spherical_hankel2 (@var{n}, @var{x})
 The spherical Hankel function of the
-second kind, m4_math(<<<h_n^{(2)}(x).>>>, <<<spherical_hankel2(n,x).>>>)
+second kind, 
+m4_math(<<<h_n^{(2)}(x).>>>, <<<spherical_hankel2(n,x).>>>)
 
 Reference: @urlaands{eqn 10.1.17,439}.
 
@@ -1615,13 +1657,18 @@ m4_displaymath(
 
 @anchor{spherical_harmonic}
 @deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{theta}, @var{phi})
-The spherical harmonic function, m4_math(<<<Y_n^m(\theta, \phi)>>>, <<<spherical_harmonic(n,m,theta,phi)>>>).
+The spherical harmonic function, 
+m4_mathdot(<<<Y_n^m(\theta, \phi)>>>, <<<spherical_harmonic(n,m,theta,phi)>>>)
 
 Spherical harmonics satisfy the angular part of Laplace's equation in spherical coordinates.
 
 For integers @math{n} and @math{m} such
-that m4_math(<<<n \geq |m|>>>,<<<n <= abs(m)>>>) and
-for m4_math(<<<\theta \in [0, \pi]>>>,<<<theta in [0, %pi]>>>), Maxima’s
+that 
+m4_math(<<<n \geq |m|>>>,<<<n <= abs(m)>>>) 
+and
+for 
+m4_mathdot(<<<\theta \in [0, \pi]>>>,<<<theta in [0, %pi]>>>) 
+Maxima’s
 spherical harmonic function can be defined by
 
 m4_displaymath(
@@ -1629,7 +1676,9 @@ m4_displaymath(
 <<<@math{spherical_harmonic(n, m, theta, phi)  :=  (-1)^m *  (((n-m)!*(2*n+1))/(4*%pi*(n+m)!))^(1/2)* exp(%i*m*phi)*assoc_legendre_p(n,m,cos(theta))}>>>)
  
 
-Further, when m4_math(<<<n < |m|>>>, <<<n < abs(m)>>>), the
+Further, when 
+m4_mathcomma(<<<n < |m|>>>, <<<n < abs(m)>>>) 
+the
 spherical harmonic function vanishes.
 
 The factor @math{(-1)^m}, frequently used in Quantum mechanics, is
@@ -1702,7 +1751,9 @@ use @mrefdot{hstep}
 
 @anchor{ultraspherical}
 @deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
-The ultraspherical polynomial, m4_math(<<<C_n^{(a)}(x)>>>, <<<ultraspherical(n,a,x)>>>) (also known as the Gegenbauer polynomial).
+The ultraspherical polynomial, 
+m4_math(<<<C_n^{(a)}(x)>>>, <<<ultraspherical(n,a,x)>>>) 
+(also known as the Gegenbauer polynomial).
 
 Reference: @urlaands{eqn 22.5.46,779}.
 

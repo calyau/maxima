@@ -36,7 +36,8 @@ value 2.718281828459045d0.  (See @urlaands{eqn 4.1.16, 67}, @urlaands{4.1.17, 67
 @vrindex Imaginary unit
 @defvr {Constant} %i
 
-@code{%i} represents the imaginary unit, m4_math(\sqrt{-1}, sqrt(- 1)).
+@code{%i} represents the imaginary unit, 
+m4_mathdot(\sqrt{-1}, sqrt(- 1))
 
 @opencatbox{Categories:}
 @category{Constants}
@@ -225,7 +226,8 @@ approximately 1.797693e+308.
 @vrindex Golden mean
 @defvr {Constant} %phi
 
-@code{%phi} represents the so-called @i{golden mean}, m4_math((1+\sqrt{5})/2, (1 + sqrt(5))/2).
+@code{%phi} represents the so-called @i{golden mean}, 
+m4_mathdot((1+\sqrt{5})/2, (1 + sqrt(5))/2)
 The numeric value of @code{%phi} is the double-precision floating-point value
 1.618033988749895d0.
 

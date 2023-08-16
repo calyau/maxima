@@ -52,11 +52,15 @@ trigonometric expessions. List of functions in trigtools package:
 @deffn {Function} c2sin (@var{x})
 @anchor{c2cos}
 @deffnx {Function} c2cos (@var{x})
-The function c2sin converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@math{a*cos(x)+b*sin(x)}>>>) to
-@w{}m4_mathdot(<<<r\sin(x+\phi)>>>, <<<@math{r*sin(x+phi)}>>>)
+The function c2sin converts the expression 
+m4_math(<<<a\cos x + b\sin x>>>, <<<@math{a*cos(x)+b*sin(x)}>>>) 
+to
+m4_mathdot(<<<r\sin(x+\phi)>>>, <<<@math{r*sin(x+phi)}>>>)
 
-The function c2cos converts the expression m4_math(<<<a\cos x + b\sin x>>>, <<<@math{ a*cos(x)+b*sin(x)}>>>) to
-@w{}m4_mathdot(<<<r\cos(x-\phi)>>>, <<<@math{r*cos(x-phi)}>>>)
+The function c2cos converts the expression 
+m4_math(<<<a\cos x + b\sin x>>>, <<<@math{ a*cos(x)+b*sin(x)}>>>) 
+to
+m4_mathdot(<<<r\cos(x-\phi)>>>, <<<@math{r*cos(x-phi)}>>>)
 
 Examples:
 @example
@@ -135,10 +139,14 @@ Example. Solve trigonometric equation
                           5         3        4         5
 @end example
 
-Answ.: m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>)@w{}m4_mathcomma(<<<x_1 = \sin^{-1}{2\over 5} - \tan^{-1}{4\over
-3}>>>, <<<x1 = asin(2/5)-atan(4/3)>>>)or
-@w{}m4_mathcomma(<<<x_1 = \tan^{-1}{3\over 4} + \cos^{-1}{2\over 5}>>>,
-<<<x1 = atan(3/4)+acos(2/5)>>>)@w{}for @math{k} any integer.
+Answ.: 
+m4_mathcomma(<<<x = x_1 + 2\pi k>>>,<<<x = x1 + 2*%pi*k>>>)
+m4_mathcomma(<<<x_1 = \sin^{-1}{2\over 5} - \tan^{-1}{4\over
+3}>>>, <<<x1 = asin(2/5)-atan(4/3)>>>)
+or
+m4_mathcomma(<<<x_1 = \tan^{-1}{3\over 4} + \cos^{-1}{2\over 5}>>>,
+<<<x1 = atan(3/4)+acos(2/5)>>>)
+for @math{k} any integer.
 
 @end deffn
 
@@ -259,7 +267,8 @@ Examples:
 @anchor{trigfactor}
 @deffn {Function} trigfactor (@var{x})
 The function trigfactor factors expresions of
-form m4_mathdot(<<<\pm \sin x \pm \cos y>>>, <<<+-sin(x)+-cos(y)>>>)
+form 
+m4_mathdot(<<<\pm \sin x \pm \cos y>>>, <<<+-sin(x)+-cos(y)>>>)
 
 Examples:
 
@@ -379,7 +388,8 @@ Examples:
 @anchor{trigsolve}
 @deffn {Function} trigsolve (@var{x})
 The function trigsolve find solutions of trigonometric equation from
-interval m4_math(<<<[a,b)>>>, <<<[a, b)>>>).
+interval 
+m4_mathdot(<<<[a,b)>>>, <<<[a, b)>>>)
 
 Examples:
 @enumerate
@@ -401,9 +411,14 @@ Examples:
 (%o41)            @{- 0.5157783719341241, 1.802780589520693@}
 @end example
 
-Answ. : m4_math(<<<x = \tan^{-1}\left({2\sqrt{21}\over 5} - {12\over
-5}\right) + 2\pi k>>>, <<<x = atan((2*sqrt(21))/5-12/5)+2*%pi*k>>>);
-@w{}m4_mathcomma(<<<x = \pi - \tan^{-1}\left({2\sqrt{21}\over 5} + {12\over 5}\right) + 2\pi k>>>, <<<x=%pi-atan((2*sqrt(21))/5+12/5)+2*%pi*k>>>) @math{k} -- any integer.
+Answ. : 
+m4_math(<<<x = \tan^{-1}\left({2\sqrt{21}\over 5} - {12\over
+5}\right) + 2\pi k>>>, <<<x = atan((2*sqrt(21))/5-12/5)+2*%pi*k>>>)
+;
+m4_mathcomma(<<<x = \pi - \tan^{-1}\left({2\sqrt{21}\over 5} +
+{12\over 5}\right) + 2\pi k>>>,
+<<<x=%pi-atan((2*sqrt(21))/5+12/5)+2*%pi*k>>>) 
+@math{k} -- any integer.
 
 @item @w{ }
 @example
@@ -472,7 +487,9 @@ Equation is equivalent to
                       3.403392041388942, 3.534291735288517, 5.105088062083414]
 @end example
 
-Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a} any from @math{S}, @math{k} any integer.
+Answer: 
+m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)
+where @math{a} any from @math{S}, @math{k} any integer.
 
 @item @w{ }
 @example
@@ -483,7 +500,8 @@ Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a
 (%o20)          2 cos(10 x) + 2 cos(8 x) + 2 cos(2 x) + 1 = 0
 @end example
 
-Left side is periodic with period m4_math(<<<T=\pi>>>, <<<T=%pi>>>).
+Left side is periodic with period 
+m4_mathdot(<<<T=\pi>>>, <<<T=%pi>>>)
 
 We have 10 solutions from [0, pi].
 @example
@@ -501,7 +519,9 @@ We have 10 solutions from [0, pi].
 
 @end example
 
-Equation we multiply by m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>):
+Equation we multiply by 
+m4_mathpunc(:, <<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>)
+
 
 @example
 (%i25) eq*2*sin(x)*cos(2*x);
@@ -526,8 +546,10 @@ Equation we multiply by m4_math(<<<2\sin x\cos 2x>>>, <<<2*sin(x)*cos(2*x)>>>):
 @end group
 @end example
 
-We remove solutions of m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) and
-@w{}m4_mathdot(<<<\cos 2x = 0>>>, <<<cos(2*x) = 0>>>)
+We remove solutions of 
+m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) 
+and
+m4_mathdot(<<<\cos 2x = 0>>>, <<<cos(2*x) = 0>>>)
 
 @example
 (%i30) S3:trigsolve(sin(x),0,%pi);
@@ -538,7 +560,9 @@ We remove solutions of m4_math(<<<\sin x = 0>>>, <<<sin(x)=0>>>) and
                                   4     4
 @end example
 
-We find 10 solutions from m4_math(<<<[0, \pi]>>>,<<<[0, %pi]>>>):
+We find 10 solutions from 
+m4_mathpunc(:,<<<[0, \pi]>>>,<<<[0, %pi]>>>)
+
 @example
 @group
 (%i32) union(S1,S2)$ setdifference(%,S3)$ setdifference(%,S4);
@@ -559,7 +583,9 @@ We find 10 solutions from m4_math(<<<[0, \pi]>>>,<<<[0, %pi]>>>):
 1.308996938995747, 1.346396851538483, 1.79519580205131, 1.832595714594046, 
 2.243994752564138, 2.692793703076966, 2.879793265790644]
 @end example
-Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a} any from @math{S}, @math{k} any integer.
+Answer: 
+m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)
+where @math{a} any from @math{S}, @math{k} any integer.
 
 @end enumerate
 @end deffn
@@ -569,20 +595,32 @@ Answer: m4_mathcomma(<<<x = a + 2\pi k>>>, <<<x = a+2*%pi*k>>>)@w{}where @math{a
 
 @anchor{trigvalue}
 @deffn {Function} trigvalue (@var{x})
-The function trigvalue compute values of m4_mathcomma(<<<\sin
-{m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\cos
-{m\pi\over n}>>>, <<<cos(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\tan
-{m\pi\over n}>>>, <<<tan(m*%pi/n)>>>)@w{} and m4_math(<<<\cot
-{m\pi\over n}>>>, <<<cot(m*%pi/n)>>>) in radicals.
+The function trigvalue compute values of 
+m4_mathcomma(<<<\sin
+{m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)
+m4_mathcomma(<<<\cos
+{m\pi\over n}>>>, <<<cos(m*%pi/n)>>>)
+m4_mathcomma(<<<\tan
+{m\pi\over n}>>>, <<<tan(m*%pi/n)>>>)
+and 
+m4_math(<<<\cot
+{m\pi\over n}>>>, <<<cot(m*%pi/n)>>>) 
+in radicals.
 @end deffn
 
 @anchor{trigeval}
 @deffn {Function} trigeval (@var{x})
-The function trigeval compute values of expressions with m4_mathcomma(<<<\sin
-{m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\cos
-{m\pi\over n}>>>, <<<cos(m*%pi/n)>>>)@w{} m4_mathcomma(<<<\tan
-{m\pi\over n}>>>, <<<tan(m*%pi/n)>>>)@w{} and m4_math(<<<\cot
-{m\pi\over n}>>>, <<<cot(m*%pi/n)>>>) in radicals.
+The function trigeval compute values of expressions with 
+m4_mathcomma(<<<\sin
+{m\pi\over n}>>>, <<<sin(m*%pi/n)>>>)
+m4_mathcomma(<<<\cos
+{m\pi\over n}>>>, <<<cos(m*%pi/n)>>>)
+m4_mathcomma(<<<\tan
+{m\pi\over n}>>>, <<<tan(m*%pi/n)>>>) 
+and 
+m4_math(<<<\cot
+{m\pi\over n}>>>, <<<cot(m*%pi/n)>>>) 
+in radicals.
 @end deffn
 
 Examples:
@@ -769,7 +807,8 @@ x = -------------------- + -----------------]
 @anchor{atan_contract}
 @deffn {Function} atan_contract (@var{r})
 The function atan_contract(r) contracts atan functions. We
-assume: m4_mathdot(<<<|r| < {\pi\over 2}>>>, <<<abs(r)<%pi/2>>>)
+assume: 
+m4_mathdot(<<<|r| < {\pi\over 2}>>>, <<<abs(r)<%pi/2>>>)
 
 Examples:
 @example

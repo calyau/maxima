@@ -10,7 +10,7 @@
 
 @var{colnew} solves mixed-order systems of boundary-value problems (BVPs)
 in ordinary differential equations(ODEs).  It is a Common Lisp translation
-(via @var{f2cl}) of the Fortran routine COLNEW (Bader&Ascher 1987).
+(via @var{f2cl}) of the Fortran routine COLNEW (@pxref{bader-ascher,, Bader&Ascher 1987}).
 
 The method uses collocation at Gaussian points and interpolation using
 basis functions. Approximate solutions are computed on a sequence
@@ -49,14 +49,14 @@ the use of adaptive meshes.
 The maxima interface to COLNEW exposes the full power and complexity
 of the Fortran 77 implementation.
 
-COLNEW is a modification of the package COLSYS (Ascher 1981a,b).
+COLNEW is a modification of the package COLSYS (@pxref{ascher-1981a,,Ascher 1981a} and @ref{ascher-1981b,, Ascher 1981b}).
 It incorporates a new basis
 representation replacing B-splines, and improvements for
 the linear and nonlinear algebraic equation solvers.
 The package can be referenced as either COLNEW or COLSYS.
 
 Many practical problems that are not in the standard form accepted by COLNEW
-can be converted into this form.  See (Asher&Russell 1981).
+can be converted into this form.  @xref{ascher-russell,, Asher&Russell 1981}.
 
 @opencatbox{Categories:}
 @category{Numerical methods}
@@ -359,7 +359,7 @@ COLNEW is best learned by example.
 
 The problem describes a uniformly loaded beam of variable stiffness, simply supported at both ends.
 
-The problem from (Gawain&Bell 1978) and is Example 1 from (Ascher 1981a).
+The problem from @ref{gawain-bell,, Gawain&Bell 1978} and is Example 1 from @ref{ascher-1981a,, Ascher 1981a}.
 The maxima code is in file share/colnew/prob1.mac and a Fortran implementation
 is in share/colnew/ex1. 
 
@@ -663,8 +663,8 @@ These equations describe the small finite deformation of a thin shallow
 spherical cap of constant thickness subject to a quadratically varying
 axisymmetric external pressure distribution superimposed on a uniform
 internal pressure distribution.
-The problem is described in (Parker&Wan 1984) and is Example 2
-from (Ascher 1981a).
+The problem is described in @ref{parker-wan,,Parker&Wan 1984} and is Example 2
+from @ref{ascher-1981a,, Ascher 1981a}.
 The maxima code is in file share/colnew/prob2.mac and a Fortran
 implementation is in share/colnew/ex2.
 
@@ -1165,7 +1165,7 @@ Columns 1 (x) and 2 (@math{φ}) of the two sets of results
 @ifnotinfo
 above, and the figure below,
 @end ifnotinfo
-can be compared with Figure 1 in (Ascher 1981a).
+can be compared with Figure 1 in @ref{ascher-1981a,, Ascher 1981a}.
 
 @ifnotinfo
 @image{figures/colnew-ex2,8cm}
@@ -1174,12 +1174,12 @@ can be compared with Figure 1 in (Ascher 1981a).
 
 @subsection Example 3: Rotating flow of viscous incompressible fluid
 
-Example 3 from (Ascher 1981a) describes the velocities in the
+Example 3 from @ref{ascher-1981a,, Ascher 1981a} describes the velocities in the
 boundary layer produced by the rotating flow of a viscous incompressible
-fluid over a stationary infinite disk (Gawain&Bell 1978).
+fluid over a stationary infinite disk (@pxref{gawain-bell,,Gawain&Bell 1978}).
 
 The solution uses a number of techniques to obtain convergence.
-Refer to (Ascher 1981a) for details.
+Refer to @ref{ascher-1981a,,Ascher 1981a} for details.
 
 The code is in directory share/colnew.  The maxima code is in file
 prob3.mac.  The reference Fortran implementation is in directory ex3. 
@@ -1187,7 +1187,7 @@ prob3.mac.  The reference Fortran implementation is in directory ex3.
 
 @subsection Example 4: Quantum Neumann equation
 
-A more sophisticated example is (Bellon&Talon 2005),
+A more sophisticated example is @ref{bellon-talon,, Bellon&Talon 2005},
 which deals with singularities in the
 solution domain, provides an initial quess to the solution
 and uses continuation to solve the system of non-linear
@@ -1200,7 +1200,7 @@ implementation is in directory ex4.
 
 @subsection Example 5: Simple example of continuation 
 
-This example (Ascher et al, 1995, Example 9.2) solves a numerically
+This example (@pxref{ascher-et-al,,Ascher et al@comma{} 1995@comma{} Example 9.2}) solves a numerically
 difficult boundary value problem using continuation.
 
 @noindent The linear differential equation is
@@ -1602,19 +1602,25 @@ The figure below shows the solution for
 @node References for colnew, , Examples for colnew, Package colnew
 @section References for colnew
 
-
+@itemize
+@anchor{gawain-bell}
+@item
 (Gawain&Bell 1978) T. H. Gawain and R. E. Ball,
    Improved Finite Difference Formulas for Boundary Value Problems,
    International Journal for Numerical Methods in Engineering 12, no. 7 (1978)
    1151–60.
    @url{https://doi.org/10.1002/nme.1620120706, doi:10.1002/nme.1620120706}
 
+@anchor{ascher-1979a}
+@item
 (Ascher 1979a) U. Ascher, J. Christiansen and R. D. Russell,
     A collocation solver for mixed order systems of boundary value problems,
     Math. Comp. 33 (1979), 659-679,
     @url{https:/doi.org/10.1090/S0025-5718-1979-0521281-7,
     doi:10.1090/S0025-5718-1979-0521281-7}
 
+@item
+@anchor{ascher-1979b}
 (Ascher 1979b) U. Ascher, J. Christiansen and R. D. Russell,
     COLSYS - a collocation code for boundary value problems,
     in @i{Codes for boundary-value problems in ordinary differential equations},
@@ -1622,34 +1628,46 @@ The figure below shows the solution for
     B. Childs et. al. (eds.) (1979), 164-185,
     ISBN 978-3-540-09554-5
 
+@anchor{ascher-1981a}
+@item
 (Ascher 1981a) U. Ascher, J. Christiansen and R. D. Russell,
     Collocation software for boundary-value odes,
     ACM Trans. Math Software 7 (1981), 209-222.
     @url{https:/doi.org/10.1145/355945.355950,
     doi:10.1145/355945.355950}
 
+@anchor{ascher-1981b}
+@item
 (Ascher 1981b) U. Ascher, U., J. Christiansen, and R. D. Russell.
    ‘Algorithm 569: COLSYS: Collocation Software for Boundary-Value ODEs [D2]’.
    ACM Transactions on Mathematical Software 7, no. 2 (June 1981): 223–29.
    @url{https:/doi.org/10.1145/355945.355951,
    doi:10.1145/355945.355951}
 
-(Asher&Russell 1981) U. Ascher and R. D. Russell.
+@anchor{ascher-russell}
+@item
+(Ascher&Russell 1981) U. Ascher and R. D. Russell.
    ‘Reformulation of Boundary Value Problems into “Standard” Form’.
    SIAM Review 23, no. 2 (April 1981), 238–54,
    @url{https:/doi.org/10.1137/1023039, doi:10.1137/1023039}
 
+@anchor{parker-wan}
+@item
 (Parker&Wan 1984) David F. Parker and Frederic Y. M. Wan,
   ‘Finite Polar Dimpling of Shallow Caps Under Sub-Buckling Axisymmetric
   Pressure Distributions’.
   SIAM Journal on Applied Mathematics 44, no. 2 (April 1984): 301–26,
   @url{https://doi.org/10.1137/0144022, doi:10.1137/0144022}
 
+@anchor{bader-ascher}
+@item
 (Bader&Ascher 1987) G. Bader and U. Ascher,
     A new basis implementation for a mixed order boundary value ode solver,
     SIAM J. Scient. Stat. Comput. (1987), 483-500,
     @url{https://doi.org/10.1137/0908047, doi:10.1137/0908047}
 
+@anchor{ascher-et-al}
+@item
 (Ascher et al, 1995) Uri M. Ascher, Robert M. M. Mattheij,
    and Robert D. Russell.
    Numerical Solution of Boundary Value Problems for Ordinary Differential
@@ -1657,9 +1675,12 @@ The figure below shows the solution for
    Classics in Applied Mathematics 13, SIAM, (1995),
    ISBN 978-0-89871-354-1
 
+@anchor{bellon-talon}
+@item
 (Bellon&Talon 2005) M. Bellon, M. Talon,
    Spectrum of the quantum Neumann model,
    Physics Letters A, Volume 337, Issues 4–6, pp 360-368,
    @url{https://doi.org/10.1016/j.physleta.2005.02.002,
    doi:10.1016/j.physleta.2005.02.002}
    @url{https://arxiv.org/abs/hep-th/0407005,arXiv:hep-th/0407005}
+@end itemize

@@ -7,7 +7,19 @@ m4_dnl for Maxima's user manual so that nice TeX-style formulas can be used
 m4_dnl for html and pdf docs and plain text for info.
 m4_dnl 
 m4_dnl For displayed formulas use m4_displaymath().  For inline formulas use
-m4_dnl m4_math().
+m4_dnl m4_math().  For both m4_displaymath and m4_math, the macros MUST start
+m4_dnl at the beginning of a line.  The end of the macro MUST not be followed
+m4_dnl by any other text either.  Thus,
+m4_dnl
+m4_dnl   Some description m4_math(foo) goes here
+m4_dnl
+m4_dnl is incorrect.  It must be written
+m4_dnl
+m4_dnl   Some description
+m4_dnl   m4_math(foo)
+m4_dnl   goes here
+m4_dnl
+m4_dnl The result will appear inline as expected.
 m4_dnl 
 m4_dnl In general, each macro takes up to 3 args.  The first arg for html
 m4_dnl docs using MathJax.  The second arg is for simple text suitable for
@@ -20,11 +32,8 @@ m4_dnl It is probably best to quote each arg to these macros like
 m4_dnl <<<foo>>> to prevent any confusion in parsing the arg, especially if
 m4_dnl the arg has commas in it.
 m4_dnl 
-m4_dnl NOTE: that there's an issue if m4_math is at the beginning or end of a
-m4_dnl line.  Then an extra newline is produced.  Hence, m4_math should have
-m4_dnl a word before and after it.  It can be helpful to add "@w{}" before or
-m4_dnl after m4_math.  For m4_displaymath, be careful not to have extra blank
-m4_dnl lines within the formula; Tex amy complain about the
+m4_dnl For m4_displaymath, be careful not to have extra blank
+m4_dnl lines within the formula; Tex may complain about the
 m4_dnl blank lines.
 m4_dnl 
 m4_dnl If m4_math is supposed to end a sentence, use m4_mathdot.  If you
@@ -34,10 +43,14 @@ m4_dnl
 m4_dnl If you have sevaral inline formulas separated by commas, use
 m4_dnl m4_mathcomma().  Otherwise, the comma (like a period), is spaced too
 m4_dnl far from the formula.
-m4_dnl 
+m4_dnl
+m4_dnl For other punctuation that follows an inline formula use m4_mathpunc.
+m4_dnl For example, if the formula is followed by a ":", use
+m4_dnl "m4_mathpunc(<<<:>>>, ...)" instead of "m4_math(...):".
+m4_dnl
 m4_dnl ----------------------------------------------------------------------
 m4_dnl Maxima has an # operator, so disable comment delimiters completely so 
-m4_dnl we don't accidentally comment out text
+m4_dnl we don't accidentally comment out text.
 m4_changecom()m4_dnl
 m4_dnl Change the quote characters to something that isn't likely to
 m4_dnl show up in the manual.
@@ -82,9 +95,11 @@ $$m4_ifelse(<<<$#>>>, <<<3>>>, <<<$3>>>, <<<$1>>>)$$
 m4_dnl
 m4_dnl m4_math(jax, info) or m4_math(jax, info, tex)
 m4_dnl Like m4_displaymath, but this is meant for inline math equations.
+m4_dnl m4_math MUST start at the beginning of the line and there must be
+m4_dnl text after m4_math().  The contents of m4_math may cover several
+m4_dnl lines, but there must not be any text after m4_math.
 m4_define(<<<m4_math>>>, 
-<<<
-@html
+<<<@html
 m4_ifelse(m4_no_displaymath(), <<<true>>>,
 <<<\($1\)>>>,
 <<<@math{$1}>>>)
@@ -94,8 +109,15 @@ m4_ifelse(m4_no_displaymath(), <<<true>>>,
 @end ifinfo
 @iftex
 @math{m4_ifelse(<<<$#>>>, <<<3>>>, <<<$3>>>, <<<$1>>>)}
-@end iftex
->>>)m4_dnl
+@end iftex>>>)m4_dnl
+m4_dnl
+m4_dnl m4_mathpunc(punc, jax, info) or m4_mathpunc(punc, jax, info, tex)
+m4_dnl This is like m4_math, but `punc` is placed at the end of the formulas
+m4_dnl so that the punctuation is not separated by too much space.
+m4_define(<<<m4_mathpunc>>>,
+<<<m4_ifelse(<<<$#>>>, <<<4>>>,
+  <<<m4_math(<<<$2$1>>>, <<<$3$1>>>, <<<$3$1>>>)>>>,
+  <<<m4_math(<<<$2$1>>>, <<<$3$1>>>)>>>)>>>)m4_dnl
 m4_dnl
 m4_dnl m4_mathdot(jax, info) or m4_mathdot(jax, info, tex)
 m4_dnl
@@ -103,14 +125,14 @@ m4_dnl Like m4_math, but automatically add a dot at the end of the
 m4_dnl equation to end a sentence.  If you place a dot after m4_math(), there's
 m4_dnl an extra space in the output that looks weird.  This is analogous to mrefdot.
 m4_define(<<<m4_mathdot>>>,
-<<<m4_ifelse(<<<$#>>>, <<<3>>>,
-  <<<m4_math(<<<$1.>>>, <<<$2.>>>, <<<$3.>>>)>>>,
-  <<<m4_math(<<<$1.>>>, <<<$2.>>>)>>>)>>>)m4_dnl
+  <<<m4_ifelse(<<<$#>>>, <<<3>>>,
+    <<<m4_mathpunc(<<<.>>>, <<<$1>>>, <<<$2>>>, <<<$3>>>)>>>,
+    <<<m4_mathpunc(<<<.>>>, <<<$1>>>, <<<$2>>>)>>>)>>>)m4_dnl
 m4_dnl
 m4_dnl Like m4_mathdot, but adds a comma at the end instead of a dot.
 m4_dnl Using m4_math() followed by a comma leaves an extra space that looks
 m4_dnl weird.  This is analogous to mrefcomma.
 m4_define(<<<m4_mathcomma>>>,
 <<<m4_ifelse(<<<$#>>>, <<<3>>>,
-  <<<m4_math(<<<$1,>>>, <<<$2,>>>, <<<$3,>>>)>>>,
-  <<<m4_math(<<<$1,>>>, <<<$2,>>>)>>>)>>>)m4_dnl
+  <<<m4_mathpunc(<<<,>>>, <<<$1>>>, <<<$2>>>, <<<$3>>>)>>>,
+  <<<m4_mathpunc(<<<,>>>, <<<$1>>>, <<<$2>>>)>>>)>>>)m4_dnl

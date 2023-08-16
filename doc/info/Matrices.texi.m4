@@ -2283,11 +2283,20 @@ expansion for an operand that is any kind of product.
 
 @table @code
 @item expandcrosscross
-Simplifies m4_math(<<<p \sim (q \sim r)>>>, <<<p ~ (q ~ r)>>>) to m4_math(<<<(p . r)q - (p . q)r>>>, <<<(p . r)*q-(p . q)*r>>>).
+Simplifies 
+m4_math(<<<p \sim (q \sim r)>>>, <<<p ~ (q ~ r)>>>) 
+to 
+m4_mathdot(<<<(p . r)q - (p . q)r>>>, <<<(p . r)*q-(p . q)*r>>>)
 @item expandcurlcurl
-Simplifies m4_math(<<<{\rm curl}\; {\rm curl}\; p>>>, <<<curl curl p>>>) to m4_math(<<<{\rm grad}\; {\rm div}\; p + {\rm div}\; {\rm grad}\; p>>>, <<<grad div p + div grad p>>>).
+Simplifies 
+m4_math(<<<{\rm curl}\; {\rm curl}\; p>>>, <<<curl curl p>>>) 
+to 
+m4_mathdot(<<<{\rm grad}\; {\rm div}\; p + {\rm div}\; {\rm grad}\; p>>>, <<<grad div p + div grad p>>>)
 @item expandlaplaciantodivgrad
-Simplifies m4_math(<<<{\rm laplacian}\; p>>>,<<<laplacian p>>>) to m4_math(<<<{\rm div}\; {\rm grad}\; p>>>, <<<div grad p>>>).
+Simplifies 
+m4_math(<<<{\rm laplacian}\; p>>>,<<<laplacian p>>>) 
+to 
+m4_mathdot(<<<{\rm div}\; {\rm grad}\; p>>>, <<<div grad p>>>)
 @item expandcross
 Enables @code{expandcrossplus} and @code{expandcrosscross}.
 @item expandplus

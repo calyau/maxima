@@ -36,16 +36,23 @@ m4_displaymath(
 @subsection The definite summation problem
 
 @code{zeilberger} implements Zeilberger's algorithm for definite hypergeometric summation.
-Given a proper hypergeometric term (in @math{n} and @math{k}) m4_math(<<<F_{n,k}>>>,<<<@math{F_(n,k)}>>>) and
+Given a proper hypergeometric term (in @math{n} and @math{k}) 
+m4_math(<<<F_{n,k}>>>,<<<@math{F_(n,k)}>>>) 
+and
 a positive integer @math{d} we want to find a @math{d}-th order linear
-recurrence with polynomial coefficients (in @math{n}) for m4_math(<<<F_{n,k}>>>,<<<@math{F_(n,k)}>>>) and
+recurrence with polynomial coefficients (in @math{n}) for 
+m4_math(<<<F_{n,k}>>>,<<<@math{F_(n,k)}>>>) 
+and
 a rational function @math{R} in @math{n} and @math{k} such that
 
 m4_displaymath(
 <<<a_0 \, F_{n,k} + \ldots + a_d \, F_{n+d,k} = \Delta_K \left(R\left(n,k\right) F_{n,k}\right),>>>,
 <<<@math{a_0 F_(n,k) + ... + a_d F_(n+d,k) = Delta_k(R(n,k) F_(n,k))},>>>)
-where m4_math(\Delta_k, @math{Delta_k}) is the @math{k}-forward difference
-operator, i.e., m4_mathdot(
+where 
+m4_math(\Delta_k, @math{Delta_k}) 
+is the @math{k}-forward difference
+operator, i.e., 
+m4_mathdot(
 <<<\Delta_k \left(t_k\right) \equiv t_{k+1} - t_k>>>,
 <<<@math{Delta_k(t_k) := t_(k+1) - t_k}>>>)
 
@@ -90,7 +97,9 @@ Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 @deffn {Function} Gosper (@math{F_k}, @var{k})
 Returns the rational certificate @math{R(k)} for @math{F_k}, that is,
 a rational function such
-that m4_mathcomma(<<<F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k>>>,<<<@math{F_k = R(k+1) F_(k+1) - R(k) F_k}>>>) if it exists.
+that 
+m4_mathcomma(<<<F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k>>>,<<<@math{F_k = R(k+1) F_(k+1) - R(k) F_k}>>>) 
+if it exists.
 Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
 @opencatbox{Categories:}
