@@ -3,16 +3,6 @@
 ;; which are otherwise very voluminous (and this construct
 ;; is accepted by other CL implementations).
 
-#+nil
-(with-compilation-unit nil
-    ($load "mring")
-    ($load "lu")
-    ($load "linalgcholesky")
-    ($load "eigens-by-jacobi")
-    ($load "linalg-extra")
-    ($load "matrixexp")
-    ($load "linalg-utilities"))
-
 #+(or ecl abcl)
 ($load "lisp-utils/defsystem.lisp")
 
