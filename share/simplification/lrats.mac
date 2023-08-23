@@ -65,7 +65,7 @@ fullratsubst([arglist]):=block(
    partswitch:true,inflag:true,piece],
   if larglistdum=2
   then if listp(farglist:first(arglist)) or inpart(farglist,0)="="
-       then lratsubst(farglist,last(arglist))
+       then fullratsubst(second(farglist),first(farglist),last(arglist))
        else error(messlrats2,arglist)
   else if larglistdum=3
        then apply('fullratsubst1,arglist)

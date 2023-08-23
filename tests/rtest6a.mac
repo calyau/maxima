@@ -162,6 +162,16 @@ cos(11/10)/1000;
 (load(lrats), 0);
 0;
 
+/* SF bug #4176: fullratsubst
+   In these examples, we make sure that both forms of calling
+   fullratsubst work as described in the documentation.
+*/
+fullratsubst(3*z^8 + 13, z^9, 147*z^13 -637);
+35721*z^8+1911*z^4+5733*z^3+17199*z^2+51597*z+154154;
+
+fullratsubst(z^9 = 3*z^8 + 13, 147*z^13 -637);
+35721*z^8+1911*z^4+5733*z^3+17199*z^2+51597*z+154154;
+
 /* SF bug #3376: fullratsubst doesn't catch infinite recursions
    In this example, fullratsubst1 should loop exactly lrats_max_iter=30 times,
    adding a power of b each time.
