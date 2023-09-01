@@ -36,39 +36,31 @@ lratsubst(listofeqns,expr):=block(
 define_variable(lrats_max_iter,100000,integer)$
 qput(lrats_max_iter,lambda([v], if v<=0 then error("lrats_max_iter must be set to a positive integer.")),value_check);
 
-lratsubst1(listofeqns,expr):=block([dum,lrats_iter:0,l],
-  begin_outer_loop,
-  l:listofeqns,
-  while dum='dum do (
-    dum:if l = [] then expr
-    else (if rest(l) = []
-      then ratsubst(inpart(l,1,2),inpart(l,1,1),expr)
-      else 'dum),
-    expr:if fullratsubstflag = true
-    then fullratsubst1(inpart(l,1,2),inpart(l,1,1),expr)
-    else ratsubst(inpart(l,1,2),inpart(l,1,1),expr),
-    l:rest(l)),
-  if fullratsubstflag = true and dum # expr and lrats_iter<lrats_max_iter then (lrats_iter:lrats_iter+1,go(begin_outer_loop))
-  else (if dum # expr then dum else expr))$
+lratsubst1(listofeqns,expr):=block([dum,lrats_iter:0],
+  for eqn in listofeqns do [dum,expr]:[expr,ratsubst(inpart(eqn,2),inpart(eqn,1),expr)],
+  expr)$
 
-fullratsubst1(substexpr,forexpr,expr):=block(
+fullratsubst0(eqn,expr):= fullratsubst1(second(eqn),first(eqn),expr)$
+
+fullratsubst1(substexpr,forexpr,expr):=fullratsubst2([forexpr=substexpr],expr)$
+
+fullratsubst2(listofeqns,expr):=block(
   [dum,lrats_iter:0],
   while lrats_iter<lrats_max_iter and dum#expr do (
-    [dum,expr]:[expr,ratsubst(substexpr,forexpr,expr)],
+    [dum,expr]:[expr,lratsubst1(listofeqns,expr)],
     lrats_iter:1+lrats_iter),
-  if lrats_iter>=lrats_max_iter then warning("fullratsubst1(substexpr,forexpr,expr): reached maximum iterations of",lrats_max_iter,". Increase `lrats_max_iter' to increase this limit."),
+  if lrats_iter>=lrats_max_iter then warning("fullratsubst2(listofeqns,expr): reached maximum iterations of",lrats_max_iter,". Increase `lrats_max_iter' to increase this limit."),
   expr)$
-    
 
 fullratsubst([arglist]):=block(
-  [fullratsubstflag:true,larglistdum:length(arglist),farglist,
-   partswitch:true,inflag:true,piece],
+  [larglistdum:length(arglist),farglist,partswitch:true,inflag:true,piece],
   if larglistdum=2
-  then if listp(farglist:first(arglist)) or inpart(farglist,0)="="
-       then fullratsubst(second(farglist),first(farglist),last(arglist))
-       else error(messlrats2,arglist)
+  then (farglist:first(arglist),
+    if listp(farglist) then fullratsubst2(farglist,second(arglist))
+    else if inpart(farglist,0)="=" then fullratsubst0(farglist,last(arglist))
+    else error(messlrats2,arglist))
   else if larglistdum=3
-       then apply('fullratsubst1,arglist)
-       else error(messlrats2,arglist))$
+  then apply('fullratsubst1,arglist)
+  else error(messlrats2,arglist))$
 
 eval_when(batch,ttyoff:false)$
