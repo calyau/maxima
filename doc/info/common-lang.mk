@@ -18,7 +18,7 @@ maxima-index-html.lisp : index.html $(top_srcdir)/doc/info/build-html-index.lisp
 	MAXIMA_LANG_SUBDIR=$(lang) $(top_srcdir)/maxima-local --no-init --no-verify-html-index --preload=$(top_srcdir)/doc/info/build-html-index.lisp --batch-string='build_and_dump_html_index("./*.html", "$(lang)");'
 	MAXIMA_LANG_SUBDIR=$(lang) $(top_srcdir)/maxima-local --no-init --batch-string="quit();"
 
-maxima_singlepage.html index.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) $(top_srcdir)/doc/info/manual.css texi2html.init
+maxima_singlepage.html index.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) $(top_srcdir)/doc/info/manual.css $(top_srcdir)/doc/info/texi2html.init
 	../build_html.sh -l $(lang)
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)
