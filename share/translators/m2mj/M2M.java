@@ -24,12 +24,14 @@ import org.stringtemplate.v4.STGroupFile;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 public class M2M {
     public static Templates theTemplates=null;
     public static void main(String[] args) throws Exception {
 	theTemplates = new Templates("Macsyma.stg");
 	FileInputStream fis = new FileInputStream(args[0]);
+	PrintWriter pw = new PrintWriter(args[1]);
 	ANTLRInputStream input = new ANTLRInputStream(fis);
 	mapleLexer lexer = new mapleLexer(input);
 	CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -38,7 +40,10 @@ public class M2M {
 	ParseTree tree = parser.program();
 	ParseTreeWalker walker = new ParseTreeWalker();
 	mapleParserVisitorImpl visitor = new mapleParserVisitorImpl();
-	visitor.visit(tree);
+	ST t=visitor.visit(tree);
+	pw.println(t.render());
+	pw.flush();
+	pw.close();
 	//System.out.println(tree.toStringTree(parser));
     }
 }
