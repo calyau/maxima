@@ -2167,7 +2167,10 @@ The integrand may be specified as the name of a Maxima or Lisp function or
 operator, a Maxima lambda expression, or a general Maxima expression.
 
 To help the integrator, the user must supply a list of points where
-the integrand is singular or discontinuous.
+the integrand is singular or discontinuous.  The list is provided by
+@var{points}.  It may be an empty list.  The elements of the list must
+be between @var{a} and @var{b}, exclusive.  An error is thrown if
+there are elements out of range. 
 
 The keyword arguments are optional and may be specified in any order.
 They all take the form @code{key=val}.  The keyword arguments are:
