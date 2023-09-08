@@ -2,6 +2,12 @@
 
 (in-package :maxima)
 
+;; This should really be necessary, but the order of compilation in
+;; maxima.system is messed up so that this file is compiled before
+;; plot.lisp.  Rearranging the order of the modules to compile
+;; plot.lisp before quadpack.lisp causes other problems.
+(declaim (special *plot-realpart*))
+
 (defvar *debug-quadpack*
   nil
   "Set to non-NIL to enable printing of the error object when the
@@ -32,8 +38,8 @@
     `(let ((,f (get-integrand ,fun ,var)))
        (lambda (,x)
 	 (let ((,result (funcall ,f ,x)))
-	   (unless (cl:numberp ,result)
-	     (merror (intl:gettext "~M: Cannot numerically evaluate ~M at ~M") ,name ,fun ,x))
+	   (unless (cl:floatp ,result)
+	     (merror (intl:gettext "~M: Numerical evaluation of ~M at ~M is not a float or is not defined") ,name ,fun ,x))
 	   (float ,result))))))
      
 (defmfun $quad_qag (fun var a b key &key
@@ -46,7 +52,8 @@
 	    %%pretty-fname key))
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
+         (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier
 				   z-limit z-lenw last)
@@ -75,10 +82,11 @@
   (quad_argument_check %%pretty-fname fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
+         (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-epsabs z-epsrel result abserr neval ier
-				   z-limit z-lenw last)
+			      z-limit z-lenw last)
 	    (slatec:dqags (float-integrand-or-lose '$quad_qags fun var)
 			  (float-or-lose a)
 			  (float-or-lose b)
@@ -135,7 +143,8 @@
 			  -1)
 			 ((2 $both)
 			  ;; Interval is [-infinity, infinity]
-			  2))))
+			  2)))
+             (*plot-realpart* nil))
 	(handler-case
 	    (multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel
 				       result abserr neval ier
@@ -165,7 +174,8 @@
   (quad_argument_check %%pretty-fname fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
+         (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier
 				   z-limit z-lenw last)
@@ -198,7 +208,8 @@
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
 	 (integr (ecase trig
 		   ((1 %cos $cos) 1)
-		   ((2 %sin $sin) 2))))
+		   ((2 %sin $sin) 2)))
+         (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-omega z-integr
 				   epsabs result abserr neval ier
@@ -235,7 +246,8 @@
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
 	 (integr (ecase trig
 		   ((1 %cos $cos) 1)
-		   ((2 %sin $sin) 2))))
+		   ((2 %sin $sin) 2)))
+         (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-omega z-integr z-epsabs z-epsrel
 				   result abserr neval ier
@@ -268,7 +280,8 @@
   (quad_argument_check %%pretty-fname fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
+         (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 				   result abserr neval ier
@@ -302,7 +315,8 @@
 	 (leniw (max limit (- (* 3 npts2) 2)))
 	 (lenw (- (* 2 leniw) npts2))
 	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
+	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
+         (*plot-realpart* nil))
     (map-into p #'float-or-lose (cdr points))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-npts z-points z-epsabs z-epsrel
