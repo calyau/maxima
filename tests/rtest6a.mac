@@ -162,6 +162,41 @@ cos(11/10)/1000;
 (load(lrats), 0);
 0;
 
+/* SF bug #4176: fullratsubst
+   In these examples, we make sure that both forms of calling
+   fullratsubst work as described in the documentation.
+*/
+fullratsubst(3*z^8 + 13, z^9, 147*z^13 -637);
+35721*z^8+1911*z^4+5733*z^3+17199*z^2+51597*z+154154;
+
+fullratsubst(z^9 = 3*z^8 + 13, 147*z^13 -637);
+35721*z^8+1911*z^4+5733*z^3+17199*z^2+51597*z+154154;
+
+fullratsubst([z^9 = 3*z^8 + 13], 147*z^13 -637);
+35721*z^8+1911*z^4+5733*z^3+17199*z^2+51597*z+154154;
+
+
+/* The following are examples from the documentation for
+   fullratsubst, ratsubst and fullratsubstflag
+*/
+lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(d + a*c)*e + a*d + b*c;
+
+lratsubst (a^2 = b, a^3);
+a*b;
+
+ratsubst (b*a, a^2, a^3);
+a^2*b;
+
+fullratsubst (b*a, a^2, a^3);
+a*b^2;
+
+fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+b;
+
+fullratsubst (a^2 = b*a, a^3);
+a*b^2;
+
 /* SF bug #3376: fullratsubst doesn't catch infinite recursions
    In this example, fullratsubst1 should loop exactly lrats_max_iter=30 times,
    adding a power of b each time.
@@ -181,7 +216,7 @@ c $
 errcatch(lratsubst([[a=b,b=c],[b=c]],a)) $
 [] $
 
-lratsubst1 ([phi_2 = 1.1], 0.001*cos(phi_2)), numer;
+lratsubst ([phi_2 = 1.1], 0.001*cos(phi_2)), numer;
 0.001*cos(11/10);
 
 /* original example from #3658;

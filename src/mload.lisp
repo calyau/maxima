@@ -304,7 +304,9 @@
 	 (and (stringp g) (string= f g)))
 
 	((arrayp f)
-	 (and (arrayp g) (approx-alike ($listarray f) ($listarray g))))
+	 (and (arrayp g)
+          (equal (array-dimensions f) (array-dimensions g))
+          (approx-alike ($listarray f) ($listarray g))))
 
 	((hash-table-p f)
 	 (and (hash-table-p g) (approx-alike ($listarray f) ($listarray g))))

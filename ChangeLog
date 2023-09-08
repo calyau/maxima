@@ -28,6 +28,8 @@ Changes in the Windows installer:
 Bug fixes for numbered bugs:
 ----------------------------
  * \#4154: Some info nodes have bad headers (and no "Up"s)
+ * \#4176: fullratsubst(old = new, expr) returns incorrect result
+ * \#4177: lratsubst1 in testsuite
 
 Unnumbered bugs fixed:
 ---------------------
