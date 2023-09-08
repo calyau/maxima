@@ -317,30 +317,50 @@
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
          (*plot-realpart* nil))
-    (map-into p #'float-or-lose (cdr points))
-    (handler-case
-	(multiple-value-bind (junk z-a z-b z-npts z-points z-epsabs z-epsrel
-				   result abserr neval ier
-				   z-leniw z-lenw last)
-	    (slatec:dqagp (float-integrand-or-lose '$quad_qagp fun var)
-			  (float-or-lose a)
-			  (float-or-lose b)
-			  npts2
-			  p
-			  (float-or-lose epsabs)
-			  (float-or-lose epsrel)
-			  0.0 0.0 0 0
-			  leniw lenw 0 iwork work)
-	  (declare (ignore junk z-a z-b z-npts z-points z-epsabs z-epsrel
-			   z-leniw z-lenw last))
-	  (list '(mlist) result abserr neval ier))
-      (error (e)
-	(when *debug-quadpack*
-	  (format t "~S" e))
-	`(($quad_qagp) ,fun ,var ,a ,b ,points
-	  ((mequal) $epsrel ,epsrel)
-	  ((mequal) $epsabs ,epsabs)
-	  ((mequal) $limit ,limit))))))
+    ;; Check the list of singular points.  Each point must be a real
+    ;; in the open interval (a, b).  If the point is valid, save it to
+    ;; the array P.  Otherwise accumulate a list of the invalid points
+    ;; so we can print a nice error message with a list of the invalid
+    ;; points.
+    (let* ((a (float-or-lose a))
+           (b (float-or-lose b))
+           (invalid-points
+             (loop for xp in (cdr points)
+                   for x = (float-or-lose xp)
+                   for k from 0
+                   if (< a x b)
+                     do (setf (aref p k) x)
+                   else
+                     collect x)))
+      ;; If there are invalid points, throw an error.
+      (when invalid-points
+        (merror
+         (intl:gettext "quad_qagp: singular points must be in the open interval (~M, ~M):  ~M")
+         a b (make-mlist-l invalid-points)))
+                              
+      (handler-case
+	  (multiple-value-bind (junk z-a z-b z-npts z-points z-epsabs z-epsrel
+				result abserr neval ier
+				z-leniw z-lenw last)
+	      (slatec:dqagp (float-integrand-or-lose '$quad_qagp fun var)
+			    (float-or-lose a)
+			    (float-or-lose b)
+			    npts2
+			    p
+			    (float-or-lose epsabs)
+			    (float-or-lose epsrel)
+			    0.0 0.0 0 0
+			    leniw lenw 0 iwork work)
+	    (declare (ignore junk z-a z-b z-npts z-points z-epsabs z-epsrel
+			     z-leniw z-lenw last))
+	    (make-mlist result abserr neval ier))
+        (error (e)
+	  (when *debug-quadpack*
+	    (format t "~S" e))
+	  `(($quad_qagp) ,fun ,var ,a ,b ,points
+	    ((mequal) $epsrel ,epsrel)
+	    ((mequal) $epsabs ,epsabs)
+	    ((mequal) $limit ,limit)))))))
 					
 ;; error checking similar to that done by $defint
 (defun quad_argument_check (name exp var ll ul) 
