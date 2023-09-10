@@ -1596,3 +1596,15 @@ integrate(1/(1+s^7),s,0,%pi);
  */
 rectform(atan2(1,1+%i));
 atan(2)/2-(%i*log(5))/4;
+
+/*
+ * SF bug #4181
+ *
+ * Test that we signal an error for incorrect singular points.  And
+ * also if the integrand does not return a real number.
+ */
+errcatch(quad_qags(sqrt(x), x, -1, 1));
+[quad_qags(sqrt(x), x, - 1, 1, epsrel = 1.0e-8, epsabs = 0.0, limit = 200)];
+
+errcatch(quad_qagp(sqrt(x), x, 0, 1, [0, 2]));
+[];
