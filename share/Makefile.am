@@ -7,8 +7,8 @@ grep -E -v 'CVS|Makefile(\.in|\.am)?|^\./Makefile|\.gitignore|\.gitattributes' |
 grep -E -v '/fortran/' | \
 grep -E -v 'colnew/ex./' | \
 grep -E -v 'lbfgs/.*\.f' | \
-grep -E -v '/\.\#' | \
-grep -E -v '~|\#' | \
+grep -E -v '/\.'\# | \
+grep -E -v '~|'\# | \
 sed -e 's%\./%%' | \
 sort -f -d | \
 sed '$$s/\\$$//' )
