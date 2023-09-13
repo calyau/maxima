@@ -1596,3 +1596,12 @@ integrate(1/(1+s^7),s,0,%pi);
  */
 rectform(atan2(1,1+%i));
 atan(2)/2-(%i*log(5))/4;
+
+/*
+ * SF bug #4143: atan2(0,minf) is wrong.
+ *
+ * atan2 on the branch cut is defined to be continuous with the second
+ *  quadrant.
+ */
+atan2(0, minf);
+%pi;

@@ -2328,6 +2328,8 @@ taking into
 consideration the quadrant of the point 
 m4_mathdot(<<<(x,y)>>>, <<<(x,y)>>>)
 
+Along the branch cut with @math{y = 0} and @math{x < 0}, @code{atan2}
+is continuous with the second quadrant.
 See also @mref{atan}.
 
 @opencatbox{Categories:}
