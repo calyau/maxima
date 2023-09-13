@@ -1221,7 +1221,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (sign1 x)))
 
 (defun infsimp* (e)
-  (if (or (atom e) (and (free e '$inf) (free e '$minf)))
+  (if (or ($mapatom e) (and (free e '$inf) (free e '$minf)))
       e
       (infsimp e)))
 

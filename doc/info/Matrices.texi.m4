@@ -373,7 +373,96 @@ variables @var{x_1}, @dots{}, @var{x_n} of the system of linear equations
 
 Returns the @var{i}'th column of the matrix @var{M}.
 The return value is a matrix.
-@c EXAMPLE HERE
+
+The matrix returned by @code{col} does not share memory with the argument @var{M};
+a modification to the return value does not modify @var{M}.
+
+Examples:
+
+@code{col} returns the @var{i}'th column of the matrix @var{M}.
+
+@c ===beg===
+@c abc: matrix ([12, 14, -4], [2, x, b], [3*y, -7, 9]);
+@c col (abc, 1);
+@c col (abc, 2);
+@c col (abc, 3);
+@c ===end===
+@example
+@group
+(%i1) abc: matrix ([12, 14, -4], [2, x, b], [3*y, -7, 9]);
+                        [ 12   14   - 4 ]
+                        [               ]
+(%o1)                   [  2    x    b  ]
+                        [               ]
+                        [ 3 y  - 7   9  ]
+@end group
+@group
+(%i2) col (abc, 1);
+                             [ 12  ]
+                             [     ]
+(%o2)                        [  2  ]
+                             [     ]
+                             [ 3 y ]
+@end group
+@group
+(%i3) col (abc, 2);
+                             [ 14  ]
+                             [     ]
+(%o3)                        [  x  ]
+                             [     ]
+                             [ - 7 ]
+@end group
+@group
+(%i4) col (abc, 3);
+                             [ - 4 ]
+                             [     ]
+(%o4)                        [  b  ]
+                             [     ]
+                             [  9  ]
+@end group
+@end example
+
+The matrix returned by @code{col} does not share memory with the argument.
+In this example,
+assigning a new value to @code{aa2} does not modify @code{aa}.
+
+@c ===beg===
+@c aa: matrix ([1, 2, x], [7, y, 3]);
+@c aa2: col (aa, 2);
+@c aa2[2, 1]: 123;
+@c aa2;
+@c aa;
+@c ===end===
+@example
+@group
+(%i1) aa: matrix ([1, 2, x], [7, y, 3]);
+                           [ 1  2  x ]
+(%o1)                      [         ]
+                           [ 7  y  3 ]
+@end group
+@group
+(%i2) aa2: col (aa, 2);
+                              [ 2 ]
+(%o2)                         [   ]
+                              [ y ]
+@end group
+@group
+(%i3) aa2[2, 1]: 123;
+(%o3)                          123
+@end group
+@group
+(%i4) aa2;
+                             [  2  ]
+(%o4)                        [     ]
+                             [ 123 ]
+@end group
+@group
+(%i5) aa;
+                           [ 1  2  x ]
+(%o5)                      [         ]
+                           [ 7  y  3 ]
+@end group
+@end example
 
 @opencatbox{Categories:}
 @category{Matrices}
@@ -1984,6 +2073,80 @@ which might not always be desired.
 
 Returns the @var{i}'th row of the matrix @var{M}.
 The return value is a matrix.
+
+The matrix returned by @code{row} shares memory with the argument @var{M};
+a modification to the return value modifies @var{M}.
+
+Examples:
+
+@code{row} returns the @var{i}'th row of the matrix @var{M}.
+
+@c ===beg===
+@c abc: matrix ([12, 14, -4], [2, x, b], [3*y, -7, 9]);
+@c row (abc, 1);
+@c row (abc, 2);
+@c row (abc, 3);
+@c ===end===
+@example
+@group
+(%i1) abc: matrix ([12, 14, -4], [2, x, b], [3*y, -7, 9]);
+                        [ 12   14   - 4 ]
+                        [               ]
+(%o1)                   [  2    x    b  ]
+                        [               ]
+                        [ 3 y  - 7   9  ]
+@end group
+@group
+(%i2) row (abc, 1);
+(%o2)                    [ 12  14  - 4 ]
+@end group
+@group
+(%i3) row (abc, 2);
+(%o3)                      [ 2  x  b ]
+@end group
+@group
+(%i4) row (abc, 3);
+(%o4)                    [ 3 y  - 7  9 ]
+@end group
+@end example
+
+The matrix returned by @code{row} shares memory with the argument.
+In this example,
+assigning a new value to @code{aa2} also modifies @code{aa}.
+
+@c ===beg===
+@c aa: matrix ([1, 2, x], [7, y, 3]);
+@c aa2: row (aa, 2);
+@c aa2[1, 3]: 123;
+@c aa2;
+@c aa;
+@c ===end===
+@example
+@group
+(%i1) aa: matrix ([1, 2, x], [7, y, 3]);
+                           [ 1  2  x ]
+(%o1)                      [         ]
+                           [ 7  y  3 ]
+@end group
+@group
+(%i2) aa2: row (aa, 2);
+(%o2)                      [ 7  y  3 ]
+@end group
+@group
+(%i3) aa2[1, 3]: 123;
+(%o3)                          123
+@end group
+@group
+(%i4) aa2;
+(%o4)                     [ 7  y  123 ]
+@end group
+@group
+(%i5) aa;
+                          [ 1  2   x  ]
+(%o5)                     [           ]
+                          [ 7  y  123 ]
+@end group
+@end example
 
 @opencatbox{Categories:}
 @category{Matrices}

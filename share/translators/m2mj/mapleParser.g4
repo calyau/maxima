@@ -29,7 +29,7 @@ program : statseq EOF ;
 // comments : COMMENT* -> skip ;
 statseq : stat ((SEMICOLON|COLON) stat)* ; 
 stat    : nameseq ASSIGN exprseq #AssignStat
-	| nameseq ASSIGN PROC LPAREN parmseq RPAREN result_type* decls_proc options_of_proc* statseq END #ProcStat
+	| nameseq ASSIGN PROC LPAREN parmseq RPAREN result_type* decls_proc? statseq END #ProcStat
 	| exprseq #ExprStat
 	| READ expr #ReadStat
 	| SAVE name_string (COMMA name_string)* #StatStat
@@ -57,6 +57,7 @@ elif_clause : (ELIF expr THEN statseq)+ ;
 else_clause : ELSE statseq ;
 exprseq : expr (COMMA expr)* ;
 expr    : expr ARROW expr #ArrowExpr
+	| IF expr THEN exprseq elif_clause? else_clause? FI #IfExpr
 	| expr OR expr #OrOp
 	| expr AND expr #AndOp
 	| NOT expr #NotOp
@@ -76,8 +77,8 @@ expr    : expr ARROW expr #ArrowExpr
 	| expr OP=(INTERSECT|MINUS|UNION) expr #SetRelOp
 	| expr EXCLAM #Factorial
 	| QUOTE expr QUOTE #UnevaluatedExpr
-	| LBRACK exprseq RBRACK #ListExpr
-	| LBRACE exprseq RBRACE #SetExpr
+	| LBRACK exprseq? RBRACK #ListExpr
+	| LBRACE exprseq? RBRACE #SetExpr
 	| name #NameExpr
 	| STRING #StringExpr
 	| name functional_operator #FunctionalOperatorExpr
@@ -90,7 +91,7 @@ expr    : expr ARROW expr #ArrowExpr
 	| expr REPEAT_COMPOSE expr #RepeatComposeExpr ;
 name    : name_string #NameString
 	| name DOT INT #NameDotInt
-	| name DOT STRING #NameDotString
+	| name DOT name_string #NameDotString
 	| name DOT LPAREN expr RPAREN #NameDotExpr
 	| name LBRACK exprseq RBRACK #NameBracket ;
 functional_operator :
@@ -101,7 +102,8 @@ result_type : DOUBLE_COLON name_string SEMICOLON ;
 oneparm : name 
 	| name DOUBLE_COLON name_string ;
 nameseq : name (COMMA name)* ;
-decls_proc : globals_of_proc 
+decls_proc : options_of_proc
+	| globals_of_proc 
 	| locals_of_proc 
 	| locals_of_proc globals_of_proc 
 	| globals_of_proc locals_of_proc  ;

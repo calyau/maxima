@@ -513,9 +513,12 @@
            0)
           ((or (eq x '$minf)
                (alike1 x '((mtimes) -1 $inf)))
-           ;; Simplify atan2(y,minf) -> %pi for realpart(y)>=0 or 
-           ;; -%pi for realpart(y)<0. When sign of y unknwon, return noun form.
-           (cond ((member (setq signy ($sign ($realpart x))) '($pos $pz $zero)) 
+           
+           ;; Simplify atan2(y,minf) -> %pi for realpart(y)>=0 or -%pi
+           ;; for realpart(y)<0. When sign of y unknwon, return noun
+           ;; form.  We are basically making atan2 on the branch cut
+           ;; be continuous with quadrant II.
+           (cond ((member (setq signy ($sign ($realpart y))) '($pos $pz $zero)) 
                   '$%pi)
                  ((eq signy '$neg) (mul -1 '$%pi))
                  (t (give-up))))

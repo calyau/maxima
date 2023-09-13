@@ -29,8 +29,8 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
  public ST visitProgram(mapleParserParser.ProgramContext ctx){
   //say("program");
   ST t = visit(ctx.statseq());
-  say(t.render());
-  return null;
+  //say(t.render());
+  return t;
  }
  @Override
  public ST visitStatseq(mapleParserParser.StatseqContext ctx){
@@ -96,6 +96,18 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
   }
   return e;
  }
+@Override
+ public ST visitIfExpr(mapleParserParser.IfExprContext ctx) {
+  ST t = M2M.theTemplates.getInstanceOf("ifstat");
+  t.add("expr",visit(ctx.expr()));
+  t.add("statseq",visit(ctx.exprseq()));
+  mapleParserParser.Elif_clauseContext elifClause = ctx.elif_clause();
+  if(elifClause !=null)t.add("elifclause",visit(elifClause));
+  mapleParserParser.Else_clauseContext elseClause = ctx.else_clause();
+  if(elseClause !=null)t.add("elseclause",visit(elseClause));
+  return t;
+ }
+
  @Override
  public ST visitSeqWithPrefix(mapleParserParser.SeqWithPrefixContext ctx) {
   ST t = M2M.theTemplates.getInstanceOf("notimplemented");
@@ -186,6 +198,7 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
  public ST visitListExpr(mapleParserParser.ListExprContext ctx) {
   say("listexpr");
   ST t = M2M.theTemplates.getInstanceOf("listexpr");
+  if(ctx.exprseq().expr()==null){ return t; };
   for(mapleParserParser.ExprContext expr : ctx.exprseq().expr()){
    say("listexpr "+expr.getText());
    t.add("args",visit1("listexpr","",expr));

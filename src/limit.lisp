@@ -1085,7 +1085,7 @@ ignoring dummy variables and array indices."
 	      (cond ((memq ans '($inf $minf $infinity))
 	              (stirling (cadr e)))
 				((eq ans '$zeroa)
-				  (add (div 1 (cadr e)) (mul -1 '$%gamma) (mul '$janet (cadr e))))
+				  (add (div 1 (cadr e)) (mul -1 '$%gamma)))
 				((and (integerp ans) (< ans 0))
 				 (div (if (oddp ans) -1 1)
 				      (mul (ftake 'mfactorial (mul -1 ans)) (sub (cadr e) ans))))
@@ -3797,8 +3797,7 @@ ignoring dummy variables and array indices."
    
 (defun extra-simp (e)
    (let ((var-present (not (freeof var e))))
-   (cond (($subvarp e) e) ;return e
-	     ((extended-real-p e) e) ;we don't want to call sign on ind, so catch this
+   (cond ((extended-real-p e) e) ;we don't want to call sign on ind, so catch this
 		 (($mapatom e) ;if e is declared zero, return 0; otherwise e
 		     (if (eq '$zero ($csign e)) 0 e))
          ;; dispatch radcan on (positive integer)^Y
