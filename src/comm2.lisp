@@ -513,7 +513,6 @@
            0)
           ((or (eq x '$minf)
                (alike1 x '((mtimes) -1 $inf)))
-           
            ;; Simplify atan2(y,minf) -> %pi for realpart(y)>=0 or -%pi
            ;; for realpart(y)<0. When sign of y unknwon, return noun
            ;; form.  We are basically making atan2 on the branch cut
@@ -533,23 +532,33 @@
           ((and (free x '$%i) (setq signx ($sign x))
                 (free y '$%i) (setq signy ($sign y))
                 (cond ((zerop1 y)
+                       ;; Handle atan2(0, x) which is %pi or -%pi
+                       ;; depending on the sign of x.
                        (cond ((eq signx '$neg) '$%pi)
                              ((member signx '($pos $pz)) 0)))
                       ((zerop1 x)
+                       ;; Handle atan2(y, 0) which is %pi/2 or -%pi/2,
+                       ;; depending on the sign of y.
                        (cond ((eq signy '$neg) (div '$%pi -2))
                              ((member signy '($pos $pz)) (div '$%pi 2))))
                       ((alike1 y x)
+                       ;; Handle atan2(x,x) which is %pi/4 or -3*%pi/4
+                       ;; depending on the sign of x.
                        (cond ((eq signx '$neg) (mul -3 (div '$%pi 4)))
                              ((member signx '($pos $pz)) (div '$%pi 4))))
                       ((alike1 y (mul -1 x))
+                       ;; Handle atan2(-x,x) which is 3*%pi/4 or
+                       ;; -%pi/4 depending on the sign of x.
                        (cond ((eq signx '$neg) (mul 3 (div '$%pi 4)))
                              ((member signx '($pos $pz)) (div '$%pi -4)))))))
           ($logarc
            (logarc '%atan2 (list ($logarc y) ($logarc x))))
           ((and $trigsign (eq t (mminusp y)))
+           ;; atan2(-y,x) = -atan2(y,x) if trigsign is true.
            (neg (take '(%atan2) (neg y) x)))
           ;; atan2(y,x) = atan(y/x) + pi sign(y) (1-sign(x))/2
           ((eq signx '$pos)
+           ;; atan2(y,x) = atan(y/x) when x is positive.
            (take '(%atan) (div y x)))
           ((and (eq signx '$neg)
                 (member (setq signy ($csign y)) '($pos $neg) :test #'eq))
