@@ -533,8 +533,10 @@
                 (free y '$%i) (setq signy ($sign y))
                 (cond ((zerop1 y)
                        ;; Handle atan2(0, x) which is %pi or -%pi
-                       ;; depending on the sign of x.
-                       (cond ((eq signx '$neg) '$%pi)
+                       ;; depending on the sign of x.  We assume that
+                       ;; x is never actually zero since atan2(0,0) is
+                       ;; undefined.
+                       (cond ((member signx '($neg $nz)) '$%pi)
                              ((member signx '($pos $pz)) 0)))
                       ((zerop1 x)
                        ;; Handle atan2(y, 0) which is %pi/2 or -%pi/2,
