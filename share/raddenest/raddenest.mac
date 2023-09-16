@@ -673,13 +673,14 @@ _sqrt_symbolic_denest(a,b,r):= block(
     Otherwise, it will be simplified depending on the value of
     the global "domain" variable:
 
-    (%i6)   w: sqrt(expand((sqrt(1-sqrt(x))-1)^2));
-    (%o6)   sqrt(-sqrt(x)-2*sqrt(1-sqrt(x))+2)
+    (%i6)   assume(x >= 0)$
+    (%i7)   w: sqrt(expand((sqrt(1+sqrt(x))-1)^2));
+    (%o6)   sqrt(sqrt(x)-2*sqrt(1+sqrt(x))+2)
     (%i7)   [a,b,r]: _sqrt_match(w^2)$
     (%i8)   _sqrt_symbolic_denest(a,b,r), domain:'real;
-    (%o8)   abs(sqrt(1-sqrt(x))-1)
+    (%o8)   abs(sqrt(1+sqrt(x))-1)
     (%i9)   _sqrt_symbolic_denest(a,b,r), domain:'complex;
-    (%o9)   sqrt((sqrt(1-sqrt(x))-1)^2)
+    (%o9)   sqrt((sqrt(1+sqrt(x))-1)^2)
 */
     [algebraic:true, rval,ra,rb,rr,y,newd2,newa,ca,cb,cc,z,cont,d2,d,s],
     supcontext(cont),

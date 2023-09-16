@@ -138,10 +138,16 @@ sqrt(-2*sqrt(29) + 11) + sqrt(5)$
 _sqrt_symbolic_denest(a,b,r));
 sqrt(sqrt(sqrt(3)+1)+1)+sqrt(2)+1$
 
-(w: sqrt(expand((sqrt(1-sqrt(x))-1)^2)),
+(assume(x >= 0),0);
+0$
+
+(w: sqrt(expand((sqrt(1+sqrt(x))-1)^2)),
 [a,b,r]: _sqrt_match(w^2),
 _sqrt_symbolic_denest(a,b,r));
-abs(sqrt(1-sqrt(x))-1)$
+abs(sqrt(1+sqrt(x))-1)$
+
+(forget(x >= 0),0);
+0$
 
 block([domain:'complex],
 w: sqrt(expand((sqrt(1-sqrt(x))-1)^2)),
