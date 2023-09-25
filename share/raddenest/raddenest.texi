@@ -1,3 +1,14 @@
+@ifinfo
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@chapter Package raddenest
+
+@node Functions and variables for package raddenest, (dir), (dir), (dir)
+@section Functions and variables for package raddenest
+
 @anchor{raddenest}
 @deffn {Function} raddenest (@var{expr})
 Denests different classes of nested radical expressions appearing as
@@ -56,7 +67,7 @@ $\sqrt{a^{1\over3}+b^{1\over3}}$
 with rational @var{a} and @var{b}.
 @end enumerate
 
-In particular, all expressions denested by @mref{sqrtdenest} are also denested
+In particular, all expressions denested by @code{sqrtdenest} are also denested
 by @code{raddenest}.
 
 Interpretation of radical expressions:
@@ -226,3 +237,5 @@ Mascha Honsbeek:
 @item
 SymPy @code{sqrtdenest()} @url{http://www.sympy.org}
 @end enumerate
+
+@end deffn
