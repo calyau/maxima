@@ -11,6 +11,7 @@
 
 @anchor{raddenest}
 @deffn {Function} raddenest (@var{expr})
+
 Denests different classes of nested radical expressions appearing as
 subexpressions in @var{expr}. Most of the implemented algorithms are specific
 to square roots, but some handle higher roots.
@@ -120,6 +121,7 @@ subexpressions involving roots other than square roots are left unchanged.
 @end itemize
 
 Examples:
+
 @c ===beg===
 @c load (raddenest)$
 @c sqrt(sqrt(16+2*sqrt(55-10*sqrt(29))-2*sqrt(29))-sqrt(5))$
@@ -198,6 +200,7 @@ Limitations:
 
 @code{raddenest} may in some cases only lower the index of a root without
 actually decreasing the absolute nesting depth of @var{expr}:
+
 @c ===beg===
 @c load (raddenest)$
 @c raddenest((5*sqrt(2)+7)^(1/6));
@@ -214,19 +217,19 @@ References:
 
 @enumerate
 @item
-Allan Borodin, Ronald Fagin, John E. Hopcroft, and Martin Tompa:@*
-@cite{Decreasing the Nesting Depth of Expressions Involving Square Roots}@*
+Allan Borodin, Ronald Fagin, John E. Hopcroft, and Martin Tompa:
+@cite{Decreasing the Nesting Depth of Expressions Involving Square Roots}
 J. Symbolic Computation (1985) 1, 169-188@*
 @url{http://researcher.watson.ibm.com/researcher/files/us-fagin/symb85.pdf}
 @item
-David J. Jeffrey and Albert D. Rich:@*
-@cite{Symplifying Square Roots of Square Roots by Denesting}@*
-in @cite{Computer Algebra Systems: A Practical Guide}@*
+David J. Jeffrey and Albert D. Rich:
+@cite{Simplifying Square Roots of Square Roots by Denesting}
+in @cite{Computer Algebra Systems: A Practical Guide}
 M.J. Wester, Ed., Wiley 1999@*
 @url{http://www.cybertester.com/data/denest.pdf}
 @item
 Thomas J. Osler:
-@cite{Cardan Polynomials and the Reduction of Radicals}@*
+@cite{Cardan Polynomials and the Reduction of Radicals}
 Mathematics Magazine 74(1), Feb. 2001@*
 @url{http://www.rowan.edu/open/depts/math/osler/mathmag026-032.pdf}
 @item
