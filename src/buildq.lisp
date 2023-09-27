@@ -131,7 +131,8 @@
 	    (cond ((eq new-car (caar expression))
 		   (setq new-car (car expression)))
 		  ((atom new-car)
-		   (setq new-car (cons new-car (cdar expression))))
+		   ;; Be careful to verbify a string before substituting into the operator.
+		   (setq new-car (cons (or (and (stringp new-car) ($verbify new-car)) new-car) (cdar expression))))
 		  (t (return
 		       `(,(cons 'mqapply (cdar expression))
 			 ,new-car

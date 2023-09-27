@@ -197,3 +197,34 @@ true;
 
 is (parse_string (string (float_eps ())) = float_eps ());
 true;
+
+/* bug reported to mailing list 2023-09-25: "Casting SPELs" */
+
+(kill (all),
+SPEL([rest])::= buildq(
+  [rest],
+  buildq(splice(rest)) ),
+game_action(command,subj,obj,place,[rest])::= SPEL(
+  [command,subj,obj,place,rest],
+  block(
+     infix(command),
+     command(subject,object):= block(
+        if location = place
+           and subject = subj
+           and object = obj
+           and have(subj) then apply(sconcat,rest)
+        else sconcat("you cannot ",command," like that. ") ))),
+game_action("weld",chain,bucket,attic,
+  if have(bucket)
+  and not chain_welded then (
+     chain_welded: true,
+     "the chain is now securely welded to the bucket. " )
+  else "you do not have a bucket. "),
+0);
+0;
+
+chain weld bucket;
+"you cannot weld like that. ";
+
+subst (f = "foo", f(x));
+foo(x);

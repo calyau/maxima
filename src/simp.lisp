@@ -489,6 +489,8 @@
 	(dosimp (let ((dosimp nil)) (simplifya (unsimplify x) y)))
 	((member 'simp (cdar x)) x)
 	((eq (caar x) 'mrat) x)
+	((stringp (caar x))
+	 (simplifya (cons (cons ($verbify (caar x)) (rest (car x))) (rest x)) y))
 	((not (atom (caar x)))
 	 (cond ((or (eq (caaar x) 'lambda)
 		    (and (not (atom (caaar x))) (eq (caaaar x) 'lambda)))
