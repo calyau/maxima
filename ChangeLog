@@ -30,6 +30,8 @@ Bug fixes for numbered bugs:
  * \#4154: Some info nodes have bad headers (and no "Up"s)
  * \#4176: fullratsubst(old = new, expr) returns incorrect result
  * \#4177: lratsubst1 in testsuite
+ * \#4184: bessel_simplify error
+ * \#4186: Correct failing test in share/contrib/diffequations/tests
 
 Unnumbered bugs fixed:
 ---------------------

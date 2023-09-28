@@ -208,7 +208,7 @@ ode_check(e_,a_) := block(
 )$
 
 /* Attempt to simplify the result from ode_check() */
-ode_check_tidy(e) := block(
+ode_check_tidy(e) := block(local(f),
   for f in ['bessel_simplify, 'expintegral_e_simplify,'ode_trig_simp]
   do 
     (if (f(e)=0) then return(e:0)),
@@ -218,7 +218,7 @@ ode_check_tidy(e) := block(
 /*  This Bessel function simplification code can be improved,
     but is does work well on the contrib_ode testsuite.
 */
-bessel_simplify(e) := block(
+bessel_simplify(e) := block(local(f),
  for f in ['besksimp, 'besisimp, 'besysimp, 'besjsimp, 
            'hankel1simp, 'hankel2simp, 'struvehsimp, 'struvelsimp]
  do
