@@ -30,6 +30,9 @@ setify([<args; separator=", ">])
 seqsansprefix(left,right) ::= <<
 makelist(<left>,<right>)
 >>
+intintervalexpr(left,right) ::= <<
+makelist(i, i, <left>, <right>)
+>>
 proc(name,parms,locals,statseq) ::= <<
 <name>(<parms; separator=", ">):=block(<locals>
 <statseq; separator=",\n">
@@ -90,6 +93,9 @@ setrelexp(op,l,r) ::= <<
 >>
 paren(e) ::= <<
 (<e>)
+>>
+comment(e) ::= <<
+/*<e> */
 >>
 notimplemented(name) ::= <<
 <name> not implemented

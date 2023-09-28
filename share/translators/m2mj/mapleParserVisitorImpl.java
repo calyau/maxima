@@ -27,7 +27,7 @@ import org.stringtemplate.v4.STGroupFile;
 public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
  @Override
  public ST visitProgram(mapleParserParser.ProgramContext ctx){
-  //say("program");
+  say("program");
   ST t = visit(ctx.statseq());
   //say(t.render());
   return t;
@@ -41,6 +41,12 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
    t.add("stat",visit(stat));
   }
   //t.inspect();
+  return t;
+ }
+ @Override
+ public ST visitComment(mapleParserParser.CommentContext ctx){
+  ST t = M2M.theTemplates.getInstanceOf("comment");
+  t.add("e",ctx.COMMENT().getText().substring(1));
   return t;
  }
  @Override
@@ -107,13 +113,14 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
   if(elseClause !=null)t.add("elseclause",visit(elseClause));
   return t;
  }
-
+/*
  @Override
  public ST visitSeqWithPrefix(mapleParserParser.SeqWithPrefixContext ctx) {
   ST t = M2M.theTemplates.getInstanceOf("notimplemented");
   t.add("name","SeqWithPrefix");
   return t;
  }
+*/
  @Override
  public ST visitSeqSansPrefix(mapleParserParser.SeqSansPrefixContext ctx) {
   //say("SeqWithoutPrefix");
@@ -311,6 +318,14 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
  }
  public ST visitSetRelOp(mapleParserParser.SetRelOpContext ctx) {
   return binexp("setrelexp", ctx.OP.getText(),ctx.expr(0),ctx.expr(1));
+ }
+ @Override
+ public ST visitIntIntervalExpr(mapleParserParser.IntIntervalExprContext ctx) {
+  ST t = M2M.theTemplates.getInstanceOf("intintervalexpr");
+say("visitIntIntervalExpr");
+  t.add("left",ctx.INT(0).getText());
+  t.add("right",ctx.INT(1).getText());
+  return t;
  }
  @Override
  public ST visitProcExpr(mapleParserParser.ProcExprContext ctx){

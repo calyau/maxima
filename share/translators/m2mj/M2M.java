@@ -16,6 +16,10 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details. */
+/*
+ At this time, the file is preprocessed to remove any backspaces.
+ The translation does not handle end of line comments yet.
+*/
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.stringtemplate.v4.ST;
@@ -23,19 +27,23 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class M2M {
     public static Templates theTemplates=null;
+    public static TokenStreamRewriter rewriter;
     public static void main(String[] args) throws Exception {
 	theTemplates = new Templates("Macsyma.stg");
 	FileInputStream fis = new FileInputStream(args[0]);
 	PrintWriter pw = new PrintWriter(args[1]);
-	ANTLRInputStream input = new ANTLRInputStream(fis);
+	StringBuilder sb = preprocess(fis);
+	ANTLRInputStream input = new ANTLRInputStream(sb.toString());
 	mapleLexer lexer = new mapleLexer(input);
 	CommonTokenStream tokens = new CommonTokenStream(lexer);
 	mapleParserParser parser = new mapleParserParser(tokens);
+	rewriter = new TokenStreamRewriter(tokens);
 	parser.setTrace(true);
 	ParseTree tree = parser.program();
 	ParseTreeWalker walker = new ParseTreeWalker();
@@ -45,5 +53,21 @@ public class M2M {
 	pw.flush();
 	pw.close();
 	//System.out.println(tree.toStringTree(parser));
+    }
+    public static StringBuilder preprocess(FileInputStream fis) throws Exception
+    {
+	StringBuilder b = new StringBuilder();
+	try(BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {
+	    for(String line; (line = br.readLine()) != null; ) {
+		line.replace('\b',' ');
+		int i=-1;
+		if(line.indexOf('#')==0)line=line+'\b';
+		else if ((i=line.indexOf("#")) > 0){
+			line=line.substring(0,i-1); // Delete the comment
+		}
+		b.append(line+'\n');
+	    }
+	}
+	return b;
     }
 }

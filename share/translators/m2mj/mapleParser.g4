@@ -37,7 +37,8 @@ stat    : nameseq ASSIGN exprseq #AssignStat
 	| for_stmt #ForStat
 	| for_in_stmt #ForInStat
 	| QUIT #Quit
-	| STOP #Stop ;
+	| STOP #Stop
+	| COMMENT #Comment ;
 for_stmt :
 	| FOR name for_without_name
 	| for_without_name ;
@@ -68,11 +69,12 @@ expr    : expr ARROW expr #ArrowExpr
 	| SUBTRACT expr UMINUS #UnaryMinus
 	| expr AMPOP expr #NeutralOp
 	| expr AMPMUL expr #NeutralMulOp
-	| expr (SEQ|SEQK) exprseq #SeqWithPrefix
+//	| expr (SEQ|SEQK) exprseq #SeqWithPrefix
 	| LBRACK? (SEQ|SEQK) LPAREN exprseq RPAREN RBRACK? #SeqSansPrefix
 	| PROC LPAREN parmseq RPAREN expr (COLON|SEMICOLON)? END #ProcExpr
 	| expr OP=(LT|GT|LE|GE|NE|EQ) expr #BinaryRelOp
 	| expr MOD expr #ModOp
+	| INT ELLIPSE INT #IntIntervalExpr
 	| expr ELLIPSE expr #IntervalExpr
 	| expr OP=(INTERSECT|MINUS|UNION) expr #SetRelOp
 	| expr EXCLAM #Factorial

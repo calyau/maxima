@@ -18,8 +18,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details. */
 
 lexer grammar mapleLexer ;
-
-COMMENT		:	'#' .*? '\n' -> skip ;
+COMMENT		:	'#' ~[\b]* ;
+BACKSPACE	:	[\b] {setText(";"); setType(SEMICOLON); };
 WS		:	[ \t\r\n]+ -> skip ;
 SEMICOLON	:	';' ;
 ASSIGN		:	':=' ;
