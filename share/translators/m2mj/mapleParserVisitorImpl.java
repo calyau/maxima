@@ -27,7 +27,7 @@ import org.stringtemplate.v4.STGroupFile;
 public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
  @Override
  public ST visitProgram(mapleParserParser.ProgramContext ctx){
-  say("program");
+  //say("program");
   ST t = visit(ctx.statseq());
   //say(t.render());
   return t;
@@ -196,6 +196,7 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
  @Override
  public ST visitSetExpr(mapleParserParser.SetExprContext ctx) {
   ST t = M2M.theTemplates.getInstanceOf("setexpr");
+  if(ctx.exprseq()==null || ctx.exprseq().expr()==null){ return t; };
   for(mapleParserParser.ExprContext expr : ctx.exprseq().expr()){
    t.add("args",visit(expr));
   }
@@ -205,7 +206,7 @@ public class mapleParserVisitorImpl extends mapleParserBaseVisitor<ST>{
  public ST visitListExpr(mapleParserParser.ListExprContext ctx) {
   say("listexpr");
   ST t = M2M.theTemplates.getInstanceOf("listexpr");
-  if(ctx.exprseq().expr()==null){ return t; };
+  if(ctx.exprseq()==null || ctx.exprseq().expr()==null){ return t; };
   for(mapleParserParser.ExprContext expr : ctx.exprseq().expr()){
    say("listexpr "+expr.getText());
    t.add("args",visit1("listexpr","",expr));
@@ -357,5 +358,5 @@ say("visitIntIntervalExpr");
   t.add("text",s);
   return t;
  }
- public void say(String s){ System.out.println(s); }
+ public void say(String s){ System.out.println(s); System.out.flush(); }
 }
