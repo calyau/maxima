@@ -1,12 +1,22 @@
+@setfilename raddenest.info
+@settitle Package raddenest
+
 @ifinfo
 @macro var {expr}
 <\expr\>
 @end macro
 @end ifinfo
 
+@node Top, Functions and variables for package raddenest, (dir), (dir)
+@top
+@menu
+* Functions and variables for package raddenest::
+* Function and variable index::
+@end menu
+
 @chapter Package raddenest
 
-@node Functions and variables for package raddenest, (dir), (dir), (dir)
+@node Functions and variables for package raddenest, Function and variable index, Top, Top
 @section Functions and variables for package raddenest
 
 @anchor{raddenest}
@@ -242,3 +252,9 @@ SymPy @code{sqrtdenest()} @url{http://www.sympy.org}
 @end enumerate
 
 @end deffn
+
+@node Function and variable index,  , Functions and variables for package raddenest, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+

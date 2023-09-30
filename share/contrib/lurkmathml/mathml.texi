@@ -18,15 +18,17 @@
 @top
 @menu
 * Definitions for package mathml::
+* Function and variable index::
 @end menu
 @chapter Package mathml
 
-@node Definitions for package mathml, Top, Top, Top
+@node Definitions for package mathml, Function and variable index, Top, Top
 @section Definitions for package mathml
 
-@defun mathml (@var{expr})
-@defunx mathml (@var{expr}, @var{filename})
-@defunx mathml (@var{label}, @var{filename})
+@deffn {Function} mathml
+@*mathml (@var{expr}) @
+@*mathml (@var{expr}, @var{filename}) @
+@*mathml (@var{label}, @var{filename})
 
 Convert an expression to Presentation MathML (version 2).
 
@@ -76,5 +78,11 @@ Examples:
 (%i6) mathml (''%o3, "/tmp/tmp.xml");
 (%o6)                         false
 @end example
-@end defun
+@end deffn
+
+@node Function and variable index,  , Definitions for package mathml, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
 @bye
