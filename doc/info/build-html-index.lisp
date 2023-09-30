@@ -96,7 +96,7 @@
   "Process one html file named FILE using MATCHER to determine matches.
   REPLACE-DASH-P and PREFIX are passed to PROCESS-LINE which will
   handle these."
-  (format *debug-io*  "Processing: ~S~%" file)
+  (format *debug-io*  "build-html-index: processing: ~S~%" file)
   (with-open-file (s file :direction :input)
     (loop for line = (read-line s nil)
           while line
