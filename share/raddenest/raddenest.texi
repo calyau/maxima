@@ -1,3 +1,7 @@
+\input texinfo
+
+@setchapternewpage off
+
 @setfilename raddenest.info
 @settitle Package raddenest
 
@@ -7,13 +11,17 @@
 @end macro
 @end ifinfo
 
+@dircategory Mathematics/Maxima
+@direntry
+* raddenest: (maxima/raddenest).           Maxima share package raddenest for de-nesting radicals.
+@end direntry
+
 @node Top, Functions and variables for package raddenest, (dir), (dir)
 @top
 @menu
 * Functions and variables for package raddenest::
 * Function and variable index::
 @end menu
-
 @chapter Package raddenest
 
 @node Functions and variables for package raddenest, Function and variable index, Top, Top
@@ -258,3 +266,4 @@ SymPy @code{sqrtdenest()} @url{http://www.sympy.org}
 @printindex fn
 @printindex vr
 
+@bye
