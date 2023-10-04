@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-03-28 12:59:37 villate"
+;; Time-stamp: "04-10-2023 14:23:04 Leo Butler"
 
 (in-package :maxima)
 
@@ -2167,7 +2167,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       ((= n 1)
        (if (or (funcall test (cadr option)) (null (cadr option))
                (eq (cadr option) t))
-           (cadr option)
+           (cdr option)
            (merror
             (intl:gettext
              "Value of option ~M. should be ~M or false, not \"~M\".")

@@ -238,7 +238,11 @@ plot2d ([f, g, h, i, sin, k], [u, 0, 1]);
 /* "j" in list of functions tickles a bug -- quote marks not sanitized
  * work around it by explicit legend spec
  */
-plot2d (["+", "j"], [u, 0, 1], [legend, "+", "j"]);
+ plot2d (["+", "j"], [u, 0, 1], [legend, "+", "j"]);
+
+/* Bug reported to mailing list by G. Königsmann, 2023-10-04
+   Legend question for plot() */
+plot2d(sin(t),[t,0,8],[legend,"Position"]);
 
 "(not a plot example, maybe it should be moved elsewhere)" $
 
