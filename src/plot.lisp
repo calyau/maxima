@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "04-10-2023 14:23:04 Leo Butler"
+;; Time-stamp: "06-10-2023 13:06:09 Leo Butler"
 
 (in-package :maxima)
 
@@ -1893,7 +1893,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($label (setf (getf options :label)
                        (check-option-label (cdr opt))))
          ($legend (setf (getf options :legend)
-                        (check-option-b (cdr opt) #'stringp "a string")))
+                        (let ((x (check-option-b (cdr opt) #'stringp "a string")))
+			  (if (listp x) x (cons x nil)))))
          ($levels (setf (getf options :levels)
                         (check-option-levels (cdr opt))))
          ($logx (setf (getf options :logx)
@@ -2167,7 +2168,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       ((= n 1)
        (if (or (funcall test (cadr option)) (null (cadr option))
                (eq (cadr option) t))
-           (cdr option)
+           (cadr option)
            (merror
             (intl:gettext
              "Value of option ~M. should be ~M or false, not \"~M\".")
