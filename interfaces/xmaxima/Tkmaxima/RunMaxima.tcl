@@ -18,7 +18,7 @@ proc resizeMaxima { win width height } {
     linkLocal $win pid
     if { [info exists pid] && $pid != "none" } {
 	set wid [expr [textWindowWidth $win]-6]
-	sendMaxima $win ":lisp-quiet (setq linel $wid)\n"
+	sendMaxima $win ":lisp-quiet (setq \$linel $wid)\n"
     }
 }
 
