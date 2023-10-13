@@ -178,11 +178,11 @@ The modified Bessel function of the second kind of order @math{v} and argument
 
 @code{bessel_k} is defined as
 m4_displaymath(
-<<<K_v(z) = {{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}>>>,
+<<<K_v(z) = {1\over 2} \pi\, {I_{-v}(z)-I_{v}(z) \over \sin v\pi}>>>,
 <<<@example
-           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
-           -------------------------------------------------
-                                  2
+               %pi (bessel_i(- v, z) - bessel_i(v, z))
+               ---------------------------------------
+                            2 sin(%pi v)
 @end example>>>
 )
 
