@@ -334,7 +334,9 @@ say("visitIntIntervalExpr");
   for(mapleParserParser.OneparmContext parm : ctx.parmseq().oneparm()){
    t.add("parms", parm.getText());
   }
-  t.add("expr",visit1("procexpr","<none>",ctx.expr()));
+  //t.add("expr",visit1("procexpr","<none>",ctx.expr()));
+  t.add("locals", visit(ctx.decls_proc()));
+  t.add("expr", visit(ctx.statseq()));
   //say(t.render());
   return t;
  }

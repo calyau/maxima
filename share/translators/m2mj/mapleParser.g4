@@ -28,8 +28,8 @@ import mapleLexer ;
 program : statseq EOF ;
 // comments : COMMENT* -> skip ;
 statseq : stat ((SEMICOLON|COLON) stat)* ; 
-stat    : nameseq ASSIGN exprseq #AssignStat
-	| nameseq ASSIGN PROC LPAREN parmseq RPAREN result_type* decls_proc? statseq END #ProcStat
+stat    : nameseq ASSIGN PROC LPAREN parmseq RPAREN result_type* decls_proc? statseq END #ProcStat
+	| nameseq ASSIGN exprseq #AssignStat
 	| exprseq #ExprStat
 	| READ expr #ReadStat
 	| SAVE name_string (COMMA name_string)* #StatStat
@@ -71,7 +71,7 @@ expr    : expr ARROW expr #ArrowExpr
 	| expr AMPMUL expr #NeutralMulOp
 //	| expr (SEQ|SEQK) exprseq #SeqWithPrefix
 	| LBRACK? (SEQ|SEQK) LPAREN exprseq RPAREN RBRACK? #SeqSansPrefix
-	| PROC LPAREN parmseq RPAREN expr (COLON|SEMICOLON)? END #ProcExpr
+	| PROC LPAREN parmseq RPAREN result_type* decls_proc? statseq END #ProcExpr
 	| expr OP=(LT|GT|LE|GE|NE|EQ) expr #BinaryRelOp
 	| expr MOD expr #ModOp
 	| INT ELLIPSE INT #IntIntervalExpr

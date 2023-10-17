@@ -38,11 +38,14 @@ proc(name,parms,locals,statseq) ::= <<
 <statseq; separator=",\n">
 );
 >>
-procexpr(parms,expr) ::= <<
-lambda([<parms; separator=", ">],<expr>)
+procexpr(parms,locals,expr) ::= <<
+lambda([<parms; separator=", ">],
+ block(<locals>
+  <expr>
+)
 >>
 statseq(stat) ::= <<
-<stat; separator=",\n">
+ <stat; separator=",\n">
 >>
 ifstat(expr,statseq,elifclause,elseclause) ::= <<
 if <expr> then (<statseq; separator=",\n" >)
