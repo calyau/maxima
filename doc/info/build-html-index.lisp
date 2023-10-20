@@ -131,19 +131,22 @@
     ;; This is messy.  Texinfo 6.8 uses plain apostrophes in the info
     ;; file.  But with texinfo 7.0.[23], some entries in HTML use an
     ;; apostrophe (U+27) character, but the info file uses
-    ;; Right_Single_Quotation_Mark (U+2019).  And apparently, the next
-    ;; version of Texinfo will not.
+    ;; Right_Single_Quotation_Mark (U+2019).  And apparently, the
+    ;; Texinfo 7.1 will not.
     ;;
     ;; Convert these only for the cases we know this is a problem.
     ;;
     ;; This current implementation will very likely not work with gcl
     ;; only supports 8-bit characters.
-    (when (and *texinfo-version*
-	       (>= *texinfo-version* (texinfo-version-number 7 0 2)))
-      (dolist (item '("Euler's number"
-		      "Introduction to Maxima's Database"))
-	(update-entry item
-		      (pregexp::pregexp-replace* "'" item (string (code-char #x2019))))))))
+    (when *texinfo-version*
+      (cond ((>= *texinfo-version* (texinfo-version-number 7 1))
+             ;; Don't need anything special for texinfo 7.1 and greater.
+             t)
+            ((>= *texinfo-version* (texinfo-version-number 7 0 2))
+             (dolist (item '("Euler's number"
+		             "Introduction to Maxima's Database"))
+	       (update-entry item
+		             (pregexp::pregexp-replace* "'" item (string (code-char #x2019))))))))))
 
 ;; Find entries from the function and variable index.  An example of
 ;; what we're looking for:
