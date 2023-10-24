@@ -121,31 +121,36 @@
                         (setq z (maxima-substitute (cdar l) (caar l) z))))))))))
 
 (defun maxima-substitute (x y z) ; The args to SUBSTITUTE are assumed to be simplified.
-;; Prevent replacing dependent variable with constant in derivative
-(cond ((and (not (atom z)) (eq (caar z) '%derivative) (eq (cadr z) y) (typep x 'number)) z)
-(t
-  (let ((in-p t) (substp t))
-    (if (and (mnump y) (= (signum1 y) 1))
-	(let ($sqrtdispflag ($pfeformat t)) (setq z (nformat-all z))))
-    (simplifya
-     (if (atom y)
-	 (cond ((equal y -1)
-		(setq y '((mminus) 1)) (subst2 x y (nformat-all z) nil nil)) ;; negxpty and timesp don't matter in this call since (caar y) != 'mexpt
-	       (t
-		(cond ((and (not (symbolp x))
-			    (functionp x))
-		       (let ((tem (gensym)))
-			 (setf (get  tem  'operators) 'application-operator)
-			 (setf (symbol-function tem) x)
-			 (setq x tem))))
-		(subst1 x y z)))
-	 (let ((negxpty (if (and (eq (caar y) 'mexpt)
-				 (= (signum1 (caddr y)) 1))
-			    (mul2 -1 (caddr y))))
-	       (timesp (if (eq (caar y) 'mtimes) (setq y (nformat y)))))
-	   (subst2 x y z negxpty timesp)))
-     nil)))
-))
+  ;; Prevent replacing dependent variable with constant in derivative
+  (cond ((and (not (atom z))
+              (eq (caar z) '%derivative)
+              (eq (cadr z) y)
+              (typep x 'number))
+         z)
+        (t
+         (let ((in-p t) (substp t))
+           (if (and (mnump y) (= (signum1 y) 1))
+	       (let ($sqrtdispflag ($pfeformat t)) (setq z (nformat-all z))))
+           (simplifya
+            (if (atom y)
+	        (cond ((equal y -1)
+		       (setq y '((mminus) 1))
+                       (subst2 x y (nformat-all z) nil nil)) ;; negxpty and timesp don't matter in this call since (caar y) != 'mexpt
+	              (t
+		       (cond ((and (not (symbolp x))
+			           (functionp x))
+		              (let ((tem (gensym)))
+			        (setf (get  tem  'operators) 'application-operator)
+			        (setf (symbol-function tem) x)
+			        (setq x tem))))
+		       (subst1 x y z)))
+	        (let ((negxpty (if (and (eq (caar y) 'mexpt)
+				        (= (signum1 (caddr y)) 1))
+			           (mul2 -1 (caddr y))))
+	              (timesp (if (eq (caar y) 'mtimes)
+                                  (setq y (nformat y)))))
+	          (subst2 x y z negxpty timesp)))
+            nil)))))
 
 ;;Remainder of page is update from F302 --gsb
 
