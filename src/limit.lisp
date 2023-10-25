@@ -1111,12 +1111,11 @@ ignoring dummy variables and array indices."
 	(t e)))
 
 (defun stirling (x)
-  (maxima-substitute x '$z
-		     '((mtimes simp)
-		       ((mexpt simp) 2 ((rat simp) 1 2))
-		       ((mexpt simp) $%pi ((rat simp) 1 2))
-		       ((mexpt simp) $z ((mplus simp) ((rat simp) -1 2) $z))
-		       ((mexpt simp) $%e ((mtimes simp) -1 $z)))))
+  "Return sqrt(2*%pi/x)*(x/%e)^x"
+  (mul (power (div (mul 2 '$%pi) x)
+              1//2)
+       (power (div x '$%e)
+              x)))
 
 (defun no-err-sub (v e &aux ans)
   (let ((errorsw t) (*zexptsimp? t)
