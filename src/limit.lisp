@@ -1111,7 +1111,8 @@ ignoring dummy variables and array indices."
 	(t e)))
 
 (defun stirling (x)
-  "Return sqrt(2*%pi/x)*(x/%e)^x"
+  "Return sqrt(2*%pi/x)*(x/%e)^x, the Stirling approximation of
+  gamma(x).  The argument x can be any valid expression."
   (mul (power (div (mul 2 '$%pi) x)
               1//2)
        (power (div x '$%e)
