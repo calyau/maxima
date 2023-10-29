@@ -527,7 +527,7 @@ string (-((a + b)/c));
 
 /* SF bug #4092: "Repeated factorial (n!)! displayed the same as double factorial n!!" */
 
-(kill (n), printf (false, "~m", (n!)!));
+(kill (n), with_default_2d_display(printf (false, "~m", (n!)!)));
 "(n!)!
 ";
 

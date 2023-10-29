@@ -322,7 +322,7 @@ f7 (error (), error (), error (), error ());
 "";
 
 (trace (atom),
- with_stdout (S, atom(1)),
+ with_default_2d_display(with_stdout (S, atom(1))),
  get_output_stream_string (S));
 "1 Enter atom [1]
 1 Exit  atom true

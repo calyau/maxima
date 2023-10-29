@@ -1743,187 +1743,187 @@ pochhammer (-3, k);
 /* verify display for various functions */
 
 (kill (x, y, a, b, m, n, f),
- printf (false, "~m", pochhammer (x, n)));
+ with_default_2d_display(printf (false, "~m", pochhammer (x, n))));
 "(x)
    n
 ";
 
-printf (false, "~m", define (f (), pochhammer (x, n)));
+with_default_2d_display(printf (false, "~m", define (f (), pochhammer (x, n))));
 "f() := (x)
           n
 ";
 
-printf(false,"~m",jacobi_p(n,a,b,x));
+with_default_2d_display(printf(false,"~m",jacobi_p(n,a,b,x)));
 " (a, b)
 P      (x)
  n
 "$
 
-printf(false,"~m",define(f(),jacobi_p(n,a,b,x)));
+with_default_2d_display(printf(false,"~m",define(f(),jacobi_p(n,a,b,x))));
 "        (a, b)
 f() := P      (x)
         n
 "$
 
-printf(false,"~m",ultraspherical(n,a,x));
+with_default_2d_display(printf(false,"~m",ultraspherical(n,a,x)));
 " (a)
 C   (x)
  n
 "$
 
-printf(false,"~m",define(f(),ultraspherical(n,a,x)));
+with_default_2d_display(printf(false,"~m",define(f(),ultraspherical(n,a,x))));
 "        (a)
 f() := C   (x)
         n
 "$
 
-printf(false,"~m",chebyshev_t(n,x));
+with_default_2d_display(printf(false,"~m",chebyshev_t(n,x)));
 "T (x)
  n
 "$
 
-printf(false,"~m",define(f(),chebyshev_t(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),chebyshev_t(n,x))));
 "f() := T (x)
         n
 "$
 
-printf(false,"~m",chebyshev_u(n,x));
+with_default_2d_display(printf(false,"~m",chebyshev_u(n,x)));
 "U (x)
  n
 "$
 
-printf(false,"~m",define(f(),chebyshev_u(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),chebyshev_u(n,x))));
 "f() := U (x)
         n
 "$
 
-printf(false,"~m",legendre_p(n,x));
+with_default_2d_display(printf(false,"~m",legendre_p(n,x)));
 "P (x)
  n
 "$
 
-printf(false,"~m",define(f(),legendre_p(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),legendre_p(n,x))));
 "f() := P (x)
         n
 "$
 
-printf(false,"~m",legendre_q(n,x));
+with_default_2d_display(printf(false,"~m",legendre_q(n,x)));
 "Q (x)
  n
 "$
 
-printf(false,"~m",define(f(),legendre_q(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),legendre_q(n,x))));
 "f() := Q (x)
         n
 "$
 
-printf(false,"~m",assoc_legendre_q(n,m,x));
+with_default_2d_display(printf(false,"~m",assoc_legendre_q(n,m,x)));
 " m
 Q (x)
  n
 "$
 
-printf(false,"~m",define(f(),assoc_legendre_q(n,m,x)));
+with_default_2d_display(printf(false,"~m",define(f(),assoc_legendre_q(n,m,x))));
 "        m
 f() := Q (x)
         n
 "$
 
-printf(false,"~m",assoc_legendre_p(n,m,x));
+with_default_2d_display(printf(false,"~m",assoc_legendre_p(n,m,x)));
 " m
 P (x)
  n
 "$
 
-printf(false,"~m",define(f(),assoc_legendre_p(n,m,x)));
+with_default_2d_display(printf(false,"~m",define(f(),assoc_legendre_p(n,m,x))));
 "        m
 f() := P (x)
         n
 "$
 
-printf(false,"~m",hermite(n,x));
+with_default_2d_display(printf(false,"~m",hermite(n,x)));
 "H (x)
  n
 "$
 
-printf(false,"~m",define(f(),hermite(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),hermite(n,x))));
 "f() := H (x)
         n
 "$
 
-printf(false,"~m",gen_laguerre(n,a,x));
+with_default_2d_display(printf(false,"~m",gen_laguerre(n,a,x)));
 " (a)
 L   (x)
  n
 "$
 
-printf(false,"~m",define(f(),gen_laguerre(n,a,x)));
+with_default_2d_display(printf(false,"~m",define(f(),gen_laguerre(n,a,x))));
 "        (a)
 f() := L   (x)
         n
 "$
 
-printf(false,"~m",laguerre(n,x));
+with_default_2d_display(printf(false,"~m",laguerre(n,x)));
 "L (x)
  n
 "$
 
-printf(false,"~m",define(f(),laguerre(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),laguerre(n,x))));
 "f() := L (x)
         n
 "$
 
-printf(false,"~m",spherical_hankel1(n,x));
+with_default_2d_display(printf(false,"~m",spherical_hankel1(n,x)));
 " (1)
 H   (x)
  n
 "$
 
-printf(false,"~m",define(f(),spherical_hankel1(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),spherical_hankel1(n,x))));
 "        (1)
 f() := H   (x)
         n
 "$
 
-printf(false,"~m",spherical_hankel2(n,x));
+with_default_2d_display(printf(false,"~m",spherical_hankel2(n,x)));
 " (2)
 H   (x)
  n
 "$
 
-printf(false,"~m",define(f(),spherical_hankel2(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),spherical_hankel2(n,x))));
 "        (2)
 f() := H   (x)
         n
 "$
 
-printf(false,"~m",spherical_bessel_j(n,x));
+with_default_2d_display(printf(false,"~m",spherical_bessel_j(n,x)));
 "J (x)
  n
 "$
 
-printf(false,"~m",define(f(),spherical_bessel_j(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),spherical_bessel_j(n,x))));
 "f() := J (x)
         n
 "$
 
-printf(false,"~m",spherical_bessel_y(n,x));
+with_default_2d_display(printf(false,"~m",spherical_bessel_y(n,x)));
 "Y (x)
  n
 "$
 
-printf(false,"~m",define(f(),spherical_bessel_y(n,x)));
+with_default_2d_display(printf(false,"~m",define(f(),spherical_bessel_y(n,x))));
 "f() := Y (x)
         n
 "$
 
-printf(false,"~m",spherical_harmonic(n,m,x,y));
+with_default_2d_display(printf(false,"~m",spherical_harmonic(n,m,x,y)));
 " m
 Y (x, y)
  n
 "$
 
-printf(false,"~m",define(f(),spherical_harmonic(n,m,x,y)));
+with_default_2d_display(printf(false,"~m",define(f(),spherical_harmonic(n,m,x,y))));
 "        m
 f() := Y (x, y)
         n
