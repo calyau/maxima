@@ -17,8 +17,8 @@
 (defmvar $max_fpprec 1000)
 
 (setf (get '$max_fpprec 'assign)
-      #'(lambda (a b) 
-	  (declare (ignore a))
+      #'(lambda (unused b) 
+	  (declare (ignore unused))
 	  (if (not (and (atom b) (integerp b)))
 	      (progn
 		(mtell "The value of `max_fpprec' must be an integer.~%")
@@ -27,8 +27,8 @@
 (defmvar $expand_hypergeometric nil)
 
 (setf (get '$expand_hypergeometric 'assign)
-      #'(lambda (a b)
-	  (declare (ignore a))
+      #'(lambda (unused b)
+	  (declare (ignore unused))
 	  (if (not (or (eq b nil) (eq b t)))
 	      (progn
 		(mtell "The value of `expand_hypergeometric' must be either true or false.~%")
