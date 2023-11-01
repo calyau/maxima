@@ -2950,8 +2950,8 @@ ignoring dummy variables and array indices."
 (setf (get '%log 'simplim%function) 'simplimln)
 (setf (get '%plog 'simplim%function) 'simplimln)
 
-(defun simplim%limit (ee xx pt)
-  (declare (ignore ee xx pt))
+(defun simplim%limit (ee x pt)
+  (declare (ignore ee x pt))
   (throw 'limit t))
 (setf (get '%limit 'simplim%function) 'simplim%limit)
 
