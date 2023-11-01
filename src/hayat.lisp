@@ -2776,10 +2776,10 @@
 	 (t (tsexpt-red (list (list '(%log) b) e)))))
 
 (defun tsexpt-red (l)
-   (*bind* ((free) (nfree) (full-log) ($logarc t) (expt) (ps) (e)
+   (*bind* ((free) (nfree) (full-log) ($logarc t) (expt) (ps) ;;(e)
 	    (log-1 '((mtimes) $%i $%pi))
 	    (log%i '((mtimes) ((rat) 1 2) $%i $%pi)))
-	   (declare (special e))
+	   ;;(declare (special e))
     a  (do ((l l (cdr l)))
 	   ((null l) )
 	  (cond ((mtimesp (car l)) (setq l (append l (cdar l))))
