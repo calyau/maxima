@@ -141,7 +141,6 @@
      (go tag1)))
 
 (defun nbn (rule x)
-  ;;(declare (special x))
   (prog (ans r a)
      (setq ans 0 r (cadar rule))
      (when (equal r 0) (return 0))
@@ -215,8 +214,7 @@
    (setq l (cdr l))
    (go loop)))
 
-(declare-top (unspecial ;;x
-              ml* rzl*))
+(declare-top (unspecial ml* rzl*))
 
 (defun atranspose (a n)
   (prog (i j d)

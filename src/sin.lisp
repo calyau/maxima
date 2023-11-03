@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ans arcpart coef
-		      aa powerlist *a* *b* k stack #+nil e w y expres arg var
+		      aa powerlist *a* *b* k stack w y expres arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
