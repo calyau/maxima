@@ -252,8 +252,8 @@
       35 37 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 57
       58 59 66 67 68)
      #+ecl
-     ;; ECL 22.2.1 results
-     ((mlist simp) 61 63 65 69)
+     ;; ECL 23.9.9 results
+     ((mlist simp) 61)
      #+clisp
      ((mlist simp) 27 38 61 63 65 69)
      #+gcl
