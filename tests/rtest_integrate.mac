@@ -6302,4 +6302,17 @@ integrate (sin(x*cos(x)), x);
  0);
 0;
 
-/* ----- End of file -------------------------------------------------------- */
+/* SF bug report #4160: "LISP error when integrating" */
+
+domain: complex;
+complex;
+
+integrate ((log((x + 1)^p) + 1)^n, x);
+'integrate ((log((x + 1)^p) + 1)^n, x);
+
+/* domain = real by default */
+reset (domain);
+[domain];
+
+integrate ((log((x + 1)^p) + 1)^n, x);
+-((expintegral_e(-n,-((p*log(x+1)+1)/p))*%e^-(1/p)*(p*log(x+1)+1)^(n+1))/p);
