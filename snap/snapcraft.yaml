@@ -93,3 +93,6 @@ parts:
        - gnuplot
     stage:
      - -usr/share/texmf/ls-R
+layout:
+  /usr/bin/gnuplot:
+    symlink: $SNAP/usr/bin/gnuplot-qt
