@@ -527,7 +527,7 @@ Example:
 
 @example
 (%i1) load("draw")$
-(%i2) draw2d(explicit(x^2,x,_1,1), /* default is black */
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
              color = red,
              explicit(0.5 + x^2,x,-1,1),
              color = blue,
