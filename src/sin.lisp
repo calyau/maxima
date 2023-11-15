@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ans arcpart coef
-		      aa powerlist *a* *b* k stack w y expres arg var
+		      aa powerlist *a* *b* k stack #+nil w #+nil y expres arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
@@ -1783,7 +1783,7 @@
 ;;; partial integration is applied: log(x)*f(x)-integrate(1/x*f(x),x)
 
 (defun ratlog (exp var form)
-  (prog (b c d y z w)
+  (prog (b c d y z #+nil w)
      (setq y form)
      (setq b (cdr (assoc 'b y :test #'eq)))
      (setq c (cdr (assoc 'c y :test #'eq)))
