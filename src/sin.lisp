@@ -1873,8 +1873,8 @@
 (defun timesloop (a b)
   (cons '(mplus) (mapcar #'(lambda (c) (mul2* a c)) b)))
 
-(defun expands (aa b)
-  (addn (mapcar #'(lambda (c) (timesloop c aa)) b) nil))
+(defun expands (arg1 arg2)
+  (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
 (defun powerlist (exp var)
   (prog (y *c* *d* powerlist *b*)
