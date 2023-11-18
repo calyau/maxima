@@ -1434,8 +1434,13 @@
 ;; in the 2D case.  This should work for both cases.  (See end of
 ;; program.)
 
-(defun d-hbar (linear? w &optional (char #\-) &aux nl)
+(defvar d-hbar-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_HORIZONTAL)
+(defvar d-hbar-char-ascii #\-)
+
+(defun d-hbar (linear? w &optional char &aux nl)
   (declare (ignore linear?))
+  (when (null char)
+    (setq char (if (maxima-unicode-enabled) d-hbar-char-unicode d-hbar-char-ascii)))
   (dotimes (i w)
     (push char nl))
   (draw-linear nl oldrow oldcol))
@@ -1445,27 +1450,35 @@
 ;; character cell precisely and not get clipped when moving things around in
 ;; the equation editor.
 
-(defun d-vbar (linear? h d &optional (char #\|))
+(defvar d-vbar-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+(defvar d-vbar-char-ascii #\|)
+
+(defun d-vbar (linear? h d &optional char)
   (declare (ignore linear?))
+  (when (null char)
+    (setq char (if (maxima-unicode-enabled) d-vbar-char-unicode d-vbar-char-ascii)))
   (setq d (- d))
   (do ((i (- h 2) (1- i))
        (nl `((0 ,(1- h) ,char))))
       ((< i d) (draw-linear (nreverse nl) oldrow oldcol))
     (push `(-1 ,i ,char) nl)))
 
+(defvar d-integralsign-string-unicode #+lisp-unicode-capable `((0 2 #\TOP_HALF_INTEGRAL) (-1 1 #\INTEGRAL_EXTENSION) (-1 0 #\INTEGRAL_EXTENSION) (-1 -1 #\INTEGRAL_EXTENSION) (-1 -2 #\BOTTOM_HALF_INTEGRAL)))
+(defvar d-integralsign-string-ascii `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
+
 (defun d-integralsign (linear? &aux dmstr)
   (declare (ignore linear?))
-  (setq dmstr `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
+  (setq dmstr (if (maxima-unicode-enabled) d-integralsign-string-unicode d-integralsign-string-ascii))
   (draw-linear dmstr oldrow oldcol))
 
 (defun d-prodsign (linear? &aux dmstr)
   (declare (ignore linear?))
-  (setq dmstr '((0 2 #\\ (d-hbar 3 #\=) #\/) (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
+  (setq dmstr '((0 2 #\\ (d-hbar 3) #\/) (-4 0) (d-vbar 2 1) #\space (d-vbar 2 1) (1 0)))
   (draw-linear dmstr oldrow oldcol))
 
 (defun d-sumsign (linear? &aux dmstr)
   (declare (ignore linear?))
-  (setq dmstr '((0 2 (d-hbar 4 #\=)) (-4 1 #\\) #\> (-2 -1 #\/)	(-1 -2 (d-hbar 4 #\=))))
+  (setq dmstr '((0 2 (d-hbar 4)) (-4 1 #\\) #\> (-2 -1 #\/)	(-1 -2 (d-hbar 4))))
   (draw-linear dmstr oldrow oldcol))
 
 ;; Notice how this calls D-VBAR in the non-graphic case.  The entire output
