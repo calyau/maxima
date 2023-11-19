@@ -112,7 +112,7 @@ Package @code{distrib} contains a set of functions for making probability comput
 
 What follows is a short reminder of basic probabilistic related definitions.
 
-Let @math{f(x)} be the @var{density function} of an absolute continuous random variable @math{X}. The @var{distribution function} is defined as
+Let @math{f(x)} be the @var{density function} of an absolute continuous random variable @math{X}. The @var{cumulative distribution function} is defined as
 m4_displaymath(
 <<<F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}>>>,
 <<<
@@ -197,7 +197,7 @@ m4_displaymath(
 >>>)
 If @math{X} is gaussian, @math{KU[X]=0}. In fact, both skewness and kurtosis are shape parameters used to measure the non--gaussianity of a distribution.
 
-If the random variable @math{X} is discrete, the density, or @var{probability}, function @math{f(x)} takes positive values within certain countable set of numbers @math{x_i}, and zero elsewhere. In this case, the distribution function is
+If the random variable @math{X} is discrete, the density, or @var{probability}, function @math{f(x)} takes positive values within certain countable set of numbers @math{x_i}, and zero elsewhere. In this case, the cumulative distribution function is
 m4_displaymath(
 <<< F\left(x\right)=\sum_{x_{i}\leq x}{f\left(x_{i}\right)} >>>,
 <<<
@@ -392,7 +392,7 @@ m4_displaymath(
 
 @anchor{cdf_normal}
 @deffn {Function} cdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Normal_RV(m,s) 
 random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
@@ -651,7 +651,7 @@ m4_displaymath(
 
 @anchor{cdf_student_t}
 @deffn {Function} cdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Student
+Returns the value at @var{x} of the cumulative distribution function of a Student
 random variable 
 m4_Student_T_RV(n)
 , with @math{n>0} degrees of freedom.
@@ -1024,7 +1024,7 @@ rat: replaced 160.6269176184973 by 178374907/1110492 = 160.626917618497
 
 @anchor{cdf_noncentral_student_t}
 @deffn {Function} cdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a
+Returns the value at @var{x} of the cumulative distribution function of a
 noncentral Student random variable 
 m4_Noncentral_T_RV(n,ncp)
 , with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. This function has no closed form and it is numerically computed.
@@ -1415,7 +1415,7 @@ m4_displaymath(
 
 @anchor{cdf_chi2}
 @deffn {Function} cdf_chi2 (@var{x},@var{n})
-Returns the value at @math{x} of the distribution function of a
+Returns the value at @math{x} of the cumulative distribution function of a
 Chi-square random variable 
 m4_Chi2_RV(n)
 , with @math{n>0}.
@@ -1790,7 +1790,7 @@ m4_displaymath(
 
 @anchor{cdf_noncentral_chi2}
 @deffn {Function} cdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a
+Returns the value at @var{x} of the cumulative distribution function of a
 noncentral Chi-square random variable 
 m4_noncentral_chi2(n,ncp)
 , with
@@ -2053,7 +2053,7 @@ x^{m/2-1}
 
 @anchor{cdf_f}
 @deffn {Function} cdf_f (@var{x},@var{m},@var{n})
-Returns the value at @var{x} of the distribution function of a F random variable @math{F(m,n)}, with @math{m,n>0}.
+Returns the value at @var{x} of the cumulative distribution function of a F random variable @math{F(m,n)}, with @math{m,n>0}.
 
 The cdf is
 m4_displaymath(
@@ -2330,7 +2330,7 @@ f(x, m) = [
 
 @anchor{cdf_exp}
 @deffn {Function} cdf_exp (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of an 
+Returns the value at @var{x} of the cumulative distribution function of an 
 m4_Exponential_RV(m) 
 random variable, with @math{m>0}.
 
@@ -2691,7 +2691,7 @@ m4_displaymath(
 
 @anchor{cdf_lognormal}
 @deffn {Function} cdf_lognormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Lognormal_RV(m,s) 
 random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
@@ -2956,7 +2956,7 @@ m4_displaymath(
 
 @anchor{cdf_gamma}
 @deffn {Function} cdf_gamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Gamma_RV(a,b) 
 random variable, with @math{a,b>0}. 
 
@@ -3201,7 +3201,7 @@ m4_displaymath(
 
 @anchor{cdf_beta}
 @deffn {Function} cdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Beta_RV(a,b) 
 random variable, with @math{a,b>0}.
 
@@ -3443,7 +3443,7 @@ and is 0 otherwise.
 
 @anchor{cdf_continuous_uniform}
 @deffn {Function} cdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a
+Returns the value at @var{x} of the cumulative distribution function of a
 m4_Continuous_Uniform_RV(a,b) 
 random variable, with 
 m4_mathdot(<<<a \lt b>>>, <<<a < b>>>, <<<a < b>>>) 
@@ -3644,7 +3644,7 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 @subsection Logistic Random Variable
 
 The @emph{logistic} distribution is a continuous distribution where
-it's cumulative distribution function is the logistic function.
+its cumulative distribution function is the logistic function.
 
 @anchor{pdf_logistic}
 @deffn {Function} pdf_logistic (@var{x},@var{a},@var{b})
@@ -3680,7 +3680,7 @@ m4_displaymath(
 
 @anchor{cdf_logistic}
 @deffn {Function} cdf_logistic (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Logistic_RV(a,b) 
 random variable , with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
@@ -3890,7 +3890,7 @@ f(x, a, b) = [
 
 @anchor{cdf_pareto}
 @deffn {Function} cdf_pareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Pareto_RV(a,b) 
 random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
@@ -4107,7 +4107,7 @@ f(x, a, b) = [
 
 @anchor{cdf_weibull}
 @deffn {Function} cdf_weibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Weibull_RV(a,b) 
 random variable, with @math{a,b>0}. To make use of this function, write first @code{load("distrib")}.
 
@@ -4373,7 +4373,7 @@ f(x, b) = [
 
 @anchor{cdf_rayleigh}
 @deffn {Function} cdf_rayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Rayleigh_RV(b) 
 random variable, with @math{b>0}.
 
@@ -4762,7 +4762,7 @@ m4_displaymath(
 
 @anchor{cdf_laplace}
 @deffn {Function} cdf_laplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Laplace_RV(a,b) 
 random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
@@ -4970,7 +4970,7 @@ m4_displaymath(
 
 @anchor{cdf_cauchy}
 @deffn {Function} cdf_cauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Cauchy_RV(a,b) 
 random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
@@ -5061,7 +5061,7 @@ m4_displaymath(
 
 @anchor{cdf_gumbel}
 @deffn {Function} cdf_gumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Gumbel_RV(a,b) 
 random variable, with @math{b>0}. To make use of this function, write first @code{load("distrib")}.
 
@@ -5323,7 +5323,7 @@ Returns the value at @var{x} of the probability function of a general finite dis
 
 @anchor{cdf_general_finite_discrete}
 @deffn {Function} cdf_general_finite_discrete (@var{x},@var{v})
-Returns the value at @var{x} of the distribution function of a general finite discrete random variable, with vector probabilities @math{v}.
+Returns the value at @var{x} of the cumulative distribution function of a general finite discrete random variable, with vector probabilities @math{v}.
 
 See @code{pdf_general_finite_discrete} for more details.
 
@@ -5511,7 +5511,7 @@ m4_displaymath(
 
 @anchor{cdf_binomial}
 @deffn {Function} cdf_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Binomial_RV(n,p) 
 random variable, with @math{0 \leq p \leq 1} and @math{n} a positive integer.
 
@@ -5744,7 +5744,7 @@ m4_displaymath(
 
 @anchor{cdf_poisson}
 @deffn {Function} cdf_poisson (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Poisson_RV(m) 
 random variable, with @math{m>0}.
 
@@ -5985,7 +5985,7 @@ m4_displaymath(
 
 @anchor{cdf_bernoulli}
 @deffn {Function} cdf_bernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Bernoulli_RV(p) 
 random variable, with @math{0 \leq p \leq 1}. To make use of this function, write first @code{load("distrib")}.
 
@@ -6294,7 +6294,7 @@ This is interpreted as the probability of @math{x} failures before the first suc
 
 @anchor{cdf_geometric}
 @deffn {Function} cdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Geometric_RV(p) 
 random variable, with
 @math{0 < p \leq  1}
@@ -6552,7 +6552,7 @@ m4_displaymath(
 
 @anchor{cdf_discrete_uniform}
 @deffn {Function} cdf_discrete_uniform (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_DiscreteUniform_RV(n) 
 random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load("distrib")}.
 
@@ -6778,7 +6778,7 @@ m4_displaymath(
 
 @anchor{cdf_hypergeometric}
 @deffn {Function} cdf_hypergeometric (@var{x},@var{n_1},@var{n_2},@var{n})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_Hypergeometric_RV(n1,n2,n) 
 random variable, with @math{n_1}, @math{n_2} and @math{n} non negative
 integers and @math{n\leq n_1+n_2}. 
@@ -7052,7 +7052,7 @@ m4_displaymath(
 
 @anchor{cdf_negative_binomial}
 @deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a 
+Returns the value at @var{x} of the cumulative distribution function of a 
 m4_NegativeBinomial_RV(n,p) 
 random variable, with @math{0 < p \leq 1} and @math{n} a positive number.
 
