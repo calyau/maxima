@@ -760,10 +760,13 @@
 
 (displa-def %at dim-%at 105. 105.)
 
+(defvar at-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+
 (defun dim-%at (form result)
-  (prog (exp  eqs (w 0) (h 0) (d 0))
+  (prog (exp  eqs (w 0) (h 0) (d 0) at-char)
      (unless (= (length (cdr form)) 2)
        (return-from dim-%at (dimension-function form result)))
+     (setq at-char (if (maxima-unicode-enabled) at-char-unicode (car (coerce $absboxchar 'list))))
      (setq exp (dimension (cadr form) result lop '%at nil 0)
 	   w width
 	   h height
@@ -775,7 +778,7 @@
      (unless (checkfit (+ 1 w width))
        (return (dimension-function form result)))
      (setq result (cons (cons 0 (cons (- 0 1 d) eqs))
-			(cons `(d-vbar ,(1+ h) ,(1+ d) ,(car (coerce $absboxchar 'list))) exp))
+			(cons `(d-vbar ,(1+ h) ,(1+ d) ,at-char) exp))
 	   width (+ 1 w width)
 	   height (1+ h)
 	   depth (+ 1 d depth))
@@ -1079,13 +1082,16 @@
 (displa-def mabs   dim-mabs)
 (displa-def %mabs  dim-mabs)
 
-(defun dim-mabs (form result &aux arg bar)
+(defvar mabs-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+
+(defun dim-mabs (form result &aux arg bar mabs-char)
+  (setq mabs-char (if (maxima-unicode-enabled) mabs-char-unicode (car (coerce $absboxchar 'list))))
   (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
   (cond ((or (> (+ 2 width) $linel) (and (= 1 height) (= 0 depth)))
 	 (dimension-function form result))
 	(t (setq width (+ 2 width))
 	   (update-heights height depth)
-	   (setq bar `(d-vbar ,height ,depth ,(car (coerce $absboxchar 'list))))
+	   (setq bar `(d-vbar ,height ,depth ,mabs-char))
 	   (cons bar (nconc arg (cons bar result))))))
 
 (displa-def $matrix dim-$matrix)
@@ -1187,6 +1193,35 @@
 (displa-def %mlabox dim-mlabox)
 
 (defun dim-mlabox (form result)
+  (if (maxima-unicode-enabled)
+    (dim-mlabox-unicode form result)
+    (dim-mlabox-ascii form result)))
+
+(defun dim-mlabox-unicode (form result)
+  (prog (dummy)
+     (setq dummy (dimension (cadr form) nil 'mparen 'mparen nil 0))
+     (cond ((not (checkfit (+ 2 width)))
+	    (return (dimension-function (cons '($box) (cdr form)) result))))
+     (setq width (+ 2 width) height (1+ height) depth (1+ depth))
+     (setq result
+	   (cons (do ((l (mapcar #'(lambda (l) (char (symbol-name l) 0))
+				 (makstring (caddr form))) (cdr l))
+		      (w 0) (nl))
+		     ((or (null l) (= width w))
+		      (cons 0 (cons (1- height)
+				    (cond ((< w width)
+					   (cons d-box-char-unicode-upper-right (cons `(d-hbar ,(- width w 1) ,d-box-char-unicode-horz) nl)))
+					  (t nl)))))
+		   (setq nl (cons (car l) nl) w (1+ w)))
+		 result))
+     (setq result (nconc dummy (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert)
+				      (list (- width) 0) result)))
+     (setq result (cons (list (- 1 width) (- depth) d-box-char-unicode-lower-right `(d-hbar ,(- width 2) ,d-box-char-unicode-horz) d-box-char-unicode-lower-left) result))
+     (setq result (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert) '(-1 0) result))
+     (update-heights height depth)
+     (return result)))
+
+(defun dim-mlabox-ascii (form result)
   (prog (dummy ch)
      (setq dummy (dimension (cadr form) nil 'mparen 'mparen nil 0))
      (cond ((not (checkfit (+ 2 width)))
@@ -1492,8 +1527,30 @@
 
 ;; There is wired knowledge of character offsets here.
 
-(defun d-box (linear? h d w body &aux (char 0) dmstr) ;char a char?
+(defvar d-box-char-unicode-horz #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_HORIZONTAL)
+(defvar d-box-char-unicode-vert #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_VERTICAL)
+(defvar d-box-char-unicode-upper-left #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_DOWN_AND_RIGHT)
+(defvar d-box-char-unicode-upper-right #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_DOWN_AND_LEFT)
+(defvar d-box-char-unicode-lower-right #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_UP_AND_LEFT)
+(defvar d-box-char-unicode-lower-left #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_UP_AND_RIGHT)
+
+(defun d-box (linear? h d w body)
   (declare (ignore linear?))
+  (if (maxima-unicode-enabled)
+    (d-box-unicode h d w body)
+    (d-box-ascii h d w body)))
+
+(defun d-box-unicode (h d w body)
+  (setq dmstr `((0 ,h ,d-box-char-unicode-upper-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-upper-left)
+		(,(- (+ w 2)) 0)
+		(d-vbar ,h ,d ,d-box-char-unicode-vert)
+		,@body
+		(,(- (1+ w)) ,(- (1+ d)) ,d-box-char-unicode-lower-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-lower-left)
+		(-1 0)
+		(d-vbar ,h ,d ,d-box-char-unicode-vert)))
+  (draw-linear dmstr oldrow oldcol))
+
+(defun d-box-ascii (h d w body &aux (char 0) dmstr)
   (setq char (car (coerce $boxchar 'list)))
   (setq dmstr `((0 ,h (d-hbar ,(+ 2 w) ,char))
 		(,(- (+ w 2)) 0)
