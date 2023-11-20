@@ -1511,9 +1511,12 @@
   (setq dmstr '((0 2 #\\ (d-hbar 3) #\/) (-4 0) (d-vbar 2 1) #\space (d-vbar 2 1) (1 0)))
   (draw-linear dmstr oldrow oldcol))
 
+(defvar d-sumsign-unicode-dmstr #+lisp-unicode-capable '((0 2 (d-hbar 4 #\LOW_LINE)) (-4 1 #\BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_LEFT_TO_LOWER_RIGHT) #\> (-2 -1 #\BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_RIGHT_TO_LOWER_LEFT) (-1 -2 (d-hbar 4 #\OVERLINE))))
+(defvar d-sumsign-ascii-dmstr '((0 2 (d-hbar 4)) (-4 1 #\\) #\> (-2 -1 #\/) (-1 -2 (d-hbar 4))))
+
 (defun d-sumsign (linear? &aux dmstr)
   (declare (ignore linear?))
-  (setq dmstr '((0 2 (d-hbar 4)) (-4 1 #\\) #\> (-2 -1 #\/)	(-1 -2 (d-hbar 4))))
+  (setq dmstr (if (maxima-unicode-enabled) d-sumsign-unicode-dmstr d-sumsign-ascii-dmstr))
   (draw-linear dmstr oldrow oldcol))
 
 ;; Notice how this calls D-VBAR in the non-graphic case.  The entire output
