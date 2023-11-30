@@ -237,6 +237,7 @@
 (defun init-readtable ()
   (unless *xpm-readtable*
     (setf *xpm-readtable* (copy-readtable))
+    (set-macro-character #\/ #'(lambda (s c) (declare (ignore c)) (let ((*parse-stream* s)) (gobble-comment)) (values)) nil *xpm-readtable*)
     (set-syntax-from-char #\, #\Space *xpm-readtable*)))
 
 
