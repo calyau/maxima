@@ -1,0 +1,497 @@
+%%% ---------------------------------------------------------------
+%%%                  SOLVER-E.tex
+%%% ---------------------------------------------------------------
+
+\documentclass[11pt]{report}           % not use twoside
+
+\usepackage{amscd,amssymb,eufrak,a4wide}   % ohne   ,german,
+\usepackage[latin1]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{color}
+
+\topmargin-10mm
+\oddsidemargin0mm
+\evensidemargin0mm
+\textwidth16cm
+\textheight23cm
+\headsep1cm
+\headheight0.5cm
+%\footheight0.5cm
+\footskip1.0cm
+\parskip5pt plus 2pt minus 2pt
+\renewcommand{\topfraction}{0.7}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.0}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\newcommand\ts{\textstyle}
+\newcommand\ds{\displaystyle}
+
+% Umgebungsdefinitionen
+% ---------------------
+\def\empty{}
+% Definition [Kapitel#].Def#
+% \begin{definition}{label} ... \end{definition}
+%
+\newtheorem{mathdefinition}{Definition}[chapter]
+\newenvironment{definition}[1]{\begin{mathdefinition}%
+\def\envlabel{#1}%
+\ifx\empty\envlabel\relax\else\label{#1}\fi%
+\rule{0pt}{0pt}\end{mathdefinition}\rm}%
+{\ $\ds\Box$\par\addvspace{\baselineskip}}
+
+% Definitionen [Kapitel#].Def#
+% \begin{definitions}{label} ... \end{definitions}
+%
+\newtheorem{mathdefinitions}[mathdefinition]{Definitionen}
+\newcounter{deflistcounter}
+\newenvironment{definitions}[1]{%
+\begin{mathdefinitions}%
+\def\envlabel{#1}%
+\ifx\empty\envlabel\relax\else\label{#1}\fi%
+\rule{0pt}{0pt}\end{mathdefinitions}%%
+\begin{list}{\bf\arabic{deflistcounter})}%
+{\usecounter{deflistcounter}\labelwidth4mm\leftmargin7mm\labelsep2mm}%
+\rm}%
+{\end{list}%
+\mbox{\ $\ds\Box$}\par\addvspace{\baselineskip}}
+
+% Satz [Kapitel#].Satz#
+% \begin{theorem}{zusatz}{label} ... \end{theorem}
+%
+\newtheorem{theoremcount}{Satz}[chapter]
+\newenvironment{theorem}[2]{%
+\def\zusatz{#1}%
+\ifx\empty\zusatz\begin{theoremcount}%
+\else\begin{theoremcount}[\zusatz]\fi%
+\def\envlabel{#2}%
+\ifx\empty\envlabel\else\label{\envlabel}\fi%
+\rule{0pt}{0pt}\end{theoremcount}\rm}%
+{\ $\ds\Box$\par\addvspace{\baselineskip}}
+
+% Beweis
+% \begin{proof} ... \end{proof}
+%
+%\newenvironment{proof}[1]{\par\addvspace{\baselineskip}%
+%{\noindent\bf Beweis #1}\par\addvspace{\baselineskip}\noindent}%
+%{\ \rule{2mm}{2mm}\par\addvspace{\baselineskip}}
+
+% Folgerung
+% \begin{conclusion} ... \end{conclusion}
+%
+\newenvironment{conclusion}{\par\addvspace{\baselineskip}%
+{\bf Folgerung}\par\addvspace{\baselineskip}}%
+{\par\addvspace{\baselineskip}}
+
+% Folgerungen
+% \begin{conclusions} ... \end{conclusions}
+%
+\newenvironment{conclusions}{\par\addvspace{\baselineskip}%
+{\bf Folgerungen}\par\addvspace{\baselineskip}}%
+{\par\addvspace{\baselineskip}}
+
+% Beobachtung
+% \begin{observation} ... \end{observation}
+%
+\newenvironment{observation}{\par\addvspace{\baselineskip}%
+{\bf Beobachtung}\par\addvspace{\baselineskip}}%
+{\par\addvspace{\baselineskip}}
+
+% Beobachtungen
+% \begin{observations} ... \end{observations}
+%
+\newenvironment{observations}{\par\addvspace{\baselineskip}%
+{\bf Beobachtungen}\par\addvspace{\baselineskip}}%
+{\par\addvspace{\baselineskip}}
+
+% Beispiel
+% \begin{example}{label} ... \end{example}
+%
+\newtheorem{examplecount}{Example}[chapter]
+\newenvironment{example}[1]{\begin{examplecount}%
+\def\envlabel{#1}%
+\ifx\empty\envlabel\relax\else\label{#1}\fi%
+\rule{0pt}{0pt}\end{examplecount}\rm}%
+{\par\noindent$\ds\Box$\par\addvspace{\baselineskip}}
+
+% Anmerkung
+% \begin{remark} ... \end{remark}
+%
+\newenvironment{remark}{\par{\it Anmerkung\/}:}{\par}
+
+%
+\newcounter{problem}
+\newenvironment{problems}{%
+\begin{list}{\arabic{problem}.}%
+{\usecounter{problem}\labelwidth1.5em\leftmargin2em\labelsep0.5em}}%
+{\end{list}}
+%
+
+% Symboldefinitionen
+% ------------------
+\newcommand\A{{\bf A}}
+\newcommand\B{{\bf B}}
+\newcommand\C{{\bf C}}
+\newcommand\E{{\bf E}}
+\def\H{{\bf H}}
+\newcommand\J{{\bf J}}
+\newcommand\K{{\bf K}}
+\newcommand\M{{\bf M}}
+\newcommand\N{{\bf N}}
+\def\P{{\bf P}}
+\newcommand\Q{{\bf Q}}
+\newcommand\T{{\bf T}}
+\newcommand\U{{\bf U}}
+\newcommand\V{{\bf V}}
+\newcommand\Y{{\bf Y}}
+\newcommand\Z{{\bf Z}}
+\newcommand\m{\phantom{-}}
+
+\newcommand\bb{{\bf b}}
+\newcommand\e{{\bf e}}
+\newcommand\f{{\bf f}}
+\newcommand\vv{{\bf v}}
+\newcommand\uu{{\bf u}}
+\newcommand\ii{{\bf i}}
+\newcommand\ib{{\bf i}_b}
+\newcommand\ibi{{\bf i}_{b1}}
+\newcommand\ibii{{\bf i}_{b2}}
+\newcommand\ub{{\bf u}_b}
+\newcommand\ubi{{\bf u}_{b1}}
+\newcommand\ubii{{\bf u}_{b2}}
+\newcommand\jl{{\bf j}_l}
+\newcommand\vn{{\bf v}_n}
+\newcommand\s{{\bf s}}
+\newcommand\x{{\bf x}}
+\newcommand\p{{\bf p}}
+\newcommand\nullvec{\underline{0}}
+\newcommand\nullmatrix{{\bf 0}}
+\newcommand\const{\mbox{const.}}
+
+% Mathematische Operatoren
+% ------------------------
+\newcommand\diver{\mathop{\mbox{div}}}  % Divergenz
+\newcommand\rot{\mathop{\mbox{rot}}}    % Rotation
+\newcommand\Def{\mathop{\mbox{Def}}}    % Defekt
+\newcommand\Rg{\mathop{\mbox{Rg}}}      % Rang
+\newcommand\Ker{\mathop{\mbox{Ker}}}    % Kern
+\newcommand\LT{\mathop{\cal L}}         % Laplace-Transformierte
+\newcommand\symdif{\mathbin{\bigtriangleup}} % symmetrische Differenz
+\newcommand\union{\mathbin{\cup}}       % Vereinigung
+\newcommand\cut{\mathbin{\cap}}         % Schnitt
+\newcommand\ringsum{\mathbin{\oplus}}   % Modulo-2-Addition
+\newcommand\ovgint{\mathop{\int\!\!\!\!\int\kern-14pt\bigcirc}\limits}
+% Oberfl"achenintegral ^
+\newcommand\volint{\mathop{\int\!\!\!\!\int\!\!\!\!\int}\limits}
+% Volumenintegral ^
+\newcommand\diag{\mathop{\mbox{diag}}}   % Diagonalmatrix
+\newcommand\Arcosh{\mathop{\mbox{Arcosh}}}
+
+\newcommand\uvec[1]{\underline{#1}}
+\newcommand\cvec[1]{\left( \begin{array}{c} #1 \end{array} \right)}
+\newcommand\rvec[2]{\left( \begin{array}{*{#1}{c}} #2 \end{array} \right)}
+\newcommand\rvect[2]{\left( \begin{array}{*{#1}{c}} #2 \end{array} \right)^T}
+\newcommand\csvec[1]{\left[ \begin{array}{c} #1 \end{array} \right]}
+\newcommand\rsvec[2]{\left[ \begin{array}{*{#1}{c}} #2 \end{array} \right]}
+\newcommand\rsvect[2]{\left[ \begin{array}{*{#1}{c}} #2 \end{array} \right]^T}
+\newcommand\vpmat[1]{\left[ \begin{array}{cc} #1 \end{array} \right]}
+\newcommand\lb{\left\{}
+\newcommand\rb{\right\}}
+\newcommand\pdf[2]{\frac{\partial #1}{\partial #2}}
+
+% Zeichen fuer die Zahlbereiche:
+% ------------------------------
+
+% Natuerliche Zahlen:
+\newcommand\nz{\ifmmode {I\hskip -3pt N} \else {\hbox {$I\hskip -3pt N$}}\fi}
+
+% Ganze Zahlen:
+\newcommand\gz{\ifmmode {Z\hskip -4.8pt Z} \else
+       {\hbox {$Z\hskip -4.8pt Z$}}\fi}
+
+% Rationale Zahlen:
+\newcommand\qz{\ifmmode {Q\hskip -5.0pt\vrule height6.0pt depth 0pt
+       \hskip 6pt} \else {\hbox
+       {$Q\hskip -5.0pt\vrule height6.0pt depth 0pt\hskip 6pt$}}\fi}
+
+% Reelle Zahlen:
+\newcommand\rz{\ifmmode {I\hskip -3pt R} \else {\hbox {$I\hskip -3pt R$}}\fi}
+
+% Komplexe Zahlen:
+\newcommand\cz{\ifmmode {C\hskip -4.8pt\vrule height5.8pt\hskip 6.3pt} \else
+       {\hbox {$C\hskip -4.8pt\vrule height5.8pt\hskip 6.3pt$}}\fi}
+
+% Schlaumakros
+% ------------
+%
+% \bordermatrixlr{ linke Klammer }{ Matrixinhalt }{ rechte Klammer }
+% Beispiel: \bordermatrixlr{\left[}{1 & 2 \cr 3 & 4}{\right]}
+\catcode`\@=11
+
+\def\bordermatrixlr#1#2#3{\begingroup \m@th
+  \setbox\z@\vbox{\def\cr{\crcr\noalign{\kern2\p@\global\let\cr\endline}}%
+    \ialign{$##$\hfil\kern2\p@\kern\p@renwd&\thinspace\hfil$##$\hfil
+      &&\quad\hfil$##$\hfil\crcr
+      \omit\strut\hfil\crcr\noalign{\kern-\baselineskip}%
+      #2\crcr\omit\strut\cr}}%
+  \setbox\tw@\vbox{\unvcopy\z@\global\setbox\@ne\lastbox}%
+  \setbox\tw@\hbox{\unhbox\@ne\unskip\global\setbox\@ne\lastbox}%
+  \setbox\tw@\hbox{$\kern\wd\@ne\kern-\p@renwd#1\kern-\wd\@ne
+    \global\setbox\@ne\vbox{\box\@ne\kern2\p@}%
+    \vcenter{\kern-\ht\@ne\unvbox\z@\kern-\baselineskip}\,#3$}%
+  \null\;\vbox{\kern\ht\@ne\box\tw@}\endgroup}
+
+\def\docspecials{\do\ \do\$\do\&%
+  \do\#\do\^\do\^^K\do\_\do\^^A\do\%\do\~}
+{\catcode`\/=0\catcode`\\=12/xdef/@bsl{\}}
+\def\literatim#1{\trivlist \item[]\if@minipage\else\vskip\parskip\fi
+\leftskip\@totalleftmargin\rightskip\z@
+\parindent\z@\parfillskip\@flushglue\parskip\z@
+\def\@nll{}\def\@arg{#1}
+\ifx\@nll\@arg\def\@newcc{}\else\def\@newcc{\catcode`#1=14}\fi
+\let\@=\@bsl
+\let\@dollar=$
+\let\@amper=&
+\let\circumflex=\^
+\@tempswafalse \def\par{\if@tempswa\hbox{}\fi\@tempswatrue\@@par}
+\obeylines \tt \catcode``=13 \@noligs \let\do\@makeother \docspecials
+\let\$=\@dollar
+\let\&=\@amper
+\let\_=\sb
+\let\^=\sp
+\frenchspacing\@vobeyspaces\@newcc}
+
+\let\endliteratim=\endtrivlist
+\def\eqnr{{\rm (\theequation)}}
+\def\eqn{\stepcounter{equation}\eqnr}
+
+% \begin{eqarr}{Musterzeile (in plain TeX)} ... \end{eqarr}
+% Musterzeile z.B. { #\hfill\quad & $\ds #$ & # } entspr. {lcc}
+%
+% Beispiel:
+%\begin{eqarr}%
+% { #\quad\hfill & \hfill $\ds #$ & $\ds #$ & $\ds #$ \hfill }
+%    Masche 1:   & u_1 + u_2      &    =    & 0       &\eqn\label{masche1}\cr
+%    Masche 2:   & u_2            &    =    & U_0     &\eqn\cr
+%\end{eqarr}
+
+\newenvironment{eqarr}[1]{%
+\let\@currentlabel=\theequation\tabskip=0pt plus 1000pt minus 1000pt\bgroup%
+\everycr{\noalign{\vskip\jot}}%
+$$\halign to\displaywidth\bgroup\tabskip=0pt#1%
+\hfill\tabskip=0pt plus1000pt minus1000pt&\llap{##}\tabskip=0pt\cr%
+}{\egroup$$\egroup}
+
+\catcode`\@=12
+
+\def\vl{\smash{\vrule height 10pt depth 5pt}}
+\def\backupa{\noalign{\vskip-8pt}}
+\def\backupb{\noalign{\vskip-3pt}}
+
+% ------ wL 2023
+\def\qq{\qquad }
+\def\nl{\hfil\break}
+\def\maxi{{\sc Maxima}}
+
+\newenvironment{eiginput}{%
+\begin{list}{\textcolor{blue}{}}{\color{blue}%
+}}{\end{list}\color{black}}
+
+\newenvironment{eigoutput}{%
+\begin{list}{\textcolor{red}{}}{\color{red}%
+}}{\end{list}\color{black}}
+
+
+%=====================================================###0
+
+
+
+\begin{document}
+
+
+%=====================================================
+
+\pagestyle{empty}
+\begin{titlepage}
+\setcounter{page}{-1}
+\newfont{\tu}{ptmrc scaled 2000}
+\newfont{\inst}{ptmb scaled 1900}
+\hrule
+
+\vspace{5mm}
+\noindent
+\begin{minipage}[t]{3.5cm}
+\rule{0pt}{0pt}
+
+\includegraphics[height=3.5cm]{tubs1.png}
+
+\vspace{6mm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{12.4cm}
+\begin{center}
+\tu 
+
+\vspace{0.5ex}
+Technische Universit\"at Braunschweig\\[1cm]
+%\inst Institut f"ur Netzwerktheorie\\[3mm]
+%und Schaltungstechnik\\[1ex]
+%\Large
+%Prof.\ Dr.-Ing.\ E.-H.\ Horneber
+\end{center}
+\end{minipage}
+\hrule
+
+\vspace{2cm}
+
+\begin{center}
+\LARGE
+Coursework
+
+\vspace{2cm}
+
+\huge Symbolic Solution of Linear and\\
+Nonlinear Parameterized Systems of Equations
+
+\vspace{2cm}
+\LARGE Eckhard Hennig
+
+\vspace{4cm}
+\Large Betreuer: Dr.-Ing.\ Ralf Sommer\\[\baselineskip]
+Braunschweig, August 1994
+\end{center}
+
+%\cleardoublepage
+\end{titlepage}
+\thispagestyle{empty}
+
+
+
+\chapter*{Preface}
+\thispagestyle{empty}
+
+\dots
+
+In this translation of the original work of E. Hennig we canceled the mention of Macsyma and used Maxima instead, because the package solver was ported to Maxima by Hennig hinself.
+ 
+to do
+
+\vspace{1cm}
+
+Dr. Wolfgang Lindner  and Dan Stanger  \\
+Leichlingen, Germany and Newton, Massachusetts, USA
+
+October 2023
+
+\cleardoublepage
+
+
+
+
+\chapter*{Acknowlegments}
+\thispagestyle{empty}
+Many persons and institutions contributed considerably to the success of this work. 
+I would like to express my thanks to:
+\vspace{1cm}
+\begin{itemize}
+\item[-] Richard Petti and Jeffrey P. Golden of Macsyma, Inc. (USA) for their interest in this work,
+   for supplying Macsyma licenses and the modification of the  \verb+LINSOLVE+-function,
+\item[-] The Center for Microelectronics of the University of Kaiserslautern, in particular
+   Dr. Peter Conradi and Uwe Wassenm\"uller, for the support of the project,
+   
+\item[-] Clemens, Frank and Michael for the first-class WG life and particularly Michael for the
+   temporary leaving of its computer,
+\item[-] My parents and grandparents for their constant support during my study,
+\item[-] and quite particularly my friend Dr. Ralf Sommer for outstanding co-operation and the
+   joint activities in the last three years.
+\end{itemize}
+\vspace{1cm}
+Eckhard Hennig \\
+Braunschweig, August 1994
+
+\cleardoublepage
+
+\chapter*{Summary}
+\thispagestyle{empty}
+
+Engineering design tasks  require frequently the solution of systems of equations, which describe an object mathematically, along the values of the function defining components and parameters. For the analytic solution of lower dimensioning problems the use of commercial computer algebra systems such as Maxima are helpful, which are able, to manipulate extensive equations algebraically and to solve them symbolically using their variables.
+
+Despite their high capabilities these systems are however usually already overwhelmed, if linear or weakly nonlinear, parameterized sets of equations are to be solved after only a subset of their variables or be before-processed at least symbolically. In order to be able to treat such sets of equations, typically with draft tasks in the context of this work, a universal symbolic equation solver based on heuristic algorithms was developed and implemented in Maxima. The program module  \verb+SOLVER+ extends the functionality of the Maxima commands \verb+SOLVE+ and  \verb+LINSOLVE+  for the symbolic solution of algebraic equations or  systems of linear equations by the ability for the selective solution of nonlinear, parameterized systems with some degrees of freedom.
+
+The first chapter of this work describes some areas of application of symbolic dimensioning methods, the respective
+ requirements following from them to a symbolic equation solver as well as the used heuristic algorithms for the extraction of linear equations and for the complexity valuation of algebraic functions. The second chapter contains an overview of the structure of the {\em Solvers} and a guidance to its use. In the appendix is the source text of the module implemented in the internal higher programming language of Maxima of the modul \verb+SOLVER.MAC+.
+
+%\input stabstr.tex    %------ is identical with SUMMARY
+
+\cleardoublepage
+\pagestyle{headings}
+\pagenumbering{roman}
+\tableofcontents
+
+\cleardoublepage
+
+\pagenumbering{arabic}
+\chapter[Heuristic algorithms]{Heuristic algorithms for
+symbolic solution of systems of equations}
+%\input heuralgo.tex
+
+\cleardoublepage
+\chapter{The Solver}
+\input solvrdoc.tex
+
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliography}
+\input solvrlit.tex
+
+\cleardoublepage
+\begin{appendix}
+{\raggedbottom
+\hfuzz20pt
+
+\chapter{Examples}
+\input examples.tex
+
+\cleardoublepage
+\chapter{Program listings}
+
+\section{SOLVER.MAC}
+\input solver.tex
+}
+\end{appendix}
+
+\cleardoublepage
+{% Conclusions
+\thispagestyle{empty}
+\leftskip3.5cm
+\rightskip2.5cm
+\parindent-1cm
+\parskip\baselineskip
+\vspace*{4cm}
+\large
+\hyphenpenalty10000
+
+{\sc Estragon} Sometimes I wonder if it wouldn't be better to diverge.
+
+{\sc Wladimir} You wouldn't get far.
+
+{\sc Estragon} 
+That would really be a shame \ldots\ Not true, Didi,
+That would be a real shame? \ldots\ If you think about the beauty of the path
+ \ldots\ And about the goodness of the companions\ldots\ Isn't that right, Didi?
+
+}
+
+%#################################################################### ###end
+
+
+\end{document}
+
+
+%####################################################################
