@@ -1,0 +1,159 @@
+\input texinfo
+
+@setfilename guess.info
+@settitle Package guess
+
+@ifinfo
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@dircategory Mathematics/Maxima
+@direntry
+* Package guess: (maxima)Maxima share package to guess a formula for a sequence.
+@end direntry
+
+@node Top, Introduction to package guess, (dir), (dir)
+@top
+@menu
+* Introduction to package guess::
+* Definitions for package guess::
+* Function and variable index::
+@end menu
+@chapter Package guess
+
+@node Introduction to package guess, Definitions for package guess, Top, Top
+@section Introduction to package guess
+
+Package @code{guess} guesses a formula for a sequence of numbers.
+
+This  package  provides  functions  to find a formula for a sequence,
+of  numbers   within  the  hierarchy  of   expressions   of   the   form,
+<rational function>, <product of rational function>, <product of product
+of rational function>, etc.
+
+This package is a translation of the Mathematica package @code{Rate.m}
+by Christian Krattenthaler (Kratt at pap.univie.ac.at).
+The translation to Maple was done by
+Jean-Francois Beraud (Jean-Francois.Beraud at sic.sp2mi.univ-poitiers.fr)
+and Bruno Gauthier (Bruno.Gauthier at univ-mlv.fr).
+
+All features of this package are due to C. Krattenthaler.
+The help text is due to Jean-Francois Beraud and Bruno Gauthier.
+
+@node Definitions for package guess, Function and variable index, Introduction to package guess, Top
+@section Definitions for package guess
+
+@deffn {Function} guess @
+@*guess (@var{l}) @
+@*guess (@var{l}, @var{nlevels}) @
+@*guess (@var{l}, "one") @
+@*guess (@var{l}, "nogamma")
+
+@code{guess(@var{l})} tries to find a formula for a sequence within the hierarchy,
+of expressions  of  the  form  <rational function>, <product of rational function>,
+<product of product of rational function>, etc.
+
+@code{guess(@var{l}, @var{nlevels})}, where @var{nlevels} is a positive integer,
+does the same thing as @code{guess(@var{l})},
+but it searches only within the first @var{nlevels} levels.
+
+@code{guess(@var{l}, "one")} does the same thing as @code{guess(@var{l})}
+but it returns the first solution it finds.
+
+@code{guess(@var{l}, "nogamma")} does the same thing as @code{guess(@var{l})}
+but it returns expressions without gamma functions.
+
+Examples:
+
+@example
+guess([1,2,3]);
+                                [i0]
+
+@end example
+
+@example
+guess([1,4,9,16]);
+
+                                   2
+                                [i0 ]
+@end example
+
+@example
+guess([1,2,6,24,120]);
+
+                           i0 - 1
+                           /===\
+                            ! !
+                          [ ! !   (i1 + 1)]
+                            ! !
+                           i1 = 1
+@end example
+
+@example
+guess(makelist(product(product(gamma(i)*i^2,i,1,j),j,1,k),k,1,8));
+
+                      i0 - 1   i1 - 1    i2 - 1
+                      /===\    /===\     /===\          2
+                       ! !      ! !       ! !   (i3 + 3)
+                     [ ! !   4  ! !   18  ! !   ---------]
+                       ! !      ! !       ! !    i3 + 2
+                      i1 = 1   i2 = 1    i3 = 1
+@end example
+
+@example
+guess([1,2,7,42,429,7436,218348,10850216]);
+
+                    i0 - 1   i1 - 1
+                    /===\    /===\
+                     ! !      ! !   3 (3 i2 + 2) (3 i2 + 4)
+                   [ ! !   2  ! !   -----------------------]
+                     ! !      ! !   4 (2 i2 + 1) (2 i2 + 3)
+                    i1 = 1   i2 = 1
+@end example
+
+@example
+guess(makelist(k^3+k^2,k,1,7));
+
+
+Dependent equations eliminated:  (6)
+                       i0 - 1
+                       /===\
+         2              ! !                       5040
+      [i0  (i0 + 1), 2  ! !   (- --------------------------------------),
+                        ! !        4        3         2
+                       i1 = 1    i1  - 24 i1  + 245 i1  - 1422 i1 + 360
+
+                                                      i0 - 1
+                                                      /===\
+                                                       ! !   (i1 + 1) (i1 + 2)
+                                                    2  ! !   -----------------]
+                                                       ! !            2
+                                                      i1 = 1        i1
+@end example
+
+Note that the last example produces three solutions. The first and the last are
+equivalent, but the second is different! In this case,
+
+@example
+guess(makelist(k^3+k^2,k,1,7),1); 
+@end example
+
+or
+
+@example
+guess(makelist(k^3+k^2,k,1,7),"one");
+@end example
+ 
+find only the solution @code{i0^2*(i0 + 1)}, which is a rational function, and is also
+the first function @code{guess} finds.
+
+@end deffn
+
+@node Function and variable index,  , Definitions for package guess, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
