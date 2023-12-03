@@ -1,30 +1,30 @@
 /* guess.mac -*- mode: Maxima; -*- 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *									 *
- * Copyright (C) 2002 Martin Rubey <Martin.Rubey at LaBRI.fr>               *
- *									 *
- * This file is part of GNU Maxima.					 *
- *									 *
- * This program is free software; you can redistribute it and/or	 *
- * modify it under the terms of the GNU General Public License as	 *
- * published by the Free Software Foundation; either version 2 of	 *
- * the License, or (at your option) any later version.			 *
- *									 *
- * This program is distributed in the hope that it will be		 *
- * useful, but WITHOUT ANY WARRANTY; without even the implied		 *
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR		 *
- * PURPOSE. See the GNU General Public License for more details.	 *
- *									 *
- * History:								 *
- * This is a translation of the Mathematica package Rate.m		 *
- * by Christian Krattenthaler <Kratt at pap.univie.ac.at>.			 *
- * The translation to Maple was done by Jean-Francois Beraud		 *
- * <Jean-Francois.Beraud at sic.sp2mi.univ-poitiers.fr> and Bruno Gauthier	 *
- * <Bruno.Gauthier at univ-mlv.fr>						 *
- *									 *
- * All features of this package are due to C. Krattenthaler      	 *
- * The help text is due to Jean-Francois Beraud and Bruno Gauthier	 *
- *									 *
+ *                                                                       *
+ * Copyright (C) 2002 Martin Rubey <Martin.Rubey at LaBRI.fr>            *
+ *                                                                       *
+ * This file is part of GNU Maxima.                                      *
+ *                                                                       *
+ * This program is free software; you can redistribute it and/or         *
+ * modify it under the terms of the GNU General Public License as        *
+ * published by the Free Software Foundation; either version 2 of        *
+ * the License, or (at your option) any later version.                   *
+ *                                                                       *
+ * This program is distributed in the hope that it will be               *
+ * useful, but WITHOUT ANY WARRANTY; without even the implied            *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR               *
+ * PURPOSE. See the GNU General Public License for more details.         *
+ *                                                                       *
+ * History:                                                              *
+ * This is a translation of the Mathematica package Rate.m               *
+ * by Christian Krattenthaler <Kratt at pap.univie.ac.at>.               *
+ * The translation to Maple was done by Jean-Francois Beraud             *
+ * <Jean-Francois.Beraud at sic.sp2mi.univ-poitiers.fr> and Bruno Gauthier
+ * <Bruno.Gauthier at univ-mlv.fr>                                       *
+ *                                                                       *
+ * All features of this package are due to C. Krattenthaler              *
+ * The help text is due to Jean-Francois Beraud and Bruno Gauthier       *
+ *                                                                       *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 
