@@ -57,7 +57,7 @@ guess([1,2,6,24,120]);
                             ! !
                            i1 = 1
 
-guess(makelist(product(product(GAMMA(i)*i^2,i,1,j),j,1,k),k,1,8));
+guess(makelist(product(product(gamma(i)*i^2,i,1,j),j,1,k),k,1,8));
 
                       i0 - 1   i1 - 1    i2 - 1
                       /===\    /===\     /===\          2
@@ -126,6 +126,6 @@ SYNOPSIS:,
   solution it finds.
 
 - guess(l,"nogamma") does the same thing as guess(l) but it returns
-  expressions without GAMMA functions. In fact, there is not much difference
+  expressions without gamma functions. In fact, there is not much difference
   just at the moment, because Maxima doesn't simplify products yet...  
 */

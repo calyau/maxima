@@ -52,7 +52,7 @@ block([fx : map(f, xlist),                 /* values of f at given points */
   mat : transpose(apply(matrix, 
                         append(rest(rowlist, -(max(m, k) - m) ), 
                                -1 * makelist(rowlist[i] * fx, i, 1, k + 1)))),
-  mat : ev(mat . varlist, SCALARMATRIXP : false), 
+  mat : ev(mat . varlist, scalarmatrixp : false), 
 
 /* not sure whether it is save to modify xlist... */
   xlist : linsolve(makelist(mat[i, 1], i, 1, m+k+1), varlist), 
@@ -102,7 +102,7 @@ block([lsize : length(l),
       then error("Wrong number of optional arguments: ", optargs)
       else maxlevel : apply(min, cons(lsize-1, maxlevellist)) - 1, 
        
-      g : make_array('FLONUM, maxlevel + 1), 
+      g : make_array('flonum, maxlevel + 1), 
 
       for k : 0 thru maxlevel do
          (g[k] : l, 
