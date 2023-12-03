@@ -38,26 +38,20 @@
  */
 
 rationalinterpolation(f, x, m, k, xlist) := 
-block([fx : map(f, xlist),                 /* values of f at given points 
-*/
-       tempvec : makelist(1, i, 1, m+k+1), /* contains the new row of mat 
-*/
-       rowlist,                               /* first set of rows of mat 
-*/
-       mat,            /* matrix that describes the interpolation problem 
-*/
+block([fx : map(f, xlist),                 /* values of f at given points */
+       tempvec : makelist(1, i, 1, m+k+1), /* contains the new row of mat */
+       rowlist,                               /* first set of rows of mat */
+       mat,            /* matrix that describes the interpolation problem */
        varlist : makelist('x[i], i, 1, m+k+2)], 
 
   if max(m, k) > 0
   then rowlist : cons(tempvec, 
-                      makelist(tempvec : tempvec * xlist, i, 1, max(m, 
-k)))
+                      makelist(tempvec : tempvec * xlist, i, 1, max(m, k)))
   else rowlist : [tempvec],
 
   mat : transpose(apply(matrix, 
                         append(rest(rowlist, -(max(m, k) - m) ), 
-                               -1 * makelist(rowlist[i] * fx, i, 1, k + 
-1)))),
+                               -1 * makelist(rowlist[i] * fx, i, 1, k + 1)))),
   mat : ev(mat . varlist, SCALARMATRIXP : false), 
 
 /* not sure whether it is save to modify xlist... */
@@ -104,8 +98,7 @@ block([lsize : length(l),
        unevp : member("nogamma", optargs), g], 
 
       optargs : delete("nogamma", delete("one", optargs, 1), 1),
-      if length(maxlevellist) > 1 or length(optargs)-length(maxlevellist) 
-> 0
+      if length(maxlevellist) > 1 or length(optargs)-length(maxlevellist) > 0
       then error("Wrong number of optional arguments: ", optargs)
       else maxlevel : apply(min, cons(lsize-1, maxlevellist)) - 1, 
        
@@ -125,16 +118,14 @@ block([lsize : length(l),
                                         map(lambda([expr], 
                                                    g[k-i][1] *
                                                    'product(expr, j, 1, 
-                                                            concat('i, 
-k-i)-1)),
+                                                            concat('i, k-i)-1)),
                                             tempres))
                          else tempres : 
                                   subst('j = concat('i, (k-i)+1),
                                         map(lambda([expr],
                                                    g[k-i][1] *
                                                    product(expr, j, 1, 
-                                                           concat('i, 
-k-i)-1)),
+                                                           concat('i, k-i)-1)),
                                             tempres)),
                 res : append(res, tempres), 
                 if onep then return())),
