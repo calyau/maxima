@@ -2726,9 +2726,14 @@
                    ncols (nth 2 mat))  ; picture width
              (setf dx (/ fwidth ncols)
                    dy (/ fheight nrows))
-             (if (equal (nth 1 mat) '$level)  ; gray level picture
-                 (setf n 3)   ; 3 numbers to be sent to gnuplot: x,y,value
-                 (setf n 5))  ; 5 numbers to be sent: x,y,r,g,b
+             (cond
+               ((equal (nth 1 mat) '$level) ; gray level picture
+                (setf n 3))                 ; 3 numbers to be sent to gnuplot: x,y,value
+               ((equal (nth 1 mat) '$rgb)
+                (setf n 5))                 ; 5 numbers to be sent: x,y,r,g,b
+               ((equal (nth 1 mat) '$rgb_alpha)
+                (setf n 6))                 ; 6 numbers to be sent: x,y,r,g,b,t
+               (t (merror "image: picture type ~M not recognized." (nth 1 mat))))
              (setf result (make-array (* n nrows ncols) :element-type 'flonum))
              (let ((yi (+ fy0 height (* dy -0.5)))
                    (count1 -1)
@@ -2752,10 +2757,12 @@
        :name 'image
        :command (case n
                    (3 (format nil " t '' w image"))
-                   (5 (format nil " t '' w rgbimage")))
+                   (5 (format nil " t '' w rgbimage"))
+                   (6 (format nil " t '' w rgbalpha")))
        :groups (case n
                    (3 '((3 0)))   ; numbers are sent to gnuplot in groups of 3, no blank lines
-                   (5 '((5 0))  ))  ; numbers in groups of 5, no blank lines
+                   (5 '((5 0)))   ; numbers in groups of 5, no blank lines
+                   (6 '((6 0))))  ; numbers in groups of 6, no blank lines
        :points (list result)) ) )
 
 

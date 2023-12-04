@@ -255,16 +255,22 @@
       ; color in hexadecimal format
       (#\#
         (let ((*read-base* 16))
-          (read f)))
+          (list (read f) 255)))
 
       ; color name:
       ; 0. read the rest of the name and append the first letter
       ; 1. get the hexadecimal code from *color-table* defined in grcommon.lisp
       ; 2. remove # and transform the code to an integer in base 10
       (otherwise
-        (parse-integer
-          (subseq (gethash (atom-to-downcased-string (format nil "~a~a" ctype (read f))) *color-table*) 1)
-          :radix 16)) )))
+        (let ((color-name (atom-to-downcased-string (format nil "~a~a" ctype (read f)))) alpha color-bits)
+          (if (string= color-name "none")
+            (setq alpha 0 color-bits 0)
+            (let ((color-table-value (gethash color-name *color-table*)))
+              (setq alpha 255)
+              (if (null color-table-value)
+                (merror "read_xpm: unrecognized color name ~M" color-name)
+                (setq color-bits (parse-integer (subseq color-table-value 1) :radix 16)))))
+          (list color-bits alpha))))))
 
 
 (defun read-charspec (f cnt)
@@ -273,17 +279,21 @@
 		collect (read-char f))))
 
 
-(defun read-cspec (str cnt hash)
+(defun read-color-spec (str cnt hash)
   (with-input-from-string (cs str)
-     (let ((chars (read-charspec cs cnt)))
+     (let (c (chars (read-charspec cs cnt)))
        (skip-whitespace cs)
-       (let ((c (read-char cs)))
-	 (if (char= c #\c)
-	     (let ((col (progn
-			  (skip-whitespace cs)
-			  (read-colour cs))))
-	       (setf (gethash chars hash) col))
-	   (merror "Unknown colourspec"))))))
+       (setq c (read-char cs))
+       (loop while (char/= c #\c)
+             do ;; Must be s, m, or g specification; just eat it and keep looking for c.
+                ;; WATCH OUT FOR END OF STRING HERE
+                (read cs)
+                (skip-whitespace cs)
+                (setq c (read-char cs)))
+       (if (char= c #\c)
+         (let ((color-spec (progn (skip-whitespace cs) (read-colour cs))))
+           (setf (gethash chars hash) color-spec))
+         (merror "read_xpm: failed to parse color specification ''~M''" str)))))
 
 
 (defun $read_xpm (mfspec)
@@ -303,20 +313,24 @@
 	  (setf height (read cspec))
 	  (let ((colours (read cspec))
 		(cpp (read cspec))
-                rgb (counter -1))
+                rgb+alpha (counter -1))
 	    (loop for cix from 0 below colours
 		  for c = (read image)
-		  do (read-cspec c cpp chartab))
-	    (setf img (make-array (* 3 width height) :element-type 'integer))
+		  do (read-color-spec c cpp chartab))
+	    (setf img (make-array (* 4 width height) :element-type 'integer))
 	    (loop for y from 0 below height
 		  for line = (read image)
 		  do (progn
 		       (with-input-from-string (data line)
 		       (loop for x from 0 below width
 		             for cs = (read-charspec data cpp) do
-                           (setf rgb (gethash cs chartab))
-                           (setf (aref img (incf counter)) (/ (logand rgb 16711680) 65536))
-                           (setf (aref img (incf counter)) (/ (logand rgb 65280) 256))
-                           (setf (aref img (incf counter)) (logand rgb 255)))))   )
-	    (list '(picture simp) '$rgb width height img)))))))
+                           (setf rgb+alpha (gethash cs chartab))
+                           (let
+                             ((rgb (first rgb+alpha))
+                              (alpha (second rgb+alpha)))
+                             (setf (aref img (incf counter)) (/ (logand rgb 16711680) 65536))
+                             (setf (aref img (incf counter)) (/ (logand rgb 65280) 256))
+                             (setf (aref img (incf counter)) (logand rgb 255))
+                             (setf (aref img (incf counter)) alpha))))   ))
+	    (list '(picture simp) '$rgb_alpha width height img)))))))
 
