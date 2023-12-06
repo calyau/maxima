@@ -1524,6 +1524,25 @@
 ;; dimension strings.
 
 (defun d-matrix (linear? direction h d)
+  (if (maxima-unicode-enabled)
+    (d-matrix-unicode linear? direction h d)
+    (d-matrix-ascii linear? direction h d)))
+
+(defvar d-matrix-char-unicode-horz #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_HORIZONTAL)
+(defvar d-matrix-char-unicode-vert #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+(defvar d-matrix-char-unicode-upper-left #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_DOWN_AND_RIGHT)
+(defvar d-matrix-char-unicode-upper-right #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_DOWN_AND_LEFT)
+(defvar d-matrix-char-unicode-lower-right #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_UP_AND_LEFT)
+(defvar d-matrix-char-unicode-lower-left #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_UP_AND_RIGHT)
+
+(defun d-matrix-unicode (linear? direction h d)
+  (let*
+    ((char-upper-corner (if (eq direction 'right) d-matrix-char-unicode-upper-right d-matrix-char-unicode-upper-left))
+     (char-lower-corner (if (eq direction 'right) d-matrix-char-unicode-lower-right d-matrix-char-unicode-lower-left))
+     (dmstr `((d-vbar ,h ,d ,d-matrix-char-unicode-vert))))
+    (draw-linear dmstr oldrow oldcol)))
+
+(defun d-matrix-ascii (linear? direction h d)
   (d-vbar linear? h d (car (coerce (if (eq direction 'right)
 					     $rmxchar
 					     $lmxchar) 'list))))
