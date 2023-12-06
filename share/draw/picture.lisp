@@ -248,14 +248,37 @@
 	))
 
 
+(defun extract-r-g-b-bits (n-bits-per-color-output n-hex-digits-input value)
+  (let*
+    ((n-bits-per-color-input (ceiling (/ (* n-hex-digits-input 4) 3)))
+     (r-bits-input (ash value (- (* n-bits-per-color-input 2))))
+     (g-bits-input (mod (ash value (- n-bits-per-color-input)) (ash 1 n-bits-per-color-input)))
+     (b-bits-input (mod value (ash 1 n-bits-per-color-input)))
+     (r-bits-output (ash r-bits-input (- n-bits-per-color-output n-bits-per-color-input)))
+     (g-bits-output (ash g-bits-input (- n-bits-per-color-output n-bits-per-color-input)))
+     (b-bits-output (ash b-bits-input (- n-bits-per-color-output n-bits-per-color-input))))
+    (list r-bits-output g-bits-output b-bits-output)))
+
+
 (defun read-colour (f)
   (let ((ctype (read-char f)))
     (case ctype
 
-      ; color in hexadecimal format
       (#\#
-        (let ((*read-base* 16))
-          (list (read f) 255)))
+
+        ; We have encountered an RGB color in hexadecimal format.
+        ; Return a list of two elements comprising packed rgb bits and alpha = 255 (fully opaque color).
+
+        (let (a)
+          (loop for c = (read-char f nil) while (and c (digit-char-p c 16)) finally (when c (unread-char c f)) do (push c a))
+          (multiple-value-bind (value ndigits)
+            (parse-integer (coerce (reverse a) 'string) :radix 16)
+            ; Some XPM images contain 12 hex digits per color;
+            ; the XPM spec itself seems to be silent about how many are allowed.
+            ; To accommodate code for picture objects here in share/draw,
+            ; truncate colors to 8 bits (i.e., 2 hex digits per color, 6 hex digits in all).
+            ; When NDIGITS = 6, EXTRACT-R-G-B-BITS just splits COLOR-BITS without shifting.
+            (list (extract-r-g-b-bits 8 ndigits value) 255))))
 
       ; color name:
       ; 0. read the rest of the name and append the first letter
@@ -270,7 +293,9 @@
               (if (null color-table-value)
                 (merror "read_xpm: unrecognized color name ~M" color-name)
                 (setq color-bits (parse-integer (subseq color-table-value 1) :radix 16)))))
-          (list color-bits alpha))))))
+          ; For call to EXTRACT-R-G-B-BITS, assume all color table items are 6 hex digits.
+          ; Given these arguments, EXTRACT-R-G-B-BITS just splits COLOR-BITS without shifting.
+          (list (extract-r-g-b-bits 8 6 color-bits) alpha))))))
 
 
 (defun read-charspec (f cnt)
@@ -301,8 +326,8 @@
   (let ((*readtable* *xpm-readtable*)
         (fspec (string-trim "\"" (coerce (mstring mfspec) 'string))) )
     (with-open-file (image fspec :direction :input)
-      (read-line image) ; Skip initial comment
-      (read-line image) ; Skip C code
+      ; Burn off any initial comment or comments, and C code ending in left curly brace.
+      (loop for x = (read image) while (not (eq x '{)))
       (let ((colspec (read image))
 	    width
 	    height
@@ -328,9 +353,9 @@
                            (let
                              ((rgb (first rgb+alpha))
                               (alpha (second rgb+alpha)))
-                             (setf (aref img (incf counter)) (/ (logand rgb 16711680) 65536))
-                             (setf (aref img (incf counter)) (/ (logand rgb 65280) 256))
-                             (setf (aref img (incf counter)) (logand rgb 255))
+                             (setf (aref img (incf counter)) (first rgb))
+                             (setf (aref img (incf counter)) (second rgb))
+                             (setf (aref img (incf counter)) (third rgb))
                              (setf (aref img (incf counter)) alpha))))   ))
 	    (list '(picture simp) '$rgb_alpha width height img)))))))
 
