@@ -242,9 +242,9 @@
 
 
 (defun skip-whitespace (f)
-  (loop for c = (read-char f)
-	while (member c '(#\space #\tab) :test #'char=)
-	finally (unread-char c f)
+  (loop for c = (read-char f nil)
+	while (and c (member c '(#\space #\tab) :test #'char=))
+	finally (when c (unread-char c f))
 	))
 
 
@@ -304,22 +304,24 @@
 		collect (read-char f))))
 
 
-(defun read-color-spec (str cnt hash)
+(defun read-color-spec-for-type (str cnt hash type-char)
   (with-input-from-string (cs str)
      (let (c (chars (read-charspec cs cnt)))
        (skip-whitespace cs)
        (setq c (read-char cs))
-       (loop while (char/= c #\c)
-             do ;; Must be s, m, or g specification; just eat it and keep looking for c.
-                ;; WATCH OUT FOR END OF STRING HERE
-                (read cs)
+       (loop while (and c (char/= c type-char))
+             do (read cs nil)
                 (skip-whitespace cs)
-                (setq c (read-char cs)))
-       (if (char= c #\c)
+                (setq c (read-char cs nil)))
+       (if (and c (char= c type-char))
          (let ((color-spec (progn (skip-whitespace cs) (read-colour cs))))
-           (setf (gethash chars hash) color-spec))
-         (merror "read_xpm: failed to parse color specification ''~M''" str)))))
+           (setf (gethash chars hash) color-spec))))))
 
+(defun read-color-spec (str cnt hash)
+  (or (read-color-spec-for-type str cnt hash #\c)
+      (read-color-spec-for-type str cnt hash #\m)
+      (read-color-spec-for-type str cnt hash #\g)
+      (merror "read_xpm: failed to parse color specification ''~M''" str)))
 
 (defun $read_xpm (mfspec)
   (init-readtable)
