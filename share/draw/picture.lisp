@@ -328,7 +328,16 @@
   (let ((*readtable* *xpm-readtable*)
         (fspec (string-trim "\"" (coerce (mstring mfspec) 'string))) )
     (with-open-file (image fspec :direction :input)
-      ; Burn off any initial comment or comments, and C code ending in left curly brace.
+      (let
+        ((first-line-raw (ignore-errors (read-line image))))
+        (if first-line-raw
+          (let ((first-line (string-trim '(#\Space #\Tab #\Return #\Newline) first-line-raw)))
+            (when (string/= first-line "/* XPM */")
+              (if (string= first-line "! XPM2")
+                (merror "read_xpm: I don't know how to read XPM2 format.")
+                (merror "read_xpm: input doesn't appear to be XPM3 format; first line: ~M" first-line))))
+          (merror "read_xpm: failed to read first line; are you sure this is an XPM image?")))
+      ; Burn off any additional comment or comments, and C code ending in left curly brace.
       (loop for x = (read image) while (not (eq x '{)))
       (let ((colspec (read image))
 	    width
@@ -348,6 +357,8 @@
 	    (loop for y from 0 below height
 		  for line = (read image)
 		  do (progn
+               (when (not (stringp line))
+                 (merror "read_xpm: failed to read ~M'th line of image; found: ~M" (1+ y) line))
 		       (with-input-from-string (data line)
 		       (loop for x from 0 below width
 		             for cs = (read-charspec data cpp) do
