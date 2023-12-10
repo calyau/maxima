@@ -22,7 +22,7 @@ externalproject_add(wxwidgets
   URL "${WXWIDGETS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${WXWIDGETS_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --build=${BUILDHOST} --host=${HOST} --enable-accessibility
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --build=${BUILDHOST} --host=${HOST} --enable-accessibility --enable-webview
   BUILD_COMMAND $(MAKE)
   INSTALL_COMMAND $(MAKE) locale_install "DESTDIR=${CMAKE_BINARY_DIR}/wxwidgets-installroot"
 )
