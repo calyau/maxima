@@ -64,7 +64,7 @@
                              :element-type  'integer
                              :initial-contents (cut-and-round (rest data)))))
         (t
-           (merror "Argument should be a matrix or a list of numbers")))
+           (merror "make_level_picture: argument must be a matrix, or a list of integers with length = width*height.")))
    (list '($picture simp) '$level width height picarray) ))
 
 
@@ -98,7 +98,7 @@
 (defun $picture_equalp (pic1 pic2)
   (if (and ($picturep pic1) ($picturep pic2))
      (equalp pic1 pic2)
-     (merror "Two picture objects are required")))
+     (merror "picture_equalp: both arguments must be picture objects.")))
 
 
 
@@ -117,10 +117,10 @@
                    (equal (cadr greenlevel) '$level)
                    ($picturep bluelevel)
                    (equal (cadr bluelevel)  '$level)))
-      (merror "Color channel is not a levels picture object"))
+      (merror "make_rgb_picture: every color channel must be a picture object with type = level."))
    (when (not (and (= (caddr redlevel) (caddr greenlevel) (caddr bluelevel))
                    (= (cadddr redlevel) (cadddr greenlevel) (cadddr bluelevel)) ))
-      (merror "Color channels are not of equal dimensions"))
+      (merror "make_rgb_picture: color channels are not of equal dimensions."))
    (let (width height leng picarray i3)
       (setf width  (caddr redlevel)
             height (cadddr redlevel))
@@ -141,9 +141,9 @@
 (defun $take_channel (pic chn)
   (when (not (and ($picturep pic)
                   (or (equal (cadr pic) '$rgb) (equal (cadr pic) '$rgb_alpha))))
-    (merror "Argument is not a coloured picture"))
+    (merror "take_channel: first argument must be a picture object with type = rgb or rgb_alpha."))
   (when (not (member chn '($red $green $blue)))
-    (merror "Incorrect colour channel"))
+    (merror "take_channel: color channel must be red, green, or blue."))
   (let* ((width  (caddr  pic))
          (height (cadddr pic))
          (dim (* width height))
@@ -168,7 +168,7 @@
 
 (defun $negative_picture (pic)
   (if (not ($picturep pic))
-      (merror "Argument is not a picture"))
+      (merror "negative_picture: argument must be a picture object."))
   (let ((dim (array-dimension (nth 4 pic) 0))
         (stride (if (eq (second pic) '$rgb) 3 (if (eq (second pic) '$level) 1 4)))
         (arr (copy-seq (nth 4 pic))))
@@ -198,7 +198,7 @@
 (defun $rgb2level (pic)
   (if (or (not ($picturep pic))
           (not (or (equal (nth 1 pic) '$rgb) (equal (nth 1 pic) '$rgb_alpha))))
-      (merror "Argument is not an rgb picture"))
+      (merror "rgb2level: argument must be a picture object with type = rgb or rgb_alpha."))
   (let* ((level-dim (* (nth 2 pic) (nth 3 pic)))
          (rgb-stride (if (eq (nth 1 pic) '$rgb) 3 4))
          (rgb-array (nth 4 pic))
@@ -230,14 +230,14 @@
 
 (defun $get_pixel (pic x y)
   (when (not ($picturep pic))
-    (merror "Argument is not a well formed picture"))
+    (merror "get_pixel: first argument must be a picture object."))
   (when (not (and (integerp x) (integerp y)))
-    (merror "Pixel coordinates must be positive integers"))
+    (merror "get_pixel: pixel coordinates must be integers."))
   (when (not (and (> x -1)
                   (< x (nth 2 pic))
                   (> y -1)
                   (< y (nth 3 pic))))
-    (merror "Pixel coordinates out of range"))
+    (merror "get_pixel: pixel coordinates out of range."))
   (let ((stride (if (eq (second pic) '$rgb) 3 (if (eq (second pic) '$level) 1 4))))
     (case (nth 1 pic)
       ($level
