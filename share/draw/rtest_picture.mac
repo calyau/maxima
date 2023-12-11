@@ -93,4 +93,16 @@ picture (level, 4, 3, ''aa_mean_rgb_negated);
 makelist (makelist (get_pixel (rgb_pic, i - 1, j - 1), i, 1, 4), j, 1, 3);
 ''(by_n (by_n (listarray (aa_rgb), 3), 4));
 
-/* read_xpm (f) */
+(test_example_rgba_list: block ([ibase: 16.], read_list (file_search ("test-example-rgba.csv"), 'comma)),
+ test_example_rgba_array: make_array (fixnum, length (test_example_rgba_list)),
+ fillarray (test_example_rgba_array, test_example_rgba_list),
+ test_example_rgba_picture: picture (rgb_alpha, 20, 10, test_example_rgba_array),
+ 0);
+0;
+
+test_example_xpm: read_xpm (file_search ("test-example.xpm"));
+''test_example_rgba_picture;
+
+(openr (file_search ("test-example.xpm")),
+ read_xpm (%%));
+''test_example_xpm;

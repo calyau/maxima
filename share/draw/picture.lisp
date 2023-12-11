@@ -367,10 +367,17 @@
       (merror "read_xpm: failed to parse color specification ''~M''" str)))
 
 (defun $read_xpm (mfspec)
+  (cond
+    ((streamp mfspec)
+     (read-xpm-from-stream mfspec))
+    (t
+      (let ((fspec (string-trim "\"" (coerce (mstring mfspec) 'string))))
+        (with-open-file (image fspec :direction :input)
+          (read-xpm-from-stream image))))))
+
+(defun read-xpm-from-stream (image)
   (init-readtable)
-  (let ((*readtable* *xpm-readtable*)
-        (fspec (string-trim "\"" (coerce (mstring mfspec) 'string))) )
-    (with-open-file (image fspec :direction :input)
+  (let ((*readtable* *xpm-readtable*))
       (let
         ((first-line-raw (ignore-errors (read-line image))))
         (if first-line-raw
@@ -413,5 +420,5 @@
                              (setf (aref img (incf counter)) (second rgb))
                              (setf (aref img (incf counter)) (third rgb))
                              (setf (aref img (incf counter)) alpha))))   ))
-	    (list '($picture simp) '$rgb_alpha width height img)))))))
+	    (list '($picture simp) '$rgb_alpha width height img))))))
 
