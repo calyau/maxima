@@ -65,7 +65,7 @@
                              :initial-contents (cut-and-round (rest data)))))
         (t
            (merror "Argument should be a matrix or a list of numbers")))
-   (list '(picture simp) '$level width height picarray) ))
+   (list '($picture simp) '$level width height picarray) ))
 
 
 
@@ -75,19 +75,21 @@
    (cond ((atom im)
             nil)
          ((and (= (length im) 5)
-               (equal (car im) '(picture simp)))
+               (equal (car im) '($picture simp)))
             t)
          (t
             (and (equal (length im) 5)
-                 (equal (car im) '(picture ))
-                 (or (member (cadr im) '($level $rgb)))
+                 (equal (car im) '($picture ))
+                 (or (member (cadr im) '($level $rgb $rgb_alpha)))
                  (arrayp (nth 4 im))
                  (cond ((equal (nth 1 im) '$level)
                          (= (array-dimension (nth 4 im) 0)
                             (* (nth 2 im) (nth 3 im))))
-                       (t ; rgb image
+                       ((equal (nth 1 im) '$rgb)
                          (= (array-dimension (nth 4 im) 0)
-                            (* 3 (nth 2 im) (nth 3 im)))))
+                            (* 3 (nth 2 im) (nth 3 im))))
+                       ((equal (nth 1 im) '$rgb_alpha)
+                        (= (array-dimension (nth 4 im) 0) (* 4 (nth 2 im) (nth 3 im)))))
                  (every #'(lambda (z) (and (integerp z) (>= z 0) (<= z 255))) (nth 4 im))  ))))
 
 
@@ -108,7 +110,7 @@
 ;;   from 0 to 255. Each pixel is represented by three consecutive numbers
 ;;  (red, green, blue). Arguments must contain the three channels in
 ;;  level_picture.
-(defun $make_rgb_picture (redlevel greenlevel bluelevel)
+(defun $make_rgb_picture (redlevel greenlevel bluelevel) ;; TODO: let alpha be an optional argument
    (when (not (and ($picturep redlevel)
                    (equal (cadr redlevel)   '$level)
                    ($picturep greenlevel)
@@ -129,15 +131,16 @@
         (setf (aref picarray i3)        (aref (nth 4 redlevel)   i))
         (setf (aref picarray (incf i3)) (aref (nth 4 greenlevel) i))
         (setf (aref picarray (incf i3)) (aref (nth 4 bluelevel)  i)))
-      (list '(picture simp) '$rgb width height picarray) ))
+      (list '($picture simp) '$rgb width height picarray) ))
 
 
 
 ;; Extracts color channel ('red, 'green or 'blue) from a coloured picture.
+;; TODO: handle CHN = '$ALPHA as well.
 ;; Returns a levels picture.
 (defun $take_channel (pic chn)
   (when (not (and ($picturep pic)
-                  (equal (cadr pic) '$rgb)))
+                  (or (equal (cadr pic) '$rgb) (equal (cadr pic) '$rgb_alpha))))
     (merror "Argument is not a coloured picture"))
   (when (not (member chn '($red $green $blue)))
     (merror "Incorrect colour channel"))
@@ -145,6 +148,7 @@
          (height (cadddr pic))
          (dim (* width height))
          (img (make-array dim :element-type 'integer))
+         (stride (if (eq (second pic) '$rgb) 3 4))
          idx)
     (setf idx
           (case chn
@@ -152,20 +156,33 @@
             ($green 1)
             ($blue  2)))
     (loop for i from 0 below dim do
-      (setf (aref img i) (aref (nth 4 pic) (+ (* 3 i) idx))))
-    (list '(picture simp) '$level width height img) ))
+      (setf (aref img i) (aref (nth 4 pic) (+ (* stride i) idx))))
+    (list '($picture simp) '$level width height img) ))
 
 
 
-;; Returns the negative of a (level or rgb) picture
+;; Returns the negative of a (level or rgb) picture.
+;;
+;; For RGB images with alpha channel, take the negative of RGB channels,
+;; and return alpha channel unmodified.
+
 (defun $negative_picture (pic)
   (if (not ($picturep pic))
       (merror "Argument is not a picture"))
   (let ((dim (array-dimension (nth 4 pic) 0))
-        (arr (make-array (array-dimension (nth 4 pic) 0) :element-type 'integer)))
-    (loop for i from 0 below dim do
-      (setf (aref arr i) (- 255 (aref (nth 4 pic) i))))
-    (list '(picture simp)
+        (stride (if (eq (second pic) '$rgb) 3 (if (eq (second pic) '$level) 1 4)))
+        (arr (copy-seq (nth 4 pic))))
+
+    (loop for i from 0 below (/ dim stride) do
+          (let ((base (* i stride)))
+            (if (eq (second pic) '$level)
+              (setf (aref arr (+ base 0)) (- 255 (aref arr (+ base 0))))
+              (setf
+                (aref arr (+ base 0)) (- 255 (aref arr (+ base 0)))
+                (aref arr (+ base 1)) (- 255 (aref arr (+ base 1)))
+                (aref arr (+ base 2)) (- 255 (aref arr (+ base 2)))))))
+
+    (list '($picture simp)
           (nth 1 pic)
           (nth 2 pic)
           (nth 3 pic)
@@ -175,29 +192,42 @@
 
 ;; Transforms an rgb picture into a level one by
 ;; averaging the red, green and blue values. 
+;; The alpha channel, if present, is ignored.
+;; TODO: I wonder if it makes sense to copy alpha into a would-be
+;; "level + alpha" image.
 (defun $rgb2level (pic)
   (if (or (not ($picturep pic))
-          (not (equal (nth 1 pic) '$rgb)))
+          (not (or (equal (nth 1 pic) '$rgb) (equal (nth 1 pic) '$rgb_alpha))))
       (merror "Argument is not an rgb picture"))
-  (let* ((dim (* (nth 2 pic) (nth 3 pic)))
-         (arr (make-array dim :element-type 'integer))
-         (k -1))
-    (loop for i from 0 below dim do
-      (setf (aref arr i) (round (/ (+ (aref (nth 4 pic) (incf k))
-                                      (aref (nth 4 pic) (incf k))
-                                      (aref (nth 4 pic) (incf k)))
-                                   3))))
-    (list '(picture simp)
+  (let* ((level-dim (* (nth 2 pic) (nth 3 pic)))
+         (rgb-stride (if (eq (nth 1 pic) '$rgb) 3 4))
+         (rgb-array (nth 4 pic))
+         (level-array (make-array level-dim :element-type 'integer)))
+
+    (loop for i from 0 below level-dim do
+          (let ((rgb-base (* rgb-stride i)))
+            (setf (aref level-array i)
+              (round (/ (+
+                          (aref rgb-array (+ rgb-base 0))
+                          (aref rgb-array (+ rgb-base 1))
+                          (aref rgb-array (+ rgb-base 2)))
+                        3)))))
+
+    (list '($picture simp)
           '$level
           (nth 2 pic)
           (nth 3 pic)
-          arr)))
+          level-array)))
 
 
 
 ;; Returns pixel from picture. Coordinates x and y range from 0 to
 ;; (width-1) and (height-1), respectively. We are working
 ;; with arrays, not with lists.
+;;
+;; For RGB pictures, return a list of 3 elements, R, G, and B.
+;; For RGB + alpha pictures, return a list of 4 elements, R, G, B, and alpha.
+
 (defun $get_pixel (pic x y)
   (when (not ($picturep pic))
     (merror "Argument is not a well formed picture"))
@@ -208,14 +238,27 @@
                   (> y -1)
                   (< y (nth 3 pic))))
     (merror "Pixel coordinates out of range"))
-  (case (nth 1 pic)
-    ($level (aref (nth 4 pic) (+ x (* y (nth 2 pic)))))
-    ($rgb   (let ((pos (* 3 (+ x (* y (nth 2 pic))))))
-               (list
-                 '(mlist simp)
-                 (aref (nth 4 pic) pos)
-                 (aref (nth 4 pic) (incf pos))
-                 (aref (nth 4 pic) (incf pos)))))))
+  (let ((stride (if (eq (second pic) '$rgb) 3 (if (eq (second pic) '$level) 1 4))))
+    (case (nth 1 pic)
+      ($level
+        (aref (nth 4 pic) (+ x (* y (nth 2 pic)))))
+      ($rgb
+       (let
+         ((pos (* stride (+ x (* y (nth 2 pic))))))
+         (list
+           '(mlist simp)
+           (aref (nth 4 pic) pos)
+           (aref (nth 4 pic) (incf pos))
+           (aref (nth 4 pic) (incf pos)))))
+      ($rgb_alpha
+       (let
+         ((pos (* stride (+ x (* y (nth 2 pic))))))
+         (list
+           '(mlist simp)
+           (aref (nth 4 pic) pos)
+           (aref (nth 4 pic) (incf pos))
+           (aref (nth 4 pic) (incf pos))
+           (aref (nth 4 pic) (incf pos))))))))
 
 
 
@@ -370,5 +413,5 @@
                              (setf (aref img (incf counter)) (second rgb))
                              (setf (aref img (incf counter)) (third rgb))
                              (setf (aref img (incf counter)) alpha))))   ))
-	    (list '(picture simp) '$rgb_alpha width height img)))))))
+	    (list '($picture simp) '$rgb_alpha width height img)))))))
 
