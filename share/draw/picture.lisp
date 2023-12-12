@@ -71,33 +71,31 @@
 
 ;; Returns true if the argument is a well formed image,
 ;; and false otherwise
-(defun $picturep (im)
-   (cond ((atom im)
-            nil)
-         ((and (= (length im) 5)
-               (equal (car im) '($picture simp)))
-            t)
-         (t
-            (and (equal (length im) 5)
-                 (equal (car im) '($picture ))
-                 (or (member (cadr im) '($level $rgb $rgb_alpha)))
-                 (arrayp (nth 4 im))
-                 (cond ((equal (nth 1 im) '$level)
-                         (= (array-dimension (nth 4 im) 0)
-                            (* (nth 2 im) (nth 3 im))))
-                       ((equal (nth 1 im) '$rgb)
-                         (= (array-dimension (nth 4 im) 0)
-                            (* 3 (nth 2 im) (nth 3 im))))
-                       ((equal (nth 1 im) '$rgb_alpha)
-                        (= (array-dimension (nth 4 im) 0) (* 4 (nth 2 im) (nth 3 im)))))
-                 (every #'(lambda (z) (and (integerp z) (>= z 0) (<= z 255))) (nth 4 im))  ))))
+
+(defun $picturep (x)
+  (and
+    (consp x)
+    (eq (caar x) '$picture)
+    (= (length x) 5)
+    (member (second x) '($level $rgb $rgb_alpha))
+    (integerp (third x))
+    (integerp (fourth x))
+    (vectorp (fifth x))
+    (cond
+      ((eq (second x) '$level)
+       (= (length (fifth x)) (* (third x) (fourth x))))
+      ((eq (second x) '$rgb)
+       (= (length (fifth x)) (* 3 (third x) (fourth x))))
+      ((eq (second x) '$rgb_alpha)
+       (= (length (fifth x)) (* 4 (third x) (fourth x)))))
+    (every #'(lambda (z) (and (integerp z) (>= z 0) (<= z 255))) (fifth x))))
 
 
 
 ;; Returns true in case of equal pictures, and false otherwise.
 (defun $picture_equalp (pic1 pic2)
   (if (and ($picturep pic1) ($picturep pic2))
-     (equalp pic1 pic2)
+     (alike1 pic1 pic2)
      (merror "picture_equalp: both arguments must be picture objects.")))
 
 

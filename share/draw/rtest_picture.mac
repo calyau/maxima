@@ -1,4 +1,6 @@
-/* test functions in share/draw/picture.lisp */
+/* test functions in share/draw/picture.lisp
+ * first apply picture functions to level and rgb pictures
+ */
 
 (data_list: makelist (floor (255*k/12), k, 1, 12),
  aa: make_array (fixnum, 3*4),
@@ -15,8 +17,8 @@ picture (level, 4, 3, ''aa);
 picturep (foo);
 true;
 
-picturep (aa);
-false;
+[picturep (1), picturep ([1, 2, 3]), picturep (x*y*z), picturep (aa)];
+[false, false, false, false];
 
 picture_equalp (foo, bar);
 true;
@@ -47,14 +49,17 @@ picture (level, 4, 3, ''aa_blue);
 rgb_pic: make_rgb_picture (red_level, green_level, blue_level);
 picture (rgb, 4, 3, ''aa_rgb);
 
-take_channel (rgb_pic, 'red);
+take_red: take_channel (rgb_pic, 'red);
 ''red_level;
 
-take_channel (rgb_pic, 'green);
+take_green: take_channel (rgb_pic, 'green);
 ''green_level;
 
-take_channel (rgb_pic, 'blue);
+take_blue: take_channel (rgb_pic, 'blue);
 ''blue_level;
+
+[picture_equalp (take_red, red_level), picture_equalp (take_green, green_level), picture_equalp (take_blue, blue_level)];
+[true, true, true];
 
 (aa_red_negated: make_array (fixnum, 12),
  for k:0 thru 11 do aa_red_negated[k]: 255 - aa_red[k],
@@ -74,7 +79,10 @@ blue_level_negated: negative_picture (blue_level);
 picture (level, 4, 3, ''aa_blue_negated);
 
 rgb_pic_negated: negative_picture (rgb_pic);
-''(make_rgb_picture (red_level_negated, green_level_negated, blue_level_negated));
+''(negated_rgb_via_make_pic: make_rgb_picture (red_level_negated, green_level_negated, blue_level_negated));
+
+picture_equalp (rgb_pic_negated, negated_rgb_via_make_pic);
+true;
 
 (aa_mean_rgb: fillarray (make_array (fixnum, 12), round ((ll_red + ll_green + ll_blue)/3)),
  aa_mean_rgb_negated: fillarray (make_array (fixnum, 12), round (255 - (ll_red + ll_green + ll_blue)/3)),
@@ -106,3 +114,47 @@ test_example_xpm: read_xpm (file_search ("test-example.xpm"));
 (openr (file_search ("test-example.xpm")),
  read_xpm (%%));
 ''test_example_xpm;
+
+/* apply picture functions to rgb_alpha pictures */
+
+first (test_example_xpm);
+rgb_alpha;
+
+picturep (test_example_xpm);
+true;
+
+picture_equalp (test_example_xpm, test_example_rgba_picture);
+true;
+
+[width, height]: [second (test_example_xpm), third (test_example_xpm)];
+[20, 10];
+
+xpm_red: take_channel (test_example_xpm, 'red);
+''(picture (level, width, height, fillarray (make_array (fixnum, width*height), makelist (test_example_rgba_list[i], i, 1, length (test_example_rgba_list), 4))));
+
+xpm_green: take_channel (test_example_xpm, 'green);
+''(picture (level, width, height, fillarray (make_array (fixnum, width*height), makelist (test_example_rgba_list[i], i, 2, length (test_example_rgba_list), 4))));
+
+xpm_blue: take_channel (test_example_xpm, 'blue);
+''(picture (level, width, height, fillarray (make_array (fixnum, width*height), makelist (test_example_rgba_list[i], i, 3, length (test_example_rgba_list), 4))));
+
+[picturep (xpm_red), picturep (xpm_green), picturep (xpm_blue)];
+[true, true, true];
+
+[picture_equalp (xpm_red, xpm_green), picture_equalp (xpm_green, xpm_blue), picture_equalp (xpm_blue, xpm_red)];
+[false, false, false];
+
+xpm_negative: negative_picture (test_example_xpm);
+''(picture (rgb_alpha, width, height, fillarray (make_array (fixnum, 4*width*height), makelist (if mod (i, 4) = 0 then test_example_rgba_list[i] else 255 - test_example_rgba_list[i], i, 1, length (test_example_rgba_list)))));
+
+xpm_level: rgb2level (test_example_xpm);
+''(picture (level, width, height, fillarray (make_array (fixnum, width*height), makelist (round ((test_example_rgba_list[1 + (i - 1)*4] + test_example_rgba_list[2 + (i - 1)*4] + test_example_rgba_list[3 + (i - 1)*4])/3), i, 1, width*height))));
+
+[picturep (xpm_negative), picturep (xpm_level)];
+[true, true];
+
+picture_equalp (xpm_negative, xpm_level);
+false;
+
+makelist (makelist (get_pixel (test_example_xpm, i - 1, j - 1), i, 1, second (test_example_xpm)), j, 1, third (test_example_xpm));
+''(by_n (by_n (test_example_rgba_list, 4), second (test_example_xpm)));
