@@ -65,7 +65,7 @@
                              :initial-contents (cut-and-round (rest data)))))
         (t
            (merror "make_level_picture: argument must be a matrix, or a list of integers with length = width*height.")))
-   (list '($picture simp) '$level width height picarray) ))
+   (list '($picture) '$level width height picarray) ))
 
 
 
@@ -129,7 +129,7 @@
         (setf (aref picarray i3)        (aref (nth 4 redlevel)   i))
         (setf (aref picarray (incf i3)) (aref (nth 4 greenlevel) i))
         (setf (aref picarray (incf i3)) (aref (nth 4 bluelevel)  i)))
-      (list '($picture simp) '$rgb width height picarray) ))
+      (list '($picture) '$rgb width height picarray) ))
 
 
 
@@ -155,7 +155,7 @@
             ($blue  2)))
     (loop for i from 0 below dim do
       (setf (aref img i) (aref (nth 4 pic) (+ (* stride i) idx))))
-    (list '($picture simp) '$level width height img) ))
+    (list '($picture) '$level width height img) ))
 
 
 
@@ -180,7 +180,7 @@
                 (aref arr (+ base 1)) (- 255 (aref arr (+ base 1)))
                 (aref arr (+ base 2)) (- 255 (aref arr (+ base 2)))))))
 
-    (list '($picture simp)
+    (list '($picture)
           (nth 1 pic)
           (nth 2 pic)
           (nth 3 pic)
@@ -211,7 +211,7 @@
                           (aref rgb-array (+ rgb-base 2)))
                         3)))))
 
-    (list '($picture simp)
+    (list '($picture)
           '$level
           (nth 2 pic)
           (nth 3 pic)
@@ -244,7 +244,7 @@
        (let
          ((pos (* stride (+ x (* y (nth 2 pic))))))
          (list
-           '(mlist simp)
+           '(mlist)
            (aref (nth 4 pic) pos)
            (aref (nth 4 pic) (incf pos))
            (aref (nth 4 pic) (incf pos)))))
@@ -252,7 +252,7 @@
        (let
          ((pos (* stride (+ x (* y (nth 2 pic))))))
          (list
-           '(mlist simp)
+           '(mlist)
            (aref (nth 4 pic) pos)
            (aref (nth 4 pic) (incf pos))
            (aref (nth 4 pic) (incf pos))
@@ -418,5 +418,5 @@
                              (setf (aref img (incf counter)) (second rgb))
                              (setf (aref img (incf counter)) (third rgb))
                              (setf (aref img (incf counter)) alpha))))   ))
-	    (list '($picture simp) '$rgb_alpha width height img))))))
+	    (list '($picture) '$rgb_alpha width height img))))))
 
