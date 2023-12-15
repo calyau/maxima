@@ -1238,7 +1238,7 @@ Examples: See @ref{unicode_to_utf8}.
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node String Processing, Octets and Utilities for Cryptography, Characters, Package stringproc
+@node String Processing, Octets and Utilities for Cryptography, Characters
 @section String Processing
 
 Position indices in strings are 1-indexed like in Maxima lists. 
@@ -1877,7 +1877,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Octets and Utilities for Cryptography,  , String Processing, Package stringproc
+@node Octets and Utilities for Cryptography, Regular Expressions, String Processing
 @section Octets and Utilities for Cryptography
 
 @c -----------------------------------------------------------------------------
@@ -2289,3 +2289,88 @@ See @ref{octets_to_string} for examples and some more information.
 
 @end deffn
 
+@node Regular Expressions,  , Octets and Utilities for Cryptography
+@section Regular Expressions
+
+@node Introduction to Regular Expressions, Functions and Variables, Regular Expressions, Regular Expressions
+@subsection Introduction to Regular Expressions
+
+@code{sregex} is an interface a portable regex engine.
+
+@node Functions and Variables,  , Introduction to Regular Expressions, Regular Expressions
+@subsection Functions and Variables
+
+@anchor{regex_compile}
+@deffn {Function} regex_compile (@var{pattern})
+Compile regex string in @var{pattern} in an internal form that is
+easier for the regex engine to process.  This is not required,
+however.  If the pattern is used in many times, compiling the pattern
+will speed up matching.
+@end deffn
+
+@anchor{regex_match_pos}
+@deffn {Function} regex_match_pos (@var{regex}, @var{str})
+Return a list consisting of a list of the start and end positions of
+@var{str} where the first match of @var{regex} occurred.  If no match
+is found, returns @code{false}.
+
+@opencatbox{Categories:}
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@anchor{regex_match}
+@deffn {Function} regex_match (@var{regex}, @var{str})
+Returns the first sub string in @var{str} that matches the regex in
+@var{regex}.  If no match is found, returns @code{false}.
+
+@opencatbox{Categories:}
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@anchor{regex_split}
+@deffn {Function} regex_split (@var{regex}, @var{str})
+Returns a list of strings where @var{str} has been split at the
+characters matching @var{regex}.
+
+@opencatbox{Categories:}
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@anchor{regex_subst_first}
+@deffn {Function} regex_subst_first (@var{replacement}, @var{pattern}, @var{str})
+Returns a string where the first occurrence of @var{pattern} in
+@var{str} with @var{replacement}.
+
+@opencatbox{Categories:}
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@anchor{regex_subst}
+@deffn {Function} regex_subst (@var{replacement}, @var{pattern}, @var{str})
+Returns a string where every occurrence of @var{pattern} has been
+replaced by @var{replacement} in the string @var{str}.
+
+@opencatbox{Categories:}
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@anchor{string_to_regex}
+@deffn {Function} string_to_regex (@var{str})
+Returns a regex string where any special reqex characters in @var{str}
+are quoted to remove the specialness of the character.
+
+@opencatbox{Categories:}
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
