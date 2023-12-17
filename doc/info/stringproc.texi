@@ -2295,24 +2295,60 @@ See @ref{octets_to_string} for examples and some more information.
 @node Introduction to Regular Expressions, Functions and Variables, Regular Expressions, Regular Expressions
 @subsection Introduction to Regular Expressions
 
-@code{sregex} is an interface a portable regex engine.
+@code{sregex} is an interface a portable regex engine by Dorai
+Sitaram.  The syntax of the regular expressions is described in detail
+in the @url{http://ds26gte.github.io/pregexp/index.html, pregexp
+manual} by Dorai Sitaram.
 
 @node Functions and Variables,  , Introduction to Regular Expressions, Regular Expressions
 @subsection Functions and Variables
 
 @anchor{regex_compile}
 @deffn {Function} regex_compile (@var{pattern})
-Compile regex string in @var{pattern} in an internal form that is
+Compile regex string in @var{pattern} to an internal form that is
 easier for the regex engine to process.  This is not required,
-however.  If the pattern is used in many times, compiling the pattern
+however.  If the pattern is used many times, compiling the pattern
 will speed up matching.
+
+@c ===beg===
+@c regex_compile("c.r");
+@c ===end===
+@example
+(%i1) regex_compile("c.r");
+(%o1)                    Structure [COMPILED-REGEX]
+@end example
+
 @end deffn
 
 @anchor{regex_match_pos}
 @deffn {Function} regex_match_pos (@var{regex}, @var{str})
+@deffnx {Function} regex_match_pos (@var{regex}, @var{str}, @var{start})
+@deffnx {Function} regex_match_pos (@var{regex}, @var{str}, @var{start}, @var{end})
 Return a list consisting of a list of the start and end positions of
 @var{str} where the first match of @var{regex} occurred.  If no match
 is found, returns @code{false}.
+
+If a third argument, @var{start}, is supplied, it is the starting index
+of the text string @var{str}.  The fourth argument, @var{end}, is the
+ending index of text string @var{str}.
+
+@c ===beg===
+@c  str : "his hay needle stack -- my hay needle stack -- her hay needle stack"$
+@c  regex : regex_compile("ne{2}dle")$
+@c  regex_match_pos(regex, str);
+@c  regex_match_pos("ne{2}dle", str);
+@c  regex_match_pos("ne{2}dle", str, 25, 44);
+@c ===end===
+@example
+(%i1) str : "his hay needle stack -- my hay needle stack -- her hay needle stack"$
+(%i2) regex : regex_compile("ne{2}dle")$
+(%i3) regex_match_pos(regex, str);
+(%o3)                                          [[9, 15]]
+(%i4) regex_match_pos("ne{2}dle", str);
+(%o4)                                          [[9, 15]]
+(%i5) regex_match_pos("ne{2}dle", str, 25, 44);
+(%o5)                                          [[32, 38]]
+@end example
 
 @opencatbox{Categories:}
 @category{Package stringproc}
@@ -2322,8 +2358,22 @@ is found, returns @code{false}.
 
 @anchor{regex_match}
 @deffn {Function} regex_match (@var{regex}, @var{str})
-Returns the first sub string in @var{str} that matches the regex in
-@var{regex}.  If no match is found, returns @code{false}.
+@deffnx {Function} regex_match (@var{regex}, @var{str}, @var{start})
+@deffn {Function} regex_match (@var{regex}, @var{str}, @var{start}, @var{end})
+@code{regex_match} is very similar to @code{regex_match_pos} except
+that it returns the matching substrings instead of the indices of the
+match.  If no match is found, returns @code{false}.
+
+@c ===beg===
+@c regex_match("ne{2}dle", "hay needle stack");
+@c regex_match("ne{2}dle", "hay needle stack", 10);
+@c ===end===
+@example
+(%i1) regex_match("ne{2}dle", "hay needle stack");
+(%o1)                                ["needle"]
+(%i2) regex_match("ne{2}dle", "hay needle stack", 10);
+(%o2)                                false
+@end example
 
 @opencatbox{Categories:}
 @category{Package stringproc}
@@ -2334,7 +2384,15 @@ Returns the first sub string in @var{str} that matches the regex in
 @anchor{regex_split}
 @deffn {Function} regex_split (@var{regex}, @var{str})
 Returns a list of strings where @var{str} has been split at the
-characters matching @var{regex}.
+using the delimiters separating the substrings in  @var{regex}.
+
+@c ===beg===
+@c regex_split("[,;]+", "split,pea;;;soup");
+@c ===end===
+@example
+(%i1) regex_split("[,;]+", "split,pea;;;soup");
+(%o2)                                 ["split", "pea", "soup"]
+@end example
 
 @opencatbox{Categories:}
 @category{Package stringproc}
@@ -2347,6 +2405,14 @@ characters matching @var{regex}.
 Returns a string where the first occurrence of @var{pattern} in
 @var{str} with @var{replacement}.
 
+@c ===beg===
+@c regex_subst_first("ty", "t.", "liberte egalite fraternite");
+@c ===end===
+@example
+(%i1) regex_subst_first("ty", "t.", "liberte egalite fraternite");
+(%o2)                                  "liberty egalite fraternite"
+@end example
+
 @opencatbox{Categories:}
 @category{Package stringproc}
 @closecatbox
@@ -2358,6 +2424,15 @@ Returns a string where the first occurrence of @var{pattern} in
 Returns a string where every occurrence of @var{pattern} has been
 replaced by @var{replacement} in the string @var{str}.
 
+@c ===beg===
+@c regex_subst("ty", "t.\\b", "liberte egalite fraternite");
+                                      "liberty egality fraternity"
+@c ===end===
+@example
+(%i1) regex_subst("ty", "t.\\b", "liberte egalite fraternite");
+(%o1)                               "liberty egality fraternity"
+@end example
+
 @opencatbox{Categories:}
 @category{Package stringproc}
 @closecatbox
@@ -2368,6 +2443,18 @@ replaced by @var{replacement} in the string @var{str}.
 @deffn {Function} string_to_regex (@var{str})
 Returns a regex string where any special reqex characters in @var{str}
 are quoted to remove the specialness of the character.
+
+@c ===beg===
+@c string_to_regex(". :");
+@c ===end===
+@example
+(%i1) string_to_regex(". :");
+(%o2)                                  "\. :"
+@end example
+
+In this example, the regex will only match a substring consisting of a
+period, followed by a space and a colon.  Without the quoting, the
+``.'' would match any single character.
 
 @opencatbox{Categories:}
 @category{Package stringproc}
