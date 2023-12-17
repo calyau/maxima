@@ -2600,12 +2600,27 @@ Returns a regex string where any special reqex characters in @var{str}
 are quoted to remove the specialness of the character.
 
 @c ===beg===
-@c string_to_regex(". :");
+@c re : string_to_regex(". :");
+@c regex_match(re, "z :");
+@c regex_match(re, ". :");
+@c regex_match(". :", "z :");
 @c ===end===
 @example
 @group
-(%i1) string_to_regex(". :");
+(%i1) re : string_to_regex(". :");
 (%o1)                         \. :
+@end group
+@group
+(%i2) regex_match(re, "z :");
+(%o2)                         false
+@end group
+@group
+(%i3) regex_match(re, ". :");
+(%o3)                         [. :]
+@end group
+@group
+(%i4) regex_match(". :", "z :");
+(%o4)                         [z :]
 @end group
 @end example
 
