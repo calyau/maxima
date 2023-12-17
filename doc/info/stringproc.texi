@@ -2314,8 +2314,10 @@ will speed up matching.
 @c regex_compile("c.r");
 @c ===end===
 @example
+@group
 (%i1) regex_compile("c.r");
-(%o1)                    Structure [COMPILED-REGEX]
+(%o1)              Structure [COMPILED-REGEX]
+@end group
 @end example
 
 @end deffn
@@ -2333,21 +2335,27 @@ of the text string @var{str}.  The fourth argument, @var{end}, is the
 ending index of text string @var{str}.
 
 @c ===beg===
-@c  str : "his hay needle stack -- my hay needle stack -- her hay needle stack"$
-@c  regex : regex_compile("ne{2}dle")$
-@c  regex_match_pos(regex, str);
-@c  regex_match_pos("ne{2}dle", str);
-@c  regex_match_pos("ne{2}dle", str, 25, 44);
+@c str : "his hay needle stack -- my hay needle stack -- her hay needle stack"$
+@c regex : regex_compile("ne{2}dle")$
+@c regex_match_pos(regex, str);
+@c regex_match_pos("ne{2}dle", str);
+@c regex_match_pos("ne{2}dle", str, 25, 44);
 @c ===end===
 @example
 (%i1) str : "his hay needle stack -- my hay needle stack -- her hay needle stack"$
-(%i2) regex : regex_compile("ne{2}dle")$
+(%i2) regex : regex_compile("ne@{2@}dle")$
+@group
 (%i3) regex_match_pos(regex, str);
-(%o3)                                          [[9, 15]]
-(%i4) regex_match_pos("ne{2}dle", str);
-(%o4)                                          [[9, 15]]
-(%i5) regex_match_pos("ne{2}dle", str, 25, 44);
-(%o5)                                          [[32, 38]]
+(%o3)                       [[9, 15]]
+@end group
+@group
+(%i4) regex_match_pos("ne@{2@}dle", str);
+(%o4)                       [[9, 15]]
+@end group
+@group
+(%i5) regex_match_pos("ne@{2@}dle", str, 25, 44);
+(%o5)                      [[32, 38]]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2369,10 +2377,14 @@ match.  If no match is found, returns @code{false}.
 @c regex_match("ne{2}dle", "hay needle stack", 10);
 @c ===end===
 @example
-(%i1) regex_match("ne{2}dle", "hay needle stack");
-(%o1)                                ["needle"]
-(%i2) regex_match("ne{2}dle", "hay needle stack", 10);
-(%o2)                                false
+@group
+(%i1) regex_match("ne@{2@}dle", "hay needle stack");
+(%o1)                       [needle]
+@end group
+@group
+(%i2) regex_match("ne@{2@}dle", "hay needle stack", 10);
+(%o2)                         false
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2390,8 +2402,10 @@ using the delimiters separating the substrings in  @var{regex}.
 @c regex_split("[,;]+", "split,pea;;;soup");
 @c ===end===
 @example
+@group
 (%i1) regex_split("[,;]+", "split,pea;;;soup");
-(%o2)                                 ["split", "pea", "soup"]
+(%o1)                  [split, pea, soup]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2409,8 +2423,10 @@ Returns a string where the first occurrence of @var{pattern} in
 @c regex_subst_first("ty", "t.", "liberte egalite fraternite");
 @c ===end===
 @example
+@group
 (%i1) regex_subst_first("ty", "t.", "liberte egalite fraternite");
-(%o2)                                  "liberty egalite fraternite"
+(%o1)              liberty egalite fraternite
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2426,11 +2442,12 @@ replaced by @var{replacement} in the string @var{str}.
 
 @c ===beg===
 @c regex_subst("ty", "t.\\b", "liberte egalite fraternite");
-                                      "liberty egality fraternity"
 @c ===end===
 @example
+@group
 (%i1) regex_subst("ty", "t.\\b", "liberte egalite fraternite");
-(%o1)                               "liberty egality fraternity"
+(%o1)              liberty egality fraternity
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2448,8 +2465,10 @@ are quoted to remove the specialness of the character.
 @c string_to_regex(". :");
 @c ===end===
 @example
+@group
 (%i1) string_to_regex(". :");
-(%o2)                                  "\. :"
+(%o1)                         \. :
+@end group
 @end example
 
 In this example, the regex will only match a substring consisting of a
