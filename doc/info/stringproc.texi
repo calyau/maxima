@@ -2295,13 +2295,12 @@ See @ref{octets_to_string} for examples and some more information.
 @node Introduction to Regular Expressions, Functions and Variables, Regular Expressions, Regular Expressions
 @subsection Introduction to Regular Expressions
 
-@code{sregex} is an interface a portable regex engine by Dorai
+@code{sregex} is an interface to the portable regex engine by Dorai
 Sitaram.  The syntax of the regular expressions is described in detail
 in the @url{http://ds26gte.github.io/pregexp/index.html, pregexp
-manual} by Dorai Sitaram which describes in detail the supported
-regexp patterns.
+manual} by Dorai Sitaram.  See the manual for full details.
 
-While sregex supports Unicode, the support for Unicode characters in
+While @code{sregex} supports Unicode, the support for Unicode characters in
 strings is dependent on the support for Unicode characters in the Lisp
 used to run Maxima.
 
@@ -2312,7 +2311,8 @@ used to run Maxima.
 @deffn {Function} regex_compile (@var{pattern})
 Compile regex string in @var{pattern} to an internal form that is
 easier for the regex engine to process.  This is not required,
-however.  If the pattern is used many times, compiling the pattern
+however.  All the regex functions accept this compiled regex or a
+string.  If the pattern is used many times, compiling the pattern
 will speed up matching.
 
 @c ===beg===
@@ -2564,6 +2564,23 @@ Returns a string where the first occurrence of @var{pattern} in
 @group
 (%i1) regex_subst_first("ty", "t.", "liberte egalite fraternite");
 (%o1)              liberty egalite fraternite
+@end group
+@end example
+
+This example shows how to use back references.  The replacement
+specifies that the first submatch is used as the replacment text.
+@c ===beg===
+@c regex_match("_(.+?)_", "the _nina_, the _pinta_, and the _santa maria_");
+@c regex_subst_first("*\\1*", "_(.+?)_", "the _nina_, the _pinta_, and the _santa maria_");
+@c ===end===
+@example
+@group
+(%i1) regex_match("_(.+?)_", "the _nina_, the _pinta_, and the _santa maria_");
+(%o1)                    [_nina_, nina]
+@end group
+@group
+(%i2) regex_subst_first("*\\1*", "_(.+?)_", "the _nina_, the _pinta_, and the _santa maria_");
+(%o2)    the *nina*, the _pinta_, and the _santa maria_
 @end group
 @end example
 
