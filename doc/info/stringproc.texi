@@ -2298,7 +2298,12 @@ See @ref{octets_to_string} for examples and some more information.
 @code{sregex} is an interface a portable regex engine by Dorai
 Sitaram.  The syntax of the regular expressions is described in detail
 in the @url{http://ds26gte.github.io/pregexp/index.html, pregexp
-manual} by Dorai Sitaram.
+manual} by Dorai Sitaram which describes in detail the supported
+regexp patterns.
+
+While sregex supports Unicode, the support for Unicode characters in
+strings is dependent on the support for Unicode characters in the Lisp
+used to run Maxima.
 
 @node Functions and Variables,  , Introduction to Regular Expressions, Regular Expressions
 @subsection Functions and Variables
@@ -2316,7 +2321,7 @@ will speed up matching.
 @example
 @group
 (%i1) regex_compile("c.r");
-(%o1)              Structure [COMPILED-REGEX]
+(%o1)         Structure [COMPILED-REGEX for "c.r"]
 @end group
 @end example
 
@@ -2358,6 +2363,32 @@ ending index of text string @var{str}.
 @end group
 @end example
 
+Here is an example where @code{regex_match_pos} returns a list of more
+than one element:
+@c ===beg===
+@c str : "jan 1, 1970";
+@c match: regex_match_pos("([a-z]+) ([0-9]+), ([0-9]+)", "jan 1, 1970");
+@c map(lambda([posn], substring(str, posn[1], posn[2])), match);
+@c ===end===
+@example
+@group
+(%i1) str : "jan 1, 1970";
+(%o1)                      jan 1, 1970
+@end group
+@group
+(%i2) match: regex_match_pos("([a-z]+) ([0-9]+), ([0-9]+)", "jan 1, 1970");
+(%o2)          [[1, 12], [1, 4], [5, 6], [8, 12]]
+@end group
+@group
+(%i3) map(lambda([posn], substring(str, posn[1], posn[2])), match);
+(%o3)              [jan 1, 1970, jan, 1, 1970]
+@end group
+@end example
+
+The first element is for the full match.  Each subsequent element of
+the list is the substring that matches the @emph{cluster} enclosed in
+parenthesis in the given regular expression.
+
 @opencatbox{Categories:}
 @category{Package stringproc}
 @closecatbox
@@ -2367,7 +2398,7 @@ ending index of text string @var{str}.
 @anchor{regex_match}
 @deffn {Function} regex_match (@var{regex}, @var{str})
 @deffnx {Function} regex_match (@var{regex}, @var{str}, @var{start})
-@deffn {Function} regex_match (@var{regex}, @var{str}, @var{start}, @var{end})
+@deffnx {Function} regex_match (@var{regex}, @var{str}, @var{start}, @var{end})
 @code{regex_match} is very similar to @code{regex_match_pos} except
 that it returns the matching substrings instead of the indices of the
 match.  If no match is found, returns @code{false}.
@@ -2387,6 +2418,112 @@ match.  If no match is found, returns @code{false}.
 @end group
 @end example
 
+Here is examples using POSIX character classes.  @code{[:alpha:]}
+matches any letter.  The pattern matches any letter or underscore:
+@c ===beg===
+@c regex_match("[[:alpha:]_]", "--x--");
+@c regex_match("[[:alpha:]_]", "--_--");
+@c regex_match("[[:alpha:]_]", "--:--");
+@c ===end===
+@example
+@group
+(%i1) regex_match("[[:alpha:]_]", "--x--");
+(%o1)                          [x]
+@end group
+@group
+(%i2) regex_match("[[:alpha:]_]", "--_--");
+(%o2)                          [_]
+@end group
+@group
+(%i3) regex_match("[[:alpha:]_]", "--:--");
+(%o3)                         false
+@end group
+@end example
+
+@code{sregex} supports @emph{clusters} (see
+@url{https://ds26gte.github.io/pregexp/index.html#TAG:__tex2page_toc_TAG:__tex2page_sec_3.4,
+pregexp clusters}) which are subpatterns denoted
+by being enclosed within parentheses.  These cause the matcher to
+return the submatch along with the overall match.
+
+Here we are looking for any number of letters followed by a space, any
+number of digits, a comma and space, then any number of digits.
+@c ===beg===
+@c regex_match("([a-z]+) ([0-9]+), ([0-9]+)", "jan 1, 1970");
+@c ===end===
+@example
+@group
+(%i1) regex_match("([a-z]+) ([0-9]+), ([0-9]+)", "jan 1, 1970");
+(%o1)              [jan 1, 1970, jan, 1, 1970]
+@end group
+@end example
+The result is a list of strings.  The first element is the full match.
+The second matches @code{"([a-z]+)"}, which is a cluster of any number
+of letters.  Hence, @code{"jan"} matches this cluster.  Likewise for
+the other clusters.
+
+A more complicated example illustrates how a subpattern fails to
+match, but the overall pattern matches.  In this case, @code{false}
+represents to failed match.
+
+The regex pattern matches ``month year'' or ``month day, year''.  The
+subpattern matches the day, if present.
+@c ===beg===
+@c date_re : regex_compile("([a-z]+) +([0-9]+,)? *([0-9]+)");
+@c regex_match(date_re, "jan 1, 1970");
+@c regex_match(date_re, "jan 1970");
+@c ===end===
+@example
+@group
+(%i1) date_re : regex_compile("([a-z]+) +([0-9]+,)? *([0-9]+)");
+(%o1) 
+  Structure [COMPILED-REGEX for "([a-z]+) +([0-9]+,)? *([0-9]+)"]
+@end group
+@group
+(%i2) regex_match(date_re, "jan 1, 1970");
+(%o2)             [jan 1, 1970, jan, 1,, 1970]
+@end group
+@group
+(%i3) regex_match(date_re, "jan 1970");
+(%o3)             [jan 1970, jan, false, 1970]
+@end group
+@end example
+
+You can also do case-insensitve matches by using a @emph{cloister}
+(see
+@url{https://ds26gte.github.io/pregexp/index.html#TAG:__tex2page_toc_TAG:__tex2page_sec_3.4.3,
+pregexp cloisters})
+with the @code{i} modifier:
+
+@c ===beg===
+@c regex_match("hearth", "HeartH");
+@c regex_match("(?i:hearth)", "HeartH");
+@c ===end===
+@example
+@group
+(%i1) regex_match("hearth", "HeartH");
+(%o1)                         false
+@end group
+@group
+(%i2) regex_match("(?i:hearth)", "HeartH");
+(%o2)                       [HeartH]
+@end group
+@end example
+
+Alternate subpatterns can be separated by @code{|}.
+@c ===beg===
+@c regex_match("f(ee|i|o|um)", "a small, final fee");
+@c ===end===
+@example
+@group
+(%i1) regex_match("f(ee|i|o|um)", "a small, final fee");
+(%o1)                        [fi, i]
+@end group
+@end example
+The first element is the full match @code{"fi"}; the second shows
+that we matched @code{"i"} for the cluster.
+
+
 @opencatbox{Categories:}
 @category{Package stringproc}
 @closecatbox
@@ -2395,8 +2532,9 @@ match.  If no match is found, returns @code{false}.
 
 @anchor{regex_split}
 @deffn {Function} regex_split (@var{regex}, @var{str})
-Returns a list of strings where @var{str} has been split at the
-using the delimiters separating the substrings in  @var{regex}.
+Returns a list of strings where @var{str} has been split into
+substrings where the @var{regex} identifies the delimiters to use for
+separating the substrings.
 
 @c ===beg===
 @c regex_split("[,;]+", "split,pea;;;soup");
@@ -2473,7 +2611,7 @@ are quoted to remove the specialness of the character.
 
 In this example, the regex will only match a substring consisting of a
 period, followed by a space and a colon.  Without the quoting, the
-``.'' would match any single character.
+@code{"."} would match any single character.
 
 @opencatbox{Categories:}
 @category{Package stringproc}

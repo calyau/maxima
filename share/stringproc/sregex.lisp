@@ -84,16 +84,24 @@
 
 
 (defstruct (compiled-regex (:print-function compiled-regex-print))
-  parse-tree )
+  ;; The compiled parse tree
+  parse-tree
+  ;; The regex pattern for the parse-tree.  Used to print a nice
+  ;; description of what the compiled regex is for.
+  pattern)
 
-(defun compiled-regex-print (struct stream i) 
-  (declare (ignore struct i))
-  (format stream "Structure [COMPILED-REGEX]") ) ;; wxMaxima prints this
-                                                 ;; terminal should print this too
+(defun compiled-regex-print (struct stream i)
+  (declare (ignore i))
+  ;; Include the pattern so the printed object is more meaningful
+  ;; instead of being some opaque structure with no information on
+  ;; what it holds.
+  (format stream "Structure [COMPILED-REGEX for ~S]"
+          (compiled-regex-pattern struct)))
 
 (defun $regex_compile (regex)
   (make-compiled-regex
-    :parse-tree (pregexp:pregexp regex) ))
+   :parse-tree (pregexp:pregexp regex)
+   :pattern regex))
 
 
 (defun regex-check-and-maybe-coerce (name regex &rest args)
