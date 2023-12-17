@@ -98,7 +98,7 @@
   (format stream "Structure [COMPILED-REGEX for ~S]"
           (compiled-regex-pattern struct)))
 
-(defun $regex_compile (regex)
+(defmfun $regex_compile (regex)
   (make-compiled-regex
    :parse-tree (pregexp:pregexp regex)
    :pattern regex))
@@ -131,7 +131,7 @@
       (incf n) )))
 
 
-(defun $regex_match_pos (regex str &optional (start 1) (end nil)) ;; 1-based indexing!
+(defmfun $regex_match_pos (regex str &optional (start 1) (end nil)) ;; 1-based indexing!
   (setq regex (regex-check-and-maybe-coerce "regex_match_pos" regex str))
   (decf start)
   (when end (decf end))
@@ -155,7 +155,7 @@
         (regex-index-error "regex_match_pos") )))
 
 
-(defun $regex_match (regex str &optional (start 1) (end nil))
+(defmfun $regex_match (regex str &optional (start 1) (end nil))
   (setq regex (regex-check-and-maybe-coerce "regex_match" regex str))
   (or (ignore-errors 
         (when *parse-utf-8-input*
@@ -171,24 +171,24 @@
       (regex-index-error "regex_match") ))
 
 
-(defun $regex_split (regex str)
+(defmfun $regex_split (regex str)
   (setq regex (regex-check-and-maybe-coerce "regex_split" regex str))
   (cons '(mlist simp) (pregexp:pregexp-split regex str)) )
 
 
-(defun $regex_subst_first (replacement regex str)
+(defmfun $regex_subst_first (replacement regex str)
   (setq regex (regex-check-and-maybe-coerce "regex_subst_first" regex str replacement))
   (pregexp:pregexp-replace regex str replacement) )
 ;;
 ;; Argument order different to the order of pregexp-replace.
 ;; Use order like in $ssubst or substitute: new, old, str.
 ;;
-(defun $regex_subst (replacement regex str)
+(defmfun $regex_subst (replacement regex str)
   (setq regex (regex-check-and-maybe-coerce "regex_subst" regex str replacement))
   (pregexp:pregexp-replace* regex str replacement) )
 
 
-(defun $string_to_regex (str)
+(defmfun $string_to_regex (str)
   (unless (stringp str)
     (gf-merror (intl:gettext "`string_to_regex': Argument must be a string.")) )
   (pregexp:pregexp-quote str) )
