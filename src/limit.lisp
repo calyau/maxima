@@ -889,7 +889,10 @@ ignoring dummy variables and array indices."
      (throw 'limit t)))
 
 ;; Test whether both n and dn have form
-;; product of poly^poly
+;; product of poly^poly.
+
+;; It's important that both n and dn be free of extended real numbers 
+;; (minf, zerob, ...), so we check for that too (see bug #4222).
 (defun expfactorp (n dn)
   (do ((llist (append (cond ((mtimesp n) (cdr n))
 			    (t (ncons n)))
@@ -902,10 +905,13 @@ ignoring dummy variables and array indices."
 	   (not exp?))
        exp?)
     (setq factor (car llist))
-    (setq exp? (or (polyinx factor var ())
+    (setq exp? 
+	   (and 
+	     (not (amongl (list '$minf '$zerob '$zeroa '$ind '$und '$inf '$infinity) factor))
+	     (or (polyinx factor var ())
 		   (and (mexptp factor)
 			(polyinx (cadr factor) var ())
-			(polyinx (caddr factor) var ()))))))
+			(polyinx (caddr factor) var ())))))))
 
 (defun expfactor (n dn var)	;Attempts to evaluate limit by grouping
   (prog (highest-deg)		       ; terms with similar exponents.

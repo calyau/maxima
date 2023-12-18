@@ -1052,6 +1052,26 @@ integrate(tan(x)^(1/3)/(cos(x)+sin(x))^2,x,0,%pi/2);
  limit(acot(x),x,0);
  ind$
 
+/* #4222 limit(6^x, x, 1) and similar cases: stack overflow crash */
+integrate(1/10^x, x, 0, 1);
+9/(10*log(10))$
+
+limit(6^x, x, 1);
+6$
+
+limit(2^x * 3^x, x, 1);
+6$
+
+limit(2^x * 3^x + 28,x,1);
+34$
+
+limit((2^x * 3^x + 28)/(x+2),x,1);
+34/3$
+
+limit(%pi^2*%i*cos(x-1)*6^x,x,1);
+6*%i*%pi^2$
+/* end of tests for #4222 */
+
 /* Did any facts, values, or contexts leak?*/
 facts();
 []$
