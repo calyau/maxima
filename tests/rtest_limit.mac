@@ -400,9 +400,10 @@ limit(log((sqrt(x^2+1))/2),x,1);
 limit( gamma_incomplete(-1/2, -%i*x^2), x, inf);
 0;
 
-/* should be complex infinity */
+/* should be complex infinity, but the bug limit(x*exp(%i*x),x,inf) = und
+prevents a correct value*/
 limit( gamma_incomplete(2, -%i*x), x, inf);
-'limit(gamma_incomplete(2,-%i*x),x,inf);
+infinity$
 
 /* Error integrating exp(-x)*sinh(sqrt(x)) with domain: complex - ID: 3529144 */
 /* need taylor expansion of gamma_incomplete(1/2, x) at x=0 */
@@ -565,21 +566,25 @@ inf;
 limit(1/inf-1/minf);
 0;
 
-/*
- 1-arg limit: limit(a*inf-inf) => minf - ID: 1385306
-
- The original fix for this bug sent it to inf, assuming that the two
- different "inf" occurrences were the same. I disagree: inf - inf
- probably shouldn't ever be simplified to zero, but we can avoid it
- here so we do.
-*/
-limit(a*inf-inf);
-und$
+/* 1-arg limit: limit(a*inf-inf) => minf - ID: 1385306 
+This is a long-standing bug--the kill(a) is needed. */
+block([L1,L2,L3,L4,L5,L6], 
+   kill(a),
+   L1 :limit(a*inf-inf),
+   L2 : limit((a-1)*inf),
+   assume(a<1), 
+   L3 : limit(a*inf-inf),
+   L4 : limit((a-1)*inf),
+   forget(a < 1),
+   assume(a > 1),
+   L5 : limit(a*inf-inf),
+   L6 : limit((a-1)*inf),
+   [L1,L2,L3,L4,L5,L6]);
+[und, und, minf, minf,inf,inf]$
 
 /* limit(1 - (-1/2)^inf) --> inf - ID: 2853506 */
 limit(1 - (-1/2)^inf);
-1-(-1)^inf/2^inf;
-/* ideally should be 1 */
+1$
 
 /* definition of derivative in terms of limit */
 limit((sin(3*(x+h)) - sin(3*(x)))/h, h, 0, plus);
@@ -852,9 +857,8 @@ limit((x^(1/x) - 1)*sqrt(x), x, inf);
 0;
 
 /* #3143 limit((x^(1/x) - 1)*sqrt(x), x, 0, minus) => inf */
-/* should really be '$infinity */
 limit((x^(1/x) - 1)*sqrt(x), x, 0, minus);
-'limit((x^(1/x) - 1)*sqrt(x), x, 0, minus);
+infinity$
 
 /* SF bug #3185: "Error in sum with non-false modulus" */
 
@@ -960,3 +964,11 @@ ind;
 
 limit(signum(x)*x/sin(x),x,0);
 ind;
+
+/* #895 limit x->inf sin(100/x)*x very slow */
+block([start : absolute_real_time()],
+  [limit(sin(100/x)*x,x,inf), 
+   limit(sin(10000/x)*x,x,inf),
+   limit(sin(10000000/x)*x,x,inf),
+   is(absolute_real_time()-start < 1)]);
+ [100, 10000, 10000000, true]$

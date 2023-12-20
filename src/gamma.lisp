@@ -422,29 +422,82 @@
 (defprop %gamma_incomplete simplim%gamma_incomplete simplim%function)
 
 (defun simplim%gamma_incomplete (expr var val)
-  ;; Look for the limit of the arguments.
-  (let ((a (limit (cadr expr) var val 'think))
-        (z (limit (caddr expr) var val 'think)))
+  ;; Set preserve-direction to true and find the limit of each argument.
+  (let* ((preserve-direction t) 
+         (a (limit (cadr expr) var val 'think))
+         (z (limit (caddr expr) var val 'think)))
   (cond
+   ;; z in {minf, inf, infinity}, use http://dlmf.nist.gov/8.11#i
+   ((or (eq z '$infinity)	
+        (eq z '$inf)
+        (eq z '$minf))
+    ;; Revert a & z to the arguments of gamma_incomplete.
+    (setq a (cadr expr))
+    (setq z (caddr expr))
+    ;; Use gamma_incomplete(a,z) = z^(a-1)/exp(z) + ... for 
+    ;; fixed a and |z| --> inf. Unfortunately, limit(x*exp(%i*x),x,inf) = und.
+    ;; And that makes limit(gamma_incomplete(2, -%i*x), x, inf) = und, not
+    ;; infinity (this is a test in rtest_limit) But this bug needs to be fixed 
+    ;; elsewhere. When a isn't fixed, give up.
+    (if (freeof var a)
+       (limit (div (ftake 'mexpt z (sub a 1)) (ftake 'mexpt '$%e z)) var val 'think)
+       (throw 'limit t)))
 
-   ((eq z '$infinity)			;; http://dlmf.nist.gov/8.11#i
-    (cond ((and (zerop1 ($realpart (caddr expr)))
-		(eq ($csign (m+ -1 (cadr expr))) '$neg))
-	   0)
-	  (t (throw 'limit t))))
+     ((and (eql a 0) (eq t (mgrp 0 z)))
+      (let ((im (behavior (cdr (risplit (caddr expr))) var val)))
+      (cond ((eql im -1)
+              (sub (mul '$%i '$%pi) (ftake '%expintegral_ei (mul -1 z))))
+            ((eql im 1)
+              (sub (mul -1 '$%i '$%pi) (ftake '%expintegral_ei (mul -1 z))))
+            (t (throw 'limit nil)))))      
+   
+    ;; z in {zerob, 0, zeroa}.
+    ((and (freeof var a) (or (eql z 0) (eq z '$zeroa) (eq z '$zerob)))
+        ;; Two cases: (i) a <= 0 & integer (ii) a not a negative integer.
+        ;; Revert a & z to the arguments of gamma_incomplete.
+        (setq a (cadr expr))
+        (setq z (caddr expr))
+        (cond ((and ($featurep a '$integer) (eq t (mgqp 0 a)))
+              ;; gamma_incomplete(a,n) = - (-1)^(-a) log(z)/(-a)! + ...
+              (setq a (sub 0 a))
+              (limit (div (mul -1 (ftake 'mexpt -1 a) (ftake '%log z))
+                          (ftake 'mfactorial a)) var val 'think))
+              (t 
+              (limit (sub (ftake '%gamma a) (div (ftake 'mexpt z a) a)) var val 'think))))
+     ;; z is on the branch cut. We need to know if the imaginary part of
+    ;; (caddr exp) approaches zero from above or below. The incomplete
+    ;; gamma function is continuous from above its branch cut.
 
-    ;; Handle an argument 0 at this place.
-    ((or (zerop1 z)
-         (eq z '$zeroa)
-         (eq z '$zerob))
-     (let ((sgn ($sign ($realpart a))))
-       (cond ((zerop1 a) '$inf)
-             ((member sgn '($neg $nz)) '$infinity)
-             ;; Call the simplifier of the function.
-             (t (simplify (list '(%gamma_incomplete) a z))))))
+    ((eq t (mgrp 0 z))
+      (let ((im (behavior (cdr (risplit (caddr expr))) var val)))
+          (cond ((eql im 1) ; use direct substitution
+                   (ftake '%gamma_incomplete a z))
+                ((eql im -1)
+                    (sub
+                       (ftake '%gamma a)
+                       (mul (ftake 'mexpt '$%e (mul -2 '$%i '$%pi a))
+                            (sub (ftake '%gamma a) (ftake '%gamma_incomplete a z)))))
+                ((eql im 0)
+                  (throw 'limit nil)))))
+
+    ((or (eq a '$ind) (eq z '$ind)) 
+        ;; Revert a & z to the arguments of gamma_incomplete. When z is
+        ;; off the negative real axis or a is not a negative integer, 
+        ;; return ind.
+        (setq a (cadr expr))
+        (setq z (caddr expr))
+        (if (or (off-negative-real-axisp z)
+                (not (and ($featurep a '$integer) (eq t (mgqp 0 a))))) '$ind
+                  (throw 'limit nil)))
+     ((or (eq a '$und) (eq z '$und)) '$und)
+    ((or (null a) 
+         (null z)
+         (extended-real-p a) 
+         (extended-real-p z))
+       (throw 'limit nil))
     (t
      ;; All other cases are handled by the simplifier of the function.
-     (simplify (list '(%gamma_incomplete) a z))))))
+     (ftake '%gamma_incomplete a z)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
