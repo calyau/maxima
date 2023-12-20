@@ -1,0 +1,778 @@
+\section{Dimensioning of Stabzweischlags}
+
+For the demonstration of the efficiency of the Solver finally the examples stated in the introduction \ref{TM}  and \ref{ET} are solved. In the following  the complete display of the outputs of the two program runs are reported. We use the following lexicon:
+
+\begin{center}
+\begin {tabular} {r r | l  }
+{\sf LEXICON:} & {\it\color{black} German} & {\color{blue} English }  \\
+\hline
+   & Stabzweischlags & \color{blue} two-strike toss \\
+     %\hline 
+     &  Zweischlag &  \color{blue} two-strike \\
+     &  Stababmessungen &  \color{blue} bar dimensions \\
+     &  Zweischlagparameter &  \color{blue} two-strike parameters 
+\end {tabular}
+\end{center}
+
+
+
+\begin{literatim}{|}
+(COM1) Zweischlag :
+[
+  F*cos(gamma) - S1*cos(alpha) - S2*cos(beta) = 0,
+  F*sin(gamma) - S1*sin(alpha) + S2*sin(beta) = 0,
+  Delta_l1 = l1*S1/(E*A1),
+  Delta_l2 = l2*S2/(E*A2),
+  l1 = c/cos(alpha),
+  l2 = c/cos(beta),
+  a = Delta_l2/sin(alpha+beta),
+  b = Delta_l1/sin(alpha+beta),
+  u = a*sin(alpha) + b*sin(beta),
+  w = -a*cos(alpha) + b*cos(beta),
+  A1 = h1^2,
+  A2 = h2^2
+]$
+
+(COM2) Stababmessungen : [h1, h2]$
+
+(COM3) Zweischlagparameter : [alpha, beta, gamma, F, c, E, u, w]$
+
+(COM4) SolverRepeatImmed : SolverRepeatLinear : FALSE$
+
+(COM5) MsgLevel : 'DETAIL$
+
+(COM6) Solver( Zweischlag, Stababmessungen, Zweischlagparameter );
+The variables to be solved for are [H1, H2]
+The parameters are [ALPHA, BETA, C, E, F, U, W, GAMMA]
+Checking for inconsistencies...
+... none found.
+Searching for immediate assignments.
+                   C
+Assigning L1 = ----------
+               COS(ALPHA)
+                   C
+Assigning L2 = ---------
+               COS(BETA)
+Checking for inconsistencies...
+... none found.
+Searching for linear equations...
+  ...with respect to: [H1, H2, A, A1, A2, B, DELTA_L1, DELTA_L2, S1, S2]
+Found 7 linear equations in 7 variables.
+The variables to be solved for are [A, A1, B, DELTA_L1, DELTA_L2, S1, S2]
+The equations are [F COS(GAMMA) - COS(BETA) S2 - COS(ALPHA) S1, 
+
+F SIN(GAMMA) + SIN(BETA) S2 - SIN(ALPHA) S1, 
+
+A SIN(BETA + ALPHA) - DELTA_L2, B SIN(BETA + ALPHA) - DELTA_L1, 
+
+                                                                       2
+U - B SIN(BETA) - A SIN(ALPHA), W - B COS(BETA) + A COS(ALPHA), A1 - H1 ]
+Solving linear equations.
+                                COS(BETA) U - SIN(BETA) W
+The solutions are [A = -------------------------------------------, 
+                       COS(ALPHA) SIN(BETA) + SIN(ALPHA) COS(BETA)
+
+       2              SIN(ALPHA) W + COS(ALPHA) U
+A1 = H1 , B = -------------------------------------------, 
+              COS(ALPHA) SIN(BETA) + SIN(ALPHA) COS(BETA)
+
+DELTA_L1 = (SIN(ALPHA) SIN(BETA + ALPHA) W
+
+ + COS(ALPHA) SIN(BETA + ALPHA) U)/(COS(ALPHA) SIN(BETA)
+
+ + SIN(ALPHA) COS(BETA)), DELTA_L2 = 
+
+COS(BETA) SIN(BETA + ALPHA) U - SIN(BETA) SIN(BETA + ALPHA) W
+-------------------------------------------------------------, 
+         COS(ALPHA) SIN(BETA) + SIN(ALPHA) COS(BETA)
+
+     COS(BETA) F SIN(GAMMA) + SIN(BETA) F COS(GAMMA)
+S1 = -----------------------------------------------, 
+       COS(ALPHA) SIN(BETA) + SIN(ALPHA) COS(BETA)
+
+     SIN(ALPHA) F COS(GAMMA) - COS(ALPHA) F SIN(GAMMA)
+S2 = -------------------------------------------------]
+        COS(ALPHA) SIN(BETA) + SIN(ALPHA) COS(BETA)
+Checking for inconsistencies...
+... none found.
+Checking for remaining equations.
+3 equation(s) and 2 variable(s) left.
+The variables to be solved for are [H1, H2]
+Applying valuation strategy.
+Trying to solve equation 3 for H2
+Valuation: 10
+                       2
+The equation is A2 - H2  = 0
+Checking if equation was solved correctly.
+The solutions are [H2 = - SQRT(A2), H2 = SQRT(A2)]
+Solution is correct.
+The solution is not unique. Tracing paths separately.
+Solution 1 for H2
+Checking for inconsistencies...
+... none found.
+Solution 2 for H2
+Checking for inconsistencies...
+... none found.
+Consistent solutions for H2 : [H2 = - SQRT(A2), H2 = SQRT(A2)]
+Checking for remaining equations.
+2 equation(s) and 2 variable(s) left.
+The variables to be solved for are [A2, H1]
+Applying valuation strategy.
+Trying to solve equation 2 for A2
+Valuation: 8
+The equation is COS(ALPHA) C F SIN(GAMMA) - SIN(ALPHA) C F COS(GAMMA)
+
+ - A2 COS(BETA) SIN(BETA) SIN(BETA + ALPHA) E W
+
+         2
+ + A2 COS (BETA) SIN(BETA + ALPHA) E U = 0
+Checking if equation was solved correctly.
+The solutions are [A2 = (COS(ALPHA) C F SIN(GAMMA)
+
+ - SIN(ALPHA) C F COS(GAMMA))/(COS(BETA) SIN(BETA) SIN(BETA + ALPHA) E W
+
+      2
+ - COS (BETA) SIN(BETA + ALPHA) E U)]
+Solution is correct.
+Solution 1 for A2
+Checking for inconsistencies...
+... none found.
+Consistent solutions for A2 : [A2 = (COS(ALPHA) C F SIN(GAMMA)
+
+ - SIN(ALPHA) C F COS(GAMMA))/(COS(BETA) SIN(BETA) SIN(BETA + ALPHA) E W
+
+      2
+ - COS (BETA) SIN(BETA + ALPHA) E U)]
+Checking for remaining equations.
+1 equation(s) and 1 variable(s) left.
+The variables to be solved for are [H1]
+Trying to solve equation 1 for H1
+Valuation: (irrelevant)
+The equation is - COS(BETA) C F SIN(GAMMA) - SIN(BETA) C F COS(GAMMA)
+
+                                               2
+ + COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E H1  W
+
+      2                                     2
+ + COS (ALPHA) SIN(BETA + ALPHA) E H1  U = 0
+Checking if equation was solved correctly.
+The solutions are [H1 = - SQRT(COS(BETA) C F SIN(GAMMA)
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H1 = SQRT(COS(BETA) C F SIN(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA)
+
+          2
+ E W + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U))]
+Solution is correct.
+The solution is not unique. Tracing paths separately.
+Solution 1 for H1
+Checking for inconsistencies...
+... none found.
+Solution 2 for H1
+Checking for inconsistencies...
+... none found.
+Consistent solutions for H1 : [H1 = - SQRT(COS(BETA) C F SIN(GAMMA)
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H1 = SQRT(COS(BETA) C F SIN(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA)
+
+          2
+ E W + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U))]
+Checking for remaining equations.
+All variables solved for. No equations left.
+Checking for remaining equations.
+All variables solved for. No equations left.
+Checking for remaining equations.
+2 equation(s) and 2 variable(s) left.
+The variables to be solved for are [A2, H1]
+Applying valuation strategy.
+Trying to solve equation 2 for A2
+Valuation: 8
+The equation is COS(ALPHA) C F SIN(GAMMA) - SIN(ALPHA) C F COS(GAMMA)
+
+ - A2 COS(BETA) SIN(BETA) SIN(BETA + ALPHA) E W
+
+         2
+ + A2 COS (BETA) SIN(BETA + ALPHA) E U = 0
+Checking if equation was solved correctly.
+The solutions are [A2 = (COS(ALPHA) C F SIN(GAMMA)
+
+ - SIN(ALPHA) C F COS(GAMMA))/(COS(BETA) SIN(BETA) SIN(BETA + ALPHA) E W
+
+      2
+ - COS (BETA) SIN(BETA + ALPHA) E U)]
+Solution is correct.
+Solution 1 for A2
+Checking for inconsistencies...
+... none found.
+Consistent solutions for A2 : [A2 = (COS(ALPHA) C F SIN(GAMMA)
+
+ - SIN(ALPHA) C F COS(GAMMA))/(COS(BETA) SIN(BETA) SIN(BETA + ALPHA) E W
+
+      2
+ - COS (BETA) SIN(BETA + ALPHA) E U)]
+Checking for remaining equations.
+1 equation(s) and 1 variable(s) left.
+The variables to be solved for are [H1]
+Trying to solve equation 1 for H1
+Valuation: (irrelevant)
+The equation is - COS(BETA) C F SIN(GAMMA) - SIN(BETA) C F COS(GAMMA)
+
+                                               2
+ + COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E H1  W
+
+      2                                     2
+ + COS (ALPHA) SIN(BETA + ALPHA) E H1  U = 0
+Checking if equation was solved correctly.
+The solutions are [H1 = - SQRT(COS(BETA) C F SIN(GAMMA)
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H1 = SQRT(COS(BETA) C F SIN(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA)
+
+          2
+ E W + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U))]
+Solution is correct.
+The solution is not unique. Tracing paths separately.
+Solution 1 for H1
+Checking for inconsistencies...
+... none found.
+Solution 2 for H1
+Checking for inconsistencies...
+... none found.
+Consistent solutions for H1 : [H1 = - SQRT(COS(BETA) C F SIN(GAMMA)
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H1 = SQRT(COS(BETA) C F SIN(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA)
+
+          2
+ E W + COS (ALPHA) SIN(BETA + ALPHA) E U)
+
+ + SIN(BETA) C F COS(GAMMA)/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U))]
+Checking for remaining equations.
+All variables solved for. No equations left.
+Checking for remaining equations.
+All variables solved for. No equations left.
+Postprocessing results.
+
+(D6) [[H1 = - SQRT((COS(BETA) C F SIN(GAMMA) + SIN(BETA) C F COS(GAMMA))
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H2 = - SQRT((SIN(ALPHA) C F COS(GAMMA) - COS(ALPHA) C F SIN(GAMMA))
+
+     2
+/(COS (BETA) SIN(BETA + ALPHA) E U - COS(BETA) SIN(BETA) SIN(BETA + ALPHA)
+
+ E W))], [H1 = SQRT((COS(BETA) C F SIN(GAMMA) + SIN(BETA) C F COS(GAMMA))
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H2 = - SQRT((SIN(ALPHA) C F COS(GAMMA) - COS(ALPHA) C F SIN(GAMMA))
+
+     2
+/(COS (BETA) SIN(BETA + ALPHA) E U - COS(BETA) SIN(BETA) SIN(BETA + ALPHA)
+
+ E W))], [H1 = - SQRT((COS(BETA) C F SIN(GAMMA) + SIN(BETA) C F COS(GAMMA))
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H2 = SQRT((SIN(ALPHA) C F COS(GAMMA) - COS(ALPHA) C F SIN(GAMMA))
+
+     2
+/(COS (BETA) SIN(BETA + ALPHA) E U - COS(BETA) SIN(BETA) SIN(BETA + ALPHA)
+
+ E W))], [H1 = SQRT((COS(BETA) C F SIN(GAMMA) + SIN(BETA) C F COS(GAMMA))
+
+/(COS(ALPHA) SIN(ALPHA) SIN(BETA + ALPHA) E W
+
+      2
+ + COS (ALPHA) SIN(BETA + ALPHA) E U)), 
+
+H2 = SQRT((SIN(ALPHA) C F COS(GAMMA) - COS(ALPHA) C F SIN(GAMMA))
+
+     2
+/(COS (BETA) SIN(BETA + ALPHA) E U - COS(BETA) SIN(BETA) SIN(BETA + ALPHA)
+
+ E W))]]
+\end{literatim}
+
+For the system of equations, which describe the 
+ 'Stabzweischlag' the 
+Solver gives four distinct analytical solutions, which are different only in their signs. 
+Due to the physical boundary condition, that the lengths
+$h_1$ and $h_2$ cannot have negative values, only the last solutionis  meaningful
+\begin{eqnarray}
+h_1 &=& \sqrt{
+  \frac{
+    \cos \beta \, c \, F \, \sin \gamma + \sin \beta \, c \, F \, 
+    \cos \gamma
+  }{
+    \cos \alpha \, \sin \alpha \, \sin \left( \beta + \alpha \right) \, 
+    E \, w + \cos^2 \alpha \, \sin \left( \beta + \alpha \right) \, E \, 
+    u
+  }
+} \\
+h_2 &=& \sqrt{
+  \frac{
+    \sin \alpha \, c \, F \, \cos \gamma - \cos \alpha \, c \, F \, 
+    \sin \gamma
+  }{
+    \cos^2 \beta \, \sin \left( \beta + \alpha \right) \, E \, u
+    - \cos \beta \, \sin \beta \, \sin \left( \beta + \alpha \right) \, 
+    E \, w
+  }
+}
+\end{eqnarray}
+
+\clearpage
+\section{Dimensioniing of the Transistor Amplifier}
+
+We use the following
+
+\begin{center}
+\begin {tabular} {r r | l  }
+{\sf LEXICON:} & {\it\color{black} German} & {\color{blue} English }  \\
+\hline
+   & Verstaerker & \color{blue} amplifier \\
+     &  Widerstaende &  \color{blue} resistances \\
+          &  Designparameter &  \color{blue} design parameter 
+\end {tabular}
+\end{center}
+
+
+
+\begin{literatim}{|}
+(COM7) Verstaerker :
+[
+  -V_V1+V_R1+V_OC_1+V_FIX2_Q1 = 0,-V_V1+V_R2+V_OC_1+V_I1+V_FIX2_Q1 = 0,
+  -V_V1+V_OC_1+V_I1+V_FIX2_Q2+V_FIX2_Q1-V_FIX1_Q2-V_FIX1_Q1 = 0,
+  V_V1-V_R6+V_R3-V_OC_1-V_I1-V_FIX2_Q1+V_FIX1_Q1 = 0,
+  -V_V1+V_R7+V_R4+V_OC_1+V_I1-V_FIX1_Q2 = 0,-V_V1+V_R7+V_R5+V_OC_1 = 0,
+  V_OC_2-V_I1+V_FIX1_Q2 = 0,V_V_CC-V_V1+V_R6+V_OC_1+V_FIX2_Q1-V_FIX1_Q1 = 0,
+  I_V1+I_OC_1 = 0,I_R7-I_OC_1+I_FIX2_Q1 = 0,I_R2+I_R1-I_FIX2_Q1-I_FIX1_Q1 = 0,
+  I_R6+I_FIX2_Q2+I_FIX1_Q1 = 0,-I_R7+I_R5+I_R4 = 0,
+  -I_R4+I_OC_2-I_FIX2_Q2-I_FIX1_Q2 = 0,I_R3-I_R2+I_I1+I_FIX1_Q2 = 0,
+  I_V_CC-I_R6-I_R3 = 0,V_V1 = 0,I_I1 = 0,I_OC_1 = 0,V_FIX1_Q1 = 2.72,
+  V_FIX2_Q1 = 0.607,I_R1*R1-V_R1 = 0,I_R7*R7-V_R7 = 0,I_R2*R2-V_R2 = 0,
+  I_R6*R6-V_R6 = 0,V_FIX1_Q2 = 6.42,V_FIX2_Q2 = 0.698,I_R3*R3-V_R3 = 0,
+  I_R4*R4-V_R4 = 0,I_R5*R5-V_R5 = 0,I_OC_2 = 0,V_V_CC = VCC,
+  I_FIX1_Q1 = 1.11e-4,I_FIX2_Q1 = 5.75001e-7,I_FIX1_Q2 = 0.00401,
+  I_FIX2_Q2 = 1.26e-5,
+  A = 145303681853*R2/(145309663773*R1),
+  ZIN = R7,
+  ZOUT = (1675719398828125*R2*R7+394048139880824192*R1*R2)
+         /(136552890630303121408*R1)
+]$
+
+(COM8) Widerstaende : [R1, R2, R3, R4, R5, R6, R7]$
+
+(COM9) Designparameter : [VCC, A, ZIN, ZOUT]$
+
+(COM10) SolverRepeatImmed : SolverRepeatLinear : TRUE$
+
+(COM11) Solver( Verstaerker, Widerstaende, Designparameter );
+The variables to be solved for are [R1, R2, R3, R4, R5, R6, R7]
+The parameters are [A, VCC, ZIN, ZOUT]
+Checking for inconsistencies...
+... none found.
+Searching for immediate assignments.
+Assigning V_V1 = 0
+Assigning I_I1 = 0
+Assigning I_OC_1 = 0
+                      68
+Assigning V_FIX1_Q1 = --
+                      25
+                      607
+Assigning V_FIX2_Q1 = ----
+                      1000
+                      321
+Assigning V_FIX1_Q2 = ---
+                      50
+                      349
+Assigning V_FIX2_Q2 = ---
+                      500
+Assigning I_OC_2 = 0
+Assigning V_V_CC = VCC
+                        111
+Assigning I_FIX1_Q1 = -------
+                      1000000
+                         5
+Assigning I_FIX2_Q1 = -------
+                      8695637
+                       401
+Assigning I_FIX1_Q2 = ------
+                      100000
+                        25
+Assigning I_FIX2_Q2 = -------
+                      1984127
+Assigning R7 = ZIN
+Checking for inconsistencies...
+... none found.
+Searching for immediate assignments.
+Assigning I_V1 = 0
+Checking for inconsistencies...
+... none found.
+Searching for immediate assignments.
+No immediate assignments found.
+Searching for linear equations...
+  ...with respect to: [R1, R2, R3, R4, R5, R6, I_R1, I_R2, I_R3, I_R4, 
+
+I_R5, I_R6, I_R7, I_V_CC, V_I1, V_OC_1, V_OC_2, V_R1, V_R2, V_R3, V_R4, 
+
+V_R5, V_R6, V_R7]
+Found 18 linear equations in 18 variables.
+The variables to be solved for are [I_R1, I_R2, I_R3, I_R4, I_R5, I_R6, 
+
+I_R7, I_V_CC, V_I1, V_OC_1, V_OC_2, V_R1, V_R2, V_R3, V_R4, V_R5, V_R6, 
+
+V_R7]
+The equations are [1000 V_R1 + 1000 V_OC_1 + 607, 
+
+1000 V_R2 + 1000 V_OC_1 + 1000 V_I1 + 607, 200 V_OC_1 + 200 V_I1 - 1567, 
+
+- 1000 V_R6 + 1000 V_R3 - 1000 V_OC_1 - 1000 V_I1 + 2113, 
+
+50 V_R7 + 50 V_R4 + 50 V_OC_1 + 50 V_I1 - 321, V_R7 + V_R5 + V_OC_1, 
+
+50 V_OC_2 - 50 V_I1 + 321, 1000 V_R6 + 1000 V_OC_1 + 1000 VCC - 2113, 
+
+8695637 I_R7 + 5, 8695637000000 I_R2 + 8695637000000 I_R1 - 970215707, 
+
+1984127000000 I_R6 + 245238097, - I_R7 + I_R5 + I_R4, 
+
+- 198412700000 I_R4 - 798134927, 100000 I_R3 - 100000 I_R2 + 401, 
+
+I_V_CC - I_R6 - I_R3, I_R7 ZIN - V_R7]
+Solving linear equations.
+                            8695637000000 I_R3 + 33899288663
+The solutions are [I_R1 = - --------------------------------, 
+                                     8695637000000
+
+       100000 I_R3 + 401            798134927
+I_R2 = -----------------, I_R4 = - ------------, 
+            100000                 198412700000
+
+        6939299538713499               245238097                5
+I_R5 = -------------------, I_R6 = - -------------, I_R7 = - -------, 
+       1725324815389900000             1984127000000         8695637
+
+         1984127000000 I_R3 - 245238097           200 V_OC_1 - 1567
+I_V_CC = ------------------------------, V_I1 = - -----------------, 
+                 1984127000000                           200
+
+           200 V_OC_1 - 283           1000 V_OC_1 + 607           4221
+V_OC_2 = - ----------------, V_R1 = - -----------------, V_R2 = - ----, 
+                 200                        1000                  500
+
+         200 V_OC_1 + 200 VCC - 1567         1000 ZIN - 2460865271
+V_R3 = - ---------------------------, V_R4 = ---------------------, 
+                     200                          1739127400
+
+         8695637 V_OC_1 - 5 ZIN           1000 V_OC_1 + 1000 VCC - 2113
+V_R5 = - ----------------------, V_R6 = - -----------------------------, 
+                8695637                               1000
+
+          5 ZIN
+V_R7 = - -------]
+         8695637
+Checking for inconsistencies...
+... none found.
+Searching for linear equations...
+  ...with respect to: [I_R3, R1, R2, R3, R4, R5, R6, V_OC_1]
+Found 6 linear equations in 5 variables.
+The variables to be solved for are [R2, R4, R5, R6, V_OC_1]
+The equations are [8695637000000 V_OC_1 - 8695637000000 I_R3 R1
+
+ - 33899288663 R1 + 5278251659000, 1984127000000 V_OC_1 + 1984127000000 VCC
+
+ - 245238097 R6 - 4192460351000, 200 V_OC_1 + 200 VCC + 200 I_R3 R3
+
+ - 1567, - 992063500000 ZIN - 6940291602213499 R4 + 2441334613776708500, 
+
+- 992063500000 ZIN + 1725324815389900000 V_OC_1 + 6939299538713499 R5, 
+
+145309663773 A R1 - 145303681853 R2]
+Solving linear equations.
+Checking for inconsistencies...
+... none found.
+                        145309663773 A R1
+The solutions are [R2 = -----------------, 
+                          145303681853
+
+       992063500000 ZIN - 2441334613776708500
+R4 = - --------------------------------------, 
+                  6940291602213499
+
+R5 = - (- 9920635000000 ZIN + (17253248153899000000 I_R3
+
+ + 67260493917052201) R1 - 10472721629416693000)/69392995387134990, 
+
+R6 = (17253248153899000000 VCC + (17253248153899000000 I_R3
+
+ + 67260493917052201) R1 - 46928834978605280000)/2132501470082789, 
+
+         (8695637000000 I_R3 + 33899288663) R1 - 5278251659000
+V_OC_1 = -----------------------------------------------------]
+                             8695637000000
+Checking for inconsistencies...
+... none found.
+Searching for linear equations...
+  ...with respect to: [I_R3, R1, R3]
+No linear equations found.
+Checking for remaining equations.
+3 equation(s) and 3 variable(s) left.
+The variables to be solved for are [I_R3, R1, R3]
+Applying valuation strategy.
+Trying to solve equation 1 for I_R3
+Valuation: 4
+The equation is 14530966377300000 A I_R3 R1 + 58269175172973 A R1
+
+                                                   + 122665368220302600 = 0
+Checking if equation was solved correctly.
+                            6474352796997 A R1 + 13629485357811400
+The solutions are [I_R3 = - --------------------------------------]
+                                    1614551819700000 A R1
+Solution is correct.
+Solution 1 for I_R3
+Checking for inconsistencies...
+... none found.
+Consistent solutions for I_R3 : [I_R3 = 
+
+                                    6474352796997 A R1 + 13629485357811400
+                                  - --------------------------------------]
+                                            1614551819700000 A R1
+Checking for remaining equations.
+2 equation(s) and 2 variable(s) left.
+The variables to be solved for are [R1, R3]
+Applying valuation strategy.
+Trying to solve equation 1 for R3
+Valuation: 20
+The equation is - R1 (- 16062755182397110876073408478539448677201569671148#
+
+116383372395290156600000000 A VCC + 64411648281412414613054367998943189195#
+
+578294381303946697323305113527966000 A R3 + 135601779249796410015811714375#
+
+830025732935651163832398508429761039502017200000 A + 135596196971410595846#
+
+324806740533400875556129557784494104259093864172929200000) - 1355961969714#
+
+10595846324806740533400875556129557784494104259093864172929200000 R3 - 179#
+
+2201925592952751292050414582157181324535016813917972727234536207382600 A
+
+   2
+ R1  = 0
+Checking if equation was solved correctly.
+The solutions are [R3 = (140395565418006489000000 A R1 VCC
+
+                            2
+ - 15664635352383720279 A R1  + (- 1185219363258810780138000 A
+
+ - 1185170571683430488618000) R1)/(562986217326206020890 A R1
+
+ + 1185170571683430488618000)]
+Solution is correct.
+Solution 1 for R3
+Checking for inconsistencies...
+... none found.
+Consistent solutions for R3 : [R3 = (140395565418006489000000 A R1 VCC
+
+                            2
+ - 15664635352383720279 A R1  + (- 1185219363258810780138000 A
+
+ - 1185170571683430488618000) R1)/(562986217326206020890 A R1
+
+ + 1185170571683430488618000)]
+Checking for remaining equations.
+1 equation(s) and 1 variable(s) left.
+The variables to be solved for are [R1]
+Trying to solve equation 1 for R1
+Valuation: (irrelevant)
+The equation is R1 (19841637776253069394020865409024 ZOUT
+
+ - 243498222421608533966015625 A ZIN)
+
+                                     2
+ - 57259002716458635629644396416 A R1  = 0
+Checking if equation was solved correctly.
+The solutions are [R1 = 
+
+19841637776253069394020865409024 ZOUT - 243498222421608533966015625 A ZIN
+-------------------------------------------------------------------------, 
+                     57259002716458635629644396416 A
+
+R1 = 0]
+Solution is correct.
+The solution is not unique. Tracing paths separately.
+Solution 1 for R1
+Checking for inconsistencies...
+... none found.
+Solution 2 for R1
+Checking for inconsistencies...
+... none found.
+Consistent solutions for R1 : [R1 = 
+
+19841637776253069394020865409024 ZOUT - 243498222421608533966015625 A ZIN
+-------------------------------------------------------------------------, 
+                     57259002716458635629644396416 A
+
+R1 = 0]
+Checking for remaining equations.
+All variables solved for. No equations left.
+Checking for remaining equations.
+All variables solved for. No equations left.
+Postprocessing results.
+
+(D11) [[R1 = - (243498222421608533966015625 A ZIN
+
+ - 19841637776253069394020865409024 ZOUT)
+
+/(57259002716458635629644396416 A), R2 = 
+
+  1493854125285941926171875 A ZIN - 121727839118116990147367272448 ZOUT
+- ---------------------------------------------------------------------, 
+                       351267764122759016747201152
+
+R3 = (334763184724568105702258732451550460395708593115792893559436793085952
+
+     2
+ ZOUT  + VCC
+
+                                                                      2
+ (106256457337115768692100530787195899963103895496024350000000000000 A  ZIN
+
+ - 8658388208766832396126274743883820688291739892383476917089599488000000 A
+
+ ZOUT) + A
+
+ (73094113258409599088098011387867214250558868171501312134070398877696000
+
+ ZOUT + ZIN
+
+ (- 8216483067762383568115091483320660991714242249851965644800000000 ZOUT
+
+ - 896980085605567678321894471091892803815897329518698154700000000000))
+
+ + 73091104214643137701992515955008538217110816411520639295650692857856000
+
+         2
+ ZOUT + A  (50416680420198682402077210492446131565566605185394287109375
+
+    2
+ ZIN  - 897017012839931319298712680905507787488523085777437562700000000000
+
+ ZIN))/(A
+
+ (- 34720136717154997908466361722974120960049876968457742437529293946880
+
+ ZOUT
+
+ - 210926324831111746833250971831897544037167089192987941918299029504000)
+
+                                                                    2
+ + 426088393921834232455323128456655558852046620939057643500000000 A
+
+              992063500000 ZIN - 2441334613776708500
+ ZIN), R4 = - --------------------------------------, 
+                         6940291602213499
+
+R5 = (38195771383195691504052086845016246794667687936 ZOUT
+
+ + A (99303995957664108704965549227744192421875 ZIN
+
+ + 599657596227485533261336202180916694139772288000)
+
+ + 8339540409811836894068029655629814665587863808000)
+
+/(3973373711375163964000922192169533030064195840 A), 
+
+R6 = (- 38195771383195691504052086845016246794667687936 ZOUT
+
+ + A (468741670456330507974731687410699967578125 ZIN
+
+ - 2687098289520198765190831087202789799110676480000)
+
+ + 987903782911837781320158487942202132025984000000 A VCC
+
+ - 8339540409811836894068029655629814665587863808000)
+
+/(122104907468322449250303944919525361454884224 A), R7 = ZIN], 
+
+                                992063500000 ZIN - 2441334613776708500
+[R1 = 0, R2 = 0, R3 = 0, R4 = - --------------------------------------, 
+                                           6940291602213499
+
+     992063500000 ZIN + 1047272162941669300
+R5 = --------------------------------------, 
+                6939299538713499
+
+     1984127000000 VCC - 5396825440000
+R6 = ---------------------------------, R7 = ZIN]]
+                 245238097
+\end{literatim}
+Here we have more than one solution of the system ,too, but only first one is
+physically meaningful result.

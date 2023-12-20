@@ -1,6 +1,16 @@
+Dec 23 2002 Inital checkin
 This package is solver, a parametric equation solver, written by
 Eckhard Hennig and Ralf Sommer.  I have made some minor modifications
 to it so that it runs on maxima. 
 I wish to thank Dr. Hennig for his donation of the solver code to the
 maxima project.
 Dan Stanger
+
+Nov 28 2023 Updates
+I decided to try to retranslate the original German document solver1.pdf hoping that advances in machine translation would improve it, however the translation
+still needed editing. 
+Dr. Wolfgang Lindner reviewed the document and was able to get the original tex
+source from Dr. Hennig. He was also able to update the diagrams. I then made
+some minor changes to the English grammar and wording.
+NB The file solver-diagramms.docx is only editable using TextMaker and one of
+the images is only partially editable.

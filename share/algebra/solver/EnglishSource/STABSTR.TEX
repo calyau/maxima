@@ -1,0 +1,30 @@
+Technische Dimensionierungsaufgaben erfordern h"aufig die L"osung von
+Gleichungssystemen, die ein Objekt mathematisch beschreiben, nach den Werten
+der funktionsbestimmenden Bauelementeparameter. Zur analytischen L"osung
+kleinerer Dimensionierungsprobleme bietet sich der Einsatz kommerzieller
+Computeralgebrasysteme wie Macsyma \cite{Macsyma} an, die in der Lage sind,
+umfangreiche Gleichungen algebraisch zu manipulieren und nach ihren Variablen
+symbolisch aufzul"osen.
+
+Trotz ihrer hohen Leistungsf"ahigkeit sind diese Systeme jedoch meist
+bereits "uberfordert, wenn lineare oder schwach nichtlineare, parametrisierte
+Gleichungssysteme nach nur einer Teilmenge ihrer Variablen zu l"osen oder
+zumindest symbolisch vorzuverarbeiten sind. Um solche typischerweise bei
+Entwurfsaufgaben entstehenden Gleichungssystem behandeln zu k"onnen, wurde im
+Rahmen dieser Arbeit ein auf heuristischen Algorithmen basierender,
+universeller symbolischer Gleichungsl"oser entwickelt und in Macsyma
+implementiert. Das Programmodul \verb+SOLVER+ erweitert die Funktionalit"at
+der Macsyma-Befehle \verb+SOLVE+ und \verb+LINSOLVE+ zur symbolischen L"osung
+algebraischer Gleichungen bzw. linearer Gleichungssysteme um die F"ahigkeit
+zur selektiven L"osung nichtlinearer, parametrisierter Systeme mit
+Freiheitsgraden.
+
+Das erste Kapitel der vorliegenden Arbeit beschreibt einige
+Anwendungsbereiche symbolischer Dimensionierungsmethoden, die aus ihnen
+folgenden Anforderungen an einen symbolischen Gleichungsl"oser sowie die
+verwendeten heuristischen Algorithmen zur Extraktion linearer Gleichungen und
+zur Komplexit"atsbewertung algebraischer Funktionen. Das zweite Kapitel
+enth"alt einen "Uberblick "uber die Struktur des {\em Solvers} und eine
+Anleitung zu seiner Benutzung. Im Anhang findet sich der Quelltext des in der
+internen h"oheren Programmiersprache von Macsyma implementierten Moduls
+\verb+SOLVER.MAC+.

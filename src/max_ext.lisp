@@ -358,14 +358,22 @@
 (autof 'simp-pochhammer "orthopoly")
 
 (dolist (f
-  '($draw
+  '($activate_window
+    $add_zeroes
+    $draw
     $draw2d
     $draw3d
-    $set_draw_defaults
-    $multiplot_mode
+    $draw_file
+    $get_pixel
     $make_level_picture
     $make_rgb_picture
-    $get_pixel
+    $multiplot_mode
+    $negative_picture
+    $picture_equalp
+    $picturep
+    $read_xpm
+    $rgb2level
+    $set_draw_defaults
     $take_channel))
   (setf (get f 'autoload) "draw"))
 

@@ -1553,7 +1553,7 @@ See also @mrefdot{test_signed_rank}
 
 @anchor{cdf_signed_rank}
 @deffn {Function} cdf_signed_rank (@var{x}, @var{n})
-Cumulative density function of the exact distribution of the
+Cumulative distribution function of the exact distribution of the
 signed rank statistic. Argument @var{x} is a real
 number and @var{n} a positive integer. 
 
@@ -1581,7 +1581,7 @@ See also @mrefdot{test_rank_sum}
 
 @anchor{cdf_rank_sum}
 @deffn {Function} cdf_rank_sum (@var{x}, @var{n}, @var{m})
-Cumulative density function of the exact distribution of the
+Cumulative distribution function of the exact distribution of the
 rank sum statistic. Argument @var{x} is a real
 number and @var{n} and @var{m} are both positive integers. 
 
