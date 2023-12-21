@@ -1909,7 +1909,7 @@
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
 (defun powerlist (exp var)
-  (prog (y *c* *d* *powerlist* *b*)
+  (prog (y *c* *d* power-list *b*)
      (setq y (m2 exp
 		 '((mtimes)
 		   ((mexpt) (var varp) (c integerp2))
@@ -1926,7 +1926,7 @@
 	          ((eq (caar ex) 'mexpt)
 	           (if (varp (cadr ex))
 	               (if (integerp2 (caddr ex))
-		           (setq *powerlist* (cons (caddr ex) *powerlist*)))
+		           (setq power-list (cons (caddr ex) power-list)))
 	               (and (rat10 (cadr ex))
                             (rat10 (caddr ex)))))
 	          ((member (caar ex) '(mplus mtimes) :test #'eq)
@@ -1935,7 +1935,7 @@
 	             (if (not (rat10 (car u)))
                          (return nil)))))))
        (unless  (rat10 *b*) (return nil))
-       (setq *d* (apply #'gcd (cons (1+ *c*) *powerlist*))))
+       (setq *d* (apply #'gcd (cons (1+ *c*) power-list))))
      (when (or (eql 1 *d*) (zerop *d*)) (return nil))
      (return
        (substint
