@@ -20,8 +20,8 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special ans #+nil arcpart +nil coef
-		      #+nil aa #+nil *powerlist* *a* *b* *stack* #+nil w #+nil y *expres* arg var
+(declare-top (special ans 
+		      *a* *b* *stack* *expres* arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
@@ -312,24 +312,6 @@
 			      (t
                                (setq coef (cons (car ex) coef)))))))
       (values arcpart coef))))
-
-#+nil
-(defun arclist (list)
-  (cond ((null list) nil)
-	((and (arcfuncp (car list)) (null arcpart))
-	 (setq arcpart (car list)) (arclist (cdr list)))
-	(t (setq coef (cons (car list) coef))
-	   (arclist (cdr list)))))
-
-#+nil
-(defun arcfuncp (ex)
-  (and (not (atom ex))
-       (or (arcp (caar ex))
-	   (eq (caar ex) '%log)     ; Experimentally treat logs also.
-	   (and (eq (caar ex) 'mexpt)
-		(integerp2 (caddr ex))
-		(> (integerp2 (caddr ex)) 0)
-		(arcfuncp (cadr ex))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -755,19 +737,6 @@
   (div (take '(mexpt) a x) (take '(%log) a)))
 
 (putprop 'mexpt `((x n) ,'integrate-mexpt-1 ,'integrate-mexpt-2) 'integral)
-
-#+nil
-(defun rat10 (ex)
-  (cond ((freevar ex) t)
-	((varp ex) nil)
-	((eq (caar ex) 'mexpt)
-	 (if (varp (cadr ex))
-	     (if (integerp2 (caddr ex))
-		 (setq *powerlist* (cons (caddr ex) *powerlist*)))
-	     (and (rat10 (cadr ex)) (rat10 (caddr ex)))))
-	((member (caar ex) '(mplus mtimes) :test #'eq)
-	 (do ((u (cdr ex) (cdr u))) ((null u) t)
-	     (if (not (rat10 (car u))) (return nil))))))
 
 (defun integrate5 (ex var)
   (if (rat8 ex)
@@ -1815,7 +1784,7 @@
 ;;; partial integration is applied: log(x)*f(x)-integrate(1/x*f(x),x)
 
 (defun ratlog (exp var form)
-  (prog (b c d y z #+nil w)
+  (prog (b c d y z)
      (setq y form)
      (setq b (cdr (assoc 'b y :test #'eq)))
      (setq c (cdr (assoc 'c y :test #'eq)))
