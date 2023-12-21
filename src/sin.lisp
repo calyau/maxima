@@ -283,7 +283,15 @@
 (defun separc (ex)
   (let (arcpart coef)
     (labels
-        ((arclist (list)
+        ((arcfuncp (ex)
+           (and (not (atom ex))
+                (or (arcp (caar ex))
+	            (eq (caar ex) '%log) ; Experimentally treat logs also.
+	            (and (eq (caar ex) 'mexpt)
+		         (integerp2 (caddr ex))
+		         (> (integerp2 (caddr ex)) 0)
+		         (arcfuncp (cadr ex))))))
+         (arclist (list)
            (cond ((null list)
                   nil)
 	         ((and (arcfuncp (car list))
@@ -313,6 +321,7 @@
 	(t (setq coef (cons (car list) coef))
 	   (arclist (cdr list)))))
 
+#+nil
 (defun arcfuncp (ex)
   (and (not (atom ex))
        (or (arcp (caar ex))
