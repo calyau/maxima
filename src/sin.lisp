@@ -20,7 +20,7 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special ans arcpart coef
+(declare-top (special ans #+nil arcpart +nil coef
 		      #+nil aa powerlist *a* *b* *stack* #+nil w #+nil y *expres* arg var
 		      *powerl* *c* *d* exp))
 
@@ -281,26 +281,29 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun separc (ex)
-  (labels
-      ((arclist (list)
-         (cond ((null list) nil)
-	       ((and (arcfuncp (car list))
-                     (null arcpart))
-	        (setq arcpart (car list))
-                (arclist (cdr list)))
-	       (t
-                (setq coef (cons (car list) coef))
-	        (arclist (cdr list))))))
-    (cond ((arcfuncp ex)
-           (setq arcpart ex
-                 coef 1))
-	  ((and (consp ex)
-                (eq (caar ex) 'mtimes))
-	   (arclist (cdr ex))
-	   (setq coef (cond ((null (cdr coef))
-                             (car coef))
-			    (t
-                             (setq coef (cons (car ex) coef)))))))))
+  (let (arcpart coef)
+    (labels
+        ((arclist (list)
+           (cond ((null list)
+                  nil)
+	         ((and (arcfuncp (car list))
+                       (null arcpart))
+	          (setq arcpart (car list))
+                  (arclist (cdr list)))
+	         (t
+                  (setq coef (cons (car list) coef))
+	          (arclist (cdr list))))))
+      (cond ((arcfuncp ex)
+             (setq arcpart ex
+                   coef 1))
+	    ((and (consp ex)
+                  (eq (caar ex) 'mtimes))
+	     (arclist (cdr ex))
+	     (setq coef (cond ((null (cdr coef))
+                               (car coef))
+			      (t
+                               (setq coef (cons (car ex) coef)))))))
+      (values arcpart coef))))
 
 #+nil
 (defun arclist (list)
@@ -472,7 +475,9 @@
      ;; SEPARC SETQS ARCPART AND COEF SUCH THAT
      ;; COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
      ;; ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
-     (separc exp)
+     (multiple-value-setq
+         (arcpart coef)
+       (separc exp))
      
      #+nil
      (progn
