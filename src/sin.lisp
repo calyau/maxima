@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ans arcpart coef
-		      #+nil aa powerlist *a* *b* k stack #+nil w #+nil y *expres* arg var
+		      #+nil aa powerlist *a* *b* *k* stack #+nil w #+nil y *expres* arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
@@ -862,15 +862,15 @@
 (defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
 
 (defun ratroot (exp var *ratroot* w)
-  (prog (*rootlist* k y w1)
+  (prog (*rootlist* *k* y w1)
      ;; Check if the integrand has a chebyform, if so return the result.
      (when (setq y (chebyf exp var)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
      (unless (rat3 exp t) (return nil))
      ;; Get the least common multiplier of m1, m2, ...
-     (setq k (apply #'lcm *rootlist*))
-     (setq w1 (cons (cons 'k k) w))
+     (setq *k* (apply #'lcm *rootlist*))
+     (setq w1 (cons (cons 'k *k*) w))
      ;; Substitute for the roots.
      (setq y
            (subst41 exp
@@ -900,7 +900,7 @@
                               2))))
              var))
      ;; Substitute back and return the result.
-     (return (substint (power *ratroot* (power k -1)) var y))))
+     (return (substint (power *ratroot* (power *k* -1)) var y))))
 
 (defun rat3 (ex ind)
   (cond ((freevar ex) t)
@@ -930,7 +930,7 @@
           ((not (eq (caar ex) 'mexpt))
            (mapcar #'(lambda (u) (subst4 u)) ex))
           ((m2 (cadr ex) *ratroot*)
-           (list (car ex) rootvar (integerp2 (timesk k (caddr ex)))))
+           (list (car ex) rootvar (integerp2 (timesk *k* (caddr ex)))))
           (t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
   
   (defun subst41 (exp a b)
