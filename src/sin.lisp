@@ -281,12 +281,28 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun separc (ex)
-  (cond ((arcfuncp ex) (setq arcpart ex coef 1))
-	((and (consp ex) (eq (caar ex) 'mtimes))
-	 (arclist (cdr ex))
-	 (setq coef (cond ((null (cdr coef)) (car coef))
-			  (t (setq coef (cons (car ex) coef))))))))
+  (labels
+      ((arclist (list)
+         (cond ((null list) nil)
+	       ((and (arcfuncp (car list))
+                     (null arcpart))
+	        (setq arcpart (car list))
+                (arclist (cdr list)))
+	       (t
+                (setq coef (cons (car list) coef))
+	        (arclist (cdr list))))))
+    (cond ((arcfuncp ex)
+           (setq arcpart ex
+                 coef 1))
+	  ((and (consp ex)
+                (eq (caar ex) 'mtimes))
+	   (arclist (cdr ex))
+	   (setq coef (cond ((null (cdr coef))
+                             (car coef))
+			    (t
+                             (setq coef (cons (car ex) coef)))))))))
 
+#+nil
 (defun arclist (list)
   (cond ((null list) nil)
 	((and (arcfuncp (car list)) (null arcpart))
