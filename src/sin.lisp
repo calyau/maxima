@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ans arcpart coef
-		      #+nil aa powerlist *a* *b* *k* stack #+nil w #+nil y *expres* arg var
+		      #+nil aa powerlist *a* *b* stack #+nil w #+nil y *expres* arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
@@ -862,15 +862,15 @@
 (defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
 
 (defun ratroot (exp var *ratroot* w)
-  (prog (*rootlist* *k* y w1)
+  (prog (*rootlist* k y w1)
      ;; Check if the integrand has a chebyform, if so return the result.
      (when (setq y (chebyf exp var)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
      (unless (rat3 exp t) (return nil))
      ;; Get the least common multiplier of m1, m2, ...
-     (setq *k* (apply #'lcm *rootlist*))
-     (setq w1 (cons (cons 'k *k*) w))
+     (setq k (apply #'lcm *rootlist*))
+     (setq w1 (cons (cons 'k k) w))
      ;; Substitute for the roots.
      (setq y
            (subst41 exp
@@ -880,7 +880,8 @@
                                 ((mtimes) -1 d ((mexpt) var k)))
                                ((mplus) ((mtimes) c ((mexpt) var k))
                                 ((mtimes) -1 e a))))
-                    var))
+                    var
+                    k))
      ;; Integrate the new problem.
      (setq y
            (integrator
@@ -900,7 +901,7 @@
                               2))))
              var))
      ;; Substitute back and return the result.
-     (return (substint (power *ratroot* (power *k* -1)) var y))))
+     (return (substint (power *ratroot* (power k -1)) var y))))
 
 (defun rat3 (ex ind)
   (cond ((freevar ex) t)
@@ -924,21 +925,21 @@
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.
   
-  (defun subst4 (ex)
+  (defun subst4 (ex k)
     (cond ((freevar ex) ex)
           ((atom ex) rootform)
           ((not (eq (caar ex) 'mexpt))
-           (mapcar #'(lambda (u) (subst4 u)) ex))
+           (mapcar #'(lambda (u) (subst4 u k)) ex))
           ((m2 (cadr ex) *ratroot*)
-           (list (car ex) rootvar (integerp2 (timesk *k* (caddr ex)))))
-          (t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
+           (list (car ex) rootvar (integerp2 (timesk k (caddr ex)))))
+          (t (list (car ex) (subst4 (cadr ex) k) (subst4 (caddr ex) k)))))
   
-  (defun subst41 (exp a b)
+  (defun subst41 (exp a b k)
     (setq rootform a
           rootvar b)
     ;; At this point resimplify, because it is not guaranteed, that a correct 
     ;; simplified expression is returned.
-    (resimplify (subst4 exp)))
+    (resimplify (subst4 exp k)))
 ) ; End of let
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
