@@ -1582,8 +1582,9 @@ ignoring dummy variables and array indices."
 
       (if (or (not (free n '%derivative)) (not (free d '%derivative)))
           (throw 'lhospital ()))
-      (setq n (expand-trigs (tansc n) var))
-      (setq d (expand-trigs (tansc d) var))
+	  (let (($trigexpandtimes nil)) ;see #895 limit x->inf sin(100/x)*x very slow
+         (setq n (expand-trigs (tansc n) var))
+         (setq d (expand-trigs (tansc d) var)))
 
       (multiple-value-setq (const n d) (remove-singularities n d))
       (setq const (m* const (m// nconst dconst)))
