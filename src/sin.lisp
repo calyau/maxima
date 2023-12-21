@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ans #+nil arcpart +nil coef
-		      #+nil aa *powerlist* *a* *b* *stack* #+nil w #+nil y *expres* arg var
+		      #+nil aa #+nil *powerlist* *a* *b* *stack* #+nil w #+nil y *expres* arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
@@ -756,6 +756,7 @@
 
 (putprop 'mexpt `((x n) ,'integrate-mexpt-1 ,'integrate-mexpt-2) 'integral)
 
+#+nil
 (defun rat10 (ex)
   (cond ((freevar ex) t)
 	((varp ex) nil)
@@ -1916,8 +1917,25 @@
 		   ((coefftt) (b true)))))
      (setq *b* (cdr (assoc 'b y :test #'eq)))
      (setq *c* (cdr (assoc 'c y :test #'eq)))
-     (unless  (rat10 *b*) (return nil))
-     (setq *d* (apply #'gcd (cons (1+ *c*) *powerlist*)))
+     (labels
+         ((rat10 (ex)
+            (cond ((freevar ex)
+                   t)
+	          ((varp ex)
+                   nil)
+	          ((eq (caar ex) 'mexpt)
+	           (if (varp (cadr ex))
+	               (if (integerp2 (caddr ex))
+		           (setq *powerlist* (cons (caddr ex) *powerlist*)))
+	               (and (rat10 (cadr ex))
+                            (rat10 (caddr ex)))))
+	          ((member (caar ex) '(mplus mtimes) :test #'eq)
+	           (do ((u (cdr ex) (cdr u)))
+                       ((null u) t)
+	             (if (not (rat10 (car u)))
+                         (return nil)))))))
+       (unless  (rat10 *b*) (return nil))
+       (setq *d* (apply #'gcd (cons (1+ *c*) *powerlist*))))
      (when (or (eql 1 *d*) (zerop *d*)) (return nil))
      (return
        (substint
