@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ans arcpart coef
-		      #+nil aa powerlist *a* *b* stack #+nil w #+nil y *expres* arg var
+		      #+nil aa powerlist *a* *b* *stack* #+nil w #+nil y *expres* arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
@@ -464,20 +464,20 @@
        (format t "coef =~%")
        (maxima-display coef))
      (cond ((and (not (null arcpart))
-		 (do  ((stacklist stack (cdr stacklist)))
+		 (do  ((stacklist *stack* (cdr stacklist)))
 		      ((null stacklist) t)
 		   (cond ((alike1 (car stacklist) coef)
 			  (return nil))))
-		 (not (isinop (setq w (let ((stack (cons coef stack)))
+		 (not (isinop (setq w (let ((*stack* (cons coef *stack*)))
 					(integrator coef var)))
 			      '%integrate))
 		 (setq integrand (mul2 w (sdiff arcpart var)))
-		 (do ((stacklist stack (cdr stacklist)))
+		 (do ((stacklist *stack* (cdr stacklist)))
 		     ((null stacklist) t)
 		   (cond ((alike1 (car stacklist) integrand)
 			  (return nil))))
 		 (not (isinop
-		       (setq y (let ((stack (cons integrand stack))
+		       (setq y (let ((*stack* (cons integrand *stack*))
 				     (integ integrand))
 				 (integrator integ var)))
 		       '%integrate)))
@@ -1676,7 +1676,7 @@
        0)
       
       ((let ((ans (simplify
-                   (let ($opsubst varlist genvar stack)
+                   (let ($opsubst varlist genvar *stack*)
 			 (integrator exp var)))))
 	     (if (sum-of-intsp ans)
 		 (list '(%integrate) exp var)
