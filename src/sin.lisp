@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ans #+nil arcpart +nil coef
-		      #+nil aa powerlist *a* *b* *stack* #+nil w #+nil y *expres* arg var
+		      #+nil aa *powerlist* *a* *b* *stack* #+nil w #+nil y *expres* arg var
 		      *powerl* *c* *d* exp))
 
 (defvar *debug-integrate* nil
@@ -762,7 +762,7 @@
 	((eq (caar ex) 'mexpt)
 	 (if (varp (cadr ex))
 	     (if (integerp2 (caddr ex))
-		 (setq powerlist (cons (caddr ex) powerlist)))
+		 (setq *powerlist* (cons (caddr ex) *powerlist*)))
 	     (and (rat10 (cadr ex)) (rat10 (caddr ex)))))
 	((member (caar ex) '(mplus mtimes) :test #'eq)
 	 (do ((u (cdr ex) (cdr u))) ((null u) t)
@@ -1908,7 +1908,7 @@
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
 (defun powerlist (exp var)
-  (prog (y *c* *d* powerlist *b*)
+  (prog (y *c* *d* *powerlist* *b*)
      (setq y (m2 exp
 		 '((mtimes)
 		   ((mexpt) (var varp) (c integerp2))
@@ -1917,7 +1917,7 @@
      (setq *b* (cdr (assoc 'b y :test #'eq)))
      (setq *c* (cdr (assoc 'c y :test #'eq)))
      (unless  (rat10 *b*) (return nil))
-     (setq *d* (apply #'gcd (cons (1+ *c*) powerlist)))
+     (setq *d* (apply #'gcd (cons (1+ *c*) *powerlist*)))
      (when (or (eql 1 *d*) (zerop *d*)) (return nil))
      (return
        (substint
