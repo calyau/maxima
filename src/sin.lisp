@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special *ans* 
-		      *a* *b* *stack* *expres* arg var
+		      *a* *b* *stack* *expres* #+nil arg var
 		      *powerl* *c* *d* *exp*))
 
 (defvar *debug-integrate* nil
@@ -112,7 +112,7 @@
 ;;; Check if the problem can be transformed or solved by special methods.
 ;;; 11 Methods are implemented by Moses, some more have been added.
 
-(defun intform (*expres* &aux w)
+(defun intform (*expres* &aux w arg)
   (cond ((freevar *expres*) nil)
         ((atom *expres*) nil)
 
