@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special *ans* 
-		      *a* *b* *stack* *expres* #+nil arg var
+		      *a* *b* *stack* *expres* var
 		      *powerl* *c* *d* *exp*))
 
 (defvar *debug-integrate* nil
