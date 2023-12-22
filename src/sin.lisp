@@ -20,7 +20,7 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special ans 
+(declare-top (special *ans* 
 		      *a* *b* *stack* *expres* arg var
 		      *powerl* *c* *d* *exp*))
 
@@ -557,14 +557,14 @@
 
 ;;after finding a non-integrable summand usually better to pass rest to risch
 (defun integrate1 (*exp*)
-  (do ((terms *exp* (cdr terms)) (ans))
-      ((null terms) (addn ans nil))
+  (do ((terms *exp* (cdr terms)) (*ans*))
+      ((null terms) (addn *ans* nil))
     (let ($liflag)					; don't gen li's for
-      (push (integrator (car terms) var) ans))		; parts of integrand
+      (push (integrator (car terms) var) *ans*))		; parts of integrand
     (when (and (not *in-risch-p*)                     ; Not called from rischint
-               (not (free (car ans) '%integrate))
+               (not (free (car *ans*) '%integrate))
                (cdr terms))
-	  (return (addn (cons (rischint (cons '(mplus) terms) var) (cdr ans))
+	  (return (addn (cons (rischint (cons '(mplus) terms) var) (cdr *ans*))
 			nil)))))
 
 (defun scep (expr var &aux trigl *exp*)	; Product of SIN, COS, EXP
@@ -1675,12 +1675,12 @@
       ((zerop1 *exp*)	;; special case because 0 will not pass sum-of-intsp test
        0)
       
-      ((let ((ans (simplify
+      ((let ((*ans* (simplify
                    (let ($opsubst varlist genvar *stack*)
 			 (integrator *exp* var)))))
-	     (if (sum-of-intsp ans)
+	     (if (sum-of-intsp *ans*)
 		 (list '(%integrate) *exp* var)
-		 ans))))))
+		 *ans*))))))
 
 ;; SUM-OF-INTSP
 ;;
@@ -1713,26 +1713,26 @@
 ;;
 ;;   (6) Otherwise something interesting (and hopefully useful) has
 ;;       happened. Return NIL to tell SININT to report it.
-(defun sum-of-intsp (ans)
-  (cond ((atom ans)
+(defun sum-of-intsp (*ans*)
+  (cond ((atom *ans*)
 	 ;; Result of integration should never be a constant other than zero.
 	 ;; If the result of integration is zero, it is either because:
 	 ;; 1) a subroutine inside integration failed and returned nil,
 	 ;;    and (mul 0 nil) yielded 0, meaning that the result is wrong, or
 	 ;; 2) the original integrand was actually zero - this is handled
 	 ;;    with a separate special case in sinint
-	 (not (eq ans var)))
-	((mplusp ans) (every #'sum-of-intsp (cdr ans)))
-	((eq (caar ans) '%integrate) t)
-	((mtimesp ans)
+	 (not (eq *ans* var)))
+	((mplusp *ans*) (every #'sum-of-intsp (cdr *ans*)))
+	((eq (caar *ans*) '%integrate) t)
+	((mtimesp *ans*)
          (let ((int-factors 0))
-           (not (or (dolist (factor (cdr ans))
+           (not (or (dolist (factor (cdr *ans*))
                       (unless (freeof var factor)
                         (if (sum-of-intsp factor)
                             (incf int-factors)
                             (return t))))
                     (<= 2 int-factors)))))
-	((freeof var ans) t)
+	((freeof var *ans*) t)
 	(t nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
