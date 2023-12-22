@@ -280,14 +280,13 @@
      )
     ((mlist simp) "rtest_sym"
      #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 15 64)
-     #+clisp  ((mlist simp) 15 64)
      #+sbcl ((mlist simp) 15 64))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
     ((mlist simp) "rtest_vect"
-     #-(or cmucl gcl ecl)
+     #-(or cmucl gcl ecl clisp)
      ((mlist simp) 4 9 10 13 16 19 20 21 24 25)
-     #+(or cmucl ecl gcl)
+     #+(or cmucl ecl gcl clisp)
      ((mlist simp) 4 9 10 13 16 20 21 24 25))
      "rtest_antid"
      "rtest_bffac"
