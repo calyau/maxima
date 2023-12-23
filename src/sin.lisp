@@ -69,11 +69,13 @@
 	((integerp (caddr ex))
 	 (rat8 (cadr ex)))))
 
+;; Predicate for m2 pattern matcher
 (defun rat8prime (c)
   (and (rat8 c)
        (or (not (mnump c))
            (not (zerop1 c)))))
 
+;; Predicate for m2 patter matcher
 (defun elem (a expres)
   (cond ((freevar a) t)
 	((atom a) nil)
