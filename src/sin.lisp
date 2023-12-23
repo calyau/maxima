@@ -379,7 +379,7 @@
 ;;; This is the main integration routine.  It is called from sinint.
 
 (defun integrator (*exp* var)
-  (prog (y arg *powerl* const *b* w arcpart coef integrand result)
+  (prog (y *powerl* const *b* w arcpart coef integrand result)
      (declare (special *integrator-level*))
      ;; Increment recursion counter
      (incf *integrator-level*)
