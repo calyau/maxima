@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special *ans* 
-		      *a* *b* *stack* *expres* var
+		      *a* *b* *stack* #+nil *expres* var
 		      *powerl* *c* *d* *exp*))
 
 (defvar *debug-integrate* nil
@@ -74,11 +74,13 @@
        (or (not (mnump c))
            (not (zerop1 c)))))
 
-(defun elem (a)
+(defun elem (a *expres*)
   (cond ((freevar a) t)
 	((atom a) nil)
 	((m2 a *expres*) t)
-	(t (every #'elem (cdr a)))))
+	(t (every #'(lambda (f)
+                      (elem f *expres*))
+                  (cdr a)))))
 
 (defun freevar (a)
   (cond ((atom a) (not (eq a var)))
@@ -139,9 +141,9 @@
 		 ((and (eq (caar *expres*) '%log)
                      (setq z (m2-b*x+a (cadr *expres*)))
                      (setq y (m2 *exp*
-                                 '((mtimes)
+                                 `((mtimes)
                                    ((coefftt) (c rat8))
-                                   ((coefftt) (d elem))))))
+                                   ((coefftt) (d elem ,*expres*))))))
 		  (return
 		    (let ((a (cdr (assoc 'a z :test #'eq)))
 			  (b (cdr (assoc 'b z :test #'eq)))
