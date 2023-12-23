@@ -31,9 +31,6 @@
 ;; integrator to avoid endless loops when calling the integrator from risch.
 (defvar *in-risch-p* nil)
 
-(defmacro op (frob)
-  `(get ,frob 'operators))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Predicate functions
@@ -1377,13 +1374,16 @@
 (defun trig2 (x)
   (member (car x) '(%sin %cos %tan %cot %sec %csc) :test #'eq))
 
+;; sin(n*x) for integer n /= 0.  Result not simplified.
 (defun supersinx (n)
   (let ((i (if (< n 0) -1 1)))
     ($expand (list '(mtimes) i (sinnx (timesk i n))))))
 
+;; cos(n*x) for integer n /= 0.  Result not simplified.
 (defun supercosnx (n)
   ($expand (cosnx (timesk (if (< n 0) -1 1) n))))
 
+;; sin(n*x) for integer n >= 1.  Result is not simplified.
 (defun sinnx (n)
   (if (equal n 1)
       '((%sin) x)
@@ -1391,6 +1391,7 @@
 	    (list '(mtimes) '((%sin) x) (cosnx (1- n)))
 	    (list '(mtimes) '((%cos) x) (sinnx (1- n))))))
 
+;; cos(n*x) for integer n >= 1.  Result is not simplified.
 (defun cosnx (n)
   (if (equal n 1)
       '((%cos) x)
