@@ -20,6 +20,19 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
+;; Notes:
+;;
+;; 1. The special var *powerl* could probably be replaced by a lexical
+;;    var by creating a closure for intform and integrator. integrator
+;;    initializes *powerl*, and intform can set *powerl* which intform
+;;    and integrator both use.
+;; 2. *ans* is referenced in integrate1 and is set in sinint.  It's
+;;    also used in sum-of-intsp, but it's an arg to the function.
+;;    integrate1 is only called in integrator.  If integrator returned
+;;    *ans* as a second value, and integrate1 took *ans* as an arg, we
+;;    might be able to remove this special variable.  Alternatively,
+;;    maybe establish a closure with integrator and integrate1 closing
+;;    over *ans*.
 (declare-top (special *ans* 
 		      *a* *b* var
 		      *powerl* *c* *d* *exp*))
@@ -1682,8 +1695,8 @@
        0)
       
       ((let ((*ans* (simplify
-                   (let ($opsubst varlist genvar)
-			 (integrator *exp* var nil)))))
+                     (let ($opsubst varlist genvar)
+		       (integrator *exp* var nil)))))
 	     (if (sum-of-intsp *ans*)
 		 (list '(%integrate) *exp* var)
 		 *ans*))))))
