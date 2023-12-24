@@ -33,7 +33,7 @@
 ;;    might be able to remove this special variable.  Alternatively,
 ;;    maybe establish a closure with integrator and integrate1 closing
 ;;    over *ans*.
-(declare-top (special *ans* 
+(declare-top (special #+nil *ans* 
 		      *a* *b* var
 		      #+nil *powerl* *c* *d* *exp*))
 
@@ -748,6 +748,7 @@
 ;;; Implementation of Method 1: Integrate a sum
 
 ;;after finding a non-integrable summand usually better to pass rest to risch
+#+nil
 (defun integrate1 (*exp*)
   (do ((terms *exp* (cdr terms)) (*ans*))
       ((null terms) (addn *ans* nil))
@@ -1828,55 +1829,74 @@
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
 
-;; This is the top level of the integrator
-(defun sinint (*exp* var)
-  ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
-  ;; INTEGRATOR for more details.  Initialize it here.
-  (let ((*integrator-level* 0))
-    (declare (special *integrator-level*))
+;; This closure allows integrate1 and sinint access to *ans* so that
+;; we don't need a special variable for this.  sinint calls integrator which can call integrate1 that uses *ans*
+(let (*ans*)
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    ;; Sanity checks for variables
-    (when (mnump var)
-      (merror (intl:gettext "integrate: variable must not be a number; found: ~:M") var))
-    (when ($ratp var) (setf var (ratdisrep var)))
-    (when ($ratp *exp*) (setf *exp* (ratdisrep *exp*)))
+  ;; Stage I
+  ;; Implementation of Method 1: Integrate a sum
 
-    (cond
-      ;; Distribute over lists and matrices
-      ((mxorlistp *exp*)
-       (cons (car *exp*)
-             (mapcar #'(lambda (y) (sinint y var)) (cdr *exp*))))
+  ;;after finding a non-integrable summand usually better to pass rest to risch
+  (defun integrate1 (*exp*)
+    (do ((terms *exp* (cdr terms)) (*ans*))
+        ((null terms) (addn *ans* nil))
+      (let ($liflag)                             ; don't gen li's for
+        (push (integrator (car terms) var) *ans*)) ; parts of integrand
+      (when (and (not *in-risch-p*)     ; Not called from rischint
+                 (not (free (car *ans*) '%integrate))
+                 (cdr terms))
+	(return (addn (cons (rischint (cons '(mplus) terms) var) (cdr *ans*))
+		      nil)))))
+  ;; This is the top level of the integrator
+  (defun sinint (*exp* var)
+    ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
+    ;; INTEGRATOR for more details.  Initialize it here.
+    (let ((*integrator-level* 0))
+      (declare (special *integrator-level*))
 
-      ;; The symbolic integration code doesn't really deal very well with
-      ;; subscripted variables, so if we have one then replace occurrences of var
-      ;; with an atomic gensym and recurse.
-      ((and (not (atom var))
-            (member 'array (cdar var)))
-       (let ((dummy-var (gensym)))
-         (maxima-substitute var dummy-var
-                            (sinint (maxima-substitute dummy-var var *exp*) dummy-var))))
+      ;; Sanity checks for variables
+      (when (mnump var)
+        (merror (intl:gettext "integrate: variable must not be a number; found: ~:M") var))
+      (when ($ratp var) (setf var (ratdisrep var)))
+      (when ($ratp *exp*) (setf *exp* (ratdisrep *exp*)))
 
-      ;; If *exp* is an equality, integrate both sides and add an integration
-      ;; constant
-      ((mequalp *exp*)
-       (list (car *exp*) (sinint (cadr *exp*) var)
-             (add (sinint (caddr *exp*) var)
-                  ($concat $integration_constant (incf $integration_constant_counter)))))
+      (cond
+        ;; Distribute over lists and matrices
+        ((mxorlistp *exp*)
+         (cons (car *exp*)
+               (mapcar #'(lambda (y) (sinint y var)) (cdr *exp*))))
 
-      ;; If var is an atom which occurs as an operator in *exp*, then return a noun form.
-      ((and (atom var)
-            (isinop *exp* var))
-       (list '(%integrate) *exp* var))
+        ;; The symbolic integration code doesn't really deal very well with
+        ;; subscripted variables, so if we have one then replace occurrences of var
+        ;; with an atomic gensym and recurse.
+        ((and (not (atom var))
+              (member 'array (cdar var)))
+         (let ((dummy-var (gensym)))
+           (maxima-substitute var dummy-var
+                              (sinint (maxima-substitute dummy-var var *exp*) dummy-var))))
 
-      ((zerop1 *exp*)	;; special case because 0 will not pass sum-of-intsp test
-       0)
+        ;; If *exp* is an equality, integrate both sides and add an integration
+        ;; constant
+        ((mequalp *exp*)
+         (list (car *exp*) (sinint (cadr *exp*) var)
+               (add (sinint (caddr *exp*) var)
+                    ($concat $integration_constant (incf $integration_constant_counter)))))
+
+        ;; If var is an atom which occurs as an operator in *exp*, then return a noun form.
+        ((and (atom var)
+              (isinop *exp* var))
+         (list '(%integrate) *exp* var))
+
+        ((zerop1 *exp*)	;; special case because 0 will not pass sum-of-intsp test
+         0)
       
-      ((let ((*ans* (simplify
-                     (let ($opsubst varlist genvar)
-		       (integrator *exp* var nil)))))
-	     (if (sum-of-intsp *ans*)
-		 (list '(%integrate) *exp* var)
-		 *ans*))))))
+        ((setf *ans* (simplify
+                      (let ($opsubst varlist genvar)
+		        (integrator *exp* var nil))))
+	 (if (sum-of-intsp *ans*)
+	     (list '(%integrate) *exp* var)
+	     *ans*))))))
 
 ;; SUM-OF-INTSP
 ;;
