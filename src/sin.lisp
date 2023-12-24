@@ -35,7 +35,7 @@
 ;;    over *ans*.
 (declare-top (special #+nil *ans* 
 		      *a* *b* var
-		      #+nil *powerl* *c* *d* *exp*))
+                      *c* *d* *exp*))
 
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
@@ -127,7 +127,7 @@
 ;;; Check if the problem can be transformed or solved by special methods.
 ;;; 11 Methods are implemented by Moses, some more have been added.
 
-(let (*powerl*)
+(let (powerl)
   (defun intform (expres &aux w arg)
     (cond ((freevar expres) nil)
           ((atom expres) nil)
@@ -211,7 +211,7 @@
 		  (intform (cadr expres)))
 	         (t
 		  (prog2
-                      (setq *powerl* t)
+                      (setq powerl t)
                       (monstertrig *exp* var (cadr expres))))))
         
 	  ((and (eq (caar expres) '%derivative)
@@ -247,7 +247,7 @@
 	  ((and (setq w (m2-ratrootform (cadr expres))) ; e*(a*x+b) / (c*x+d)
                 (denomfind (caddr expres))) ; expon is ratnum
            (or (progn
-                 (setq *powerl* t)
+                 (setq powerl t)
                  (ratroot *exp* var (cadr expres) w))
                (inte *exp* var)))
         
@@ -293,14 +293,14 @@
 		         (maxima-substitute w (cadr expres) *exp*)))
 	   (intform (let (($radexpand '$all))
 		      (simplify (list '(mexpt) w (caddr expres))))))))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;;------------------------------------------------------------------------------
 
-;;; This is the main integration routine.  It is called from sinint.
+  ;; This is the main integration routine.  It is called from sinint.
 
   (defun integrator (*exp* var &optional stack)
-    (prog (y #+nil *powerl* const *b* w arcpart coef integrand result)
+    (prog (y const *b* w arcpart coef integrand result)
        (declare (special *integrator-level*))
-       (setq *powerl* nil)
+       (setq powerl nil)
        ;; Increment recursion counter
        (incf *integrator-level*)
      
@@ -446,7 +446,7 @@
 			       (maxima-display y)
 			       (break))
 			     (integrator y var stack))
-			    ((and (not *powerl*)
+			    ((and (not powerl)
 				  (setq y (powerlist *exp* var)))
 			     y)
 			    ((and (not *in-risch-p*) ; Not called from rischint
