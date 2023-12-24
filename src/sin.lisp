@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special *ans* 
-		      *a* *b* #+nil *stack* var
+		      *a* *b* #+nil stack var
 		      *powerl* *c* *d* *exp*))
 
 (defvar *debug-integrate* nil
@@ -378,7 +378,7 @@
 
 ;;; This is the main integration routine.  It is called from sinint.
 
-(defun integrator (*exp* var &optional *stack*)
+(defun integrator (*exp* var &optional stack)
   (prog (y *powerl* const *b* w arcpart coef integrand result)
      (declare (special *integrator-level*))
      ;; Increment recursion counter
@@ -408,7 +408,7 @@
                                      w
                                      *exp*))
             (return (mul* const
-                          (integrator *exp* var *stack*))))
+                          (integrator *exp* var stack))))
            
            ;; First stage, Method II: Integrate sums.
 	   ((and (not (atom *exp*))
@@ -478,22 +478,22 @@
        (format t "coef =~%")
        (maxima-display coef))
      (cond ((and (not (null arcpart))
-		 (do  ((stacklist *stack* (cdr stacklist)))
+		 (do  ((stacklist stack (cdr stacklist)))
 		      ((null stacklist) t)
 		   (cond ((alike1 (car stacklist) coef)
 			  (return nil))))
-		 (not (isinop (setq w (let ((*stack* (cons coef *stack*)))
-					(integrator coef var *stack*)))
+		 (not (isinop (setq w (let ((stack (cons coef stack)))
+					(integrator coef var stack)))
 			      '%integrate))
 		 (setq integrand (mul2 w (sdiff arcpart var)))
-		 (do ((stacklist *stack* (cdr stacklist)))
+		 (do ((stacklist stack (cdr stacklist)))
 		     ((null stacklist) t)
 		   (cond ((alike1 (car stacklist) integrand)
 			  (return nil))))
 		 (not (isinop
-		       (setq y (let ((*stack* (cons integrand *stack*))
+		       (setq y (let ((stack (cons integrand stack))
 				     (integ integrand))
-				 (integrator integ var *stack*)))
+				 (integrator integ var stack)))
 		       '%integrate)))
 	    (return (add* (list '(mtimes) const w arcpart)
 			  (list '(mtimes) -1 const y))))
@@ -506,7 +506,7 @@
 				    (progn
 				      (format t "cddr y =~%")
 				      (maxima-display (cddr y)))
-				    (integrator ($trigreduce *exp*) var *stack*))
+				    (integrator ($trigreduce *exp*) var stack))
 				   (t (sce-int (car y) (cadr y) var))))
 			    ;; I don't understand why we do this. This
 			    ;; causes the stack overflow in Bug
@@ -525,7 +525,7 @@
 			       (format t "y   = ~A~%" y)
 			       (maxima-display y)
 			       (break))
-			     (integrator y var *stack*))
+			     (integrator y var stack))
 			    ((and (not *powerl*)
 				  (setq y (powerlist *exp* var)))
 			     y)
@@ -1682,8 +1682,8 @@
        0)
       
       ((let ((*ans* (simplify
-                   (let ($opsubst varlist genvar *stack*)
-			 (integrator *exp* var *stack*)))))
+                   (let ($opsubst varlist genvar)
+			 (integrator *exp* var nil)))))
 	     (if (sum-of-intsp *ans*)
 		 (list '(%integrate) *exp* var)
 		 *ans*))))))
