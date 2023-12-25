@@ -1909,26 +1909,26 @@
 ;;
 ;;   (6) Otherwise something interesting (and hopefully useful) has
 ;;       happened. Return NIL to tell SININT to report it.
-(defun sum-of-intsp (*ans*)
-  (cond ((atom *ans*)
+(defun sum-of-intsp (ans)
+  (cond ((atom ans)
 	 ;; Result of integration should never be a constant other than zero.
 	 ;; If the result of integration is zero, it is either because:
 	 ;; 1) a subroutine inside integration failed and returned nil,
 	 ;;    and (mul 0 nil) yielded 0, meaning that the result is wrong, or
 	 ;; 2) the original integrand was actually zero - this is handled
 	 ;;    with a separate special case in sinint
-	 (not (eq *ans* var)))
-	((mplusp *ans*) (every #'sum-of-intsp (cdr *ans*)))
-	((eq (caar *ans*) '%integrate) t)
-	((mtimesp *ans*)
+	 (not (eq ans var)))
+	((mplusp ans) (every #'sum-of-intsp (cdr ans)))
+	((eq (caar ans) '%integrate) t)
+	((mtimesp ans)
          (let ((int-factors 0))
-           (not (or (dolist (factor (cdr *ans*))
+           (not (or (dolist (factor (cdr ans))
                       (unless (freeof var factor)
                         (if (sum-of-intsp factor)
                             (incf int-factors)
                             (return t))))
                     (<= 2 int-factors)))))
-	((freeof var *ans*) t)
+	((freeof var ans) t)
 	(t nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
