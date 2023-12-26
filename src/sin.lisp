@@ -33,7 +33,7 @@
 ;;    might be able to remove this special variable.  Alternatively,
 ;;    maybe establish a closure with integrator and integrate1 closing
 ;;    over *ans*.
-(declare-top (special *ans* 
+(declare-top (special #+nil *ans* 
 		      *a* *b* var
                       *c* *d* *exp*))
 
@@ -749,14 +749,14 @@
 
 ;;after finding a non-integrable summand usually better to pass rest to risch
 (defun integrate1 (*exp*)
-  (do ((terms *exp* (cdr terms)) (*ans*))
-      ((null terms) (addn *ans* nil))
+  (do ((terms *exp* (cdr terms)) (ans))
+      ((null terms) (addn ans nil))
     (let ($liflag)					; don't gen li's for
-      (push (integrator (car terms) var) *ans*))		; parts of integrand
+      (push (integrator (car terms) var) ans))		; parts of integrand
     (when (and (not *in-risch-p*)                     ; Not called from rischint
-               (not (free (car *ans*) '%integrate))
+               (not (free (car ans) '%integrate))
                (cdr terms))
-	  (return (addn (cons (rischint (cons '(mplus) terms) var) (cdr *ans*))
+	  (return (addn (cons (rischint (cons '(mplus) terms) var) (cdr ans))
 			nil)))))
 
 (defun scep (expr var &aux trigl *exp*)	; Product of SIN, COS, EXP
@@ -1871,12 +1871,12 @@
       ((zerop1 *exp*)	;; special case because 0 will not pass sum-of-intsp test
        0)
       
-      ((let ((*ans* (simplify
+      ((let ((ans (simplify
                      (let ($opsubst varlist genvar)
 		       (integrator *exp* var nil)))))
-	     (if (sum-of-intsp *ans*)
+	     (if (sum-of-intsp ans)
 		 (list '(%integrate) *exp* var)
-		 *ans*))))))
+		 ans))))))
 
 ;; SUM-OF-INTSP
 ;;
