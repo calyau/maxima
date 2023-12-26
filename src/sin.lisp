@@ -20,12 +20,6 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-;; Notes:
-;;
-;; 1. The special var *powerl* could probably be replaced by a lexical
-;;    var by creating a closure for intform and integrator. integrator
-;;    initializes *powerl*, and intform can set *powerl* which intform
-;;    and integrator both use.
 (declare-top (special *a* *b* var
                       *c* *d* *exp*))
 
@@ -120,6 +114,9 @@
 ;;; 11 Methods are implemented by Moses, some more have been added.
 
 (let (powerl)
+  ;; POWERL is initialized in INTEGRATOR to NIL and can be modified in
+  ;; INTFORM in certain cases and is read by INTEGRATOR in some cases.
+  ;; Instead of a global special variable, use a closure.
   (defun intform (expres &aux w arg)
     (cond ((freevar expres) nil)
           ((atom expres) nil)
