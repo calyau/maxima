@@ -38,6 +38,11 @@
 (defun varp (x)
   (alike1 x var))
 
+;; Same as varp, but the second arg specifiies the variable to be
+;; tested.
+(defun varp2 (x var2)
+  (alike1 x var2))
+
 (defun integerp1 (x)
   "Returns 2*x if 2*x is an integer, else nil"
   (integerp2 (mul2* 2 x)))
@@ -1890,7 +1895,7 @@
   (prog (y *c* *d* power-list *b*)
      (setq y (m2 *exp*
 		 '((mtimes)
-		   ((mexpt) (var varp) (c integerp2))
+		   ((mexpt) (var varp2 var) (c integerp2))
 		   ((coefftt) (a freevar))
 		   ((coefftt) (b true)))))
      (setq *b* (cdr (assoc 'b y :test #'eq)))
@@ -1899,10 +1904,10 @@
          ((rat10 (ex)
             (cond ((freevar ex)
                    t)
-	          ((varp ex)
+	          ((varp2 ex var)
                    nil)
 	          ((eq (caar ex) 'mexpt)
-	           (if (varp (cadr ex))
+	           (if (varp2 (cadr ex) var)
 	               (if (integerp2 (caddr ex))
 		           (setq power-list (cons (caddr ex) power-list)))
 	               (and (rat10 (cadr ex))
