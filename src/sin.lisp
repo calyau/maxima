@@ -20,9 +20,8 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special ans arcpart coef
-		      aa powerlist *a* *b* k stack w y expres arg var
-		      *powerl* *c* *d* exp))
+(declare-top (special *a* *b* var
+                      *c* *d* *exp*))
 
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
@@ -30,9 +29,6 @@
 ;; When T do not call the risch integrator. This flag can be set by the risch 
 ;; integrator to avoid endless loops when calling the integrator from risch.
 (defvar *in-risch-p* nil)
-
-(defmacro op (frob)
-  `(get ,frob 'operators))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -52,7 +48,8 @@
     (cond ((not (numberp x)) nil)
 	  ((not (floatp x)) x)
 	  ((prog2 (setq u (maxima-rationalize x))
-	       (equal (cdr u) 1)) (car u)))))
+	       (equal (cdr u) 1))
+           (car u)))))
 
 ;; This predicate is used with m2 pattern matcher.
 ;; A rational expression in var.
@@ -69,16 +66,20 @@
 	((integerp (caddr ex))
 	 (rat8 (cadr ex)))))
 
+;; Predicate for m2 pattern matcher
 (defun rat8prime (c)
   (and (rat8 c)
        (or (not (mnump c))
            (not (zerop1 c)))))
 
-(defun elem (a)
+;; Predicate for m2 patter matcher
+(defun elem (a expres)
   (cond ((freevar a) t)
 	((atom a) nil)
 	((m2 a expres) t)
-	(t (every #'elem (cdr a)))))
+	(t (every #'(lambda (f)
+                      (elem f expres))
+                  (cdr a)))))
 
 (defun freevar (a)
   (cond ((atom a) (not (eq a var)))
@@ -112,196 +113,385 @@
 ;;; Check if the problem can be transformed or solved by special methods.
 ;;; 11 Methods are implemented by Moses, some more have been added.
 
-(defun intform (expres &aux w)
-  (cond ((freevar expres) nil)
-        ((atom expres) nil)
+(let (powerl)
+  ;; POWERL is initialized in INTEGRATOR to NIL and can be modified in
+  ;; INTFORM in certain cases and is read by INTEGRATOR in some cases.
+  ;; Instead of a global special variable, use a closure.
+  (defun intform (expres &aux w arg)
+    (cond ((freevar expres) nil)
+          ((atom expres) nil)
 
-        ;; Map the function intform over the arguments of a sum or a product
-	((member (caar expres) '(mplus mtimes) :test #'eq)
-         (some #'intform (cdr expres)))
+          ;; Map the function intform over the arguments of a sum or a product
+	  ((member (caar expres) '(mplus mtimes) :test #'eq)
+           (some #'intform (cdr expres)))
 
-        ((or (eq (caar expres) '%log)
-            (arcp (caar expres)))
-         (cond
-           ;; Method 9: Rational function times a log or arctric function
-	   ((setq arg (m2 exp
-			  `((mtimes) ((,(caar expres)) (b rat8))
-			    ((coefftt) (c rat8prime)))))
-	    ;; Integrand is of the form R(x)*F(S(x)) where F is a log, or 
-	    ;; arctric function and R(x) and S(x) are rational functions.
-	    (ratlog exp var (cons (cons 'a expres) arg)))
-	   (t
-	    (prog (y z)
-	       (cond
-	         ((setq y (intform (cadr expres))) (return y))
+          ((or (eq (caar expres) '%log)
+               (arcp (caar expres)))
+           (cond
+             ;; Method 9: Rational function times a log or arctric function
+	     ((setq arg (m2 *exp*
+			    `((mtimes) ((,(caar expres)) (b rat8))
+			      ((coefftt) (c rat8prime)))))
+	      ;; Integrand is of the form R(x)*F(S(x)) where F is a log, or 
+	      ;; arctric function and R(x) and S(x) are rational functions.
+	      (ratlog *exp* var (cons (cons 'a expres) arg)))
+	     (t
+	      (prog (y z)
+	         (cond
+	           ((setq y (intform (cadr expres))) (return y))
 	         
-	         ;; Method 10: Rational function times log(b*x+a)
-		 ((and (eq (caar expres) '%log)
-                     (setq z (m2-b*x+a (cadr expres)))
-                     (setq y (m2 exp
-                                 '((mtimes)
-                                   ((coefftt) (c rat8))
-                                   ((coefftt) (d elem))))))
-		  (return
-		    (let ((a (cdr (assoc 'a z :test #'eq)))
-			  (b (cdr (assoc 'b z :test #'eq)))
-			  (c (cdr (assoc 'c y :test #'eq)))
-			  (d (cdr (assoc 'd y :test #'eq)))
-		          (newvar (gensym "intform")))
-		      ;; keep var from appearing in questions to user
-		      (putprop newvar t 'internal)
-		      ;; Substitute y = log(b*x+a) and integrate again
-		      (substint
-		       expres
-		       newvar
-		       (integrator
-			(muln
-			 (list (maxima-substitute
-				`((mquotient) ((mplus) ((mexpt) $%e ,newvar)
-					       ((mtimes) -1 ,a))
-				  ,b)
-				var
-				c)
-			       `((mquotient) ((mexpt) $%e ,newvar) ,b)
-			       (maxima-substitute newvar expres d))
-			 nil)
-			newvar)))))
-		 (t (return nil)))))))
+	           ;; Method 10: Rational function times log(b*x+a)
+		   ((and (eq (caar expres) '%log)
+                         (setq z (m2-b*x+a (cadr expres)))
+                         (setq y (m2 *exp*
+                                     `((mtimes)
+                                       ((coefftt) (c rat8))
+                                       ((coefftt) (d elem ,expres))))))
+		    (return
+		      (let ((a (cdr (assoc 'a z :test #'eq)))
+			    (b (cdr (assoc 'b z :test #'eq)))
+			    (c (cdr (assoc 'c y :test #'eq)))
+			    (d (cdr (assoc 'd y :test #'eq)))
+		            (newvar (gensym "intform")))
+		        ;; keep var from appearing in questions to user
+		        (putprop newvar t 'internal)
+		        ;; Substitute y = log(b*x+a) and integrate again
+		        (substint
+		         expres
+		         newvar
+		         (integrator
+			  (muln
+			   (list (maxima-substitute
+				  `((mquotient) ((mplus) ((mexpt) $%e ,newvar)
+					                 ((mtimes) -1 ,a))
+				                ,b)
+				  var
+				  c)
+			         `((mquotient) ((mexpt) $%e ,newvar) ,b)
+			         (maxima-substitute newvar expres d))
+			   nil)
+			  newvar)))))
+		   (t (return nil)))))))
         
-        ;; We have a special function with an integral on the property list.
-        ;; After the integral property was defined for the trig functions,
-        ;; in rev 1.52, need to exclude trig functions here.
-        ((and (not (atom (car expres)))
-            (not (optrig (caar expres)))
-	    (not (eq (caar expres) 'mexpt))
-	    (get (caar expres) 'integral))
-         (when *debug-integrate*
-           (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
-         (cond
-           ((setq arg
-                  (m2 exp `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))))
-            ;; A rational function times the special function.
-            ;; Integrate with the method integration-by-parts.
-            (partial-integration (cons (cons 'a expres) arg) var))
-           ;; The method of integration-by-parts can not be applied.
-           ;; Maxima tries to get a clue for the argument of the function which
-           ;; allows a substitution for the argument.
-           ((intform (cadr expres)))
-           (t nil)))
+          ;; We have a special function with an integral on the property list.
+          ;; After the integral property was defined for the trig functions,
+          ;; in rev 1.52, need to exclude trig functions here.
+          ((and (not (atom (car expres)))
+                (not (optrig (caar expres)))
+	        (not (eq (caar expres) 'mexpt))
+	        (get (caar expres) 'integral))
+           (when *debug-integrate*
+             (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
+           (cond
+             ((setq arg
+                    (m2 *exp* `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))))
+              ;; A rational function times the special function.
+              ;; Integrate with the method integration-by-parts.
+              (partial-integration (cons (cons 'a expres) arg) var))
+             ;; The method of integration-by-parts can not be applied.
+             ;; Maxima tries to get a clue for the argument of the function which
+             ;; allows a substitution for the argument.
+             ((intform (cadr expres)))
+             (t nil)))
         
-        ;; Method 6: Elementary function of trigonometric functions
-	((optrig (caar expres))
-	 (cond ((not (setq w (m2-b*x+a (cadr expres))))
-		(intform (cadr expres)))
-	       (t
-		(prog2
-                    (setq *powerl* t)
-                    (monstertrig exp var (cadr expres))))))
+          ;; Method 6: Elementary function of trigonometric functions
+	  ((optrig (caar expres))
+	   (cond ((not (setq w (m2-b*x+a (cadr expres))))
+		  (intform (cadr expres)))
+	         (t
+		  (prog2
+                      (setq powerl t)
+                      (monstertrig *exp* var (cadr expres))))))
         
-	((and (eq (caar expres) '%derivative)
-            (eq (caar exp) (caar expres))
-            (checkderiv exp)))
+	  ((and (eq (caar expres) '%derivative)
+                (eq (caar *exp*) (caar expres))
+                (checkderiv *exp*)))
         
-        ;; Stop intform if we have not a power function.
-        ((not (eq (caar expres) 'mexpt)) nil)
+          ;; Stop intform if we have not a power function.
+          ((not (eq (caar expres) 'mexpt)) nil)
         
-        ;; Method 2: Substitution for an integral power
-        ((integerp (caddr expres)) (intform (cadr expres)))
+          ;; Method 2: Substitution for an integral power
+          ((integerp (caddr expres)) (intform (cadr expres)))
         
-        ;; Method 1: Elementary function of exponentials
-        ((freevar (cadr expres))
-         (cond ((setq w (m2-b*x+a (caddr expres)))
-                (superexpt exp var (cadr expres) w))
-               ((intform (caddr expres)))
-               ((and (eq '$%e (cadr expres))
-                   (isinop (caddr expres) '%log))
-                ;; Found something like exp(r*log(x))
-                (let* (($%e_to_numlog t)
-                       ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
-                       (nexp (resimplify exp)))
-                  (cond ((alike1 exp nexp) nil)
-                        (t (integrator (setq exp nexp) var)))))
-               (t nil)))
+          ;; Method 1: Elementary function of exponentials
+          ((freevar (cadr expres))
+           (cond ((setq w (m2-b*x+a (caddr expres)))
+                  (superexpt *exp* var (cadr expres) w))
+                 ((intform (caddr expres)))
+                 ((and (eq '$%e (cadr expres))
+                       (isinop (caddr expres) '%log))
+                  ;; Found something like exp(r*log(x))
+                  (let* (($%e_to_numlog t)
+                         ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
+                         (nexp (resimplify *exp*)))
+                    (cond ((alike1 *exp* nexp) nil)
+                          (t (integrator (setq *exp* nexp) var)))))
+                 (t nil)))
         
-        ;; The base is not a rational function. Try to get a clue for the base.
-	((not (rat8 (cadr expres)))
-	 (intform (cadr expres)))
+          ;; The base is not a rational function. Try to get a clue for the base.
+	  ((not (rat8 (cadr expres)))
+	   (intform (cadr expres)))
         
-        ;; Method 3: Substitution for a rational root
-	((and (setq w (m2-ratrootform (cadr expres))) ; e*(a*x+b) / (c*x+d)
-            (denomfind (caddr expres))) ; expon is ratnum
-         (or (progn
-              (setq *powerl* t)
-              (ratroot exp var (cadr expres) w))
-            (inte exp var)))
+          ;; Method 3: Substitution for a rational root
+	  ((and (setq w (m2-ratrootform (cadr expres))) ; e*(a*x+b) / (c*x+d)
+                (denomfind (caddr expres))) ; expon is ratnum
+           (or (progn
+                 (setq powerl t)
+                 (ratroot *exp* var (cadr expres) w))
+               (inte *exp* var)))
         
-        ;; Method 4: Binomial - Chebyschev
-	((not (integerp1 (caddr expres))) ; 2*exponent not integer
-	 (cond ((m2-chebyform exp)
-		(chebyf exp var))
-	       (t (intform (cadr expres)))))
+          ;; Method 4: Binomial - Chebyschev
+	  ((not (integerp1 (caddr expres))) ; 2*exponent not integer
+	   (cond ((m2-chebyform *exp*)
+		  (chebyf *exp* var))
+	         (t (intform (cadr expres)))))
         
-        ;; Method 5: Arctrigonometric substitution
-	((setq w (m2-c*x^2+b*x+a (cadr expres))) ; sqrt(c*x^2+b*x+a)
-	 #+nil
-	 (format t "expres = sqrt(c*x^2+b*x+a)~%")
-	 ;; I think this is method 5, arctrigonometric substitutions.
-	 ;; (Moses, pg 80.)  The integrand is of the form
-	 ;; R(x,sqrt(c*x^2+b*x+a)).  This method first eliminates the b
-	 ;; term of the quadratic, and then uses an arctrig substitution.
-	 (inte exp var))
+          ;; Method 5: Arctrigonometric substitution
+	  ((setq w (m2-c*x^2+b*x+a (cadr expres))) ; sqrt(c*x^2+b*x+a)
+	   #+nil
+	   (format t "expres = sqrt(c*x^2+b*x+a)~%")
+	   ;; I think this is method 5, arctrigonometric substitutions.
+	   ;; (Moses, pg 80.)  The integrand is of the form
+	   ;; R(x,sqrt(c*x^2+b*x+a)).  This method first eliminates the b
+	   ;; term of the quadratic, and then uses an arctrig substitution.
+	   (inte *exp* var))
         
-        ;; Method 4: Binomial - Chebyschev
-	((m2-chebyform exp )
-	 (chebyf exp var))
+          ;; Method 4: Binomial - Chebyschev
+	  ((m2-chebyform *exp* )
+	   (chebyf *exp* var))
         
-        ;; Expand expres.
-        ;; Substitute the expanded factor into the integrand and try again.
-	((not (m2 (setq w ($expand (cadr expres)))
-                (cadr expres)))
-	 (prog2
-             (setq exp (maxima-substitute w (cadr expres) exp))
-             (intform (simplify (list '(mexpt) w (caddr expres))))))
+          ;; Expand expres.
+          ;; Substitute the expanded factor into the integrand and try again.
+	  ((not (m2 (setq w ($expand (cadr expres)))
+                    (cadr expres)))
+	   (prog2
+               (setq *exp* (maxima-substitute w (cadr expres) *exp*))
+               (intform (simplify (list '(mexpt) w (caddr expres))))))
         
-        ;; Factor expres.
-        ;; Substitute the factored factor into the integrand and try again.
-	((setq w (rationalizer (cadr expres)))
-	 ;; The forms below used to have $radexpand set to $all.  But I
-	 ;; don't think we really want to do that here because that makes
-	 ;; sqrt(x^2) become x, which might be totally wrong.  This is one
-	 ;; reason why we returned -4/3 for the
-	 ;; integrate(sqrt(x+1/x-2),x,0,1).  We were replacing
-	 ;; sqrt((x-1)^2) with x - 1, which is totally wrong since 0 <= x
-	 ;; <= 1.
-	 (setq exp (let (($radexpand $radexpand))
-		     (maxima-substitute w (cadr expres) exp)))
-	 (intform (let (($radexpand '$all))
-		    (simplify (list '(mexpt) w (caddr expres))))))))
+          ;; Factor expres.
+          ;; Substitute the factored factor into the integrand and try again.
+	  ((setq w (rationalizer (cadr expres)))
+	   ;; The forms below used to have $radexpand set to $all.  But I
+	   ;; don't think we really want to do that here because that makes
+	   ;; sqrt(x^2) become x, which might be totally wrong.  This is one
+	   ;; reason why we returned -4/3 for the
+	   ;; integrate(sqrt(x+1/x-2),x,0,1).  We were replacing
+	   ;; sqrt((x-1)^2) with x - 1, which is totally wrong since 0 <= x
+	   ;; <= 1.
+	   (setq *exp* (let (($radexpand $radexpand))
+		         (maxima-substitute w (cadr expres) *exp*)))
+	   (intform (let (($radexpand '$all))
+		      (simplify (list '(mexpt) w (caddr expres))))))))
+  ;;------------------------------------------------------------------------------
+
+  ;; This is the main integration routine.  It is called from sinint.
+
+  (defun integrator (*exp* var &optional stack)
+    (prog (y const *b* w arcpart coef integrand result)
+       (declare (special *integrator-level*))
+       (setq powerl nil)
+       ;; Increment recursion counter
+       (incf *integrator-level*)
+     
+       ;; Trivial case. exp is not a function of var.
+       (if (freevar *exp*) (return (mul2* *exp* var)))
+     
+       ;; Remove constant factors
+       (setq w (partition *exp* var 1))
+       (setq const (car w))
+       (setq *exp* (cdr w))
+       #+nil
+       (progn
+         (format t "w = ~A~%" w)
+         (format t "const = ~A~%" const)
+         (format t "exp = ~A~%" *exp*))
+     
+       (cond ;; First stage, Method I: Integrate a sum.
+         ((mplusp *exp*)
+          (return (mul2* const (integrate1 (cdr *exp*)))))
+           
+         ;; Convert atan2(a,b) to atan(a/b) and try again.
+         ((setq w (isinop *exp* '%atan2))
+          (setq *exp*
+                (maxima-substitute (take '(%atan) (div (cadr w) (caddr w)))
+                                   w
+                                   *exp*))
+          (return (mul* const
+                        (integrator *exp* var stack))))
+           
+         ;; First stage, Method II: Integrate sums.
+	 ((and (not (atom *exp*))
+	       (eq (caar *exp*) '%sum))
+	  (return (mul2* const (intsum *exp* var))))
+           
+         ;; First stage, Method III: Try derivative-divides method.
+         ;; This is the workhorse that solves many integrals.
+         ((setq y (diffdiv *exp* var))
+	  (return (mul2* const y))))
+     
+       ;; At this point, we have EXP as a product of terms.  Make Y a
+       ;; list of the terms of the product.
+       (setq y (cond ((mtimesp *exp*)
+		      (cdr *exp*))
+		     (t
+		      (list *exp*))))
+     
+       ;; Second stage:
+       ;; We're looking at each term of the product and check if we can
+       ;; apply one of the special methods.
+     loop
+       #+nil
+       (progn
+         (format t "car y =~%")
+         (maxima-display (car y)))
+       (cond ((rat8 (car y))
+	      #+nil
+	      (format t "In loop, go skip~%")
+	      (go skip))
+	     ((and (setq w (intform (car y)))
+		   ;; Do not return a noun form as result at this point, because
+		   ;; we would like to check for further special integrals.
+		   ;; We store the result for later use.
+		   (setq result w)
+		   (not (isinop w '%integrate)))
+	      #+nil
+	      (format t "In loop, case intform~%")
+	      (return (mul2* const w)))
+	     (t
+	      #+nil
+	      (format t "In loop, go special~%")
+	      ;; Store a possible partial result
+	      (setq result w)
+	      (go special)))
+     skip
+       (setq y (cdr y))
+       (cond ((null y)
+              ;; Method 8: Rational functions
+	      (return (mul2* const (cond ((setq y (powerlist *exp* var)) y)
+				         (t (ratint *exp* var)))))))
+       (go loop)
+        
+     special
+       ;; Third stage: Try more general methods
+     
+       ;; SEPARC SETQS ARCPART AND COEF SUCH THAT
+       ;; COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
+       ;; ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
+       (multiple-value-setq
+           (arcpart coef)
+         (separc *exp*))
+     
+       #+nil
+       (progn
+         (format t "arcpart = ~A~%" arcpart)
+         (format t "coef =~%")
+         (maxima-display coef))
+       (cond ((and (not (null arcpart))
+		   (do  ((stacklist stack (cdr stacklist)))
+		        ((null stacklist) t)
+		     (cond ((alike1 (car stacklist) coef)
+			    (return nil))))
+		   (not (isinop (setq w (let ((stack (cons coef stack)))
+					  (integrator coef var stack)))
+			        '%integrate))
+		   (setq integrand (mul2 w (sdiff arcpart var)))
+		   (do ((stacklist stack (cdr stacklist)))
+		       ((null stacklist) t)
+		     (cond ((alike1 (car stacklist) integrand)
+			    (return nil))))
+		   (not (isinop
+		         (setq y (let ((stack (cons integrand stack))
+				       (integ integrand))
+				   (integrator integ var stack)))
+		         '%integrate)))
+	      (return (add* (list '(mtimes) const w arcpart)
+			    (list '(mtimes) -1 const y))))
+	     (t
+	      (return
+		(mul* const
+		      (cond ((setq y (scep *exp* var))
+			     (cond ((cddr y)
+				    #+nil
+				    (progn
+				      (format t "cddr y =~%")
+				      (maxima-display (cddr y)))
+				    (integrator ($trigreduce *exp*) var stack))
+				   (t (sce-int (car y) (cadr y) var))))
+			    ;; I don't understand why we do this. This
+			    ;; causes the stack overflow in Bug
+			    ;; 1487703, because we keep expanding *exp*
+			    ;; into a form that matches the original
+			    ;; and therefore we loop forever.  To
+			    ;; break this we keep track how how many
+			    ;; times we've tried this and give up
+			    ;; after 4 (arbitrarily selected) times.
+			    ((and (< *integrator-level* 4)
+				  (not (alike1 *exp* (setq y ($expand *exp*)))))
+			     #+nil
+			     (progn
+			       (format t "*exp* = ~A~%" *exp*)
+			       (maxima-display *exp*)
+			       (format t "y   = ~A~%" y)
+			       (maxima-display y)
+			       (break))
+			     (integrator y var stack))
+			    ((and (not powerl)
+				  (setq y (powerlist *exp* var)))
+			     y)
+			    ((and (not *in-risch-p*) ; Not called from rischint
+			          (setq y (rischint *exp* var))
+				  ;; rischint has not found an integral but
+				  ;; returns a noun form. Do not return that
+				  ;; noun form as result at this point, but
+				  ;; store it for later use.
+				  (setq result y)
+				  (not (isinop y '%integrate)))
+			     y)
+			    ((setq y (integrate-exp-special *exp* var))
+			     ;; Maxima found an integral for a power function
+			     y)
+			    (t
+			     ;; Integrate-exp-special has not found an integral
+			     ;; We look for a previous result obtained by
+			     ;; intform or rischint.
+			     (if result
+				 result
+				 (list '(%integrate) *exp* var)))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun separc (ex)
-  (cond ((arcfuncp ex) (setq arcpart ex coef 1))
-	((and (consp ex) (eq (caar ex) 'mtimes))
-	 (arclist (cdr ex))
-	 (setq coef (cond ((null (cdr coef)) (car coef))
-			  (t (setq coef (cons (car ex) coef))))))))
-
-(defun arclist (list)
-  (cond ((null list) nil)
-	((and (arcfuncp (car list)) (null arcpart))
-	 (setq arcpart (car list)) (arclist (cdr list)))
-	(t (setq coef (cons (car list) coef))
-	   (arclist (cdr list)))))
-
-(defun arcfuncp (ex)
-  (and (not (atom ex))
-       (or (arcp (caar ex))
-	   (eq (caar ex) '%log)     ; Experimentally treat logs also.
-	   (and (eq (caar ex) 'mexpt)
-		(integerp2 (caddr ex))
-		(> (integerp2 (caddr ex)) 0)
-		(arcfuncp (cadr ex))))))
+  (let (arcpart coef)
+    (labels
+        ((arcfuncp (ex)
+           (and (not (atom ex))
+                (or (arcp (caar ex))
+	            (eq (caar ex) '%log) ; Experimentally treat logs also.
+	            (and (eq (caar ex) 'mexpt)
+		         (integerp2 (caddr ex))
+		         (> (integerp2 (caddr ex)) 0)
+		         (arcfuncp (cadr ex))))))
+         (arclist (list)
+           (cond ((null list)
+                  nil)
+	         ((and (arcfuncp (car list))
+                       (null arcpart))
+	          (setq arcpart (car list))
+                  (arclist (cdr list)))
+	         (t
+                  (setq coef (cons (car list) coef))
+	          (arclist (cdr list))))))
+      (cond ((arcfuncp ex)
+             (setq arcpart ex
+                   coef 1))
+	    ((and (consp ex)
+                  (eq (caar ex) 'mtimes))
+	     (arclist (cdr ex))
+	     (setq coef (cond ((null (cdr coef))
+                               (car coef))
+			      (t
+                               (setq coef (cons (car ex) coef)))))))
+      (values arcpart coef))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -362,179 +552,6 @@
          ((coeffpt) (c freevar) (var varp))
          ((coeffpt) (d freevar))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; This is the main integration routine.  It is called from sinint.
-
-(defun integrator (exp var)
-  (prog (y arg *powerl* const *b* w arcpart coef integrand result)
-     (declare (special *integrator-level*))
-     ;; Increment recursion counter
-     (incf *integrator-level*)
-     
-     ;; Trivial case. exp is not a function of var.
-     (if (freevar exp) (return (mul2* exp var)))
-     
-     ;; Remove constant factors
-     (setq w (partition exp var 1))
-     (setq const (car w))
-     (setq exp (cdr w))
-     #+nil
-     (progn
-       (format t "w = ~A~%" w)
-       (format t "const = ~A~%" const)
-       (format t "exp = ~A~%" exp))
-     
-     (cond ;; First stage, Method I: Integrate a sum.
-           ((mplusp exp)
-            (return (mul2* const (integrate1 (cdr exp)))))
-           
-           ;; Convert atan2(a,b) to atan(a/b) and try again.
-           ((setq w (isinop exp '%atan2))
-            (setq exp
-                  (maxima-substitute (take '(%atan) (div (cadr w) (caddr w)))
-                                     w
-                                     exp))
-            (return (mul* const
-                          (integrator exp var))))
-           
-           ;; First stage, Method II: Integrate sums.
-	   ((and (not (atom exp))
-		 (eq (caar exp) '%sum))
-	    (return (mul2* const (intsum exp var))))
-           
-           ;; First stage, Method III: Try derivative-divides method.
-           ;; This is the workhorse that solves many integrals.
-           ((setq y (diffdiv exp var))
-	    (return (mul2* const y))))
-     
-     ;; At this point, we have EXP as a product of terms.  Make Y a
-     ;; list of the terms of the product.
-     (setq y (cond ((mtimesp exp)
-		    (cdr exp))
-		   (t
-		    (list exp))))
-     
-     ;; Second stage:
-     ;; We're looking at each term of the product and check if we can
-     ;; apply one of the special methods.
-     loop
-     #+nil
-     (progn
-       (format t "car y =~%")
-       (maxima-display (car y)))
-     (cond ((rat8 (car y))
-	    #+nil
-	    (format t "In loop, go skip~%")
-	    (go skip))
-	   ((and (setq w (intform (car y)))
-		 ;; Do not return a noun form as result at this point, because
-		 ;; we would like to check for further special integrals.
-		 ;; We store the result for later use.
-		 (setq result w)
-		 (not (isinop w '%integrate)))
-	    #+nil
-	    (format t "In loop, case intform~%")
-	    (return (mul2* const w)))
-	   (t
-	    #+nil
-	    (format t "In loop, go special~%")
-	    ;; Store a possible partial result
-	    (setq result w)
-	    (go special)))
-     skip
-     (setq y (cdr y))
-     (cond ((null y)
-            ;; Method 8: Rational functions
-	    (return (mul2* const (cond ((setq y (powerlist exp var)) y)
-				       (t (ratint exp var)))))))
-     (go loop)
-        
-     special
-     ;; Third stage: Try more general methods
-     
-     ;; SEPARC SETQS ARCPART AND COEF SUCH THAT
-     ;; COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
-     ;; ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
-     (separc exp)
-     
-     #+nil
-     (progn
-       (format t "arcpart = ~A~%" arcpart)
-       (format t "coef =~%")
-       (maxima-display coef))
-     (cond ((and (not (null arcpart))
-		 (do  ((stacklist stack (cdr stacklist)))
-		      ((null stacklist) t)
-		   (cond ((alike1 (car stacklist) coef)
-			  (return nil))))
-		 (not (isinop (setq w (let ((stack (cons coef stack)))
-					(integrator coef var)))
-			      '%integrate))
-		 (setq integrand (mul2 w (sdiff arcpart var)))
-		 (do ((stacklist stack (cdr stacklist)))
-		     ((null stacklist) t)
-		   (cond ((alike1 (car stacklist) integrand)
-			  (return nil))))
-		 (not (isinop
-		       (setq y (let ((stack (cons integrand stack))
-				     (integ integrand))
-				 (integrator integ var)))
-		       '%integrate)))
-	    (return (add* (list '(mtimes) const w arcpart)
-			  (list '(mtimes) -1 const y))))
-	   (t
-	    (return
-		(mul* const
-		      (cond ((setq y (scep exp var))
-			     (cond ((cddr y)
-				    #+nil
-				    (progn
-				      (format t "cddr y =~%")
-				      (maxima-display (cddr y)))
-				    (integrator ($trigreduce exp) var))
-				   (t (sce-int (car y) (cadr y) var))))
-			    ;; I don't understand why we do this. This
-			    ;; causes the stack overflow in Bug
-			    ;; 1487703, because we keep expanding exp
-			    ;; into a form that matches the original
-			    ;; and therefore we loop forever.  To
-			    ;; break this we keep track how how many
-			    ;; times we've tried this and give up
-			    ;; after 4 (arbitrarily selected) times.
-			    ((and (< *integrator-level* 4)
-				  (not (alike1 exp (setq y ($expand exp)))))
-			     #+nil
-			     (progn
-			       (format t "exp = ~A~%" exp)
-			       (maxima-display exp)
-			       (format t "y   = ~A~%" y)
-			       (maxima-display y)
-			       (break))
-			     (integrator y var))
-			    ((and (not *powerl*)
-				  (setq y (powerlist exp var)))
-			     y)
-			    ((and (not *in-risch-p*)  ; Not called from rischint
-			          (setq y (rischint exp var))
-				  ;; rischint has not found an integral but
-				  ;; returns a noun form. Do not return that
-				  ;; noun form as result at this point, but
-				  ;; store it for later use.
-				  (setq result y)
-				  (not (isinop y '%integrate)))
-			     y)
-			    ((setq y (integrate-exp-special exp var))
-			     ;; Maxima found an integral for a power function
-			     y)
-			    (t
-			     ;; Integrate-exp-special has not found an integral
-			     ;; We look for a previous result obtained by
-			     ;; intform or rischint.
-			     (if result
-				 result
-				 (list '(%integrate) exp var))))))))))
-
 (defun optrig (x)
   (member x '(%sin %cos %sec %tan %csc %cot) :test #'eq))
 
@@ -544,8 +561,8 @@
 ;;; Implementation of Method 1: Integrate a sum
 
 ;;after finding a non-integrable summand usually better to pass rest to risch
-(defun integrate1 (exp)
-  (do ((terms exp (cdr terms)) (ans))
+(defun integrate1 (*exp*)
+  (do ((terms *exp* (cdr terms)) (ans))
       ((null terms) (addn ans nil))
     (let ($liflag)					; don't gen li's for
       (push (integrator (car terms) var) ans))		; parts of integrand
@@ -555,7 +572,7 @@
 	  (return (addn (cons (rischint (cons '(mplus) terms) var) (cdr ans))
 			nil)))))
 
-(defun scep (expr var &aux trigl exp)	; Product of SIN, COS, EXP
+(defun scep (expr var &aux trigl *exp*)	; Product of SIN, COS, EXP
   (and (mtimesp expr)			;	of linear args.
        (loop for fac in (cdr expr) do
 	     (cond ((atom fac) (return nil))
@@ -566,21 +583,21 @@
 			 (eq (cadr fac) '$%e)
 			 (linearp (caddr fac) var))
 		    ;; should be only one exponential factor
-		    (setq exp fac))
+		    (setq *exp* fac))
 		   (t (return nil)))
-	     finally (return (cons exp trigl)))))
+	     finally (return (cons *exp* trigl)))))
 
 ;; Integrates exponential * sin or cos, all with linear args.
 
-(defun sce-int (exp s-c var)		; EXP is non-trivial
-  (let* ((e-coef (car (islinear (caddr exp) var)))
+(defun sce-int (*exp* s-c var)		; EXP is non-trivial
+  (let* ((e-coef (car (islinear (caddr *exp*) var)))
          (sc-coef (car (islinear (cadr s-c) var)))
          (sc-arg (cadr s-c))
          (abs-val (add (power e-coef 2) (power sc-coef 2))))
     (if (zerop1 abs-val)
         ;; The numerator is zero. Exponentialize the integrand and try again.
-        (integrator ($exponentialize (mul exp s-c)) var)
-        (mul (div exp abs-val)
+        (integrator ($exponentialize (mul *exp* s-c)) var)
+        (mul (div *exp* abs-val)
              (add (mul e-coef s-c)
                   (if (eq (caar s-c) '%sin)
                       (mul* (neg sc-coef) `((%cos) ,sc-arg))
@@ -614,25 +631,25 @@
 	(t (checkderiv1 expr (cddr wrt)	;Else we check later terms
 			(list* (cadr wrt) (car wrt) old-wrt)))))
 
-(defun integrallookups (exp)
+(defun integrallookups (*exp*)
   (let (form dummy-args real-args)
   (cond
-	((eq (caar exp) 'mqapply)
+	((eq (caar *exp*) 'mqapply)
 	 ;; Transform to functional form and try again.
 	 ;; For example:
 	 ;; ((MQAPPLY SIMP) (($PSI SIMP ARRAY) 1) $X)
 	 ;; => (($PSI) 1 $X)
-	 (integrallookups `((,(caaadr exp)) ,@(cdadr exp) ,@(cddr exp))))
+	 (integrallookups `((,(caaadr *exp*)) ,@(cdadr *exp*) ,@(cddr *exp*))))
 
 	;; Lookup algorithm for integral of a special function. 
 	;; The integral form is put on the property list, and can be a 
 	;; lisp function of the args.  If the form is nil, or evaluates 
         ;; to nil, then return noun form unevaluated.
-	((and (not (atom (car exp)))
-	    (setq form (get (caar exp) 'integral))
+	((and (not (atom (car *exp*)))
+	    (setq form (get (caar *exp*) 'integral))
 	    (setq dummy-args (car form))
-	    (setq real-args (cdr exp))
-	    ;; search through the args of exp and find the arg containing var
+	    (setq real-args (cdr *exp*))
+	    ;; search through the args of *exp* and find the arg containing var
 	    ;; look up the integral wrt this arg from form
 	    (setq form
 	      (do ((x real-args (cdr x))
@@ -643,11 +660,11 @@
 	    (or (not (functionp form))
 		(setq form (apply form real-args))))
 	 (when *debug-integrate*
-	   (format t "~&INTEGRALLOOKUPS: Found integral ~A.~%" (caar exp)))
+	   (format t "~&INTEGRALLOOKUPS: Found integral ~A.~%" (caar *exp*)))
 	 (substitutel real-args dummy-args form))
 
-	((eq (caar exp) 'mplus)
-	 (muln (list '((rat simp) 1 2) exp exp) nil))
+	((eq (caar *exp*) 'mplus)
+	 (muln (list '((rat simp) 1 2) *exp* *exp*) nil))
 
 	(t nil))))
 
@@ -726,18 +743,6 @@
 
 (putprop 'mexpt `((x n) ,'integrate-mexpt-1 ,'integrate-mexpt-2) 'integral)
 
-(defun rat10 (ex)
-  (cond ((freevar ex) t)
-	((varp ex) nil)
-	((eq (caar ex) 'mexpt)
-	 (if (varp (cadr ex))
-	     (if (integerp2 (caddr ex))
-		 (setq powerlist (cons (caddr ex) powerlist)))
-	     (and (rat10 (cadr ex)) (rat10 (caddr ex)))))
-	((member (caar ex) '(mplus mtimes) :test #'eq)
-	 (do ((u (cdr ex) (cdr u))) ((null u) t)
-	     (if (not (rat10 (car u))) (return nil))))))
-
 (defun integrate5 (ex var)
   (if (rat8 ex)
       (ratint ex var)
@@ -765,7 +770,7 @@
                       ; stored in a list which is returned from m2.
       (exptflag nil)) ; When T, the substitution is not possible.
   
-  (defun superexpt (exp var bas1 pow1)
+  (defun superexpt (*exp* var bas1 pow1)
     (prog (y ($logabs nil) (new-var (gensym "NEW-VAR-")))
       (putprop new-var t 'internal)
       (setq base bas1
@@ -774,7 +779,7 @@
       ;; Transform the integrand. At this point resimplify, because it is not
       ;; guaranteed, that a correct simplified expression is returned.
       ;; Use a new variable to prevent facts on the old variable to be wrongly used.
-      (setq y (resimplify (maxima-substitute new-var var (elemxpt exp))))
+      (setq y (resimplify (maxima-substitute new-var var (elemxpt *exp*))))
       (when exptflag (return nil))
       ;; Integrate the transformed integrand and substitute back.
       (return
@@ -861,26 +866,27 @@
 (defvar *ratroot* nil)  ; Expression of the form (a*x+b)/(c*x+d)
 (defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
 
-(defun ratroot (exp var *ratroot* w)
+(defun ratroot (*exp* var *ratroot* w)
   (prog (*rootlist* k y w1)
      ;; Check if the integrand has a chebyform, if so return the result.
-     (when (setq y (chebyf exp var)) (return y))
+     (when (setq y (chebyf *exp* var)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
-     (unless (rat3 exp t) (return nil))
+     (unless (rat3 *exp* t) (return nil))
      ;; Get the least common multiplier of m1, m2, ...
      (setq k (apply #'lcm *rootlist*))
      (setq w1 (cons (cons 'k k) w))
      ;; Substitute for the roots.
      (setq y
-           (subst41 exp
+           (subst41 *exp*
                     (subliss w1
                              '((mquotient)
                                ((mplus) ((mtimes) b e)
                                 ((mtimes) -1 d ((mexpt) var k)))
                                ((mplus) ((mtimes) c ((mexpt) var k))
                                 ((mtimes) -1 e a))))
-                    var))
+                    var
+                    k))
      ;; Integrate the new problem.
      (setq y
            (integrator
@@ -924,21 +930,21 @@
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.
   
-  (defun subst4 (ex)
+  (defun subst4 (ex k)
     (cond ((freevar ex) ex)
           ((atom ex) rootform)
           ((not (eq (caar ex) 'mexpt))
-           (mapcar #'(lambda (u) (subst4 u)) ex))
+           (mapcar #'(lambda (u) (subst4 u k)) ex))
           ((m2 (cadr ex) *ratroot*)
            (list (car ex) rootvar (integerp2 (timesk k (caddr ex)))))
-          (t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
+          (t (list (car ex) (subst4 (cadr ex) k) (subst4 (caddr ex) k)))))
   
-  (defun subst41 (exp a b)
+  (defun subst41 (*exp* a b k)
     (setq rootform a
           rootvar b)
     ;; At this point resimplify, because it is not guaranteed, that a correct 
     ;; simplified expression is returned.
-    (resimplify (subst4 exp)))
+    (resimplify (subst4 *exp* k)))
 ) ; End of let
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -956,10 +962,10 @@
 ;; 3. (r1+1)/q+r2 is an integer.
 ;;
 ;; I (rtoy) think that for this code to work, r1, r2, and q must be numbers.
-(defun chebyf (exp var)
+(defun chebyf (*exp* var)
   (prog (r1 r2 d1 d2 n1 n2 w q)
      ;; Return NIL if the expression doesn't match.
-     (when (not (setq w (m2-chebyform exp)))
+     (when (not (setq w (m2-chebyform *exp*)))
        (return nil))
      #+nil
      (format t "w = ~A~%" w)
@@ -1166,7 +1172,7 @@
 						    r1 r2
 						    2))))))
 			    var))))
-       (t (return (list '(%integrate) exp var))))))
+       (t (return (list '(%integrate) *exp* var))))))
 
 (defun greaterratp (x1 x2)
   (cond ((and (numberp x1) (numberp x2))
@@ -1183,27 +1189,27 @@
 (defun trig1 (x)
   (member (car x) '(%sin %cos) :test #'eq))
 
-(defun supertrig (exp)
+(defun supertrig (*exp*)
   (declare (special *notsame* *trigarg*))
-  (cond ((freevar exp) t)
-	((atom exp) nil)
-	((member (caar exp) '(mplus mtimes) :test #'eq)
-	 (and (supertrig (cadr exp))
-	      (or (null (cddr exp))
-		  (supertrig (cons (car exp)
-				   (cddr exp))))))
-	((eq (caar exp) 'mexpt)
-	 (and (supertrig (cadr exp))
-	      (supertrig (caddr exp))))
-	((eq (caar exp) '%log)
-	 (supertrig (cadr exp)))
-	((member (caar exp)
+  (cond ((freevar *exp*) t)
+	((atom *exp*) nil)
+	((member (caar *exp*) '(mplus mtimes) :test #'eq)
+	 (and (supertrig (cadr *exp*))
+	      (or (null (cddr *exp*))
+		  (supertrig (cons (car *exp*)
+				   (cddr *exp*))))))
+	((eq (caar *exp*) 'mexpt)
+	 (and (supertrig (cadr *exp*))
+	      (supertrig (caddr *exp*))))
+	((eq (caar *exp*) '%log)
+	 (supertrig (cadr *exp*)))
+	((member (caar *exp*)
 	       '(%sin %cos %tan %sec %cot %csc) :test #'eq)
-	 (cond ((m2 (cadr exp) *trigarg*) t)
-               ((m2-b*x+a (cadr exp))
+	 (cond ((m2 (cadr *exp*) *trigarg*) t)
+               ((m2-b*x+a (cadr *exp*))
                 (and (setq *notsame* t) nil))
-	       (t (supertrig (cadr exp)))))
-	(t (supertrig (cadr exp)))))
+	       (t (supertrig (cadr *exp*)))))
+	(t (supertrig (cadr *exp*)))))
 
 (defun subst2s (ex pat)
   (cond ((null ex) nil)
@@ -1213,8 +1219,8 @@
 		 (subst2s (cdr ex) pat)))))
 
 ;; Match (c*x+b), where c and b are free of x
-(defun simple-trig-arg (exp)
-  (m2 exp '((mplus) ((mtimes)
+(defun simple-trig-arg (*exp*)
+  (m2 *exp* '((mplus) ((mtimes)
 		     ((coefftt) (c freevar))
 		     ((coefftt) (v varp)))
 	    ((coeffpp) (b freevar)))))
@@ -1224,7 +1230,7 @@
 ;;; Stage II
 ;;; Implementation of Method 6: Elementary function of trigonometric functions
 
-(defun monstertrig (exp var *trigarg*)
+(defun monstertrig (*exp* var *trigarg*)
   (declare (special *trigarg*))
   (when (and (not (atom *trigarg*))
              ;; Do not exute the following code when called from rischint.
@@ -1240,7 +1246,7 @@
 		    (b (cdras 'b arg))
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
-						var exp)))
+						var *exp*)))
          (putprop new-var t 'internal)    
 	       (if (every-trigarg-alike new-exp new-var)
 		   ;; avoid endless recursion when more than one
@@ -1251,15 +1257,15 @@
 		      new-var 
 		      (div (integrator new-exp new-var) c))))))
 	    (t
-	     (return-from monstertrig (rischint exp var))))))
+	     (return-from monstertrig (rischint *exp* var))))))
   (prog (*notsame* w a b y d)
      (declare (special *notsame*))
      (cond
-       ((supertrig exp) (go a))
+       ((supertrig *exp*) (go a))
        ((null *notsame*) (return nil))
        ;; Check for an expression like a*trig1(m*x)*trig2(n*x),
        ;; where trig1 and trig2 are sin or cos.
-       ((not (setq y (m2 exp
+       ((not (setq y (m2 *exp*
                          '((mtimes)
                            ((coefftt) (a freevar))
                            (((b trig1))
@@ -1332,7 +1338,7 @@
      ;; but not a product of sin and cos.
      (cond ((not (setq y (prog2 
                            (setq *trigarg* var)
-                           (m2 exp
+                           (m2 *exp*
                                '((mtimes)
                                  ((coefftt) (a freevar))
                                  (((b trig1))
@@ -1362,23 +1368,26 @@
   a  ;; A product of trig functions and all trig functions have the same
      ;; argument *trigarg*. Maxima substitutes *trigarg* with the variable var
      ;; of integration and calls trigint to integrate the new problem.
-     (setq w (subst2s exp *trigarg*))
+     (setq w (subst2s *exp* *trigarg*))
      (setq b (cdras 'b (m2-b*x+a *trigarg*)))
      (setq a (substint *trigarg* var (trigint (div* w b) var)))
      (return (if (isinop a '%integrate)
-                 (list '(%integrate) exp var)
+                 (list '(%integrate) *exp* var)
                  a))))
 
 (defun trig2 (x)
   (member (car x) '(%sin %cos %tan %cot %sec %csc) :test #'eq))
 
+;; sin(n*x) for integer n /= 0.  Result not simplified.
 (defun supersinx (n)
   (let ((i (if (< n 0) -1 1)))
     ($expand (list '(mtimes) i (sinnx (timesk i n))))))
 
+;; cos(n*x) for integer n /= 0.  Result not simplified.
 (defun supercosnx (n)
   ($expand (cosnx (timesk (if (< n 0) -1 1) n))))
 
+;; sin(n*x) for integer n >= 1.  Result is not simplified.
 (defun sinnx (n)
   (if (equal n 1)
       '((%sin) x)
@@ -1386,6 +1395,7 @@
 	    (list '(mtimes) '((%sin) x) (cosnx (1- n)))
 	    (list '(mtimes) '((%cos) x) (sinnx (1- n))))))
 
+;; cos(n*x) for integer n >= 1.  Result is not simplified.
 (defun cosnx (n)
   (if (equal n 1)
       '((%cos) x)
@@ -1401,28 +1411,28 @@
       (not (member x '(sin* cos* sec* tan*) :test #'eq))
       (and (trigfree (car x)) (trigfree (cdr x)))))
 
-(defun rat1 (exp)
+(defun rat1 (*exp*)
   (prog (*b1* *notsame*)
      (declare (special *yy* *b1* *notsame*))
-     (when (and (numberp exp) (zerop exp))
+     (when (and (numberp *exp*) (zerop *exp*))
        (return nil))
      (setq *b1* (subst *b* 'b '((mexpt) b (n even))))
      (return (prog2
-		 (setq *yy* (rats exp))
+		 (setq *yy* (rats *exp*))
 		 (cond ((not *notsame*) *yy*))))))
 
-(defun rats (exp)
+(defun rats (*exp*)
   (prog (y)
      (declare (special *notsame* *b1*))
      (return
-       (cond ((eq exp *a*) 'x)
-	     ((atom exp)
-	      (cond ((member exp '(sin* cos* sec* tan*) :test #'eq)
+       (cond ((eq *exp* *a*) 'x)
+	     ((atom *exp*)
+	      (cond ((member *exp* '(sin* cos* sec* tan*) :test #'eq)
 		     (setq *notsame* t))
-		    (t exp)))
-	     ((setq y (m2 exp *b1*))
+		    (t *exp*)))
+	     ((setq y (m2 *exp* *b1*))
 	      (f3 y))
-	     (t (cons (car exp) (mapcar #'(lambda (g) (rats g)) (cdr exp))))))))
+	     (t (cons (car *exp*) (mapcar #'(lambda (g) (rats g)) (cdr *exp*))))))))
 
 (defun f3 (y)
   (maxima-substitute *c*
@@ -1459,7 +1469,7 @@
 
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
-(defun trigint (exp var)
+(defun trigint (*exp* var)
   (prog (y repl y1 y2 *yy* z m n *c* *yz* *a* *b* )
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
@@ -1471,7 +1481,7 @@
 				 (((%cot) x) . ((mexpt) tan* -1))
 				 (((%sec) x) . sec*)
 				 (((%csc) x) . ((mexpt) sin* -1))))
-		    exp))
+		    *exp*))
      
      (when *debug-integrate*
        (format t "~& in TRIGINT:~%")
@@ -1591,7 +1601,7 @@
      (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) tan* (n odd1))))
            (setq repl (list '(%sec) var)))
        (go getout))
-     (when (not (alike1 (setq repl ($expand exp)) exp))
+     (when (not (alike1 (setq repl ($expand *exp*)) *exp*))
        (return (integrator repl var)))
      (setq y (subliss '((sin* (mtimes) 2 x
                               ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))
@@ -1632,7 +1642,7 @@
 (defmvar $integration_constant '$%c)
 
 ;; This is the top level of the integrator
-(defun sinint (exp var)
+(defun sinint (*exp* var)
   ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
   ;; INTEGRATOR for more details.  Initialize it here.
   (let ((*integrator-level* 0))
@@ -1642,13 +1652,13 @@
     (when (mnump var)
       (merror (intl:gettext "integrate: variable must not be a number; found: ~:M") var))
     (when ($ratp var) (setf var (ratdisrep var)))
-    (when ($ratp exp) (setf exp (ratdisrep exp)))
+    (when ($ratp *exp*) (setf *exp* (ratdisrep *exp*)))
 
     (cond
       ;; Distribute over lists and matrices
-      ((mxorlistp exp)
-       (cons (car exp)
-             (mapcar #'(lambda (y) (sinint y var)) (cdr exp))))
+      ((mxorlistp *exp*)
+       (cons (car *exp*)
+             (mapcar #'(lambda (y) (sinint y var)) (cdr *exp*))))
 
       ;; The symbolic integration code doesn't really deal very well with
       ;; subscripted variables, so if we have one then replace occurrences of var
@@ -1657,28 +1667,28 @@
             (member 'array (cdar var)))
        (let ((dummy-var (gensym)))
          (maxima-substitute var dummy-var
-                            (sinint (maxima-substitute dummy-var var exp) dummy-var))))
+                            (sinint (maxima-substitute dummy-var var *exp*) dummy-var))))
 
-      ;; If exp is an equality, integrate both sides and add an integration
+      ;; If *exp* is an equality, integrate both sides and add an integration
       ;; constant
-      ((mequalp exp)
-       (list (car exp) (sinint (cadr exp) var)
-             (add (sinint (caddr exp) var)
+      ((mequalp *exp*)
+       (list (car *exp*) (sinint (cadr *exp*) var)
+             (add (sinint (caddr *exp*) var)
                   ($concat $integration_constant (incf $integration_constant_counter)))))
 
-      ;; If var is an atom which occurs as an operator in exp, then return a noun form.
+      ;; If var is an atom which occurs as an operator in *exp*, then return a noun form.
       ((and (atom var)
-            (isinop exp var))
-       (list '(%integrate) exp var))
+            (isinop *exp* var))
+       (list '(%integrate) *exp* var))
 
-      ((zerop1 exp)	;; special case because 0 will not pass sum-of-intsp test
+      ((zerop1 *exp*)	;; special case because 0 will not pass sum-of-intsp test
        0)
       
       ((let ((ans (simplify
-                   (let ($opsubst varlist genvar stack)
-			 (integrator exp var)))))
+                     (let ($opsubst varlist genvar)
+		       (integrator *exp* var nil)))))
 	     (if (sum-of-intsp ans)
-		 (list '(%integrate) exp var)
+		 (list '(%integrate) *exp* var)
 		 ans))))))
 
 ;; SUM-OF-INTSP
@@ -1740,8 +1750,8 @@
 ;;; Implementation of Method 2: Integrate a summation
 
 (defun intsum (form var)
-  (prog (exp idx ll ul pair val)
-     (setq exp (cadr form)
+  (prog (*exp* idx ll ul pair val)
+     (setq *exp* (cadr form)
 	   idx (caddr form)
 	   ll (cadddr form)
 	   ul (car (cddddr form)))
@@ -1750,22 +1760,22 @@
 	     (not (free ll var))
 	     (not (free ul var)))
 	 (return (list '(%integrate) form var)))
-     (setq pair (partition exp var 1))
+     (setq pair (partition *exp* var 1))
      (when (and (mexptp (cdr pair))
 		(eq (caddr pair) var))
        (setq val (maxima-substitute ll idx (cadddr pair)))
        (cond ((equal val -1)
-	      (return (add (integrator (maxima-substitute ll idx exp) var)
-			    (intsum1 exp idx (add 1 ll) ul var))))
+	      (return (add (integrator (maxima-substitute ll idx *exp*) var)
+			    (intsum1 *exp* idx (add 1 ll) ul var))))
 	     ((mlsp val -1)
 	      (return (list '(%integrate) form var)))))
-     (return (intsum1 exp idx ll ul var))))
+     (return (intsum1 *exp* idx ll ul var))))
 
-(defun intsum1 (exp idx ll ul var)
+(defun intsum1 (*exp* idx ll ul var)
   (assume (list '(mgeqp) idx ll))
   (if (not (eq ul '$inf))
       (assume (list '(mgeqp) ul idx)))
-  (simplifya (list '(%sum) (integrator exp var) idx ll ul) t))
+  (simplifya (list '(%sum) (integrator *exp* var) idx ll ul) t))
 
 (defun finds (x)
   (if (atom x)
@@ -1782,8 +1792,8 @@
 ;;; The integrand is like log(x)*f'(x). To obtain the result the technique of
 ;;; partial integration is applied: log(x)*f(x)-integrate(1/x*f(x),x)
 
-(defun ratlog (exp var form)
-  (prog (b c d y z w)
+(defun ratlog (*exp* var form)
+  (prog (b c d y z)
      (setq y form)
      (setq b (cdr (assoc 'b y :test #'eq)))
      (setq c (cdr (assoc 'c y :test #'eq)))
@@ -1830,16 +1840,16 @@
 (defun every-trigarg-alike (y arg)
   (cond ((atom y) t)
 	((optrig (caar y)) (alike1 arg (cadr y)))
-	(t (every (lambda (exp)
-		    (every-trigarg-alike exp arg))
+	(t (every (lambda (*exp*)
+		    (every-trigarg-alike *exp* arg))
 		  (cdr y)))))
 
 ;; return argument of first trig operation encountered in y
 (defun find-first-trigarg (y)
   (cond ((atom y) nil)
 	((optrig (caar y)) (cadr y))
-	(t (some (lambda (exp)
-		   (find-first-trigarg exp))
+	(t (some (lambda (*exp*)
+		   (find-first-trigarg *exp*))
 		 (cdr y)))))
 
 ;; return constant factor that makes elements of alist match elements of blist
@@ -1873,20 +1883,37 @@
 (defun timesloop (a b)
   (cons '(mplus) (mapcar #'(lambda (c) (mul2* a c)) b)))
 
-(defun expands (aa b)
-  (addn (mapcar #'(lambda (c) (timesloop c aa)) b) nil))
+(defun expands (arg1 arg2)
+  (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
-(defun powerlist (exp var)
-  (prog (y *c* *d* powerlist *b*)
-     (setq y (m2 exp
+(defun powerlist (*exp* var)
+  (prog (y *c* *d* power-list *b*)
+     (setq y (m2 *exp*
 		 '((mtimes)
 		   ((mexpt) (var varp) (c integerp2))
 		   ((coefftt) (a freevar))
 		   ((coefftt) (b true)))))
      (setq *b* (cdr (assoc 'b y :test #'eq)))
      (setq *c* (cdr (assoc 'c y :test #'eq)))
-     (unless  (rat10 *b*) (return nil))
-     (setq *d* (apply #'gcd (cons (1+ *c*) powerlist)))
+     (labels
+         ((rat10 (ex)
+            (cond ((freevar ex)
+                   t)
+	          ((varp ex)
+                   nil)
+	          ((eq (caar ex) 'mexpt)
+	           (if (varp (cadr ex))
+	               (if (integerp2 (caddr ex))
+		           (setq power-list (cons (caddr ex) power-list)))
+	               (and (rat10 (cadr ex))
+                            (rat10 (caddr ex)))))
+	          ((member (caar ex) '(mplus mtimes) :test #'eq)
+	           (do ((u (cdr ex) (cdr u)))
+                       ((null u) t)
+	             (if (not (rat10 (car u)))
+                         (return nil)))))))
+       (unless  (rat10 *b*) (return nil))
+       (setq *d* (apply #'gcd (cons (1+ *c*) power-list))))
      (when (or (eql 1 *d*) (zerop *d*)) (return nil))
      (return
        (substint
@@ -1925,27 +1952,27 @@
 ;; In other words, the method performs an implicit substitution y = u(x),
 ;; and obtains the integral of op(y)dy by a table look up.
 ;;
-(defun diffdiv (exp var)
+(defun diffdiv (*exp* var)
   (prog (y *a* x v *d* z w r)
-     (cond ((and (mexptp exp)
-		 (mplusp (cadr exp))
-		 (integerp (caddr exp))
-		 (< (caddr exp) 6)
-		 (> (caddr exp) 0))
-	    (return (integrator (expandexpt (cadr exp) (caddr exp)) var))))
+     (cond ((and (mexptp *exp*)
+		 (mplusp (cadr *exp*))
+		 (integerp (caddr *exp*))
+		 (< (caddr *exp*) 6)
+		 (> (caddr *exp*) 0))
+	    (return (integrator (expandexpt (cadr *exp*) (caddr *exp*)) var))))
 
      ;; If not a product, transform to a product with one term
-     (setq exp (cond ((mtimesp exp) exp) (t (list '(mtimes) exp))))
+     (setq *exp* (cond ((mtimesp *exp*) *exp*) (t (list '(mtimes) *exp*))))
 
-     ;; Loop over the terms in exp
-     (setq z (cdr exp))
+     ;; Loop over the terms in *exp*
+     (setq z (cdr *exp*))
      a    (setq y (car z))
 
      ;; This m2 pattern matches const*(exp/y)
      (setq r (list '(mplus)
 		   (cons '(coeffpt)
 			 (cons '(c free1)
-			       (remove y (cdr exp) :count 1)))))
+			       (remove y (cdr *exp*) :count 1)))))
      (cond
       ;; Case u(var) is the identity function. y is a term in exp.
       ;; Match if diff(y,var) == c*(exp/y).
@@ -1970,7 +1997,7 @@
      (cond
        ((setq w (cond ((and (setq x (sdiff w var))
 			    (mplusp x)
-			    (setq *d* (remove y (cdr exp) :count 1))
+			    (setq *d* (remove y (cdr *exp*) :count 1))
 			    (setq v (car *d*))
 			    (mplusp v)
 			    (not (cdr *d*)))
@@ -1995,19 +2022,19 @@
 
 (defun substint (x y expres)
   (if (and (not (atom expres)) (eq (caar expres) '%integrate))
-      (list (car expres) exp var)
+      (list (car expres) *exp* var)
       (substint1 (maxima-substitute x y expres))))
 
-(defun substint1 (exp)
-  (cond ((atom exp) exp)
-	((and (eq (caar exp) '%integrate)
-	      (null (cdddr exp))
-	      (not (symbolp (caddr exp)))
-	      (not (free (caddr exp) var)))
+(defun substint1 (*exp*)
+  (cond ((atom *exp*) *exp*)
+	((and (eq (caar *exp*) '%integrate)
+	      (null (cdddr *exp*))
+	      (not (symbolp (caddr *exp*)))
+	      (not (free (caddr *exp*) var)))
 	 (simplify (list '(%integrate)
-			 (mul2 (cadr exp) (sdiff (caddr exp) var))
+			 (mul2 (cadr *exp*) (sdiff (caddr *exp*) var))
 			 var)))
-	(t (recur-apply #'substint1 exp))))
+	(t (recur-apply #'substint1 *exp*))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
