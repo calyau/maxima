@@ -1755,6 +1755,49 @@ See also @mref{set_alt_display} and @mrefdot{display2d}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{maxima_unicode_display}
+@defvr {Option variable} maxima_unicode_display
+Default value: @code{true}
+
+When @code{maxima_unicode_display} is @code{true},
+the 2-d pretty printer uses Unicode drawing characters [1] to display
+integrals, summations, products, matrices, ratios, derivatives,
+@code{box} expressions, @code{at} expressions, and absolute value expressions.
+
+Otherwise, the pretty printer uses only ASCII characters to display every kind of expression.
+
+In addition to displaying expressions in console interaction (as @code{%o} labeled expressions),
+the 2-d pretty printer is invoked to display expressions for @code{print},
+and @code{printf} with the @code{~m} format specifier.
+
+@ifnotinfo
+Examples:
+
+Expressions displayed by 2-d pretty printer using Unicode drawing characters
+(@code{maxima_unicode_display} equal to @code{true}),
+shown as an image:
+
+@image{figures/maxima-unicode-display-variety-1}
+
+Same expressions, displayed using only ASCII characters
+(@code{maxima_unicode_display} equal to @code{false}),
+shown as an image:
+
+@image{figures/maxima-unicode-display-variety-1-ascii}
+
+@end ifnotinfo
+
+Footnotes:
+
+[1] @url{https://en.wikipedia.org/wiki/Box-drawing_character}
+
+@opencatbox{Categories:}
+@category{Display flags and variables}
+@closecatbox
+
+@end defvr
+
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES
 
