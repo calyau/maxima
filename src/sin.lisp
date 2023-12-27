@@ -946,7 +946,11 @@
       (rootvar nil)) ; The variable we substitute for the root.
   
   (defun subst4 (ex k)
-    (cond ((freevar ex) ex)
+    (cond ((freevar2 ex rootvar)
+           ;; SUBST4 is called from SUBST41 with ROOTVAR equal to VAR
+           ;; (from RATROOT).  Hence we can use FREEVAR2 to see if EX
+           ;; is free of ROOTVAR instead of using FREEVAR.
+           ex)
           ((atom ex) rootform)
           ((not (eq (caar ex) 'mexpt))
            (mapcar #'(lambda (u) (subst4 u k)) ex))
@@ -955,6 +959,7 @@
           (t (list (car ex) (subst4 (cadr ex) k) (subst4 (caddr ex) k)))))
   
   (defun subst41 (*exp* a b k)
+    ;; Note:  SUBST41 is only called from RATROOT, and the arg B is VAR.
     (setq rootform a
           rootvar b)
     ;; At this point resimplify, because it is not guaranteed, that a correct 
