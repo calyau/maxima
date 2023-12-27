@@ -887,7 +887,7 @@
      (when (setq y (chebyf *exp* var)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
-     (unless (rat3 *exp* t) (return nil))
+     (unless (rat3 *exp* t var) (return nil))
      ;; Get the least common multiplier of m1, m2, ...
      (setq k (apply #'lcm *rootlist*))
      (setq w1 (cons (cons 'k k) w))
@@ -923,24 +923,25 @@
      ;; Substitute back and return the result.
      (return (substint (power *ratroot* (power k -1)) var y))))
 
-(defun rat3 (ex ind)
-  (cond ((freevar ex) t)
+;; This is only called from RATROOT.  Maybe move this into RATROOT?
+(defun rat3 (ex ind var2)
+  (cond ((freevar2 ex var2) t)
 	((atom ex) ind)
 	((member (caar ex) '(mtimes mplus) :test #'eq)
 	 (do ((u (cdr ex) (cdr u)))
 	     ((null u) t)
-	   (if (not (rat3 (car u) ind))
+	   (if (not (rat3 (car u) ind var2))
 	       (return nil))))
 	((not (eq (caar ex) 'mexpt))
-	 (rat3 (car (margs ex)) t))
-	((freevar (cadr ex))
-	 (rat3 (caddr ex) t))
+	 (rat3 (car (margs ex)) t var2))
+	((freevar2 (cadr ex) var2)
+	 (rat3 (caddr ex) t var2))
 	((integerp (caddr ex))
-	 (rat3 (cadr ex) ind))
+	 (rat3 (cadr ex) ind var2))
         ((and (m2 (cadr ex) *ratroot*)
 	      (denomfind (caddr ex)))
          (setq *rootlist* (cons (denomfind (caddr ex)) *rootlist*)))
-        (t (rat3 (cadr ex) nil))))
+        (t (rat3 (cadr ex) nil var2))))
 
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.
