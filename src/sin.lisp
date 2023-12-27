@@ -57,7 +57,7 @@
            (car u)))))
 
 ;; This predicate is used with m2 pattern matcher.
-;; A rational expression in var.
+;; A rational expression in var2.
 (defun rat8 (ex var2)
   (cond ((or (varp2 ex var2) (freevar2 ex var2))
 	 t)
@@ -78,12 +78,12 @@
            (not (zerop1 c)))))
 
 ;; Predicate for m2 patter matcher
-(defun elem (a expres)
-  (cond ((freevar a) t)
+(defun elem (a expres var2)
+  (cond ((freevar2 a var2) t)
 	((atom a) nil)
 	((m2 a expres) t)
 	(t (every #'(lambda (f)
-                      (elem f expres))
+                      (elem f expres var2))
                   (cdr a)))))
 
 (defun freevar (a)
@@ -160,7 +160,7 @@
                          (setq y (m2 *exp*
                                      `((mtimes)
                                        ((coefftt) (c rat8 ,var))
-                                       ((coefftt) (d elem ,expres))))))
+                                       ((coefftt) (d elem ,expres ,var))))))
 		    (return
 		      (let ((a (cdr (assoc 'a z :test #'eq)))
 			    (b (cdr (assoc 'b z :test #'eq)))
