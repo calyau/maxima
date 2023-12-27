@@ -58,22 +58,22 @@
 
 ;; This predicate is used with m2 pattern matcher.
 ;; A rational expression in var.
-(defun rat8 (ex)
-  (cond ((or (varp ex) (freevar ex))
+(defun rat8 (ex var2)
+  (cond ((or (varp2 ex var2) (freevar ex))
 	 t)
 	((member (caar ex) '(mplus mtimes) :test #'eq)
 	 (do ((u (cdr ex) (cdr u)))
 	     ((null u) t)
-	   (if (not (rat8 (car u)))
+	   (if (not (rat8 (car u) var2))
 	       (return nil))))
 	((not (eq (caar ex) 'mexpt))
 	 nil)
 	((integerp (caddr ex))
-	 (rat8 (cadr ex)))))
+	 (rat8 (cadr ex) var2))))
 
 ;; Predicate for m2 pattern matcher
-(defun rat8prime (c)
-  (and (rat8 c)
+(defun rat8prime (c var2)
+  (and (rat8 c var2)
        (or (not (mnump c))
            (not (zerop1 c)))))
 
@@ -135,8 +135,8 @@
            (cond
              ;; Method 9: Rational function times a log or arctric function
 	     ((setq arg (m2 *exp*
-			    `((mtimes) ((,(caar expres)) (b rat8))
-			      ((coefftt) (c rat8prime)))))
+			    `((mtimes) ((,(caar expres)) (b rat8 ,var))
+			      ((coefftt) (c rat8prime ,var)))))
 	      ;; Integrand is of the form R(x)*F(S(x)) where F is a log, or 
 	      ;; arctric function and R(x) and S(x) are rational functions.
 	      (ratlog *exp* var (cons (cons 'a expres) arg)))
@@ -150,7 +150,7 @@
                          (setq z (m2-b*x+a (cadr expres) var))
                          (setq y (m2 *exp*
                                      `((mtimes)
-                                       ((coefftt) (c rat8))
+                                       ((coefftt) (c rat8 ,var))
                                        ((coefftt) (d elem ,expres))))))
 		    (return
 		      (let ((a (cdr (assoc 'a z :test #'eq)))
@@ -189,7 +189,7 @@
              (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
            (cond
              ((setq arg
-                    (m2 *exp* `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))))
+                    (m2 *exp* `((mtimes) ((,(caar expres)) (b rat8 ,var)) ((coefftt) (c rat8prime ,var)))))
               ;; A rational function times the special function.
               ;; Integrate with the method integration-by-parts.
               (partial-integration (cons (cons 'a expres) arg) var))
@@ -234,7 +234,7 @@
                  (t nil)))
         
           ;; The base is not a rational function. Try to get a clue for the base.
-	  ((not (rat8 (cadr expres)))
+	  ((not (rat8 (cadr expres) var))
 	   (intform (cadr expres)))
         
           ;; Method 3: Substitution for a rational root
@@ -349,7 +349,7 @@
        (progn
          (format t "car y =~%")
          (maxima-display (car y)))
-       (cond ((rat8 (car y))
+       (cond ((rat8 (car y) var)
 	      #+nil
 	      (format t "In loop, go skip~%")
 	      (go skip))
@@ -749,7 +749,7 @@
 (putprop 'mexpt `((x n) ,'integrate-mexpt-1 ,'integrate-mexpt-2) 'integral)
 
 (defun integrate5 (ex var)
-  (if (rat8 ex)
+  (if (rat8 ex var)
       (ratint ex var)
       (integrator ex var)))
 
