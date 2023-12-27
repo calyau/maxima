@@ -1238,7 +1238,7 @@
   (m2 *exp* `((mplus) ((mtimes)
 		       ((coefftt) (c freevar2 ,var2))
 		       ((coefftt) (v varp2 ,var2)))
-	      ((coeffpp) (b freevar)))))
+	      ((coeffpp) (b freevar2 ,var2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2070,12 +2070,12 @@
          ((mplus)
           ;; The order of the pattern is critical. If we change it,
           ;; we do not get the expected match.
-          ((coeffpp) (d freevar))
+          ((coeffpp) (d freevar2 ,var2))
           ((coefft) (c freevar0)
            ((mexpt)
             ((mexpt) (z varp2 ,var2) (r freevar0))
-            (p freevar)))))
-        (v freevar))))
+            (p freevar2 ,var2)))))
+        (v freevar2 ,var2))))
 
 ;;; Recognize z^v*a^(b*z^r+d)
 
