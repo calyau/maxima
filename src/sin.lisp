@@ -1237,7 +1237,7 @@
 (defun simple-trig-arg (*exp* var2)
   (m2 *exp* `((mplus) ((mtimes)
 		       ((coefftt) (c freevar2 ,var2))
-		       ((coefftt) (v varp)))
+		       ((coefftt) (v varp2 ,var2)))
 	      ((coeffpp) (b freevar)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1285,11 +1285,11 @@
                            ((coefftt) (a freevar2 ,var))
                            (((b trig1))
                             ((mtimes)
-                             (x varp)
+                             (x varp2 ,var)
                              ((coefftt) (m freevar2 ,var))))
                            (((d trig1))
                             ((mtimes)
-                             (x varp)
+                             (x varp2 ,var)
                              ((coefftt) (n freevar2 ,var))))))))
         (go b))
 ; This check has been done with the pattern match.
@@ -1358,7 +1358,7 @@
                                  ((coefftt) (a freevar2 ,var))
                                  (((b trig1))
                                   ((mtimes) 
-                                   (x varp)
+                                   (x varp2 ,var)
                                    ((coefftt) (n integerp2))))
                                  ((coefftt) (c supertrig)))))))
             (return nil)))
