@@ -1484,8 +1484,9 @@
   (do ((i (- h 2) (1- i))
        (nl-foot `((0 ,(1- h) ,char-foot)))
        (nl-head `((0 ,(1- h) ,char-head))))
-      ((or (and (maxima-unicode-enabled) (= i d)) (and (not (maxima-unicode-enabled)) (< i d)))
-       (if (maxima-unicode-enabled) (push `(-1 ,i ,char-foot) nl-head))
+      ((or (and (maxima-unicode-enabled) (<= i d)) (and (not (maxima-unicode-enabled)) (< i d)))
+       (when (and (maxima-unicode-enabled) (= i d))
+         (push `(-1 ,i ,char-foot) nl-head))
        (draw-linear (nreverse nl-head) oldrow oldcol))
     (push `(-1 ,i ,char-body) nl-head)))
 
