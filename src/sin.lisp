@@ -147,7 +147,7 @@
 	         
 	           ;; Method 10: Rational function times log(b*x+a)
 		   ((and (eq (caar expres) '%log)
-                         (setq z (m2-b*x+a (cadr expres)))
+                         (setq z (m2-b*x+a (cadr expres) var))
                          (setq y (m2 *exp*
                                      `((mtimes)
                                        ((coefftt) (c rat8))
@@ -201,7 +201,7 @@
         
           ;; Method 6: Elementary function of trigonometric functions
 	  ((optrig (caar expres))
-	   (cond ((not (setq w (m2-b*x+a (cadr expres))))
+	   (cond ((not (setq w (m2-b*x+a (cadr expres) var)))
 		  (intform (cadr expres)))
 	         (t
 		  (prog2
@@ -220,7 +220,7 @@
         
           ;; Method 1: Elementary function of exponentials
           ((freevar (cadr expres))
-           (cond ((setq w (m2-b*x+a (caddr expres)))
+           (cond ((setq w (m2-b*x+a (caddr expres) var))
                   (superexpt *exp* var (cadr expres) w))
                  ((intform (caddr expres)))
                  ((and (eq '$%e (cadr expres))
@@ -252,7 +252,7 @@
 	         (t (intform (cadr expres)))))
         
           ;; Method 5: Arctrigonometric substitution
-	  ((setq w (m2-c*x^2+b*x+a (cadr expres))) ; sqrt(c*x^2+b*x+a)
+	  ((setq w (m2-c*x^2+b*x+a (cadr expres) var)) ; sqrt(c*x^2+b*x+a)
 	   #+nil
 	   (format t "expres = sqrt(c*x^2+b*x+a)~%")
 	   ;; I think this is method 5, arctrigonometric substitutions.
@@ -532,18 +532,18 @@
         ((coefftt) (a freevar)))))
 
 ;; Pattern to match b*x + a
-(defun m2-b*x+a (expr)
+(defun m2-b*x+a (expr var2)
   (m2 expr
       `((mplus)
-        ((coeffpt) (b freevar) (x varp))
+        ((coeffpt) (b freevar) (x varp2 ,var2))
         ((coeffpt) (a freevar)))))
 
 ;; This is the pattern c*x^2 + b * x + a.
-(defun m2-c*x^2+b*x+a (expr)
+(defun m2-c*x^2+b*x+a (expr var2)
   (m2 expr
       `((mplus)
-        ((coeffpt) (c freevar) ((mexpt) (x varp) 2))
-        ((coeffpt) (b freevar) (x varp))
+        ((coeffpt) (c freevar) ((mexpt) (x varp2 ,var2) 2))
+        ((coeffpt) (b freevar) (x varp2 ,var2))
         ((coeffpt) (a freevar)))))
 
 ;; This is the pattern (a*x+b)*(c*x+d)
@@ -819,7 +819,7 @@
                                (take '(%log) (cadr expr))
                                (caddr expr)))))
           ;; The exponent must be linear in the variable of integration.
-          ((not (setq w (m2-b*x+a (caddr expr))))
+          ((not (setq w (m2-b*x+a (caddr expr) var)))
            (list (car expr) base (elemxpt (caddr expr))))
           ;; Do the substitution y = g^(b*x+a).
           (t
@@ -1211,7 +1211,7 @@
 	((member (caar *exp*)
 	       '(%sin %cos %tan %sec %cot %csc) :test #'eq)
 	 (cond ((m2 (cadr *exp*) *trigarg*) t)
-               ((m2-b*x+a (cadr *exp*))
+               ((m2-b*x+a (cadr *exp*) var)
                 (and (setq *notsame* t) nil))
 	       (t (supertrig (cadr *exp*)))))
 	(t (supertrig (cadr *exp*)))))
@@ -1374,7 +1374,7 @@
      ;; argument *trigarg*. Maxima substitutes *trigarg* with the variable var
      ;; of integration and calls trigint to integrate the new problem.
      (setq w (subst2s *exp* *trigarg*))
-     (setq b (cdras 'b (m2-b*x+a *trigarg*)))
+     (setq b (cdras 'b (m2-b*x+a *trigarg* var)))
      (setq a (substint *trigarg* var (trigint (div* w b) var)))
      (return (if (isinop a '%integrate)
                  (list '(%integrate) *exp* var)
@@ -1894,8 +1894,8 @@
 (defun powerlist (*exp* var)
   (prog (y *c* *d* power-list *b*)
      (setq y (m2 *exp*
-		 '((mtimes)
-		   ((mexpt) (var varp2 var) (c integerp2))
+		 `((mtimes)
+		   ((mexpt) (var varp2 ,var) (c integerp2))
 		   ((coefftt) (a freevar))
 		   ((coefftt) (b true)))))
      (setq *b* (cdr (assoc 'b y :test #'eq)))
@@ -2049,9 +2049,9 @@
 
 ;;; Recognize (a^(c*(z^r)^p+d)^v
 
-(defun m2-exp-type-1a (expr)
+(defun m2-exp-type-1a (expr var2)
   (m2 expr
-      '((mexpt)
+      `((mexpt)
         ((mexpt)
          (a freevar0)
          ((mplus)
@@ -2060,293 +2060,293 @@
           ((coeffpp) (d freevar))
           ((coefft) (c freevar0)
            ((mexpt)
-            ((mexpt) (z varp) (r freevar0))
+            ((mexpt) (z varp2 ,var2) (r freevar0))
             (p freevar)))))
         (v freevar))))
 
 ;;; Recognize z^v*a^(b*z^r+d)
 
-(defun m2-exp-type-2 (expr)
+(defun m2-exp-type-2 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (v freevar0))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (v freevar0))
         ((mexpt)
          (a freevar0)
          ((mplus)
           ((coeffpp) (d freevar))
-          ((coefft) (b freevar0) ((mexpt) (z varp) (r freevar0))))))))
+          ((coefft) (b freevar0) ((mexpt) (z varp2 ,var2) (r freevar0))))))))
 
 ;;; Recognize z^v*%e^(a*z^r+b)^u
 
-(defun m2-exp-type-2-1 (expr)
+(defun m2-exp-type-2-1 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (v freevar0))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (v freevar0))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (b freevar))
-           ((coefft) (a freevar0) ((mexpt) (z varp) (r freevar0)))))
+           ((coefft) (a freevar0) ((mexpt) (z varp2 ,var2) (r freevar0)))))
          (u freevar)))))
 
 ;;; Recognize (a*z+b)^p*%e^(c*z+d)
 
-(defun m2-exp-type-3 (expr)
+(defun m2-exp-type-3 (expr var2)
   (m2 expr
-    '((mtimes)
+    `((mtimes)
 	((mexpt)
 	   ((mplus)
-	      ((coefft) (a freevar0) (z varp))
+	      ((coefft) (a freevar0) (z varp2 ,var2))
 	      ((coeffpp) (b freevar)))
 	   (p freevar0))
       ((mexpt)
 	 $%e
 	 ((mplus)
-	    ((coefft) (c freevar0) (z varp))
+	    ((coefft) (c freevar0) (z varp2 ,var2))
 	    ((coeffpp) (d freevar)))))))
 
 ;;; Recognize d^(a*z^2+b/z^2+c)
 
-(defun m2-exp-type-4 (expr)
+(defun m2-exp-type-4 (expr var2)
   (m2 expr
-    '((mexpt)
+    `((mexpt)
 	(d freevar0)
 	((mplus)
-	   ((coefft) (a freevar0) ((mexpt) (z varp) 2))
-	   ((coefft) (b freevar0) ((mexpt) (z varp) -2))
+	   ((coefft) (a freevar0) ((mexpt) (z varp2 ,var2) 2))
+	   ((coefft) (b freevar0) ((mexpt) (z varp2 ,var2) -2))
 	   ((coeffpp) (c freevar))))))
 
 ;;; Recognize z^(2*n)*d^(a*z^2+b/z^2+c)
 
-(defun m2-exp-type-4-1 (expr)
+(defun m2-exp-type-4-1 (expr var2)
   (m2 expr
-    '((mtimes)
-	((mexpt) (z varp) (n freevar0))
+    `((mtimes)
+	((mexpt) (z varp2 ,var2) (n freevar0))
 	((mexpt)
 	   (d freevar0)
 	   ((mplus)
-	      ((coefft)  (a freevar0) ((mexpt) (z varp) 2))
-	      ((coefft)  (b freevar0) ((mexpt) (z varp) -2))
+	      ((coefft)  (a freevar0) ((mexpt) (z varp2 ,var2) 2))
+	      ((coefft)  (b freevar0) ((mexpt) (z varp2 ,var2) -2))
 	      ((coeffpp) (c freevar)))))))
 
 ;;; Recognize z^n*d^(a*z^2+b*z+c)
 
-(defun m2-exp-type-5 (expr)
+(defun m2-exp-type-5 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (n freevar))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (n freevar))
         ((mexpt)
          (d freevar0)
          ((mplus)
-          ((coeffpt) (a freevar) ((mexpt) (z varp) 2))
-          ((coeffpt) (b freevar) (z varp))
+          ((coeffpt) (a freevar) ((mexpt) (z varp2 ,var2) 2))
+          ((coeffpt) (b freevar) (z varp2 ,var2))
           ((coeffpp) (c freevar)))))))
 
 ;;; Recognize z^n*(%e^(a*z^2+b*z+c))^u
 
-(defun m2-exp-type-5-1 (expr)
+(defun m2-exp-type-5-1 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (n freevar0))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (n freevar0))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (c freevar))
-           ((coefft) (a freevar0) ((mexpt) (z varp) 2))
-           ((coefft) (b freevar0) (z varp))))
+           ((coefft) (a freevar0) ((mexpt) (z varp2 ,var2) 2))
+           ((coefft) (b freevar0) (z varp2 ,var2))))
          (u freevar)))))
 
 ;;; Recognize z^n*d^(a*sqrt(z)+b*z+c)
 
-(defun m2-exp-type-6 (expr)
+(defun m2-exp-type-6 (expr var2)
   (m2 expr
-    '((mtimes)
-	((mexpt) (z varp) (n freevar0))
+    `((mtimes)
+	((mexpt) (z varp2 ,var2) (n freevar0))
 	((mexpt)
 	   (d freevar0)
 	   ((mplus)
-	      ((coefft) (a freevar0) ((mexpt) (z varp) ((rat) 1 2)))
-	      ((coefft) (b freevar0) (z varp))
+	      ((coefft) (a freevar0) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+	      ((coefft) (b freevar0) (z varp2 ,var2))
 	      ((coeffpp) (c freevar)))))))
 
 ;;; Recognize z^n*(%e^(a*sqrt(z)+b*z+c))^u
 
-(defun m2-exp-type-6-1 (expr)
+(defun m2-exp-type-6-1 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (n freevar0))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (n freevar0))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (c freevar))
-           ((coefft) (a freevar0) ((mexpt) (z varp) ((rat) 1 2)))
-           ((coefft) (b freevar0) (z varp))))
+           ((coefft) (a freevar0) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+           ((coefft) (b freevar0) (z varp2 ,var2))))
          (u freevar)))))
 
 ;;; Recognize z^n*a^(b*z^r+e)*h^(c*z^r+g)
 
-(defun m2-exp-type-7 (expr)
+(defun m2-exp-type-7 (expr var2)
   (m2 expr
-    '((mtimes)
-	((mexpt) (z varp) (n freevar))
+    `((mtimes)
+	((mexpt) (z varp2 ,var2) (n freevar))
 	((mexpt)
 	   (a freevar0)
 	   ((mplus)
 	      ((coefft)
 		 (b freevar0)
-		 ((mexpt) (z varp) (r freevar0)))
+		 ((mexpt) (z varp2 ,var2) (r freevar0)))
 	      ((coeffpp) (e freevar))))
 	((mexpt)
 	   (h freevar0)
 	   ((mplus)
 	      ((coefft)
 		 (c freevar0)
-		 ((mexpt) (z varp) (r1 freevar0)))
+		 ((mexpt) (z varp2 ,var2) (r1 freevar0)))
 	      ((coeffpp) (g freevar)))))))
 
 ;;; Recognize z^v*(%e^(b*z^r+e))^q*(%e^(c*z^r+g))^u
 
-(defun m2-exp-type-7-1 (expr)
+(defun m2-exp-type-7-1 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (v freevar))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (v freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (e freevar))
-           ((coefft) (b freevar0) ((mexpt) (z varp) (r freevar0)))))
+           ((coefft) (b freevar0) ((mexpt) (z varp2 ,var2) (r freevar0)))))
          (q freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (g freevar))
-           ((coefft) (c freevar0) ((mexpt) (z varp) (r1 freevar0)))))
+           ((coefft) (c freevar0) ((mexpt) (z varp2 ,var2) (r1 freevar0)))))
          (u freevar)))))
 
 ;;; Recognize a^(b*sqrt(z)+d*z+e)*h^(c*sqrt(z)+f*z+g)
 
-(defun m2-exp-type-8 (expr)
+(defun m2-exp-type-8 (expr var2)
   (m2 expr
-    '((mtimes)
+    `((mtimes)
 	((mexpt)
 	   (a freevar0)
 	   ((mplus)
-	      ((coeffpt) (b freevar) ((mexpt) (z varp) ((rat) 1 2)))
-	      ((coeffpt) (d freevar) (z varp))
+	      ((coeffpt) (b freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+	      ((coeffpt) (d freevar) (z varp2 ,var2))
 	      ((coeffpp) (e freevar))))
 	((mexpt)
 	   (h freevar0)
 	   ((mplus)
-	      ((coeffpt) (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
-	      ((coeffpt) (f freevar) (z varp))
+	      ((coeffpt) (c freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+	      ((coeffpt) (f freevar) (z varp2 ,var2))
 	      ((coeffpp) (g freevar)))))))
 
 ;;; Recognize (%e^(b*sqrt(z)+d*z+e))^u*(%e^(c*sqrt(z)+f*z+g))^v
 
-(defun m2-exp-type-8-1 (expr)
+(defun m2-exp-type-8-1 (expr var2)
   (m2 expr
-      '((mtimes)
+      `((mtimes)
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (e freevar))
-           ((coeffpt) (b freevar) ((mexpt) (z varp) ((rat) 1 2)))
-           ((coeffpt) (d freevar) (z varp))))
+           ((coeffpt) (b freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+           ((coeffpt) (d freevar) (z varp2 ,var2))))
          (u freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (g freevar))
-           ((coeffpt) (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
-           ((coeffpt) (f freevar) (z varp))))
+           ((coeffpt) (c freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+           ((coeffpt) (f freevar) (z varp2 ,var2))))
          (v freevar)))))
 
 ;;; Recognize (%e^(b*z^r+e))^u*(%e^(c*z^r+g))^v
 
-(defun m2-exp-type-8-2 (expr)
+(defun m2-exp-type-8-2 (expr var2)
   (m2 expr
-      '((mtimes)
+      `((mtimes)
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (e freevar))
-           ((coefft) (b freevar) ((mexpt) (z varp) (r freevar0)))))
+           ((coefft) (b freevar) ((mexpt) (z varp2 ,var2) (r freevar0)))))
          (u freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (g freevar))
-           ((coefft) (c freevar) ((mexpt) (z varp) (r1 freevar0)))))
+           ((coefft) (c freevar) ((mexpt) (z varp2 ,var2) (r1 freevar0)))))
          (v freevar)))))
 
 ;;; Recognize z^n*a^(b*z^2+d*z+e)*h^(c*z^2+f*z+g)
 
-(defun m2-exp-type-9 (expr)
+(defun m2-exp-type-9 (expr var2)
   (m2 expr
-    '((mtimes)
-      ((mexpt) (z varp) (n freevar))
+    `((mtimes)
+      ((mexpt) (z varp2 ,var2) (n freevar))
       ((mexpt)
 	 (a freevar0)
 	 ((mplus)
-	    ((coeffpt)  (b freevar) ((mexpt) (z varp) 2))
-	    ((coeffpt)  (d freevar) (z varp))
+	    ((coeffpt)  (b freevar) ((mexpt) (z varp2 ,var2) 2))
+	    ((coeffpt)  (d freevar) (z varp2 ,var2))
 	    ((coeffpp) (e freevar))))
       ((mexpt)
 	 (h freevar0)
 	 ((mplus)
-	    ((coeffpt)  (c freevar) ((mexpt) (z varp) 2))
-	    ((coeffpt)  (f freevar) (z varp))
+	    ((coeffpt)  (c freevar) ((mexpt) (z varp2 ,var2) 2))
+	    ((coeffpt)  (f freevar) (z varp2 ,var2))
 	    ((coeffpp) (g freevar)))))))
 
 ;;; Recognize z^n*(%e^(b*z^2+d*z+e))^q*(%e^(c*z^2+f*z+g))^u
 
-(defun m2-exp-type-9-1 (expr)
+(defun m2-exp-type-9-1 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (n freevar))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (n freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (e freevar))
-           ((coeffpt) (b freevar) ((mexpt) (z varp) 2))
-           ((coeffpt) (d freevar) (z varp))))
+           ((coeffpt) (b freevar) ((mexpt) (z varp2 ,var2) 2))
+           ((coeffpt) (d freevar) (z varp2 ,var2))))
          (q freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (g freevar))
-           ((coeffpt) (c freevar) ((mexpt) (z varp) 2))
-           ((coeffpt) (f freevar) (z varp))))
+           ((coeffpt) (c freevar) ((mexpt) (z varp2 ,var2) 2))
+           ((coeffpt) (f freevar) (z varp2 ,var2))))
          (u freevar)))))
 
 ;;; Recognize z^n*a^(b*sqrt(z)+d*z+e)*h^(c*sqrt(z+)f*z+g)
 
-(defun m2-exp-type-10 (expr)
+(defun m2-exp-type-10 (expr var2)
   (m2 expr
-    '((mtimes)
-	((mexpt) (z varp) (n freevar))
+    `((mtimes)
+	((mexpt) (z varp2 ,var2) (n freevar))
 	((mexpt)
 	   (a freevar0)
 	   ((mplus)
-	      ((coeffpt)  (b freevar) ((mexpt) (z varp) ((rat) 1 2)))
-	      ((coeffpt)  (d freevar) (z varp))
+	      ((coeffpt)  (b freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+	      ((coeffpt)  (d freevar) (z varp2 ,var2))
 	      ((coeffpp) (e freevar))))
 	((mexpt)
 	   (h freevar0)
 	   ((mplus)
-	      ((coeffpt)  (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
-	      ((coeffpt)  (f freevar) (z varp))
+	      ((coeffpt)  (c freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+	      ((coeffpt)  (f freevar) (z varp2 ,var2))
 	      ((coeffpp) (g freevar)))))))
 
 ;;; Recognize z^n*(%e^(b*sqrt(z)+d*z+e))^q*(%e^(c*sqrt(z)+f*z+g))^u
@@ -2385,7 +2385,7 @@
   (setq expr (cdr w))
 
   (schatchen-cond w
-    ((m2-exp-type-1a (facsum-exponent expr))
+    ((m2-exp-type-1a (facsum-exponent expr) var)
      (a c d r p v)
      (when *debug-integrate*
        (format t "~&Type 1a: (a^(c*(z^r)^p+d)^v : w = ~A~%" w))
@@ -2405,7 +2405,7 @@
 	  (power (mul -1 c v (power (power var r) p) (take '(%log) a))
 		 (div -1 (mul p r)))))
 
-    ((m2-exp-type-2 (facsum-exponent expr))
+    ((m2-exp-type-2 (facsum-exponent expr) var)
      (a b d v r)
 
      (when *debug-integrate*
@@ -2423,7 +2423,7 @@
        (mul -1 b (power var r) ($log a))
        (mul -1 (div (add v 1) r)))))
 
-    ((m2-exp-type-2-1 (facsum-exponent expr))
+    ((m2-exp-type-2-1 (facsum-exponent expr) var)
      (a b v r u)
      (when *debug-integrate*
        (format t "~&Type 2-1: z^v*(%e^(a*z^r+b))^u : w = ~A~%" w))
@@ -2439,7 +2439,7 @@
                 (div (add v 1) r)
                 (mul -1 a u (power var r)))))
 
-    ((m2-exp-type-3 (facsum-exponent expr))
+    ((m2-exp-type-3 (facsum-exponent expr) var)
      (a b c d p)
      (when *debug-integrate*
        (format t "~&Type 3: (a*z+b)^p*%e^(c*z+d) : w = ~A~%" w))
@@ -2450,7 +2450,7 @@
       (power (add b (mul a var)) (add p 1))
       (ftake '%expintegral_e (mul -1 p) (mul (div -1 a) c (add b (mul a var))))))
 
-    ((m2-exp-type-4 expr)
+    ((m2-exp-type-4 expr var)
      (a b c d)
      (let (($trigsign nil))             ; Do not simplify erfc(-x) !
        (when *debug-integrate*
@@ -2481,7 +2481,7 @@
                  (mul var (power (mul -1 a ($log d)) (div 1 2)))
                  (div (power (mul -1 b ($log d)) (div 1 2)) var)))))))))
 
-    ((and (m2-exp-type-4-1 expr)
+    ((and (m2-exp-type-4-1 expr var)
 	  (poseven (cdras 'n w))  ; only for n a positive, even integer
 	  (symbolp (cdras 'a w))) ; a has to be a symbol
      (a b c d n)
@@ -2527,7 +2527,7 @@
 	       (power (mul -1 a ($log d)) (div 1 2)))
 	     a n)))))
 
-    ((and (m2-exp-type-5 (facsum-exponent expr))
+    ((and (m2-exp-type-5 (facsum-exponent expr) var)
           (maxima-integerp (cdras 'n w))
 	  (eq ($sign (cdras 'n w)) '$pos))
      (a b c d n)
@@ -2560,7 +2560,7 @@
                      (mul (div -1 2) (add index 1))))
                    index 0 n)))))
 
-    ((and (m2-exp-type-5-1 (facsum-exponent expr))
+    ((and (m2-exp-type-5-1 (facsum-exponent expr) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos))
      (a b c u n)
@@ -2591,7 +2591,7 @@
                              (mul 4 a))))
              index 0 n t))))
 
-    ((and (m2-exp-type-6 (facsum-exponent expr))
+    ((and (m2-exp-type-6 (facsum-exponent expr) var)
 	  (maxima-integerp (cdras 'n w))
 	  (eq ($sign (cdras 'n w)) '$pos))
      (a b c d n)
@@ -2650,7 +2650,7 @@
                             index2 0 index1)
                   index1 0 n))))
 
-    ((and (m2-exp-type-6-1 (facsum-exponent expr))
+    ((and (m2-exp-type-6-1 (facsum-exponent expr) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos))
      (a b c u n)
@@ -2721,7 +2721,7 @@
               index2 0 index1 t)
              index1 0 n t))))
 
-    ((and (m2-exp-type-7 (facsum-exponent expr))
+    ((and (m2-exp-type-7 (facsum-exponent expr) var)
 	  (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
      (a b c e g h r n)
      (when *debug-integrate*
@@ -2744,7 +2744,7 @@
        (div n r)
        (mul -1 (power var r) (add (mul b ($log a)) (mul c ($log h)))))))
 
-    ((and (m2-exp-type-7-1 (facsum-exponent expr))
+    ((and (m2-exp-type-7-1 (facsum-exponent expr) var)
           (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
      (b c e g r v q u)
      (when *debug-integrate*
@@ -2762,7 +2762,7 @@
                 (div (add v 1) r)
                 (mul -1 (power var r) (add (mul b q) (mul c u))))))
 
-    ((m2-exp-type-8 (facsum-exponent expr))
+    ((m2-exp-type-8 (facsum-exponent expr) var)
      (a b c d e f g h)
      (when *debug-integrate*
        (format t "~&Type 8: a^(b*sqrt(z)+d*z+e)*h^(c*sqrt(z)+f*z+g)")
@@ -2798,7 +2798,7 @@
             (add (mul b ($log a)) (mul c ($log h)))
             (power (add (mul d ($log a)) (mul f ($log h))) (div -3 2))))))
 
-    ((m2-exp-type-8-1 (facsum-exponent expr))
+    ((m2-exp-type-8-1 (facsum-exponent expr) var)
      (b c d e f g u v)
      (when *debug-integrate*
        (format t "~&Type 8-1: (%e^(b*sqrt(z)+d*z+e))^u*(%e^(c*sqrt(z)+f*z+g))^v")
@@ -2844,7 +2844,7 @@
                                          (power (add (mul d u) (mul f v))
                                                 (div 1 2))))))))))
 
-    ((and (m2-exp-type-8-2 (facsum-exponent expr))
+    ((and (m2-exp-type-8-2 (facsum-exponent expr) var)
           (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
      (b c e g r u v)
      (when *debug-integrate*
@@ -2873,7 +2873,7 @@
                 (div 1 r)
                 (mul -1 (power var r) (add (mul b u) (mul c v))))))
 
-    ((and (m2-exp-type-9 (facsum-exponent expr))
+    ((and (m2-exp-type-9 (facsum-exponent expr) var)
 	  (maxima-integerp (cdras 'n w))
 	  (eq ($sign (cdras 'n w)) '$pos)
 	  (or (not (eq ($sign (cdras 'b w)) '$zero))
@@ -2929,7 +2929,7 @@
                           (mul 4 (add (mul b ($log a)) (mul c ($log h))))))))
                   index 0 n))))
 
-    ((and (m2-exp-type-9-1 (facsum-exponent expr))
+    ((and (m2-exp-type-9-1 (facsum-exponent expr) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos)
           (or (not (eq ($sign (cdras 'b w)) '$zero))
@@ -2991,7 +2991,7 @@
                              (mul -4 (add (mul b q) (mul c u))))))
              index 0 n t))))
 
-    ((and (m2-exp-type-10 (facsum-exponent expr))
+    ((and (m2-exp-type-10 (facsum-exponent expr) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos)
           (or (not (eq ($sign (cdras 'b w)) '$zero))
