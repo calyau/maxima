@@ -238,7 +238,7 @@
 	   (intform (cadr expres)))
         
           ;; Method 3: Substitution for a rational root
-	  ((and (setq w (m2-ratrootform (cadr expres))) ; e*(a*x+b) / (c*x+d)
+	  ((and (setq w (m2-ratrootform (cadr expres) var)) ; e*(a*x+b) / (c*x+d)
                 (denomfind (caddr expres))) ; expon is ratnum
            (or (progn
                  (setq powerl t)
@@ -247,7 +247,7 @@
         
           ;; Method 4: Binomial - Chebyschev
 	  ((not (integerp1 (caddr expres))) ; 2*exponent not integer
-	   (cond ((m2-chebyform *exp*)
+	   (cond ((m2-chebyform *exp* var)
 		  (chebyf *exp* var))
 	         (t (intform (cadr expres)))))
         
@@ -262,7 +262,7 @@
 	   (inte *exp* var))
         
           ;; Method 4: Binomial - Chebyschev
-	  ((m2-chebyform *exp* )
+	  ((m2-chebyform *exp* var)
 	   (chebyf *exp* var))
         
           ;; Expand expres.
@@ -504,29 +504,29 @@
 
 ;; This is matching the pattern e*(a*x+b)/(c*x+d), where
 ;; a, b, c, d, and e are free of x, and x is the variable of integration.
-(defun m2-ratrootform (expr)
+(defun m2-ratrootform (expr var2)
   (m2 expr
       `((mtimes)
         ((coefftt) (e freevar))
         ((mplus)
-         ((coeffpt) (a freevar) (var varp))
+         ((coeffpt) (a freevar) (var varp2 ,var2))
          ((coeffpt) (b freevar)))
         ((mexpt)
          ((mplus)
-          ((coeffpt) (c freevar) (var varp))
+          ((coeffpt) (c freevar) (var varp2 ,var2))
           ((coeffpt) (d freevar)))
          -1))))
 
 ;; This is for matching the pattern a*x^r1*(c1+c2*x^q)^r2.
-(defun m2-chebyform (expr)
+(defun m2-chebyform (expr var2)
   (m2 expr
       `((mtimes)
-        ((mexpt) (var varp) (r1 numberp))
+        ((mexpt) (var varp2 ,var2) (r1 numberp))
         ((mexpt)
          ((mplus)
           ((mtimes)
            ((coefftt) (c2 freevar))
-           ((mexpt) (var varp) (q free1)))
+           ((mexpt) (var varp2 ,var2) (q free1)))
           ((coeffpp) (c1 freevar)))
          (r2 numberp))
         ((coefftt) (a freevar)))))
@@ -970,7 +970,7 @@
 (defun chebyf (*exp* var)
   (prog (r1 r2 d1 d2 n1 n2 w q)
      ;; Return NIL if the expression doesn't match.
-     (when (not (setq w (m2-chebyform *exp*)))
+     (when (not (setq w (m2-chebyform *exp* var)))
        (return nil))
      #+nil
      (format t "w = ~A~%" w)
@@ -2351,25 +2351,25 @@
 
 ;;; Recognize z^n*(%e^(b*sqrt(z)+d*z+e))^q*(%e^(c*sqrt(z)+f*z+g))^u
 
-(defun m2-exp-type-10-1 (expr)
+(defun m2-exp-type-10-1 (expr var2)
   (m2 expr
-      '((mtimes)
-        ((mexpt) (z varp) (n freevar))
+      `((mtimes)
+        ((mexpt) (z varp2 ,var2) (n freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (e freevar))
-           ((coeffpt) (b freevar) ((mexpt) (z varp) ((rat) 1 2)))
-           ((coeffpt) (d freevar) (z varp))))
+           ((coeffpt) (b freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+           ((coeffpt) (d freevar) (z varp2 ,var2))))
          (q freevar))
         ((mexpt)
          ((mexpt)
           $%e
           ((mplus)
            ((coeffpp) (g freevar))
-           ((coeffpt) (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
-           ((coeffpt) (f freevar) (z varp))))
+           ((coeffpt) (c freevar) ((mexpt) (z varp2 ,var2) ((rat) 1 2)))
+           ((coeffpt) (f freevar) (z varp2 ,var2))))
          (u freevar)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3080,7 +3080,7 @@
               index2 0 index1 t)
              index1 0 n t))))
 
-    ((and (m2-exp-type-10-1 (facsum-exponent expr))
+    ((and (m2-exp-type-10-1 (facsum-exponent expr) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos)
           (or (not (eq ($sign (cdras 'b w)) '$zero))
