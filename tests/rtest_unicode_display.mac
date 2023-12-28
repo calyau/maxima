@@ -1,4 +1,4 @@
-(reset (linel), 0);
+(kill (all), reset (linel), 0);
 0;
 
 /* tests adapted from tests/rtest3.mac */
@@ -348,13 +348,74 @@ block ([maxima_unicode_display: true],
  0);
 0;
 
+block ([simp: false], print_string_2d_unicode ([abs(1/2), abs(x[n]), abs(x^2)]));
+" │1│        │ 2│
+[│─│, │x │, │x │]
+ │2│  │ n│
+";
+
+(M: [matrix ([a]), matrix ([a, b], [c, d]), matrix ([a, b, c], [d, e, f], [g, h, i])],
+ print_string_2d_unicode (M));
+"                  ┌         ┐
+        ┌      ┐  │ a  b  c │
+ ┌   ┐  │ a  b │  │         │
+[│ a │, │      │, │ d  e  f │]
+ └   ┘  │ c  d │  │         │
+        └      ┘  │ g  h  i │
+                  └         ┘
+";
+
+print_string_2d_unicode (matrix (M));
+"┌                              ┐
+│                  ┌         ┐ │
+│        ┌      ┐  │ a  b  c │ │
+│ ┌   ┐  │ a  b │  │         │ │
+│ │ a │  │      │  │ d  e  f │ │
+│ └   ┘  │ c  d │  │         │ │
+│        └      ┘  │ g  h  i │ │
+│                  └         ┘ │
+└                              ┘
+";
+
+print_string_2d_unicode (transpose (matrix (M)));
+"┌             ┐
+│    ┌   ┐    │
+│    │ a │    │
+│    └   ┘    │
+│             │
+│  ┌      ┐   │
+│  │ a  b │   │
+│  │      │   │
+│  │ c  d │   │
+│  └      ┘   │
+│             │
+│ ┌         ┐ │
+│ │ a  b  c │ │
+│ │         │ │
+│ │ d  e  f │ │
+│ │         │ │
+│ │ g  h  i │ │
+│ └         ┘ │
+└             ┘
+";
+
+print_string_2d_unicode ('at(u, u='sum(x[k],k,1,n)));
+" │    ____
+u│    ╲
+ │u =  >    x
+      ╱      k
+      ‾‾‾‾
+      k = 1
+";
+
 (e1a: 'integrate (f (u), u),
  e1b: 'integrate (f (u), u, 0, 1),
  e2: 'sum (g[k], k, 1, m),
  e3: 'lsum (v[k]^2, k, L),
  e4: 'product (N[i], i, 1, inf),
  e5: 'diff (h (u[i], v[j], w[k]), u[i], 3, v[j], 2, w[k], 1),
- e6: 'at (1/(1 + 1/f(u, v)), [u = 0, v = 1]),
+ e6a: 'at (u, u = 0),
+ e6b: 'at (1/(1 + 1/f(u, v)), [u = 0, v = 1]),
  e7: abs (1/p[q[r[s[0]]]]^n),
  e8a: matrix (makelist (y[i], i, 1, 10)),
  e8b: transpose (e8a),
@@ -427,7 +488,7 @@ du  dv  dw
   i   j   k
 "$
 
-print_string_2d_unicode(e6);
+print_string_2d_unicode(e6b);
 "           │
      1     │
 ───────────│
@@ -831,7 +892,7 @@ print_string_2d_unicode(transpose(matrix(ee1)));
 └            ┘
 ";
 
-(ee2:[e5,e6,e7,e8a,e8b],print_string_2d_unicode(ee2));
+(ee2:[e5,e6b,e7,e8a,e8b],print_string_2d_unicode(ee2));
 "      6                                  │
      d                             1     │                  │  1  │
 [─────────── (h(u , v , w )), ───────────│                , │─────│, 
@@ -1169,12 +1230,12 @@ print_string_2d_unicode(transpose(matrix(ee4)));
 └          ┘
 ";
 
-(ee5:[e12,FOO,BAR,BAZ,QUUX],print_string_2d_unicode(ee5));
+(ee5:[e12,FOO,BAR,BAZ,e6a],print_string_2d_unicode(ee5));
 "    3         2      2       3
  - y  + 3 x  y  - 3 x  y  + x  - 1
-    l      k  l      k  l    k
-[─────────────────────────────────, FOO, BAR, BAZ, QUUX]
-                   456
+    l      k  l      k  l    k                      │
+[─────────────────────────────────, FOO, BAR, BAZ, u│     ]
+                   456                              │u = 0
          1234 - ──────────
                          3
                 (a  - b )
@@ -1182,17 +1243,17 @@ print_string_2d_unicode(transpose(matrix(ee4)));
 ";
 
 print_string_2d_unicode(matrix(ee5));
-"┌                                                        ┐
-│    3         2      2       3                          │
-│ - y  + 3 x  y  - 3 x  y  + x  - 1                      │
-│    l      k  l      k  l    k                          │
-│ ─────────────────────────────────  FOO  BAR  BAZ  QUUX │
-│                   456                                  │
-│         1234 - ──────────                              │
-│                         3                              │
-│                (a  - b )                               │
-│                  i    j                                │
-└                                                        ┘
+"┌                                                           ┐
+│    3         2      2       3                             │
+│ - y  + 3 x  y  - 3 x  y  + x  - 1                         │
+│    l      k  l      k  l    k                      │      │
+│ ─────────────────────────────────  FOO  BAR  BAZ  u│      │
+│                   456                              │u = 0 │
+│         1234 - ──────────                                 │
+│                         3                                 │
+│                (a  - b )                                  │
+│                  i    j                                   │
+└                                                           ┘
 ";
 
 print_string_2d_unicode(transpose(matrix(ee5)));
@@ -1213,6 +1274,70 @@ print_string_2d_unicode(transpose(matrix(ee5)));
 │                                   │
 │                BAZ                │
 │                                   │
-│               QUUX                │
+│               │                   │
+│              u│                   │
+│               │u = 0              │
 └                                   ┘
+";
+
+block ([linel: 140], print_string_2d_unicode (matrix (ee1, ee2, ee4, ee5)));
+"┌                                                                                                                                  ┐
+│                                              1                    m                                                      inf     │
+│             ⌠                               ⌠                    ____                       ____                        /───\\    │
+│             ⎮                               ⎮                    ╲                          ╲       2                    │ │     │
+│             ⎮ f(u) du                       ⎮  f(u) du            >    g                     >     v                     │ │  N  │
+│             ⎮                               ⎮                    ╱      k                   ╱       k                    │ │   i │
+│             ⌡                               ⌡                    ‾‾‾‾                       ‾‾‾‾                        i = 1    │
+│                                              0                   k = 1                      k in L                               │
+│                                                                                                                                  │
+│                                                                                                                         ┌     ┐  │
+│                                                                                                                         │ y   │  │
+│                                                                                                                         │  1  │  │
+│                                                                                                                         │     │  │
+│                                                                                                                         │ y   │  │
+│                                                                                                                         │  2  │  │
+│                                                                                                                         │     │  │
+│                                                                                                                         │ y   │  │
+│                                                                                                                         │  3  │  │
+│                                                                                                                         │     │  │
+│                                                                                                                         │ y   │  │
+│                                                                                                                         │  4  │  │
+│                                                                                                                         │     │  │
+│         6                                     │                                                                         │ y   │  │
+│        d                                1     │                  │  1  │   ┌                                         ┐  │  5  │  │
+│    ─────────── (h(u , v , w ))     ───────────│                  │─────│   │ y   y   y   y   y   y   y   y   y   y   │  │     │  │
+│      3   2         i   j   k          1       │                  │ n   │   │  1   2   3   4   5   6   7   8   9   10 │  │ y   │  │
+│    du  dv  dw                      ─────── + 1│                  │p    │   └                                         ┘  │  6  │  │
+│      i   j   k                     f(u, v)    │                  │ q   │                                                │     │  │
+│                                               │(u = 0), (v = 1)  │  r  │                                                │ y   │  │
+│                                                                  │   s │                                                │  7  │  │
+│                                                                  │    0│                                                │     │  │
+│                                                                                                                         │ y   │  │
+│                                                                                                                         │  8  │  │
+│                                                                                                                         │     │  │
+│                                                                                                                         │ y   │  │
+│                                                                                                                         │  9  │  │
+│                                                                                                                         │     │  │
+│                                                                                                                         │ y   │  │
+│                                                                                                                         │  10 │  │
+│                                                                                                                         └     ┘  │
+│                                                                                                                                  │
+│                                                                    baz╗                     quux═══╗                             │
+│                foo                             bar╗                ║ n║                     ║    1 ║                     y       │
+│                ║u║                             ║u ║                ║u ║                     ║1 - ──║                    ──── + x │
+│                ╚═╝                             ║ 1║                ╚══╝                     ║     n║                       2     │
+│                                                ╚══╝                                         ║    u ║                    ╔═╗      │
+│                                                                                             ║     1║                    ║z║      │
+│                                                                                             ╚══════╝                    ╚═╝      │
+│                                                                                                                                  │
+│    3         2      2       3                                                                                                    │
+│ - y  + 3 x  y  - 3 x  y  + x  - 1                                                                                                │
+│    l      k  l      k  l    k                                                                                            │       │
+│ ─────────────────────────────────              FOO                 BAR                         BAZ                      u│       │
+│                   456                                                                                                    │u = 0  │
+│         1234 - ──────────                                                                                                        │
+│                         3                                                                                                        │
+│                (a  - b )                                                                                                         │
+│                  i    j                                                                                                          │
+└                                                                                                                                  ┘
 ";
