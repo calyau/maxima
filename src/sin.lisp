@@ -219,7 +219,7 @@
         
 	  ((and (eq (caar expres) '%derivative)
                 (eq (caar *exp*) (caar expres))
-                (checkderiv *exp*)))
+                (checkderiv *exp* var)))
         
           ;; Stop intform if we have not a power function.
           ((not (eq (caar expres) 'mexpt)) nil)
@@ -618,8 +618,8 @@
                       (mul* (neg sc-coef) `((%cos) ,sc-arg))
                       (mul* sc-coef `((%sin) ,sc-arg))))))))
 
-(defun checkderiv (expr)
-  (checkderiv1 (cadr expr) (cddr expr) () ))
+(defun checkderiv (expr var2)
+  (checkderiv1 (cadr expr) (cddr expr) () var2))
 
 ;; CHECKDERIV1 gets called on the expression being differentiated,
 ;; an alternating list of variables being differentiated with
@@ -627,8 +627,8 @@
 ;; that have already been examined.  It returns either the antiderivative
 ;; or (), saying this derivative isn't wrt the variable of integration.
 
-(defun checkderiv1 (expr wrt old-wrt)
-  (cond ((varp (car wrt))
+(defun checkderiv1 (expr wrt old-wrt var2)
+  (cond ((varp2 (car wrt) var2)
 	 (if (equal (cadr wrt) 1)	;Power = 1?
 	     (if (null (cddr wrt))	;single or partial
 		 (if (null old-wrt)
@@ -644,7 +644,8 @@
 	       ,@ (cddr wrt))))
 	((null (cddr wrt)) () )		;Say it doesn't apply here
 	(t (checkderiv1 expr (cddr wrt)	;Else we check later terms
-			(list* (cadr wrt) (car wrt) old-wrt)))))
+			(list* (cadr wrt) (car wrt) old-wrt)
+                        var2))))
 
 (defun integrallookups (*exp* var2)
   (let (form dummy-args real-args)
