@@ -795,7 +795,7 @@
       ;; Transform the integrand. At this point resimplify, because it is not
       ;; guaranteed, that a correct simplified expression is returned.
       ;; Use a new variable to prevent facts on the old variable to be wrongly used.
-      (setq y (resimplify (maxima-substitute new-var var (elemxpt *exp*))))
+      (setq y (resimplify (maxima-substitute new-var var (elemxpt *exp* var))))
       (when exptflag (return nil))
       ;; Integrate the transformed integrand and substitute back.
       (return
@@ -811,27 +811,30 @@
   
   ;; Transform expressions like g^(b*x+a) to the common base base and
   ;; do the substitution y = base^(b*x+a) in the expr.
-  (defun elemxpt (expr &aux w)
-    (cond ((freevar expr) expr)
+  (defun elemxpt (expr var2 &aux w)
+    (cond ((freevar2 expr var2) expr)
           ;; var is the base of a subexpression. The transformation fails.
           ((atom expr) (setq exptflag t))
           ((not (eq (caar expr) 'mexpt))
            (cons (car expr)
-                 (mapcar #'(lambda (c) (elemxpt c)) (cdr expr))))
-          ((not (freevar (cadr expr)))
+                 (mapcar #'(lambda (c)
+                             (elemxpt c var2))
+                         (cdr expr))))
+          ((not (freevar2 (cadr expr) var2))
            (list '(mexpt)
-                 (elemxpt (cadr expr))
-                 (elemxpt (caddr expr))))
+                 (elemxpt (cadr expr) var2)
+                 (elemxpt (caddr expr) var2)))
           ;; Transform the expression to the common base.
           ((not (eq (cadr expr) base))
            (elemxpt (list '(mexpt)
                           base
                           (mul (power (take '(%log) base) -1)
                                (take '(%log) (cadr expr))
-                               (caddr expr)))))
+                               (caddr expr)))
+                    var2))
           ;; The exponent must be linear in the variable of integration.
-          ((not (setq w (m2-b*x+a (caddr expr) var)))
-           (list (car expr) base (elemxpt (caddr expr))))
+          ((not (setq w (m2-b*x+a (caddr expr) var2)))
+           (list (car expr) base (elemxpt (caddr expr) var2)))
           ;; Do the substitution y = g^(b*x+a).
           (t
            (setq w (cons (cons 'bb (cdras 'b pow)) w))
