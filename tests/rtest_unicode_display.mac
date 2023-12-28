@@ -337,3 +337,430 @@ block ([maxima_unicode_display: true],
 ~m ~:m ~~@m ─────, (x+1)/(1-x), (x+1)/(1-x), ─────, 1234 ~z ~~z ~~~y
             1 - x                            1 - x
 ";
+
+/* additional tests covering integrate, sum, lsum, product, diff, at, abs, matrix, box, labeled box, dpart, and ratio. */
+
+(kill (all),
+ print_string_2d_unicode (e) := block ([maxima_unicode_display: true], with_default_2d_display (printf (false, "~m", e))),
+ 0);
+0;
+
+(e1a: 'integrate (f (u), u),
+ e1b: 'integrate (f (u), u, 0, 1),
+ e2: 'sum (g[k], k, 1, m),
+ e3: 'lsum (v[k]^2, k, L),
+ e4: 'product (N[i], i, 1, inf),
+ e5: 'diff (h (u[i], v[j], w[k]), u[i], 3, v[j], 2, w[k], 1),
+ e6: 'at (1/(1 + 1/f(u, v)), [u = 0, v = 1]),
+ e7: abs (1/p[q[r[s[0]]]]^n),
+ e8a: matrix (makelist (y[i], i, 1, 10)),
+ e8b: transpose (e8a),
+ e8c: e8b . e8a,
+ e9a: box (u),
+ e9b: box (u[1]),
+ e9c: box (u^n),
+ e9d: box (1 - 1/u[1]^n),
+ e10a: box (u, foo),
+ e10b: box (u[1], bar),
+ e10c: box (u^n, baz),
+ e10d: box (1 - 1/u[1]^n, quux),
+ e11: dpart (x+y/z^2, 1, 2, 1),
+ e12: expand ((x[k] - y[l])^3 - 1) / (1234 - 456/(a[i] - b[j])^3),
+ 0);
+0;
+
+print_string_2d_unicode(e1a);
+"⌠
+⎮
+⎮ f(u) du
+⎮
+⌡
+"$
+
+print_string_2d_unicode(e1b);
+" 1
+⌠
+⎮
+⎮  f(u) du
+⎮
+⌡
+ 0
+"$
+
+print_string_2d_unicode(e2);
+" m
+____
+╲
+ >    g
+╱      k
+‾‾‾‾
+k = 1
+"$
+
+print_string_2d_unicode(e3);
+"____
+╲       2
+ >     v
+╱       k
+‾‾‾‾
+k in L
+"$
+
+print_string_2d_unicode(e4);
+" inf
+/───\\
+ │ │
+ │ │  N
+ │ │   i
+i = 1
+"$
+
+print_string_2d_unicode(e5);
+"     6
+    d
+─────────── (h(u , v , w ))
+  3   2         i   j   k
+du  dv  dw
+  i   j   k
+"$
+
+print_string_2d_unicode(e6);
+"           │
+     1     │
+───────────│
+   1       │
+─────── + 1│
+f(u, v)    │
+           │(u = 0), (v = 1)
+"$
+
+print_string_2d_unicode(e7);
+"│  1  │
+│─────│
+│ n   │
+│p    │
+│ q   │
+│  r  │
+│   s │
+│    0│
+"$
+
+block ([linel: 80], print_string_2d_unicode(e8a));
+"┌                                         ┐
+│ y   y   y   y   y   y   y   y   y   y   │
+│  1   2   3   4   5   6   7   8   9   10 │
+└                                         ┘
+"$
+
+block ([linel: 40], print_string_2d_unicode(e8a));
+"         ┌    ┐         ┌    ┐
+ Col 1 = │ y  │ Col 2 = │ y  │
+         │  1 │         │  2 │
+         └    ┘         └    ┘
+         ┌    ┐         ┌    ┐
+ Col 3 = │ y  │ Col 4 = │ y  │
+         │  3 │         │  4 │
+         └    ┘         └    ┘
+         ┌    ┐         ┌    ┐
+ Col 5 = │ y  │ Col 6 = │ y  │
+         │  5 │         │  6 │
+         └    ┘         └    ┘
+         ┌    ┐         ┌    ┐
+ Col 7 = │ y  │ Col 8 = │ y  │
+         │  7 │         │  8 │
+         └    ┘         └    ┘
+         ┌    ┐          ┌     ┐
+ Col 9 = │ y  │ Col 10 = │ y   │
+         │  9 │          │  10 │
+         └    ┘          └     ┘
+"$
+
+print_string_2d_unicode(e8b);
+"┌     ┐
+│ y   │
+│  1  │
+│     │
+│ y   │
+│  2  │
+│     │
+│ y   │
+│  3  │
+│     │
+│ y   │
+│  4  │
+│     │
+│ y   │
+│  5  │
+│     │
+│ y   │
+│  6  │
+│     │
+│ y   │
+│  7  │
+│     │
+│ y   │
+│  8  │
+│     │
+│ y   │
+│  9  │
+│     │
+│ y   │
+│  10 │
+└     ┘
+"$
+
+block ([linel: 120], print_string_2d_unicode(e8c));
+"┌                                                                                ┐
+│    2                                                                           │
+│   y     y  y    y  y    y  y    y  y    y  y    y  y    y  y    y  y    y  y   │
+│    1     1  2    1  3    1  4    1  5    1  6    1  7    1  8    1  9    1  10 │
+│                                                                                │
+│            2                                                                   │
+│ y  y      y     y  y    y  y    y  y    y  y    y  y    y  y    y  y    y  y   │
+│  1  2      2     2  3    2  4    2  5    2  6    2  7    2  8    2  9    2  10 │
+│                                                                                │
+│                    2                                                           │
+│ y  y    y  y      y     y  y    y  y    y  y    y  y    y  y    y  y    y  y   │
+│  1  3    2  3      3     3  4    3  5    3  6    3  7    3  8    3  9    3  10 │
+│                                                                                │
+│                            2                                                   │
+│ y  y    y  y    y  y      y     y  y    y  y    y  y    y  y    y  y    y  y   │
+│  1  4    2  4    3  4      4     4  5    4  6    4  7    4  8    4  9    4  10 │
+│                                                                                │
+│                                    2                                           │
+│ y  y    y  y    y  y    y  y      y     y  y    y  y    y  y    y  y    y  y   │
+│  1  5    2  5    3  5    4  5      5     5  6    5  7    5  8    5  9    5  10 │
+│                                                                                │
+│                                            2                                   │
+│ y  y    y  y    y  y    y  y    y  y      y     y  y    y  y    y  y    y  y   │
+│  1  6    2  6    3  6    4  6    5  6      6     6  7    6  8    6  9    6  10 │
+│                                                                                │
+│                                                    2                           │
+│ y  y    y  y    y  y    y  y    y  y    y  y      y     y  y    y  y    y  y   │
+│  1  7    2  7    3  7    4  7    5  7    6  7      7     7  8    7  9    7  10 │
+│                                                                                │
+│                                                            2                   │
+│ y  y    y  y    y  y    y  y    y  y    y  y    y  y      y     y  y    y  y   │
+│  1  8    2  8    3  8    4  8    5  8    6  8    7  8      8     8  9    8  10 │
+│                                                                                │
+│                                                                    2           │
+│ y  y    y  y    y  y    y  y    y  y    y  y    y  y    y  y      y     y  y   │
+│  1  9    2  9    3  9    4  9    5  9    6  9    7  9    8  9      9     9  10 │
+│                                                                                │
+│                                                                           2    │
+│ y  y    y  y    y  y    y  y    y  y    y  y    y  y    y  y    y  y     y     │
+│  1  10   2  10   3  10   4  10   5  10   6  10   7  10   8  10   9  10    10   │
+└                                                                                ┘
+"$
+
+block ([linel: 60], print_string_2d_unicode(e8c));
+"         ┌        ┐         ┌        ┐         ┌        ┐
+         │    2   │         │ y  y   │         │ y  y   │
+         │   y    │         │  1  2  │         │  1  3  │
+         │    1   │         │        │         │        │
+         │        │         │    2   │         │ y  y   │
+         │ y  y   │         │   y    │         │  2  3  │
+         │  1  2  │         │    2   │         │        │
+         │        │         │        │         │    2   │
+         │ y  y   │         │ y  y   │         │   y    │
+         │  1  3  │         │  2  3  │         │    3   │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  4  │         │  2  4  │         │  3  4  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+ Col 1 = │  1  5  │ Col 2 = │  2  5  │ Col 3 = │  3  5  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  6  │         │  2  6  │         │  3  6  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  7  │         │  2  7  │         │  3  7  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  8  │         │  2  8  │         │  3  8  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  9  │         │  2  9  │         │  3  9  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  10 │         │  2  10 │         │  3  10 │
+         └        ┘         └        ┘         └        ┘
+         ┌        ┐         ┌        ┐         ┌        ┐
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  4  │         │  1  5  │         │  1  6  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  2  4  │         │  2  5  │         │  2  6  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  3  4  │         │  3  5  │         │  3  6  │
+         │        │         │        │         │        │
+         │    2   │         │ y  y   │         │ y  y   │
+         │   y    │         │  4  5  │         │  4  6  │
+         │    4   │         │        │         │        │
+         │        │         │    2   │         │ y  y   │
+         │ y  y   │         │   y    │         │  5  6  │
+ Col 4 = │  4  5  │ Col 5 = │    5   │ Col 6 = │        │
+         │        │         │        │         │    2   │
+         │ y  y   │         │ y  y   │         │   y    │
+         │  4  6  │         │  5  6  │         │    6   │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  4  7  │         │  5  7  │         │  6  7  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  4  8  │         │  5  8  │         │  6  8  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  4  9  │         │  5  9  │         │  6  9  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  4  10 │         │  5  10 │         │  6  10 │
+         └        ┘         └        ┘         └        ┘
+         ┌        ┐         ┌        ┐         ┌        ┐
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  1  7  │         │  1  8  │         │  1  9  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  2  7  │         │  2  8  │         │  2  9  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  3  7  │         │  3  8  │         │  3  9  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  4  7  │         │  4  8  │         │  4  9  │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  5  7  │         │  5  8  │         │  5  9  │
+ Col 7 = │        │ Col 8 = │        │ Col 9 = │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  6  7  │         │  6  8  │         │  6  9  │
+         │        │         │        │         │        │
+         │    2   │         │ y  y   │         │ y  y   │
+         │   y    │         │  7  8  │         │  7  9  │
+         │    7   │         │        │         │        │
+         │        │         │    2   │         │ y  y   │
+         │ y  y   │         │   y    │         │  8  9  │
+         │  7  8  │         │    8   │         │        │
+         │        │         │        │         │    2   │
+         │ y  y   │         │ y  y   │         │   y    │
+         │  7  9  │         │  8  9  │         │    9   │
+         │        │         │        │         │        │
+         │ y  y   │         │ y  y   │         │ y  y   │
+         │  7  10 │         │  8  10 │         │  9  10 │
+         └        ┘         └        ┘         └        ┘
+          ┌        ┐
+          │ y  y   │
+          │  1  10 │
+          │        │
+          │ y  y   │
+          │  2  10 │
+          │        │
+          │ y  y   │
+          │  3  10 │
+          │        │
+          │ y  y   │
+          │  4  10 │
+          │        │
+          │ y  y   │
+          │  5  10 │
+ Col 10 = │        │
+          │ y  y   │
+          │  6  10 │
+          │        │
+          │ y  y   │
+          │  7  10 │
+          │        │
+          │ y  y   │
+          │  8  10 │
+          │        │
+          │ y  y   │
+          │  9  10 │
+          │        │
+          │   2    │
+          │  y     │
+          │   10   │
+          └        ┘
+"$
+
+print_string_2d_unicode(e9a);
+"╔═╗
+║u║
+╚═╝
+"$
+
+print_string_2d_unicode(e9b);
+"╔══╗
+║u ║
+║ 1║
+╚══╝
+"$
+
+print_string_2d_unicode(e9c);
+"╔══╗
+║ n║
+║u ║
+╚══╝
+"$
+
+print_string_2d_unicode(e9d);
+"╔══════╗
+║    1 ║
+║1 - ──║
+║     n║
+║    u ║
+║     1║
+╚══════╝
+"$
+
+print_string_2d_unicode(e10a);
+"foo
+║u║
+╚═╝
+"$
+
+print_string_2d_unicode(e10b);
+"bar╗
+║u ║
+║ 1║
+╚══╝
+"$
+
+print_string_2d_unicode(e10c);
+"baz╗
+║ n║
+║u ║
+╚══╝
+"$
+
+print_string_2d_unicode(e10d);
+"quux═══╗
+║    1 ║
+║1 - ──║
+║     n║
+║    u ║
+║     1║
+╚══════╝
+"$
+
+print_string_2d_unicode(e11);
+" y
+──── + x
+   2
+╔═╗
+║z║
+╚═╝
+"$
+
+print_string_2d_unicode(e12);
+"   3         2      2       3
+- y  + 3 x  y  - 3 x  y  + x  - 1
+   l      k  l      k  l    k
+─────────────────────────────────
+                  456
+        1234 - ──────────
+                        3
+               (a  - b )
+                 i    j
+"$
