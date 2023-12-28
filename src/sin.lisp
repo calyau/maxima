@@ -1918,7 +1918,7 @@
      (setq *c* (cdr (assoc 'c y :test #'eq)))
      (labels
          ((rat10 (ex)
-            (cond ((freevar ex)
+            (cond ((freevar2 ex var)
                    t)
 	          ((varp2 ex var)
                    nil)
