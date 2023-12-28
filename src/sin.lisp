@@ -646,7 +646,7 @@
 	(t (checkderiv1 expr (cddr wrt)	;Else we check later terms
 			(list* (cadr wrt) (car wrt) old-wrt)))))
 
-(defun integrallookups (*exp*)
+(defun integrallookups (*exp* var2)
   (let (form dummy-args real-args)
   (cond
 	((eq (caar *exp*) 'mqapply)
@@ -654,7 +654,8 @@
 	 ;; For example:
 	 ;; ((MQAPPLY SIMP) (($PSI SIMP ARRAY) 1) $X)
 	 ;; => (($PSI) 1 $X)
-	 (integrallookups `((,(caaadr *exp*)) ,@(cdadr *exp*) ,@(cddr *exp*))))
+	 (integrallookups `((,(caaadr *exp*)) ,@(cdadr *exp*) ,@(cddr *exp*))
+                          var2))
 
 	;; Lookup algorithm for integral of a special function. 
 	;; The integral form is put on the property list, and can be a 
@@ -670,7 +671,7 @@
 	      (do ((x real-args (cdr x))
 		   (y (cdr form) (cdr y)))
 		  ((or (null x) (null y)) nil)
-		  (if (not (freevar (car x))) (return (car y)))))
+		  (if (not (freevar2 (car x) var2)) (return (car y)))))
 	    ;; If form is a function then evaluate it with actual args
 	    (or (not (functionp form))
 		(setq form (apply form real-args))))
@@ -2029,7 +2030,7 @@
 			      (list (cons 'c *d*)))
 			     (t nil)))
 		      (t (m2 x r))))
-	(return (cond ((null (setq x (integrallookups y))) nil)
+	(return (cond ((null (setq x (integrallookups y var))) nil)
 		      ((eq w t) x)
 		      (t (mul2* x (power* (cdr (assoc 'c w :test #'eq)) -1)))))))
      (setq z (cdr z))
