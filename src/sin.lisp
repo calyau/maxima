@@ -771,10 +771,10 @@
 
 (putprop 'mexpt `((x n) ,'integrate-mexpt-1 ,'integrate-mexpt-2) 'integral)
 
-(defun integrate5 (ex var)
-  (if (rat8 ex var)
-      (ratint ex var)
-      (integrator ex var)))
+(defun integrate5 (ex var2)
+  (if (rat8 ex var2)
+      (ratint ex var2)
+      (integrator ex var2)))
 
 (defun denomfind (x)
   (cond ((ratnump x) (caddr x))
