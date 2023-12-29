@@ -137,36 +137,38 @@
   ;; POWERL is initialized in INTEGRATOR to NIL and can be modified in
   ;; INTFORM in certain cases and is read by INTEGRATOR in some cases.
   ;; Instead of a global special variable, use a closure.
-  (defun intform (expres &aux w arg)
-    (cond ((freevar2 expres var) nil)
+  (defun intform (expres var2 &aux w arg)
+    (cond ((freevar2 expres var2) nil)
           ((atom expres) nil)
 
           ;; Map the function intform over the arguments of a sum or a product
 	  ((member (caar expres) '(mplus mtimes) :test #'eq)
-           (some #'intform (cdr expres)))
+           (some #'(lambda (ex)
+                     (intform ex var2))
+                 (cdr expres)))
 
           ((or (eq (caar expres) '%log)
                (arcp (caar expres)))
            (cond
              ;; Method 9: Rational function times a log or arctric function
 	     ((setq arg (m2 *exp*
-			    `((mtimes) ((,(caar expres)) (b rat8 ,var))
-			      ((coefftt) (c rat8prime ,var)))))
+			    `((mtimes) ((,(caar expres)) (b rat8 ,var2))
+			      ((coefftt) (c rat8prime ,var2)))))
 	      ;; Integrand is of the form R(x)*F(S(x)) where F is a log, or 
 	      ;; arctric function and R(x) and S(x) are rational functions.
-	      (ratlog *exp* var (cons (cons 'a expres) arg)))
+	      (ratlog *exp* var2 (cons (cons 'a expres) arg)))
 	     (t
 	      (prog (y z)
 	         (cond
-	           ((setq y (intform (cadr expres))) (return y))
+	           ((setq y (intform (cadr expres) var2)) (return y))
 	         
 	           ;; Method 10: Rational function times log(b*x+a)
 		   ((and (eq (caar expres) '%log)
-                         (setq z (m2-b*x+a (cadr expres) var))
+                         (setq z (m2-b*x+a (cadr expres) var2))
                          (setq y (m2 *exp*
                                      `((mtimes)
-                                       ((coefftt) (c rat8 ,var))
-                                       ((coefftt) (d elem ,expres ,var))))))
+                                       ((coefftt) (c rat8 ,var2))
+                                       ((coefftt) (d elem ,expres ,var2))))))
 		    (return
 		      (let ((a (cdr (assoc 'a z :test #'eq)))
 			    (b (cdr (assoc 'b z :test #'eq)))
@@ -185,7 +187,7 @@
 				  `((mquotient) ((mplus) ((mexpt) $%e ,newvar)
 					                 ((mtimes) -1 ,a))
 				                ,b)
-				  var
+				  var2
 				  c)
 			         `((mquotient) ((mexpt) $%e ,newvar) ,b)
 			         (maxima-substitute newvar expres d))
@@ -204,40 +206,40 @@
              (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
            (cond
              ((setq arg
-                    (m2 *exp* `((mtimes) ((,(caar expres)) (b rat8 ,var)) ((coefftt) (c rat8prime ,var)))))
+                    (m2 *exp* `((mtimes) ((,(caar expres)) (b rat8 ,var2)) ((coefftt) (c rat8prime ,var2)))))
               ;; A rational function times the special function.
               ;; Integrate with the method integration-by-parts.
-              (partial-integration (cons (cons 'a expres) arg) var))
+              (partial-integration (cons (cons 'a expres) arg) var2))
              ;; The method of integration-by-parts can not be applied.
              ;; Maxima tries to get a clue for the argument of the function which
              ;; allows a substitution for the argument.
-             ((intform (cadr expres)))
+             ((intform (cadr expres) var2))
              (t nil)))
         
           ;; Method 6: Elementary function of trigonometric functions
 	  ((optrig (caar expres))
-	   (cond ((not (setq w (m2-b*x+a (cadr expres) var)))
-		  (intform (cadr expres)))
+	   (cond ((not (setq w (m2-b*x+a (cadr expres) var2)))
+		  (intform (cadr expres) var2))
 	         (t
 		  (prog2
                       (setq powerl t)
-                      (monstertrig *exp* var (cadr expres))))))
+                      (monstertrig *exp* var2 (cadr expres))))))
         
 	  ((and (eq (caar expres) '%derivative)
                 (eq (caar *exp*) (caar expres))
-                (checkderiv *exp* var)))
+                (checkderiv *exp* var2)))
         
           ;; Stop intform if we have not a power function.
           ((not (eq (caar expres) 'mexpt)) nil)
         
           ;; Method 2: Substitution for an integral power
-          ((integerp (caddr expres)) (intform (cadr expres)))
+          ((integerp (caddr expres)) (intform (cadr expres) var2))
         
           ;; Method 1: Elementary function of exponentials
-          ((freevar2 (cadr expres) var)
-           (cond ((setq w (m2-b*x+a (caddr expres) var))
-                  (superexpt *exp* var (cadr expres) w))
-                 ((intform (caddr expres)))
+          ((freevar2 (cadr expres) var2)
+           (cond ((setq w (m2-b*x+a (caddr expres) var2))
+                  (superexpt *exp* var2 (cadr expres) w))
+                 ((intform (caddr expres) var2))
                  ((and (eq '$%e (cadr expres))
                        (isinop (caddr expres) '%log))
                   ;; Found something like exp(r*log(x))
@@ -245,40 +247,40 @@
                          ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
                          (nexp (resimplify *exp*)))
                     (cond ((alike1 *exp* nexp) nil)
-                          (t (integrator (setq *exp* nexp) var)))))
+                          (t (integrator (setq *exp* nexp) var2)))))
                  (t nil)))
         
           ;; The base is not a rational function. Try to get a clue for the base.
-	  ((not (rat8 (cadr expres) var))
-	   (intform (cadr expres)))
+	  ((not (rat8 (cadr expres) var2))
+	   (intform (cadr expres) var2))
         
           ;; Method 3: Substitution for a rational root
-	  ((and (setq w (m2-ratrootform (cadr expres) var)) ; e*(a*x+b) / (c*x+d)
+	  ((and (setq w (m2-ratrootform (cadr expres) var2)) ; e*(a*x+b) / (c*x+d)
                 (denomfind (caddr expres))) ; expon is ratnum
            (or (progn
                  (setq powerl t)
-                 (ratroot *exp* var (cadr expres) w))
-               (inte *exp* var)))
+                 (ratroot *exp* var2 (cadr expres) w))
+               (inte *exp* var2)))
         
           ;; Method 4: Binomial - Chebyschev
 	  ((not (integerp1 (caddr expres))) ; 2*exponent not integer
-	   (cond ((m2-chebyform *exp* var)
-		  (chebyf *exp* var))
-	         (t (intform (cadr expres)))))
+	   (cond ((m2-chebyform *exp* var2)
+		  (chebyf *exp* var2))
+	         (t (intform (cadr expres) var2))))
         
           ;; Method 5: Arctrigonometric substitution
-	  ((setq w (m2-c*x^2+b*x+a (cadr expres) var)) ; sqrt(c*x^2+b*x+a)
+	  ((setq w (m2-c*x^2+b*x+a (cadr expres) var2)) ; sqrt(c*x^2+b*x+a)
 	   #+nil
 	   (format t "expres = sqrt(c*x^2+b*x+a)~%")
 	   ;; I think this is method 5, arctrigonometric substitutions.
 	   ;; (Moses, pg 80.)  The integrand is of the form
 	   ;; R(x,sqrt(c*x^2+b*x+a)).  This method first eliminates the b
 	   ;; term of the quadratic, and then uses an arctrig substitution.
-	   (inte *exp* var))
+	   (inte *exp* var2))
         
           ;; Method 4: Binomial - Chebyschev
-	  ((m2-chebyform *exp* var)
-	   (chebyf *exp* var))
+	  ((m2-chebyform *exp* var2)
+	   (chebyf *exp* var2))
         
           ;; Expand expres.
           ;; Substitute the expanded factor into the integrand and try again.
@@ -286,7 +288,8 @@
                     (cadr expres)))
 	   (prog2
                (setq *exp* (maxima-substitute w (cadr expres) *exp*))
-               (intform (simplify (list '(mexpt) w (caddr expres))))))
+               (intform (simplify (list '(mexpt) w (caddr expres)))
+                        var2)))
         
           ;; Factor expres.
           ;; Substitute the factored factor into the integrand and try again.
@@ -301,7 +304,8 @@
 	   (setq *exp* (let (($radexpand $radexpand))
 		         (maxima-substitute w (cadr expres) *exp*)))
 	   (intform (let (($radexpand '$all))
-		      (simplify (list '(mexpt) w (caddr expres))))))))
+		      (simplify (list '(mexpt) w (caddr expres))))
+                    var2))))
   ;;------------------------------------------------------------------------------
 
   ;; This is the main integration routine.  It is called from sinint.
@@ -368,7 +372,7 @@
 	      #+nil
 	      (format t "In loop, go skip~%")
 	      (go skip))
-	     ((and (setq w (intform (car y)))
+	     ((and (setq w (intform (car y) var))
 		   ;; Do not return a noun form as result at this point, because
 		   ;; we would like to check for further special integrals.
 		   ;; We store the result for later use.
