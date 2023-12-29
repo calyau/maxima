@@ -600,7 +600,7 @@ sqrt(    G    )
      d, x a
 ";
 
-block ([maxima_unicode_display: false], with_default_2d_display ([S: make_string_output_stream ()],
+block ([display2d_unicode: false], with_default_2d_display ([S: make_string_output_stream ()],
   with_stdout (S, ?terpri (), print ((1 - G[a, b, c, d, w, x])/E[1, 1/2, 2/3, 17/29])),
   get_output_stream_string (S)));
 "
@@ -624,7 +624,7 @@ map (get_index_properties, '[A, B, C, D, E, F, G]);
 (print_string_2d (e) := with_default_2d_display (printf (false, "~m", e)), 0);
 0;
 
-block ([maxima_unicode_display: false], print_string_2d (lsum(1/f(g(x)/h(x)), x, LOOOOOOOOONG_EXPR)));
+block ([display2d_unicode: false], print_string_2d (lsum(1/f(g(x)/h(x)), x, LOOOOOOOOONG_EXPR)));
 "====
 \\                         1
  >                     -------
@@ -635,7 +635,7 @@ x in LOOOOOOOOONG_EXPR   h(x)
 
 /* other examples which call DSUMPROD in test suite */
 
-block ([maxima_unicode_display: false], print_string_2d ('sum(x^k / k,k,1,inf)));
+block ([display2d_unicode: false], print_string_2d ('sum(x^k / k,k,1,inf)));
 "inf
 ====   k
 \\     x
@@ -645,7 +645,7 @@ block ([maxima_unicode_display: false], print_string_2d ('sum(x^k / k,k,1,inf)))
 k = 1
 "$
 
-block ([maxima_unicode_display: false], print_string_2d (subst (k = \*index, 'sum(x^k / k,k,1,inf))));
+block ([display2d_unicode: false], print_string_2d (subst (k = \*index, 'sum(x^k / k,k,1,inf))));
 "inf
 ====        *index
 \\          x
@@ -655,7 +655,7 @@ block ([maxima_unicode_display: false], print_string_2d (subst (k = \*index, 'su
 *index = 1
 "$
 
-block ([maxima_unicode_display: false], print_string_2d ('sum(i!,i,1,4)));
+block ([display2d_unicode: false], print_string_2d ('sum(i!,i,1,4)));
 " 4
 ====
 \\
@@ -665,7 +665,7 @@ block ([maxima_unicode_display: false], print_string_2d ('sum(i!,i,1,4)));
 i = 1
 "$
 
-block ([maxima_unicode_display: false], print_string_2d ('sum(g(i),i,0,n)));
+block ([display2d_unicode: false], print_string_2d ('sum(g(i),i,0,n)));
 " n
 ====
 \\
@@ -675,7 +675,7 @@ block ([maxima_unicode_display: false], print_string_2d ('sum(g(i),i,0,n)));
 i = 0
 "$
 
-block ([maxima_unicode_display: false], print_string_2d ('sum(g(i),i,0,n) + 1));
+block ([display2d_unicode: false], print_string_2d ('sum(g(i),i,0,n) + 1));
 " n
 ====
 \\
@@ -685,7 +685,7 @@ block ([maxima_unicode_display: false], print_string_2d ('sum(g(i),i,0,n) + 1));
 i = 0
 "$
 
-block ([maxima_unicode_display: false], print_string_2d (foo: unsum(product(i^2,i,1,n),n)));
+block ([display2d_unicode: false], print_string_2d (foo: unsum(product(i^2,i,1,n),n)));
 " n - 1
  /===\\
   ! !   2
@@ -694,7 +694,7 @@ block ([maxima_unicode_display: false], print_string_2d (foo: unsum(product(i^2,
  i = 1
 "$
 
-block ([maxima_unicode_display: false], print_string_2d (nusum(foo,n,1,n)));
+block ([display2d_unicode: false], print_string_2d (nusum(foo,n,1,n)));
 "  n
 /===\\
  ! !   2
@@ -703,7 +703,7 @@ block ([maxima_unicode_display: false], print_string_2d (nusum(foo,n,1,n)));
 i = 1
 "$
 
-block ([maxima_unicode_display: false], print_string_2d (powerseries(log(sin(x)/x),x,0)));
+block ([display2d_unicode: false], print_string_2d (powerseries(log(sin(x)/x),x,0)));
 "inf
 ====        i2  2 i2 - 1             2 i2
 \\      (- 1)   2         bern(2 i2) x
@@ -713,7 +713,7 @@ block ([maxima_unicode_display: false], print_string_2d (powerseries(log(sin(x)/
 i2 = 1
 "$
 
-block ([maxima_unicode_display: false], print_string_2d (product((x^i+1)^2.5,i,1,inf)/(x^2+1)));
+block ([display2d_unicode: false], print_string_2d (product((x^i+1)^2.5,i,1,inf)/(x^2+1)));
 " inf
 /===\\
  ! !    i     2.5
@@ -727,7 +727,7 @@ i = 1
 
 /* additional DSUMPROD examples */
 
-block ([maxima_unicode_display: false], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl)));
+block ([display2d_unicode: false], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl)));
 "====
 \\                                            1
  >                                        --------
@@ -736,7 +736,7 @@ block ([maxima_unicode_display: false], print_string_2d ('lsum(1/(1+f(x)/2), ksk
 kskdsksdkkdksdksd in w999393293923939losl  2
 "$
 
-block ([maxima_unicode_display: false], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^2)));
+block ([display2d_unicode: false], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^2)));
 "====
 \\                                             1
  >                                         --------
@@ -746,7 +746,7 @@ block ([maxima_unicode_display: false], print_string_2d ('lsum(1/(1+f(x)/2), ksk
 kskdsksdkkdksdksd in w999393293923939losl
 "$
 
-block ([maxima_unicode_display: false], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skdkskdsk)));
+block ([display2d_unicode: false], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skdkskdsk)));
 "====
 \\                                                     1
  >                                                 --------
@@ -801,13 +801,13 @@ print_string_2d (' "."(a, b, c));
 "a . b . c
 ";
 
-block ([maxima_unicode_display: false], print_string_2d (' ?rat(a, b)));
+block ([display2d_unicode: false], print_string_2d (' ?rat(a, b)));
 "a
 -
 b
 ";
 
-block ([maxima_unicode_display: false], print_string_2d (' "/"(a, b)));
+block ([display2d_unicode: false], print_string_2d (' "/"(a, b)));
 "a
 -
 b
@@ -891,17 +891,17 @@ print_string_2d ('?mabs(a));
 "abs(a)
 ";
 
-block ([maxima_unicode_display: false], print_string_2d ('matrix([a, b, c])));
+block ([display2d_unicode: false], print_string_2d ('matrix([a, b, c])));
 "[ a  b  c ]
 ";
 
-block ([maxima_unicode_display: false], print_string_2d ('?mbox(a)));
+block ([display2d_unicode: false], print_string_2d ('?mbox(a)));
 "\"\"\"
 \"a\"
 \"\"\"
 ";
 
-block ([maxima_unicode_display: false], print_string_2d ('?mlabox (a, b)));
+block ([display2d_unicode: false], print_string_2d ('?mlabox (a, b)));
 "b\"\"
 \"a\"
 \"\"\"

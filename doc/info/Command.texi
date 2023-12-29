@@ -1756,11 +1756,11 @@ See also @mref{set_alt_display} and @mrefdot{display2d}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{maxima_unicode_display}
-@defvr {Option variable} maxima_unicode_display
+@anchor{display2d_unicode}
+@defvr {Option variable} display2d_unicode
 Default value: @code{true}
 
-When @code{maxima_unicode_display} is @code{true},
+When @code{display2d_unicode} is @code{true},
 the 2-d pretty printer uses Unicode drawing characters [1] to display
 integrals, summations, products, matrices, ratios, derivatives,
 @code{box} expressions, @code{at} expressions, and absolute value expressions.
@@ -1775,13 +1775,13 @@ and @code{printf} with the @code{~m} format specifier.
 Examples:
 
 Expressions displayed by 2-d pretty printer using Unicode drawing characters
-(@code{maxima_unicode_display} equal to @code{true}),
+(@code{display2d_unicode} equal to @code{true}),
 shown as an image:
 
 @image{figures/maxima-unicode-display-variety-1}
 
 Same expressions, displayed using only ASCII characters
-(@code{maxima_unicode_display} equal to @code{false}),
+(@code{display2d_unicode} equal to @code{false}),
 shown as an image:
 
 @image{figures/maxima-unicode-display-variety-1-ascii}

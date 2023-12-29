@@ -9,7 +9,7 @@ declare_index_properties
       postsuperscript, presubscript]);
 done;
 
-block ([maxima_unicode_display: true], with_default_2d_display ([S: make_string_output_stream ()],
+block ([display2d_unicode: true], with_default_2d_display ([S: make_string_output_stream ()],
   with_stdout (S, ?terpri (), print ((1 - G[a, b, c, d, w, x])/E[1, 1/2, 2/3, 17/29])),
   get_output_stream_string (S)));
 "
@@ -25,7 +25,7 @@ block ([maxima_unicode_display: true], with_default_2d_display ([S: make_string_
 (print_string_2d (e) := with_default_2d_display (printf (false, "~m", e)), 0);
 0;
 
-block ([maxima_unicode_display: true], print_string_2d (lsum(1/f(g(x)/h(x)), x, LOOOOOOOOONG_EXPR)));
+block ([display2d_unicode: true], print_string_2d (lsum(1/f(g(x)/h(x)), x, LOOOOOOOOONG_EXPR)));
 "____
 ╲                         1
  >                     ───────
@@ -36,7 +36,7 @@ x in LOOOOOOOOONG_EXPR   h(x)
 
 /* other examples which call DSUMPROD in test suite */
 
-block ([maxima_unicode_display: true], print_string_2d ('sum(x^k / k,k,1,inf)));
+block ([display2d_unicode: true], print_string_2d ('sum(x^k / k,k,1,inf)));
 "inf
 ____   k
 ╲     x
@@ -46,7 +46,7 @@ ____   k
 k = 1
 "$
 
-block ([maxima_unicode_display: true], print_string_2d (subst (k = \*index, 'sum(x^k / k,k,1,inf))));
+block ([display2d_unicode: true], print_string_2d (subst (k = \*index, 'sum(x^k / k,k,1,inf))));
 "inf
 ____        *index
 ╲          x
@@ -56,7 +56,7 @@ ____        *index
 *index = 1
 "$
 
-block ([maxima_unicode_display: true], print_string_2d ('sum(i!,i,1,4)));
+block ([display2d_unicode: true], print_string_2d ('sum(i!,i,1,4)));
 " 4
 ____
 ╲
@@ -66,7 +66,7 @@ ____
 i = 1
 "$
 
-block ([maxima_unicode_display: true], print_string_2d ('sum(g(i),i,0,n)));
+block ([display2d_unicode: true], print_string_2d ('sum(g(i),i,0,n)));
 " n
 ____
 ╲
@@ -76,7 +76,7 @@ ____
 i = 0
 "$
 
-block ([maxima_unicode_display: true], print_string_2d ('sum(g(i),i,0,n) + 1));
+block ([display2d_unicode: true], print_string_2d ('sum(g(i),i,0,n) + 1));
 " n
 ____
 ╲
@@ -86,7 +86,7 @@ ____
 i = 0
 "$
 
-block ([maxima_unicode_display: true], print_string_2d (foo: unsum(product(i^2,i,1,n),n)));
+block ([display2d_unicode: true], print_string_2d (foo: unsum(product(i^2,i,1,n),n)));
 " n - 1
  /───\\
   │ │   2
@@ -95,7 +95,7 @@ block ([maxima_unicode_display: true], print_string_2d (foo: unsum(product(i^2,i
  i = 1
 "$
 
-block ([maxima_unicode_display: true], print_string_2d (nusum(foo,n,1,n)));
+block ([display2d_unicode: true], print_string_2d (nusum(foo,n,1,n)));
 "  n
 /───\\
  │ │   2
@@ -104,7 +104,7 @@ block ([maxima_unicode_display: true], print_string_2d (nusum(foo,n,1,n)));
 i = 1
 "$
 
-block ([maxima_unicode_display: true], print_string_2d (niceindices (powerseries(log(sin(x)/x),x,0))));
+block ([display2d_unicode: true], print_string_2d (niceindices (powerseries(log(sin(x)/x),x,0))));
 "inf
 ____       i  2 i - 1            2 i
 ╲     (- 1)  2        bern(2 i) x
@@ -114,7 +114,7 @@ ____       i  2 i - 1            2 i
 i = 1
 "$
 
-block ([maxima_unicode_display: true], print_string_2d (product((x^i+1)^2.5,i,1,inf)/(x^2+1)));
+block ([display2d_unicode: true], print_string_2d (product((x^i+1)^2.5,i,1,inf)/(x^2+1)));
 " inf
 /───\\
  │ │    i     2.5
@@ -128,7 +128,7 @@ i = 1
 
 /* additional DSUMPROD examples */
 
-block ([maxima_unicode_display: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl)));
+block ([display2d_unicode: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl)));
 "____
 ╲                                            1
  >                                        ────────
@@ -137,7 +137,7 @@ block ([maxima_unicode_display: true], print_string_2d ('lsum(1/(1+f(x)/2), kskd
 kskdsksdkkdksdksd in w999393293923939losl  2
 "$
 
-block ([maxima_unicode_display: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^2)));
+block ([display2d_unicode: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^2)));
 "____
 ╲                                             1
  >                                         ────────
@@ -147,7 +147,7 @@ block ([maxima_unicode_display: true], print_string_2d ('lsum(1/(1+f(x)/2), kskd
 kskdsksdkkdksdksd in w999393293923939losl
 "$
 
-block ([maxima_unicode_display: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skdkskdsk)));
+block ([display2d_unicode: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skdkskdsk)));
 "____
 ╲                                                     1
  >                                                 ────────
@@ -157,31 +157,31 @@ block ([maxima_unicode_display: true], print_string_2d ('lsum(1/(1+f(x)/2), kskd
 kskdsksdkkdksdksd in w999393293923939losl
 "$
 
-block ([maxima_unicode_display: true], print_string_2d (' ?rat(a, b)));
+block ([display2d_unicode: true], print_string_2d (' ?rat(a, b)));
 "a
 ─
 b
 ";
 
-block ([maxima_unicode_display: true], print_string_2d (' "/"(a, b)));
+block ([display2d_unicode: true], print_string_2d (' "/"(a, b)));
 "a
 ─
 b
 ";
 
-block ([maxima_unicode_display: true], print_string_2d ('matrix([a, b, c])));
+block ([display2d_unicode: true], print_string_2d ('matrix([a, b, c])));
 "┌         ┐
 │ a  b  c │
 └         ┘
 ";
 
-block ([maxima_unicode_display: true], print_string_2d ('?mbox(a)));
+block ([display2d_unicode: true], print_string_2d ('?mbox(a)));
 "╔═╗
 ║a║
 ╚═╝
 ";
 
-block ([maxima_unicode_display: true], print_string_2d ('?mlabox (a, b)));
+block ([display2d_unicode: true], print_string_2d ('?mlabox (a, b)));
 "b═╗
 ║a║
 ╚═╝
@@ -202,7 +202,7 @@ block ([maxima_unicode_display: true], print_string_2d ('?mlabox (a, b)));
  0);
 0;
 
-block ([powerdisp : false, maxima_unicode_display: true],
+block ([powerdisp : false, display2d_unicode: true],
   verify_display_2d ((x+1)/(x+2),
 "x + 1
 ───── 
@@ -210,7 +210,7 @@ x + 2
 "));
 true;
 
-block ([powerdisp : true, maxima_unicode_display: true],
+block ([powerdisp : true, display2d_unicode: true],
   verify_display_2d ((x+1)/(x+2),
 "1 + x
 ───── 
@@ -221,7 +221,7 @@ true;
 (H : ( n2 * s^2 + n1 * s + n0 ) / ( d2 * s^2 + d1 * s + d0 ), 0);
 0;
 
-block ([powerdisp : false, maxima_unicode_display: true], verify_display_2d (H,
+block ([powerdisp : false, display2d_unicode: true], verify_display_2d (H,
 "    2
 n2 s  + n1 s + n0
 ───────────────── 
@@ -230,7 +230,7 @@ d2 s  + d1 s + d0
 "));
 true;
 
-block ([powerdisp : true, maxima_unicode_display: true], verify_display_2d (H,
+block ([powerdisp : true, display2d_unicode: true], verify_display_2d (H,
 "                2
 n0 + n1 s + n2 s
 ───────────────── 
@@ -243,7 +243,7 @@ true;
 (print_string_2d (e) := with_default_2d_display (printf (false, "~m", e)), 0);
 0;
 
-block ([maxima_unicode_display: true], print_string_2d (-a/b));
+block ([display2d_unicode: true], print_string_2d (-a/b));
 "  a
 - ─
   b
@@ -252,7 +252,7 @@ block ([maxima_unicode_display: true], print_string_2d (-a/b));
 string (-a/b);
 "-(a/b)";
 
-block ([maxima_unicode_display: true], print_string_2d (-(a/b)));
+block ([display2d_unicode: true], print_string_2d (-(a/b)));
 "  a
 - ─
   b
@@ -261,13 +261,13 @@ block ([maxima_unicode_display: true], print_string_2d (-(a/b)));
 string (-(a/b));
 "-(a/b)";
 
-block ([maxima_unicode_display: true], print_string_2d ((-a)/b));
+block ([display2d_unicode: true], print_string_2d ((-a)/b));
 "  a
 - ─
   b
 ";
 
-block ([maxima_unicode_display: true], print_string_2d (-(a + b)/c));
+block ([display2d_unicode: true], print_string_2d (-(a + b)/c));
 "- b - a
 ───────
    c
@@ -276,7 +276,7 @@ block ([maxima_unicode_display: true], print_string_2d (-(a + b)/c));
 string (-(a + b)/c);
 "(-b-a)/c";
 
-block ([maxima_unicode_display: true], print_string_2d ((-(a + b))/c));
+block ([display2d_unicode: true], print_string_2d ((-(a + b))/c));
 "- b - a
 ───────
    c
@@ -285,7 +285,7 @@ block ([maxima_unicode_display: true], print_string_2d ((-(a + b))/c));
 string ((-(a + b))/c);
 "(-b-a)/c";
 
-block ([maxima_unicode_display: true], print_string_2d (-((a + b)/c)));
+block ([display2d_unicode: true], print_string_2d (-((a + b)/c)));
 "  b + a
 - ─────
     c
@@ -293,14 +293,14 @@ block ([maxima_unicode_display: true], print_string_2d (-((a + b)/c)));
 
 /* tests adapted from share/stringproc/rtestprintf.mac */
 
-block ([maxima_unicode_display: true],
+block ([display2d_unicode: true],
        with_default_2d_display(printf (false, "~m~%", 1/2)));
 "1
 ─
 2
 ";
 
-block ([maxima_unicode_display: true],
+block ([display2d_unicode: true],
        with_default_2d_display(block ([s: make_string_output_stream ()],
                                       printf (s, "~m~%", 1/2),
                                       get_output_stream_string (s))));
@@ -309,14 +309,14 @@ block ([maxima_unicode_display: true],
 2
 ";
 
-block ([maxima_unicode_display: true],
+block ([display2d_unicode: true],
        with_default_2d_display(printf (false, "~m, ~a, ~:m, ~@m, ~d~%", (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), 1234)));
 "x + 1                            x + 1
 ─────, (x+1)/(1-x), (x+1)/(1-x), ─────, 1234
 1 - x                            1 - x
 ";
 
-block ([maxima_unicode_display: true],
+block ([display2d_unicode: true],
        with_default_2d_display(block ([s: make_string_output_stream ()],
                                       printf (s, "~m, ~a, ~:m, ~@m, ~d~%", (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), 1234),
                                       get_output_stream_string (s))));
@@ -325,14 +325,14 @@ block ([maxima_unicode_display: true],
 1 - x                            1 - x
 ";
 
-block ([maxima_unicode_display: true],
+block ([display2d_unicode: true],
        with_default_2d_display(printf (false, "~~m ~~:m ~~~~@m ~m, ~a, ~:m, ~@m, ~d ~~z ~~~~z ~~~~~~y~%", (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), 1234)));
 "            x + 1                            x + 1
 ~m ~:m ~~@m ─────, (x+1)/(1-x), (x+1)/(1-x), ─────, 1234 ~z ~~z ~~~y
             1 - x                            1 - x
 ";
 
-block ([maxima_unicode_display: true],
+block ([display2d_unicode: true],
        with_default_2d_display(block ([s: make_string_output_stream ()],
                                       printf (s, "~~m ~~:m ~~~~@m ~m, ~a, ~:m, ~@m, ~d ~~z ~~~~z ~~~~~~y~%", (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), (1 + x)/(1 - x), 1234),
                                       get_output_stream_string (s))));
@@ -344,7 +344,7 @@ block ([maxima_unicode_display: true],
 /* additional tests covering integrate, sum, lsum, product, diff, at, abs, matrix, box, labeled box, dpart, and ratio. */
 
 (kill (all),
- print_string_2d_unicode (e) := block ([maxima_unicode_display: true], with_default_2d_display (printf (false, "~m", e))),
+ print_string_2d_unicode (e) := block ([display2d_unicode: true], with_default_2d_display (printf (false, "~m", e))),
  0);
 0;
 

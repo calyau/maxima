@@ -750,11 +750,11 @@
 	   (setf custom:*terminal-encoding*
 		 custom:*default-file-encoding*))))
 
-(defmvar $maxima_unicode_display #+lisp-unicode-capable t #-lisp-unicode-capable nil)
+(defmvar $display2d_unicode #+lisp-unicode-capable t #-lisp-unicode-capable nil)
 
-(defun maxima-unicode-enabled ()
+(defun display2d-unicode-enabled ()
   #+lisp-unicode-capable
-    (and $maxima_unicode_display 
+    (and $display2d_unicode 
          #+clisp (eq (ext:encoding-charset (stream-external-format *terminal-io* )) 'charset:utf-8)
          ;; other special cases go here as we learn about them ...
          #-clisp t)
