@@ -311,18 +311,18 @@
 
   ;; This is the main integration routine.  It is called from sinint.
 
-  (defun integrator (*exp* var &optional stack)
+  (defun integrator (*exp* var2 &optional stack)
     (prog (y const *b* w arcpart coef integrand result)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
        (incf *integrator-level*)
      
-       ;; Trivial case. exp is not a function of var.
-       (if (freevar2 *exp* var) (return (mul2* *exp* var)))
+       ;; Trivial case. exp is not a function of var2.
+       (if (freevar2 *exp* var2) (return (mul2* *exp* var2)))
      
        ;; Remove constant factors
-       (setq w (partition *exp* var 1))
+       (setq w (partition *exp* var2 1))
        (setq const (car w))
        (setq *exp* (cdr w))
        #+nil
@@ -333,7 +333,7 @@
      
        (cond ;; First stage, Method I: Integrate a sum.
          ((mplusp *exp*)
-          (return (mul2* const (integrate1 (cdr *exp*) var))))
+          (return (mul2* const (integrate1 (cdr *exp*) var2))))
            
          ;; Convert atan2(a,b) to atan(a/b) and try again.
          ((setq w (isinop *exp* '%atan2))
@@ -342,16 +342,16 @@
                                    w
                                    *exp*))
           (return (mul* const
-                        (integrator *exp* var stack))))
+                        (integrator *exp* var2 stack))))
            
          ;; First stage, Method II: Integrate sums.
 	 ((and (not (atom *exp*))
 	       (eq (caar *exp*) '%sum))
-	  (return (mul2* const (intsum *exp* var))))
+	  (return (mul2* const (intsum *exp* var2))))
            
          ;; First stage, Method III: Try derivative-divides method.
          ;; This is the workhorse that solves many integrals.
-         ((setq y (diffdiv *exp* var))
+         ((setq y (diffdiv *exp* var2))
 	  (return (mul2* const y))))
      
        ;; At this point, we have EXP as a product of terms.  Make Y a
@@ -369,11 +369,11 @@
        (progn
          (format t "car y =~%")
          (maxima-display (car y)))
-       (cond ((rat8 (car y) var)
+       (cond ((rat8 (car y) var2)
 	      #+nil
 	      (format t "In loop, go skip~%")
 	      (go skip))
-	     ((and (setq w (intform (car y) var))
+	     ((and (setq w (intform (car y) var2))
 		   ;; Do not return a noun form as result at this point, because
 		   ;; we would like to check for further special integrals.
 		   ;; We store the result for later use.
@@ -392,8 +392,8 @@
        (setq y (cdr y))
        (cond ((null y)
               ;; Method 8: Rational functions
-	      (return (mul2* const (cond ((setq y (powerlist *exp* var)) y)
-				         (t (ratint *exp* var)))))))
+	      (return (mul2* const (cond ((setq y (powerlist *exp* var2)) y)
+				         (t (ratint *exp* var2)))))))
        (go loop)
         
      special
@@ -417,9 +417,9 @@
 		     (cond ((alike1 (car stacklist) coef)
 			    (return nil))))
 		   (not (isinop (setq w (let ((stack (cons coef stack)))
-					  (integrator coef var stack)))
+					  (integrator coef var2 stack)))
 			        '%integrate))
-		   (setq integrand (mul2 w (sdiff arcpart var)))
+		   (setq integrand (mul2 w (sdiff arcpart var2)))
 		   (do ((stacklist stack (cdr stacklist)))
 		       ((null stacklist) t)
 		     (cond ((alike1 (car stacklist) integrand)
@@ -427,21 +427,21 @@
 		   (not (isinop
 		         (setq y (let ((stack (cons integrand stack))
 				       (integ integrand))
-				   (integrator integ var stack)))
+				   (integrator integ var2 stack)))
 		         '%integrate)))
 	      (return (add* (list '(mtimes) const w arcpart)
 			    (list '(mtimes) -1 const y))))
 	     (t
 	      (return
 		(mul* const
-		      (cond ((setq y (scep *exp* var))
+		      (cond ((setq y (scep *exp* var2))
 			     (cond ((cddr y)
 				    #+nil
 				    (progn
 				      (format t "cddr y =~%")
 				      (maxima-display (cddr y)))
-				    (integrator ($trigreduce *exp*) var stack))
-				   (t (sce-int (car y) (cadr y) var))))
+				    (integrator ($trigreduce *exp*) var2 stack))
+				   (t (sce-int (car y) (cadr y) var2))))
 			    ;; I don't understand why we do this. This
 			    ;; causes the stack overflow in Bug
 			    ;; 1487703, because we keep expanding *exp*
@@ -459,12 +459,12 @@
 			       (format t "y   = ~A~%" y)
 			       (maxima-display y)
 			       (break))
-			     (integrator y var stack))
+			     (integrator y var2 stack))
 			    ((and (not powerl)
-				  (setq y (powerlist *exp* var)))
+				  (setq y (powerlist *exp* var2)))
 			     y)
 			    ((and (not *in-risch-p*) ; Not called from rischint
-			          (setq y (rischint *exp* var))
+			          (setq y (rischint *exp* var2))
 				  ;; rischint has not found an integral but
 				  ;; returns a noun form. Do not return that
 				  ;; noun form as result at this point, but
@@ -472,7 +472,7 @@
 				  (setq result y)
 				  (not (isinop y '%integrate)))
 			     y)
-			    ((setq y (integrate-exp-special *exp* var))
+			    ((setq y (integrate-exp-special *exp* var2))
 			     ;; Maxima found an integral for a power function
 			     y)
 			    (t
@@ -481,7 +481,7 @@
 			     ;; intform or rischint.
 			     (if result
 				 result
-				 (list '(%integrate) *exp* var)))))))))))
+				 (list '(%integrate) *exp* var2)))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
