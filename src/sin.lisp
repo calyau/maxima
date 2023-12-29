@@ -1843,16 +1843,16 @@
 ;;; The integrand is like log(x)*f'(x). To obtain the result the technique of
 ;;; partial integration is applied: log(x)*f(x)-integrate(1/x*f(x),x)
 
-(defun ratlog (*exp* var form)
+(defun ratlog (*exp* var2 form)
   (prog (b c d y z)
      (setq y form)
      (setq b (cdr (assoc 'b y :test #'eq)))
      (setq c (cdr (assoc 'c y :test #'eq)))
-     (setq y (integrator c var))
+     (setq y (integrator c var2))
      (when (finds y) (return nil))
-     (setq d (sdiff (cdr (assoc 'a form :test #'eq)) var))
+     (setq d (sdiff (cdr (assoc 'a form :test #'eq)) var2))
      
-     (setq z (integrator (mul2* y d) var))
+     (setq z (integrator (mul2* y d) var2))
      (setq d (cdr (assoc 'a form :test #'eq)))
      (return (simplify (list '(mplus)
 			     (list '(mtimes) y d)
