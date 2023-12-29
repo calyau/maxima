@@ -1726,7 +1726,7 @@
       ((let ((ans (simplify
                      (let ($opsubst varlist genvar)
 		       (integrator *exp* var nil)))))
-	     (if (sum-of-intsp ans)
+	     (if (sum-of-intsp ans var)
 		 (list '(%integrate) *exp* var)
 		 ans))))))
 
@@ -1761,7 +1761,7 @@
 ;;
 ;;   (6) Otherwise something interesting (and hopefully useful) has
 ;;       happened. Return NIL to tell SININT to report it.
-(defun sum-of-intsp (ans)
+(defun sum-of-intsp (ans var2)
   (cond ((atom ans)
 	 ;; Result of integration should never be a constant other than zero.
 	 ;; If the result of integration is zero, it is either because:
@@ -1769,18 +1769,20 @@
 	 ;;    and (mul 0 nil) yielded 0, meaning that the result is wrong, or
 	 ;; 2) the original integrand was actually zero - this is handled
 	 ;;    with a separate special case in sinint
-	 (not (eq ans var)))
-	((mplusp ans) (every #'sum-of-intsp (cdr ans)))
+	 (not (eq ans var2)))
+	((mplusp ans) (every #'(lambda (e)
+                                 (sum-of-intsp e var2))
+                             (cdr ans)))
 	((eq (caar ans) '%integrate) t)
 	((mtimesp ans)
          (let ((int-factors 0))
            (not (or (dolist (factor (cdr ans))
-                      (unless (freeof var factor)
-                        (if (sum-of-intsp factor)
+                      (unless (freeof var2 factor)
+                        (if (sum-of-intsp factor var2)
                             (incf int-factors)
                             (return t))))
                     (<= 2 int-factors)))))
-	((freeof var ans) t)
+	((freeof var2 ans) t)
 	(t nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
