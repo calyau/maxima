@@ -114,6 +114,13 @@ done;
  0);
 0;
 
+/* increase linel so next few test cases avoid Lisp error when run_testsuite(display_all = true)
+ * workaround for SF bug https://sourceforge.net/p/maxima/bugs/4234/
+ */
+
+linel: 140;
+140;
+
 block ([powerdisp : false, display2d_unicode: false],
   verify_display_2d ((x+1)/(x+2),
 "x + 1
@@ -129,6 +136,9 @@ block ([powerdisp : true, display2d_unicode: false],
 2 + x
 "));
 true;
+
+(reset (linel), 0);
+0;
 
 block ([powerdisp : false], verify_display_1d ((x+1)/(x+2), "(x+1)/(x+2)"));
 true;

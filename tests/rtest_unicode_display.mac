@@ -202,6 +202,13 @@ block ([display2d_unicode: true], print_string_2d ('?mlabox (a, b)));
  0);
 0;
 
+/* increase linel so next few test cases avoid Lisp error when run_testsuite(display_all = true)
+ * workaround for SF bug https://sourceforge.net/p/maxima/bugs/4234/
+ */
+
+linel: 140;
+140;
+
 block ([powerdisp : false, display2d_unicode: true],
   verify_display_2d ((x+1)/(x+2),
 "x + 1
@@ -217,6 +224,9 @@ block ([powerdisp : true, display2d_unicode: true],
 2 + x
 "));
 true;
+
+(reset (linel), 0);
+0;
 
 (H : ( n2 * s^2 + n1 * s + n0 ) / ( d2 * s^2 + d1 * s + d0 ), 0);
 0;
