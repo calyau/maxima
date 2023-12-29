@@ -34,6 +34,9 @@
 
 ;;; Predicate functions
 
+;; Note: varp and freevarp are not used in this file anymore.  But
+;; they are used in other files.  Someday, varp and freevarp should be
+;; moved elsewhere.
 (declaim (inline varp))
 (defun varp (x)
   (alike1 x var))
@@ -86,6 +89,7 @@
                       (elem f expres var2))
                   (cdr a)))))
 
+;; Note: not used in this file.
 (defun freevar (a)
   (cond ((atom a) (not (eq a var)))
 	((varp a) nil)
