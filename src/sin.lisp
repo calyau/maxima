@@ -1248,12 +1248,12 @@
 	       (t (supertrig (cadr *exp*) var2))))
 	(t (supertrig (cadr *exp*) var2))))
 
-(defun subst2s (ex pat)
+(defun subst2s (ex pat var2)
   (cond ((null ex) nil)
-	((m2 ex pat) var)
+	((m2 ex pat) var2)
 	((atom ex) ex)
-	(t (cons (subst2s (car ex) pat)
-		 (subst2s (cdr ex) pat)))))
+	(t (cons (subst2s (car ex) pat var2)
+		 (subst2s (cdr ex) pat var2)))))
 
 ;; Match (c*x+b), where c and b are free of x
 (defun simple-trig-arg (*exp* var2)
@@ -1405,7 +1405,7 @@
   a  ;; A product of trig functions and all trig functions have the same
      ;; argument *trigarg*. Maxima substitutes *trigarg* with the variable var
      ;; of integration and calls trigint to integrate the new problem.
-     (setq w (subst2s *exp* *trigarg*))
+     (setq w (subst2s *exp* *trigarg* var))
      (setq b (cdras 'b (m2-b*x+a *trigarg* var)))
      (setq a (substint *trigarg* var (trigint (div* w b) var)))
      (return (if (isinop a '%integrate)
