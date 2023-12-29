@@ -1496,12 +1496,12 @@
 					(quotient (1- n) 2)))))
 	(t nil)))
 
-(defun subvar (x)
-  (maxima-substitute var 'x x))
+(defun subvar (x var2)
+  (maxima-substitute var2 'x x))
 
-(defun subvardlg (x)
+(defun subvardlg (x var2)
   (mapcar #'(lambda (m)
-	      (cons (maxima-substitute var 'x (car m)) (cdr m)))
+	      (cons (maxima-substitute var2 'x (car m)) (cdr m)))
 	  x))
 
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
@@ -1517,7 +1517,8 @@
 				 (((%tan) x) . tan*)
 				 (((%cot) x) . ((mexpt) tan* -1))
 				 (((%sec) x) . sec*)
-				 (((%csc) x) . ((mexpt) sin* -1))))
+				 (((%csc) x) . ((mexpt) sin* -1)))
+                               var)
 		    *exp*))
      
      (when *debug-integrate*
@@ -1649,7 +1650,8 @@
      (setq y (list '(mtimes) 
                    y 
                    '((mtimes) 2 ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))))
-     (setq repl (subvar '((mquotient) ((%sin) x) ((mplus) 1 ((%cos) x)))))
+     (setq repl (subvar '((mquotient) ((%sin) x) ((mplus) 1 ((%cos) x)))
+                        var))
      (go get2)
   get3
      (setq y (list '(mtimes) -1 *yy* *yz*))
