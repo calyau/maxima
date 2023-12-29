@@ -798,7 +798,7 @@
                       ; stored in a list which is returned from m2.
       (exptflag nil)) ; When T, the substitution is not possible.
   
-  (defun superexpt (*exp* var bas1 pow1)
+  (defun superexpt (*exp* var2 bas1 pow1)
     (prog (y ($logabs nil) (new-var (gensym "NEW-VAR-")))
       (putprop new-var t 'internal)
       (setq base bas1
@@ -807,21 +807,21 @@
       ;; Transform the integrand. At this point resimplify, because it is not
       ;; guaranteed, that a correct simplified expression is returned.
       ;; Use a new variable to prevent facts on the old variable to be wrongly used.
-      (setq y (resimplify (maxima-substitute new-var var (elemxpt *exp* var))))
+      (setq y (resimplify (maxima-substitute new-var var2 (elemxpt *exp* var2))))
       (when exptflag (return nil))
       ;; Integrate the transformed integrand and substitute back.
       (return
         ($multthru
           (substint (list '(mexpt) base
                           (list '(mplus) (cdras 'a pow)
-                                (list '(mtimes) (cdras 'b pow) var)))
+                                (list '(mtimes) (cdras 'b pow) var2)))
                     new-var
                     (integrator (div y
                                      (mul new-var
                                           (cdras 'b pow)
                                           (take '(%log) base)))
                                 new-var)
-                    var)))))
+                    var2)))))
   
   ;; Transform expressions like g^(b*x+a) to the common base base and
   ;; do the substitution y = base^(b*x+a) in the expr.
