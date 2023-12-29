@@ -192,7 +192,8 @@
 			         `((mquotient) ((mexpt) $%e ,newvar) ,b)
 			         (maxima-substitute newvar expres d))
 			   nil)
-			  newvar)))))
+			  newvar)
+                         var2))))
 		   (t (return nil)))))))
         
           ;; We have a special function with an integral on the property list.
@@ -818,7 +819,9 @@
                     (integrator (div y
                                      (mul new-var
                                           (cdras 'b pow)
-                                          (take '(%log) base))) new-var))))))
+                                          (take '(%log) base)))
+                                new-var)
+                    var)))))
   
   ;; Transform expressions like g^(b*x+a) to the common base base and
   ;; do the substitution y = base^(b*x+a) in the expr.
@@ -936,7 +939,7 @@
                               2))))
              var))
      ;; Substitute back and return the result.
-     (return (substint (power *ratroot* (power k -1)) var y))))
+     (return (substint (power *ratroot* (power k -1)) var y var))))
 
 ;; This is only called from RATROOT.  Maybe move this into RATROOT?
 (defun rat3 (ex ind var2)
@@ -1083,7 +1086,8 @@
 					     var
 					     ((mtimes) -1 c1)))
 				  r1)))
-	    var))))
+	    var)
+           var)))
        ((integerp2 r2)
 	#+nil (format t "integer r2~%")
 	;; I (rtoy) think this is using the substitution z = t^(q/d1).
@@ -1112,7 +1116,8 @@
 						     var d1))
 						   c1)
 						  r2))))
-			    var))))
+			    var)
+                    var)))
        ((and (integerp2 r1) (< r1 0))
 	#+nil (format t "integer r1 < 0~%")
 	;; I (rtoy) think this is using the substitution
@@ -1157,7 +1162,8 @@
 						    var d2)
 						   ((mtimes) -1 c1))
 						  r1))))
-			    var))))
+			    var)
+                    var)))
        ((integerp2 (add* r1 r2))
 	#+nil (format t "integer r1+r2~%")
 	;; If we're here,  (r1-q+1)/q+r2 is an integer.
@@ -1207,7 +1213,8 @@
 						   ((mplus)
 						    r1 r2
 						    2))))))
-			    var))))
+			    var)
+                    var)))
        (t (return (list '(%integrate) *exp* var))))))
 
 (defun greaterratp (x1 x2)
@@ -1407,7 +1414,7 @@
      ;; of integration and calls trigint to integrate the new problem.
      (setq w (subst2s *exp* *trigarg* var))
      (setq b (cdras 'b (m2-b*x+a *trigarg* var)))
-     (setq a (substint *trigarg* var (trigint (div* w b) var)))
+     (setq a (substint *trigarg* var (trigint (div* w b) var) var))
      (return (if (isinop a '%integrate)
                  (list '(%integrate) *exp* var)
                  a))))
@@ -1591,7 +1598,8 @@
                                     ((mtimes)
                                      ((rat simp) -1 2) 
                                      ((%cos) x))) a)))))
-                var))))
+                var)
+              var)))
   l1 
      ;; Case IV:
      ;; I think this is case IV, working on the expression in terms of
@@ -1675,7 +1683,8 @@
        (let (($triginverses '$all) (newvar (gensym)))
          (substint repl
                    newvar
-                   (integrator (maxima-substitute newvar 'x y) newvar))))))
+                   (integrator (maxima-substitute newvar 'x y) newvar)
+                   var)))))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
@@ -1965,7 +1974,8 @@
 				    (cdr (assoc 'a y :test #'eq))
 				    (list '(mexpt) var (1- (quotient (1+ *c*) *d*)))
 				    (subst10 *b* var)))
-		    var)))))
+		    var)
+        var))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2064,21 +2074,23 @@
     (dolist (a alist x)
       (setq x (maxima-substitute (cdr a) (car a) x)))))
 
-(defun substint (x y expres)
+(defun substint (x y expres var2)
   (if (and (not (atom expres)) (eq (caar expres) '%integrate))
-      (list (car expres) *exp* var)
-      (substint1 (maxima-substitute x y expres))))
+      (list (car expres) *exp* var2)
+      (substint1 (maxima-substitute x y expres) var2)))
 
-(defun substint1 (*exp*)
+(defun substint1 (*exp* var2)
   (cond ((atom *exp*) *exp*)
 	((and (eq (caar *exp*) '%integrate)
 	      (null (cdddr *exp*))
 	      (not (symbolp (caddr *exp*)))
-	      (not (free (caddr *exp*) var)))
+	      (not (free (caddr *exp*) var2)))
 	 (simplify (list '(%integrate)
-			 (mul2 (cadr *exp*) (sdiff (caddr *exp*) var))
-			 var)))
-	(t (recur-apply #'substint1 *exp*))))
+			 (mul2 (cadr *exp*) (sdiff (caddr *exp*) var2))
+			 var2)))
+	(t (recur-apply #'(lambda (e)
+                            (substint1 e var2))
+                        *exp*))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
