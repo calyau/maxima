@@ -1514,7 +1514,7 @@
 
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
-(defun trigint (*exp* var)
+(defun trigint (*exp* var2)
   (prog (y repl y1 y2 *yy* z m n *c* *yz* *a* *b* )
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
@@ -1526,7 +1526,7 @@
 				 (((%cot) x) . ((mexpt) tan* -1))
 				 (((%sec) x) . sec*)
 				 (((%csc) x) . ((mexpt) sin* -1)))
-                               var)
+                               var2)
 		    *exp*))
      
      (when *debug-integrate*
@@ -1557,7 +1557,7 @@
      (setq n (cdras 'n z))
      (setq *a* (integerp2 (* 0.5 (if (< m n) 1 -1) (+ n (* -1 m)))))
      (setq z (cons (cons 'a *a*) z))
-     (setq z (cons (cons 'x var) z))
+     (setq z (cons (cons 'x var2) z))
      
      (when *debug-integrate*
        (format t "~& CASE III:~%")
@@ -1573,8 +1573,8 @@
        (mul (cdras 'b z)
             (div 1 2)
             (substint 
-              (mul 2 var)
-              var
+              (mul 2 var2)
+              var2
               (integrator 
                 (cond ((< m n)
                        (subliss z
@@ -1599,8 +1599,8 @@
                                     ((mtimes)
                                      ((rat simp) -1 2) 
                                      ((%cos) x))) a)))))
-                var)
-              var)))
+                var2)
+              var2)))
   l1 
      ;; Case IV:
      ;; I think this is case IV, working on the expression in terms of
@@ -1619,13 +1619,13 @@
      (setq *a* 'sin*)
      (setq *b* 'cos*)
      (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) cos* (n odd1))))
-                (setq repl (list '(%sin) var)))
+                (setq repl (list '(%sin) var2)))
        ;; The case cos^(2*n+1)*Elem(cos^2,sin).  Use the substitution z = sin.
        (go getout))
      (setq *a* *b*)
      (setq *b* 'sin*)
      (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) sin* (n odd1))))
-                (setq repl (list '(%cos) var)))
+                (setq repl (list '(%cos) var2)))
        ;; The case sin^(2*n+1)*Elem(sin^2,cos).  Use the substitution z = cos.
        (go get3))
      
@@ -1641,15 +1641,15 @@
      (setq *c* 1)
      (setq *a* 'tan*)
      (setq *b* 'sec*)
-     (when (and (rat1 y) (setq repl (list '(%tan) var)))
+     (when (and (rat1 y) (setq repl (list '(%tan) var2)))
        (go get1))
      (setq *a* *b*)
      (setq *b* 'tan*)
      (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) tan* (n odd1))))
-           (setq repl (list '(%sec) var)))
+           (setq repl (list '(%sec) var2)))
        (go getout))
      (when (not (alike1 (setq repl ($expand *exp*)) *exp*))
-       (return (integrator repl var)))
+       (return (integrator repl var2)))
      (setq y (subliss '((sin* (mtimes) 2 x
                               ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))
                         (cos* (mtimes)
@@ -1660,7 +1660,7 @@
                    y 
                    '((mtimes) 2 ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))))
      (setq repl (subvar '((mquotient) ((%sin) x) ((mplus) 1 ((%cos) x)))
-                        var))
+                        var2))
      (go get2)
   get3
      (setq y (list '(mtimes) -1 *yy* *yz*))
@@ -1685,7 +1685,7 @@
          (substint repl
                    newvar
                    (integrator (maxima-substitute newvar 'x y) newvar)
-                   var)))))
+                   var2)))))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
