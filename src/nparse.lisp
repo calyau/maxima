@@ -39,9 +39,8 @@
     ))
 
 (defvar *unicode-space-chars-for-maxima*
-    #-(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) nil
-    #+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics))
-    (mapcar 'code-char *unicode-space-char-codes-for-maxima*))
+    #-lisp-unicode-capable nil
+    #+lisp-unicode-capable (mapcar 'code-char *unicode-space-char-codes-for-maxima*))
 
 (defmvar *whitespace-chars* (append *ascii-space-chars-for-maxima* *unicode-space-chars-for-maxima*))
 

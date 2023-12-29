@@ -750,6 +750,16 @@
 	   (setf custom:*terminal-encoding*
 		 custom:*default-file-encoding*))))
 
+(defmvar $display2d_unicode #+lisp-unicode-capable t #-lisp-unicode-capable nil)
+
+(defun display2d-unicode-enabled ()
+  #+lisp-unicode-capable
+    (and $display2d_unicode 
+         #+clisp (eq (ext:encoding-charset (stream-external-format *terminal-io* )) 'charset:utf-8)
+         ;; other special cases go here as we learn about them ...
+         #-clisp t)
+  #-lisp-unicode-capable nil)
+
 (import 'cl-user::run)
 
 (defmfun $to_lisp ()
