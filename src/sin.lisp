@@ -2436,7 +2436,7 @@
   (setq expr (cdr w))
 
   (schatchen-cond w
-    ((m2-exp-type-1a (facsum-exponent expr) var)
+    ((m2-exp-type-1a (facsum-exponent expr var) var)
      (a c d r p v)
      (when *debug-integrate*
        (format t "~&Type 1a: (a^(c*(z^r)^p+d)^v : w = ~A~%" w))
@@ -2456,7 +2456,7 @@
 	  (power (mul -1 c v (power (power var r) p) (take '(%log) a))
 		 (div -1 (mul p r)))))
 
-    ((m2-exp-type-2 (facsum-exponent expr) var)
+    ((m2-exp-type-2 (facsum-exponent expr var) var)
      (a b d v r)
 
      (when *debug-integrate*
@@ -2474,7 +2474,7 @@
        (mul -1 b (power var r) ($log a))
        (mul -1 (div (add v 1) r)))))
 
-    ((m2-exp-type-2-1 (facsum-exponent expr) var)
+    ((m2-exp-type-2-1 (facsum-exponent expr var) var)
      (a b v r u)
      (when *debug-integrate*
        (format t "~&Type 2-1: z^v*(%e^(a*z^r+b))^u : w = ~A~%" w))
@@ -2490,7 +2490,7 @@
                 (div (add v 1) r)
                 (mul -1 a u (power var r)))))
 
-    ((m2-exp-type-3 (facsum-exponent expr) var)
+    ((m2-exp-type-3 (facsum-exponent expr var) var)
      (a b c d p)
      (when *debug-integrate*
        (format t "~&Type 3: (a*z+b)^p*%e^(c*z+d) : w = ~A~%" w))
@@ -2578,7 +2578,7 @@
 	       (power (mul -1 a ($log d)) (div 1 2)))
 	     a n)))))
 
-    ((and (m2-exp-type-5 (facsum-exponent expr) var)
+    ((and (m2-exp-type-5 (facsum-exponent expr var) var)
           (maxima-integerp (cdras 'n w))
 	  (eq ($sign (cdras 'n w)) '$pos))
      (a b c d n)
@@ -2611,7 +2611,7 @@
                      (mul (div -1 2) (add index 1))))
                    index 0 n)))))
 
-    ((and (m2-exp-type-5-1 (facsum-exponent expr) var)
+    ((and (m2-exp-type-5-1 (facsum-exponent expr var) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos))
      (a b c u n)
@@ -2642,7 +2642,7 @@
                              (mul 4 a))))
              index 0 n t))))
 
-    ((and (m2-exp-type-6 (facsum-exponent expr) var)
+    ((and (m2-exp-type-6 (facsum-exponent expr var) var)
 	  (maxima-integerp (cdras 'n w))
 	  (eq ($sign (cdras 'n w)) '$pos))
      (a b c d n)
@@ -2701,7 +2701,7 @@
                             index2 0 index1)
                   index1 0 n))))
 
-    ((and (m2-exp-type-6-1 (facsum-exponent expr) var)
+    ((and (m2-exp-type-6-1 (facsum-exponent expr var) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos))
      (a b c u n)
@@ -2772,7 +2772,7 @@
               index2 0 index1 t)
              index1 0 n t))))
 
-    ((and (m2-exp-type-7 (facsum-exponent expr) var)
+    ((and (m2-exp-type-7 (facsum-exponent expr var) var)
 	  (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
      (a b c e g h r n)
      (when *debug-integrate*
@@ -2795,7 +2795,7 @@
        (div n r)
        (mul -1 (power var r) (add (mul b ($log a)) (mul c ($log h)))))))
 
-    ((and (m2-exp-type-7-1 (facsum-exponent expr) var)
+    ((and (m2-exp-type-7-1 (facsum-exponent expr var) var)
           (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
      (b c e g r v q u)
      (when *debug-integrate*
@@ -2813,7 +2813,7 @@
                 (div (add v 1) r)
                 (mul -1 (power var r) (add (mul b q) (mul c u))))))
 
-    ((m2-exp-type-8 (facsum-exponent expr) var)
+    ((m2-exp-type-8 (facsum-exponent expr var) var)
      (a b c d e f g h)
      (when *debug-integrate*
        (format t "~&Type 8: a^(b*sqrt(z)+d*z+e)*h^(c*sqrt(z)+f*z+g)")
@@ -2849,7 +2849,7 @@
             (add (mul b ($log a)) (mul c ($log h)))
             (power (add (mul d ($log a)) (mul f ($log h))) (div -3 2))))))
 
-    ((m2-exp-type-8-1 (facsum-exponent expr) var)
+    ((m2-exp-type-8-1 (facsum-exponent expr var) var)
      (b c d e f g u v)
      (when *debug-integrate*
        (format t "~&Type 8-1: (%e^(b*sqrt(z)+d*z+e))^u*(%e^(c*sqrt(z)+f*z+g))^v")
@@ -2895,7 +2895,7 @@
                                          (power (add (mul d u) (mul f v))
                                                 (div 1 2))))))))))
 
-    ((and (m2-exp-type-8-2 (facsum-exponent expr) var)
+    ((and (m2-exp-type-8-2 (facsum-exponent expr var) var)
           (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
      (b c e g r u v)
      (when *debug-integrate*
@@ -2924,7 +2924,7 @@
                 (div 1 r)
                 (mul -1 (power var r) (add (mul b u) (mul c v))))))
 
-    ((and (m2-exp-type-9 (facsum-exponent expr) var)
+    ((and (m2-exp-type-9 (facsum-exponent expr var) var)
 	  (maxima-integerp (cdras 'n w))
 	  (eq ($sign (cdras 'n w)) '$pos)
 	  (or (not (eq ($sign (cdras 'b w)) '$zero))
@@ -2980,7 +2980,7 @@
                           (mul 4 (add (mul b ($log a)) (mul c ($log h))))))))
                   index 0 n))))
 
-    ((and (m2-exp-type-9-1 (facsum-exponent expr) var)
+    ((and (m2-exp-type-9-1 (facsum-exponent expr var) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos)
           (or (not (eq ($sign (cdras 'b w)) '$zero))
@@ -3042,7 +3042,7 @@
                              (mul -4 (add (mul b q) (mul c u))))))
              index 0 n t))))
 
-    ((and (m2-exp-type-10 (facsum-exponent expr) var)
+    ((and (m2-exp-type-10 (facsum-exponent expr var) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos)
           (or (not (eq ($sign (cdras 'b w)) '$zero))
@@ -3131,7 +3131,7 @@
               index2 0 index1 t)
              index1 0 n t))))
 
-    ((and (m2-exp-type-10-1 (facsum-exponent expr) var)
+    ((and (m2-exp-type-10-1 (facsum-exponent expr var) var)
           (maxima-integerp (cdras 'n w))
           (eq ($sign (cdras 'n w)) '$pos)
           (or (not (eq ($sign (cdras 'b w)) '$zero))
@@ -3228,7 +3228,7 @@
 ;;; This is necessary to integrate all general forms. The pattern matcher is
 ;;; not powerful enough to do the job.
 
-(defun facsum-exponent (expr)
+(defun facsum-exponent (expr var2)
   ;; Make sure that expr has the form ((mtimes) factor1 factor2 ...)
   (when (not (mtimesp expr)) (setq expr (list '(mtimes) expr)))
   (do ((result nil)
@@ -3237,7 +3237,7 @@
     (cond
       ((mexptp (car l))
        ;; Found an power function. Factor the exponent with facsum.
-       (let* ((fac (mfuncall '$facsum (caddr (car l)) var))
+       (let* ((fac (mfuncall '$facsum (caddr (car l)) var2))
               (num ($num fac))
               (den ($denom fac)))
          (setq result
