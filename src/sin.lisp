@@ -598,16 +598,16 @@
 	  (return (addn (cons (rischint (cons '(mplus) terms) var2) (cdr ans))
 			nil)))))
 
-(defun scep (expr var &aux trigl *exp*)	; Product of SIN, COS, EXP
+(defun scep (expr var2 &aux trigl *exp*)	; Product of SIN, COS, EXP
   (and (mtimesp expr)			;	of linear args.
        (loop for fac in (cdr expr) do
 	     (cond ((atom fac) (return nil))
 		   ((trig1 (car fac))
-		    (if (linearp (cadr fac) var) (push fac trigl)
+		    (if (linearp (cadr fac) var2) (push fac trigl)
 			(return nil)))
 		   ((and (mexptp fac)
 			 (eq (cadr fac) '$%e)
-			 (linearp (caddr fac) var))
+			 (linearp (caddr fac) var2))
 		    ;; should be only one exponential factor
 		    (setq *exp* fac))
 		   (t (return nil)))
