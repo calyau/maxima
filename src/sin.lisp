@@ -1937,23 +1937,23 @@
 (defun expands (arg1 arg2)
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
-(defun powerlist (*exp* var)
+(defun powerlist (*exp* var2)
   (prog (y *c* *d* power-list *b*)
      (setq y (m2 *exp*
 		 `((mtimes)
-		   ((mexpt) (var varp2 ,var) (c integerp2))
-		   ((coefftt) (a freevar2 ,var))
+		   ((mexpt) (var varp2 ,var2) (c integerp2))
+		   ((coefftt) (a freevar2 ,var2))
 		   ((coefftt) (b true)))))
      (setq *b* (cdr (assoc 'b y :test #'eq)))
      (setq *c* (cdr (assoc 'c y :test #'eq)))
      (labels
          ((rat10 (ex)
-            (cond ((freevar2 ex var)
+            (cond ((freevar2 ex var2)
                    t)
-	          ((varp2 ex var)
+	          ((varp2 ex var2)
                    nil)
 	          ((eq (caar ex) 'mexpt)
-	           (if (varp2 (cadr ex) var)
+	           (if (varp2 (cadr ex) var2)
 	               (if (integerp2 (caddr ex))
 		           (setq power-list (cons (caddr ex) power-list)))
 	               (and (rat10 (cadr ex))
@@ -1968,15 +1968,15 @@
      (when (or (eql 1 *d*) (zerop *d*)) (return nil))
      (return
        (substint
-	(list '(mexpt) var *d*)
-	var
+	(list '(mexpt) var2 *d*)
+	var2
 	(integrate5 (simplify (list '(mtimes)
 				    (power* *d* -1)
 				    (cdr (assoc 'a y :test #'eq))
-				    (list '(mexpt) var (1- (quotient (1+ *c*) *d*)))
-				    (subst10 *b* var)))
-		    var)
-        var))))
+				    (list '(mexpt) var2 (1- (quotient (1+ *c*) *d*)))
+				    (subst10 *b* var2)))
+		    var2)
+        var2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
