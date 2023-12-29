@@ -1001,10 +1001,10 @@
 ;; 3. (r1+1)/q+r2 is an integer.
 ;;
 ;; I (rtoy) think that for this code to work, r1, r2, and q must be numbers.
-(defun chebyf (*exp* var)
+(defun chebyf (*exp* var2)
   (prog (r1 r2 d1 d2 n1 n2 w q)
      ;; Return NIL if the expression doesn't match.
-     (when (not (setq w (m2-chebyform *exp* var)))
+     (when (not (setq w (m2-chebyform *exp* var2)))
        (return nil))
      #+nil
      (format t "w = ~A~%" w)
@@ -1015,10 +1015,11 @@
 	 (mul*
 	  ;; This factor is locally constant as long as t and
 	  ;; c2*t^q avoid log's branch cut.
-	  (subliss w '((mtimes) a ((mexpt) var ((mtimes) -1 q r2))
-		       ((mexpt) ((mtimes) c2 ((mexpt) var q)) r2)))
+	  (subliss w `((mtimes) a ((mexpt) ,var2 ((mtimes) -1 q r2))
+		       ((mexpt) ((mtimes) c2 ((mexpt) ,var2 q)) r2)))
 	  (integrator
-	   (subliss w '((mexpt) var ((mplus) r1 ((mtimes) q r2)))) var))))
+	   (subliss w `((mexpt) ,var2 ((mplus) r1 ((mtimes) q r2))))
+           var2))))
      (setq q (cdr (assoc 'q w :test #'eq)))
      ;; Reset parameters.  a = a/q, r1 = (1 - q + r1)/q
      (setq w
@@ -1066,14 +1067,14 @@
 	;;
 	(return
 	  (substint
-	   (subliss w '((mplus) c1 ((mtimes) c2 ((mexpt) var q))))
-	   var
+	   (subliss w `((mplus) c1 ((mtimes) c2 ((mexpt) ,var2 q))))
+	   var2
 	   (integrator
 	    (expands (list (subliss w
 				    ;; a*t^r2*c2^(-r1-1)
-				    '((mtimes)
+				    `((mtimes)
 				      a
-				      ((mexpt) var r2)
+				      ((mexpt) ,var2 r2)
 				      ((mexpt)
 				       c2
 				       ((mtimes)
@@ -1082,12 +1083,12 @@
 		     (cdr
 		      ;; (t-c1)^r1
 		      (expandexpt (subliss w
-					   '((mplus)
-					     var
+					   `((mplus)
+					     ,var2
 					     ((mtimes) -1 c1)))
 				  r1)))
-	    var)
-           var)))
+	    var2)
+           var2)))
        ((integerp2 r2)
 	#+nil (format t "integer r2~%")
 	;; I (rtoy) think this is using the substitution z = t^(q/d1).
@@ -1099,13 +1100,13 @@
 	;; But be careful because the variable A in the code is
 	;; actually a/q.
 	(return
-	  (substint (subliss w '((mexpt) var ((mquotient) q d1)))
-		    var
+	  (substint (subliss w `((mexpt) ,var2 ((mquotient) q d1)))
+		    var2
 		    (ratint (simplify (subliss w
-					       '((mtimes)
+					       `((mtimes)
 						 d1 a
 						 ((mexpt)
-						  var
+						  ,var2
 						  ((mplus)
 						   n1 d1 -1))
 						 ((mexpt)
@@ -1113,11 +1114,11 @@
 						   ((mtimes)
 						    c2
 						    ((mexpt)
-						     var d1))
+						     ,var2 d1))
 						   c1)
 						  r2))))
-			    var)
-                    var)))
+			    var2)
+                    var2)))
        ((and (integerp2 r1) (< r1 0))
 	#+nil (format t "integer r1 < 0~%")
 	;; I (rtoy) think this is using the substitution
@@ -1132,19 +1133,19 @@
 	(return
 	  (substint (subliss w
 			     ;; (c1+c2*t^q)^(1/d2)
-			     '((mexpt)
+			     `((mexpt)
 			       ((mplus)
 				c1
-				((mtimes) c2 ((mexpt) var q)))
+				((mtimes) c2 ((mexpt) ,var2 q)))
 			       ((mquotient) 1 d2)))
-		    var
+		    var2
 		    (ratint (simplify (subliss w
 					       ;; This is essentially
 					       ;; the integrand above,
 					       ;; except A and R1 here
 					       ;; are not the same as
 					       ;; derived above.
-					       '((mtimes)
+					       `((mtimes)
 						 a d2
 						 ((mexpt)
 						  c2
@@ -1153,17 +1154,17 @@
 						   ((mplus)
 						    r1 1)))
 						 ((mexpt)
-						  var
+						  ,var2
 						  ((mplus)
 						   n2 d2 -1))
 						 ((mexpt)
 						  ((mplus)
 						   ((mexpt)
-						    var d2)
+						    ,var2 d2)
 						   ((mtimes) -1 c1))
 						  r1))))
-			    var)
-                    var)))
+			    var2)
+                    var2)))
        ((integerp2 (add* r1 r2))
 	#+nil (format t "integer r1+r2~%")
 	;; If we're here,  (r1-q+1)/q+r2 is an integer.
@@ -1183,29 +1184,29 @@
 		      ;; ABS in the subtitution.  I think that's ok in
 		      ;; this case.  See Bug 1654183.
 		      (subliss w
-			       '((mexpt)
+			       `((mexpt)
 				 ((mquotient)
 				  ((mplus)
 				   c1
-				   ((mtimes) c2 ((mexpt) var q)))
-				  ((mexpt) var q))
+				   ((mtimes) c2 ((mexpt) ,var2 q)))
+				  ((mexpt) ,var2 q))
 				 ((mquotient) 1 d1))))
-		    var
+		    var2
 		    (ratint (simplify (subliss w
-					       '((mtimes)
+					       `((mtimes)
 						 -1 a d1
 						 ((mexpt)
 						  c1
 						  ((mplus)
 						   r1 r2 1))
 						 ((mexpt)
-						  var
+						  ,var2
 						  ((mplus)
 						   n2 d1 -1))
 						 ((mexpt)
 						  ((mplus)
 						   ((mexpt)
-						    var d1)
+						    ,var2 d1)
 						   ((mtimes)
 						    -1 c2))
 						  ((mtimes)
@@ -1213,9 +1214,9 @@
 						   ((mplus)
 						    r1 r2
 						    2))))))
-			    var)
-                    var)))
-       (t (return (list '(%integrate) *exp* var))))))
+			    var2)
+                    var2)))
+       (t (return (list '(%integrate) *exp* var2))))))
 
 (defun greaterratp (x1 x2)
   (cond ((and (numberp x1) (numberp x2))
