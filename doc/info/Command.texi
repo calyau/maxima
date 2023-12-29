@@ -1761,7 +1761,7 @@ See also @mref{set_alt_display} and @mrefdot{display2d}
 Default value: @code{true}
 
 When @code{display2d_unicode} is @code{true},
-the 2-d pretty printer uses Unicode drawing characters [1] to display
+the 2-d pretty printer (enabled by the global flag @code{display2d}) uses Unicode drawing characters [1] to display
 integrals, summations, products, matrices, ratios, derivatives,
 @code{box} expressions, @code{at} expressions, and absolute value expressions.
 
