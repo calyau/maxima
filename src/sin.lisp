@@ -1275,12 +1275,12 @@
 ;;; Stage II
 ;;; Implementation of Method 6: Elementary function of trigonometric functions
 
-(defun monstertrig (*exp* var *trigarg*)
+(defun monstertrig (*exp* var2 *trigarg*)
   (declare (special *trigarg*))
   (when (and (not (atom *trigarg*))
              ;; Do not exute the following code when called from rischint.
              (not *in-risch-p*))
-    (let ((arg (simple-trig-arg *trigarg* var)))
+    (let ((arg (simple-trig-arg *trigarg* var2)))
       (cond (arg
 	     ;; We have trig(c*x+b).  Use the substitution y=c*x+b to
 	     ;; try to compute the integral.  Why?  Because x*sin(n*x)
@@ -1291,7 +1291,7 @@
 		    (b (cdras 'b arg))
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
-						var *exp*)))
+						var2 *exp*)))
          (putprop new-var t 'internal)    
 	       (if (every-trigarg-alike new-exp new-var)
 		   ;; avoid endless recursion when more than one
@@ -1306,21 +1306,21 @@
   (prog (*notsame* w a b y d)
      (declare (special *notsame*))
      (cond
-       ((supertrig *exp* var) (go a))
+       ((supertrig *exp* var2) (go a))
        ((null *notsame*) (return nil))
        ;; Check for an expression like a*trig1(m*x)*trig2(n*x),
        ;; where trig1 and trig2 are sin or cos.
        ((not (setq y (m2 *exp*
                          `((mtimes)
-                           ((coefftt) (a freevar2 ,var))
+                           ((coefftt) (a freevar2 ,var2))
                            (((b trig1))
                             ((mtimes)
-                             (x varp2 ,var)
-                             ((coefftt) (m freevar2 ,var))))
+                             (x varp2 ,var2)
+                             ((coefftt) (m freevar2 ,var2))))
                            (((d trig1))
                             ((mtimes)
-                             (x varp2 ,var)
-                             ((coefftt) (n freevar2 ,var))))))))
+                             (x varp2 ,var2)
+                             ((coefftt) (n freevar2 ,var2))))))))
         (go b))
 ; This check has been done with the pattern match.
 ;       ((not (and (member (car (setq b (cdr (assoc 'b y :test #'eq)))) '(%sin %cos) :test #'eq)
@@ -1382,15 +1382,15 @@
   b  ;; At this point we have trig functions with different arguments,
      ;; but not a product of sin and cos.
      (cond ((not (setq y (prog2 
-                           (setq *trigarg* var)
+                           (setq *trigarg* var2)
                            (m2 *exp*
                                `((mtimes)
-                                 ((coefftt) (a freevar2 ,var))
+                                 ((coefftt) (a freevar2 ,var2))
                                  (((b trig1))
                                   ((mtimes) 
-                                   (x varp2 ,var)
+                                   (x varp2 ,var2)
                                    ((coefftt) (n integerp2))))
-                                 ((coefftt) (c supertrig ,var)))))))
+                                 ((coefftt) (c supertrig ,var2)))))))
             (return nil)))
      ;; We have a product of trig functions: trig1(n*x)*trig2(y).
      ;; trig1 is sin or cos, where n is a numerical integer. trig2 is not a sin
@@ -1402,22 +1402,22 @@
                  (cdras 'a y)                             ; constant factor
                  (cdras 'c y)                             ; trig functions
                  (cond ((eq (car (cdras 'b y)) '%cos)     ; expand cos(n*x)
-                        (maxima-substitute var
+                        (maxima-substitute var2
                                            'x
                                            (supercosnx (cdras 'n y))))
                        (t                                 ; expand sin(x*x)
-                        (maxima-substitute var
+                        (maxima-substitute var2
                                            'x
                                            (supersinx (cdras 'n y)))))))
-         var))
+         var2))
   a  ;; A product of trig functions and all trig functions have the same
-     ;; argument *trigarg*. Maxima substitutes *trigarg* with the variable var
+     ;; argument *trigarg*. Maxima substitutes *trigarg* with the variable var2
      ;; of integration and calls trigint to integrate the new problem.
-     (setq w (subst2s *exp* *trigarg* var))
-     (setq b (cdras 'b (m2-b*x+a *trigarg* var)))
-     (setq a (substint *trigarg* var (trigint (div* w b) var) var))
+     (setq w (subst2s *exp* *trigarg* var2))
+     (setq b (cdras 'b (m2-b*x+a *trigarg* var2)))
+     (setq a (substint *trigarg* var2 (trigint (div* w b) var2) var2))
      (return (if (isinop a '%integrate)
-                 (list '(%integrate) *exp* var)
+                 (list '(%integrate) *exp* var2)
                  a))))
 
 (defun trig2 (x)
