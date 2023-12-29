@@ -332,7 +332,7 @@
      
        (cond ;; First stage, Method I: Integrate a sum.
          ((mplusp *exp*)
-          (return (mul2* const (integrate1 (cdr *exp*)))))
+          (return (mul2* const (integrate1 (cdr *exp*) var))))
            
          ;; Convert atan2(a,b) to atan(a/b) and try again.
          ((setq w (isinop *exp* '%atan2))
@@ -586,15 +586,15 @@
 ;;; Implementation of Method 1: Integrate a sum
 
 ;;after finding a non-integrable summand usually better to pass rest to risch
-(defun integrate1 (*exp*)
+(defun integrate1 (*exp* var2)
   (do ((terms *exp* (cdr terms)) (ans))
       ((null terms) (addn ans nil))
     (let ($liflag)					; don't gen li's for
-      (push (integrator (car terms) var) ans))		; parts of integrand
+      (push (integrator (car terms) var2) ans))		; parts of integrand
     (when (and (not *in-risch-p*)                     ; Not called from rischint
                (not (free (car ans) '%integrate))
                (cdr terms))
-	  (return (addn (cons (rischint (cons '(mplus) terms) var) (cdr ans))
+	  (return (addn (cons (rischint (cons '(mplus) terms) var2) (cdr ans))
 			nil)))))
 
 (defun scep (expr var &aux trigl *exp*)	; Product of SIN, COS, EXP
