@@ -1871,12 +1871,12 @@
 ;;;  o  integrate(sqrt(z)*expintegral_li(z),z)
 ;;; while a value of 4 causes testsuite regressions with 
 ;;;  o  integrate(z*expintegral_shi(z),z)
-(defun partial-integration (form var)
+(defun partial-integration (form var2)
   (declare (special *integrator-level*))
   (let ((g  (cdr (assoc 'a form)))   ; part g(x)
 	(df (cdr (assoc 'c form)))   ; part f'(x)
 	(f  nil))
-    (setq f (integrator df var))     ; integrate f'(x) wrt var
+    (setq f (integrator df var2))     ; integrate f'(x) wrt var2
     (cond
       ((or (isinop f '%integrate)    ; no result or
 	   (isinop f (caar g))       ; g in result
@@ -1885,7 +1885,7 @@
       (t
        ;; Build the result: g(x)*f(x)-integrate(g'(x)*f(x))
        (add (mul f g)
-	    (mul -1 (integrator (mul f (sdiff g var)) var)))))))
+	    (mul -1 (integrator (mul f (sdiff g var2)) var2)))))))
 
 ;; returns t if argument of every trig operation in y matches arg
 (defun every-trigarg-alike (y arg)
