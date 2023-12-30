@@ -760,10 +760,13 @@
 
 (displa-def %at dim-%at 105. 105.)
 
+(defvar at-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+
 (defun dim-%at (form result)
-  (prog (exp  eqs (w 0) (h 0) (d 0))
+  (prog (exp  eqs (w 0) (h 0) (d 0) at-char)
      (unless (= (length (cdr form)) 2)
        (return-from dim-%at (dimension-function form result)))
+     (setq at-char (if (display2d-unicode-enabled) at-char-unicode (car (coerce $absboxchar 'list))))
      (setq exp (dimension (cadr form) result lop '%at nil 0)
 	   w width
 	   h height
@@ -775,7 +778,7 @@
      (unless (checkfit (+ 1 w width))
        (return (dimension-function form result)))
      (setq result (cons (cons 0 (cons (- 0 1 d) eqs))
-			(cons `(d-vbar ,(1+ h) ,(1+ d) ,(car (coerce $absboxchar 'list))) exp))
+			(cons `(d-vbar ,(1+ h) ,(1+ d) ,at-char) exp))
 	   width (+ 1 w width)
 	   height (1+ h)
 	   depth (+ 1 d depth))
@@ -1079,13 +1082,16 @@
 (displa-def mabs   dim-mabs)
 (displa-def %mabs  dim-mabs)
 
-(defun dim-mabs (form result &aux arg bar)
+(defvar mabs-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+
+(defun dim-mabs (form result &aux arg bar mabs-char)
+  (setq mabs-char (if (display2d-unicode-enabled) mabs-char-unicode (car (coerce $absboxchar 'list))))
   (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
   (cond ((or (> (+ 2 width) $linel) (and (= 1 height) (= 0 depth)))
 	 (dimension-function form result))
 	(t (setq width (+ 2 width))
 	   (update-heights height depth)
-	   (setq bar `(d-vbar ,height ,depth ,(car (coerce $absboxchar 'list))))
+	   (setq bar `(d-vbar ,height ,depth ,mabs-char))
 	   (cons bar (nconc arg (cons bar result))))))
 
 (displa-def $matrix dim-$matrix)
@@ -1110,7 +1116,9 @@
 	 ((or consp (null r))
 	  (setq width 0)
 	  (do ((cs cstr (cdr cs))) ((null cs)) (setq width (+ 2 (car cs) width)))
-	  (setq h1 (1- (+ h1 d1)) depth (truncate h1 2) height (- h1 depth)))
+	  (if (display2d-unicode-enabled)
+	    (setq h1 (1+ (+ h1 d1)) depth (truncate h1 2) height (- h1 depth))
+	    (setq h1 (1- (+ h1 d1)) depth (truncate h1 2) height (- h1 depth))))
        (do ((c (cdar r) (cdr c))
 	    (nc dmstr (cdr nc))
 	    (cs cstr (cdr cs)) (dummy) (h2 0) (d2 0))
@@ -1126,7 +1134,7 @@
      (return
        (cond ((and (not consp) (checkfit (+ 2 width)))
 	      (matout dmstr cstr rstr result))
-	     ((and (not consp) (<= level 2)) (colout dmstr cstr result))
+	     ((and (not consp) (<= level 2)) (colout form result))
 	     (t (dimension-function form result))))))
 
 (defun matout (dmstr cstr rstr result)
@@ -1135,7 +1143,7 @@
   (do ((d dmstr (cdr d)) (c cstr (cdr c)) (w 0 0))
       ((null d))
     (do ((d (car d) (cdr d)) (r rstr (cdr r))) ((null d))
-      (rplaca (cddar d) (- height (car r)))
+      (rplaca (cddar d) (- height (car r) (if (display2d-unicode-enabled) 1 0)))
       (rplaca (cdar d) (- (truncate (- (car c) (caar d)) 2) w))
       (setq w (truncate (+ (car c) (caar d)) 2))
       (rplaca d (cdar d)))
@@ -1146,30 +1154,12 @@
   (push `(d-matrix right ,height ,depth) result)
   result)
 
-(defun colout (dmstr cstr result)
-  (setq width 0 height 1 depth 0)
-  (do ((r dmstr (cdr r)) (c cstr (cdr c)) (col 1 (1+ col)) (w 0 0) (h -1 -1) (d 0))
-      ((null r))
-    (push-string " Col " result)
-    (setq result (nreconc (exploden col) result))
-    (push-string " = " result)
-    (setq width (+ 8 (flatc col) width))
-    (do ((r (car r) (cdr r))) ((null r))
-      (setq h (+ 1 h (cadar r) (caddar r)))
-      (rplaca (cddar r) (- h (cadar r)))
-      (rplaca (cdar r) (- (truncate (- (car c) (caar r)) 2) w))
-      (setq w (truncate (+ (car c) (caar r)) 2))
-      (rplaca r (cdar r)))
-    (setq d (truncate h 2) h (- h d))
-    (push `(d-matrix left ,h ,d) result)
-    (push #\space result)
-    (push `(0 ,(- d) . ,(nreverse (car r))) result)
-    (push `(,(1+ (- (car c) w)) 0) result)
-    (push `(d-matrix right ,h ,d) result)
-    (setq width (+ 4 (car c) width) height (max h height) depth (max d depth))
-    (update-heights h d)
-    (checkbreak result width))
-  result)
+(defun colout (form result)
+  (dimension-list
+    (cons '(mlist)
+          (loop for k from 1 to ($length ($first form))
+                collect (list '(mequal) (format nil " Col ~d" k) ($col form k))))
+    result ""))
 
 (displa-def mbox dim-mbox)
 (displa-def %mbox dim-mbox)
@@ -1187,6 +1177,35 @@
 (displa-def %mlabox dim-mlabox)
 
 (defun dim-mlabox (form result)
+  (if (display2d-unicode-enabled)
+    (dim-mlabox-unicode form result)
+    (dim-mlabox-ascii form result)))
+
+(defun dim-mlabox-unicode (form result)
+  (prog (dummy)
+     (setq dummy (dimension (cadr form) nil 'mparen 'mparen nil 0))
+     (cond ((not (checkfit (+ 2 width)))
+	    (return (dimension-function (cons '($box) (cdr form)) result))))
+     (setq width (+ 2 width) height (1+ height) depth (1+ depth))
+     (setq result
+	   (cons (do ((l (mapcar #'(lambda (l) (char (symbol-name l) 0))
+				 (makstring (caddr form))) (cdr l))
+		      (w 0) (nl))
+		     ((or (null l) (= width w))
+		      (cons 0 (cons (1- height)
+				    (cond ((< w width)
+					   (cons d-box-char-unicode-upper-right (cons `(d-hbar ,(- width w 1) ,d-box-char-unicode-horz) nl)))
+					  (t nl)))))
+		   (setq nl (cons (car l) nl) w (1+ w)))
+		 result))
+     (setq result (nconc dummy (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert)
+				      (list (- width) 0) result)))
+     (setq result (cons (list (- 1 width) (- depth) d-box-char-unicode-lower-right `(d-hbar ,(- width 2) ,d-box-char-unicode-horz) d-box-char-unicode-lower-left) result))
+     (setq result (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert) '(-1 0) result))
+     (update-heights height depth)
+     (return result)))
+
+(defun dim-mlabox-ascii (form result)
   (prog (dummy ch)
      (setq dummy (dimension (cadr form) nil 'mparen 'mparen nil 0))
      (cond ((not (checkfit (+ 2 width)))
@@ -1434,8 +1453,13 @@
 ;; in the 2D case.  This should work for both cases.  (See end of
 ;; program.)
 
-(defun d-hbar (linear? w &optional (char #\-) &aux nl)
+(defvar d-hbar-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_HORIZONTAL)
+(defvar d-hbar-char-ascii #\-)
+
+(defun d-hbar (linear? w &optional char &aux nl)
   (declare (ignore linear?))
+  (when (null char)
+    (setq char (if (display2d-unicode-enabled) d-hbar-char-unicode d-hbar-char-ascii)))
   (dotimes (i w)
     (push char nl))
   (draw-linear nl oldrow oldcol))
@@ -1445,27 +1469,49 @@
 ;; character cell precisely and not get clipped when moving things around in
 ;; the equation editor.
 
-(defun d-vbar (linear? h d &optional (char #\|))
+(defvar d-vbar-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+(defvar d-vbar-char-ascii #\|)
+
+(defun d-vbar (linear? h d &optional char-body char-head char-foot)
   (declare (ignore linear?))
+  (when (null char-body)
+    (setq char-body (if (display2d-unicode-enabled) d-vbar-char-unicode d-vbar-char-ascii)))
+  (when (null char-head)
+    (setq char-head char-body))
+  (when (null char-foot)
+    (setq char-foot char-body))
   (setq d (- d))
   (do ((i (- h 2) (1- i))
-       (nl `((0 ,(1- h) ,char))))
-      ((< i d) (draw-linear (nreverse nl) oldrow oldcol))
-    (push `(-1 ,i ,char) nl)))
+       (nl-foot `((0 ,(1- h) ,char-foot)))
+       (nl-head `((0 ,(1- h) ,char-head))))
+      ((or (and (display2d-unicode-enabled) (<= i d)) (and (not (display2d-unicode-enabled)) (< i d)))
+       (when (and (display2d-unicode-enabled) (= i d))
+         (push `(-1 ,i ,char-foot) nl-head))
+       (draw-linear (nreverse nl-head) oldrow oldcol))
+    (push `(-1 ,i ,char-body) nl-head)))
+
+(defvar d-integralsign-string-unicode #+lisp-unicode-capable `((0 2 #\TOP_HALF_INTEGRAL) (-1 1 #\INTEGRAL_EXTENSION) (-1 0 #\INTEGRAL_EXTENSION) (-1 -1 #\INTEGRAL_EXTENSION) (-1 -2 #\BOTTOM_HALF_INTEGRAL)))
+(defvar d-integralsign-string-ascii `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
 
 (defun d-integralsign (linear? &aux dmstr)
   (declare (ignore linear?))
-  (setq dmstr `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
+  (setq dmstr (if (display2d-unicode-enabled) d-integralsign-string-unicode d-integralsign-string-ascii))
   (draw-linear dmstr oldrow oldcol))
+
+(defvar d-prodsign-unicode-dmstr '((0 2 #\\ (d-hbar 3) #\/) (-4 0) (d-vbar 2 1) #\space (d-vbar 2 1) (1 0)))
+(defvar d-prodsign-ascii-dmstr '((0 2 #\\ (d-hbar 3 #\=) #\/) (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
 
 (defun d-prodsign (linear? &aux dmstr)
   (declare (ignore linear?))
-  (setq dmstr '((0 2 #\\ (d-hbar 3 #\=) #\/) (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
+  (setq dmstr (if (display2d-unicode-enabled) d-prodsign-unicode-dmstr d-prodsign-ascii-dmstr))
   (draw-linear dmstr oldrow oldcol))
+
+(defvar d-sumsign-unicode-dmstr #+lisp-unicode-capable '((0 2 (d-hbar 4 #\LOW_LINE)) (-4 1 #\BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_LEFT_TO_LOWER_RIGHT) #\> (-2 -1 #\BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_RIGHT_TO_LOWER_LEFT) (-1 -2 (d-hbar 4 #\OVERLINE))))
+(defvar d-sumsign-ascii-dmstr '((0 2 (d-hbar 4 #\=)) (-4 1 #\\) #\> (-2 -1 #\/) (-1 -2 (d-hbar 4 #\=))))
 
 (defun d-sumsign (linear? &aux dmstr)
   (declare (ignore linear?))
-  (setq dmstr '((0 2 (d-hbar 4 #\=)) (-4 1 #\\) #\> (-2 -1 #\/)	(-1 -2 (d-hbar 4 #\=))))
+  (setq dmstr (if (display2d-unicode-enabled) d-sumsign-unicode-dmstr d-sumsign-ascii-dmstr))
   (draw-linear dmstr oldrow oldcol))
 
 ;; Notice how this calls D-VBAR in the non-graphic case.  The entire output
@@ -1473,14 +1519,55 @@
 ;; dimension strings.
 
 (defun d-matrix (linear? direction h d)
+  (if (display2d-unicode-enabled)
+    (d-matrix-unicode linear? direction h d)
+    (d-matrix-ascii linear? direction h d)))
+
+(defvar d-matrix-char-unicode-horz #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_HORIZONTAL)
+(defvar d-matrix-char-unicode-vert #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+(defvar d-matrix-char-unicode-upper-left #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_DOWN_AND_RIGHT)
+(defvar d-matrix-char-unicode-upper-right #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_DOWN_AND_LEFT)
+(defvar d-matrix-char-unicode-lower-right #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_UP_AND_LEFT)
+(defvar d-matrix-char-unicode-lower-left #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_UP_AND_RIGHT)
+
+(defun d-matrix-unicode (linear? direction h d)
+  (let*
+    ((char-upper-corner (if (eq direction 'right) d-matrix-char-unicode-upper-right d-matrix-char-unicode-upper-left))
+     (char-lower-corner (if (eq direction 'right) d-matrix-char-unicode-lower-right d-matrix-char-unicode-lower-left))
+     (dmstr `((d-vbar ,h ,d ,d-matrix-char-unicode-vert ,char-upper-corner ,char-lower-corner))))
+    (draw-linear dmstr oldrow oldcol)))
+
+(defun d-matrix-ascii (linear? direction h d)
   (d-vbar linear? h d (car (coerce (if (eq direction 'right)
 					     $rmxchar
 					     $lmxchar) 'list))))
 
 ;; There is wired knowledge of character offsets here.
 
-(defun d-box (linear? h d w body &aux (char 0) dmstr) ;char a char?
+(defvar d-box-char-unicode-horz #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_HORIZONTAL)
+(defvar d-box-char-unicode-vert #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_VERTICAL)
+(defvar d-box-char-unicode-upper-left #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_DOWN_AND_RIGHT)
+(defvar d-box-char-unicode-upper-right #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_DOWN_AND_LEFT)
+(defvar d-box-char-unicode-lower-right #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_UP_AND_LEFT)
+(defvar d-box-char-unicode-lower-left #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_UP_AND_RIGHT)
+
+(defun d-box (linear? h d w body)
   (declare (ignore linear?))
+  (if (display2d-unicode-enabled)
+    (d-box-unicode h d w body)
+    (d-box-ascii h d w body)))
+
+(defun d-box-unicode (h d w body)
+  (setq dmstr `((0 ,h ,d-box-char-unicode-upper-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-upper-left)
+		(,(- (+ w 2)) 0)
+		(d-vbar ,h ,d ,d-box-char-unicode-vert)
+		,@body
+		(,(- (1+ w)) ,(- (1+ d)) ,d-box-char-unicode-lower-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-lower-left)
+		(-1 0)
+		(d-vbar ,h ,d ,d-box-char-unicode-vert)))
+  (draw-linear dmstr oldrow oldcol))
+
+(defun d-box-ascii (h d w body &aux (char 0) dmstr)
   (setq char (car (coerce $boxchar 'list)))
   (setq dmstr `((0 ,h (d-hbar ,(+ 2 w) ,char))
 		(,(- (+ w 2)) 0)

@@ -7,6 +7,12 @@
 
 (in-package "MAXIMA")
 
+;; Distill various Unicode-related features into a single :lisp-unicode-capable.
+;; Park it here since this file is required by most, although not all, of the other Lisp files.
+;; See also function MAXIMA-UNICODE-ENABLED in src/init-cl.lisp.
+
+#+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) (push :lisp-unicode-capable *features*)
+
 (defvar *variable-initial-values* (make-hash-table)
   "Hash table containing all Maxima defmvar variables and their
   initial values")

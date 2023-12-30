@@ -114,7 +114,14 @@ done;
  0);
 0;
 
-block ([powerdisp : false],
+/* increase linel so next few test cases avoid Lisp error when run_testsuite(display_all = true)
+ * workaround for SF bug https://sourceforge.net/p/maxima/bugs/4234/
+ */
+
+linel: 140;
+140;
+
+block ([powerdisp : false, display2d_unicode: false],
   verify_display_2d ((x+1)/(x+2),
 "x + 1
 ----- 
@@ -122,13 +129,16 @@ x + 2
 "));
 true;
 
-block ([powerdisp : true],
+block ([powerdisp : true, display2d_unicode: false],
   verify_display_2d ((x+1)/(x+2),
 "1 + x
 ----- 
 2 + x
 "));
 true;
+
+(reset (linel), 0);
+0;
 
 block ([powerdisp : false], verify_display_1d ((x+1)/(x+2), "(x+1)/(x+2)"));
 true;
@@ -139,7 +149,7 @@ true;
 (H : ( n2 * s^2 + n1 * s + n0 ) / ( d2 * s^2 + d1 * s + d0 ), 0);
 0;
 
-block ([powerdisp : false], verify_display_2d (H,
+block ([powerdisp : false, display2d_unicode: false], verify_display_2d (H,
 "    2
 n2 s  + n1 s + n0
 ----------------- 
@@ -148,7 +158,7 @@ d2 s  + d1 s + d0
 "));
 true;
 
-block ([powerdisp : true], verify_display_2d (H,
+block ([powerdisp : true, display2d_unicode: false], verify_display_2d (H,
 "                2
 n0 + n1 s + n2 s
 ----------------- 
@@ -459,7 +469,7 @@ true;
 is (-(a/b) = -a/b);
 true;
 
-print_string_2d (-a/b);
+block ([display2d_unicode: false], print_string_2d (-a/b));
 "  a
 - -
   b
@@ -468,7 +478,7 @@ print_string_2d (-a/b);
 string (-a/b);
 "-(a/b)";
 
-print_string_2d (-(a/b));
+block ([display2d_unicode: false], print_string_2d (-(a/b)));
 "  a
 - -
   b
@@ -477,7 +487,7 @@ print_string_2d (-(a/b));
 string (-(a/b));
 "-(a/b)";
 
-print_string_2d ((-a)/b);
+block ([display2d_unicode: false], print_string_2d ((-a)/b));
 "  a
 - -
   b
@@ -498,7 +508,7 @@ true;
 is (-((a + b)/c) = -(a + b)/c);
 false;
 
-print_string_2d (-(a + b)/c);
+block ([display2d_unicode: false], print_string_2d (-(a + b)/c));
 "- b - a
 -------
    c
@@ -507,7 +517,7 @@ print_string_2d (-(a + b)/c);
 string (-(a + b)/c);
 "(-b-a)/c";
 
-print_string_2d ((-(a + b))/c);
+block ([display2d_unicode: false], print_string_2d ((-(a + b))/c));
 "- b - a
 -------
    c
@@ -516,7 +526,7 @@ print_string_2d ((-(a + b))/c);
 string ((-(a + b))/c);
 "(-b-a)/c";
 
-print_string_2d (-((a + b)/c));
+block ([display2d_unicode: false], print_string_2d (-((a + b)/c)));
 "  b + a
 - -----
     c
