@@ -1145,12 +1145,15 @@ Default value: @code{!}
 @code{absboxchar} is the character used to draw absolute value
 signs around expressions which are more than one line tall.
 
+@code{absboxchar} is only used when @code{display2d_unicode} is @code{false}.
+
 Example:
 
 @example
-(%i1) abs((x^3+1));
+(%i1) display2d_unicode: false $
+(%i2) abs((x^3+1));
                             ! 3    !
-(%o1)                       !x  + 1!
+(%o2)                       !x  + 1!
 @end example
 
 @opencatbox{Categories:}
