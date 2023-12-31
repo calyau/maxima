@@ -20,7 +20,7 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special *a* *b* var
+(declare-top (special *a* *b* #+nil var
                       *c* *d* *exp*))
 
 (defvar *debug-integrate* nil
@@ -39,6 +39,7 @@
 ;; moved elsewhere.
 (declaim (inline varp))
 (defun varp (x)
+  (declare (special var))
   (alike1 x var))
 
 ;; Same as varp, but the second arg specifiies the variable to be
@@ -91,6 +92,7 @@
 
 ;; Note: not used in this file.
 (defun freevar (a)
+  (declare (special var))
   (cond ((atom a) (not (eq a var)))
 	((varp a) nil)
 	((and (not (atom (car a)))
