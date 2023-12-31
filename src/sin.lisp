@@ -125,7 +125,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; possibly a bug: For var = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
+;; possibly a bug: For var2 = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
 ;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
 
 (defun subst10 (ex var2)
@@ -692,7 +692,7 @@
 	    (setq form (get (caar *exp*) 'integral))
 	    (setq dummy-args (car form))
 	    (setq real-args (cdr *exp*))
-	    ;; search through the args of *exp* and find the arg containing var
+	    ;; search through the args of *exp* and find the arg containing var2
 	    ;; look up the integral wrt this arg from form
 	    (setq form
 	      (do ((x real-args (cdr x))
@@ -842,7 +842,7 @@
   ;; do the substitution y = base^(b*x+a) in the expr.
   (defun elemxpt (expr var2 &aux w)
     (cond ((freevar2 expr var2) expr)
-          ;; var is the base of a subexpression. The transformation fails.
+          ;; var2 is the base of a subexpression. The transformation fails.
           ((atom expr) (setq exptflag t))
           ((not (eq (caar expr) 'mexpt))
            (cons (car expr)
@@ -1006,7 +1006,7 @@
 ;;; Stage II
 ;;; Implementation of Method 4: Binomial Chebyschev
 
-;; exp = a*t^r1*(c1+c2*t^q)^r2, where var = t.
+;; exp = a*t^r1*(c1+c2*t^q)^r2, where var2 = t.
 ;;
 ;; G&S 2.202 has says this integral can be expressed by elementary
 ;; functions ii:
