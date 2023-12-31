@@ -3697,7 +3697,7 @@ ignoring dummy variables and array indices."
 ;; Ideally we would use a lazy series representation that generates
 ;; more terms as higher order terms cancel.
 (defun calculate-series (exp var)
-  (let ((cntx ($supcontext)))
+  (let ((cntx ($supcontext)) ($taylor_simplifier #'extra-simp))
 		 ($activate cntx)
 		 (unwind-protect 
 		 	 (progn
