@@ -13,6 +13,32 @@
 
 #+(or unicode sb-unicode openmcl-unicode-strings abcl (and allegro ics)) (push :lisp-unicode-capable *features*)
 
+;; Clozure CL has names for Unicode characters only the range #xa0-#x7ff.
+;; See: https://ccl.clozure.com/manual/chapter4.5.html
+;; Define character names for the drawing characters used by the Unicode pretty printer.
+
+#+openmcl-unicode-strings
+(progn
+    (ccl::register-character-name "LOW_LINE" #\U+5F)
+    (ccl::register-character-name "OVERLINE" #\U+203E)
+    (ccl::register-character-name "TOP_HALF_INTEGRAL" #\U+2320)
+    (ccl::register-character-name "INTEGRAL_EXTENSION" #\U+23AE)
+    (ccl::register-character-name "BOTTOM_HALF_INTEGRAL" #\U+2321)
+    (ccl::register-character-name "BOX_DRAWINGS_DOUBLE_DOWN_AND_LEFT" #\U+2557)
+    (ccl::register-character-name "BOX_DRAWINGS_DOUBLE_DOWN_AND_RIGHT" #\U+2554)
+    (ccl::register-character-name "BOX_DRAWINGS_DOUBLE_HORIZONTAL" #\U+2550)
+    (ccl::register-character-name "BOX_DRAWINGS_DOUBLE_UP_AND_LEFT" #\U+255D)
+    (ccl::register-character-name "BOX_DRAWINGS_DOUBLE_UP_AND_RIGHT" #\U+255A)
+    (ccl::register-character-name "BOX_DRAWINGS_DOUBLE_VERTICAL" #\U+2551)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_LEFT_TO_LOWER_RIGHT" #\U+2572)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_RIGHT_TO_LOWER_LEFT" #\U+2571)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_DOWN_AND_LEFT" #\U+2510)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_DOWN_AND_RIGHT" #\U+250C)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_HORIZONTAL" #\U+2500)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_UP_AND_LEFT" #\U+2518)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_UP_AND_RIGHT" #\U+2514)
+    (ccl::register-character-name "BOX_DRAWINGS_LIGHT_VERTICAL" #\U+2502))
+
 (defvar *variable-initial-values* (make-hash-table)
   "Hash table containing all Maxima defmvar variables and their
   initial values")
