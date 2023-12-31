@@ -1919,17 +1919,17 @@
 ;; return constant factor that makes elements of alist match elements of blist
 ;; or nil if no match found
 ;; (we could replace this using rat package to divide alist and blist)
-(defun matchsum (alist blist)
+(defun matchsum (alist blist var2)
   (prog (r s *c* *d*)
      (setq s (m2 (car alist)	;; find coeff for first term of alist
-		 '((mtimes)
-		   ((coefftt) (a freevar))
+		 `((mtimes)
+		   ((coefftt) (a freevar2 ,var2))
 		   ((coefftt) (c true)))))
      (setq *c* (cdr (assoc 'c s :test #'eq)))
      (cond ((not (setq r	;; find coeff for first term of blist
 		       (m2 (car blist)
                            (cons '(mtimes)
-                                 (cons `((coefftt) (b free1))
+                                 (cons `((coefftt) (b free12 ,var2))
                                        (cond ((mtimesp *c*)
                                               (cdr *c*))
                                              (t (list *c*))))))))
@@ -2017,14 +2017,14 @@
 ;; In other words, the method performs an implicit substitution y = u(x),
 ;; and obtains the integral of op(y)dy by a table look up.
 ;;
-(defun diffdiv (*exp* var)
+(defun diffdiv (*exp* var2)
   (prog (y *a* x v *d* z w r)
      (cond ((and (mexptp *exp*)
 		 (mplusp (cadr *exp*))
 		 (integerp (caddr *exp*))
 		 (< (caddr *exp*) 6)
 		 (> (caddr *exp*) 0))
-	    (return (integrator (expandexpt (cadr *exp*) (caddr *exp*)) var))))
+	    (return (integrator (expandexpt (cadr *exp*) (caddr *exp*)) var2))))
 
      ;; If not a product, transform to a product with one term
      (setq *exp* (cond ((mtimesp *exp*) *exp*) (t (list '(mtimes) *exp*))))
@@ -2036,13 +2036,13 @@
      ;; This m2 pattern matches const*(exp/y)
      (setq r (list '(mplus)
 		   (cons '(coeffpt)
-			 (cons `(c free12 ,var)
+			 (cons `(c free12 ,var2)
 			       (remove y (cdr *exp*) :count 1)))))
      (cond
-      ;; Case u(var) is the identity function. y is a term in exp.
-      ;; Match if diff(y,var) == c*(exp/y).
+      ;; Case u(var2) is the identity function. y is a term in exp.
+      ;; Match if diff(y,var2) == c*(exp/y).
       ;; This even works when y is a function with multiple args.
-       ((setq w (m2 (sdiff y var) r))
+       ((setq w (m2 (sdiff y var2) r))
 	(return (muln (list y y (power* (mul2* 2 (cdr (assoc 'c w :test #'eq))) -1)) nil))))
 
      ;; w is the arg in y.
@@ -2052,9 +2052,9 @@
 	  ((or (atom y) (member (caar y) '(mplus mtimes) :test #'eq)) y)
 	  ;; Take the argument of a function with one value.
 	  ((= (length (cdr y)) 1) (cadr y))
-	  ;; A function has multiple args, and exactly one arg depends on var
+	  ;; A function has multiple args, and exactly one arg depends on var2
 	  ((= (count-if #'null (setq arg-freevar (mapcar #'(lambda (v)
-                                                             (freevar2 v var))
+                                                             (freevar2 v var2))
                                                          (cdr y))))
               1)
 	   (do ((args (cdr y) (cdr args))
@@ -2063,17 +2063,17 @@
 	  (t 0))))
 
      (cond
-       ((setq w (cond ((and (setq x (sdiff w var))
+       ((setq w (cond ((and (setq x (sdiff w var2))
 			    (mplusp x)
 			    (setq *d* (remove y (cdr *exp*) :count 1))
 			    (setq v (car *d*))
 			    (mplusp v)
 			    (not (cdr *d*)))
-		       (cond ((setq *d* (matchsum (cdr x) (cdr v)))
+		       (cond ((setq *d* (matchsum (cdr x) (cdr v) var2))
 			      (list (cons 'c *d*)))
 			     (t nil)))
 		      (t (m2 x r))))
-	(return (cond ((null (setq x (integrallookups y var))) nil)
+	(return (cond ((null (setq x (integrallookups y var2))) nil)
 		      ((eq w t) x)
 		      (t (mul2* x (power* (cdr (assoc 'c w :test #'eq)) -1)))))))
      (setq z (cdr z))
