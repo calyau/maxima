@@ -1307,7 +1307,7 @@
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
 						var2 *exp*)))
-               (putprop new-var t 'internal)    
+               (putprop new-var t 'internal)
 	       (if (every-trigarg-alike new-exp new-var)
 		   ;; avoid endless recursion when more than one
 		   ;; trigarg exists or c is a float
