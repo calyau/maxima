@@ -1315,7 +1315,7 @@
 		      new-var 
 		      (div (integrator new-exp new-var) c))))))
 	    (t
-	     (return-from monstertrig (rischint *exp* var))))))
+	     (return-from monstertrig (rischint *exp* var2))))))
   (prog (*notsame* w a b y d)
      (declare (special *notsame*))
      (cond
