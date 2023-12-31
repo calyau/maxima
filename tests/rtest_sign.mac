@@ -1299,6 +1299,7 @@ unknown;
 unknown;
 
 (killcontext (myctxt),
+ remvalue(myctxt),
  reset (domain));
 [domain];
 
@@ -1369,7 +1370,7 @@ true;
 
 /* SF bug #3324: "Stack overflow in sign() when domain complex" */
 
-(kill(a, b, c),
+(kill(a, b, c, xxx, yyy, zzz, aaa, bbb, ccc, ddd),
  domain: complex,
  declare([a,b,c], real),
  mycontext: newcontext (),
@@ -1380,8 +1381,8 @@ pnz;
 sign(c - (b*c)^(1/3));
 pnz;
 
-killcontext (mycontext);
-done;
+(killcontext (mycontext), remvalue(mycontext),0);
+0;
 
 /* SF bug #3440: "complex domain + real variable = seg-fault"
  * possibly related to #3324
@@ -1400,8 +1401,10 @@ done;
 unknown;
 
 (reset (),
- killcontext (mycontext));
-done;
+ killcontext (mycontext),
+ remvalue(A),
+ remvalue(mycontext), 0);
+0;
 
 /* SF bug #4120: is("foo"<3) gives internal error */
 
@@ -1469,3 +1472,93 @@ block ([prederror: false], sort (["xyz", "xy", "vwxy", "vw", "uvwxyz", "uv"], ">
 
 is(sqrt(x) >= 0);
 true$
+
+/* Tests for sign-cos & sign-sin */
+sign(sin(x^2+1));
+pnz$
+
+sign(sin(z));
+pnz$
+
+block([ans], assume(0 < z, z < %pi), ans : sign(sin(z)), forget(0 < z, z < %pi), ans);
+pos$
+
+block([ans], assume(0 <= z, z <= %pi), ans : sign(sin(z)), forget(0 <= z, z <= %pi), ans);
+pz$
+
+block([ans], assume(0 < z, z < %pi), ans : sign(sin(z)), forget(0 < z, z < %pi), ans);
+pos$
+
+block([ans], assume(-%pi < z, z < 0), ans : sign(sin(z)), forget(-%pi < z, z < 0), ans);
+neg$
+
+block([ans], assume(-%pi <= z, z <= 0), ans : sign(sin(z)), forget(-%pi <= z, z <= 0), ans);
+nz$
+
+csign(sin(-28/3 +%i));
+complex$
+
+sign(cos(x^2+1));
+pnz$
+
+sign(cos(z));
+pnz$
+
+block([ans], assume(-%pi/2 < z, z < %pi/2), ans : sign(cos(z)), forget(-%pi/2 < z, z < %pi/2), ans);
+pos$
+
+block([ans], assume(-%pi/2 <= z, z <= %pi/2), ans : sign(cos(z)), forget(-%pi/2 <= z, z <= %pi/2), ans);
+pz$
+
+block([ans], assume(%pi/2 < z, z < 3*%pi/2), ans : sign(cos(z)), forget(%pi/2 < z, z < 3*%pi/2), ans);
+neg$
+
+block([ans], assume(%pi/2 <= z, z <= 3*%pi/2), ans : sign(cos(z)), forget(%pi/2 <= z, z <= 3*%pi/2), ans);
+nz$
+
+csign(cos(11/5 +%i));
+complex$
+
+/* Tests for sign of ceiling & floor */
+
+block([ans], assume(x >= 0), ans : sign(floor(x)), forget(x >= 0), ans);
+pz$
+
+block([ans], assume(x >= 1), ans : sign(floor(x)), forget(x >= 1), ans);
+pos$
+
+block([ans], assume(x > 1), ans : sign(floor(x)), forget(x > 1), ans);
+pos$
+
+block([ans], assume(x < 0), ans : sign(floor(x)), forget(x < 0), ans);
+neg$
+
+block([ans], assume(x <= 0), ans : sign(floor(x)), forget(x <= 0), ans);
+nz$
+
+block([ans], assume(x > 0), ans : sign(ceiling(x)), forget(x > 0), ans);
+pos$
+
+block([ans], assume(x > -1), ans : sign(ceiling(x)), forget(x > -1), ans);
+pz$
+
+block([ans], assume(x <= -1), ans : sign(ceiling(x)), forget(x <= -1), ans);
+neg$
+
+block([ans], assume(x < 0), ans : sign(ceiling(x)), forget(x < 0), ans);
+nz$
+
+
+/* Clean up!*/
+
+(kill(a,b,c),killcontext(learndata),0);
+0$
+
+facts();
+[]$
+
+values;
+[]$
+
+contexts;
+[initial,global]$

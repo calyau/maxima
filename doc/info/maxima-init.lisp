@@ -11,4 +11,4 @@
 (setf *maxima-prolog* "")
 (setf *maxima-epilog* "")
 
-
+(setq $display2d_unicode nil)

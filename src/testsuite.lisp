@@ -138,9 +138,9 @@
 	"rtest_polynomialp"
         ((mlist simp) "rtest_limit_extra" 
           ((mlist simp)  42 59 61 80 82 83 84 89 
-                         94 96 98 102 104 106 108 111
+                         94 96 102 104 106 108 111
                          124 125 126 127 132 133 135 136 137
-                         224 226 238 
+                         224 238 
                          239 240 241 242 243 244 245 246 249
                          256 259 261 262 263 267 268 269 270 271 272
                          280 281 282))
@@ -280,14 +280,15 @@
      #-(or gcl) ((mlist simp) 64 74 80 116 140 141 168 184 242 245 322)
      )
     ((mlist simp) "rtest_sym"
-     #-(or sbcl gcl clisp cmucl ecl) ((mlist simp) 15 64)
-     #+sbcl ((mlist simp) 15 64))
+     #-(or sbcl ccl gcl clisp cmucl ecl) ((mlist simp) 15 64)
+     #+sbcl ((mlist simp))
+     #+ccl ((mlist simp)))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
     ((mlist simp) "rtest_vect"
-     #-(or cmucl gcl ecl clisp)
+     #-(or sbcl ccl cmucl gcl ecl clisp)
      ((mlist simp) 4 9 10 13 16 19 20 21 24 25)
-     #+(or cmucl ecl gcl clisp)
+     #+(or sbcl ccl cmucl ecl gcl clisp)
      ((mlist simp) 4 9 10 13 16 20 21 24 25))
      "rtest_antid"
      "rtest_bffac"
