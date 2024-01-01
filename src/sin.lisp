@@ -914,12 +914,12 @@
 ;;; a, b... (and to VAR) their values.
 
 ;; ratroot2 is an expression of the form (a*x+b)/(c*x+d)
-(defun ratroot (*exp* var2 ratroot2 w)
+(defun ratroot (expr var2 ratroot2 w)
   (prog (rootlist k y w1)
      ;; List of powers of the expression ratroot2.
      ;;
      ;; Check if the integrand has a chebyform, if so return the result.
-     (when (setq y (chebyf *exp* var2)) (return y))
+     (when (setq y (chebyf expr var2)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
      (labels
@@ -941,13 +941,13 @@
 	                (denomfind (caddr ex)))
                    (setq rootlist (cons (denomfind (caddr ex)) rootlist)))
                   (t (rat3 (cadr ex) nil var2 ratroot2)))))
-       (unless (rat3 *exp* t var2 ratroot2) (return nil)))
+       (unless (rat3 expr t var2 ratroot2) (return nil)))
      ;; Get the least common multiplier of m1, m2, ...
      (setq k (apply #'lcm rootlist))
      (setq w1 (cons (cons 'k k) w))
      ;; Substitute for the roots.
      (setq y
-           (subst41 *exp*
+           (subst41 expr
                     (subliss w1
                              `((mquotient)
                                ((mplus) ((mtimes) b e)
@@ -976,7 +976,7 @@
                              2))))
             var2))
      ;; Substitute back and return the result.
-     (return (substint (power ratroot2 (power k -1)) var2 y var2 *exp*))))
+     (return (substint (power ratroot2 (power k -1)) var2 y var2 expr))))
 
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.
