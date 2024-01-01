@@ -1714,7 +1714,7 @@
 (defmvar $integration_constant '$%c)
 
 ;; This is the top level of the integrator
-(defun sinint (*exp* var2)
+(defun sinint (expr var2)
   ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
   ;; INTEGRATOR for more details.  Initialize it here.
   (let ((*integrator-level* 0))
@@ -1724,13 +1724,13 @@
     (when (mnump var2)
       (merror (intl:gettext "integrate: variable must not be a number; found: ~:M") var2))
     (when ($ratp var2) (setf var2 (ratdisrep var2)))
-    (when ($ratp *exp*) (setf *exp* (ratdisrep *exp*)))
+    (when ($ratp expr) (setf expr (ratdisrep expr)))
 
     (cond
       ;; Distribute over lists and matrices
-      ((mxorlistp *exp*)
-       (cons (car *exp*)
-             (mapcar #'(lambda (y) (sinint y var2)) (cdr *exp*))))
+      ((mxorlistp expr)
+       (cons (car expr)
+             (mapcar #'(lambda (y) (sinint y var2)) (cdr expr))))
 
       ;; The symbolic integration code doesn't really deal very well with
       ;; subscripted variables, so if we have one then replace occurrences of var2
@@ -1739,28 +1739,28 @@
             (member 'array (cdar var2)))
        (let ((dummy-var2 (gensym)))
          (maxima-substitute var2 dummy-var2
-                            (sinint (maxima-substitute dummy-var2 var2 *exp*) dummy-var2))))
+                            (sinint (maxima-substitute dummy-var2 var2 expr) dummy-var2))))
 
-      ;; If *exp* is an equality, integrate both sides and add an integration
+      ;; If expr is an equality, integrate both sides and add an integration
       ;; constant
-      ((mequalp *exp*)
-       (list (car *exp*) (sinint (cadr *exp*) var2)
-             (add (sinint (caddr *exp*) var2)
+      ((mequalp expr)
+       (list (car expr) (sinint (cadr expr) var2)
+             (add (sinint (caddr expr) var2)
                   ($concat $integration_constant (incf $integration_constant_counter)))))
 
-      ;; If var2 is an atom which occurs as an operator in *exp*, then return a noun form.
+      ;; If var2 is an atom which occurs as an operator in expr, then return a noun form.
       ((and (atom var2)
-            (isinop *exp* var2))
-       (list '(%integrate) *exp* var2))
+            (isinop expr var2))
+       (list '(%integrate) expr var2))
 
-      ((zerop1 *exp*)	;; special case because 0 will not pass sum-of-intsp test
+      ((zerop1 expr)	;; special case because 0 will not pass sum-of-intsp test
        0)
       
       ((let ((ans (simplify
                      (let ($opsubst varlist genvar)
-		       (integrator *exp* var2 nil)))))
+		       (integrator expr var2 nil)))))
 	     (if (sum-of-intsp ans var2)
-		 (list '(%integrate) *exp* var2)
+		 (list '(%integrate) expr var2)
 		 ans))))))
 
 ;; SUM-OF-INTSP
