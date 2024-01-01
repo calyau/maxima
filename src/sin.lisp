@@ -1535,7 +1535,7 @@
 
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
-(defun trigint (*exp* var2)
+(defun trigint (expr var2)
   (prog (y repl y1 y2 *yy* z m n *c* *yz* *a* *b* )
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
@@ -1548,7 +1548,7 @@
 				 (((%sec) x) . sec*)
 				 (((%csc) x) . ((mexpt) sin* -1)))
                                var2)
-		    *exp*))
+		    expr))
      
      (when *debug-integrate*
        (format t "~& in TRIGINT:~%")
@@ -1622,7 +1622,7 @@
                                      ((%cos) x))) a)))))
                 var2)
               var2
-              *exp*)))
+              expr)))
   l1 
      ;; Case IV:
      ;; I think this is case IV, working on the expression in terms of
@@ -1670,7 +1670,7 @@
      (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) tan* (n odd1))))
            (setq repl (list '(%sec) var2)))
        (go getout))
-     (when (not (alike1 (setq repl ($expand *exp*)) *exp*))
+     (when (not (alike1 (setq repl ($expand expr)) expr))
        (return (integrator repl var2)))
      (setq y (subliss '((sin* (mtimes) 2 x
                               ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))
@@ -1708,7 +1708,7 @@
                    newvar
                    (integrator (maxima-substitute newvar 'x y) newvar)
                    var2
-                   *exp*)))))
+                   expr)))))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
