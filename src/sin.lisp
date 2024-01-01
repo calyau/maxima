@@ -1477,14 +1477,14 @@
       (not (member x '(sin* cos* sec* tan*) :test #'eq))
       (and (trigfree (car x)) (trigfree (cdr x)))))
 
-(defun rat1 (*exp*)
+(defun rat1 (expr)
   (prog (*b1* *notsame*)
      (declare (special *yy* *b1* *notsame*))
-     (when (and (numberp *exp*) (zerop *exp*))
+     (when (and (numberp expr) (zerop expr))
        (return nil))
      (setq *b1* (subst *b* 'b '((mexpt) b (n even))))
      (return (prog2
-		 (setq *yy* (rats *exp*))
+		 (setq *yy* (rats expr))
 		 (cond ((not *notsame*) *yy*))))))
 
 (defun rats (expr)
