@@ -674,26 +674,26 @@
 			(list* (cadr wrt) (car wrt) old-wrt)
                         var2))))
 
-(defun integrallookups (*exp* var2)
+(defun integrallookups (expr var2)
   (let (form dummy-args real-args)
   (cond
-	((eq (caar *exp*) 'mqapply)
+	((eq (caar expr) 'mqapply)
 	 ;; Transform to functional form and try again.
 	 ;; For example:
 	 ;; ((MQAPPLY SIMP) (($PSI SIMP ARRAY) 1) $X)
 	 ;; => (($PSI) 1 $X)
-	 (integrallookups `((,(caaadr *exp*)) ,@(cdadr *exp*) ,@(cddr *exp*))
+	 (integrallookups `((,(caaadr expr)) ,@(cdadr expr) ,@(cddr expr))
                           var2))
 
 	;; Lookup algorithm for integral of a special function. 
 	;; The integral form is put on the property list, and can be a 
 	;; lisp function of the args.  If the form is nil, or evaluates 
         ;; to nil, then return noun form unevaluated.
-	((and (not (atom (car *exp*)))
-	    (setq form (get (caar *exp*) 'integral))
+	((and (not (atom (car expr)))
+	    (setq form (get (caar expr) 'integral))
 	    (setq dummy-args (car form))
-	    (setq real-args (cdr *exp*))
-	    ;; search through the args of *exp* and find the arg containing var2
+	    (setq real-args (cdr expr))
+	    ;; search through the args of expr and find the arg containing var2
 	    ;; look up the integral wrt this arg from form
 	    (setq form
 	      (do ((x real-args (cdr x))
@@ -704,11 +704,11 @@
 	    (or (not (functionp form))
 		(setq form (apply form real-args))))
 	 (when *debug-integrate*
-	   (format t "~&INTEGRALLOOKUPS: Found integral ~A.~%" (caar *exp*)))
+	   (format t "~&INTEGRALLOOKUPS: Found integral ~A.~%" (caar expr)))
 	 (substitutel real-args dummy-args form))
 
-	((eq (caar *exp*) 'mplus)
-	 (muln (list '((rat simp) 1 2) *exp* *exp*) nil))
+	((eq (caar expr) 'mplus)
+	 (muln (list '((rat simp) 1 2) expr expr) nil))
 
 	(t nil))))
 
