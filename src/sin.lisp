@@ -1960,9 +1960,9 @@
 (defun expands (arg1 arg2)
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
-(defun powerlist (*exp* var2)
+(defun powerlist (expr var2)
   (prog (y *c* *d* power-list *b*)
-     (setq y (m2 *exp*
+     (setq y (m2 expr
 		 `((mtimes)
 		   ((mexpt) (var varp2 ,var2) (c integerp2))
 		   ((coefftt) (a freevar2 ,var2))
@@ -2000,7 +2000,7 @@
 				    (subst10 *b* var2)))
 		    var2)
         var2
-        *exp*))))
+        expr))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
