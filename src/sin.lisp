@@ -934,7 +934,8 @@
                                ((mplus) ((mtimes) c ((mexpt) ,var2 k))
                                 ((mtimes) -1 e a))))
                     var2
-                    k))
+                    k
+                    *ratroot*))
      ;; Integrate the new problem.
      (setq y
            (integrator
@@ -979,7 +980,7 @@
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.
   
-  (defun subst4 (ex k)
+  (defun subst4 (ex k ratroot2)
     (cond ((freevar2 ex rootvar)
            ;; SUBST4 is called from SUBST41 with ROOTVAR equal to VAR
            ;; (from RATROOT).  Hence we can use FREEVAR2 to see if EX
@@ -987,18 +988,18 @@
            ex)
           ((atom ex) rootform)
           ((not (eq (caar ex) 'mexpt))
-           (mapcar #'(lambda (u) (subst4 u k)) ex))
-          ((m2 (cadr ex) *ratroot*)
+           (mapcar #'(lambda (u) (subst4 u k ratroot2)) ex))
+          ((m2 (cadr ex) ratroot2)
            (list (car ex) rootvar (integerp2 (timesk k (caddr ex)))))
-          (t (list (car ex) (subst4 (cadr ex) k) (subst4 (caddr ex) k)))))
+          (t (list (car ex) (subst4 (cadr ex) k ratroot2) (subst4 (caddr ex) k ratroot2)))))
   
-  (defun subst41 (*exp* a b k)
+  (defun subst41 (*exp* a b k ratroot2)
     ;; Note:  SUBST41 is only called from RATROOT, and the arg B is VAR.
     (setq rootform a
           rootvar b)
     ;; At this point resimplify, because it is not guaranteed, that a correct 
     ;; simplified expression is returned.
-    (resimplify (subst4 *exp* k)))
+    (resimplify (subst4 *exp* k ratroot2)))
 ) ; End of let
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
