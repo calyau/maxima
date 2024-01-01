@@ -905,18 +905,17 @@
 ;;;    (3) dx = k*(a*d-b*c)*t^(k-1)/(a-c*t^k)^2 * dt
 ;;;
 ;;; First, the algorithm calls the routine RAT3 to collect the roots of the
-;;; form ((a*x+b)/(c*x+d))^(n/m) in the list *ROOTLIST*.
+;;; form ((a*x+b)/(c*x+d))^(n/m) in the list ROOTLIST.
 ;;; search for the least common multiplier of m1, m2, ... then the
 ;;; substitutions (2) and (3) are done and the new problem is integrated.
 ;;; As always, W is an alist which associates to the coefficients
 ;;; a, b... (and to VAR) their values.
 
-#+nil
-(defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
-
 ;; ratroot2 is an expression of the form (a*x+b)/(c*x+d)
 (defun ratroot (*exp* var2 ratroot2 w)
   (prog (rootlist k y w1)
+     ;; List of powers of the expression ratroot2.
+     ;;
      ;; Check if the integrand has a chebyform, if so return the result.
      (when (setq y (chebyf *exp* var2)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
@@ -976,27 +975,6 @@
             var2))
      ;; Substitute back and return the result.
      (return (substint (power ratroot2 (power k -1)) var2 y var2))))
-
-;; This is only called from RATROOT.  Maybe move this into RATROOT?
-#+nil
-(defun rat3 (ex ind var2 ratroot2)
-  (cond ((freevar2 ex var2) t)
-	((atom ex) ind)
-	((member (caar ex) '(mtimes mplus) :test #'eq)
-	 (do ((u (cdr ex) (cdr u)))
-	     ((null u) t)
-	   (if (not (rat3 (car u) ind var2 ratroot2))
-	       (return nil))))
-	((not (eq (caar ex) 'mexpt))
-	 (rat3 (car (margs ex)) t var2 ratroot2))
-	((freevar2 (cadr ex) var2)
-	 (rat3 (caddr ex) t var2 ratroot2))
-	((integerp (caddr ex))
-	 (rat3 (cadr ex) ind var2 ratroot2))
-        ((and (m2 (cadr ex) ratroot2)
-	      (denomfind (caddr ex)))
-         (setq *rootlist* (cons (denomfind (caddr ex)) *rootlist*)))
-        (t (rat3 (cadr ex) nil var2 ratroot2))))
 
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.
