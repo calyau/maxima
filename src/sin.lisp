@@ -2095,18 +2095,18 @@
       (list (car expres) *exp* var2)
       (substint1 (maxima-substitute x y expres) var2)))
 
-(defun substint1 (*exp* var2)
-  (cond ((atom *exp*) *exp*)
-	((and (eq (caar *exp*) '%integrate)
-	      (null (cdddr *exp*))
-	      (not (symbolp (caddr *exp*)))
-	      (not (free (caddr *exp*) var2)))
+(defun substint1 (expr var2)
+  (cond ((atom expr) expr)
+	((and (eq (caar expr) '%integrate)
+	      (null (cdddr expr))
+	      (not (symbolp (caddr expr)))
+	      (not (free (caddr expr) var2)))
 	 (simplify (list '(%integrate)
-			 (mul2 (cadr *exp*) (sdiff (caddr *exp*) var2))
+			 (mul2 (cadr expr) (sdiff (caddr expr) var2))
 			 var2)))
 	(t (recur-apply #'(lambda (e)
                             (substint1 e var2))
-                        *exp*))))
+                        expr))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
