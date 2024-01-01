@@ -994,13 +994,13 @@
            (list (car ex) rootvar (integerp2 (timesk k (caddr ex)))))
           (t (list (car ex) (subst4 (cadr ex) k ratroot2) (subst4 (caddr ex) k ratroot2)))))
   
-  (defun subst41 (*exp* a b k ratroot2)
+  (defun subst41 (expr a b k ratroot2)
     ;; Note:  SUBST41 is only called from RATROOT, and the arg B is VAR.
     (setq rootform a
           rootvar b)
     ;; At this point resimplify, because it is not guaranteed, that a correct 
     ;; simplified expression is returned.
-    (resimplify (subst4 *exp* k ratroot2)))
+    (resimplify (subst4 expr k ratroot2)))
 ) ; End of let
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
