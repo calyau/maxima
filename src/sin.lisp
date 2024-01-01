@@ -631,15 +631,15 @@
 
 ;; Integrates exponential * sin or cos, all with linear args.
 
-(defun sce-int (*exp* s-c var2)		; EXP is non-trivial
-  (let* ((e-coef (car (islinear (caddr *exp*) var2)))
+(defun sce-int (expr s-c var2)		; EXP is non-trivial
+  (let* ((e-coef (car (islinear (caddr expr) var2)))
          (sc-coef (car (islinear (cadr s-c) var2)))
          (sc-arg (cadr s-c))
          (abs-val (add (power e-coef 2) (power sc-coef 2))))
     (if (zerop1 abs-val)
         ;; The numerator is zero. Exponentialize the integrand and try again.
-        (integrator ($exponentialize (mul *exp* s-c)) var2)
-        (mul (div *exp* abs-val)
+        (integrator ($exponentialize (mul expr s-c)) var2)
+        (mul (div expr abs-val)
              (add (mul e-coef s-c)
                   (if (eq (caar s-c) '%sin)
                       (mul* (neg sc-coef) `((%cos) ,sc-arg))
