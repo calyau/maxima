@@ -914,13 +914,13 @@
 (defvar *ratroot* nil)  ; Expression of the form (a*x+b)/(c*x+d)
 (defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
 
-(defun ratroot (*exp* var2 *ratroot* w)
+(defun ratroot (*exp* var2 ratroot2 w)
   (prog (*rootlist* k y w1)
      ;; Check if the integrand has a chebyform, if so return the result.
      (when (setq y (chebyf *exp* var2)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
-     (unless (rat3 *exp* t var2 *ratroot*) (return nil))
+     (unless (rat3 *exp* t var2 ratroot2) (return nil))
      ;; Get the least common multiplier of m1, m2, ...
      (setq k (apply #'lcm *rootlist*))
      (setq w1 (cons (cons 'k k) w))
@@ -935,7 +935,7 @@
                                 ((mtimes) -1 e a))))
                     var2
                     k
-                    *ratroot*))
+                    ratroot2))
      ;; Integrate the new problem.
      (setq y
            (integrator
@@ -955,7 +955,7 @@
                               2))))
              var2))
      ;; Substitute back and return the result.
-     (return (substint (power *ratroot* (power k -1)) var2 y var2))))
+     (return (substint (power ratroot2 (power k -1)) var2 y var2))))
 
 ;; This is only called from RATROOT.  Maybe move this into RATROOT?
 (defun rat3 (ex ind var2 ratroot2)
