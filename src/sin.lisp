@@ -1487,18 +1487,18 @@
 		 (setq *yy* (rats *exp*))
 		 (cond ((not *notsame*) *yy*))))))
 
-(defun rats (*exp*)
+(defun rats (expr)
   (prog (y)
      (declare (special *notsame* *b1*))
      (return
-       (cond ((eq *exp* *a*) 'x)
-	     ((atom *exp*)
-	      (cond ((member *exp* '(sin* cos* sec* tan*) :test #'eq)
+       (cond ((eq expr *a*) 'x)
+	     ((atom expr)
+	      (cond ((member expr '(sin* cos* sec* tan*) :test #'eq)
 		     (setq *notsame* t))
-		    (t *exp*)))
-	     ((setq y (m2 *exp* *b1*))
+		    (t expr)))
+	     ((setq y (m2 expr *b1*))
 	      (f3 y))
-	     (t (cons (car *exp*) (mapcar #'(lambda (g) (rats g)) (cdr *exp*))))))))
+	     (t (cons (car expr) (mapcar #'(lambda (g) (rats g)) (cdr expr))))))))
 
 (defun f3 (y)
   (maxima-substitute *c*
