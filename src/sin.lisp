@@ -603,8 +603,8 @@
 ;;; Implementation of Method 1: Integrate a sum
 
 ;;after finding a non-integrable summand usually better to pass rest to risch
-(defun integrate1 (*exp* var2)
-  (do ((terms *exp* (cdr terms)) (ans))
+(defun integrate1 (expr var2)
+  (do ((terms expr (cdr terms)) (ans))
       ((null terms) (addn ans nil))
     (let ($liflag)					; don't gen li's for
       (push (integrator (car terms) var2) ans))		; parts of integrand
