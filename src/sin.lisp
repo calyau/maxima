@@ -1296,7 +1296,7 @@
 ;;; Stage II
 ;;; Implementation of Method 6: Elementary function of trigonometric functions
 
-(defun monstertrig (*exp* var2 trigarg)
+(defun monstertrig (expr var2 trigarg)
   (when (and (not (atom trigarg))
              ;; Do not exute the following code when called from rischint.
              (not *in-risch-p*))
@@ -1311,7 +1311,7 @@
 		    (b (cdras 'b arg))
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
-						var2 *exp*)))
+						var2 expr)))
                (putprop new-var t 'internal)
 	       (if (every-trigarg-alike new-exp new-var)
 		   ;; avoid endless recursion when more than one
@@ -1322,16 +1322,16 @@
 		      new-var 
 		      (div (integrator new-exp new-var) c))))))
 	    (t
-	     (return-from monstertrig (rischint *exp* var2))))))
+	     (return-from monstertrig (rischint expr var2))))))
   (prog (*notsame* w a b y d)
      (declare (special *notsame*))
      (cond
-       ((supertrig *exp* var2 trigarg)
+       ((supertrig expr var2 trigarg)
         (go a))
        ((null *notsame*) (return nil))
        ;; Check for an expression like a*trig1(m*x)*trig2(n*x),
        ;; where trig1 and trig2 are sin or cos.
-       ((not (setq y (m2 *exp*
+       ((not (setq y (m2 expr
                          `((mtimes)
                            ((coefftt) (a freevar2 ,var2))
                            (((b trig1))
@@ -1404,7 +1404,7 @@
      ;; but not a product of sin and cos.
      (cond ((not (setq y (prog2 
                            (setq trigarg var2)
-                           (m2 *exp*
+                           (m2 expr
                                `((mtimes)
                                  ((coefftt) (a freevar2 ,var2))
                                  (((b trig1))
@@ -1434,11 +1434,11 @@
   a  ;; A product of trig functions and all trig functions have the same
      ;; argument trigarg. Maxima substitutes trigarg with the variable var2
      ;; of integration and calls trigint to integrate the new problem.
-     (setq w (subst2s *exp* trigarg var2))
+     (setq w (subst2s expr trigarg var2))
      (setq b (cdras 'b (m2-b*x+a trigarg var2)))
-     (setq a (substint trigarg var2 (trigint (div* w b) var2) var2 *exp*))
+     (setq a (substint trigarg var2 (trigint (div* w b) var2) var2 expr))
      (return (if (isinop a '%integrate)
-                 (list '(%integrate) *exp* var2)
+                 (list '(%integrate) expr var2)
                  a))))
 
 (defun trig2 (x)
