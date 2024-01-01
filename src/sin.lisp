@@ -208,7 +208,8 @@
 			         (maxima-substitute newvar expres d))
 			   nil)
 			  newvar)
-                         var2))))
+                         var2
+                         *exp*))))
 		   (t (return nil)))))))
         
           ;; We have a special function with an integral on the property list.
@@ -836,7 +837,8 @@
                                           (cdras 'b pow)
                                           (take '(%log) base)))
                                 new-var)
-                    var2)))))
+                    var2
+                    *exp*)))))
   
   ;; Transform expressions like g^(b*x+a) to the common base base and
   ;; do the substitution y = base^(b*x+a) in the expr.
@@ -974,7 +976,7 @@
                              2))))
             var2))
      ;; Substitute back and return the result.
-     (return (substint (power ratroot2 (power k -1)) var2 y var2))))
+     (return (substint (power ratroot2 (power k -1)) var2 y var2 *exp*))))
 
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.
@@ -1103,7 +1105,8 @@
 					     ((mtimes) -1 c1)))
 				  r1)))
 	    var2)
-           var2)))
+           var2
+           *exp*)))
        ((integerp2 r2)
 	#+nil (format t "integer r2~%")
 	;; I (rtoy) think this is using the substitution z = t^(q/d1).
@@ -1133,7 +1136,8 @@
 						   c1)
 						  r2))))
 			    var2)
-                    var2)))
+                    var2
+                    *exp*)))
        ((and (integerp2 r1) (< r1 0))
 	#+nil (format t "integer r1 < 0~%")
 	;; I (rtoy) think this is using the substitution
@@ -1179,7 +1183,8 @@
 						   ((mtimes) -1 c1))
 						  r1))))
 			    var2)
-                    var2)))
+                    var2
+                    *exp*)))
        ((integerp2 (add* r1 r2))
 	#+nil (format t "integer r1+r2~%")
 	;; If we're here,  (r1-q+1)/q+r2 is an integer.
@@ -1230,7 +1235,8 @@
 						    r1 r2
 						    2))))))
 			    var2)
-                    var2)))
+                    var2
+                    *exp*)))
        (t (return (list '(%integrate) *exp* var2))))))
 
 (defun greaterratp (x1 x2)
@@ -1430,7 +1436,7 @@
      ;; of integration and calls trigint to integrate the new problem.
      (setq w (subst2s *exp* trigarg var2))
      (setq b (cdras 'b (m2-b*x+a trigarg var2)))
-     (setq a (substint trigarg var2 (trigint (div* w b) var2) var2))
+     (setq a (substint trigarg var2 (trigint (div* w b) var2) var2 *exp*))
      (return (if (isinop a '%integrate)
                  (list '(%integrate) *exp* var2)
                  a))))
@@ -1615,7 +1621,8 @@
                                      ((rat simp) -1 2) 
                                      ((%cos) x))) a)))))
                 var2)
-              var2)))
+              var2
+              *exp*)))
   l1 
      ;; Case IV:
      ;; I think this is case IV, working on the expression in terms of
@@ -1700,7 +1707,8 @@
          (substint repl
                    newvar
                    (integrator (maxima-substitute newvar 'x y) newvar)
-                   var2)))))
+                   var2
+                   *exp*)))))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
@@ -1991,7 +1999,8 @@
 				    (list '(mexpt) var2 (1- (quotient (1+ *c*) *d*)))
 				    (subst10 *b* var2)))
 		    var2)
-        var2))))
+        var2
+        *exp*))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2090,9 +2099,9 @@
     (dolist (a alist x)
       (setq x (maxima-substitute (cdr a) (car a) x)))))
 
-(defun substint (x y expres var2)
+(defun substint (x y expres var2 expr)
   (if (and (not (atom expres)) (eq (caar expres) '%integrate))
-      (list (car expres) *exp* var2)
+      (list (car expres) expr var2)
       (substint1 (maxima-substitute x y expres) var2)))
 
 (defun substint1 (expr var2)
