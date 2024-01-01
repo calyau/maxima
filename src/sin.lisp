@@ -911,18 +911,38 @@
 ;;; As always, W is an alist which associates to the coefficients
 ;;; a, b... (and to VAR) their values.
 
+#+nil
 (defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
 
 ;; ratroot2 is an expression of the form (a*x+b)/(c*x+d)
 (defun ratroot (*exp* var2 ratroot2 w)
-  (prog (*rootlist* k y w1)
+  (prog (rootlist k y w1)
      ;; Check if the integrand has a chebyform, if so return the result.
      (when (setq y (chebyf *exp* var2)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
-     (unless (rat3 *exp* t var2 ratroot2) (return nil))
+     (labels
+         ((rat3 (ex ind var2 ratroot2)
+            (cond ((freevar2 ex var2) t)
+	          ((atom ex) ind)
+	          ((member (caar ex) '(mtimes mplus) :test #'eq)
+	           (do ((u (cdr ex) (cdr u)))
+	               ((null u) t)
+	             (if (not (rat3 (car u) ind var2 ratroot2))
+	                 (return nil))))
+	          ((not (eq (caar ex) 'mexpt))
+	           (rat3 (car (margs ex)) t var2 ratroot2))
+	          ((freevar2 (cadr ex) var2)
+	           (rat3 (caddr ex) t var2 ratroot2))
+	          ((integerp (caddr ex))
+	           (rat3 (cadr ex) ind var2 ratroot2))
+                  ((and (m2 (cadr ex) ratroot2)
+	                (denomfind (caddr ex)))
+                   (setq rootlist (cons (denomfind (caddr ex)) rootlist)))
+                  (t (rat3 (cadr ex) nil var2 ratroot2)))))
+       (unless (rat3 *exp* t var2 ratroot2) (return nil)))
      ;; Get the least common multiplier of m1, m2, ...
-     (setq k (apply #'lcm *rootlist*))
+     (setq k (apply #'lcm rootlist))
      (setq w1 (cons (cons 'k k) w))
      ;; Substitute for the roots.
      (setq y
@@ -939,25 +959,26 @@
      ;; Integrate the new problem.
      (setq y
            (integrator
-             (mul y
-                  (subliss w1
-                           `((mquotient)
-                             ((mtimes) e
-                              ((mplus)
-                               ((mtimes) a d k
-                                ((mexpt) ,var2 ((mplus) -1 k)))
-                               ((mtimes) -1
-                                ((mtimes) b c k
-                                 ((mexpt) ,var2 ((mplus) -1 k))))))
-                             ((mexpt) ((mplus)
-                                       ((mtimes) c ((mexpt) ,var2 k))
-                                       ((mtimes) -1 a e))
-                              2))))
-             var2))
+            (mul y
+                 (subliss w1
+                          `((mquotient)
+                            ((mtimes) e
+                             ((mplus)
+                              ((mtimes) a d k
+                               ((mexpt) ,var2 ((mplus) -1 k)))
+                              ((mtimes) -1
+                               ((mtimes) b c k
+                                ((mexpt) ,var2 ((mplus) -1 k))))))
+                            ((mexpt) ((mplus)
+                                      ((mtimes) c ((mexpt) ,var2 k))
+                                      ((mtimes) -1 a e))
+                             2))))
+            var2))
      ;; Substitute back and return the result.
      (return (substint (power ratroot2 (power k -1)) var2 y var2))))
 
 ;; This is only called from RATROOT.  Maybe move this into RATROOT?
+#+nil
 (defun rat3 (ex ind var2 ratroot2)
   (cond ((freevar2 ex var2) t)
 	((atom ex) ind)
