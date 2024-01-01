@@ -171,7 +171,7 @@
 			      ((coefftt) (c rat8prime ,var2)))))
 	      ;; Integrand is of the form R(x)*F(S(x)) where F is a log, or 
 	      ;; arctric function and R(x) and S(x) are rational functions.
-	      (ratlog *exp* var2 (cons (cons 'a expres) arg)))
+	      (ratlog var2 (cons (cons 'a expres) arg)))
 	     (t
 	      (prog (y z)
 	         (cond
@@ -1866,7 +1866,8 @@
 ;;; The integrand is like log(x)*f'(x). To obtain the result the technique of
 ;;; partial integration is applied: log(x)*f(x)-integrate(1/x*f(x),x)
 
-(defun ratlog (*exp* var2 form)
+;;; Only called by intform.
+(defun ratlog (var2 form)
   (prog (b c d y z)
      (setq y form)
      (setq b (cdr (assoc 'b y :test #'eq)))
