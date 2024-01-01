@@ -1018,10 +1018,10 @@
 ;; 3. (r1+1)/q+r2 is an integer.
 ;;
 ;; I (rtoy) think that for this code to work, r1, r2, and q must be numbers.
-(defun chebyf (*exp* var2)
+(defun chebyf (expr var2)
   (prog (r1 r2 d1 d2 n1 n2 w q)
      ;; Return NIL if the expression doesn't match.
-     (when (not (setq w (m2-chebyform *exp* var2)))
+     (when (not (setq w (m2-chebyform expr var2)))
        (return nil))
      #+nil
      (format t "w = ~A~%" w)
@@ -1106,7 +1106,7 @@
 				  r1)))
 	    var2)
            var2
-           *exp*)))
+           expr)))
        ((integerp2 r2)
 	#+nil (format t "integer r2~%")
 	;; I (rtoy) think this is using the substitution z = t^(q/d1).
@@ -1137,7 +1137,7 @@
 						  r2))))
 			    var2)
                     var2
-                    *exp*)))
+                    expr)))
        ((and (integerp2 r1) (< r1 0))
 	#+nil (format t "integer r1 < 0~%")
 	;; I (rtoy) think this is using the substitution
@@ -1184,7 +1184,7 @@
 						  r1))))
 			    var2)
                     var2
-                    *exp*)))
+                    expr)))
        ((integerp2 (add* r1 r2))
 	#+nil (format t "integer r1+r2~%")
 	;; If we're here,  (r1-q+1)/q+r2 is an integer.
@@ -1236,8 +1236,8 @@
 						    2))))))
 			    var2)
                     var2
-                    *exp*)))
-       (t (return (list '(%integrate) *exp* var2))))))
+                    expr)))
+       (t (return (list '(%integrate) expr var2))))))
 
 (defun greaterratp (x1 x2)
   (cond ((and (numberp x1) (numberp x2))
