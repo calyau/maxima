@@ -1914,16 +1914,16 @@
 (defun every-trigarg-alike (y arg)
   (cond ((atom y) t)
 	((optrig (caar y)) (alike1 arg (cadr y)))
-	(t (every (lambda (*exp*)
-		    (every-trigarg-alike *exp* arg))
+	(t (every (lambda (expr)
+		    (every-trigarg-alike expr arg))
 		  (cdr y)))))
 
 ;; return argument of first trig operation encountered in y
 (defun find-first-trigarg (y)
   (cond ((atom y) nil)
 	((optrig (caar y)) (cadr y))
-	(t (some (lambda (*exp*)
-		   (find-first-trigarg *exp*))
+	(t (some (lambda (expr)
+		   (find-first-trigarg expr))
 		 (cdr y)))))
 
 ;; return constant factor that makes elements of alist match elements of blist
