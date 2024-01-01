@@ -911,9 +911,9 @@
 ;;; As always, W is an alist which associates to the coefficients
 ;;; a, b... (and to VAR) their values.
 
-(defvar *ratroot* nil)  ; Expression of the form (a*x+b)/(c*x+d)
 (defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
 
+;; ratroot2 is an expression of the form (a*x+b)/(c*x+d)
 (defun ratroot (*exp* var2 ratroot2 w)
   (prog (*rootlist* k y w1)
      ;; Check if the integrand has a chebyform, if so return the result.
