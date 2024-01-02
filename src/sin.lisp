@@ -614,7 +614,7 @@
 	  (return (addn (cons (rischint (cons '(mplus) terms) var2) (cdr ans))
 			nil)))))
 
-(defun scep (expr var2 &aux trigl *exp*)	; Product of SIN, COS, EXP
+(defun scep (expr var2 &aux trigl ex)	; Product of SIN, COS, EXP
   (and (mtimesp expr)			;	of linear args.
        (loop for fac in (cdr expr) do
 	     (cond ((atom fac) (return nil))
@@ -625,9 +625,9 @@
 			 (eq (cadr fac) '$%e)
 			 (linearp (caddr fac) var2))
 		    ;; should be only one exponential factor
-		    (setq *exp* fac))
+		    (setq ex fac))
 		   (t (return nil)))
-	     finally (return (cons *exp* trigl)))))
+	     finally (return (cons ex trigl)))))
 
 ;; Integrates exponential * sin or cos, all with linear args.
 
