@@ -560,6 +560,8 @@ Default value: @code{"}
 @code{boxchar} is the character used to draw the box in the @mref{box}@w{}
 and in the @mref{dpart} and @mref{lpart} functions.
 
+@code{boxchar} is only used when @code{display2d_unicode} is @code{false}.
+
 All boxes in an expression are drawn with the current value of @code{boxchar};
 the drawing character is not stored with the box expression.
 

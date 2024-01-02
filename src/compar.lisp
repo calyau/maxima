@@ -1767,6 +1767,91 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	(t ; x >= 1
 	 (setq sign '$pz))))
 
+;; This code handles sign(sin(x)), where -%pi <= x <= %pi. Of course, at the 
+;; expense of a great deal of additional complexity, this code could catch far 
+;; more cases.
+
+;; Like all sign functions, it works by setting the value of the special variable 
+;; sign.
+
+;; The sign of sin(constant expression) is supposed to be handled elsewhere,
+;; so we don't consider that case here. But running the testsuite,
+;; sometimes sign-sin receives a constant expression. This code could 
+;; handle this case, but I think that's fixing a bug in the wrong place.
+
+;; The general simplifier converts sin(%i*a) to %i*sinh(a), so I don't 
+;; think this code needs to handle the case of sin(x), where x is purely imaginary. 
+
+;; This code could handle sin({zerob, zeroa, ind}), but it doesn't.
+
+;; Finally, sometimes the argument to sin is not simplified; for example,
+;; running the testsuite sometimes this code recieves the expression sin(1/(1/x)). 
+;; We could simplify it, but I think that it would be better to fix the code 
+;; so that the input to sign-sin is always simplified.
+(defun sign-sin (e) ; e = sin(x)
+     (let ((x (cadr e)) (y 0))
+       ;; When *complexsign* is true, find the rectangular form of 
+       ;; the argument to sin.
+       (when *complexsign* 
+          (setq x (risplit x))
+          (setq y (cdr x)
+                x (car x)))
+       (cond 
+             ;; When y = 0 and -%pi <= x <= %pi, sign(sin(x)) = sign(x) 
+             ((and (eql y 0)
+                   (eq t (mgqp x (mul -1 '$%pi))) 
+                   (eq t (mgqp '$%pi x)))
+                (sign x))
+              ;; When *complexsign* is true & y # 0, set sign to complex.
+              ;; To test y # 0, we'll use (not (eql y 0)))
+              ((and *complexsign* (not (eql y 0)))
+                (setf sign '$complex))
+			        (t (setf sign '$pnz))))
+		nil)
+(putprop '%sin 'sign-sin 'sign-function)
+
+(defun sign-cos (e) ; e = cos(x)
+     (let ((x (cadr e)) (y 0))
+       ;; When *complexsign* is true, find the rectangular form of 
+       ;; the argument to cos.
+       (when *complexsign* 
+          (setq x (risplit x))
+          (setq y (cdr x)
+                x (car x)))
+       (cond 
+          ;; When y = 0 and -%pi/2 <= x <= 3 %pi/2, sign(cos(x)) = sign(%pi/2-x)
+          ((and (eql y 0)
+                (eq t (mgqp x (div '$%pi -2))) 
+                (eq t (mgqp (div (mul 3 '$%pi) 2) x)))
+            (sign (sub (div '$%pi 2) x)))
+          ;; When *complexsign* is true & y # 0, set sign to complex.
+          ;; To test y # 0, we'll use (not (eql y 0)))
+          ((and *complexsign* (not (eql y 0)))
+              (setf sign '$complex))
+			    (t (setf sign '$pnz))))
+		nil)
+(putprop '%cos 'sign-cos 'sign-function)
+
+;; When Maxima can deduce that when -1<x<=0, then ceiling(x) simplifies to 0. So this
+;; case is simplified away before it gets to this function.
+(defun sign-ceiling (x)
+   (setq x (cadr x)) ; ceiling(x) --> x
+   (setf sign (cond ((eq t (mgrp x 0)) '$pos)  ; ceiling(> 0) = pos
+                    ((eq t (mgrp x -1)) '$pz)  ; ceiling(> -1) = pz
+                    ((eq t (mgqp -1 x)) '$neg) ; ceiling(<= -1) = neg
+                    ((eq t (mgrp 0 x)) '$nz)   ; ceiling( < 0) = nz
+                    (t '$pnz))))
+(putprop '$ceiling 'sign-ceiling 'sign-function)
+
+(defun sign-floor (x)
+   (setq x (cadr x)) ; floor(x) --> x
+   (setf sign (cond ((eq t (mgqp x 1)) '$pos) ;floor(>= 1) = pos
+                    ((eq t (mgqp x 0)) '$pz)  ;floor(>= 0) = pz
+                    ((eq t (mgrp 0 x)) '$neg) ;floor(< 0) = neg
+                    ((eq t (mgqp 0 x)) '$nz)  ;floor(<= 0) = nz
+                    (t '$pnz))))
+(putprop '$floor 'sign-floor 'sign-function)
+
 ;;; Compare min/max
 
 ;;; Macros used in simp min/max

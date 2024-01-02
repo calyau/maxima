@@ -1925,7 +1925,7 @@ in the interval of integration.")
 	($trigsign t)
 	(*sin-cos-recur* t))		;recursion stopper
     (prog (ans d nzp2 l int-zero-to-d int-nzp2 int-zero-to-c limit-diff)
-       (let* ((arg (simple-trig-arg trigarg))	;; pattern match sin(cc*x + bb)
+       (let* ((arg (simple-trig-arg trigarg var))	;; pattern match sin(cc*x + bb)
 	      (cc (cdras 'c arg))
 	      (bb (cdras 'b arg))
 	      (new-var (gensym "NEW-VAR-")))

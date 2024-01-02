@@ -1145,12 +1145,15 @@ Default value: @code{!}
 @code{absboxchar} is the character used to draw absolute value
 signs around expressions which are more than one line tall.
 
+@code{absboxchar} is only used when @code{display2d_unicode} is @code{false}.
+
 Example:
 
 @example
-(%i1) abs((x^3+1));
+(%i1) display2d_unicode: false $
+(%i2) abs((x^3+1));
                             ! 3    !
-(%o1)                       !x  + 1!
+(%o2)                       !x  + 1!
 @end example
 
 @opencatbox{Categories:}
@@ -1754,6 +1757,49 @@ See also @mref{set_alt_display} and @mrefdot{display2d}
 @category{Display functions}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{display2d_unicode}
+@defvr {Option variable} display2d_unicode
+Default value: @code{true}
+
+When @code{display2d_unicode} is @code{true},
+the 2-d pretty printer (enabled by the global flag @code{display2d}) uses Unicode drawing characters [1] to display
+integrals, summations, products, matrices, ratios, derivatives,
+@code{box} expressions, @code{at} expressions, and absolute value expressions.
+
+Otherwise, the pretty printer uses only ASCII characters to display every kind of expression.
+
+In addition to displaying expressions in console interaction (as @code{%o} labeled expressions),
+the 2-d pretty printer is invoked to display expressions for @code{print},
+and @code{printf} with the @code{~m} format specifier.
+
+@ifnotinfo
+Examples:
+
+Expressions displayed by 2-d pretty printer using Unicode drawing characters
+(@code{display2d_unicode} equal to @code{true}),
+shown as an image:
+
+@image{figures/maxima-unicode-display-variety-1}
+
+Same expressions, displayed using only ASCII characters
+(@code{display2d_unicode} equal to @code{false}),
+shown as an image:
+
+@image{figures/maxima-unicode-display-variety-1-ascii}
+
+@end ifnotinfo
+
+Footnotes:
+
+[1] @url{https://en.wikipedia.org/wiki/Box-drawing_character}
+
+@opencatbox{Categories:}
+@category{Display flags and variables}
+@closecatbox
+
+@end defvr
 
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES

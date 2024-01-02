@@ -1486,14 +1486,17 @@ Default value: @code{[}
 @code{lmxchar} is the character displayed as the left delimiter of a matrix.
 See also @mrefdot{rmxchar}
 
+@code{lmxchar} is only used when @code{display2d_unicode} is @code{false}.
+
 Example:
 
 @example
-(%i1) lmxchar: "|"$
-(%i2) matrix ([a, b, c], [d, e, f], [g, h, i]);
+(%i1) display2d_unicode: false $
+(%i2) lmxchar: "|"$
+(%i3) matrix ([a, b, c], [d, e, f], [g, h, i]);
                            | a  b  c ]
                            |         ]
-(%o2)                      | d  e  f ]
+(%o3)                      | d  e  f ]
                            |         ]
                            | g  h  i ]
 @end example
@@ -2159,6 +2162,8 @@ assigning a new value to @code{aa2} also modifies @code{aa}.
 Default value: @code{]}
 
 @code{rmxchar} is the character drawn on the right-hand side of a matrix.
+
+@code{rmxchar} is only used when @code{display2d_unicode} is @code{false}.
 
 See also @mrefdot{lmxchar}
 
