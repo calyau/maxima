@@ -2029,27 +2029,27 @@
 ;; In other words, the method performs an implicit substitution y = u(x),
 ;; and obtains the integral of op(y)dy by a table look up.
 ;;
-(defun diffdiv (*exp* var2)
+(defun diffdiv (expr var2)
   (prog (y *a* x v *d* z w r)
-     (cond ((and (mexptp *exp*)
-		 (mplusp (cadr *exp*))
-		 (integerp (caddr *exp*))
-		 (< (caddr *exp*) 6)
-		 (> (caddr *exp*) 0))
-	    (return (integrator (expandexpt (cadr *exp*) (caddr *exp*)) var2))))
+     (cond ((and (mexptp expr)
+		 (mplusp (cadr expr))
+		 (integerp (caddr expr))
+		 (< (caddr expr) 6)
+		 (> (caddr expr) 0))
+	    (return (integrator (expandexpt (cadr expr) (caddr expr)) var2))))
 
      ;; If not a product, transform to a product with one term
-     (setq *exp* (cond ((mtimesp *exp*) *exp*) (t (list '(mtimes) *exp*))))
+     (setq expr (cond ((mtimesp expr) expr) (t (list '(mtimes) expr))))
 
-     ;; Loop over the terms in *exp*
-     (setq z (cdr *exp*))
+     ;; Loop over the terms in expr
+     (setq z (cdr expr))
      a    (setq y (car z))
 
      ;; This m2 pattern matches const*(exp/y)
      (setq r (list '(mplus)
 		   (cons '(coeffpt)
 			 (cons `(c free12 ,var2)
-			       (remove y (cdr *exp*) :count 1)))))
+			       (remove y (cdr expr) :count 1)))))
      (cond
       ;; Case u(var2) is the identity function. y is a term in exp.
       ;; Match if diff(y,var2) == c*(exp/y).
@@ -2077,7 +2077,7 @@
      (cond
        ((setq w (cond ((and (setq x (sdiff w var2))
 			    (mplusp x)
-			    (setq *d* (remove y (cdr *exp*) :count 1))
+			    (setq *d* (remove y (cdr expr) :count 1))
 			    (setq v (car *d*))
 			    (mplusp v)
 			    (not (cdr *d*)))
