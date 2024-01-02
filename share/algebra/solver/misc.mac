@@ -83,3 +83,10 @@ Union2(l1, l2) :=
   else if not(member(l2[1], l1)) then Union2(append(l1, [l2[1]]), rest(l2))
   else Union2(l1, rest(l2))$
 
+/******************************************************************************/
+/* Some work arounds for case sensitivity and function name changes.          */
+/******************************************************************************/
+
+Empty( e) :=emptyp( e)$
+ZeroP( n) :=equal(n,0)$
+Flatten( e) :=flatten(e)$

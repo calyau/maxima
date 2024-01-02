@@ -167,6 +167,7 @@ put(
   lambda(
     [ VerboseMode ],
 
+    /*
     CASE( VerboseMode,
 
       [ FALSE,     MsgLevel : 'FALSE  ],
@@ -174,6 +175,11 @@ put(
       [ ALL,       MsgLevel : 'DETAIL ],
       [ OTHERWISE, ErrorHandler( "InvVerbMode", VerboseMode, 'Fatal ) ]
     )
+    */
+    if VerboseMode=false then MsgLevel : 'FALSE
+    else if VerboseMode=true then MsgLevel : 'SHORT
+    else if VerboseMode='all then MsgLevel : 'DETAIL
+    else  ErrorHandler( "InvVerbMode", VerboseMode, 'Fatal)
   ),
   'value_check
 )$
