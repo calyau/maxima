@@ -152,6 +152,11 @@
   ;; POWERL is initialized in INTEGRATOR to NIL and can be modified in
   ;; INTFORM in certain cases and is read by INTEGRATOR in some cases.
   ;; Instead of a global special variable, use a closure.
+
+  ;; It would be really good to get rid of the special variable *EXP*
+  ;; used only in INTFORM and INTEGRATOR.  I (rtoy) haven't been able
+  ;; to figure out exactly how to do that.
+
   (defun intform (expres var2 &aux w arg)
     (declare (special *exp*))
     (cond ((freevar2 expres var2) nil)
