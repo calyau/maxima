@@ -12,5 +12,10 @@ still needed editing.
 Dr. Wolfgang Lindner reviewed the document and was able to get the original tex
 source from Dr. Hennig. He was also able to update the diagrams. I then made
 some minor changes to the English grammar and wording.
+Dec 21 2023 Updates
+I also want to thank Dr. Dorai Sitaram for help debugging my Tex environment.
+
 NB The file solver-diagramms.docx is only editable using TextMaker and one of
 the images is only partially editable.
+It appears that the variable described in the document SolverAssumptions is
+Solver_Assumptions.

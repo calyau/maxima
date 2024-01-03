@@ -3,25 +3,25 @@
 The requirements, in particular the points  \ref{AnfImmed}, \ref{AnfLinear} and
 \ref{AnfNonlinear}, set up in  chapter \ref{SolverAnforderungen} and schematically represented the structuring of the equations solvers  in figure \ref{Grobstruktur} suggests to lay down this into five largely independent main modules, see \cite{Trispel}. Built up on this structure and the heuristic algorithms described in the preceding chapter,  the Macsyma program packet \verb+SOLVER+ was developed for the functionality extension of the Macsyma functions \verb+SOLVE+ and \verb+LINSOLVE+.
 
-The task of the module {\em Solver Preprocessor} are general, preparing works like the check of the command syntax and semantic and the construction of internal data structures, but also in addition, the execution of an introductory consistency check. With it, it is to be determined whether the set of equations directly contains contradictory  statements like  number = number or constraint conditions between parameters .
+The tasks of the module {\em Solver Preprocessor} are general, checking the command syntax and semantics, the construction of internal data structures, and the execution of an introductory consistency check. The check determines whether the set of equations directly contains contradictory  statements like  number = number or constraint conditions between parameters .
 
-The {\em Immediate Assignment Solver}  searches the system of equations for direct assignments of the form $\mbox{\em var} = \const$ oder $\const = \mbox{\em var}$ before the call of the {\em Linear Solvers}  and executes these immediately, so that the cost of computation  for the following program module is kept as small as possible.
+The {\em Immediate Assignment Solver}  searches the system of equations for direct assignments of the form $\mbox{\em var} = \const$ or $\const = \mbox{\em var}$ before the call of the {\em Linear Solvers}  and executes these immediately, so that the cost of computation  for the following program module is kept as small as possible.
 
-The  {\em Linear Solver} is a pre- and a post processor for the Maxima function \verb+LINSOLVE+  for the simultaneous solution of linear systems of equations. The module extracts  pieces  of linear equations according to the heuristic algorithm described in paragraph \ref{HeurAlgoLin}  and solves the equations by calling \verb+LINSOLVE+. The resulting solutions are inserted into the remaining equations before leaving the {\em Linear Solvers}.
+The  {\em Linear Solver} is a pre and post processor for the Maxima function \verb+LINSOLVE+  for the simultaneous solution of linear systems of equations. The module extracts  pieces  of linear equations according to the heuristic algorithm described in paragraph \ref{HeurAlgoLin}  and solves the equations by calling \verb+LINSOLVE+. The resulting solutions are inserted into the remaining equations before leaving the {\em Linear Solvers}.
 
 The {\em Valuation Solver} is the core module of the  {\em Solvers}. Its tasks are the use of valuation strategies for the generation of the solution sequences and the solution of the nonlinear equations with the help of the Maxima build-in function \verb+SOLVE+. In the case of multiple solutions the {\em Valuation Solver}  checks each individual solution for consistency with the remaining system of equations. Inconsistent solutions are rejected, while valid solutions are inserted into the remaining system  of equations and the corresponding solution paths are tracked separately through recursive  calls of the {\em Valuation Solvers}.
 
 All steps necessary for the editing of the solutions for output to the user are taken over  by the {\em Solver Postprocessor}. These are the expansion of the hierarchically organized solution list supplied by the {\em Valuation  Solver}, the back substitution of the
-symbolic solutions as well as picking out, evaluating and outputting the variables and composite terms asked by the user.
+symbolic solutions as well as picking out, evaluating and outputting the variables and composite terms asked for by the user.
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=10cm]{struktur.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=10cm]{StrukturEn.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Structure of the Solvers
 \label{Grobstruktur}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 
@@ -34,18 +34,18 @@ Structure of the Solvers
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=8cm]{preproc.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=8cm]{PreprocEn.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Flow diagram of the  Solver Preprocessor\label{AblPreproc}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 
 %\inbildpsf{Ablaufdiagramm des Solver Preprocessors}{preproc.eps}{60mm}%
 %{AblPreproc}
 
-Beside the examination of the command syntax and semantic as well as the construction of the internal equations --, variables and parameter lists,  the {\em Solver Preprocessor} executes a consistency check of the equations, whose flow diagram is represented in figure \ref{AblConsChk}. Aim of the consistency check is it to detect from the beginning, whether the system of equations is unsolvable due to direct contradictions. Such contradictions can occur in form of pure number equations, e.g. \ $0=1$, or in addition, in the form of constrained  conditions between symbols declared as parameters.
+Beside the examination of the command syntax and semantic as well as the construction of the internal equations, variables and parameter lists,  the {\em Solver Preprocessor} executes a consistency check of the equations, whose flow diagram is represented in figure \ref{AblConsChk}. Aim of the consistency check is it to detect from the beginning, whether the system of equations is unsolvable due to direct contradictions. Such contradictions can occur in form of pure number equations, e.g. \ $0=1$, or in addition, in the form of constrained  conditions between symbols declared as parameters.
 
 In order to uncover direct contradictions, the routine for the consistency check searches after equations in the system of equations, which consist exclusively of numbers  or numbers with parameters, but does not contain variables.  If a contradictory number equation is found, then the  {\em Solver Preprocessor}  aborts immediately. If such an equation is  consistently, as for example $0=0$, it is removed from the system of equations, since it does not influence the solubility and solution of the system  and therefore is redundant.
 
@@ -56,18 +56,18 @@ A + B = 1
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=8cm]{conschk.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=8cm]{ConschkEn.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Flow diagram of the routine for the consistency check\label{AblConsChk}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 
 %\inbildpsf{Ablaufdiagramm der Routine zur Konsistenzpr"ufung}{conschk.eps}%
 %{125mm}{AblConsChk}
 
-From this condition follows, that $A$ and $B$ are not {\em independent} parameters and therefore the system of equations is not solvable for any combinations of their values. Since conditioned inconsistencies of this type cannot be excluded with many technical problem settings, it is not meaningful to abort the solution process in such cases -- unless the parameterized equation contradicts  other constrains  in the system of equations. The decision, whether a parameter constrained condition is to be regarded as admissible, is delegated therefore by the consistency check to the user. In the case of the equation (\ref{ParamConstraint}) the system asks in the following way for the validity of the condition:
+From this condition follows, that $A$ and $B$ are not {\em independent} parameters and therefore the system of equations is not solvable for any combinations of their values. Since conditioned inconsistencies of this type cannot be excluded with many technical problem settings, it is not meaningful to abort the solution process in such cases unless the parameterized equation contradicts  other constraints  in the system of equations. The decision, whether a parameter constraint is to be regarded as admissible, is delegated therefore by the consistency check to the user. In the case of the equation (\ref{ParamConstraint}) the system asks in the following way for the validity of the condition:
 \begin{literatim}{|}
 Is   B + A - 1   positive, negative, or zero?
 \end{literatim}
@@ -80,11 +80,11 @@ negative}), then the Solver aborts. If the response reads \verb+z;+ ({\em zero})
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=8cm]{immed.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=8cm]{ImmedEn.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Flow diagram of the Immediate Assignment Solver\label{AblImmed}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 
@@ -117,11 +117,11 @@ If the linear equations were successfully solved, then the solutions are inserte
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=8cm]{linear.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=8cm]{LinearEn.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Flow diagram of the Linear Solver\label{AblLinear}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 %\inbildpsf{Ablaufdiagramm des Linear Solvers}{linear.eps}{160mm}%
@@ -150,11 +150,11 @@ With consistent multiple solutions all solution paths must be pursued separately
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=8cm]{valsolv1.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=8cm]{Valsolv1En.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Flow diagram of the Valuation Solver (part 1)\label{AblValSolv1}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 
@@ -165,11 +165,12 @@ Flow diagram of the Valuation Solver (part 1)\label{AblValSolv1}
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=8cm]{valsolv2.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=8cm]{Valsolv2aEn.png}
+\includegraphics[height=8cm]{Valsolv2bEn.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Flow diagram of the Valuation Solver (part 2)\label{AblValSolv2}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 
@@ -184,11 +185,11 @@ Flow diagram of the Valuation Solver (part 2)\label{AblValSolv2}
 
 \begin {figure} [htbp]
 \begin {center}
-\centerline{\includegraphics[height=8cm]{postproc.png}}
-\caption {\begin {minipage} [h] {10cm}% --- TABLE
+\includegraphics[height=8cm]{PostProcEn.png}
+\caption \protect {\begin {minipage} [h] {10cm}% --- TABLE
 Flow diagram of the Solver Postprocessor\label{AblPostproc}
 \end {minipage}
-}%small
+}
 \end {center}
 \end {figure}
 
@@ -199,7 +200,7 @@ The Valuation Solver supplies in the case of multiple solutions of nonlinear equ
 
 If not all equations within a solution path could be solved  symbolically, then the result list contains the list of the remaining, unresolved nonlinear equations additionally to the variables, for which a solution was found. These will provisionally removed from the equation list and buffered, in order to be added later to the final result.
 
-Depending upon the desire of the user, the back substitution of the system of equations takes place afterwards, which is present up to this point still in upper triangle form. For that, the solution list is evaluated iterative with itself, until no modification of the results is to be seen any  more. Even, if the back substitution is not required by the user\footnote{this requires to fill of the option variable {\tt SolverBacksubst} with {\tt FALSE} (see section \ref{Optionen})}, it  is nevertheless executed, but only so far as necessary, in order to eliminate all not specified command line variables  from the solutions. If e.g. a system of equations
+Depending upon the desire of the user, the back substitution of the system of equations takes place afterwards, which is present up to this point still in upper triangle form. For that, the solution list is evaluated iterative with itself, until no modification of the results is to be seen any  more. Even, if the back substitution is not required by the user\footnote{This requires to set the option variable {\tt SolverBacksubst} to {\tt FALSE} (see section \ref{Optionen})}, it  is nevertheless executed, but only so far as necessary, in order to eliminate all not specified command line variables  from the solutions. If e.g. a system of equations
 in the variables $x$, $y$, $z$ and $w$ is to be solved only after the variables $x$ and $y$  and the solution process gives  the triangle form
 \begin{eqnarray}
 x &=& f_1(y,z,w)\\
@@ -269,7 +270,7 @@ At this point we refer to some differences of the command syntax in  comparison 
      ]$
 \end{literatim}
 This form of representation of the equation  is used internally, e.g. by the {\em 
-Valuation Solver}, but is not not permitted as call of the Solver in the command line. Furthermore, the \verb+SOLVE+ function permits  omitting the brackets around the arguments, if only one equation and/or only one variable is to be transferred. This is  also not admissible with the use of Solver.
+Valuation Solver}, but is not permitted as call of the Solver in the command line. Furthermore, the \verb+SOLVE+ function permits  omitting the brackets around the arguments, if only one equation and/or only one variable is to be transferred. This is  also not admissible with the use of Solver.
 
 \subsection{Example Calls of Solver}
 
@@ -568,7 +569,7 @@ contains the name of the file, into which the intermediate results are to be wri
 \section[user specific transformation routines]{Definition and
 Integration of User Specific Transformation Routines\label{SolverTransforms}} %==================== 2.5
 
-Not rarely the {\em Valuation Solver} encounters equations during the solution process, which it is not able to solve, although already some simple rearrangements or simplifications could help, in order to receive the desired result. E.g.\  the \verb+SOLVE+ function is not able to solve the equation
+Often the {\em Valuation Solver} encounters equations during the solution process, which it is not able to solve, although already some simple rearrangements or simplifications could help, in order to receive the desired result. E.g.\  the \verb+SOLVE+ function is not able to solve the equation
 \begin{equation}
 x + \sin^2 x + \cos ^2 x = 1
 \end{equation}
@@ -762,10 +763,10 @@ The transformation function \verb+TransformTrig+ succeeds to simplfy the equatio
 
 \section{Modification of the Operator Valuations\label{ChgOpValuations}}  % ch 2.6 =====================
 
-To give the user of the Solver the possibility for an individual intervention of the heuristic complexity valuation of algebraic terms,  the valuations of the arithmetic operators are stored as {\em Macsyma Properties}  under the keyword \verb+Valuation+, and not as unchangeable constants. The definition of a valuation factor takes place with the instruction
+To give the user of the Solver the possibility for an individual intervention of the heuristic complexity valuation of algebraic terms,  the valuations of the arithmetic operators are stored as {\em Macsyma Properties}  under the keyword \verb+Valuation+, and not as immutable constants. The definition of a valuation factor takes place with the instruction
 
 \begin{literatim}{|}
-     SetProp( {\em{}Operator}, 'Valuation, {\em{}Bewertungsfaktor} )$
+     SetProp( {\em{}Operator}, 'Valuation, {\em{}Valuation factor} )$
 \end{literatim}
 
 The standard mappings of the valuation factors are pre-defined in the Solver:
@@ -818,7 +819,7 @@ If the result of the query has  the value \verb+FALSE+,  then this means that no
 {Definition and Integration of \\User Specific Valuation Strategies%
 \label{SolverValuationStrategies}}
 
-By means of a reassignement of the procedure variable \verb+SolverValuationStrategy+ the {\em Valuation Solver} is caused to use  a user-defined valuation strategy to the determination of the solution order instead of the internal function. The function are given by their call 
+By means of a reassignment of the procedure variable \verb+SolverValuationStrategy+ the {\em Valuation Solver} is caused to use  a user-defined valuation strategy to the determination of the solution order instead of the internal function. The function are given by their call 
 two valuation matrices,
 \begin{literatim}{|}
      SolveOrder : Apply(

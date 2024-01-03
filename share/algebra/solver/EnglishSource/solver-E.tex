@@ -329,7 +329,7 @@ $$\halign to\displaywidth\bgroup\tabskip=0pt#1%
 \begin{minipage}[t]{3.5cm}
 \rule{0pt}{0pt}
 
-\includegraphics[height=3.5cm]{tubs1.png}
+\includegraphics[height=3.5cm]{TUBS1.png}
 
 \vspace{6mm}
 \end{minipage}
@@ -352,7 +352,7 @@ Technische Universit\"at Braunschweig\\[1cm]
 
 \begin{center}
 \LARGE
-Coursework
+Thesis
 
 \vspace{2cm}
 
@@ -363,7 +363,7 @@ Nonlinear Parameterized Systems of Equations
 \LARGE Eckhard Hennig
 
 \vspace{4cm}
-\Large Betreuer: Dr.-Ing.\ Ralf Sommer\\[\baselineskip]
+\Large Thesis advisor: Dr.-Ing.\ Ralf Sommer\\[\baselineskip]
 Braunschweig, August 1994
 \end{center}
 
@@ -371,30 +371,40 @@ Braunschweig, August 1994
 \end{titlepage}
 \thispagestyle{empty}
 
+\chapter*{Statutory declaration}
+I hereby certify that I wrote this work myself and that I did not use any tools other than
+those specified therein.\\[\baselineskip]
+Braunschweig, August 30, 1994\\[\baselineskip]
+(Eckhard Hennig)
 
-
-\chapter*{Preface}
+\chapter*{Translators notes}
 \thispagestyle{empty}
 
-\dots
+This is the translation of the German version of Prof. Eckhard {\sc Hennig}'s\footnote{Eckhard.Hennig@reutlingen-university.de, \url{
+www.reutlingen-university.de}
+} dissertation of his Solver package documentation. 
+We would like to thank Eckart Hennig for providing us with the original German TeX file and the accompanying pictures.
+Using this TeX source Wolfgang Lindner translated a first version using the {\tt solver1-en.html} by Google Translate. He used  TeXShop version 5.22 for macOS 14.2.1 (Sonoma). The flow diagrams were revised with SoftMaker {\sc TextMaker}\footnote{There is a free version, see \url{https://www.freeoffice.com/de/features/freeoffice-textmaker}}. 
+Dan Stanger revised the whole template to correct the grammar and wording errors and worked on updating the Maxima code. 
 
-In this translation of the original work of E. Hennig we canceled the mention of Macsyma and used Maxima instead, because the package solver was ported to Maxima by Hennig hinself.
+We hope to provide some help to the user of the solver package.
+The source is to be found at 
+\url{https://sourceforge.net/p/maxima/code/ci/master/tree/share/algebra/solver/}
  
-to do
 
 \vspace{1cm}
 
-Dr. Wolfgang Lindner  and Dan Stanger  \\
+\noindent Dr. Wolfgang Lindner  and Dan Stanger  \\
 Leichlingen, Germany and Newton, Massachusetts, USA
 
-October 2023
+\noindent January 2024
 
 \cleardoublepage
 
 
 
 
-\chapter*{Acknowlegments}
+\chapter*{Acknowledgments}
 \thispagestyle{empty}
 Many persons and institutions contributed considerably to the success of this work. 
 I would like to express my thanks to:
@@ -424,8 +434,8 @@ Engineering design tasks  require frequently the solution of systems of equation
 
 Despite their high capabilities these systems are however usually already overwhelmed, if linear or weakly nonlinear, parameterized sets of equations are to be solved after only a subset of their variables or be before-processed at least symbolically. In order to be able to treat such sets of equations, typically with draft tasks in the context of this work, a universal symbolic equation solver based on heuristic algorithms was developed and implemented in Maxima. The program module  \verb+SOLVER+ extends the functionality of the Maxima commands \verb+SOLVE+ and  \verb+LINSOLVE+  for the symbolic solution of algebraic equations or  systems of linear equations by the ability for the selective solution of nonlinear, parameterized systems with some degrees of freedom.
 
-The first chapter of this work describes some areas of application of symbolic dimensioning methods, the respective
- requirements following from them to a symbolic equation solver as well as the used heuristic algorithms for the extraction of linear equations and for the complexity valuation of algebraic functions. The second chapter contains an overview of the structure of the {\em Solvers} and a guidance to its use. In the appendix is the source text of the module implemented in the internal higher programming language of Maxima of the modul \verb+SOLVER.MAC+.
+The first chapter of this work describes some areas of application of symbolic analysis methods, the respective
+ requirements following from them to a symbolic equation solver as well as the used heuristic algorithms for the extraction of linear equations and for the complexity valuation of algebraic functions. The second chapter contains an overview of the structure of the {\em Solvers} and guidance to its use. In the appendix is the source text of the module implemented in the internal higher programming language of Maxima, \verb+SOLVER.MAC+.
 
 %\input stabstr.tex    %------ is identical with SUMMARY
 
@@ -439,16 +449,16 @@ The first chapter of this work describes some areas of application of symbolic d
 \pagenumbering{arabic}
 \chapter[Heuristic algorithms]{Heuristic algorithms for
 symbolic solution of systems of equations}
-%\input heuralgo.tex
+\input HEURALGO.TEX
 
 \cleardoublepage
 \chapter{The Solver}
-\input solvrdoc.tex
+\input SOLVRDOC.TEX
 
 
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Bibliography}
-\input solvrlit.tex
+\input SOLVRLIT.TEX
 
 \cleardoublepage
 \begin{appendix}
@@ -456,13 +466,13 @@ symbolic solution of systems of equations}
 \hfuzz20pt
 
 \chapter{Examples}
-\input examples.tex
+\input EXAMPLES.TEX
 
 \cleardoublepage
 \chapter{Program listings}
 
 \section{SOLVER.MAC}
-\input solver.tex
+\input SOLVER.TEX
 }
 \end{appendix}
 
