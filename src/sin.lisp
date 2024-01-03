@@ -1472,17 +1472,17 @@
       (not (member x '(sin* cos* sec* tan*) :test #'eq))
       (and (trigfree (car x)) (trigfree (cdr x)))))
 
-(defun rat1 (expr aa bb)
+(defun rat1 (expr aa bb cc)
   (prog (b1 *notsame*)
      (declare (special *yy* *notsame*))
      (when (and (numberp expr) (zerop expr))
        (return nil))
      (setq b1 (subst bb 'b '((mexpt) b (n even))))
      (return (prog2
-		 (setq *yy* (rats expr aa b1))
+		 (setq *yy* (rats expr aa b1 cc))
 		 (cond ((not *notsame*) *yy*))))))
 
-(defun rats (expr aa b1)
+(defun rats (expr aa b1 cc)
   (prog (y)
      (declare (special *notsame*))
      (return
@@ -1492,12 +1492,12 @@
 		     (setq *notsame* t))
 		    (t expr)))
 	     ((setq y (m2 expr b1))
-	      (f3 y))
-	     (t (cons (car expr) (mapcar #'(lambda (g) (rats g aa b1))
+	      (f3 y cc))
+	     (t (cons (car expr) (mapcar #'(lambda (g) (rats g aa b1 cc))
                                          (cdr expr))))))))
 
-(defun f3 (y)
-  (maxima-substitute *c*
+(defun f3 (y cc)
+  (maxima-substitute cc
 		     'c
 		     (maxima-substitute (quotient (cdr (assoc 'n y :test #'eq)) 2)
 					'n
@@ -1509,12 +1509,12 @@
 					    ((mexpt) x 2)))
 					  n))))
 
-(defun odd1 (n)
+(defun odd1 (n cc)
   (declare (special *yz*))
   (cond ((not (numberp n)) nil)
 	((not (equal (rem n 2) 0))
 	 (setq *yz*
-	       (maxima-substitute *c*
+	       (maxima-substitute cc
 				  'c
 				  (list '(mexpt)
 					'((mplus) 1 ((mtimes) c ((mexpt) x 2)))
@@ -1532,7 +1532,7 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n *c* *yz* aa)
+  (prog (y repl y1 y2 *yy* z m n #+nil *c* *yz* aa)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1633,13 +1633,13 @@
      
      (when *debug-integrate* (format t "~& Case IV:~%"))
      
-     (setq *c* -1)
-     (when (and (m2 y '((coeffpt) (c rat1 sin* cos*) ((mexpt) cos* (n odd1))))
+     ;;(setq *c* -1)
+     (when (and (m2 y '((coeffpt) (c rat1 sin* cos* -1) ((mexpt) cos* (n odd1 -1))))
                 (setq repl (list '(%sin) var2)))
        ;; The case cos^(2*n+1)*Elem(cos^2,sin).  Use the substitution z = sin.
        (go getout))
 
-     (when (and (m2 y '((coeffpt) (c rat1 cos* sin*) ((mexpt) sin* (n odd1))))
+     (when (and (m2 y '((coeffpt) (c rat1 cos* sin* -1) ((mexpt) sin* (n odd1 -1))))
                 (setq repl (list '(%cos) var2)))
        ;; The case sin^(2*n+1)*Elem(sin^2,cos).  Use the substitution z = cos.
        (go get3))
@@ -1653,11 +1653,11 @@
      (setq y (subliss '((sin* (mtimes) tan* ((mexpt) sec* -1))
                         (cos* (mexpt) sec* -1))
                       y2))
-     (setq *c* 1)
-     (when (and (rat1 y 'tan* 'sec*) (setq repl (list '(%tan) var2)))
+     ;;(setq *c* 1)
+     (when (and (rat1 y 'tan* 'sec* 1) (setq repl (list '(%tan) var2)))
        (go get1))
 
-     (when (and (m2 y '((coeffpt) (c rat1 sec* tan*) ((mexpt) tan* (n odd1))))
+     (when (and (m2 y '((coeffpt) (c rat1 sec* tan* 1) ((mexpt) tan* (n odd1 1))))
            (setq repl (list '(%sec) var2)))
        (go getout))
      (when (not (alike1 (setq repl ($expand expr)) expr))
