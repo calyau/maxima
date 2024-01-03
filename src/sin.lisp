@@ -125,18 +125,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; possibly a bug: For var2 = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
-;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
-
-(defun subst10 (ex var2 dd)
-  (cond ((atom ex) ex)
-	((and (eq (caar ex) 'mexpt) (eq (cadr ex) var2))
-	 (list '(mexpt) var2 (integerp2 (quotient (caddr ex) dd))))
-	(t (cons (remove 'simp (car ex))
-		 (mapcar #'(lambda (c)
-                             (subst10 c var2 dd))
-                         (cdr ex))))))
-
 (defun rationalizer (x)
   (let ((ex (simplify ($factor x))))
     (if (not (alike1 ex x)) ex)))
@@ -1967,6 +1955,18 @@
 
 (defun expands (arg1 arg2)
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
+
+;; possibly a bug: For var2 = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
+;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
+
+(defun subst10 (ex var2 dd)
+  (cond ((atom ex) ex)
+	((and (eq (caar ex) 'mexpt) (eq (cadr ex) var2))
+	 (list '(mexpt) var2 (integerp2 (quotient (caddr ex) dd))))
+	(t (cons (remove 'simp (car ex))
+		 (mapcar #'(lambda (c)
+                             (subst10 c var2 dd))
+                         (cdr ex))))))
 
 (defun powerlist (expr var2)
   (prog (y cc dd power-list bb)
