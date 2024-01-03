@@ -21,7 +21,7 @@
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special *a* *b*
-                      *c* *d* *exp*))
+                      *c* *d*))
 
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
@@ -153,6 +153,7 @@
   ;; INTFORM in certain cases and is read by INTEGRATOR in some cases.
   ;; Instead of a global special variable, use a closure.
   (defun intform (expres var2 &aux w arg)
+    (declare (special *exp*))
     (cond ((freevar2 expres var2) nil)
           ((atom expres) nil)
 
@@ -328,6 +329,7 @@
   ;; This is the main integration routine.  It is called from sinint.
 
   (defun integrator (*exp* var2 &optional stack)
+    (declare (special *exp*))
     (prog (y const *b* w arcpart coef integrand result)
        (declare (special *integrator-level*))
        (setq powerl nil)
