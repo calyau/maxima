@@ -1532,7 +1532,7 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n *c* *yz* aa bb )
+  (prog (y repl y1 y2 *yy* z m n *c* *yz* aa)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1634,15 +1634,15 @@
      (when *debug-integrate* (format t "~& Case IV:~%"))
      
      (setq *c* -1)
-     (setq aa 'sin*)
-     (setq bb 'cos*)
-     (when (and (m2 y `((coeffpt) (c rat1 ,aa ,bb) ((mexpt) cos* (n odd1))))
+     ;;(setq aa 'sin*)
+     ;;(setq bb 'cos*)
+     (when (and (m2 y '((coeffpt) (c rat1 sin* cos*) ((mexpt) cos* (n odd1))))
                 (setq repl (list '(%sin) var2)))
        ;; The case cos^(2*n+1)*Elem(cos^2,sin).  Use the substitution z = sin.
        (go getout))
-     (setq aa bb)
-     (setq bb 'sin*)
-     (when (and (m2 y `((coeffpt) (c rat1 ,aa ,bb) ((mexpt) sin* (n odd1))))
+     ;;(setq aa bb)
+     ;;(setq bb 'sin*)
+     (when (and (m2 y '((coeffpt) (c rat1 cos* sin*) ((mexpt) sin* (n odd1))))
                 (setq repl (list '(%cos) var2)))
        ;; The case sin^(2*n+1)*Elem(sin^2,cos).  Use the substitution z = cos.
        (go get3))
@@ -1657,13 +1657,13 @@
                         (cos* (mexpt) sec* -1))
                       y2))
      (setq *c* 1)
-     (setq aa 'tan*)
-     (setq bb 'sec*)
-     (when (and (rat1 y aa bb) (setq repl (list '(%tan) var2)))
+     ;;(setq aa 'tan*)
+     ;;(setq bb 'sec*)
+     (when (and (rat1 y 'tan* 'sec*) (setq repl (list '(%tan) var2)))
        (go get1))
-     (setq aa bb)
-     (setq bb 'tan*)
-     (when (and (m2 y `((coeffpt) (c rat1 ,aa ,bb) ((mexpt) tan* (n odd1))))
+     ;;(setq aa bb)
+     ;;(setq bb 'tan*)
+     (when (and (m2 y '((coeffpt) (c rat1 sec* tan*) ((mexpt) tan* (n odd1))))
            (setq repl (list '(%sec) var2)))
        (go getout))
      (when (not (alike1 (setq repl ($expand expr)) expr))
