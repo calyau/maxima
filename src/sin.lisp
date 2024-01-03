@@ -1473,27 +1473,28 @@
       (and (trigfree (car x)) (trigfree (cdr x)))))
 
 (defun rat1 (expr)
-  (prog (*b1* *notsame*)
-     (declare (special *yy* *b1* *notsame*))
+  (prog (b1 *notsame*)
+     (declare (special *yy* *notsame*))
      (when (and (numberp expr) (zerop expr))
        (return nil))
-     (setq *b1* (subst *b* 'b '((mexpt) b (n even))))
+     (setq b1 (subst *b* 'b '((mexpt) b (n even))))
      (return (prog2
-		 (setq *yy* (rats expr))
+		 (setq *yy* (rats expr b1))
 		 (cond ((not *notsame*) *yy*))))))
 
-(defun rats (expr)
+(defun rats (expr b1)
   (prog (y)
-     (declare (special *notsame* *b1*))
+     (declare (special *notsame*))
      (return
        (cond ((eq expr *a*) 'x)
 	     ((atom expr)
 	      (cond ((member expr '(sin* cos* sec* tan*) :test #'eq)
 		     (setq *notsame* t))
 		    (t expr)))
-	     ((setq y (m2 expr *b1*))
+	     ((setq y (m2 expr b1))
 	      (f3 y))
-	     (t (cons (car expr) (mapcar #'(lambda (g) (rats g)) (cdr expr))))))))
+	     (t (cons (car expr) (mapcar #'(lambda (g) (rats g b1))
+                                         (cdr expr))))))))
 
 (defun f3 (y)
   (maxima-substitute *c*
