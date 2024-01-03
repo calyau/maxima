@@ -20,6 +20,7 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
+#+nil
 (declare-top (special *c* *d*))
 
 (defvar *debug-integrate* nil
