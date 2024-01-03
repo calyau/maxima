@@ -1529,7 +1529,7 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n *yz* aa)
+  (prog (y repl y1 y2 *yy* z m n *yz*)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1569,15 +1569,15 @@
      
      (setq m (cdras 'm z))
      (setq n (cdras 'n z))
-     (setq aa (integerp2 (* 0.5 (if (< m n) 1 -1) (+ n (* -1 m)))))
-     (setq z (cons (cons 'a aa) z))
-     (setq z (cons (cons 'x var2) z))
+     (let ((aa (integerp2 (* 0.5 (if (< m n) 1 -1) (+ n (* -1 m))))))
+       (setq z (cons (cons 'a aa) z))
+       (setq z (cons (cons 'x var2) z))
      
-     (when *debug-integrate*
-       (format t "~& CASE III:~%")
-       (format t "~&   : m, n = ~A ~A~%" m n)
-       (format t "~&   : a    = ~A~%" aa)
-       (format t "~&   : z    = ~A~%" z))
+       (when *debug-integrate*
+         (format t "~& CASE III:~%")
+         (format t "~&   : m, n = ~A ~A~%" m n)
+         (format t "~&   : a    = ~A~%" aa)
+         (format t "~&   : z    = ~A~%" z)))
      
      ;; integrate(sin(y)^m*cos(y)^n,y) is transformed to the following form:
      ;;
