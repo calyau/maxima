@@ -128,13 +128,13 @@
 ;; possibly a bug: For var2 = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
 ;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
 
-(defun subst10 (ex var2)
+(defun subst10 (ex var2 dd)
   (cond ((atom ex) ex)
 	((and (eq (caar ex) 'mexpt) (eq (cadr ex) var2))
-	 (list '(mexpt) var2 (integerp2 (quotient (caddr ex) *d*))))
+	 (list '(mexpt) var2 (integerp2 (quotient (caddr ex) dd))))
 	(t (cons (remove 'simp (car ex))
 		 (mapcar #'(lambda (c)
-                             (subst10 c var2))
+                             (subst10 c var2 dd))
                          (cdr ex))))))
 
 (defun rationalizer (x)
@@ -1969,14 +1969,14 @@
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
 (defun powerlist (expr var2)
-  (prog (y *c* *d* power-list *b*)
+  (prog (y cc dd power-list bb)
      (setq y (m2 expr
 		 `((mtimes)
 		   ((mexpt) (var varp2 ,var2) (c integerp2))
 		   ((coefftt) (a freevar2 ,var2))
 		   ((coefftt) (b true)))))
-     (setq *b* (cdr (assoc 'b y :test #'eq)))
-     (setq *c* (cdr (assoc 'c y :test #'eq)))
+     (setq bb (cdr (assoc 'b y :test #'eq)))
+     (setq cc (cdr (assoc 'c y :test #'eq)))
      (labels
          ((rat10 (ex)
             (cond ((freevar2 ex var2)
@@ -1994,18 +1994,18 @@
                        ((null u) t)
 	             (if (not (rat10 (car u)))
                          (return nil)))))))
-       (unless  (rat10 *b*) (return nil))
-       (setq *d* (apply #'gcd (cons (1+ *c*) power-list))))
-     (when (or (eql 1 *d*) (zerop *d*)) (return nil))
+       (unless  (rat10 bb) (return nil))
+       (setq dd (apply #'gcd (cons (1+ cc) power-list))))
+     (when (or (eql 1 dd) (zerop dd)) (return nil))
      (return
        (substint
-	(list '(mexpt) var2 *d*)
+	(list '(mexpt) var2 dd)
 	var2
 	(integrate5 (simplify (list '(mtimes)
-				    (power* *d* -1)
+				    (power* dd -1)
 				    (cdr (assoc 'a y :test #'eq))
-				    (list '(mexpt) var2 (1- (quotient (1+ *c*) *d*)))
-				    (subst10 *b* var2)))
+				    (list '(mexpt) var2 (1- (quotient (1+ cc) dd)))
+				    (subst10 bb var2 dd)))
 		    var2)
         var2
         expr))))
