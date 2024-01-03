@@ -20,8 +20,7 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special *a* *b*
-                      *c* *d*))
+(declare-top (special *c* *d*))
 
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
@@ -323,7 +322,7 @@
 
   (defun integrator (*exp* var2 &optional stack)
     (declare (special *exp*))
-    (prog (y const *b* w arcpart coef integrand result)
+    (prog (y const w arcpart coef integrand result)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
@@ -1532,7 +1531,7 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n #+nil *c* *yz* aa)
+  (prog (y repl y1 y2 *yy* z m n *yz* aa)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1633,7 +1632,6 @@
      
      (when *debug-integrate* (format t "~& Case IV:~%"))
      
-     ;;(setq *c* -1)
      (when (and (m2 y '((coeffpt) (c rat1 sin* cos* -1) ((mexpt) cos* (n odd1 -1))))
                 (setq repl (list '(%sin) var2)))
        ;; The case cos^(2*n+1)*Elem(cos^2,sin).  Use the substitution z = sin.
@@ -1653,7 +1651,6 @@
      (setq y (subliss '((sin* (mtimes) tan* ((mexpt) sec* -1))
                         (cos* (mexpt) sec* -1))
                       y2))
-     ;;(setq *c* 1)
      (when (and (rat1 y 'tan* 'sec* 1) (setq repl (list '(%tan) var2)))
        (go get1))
 
@@ -1951,7 +1948,7 @@
 (defun expands (arg1 arg2)
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
-;; possibly a bug: For var2 = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
+;; possibly a bug: For var2 = x and dd =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
 ;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
 
 (defun subst10 (ex var2 dd)
@@ -2032,7 +2029,7 @@
 ;; and obtains the integral of op(y)dy by a table look up.
 ;;
 (defun diffdiv (expr var2)
-  (prog (y *a* x v *d* z w r)
+  (prog (y x v *d* z w r)
      (cond ((and (mexptp expr)
 		 (mplusp (cadr expr))
 		 (integerp (caddr expr))
