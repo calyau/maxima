@@ -1067,7 +1067,9 @@ ImmediateAssignments( Solutions, RemainingEqs, Variables, Parameters ) := (
         Variables : SetDifference( Variables, map( 'lhs, Solutions ) ),
 
         /* Evaluate the remaining equations with the constraints */
-        RemainingEqs : ev( RemainingEqs, Solutions ),
+        /* RemainingEqs : ev( RemainingEqs, Solutions ), */
+        for i in Solutions do RemainingEqs :
+            ratsubst(rhs(i),lhs(i),RemainingEqs),
 
         /* Do a parameter consistency check */
         RemainingEqs : ParamConsistency( RemainingEqs, Parameters )
@@ -2380,6 +2382,7 @@ DumpToFile( Sols, Eqs, Vars ) := (
 )$
 
 tma():=trace(
+AskZeroNonzero,
 TerminateSolver,
 SetupSolver,
 ParamConsistency,
