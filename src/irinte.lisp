@@ -473,27 +473,27 @@
 ;; Match d*p(x)*r1(x)^e1*r2(x)^e2*r0(x)^e0, where p(x) is a
 ;; polynomial, e1 and e2 are both half an odd integer, and e3 is an
 ;; integer.
-(defun factpow (exp var)
-  (m2 exp '((mtimes) ((coefftt) (d freevar))
-	    ((coefftt) (p polyp))
-	    ((mexpt) (r1 hasvar)
+(defun factpow (exp var2)
+  (m2 exp `((mtimes) ((coefftt) (d freevar2 ,var2))
+	    ((coefftt) (p polyp2 ,var2))
+	    ((mexpt) (r1 hasvar2 ,var2)
 	     (e1 integerpfr))
-	    ((mexpt) (r2 hasvar)
+	    ((mexpt) (r2 hasvar2 ,var2)
 	     (e2 integerpfr))
-	    ((mexpt) (r0 hasvar)
+	    ((mexpt) (r0 hasvar2 ,var2)
 	     (e0 maxima-integerp)))))
 
 ;; Match EXP to the form
 ;; d*p/(e*x^2+f*x+g)*r0(x)^e0.  p is a polynomial in x.
-(defun elliptquad (exp var)
-  (m2 exp '((mtimes)
-	    ((coefftt) (d freevar))
-	    ((coefftt) (p polyp))
-	    ((mexpt) ((mplus) ((coeffpt) (e freevnz) ((mexpt) (x varp) 2))
-		      ((coeffpt) (f freevar) (x varp))
-		      ((coeffpp) (g freevar)))
+(defun elliptquad (exp var2)
+  (m2 exp `((mtimes)
+	    ((coefftt) (d freevar2 ,var2))
+	    ((coefftt) (p polyp2 ,var2))
+	    ((mexpt) ((mplus) ((coeffpt) (e freevnz2 ,var2) ((mexpt) (x varp2 ,var2) 2))
+		      ((coeffpt) (f freevar2 ,var2) (x varp2 ,var2))
+		      ((coeffpp) (g freevar2 ,var2)))
 	     -1)
-	    ((mexpt) (r0 hasvar)
+	    ((mexpt) (r0 hasvar2 ,var2)
 	     (e0 integerpfr)))))
 
 ;; From the set of coefficients, generate the polynomial c*x^2+b*x+a.
