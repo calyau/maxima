@@ -26,6 +26,14 @@
 
 (defun freevnz (a) (and (freevar a) (not (equal a 0))))
 
+(defun hasvar2 (exp var2)
+  (not (freevar2 exp var2)))
+
+(defun freevnz2 (a var2)
+  (and (freevar2 a var2)
+       (not (equal a 0))))
+
+
 (defun inte (funct x)
   (let ((*checkcoefsignlist* nil)
 	(*globalcareflag* nil)
@@ -299,11 +307,11 @@
 ;;
 ;; If EXPR is of the form A^B and is not free of VAR, use CAREFULFACTOR to try
 ;; to factor it. Otherwise just return EXPR.
-(defun factoroot (expr var)
+(defun factoroot (expr var2)
   (if (and (mexptp expr)
-           (hasvar expr)
+           (hasvar2 expr var2)
            (integerpfr (caddr expr)))
-      (carefulfactor expr var)
+      (carefulfactor expr var2)
       expr))
 
 ;; CAREFULFACTOR
