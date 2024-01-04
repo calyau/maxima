@@ -213,11 +213,8 @@
 	      (if (not (or (real-epsilonp val)		;; if direction of limit not specified
 			   (infinityp val)))
 		  (setq ans (both-side exp var val))	;; compute from both sides
-		(let ((d (catch 'mabs (mabs-subst exp var val))))
-		  (cond 				;; otherwise try to remove absolute value
-		   ((eq d '$und) (return '$und))
-		   ((eq d 'retn) )
-		   (t (setq exp d)))
+		(progn
+		  (setq exp (mabs-subst exp  var val))
 		  (setq ans (limit-catch exp var val));; and find limit from one side
 
 		  ;; try gruntz
@@ -357,16 +354,33 @@
 	 (setq e (simplify ($minfactorial e))))
 	(t e)))
 
-;; returns 1, 0, -1
-;; or nil if sign unknown or complex
+;; Define sgn = csign(limit(z,var,val)). Return -1, 0, 1, or nil when
+;; sgn is neg, zero, pos, or complex, imaginary or unknown (including when
+;; the limit is ind), respectively. Also, when the limit is either zerob or zeroa,
+;; return 0.
+
+;; This function obeys the flag *getsignl-asksign-ok*, so it only does
+;; an asksign when *getsignl-asksign-ok* is true. 
+
+;; When the limit is either zerob or zeroa, it's reasonable to return -1 or 1,
+;; respectively, but that causes a testsuite regression. Also when z is
+;; positive but limit(z,var,val) is ind, possibly this function could return 1, but
+;; it doesn't.
 (defun getsignl (z)
-  (let ((z (ridofab z)))
-    (if (not (free z var)) (setq z (toplevel-$limit z var val)))
-    (let ((*complexsign* t))
-      (let ((sign (if *getsignl-asksign-ok* ($asksign z) ($sign z))))
-        (cond ((eq sign '$pos) 1)
-              ((eq sign '$neg) -1)
-              ((eq sign '$zero) 0))))))
+    (let ((sgn))
+      (setq z (let ((preserve-direction nil)) (limit-catch z var val)))
+  	  (cond
+	    ;; Don't call csign on ind, und, infinity, zeroa, or zerob.
+		;; When z is either zeroa or zerob, return 0.
+	    ((or (eq z '$ind) (eq z '$und) (eq z '$infinity)) nil)
+		  ((eq z '$zeroa) 0)
+		  ((eq z '$zerob) 0)
+		  (t
+            (setq sgn (if *getsignl-asksign-ok* ($asksign z) ($csign z)))
+            (cond ((eq sgn '$pos) 1)
+                  ((eq sgn '$neg) -1)
+                  ((eq sgn '$zero) 0)
+			      (t nil))))))
 
 (defun restorelim (exp)
   (cond ((null exp) nil)
@@ -377,53 +391,53 @@
 		     (restorelim (cddr exp)))))
 	(t (cons (car exp) (mapcar #'restorelim (cdr exp))))))
 
+;; For each subexpression of e of the form abs(X), decide if abs(X) can be
+;; replaced by -X or by X. Define ans = limit(X,var, val) and 
+;; bee = behavior(X,var,val). Cases:
 
-(defun mabs-subst (exp var val)	; RETURNS EXP WITH MABS REMOVED, OR THROWS.
-  (let ((d (involve exp '(mabs)))
-        arglim)
-    (cond ((null d) exp)
-	  (t (cond
-	       ((not (and (equal ($imagpart (let ((v (limit-catch d var val)))
-					      ;; The above call might
-					      ;; throw 'limit, so we
-					      ;; need to catch it.  If
-					      ;; we can't find the
-					      ;; limit without ABS, we
-					      ;; assume the limit is
-					      ;; undefined.  Is this
-					      ;; right?  Anyway, this
-					      ;; fixes Bug 1548643.
-					      (unless v
-						(throw 'mabs '$und))
-					      (setq arglim v)))
-				 0)
-			  (equal ($imagpart var) 0)))
-                (cond ((eq arglim '$infinity)
-                       ;; Check for $infinity as limit of argument.
-                       '$inf)
-                      (t
-                       (throw 'mabs 'retn))))
-	       (t (do ((ans d (involve exp '(mabs))) (a () ()))
-		      ((null ans) exp)
-		    (setq a (mabs-subst ans var val))
-		    (setq d (limit a var val t))
-		    (cond
-		      ((and a d)
-		       (cond ((zerop1 d)
-			      (setq d (behavior a var val))
-			      (if (zerop1 d) (throw 'mabs 'retn))))
-		       (if (eq d '$und)
-			   (throw 'mabs d))
-		       (cond ((or (eq d '$zeroa) (eq d '$inf)
-				  (eq d '$ind)
-				  ;; fails on limit(abs(sin(x))/sin(x), x, inf)
-				  (eq ($sign d) '$pos))
-			      (setq exp (maxima-substitute a `((mabs) ,ans) exp)))
-			     ((or (eq d '$zerob) (eq d '$minf)
-				  (eq ($sign d) '$neg))
-			      (setq exp (maxima-substitute (m* -1 a) `((mabs) ,ans) exp)))
-			     (t (throw 'mabs 'retn))))
-		      (t (throw 'mabs 'retn))))))))))
+;;  (a) negative (ans = -1) & decreasing (bee = -1), do abs(X) --> -X
+;;  (b) positive (ans = 1) & increasing (bee = 1), do abs(X) --> X
+;;  (c) zero (ans = 0) & decreasing (bee = -1), do abs(X) --> -X
+;;  (d) zero (ans = 0) & X increasing (bee = 1), do abs(X) --> X
+
+;; This function misses cases such as abs(1-x^2) for x near 0.
+;; For that case, we get ans = 1 & bee = -1.
+
+;; If one-sided limits assumed both lower and upper bounds for the limit 
+;; variable (something like 0 < x < tiny for a limit of x toward 0 from above), 
+;; some subexpressions of the form abs(X) could be simplifed away before 
+;; going through this function. 
+
+;; This function was rewritten and algorithmally altered by Barton Willis in 
+;; January 2024. Previously, it was responsible for the bug 
+;; limit(abs(sin(x))/sin(x), x, inf) = 1. Also, the old version also prevented 
+;; limit(cos(a*x),x,inf) from doing an asksign on a, and it gave an
+;; internal error for limit((abs(sin(x)*cos(x)-x^4) -x)/x^3,x,0,plus).
+(defun mabs-subst (e var val)
+	(let ((ans) (bee))
+     (cond (($mapatom e) e)
+		   ;; Found a subexpression of the form abs(X). Decide if its OK
+		   ;; to replace abs(X) by -X or by X. We could skip this when
+		   ;; X is freeof var, but I'm not sure that we win by doing do
+	       ((and (consp e) (eq (caar e) 'mabs))
+		     (setq e (mabs-subst (cadr e) var val)) ;recurse on mabs-subst
+		     (setq ans (getsignl e))
+		     (setq bee (if ans (behavior e var val) nil))
+			 (cond
+			   ((and (eql ans -1) (eql bee -1)) (mul -1 e)) ;negative & decreasing
+			   ((and (eql ans 1) (eql bee 1)) e) ; positive & increasing
+			   ((and (eql ans 0) (eql bee -1)) (mul -1 e)) ;zero & decreasing
+			   ((and (eql ans 0) (eql bee 1)) e) ;zero & increasing
+			   (t (ftake 'mabs e)))) ; don't know
+		   ;; Map mabs-subst over a subscripted function.
+		   (($subvarp (mop e))
+		     (subfunmake
+		      (subfunname e)
+			  (mapcar #'(lambda (q) (mabs-subst q var val)) (subfunsubs e))
+			  (mapcar #'(lambda (q) (mabs-subst q var val)) (subfunargs e))))
+		   ;; Map mabs-subst over the expression.
+		   (t (fapply (caar e)
+		     (mapcar #'(lambda (q) (mabs-subst q var val)) (cdr e)))))))
 
 ;; Called on an expression that might contain $INF, $MINF, $ZEROA, $ZEROB. Tries
 ;; to simplify it to sort out things like inf^inf or inf+1.
@@ -1140,6 +1154,15 @@ ignoring dummy variables and array indices."
 	(setq ans nil)))
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
 	  (t ans))))
+
+(defun simplim%mabs (e x pt)
+ (let ((lim (limit (cadr e) x pt 'think)))
+	(cond ((or (eq lim '$zeroa) (eql lim 0) (eq lim '$ind)) lim)
+	      ((eq lim '$zerob) '$zeroa)
+		  ((eq lim '$und) (throw 'limit nil))
+		  ((or (eq lim '$minf) (eq lim '$inf) (eq lim '$infinity)) '$inf)
+		  (t (ftake 'mabs lim)))))
+(setf (get 'mabs 'simplim%function) 'simplim%mabs)
 
 (defun extended-real-p (e)
 	(member e (list '$minf '$zerob '$zeroa '$ind '$und '$inf '$infinity)))
