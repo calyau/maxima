@@ -166,9 +166,9 @@
 	  (t
 	   (zs-intir3 x e f d p r0 e0)))))
 
-(defun root+anything (exp var)
-  (m2 exp '((mplus)
-	    ((coeffpt) (c nonzerp) ((mexpt) (u hasvar) (v integerpfr)))
+(defun root+anything (exp var2)
+  (m2 exp `((mplus)
+	    ((coeffpt) (c nonzerp) ((mexpt) (u hasvar2 ,var2) (v integerpfr)))
 	    ((coeffpp) (c true)))))
 
 ;; Handle d*p(x)/(e*x^2+f*x+g)*r0(x)^e0.  We know that e*x^2+f*x+g has
