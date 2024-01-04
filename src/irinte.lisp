@@ -16,15 +16,11 @@
 
 (declare-top (special var zerosigntest productcase))
 
-(defun hasvar (exp) (not (freevar exp)))
-
 (defun zerp (a) (equal a 0))
 
 (defun integerpfr (a) (if (not (maxima-integerp a)) (integerp1 a)))
 
 (defun nonzerp (a) (not (equal a 0)))
-
-(defun freevnz (a) (and (freevar a) (not (equal a 0))))
 
 (defun hasvar2 (exp var2)
   (not (freevar2 exp var2)))
