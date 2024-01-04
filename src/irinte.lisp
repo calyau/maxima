@@ -457,17 +457,17 @@
 ;; Match d*p(x)*(f*x+e)^m*(a*x^2+b*x+c)^n.  p(x) is a polynomial, m is
 ;; an integer, n is half of an integer.  a, b, c, e, and f are
 ;; expressions independent of x (var).
-(defun jmaug (exp var)
-  (m2 exp '((mtimes)
-	    ((coefftt) (d freevar))
-	    ((coefftt) (p polyp))
-	    ((mexpt) ((mplus) ((coeffpt) (f freevar) (x varp))
-		      ((coeffpp)(e freevar)))
+(defun jmaug (exp var2)
+  (m2 exp `((mtimes)
+	    ((coefftt) (d freevar2 ,var2))
+	    ((coefftt) (p polyp2 ,var2))
+	    ((mexpt) ((mplus) ((coeffpt) (f freevar2 ,var2) (x varp2 ,var2))
+		      ((coeffpp)(e freevar2 ,var2)))
 	     (m maxima-integerp))
 	    ((mexpt) ((mplus)
-		      ((coeffpt) (a freevar) ((mexpt) (x varp) 2))
-		      ((coeffpt) (b freevar) (x varp))
-		      ((coeffpp) (c freevar)))
+		      ((coeffpt) (a freevar2 ,var2) ((mexpt) (x varp2 ,var2) 2))
+		      ((coeffpt) (b freevar2 ,var2) (x varp2 ,var2))
+		      ((coeffpp) (c freevar2 ,var2)))
 	     (n integerp1)))))
 
 ;; Match d*p(x)*r1(x)^e1*r2(x)^e2*r0(x)^e0, where p(x) is a

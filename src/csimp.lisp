@@ -338,6 +338,23 @@
 			  (free subexp var))
 		      (cdr a)))))
 
+;; Like polyp but takes an extra arg for the variable.
+(defun polyp2 (a var2)
+  (cond ((atom a) t)
+	((member (caar a) '(mplus mtimes) :test #'eq)
+	 (every #'(lambda (p)
+                    (polyp2 p var2))
+                (cdr a)))
+	((eq (caar a) 'mexpt)
+	 (cond ((free (cadr a) var2)
+		(free (caddr a) var2))
+	       (t (and (integerp (caddr a))
+		       (> (caddr a) 0)
+		       (polyp2 (cadr a) var2)))))
+	(t (andmapcar #'(lambda (subexp)
+			  (free subexp var2))
+		      (cdr a)))))
+
 (defun pip (e)
   (prog (varlist d c)
      (newvar e)
