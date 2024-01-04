@@ -20,9 +20,6 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special *a* *b*
-                      *c* *d*))
-
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
 
@@ -42,10 +39,31 @@
   (declare (special var))
   (alike1 x var))
 
+(defun freevar (a)
+  (declare (special var))
+  (cond ((atom a) (not (eq a var)))
+	((varp a) nil)
+	((and (not (atom (car a)))
+	      (member 'array (cdar a) :test #'eq))
+	 (cond ((freevar (cdr a)) t)
+	       (t (merror "~&FREEVAR: variable of integration appeared in subscript."))))
+	(t (and (freevar (car a)) (freevar (cdr a))))))
+
 ;; Same as varp, but the second arg specifiies the variable to be
-;; tested.
+;; tested instead of using the special variable VAR.
 (defun varp2 (x var2)
   (alike1 x var2))
+
+;; Like freevar bug the second arg specifies the variable to be tested
+;; instead of using the special variable VAR.
+(defun freevar2 (a var2)
+  (cond ((atom a) (not (eq a var2)))
+	((varp2 a var2) nil)
+	((and (not (atom (car a)))
+	      (member 'array (cdar a) :test #'eq))
+	 (cond ((freevar2 (cdr a) var2) t)
+	       (t (merror "~&FREEVAR: variable of integration appeared in subscript."))))
+	(t (and (freevar2 (car a) var2) (freevar2 (cdr a) var2)))))
 
 (defun integerp1 (x)
   "Returns 2*x if 2*x is an integer, else nil"
@@ -90,26 +108,6 @@
                       (elem f expres var2))
                   (cdr a)))))
 
-;; Note: not used in this file.
-(defun freevar (a)
-  (declare (special var))
-  (cond ((atom a) (not (eq a var)))
-	((varp a) nil)
-	((and (not (atom (car a)))
-	      (member 'array (cdar a) :test #'eq))
-	 (cond ((freevar (cdr a)) t)
-	       (t (merror "~&FREEVAR: variable of integration appeared in subscript."))))
-	(t (and (freevar (car a)) (freevar (cdr a))))))
-
-(defun freevar2 (a var2)
-  (cond ((atom a) (not (eq a var2)))
-	((varp2 a var2) nil)
-	((and (not (atom (car a)))
-	      (member 'array (cdar a) :test #'eq))
-	 (cond ((freevar2 (cdr a) var2) t)
-	       (t (merror "~&FREEVAR: variable of integration appeared in subscript."))))
-	(t (and (freevar2 (car a) var2) (freevar2 (cdr a) var2)))))
-
 ;; Like freevar0 (in hypgeo.lisp), but we take a second arg to specify
 ;; the variable instead of implicitly using VAR.
 (defun freevar02 (m var2)
@@ -124,18 +122,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; possibly a bug: For var2 = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
-;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
-
-(defun subst10 (ex var2)
-  (cond ((atom ex) ex)
-	((and (eq (caar ex) 'mexpt) (eq (cadr ex) var2))
-	 (list '(mexpt) var2 (integerp2 (quotient (caddr ex) *d*))))
-	(t (cons (remove 'simp (car ex))
-		 (mapcar #'(lambda (c)
-                             (subst10 c var2))
-                         (cdr ex))))))
 
 (defun rationalizer (x)
   (let ((ex (simplify ($factor x))))
@@ -335,7 +321,7 @@
 
   (defun integrator (*exp* var2 &optional stack)
     (declare (special *exp*))
-    (prog (y const *b* w arcpart coef integrand result)
+    (prog (y const w arcpart coef integrand result)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
@@ -1484,31 +1470,32 @@
       (not (member x '(sin* cos* sec* tan*) :test #'eq))
       (and (trigfree (car x)) (trigfree (cdr x)))))
 
-(defun rat1 (expr)
-  (prog (*b1* *notsame*)
-     (declare (special *yy* *b1* *notsame*))
+(defun rat1 (expr aa bb cc)
+  (prog (b1 *notsame*)
+     (declare (special *yy* *notsame*))
      (when (and (numberp expr) (zerop expr))
        (return nil))
-     (setq *b1* (subst *b* 'b '((mexpt) b (n even))))
+     (setq b1 (subst bb 'b '((mexpt) b (n even))))
      (return (prog2
-		 (setq *yy* (rats expr))
+		 (setq *yy* (rats expr aa b1 cc))
 		 (cond ((not *notsame*) *yy*))))))
 
-(defun rats (expr)
+(defun rats (expr aa b1 cc)
   (prog (y)
-     (declare (special *notsame* *b1*))
+     (declare (special *notsame*))
      (return
-       (cond ((eq expr *a*) 'x)
+       (cond ((eq expr aa) 'x)
 	     ((atom expr)
 	      (cond ((member expr '(sin* cos* sec* tan*) :test #'eq)
 		     (setq *notsame* t))
 		    (t expr)))
-	     ((setq y (m2 expr *b1*))
-	      (f3 y))
-	     (t (cons (car expr) (mapcar #'(lambda (g) (rats g)) (cdr expr))))))))
+	     ((setq y (m2 expr b1))
+	      (f3 y cc))
+	     (t (cons (car expr) (mapcar #'(lambda (g) (rats g aa b1 cc))
+                                         (cdr expr))))))))
 
-(defun f3 (y)
-  (maxima-substitute *c*
+(defun f3 (y cc)
+  (maxima-substitute cc
 		     'c
 		     (maxima-substitute (quotient (cdr (assoc 'n y :test #'eq)) 2)
 					'n
@@ -1520,12 +1507,12 @@
 					    ((mexpt) x 2)))
 					  n))))
 
-(defun odd1 (n)
+(defun odd1 (n cc)
   (declare (special *yz*))
   (cond ((not (numberp n)) nil)
 	((not (equal (rem n 2) 0))
 	 (setq *yz*
-	       (maxima-substitute *c*
+	       (maxima-substitute cc
 				  'c
 				  (list '(mexpt)
 					'((mplus) 1 ((mtimes) c ((mexpt) x 2)))
@@ -1543,7 +1530,7 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n *c* *yz* *a* *b* )
+  (prog (y repl y1 y2 *yy* z m n *yz*)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1583,15 +1570,15 @@
      
      (setq m (cdras 'm z))
      (setq n (cdras 'n z))
-     (setq *a* (integerp2 (* 0.5 (if (< m n) 1 -1) (+ n (* -1 m)))))
-     (setq z (cons (cons 'a *a*) z))
-     (setq z (cons (cons 'x var2) z))
+     (let ((aa (integerp2 (* 0.5 (if (< m n) 1 -1) (+ n (* -1 m))))))
+       (setq z (cons (cons 'a aa) z))
+       (setq z (cons (cons 'x var2) z))
      
-     (when *debug-integrate*
-       (format t "~& CASE III:~%")
-       (format t "~&   : m, n = ~A ~A~%" m n)
-       (format t "~&   : a    = ~A~%" *a*)
-       (format t "~&   : z    = ~A~%" z))
+       (when *debug-integrate*
+         (format t "~& CASE III:~%")
+         (format t "~&   : m, n = ~A ~A~%" m n)
+         (format t "~&   : a    = ~A~%" aa)
+         (format t "~&   : z    = ~A~%" z)))
      
      ;; integrate(sin(y)^m*cos(y)^n,y) is transformed to the following form:
      ;;
@@ -1644,16 +1631,12 @@
      
      (when *debug-integrate* (format t "~& Case IV:~%"))
      
-     (setq *c* -1)
-     (setq *a* 'sin*)
-     (setq *b* 'cos*)
-     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) cos* (n odd1))))
+     (when (and (m2 y '((coeffpt) (c rat1 sin* cos* -1) ((mexpt) cos* (n odd1 -1))))
                 (setq repl (list '(%sin) var2)))
        ;; The case cos^(2*n+1)*Elem(cos^2,sin).  Use the substitution z = sin.
        (go getout))
-     (setq *a* *b*)
-     (setq *b* 'sin*)
-     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) sin* (n odd1))))
+
+     (when (and (m2 y '((coeffpt) (c rat1 cos* sin* -1) ((mexpt) sin* (n odd1 -1))))
                 (setq repl (list '(%cos) var2)))
        ;; The case sin^(2*n+1)*Elem(sin^2,cos).  Use the substitution z = cos.
        (go get3))
@@ -1667,14 +1650,10 @@
      (setq y (subliss '((sin* (mtimes) tan* ((mexpt) sec* -1))
                         (cos* (mexpt) sec* -1))
                       y2))
-     (setq *c* 1)
-     (setq *a* 'tan*)
-     (setq *b* 'sec*)
-     (when (and (rat1 y) (setq repl (list '(%tan) var2)))
+     (when (and (rat1 y 'tan* 'sec* 1) (setq repl (list '(%tan) var2)))
        (go get1))
-     (setq *a* *b*)
-     (setq *b* 'tan*)
-     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) tan* (n odd1))))
+
+     (when (and (m2 y '((coeffpt) (c rat1 sec* tan* 1) ((mexpt) tan* (n odd1 1))))
            (setq repl (list '(%sec) var2)))
        (go getout))
      (when (not (alike1 (setq repl ($expand expr)) expr))
@@ -1938,28 +1917,28 @@
 ;; or nil if no match found
 ;; (we could replace this using rat package to divide alist and blist)
 (defun matchsum (alist blist var2)
-  (prog (r s *c* *d*)
+  (prog (r s cc dd)
      (setq s (m2 (car alist)	;; find coeff for first term of alist
 		 `((mtimes)
 		   ((coefftt) (a freevar2 ,var2))
 		   ((coefftt) (c true)))))
-     (setq *c* (cdr (assoc 'c s :test #'eq)))
+     (setq cc (cdr (assoc 'c s :test #'eq)))
      (cond ((not (setq r	;; find coeff for first term of blist
 		       (m2 (car blist)
                            (cons '(mtimes)
                                  (cons `((coefftt) (b free12 ,var2))
-                                       (cond ((mtimesp *c*)
-                                              (cdr *c*))
-                                             (t (list *c*))))))))
+                                       (cond ((mtimesp cc)
+                                              (cdr cc))
+                                             (t (list cc))))))))
 	    (return nil)))
-     (setq *d* (simplify (list '(mtimes)
+     (setq dd (simplify (list '(mtimes)
 			     (subliss s 'a)
 			     (list '(mexpt)
 				   (subliss r 'b)
 				   -1))))
      (cond ((m2 (cons '(mplus) alist)	;; check that all terms match
-		(timesloop *d* blist))
-	    (return *d*))
+		(timesloop dd blist))
+	    (return dd))
 	   (t (return nil)))))
 
 (defun timesloop (a b)
@@ -1968,15 +1947,27 @@
 (defun expands (arg1 arg2)
   (addn (mapcar #'(lambda (c) (timesloop c arg1)) arg2) nil))
 
+;; possibly a bug: For var2 = x and dd =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
+;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
+
+(defun subst10 (ex var2 dd)
+  (cond ((atom ex) ex)
+	((and (eq (caar ex) 'mexpt) (eq (cadr ex) var2))
+	 (list '(mexpt) var2 (integerp2 (quotient (caddr ex) dd))))
+	(t (cons (remove 'simp (car ex))
+		 (mapcar #'(lambda (c)
+                             (subst10 c var2 dd))
+                         (cdr ex))))))
+
 (defun powerlist (expr var2)
-  (prog (y *c* *d* power-list *b*)
+  (prog (y cc dd power-list bb)
      (setq y (m2 expr
 		 `((mtimes)
 		   ((mexpt) (var varp2 ,var2) (c integerp2))
 		   ((coefftt) (a freevar2 ,var2))
 		   ((coefftt) (b true)))))
-     (setq *b* (cdr (assoc 'b y :test #'eq)))
-     (setq *c* (cdr (assoc 'c y :test #'eq)))
+     (setq bb (cdr (assoc 'b y :test #'eq)))
+     (setq cc (cdr (assoc 'c y :test #'eq)))
      (labels
          ((rat10 (ex)
             (cond ((freevar2 ex var2)
@@ -1994,18 +1985,18 @@
                        ((null u) t)
 	             (if (not (rat10 (car u)))
                          (return nil)))))))
-       (unless  (rat10 *b*) (return nil))
-       (setq *d* (apply #'gcd (cons (1+ *c*) power-list))))
-     (when (or (eql 1 *d*) (zerop *d*)) (return nil))
+       (unless  (rat10 bb) (return nil))
+       (setq dd (apply #'gcd (cons (1+ cc) power-list))))
+     (when (or (eql 1 dd) (zerop dd)) (return nil))
      (return
        (substint
-	(list '(mexpt) var2 *d*)
+	(list '(mexpt) var2 dd)
 	var2
 	(integrate5 (simplify (list '(mtimes)
-				    (power* *d* -1)
+				    (power* dd -1)
 				    (cdr (assoc 'a y :test #'eq))
-				    (list '(mexpt) var2 (1- (quotient (1+ *c*) *d*)))
-				    (subst10 *b* var2)))
+				    (list '(mexpt) var2 (1- (quotient (1+ cc) dd)))
+				    (subst10 bb var2 dd)))
 		    var2)
         var2
         expr))))
@@ -2037,7 +2028,7 @@
 ;; and obtains the integral of op(y)dy by a table look up.
 ;;
 (defun diffdiv (expr var2)
-  (prog (y *a* x v *d* z w r)
+  (prog (y x v dd z w r)
      (cond ((and (mexptp expr)
 		 (mplusp (cadr expr))
 		 (integerp (caddr expr))
@@ -2084,12 +2075,12 @@
      (cond
        ((setq w (cond ((and (setq x (sdiff w var2))
 			    (mplusp x)
-			    (setq *d* (remove y (cdr expr) :count 1))
-			    (setq v (car *d*))
+			    (setq dd (remove y (cdr expr) :count 1))
+			    (setq v (car dd))
 			    (mplusp v)
-			    (not (cdr *d*)))
-		       (cond ((setq *d* (matchsum (cdr x) (cdr v) var2))
-			      (list (cons 'c *d*)))
+			    (not (cdr dd)))
+		       (cond ((setq dd (matchsum (cdr x) (cdr v) var2))
+			      (list (cons 'c dd)))
 			     (t nil)))
 		      (t (m2 x r))))
 	(return (cond ((null (setq x (integrallookups y var2))) nil)
