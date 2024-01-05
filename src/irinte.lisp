@@ -980,8 +980,8 @@
 	(exp1 (add b (mul 2 c x)))             ;; exp1 = b + 2*c*x;
 	(exp2 (add (mul 4 a c)	(mul b b -1))) ;; exp2 = (4*a*c-b^2)
 	(exp3 (inv (+ p p -1)))		       ;; exp3 = 1/(2*p-1)
-	(*ec-1* (inv c)))
-    (declare (special *ec-1*))
+	(ec-1 (inv c)))
+    #+nil (declare (special *ec-1*))
     #+nil (format t "signdisc = ~A~%p = ~A~%" signdisc p)
     (cond ((and (eq signdisc '$zero) (zerop p))
 	   ;; 1/sqrt(R), and R has duplicate roots.  That is, we have
@@ -989,8 +989,8 @@
 	   ;;
 	   ;; We return 1/sqrt(c)*log(x+b/2/c).  Shouldn't we return
 	   ;; 1/c*log(|x+b/2/c|)?
-	   (augmult (mul* (power *ec-1* 1//2)
-			  `((%log) ,(add x (mul b 1//2 *ec-1*))))))
+	   (augmult (mul* (power ec-1 1//2)
+			  `((%log) ,(add x (mul b 1//2 ec-1))))))
 	  ((and (eq signdisc '$zero) (plusp p))
 	   ;; 1/sqrt(R^(2*p+1)), with duplicate roots.
 	   ;;
@@ -999,7 +999,7 @@
 	   ;; -1/2/p*c^(-p-1/2)/(x+b/2/c)^(2*p)
 	   (augmult (mul (div -1 (+ p p))
 			 (power c (mul -1//2 (+ p p 1)))
-			 (power (add x (mul b 1//2  *ec-1*)) (* -2 p)))))
+			 (power (add x (mul b 1//2  ec-1)) (* -2 p)))))
 	  ((zerop p)
 	   ;; 1/sqrt(R)
 	   (den1 c b a x))
