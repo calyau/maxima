@@ -418,7 +418,7 @@
 	 (return (augmult (mul d
 			       (nummnumn poszpowlist
 					 pluspowfo1
-					 minuspowfo c b a x)))))
+					 minuspowfo c b a x *ec-1*)))))
        (return (augmult (mul d
 			     (nummdenn poszpowlist
 				       pluspowfo2 c b a x *ec-1*)))))
@@ -437,7 +437,7 @@
 	 (return (add (augmult (mul d
 				    (nummnumn poszpowlist
 					      pluspowfo1
-					      minuspowfo c b a x)))
+					      minuspowfo c b a x *ec-1*)))
 		      (augmult (mul d
 				    (denmnumn negpowlist
 					      minuspowfo c b a x *ec-1*))))))
@@ -738,10 +738,10 @@
 ;; Integrate things like x^m*R^(p-1/2), p > 0, m > 0.
 ;;
 ;; I think pluspowfo1 = p - 1.
-(defun nummnumn (poszpowlist pluspowfo1 p c b a x)
-  (declare (special *ec-1*))
+(defun nummnumn (poszpowlist pluspowfo1 p c b a x ec-1)
+  #+nil (declare (special *ec-1*))
   (let ((expr (power (polfoo c b a x) (add p 1//2))) ;; expr = R^(p+1/2)
-	(expo *ec-1*)				     ;; expo = 1/c
+	(expo ec-1)				     ;; expo = 1/c
 	(ex (power c -2)))			     ;; ex = 1/c^2
     (prog ((result 0)
 	   (controlpow (caar poszpowlist))
@@ -750,7 +750,7 @@
        #+nil (format t "p = ~A~%pluspowfo1 = ~A~%" p pluspowfo1)
        (when (zerop controlpow)
 	 ;; Integrate R^(p-1/2)
-	 (setq result (augmult (mul coef (numn pluspowfo1 c b a x *ec-1*)))
+	 (setq result (augmult (mul coef (numn pluspowfo1 c b a x ec-1)))
 	       count 1)
 	 (go loop))
 
@@ -765,7 +765,7 @@
        (setq res1 (add (augmult (mul expr expo
 				     (power (+ p p 1) -1)))
 		       (augmult (mul -1 b 1//2 expo
-				     (numn pluspowfo1 c b a x *ec-1*)))))
+				     (numn pluspowfo1 c b a x ec-1)))))
        (when (equal controlpow 1)
 	 (setq result (add result (augmult (mul coef res1)))
 	       count 2)
@@ -795,7 +795,7 @@
 				     (add (mul (power b 2)
 					       (+ p p 3))
 					  (mul -4 a c))
-				     (numn pluspowfo1 c b a x *ec-1*)))))
+				     (numn pluspowfo1 c b a x ec-1)))))
        (when (equal controlpow 2)
 	 (setq result (add result (augmult (mul coef res2)))
 	       count 3)
