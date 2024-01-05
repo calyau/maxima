@@ -421,7 +421,7 @@
 					 minuspowfo c b a x)))))
        (return (augmult (mul d
 			     (nummdenn poszpowlist
-				       pluspowfo2 c b a x)))))
+				       pluspowfo2 c b a x *ec-1*)))))
      (when (and (null poszpowlist)
 		(not (null negpowlist)))
        ;; No polynomial parts
@@ -443,7 +443,7 @@
 					      minuspowfo c b a x *ec-1*))))))
        (return (add (augmult (mul d
 				  (nummdenn poszpowlist
-					    pluspowfo2 c b a x)))
+					    pluspowfo2 c b a x *ec-1*)))
 		    (augmult (mul d
 				  (denmdenn negpowlist
 					    pluspowfo2 c b a x))))))))
@@ -1219,12 +1219,13 @@
 
 ;; Integrate pl(x)/(c*x^2+b*x+a)^(p+1/2) where pl(x) is a polynomial
 ;; and p > 0.  The polynomial is given in POSZPOWLIST.
-(defun nummdenn (poszpowlist p c b a x)
+(defun nummdenn (poszpowlist p c b a x ec-1)
+  #+nil
   (declare (special *ec-1*))
   (let ((exp1 (inv (+ p p -1)))	;; exp1 = 1/(2*p-1)
 	(exp2 (power (polfoo c b a x) (add 1//2 (- p)))) ;; exp2 = (a*x^2+b*x+c)^(p-1/2)
 	(exp3 (add (mul 4 a c) (mul -1 b b))) ;; exp3 = (4*a*c-b^2) (negative of the discriminant)
-	(exp4 (add x (mul b 1//2 *ec-1*)))    ;; exp4 = x+b/2/c
+	(exp4 (add x (mul b 1//2 ec-1)))    ;; exp4 = x+b/2/c
 	(exp5 (power c -2))		      ;; exp5 = 1/c^2
 	(exp6 (+ 2 (* -2 p)))		      ;; exp6 = -2*p+2
 	(exp7 (1+ (* -2 p))))		      ;; exp7 = -2*p+1
@@ -1275,8 +1276,8 @@
        ;;         -b/2/c*integrate(R^(p+1/2),x)
        ;;
        (setq res1
-	     (add (augmult (mul -1  *ec-1* exp1 exp2))
-		  (augmult (mul b -1//2 *ec-1* (denn p c b a x)))))
+	     (add (augmult (mul -1  ec-1 exp1 exp2))
+		  (augmult (mul b -1//2 ec-1 (denn p c b a x)))))
        (when (= controlpow 1)
 	 ;; Integrate coef*x/R^(p+1/2).
 	 ;;
@@ -1289,11 +1290,11 @@
        (when (and (plusp p) (not (eq signdiscrim '$zero)))
 	 ;; p > 0, no repeated roots
 	 (setq res2
-	       (add (augmult (mul *ec-1* exp1 (inv exp3) exp2
+	       (add (augmult (mul ec-1 exp1 (inv exp3) exp2
 				  (add (mul 2 a b)
 				       (mul 2 b b x)
 				       (mul -4 a c x))))
-		    (augmult (mul *ec-1* (inv exp3) exp1
+		    (augmult (mul ec-1 (inv exp3) exp1
 				  (add (mul 4 a c)
 				       (mul 2 b b p)
 				       (mul -3 b b))
@@ -1338,7 +1339,7 @@
 	       ;; (add (augmult (mul* b b (list '(rat) 1 4)
 	       ;;			   (power c -3)
 	       ;;			   (list '(%log) exp4)))
-	       ;;	    (augmult (mul *ec-1* 1//2 (power exp4 2)))
+	       ;;	    (augmult (mul ec-1 1//2 (power exp4 2)))
 	       ;;	    (augmult (mul -1 b x exp5)))
 	       (add (augmult (mul* b b '((rat) 1 4)
 				   (power c (div -5 2))
@@ -1359,7 +1360,7 @@
 	 ;;
 	 ;; where z = b/2/c.
 	 (setq res2
-	       ;; (add (augmult (mul* *ec-1* (list '(%log) exp4)))
+	       ;; (add (augmult (mul* ec-1 (list '(%log) exp4)))
 	       ;;	    (augmult (mul b exp5 (power exp4 -1)))
 	       ;;	    (augmult (mul (list '(rat) -1 8)
 	       ;;			  (power c -3)
@@ -1393,7 +1394,7 @@
 	 ;;  - b/c^(p+3/2)/(2*p-1)/(x+d)^(2*p-1)
 	 ;;  + b^2/8/c^(p+5/2)/p/(x+d)^(2*p)
 	 (setq res2
-	       ;; (add (augmult (mul *ec-1*
+	       ;; (add (augmult (mul ec-1
 	       ;;			  (power exp4 exp6)
 	       ;;			  (inv exp6)))
 	       ;;	    (augmult (mul -1 b exp5 (inv exp7)
@@ -1442,13 +1443,13 @@
 	       ;; The two integrals here were computed above in res2
 	       ;; and res1, respectively.
 	       (add (augmult (mul* (power x (1- m))
-				   *ec-1* (div -1 denom)
+				   ec-1 (div -1 denom)
 				   (power (polfoo c b a x)
 					  (add 1//2 (- p)))))
 		    (augmult (mul b (+ p p 1 (* -2 m))
 				  -1//2
-				  *ec-1* (inv denom) res2))
-		    (augmult (mul a (1- m) *ec-1* (inv denom) res1)))))
+				  ec-1 (inv denom) res2))
+		    (augmult (mul a (1- m) ec-1 (inv denom) res1)))))
        on
        ;; Move on to next higher power
        (incf m)
@@ -1460,7 +1461,7 @@
 	     res2 partres)
        (when (= m (+ p p))
 	 (setq partres
-	       (let ((expr (nummdenn (list (list (1- m) 1)) p c b a x)))
+	       (let ((expr (nummdenn (list (list (1- m) 1)) p c b a x ec-1)))
 		 (add (mul x expr)
 		      (mul -1 (distrint (cdr ($expand expr)) x)))))
 	 (go on))
