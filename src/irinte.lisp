@@ -367,8 +367,6 @@
   (prog (a b c ec-1 d m n (assoclist (jmaug (specrepcheck funct) x))
 	 pluspowfo1 pluspowfo2 minuspowfo
 	 polfact signn poszpowlist negpowlist)
-     #+nil
-     (declare (special *ec-1*))
      (setq n (cdras 'n assoclist))
      ;; r12 1//2)
      ;; (format t "n = ~A~%" n)
@@ -729,8 +727,6 @@
 	       (signdiscr c b a)))))
 
 (defun signdis3 (c b a signa ec-1)
-  #+nil
-  (declare (special *ec-1*))
   (cond ((equal b 0)
 	 (if (equal (checksigntm ec-1) signa)
 	     '$negative
@@ -741,7 +737,6 @@
 ;;
 ;; I think pluspowfo1 = p - 1.
 (defun nummnumn (poszpowlist pluspowfo1 p c b a x ec-1)
-  #+nil (declare (special *ec-1*))
   (let ((expr (power (polfoo c b a x) (add p 1//2))) ;; expr = R^(p+1/2)
 	(expo ec-1)				     ;; expo = 1/c
 	(ex (power c -2)))			     ;; ex = 1/c^2
@@ -846,7 +841,6 @@
 
 ;; Integrate R^(p+1/2)
 (defun numn (p c b a x ec-1)
-  #+nil (declare (special *ec-1*))
   (let ((exp1 ec-1)			      ;; exp1 = 1/c
 	(exp2 (add b (mul 2 c x)))	      ;; exp2 = b+2*c*x
 	(exp4 (add (mul 4 a c) (mul -1 b b))) ;; exp4 = 4*a*c-b^2
@@ -983,7 +977,6 @@
 	(exp2 (add (mul 4 a c)	(mul b b -1))) ;; exp2 = (4*a*c-b^2)
 	(exp3 (inv (+ p p -1)))		       ;; exp3 = 1/(2*p-1)
 	(ec-1 (inv c)))
-    #+nil (declare (special *ec-1*))
     #+nil (format t "signdisc = ~A~%p = ~A~%" signdisc p)
     (cond ((and (eq signdisc '$zero) (zerop p))
 	   ;; 1/sqrt(R), and R has duplicate roots.  That is, we have
@@ -1222,8 +1215,6 @@
 ;; Integrate pl(x)/(c*x^2+b*x+a)^(p+1/2) where pl(x) is a polynomial
 ;; and p > 0.  The polynomial is given in POSZPOWLIST.
 (defun nummdenn (poszpowlist p c b a x ec-1)
-  #+nil
-  (declare (special *ec-1*))
   (let ((exp1 (inv (+ p p -1)))	;; exp1 = 1/(2*p-1)
 	(exp2 (power (polfoo c b a x) (add 1//2 (- p)))) ;; exp2 = (a*x^2+b*x+c)^(p-1/2)
 	(exp3 (add (mul 4 a c) (mul -1 b b))) ;; exp3 = (4*a*c-b^2) (negative of the discriminant)
@@ -1642,8 +1633,6 @@
 
 ;; Integrate things like sqrt(c*x^2+b*x))/x^m.
 (defun case1 (negpowlist c b x ec-1)
-  #+nil
-  (declare (special *ec-1*))
   (let ((exp1 (power c -1//2)) ;; exp1 = 1/sqrt(c)
 	(eb-1 (inv b)))	       ;; eb-1 = 1/b
     (prog ((result 0) (controlpow (caar negpowlist)) (coef (cadar negpowlist))
@@ -1748,7 +1737,6 @@
     ;; exp2 = b+2*c*x
     ;; exp3 = 1/c^(3/2)
     ;; exp4 = 2*c*x-b
-    #+nil (declare (special *ec-1*))
     (prog (signc p result)
        (setq signc (checksigntm ec-1)
 	     p 1)
