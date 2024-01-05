@@ -760,7 +760,93 @@
 
 (displa-def %at dim-%at 105. 105.)
 
-(defvar at-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+;; We do it this way because there's no guarantee that all lisps use
+;; the same name for these unicode characters.
+#+nil
+(defun get-unicode-char (char-keyword)
+  "Return the Unicode character corresponding to the CHAR-KEYWORD.
+  CHAR-KEYWORD must be a keyword describing the name of the Unicode
+  character, where underscore is replaced by a dash."
+  (ecase char-keyword
+    (:box-drawings-light-vertical
+     (code-char #x2502))
+    (:box-drawings-light-horizontal
+     (code-char #x2500))
+    (:box-drawings-light-down-and-right
+     (code-char #x250c))
+    (:box-drawings-light-down-and-left
+     (code-char #x2510))
+    (:box-drawings-light-up-and-left
+     (code-char #x2518))
+    (:box-drawings-light-up-and-right
+     (code-char #x2514))
+    (:box-drawings-double-horizontal
+     (code-char #x2550))
+    (:box-drawings-double-vertical
+     (code-char #x2551))
+    (:box-drawings-double-down-and-right
+     (code-char #x2554))
+    (:box-drawings-double-down-and-left
+     (code-char #x2557))
+    (:box-drawings-double-up-and-left
+     (code-char #x255d))
+    (:box-drawings-double-up-and-right
+     (code-char #x255a))
+    (:top-half-integral
+     (code-char #x2320))
+    (:integral-extension
+     (code-char #x23ae))
+    (:bottom-half-integral
+     (code-char #x2321))
+    (:low-line
+     (code-char #x005f))
+    (:box-drawings-light-diagonal-upper-left-to-lower-right
+     (code-char #x2572))
+    (:box-drawings-light-diagonal-upper-right-to-lower-left
+     (code-char #x2571))
+    (:overline
+     (code-char #x203e))))
+
+#+lisp-unicode-capable
+(let ((alist
+        ;; An alist whose key is represents the unicode character
+        ;; we're looking for and whose value is the Unicode code for
+        ;; the corresponding character
+        ;;
+        ;; The key is basically the Unicode name of the character as a
+        ;; keyword, with underscore replaced by dash.
+        `((:box-drawings-light-vertical #x2502)
+          (:box-drawings-light-horizontal #x2500)
+          (:box-drawings-light-down-and-right #x250c)
+          (:box-drawings-light-down-and-left #x2510)
+          (:box-drawings-light-up-and-left #x2518)
+          (:box-drawings-light-up-and-right #x2514)
+          (:box-drawings-double-horizontal #x2550)
+          (:box-drawings-double-vertical #x2551)
+          (:box-drawings-double-down-and-right #x2554)
+          (:box-drawings-double-down-and-left #x2557)
+          (:box-drawings-double-up-and-left #x255d)
+          (:box-drawings-double-up-and-right #x255a)
+          (:top-half-integral #x2320)
+          (:integral-extension #x23ae)
+          (:bottom-half-integral #x2321)
+          (:low-line #x005f)
+          (:box-drawings-light-diagonal-upper-left-to-lower-right #x2572)
+          (:box-drawings-light-diagonal-upper-right-to-lower-left #x2571)
+          (:overline #x203e))))
+
+  (defun get-unicode-char (char-keyword)
+    "Return the Unicode character corresponding to the CHAR-KEYWORD.
+  CHAR-KEYWORD must be a keyword describing the name of the Unicode
+  character, where underscore is replaced by a dash."
+    (let ((code (assoc char-keyword alist)))
+      (unless code
+        (error "Unknown char keyword: ~S~%" char-keyword))
+      (code-char (second code)))))
+
+(defvar at-char-unicode
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-vertical))
 
 (defun dim-%at (form result)
   (prog (exp  eqs (w 0) (h 0) (d 0) at-char)
@@ -1082,7 +1168,9 @@
 (displa-def mabs   dim-mabs)
 (displa-def %mabs  dim-mabs)
 
-(defvar mabs-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+(defvar mabs-char-unicode
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-vertical))
 
 (defun dim-mabs (form result &aux arg bar mabs-char)
   (setq mabs-char (if (display2d-unicode-enabled) mabs-char-unicode (car (coerce $absboxchar 'list))))
@@ -1453,7 +1541,9 @@
 ;; in the 2D case.  This should work for both cases.  (See end of
 ;; program.)
 
-(defvar d-hbar-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_HORIZONTAL)
+(defvar d-hbar-char-unicode
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-horizontal))
 (defvar d-hbar-char-ascii #\-)
 
 (defun d-hbar (linear? w &optional char &aux nl)
@@ -1469,7 +1559,9 @@
 ;; character cell precisely and not get clipped when moving things around in
 ;; the equation editor.
 
-(defvar d-vbar-char-unicode #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
+(defvar d-vbar-char-unicode
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-vertical))
 (defvar d-vbar-char-ascii #\|)
 
 (defun d-vbar (linear? h d &optional char-body char-head char-foot)
@@ -1490,7 +1582,14 @@
        (draw-linear (nreverse nl-head) oldrow oldcol))
     (push `(-1 ,i ,char-body) nl-head)))
 
-(defvar d-integralsign-string-unicode #+lisp-unicode-capable `((0 2 #\TOP_HALF_INTEGRAL) (-1 1 #\INTEGRAL_EXTENSION) (-1 0 #\INTEGRAL_EXTENSION) (-1 -1 #\INTEGRAL_EXTENSION) (-1 -2 #\BOTTOM_HALF_INTEGRAL)))
+(defvar d-integralsign-string-unicode
+  #+lisp-unicode-capable
+  `((0 2 ,(get-unicode-char :top-half-integral))
+    (-1 1 ,(get-unicode-char :integral-extension))
+    (-1 0 ,(get-unicode-char :integral-extension))
+    (-1 -1 ,(get-unicode-char :integral-extension))
+    (-1 -2 ,(get-unicode-char :bottom-half-integral))))
+
 (defvar d-integralsign-string-ascii `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
 
 (defun d-integralsign (linear? &aux dmstr)
@@ -1506,7 +1605,14 @@
   (setq dmstr (if (display2d-unicode-enabled) d-prodsign-unicode-dmstr d-prodsign-ascii-dmstr))
   (draw-linear dmstr oldrow oldcol))
 
-(defvar d-sumsign-unicode-dmstr #+lisp-unicode-capable '((0 2 (d-hbar 4 #\LOW_LINE)) (-4 1 #\BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_LEFT_TO_LOWER_RIGHT) #\> (-2 -1 #\BOX_DRAWINGS_LIGHT_DIAGONAL_UPPER_RIGHT_TO_LOWER_LEFT) (-1 -2 (d-hbar 4 #\OVERLINE))))
+(defvar d-sumsign-unicode-dmstr
+  #+lisp-unicode-capable
+  `((0 2 (d-hbar 4 ,(get-unicode-char :low-line)))
+    (-4 1 ,(get-unicode-char :box-drawings-light-diagonal-upper-left-to-lower-right))
+    #\>
+    (-2 -1 ,(get-unicode-char :box-drawings-light-diagonal-upper-right-to-lower-left))
+    (-1 -2 (d-hbar 4 ,(get-unicode-char :overline)))))
+
 (defvar d-sumsign-ascii-dmstr '((0 2 (d-hbar 4 #\=)) (-4 1 #\\) #\> (-2 -1 #\/) (-1 -2 (d-hbar 4 #\=))))
 
 (defun d-sumsign (linear? &aux dmstr)
@@ -1523,12 +1629,24 @@
     (d-matrix-unicode linear? direction h d)
     (d-matrix-ascii linear? direction h d)))
 
-(defvar d-matrix-char-unicode-horz #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_HORIZONTAL)
-(defvar d-matrix-char-unicode-vert #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_VERTICAL)
-(defvar d-matrix-char-unicode-upper-left #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_DOWN_AND_RIGHT)
-(defvar d-matrix-char-unicode-upper-right #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_DOWN_AND_LEFT)
-(defvar d-matrix-char-unicode-lower-right #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_UP_AND_LEFT)
-(defvar d-matrix-char-unicode-lower-left #+lisp-unicode-capable #\BOX_DRAWINGS_LIGHT_UP_AND_RIGHT)
+(defvar d-matrix-char-unicode-horz
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-horizontal))
+(defvar d-matrix-char-unicode-vert
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-vertical))
+(defvar d-matrix-char-unicode-upper-left
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-down-and-right))
+(defvar d-matrix-char-unicode-upper-right
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-down-and-left))
+(defvar d-matrix-char-unicode-lower-right
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-up-and-left))
+(defvar d-matrix-char-unicode-lower-left
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-light-up-and-right))
 
 (defun d-matrix-unicode (linear? direction h d)
   (let*
@@ -1544,12 +1662,24 @@
 
 ;; There is wired knowledge of character offsets here.
 
-(defvar d-box-char-unicode-horz #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_HORIZONTAL)
-(defvar d-box-char-unicode-vert #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_VERTICAL)
-(defvar d-box-char-unicode-upper-left #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_DOWN_AND_RIGHT)
-(defvar d-box-char-unicode-upper-right #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_DOWN_AND_LEFT)
-(defvar d-box-char-unicode-lower-right #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_UP_AND_LEFT)
-(defvar d-box-char-unicode-lower-left #+lisp-unicode-capable #\BOX_DRAWINGS_DOUBLE_UP_AND_RIGHT)
+(defvar d-box-char-unicode-horz
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-horizontal))
+(defvar d-box-char-unicode-vert
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-vertical))
+(defvar d-box-char-unicode-upper-left
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-down-and-right))
+(defvar d-box-char-unicode-upper-right
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-down-and-left))
+(defvar d-box-char-unicode-lower-right
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-up-and-left))
+(defvar d-box-char-unicode-lower-left
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-up-and-right))
 
 (defun d-box (linear? h d w body)
   (declare (ignore linear?))
