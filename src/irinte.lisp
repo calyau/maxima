@@ -1601,7 +1601,7 @@
 (defun nonconstquadenum (negpowlist p c b x ec-1)
   (prog (result coef m)
      (cond ((equal p 1)
-	    (return (case1 negpowlist c b x))))
+	    (return (case1 negpowlist c b x ec-1))))
      (setq result 0)
      loop
      (setq m (caar negpowlist)
@@ -1617,7 +1617,7 @@
 	(exp3 (power x (1+ (- m)))))                 ;; exp3 = 1/x^(m-1)
     (cond ((= p 1)
 	   ;; sqrt(c*x^2+b*x)/x^m
-	   (case1 (list (list m 1)) c b x))
+	   (case1 (list (list m 1)) c b x ec-1))
 	  ((zerop m)
 	   ;; (c*x^2+b*x)^(p-1/2)
 	   (case0 p c b x ec-1))
@@ -1638,7 +1638,8 @@
 			      (casegen (1- m) (- p 2) c b x ec-1))))))))
 
 ;; Integrate things like sqrt(c*x^2+b*x))/x^m.
-(defun case1 (negpowlist c b x)
+(defun case1 (negpowlist c b x ec-1)
+  #+nil
   (declare (special *ec-1*))
   (let ((exp1 (power c -1//2)) ;; exp1 = 1/sqrt(c)
 	(eb-1 (inv b)))	       ;; eb-1 = 1/b
@@ -1646,7 +1647,7 @@
 	   m1 count res1 res2 m signc signb partres res)
        (setq m1 (- controlpow 2))
        (when (zerop controlpow)
-	 (setq result (augmult (mul coef (case0 1 c b x *ec-1*)))
+	 (setq result (augmult (mul coef (case0 1 c b x ec-1)))
 	       count 1)
 	 (go loop))
        jump1
@@ -1663,7 +1664,7 @@
 	 (setq result
 	       (add result
 		    (augmult (mul coef
-				  (denmnumn '(t (2 1)) 1 c b 0 x *ec-1*))))
+				  (denmnumn '(t (2 1)) 1 c b 0 x ec-1))))
 	       count 3)
 	 (go loop))
        jump3
@@ -1673,7 +1674,7 @@
 	 (go jump5))
        (setq count 4
 	     m 0
-	     signc (checksigntm *ec-1*))
+	     signc (checksigntm ec-1))
        (when (eq signc '$positive)
 	 (setq res
 	       (augmult (mul* 2 exp1
