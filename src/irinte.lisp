@@ -32,6 +32,11 @@
   (let ((*checkcoefsignlist* nil)
 	(*globalcareflag* nil)
 	($radexpand t))
+    ;; It would be nice to remove *GLOBALCAREFLAG*, which is only used
+    ;; here, INTIRFACTOROOT, and CAREFULFACTOR.  But to do that, we'd
+    ;; have to pass the value of *GLOBALCAREFACTOR* through many
+    ;; functions because CAREFULFACTOR is near or at the bottom of the
+    ;; call tree.
     (declare (special *globalcareflag*))
     (intir-ref funct x)))
 
