@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var zerosigntest productcase))
+(declare-top (special zerosigntest productcase))
 
 (defun zerp (a) (equal a 0))
 
