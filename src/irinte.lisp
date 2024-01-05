@@ -364,9 +364,10 @@
 ;; Integrate a function of the form d*p(y)*y^m*(a*y^2+b*x+c)^n.
 ;; n is half of an integer.
 (defun intira (funct x)
-  (prog (a b c *ec-1* d m n (assoclist (jmaug (specrepcheck funct) x))
+  (prog (a b c ec-1 d m n (assoclist (jmaug (specrepcheck funct) x))
 	 pluspowfo1 pluspowfo2 minuspowfo
 	 polfact signn poszpowlist negpowlist)
+     #+nil
      (declare (special *ec-1*))
      (setq n (cdras 'n assoclist))
      ;; r12 1//2)
@@ -387,7 +388,7 @@
 	   ;; divided by 2.
 	   n (cadr n)
 	   signn (checksigntm n)
-	   *ec-1* (power c -1)
+	   ec-1 (power c -1)
 	   b (cdras 'b assoclist)
 	   a (cdras 'c assoclist)
 	   ;; pluspowfo1 = 1/2*(n-1), That is, the original exponent - 1/2.
@@ -418,18 +419,18 @@
 	 (return (augmult (mul d
 			       (nummnumn poszpowlist
 					 pluspowfo1
-					 minuspowfo c b a x *ec-1*)))))
+					 minuspowfo c b a x ec-1)))))
        (return (augmult (mul d
 			     (nummdenn poszpowlist
-				       pluspowfo2 c b a x *ec-1*)))))
+				       pluspowfo2 c b a x ec-1)))))
      (when (and (null poszpowlist)
 		(not (null negpowlist)))
        ;; No polynomial parts
        (when (eq signn '$positive)
 	 (return (augmult (mul d
-			       (denmnumn negpowlist minuspowfo c b a x *ec-1*)))))
+			       (denmnumn negpowlist minuspowfo c b a x ec-1)))))
        (return (augmult (mul d
-			     (denmdenn negpowlist pluspowfo2 c b a x *ec-1*)))))
+			     (denmdenn negpowlist pluspowfo2 c b a x ec-1)))))
      (when (and (not (null negpowlist))
 		(not (null poszpowlist)))
        ;; Positive and negative powers.
@@ -437,16 +438,16 @@
 	 (return (add (augmult (mul d
 				    (nummnumn poszpowlist
 					      pluspowfo1
-					      minuspowfo c b a x *ec-1*)))
+					      minuspowfo c b a x ec-1)))
 		      (augmult (mul d
 				    (denmnumn negpowlist
-					      minuspowfo c b a x *ec-1*))))))
+					      minuspowfo c b a x ec-1))))))
        (return (add (augmult (mul d
 				  (nummdenn poszpowlist
-					    pluspowfo2 c b a x *ec-1*)))
+					    pluspowfo2 c b a x ec-1)))
 		    (augmult (mul d
 				  (denmdenn negpowlist
-					    pluspowfo2 c b a x *ec-1*))))))))
+					    pluspowfo2 c b a x ec-1))))))))
 
 ;; Match d*p(x)*(f*x+e)^m*(a*x^2+b*x+c)^n.  p(x) is a polynomial, m is
 ;; an integer, n is half of an integer.  a, b, c, e, and f are
