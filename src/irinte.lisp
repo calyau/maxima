@@ -509,8 +509,8 @@
 ;; Thus (x+3)^2/x^2 = 1 + 6/x + 9/x^2 returns
 ;;
 ;; '(((0 1)) ((1 6) (2 9)))
-(defun powercoeflist (fun m var)
-  (prog ((expanfun (unquote ($expand (mul (prevconstexpan fun var) (power var m)))))
+(defun powercoeflist (fun m var2)
+  (prog ((expanfun (unquote ($expand (mul (prevconstexpan fun var2) (power var2 m)))))
 	 maxpowfun powfun coef poszpowlist negpowlist)
      (when (and (equal fun 1) (plusp m))
        (return (cons nil (list (list (cons m (list 1)))))))
@@ -518,9 +518,9 @@
        (return (cons nil (list (list (cons (- m) (list 1)))))))
      (when (equal expanfun 1)
        (return (cons (list (cons 0 (list 1))) (list nil))))
-     (setq maxpowfun ($hipow expanfun var)
-	   powfun ($lopow expanfun var))
-     loop (setq coef ($coeff expanfun (power var powfun)))
+     (setq maxpowfun ($hipow expanfun var2)
+	   powfun ($lopow expanfun var2))
+     loop (setq coef ($coeff expanfun (power var2 powfun)))
      (when (numberp coef) (go testjump))
      (go nojump)
      testjump (when (and (not (zerop powfun)) (zerop coef))
@@ -531,7 +531,7 @@
      (when (zerop powfun)
        (setq poszpowlist
 	     (append poszpowlist
-		     (list (cons 0 (list (consterm (cdr expanfun) var)))))))
+		     (list (cons 0 (list (consterm (cdr expanfun) var2)))))))
      (when (minusp powfun)
        (setq negpowlist (append negpowlist (list (cons (- powfun) (list coef))))))
      (when (= powfun maxpowfun)
