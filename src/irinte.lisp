@@ -344,19 +344,19 @@
 ;; these factors, but after multiplying one of them by VAR to try to multiply
 ;; the entire product by VAR^EXPT. If it's not possible to multiply factors to
 ;; do so, add a factor of VAR^EXPT to the end.
-(defun distrestorex (factors var expt)
+(defun distrestorex (factors var2 expt)
   (if (null factors)
-      (power var expt)
+      (power var2 expt)
       (let ((start (first factors)))
         (if (and (mexptp start)
                  (equal expt (caddr start)))
 
             (lmul
-             (cons (power ($expand (mul var (cadr start)))
+             (cons (power ($expand (mul var2 (cadr start)))
                           (caddr start))
                    (rest factors)))
 
-            (mul start (distrestorex (rest factors) var expt))))))
+            (mul start (distrestorex (rest factors) var2 expt))))))
 
 (defun timestest (expr)
   (if (mtimesp expr)
