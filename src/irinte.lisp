@@ -750,7 +750,7 @@
        #+nil (format t "p = ~A~%pluspowfo1 = ~A~%" p pluspowfo1)
        (when (zerop controlpow)
 	 ;; Integrate R^(p-1/2)
-	 (setq result (augmult (mul coef (numn pluspowfo1 c b a x)))
+	 (setq result (augmult (mul coef (numn pluspowfo1 c b a x *ec-1*)))
 	       count 1)
 	 (go loop))
 
@@ -765,7 +765,7 @@
        (setq res1 (add (augmult (mul expr expo
 				     (power (+ p p 1) -1)))
 		       (augmult (mul -1 b 1//2 expo
-				     (numn pluspowfo1 c b a x)))))
+				     (numn pluspowfo1 c b a x *ec-1*)))))
        (when (equal controlpow 1)
 	 (setq result (add result (augmult (mul coef res1)))
 	       count 2)
@@ -795,7 +795,7 @@
 				     (add (mul (power b 2)
 					       (+ p p 3))
 					  (mul -4 a c))
-				     (numn pluspowfo1 c b a x)))))
+				     (numn pluspowfo1 c b a x *ec-1*)))))
        (when (equal controlpow 2)
 	 (setq result (add result (augmult (mul coef res2)))
 	       count 3)
@@ -843,9 +843,9 @@
        (go jump3))))
 
 ;; Integrate R^(p+1/2)
-(defun numn (p c b a x)
-  (declare (special *ec-1*))
-  (let ((exp1 *ec-1*)			      ;; exp1 = 1/c
+(defun numn (p c b a x ec-1)
+  #+nil (declare (special *ec-1*))
+  (let ((exp1 ec-1)			      ;; exp1 = 1/c
 	(exp2 (add b (mul 2 c x)))	      ;; exp2 = b+2*c*x
 	(exp4 (add (mul 4 a c) (mul -1 b b))) ;; exp4 = 4*a*c-b^2
         (exp5 (div 1 (1+ p))))                ;; exp5 = 1/(p+1)
@@ -878,7 +878,7 @@
 	     (augmult (mul '((rat simp) 1 8)
 			   exp1 exp5 (+ p p 1)
 			   exp4
-			   (numn (1- p) c b a x)))))))
+			   (numn (1- p) c b a x ec-1)))))))
 
 (defun augmult (x)
   ($multthru (simplifya x nil)))
@@ -1502,12 +1502,12 @@
 	 ;; I don't think we can normally get here.
 	 (setq result (augmult (mul coef
 				    (numn (add (mul p 1//2) 1//2)
-					  c b a x)))
+					  c b a x ec-1)))
 	       count 1)
 	 (go loop))
        jump1
        ;; Handle integrate(sqrt(R^(2*pow-1))/x),x
-       (setq res1 (den1numn pow c b a x))
+       (setq res1 (den1numn pow c b a x ec-1))
        (when (equal controlpow 1)
 	 (setq result (add result (augmult (mul coef res1)))
 	       count 2)
@@ -1528,8 +1528,8 @@
 				  (power (polfoo c b a x)
 					 (add pow -1//2))))
 		    (augmult (mul b (div exp2 2)
-				  (den1numn (1- pow) c b a x)))
-		    (augmult (mul c exp2 (numn (- pow 2) c b a x))))))
+				  (den1numn (1- pow) c b a x ec-1)))
+		    (augmult (mul c exp2 (numn (- pow 2) c b a x ec-1))))))
        (when (= p 1)
 	 ;; integrate(sqrt(R)/x^2,x)
 	 ;;
@@ -1656,7 +1656,7 @@
        (when (= controlpow 1)
 	 (setq result
 	       (add result
-		    (augmult (mul coef (den1numn 1 c b 0 x))))
+		    (augmult (mul coef (den1numn 1 c b 0 x ec-1))))
 	       count 2)
 	 (go loop))
        jump2
@@ -1787,7 +1787,7 @@
        (go loop))))
 
 ;; Integrate R^(p-1/2)/x, p >= 1.
-(defun den1numn (p c b a x)
+(defun den1numn (p c b a x ec-1)
   (cond ((= p 1)
 	 ;; integrate(sqrt(R)/x,x)
 	 ;;
@@ -1812,8 +1812,8 @@
 	 (add (augmult (mul (power (polfoo c b a x)
 				   (add p -1//2))
 			    (inv (+ p p -1))))
-	      (augmult (mul a (den1numn (+ p -1) c b a x)))
-	      (augmult (mul b 1//2 (numn (+ p -2) c b a x)))))))
+	      (augmult (mul a (den1numn (+ p -1) c b a x ec-1)))
+	      (augmult (mul b 1//2 (numn (+ p -2) c b a x ec-1)))))))
 
 ;; L is a list of expressions that INTIRA should be applied to.
 ;; Sum up the results of applying INTIRA to each.
