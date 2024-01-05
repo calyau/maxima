@@ -277,22 +277,6 @@ infinity$
 limit(signum(zeroa+zerob));
 ind$
 
-/* #3483 limit apparently causes infinite loop 
-(X : log((sqrt(t)*sqrt(t+1)+t)/t)/(t+1)-(t*(log((t-sqrt(t)*sqrt(t+1))/t)-log((sqrt(t)*sqrt(t+1)+t)/t)))/(t+1)-log((t-sqrt(t)*sqrt(t+1))/t)/(t+1)-(2*sqrt(t))/sqrt(t+1),0);
-0$ 
-
-limit(ratsimp(X),t,1);
-log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
-
-/* doesn't finish!
-limit(X,t,1);
-log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
-*/
-
-(remvalue(X),0);
-0$
-*/
-
 /* #3459 Wrong limit calculation */
  limit(x / (x+2^x+cos(x)),x,-inf);
  1$
@@ -744,8 +728,9 @@ block([ans1,ans2, ans3],
 X : limit(((9*x)^(1/3)-3)/(sqrt(3+x)-sqrt(2*x)),x,3);
 -(2*sqrt(6))/3$
 
-radcan(X);
+block([ans : radcan(X)], remvalue(X),ans);
 -(2^(3/2)/sqrt(3))$
+
 /* #3861 function simplimsubst problems */
 limit(log(-1+%i*x) * ceiling(a),x,0,minus);
 -%i*%pi*ceiling(a)$
@@ -1039,13 +1024,13 @@ integrate(tan(x)^(1/3)/(cos(x)+sin(x))^2,x,0,%pi/2);
  11^(6/5)/6^(6/5)$
 
  /* #4133 limit(abs(cos(a*x)),x,inf) */
- (assume(a < 0), ans : limit(abs(cos(a*x)),x,inf), forget(a < 0), ans);
+ block([ans], (assume(a < 0), ans : limit(abs(cos(a*x)),x,inf), forget(a < 0), ans));
  ind$
 
-(assume(equal(a,0)), ans : limit(abs(cos(a*x)),x,inf), forget(equal(a,0)), ans);
+block([ans], (assume(equal(a,0)), ans : limit(abs(cos(a*x)),x,inf), forget(equal(a,0)), ans));
  1$
 
- (assume(a > 0), ans : limit(abs(cos(a*x)),x,inf), forget(a > 0), ans);
+ block([ans], (assume(a > 0), ans : limit(abs(cos(a*x)),x,inf), forget(a > 0), ans));
  ind$
 
   /* #4103 limit(acot(x),x,0) should be IND (not UND) */
@@ -1072,12 +1057,50 @@ limit(%pi^2*%i*cos(x-1)*6^x,x,1);
 6*%i*%pi^2$
 /* end of tests for #4222 */
 
-/* Did any facts, values, or contexts leak?*/
-facts();
-[]$
+/* #4227 limit(abs(sin(x))/sin(x), x, inf) = 1 */
+limit(abs(sin(x))/sin(x), x, inf);
+und$
+
+/* #4133 limit(abs(cos(a*x)),x,inf) */
+block([ans],  assume(a < 0), ans : limit(abs(cos(a*x)),x,inf), forget(a < 0), ans);
+ind$
+
+block([ans],  assume(a > 0), ans : limit(abs(cos(a*x)),x,inf), forget(a > 0), ans);
+ind$
+
+block([ans],  assume(equal(a,0)), ans : limit(abs(cos(a*x)),x,inf), forget(equal(a,0)), ans);
+1$
+
+limit(abs(sin(x) + abs(cos(x))),x,inf);
+ind$
+
+/* #3824 limit of an antiderivative */
+block([xxx : integrate((x-%i)/((x-2*%i)*(x^2+1)),x)],
+  [limit(rectform(xxx),x,minf), rectform(limit(xxx,x,minf))]);
+[-%pi/2, -%pi/2]$
+
+/* #3483 limit apparently causes infinite loop */
+(X : log((sqrt(t)*sqrt(t+1)+t)/t)/(t+1)-(t*(log((t-sqrt(t)*sqrt(t+1))/t)-log((sqrt(t)*sqrt(t+1)+t)/t)))/(t+1)-log((t-sqrt(t)*sqrt(t+1))/t)/(t+1)-(2*sqrt(t))/sqrt(t+1),0);
+0$ 
+
+limit(ratsimp(X),t,1);
+log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
+
+/* doesn't finish! */
+limit(X,t,1);
+log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
 
 (remvalue(X),0);
 0$
+
+/* #4238 limit((abs(sin(x)*cos(x)-x^4) -x)/x^3,x,0,plus) gives internal error 
+This test exercises the function mabs-subst. */
+limit((abs(sin(x)*cos(x)-x^4) -x)/x^3,x,0,plus);
+-2/3$
+
+/* Did any facts or contexts leak?*/
+facts();
+[]$
 
 contexts;
 [initial,global]$
