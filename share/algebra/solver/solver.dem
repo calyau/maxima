@@ -1,0 +1,98 @@
+("A demonstration of solver.")$
+if get('SOLVER,'Version)=false then load("Solver");
+Solver_Verbose : all$
+
+("Example 2.1")$
+Equations: [ x + 2*y - z = 6, 2*x + y*z - z^2 = -1, 3*x - y + 2*z^2 = 3 ]$
+Solver(Equations, [ x, y, z ]);
+("Show the assumptions made during the run.")$
+Solver_Assumptions;
+
+("Example 2.2")$
+Solver_Immed_Assign: Solver_Repeat_Linear: false$
+ParEq: [ 3*a*x + y^2 = 1, b*x - y = -1 ] $
+Solver(ParEq, [ x, y, x/y ], [ a, b ]);
+Solver_Assumptions;
+
+("Transformation examples (Chapter 2.5).")$
+SolverTransforms:[]$
+TrigEq : [ z - sin(x) = 0, y + z^2 + cos(x)^2 = 5, y + x = 1 ]$
+Var : [x, y, z]$
+Solver( TrigEq, Var );
+
+TransformLog( Equation, Variable, Solution ) := block(
+  [ Eq ],
+  Eq : LogContract( Equation ),
+  if Eq = Equation then
+    return( [] )
+  else
+    return( Eq )
+)$
+
+TransformTrig( Equation, Variable, Solution ) := block(
+  [ Eq ],
+  Eq : TrigSimp( Equation ),
+  if Eq = Equation then
+    return( [] )
+  else
+    return( Eq )
+)$
+
+Solver_Transforms : [ 'TransformLog, 'TransformTrig ]$
+Solver( TrigEq, Var );
+
+("Truss example.")$
+two_bar :
+[
+  F*cos(gamma) - S1*cos(alpha) - S2*cos(beta) = 0,
+  F*sin(gamma) - S1*sin(alpha) + S2*sin(beta) = 0,
+  Delta_l1 = l1*S1/(E*A1),
+  Delta_l2 = l2*S2/(E*A2),
+  l1 = c/cos(alpha),
+  l2 = c/cos(beta),
+  a = Delta_l2/sin(alpha+beta),
+  b = Delta_l1/sin(alpha+beta),
+  u = a*sin(alpha) + b*sin(beta),
+  w = -a*cos(alpha) + b*cos(beta),
+  A1 = h1^2,
+  A2 = h2^2
+]$
+
+bar_dimensions : [h1, h2]$
+parameters : [alpha, beta, gamma, F, c, E, u, w]$
+Solver_Repeat_Immed : Solver_Repeat_Linear : false$
+Solver( two_bar, bar_dimensions, parameters );
+
+
+TwoStageAmp :
+[
+  -V_V1+V_R1+V_OC_1+V_FIX2_Q1 = 0,-V_V1+V_R2+V_OC_1+V_I1+V_FIX2_Q1 = 0,
+  -V_V1+V_OC_1+V_I1+V_FIX2_Q2+V_FIX2_Q1-V_FIX1_Q2-V_FIX1_Q1 = 0,
+  V_V1-V_R6+V_R3-V_OC_1-V_I1-V_FIX2_Q1+V_FIX1_Q1 = 0,
+  -V_V1+V_R7+V_R4+V_OC_1+V_I1-V_FIX1_Q2 = 0,-V_V1+V_R7+V_R5+V_OC_1 = 0,
+  V_OC_2-V_I1+V_FIX1_Q2 = 0,V_V_CC-V_V1+V_R6+V_OC_1+V_FIX2_Q1-V_FIX1_Q1 = 0,
+  I_V1+I_OC_1 = 0,I_R7-I_OC_1+I_FIX2_Q1 = 0,I_R2+I_R1-I_FIX2_Q1-I_FIX1_Q1 = 0,
+  I_R6+I_FIX2_Q2+I_FIX1_Q1 = 0,-I_R7+I_R5+I_R4 = 0,
+  -I_R4+I_OC_2-I_FIX2_Q2-I_FIX1_Q2 = 0,I_R3-I_R2+I_I1+I_FIX1_Q2 = 0,
+  I_V_CC-I_R6-I_R3 = 0,V_V1 = 0,I_I1 = 0,I_OC_1 = 0,V_FIX1_Q1 = 2.72,
+  V_FIX2_Q1 = 0.607,I_R1*R1-V_R1 = 0,I_R7*R7-V_R7 = 0,I_R2*R2-V_R2 = 0,
+  I_R6*R6-V_R6 = 0,V_FIX1_Q2 = 6.42,V_FIX2_Q2 = 0.698,I_R3*R3-V_R3 = 0,
+  I_R4*R4-V_R4 = 0,I_R5*R5-V_R5 = 0,I_OC_2 = 0,V_V_CC = VCC,
+  I_FIX1_Q1 = 1.11e-4,I_FIX2_Q1 = 5.75001e-7,I_FIX1_Q2 = 0.00401,
+  I_FIX2_Q2 = 1.26e-5,
+  A = 145303681853*R2/(145309663773*R1),
+  ZIN = R7,
+  ZOUT = (1675719398828125*R2*R7+394048139880824192*R1*R2)
+         /(136552890630303121408*R1)
+]$
+
+Resistors : [R1, R2, R3, R4, R5, R6, R7]$
+DesignParameters : [VCC, A, ZIN, ZOUT]$
+
+Solver_Verbose : 'all$
+
+Solver( TwoStageAmp, Resistors, DesignParameters );
+
+("Example (Chapter 1.2).")$
+Eq : [x + y = 1, 2*x - y = 5, y*z + sin(z) = 1]$
+Solver( Eq, [x, y, z] );
