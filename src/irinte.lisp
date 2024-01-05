@@ -14,6 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
+#+nil
 (declare-top (special zerosigntest productcase))
 
 (defun zerp (a) (equal a 0))
@@ -583,11 +584,14 @@
   (cond ((not (inside fun 'mquote)) fun)
 	(t (unquote (meval fun)))))
 
-(defun checksigntm (expr)
-  (prog (aslist quest zerosigntest productcase)
-     (setq aslist *checkcoefsignlist*)
-     (cond ((atom expr) (go loop)))
-     (cond ((eq (caar expr) 'mtimes)(setq productcase t)))
+(let (zerosigntest productcase)
+  (defun checksigntm (expr)
+    (prog (aslist quest)
+       (setf zerosigntest nil
+             productcase nil)
+       (setq aslist *checkcoefsignlist*)
+       (cond ((atom expr) (go loop)))
+       (cond ((eq (caar expr) 'mtimes)(setq productcase t)))
      loop (cond ((null aslist)
 		 (setq *checkcoefsignlist*
 		       (append *checkcoefsignlist*
@@ -595,21 +599,21 @@
 					   (list
 					    (setq quest (checkflagandact expr)))))))
 		 (return quest)))
-     (cond ((equal (caar aslist) expr) (return (cadar aslist))))
-     (setq aslist (cdr aslist))
-     (go loop)))
+       (cond ((equal (caar aslist) expr) (return (cadar aslist))))
+       (setq aslist (cdr aslist))
+       (go loop)))
 
-(defun checkflagandact (expr)
-  (cond (productcase
-	 (setq productcase nil)
-	 (findsignoftheirproduct (findsignofactors (cdr expr))))
-	(t (asksign ($realpart expr)))))
+  (defun checkflagandact (expr)
+    (cond (productcase
+	   (setq productcase nil)
+	   (findsignoftheirproduct (findsignofactors (cdr expr))))
+	  (t (asksign ($realpart expr)))))
 
-(defun findsignofactors (listofactors)
-  (cond ((null listofactors) nil)
-	((eq zerosigntest '$zero) '$zero)
-	(t (append (list (setq zerosigntest (checksigntm (car listofactors))))
-		   (findsignofactors (cdr listofactors))))))
+  (defun findsignofactors (listofactors)
+    (cond ((null listofactors) nil)
+	  ((eq zerosigntest '$zero) '$zero)
+	  (t (append (list (setq zerosigntest (checksigntm (car listofactors))))
+		     (findsignofactors (cdr listofactors)))))))
 
 (defun findsignoftheirproduct (llist)
   (prog (sign)
