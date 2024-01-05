@@ -761,52 +761,8 @@
 (displa-def %at dim-%at 105. 105.)
 
 ;; We do it this way because there's no guarantee that all lisps use
-;; the same name for these unicode characters.
-#+nil
-(defun get-unicode-char (char-keyword)
-  "Return the Unicode character corresponding to the CHAR-KEYWORD.
-  CHAR-KEYWORD must be a keyword describing the name of the Unicode
-  character, where underscore is replaced by a dash."
-  (ecase char-keyword
-    (:box-drawings-light-vertical
-     (code-char #x2502))
-    (:box-drawings-light-horizontal
-     (code-char #x2500))
-    (:box-drawings-light-down-and-right
-     (code-char #x250c))
-    (:box-drawings-light-down-and-left
-     (code-char #x2510))
-    (:box-drawings-light-up-and-left
-     (code-char #x2518))
-    (:box-drawings-light-up-and-right
-     (code-char #x2514))
-    (:box-drawings-double-horizontal
-     (code-char #x2550))
-    (:box-drawings-double-vertical
-     (code-char #x2551))
-    (:box-drawings-double-down-and-right
-     (code-char #x2554))
-    (:box-drawings-double-down-and-left
-     (code-char #x2557))
-    (:box-drawings-double-up-and-left
-     (code-char #x255d))
-    (:box-drawings-double-up-and-right
-     (code-char #x255a))
-    (:top-half-integral
-     (code-char #x2320))
-    (:integral-extension
-     (code-char #x23ae))
-    (:bottom-half-integral
-     (code-char #x2321))
-    (:low-line
-     (code-char #x005f))
-    (:box-drawings-light-diagonal-upper-left-to-lower-right
-     (code-char #x2572))
-    (:box-drawings-light-diagonal-upper-right-to-lower-left
-     (code-char #x2571))
-    (:overline
-     (code-char #x203e))))
-
+;; the same name for these unicode characters or that there the lisp
+;; impl even has names for these characters.
 #+lisp-unicode-capable
 (let ((alist
         ;; An alist whose key is represents the unicode character
