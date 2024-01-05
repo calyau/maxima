@@ -14,9 +14,6 @@
 
 (load-macsyma-macros rzmac)
 
-#+nil
-(declare-top (special zerosigntest productcase))
-
 (defun zerp (a) (equal a 0))
 
 (defun integerpfr (a) (if (not (maxima-integerp a)) (integerp1 a)))
