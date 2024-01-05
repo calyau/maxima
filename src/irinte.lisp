@@ -324,19 +324,19 @@
 
 ;; RESTOREX
 ;;
-;; Multiply EXPR by VAR^EXPT, trying to insert the factor of VAR inside terms in
+;; Multiply EXPR by VAR2^EXPT, trying to insert the factor of VAR2 inside terms in
 ;; a product if possible.
-(defun restorex (expr var expt)
+(defun restorex (expr var2 expt)
   (cond
     ((and (mexptp expr)
           (equal expt (caddr expr)))
-     (power (restorex (cadr expr) var 1) (caddr expr)))
+     (power (restorex (cadr expr) var2 1) (caddr expr)))
 
     ((mtimesp expr)
-     (distrestorex (cdr expr) var expt))
+     (distrestorex (cdr expr) var2 expt))
 
     (t
-     (mul (power var expt) expr))))
+     (mul (power var2 expt) expr))))
 
 ;; DISTRESTOREX
 ;;
