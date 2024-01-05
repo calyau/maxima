@@ -429,7 +429,7 @@
 	 (return (augmult (mul d
 			       (denmnumn negpowlist minuspowfo c b a x *ec-1*)))))
        (return (augmult (mul d
-			     (denmdenn negpowlist pluspowfo2 c b a x)))))
+			     (denmdenn negpowlist pluspowfo2 c b a x *ec-1*)))))
      (when (and (not (null negpowlist))
 		(not (null poszpowlist)))
        ;; Positive and negative powers.
@@ -446,7 +446,7 @@
 					    pluspowfo2 c b a x *ec-1*)))
 		    (augmult (mul d
 				  (denmdenn negpowlist
-					    pluspowfo2 c b a x))))))))
+					    pluspowfo2 c b a x *ec-1*))))))))
 
 ;; Match d*p(x)*(f*x+e)^m*(a*x^2+b*x+c)^n.  p(x) is a polynomial, m is
 ;; an integer, n is half of an integer.  a, b, c, e, and f are
@@ -727,10 +727,11 @@
 	       '$positive
 	       (signdiscr c b a)))))
 
-(defun signdis3 (c b a signa)
+(defun signdis3 (c b a signa ec-1)
+  #+nil
   (declare (special *ec-1*))
   (cond ((equal b 0)
-	 (if (equal (checksigntm *ec-1*) signa)
+	 (if (equal (checksigntm ec-1) signa)
 	     '$negative
 	     '$positive))
 	(t (signdiscr c b a))))
@@ -884,7 +885,7 @@
   ($multthru (simplifya x nil)))
 
 ;; Integrate things like 1/x^m/R^(p+1/2), p > 0.
-(defun denmdenn (negpowlist p c b a x)
+(defun denmdenn (negpowlist p c b a x ec-1)
   (let ((exp1 (power (polfoo c b a x) (add 1//2 (- p)))))  ;; exp1 = 1/R^(p-1/2)
     (prog (result controlpow coef count res1 res2 m partres
 	   (signa (checksigntm (simplifya a nil)))
@@ -904,7 +905,7 @@
 
        jump1
        ;; Handle 1/x/R^(p+1/2)
-       (setq res1 (den1denn p c b a x))
+       (setq res1 (den1denn p c b a x ec-1))
        (when (equal controlpow 1)
 	 (setq result (add result (augmult (mul coef res1)))
 	       count 2)
@@ -921,7 +922,7 @@
        ;;     -2*p*c/a*integrate(1/sqrt(R^(2*p+1)),x)
        (setq res2 (add (augmult (mul -1 ea-1 (power x -1) exp1))
 		       (augmult (mul -1 b (+ 1 p p) 1//2
-				     ea-1 (den1denn p c b a x)))
+				     ea-1 (den1denn p c b a x ec-1)))
 		       (augmult (mul -2 p c ea-1 (denn p c b a x)))))
        (when (equal controlpow 2)
 	 (setq result (add result (augmult (mul coef res2)))
@@ -1028,7 +1029,7 @@
 			      (denn (1- p) c b a x))))))))
 
 ;; Integral of 1/x/(c*x^2+b*x+a)^(p+1/2), p > 0.
-(defun den1denn (p c b a x)
+(defun den1denn (p c b a x ec-1)
   (let ((signa (checksigntm (power a 2))) ;; signa = sign of a^2
 	(ea-1 (inv a)))		  ;; ea-1 = 1/a
     (cond ((eq signa '$zero)
@@ -1039,7 +1040,7 @@
 	   (noconstquad 1 p c b x))
 	  ((zerop p)
 	   ;; 1/x/sqrt(c*x^2+b*x+a)
-	   (den1den1 c b a x))
+	   (den1den1 c b a x ec-1))
 	  (t
 	   ;; The general case.  See G&R 2.268:
 	   ;;
@@ -1054,7 +1055,7 @@
 			      ea-1
 			      (power (polfoo c b a x)
 				     (add 1//2 (- p)))))
-		(augmult (mul ea-1 (den1denn (1- p) c b a x)))
+		(augmult (mul ea-1 (den1denn (1- p) c b a x ec-1)))
 		(augmult (mul -1 1//2 ea-1 b (denn p c b a x))))))))
 
 ;; Integral of 1/x/sqrt(c*x^2+b*x+a).
@@ -1063,7 +1064,7 @@
 ;; discriminant 4*a*c-b^2.  (I think this is the opposite of what we
 ;; compute below for the discriminant.)
 ;;
-(defun den1den1 (c b a x)
+(defun den1den1 (c b a x ec-1)
   (let ((exp2 (add (mul b x) a a))                ; exp2 = b*x+2*a
         (exp3 (inv (simplify (list '(mabs) x))))) ; exp3 = 1/abs(x)
     (prog (signdiscrim
@@ -1072,7 +1073,7 @@
 	   exp1)
        (when (eq signa '$zero)
 	 (return (noconstquad '((1 1)) 0 c b x)))
-       (setq signdiscrim (signdis3 c b a signa)
+       (setq signdiscrim (signdis3 c b a signa ec-1)
 	     exp1 (power a (inv -2)))
        #+nil (format t "signa = ~A~%signdiscrim = ~A~%" signa signdiscrim)
 
@@ -1127,7 +1128,7 @@
        ;; FIXME:  Why the multiplication by -1?
        (return (mul #+nil -1
 		    (power -1 1//2)
-		    (den1den1 (mul -1 c) (mul -1 b) (mul -1 a) x))))))
+		    (den1den1 (mul -1 c) (mul -1 b) (mul -1 a) x ec-1))))))
 
 ;; Integral of d/x^m/(c*x^2+b*x)^(p+1/2), p > 0.  The values of m and
 ;; d are in NEGPOWLIST.
@@ -1542,7 +1543,7 @@
 	 ;;
 	 (setq res2 (add (augmult (mul -1 (power (polfoo c b a x) 1//2)
 					    exp1))
-			      (augmult (mul b 1//2 (den1den1 c b a x)))
+			      (augmult (mul b 1//2 (den1den1 c b a x ec-1)))
 			      (augmult (mul c (den1 c b a x))))))
        (when (equal controlpow 2)
 	 (setq result (add result (augmult (mul coef res2)))
@@ -1798,7 +1799,7 @@
 	 ;;    + a*integrate(1/x/sqrt(R),x)
 	 ;;    + b/2*integrate(1/sqrt(R),x)
 	 (add (power (polfoo c b a x) 1//2)
-	      (augmult (mul a (den1den1 c b a x)))
+	      (augmult (mul a (den1den1 c b a x ec-1)))
 	      (augmult (mul b 1//2 (den1 c b a x)))))
 	(t
 	 ;; General case
