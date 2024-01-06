@@ -770,9 +770,9 @@
   (prog (a b c lgf)
      (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
      
-     (cond ((zerop1 var)
+     (cond ((zerop1 arg)
             ;; F(a,b; c; 0) = 1
-            (return (add var 1))))
+            (return (add arg 1))))
      
      (when $trace2f1
        (format t "Tracing SIMP2F1~%")
@@ -794,8 +794,8 @@
 	    ;; F(1,1;2;z) = -log(1-z)/z, A&S 15.1.3
 	    (when $trace2f1
 	      (format t " Yes~%"))
-	    (return (mul (inv (mul -1 var))
-	                 (take '(%log) (add 1 (mul -1 var)))))))
+	    (return (mul (inv (mul -1 arg))
+	                 (take '(%log) (add 1 (mul -1 arg)))))))
      
      (when $trace2f1
        (format t " Test c = 1/2 or c = 3/2...~%"))
@@ -842,7 +842,7 @@
 	    ;; integer.
 	    (when $trace2f1
 	      (format t " Yes: step4~%"))
-            (return (step4 a b c))))
+            (return (step4 a b c arg))))
      
      (when $trace2f1
        (format t " Test a-b+1/2 is a numerical integer...~%"))
@@ -898,7 +898,7 @@
      
      (when $trace2f1
        (format t "'simp2f1-will-continue-in~%"))
-     (return  (fpqform arg-l1 arg-l2 var))))
+     (return  (fpqform arg-l1 arg-l2 arg))))
 
 ;; As best as I (rtoy) can tell, step7 is meant to handle an extension
 ;; of hyp-cos, which handles |a-b|=1/2 and either a+b-1/2 = c or
@@ -3040,7 +3040,7 @@
 
 
 ;;Algor. 2F1-RL from thesis:step 4:dispatch on a+m,-a+n,1/2+l cases
-(defun step4 (a b c)
+(defun step4 (a b c arg)
   ;; F(a,b;c;z) where a+b is an integer and c+1/2 is an integer.  If a
   ;; and b are not integers themselves, we can derive the result from
   ;; F(a1,-a1;1/2;z).  However, if a and b are integers, we can't use
@@ -3048,7 +3048,7 @@
   ;; the result from F(1,1;3/2;z).
   (if (and (hyp-integerp a)
 	   (hyp-integerp b))
-      (step4-int a b c)
+      (step4-int a b c arg)
       (step4-a a b c)))
 
 (defun step4-a (a b c)
@@ -3232,14 +3232,14 @@
 		   fun)
 	      arg n)))
 
-(defun step4-int (a b c)
+(defun step4-int (a b c arg)
   (if (> a b)
-      (step4-int b a c)
-      (let* ((s (gensym (symbol-name '#:step4-var-)))
+      (step4-int b a c arg)
+      (let* ((s (gensym (symbol-name '#:step4-arg-)))
 	     (m (1- a))
 	     (n (1- b))
 	     (ell (sub c 3//2))
-	     (res (cond ((eq (checksigntm var) '$negative)
+	     (res (cond ((eq (checksigntm arg) '$negative)
 			 ;; F(1,1;3/2;z) =
 			 ;; -%i*log(%i*sqrt(zn)+sqrt(1-zn))/(sqrt(1-zn)*sqrt(zn))
 			 ;; for z < 0
@@ -3263,7 +3263,7 @@
 	;; We now have res = C*F(m,1;3/2;z).  Compute F(m,n;3/2;z)
 	(setf res (as-15.2.3 1 a 3//2 n s res))
 	;; We now have res = C*F(m,n;3/2;z).  Now compute F(m,n;3/2+ell;z):
-	(subst var s
+	(subst arg s
 	       (cond ((minusp ell)
 		      (as-15.2.4 a b 3//2 (- ell) s res))
 		     (t
