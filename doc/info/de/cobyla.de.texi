@@ -61,7 +61,7 @@ Academic: Dordrecht, 1994), p. 51-67.
 Acta Numerica 7, 287-336 (1998).  Also available as University of Cambridge, 
 Department of Applied Mathematics and Theoretical Physics,  Numerical Analysis 
 Group, Report NA1998/04 from 
-@url{http://www.damtp.cam.ac.uk/user/na/reports.html}
+@url{https://web.archive.org/web/20160607190705/http://www.damtp.cam.ac.uk:80/user/na/reports.html}
 
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, cobyla
