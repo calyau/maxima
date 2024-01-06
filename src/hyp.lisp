@@ -3049,9 +3049,9 @@
   (if (and (hyp-integerp a)
 	   (hyp-integerp b))
       (step4-int a b c arg)
-      (step4-a a b c)))
+      (step4-a a b c arg)))
 
-(defun step4-a (a b c)
+(defun step4-a (a b c arg)
   (let* ((alglist (algii a b))
 	 (aprime (cadr alglist))
 	 (m (caddr alglist))
@@ -3082,20 +3082,20 @@
 	   (gered1 (list a b) (list c) #'hgfsimp))
 	  (t
 	   (let ((newf 
-		  (cond ((equal (checksigntm var) '$positive)
+		  (cond ((equal (checksigntm arg) '$positive)
 			 (trig-log-1-pos aprime 'ell))
-			((equal (checksigntm var) '$negative)
+			((equal (checksigntm arg) '$negative)
 			 (trig-log-1-neg (mul -1 aprime) aprime 'ell)))))
 	     ;; Ok, this uses F(a,-a;1/2;z).  Since there are 2 possible
 	     ;; representations (A&S 15.1.11 and 15.1.17), we check the sign
-	     ;; of the var (as done in trig-log-1) to select which form we
+	     ;; of the arg (as done in trig-log-1) to select which form we
 	     ;; want to use.  The original didn't and seemed to want to use
 	     ;; the negative form.
 	     ;;
 	     ;; With this change, F(a,-a;3/2;z) matches what A&S 15.2.6 would
 	     ;; produce starting from F(a,-a;1/2;z), assuming z < 0.
     
-	     (subst var 'ell
+	     (subst arg 'ell
 		    (algiii newf
 			    m n aprime)))))))
 
