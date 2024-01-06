@@ -828,7 +828,7 @@
 		 (hyp-integerp c))
 	    ;; F(a,b;c;z) when a, and b are integers (or are declared
 	    ;; to be integers) and c is a integral number.
-	    (setf lgf (simpr2f1 (list a b) (list c)))
+	    (setf lgf (simpr2f1 (list a b) (list c) arg))
 	    (unless (symbolp lgf) ; Should be more specific! (DK 01/2010)
 	      (when $trace2f1
 		(format t " Yes: simpr2f1~%"))
@@ -1136,7 +1136,7 @@
 
 ;; F(a,b;c;z) when a and b are integers (or declared to be integers)
 ;; and c is an integral number.
-(defun simpr2f1 (arg-l1 arg-l2)
+(defun simpr2f1 (arg-l1 arg-l2 arg)
   (destructuring-bind (a b)
       arg-l1
     (destructuring-bind (c)
@@ -1151,10 +1151,10 @@
 		      (derivint a b c))
 		     (inl1p
 		      ;; a and c are integers
-		      (geredno2 b a c))
+		      (geredno2 b a c arg))
 		     (inl1bp
 		      ;; b and c are integers.
-		      (geredno2 a b c))
+		      (geredno2 a b c arg))
 		     (t 'fail1)))
 	      ;; Can't really do anything else if c is not an integer.
 	      (inl1p
@@ -1175,11 +1175,11 @@
     (arg-l1 arg-l2)
   (cond ((and (> (car arg-l2)(car arg-l1))
 	      (> (car arg-l2)(cadr arg-l1)))
-	 (geredf (car arg-l1)(cadr arg-l1)(car arg-l2)))
+	 (geredf (car arg-l1) (cadr arg-l1) (car arg-l2) arg))
 	(t (gered1 arg-l1 arg-l2 #'hgfsimp))))
 
-(defun geredno2 (a b c)
-  (cond ((> c b) (geredf b a c))
+(defun geredno2 (a b c arg)
+  (cond ((> c b) (geredf b a c arg))
 	(t (gered2 a b c))))
 
 ;; Consider F(1,1;2;z).  A&S 15.1.3 says this is equal to -log(1-z)/z.
@@ -1975,24 +1975,24 @@
 ;; where A = gamma(c)*gamma(c-a-b)/gamma(c-a)/gamma(c-b)
 ;;       B = gamma(c)*gamma(a+b-c)/gamma(a)/gamma(b)
 
-(defun geredf (a b c)
+(defun geredf (a b c arg)
   (let (($gamma_expand t))
     (add (div (mul (take '(%gamma) c)
                    (take '(%gamma) (add c (mul -1 a) (mul -1 b)))
-                   (power var (mul -1 a))
+                   (power arg (mul -1 a))
                    ($hgfred `((mlist) ,a ,(add a 1 (mul -1 c)))
                             `((mlist) ,(add a b (mul -1 c) 1))
-                            (sub 1 (div 1 var))))
+                            (sub 1 (div 1 arg))))
               (mul (take '(%gamma) (sub c a)) 
                    (take '(%gamma) (sub c b))))
          (div (mul (take '(%gamma) c)
                    (take '(%gamma) (add a b (mul -1 c)))
-                   (power (sub 1 var)
+                   (power (sub 1 arg)
                           (add c (mul -1 a) (mul -1 b)))
-                   (power var (sub a c))
+                   (power arg (sub a c))
                    ($hgfred `((mlist) ,(sub c a) ,(sub 1 a))
                             `((mlist) ,(add c (mul -1 a) (mul -1 b) 1))
-                            (sub 1 (div 1 var))))
+                            (sub 1 (div 1 arg))))
               (mul (take '(%gamma) a) (take '(%gamma) b))))))
 
 (defun trig-log (arg-l1 arg-l2 arg)
