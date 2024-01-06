@@ -2028,7 +2028,7 @@
 	 ;; a + b = 1 or a + b = 2
 	 (when $trace2f1
 	   (format t "   Case a+b is 1 or 2~%"))
-	 (trig-sin arg-l1 arg-l2))
+	 (trig-sin arg-l1 arg-l2 arg))
 	((or (equal (sub (car arg-l1) (cadr arg-l1)) (div 1 2))
 	     (equal (sub (cadr arg-l1) (car arg-l1)) (div 1 2)))
 	 ;; a - b = 1/2 or b - a = 1/2
@@ -2055,7 +2055,7 @@
 	 (sub (power (add 1 z) a)
 	      (power (sub 1 z) a)))))
 
-(defun trig-sin (arg-l1 arg-l2)
+(defun trig-sin (arg-l1 arg-l2 arg)
   (declare (ignore arg-l2))
   ;; A&S 15.1.15, 15.1.16
   (destructuring-bind (a b)
@@ -2071,10 +2071,10 @@
 	     ;;
 	     ;; sin((2*a-1)*z)/(2*a-1)/sin(z)
 	     (mul (inv (mul (mul -1 (sub a b))
-			    (msin (masin (msqrt var)))))
+			    (msin (masin (msqrt arg)))))
 		  (msin (mul (mul -1
 				  (sub a b))
-			     (masin (msqrt var))))))
+			     (masin (msqrt arg))))))
 	    ((equal (add a b) 2)
 	     ;; A&S 15.1.16
 	     ;;
@@ -2083,7 +2083,7 @@
 	     ;; sin((2*a-2)*z)/(a-1)/sin(2*z)
 	     (mul (msin (mul (setq z1
 				   (masin (msqrt
-					   var)))
+					   arg)))
 			     (setq a1
 				   (mul -1
 					(sub a
