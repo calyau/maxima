@@ -150,7 +150,8 @@
                        (intdiffl1l2 (cadr resimp) (caddr resimp))))
             (return (splitpfq listcmdiff
                               (cadr resimp)
-                              (caddr resimp))))
+                              (caddr resimp)
+                              var)))
            (t
             (return (dispatch-spec-simp (cadr resimp) 
                                         (caddr resimp)
@@ -2987,7 +2988,7 @@
 ;;                k=0
 ;;
 ;; Thus, F(a+n,b;c;z) is expressed in terms of 1F0(b+k;;z), as desired.
-(defun splitpfq (l arg-l1 arg-l2)
+(defun splitpfq (l arg-l1 arg-l2 arg)
   (destructuring-bind (a1 k)
       l
     (let* ((result 0)
@@ -3004,7 +3005,7 @@
 	     (maxima-display (mul (combin k count)
 				  (div prodnum proden)
 				  (inv prod-b)
-				  (power var count)))
+				  (power arg count)))
 	     (mtell "F(~:M, ~:M)~%" 
 	            (cons '(mlist) arg-l1) 
 	            (cons '(mlist) arg-l2)))
@@ -3012,8 +3013,8 @@
 			   (mul (combin k count)
 				(div prodnum proden)
 				(inv prod-b)
-				(power var count)
-				(hgfsimp arg-l1 arg-l2 var))))
+				(power arg count)
+				(hgfsimp arg-l1 arg-l2 arg))))
 	 (setq prod-b (mul prod-b (add b1 count)))
 	 (setq prodnum (mul prodnum (mull arg-l1))
 	       proden (mul proden (mull arg-l2)))
