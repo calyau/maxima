@@ -2034,10 +2034,10 @@
 	 ;; a - b = 1/2 or b - a = 1/2
 	 (when $trace2f1
 	   (format t "   Case a-b=1/2 or b-a=1/2~%"))
-	 (trig-3 arg-l1 arg-l2))
+	 (trig-3 arg-l1 arg-l2 arg))
 	(t nil)))
 
-(defun trig-3 (arg-l1 arg-l2)
+(defun trig-3 (arg-l1 arg-l2 arg)
   (declare (ignore arg-l2))
   ;; A&S 15.1.10
   ;;
@@ -2048,7 +2048,7 @@
 		 (sub (add (car arg-l1)
 			   (cadr arg-l1))
 		      (div 1 2))))
-	 (z (power var (div 1 2))))
+	 (z (power arg (div 1 2))))
     (mul (inv z)
 	 (inv 2)
 	 (inv a)
