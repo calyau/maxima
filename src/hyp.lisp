@@ -2000,7 +2000,7 @@
 	 ;; c = 3/2
 	 (when $trace2f1
 	   (format t "  trig-log:  Test c=3/2~%"))
-	 (trig-log-3 arg-l1 arg-l2))
+	 (trig-log-3 arg-l1 arg-l2 arg))
 	((equal (simplifya (car arg-l2) nil) '((rat simp) 1 2))
 	 ;; c = 1/2
 	 (when $trace2f1
@@ -2008,7 +2008,7 @@
 	 (trig-log-1 arg-l1 arg-l2 arg))
 	(t nil)))
 
-(defun trig-log-3 (arg-l1 arg-l2)
+(defun trig-log-3 (arg-l1 arg-l2 arg)
   (cond ((and (or (equal (car arg-l1) 1) (equal (cadr arg-l1) 1))
 	      (or (equal (car arg-l1) (div 1 2))
 		  (equal (cadr arg-l1) (div 1 2))))
@@ -2022,7 +2022,7 @@
 	 ;; a = b and (a = 1 or a = 1/2)
 	 (when $trace2f1
 	   (format t "   Case a=b and a is 1 or 1/2~%"))
-	 (trig-log-3a-exec arg-l1 arg-l2))
+	 (trig-log-3a-exec arg-l1 arg-l2 arg))
 	((or (equal (add (car arg-l1) (cadr arg-l1)) 1)
 	     (equal (add (car arg-l1) (cadr arg-l1)) 2))
 	 ;; a + b = 1 or a + b = 2
@@ -2130,7 +2130,7 @@
 	     (mul (power z -1)
 		  (matan z)))))))
 
-(defun trig-log-3a-exec (arg-l1 arg-l2)
+(defun trig-log-3a-exec (arg-l1 arg-l2 arg)
   ;; See A&S 15.1.6 and 15.1.7
   ;;
   ;; F(a,b;3/2,z) where a = b and a = 1/2 or a = 1.
@@ -2139,27 +2139,28 @@
   ;; $all.
   (let ((a (first arg-l1))
 	($radexpand '$all))
-    (cond ((equal (checksigntm var) '$positive)
+    (cond ((equal (checksigntm arg) '$positive)
 	   ;; A&S 15.1.6
 	   ;;
 	   ;; F(1/2,1/2; 3/2; z^2) = sqrt(1-z^2)*F(1,1;3/2;z^2) =
 	   ;; asin(z)/z
-	   (let ((z (power var (div 1 2))))
+	   (let ((z (power arg (div 1 2))))
 	     (if (equal a 1)
-		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2)) arg-l2)
+		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2)) arg-l2 arg)
 		      (power (sub 1 (power z 2)) (div 1 2)))
 		 (div (masin z) z))))
-	  ((equal (checksigntm var) '$negative)
+	  ((equal (checksigntm arg) '$negative)
 	   ;; A&S 15.1.7
 	   ;;
 	   ;; F(1/2,1/2; 3/2; -z^2) = sqrt(1+z^2)*F(1,1,3/2; -z^2) =
 	   ;;log(z + sqrt(1+z^2))/z
-	   (let* ((z (power (mul -1 var)
+	   (let* ((z (power (mul -1 arg)
 			    (div 1 2)))
 		  (1+z^2 (add 1 (power z 2))))
 	     (if (equal a 1)
 		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2))
-					arg-l2)
+					arg-l2
+                                        arg)
 		      (power 1+z^2
 			     (div 1 2)))
 		 (div (mlog (add z (power 1+z^2
