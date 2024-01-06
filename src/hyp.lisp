@@ -804,7 +804,7 @@
      (cond ((or (alike1 c '((rat simp) 3 2))
 		(alike1 c '((rat simp) 1 2)))
 	    ;; F(a,b; 3/2; z) or F(a,b;1/2;z)
-	    (cond ((setq lgf (trig-log (list a b) (list c)))
+	    (cond ((setq lgf (trig-log (list a b) (list c) arg))
 		   (when $trace2f1
 		     (format t " Yes: trig-log~%"))
 	           (return lgf)))))
@@ -1995,7 +1995,7 @@
                             (sub 1 (div 1 var))))
               (mul (take '(%gamma) a) (take '(%gamma) b))))))
 
-(defun trig-log (arg-l1 arg-l2)
+(defun trig-log (arg-l1 arg-l2 arg)
   (cond ((equal (simplifya (car arg-l2) nil) '((rat simp) 3 2))
 	 ;; c = 3/2
 	 (when $trace2f1
@@ -2005,7 +2005,7 @@
 	 ;; c = 1/2
 	 (when $trace2f1
 	   (format t "  trig-log:  Test c=1/2~%"))
-	 (trig-log-1 arg-l1 arg-l2))
+	 (trig-log-1 arg-l1 arg-l2 arg))
 	(t nil)))
 
 (defun trig-log-3 (arg-l1 arg-l2)
@@ -2167,7 +2167,7 @@
 		      z)))))))
 
 
-(defun trig-log-1 (arg-l1 arg-l2)	;; 2F1's with C = 1/2
+(defun trig-log-1 (arg-l1 arg-l2 arg)	;; 2F1's with C = 1/2
   (declare (ignore arg-l2))
   ;; 15.1.17, 11, 18, 12, 9, and 19
 
@@ -2179,47 +2179,47 @@
     (cond ((=0 (m+t a b))
 	   ;; F(-a,a;1/2,z)
 
-	   (cond ((equal (checksigntm var) '$positive)
+	   (cond ((equal (checksigntm arg) '$positive)
 		  ;; A&S 15.1.17:
 		  ;; F(-a,a;1/2;sin(z)^2) = cos(2*a*z)
-		  (trig-log-1-pos a var))
-		 ((equal (checksigntm var) '$negative)
+		  (trig-log-1-pos a arg))
+		 ((equal (checksigntm arg) '$negative)
 		  ;; A&X 15.1.11:
 		  ;; F(-a,a;1/2;-z^2) = 1/2*((sqrt(1+z^2)+z)^(2*a)
 		  ;;                         +(sqrt(1+z^2)-z)^(2*a))
 		  ;;
-		  (trig-log-1-neg a b var))
+		  (trig-log-1-neg a b arg))
 		 (t ())))
 	  ((equal (m+t a b) 1.)
 	   ;; F(a,1-a;1/2,z)
-	   (cond ((equal (checksigntm var) '$positive)
+	   (cond ((equal (checksigntm arg) '$positive)
 		  ;; A&S 15.1.18:
 		  ;; F(a,1-a;1/2;sin(z)^2) = cos((2*a-1)*z)/cos(z)
-		  (m//t (mcos (m*t (m-t a b) (setq z (masin (msqrt var)))))
+		  (m//t (mcos (m*t (m-t a b) (setq z (masin (msqrt arg)))))
 			(mcos z)))
-		 ((equal (checksigntm var) '$negative)
+		 ((equal (checksigntm arg) '$negative)
 		  ;; A&S 15.1.12
 		  ;; F(a,1-a;1/2;-z^2) = 1/2*(1+z^2)^(-1/2)*
 		  ;;                     {[(sqrt(1+z^2)+z]^(2*a-1)
 		  ;;                       +[sqrt(1+z^2)-z]^(2*a-1)}
-		  (m*t 1//2 (m//t (setq x (msqrt (m-t 1. var))))
-		       (m+t (m^t (m+t x (setq z (msqrt (m-t var))))
+		  (m*t 1//2 (m//t (setq x (msqrt (m-t 1. arg))))
+		       (m+t (m^t (m+t x (setq z (msqrt (m-t arg))))
 				 (setq b (m-t a b)))
 			    (m^t (m-t x z) b))))
 		 (t ())))
 	  ((=1//2 (hyp-mabs (m-t b a)))
 	   ;; F(a, a+1/2; 1/2; z)
-	   (cond ((equal (checksigntm var) '$positive)
+	   (cond ((equal (checksigntm arg) '$positive)
 		  ;; A&S 15.1.9
 		  ;; F(a,1/2+a;1/2;z^2) = ((1+z)^(-2*a)+(1-z)^(-2*a))/2
 		  (m*t 1//2
-		       (m+t (m^t (m1+t (setq z (msqrt var)))
+		       (m+t (m^t (m1+t (setq z (msqrt arg)))
 				 (setq b (m-t 1//2 (m+t a b))))
 			    (m^t (m-t 1. z) b))))
-		 ((equal (checksigntm var) '$negative)
+		 ((equal (checksigntm arg) '$negative)
 		  ;; A&S 15.1.19
 		  ;; F(a,1/2+a;1/2;-tan(z)^2) = cos(z)^(2*a)*cos(2*a*z)
-		  (m*t (m^t (mcos (setq z (matan (msqrt (m-t var)))))
+		  (m*t (m^t (mcos (setq z (matan (msqrt (m-t arg)))))
 			    (setq b (m+t a b -1//2)))
 		       (mcos (m*t b z))))
 		 (t ())))
