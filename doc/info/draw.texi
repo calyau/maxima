@@ -6069,7 +6069,7 @@ the northern and southern cones are tangent to sphere.
 @end itemize
 @figure{worldmap_geomap6}
 
-See also @url{http://riotorto.users.sf.net/Maxima/gnuplot/geomap}
+See also @url{https://riotorto.users.sourceforge.net/Maxima/gnuplot/geomap/}
 for more elaborated examples.
 
 @opencatbox{Categories:}

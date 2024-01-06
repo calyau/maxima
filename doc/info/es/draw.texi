@@ -5137,7 +5137,7 @@ y centro (@var{x},@var{y},@var{z}). Ambos conos, norte y sur, son tangentes a la
 @end example
 @end itemize
 
-En @url{http://riotorto.users.sf.net/gnuplot/geomap}
+En @url{https://riotorto.users.sourceforge.net/Maxima/gnuplot/geomap/}
 hay ejemplos más elaborados.
 @end deffn
 

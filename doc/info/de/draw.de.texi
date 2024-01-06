@@ -4647,7 +4647,7 @@ to sphere.
 @end example
 @end itemize
 
-See also @url{http://riotorto.users.sf.net/gnuplot/geomap}
+See also @url{https://riotorto.users.sourceforge.net/Maxima/gnuplot/geomap/}
 for more elaborated examples.
 @end deffn
 
