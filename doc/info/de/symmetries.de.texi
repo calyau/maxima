@@ -21,11 +21,11 @@
 @code{sym} is a package for working with symmetric groups of polynomials.
 
 @ifnottex
-It was written for Macsyma-Symbolics by Annick Valibouze (@url{http://www-calfor.lip6.fr/~avb/}).
+It was written for Macsyma-Symbolics by Annick Valibouze (@url{https://web.archive.org/web/20061125035035/http://www-calfor.lip6.fr/~avb/}).
 The algorithms are described in the following papers:
 @end ifnottex
 @iftex
-It was written for Macsyma-Symbolics by Annick Valibouze@footnote{@url{www-calfor.lip6.fr/~avb}}.
+It was written for Macsyma-Symbolics by Annick Valibouze@footnote{@url{https://web.archive.org/web/20061125035035/http://www-calfor.lip6.fr/~avb/}}.
 The algorithms are described in the following papers:
 @end iftex
 
@@ -41,7 +41,7 @@ Springer, Berlin, 1989.@*
 Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
 and Algebraic Computation, ISSAC'89 (Portland, Oregon).
 ACM Press, 390-399, 1989.@*
-@url{http://www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}
+@url{https://web.archive.org/web/20061125035035/http://www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}
 
 @item Symbolic computation with symmetric polynomials, an extension to Macsyma.
 Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
@@ -62,7 +62,7 @@ Annick Valibouze. EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput.
 Springer, Berlin, 1989.
 
 @item R@'esolvantes et fonctions sym@'etriques
-@footnote{@url{www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}}.
+@footnote{@url{https://web.archive.org/web/20061125035035/http://www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}}.
 Annick Valibouze. Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
 and Algebraic Computation, ISSAC'89 (Portland, Oregon). ACM Press, 390-399, 1989.
 
