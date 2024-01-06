@@ -153,7 +153,8 @@
                               (caddr resimp))))
            (t
             (return (dispatch-spec-simp (cadr resimp) 
-                                        (caddr resimp)))))))
+                                        (caddr resimp)
+                                        var))))))
 
 (defun macsimp (expr)
   (mapcar #'(lambda (index) ($expand index)) expr))
@@ -550,7 +551,7 @@
 
 ;; Figure out the orders of generalized hypergeometric function we
 ;; have and call the right simplifier.
-(defun dispatch-spec-simp (arg-l1 arg-l2)
+(defun dispatch-spec-simp (arg-l1 arg-l2 arg)
   (let  ((len1 (length arg-l1))
 	 (len2 (length arg-l2)))
     (cond ((and (< len1 2)
@@ -560,7 +561,7 @@
 	  ((and (equal len1 2)
 		(equal len2 1))
 	   ;; 2F1
-	   (simp2f1 arg-l1 arg-l2))
+	   (simp2f1 arg-l1 arg-l2 arg))
           ((and (equal len1 2)
                 (equal len2 0))
            ;; 2F0(a,b; ; z)                
@@ -765,7 +766,7 @@
   "Enables simple tracing of simp2f1 so you can see how it decides
   what approach to use to simplify hypergeometric functions")
 
-(defun simp2f1 (arg-l1 arg-l2)
+(defun simp2f1 (arg-l1 arg-l2 arg)
   (prog (a b c lgf)
      (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
      
@@ -862,7 +863,7 @@
 			 (hyp-integerp a))))
        (when $trace2f1
 	 (format t " Test for atanh:  a+1/2, b, and c+1/2 are integers~%"))
-       (return (hyp-atanh a b c)))
+       (return (hyp-atanh a b c arg)))
      
      (when (hyp-integerp (add c 1//2))
        (when $trace2f1
@@ -871,12 +872,12 @@
 		   (hyp-integerp b))
 	      (when $trace2f1
 		(format t "  atanh with integers a+1/2 and b ~%"))
-	      (return (hyp-atanh a b c)))
+	      (return (hyp-atanh a b c arg)))
 	     ((and (hyp-integerp (add b 1//2))
 		   (hyp-integerp a))
 	      (when $trace2f1
 		(format t "  atanh with integers a and b+1/2 ~%"))
-	      (return (hyp-atanh b a c)))))
+	      (return (hyp-atanh b a c arg)))))
      
      (when $trace2f1
        (format t " Test for Legendre function...~%"))
@@ -3526,7 +3527,7 @@
 	      'ell n)))
 
 ;; F(-1/2+n, 1+m; 1/2+l; z)
-(defun hyp-atanh (a b c)
+(defun hyp-atanh (a b c arg)
   ;; We start with F(-1/2,1;1/2;z) = 1-sqrt(z)*atanh(sqrt(z)).  We can
   ;; derive the remaining forms by differentiating this enough times.
   ;;
@@ -3592,7 +3593,7 @@
       (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c)
       (maxima-display res))
     ;; Substitute the argument into the expression and simplify the result.
-    (sratsimp (maxima-substitute var s res))))
+    (sratsimp (maxima-substitute arg s res))))
   
 (eval-when
     (:compile-toplevel)
