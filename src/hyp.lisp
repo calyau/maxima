@@ -883,7 +883,7 @@
      (when $trace2f1
        (format t " Test for Legendre function...~%"))
      
-     (cond ((setq lgf (legfun a b c))
+     (cond ((setq lgf (legfun a b c arg))
 	    (unless (atom lgf)
 	      ;; LEGFUN returned something interesting, so we're done.
 	      (when $trace2f1
@@ -891,7 +891,7 @@
 	      (return lgf))
 	    ;; LEGFUN didn't return anything, so try it with the args
 	    ;; reversed, since F(a,b;c;z) is F(b,a;c;z).
-	    (setf lgf (legfun b a c))
+	    (setf lgf (legfun b a c arg))
 	    (when lgf
 	      (when $trace2f1
 		(format t " Yes: case 2~%"))
@@ -1176,7 +1176,7 @@
   (cond ((and (> (car arg-l2)(car arg-l1))
 	      (> (car arg-l2)(cadr arg-l1)))
 	 (geredf (car arg-l1) (cadr arg-l1) (car arg-l2) arg))
-	(t (gered1 arg-l1 arg-l2 #'hgfsimp))))
+	(t (gered1 arg-l1 arg-l2 #'hgfsimp arg))))
 
 (defun geredno2 (a b c arg)
   (cond ((> c b) (geredf b a c arg))
@@ -1459,7 +1459,7 @@
 ;; equal to each other or one of them equals +/- 1/2.
 ;;
 ;; This routine checks for each of the possibilities.
-(defun legfun (a b c)			   
+(defun legfun (a b c arg)
   (let ((1-c (sub 1 c))
 	(a-b (sub a b))
 	(c-a-b (sub (sub c a) b))
@@ -1468,7 +1468,7 @@
 	   ;; a-b = 1/2
 	   (when $trace2f1
 	     (format t "Legendre a-b = 1/2~%"))
-           (gered1 (list a b) (list c) #'legf24))
+           (gered1 (list a b) (list c) #'legf24 arg))
           
 	  ((alike1 a-b (mul -1 inv2))
 	   ;; a-b = -1/2
@@ -1476,14 +1476,14 @@
 	   ;; For example F(a,a+1/2;c;x)
 	   (when $trace2f1
 	     (format t "Legendre a-b = -1/2~%"))
-	   (legf24 (list a b) (list c) var))
+	   (legf24 (list a b) (list c) arg))
           
 	  ((alike1 c-a-b '((rat simp) 1 2))
 	   ;; c-a-b = 1/2
 	   ;; For example F(a,b;a+b+1/2;z)
 	   (when $trace2f1
 	     (format t "Legendre c-a-b = 1/2~%"))
-	   (legf20 (list a b) (list c) var))
+	   (legf20 (list a b) (list c) arg))
           
           ((and (alike1 c-a-b '((rat simp) 3 2))
 		(not (alike1 c 1))
@@ -1520,25 +1520,25 @@
 	   ;;    F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a,c-b;c;z)
 	   (when $trace2f1
 	     (format t "Legendre c-a-b = -1/2~%"))
-	   (gered1 (list a b) (list c) #'legf20))
+	   (gered1 (list a b) (list c) #'legf20 arg))
           
 	  ((alike1 1-c a-b)
 	   ;; 1-c = a-b, F(a,b; b-a+1; z)
 	   (when $trace2f1
 	     (format t "Legendre 1-c = a-b~%"))
-	   (gered1 (list a b) (list c) #'legf16))
+	   (gered1 (list a b) (list c) #'legf16 arg))
           
 	  ((alike1 1-c (mul -1 a-b))
 	   ;; 1-c = b-a, e.g. F(a,b; a-b+1; z)
 	   (when $trace2f1
 	     (format t "Legendre 1-c = b-a~%"))
-	   (legf16 (list a b) (list c) var))
+	   (legf16 (list a b) (list c) arg))
           
 	  ((alike1 1-c c-a-b)
 	   ;; 1-c = c-a-b, e.g. F(a,b; (a+b+1)/2; z)
 	   (when $trace2f1
 	     (format t "Legendre 1-c = c-a-b~%"))
-	   (gered1 (list a b) (list c) #'legf14))
+	   (gered1 (list a b) (list c) #'legf14 arg))
           
 	  ((alike1 1-c (mul -1 c-a-b))
 	   ;; 1-c = a+b-c
@@ -1546,13 +1546,13 @@
 	   ;; For example F(a,1-a;c;x)
 	   (when $trace2f1
 	     (format t "Legendre 1-c = a+b-c~%"))
-	   (legf14 (list a b) (list c) var))
+	   (legf14 (list a b) (list c) arg))
           
 	  ((alike1 a-b (mul -1 c-a-b))
 	   ;; a-b = a+b-c, e.g. F(a,b;2*b;z)
 	   (when $trace2f1
 	     (format t "Legendre a-b = a+b-c~%"))
-	   (legf36 (list a b) (list c) var))
+	   (legf36 (list a b) (list c) arg))
           
 	  ((or (alike1 1-c inv2)
 	       (alike1 1-c (mul -1 inv2)))
@@ -1943,12 +1943,12 @@
 ;; See A&S 15.3.3:
 ;;
 ;; F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a,c-b;c;z)
-(defun gered1 (arg-l1 arg-l2 simpflg)
+(defun gered1 (arg-l1 arg-l2 simpflg arg)
   (destructuring-bind (a b)
       arg-l1
     (destructuring-bind (c)
 	arg-l2
-      (mul (power (sub 1 var)
+      (mul (power (sub 1 arg)
 		  (add c
 		       (mul -1 a)
 		       (mul -1 b)))
@@ -1956,7 +1956,7 @@
 		    (list (sub c a)
 			  (sub c b))
 		    arg-l2
-	            var)))))
+	            arg)))))
 
 ;; See A&S 15.3.4
 ;;
@@ -3080,7 +3080,7 @@
 	   ;; Recall that a' + 1/2 is an integer.  Thus we have
 	   ;; F(<int>,<int>,1/2+n;z), which we know how to handle in
 	   ;; step4-int.
-	   (gered1 (list a b) (list c) #'hgfsimp))
+	   (gered1 (list a b) (list c) #'hgfsimp arg))
 	  (t
 	   (let ((newf 
 		  (cond ((equal (checksigntm arg) '$positive)
