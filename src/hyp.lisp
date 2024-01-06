@@ -458,7 +458,8 @@
                  ;; both order of arguments.
                  (setq lgf (legpol-core (car arg-l1) 
                                         (cadr arg-l1) 
-                                        (car arg-l2))))
+                                        (car arg-l2)
+                                        var)))
             (return lgf))
            ((and (or (not (integerp n))
                      (not $expand_polynomials))
@@ -1171,6 +1172,7 @@
 	      (t
 	       'failg))))))
 
+;; This isn't called from anywhere?
 (defun geredno1
     (arg-l1 arg-l2)
   (cond ((and (> (car arg-l2)(car arg-l1))
@@ -1841,7 +1843,7 @@
                      '($assoc_legendre_p simp))
                  n m x)))))
 
-(defun legpol-core (a b c)
+(defun legpol-core (a b c arg)
   ;; I think for this to be correct, we need a to be a negative integer.
   (unless (and (eq '$yes (ask-integerp a))
 	       (eq (asksign a) '$negative))
@@ -1855,7 +1857,7 @@
        ;; A&S 22.5.49:
        ;; P(n,x) = F(-n,n+1;1;(1-x)/2)
        (legenpol (mul -1 a)
-		 (sub 1 (mul 2 var))))
+		 (sub 1 (mul 2 arg))))
 
       ((and (alike1 c '((rat simp) 1 2))
 	    (alike1 (add b a) '((rat simp) 1 2)))
@@ -1872,7 +1874,7 @@
 	      (inv (gm (add 1 (mul 2 n))))
 	      (power 2 (mul 2 n))
 	      (legenpol (mul 2 n)
-			(power var (div 1 2))))))
+			(power arg (div 1 2))))))
 
       ((and (alike1 c '((rat simp) 3 2))
 	    (alike1 (add b a) '((rat simp) 3 2)))
@@ -1889,8 +1891,8 @@
 	      (inv (gm (add 2 (mul 2 n))))
 	      (power 2 (mul 2 n))
 	      (legenpol (add 1 (mul 2 n))
-			(power var (div 1 2)))
-	      (inv (power var (div 1 2))))))
+			(power arg (div 1 2)))
+	      (inv (power arg (div 1 2))))))
 
       ((and (zerp (sub b a))
 	    (zerp (sub c (add a b))))
@@ -1902,9 +1904,9 @@
        ;; F(-n,-n;-2*n;x) = P(n,1-2/x)/binomial(2*n,n)(-1/x)^(-n)
        (mul (power (gm (add 1 (mul -1 a))) 2)
 	    (inv (gm (add 1 (mul -2 a))))
-	    (power (mul -1 var) (mul -1 a))
+	    (power (mul -1 arg) (mul -1 a))
 	    (legenpol (mul -1 a)
-		      (add 1 (div -2 var)))))
+		      (add 1 (div -2 arg)))))
       ((and (alike1 (sub a b) '((rat simp) 1 2))
 	    (alike1 (sub c (mul 2 b)) '((rat simp) 1 2)))
        ;; a - b = 1/2, c - 2*b = 1/2
@@ -1915,9 +1917,9 @@
        ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
        (mul (power (gm (add 1 (mul -2 b))) 2)
 	    (inv (gm (add 1 (mul -4 b))))
-	    (power (mul 2 (power var (div 1 2))) (mul -2 b))
+	    (power (mul 2 (power arg (div 1 2))) (mul -2 b))
 	    (legenpol (mul -2 b)
-		      (power var (div -1 2)))))
+		      (power arg (div -1 2)))))
       ((and (alike1 (sub b a) '((rat simp) 1 2))
 	    (alike1 (sub c (mul 2 a)) '((rat simp) 1 2)))
        ;; b - a = 1/2, c + 2*a = 1/2
@@ -1928,17 +1930,18 @@
        ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
        (mul (power (gm (add 1 (mul -2 a))) 2)
 	    (inv (gm (add 1 (mul -4 a))))
-	    (power (mul 2 (power var (div 1 2))) (mul -2 a))
+	    (power (mul 2 (power arg (div 1 2))) (mul -2 a))
 	    (legenpol (mul -2 a)
-		      (power var (div -1 2)))))
+		      (power arg (div -1 2)))))
       (t 
        nil))))
 
+;; This seems not be be called at all?
 (defun legpol (a b c)
   ;; See if F(a,b;c;z) is a Legendre polynomial.  If not, try
   ;; F(b,a;c;z).
-  (or (legpol-core a b c)
-      (legpol-core b a c)))
+  (or (legpol-core a b c var)
+      (legpol-core b a c var)))
 
 ;; See A&S 15.3.3:
 ;;
