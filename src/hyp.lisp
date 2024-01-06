@@ -2015,7 +2015,7 @@
 	 ;; (a = 1 or b = 1) and (a = 1/2 or b = 1/2)
 	 (when $trace2f1
 	   (format t "   Case a or b is 1 and the other is 1/2~%"))
-	 (trig-log-3-exec arg-l1 arg-l2))
+	 (trig-log-3-exec arg-l1 arg-l2 arg))
 	((and (equal (car arg-l1) (cadr arg-l1))
 	      (or (equal 1 (car arg-l1))
 		  (equal (div 1 2) (car arg-l1))))
@@ -2096,7 +2096,7 @@
 
 
 ;;Generates atan if arg positive else log
-(defun trig-log-3-exec (arg-l1 arg-l2)
+(defun trig-log-3-exec (arg-l1 arg-l2 arg)
   (declare (ignore arg-l1 arg-l2))
   ;; See A&S 15.1.4 and 15.1.5
   ;;
@@ -2105,7 +2105,7 @@
   ;; I think it's ok to convert sqrt(z^2) to z here, so $radexpand is
   ;; $all.
   (let (($radexpand '$all))
-    (cond ((equal (checksigntm var) '$positive)
+    (cond ((equal (checksigntm arg) '$positive)
 	   ;; A&S 15.1.4
 	   ;;
 	   ;; F(1/2,1;3/2,z^2) =
@@ -2115,17 +2115,17 @@
 	   ;; This is the same as atanh(z)/z.  Should we return that
 	   ;; instead?  This would make this match what hyp-atanh
 	   ;; returns.
-	   (let ((z (power var (div 1 2))))
+	   (let ((z (power arg (div 1 2))))
 	     (mul (power z -1)
 		  (inv 2)
 		  (mlog (div (add 1 z)
 			     (sub 1 z))))))
-	  ((equal (checksigntm var) '$negative)
+	  ((equal (checksigntm arg) '$negative)
 	   ;; A&S 15.1.5
 	   ;;
 	   ;; F(1/2,1;3/2,z^2) =
 	   ;; atan(z)/z
-	   (let ((z (power (mul -1 var)
+	   (let ((z (power (mul -1 arg)
 			   (div 1 2))))
 	     (mul (power z -1)
 		  (matan z)))))))
