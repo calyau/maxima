@@ -1180,7 +1180,7 @@
 
 (defun geredno2 (a b c arg)
   (cond ((> c b) (geredf b a c arg))
-	(t (gered2 a b c))))
+	(t (gered2 a b c arg))))
 
 ;; Consider F(1,1;2;z).  A&S 15.1.3 says this is equal to -log(1-z)/z.
 ;;
@@ -1961,11 +1961,11 @@
 ;; See A&S 15.3.4
 ;;
 ;; F(a,b;c;z) = (1-z)^(-a)*F(a,c-b;c;z/(z-1))
-(defun gered2 (a b c)
-  (mul (power (sub 1 var) (mul -1 a))
+(defun gered2 (a b c arg)
+  (mul (power (sub 1 arg) (mul -1 a))
        (hgfsimp (list a (sub c b))
 		(list c)
-		(div var (sub var 1)))))
+		(div arg (sub arg 1)))))
 
 ;; See A&S 15.3.9:
 ;;
