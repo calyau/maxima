@@ -664,8 +664,8 @@
 ;; Kummer's transformation.  A&S 13.1.27
 ;;
 ;; M(a,b,z) = e^z*M(b-a,b,-z)
-(defun kummer (arg-l1 arg-l2)
-  (mul (list '(mexpt) '$%e var)
+(defun kummer (arg-l1 arg-l2 arg)
+  (mul (list '(mexpt) '$%e arg)
        (confl (list (sub (car arg-l2) (car arg-l1)))
 	      arg-l2 (mul -1 var))))
 
@@ -2382,20 +2382,20 @@
 ;; Confluent hypergeometric function.
 ;;
 ;; F(a;c;z)
-(defun confl (arg-l1 arg-l2 var)
+(defun confl (arg-l1 arg-l2 arg)
   (let* ((a (car arg-l1))
          (c (car arg-l2))
          (a-c (sub a c))
          n)
-    (cond ((zerop1 var)
+    (cond ((zerop1 arg)
            ;; F(a;c;0) = 1
-           (add 1 var))
+           (add 1 arg))
           
           ((and (equal 1 c)
                 (not (integerp a))          ; Do not handle an integer or
                 (not (integerp (add a a)))) ; an half integral value
            ;; F(a;1;z) = laguerre(-a,z)
-           (lagpol (neg a) 0 var))
+           (lagpol (neg a) 0 arg))
           
           ((and (maxima-integerp a)
                 (member ($sign a) '($neg nz)))
@@ -2422,8 +2422,8 @@
 	       (let ((n (neg a)))
 	         (mul (power -1  n)
 	              (inv (take '(%binomial) (add n n) n))
-	              (lagpol n (sub c 1) var)))
-	       (let ((z (div var 2)))
+	              (lagpol n (sub c 1) arg)))
+	       (let ((z (div arg 2)))
 		 (mul (power '$%e z)
 		      (bestrig (add a '((rat simp) 1 2))
 		               (div (mul z z) 4))))))
@@ -2440,9 +2440,9 @@
              (format t "~&   : n = ~A~%" n))
            (sratsimp
              (mul (take '(%gamma) (sub a (add n '((rat simp) 1 2))))
-                  (power (div var 4)
+                  (power (div arg 4)
                          (sub (add '((rat simp) 1 2) n) a))
-                  (power '$%e (div var 2))
+                  (power '$%e (div arg 2))
                   (let ((index (gensym)))
                     (dosum
                       (mul (power -1 index)
@@ -2453,7 +2453,7 @@
                            (inv (take '(mfactorial) index))
                            (take '(%bessel_i)
                                  (add a index (- n) '((rat simp) -1 2))
-                                 (div var 2)))
+                                 (div arg 2)))
                      index 0 n t)))))
                 
           ((and (integerp (setq n (sub c (add a a))))
@@ -2468,9 +2468,9 @@
              (format t "~&   : n = ~A~%" n))
            (sratsimp
              (mul (take '(%gamma) (sub a '((rat simp) 1 2)))
-                  (power (div var 4)
+                  (power (div arg 4)
                          (sub '((rat simp) 1 2) a))
-                  (power '$%e (div var 2))
+                  (power '$%e (div arg 2))
                   (let ((index (gensym)))
                     (dosum
                       (mul (take '($pochhammer) (- n) index)
@@ -2480,7 +2480,7 @@
                            (inv (take '(mfactorial) index))
                            (take '(%bessel_i)
                                  (add a index '((rat simp) -1 2))
-                                 (div var 2)))
+                                 (div arg 2)))
                      index 0 n t)))))
           
           ((and (integerp (setq n (sub a '((rat simp) 1 2))))
@@ -2498,7 +2498,7 @@
                (format t "~&   : m = ~A~%" m))
              (sratsimp
                (mul (power 2 (- 1 m))
-                    (power '$%e (div var 2))
+                    (power '$%e (div arg 2))
                     (factorial (- m 1))
                     (factorial n)
                     (inv (take '($pochhammer) '((rat simp) 1 2) (- m 1)))
@@ -2506,12 +2506,12 @@
                     (let ((index1 (gensumindex)))
                       (dosum
                         (mul (power 2 (neg index1))
-                             (power (neg var) index1)
+                             (power (neg arg) index1)
                              (inv (take '(mfactorial) index1))
                              (mfuncall '$gen_laguerre
                                        (sub n index1)
                                        (sub index1 '((rat simp) 1 2))
-                                       (neg var))
+                                       (neg arg))
                              (let ((index2 (gensumindex)))
                                (dosum
                                  (mul (power -1 index2)
@@ -2524,7 +2524,7 @@
                                           (mul (take '(%binomial) index2 index3)
                                                (take '(%bessel_i)
                                                      (sub index2 (mul 2 index3))
-                                                     (div var 2)))
+                                                     (div arg 2)))
                                          index3 0 index2 t)))
                                 index2 0 (add index1 m -1) t)))
                        index1 0 n t))))))
@@ -2546,14 +2546,14 @@
              (sratsimp
                (mul (power -1 n)
                     (power 2 (- 1 m))
-                    (power '$%e (div var 2))
+                    (power '$%e (div arg 2))
                     (factorial (- m 1))
                     (inv (take '($pochhammer) '((rat simp) 1 2) (- m 1)))
                     (inv (take '($pochhammer) (sub m '((rat simp) 1 2)) n))
                     (let ((index1 (gensumindex)))
                       (dosum
                         (mul (power 2 (neg index1))
-                             (power var index1)
+                             (power arg index1)
                              (take '(%binomial) n index1)
                              (take '($pochhammer) 
                                    (sub '((rat simp) 3 2) (+ m n))
@@ -2569,14 +2569,14 @@
                                           (mul (take '(%binomial) index2 index3)
                                                (take '(%bessel_i)
                                                      (sub index2 (mul 2 index3))
-                                                     (div var 2)))
+                                                     (div arg 2)))
                                           index3 0 index2 t)))
                                  index2 0 (add index1 m -1) t)))
                         index1 0 n t))))))
           
 	  ((not (hyp-integerp a-c))
 	   (cond ((hyp-integerp a)
-		  (kummer arg-l1 arg-l2))
+		  (kummer arg-l1 arg-l2 arg))
 		 ($prefer_whittaker
 		  ;; A&S 15.1.32:
 		  ;;
@@ -2599,15 +2599,15 @@
 		  ;; return this second form instead.
 		  (let* ((m (div (sub c 1) 2))
 			 (k (add '((rat simp) 1 2) m (mul -1 a))))
-		    (mul (power var (mul -1 (add '((rat simp) 1 2) m)))
-			 (power '$%e (div var 2))
-			 (whitfun k m var))))
+		    (mul (power arg (mul -1 (add '((rat simp) 1 2) m)))
+			 (power '$%e (div arg 2))
+			 (whitfun k m arg))))
 		 (t
-		  (fpqform arg-l1 arg-l2 var))))
+		  (fpqform arg-l1 arg-l2 arg))))
 	  ((minusp a-c)
-	   (sratsimp (erfgammared a c var)))
+	   (sratsimp (erfgammared a c arg)))
 	  (t
-	   (kummer arg-l1 arg-l2)))))
+	   (kummer arg-l1 arg-l2 arg)))))
 
 ;; A&S 13.6.19:
 ;; M(1/2,3/2,-z^2) =  sqrt(%pi)*erf(z)/2/sqrt(z)
@@ -2665,8 +2665,7 @@
 	   ;; Apply Kummer's tranformation to get the form M(a-1,a,z)
 	   ;;
 	   ;; (I don't think we ever get here, but just in case, we leave it.)
-	   (let ((var z))
-	     (kummer (list a) (list c))))
+	   (kummer (list a) (list c) z))
 	  (t
 	   ;; We have M(a, a+n, z)
 	   ;;
