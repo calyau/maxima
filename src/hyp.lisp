@@ -1149,7 +1149,7 @@
 	       ;; c is an integer
 	       (cond ((and inl1p inl1bp)
 		      ;; a, b, c are (numerical) integers
-		      (derivint a b c))
+		      (derivint a b c arg))
 		     (inl1p
 		      ;; a and c are integers
 		      (geredno2 b a c arg))
@@ -1214,9 +1214,9 @@
 ;; So if a = 1+ell, b = 1+ell+m, and c = 2+ell+m+n, we have ell = a-1,
 ;; m = b - a, and n = c - ell - m - 2 = c - b - 1.
 
-(defun derivint (a b c)
+(defun derivint (a b c arg)
   (if (> a b)
-      (derivint b a c)
+      (derivint b a c arg)
       (let ((l (- a 1))
 	    (m (- b a))
             (n (- c b 1))
@@ -1239,9 +1239,9 @@
                                       l))
                           psey
                           (+ n m))))
-        (if (onep1 var)
-            ($limit result psey var)
-            (maxima-substitute var psey result)))))
+        (if (onep1 arg)
+            ($limit result psey arg)
+            (maxima-substitute arg psey result)))))
 
 ;; Handle F(a, b; c; z) for certain values of a, b, and c.  See the
 ;; comments below for these special values.  The optional arg z
