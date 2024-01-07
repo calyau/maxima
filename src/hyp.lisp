@@ -559,7 +559,7 @@
     (cond ((and (< len1 2)
 		(< len2 2))
 	   ;; pFq where p and q < 2.
-	   (simp2>f<2 arg-l1 arg-l2 len1 len2))
+	   (simp2>f<2 arg-l1 arg-l2 len1 len2 arg))
 	  ((and (equal len1 2)
 		(equal len2 1))
 	   ;; 2F1
@@ -590,15 +590,15 @@
 	   (fpqform arg-l1 arg-l2 arg)))))
 
 ;; Handle the cases where the number of indices is less than 2.
-(defun simp2>f<2 (arg-l1 arg-l2 len1 len2)
+(defun simp2>f<2 (arg-l1 arg-l2 len1 len2 arg)
   (cond ((and (zerop len1) (zerop len2))
 	 ;; hgfred([],[],z) = e^z
-         (power '$%e var))
+         (power '$%e arg))
         ((and (zerop len1) (equal len2 1))
          (cond 
-           ((zerop1 var)
+           ((zerop1 arg)
             ;; hgfred([],[b],0) = 1
-            (add var 1))
+            (add arg 1))
            (t
             ;; hgfred([],[b],z)
             ;;
@@ -621,13 +621,13 @@
             ;; So this hypergeometric series is a Bessel I function:
             ;;
             ;; hgfred([],[b],z) = bessel_i(b-1,2*sqrt(z))*z^((1-b)/2)*gamma(b)
-            (bestrig (car arg-l2) var))))
+            (bestrig (car arg-l2) arg))))
 	((zerop len2)
 	 ;; hgfred([a],[],z) = 1 + sum(binomial(a+k,k)*z^k) = 1/(1-z)^a
-	 (power (sub 1 var) (mul -1 (car arg-l1))))
+	 (power (sub 1 arg) (mul -1 (car arg-l1))))
 	(t
 	 ;; The general case of 1F1, the confluent hypergeomtric function.
-	 (confl arg-l1 arg-l2 var))))
+	 (confl arg-l1 arg-l2 arg))))
 
 ;; Computes 
 ;;
@@ -703,8 +703,8 @@
 ;; %m[k,u](z) = exp(-z/2)*z^(u+1/2)*M(1/2+u-k,1+2*u,z)
 ;;
 ;; where M is the confluent hypergeometric function.
-(defun whitfun (k m var)
-  (list '(mqapply) (list '($%m array) k m) var))
+(defun whitfun (k m arg)
+  (list '(mqapply) (list '($%m array) k m) arg))
 
 (defun simp1f2 (arg-l1 arg-l2 arg)
   "Simplify 1F2([a], [b,c], arg).  ARG-L1 is the list [a], and ARG-L2 is
