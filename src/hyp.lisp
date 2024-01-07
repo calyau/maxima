@@ -1173,6 +1173,7 @@
 	       'failg))))))
 
 ;; This isn't called from anywhere?
+#+nil
 (defun geredno1
     (arg-l1 arg-l2)
   (cond ((and (> (car arg-l2)(car arg-l1))
@@ -1806,14 +1807,14 @@
 ;; F(a,b;c;z) = 2*gamma(2*b)/gamma(b)/gamma(2*b-a)*w^(-b)*(1-w)^((b-a)/2)
 ;;              *Q(b-1,b-a,2/w-1)*exp(-%i*%pi*(b-a))
 ;;
-(defun legf36 (arg-l1 arg-l2 var)
+(defun legf36 (arg-l1 arg-l2 arg)
   (declare (ignore arg-l2))
   (let* ((a (car arg-l1))
 	 (b (cadr arg-l1))
 	 (n (sub b 1))
 	 (m (sub b a))
-	 ;;z (div (sub 2 var) var)
-	 (z (sub (div 2 var) 1)))
+	 ;;z (div (sub 2 arg) arg)
+	 (z (sub (div 2 arg) 1)))
     (mul (inv (power 2 n))
 	 (inv (gm (add 1 n)))
 	 (inv (gm (add 1 n m)))
@@ -1936,7 +1937,9 @@
       (t 
        nil))))
 
-;; This seems not be be called at all?
+;; This seems not be be called at all?  There is a commented-out call
+;; in LEGFUN that says it doesn't make sense to call LEGPOL there.
+#+nil
 (defun legpol (a b c)
   ;; See if F(a,b;c;z) is a Legendre polynomial.  If not, try
   ;; F(b,a;c;z).
