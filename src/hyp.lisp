@@ -851,7 +851,7 @@
      
      (cond ((hyp-integerp (add (sub a b) (inv 2)))
 	    ;; F(a,b;c,z) where a-b+1/2 is an integer
-	    (cond ((setq lgf (step7 a b c))
+	    (cond ((setq lgf (step7 a b c arg))
 		   (unless (atom lgf)
 		     (when $trace2f1
 		       (format t " Yes: step7~%"))
@@ -1020,7 +1020,7 @@
 )
 
 ;; A new version of step7.
-(defun step7 (a b c)
+(defun step7 (a b c arg)
   ;; To get here, we know that a-b+1/2 is an integer.  To make further
   ;; progress, we want a+b-1/2-c to be an integer too.
   ;;
@@ -1040,6 +1040,7 @@
   ;; Thus F(a',b;c';z) is exactly the form we want for hyp-cos.  In
   ;; fact, it's A&S 15.1.14: F(a,a+1/2,;1+2a;z) =
   ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a).
+  #+nil
   (declare (special var))
   (let ((q (sub (add a b (inv 2))
 		c)))
@@ -1059,11 +1060,11 @@
 	(format t "     p2, r2 = ~A ~A~%" p2 r2))
       (cond ((<= (+ (abs p1) (abs r1))
 		 (+ (abs p2) (abs r2)))
-	     (step7-core a b c))
+	     (step7-core a b c arg))
 	    (t
-	     (step7-core b a c))))))
+	     (step7-core b a c arg))))))
 
-(defun step7-core (a b c)
+(defun step7-core (a b c arg)
   (let* ((p (add (sub a b) (inv 2)))
 	 (q (sub (add a b (inv 2))
 		 c))
@@ -1087,7 +1088,7 @@
 	  (maxima-display fun))
 	;; Compute the result, and substitute the actual argument into
 	;; result.
-	(maxima-substitute var 'ell
+	(maxima-substitute arg 'ell
 	       (cond ((>= p 0)
 		      (cond ((>= r 0)
 			     (step-7-pp a-prime b c-prime p r 'ell fun))
