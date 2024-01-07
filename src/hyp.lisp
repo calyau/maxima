@@ -668,7 +668,7 @@
 (defun kummer (arg-l1 arg-l2 arg)
   (mul (list '(mexpt) '$%e arg)
        (confl (list (sub (car arg-l2) (car arg-l1)))
-	      arg-l2 (mul -1 var))))
+	      arg-l2 (mul -1 arg))))
 
 ;; Return non-NIL if any element of the list L is zero.
 
