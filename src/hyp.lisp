@@ -580,7 +580,7 @@
 	  ((and (= len1 1)
 		(= len2 2))
 	  ;; Some 1F2 forms
-	   (simp1f2 arg-l1 arg-l2))
+	   (simp1f2 arg-l1 arg-l2 arg))
 	  ((and (= len1 2)
 		(= len2 2))
 	   (simp2f2 arg-l1 arg-l2 arg))
@@ -706,8 +706,8 @@
 (defun whitfun (k m var)
   (list '(mqapply) (list '($%m array) k m) var))
 
-(defun simp1f2 (arg-l1 arg-l2)
-  "Simplify 1F2([a], [b,c], var).  ARG-L1 is the list [a], and ARG-L2 is
+(defun simp1f2 (arg-l1 arg-l2 arg)
+  "Simplify 1F2([a], [b,c], arg).  ARG-L1 is the list [a], and ARG-L2 is
   the list [b, c].  The dependent variable is the (special variable)
   VAR."
   (let ((a (car arg-l1)))
@@ -724,10 +724,10 @@
 	 ;;  expintegral_si(2*sqrt(-y)) = 2*%f[1,2]([1/2],[3/2,3/2], y)*sqrt(-y)
 	 ;;
 	 ;; Hence %f[1,2]([1/2],[3/2,3/2], y) = expintegral_si(2*sqrt(-y))/2/sqrt(-y)
-	 (div (ftake '%expintegral_si (mul 2 (power (neg var) 1//2)))
-	      (mul 2 (power (neg var) 1//2))))
+	 (div (ftake '%expintegral_si (mul 2 (power (neg arg) 1//2)))
+	      (mul 2 (power (neg arg) 1//2))))
 	(t
-	 (fpqform arg-l1 arg-l2 var))))))
+	 (fpqform arg-l1 arg-l2 arg))))))
 
 (defun simp2f2 (arg-l1 arg-l2 arg)
   (destructuring-bind (a1 a2)
