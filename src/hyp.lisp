@@ -576,18 +576,18 @@
                   ;; 2F0(a,-n; ; z), n a positive integer
                   (2f0polys (reverse arg-l1) (cadr arg-l1)))
                  (t
-                  (fpqform arg-l1 arg-l2 var))))
+                  (fpqform arg-l1 arg-l2 arg))))
 	  ((and (= len1 1)
 		(= len2 2))
 	  ;; Some 1F2 forms
 	   (simp1f2 arg-l1 arg-l2))
 	  ((and (= len1 2)
 		(= len2 2))
-	   (simp2f2 arg-l1 arg-l2))
+	   (simp2f2 arg-l1 arg-l2 arg))
 	  (t
 	   ;; We don't have simplifiers for any other hypergeometric
 	   ;; function.
-	   (fpqform arg-l1 arg-l2 var)))))
+	   (fpqform arg-l1 arg-l2 arg)))))
 
 ;; Handle the cases where the number of indices is less than 2.
 (defun simp2>f<2 (arg-l1 arg-l2 len1 len2)
@@ -729,7 +729,7 @@
 	(t
 	 (fpqform arg-l1 arg-l2 var))))))
 
-(defun simp2f2 (arg-l1 arg-l2)
+(defun simp2f2 (arg-l1 arg-l2 arg)
   (destructuring-bind (a1 a2)
       arg-l1
     (destructuring-bind (b1 b2)
@@ -757,12 +757,12 @@
 	 ;; which shows that expintegral_ei can be written in terms of
 	 ;; %f[2,2]([1,1],[2,2],z) too.  Not sure how to choose
 	 ;; between the two representations.
-	 (div (sub (ftake '%expintegral_ci (mul 2 (power (neg var) 1//2)))
-		   (add (ftake '%log (mul 2 (power (neg var) 1//2)))
+	 (div (sub (ftake '%expintegral_ci (mul 2 (power (neg arg) 1//2)))
+		   (add (ftake '%log (mul 2 (power (neg arg) 1//2)))
 			'$%gamma))
-	      var))
+	      arg))
 	(t
-	 (fpqform arg-l1 arg-l2 var))))))
+	 (fpqform arg-l1 arg-l2 arg))))))
 
 (defvar $trace2f1 nil
   "Enables simple tracing of simp2f1 so you can see how it decides
