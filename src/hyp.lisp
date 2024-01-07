@@ -1601,7 +1601,7 @@
 ;; F(a,b;c;w) = 2^(c-1)*gamma(c)*(-w)^((1-c)/2)*P(c-2*b-1,1-c,sqrt(1-w))
 ;;
 ;;
-(defun legf20 (arg-l1 arg-l2 var)
+(defun legf20 (arg-l1 arg-l2 arg)
   ;; F(a,b;a+b+1/2;x)
   (let* (($radexpand nil)
 	 (b (cadr arg-l1))
@@ -1618,12 +1618,12 @@
     ;; This formula is correct for all arguments x.
     (mul (power 2 (add a b '((rat simp) -1 2)))
 	 (take '(%gamma) (add a b '((rat simp) 1 2)))
-	 (power var
+	 (power arg
 		(div (sub '((rat simp) 1 2) (add a b))
 		     2))
 	 (legen n
 		m
-		(power (sub 1 var) '((rat simp) 1 2))
+		(power (sub 1 arg) '((rat simp) 1 2))
 		'$p))))
 
 ;; Handle the case a-b = -1/2.
@@ -1697,7 +1697,7 @@
 ;; F(a,b;c;w) = gamma(c)*w^(1/2-c/2)*(1-w)^(-a)*P(-a,1-c,(1+w)/(1-w));
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
-(defun legf16 (arg-l1 arg-l2 var)
+(defun legf16 (arg-l1 arg-l2 arg)
   (let* (($radexpand nil)
 	 (a (car arg-l1))
 	 (c (car arg-l2))
@@ -1707,13 +1707,13 @@
 	 ;; m = b - a, so b = a + m
 	 (b (add a m))
 	 (n (mul -1 b))
-	 (z (div (add 1 var)
-		 (sub 1 var))))
+	 (z (div (add 1 arg)
+		 (sub 1 arg))))
     (when $trace2f1
       (format t "a, c = ~A ~A~%" a c)
       (format t "b = ~A~%" b))
     ;; A&S 15.4.14, 15.4.15
-    (cond ((eq (asksign var) '$negative)
+    (cond ((eq (asksign arg) '$negative)
 	   ;; A&S 15.4.15
 	   ;;
 	   ;; F(a,b;a-b+1,x) = gamma(a-b+1)*(1-x)^(-b)*(-x)^(b/2-a/2)
@@ -1721,13 +1721,13 @@
 	   ;;
 	   ;; for x < 0
 	   (mul (take '(%gamma) c)
-		(power (sub 1 var) (mul -1 b))
-		(power (mul -1 var) (div m 2))
+		(power (sub 1 arg) (mul -1 b))
+		(power (mul -1 arg) (div m 2))
 		(legen n m z '$p)))
 	  (t
 	   (mul (take '(%gamma) c)
-		(power (sub 1 var) (mul -1 b))
-		(power var (div m 2))
+		(power (sub 1 arg) (mul -1 b))
+		(power arg (div m 2))
 		(legen n m z '$p))))))
 
 ;; Handle the case 1-c = a+b-c.
@@ -1749,7 +1749,7 @@
 ;; The code belows chooses the first solution.
 ;;
 ;; F(a,b;c;w) = gamma(c)*(-w)^(1/2-c/2)*(1-w)^(c/2-1/2)*P(-a,1-c,1-2*w)
-(defun legf14 (arg-l1 arg-l2 var)
+(defun legf14 (arg-l1 arg-l2 arg)
   ;; Set $radexpand to NIL, because we don't want (-z)^x getting
   ;; expanded to (-1)^x*z^x because that's wrong for this.
   (let* (($radexpand nil)
@@ -1758,7 +1758,7 @@
 	 (c (first arg-l2))
 	 (m (sub 1 c))
 	 (n (mul -1 a))
-	 (z (sub 1 (mul 2 var))))
+	 (z (sub 1 (mul 2 arg))))
     (when $trace2f1
       (format t "~&legf14~%"))
     ;; A&S 15.4.16, 15.4.17
@@ -1767,8 +1767,8 @@
 	   ;; F(a,1-a;c;x).  That is, a+b = 1.  If we don't have it
 	   ;; exit now.
 	   nil)
-	  ((and (eq (asksign var) '$positive)
-		(eq (asksign (sub 1 var)) '$positive))
+	  ((and (eq (asksign arg) '$positive)
+		(eq (asksign (sub 1 arg)) '$positive))
 	   (when $trace2f1
 	     (format t " A&S 15.4.17~%"))
 	   ;; A&S 15.4.17
@@ -1778,8 +1778,8 @@
 	   ;;
 	   ;; for 0 < x < 1
 	   (mul (gm c)
-		(power var (div (sub 1 c) 2))
-		(power (sub 1 var) (div (sub c 1) 2))
+		(power arg (div (sub 1 c) 2))
+		(power (sub 1 arg) (div (sub c 1) 2))
 		(legen n m z '$p)))
 	  (t
 	   ;; A&S 15.4.16
@@ -1789,8 +1789,8 @@
 	   (when $trace2f1
 	     (format t " A&S 15.4.17~%"))
 	   (mul (gm c)
-		(power (mul -1 var) (div (sub 1 c) 2))
-		(power (sub 1 var) (div (sub c 1) 2))
+		(power (mul -1 arg) (div (sub 1 c) 2))
+		(power (sub 1 arg) (div (sub c 1) 2))
 		(legen n m z '$p))))))
 
 ;; Handle a-b = a+b-c
