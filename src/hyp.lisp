@@ -142,7 +142,7 @@
   (prog (resimp listcmdiff)
      (setq arg-l1 (macsimp arg-l1)
            arg-l2 (macsimp arg-l2)
-           resimp (simpg arg-l1 arg-l2))
+           resimp (simpg arg-l1 arg-l2 var))
      (cond ((not (eq (and (consp resimp) (car resimp)) 'fail))
             (return resimp))
            ((and (not (zerop1 var)) ; Do not call splitfpq for a zero argument
@@ -162,13 +162,14 @@
 
 ;; Simplify the parameters.  If L1 and L2 have common elements, remove
 ;; them from both L1 and L2.
-(defun simpg (arg-l1 arg-l2)
+(defun simpg (arg-l1 arg-l2 arg)
   (let ((il (zl-intersection arg-l1 arg-l2)))
     (cond ((null il)
-	   (simpg-exec arg-l1 arg-l2))
+	   (simpg-exec arg-l1 arg-l2 arg))
 	  (t
 	   (simpg-exec (del il arg-l1)
-		       (del il arg-l2))))))
+		       (del il arg-l2)
+                       arg)))))
 
 (defun del (a b)
   (cond ((null a) b)
@@ -177,7 +178,7 @@
 
 ;; Handle the simple cases where the result is either a polynomial, or
 ;; is undefined because we divide by zero.
-(defun simpg-exec (arg-l1 arg-l2)
+(defun simpg-exec (arg-l1 arg-l2 arg)
   (let (n)
     (cond ((zerop-in-l arg-l1)
 	   ;; A zero in the first index means the series terminates
@@ -186,7 +187,7 @@
 	  ((setq n (hyp-negp-in-l arg-l1))
 	   ;; A negative integer in the first series means we have a
 	   ;; polynomial.
-	   (create-poly arg-l1 arg-l2 n))
+	   (create-poly arg-l1 arg-l2 n arg))
 	  ((and (or (zerop-in-l arg-l2)
 		    (hyp-negp-in-l arg-l2))
 		(every #'mnump arg-l1)
@@ -227,7 +228,7 @@
       min)))
 
 ;; Create the appropriate polynomial for the hypergeometric function.
-(defun create-poly (arg-l1 arg-l2 n)
+(defun create-poly (arg-l1 arg-l2 n arg)
   (let ((len1 (length arg-l1))
 	(len2 (length arg-l2)))
     ;; n is the smallest (in magnitude) negative integer in L1.  To
@@ -245,7 +246,7 @@
 	  ((and (equal len1 2)
 		(zerop len2))
 	   (2f0polys arg-l1 n))
-	  (t (create-any-poly arg-l1 arg-l2 (mul -1 n))))))
+	  (t (create-any-poly arg-l1 arg-l2 (mul -1 n) arg)))))
 
 (defun 1f1polys (arg-l2 n)
   (let* ((c (car arg-l2))
@@ -519,12 +520,11 @@
 ;; are made to ensure the hypergeometric function reduces to a
 ;; polynomial.
 (defmfun $hgfpoly (arg-l1 arg-l2 arg)
-  (let ((var arg)
-	(*par* arg)
+  (let ((*par* arg)
 	(n (hyp-negp-in-l (cdr arg-l1))))
-    (create-any-poly (cdr arg-l1) (cdr arg-l2) (- n))))
+    (create-any-poly (cdr arg-l1) (cdr arg-l2) (- n) arg)))
 
-(defun create-any-poly (arg-l1 arg-l2 n)
+(defun create-any-poly (arg-l1 arg-l2 n arg)
   (prog (result exp prodnum proden)
      (setq result 1 prodnum 1 proden 1 exp 1)
      loop
@@ -534,7 +534,7 @@
      (setq result
 	   (add result
 		(mul prodnum
-		     (power var exp)
+		     (power arg exp)
 		     (inv proden)
 		     (inv (factorial exp)))))
      (setq n (sub n 1)
