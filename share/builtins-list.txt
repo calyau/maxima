@@ -498,6 +498,7 @@ url_base
 browser
 desolve
 determinant
+determinant_by_lu
 detout
 dfloat
 dgauss_a
