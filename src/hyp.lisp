@@ -242,13 +242,13 @@
 	   (2f1polys arg-l1 arg-l2 n arg))
 	  ((and (equal len1 1)
 		(equal len2 1))
-	   (1f1polys arg-l2 n))
+	   (1f1polys arg-l2 n arg))
 	  ((and (equal len1 2)
 		(zerop len2))
 	   (2f0polys arg-l1 n arg))
 	  (t (create-any-poly arg-l1 arg-l2 (mul -1 n) arg)))))
 
-(defun 1f1polys (arg-l2 n)
+(defun 1f1polys (arg-l2 n arg)
   (let* ((c (car arg-l2))
 	 (n (mul -1 n))
 	 (fact1 (mul (power 2 n)
@@ -260,7 +260,7 @@
 	 ;; $radexpand $all is ok here.
 	 (fact2 (let (($radexpand '$all))
 		  (mul (power 2 '((rat simp) 1 2))
-		       (power var '((rat simp) 1 2))))))
+		       (power arg '((rat simp) 1 2))))))
     (cond ((alike1 c '((rat simp) 1 2))
 	   ;; A&S 22.5.56
 	   ;; hermite(2*n,x) = (-1)^n*(2*n)!/n!*M(-n,1/2,x^2)
@@ -290,12 +290,12 @@
 		(hermpol (add n n 1) fact2)
 		;; Similarly, $radexpand here is ok to convert sqrt(z^2) to z.
 		(let (($radexpand '$all))
-		  (inv (power var '((rat simp) 1 2))))))
+		  (inv (power arg '((rat simp) 1 2))))))
           ((alike1 c (neg (add n n)))
            ;; 1F1(-n; -2*n; z)
            (mul (power -1 n)
                 (inv (take '(%binomial) (add n n) n))
-                (lagpol n (sub c 1) var)))
+                (lagpol n (sub c 1) arg)))
 	  (t
 	   ;; A&S 22.5.54:
 	   ;;
@@ -321,15 +321,15 @@
 	       (if (or (zerop c)
 	               (and (minusp c) (> c (- n))))
 	           (merror (intl:gettext "hgfred: 1F1(~M; ~M; ~M) not defined.")
-	                   (- n) c var)
+	                   (- n) c arg)
 	           (mul (take '(mfactorial) n)
 	                (inv (take '($pochhammer) c n))
-	                (lagpol n (sub c 1) var)))
+	                (lagpol n (sub c 1) arg)))
 	       (let (($gamma_expand t)) ; Expand Gamma function
 	         (mul (take '(mfactorial) n)
 	              (take '(%gamma) c)
 	              (inv (take '(%gamma) (add c n)))
-	              (lagpol n (sub c 1) var))))))))
+	              (lagpol n (sub c 1) arg))))))))
 
 ;; Hermite polynomial.  Note: The Hermite polynomial used here is the
 ;; He polynomial, defined as (A&S 22.5.18, 22.5.19)
@@ -2408,7 +2408,7 @@
           ((and (maxima-integerp a)
                 (member ($sign a) '($neg nz)))
            ;; F(-n; c; z) and n a positive integer
-           (1f1polys (list c) a))
+           (1f1polys (list c) a arg))
           
           ((alike1 c (add a a))
 	   ;; F(a;2a;z)
