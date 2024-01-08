@@ -816,7 +816,7 @@
      (cond ((or (alike1 (sub a b) '((rat simp) 1 2))
                 (alike1 (sub b a) '((rat simp) 1 2)))
 	    ;; F(a,b;c;z) where |a-b|=1/2 
-	    (cond ((setq lgf (hyp-cos a b c))
+	    (cond ((setq lgf (hyp-cos a b c arg))
 		   (when $trace2f1
 		     (format t " Yes: hyp-cos~%"))
 	           (return lgf)))))
@@ -1247,7 +1247,7 @@
 ;; Handle F(a, b; c; z) for certain values of a, b, and c.  See the
 ;; comments below for these special values.  The optional arg z
 ;; defaults to var, which is usually the argument of hgfred.
-(defun hyp-cos (a b c &optional (z var))
+(defun hyp-cos (a b c z)
   (let ((a1 (div (sub (add a b) (div 1 2)) 2))
 	(z1 (sub 1 z)))
     ;; a1 = (a+b-1/2)/2
