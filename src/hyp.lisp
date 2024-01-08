@@ -16,8 +16,6 @@
 
 (macsyma-module hyp)
 
-(declare-top (special var))
-
 (defvar *debug-hyp* nil)
 
 (defmvar $prefer_whittaker nil)
@@ -119,7 +117,6 @@
   ;; verify find all of the code that does or does not need this and
   ;; until we can verify all of the test cases are correct.
   (let (;;($radexpand '$all)
-	#+nil (var arg)
 	(*par* arg)
 	(*checkcoefsignlist* nil))
     (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
@@ -1040,8 +1037,6 @@
   ;; Thus F(a',b;c';z) is exactly the form we want for hyp-cos.  In
   ;; fact, it's A&S 15.1.14: F(a,a+1/2,;1+2a;z) =
   ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a).
-  #+nil
-  (declare (special var))
   (let ((q (sub (add a b (inv 2))
 		c)))
     (unless (hyp-integerp q)
@@ -1245,8 +1240,7 @@
             (maxima-substitute arg psey result)))))
 
 ;; Handle F(a, b; c; z) for certain values of a, b, and c.  See the
-;; comments below for these special values.  The optional arg z
-;; defaults to var, which is usually the argument of hgfred.
+;; comments below for these special values.
 (defun hyp-cos (a b c z)
   (let ((a1 (div (sub (add a b) (div 1 2)) 2))
 	(z1 (sub 1 z)))
@@ -3602,8 +3596,3 @@
       (maxima-display res))
     ;; Substitute the argument into the expression and simplify the result.
     (sratsimp (maxima-substitute arg s res))))
-  
-(eval-when
-    (:compile-toplevel)
-    (declare-top (unspecial var))
-    )
