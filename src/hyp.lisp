@@ -443,7 +443,7 @@
             ;; Check if (b+n)/2 is free of the argument.
             ;; At this point of the code there is no check of the return value
             ;; of vfvp. When nil we have no solution and the result is wrong.
-            (setq l (vfvp (div (add (cadr arg-l1) n) 2)))
+            (setq l (vfvp (div (add (cadr arg-l1) n) 2) arg))
             (setq v (cdr (assoc 'v l :test #'equal)))))
      
      (cond ((and (or (not (integerp n))
@@ -1844,7 +1844,7 @@
   (unless (and (eq '$yes (ask-integerp a))
 	       (eq (asksign a) '$negative))
     (return-from legpol-core nil))
-  (let* ((l (vfvp (div (add b a) 2)))
+  (let* ((l (vfvp (div (add b a) 2) arg))
 	 (v (cdr (assoc 'v l :test #'equal))))
     ;; v is (a+b)/2
     (cond
@@ -2370,6 +2370,11 @@
 
 (defun freevarpar (exp)
   (cond ((freevar exp) (freepar exp))
+	(t nil)))
+
+(defun freevarpar2 (exp arg)
+  (cond ((freevar2 exp arg)
+         (freepar exp))
 	(t nil)))
 
 ;; Why is this needed?
@@ -2919,8 +2924,8 @@
 
 (setq *par* '$p)                           
 
-(defun vfvp (exp)
-  (m2 exp '(v freevarpar)))
+(defun vfvp (exp arg)
+  (m2 exp `(v freevarpar2 ,arg)))
 
 
 (defun fpqform (arg-l1 arg-l2 arg)
