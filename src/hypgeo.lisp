@@ -115,24 +115,24 @@
 ;;; Two general pattern for the routine lt-sf-log.
 
 ;; Recognize c*u^v + a and a=0.
-(defun m2-arbpow1 (expr var)
+(defun m2-arbpow1 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
-         (c free ,var) ; more special to ensure that c is constant
-         ((mexpt) (u has ,var) (v free ,var)))
+         (c free ,var2) ; more special to ensure that c is constant
+         ((mexpt) (u has ,var2) (v free ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize c*u^v*(a+b*u)^w+d and d=0. This is a generalization of arbpow1. 
-(defun m2-arbpow2 (expr var)
+(defun m2-arbpow2 (expr var2)
   (m2 expr
       `((mplus)
         ((mtimes)
-         ((coefftt) (c free ,var))
-         ((mexpt) (u equal ,var) (v free ,var))
+         ((coefftt) (c free ,var2))
+         ((mexpt) (u equal ,var2) (v free ,var2))
          ((mexpt)
-          ((mplus) (a free ,var) ((coefft) (b free ,var) (u equal ,var)))
-          (w free-not-zero-p ,var)))
+          ((mplus) (a free ,var2) ((coefft) (b free ,var2) (u equal ,var2)))
+          (w free-not-zero-p ,var2)))
         ((coeffpp) (d zerp)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -140,770 +140,770 @@
 ;;; The pattern to match special functions in the routine lt-sf-log.
 
 ;; Recognize asin(w)
-(defun m2-asin (expr var)
+(defun m2-asin (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt) (u nonzerp)
-         ((%asin) (w has ,var)))
+         ((%asin) (w has ,var2)))
         ((coeffpp) (a equal 0)))))
 
 ;; Recognize atan(w)
-(defun m2-atan (expr var)
+(defun m2-atan (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt) (u nonzerp)
-         ((%atan) (w has ,var)))
+         ((%atan) (w has ,var2)))
         ((coeffpp) (a equal 0)))))
 
 ;; Recognize bessel_j(v,w)
-(defun m2-onej (expr var)
+(defun m2-onej (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_j) (v free ,var) (w has ,var)))
+         ((%bessel_j) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_j(v1,w1)*bessel_j(v2,w2)
-(defun m2-twoj (expr var)
+(defun m2-twoj (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_j) (v1 free ,var) (w1 has ,var))
-         ((%bessel_j) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_j) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_j) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_y(v1,w1)*bessel_y(v2,w2)
-(defun m2-twoy (expr var)
+(defun m2-twoy (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_y) (v1 free ,var) (w1 has ,var))
-         ((%bessel_y) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_y) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_y) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_k(v1,w1)*bessel_k(v2,w2)
-(defun m2-twok (expr var)
+(defun m2-twok (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v1 free ,var) (w1 has ,var))
-         ((%bessel_k) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_k) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_k) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_k(v1,w1)*bessel_y(v2,w2)
-(defun m2-onekoney (expr var)
+(defun m2-onekoney (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v1 free ,var) (w1 has ,var))
-         ((%bessel_y) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_k) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_y) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_j(v,w)^2
-(defun m2-onej^2 (expr var)
+(defun m2-onej^2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%bessel_j) (v free ,var) (w has ,var))
+          ((%bessel_j) (v free ,var2) (w has ,var2))
           2))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_y(v,w)^2
-(defun m2-oney^2 (expr var)
+(defun m2-oney^2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%bessel_y) (v free ,var) (w has ,var))
+          ((%bessel_y) (v free ,var2) (w has ,var2))
           2))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_k(v,w)^2
-(defun m2-onek^2 (expr var)
+(defun m2-onek^2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%bessel_k) (v free ,var) (w has ,var))
+          ((%bessel_k) (v free ,var2) (w has ,var2))
           2))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v,w)
-(defun m2-onei (expr var)
+(defun m2-onei (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v free ,var) (w has ,var)))
+         ((%bessel_i) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v1,w1)*bessel_i(v2,w2)
-(defun m2-twoi (expr var)
+(defun m2-twoi (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 free ,var) (w1 has ,var))
-         ((%bessel_i) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_i) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_i) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_1(v1,w1)*hankel_1(v2,w2), product of 2 Hankel 1 functions.
-(defun m2-two-hankel_1 (expr var)
+(defun m2-two-hankel_1 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v1 free ,var) (w1 has ,var))
-         ((%hankel_1) (v2 free ,var) (w2 has ,var)))
+         ((%hankel_1) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_1) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_2(v1,w1)*hankel_2(v2,w2), product of 2 Hankel 2 functions.
-(defun m2-two-hankel_2 (expr var)
+(defun m2-two-hankel_2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_2) (v1 free ,var) (w1 has ,var))
-         ((%hankel_2) (v2 free ,var) (w2 has ,var)))
+         ((%hankel_2) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_2) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_1(v1,w1)*hankel_2(v2,w2), product of 2 Hankel functions.
-(defun m2-hankel_1*hankel_2 (expr var)
+(defun m2-hankel_1*hankel_2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v1 free ,var) (w1 has ,var))
-         ((%hankel_2) (v2 free ,var) (w2 has ,var)))
+         ((%hankel_1) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_2) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_y(v1,w1)*bessel_j(v2,w2)
-(defun m2-oneyonej (expr var)
+(defun m2-oneyonej (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_y) (v1 free ,var) (w1 has ,var))
-         ((%bessel_j) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_y) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_j) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_k(v1,w1)*bessel_j(v2,w2)
-(defun m2-onekonej (expr var)
+(defun m2-onekonej (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v1 free ,var) (w1 has ,var))
-         ((%bessel_j) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_k) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_j) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_y(v1,w1)*hankel_1(v2,w2)
-(defun m2-bessel_y*hankel_1 (expr var)
+(defun m2-bessel_y*hankel_1 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_y) (v1 free ,var) (w1 has ,var))
-         ((%hankel_1) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_y) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_1) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_y(v1,w1)*hankel_2(v2,w2)
-(defun m2-bessel_y*hankel_2 (expr var)
+(defun m2-bessel_y*hankel_2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_y) (v1 free ,var) (w1 has ,var))
-         ((%hankel_2) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_y) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_2) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_k(v1,w1)*hankel_1(v2,w2)
-(defun m2-bessel_k*hankel_1 (expr var)
+(defun m2-bessel_k*hankel_1 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v1 free ,var) (w1 has ,var))
-         ((%hankel_1) (v1 free ,var) (w2 has ,var)))
+         ((%bessel_k) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_1) (v1 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_k(v1,w1)*hankel_2(v2,w2)
-(defun m2-bessel_k*hankel_2 (expr var)
+(defun m2-bessel_k*hankel_2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v1 free ,var) (w1 has ,var))
-         ((%hankel_2) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_k) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_2) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v1,w1)*bessel_j(v2,w2)
-(defun m2-oneionej (expr var)
+(defun m2-oneionej (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 free ,var) (w1 has ,var))
-         ((%bessel_j) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_i) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_j) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v1,w1)*hankel_1(v2,w2)
-(defun m2-bessel_i*hankel_1 (expr var)
+(defun m2-bessel_i*hankel_1 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 free ,var) (w1 has ,var))
-         ((%hankel_1) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_i) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_1) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v1,w1)*hankel_2(v2,w2)
-(defun m2-bessel_i*hankel_2 (expr var)
+(defun m2-bessel_i*hankel_2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 free ,var) (w1 has ,var))
-         ((%hankel_2) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_i) (v1 free ,var2) (w1 has ,var2))
+         ((%hankel_2) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_1(v1,w1)*bessel_j(v2,w2)
-(defun m2-hankel_1*bessel_j (expr var)
+(defun m2-hankel_1*bessel_j (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v1 free ,var) (w1 has ,var))
-         ((%bessel_j) (v2 free ,var) (w2 has ,var)))
+         ((%hankel_1) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_j) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_2(v1,w1)*bessel_j(v2,w2)
-(defun m2-hankel_2*bessel_j (expr var)
+(defun m2-hankel_2*bessel_j (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_2) (v1 free ,var) (w1 has ,var))
-         ((%bessel_j) (v2 free ,var) (w2 has ,var)))
+         ((%hankel_2) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_j) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v1,w1)*bessel_y(v2,w2)
-(defun m2-oneioney (expr var)
+(defun m2-oneioney (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 free ,var) (w1 has ,var))
-         ((%bessel_y) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_i) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_y) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v1,w1)*bessel_k(v2,w2)
-(defun m2-oneionek (expr var)
+(defun m2-oneionek (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 free ,var) (w1 has ,var))
-         ((%bessel_k) (v2 free ,var) (w2 has ,var)))
+         ((%bessel_i) (v1 free ,var2) (w1 has ,var2))
+         ((%bessel_k) (v2 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_i(v,w)^2
-(defun m2-onei^2 (expr var)
+(defun m2-onei^2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%bessel_i) (v free ,var) (w has ,var))
+          ((%bessel_i) (v free ,var2) (w has ,var2))
           2))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_1(v,w)^2
-(defun m2-hankel_1^2 (expr var)
+(defun m2-hankel_1^2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%hankel_1) (v free ,var) (w has ,var))
+          ((%hankel_1) (v free ,var2) (w has ,var2))
           2))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_2(v,w)^2
-(defun m2-hankel_2^2 (expr var)
+(defun m2-hankel_2^2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%hankel_2) (v free ,var) (w has ,var))
+          ((%hankel_2) (v free ,var2) (w has ,var2))
           2))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_y(v,w)
-(defun m2-oney (expr var)
+(defun m2-oney (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_y) (v free ,var) (w has ,var)))
+         ((%bessel_y) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize bessel_k(v,w)
-(defun m2-onek (expr var)
+(defun m2-onek (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v free ,var) (w has ,var)))
+         ((%bessel_k) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_1(v,w)
-(defun m2-hankel_1 (expr var)
+(defun m2-hankel_1 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v free ,var) (w has ,var)))
+         ((%hankel_1) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hankel_2(v,w)
-(defun m2-hankel_2 (expr var)
+(defun m2-hankel_2 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_2) (v free ,var) (w has ,var)))
+         ((%hankel_2) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize log(w)
-(defun m2-onelog (expr var)
+(defun m2-onelog (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt) 
          (u nonzerp) 
-         ((%log) (w has ,var)))
+         ((%log) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize erf(w)
-(defun m2-onerf (expr var)
+(defun m2-onerf (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%erf) (w has ,var)))
+         ((%erf) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize erfc(w)
-(defun m2-onerfc (expr var)
+(defun m2-onerfc (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%erfc) (w has ,var)))
+         ((%erfc) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize fresnel_s(w)
-(defun m2-onefresnel_s (expr var)
+(defun m2-onefresnel_s (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%fresnel_s) (w has ,var)))
+         ((%fresnel_s) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize fresnel_c(w)
-(defun m2-onefresnel_c (expr var)
+(defun m2-onefresnel_c (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%fresnel_c) (w has ,var)))
+         ((%fresnel_c) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize expintegral_e(v,w)
-(defun m2-oneexpintegral_e (expr var)
+(defun m2-oneexpintegral_e (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%expintegral_e) (v free ,var) (w has ,var)))
+         ((%expintegral_e) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize expintegral_ei(w)
-(defun m2-oneexpintegral_ei (expr var)
+(defun m2-oneexpintegral_ei (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%expintegral_ei) (w has ,var)))
+         ((%expintegral_ei) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize expintegral_e1(w)
-(defun m2-oneexpintegral_e1 (expr var)
+(defun m2-oneexpintegral_e1 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%expintegral_e1) (w has ,var)))
+         ((%expintegral_e1) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize expintegral_si(w)
-(defun m2-oneexpintegral_si (expr var)
+(defun m2-oneexpintegral_si (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%expintegral_si) (w has ,var)))
+         ((%expintegral_si) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize expintegral_shi(w)
-(defun m2-oneexpintegral_shi (expr var)
+(defun m2-oneexpintegral_shi (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%expintegral_shi) (w has ,var)))
+         ((%expintegral_shi) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize expintegral_ci(w)
-(defun m2-oneexpintegral_ci (expr var)
+(defun m2-oneexpintegral_ci (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%expintegral_ci) (w has ,var)))
+         ((%expintegral_ci) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize expintegral_chi(w)
-(defun m2-oneexpintegral_chi (expr var)
+(defun m2-oneexpintegral_chi (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%expintegral_chi) (w has ,var)))
+         ((%expintegral_chi) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize kelliptic(w), (new would be elliptic_kc)
-(defun m2-onekelliptic (expr var)
+(defun m2-onekelliptic (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($kelliptic) (w has ,var)))
+         (($kelliptic) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize elliptic_kc
-(defun m2-elliptic_kc (expr var)
+(defun m2-elliptic_kc (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt) 
          (u nonzerp)
-         ((%elliptic_kc) (w has ,var)))
+         ((%elliptic_kc) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %e(w), (new would be elliptic_ec)
-(defun m2-onee (expr var)
+(defun m2-onee (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($%e) (w has ,var)))
+         (($%e) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize elliptic_ec
-(defun m2-elliptic_ec (expr var)
+(defun m2-elliptic_ec (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt) 
          (u nonzerp)
-         ((%elliptic_ec) (w has ,var)))
+         ((%elliptic_ec) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize gamma_incomplete(w1, w2), Incomplete Gamma function
-(defun m2-onegammaincomplete (expr var)
+(defun m2-onegammaincomplete (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%gamma_incomplete) (w1 free ,var) (w2 has ,var)))
+         ((%gamma_incomplete) (w1 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize gamma_incomplete_lower(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
-(defun m2-onegamma-incomplete-lower (expr var)
+(defun m2-onegamma-incomplete-lower (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%gamma_incomplete_lower) (w1 free ,var) (w2 has ,var)))
+         ((%gamma_incomplete_lower) (w1 free ,var2) (w2 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize Struve H function.
-(defun m2-struve_h (expr var)
+(defun m2-struve_h (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%struve_h) (v free ,var) (w has ,var)))
+         ((%struve_h) (v free ,var2) (w has ,var2)))
         ((coeffpp)(a zerp)))))
 
 ;; Recognize Struve L function.
-(defun m2-struve_l (expr var)
+(defun m2-struve_l (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%struve_l) (v free ,var) (w has ,var)))
+         ((%struve_l) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize Lommel s[v1,v2](w) function.
-(defun m2-ones (expr var)
+(defun m2-ones (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%s array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($%s array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize S[v1,v2](w), Lommel function
-(defun m2-oneslommel (expr var)
+(defun m2-oneslommel (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($slommel array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($slommel array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize parabolic_cylinder_d function
-(defun m2-parabolic_cylinder_d (expr var)
+(defun m2-parabolic_cylinder_d (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($parabolic_cylinder_d) (v free ,var) (w has ,var)))
+         (($parabolic_cylinder_d) (v free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize kbatmann(v,w), Batemann function
-(defun m2-onekbateman (expr var)
+(defun m2-onekbateman (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-         (($kbateman array) (v free ,var)) (w has ,var)))
+         (($kbateman array) (v free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %l[v1,v2](w), Generalized Laguerre function
-(defun m2-onel (expr var)
+(defun m2-onel (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%l array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($%l array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize gen_laguerre(v1,v2,w), Generalized Laguerre function
-(defun m2-one-gen-laguerre (expr var)
+(defun m2-one-gen-laguerre (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%gen_laguerre) (v1 free ,var) (v2 free ,var) (w has ,var)))
+         ((%gen_laguerre) (v1 free ,var2) (v2 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize laguerre(v1,w), Laguerre function
-(defun m2-one-laguerre (expr var)
+(defun m2-one-laguerre (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%laguerre) (v1 free ,var) (w has ,var)))
+         ((%laguerre) (v1 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %c[v1,v2](w), Gegenbauer function
-(defun m2-onec (expr var)
+(defun m2-onec (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%c array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($%c array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %t[v1](w), Chebyshev function of the first kind
-(defun m2-onet (expr var)
+(defun m2-onet (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((mqapply) (($%t array) (v1 free ,var)) (w has ,var)))
+         ((mqapply) (($%t array) (v1 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %u[v1](w), Chebyshev function of the second kind
-(defun m2-oneu (expr var)
+(defun m2-oneu (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((mqapply) (($%u array) (v1 free ,var)) (w has ,var)))
+         ((mqapply) (($%u array) (v1 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %p[v1,v2,v3](w), Jacobi function
-(defun m2-onepjac (expr var)
+(defun m2-onepjac (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
           (($%p array) 
-           (v1 free ,var) (v2 free ,var) (v3 free ,var)) (w has ,var)))
+           (v1 free ,var2) (v2 free ,var2) (v3 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize jacobi_p function
-(defun m2-jacobi_p (expr var)
+(defun m2-jacobi_p (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          (($jacobi_p) 
-          (v1 free ,var) (v2 free ,var) (v3 free ,var) (w has ,var)))
+          (v1 free ,var2) (v2 free ,var2) (v3 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %p[v1,v2](w), Associated Legendre P function
-(defun m2-hyp-onep (expr var)
+(defun m2-hyp-onep (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%p array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($%p array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize assoc_legendre_p function
-(defun m2-assoc_legendre_p (expr var)
+(defun m2-assoc_legendre_p (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($assoc_legendre_p) (v1 free ,var) (v2 free ,var) (w has ,var)))
+         (($assoc_legendre_p) (v1 free ,var2) (v2 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %p[v1](w), Legendre P function
-(defun m2-onep0 (expr var)
+(defun m2-onep0 (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((mqapply)(($%p array) (v1 free ,var)) (w has ,var)))
+         ((mqapply)(($%p array) (v1 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %p[v1](w), Legendre P function
-(defun m2-legendre_p (expr var)
+(defun m2-legendre_p (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($legendre_p) (v free ,var)) (w has ,var))
+         (($legendre_p) (v free ,var2)) (w has ,var2))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hermite(v1,w), Hermite function
-(defun m2-one-hermite (expr var)
+(defun m2-one-hermite (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hermite) (v1 free ,var) (w has ,var)))
+         ((%hermite) (v1 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %q[v1,v2](w), Associated Legendre function of the second kind
-(defun m2-oneq (expr var)
+(defun m2-oneq (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%q array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($%q array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize assoc_legendre_q function
-(defun m2-assoc_legendre_q (expr var)
+(defun m2-assoc_legendre_q (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($assoc_legendre_q) (v1 free ,var) (v2 free ,var) (w has ,var)))
+         (($assoc_legendre_q) (v1 free ,var2) (v2 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %w[v1,v2](w), Whittaker W function.
-(defun m2-onew (expr var)
+(defun m2-onew (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%w array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($%w array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize whittaker_w function.
-(defun m2-whittaker_w (expr var)
+(defun m2-whittaker_w (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($whittaker_w) (v1 free ,var) (v2 free ,var) (w has ,var)))
+         (($whittaker_w) (v1 free ,var2) (v2 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %m[v1,v2](w), Whittaker M function
-(defun m2-onem (expr var)
+(defun m2-onem (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%m array) (v1 free ,var) (v2 free ,var)) (w has ,var)))
+          (($%m array) (v1 free ,var2) (v2 free ,var2)) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize whittaker_m function.
-(defun m2-whittaker_m (expr var)
+(defun m2-whittaker_m (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($whittaker_m) (v1 free ,var) (v2 free ,var) (w has ,var)))
+         (($whittaker_m) (v1 free ,var2) (v2 free ,var2) (w has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize %f[v1,v2](w1,w2,w3), Hypergeometric function
-(defun m2-onef (expr var)
+(defun m2-onef (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
          ((mqapply)
-          (($%f array) (v1 free ,var) (v2 free ,var))
-          (w1 free ,var)
-          (w2 free ,var)
-          (w3 has ,var)))
+          (($%f array) (v1 free ,var2) (v2 free ,var2))
+          (w1 free ,var2)
+          (w2 free ,var2)
+          (w3 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize hypergeometric function
-(defun m2-hypergeometric (expr var)
+(defun m2-hypergeometric (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-          ((%hypergeometric) (w1 free ,var) (w2 free ,var) (w3 has ,var)))
+          ((%hypergeometric) (w1 free ,var2) (w2 free ,var2) (w3 has ,var2)))
         ((coeffpp) (a zerp)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -911,7 +911,7 @@
 ;;; Pattern for the routine hypgeo-exec.
 ;;; RECOGNIZES L.T.E. "U*%E^(A*X+E*F(X)-P*X+C)+D".
 
-(defun m2-ltep (expr var par)
+(defun m2-ltep (expr var2 par)
   (m2 expr
       `((mplus)
         ((coeffpt)
@@ -919,10 +919,10 @@
          ((mexpt)
           $%e
           ((mplus)
-           ((coeffpt) (a free2 ,var ,par) (x alike1 ,var))
-           ((coeffpt) (e free2 ,var ,par) (f has ,var))
-           ((mtimes) -1 (p alike1 ,par) (x alike1 ,var))
-           ((coeffpp) (c free2 ,var ,par)))))
+           ((coeffpt) (a free2 ,var2 ,par) (x alike1 ,var2))
+           ((coeffpt) (e free2 ,var2 ,par) (f has ,var2))
+           ((mtimes) -1 (p alike1 ,par) (x alike1 ,var2))
+           ((coeffpp) (c free2 ,var2 ,par)))))
         ((coeffpp) (d equal 0)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -931,7 +931,7 @@
 ;;; This is trying to match EXP to u*%e^(a*x+e*f+c)+d
 ;;; where a, c, and e are free of x, f is free of p, and d is 0.
 
-(defun m2-defltep (expr var)
+(defun m2-defltep (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
@@ -939,9 +939,9 @@
          ((mexpt)
           $%e
           ((mplus)
-           ((coeffpt) (a free ,var) (x alike1 ,var))
-           ((coeffpt) (e free ,var) (f has-not-alike1-p ,var))
-           ((coeffpp) (c free ,var)))))
+           ((coeffpt) (a free ,var2) (x alike1 ,var2))
+           ((coeffpt) (e free ,var2) (f has-not-alike1-p ,var2))
+           ((coeffpp) (c free ,var2)))))
         ((coeffpp) (d equal 0)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
