@@ -119,7 +119,7 @@
   ;; verify find all of the code that does or does not need this and
   ;; until we can verify all of the test cases are correct.
   (let (;;($radexpand '$all)
-	(var arg)
+	#+nil (var arg)
 	(*par* arg)
 	(*checkcoefsignlist* nil))
     (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
@@ -138,24 +138,24 @@
 	  (t
 	   res))))
 
-(defun hgfsimp (arg-l1 arg-l2 var)
+(defun hgfsimp (arg-l1 arg-l2 arg)
   (prog (resimp listcmdiff)
      (setq arg-l1 (macsimp arg-l1)
            arg-l2 (macsimp arg-l2)
-           resimp (simpg arg-l1 arg-l2 var))
+           resimp (simpg arg-l1 arg-l2 arg))
      (cond ((not (eq (and (consp resimp) (car resimp)) 'fail))
             (return resimp))
-           ((and (not (zerop1 var)) ; Do not call splitfpq for a zero argument
+           ((and (not (zerop1 arg)) ; Do not call splitfpq for a zero argument
                  (setq listcmdiff
                        (intdiffl1l2 (cadr resimp) (caddr resimp))))
             (return (splitpfq listcmdiff
                               (cadr resimp)
                               (caddr resimp)
-                              var)))
+                              arg)))
            (t
             (return (dispatch-spec-simp (cadr resimp) 
                                         (caddr resimp)
-                                        var))))))
+                                        arg))))))
 
 (defun macsimp (expr)
   (mapcar #'(lambda (index) ($expand index)) expr))
