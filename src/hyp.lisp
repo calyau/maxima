@@ -245,7 +245,7 @@
 	   (1f1polys arg-l2 n))
 	  ((and (equal len1 2)
 		(zerop len2))
-	   (2f0polys arg-l1 n))
+	   (2f0polys arg-l1 n arg))
 	  (t (create-any-poly arg-l1 arg-l2 (mul -1 n) arg)))))
 
 (defun 1f1polys (arg-l2 n)
@@ -359,17 +359,17 @@
           (mfuncall '$gen_laguerre n a arg)
           (list '($gen_laguerre simp) n a arg))))
 
-(defun 2f0polys (arg-l1 n)
+(defun 2f0polys (arg-l1 n arg)
   (let ((a (car arg-l1))
 	(b (cadr arg-l1)))
     (when (alike1 (sub b a) '((rat simp) -1 2))
       (rotatef a b))
     (cond ((alike1 (sub b a) '((rat simp) 1 2))
 	   ;; 2F0(-n,-n+1/2,z) or 2F0(-n-1/2,-n,z)
-	   (interhermpol n a b var))
+	   (interhermpol n a b arg))
 	  (t
 	   ;; 2F0(a,b;z)
-	   (let ((x (mul -1 (inv var)))
+	   (let ((x (mul -1 (inv arg)))
 		 (order (mul -1 n)))
 	     (mul (take '(mfactorial) order)
 		  (inv (power x order))
@@ -570,11 +570,11 @@
            (cond ((and (maxima-integerp (car arg-l1))
                        (member ($sign (car arg-l1)) '($neg $nz)))
                   ;; 2F0(-n,b; ; z), n a positive integer
-                  (2f0polys arg-l1 (car arg-l1)))
+                  (2f0polys arg-l1 (car arg-l1) arg))
                  ((and (maxima-integerp (cadr arg-l1))
                        (member ($sign (cadr arg-l1)) '($neg $nz)))
                   ;; 2F0(a,-n; ; z), n a positive integer
-                  (2f0polys (reverse arg-l1) (cadr arg-l1)))
+                  (2f0polys (reverse arg-l1) (cadr arg-l1) arg))
                  (t
                   (fpqform arg-l1 arg-l2 arg))))
 	  ((and (= len1 1)
