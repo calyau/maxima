@@ -239,7 +239,7 @@
     (setf arg-l1 (cons n (remove n arg-l1 :count 1)))
     (cond ((and (equal len1 2)
 		(equal len2 1))
-	   (2f1polys arg-l1 arg-l2 n))
+	   (2f1polys arg-l1 arg-l2 n arg))
 	  ((and (equal len1 1)
 		(equal len2 1))
 	   (1f1polys arg-l2 n))
@@ -429,7 +429,7 @@
 
 ;; F(n,b;c;z), where n is a negative integer (number or symbolic).
 ;; The order of the arguments must be checked by the calling routine. 
-(defun 2f1polys (arg-l1 arg-l2 n)
+(defun 2f1polys (arg-l1 arg-l2 n arg)
   (prog (l v lgf)
      ;; Since F(a,b;c;z) = F(b,a;c;z), make sure L1 has the negative
      ;; integer first, so we have F(-n,d;c;z)
@@ -460,7 +460,7 @@
                  (setq lgf (legpol-core (car arg-l1) 
                                         (cadr arg-l1) 
                                         (car arg-l2)
-                                        var)))
+                                        arg)))
             (return lgf))
            ((and (or (not (integerp n))
                      (not $expand_polynomials))
@@ -783,9 +783,9 @@
      ;; Look if a or b is a symbolic negative integer. The routine 
      ;; 2f1polys handles this case.
      (cond ((and (maxima-integerp a) (member ($sign a) '($neg $nz)))
-            (return (2f1polys arg-l1 arg-l2 a))))
+            (return (2f1polys arg-l1 arg-l2 a arg))))
      (cond ((and (maxima-integerp b) (member ($sign b) '($neg $nz)))
-            (return (2f1polys (list b a) arg-l2 b))))
+            (return (2f1polys (list b a) arg-l2 b arg))))
      
      (when $trace2f1
        (format t " Test F(1,1,2)...~%"))
@@ -1648,24 +1648,24 @@
 ;;
 ;; Is there a mistake in 15.4.10 and 15.4.11?
 ;;
-(defun legf24 (arg-l1 arg-l2 var)
+(defun legf24 (arg-l1 arg-l2 arg)
   (let* (($radexpand nil)
 	 (a (car arg-l1))
 	 (c (car arg-l2))
 	 (m (sub 1 c))
 ;	 (n (mul -1 (add a a m))) ; This is not 2*a-c
          (n (sub (add a a) c))    ; but this.
-	 (z (inv (power (sub 1 var) (inv 2)))))
+	 (z (inv (power (sub 1 arg) (inv 2)))))
     ;; A&S 15.4.10, 15.4.11
-    (cond ((eq (asksign var) '$negative)
+    (cond ((eq (asksign arg) '$negative)
 	   ;; A&S 15.4.11
 	   ;;
 	   ;; F(a,a+1/2;c;x) = 2^(c-1)*gamma(c)(-x)^(1/2-c/2)*(1-x)^(c/2-a-1/2)
 	   ;;                   *assoc_legendre_p(2*a-c,1-c,1/sqrt(1-x))
 	   (mul (inv (power 2 m))
 		(gm (sub 1 m))
-		(power (mul -1 var) (div m 2))
-		(power (sub 1 var) (sub (div m -2) a))
+		(power (mul -1 arg) (div m 2))
+		(power (sub 1 arg) (sub (div m -2) a))
 		(legen n
 		       m
 		       z
@@ -1673,8 +1673,8 @@
 	  (t
 	   (mul (inv (power 2 m))
 		(gm (sub 1 m))
-		(power var (div m 2))
-		(power (sub 1 var) (sub (div m -2) a))
+		(power arg (div m 2))
+		(power (sub 1 arg) (sub (div m -2) a))
 		(legen n
 		       m
 		       z
