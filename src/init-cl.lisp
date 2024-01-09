@@ -750,8 +750,10 @@
 	   (setf custom:*terminal-encoding*
 		 custom:*default-file-encoding*))))
 
+#+nil
 (defmvar $display2d_unicode #+lisp-unicode-capable t #-lisp-unicode-capable nil)
 
+#+nil
 (defun display2d-unicode-enabled ()
   #+lisp-unicode-capable
     (and $display2d_unicode 

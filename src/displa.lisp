@@ -804,6 +804,16 @@
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 
+(defmvar $display2d_unicode #+lisp-unicode-capable t #-lisp-unicode-capable nil)
+
+(defun display2d-unicode-enabled ()
+  #+lisp-unicode-capable
+    (and $display2d_unicode 
+         #+clisp (eq (ext:encoding-charset (stream-external-format *terminal-io* )) 'charset:utf-8)
+         ;; other special cases go here as we learn about them ...
+         #-clisp t)
+  #-lisp-unicode-capable nil)
+
 (defun dim-%at (form result)
   (prog (exp  eqs (w 0) (h 0) (d 0) at-char)
      (unless (= (length (cdr form)) 2)
