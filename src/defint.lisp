@@ -3615,15 +3615,15 @@ in the interval of integration.")
 
 ;;; Recognize c*z^w*log(z)^m*exp(-t^s)
 
-(defun m2-log-exp-1 (expr)
+(defun m2-log-exp-1 (expr arg)
   (when *debug-defint-log*
     (format t "~&M2-LOG-EXP-1 with ~A~%" expr))
   (m2 expr
-    '((mtimes)
-        (c freevar)
-        ((mexpt) (z varp) (w freevar))
-        ((mexpt) $%e ((mtimes) -1 ((mexpt) (z varp) (s freevar0))))
-        ((mexpt) ((%log) (z varp)) (m freevar)))))
+    `((mtimes)
+        (c freevar2 ,arg)
+        ((mexpt) (z varp2 ,arg) (w freevar2 ,arg))
+        ((mexpt) $%e ((mtimes) -1 ((mexpt) (z varp2 ,arg) (s freevar02 ,arg))))
+        ((mexpt) ((%log) (z varp2 ,arg)) (m freevar2 ,arg)))))
 
 ;;; Recognize c*z^r*log(z)^n*(1-z)^s*log(1-z)^m
 
@@ -3640,7 +3640,7 @@ in the interval of integration.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun defint-log-exp (expr var *ll* *ul*)
+(defun defint-log-exp (expr arg *ll* *ul*)
   (let ((x nil)
         (result nil)
         (var1 (gensym)))
@@ -3654,7 +3654,7 @@ in the interval of integration.")
 
     (cond
       ((and (eq *ul* '$inf)
-            (setq x (m2-log-exp-1 expr)))
+            (setq x (m2-log-exp-1 expr arg)))
        ;; The integrand matches the cases 1 and 2.
        (let ((c (cdras 'c x))
              (w (cdras 'w x))
