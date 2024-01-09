@@ -1168,17 +1168,17 @@
 ;;; Call for every term of a sum defexec and add up the results.
 
 ;; Evaluate the transform of a sum as sum of transforms.
-(defun distrdefexecinit (expr var)
+(defun distrdefexecinit (expr var2)
   (cond ((equal (caar expr) 'mplus)
-         (distrdefexec (cdr expr) var))
-        (t (defexec expr var))))
+         (distrdefexec (cdr expr) var2))
+        (t (defexec expr var2))))
 
 ;; FUN is a list of addends. Compute the transform of each addend and 
 ;; add them up.
-(defun distrdefexec (expr var)
+(defun distrdefexec (expr var2)
   (cond ((null expr) 0)
-        (t (add (defexec (car expr) var)
-                (distrdefexec (cdr expr) var)))))
+        (t (add (defexec (car expr) var2)
+                (distrdefexec (cdr expr) var2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
