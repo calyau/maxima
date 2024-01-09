@@ -1339,30 +1339,30 @@
 ;;; Pattern for the routine lt-exec
 
 ;; Recognize c*sum(u,index,low,high)
-(defun m2-sum (expr var)
+(defun m2-sum (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
-         (c free ,var)
+         (c free ,var2)
          ((%sum) (u true) (i true) (l true) (h true)))
         ((coeffpp) (d zerp)))))
 
 ;; Recognize u(t)*unit_step(x-a)
-(defun m2-unit_step (expr var)
+(defun m2-unit_step (expr var2)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($unit_step) ((mplus) (x alike1 ,var) ((coeffpp) (a true)))))
+         (($unit_step) ((mplus) (x alike1 ,var2) ((coeffpp) (a true)))))
         ((coeffpp) (d zerp)))))
 
 ;; Recognize c*t^v.
 ;; This is a duplicate of m2-arbpow1. Look if we can use it.
-(defun m2-c*t^v (expr var)
+(defun m2-c*t^v (expr var2)
   (m2 expr
       `((mtimes)
-        ((coefftt) (c free ,var))
-        ((mexpt) (u alike1 ,var) (v free ,var)))))
+        ((coefftt) (c free ,var2))
+        ((mexpt) (u alike1 ,var2) (v free ,var2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 
@@ -1398,24 +1398,24 @@
 ;;; Pattern for the routine lt-exp
 
 ;; Recognize t^2
-(defun m2-t^2 (expr var)
-  (m2 expr `((mexpt) (u alike1 ,var) 2)))
+(defun m2-t^2 (expr var2)
+  (m2 expr `((mexpt) (u alike1 ,var2) 2)))
 
 ;; Recognize sqrt(t)
-(defun m2-sqroott (expr var)
-  (m2 expr `((mexpt) (u alike1 ,var) ((rat) 1 2))))
+(defun m2-sqroott (expr var2)
+  (m2 expr `((mexpt) (u alike1 ,var2) ((rat) 1 2))))
 
 ;; Recognize t^-1
-(defun m2-t^-1 (expr var)
-  (m2 expr `((mexpt) (u alike1 ,var) -1)))
+(defun m2-t^-1 (expr var2)
+  (m2 expr `((mexpt) (u alike1 ,var2) -1)))
 
 ;; Recognize %e^-t
-(defun m2-e^-t (expr var)
-  (m2 expr `((mexpt) $%e ((mtimes) -1 (u alike1 ,var)))))
+(defun m2-e^-t (expr var2)
+  (m2 expr `((mexpt) $%e ((mtimes) -1 (u alike1 ,var2)))))
 
 ;; Recognize %e^t
-(defun m2-e^t (expr var)
-  (m2 expr `((mexpt) $%e (u alike1 ,var))))
+(defun m2-e^t (expr var2)
+  (m2 expr `((mexpt) $%e (u alike1 ,var2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
