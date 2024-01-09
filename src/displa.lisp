@@ -810,11 +810,20 @@
 
 (defun display2d-unicode-enabled ()
   #+lisp-unicode-capable
-    (and $display2d_unicode 
-         #+clisp (eq (ext:encoding-charset (stream-external-format *terminal-io* )) 'charset:utf-8)
-         ;; other special cases go here as we learn about them ...
-         #-clisp t)
-  #-lisp-unicode-capable nil)
+  (and $display2d_unicode
+       ;; While the Lisp implementation may support unicode, the
+       ;; terminal encoding in use may not be (because of LANG
+       ;; settings or other things).  Enable unicode only if we have
+       ;; utf-8 encoding.
+       #+clisp
+       (eq (ext:encoding-charset (stream-external-format *terminal-io* )) 'charset:utf-8)
+       ;; other special cases go here as we learn about them ...  But
+       ;; see also ADJUST-CHARACTER-ENCODING in init-cl.lisp that
+       ;; generally sets up Lisp to use :utf-8 always.
+       #-clisp
+       t)
+  #-lisp-unicode-capable
+  nil)
 
 (defun dim-%at (form result)
   (prog (exp  eqs (w 0) (h 0) (d 0) at-char)
