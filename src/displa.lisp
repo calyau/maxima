@@ -1647,6 +1647,7 @@
   (get-unicode-char :box-drawings-light-up-and-right))
 
 (defun d-matrix-unicode (linear? direction h d)
+  (declare (ignore linear?))
   (let*
     ((char-upper-corner (if (eq direction 'right) d-matrix-char-unicode-upper-right d-matrix-char-unicode-upper-left))
      (char-lower-corner (if (eq direction 'right) d-matrix-char-unicode-lower-right d-matrix-char-unicode-lower-left))
