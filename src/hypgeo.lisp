@@ -2469,10 +2469,10 @@
 
 ;; Pattern for lt-log.
 ;; Extract the argument of a function: a*t+c for c=0.
-(defun m2-a*t (expr var)
+(defun m2-a*t (expr var2)
   (m2 expr
    `((mplus)
-     ((mtimes) (u alike1 ,var) (a free ,var))
+     ((mtimes) (u alike1 ,var2) (a free ,var2))
      ((coeffpp) (c equal 0)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3699,33 +3699,33 @@
 
 ;; Match d*x^m*%e^(a*x).  If we match, Q is the e^(a*x) part, A is a,
 ;; M is M, and D is d.
-(defun m2-d*x^m*%e^a*x (expr var par)
+(defun m2-d*x^m*%e^a*x (expr var2 par)
   (m2 expr
       `((mtimes)
-        ((coefftt) (d free2 ,var ,par))
-        ((mexpt) (x alike1 ,var) (m free2 ,var ,par))
+        ((coefftt) (d free2 ,var2 ,par))
+        ((mexpt) (x alike1 ,var2) (m free2 ,var2 ,par))
         ((mexpt)
          (q expor1p)
          ((mtimes) 
-          ((coefftt) (a free2 ,var ,par)) 
-          (x alike1 ,var))))))
+          ((coefftt) (a free2 ,var2 ,par)) 
+          (x alike1 ,var2))))))
 
 ;; Match f(x)+c
-(defun m2-f+c (expr var)
+(defun m2-f+c (expr var2)
   (m2 expr
       `((mplus) 
-        ((coeffpt) (f has ,var)) 
-        ((coeffpp) (c free ,var)))))
+        ((coeffpt) (f has ,var2)) 
+        ((coeffpp) (c free ,var2)))))
 
 ;; Match a*x^m+c.
 ;; The pattern was too general. We match also a*t^2+b*t. But that's not correct.
-(defun m2-a*x^m+c (expr var)
+(defun m2-a*x^m+c (expr var2)
   (m2 expr
       `((mplus)
         ((coefft) ; more special (not coeffpt)
-         (a free ,var)
-         ((mexpt) (x alike1 ,var) (m free-not-zero-p ,var)))
-        ((coeffpp) (c free ,var)))))
+         (a free ,var2)
+         ((mexpt) (x alike1 ,var2) (m free-not-zero-p ,var2)))
+        ((coeffpp) (c free ,var2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
