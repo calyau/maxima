@@ -64,9 +64,8 @@
 
 ;;; Test functions for pattern match, which use the globals var and *par*
 
-(defun parp (a)
-  (eq a *par*))
-
+;; Not used here.  This is only used in defint.lisp.  Should either
+;; move it to defint.lisp or change defint.lisp to use freevar02.
 (defun freevar0 (m)
   (cond ((equal m 0) nil)
         (t (freevar m))))
