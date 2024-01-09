@@ -1130,22 +1130,22 @@
 
 ;; There is wired knowledge of character offsets here.
 
-(defvar d-box-char-unicode-horz
+(defvar *d-box-char-unicode-horz*
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-horizontal))
-(defvar d-box-char-unicode-vert
+(defvar *d-box-char-unicode-vert*
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-vertical))
-(defvar d-box-char-unicode-upper-left
+(defvar *d-box-char-unicode-upper-left*
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-down-and-right))
-(defvar d-box-char-unicode-upper-right
+(defvar *d-box-char-unicode-upper-right*
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-down-and-left))
-(defvar d-box-char-unicode-lower-right
+(defvar *d-box-char-unicode-lower-right*
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-up-and-left))
-(defvar d-box-char-unicode-lower-left
+(defvar *d-box-char-unicode-lower-left*
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-up-and-right))
 
@@ -1259,14 +1259,14 @@
 		     ((or (null l) (= width w))
 		      (cons 0 (cons (1- height)
 				    (cond ((< w width)
-					   (cons d-box-char-unicode-upper-right (cons `(d-hbar ,(- width w 1) ,d-box-char-unicode-horz) nl)))
+					   (cons *d-box-char-unicode-upper-right* (cons `(d-hbar ,(- width w 1) ,*d-box-char-unicode-horz*) nl)))
 					  (t nl)))))
 		   (setq nl (cons (car l) nl) w (1+ w)))
 		 result))
-     (setq result (nconc dummy (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert)
+     (setq result (nconc dummy (list* `(d-vbar ,(1- height) ,(1- depth) ,*d-box-char-unicode-vert*)
 				      (list (- width) 0) result)))
-     (setq result (cons (list (- 1 width) (- depth) d-box-char-unicode-lower-right `(d-hbar ,(- width 2) ,d-box-char-unicode-horz) d-box-char-unicode-lower-left) result))
-     (setq result (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert) '(-1 0) result))
+     (setq result (cons (list (- 1 width) (- depth) *d-box-char-unicode-lower-right* `(d-hbar ,(- width 2) ,*d-box-char-unicode-horz*) *d-box-char-unicode-lower-left*) result))
+     (setq result (list* `(d-vbar ,(1- height) ,(1- depth) ,*d-box-char-unicode-vert*) '(-1 0) result))
      (update-heights height depth)
      (return result)))
 
@@ -1644,13 +1644,13 @@
     (d-box-ascii h d w body)))
 
 (defun d-box-unicode (h d w body &aux dmstr)
-  (setq dmstr `((0 ,h ,d-box-char-unicode-upper-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-upper-left)
+  (setq dmstr `((0 ,h ,*d-box-char-unicode-upper-right* (d-hbar ,w ,*d-box-char-unicode-horz*) ,*d-box-char-unicode-upper-left*)
 		(,(- (+ w 2)) 0)
-		(d-vbar ,h ,d ,d-box-char-unicode-vert)
+		(d-vbar ,h ,d ,*d-box-char-unicode-vert*)
 		,@body
-		(,(- (1+ w)) ,(- (1+ d)) ,d-box-char-unicode-lower-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-lower-left)
+		(,(- (1+ w)) ,(- (1+ d)) ,*d-box-char-unicode-lower-right* (d-hbar ,w ,*d-box-char-unicode-horz*) ,*d-box-char-unicode-lower-left*)
 		(-1 0)
-		(d-vbar ,h ,d ,d-box-char-unicode-vert)))
+		(d-vbar ,h ,d ,*d-box-char-unicode-vert*)))
   (draw-linear dmstr oldrow oldcol))
 
 (defun d-box-ascii (h d w body &aux (char 0) dmstr)
