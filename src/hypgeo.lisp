@@ -948,10 +948,10 @@
 
 ;;; $specint is the Maxima User function
 
-(defmfun $specint (expr var)
+(defmfun $specint (expr var2)
   (prog ($radexpand *checkcoefsignlist*)
      (setq $radexpand '$all)
-     (return (defintegrate expr var))))
+     (return (defintegrate expr var2))))
 
 (defun defintegrate (expr var2)
   ;; This used to have $exponentialize enabled for everything, but I
