@@ -3393,7 +3393,7 @@ in the interval of integration.")
 ;;;Returns $YES if there is no pole and $NO if there is one.
 (defun limit-pole (exp var limit direction)
   (let ((ans (cond ((member limit '($minf $inf) :test #'eq)
-		    (cond ((eq (special-convergent-formp exp limit) '$yes)
+		    (cond ((eq (special-convergent-formp exp limit var) '$yes)
 			   '$no)
 			  (t (get-limit (m* exp var) var limit direction))))
 		   (t '$no))))
@@ -3404,14 +3404,14 @@ in the interval of integration.")
 	  (t '$yes))))
 
 ;;;Takes care of forms that the ratio test fails on.
-(defun special-convergent-formp (exp limit)
+(defun special-convergent-formp (exp limit arg)
   (cond ((not (oscip exp))  '$no)
-	((or (eq (sc-converg-form exp limit var) '$yes)
-	     (eq (exp-converg-form exp limit) '$yes))
+	((or (eq (sc-converg-form exp limit arg) '$yes)
+	     (eq (exp-converg-form exp limit arg) '$yes))
 	 '$yes)
 	(t  '$no)))
 
-(defun exp-converg-form (exp limit)
+(defun exp-converg-form (exp limit arg)
   (let (exparg)
     (setq exparg (%einvolve exp))
     (cond ((or (null exparg)
@@ -3422,7 +3422,7 @@ in the interval of integration.")
 			     (%einvolve
 			      (setq exp
 				    (sratsimp (m// exp (m^t '$%e exparg))))))
-		     (equal (get-limit exp var limit)  0))
+		     (equal (get-limit exp arg limit)  0))
 		'$yes)
 	       (t '$no))))))
 
