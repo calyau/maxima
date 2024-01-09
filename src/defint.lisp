@@ -3381,7 +3381,7 @@ in the interval of integration.")
 		      (root-in-ll-ul (in-interval soltn *ll* *ul*)))
 		 (cond ((eq root-in-ll-ul '$no) '$no)
 		       ((eq root-in-ll-ul '$yes)
-			(let ((lim-ans (is-a-pole exp soltn)))
+			(let ((lim-ans (is-a-pole exp soltn var)))
 			  (cond ((null lim-ans)
 				 (return '$unknown))
 				((equal lim-ans 0)
@@ -3447,9 +3447,9 @@ in the interval of integration.")
 	    (return '$yes))
 	   (t (return '$no)))))
 
-(defun is-a-pole (exp soltn)
+(defun is-a-pole (exp soltn arg)
   (get-limit ($radcan
-	      (m* (maxima-substitute (m+ 'epsilon soltn) var exp)
+	      (m* (maxima-substitute (m+ 'epsilon soltn) arg exp)
 		  'epsilon))
 	     'epsilon 0 '$plus))
 
@@ -3475,15 +3475,15 @@ in the interval of integration.")
        (or (eq *ll* '$minf) 
 	   (eq ($asksign (m+ place (m- *ll*))) '$pos))))
 
-(defun real-roots (exp var)
+(defun real-roots (exp arg)
   (let (($solvetrigwarn (cond (defintdebug t) ;Rest of the code for
 			      (t ())))	;TRIGS in denom needed.
 	($solveradcan (cond ((or (among '$%i exp)
 				 (among '$%e exp)) t)
 			    (t nil)))
 	*roots *failures)		;special vars for solve.
-    (cond ((not (among var exp))   '$no)
-	  (t (solve exp var 1)
+    (cond ((not (among arg exp))   '$no)
+	  (t (solve exp arg 1)
 	     ;; If *failures is set, we may have missed some roots.
 	     ;; We still return the roots that we have found.
 	     (do ((dummy *roots (cddr dummy))
