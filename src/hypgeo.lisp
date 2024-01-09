@@ -953,7 +953,7 @@
      (setq $radexpand '$all)
      (return (defintegrate expr var))))
 
-(defun defintegrate (expr var)
+(defun defintegrate (expr var2)
   ;; This used to have $exponentialize enabled for everything, but I
   ;; don't think we should do that.  If various routines want
   ;; $exponentialize, let them set it themselves.  So, for here, we
@@ -967,35 +967,35 @@
 
     (when (atom form)
       (cond ((and (numberp form) (zerop form)) (return-from defintegrate 0))
-	    (t (return-from defintegrate (list '(%specint simp) form var)))))
+	    (t (return-from defintegrate (list '(%specint simp) form var2)))))
 
     ;; We try to find a constant denominator. This is necessary to get results
     ;; for integrands like u(t)/(a+b+c+...).
 
     (let ((den ($denom form)))
-      (when (and (not (equal 1 den)) ($freeof var den))
+      (when (and (not (equal 1 den)) ($freeof var2 den))
 	(return-from defintegrate
-	  (div (defintegrate (mul den form) var) den))))
+	  (div (defintegrate (mul den form) var2) den))))
 
     ;; We search for a sum of Exponential functions which we can integrate.
     ;; This code finds result for Trigonometric or Hyperbolic functions with
     ;; a factor t^-1 or t^-2 e.g. t^-1*sin(a*t).
 
-    (let* ((l (m2-defltep form var))
+    (let* ((l (m2-defltep form var2))
 	   (s (mul -1 (cdras 'a l)))
 	   (u ($expand (cdras 'u l)))
 	   (l1))
       (cond
-	((setq l1 (m2-sum-with-exp-case1 u var))
+	((setq l1 (m2-sum-with-exp-case1 u var2))
 	 ;;  c * t^-1 * (%e^(-a*t) - %e^(-b*t)) + d
 	 (let ((c (cdras 'c l1))
 	       (a (mul -1 (cdras 'a l1)))
 	       (b (mul -1 (cdras 'b l1)))
 	       (d (cdras 'd l1)))
            (add (mul c (take '(%log) (div (add s b) (add s a))))
-                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+                (defintegrate (mul d (power '$%e (mul -1 s var2))) var2))))
         
-	((setq l1 (m2-sum-with-exp-case2 u var))
+	((setq l1 (m2-sum-with-exp-case2 u var2))
 	 ;;  c * t^(-3/2) * (%e^(-a*t) - %e^(-b*t)) + d
 	 (let ((c (cdras 'c l1))
 	       (a (mul -1 (cdras 'a l1)))
@@ -1005,9 +1005,9 @@
                      (power '$%pi '((rat simp) 1 2))
                      (sub (power (add s b) '((rat simp) 1 2))
                           (power (add s a) '((rat simp) 1 2))))
-                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+                (defintegrate (mul d (power '$%e (mul -1 s var2))) var2))))
         
-	((setq l1 (m2-sum-with-exp-case3 u var))
+	((setq l1 (m2-sum-with-exp-case3 u var2))
 	 ;; c * t^-2 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
 	 (let ((c (cdras 'c l1))
 	       (a (div (cdras 'a l1) -2))
@@ -1016,9 +1016,9 @@
                      (add (mul (add s a a) (take '(%log) (add s a a)))
                           (mul s (take '(%log) s))
                           (mul -2 (add s a) (take '(%log) (add s a)))))
-                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+                (defintegrate (mul d (power '$%e (mul -1 s var2))) var2))))
         
-        ((setq l1 (m2-sum-with-exp-case4 u var))
+        ((setq l1 (m2-sum-with-exp-case4 u var2))
          ;; c * t^-1 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
          (let ((c (cdras 'c l1))
                (a (div (cdras 'a l1) (mul 4 '$%i)))
@@ -1029,19 +1029,19 @@
                                 (div (mul 4 a a) 
                                      (mul (sub s (mul 2 '$%i a)) 
                                           (sub s (mul 2 '$%i a)))))))
-                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+                (defintegrate (mul d (power '$%e (mul -1 s var2))) var2))))
        
-       ((setq l1 (m2-sum-with-exp-case5 u var))
+       ((setq l1 (m2-sum-with-exp-case5 u var2))
 	 ;; c * t^-1 * (1 - %e^(2*a*t)) + d
 	 (let ((c (cdras 'c l1))
 	       (a (cdras 'a l1))
 	       (d (cdras 'd l1)))
            (add (mul c (take '(%log) (div (sub s a) s)))
-                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+                (defintegrate (mul d (power '$%e (mul -1 s var2))) var2))))
         
 	(t
 	  ;; At this point we expand the integrand.
-	 (distrdefexecinit ($expand form) var))))))
+	 (distrdefexecinit ($expand form) var2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1221,12 +1221,12 @@
 
 ;;; Compute transform of EXP wrt the variable of integration VAR.
 
-(defun defexec (expr var)
+(defun defexec (expr var2)
   (let* ((*par* 'psey)                ; Set parameter of Laplace transform
-         (*var* var)                  ; Set variable of integration
+         (*var* var2)                  ; Set variable of integration
          (*hyp-return-noun-flag* nil) ; Reset the flag
          (form expr)
-	 (l (m2-defltep expr var))
+	 (l (m2-defltep expr var2))
 	 (s (cdras 'a l))) ; Get the parameter of the Laplace transform.
 
     ;; If we have not found a parameter, we try to factor the integrand.
