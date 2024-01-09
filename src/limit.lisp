@@ -2950,7 +2950,11 @@ ignoring dummy variables and array indices."
 	  ((or (member arglim '($minf $infinity $zerob)))
 	   '$infinity)
 	  ((eq arglim '$zeroa) '$minf)  ;log(zeroa) = minf
-          ;; log(ind)=und & log(und)=und
+      ;; log(ind) = ind when ind > 0 else und
+	  ((eq arglim '$ind)
+	      (if (eq t (mgrp (cadr expr) 0)) '$ind '$und))
+	  ;; log(und) = und
+	  ((eq arglim '$und) '$und)
 	  ((member arglim '($ind $und)) '$und)
           ;; log(1^(-)) = zerob, log(1^(+)) = zeroa & log(1)=0
 	  ((eql arglim 1)

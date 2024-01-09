@@ -102,7 +102,7 @@ limit(log(signum(x)),x,0);
 ind$
 
 limit(log(107+sin(x)),x,inf);
-und$
+ind$
 
 /* far too complex result, but it's not the fault of simplimln */
 limit(log((x-%i)/(x+%i)),x,2);
@@ -1097,6 +1097,9 @@ log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
 This test exercises the function mabs-subst. */
 limit((abs(sin(x)*cos(x)-x^4) -x)/x^3,x,0,plus);
 -2/3$
+
+limit(log(cos(x)),x,inf);
+und$
 
 /* Did any facts or contexts leak?*/
 facts();
