@@ -804,7 +804,9 @@
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 
-(defmvar $display2d_unicode #+lisp-unicode-capable t #-lisp-unicode-capable nil)
+(defmvar $display2d_unicode
+  #+lisp-unicode-capable t
+  #-lisp-unicode-capable nil)
 
 (defun display2d-unicode-enabled ()
   #+lisp-unicode-capable
