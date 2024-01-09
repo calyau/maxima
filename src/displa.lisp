@@ -1128,6 +1128,27 @@
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 
+;; There is wired knowledge of character offsets here.
+
+(defvar d-box-char-unicode-horz
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-horizontal))
+(defvar d-box-char-unicode-vert
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-vertical))
+(defvar d-box-char-unicode-upper-left
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-down-and-right))
+(defvar d-box-char-unicode-upper-right
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-down-and-left))
+(defvar d-box-char-unicode-lower-right
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-up-and-left))
+(defvar d-box-char-unicode-lower-left
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-up-and-right))
+
 (defun dim-mabs (form result &aux arg bar mabs-char)
   (setq mabs-char (if (display2d-unicode-enabled) mabs-char-unicode (car (coerce $absboxchar 'list))))
   (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
@@ -1616,34 +1637,13 @@
 					     $rmxchar
 					     $lmxchar) 'list))))
 
-;; There is wired knowledge of character offsets here.
-
-(defvar d-box-char-unicode-horz
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-horizontal))
-(defvar d-box-char-unicode-vert
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-vertical))
-(defvar d-box-char-unicode-upper-left
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-down-and-right))
-(defvar d-box-char-unicode-upper-right
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-down-and-left))
-(defvar d-box-char-unicode-lower-right
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-up-and-left))
-(defvar d-box-char-unicode-lower-left
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-up-and-right))
-
 (defun d-box (linear? h d w body)
   (declare (ignore linear?))
   (if (display2d-unicode-enabled)
     (d-box-unicode h d w body)
     (d-box-ascii h d w body)))
 
-(defun d-box-unicode (h d w body)
+(defun d-box-unicode (h d w body &aux dmstr)
   (setq dmstr `((0 ,h ,d-box-char-unicode-upper-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-upper-left)
 		(,(- (+ w 2)) 0)
 		(d-vbar ,h ,d ,d-box-char-unicode-vert)
