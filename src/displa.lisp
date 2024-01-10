@@ -1572,7 +1572,6 @@
     (setq char-foot char-body))
   (setq d (- d))
   (do ((i (- h 2) (1- i))
-       (nl-foot `((0 ,(1- h) ,char-foot)))
        (nl-head `((0 ,(1- h) ,char-head))))
       ((or (and (display2d-unicode-enabled) (<= i d)) (and (not (display2d-unicode-enabled)) (< i d)))
        (when (and (display2d-unicode-enabled) (= i d))
