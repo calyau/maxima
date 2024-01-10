@@ -2966,9 +2966,15 @@ in the interval of integration.")
 	      ;; Try integration by parts.
 	      (return ans))))))
 
+;; Like SUBIN in src/csimp.lisp, but we make the dependency on the arg
+;; explicit instead of using the specvar VAR to hold the variable.
+(defun subin-var (y x arg)
+  (cond ((not (among arg x)) x)
+	(t (maxima-substitute y arg x))))
+
 ;; Compute diff(e,var,n) at the point pt.
-(defun derivat (var n e pt)
-  (subin pt (apply '$diff (list e var n))))
+(defun derivat (arg n e pt)
+  (subin-var pt (apply '$diff (list e arg n)) arg))
 
 ;;; GGR and friends
 
