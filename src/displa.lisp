@@ -804,6 +804,27 @@
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 
+(defmvar $display2d_unicode
+  #+lisp-unicode-capable t
+  #-lisp-unicode-capable nil)
+
+(defun display2d-unicode-enabled ()
+  #+lisp-unicode-capable
+  (and $display2d_unicode
+       ;; While the Lisp implementation may support unicode, the
+       ;; terminal encoding in use may not be (because of LANG
+       ;; settings or other things).  Enable unicode only if we have
+       ;; utf-8 encoding.
+       #+clisp
+       (eq (ext:encoding-charset (stream-external-format *terminal-io* )) 'charset:utf-8)
+       ;; other special cases go here as we learn about them ...  But
+       ;; see also ADJUST-CHARACTER-ENCODING in init-cl.lisp that
+       ;; generally sets up Lisp to use :utf-8 always.
+       #-clisp
+       t)
+  #-lisp-unicode-capable
+  nil)
+
 (defun dim-%at (form result)
   (prog (exp  eqs (w 0) (h 0) (d 0) at-char)
      (unless (= (length (cdr form)) 2)
@@ -1128,6 +1149,27 @@
   #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 
+;; There is wired knowledge of character offsets here.
+
+(defvar *d-box-char-unicode-horz*
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-horizontal))
+(defvar *d-box-char-unicode-vert*
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-vertical))
+(defvar *d-box-char-unicode-upper-left*
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-down-and-right))
+(defvar *d-box-char-unicode-upper-right*
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-down-and-left))
+(defvar *d-box-char-unicode-lower-right*
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-up-and-left))
+(defvar *d-box-char-unicode-lower-left*
+  #+lisp-unicode-capable
+  (get-unicode-char :box-drawings-double-up-and-right))
+
 (defun dim-mabs (form result &aux arg bar mabs-char)
   (setq mabs-char (if (display2d-unicode-enabled) mabs-char-unicode (car (coerce $absboxchar 'list))))
   (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
@@ -1238,14 +1280,14 @@
 		     ((or (null l) (= width w))
 		      (cons 0 (cons (1- height)
 				    (cond ((< w width)
-					   (cons d-box-char-unicode-upper-right (cons `(d-hbar ,(- width w 1) ,d-box-char-unicode-horz) nl)))
+					   (cons *d-box-char-unicode-upper-right* (cons `(d-hbar ,(- width w 1) ,*d-box-char-unicode-horz*) nl)))
 					  (t nl)))))
 		   (setq nl (cons (car l) nl) w (1+ w)))
 		 result))
-     (setq result (nconc dummy (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert)
+     (setq result (nconc dummy (list* `(d-vbar ,(1- height) ,(1- depth) ,*d-box-char-unicode-vert*)
 				      (list (- width) 0) result)))
-     (setq result (cons (list (- 1 width) (- depth) d-box-char-unicode-lower-right `(d-hbar ,(- width 2) ,d-box-char-unicode-horz) d-box-char-unicode-lower-left) result))
-     (setq result (list* `(d-vbar ,(1- height) ,(1- depth) ,d-box-char-unicode-vert) '(-1 0) result))
+     (setq result (cons (list (- 1 width) (- depth) *d-box-char-unicode-lower-right* `(d-hbar ,(- width 2) ,*d-box-char-unicode-horz*) *d-box-char-unicode-lower-left*) result))
+     (setq result (list* `(d-vbar ,(1- height) ,(1- depth) ,*d-box-char-unicode-vert*) '(-1 0) result))
      (update-heights height depth)
      (return result)))
 
@@ -1530,7 +1572,6 @@
     (setq char-foot char-body))
   (setq d (- d))
   (do ((i (- h 2) (1- i))
-       (nl-foot `((0 ,(1- h) ,char-foot)))
        (nl-head `((0 ,(1- h) ,char-head))))
       ((or (and (display2d-unicode-enabled) (<= i d)) (and (not (display2d-unicode-enabled)) (< i d)))
        (when (and (display2d-unicode-enabled) (= i d))
@@ -1605,6 +1646,7 @@
   (get-unicode-char :box-drawings-light-up-and-right))
 
 (defun d-matrix-unicode (linear? direction h d)
+  (declare (ignore linear?))
   (let*
     ((char-upper-corner (if (eq direction 'right) d-matrix-char-unicode-upper-right d-matrix-char-unicode-upper-left))
      (char-lower-corner (if (eq direction 'right) d-matrix-char-unicode-lower-right d-matrix-char-unicode-lower-left))
@@ -1616,41 +1658,20 @@
 					     $rmxchar
 					     $lmxchar) 'list))))
 
-;; There is wired knowledge of character offsets here.
-
-(defvar d-box-char-unicode-horz
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-horizontal))
-(defvar d-box-char-unicode-vert
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-vertical))
-(defvar d-box-char-unicode-upper-left
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-down-and-right))
-(defvar d-box-char-unicode-upper-right
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-down-and-left))
-(defvar d-box-char-unicode-lower-right
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-up-and-left))
-(defvar d-box-char-unicode-lower-left
-  #+lisp-unicode-capable
-  (get-unicode-char :box-drawings-double-up-and-right))
-
 (defun d-box (linear? h d w body)
   (declare (ignore linear?))
   (if (display2d-unicode-enabled)
     (d-box-unicode h d w body)
     (d-box-ascii h d w body)))
 
-(defun d-box-unicode (h d w body)
-  (setq dmstr `((0 ,h ,d-box-char-unicode-upper-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-upper-left)
+(defun d-box-unicode (h d w body &aux dmstr)
+  (setq dmstr `((0 ,h ,*d-box-char-unicode-upper-right* (d-hbar ,w ,*d-box-char-unicode-horz*) ,*d-box-char-unicode-upper-left*)
 		(,(- (+ w 2)) 0)
-		(d-vbar ,h ,d ,d-box-char-unicode-vert)
+		(d-vbar ,h ,d ,*d-box-char-unicode-vert*)
 		,@body
-		(,(- (1+ w)) ,(- (1+ d)) ,d-box-char-unicode-lower-right (d-hbar ,w ,d-box-char-unicode-horz) ,d-box-char-unicode-lower-left)
+		(,(- (1+ w)) ,(- (1+ d)) ,*d-box-char-unicode-lower-right* (d-hbar ,w ,*d-box-char-unicode-horz*) ,*d-box-char-unicode-lower-left*)
 		(-1 0)
-		(d-vbar ,h ,d ,d-box-char-unicode-vert)))
+		(d-vbar ,h ,d ,*d-box-char-unicode-vert*)))
   (draw-linear dmstr oldrow oldcol))
 
 (defun d-box-ascii (h d w body &aux (char 0) dmstr)
