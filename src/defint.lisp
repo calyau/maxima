@@ -2479,7 +2479,7 @@ in the interval of integration.")
 	  ((and (or (eq (caar e) '%sin)
 		    (eq (caar e) '%cos))
 		(setq ind (caar e))
-		(setq e (bx**n (cadr e))))
+		(setq e (bx**n (cadr e) var)))
 	   ;; Ok, we have cos(b*x^n) or sin(b*x^n), and we set e = (n
 	   ;; b)
 	   (cond ((equal (car e) 1.)
@@ -2837,7 +2837,7 @@ in the interval of integration.")
 
 (defun findsub (p)
   (cond ((findp p var) nil)
-	((setq nd* (bx**n p))
+	((setq nd* (bx**n p var))
 	 (m^t var (car nd*)))
 	((setq p (bx**n+a p))
 	 (m* (caddr p) (m^t var (cadr p))))))
@@ -3145,22 +3145,24 @@ in the interval of integration.")
 	(t (let ((a (no-err-sub 0. e)))
 	     (cond ((null a)  ())
 		   (t (setq e (m+ e (m*t -1 a)))
-		      (cond ((setq e (bx**n e))
+		      (cond ((setq e (bx**n e var))
 			     (cons a e))
 			    (t ()))))))))
 
 ;; Match b*x^n.  Return the list (n b) if found or NIL if not.
-(defun bx**n (e)
+(defun bx**n (e arg)
   (let ((n ()))
-    (and (setq n (xexponget e var))
-	 (not (among var
+    (and (setq n (xexponget e arg))
+	 (not (among arg
 		     (setq e (let (($maxposex 1)
 				   ($maxnegex 1))
-			       ($expand (m// e (m^t var n)))))))
+			       ($expand (m// e (m^t arg n)))))))
 	 (list n e))))
 
+;; nn* should be the value of var.  This is only called by bx**n with
+;; the second arg of var.
 (defun xexponget (e nn*)
-  (cond ((atom e) (cond ((eq e var) 1.)))
+  (cond ((atom e) (cond ((eq e nn*) 1.)))
 	((mnump e) nil)
 	((and (mexptp e)
 	      (eq (cadr e) nn*)
