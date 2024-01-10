@@ -2976,12 +2976,12 @@ in the interval of integration.")
 ;;
 ;; This basically picks off b*x^n+a and returns the list
 ;; (b n a).  It may also set the global *zd*.
-(defun maybpc (e var)
+(defun maybpc (e arg)
   (declare (special *zd*))
-  (cond (*mtoinf* (throw 'ggrm (linpower0 e var)))
+  (cond (*mtoinf* (throw 'ggrm (linpower0 e arg)))
 	((and (not *mtoinf*)
-	      (null (setq e (bx**n+a e var)))) ;bx**n+a --> (a n b) or nil.
-	 nil)				;with var being x.
+	      (null (setq e (bx**n+a e arg)))) ;bx**n+a --> (a n b) or nil.
+	 nil)				;with arg being x.
 	;; At this point, e is of the form (a n b)
 	((and (among '$%i (caddr e))
 	      (zerop1 ($realpart (caddr e)))
@@ -2989,18 +2989,18 @@ in the interval of integration.")
 	      (eq ($asksign (cadr e)) '$pos))
 	 ;; If we're here, b is complex, and n > 0.  zn = imagpart(b).
 	 ;;
-	 ;; Set var to the same sign as zn.
+	 ;; Set arg to the same sign as zn.
 	 (cond ((eq ($asksign zn) '$neg)
-		(setq var -1)
+		(setq arg -1)
 		(setq zn (m- zn)))
-	       (t (setq var 1)))
-	 ;; zd = exp(var*%i*%pi*(1+nd)/(2*n). (ZD is special!)
-	 (setq *zd* (m^t '$%e (m// (mul* var '$%i '$%pi (m+t 1 nd*))
+	       (t (setq arg 1)))
+	 ;; zd = exp(arg*%i*%pi*(1+nd)/(2*n). (ZD is special!)
+	 (setq *zd* (m^t '$%e (m// (mul* arg '$%i '$%pi (m+t 1 nd*))
 				   (m*t 2 (cadr e)))))
 	 ;; Return zn, n, a.
 	 `(,(caddr e) ,(cadr e) ,(car e)))
-	((and (or (eq (setq var ($asksign ($realpart (caddr e)))) '$neg)
-		  (equal var '$zero))
+	((and (or (eq (setq arg ($asksign ($realpart (caddr e)))) '$neg)
+		  (equal arg '$zero))
 	      (equal ($imagpart (cadr e)) 0)
 	      (ratgreaterp (cadr e) 0.))
 	 ;; We're here if realpart(b) <= 0, and n >= 0.  Then return -b, n, a.
