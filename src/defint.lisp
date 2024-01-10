@@ -1346,7 +1346,7 @@ in the interval of integration.")
 	   (t nil))
      on
      (cond ((let ((*mtoinf* nil))
-	      (setq temp (ggr grand t)))
+	      (setq temp (ggr grand t var)))
 	    (return temp))
 	   ((mplusp grand)
 	    (cond ((let ((*nodiverg t))
@@ -1611,7 +1611,7 @@ in the interval of integration.")
      (setq *mtoinf* t)
      (cond ((and (setq expo (%einvolve e))
 		 (polyp (setq poly (sratsimp (m// e (m^t '$%e expo)))))
-		 (setq l (catch 'ggrm (ggr (m^t '$%e expo) nil))))
+		 (setq l (catch 'ggrm (ggr (m^t '$%e expo) nil var))))
 	    (setq *mtoinf* nil)
 	    (setq mb (m- (subin 0. (cadr l))))
 	    (setq poly (m+ (subin (m+t mb var) poly)
@@ -3044,7 +3044,7 @@ in the interval of integration.")
 ;;   integrate(y^((m+1)/n-1)*exp(-y),y,0,inf)/(n*k^((m+1)/n))
 ;;
 ;; which is the same form above.
-(defun ggr (e ind)
+(defun ggr (e ind arg)
   (prog (c *zd* zn nn* dn* nd* dosimp $%emode)
      (declare (special *zd*))
      (setq nd* 0.)
@@ -3054,14 +3054,14 @@ in the interval of integration.")
 			      (setq e (catch 'divergent
 					(andmapcar
 					 #'(lambda (j)
-					     (ggr j nil))
+					     (ggr j nil arg))
 					 (cdr e))))))
 		       (cond ((eq e 'divergent) nil)
 			     (t (return (sratsimp (cons '(mplus) e)))))))))
      (setq e (rmconst1 e))
      (setq c (car e))
      (setq e (cdr e))
-     (cond ((setq e (ggr1 e var))
+     (cond ((setq e (ggr1 e arg))
 	    ;; e = (m b n a).  That is, the integral is of the form
 	    ;; x^m*exp(b*x^n+a).  I think we want to compute
 	    ;; gamma((m+1)/n)/b^((m+1)/n)/n.
