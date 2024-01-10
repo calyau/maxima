@@ -305,7 +305,7 @@ in the interval of integration.")
 
 ;; integration change of variable
 (defun intcv (nv flag)
-  (let ((d (bx**n+a nv))
+  (let ((d (bx**n+a nv var))
 	(*roots ())  (*failures ())  ($breakup ()))
     (cond ((and (eq *ul* '$inf)
 		(equal *ll* 0)
@@ -2839,7 +2839,7 @@ in the interval of integration.")
   (cond ((findp p var) nil)
 	((setq nd* (bx**n p var))
 	 (m^t var (car nd*)))
-	((setq p (bx**n+a p))
+	((setq p (bx**n+a p var))
 	 (m* (caddr p) (m^t var (cadr p))))))
 
 ;; I think this is looking at f(exp(x)) and tries to find some
@@ -2980,7 +2980,7 @@ in the interval of integration.")
   (declare (special *zd*))
   (cond (*mtoinf* (throw 'ggrm (linpower0 e var)))
 	((and (not *mtoinf*)
-	      (null (setq e (bx**n+a e)))) ;bx**n+a --> (a n b) or nil.
+	      (null (setq e (bx**n+a e var)))) ;bx**n+a --> (a n b) or nil.
 	 nil)				;with var being x.
 	;; At this point, e is of the form (a n b)
 	((and (among '$%i (caddr e))
@@ -3137,15 +3137,15 @@ in the interval of integration.")
 
 ;; Match b*x^n+a.  If a match is found, return the list (a n b).
 ;; Otherwise, return NIL
-(defun bx**n+a (e)
-  (cond ((eq e var)
+(defun bx**n+a (e arg)
+  (cond ((eq e arg)
 	 (list 0 1 1))
 	((or (atom e)
 	     (mnump e)) ())
 	(t (let ((a (no-err-sub 0. e)))
 	     (cond ((null a)  ())
 		   (t (setq e (m+ e (m*t -1 a)))
-		      (cond ((setq e (bx**n e var))
+		      (cond ((setq e (bx**n e arg))
 			     (cons a e))
 			    (t ()))))))))
 
@@ -3180,9 +3180,9 @@ in the interval of integration.")
 	       (%einvolve e))  nil)
 	  ((mtimesp e)  nil)
 	  ((mexptp e)  (cond ((among arg (caddr e))  nil)
-			     ((setq r (bx**n+a (cadr e)))
+			     ((setq r (bx**n+a (cadr e) arg))
 			      (cons (caddr e) r))))
-	  ((setq r (bx**n+a e))  (cons 1. r))
+	  ((setq r (bx**n+a e arg))  (cons 1. r))
 	  ((not (null ind))
 ;;;Catches Unfactored forms.
 	   (setq m (m// (sdiff e arg) e))
@@ -3190,7 +3190,7 @@ in the interval of integration.")
 	   (setq m nn*)
 	   (setq r dn*)
 	   (cond
-	     ((and (setq r (bx**n+a (sratsimp r)))
+	     ((and (setq r (bx**n+a (sratsimp r) arg))
 		   (not (among arg (setq m (m// m (m* (cadr r) (caddr r)
 						      (m^t arg (m+t -1 (cadr r))))))))
 		   (setq e (m// (subin 0. e) (m^t (car r) m))))
