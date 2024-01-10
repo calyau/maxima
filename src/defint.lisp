@@ -524,7 +524,7 @@ in the interval of integration.")
 		(method-radical-poly exp var *ll* *ul*)))
 	  ((and (not (equal *dintlog-recur* 2.))
 		(setq arg (involve exp '(%log)))
-		(dintlog exp arg)))
+		(dintlog exp arg var)))
 	  ((and (not *dintexp-recur*)
 		(setq arg (%einvolve exp))
 		(dintexp exp var)))
@@ -2920,15 +2920,15 @@ in the interval of integration.")
 	   (intcv ans nil)))))
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
-(defun dintlog (exp arg)
+(defun dintlog (exp arg var1)
   (let ((*dintlog-recur* (1+ *dintlog-recur*))) ;recursion stopper
     (prog (ans d)
        (cond ((and (eq *ul* '$inf)
 		   (equal *ll* 0.)
-		   (eq arg var)
-		   (equal 1 (sratsimp (m// exp (m* (m- (subin (m^t var -1)
+		   (eq arg var1)
+		   (equal 1 (sratsimp (m// exp (m* (m- (subin (m^t var1 -1)
 							       exp))
-						    (m^t var -2))))))
+						    (m^t var1 -2))))))
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
@@ -2945,11 +2945,11 @@ in the interval of integration.")
        (cond ((involve ans '(%log))
 	      ;; Bad. f(x) contains a log term, so we give up.
 	      (return nil))
-	     ((and (eq arg var)
+	     ((and (eq arg var1)
 		   (equal 0. (no-err-sub 0. ans))
 		   (setq d (let ((*def2* t))
-			     (defint (m* ans (m^t var '*z*))
-				 var *ll* *ul*))))
+			     (defint (m* ans (m^t var1 '*z*))
+				 var1 *ll* *ul*))))
 	      ;; The arg of the log function is the same as the
 	      ;; integration variable.  We can do something a little
 	      ;; simpler than integration by parts.  We have something
