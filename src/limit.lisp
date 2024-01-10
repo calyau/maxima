@@ -1939,7 +1939,27 @@ ignoring dummy variables and array indices."
 
         ((eq el '$ind)  '$ind)
         ((zerop2 el) 1)
-        (t (m^ bl el))))
+          ((zerop2 el) 1)
+		;; When bl is off the negative real axis, use direct substitution
+		((off-negative-real-axisp bl) (ftake 'mexpt bl el))
+        (t 
+		  ;; We're looking at (neg + {zerob, 0 zeroa} %i)^el. We need to 
+		  ;; do a rectform on bas and decide if the imaginary part is
+		  ;; zerob, 0, or zeroa.
+		  (let ((x) (y) (xlim) (ylim) (preserve-direction t))
+		    (setq bas (risplit bas))
+			(setq x (car bas)
+			      y (cdr bas))
+			(setq xlim (limit x var val 'think))
+			(setq ylim (limit y var val 'think))
+			(cond ((eql 0 y) (ftake 'mexpt bl el))		        
+			      ((eq ylim '$zeroa)
+			        (mul (ftake 'mexpt (mul -1 xlim) el)
+					     (ftake 'mexpt '$%e (mul '$%i '$%pi el))))
+			      ((eq ylim '$zerob)
+				     (mul (ftake 'mexpt (mul -1 xlim) el)
+					      (ftake 'mexpt '$%e (mul -1 '$%i '$%pi el))))
+				  (t (throw 'limit nil)))))))
 
 (defun even1 (x)
   (cond ((numberp x) (and (integerp x) (evenp x)))

@@ -181,12 +181,13 @@ here are two related limit problems. */
  limit(asin(3+%i*x),x,0,minus);
  asin(3)$
 
-/* With the default value of lhospitallim, the calculation takes about 7 seconds.
-   Arguably, it's so slow, it's a bug. So we'll locally set lhospitallim to 1.*/
- block([lhospitallim : 1], limit(rectform(asin(3+%i*x)),x,0,'plus));
+/* Once the next two tests were slow (7 seconds) with the default value for 
+  lhospitallim. At that time, locally these tests set lhospitallim : 1. These
+  tests are no longer slow with the defaulty value of lhospitallim. */
+ limit(rectform(asin(3+%i*x)),x,0,'plus);
  %pi/2-(%i*log(17-3*2^(5/2)))/2$
 
-block([lhospitallim : 1], limit(rectform(asin(3+%i*x)),x,0,'minus));
+limit(rectform(asin(3+%i*x)),x,0,'minus);
 %pi/2-%i*log(2^(3/2)+3)$
 
 /* #3838 limit(atan(sin(x)),x,inf,plus) --> atan(ind) */
@@ -313,10 +314,6 @@ block([domain : 'complex], limit((2^(2*x+1)+(2^x*x^100)^(3/2))/(4^x-100*2^x),x,i
  limit(floor((10^8 +1)*x),x,0,minus);
  -1$
 
- /* #3153 Limits of erfc  
- integrate(exp(-%i*ω^2*ρ^2-(%i*t^2)/(4*ρ^2)),ρ,0,inf);
- 1/sqrt(%i/%pi)*1/(2*ω)*exp(-%i*ω*abs(t))$ */
-
  limit(erfc(x*(1 + %i)), x, inf);
  0$
 
@@ -373,13 +370,13 @@ xxx$
 
 /* #3053 limit with branch cuts */
 block([domain : 'real], limit(sqrt(-1 + %i*x), x, 0,minus));
-%i$
+-%i$
 
 block([domain : 'real], limit(sqrt(-1 - %i*x), x, 0,plus));
 -%i$
 
 block([domain : 'complex], limit(sqrt(-1 + %i*x), x, 0,minus));
-%i$
+-%i$
 
 block([domain : 'complex], limit(sqrt(-1 - %i*x), x, 0,plus));
 -%i$
@@ -407,7 +404,7 @@ block([domain : 'complex],limit(2/5*((3/4)^m - 1)*(a - 10) + 1/5*(3*(3/4)^m + 2)
 
  /* #2953 limit loops endlessly */
  limit((a/x^b + (1-a)/y^b)^(-1/b),b,0);
- %e^(a*log(x)-(a-1)*log(y))$
+ x^a*y^(1-a)$
 
  /* #2899 Limit that once worked is broken */
  limit((1+sqrt(n+1))^(-n-1)/(1+sqrt(n))^(-n),n,inf);
@@ -593,28 +590,28 @@ ind$
 
 /* limits of conjugate expressions */
 limit(conjugate(sqrt(-1+%i*sin(x))),x,0,'minus);
-conjugate(sqrt(-1))$
+%i$
 
 limit(conjugate(sqrt(-1+%i*sin(x))),x,0,'plus);
-conjugate(sqrt(-1))$
+-%i$
 
 limit(conjugate(sqrt(-1+%i*sin(x))),x,0);
-conjugate(sqrt(-1))$
+ind$
 
 (assume(a > 0), limit(conjugate(sqrt(a+%i*sin(x))),x,0));
 conjugate(sqrt(a))$
 
 limit(conjugate(sqrt(-a+%i*sin(x))),x,0,'minus);
-conjugate(sqrt(-a))$
+%i*sqrt(a)$
 
 limit(conjugate(sqrt(-a+%i*sin(x))),x,0,'plus);
 -%i*sqrt(a)$
 
 limit(107+93*conjugate(sqrt(-a+%i*sin(x))),x,0,'minus);
-107 + 93*conjugate(sqrt(-a))$
+107 + 93*%i*sqrt(a)$
 
 limit(107+93*conjugate(sqrt(-a+%i*sin(x))),x,0,'plus);
-107 + 93*conjugate(sqrt(-a))$
+107 - 93*%i*sqrt(a)$
 
 (forget(a>0),0);
 0$
@@ -708,7 +705,7 @@ log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
 
 /* #2953 limit loops endlessly */
 limit((a/x^b + (1-a)/y^b)^(-1/b),b,0);
- %e^(a*log(x)-(a-1)*log(y))$
+x^a*y^(1-a)$
 
 /* #2706 Limit runs forever, never returning (simplified bug) */
 block([ans1,ans2, ans3],
@@ -1100,6 +1097,31 @@ limit((abs(sin(x)*cos(x)-x^4) -x)/x^3,x,0,plus);
 
 limit(log(cos(x)),x,inf);
 und$
+
+/* #3153 Limits of erfc  */
+ (domain : complex, block([ans], 
+    assume(t > 0,ω > 0),
+    ans : integrate(exp(-%i*ω^2*ρ^2-(%i*t^2)/(4*ρ^2)),ρ,0,inf),
+    forget(t > 0, ω > 0),
+    ans));
+(-1/2)*((sqrt(-(%i*%pi*ω^2))*%e^-(2*sqrt(-((t^2*ω^2)/4))))/(ω^2))$
+  
+(domain : real, block([ans], 
+    assume(t > 0,ω > 0),
+    ans : integrate(exp(-%i*ω^2*ρ^2-(%i*t^2)/(4*ρ^2)),ρ,0,inf),
+    forget(t > 0, ω > 0),
+    ans));
+ -(((-1)^(1/4)*sqrt(%pi)*%e^-(%i*t*ω))/(2*ω))$
+
+/* #3054 limit(exp(exp(2*log(x**5 + x)*log(log(x)))) / exp(exp(10*log(x)*log(log(x)))), x, inf) 
+   This test is commented out for two reasons: (a) evalutating this limit multiple
+   times even with a kill(all) in between gives an bad error after four evaluations
+   (b) the value of this limit is, I think, inf, but currently Maxima gives a limit
+   of 1.*/
+
+/* limit(exp(exp(2*log(x**5 + x)*log(log(x)))) / exp(exp(10*log(x)*log(log(x)))), x, inf)$
+1$
+*/
 
 /* Did any facts or contexts leak?*/
 facts();
