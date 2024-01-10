@@ -3104,30 +3104,30 @@ in the interval of integration.")
 
 
 ;; Match x^m*exp(b*x^n+a).  If it does, return (list m b n a).
-(defun ggr1 (e var)
+(defun ggr1 (e arg)
   (cond ((atom e) nil)
 	((and (mexptp e)
 	      (eq (cadr e) '$%e))
-	 ;; We're looking at something like exp(f(var)).  See if it's
+	 ;; We're looking at something like exp(f(arg)).  See if it's
 	 ;; of the form b*x^n+a, and return (list 0 b n a).  (The 0 is
 	 ;; so we can graft something onto it if needed.)
-	 (cond ((setq e (maybpc (caddr e) var))
+	 (cond ((setq e (maybpc (caddr e) arg))
 		(cons 0. e))))
 	((and (mtimesp e)
 	      ;; E should be the product of exactly 2 terms
 	      (null (cdddr e))
 	      ;; Check to see if one of the terms is of the form
-	      ;; var^p.  If so, make sure the realpart of p > -1.  If
+	      ;; arg^p.  If so, make sure the realpart of p > -1.  If
 	      ;; so, check the other term has the right form via
 	      ;; another call to ggr1.
-	      (or (and (setq dn* (xtorterm (cadr e) var))
+	      (or (and (setq dn* (xtorterm (cadr e) arg))
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
-		       (setq nn* (ggr1 (caddr e) var)))
-		  (and (setq dn* (xtorterm (caddr e) var))
+		       (setq nn* (ggr1 (caddr e) arg)))
+		  (and (setq dn* (xtorterm (caddr e) arg))
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
-		       (setq nn* (ggr1 (cadr e) var)))))
+		       (setq nn* (ggr1 (cadr e) arg)))))
 	 ;; Both terms have the right form and nn* contains the arg of
 	 ;; the exponential term.  Put dn* as the car of nn*.  The
 	 ;; result is something like (m b n a) when we have the
