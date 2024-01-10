@@ -3120,11 +3120,11 @@ in the interval of integration.")
 	      ;; var^p.  If so, make sure the realpart of p > -1.  If
 	      ;; so, check the other term has the right form via
 	      ;; another call to ggr1.
-	      (or (and (setq dn* (xtorterm (cadr e) var var))
+	      (or (and (setq dn* (xtorterm (cadr e) var))
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
 		       (setq nn* (ggr1 (caddr e) var)))
-		  (and (setq dn* (xtorterm (caddr e) var var))
+		  (and (setq dn* (xtorterm (caddr e) var))
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
 		       (setq nn* (ggr1 (cadr e) var)))))
@@ -3202,17 +3202,14 @@ in the interval of integration.")
 ;;;Is E = VAR raised to some power? If so return power or 0.
 (defun findp (e arg)
   (cond ((not (among arg e)) 0.)
-	(t (xtorterm e arg arg))))
+	(t (xtorterm e arg))))
 
-;; Note: It seems that all calls to xtorterm pass VAR as the value of
-;; VAR1.  Hence, maybe we don't really need the extra arg ARG to pass
-;; the value of the special var VAR?
-(defun xtorterm (e var1 arg)
+(defun xtorterm (e arg)
 ;;;Is E = VAR1 raised to some power? If so return power.
-  (cond ((alike1 e var1) 1.)
+  (cond ((alike1 e arg) 1.)
 	((atom e) nil)
 	((and (mexptp e)
-	      (alike1 (cadr e) var1)
+	      (alike1 (cadr e) arg)
 	      (not (among arg (caddr e))))
 	 (caddr e))))
 
