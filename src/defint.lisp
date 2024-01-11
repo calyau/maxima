@@ -2896,10 +2896,9 @@ in the interval of integration.")
 ;; to get integrate(f(y)/y,y,0,inf)/k.  If the limits are 0 to inf,
 ;; use the substitution s+1=exp(k*x) to get
 ;; integrate(f(s+1)/(s+1),s,0,inf).
-(defun dintexp (exp ignored &aux ans)
-  (declare (ignore ignored))
+(defun dintexp (exp arg &aux ans)
   (let ((*dintexp-recur* t))		;recursion stopper
-    (cond ((and (sinintp exp var)     ;To be moved higher in the code.
+    (cond ((and (sinintp exp arg)     ;To be moved higher in the code.
 		(setq ans (antideriv exp))
 		(setq ans (intsubs ans *ll* *ul*)))
 	   ;; If we can integrate it directly, do so and take the
