@@ -2845,9 +2845,9 @@ in the interval of integration.")
 ;; I think this is looking at f(exp(x)) and tries to find some
 ;; rational function R and some number k such that f(exp(x)) =
 ;; R(exp(k*x)).
-(defun funclogor%e (e)
+(defun funclogor%e (e ivar)
   (prog (ans arg nvar r)
-     (cond ((or (ratp e var)
+     (cond ((or (ratp e ivar)
 		(involve e '(%sin %cos %tan))
 		(not (setq arg (xor (and (setq arg (involve e '(%log)))
 					 (setq r '%log))
@@ -2856,7 +2856,7 @@ in the interval of integration.")
      ag (setq nvar (cond ((eq r '%log) `((%log) ,arg))
 			 (t (m^t '$%e arg))))
      (setq ans (maxima-substitute (m^t 'yx -1) (m^t nvar -1) (maxima-substitute 'yx nvar e)))
-     (cond ((not (among var ans))  (return (list (subst var 'yx ans) nvar)))
+     (cond ((not (among ivar ans))  (return (list (subst ivar 'yx ans) nvar)))
 	   ((and (null r)
 		 (setq arg (findsub arg)))
 	    (go ag)))))
@@ -2904,7 +2904,7 @@ in the interval of integration.")
 	   ;; If we can integrate it directly, do so and take the
 	   ;; appropriate limits.
 	   )
-	  ((setq ans (funclogor%e exp))
+	  ((setq ans (funclogor%e exp arg))
 	   ;; ans is the list (f(x) exp(k*x)).
 	   (cond ((and (equal *ll* 0.)
 		       (eq *ul* '$inf))
@@ -2962,7 +2962,7 @@ in the interval of integration.")
 	      ;; f(x)*x^z, then we differentiate the result and
 	      ;; evaluate it at z = 0.
 	      (return (derivat '*z* 1. d 0.)))
-	     ((setq ans (dintbypart `((%log) ,arg) ans *ll* *ul* var))
+	     ((setq ans (dintbypart `((%log) ,arg) ans *ll* *ul* var1))
 	      ;; Try integration by parts.
 	      (return ans))))))
 
