@@ -217,7 +217,7 @@ in the interval of integration.")
 
 (defun eezz (exp *ll* *ul*)
   (cond ((or (polyinx exp var nil)
-	     (catch 'pin%ex (pin%ex exp)))
+	     (catch 'pin%ex (pin%ex exp var)))
 	 (setq exp (antideriv exp))
 	 ;; If antideriv can't do it, returns nil
 	 ;; use limit to evaluate every answer returned by antideriv.
@@ -1467,7 +1467,7 @@ in the interval of integration.")
 	   ((and (or (%einvolve grand)
 		     (involve grand '(%sinh %cosh %tanh)))
 		 (p*pin%ex n var)	      ;setq's P* and PE*...Barf again.
-		 (setq ans (catch 'pin%ex (pin%ex d))))
+		 (setq ans (catch 'pin%ex (pin%ex d var))))
 	    ;; We have an integral of the form p(x)*F(exp(x)), where
 	    ;; p(x) is a polynomial.
 	    (cond ((null p*)
@@ -2667,8 +2667,8 @@ in the interval of integration.")
 ;; by dintlog.
 (defun log-transform (p pe d)
   (let ((new-p (subst (list '(%log) var) var p))
-	(new-pe (subst var 'z* (catch 'pin%ex (pin%ex pe))))
-	(new-d (subst var 'z* (catch 'pin%ex (pin%ex d)))))
+	(new-pe (subst var 'z* (catch 'pin%ex (pin%ex pe var))))
+	(new-d (subst var 'z* (catch 'pin%ex (pin%ex d var)))))
     (defint (div (div (mul new-p new-pe) new-d) var) var 0 *ul*)))
 
 ;; This implements Wang's algorithm in Chapter 5.2, pp. 98-100.
@@ -2693,7 +2693,7 @@ in the interval of integration.")
 (defun rectzto%pi2 (p pe d)
   ;; We have R(exp(x))*p(x) represented as p(x)*pe(exp(x))/d(exp(x)).
   (prog (dp n pl a b c denom-exponential)
-     (if (not (and (setq denom-exponential (catch 'pin%ex (pin%ex d)))
+     (if (not (and (setq denom-exponential (catch 'pin%ex (pin%ex d var)))
 		   (%e-integer-coeff pe)
 		   (%e-integer-coeff d)))
 	 (return ()))
@@ -2792,35 +2792,40 @@ in the interval of integration.")
 
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
 ;; exp(x) with 'z*.  That is, basically return f(z*).
-(defun pin%ex (exp)
+(defun pin%ex (exp ivar)
   (pin%ex0 (cond ((notinvolve exp '(%sinh %cosh %tanh))
 		  exp)
 		 (t
 		  (let (($exponentialize t))
-		    (setq exp ($expand exp)))))))
+		    (setq exp ($expand exp)))))
+           ivar))
 
-(defun pin%ex0 (e)
+(defun pin%ex0 (e ivar)
   ;; Does e really need to be special here?  Seems to be ok without
   ;; it; testsuite works.
   #+nil
   (declare (special e))
-  (cond ((not (among var e))
+  (cond ((not (among ivar e))
 	 e)
 	((atom e)
 	 (throw 'pin%ex nil))
 	((and (mexptp e)
 	      (eq (cadr e)  '$%e))
-	 (cond ((eq (caddr e) var)
+	 (cond ((eq (caddr e) ivar)
 		'z*)
-	       ((let ((linterm (wlinearpoly (caddr e) var)))
+	       ((let ((linterm (wlinearpoly (caddr e) ivar)))
 		  (and linterm
-		       (m* (subin-var 0 e var) (m^t 'z* linterm)))))
+		       (m* (subin-var 0 e ivar) (m^t 'z* linterm)))))
 	       (t
 		(throw 'pin%ex nil))))
 	((mtimesp e)
-	 (m*l (mapcar #'pin%ex0 (cdr e))))
+	 (m*l (mapcar #'(lambda (ee)
+                          (pin%ex0 ee ivar))
+                      (cdr e))))
 	((mplusp e)
-	 (m+l (mapcar #'pin%ex0 (cdr e))))
+	 (m+l (mapcar #'(lambda (ee)
+                          (pin%ex0 ee ivar))
+                      (cdr e))))
 	(t
 	 (throw 'pin%ex nil))))
 
@@ -2830,7 +2835,7 @@ in the interval of integration.")
   (setq nd* ($factor nd*))
   (cond ((polyinx nd* ivar nil)
 	 (setq p* (cons nd* p*)) t)
-	((catch 'pin%ex (pin%ex nd*))
+	((catch 'pin%ex (pin%ex nd* ivar))
 	 (setq pe* (cons nd* pe*)) t)
 	((mtimesp nd*)
 	 (andmapcar #'(lambda (ex)
