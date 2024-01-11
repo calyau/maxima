@@ -827,7 +827,7 @@ in the interval of integration.")
 		  ;   *ul*  -> inf
 		  ;
 		  ; so that minf < *ll* < *ul* = inf
-		  (setq exp (subin (m- var) exp))
+		  (setq exp (subin-var (m- var) exp var))
 		  (setq *ll* (m- *ul*))
 		  (setq *ul* '$inf))
 		 ((or (eq *ll* '$inf)
@@ -1613,9 +1613,9 @@ in the interval of integration.")
 		 (polyp (setq poly (sratsimp (m// e (m^t '$%e expo)))))
 		 (setq l (catch 'ggrm (ggr (m^t '$%e expo) nil var))))
 	    (setq *mtoinf* nil)
-	    (setq mb (m- (subin 0. (cadr l))))
-	    (setq poly (m+ (subin (m+t mb var) poly)
-			   (subin (m+t mb (m*t -1 var)) poly))))
+	    (setq mb (m- (subin-var 0. (cadr l) var)))
+	    (setq poly (m+ (subin-var (m+t mb var) poly var)
+			   (subin-var (m+t mb (m*t -1 var)) poly var))))
 	   (t (return nil)))
      (setq expo (caddr l)
 	   c (cadddr l)
@@ -2035,7 +2035,7 @@ in the interval of integration.")
       (multiple-value-bind (b sc)
 	  (cond ((eq ($sign b) '$neg)
 		 (values (m*t -1 b)
-			 (m* -1 (subin (m*t -1 var) sc))))
+			 (m* -1 (subin-var (m*t -1 var) sc var))))
 		(t
 		 (values b sc)))
 	;; Partition the integrand SC into the factors that do not
@@ -2371,7 +2371,7 @@ in the interval of integration.")
 (defun batapp (e)
   (cond ((not (or (equal *ll* 0)
 		  (eq *ll* '$minf)))
-	 (setq e (subin (m+ *ll* var) e))))
+	 (setq e (subin-var (m+ *ll* var) e var))))
   (multiple-value-bind (k c)
       (bata0 e)
     (cond ((null k)
@@ -2644,7 +2644,7 @@ in the interval of integration.")
     (setq varlist (append cl (list var))) ;Make VAR most important.
     (setq gp (car ans))		 ;This is the poly with gensym coeffs.
 ;;;Now, poly(x)-poly(x+2*%i*%pi)=p(x), P is the original poly.
-    (setq ans (m+ gp (subin (m+t (m*t '$%i %pi2) var) (m- gp)) (m- p)))
+    (setq ans (m+ gp (subin-var (m+t (m*t '$%i %pi2) var) (m- gp) var) (m- p)))
     (newvar ans)
     (setq ans (ratrep* ans))	       ;Rational rep with VAR leading.
     (setq zz (coefsolve n cl (cond ((not (eq (caadr ans) ;What is Lead Var.
@@ -2788,7 +2788,7 @@ in the interval of integration.")
 (defun wlinearpoly (e var)
   (cond ((and (setq e (polyinx e var t))
 	      (equal (deg e) 1))
-	 (subin 1 e))))
+	 (subin-var 1 e var))))
 
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
 ;; exp(x) with 'z*.  That is, basically return f(z*).
@@ -2814,7 +2814,7 @@ in the interval of integration.")
 		'z*)
 	       ((let ((linterm (wlinearpoly (caddr e) var)))
 		  (and linterm
-		       (m* (subin 0 e) (m^t 'z* linterm)))))
+		       (m* (subin-var 0 e var) (m^t 'z* linterm)))))
 	       (t
 		(throw 'pin%ex nil))))
 	((mtimesp e)
@@ -2925,8 +2925,9 @@ in the interval of integration.")
        (cond ((and (eq *ul* '$inf)
 		   (equal *ll* 0.)
 		   (eq arg var1)
-		   (equal 1 (sratsimp (m// exp (m* (m- (subin (m^t var1 -1)
-							       exp))
+		   (equal 1 (sratsimp (m// exp (m* (m- (subin-var (m^t var1 -1)
+							          exp
+                                                                  var1))
 						    (m^t var1 -2))))))
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
@@ -3198,7 +3199,7 @@ in the interval of integration.")
 	     ((and (setq r (bx**n+a (sratsimp r) arg))
 		   (not (among arg (setq m (m// m (m* (cadr r) (caddr r)
 						      (m^t arg (m+t -1 (cadr r))))))))
-		   (setq e (m// (subin 0. e) (m^t (car r) m))))
+		   (setq e (m// (subin-var 0. e arg) (m^t (car r) m))))
 	      (cond ((equal e 1.)
 		     (cons m r))
 		    (t (setq e (m^ e (m// 1. m)))
