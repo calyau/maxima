@@ -2868,21 +2868,21 @@ in the interval of integration.")
 ;;   = u(x)*v(x)| - integrate(v(x)*diff(u(x),x))
 ;;              |a
 ;;
-(defun dintbypart (u v a b)
+(defun dintbypart (u v a b arg)
 ;;;SINCE ONLY CALLED FROM DINTLOG TO get RID OF LOGS - IF LOG REMAINS, QUIT
   (let ((ad (antideriv v)))
     (cond ((or (null ad)
 	       (involve ad '(%log)))
 	   nil)
 	  (t (let ((p1 (m* u ad))
-		   (p2 (m* ad (sdiff u var))))
-	       (let ((p1-part1 (get-limit p1 var b '$minus))
-		     (p1-part2 (get-limit p1 var a '$plus)))
+		   (p2 (m* ad (sdiff u arg))))
+	       (let ((p1-part1 (get-limit p1 arg b '$minus))
+		     (p1-part2 (get-limit p1 arg a '$plus)))
 		 (cond ((or (null p1-part1)
 			    (null p1-part2))
 			nil)
 		       (t (let ((p2 (let ((*def2* t))
-				      (defint p2 var a b))))
+				      (defint p2 arg a b))))
 			    (cond (p2 (add* p1-part1
 					    (m- p1-part2)
 					    (m- p2)))
@@ -2962,7 +2962,7 @@ in the interval of integration.")
 	      ;; f(x)*x^z, then we differentiate the result and
 	      ;; evaluate it at z = 0.
 	      (return (derivat '*z* 1. d 0.)))
-	     ((setq ans (dintbypart `((%log) ,arg) ans *ll* *ul*))
+	     ((setq ans (dintbypart `((%log) ,arg) ans *ll* *ul* var))
 	      ;; Try integration by parts.
 	      (return ans))))))
 
@@ -2972,7 +2972,7 @@ in the interval of integration.")
   (cond ((not (among arg x)) x)
 	(t (maxima-substitute y arg x))))
 
-;; Compute diff(e,var,n) at the point pt.
+;; Compute diff(e,arg,n) at the point pt.
 (defun derivat (arg n e pt)
   (subin-var pt (apply '$diff (list e arg n)) arg))
 
