@@ -2835,12 +2835,12 @@ in the interval of integration.")
 	((mtimesp nd*)
 	 (andmapcar #'p*pin%ex (cdr nd*)))))
 
-(defun findsub (p)
-  (cond ((findp p var) nil)
-	((setq nd* (bx**n p var))
-	 (m^t var (car nd*)))
-	((setq p (bx**n+a p var))
-	 (m* (caddr p) (m^t var (cadr p))))))
+(defun findsub (p ivar)
+  (cond ((findp p ivar) nil)
+	((setq nd* (bx**n p ivar))
+	 (m^t ivar (car nd*)))
+	((setq p (bx**n+a p ivar))
+	 (m* (caddr p) (m^t ivar (cadr p))))))
 
 ;; I think this is looking at f(exp(x)) and tries to find some
 ;; rational function R and some number k such that f(exp(x)) =
@@ -2858,7 +2858,7 @@ in the interval of integration.")
      (setq ans (maxima-substitute (m^t 'yx -1) (m^t nvar -1) (maxima-substitute 'yx nvar e)))
      (cond ((not (among ivar ans))  (return (list (subst ivar 'yx ans) nvar)))
 	   ((and (null r)
-		 (setq arg (findsub arg)))
+		 (setq arg (findsub arg ivar)))
 	    (go ag)))))
 
 ;; Integration by parts.
