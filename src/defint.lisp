@@ -2694,8 +2694,8 @@ in the interval of integration.")
   ;; We have R(exp(x))*p(x) represented as p(x)*pe(exp(x))/d(exp(x)).
   (prog (dp n pl a b c denom-exponential)
      (if (not (and (setq denom-exponential (catch 'pin%ex (pin%ex d var)))
-		   (%e-integer-coeff pe)
-		   (%e-integer-coeff d)))
+		   (%e-integer-coeff pe var)
+		   (%e-integer-coeff d var)))
 	 (return ()))
      ;; At this point denom-exponential has converted d(exp(x)) to the
      ;; polynomial d(z), where z = exp(x).
@@ -2777,18 +2777,20 @@ in the interval of integration.")
 
 ;; Check to see if each term in exp that is of the form exp(k*x) has
 ;; an integer value for k.
-(defun %e-integer-coeff (exp)
+(defun %e-integer-coeff (exp ivar)
   (cond ((mapatom exp) t)
 	((and (mexptp exp)
 	      (eq (cadr exp) '$%e))
-	 (eq (ask-integer ($coeff (caddr exp) var) '$integer)
+	 (eq (ask-integer ($coeff (caddr exp) ivar) '$integer)
 	     '$yes))
-	(t (every '%e-integer-coeff (cdr exp)))))
+	(t (every #'(lambda (e)
+                      (%e-integer-coeff e ivar))
+                  (cdr exp)))))
 
-(defun wlinearpoly (e var)
-  (cond ((and (setq e (polyinx e var t))
+(defun wlinearpoly (e ivar)
+  (cond ((and (setq e (polyinx e ivar t))
 	      (equal (deg e) 1))
-	 (subin-var 1 e var))))
+	 (subin-var 1 e ivar))))
 
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
 ;; exp(x) with 'z*.  That is, basically return f(z*).
