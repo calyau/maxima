@@ -1466,7 +1466,7 @@ in the interval of integration.")
 	    (return (m* (m// nc dc) ans)))
 	   ((and (or (%einvolve grand)
 		     (involve grand '(%sinh %cosh %tanh)))
-		 (p*pin%ex n)	      ;setq's P* and PE*...Barf again.
+		 (p*pin%ex n var)	      ;setq's P* and PE*...Barf again.
 		 (setq ans (catch 'pin%ex (pin%ex d))))
 	    ;; We have an integral of the form p(x)*F(exp(x)), where
 	    ;; p(x) is a polynomial.
@@ -2826,14 +2826,16 @@ in the interval of integration.")
 
 ;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set p* to
 ;; be p(x) and set pe* to f(exp(x)).
-(defun p*pin%ex (nd*)
+(defun p*pin%ex (nd* ivar)
   (setq nd* ($factor nd*))
-  (cond ((polyinx nd* var nil)
+  (cond ((polyinx nd* ivar nil)
 	 (setq p* (cons nd* p*)) t)
 	((catch 'pin%ex (pin%ex nd*))
 	 (setq pe* (cons nd* pe*)) t)
 	((mtimesp nd*)
-	 (andmapcar #'p*pin%ex (cdr nd*)))))
+	 (andmapcar #'(lambda (ex)
+                        (p*pin%ex ex ivar))
+                    (cdr nd*)))))
 
 (defun findsub (p ivar)
   (cond ((findp p ivar) nil)
