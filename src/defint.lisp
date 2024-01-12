@@ -1334,7 +1334,7 @@ in the interval of integration.")
 		   (return (m* (m// nc dc) ans)))
 	   ((and (evenfn d var)
 		 (setq nn* (p*lognxp n s)))
-	    (setq ans (log*rat (car nn*) d (cadr nn*)))
+	    (setq ans (log*rat (car nn*) d (cadr nn*) var))
 	    (return (m* (m// nc dc) ans)))
 	   ((involve grand '(%log))
 	    (cond ((setq ans (logquad0 grand))
@@ -2568,12 +2568,12 @@ in the interval of integration.")
     (setq ans (cons (m* dn (car rl) (m^ `((%plog) ,(car pl)) nn))
 		    ans))))
 
-(defun logcpj (n d i)
+(defun logcpj (n d i ivar)
   (setq n (append
 	   (if plm*
 	       (list (mul* (m*t '$%i %pi2)
 			   (m+l
-			    (residue (m* (m^ `((%plog) ,var) i)	 n)
+			    (residue (m* (m^ `((%plog) ,ivar) i)	 n)
 				     d
 				     plm*)))))
 	   (lognx2 i (m*t '$%i %pi2) pl* rl*)
@@ -2584,7 +2584,7 @@ in the interval of integration.")
 
 ;; Handle integral(n(x)/d(x)*log(x)^m,x,0,inf).  n and d are
 ;; polynomials.
-(defun log*rat (n d m)
+(defun log*rat (n d m ivar)
   (declare (special *i* *j*))
   (setq *i* (make-array (1+ m)))
   (setq *j* (make-array (1+ m)))
@@ -2592,7 +2592,7 @@ in the interval of integration.")
   (prog (leadcoef factors plm* pl* rl* pl*1 rl*1 rlm*)
      (dotimes (c m (return (logcpi n d m)))
        (setf (aref *i* c) (logcpi n d c))
-       (setf (aref *j* c) (logcpj n factors c)))))
+       (setf (aref *j* c) (logcpj n factors c ivar)))))
 
 (defun logcpi (n d c)
   (declare (special *j*))
