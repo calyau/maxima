@@ -2267,7 +2267,7 @@ in the interval of integration.")
 	(cond
 	  ((eq *ul* '$inf)
 	   (multiple-value-bind (kk s d r cc)
-	       (batap-inf e)
+	       (batap-inf e var)
 	     ;; We have i(x^kk/(d+cc*x^r)^s,x,0,inf) =
 	     ;; beta(aa,bb)/(cc^aa*d^bb*r).  Compute this, and then
 	     ;; differentiate it m times to get the log term
@@ -2286,7 +2286,7 @@ in the interval of integration.")
 		      (list '(mequal) var kk)))))))
 	  (t
 	   (multiple-value-bind
-		 (k/n l n b) (batap-new e)
+		 (k/n l n b) (batap-new e var)
 	     (when k/n
 	       (let ((beta (ftake* '%beta k/n l))
 		     (m (if (eq ($asksign m) '$zero) 0 m)))
@@ -2316,17 +2316,17 @@ in the interval of integration.")
 ;;; substitution; the log(x)s were just thrown in, which,
 ;;; of course would give wrong results.
 
-(defun batap-new (e)
+(defun batap-new (e ivar)
   ;; Parse e
   (multiple-value-bind (k c)
-      (bata0 e var)
+      (bata0 e ivar)
     (when k
       ;; e=x^k*(a+b*x^n)^l
       (destructuring-bind (l a n b)
 	  c
-	(when (and (freeof var k)
-		   (freeof var n)
-		   (freeof var l)
+	(when (and (freeof ivar k)
+		   (freeof ivar n)
+		   (freeof ivar l)
 		   (alike1 a (m-t (m*t b (m^t *ul* n))))
 		   (eq ($asksign b) '$neg)
 		   (eq ($asksign (setq k (m1+t k))) '$pos)
@@ -2345,9 +2345,9 @@ in the interval of integration.")
 ;; This function matches this and returns k-1, d, r, c, a, b.  And
 ;; also checks that all the conditions hold.  If not, NIL is returned.
 ;;
-(defun batap-inf (e)
+(defun batap-inf (e ivar)
   (multiple-value-bind (k c)
-      (bata0 e var)
+      (bata0 e ivar)
     (when k
       (destructuring-bind (l d r cc)
 	  c
@@ -2355,9 +2355,9 @@ in the interval of integration.")
 	       (kk (add k 1))
 	       (a (div kk r))
 	       (b (sub s a)))
-	  (when (and (freeof var k)
-		     (freeof var r)
-		     (freeof var l)
+	  (when (and (freeof ivar k)
+		     (freeof ivar r)
+		     (freeof ivar l)
 		     (eq ($asksign kk) '$pos)
 		     (eq ($asksign a) '$pos)
 		     (eq ($asksign b) '$pos)
