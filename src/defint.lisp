@@ -1341,7 +1341,7 @@ in the interval of integration.")
 		   (return (m* (m// nc dc) ans)))
 		  (t (return nil)))))
      findout
-     (cond ((setq temp (batapp grand))
+     (cond ((setq temp (batapp grand var))
 	    (return temp))
 	   (t nil))
      on
@@ -2189,7 +2189,7 @@ in the interval of integration.")
 
 ;; Check e for an expression of the form x^kk*(b*x^n+a)^l.  If it
 ;; matches, Return the two values kk and (list l a n b).
-(defun bata0 (e)
+(defun bata0 (e ivar)
   (let (k c)
     (cond ((atom e) nil)
 	  ((mexptp e)
@@ -2204,7 +2204,7 @@ in the interval of integration.")
 	       e
 	     (declare (ignore mexp))
 	     (multiple-value-bind (kk cc)
-		 (bata0 base)
+		 (bata0 base ivar)
 	       (when kk
 		 ;; Got a match.  Adjust kk and cc appropriately.
 		 (destructuring-bind (l a n b)
@@ -2213,12 +2213,12 @@ in the interval of integration.")
 			   (list (mul l power) a n b)))))))
 	  ((and (mtimesp e)
 		(null (cdddr e))
-		(or (and (setq k (findp (cadr e) var))
-			 (setq c (bxm (caddr e) (polyinx (caddr e) var nil) var)))
-		    (and (setq k (findp (caddr e) var))
-			 (setq c (bxm (cadr e) (polyinx (cadr e) var nil) var)))))
+		(or (and (setq k (findp (cadr e) ivar))
+			 (setq c (bxm (caddr e) (polyinx (caddr e) ivar nil) ivar)))
+		    (and (setq k (findp (caddr e) ivar))
+			 (setq c (bxm (cadr e) (polyinx (cadr e) ivar nil) ivar)))))
 	   (values k c))
-	  ((setq c (bxm e (polyinx e var nil) var))
+	  ((setq c (bxm e (polyinx e ivar nil) ivar))
 	   (setq k 0.)
 	   (values k c)))))
 
@@ -2319,7 +2319,7 @@ in the interval of integration.")
 (defun batap-new (e)
   ;; Parse e
   (multiple-value-bind (k c)
-      (bata0 e)
+      (bata0 e var)
     (when k
       ;; e=x^k*(a+b*x^n)^l
       (destructuring-bind (l a n b)
@@ -2347,7 +2347,7 @@ in the interval of integration.")
 ;;
 (defun batap-inf (e)
   (multiple-value-bind (k c)
-      (bata0 e)
+      (bata0 e var)
     (when k
       (destructuring-bind (l d r cc)
 	  c
@@ -2368,12 +2368,12 @@ in the interval of integration.")
 
 
 ;; Handles beta integrals.
-(defun batapp (e)
+(defun batapp (e ivar)
   (cond ((not (or (equal *ll* 0)
 		  (eq *ll* '$minf)))
-	 (setq e (subin-var (m+ *ll* var) e var))))
+	 (setq e (subin-var (m+ *ll* ivar) e ivar))))
   (multiple-value-bind (k c)
-      (bata0 e)
+      (bata0 e ivar)
     (cond ((null k)
 	   nil)
 	  (t
