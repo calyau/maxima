@@ -1477,7 +1477,7 @@ in the interval of integration.")
 			     (zerop1 (get-limit grand var '$minf))))
 		   ;; These limits must exist for the integral to converge.
 		   (diverg))
-		  ((setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d))
+		  ((setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d var))
 		   ;; This only handles the case when the F(z) is a
 		   ;; rational function.
 		   (return (m* (m// nc dc) ans)))
@@ -2690,18 +2690,20 @@ in the interval of integration.")
 ;; residues of R(exp(z))*q(z).  The only tricky part is that we want
 ;; the log function to have an imaginary part between 0 and 2*%pi
 ;; instead of -%pi to %pi.
-(defun rectzto%pi2 (p pe d)
+(defun rectzto%pi2 (p pe d ivar)
   ;; We have R(exp(x))*p(x) represented as p(x)*pe(exp(x))/d(exp(x)).
   (prog (dp n pl a b c denom-exponential)
-     (if (not (and (setq denom-exponential (catch 'pin%ex (pin%ex d var)))
-		   (%e-integer-coeff pe var)
-		   (%e-integer-coeff d var)))
+     (if (not (and (setq denom-exponential (catch 'pin%ex (pin%ex d ivar)))
+		   (%e-integer-coeff pe ivar)
+		   (%e-integer-coeff d ivar)))
 	 (return ()))
      ;; At this point denom-exponential has converted d(exp(x)) to the
      ;; polynomial d(z), where z = exp(x).
      (setq n (m* (cond ((null p) -1)
-		       (t ($expand (m*t '$%i %pi2 (makpoly p var)))))
+		       (t ($expand (m*t '$%i %pi2 (makpoly p ivar)))))
 		 pe))
+     ;; POLELIST (in residu.lisp) implicitly references VAR.  So we
+     ;; need the special variable here.
      (let ((var 'z*)
 	   (leadcoef ()))
        ;; Find the poles of the denominator.  denom-exponential is the
@@ -2727,7 +2729,7 @@ in the interval of integration.")
 	   ((or (cadr pl)
 		(caddr pl))
 	    ;; We have simple roots or roots in REGION1
-	    (setq dp (sdiff d var))))
+	    (setq dp (sdiff d ivar))))
      (cond ((cadr pl)
 	    ;; The cadr of pl is the list of the simple poles of
 	    ;; denom-exponential.  Take the log of them to find the
@@ -2755,11 +2757,11 @@ in the interval of integration.")
 	    (let ((poles (mapcar #'(lambda (p)
 				     (log-imag-0-2%pi (car p)))
 				 (car pl)))
-		  (exp (m// n (subst (m^t '$%e var) 'z* denom-exponential))))
+		  (exp (m// n (subst (m^t '$%e ivar) 'z* denom-exponential))))
 	      ;; Compute the residues at all of these poles and sum
 	      ;; them up.
 	      (setq a (mapcar #'(lambda (j)
-				  ($residue exp var j))
+				  ($residue exp ivar j))
 			      poles))
 	      (setq a (m+l a))))
 	   (t (setq a 0.)))
