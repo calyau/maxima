@@ -1481,7 +1481,7 @@ in the interval of integration.")
 		   ;; This only handles the case when the F(z) is a
 		   ;; rational function.
 		   (return (m* (m// nc dc) ans)))
-		  ((setq ans (log-transform (m*l p*) (m*l pe*) d))
+		  ((setq ans (log-transform (m*l p*) (m*l pe*) d var))
 		   ;; If we get here, F(z) is not a rational function.
 		   ;; We transform it using the substitution x=log(y)
 		   ;; which gives us an integral of the form
@@ -2665,11 +2665,11 @@ in the interval of integration.")
 ;; transformation y = exp(x) to get
 ;; integrate(p(log(y))*f(y)/g(y)/y,y,0,inf).  This should be handled
 ;; by dintlog.
-(defun log-transform (p pe d)
-  (let ((new-p (subst (list '(%log) var) var p))
-	(new-pe (subst var 'z* (catch 'pin%ex (pin%ex pe var))))
-	(new-d (subst var 'z* (catch 'pin%ex (pin%ex d var)))))
-    (defint (div (div (mul new-p new-pe) new-d) var) var 0 *ul*)))
+(defun log-transform (p pe d ivar)
+  (let ((new-p (subst (list '(%log) ivar) ivar p))
+	(new-pe (subst ivar 'z* (catch 'pin%ex (pin%ex pe ivar))))
+	(new-d (subst ivar 'z* (catch 'pin%ex (pin%ex d ivar)))))
+    (defint (div (div (mul new-p new-pe) new-d) ivar) ivar 0 *ul*)))
 
 ;; This implements Wang's algorithm in Chapter 5.2, pp. 98-100.
 ;;
