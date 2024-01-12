@@ -2048,7 +2048,7 @@ in the interval of integration.")
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
 (defun intsc0 (sc b var)
   ;; Determine if sc is a product of sin's and cos's.
-  (let ((nn* (scprod sc))
+  (let ((nn* (scprod sc var))
 	(dn* ()))
     (cond (nn*
 	   ;; We have a product of sin's and cos's.  We handle some
@@ -2133,23 +2133,23 @@ in the interval of integration.")
 
 ;; Determine whether E is of the form sin(x)^m*cos(x)^n and return the
 ;; list (m n).
-(defun scprod (e)
+(defun scprod (e ivar)
   (let ((great-minus-1 #'(lambda (temp)
 			   (ratgreaterp temp -1)))
 	m n)
     (cond
-      ((setq m (powerofx e `((%sin) ,var) great-minus-1 var))
+      ((setq m (powerofx e `((%sin) ,ivar) great-minus-1 ivar))
        (list m 0.))
-      ((setq n (powerofx e `((%cos) ,var) great-minus-1 var))
+      ((setq n (powerofx e `((%cos) ,ivar) great-minus-1 ivar))
        (setq m 0.)
        (list 0. n))
       ((and (mtimesp e)
-	    (or (setq m (powerofx (cadr e) `((%sin) ,var) great-minus-1 var))
-		(setq n (powerofx (cadr e) `((%cos) ,var) great-minus-1 var)))
+	    (or (setq m (powerofx (cadr e) `((%sin) ,ivar) great-minus-1 ivar))
+		(setq n (powerofx (cadr e) `((%cos) ,ivar) great-minus-1 ivar)))
 	    (cond
 	      ((null m)
-	       (setq m (powerofx (caddr e) `((%sin) ,var) great-minus-1 var)))
-	      (t (setq n (powerofx (caddr e) `((%cos) ,var) great-minus-1 var))))
+	       (setq m (powerofx (caddr e) `((%sin) ,ivar) great-minus-1 ivar)))
+	      (t (setq n (powerofx (caddr e) `((%cos) ,ivar) great-minus-1 ivar))))
 	    (null (cdddr e)))
        (list m n))
       (t ()))))
