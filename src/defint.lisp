@@ -2124,9 +2124,9 @@ in the interval of integration.")
 	nil
       ans)))
 
-(defun try-defint (exp var *ll* *ul*)
+(defun try-defint (exp ivar *ll* *ul*)
   (let* ((*nodiverg t)
-	 (ans (catch 'divergent (defint exp var *ll* *ul*))))
+	 (ans (catch 'divergent (defint exp ivar *ll* *ul*))))
     (if (eq ans 'divergent)
 	nil
       ans)))
