@@ -2103,16 +2103,21 @@ in the interval of integration.")
 
 ;;;Is careful about substitution of limits where the denominator may be zero
 ;;;because of various assumptions made.
-(defun sin-cos-intsubs (exp var *ll* *ul*)
+(defun sin-cos-intsubs (exp ivar *ll* *ul*)
   (cond ((mplusp exp)
-	 (let ((l (mapcar #'sin-cos-intsubs1 (cdr exp))))
+	 (let ((l (mapcar #'(lambda (e)
+                              (sin-cos-intsubs1 e ivar))
+                          (cdr exp))))
 	   (if (not (some #'null l))
 	       (m+l l))))
-	(t (sin-cos-intsubs1 exp))))
+	(t (sin-cos-intsubs1 exp ivar))))
 
-(defun sin-cos-intsubs1 (exp)
+(defun sin-cos-intsubs1 (exp ivar)
   (let* ((rat-exp ($rat exp))
-	 (denom (pdis (cddr rat-exp))))
+	 (denom (let ((var ivar))
+                  (declare (special var))
+                  ;; PDIS references the special variable VAR.
+                  (pdis (cddr rat-exp)))))
     (cond ((equal ($csign denom) '$zero)
 	   '$und)
 	  (t (try-intsubs exp *ll* *ul*)))))
