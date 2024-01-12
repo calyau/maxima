@@ -2637,18 +2637,18 @@ in the interval of integration.")
 ;;of the varibale of integration.
 ;;Can probably be made simpler now.
 
-(defun makpoly (p)
+(defun makpoly (p ivar)
   (let ((n (deg p))  (ans ())  (varlist ())  (gp ())  (cl ())  (zz ()))
-    (setq ans (genpoly (m+ 1 n))) ;Make poly with gensyms of 1 higher deg.
+    (setq ans (genpoly (m+ 1 n) ivar)) ;Make poly with gensyms of 1 higher deg.
     (setq cl (cdr ans))			;Coefficient list
-    (setq varlist (append cl (list var))) ;Make VAR most important.
+    (setq varlist (append cl (list ivar))) ;Make VAR most important.
     (setq gp (car ans))		 ;This is the poly with gensym coeffs.
 ;;;Now, poly(x)-poly(x+2*%i*%pi)=p(x), P is the original poly.
-    (setq ans (m+ gp (subin-var (m+t (m*t '$%i %pi2) var) (m- gp) var) (m- p)))
+    (setq ans (m+ gp (subin-var (m+t (m*t '$%i %pi2) ivar) (m- gp) ivar) (m- p)))
     (newvar ans)
     (setq ans (ratrep* ans))	       ;Rational rep with VAR leading.
     (setq zz (coefsolve n cl (cond ((not (eq (caadr ans) ;What is Lead Var.
-					     (genfind (car ans) var)))
+					     (genfind (car ans) ivar)))
 				    (list 0 (cadr ans))) ;No VAR in ans.
 				   ((cdadr ans))))) ;The real Poly.
     (if (or (null zz) (null gp))
@@ -2700,7 +2700,7 @@ in the interval of integration.")
      ;; At this point denom-exponential has converted d(exp(x)) to the
      ;; polynomial d(z), where z = exp(x).
      (setq n (m* (cond ((null p) -1)
-		       (t ($expand (m*t '$%i %pi2 (makpoly p)))))
+		       (t ($expand (m*t '$%i %pi2 (makpoly p var)))))
 		 pe))
      (let ((var 'z*)
 	   (leadcoef ()))
@@ -2765,14 +2765,14 @@ in the interval of integration.")
 	   (t (setq a 0.)))
      (return (sratsimp (m+ a b (m* '((rat) 1. 2.) c))))))
 
-(defun genpoly (i)
+(defun genpoly (i ivar)
   (do ((i i (m+ i -1))
        (c (gensym) (gensym))
        (cl ())
        (ans ()))
       ((zerop i)
        (cons (m+l ans) cl))
-    (setq ans (cons (m* c (m^t var i)) ans))
+    (setq ans (cons (m* c (m^t ivar i)) ans))
     (setq cl (cons c cl))))
 
 ;; Check to see if each term in exp that is of the form exp(k*x) has
