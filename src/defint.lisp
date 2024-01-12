@@ -2399,32 +2399,36 @@ in the interval of integration.")
       (m^ (m* b (m^ a (setq c (m// (m+t c 1) b)))) -1)
       `((%gamma) ,c)))
 
-(defun zto%pi2 (grand var)
-  (let ((result (unitcir (sratsimp (m// grand var)) var)))
+(defun zto%pi2 (grand ivar)
+  (let ((result (unitcir (sratsimp (m// grand ivar)) ivar)))
     (cond (result (sratsimp (m* (m- '$%i) result)))
 	  (t nil))))
 
 ;; Evaluates the contour integral of GRAND around the unit circle
 ;; using residues.
-(defun unitcir (grand var)
-  (numden grand)
-  (let* ((sgn nil)
-	 (result (princip (res nn* dn* 
-			       #'(lambda (pt)
-				   ;; Is pt stricly inside the unit circle?
-				   (setq sgn (let ((limitp nil))
-					       ($asksign (m+ -1 (cabs pt)))))
-				   (eq sgn '$neg))
-			       #'(lambda (pt)
-				   (declare (ignore pt))
-				   ;; Is pt on the unit circle?  (Use
-				   ;; the cached value computed
-				   ;; above.)
-				   (prog1
-				       (eq sgn '$zero)
+(defun unitcir (grand ivar)
+  (let ((var ivar))
+    (declare (special var))
+    ;; NOTE: Both NUMDEN and RES implicitly reference the special
+    ;; variable VAR.
+    (numden grand)
+    (let* ((sgn nil)
+	   (result (princip (res nn* dn* 
+			         #'(lambda (pt)
+				     ;; Is pt stricly inside the unit circle?
+				     (setq sgn (let ((limitp nil))
+					         ($asksign (m+ -1 (cabs pt)))))
+				     (eq sgn '$neg))
+			         #'(lambda (pt)
+				     (declare (ignore pt))
+				     ;; Is pt on the unit circle?  (Use
+				     ;; the cached value computed
+				     ;; above.)
+				     (prog1
+				         (eq sgn '$zero)
 				       (setq sgn nil)))))))
-    (when result
-      (m* '$%pi result))))
+      (when result
+        (m* '$%pi result)))))
 
 
 (defun logx1 (exp *ll* *ul* ivar)
