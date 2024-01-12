@@ -2508,7 +2508,7 @@ in the interval of integration.")
 
 ;; this is the second part of the definite integral package
 
-(declare-top(special var plm* pl* rl* pl*1 rl*1))
+(declare-top (special plm* pl* rl* pl*1 rl*1))
 
 (defun p*lognxp (a s ivar)
   (let (b)
@@ -2707,6 +2707,7 @@ in the interval of integration.")
      ;; need the special variable here.
      (let ((var 'z*)
 	   (leadcoef ()))
+       (declare (special var))
        ;; Find the poles of the denominator.  denom-exponential is the
        ;; denominator of R(x).
        ;;
