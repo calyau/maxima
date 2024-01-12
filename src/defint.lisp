@@ -503,7 +503,7 @@ in the interval of integration.")
 	       ((and (equal *ll* 0.)
 		     (freeof var *ul*)
 		     (eq ($asksign *ul*) '$pos)
-		     (zto1 exp)))
+		     (zto1 exp var)))
 	       ;;	     ((and (and (equal *ul* 1.)
 	       ;;			(equal *ll* 0.))  (zto1 exp)))
 	       (t (dintegrate exp var *ll* *ul*)))
@@ -2251,29 +2251,29 @@ in the interval of integration.")
 ;; function might not even be called for some of these integrals.
 ;; However, this can be palliated by setting intanalysis:false.
 
-(defun zto1 (e)
+(defun zto1 (e ivar)
   (when (or (mtimesp e) (mexptp e))
     (let ((m 0)
-	  (log (list '(%log) var)))
+	  (log (list '(%log) ivar)))
       (flet ((set-m (p)
 	       (setq m p)))
 	(find-if #'(lambda (fac)
-		     (powerofx fac log #'set-m var))
+		     (powerofx fac log #'set-m ivar))
 		 (cdr e)))
-      (when (and (freeof var m)
+      (when (and (freeof ivar m)
 		 (eq (ask-integer m '$integer) '$yes)
 		 (not (eq ($asksign m) '$neg)))
 	(setq e (m//t e (list '(mexpt) log m)))
 	(cond
 	  ((eq *ul* '$inf)
 	   (multiple-value-bind (kk s d r cc)
-	       (batap-inf e var)
+	       (batap-inf e ivar)
 	     ;; We have i(x^kk/(d+cc*x^r)^s,x,0,inf) =
 	     ;; beta(aa,bb)/(cc^aa*d^bb*r).  Compute this, and then
 	     ;; differentiate it m times to get the log term
 	     ;; incorporated.
 	     (when kk
-	       (let* ((aa (div (add 1 var) r))
+	       (let* ((aa (div (add 1 ivar) r))
 		      (bb (sub s aa))
 		      (m (if (eq ($asksign m) '$zero)
 			     0
@@ -2282,11 +2282,11 @@ in the interval of integration.")
 			       (mul (m^t cc aa)
 				    (m^t d bb)
 				    r))))
-		 ($at ($diff res var m)
-		      (list '(mequal) var kk)))))))
+		 ($at ($diff res ivar m)
+		      (list '(mequal) ivar kk)))))))
 	  (t
 	   (multiple-value-bind
-		 (k/n l n b) (batap-new e var)
+		 (k/n l n b) (batap-new e ivar)
 	     (when k/n
 	       (let ((beta (ftake* '%beta k/n l))
 		     (m (if (eq ($asksign m) '$zero) 0 m)))
@@ -2301,10 +2301,10 @@ in the interval of integration.")
 		     (m^t (m-t b) (m1-t l))
 		     (m^t *ul* (m*t n (m1-t l)))
 		     (m^t n (m-t (m1+t m)))
-		     ($at ($diff (m*t (m^t *ul* (m*t n var))
-				      (list '(%beta) var l))
-				 var m)
-			  (list '(mequal) var k/n)))
+		     ($at ($diff (m*t (m^t *ul* (m*t n ivar))
+				      (list '(%beta) ivar l))
+				 ivar m)
+			  (list '(mequal) ivar k/n)))
 		    beta))))))))))))
 
 
