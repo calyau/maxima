@@ -2427,16 +2427,16 @@ in the interval of integration.")
       (m* '$%pi result))))
 
 
-(defun logx1 (exp *ll* *ul*)
+(defun logx1 (exp *ll* *ul* ivar)
   (let ((arg nil))
     (cond
       ((and (notinvolve exp '(%sin %cos %tan %atan %asin %acos))
 	    (setq arg (involve exp '(%log))))
-       (cond ((eq arg var)
+       (cond ((eq arg ivar)
 	      (cond ((ratgreaterp 1. *ll*)
 		     (cond ((not (eq *ul* '$inf))
-			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,var))))
-			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,var)))))))
+			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar))))
+			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar)))))))
 	     (t (intcv arg nil)))))))
 
 
@@ -2945,7 +2945,7 @@ in the interval of integration.")
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
-             ((and (setq ans (let (($gamma_expand t)) (logx1 exp *ll* *ul*)))
+             ((and (setq ans (let (($gamma_expand t)) (logx1 exp *ll* *ul* var1)))
 		   (free ans '%limit))
 	      (return ans))
 	     ((setq ans (antideriv exp))
