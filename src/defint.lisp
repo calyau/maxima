@@ -1516,19 +1516,19 @@ in the interval of integration.")
 	 exp)))
 
 ;;; given (b*x+a)^n+c returns  (a b n c)
-(defun linpower (exp var)
+(defun linpower (exp ivar)
   (let (linpart deg lc c varlist)
     (cond ((not (polyp exp))   nil)
-	  (t (let ((varlist (list var)))
+	  (t (let ((varlist (list ivar)))
 	       (newvar exp)
 	       (setq linpart (cadr (ratrep* exp)))
 	       (cond ((atom linpart)
 		      nil)
 		     (t (setq deg (cadr linpart))
 ;;;get high degree of poly
-			(setq linpart ($diff exp var (m+ deg -1)))
+			(setq linpart ($diff exp ivar (m+ deg -1)))
 ;;;diff down to linear.
-			(setq lc (sdiff linpart var))
+			(setq lc (sdiff linpart ivar))
 ;;;all the way to constant.
 			(setq linpart (sratsimp (m// linpart lc)))
 			(setq lc (sratsimp (m// lc `((mfactorial) ,deg))))
@@ -1536,7 +1536,7 @@ in the interval of integration.")
 			(setq c (sratsimp (m+ exp (m* (m- lc)
 						      (m^ linpart deg)))))))
 ;;;Sees if can be expressed as (a*x+b)^n + part freeof x.
-	       (cond ((not (among var c))
+	       (cond ((not (among ivar c))
 		      `(,lc ,linpart ,deg ,c))
 		     (t nil)))))))
 
