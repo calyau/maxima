@@ -1332,7 +1332,9 @@ in the interval of integration.")
 	   ((and (ratp grand var)
 		 (setq ans (zmtorat n (cond ((mtimesp d) d)
 					    (t ($sqfr d)))
-				    s #'ztorat)))
+				    s
+                                    #'ztorat
+                                    var)))
 		   (return (m* (m// nc dc) ans)))
 	   ((and (evenfn d var)
 		 (setq nn* (p*lognxp n s var)))
@@ -1463,7 +1465,11 @@ in the interval of integration.")
 			  (return (m* (m// nc dc) ans))))))))
 	  (cond
 	    ((and (ratp grand var)
-	          (setq ans1 (zmtorat n (cond ((mtimesp d) d) (t ($sqfr d))) s #'mtorat)))
+	          (setq ans1 (zmtorat n
+                                      (cond ((mtimesp d) d) (t ($sqfr d)))
+                                      s
+                                      #'mtorat
+                                      var)))
 	    (setq ans (m*t '$%pi ans1))
 	    (return (m* (m// nc dc) ans)))
 	   ((and (or (%einvolve grand)
@@ -1541,7 +1547,7 @@ in the interval of integration.")
 	   s)
 	  (t (csemiup n d var)))))
 
-(defun zmtorat (n d s fn1)
+(defun zmtorat (n d s fn1 ivar)
   (prog (c)
      (cond ((eq ($sign (m+ s (m+ 1 (setq nn* (deg n)))))
 		'$neg)
@@ -1556,7 +1562,7 @@ in the interval of integration.")
      (cond
        ((mtimesp d)
 	(setq d (cdr d))
-	(setq n (partnum n d var))
+	(setq n (partnum n d ivar))
 	(let ((rsn* t))
 	  (setq n ($xthru (m+l
 			   (mapcar #'(lambda (a b)
@@ -1573,14 +1579,17 @@ in the interval of integration.")
      (return (when n (sratsimp (cond (c  (m// n c))
 				     (t n)))))))
 
-(defun pfrnum (f g n n2 var)
-  (let ((varlist (list var))  genvar)
+(defun pfrnum (f g n n2 ivar)
+  (let ((varlist (list ivar))  genvar)
     (setq f (polyform f)
 	  g (polyform g)
 	  n (polyform n)
 	  n2 (polyform n2))
-    (setq var (caadr (ratrep* var)))
-    (setq f (resprog0 f g n n2))
+    (setq ivar (caadr (ratrep* ivar)))
+    (setq f (let ((var ivar))
+              (declare (special var))
+              ;; RESPROG0 (RESPROG) references the special variable VAR.
+              (resprog0 f g n n2)))
     (list (list (pdis (cadr f)) (pdis (cddr f)))
 	  (list (pdis (caar f)) (pdis (cdar f))))))
 
