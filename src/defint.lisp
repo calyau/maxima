@@ -1297,7 +1297,7 @@ in the interval of integration.")
 		'$pos)
 	    (return nil))
 	   ((setq temp (or (scaxn grand var)
-			   (ssp grand)))
+			   (ssp grand var)))
 	    (return temp))
 	   ((involve grand '(%sin %cos %tan))
 	    (setq grand (sconvert grand var))
@@ -1416,7 +1416,7 @@ in the interval of integration.")
 	   ((involve grand '(%sin %cos))
 	    (cond ((and (evenfn grand var)
 			(or (setq temp (scaxn grand var))
-			    (setq temp (ssp grand))))
+			    (setq temp (ssp grand var))))
 		   (return (m*t 2. temp)))
 		  ((setq temp (mtosc grand))
 		   (return temp))
@@ -1695,7 +1695,7 @@ in the interval of integration.")
 
 
 ;; integrate(a*sc(r*x)^k/x^n,x,0,inf).
-(defun ssp (exp)
+(defun ssp (exp ivar)
   (prog (u n c arg)
      ;; Get the argument of the involved trig function.
      (when (null (setq arg (involve exp '(%sin %cos))))
@@ -1704,8 +1704,8 @@ in the interval of integration.")
      #+nil
      (declare (special n))
      ;; Replace (1-cos(arg)^2) with sin(arg)^2.
-     (setq exp ($substitute ;(m^t `((%sin) ,var) 2.)
-                            ;(m+t 1. (m- (m^t `((%cos) ,var) 2.)))
+     (setq exp ($substitute ;(m^t `((%sin) ,ivar) 2.)
+                            ;(m+t 1. (m- (m^t `((%cos) ,ivar) 2.)))
                             ;; The code from above generates expressions with
                             ;; a missing simp flag. Furthermore, the 
                             ;; substitution has to be done for the complete
@@ -1715,16 +1715,16 @@ in the interval of integration.")
                             exp))
      (numden exp)
      (setq u nn*)
-     (cond ((and (setq n (findp dn* var))
+     (cond ((and (setq n (findp dn* ivar))
 		 (eq (ask-integer n '$integer) '$yes))
 	    ;; n is the power of the denominator.
 	    (cond ((setq c (skr u))
 		   ;; The simple case.
-		   (return (scmp c n var)))
+		   (return (scmp c n ivar)))
 		  ((and (mplusp u)
 			(setq c (andmapcar #'skr (cdr u))))
 		   ;; Do this for a sum of such terms.
-		   (return (m+l (mapcar #'(lambda (j) (scmp j n var))
+		   (return (m+l (mapcar #'(lambda (j) (scmp j n ivar))
 					c)))))))))
 
 ;; We have an integral of the form sin(r*x)^k/x^n.  C is the list (1 r k).
