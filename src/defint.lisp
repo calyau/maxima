@@ -2020,29 +2020,29 @@ in the interval of integration.")
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
 ;; calls intsc with a wrapper to just return nil if integral is divergent,
 ;;  rather than generating an error.
-(defun try-intsc (sc b var)
+(defun try-intsc (sc b ivar)
   (let* ((*nodiverg t)
-	 (ans (catch 'divergent (intsc sc b var))))
+	 (ans (catch 'divergent (intsc sc b ivar))))
     (if (eq ans 'divergent)
 	nil
       ans)))
 
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).  I (rtoy)
 ;; think this expects b to be less than 2*%pi.
-(defun intsc (sc b var)
+(defun intsc (sc b ivar)
   (if (zerop1 b)
       0
       (multiple-value-bind (b sc)
 	  (cond ((eq ($sign b) '$neg)
 		 (values (m*t -1 b)
-			 (m* -1 (subin-var (m*t -1 var) sc var))))
+			 (m* -1 (subin-var (m*t -1 ivar) sc ivar))))
 		(t
 		 (values b sc)))
 	;; Partition the integrand SC into the factors that do not
 	;; contain VAR (the car part) and the parts that do (the cdr
 	;; part).
-	(setq sc (partition sc var 1))
-	(cond ((setq b (intsc0 (cdr sc) b var))
+	(setq sc (partition sc ivar 1))
+	(cond ((setq b (intsc0 (cdr sc) b ivar))
 	       (m* (resimplify (car sc)) b))))))
 
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
