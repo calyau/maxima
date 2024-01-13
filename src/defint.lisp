@@ -1656,11 +1656,12 @@ in the interval of integration.")
 ;; keyhole contour.  This contour is basically an disk with a slit
 ;; along the positive real axis.  n/d must be a rational function.
 (defun keyhole (n d ivar)
-  (let ((var ivar))
-    (declare (special var))
-    ;; RES references the special variable VAR, so we need it for now.
-    (let* ((*semirat* ())
-	   (res (res n d
+  (let* ((*semirat* ())
+	 (res (let ((var ivar))
+                (declare (special var))
+                ;; RES references the special variable VAR, so we need
+                ;; it for now.
+                (res n d
 		     #'(lambda (j)
 		         ;; Ok if not on the positive real axis.
 		         (or (not (equal ($imagpart j) 0))
@@ -1668,15 +1669,15 @@ in the interval of integration.")
 		     #'(lambda (j)
 		         (cond ((eq ($asksign j) '$pos)
 			        t)
-			       (t (diverg)))))))
-      (when res
-        (let ((rsn* t))
-	  ($rectform ($multthru (m+ (cond ((car res)
-					   (car res))
-					  (t 0.))
-				    (cond ((cadr res)
-					   (cadr res))
-					  (t 0.))))))))))
+			       (t (diverg))))))))
+    (when res
+      (let ((rsn* t))
+	($rectform ($multthru (m+ (cond ((car res)
+					 (car res))
+					(t 0.))
+				  (cond ((cadr res)
+					 (cadr res))
+					(t 0.)))))))))
 
 ;; Look at an expression e of the form sin(r*x)^k, where k is an
 ;; integer.  Return the list (1 r k).  (Not sure if the first element
