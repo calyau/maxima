@@ -2046,9 +2046,9 @@ in the interval of integration.")
 	       (m* (resimplify (car sc)) b))))))
 
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
-(defun intsc0 (sc b var)
+(defun intsc0 (sc b ivar)
   ;; Determine if sc is a product of sin's and cos's.
-  (let ((nn* (scprod sc var))
+  (let ((nn* (scprod sc ivar))
 	(dn* ()))
     (cond (nn*
 	   ;; We have a product of sin's and cos's.  We handle some
@@ -2098,7 +2098,7 @@ in the interval of integration.")
 		       (setq dn* (scrat sc b)))
 		  dn*)
 		 ((setq nn* (antideriv sc))
-		  (sin-cos-intsubs nn* var 0. b))
+		  (sin-cos-intsubs nn* ivar 0. b))
 		 (t ()))))))
 
 ;;;Is careful about substitution of limits where the denominator may be zero
