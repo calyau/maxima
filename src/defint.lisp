@@ -1848,6 +1848,9 @@ in the interval of integration.")
 	      (abless1 (caddr a)))
 	 (caddr a))))
 
+;; Doesn't appear to be used anywhere in Maxima.  Not sure what this
+;; was intended to do.
+#+nil
 (defun thrad (e)
   (cond ((polyinx e var nil) 0.)
 	((and (mexptp e)
@@ -1862,8 +1865,8 @@ in the interval of integration.")
 ;;; LOWER LIMIT=0 B A MULTIPLE OF %PI SCA FUNCTION OF SIN (X) COS (X)
 ;;; B<=%PI2
 
-(defun period (p e var)
-  (and (alike1 (no-err-sub var e) (setq e (no-err-sub (m+ p var) e)))
+(defun period (p e ivar)
+  (and (alike1 (no-err-sub ivar e) (setq e (no-err-sub (m+ p ivar) e)))
        ;; means there was no error
        (not (eq e t))))
 
