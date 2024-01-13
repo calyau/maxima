@@ -1409,16 +1409,16 @@ in the interval of integration.")
 		(not (equal (ptterm (cddr exp) 0.) 0.)))
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
-(defun mtoinf (grand var)
+(defun mtoinf (grand ivar)
   (prog (ans ans1 sd* sn* p* pe* n d s nc dc $savefactors *checkfactors* temp)
      (setq $savefactors t)
      (setq sn* (setq sd* (list 1.)))
      (cond ((eq ($sign (m+ loopstop* -1)) '$pos)
 	    (return nil))
 	   ((involve grand '(%sin %cos))
-	    (cond ((and (evenfn grand var)
-			(or (setq temp (scaxn grand var))
-			    (setq temp (ssp grand var))))
+	    (cond ((and (evenfn grand ivar)
+			(or (setq temp (scaxn grand ivar))
+			    (setq temp (ssp grand ivar))))
 		   (return (m*t 2. temp)))
 		  ((setq temp (mtosc grand))
 		   (return temp))
@@ -1428,9 +1428,9 @@ in the interval of integration.")
 		   (return temp))
 		  (t (go en)))))
      (setq grand ($exponentialize grand))	; exponentializing before numden 
-     (cond ((polyinx grand var nil)		;  avoids losing multiplicities [ 1309432 ]
+     (cond ((polyinx grand ivar nil)		;  avoids losing multiplicities [ 1309432 ]
 	    (diverg))
-	   ((and (ratp grand var)
+	   ((and (ratp grand ivar)
 		 (mtimesp grand)
 		 (andmapcar #'snumden (cdr grand)))
 	    (setq nn* (m*l sn*) sn* nil)
@@ -1442,13 +1442,13 @@ in the interval of integration.")
      (setq n (cdr n))
      (setq dc (car d))
      (setq d (cdr d))
-     (cond ((polyinx d var nil)
+     (cond ((polyinx d ivar nil)
 	    (setq s (deg d))))
      (cond ((and (not (%einvolve grand))
 		 (notinvolve exp '(%sinh %cosh %tanh))
-		 (setq p* (findp n var))
+		 (setq p* (findp n ivar))
 		 (eq (ask-integer p* '$integer) '$yes)
-		 (setq pe* (bxm d s var)))
+		 (setq pe* (bxm d s ivar)))
 	    (cond ((and (eq (ask-integer (caddr pe*) '$even) '$yes)
 			(eq (ask-integer p* '$even) '$yes))
 		   (cond ((setq ans (apply 'fan (cons (m+ 1. p*) pe*)))
@@ -1464,32 +1464,32 @@ in the interval of integration.")
 			  (setq ans (m+ ans (m*t (m^ -1 p*) nn*)))
 			  (return (m* (m// nc dc) ans))))))))
 	  (cond
-	    ((and (ratp grand var)
+	    ((and (ratp grand ivar)
 	          (setq ans1 (zmtorat n
                                       (cond ((mtimesp d) d) (t ($sqfr d)))
                                       s
                                       #'mtorat
-                                      var)))
+                                      ivar)))
 	    (setq ans (m*t '$%pi ans1))
 	    (return (m* (m// nc dc) ans)))
 	   ((and (or (%einvolve grand)
 		     (involve grand '(%sinh %cosh %tanh)))
-		 (p*pin%ex n var)	      ;setq's P* and PE*...Barf again.
-		 (setq ans (catch 'pin%ex (pin%ex d var))))
+		 (p*pin%ex n ivar)	      ;setq's P* and PE*...Barf again.
+		 (setq ans (catch 'pin%ex (pin%ex d ivar))))
 	    ;; We have an integral of the form p(x)*F(exp(x)), where
 	    ;; p(x) is a polynomial.
 	    (cond ((null p*)
 		   ;; No polynomial
-		   (return (dintexp grand var)))
-		  ((not (and (zerop1 (get-limit grand var '$inf))
-			     (zerop1 (get-limit grand var '$minf))))
+		   (return (dintexp grand ivar)))
+		  ((not (and (zerop1 (get-limit grand ivar '$inf))
+			     (zerop1 (get-limit grand ivar '$minf))))
 		   ;; These limits must exist for the integral to converge.
 		   (diverg))
-		  ((setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d var))
+		  ((setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d ivar))
 		   ;; This only handles the case when the F(z) is a
 		   ;; rational function.
 		   (return (m* (m// nc dc) ans)))
-		  ((setq ans (log-transform (m*l p*) (m*l pe*) d var))
+		  ((setq ans (log-transform (m*l p*) (m*l pe*) d ivar))
 		   ;; If we get here, F(z) is not a rational function.
 		   ;; We transform it using the substitution x=log(y)
 		   ;; which gives us an integral of the form
@@ -1500,11 +1500,11 @@ in the interval of integration.")
 		   ;; Give up.  We don't know how to handle this.
 		   (return nil)))))
      en
-     (cond ((setq ans (ggrm grand var))
+     (cond ((setq ans (ggrm grand ivar))
 	    (return ans))
-	   ((and (evenfn grand var)
+	   ((and (evenfn grand ivar)
 		 (setq loopstop* (m+ 1 loopstop*))
-		 (setq ans (method-by-limits grand var 0 '$inf)))
+		 (setq ans (method-by-limits grand ivar 0 '$inf)))
 	    (return (m*t 2. ans)))
 	   (t (return nil)))))
 
