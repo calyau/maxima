@@ -1720,11 +1720,11 @@ in the interval of integration.")
 	    ;; n is the power of the denominator.
 	    (cond ((setq c (skr u))
 		   ;; The simple case.
-		   (return (scmp c n)))
+		   (return (scmp c n var)))
 		  ((and (mplusp u)
 			(setq c (andmapcar #'skr (cdr u))))
 		   ;; Do this for a sum of such terms.
-		   (return (m+l (mapcar #'(lambda (j) (scmp j n))
+		   (return (m+l (mapcar #'(lambda (j) (scmp j n var))
 					c)))))))))
 
 ;; We have an integral of the form sin(r*x)^k/x^n.  C is the list (1 r k).
@@ -1756,7 +1756,7 @@ in the interval of integration.")
 ;;
 ;; where q >= 2.
 ;;
-(defun scmp (c n)
+(defun scmp (c n ivar)
   ;; Compute sign(r)*r^(n-1)*integrate(sin(y)^k/y^n,y,0,inf)
   (destructuring-bind (mult r k)
       c
@@ -1769,14 +1769,14 @@ in the interval of integration.")
           ;; Recursion failed.  Return the integrand
           ;; The following code generates expressions with a missing simp flag 
           ;; for the sin function. Use better simplifying code. (DK 02/2010)
-;	  (let ((integrand (div (pow `((%sin) ,(m* r var))
+;	  (let ((integrand (div (pow `((%sin) ,(m* r ivar))
 ;				     k)
-;				(pow var n))))
-          (let ((integrand (div (power (take '(%sin) (mul r var))
+;				(pow ivar n))))
+          (let ((integrand (div (power (take '(%sin) (mul r ivar))
                                        k)
-                                (power var n))))
+                                (power ivar n))))
 	    (m* mult
-		`((%integrate) ,integrand ,var ,*ll* ,*ul*)))))))
+		`((%integrate) ,integrand ,ivar ,*ll* ,*ul*)))))))
 
 ;; integrate(sin(x)^n/x^2,x,0,inf) = pi/2*binomial(n-3/2,n-1).
 ;; Express in terms of Gamma functions, though.
