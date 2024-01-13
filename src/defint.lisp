@@ -1556,7 +1556,7 @@ in the interval of integration.")
      (cond
        ((mtimesp d)
 	(setq d (cdr d))
-	(setq n (partnum n d))
+	(setq n (partnum n d var))
 	(let ((rsn* t))
 	  (setq n ($xthru (m+l
 			   (mapcar #'(lambda (a b)
@@ -1598,12 +1598,12 @@ in the interval of integration.")
 			(ptimes (cadr f) (caddr d)))))
      (merror "defint: bug from PFRNUM in RESIDU.")))
 
-(defun partnum (n dl)
+(defun partnum (n dl ivar)
   (let ((n2 1)  ans nl)
     (do ((dl dl (cdr dl)))
 	((null (cdr dl))
 	 (nconc ans (ncons (list n n2))))
-      (setq nl (pfrnum (car dl) (m*l (cdr dl)) n n2 var))
+      (setq nl (pfrnum (car dl) (m*l (cdr dl)) n n2 ivar))
       (setq ans (nconc ans (ncons (car nl))))
       (setq n2 (cadadr nl) n (caadr nl) nl nil))))
 
