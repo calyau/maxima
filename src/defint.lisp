@@ -1006,7 +1006,7 @@ in the interval of integration.")
   ;; XXX Should the result try to convert sin/cos back into tan?  (A
   ;; call to trigreduce would do it, among other things.)
   (let* ((exp (mfuncall '$trigsimp exp))
-	 (poles (atan-poles exp *ll* *ul*)))
+	 (poles (atan-poles exp *ll* *ul* var)))
     ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......)
     ;;We can then use $SUBSTITUTE
     (setq ll-ans (limcp exp var *ll* '$plus))
@@ -1017,10 +1017,10 @@ in the interval of integration.")
 	(combine-ll-ans-ul-ans ll-ans ul-ans)
       nil)))
 
-(defun atan-poles (exp *ll* *ul*)
-  `((mlist) ,@(atan-pole1 exp *ll* *ul*)))
+(defun atan-poles (exp *ll* *ul* ivar)
+  `((mlist) ,@(atan-pole1 exp *ll* *ul* ivar)))
 
-(defun atan-pole1 (exp *ll* *ul* &aux ipart)
+(defun atan-pole1 (exp *ll* *ul* ivar &aux ipart)
   (cond
     ((mapatom exp)  ())
     ((matanp exp)	 ;neglect multiplicity and '$unknowns for now.
@@ -1029,7 +1029,7 @@ in the interval of integration.")
        ((not (equal (sratsimp ipart) 0))  ())
        (t (let ((pole (poles-in-interval (let (($algebraic t))
 					   (sratsimp (cadr exp)))
-					 var *ll* *ul*)))
+					 ivar *ll* *ul*)))
 	    (cond ((and pole (not (or (eq pole '$unknown)
 				      (eq pole '$no))))
 		   (do ((l pole (cdr l)) (llist ()))
@@ -1037,8 +1037,8 @@ in the interval of integration.")
 		     (cond
 		       ((zerop1 (m- (caar l) *ll*)) t)  ; don't worry about discontinuity
  		       ((zerop1 (m- (caar l) *ul*)) t)  ;  at boundary of integration
-		       (t (let ((low-lim ($limit (cadr exp) var (caar l) '$minus))
-				(up-lim ($limit (cadr exp) var (caar l) '$plus)))
+		       (t (let ((low-lim ($limit (cadr exp) ivar (caar l) '$minus))
+				(up-lim ($limit (cadr exp) ivar (caar l) '$plus)))
 			    (cond ((and (not (eq low-lim up-lim))
 					(real-infinityp low-lim)
 					(real-infinityp up-lim))
@@ -1050,7 +1050,7 @@ in the interval of integration.")
     (t (do ((l (cdr exp) (cdr l))
 	    (llist ()))
 	   ((null l)  llist)
-	 (setq llist (append llist (atan-pole1 (car l) *ll* *ul*)))))))
+	 (setq llist (append llist (atan-pole1 (car l) *ll* *ul* ivar)))))))
 
 (defun difapply (n d s fn1)
   (prog (k m r $noprincipal)
