@@ -1209,29 +1209,29 @@ in the interval of integration.")
 ;; exponentializes sin and cos before applying residue method.
 ;; can handle some expressions with poles on real line, such as
 ;; sin(x)*cos(x)/x.
-(defun mtosc (grand)
+(defun mtosc (grand ivar)
   (numden grand)
   (let ((n nn*)
 	(d dn*)
 	ratterms ratans
 	plf bptu bptd s upans downans)
-    (cond ((not (or (polyinx d var nil)
+    (cond ((not (or (polyinx d ivar nil)
 		    (and (setq grand (%einvolve d))
 			 (among '$%i grand)
 			 (polyinx (setq d (sratsimp (m// d (m^t '$%e grand))))
-				  var
+				  ivar
 				  nil)
 			 (setq n (m// n (m^t '$%e grand))))))  nil)
 	  ((equal (setq s (deg d)) 0)  nil)
 ;;;Above tests for applicability of this method.
 	  ((and (or (setq plf (polfactors n))  t)
 		(setq n ($expand (cond ((car plf)
-					(m*t 'x* (sconvert (cadr plf) var)))
-				       (t (sconvert n var)))))
+					(m*t 'x* (sconvert (cadr plf) ivar)))
+				       (t (sconvert n ivar)))))
 		(cond ((mplusp n)  (setq n (cdr n)))
 		      (t (setq n (list n))))
 		(dolist (term n t)
-		  (cond ((polyinx term var nil)
+		  (cond ((polyinx term ivar nil)
 			 ;; call to $expand can create rational terms
 			 ;; with no exp(m*%i*x)
 			 (setq ratterms (cons term ratterms)))
@@ -1253,14 +1253,14 @@ in the interval of integration.")
 			    ;; determined to have no poles by initial-analysis.
 			    ;; If individual terms of the expansion have poles, the poles 
 			    ;; must cancel each other out, so we can ignore them.
-			    (try-defint (m// (m+l ratterms) d) var '$minf '$inf))
+			    (try-defint (m// (m+l ratterms) d) ivar '$minf '$inf))
 			0))
 		;; if integral of ratterms is divergent, ratans is nil, 
 		;; and mtosc returns nil
 
-		(cond (bptu (setq upans (csemiup (m+l bptu) d var)))
+		(cond (bptu (setq upans (csemiup (m+l bptu) d ivar)))
 		      (t (setq upans 0)))
-		(cond (bptd (setq downans (csemidown (m+l bptd) d var)))
+		(cond (bptd (setq downans (csemidown (m+l bptd) d ivar)))
 		      (t (setq downans 0))))
 	   
 	   (sratsimp (m+ ratans
@@ -1420,11 +1420,11 @@ in the interval of integration.")
 			(or (setq temp (scaxn grand ivar))
 			    (setq temp (ssp grand ivar))))
 		   (return (m*t 2. temp)))
-		  ((setq temp (mtosc grand))
+		  ((setq temp (mtosc grand ivar))
 		   (return temp))
 		  (t (go en))))
 	   ((among '$%i (%einvolve grand))
-	    (cond ((setq temp (mtosc grand))
+	    (cond ((setq temp (mtosc grand ivar))
 		   (return temp))
 		  (t (go en)))))
      (setq grand ($exponentialize grand))	; exponentializing before numden 
