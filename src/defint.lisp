@@ -901,13 +901,13 @@ in the interval of integration.")
 	(t 
 	 (m*l (mapcar #'discontinuities-denom (cdr exp))))))
 
-;; returns list of places where exp might be discontinuous in var.
+;; returns list of places where exp might be discontinuous in ivar.
 ;; list begins with *ll* and ends with *ul*, and include any values between
 ;; *ll* and *ul*.
 ;; return '$no or '$unknown if no discontinuities found.
-(defun discontinuities-in-interval (exp var *ll* *ul*)
+(defun discontinuities-in-interval (exp ivar *ll* *ul*)
   (let* ((denom (discontinuities-denom exp))
-	 (roots (real-roots denom var)))
+	 (roots (real-roots denom ivar)))
     (cond ((eq roots '$failure)
 	   '$unknown)
 	  ((eq roots '$no)
