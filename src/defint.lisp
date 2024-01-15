@@ -222,7 +222,7 @@ in the interval of integration.")
 	 ;; If antideriv can't do it, returns nil
 	 ;; use limit to evaluate every answer returned by antideriv.
 	 (cond ((null exp) nil)
-	       (t (intsubs exp *ll* *ul*))))))
+	       (t (intsubs exp *ll* *ul* var))))))
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr var)
@@ -434,7 +434,7 @@ in the interval of integration.")
 		       ;; Well, there's at least one existing result which requires
 		       ;; logabs = true in RISCHINT, so try to make a minimal change here instead.
 		       (cond ((setq ans (let ($logabs) (antideriv exp)))
-			      (setq ans (intsubs ans *ll* *ul*))
+			      (setq ans (intsubs ans *ll* *ul* var))
 			      (return (cond (ans (m* c ans)) (t nil))))
 			     (t (return nil)))))
 		(setq exp (tansc exp))
@@ -542,7 +542,7 @@ in the interval of integration.")
 	  ;; Well, there's at least one existing result which requires
 	  ;; logabs = true in RISCHINT, so try to make a minimal change here instead.
 	  ((setq ans (let ($logabs) (antideriv exp)))
-	   (intsubs ans *ll* *ul*))
+	   (intsubs ans *ll* *ul* var))
 	  (t nil))))
 
 (defun method-radical-poly (exp var *ll* *ul*)
@@ -551,7 +551,7 @@ in the interval of integration.")
 	(result ()))
     (cond ((and (sinintp exp var)
 		(setq result (antideriv exp))
-		(intsubs result *ll* *ul*)))
+		(intsubs result *ll* *ul* var)))
 	  ((and (ratp exp var)
 		(setq result (ratfnt exp))))
 	  ((and (not *scflag*)
@@ -583,7 +583,8 @@ in the interval of integration.")
       ((null current-pole)  t)
     (setq ans (m+ ans
 		  (intsubs anti-deriv (m+ (caar previous-pole) 'epsilon)
-			   (m+ (caar current-pole) (m- 'epsilon))))))
+			   (m+ (caar current-pole) (m- 'epsilon))
+                           var))))
 
   (setq ans (get-limit (get-limit ans 'epsilon 0 '$plus) 'prin-inf '$inf))
   ;;Return section.
@@ -653,7 +654,7 @@ in the interval of integration.")
     (flet ((try-antideriv (e lo hi)
 	     (let ((ans (antideriv e)))
 	       (when ans
-		 (intsubs ans lo hi)))))
+		 (intsubs ans lo hi var)))))
 
       (cond ((equal 0. (car e))
 	     ;; No polynomial part
@@ -699,7 +700,7 @@ in the interval of integration.")
 		   ((eq ans 'divergent)
 		    (let ((*nodiverg nil))
 		      (cond ((setq ans (antideriv saved-exp))
-			     (intsubs ans *ll* *ul*))
+			     (intsubs ans *ll* *ul* var))
 			    (t nil))))
 		   (t (sratsimp (m+l ans))))))
 ;;;If leadop isn't plus don't do anything.
@@ -866,17 +867,17 @@ in the interval of integration.")
 ;; 
 ;; the integral has a discontinuity at x=0.
 ;;
-(defun intsubs (e a b)
+(defun intsubs (e a b ivar)
   (let ((edges (cond ((not $intanalysis)
 		      '$no)		;don't do any checking.
 		    (t (discontinuities-in-interval 
 			(let (($algebraic t)) 
 			  (sratsimp e))
-			var a b)))))
+			ivar a b)))))
 
     (cond ((or (eq edges '$no)
 	       (eq edges '$unknown))
-	   (whole-intsubs e a b var))
+	   (whole-intsubs e a b ivar))
 	  (t
 	   (do* ((l edges (cdr l))
 		 (total nil)
@@ -885,7 +886,7 @@ in the interval of integration.")
 		((null (cdr l)) (if (every (lambda (x) x) total)
 				    (m+l total)))
 		(push
-		 (whole-intsubs e a1 b1 var)
+		 (whole-intsubs e a1 b1 ivar)
 		 total))))))
 
 ;; look for terms with a negative exponent
@@ -2154,7 +2155,7 @@ in the interval of integration.")
 
 (defun try-intsubs (exp *ll* *ul*)
   (let* ((*nodiverg t)
-	 (ans (catch 'divergent (intsubs exp *ll* *ul*))))
+	 (ans (catch 'divergent (intsubs exp *ll* *ul* var))))
     (if (eq ans 'divergent)
 	nil
       ans)))
@@ -2952,7 +2953,7 @@ in the interval of integration.")
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp arg)     ;To be moved higher in the code.
 		(setq ans (antideriv exp))
-		(setq ans (intsubs ans *ll* *ul*)))
+		(setq ans (intsubs ans *ll* *ul* arg)))
 	   ;; If we can integrate it directly, do so and take the
 	   ;; appropriate limits.
 	   )
@@ -2990,7 +2991,7 @@ in the interval of integration.")
 	     ((setq ans (antideriv exp))
 	      ;; It's easy if we have the antiderivative.
 	      ;; but intsubs sometimes gives results containing %limit
-	      (return (intsubs ans *ll* *ul*))))
+	      (return (intsubs ans *ll* *ul* var1))))
        ;; Ok, the easy cases didn't work.  We now try integration by
        ;; parts.  Set ANS to f(x).
        (setq ans (m// exp `((%log) ,arg)))
