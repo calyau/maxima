@@ -892,21 +892,23 @@ in the interval of integration.")
 ;;
 ;; recursively traverses exp in order to find discontinuities such as
 ;;  erfc(1/x-x) at x=0
-(defun discontinuities-denom (exp)
+(defun discontinuities-denom (exp ivar)
   (cond ((atom exp) 1)
 	((and (eq (caar exp) 'mexpt)
-	      (not (freeof var (cadr exp)))
+	      (not (freeof ivar (cadr exp)))
 	      (not (member ($sign (caddr exp)) '($pos $pz))))
 	 (m^ (cadr exp) (m- (caddr exp))))
 	(t 
-	 (m*l (mapcar #'discontinuities-denom (cdr exp))))))
+	 (m*l (mapcar #'(lambda (e)
+                          (discontinuities-denom e ivar))
+                      (cdr exp))))))
 
 ;; returns list of places where exp might be discontinuous in ivar.
 ;; list begins with *ll* and ends with *ul*, and include any values between
 ;; *ll* and *ul*.
 ;; return '$no or '$unknown if no discontinuities found.
 (defun discontinuities-in-interval (exp ivar *ll* *ul*)
-  (let* ((denom (discontinuities-denom exp))
+  (let* ((denom (discontinuities-denom exp ivar))
 	 (roots (real-roots denom ivar)))
     (cond ((eq roots '$failure)
 	   '$unknown)
