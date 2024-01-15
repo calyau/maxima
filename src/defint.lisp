@@ -559,7 +559,7 @@ in the interval of integration.")
 		(not (eq *ul* '$inf))
 		(radicalp exp var)
 		(kindp34 var)
-		(setq result (cv exp))))
+		(setq result (cv exp var))))
 	  (t ()))))
 
 (defun principal-value-integral (exp var *ll* *ul* poles)
@@ -621,7 +621,7 @@ in the interval of integration.")
 ;; x = (b*y+a)/(y+1).
 ;;
 ;; (I'm guessing CV means Change Variable here.)
-(defun cv (exp)
+(defun cv (exp ivar)
   (if (not (or (real-infinityp *ll*) (real-infinityp *ul*)))
       ;; FIXME!  This is a hack.  We apply the transformation with
       ;; symbolic limits and then substitute the actual limits later.
@@ -633,7 +633,7 @@ in the interval of integration.")
       ;; work (in other places).
       (let ((trans (integrand-changevar (m// (m+t '*ll* (m*t '*ul* 'yx))
 					     (m+t 1. 'yx))
-					'yx exp var)))
+					'yx exp ivar)))
 	;; If the limit is a number, use $substitute so we simplify
 	;; the result.  Do we really want to do this?
 	(setf trans (if (mnump *ll*)
@@ -662,7 +662,7 @@ in the interval of integration.")
 	     (let ((ans (try-antideriv exp *ll* *ul*)))
 	       (if ans
 		   ans
-		   (cv exp))))
+		   (cv exp ivar))))
 	    ((equal 0. (cdr e))
 	     ;; Only polynomial part
 	     (eezz (car e) *ll* *ul*))
@@ -675,7 +675,7 @@ in the interval of integration.")
 			   ans))
 		     (t
 		      (m+t (eezz (car e) *ll* *ul*)
-			   (cv (m// (cdr e) dn*)))))))))))
+			   (cv (m// (cdr e) dn*) ivar))))))))))
 
 ;; I think this takes a rational expression E, and finds the
 ;; polynomial part.  A cons is returned.  The car is the quotient and
@@ -1754,7 +1754,7 @@ in the interval of integration.")
                             `((mplus) 1 ((mtimes) -1 ((mexpt) ((%cos) ,arg) 2)))
                             exp))
      (let ((var ivar))
-       (declare (speical var))
+       (declare (special var))
        (numden exp))
      (setq u nn*)
      (cond ((and (setq n (findp dn* ivar))
