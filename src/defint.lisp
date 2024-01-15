@@ -554,7 +554,7 @@ in the interval of integration.")
 		(setq result (antideriv exp))
 		(intsubs result *ll* *ul* var)))
 	  ((and (ratp exp var)
-		(setq result (ratfnt exp))))
+		(setq result (ratfnt exp var))))
 	  ((and (not *scflag*)
 		(not (eq *ul* '$inf))
 		(radicalp exp var)
@@ -648,14 +648,14 @@ in the interval of integration.")
 ;; Integrate rational functions over a finite interval by doing the
 ;; polynomial part directly, and converting the rational part to an
 ;; integral from 0 to inf.  This is evaluated via residues.
-(defun ratfnt (exp)
-  (let ((e (pqr exp)))
+(defun ratfnt (exp ivar)
+  (let ((e (pqr exp ivar)))
     ;; PQR divides the rational expression and returns the quotient
     ;; and remainder
     (flet ((try-antideriv (e lo hi)
 	     (let ((ans (antideriv e)))
 	       (when ans
-		 (intsubs ans lo hi var)))))
+		 (intsubs ans lo hi ivar)))))
 
       (cond ((equal 0. (car e))
 	     ;; No polynomial part
@@ -680,8 +680,8 @@ in the interval of integration.")
 ;; I think this takes a rational expression E, and finds the
 ;; polynomial part.  A cons is returned.  The car is the quotient and
 ;; the cdr is the remainder.
-(defun pqr (e)
-  (let ((varlist (list var)))
+(defun pqr (e ivar)
+  (let ((varlist (list ivar)))
     (newvar e)
     (setq e (cdr (ratrep* e)))
     (setq dn* (pdis (ratdenominator e)))
