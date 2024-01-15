@@ -474,7 +474,8 @@ in the interval of integration.")
 	  ((and (ratp exp var)
 		(setq ans (method-by-limits exp var *ll* *ul*)))  ans)
 	  ((and (mplusp exp)
-		(setq ans (intbyterm exp t)))  ans)
+		(setq ans (intbyterm exp t var)))
+           ans)
 	  ((setq ans (method-by-limits exp var *ll* *ul*))  ans)
 	  (t ()))))
 
@@ -534,7 +535,7 @@ in the interval of integration.")
 			    ($trigexpand exp)))
 		(setq ans ($expand ans))
 		(not (alike1 ans exp))
-		(intbyterm ans t)))
+		(intbyterm ans t var)))
 	  ;; Call ANTIDERIV with logabs disabled,
 	  ;; because the Risch algorithm assumes
 	  ;; the integral of 1/x is log(x), not log(abs(x)).
@@ -688,19 +689,19 @@ in the interval of integration.")
     (cons (simplify (rdis (car e))) (simplify (rdis (cadr e))))))
 
 
-(defun intbyterm (exp *nodiverg)
+(defun intbyterm (exp *nodiverg ivar)
   (let ((saved-exp exp))
     (cond ((mplusp exp)
 	   (let ((ans (catch 'divergent
 			(andmapcar #'(lambda (new-exp)
 				       (let ((*def2* t))
-					 (defint new-exp var *ll* *ul*)))
+					 (defint new-exp ivar *ll* *ul*)))
 				   (cdr exp)))))
 	     (cond ((null ans) nil)
 		   ((eq ans 'divergent)
 		    (let ((*nodiverg nil))
 		      (cond ((setq ans (antideriv saved-exp))
-			     (intsubs ans *ll* *ul* var))
+			     (intsubs ans *ll* *ul* ivar))
 			    (t nil))))
 		   (t (sratsimp (m+l ans))))))
 ;;;If leadop isn't plus don't do anything.
