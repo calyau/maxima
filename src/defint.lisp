@@ -562,17 +562,17 @@ in the interval of integration.")
 		(setq result (cv exp var))))
 	  (t ()))))
 
-(defun principal-value-integral (exp var *ll* *ul* poles)
+(defun principal-value-integral (exp ivar *ll* *ul* poles)
   (let ((anti-deriv ()))
     (cond ((not (null (setq anti-deriv (antideriv exp))))
 	   (cond ((not (null poles))
-		  (order-limits 'ask var)
-		  (cond ((take-principal anti-deriv *ll* *ul* poles))
+		  (order-limits 'ask ivar)
+		  (cond ((take-principal anti-deriv *ll* *ul* ivar poles))
 			(t ()))))))))
 
 ;; adds up integrals of ranges between each pair of poles.
 ;; checks if whole thing is divergent as limits of integration approach poles.
-(defun take-principal (anti-deriv *ll* *ul* poles &aux ans merged-list)
+(defun take-principal (anti-deriv *ll* *ul* ivar poles &aux ans merged-list)
   ;;; calling $logcontract causes antiderivative of 1/(1-x^5) to blow up
   ;;  (setq anti-deriv (cond ((involve anti-deriv '(%log))
   ;;			  ($logcontract anti-deriv))
@@ -585,7 +585,7 @@ in the interval of integration.")
     (setq ans (m+ ans
 		  (intsubs anti-deriv (m+ (caar previous-pole) 'epsilon)
 			   (m+ (caar current-pole) (m- 'epsilon))
-                           var))))
+                           ivar))))
 
   (setq ans (get-limit (get-limit ans 'epsilon 0 '$plus) 'prin-inf '$inf))
   ;;Return section.
