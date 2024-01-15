@@ -935,7 +935,7 @@ in the interval of integration.")
 	   (let (($algebraic t))
 	     (setq e (sratsimp e))
 	     (cond ((limit-subs e a b))
-		   (t (same-sheet-subs e a b)))))))
+		   (t (same-sheet-subs e a b var)))))))
 
 ;; Try easy substitutions.  Return NIL if we can't.
 (defun easy-subs (e *ll* *ul*)
@@ -993,7 +993,7 @@ in the interval of integration.")
 	(t (m- a2 a1))))
 
 ;;;This function works only on things with ATAN's in them now.
-(defun same-sheet-subs (exp *ll* *ul* &aux ll-ans ul-ans)
+(defun same-sheet-subs (exp *ll* *ul* ivar &aux ll-ans ul-ans)
   ;; POLES-IN-INTERVAL doesn't know about the poles of tan(x).  Call
   ;; trigsimp to convert tan into sin/cos, which POLES-IN-INTERVAL
   ;; knows how to handle.
@@ -1006,12 +1006,12 @@ in the interval of integration.")
   ;; XXX Should the result try to convert sin/cos back into tan?  (A
   ;; call to trigreduce would do it, among other things.)
   (let* ((exp (mfuncall '$trigsimp exp))
-	 (poles (atan-poles exp *ll* *ul* var)))
+	 (poles (atan-poles exp *ll* *ul* ivar)))
     ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......)
     ;;We can then use $SUBSTITUTE
-    (setq ll-ans (limcp exp var *ll* '$plus))
+    (setq ll-ans (limcp exp ivar *ll* '$plus))
     (setq exp (sratsimp ($substitute poles exp)))
-    (setq ul-ans (limcp exp var *ul* '$minus))
+    (setq ul-ans (limcp exp ivar *ul* '$minus))
     (if (and ll-ans 
 	     ul-ans)
 	(combine-ll-ans-ul-ans ll-ans ul-ans)
