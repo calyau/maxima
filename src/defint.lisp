@@ -565,7 +565,7 @@ in the interval of integration.")
   (let ((anti-deriv ()))
     (cond ((not (null (setq anti-deriv (antideriv exp))))
 	   (cond ((not (null poles))
-		  (order-limits 'ask)
+		  (order-limits 'ask var)
 		  (cond ((take-principal anti-deriv *ll* *ul* poles))
 			(t ()))))))))
 
@@ -728,7 +728,7 @@ in the interval of integration.")
 	(t (merror (intl:gettext "defint: integral is divergent.")))))
 
 (defun make-defint-assumptions (ask-or-not)
-  (cond ((null (order-limits ask-or-not))  ())
+  (cond ((null (order-limits ask-or-not var))  ())
 	(t (mapc 'forget *defint-assumptions*)
 	   (setq *defint-assumptions* ())
 	   (let ((sign-ll (cond ((eq *ll* '$inf)  '$pos)
@@ -801,7 +801,7 @@ in the interval of integration.")
 	     ((null llist) t)
 	   (i-$remove `(,(cadar llist) ,(caddar llist)))))))
 
-(defun order-limits (ask-or-not)
+(defun order-limits (ask-or-not ivar)
   (cond ((or (not (equal ($imagpart *ll*) 0))
 	     (not (equal ($imagpart *ul*) 0)))  ())
 	(t (cond ((alike1 *ll* (m*t -1 '$inf))
@@ -823,12 +823,12 @@ in the interval of integration.")
 		  ;
 		  ; Now substitute
 		  ;
-		  ;   var -> -var
+		  ;   ivar -> -ivar
 		  ;   *ll*  -> -*ul*
 		  ;   *ul*  -> inf
 		  ;
 		  ; so that minf < *ll* < *ul* = inf
-		  (setq exp (subin-var (m- var) exp var))
+		  (setq exp (subin-var (m- ivar) exp ivar))
 		  (setq *ll* (m- *ul*))
 		  (setq *ul* '$inf))
 		 ((or (eq *ll* '$inf)
