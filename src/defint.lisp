@@ -511,7 +511,7 @@ in the interval of integration.")
       (restore-defint-assumptions old-assumptions *defint-assumptions*))))
 
 
-(defun dintegrate (exp var *ll* *ul*)
+(defun dintegrate (exp ivar *ll* *ul*)
   (let ((ans nil) (arg nil) (*scflag* nil)
 	(*dflag nil) ($%emode t))
 ;;;NOT COMPLETE for sin's and cos's.
@@ -522,20 +522,20 @@ in the interval of integration.")
 	  ((and (not *rad-poly-recur*)
 		(notinvolve exp '(%log))
 		(not (%einvolve exp))
-		(method-radical-poly exp var *ll* *ul*)))
+		(method-radical-poly exp ivar *ll* *ul*)))
 	  ((and (not (equal *dintlog-recur* 2.))
 		(setq arg (involve exp '(%log)))
-		(dintlog exp arg var)))
+		(dintlog exp arg ivar)))
 	  ((and (not *dintexp-recur*)
 		(setq arg (%einvolve exp))
-		(dintexp exp var)))
-	  ((and (not (ratp exp var))
+		(dintexp exp ivar)))
+	  ((and (not (ratp exp ivar))
 		(setq ans (let (($trigexpandtimes nil)
 				($trigexpandplus t))
 			    ($trigexpand exp)))
 		(setq ans ($expand ans))
 		(not (alike1 ans exp))
-		(intbyterm ans t var)))
+		(intbyterm ans t ivar)))
 	  ;; Call ANTIDERIV with logabs disabled,
 	  ;; because the Risch algorithm assumes
 	  ;; the integral of 1/x is log(x), not log(abs(x)).
@@ -543,7 +543,7 @@ in the interval of integration.")
 	  ;; Well, there's at least one existing result which requires
 	  ;; logabs = true in RISCHINT, so try to make a minimal change here instead.
 	  ((setq ans (let ($logabs) (antideriv exp)))
-	   (intsubs ans *ll* *ul* var))
+	   (intsubs ans *ll* *ul* ivar))
 	  (t nil))))
 
 (defun method-radical-poly (exp ivar *ll* *ul*)
