@@ -876,7 +876,7 @@ in the interval of integration.")
 
     (cond ((or (eq edges '$no)
 	       (eq edges '$unknown))
-	   (whole-intsubs e a b))
+	   (whole-intsubs e a b var))
 	  (t
 	   (do* ((l edges (cdr l))
 		 (total nil)
@@ -885,7 +885,7 @@ in the interval of integration.")
 		((null (cdr l)) (if (every (lambda (x) x) total)
 				    (m+l total)))
 		(push
-		 (whole-intsubs e a1 b1)
+		 (whole-intsubs e a1 b1 var)
 		 total))))))
 
 ;; look for terms with a negative exponent
@@ -928,25 +928,25 @@ in the interval of integration.")
 
 ;; Carefully substitute the integration limits A and B into the
 ;; expression E.
-(defun whole-intsubs (e a b)
-  (cond ((easy-subs e a b))
+(defun whole-intsubs (e a b ivar)
+  (cond ((easy-subs e a b ivar))
 	(t (setq *current-assumptions*
 		 (make-defint-assumptions 'ask)) ;get forceful!
 	   (let (($algebraic t))
 	     (setq e (sratsimp e))
-	     (cond ((limit-subs e a b))
-		   (t (same-sheet-subs e a b var)))))))
+	     (cond ((limit-subs e a b ivar))
+		   (t (same-sheet-subs e a b ivar)))))))
 
 ;; Try easy substitutions.  Return NIL if we can't.
-(defun easy-subs (e *ll* *ul*)
+(defun easy-subs (e *ll* *ul* ivar)
   (cond ((or (infinityp *ll*) (infinityp *ul*))
 	 ;; Infinite limits aren't easy
 	 nil)
 	(t
-	 (cond ((or (polyinx e var ())
+	 (cond ((or (polyinx e ivar ())
 		    (and (not (involve e '(%log %asin %acos %atan %asinh %acosh %atanh %atan2
 						%gamma_incomplete %expintegral_ei)))
-			 (free ($denom e) var)))
+			 (free ($denom e) ivar)))
 		;; It's easy if we have a polynomial.  I (rtoy) think
 		;; it's also easy if the denominator is free of the
 		;; integration variable and also if the expression
@@ -972,12 +972,12 @@ in the interval of integration.")
 			(t nil))))
 	       (t nil)))))
 
-(defun limit-subs (e *ll* *ul*)
+(defun limit-subs (e *ll* *ul* ivar)
   (cond ((involve e '(%atan %gamma_incomplete %expintegral_ei))
 	 ())	; functions with discontinuities
 	(t (setq e ($multthru e))
-	   (let ((a1 ($limit e var *ll* '$plus))
-		 (a2 ($limit e var *ul* '$minus)))
+	   (let ((a1 ($limit e ivar *ll* '$plus))
+		 (a2 ($limit e ivar *ul* '$minus)))
 	     (combine-ll-ans-ul-ans a1 a2)))))
 
 ;; check for divergent integral
