@@ -215,14 +215,14 @@ in the interval of integration.")
 		   (t `((%integrate) ,orig-exp ,orig-var ,orig-ll ,orig-ul))))
 	(forget-global-assumptions)))))
 
-(defun eezz (exp *ll* *ul*)
-  (cond ((or (polyinx exp var nil)
-	     (catch 'pin%ex (pin%ex exp var)))
-	 (setq exp (antideriv exp var))
+(defun eezz (exp *ll* *ul* ivar)
+  (cond ((or (polyinx exp ivar nil)
+	     (catch 'pin%ex (pin%ex exp ivar)))
+	 (setq exp (antideriv exp ivar))
 	 ;; If antideriv can't do it, returns nil
 	 ;; use limit to evaluate every answer returned by antideriv.
 	 (cond ((null exp) nil)
-	       (t (intsubs exp *ll* *ul* var))))))
+	       (t (intsubs exp *ll* *ul* ivar))))))
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -470,7 +470,7 @@ in the interval of integration.")
 
 (defun parse-integrand (exp ivar *ll* *ul*)
   (let (ans)
-    (cond ((setq ans (eezz exp *ll* *ul*))  ans)
+    (cond ((setq ans (eezz exp *ll* *ul* ivar))  ans)
 	  ((and (ratp exp ivar)
 		(setq ans (method-by-limits exp ivar *ll* *ul*)))
            ans)
@@ -666,16 +666,16 @@ in the interval of integration.")
 		   (cv exp ivar))))
 	    ((equal 0. (cdr e))
 	     ;; Only polynomial part
-	     (eezz (car e) *ll* *ul*))
+	     (eezz (car e) *ll* *ul* ivar))
 	    (t
 	     ;; A non-zero quotient and remainder.  Combine the results
 	     ;; together.
 	     (let ((ans (try-antideriv (m// (cdr e) dn*) *ll* *ul*)))
 	       (cond (ans
-		      (m+t (eezz (car e) *ll* *ul*)
+		      (m+t (eezz (car e) *ll* *ul* ivar)
 			   ans))
 		     (t
-		      (m+t (eezz (car e) *ll* *ul*)
+		      (m+t (eezz (car e) *ll* *ul* ivar)
 			   (cv (m// (cdr e) dn*) ivar))))))))))
 
 ;; I think this takes a rational expression E, and finds the
