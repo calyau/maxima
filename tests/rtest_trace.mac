@@ -348,7 +348,7 @@ f7 (error (), error (), error (), error ());
   1 Exit  limit 0
   1 Enter limit [0]
   1 Exit  limit 0
-  1 Enter antideriv [%e^-x*cos(x)]
+  1 Enter antideriv [%e^-x*cos(x),x]
   1 Exit  antideriv (%e^-x*(sin(x)-cos(x)))/2
   1 Enter limit [0]
   1 Exit  limit 0
@@ -364,7 +364,7 @@ f7 (error (), error (), error (), error ());
  with_stdout (S, block ([display2d: false], integrate (exp(-x)*cos(x), x, 0, inf))),
  get_output_stream_string (S));
 "1 Enter integrate [%e^-x*cos(x),x,0,inf]
- 1 Enter antideriv [%e^-x*cos(x)]
+ 1 Enter antideriv [%e^-x*cos(x),x]
  1 Exit  antideriv (%e^-x*(sin(x)-cos(x)))/2
 1 Exit  integrate 1/2
 ";

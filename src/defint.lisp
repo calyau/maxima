@@ -218,7 +218,7 @@ in the interval of integration.")
 (defun eezz (exp *ll* *ul*)
   (cond ((or (polyinx exp var nil)
 	     (catch 'pin%ex (pin%ex exp var)))
-	 (setq exp (antideriv exp))
+	 (setq exp (antideriv exp var))
 	 ;; If antideriv can't do it, returns nil
 	 ;; use limit to evaluate every answer returned by antideriv.
 	 (cond ((null exp) nil)
@@ -268,11 +268,11 @@ in the interval of integration.")
 	  ;; other cases we're mising here?
 	  t)))
 
-(defun antideriv (a)
+(defun antideriv (a ivar)
   (let ((limitp ())
 	(ans ())
 	(generate-atan2 ()))
-    (setq ans (sinint a var))
+    (setq ans (sinint a ivar))
     (cond ((among '%integrate ans)  nil)
 	  (t (simplify ans)))))
 
@@ -433,7 +433,7 @@ in the interval of integration.")
 		       ;; Why not just assume logabs = false within RISCHINT itself?
 		       ;; Well, there's at least one existing result which requires
 		       ;; logabs = true in RISCHINT, so try to make a minimal change here instead.
-		       (cond ((setq ans (let ($logabs) (antideriv exp)))
+		       (cond ((setq ans (let ($logabs) (antideriv exp var)))
 			      (setq ans (intsubs ans *ll* *ul* var))
 			      (return (cond (ans (m* c ans)) (t nil))))
 			     (t (return nil)))))
@@ -543,7 +543,7 @@ in the interval of integration.")
 	  ;; Why not just assume logabs = false within RISCHINT itself?
 	  ;; Well, there's at least one existing result which requires
 	  ;; logabs = true in RISCHINT, so try to make a minimal change here instead.
-	  ((setq ans (let ($logabs) (antideriv exp)))
+	  ((setq ans (let ($logabs) (antideriv exp ivar)))
 	   (intsubs ans *ll* *ul* ivar))
 	  (t nil))))
 
@@ -552,7 +552,7 @@ in the interval of integration.")
   (let ((*rad-poly-recur* t)		;recursion stopper
 	(result ()))
     (cond ((and (sinintp exp ivar)
-		(setq result (antideriv exp))
+		(setq result (antideriv exp ivar))
 		(intsubs result *ll* *ul* ivar)))
 	  ((and (ratp exp ivar)
 		(setq result (ratfnt exp ivar))))
@@ -565,7 +565,7 @@ in the interval of integration.")
 
 (defun principal-value-integral (exp ivar *ll* *ul* poles)
   (let ((anti-deriv ()))
-    (cond ((not (null (setq anti-deriv (antideriv exp))))
+    (cond ((not (null (setq anti-deriv (antideriv exp ivar))))
 	   (cond ((not (null poles))
 		  (order-limits 'ask ivar)
 		  (cond ((take-principal anti-deriv *ll* *ul* ivar poles))
@@ -654,7 +654,7 @@ in the interval of integration.")
     ;; PQR divides the rational expression and returns the quotient
     ;; and remainder
     (flet ((try-antideriv (e lo hi)
-	     (let ((ans (antideriv e)))
+	     (let ((ans (antideriv e ivar)))
 	       (when ans
 		 (intsubs ans lo hi ivar)))))
 
@@ -701,7 +701,7 @@ in the interval of integration.")
 	     (cond ((null ans) nil)
 		   ((eq ans 'divergent)
 		    (let ((*nodiverg nil))
-		      (cond ((setq ans (antideriv saved-exp))
+		      (cond ((setq ans (antideriv saved-exp ivar))
 			     (intsubs ans *ll* *ul* ivar))
 			    (t nil))))
 		   (t (sratsimp (m+l ans))))))
@@ -2147,7 +2147,7 @@ in the interval of integration.")
 			   (alike1 b half%pi))
 		       (setq dn* (scrat sc b ivar)))
 		  dn*)
-		 ((setq nn* (antideriv sc))
+		 ((setq nn* (antideriv sc ivar))
 		  (sin-cos-intsubs nn* ivar 0. b))
 		 (t ()))))))
 
@@ -2942,7 +2942,7 @@ in the interval of integration.")
 ;;
 (defun dintbypart (u v a b arg)
 ;;;SINCE ONLY CALLED FROM DINTLOG TO get RID OF LOGS - IF LOG REMAINS, QUIT
-  (let ((ad (antideriv v)))
+  (let ((ad (antideriv v arg)))
     (cond ((or (null ad)
 	       (involve ad '(%log)))
 	   nil)
@@ -2971,7 +2971,7 @@ in the interval of integration.")
 (defun dintexp (exp arg &aux ans)
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp arg)     ;To be moved higher in the code.
-		(setq ans (antideriv exp))
+		(setq ans (antideriv exp arg))
 		(setq ans (intsubs ans *ll* *ul* arg)))
 	   ;; If we can integrate it directly, do so and take the
 	   ;; appropriate limits.
@@ -3007,7 +3007,7 @@ in the interval of integration.")
              ((and (setq ans (let (($gamma_expand t)) (logx1 exp *ll* *ul* var1)))
 		   (free ans '%limit))
 	      (return ans))
-	     ((setq ans (antideriv exp))
+	     ((setq ans (antideriv exp var1))
 	      ;; It's easy if we have the antiderivative.
 	      ;; but intsubs sometimes gives results containing %limit
 	      (return (intsubs ans *ll* *ul* var1))))
