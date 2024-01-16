@@ -277,15 +277,15 @@ in the interval of integration.")
 	  (t (simplify ans)))))
 
 ;; This routine tries to take a limit a couple of ways.
-(defun get-limit (exp var val &optional (dir '$plus dir?))
+(defun get-limit (exp ivar val &optional (dir '$plus dir?))
   (let ((ans (if dir?
-		 (funcall #'limit-no-err exp var val dir)
-		 (funcall #'limit-no-err exp var val))))
+		 (funcall #'limit-no-err exp ivar val dir)
+		 (funcall #'limit-no-err exp ivar val))))
     (if (and ans (not (among '%limit ans)))
 	ans
 	(when (member val '($inf $minf) :test #'eq)
-	  (setq ans (limit-no-err (maxima-substitute (m^t var -1) var exp)
-				  var
+	  (setq ans (limit-no-err (maxima-substitute (m^t ivar -1) ivar exp)
+				  ivar
 				  0
 				  (if (eq val '$inf) '$plus '$minus)))
 	  (if (among '%limit ans) nil ans)))))
