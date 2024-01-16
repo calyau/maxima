@@ -344,9 +344,9 @@ in the interval of integration.")
 			       (t (intcv1 d nv ivar))))
 			(t ()))))))))
 
-;; d: original variable (var) as a function of 'yx
+;; d: original variable (ivar) as a function of 'yx
 ;; ind: boolean flag
-;; nv: new variable ('yx) as a function of original variable (var)
+;; nv: new variable ('yx) as a function of original variable (ivar)
 (defun intcv1 (d nv ivar)
   (cond ((and (intcv2 d nv ivar)
 	      (equal ($imagpart *ll1*) 0)
@@ -375,7 +375,7 @@ in the interval of integration.")
 		    (among '$und ans)))
 	   ans))))
 
-;; rewrites exp, the integrand in terms of var,
+;; rewrites exp, the integrand in terms of ivar,
 ;; into exp1, the integrand in terms of 'yx.
 (defun intcv3 (d nv ivar)
   (setq exp1 (m* (sdiff d 'yx)
@@ -1939,7 +1939,7 @@ in the interval of integration.")
   (mfuncall '$floor r))
 
 
-;;;Try making exp(%i*var) --> yy, if result is rational then do integral
+;;;Try making exp(%i*ivar) --> yy, if result is rational then do integral
 ;;;around unit circle. Make corrections for limits of integration if possible.
 (defun scrat (sc b ivar)
   (let* ((exp-form (sconvert sc ivar))	;Exponentialize
@@ -2077,7 +2077,7 @@ in the interval of integration.")
 	nil
       ans)))
 
-;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).  I (rtoy)
+;; integrate(sc, ivar, 0, b), where sc is f(sin(x), cos(x)).  I (rtoy)
 ;; think this expects b to be less than 2*%pi.
 (defun intsc (sc b ivar)
   (if (zerop1 b)
@@ -2095,7 +2095,7 @@ in the interval of integration.")
 	(cond ((setq b (intsc0 (cdr sc) b ivar))
 	       (m* (resimplify (car sc)) b))))))
 
-;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
+;; integrate(sc, ivar, 0, b), where sc is f(sin(x), cos(x)).
 (defun intsc0 (sc b ivar)
   ;; Determine if sc is a product of sin's and cos's.
   (let ((nn* (scprod sc ivar))
@@ -3427,7 +3427,7 @@ in the interval of integration.")
 
 ;;; LL and UL must be real otherwise this routine return $UNKNOWN.
 ;;; Returns $no $unknown or a list of poles in the interval (*ll* *ul*)
-;;; for exp w.r.t. var.
+;;; for exp w.r.t. ivar.
 ;;; Form of list ((pole . multiplicity) (pole1 . multiplicity) ....)
 (defun poles-in-interval (exp ivar *ll* *ul*)
   (let* ((denom (cond ((mplusp exp)
