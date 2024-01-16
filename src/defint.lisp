@@ -3182,31 +3182,31 @@ in the interval of integration.")
 
 
 ;; Match x^m*exp(b*x^n+a).  If it does, return (list m b n a).
-(defun ggr1 (e arg)
+(defun ggr1 (e ivar)
   (cond ((atom e) nil)
 	((and (mexptp e)
 	      (eq (cadr e) '$%e))
-	 ;; We're looking at something like exp(f(arg)).  See if it's
+	 ;; We're looking at something like exp(f(ivar)).  See if it's
 	 ;; of the form b*x^n+a, and return (list 0 b n a).  (The 0 is
 	 ;; so we can graft something onto it if needed.)
-	 (cond ((setq e (maybpc (caddr e) arg))
+	 (cond ((setq e (maybpc (caddr e) ivar))
 		(cons 0. e))))
 	((and (mtimesp e)
 	      ;; E should be the product of exactly 2 terms
 	      (null (cdddr e))
 	      ;; Check to see if one of the terms is of the form
-	      ;; arg^p.  If so, make sure the realpart of p > -1.  If
+	      ;; ivar^p.  If so, make sure the realpart of p > -1.  If
 	      ;; so, check the other term has the right form via
 	      ;; another call to ggr1.
-	      (or (and (setq dn* (xtorterm (cadr e) arg))
+	      (or (and (setq dn* (xtorterm (cadr e) ivar))
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
-		       (setq nn* (ggr1 (caddr e) arg)))
-		  (and (setq dn* (xtorterm (caddr e) arg))
+		       (setq nn* (ggr1 (caddr e) ivar)))
+		  (and (setq dn* (xtorterm (caddr e) ivar))
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
-		       (setq nn* (ggr1 (cadr e) arg)))))
-	 ;; Both terms have the right form and nn* contains the arg of
+		       (setq nn* (ggr1 (cadr e) ivar)))))
+	 ;; Both terms have the right form and nn* contains the ivar of
 	 ;; the exponential term.  Put dn* as the car of nn*.  The
 	 ;; result is something like (m b n a) when we have the
 	 ;; expression x^m*exp(b*x^n+a).
@@ -3215,26 +3215,26 @@ in the interval of integration.")
 
 ;; Match b*x^n+a.  If a match is found, return the list (a n b).
 ;; Otherwise, return NIL
-(defun bx**n+a (e arg)
-  (cond ((eq e arg)
+(defun bx**n+a (e ivar)
+  (cond ((eq e ivar)
 	 (list 0 1 1))
 	((or (atom e)
 	     (mnump e)) ())
 	(t (let ((a (no-err-sub 0. e)))
 	     (cond ((null a)  ())
 		   (t (setq e (m+ e (m*t -1 a)))
-		      (cond ((setq e (bx**n e arg))
+		      (cond ((setq e (bx**n e ivar))
 			     (cons a e))
 			    (t ()))))))))
 
 ;; Match b*x^n.  Return the list (n b) if found or NIL if not.
-(defun bx**n (e arg)
+(defun bx**n (e ivar)
   (let ((n ()))
-    (and (setq n (xexponget e arg))
-	 (not (among arg
+    (and (setq n (xexponget e ivar))
+	 (not (among ivar
 		     (setq e (let (($maxposex 1)
 				   ($maxnegex 1))
-			       ($expand (m// e (m^t arg n)))))))
+			       ($expand (m// e (m^t ivar n)))))))
 	 (list n e))))
 
 ;; nn* should be the value of var.  This is only called by bx**n with
