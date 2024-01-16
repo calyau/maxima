@@ -3562,15 +3562,15 @@ in the interval of integration.")
        (or (eq *ll* '$minf) 
 	   (eq ($asksign (m+ place (m- *ll*))) '$pos))))
 
-(defun real-roots (exp arg)
+(defun real-roots (exp ivar)
   (let (($solvetrigwarn (cond (defintdebug t) ;Rest of the code for
 			      (t ())))	;TRIGS in denom needed.
 	($solveradcan (cond ((or (among '$%i exp)
 				 (among '$%e exp)) t)
 			    (t nil)))
 	*roots *failures)		;special vars for solve.
-    (cond ((not (among arg exp))   '$no)
-	  (t (solve exp arg 1)
+    (cond ((not (among ivar exp))   '$no)
+	  (t (solve exp ivar 1)
 	     ;; If *failures is set, we may have missed some roots.
 	     ;; We still return the roots that we have found.
 	     (do ((dummy *roots (cddr dummy))
