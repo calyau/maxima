@@ -304,13 +304,13 @@ in the interval of integration.")
     (alike1 val out2)))
 
 ;; integration change of variable
-(defun intcv (nv flag)
-  (let ((d (bx**n+a nv var))
+(defun intcv (nv flag ivar)
+  (let ((d (bx**n+a nv ivar))
 	(*roots ())  (*failures ())  ($breakup ()))
     (cond ((and (eq *ul* '$inf)
 		(equal *ll* 0)
 		(equal (cadr d) 1)) ())
-	  ((eq var 'yx)		; new var cannot be same as old var
+	  ((eq ivar 'yx)		; new ivar cannot be same as old ivar
 	   ())
 	  (t
 	   ;; This is a hack!  If nv is of the form b*x^n+a, we can
@@ -325,23 +325,23 @@ in the interval of integration.")
 		    (let ((root (power* (div (sub 'yx a) b) (inv n))))
 		      (cond (t
 			     (setq d root)
-			     (cond (flag (intcv2 d nv var))
-				   (t (intcv1 d nv var))))
+			     (cond (flag (intcv2 d nv ivar))
+				   (t (intcv1 d nv ivar))))
 			    ))))
 		 (t
-		  (putprop 'yx t 'internal);; keep var from appearing in questions to user
-		  (solve (m+t 'yx (m*t -1 nv)) var 1.)
+		  (putprop 'yx t 'internal);; keep ivar from appearing in questions to user
+		  (solve (m+t 'yx (m*t -1 nv)) ivar 1.)
 		  (cond ((setq d	;; look for root that is inverse of nv
 			       (do* ((roots *roots (cddr roots))
 				     (root (caddar roots) (caddar roots)))
 				    ((null root) nil)
 				    (if (and (or (real-infinityp *ll*)
-						 (test-inverse nv var root 'yx *ll*))
+						 (test-inverse nv ivar root 'yx *ll*))
 					     (or (real-infinityp *ul*)
-						 (test-inverse nv var root 'yx *ul*)))
+						 (test-inverse nv ivar root 'yx *ul*)))
 					(return root))))
-			 (cond (flag (intcv2 d nv var))
-			       (t (intcv1 d nv var))))
+			 (cond (flag (intcv2 d nv ivar))
+			       (t (intcv1 d nv ivar))))
 			(t ()))))))))
 
 ;; d: original variable (var) as a function of 'yx
@@ -2496,7 +2496,7 @@ in the interval of integration.")
 		     (cond ((not (eq *ul* '$inf))
 			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar)) ivar))
 			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar) ivar))))))
-	     (t (intcv arg nil)))))))
+	     (t (intcv arg nil ivar)))))))
 
 
 ;; Wang 81-83.  Unfortunately, the pdf version has page 82 as all
@@ -2988,7 +2988,7 @@ in the interval of integration.")
 		  ;; limits are minf to inf.
 		  (setq ans (cadr ans))))
 	   ;; Apply the substitution and integrate it.
-	   (intcv ans nil)))))
+	   (intcv ans nil arg)))))
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
 (defun dintlog (exp arg var1)
