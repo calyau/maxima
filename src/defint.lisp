@@ -325,8 +325,8 @@ in the interval of integration.")
 		    (let ((root (power* (div (sub 'yx a) b) (inv n))))
 		      (cond (t
 			     (setq d root)
-			     (cond (flag (intcv2 d nv))
-				   (t (intcv1 d nv))))
+			     (cond (flag (intcv2 d nv var))
+				   (t (intcv1 d nv var))))
 			    ))))
 		 (t
 		  (putprop 'yx t 'internal);; keep var from appearing in questions to user
@@ -340,15 +340,15 @@ in the interval of integration.")
 					     (or (real-infinityp *ul*)
 						 (test-inverse nv var root 'yx *ul*)))
 					(return root))))
-			 (cond (flag (intcv2 d nv))
-			       (t (intcv1 d nv))))
+			 (cond (flag (intcv2 d nv var))
+			       (t (intcv1 d nv var))))
 			(t ()))))))))
 
 ;; d: original variable (var) as a function of 'yx
 ;; ind: boolean flag
 ;; nv: new variable ('yx) as a function of original variable (var)
-(defun intcv1 (d nv)
-  (cond ((and (intcv2 d nv)
+(defun intcv1 (d nv ivar)
+  (cond ((and (intcv2 d nv ivar)
 	      (equal ($imagpart *ll1*) 0)
 	      (equal ($imagpart *ul1*) 0)
 	      (not (alike1 *ll1* *ul1*)))
@@ -356,14 +356,14 @@ in the interval of integration.")
 	   (defint exp1 'yx *ll1* *ul1*)))))
 
 ;; converts limits of integration to values for new variable 'yx
-(defun intcv2 (d nv)
-  (intcv3 d nv)
+(defun intcv2 (d nv ivar)
+  (intcv3 d nv ivar)
   (and (cond ((and (zerop1 (m+ *ll* *ul*))
-		   (evenfn nv var))
+		   (evenfn nv ivar))
 	      (setq exp1 (m* 2 exp1)
-		    *ll1* (limcp nv var 0 '$plus)))
-	     (t (setq *ll1* (limcp nv var *ll* '$plus))))
-       (setq *ul1* (limcp nv var *ul* '$minus))))
+		    *ll1* (limcp nv ivar 0 '$plus)))
+	     (t (setq *ll1* (limcp nv ivar *ll* '$plus))))
+       (setq *ul1* (limcp nv ivar *ul* '$minus))))
 
 ;; wrapper around limit, returns nil if 
 ;; limit not found (nounform returned), or undefined ($und or $ind)
@@ -377,9 +377,9 @@ in the interval of integration.")
 
 ;; rewrites exp, the integrand in terms of var,
 ;; into exp1, the integrand in terms of 'yx.
-(defun intcv3 (d nv)
+(defun intcv3 (d nv ivar)
   (setq exp1 (m* (sdiff d 'yx)
-		 (subst d var (subst 'yx nv exp))))
+		 (subst d ivar (subst 'yx nv exp))))
   (setq exp1 (sratsimp exp1)))
 
 (defun integrand-changevar (d newvar exp ivar)
@@ -2494,8 +2494,8 @@ in the interval of integration.")
        (cond ((eq arg ivar)
 	      (cond ((ratgreaterp 1. *ll*)
 		     (cond ((not (eq *ul* '$inf))
-			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar))))
-			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar)))))))
+			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar)) ivar))
+			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar) ivar))))))
 	     (t (intcv arg nil)))))))
 
 
