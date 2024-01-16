@@ -3040,13 +3040,13 @@ in the interval of integration.")
 
 ;; Like SUBIN in src/csimp.lisp, but we make the dependency on the arg
 ;; explicit instead of using the specvar VAR to hold the variable.
-(defun subin-var (y x arg)
-  (cond ((not (among arg x)) x)
-	(t (maxima-substitute y arg x))))
+(defun subin-var (y x ivar)
+  (cond ((not (among ivar x)) x)
+	(t (maxima-substitute y ivar x))))
 
-;; Compute diff(e,arg,n) at the point pt.
-(defun derivat (arg n e pt)
-  (subin-var pt (apply '$diff (list e arg n)) arg))
+;; Compute diff(e,ivar,n) at the point pt.
+(defun derivat (ivar n e pt)
+  (subin-var pt (apply '$diff (list e ivar n)) ivar))
 
 ;;; GGR and friends
 
