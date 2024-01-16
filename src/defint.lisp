@@ -382,9 +382,9 @@ in the interval of integration.")
 		 (subst d var (subst 'yx nv exp))))
   (setq exp1 (sratsimp exp1)))
 
-(defun integrand-changevar (d newvar exp var)
+(defun integrand-changevar (d newvar exp ivar)
   (m* (sdiff d newvar)
-      (subst d var exp)))
+      (subst d ivar exp)))
   
 (defun defint (exp var *ll* *ul*)
   (let ((old-assumptions *defint-assumptions*)  
