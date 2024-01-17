@@ -269,6 +269,11 @@ in the interval of integration.")
     (declare (special var))
     (polelist d region region1)))
 
+(defun residue-var (zn factors pl ivar)
+  (let ((var ivar))
+    (declare (special var))
+    (residue zn factors pl)))
+
 ;; NO-ERR-SUB references VAR via SUBIN, so we need to bind VAR for
 ;; this to work, until we fix NO-ERR-SUB to make the dependency
 ;; explicit.
@@ -2642,9 +2647,10 @@ in the interval of integration.")
 		(caddr pl))
 	    (setq dp (sdiff d ivar))))
      (cond ((setq plm* (car pl))
-	    (setq rlm* (residue n (cond (leadcoef factors)
+	    (setq rlm* (residue-var n (cond (leadcoef factors)
 					(t d))
-				plm*))))
+				    plm*
+                                    ivar))))
      (cond ((setq pl* (cadr pl))
 	    (setq rl* (res1 n dp pl*))))
      (cond ((setq pl*1 (caddr pl))
@@ -2670,9 +2676,10 @@ in the interval of integration.")
 	   (if plm*
 	       (list (mul* (m*t '$%i %pi2)
 			   (m+l
-			    (residue (m* (m^ `((%plog) ,ivar) i)	 n)
-				     d
-				     plm*)))))
+			    (residue-var (m* (m^ `((%plog) ,ivar) i)	 n)
+				         d
+				         plm*
+                                         ivar)))))
 	   (lognx2 i (m*t '$%i %pi2) pl* rl*)
 	   (lognx2 i %p%i pl*1 rl*1)))
   (if (null n)
