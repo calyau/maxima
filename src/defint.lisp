@@ -269,6 +269,14 @@ in the interval of integration.")
     (declare (special var))
     (polelist d region region1)))
 
+;; NO-ERR-SUB references VAR via SUBIN, so we need to bind VAR for
+;; this to work, until we fix NO-ERR-SUB to make the dependency
+;; explicit.
+(defun no-err-sub-var (v e ivar)
+  (let ((var ivar))
+    (declare (special var))
+    (no-err-sub v e)))
+
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -341,12 +349,10 @@ in the interval of integration.")
     (setq ans (catch 'errorsw (apply #'$limit argvec)))
     (if (eq ans t) nil ans)))
 
-;; test whether fun2 is inverse of fun1 at val
+;; Test whether fun2 is inverse of fun1 at val.
 (defun test-inverse (fun1 var1 fun2 var2 val)
-  (let* ((out1 (let ((var var1))
-		 (no-err-sub val fun1)))
-	 (out2 (let ((var var2))
-		 (no-err-sub out1 fun2))))
+  (let* ((out1 (no-err-sub-var val fun1 var1))
+	 (out2 (no-err-sub-var out1 fun2 var2)))
     (alike1 val out2)))
 
 ;; integration change of variable
@@ -1012,8 +1018,8 @@ in the interval of integration.")
 		;;
 		;; So just try to substitute the limits into the
 		;; expression.  If no errors are produced, we're done.
-		(let ((ll-val (no-err-sub *ll* e))
-		      (ul-val (no-err-sub *ul* e)))
+		(let ((ll-val (no-err-sub-var *ll* e ivar))
+		      (ul-val (no-err-sub-var *ul* e ivar)))
 		  (cond ((or (eq ll-val t)
                              (eq ul-val t))
                          ;; no-err-sub has returned T. An error was catched.
@@ -1938,7 +1944,8 @@ in the interval of integration.")
 ;;; B<=%PI2
 
 (defun period (p e ivar)
-  (and (alike1 (no-err-sub ivar e) (setq e (no-err-sub (m+ p ivar) e)))
+  (and (alike1 (no-err-sub-var ivar e ivar)
+               (setq e (no-err-sub-var (m+ p ivar) e ivar)))
        ;; means there was no error
        (not (eq e t))))
 
@@ -1986,8 +1993,9 @@ in the interval of integration.")
 		 ((and (alike1 b half%pi)
 		       (evenfn exp-form ivar)
 		       (alike1 rat-form
-			       (no-err-sub (m+t '$%pi (m*t -1 ivar))
-					   rat-form)))
+			       (no-err-sub-var (m+t '$%pi (m*t -1 ivar))
+					       rat-form
+                                               ivar)))
 		  (let ((ans (zto%pi2 rat-form 'yy)))
 		    (cond (ans (m*t '((rat) 1. 4.) ans))
 			  (t nil)))))))))
@@ -3034,7 +3042,7 @@ in the interval of integration.")
 	      ;; Bad. f(x) contains a log term, so we give up.
 	      (return nil))
 	     ((and (eq arg ivar)
-		   (equal 0. (no-err-sub 0. ans))
+		   (equal 0. (no-err-sub-var 0. ans ivar))
 		   (setq d (let ((*def2* t))
 			     (defint (m* ans (m^t ivar '*z*))
 				 ivar *ll* *ul*))))
@@ -3236,7 +3244,7 @@ in the interval of integration.")
 	 (list 0 1 1))
 	((or (atom e)
 	     (mnump e)) ())
-	(t (let ((a (no-err-sub 0. e)))
+	(t (let ((a (no-err-sub-var 0. e ivar)))
 	     (cond ((null a)  ())
 		   (t (setq e (m+ e (m*t -1 a)))
 		      (cond ((setq e (bx**n e ivar))
