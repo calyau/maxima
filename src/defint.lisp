@@ -277,6 +277,11 @@ in the interval of integration.")
     (declare (special var))
     (no-err-sub v e)))
 
+(defun tansc-var (e ivar)
+  (let ((var ivar))
+    (declare (special var))
+    (tansc e)))
+
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -489,7 +494,7 @@ in the interval of integration.")
 			      (setq ans (intsubs ans *ll* *ul* var))
 			      (return (cond (ans (m* c ans)) (t nil))))
 			     (t (return nil)))))
-		(setq exp (tansc exp))
+		(setq exp (tansc-var exp var))
 		(cond ((setq  ans (initial-analysis exp var *ll* *ul*))
 		       (return (m* c ans))))
 		(return nil))))
