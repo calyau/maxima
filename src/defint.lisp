@@ -1357,7 +1357,8 @@ in the interval of integration.")
 		 (setq ans (zmtorat n (cond ((mtimesp d) d)
 					    (t ($sqfr d)))
 				    s
-                                    #'ztorat
+                                    #'(lambda (n d s)
+                                        (ztorat n d s ivar))
                                     ivar)))
 		   (return (m* (m// nc dc) ans)))
 	   ((and (evenfn d ivar)
@@ -1391,12 +1392,13 @@ in the interval of integration.")
 	    (return (m*t '((rat) 1. 2.) ans)))
 	   (t (return nil)))))
 
-(defun ztorat (n d s)
+(defun ztorat (n d s ivar)
   (cond ((and (null *dflag)
-	      (setq s (difapply n d s #'ztorat)))
+	      (setq s (difapply n d s #'(lambda (n d s)
+                                          (ztorat n d s ivar)))))
 	 s)
 	((setq n (let ((plogabs ()))
-		   (keyhole (m* `((%plog) ,(m- var)) n) d var)))
+		   (keyhole (m* `((%plog) ,(m- ivar)) n) d ivar)))
 	 (m- n))
 	(t
 	 ;; Let's not signal an error here.  Return nil so that we
@@ -1496,7 +1498,8 @@ in the interval of integration.")
 	          (setq ans1 (zmtorat n
                                       (cond ((mtimesp d) d) (t ($sqfr d)))
                                       s
-                                      #'mtorat
+                                      #'(lambda (n d s)
+                                          (mtorat n d s ivar))
                                       ivar)))
 	    (setq ans (m*t '$%pi ans1))
 	    (return (m* (m// nc dc) ans)))
@@ -1568,12 +1571,13 @@ in the interval of integration.")
 		      `(,lc ,linpart ,deg ,c))
 		     (t nil)))))))
 
-(defun mtorat (n d s)
+(defun mtorat (n d s ivar)
   (let ((*semirat* t))
     (cond ((and (null *dflag)
-		(setq s (difapply n d s #'mtorat)))
+		(setq s (difapply n d s #'(lambda (n d s)
+                                            (mtorat n d s ivar)))))
 	   s)
-	  (t (csemiup n d var)))))
+	  (t (csemiup n d ivar)))))
 
 (defun zmtorat (n d s fn1 ivar)
   (prog (c)
