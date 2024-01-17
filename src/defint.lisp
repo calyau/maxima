@@ -259,6 +259,16 @@ in the interval of integration.")
     (declare (special var))
     (res n d region region1)))
 
+(defun resprog0-var (ivar f g n n2)
+  (let ((var ivar))
+    (declare (special var))
+    (resprog0 f g n n2)))
+
+(defun polelist-var (ivar d region region1)
+  (let ((var ivar))
+    (declare (special var))
+    (polelist d region region1)))
+
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -1640,10 +1650,7 @@ in the interval of integration.")
 	  n (polyform n)
 	  n2 (polyform n2))
     (setq ivar (caadr (ratrep* ivar)))
-    (setq f (let ((var ivar))
-              (declare (special var))
-              ;; RESPROG0 (RESPROG) references the special variable VAR.
-              (resprog0 f g n n2)))
+    (setq f (resprog0-var ivar f g n n2))
     (list (list (pdis (cadr f)) (pdis (cddr f)))
 	  (list (pdis (caar f)) (pdis (cdar f))))))
 
@@ -2184,10 +2191,12 @@ in the interval of integration.")
 
 (defun sin-cos-intsubs1 (exp ivar)
   (let* ((rat-exp ($rat exp))
-	 (denom (let ((var ivar))
+	 (denom #+nil
+                (let ((var ivar))
                   (declare (special var))
                   ;; PDIS references the special variable VAR.
-                  (pdis (cddr rat-exp)))))
+                  (pdis (cddr rat-exp)))
+                (pdis (cddr rat-exp))))
     (cond ((equal ($csign denom) '$zero)
 	   '$und)
 	  (t (try-intsubs exp *ll* *ul*)))))
@@ -2609,10 +2618,10 @@ in the interval of integration.")
 
 (defun logcpi0 (n d ivar)
   (prog (pl dp)
-     (setq pl (polelist d #'upperhalf #'(lambda (j)
-					  (cond ((zerop1 j) nil)
-						((equal ($imagpart j) 0)
-						 t)))))
+     (setq pl (polelist-var ivar d #'upperhalf #'(lambda (j)
+					           (cond ((zerop1 j) nil)
+						         ((equal ($imagpart j) 0)
+						          t)))))
      (cond ((null pl)
 	    (return nil)))
      (setq factors (car pl)
@@ -2778,11 +2787,7 @@ in the interval of integration.")
      (setq n (m* (cond ((null p) -1)
 		       (t ($expand (m*t '$%i %pi2 (makpoly p ivar)))))
 		 pe))
-     ;; POLELIST (in residu.lisp) implicitly references VAR.  So we
-     ;; need the special variable here.
-     (let ((var 'z*)
-	   (leadcoef ()))
-       (declare (special var))
+     (let ((leadcoef ()))
        ;; Find the poles of the denominator.  denom-exponential is the
        ;; denominator of R(x).
        ;;
@@ -2790,15 +2795,15 @@ in the interval of integration.")
        ;; The first element is a list consisting of the pole and (z -
        ;; pole).  We don't care about this, so we take the rest of the
        ;; result.
-       (setq pl (cdr (polelist denom-exponential
-			       #'(lambda (j)
-				   ;; The imaginary part is nonzero,
-				   ;; or the realpart is negative.
-				   (or (not (equal ($imagpart j) 0))
-				       (eq ($asksign ($realpart j)) '$neg)))
-			       #'(lambda (j)
-				   ;; The realpart is not zero.
-				   (not (eq ($asksign ($realpart j)) '$zero)))))))
+       (setq pl (cdr (polelist-var 'z* denom-exponential
+			           #'(lambda (j)
+				       ;; The imaginary part is nonzero,
+				       ;; or the realpart is negative.
+				       (or (not (equal ($imagpart j) 0))
+				           (eq ($asksign ($realpart j)) '$neg)))
+			           #'(lambda (j)
+				       ;; The realpart is not zero.
+				       (not (eq ($asksign ($realpart j)) '$zero)))))))
      ;; Not sure what this does.
      (cond ((null pl)
 	    ;; No roots at all, so return
