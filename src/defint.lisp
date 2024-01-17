@@ -282,6 +282,11 @@ in the interval of integration.")
     (declare (special var))
     (tansc e)))
 
+(defun oscip-var (e ivar)
+  (let ((var ivar))
+    (declare (special var))
+    (oscip e)))
+
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -574,7 +579,7 @@ in the interval of integration.")
 	(*dflag nil) ($%emode t))
 ;;;NOT COMPLETE for sin's and cos's.
     (cond ((and (not *sin-cos-recur*)
-		(oscip exp)
+		(oscip-var exp ivar)
 		(setq *scflag* t)
 		(intsc1 *ll* *ul* exp ivar)))
 	  ((and (not *rad-poly-recur*)
@@ -3517,7 +3522,7 @@ in the interval of integration.")
 
 ;;;Takes care of forms that the ratio test fails on.
 (defun special-convergent-formp (exp limit ivar)
-  (cond ((not (oscip exp))  '$no)
+  (cond ((not (oscip-var exp ivar))  '$no)
 	((or (eq (sc-converg-form exp limit ivar) '$yes)
 	     (eq (exp-converg-form exp limit ivar) '$yes))
 	 '$yes)
