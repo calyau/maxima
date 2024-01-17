@@ -538,29 +538,29 @@ in the interval of integration.")
 	(t (cons e 1))))
 
 
-(defun method-by-limits (exp var *ll* *ul*)
+(defun method-by-limits (exp ivar *ll* *ul*)
   (let ((old-assumptions *defint-assumptions*))
-    (setq *current-assumptions* (make-defint-assumptions 'noask var))
+    (setq *current-assumptions* (make-defint-assumptions 'noask ivar))
     ;;Should be a PROG inside of unwind-protect, but Multics has a compiler
     ;;bug wrt. and I want to test this code now.
     (unwind-protect
 	 (cond ((and (and (eq *ul* '$inf)
 			  (eq *ll* '$minf))
-		     (mtoinf exp var)))
+		     (mtoinf exp ivar)))
 	       ((and (and (eq *ul* '$inf)
 			  (equal *ll* 0.))
-		     (ztoinf exp var)))
+		     (ztoinf exp ivar)))
 ;;;This seems((and (and (eq *ul* '$inf)
-;;;fairly losing	(setq exp (subin (m+ *ll* var) exp))
+;;;fairly losing	(setq exp (subin (m+ *ll* ivar) exp))
 ;;;			(setq *ll* 0.))
-;;;		   (ztoinf exp var)))
+;;;		   (ztoinf exp ivar)))
 	       ((and (equal *ll* 0.)
-		     (freeof var *ul*)
+		     (freeof ivar *ul*)
 		     (eq ($asksign *ul*) '$pos)
-		     (zto1 exp var)))
+		     (zto1 exp ivar)))
 	       ;;	     ((and (and (equal *ul* 1.)
 	       ;;			(equal *ll* 0.))  (zto1 exp)))
-	       (t (dintegrate exp var *ll* *ul*)))
+	       (t (dintegrate exp ivar *ll* *ul*)))
       (restore-defint-assumptions old-assumptions *defint-assumptions*))))
 
 
@@ -2003,7 +2003,7 @@ in the interval of integration.")
 ;;; Do integrals of sin and cos. this routine makes sure lower limit
 ;;; is zero.
 (defun intsc1 (a b e ivar)
-  ;; integrate(e,var,a,b)
+  ;; integrate(e,ivar,a,b)
   (let ((trigarg (find-first-trigarg e))
 	($%emode t)
 	($trigsign t)
