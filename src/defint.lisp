@@ -2191,12 +2191,7 @@ in the interval of integration.")
 
 (defun sin-cos-intsubs1 (exp ivar)
   (let* ((rat-exp ($rat exp))
-	 (denom #+nil
-                (let ((var ivar))
-                  (declare (special var))
-                  ;; PDIS references the special variable VAR.
-                  (pdis (cddr rat-exp)))
-                (pdis (cddr rat-exp))))
+	 (denom (pdis (cddr rat-exp))))
     (cond ((equal ($csign denom) '$zero)
 	   '$und)
 	  (t (try-intsubs exp *ll* *ul*)))))
