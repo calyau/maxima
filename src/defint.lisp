@@ -1069,6 +1069,9 @@ in the interval of integration.")
 		(not (numberp (setq r (caddr d)))))
 	    (return nil))
 	   ((and (equal n 1.)
+                 ;; There are no calls where fn1 is ever equal to
+                 ;; 'mtorat.  Hence this case is never true.  What is
+                 ;; this testing for?
 		 (eq fn1 'mtorat)
 		 (equal 1. (deg (cadr d))))
 	    (return 0.)))
