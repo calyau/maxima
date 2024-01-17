@@ -242,6 +242,13 @@ in the interval of integration.")
     (declare (special var))
     (notinvolve e nn*)))
 
+;; Make dependency on VAR explicit for NUMDEN.  Temporary workaround
+;; until we actually fix NUMDEN.
+(defun numden-var (exp ivar)
+  (let ((var ivar))
+    (declare (special var))
+    (numden exp)))
+
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -728,10 +735,7 @@ in the interval of integration.")
 	  (t nil))))
 
 (defun kindp34 (ivar)
-  (let ((var ivar))
-    (declare (special var))
-    ;; NOTE:  NUMDEN and RES implicitly reference the special
-    (numden exp))
+  (numden-var exp ivar)
   (let* ((d dn*)
 	 (a (cond ((and (zerop1 ($limit d ivar *ll* '$plus))
 			(eq (limit-pole (m+ exp (m+ (m- *ll*) ivar))
@@ -1248,9 +1252,7 @@ in the interval of integration.")
 ;; can handle some expressions with poles on real line, such as
 ;; sin(x)*cos(x)/x.
 (defun mtosc (grand ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (numden grand))
+  (numden-var grand ivar)
   (let ((n nn*)
 	(d dn*)
 	ratterms ratans
@@ -1356,9 +1358,7 @@ in the interval of integration.")
 		  sn* nil)
 	    (setq dn* (m*l sd*)
 		  sd* nil))
-	   (t (let ((var ivar))
-                (declare (special var))
-                (numden grand))))
+	   (t (numden-var grand ivar)))
 ;;;
 ;;;New section.
      (setq n (rmconst1 nn* ivar))
@@ -1485,9 +1485,7 @@ in the interval of integration.")
 		   (andmapcar #'snumden (cdr grand))))
 	    (setq nn* (m*l sn*) sn* nil)
 	    (setq dn* (m*l sd*) sd* nil))
-	   (t (let ((var ivar))
-                (declare (special var))
-                (numden grand))))
+	   (t (numden-var grand ivar)))
      (setq n (rmconst1 nn* ivar))
      (setq d (rmconst1 dn* ivar))
      (setq nc (car n))
@@ -1780,9 +1778,7 @@ in the interval of integration.")
                             `((mexpt simp) ((%sin simp) ,arg) 2)
                             `((mplus) 1 ((mtimes) -1 ((mexpt) ((%cos) ,arg) 2)))
                             exp))
-     (let ((var ivar))
-       (declare (special var))
-       (numden exp))
+     (numden-var exp ivar)
      (setq u nn*)
      (cond ((and (setq n (findp dn* ivar))
 		 (eq (ask-integer n '$integer) '$yes))
@@ -2488,11 +2484,10 @@ in the interval of integration.")
 ;; Evaluates the contour integral of GRAND around the unit circle
 ;; using residues.
 (defun unitcir (grand ivar)
+  (numden-var grand ivar)
   (let ((var ivar))
     (declare (special var))
-    ;; NOTE: Both NUMDEN and RES implicitly reference the special
-    ;; variable VAR.
-    (numden grand)
+    ;; NOTE: RES implicitly reference the special variable VAR.
     (let* ((sgn nil)
 	   (result (princip (res nn* dn* 
 			         #'(lambda (pt)
@@ -3290,9 +3285,7 @@ in the interval of integration.")
 	  ((not (null ind))
 ;;;Catches Unfactored forms.
 	   (setq m (m// (sdiff e ivar) e))
-	   (let ((var ivar))
-             (declare (special var))
-             (numden m))
+           (numden-var m ivar)
 	   (setq m nn*)
 	   (setq r dn*)
 	   (cond
