@@ -249,6 +249,16 @@ in the interval of integration.")
     (declare (special var))
     (numden exp)))
 
+(defun snumden-var (exp ivar)
+  (let ((var ivar))
+    (declare (special var))
+    (snumden exp)))
+
+(defun res-var (ivar n d region region1)
+  (let ((var ivar))
+    (declare (special var))
+    (res n d region region1)))
+
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -1165,12 +1175,9 @@ in the interval of integration.")
 (defun csemidown (n d ivar)
   (let ((pcprntd t)) ;Not sure what to do about PRINCIPAL values here.
     (princip
-     (let ((var ivar))
-       (declare (special var))
-       ;; RES access the special var VAR, so we need to set it here.
-       (res n d #'lowerhalf #'(lambda (x)
-				(cond ((equal ($imagpart x) 0)  t)
-				      (t ()))))))))
+       (res-var ivar n d #'lowerhalf #'(lambda (x)
+				         (cond ((equal ($imagpart x) 0)  t)
+				               (t ())))))))
 
 (defun lowerhalf (j)
   (eq ($asksign ($imagpart j)) '$neg))
@@ -1182,12 +1189,9 @@ in the interval of integration.")
 (defun csemiup (n d ivar)
   (let ((pcprntd t)) ;I'm not sure what to do about PRINCIPAL values here.
     (princip
-     (let ((var ivar))
-       (declare (special var))
-       ;; RES access the special var VAR, so we need to set it here.
-       (res n d #'upperhalf #'(lambda (x)
-				(cond ((equal ($imagpart x) 0)  t)
-				      (t ()))))))))
+     (res-var ivar n d #'upperhalf #'(lambda (x)
+				        (cond ((equal ($imagpart x) 0)  t)
+				              (t ())))))))
 
 (defun princip (n)
   (cond ((null n) nil)
@@ -1349,11 +1353,9 @@ in the interval of integration.")
 	    (diverg))
 	   ((and (ratp grand ivar)
 		 (mtimesp grand)
-                 (let ((var ivar))
-                   (declare (special var))
-                   ;; SNUMDEN references the specvar VAR, so we need
-                   ;; to bind it before calling SNUMDEN.
-		   (andmapcar #'snumden (cdr grand))))
+		 (andmapcar #'(lambda (e)
+                                (snumden-var e ivar))
+                            (cdr grand)))
 	    (setq nn* (m*l sn*)
 		  sn* nil)
 	    (setq dn* (m*l sd*)
@@ -1480,9 +1482,9 @@ in the interval of integration.")
 	    (diverg))
 	   ((and (ratp grand ivar)
 		 (mtimesp grand)
-                 (let ((var ivar))
-                   (declare (special var))
-		   (andmapcar #'snumden (cdr grand))))
+		 (andmapcar #'(lambda (e)
+                                (snumden-var e ivar))
+                            (cdr grand)))
 	    (setq nn* (m*l sn*) sn* nil)
 	    (setq dn* (m*l sd*) sd* nil))
 	   (t (numden-var grand ivar)))
@@ -1709,19 +1711,15 @@ in the interval of integration.")
 ;; along the positive real axis.  n/d must be a rational function.
 (defun keyhole (n d ivar)
   (let* ((*semirat* ())
-	 (res (let ((var ivar))
-                (declare (special var))
-                ;; RES references the special variable VAR, so we need
-                ;; it for now.
-                (res n d
-		     #'(lambda (j)
-		         ;; Ok if not on the positive real axis.
-		         (or (not (equal ($imagpart j) 0))
-			     (eq ($asksign j) '$neg)))
-		     #'(lambda (j)
-		         (cond ((eq ($asksign j) '$pos)
-			        t)
-			       (t (diverg))))))))
+	 (res (res-var ivar n d
+		       #'(lambda (j)
+		           ;; Ok if not on the positive real axis.
+		           (or (not (equal ($imagpart j) 0))
+			       (eq ($asksign j) '$neg)))
+		       #'(lambda (j)
+		           (cond ((eq ($asksign j) '$pos)
+			          t)
+			         (t (diverg)))))))
     (when res
       (let ((rsn* t))
 	($rectform ($multthru (m+ (cond ((car res)
@@ -2485,26 +2483,23 @@ in the interval of integration.")
 ;; using residues.
 (defun unitcir (grand ivar)
   (numden-var grand ivar)
-  (let ((var ivar))
-    (declare (special var))
-    ;; NOTE: RES implicitly reference the special variable VAR.
-    (let* ((sgn nil)
-	   (result (princip (res nn* dn* 
-			         #'(lambda (pt)
-				     ;; Is pt stricly inside the unit circle?
-				     (setq sgn (let ((limitp nil))
-					         ($asksign (m+ -1 (cabs pt)))))
-				     (eq sgn '$neg))
-			         #'(lambda (pt)
-				     (declare (ignore pt))
-				     ;; Is pt on the unit circle?  (Use
-				     ;; the cached value computed
-				     ;; above.)
-				     (prog1
-				         (eq sgn '$zero)
-				       (setq sgn nil)))))))
-      (when result
-        (m* '$%pi result)))))
+  (let* ((sgn nil)
+	 (result (princip (res-var ivar nn* dn* 
+			           #'(lambda (pt)
+				       ;; Is pt stricly inside the unit circle?
+				       (setq sgn (let ((limitp nil))
+					           ($asksign (m+ -1 (cabs pt)))))
+				       (eq sgn '$neg))
+			           #'(lambda (pt)
+				       (declare (ignore pt))
+				       ;; Is pt on the unit circle?  (Use
+				       ;; the cached value computed
+				       ;; above.)
+				       (prog1
+				           (eq sgn '$zero)
+				         (setq sgn nil)))))))
+    (when result
+      (m* '$%pi result))))
 
 
 (defun logx1 (exp *ll* *ul* ivar)
