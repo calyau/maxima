@@ -777,7 +777,7 @@ value of @var{x=zeta[j]} must be substituted.
 @c /* Tolerances on all components */
 @c  ipar[4] : 4;
 @c
-@c /* Two error tolerances (on u and its second derivative */
+@c /* Tolerances on all four components */
 @c  ltol : [1, 2, 3, 4];
 @c tol : [1d-5, 1d-5, 1d-5, 1d-5];
 @c
