@@ -41,7 +41,7 @@ is checked for continuity and continuity of the derivative
 on the boundary of the intervals.
 
 @item @b{Stiff differential equations:}
-COLNEW is can be used for solving some stiff differential equations due to
+COLNEW can be used for solving some stiff differential equations due to
 the use of adaptive meshes.
 
 @end itemize
