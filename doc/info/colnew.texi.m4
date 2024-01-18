@@ -359,7 +359,7 @@ COLNEW is best learned by example.
 
 The problem describes a uniformly loaded beam of variable stiffness, simply supported at both ends.
 
-The problem from @ref{gawain-bell,, Gawain&Bell 1978} and is Example 1 from @ref{ascher-1981a,, Ascher 1981a}.
+The problem from @ref{gawain-ball,, Gawain&Ball 1978} and is Example 1 from @ref{ascher-1981a,, Ascher 1981a}.
 The maxima code is in file share/colnew/prob1.mac and a Fortran implementation
 is in share/colnew/ex1. 
 
@@ -1176,7 +1176,7 @@ can be compared with Figure 1 in @ref{ascher-1981a,, Ascher 1981a}.
 
 Example 3 from @ref{ascher-1981a,, Ascher 1981a} describes the velocities in the
 boundary layer produced by the rotating flow of a viscous incompressible
-fluid over a stationary infinite disk (@pxref{gawain-bell,,Gawain&Bell 1978}).
+fluid over a stationary infinite disk (@pxref{gawain-ball,,Gawain&Ball 1978}).
 
 The solution uses a number of techniques to obtain convergence.
 Refer to @ref{ascher-1981a,,Ascher 1981a} for details.
@@ -1604,8 +1604,8 @@ The figure below shows the solution for
 
 @itemize
 
-@item @anchor{gawain-bell}
-(Gawain&Bell 1978) T. H. Gawain and R. E. Ball,
+@item @anchor{gawain-ball}
+(Gawain&Ball 1978) T. H. Gawain and R. E. Ball,
    Improved Finite Difference Formulas for Boundary Value Problems,
    International Journal for Numerical Methods in Engineering 12, no. 7 (1978)
    1151–60.
