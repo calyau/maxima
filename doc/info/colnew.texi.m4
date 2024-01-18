@@ -957,7 +957,7 @@ value of @var{x=zeta[j]} must be substituted.
 (%o23)                          4
 @end group
 @group
-(%i24) /* Two error tolerances (on u and its second derivative */
+(%i24) /* Tolerances on all four components */
  ltol : [1, 2, 3, 4];
 (%o24)                    [1, 2, 3, 4]
 @end group
