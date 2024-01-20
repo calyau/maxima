@@ -1467,9 +1467,13 @@ in the interval of integration.")
 	      (setq s (difapply ivar n d s #'(lambda (n d s)
                                           (ztorat n d s ivar)))))
 	 s)
-	((setq n (let ((plogabs ())
-                       (var ivar))
-		   (keyhole (m* `((%plog) ,(m- ivar)) n) d ivar)))
+	((setq n (let ((plogabs ()))
+		   (keyhole (let ((var ivar))
+                              ;; The simplifier for PLOG references
+                              ;; VAR!!!!
+                              (m* `((%plog) ,(m- ivar)) n))
+                            d
+                            ivar)))
 	 (m- n))
 	(t
 	 ;; Let's not signal an error here.  Return nil so that we
