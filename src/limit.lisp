@@ -3850,6 +3850,7 @@ ignoring dummy variables and array indices."
   (%jacobi_dc . %jacobi_cd)))
    
 (defun extra-simp (e)
+  (declare (special var))
    (let ((var-present (not (freeof var e))))
    (cond ((extended-real-p e) e) ;we don't want to call sign on ind, so catch this
 		 (($mapatom e) ;if e is declared zero, return 0; otherwise e
