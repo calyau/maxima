@@ -2693,7 +2693,10 @@ in the interval of integration.")
        (ans ()))
       ((or (null pl)
 	   (null rl))  ans)
-    (setq ans (cons (m* dn (car rl) (m^ `((%plog) ,(car pl)) nn))
+    (setq ans (cons (m* dn (car rl)
+                        ;; AFAICT, this call to PLOG doesn't need
+                        ;; to bind VAR.
+                        (m^ `((%plog) ,(car pl)) nn))
 		    ans))))
 
 (defun logcpj (n d i ivar)
@@ -2701,7 +2704,12 @@ in the interval of integration.")
 	   (if plm*
 	       (list (mul* (m*t '$%i %pi2)
 			   (m+l
-			    (residue-var (m* (m^ `((%plog) ,ivar) i)	 n)
+                            ;; AFAICT, this call to PLOG doesn't need
+                            ;; to bind VAR.  An example where this is
+                            ;; used is
+                            ;; integrate(log(x)^2/(1+x^2),x,0,1)
+			    (residue-var (m* (m^ `((%plog) ,ivar) i)
+                                             n)
 				         d
 				         plm*
                                          ivar)))))
