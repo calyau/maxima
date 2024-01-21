@@ -30,7 +30,6 @@
 	   ((among var x)	;This is used in DEFINT. 1/19/81. -JIM
 	    (return (give-up))))
      (newvar x)
-     (format t "varlist = ~A~%" varlist)
      (cond
        ((and (member '$%i varlist)
 	     (not (some #'(lambda (v)
@@ -38,7 +37,6 @@
 			varlist)))
 	(setq dd (trisplit x))
 	(cond ((setq z (patan (car dd) (cdr dd)))
-               (format t "patan = ~A~%" z)
 	       (return (add2* (ftake '%log
                                      (simpexpt (power ($expand (add* (power (car dd) 2)
                                                                      (power (cdr dd) 2)))
@@ -51,12 +49,10 @@
        ((and (equal ($imagpart x) 0)
 	     (setq y ($asksign x)))
 	(cond ((eq y '$pos)
-               (format t "y pos: x = ~A~%" x)
 	       (return (ftake '%log x)))
 	      ((and plogabs (eq y '$neg))
 	       (return (ftake '%log (list '(mtimes) -1 x))))
 	      ((eq y '$neg)
-               (format t "y neg~%")
 	       (return (add2 %p%i
 			     (ftake '%log (mul -1 x)))))
 	      (t (merror (intl:gettext "plog: plog(0) is undefined.")))))
@@ -69,7 +65,6 @@
 		    (setq y 1))
 		   ((eq y '$neg)
 		    (setq y -1)))
-             (format t "log case~%")
 	     (return (add2* (ftake '%log (mul y z))
                             (mul y 1//2 '$%i '$%pi)))))))
      (return (give-up))))
