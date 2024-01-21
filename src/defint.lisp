@@ -1469,8 +1469,13 @@ in the interval of integration.")
 	 s)
 	((setq n (let ((plogabs ()))
 		   (keyhole (let ((var ivar))
-                              ;; The simplifier for PLOG references
-                              ;; VAR!!!!
+                              (declare (special var))
+                              ;; It's very important here to bind VAR
+                              ;; because the PLOG simplifier checks
+                              ;; for VAR.  Without this, the
+                              ;; simplifier converts plog(-x) to
+                              ;; log(x)+%i*%pi, which messes up the
+                              ;; keyhole routine.
                               (m* `((%plog) ,(m- ivar)) n))
                             d
                             ivar)))
