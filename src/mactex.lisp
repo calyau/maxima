@@ -220,7 +220,7 @@
 
   (defun myprinc (chstr &optional (texport nil))
     (prog (chlst)
-       (cond ((and (> (+ (length (setq chlst (exploden chstr))) ccol) 70.)
+       (cond ((and (> (+ (length (setq chlst (exploden chstr))) ccol) $linel)
                    (or (stringp chstr) (equal chstr '| |)))
 	      (terpri texport)      ;would have exceeded the line length
 	      (setq ccol 1.)

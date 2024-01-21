@@ -10,7 +10,7 @@
 ;; Copyright (C) 2007, 2008 Yasuaki Honda (imaxima-to-html, inline graph)
 ;; Copyright (C) 2020, 2021, 2022 Leo Butler (imaxima-gnuplot-replot, various improvements)
 
-;; Time-stamp: <16-05-2022 10:48:22 Leo Butler>
+;; Time-stamp: <16-01-2024 11:38:28 Leo Butler>
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -733,6 +733,11 @@ This command does not work in XEmacs."
   (unless (eq (process-status process) 'run)
     (imaxima-clean-up)))
 
+(defun imaxima-restart-gs ()
+  "Kill Ghostscript process and start a new one."
+  (kill-process imaxima-gs-process)
+  (imaxima-start-gs))
+
 (defun imaxima-maybe-restart-gs ()
   "Unless `imaxima-gs-process' is running, call
 `imaxima-start-gs' to (re)start GS."
@@ -835,15 +840,16 @@ cleardictstack 0 get restore\n")
 		  (cl-multiple-value-setq (bb width height)
 		    (imaxima-extract-bb psfilename))))))
 	  (unless (eq imaxima-image-type 'postscript)
-	    (imaxima-ps-to-image psfilename filename bb width height))
+	    (imaxima-ps-to-image psfilename filename bb width height)
+	    ;; FIXME:
+	    ;; Ghostscript on Windows doesn't flush the image to the file.
+	    ;; So we have to kill the process and restart.  What a kludge!
+	    (when (eq system-type 'windows-nt)
+	      (imaxima-restart-gs)))
 	  (cond ((featurep 'xemacs)
+		 ;; FIXME:
 		 (when (eq system-type 'windows-nt)
-		   ;;(setq filename (imaxima-subst-char-in-string ?\\ ?/ filename))
-		   ;; FIXME:
-		   ;; Ghostscript on Windows doesn't flush the image to the file.
-		   ;; So we have to kill the process and restart.  What a kludge!
-		   (kill-process imaxima-gs-process)
-		   (imaxima-start-gs))
+		   (imaxima-restart-gs))
 		 (xemacs-set-imagefile-properties filename imaxima-image-type str))
 		(t
 		 (prog1

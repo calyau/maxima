@@ -26,8 +26,8 @@ Usage:
 batch("rtest_imaxima.mac",'test);
 */
 
-wximplicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4]);
-'implicit_plot;
+wxplot2d (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4]);
+plot2d$
 
 wxplot2d (sin(x), [x, -%pi, %pi])$
 plot2d$
@@ -129,7 +129,7 @@ block([m], load(descriptive), m : read_matrix (file_search ("biomed.data")),
     xlabel       = "years",
     box_width    = 1/2,
     fill_density = 3/4))$
-[gr2d(points,bars,label)] $
+[gr2d(?points,?bars,?label)] $
 
 block([s2:read_matrix(file_search("wind.data"))],
   wxboxplot(s2,
@@ -138,10 +138,10 @@ block([s2:read_matrix(file_search("wind.data"))],
     xlabel     = "Stations",
     color      = red,
     line_width = 2))$
-[gr2d(points,points,points,points,points,points,points,points,points,
-  points,points,points,points,points,points,points,points,points,
-  points,points,points,points,points,points,points,points,points,
-  points,points,points)]$
+[gr2d(?points,?points,?points,?points,?points,?points,?points,?points,?points,
+  ?points,?points,?points,?points,?points,?points,?points,?points,?points,
+  ?points,?points,?points,?points,?points,?points,?points,?points,?points,
+  ?points,?points,?points)]$
           
 block([s1:read_list (file_search ("pidigits.data"))],
   wxhistogram (
@@ -152,7 +152,7 @@ block([s1:read_list (file_search ("pidigits.data"))],
     ylabel       = "Absolute frequency",
     fill_color   = grey,
     fill_density = 0.6))$
-[gr2d(bars)] $
+[gr2d(?bars)] $
 
 block([s1 : read_list (file_search ("pidigits.data"))],
   wxpiechart(
@@ -160,8 +160,8 @@ block([s1 : read_list (file_search ("pidigits.data"))],
     xrange  = [-1.1, 1.3],
     yrange  = [-1.1, 1.1],
     title   = "Digit frequencies in pi"))$
-[gr2d(ellipse,ellipse,ellipse,ellipse,ellipse,ellipse,ellipse,ellipse,
-  ellipse,ellipse)]$
+[gr2d(?ellipse,?ellipse,?ellipse,?ellipse,?ellipse,?ellipse,?ellipse,?ellipse,
+  ?ellipse,?ellipse)]$
 
 block([s2 : read_matrix (file_search ("wind.data"))],
   wxscatterplot(
@@ -170,7 +170,7 @@ block([s2 : read_matrix (file_search ("wind.data"))],
     point_type = diamant,
     point_size = 2,
     color      = blue))$
-[gr2d(points)]$
+[gr2d(?points)]$
 
 block([l1: makelist(random(10),k,1,50),
   l2: makelist(random(10),k,1,200)],
@@ -182,8 +182,8 @@ block([l1: makelist(random(10),k,1,50),
     star_radius = 4,
     proportional_axes = xy,
     line_width = 2 )) $
-[gr2d(points,points,points,points,points,points,points,points,points,
-  points,label,points,points)]$
+[gr2d(?points,?points,?points,?points,?points,?points,?points,?points,?points,
+  ?points,?label,?points,?points)]$
 
 
 /* end of rtest_imaxima.mac */
