@@ -27,7 +27,14 @@
   (prog (varlist dd y z)
      (cond ((equal 0 x)
 	    (merror (intl:gettext "plog: plog(0) is undefined.")))
-	   ((among var x)	;This is used in DEFINT. 1/19/81. -JIM
+	   ((among var x)
+            ;; This is used in DEFINT. 1/19/81. -JIM
+            ;;
+            ;; In particular, this is the call to KEYHOLE in ZTORAT
+            ;; for an integral like integrate(1/(x^2+x+1),x,0,inf).
+            ;; Without this, the integral is computed incorrectly.
+            ;;
+            ;; FIXME:  We should be doing this.
 	    (return (give-up))))
      (newvar x)
      (cond
