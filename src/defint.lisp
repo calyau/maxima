@@ -247,6 +247,12 @@ in the interval of integration.")
     (declare (special var))
     (polyp a)))
 
+;; Like SUBIN in src/csimp.lisp, but we make the dependency on the arg
+;; explicit instead of using the specvar VAR to hold the variable.
+(defun subin-var (y x ivar)
+  (cond ((not (among ivar x)) x)
+	(t (maxima-substitute y ivar x))))
+
 ;; Make dependency on VAR explicit for NUMDEN.  Temporary workaround
 ;; until we actually fix NUMDEN.
 (defun numden-var (exp ivar)
@@ -1571,19 +1577,18 @@ in the interval of integration.")
 					      (cadddr pe*))))
 			  (setq ans (m+ ans (m*t (m^ -1 p*) nn*)))
 			  (return (m* (m// nc dc) ans))))))))
-	  (cond
-	    ((and (ratp grand ivar)
-	          (setq ans1 (zmtorat n
-                                      (cond ((mtimesp d) d) (t ($sqfr d)))
-                                      s
-                                      #'(lambda (n d s)
-                                          (mtorat n d s ivar))
-                                      ivar)))
+     (cond ((and (ratp grand ivar)
+	         (setq ans1 (zmtorat n
+                                     (cond ((mtimesp d) d) (t ($sqfr d)))
+                                     s
+                                     #'(lambda (n d s)
+                                         (mtorat n d s ivar))
+                                     ivar)))
 	    (setq ans (m*t '$%pi ans1))
 	    (return (m* (m// nc dc) ans)))
 	   ((and (or (%einvolve-var grand ivar)
 		     (involve-var grand ivar '(%sinh %cosh %tanh)))
-		 (p*pin%ex n ivar)	      ;setq's P* and PE*...Barf again.
+		 (p*pin%ex n ivar)    ;setq's P* and PE*...Barf again.
 		 (setq ans (catch 'pin%ex (pin%ex d ivar))))
 	    ;; We have an integral of the form p(x)*F(exp(x)), where
 	    ;; p(x) is a polynomial.
@@ -3110,12 +3115,6 @@ in the interval of integration.")
 	     ((setq ans (dintbypart `((%log) ,arg) ans *ll* *ul* ivar))
 	      ;; Try integration by parts.
 	      (return ans))))))
-
-;; Like SUBIN in src/csimp.lisp, but we make the dependency on the arg
-;; explicit instead of using the specvar VAR to hold the variable.
-(defun subin-var (y x ivar)
-  (cond ((not (among ivar x)) x)
-	(t (maxima-substitute y ivar x))))
 
 ;; Compute diff(e,ivar,n) at the point pt.
 (defun derivat (ivar n e pt)
