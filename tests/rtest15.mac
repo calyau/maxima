@@ -1623,3 +1623,24 @@ errcatch(quad_qags(sqrt(x), x, -1, 1));
 
 errcatch(quad_qagp(sqrt(x), x, 0, 1, [0, 2]));
 [];
+
+/*
+ * SF Bug 4254:  plog doesn't always simplify results
+ */
+plog(-1);
+%i*%pi;
+
+assume(xp > 0);
+[xp > 0];
+
+plog(-xp);
+log(xp) + %i*%pi;
+
+plog(xp*%i);
+log(xp) + %i*%pi/2;
+
+plog(-xp*%i);
+log(xp) - %i*%pi/2;
+
+forget(xp > 0);
+[xp > 0];
