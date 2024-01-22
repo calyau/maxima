@@ -245,7 +245,7 @@ in the interval of integration.")
     (declare (special var))
     (notinvolve e nn*)))
 
-#+nli
+#+nil
 (defun polyp-var (a ivar)
   (let ((var ivar))
     (declare (special var))
