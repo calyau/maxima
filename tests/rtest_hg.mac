@@ -664,8 +664,7 @@ tex(hypergeometric([2],[9],x),false);
 "$
 
 tex(hypergeometric([a,b],[c],x),false);
-"$$F\\left( \\left. \\begin{array}{c}a,\\;b\\\\c\\end{array} \\right |,x
- \\right)$$
+"$$F\\left( \\left. \\begin{array}{c}a,\\;b\\\\c\\end{array} \\right |,x\\right)$$
 "$
 
 /* float hypergeometric error | fix - ID: 3426847 */
