@@ -300,6 +300,7 @@ in the interval of integration.")
 ;; NO-ERR-SUB references VAR via SUBIN, so we need to bind VAR for
 ;; this to work, until we fix NO-ERR-SUB to make the dependency
 ;; explicit.
+#+nil
 (defun no-err-sub-var (v e ivar)
   (let ((var ivar))
     (declare (special var))

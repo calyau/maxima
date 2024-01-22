@@ -1206,6 +1206,23 @@ ignoring dummy variables and array indices."
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
 	  (t ans))))
 
+(defun no-err-sub-var (v e var1 &aux ans)
+  (let ((errorsw t) (*zexptsimp? t)
+	(errcatch t)
+	;; Don't print any error messages
+	($errormsg nil))
+    ;; Should we just use IGNORE-ERRORS instead HANDLER-CASE here?  I
+    ;; (rtoy) am choosing the latter so that unexpected errors will
+    ;; actually show up instead of being silently discarded.
+    (handler-case
+	(setq ans (catch 'errorsw
+                    (ignore-rat-err
+                      (sratsimp (subin-var v e var1)))))
+      (maxima-$error ()
+	(setq ans nil)))
+    (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
+	  (t ans))))
+
 (defun simplim%mabs (e x pt)
  (let ((lim (limit (cadr e) x pt 'think)))
 	(cond ((or (eq lim '$zeroa) (eql lim 0) (eq lim '$ind)) lim)
