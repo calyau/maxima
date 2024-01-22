@@ -253,12 +253,14 @@ in the interval of integration.")
 
 ;; Like SUBIN in src/csimp.lisp, but we make the dependency on the arg
 ;; explicit instead of using the specvar VAR to hold the variable.
+#+nil
 (defun subin-var (y x ivar)
   (cond ((not (among ivar x)) x)
 	(t (maxima-substitute y ivar x))))
 
 ;; Make dependency on VAR explicit for NUMDEN.  Temporary workaround
 ;; until we actually fix NUMDEN.
+#+nil
 (defun numden-var (exp ivar)
   (let ((var ivar))
     (declare (special var))

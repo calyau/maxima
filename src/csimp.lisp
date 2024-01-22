@@ -156,6 +156,19 @@
 		      nil)))
   (values nn* dn*))
 
+(defun numden-var (e var1)
+  (prog (varlist)
+     (setq varlist (list var1))
+     (newvar (setq e (fmt e)))
+     (setq e (cdr (ratrep* e)))
+     (setq dn*
+	   (simplifya (pdis (ratdenominator e))
+		      nil))
+     (setq nn*
+	   (simplifya (pdis (ratnumerator e))
+		      nil)))
+  (values nn* dn*))
+
 (defun fmt (exp)
   (let (nn*)
     (cond ((atom exp) exp)
@@ -197,6 +210,10 @@
 (defun subin (y x)
   (cond ((not (among var x)) x)
 	(t (maxima-substitute y var x))))
+
+(defun subin-var (y x ivar)
+  (cond ((not (among ivar x)) x)
+	(t (maxima-substitute y ivar x))))
 
 ;; Right-hand side (rhs) and left-hand side (lhs) of binary infix expressions.
 ;; These are unambiguous for relational operators, some other built-in infix operators,
