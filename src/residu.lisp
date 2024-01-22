@@ -262,6 +262,22 @@
 	((polyinx e var nil)
 	 (setq sn* (cons e sn*)))))
 
+(defun snumden-var (e var1)
+  (cond ((or (atom e)
+	     (mnump e))
+	 (setq sn* (cons e sn*)))
+	((and (mexptp e)
+	      (integerp (caddr e)))
+	 (cond ((polyinx (cadr e) var1 nil)
+		(cond ((minusp (caddr e))
+		       (setq sd* (cons (cond ((equal (caddr e) -1) (cadr e))
+					     (t (m^ (cadr e)
+						    (- (caddr e)))))
+				       sd*)))
+		      (t (setq sn* (cons e sn*)))))))
+	((polyinx e var1 nil)
+	 (setq sn* (cons e sn*)))))
+
 (setq sn* nil sd* nil)
 
 (defmfun $residue (e var p)

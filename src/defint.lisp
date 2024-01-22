@@ -266,6 +266,7 @@ in the interval of integration.")
     (declare (special var))
     (numden exp)))
 
+#+nil
 (defun snumden-var (exp ivar)
   (let ((var ivar))
     (declare (special var))
