@@ -45,10 +45,9 @@
 	(setq dd (trisplit x))
 	(cond ((setq z (patan (car dd) (cdr dd)))
 	       (return (add2* (ftake '%log
-                                     (simpexpt (power ($expand (add* (power (car dd) 2)
-                                                                     (power (cdr dd) 2)))
-                                                      1//2)
-                                               1 nil))
+                                     (power ($expand (add* (power (car dd) 2)
+                                                           (power (cdr dd) 2)))
+                                            1//2))
                               (mul* z '$%i))))))
        ((and (free x '$%i)
 	     (eq ($sign x) '$pnz))
