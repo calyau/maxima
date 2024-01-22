@@ -2470,6 +2470,7 @@ ignoring dummy variables and array indices."
                    (involve-var j var1 nn*))
                (cdr e)))))
 
+;; Why not implement this as (NOT (INVOLVE EXP NN*))?
 (defun notinvolve (exp nn*)
   (cond ((atom exp) t)
 	((mnump exp) t)
