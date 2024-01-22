@@ -227,21 +227,25 @@ in the interval of integration.")
 ;; Temporary replacements for INVOLVE-related functions to make the
 ;; dependency on VAR explicit.  However, we haven't actuall fixed these..
 ;; Just bind VAR to IVAR before calling the actual function.
+#+nil
 (defun %einvolve-var (e ivar)
   (let ((var ivar))
     (declare (special var))
     (%einvolve e)))
 
+#+nil
 (defun involve-var (e ivar nn*)
   (let ((var ivar))
     (declare (special var))
     (involve e nn*)))
 
+#+nil
 (defun notinvolve-var (e ivar nn*)
   (let ((var ivar))
     (declare (special var))
     (notinvolve e nn*)))
 
+#+nli
 (defun polyp-var (a ivar)
   (let ((var ivar))
     (declare (special var))
@@ -298,11 +302,13 @@ in the interval of integration.")
     (declare (special var))
     (no-err-sub v e)))
 
+#+nil
 (defun tansc-var (e ivar)
   (let ((var ivar))
     (declare (special var))
     (tansc e)))
 
+#+nil
 (defun oscip-var (e ivar)
   (let ((var ivar))
     (declare (special var))
@@ -1632,7 +1638,7 @@ in the interval of integration.")
 ;;; given (b*x+a)^n+c returns  (a b n c)
 (defun linpower (exp ivar)
   (let (linpart deg lc c varlist)
-    (cond ((not (polyp-var exp ivar))   nil)
+    (cond ((not (polyp2 exp ivar))   nil)
 	  (t (let ((varlist (list ivar)))
 	       (newvar exp)
 	       (setq linpart (cadr (ratrep* exp)))
@@ -1733,7 +1739,7 @@ in the interval of integration.")
      (setq varlist (list ivar))
      (setq *mtoinf* t)
      (cond ((and (setq expo (%einvolve-var e ivar))
-		 (polyp-var (setq poly (sratsimp (m// e (m^t '$%e expo)))) ivar)
+		 (polyp2 (setq poly (sratsimp (m// e (m^t '$%e expo)))) ivar)
 		 (setq l (catch 'ggrm (ggr (m^t '$%e expo) nil ivar))))
 	    (setq *mtoinf* nil)
 	    (setq mb (m- (subin-var 0. (cadr l) ivar)))
