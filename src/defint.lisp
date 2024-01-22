@@ -129,7 +129,7 @@
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
-		      loopstop* var nd* p*
+		      loopstop* nd* p*
 		      factors rlm*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
