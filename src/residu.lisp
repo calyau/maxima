@@ -262,6 +262,8 @@
 	((polyinx e var nil)
 	 (setq sn* (cons e sn*)))))
 
+;; Like SNUMDEN, but dependency on VAR is explicit.  Use this instead
+;; when possible.
 (defun snumden-var (e var1)
   (cond ((or (atom e)
 	     (mnump e))

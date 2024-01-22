@@ -751,6 +751,8 @@ ignoring dummy variables and array indices."
 		   `((mfactorial) ,(caddr e)))))
 	(t e)))
 
+;; Like TANSC but dependency on VAR is explicit.  Use this instead of
+;; TANSC when possible.
 (defun tansc-var (e var1)
   (cond ((not (involve-var e var1
 		           '(%cot %csc %binomial
@@ -1206,6 +1208,8 @@ ignoring dummy variables and array indices."
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
 	  (t ans))))
 
+;; Like NO-ERR-SUB but dependency on VAR is explicit.  Use this
+;; instead when possible.
 (defun no-err-sub-var (v e var1 &aux ans)
   (let ((errorsw t) (*zexptsimp? t)
 	(errcatch t)
@@ -2475,7 +2479,7 @@ ignoring dummy variables and array indices."
 	(t (some #'(lambda (j) (involve j nn*)) (cdr e)))))
 
 ;; Just like INVOLVE, except the dependency on VAR is explicit (second
-;; arg here).
+;; arg here).  Use this instead.
 (defun involve-var (e var1 nn*)
   (cond ((atom e) nil)
 	((mnump e) nil)
@@ -2495,8 +2499,8 @@ ignoring dummy variables and array indices."
 	((every #'(lambda (j) (notinvolve j nn*))
 		(cdr exp)))))
 
-;; Just like NOTINVOLVE, except the dependency on VAR is explicit (second
-;; arg here).
+;; Just like NOTINVOLVE, except the dependency on VAR is explicit
+;; (second arg here).  Use this instead.
 (Defun notinvolve-var (exp var1 nn*)
   (cond ((atom exp)
          t)
@@ -2948,6 +2952,8 @@ ignoring dummy variables and array indices."
 	       (newvar p)
 	       (pdegr (cadr (ratrep* p)))))))
 
+;; Like DEG, but dependency on VAR is explicit.  Use this instead when
+;; possible.
 (defun deg-var (p var1)
   (prog ((varlist (list var1)))
      (flet ((pdegr-var (pf)
@@ -3643,12 +3649,12 @@ ignoring dummy variables and array indices."
 		 (mapcar (lambda (x) (derivative-subst x val var realvar))
 			 (cdr exp))))))
 
-;;;Used by Defint also.
 (defun oscip (e)
   (or (involve e '(%sin %cos %tan))
       (among '$%i (%einvolve e))))
 
 ;; Like OSCIP, but the dependency on VAR is explicit (second arg).
+;; Use this instead when possible.
 (defun oscip-var (e var1)
   (or (involve-var e var1 '(%sin %cos %tan))
       (among '$%i (%einvolve-var e var1))))
@@ -3666,7 +3672,7 @@ ignoring dummy variables and array indices."
 	(t (some #'%einvolve (cdr e)))))
 
 ;; Just like %EINVOLVE, except the dependency on VAR is explicit
-;; (second arg here).
+;; (second arg here).  Use this instead when possible.
 (defun %einvolve-var (e var1)
   (flet ((%einvolve01-var (e)
            ;; A copy of %ENVOLVE01, but for %EINVOLVE-VAR.

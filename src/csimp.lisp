@@ -156,6 +156,8 @@
 		      nil)))
   (values nn* dn*))
 
+;; Like NUMDEN but dependency on VAR is explicit.  Use this instead of
+;; NUMDEN if possible.
 (defun numden-var (e var1)
   (prog (varlist)
      (setq varlist (list var1))
@@ -211,6 +213,8 @@
   (cond ((not (among var x)) x)
 	(t (maxima-substitute y var x))))
 
+;; Like SUBIN but dependency on VAR is explicit.  Use this instead
+;; when possible.
 (defun subin-var (y x ivar)
   (cond ((not (among ivar x)) x)
 	(t (maxima-substitute y ivar x))))
