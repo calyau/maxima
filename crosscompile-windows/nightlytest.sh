@@ -7,7 +7,7 @@
 # the working directory is ~/maxima-test - attention: it will be deleted and recreated.
 
 # do everything in English
-export LANG=C
+export LANG=C.UTF-8
 
 MAXIMAGITREPOSITORY=https://git.code.sf.net/p/maxima/code
 PATH=/opt/texinfo-7.0.3/bin:$PATH
