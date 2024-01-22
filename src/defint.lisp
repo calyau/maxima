@@ -317,6 +317,7 @@ in the interval of integration.")
     (declare (special var))
     (oscip e)))
 
+#+nil
 (defun deg-var (p ivar)
   (let ((var ivar))
     (declare (special var))

@@ -2931,6 +2931,21 @@ ignoring dummy variables and array indices."
 	       (newvar p)
 	       (pdegr (cadr (ratrep* p)))))))
 
+(defun deg-var (p var1)
+  (prog ((varlist (list var1)))
+     (flet ((pdegr-var (pf)
+              (cond ((or (atom pf)
+                         (not (eq (caadr (ratf var1))
+                                  (car pf))))
+	             0)
+	            (low*
+                     (cadr (reverse pf)))
+	            (t
+                     (cadr pf)))))
+       (return (let (($ratfac nil))
+	         (newvar p)
+	         (pdegr-var (cadr (ratrep* p))))))))
+
 (defun rat-no-ratfac (e)
   (let (($ratfac nil))
     (newvar e)
