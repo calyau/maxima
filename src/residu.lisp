@@ -244,6 +244,17 @@
 		       (resm1 (div* zn factors) (car j)))
 		   pl))))
 
+(defun residue-var (var1 zn factors pl)
+  (cond (leadcoef
+	 (mapcar #'(lambda (j)
+		     (destructuring-let (((factor1 factor2)
+                                          (remfactor factors (car j) zn)))
+		       (resm0-var var1 factor1 factor2 (car j) (cadr j))))
+		 pl))
+	(t (mapcar #'(lambda (j)
+		       (resm1-var var1 (div* zn factors) (car j)))
+		   pl))))
+
 ;; Compute the residues of zn/d for the simple poles in the list PL1.
 ;; The poles must be simple because ZD must be the derivative of
 ;; denominator.  For simple poles the residue can be computed as
@@ -288,6 +299,12 @@
   (setq e (div* n e))
   (setq e ($diff e var (1- m)))
   (setq e ($rectform ($expand (subin pole e))))
+  (div* e (simplify `((mfactorial) ,(1- m)))))
+
+(defun resm0-var (var1 e n pole m)
+  (setq e (div* n e))
+  (setq e ($diff e var1 (1- m)))
+  (setq e ($rectform ($expand (subin-var pole e var1))))
   (div* e (simplify `((mfactorial) ,(1- m)))))
 
 (defun remfactor (l p n)
@@ -420,4 +437,22 @@
                     ;; Things like residue(s/(s^2-a^2),s,a) fails if use -1.
                     ($taylor e var pole 1))))
         (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var) -1) 1)
+        (merror (intl:gettext "residue: taylor failed."))))
+
+(defun resm1 (e pole)
+    ;; Call taylor with silent-taylor-flag t and catch an error.
+    (if (setq e (catch 'taylor-catch
+                  (let ((silent-taylor-flag t))
+                    ;; Things like residue(s/(s^2-a^2),s,a) fails if use -1.
+                    ($taylor e var pole 1))))
+        (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var) -1) 1)
+        (merror (intl:gettext "residue: taylor failed."))))
+
+(defun resm1-var (var1 e pole)
+    ;; Call taylor with silent-taylor-flag t and catch an error.
+    (if (setq e (catch 'taylor-catch
+                  (let ((silent-taylor-flag t))
+                    ;; Things like residue(s/(s^2-a^2),s,a) fails if use -1.
+                    ($taylor e var` pole 1))))
+        (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var1) -1) 1)
         (merror (intl:gettext "residue: taylor failed."))))

@@ -294,6 +294,7 @@ in the interval of integration.")
     (declare (special var))
     (polelist d region region1)))
 
+#+nil
 (defun residue-var (zn factors pl ivar)
   (let ((var ivar))
     (declare (special var))
@@ -2690,10 +2691,10 @@ in the interval of integration.")
 		(caddr pl))
 	    (setq dp (sdiff d ivar))))
      (cond ((setq plm* (car pl))
-	    (setq rlm* (residue-var n (cond (leadcoef factors)
+	    (setq rlm* (residue-var ivar
+                                    n (cond (leadcoef factors)
 					(t d))
-				    plm*
-                                    ivar))))
+				    plm*))))
      (cond ((setq pl* (cadr pl))
 	    (setq rl* (res1-var ivar n dp pl*))))
      (cond ((setq pl*1 (caddr pl))
@@ -2726,11 +2727,11 @@ in the interval of integration.")
                             ;; to bind VAR.  An example where this is
                             ;; used is
                             ;; integrate(log(x)^2/(1+x^2),x,0,1)
-			    (residue-var (m* (m^ `((%plog) ,ivar) i)
+			    (residue-var ivar
+                                         (m* (m^ `((%plog) ,ivar) i)
                                              n)
 				         d
-				         plm*
-                                         ivar)))))
+				         plm*)))))
 	   (lognx2 i (m*t '$%i %pi2) pl* rl*)
 	   (lognx2 i %p%i pl*1 rl*1)))
   (if (null n)
