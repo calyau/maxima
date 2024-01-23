@@ -270,6 +270,15 @@
 	      ($rectform ($expand (subin ($rectform j) zd))))
 	  pl1))
 
+(defun res1-var (var1 zn zd pl1)
+  (setq zd (div* zn zd))
+  (mapcar #'(lambda (j)
+	      ;; In case the pole is messy, call $RECTFORM.  This
+	      ;; works around some issues with gcd bugs in certain
+	      ;; cases.  (See bug 1073338.)
+	      ($rectform ($expand (subin-var ($rectform j) zd var1))))
+	  pl1))
+
 (defun resprog0 (f g n n2)
   (prog (a b c r)
      (setq a (resprog f g))

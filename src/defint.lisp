@@ -277,6 +277,7 @@ in the interval of integration.")
     (declare (special var))
     (res n d region region1)))
 
+#+nil
 (defun res1-var (ivar zn zd pl1)
   (let ((var ivar))
     (declare (special var))
