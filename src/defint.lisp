@@ -287,6 +287,7 @@ in the interval of integration.")
     (declare (special var))
     (resprog0 f g n n2)))
 
+#+nil
 (defun polelist-var (ivar d region region1)
   (let ((var ivar))
     (declare (special var))

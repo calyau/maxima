@@ -107,10 +107,85 @@
      (setq roots (cddr roots))
      (go loop1)))
 
+;; Like POLELIST, but dependency on VAR is explicit.  Use this instead
+;; when possible.
+(defun polelist-var (var1 d region region1)
+  (prog (roots $breakup r rr ss r1 s pole wflag cf)
+     (setq wflag t)
+     (setq leadcoef (polyinx d var1 'leadcoef))
+     (setq roots (solvecase-var d var1))
+     (if (eq roots 'failure) (return ()))
+     ;; Loop over all the roots.  SOLVECASE returns the roots in the form
+     ;; ((x = r1) mult1
+     ;;  (x = r2) mult2
+     ;;  ...)
+
+   loop1
+     (cond ((null roots)
+	    (cond ((and *semirat*
+			(> (+ (length s) (length r))
+			   (+ (length ss) (length rr))))
+		   ;; Return CF, repeated roots (*semirat*), simple
+		   ;; roots (*semirat*), roots in region 1.
+		   (return (list cf rr ss r1)))
+		  (t
+		   ;; Return CF, repeated roots, simple roots, roots in region 1.
+		   (return (list cf r s r1)))))
+	   (t
+	    ;; Set POLE to the actual root and set D to the
+	    ;; multiplicity of the root.
+	    (setq pole (caddar roots))
+	    (setq d (cadr roots))
+	    (cond (leadcoef
+		   ;; Is it possible for LEADCOEF to be NIL ever?
+		   ;;
+		   ;; Push (pole (x - pole)^d) onto the list CF.
+		   (setq cf (cons pole
+				  (cons
+				   (m^ (m+ var1 (m* -1 pole))
+				       d)
+				   cf)))))))
+     ;; Don't change the order of clauses here.  We want to call REGION and then REGION1.
+     (cond ((funcall region pole)
+	    ;; The pole is in REGION
+	    (cond ((equal d 1)
+		   ;; A simple pole, so just push the pole onto the list S.
+		   (push pole s))
+		  (t
+		   ;; A multiple pole, so push (pole d) onto the list R.
+		   (push (list pole d) r))))
+	   ((funcall region1 pole)
+	    ;; The pole is in REGION1
+	    (cond ((not $noprincipal)
+		   ;; Put the pole onto the R1 list.  (Don't know what
+		   ;; $NOPRINCIPAL is.)
+		   (push pole r1))
+		  (t
+		   ;; Return NIL if we get here.
+		   (return nil))))
+	   (*semirat*
+	    ;; (What does *SEMIRAT* mean?)  Anyway if we're here, the
+	    ;; pole is not in REGION or REGION1, so push the pole onto
+	    ;; SS or RR depending if the pole is repeated or not.
+	    (cond ((equal d 1)
+		   (push pole ss))
+		  (t (push (list pole d) rr)))))
+     ;; Pop this root and multiplicity and move on.
+     (setq roots (cddr roots))
+     (go loop1)))
+
 (defun solvecase (e)
   (cond ((not (among var e)) nil)
 	(t (let (*failures *roots)
 	     (solve e var 1)
+	     (cond (*failures 'failure)
+		   ((null *roots) ())
+		   (t *roots))))))
+
+(defun solvecase-var (e var1)
+  (cond ((not (among var1 e)) nil)
+	(t (let (*failures *roots)
+	     (solve e var1 1)
 	     (cond (*failures 'failure)
 		   ((null *roots) ())
 		   (t *roots))))))
