@@ -282,6 +282,7 @@ in the interval of integration.")
     (declare (special var))
     (res1 zn zd pl1)))
 
+#+nil
 (defun resprog0-var (ivar f g n n2)
   (let ((var ivar))
     (declare (special var))
