@@ -1871,6 +1871,7 @@
 (defvar *n)
 (defvar derivlist)
 (defvar opers-list)
+(defvar *leadcoef*)
 
 ;;------------------------------------------------------------------------
 (defvar *bindtest-deprecation-messages* '()

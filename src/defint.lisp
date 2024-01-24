@@ -125,7 +125,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *def2* pcprntd *mtoinf*
-		      sn* sd* leadcoef
+		      sn* sd*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
@@ -2591,7 +2591,7 @@ in the interval of integration.")
 	    (setq dp (sdiff d ivar))))
      (cond ((setq plm* (car pl))
 	    (setq rlm* (residue-var ivar
-                                    n (cond (leadcoef factors)
+                                    n (cond (*leadcoef* factors)
 					(t d))
 				    plm*))))
      (cond ((setq pl* (cadr pl))
@@ -2659,7 +2659,7 @@ in the interval of integration.")
 		         (aref i-vals (- c k)))
 	           ans))))
       (setf (aref j-vals 0) 0)
-      (prog (leadcoef factors plm* pl* rl* pl*1 rl*1 rlm*)
+      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1 rlm*)
          (dotimes (c m (return (logcpi n d m ivar)))
            (setf (aref i-vals c) (logcpi n d c ivar))
            (setf (aref j-vals c) (logcpj n factors c ivar)))))))
@@ -2754,7 +2754,7 @@ in the interval of integration.")
      (setq n (m* (cond ((null p) -1)
 		       (t ($expand (m*t '$%i %pi2 (makpoly p ivar)))))
 		 pe))
-     (let ((leadcoef ()))
+     (let ((*leadcoef* ()))
        ;; Find the poles of the denominator.  denom-exponential is the
        ;; denominator of R(x).
        ;;

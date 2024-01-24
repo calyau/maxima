@@ -15,7 +15,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special $noprincipal
-		      leadcoef var *roots *failures
+		      var *roots *failures
 		      sn* sd* genvar zn))
 
 
@@ -45,7 +45,7 @@
 (defun polelist (d region region1)
   (prog (roots $breakup r rr ss r1 s pole wflag cf)
      (setq wflag t)
-     (setq leadcoef (polyinx d var 'leadcoef))
+     (setq *leadcoef* (polyinx d var 'leadcoef))
      (setq roots (solvecase d))
      (if (eq roots 'failure) (return ()))
      ;; Loop over all the roots.  SOLVECASE returns the roots in the form
@@ -69,7 +69,7 @@
 	    ;; multiplicity of the root.
 	    (setq pole (caddar roots))
 	    (setq d (cadr roots))
-	    (cond (leadcoef
+	    (cond (*leadcoef*
 		   ;; Is it possible for LEADCOEF to be NIL ever?
 		   ;;
 		   ;; Push (pole (x - pole)^d) onto the list CF.
@@ -112,7 +112,7 @@
 (defun polelist-var (var1 d region region1)
   (prog (roots $breakup r rr ss r1 s pole wflag cf)
      (setq wflag t)
-     (setq leadcoef (polyinx d var1 'leadcoef))
+     (setq *leadcoef* (polyinx d var1 'leadcoef))
      (setq roots (solvecase-var d var1))
      (if (eq roots 'failure) (return ()))
      ;; Loop over all the roots.  SOLVECASE returns the roots in the form
@@ -136,7 +136,7 @@
 	    ;; multiplicity of the root.
 	    (setq pole (caddar roots))
 	    (setq d (cadr roots))
-	    (cond (leadcoef
+	    (cond (*leadcoef*
 		   ;; Is it possible for LEADCOEF to be NIL ever?
 		   ;;
 		   ;; Push (pole (x - pole)^d) onto the list CF.
@@ -193,7 +193,7 @@
 ;; Compute the sum of the residues of n/d.
 (defun res (n d region region1)
   (let ((pl (polelist d region region1))
-	dp a b c factors leadcoef)
+	dp a b c factors *leadcoef*)
     (cond
       ((null pl) nil)
       (t
@@ -207,7 +207,7 @@
        (cond ((car pl)
 	      ;; Compute the sum of the residues of n/d for the
 	      ;; multiple roots in REGION.
-	      (setq a (m+l (residue n (cond (leadcoef factors)
+	      (setq a (m+l (residue n (cond (*leadcoef* factors)
 					    (t d))
 				    (car pl)))))
 	     (t (setq a 0)))
@@ -236,12 +236,7 @@
 
 (defun res-var (var1 n d region region1)
   (let ((pl (polelist-var var1 d region region1))
-        ;; This is really important when called from defint.  It's
-        ;; needed to handle plog simplification from routines in
-        ;; defint.
-        #+nil
-        (var var1)
-	dp a b c factors leadcoef)
+	dp a b c factors *leadcoef*)
     (cond
       ((null pl) nil)
       (t
@@ -262,7 +257,7 @@
                              ;; the pole has been substituted in when
                              ;; computing the residue.
                              (declare (special var))
-                             (residue-var var1 n (cond (leadcoef factors)
+                             (residue-var var1 n (cond (*leadcoef* factors)
 					               (t d))
 				          (car pl))))))
 	     (t (setq a 0)))
@@ -290,7 +285,7 @@
        (list (m+ a b) c)))))
 
 (defun residue (zn factors pl)
-  (cond (leadcoef
+  (cond (*leadcoef*
 	 (mapcar #'(lambda (j)
 		     (destructuring-let (((factor1 factor2) (remfactor factors (car j) zn)))
 		       (resm0 factor1 factor2 (car j) (cadr j))))
@@ -300,7 +295,7 @@
 		   pl))))
 
 (defun residue-var (var1 zn factors pl)
-  (cond (leadcoef
+  (cond (*leadcoef*
 	 (mapcar #'(lambda (j)
 		     (destructuring-let (((factor1 factor2)
                                           (remfactor factors (car j) zn)))
@@ -374,7 +369,7 @@
 (defun remfactor (l p n)
   (prog (f g)
    loop (cond ((null l)
-	       (return (list (m*l (cons leadcoef g)) n)))
+	       (return (list (m*l (cons *leadcoef* g)) n)))
 	      ((equal p (car l)) (setq f (cadr l)))
 	      (t (setq g (cons (cadr l) g))))
    (setq l (cddr l))
