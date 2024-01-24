@@ -28,7 +28,7 @@
   (setq *read-base* 10. *print-base* 10.))
 
 (declare-top  (special errset
-		       *checkfactors* $features featurel
+		       $features featurel
 		       dispflag savefile
 		       opers *ratweights
 		       transp autoload))

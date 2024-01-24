@@ -810,8 +810,7 @@
 				  ans)))))
      (go a)))
 
-(declare-top (special *checkfactors*
-		      $factorflag
+(declare-top (special $factorflag
 		      varlist))
 
 (defmfun $partfrac (ratout-exp ratout-var)

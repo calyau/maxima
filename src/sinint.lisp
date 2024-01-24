@@ -14,8 +14,6 @@
 
 (load-macsyma-macros ratmac)
 
-(declare-top (special *checkfactors*))
-
 (defun rootfac (q sinint-var)
   (prog (nthdq nthdq1 simproots ans n-loops)
      (setq nthdq (pgcd q (pderivative q sinint-var)))
