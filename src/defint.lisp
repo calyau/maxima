@@ -129,7 +129,7 @@
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
-		      loopstop* nd* p*
+		      nd* p*
 		      factors rlm*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
@@ -149,6 +149,8 @@
 		      ;;If LIMITP is non-null ask-integer conses
 		      ;;its assumptions onto this list.
 		      ))
+
+(defvar *loopstop* 0)
 
 (defmvar $intanalysis t
   "When @code{true}, definite integration tries to find poles in the integrand 
@@ -395,7 +397,7 @@ in the interval of integration.")
 	    (let ((exp (resimplify exp))
 		  (ivar (resimplify ivar))
 		  ($exptsubst t)
-		  (loopstop* 0)
+		  (*loopstop* 0)
 		  ;; D (not used? -- cwh)
 		  ans nn* dn* nd* $noprincipal)
 	      (cond ((setq ans (defint-list exp ivar *ll* *ul*))
@@ -1302,7 +1304,7 @@ in the interval of integration.")
 	 s nc dc
 	 ans r $savefactors *checkfactors* temp test-var)
      (setq $savefactors t sn* (setq sd* (list 1.)))
-     (cond ((eq ($sign (m+ loopstop* -1))
+     (cond ((eq ($sign (m+ *loopstop* -1))
 		'$pos)
 	    (return nil))
 	   ((setq temp (or (scaxn grand ivar)
@@ -1374,7 +1376,7 @@ in the interval of integration.")
 			 (t (return (sratsimp (m+l ans)))))))))
 
      (cond ((and (evenfn grand ivar)
-		 (setq loopstop* (m+ 1 loopstop*))
+		 (setq *loopstop* (m+ 1 *loopstop*))
 		 (setq ans (method-by-limits grand ivar '$minf '$inf)))
 	    (return (m*t '((rat) 1. 2.) ans)))
 	   (t (return nil)))))
@@ -1436,7 +1438,7 @@ in the interval of integration.")
   (prog (ans ans1 sd* sn* p* pe* n d s nc dc $savefactors *checkfactors* temp)
      (setq $savefactors t)
      (setq sn* (setq sd* (list 1.)))
-     (cond ((eq ($sign (m+ loopstop* -1)) '$pos)
+     (cond ((eq ($sign (m+ *loopstop* -1)) '$pos)
 	    (return nil))
 	   ((involve-var grand ivar '(%sin %cos))
 	    (cond ((and (evenfn grand ivar)
@@ -1528,7 +1530,7 @@ in the interval of integration.")
      (cond ((setq ans (ggrm grand ivar))
 	    (return ans))
 	   ((and (evenfn grand ivar)
-		 (setq loopstop* (m+ 1 loopstop*))
+		 (setq *loopstop* (m+ 1 *loopstop*))
 		 (setq ans (method-by-limits grand ivar 0 '$inf)))
 	    (return (m*t 2. ans)))
 	   (t (return nil)))))
