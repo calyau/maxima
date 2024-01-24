@@ -3035,8 +3035,6 @@ in the interval of integration.")
 ;; This basically picks off b*x^n+a and returns the list
 ;; (b n a).  It may also set the global *zd*.
 (defun maybpc (e ivar)
-  #+nil
-  (declare (special *zd*))
   (let (zd)
     (cond (*mtoinf* (throw 'ggrm (linpower0 e ivar)))
 	  ((and (not *mtoinf*)
@@ -3106,8 +3104,6 @@ in the interval of integration.")
 ;; which is the same form above.
 (defun ggr (e ind ivar)
   (prog (c zd zn nn* dn* nd* dosimp $%emode)
-     #+nil
-     (declare (special zd))
      (setq nd* 0.)
      (cond (ind (setq e ($expand e))
 		(cond ((and (mplusp e)
@@ -3153,7 +3149,6 @@ in the interval of integration.")
 				       ;; Complex b.  Take the imaginary part
 				       `((mabs) ,($imagpart b))))
 			      n a))
-	      ;; NOTE: *zd* (Ick!) is special and might be set by maybpc.
 	      (when zd
 		;; FIXME: Why do we set %emode here?  Shouldn't we just
 		;; bind it?  And why do we want it bound to T anyway?
