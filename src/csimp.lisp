@@ -156,6 +156,21 @@
 		      nil)))
   (values nn* dn*))
 
+;; Like NUMDEN but dependency on VAR is explicit.  Use this instead of
+;; NUMDEN if possible.
+(defun numden-var (e var1)
+  (prog (varlist)
+     (setq varlist (list var1))
+     (newvar (setq e (fmt e)))
+     (setq e (cdr (ratrep* e)))
+     (setq dn*
+	   (simplifya (pdis (ratdenominator e))
+		      nil))
+     (setq nn*
+	   (simplifya (pdis (ratnumerator e))
+		      nil)))
+  (values nn* dn*))
+
 (defun fmt (exp)
   (let (nn*)
     (cond ((atom exp) exp)
@@ -197,6 +212,12 @@
 (defun subin (y x)
   (cond ((not (among var x)) x)
 	(t (maxima-substitute y var x))))
+
+;; Like SUBIN but dependency on VAR is explicit.  Use this instead
+;; when possible.
+(defun subin-var (y x ivar)
+  (cond ((not (among ivar x)) x)
+	(t (maxima-substitute y ivar x))))
 
 ;; Right-hand side (rhs) and left-hand side (lhs) of binary infix expressions.
 ;; These are unambiguous for relational operators, some other built-in infix operators,
@@ -339,18 +360,18 @@
 		      (cdr a)))))
 
 ;; Like polyp but takes an extra arg for the variable.
-(defun polyp2 (a var2)
+(defun polyp-var (a var2)
   (cond ((atom a) t)
 	((member (caar a) '(mplus mtimes) :test #'eq)
 	 (every #'(lambda (p)
-                    (polyp2 p var2))
+                    (polyp-var p var2))
                 (cdr a)))
 	((eq (caar a) 'mexpt)
 	 (cond ((free (cadr a) var2)
 		(free (caddr a) var2))
 	       (t (and (integerp (caddr a))
 		       (> (caddr a) 0)
-		       (polyp2 (cadr a) var2)))))
+		       (polyp-var (cadr a) var2)))))
 	(t (andmapcar #'(lambda (subexp)
 			  (free subexp var2))
 		      (cdr a)))))

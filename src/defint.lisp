@@ -224,95 +224,6 @@ in the interval of integration.")
 	 (cond ((null exp) nil)
 	       (t (intsubs exp *ll* *ul* ivar))))))
 
-;; Temporary replacements for INVOLVE-related functions to make the
-;; dependency on VAR explicit.  However, we haven't actuall fixed these..
-;; Just bind VAR to IVAR before calling the actual function.
-(defun %einvolve-var (e ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (%einvolve e)))
-
-(defun involve-var (e ivar nn*)
-  (let ((var ivar))
-    (declare (special var))
-    (involve e nn*)))
-
-(defun notinvolve-var (e ivar nn*)
-  (let ((var ivar))
-    (declare (special var))
-    (notinvolve e nn*)))
-
-(defun polyp-var (a ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (polyp a)))
-
-;; Like SUBIN in src/csimp.lisp, but we make the dependency on the arg
-;; explicit instead of using the specvar VAR to hold the variable.
-(defun subin-var (y x ivar)
-  (cond ((not (among ivar x)) x)
-	(t (maxima-substitute y ivar x))))
-
-;; Make dependency on VAR explicit for NUMDEN.  Temporary workaround
-;; until we actually fix NUMDEN.
-(defun numden-var (exp ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (numden exp)))
-
-(defun snumden-var (exp ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (snumden exp)))
-
-(defun res-var (ivar n d region region1)
-  (let ((var ivar))
-    (declare (special var))
-    (res n d region region1)))
-
-(defun res1-var (ivar zn zd pl1)
-  (let ((var ivar))
-    (declare (special var))
-    (res1 zn zd pl1)))
-
-(defun resprog0-var (ivar f g n n2)
-  (let ((var ivar))
-    (declare (special var))
-    (resprog0 f g n n2)))
-
-(defun polelist-var (ivar d region region1)
-  (let ((var ivar))
-    (declare (special var))
-    (polelist d region region1)))
-
-(defun residue-var (zn factors pl ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (residue zn factors pl)))
-
-;; NO-ERR-SUB references VAR via SUBIN, so we need to bind VAR for
-;; this to work, until we fix NO-ERR-SUB to make the dependency
-;; explicit.
-(defun no-err-sub-var (v e ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (no-err-sub v e)))
-
-(defun tansc-var (e ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (tansc e)))
-
-(defun oscip-var (e ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (oscip e)))
-
-(defun deg-var (p ivar)
-  (let ((var ivar))
-    (declare (special var))
-    (deg p)))
-
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr ivar)
@@ -2677,10 +2588,10 @@ in the interval of integration.")
 		(caddr pl))
 	    (setq dp (sdiff d ivar))))
      (cond ((setq plm* (car pl))
-	    (setq rlm* (residue-var n (cond (leadcoef factors)
+	    (setq rlm* (residue-var ivar
+                                    n (cond (leadcoef factors)
 					(t d))
-				    plm*
-                                    ivar))))
+				    plm*))))
      (cond ((setq pl* (cadr pl))
 	    (setq rl* (res1-var ivar n dp pl*))))
      (cond ((setq pl*1 (caddr pl))
@@ -2712,12 +2623,13 @@ in the interval of integration.")
                             ;; AFAICT, this call to PLOG doesn't need
                             ;; to bind VAR.  An example where this is
                             ;; used is
-                            ;; integrate(log(x)^2/(1+x^2),x,0,1)
-			    (residue-var (m* (m^ `((%plog) ,ivar) i)
+                            ;; integrate(log(x)^2/(1+x^2),x,0,1) =
+                            ;; %pi^3/16.
+			    (residue-var ivar
+                                         (m* (m^ `((%plog) ,ivar) i)
                                              n)
 				         d
-				         plm*
-                                         ivar)))))
+				         plm*)))))
 	   (lognx2 i (m*t '$%i %pi2) pl* rl*)
 	   (lognx2 i %p%i pl*1 rl*1)))
   (if (null n)

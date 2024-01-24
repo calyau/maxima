@@ -751,6 +751,59 @@ ignoring dummy variables and array indices."
 		   `((mfactorial) ,(caddr e)))))
 	(t e)))
 
+;; Like TANSC but dependency on VAR is explicit.  Use this instead of
+;; TANSC when possible.
+(defun tansc-var (e var1)
+  (cond ((not (involve-var e var1
+		           '(%cot %csc %binomial
+			     %sec %coth %sech %csch
+			     %acot %acsc %asec %acoth
+			     %asech %acsch
+			     %jacobi_ns %jacobi_nc %jacobi_cs
+			     %jacobi_ds %jacobi_dc)))
+	 e)
+	(t
+         (labels
+             ((tansc1-v (e &aux tem)
+                ;; Copy of TANSC1, but VAR replaced by VAR1
+                (cond ((atom e)
+                       e)
+	              ((and (setq e (cons (car e) (mapcar 'tansc1-v (cdr e))))
+                            ()))
+	              ((setq tem (assoc (caar e)
+                                        '((%cot . %tan) (%coth . %tanh)
+				          (%sec . %cos) (%sech . %cosh)
+				          (%csc . %sin) (%csch . %sinh))
+                                        :test #'eq))
+	               (tansc1-v (m^ (list (ncons (cdr tem)) (cadr e)) -1.)))
+	              ((setq tem (assoc (caar e)
+                                        '((%jacobi_nc . %jacobi_cn)
+				          (%jacobi_ns . %jacobi_sn)
+				          (%jacobi_cs . %jacobi_sc)
+				          (%jacobi_ds . %jacobi_sd)
+				          (%jacobi_dc . %jacobi_cd))
+                                        :test #'eq))
+	               ;; Converts Jacobi elliptic function to its reciprocal
+	               ;; function.
+	               (tansc1-v (m^ (list (ncons (cdr tem)) (cadr e) (third e))
+                                     -1.)))
+	              ((setq tem (member (caar e) '(%sinh %cosh %tanh) :test #'eq))
+	               (let (($exponentialize t))
+	                 (resimplify e)))
+	              ((setq tem (assoc (caar e)
+                                        '((%acsc . %asin) (%asec . %acos)
+				          (%acot . %atan) (%acsch . %asinh)
+				          (%asech . %acosh) (%acoth . %atanh))
+                                        :test #'eq))
+	               (list (ncons (cdr tem)) (m^t (cadr e) -1.)))
+	              ((and (eq (caar e) '%binomial)
+                            (among var1 (cdr e)))
+	               (m// `((mfactorial) ,(cadr e))
+	                    (m* `((mfactorial) ,(m+t (cadr e) (m- (caddr e))))
+		                `((mfactorial) ,(caddr e)))))
+	              (t e))))
+           (sratsimp (tansc1-v e))))))
+
 (defun hyperex (ex)
   (cond ((not (involve ex '(%sin %cos %tan %asin %acos %atan
 			    %sinh %cosh %tanh %asinh %acosh %atanh)))
@@ -1150,6 +1203,25 @@ ignoring dummy variables and array indices."
 	(setq ans (catch 'errorsw
                     (ignore-rat-err
                       (sratsimp (subin v e)))))
+      (maxima-$error ()
+	(setq ans nil)))
+    (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
+	  (t ans))))
+
+;; Like NO-ERR-SUB but dependency on VAR is explicit.  Use this
+;; instead when possible.
+(defun no-err-sub-var (v e var1 &aux ans)
+  (let ((errorsw t) (*zexptsimp? t)
+	(errcatch t)
+	;; Don't print any error messages
+	($errormsg nil))
+    ;; Should we just use IGNORE-ERRORS instead HANDLER-CASE here?  I
+    ;; (rtoy) am choosing the latter so that unexpected errors will
+    ;; actually show up instead of being silently discarded.
+    (handler-case
+	(setq ans (catch 'errorsw
+                    (ignore-rat-err
+                      (sratsimp (subin-var v e var1)))))
       (maxima-$error ()
 	(setq ans nil)))
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
@@ -2406,11 +2478,38 @@ ignoring dummy variables and array indices."
 	((and (member (caar e) nn* :test #'eq) (among var (cdr e))) (cadr e))
 	(t (some #'(lambda (j) (involve j nn*)) (cdr e)))))
 
+;; Just like INVOLVE, except the dependency on VAR is explicit (second
+;; arg here).  Use this instead.
+(defun involve-var (e var1 nn*)
+  (cond ((atom e) nil)
+	((mnump e) nil)
+	((and (member (caar e) nn* :test #'eq)
+              (among var1 (cdr e)))
+         (cadr e))
+	(t
+         (some #'(lambda (j)
+                   (involve-var j var1 nn*))
+               (cdr e)))))
+
+;; Why not implement this as (NOT (INVOLVE EXP NN*))?
 (defun notinvolve (exp nn*)
   (cond ((atom exp) t)
 	((mnump exp) t)
 	((member (caar exp) nn* :test #'eq) (not (among var (cdr exp))))
 	((every #'(lambda (j) (notinvolve j nn*))
+		(cdr exp)))))
+
+;; Just like NOTINVOLVE, except the dependency on VAR is explicit
+;; (second arg here).  Use this instead.
+(Defun notinvolve-var (exp var1 nn*)
+  (cond ((atom exp)
+         t)
+	((mnump exp)
+         t)
+	((member (caar exp) nn* :test #'eq)
+         (not (among var1 (cdr exp))))
+	((every #'(lambda (j)
+                    (notinvolve-var j var1 nn*))
 		(cdr exp)))))
 
 (defun sheur1 (l1 l2)
@@ -2852,6 +2951,23 @@ ignoring dummy variables and array indices."
      (return (let (($ratfac nil))
 	       (newvar p)
 	       (pdegr (cadr (ratrep* p)))))))
+
+;; Like DEG, but dependency on VAR is explicit.  Use this instead when
+;; possible.
+(defun deg-var (p var1)
+  (prog ((varlist (list var1)))
+     (flet ((pdegr-var (pf)
+              (cond ((or (atom pf)
+                         (not (eq (caadr (ratf var1))
+                                  (car pf))))
+	             0)
+	            (low*
+                     (cadr (reverse pf)))
+	            (t
+                     (cadr pf)))))
+       (return (let (($ratfac nil))
+	         (newvar p)
+	         (pdegr-var (cadr (ratrep* p))))))))
 
 (defun rat-no-ratfac (e)
   (let (($ratfac nil))
@@ -3533,10 +3649,15 @@ ignoring dummy variables and array indices."
 		 (mapcar (lambda (x) (derivative-subst x val var realvar))
 			 (cdr exp))))))
 
-;;;Used by Defint also.
 (defun oscip (e)
   (or (involve e '(%sin %cos %tan))
       (among '$%i (%einvolve e))))
+
+;; Like OSCIP, but the dependency on VAR is explicit (second arg).
+;; Use this instead when possible.
+(defun oscip-var (e var1)
+  (or (involve-var e var1 '(%sin %cos %tan))
+      (among '$%i (%einvolve-var e var1))))
 
 (defun %einvolve (e)
   (when (among '$%e e) (%einvolve01 e)))
@@ -3549,6 +3670,26 @@ ignoring dummy variables and array indices."
 	      (among var (caddr e)))
 	 (caddr e))
 	(t (some #'%einvolve (cdr e)))))
+
+;; Just like %EINVOLVE, except the dependency on VAR is explicit
+;; (second arg here).  Use this instead when possible.
+(defun %einvolve-var (e var1)
+  (flet ((%einvolve01-var (e)
+           ;; A copy of %ENVOLVE01, but for %EINVOLVE-VAR.
+           (cond ((atom e)
+                  nil)
+	         ((mnump e)
+                  nil)
+	         ((and (mexptp e)
+	               (eq (cadr e) '$%e)
+	               (among var1 (caddr e)))
+	          (caddr e))
+	         (t (some #'(lambda (ee)
+                              (%einvolve-var ee var1))
+                          (cdr e))))))
+    (when (among '$%e e)
+      (%einvolve01-var e))))
+  
 
 (declare-top (unspecial *indicator exp var val origval taylored
 			$tlimswitch logcombed lhp? lhcount))
