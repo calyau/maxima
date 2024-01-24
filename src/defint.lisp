@@ -272,6 +272,7 @@ in the interval of integration.")
     (declare (special var))
     (snumden exp)))
 
+#+nil
 (defun res-var (ivar n d region region1)
   (let ((var ivar))
     (declare (special var))
@@ -2727,7 +2728,8 @@ in the interval of integration.")
                             ;; AFAICT, this call to PLOG doesn't need
                             ;; to bind VAR.  An example where this is
                             ;; used is
-                            ;; integrate(log(x)^2/(1+x^2),x,0,1)
+                            ;; integrate(log(x)^2/(1+x^2),x,0,1) =
+                            ;; %pi^3/16.
 			    (residue-var ivar
                                          (m* (m^ `((%plog) ,ivar) i)
                                              n)

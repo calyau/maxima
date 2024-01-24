@@ -234,6 +234,61 @@
        ;; sum of the residues outside the two regions.
        (list (m+ a b) c)))))
 
+(defun res-var (var1 n d region region1)
+  (let ((pl (polelist-var var1 d region region1))
+        ;; This is really important when called from defint.  It's
+        ;; needed to handle plog simplification from routines in
+        ;; defint.
+        #+nil
+        (var var1)
+	dp a b c factors leadcoef)
+    (cond
+      ((null pl) nil)
+      (t
+       (setq factors (car pl))
+       (setq pl (cdr pl))
+       ;; PL now contains the list of the roots in region, roots in
+       ;; region1, and everything else.
+       (cond ((or (cadr pl)
+		  (caddr pl))
+	      (setq dp (sdiff d var1))))
+       (cond ((car pl)
+	      ;; Compute the sum of the residues of n/d for the
+	      ;; multiple roots in REGION.
+	      (setq a (m+l (let ((var var1))
+                             ;; This binding is very important for
+                             ;; defint.  It prevents the plog
+                             ;; simplifier from simplifying plog until
+                             ;; the pole has been substituted in when
+                             ;; computing the residue.
+                             (declare (special var))
+                             (residue-var var1 n (cond (leadcoef factors)
+					               (t d))
+				          (car pl))))))
+	     (t (setq a 0)))
+       (cond ((cadr pl)
+	      ;; Compute the sum of the residues of n/d for the simple
+	      ;; roots in REGION1.  Since the roots are simple, we can
+	      ;; use RES1 to compute the residues instead of the more
+	      ;; complicated $RESIDUE.  (This works around a bug
+	      ;; described in bug 1073338.)
+	      #+nil
+	      (setq b (m+l (mapcar #'(lambda (pole)
+				       ($residue (m// n d) var1 pole))
+				   (cadr pl))))
+	      (setq b (m+l (res1-var var1 n dp (cadr pl)))))
+	     (t (setq b 0)))
+       (cond ((caddr pl)
+	      ;; Compute the sum of the residues of n/d for the roots
+	      ;; not in REGION nor REGION1.
+	      (setq c (m+l (mapcar #'(lambda (pole)
+				       ($residue (m// n d) var1 pole))
+				   (caddr pl)))))
+	     (t (setq c ())))
+       ;; Return the sum of the residues in the two regions and the
+       ;; sum of the residues outside the two regions.
+       (list (m+ a b) c)))))
+
 (defun residue (zn factors pl)
   (cond (leadcoef
 	 (mapcar #'(lambda (j)
@@ -462,6 +517,6 @@
     (if (setq e (catch 'taylor-catch
                   (let ((silent-taylor-flag t))
                     ;; Things like residue(s/(s^2-a^2),s,a) fails if use -1.
-                    ($taylor e var` pole 1))))
+                    ($taylor e var1 pole 1))))
         (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var1) -1) 1)
         (merror (intl:gettext "residue: taylor failed."))))
