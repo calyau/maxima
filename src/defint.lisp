@@ -128,7 +128,8 @@
 		      sn* sd*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
-		      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
+		      #+nil
+                      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
 		      factors rlm*
 		      *scflag*
@@ -1106,7 +1107,8 @@ in the interval of integration.")
 	     (setq c (car e))
 	     (setq nn* (cdr e))
 	     (setq nd* s)
-	     (setq e (catch 'ptimes%e (ptimes%e nn* nd* ivar)))
+	     (multiple-value-setq (e *updn)
+               (catch 'ptimes%e (ptimes%e nn* nd* ivar)))
 	     (cond ((null e) nil)
 		   (t (setq e (m* c e))
 		      (cond (*updn (setq bptu (cons e bptu)))
@@ -1114,7 +1116,7 @@ in the interval of integration.")
 
 ;; check term is of form poly(x)*exp(m*%i*x)
 ;; n is degree of denominator
-(defun ptimes%e (term n ivar)
+(defun ptimes%e (term n ivar &aux *updn)
   (cond ((and (mexptp term)
 	      (eq (cadr term) '$%e)
 	      (polyinx (caddr term) ivar nil)
@@ -1126,15 +1128,17 @@ in the interval of integration.")
 	 (cond ((eq ($asksign (ratdisrep (ratcoef nn* ivar))) '$pos)
 		(setq *updn t))
 	       (t (setq *updn nil)))
-	 term)
+	 (values term *updn))
 	((and (mtimesp term)
 	      (setq nn* (polfactors term ivar))
 	      (or (null (car nn*))
 		  (eq ($sign (m+ n (m- (deg-var (car nn*) ivar))))
 		      '$pos))
-          (not (alike1 (cadr nn*) term))
-	      (ptimes%e (cadr nn*) n ivar)
-	      term))
+              (not (alike1 (cadr nn*) term))
+	      (multiple-value-setq (term *updn)
+                (ptimes%e (cadr nn*) n ivar))
+	      term)
+         (values term *updn))
 	(t (throw 'ptimes%e nil))))
 
 (defun csemidown (n d ivar)
