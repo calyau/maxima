@@ -128,8 +128,7 @@
 		      sn* sd*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
-		      #+nil
-                      *updn *ul* *ll* exp pe* pl* rl* pl*1 rl*1
+		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
 		      factors rlm*
 		      *scflag*
@@ -1100,23 +1099,23 @@ in the interval of integration.")
 ;; s is degree of denominator
 ;; adds e to bptu or bptd according to sign of m
 (defun rib (e s ivar)
-  (let (*updn c)
+  (let (updn c)
     (cond ((or (mnump e) (constant e))
 	   (setq bptu (cons e bptu)))
 	  (t (setq e (rmconst1 e ivar))
 	     (setq c (car e))
 	     (setq nn* (cdr e))
 	     (setq nd* s)
-	     (multiple-value-setq (e *updn)
+	     (multiple-value-setq (e updn)
                (catch 'ptimes%e (ptimes%e nn* nd* ivar)))
 	     (cond ((null e) nil)
 		   (t (setq e (m* c e))
-		      (cond (*updn (setq bptu (cons e bptu)))
+		      (cond (updn (setq bptu (cons e bptu)))
 			    (t (setq bptd (cons e bptd))))))))))
 
 ;; Check term is of form poly(x)*exp(m*%i*x)
 ;; n is degree of denominator.
-(defun ptimes%e (term n ivar &aux *updn)
+(defun ptimes%e (term n ivar &aux updn)
   (cond ((and (mexptp term)
 	      (eq (cadr term) '$%e)
 	      (polyinx (caddr term) ivar nil)
@@ -1125,23 +1124,23 @@ in the interval of integration.")
 	      (eq ($sign (m+ (deg-var (setq nn* ($imagpart (caddr term))) ivar)
 			     -2.))
 		  '$neg))
-         ;; Set *updn to T if the coefficient of IVAR in the
+         ;; Set updn to T if the coefficient of IVAR in the
          ;; polynomial is known to be positive.  Otherwise set to NIL.
-         ;; (What does *updn really mean?)
+         ;; (What does updn really mean?)
 	 (cond ((eq ($asksign (ratdisrep (ratcoef nn* ivar))) '$pos)
-		(setq *updn t))
-	       (t (setq *updn nil)))
-	 (values term *updn))
+		(setq updn t))
+	       (t (setq updn nil)))
+	 (values term updn))
 	((and (mtimesp term)
 	      (setq nn* (polfactors term ivar))
 	      (or (null (car nn*))
 		  (eq ($sign (m+ n (m- (deg-var (car nn*) ivar))))
 		      '$pos))
               (not (alike1 (cadr nn*) term))
-	      (multiple-value-setq (term *updn)
+	      (multiple-value-setq (term updn)
                 (ptimes%e (cadr nn*) n ivar))
 	      term)
-         (values term *updn))
+         (values term updn))
 	(t (throw 'ptimes%e nil))))
 
 (defun csemidown (n d ivar)
