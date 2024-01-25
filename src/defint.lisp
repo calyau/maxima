@@ -1114,8 +1114,8 @@ in the interval of integration.")
 		      (cond (*updn (setq bptu (cons e bptu)))
 			    (t (setq bptd (cons e bptd))))))))))
 
-;; check term is of form poly(x)*exp(m*%i*x)
-;; n is degree of denominator
+;; Check term is of form poly(x)*exp(m*%i*x)
+;; n is degree of denominator.
 (defun ptimes%e (term n ivar &aux *updn)
   (cond ((and (mexptp term)
 	      (eq (cadr term) '$%e)
@@ -1125,6 +1125,9 @@ in the interval of integration.")
 	      (eq ($sign (m+ (deg-var (setq nn* ($imagpart (caddr term))) ivar)
 			     -2.))
 		  '$neg))
+         ;; Set *updn to T if the coefficient of IVAR in the
+         ;; polynomial is known to be positive.  Otherwise set to NIL.
+         ;; (What does *updn really mean?)
 	 (cond ((eq ($asksign (ratdisrep (ratcoef nn* ivar))) '$pos)
 		(setq *updn t))
 	       (t (setq *updn nil)))
