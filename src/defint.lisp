@@ -130,7 +130,6 @@
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
 		      factors
-                      #+nil rlm*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
@@ -2591,7 +2590,7 @@ in the interval of integration.")
 	 (caddr a))))
 
 (defun logcpi0 (n d ivar)
-  (prog (pl dp rlm*)
+  (prog (pl dp rlm)
      (setq pl (polelist-var ivar d #'upperhalf #'(lambda (j)
 					           (cond ((zerop1 j) nil)
 						         ((equal ($imagpart j) 0)
@@ -2604,7 +2603,7 @@ in the interval of integration.")
 		(caddr pl))
 	    (setq dp (sdiff d ivar))))
      (cond ((setq plm* (car pl))
-	    (setq rlm* (residue-var ivar
+	    (setq rlm (residue-var ivar
                                     n (cond (*leadcoef* factors)
 					(t d))
 				    plm*))))
@@ -2615,7 +2614,7 @@ in the interval of integration.")
      (return (m*t (m//t 1. 2.)
 		  (m*t '$%pi
 		       (princip
-			(list (cond ((setq nn* (append rl* rlm*))
+			(list (cond ((setq nn* (append rl* rlm))
 				     (m+l nn*)))
 			      (cond (rl*1 (m+l rl*1))))))))))
 
@@ -2673,7 +2672,7 @@ in the interval of integration.")
 		         (aref i-vals (- c k)))
 	           ans))))
       (setf (aref j-vals 0) 0)
-      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1 #+nil rlm*)
+      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1)
          (dotimes (c m (return (logcpi n d m ivar)))
            (setf (aref i-vals c) (logcpi n d c ivar))
            (setf (aref j-vals c) (logcpj n factors c ivar)))))))
