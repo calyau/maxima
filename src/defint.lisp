@@ -126,7 +126,7 @@
 
 (declare-top (special *def2* pcprntd *mtoinf*
 		      *nodiverg exp1
-		      *ul1* *ll1* *dflag bptu bptd plm* zn
+		      *ul1* *ll1* *dflag bptu bptd #+nil plm* zn
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
 		      factors
@@ -2611,12 +2611,14 @@ in the interval of integration.")
 	    (setq rl* (res1-var ivar n dp pl*))))
      (cond ((setq pl*1 (caddr pl))
 	    (setq rl*1 (res1-var ivar n dp pl*1))))
-     (return (m*t (m//t 1. 2.)
-		  (m*t '$%pi
-		       (princip
-			(list (cond ((setq nn* (append rl* rlm))
-				     (m+l nn*)))
-			      (cond (rl*1 (m+l rl*1))))))))))
+     (return (values
+              (m*t (m//t 1. 2.)
+		   (m*t '$%pi
+		        (princip
+			 (list (cond ((setq nn* (append rl* rlm))
+				      (m+l nn*)))
+			       (cond (rl*1 (m+l rl*1)))))))
+              plm*))))
 
 (defun lognx2 (nn dn pl rl)
   (do ((pl pl (cdr pl))
@@ -2672,9 +2674,11 @@ in the interval of integration.")
 		         (aref i-vals (- c k)))
 	           ans))))
       (setf (aref j-vals 0) 0)
-      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1)
+      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1 res)
          (dotimes (c m (return (logcpi n d m ivar)))
-           (setf (aref i-vals c) (logcpi n d c ivar))
+           (multiple-value-setq (res plm*)
+             (logcpi n d c ivar))
+           (setf (aref i-vals c) res)
            (setf (aref j-vals c) (logcpj n factors c ivar)))))))
 
 (defun fan (p m a n b)
