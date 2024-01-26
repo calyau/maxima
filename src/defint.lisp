@@ -129,7 +129,8 @@
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
-		      factors rlm*
+		      factors
+                      #+nil rlm*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
@@ -2590,7 +2591,7 @@ in the interval of integration.")
 	 (caddr a))))
 
 (defun logcpi0 (n d ivar)
-  (prog (pl dp)
+  (prog (pl dp rlm*)
      (setq pl (polelist-var ivar d #'upperhalf #'(lambda (j)
 					           (cond ((zerop1 j) nil)
 						         ((equal ($imagpart j) 0)
@@ -2672,7 +2673,7 @@ in the interval of integration.")
 		         (aref i-vals (- c k)))
 	           ans))))
       (setf (aref j-vals 0) 0)
-      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1 rlm*)
+      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1 #+nil rlm*)
          (dotimes (c m (return (logcpi n d m ivar)))
            (setf (aref i-vals c) (logcpi n d c ivar))
            (setf (aref j-vals c) (logcpj n factors c ivar)))))))
