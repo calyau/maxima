@@ -1127,9 +1127,7 @@ in the interval of integration.")
          ;; Set updn to T if the coefficient of IVAR in the
          ;; polynomial is known to be positive.  Otherwise set to NIL.
          ;; (What does updn really mean?)
-	 (cond ((eq ($asksign (ratdisrep (ratcoef nn* ivar))) '$pos)
-		(setq updn t))
-	       (t (setq updn nil)))
+         (setq updn (eq ($asksign (ratdisrep (ratcoef nn* ivar))) '$pos))
 	 (values term updn))
 	((and (mtimesp term)
 	      (setq nn* (polfactors term ivar))
