@@ -140,7 +140,7 @@
 	     (special $intanalysis $noprincipal)
 					;impvar
 	     (special *roots *failures
-		      $exptsubst context
+		      context
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
 		      ;;take realpart and imagpart.
