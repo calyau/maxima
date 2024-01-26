@@ -460,21 +460,26 @@
 
 ;; Like SNUMDEN, but dependency on VAR is explicit.  Use this instead
 ;; when possible.
-(defun snumden-var (e var1)
+(defun snumden-var (e var1 sn sd)
   (cond ((or (atom e)
 	     (mnump e))
-	 (setq sn* (cons e sn*)))
+	 (setq sn (cons e sn))
+         (values t sn sd))
 	((and (mexptp e)
 	      (integerp (caddr e)))
 	 (cond ((polyinx (cadr e) var1 nil)
 		(cond ((minusp (caddr e))
-		       (setq sd* (cons (cond ((equal (caddr e) -1) (cadr e))
+		       (setq sd (cons (cond ((equal (caddr e) -1) (cadr e))
 					     (t (m^ (cadr e)
 						    (- (caddr e)))))
-				       sd*)))
-		      (t (setq sn* (cons e sn*)))))))
+				      sd))
+                       (values t sn sd))
+		      (t
+                       (setq sn (cons e sn))
+                       (values t sn sd))))))
 	((polyinx e var1 nil)
-	 (setq sn* (cons e sn*)))))
+	 (setq sn (cons e sn))
+         (values t sn sd))))
 
 (setq sn* nil sd* nil)
 

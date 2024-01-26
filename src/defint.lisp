@@ -125,7 +125,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *def2* pcprntd *mtoinf*
-		      sn* sd*
+		      #+nil sn* #+nil sd*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
@@ -1304,10 +1304,10 @@ in the interval of integration.")
 	  (t nil))))
 
 (defun ztoinf (grand ivar)
-  (prog (n d sn* sd* varlist
+  (prog (n d sn sd varlist
 	 s nc dc
 	 ans r $savefactors *checkfactors* temp test-var)
-     (setq $savefactors t sn* (setq sd* (list 1.)))
+     (setq $savefactors t sn (setq sd (list 1.)))
      (cond ((eq ($sign (m+ *loopstop* -1))
 		'$pos)
 	    (return nil))
@@ -1323,12 +1323,17 @@ in the interval of integration.")
 	   ((and (ratp grand ivar)
 		 (mtimesp grand)
 		 (andmapcar #'(lambda (e)
-                                (snumden-var e ivar))
+                                (multiple-value-bind (result new-sn new-sd)
+                                    (snumden-var e ivar sn sd)
+                                  (when result
+                                    (setf sn new-sn
+                                          sd new-sd))
+                                  result))
                             (cdr grand)))
-	    (setq nn* (m*l sn*)
-		  sn* nil)
-	    (setq dn* (m*l sd*)
-		  sd* nil))
+	    (setq nn* (m*l sn)
+		  sn nil)
+	    (setq dn* (m*l sd)
+		  sd nil))
 	   (t (numden-var grand ivar)))
 ;;;
 ;;;New section.
@@ -1439,9 +1444,9 @@ in the interval of integration.")
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
 (defun mtoinf (grand ivar)
-  (prog (ans ans1 sd* sn* p* pe* n d s nc dc $savefactors *checkfactors* temp)
+  (prog (ans ans1 sd sn p* pe* n d s nc dc $savefactors *checkfactors* temp)
      (setq $savefactors t)
-     (setq sn* (setq sd* (list 1.)))
+     (setq sn (setq sd (list 1.)))
      (cond ((eq ($sign (m+ *loopstop* -1)) '$pos)
 	    (return nil))
 	   ((involve-var grand ivar '(%sin %cos))
@@ -1462,10 +1467,15 @@ in the interval of integration.")
 	   ((and (ratp grand ivar)
 		 (mtimesp grand)
 		 (andmapcar #'(lambda (e)
-                                (snumden-var e ivar))
+                                (multiple-value-bind (result new-sn new-sd)
+                                    (snumden-var e ivar sn sd)
+                                  (when result
+                                    (setf sn new-sn
+                                          sd new-sd))
+                                  result))
                             (cdr grand)))
-	    (setq nn* (m*l sn*) sn* nil)
-	    (setq dn* (m*l sd*) sd* nil))
+	    (setq nn* (m*l sn) sn nil)
+	    (setq dn* (m*l sd) sd nil))
 	   (t (numden-var grand ivar)))
      (setq n (rmconst1 nn* ivar))
      (setq d (rmconst1 dn* ivar))
