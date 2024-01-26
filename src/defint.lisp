@@ -125,7 +125,6 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *def2* pcprntd *mtoinf*
-		      #+nil sn* #+nil sd*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
