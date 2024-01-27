@@ -129,8 +129,6 @@
 		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
-		      #+nil
-                      factors
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
