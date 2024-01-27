@@ -128,11 +128,7 @@
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp
-                      #+nil
-                      pe*
 		      nd*
-                      #+nil
-                      p*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
@@ -1446,7 +1442,7 @@ in the interval of integration.")
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
 (defun mtoinf (grand ivar)
-  (prog (ans ans1 sd sn p* pe* n d s nc dc $savefactors *checkfactors* temp)
+  (prog (ans ans1 sd sn pp pe n d s nc dc $savefactors *checkfactors* temp)
      (setq $savefactors t)
      (setq sn (setq sd (list 1.)))
      (cond ((eq ($sign (m+ *loopstop* -1)) '$pos)
@@ -1489,36 +1485,36 @@ in the interval of integration.")
 	    (setq s (deg-var d ivar))))
      (cond ((and (not (%einvolve-var grand ivar))
 		 (notinvolve-var exp ivar '(%sinh %cosh %tanh))
-		 (setq p* (findp n ivar))
-		 (eq (ask-integer p* '$integer) '$yes)
-		 (setq pe* (bxm d s ivar)))
-	    (cond ((and (eq (ask-integer (caddr pe*) '$even) '$yes)
-			(eq (ask-integer p* '$even) '$yes))
-		   (cond ((setq ans (apply 'fan (cons (m+ 1. p*) pe*)))
+		 (setq pp (findp n ivar))
+		 (eq (ask-integer pp '$integer) '$yes)
+		 (setq pe (bxm d s ivar)))
+	    (cond ((and (eq (ask-integer (caddr pe) '$even) '$yes)
+			(eq (ask-integer pp '$even) '$yes))
+		   (cond ((setq ans (apply 'fan (cons (m+ 1. pp) pe)))
 			  (setq ans (m*t 2. ans))
 			  (return (m* (m// nc dc) ans)))))
-		  ((equal (car pe*) 1.)
-		   (cond ((and (setq ans (apply 'fan (cons (m+ 1. p*) pe*)))
-			       (setq nn* (fan (m+ 1. p*)
-					      (car pe*)
-					      (m* -1 (cadr pe*))
-					      (caddr pe*)
-					      (cadddr pe*))))
-			  (setq ans (m+ ans (m*t (m^ -1 p*) nn*)))
+		  ((equal (car pe) 1.)
+		   (cond ((and (setq ans (apply 'fan (cons (m+ 1. pp) pe)))
+			       (setq nn* (fan (m+ 1. pp)
+					      (car pe)
+					      (m* -1 (cadr pe))
+					      (caddr pe)
+					      (cadddr pe))))
+			  (setq ans (m+ ans (m*t (m^ -1 pp) nn*)))
 			  (return (m* (m// nc dc) ans))))))))
 
      (labels
-         ((p*pin%ex (nd* ivar)
-            ;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set p* to
-            ;; be p(x) and set pe* to f(exp(x)).
+         ((pppin%ex (nd* ivar)
+            ;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set pp to
+            ;; be p(x) and set pe to f(exp(x)).
             (setq nd* ($factor nd*))
             (cond ((polyinx nd* ivar nil)
-	           (setq p* (cons nd* p*)) t)
+	           (setq pp (cons nd* pp)) t)
 	          ((catch 'pin%ex (pin%ex nd* ivar))
-	           (setq pe* (cons nd* pe*)) t)
+	           (setq pe (cons nd* pe)) t)
 	          ((mtimesp nd*)
 	           (andmapcar #'(lambda (ex)
-                                  (p*pin%ex ex ivar))
+                                  (pppin%ex ex ivar))
                               (cdr nd*))))))
        (cond ((and (ratp grand ivar)
 	           (setq ans1 (zmtorat n
@@ -1531,22 +1527,22 @@ in the interval of integration.")
 	      (return (m* (m// nc dc) ans)))
 	     ((and (or (%einvolve-var grand ivar)
 		       (involve-var grand ivar '(%sinh %cosh %tanh)))
-		   (p*pin%ex n ivar)  ;setq's P* and PE*...Barf again.
+		   (pppin%ex n ivar)  ;setq's P* and PE*...Barf again.
 		   (setq ans (catch 'pin%ex (pin%ex d ivar))))
 	      ;; We have an integral of the form p(x)*F(exp(x)), where
 	      ;; p(x) is a polynomial.
-	      (cond ((null p*)
+	      (cond ((null pp)
 		     ;; No polynomial
 		     (return (dintexp grand ivar)))
 		    ((not (and (zerop1 (get-limit grand ivar '$inf))
 			       (zerop1 (get-limit grand ivar '$minf))))
 		     ;; These limits must exist for the integral to converge.
 		     (diverg))
-		    ((setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d ivar))
+		    ((setq ans (rectzto%pi2 (m*l pp) (m*l pe) d ivar))
 		     ;; This only handles the case when the F(z) is a
 		     ;; rational function.
 		     (return (m* (m// nc dc) ans)))
-		    ((setq ans (log-transform (m*l p*) (m*l pe*) d ivar))
+		    ((setq ans (log-transform (m*l pp) (m*l pe) d ivar))
 		     ;; If we get here, F(z) is not a rational function.
 		     ;; We transform it using the substitution x=log(y)
 		     ;; which gives us an integral of the form
@@ -2920,20 +2916,6 @@ in the interval of integration.")
                       (cdr e))))
 	(t
 	 (throw 'pin%ex nil))))
-
-;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set p* to
-;; be p(x) and set pe* to f(exp(x)).
-#+nil
-(defun p*pin%ex (nd* ivar)
-  (setq nd* ($factor nd*))
-  (cond ((polyinx nd* ivar nil)
-	 (setq p* (cons nd* p*)) t)
-	((catch 'pin%ex (pin%ex nd* ivar))
-	 (setq pe* (cons nd* pe*)) t)
-	((mtimesp nd*)
-	 (andmapcar #'(lambda (ex)
-                        (p*pin%ex ex ivar))
-                    (cdr nd*)))))
 
 (defun findsub (p ivar)
   (cond ((findp p ivar) nil)
