@@ -128,7 +128,6 @@
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp pe*
-                      #+nil pl* #+nil rl* #+nil pl*1 #+nil rl*1
 		      nd* p*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
@@ -2564,9 +2563,6 @@ in the interval of integration.")
 
 
 ;; this is the second part of the definite integral package
-
-#+nil
-(declare-top (special pl* rl* pl*1 rl*1))
 
 (defun p*lognxp (a s ivar)
   (let (b)
