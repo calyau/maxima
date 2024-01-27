@@ -127,7 +127,8 @@
 (declare-top (special *def2* pcprntd *mtoinf*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd zn
-		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
+		      *ul* *ll* exp pe*
+                      #+nil pl* #+nil rl* #+nil pl*1 #+nil rl*1
 		      nd* p*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
@@ -2564,6 +2565,7 @@ in the interval of integration.")
 
 ;; this is the second part of the definite integral package
 
+#+nil
 (declare-top (special pl* rl* pl*1 rl*1))
 
 (defun p*lognxp (a s ivar)
@@ -2589,7 +2591,7 @@ in the interval of integration.")
 	 (caddr a))))
 
 (defun logcpi0 (n d ivar)
-  (prog (pl dp rlm factors)
+  (prog (pl dp rlm factors pl rl pl1 rl1)
      (setq pl (polelist-var ivar d #'upperhalf #'(lambda (j)
 					           (cond ((zerop1 j) nil)
 						         ((equal ($imagpart j) 0)
@@ -2607,33 +2609,38 @@ in the interval of integration.")
                                    (cond (*leadcoef* factors)
 					 (t d))
 				   plm))))
-     (cond ((setq pl* (cadr pl))
-	    (setq rl* (res1-var ivar n dp pl*))))
-     (cond ((setq pl*1 (caddr pl))
-	    (setq rl*1 (res1-var ivar n dp pl*1))))
+     (cond ((setq pl (cadr pl))
+	    (setq rl (res1-var ivar n dp pl))))
+     (cond ((setq pl1 (caddr pl))
+	    (setq rl1 (res1-var ivar n dp pl1))))
      (return (values
               (m*t (m//t 1. 2.)
 		   (m*t '$%pi
 		        (princip
-			 (list (cond ((setq nn* (append rl* rlm))
+			 (list (cond ((setq nn* (append rl rlm))
 				      (m+l nn*)))
-			       (cond (rl*1 (m+l rl*1)))))))
+			       (cond (rl1 (m+l rl1)))))))
               plm
-              factors))))
+              factors
+              pl
+              rl
+              pl1
+              rl1))))
 
 (defun lognx2 (nn dn pl rl)
   (do ((pl pl (cdr pl))
        (rl rl (cdr rl))
        (ans ()))
       ((or (null pl)
-	   (null rl))  ans)
+	   (null rl))
+       ans)
     (setq ans (cons (m* dn (car rl)
                         ;; AFAICT, this call to PLOG doesn't need
                         ;; to bind VAR.
                         (m^ `((%plog) ,(car pl)) nn))
 		    ans))))
 
-(defun logcpj (n d i ivar plm)
+(defun logcpj (n d i ivar plm pl rl pl1 rl1)
   (setq n (append
 	   (if plm
 	       (list (mul* (m*t '$%i %pi2)
@@ -2648,8 +2655,8 @@ in the interval of integration.")
                                              n)
 				         d
 				         plm)))))
-	   (lognx2 i (m*t '$%i %pi2) pl* rl*)
-	   (lognx2 i %p%i pl*1 rl*1)))
+	   (lognx2 i (m*t '$%i %pi2) pl rl)
+	   (lognx2 i %p%i pl1 rl1)))
   (if (null n)
       0
       (simplify (m+l n))))
@@ -2677,10 +2684,10 @@ in the interval of integration.")
       (setf (aref j-vals 0) 0)
       (prog (*leadcoef* pl* rl* pl*1 rl*1 res)
          (dotimes (c m (return (logcpi n d m ivar)))
-           (multiple-value-bind (res plm factors)
+           (multiple-value-bind (res plm factors pl rl pl1 rl1)
                (logcpi n d c ivar)
              (setf (aref i-vals c) res)
-             (setf (aref j-vals c) (logcpj n factors c ivar plm))))))))
+             (setf (aref j-vals c) (logcpj n factors c ivar plm pl rl pl1 rl1))))))))
 
 (defun fan (p m a n b)
   (let ((povern (m// p n))
