@@ -126,7 +126,7 @@
 
 (declare-top (special *def2* pcprntd *mtoinf*
 		      *nodiverg exp1
-		      *ul1* *ll1* *dflag bptu bptd #+nil plm* zn
+		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
 		      factors
@@ -2565,7 +2565,7 @@ in the interval of integration.")
 
 ;; this is the second part of the definite integral package
 
-(declare-top (special plm* pl* rl* pl*1 rl*1))
+(declare-top (special pl* rl* pl*1 rl*1))
 
 (defun p*lognxp (a s ivar)
   (let (b)
@@ -2602,11 +2602,11 @@ in the interval of integration.")
      (cond ((or (cadr pl)
 		(caddr pl))
 	    (setq dp (sdiff d ivar))))
-     (cond ((setq plm* (car pl))
+     (cond ((setq plm (car pl))
 	    (setq rlm (residue-var ivar
                                     n (cond (*leadcoef* factors)
 					(t d))
-				    plm*))))
+				    plm))))
      (cond ((setq pl* (cadr pl))
 	    (setq rl* (res1-var ivar n dp pl*))))
      (cond ((setq pl*1 (caddr pl))
@@ -2618,7 +2618,7 @@ in the interval of integration.")
 			 (list (cond ((setq nn* (append rl* rlm))
 				      (m+l nn*)))
 			       (cond (rl*1 (m+l rl*1)))))))
-              plm*))))
+              plm))))
 
 (defun lognx2 (nn dn pl rl)
   (do ((pl pl (cdr pl))
@@ -2632,9 +2632,9 @@ in the interval of integration.")
                         (m^ `((%plog) ,(car pl)) nn))
 		    ans))))
 
-(defun logcpj (n d i ivar)
+(defun logcpj (n d i ivar plm)
   (setq n (append
-	   (if plm*
+	   (if plm
 	       (list (mul* (m*t '$%i %pi2)
 			   (m+l
                             ;; AFAICT, this call to PLOG doesn't need
@@ -2646,7 +2646,7 @@ in the interval of integration.")
                                          (m* (m^ `((%plog) ,ivar) i)
                                              n)
 				         d
-				         plm*)))))
+				         plm)))))
 	   (lognx2 i (m*t '$%i %pi2) pl* rl*)
 	   (lognx2 i %p%i pl*1 rl*1)))
   (if (null n)
@@ -2674,12 +2674,12 @@ in the interval of integration.")
 		         (aref i-vals (- c k)))
 	           ans))))
       (setf (aref j-vals 0) 0)
-      (prog (*leadcoef* factors plm* pl* rl* pl*1 rl*1 res)
+      (prog (*leadcoef* factors plm pl* rl* pl*1 rl*1 res)
          (dotimes (c m (return (logcpi n d m ivar)))
-           (multiple-value-setq (res plm*)
+           (multiple-value-setq (res plm)
              (logcpi n d c ivar))
            (setf (aref i-vals c) res)
-           (setf (aref j-vals c) (logcpj n factors c ivar)))))))
+           (setf (aref j-vals c) (logcpj n factors c ivar plm)))))))
 
 (defun fan (p m a n b)
   (let ((povern (m// p n))
