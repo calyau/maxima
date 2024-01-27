@@ -129,7 +129,8 @@
 		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp pe* pl* rl* pl*1 rl*1
 		      nd* p*
-		      factors
+		      #+nil
+                      factors
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
@@ -2590,7 +2591,7 @@ in the interval of integration.")
 	 (caddr a))))
 
 (defun logcpi0 (n d ivar)
-  (prog (pl dp rlm)
+  (prog (pl dp rlm factors)
      (setq pl (polelist-var ivar d #'upperhalf #'(lambda (j)
 					           (cond ((zerop1 j) nil)
 						         ((equal ($imagpart j) 0)
@@ -2604,9 +2605,10 @@ in the interval of integration.")
 	    (setq dp (sdiff d ivar))))
      (cond ((setq plm (car pl))
 	    (setq rlm (residue-var ivar
-                                    n (cond (*leadcoef* factors)
-					(t d))
-				    plm))))
+                                   n
+                                   (cond (*leadcoef* factors)
+					 (t d))
+				   plm))))
      (cond ((setq pl* (cadr pl))
 	    (setq rl* (res1-var ivar n dp pl*))))
      (cond ((setq pl*1 (caddr pl))
@@ -2618,7 +2620,8 @@ in the interval of integration.")
 			 (list (cond ((setq nn* (append rl* rlm))
 				      (m+l nn*)))
 			       (cond (rl*1 (m+l rl*1)))))))
-              plm))))
+              plm
+              factors))))
 
 (defun lognx2 (nn dn pl rl)
   (do ((pl pl (cdr pl))
@@ -2674,12 +2677,12 @@ in the interval of integration.")
 		         (aref i-vals (- c k)))
 	           ans))))
       (setf (aref j-vals 0) 0)
-      (prog (*leadcoef* factors plm pl* rl* pl*1 rl*1 res)
+      (prog (*leadcoef* pl* rl* pl*1 rl*1 res)
          (dotimes (c m (return (logcpi n d m ivar)))
-           (multiple-value-setq (res plm)
-             (logcpi n d c ivar))
-           (setf (aref i-vals c) res)
-           (setf (aref j-vals c) (logcpj n factors c ivar plm)))))))
+           (multiple-value-bind (res plm factors)
+               (logcpi n d c ivar)
+             (setf (aref i-vals c) res)
+             (setf (aref j-vals c) (logcpj n factors c ivar plm))))))))
 
 (defun fan (p m a n b)
   (let ((povern (m// p n))
