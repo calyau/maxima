@@ -1290,32 +1290,6 @@
 ;;; Implementation of Method 6: Elementary function of trigonometric functions
 
 (defun monstertrig (expr var2 trigarg)
-  (when (and (not (atom trigarg))
-             ;; Do not exute the following code when called from rischint.
-             (not *in-risch-p*))
-    (let ((arg (simple-trig-arg trigarg var2)))
-      (cond (arg
-	     ;; We have trig(c*x+b).  Use the substitution y=c*x+b to
-	     ;; try to compute the integral.  Why?  Because x*sin(n*x)
-	     ;; takes longer and longer as n gets larger and larger.
-	     ;; This is caused by the Risch integrator.  This is a
-	     ;; work-around for this issue.
-	     (let* ((c (cdras 'c arg))
-		    (b (cdras 'b arg))
-		    (new-var (gensym "NEW-VAR-"))
-		    (new-exp (maxima-substitute (div (sub new-var b) c)
-						var2 expr)))
-               (putprop new-var t 'internal)
-	       (if (every-trigarg-alike new-exp new-var)
-		   ;; avoid endless recursion when more than one
-		   ;; trigarg exists or c is a float
-		   (return-from monstertrig 
-		     (maxima-substitute 
-		      trigarg 
-		      new-var 
-		      (div (integrator new-exp new-var) c))))))
-	    (t
-	     (return-from monstertrig (rischint expr var2))))))
   (prog (*notsame* w a b y d)
      (declare (special *notsame*))
      (cond
