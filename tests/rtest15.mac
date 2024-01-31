@@ -1644,3 +1644,12 @@ log(xp) - %i*%pi/2;
 
 forget(xp > 0);
 [xp > 0];
+
+/*
+ * SF bug 4257: incorrect change of variable involving diff
+ *
+ * Just check that this integral returns a correct noun form.
+ */
+integrate(cos(2*x)*diff(f(x),x),x);
+'integrate(cos(2*x)*'diff(f(x),x,1),x);
+
