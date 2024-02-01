@@ -21,7 +21,7 @@ cd ~/maxima-test || exit
 ./bootstrap >logfile-bootstrap.txt 2>&1
 
 echo "./configure"
-./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-23.9.9/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-2.4.0/bin/sbcl --enable-gcl --with-gcl=/opt/gcl-2.6.14/bin/gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-2023-08-x86-linux/bin/lisp --with-cmucl-runtime=/opt/cmucl-2023-08-x86-linux/bin/lisp --enable-acl --with-acl=/opt/acl11.0express.64/alisp --enable-abcl --with-abcl-jar=/opt/abcl-bin-1.9.2/abcl.jar --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
+./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-23.9.9/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-2.4.1/bin/sbcl --enable-gcl --with-gcl=/opt/gcl-2.6.14/bin/gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-2023-08-x86-linux/bin/lisp --with-cmucl-runtime=/opt/cmucl-2023-08-x86-linux/bin/lisp --enable-acl --with-acl=/opt/acl11.0express.64/alisp --enable-abcl --with-abcl-jar=/opt/abcl-bin-1.9.2/abcl.jar --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
 
 echo "make"
 make VERBOSE=1 >logfile-make.txt 2>&1
