@@ -1,5 +1,7 @@
 @menu
 * Functions and Variables for Equations::   
+* Examples for algsys::
+* References for equations::
 @end menu
 
 @c -----------------------------------------------------------------------------
