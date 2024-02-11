@@ -78,6 +78,7 @@ option(USE_VTK "Use VTK." YES)
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 option(WITH_ABCL "Include ABCL in the installer." NO)
+option(WITH_CCL64 "Include CCL64 in the installer." NO)
 
 # SBCL and CLISP have both advantages and disadvantages:
 #  - SBCL is fast, but sometimes runs out of memory in places it really shouldn't
@@ -235,10 +236,21 @@ else()
     set(ABCL_DEPENDS "")
     set(ABCL_JAR "")
 endif()
+if(WITH_CCL64)
+    add_subdirectory("ccl/")
+    set(CCL64_ENABLE "--enable-ccl64")
+    set(CCL64_DEPENDS "ccl")
+    set(CCL64_EXECUTABLE "--with-ccl64=${CMAKE_BINARY_DIR}/wine-ccl.sh")
+else()
+    set(CCL64_ENABLE "")
+    set(CCL64_DEPENDS "")
+    set(CCL64_EXECUTABLE "")
+endif()
 
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-lisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
+configure_file("${CMAKE_SOURCE_DIR}/wine-ccl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-ccl.sh")
 
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
@@ -246,7 +258,7 @@ externalproject_add(maxima
   DEPENDS clisp sbcl tcl tk texinfo ${ABCL_DEPENDS}
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
-            COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
+            COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" ${CCL64_ENABLE} "${CCL64_EXECUTABLE}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk

@@ -87,6 +87,8 @@ QUIET="(setf *compile-print* nil) (setq *compile-verbose* nil)"
 DEFSYSTEMCOMPILE = ($(DS_OOS) :compile :verbose nil)
 DEFSYSTEMLOAD = ($(DS_OOS) :load :verbose nil )
 else
+# Set QUIET to an empty list, so that --eval '$(QUIET)' works.
+QUIET="()"
 DEFSYSTEMCOMPILE = ($(DS_OOS) :compile :verbose t)
 DEFSYSTEMLOAD = ($(DS_OOS) :load :verbose t)
 endif
@@ -429,21 +431,20 @@ endif
 EXECUTECCL64 = $(CCL64_NAME)
 BUILT_FILES += $(CCL64_MAXIMA)
 
-COMPILE_CCL64 = echo '$(QUIET) (require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64)
-WRITE_CCL64 = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTECCL64)
+COMPILE_CCL64 = $(EXECUTECCL64) --eval '$(QUIET)' --eval '(require :defsystem)' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '$(DEFSYSTEMCOMPILE)' --eval '(ccl::quit)'
+WRITE_CCL64 = $(EXECUTECCL64) --eval '(require :defsystem)' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '$(DEFSYSTEMLOAD)' --eval '(ccl:save-application "$@")' --eval '(ccl::quit)'
 BUILD_CCL64 = $(COMPILE_CCL64) && $(WRITE_CCL64)
 
 ccl64: $(CCL64_MAXIMA)
 
 $(CCL64_MAXIMA):
 	$(BUILD_CCL64)
-	echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64) \
-	   && \
-	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTECCL64)
+	$(EXECUTECCL64) --eval '(require :defsystem)' --eval '$(DEFSYSTEMCOMPILE)' --eval '(ccl::quit)' && \
+	$(EXECUTECCL64) --eval '(require :defsystem)' --eval '$(DEFSYSTEMLOAD)' --eval '(ccl:save-application "$@" $(omcl_flag))' --eval '(ccl::quit)'
 
 ccl64-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) | $(EXECUTECCL64)
-	cat ccl64-depends.mk.tmp | sed -e "s#\\\\#/#g" > ccl64-depends.mk
+	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) >ccl64-depends.mk.tmp
+	$(EXECUTECCL64) --load ccl64-depends.mk.tmp | sed -e "s#\\\\#/#g" > ccl64-depends.mk
 
 -include ccl64-depends.mk
 
