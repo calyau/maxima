@@ -78,6 +78,9 @@ Preload \fIlisp_file\fR.
 \fB\-q\fR, \fB\-\-quiet\fR
 Suppress Maxima start-up message.
 .TP
+\fB\-Q\fR, \fB\-\-quit\-on\-error\fR
+Quit, and return an exit code 1, when Maxima encounters an error.
+.TP
 \fB\-r\fR \fIstring\fR, \fB\-\-run-string=\fR\fIstring\fR
 Process \fIstring\fR in interactive mode.
 .TP

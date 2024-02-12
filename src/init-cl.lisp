@@ -35,6 +35,7 @@
 (defvar *verify-html-index* t
   "If non-NIL, verify the contents of the html index versus the text
   index.  Set via the command-line option --no-verify-html-index.")
+(defvar *quit-on-error*)
 
 (defun shadow-string-assignment (var value)
   (cond
@@ -548,6 +549,13 @@
 				     (declare (special *maxima-quiet*))
 				     (setq *maxima-quiet* t))
 			 :help-string "Suppress Maxima start-up message.")
+	 (make-cl-option :names '("-Q" "--quit-on-error")
+			 :argument "<string>"
+			 :action #'(lambda (string)
+				     (declare (special *quit-on-error*))
+				     (setq *quit-on-error* t))
+			 :help-string
+			 "Quit, and return an exit code 1, when Maxima encounters an error.")
 	 (make-cl-option :names '("-r" "--run-string")
 			 :argument "<string>"
 			 :action #'(lambda (string)

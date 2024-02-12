@@ -83,6 +83,7 @@
      ,@body))
 
 (defun merror (sstring &rest l)
+  (declare (special *quit-on-error*))
   (setq $error `((mlist simp) ,sstring ,@ l))
   (cond (*merror-signals-$error-p*
 	 (error 'maxima-$error))

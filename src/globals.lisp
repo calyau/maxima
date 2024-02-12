@@ -1659,6 +1659,8 @@
   "The version of the maxima frontend.")
 (defvar $maxima_frontend_bugreportinfo nil
   "The bug report info the maxima frontend comes with.")
+(defvar *quit-on-error* nil
+  "If non-NIL, Maxima will quit on the first error.")
 
 ;; A list of temporary files that can be deleted on leaving maxima
 (defvar *temp-files-list* (make-hash-table :test 'equal))

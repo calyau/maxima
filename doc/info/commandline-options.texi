@@ -31,6 +31,9 @@ The following command line options are available for Maxima:
 @item     -g, --enable-lisp-debugger
         Enable underlying lisp debugger.
 
+@need 150
+@item     -Q, --quit-on-error
+        Quit, and return an exit code 1, when Maxima encounters an error.
 
 @need 150
 @item     -h, --help
