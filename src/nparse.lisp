@@ -73,7 +73,8 @@
   (let ((fp (and (not (eq *parse-stream* *standard-input*))
                  (file-position *parse-stream*)))
 	(file (and (not (eq *parse-stream* *standard-input*))
-                   (cadr *current-line-info*))))
+                   (cadr *current-line-info*)))
+	(*standard-output* *error-output*))
     (flet ((line-number ()
 	     ;; Fix me: Neither batch nor load track the line number
 	     ;; correctly. batch, via dbm-read, does not track the

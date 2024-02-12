@@ -106,16 +106,18 @@
 	   ($errormsg))
 	 (error 'maxima-$error))
 	(t
+	 (let ((*standard-output* *error-output*))
 	 (when $errormsg
 	   ($errormsg))
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
 	 (format t (intl:gettext "~& -- an error. To debug this try: debugmode(true);~%"))
 	 (finish-output)
-	 (throw 'macsyma-quit 'maxima-error))))
+         (if *quit-on-error* ($quit 1.))
+	 (throw 'macsyma-quit 'maxima-error)))))
 
 (defun mwarning (&rest l)
-  (format t "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
+  (format *error-output* "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
   "Symbols to bind the too-large `maxima-error' expressions to"
