@@ -531,8 +531,9 @@
 	 (make-cl-option :names '("-p" "--preload" "--preload-lisp" "--init-mac" "--init-lisp")
 			 :argument "<file>"
 			 :action #'(lambda (file)
-				     ;; $loadprint T so we can see the file being loaded.
-				     (let (($loadprint t))
+				     ;; $loadprint T so we can see the file being loaded;
+				     ;; unless *maxima-quiet* is T.
+				     (let (($loadprint (not *maxima-quiet*)))
 				       ($load file)))
 			 :help-string
                          "Preload <file>, which may be any file time accepted by
@@ -581,9 +582,14 @@
 			 "Display the default installed version.")
 	 (make-cl-option :names '("--very-quiet")
 			 :action #'(lambda ()
-				     (declare (special *maxima-quiet*))
-				     (setq *maxima-quiet* t *display-labels-p* nil))
-			 :help-string "Suppress expression labels and Maxima start-up message.")
+				     (declare (special *maxima-quiet* *display-labels-p* *verify-html-index*))
+				     (setq *maxima-quiet* t *display-labels-p* nil *verify-html-index* nil))
+			 :help-string "Suppress expression labels, Maxima start-up message and verification of html index.")
+	 (make-cl-option :names '("--very-very-quiet")
+			 :action #'(lambda ()
+				     (declare (special *maxima-quiet* *display-labels-p* *verify-html-index* $ttyoff))
+				     (setq *maxima-quiet* t *display-labels-p* nil *verify-html-index* nil $ttyoff t))
+			 :help-string "In addition to --very-quiet, suppress most printed output by setting TTYOFF to T.")
 	 (make-cl-option :names '("-X" "--lisp-options")
 			 :argument "<Lisp options>"
 			 :action #'(lambda (&rest opts)

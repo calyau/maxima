@@ -99,13 +99,18 @@ Print extra information from the Maxima wrapper script.
 Print the (default) installed version.
 .TP
 \fB\-\-very\-quiet\fR
-Suppress expression labels and the Maxima start-up message.
+Suppress expression labels, the Maxima start-up message, verification of the HTML index and loading related messages.
+\fB\-\-very\-very\-quiet\fR
+In addition to \-\-very\-quiet, suppress most printed output.
 .TP
 \fB\-X\fR \fILisp options\fR, \fB\-\-lisp-options=\fR\fILisp options\fR
 Options to be given to the underlying Lisp.
 .TP
 \fB\-\-no\-init\fR, \fB\-\-norc\fR
 Do not load the init file(s) on startup.
+.TP
+\fB\-\-no\-verify\-html\-index\fR
+Do not verify on startup that the set of html topics is consistent with text topics.
 
 .SH INTRODUCTORY INSTRUCTIONS
 Upon initialization,

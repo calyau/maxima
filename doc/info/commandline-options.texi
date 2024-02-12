@@ -76,6 +76,14 @@ The following command line options are available for Maxima:
 @item     -q, --quiet
         Suppress Maxima start-up message.
 
+@need 150
+@item     --very-quiet
+        Suppress expression labels, the Maxima start-up message, verification of the HTML index and @code{load}-ing related messages.
+
+@need 150
+@item     --very-very-quiet
+        In addition to @code{--very-quiet}, set @mref{ttyoff} to @code{true} to suppress most printed output.
+
 
 @need 150
 @item     -r <string>, --run-string=<string>
