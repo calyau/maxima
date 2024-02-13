@@ -1,0 +1,10 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+WINEPREFIX=@CMAKE_BINARY_DIR@/wine
+export WINEPREFIX
+# do not install (and pop up a window) for Mono and Gecko - not needed.
+WINEDLLOVERRIDES="mscoree,mshtml="
+export WINEDLLOVERRIDES
+# drive Z: is mapped to the root of the unix filesystem when using wine.
+unset DISPLAY
+@WINE_EXE@ @CMAKE_BINARY_DIR@/ccl/ccl-prefix/src/ccl/wx86cl64.exe --image-name @CMAKE_BINARY_DIR@/ccl/ccl-prefix/src/ccl/wx86cl64.image "$@"
