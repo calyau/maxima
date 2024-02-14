@@ -550,8 +550,7 @@
 				     (setq *maxima-quiet* t))
 			 :help-string "Suppress Maxima start-up message.")
 	 (make-cl-option :names '("-Q" "--quit-on-error")
-			 :argument "<string>"
-			 :action #'(lambda (string)
+			 :action #'(lambda ()
 				     (declare (special *quit-on-error*))
 				     (setq *quit-on-error* t))
 			 :help-string
