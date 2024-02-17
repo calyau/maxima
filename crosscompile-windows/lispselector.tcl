@@ -4,6 +4,8 @@
 
 #  @ABCL_ENABLED@ will be replaced by 0 or 1 in the final program.
 set abcl @ABCL_ENABLED@
+#  @CCL_ENABLED@ will be replaced by 0 or 1 in the final program.
+set ccl @CCL_ENABLED@
 
 proc selectclisp {} {
     set maximarc [file join $::env(USERPROFILE) maxima maximarc]
@@ -32,6 +34,15 @@ proc selectabcl {} {
     tk_messageBox -type ok -message "ABCL was selected as default Lisp interpreter for Maxima." -icon info
 }
 
+proc selectccl {} {
+    set maximarc [file join $::env(USERPROFILE) maxima maximarc]
+    file mkdir [file dirname $maximarc]
+    set f [open $maximarc "w"]
+    puts $f "MAXIMA_LISP=ccl64"
+    close $f
+    tk_messageBox -type ok -message "CCL was selected as default Lisp interpreter for Maxima." -icon info
+}
+
 set binpath [file dirname [file normalize [info script]]]
 
 set documentation "One can use different LISP (the programming language, in which Maxima is (mostly) written) compilers for running Maxima.
@@ -42,6 +53,8 @@ Currently this Windows installer supports:
 "
 
 if {$abcl == 1} { append documentation "- ABCL (https://www.abcl.org)" }
+
+if {$ccl == 1} { append documentation "- CCL (https://ccl.clozure.com)" }
 
 append documentation "
 Which Lisp you select, may depend on your needs:
@@ -55,8 +68,12 @@ provides advanced editing features (a history of previous commands is accessible
 
 "
 
-if {$abcl == 1} { append documentation "Armed Bear Common Lisp (ABCL) is a full implementation of the Common Lisp language  running in the JVM. 
+if {$abcl == 1} { append documentation "Armed Bear Common Lisp (ABCL) is a full implementation of the Common Lisp language running in the JVM. 
 Java must be installed, if you use ABCL.
+
+" }
+
+if {$ccl == 1} { append documentation "Clozure Common Lisp (CCL) is a free Common Lisp implementation with a long history. CCL support is new in the crosscompiled Windows installer.
 
 " }
 
@@ -70,10 +87,12 @@ frame .toolbar
 button .toolbar.clisp -text "Select CLISP" -command "selectclisp"
 button .toolbar.sbcl -text "Select SBCL" -command "selectsbcl"
 if {$abcl == 1} { button .toolbar.abcl -text "Select ABCL" -command "selectabcl" }
+if {$ccl == 1} { button .toolbar.ccl -text "Select CCL" -command "selectccl" }
 button .toolbar.exit -text "Exit" -command "exit"
 pack .toolbar.clisp -side left
 pack .toolbar.sbcl -side left
 if {$abcl == 1} { pack .toolbar.abcl -side left }
+if {$ccl == 1} { pack .toolbar.ccl -side left }
 pack .toolbar.exit -side right
 
 # Documentation area

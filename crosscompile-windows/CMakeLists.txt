@@ -241,21 +241,23 @@ if(WITH_CCL64)
     set(CCL64_ENABLE "--enable-ccl64")
     set(CCL64_DEPENDS "ccl")
     set(CCL64_EXECUTABLE "--with-ccl64=${CMAKE_BINARY_DIR}/wine-ccl.sh")
+    configure_file("${CMAKE_SOURCE_DIR}/wine-ccl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-ccl.sh")
+    set(CCL_ENABLED 1)
 else()
     set(CCL64_ENABLE "")
     set(CCL64_DEPENDS "")
     set(CCL64_EXECUTABLE "")
+    set(CCL_ENABLED 0)
 endif()
 
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-lisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
-configure_file("${CMAKE_SOURCE_DIR}/wine-ccl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-ccl.sh")
 
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
   DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima"
-  DEPENDS clisp sbcl tcl tk texinfo ${ABCL_DEPENDS}
+  DEPENDS clisp sbcl tcl tk texinfo ${ABCL_DEPENDS} ${CCL64_DEPENDS}
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
             COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" ${CCL64_ENABLE} "${CCL64_EXECUTABLE}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
@@ -267,6 +269,7 @@ externalproject_add(maxima
   INSTALL_COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
           COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) extradocinstall DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
+
 
 option(STRIP_HELPERPROGRAMS "Strip the included helper programs (winkill, winkill_lib, maxima_longnames)." YES)
 
@@ -368,4 +371,8 @@ cpack_add_component(TclTk
 if(WITH_ABCL)
     cpack_add_component(ABCL
                         DESCRIPTION "The ABCL Lisp compiler.\nA Java installation is required.\nOptional.")
+endif()
+if(WITH_CCL64)
+    cpack_add_component(CCL64
+                        DESCRIPTION "The CCL (64Bit) Lisp compiler.\nOptional.")
 endif()

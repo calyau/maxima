@@ -7,6 +7,8 @@ dpkg --add-architecture i386
 
 apt-get install g++-mingw-w64-x86-64 cmake nsis wine wine64 automake texlive texlive-plain-generic texlive-xetex rsync p7zip-full g++ gettext python3 tcl pandoc po4a wine32 libgcc-s1:i386 libstdc++6:i386 bsdutils
 
+If you want to include CCL64 support, a recent wine installation (from winehq.org)
+is necessary.
 
 The Mingw compiler comes in two flavors for threading (win32 and posix threads).
 wxMaxima requires posix threads, so you must reconfigure mingw and select the posix
@@ -49,10 +51,14 @@ than without VTK).
 
 One can also include ABCL - a Java based Lisp compiler - with the option
 -DWITH_ABCL=YES
-Of course you will need a Java installation.
+Of course you will need a Java installation, that is not included
+in the installer.
+
+One can also include CCL64 (Clozure Common Lisp) with the option:
+-DWITH_CCL64=YES
 
 If you want to change the default Lisp, which will be used, you can
-use the option "-DWITH_DEFAULT_LISP=clisp" (or abcl) in the cmake call
+use the option "-DWITH_DEFAULT_LISP=clisp" (or abcl/ccl64) in the cmake call
 (otherwise SBCL would be the default).
 
 
