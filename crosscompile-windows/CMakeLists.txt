@@ -186,7 +186,7 @@ endif()
 # But policy OLD is deprecated and may be removed in future CMake versions, see:
 # https://cmake.org/cmake/help/latest/policy/CMP0135.html
 # Hopefully texinfo solves that issue.
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.24)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.24)
     cmake_policy(SET CMP0135 OLD)
 endif()
 
@@ -293,10 +293,14 @@ install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp"
 
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/
-        DESTINATION . COMPONENT Maxima PATTERN "binary-abcl" EXCLUDE)
+        DESTINATION . COMPONENT Maxima PATTERN "binary-abcl" EXCLUDE PATTERN "binary-ccl64" EXCLUDE)
 if(WITH_ABCL)
     install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/
             DESTINATION . COMPONENT ABCL PATTERN "binary-abcl")
+endif()
+if(WITH_CCL64)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/
+            DESTINATION . COMPONENT CCL64 PATTERN "binary-ccl64")
 endif()
 
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/ COMPONENT Maxima)
