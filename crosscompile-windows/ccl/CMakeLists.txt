@@ -11,4 +11,4 @@ externalproject_add(ccl
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
-install(DIRECTORY ${CMAKE_BINARY_DIR}/ccl/ccl-prefix/src/ccl/ DESTINATION bin COMPONENT CCL64)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/ccl/ccl-prefix/src/ccl/ DESTINATION bin COMPONENT CCL64 PATTERN wx86cl.exe EXCLUDE PATTERN wx86cl.image EXCLUDE)
