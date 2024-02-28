@@ -44,9 +44,11 @@ did not work for me.
 Crosscompiling ECL works and it seems to work with 'wine', but only in bytecode-mode -
 and Maxima can currently not compiled, if ECL uses the bytecode compiler.
 
-CCL released a ZIP File for windows (which is promising), but sadly it does
-not work with wine.
-
+CCL64 suppport works now. Compiling a 32 bit version with CCL does not work because
+of a compiler bug (see: https://sourceforge.net/p/maxima/mailman/message/37296110/)
+(Tested - on 2024-02-28 the crosscompiliation procedure with CCL 1.12.2, it still
+has the same bug. And the CCL team considers 32 bit support close to be obsolete
+according to their bug report: https://github.com/Clozure/ccl/issues/377
 
 
 Wolfgang Dautermann
