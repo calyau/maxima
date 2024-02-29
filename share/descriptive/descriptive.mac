@@ -1634,7 +1634,7 @@ defstruct (runs (lengths, values));
 
 find_runs (x) :=
   if x = [] then runs ([], [])
-    else block ([dx : map (lambda ([a, b], is(a # b)), rest(x), rest(x, -1)), ii0, ii],
+    else block ([dx : map (lambda ([a, b], is(a # b)), rest(x), rest(x, -1)), ii0, ii, dii],
                 ii0 : sublist_indices (dx, identity),
                 ii : append ([0], ii0, [length (x)]),
                 dii : rest(ii) - rest(ii, -1),
