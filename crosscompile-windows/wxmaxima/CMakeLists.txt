@@ -12,7 +12,7 @@
 
 set(WXMAXIMAVERSION "24.02.2")
 
-set(WXMAXIMA_MD5 "cd6512057a404bcba3a9f12ffbe5714b")
+set(WXMAXIMA_MD5 "821a8c7302d836cdea85788338cf41b3")
 
 set(WXMAXIMA_URL "https://github.com/wxMaxima-developers/wxmaxima/archive/refs/tags/Version-${WXMAXIMAVERSION}.tar.gz")
 
