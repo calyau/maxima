@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "06-10-2023 13:06:09 Leo Butler"
+;; Time-stamp: "2024-03-06 21:13:50 villate"
 
 (in-package :maxima)
 
@@ -1341,11 +1341,9 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; draw2d-discrete. Accepts [discrete,[x1,x2,...],[y1,y2,...]]
 ;; or [discrete,[[x1,y1]...] and returns [x1,y1,...] or nil, if
 ;; non of the points have real values.
-;; Currently any options given are being ignored, because there
-;; are no options specific to the generation of the points.
-(defun draw2d-discrete (f)
+(defun draw2d-discrete (f options)
   (let ((x (third f)) (y (fourth f)) data gaps)
-    (cond
+   (cond
       (($listp x)            ; x is a list
        (cond
          (($listp (cadr x))     ; x1 is a list
@@ -1374,19 +1372,36 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              (setq data (parse-points-y x)))))))
       (t                     ; x is not a list
        (merror (intl:gettext "draw2d-discrete: Expecting a list of x coordinates or points; found ~M~%") x)))
-
-    ;; checks for non-real values
-    (cond
-      ((some #'realp data)
-       (setq gaps (count-if #'(lambda (x) (eq x 'moveto)) data))
-       (when (> gaps 0)
-         ;; some points have non-real values
-         (mtell (intl:gettext "Warning: excluding ~M points with non-numerical values.~%") (/ gaps 2))))
-      (t
-       ;; none of the points have real values
-       (mtell (intl:gettext "Warning: none of the points have numerical values.~%"))
-       (setq data nil)))
-    data))
+   ;; remove points out of x-range
+   (when (getf options :x)
+     (let ((xmin (first (getf options :x))) (xmax (second (getf options :x)))
+           newdata (n-clipped 0))
+       (do ((i 1 (+ i 2)))
+           ((>= i (length data)))
+         (if (or (not (realp (nth i data)))
+                 (and (>= (nth i data) xmin) (<= (nth i data) xmax)))
+             (setq newdata (cons (nth (1+ i) data) (cons (nth i data) newdata)))
+           (incf n-clipped)))
+       (setq data (cons '(mlist) (reverse newdata)))
+       (when (= n-clipped 1)
+         (mtell (intl:gettext "Warning: 1 point was clipped.~%")))
+       (when (> n-clipped 1)
+         (mtell (intl:gettext "Warning: ~M points were clipped.~%") n-clipped))))
+   ;; checks for non-real values
+   (cond
+    ((some #'realp data)
+     (setq gaps (count-if #'(lambda (x) (eq x 'moveto)) data))
+     (when (= gaps 2)
+       ;; one point has non-real value
+       (mtell (intl:gettext "Warning: excluding 1 point with non-numerical value.~%")))
+     (when (> gaps 2)
+       ;; some points have non-real values
+       (mtell (intl:gettext "Warning: excluding ~M points with non-numerical values.~%") (/ gaps 2))))
+    (t
+     ;; none of the points have real values
+     (mtell (intl:gettext "Warning: none of the points have numerical values.~%"))
+     (setq data nil)))
+   data))
 
 ;; Two lists [x1...xn] and [y1...yn] are joined as
 ;; [x1 y1...xn yn], converting all expressions to real numbers.
@@ -1590,7 +1605,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       (return-from draw2d
         (draw2d-parametric-adaptive fcn plot-options)))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
-      (return-from draw2d (draw2d-discrete fcn)))
+      (return-from draw2d (draw2d-discrete fcn plot-options)))
   (when (and ($listp fcn) (equal '$contour (cadr fcn)))
     (setf (getf plot-options :contour) t)
     (return-from draw2d (draw2d-implicit (caddr fcn) plot-options)))
