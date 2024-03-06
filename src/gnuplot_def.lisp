@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2022-03-28 11:45:15 villate"
+;; Time-stamp: "2024-03-06 16:26:02 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -663,6 +663,11 @@
       'string
       (slot-value plot 'data)
       (with-output-to-string ($pstream)
+        ;; user's commands; may overule any of the previous settings
+        (when (and (getf options :gnuplot_postamble)
+                   (> (length  (getf options :gnuplot_postamble)) 0))
+          (format $pstream "~a~%" (getf options :gnuplot_postamble)))
+        ;; gnuplot command to produce the 3d plot
         (format $pstream "~a"
                 (gnuplot-plot3d-command "-" (getf options :palette)
                                         (getf options :gnuplot_curve_styles)
