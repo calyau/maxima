@@ -12,7 +12,7 @@ New items in share:
 Changes in core:
 ----------------
  * Add rtest_raddenest to share_testsuite_files
- * In src/plots.lisp, draw2d-discrete now accepts options x and y to clip points
+ * In src/plot.lisp, draw2d-discrete now accepts options x and y to clip points
 
 Changes in share:
 -----------------
@@ -31,6 +31,7 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
+ * \#4117: Unexpected Behaviour of run_viewer and gnu_term dumb
  * \#4154: Some info nodes have bad headers (and no "Up"s)
  * \#4176: fullratsubst(old = new, expr) returns incorrect result
  * \#4177: lratsubst1 in testsuite
