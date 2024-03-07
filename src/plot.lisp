@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-06 21:13:50 villate"
+;; Time-stamp: "2024-03-07 08:52:26 villate"
 
 (in-package :maxima)
 
@@ -1339,10 +1339,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 	(cons '(mlist) result-sans-nil)))))
 
 ;; draw2d-discrete. Accepts [discrete,[x1,x2,...],[y1,y2,...]]
-;; or [discrete,[[x1,y1]...] and returns [x1,y1,...] or nil, if
-;; non of the points have real values.
+;; or [discrete,[[x1,y1]...] and returns [x1,y1,...] or nil, if none of the points
+;; have real values.
+;; It accepts options x and y to decide which points are clipped from the plot.
 (defun draw2d-discrete (f options)
-  (let ((x (third f)) (y (fourth f)) data gaps)
+  (let ((x (third f)) (y (fourth f)) (n-clipped 0) data gaps)
    (cond
       (($listp x)            ; x is a list
        (cond
@@ -1372,21 +1373,26 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              (setq data (parse-points-y x)))))))
       (t                     ; x is not a list
        (merror (intl:gettext "draw2d-discrete: Expecting a list of x coordinates or points; found ~M~%") x)))
-   ;; remove points out of x-range
+   ;; removes points out of x-range and warns about points out of y-range
    (when (getf options :x)
      (let ((xmin (first (getf options :x))) (xmax (second (getf options :x)))
-           newdata (n-clipped 0))
-       (do ((i 1 (+ i 2)))
-           ((>= i (length data)))
+           newdata)
+       (do ((i 1 (+ i 2))) ((>= i (length data)))
          (if (or (not (realp (nth i data)))
                  (and (>= (nth i data) xmin) (<= (nth i data) xmax)))
              (setq newdata (cons (nth (1+ i) data) (cons (nth i data) newdata)))
            (incf n-clipped)))
-       (setq data (cons '(mlist) (reverse newdata)))
-       (when (= n-clipped 1)
-         (mtell (intl:gettext "Warning: 1 point was clipped.~%")))
-       (when (> n-clipped 1)
-         (mtell (intl:gettext "Warning: ~M points were clipped.~%") n-clipped))))
+       (setq data (cons '(mlist) (reverse newdata)))))
+   (when (getf options :y)
+     (let ((ymin (first (getf options :y))) (ymax (second (getf options :y))))
+       (do ((i 2 (+ i 2))) ((>= i (length data)))
+         (unless (or (not (realp (nth i data)))
+                 (and (>= (nth i data) ymin) (<= (nth i data) ymax)))
+           (incf n-clipped)))))
+   (when (= n-clipped 1)
+     (mtell (intl:gettext "Warning: 1 point was clipped.~%")))
+   (when (> n-clipped 1)
+     (mtell (intl:gettext "Warning: ~M points were clipped.~%") n-clipped))
    ;; checks for non-real values
    (cond
     ((some #'realp data)
