@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-07 09:37:09 villate"
+;; Time-stamp: "2024-03-07 12:16:01 villate"
 
 (in-package :maxima)
 
@@ -826,8 +826,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (ymin (first (getf options :y)))
          (xmax (second (getf options :x)))
          (ymax (second (getf options :y)))
-         (gridx (or (first (getf options :sample)) 50))
-         (gridy (or (second (getf options :sample)) 50))
+         (gridx (or (first (getf options :sample)) 47))
+         (gridy (or (second (getf options :sample)) 47))
          (eps (or (getf options :plotepsilon) 1e-6))
          (f (make-array `(,(1+ gridx) ,(1+ gridy))))
          vx vy dx dy fun faux fmax fmin levels values result results)

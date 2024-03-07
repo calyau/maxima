@@ -1,4 +1,4 @@
-@c Time-stamp: "2022-03-28 13:36:15 villate"
+@c Time-stamp: "2024-03-07 12:17:14 villate"
 @menu
 * Introduction to Plotting::
 * Plotting Formats::
@@ -1634,7 +1634,7 @@ synonyms for @code{[same_xyz, true]} and @code{[same_xyz, false]}.
 @anchor{sample}
 @defvr {Plot option} sample [sample, @var{nx}, @var{ny}]
 
-Default value: @code{[sample, 50, 50]}
+Default value: @code{[sample, 47, 47]}
 
 @var{nx} and @var{ny} must be two natural numbers that will be used by
 @mref{plot2d} to look for the points that make part of the plot of an
