@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-07 09:28:14 villate"
+;; Time-stamp: "2024-03-07 09:37:09 villate"
 
 (in-package :maxima)
 
@@ -2115,7 +2115,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($nognuplot_svg_background (setf (getf options :gnuplot_svg_background) nil))
          (t
           (merror (intl:gettext "Unknown plot option \"~M\".") opt))))))
-  ;; plots that create a file work better in gnuplot than gnuplot_pipes
+  ;; plots that use ASCII art should not use gnuplot_pipes
   (when (and (eq (getf options :plot_format) '$gnuplot_pipes)
              (eq (getf options :gnuplot_term) '$dumb))
     (setf (getf options :plot_format) '$gnuplot))
