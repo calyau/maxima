@@ -1,6 +1,6 @@
 ;; xmaxima.lisp: routines for Maxima's interface to xmaxima
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2021-06-14 17:27:42 villate"
+;; Time-stamp: "2024-03-08 07:53:34 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -261,24 +261,30 @@
       (with-output-to-string (st)            
         (unless (or (getf options :logy)
                     (and (getf options :y) (listp (getf options :y))))
-          (let (y ymin ymax)
+          (let (x y ymin ymax (xmin +most-negative-flonum+)
+                  (xmax +most-positive-flonum+))
+            (when (getf options :x)
+              (setq xmin (first (getf options :x)))
+              (setq xmax (second (getf options :x))))
             (dolist (points-list points-lists)
               (dotimes (i (/ (length points-list) 2))
+                (setq x (nth (* i 2) points-list))
                 (setq y (nth (1+ (* i 2)) points-list))
-                (when (numberp y)
-                  (if (numberp ymin)
-                      (if (numberp ymax)
-                          (progn
-                            (when (< y ymin) (setq ymin y))
-                            (when (> y ymax) (setq ymax y)))
+                (when (and (numberp x) (>= x xmin) (<= x xmax))
+                  (when (numberp y)
+                    (if (numberp ymin)
+                        (if (numberp ymax)
+                            (progn
+                              (when (< y ymin) (setq ymin y))
+                              (when (> y ymax) (setq ymax y)))
                           (if (< y ymin)
                               (setq ymax ymin ymin y)
-                              (setq ymax y)))
+                            (setq ymax y)))
                       (if (numberp ymax)
                           (if (> y ymax)
                               (setq ymin ymax ymax y)
-                              (setq ymin y))
-                          (setq ymin y))))))
+                            (setq ymin y))
+                        (setq ymin y)))))))
             (when (and (numberp ymin) (numberp ymax) (< ymin ymax))
               (psetq ymin (- (* 1.05 ymin) (* 0.05 ymax))
                      ymax (- (* 1.05 ymax) (* 0.05 ymin)))
