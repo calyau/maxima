@@ -19,6 +19,7 @@ Changes in share:
 
 Changes in Xmaxima:
 -------------------
+plot2d now does line clipping.
 
 Changes in the Windows installer:
 ---------------------------------

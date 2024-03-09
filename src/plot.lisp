@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-08 07:36:58 villate"
+;; Time-stamp: "2024-03-09 22:02:30 villate"
 
 (in-package :maxima)
 
@@ -1290,19 +1290,14 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 	   (y (cdr result) (cddr y)))
 	  ((null y))
 	(if (and (numberp (car x)) (numberp (car y)))
+	    ;; Let clipping to the graphic program. See the comment in DRAW2D.
             (unless (and (<= ymin (car y) ymax)
 			 (<= xmin (car x) xmax))
-	      ;; Let gnuplot do the clipping.  See the comment in DRAW2D.
-	      (incf n-clipped)
-	      (unless (member (getf options :plot_format)
-			      '($gnuplot_pipes $gnuplot))
-
-		(setf (car x) 'moveto)
-		(setf (car y) 'moveto)))
-            (progn
-              (incf n-non-numeric)
-              (setf (car x) 'moveto)
-              (setf (car y) 'moveto))))
+	      (incf n-clipped))
+          (progn
+            (incf n-non-numeric)
+            (setf (car x) 'moveto)
+            (setf (car y) 'moveto))))
       ;; Filter out any MOVETO's which do not precede a number.
       ;; Code elsewhere in this file expects MOVETO's to
       ;; come in pairs, so leave two MOVETO's before a number.
@@ -1677,22 +1672,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              (y (cdr result) (cddr y)))
             ((null y))
           (if (numberp (car y))
+	      ;; We can let graphic program do the clipping for us.
+              ;; This results in better looking plots. For example:
+              ;;     plot2d(x-floor(x),[x,0,5], [y,0,.5])
+              ;; has lines going all the way to
+	      ;; the limits.  Previously, the lines would stop
+	      ;; before the limit.
 	      (unless (<= ymin (car y) ymax)
-		(incf n-clipped)
-		;; If the plot format uses gnuplot, we can let gnuplot
-		;; do the clipping for us.  This results in better
-		;; looking plots.  For example plot2d(x-floor(x),
-		;; [x,0,5], [y, 0, .5]) has lines going all the way to
-		;; the limits.  Previously, the lines would stop
-		;; before the limit.
-              	(unless (member (getf plot-options :plot_format)
-				'($gnuplot_pipes $gnuplot))
-                  (setf (car x) 'moveto)
-                  (setf (car y) 'moveto)))
-              (progn
-                (incf n-non-numeric)
-                (setf (car x) 'moveto)
-                (setf (car y) 'moveto)))
+		(incf n-clipped))
+            (progn
+              (incf n-non-numeric)
+              (setf (car x) 'moveto)
+              (setf (car y) 'moveto)))
           (when (and (getf plot-options :logx)
                      (numberp (car x)))
             (setf (car x) (exp (car x))))

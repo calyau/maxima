@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-02 14:34:52 villate"            #
+#     Time-stamp: "2024-03-09 21:53:27 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -705,26 +705,36 @@ proc drawPlot {win listpts args } {
 			}
 		    }
 		}
-		
 		if { $nolines == 0 } {
-		    set n [llength $pts]
-		    set i 0
-		    set res "$win create line "
-		    #puts npts:[llength $pts]
-		    if { $n >= 4 } {
-			eval $c create line $pts -tags [list $tags] -width $linewidth -fill $fill
-		    }
-		}
-	    }
-	
-	}
-    }
-    if { $nolegend == 0 } {
-	plot2dDrawLabel $win $label $fill
-    }
-}
-
-
+                    set first 1
+                    foreach {x y} $pts {
+                        if {$first} {
+                            set point1 [list [lindex $pts 0] [lindex $pts 1]]
+                            set c1 [PointCode $win $point1]
+                            if {!$c1} {
+                                set inpts [list $point1]
+                            } else {set inpts {}}
+                            set first 0
+                       } else {
+                           set point2 [list $x $y]
+                           set c2 [PointCode $win $point2]
+                           if {$c1|$c2} {
+                               set clipped \
+                                   [ClipLine $win $point1 $point2 $c1 $c2]
+                               if {[llength $clipped]} {
+                                   lappend inpts {*}$clipped}
+                            if {$c2 && ([llength $inpts] >= 4)} {
+                                eval $c create line {*}$inpts -tags \
+                                    [list $tags] -width $linewidth -fill $fill
+                                set inpts {}}
+                           } else {lappend inpts $point2}
+                           set point1 $point2
+                           set c1 $c2}
+                        if {[llength $inpts] >= 4} {
+                            eval $c create line {*}$inpts -tags [list $tags] \
+                                -width $linewidth -fill $fill}
+                        set res "$win create line "}}}}
+        if { $nolegend == 0 } {plot2dDrawLabel $win $label $fill}}}
 
 proc drawPointsForPrint { c } {
     global maxima_priv
@@ -779,5 +789,120 @@ proc recomputePlot2d { win } {
     replot2d $win
 }
 
+# Assign an integer code between 0 and 10 to a given point, according
+# to its position relative to the box with vertices (xmin,ymin) and (xmax,ymax)
+proc PointCode {win point} {
+    makeLocal $win xmin xmax ymin ymax
+    set Xmin [rtosx$win $xmin]
+    set Xmax [rtosx$win $xmax]
+    set Ymin [rtosy$win $ymax]
+    set Ymax [rtosy$win $ymin]
+    set code 0
+    set x [lindex $point 0]
+    set y [lindex $point 1]
+    if {$x < $Xmin} {incr code 1} elseif {$x > $Xmax} {incr code 2}
+    if {$y < $Ymin} {incr code 4} elseif {$y > $Ymax} {incr code 8}
+    return $code}
+
+# Finds the intersection of the segment from point p1 to point p2 with
+# the left edge of the box with vertices (xmin,ymin) and (xmax,ymax)
+proc ClipLeft {win p1 p2} {
+    makeLocal $win xmin ymin ymax
+    set Xmin [rtosx$win $xmin]
+    set Ymin [rtosy$win $ymax]
+    set Ymax [rtosy$win $ymin]
+    set x1 [lindex $p1 0]
+    set y1 [lindex $p1 1]
+    set x2 [lindex $p2 0]
+    set y2 [lindex $p2 1]
+    set y [expr {$y1 + ($y2-1.0*$y1)*($Xmin-$x1)/($x2-$x1)}]
+    if {($y >= $Ymin) && ($y <= $Ymax)} {
+        return "$Xmin $y"
+    } else {return}}
+
+# Finds the intersection of the segment from point p1 to point p2 with
+# the right edge of the box with vertices (xmin,ymin) and (xmax,ymax)
+proc ClipRight {win p1 p2} {
+    makeLocal $win xmax ymin ymax
+    set Xmax [rtosx$win $xmax]
+    set Ymin [rtosy$win $ymax]
+    set Ymax [rtosy$win $ymin]
+    set x1 [lindex $p1 0]
+    set y1 [lindex $p1 1]
+    set x2 [lindex $p2 0]
+    set y2 [lindex $p2 1]
+    set y [expr {$y1 + ($y2-1.0*$y1)*($Xmax-$x1)/($x2-$x1)}]
+    if {($y >= $Ymin) && ($y <= $Ymax)} {
+        return "$Xmax $y"
+    } else {return}}
+
+# Finds the intersection of the segment from point p1 to point p2 with
+# the bottom edge of the box with vertices (xmin,ymin) and (xmax,ymax)
+proc ClipBottom {win p1 p2} {
+    makeLocal $win xmin xmax ymax
+    set Xmin [rtosx$win $xmin]
+    set Xmax [rtosx$win $xmax]
+    set Ymin [rtosy$win $ymax]
+    set x1 [lindex $p1 0]
+    set y1 [lindex $p1 1]
+    set x2 [lindex $p2 0]
+    set y2 [lindex $p2 1]
+    set x [expr {$x1 + ($x2-1.0*$x1)*($Ymin-$y1)/($y2-$y1)}]
+    if {($x >= $Xmin) && ($x <= $Xmax)} {
+        return "$x $Ymin"
+    } else {return}}
+
+# Finds the intersection of the segment from point p1 to point p2 with
+# the top edge of the box with vertices (xmin,ymin) and (xmax,ymax)
+proc ClipTop {win p1 p2} {
+    makeLocal $win xmin xmax ymin
+    set Xmin [rtosx$win $xmin]
+    set Xmax [rtosx$win $xmax]
+    set Ymax [rtosy$win $ymin]
+    set x1 [lindex $p1 0]
+    set y1 [lindex $p1 1]
+    set x2 [lindex $p2 0]
+    set y2 [lindex $p2 1]
+    set x [expr {$x1 + ($x2-1.0*$x1)*($Ymax-$y1)/($y2-$y1)}]
+    if {($x >= $Xmin) && ($x <= $Xmax)} {
+        return "$x $Ymax"
+    } else {return}}
+
+# Returns the intersection points of the segment from point1 to ppoint2
+# and the box with vertices in (xmin,ymin) and (xmax,ymax). 
+proc ClipLine {win point1 point2 code1 code2} {
+    set clipped {}
+    if {$code1 & $code2} {
+        return
+    } else {
+        foreach point [list $point1 $point2] code [list $code1 $code2] {
+            switch $code {
+                0 {}
+                1 {set p [ClipLeft $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p} else {return}}
+                2 {set p [ClipRight $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p} else {return}}
+                4 {set p [ClipBottom $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p} else {return}}
+                8 {set p [ClipTop $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p} else {return}}
+                5 {set p [ClipLeft $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p
+                    } else {set p [ClipBottom $win $point1 $point2]
+                        if {[llength $p]} {lappend clipped $p} else {return}}}
+                6 {set p [ClipRight $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p
+                    } else {set p [ClipBottom $win $point1 $point2]
+                        if {[llength $p]} {lappend clipped $p} else {return}}}
+                9 {set p [ClipLeft $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p
+                    } else {set p [ClipTop $win $point1 $point2]
+                        if {[llength $p]} {lappend clipped $p} else {return}}}
+                10 {set p [ClipRight $win $point1 $point2]
+                    if {[llength $p]} {lappend clipped $p
+                    } else {set p [ClipTop $win $point1 $point2]
+                        if {[llength $p]} {lappend clipped $p} else {return}}}
+                default {return}}}
+        return $clipped}}
 
 ## endsource plot2d.tcl
