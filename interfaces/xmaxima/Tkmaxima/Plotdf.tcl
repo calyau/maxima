@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2022-04-05 08:14:35 villate"            #
+#     Time-stamp: "2024-03-11 09:55:35 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -103,10 +103,12 @@ proc doIntegrateScreen { win sx sy  } {
 
 proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
-    #    puts "dointegrate $win $x0 $y0"
+    # puts "dointegrate $win $x0 $y0"
     makeLocal $win xradius yradius c dxdt dydt tinitial tstep nsteps xfun direction linewidth tinitial versus_t xmin xmax ymin ymax number_of_arrows parameters
     linkLocal $win didLast trajectoryStarts
     setXffYff $dxdt $dydt $parameters
+    setXggYgg $dxdt $dydt $parameters
+    set method {RK4}
 
     set rtosx rtosx$win ; set rtosy rtosy$win
     set x1 [$rtosx $xmin]
@@ -119,89 +121,70 @@ proc doIntegrate { win x0 y0 } {
     set didLast {}
     # puts "doing at $trajectory_at"
     set steps $nsteps
-    set hx [expr {$xradius / 100.0}]
-    set hy [expr {$yradius / 100.0}]
-    if { "$tstep" == "" } {
-	set h [expr {[vectorlength $xradius $yradius] / 200.0}]
+    if {$tstep eq {}} {
+	set h [expr {[vectorlength $xradius $yradius]/200.0}]
 	set tstep $h
-    } else {set h $tstep }
+    } else {set h $tstep}
 
     # puts h=$h
-    set todo "1"
+    set todo {1}
     switch -- $direction {
-	forward { set todo "1" }
-	backward { set todo "-1" }
-	both { set todo "-1 1" }
-    }
-    set methods ""
-    foreach method { fieldlines curves } {
-				    set color [oget $win $method]
-				    if {"$color" != "" && "$color" != "blank"} {
-					lappend methods $method
-					lappend useColors $method $color
-				    }
-				}
-    set methodNo -1
-    foreach method $methods {
-			     incr methodNo
-			     set linecolor [assoc $method $useColors ]
-			     #    puts method=$method
-			     set signs $todo
-			     if {"$method" == "curves"} {
-				 set signs "-1 1"
-				 set coords {}
-			     }
-			     foreach sgn $signs {
-				 set arrow "none"
-				 if { "$method"=="fieldlines" } {
-				     if { $sgn < 0 } {
-					 set arrow "first"
-					 set coords {}
-				     } else {
-					 if { "$direction" == "forward"} {
-					     set arrow "last"
-					     set coords {}
-					 }
-				     }
-				 }
-				 set h1 [expr {- $hx}]
-				 set h2 [expr {- $hy}]
-				 set form [list $method xff yff $tinitial $x0 $y0 $hx $hy $steps $sgn]
-				 set ans [eval $form]
-				 lappend didLast $form
+	forward { set todo {1}}
+	backward { set todo {-1}}
+	both { set todo {-1 1}}}
+    set tasks {}
+    foreach task {fieldlines curves} {
+        set color [oget $win $task]
+        if {($color ne {}) && ($color ne {blank})} {
+            lappend tasks $task
+            lappend useColors $task $color}}
+    set taskNo -1
+    foreach task $tasks {
+        incr taskNo
+        set linecolor [assoc $task $useColors]
+        set signs $todo
+            set coords {}
+            if {$task eq {curves}} {
+                set signs {-1 1}
+                set fx xgg
+                set fy ygg
+            } else {
+                set fx xff
+                set fy yff}                 
+        foreach sgn $signs {
+            set arrow {none}
+            if {$task eq {fieldlines}} {
+                if { $sgn < 0 } {
+                    set arrow {first}
+                    set coords {}
+                } else {
+                    if {$direction eq {forward}} {
+                        set arrow {last}
+                        set coords {}}}}
+            set form [list $method $fx $fy $tinitial $x0 $y0 $h $steps $sgn]
 
-				 #puts "doing: $form"
-				 set i 0
-				 set lim [expr {$steps * 3}]
-				 catch {
-				     while { $i <= $lim } {
-					 set xn [$rtosx [lindex $ans [incr i]]]
-					 set yn [$rtosy [lindex $ans [incr i]]]
-					 incr i
-					 # puts "$xn $yn"
-					 # Tests if point is inside the domain.
-					 # In version 1.14 there was an if:
-					 # abs($xn1)+abs($yn1)+abs($xn2)
-					 # +abs($yn2) < [expr {pow(10.0,9)}]
-					 # to fix a bug in win95 version.
-					 # That's now out of context, but the
-					 # bug might reappear. (J. Villate)
-					 if { ($xn-$x1)*($xn-$x2) <= 0 &&
-					      ($yn-$y1)*($yn-$y2) <= 0 } {
-					     lappend coords $xn $yn
-					 }
-				     }
-				 }
-				 if { [llength $coords] > 3 } {
-				     $c create line $coords -tags path \
-					 -width $linewidth -fill $linecolor \
-					 -arrow $arrow
-				     if { "$direction" == "both" } {
-					 set coords [lrange $coords 2 3]
-				     }
-				 }
-			     }
-			 }
+            # ans will be a list with values of t, x and y, at the initial
+            # point and each of the steps
+            set ans [eval $form]
+            lappend didLast $form
+            # puts "doing: $form"
+            set i 0
+            catch {
+                while {$i <= [expr {[llength $ans]-3}]} {
+                    set xn [$rtosx [lindex $ans [incr i]]]
+                    set yn [$rtosy [lindex $ans [incr i]]]
+                    incr i
+                    # Tests if point is inside the domain. FIXME: This
+                    # is not the correct way to clip lines!
+                    if { ($xn-$x1)*($xn-$x2) <= 0 &&
+                         ($yn-$y1)*($yn-$y2) <= 0 } {
+                        lappend coords $xn $yn}}}
+            if { [llength $coords] > 3 } {
+                $c create line $coords -tags path \
+                    -width $linewidth -fill $linecolor \
+                    -arrow $arrow
+                if { "$direction" == "both" } {
+                    set coords [lrange $coords 2 3]}}}}
     if { $versus_t } { plotVersusT $win}
 }
 
@@ -230,8 +213,8 @@ proc plotVersusT { win } {
 
     foreach v $didLast {
 	set ans [eval $v]
-	desetq "tinitial x0 y0 hx hy steps sgn" [lrange $v 3 end]
-	set this [lrange $v 0 5]
+	desetq "tinitial x0 y0 h steps sgn" [lrange $v 3 end]
+	set this [lrange $v 0 4]
 	if { [info exists doing($this) ] } { set tem $doing($this) } else {
 	    set tem ""
 	}
@@ -275,31 +258,6 @@ proc lreverse { lis } {
     }
     return $ans
 }
-
-
-#
-#-----------------------------------------------------------------
-#
-# $rtosx,$rtosy --  convert Real coordinate to screen coordinate
-#
-#  Results: a window coordinate
-#
-#  Side Effects:
-#
-#----------------------------------------------------------------
-
-
-#
-#-----------------------------------------------------------------
-#
-# $storx,$story --  Convert a screen coordinate to a Real coordinate.
-#
-#  Results:
-#
-#  Side Effects:
-#
-#----------------------------------------------------------------
-#
 
 proc drawArrowScreen { c atx aty dfx dfy color } {
 
@@ -523,9 +481,12 @@ proc replotdf { win } {
 }
 
 proc setXffYff { dxdt dydt parameters } {
-
-    proc xff { t x y } "expr { [sparseWithParams $dxdt { x y} $parameters] }"
-    proc yff { t x y } "expr { [sparseWithParams $dydt { x y} $parameters] } "
+    proc xff {t x y} "expr {[sparseWithParams $dxdt {x y} $parameters]}"
+    proc yff {t x y} "expr {[sparseWithParams $dydt {x y} $parameters] } "
+}
+proc setXggYgg { dxdt dydt parameters } {
+    proc xgg {t x y} "expr {[sparseWithParams $dydt {x y} $parameters]}"
+    proc ygg {t x y} "expr {[sparseWithParams -($dxdt) {x y} $parameters]}"
 }
 
 proc doConfigdf { win } {

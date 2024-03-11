@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2022-04-02 10:25:09 villate"            #
+#     Time-stamp: "2024-03-11 09:51:47 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -338,7 +338,7 @@ proc compose { a b } {
 
 proc sparseListWithParams { form variables paramlist } {
     set tem [parseConvert $form -doall 1]
-    #puts tem=$tem
+    # puts tem=$tem
     set params [splitParams $paramlist]
     if { [catch {set res [substParams [lindex $tem 0] $variables $params] }\
 	      err ] } {
@@ -450,6 +450,9 @@ proc set_xy_region { win fac } {
 #
 #  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
 #  are defined.
+#
+# $rtosx,$rtosy --  convert Real coordinate to screen coordinate
+# $storx,$story --  Convert a screen coordinate to a Real coordinate.
 #
 #----------------------------------------------------------------
 #
