@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-09 21:53:27 villate"            #
+#     Time-stamp: "2024-03-11 18:37:13 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -656,9 +656,14 @@ proc RealtoScreen { win listPts } {
 }
 
 proc drawPlot {win listpts args } {
-    makeLocal $win  c nolines nolegend plotpoints  pointsize bargraph linewidth
-    #    set linewidth 2.4
+    makeLocal $win c nolines nolegend plotpoints  pointsize bargraph \
+        linewidth xmin xmax ymin ymax
+    # set linewidth 2.4
     # puts ll:[llength $listpts]
+    set x1 [rtosx$win $xmin]
+    set x2 [rtosx$win $xmax]
+    set y1 [rtosy$win $ymax]
+    set y2 [rtosy$win $ymin]
     set tags [assoc -tags $args ""]
     if { [lsearch $tags path] < 0 } {lappend tags path}
     set fill [assoc -fill $args black]
@@ -670,239 +675,205 @@ proc drawPlot {win listpts args } {
     catch { set fill [oget $win color] }
 
     if { $nolines == 1 && $plotpoints == 0 && $bargraph == 0} {
-	set plotpoints 1
-    }
+	set plotpoints 1}
 
-    catch {
-	foreach pts $listpts {
-	    if { $bargraph } {
-		set rtosy rtosy$win
-		set rtosx rtosx$win
-		set width [expr {abs([$rtosx $bargraph] - [$rtosx 0])}]
-		set w2 [expr {$width/2.0}]
-		# puts "width=$width,w2=$w2"
-		set ry0 [$rtosy 0]
-		foreach { x y } $pts {
-		    $c create rectangle [expr {$x-$w2}] $y  [expr {$x+$w2}] \
-			$ry0 -tags $tags -fill $fill }
-	    } else {
-		if { $plotpoints } {
-		    set im [getPoint $pointsize $fill]
-		
-		    # there is no eval, so we need this.
-		    if { "$im" != "" } {
-			foreach { x y } $pts {
-			    $c create image $x $y -image $im -anchor center \
-				-tags "$tags point"
-			}
-		    } else {
-			foreach { x y } $pts {
-			    $c create oval [expr {$x -$pointsize}] \
-				[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
-				[expr {$y +$pointsize}] -tags $tags \
-				-fill $fill -outline {}
-			
-			}
-		    }
-		}
-		if { $nolines == 0 } {
-                    set first 1
-                    foreach {x y} $pts {
-                        if {$first} {
-                            set point1 [list [lindex $pts 0] [lindex $pts 1]]
-                            set c1 [PointCode $win $point1]
-                            if {!$c1} {
-                                set inpts [list $point1]
-                            } else {set inpts {}}
-                            set first 0
-                       } else {
-                           set point2 [list $x $y]
-                           set c2 [PointCode $win $point2]
-                           if {$c1|$c2} {
-                               set clipped \
-                                   [ClipLine $win $point1 $point2 $c1 $c2]
-                               if {[llength $clipped]} {
-                                   lappend inpts {*}$clipped}
+    foreach pts $listpts {
+        if { $bargraph } {
+            set rtosy rtosy$win
+            set rtosx rtosx$win
+            set width [expr {abs([$rtosx $bargraph] - [$rtosx 0])}]
+            set w2 [expr {$width/2.0}]
+            # puts "width=$width,w2=$w2"
+            set ry0 [$rtosy 0]
+            foreach { x y } $pts {
+                $c create rectangle [expr {$x-$w2}] $y  [expr {$x+$w2}] \
+                    $ry0 -tags $tags -fill $fill }
+        } else {
+            if { $plotpoints } {
+                set im [getPoint $pointsize $fill]
+                # there is no eval, so we need this.
+                if {$im ne {}} {
+                    foreach { x y } $pts {
+                        $c create image $x $y -image $im -anchor center \
+                            -tags "$tags point"}
+                } else {
+                    foreach { x y } $pts {
+                        $c create oval [expr {$x-$pointsize}] \
+                            [expr {$y-$pointsize}] [expr {$x +$pointsize}] \
+                            [expr {$y+$pointsize}] -tags $tags \
+                            -fill $fill -outline {}}}}
+            if { $nolines == 0 } {
+                set first 1
+                # puts "box: ($x1,$y1), ($x2,$y2)"
+                foreach {x y} $pts {
+                    if {$first} {
+                        set p1 [list [lindex $pts 0] [lindex $pts 1]]
+                        set c1 [PointCode $p1 $x1 $y1 $x2 $y2]
+                        # puts "point $p1 with code $c1"
+                        if {!$c1} {
+                            set inpts [list $p1]
+                        } else {set inpts {}}
+                        set first 0
+                    } else {
+                        set p2 [list $x $y]
+                        set c2 [PointCode $p2 $x1 $y1 $x2 $y2]
+                        # puts "point $p2 with code $c2"
+                        if {$c1|$c2} {
+                            set clip [ClipLine $p1 $p2 $c1 $c2 $x1 $y1 $x2 $y2]
+                            if {[llength $clip]} {
+                                lappend inpts {*}$clip}
                             if {$c2 && ([llength $inpts] >= 4)} {
                                 eval $c create line {*}$inpts -tags \
                                     [list $tags] -width $linewidth -fill $fill
                                 set inpts {}}
-                           } else {lappend inpts $point2}
-                           set point1 $point2
-                           set c1 $c2}
-                        if {[llength $inpts] >= 4} {
-                            eval $c create line {*}$inpts -tags [list $tags] \
-                                -width $linewidth -fill $fill}
-                        set res "$win create line "}}}}
-        if { $nolegend == 0 } {plot2dDrawLabel $win $label $fill}}}
+                        } else {lappend inpts $p2}
+                        set p1 $p2
+                        set c1 $c2}
+                    if {[llength $inpts] >= 4} {
+                        eval $c create line {*}$inpts -tags [list $tags] \
+                            -width $linewidth -fill $fill}
+                    set res "$win create line "}}}}
+    if { $nolegend == 0 } {plot2dDrawLabel $win $label $fill}}
 
 proc drawPointsForPrint { c } {
     global maxima_priv
     foreach v [$c find withtag point] {
 	set tags [ldelete point [$c gettags $v]]
 	desetq "x y" [$c coords $v]
-	
-	
 	desetq "pointsize fill" $maxima_priv(pointimage,[$c itemcget $v -image])
 	catch {
 	    $c create oval [expr {$x -$pointsize}] \
 		[expr {$y -$pointsize}] [expr {$x +$pointsize}] \
 		[expr {$y +$pointsize}] -tags $tags \
 		-fill $fill -outline {}
-	    $c delete $v			
-	}
-
-
-    }
-
-}
+	    $c delete $v}}}
 
 proc getPoint { size color } {
     global maxima_priv
-    set im ""
+    set im {}
     if { ![catch { set im $maxima_priv(pointimage,$size,$color) }] } {
 	return $im
     }
     catch { set data $maxima_priv(bitmap,disc[expr {$size * 2}])
 	set im [image create bitmap -data $data -foreground $color]
 	set maxima_priv(pointimage,$size,$color) $im
-	set maxima_priv(pointimage,$im) "$size $color"
-    }
-    return $im
-}
-
-
-
+	set maxima_priv(pointimage,$im) "$size $color"}
+    return $im}
 
 proc sliderCommandPlot2d { win var val } {
     linkLocal $win recompute
-
     updateParameters $win $var $val
     set com "recomputePlot2d $win"
     # allow for fast move of slider...
     #mike FIXME: this is a wrong use of after cancel
     after cancel $com
-    after 10 $com
-}
+    after 10 $com}
 
-proc recomputePlot2d { win } {
-    replot2d $win
-}
+proc recomputePlot2d { win } {replot2d $win}
 
 # Assign an integer code between 0 and 10 to a given point, according
 # to its position relative to the box with vertices (xmin,ymin) and (xmax,ymax)
-proc PointCode {win point} {
-    makeLocal $win xmin xmax ymin ymax
-    set Xmin [rtosx$win $xmin]
-    set Xmax [rtosx$win $xmax]
-    set Ymin [rtosy$win $ymax]
-    set Ymax [rtosy$win $ymin]
+proc PointCode {point xmin ymin xmax ymax} {
     set code 0
     set x [lindex $point 0]
     set y [lindex $point 1]
-    if {$x < $Xmin} {incr code 1} elseif {$x > $Xmax} {incr code 2}
-    if {$y < $Ymin} {incr code 4} elseif {$y > $Ymax} {incr code 8}
+    if {$x < $xmin} {incr code 1} elseif {$x > $xmax} {incr code 2}
+    if {$y < $ymin} {incr code 4} elseif {$y > $ymax} {incr code 8}
     return $code}
 
 # Finds the intersection of the segment from point p1 to point p2 with
 # the left edge of the box with vertices (xmin,ymin) and (xmax,ymax)
-proc ClipLeft {win p1 p2} {
-    makeLocal $win xmin ymin ymax
-    set Xmin [rtosx$win $xmin]
-    set Ymin [rtosy$win $ymax]
-    set Ymax [rtosy$win $ymin]
+proc ClipLeft {p1 p2 xmin ymin xmax ymax} {
     set x1 [lindex $p1 0]
     set y1 [lindex $p1 1]
     set x2 [lindex $p2 0]
     set y2 [lindex $p2 1]
-    set y [expr {$y1 + ($y2-1.0*$y1)*($Xmin-$x1)/($x2-$x1)}]
-    if {($y >= $Ymin) && ($y <= $Ymax)} {
-        return "$Xmin $y"
+    set y [expr {$y1 + ($y2-1.0*$y1)*($xmin-$x1)/($x2-$x1)}]
+    if {($y >= $ymin) && ($y <= $ymax)} {
+        return "$xmin $y"
     } else {return}}
 
 # Finds the intersection of the segment from point p1 to point p2 with
 # the right edge of the box with vertices (xmin,ymin) and (xmax,ymax)
-proc ClipRight {win p1 p2} {
-    makeLocal $win xmax ymin ymax
-    set Xmax [rtosx$win $xmax]
-    set Ymin [rtosy$win $ymax]
-    set Ymax [rtosy$win $ymin]
+proc ClipRight {p1 p2 xmin ymin xmax ymax} {
     set x1 [lindex $p1 0]
     set y1 [lindex $p1 1]
     set x2 [lindex $p2 0]
     set y2 [lindex $p2 1]
-    set y [expr {$y1 + ($y2-1.0*$y1)*($Xmax-$x1)/($x2-$x1)}]
-    if {($y >= $Ymin) && ($y <= $Ymax)} {
-        return "$Xmax $y"
+    set y [expr {$y1 + ($y2-1.0*$y1)*($xmax-$x1)/($x2-$x1)}]
+    if {($y >= $ymin) && ($y <= $ymax)} {
+        return "$xmax $y"
     } else {return}}
 
 # Finds the intersection of the segment from point p1 to point p2 with
 # the bottom edge of the box with vertices (xmin,ymin) and (xmax,ymax)
-proc ClipBottom {win p1 p2} {
-    makeLocal $win xmin xmax ymax
-    set Xmin [rtosx$win $xmin]
-    set Xmax [rtosx$win $xmax]
-    set Ymin [rtosy$win $ymax]
+proc ClipBottom {p1 p2 xmin ymin xmax ymax} {
     set x1 [lindex $p1 0]
     set y1 [lindex $p1 1]
     set x2 [lindex $p2 0]
     set y2 [lindex $p2 1]
-    set x [expr {$x1 + ($x2-1.0*$x1)*($Ymin-$y1)/($y2-$y1)}]
-    if {($x >= $Xmin) && ($x <= $Xmax)} {
-        return "$x $Ymin"
+    set x [expr {$x1 + ($x2-1.0*$x1)*($ymin-$y1)/($y2-$y1)}]
+    if {($x >= $xmin) && ($x <= $xmax)} {
+        return "$x $ymin"
     } else {return}}
 
 # Finds the intersection of the segment from point p1 to point p2 with
 # the top edge of the box with vertices (xmin,ymin) and (xmax,ymax)
-proc ClipTop {win p1 p2} {
-    makeLocal $win xmin xmax ymin
-    set Xmin [rtosx$win $xmin]
-    set Xmax [rtosx$win $xmax]
-    set Ymax [rtosy$win $ymin]
+proc ClipTop {p1 p2 xmin ymin xmax ymax} {
     set x1 [lindex $p1 0]
     set y1 [lindex $p1 1]
     set x2 [lindex $p2 0]
     set y2 [lindex $p2 1]
-    set x [expr {$x1 + ($x2-1.0*$x1)*($Ymax-$y1)/($y2-$y1)}]
-    if {($x >= $Xmin) && ($x <= $Xmax)} {
-        return "$x $Ymax"
+    set x [expr {$x1 + ($x2-1.0*$x1)*($ymax-$y1)/($y2-$y1)}]
+    if {($x >= $xmin) && ($x <= $xmax)} {
+        return "$x $ymax"
     } else {return}}
 
 # Returns the intersection points of the segment from point1 to ppoint2
 # and the box with vertices in (xmin,ymin) and (xmax,ymax). 
-proc ClipLine {win point1 point2 code1 code2} {
+proc ClipLine {p1 p2 code1 code2 xmin ymin xmax ymax} {
     set clipped {}
+    # puts "ClipLine: input = $p1 $p2"
     if {$code1 & $code2} {
         return
     } else {
-        foreach point [list $point1 $point2] code [list $code1 $code2] {
+        foreach code [list $code1 $code2] i [list 0 1] {
             switch $code {
-                0 {}
-                1 {set p [ClipLeft $win $point1 $point2]
+                0 {if {$i} {lappend clipped $p2}}
+                1 {set p [ClipLeft $p1 $p2 $xmin $ymin $xmax $ymax]
                     if {[llength $p]} {lappend clipped $p} else {return}}
-                2 {set p [ClipRight $win $point1 $point2]
+                2 {set p [ClipRight $p1 $p2 $xmin $ymin $xmax $ymax]
                     if {[llength $p]} {lappend clipped $p} else {return}}
-                4 {set p [ClipBottom $win $point1 $point2]
+                4 {set p [ClipBottom $p1 $p2 $xmin $ymin $xmax $ymax]
                     if {[llength $p]} {lappend clipped $p} else {return}}
-                8 {set p [ClipTop $win $point1 $point2]
+                8 {set p [ClipTop $p1 $p2 $xmin $ymin $xmax $ymax]
                     if {[llength $p]} {lappend clipped $p} else {return}}
-                5 {set p [ClipLeft $win $point1 $point2]
-                    if {[llength $p]} {lappend clipped $p
-                    } else {set p [ClipBottom $win $point1 $point2]
+                5 {set p [ClipLeft $p1 $p2 $xmin $ymin $xmax $ymax]
+                    if {[llength $p]} {
+                        lappend clipped $p
+                    } else {
+                        set p [ClipBottom $p1 $p2 $xmin $ymin $xmax $ymax]
                         if {[llength $p]} {lappend clipped $p} else {return}}}
-                6 {set p [ClipRight $win $point1 $point2]
-                    if {[llength $p]} {lappend clipped $p
-                    } else {set p [ClipBottom $win $point1 $point2]
+                6 {set p [ClipRight $p1 $p2 $xmin $ymin $xmax $ymax]
+                    if {[llength $p]} {
+                        lappend clipped $p
+                    } else {
+                        set p [ClipBottom $p1 $p2 $xmin $ymin $xmax $ymax]
                         if {[llength $p]} {lappend clipped $p} else {return}}}
-                9 {set p [ClipLeft $win $point1 $point2]
-                    if {[llength $p]} {lappend clipped $p
-                    } else {set p [ClipTop $win $point1 $point2]
+                9 {set p [ClipLeft $p1 $p2 $xmin $ymin $xmax $ymax]
+                    if {[llength $p]} {
+                        lappend clipped $p
+                    } else {
+                        set p [ClipTop $p1 $p2 $xmin $ymin $xmax $ymax]
                         if {[llength $p]} {lappend clipped $p} else {return}}}
-                10 {set p [ClipRight $win $point1 $point2]
-                    if {[llength $p]} {lappend clipped $p
-                    } else {set p [ClipTop $win $point1 $point2]
+                10 {set p [ClipRight $p1 $p2 $xmin $ymin $xmax $ymax]
+                    if {[llength $p]} {
+                        lappend clipped $p
+                    } else {
+                        set p [ClipTop $p1 $p2 $xmin $ymin $xmax $ymax]
                         if {[llength $p]} {lappend clipped $p} else {return}}}
                 default {return}}}
+        # puts "ClipLine: output = $clipped"
         return $clipped}}
 
 ## endsource plot2d.tcl
