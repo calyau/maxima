@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-11 09:55:35 villate"            #
+#     Time-stamp: "2024-03-11 21:31:12 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -104,17 +104,12 @@ proc doIntegrateScreen { win sx sy  } {
 proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
     # puts "dointegrate $win $x0 $y0"
-    makeLocal $win xradius yradius c dxdt dydt tinitial tstep nsteps xfun direction linewidth tinitial versus_t xmin xmax ymin ymax number_of_arrows parameters
+    makeLocal $win xradius yradius c dxdt dydt tinitial tstep nsteps \
+        direction linewidth tinitial versus_t xmin xmax ymin ymax parameters
     linkLocal $win didLast trajectoryStarts
     setXffYff $dxdt $dydt $parameters
     setXggYgg $dxdt $dydt $parameters
     set method {RK4}
-
-    set rtosx rtosx$win ; set rtosy rtosy$win
-    set x1 [$rtosx $xmin]
-    set y1 [$rtosy $ymax]
-    set x2 [$rtosx $xmax]
-    set y2 [$rtosy $ymin]
     oset $win trajectory_at [format "%.10g  %.10g" $x0 $y0]
     lappend trajectoryStarts [list $x0 $y0]
 
@@ -163,28 +158,48 @@ proc doIntegrate { win x0 y0 } {
                         set coords {}}}}
             set form [list $method $fx $fy $tinitial $x0 $y0 $h $steps $sgn]
 
-            # ans will be a list with values of t, x and y, at the initial
-            # point and each of the steps
-            set ans [eval $form]
-            lappend didLast $form
             # puts "doing: $form"
-            set i 0
-            catch {
-                while {$i <= [expr {[llength $ans]-3}]} {
-                    set xn [$rtosx [lindex $ans [incr i]]]
-                    set yn [$rtosy [lindex $ans [incr i]]]
-                    incr i
-                    # Tests if point is inside the domain. FIXME: This
-                    # is not the correct way to clip lines!
-                    if { ($xn-$x1)*($xn-$x2) <= 0 &&
-                         ($yn-$y1)*($yn-$y2) <= 0 } {
-                        lappend coords $xn $yn}}}
-            if { [llength $coords] > 3 } {
-                $c create line $coords -tags path \
-                    -width $linewidth -fill $linecolor \
-                    -arrow $arrow
+            # pts will be a list with values of t, x and y, at the initial
+            # point and at each of the steps
+            set pts [eval $form]
+            lappend didLast $form
+            set first 1
+            # puts "clipping box: ($x1,$y1), ($x2,$y2)"
+            foreach {t xr yr} $pts {
+                if {$first} {
+                        set p1 [list [lindex $pts 1] [lindex $pts 2]]
+                        set c1 [PointCode $p1 $xmin $ymin $xmax $ymax]
+                        # puts "point $p1 with code $c1"
+                        if {!$c1} {
+                            set coords [rtosx$win [lindex $p1 0]]
+                            lappend coords [rtosy$win [lindex $p1 1]]
+                        } else {set coords {}}
+                        set first 0
+                    } else {
+                        set p2 [list $xr $yr]
+                        set c2 [PointCode $p2 $xmin $ymin $xmax $ymax]
+                        # puts "point $p2 with code $c2"
+                        if {$c1|$c2} {
+                            set clip \
+                                [ClipLine $p1 $p2 $c1 $c2 $xmin $ymin $xmax $ymax]
+                            if {[llength $clip]} {
+                                foreach p $clip {
+                                    lappend coords [rtosx$win [lindex $p 0]]
+                                    lappend coords [rtosy$win [lindex $p 1]]}}
+                            if {$c2 && ([llength $coords] >= 4)} {
+                                $c create line $coords -tags path -width \
+                                    $linewidth -fill $linecolor -arrow $arrow
+                                set coords {}}
+                        } else {
+                            lappend coords [rtosx$win [lindex $p2 0]]
+                            lappend coords [rtosy$win [lindex $p2 1]]}
+                        set p1 $p2
+                        set c1 $c2}}
+            if {[llength $coords] >= 4} {
+                $c create line $coords -tags path -width $linewidth \
+                    -fill $linecolor -arrow $arrow}
                 if { "$direction" == "both" } {
-                    set coords [lrange $coords 2 3]}}}}
+                    set coords [lrange $coords 2 3]}}}
     if { $versus_t } { plotVersusT $win}
 }
 
@@ -192,24 +207,18 @@ proc plotVersusT { win } {
     linkLocal $win didLast dydt dxdt parameters xcenter xradius ycenter yradius
     if { $didLast == {} } { return }
     set w [winfo parent $win]
-    if { "$w" == "." } { set w "" }
+    if {$w eq {.}} { set w {}}
     set nwin .versust.plot2d
-    if { "$parameters" != ""  } {
-	set pars ", $parameters"
-    } else {
-	set pars ""
-    }
+    if {$parameters ne {}} {set pars ", $parameters"} else {set pars {}}
     oset $nwin themaintitle "dy/dt=$dydt, dx/dt=$dxdt $pars"
     lappend plotdata [list maintitle [list oget $nwin themaintitle]]
 
     set max [expr {$xcenter + $xradius}]
     set min [expr {$xcenter - $xradius}]
     if { ($ycenter + $yradius) > $max } {
-	set max [expr {$ycenter + $yradius}]
-    }
+        set max [expr {$ycenter + $yradius}]}
     if { ($ycenter - $yradius) < $min } {
-	set min [expr {$ycenter - $yradius}]
-    }
+	set min [expr {$ycenter - $yradius}]}
 
     foreach v $didLast {
 	set ans [eval $v]
@@ -222,30 +231,25 @@ proc plotVersusT { win } {
 	set allx "" ; set ally "" ; set allt ""
 	set ii 0
 	foreach {t x y } $ans {
-	    lappend allx $x
-	    lappend ally $y
-	    lappend allt $t
-	    incr ii
-	}
+            if {($x >= 0.95*$min) && ($x <= 1.05*$max) && \
+                ($y >= 0.95*$min) && ($y <= 1.05*$max)} {
+                lappend allx $x
+                lappend ally $y
+                lappend allt $t
+                incr ii}}
 	
 	foreach u $tem v [list $allx $ally $allt] {
 	    if { $sgn > 0 } { lappend doing($this) [concat $u $v]} else {
-		lappend doing($this) [concat [lreverse $v] $u]
-	    }
-	}
-    }
+		lappend doing($this) [concat [lreverse $v] $u]}}}
 
     foreach {na val } [array get doing] {
 	lappend plotdata [list xaxislabel "t"]
 	lappend plotdata [list label [oget $win xaxislabel]] [list plotpoints 0]
 	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 0] ]
 	lappend plotdata [list label [oget $win yaxislabel]]	
-	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 1] ]
-    }
-    if { ![winfo exists .versust] } {
-	toplevel .versust
-    }
-
+	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 1] ]}
+    if { ![winfo exists .versust] } {toplevel .versust}
+    # puts "plotdata: $plotdata"
     plot2d -data $plotdata -windowname $nwin -ycenter [expr {($max+$min)/2.0}] -yradius [expr {($max-$min)/2.0}]
     wm title .versust [concat [oget $win xaxislabel] [mc " and "] [oget $win yaxislabel] [mc " versus t"]]
 }
