@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-12 10:29:25 villate"            #
+#     Time-stamp: "2024-03-12 16:07:46 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -185,11 +185,9 @@ proc doIntegrate { win x0 y0 } {
                                 foreach p $clip {
                                     lappend coords [rtosx$win [lindex $p 0]]
                                     lappend coords [rtosy$win [lindex $p 1]]}}
-                            if {$c2} {
-                                if {[llength $coords] >= 4} {
-                                    $c create line $coords -tags path -width \
-                                        $linewidth -fill $linecolor \
-                                        -arrow $arrow}
+                            if {$c2 && ([llength $coords] >= 4)} {
+                                $c create line $coords -tags path -width \
+                                    $linewidth -fill $linecolor -arrow $arrow
                                 set coords {}}
                         } else {
                             lappend coords [rtosx$win [lindex $p2 0]]
@@ -230,7 +228,8 @@ proc plotVersusT { win } {
 	set allx "" ; set ally "" ; set allt ""
 	set ii 0
 	foreach {t x y } $ans {
-            if {($x >= $min) && ($x <= $max)} {
+            if {($x >= 1.1*$min) && ($x <= 1.1*$max) && \
+                ($y >= 1.1*$min) && ($y <= 1.1*$max)} {
                 lappend allx $x
                 lappend ally $y
                 lappend allt $t

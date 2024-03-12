@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-12 15:44:16 villate"            #
+#     Time-stamp: "2024-03-12 15:58:17 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -728,11 +728,11 @@ proc drawPlot {win listpts args } {
                                 set inpts {}}
                         } else {lappend inpts $p2}
                         set p1 $p2
-                        set c1 $c2}
-                    if {[llength $inpts] >= 2} {
-                        eval $c create line {*}$inpts -tags [list $tags] \
-                            -width $linewidth -fill $fill}
-                    set res "$win create line "}}}}
+                        set c1 $c2}}
+                if {[llength $inpts] >= 2} {
+                    eval $c create line {*}$inpts -tags [list $tags] \
+                        -width $linewidth -fill $fill}
+                set res "$win create line "}}}
     if { $nolegend == 0 } {plot2dDrawLabel $win $label $fill}}
 
 proc drawPointsForPrint { c } {
