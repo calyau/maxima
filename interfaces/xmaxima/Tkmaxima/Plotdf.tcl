@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-11 21:31:12 villate"            #
+#     Time-stamp: "2024-03-12 10:29:25 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -167,12 +167,11 @@ proc doIntegrate { win x0 y0 } {
             # puts "clipping box: ($x1,$y1), ($x2,$y2)"
             foreach {t xr yr} $pts {
                 if {$first} {
-                        set p1 [list [lindex $pts 1] [lindex $pts 2]]
+                        set p1 [list $xr $yr]
                         set c1 [PointCode $p1 $xmin $ymin $xmax $ymax]
                         # puts "point $p1 with code $c1"
                         if {!$c1} {
-                            set coords [rtosx$win [lindex $p1 0]]
-                            lappend coords [rtosy$win [lindex $p1 1]]
+                            set coords [list [rtosx$win $xr] [rtosy$win $yr]]
                         } else {set coords {}}
                         set first 0
                     } else {
@@ -186,9 +185,11 @@ proc doIntegrate { win x0 y0 } {
                                 foreach p $clip {
                                     lappend coords [rtosx$win [lindex $p 0]]
                                     lappend coords [rtosy$win [lindex $p 1]]}}
-                            if {$c2 && ([llength $coords] >= 4)} {
-                                $c create line $coords -tags path -width \
-                                    $linewidth -fill $linecolor -arrow $arrow
+                            if {$c2} {
+                                if {[llength $coords] >= 4} {
+                                    $c create line $coords -tags path -width \
+                                        $linewidth -fill $linecolor \
+                                        -arrow $arrow}
                                 set coords {}}
                         } else {
                             lappend coords [rtosx$win [lindex $p2 0]]
@@ -197,9 +198,7 @@ proc doIntegrate { win x0 y0 } {
                         set c1 $c2}}
             if {[llength $coords] >= 4} {
                 $c create line $coords -tags path -width $linewidth \
-                    -fill $linecolor -arrow $arrow}
-                if { "$direction" == "both" } {
-                    set coords [lrange $coords 2 3]}}}
+                    -fill $linecolor -arrow $arrow}}}
     if { $versus_t } { plotVersusT $win}
 }
 
@@ -231,8 +230,7 @@ proc plotVersusT { win } {
 	set allx "" ; set ally "" ; set allt ""
 	set ii 0
 	foreach {t x y } $ans {
-            if {($x >= 0.95*$min) && ($x <= 1.05*$max) && \
-                ($y >= 0.95*$min) && ($y <= 1.05*$max)} {
+            if {($x >= $min) && ($x <= $max)} {
                 lappend allx $x
                 lappend ally $y
                 lappend allt $t

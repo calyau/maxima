@@ -12,14 +12,16 @@ New items in share:
 Changes in core:
 ----------------
  * Add rtest_raddenest to share_testsuite_files
- * In src/plot.lisp, draw2d-discrete now accepts options x and y to clip points
+ * In src/plot.lisp, clipping is no longer done when plot_format is xmaxima
+ * The default y-range for plots is determined only by points within x-range
 
 Changes in share:
 -----------------
 
 Changes in Xmaxima:
 -------------------
-plot2d now does line clipping.
+ * Line clipping in plot2d  and plotdf
+ * Better integration algorithm for plotdf
 
 Changes in the Windows installer:
 ---------------------------------

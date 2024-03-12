@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-11 18:37:13 villate"            #
+#     Time-stamp: "2024-03-12 10:28:17 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -707,7 +707,7 @@ proc drawPlot {win listpts args } {
                 # puts "box: ($x1,$y1), ($x2,$y2)"
                 foreach {x y} $pts {
                     if {$first} {
-                        set p1 [list [lindex $pts 0] [lindex $pts 1]]
+                        set p1 [list $x $y]
                         set c1 [PointCode $p1 $x1 $y1 $x2 $y2]
                         # puts "point $p1 with code $c1"
                         if {!$c1} {
@@ -722,9 +722,11 @@ proc drawPlot {win listpts args } {
                             set clip [ClipLine $p1 $p2 $c1 $c2 $x1 $y1 $x2 $y2]
                             if {[llength $clip]} {
                                 lappend inpts {*}$clip}
-                            if {$c2 && ([llength $inpts] >= 4)} {
-                                eval $c create line {*}$inpts -tags \
-                                    [list $tags] -width $linewidth -fill $fill
+                            if {$c2} {
+                                if {[llength $inpts] >= 4} {
+                                    eval $c create line {*}$inpts -tags \
+                                        [list $tags] -width $linewidth \
+                                        -fill $fill}
                                 set inpts {}}
                         } else {lappend inpts $p2}
                         set p1 $p2
