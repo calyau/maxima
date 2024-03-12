@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-12 10:28:17 villate"            #
+#     Time-stamp: "2024-03-12 15:44:16 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -722,16 +722,14 @@ proc drawPlot {win listpts args } {
                             set clip [ClipLine $p1 $p2 $c1 $c2 $x1 $y1 $x2 $y2]
                             if {[llength $clip]} {
                                 lappend inpts {*}$clip}
-                            if {$c2} {
-                                if {[llength $inpts] >= 4} {
-                                    eval $c create line {*}$inpts -tags \
-                                        [list $tags] -width $linewidth \
-                                        -fill $fill}
+                            if {$c2 && ([llength $inpts] >= 2)} {
+                                eval $c create line {*}$inpts -tags \
+                                    [list $tags] -width $linewidth -fill $fill
                                 set inpts {}}
                         } else {lappend inpts $p2}
                         set p1 $p2
                         set c1 $c2}
-                    if {[llength $inpts] >= 4} {
+                    if {[llength $inpts] >= 2} {
                         eval $c create line {*}$inpts -tags [list $tags] \
                             -width $linewidth -fill $fill}
                     set res "$win create line "}}}}
@@ -835,7 +833,7 @@ proc ClipTop {p1 p2 xmin ymin xmax ymax} {
 # and the box with vertices in (xmin,ymin) and (xmax,ymax). 
 proc ClipLine {p1 p2 code1 code2 xmin ymin xmax ymax} {
     set clipped {}
-    # puts "ClipLine: input = $p1 $p2"
+    # puts "ClipLine: codes = $code1 $code2"
     if {$code1 & $code2} {
         return
     } else {
@@ -875,7 +873,7 @@ proc ClipLine {p1 p2 code1 code2 xmin ymin xmax ymax} {
                         set p [ClipTop $p1 $p2 $xmin $ymin $xmax $ymax]
                         if {[llength $p]} {lappend clipped $p} else {return}}}
                 default {return}}}
-        # puts "ClipLine: output = $clipped"
+        # puts "$clipped"
         return $clipped}}
 
 ## endsource plot2d.tcl
