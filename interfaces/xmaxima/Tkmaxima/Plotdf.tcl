@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-16 18:45:48 villate"            #
+#     Time-stamp: "2024-03-16 21:26:44 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -73,7 +73,6 @@ proc makeFrameDf { win } {
 
 proc swapChoose {win msg winchoose } {
     # global dydx dxdt dydt
-
     if { "$msg" == "dydt" } {
 	pack $winchoose.dxdt -before $winchoose.dydt -side bottom
 	oset $win dydx ""
@@ -82,9 +81,7 @@ proc swapChoose {win msg winchoose } {
 	pack forget $winchoose.dxdt
 	oset $win dxdt 1
 	oset $win dydx " "
-	$winchoose.dydt.lab config -text "dy/dx:"
-    }
-}
+	$winchoose.dydt.lab config -text "dy/dx:"}}
 
 proc setForIntegrate { win} {
     makeLocal $win c
@@ -109,7 +106,7 @@ proc doIntegrate { win x0 y0 } {
     linkLocal $win didLast trajectoryStarts
     setXffYff $dxdt $dydt $parameters
     setXggYgg $dxdt $dydt $parameters
-    set method {RK4}
+    set method {rungeKutta}
     oset $win trajectory_at [format "%.10g  %.10g" $x0 $y0]
     lappend trajectoryStarts [list $x0 $y0]
 
@@ -117,11 +114,10 @@ proc doIntegrate { win x0 y0 } {
     # puts "doing at $trajectory_at"
     set steps $nsteps
     if {$tstep eq {}} {
-	set h [expr {[vectorlength $xradius $yradius]/200.0}]
-	set tstep $h
-    } else {set h $tstep}
+	set tstep [expr {[vectorlength $xradius $yradius]/200.0}]
+    }
 
-    # puts h=$h
+    # puts tstep=$tstep
     set todo {1}
     switch -- $direction {
 	forward { set todo {1}}
@@ -156,7 +152,8 @@ proc doIntegrate { win x0 y0 } {
                     if {$direction eq {forward}} {
                         set arrow {last}
                         set coords {}}}}
-            set form [list $method $fx $fy $tinitial $x0 $y0 $h $steps $sgn]
+            set h [expr {$sgn*$tstep}]
+            set form [list $method $fx $fy $tinitial $x0 $y0 $h $steps]
 
             # puts "doing: $form"
             # pts will be a list with values of t, x and y, at the initial
@@ -212,7 +209,7 @@ proc plotVersusT { win } {
 
     foreach v $didLast {
 	set ans [eval $v]
-	desetq "tinitial x0 y0 h steps sgn" [lrange $v 3 end]
+	desetq "tinitial x0 y0 h steps" [lrange $v 3 end]
 	set this [lrange $v 0 4]
 	if { [info exists doing($this) ] } { set tem $doing($this) } else {
 	    set tem ""
@@ -226,7 +223,7 @@ proc plotVersusT { win } {
                 lappend ally $y
                 lappend allt $t}}
 	foreach u $tem v [list $allx $ally $allt] {
-	    if { $sgn > 0 } { lappend doing($this) [concat $u $v]} else {
+	    if { $h > 0 } { lappend doing($this) [concat $u $v]} else {
 		lappend doing($this) [concat [lreverse $v] $u]}}}
 
     foreach {na val } [array get doing] {

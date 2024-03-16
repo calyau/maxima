@@ -1,27 +1,24 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Adams.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
-#
-###### Adams.tcl ######
+############################################################
+# Adams.tcl                                                #
+#  Copyright William F. Schelter.  All rights reserved.    #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2024-03-16 20:45:39 villate"            #
+############################################################
 
-
-proc adamsMoulton { f g t0 x0 y0  h nsteps } {
+proc adamsMoulton {f g t0 x0 y0 h nsteps} {
     set ans [rungeKutta $f $g $t0 $x0 $y0 $h 3]
     catch {
 	set i 0
-	set h24 [expr {$h /24.0}]
-	foreach { x y } $ans {
-	    lappend listXff [xff  [expr {$t0 + $i * $h} ] $x $y]
-	    lappend listYff [yff  [expr {$t0 + $i * $h} ] $x $y]
+	set h24 [expr {$h/24.0}]
+	foreach {t x y } $ans {
+	    lappend listXff [xff [expr {$t0+$i*$h}] $x $y]
+	    lappend listYff [yff [expr {$t0+$i*$h}] $x $y]
 	    incr i
 	    set xn $x
-	    set yn $y
-	}
-
+	    set yn $y}
 	set n [expr $nsteps -3]
-
 	while { [incr n -1] >= 0 } {
-
 	    #puts "listXff = $listXff"
 	    #puts "listYff = $listYff"		
 	    # adams - bashford formula:
@@ -30,7 +27,7 @@ proc adamsMoulton { f g t0 x0 y0  h nsteps } {
 	    #puts "i=$i,xp=$xp,yp=$yp"
 	    # adams-moulton corrector-predictor:
 	    # compute the yp = yn+1 value..
-	    set t [expr {$t0 + $i * $h}]
+	    set t [expr {$t0+$i*$h}]
 	    incr i
 	    if { 1 } {
 		set xap [expr { $xn+($h24)*(9*[xff $t $xp $yp]+19*[lindex $listXff 3]-5*[lindex $listXff 2]+[lindex $listXff 1]) }]
@@ -47,12 +44,10 @@ proc adamsMoulton { f g t0 x0 y0  h nsteps } {
 	    lappend listXff [xff $t $xn $yn]
 	    lappend listYff [yff $t $xn $yn]
 
-	    lappend ans $xn $yn
-	    # puts "ans=$ans"	
-	}
+	    lappend ans $t $xn $yn
+	    # puts "ans=$ans"}
 	#puts "adams:t=$t"
     }
-    return $ans
-}
+    return $ans}
 
 ## endsource adams.tcl
