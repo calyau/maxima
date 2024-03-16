@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-16 21:26:44 villate"            #
+#     Time-stamp: "2024-03-16 22:17:41 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -50,6 +50,7 @@ set plotdfOptions {
     {axes "xy" "if zero, no axes are drawn. x, y or xy to draw the axes."}
     {number_of_arrows 225 "Approximate. Choose a square number as the number of arrows to draw"}
     {nolegend 0 "if not zero, do not write down the legend."}
+    {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
 }
 
 proc makeFrameDf { win } {
@@ -106,7 +107,7 @@ proc doIntegrate { win x0 y0 } {
     linkLocal $win didLast trajectoryStarts
     setXffYff $dxdt $dydt $parameters
     setXggYgg $dxdt $dydt $parameters
-    set method {rungeKutta}
+    set method {adamsMoulton}
     oset $win trajectory_at [format "%.10g  %.10g" $x0 $y0]
     lappend trajectoryStarts [list $x0 $y0]
 

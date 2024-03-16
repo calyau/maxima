@@ -22,7 +22,7 @@ genericdir = $(xmaximadir)
 
 genericdirDATA = demos.html examples.html intro.html plotmaxima.html net.sourceforge.maxima.png net.sourceforge.maxima.svg net.sourceforge.maxima.gif maxima-icon.ico maxima-icon.png maxima-icon.gif 
 
-appicondir = $(datarootdir)/pixmaps
+appicondir = $(datarootdir)/icons
 dist_appicon_DATA = net.sourceforge.maxima.png net.sourceforge.maxima.svg
 
 bin_SCRIPTS = xmaxima
@@ -54,7 +54,6 @@ TKSOURCES = \
 	Tkmaxima/Plotconf.tcl \
 	Tkmaxima/Adams.tcl \
 	Tkmaxima/Rk.tcl \
-	Tkmaxima/rk4.tcl \
 	Tkmaxima/Plotdf.tcl \
 	Tkmaxima/Plot2d.tcl \
 	Tkmaxima/Matrix.tcl \
