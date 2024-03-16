@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-12 16:07:46 villate"            #
+#     Time-stamp: "2024-03-16 18:45:48 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -18,7 +18,7 @@ set plotdfOptions {
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
     {width 700 "Width of canvas in pixels"}
-    {height 500 "Height of canvas in pixels" }
+    {height 600 "Height of canvas in pixels" }
     {scrollregion {} "Area to show if canvas is larger" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {ycenter 0.0 "see xcenter"}
@@ -205,17 +205,10 @@ proc plotVersusT { win } {
     if { $didLast == {} } { return }
     set w [winfo parent $win]
     if {$w eq {.}} { set w {}}
-    set nwin .versust.plot2d
-    if {$parameters ne {}} {set pars ", $parameters"} else {set pars {}}
-    oset $nwin themaintitle "dy/dt=$dydt, dx/dt=$dxdt $pars"
-    lappend plotdata [list maintitle [list oget $nwin themaintitle]]
-
-    set max [expr {$xcenter + $xradius}]
-    set min [expr {$xcenter - $xradius}]
-    if { ($ycenter + $yradius) > $max } {
-        set max [expr {$ycenter + $yradius}]}
-    if { ($ycenter - $yradius) < $min } {
-	set min [expr {$ycenter - $yradius}]}
+    set xwin .versust.plotx
+    set ywin .versust.ploty
+    set xdata {}
+    set ydata {}
 
     foreach v $didLast {
 	set ans [eval $v]
@@ -225,30 +218,32 @@ proc plotVersusT { win } {
 	    set tem ""
 	}
 	set doing($this) ""
-	set allx "" ; set ally "" ; set allt ""
-	set ii 0
+	set allx ""; set ally ""; set allt ""
 	foreach {t x y } $ans {
-            if {($x >= 1.1*$min) && ($x <= 1.1*$max) && \
-                ($y >= 1.1*$min) && ($y <= 1.1*$max)} {
+            if {($x>=$xcenter-1.1*$xradius) && ($x<=$xcenter+1.1*$xradius)
+                && ($y>=$ycenter-1.1*$yradius) && ($y<=$ycenter+1.1*$yradius)} {
                 lappend allx $x
                 lappend ally $y
-                lappend allt $t
-                incr ii}}
-	
+                lappend allt $t}}
 	foreach u $tem v [list $allx $ally $allt] {
 	    if { $sgn > 0 } { lappend doing($this) [concat $u $v]} else {
 		lappend doing($this) [concat [lreverse $v] $u]}}}
 
     foreach {na val } [array get doing] {
-	lappend plotdata [list xaxislabel "t"]
-	lappend plotdata [list label [oget $win xaxislabel]] [list plotpoints 0]
-	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 0] ]
-	lappend plotdata [list label [oget $win yaxislabel]]	
-	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 1] ]}
+	lappend xdata [list xaxislabel "t"]
+	lappend xdata [list yaxislabel [oget $win xaxislabel]]
+        lappend xdata [list plotpoints 0] [list nolegend 1]
+	lappend xdata [list xversusy [lindex $val 2] [lindex $val 0] ]
+	lappend ydata [list xaxislabel "t"]
+	lappend ydata [list yaxislabel [oget $win yaxislabel]]
+        lappend ydata [list plotpoints 0] [list nolegend 1]
+	lappend ydata [list xversusy [lindex $val 2] [lindex $val 1] ]}
     if { ![winfo exists .versust] } {toplevel .versust}
     # puts "plotdata: $plotdata"
-    plot2d -data $plotdata -windowname $nwin -ycenter [expr {($max+$min)/2.0}] -yradius [expr {($max-$min)/2.0}]
-    wm title .versust [concat [oget $win xaxislabel] [mc " and "] [oget $win yaxislabel] [mc " versus t"]]
+    plot2d -data $xdata -windowname $xwin -ycenter $xcenter -yradius $xradius
+    wm title $xwin [concat [oget $win xaxislabel] [mc " versus t"]]
+    plot2d -data $ydata -windowname $ywin -ycenter $ycenter -yradius $yradius
+    wm title $ywin [concat [oget $win yaxislabel] [mc " versus t"]]
 }
 
 proc lreverse { lis } {

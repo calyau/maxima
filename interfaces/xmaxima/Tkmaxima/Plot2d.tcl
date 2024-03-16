@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-12 15:58:17 villate"            #
+#     Time-stamp: "2024-03-16 18:50:51 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -12,7 +12,7 @@ set plot2dOptions {
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
     {width 700 "Width of canvas in pixels"}
-    {height 500 "Height of canvas in pixels" }
+    {height 600 "Height of canvas in pixels" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {xfun "" {function of x to plot eg: sin(x) or "sin(x);x^2+3" }}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
