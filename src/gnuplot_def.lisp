@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2024-03-08 07:49:02 villate"
+;; Time-stamp: "2024-03-16 13:38:52 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -334,7 +334,7 @@
       (slot-value plot 'data)
       (with-output-to-string (dest)
         ;; reset initial state
-        (format dest "reset~%unset output~%unset multiplot~%")
+        (format dest "reset~%unset output~%unset multiplot~%set clip two~%")
         ;; user's preamble
         (when (and (getf plot-options :gnuplot_preamble)
                    (> (length  (getf plot-options :gnuplot_preamble)) 0))
