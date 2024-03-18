@@ -184,7 +184,7 @@ Lisp implementation version: "GCL 2.6.12"
 @end group
 @end example
 
-The Maxima version string can (here 5.36.1) can look very different:
+The Maxima version string (here 5.36.1) can look very different:
 
 @example
 (%i1) build_info();
