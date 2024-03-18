@@ -124,7 +124,7 @@ proc endAnimation {frame} {
 }
 
 proc makeVTKFrame { w type } {
-    global writefile doExit fontSize buttonfont maxima_priv 
+    global doExit fontSize buttonfont maxima_priv 
     linkLocal $w width height restart renwin windowtitle
     set win $w
     if { "$w" == "." } {

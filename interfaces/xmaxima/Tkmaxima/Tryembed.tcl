@@ -25,9 +25,6 @@
 # %     setupPrintVariables $slave
 # % interp eval jack plot2d -xfun {sin(x)}
 
-
-
-
 proc makeEmbedWin { parent width height } {
     global maxima_priv env auto_index
     set win $parent.embed[incr maxima_priv(counter)]
@@ -58,7 +55,6 @@ proc makeEmbedWin { parent width height } {
     return $fr
 }
 
-
 proc setupUnknown { slave } {
     interp eval $slave {rename auto_load auto_load-orig}
     interp alias $slave auto_load1 {} auto_load1 $slave
@@ -68,8 +64,6 @@ proc setupUnknown { slave } {
     }
     }
 }
-
-
 
 proc auto_load1 { slave name {namespace ""} } {
     if { "[info proc $name ]" != "" } {
@@ -89,39 +83,17 @@ proc auto_load1 { slave name {namespace ""} } {
 }
 
 proc setupPrintVariables { slave } {
-    global printOption fontSize show_balloons getOp parse_table Parser     axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile     doExit  fontCourier8   plotdfOptions ftpInfo  maxima_priv
+    global printOption fontSize show_balloons getOp parse_table Parser \
+        axisGray plot2dOptions plot3dOptions paperSizes printOptions \
+        doExit fontCourier8 plotdfOptions maxima_priv
     foreach v {printOption fontSize show_balloons getOp parse_table Parser
-	axisGray plot2dOptions plot3dOptions paperSizes  printOptions writefile
-	doExit  fontCourier8   plotdfOptions ftpInfo maxima_priv} {
+	axisGray plot2dOptions plot3dOptions paperSizes printOptions
+	doExit  fontCourier8   plotdfOptions maxima_priv} {
 	if { [array exists  $v] } {
 	    interp eval $slave [list array set $v [array get $v *] ]
-	} else {
-	    interp eval $slave [list set $v [set $v ]]
-	}
-    }
+	} else {interp eval $slave [list set $v [set $v ]]}}}
 
-}
-# proc tryit {{win .}} {
-#  global  maxima_priv
-#     if { ![info exists maxima_priv(counter)] } {
-# 	set maxima_priv(counter) 0
-#     }
-#     set width [winfo width $win]
-#     set height [winfo height $win]
-#     if { $width <=1 } {set width 200}
-#     if { $height <=1 } {set height 200}
-#     set ff [makeEmbedWin $win $width $height]
-
-#     return [list $ff [oget $ff slave]]
-# }
-
-if { "[info command policy]" != "policy" } {
-    proc policy { args } { }
-}
-
-proc browser_log { args } {
-    # puts "$args"
-}
+if { "[info command policy]" != "policy" } {proc policy { args } { }}
 
 ## source nsafesock.tcl
 
@@ -179,12 +151,9 @@ proc Safesock_PolicyInit {slave {version 1.0}} {
     set browser_state($slave,safesock,permissions) unknown
 
     # Save the homebase for this Tclet:
-
     set browser_state($slave,safesock,homebase) $server
-    set browser_state($slave,safesock,homeport) [list $port 1025- ftp ping]
 
     # Tell the slave about itself:
-
     interp eval $slave [list set env(SERVER) $server]
     interp eval $slave [list set env(PORT) $port]
     interp eval $slave [list set env(URL) $url]

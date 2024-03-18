@@ -37,7 +37,6 @@
 # Source Tkmaxima/Plotconf.tcl 		;# can be autoloaded
 # Source Tkmaxima/Adams.tcl 		;# can be autoloaded
 # Source Tkmaxima/Rk.tcl 		;# can be autoloaded
-# Source Tkmaxima/rk4.tcl
 # Source Tkmaxima/Plotdf.tcl 		;# can be autoloaded
 # Source Tkmaxima/Plot2d.tcl 		;# defined globals
 # Source Tkmaxima/Matrix.tcl 		;# can be autoloaded
@@ -51,7 +50,6 @@
 # Source Tkmaxima/Browser.tcl 		;# defines globals
 # Source Tkmaxima/Bindings.tcl 		;# defines bindings
 # Source Tkmaxima/Wmenu.tcl 		;# can be autoloaded
-# Source Tkmaxima/Tryftp2.tcl 		;# can be autoloaded
 # Source Tkmaxima/Myhtml.tcl 		;# defines globals and tags
 # Source Tkmaxima/Myhtml1.tcl 		;# can be autoloaded
 # Source Tkmaxima/Base64.tcl 		;# can be autoloaded

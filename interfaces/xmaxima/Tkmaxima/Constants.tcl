@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-06-14 15:38:17 villate"            #
+#     Time-stamp: "2024-03-18 17:23:12 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
@@ -94,9 +94,6 @@ set maxima_priv(clicks_per_second) 1000000
 
 # from Getdata1.tcl
 set maxima_priv(cachedir) ~/.xmaxima/cache
-
-# from Plotconf.tcl
-global ftpInfo
 
 # from Plot2d.tcl
 array set maxima_priv { bitmap,disc4 {#define disc4_width 4

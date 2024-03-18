@@ -8,19 +8,12 @@
 # For distribution under GNU public License.  See COPYING. #
 ############################################################
 
-
 global axisGray
 if { "[winfo screenvisual .]" == "staticgray" } {
     set axisGray black
 } else  {
     set axisGray gray60
 }
-
-global writefile
-set writefile  "Save"
-# make printing be by ftp'ing a file..
-
 if {[catch { set doExit }] } { set doExit ""}
-
 
 ## endsource plotting.tcl

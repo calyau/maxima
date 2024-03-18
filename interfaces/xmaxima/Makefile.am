@@ -67,7 +67,6 @@ TKSOURCES = \
 	Tkmaxima/Browser.tcl \
 	Tkmaxima/Bindings.tcl \
 	Tkmaxima/Wmenu.tcl \
-	Tkmaxima/Tryftp2.tcl \
 	Tkmaxima/Myhtml.tcl \
 	Tkmaxima/Myhtml1.tcl \
 	Tkmaxima/Base64.tcl \

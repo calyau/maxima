@@ -205,7 +205,6 @@ proc mkPrintDialog { name args } {
     set win [winfo parent $canv]
     button $wb.save -text [mc "Save"] -font $buttonFont -command "destroy $name; writePostscript $win; $canv delete printoptions"
     button $wb.cancel -text [mc "Cancel"] -font $buttonFont -command "destroy $name ; $canv delete printoptions"
-    set writefile "Save"
     mkentryPr  $wb.psfilename printOption(psfilename) [mc "Postscript filename"] $buttonFont
     mkentryPr  $wb.hoffset printOption(hoffset) [mc "Left margin (inches)"] $buttonFont
     mkentryPr  $wb.voffset printOption(voffset) [mc "Top margin (inches)"] $buttonFont
