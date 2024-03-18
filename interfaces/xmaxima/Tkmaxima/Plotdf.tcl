@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-16 22:17:41 villate"            #
+#     Time-stamp: "2024-03-18 20:53:06 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -254,7 +254,6 @@ proc lreverse { lis } {
 }
 
 proc drawArrowScreen { c atx aty dfx dfy color } {
-
     set x1 [expr {$atx + $dfx}]
     set y1 [expr {$aty + $dfy}]
     #   set x2 [expr {$atx + .8*$dfx +.1* $dfy}]
@@ -299,7 +298,7 @@ proc drawDF { win tinitial } {
 		# puts "$dfx $dfy"
 		set len  [vectorlength $dfx $dfy]
 		append all " $len $dfx $dfy "
-		if { $min > $len } { set min $len }
+		if { $min > $len } {set min $len}
 		if { $max < $len } {set  max $len}
 	    }
 	}
@@ -318,22 +317,17 @@ proc drawDF { win tinitial } {
 	# puts "xfactor=$xfactor,yfactor=$yfactor"
 	
 	set i -1
-	for { set x [expr {[$rtosx $xmin] + $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
-	    for { set y [expr {[$rtosy $ymax] + $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
-		
-		
-		set len [lindex $all [incr i]]
+	for {set x [expr {[$rtosx $xmin] + $stepsize}]} {$x < $uptox} {set x [expr {$x +$stepsize}]} {
+	    for {set y [expr {[$rtosy $ymax] + $stepsize}]} {$y < $uptoy} {set y [expr {$y + $stepsize}]} {
+                set len [lindex $all [incr i]]
 		set dfx [lindex $all [incr i]]
 		set dfy [lindex $all [incr i]]
 		#puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy
 		# puts "$len $dfx $dfy"
                 if {$len != 0.0} {
                     set fac [expr {$s1/$len + $s2}]
-                    drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy} ] $vectors
-                }
-	    }
-	}
-    }
+                    drawArrowScreen $c $x $y [expr {$fac * $dfx}] \
+                        [expr {$fac * $dfy} ] $vectors}}}}
 
     set x1 [rtosx$win $xmin]
     set y1 [rtosy$win $ymax]
@@ -347,25 +341,19 @@ proc drawDF { win tinitial } {
 		-tags axes
 	} else {
 	    $c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -width 2 \
-		-arrow "first" -tags axes
-	}
-    }
+		-arrow "first" -tags axes}}
     if { $ymin*$ymax < 0  && ($axes == {x} || $axes == {xy}) } {
 	if { $nobox == 0 } {
 	    $c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -fill $axisGray \
 		-tags axes
 	} else {
 	    $c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -width 2 \
-		-arrow "last" -tags axes
-	}
-    }
+		-arrow "last" -tags axes}}
     # Draw the plot box
     if { "[$c find withtag printrectangle]" == "" && $nobox == 0 } {
 	$c create rectangle $x1 $y1 $x2 $y2 -tags printrectangle -width 2
 	marginTicks $c [storx$win $x1] [story$win $y2] [storx$win $x2] \
-	    [story$win $y1] "printrectangle marginticks"
-
-    }
+	    [story$win $y1] "printrectangle marginticks"}
     # Write down the axes labels
     $c del axislabel
     set width [oget $win width]
@@ -406,7 +394,7 @@ proc parseOdeArg {  s } {
 }
 
 proc plotdf { args } {
-    global plotdfOptions   printOption printOptions plot2dOptions
+    global plotdfOptions printOption printOptions plot2dOptions
     # puts "args=$args"
     # to see options add: -debug 1
     set win [assoc -windowname $args]
@@ -418,6 +406,10 @@ proc plotdf { args } {
     global [oarray $win]
     getOptions $plotdfOptions $args -usearray [oarray $win]
     oset $win didLast {}
+    # Makes extra vertical space for sliders
+    linkLocal $win sliders height
+    if {[string length $sliders] > 0} {
+        oset $win height [expr {$height + 40*[llength [split $sliders ,]]}]}
 
     makeLocal $win dydx
 
@@ -444,7 +436,9 @@ proc replotdf { win } {
 	set data ""
 	
     }
-    makeLocal $win c dxdt dydt tinitial nsteps xfun trajectory_at parameters number_of_arrows
+    makeLocal $win c dxdt dydt tinitial nsteps xfun trajectory_at \
+        parameters number_of_arrows
+
     set_xy_region $win 0.8
     set_xy_transforms $win
     setXffYff $dxdt $dydt $parameters

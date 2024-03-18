@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-18 17:40:27 villate"            #
+#     Time-stamp: "2024-03-18 20:53:56 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -302,6 +302,10 @@ proc set_xy_transforms { win } {
     set y1 [expr {$f1 *$height}]
     set x2 [expr {$x1 + $fac*$width}]
     set y2 [expr {$y1 + $fac*$height}]
+    # Do not use the extra vertical space for sliders
+    linkLocal $win sliders
+    if {[string length $sliders] > 0} {
+        set y2 [expr {$y2 - 40*[llength [split $sliders ,]]}]}
 
     set transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " \
                        "$xmax $ymin $x2 $y2"]
@@ -354,9 +358,9 @@ proc composeTransform { t1 t2  } {
 #
 #----------------------------------------------------------------
 proc makeTransform { P1 P2 P3 } {
-    desetq  "X1 Y1 U1 V1" $P1
-    desetq  "X2 Y2 U2 V2" $P2
-    desetq  "X3 Y3 U3 V3" $P3
+    desetq  {X1 Y1 U1 V1} $P1
+    desetq  {X2 Y2 U2 V2} $P2
+    desetq  {X3 Y3 U3 V3} $P3
     set tem [expr {double((($X2-$X1)*$Y3+($X1-$X3)*$Y2+($X3-$X2)*$Y1))}]
     set A [expr {(($U2-$U1)*$Y3+($U1-$U3)*$Y2+($U3-$U2)*$Y1) \
 		     /$tem}]
@@ -370,11 +374,6 @@ proc makeTransform { P1 P2 P3 } {
 		     /$tem}]
     set F [expr {(($V1*$X2-$V2*$X1)*$Y3+($V3*$X1-$V1*$X3)*$Y2+($V2*$X3-$V3*$X2)*$Y1) \
 		     /$tem}]
-    set xf ""
-    set yf ""
-    if { $B == 0  && $C == 0 } {
-	set xf "$A*\$X+$E"
-	set yf "$D*\$Y+$F"}
     return [list $A $B $C $D $E $F]}
 
 #-----------------------------------------------------------------
@@ -719,8 +718,8 @@ proc addSliders { win } {
     set i 0
     if { "$sliders" == "" } { return }
     catch { destroy $c.sliders }
-    set bg "#22aaee"
-    set trough "#22ccff"
+    set bg "#9ce"
+    set trough "#9df"
     frame $c.sliders -relief raised -highlightthickness 2 -highlightbackground $trough
     foreach v [split $sliders ,] {
 	if { [regexp {([a-zA-Z0-9]+)[ ]*=?(([---0-9.]+):([---0-9.]+))?} $v  junk var junk x0 x1] } {
@@ -733,7 +732,9 @@ proc addSliders { win } {
 	    scale $fr.scale -command "sliderUpdate $win $var" \
 		-from "$x0" -to $x1 -orient horizontal \
 		-resolution [expr ($x1 - $x0) < 1 ? ($x1-$x0)/100.0 : .01] \
-		-length [expr {$width/2}] -showvalue 0 -variable [oloc $win slidevalue$i] -background $bg -troughcolor "#22ccff" -highlightthickness 0
+		-length [expr {$width/2}] -showvalue 0 -variable \
+                [oloc $win slidevalue$i] -background $bg -troughcolor "#9ad" \
+                -highlightthickness 0
 	    pack $fr.lab -side left -expand 1 -fill x
 	    pack $fr.labvalue $fr.scale -side left
 	    pack  $fr -side top -expand 1 -fill x

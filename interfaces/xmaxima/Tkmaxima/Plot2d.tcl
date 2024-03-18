@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-16 18:50:51 villate"            #
+#     Time-stamp: "2024-03-18 20:53:14 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -54,6 +54,11 @@ proc mkPlot2d { args } {
     set data [assoc -data $args ]
     
     getOptions $plot2dOptions $args -usearray [oarray $win]
+    # Makes extra vertical space for sliders
+    linkLocal $win sliders height
+    if {[string length $sliders] > 0} {
+        oset $win height [expr {$height + 40*[llength [split $sliders ,]]}]}
+
     linkLocal $win autoscale
     if { [argSuppliedp -data] && ![argSuppliedp -autoscale] && \
 	     ![argSuppliedp -xradius] } {
