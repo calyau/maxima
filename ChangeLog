@@ -45,6 +45,7 @@ Bug fixes for numbered bugs:
 
 Unnumbered bugs fixed:
 ---------------------
+ * plotdf sliders hidden (reported on the mailing list on 2023/11/26)
 
 Documentation:
 --------------

@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-11 09:51:47 villate"            #
+#     Time-stamp: "2024-03-18 13:38:21 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -47,7 +47,7 @@ proc makeFrame { w type } {
 
     # widgets for the menu buttons and (x, y) coordinates label
     if { $type == {df} } {
-        set ltext [mc "Click on the graph to trace a curve"]
+        set ltext [mc "Click on the graph\nto trace a curve"]
     } else {
         set ltext [mc "Pointer Coordinates"]
     }
@@ -1019,29 +1019,15 @@ proc addSliders { win } {
 	    if { "$val" == "no" } {
 		set val  [expr ($x1 + $x0)/2.0]
 		if { "$parameters" != "" }  { append parameters , }
-		append parameters $var=$val
-	    }
-	    $fr.scale set $val
-	}
-    }
-
-    place  $c.sliders -in $c -x 4 -rely 1.0 -y -4 -anchor sw
-
-}
-
+		append parameters $var=$val}
+	    $fr.scale set $val}}
+    place $c.sliders -in $c -relx 1.0 -x -4 -rely 1.0 -y -4 -anchor se}
 
 proc sliderUpdate { win var val } {
     linkLocal $win sliderCommand parameters
     set params $parameters
     updateParameters $win $var $val
-    if { "$params" != "$parameters" &&
-	 [info exists sliderCommand] } {
-
-	$sliderCommand $win $var $val
-    }
-}
-
-
-
+    if {"$params" ne "$parameters" && [info exists sliderCommand] } {
+        $sliderCommand $win $var $val}}
 
 ## endsource plotconf.tcl
