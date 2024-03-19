@@ -1982,5 +1982,26 @@ integrate (x^4*(construct_float(13843560353427925598)*sqrt(x)*%e^(construct_floa
 0);
 0;
 
+/*
+ * SF bug #4265: integrate(sin(nn*x)*sin(mm*x),x,0,2*%pi) always zero.
+ * We have similar issues with cos(nn*x)*cos(mm*x) and sin(nn*x)*cos(mm*x)
+ */
+(assume(equal(nn, mm)),declare(nn, integer, mm, integer), 0);
+0;
+integrate(sin(nn*x)*sin(mm*x),x);
+x/2-sin(2*nn*x)/(4*nn);
+
+integrate(cos(nn*x)*cos(mm*x),x);
+sin(2*nn*x)/(4*nn)+x/2;
+
+integrate(cos(nn*x)*sin(mm*x),x);
+-cos(nn*x)^2/(2*nn);
+
+integrate(sin(nn*x)*sin(mm*x),x,0,2*%pi);
+%pi;
+
+integrate(cos(nn*x)*cos(mm*x),x, 0, 2*%pi);
+%pi;
+
 (reset(), 0);
 0;
