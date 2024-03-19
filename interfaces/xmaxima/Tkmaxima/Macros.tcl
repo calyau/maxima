@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Macros.tcl,v 1.6 2006-06-29 13:09:58 villate Exp $
+#     Time-stamp: "2024-03-19 16:12:37 villate"            #
 #
 ###### Macros.tcl ######
 ############################################################
@@ -9,91 +9,79 @@
 ############################################################
 #
 #-----------------------------------------------------------------------
-# desetq lis1 lis2 -- sets the values for several variables
+# desetq lis1 lis2 -- sets the values for several variables, in the
+# scope where desetq was issued
 #
-# Result: each variable name in LIS1 is defined with a value in LIS2
+# villate (20240319): This procedures accepts lis1 longer than lis2
+# which indeed happens in an instance in Plot3d.tcl. That should be
+# checked because it might be an error.
 #-----------------------------------------------------------------------
-#
 proc desetq {lis1 lis2} {
     set i 0
     foreach v $lis1 {
-	uplevel 1 set $v [list [lindex $lis2 $i]]
-	incr i
-    }
-}
+        uplevel 1 set $v [list [lindex $lis2 $i]]
+        incr i}}
+
 ######  Options parsing functions ######################################
+# Options are assumed to be a list of keywords followed by a single vlaue
 #
 #-----------------------------------------------------------------------
-# assoc key lis args -- find value of option KEY in options list LIS
-#
-# Result: value of option or first element of list ARGS
+# assoc key lis args -- returns the value of option with keywork key in
+# options list lis, or the optional value args if lis doesn't have that
+# keyword.
 #-----------------------------------------------------------------------
-#
-proc assoc { key lis args } {
-    foreach { k val } $lis { if { "$k" == "$key" } { return $val} }
-    return [lindex $args 0]
-}
-#
+proc assoc {key lis args} {
+    foreach {k val} $lis {if {$k eq $key} {return $val}}
+    return [lindex $args 0]}
+
 #-----------------------------------------------------------------------
-# delassoc key lis -- remove option KEY from options list LIS
-#
-# Result: an options list without option KEY
+# delassoc key lis -- returns the options list lis excluding the option
+# with keyword key
 #-----------------------------------------------------------------------
-#
-proc delassoc { key lis } {
+proc delassoc {key lis} {
     set new {}
-    foreach { k val } $lis {
-	if { "$k" != "$key" } { lappend new $k $val}
-    }
-    return $new
-}
-#
+    foreach {k val} $lis {
+	if {$k ne $key} {lappend new $k $val}}
+    return $new}
+
 #-----------------------------------------------------------------------
-# putassoc key lis value -- set VALUE for option KEY in options list LIS
-#
-# Result: an option list with KEY set to VALUE
+# putassoc key lis value -- returns the options list lis with the keyword
+# key associated to value. If the keyword key was already present its
+# associated value is replaced by value
 #-----------------------------------------------------------------------
-#
-proc putassoc {key lis value } {
+proc putassoc {key lis value} {
     set done 0
-    foreach { k val } $lis {
-	if { "$k" == "$key" } {
+    set new {}
+    foreach {k val} $lis {
+	if {$k eq $key} {
 	    set done 1
-	    set val $value
-	}
-	lappend new $k $val
-    }
-    if { !$done } { lappend new $key $value }
-    return $new
-}
+	    set val $value}
+	lappend new $k $val}
+    if {!$done} {lappend new $key $value }
+    return $new}
 ######  End options parsing functions #################################
-#
+
 #-----------------------------------------------------------------------
-# intersect lis1 lis2 -- find common elements of two lists
-#
-# Result: a list of values found in LIS1 and LIS2
+# intersect lis1 lis2 -- returns the list of common elements of the two
+# lists lis1 and lis2
 #-----------------------------------------------------------------------
-#
-proc intersect { lis1 lis2 } {
-    set new ""
-    foreach v $lis1 { set there($v) 1 }
-    foreach v $lis2 { if { [info exists there($v)] } { lappend new $v }}
-    return $new
-}
-#
+proc intersect {lis1 lis2} {
+    set new {}
+    foreach v $lis1 {
+        foreach u $lis2 {
+            if {$v eq $u} {lappend new $v}}}
+    return $new}
+
 #-----------------------------------------------------------------------
-# ldelete item lis --  remove all copies of ITEM from LIS
-#
-# Result: new list without ITEM
+# ldelete item lis -- returns list lis with all ocurrences of item
+# removed
 #-----------------------------------------------------------------------
-#
-proc ldelete { item list } {
-    while { [set ind [lsearch $list $item]] >= 0  } {
-	set list [concat [lrange $list 0 [expr {$ind -1}]] [lrange $list [expr {$ind +1}] end]]
-    }
-    return $list
-}
-#
+proc ldelete {item lis} {
+    while {[set ind [lsearch $lis $item]] >= 0} {
+	set lis [concat [lrange $lis 0 [expr {$ind-1}]] \
+                     [lrange $lis [expr {$ind+1}] end]]}
+    return $lis}
+
 #-----------------------------------------------------------------------
 # mxapply f a1 .. am [list u1 .. un] -- apply a function with arguments
 #        A1 .. Am and all the elements U1 .. Un in a list
@@ -102,8 +90,13 @@ proc ldelete { item list } {
 #
 # Used to be called "apply", before 2020-06-15, when it was renamed to
 # avoid conflicts with the apply function in TcL since version 8.5.
-#-----------------------------------------------------------------------
 #
+# villate (20240319): In the places where
+#    mxapply f a1 .. am [list u1 .. un]
+# is used, the new Tcl operator {*} can be used:
+#    apply f  a1 .. am {*}[list u1 .. un]
+# making this procedure obsolote.
+#-----------------------------------------------------------------------
 proc mxapply {f args } {
     set lis1 [lrange $args 0 [expr {[llength $args] -2}]]
     foreach v [lindex $args end] { lappend lis1 $v}
