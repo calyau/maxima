@@ -1,11 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+###### wmenu.tcl ###########################################
 #
-#       $Id: Wmenu.tcl,v 1.8 2004-10-13 12:08:58 vvzhy Exp $
+# Copyright (C) 1998 William F. Schelter
+# For distribution under GNU public License.  See COPYING.tcl
 #
-###### wmenu.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. #
+#     Time-stamp: "2024-03-20 15:14:53 villate"
+#
 ############################################################
 
 # implement a menu bar without toplevel windows.
@@ -270,10 +269,10 @@ proc wmenuInternal {win option  olist } {
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
 		    # puts "new=$new"
-		    mxapply label $new.label $labopts
+		    label $new.label {*}$labopts
 		    pack $new.label -side left -fill x
 		    set opts [lsublis {{-radiovariable -textvariable}} $opts]
-		    mxapply radiobutton $new.radio $opts
+		    radiobutton $new.radio {*}$opts
 		    pack $new.radio -side right -anchor e
 		    set com "$new.radio invoke"
 		}
@@ -281,10 +280,10 @@ proc wmenuInternal {win option  olist } {
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
 		    # puts "new=$new"
-		    mxapply label $new.label $labopts
+		    label $new.label {*}$labopts
 		    pack $new.label -side left
 		    set opts [lsublis {{-checkvariable -textvariable}} $opts]
-		    mxapply checkbutton $new.check $opts
+		    checkbutton $new.check {*}$opts
 		    pack $new.check -side right
 		    # puts "$var --> $val"
 		    set com "$new.check invoke"
@@ -293,7 +292,7 @@ proc wmenuInternal {win option  olist } {
 		    set com [assoc -command $lis]
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
-		    mxapply label $new.label $labopts
+		    label $new.label {*}$labopts
 		    pack $new.label -in $new -side left
 		    # puts "bind $new.label <Button-1> $com"
 		    bind $new.label <Button-1> $com
@@ -306,9 +305,9 @@ proc wmenuInternal {win option  olist } {
 		entry {
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
-		    mxapply label $new.label $labopts
+		    label $new.label {*}$labopts
 		    set opts [lsublis {{-entryvariable -textvariable}} $opts]
-		    mxapply entry $new.entry $opts
+		    entry $new.entry {*}$opts
 		    pack $new.label -side top -in $new -anchor w
 		    pack $new.entry  -side top -in $new
 		    set com "focus $new.entry"

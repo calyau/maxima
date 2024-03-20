@@ -1,6 +1,12 @@
-#     OpenMath.tcl
-#     Time-stamp: "2021-03-28 17:36:15 villate"
+###### OpenMath.tcl ####################################################
 #
+# Copyright (C) 1998 William F. Schelter
+# For distribution under GNU public License.  See COPYING.tcl
+#
+#     Time-stamp: "2024-03-20 15:14:02 villate"
+#
+########################################################################
+
 proc genSample { x n } {
     set sample $x
     set m 1
@@ -942,11 +948,7 @@ proc markForProgram { w args } {
 	    $w insert tmp RESULT {Tresult Tmodified}
 	    $w insert tmp " "  {plain}
 	} else {
-	    mxapply $w tag add Tmodified $nextResult
-	}
-
-    }
-}
+	    $w tag add Tmodified {*}$nextResult}}}
 
 ## endsource preamble.tcl
 

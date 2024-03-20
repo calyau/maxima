@@ -1,11 +1,12 @@
-############################################################
-# Plot2d.tcl                                               #
-# Copyright (C) 1998 William F. Schelter                   #
-# For distribution under GNU public License.  See COPYING. #
-#                                                          #
-#     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-18 20:53:14 villate"            #
-############################################################
+###### Plot2d.tcl ####################################################
+#
+# Copyright (C) 1998 William F. Schelter 
+# For distribution under GNU public License.  See COPYING.tcl
+#
+#     Modified by Jaime E. Villate
+#     Time-stamp: "2024-03-20 15:17:40 villate"
+#
+######################################################################
 
 global plot2dOptions
 set plot2dOptions {
@@ -292,7 +293,7 @@ proc nextColor { win } {
 
 
 proc plot2d { args } {
-    set win [mxapply mkPlot2d $args]
+    set win [mkPlot2d {*}$args]
     replot2d $win
     return $win
 }

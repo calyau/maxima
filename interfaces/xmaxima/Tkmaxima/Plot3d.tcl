@@ -1,11 +1,12 @@
-############################################################
-# Plot3d.tcl                                               #
-# Copyright (C) 1998 William F. Schelter                   #
-# For distribution under GNU public License.  See COPYING. #
-#                                                          #
-#     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-27 19:10:28 villate"            #
-############################################################
+###### Plot3d.tcl #################################################
+#
+# Copyright (C) 1998 William F. Schelter
+# For distribution under GNU public License. See COPYING.tcl
+#
+#     Modified by Jaime E. Villate 
+#     Time-stamp: "2024-03-20 14:40:38 villate
+#
+###################################################################
 
 global plot3dOptions
 set plot3dOptions {
@@ -371,16 +372,11 @@ proc set_xy_region_3d { win fac } {
     makeLocal $win xcenter ycenter xradius yradius xmin xmax ymin ymax zradius
     set scale [list [expr {1.5/($xradius)}] 0 0 0 [expr {1.5/($yradius)}] \
                    0 0 0 [expr {1.5/($zradius)}] ]
-    desetq "xmin ymin" [matMul $scale 3 "$xmin $ymin 0" 1]
-    desetq "xmax ymax" [matMul $scale 3 "$xmax $ymax 0" 1]
     oset $win fac $fac
-    oset $win xmin $xmin
-    oset $win xmax $xmax
-    oset $win ymin $ymin
-    oset $win ymax $ymax
-}
-
-#
+    oset $win xmin [expr {1.5*$xmin/($xradius)}]
+    oset $win xmax [expr {1.5*$xmax/($xradius)}]
+    oset $win ymin [expr {1.5*$ymin/($yradius)}]
+    oset $win ymax [expr {1.5*$ymax/($yradius)}]}
 
 proc plot3d { args } {
     global  plot3dOptions
@@ -388,7 +384,7 @@ proc plot3d { args } {
     if { "$win" == "" } {
 	set win [getOptionDefault windowname $plot3dOptions] }
     clearLocal $win
-    mxapply mkPlot3d  $win $args
+    mkPlot3d  $win {*}$args
     #    bind $win <Configure> {}	
     replot3d $win
 }
