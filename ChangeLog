@@ -51,7 +51,8 @@ Documentation:
 --------------
  * Document colnew share package
  * \#4154: Some info nodes have bad headers (and no "Up"s)
+ * HTML files for the manual now have the name of the corresponding section
 
 Build system:
 -------------
-
+ * Install Maxima icons in an 'icons' subdirectory rather than 'pixmaps'
