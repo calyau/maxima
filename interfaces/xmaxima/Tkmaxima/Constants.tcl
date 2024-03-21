@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2024-03-18 17:23:12 villate"            #
+#     Time-stamp: "2024-03-21 18:03:01 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
@@ -37,13 +37,17 @@ proc cMAXINITBeforeIni {} {
     set maxima_default(OpenFile) "~/.xmaximarc"
     set maxima_default(SaveFile) "~/.xmaximarc"
 
-    global embed_args
+    global embed_args tk_version
     if { "[info var embed_args]" != "" } {
 	# the following will be defined only in the plugin
 	set maxima_default(defaultservers) nmtp://some.server.example.org/
     }
     set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
-    set maxima_priv(home) "~"
+    if {[string index $tk_version 0] == 9} {
+        set maxima_priv(home) [file home]
+    } else {
+        set maxima_priv(home) "~"
+    }
 }
 
 proc cMAXINITReadIni {} {
