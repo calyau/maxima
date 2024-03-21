@@ -3,11 +3,12 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2024-03-21 18:03:01 villate"            #
+#     Time-stamp: "2024-03-21 18:26:52 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
-    global maxima_default maxima_priv
+    global maxima_default maxima_priv embed_args tk_version
+
     set maxima_default(plotwindow) multiple
 
     #mike turn these off by default
@@ -24,35 +25,35 @@ proc cMAXINITBeforeIni {} {
     catch {font delete ConsoleFont}
     font create ConsoleFont -family $cfont -size $cfontsize 
     set maxima_default(ConsoleFont) [list $cfont $cfontsize]
-
     set maxima_default(iLocalPort) 4008
-
     set maxima_default(bDebugParse) 0
-
-    # from FileDlg.tcl
-    set maxima_default(OpenDir) "~/"
-    # The last files opened and saved. Any default value serves
-    # but a good starting value is Xmaxima's initialization file.
-    # TO DO: change ~ for a home directory customized for each system.
-    set maxima_default(OpenFile) "~/.xmaximarc"
-    set maxima_default(SaveFile) "~/.xmaximarc"
-
-    global embed_args tk_version
-    if { "[info var embed_args]" != "" } {
-	# the following will be defined only in the plugin
-	set maxima_default(defaultservers) nmtp://some.server.example.org/
-    }
-    set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
     if {[string index $tk_version 0] == 9} {
         set maxima_priv(home) [file home]
     } else {
         set maxima_priv(home) "~"
     }
+
+    # from FileDlg.tcl
+    set maxima_default(OpenDir) "$maxima_priv(home)/"
+    # The last files opened and saved. Any default value serves
+    # but a good starting value is Xmaxima's initialization file.
+    # TO DO: change ~ for a home directory customized for each system.
+    set maxima_default(OpenFile) "$maxima_priv(home)/.xmaximarc"
+    set maxima_default(SaveFile) "$maxima_priv(home)/.xmaximarc"
+
+    if { "[info var embed_args]" != "" } {
+	# the following will be defined only in the plugin
+	set maxima_default(defaultservers) nmtp://some.server.example.org/
+    }
+    set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
+
+    # from Getdata1.tcl
+    set maxima_priv(cachedir) "$maxima_priv(home)/.xmaximarc/.xmaxima/cache"
 }
 
 proc cMAXINITReadIni {} {
     global maxima_priv
-    if {[file isfile ~/.xmaximarc]} {
+    if {[file isfile "$maxima_priv(home)/.xmaximarc"]} {
 	if {[catch {uplevel "#0" [list source "$maxima_priv(home)/.xmaximarc"]}\
                  err]} {
 	    tide_failure [M [mc "Error sourcing %s\n%s"] \
@@ -87,7 +88,7 @@ proc cMAXINITAfterIni {} {
 
 # Constants
 global maxima_priv
-set maxima_priv(date) 28/03/2021
+set maxima_priv(date) 21/03/2024
 
 if { ![info exists maxima_priv(date)] } {
     set maxima_priv(date) [clock  format [clock seconds] -format {%m/%d/%Y} ]
@@ -95,9 +96,6 @@ if { ![info exists maxima_priv(date)] } {
 
 # from Preamble.tcl
 set maxima_priv(clicks_per_second) 1000000
-
-# from Getdata1.tcl
-set maxima_priv(cachedir) ~/.xmaxima/cache
 
 # from Plot2d.tcl
 array set maxima_priv { bitmap,disc4 {#define disc4_width 4
