@@ -40,6 +40,7 @@ Bug fixes for numbered bugs:
  * \#4177: lratsubst1 in testsuite
  * \#4184: bessel_simplify error
  * \#4186: Correct failing test in share/contrib/diffequations/tests
+ * \#4246: tcl9.0b1 upgrade and xmaxima
  * \#4263: plot2d discrete with x range computes y range over all data, not restricted to x
  * \#4269: plot3d ignores the option gnuplot_postamble
 
