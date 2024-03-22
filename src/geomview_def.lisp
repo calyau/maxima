@@ -67,16 +67,16 @@
           (let* ((pl
                   (draw3d
                    fun (third xrange) (fourth xrange) (third yrange)
-                   (fourth yrange) (first (getf options :grid))
-                   (second (getf options :grid))))
+                   (fourth yrange) (first (getf options '$grid))
+                   (second (getf options '$grid))))
                  (ar (polygon-pts pl)))
             (declare (type (cl:array t) ar))
             (when trans (mfuncall trans ar))
-            (when (getf options :transform_xy)
-                (mfuncall (getf options :transform_xy) ar))
+            (when (getf options '$transform_xy)
+                (mfuncall (getf options '$transform_xy) ar))
             (format $pstream "{ appearance { +smooth }~%MESH ~a ~a ~%"
-                    (+ 1 (first (getf options :grid)))
-                    (+ 1 (second (getf options :grid))))
+                    (+ 1 (first (getf options '$grid)))
+                    (+ 1 (second (getf options '$grid))))
             (output-points pl nil)
             (format $pstream "}~%"))))))))
 

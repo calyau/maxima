@@ -27,35 +27,35 @@
 (defmfun $mandelbrot (&rest extra-options)
   (let (plot output-file (options (copy-tree *plot-options*))
         a b c d e num  dx dy x xmax xmin y ymax ymin m nx ny)
-    (setf (getf options :type) "plot2d")
-    (unless (getf options :x) (setf (getf options :x) '(-2 2)))
-    (unless (getf options :y) (setf (getf options :y) '(-2 2)))
-    (unless (getf options :iterations) (setf (getf options :iterations) 9))
-    (unless (getf options :xlabel) (setf (getf options :xlabel) "x"))
-    (unless (getf options :ylabel) (setf (getf options :ylabel) "y"))
-    (unless (member :color_bar options) (setf (getf options :color_bar) t))
-    (setf (getf options :palette)
+    (setf (getf options '$type) "plot2d")
+    (unless (getf options '$x) (setf (getf options '$x) '(-2 2)))
+    (unless (getf options '$y) (setf (getf options '$y) '(-2 2)))
+    (unless (getf options '$iterations) (setf (getf options '$iterations) 9))
+    (unless (getf options '$xlabel) (setf (getf options '$xlabel) "x"))
+    (unless (getf options '$ylabel) (setf (getf options '$ylabel) "y"))
+    (unless (member '$color_bar options) (setf (getf options '$color_bar) t))
+    (setf (getf options '$palette)
           '(((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
             $orange $red $brown $black)))
                                           
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
-    (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
-    (setq xmin (car (getf options :x))) 
-    (setq xmax (cadr (getf options :x)))
-    (setq ymin (car (getf options :y))) 
-    (setq ymax (cadr (getf options :y)))
-    (setq m (getf options :iterations))
-    (setq nx (or (car (getf options :grid)) 30))
-    (setq ny (or (cadr (getf options :grid)) 30))
+    (unless (getf options '$yx_ratio) (setf (getf options '$same_xy) t))
+    (setq xmin (car (getf options '$x))) 
+    (setq xmax (cadr (getf options '$x)))
+    (setq ymin (car (getf options '$y))) 
+    (setq ymax (cadr (getf options '$y)))
+    (setq m (getf options '$iterations))
+    (setq nx (or (car (getf options '$grid)) 30))
+    (setq ny (or (cadr (getf options '$grid)) 30))
     (setq dx (/ (rationalize (- xmax xmin)) nx)) ; x incr. per pixel
     (setq dy (/ (rationalize (- ymax ymin)) ny)) ; y incr. per pixel
 
     ;; Creates the object that will be passed to the external graphic program
     (setq plot (make-instance 'gnuplot-plot))
-    (if (eq (getf options :plot_format) '$gnuplot_pipes)
+    (if (eq (getf options '$plot_format) '$gnuplot_pipes)
         (setf (slot-value plot 'pipe) T)
-        (setf (getf options :plot_format) '$gnuplot))
+        (setf (getf options '$plot_format) '$gnuplot))
 
     (setq output-file (plot-preamble plot options))
     (setf
@@ -65,7 +65,7 @@
       (slot-value plot 'data)
       (with-output-to-string (st)            
         (format st "set palette ~a~%"
-                (gnuplot-palette (rest (first (getf options :palette)))))
+                (gnuplot-palette (rest (first (getf options '$palette)))))
         (format st "unset key~%")
         (format st "plot '-' with image~%")
         ;; iterates through all grid points
@@ -93,35 +93,35 @@
 (defmfun $julia (x y &rest extra-options)
   (let (plot output-file (options (copy-tree *plot-options*))
         num dx dy xmax xmin ymax ymin a b c d e a0 b0 m nx ny)
-    (setf (getf options :type) "plot2d")
-    (unless (getf options :x) (setf (getf options :x) '(-2 2)))
-    (unless (getf options :y) (setf (getf options :y) '(-2 2)))
-    (unless (getf options :iterations) (setf (getf options :iterations) 9))
-    (unless (getf options :xlabel) (setf (getf options :xlabel) "x"))
-    (unless (getf options :ylabel) (setf (getf options :ylabel) "y"))
-    (unless (member :color_bar options) (setf (getf options :color_bar) t))
-    (setf (getf options :palette)
+    (setf (getf options '$type) "plot2d")
+    (unless (getf options '$x) (setf (getf options '$x) '(-2 2)))
+    (unless (getf options '$y) (setf (getf options '$y) '(-2 2)))
+    (unless (getf options '$iterations) (setf (getf options '$iterations) 9))
+    (unless (getf options '$xlabel) (setf (getf options '$xlabel) "x"))
+    (unless (getf options '$ylabel) (setf (getf options '$ylabel) "y"))
+    (unless (member '$color_bar options) (setf (getf options '$color_bar) t))
+    (setf (getf options '$palette)
           '(((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
             $orange $red $brown $black)))
                                           
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
-    (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
-    (setq xmin (car (getf options :x))) 
-    (setq xmax (cadr (getf options :x)))
-    (setq ymin (car (getf options :y))) 
-    (setq ymax (cadr (getf options :y)))
-    (setq m (getf options :iterations))
-    (setq nx (or (car (getf options :grid)) 30))
-    (setq ny (or (cadr (getf options :grid)) 30))
+    (unless (getf options '$yx_ratio) (setf (getf options '$same_xy) t))
+    (setq xmin (car (getf options '$x))) 
+    (setq xmax (cadr (getf options '$x)))
+    (setq ymin (car (getf options '$y))) 
+    (setq ymax (cadr (getf options '$y)))
+    (setq m (getf options '$iterations))
+    (setq nx (or (car (getf options '$grid)) 30))
+    (setq ny (or (cadr (getf options '$grid)) 30))
     (setq dx (/ (rationalize (- xmax xmin)) nx)) ; x incr. per pixel
     (setq dy (/ (rationalize (- ymax ymin)) ny)) ; y incr. per pixel
 
     ;; Creates the object that will be passed to the external graphic program
     (setq plot (make-instance 'gnuplot-plot))
-    (if (eq (getf options :plot_format) '$gnuplot_pipes)
+    (if (eq (getf options '$plot_format) '$gnuplot_pipes)
         (setf (slot-value plot 'pipe) T)
-        (setf (getf options :plot_format) '$gnuplot))
+        (setf (getf options '$plot_format) '$gnuplot))
 
     (setq output-file (plot-preamble plot options))
     (setf
@@ -131,7 +131,7 @@
       (slot-value plot 'data)
       (with-output-to-string (st)
         (format st "set palette ~a~%"
-                (gnuplot-palette (rest (first (getf options :palette)))))
+                (gnuplot-palette (rest (first (getf options '$palette)))))
         (format st "unset key~%")
         (format st "plot '-' with image~%")
         
