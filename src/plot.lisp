@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-22 19:20:42 villate"
+;; Time-stamp: "2024-03-22 20:21:20 villate"
 
 (in-package :maxima)
 
@@ -82,7 +82,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; two plotting programs: mgnuplot and omplotdata. omplotdata no longer
 ;; exists and the only program left in the directory *maxima-plotdir* is
 ;; a version of mgnuplot that is no longer usable.
-;; Let's leave for now, in case we ever recover mgnuplot (to get read
+;; Let's leave it for now, in case we ever recover mgnuplot (to get rid
 ;; of it would imply modifying init-cl.lisp when this variable is set.
 (defvar *maxima-plotdir* "")
 
@@ -127,8 +127,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           nil)))
 
 ;; gnuplot_pipes functions. They allow the use of Gnuplot through a
-;; pipe in order to keep active (this allows for instance, to rotate
-;; a 3d surface with the mouse)
+;; pipe in order to keep it active (this makes it possible for instance,
+;; to rotate a 3d surface with the mouse)
 
 (defvar *missing-data-indicator* "NaN")
 
@@ -274,10 +274,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
   (setq *plot-options* (plot-options-parser value *plot-options*))
   ($get_plot_option))
 
-;; This long case command reflects my incompetence in Lisp. If I were able
-;; to define to replacing the dollar sign in a symbol by a semicolon, the
-;; following function would simply be:
-;;  (defmfun $remove_plot_option (name) (remf (dollar-to-semicolon name)))
+;; This long case command reflects my incompetence in Lisp because I don't
+;; know how to replace replace the dollar sign in a symbol by a semicolon.
+;; in any case this will soon become just:
+;;  (defmfun $remove_plot_option (name) (remf *plot-options* name))
+;; because I'm going to replace the syntax :option by '$option
 ;; (villate, 20240322)
 
 (defmfun $remove_plot_option (name)
@@ -393,16 +394,16 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; ----
 
 ;; make-grid-vertices
-;; Creates an array that describes a rectangular grid with nx divisions
-;; in the x direction and ny divisions in the y direction.
+;; Creates an array that describes a rectangular grid with nx intervals
+;; in the x direction and ny intervals in the y direction.
 ;; Such grid is then formed by nx*ny rectangles.
 ;; Each rectangle is defined by four points and a value of zero, which
 ;; will be later replaced by the z value corresponding to that rectangle.
 ;;
 ;; Thus, each sequence of 5 integers in the resulting array describe
 ;; a rectangle in the grid. For instance, 0 3 4 1 0 corresponds to the
-;; the rectangle with vertices at the points with indices 0 3 4 and 1
-;; the points on the top row of the grid have indices:
+;; the rectangle with vertices at the points with indices 0 3 4 and 1.
+;; The points on the top row of the grid have indices:
 ;;    0 1 2 ... nx
 ;; and the points in the j'th row from the top (counting from 0) are:
 ;;    j j+1 j+2 ... j+nx
@@ -438,11 +439,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     tem))
 
 ;; $rotation1
-;; The argument elevation and th the azimuth. This function returns tha
+;; The argument phi is elevation and th is azimuth. This function returns the
 ;; matrix of a rotation in the positive direction (from x to y) along
 ;; the z axis, with an angle equal to the azimuth, followed by a negative
 ;; rotation (from x to z) along the new y axis, with an angle equal to
-;; the elevation. Even thought it is declared as a Maxima function, it can
+;; the elevation. Even though it is declared as a Maxima function, it can
 ;; not be called with symbolic arguments; only numeric arguments.
 
 (defmfun $rotation1 (phi th)
@@ -2278,8 +2279,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 ;; palette most be one or more Maxima lists starting with the name of one
 ;; of the 5 kinds: hue, saturation, value, gray or gradient. The first
-;; four types must be followed by floating-point numbers, and the gradient
-;; type must be followed by a list of colors.
+;; four types must be followed by 4 floating-point numbers, while the
+;; gradient type must be followed by a list of valid colors.
 (defun check-option-palette (option)
   (if (and (= (length option) 2) (null (cadr option)))
       nil
