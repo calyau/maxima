@@ -1,8 +1,12 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-09 22:02:30 villate"
+;; Time-stamp: "2024-03-22 19:20:42 villate"
 
 (in-package :maxima)
+
+(defvar $mgnuplot_command "mgnuplot")
+(defvar $geomview_command "geomview")
+(defvar $xmaxima_plot_command "xmaxima")
 
 #|
 Examples
@@ -26,6 +30,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
  [x,0,2*%pi],[y,0,2*%pi],['grid,40,40]);
 |#
 
+;; Each plot is described by an object whose class depends on the
+;; graphic program used to visualize it (option "plot_format").
+;; We currently have 3 classes for Gnuplot, Xmaxima and Geomview
+
 (defclass gnuplot-plot ()
   ((data :initarg :data :initform "")
    (pipe :initarg :pipe :initform nil)))
@@ -38,6 +46,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
   ((data :initarg :data :initform "")
    (pipe :initarg :pipe :initform nil)))
 
+;; These are the methods that each plot class should define.
+;; For each class (plot plot_format) there is a corresponding file
+;;      plot_format_def.lisp
+;; where thoses methods are defined for the particular class.
+
 (defgeneric plot-preamble (plot options)
     (:documentation "Plots the preamble for a plot."))
 
@@ -49,6 +62,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defgeneric plot-shipout (plot options &optional output-file)
     (:documentation "Sends the plot commands to the graphic program."))
+
+;; Convenience functions used to check values of plot arguments and options
 
 (defun ensure-string (x)
   (cond
@@ -63,12 +78,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defun coerce-float (x) ($float (meval* x)))
 
+;; This variable seems to be a remnant of when Maxima was distributed with
+;; two plotting programs: mgnuplot and omplotdata. omplotdata no longer
+;; exists and the only program left in the directory *maxima-plotdir* is
+;; a version of mgnuplot that is no longer usable.
+;; Let's leave for now, in case we ever recover mgnuplot (to get read
+;; of it would imply modifying init-cl.lisp when this variable is set.
 (defvar *maxima-plotdir* "")
 
 ;; *ROT* AND FRIENDS ($ROT, $ROTATE_PTS, $ROTATE_LIST) CAN PROBABLY GO AWAY !!
 ;; THEY ARE UNDOCUMENTED AND UNUSED !!
-(defvar *rot* (make-array 9 :element-type 'flonum))
-(defvar $rot nil)
+;; (defvar *rot* (make-array 9 :element-type 'flonum))
+;; (defvar $rot nil)
 
 ;; Global plot options list; this is a property list.. It is not a
 ;; Maxima variable, to discourage users from changing it directly; it
@@ -82,11 +103,14 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     :nticks 29 :adapt_depth 5
     :color ($blue $red $green $magenta $black $cyan)
     :point_type ($bullet $box $triangle $plus $times $asterisk)
-    :palette (((mlist) $gradient $green $cyan $blue $violet)
-              ((mlist) $gradient $magenta $violet $blue $cyan $green $yellow
-               $orange $red $brown $black))   
+    :palette (((mlist) $hue 0.33333333 0.7 1 0.5)
+              ((mlist) $hue 0.8 0.7 1 0.4))   
     :gnuplot_svg_background "white"
     :gnuplot_preamble "" :gnuplot_term $default))
+
+;; Apparently Wxmaxima needs a default plot_options Maxima list pre-defined.
+;; We will then create such list with minimum content.
+;; (TO-DO: check whether recent versions of Wxmaxima still require that)
 
 (defvar $plot_options 
   '((mlist) ((mlist) $plot_format $gnuplot_pipes)))
@@ -101,6 +125,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       (if (zerop1 ($imagpart x))
           ($realpart x)
           nil)))
+
+;; gnuplot_pipes functions. They allow the use of Gnuplot through a
+;; pipe in order to keep active (this allows for instance, to rotate
+;; a 3d surface with the mouse)
 
 (defvar *missing-data-indicator* "NaN")
 
@@ -203,7 +231,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (merror (intl:gettext "gnuplot_replot: argument, if present, must be a string; found: ~M") s)))
   "")
 
+;; PLOT OPTIONS PARSING
+;;
 ;; allow this to be set in a system init file (sys-init.lsp)
+;; (villate 20240322: I don't understand that comment)
 
 (defmfun $get_plot_option (&optional name n)
   (let (options)
@@ -242,6 +273,12 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 (defmfun $set_plot_option (&rest value)
   (setq *plot-options* (plot-options-parser value *plot-options*))
   ($get_plot_option))
+
+;; This long case command reflects my incompetence in Lisp. If I were able
+;; to define to replacing the dollar sign in a symbol by a semicolon, the
+;; following function would simply be:
+;;  (defmfun $remove_plot_option (name) (remf (dollar-to-semicolon name)))
+;; (villate, 20240322)
 
 (defmfun $remove_plot_option (name)
   (remf *plot-options*
@@ -288,7 +325,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (if pos  
       (subseq sterm 0 pos)
       sterm)))
-  
+;; end of PLOT OPTIONS parsing functions
+
 (defvar $pstream nil)
 
 (defun print-pt1 (f str)
@@ -342,6 +380,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
            (setq y (+ y epsy)))
     (make-polygon  ar  (make-grid-vertices nxint nyint))))
 
+;; ***** This comment refers to some unexistent function make-vertices ****
+;; ***** let's leave it here for the sake of history :)                ****
 ;; The following is 3x2 = 6 rectangles
 ;; call (make-vertices 3 2)
 ;; there are 4x3 = 12 points.
@@ -351,6 +391,24 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; ----
 ;; ||||
 ;; ----
+
+;; make-grid-vertices
+;; Creates an array that describes a rectangular grid with nx divisions
+;; in the x direction and ny divisions in the y direction.
+;; Such grid is then formed by nx*ny rectangles.
+;; Each rectangle is defined by four points and a value of zero, which
+;; will be later replaced by the z value corresponding to that rectangle.
+;;
+;; Thus, each sequence of 5 integers in the resulting array describe
+;; a rectangle in the grid. For instance, 0 3 4 1 0 corresponds to the
+;; the rectangle with vertices at the points with indices 0 3 4 and 1
+;; the points on the top row of the grid have indices:
+;;    0 1 2 ... nx
+;; and the points in the j'th row from the top (counting from 0) are:
+;;    j j+1 j+2 ... j+nx
+;; The order of the points given for each rectangle gives the correct
+;; sequence when the boundary of the rectangle is traversed in
+;; the clockwise direction.
 
 (defun make-grid-vertices (nx ny)
   (declare (fixnum nx ny))
@@ -378,6 +436,14 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                   (setq i (+ i 1))))
            )
     tem))
+
+;; $rotation1
+;; The argument elevation and th the azimuth. This function returns tha
+;; matrix of a rotation in the positive direction (from x to y) along
+;; the z axis, with an angle equal to the azimuth, followed by a negative
+;; rotation (from x to z) along the new y axis, with an angle equal to
+;; the elevation. Even thought it is declared as a Maxima function, it can
+;; not be called with symbolic arguments; only numeric arguments.
 
 (defmfun $rotation1 (phi th)
   (let ((sinph (sin phi))
@@ -775,7 +841,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          do (setf (aref ar1 i1) (aref ar2 i2))
          (setq i1 (+ i1 1))
          (setq i2 (+ i2 1))))
-
 
 (defmfun $concat_polygons (pl1 pl2 &aux tem new)
   (setq new
@@ -1743,11 +1808,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 #+(or sbcl openmcl) (defvar $gnuplot_file_args "~a")
 #-(or sbcl openmcl) (defvar $gnuplot_file_args "~s")
 
-(defvar $mgnuplot_command "mgnuplot")
-(defvar $geomview_command "geomview")
-
-(defvar $xmaxima_plot_command "xmaxima")
-
 (defun plot-set-gnuplot-script-file-name (options)
   (let ((gnuplot-term (getf options :gnuplot_term))
 	(gnuplot-out-file (getf options :gnuplot_out_file)))
@@ -1825,13 +1885,14 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              ($printfile (car out-file))
              (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))))
 
+;; PLOT OPTIONS PARSING
 ;; plot-options-parser puts the plot options given into a property list.
 ;; maxopts: a list (not a Maxima list!) with plot options.
 ;; options: a property list, or an empty list.
 ;; Example:
-;;  (plot-options-parser (list #$[x,-2,2]$ #$[nticks,30]$) '(:nticks 4))
+;;  (plot-options-parser (list #$[x,-2,2]$ #$[nticks,30]$) '(:xlabel "t"))
 ;; returns:
-;;  (:XLABEL "x" :XMAX 2.0 :XMIN -2.0 :NTICKS 30)
+;;  (:NTICKS 30 :X (-2.0 2.0) :XLABEL "t")
 
 (defun plot-options-parser (maxopts options &aux name)
   (dolist (opt maxopts)
@@ -2107,7 +2168,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
   (if (member p  '($bullet $circle $plus $times $asterisk $box $square
                   $triangle $delta $wedge $nabla $diamond $lozenge)) t nil))
 
-;; Colors can only one of the named colors or a six-digit hexadecimal
+;; Colors can only be one of the named colors or a six-digit hexadecimal
 ;; number with a # suffix.
 (defun plotcolorp (color)
   (cond ((and (stringp color)
@@ -2121,16 +2182,16 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         (t nil)))
 
 ;; tries to convert az into a floating-point number between 0 and 360
-(defun parse-azimuth (az) (mod ($float (meval* az)) 360))
+(defun parse-azimuth (az) (mod (coerce-float (meval* az)) 360))
 
 ;; tries to convert el into a floating-poitn number between -180 and 180
-(defun parse-elevation (el) (- (mod (+ 180 ($float (meval* el))) 360) 180))
+(defun parse-elevation (el) (- (mod (+ 180 (coerce-float (meval* el))) 360) 180))
 
 ;; The following functions check the value of an option returning an atom
 ;;  when there is only one argument or a list when there are several arguments
 
-
-;; Checks for one or more items of the same type, using the test given
+;; Checks for one or more items of the same type, using the test given.
+;; If count is given, the number of arguments must be exactly count.
 (defun check-option (option test type &optional count)
   (when count
     (unless (= (1- (length option)) count)
@@ -2147,7 +2208,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       (cdr option)))
 
 ;; Accepts one or more items of the same type or false.
-;; When given, n is the maximum number of items.
+;; When given, count is the maximum number of items.
 (defun check-option-b (option test type &optional count)
   (let ((n (- (length option) 1)))
     (when count
@@ -2215,8 +2276,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
      (cadr option) (car option)))
   (cadr option))
 
-; palette most be one or more Maxima lists starting with the name of one
-;; of the 5 kinds: hue, saturation, value, gray or gradient.
+;; palette most be one or more Maxima lists starting with the name of one
+;; of the 5 kinds: hue, saturation, value, gray or gradient. The first
+;; four types must be followed by floating-point numbers, and the gradient
+;; type must be followed by a list of colors.
 (defun check-option-palette (option)
   (if (and (= (length option) 2) (null (cadr option)))
       nil
@@ -2228,7 +2291,17 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
             (merror
              (intl:gettext
               "Wrong argument ~M for option ~M. Not a valid palette.")
-             item (car option))))
+             item (car option)))
+          (if (eq (cadr item) '$gradient)
+              (dolist (c (cddr item))
+                (unless (plotcolorp c)
+                  (merror
+                   (intl:gettext
+                    "In palette option, ~M is not a valid color")
+                   c)))
+            (progn
+              (setf (cddr item) (mapcar #'coerce-float (cddr item)))
+              (check-option (cdr item) #'realp "a real number" 4))))
         (cdr option))))
 
 ;; style can be one or several of the names of the styles or one or several
