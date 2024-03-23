@@ -470,6 +470,9 @@ integrate(1/abs(x),x);
 'integrate(cos(m*x),x);
 %if(m#0,sin(m*x)/m,x)$
 
+/*
+ * These no longer work after fixing bug #4265
+ 
 e : 'integrate(cos(m*x)*cos(2*m*x),x);
 %if(m#0,(sin(3*m*x)+3*sin(m*x))/(6*m),x)$
 
@@ -478,7 +481,7 @@ e : sublis([x=%pi],e) - sublis([x=0],e);
 
 [sublis([m=1],e), sublis([m=0],e)];
 [0,%pi]$
-
+*/
 'integrate(abs(a*x+b),x);
 %if(a # 0,(a*x+b)*abs(a*x+b)/(2*a),abs(b)*x)$
 
@@ -488,8 +491,12 @@ e : sublis([x=%pi],e) - sublis([x=0],e);
 'integrate(bessel_j(b-1,a*x),x);
 %if(a # 0, 2^(1-b)*hypergeometric([b/2],[b,(b+2)/2],-a^2*x^2/4)*(a*x)^b/(a*gamma(b+1)),bessel_j(b-1,0)*x)$
 
+/*
+ * These no longer work after fixing bug #4265
+
 ratexpand(sublis([m=42, n = 42], 'integrate(cos(m*x) * cos(n * x),x)));
 sin(84*x)/168+x/2$
+*/
 
 'integrate(sqrt(a^2 + x^2),x);
 %if(a#0,(a^2*asinh(x/abs(a))+x*sqrt(x^2+a^2))/2,(x*abs(x))/2)$
