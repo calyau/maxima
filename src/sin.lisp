@@ -1323,8 +1323,10 @@
 	  (and (eq (car b) '%sin)
 	       (eq (car d) '%sin)))
         ;; We have a*sin(m*x)*sin(n*x).
-        ;; The integral is: a*(sin((m-n)*x)/(2*(m-n))-sin((m+n)*x)/(2*(m+n))
-        (format t "y = ~A~%" y)
+        ;;
+        ;; The integral is:
+        ;; a*(sin((m-n)*x)/(2*(m-n))-sin((m+n)*x)/(2*(m+n)).  But if n
+        ;; = m, the integral is x/2-sin(2*n*x)/(4*n).
         (let ((n (cdras 'n y))
               (m (cdras 'm y)))
           (cond
@@ -1351,7 +1353,10 @@
                                    ((mtimes) 2 ((mplus) m n))))))))))))
        ((and (eq (car b) '%cos) (eq (car d) '%cos))
         ;; We have a*cos(m*x)*cos(n*x).
-        ;; The integral is: a*(sin((m-n)*x)/(2*(m-n))+sin((m+n)*x)/(2*(m+n))
+        ;; 
+        ;; The integral is:
+        ;; a*(sin((m-n)*x)/(2*(m-n))+sin((m+n)*x)/(2*(m+n)).  But when
+        ;; n = m, the integral is sin(2*m*x)/(4*m)+x/2.
         (let ((n (cdras 'n y))
               (m (cdras 'm y)))
           (cond
@@ -1387,9 +1392,8 @@
         ;; We have a*cos(n*x)*sin(m*x).
         ;;
         ;; The integral is:
-        ;; -a*(cos((m-n)*x)/(2*(m-n))+cos((m+n)*x)/(2*(m+n)).  Except
-        ;; if n=m, the integral is -cos(n*x)^2/(2*n).  We need to
-        ;; ask the user if n=m.
+        ;; -a*(cos((m-n)*x)/(2*(m-n))+cos((m+n)*x)/(2*(m+n)).  But
+        ;; if n = m, the integral is -cos(n*x)^2/(2*n).
         (let ((n (cdras 'n y))
               (m (cdras 'm y)))
           (cond
