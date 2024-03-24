@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2023-07-17 09:51:29 villate"            #
+#     Time-stamp: "2024-03-24 21:38:07 villate"            #
 ############################################################
 
 proc zoomConsole {f} {
@@ -195,10 +195,12 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 0 -label [mc "Save Console to File"] \
 	-command [list pMAXSaveTexToFile $maxima_priv(cConsoleText)]
 
-    # Add a Options menubutton
+    # Add an Options menubutton
     set m [menu .menu.options -tearoff 0]
     .menu add cascade -label [mc "Options"] -menu $m -underline 0
     $m add separator
+    $m add command -label [mc "Open the Browser"] \
+        -command [list createBrowser .browser]
     set pm [menu $m.plot]
     $m add cascade -label [mc "Plot Windows"] -menu $pm
     foreach elt { embedded separate multiple } {

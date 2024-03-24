@@ -3,8 +3,8 @@
 # Copyright (C) 1998 William F. Schelter
 # For distribution under GNU public License.  See COPYING.tcl
 #
-#     Time-stamp: "2024-03-20 15:14:02 villate"
-#
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2024-03-24 21:55:56 villate"            #
 ########################################################################
 
 proc genSample { x n } {
@@ -126,6 +126,9 @@ return
     }
 
 }
+# omPanel
+# Creates the browser window
+#
 proc omPanel { w args } {
     global buttonfont entryfont labelfont maxima_priv
 

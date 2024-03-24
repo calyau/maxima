@@ -3,8 +3,22 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-06-14 15:40:23 villate"            #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2024-03-24 21:55:30 villate"            #
 ############################################################
+
+proc createBrowser {bname} {
+    global maxima_priv maxima_default
+    if {[winfo exists $bname]} {
+        focus $bname
+    } else {
+        toplevel $bname
+        wm title $bname [mc {Xmaxima: browser}]
+        OpenMathOpenUrl $maxima_priv(firstUrl) -toplevel $bname
+        set maxima_priv(cBrowser) $bname
+        set Maxima_default(browser) 1
+        # Adds the menubar and the toolbar to the browser
+        vMAXAddBrowserMenu $bname}}
 
 object_class MAXGui {
 
@@ -46,13 +60,7 @@ object_class MAXGui {
 	set maxima_priv(cStatusLabel) $st.rate
 
         # Creates the browser in a separate window
-	toplevel .browser
-	wm title .browser [mc {Xmaxima: browser}]
-	OpenMathOpenUrl $maxima_priv(firstUrl) -toplevel .browser
-	set maxima_priv(cBrowser) .browse
-        
-        # Adds the menubar and the toolbar to the browser
-	vMAXAddBrowserMenu .browser
+        if {$maxima_default(browser)} {createBrowser .browser}
 
  	# Adds the toolbar to the Maxima console
 	vMAXAddSystemBar

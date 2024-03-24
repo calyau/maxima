@@ -3,7 +3,8 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2024-03-21 18:26:52 villate"            #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2024-03-24 21:56:17 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
@@ -48,7 +49,7 @@ proc cMAXINITBeforeIni {} {
     set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
 
     # from Getdata1.tcl
-    set maxima_priv(cachedir) "$maxima_priv(home)/.xmaximarc/.xmaxima/cache"
+    set maxima_priv(cachedir) "$maxima_priv(home)/.xmaxima/cache"
 }
 
 proc cMAXINITReadIni {} {

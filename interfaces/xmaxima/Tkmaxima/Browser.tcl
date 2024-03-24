@@ -3,7 +3,8 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-04-04 20:04:35 villate"            #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2024-03-24 21:56:09 villate"            #
 ############################################################
 
 proc peekLastCommand {win} {
@@ -740,6 +741,7 @@ proc ws_outputToTemp { string file ext encoding } {
 
 proc OpenMathOpenUrl { name args} {
     global maxima_priv
+    if {![winfo exists .browser]} {createBrowser .browser}
     
     # Removes any white spaces at the end of the Url given
     set name [string trimright $name]
@@ -1060,6 +1062,10 @@ proc savePreferences {} {
     set maxima_default(iConsoleHeight) [textWindowHeight $console]
 
     catch {
+        if {[winfo exists .browser]} {
+            set maxima_default(browser) 1
+        } else {
+            set maxima_default(browser) 0}
         set fi [open  "$maxima_priv(home)/.xmaximarc" w]
         puts $fi "array set maxima_default {"
         foreach {k v} [array get maxima_default *] {
