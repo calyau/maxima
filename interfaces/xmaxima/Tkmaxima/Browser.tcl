@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-24 21:56:09 villate"            #
+#     Time-stamp: "2024-03-25 20:03:02 villate"            #
 ############################################################
 
 proc peekLastCommand {win} {
@@ -746,7 +746,7 @@ proc OpenMathOpenUrl { name args} {
     # Removes any white spaces at the end of the Url given
     set name [string trimright $name]
 
-    gui status [concat [mc "Opening"] "$name"]
+    maxStatus [concat [mc "Opening"] "$name"]
 
     #puts "OpenMathOpenUrl  $name $args "
     set history "" ; set historyIndex -1 ; set currentUrl ""

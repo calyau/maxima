@@ -1,7 +1,11 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: RunMaxima.tcl,v 1.36 2011-03-20 23:15:48 villate Exp $
-#
+############################################################
+# RunMaxima.tcl                                            #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2024-03-25 19:57:55 villate"            #
+############################################################
 proc textWindowWidth { w } {
     set font [$w cget -font]
     set w20 [font measure [$w cget -font] -displayof $w "01234567890123456789"]
@@ -158,7 +162,7 @@ proc closeMaxima { win } {
 	    catch {
 		close $maximaSocket
 	    } err
-	    gui status [concat [mc "Closed socket"] "$maximaSocket: $err"]
+	    maxStatus [concat [mc "Closed socket"] "$maximaSocket: $err"]
 	    unset maximaSocket
 	    after 500
 	    # Maxima takes time to shutdown?
@@ -173,7 +177,7 @@ proc closeMaxima { win } {
 	    catch {
 		CMkill -TERM $pid
 	    } err
-	    gui status [concat [mc "Killed process"] "'$pid': $err"]	    
+	    maxStatus [concat [mc "Killed process"] "'$pid': $err"]	    
 	    unset pid
 	    # Maxima takes time to shutdown?
 	    after 500
@@ -324,7 +328,7 @@ proc runOneMaxima { win } {
     while { $pid == "none" } {
 	set af [after $maxima_priv(timeout) oset $win pid "none" ]
 	# puts "waiting pid=$pid"
-	gui status [mc "Starting Maxima"]
+	maxStatus [mc "Starting Maxima"]
 	vwait [oloc $win pid]
 	after cancel $af
 	if { $pid  == "none" } {
@@ -345,7 +349,7 @@ proc runOneMaxima { win } {
     if {[catch {oget $win socket} sock]} {
 	return -code error [mc "Failed to start Maxima"]
     }
-    gui status [mc "Started Maxima"]
+    maxStatus [mc "Started Maxima"]
     
     SetPlotFormat $maxima_priv(cConsoleText)
 
@@ -487,7 +491,7 @@ proc CMkill {  signal pid } {
 
     # Windows pids can be negative
     if {[string is int $pid]} {
-	gui status [M [mc "Sending signal %s to process %s"] "$signal" "$pid"]
+	maxStatus [mc "Sending signal %s to process %s" "$signal" "$pid"]
 	if {$tcl_platform(platform) == "windows" } {
 	    exec $maxima_priv(kill) $signal $pid
 	} else {

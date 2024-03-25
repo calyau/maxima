@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-24 21:38:07 villate"            #
+#     Time-stamp: "2024-03-25 18:32:47 villate"            #
 ############################################################
 
 proc zoomConsole {f} {
@@ -83,7 +83,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    set file [tide_openfile [M [mc "Open a file to Batch"]] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batch(\"$file\")\$\n"
-		gui status [concat [mc "Batched File "] "$file"]
+		maxStatus [concat [mc "Batched File "] "$file"]
 	    }
 	}]]
     bind $text <Alt-Key-b> $command
@@ -94,7 +94,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    set file [tide_openfile [M [mc "Open a file to Batch Silently"]] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batchload(\"$file\")\$\n"
-		gui status [concat [mc "Batched File "] "$file"]
+		maxStatus [concat [mc "Batched File "] "$file"]
 	    }
 	}]]
     bind $text <Alt-Key-o> $command
@@ -106,7 +106,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    set file [tide_openfile [M [mc "Open a file to Restore State"]] "" *.lisp]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$load \"$file\") nil)\n"
-		gui status [concat [mc "Maxima State Restored from "] "$file"]
+		maxStatus [concat [mc "Maxima State Restored from "] "$file"]
 	    }
 	}]]
     bind $text <Alt-Key-i> $command
@@ -119,7 +119,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    set file [tide_savefile [M [mc "Save to a file"]] "" *.lisp]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$save \"$file\" '\$all) nil)\n"
-		gui status [concat [mc "Maxima State Saved to "] "$file"]
+		maxStatus [concat [mc "Maxima State Saved to "] "$file"]
 	    }
 	}]]
     bind $text <Control-Key-s> $command
@@ -131,7 +131,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    set file [tide_savefile [M [mc "Save to a file"]] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$stringout \"$file\" '\$input) nil)\n"
-		gui status [concat [mc "Maxima Input Saved to "] "$file"]
+		maxStatus [concat [mc "Maxima Input Saved to "] "$file"]
 	    }
 	}]]
     bind $text <Control-Key-a> $command
@@ -149,9 +149,8 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [list event generate $text <Alt-Key-s>]
 
     $m add separator
-    $m add command -underline 1 \
-	-label [mc "Exit"] \
-	-command [list tkmaxima exit $text]
+    $m add command -underline 1 -label [mc "Exit"] \
+        -command [list maxExit $text]
 
     # Add an Edit menubutton
     set m [menu .menu.edit -tearoff 0]

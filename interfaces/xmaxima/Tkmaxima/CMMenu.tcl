@@ -1,7 +1,11 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: CMMenu.tcl,v 1.8 2002-09-19 16:17:22 mikeclarkson Exp $
-#
+############################################################
+# Menu.tcl                                                 #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2024-03-25 19:20:02 villate"            #
+############################################################
+
 proc CMmenu { win } {
     global buttonfont maxima_priv
     set menubar $win.textcommands
@@ -55,7 +59,8 @@ proc CMmenu { win } {
     #oset $win showFileBar "show file bar"
     $m add command -underline 0 -label {Toggle Browser Visibility} \
 	-help {Toggle display of Browser} -command {if { [catch { pack info .browser }] } { pack .browser -side bottom } else { pack forget .browser }}
-    $m add command -underline 0 -label {Exit} -command "tkmaxima exit $maxima_priv(cConsoleText)" \
+    $m add command -underline 0 -label {Exit} \
+        -command "maxExit $maxima_priv(cConsoleText)" \
 	-help  "End this session of Maxima"
     $m add command -underline 0 -label {Interrupt   C-c C-c} -command "CMinterrupt \[oget $win textwin\]" \
 	-help  "Interrupt the Maxima process and reset the filter"

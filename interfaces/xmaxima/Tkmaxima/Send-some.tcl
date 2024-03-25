@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-04-04 12:02:33 villate"            #
+#     Time-stamp: "2024-03-25 20:06:43 villate"            #
 ############################################################
 # Usage:
 # catch {close $socket}
@@ -249,7 +249,7 @@ proc openConnection { tohost port magic program } {
 proc sendInterrupt { program } {
     global pdata interrupt_signal
     set socket $pdata($program,socket)
-    gui status [mc "Sending scoket interrupt"]
+    maxStatus [mc "Sending socket interrupt"]
     puts $socket $interrupt_signal
     flush $socket
 }
