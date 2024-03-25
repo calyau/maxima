@@ -34,6 +34,7 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
+ * \#3755: Insecure tmpdir usage
  * \#3803: Xmaxima should reopen the browser when needed
  * \#4117: Unexpected Behaviour of run_viewer and gnu_term dumb
  * \#4154: Some info nodes have bad headers (and no "Up"s)

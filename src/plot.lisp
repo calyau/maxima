@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-22 21:09:39 villate"
+;; Time-stamp: "2024-03-25 09:04:23 villate"
 
 (in-package :maxima)
 
@@ -1766,16 +1766,27 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 #+(or sbcl openmcl) (defvar $gnuplot_file_args "~a")
 #-(or sbcl openmcl) (defvar $gnuplot_file_args "~s")
 
+;; random-file-name
+;; Creates a random word of 'count' alphanumeric characters
+(defun random-name (count)
+  (let ((chars "0123456789abcdefghijklmnopqrstuvwxyz") (name ""))
+    (setf *random-state* (make-random-state t))
+    (dotimes (i count)
+      (setq name (format nil "~a~a" name (aref chars (random 36)))))
+    name))
+
+;; TODO: This next function should be moved into gnuplot_def.lisp
+;; and instead of the list of options, the argument should be the desired
+;; extension for the file (villate 20240325)
 (defun plot-set-gnuplot-script-file-name (options)
   (let ((gnuplot-term (getf options '$gnuplot_term))
 	(gnuplot-out-file (getf options '$gnuplot_out_file)))
     (if (and (find (getf options '$plot_format) '($gnuplot_pipes $gnuplot))
              (eq gnuplot-term '$default) gnuplot-out-file)
 	(plot-file-path gnuplot-out-file t options)
-      (plot-file-path
-       (format nil "maxout~d.~(~a~)"
-	       (getpid)
-               (ensure-string (getf options '$plot_format))) nil options))))
+      (plot-file-path (format nil "~a.~a" (random-name 16)
+                              (ensure-string (getf options '$plot_format)))
+                      nil options))))
 
 (defun plot-temp-file0 (file &optional (preserve-file nil))
   (let ((filename 
@@ -2606,9 +2617,13 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
        (format dest "}~%"))
   (format dest "}~%"))
 
+; TODO: Check whether this function is still being used (villate 20240325)
 (defun show-open-plot (ans file)
   (cond ($show_openplot
-         (with-open-file (st1 (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))) :direction :output :if-exists :supersede)
+         (with-open-file
+          (st1 (plot-temp-file
+                (format nil "~a.xmaxima" (random-name 16)))
+               :direction :output :if-exists :supersede)
            (princ  ans st1))
          ($system (concatenate 'string *maxima-prefix* 
                                (if (string= *autoconf-windows* "true") "\\bin\\" "/bin/") 

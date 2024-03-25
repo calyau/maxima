@@ -1,6 +1,6 @@
 ;; xmaxima.lisp: routines for Maxima's interface to xmaxima
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2024-03-22 20:48:43 villate"
+;; Time-stamp: "2024-03-25 08:58:31 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -437,7 +437,7 @@
         (format $pstream "}~%"))))))
 
 (defmethod plot-shipout ((plot xmaxima-plot) options &optional output-file)
-  (let ((file (plot-file-path (format nil "maxout~d.xmaxima" (getpid)))))
+  (let ((file (plot-file-path (format nil "~a.xmaxima" (random-name 16)))))
     (cond ($show_openplot
            (with-open-file (fl
                             #+sbcl (sb-ext:native-namestring file)

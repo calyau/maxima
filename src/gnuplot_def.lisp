@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2024-03-22 20:47:00 villate"
+;; Time-stamp: "2024-03-25 09:10:05 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -286,7 +286,7 @@
                (format nil "set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\" ~a" gstrings)))
      (if (getf plot-options '$gnuplot_out_file)
          (setq out-file (getf plot-options '$gnuplot_out_file))
-         (setq out-file "maxplot.ps")))
+         (setq out-file (format nil "~a.ps" (random-name 16)))))
     ((eq (getf plot-options '$gnuplot_term) '$dumb)
      (if (getf plot-options '$gnuplot_dumb_term_command)
          (setq terminal-command
@@ -294,7 +294,7 @@
          (setq terminal-command "set term dumb 79 22"))
      (if (getf plot-options '$gnuplot_out_file)
          (setq out-file (getf plot-options '$gnuplot_out_file))
-         (setq out-file "maxplot.txt")))
+         (setq out-file (format nil "~a.txt" (random-name 16)))))
     ((eq (getf plot-options '$gnuplot_term) '$default)
      (if (getf plot-options '$gnuplot_default_term_command)
          (setq terminal-command
