@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-25 19:57:55 villate"            #
+#     Time-stamp: "2024-03-25 21:12:21 villate"            #
 ############################################################
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -379,9 +379,9 @@ proc sendMaxima { win form } {
 	    # The maxima went away
 	    set maximaSocket ""
 	    unset maximaSocket
-	    set mess [M [concat "$mess\n%s\n" [mc "You must Restart"]] $err]
+	    set mess [concat "$mess\n%s\n" [mc "You must Restart"] $err]
 	} else {
-	    set mess [M [concat "$mess:\n%s\n" [mc "You may need to Restart"]] $err]
+	    set mess [concat "$mess:\n%s\n" [mc "You may need to Restart"] $err]
 	}
 	tide_failure $mess
     }
@@ -455,9 +455,9 @@ proc sendMaximaCall { win form call } {
 	    # The maxima went away
 	    set maximaSocket ""
 	    unset maximaSocket
-	    set mess [M [concat "$mess\n%s\n" [mc "You must Restart"]] $err]
+	    set mess [concat "$mess\n%s\n" [mc "You must Restart"] $err]
 	} else {
-	    set mess [M [concat "$mess:\n%s\n" [mc "You may need to Restart"]] $err]
+	    set mess [concat "$mess:\n%s\n" [mc "You may need to Restart"] $err]
 	}
 	tide_failure $mess
 	return

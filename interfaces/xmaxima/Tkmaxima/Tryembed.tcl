@@ -1,11 +1,9 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Tryembed.tcl,v 1.7 2004-10-13 12:08:58 vvzhy Exp $
-#
-###### Tryembed.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# Tryembed.tcl                                             #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2024-03-25 21:13:36 villate"            #
 ############################################################
 
 ## the following worked to have an entry box that spoke...
@@ -253,7 +251,7 @@ proc SafesockServerAnswer { slave command sock host port } {
 	interp transfer {} $sock $slave
 	interp eval $slave $command $sock $host $port
     } else {
-	interp eval $slave [list error [M [mc "connection from %s and %s disallowed"] "$host" "$port" ] ]
+	interp eval $slave [list error [mc "connection from %s and %s disallowed" $host $port] ]
     }
 }
 

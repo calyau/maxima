@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-18 20:53:56 villate"            #
+#     Time-stamp: "2024-03-25 21:11:14 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -204,8 +204,8 @@ proc sparseListWithParams { form variables paramlist } {
 	set all $variables
 	foreach { v val }  $params { lappend all $v}
 	foreach v $vars { if { [lsearch $all [string range $v 1 end]] < 0 } {
-	    error [M [mc "The variable %s appeared in %s but was not in allowed variables: %s or in parameters: %s"] "`[string range $v 1 end]'" "$form" "{$variables}" "{$paramlist}"] }}
-	error [M [mc "The form %s may involve variables other than %s or the parameters %s, or the latter may have invalid expressions: %s"] "$form" "{$variables}" "{$paramlist}" "$err"] }
+	    error [mc "The variable %s appeared in %s but was not in allowed variables: %s or in parameters: %s" "`[string range $v 1 end]'" $form $variables $paramlist] }}
+	error [mc "The form %s may involve variables other than %s or the parameters %s, or the latter may have invalid expressions: %s" $form $variables $paramlist $err] }
     return $res
 }
 

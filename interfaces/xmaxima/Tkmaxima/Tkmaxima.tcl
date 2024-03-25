@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2024-03-25 19:20:47 villate"            #
+#     Time-stamp: "2024-03-25 20:50:57 villate"            #
 ############################################################
 
 # The Header.tcl is created by autoconf to make the xmaxima script
@@ -19,8 +19,6 @@
 # Source Utils/FileDlg.tcl
 # Source Utils/Messages.tcl
 # Source Utils/Misc.tcl
-# Source ObjTcl/Object.tcl
-# Source ObjTcl/Feedback.tcl
 # Source Tkmaxima/Constants.tcl 	;# required - must not be autoloaded
 # Source Tkmaxima/Preamble.tcl 		;# required - must not be autoloaded
 # Source Tkmaxima/Readdata.tcl 		;# can be autoloaded

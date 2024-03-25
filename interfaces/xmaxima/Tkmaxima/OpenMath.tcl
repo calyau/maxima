@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING.tcl
 #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-24 21:55:56 villate"            #
+#     Time-stamp: "2024-03-25 21:06:23 villate"            #
 ########################################################################
 
 proc genSample { x n } {
@@ -401,8 +401,7 @@ proc saveToFile { commandPanel label file } {
 
     if { [catch { set fi [open $file w] } err] } {
 	return -code error \
-	    [M [mc "Could not open file %s\n%s"] \
-		 [file native $file] $err]
+	    [mc "Could not open file %s\n%s" [file native $file] $err]
     }
     puts $fi $text
     close $fi
@@ -871,7 +870,7 @@ proc textShowHelp { win tag index msg } {
 	set program [programFromTags $tags]
 	if { "$program" != ""} {
 	    set msg [string trimright $msg ". "]
-	    append msg [M [mc " by %s."] "$program"]
+	    append msg [mc " by %s." $program]
 	}
 	if { [doInsertp $tags] } {
 	    append msg [mc " The result will be inserted."]

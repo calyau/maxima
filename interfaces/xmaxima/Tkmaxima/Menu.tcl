@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-25 18:32:47 villate"            #
+#     Time-stamp: "2024-03-25 21:03:24 villate"            #
 ############################################################
 
 proc zoomConsole {f} {
@@ -20,12 +20,12 @@ proc zoomConsole {f} {
 }
 
 proc pMAXSaveTexToFile {text} {
-    set file [tide_savefile [M [mc "Save to a file"]] "" *.out]
+    set file [tide_savefile [mc "Save to a file"] "" *.out]
     if {$file != ""} {
 	set contents [$text get 1.0 end]
 	set fd [open $file w]
 	if {[catch {puts $fd $contents} err]} {
-	    tide_failure [M [mc "Error writing to file:\n%s"] $err]
+	    tide_failure [mc "Error writing to file:\n%s" $err]
 	}
 	catch {close $fd}
     }
@@ -78,9 +78,9 @@ proc vMAXAddSystemMenu {fr text} {
     .menu add cascade -label [mc "File"] -menu $m -underline 0
     $m add command -underline 0 \
 	-accel {Alt+b} \
-	-label [set label [M [mc "Batch File"]]] \
+	-label [set label [mc "Batch File"]] \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_openfile [M [mc "Open a file to Batch"]] "" *.mac]
+	    set file [tide_openfile [mc "Open a file to Batch"] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batch(\"$file\")\$\n"
 		maxStatus [concat [mc "Batched File "] "$file"]
@@ -89,9 +89,9 @@ proc vMAXAddSystemMenu {fr text} {
     bind $text <Alt-Key-b> $command
     $m add command -underline 11 \
 	-accel {Alt+o} \
-	-label [set label [M [mc "Batch File Silently"]]] \
+	-label [set label [mc "Batch File Silently"]] \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_openfile [M [mc "Open a file to Batch Silently"]] "" *.mac]
+	    set file [tide_openfile [mc "Open a file to Batch Silently"] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batchload(\"$file\")\$\n"
 		maxStatus [concat [mc "Batched File "] "$file"]
@@ -101,9 +101,9 @@ proc vMAXAddSystemMenu {fr text} {
 
     $m add command -underline 11 \
 	-accel {Alt+i} \
-	-label [set label [M [mc "Restore Maxima State"]]] \
+	-label [set label [mc "Restore Maxima State"]] \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_openfile [M [mc "Open a file to Restore State"]] "" *.lisp]
+	    set file [tide_openfile [mc "Open a file to Restore State"] "" *.lisp]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$load \"$file\") nil)\n"
 		maxStatus [concat [mc "Maxima State Restored from "] "$file"]
@@ -116,7 +116,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-label [set label [mc "Save Maxima State to File"]] \
 	-accel {Ctrl+s} \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_savefile [M [mc "Save to a file"]] "" *.lisp]
+	    set file [tide_savefile [mc "Save to a file"] "" *.lisp]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$save \"$file\" '\$all) nil)\n"
 		maxStatus [concat [mc "Maxima State Saved to "] "$file"]
@@ -128,7 +128,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-label [set label [mc "Save Maxima Input to File"]] \
 	-accel {Ctrl+a} \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_savefile [M [mc "Save to a file"]] "" *.mac]
+	    set file [tide_savefile [mc "Save to a file"] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$stringout \"$file\" '\$input) nil)\n"
 		maxStatus [concat [mc "Maxima Input Saved to "] "$file"]

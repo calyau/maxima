@@ -1,11 +1,9 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: NPlot3d.tcl,v 1.9 2009-11-16 22:41:47 villate Exp $
-#
-###### NPlot3d.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# NPlot3d.tc                                              #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2024-03-25 21:05:20 villate"            #
 ############################################################
 
 # source plotting.tcl ; source nplot3d.tcl ; catch { destroy .plot3d} ;  plot3d -zfun "" -data $sample -xradius 10 -yradius 10
@@ -87,7 +85,7 @@ proc vectorCross { x1 x2 }  {
 }
 
 proc linspace { a b n } {
-    if { $n < 2 } { error [M [mc "from %s to %s requires at least 2 points"] "$a" "$b" ] }
+    if { $n < 2 } { error [mc "from %s to %s requires at least 2 points" $a $b ] }
     set del [expr {($b - $a)*1.0/($n -1)  }]
     for { set i 0 } { $i < $n } { incr i } {
 	lappend ans [expr {$a + $del * $i}]

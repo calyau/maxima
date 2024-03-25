@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-24 21:56:17 villate"            #
+#     Time-stamp: "2024-03-25 21:00:35 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
@@ -57,9 +57,8 @@ proc cMAXINITReadIni {} {
     if {[file isfile "$maxima_priv(home)/.xmaximarc"]} {
 	if {[catch {uplevel "#0" [list source "$maxima_priv(home)/.xmaximarc"]}\
                  err]} {
-	    tide_failure [M [mc "Error sourcing %s\n%s"] \
-			      [file native ~/.xmaximarc] \
-			      $err]
+	    tide_failure [mc "Error sourcing %s\n%s" \
+			      [file native ~/.xmaximarc] $err]
 	}
     }
 }

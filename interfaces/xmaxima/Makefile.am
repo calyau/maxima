@@ -31,10 +31,7 @@ TKSOURCES = \
 	Tkmaxima/COPYING.tcl \
 	Tkmaxima/Cygwin.tcl \
 	Utils/FileDlg.tcl \
-	Utils/Messages.tcl \
 	Utils/Misc.tcl \
-	ObjTcl/Object.tcl \
-	ObjTcl/Feedback.tcl \
 	Tkmaxima/Constants.tcl \
 	Tkmaxima/Preamble.tcl \
 	Tkmaxima/Readdata.tcl \
