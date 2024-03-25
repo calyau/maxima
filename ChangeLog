@@ -3,6 +3,7 @@ Maxima 5.47-post change log
 
 New items in core:
 ------------------
+ * A new function random-name in plot.lisp that generates a random string
 
 New items in share:
 -------------------
