@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2024-03-25 09:04:23 villate"
+;; Time-stamp: "2024-03-26 21:44:42 villate"
 
 (in-package :maxima)
 
@@ -2616,23 +2616,6 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
 	    (format dest "}~%"))
        (format dest "}~%"))
   (format dest "}~%"))
-
-; TODO: Check whether this function is still being used (villate 20240325)
-(defun show-open-plot (ans file)
-  (cond ($show_openplot
-         (with-open-file
-          (st1 (plot-temp-file
-                (format nil "~a.xmaxima" (random-name 16)))
-               :direction :output :if-exists :supersede)
-           (princ  ans st1))
-         ($system (concatenate 'string *maxima-prefix* 
-                               (if (string= *autoconf-windows* "true") "\\bin\\" "/bin/") 
-                               $xmaxima_plot_command)
-		  #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-		  (format nil " ~s &" file)
-		  #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-		  file))
-        (t (princ ans) "")))
 
 ;; contour_plot now punts to plot2d
 (defmfun $contour_plot (expr &rest optional-args)

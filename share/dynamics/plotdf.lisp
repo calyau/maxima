@@ -142,15 +142,25 @@
                                     (expr_to_str (second ode)) "\"")))
           (t (merror 
               (intl:gettext "plotdf: first argument must be either an expression or a list with two expressions."))))
-    (setq file (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))))
-    (show-open-plot
-     (with-output-to-string
-         (st)
-       (cond
-         ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
-         (t (format st "{plotdf ~a ~a} " cmd opts))))
-     file)
-    file))
+    (let ((data (format nil "plotdf ~a ~a~%" cmd opts)))
+      (setq file (plot-file-path (format nil "~a.xmaxima" (random-name 16))))
+      (cond ($show_openplot
+             (with-open-file
+              (fl
+               #+sbcl (sb-ext:native-namestring file)
+               #-sbcl file
+               :direction :output :if-exists :supersede)
+              (princ data fl))
+             ($system (concatenate 'string *maxima-prefix* 
+                                   (if (string= *autoconf-windows* "true")
+                                       "\\bin\\" "/bin/") 
+                                   $xmaxima_plot_command)
+                      #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                      (format nil " ~s &" file)
+                      #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                      file))
+            (t (princ data) "")))
+    (list '(mlist) file)))
 
 ;; plot equipotential curves for a scalar field f(x,y)
 (defun $ploteq (fun &rest options)
@@ -199,11 +209,22 @@
     (unless (search "-yaxislabel " opts)
       (setq opts (concatenate 'string opts " -yaxislabel " (ensure-string s2))))
 							      
-    (setq file (plot-temp-file (format nil "maxout~d.xmaxima" (getpid))))
-    (show-open-plot
-     (with-output-to-string
-         (st)
-       (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
-             (t (format st "{plotdf ~a ~a}" cmd opts))))
-     file)
-    file))
+    (let ((data (format nil "plotdf ~a ~a~%" cmd opts)))
+      (setq file (plot-file-path (format nil "~a.xmaxima" (random-name 16))))
+      (cond ($show_openplot
+             (with-open-file
+              (fl
+               #+sbcl (sb-ext:native-namestring file)
+               #-sbcl file
+               :direction :output :if-exists :supersede)
+              (princ data fl))
+             ($system (concatenate 'string *maxima-prefix* 
+                                   (if (string= *autoconf-windows* "true")
+                                       "\\bin\\" "/bin/") 
+                                   $xmaxima_plot_command)
+                      #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                      (format nil " ~s &" file)
+                      #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                      file))
+            (t (princ data) "")))
+    (list '(mlist) file)))
