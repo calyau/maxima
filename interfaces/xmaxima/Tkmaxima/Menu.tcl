@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-26 17:02:15 villate"            #
+#     Time-stamp: "2024-03-26 17:08:40 villate"            #
 ############################################################
 
 proc zoomConsole {f} {
@@ -60,6 +60,13 @@ proc getSaveFile {title {type "all"}} {
 	return ""}
     if {$retval ne ""} { set maxima_default(SaveFile) $retval }
     return $retval}
+
+proc cIDECreateEvent {text label code} {
+    set z [winfo toplevel $text]
+    set event "<<[join $label -]>>"
+    bind $text $event $code
+    return [list event generate $text $event]
+}
 
 proc pMAXSaveTexToFile {text} {
     set file [getSaveFile [mc "Save to a file"] output]
