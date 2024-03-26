@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-25 21:00:01 villate"            #
+#     Time-stamp: "2024-03-26 12:57:21 villate"            #
 ############################################################
 
 proc peekLastCommand {win} {
@@ -498,7 +498,8 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		#mike FIXME - use async sockets and dns
 		if {[catch {socket $server $port} sock]} {
 		    global errorInfo
-		    tide_failure [mc "Error connecting to %s on %s\n%s" \
+		    tk_messageBox -title Error -icon error -message \
+                        [mc "Error connecting to %s on %s\n%s" \
 				      $server $port $sock]
 		    return
 		}

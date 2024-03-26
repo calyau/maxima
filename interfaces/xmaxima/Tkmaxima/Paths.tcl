@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2024-03-25 21:09:16 villate"            #
+#     Time-stamp: "2024-03-26 13:07:06 villate"            #
 ############################################################
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
@@ -128,7 +128,8 @@ proc setMaxDir {} {
 	# maxima_datadir is unused outside of this proc
 
 	if {![file isdir $maxima_datadir]} {
-	    tide_notify [mc "Maxima data directory not found in '%s'" \
+	    tk_messageBox -title Warning -icon warning -message \
+                [mc "Maxima data directory not found in '%s'" \
 			     [file native  $maxima_datadir]]
 	}
 	set maxima_priv(maxima_verpkgdatadir) \
@@ -295,8 +296,9 @@ proc setMaxDir {} {
 	    }
 	}
     } else {
-	tide_notify [mc "Documentation not found in '%s'" \
-			 [file native  $maxima_priv(maxima_verpkgdatadir)]]
+	tk_messageBox -title Warning -icon warning -message \
+            [mc "Documentation not found in '%s'" \
+                 [file native  $maxima_priv(maxima_verpkgdatadir)]]
     }
 
     # used in Menu.tcl CMMenu.tcl
@@ -311,8 +313,8 @@ proc setMaxDir {} {
     }
     set file [file join $maxima_priv(maxima_xmaximadir) "intro.html"]
     if {![file isfile $file]} {
-	tide_notify [mc "Starting documentation not found in '%s'" \
-			 [file native	$file]]
+	tk_messageBox -title Warning -icon warning -message \
+            [mc "Starting documentation not found in '%s'" [file native $file]]
 	set maxima_priv(firstUrl) ""
     } else {
 	if {$tcl_platform(platform) == "windows"} {
@@ -361,20 +363,23 @@ proc vMAXSetMaximaCommand {} {
 	    $maxima_priv(xmaxima_maxima) != ""} {
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 
-	    tide_failure [mc "Error: Maxima executable not found\n%s\n\n Try setting the environment variable  XMAXIMA_MAXIMA." \
+	    tk_messageBox -title Error -icon error -message \
+                [mc "Maxima executable not found\n%s\n\n Try setting the environment variable XMAXIMA_MAXIMA." \
 			      [file native $maxima_priv(xmaxima_maxima)]]
 	    return
 	}
     } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
 	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA)
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	    tide_failure [concat [mc "Error2: maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"]
+	    tk_messageBox -title Error -icon error -message \
+                [concat [mc "Maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"]
 	    return
 	}
     } else {
 	set maxima_priv(xmaxima_maxima) maxima
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	    tide_failure [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+	    tk_messageBox -title Error -icon error -message \
+                [mc "Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 	}
 	# jfa: bypass maxima script on windows
         # vvz: on Windows 9X/ME only
@@ -386,13 +391,15 @@ proc vMAXSetMaximaCommand {} {
 	    if {[llength $exes] != "1" || \
 		    [set exe [lindex $exes 0]] == "" || \
 		    ![file isfile $exe]} {
-		tide_failure [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+		tk_messageBox -title Error -icon error -message \
+                    [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 		return
 	    }
 	} else {
 	    set maxima_priv(xmaxima_maxima) maxima
 	    if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-		tide_failure [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+                tk_messageBox -title Error -icon error -message \
+                    [mc "Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 	    }
 	}
     }

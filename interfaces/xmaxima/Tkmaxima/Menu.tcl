@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-25 21:03:24 villate"            #
+#     Time-stamp: "2024-03-26 13:00:11 villate"            #
 ############################################################
 
 proc zoomConsole {f} {
@@ -25,7 +25,8 @@ proc pMAXSaveTexToFile {text} {
 	set contents [$text get 1.0 end]
 	set fd [open $file w]
 	if {[catch {puts $fd $contents} err]} {
-	    tide_failure [mc "Error writing to file:\n%s" $err]
+	    tk_messageBox -title Error -icon error -message \
+                [mc "Error writing to file:\n%s" $err]
 	}
 	catch {close $fd}
     }

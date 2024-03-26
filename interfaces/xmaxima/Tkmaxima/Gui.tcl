@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-25 18:31:48 villate"            #
+#     Time-stamp: "2024-03-26 13:17:03 villate"            #
 ############################################################
 
 # Creates the browser if it doesn't exist
@@ -94,8 +94,8 @@ proc createConsole {cname} {
     set histfile "$maxima_priv(home)/.xmaxima_history"
     if {[file isfile $histfile]} {
         if {[catch {uplevel "#0" [list source $histfile]} err]} {
-            tide_failure [mc "Error sourcing %s\n%s" \
-                              [file native $histfile] $err]}}
+            tk_messageBox -title Error -icon error -message \
+                [mc "Error sourcing %s\n%s" [file native $histfile] $err]}}
     return $w}
 
 # Updates the information in the status bar at the bottom of the console

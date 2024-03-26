@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-25 21:12:21 villate"            #
+#     Time-stamp: "2024-03-26 13:12:50 villate"            #
 ############################################################
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -168,7 +168,7 @@ proc closeMaxima { win } {
 	    # Maxima takes time to shutdown?
 	}
     } else {
-	# tide_failure "no socket $win"
+	# tk_messageBox -icon error -message "no socket $win"
     }
 
     if {[info exists pid]} {
@@ -183,7 +183,7 @@ proc closeMaxima { win } {
 	    after 500
 	}
     } else {
-	# tide_failure "no pid $win"
+	# tk_messageBox -icon error -message "no pid $win"
     }
 
     if {[info exists pdata]} {
@@ -332,11 +332,12 @@ proc runOneMaxima { win } {
 	vwait [oloc $win pid]
 	after cancel $af
 	if { $pid  == "none" } {
-	    if {[tide_yesno [mc "Starting maxima timed out.  Wait longer?"]]} {
+	    if {[tk_messageBox -type yesno -title "Connection" -icon question \
+                     -message [mc "Starting maxima timed out. Wait longer?"]]} {
 		continue
 	    } else {
 		catch {closeMaxima $win}
-		set err   [mc "Starting Maxima timed out"]
+		set err [mc "Starting Maxima timed out"]
 		if {![catch {oget $win socket} sock] && \
 			[info exists pdata(maximaInit,$sock)] } {
 		    append err : $pdata(maximaInit,$sock)
@@ -383,7 +384,7 @@ proc sendMaxima { win form } {
 	} else {
 	    set mess [concat "$mess:\n%s\n" [mc "You may need to Restart"] $err]
 	}
-	tide_failure $mess
+	tk_messageBox -title Error -icon error -message $mess
     }
 }
 
@@ -459,7 +460,7 @@ proc sendMaximaCall { win form call } {
 	} else {
 	    set mess [concat "$mess:\n%s\n" [mc "You may need to Restart"] $err]
 	}
-	tide_failure $mess
+	tk_messageBox -title Error -icon error -message $mess
 	return
     }
     if { [info exists counter] } {
