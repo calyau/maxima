@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING.tcl
 #
 #     Modified by Jaime E. Villate
-#     Time-stamp: "2024-03-20 15:17:40 villate"
+#     Time-stamp: "2024-03-26 20:25:15 villate"
 #
 ######################################################################
 
@@ -612,7 +612,7 @@ proc redraw2dData { win  args } {
 		if { [lsearch { xfun color plotpoints linecolors pointsize \
 				    nolines bargraph errorbar maintitle \
 				    linewidth labelposition xaxislabel \
-				    yaxislabel dydx } $type] >= 0 } {
+				    yaxislabel dydx nolegend} $type] >= 0 } {
 		    # puts "setting oset $win $type [lindex $d 1]"
 		    oset $win $type [lindex $d 1]
 		} elseif { "$type" == "text" } {

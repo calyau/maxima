@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-18 20:53:06 villate"            #
+#     Time-stamp: "2024-03-26 20:26:42 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -452,8 +452,7 @@ proc replotdf { win } {
     set xfundata ""
     foreach v [sparseListWithParams $xfun {x y t} $parameters ] {
 	proc _xf {  x  } "return \[expr { $v } \]"
-	regsub "\\$" $v "" label
-	lappend xfundata [list label $label] \
+	lappend xfundata [list nolegend 1] \
 	    [linsert [calculatePlot $win _xf $nsteps]  \
 		 0 xversusy]
     }
