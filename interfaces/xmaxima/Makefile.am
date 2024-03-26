@@ -30,8 +30,6 @@ bin_SCRIPTS = xmaxima
 TKSOURCES = \
 	Tkmaxima/COPYING.tcl \
 	Tkmaxima/Cygwin.tcl \
-	Utils/FileDlg.tcl \
-	Utils/Misc.tcl \
 	Tkmaxima/Constants.tcl \
 	Tkmaxima/Preamble.tcl \
 	Tkmaxima/Readdata.tcl \
