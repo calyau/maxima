@@ -142,9 +142,10 @@
                                     (expr_to_str (second ode)) "\"")))
           (t (merror 
               (intl:gettext "plotdf: first argument must be either an expression or a list with two expressions."))))
-    (let ((data (format nil "plotdf ~a ~a~%" cmd opts)))
+    (let (data)
       (setq file (plot-file-path (format nil "~a.xmaxima" (random-name 16))))
       (cond ($show_openplot
+             (setq data (format nil "plotdf ~a ~a~%" cmd opts))
              (with-open-file
               (fl
                #+sbcl (sb-ext:native-namestring file)
@@ -158,9 +159,11 @@
                       #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
                       (format nil " ~s &" file)
                       #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-                      file))
-            (t (princ data) "")))
-    (list '(mlist) file)))
+                      file)
+             (list '(mlist) file))
+            (t
+             (setq data (format nil "{plotdf ~a ~a}" cmd opts))
+             (princ data) "")))))
 
 ;; plot equipotential curves for a scalar field f(x,y)
 (defun $ploteq (fun &rest options)
@@ -209,9 +212,10 @@
     (unless (search "-yaxislabel " opts)
       (setq opts (concatenate 'string opts " -yaxislabel " (ensure-string s2))))
 							      
-    (let ((data (format nil "plotdf ~a ~a~%" cmd opts)))
+    (let (data)
       (setq file (plot-file-path (format nil "~a.xmaxima" (random-name 16))))
       (cond ($show_openplot
+             (setq data (format nil "plotdf ~a ~a~%" cmd opts))
              (with-open-file
               (fl
                #+sbcl (sb-ext:native-namestring file)
@@ -225,6 +229,8 @@
                       #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
                       (format nil " ~s &" file)
                       #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-                      file))
-            (t (princ data) "")))
-    (list '(mlist) file)))
+                      file)
+             (list '(mlist) file))
+            (t
+             (setq data (format nil "{plotdf ~a ~a}" cmd opts))
+             (princ data) "")))))
