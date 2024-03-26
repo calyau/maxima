@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2024-03-26 13:07:06 villate"            #
+#     Time-stamp: "2024-03-26 13:42:55 villate"            #
 ############################################################
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
@@ -392,7 +392,7 @@ proc vMAXSetMaximaCommand {} {
 		    [set exe [lindex $exes 0]] == "" || \
 		    ![file isfile $exe]} {
 		tk_messageBox -title Error -icon error -message \
-                    [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+                    [mc "Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 		return
 	    }
 	} else {

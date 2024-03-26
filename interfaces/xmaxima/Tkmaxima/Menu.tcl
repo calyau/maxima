@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-26 13:00:11 villate"            #
+#     Time-stamp: "2024-03-26 17:02:15 villate"            #
 ############################################################
 
 proc zoomConsole {f} {
@@ -19,8 +19,50 @@ proc zoomConsole {f} {
     set maxima_default(ConsoleFont) [list $ffamily $fsize]
 }
 
+proc fileType {type} {
+    switch -exact -- $type output {
+        return [list {"Output Files" .out} {"All Files" *}]
+    } lisp {
+        return [list {"Lisp Files" {.lisp}} {"All Files" *}]
+    } maxima {
+        return [list {"Maxima Files" {.mac .mc .dem}} {"All Files" *}]
+    } all - default {
+        return [list {"All Files" *}]}}
+
+proc getOpenFile {title {type "all"}} {
+    global maxima_default
+    set types [fileType $type]
+    set file $maxima_default(OpenFile)
+    if {$file ne ""} {set dir [file dir $file]} {set dir ""}
+    set proc tk_getOpenFile
+    set list [list $proc -title $title -filetypes $types]
+    if {$dir ne ""} {lappend list  -initialdir [file native $dir]}
+    if {[catch {eval $list} retval]} {
+	global errorInfo
+	tk_messageBox -title Error -icon error -message \
+            [mc "Error opening file:\n%s" $errorInfo]
+	return ""}
+    if {$retval ne ""} { set maxima_default(OpenFile) $retval }
+    return $retval}
+
+proc getSaveFile {title {type "all"}} {
+    global maxima_default
+    set types [fileType $type]
+    set file $maxima_default(SaveFile)
+    if {$file ne ""} {set dir [file dir $file]} {set dir ""}
+    set proc tk_getSaveFile
+    set list [list $proc -title $title -filetypes $types]
+    if {$dir ne ""} {lappend list -initialdir [file native $dir]}
+    if {[catch {eval $list} retval]} {
+	global errorInfo
+	tk_messageBox -title Error -icon error -message \
+            [mc "Error saving file:\n%s" $errorInfo]
+	return ""}
+    if {$retval ne ""} { set maxima_default(SaveFile) $retval }
+    return $retval}
+
 proc pMAXSaveTexToFile {text} {
-    set file [tide_savefile [mc "Save to a file"] "" *.out]
+    set file [getSaveFile [mc "Save to a file"] output]
     if {$file != ""} {
 	set contents [$text get 1.0 end]
 	set fd [open $file w]
@@ -81,7 +123,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-accel {Alt+b} \
 	-label [set label [mc "Batch File"]] \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_openfile [mc "Open a file to Batch"] "" *.mac]
+	    set file [getOpenFile [mc "Open a file to Batch"] maxima]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batch(\"$file\")\$\n"
 		maxStatus [concat [mc "Batched File "] "$file"]
@@ -92,7 +134,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-accel {Alt+o} \
 	-label [set label [mc "Batch File Silently"]] \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_openfile [mc "Open a file to Batch Silently"] "" *.mac]
+	    set file [getOpenFile [mc "Open a file to Batch Silently"] maxima]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batchload(\"$file\")\$\n"
 		maxStatus [concat [mc "Batched File "] "$file"]
@@ -104,7 +146,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-accel {Alt+i} \
 	-label [set label [mc "Restore Maxima State"]] \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_openfile [mc "Open a file to Restore State"] "" *.lisp]
+	    set file [getOpenFile [mc "Open a file to Restore State"] lisp]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$load \"$file\") nil)\n"
 		maxStatus [concat [mc "Maxima State Restored from "] "$file"]
@@ -117,7 +159,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-label [set label [mc "Save Maxima State to File"]] \
 	-accel {Ctrl+s} \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_savefile [mc "Save to a file"] "" *.lisp]
+	    set file [getSaveFile [mc "Save to a file"] lisp]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$save \"$file\" '\$all) nil)\n"
 		maxStatus [concat [mc "Maxima State Saved to "] "$file"]
@@ -129,7 +171,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-label [set label [mc "Save Maxima Input to File"]] \
 	-accel {Ctrl+a} \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_savefile [mc "Save to a file"] "" *.mac]
+	    set file [getSaveFile [mc "Save to a file"] maxima]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$stringout \"$file\" '\$input) nil)\n"
 		maxStatus [concat [mc "Maxima Input Saved to "] "$file"]
