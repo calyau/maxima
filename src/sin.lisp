@@ -1323,30 +1323,63 @@
 	  (and (eq (car b) '%sin)
 	       (eq (car d) '%sin)))
         ;; We have a*sin(m*x)*sin(n*x).
-        ;; The integral is: a*(sin((m-n)*x)/(2*(m-n))-sin((m+n)*x)/(2*(m+n))
-        (return (subliss y
-                         '((mtimes) a
-                           ((mplus)
-                            ((mquotient)
-                             ((%sin) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
-                             ((mtimes) 2 ((mplus) m ((mtimes) -1 n))))
-                            ((mtimes) -1
-                             ((mquotient)
-                              ((%sin) ((mtimes) ((mplus) m n) x))
-                              ((mtimes) 2 ((mplus) m n)))))))))
+        ;;
+        ;; The integral is:
+        ;; a*(sin((m-n)*x)/(2*(m-n))-sin((m+n)*x)/(2*(m+n)).  But if n
+        ;; = m, the integral is x/2-sin(2*n*x)/(4*n).
+        (let ((n (cdras 'n y))
+              (m (cdras 'm y)))
+          (cond
+            ((eq ($askequal n m) '$yes)
+             ;; n=m, so we have the integral of a*sin(n*x)^2 which is
+             (return (subliss y
+                              `((mtimes) a
+                                ((mplus)
+                                 ((mquotient) x 2)
+                                 ((mtimes) -1
+                                  ((mquotient)
+                                   ((%sin) ((mtimes) 2 n x))
+                                   ((mtimes) 4 n))))))))
+            (t
+             (return (subliss y
+                              '((mtimes) a
+                                ((mplus)
+                                 ((mquotient)
+                                  ((%sin) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
+                                  ((mtimes) 2 ((mplus) m ((mtimes) -1 n))))
+                                 ((mtimes) -1
+                                  ((mquotient)
+                                   ((%sin) ((mtimes) ((mplus) m n) x))
+                                   ((mtimes) 2 ((mplus) m n))))))))))))
        ((and (eq (car b) '%cos) (eq (car d) '%cos))
         ;; We have a*cos(m*x)*cos(n*x).
-        ;; The integral is: a*(sin((m-n)*x)/(2*(m-n))+sin((m+n)*x)/(2*(m+n))
-        (return (subliss y
-                         '((mtimes) a
-                           ((mplus)
-                            ((mquotient)
-                             ((%sin) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
-                             ((mtimes) 2
-                              ((mplus) m ((mtimes) -1 n))))
-                            ((mquotient)
-                             ((%sin) ((mtimes) ((mplus) m n) x))
-                             ((mtimes) 2 ((mplus) m n))))))))
+        ;; 
+        ;; The integral is:
+        ;; a*(sin((m-n)*x)/(2*(m-n))+sin((m+n)*x)/(2*(m+n)).  But when
+        ;; n = m, the integral is sin(2*m*x)/(4*m)+x/2.
+        (let ((n (cdras 'n y))
+              (m (cdras 'm y)))
+          (cond
+            ((eq ($askequal n m) '$yes)
+             (return (subliss y
+                              '((mtimes) a
+                                ((mplus)
+                                 ((mquotient)
+                                  ((%sin) ((mtimes) 2 n x))
+                                  ((mtimes) 4 n))
+                                 ((mquotient)
+                                  x 2))))))
+            (t
+             (return (subliss y
+                              '((mtimes) a
+                                ((mplus)
+                                 ((mquotient)
+                                  ((%sin) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
+                                  ((mtimes) 2
+                                   ((mplus) m ((mtimes) -1 n))))
+                                 ((mquotient)
+                                  ((%sin) ((mtimes) ((mplus) m n) x))
+                                  ((mtimes) 2 ((mplus) m n)))))))))))
        ((or (and (eq (car b) '%cos)
 		 ;; The following (destructively!) swaps the values of
 		 ;; m and n if first trig term is sin.  I (rtoy) don't
@@ -1357,16 +1390,35 @@
                  (rplacd (assoc 'n y) w))
             t)
         ;; We have a*cos(n*x)*sin(m*x).
-        ;; The integral is: -a*(cos((m-n)*x)/(2*(m-n))+cos((m+n)*x)/(2*(m+n))
-        (return (subliss y
-                         '((mtimes) -1 a
-                           ((mplus)
-                            ((mquotient)
-                             ((%cos) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
-                             ((mtimes) 2 ((mplus) m ((mtimes) -1 n))))
-                            ((mquotient)
-                             ((%cos) ((mtimes) ((mplus) m n) x))
-                             ((mtimes) 2 ((mplus) m n)))))))))
+        ;;
+        ;; The integral is:
+        ;; -a*(cos((m-n)*x)/(2*(m-n))+cos((m+n)*x)/(2*(m+n)).  But
+        ;; if n = m, the integral is -cos(n*x)^2/(2*n).
+        (let ((n (cdras 'n y))
+              (m (cdras 'm y)))
+          (cond
+            ((eq ($askequal n m) '$yes)
+             ;; This needs work.  For example
+             ;; integrate(cos(m*x)*sin(2*m*x),x).  We ask if 2*m = m.
+             ;; If the answer is yes, we return -cos(m*x)^2/(2*m).
+             ;; But if 2*m=m, then m=0 and the integral must be 0.
+             (return (subliss y
+                              '((mquotient)
+                                ((mtimes) -1 a
+                                 ((mexpt)
+                                  ((%cos) ((mtimes) n x))
+                                  2))
+                                ((mtimes) 2 n)))))
+            (t
+             (return (subliss y
+                              '((mtimes) -1 a
+                                ((mplus)
+                                 ((mquotient)
+                                  ((%cos) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
+                                  ((mtimes) 2 ((mplus) m ((mtimes) -1 n))))
+                                 ((mquotient)
+                                  ((%cos) ((mtimes) ((mplus) m n) x))
+                                  ((mtimes) 2 ((mplus) m n))))))))))))
   b  ;; At this point we have trig functions with different arguments,
      ;; but not a product of sin and cos.
      (cond ((not (setq y (prog2 
