@@ -178,4 +178,9 @@ proc vectorOp { a op b} {
     }
     return $ans
 }
+
+proc scalarTimesVector {scalar vector} {
+    foreach coord $vector {lappend ans [expr {$scalar*$coord}]}
+    return $ans}
+
 ## endsource matrix.tcl
