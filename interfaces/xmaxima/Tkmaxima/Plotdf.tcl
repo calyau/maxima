@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-27 15:21:53 villate"            #
+#     Time-stamp: "2024-03-27 16:57:30 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -105,12 +105,10 @@ proc doIntegrate { win x0 y0 } {
     makeLocal $win xradius yradius c dxdt dydt tinitial tstep nsteps \
         direction linewidth tinitial versus_t xmin xmax ymin ymax parameters
     linkLocal $win didLast trajectoryStarts
-    setXffYff $dxdt $dydt $parameters
-    setXggYgg $dxdt $dydt $parameters
-    set method {rungeKuttaA}
+    # method can be rungeKutta, rungeKuttaA or adamsMoulton
+    set method {adamsMoulton}
     oset $win trajectory_at [format "%.10g  %.10g" $x0 $y0]
     lappend trajectoryStarts [list $x0 $y0]
-
     set didLast {}
     # puts "doing at $trajectory_at"
     set steps $nsteps
@@ -135,14 +133,12 @@ proc doIntegrate { win x0 y0 } {
         incr taskNo
         set linecolor [assoc $task $useColors]
         set signs $todo
-            set coords {}
-            if {$task eq {curves}} {
-                set signs {-1 1}
-                set fx xgg
-                set fy ygg
-            } else {
-                set fx xff
-                set fy yff}                 
+        set coords {}
+        if {$task eq {curves}} {
+            setCurvesFunctions $dxdt $dydt $parameters
+            set signs {-1 1}
+        } else {
+             setFieldFunctions $dxdt $dydt $parameters}                 
         foreach sgn $signs {
             set arrow {none}
             if {$task eq {fieldlines}} {
@@ -154,7 +150,7 @@ proc doIntegrate { win x0 y0 } {
                         set arrow {last}
                         set coords {}}}}
             set h [expr {$sgn*$tstep}]
-            set form [list $method $fx $fy $tinitial $x0 $y0 $h $steps]
+            set form [list $method xff yff $tinitial $x0 $y0 $h $steps]
 
             # puts "doing: $form"
             # pts will be a list with values of t, x and y, at the initial
@@ -432,7 +428,7 @@ proc replotdf { win } {
     makeLocal $win c dxdt dydt tinitial nsteps xfun trajectory_at parameters
     set_xy_region $win 0.8
     set_xy_transforms $win
-    setXffYff $dxdt $dydt $parameters
+    setFieldFunctions $dxdt $dydt $parameters
     $c delete all
     setForIntegrate $win
     oset $win curveNumber -1
@@ -452,13 +448,13 @@ proc replotdf { win } {
 	$c delete printoptions
 	eval [$win.menubar.close cget -command] }}
 
-proc setXffYff { dxdt dydt parameters } {
+proc setFieldFunctions { dxdt dydt parameters } {
     proc xff {t x y} "expr {[sparseWithParams $dxdt {x y} $parameters]}"
     proc yff {t x y} "expr {[sparseWithParams $dydt {x y} $parameters] } "
 }
-proc setXggYgg { dxdt dydt parameters } {
-    proc xgg {t x y} "expr {[sparseWithParams $dydt {x y} $parameters]}"
-    proc ygg {t x y} "expr {[sparseWithParams -($dxdt) {x y} $parameters]}"
+proc setCurvesFunctions { dxdt dydt parameters } {
+    proc xff {t x y} "expr {[sparseWithParams $dydt {x y} $parameters]}"
+    proc yff {t x y} "expr {[sparseWithParams -($dxdt) {x y} $parameters]}"
 }
 
 proc doConfigdf { win } {
@@ -513,10 +509,9 @@ proc recomputeDF { win } {
 
     catch {     set trajs $trajectoryStarts}
 
-
     while { $redo != $recompute } {
-	#	puts "	setXffYff $dxdt $dydt $parameters"
-	setXffYff $dxdt $dydt $parameters
+	#	puts "	setFieldFunctions $dxdt $dydt $parameters"
+	setFieldFunctions $dxdt $dydt $parameters
 	#	$c delete path point arrow
 	$c delete all
 	catch { unset  trajectoryStarts }

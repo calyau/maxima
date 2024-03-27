@@ -3,7 +3,7 @@
 #  Copyright William F. Schelter.  All rights reserved.    #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-16 21:36:30 villate"            #
+#     Time-stamp: "2024-03-27 16:06:40 villate"            #
 ############################################################
 
 proc rungeKutta { f g t0 x0 y0 h nsteps} {
@@ -53,7 +53,7 @@ proc rungeKuttaA {f g t0 x0 y0 h nsteps} {
 	#if { $leng == 0 } {set leng .001}
 	set th [expr {$h/3.0}]
 	if { $th  < $h }  { set h $th }
-	set ans  [rungeKutta $f $g $t0 $x0 $y0 $h $nsteps $dir]
+	set ans  [rungeKutta $f $g $t0 $x0 $y0 $h $nsteps]
 	# puts -nonewline "..(h=[format "%.5f" $h],pts=[llength $ans])"
 	# flush stdout
     }
