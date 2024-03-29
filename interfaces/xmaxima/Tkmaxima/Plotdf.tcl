@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-27 16:57:30 villate"            #
+#     Time-stamp: "2024-03-28 14:51:52 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -100,23 +100,23 @@ proc doIntegrateScreen { win sx sy  } {
 }
 
 proc doIntegrate { win x0 y0 } {
-    # global xradius yradius c tstep  nsteps
-    # puts "dointegrate $win $x0 $y0"
     makeLocal $win xradius yradius c dxdt dydt tinitial tstep nsteps \
-        direction linewidth tinitial versus_t xmin xmax ymin ymax parameters
+        direction linewidth tinitial versus_t xmin xmax ymin ymax parameters \
+        width height
     linkLocal $win didLast trajectoryStarts
+    set linewidth [expr {$linewidth*[vectorlength $width $height]/1000.}]
+    set arrowshape [scalarTimesVector $linewidth {3 5 2}]
+
     # method can be rungeKutta, rungeKuttaA or adamsMoulton
     set method {adamsMoulton}
     oset $win trajectory_at [format "%.10g  %.10g" $x0 $y0]
     lappend trajectoryStarts [list $x0 $y0]
     set didLast {}
     # puts "doing at $trajectory_at"
-    set steps $nsteps
-    if {$tstep eq {}} {
-	set tstep [expr {[vectorlength $xradius $yradius]/200.0}]
-    }
+    # A reasonabel value of tstep has already been set up in drawDF by
+    # using the maximum length of the field vectors. This is just in case.
+    if {$tstep eq {}} {set tstep 0.1}
 
-    # puts tstep=$tstep
     set todo {1}
     switch -- $direction {
 	forward { set todo {1}}
@@ -150,7 +150,7 @@ proc doIntegrate { win x0 y0 } {
                         set arrow {last}
                         set coords {}}}}
             set h [expr {$sgn*$tstep}]
-            set form [list $method xff yff $tinitial $x0 $y0 $h $steps]
+            set form [list $method xff yff $tinitial $x0 $y0 $h $nsteps]
 
             # puts "doing: $form"
             # pts will be a list with values of t, x and y, at the initial
@@ -181,7 +181,8 @@ proc doIntegrate { win x0 y0 } {
                                     lappend coords [rtosy$win [lindex $p 1]]}}
                             if {$c2 && ([llength $coords] >= 4)} {
                                 $c create line $coords -tags path -width \
-                                    $linewidth -fill $linecolor -arrow $arrow
+                                    $linewidth -fill $linecolor -arrow $arrow \
+                                    -arrowshape $arrowshape
                                 set coords {}}
                         } else {
                             lappend coords [rtosx$win [lindex $p2 0]]
@@ -190,7 +191,7 @@ proc doIntegrate { win x0 y0 } {
                         set c1 $c2}}
             if {[llength $coords] >= 4} {
                 $c create line $coords -tags path -width $linewidth \
-                    -fill $linecolor -arrow $arrow}}}
+                    -fill $linecolor -arrow $arrow -arrowshape $arrowshape}}}
     if { $versus_t } { plotVersusT $win}
 }
 
@@ -251,7 +252,7 @@ proc lreverse { lis } {
 
 proc drawArrowScreen { c atx aty dfx dfy color } {
     set win [winfo parent $c]
-    linkLocal $win width height
+    makeLocal $win width height
     set linewidth [expr {[vectorlength $width $height]/1000.}]
     set arrowshape [scalarTimesVector $linewidth {3 5 2}]
     set x1 [expr {$atx + $dfx}]
@@ -262,8 +263,7 @@ proc drawArrowScreen { c atx aty dfx dfy color } {
 proc drawDF { win tinitial } {
     global axisGray
     makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vectors \
-        xaxislabel yaxislabel
-    linkLocal $win nobox axes width height narrows
+        xaxislabel yaxislabel nobox axes width height narrows tstep
     set rtosx rtosx$win
     set rtosy rtosy$win
     set storx storx$win
@@ -294,10 +294,10 @@ proc drawDF { win tinitial } {
 		set len [vectorlength $dfx $dfy]
 		append all " $len $dfx $dfy "
 		if { $min > $len } {set min $len}
-		if { $max < $len } {set max $len}}}
-	set fac [expr {($stepsize - 13)/($max - $min)}]
-	set arrowmin 8
-	set arrowrange [expr {$stepsize - 4 - $arrowmin}]
+                        if { $max < $len } {set max $len}}}
+        if {$tstep eq {}} {oset $win tstep [expr {$stepsize/(10.0*$max)}]}
+	set arrowmin [expr {0.25*$stepsize}]
+	set arrowrange [expr {0.85*$stepsize - $arrowmin}]
 	set s1 [expr {($arrowrange*$min+$arrowmin*$min-$arrowmin*$max)/($min-$max)}]
 	set s2 [expr {$arrowrange/($max-$min)}]
 	# we calculate fac for each length, so that
@@ -315,7 +315,7 @@ proc drawDF { win tinitial } {
 		set dfx [lindex $all [incr i]]
 		set dfy [lindex $all [incr i]]
 		#puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy
-		# puts "fac=$fac $len $dfx $dfy"
+		# puts "$len $dfx $dfy"
                 if {$len != 0.0} {
                     set fac [expr {$s1/$len + $s2}]
                     drawArrowScreen $c $x $y [expr {$fac * $dfx}] \
@@ -503,11 +503,11 @@ proc recomputeDF { win } {
 	#	puts "set recompute 1"
 	set recompute 1
     }
-    linkLocal $win trajectoryStarts  c tinitial dxdt dydt parameters
+    linkLocal $win trajectoryStarts c tinitial dxdt dydt parameters
     set redo 0
     set trajs ""
 
-    catch {     set trajs $trajectoryStarts}
+    catch {set trajs $trajectoryStarts}
 
     while { $redo != $recompute } {
 	#	puts "	setFieldFunctions $dxdt $dydt $parameters"
