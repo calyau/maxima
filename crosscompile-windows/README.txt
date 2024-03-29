@@ -13,8 +13,8 @@ is necessary.
 The Mingw compiler comes in two flavors for threading (win32 and posix threads).
 wxMaxima requires posix threads, so you must reconfigure mingw and select the posix
 version, on Debian/Ubuntu Linux using:
-update-alternatives --config x86_64-w64-mingw32-g++
-update-alternatives --config x86_64-w64-mingw32-gcc
+update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
+update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
 
 
 Then you can extract the Maxima sourcecode or clone the git repository
@@ -30,8 +30,8 @@ The build directory should be called "build", because the Maxima code
 is copied during the build and this directory will be excluded.
 
 This will download the required Software (CLISP, SBCL, Gnuplot, wxMaxima,
-wxWidgets, Tcl, Tk, VTK) from the Internet into the directory
-"crosscompile-windows/download".
+wxWidgets, Tcl, Tk, VTK, Texinfo, maybe ABCL and CCL) from the Internet
+into the directory "crosscompile-windows/download".
 
 The packages will be compiled (if necessary) and a Windows 
 installer for Maxima is generated.
