@@ -783,6 +783,9 @@
           (:box-drawings-double-down-and-left #x2557)
           (:box-drawings-double-up-and-left #x255d)
           (:box-drawings-double-up-and-right #x255a)
+          (:box-drawings-light-arc-down-and-right #x256d)
+          (:box-drawings-light-arc-down-and-left #x256e)
+          (:mathematical-right-angle-bracket #x27E9)
           (:top-half-integral #x2320)
           (:integral-extension #x23ae)
           (:bottom-half-integral #x2321)
@@ -1594,7 +1597,7 @@
   (setq dmstr (if (display2d-unicode-enabled) d-integralsign-string-unicode d-integralsign-string-ascii))
   (draw-linear dmstr oldrow oldcol))
 
-(defvar d-prodsign-unicode-dmstr '((0 2 #\\ (d-hbar 3) #\/) (-4 0) (d-vbar 2 1) #\space (d-vbar 2 1) (1 0)))
+(defvar d-prodsign-unicode-dmstr `((0 2 ,(get-unicode-char :box-drawings-light-arc-down-and-left) (d-hbar 3) ,(get-unicode-char :box-drawings-light-arc-down-and-right)) (-4 0) (d-vbar 2 1) #\space (d-vbar 2 1) (1 0)))
 (defvar d-prodsign-ascii-dmstr '((0 2 #\\ (d-hbar 3 #\=) #\/) (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
 
 (defun d-prodsign (linear? &aux dmstr)
@@ -1606,7 +1609,7 @@
   #+lisp-unicode-capable
   `((0 2 (d-hbar 4 ,(get-unicode-char :low-line)))
     (-4 1 ,(get-unicode-char :box-drawings-light-diagonal-upper-left-to-lower-right))
-    #\>
+    ,(get-unicode-char :mathematical-right-angle-bracket)
     (-2 -1 ,(get-unicode-char :box-drawings-light-diagonal-upper-right-to-lower-left))
     (-1 -2 (d-hbar 4 ,(get-unicode-char :overline)))))
 
