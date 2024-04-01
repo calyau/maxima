@@ -547,7 +547,7 @@ limit('diff(x+1,x),x,2);
 1;
 
 limit('integrate(x+1,x),x,2);
-'integrate(x+1,x);
+'limit('integrate(x+1,x),x,2);
 
 /* #3767 incorrect limit (radius of convergence) */
 limit(diff(exp(n * x), x,n)/n,n,inf);
@@ -972,3 +972,40 @@ block([start : absolute_real_time()],
    limit(sin(10000000/x)*x,x,inf),
    is(absolute_real_time()-start < 1)]);
  [100, 10000, 10000000, true]$
+
+/* #4273 limit(integrate(f(x)*g(x), x), x, a) incorrect results */
+ limit(integrate (abs(x) * cos(x), x), x, 1);
+ 'limit('integrate(cos(x)*abs(x),x),x,1);
+
+limit(integrate (abs(x) * exp(x), x), x, 1);
+'limit(integrate (abs(x) * exp(x), x), x, 1);
+
+limit(integrate (bessel_j(0, x) * exp(x), x), x, 1);
+'limit(integrate (bessel_j(0, x) * exp(x), x), x, 1);
+
+limit(integrate (bessel_j(0, x) * unit_step(x), x), x, 1);
+'limit(integrate (bessel_j(0, x) * unit_step(x), x), x, 1);
+
+(remvalue(foo), limit (integrate (bessel_j(0, x) * foo(x), x), x, 1));
+'limit (integrate (bessel_j(0, x) * foo(x), x), x, 1);
+
+ limit (integrate (baz(0, x) * unit_step(x), x), x, 1);
+'limit (integrate (baz(0, x) * unit_step(x), x), x, 1);
+
+limit (integrate (baz(0, x) * foo(x), x), x, 1);
+ 'limit (integrate (baz(0, x) * foo(x), x), x, 1);
+
+ /* #4275 ldefint returns zero */
+
+ /* not wrong and not optimal*/
+ ldefint(floor(x)*exp(x),x,2,3);
+ 'limit('integrate(%e^x*floor(x),x),x,3,minus)-'limit('integrate(%e^x*floor(x),x),x,2,plus);
+
+ (remvalue(foo, ctxt),0);
+ 0$
+
+ contexts;
+ [initial,global]$
+
+(kill(facts),0);
+0$

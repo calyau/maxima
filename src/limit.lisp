@@ -105,6 +105,15 @@
 	  		(setq first-try (resimplify first-try)))
       	 first-try))))
 
+;; Return true iff the expression e has a subexpression that 
+;; is an indefinite integral.
+(defun indefinite-integral-p (e x)
+	(cond (($mapatom e) nil)
+	      ((and (eq (caar e) '%integrate) (alike x (third e)))
+		    (null (fourth e)))
+		  (t 
+		    (some #'(lambda (q) (indefinite-integral-p q x)) (cdr e)))))
+
 (defun toplevel-$limit (&rest args)
   (let ((limit-assumptions ())
 	(old-integer-info ())
@@ -171,9 +180,20 @@
 		    (setq var (gensym))
 		    (setq exp (maxima-substitute var realvar exp1))
 		    (putprop var realvar 'limitsub)))
-	      (unless (or $limsubst (eq var genfoo))
-		(when (limunknown exp)
-		  (return `((%limit) ,@(cons exp1 (cdr args))))))
+
+		;; When exp involves an indefinite integral whose integration variable
+		;; is the limit variable, return a limit nounform. Do this even when
+		;; limsubst is true. Thus limit(int(f(x),x,a) is trapped here, but 
+		;; limit(int(f(x,z),x,a) is not. 
+	    (when (indefinite-integral-p exp var)
+		  	(return (cons (list '%limit) args)))
+
+        ;; This returns a limit nounform for expressions such as 
+		;; limit(x < 8,x,0), limit(diff(f(x),x,x,0), and ...
+        (unless (or $limsubst (eq var genfoo))
+		    (when (limunknown exp)
+			     (return `((%limit) ,@(cons exp1 (cdr args))))))	
+
 	      (setq varlist (ncons var) genvar nil origval val)
 	      ;; Transform limits to minf to limits to inf by
 	      ;; replacing var with -var everywhere.
