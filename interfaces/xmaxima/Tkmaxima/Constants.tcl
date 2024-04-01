@@ -4,22 +4,20 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-26 12:57:34 villate"            #
+#     Time-stamp: "2024-04-01 14:13:26 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
     global maxima_default maxima_priv embed_args tk_version
 
+    # default settings. Might be changed by local configuration file
     set maxima_default(plotwindow) multiple
-
-    #mike turn these off by default
     set maxima_default(iShowBalloons) 0
-
     set maxima_default(fontAdjust) 0
-
     set maxima_default(iConsoleWidth) 80
     set maxima_default(iConsoleHeight) 32
-
+    set maxima_default(browser) 1
+    
     # Set up Maxima console font
     set cfont [font actual TkFixedFont -family]
     set cfontsize [font actual TkFixedFont -size]

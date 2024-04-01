@@ -1,5 +1,5 @@
 #     xmaxima-trailer.tcl
-#     Time-stamp: "2024-04-01 12:33:11 villate"
+#     Time-stamp: "2024-04-01 14:13:55 villate"
 #
 # Attach this at the bottom of the xmaxima code to start up the interface.
 
@@ -53,7 +53,6 @@ if { [llength $maxima_priv(plotfile)] > 0 } {
     
     wm deiconify .
     # Creates the browser in a separate window
-    if {[catch {set maxima_default(browser)}]} {set maxima_default(browser) 1}
     if {$maxima_default(browser)} {createBrowser .browser}
     
     ### end of replacement o object gui
