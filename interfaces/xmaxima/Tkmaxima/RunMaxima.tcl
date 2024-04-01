@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-26 13:12:50 villate"            #
+#     Time-stamp: "2024-04-01 16:16:06 villate"            #
 ############################################################
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -133,8 +133,11 @@ proc openMaxima { win filter } {
 proc runMaxima { win  filter sock args } {
     linkLocal $win server
     oset $win maximaSocket $sock
-
     fconfigure $sock -blocking 0 -translation lf
+    
+    # Starting from 5.47post, Maxima now outputs UTF-8
+    fconfigure $sock -encoding utf-8
+    
     fileevent $sock readable "$filter $win $sock"
 
     if { [info exists server] } {
