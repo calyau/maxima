@@ -1,4 +1,3 @@
-;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
@@ -23,7 +22,7 @@
   "Causes equations to be drawn left justified rather than centered.
 	 For slow consoles.")
 
-(defmvar $noundisp nil)
+(defmvar $noundisp nil "Causes nouns to be displayed with a single quote")
 
 (defmvar displayp nil "Is T when inside of `displa'")
 
@@ -31,7 +30,8 @@
 ;; evaluation-at-a-point bars, and matrices are drawn.
 
 (defmvar $boxchar "\""  "Character used for drawing boxes.")
-(defmvar $absboxchar "!" "Character used for drawing absolute value signs and 'evaluation at' signs.")
+(defmvar $absboxchar "!"
+  "Character used for drawing absolute value signs and 'evaluation at' signs.")
 (defmvar $lmxchar "["  "Character used for drawing the left edge of a matrix.")
 (defmvar $rmxchar "]"  "Character used for drawing the right edge of a matrix.")
 
@@ -607,7 +607,7 @@
 (displa-def %product dim-%product 115.)
 
 (defun dim-%product (form result)
-  (dsumprod form result '(d-prodsign) 5 3 1))
+  (dsumprod form result '(d-prodsign) 7 3 1))
 
 (displa-def rat dim-rat "/")
 (displa-def %rat dim-rat "/")
@@ -777,14 +777,13 @@
           (:box-drawings-light-down-and-left #x2510)
           (:box-drawings-light-up-and-left #x2518)
           (:box-drawings-light-up-and-right #x2514)
+          (:box-drawings-light-down-and-horizontal #x252c)
           (:box-drawings-double-horizontal #x2550)
           (:box-drawings-double-vertical #x2551)
           (:box-drawings-double-down-and-right #x2554)
           (:box-drawings-double-down-and-left #x2557)
           (:box-drawings-double-up-and-left #x255d)
           (:box-drawings-double-up-and-right #x255a)
-          (:box-drawings-light-arc-down-and-right #x256d)
-          (:box-drawings-light-arc-down-and-left #x256e)
           (:mathematical-right-angle-bracket #x27E9)
           (:top-half-integral #x2320)
           (:integral-extension #x23ae)
@@ -1597,8 +1596,14 @@
   (setq dmstr (if (display2d-unicode-enabled) d-integralsign-string-unicode d-integralsign-string-ascii))
   (draw-linear dmstr oldrow oldcol))
 
-(defvar d-prodsign-unicode-dmstr `((0 2 ,(get-unicode-char :box-drawings-light-arc-down-and-left) (d-hbar 3) ,(get-unicode-char :box-drawings-light-arc-down-and-right)) (-4 0) (d-vbar 2 1) #\space (d-vbar 2 1) (1 0)))
-(defvar d-prodsign-ascii-dmstr '((0 2 #\\ (d-hbar 3 #\=) #\/) (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
+(defvar d-prodsign-unicode-dmstr
+  `((0 2 ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 3)
+       ,(get-unicode-char :box-drawings-light-down-and-horizontal))
+    (-5 0) (d-vbar 2 1) #\space #\space #\space (d-vbar 2 1) (2 0)))
+
+(defvar d-prodsign-ascii-dmstr
+  '((0 2 (d-hbar 5 #\=)) (-5 0) (d-vbar 2 1 #\!) #\space #\space #\space
+    (d-vbar 2 1 #\!) (2 0)))
 
 (defun d-prodsign (linear? &aux dmstr)
   (declare (ignore linear?))
