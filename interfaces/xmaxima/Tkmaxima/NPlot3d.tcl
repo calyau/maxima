@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2024-03-25 21:05:20 villate"            #
+#     Time-stamp: "2024-04-03 19:04:26 villate"            #
 ############################################################
 
 # source plotting.tcl ; source nplot3d.tcl ; catch { destroy .plot3d} ;  plot3d -zfun "" -data $sample -xradius 10 -yradius 10
@@ -281,7 +281,9 @@ proc addOnePlot3d { win data } {
 	set ${v}radius [expr {($b - $a)/2.0}]
 	set ${v}center [expr {($b + $a)/2.0}]
     }
-    set rotationcenter "[expr {.5*($xmax + $xmin)}] [expr {.5*($ymax + $ymin)}]   [expr {.5*($zmax + $zmin)}] "
+    set rotationcenter [list [list [expr {.5*($xmax+$xmin)}]] \
+                            [list [expr {.5*($ymax+$ymin)}]] \
+                            [list [expr {.5*($zmax+$zmin)}]]]
 
     #puts "meshes data=[array get meshes]"
     #global plot3dMeshes.plot3d

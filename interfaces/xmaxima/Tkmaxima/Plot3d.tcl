@@ -282,26 +282,24 @@ proc setupPlot3dColors { win first_mesh} {
 
 proc calculateRotated { win } {
     set pideg [expr {3.14159/180.0}]
-    linkLocal $win scale
+    linkLocal $win scalemat
     makeLocal $win az el rotationcenter xradius zradius yradius
-    set rotmatrix [rotationMatrix [expr {$az * $pideg }] \
-		       [expr {$el * $pideg }] \
-		      ]
+    set rotmatrix [rotationMatrix [expr {$az*$pideg }] [expr {$el*$pideg}] ]
 
     # shrink by .2 on z axis
     # set fac [expr  {[vectorlength $xradius $yradius] / (sqrt(2) * $zradius)}]
 
-    set rotmatrix [ matMul  $rotmatrix 3 $scale 3 ]
-    set tem [matMul $scale 3 $rotationcenter 1]
+    set rotmatrix [ matMul  $rotmatrix $scalemat]
+    set tem [matMul $scalemat $rotationcenter]
 
-    mkMultLeftFun  $rotmatrix 3 _rot$win
+    mkMultLeftFun  $rotmatrix _rot$win
     set rot _rot$win
     set ans ""
     # puts "points=[oget $win points]"
-    if { "$rotationcenter" != "" } {
+    if { $rotationcenter ne "" } {
 	#puts "rotationcenter = $rotationcenter"
 	set constant [vectorOp $tem - [eval $rot $rotationcenter]]
-	mkMultLeftFun  $rotmatrix 3 _rot$win $constant
+	mkMultLeftFun  $rotmatrix _rot$win $constant
     }
     #puts "win $win"
     foreach { x y z } [oget $win points] {
@@ -368,10 +366,11 @@ proc getOrderedMeshIndices { win } {
 #----------------------------------------------------------------
 #
 proc set_xy_region_3d { win fac } {
-    linkLocal $win scale
+    linkLocal $win scalemat
     makeLocal $win xcenter ycenter xradius yradius xmin xmax ymin ymax zradius
-    set scale [list [expr {1.5/($xradius)}] 0 0 0 [expr {1.5/($yradius)}] \
-                   0 0 0 [expr {1.5/($zradius)}] ]
+    set scalemat [list [list [expr {1.5/($xradius)}] 0 0] \
+                      [list 0 [expr {1.5/($yradius)}] 0] \
+                      [list 0 0 [expr {1.5/($zradius)}]]]
     oset $win fac $fac
     oset $win xmin [expr {1.5*$xmin/($xradius)}]
     oset $win xmax [expr {1.5*$xmax/($xradius)}]

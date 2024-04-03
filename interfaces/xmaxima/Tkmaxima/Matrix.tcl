@@ -1,184 +1,103 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+###### Matrix.tcl #################################################
 #
-#       $Id: Matrix.tcl,v 1.4 2006-10-01 23:58:29 villate Exp $
+#   Copyright (C) 2024 Jaime E. Villate
+#   Time-stamp: "2024-03-20 14:40:38 villate
 #
-###### Matrix.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. #
-############################################################
+#  For distribution under GNU public License. See COPYING.tcl
+#  (Based on William F. Schelter's work, Copyright (C) 1998)
+#
+###################################################################
 
-# In this file a matrix is represented by a list of M*N entries together
-# with an integer N giving the number of columns: {1 0 0 1} 2  would give
-# the two by two identity
+# In this file a matrix is represented as in Maxima.
+# Namely, as a list of rows, where each row is itself a list.
+# {{1 0} {0 1}} would then be the two by two identity.
+# vectors are represented by lists.
 
-proc comment {args } {
-}
-global mee
-set mee " } \] \[ expr { "
+# mkMultLeftExpr
+# Given a matrix {{a00 a01} {a10 a11}} and a constant vector {k0 k1},
+# it returns the symbolic expression:
+# {prefix0 prefix1} {[expr {a00*$prefix0+a01*$prefix1+k0}]
+#    [expr {a10*$prefix0+a11*$prefix1+k1}]}
+# which will be used by mkMultLeft to define a procedure with input
+# parameters {prefix0 prefix1}
 
-proc mkMultLeftExpr { mat n prefix { constant "" } } {
-    #create a function body that does MAT (prefix1,prefix2,..) + constant
-    global mee
-    set all ""
-
+proc mkMultLeftExpr {mat prefix {constant ""}} {
     set vars ""
-    for { set i 0} { $i < $n} {incr i} { append vars " $prefix$i" }
-    set j 0
-    set k 0
-
-    foreach v $mat {
-	if { $j == 0 } {
-	    set ro ""
-	    # append ans ""
-	    set op ""
-	}
-        append ro " $op $v*\$$prefix$j"
-	set op "+"
-	if { $j == [expr {$n -1}] } {
-	    append ans " "
-	    if { "[lindex $constant $k]" != "" } {
-		append ro " + [lindex $constant $k] "
-	    }
-	    incr k
-	    append ans [concat \[ expr [list $ro] \]]
-	    set j -1
-	}
-	incr j
-    }
-    # puts [list $vars $ans]
-    return [list $vars $ans]
-}
-
-proc mkMultLeftFun { mat n name { constant ""} } {
-    set expr [mkMultLeftExpr $mat $n _a $constant]
-    set bod1 [string trim [lindex $expr 1] " "]
-    #    set bod "return \"$bod1\""
-    set bod [concat list [lindex $expr 1]]
-    proc $name [lindex $expr 0] $bod
-}
-
-proc rotationMatrix { th ph } {
-    return [list \
-		[expr {cos($ph)*cos($th)}] [expr {- cos($ph)*sin($th)}] [expr {sin($ph)}] \
-		[expr {sin($th)}] [expr {cos($th)}] 0.0 \
-		[expr {- sin($ph)*cos($th)}] [expr {sin($ph)*sin($th)}] [expr {cos($ph)}]]
-}
-
-proc rotationMatrix { thx thy thz } {
-    return \
-	[list  \
-	     [expr { cos($thy)*cos($thz) } ] \
-	     [expr { cos($thy)*sin($thz) } ] \
-	     [expr { sin($thy) } ] \
-	     [expr { sin($thx)*sin($thy)*cos($thz)-cos($thx)*sin($thz) } ] \
-	     [expr { sin($thx)*sin($thy)*sin($thz)+cos($thx)*cos($thz) } ] \
-	     [expr { -sin($thx)*cos($thy) } ] \
-	     [expr { -sin($thx)*sin($thz)-cos($thx)*sin($thy)*cos($thz) } ] \
-	     [expr { sin($thx)*cos($thz)-cos($thx)*sin($thy)*sin($thz) } ] \
-	     [expr { cos($thx)*cos($thy) } ] ]
-}
-
-# cross [a,b,c] [d,e,f] == [B*F-C*E,C*D-A*F,A*E-B*D]
-# cross_product([a,b,c],[d,e,f]):=[B*F-C*E,C*D-A*F,A*E-B*D]
-# cross_product(u,v):=sublis([a=u[1],b=u[2],c=u[3],d=v[1],e=v[2],f=v[3]],[B*F-C*E,C*D-A*F,A*E-B*D]);
-# the rotation by azimuth th, and elevation ph
-# MATRIX([COS(TH),SIN(TH),0],[-COS(PH)*SIN(TH),COS(PH)*COS(TH),SIN(PH)],
-#	    [SIN(PH)*SIN(TH),-SIN(PH)*COS(TH),COS(PH)]);
-
-proc rotationMatrix { th ph {ignore {} } } {
-    return \
-	[list \
-	     [	    expr {cos($th)   } ]\
-	     [expr {sin($th)   } ]\
-	     0 \
-	     [expr {-cos($ph)*sin($th)   } ]\
-	     [expr {cos($ph)*cos($th)   } ]\
-	     [expr {sin($ph)   } ]\
-	     [expr {sin($ph)*sin($th)   } ]\
-	     [expr {-sin($ph)*cos($th)   } ]\
-	     [expr {cos($ph)   } ]]
-}
-
-proc setMatFromList {name lis n} {
-    set i 1
-    set j 1
-    foreach v $lis {
-	uplevel 1 set [set name]($i,$j) $v
-	if { $j == $n } {set j 1; incr i} else { incr j}
-    }
-}
-
-proc matRef { mat cols i j } {
-    [lindex $mat [expr {$i*$cols + $j}]]
-}
-
-proc matTranspose { mat cols } {
-    set j 0
-    set m [expr {[llength $mat ] / $cols}]
-    while { $j < $cols} {
-	set i 0
-	while { $i < $m } {
-	    append ans " [lindex $mat [expr {$i*$cols + $j}]]"
-	    incr i
-	}
-	incr j
-    }
-    return $ans
-}
-
-
-proc matMul { mat1 cols1 mat2 cols2 } {
-    mkMultLeftFun $mat1 $cols1 __tem
-    set tr [matTranspose $mat2 $cols2]
-    set rows1 [expr {[llength $mat1] / $cols1}]
-    #puts "tr=$tr"
-    set upto [llength $tr]
-    set j 0
     set ans ""
-    set i 0
-    while { $j < $cols2  } {
-	append ans " [eval __tem [lrange $tr $i [expr {$i+$cols1 -1}]]]"
-	incr i $cols1
-	incr j
-    }
-    #   return $ans
-    # puts "matTranspose $ans $rows1"
-    return [matTranspose $ans $rows1]
-}
+    set n [llength [lindex $mat 0]]
+    for { set i 0} { $i < $n} {incr i} { append vars " $prefix$i" }
+    foreach row $mat c $constant {
+        set prod ""
+        set op ""
+        foreach a $row v $vars {
+            append prod "$op$a*\$$v"
+            set op "+"}
+        if {$c ne ""} {append prod "+$c"}
+        append ans [concat \[expr [list $prod]\]]
+        append ans " "}
+    return [list $vars $ans]}
 
+# mkMultLeftFun
+# Creates a procedure named "name" with as many input parameters as
+# the number of columns o matrix mat.
+# That procedure will return a vector with as many components as
+# the number of rows of mat.
+# If given, constant is a vector with as many components as the number
+# of rows of mat. Each component on the returned vector is the linear
+# combination of the input parameters with the corresponding row of mat,
+# plus the corresponding component of "constant" if it is given.
 
+proc mkMultLeftFun {mat name {constant ""} } {
+    set expr [mkMultLeftExpr $mat _a $constant]
+    set bod1 [string trim [lindex $expr 1] " "]
+    set bod [concat list [lindex $expr 1]]
+    proc $name [lindex $expr 0] $bod}
 
-proc invMat3 { mat } {
-    setMatFromList xx $mat 3
-    set det [expr { double($xx(1,1))*($xx(2,2)*$xx(3,3)-$xx(2,3)*$xx(3,2))-$xx(1,2)* \
-			($xx(2,1)*$xx(3,3)-$xx(2,3)*$xx(3,1))+$xx(1,3)*($xx(2,1)*$xx(3,2)\
-									    -$xx(2,2)*$xx(3,1)) }]
+# rotationMatrix
+# Computes the matrix of the rotation by azimuth th, and elevation ph
+# matrix([cos(th),sin(th),0], [-cos(ph)*sin(th),cos(ph)*cos(th),sin(ph)],
+#	  [sin(ph)*sin(th),-sin(ph)*cos(th),cos(ph)]);
+proc rotationMatrix {th ph {ignore {} } } {
+    set cph [expr {cos($ph)}]
+    set sph [expr {sin($ph)}]
+    set cth [expr {cos($th)}]
+    set sth [expr {sin($th)}]
+    return [list [list $cth $sth 0] \
+                [list [expr {-$cph*$sth}] [expr {$cph*$cth}] $sph] \
+                [list [expr {$sph*$sth}] [expr {-$sph*$cth}] $cph]]}
 
-    return [list   [expr { ($xx(2,2)*$xx(3,3)-$xx(2,3)*$xx(3,2))/$det}] \
-		[expr { ($xx(1,3)*$xx(3,2)-$xx(1,2)*$xx(3,3))/$det}] \
-		[expr { ($xx(1,2)*$xx(2,3)-$xx(1,3)*$xx(2,2))/$det}] \
-		\
-		[expr { ($xx(2,3)*$xx(3,1)-$xx(2,1)*$xx(3,3))/$det}] \
-		[expr { ($xx(1,1)*$xx(3,3)-$xx(1,3)*$xx(3,1))/$det}] \
-		[expr { ($xx(1,3)*$xx(2,1)-$xx(1,1)*$xx(2,3))/$det}] \
-		\
-		[expr { ($xx(2,1)*$xx(3,2)-$xx(2,2)*$xx(3,1))/$det}] \
-		[expr { ($xx(1,2)*$xx(3,1)-$xx(1,1)*$xx(3,2))/$det}] \
-		[expr { ($xx(1,1)*$xx(2,2)-$xx(1,2)*$xx(2,1))/$det}]]
-}
+# matMul
+# Returns the product of matrices mat1 and mat2
+proc matMul {mat1 mat2} {
+    set rows [llength $mat1]
+    set cols [llength [lindex $mat2 0]]
+    foreach r $mat2 {
+        for {set j 0} {$j < $cols} {incr j} {
+            lappend col$j [lindex $r $j]}}
+    for {set i 0} {$i < $rows} {incr i} {
+        for {set j 0} {$j < $cols} {incr j} {
+            lappend row$i [vectDot [lindex $mat1 $i] [set col$j]]}
+        lappend mat3 [set row$i]}
+    return $mat3}
 
+# vectDot
+# Returns the dot product of vectors vec1 and vec2
+proc vectDot {vec1 vec2} {
+    set prod 0
+    foreach c1 $vec1 c2 $vec2 {
+        set prod [expr {$prod + $c1*$c2}]}
+    return $prod}
 
-proc vectorOp { a op b} {
-    set i [llength $a]
-    set k 0
-    set ans [expr [list [lindex $a 0]  $op [lindex $b 0]]]
-    while { [incr k] < $i } {
-	lappend ans  [expr  [list [lindex $a $k] $op [lindex $b $k]]]
-    }
-    return $ans
-}
+# vectorOp
+# Returns the vector obtained by applying the infix operator "op"
+# between vectors vec1 and vec2
+proc vectorOp {vec1 op vec2} {
+    set ans ""
+    foreach ai $vec1 bi $vec2 {lappend ans [expr [list $ai $op $bi]]}
+    return $ans}
 
+# scalarTimesVector
+# Returns the vector obtained by multiplying vector by scalar
 proc scalarTimesVector {scalar vector} {
     foreach coord $vector {lappend ans [expr {$scalar*$coord}]}
     return $ans}
