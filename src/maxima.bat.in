@@ -176,6 +176,7 @@ rem ./configure sets a variable @CLISP_NAME@ which might be used instead of lisp
 rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
 rem which would be inserted here ==> do not use the variable @CLISP_NAME@ but just lisp.exe.
 set "path=%maxima_imagesdir%/binary-%lisp%;%maxima_prefix%/clisp-2.49/base;%path%"
+chcp 65001
 lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto :EOF
 

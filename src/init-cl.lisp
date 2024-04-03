@@ -743,15 +743,17 @@
     (setf stream:*default-external-format* :utf-8)
     (stream:set-system-external-format :utf-8 :utf-8)
     (setf ext:*default-external-format* :utf-8))
-  #+ (and clisp win32)
-  (setf custom:*terminal-encoding*
-        (ext:make-encoding :charset "utf-8" :line-terminator :dos))
   #+clisp
   (ignore-errors
     (progn (setf custom:*default-file-encoding*
 		 (ext:make-encoding :input-error-action #\?))
+           ;; Tries to set the terminal encoding to utf-8, if CLISP
+           ;; has that option, keeping the same line-terminator
 	   (setf custom:*terminal-encoding*
-		 custom:*default-file-encoding*))))
+                 (ext:make-encoding :charset "utf-8"
+                                    :line-terminator
+                                    (ext:encoding-line-terminator
+                                     custom:*terminal-encoding*))))))
 
 (import 'cl-user::run)
 

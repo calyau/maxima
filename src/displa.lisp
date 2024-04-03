@@ -813,12 +813,11 @@
 (defun display2d-unicode-enabled ()
   #+lisp-unicode-capable
   (and $display2d_unicode
-       ;; While the Lisp implementation may support unicode, the
-       ;; terminal encoding in use may not be (because of LANG
-       ;; settings or other things).  Enable unicode only if we have
-       ;; utf-8 encoding.
+       ;; While ADJUST-CHARACTER-ENCODING in init-cl.lisp tried
+       ;; to set the terminal encoding to utf-8, it might have
+       ;; failed if CLISP was not compiled with that option.
        #+clisp
-       (eq (ext:encoding-charset (stream-external-format *terminal-io* )) 'charset:utf-8)
+       (eq (ext:encoding-charset custom:*terminal-encoding*) 'charset:utf-8)
        ;; other special cases go here as we learn about them ...  But
        ;; see also ADJUST-CHARACTER-ENCODING in init-cl.lisp that
        ;; generally sets up Lisp to use :utf-8 always.
