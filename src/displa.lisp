@@ -1601,8 +1601,8 @@
     (-6 0) (d-vbar 2 1) #\space #\space #\space (d-vbar 2 1) (0 0)))
 
 (defvar d-prodsign-ascii-dmstr
-  '((0 2 (d-hbar 5 #\=)) (-5 0) (d-vbar 2 1 #\!) #\space #\space #\space
-    (d-vbar 2 1 #\!) (2 0)))
+  '((-2 2 (d-hbar 5 #\=)) (-5 0) (d-vbar 2 1 #\!) #\space #\space #\space
+    (d-vbar 2 1 #\!) (0 0)))
 
 (defun d-prodsign (linear? &aux dmstr)
   (declare (ignore linear?))
