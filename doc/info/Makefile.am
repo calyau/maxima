@@ -61,6 +61,8 @@ figures/dynamics5.png\
 figures/dynamics6.png\
 figures/dynamics7.png\
 figures/dynamics8.png\
+figures/maxima-unicode-display-variety-1-ascii.png\
+figures/maxima-unicode-display-variety-1.png\
 figures/plotdf1.png\
 figures/plotdf2.png\
 figures/plotdf3.png\
@@ -289,6 +291,8 @@ figures/dynamics5.pdf\
 figures/dynamics6.pdf\
 figures/dynamics7.pdf\
 figures/dynamics8.pdf\
+figures/maxima-unicode-display-variety-1-ascii.pdf\
+figures/maxima-unicode-display-variety-1.pdf\
 figures/plotdf1.pdf\
 figures/plotdf2.pdf\
 figures/plotdf3.pdf\
@@ -297,7 +301,7 @@ figures/plotdf5.pdf\
 figures/plotdf6.pdf\
 figures/plotting2.pdf\
 figures/plotting3.pdf\
-figures/plotting4.pdf\
+qfigures/plotting4.pdf\
 figures/plotting5.pdf\
 figures/plotting6.pdf\
 figures/plotting7.pdf\

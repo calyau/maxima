@@ -3,6 +3,7 @@ Maxima 5.47-post change log
 
 New items in core:
 ------------------
+ * New Unicode display2d and global variable display2d_unicode
  * A new function random-name in plot.lisp that generates a random string
 
 New items in share:
@@ -56,6 +57,7 @@ Documentation:
  * Document colnew share package
  * \#4154: Some info nodes have bad headers (and no "Up"s)
  * HTML files for the manual now have the name of the corresponding section
+ * Documentation for display2d_unicode in section "Command Line"
 
 Build system:
 -------------
