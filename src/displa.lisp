@@ -607,7 +607,7 @@
 (displa-def %product dim-%product 115.)
 
 (defun dim-%product (form result)
-  (dsumprod form result '(d-prodsign) 7 3 1))
+  (dsumprod form result '(d-prodsign) 5 3 1))
 
 (displa-def rat dim-rat "/")
 (displa-def %rat dim-rat "/")
@@ -1596,9 +1596,9 @@
   (draw-linear dmstr oldrow oldcol))
 
 (defvar d-prodsign-unicode-dmstr
-  `((0 2 ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 3)
-       ,(get-unicode-char :box-drawings-light-down-and-horizontal))
-    (-5 0) (d-vbar 2 1) #\space #\space #\space (d-vbar 2 1) (2 0)))
+  `((-2 2 (d-hbar 1) ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 3)
+       ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 1))
+    (-6 0) (d-vbar 2 1) #\space #\space #\space (d-vbar 2 1) (0 0)))
 
 (defvar d-prodsign-ascii-dmstr
   '((0 2 (d-hbar 5 #\=)) (-5 0) (d-vbar 2 1 #\!) #\space #\space #\space
