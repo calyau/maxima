@@ -301,7 +301,7 @@ figures/plotdf5.pdf\
 figures/plotdf6.pdf\
 figures/plotting2.pdf\
 figures/plotting3.pdf\
-qfigures/plotting4.pdf\
+figures/plotting4.pdf\
 figures/plotting5.pdf\
 figures/plotting6.pdf\
 figures/plotting7.pdf\
