@@ -28,12 +28,6 @@
   ;; the connection is opened. If it isn't the first unicode 
   ;; character maxima wants to send causes sbcl to wait indefinitely.
   #+sbcl (setf sb-impl::*default-external-format* :utf-8)
-  #+clisp
-  (ignore-errors
-    (setf custom:*terminal-encoding*
-          (ext:make-encoding
-           :charset "utf-8"
-           :line-terminator (ext:encoding-line-terminator custom:*terminal-encoding*))))
   (multiple-value-bind (sock condition) (ignore-errors (open-socket host port))
     (unless sock
       ; It appears that we were unable to open a socket or connect to the

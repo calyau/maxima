@@ -747,13 +747,8 @@
   (ignore-errors
     (progn (setf custom:*default-file-encoding*
 		 (ext:make-encoding :input-error-action #\?))
-           ;; Tries to set the terminal encoding to utf-8, if CLISP
-           ;; has that option, keeping the same line-terminator
 	   (setf custom:*terminal-encoding*
-                 (ext:make-encoding :charset "utf-8"
-                                    :line-terminator
-                                    (ext:encoding-line-terminator
-                                     custom:*terminal-encoding*))))))
+		 custom:*default-file-encoding*))))
 
 (import 'cl-user::run)
 

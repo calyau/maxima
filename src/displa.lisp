@@ -811,11 +811,15 @@
   #-lisp-unicode-capable nil)
 
 (defun display2d-unicode-enabled ()
+  #+(and clisp unicode)
+  (setf custom:*terminal-encoding*
+        (ext:make-encoding
+         :charset "utf-8"
+         :line-terminator
+         (ext:encoding-line-terminator custom:*terminal-encoding*)))
   #+lisp-unicode-capable
   (and $display2d_unicode
-       ;; While ADJUST-CHARACTER-ENCODING in init-cl.lisp tried
-       ;; to set the terminal encoding to utf-8, it might have
-       ;; failed if CLISP was not compiled with that option.
+       ;; Makes sure the version of CLISP being used has Unicode support.
        #+clisp
        (eq (ext:encoding-charset custom:*terminal-encoding*) 'charset:utf-8)
        ;; other special cases go here as we learn about them ...  But
