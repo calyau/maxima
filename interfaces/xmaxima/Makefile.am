@@ -23,7 +23,7 @@ genericdir = $(xmaximadir)
 genericdirDATA = demos.html examples.html intro.html plotmaxima.html net.sourceforge.maxima.png net.sourceforge.maxima.svg net.sourceforge.maxima.gif maxima-icon.ico maxima-icon.png maxima-icon.gif 
 
 appicondir = $(datarootdir)/icons
-dist_appicon_DATA = net.sourceforge.maxima.png net.sourceforge.maxima.svg
+dist_appicon_DATA = xmaxima.png xmaxima.svg
 
 bin_SCRIPTS = xmaxima
 
