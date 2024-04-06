@@ -28,7 +28,7 @@ block ([display2d_unicode: true], with_default_2d_display ([S: make_string_outpu
 block ([display2d_unicode: true], print_string_2d (lsum(1/f(g(x)/h(x)), x, LOOOOOOOOONG_EXPR)));
 "____
 ╲                         1
- >                     ───────
+ ⟩                     ───────
 ╱                        g(x)
 ‾‾‾‾                   f(────)
 x in LOOOOOOOOONG_EXPR   h(x)
@@ -40,7 +40,7 @@ block ([display2d_unicode: true], print_string_2d ('sum(x^k / k,k,1,inf)));
 "inf
 ____   k
 ╲     x
- >    ──
+ ⟩    ──
 ╱     k
 ‾‾‾‾
 k = 1
@@ -50,7 +50,7 @@ block ([display2d_unicode: true], print_string_2d (subst (k = \*index, 'sum(x^k 
 "inf
 ____        *index
 ╲          x
- >         ───────
+ ⟩         ───────
 ╱          *index
 ‾‾‾‾
 *index = 1
@@ -60,7 +60,7 @@ block ([display2d_unicode: true], print_string_2d ('sum(i!,i,1,4)));
 " 4
 ____
 ╲
- >    i!
+ ⟩    i!
 ╱
 ‾‾‾‾
 i = 1
@@ -70,7 +70,7 @@ block ([display2d_unicode: true], print_string_2d ('sum(g(i),i,0,n)));
 " n
 ____
 ╲
- >    g(i)
+ ⟩    g(i)
 ╱
 ‾‾‾‾
 i = 0
@@ -80,7 +80,7 @@ block ([display2d_unicode: true], print_string_2d ('sum(g(i),i,0,n) + 1));
 " n
 ____
 ╲
- >    g(i) + 1
+ ⟩    g(i) + 1
 ╱
 ‾‾‾‾
 i = 0
@@ -108,7 +108,7 @@ block ([display2d_unicode: true], print_string_2d (niceindices (powerseries(log(
 "inf
 ____       i  2 i - 1            2 i
 ╲     (- 1)  2        bern(2 i) x
- >    ──────────────────────────────
+ ⟩    ──────────────────────────────
 ╱                i (2 i)!
 ‾‾‾‾
 i = 1
@@ -131,7 +131,7 @@ i = 1
 block ([display2d_unicode: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl)));
 "____
 ╲                                            1
- >                                        ────────
+ ⟩                                        ────────
 ╱                                         f(x)
 ‾‾‾‾                                      ──── + 1
 kskdsksdkkdksdksd in w999393293923939losl  2
@@ -140,7 +140,7 @@ kskdsksdkkdksdksd in w999393293923939losl  2
 block ([display2d_unicode: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^2)));
 "____
 ╲                                             1
- >                                         ────────
+ ⟩                                         ────────
 ╱                                          f(x)
 ‾‾‾‾                                       ──── + 1
                                          2  2
@@ -150,7 +150,7 @@ kskdsksdkkdksdksd in w999393293923939losl
 block ([display2d_unicode: true], print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skdkskdsk)));
 "____
 ╲                                                     1
- >                                                 ────────
+ ⟩                                                 ────────
 ╱                                                  f(x)
 ‾‾‾‾                                               ──── + 1
                                          skdkskdsk  2
@@ -412,7 +412,7 @@ print_string_2d_unicode (transpose (matrix (M)));
 print_string_2d_unicode ('at(u, u='sum(x[k],k,1,n)));
 " │    ____
 u│    ╲
- │u =  >    x
+ │u =  ⟩    x
       ╱      k
       ‾‾‾‾
       k = 1
@@ -465,7 +465,7 @@ print_string_2d_unicode(e2);
 " m
 ____
 ╲
- >    g
+ ⟩    g
 ╱      k
 ‾‾‾‾
 k = 1
@@ -474,7 +474,7 @@ k = 1
 print_string_2d_unicode(e3);
 "____
 ╲       2
- >     v
+ ⟩     v
 ╱       k
 ‾‾‾‾
 k in L
@@ -843,7 +843,7 @@ print_string_2d_unicode(e12);
 "             1           m                    inf
  ⌠          ⌠           ____      ____       /───\\
  ⎮          ⎮           ╲         ╲       2   │ │
-[⎮ f(u) du, ⎮  f(u) du,  >    g ,  >     v ,  │ │  N ]
+[⎮ f(u) du, ⎮  f(u) du,  ⟩    g ,  ⟩     v ,  │ │  N ]
  ⎮          ⎮           ╱      k  ╱       k   │ │   i
  ⌡          ⌡           ‾‾‾‾      ‾‾‾‾       i = 1
              0          k = 1     k in L
@@ -854,7 +854,7 @@ print_string_2d_unicode(matrix(ee1));
 │             1           m                    inf     │
 │ ⌠          ⌠           ____      ____       /───\\    │
 │ ⎮          ⎮           ╲         ╲       2   │ │     │
-│ ⎮ f(u) du  ⎮  f(u) du   >    g    >     v    │ │  N  │
+│ ⎮ f(u) du  ⎮  f(u) du   ⟩    g    ⟩     v    │ │  N  │
 │ ⎮          ⎮           ╱      k  ╱       k   │ │   i │
 │ ⌡          ⌡           ‾‾‾‾      ‾‾‾‾       i = 1    │
 │             0          k = 1     k in L              │
@@ -880,7 +880,7 @@ print_string_2d_unicode(transpose(matrix(ee1)));
 │   m        │
 │  ____      │
 │  ╲         │
-│   >    g   │
+│   ⟩    g   │
 │  ╱      k  │
 │  ‾‾‾‾      │
 │  k = 1     │
@@ -888,7 +888,7 @@ print_string_2d_unicode(transpose(matrix(ee1)));
 │            │
 │ ____       │
 │ ╲       2  │
-│  >     v   │
+│  ⟩     v   │
 │ ╱       k  │
 │ ‾‾‾‾       │
 │ k in L     │
@@ -1295,7 +1295,7 @@ block ([linel: 140], print_string_2d_unicode (matrix (ee1, ee2, ee4, ee5)));
 │                                              1                    m                                                      inf     │
 │             ⌠                               ⌠                    ____                       ____                        /───\\    │
 │             ⎮                               ⎮                    ╲                          ╲       2                    │ │     │
-│             ⎮ f(u) du                       ⎮  f(u) du            >    g                     >     v                     │ │  N  │
+│             ⎮ f(u) du                       ⎮  f(u) du            ⟩    g                     ⟩     v                     │ │  N  │
 │             ⎮                               ⎮                    ╱      k                   ╱       k                    │ │   i │
 │             ⌡                               ⌡                    ‾‾‾‾                       ‾‾‾‾                        i = 1    │
 │                                              0                   k = 1                      k in L                               │
