@@ -1600,12 +1600,12 @@
   (draw-linear dmstr oldrow oldcol))
 
 (defvar d-prodsign-unicode-dmstr
-  `((-2 2 (d-hbar 1) ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 3)
+  `((0 2 (d-hbar 1) ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 3)
        ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 1))
     (-6 0) (d-vbar 2 1) #\space #\space #\space (d-vbar 2 1) (0 0)))
 
 (defvar d-prodsign-ascii-dmstr
-  '((-2 2 (d-hbar 5 #\=)) (-5 0) (d-vbar 2 1 #\!) #\space #\space #\space
+  '((0 2 (d-hbar 5 #\=)) (-5 0) (d-vbar 2 1 #\!) #\space #\space #\space
     (d-vbar 2 1 #\!) (0 0)))
 
 (defun d-prodsign (linear? &aux dmstr)
