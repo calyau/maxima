@@ -802,8 +802,14 @@
         (error "Unknown char keyword: ~S~%" char-keyword))
       (code-char (second code)))))
 
+#-lisp-unicode-capable
+(defun get-unicode-char (char-keyword)
+  (declare (ignore char-keyword))
+  ;; Just return NIL if the Lisp doesn't support unicode in the way we
+  ;; need.
+  nil)
+
 (defvar at-char-unicode
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 
 (defmvar $display2d_unicode
@@ -1151,28 +1157,21 @@
 (displa-def %mabs  dim-mabs)
 
 (defvar mabs-char-unicode
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 
 ;; There is wired knowledge of character offsets here.
 
 (defvar *d-box-char-unicode-horz*
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-horizontal))
 (defvar *d-box-char-unicode-vert*
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-vertical))
 (defvar *d-box-char-unicode-upper-left*
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-down-and-right))
 (defvar *d-box-char-unicode-upper-right*
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-down-and-left))
 (defvar *d-box-char-unicode-lower-right*
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-up-and-left))
 (defvar *d-box-char-unicode-lower-left*
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-double-up-and-right))
 
 (defun dim-mabs (form result &aux arg bar mabs-char)
@@ -1545,7 +1544,6 @@
 ;; program.)
 
 (defvar d-hbar-char-unicode
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-horizontal))
 (defvar d-hbar-char-ascii #\-)
 
@@ -1563,7 +1561,6 @@
 ;; the equation editor.
 
 (defvar d-vbar-char-unicode
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 (defvar d-vbar-char-ascii #\|)
 
@@ -1600,6 +1597,7 @@
   (draw-linear dmstr oldrow oldcol))
 
 (defvar d-prodsign-unicode-dmstr
+  #+lisp-unicode-capable
   `((0 2 (d-hbar 1) ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 3)
        ,(get-unicode-char :box-drawings-light-down-and-horizontal) (d-hbar 1))
     (-6 0) (d-vbar 2 1) #\space #\space #\space (d-vbar 2 1) (0 0)))
@@ -1638,22 +1636,16 @@
     (d-matrix-ascii linear? direction h d)))
 
 (defvar d-matrix-char-unicode-horz
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-horizontal))
 (defvar d-matrix-char-unicode-vert
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-vertical))
 (defvar d-matrix-char-unicode-upper-left
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-down-and-right))
 (defvar d-matrix-char-unicode-upper-right
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-down-and-left))
 (defvar d-matrix-char-unicode-lower-right
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-up-and-left))
 (defvar d-matrix-char-unicode-lower-left
-  #+lisp-unicode-capable
   (get-unicode-char :box-drawings-light-up-and-right))
 
 (defun d-matrix-unicode (linear? direction h d)
