@@ -688,19 +688,19 @@ i = 0
 
 block ([display2d_unicode: false], print_string_2d (foo: unsum(product(i^2,i,1,n),n)));
 " n - 1
- /===\\
-  ! !   2
-( ! !  i ) (n - 1) (n + 1)
-  ! !
+ =====
+ !   !  2
+(!   ! i ) (n - 1) (n + 1)
+ !   !
  i = 1
 "$
 
 block ([display2d_unicode: false], print_string_2d (nusum(foo,n,1,n)));
 "  n
-/===\\
- ! !   2
- ! !  i  - 1
- ! !
+=====
+!   !  2
+!   ! i  - 1
+!   !
 i = 1
 "$
 
@@ -716,10 +716,10 @@ i2 = 1
 
 block ([display2d_unicode: false], print_string_2d (product((x^i+1)^2.5,i,1,inf)/(x^2+1)));
 " inf
-/===\\
- ! !    i     2.5
- ! !  (x  + 1)
- ! !
+=====
+!   !   i     2.5
+!   ! (x  + 1)
+!   !
 i = 1
 -----------------
       2
