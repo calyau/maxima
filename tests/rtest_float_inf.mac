@@ -118,3 +118,30 @@ errcatch(string(ev(exp(10000/3),numer,%enumer)));
    elseif is_gcl then ["#<inf>"]
    elseif is_ecl then ["#.ext::double-float-positive-infinity"]);
 
+float_infinity_p (i);
+true;
+
+float_infinity_p (minusi);
+true;
+
+sign (i);
+pos;
+
+is (i > 0.0);
+true;
+
+sign (minusi);
+neg;
+
+is (minusi < 0.0);
+true;
+
+float_nan_p (n);
+true;
+
+map (float_infinity_p, [n, 0, 1.0, %pi, 'foo('blurf)]);
+[false, false, false, false, false];
+
+map (float_nan_p, [i, minusi, 0, 1.0, %pi, 'foo('blurf)]);
+[false, false, false, false, false, false];
+

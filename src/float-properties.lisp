@@ -264,3 +264,9 @@
     (t
      (merror (intl:gettext "float_sign is only defined for floats and bfloats: ~M")
 	     f))))
+
+(defmfun $float_infinity_p (x)
+  (and (typep x 'double-float) (or (> x +most-positive-flonum+) (< x +most-negative-flonum+))))
+
+(defmfun $float_nan_p (x)
+  (and (typep x 'double-float) (/= x x)))

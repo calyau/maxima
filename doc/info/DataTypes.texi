@@ -390,6 +390,57 @@ float_sign is only defined for floats and bfloats: %pi
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{float_infinity_p}
+@deffn {Function} float_infinity_p (@var{x})
+
+Returns @code{true} if @var{x} is floating point positive infinity or floating point negative infinity,
+and returns @code{false} for all other arguments;
+arguments which are not numbers are allowed,
+and @code{float_infinity_p} returns @code{false} for all such arguments.
+
+Positive and negative floating point infinity may be distinguished by @code{sign},
+which returns @code{pos} for positive infinity and @code{neg} for negative infinity.
+
+@code{float_infinity_p} is defined whether or not the Lisp implementation supports float infinity.
+When float infinity does not exist in the Lisp implementation's number system,
+@code{float_infinity_p} returns @code{false} for all arguments.
+
+A Lisp implementation may support more than one precision of floating point numbers.
+@code{float_infinity_p} only recognizes double precision floating point infinity,
+and not any other precision.
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{float_nan_p}
+@deffn {Function} float_nan_p (@var{x})
+
+Returns @code{true} if @var{x} is a floating point not-a-number (NaN) value,
+and returns @code{false} for all other arguments;
+arguments which are not numbers are allowed,
+and @code{float_nan_p} returns @code{false} for all such arguments.
+
+@code{float_nan_p} is defined whether or not the Lisp implementation supports floating point not-a-number values.
+When floating point not-a-number does not exist in the Lisp implementation's number system,
+@code{float_nan_p} returns @code{false} for all arguments.
+
+A Lisp implementation may support more than one precision of floating point numbers.
+@code{float_nan_p} only recognizes double precision floating point not-a-number,
+and not any other precision.
+
+@opencatbox{Categories:}
+@category{Numerical evaluation}
+@category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{floatnump}
 @deffn {Function} floatnump (@var{expr})
 
@@ -949,7 +1000,7 @@ scale_float}.  Of course, this is extended to support bfloats.
 
 @c -----------------------------------------------------------------------------
 @anchor{unit_in_last_place}
-@deffn {Function} unit_in_last_plase (@var{n})
+@deffn {Function} unit_in_last_place (@var{n})
 
 @code{unit_in_last_place} returns a value that is the gap between
 @var{n} and the nearest other number.  See, for example,
