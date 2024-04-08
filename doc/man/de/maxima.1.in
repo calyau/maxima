@@ -324,8 +324,8 @@ Skript und dem Lisp-Abbild. Alle diese Variablen starten mit
 .I maxima
 Skript beim Start eingelesen. Es sollte im Verzeichnis, auf das die Variable
 \fB$MAXIMA_USERDIR\fR zeigt (siehe oben) vorhanden sein. \fBmaximarc\fR kann verwendet werden,
- um beispielsweise die standardm\(:assige Lisp-Implementation zu \(:andern, z.B. durch die Zeile "MAXIMA_LISP=cmucl"
- (um CMUCL Lisp auszuw\(:ahlen).
+um beispielsweise die standardm\(:assige Lisp-Implementation zu \(:andern, z.B. durch die Zeile "MAXIMA_LISP=cmucl"
+(um CMUCL Lisp auszuw\(:ahlen).
 .TP
 \fBmaxima-init.lisp\fR
 Beim Programmstart wird die Lisp-Datei \fBmaxima-init.lisp\fR eingelesen, falls sie
