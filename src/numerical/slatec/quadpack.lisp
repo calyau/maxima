@@ -234,7 +234,7 @@
 	  ((mequal) $maxp1 ,maxp1)
 	  ((mequal) $limlst ,limlst))))))
 
-(defmfun $quad_qawo (fun var a b omega trig &key
+(defmfun $quad_qawo (fun var a b omega trig_name &key
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (maxp1 100)
@@ -244,9 +244,13 @@
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
-	 (integr (ecase trig
-		   ((1 %cos $cos) 1)
-		   ((2 %sin $sin) 2)))
+	 (integr (case trig_name
+		   ((%cos $cos) 1)
+		   ((%sin $sin) 2)
+                   (otherwise
+                    (merror "~M:  the name of the trig function should be sin or cos, not ~M"
+                            '$quad_qawo
+                            trig_name))))
          (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-b z-omega z-integr z-epsabs z-epsrel
@@ -267,7 +271,7 @@
       (error (e)
 	(when *debug-quadpack*
 	  (format t "~S" e))
-	`(($quad_qawo) ,fun ,var ,a ,b ,omega ,trig
+	`(($quad_qawo) ,fun ,var ,a ,b ,omega ,trig_name
 	  ((mequal) $epsrel ,epsrel)
 	  ((mequal) $epsabs ,epsabs)
 	  ((mequal) $limit ,limit)
