@@ -248,7 +248,7 @@
 		   ((%cos $cos) 1)
 		   ((%sin $sin) 2)
                    (otherwise
-                    (merror "~M:  the name of the trig function should be sin or cos, not ~M"
+                    (merror "~M:  the name of the trig function should be sin or cos, not ~M."
                             '$quad_qawo
                             trig_name))))
          (*plot-realpart* nil))
