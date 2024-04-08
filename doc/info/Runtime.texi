@@ -11,11 +11,18 @@
 
 @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
 @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
-@code{maxima-init.mac} is a file which is loaded automatically when Maxima
-starts.  You can use @code{maxima-init.mac} to customize your Maxima
-environment.  @code{maxima-init.mac}, if it exists, is typically placed in the
-directory named by @code{maxima_userdir},
-although it can be in any directory searched by the function @code{file_search}.
+
+@cindex maxima-init.mac
+@cindex maxima-init.lisp
+
+@code{maxima-init.mac} and @code{maxima-init.lisp} are loaded automatically when Maxima
+starts. @code{maxima-init.mac} contains Maxima code and is loaded using @mref{batchload},
+@code{maxima-init.lisp} contains Lisp code and is loaded using @mref{load}.
+
+You can use @code{maxima-init.mac} (and @code{maxima-init.mac}) to customize your Maxima
+environment. These files typically placed in the directory named by
+@code{maxima_userdir}, although it can be in any directory searched by the function
+@code{file_search}.
 
 Here is an example @code{maxima-init.mac} file:
 
@@ -33,6 +40,28 @@ Thus you needn't remember to load the file before calling the functions.
 The statement @code{showtime: all} tells Maxima to set the @code{showtime}
 variable.  The @code{maxima-init.mac} file can contain any other assignments or
 other Maxima statements.
+
+@code{maxima-init.mac} and @code{maxima-init.lisp} are loaded automatically when Maxima
+starts. @code{maxima-init.mac} contains Maxima code and is loaded using @mref{batchload},
+@code{maxima-init.lisp} contains Lisp code and is loaded using @mref{load}.
+
+
+@cindex maximarc
+
+@code{maximarc} is sourced by the maxima script at startup. It should be located in @code{$MAXIMA_USERDIR}.
+If Maxima was compiled with several Lisp compilers, @code{maximarc} can be used, e.g., to change the
+user's default lisp implementation. E.g. to select CMUCL create a @code{maximarc} file containing the line:
+@code{MAXIMA_LISP=cmucl}
+
+You can also use the command option @code{-l <lisp>} or @code{--lisp=<lisp>} to select the Lisp when starting Maxima.
+
+@cindex .xmaximarc
+
+In the file @code{.xmaximarc} (in the users home directory) Xmaxima stores personal settings.
+
+@cindex .xmaxima_history
+
+In the file @code{.xmaxima_history} (in the users home directory) Xmaxima stores the command history.
 
 @opencatbox{Categories:}
 @category{Session management}
