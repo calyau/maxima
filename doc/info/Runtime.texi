@@ -19,7 +19,7 @@
 starts. @code{maxima-init.mac} contains Maxima code and is loaded using @mref{batchload},
 @code{maxima-init.lisp} contains Lisp code and is loaded using @mref{load}.
 
-You can use @code{maxima-init.mac} (and @code{maxima-init.mac}) to customize your Maxima
+You can use @code{maxima-init.mac} (and @code{maxima-init.lisp}) to customize your Maxima
 environment. These files typically placed in the directory named by
 @code{maxima_userdir}, although it can be in any directory searched by the function
 @code{file_search}.
