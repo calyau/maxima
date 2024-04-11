@@ -123,7 +123,9 @@
 		     ("Assignment operator (evaluates left hand side)"
 		      "Assignment operator (evaluates left-hand side)")
 		     ("Euler Mascheroni constant"
-		      "Euler-Mascheroni constant")))
+		      "Euler-Mascheroni constant")
+                     ("maxima init.lisp" "maxima-init.lisp")
+                     ("maxima init.mac" "maxima-init.mac")))
       (destructuring-bind (old new)
 	  items
 	(update-entry old new)))
