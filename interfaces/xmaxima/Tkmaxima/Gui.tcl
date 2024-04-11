@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-03-26 13:17:03 villate"            #
+#     Time-stamp: "2024-04-11 16:35:46 villate"            #
 ############################################################
 
 # Creates the browser if it doesn't exist
@@ -68,6 +68,7 @@ proc createConsole {cname} {
     $w configure -foreground "#008600"
     $w tag configure input -foreground blue
     $w tag configure output -foreground black
+    $w tag configure mprompt -foreground red
 
     # binding order will be: window bindings, CNtext bindings,
     # OpenMathText bindings and default bindings (usually Text . all)

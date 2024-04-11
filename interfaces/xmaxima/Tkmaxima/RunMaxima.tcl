@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2024-04-01 16:16:06 villate"            #
+#     Time-stamp: "2024-04-11 16:34:14 villate"            #
 ############################################################
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -67,6 +67,7 @@ proc CMeval { w } {
     }
 
     $w tag add input lastStart-1c "end -1char"
+    $w tag add mprompt "lastStart linestart" lastStart
     $w mark set  lastStart "end -1char"
     lappend inputs $expr
 
