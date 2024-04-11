@@ -30,7 +30,7 @@
 ;; evaluation-at-a-point bars, and matrices are drawn.
 
 (defmvar $boxchar "\""  "Character used for drawing boxes.")
-(defmvar $absboxchar "!"
+(defmvar $absboxchar "|"
   "Character used for drawing absolute value signs and 'evaluation at' signs.")
 (defmvar $lmxchar "["  "Character used for drawing the left edge of a matrix.")
 (defmvar $rmxchar "]"  "Character used for drawing the right edge of a matrix.")
@@ -1589,7 +1589,7 @@
     (-1 -1 ,(get-unicode-char :integral-extension))
     (-1 -2 ,(get-unicode-char :bottom-half-integral))))
 
-(defvar d-integralsign-string-ascii `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
+(defvar d-integralsign-string-ascii `((0 2 #\/) (-1 1 #\|) (-1 0 #\|) (-1 -1 #\|) (-1 -2 #\/)))
 
 (defun d-integralsign (linear? &aux dmstr)
   (declare (ignore linear?))
@@ -1603,8 +1603,8 @@
     (-6 0) (d-vbar 2 1) #\space #\space #\space (d-vbar 2 1) (0 0)))
 
 (defvar d-prodsign-ascii-dmstr
-  '((0 2 (d-hbar 5 #\=)) (-5 0) (d-vbar 2 1 #\!) #\space #\space #\space
-    (d-vbar 2 1 #\!) (0 0)))
+  '((0 2 (d-hbar 5 #\_)) (-5 0) (d-vbar 2 1 #\|) #\space #\space #\space
+    (d-vbar 2 1 #\|) (0 0)))
 
 (defun d-prodsign (linear? &aux dmstr)
   (declare (ignore linear?))
@@ -1619,7 +1619,7 @@
     (-2 -1 ,(get-unicode-char :box-drawings-light-diagonal-upper-right-to-lower-left))
     (-1 -2 (d-hbar 4 ,(get-unicode-char :overline)))))
 
-(defvar d-sumsign-ascii-dmstr '((0 2 (d-hbar 4 #\=)) (-4 1 #\\) #\> (-2 -1 #\/) (-1 -2 (d-hbar 4 #\=))))
+(defvar d-sumsign-ascii-dmstr '((0 2 (d-hbar 4 #\_)) (-4 1 #\\) #\> (-2 -1 #\/) (-1 -2 (d-hbar 4 #\-))))
 
 (defun d-sumsign (linear? &aux dmstr)
   (declare (ignore linear?))
