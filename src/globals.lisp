@@ -874,7 +874,7 @@
 (defmvar $scalarmatrixp t
   "Causes a square matrix of dimension one to be converted to a scalar,
   i.e. its only element."
-  :setting-list (nil t ))
+  :setting-list (nil t $all))
 
 (defmvar $assumescalar t
   "This governs whether unknown expressions 'exp' are assumed to
