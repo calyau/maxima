@@ -814,7 +814,26 @@
 
 (defmvar $display2d_unicode
   #+lisp-unicode-capable t
-  #-lisp-unicode-capable nil)
+  #-lisp-unicode-capable nil
+  "Enable use of unicode characters for 2D display"
+  :setting-predicate #'(lambda (arg)
+                         ;; For Unicode-capable Lisps, check that we
+                         ;; only assign true or false.  If not,
+                         ;; produce an error with an appropriate
+                         ;; message.
+                         #+lisp-unicode-capable
+                         (values (member arg '(nil t))
+                                 (let ((*print-case* :downcase))
+                                   (format nil "must be one of: ~{~A~^, ~}"
+                                           (mapcar #'stripdollar '($false $true)))))
+                         ;; For Lisps that don't support Unicode, It's
+                         ;; an error if we try to set this to anything
+                         ;; other than false (NIL).  Tell the user
+                         ;; that it's not supported.
+                         #-lisp-unicode-capable
+                         (if arg
+                             (values nil "2D Unicode display not supported with this Lisp")
+                             t)))
 
 (defun display2d-unicode-enabled ()
   #+(and clisp unicode)
