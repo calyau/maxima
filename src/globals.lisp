@@ -35,8 +35,11 @@
           a list of lists.  Each sublist is a list of the property and
           the value to be assigned to the property.
     :SETTING-PREDICATE
-        - A function of one argument that returns NIL if the given
-          value is not a valid value for the variable.
+        - A function (symbol or lambda) of one argument specifying the
+          value that variable is to be set to.  It should return
+          non-NIL if the value is valid.  When NIL is returned, an
+          optional second value may be given which is a string giving
+          the reason why the setting failed.
     :SETTING-LIST
         - A list of values that can be assigned to the variable.  An
           error is signaled if an attempt to assign a different value
