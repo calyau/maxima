@@ -648,7 +648,8 @@
 
 (defmvar $display2d t
   "Causes equations to be drawn in two dimensions.  Otherwise, drawn
-  linearly.")
+  linearly."
+  :setting-list (nil t))
 
 (defmvar $lispdisp nil
   "Causes symbols not having $ as the first character in their pnames to
