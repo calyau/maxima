@@ -1,0 +1,43 @@
+/*
+ * Test that variables can only be assigned to a set of allowed values
+ * and that an error is thrown if such an attempt is made.
+ */
+
+display2d_unicode:false;
+false;
+display2d_unicode:true;
+true;
+errcatch(display2d_unicode: 99);
+[];
+
+logexpand:false;
+false;
+logexpand:true;
+true;
+logexpand:all;
+all;
+logexpand:super;
+super;
+errcatch(logexpand:99);
+[];
+
+loadprint:false;
+false;
+loadprint: true;
+true;
+loadprint: 'loadfile;
+loadfile;
+loadprint: 'autoload;
+autoload;
+errcatch(loadprint:99);
+[];
+
+radexpand: false;
+false;
+radexpand: true;
+true;
+radexpand: all;
+all;
+errcatch(radexpand:99);
+[];
+
