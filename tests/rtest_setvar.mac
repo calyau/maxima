@@ -41,3 +41,59 @@ all;
 errcatch(radexpand:99);
 [];
 
+rootsconmode: false;
+false;
+rootsconmode: true;
+true;
+rootsconmode: all;
+all;
+errcatch(rootsconmode:99);
+[];
+
+triginverses: false;
+false;
+triginverses: true;
+true;
+triginverses: all;
+all;
+errcatch(triginverses:99);
+[];
+
+scalarmatrixp: false;
+false;
+scalarmatrixp: true;
+true;
+scalarmatrixp: all;
+all;
+errcatch(scalarmatrixp:99);
+[];
+
+assumescalar: false;
+false;
+assumescalar: true;
+true;
+assumescalar: all;
+all;
+errcatch(assumescalar:99);
+[];
+
+savedef: false;
+false;
+savedef: true;
+true;
+savedef: all;
+all;
+errcatch(savedef:99);
+[];
+
+showtime: false;
+false;
+showtime: true;
+true;
+showtime: all;
+all;
+errcatch(showtime:99);
+[];
+
+(reset(), 0);
+0;
