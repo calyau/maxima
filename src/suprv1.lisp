@@ -342,7 +342,7 @@
 		(if (gethash 'dim1 z)
 		  (remhash (car indices) z)
 		  (remhash indices z))))
-         ((eq (caar x) '$@) (mrecord-kill x))
+             ((eq (caar x) '$@) (mrecord-kill x))
 	     ((and (eq (caar x) '$allbut)
 		   (not (dolist (u (cdr x))
 			  (if (not (symbolp u)) (return t)))))
