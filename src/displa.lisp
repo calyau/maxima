@@ -146,7 +146,7 @@
 	       ((null l) (checkbreak result width) result)
 	     (setq dummy l l (cdr l))
 	     (cond ((char= (car dummy) #\newline)
-		    (forcebreak result width)
+		    (if result (forcebreak result width) (forcebreak (list #\space) width))
 		    (setq result nil w (+ $linel width)))
 		   (t (incf width)
 		      (when (and (= w width) l)

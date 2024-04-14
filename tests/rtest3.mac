@@ -979,3 +979,98 @@ block( [ bad: [], str],
 
 (reset(fpprec, fpprintprec), done);
 done;
+
+/* SF bug report #4287: "2d pretty printer ignores successive empty lines"
+ *
+ * Note that in the following examples, an empty line is displayed with one space on it,
+ * so the expected results have a space on lines that are entirely empty in the input.
+ * This is a consequence of the particular bug fix that was devised;
+ * if ever the display code is modified again so that the place-holding space
+ * becomes unnecessary, the expected results will have to be adjusted.
+ */
+
+print_string_2d ("aaa");
+"aaa
+";
+
+print_string_2d ("aaa
+bbb");
+"aaa
+bbb
+";
+
+print_string_2d ("aaa
+
+bbb");
+"aaa
+ 
+bbb
+";
+
+print_string_2d ("aaa
+
+
+bbb");
+"aaa
+ 
+ 
+bbb
+";
+
+print_string_2d ("aaa
+
+
+
+bbb
+
+
+
+
+ccc");
+"aaa
+ 
+ 
+ 
+bbb
+ 
+ 
+ 
+ 
+ccc
+";
+
+print_string_2d ("
+
+
+
+aaa
+
+
+");
+" 
+ 
+ 
+ 
+aaa
+ 
+ 
+";
+
+print_string_2d ("
+
+   With longing comes loss,
+
+  and the presence of absence:
+
+    \"'My Novel' not found.\"
+
+");
+" 
+ 
+   With longing comes loss,
+ 
+  and the presence of absence:
+ 
+    \"'My Novel' not found.\"
+ 
+";
