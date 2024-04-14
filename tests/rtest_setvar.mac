@@ -1,0 +1,99 @@
+/*
+ * Test that variables can only be assigned to a set of allowed values
+ * and that an error is thrown if such an attempt is made.
+ */
+
+display2d_unicode:false;
+false;
+display2d_unicode:true;
+true;
+errcatch(display2d_unicode: 99);
+[];
+
+logexpand:false;
+false;
+logexpand:true;
+true;
+logexpand:all;
+all;
+logexpand:super;
+super;
+errcatch(logexpand:99);
+[];
+
+loadprint:false;
+false;
+loadprint: true;
+true;
+loadprint: 'loadfile;
+loadfile;
+loadprint: 'autoload;
+autoload;
+errcatch(loadprint:99);
+[];
+
+radexpand: false;
+false;
+radexpand: true;
+true;
+radexpand: all;
+all;
+errcatch(radexpand:99);
+[];
+
+rootsconmode: false;
+false;
+rootsconmode: true;
+true;
+rootsconmode: all;
+all;
+errcatch(rootsconmode:99);
+[];
+
+triginverses: false;
+false;
+triginverses: true;
+true;
+triginverses: all;
+all;
+errcatch(triginverses:99);
+[];
+
+scalarmatrixp: false;
+false;
+scalarmatrixp: true;
+true;
+scalarmatrixp: all;
+all;
+errcatch(scalarmatrixp:99);
+[];
+
+assumescalar: false;
+false;
+assumescalar: true;
+true;
+assumescalar: all;
+all;
+errcatch(assumescalar:99);
+[];
+
+savedef: false;
+false;
+savedef: true;
+true;
+savedef: all;
+all;
+errcatch(savedef:99);
+[];
+
+showtime: false;
+false;
+showtime: true;
+true;
+showtime: all;
+all;
+errcatch(showtime:99);
+[];
+
+(reset(), 0);
+0;
