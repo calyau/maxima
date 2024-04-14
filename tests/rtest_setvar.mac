@@ -48,5 +48,16 @@ test_setter('savedef, [false, true, 'all], 99);
 test_setter('showtime, [false, true, 'all], 99);
 [false, true, all, []];
 
+test_setter('tr_warn_fexpr, ['all, 'compile, 'compfile, 'translate], 99);
+['all, 'compile, 'compfile, 'translate, []];
+test_setter('tr_warn_meval, ['all, 'compile, 'compfile, 'translate], 99);
+['all, 'compile, 'compfile, 'translate, []];
+test_setter('tr_warn_mode, ['all, 'compile, 'compfile, 'translate], 99);
+['all, 'compile, 'compfile, 'translate, []];
+test_setter('tr_warn_undeclared, ['all, 'compile, 'compfile, 'translate], 99);
+['all, 'compile, 'compfile, 'translate, []];
+test_setter('tr_warn_undefined_variable, ['all, 'compile, 'compfile, 'translate], 99);
+['all, 'compile, 'compfile, 'translate, []];
+
 (reset(), 0);
 0;

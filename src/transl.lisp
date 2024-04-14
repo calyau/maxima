@@ -126,21 +126,26 @@
 
 
 (defmvar $tr_warn_undeclared '$compile
-  "When to send warnings about undeclared variables to the TTY")
+  "When to send warnings about undeclared variables to the TTY"
+  :setting-list ($all $compile $compfile $translate))
 
 (defmvar $tr_warn_meval '$compfile
-  "If `meval' is called that indicates problems in the translation")
+  "If `meval' is called that indicates problems in the translation"
+  :setting-list ($all $compile $compfile $translate))
 
 (defmvar $tr_warn_fexpr
     '$compfile
   "FEXPRS should not normally be output in translated code, all legitimate
-special program forms are translated.")
+special program forms are translated."
+  :setting-list ($all $compile $compfile $translate))
 
 (defmvar $tr_warn_mode '$all
-  "Warn when variables are assigned values out of their mode.")
+  "Warn when variables are assigned values out of their mode."
+  :setting-list ($all $compile $compfile $translate))
 
 (defmvar $tr_warn_undefined_variable '$all
-  "Warn when undefined global variables are seen.")
+  "Warn when undefined global variables are seen."
+  :setting-list ($all $compile $compfile $translate))
 
 
 (defmvar *warned-un-declared-vars* nil "Warning State variable")
