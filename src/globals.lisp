@@ -514,7 +514,8 @@
 ;; From comm2.lisp
 (defmvar $rootsconmode t
   "Governs the behavior of the 'rootscontract' command. See
-  'rootscontract' for details.")
+  'rootscontract' for details."
+  :setting-list (nil t $all))
 
 ;;------------------------------------------------------------------------
 ;; From comm.lisp
@@ -647,7 +648,8 @@
 
 (defmvar $display2d t
   "Causes equations to be drawn in two dimensions.  Otherwise, drawn
-  linearly.")
+  linearly."
+  :setting-list (nil t))
 
 (defmvar $lispdisp nil
   "Causes symbols not having $ as the first character in their pnames to
@@ -780,7 +782,8 @@
 ;;------------------------------------------------------------------------
 ;; From macsys.lisp
 (defmvar $showtime nil
-  "When T, the computation time is printed with each output expression.")
+  "When T, the computation time is printed with each output expression."
+  :setting-list (nil t $all))
 
 (defmvar $_ '$_
   "last thing read in, corresponds to lisp +")
@@ -871,7 +874,8 @@
 
 (defmvar $scalarmatrixp t
   "Causes a square matrix of dimension one to be converted to a scalar,
-  i.e. its only element.")
+  i.e. its only element."
+  :setting-list (nil t $all))
 
 (defmvar $assumescalar t
   "This governs whether unknown expressions 'exp' are assumed to
@@ -887,7 +891,8 @@
   Note: This switch is primarily for the benefit of old code.  If
   possible, you should declare your variables to be SCALAR or
   NONSCALAR so that there is no need to rely on the setting of this
-  switch.")
+  switch."
+  :setting-list (nil t $all))
 
 ;;------------------------------------------------------------------------
 ;; From merror.lisp
@@ -928,7 +933,8 @@
 (defmvar $savedef t
   "When true, the Maxima version of a user function is preserved when
   the function is translated.  This permits the definition to be
-  displayed by 'dispfun' and allows the function to be edited.")
+  displayed by 'dispfun' and allows the function to be edited."
+  :setting-list (nil t $all))
 (defmvar $infeval nil
   "When true, Enables \"infinite evaluation\" mode.  'ev' repeatedly
   evaluates an expression until it stops changing."
@@ -1295,7 +1301,8 @@
   :properties ((evflag t)))
 (defmvar $logexpand t ; Possible values are T, $ALL and $SUPER
   "Controls how logs are expanded.  See the user manual."
-  :properties ((evflag t))) 
+  :properties ((evflag t))
+  :setting-list (nil t $all $super))
 (defmvar $radexpand t
   "Controls some simplification of radicals.  See the user manual."
   :properties ((evflag t))
@@ -1373,7 +1380,8 @@
 ;;------------------------------------------------------------------------
 ;; From suprv1.lisp
 (defmvar $loadprint nil
-  "Controls whether to print a message when a file is loaded.")
+  "Controls whether to print a message when a file is loaded."
+  :setting-list (nil t $loadfile $autoload))
 (defmvar $nolabels nil
   "When 'true', input and output result labels ('%i' and '%o',
   respectively) are displayed, but the labels are not bound to
@@ -1528,7 +1536,8 @@
   imaginary unit %i.")
 (defmvar $triginverses t
   "Controls the simplification of the composition of trigonometric and
-  hyperbolic functions with their inverse functions.")
+  hyperbolic functions with their inverse functions."
+  :setting-list (nil t $all))
 (defmvar $trigexpand nil
   "If 'true' causes expansion of all expressions containing sin's and
   cos's occurring subsequently."

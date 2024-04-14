@@ -156,7 +156,10 @@
 	 ;; Clisp doesn't have denormals
 	 #+clisp
 	 ((mlist simp) 10 42 49))
-	 #+lisp-unicode-capable "rtest_unicode_display"))
+	#+lisp-unicode-capable "rtest_unicode_display"
+        ((mlist simp) "rtest_setvar"
+         #+gcl
+         ((mlist simp) 2))))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima
