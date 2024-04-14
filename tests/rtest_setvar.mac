@@ -3,97 +3,50 @@
  * and that an error is thrown if such an attempt is made.
  */
 
-display2d_unicode:false;
-false;
-display2d_unicode:true;
-true;
-errcatch(display2d_unicode: 99);
-[];
+/*
+ * Function that tests if VAR can successfully set to each of the
+ * values in ALLOWED, but causes an error if set to INVALID.
+ *
+ * Returns a list of the assigned values and an empty list if the test
+ * succeeded.
+ */
 
-logexpand:false;
-false;
-logexpand:true;
-true;
-logexpand:all;
-all;
-logexpand:super;
-super;
-errcatch(logexpand:99);
-[];
+(test_setter(var, allowed, invalid) :=
+  block([result:[]],
+    append(map(lambda([v], var:: v), allowed),
+           [errcatch(var:: invalid)])),
+  0);
+0;
 
-loadprint:false;
-false;
-loadprint: true;
-true;
-loadprint: 'loadfile;
-loadfile;
-loadprint: 'autoload;
-autoload;
-errcatch(loadprint:99);
-[];
+test_setter('display2d_unicode, [false, true], 99);
+[false, true, []];
 
-radexpand: false;
-false;
-radexpand: true;
-true;
-radexpand: all;
-all;
-errcatch(radexpand:99);
-[];
+test_setter('logexpand, [false, true, all], 99);
+[false, true, all, []];
 
-rootsconmode: false;
-false;
-rootsconmode: true;
-true;
-rootsconmode: all;
-all;
-errcatch(rootsconmode:99);
-[];
+test_setter('loadprint, [false, true, 'loadfile, 'autoload], 99);
+[false, true, 'loadfile, 'autoload, []];
 
-triginverses: false;
-false;
-triginverses: true;
-true;
-triginverses: all;
-all;
-errcatch(triginverses:99);
-[];
+test_setter('radexpand, [false, true, 'all], 99);
+[false, true, all, []];
 
-scalarmatrixp: false;
-false;
-scalarmatrixp: true;
-true;
-scalarmatrixp: all;
-all;
-errcatch(scalarmatrixp:99);
-[];
+test_setter('rootsconmode, [false, true, 'all], 99);
+[false, true, all, []];
 
-assumescalar: false;
-false;
-assumescalar: true;
-true;
-assumescalar: all;
-all;
-errcatch(assumescalar:99);
-[];
+test_setter('triginverses, [false, true, 'all], 99);
+[false, true, all, []];
 
-savedef: false;
-false;
-savedef: true;
-true;
-savedef: all;
-all;
-errcatch(savedef:99);
-[];
+test_setter('scalarmatrixp, [false, true, 'all], 99);
+[false, true, all, []];
 
-showtime: false;
-false;
-showtime: true;
-true;
-showtime: all;
-all;
-errcatch(showtime:99);
-[];
+test_setter('assumescalar, [false, true, 'all], 99);
+[false, true, all, []];
+
+test_setter('savedef, [false, true, 'all], 99);
+[false, true, all, []];
+
+test_setter('showtime, [false, true, 'all], 99);
+[false, true, all, []];
 
 (reset(), 0);
 0;
