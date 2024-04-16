@@ -186,8 +186,9 @@
 	 (asksign npask-exp))
 	(t '$positive)))
 
-(defvar $integrate_use_rootsof nil
-  "Use the rootsof form for integrals when denominator does not factor")
+(defmvar $integrate_use_rootsof nil
+  "Use the rootsof form for integrals when denominator does not factor"
+  :setting-list (nil t))
 
 (defun integrate-use-rootsof (f q variable sinint-ratform)
   (let ((dummy (make-param))
