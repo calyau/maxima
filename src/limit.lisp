@@ -788,7 +788,7 @@ ignoring dummy variables and array indices."
                 ;; Copy of TANSC1, but VAR replaced by VAR1
                 (cond ((atom e)
                        e)
-	              ((and (setq e (cons (car e) (mapcar 'tansc1-v (cdr e))))
+	              ((and (setq e (cons (car e) (mapcar #'tansc1-v (cdr e))))
                             ()))
 	              ((setq tem (assoc (caar e)
                                         '((%cot . %tan) (%coth . %tanh)
