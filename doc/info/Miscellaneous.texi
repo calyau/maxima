@@ -144,7 +144,7 @@ creating Maxima init files.
 @anchor{remvalue}
 @deffn  {Function} remvalue @
 @fname{remvalue} (@var{name_1}, @dots{}, @var{name_n}) @
-@fname{remvalue} remvalue (all)
+@fname{remvalue} (all)
 
 Removes the values of user variables @var{name_1}, @dots{}, @var{name_n}
 (which can be subscripted) from the system.
