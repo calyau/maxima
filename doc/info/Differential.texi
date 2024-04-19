@@ -130,8 +130,7 @@ variable in the form @code{@var{x} = @var{x0}}, @var{yval} gives the
 initial value of the dependent variable in the form @code{@var{y} =
 @var{y0}}, and @var{dval} gives the initial value for the first
 derivative of the dependent variable with respect to independent
-variable, in the form @code{diff(@var{y},@var{x}) = @var{dy0}}
-(@code{diff} does not have to be quoted).
+variable, in the form @code{'diff(@var{y},@var{x}) = @var{dy0}}.
 
 See @mref{ode2} for an example of its usage.
 
@@ -185,52 +184,50 @@ Example:
 
 @c ===beg===
 @c x^2*'diff(y,x) + 3*y*x = sin(x)/x;
-@c ode2(%,y,x);
-@c ic1(%o2,x=%pi,y=0);
+@c soln1: ode2(%,y,x);
+@c ic1 (soln1,x=%pi,y=0);
 @c 'diff(y,x,2) + y*'diff(y,x)^3 = 0;
-@c ode2(%,y,x);
-@c ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));
-@c bc2(%o5,x=0,y=1,x=1,y=3);
+@c soln2: ode2(%,y,x);
+@c ratsimp (ic2(soln2,x=0,y=0,'diff(y,x)=2));
+@c bc2 (soln2,x=0,y=1,x=1,y=3);
 @c ===end===
 @example
-(%i1) x^2*'diff(y,x) + 3*y*x = sin(x)/x;
-                      2 dy           sin(x)
-(%o1)                x  -- + 3 x y = ------
-                        dx             x
-(%i2) ode2(%,y,x);
-                             %c - cos(x)
-(%o2)                    y = -----------
-                                  3
-                                 x
-(%i3) ic1(%o2,x=%pi,y=0);
-                              cos(x) + 1
-(%o3)                   y = - ----------
-                                   3
-                                  x
-(%i4) 'diff(y,x,2) + y*'diff(y,x)^3 = 0;
-                         2
-                        d y      dy 3
-(%o4)                   --- + y (--)  = 0
-                          2      dx
-                        dx
-(%i5) ode2(%,y,x);
-                      3
-                     y  + 6 %k1 y
-(%o5)                ------------ = x + %k2
-                          6
-(%i6) ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));
-@group
-                             3
-                          2 y  - 3 y
-(%o6)                   - ---------- = x
-                              6
-@end group
-(%i7) bc2(%o5,x=0,y=1,x=1,y=3);
-                         3
-                        y  - 10 y       3
-(%o7)                   --------- = x - -
-                            6           2
+(%i1) x^2*'diff(y,x)+3*x*y = sin(x)/x;
+                                     2 dy   sin(x)
+(%o1)                       3 x y + x  -- = ------
+                                       dx     x
+(%i2) soln1:ode2(%,y,x);
+                                    %c - cos(x)
+(%o2)                           y = -----------
+                                         3
+                                        x
+(%i3) ic1(soln1,x = %pi,y = 0);
+                                     1 + cos(x)
+(%o3)                          y = - ----------
+                                          3
+                                         x
+(%i4) 'diff(y,x,2)+y*('diff(y,x))^3 = 0;
+                                          2
+                                  dy 3   d y
+(%o4)                          y (--)  + --- = 0
+                                  dx       2
+                                         dx
+(%i5) soln2:ode2(%,y,x);
+                                       3
+                            6 %k1 y + y
+(%o5)                       ------------ = %k2 + x
+                                 6
+(%i6) ratsimp(ic2(soln2,x = 0,y = 0,'diff(y,x) = 2));
+                                        3
+                                 3 y + y
+(%o6)                            -------- = x
+                                    6
+(%i7) bc2(soln2,x = 0,y = 1,x = 1,y = 3);
 
+                                       3
+                             - 10 y + y      3
+(%o7)                        ----------- = - - + x
+                                  6          2
 @end example
 
 @opencatbox{Categories:}
