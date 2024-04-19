@@ -188,11 +188,11 @@
 	    (when (indefinite-integral-p exp var)
 		  	(return (cons (list '%limit) args)))
 
-        ;; This returns a limit nounform for expressions such as 
+		;; This returns a limit nounform for expressions such as 
 		;; limit(x < 8,x,0), limit(diff(f(x),x,x,0), and ...
-        (unless (or $limsubst (eq var genfoo))
-		    (when (limunknown exp)
-			     (return `((%limit) ,@(cons exp1 (cdr args))))))	
+        (unless (eq var genfoo)
+		  (when (limunknown exp)
+			    (return `((%limit) ,@(cons exp1 (cdr args))))))	
 
 	      (setq varlist (ncons var) genvar nil origval val)
 	      ;; Transform limits to minf to limits to inf by
@@ -344,20 +344,33 @@
                      (t
                       '$ind))))))))
 
-(defun limunknown (f)
-  (catch 'limunknown (limunknown1 (specrepcheck f))))
+;; Return true when Maxima should return a limit nounform for limit(e,x,var,val).
+(defun limunknown (e)
+  (not (limit-ok e var)))
 
-(defun limunknown1 (f)
-  (cond ((mapatom f) nil)
-     ;; special pass for fib(X). What else?
-    ((and (consp f) (eq '$fib (caar f))) nil)
-	((or (not (safe-get (caar f) 'operators))
-	     (member (caar f) '(%sum %product mncexpt) :test #'eq)
-	     ;;Special function code here i.e. for li[2](x).
-	     (and (eq (caar f) 'mqapply)
-		  (not (get (subfunname f) 'specsimp))))
-	 (if (not (free f var)) (throw 'limunknown t)))
-	(t (mapc #'limunknown1 (cdr f)) nil)))
+;; Return true when Maxima's limit code should be able to determine limit
+(defun limit-ok (e x)
+   (cond 
+    ((mapatom e) t) ;mapatoms are OK
+    ;; return nil for an indefinite integral
+    ((and (eq (caar e) '%integrate) (alike x (third e)) (null (fourth e))) nil)
+	;; Return true for integrate(X,z,a,b) provided (a) freeof(x,X) (b) limit-ok(a,x)
+	;; and (c) limit-ok(b,x). The function simplim%integrate doesn't recoginize
+	;; $limsubst, but this function does.
+	((eq (caar e) '%integrate) 
+	    (and (limit-ok (fourth e) x) (limit-ok (fifth e) x)) 
+		     (or $limsubst ($freeof (third e) x)))
+    ;; when the operator of e either (a) has a simplim%function, (b) 
+    ;; is a simplifying operator (including subscripted operators), 
+    ;; or (c) is $fib, check that each argument of e is OK.
+	(t 
+        (let* ((op (caar e))
+               (ok (or (get op 'operators)
+                       (get op 'simplim%function)
+                       (and (eq op 'mqapply) (get (subfunname e) 'specsimp))
+                       (eq op '$fib))))
+		  (and (or ok $limsubst)
+		       (or (every #'(lambda(q) (limit-ok q x)) (cdr e)) ($freeof x e)))))))
 
 ;; The functionality of this code has been blended into extra-simp. But 
 ;; there are some differences: (a) when e depends on the global var, this 

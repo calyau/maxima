@@ -1123,6 +1123,29 @@ und$
 1$
 */
 
+/* #4277 limit misses some constant expressions */
+block([limsubst : false], limit(sum(f(x),x,1,inf),x, 3));
+'sum(f(x),x,1,inf)$
+
+block([limsubst : true], limit(sum(f(x),x,1,inf),x, 3));
+'sum(f(x),x,1,inf)$
+
+limit(integrate(f(x),x),x,%pi);
+'limit('integrate(f(x),x),x,%pi)$
+
+block([limsubst : false], limit(integrate(f(x,t),t),x,%pi));
+'limit('integrate(f(x,t),t),x,%pi)$
+
+block([limsubst : true], limit(integrate(f(x,t),t),x,%pi));
+'limit('integrate(f(x,t),t),x,%pi)$
+
+block([limsubst : false], limit(diff(g(x,t),t,3),x,42));
+'limit('diff(g(x,t),t,3),x,42)$
+
+block([limsubst : true], limit(diff(g(x,t),t,3),x,42));
+'diff(g(42,t),t,3)$
+
+
 /* Did any facts or contexts leak?*/
 facts();
 []$
