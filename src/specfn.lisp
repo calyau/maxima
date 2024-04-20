@@ -26,6 +26,9 @@
 
 ;; subtitle polylogarithm routines
 
+;; li has mirror symmetry
+(defprop %li t commutes-with-conjugate)
+
 (declare-top (special tlist))
 
 (defun lisimp (expr vestigial z)
