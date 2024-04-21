@@ -130,7 +130,7 @@
 	   (setq p2 (if (mtimesp p2) (margs p2) (list p2)))
 	   (setq p2 (mapcar #'(lambda (s) (if (mexptp s) (nth 1 s) s)) p2))
 	   (setq p2 `((mtimes simp) ,@p2))
-	(mtell "Proviso: assuming ~:M" `((mnotequal simp) ,p2 0))))
+	(mtell "Proviso: assuming ~:M ~%" `((mnotequal simp) ,p2 0))))
 
     (setq sp ($solve p z))
     (setq sp (mapcar '$rhs (cdr sp)))
