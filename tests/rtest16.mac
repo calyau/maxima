@@ -2834,15 +2834,11 @@ limit(tan(%pi/2*tanh(x)+1), x, inf);
 [limit(cot(%pi/2*tanh(x)), x, inf), limit(cot(%pi/2*tanh(x)), x, minf)];
 [0, 0];
 
-/*
- * SF bug #4158: float(li[2](%i)) doens't give numerical result.
- * Also li[2](%i),numer signaled a Lisp error.
- */
 float(li[2](%i));
-li[2](1.0*%i);
+0.915965594177219*%i-0.20561675835602827;
 
 float(li[2](%i)),numer;
-li[2](1.0*%i);
+0.9159655941772191*%i - 0.20561675835602777;
 
 bfloat(li[2](%i));
-li[2](1b0*%i);
+9.15965594177219015054603b-1*%i - 2.05616758356028304559052b-1;
