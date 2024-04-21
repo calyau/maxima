@@ -1228,3 +1228,40 @@
 	   (values (polylog-log-series s z)))
 	  ((> (abs z) 1.5)
 	   (polylog-inversion-formula s z)))))
+
+;;; Computation of Catalan's constant
+(in-package #:bigfloat)
+;;
+;; catalan = 1/2*sum(a[n], k, 0, inf)
+;;
+;;  a[n] = (-8)^k*(3*k+2)/((2*k+1)^3*binomial(2*k,k)^3)
+;;
+;; This is the first of the other quickly converging series from
+;; https://en.wikipedia.org/wiki/Catalan%27s_constant
+;;
+;; There are other quickly converging series given in the Wikipedia
+;; article, that might work better, but this one has relatively simple
+;; form and is an alternating series so it's easy to know when to
+;; stop.
+;;
+;; This is an alternating series, so we can stop when the computed
+;; term is below our desired accuracy.
+;;
+;; The ratio between succesive terms is
+;;
+;;   a[n+1]/a[n] = -(3*k+5)/(3*k+2)*((k+1)/(2*k+3))^3
+;;
+
+(defun comp-catalan (prec)
+  (let* ((limit (expt 2 (- prec))))
+    (do ((k 0 (+ k 1))
+         (a (bigfloat 2)
+            (* -1 a (* (/ (+ (* 3 k) 5)
+                          (+ (* 3 k) 2))
+                       (expt (/ (+ k 1)
+                                (+ (* 2 k) 3))
+                             3))))
+         (sum (bigfloat 0)
+              (+ sum a)))
+        ((< (abs a) limit)
+         (maxima::to (/ sum 2))))))

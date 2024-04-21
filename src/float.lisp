@@ -724,7 +724,7 @@
 	   ;; Handle %i specially.
 	   (mul ($bfloat 1) '$%i))
 	  ((or (numberp x)
-	       (member x '($%e $%pi $%gamma) :test #'eq))
+	       (member x '($%e $%pi $%gamma $%catalan) :test #'eq))
 	   (bcons (intofp x)))
 	  ((or (atom x) (member 'array (cdar x) :test #'eq))
 	   (if (eq x '$%phi)
@@ -953,6 +953,7 @@
 	((eq l '$%pi) (fppi))
 	((eq l '$%e) (fpe))
 	((eq l '$%gamma) (fpgamma))
+        ((eq l '$%catalan) (fpcatalan))
 	(t (list (fpround l) (+ *m fpprec)))))
 
 ;; It seems to me that this function gets called on an integer
@@ -1161,6 +1162,17 @@
   (defun fplog2-table ()
     table)
   (defun clear_fplog2_table ()
+    (clrhash table)))
+
+(let ((table (make-hash-table)))
+  (defun fpcatalan ()
+    (let ((value (gethash fpprec table)))
+      (if value
+	  value
+	  (setf (gethash fpprec table) (cdr (fpcatalan1))))))
+  (defun fpcatalan-table ()
+    table)
+  (defun clear_fpcatalan_table ()
     (clrhash table)))
 
 ;; This doesn't need a hash table because there's never a problem with
@@ -1566,6 +1578,15 @@
                   qq (* ql qr)
                   tt (+ (* br qr tl) (* bl pl tr)) )))))
     (values tt qq bb pp) ))
+;;
+;;----------------------------------------------------------------------------;;
+(defun fpcatalan1 ()
+  ;; Use 5 extra bits when computing %catalan.  Not exactly sure what
+  ;; is right value, but 5 seems good enough.
+  (let ((catalan (cdr (bigfloat::comp-catalan (+ fpprec 5)))))
+    (bcons (list (fpround (car catalan))
+                 (cadr catalan)))))
+
 ;;
 ;;----------------------------------------------------------------------------;;
 
