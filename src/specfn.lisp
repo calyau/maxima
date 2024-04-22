@@ -26,7 +26,13 @@
 
 ;; subtitle polylogarithm routines
 
-;; li has mirror symmetry
+;; li has mirror symmetry:
+;;
+;;   li[s](conjugate(z)) = conjugate(li[s](z))
+;;
+;; for z not on the negative real line.
+;;
+;; See http://functions.wolfram.com/10.08.04.0002.01
 (defprop %li t commutes-with-conjugate)
 
 (declare-top (special tlist))
