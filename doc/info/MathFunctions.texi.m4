@@ -47,16 +47,23 @@ distributes over the elements of a list.
 @c abs([inf, infinity, minf]);
 @c ===end===
 @example
+@group
 (%i1) abs([-4, 0, 1, 1+%i]);
 (%o1)                  [4, 0, 1, sqrt(2)]
-
+@end group
+@group
 (%i2) abs((1+%i)*(1-%i));
 (%o2)                           2
+@end group
+@group
 (%i3) abs(%e+%i);
-                                2
-(%o3)                    sqrt(%e  + 1)
+                                 2
+(%o3)                     sqrt(%e  + 1)
+@end group
+@group
 (%i4) abs([inf, infinity, minf]);
-(%o4)                   [inf, inf, inf]
+(%o4)                    [inf, inf, inf]
+@end group
 @end example
 
 Simplification of expressions containing @code{abs}:
@@ -68,17 +75,24 @@ Simplification of expressions containing @code{abs}:
 @c abs(conjugate(x));
 @c ===end===
 @example
-(%i5) abs(x^2);
+@group
+(%i1) abs(x^2);
                                 2
-(%o5)                          x
-(%i6) abs(x^3);
+(%o1)                          x
+@end group
+@group
+(%i2) abs(x^3);
                              2
-(%o6)                       x  abs(x)
-
-(%i7) abs(abs(x));
-(%o7)                       abs(x)
-(%i8) abs(conjugate(x));
-(%o8)                       abs(x)
+(%o2)                       x  abs(x)
+@end group
+@group
+(%i3) abs(abs(x));
+(%o3)                        abs(x)
+@end group
+@group
+(%i4) abs(conjugate(x));
+(%o4)                        abs(x)
+@end group
 @end example
 
 Integrating and differentiating with the @code{abs} function. Note that more
@@ -96,39 +110,46 @@ transform of @code{abs}: see @mrefdot{laplace}
 @c laplace(abs(x),x,s);
 @c ===end===
 @example
-(%i9) diff(x*abs(x),x),expand;
-(%o9)                       2 abs(x)
-
-(%i10) integrate(abs(x),x);
-                             x abs(x)
-(%o10)                       --------
-                                2
-
-(%i11) integrate(x*abs(x),x);
-                           /
-                           [
-(%o11)                     I x abs(x) dx
-                           ]
-                           /
-
-(%i12) load("abs_integrate")$
-(%i13) integrate(x*abs(x),x);
-                      2           3
-                     x  abs(x)   x  signum(x)
-(%o13)               --------- - ------------
-                         2            6
-
-(%i14) integrate(abs(x),x,-2,%pi);
+@group
+(%i1) diff(x*abs(x),x),expand;
+(%o1)                       2 abs(x)
+@end group
+@group
+(%i2) integrate(abs(x),x);
+                            x abs(x)
+(%o2)                       --------
+                               2
+@end group
+@group
+(%i3) integrate(x*abs(x),x);
+                          /
+                          |
+(%o3)                     | x abs(x) dx
+                          |
+                          /
+@end group
+(%i4) load("abs_integrate")$
+@group
+(%i5) integrate(x*abs(x),x);
+                           3
+                          x  signum(x)
+(%o5)                     ------------
+                               3
+@end group
+@group
+(%i6) integrate(abs(x),x,-2,%pi);
                                2
                             %pi
-(%o14)                      ---- + 2
+(%o6)                       ---- + 2
                              2
-
-(%i15) laplace(abs(x),x,s);
+@end group
+@group
+(%i7) laplace(abs(x),x,s);
                                1
-(%o15)                         --
+(%o7)                          --
                                 2
                                s
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -233,6 +254,7 @@ Example use:
 @c apply ("+", %);
 @c ===end===
 @example
+@group
 (%i1) unitfrac(r) := block([uf : [], q],
     if not(ratnump(r)) then
        error("unitfrac: argument must be a rational number"),
@@ -241,14 +263,14 @@ Example use:
         r : r - q),
     reverse(uf));
 (%o1) unitfrac(r) := block([uf : [], q], 
-if not ratnump(r) then
-error("unitfrac: argument must be a rational number"), 
-                                  1
-while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
-                                      1
-                              ceiling(-)
-                                      r
+if not ratnump(r) then error("unitfrac: argument must be a rational number"
+                                     1
+), while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
+                                         1
+                                 ceiling(-)
+                                         r
 reverse(uf))
+@end group
 @group
 (%i2) unitfrac (9/10);
                             1  1  1
@@ -725,12 +747,16 @@ Examples with @mref{sqrt} and @mrefdot{sin}
 @c cabs(sin(x+%i*y));
 @c ===end===
 @example
+@group
 (%i1) cabs(sqrt(1+%i*x));
                              2     1/4
 (%o1)                      (x  + 1)
+@end group
+@group
 (%i2) cabs(sin(x+%i*y));
                     2        2         2        2
 (%o2)       sqrt(cos (x) sinh (y) + sin (x) cosh (y))
+@end group
 @end example
 
 The error function, @mrefcomma{erf} has mirror symmetry, which is used here in
@@ -740,15 +766,17 @@ the calculation of the absolute value with a complex argument:
 @c cabs(erf(x+%i*y));
 @c ===end===
 @example
-(%i3) cabs(erf(x+%i*y));
+@group
+(%i1) cabs(erf(x+%i*y));
                                           2
            (erf(%i y + x) - erf(%i y - x))
-(%o3) sqrt(--------------------------------
+(%o1) sqrt(--------------------------------
                           4
                                                                2
-                                (erf(%i y + x) + erf(%i y - x))
-                              - --------------------------------)
-                                               4
+                              (- erf(%i y + x) - erf(%i y - x))
+                            - ----------------------------------)
+                                              4
+@end group
 @end example
 
 Maxima knows complex identities for the Bessel functions, which allow
@@ -759,8 +787,10 @@ example for @mrefdot{bessel_j}
 @c cabs(bessel_j(1,%i));
 @c ===end===
 @example
-(%i4) cabs(bessel_j(1,%i));
-(%o4)                 abs(bessel_j(1, %i))
+@group
+(%i1) cabs(bessel_j(1,%i));
+(%o1)                    bessel_i(1, 1)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1424,14 +1454,18 @@ which differ by an integer.
 @c minfactorial (%);
 @c ===end===
 @example
+@group
 (%i1) n!/(n+2)!;
                                n!
 (%o1)                       --------
                             (n + 2)!
+@end group
+@group
 (%i2) minfactorial (%);
                                 1
 (%o2)                    ---------------
                          (n + 1) (n + 2)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1562,15 +1596,15 @@ When @code{%emode} is @code{false}, no special simplification of
 @end group
 @group
 (%i4) %e^(%pi*%i*192/144);
-                          sqrt(3) %i    1
-(%o4)                  (- ----------) - -
-                              2         2
+                          sqrt(3) %i   1
+(%o4)                   - ---------- - -
+                              2        2
 @end group
 @group
 (%i5) %e^(%pi*%i*180/144);
-                           %i          1
-(%o5)                 (- -------) - -------
-                         sqrt(2)    sqrt(2)
+                           %i         1
+(%o5)                  - ------- - -------
+                         sqrt(2)   sqrt(2)
 @end group
 @group
 (%i6) %e^(%pi*%i*120/144);
@@ -1760,7 +1794,7 @@ Examples:
 @c li[4](1);
 @c li[5](1);
 @c li[2](1/2);
-@c li[2[(%i);
+@c li[2](%i);
 @c li[2](1+%i);
 @c li [2] (7);
 @c li [2] (7), numer;
@@ -1781,44 +1815,76 @@ Examples:
                                 2
 @end group
 @group
-(%i3) li [2] (7);
-(%o3)                        li (7)
+(%i3) li[4](1);
+                                 4
+                              %pi
+(%o3)                         ----
+                               90
+@end group
+@group
+(%i4) li[5](1);
+(%o4)                        zeta(5)
+@end group
+@group
+(%i5) li[2](1/2);
+                            2      2
+                         %pi    log (2)
+(%o5)                    ---- - -------
+                          12       2
+@end group
+@group
+(%i6) li[2](%i);
+                                        2
+                                     %pi
+(%o6)                  %catalan %i - ----
+                                      48
+@end group
+@group
+(%i7) li[2](1+%i);
+                                  2
+               %i %pi log(2)   %pi
+(%o7)          ------------- + ---- + %catalan %i
+                     4          16
+@end group
+@group
+(%i8) li [2] (7);
+(%o8)                        li (7)
                                2
 @end group
 @group
-(%i4) li [2] (7), numer;
-(%o4)       1.248273182099423 - 6.113257028817991 %i
+(%i9) li [2] (7), numer;
+(%o9)      1.2482731820994244 - 6.1132570288179915 %i
 @end group
 @group
-(%i5) li [3] (7);
-(%o5)                        li (7)
+(%i10) li [3] (7);
+(%o10)                       li (7)
                                3
 @end group
 @group
-(%i6) li [3] (7), numer;
-(%o6)       5.319257992145674 - 5.94792444808033 %i
+(%i11) li [2] (7), numer;
+(%o11)     1.2482731820994244 - 6.1132570288179915 %i
 @end group
 @group
-(%i7) L : makelist (i / 4.0, i, 0, 8);
-(%o7)   [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+(%i12) L : makelist (i / 4.0, i, 0, 8);
+(%o12)  [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
 @end group
 @group
-(%i8) map (lambda ([x], li [2] (x)), L);
-(%o8) [0.0, 0.2676526390827326, 0.5822405264650125, 
-0.978469392930306, 1.644934066848226, 
-2.190177011441645 - 0.7010261415046585 %i, 
-2.37439527027248 - 1.2738062049196 %i, 
-2.448686765338205 - 1.758084848210787 %i, 
-2.467401100272339 - 2.177586090303601 %i]
+(%i13) map (lambda ([x], li [2] (x)), L);
+(%o13) [0.0, 0.2676526390827326, 0.5822405264650125, 
+0.978469392930306, 1.6449340668482264, 
+2.1901770114416452 - 0.7010261415046585 %i, 
+2.3743952702724798 - 1.2738062049196004 %i, 
+2.448686765338203 - 1.7580848482107874 %i, 
+2.4674011002723395 - 2.177586090303602 %i]
 @end group
 @group
-(%i9) map (lambda ([x], li [3] (x)), L);
-(%o9) [0.0, 0.2584613953442624, 0.537213192678042, 
-0.8444258046482203, 1.2020569, 1.642866878950322
- - 0.07821473130035025 %i, 2.060877505514697
- - 0.2582419849982037 %i, 2.433418896388322
- - 0.4919260182322965 %i, 2.762071904015935
- - 0.7546938285978846 %i]
+(%i14) map (lambda ([x], li [3] (x)), L);
+(%o14) [0.0, 0.25846139579657335, 0.5372131936080402, 
+0.8444258088622044, 1.2020569031595942, 
+1.6428668813178295 - 0.07821473138972386 %i, 
+2.0608775073202805 - 0.258241985293288 %i, 
+2.433418898226189 - 0.49192601879440423 %i, 
+2.762071906228924 - 0.7546938294602477 %i]
 @end group
 @end example
 
@@ -1997,8 +2063,10 @@ When @code{logexpand} is @code{true},
 @c log(n^2), logexpand=true;
 @c ===end===
 @example
+@group
 (%i1) log(n^2), logexpand=true;
 (%o1)                       2 log(n)
+@end group
 @end example
 
 When @code{logexpand} is @code{all},
@@ -2008,8 +2076,10 @@ When @code{logexpand} is @code{all},
 @c log(10*x), logexpand=all;
 @c ===end===
 @example
+@group
 (%i1) log(10*x), logexpand=all;
 (%o1)                   log(x) + log(10)
+@end group
 @end example
 
 When @code{logexpand} is @code{super},
@@ -2020,8 +2090,10 @@ for rational numbers @code{a/b} with @code{a#1}.
 @c log(a/(n + 1)), logexpand=super;
 @c ===end===
 @example
+@group
 (%i1) log(a/(n + 1)), logexpand=super;
 (%o1)                  log(a) - log(n + 1)
+@end group
 @end example
 
 When @code{logexpand} is set to @code{all} or @code{super},
@@ -2033,29 +2105,35 @@ the logarithm of a product expression simplifies to a summation of logarithms.
 @c log(my_product), logexpand=super;
 @c ===end===
 @example
+@group
 (%i1) my_product : product (X(i), i, 1, n);
                              n
-                           /===\
-                            ! !
-(%o1)                       ! !  X(i)
-                            ! !
+                           _____
+                           |   |
+(%o1)                      |   | X(i)
+                           |   |
                            i = 1
+@end group
+@group
 (%i2) log(my_product), logexpand=all;
                           n
-                         ====
+                         ____
                          \
 (%o2)                     >    log(X(i))
                          /
-                         ====
+                         ----
                          i = 1
+@end group
+@group
 (%i3) log(my_product), logexpand=super;
                           n
-                         ====
+                         ____
                          \
 (%o3)                     >    log(X(i))
                          /
-                         ====
+                         ----
                          i = 1
+@end group
 @end example
 
 When @code{logexpand} is @code{false},
@@ -2070,22 +2148,30 @@ these simplifications are disabled.
 @c ===end===
 @example
 (%i1) logexpand : false $
+@group
 (%i2) log(n^2);
                                   2
 (%o2)                        log(n )
+@end group
+@group
 (%i3) log(10*x);
 (%o3)                       log(10 x)
+@end group
+@group
 (%i4) log(a/(n + 1));
                                  a
 (%o4)                      log(-----)
                                n + 1
+@end group
+@group
 (%i5) log ('product (X(i), i, 1, n));
                                n
-                             /===\
-                              ! !
-(%o5)                    log( ! !  X(i))
-                              ! !
+                             _____
+                             |   |
+(%o5)                    log(|   | X(i))
+                             |   |
                              i = 1
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2829,8 +2915,8 @@ Examples:
 @example
 @group
 (%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
-                         2            2
-(%o1)              (- sin (x)) + 3 cos (x) + x
+                         2           2
+(%o1)               - sin (x) + 3 cos (x) + x
 @end group
 @group
 (%i2) trigexpand(sin(10*x+y));
@@ -3037,10 +3123,10 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 (%i1) c : %pi/3 - a - b$
 @group
 (%i2) bc : sin(a)*sin(3*c)/sin(a+b);
-                                           %pi
-                 sin(a) sin(3 ((- b) - a + ---))
-                                            3
-(%o2)            -------------------------------
+                                          %pi
+                  sin(a) sin(3 (- b - a + ---))
+                                           3
+(%o2)             -----------------------------
                            sin(b + a)
 @end group
 @group
@@ -3062,18 +3148,18 @@ Addison-Wesley), section 1.5.5, Morley theorem.
                 2     %pi
              sin (a - ---)
                        3
-                                         %pi
- - (2 sin(a) sin(3 a) sin(3 ((- b) - a + ---)) cos(b)
-                                          3
+                                       %pi
+ - (2 sin(a) sin(3 a) sin(3 (- b - a + ---)) cos(b)
+                                        3
              %pi            %pi
  sin(b + a - ---))/(sin(a - ---) sin(b + a))
               3              3
-      2       2                %pi
-   sin (a) sin (3 ((- b) - a + ---))
-                                3
- + ---------------------------------
-                 2
-              sin (b + a)
+      2       2              %pi
+   sin (a) sin (3 (- b - a + ---))
+                              3
+ + -------------------------------
+                2
+             sin (b + a)
 @end group
 @group
 (%i5) trigrat (ac2);
@@ -3253,7 +3339,7 @@ Examples:
 @end group
 @group
 (%i8) random (10.0);
-(%o8)                   4.394553645870825
+(%o8)                  4.3945536458708245
 @end group
 @group
 (%i9) random (100.0);
@@ -3269,7 +3355,7 @@ Examples:
 @end group
 @group
 (%i12) random (10.0);
-(%o12)                  4.394553645870825
+(%o12)                 4.3945536458708245
 @end group
 @group
 (%i13) random (100.0);
