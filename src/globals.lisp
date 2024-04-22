@@ -1523,7 +1523,7 @@
 (defvar *in-translate-file* nil)
 (defvar *linelabel* nil)
 
-(defvar *builtin-numeric-constants* '($%e $%pi $%phi $%gamma))
+(defvar *builtin-numeric-constants* '($%e $%pi $%phi $%gamma $%catalan))
 ;;------------------------------------------------------------------------
 ;; From trigi.lisp
 (defmvar $%piargs t

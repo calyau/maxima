@@ -15,6 +15,36 @@
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{%catalan}
+@defvr {Constant} %catalan
+@vrindex catalan
+@vrindex Catalan's Constant
+
+@code{%catalan} represents Catalan's constant, @math{G}, defined by
+m4_displaymath(
+<<<G = \sum_{n=0}^\infty {(-1)^n\over (2n+1)^2}>>>,
+<<<
+@example
+                               inf
+                               ____         n
+                               ╲       (- 1)
+                    %catalan =  ⟩    ──────────
+                               ╱              2
+                               ‾‾‾‾  (2 n + 1)
+                               n = 0
+
+@end example
+>>>)
+(It is also sometimes denoted by @math{C}).
+
+The numeric value of @code{%catalan} is approximately
+0.915965594177219.  (See @urldlmf{25.11.E40}).
+@opencatbox{Categories:}
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{%e}
 @defvr {Constant} %e
 @vrindex e

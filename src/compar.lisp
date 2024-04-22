@@ -1287,7 +1287,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun constp (x)
   (cond ((floatp x) 'float)
 	((numberp x) 'numer)
-	((symbolp x) (if (member x '($%pi $%e $%phi $%gamma) :test #'eq) 'symbol))
+	((symbolp x) (if (member x '($%pi $%e $%phi $%gamma $%catalan) :test #'eq) 'symbol))
     ((atom x) nil)
 	((eq (caar x) 'rat) 'numer)
 	((eq (caar x) 'bigfloat) 'bigfloat)
@@ -2664,6 +2664,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           (kind $%pi $irrational)
 	  (kind $%e $irrational)
 	  (kind $%phi $irrational)
+          (kind $%catalan $noninteger)
+          (kind $%catalan $real)
 	  
           ;; Declarations for functions
 	  (kind %log $increasing)

@@ -796,7 +796,7 @@
 (eval-when (:load-toplevel :execute)
     (let ((context '$global))
       (declare (special context))
-      (dolist (x '($%pi $%i $%e $%phi %i $%gamma  ;numeric constants
+      (dolist (x '($%pi $%i $%e $%phi %i $%gamma $%catalan  ;numeric constants
                    $inf $minf $und $ind $infinity ;pseudo-constants
                    t nil))                        ;logical constants (Maxima names: true, false)
 	(kind x '$constant)

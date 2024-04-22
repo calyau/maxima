@@ -26,6 +26,15 @@
 
 ;; subtitle polylogarithm routines
 
+;; li has mirror symmetry:
+;;
+;;   li[s](conjugate(z)) = conjugate(li[s](z))
+;;
+;; for z not on the negative real line.
+;;
+;; See http://functions.wolfram.com/10.08.04.0002.01
+(defprop %li t commutes-with-conjugate)
+
 (declare-top (special tlist))
 
 (defun lisimp (expr vestigial z)
@@ -106,9 +115,53 @@
 	     (complex-bigfloat-numerical-eval-p arg))
 	 (to (bigfloat::li2numer (bigfloat:to ($rectform ($bfloat arg))))))
         ((alike1 arg '((rat) 1 2))
+         ;; li[2](1/2) = zeta(2)/2-log(2)^2/2
+         ;;            = %pi^2/12-log(2)^2/2
          (add (div (take '(%zeta) 2) 2)
               (mul '((rat simp) -1 2)
-                   (power (take '(%log) 2) 2))))))
+                   (power (take '(%log) 2) 2))))
+        ((alike1 arg 2)
+         ;; li[2](2) = %pi^2/4 - %i*%pi*log(2)
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0007.01.  But
+         ;; this also follows from https://dlmf.nist.gov/25.12.E4:
+         ;;
+         ;; li[2](z) + li[2](1/z) = -%pi^2/6-log(-z)^2/2
+         ;;
+         ;; with z = 2.
+         (sub (div (power '$%pi 2)
+                   4)
+              (mul '$%pi '$%i (ftake '%log 2))))
+        ((alike1 arg '$%i)
+         ;; li[2](%i) = %i*%catalan - %pi^2/48
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0008.01
+         (sub (mul '$%i '$%catalan)
+              (mul '$%pi '$%pi (div 1 48))))
+        ((alike1 arg (neg '$%i))
+         ;; li[2](-%i) = -%i*%catalan - %pi^2/48
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0009.01, but
+         ;; this follows from the mirror symmetry: li[2](conjugate(z))
+         ;; = conjugate(li[2](z)), which holds when z is not on the
+         ;; negative real line.
+         (sub (mul -1 '$%i '$%catalan)
+              (mul '$%pi '$%pi (div 1 48))))
+        ((alike1 arg (sub 1 '$%i))
+         ;; li[2](1 - %i) = %pi^2/16 - %i*%catalan - %pi*%i*log(2)/4
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0010.01
+         (sub (div (power '$%pi 2) 16)
+              (add (mul '$%i '$%catalan)
+                   (mul '$%pi '$%i (div 1 4) (ftake '%log 2)))))
+        ((alike1 arg (add 1 '$%i))
+         ;; li[2](1 + %i) = %pi^2/16 + %i*%catalan + %pi*%i*log(2)/4
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0011.01, but
+         ;; this also follows from mirror symmetry.
+         (add (div (power '$%pi 2) 16)
+              (mul '$%i '$%catalan)
+              (mul '$%pi '$%i (div 1 4) (ftake '%log 2)))))) 
 
 (defun li3simp (arg)
   (cond ((or (float-numerical-eval-p arg)
@@ -1206,3 +1259,40 @@
 	   (values (polylog-log-series s z)))
 	  ((> (abs z) 1.5)
 	   (polylog-inversion-formula s z)))))
+
+;;; Computation of Catalan's constant
+(in-package #:bigfloat)
+;;
+;; catalan = 1/2*sum(a[n], k, 0, inf)
+;;
+;;  a[n] = (-8)^k*(3*k+2)/((2*k+1)^3*binomial(2*k,k)^3)
+;;
+;; This is the first of the other quickly converging series from
+;; https://en.wikipedia.org/wiki/Catalan%27s_constant
+;;
+;; There are other quickly converging series given in the Wikipedia
+;; article, that might work better, but this one has relatively simple
+;; form and is an alternating series so it's easy to know when to
+;; stop.
+;;
+;; This is an alternating series, so we can stop when the computed
+;; term is below our desired accuracy.
+;;
+;; The ratio between succesive terms is
+;;
+;;   a[n+1]/a[n] = -(3*k+5)/(3*k+2)*((k+1)/(2*k+3))^3
+;;
+
+(defun comp-catalan (prec)
+  (let* ((limit (expt 2 (- prec))))
+    (do ((k 0 (+ k 1))
+         (a (bigfloat 2)
+            (* -1 a (* (/ (+ (* 3 k) 5)
+                          (+ (* 3 k) 2))
+                       (expt (/ (+ k 1)
+                                (+ (* 2 k) 3))
+                             3))))
+         (sum (bigfloat 0)
+              (+ sum a)))
+        ((< (abs a) limit)
+         (maxima::to (/ sum 2))))))
