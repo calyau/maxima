@@ -1723,10 +1723,9 @@ See @mrefdot{%emode}
 Represents the polylogarithm function of order @var{s} and argument @var{z},
 defined by the infinite series
 
-@tex
-$${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
-@end tex
-@ifnottex
+m4_displaymath(
+<<<{\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}>>>,
+<<<
 @example
                                  inf
                                  ====   k
@@ -1736,9 +1735,12 @@ $${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
                                  ====  k
                                  k = 1
 @end example
-@end ifnottex
+>>>)
 
-@code{li [1]} is @code{- log (1 - z)}.  @code{li [2]} and @code{li [3]} are the
+
+@code{li[1](z)} is
+m4_mathdot(-\log(1 - z),-log(1-z))
+@code{li[2]} and @code{li[3]} are the
 dilogarithm and trilogarithm functions, respectively.
 
 When the order is 1, the polylogarithm simplifies to @code{- log (1 - z)}, which
@@ -1755,6 +1757,11 @@ Examples:
 @c ===beg===
 @c assume (x > 0);
 @c integrate ((log (1 - t)) / t, t, 0, x);
+@c li[4](1);
+@c li[5](1);
+@c li[2](1/2);
+@c li[2[(%i);
+@c li[2](1+%i);
 @c li [2] (7);
 @c li [2] (7), numer;
 @c li [3] (7);
