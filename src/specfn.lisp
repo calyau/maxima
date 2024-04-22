@@ -109,28 +109,53 @@
 	     (complex-bigfloat-numerical-eval-p arg))
 	 (to (bigfloat::li2numer (bigfloat:to ($rectform ($bfloat arg))))))
         ((alike1 arg '((rat) 1 2))
+         ;; li[2](1/2) = zeta(2)/2-log(2)^2/2
+         ;;            = %pi^2/12-log(2)^2/2
          (add (div (take '(%zeta) 2) 2)
               (mul '((rat simp) -1 2)
                    (power (take '(%log) 2) 2))))
         ((alike1 arg 2)
+         ;; li[2](2) = %pi^2/4 - %i*%pi*log(2)
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0007.01.  But
+         ;; this also follows from https://dlmf.nist.gov/25.12.E4:
+         ;;
+         ;; li[2](z) + li[2](1/z) = -%pi^2/6-log(-z)^2/2
+         ;;
+         ;; with z = 2.
          (sub (div (power '$%pi 2)
                    4)
               (mul '$%pi '$%i (ftake '%log 2))))
         ((alike1 arg '$%i)
+         ;; li[2](%i) = %i*%catalan - %pi^2/48
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0008.01
          (sub (mul '$%i '$%catalan)
               (mul '$%pi '$%pi (div 1 48))))
         ((alike1 arg (neg '$%i))
+         ;; li[2](-%i) = -%i*%catalan - %pi^2/48
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0009.01, but
+         ;; this follows from the mirror symmetry: li[2](conjugate(z))
+         ;; = conjugate(li[2](z)), which holds when z is not on the
+         ;; negative real line.
          (sub (mul -1 '$%i '$%catalan)
               (mul '$%pi '$%pi (div 1 48))))
         ((alike1 arg (sub 1 '$%i))
+         ;; li[2](1 - %i) = %pi^2/16 - %i*%catalan - %pi*%i*log(2)/4
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0010.01
          (sub (div (power '$%pi 2) 16)
               (add (mul '$%i '$%catalan)
                    (mul '$%pi '$%i (div 1 4) (ftake '%log 2)))))
         ((alike1 arg (add 1 '$%i))
+         ;; li[2](1 + %i) = %pi^2/16 + %i*%catalan + %pi*%i*log(2)/4
+         ;;
+         ;; See http://functions.wolfram.com/10.07.03.0011.01, but
+         ;; this also follows from mirror symmetry.
          (add (div (power '$%pi 2) 16)
               (mul '$%i '$%catalan)
-              (mul '$%pi '$%i (div 1 4) (ftake '%log 2))))
-        ))
+              (mul '$%pi '$%i (div 1 4) (ftake '%log 2)))))) 
 
 (defun li3simp (arg)
   (cond ((or (float-numerical-eval-p arg)
