@@ -1151,7 +1151,7 @@
 (fun-memoize fpphi (cdr fpphi1))
 
 (macrolet
-    ((memoize (name f)
+    ((memoize (name compute-form)
        ;; Macro creates a closure over a hash table containing the
        ;; bigfloat values of a constant.  The key of the hash table is
        ;; the number of bits of precision of the bigfloat.  This keeps
@@ -1161,23 +1161,27 @@
        ;;
        ;; A function with the name NAME is created that looks up the
        ;; value in hash table.  If it exists, return it.  If not
-       ;; update the hash table with a new value computed via F.  this
-       ;; value is returned.
+       ;; update the hash table with a new value computed via
+       ;; COMPUTE-FORM.  This value is returned.
        ;;
        ;; For debugging, we define a function to get the hash table
        ;; and a function to clear the hash table of all entries.
-       (let ((table-getter-name (intern (concatenate 'string (string name) "-TABLE")))
-             (table-clearer-name (intern (concatenate 'string "CLEAR_" (string name) "_TABLE"))))
-         `(let ((table (make-hash-table)))
+       (let ((table-getter-name
+               (intern (concatenate 'string (string name) "-TABLE")))
+             (table-clearer-name
+               (intern (concatenate 'string
+                                    "CLEAR_" (string name) "_TABLE")))
+             (table-name (gensym (concatenate 'string "TABLE-" (string name)))))
+         `(let ((,table-name (make-hash-table)))
             (defun ,name ()
-              (let ((value (gethash fpprec table)))
+              (let ((value (gethash fpprec ,table-name)))
                 (if value
 	            value
-	            (setf (gethash fpprec table) ,f))))
+	            (setf (gethash fpprec ,table-name) ,compute-form))))
             (defun ,table-getter-name ()
-              table)
+              ,table-name)
             (defun ,table-clearer-name ()
-              (clrhash table))))))
+              (clrhash ,table-name))))))
   (memoize fpe (cdr (fpe1)))
   (memoize fppi (cdr (fppi1)))
   (memoize fpgamma (cdr (fpgamma1)))
