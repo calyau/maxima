@@ -720,18 +720,15 @@
 (defmfun ($bfloat :properties ((evfun t))) (x)
   (let (y)
     (cond ((bigfloatp x))
-	  ((eq x '$%i)
+	  #+nil
+          ((eq x '$%i)
 	   ;; Handle %i specially.
 	   (mul ($bfloat 1) '$%i))
 	  ((or (numberp x)
-	       (member x '($%e $%pi $%gamma $%catalan) :test #'eq))
+	       (member x *builtin-numeric-constants* :test #'eq))
 	   (bcons (intofp x)))
 	  ((or (atom x) (member 'array (cdar x) :test #'eq))
-	   (if (eq x '$%phi)
-	       ($bfloat '((mtimes simp)
-			  ((rat simp) 1 2)
-			  ((mplus simp) 1 ((mexpt simp) 5 ((rat simp) 1 2)))))
-	       x))
+	   x)
 	  ((eq (caar x) 'mexpt)
 	   (if (equal (cadr x) '$%e)
 	       (*fpexp ($bfloat (caddr x)))
@@ -945,16 +942,28 @@
 		  (fpquotient (fpsin a t) (fpsin a nil)))
 		 (t (list '(%tan) a))))))
 
-;; Returns a list of a mantissa and an exponent.
+;; Returns a list of a mantissa and an exponent.  This function MUST
+;; recognize any symbol in *builtin-numeric-constants* and compute a
+;; bfloat value for it.
 (defun intofp (l)
-  (cond ((not (atom l)) ($bfloat l))
-	((floatp l) (floattofp l))
-	((equal 0 l) '(0 0))
-	((eq l '$%pi) (fppi))
-	((eq l '$%e) (fpe))
-	((eq l '$%gamma) (fpgamma))
-        ((eq l '$%catalan) (fpcatalan))
-	(t (list (fpround l) (+ *m fpprec)))))
+  (cond ((not (atom l))
+         ($bfloat l))
+	((floatp l)
+         (floattofp l))
+	((equal 0 l)
+         '(0 0))
+	((eq l '$%pi)
+         (fppi))
+	((eq l '$%e)
+         (fpe))
+	((eq l '$%gamma)
+         (fpgamma))
+        ((eq l '$%catalan)
+         (fpcatalan))
+        ((eq l '$%phi)
+         (fpphi))
+	(t
+         (list (fpround l) (+ *m fpprec)))))
 
 ;; It seems to me that this function gets called on an integer
 ;; and returns the mantissa portion of the mantissa/exponent pair.
@@ -1120,6 +1129,63 @@
 ;; See
 ;; https://sourceforge.net/p/maxima/bugs/1842/
 ;; for an explanation.
+(defmacro fun-memoize (name f)
+  (let ((table-getter-name (intern (concatenate 'string (string name) "-TABLE")))
+        (table-clearer-name (intern (concatenate 'string "CLEAR_" (string name) "_TABLE"))))
+    `(let ((table (make-hash-table)))
+       (defun ,name ()
+         (let ((value (gethash fpprec table)))
+           (if value
+	       value
+	       (setf (gethash fpprec table) ,f))))
+       (defun ,table-getter-name ()
+         table)
+       (defun ,table-clearer-name ()
+         (clrhash table)))))
+
+(fun-memoize fpe (cdr fpe1))
+(fun-memoize fpi (cdr (fppi1)))
+(fun-memoize fpgamma (cdr (fpgamma1)))
+(fun-memoize fplog2 (comp-log2))
+(fun-memoize fpcatalan (cdr (fpcatalan1)))
+(fun-memoize fpphi (cdr fpphi1))
+
+(macrolet
+    ((memoize (name f)
+       ;; Macro creates a closure over a hash table containing the
+       ;; bigfloat values of a constant.  The key of the hash table is
+       ;; the number of bits of precision of the bigfloat.  This keeps
+       ;; Maxima from constantly computing the numeric value of a
+       ;; constant.  Once computed for a certain precision, we can
+       ;; just look up precomputed value.
+       ;;
+       ;; A function with the name NAME is created that looks up the
+       ;; value in hash table.  If it exists, return it.  If not
+       ;; update the hash table with a new value computed via F.  this
+       ;; value is returned.
+       ;;
+       ;; For debugging, we define a function to get the hash table
+       ;; and a function to clear the hash table of all entries.
+       (let ((table-getter-name (intern (concatenate 'string (string name) "-TABLE")))
+             (table-clearer-name (intern (concatenate 'string "CLEAR_" (string name) "_TABLE"))))
+         `(let ((table (make-hash-table)))
+            (defun ,name ()
+              (let ((value (gethash fpprec table)))
+                (if value
+	            value
+	            (setf (gethash fpprec table) ,f))))
+            (defun ,table-getter-name ()
+              table)
+            (defun ,table-clearer-name ()
+              (clrhash table))))))
+  (memoize fpe (cdr (fpe1)))
+  (memoize fppi (cdr (fppi1)))
+  (memoize fpgamma (cdr (fpgamma1)))
+  (memoize fplog2 (comp-log2))
+  (memoize fpcatalan (cdr (fpcatalan1)))
+  (memoize fpphi (cdr (fpphi1))))
+
+#||
 (let ((table (make-hash-table)))
   (defun fpe ()
     (let ((value (gethash fpprec table)))
@@ -1174,6 +1240,18 @@
     table)
   (defun clear_fpcatalan_table ()
     (clrhash table)))
+
+(let ((table (make-hash-table)))
+  (defun fpphi ()
+    (let ((value (gethash fpprec table)))
+      (if value
+	  value
+	  (setf (gethash fpprec table) (cdr (fpphi1))))))
+  (defun fpphi-table ()
+    table)
+  (defun clear_fpphi_table ()
+    (clrhash table)))
+||#
 
 ;; This doesn't need a hash table because there's never a problem with
 ;; using a high precision value and rounding to a lower precision
@@ -1584,9 +1662,24 @@
   ;; Use 5 extra bits when computing %catalan.  Not exactly sure what
   ;; is right value, but 5 seems good enough.
   (let ((catalan (cdr (bigfloat::comp-catalan (+ fpprec 5)))))
+    ;; Round value that has extra bits to the current number of bits
+    ;; in a bfloat.
     (bcons (list (fpround (car catalan))
                  (cadr catalan)))))
 
+;;
+;;
+(defun fpphi1 ()
+  (let* ((phi (let ((fpprec (+ fpprec 2)))
+                ;; Use couple of extra bits to compute %phi =
+                ;; (1+sqrt(5))/2.
+                (cdr ($bfloat (div (add 1 (power 5 1//2))
+                                   2))))))
+    ;; Round value that has extra bits to the current number of bits
+    ;; in a bfloat.
+    (bcons (list (fpround (car phi))
+                 (cadr phi)))))
+    
 ;;
 ;;----------------------------------------------------------------------------;;
 

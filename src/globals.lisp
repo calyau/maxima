@@ -1523,7 +1523,11 @@
 (defvar *in-translate-file* nil)
 (defvar *linelabel* nil)
 
-(defvar *builtin-numeric-constants* '($%e $%pi $%phi $%gamma $%catalan))
+(defvar *builtin-numeric-constants*
+  '($%e $%pi $%phi $%gamma $%catalan)
+  "Speical numeric constants that Maxima knows how to evaluate
+  numerically.")
+
 ;;------------------------------------------------------------------------
 ;; From trigi.lisp
 (defmvar $%piargs t
