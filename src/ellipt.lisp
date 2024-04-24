@@ -4879,9 +4879,10 @@ first kind:
     "Arithmetic-Geometric Mean algorithm"
     (let ((q (/ b0 a0)))
       (when (and (/= (imagpart q) 0)
-                   (minusp (realpart q)))
+                 (minusp (realpart q)))
         (error "Invalid arguments for AGM:  ~A ~A~%" a0 b0)))
-    (let ((nd (min (truncate (abs (log tol 2))) 8)))
+    (let ((nd (max (* 8 (truncate (abs (log tol 2)))) 8)))
+      (format t "nd = ~A~%" nd)
       (setf (fill-pointer an) 0
             (fill-pointer bn) 0
             (fill-pointer cn) 0)
@@ -4908,7 +4909,7 @@ first kind:
         (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
         (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
 
-(defun calc-jacobi-am (u m tol)
+(defun jacobi-am-agm (u m tol)
   (multiple-value-bind (n an bn cn)
       (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
     (declare (ignore bn))
@@ -4953,6 +4954,19 @@ first kind:
       #+nil
       (format t "~4d: term = ~A~%" n term))))
 
+(defun bf-jacobi-am (u m tol)
+  (cond ((and (realp u) (realp m) (<= (abs m) 1))
+         ;; The case of real u and m with |m| <= 1.  We can use AGM to
+         ;; compute the result.
+         (jacobi-am-agm (to u)
+                        (to m)
+                        tol))
+        (t
+         ;; Otherwise, use the formula am(u,m) = asin(jacobi_sn(u,m)).
+         ;; This appears to be what functions.wolfram.com is using in
+         ;; this case.
+         (asin (sn (to u) (to m))))))
+
 (in-package :maxima)
 (def-simplifier jacobi_am (u m)
   (let (args)
@@ -4970,28 +4984,25 @@ first kind:
       ((float-numerical-eval-p u m)
        ;; For |m| <= 1, we want to use AGM.  But for |m| > 1, we want
        ;; to use am(z,m) = asin(jacobi_sn(z,m)).
-       (if (<= (abs m) 1)
-           (let ((tol (* 8 double-float-epsilon)))
-             (complexify (bigfloat::calc-jacobi-am u m tol)))
-           (to (bigfloat:asin (bigfloat::sn ($float u) ($float m))))))
+       (to (bigfloat::bf-jacobi-am ($float u)
+                                   ($float m)
+                                   double-float-epsilon)))
       ((setf args (complex-float-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (to (bigfloat:asin (bigfloat::sn (bigfloat:to ($float u))
-                                          (bigfloat:to ($float m)))))))
+         (to (bigfloat::bf-jacobi-am ($float u)
+                                     ($float m)
+                                     double-float-epsilon))))
       ((bigfloat-numerical-eval-p u m)
-       (if (bigfloat:<= (bigfloat:abs (bigfloat:to m)) 1)
-           (let ((tol (* 8 (expt 2 (- fpprec)))))
-             (to (bigfloat::calc-jacobi-am (bigfloat:to u)
-                                           (bigfloat:to m)
-                                           tol)))
-           (to (bigfloat:asin (bigfloat::sn (bigfloat:to ($bfloat u))
-                                            (bigfloat:to ($bfloat m)))))))
+       (to (bigfloat::bf-jacobi-am (bigfloat:to ($bfloat u))
+                                   (bigfloat:to ($bfloat m))
+                                   (expt 2 (- fpprec)))))
       ((setf args (complex-bigfloat-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (to (bigfloat:asin (bigfloat::sn (bigfloat:to ($bfloat u))
-                                          (bigfloat:to ($bfloat m)))))))
+         (to (bigfloat::bf-jacobi-am (bigfloat:to ($bfloat u))
+                                     (bigfloat:to ($bfloat m))
+                                     (expt 2 (- fpprec))))))
       (t
        ;; Nothing to do
        (give-up)))))
