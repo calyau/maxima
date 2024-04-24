@@ -4954,6 +4954,9 @@ first kind:
       #+nil
       (format t "~4d: term = ~A~%" n term))))
 
+;; Compute Jacobi am for real or complex values of U and M.  The args
+;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
+;; by the AGM algorithm.  It is ignored the AGM algorithm is not used.
 (defun bf-jacobi-am (u m tol)
   (cond ((and (realp u) (realp m) (<= (abs m) 1))
          ;; The case of real u and m with |m| <= 1.  We can use AGM to
@@ -4975,7 +4978,7 @@ first kind:
        ;; am(0,m) = 0
        0)
       ((zerop1 m)
-       ;; am(u,m) = u
+       ;; am(u,0) = u
        u)
       ((eql m 1)
        ;; am(u,1) = 2*atan(exp(u))-%pi/2
