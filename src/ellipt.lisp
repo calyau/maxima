@@ -4957,6 +4957,16 @@ first kind:
 (def-simplifier jacobi_am (u m)
   (let (args)
     (cond
+      ((zerop1 u)
+       ;; am(0,m) = 0
+       0)
+      ((zerop1 m)
+       ;; am(u,m) = u
+       u)
+      ((eql m 1)
+       ;; am(u,1) = 2*atan(exp(u))-%pi/2
+       (sub (mul 2 (ftake '%atan (ftake '%exp u)))
+            (div '$%pi 2)))
       ((float-numerical-eval-p u m)
        ;; For |m| <= 1, we want to use AGM.  But for |m| > 1, we want
        ;; to use am(z,m) = asin(jacobi_sn(z,m)).
