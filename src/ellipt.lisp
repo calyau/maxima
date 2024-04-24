@@ -4560,6 +4560,7 @@ first kind:
     (t
      (give-up))))
 
+#+nil
 (def-simplifier jacobi_am (u m)
   (cond
     ;; as it stands, BIGFLOAT::SN can't handle bigfloats or complex bigfloats,
@@ -4864,3 +4865,116 @@ first kind:
 			(div (mul -1 (mul param (mul s (mul c s1))))
 			     den))))))))))
 
+
+;; Jacobi amplitude function.
+
+;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
+;; See https://dlmf.nist.gov/22.20.ii.
+(in-package #:bigfloat)
+
+(let ((an (make-array 100 :fill-pointer 0))
+      (bn (make-array 100 :fill-pointer 0))
+      (cn (make-array 100 :fill-pointer 0)))
+  (defun agm (a0 b0 c0 tol)
+    "Arithmetic-Geometric Mean algorithm"
+    (let ((q (/ b0 a0)))
+      (when (and (/= (imagpart q) 0)
+                   (minusp (realpart q)))
+        (error "Invalid arguments for AGM:  ~A ~A~%" a0 b0)))
+    (let ((nd (min (truncate (abs (log tol 2))) 8)))
+      (setf (fill-pointer an) 0
+            (fill-pointer bn) 0
+            (fill-pointer cn) 0)
+      (vector-push-extend a0 an)
+      (vector-push-extend b0 bn)
+      (vector-push-extend c0 cn)
+
+      (do ((k 0 (1+ k)))
+          ((or (<= (abs (aref cn k)) tol)
+               (>= k nd))
+           (if (>= k nd)
+               (error "Failed to converge")
+               (values k an bn cn)))
+        #+nil
+        (setf (aref an (1+ k)) (/ (+ (aref an k) (aref bn k)) 2)
+              (aref bn (1+ k)) (sqrt (* (aref an k) (aref bn k)))
+              (aref cn (1+ k)) (/ (- (aref an k) (aref bn k))))
+        (vector-push-extend (/ (+ (aref an k) (aref bn k)) 2) an)
+        #+nil
+        (let ((new-b (sqrt (* (aref an k) (aref bn k)))))
+          (format t "~4D: a = ~A ~A~%" k (aref an k) (phase (aref an k)))
+          (format t "    : b = ~A ~A~%" (aref bn k) (phase (aref bn k)))
+          (format t "    : new = ~A ~A~%" new-b (phase new-b)))
+        (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
+        (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
+
+(defun calc-jacobi-am (u m tol)
+  (multiple-value-bind (n an bn cn)
+      (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
+    (declare (ignore bn))
+    (let ((phi (* u (aref an n) (expt 2 n))))
+      (loop for k from n downto 1
+            do
+               (setf phi (/ (+ phi (asin (* (/ (aref cn k)
+                                               (aref an k))
+                                            (sin phi))))
+                            2)))
+      phi)))
+
+(defun am-q-series (z m limit)
+  (let* ((K (bf-elliptic-k m))
+         (K-prime (bf-elliptic-k (- 1 m)))
+         (2-arg (/ (* (%pi z) z)
+                   K))
+         (q (exp (- (* (%pi z)
+                       (/ K-prime K))))))
+    (format t "K = ~A~%" K)
+    (format t "K-prime = ~A~%" K-prime)
+    (format t "2-arg = ~A~%" 2-arg)
+    (format t "q = ~A~%" q)
+    
+    (do* ((n 1 (1+ n))
+          (term (* (sin (* n 2-arg))
+                   (/ (* (expt q n))
+                      (* n (1+ (expt q (* 2 n))))))
+                (* (sin (* n 2-arg))
+                   (/ (* (expt q n))
+                      (* n (1+ (expt q (* 2 n)))))))
+          (sum term
+               (+ sum term)))
+        ((<= (abs term) limit)
+         (+ (* 2 sum)
+            (/ (* (%pi z) z)
+               (* 2 K))))
+      #+nil
+      (format t "~4d: term = ~A~%" n term))))
+
+(in-package :maxima)
+(def-simplifier jacobi_am (u m)
+  (let (args)
+    (cond
+      ((float-numerical-eval-p u m)
+       (let ((tol (* 8 double-float-epsilon)))
+         (complexify (bigfloat::calc-jacobi-am u m tol))))
+      ((setf args (complex-float-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (let ((tol (* 8 double-float-epsilon)))
+           (complexify (bigfloat::calc-jacobi-am (bigfloat:to ($float u))
+                                                 (bigfloat:to ($float m))
+                                                 tol)))))
+      ((bigfloat-numerical-eval-p u m)
+       (let ((tol (* 8 (expt 2 (- fpprec)))))
+         (to (bigfloat::calc-jacobi-am (bigfloat:to u)
+                                       (bigfloat:to m)
+                                       tol))))
+      ((setf args (complex-bigfloat-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (let ((tol (* 8 (expt 2 (- fpprec)))))
+           (to (bigfloat::calc-jacobi-am (bigfloat:to ($bfloat u))
+                                         (bigfloat:to ($bfloat m))
+                                         tol)))))
+      (t
+       ;; Nothing to do
+       (give-up)))))
