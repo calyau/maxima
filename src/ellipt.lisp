@@ -4921,6 +4921,10 @@ first kind:
                             2)))
       phi)))
 
+;; For real z and real m with |m| < 1, this appears to be less
+;; accurate than using AGM.  For am(3,0.7), we get 2.1263556865337185,
+;; but AGM gives 2.126355671062825, which matches what Wolfram gives.
+#+nil
 (defun am-q-series (z m limit)
   (let* ((K (bf-elliptic-k m))
          (K-prime (bf-elliptic-k (- 1 m)))
@@ -4954,27 +4958,30 @@ first kind:
   (let (args)
     (cond
       ((float-numerical-eval-p u m)
-       (let ((tol (* 8 double-float-epsilon)))
-         (complexify (bigfloat::calc-jacobi-am u m tol))))
+       ;; For |m| <= 1, we want to use AGM.  But for |m| > 1, we want
+       ;; to use am(z,m) = asin(jacobi_sn(z,m)).
+       (if (<= (abs m) 1)
+           (let ((tol (* 8 double-float-epsilon)))
+             (complexify (bigfloat::calc-jacobi-am u m tol)))
+           (to (bigfloat:asin (bigfloat::sn ($float u) ($float m))))))
       ((setf args (complex-float-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (let ((tol (* 8 double-float-epsilon)))
-           (complexify (bigfloat::calc-jacobi-am (bigfloat:to ($float u))
-                                                 (bigfloat:to ($float m))
-                                                 tol)))))
+         (to (bigfloat:asin (bigfloat::sn (bigfloat:to ($float u))
+                                          (bigfloat:to ($float m)))))))
       ((bigfloat-numerical-eval-p u m)
-       (let ((tol (* 8 (expt 2 (- fpprec)))))
-         (to (bigfloat::calc-jacobi-am (bigfloat:to u)
-                                       (bigfloat:to m)
-                                       tol))))
+       (if (bigfloat:<= (bigfloat:abs (bigfloat:to m)) 1)
+           (let ((tol (* 8 (expt 2 (- fpprec)))))
+             (to (bigfloat::calc-jacobi-am (bigfloat:to u)
+                                           (bigfloat:to m)
+                                           tol)))
+           (to (bigfloat:asin (bigfloat::sn (bigfloat:to ($bfloat u))
+                                            (bigfloat:to ($bfloat m)))))))
       ((setf args (complex-bigfloat-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (let ((tol (* 8 (expt 2 (- fpprec)))))
-           (to (bigfloat::calc-jacobi-am (bigfloat:to ($bfloat u))
-                                         (bigfloat:to ($bfloat m))
-                                         tol)))))
+         (to (bigfloat:asin (bigfloat::sn (bigfloat:to ($bfloat u))
+                                          (bigfloat:to ($bfloat m)))))))
       (t
        ;; Nothing to do
        (give-up)))))
