@@ -1525,7 +1525,7 @@
 
 (defvar *builtin-numeric-constants*
   '($%e $%pi $%phi $%gamma $%catalan)
-  "Speical numeric constants that Maxima knows how to evaluate
+  "Special numeric constants that Maxima knows how to evaluate
   numerically.")
 
 ;;------------------------------------------------------------------------
