@@ -4868,21 +4868,33 @@ first kind:
 
 ;; Jacobi amplitude function.
 
-;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
-;; See https://dlmf.nist.gov/22.20.ii.
 (in-package #:bigfloat)
 
+;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
+;; See https://dlmf.nist.gov/22.20.ii.
 (let ((an (make-array 100 :fill-pointer 0))
       (bn (make-array 100 :fill-pointer 0))
       (cn (make-array 100 :fill-pointer 0)))
+  ;; Instead of allocating these array anew each time, we'll reuse
+  ;; them and allow them to grow as needed.
   (defun agm (a0 b0 c0 tol)
-    "Arithmetic-Geometric Mean algorithm"
+    "Arithmetic-Geometric Mean algorithm for real or complex a0, b0, c0.
+    Algorithm continues until |c[n]| <= tol."
+
+    ;; DLMF (https://dlmf.nist.gov/22.20.ii) says for any real or
+    ;; complex a0 and b0, b0/a0 must not be real and negative.  Let's
+    ;; check that.
     (let ((q (/ b0 a0)))
-      (when (and (/= (imagpart q) 0)
+      (when (and (= (imagpart q) 0)
                  (minusp (realpart q)))
         (error "Invalid arguments for AGM:  ~A ~A~%" a0 b0)))
-    (let ((nd (max (* 8 (truncate (abs (log tol 2)))) 8)))
-      (format t "nd = ~A~%" nd)
+    (let ((nd (max (* 2 (ceiling (log (- (log tol 2))))) 8)))
+      ;; DLMF (https://dlmf.nist.gov/22.20.ii) says that |c[n]| <=
+      ;; C*2^(-2^n), for some constant C.  Solve C*2^(-2^n) = tol to
+      ;; get n = log(log(C/tol)/log(2))/log(2).  Arbitrarily assume C
+      ;; is one to get n = log(-(log(tol)/log(2)))/log(2).  Thus, the
+      ;; approximate number of term needed is n =
+      ;; 1.44*log(-(1.44*log(tol))).  Round to 2*log(-log2(tol)).
       (setf (fill-pointer an) 0
             (fill-pointer bn) 0
             (fill-pointer cn) 0)
@@ -4896,23 +4908,21 @@ first kind:
            (if (>= k nd)
                (error "Failed to converge")
                (values k an bn cn)))
-        #+nil
-        (setf (aref an (1+ k)) (/ (+ (aref an k) (aref bn k)) 2)
-              (aref bn (1+ k)) (sqrt (* (aref an k) (aref bn k)))
-              (aref cn (1+ k)) (/ (- (aref an k) (aref bn k))))
         (vector-push-extend (/ (+ (aref an k) (aref bn k)) 2) an)
-        #+nil
-        (let ((new-b (sqrt (* (aref an k) (aref bn k)))))
-          (format t "~4D: a = ~A ~A~%" k (aref an k) (phase (aref an k)))
-          (format t "    : b = ~A ~A~%" (aref bn k) (phase (aref bn k)))
-          (format t "    : new = ~A ~A~%" new-b (phase new-b)))
+        ;; DLMF (https://dlmf.nist.gov/22.20.ii) has conditions on how
+        ;; to choose the square root depending on the phase of a[n-1]
+        ;; and b[n-1].  We don't check for that here.
         (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
         (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
 
 (defun jacobi-am-agm (u m tol)
+  "Evaluate the jacobi_am function from real u and m with |m| <= 1.  This
+  uses the AGM method until a tolerance of TOL is reached for the
+  error."
   (multiple-value-bind (n an bn cn)
       (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
     (declare (ignore bn))
+    ;; See DLMF (https://dlmf.nist.gov/22.20.ii) for the algorithm.
     (let ((phi (* u (aref an n) (expt 2 n))))
       (loop for k from n downto 1
             do
@@ -4956,7 +4966,8 @@ first kind:
 
 ;; Compute Jacobi am for real or complex values of U and M.  The args
 ;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
-;; by the AGM algorithm.  It is ignored the AGM algorithm is not used.
+;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
+;; used.
 (defun bf-jacobi-am (u m tol)
   (cond ((and (realp u) (realp m) (<= (abs m) 1))
          ;; The case of real u and m with |m| <= 1.  We can use AGM to
@@ -4966,8 +4977,8 @@ first kind:
                         tol))
         (t
          ;; Otherwise, use the formula am(u,m) = asin(jacobi_sn(u,m)).
-         ;; This appears to be what functions.wolfram.com is using in
-         ;; this case.
+         ;; (See DLMF https://dlmf.nist.gov/22.16.E1).  This appears
+         ;; to be what functions.wolfram.com is using in this case.
          (asin (sn (to u) (to m))))))
 
 (in-package :maxima)
