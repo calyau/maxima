@@ -4865,38 +4865,6 @@ first kind:
                             2)))
       phi)))
 
-;; For real z and real m with |m| < 1, this appears to be less
-;; accurate than using AGM.  For am(3,0.7), we get 2.1263556865337185,
-;; but AGM gives 2.126355671062825, which matches what Wolfram gives.
-#+nil
-(defun am-q-series (z m limit)
-  (let* ((K (bf-elliptic-k m))
-         (K-prime (bf-elliptic-k (- 1 m)))
-         (2-arg (/ (* (%pi z) z)
-                   K))
-         (q (exp (- (* (%pi z)
-                       (/ K-prime K))))))
-    (format t "K = ~A~%" K)
-    (format t "K-prime = ~A~%" K-prime)
-    (format t "2-arg = ~A~%" 2-arg)
-    (format t "q = ~A~%" q)
-    
-    (do* ((n 1 (1+ n))
-          (term (* (sin (* n 2-arg))
-                   (/ (* (expt q n))
-                      (* n (1+ (expt q (* 2 n))))))
-                (* (sin (* n 2-arg))
-                   (/ (* (expt q n))
-                      (* n (1+ (expt q (* 2 n)))))))
-          (sum term
-               (+ sum term)))
-        ((<= (abs term) limit)
-         (+ (* 2 sum)
-            (/ (* (%pi z) z)
-               (* 2 K))))
-      #+nil
-      (format t "~4d: term = ~A~%" n term))))
-
 ;; Compute Jacobi am for real or complex values of U and M.  The args
 ;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
 ;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
