@@ -1044,5 +1044,57 @@ carlson_rj(x,yp,yp,pp);
 carlson_rj(x,yp,yp,yp);
 (3*(carlson_rc(x,yp)-sqrt(x)/yp))/(2*(yp-x))$
 
+jacobi_am(z,0);
+z;
+
+jacobi_am(z,1);
+2*atan(exp(z))-%pi/2;
+
+jacobi_am(0,m);
+0;
+
+/*
+ * A few numerical values of jacobi_am to test that we return the
+ * correct values.  The expected values were produced from
+ * functions.wolfram.com
+ */
+
+/*
+closeto(e,tol):=block([numer:true,abse],abse:cabs(e),if(abse<tol) then true else abse);
+closeto(e,tol):=block([numer:true,abse],abse:cabs(e),if(abse<tol) then true else abse);
+*/
+
+closeto(jacobi_am(1, .5) - 0.93231507988385386595, 1e-18);
+true$
+
+closeto(jacobi_am(100, .5) - 84.703112724113824403, 1e-18);
+true$
+
+closeto(jacobi_am(0.5, 1.5) - 0.47071978970469916313, 1.1103e-16);
+true$
+
+closeto(jacobi_am(1.5, 1.5+%i) - (0.93405421687007830327 - 0.37239604521460716554*%i), 2.4826e-16);
+true$
+
+closeto(jacobi_am(2.0-.5*%i, .5+.5*%i) - (1.4693733607922556333 - 0.7245711235745948013*%i), 5.9788e-16);
+true$
+
+closeto(jacobi_am(1b0, .5b0) - 0.932315079883853865951695610516257727b0, 1.5408b-33);
+true$
+
+closeto(jacobi_am(100b0, .5b0) - 84.7031127241138244025523773764166798b0, 1b-35);
+true$
+
+closeto(jacobi_am(0.5b0, 1.5b0) - 0.470719789704699163132257860869655024b0, 7.7038b-34);
+true$
+
+closeto(jacobi_am(1.5b0, 1.5b0+%i) - (0.934054216870078303274350830308588452b0 - 0.372396045214607165539500260724230487b0*%i), 2.3112b-32);
+true$
+
+closeto(jacobi_am(2.0b0-.5b0*%i, .5b0+.5b0*%i) - (1.46937336079225563334301589326200829b0 - 0.72457112357459480134743514393673164b0*%i), 1.2422b-32);
+true$
+
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
+
