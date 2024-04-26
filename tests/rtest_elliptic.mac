@@ -1059,11 +1059,6 @@ jacobi_am(0,m);
  * functions.wolfram.com
  */
 
-/*
-closeto(e,tol):=block([numer:true,abse],abse:cabs(e),if(abse<tol) then true else abse);
-closeto(e,tol):=block([numer:true,abse],abse:cabs(e),if(abse<tol) then true else abse);
-*/
-
 closeto(jacobi_am(1, .5) - 0.93231507988385386595, 1e-18);
 true$
 
