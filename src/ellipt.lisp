@@ -4925,7 +4925,7 @@ first kind:
        ;; Nothing to do
        (give-up)))))
 
-;; Derivative of jacobi_am wrt z:  diff(jacobi_am(z,m),z) = jacobi_dn(z,m);
+;; Derivative of jacobi_am wrt z and m.
 (defprop %jacobi_am
     ((z m)
     ;; WRT z.  From  http://functions.wolfram.com/09.24.20.0001.01
