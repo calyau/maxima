@@ -1,0 +1,11 @@
+/*
+ * Generate figure for jacobi_am plot
+ */
+plot2d([jacobi_am(x,.4),jacobi_am(x,.7),jacobi_am(x,.99),jacobi_am(x,.999999)],
+  [x,0,10*%pi],
+  [pdf_file, "./figures/jacobi_am.pdf"]);
+
+plot2d([jacobi_am(x,.4),jacobi_am(x,.7),jacobi_am(x,.99),jacobi_am(x,.999999)],
+  [x,0,10*%pi],
+  [png_file, "./figures/jacobi_am.png"]);
+
