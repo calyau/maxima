@@ -61,25 +61,33 @@ Some examples of elliptic functions:
 @c diff (jacobi_sn (u, m), m);
 @c ===end===
 @example
+@group
 (%i1) jacobi_sn (u, m);
 (%o1)                    jacobi_sn(u, m)
+@end group
+@group
 (%i2) jacobi_sn (u, 1);
 (%o2)                        tanh(u)
+@end group
+@group
 (%i3) jacobi_sn (u, 0);
 (%o3)                        sin(u)
+@end group
+@group
 (%i4) diff (jacobi_sn (u, m), u);
 (%o4)            jacobi_cn(u, m) jacobi_dn(u, m)
+@end group
+@group
 (%i5) diff (jacobi_sn (u, m), m);
-(%o5) jacobi_cn(u, m) jacobi_dn(u, m)
-
+(%o5) (jacobi_cn(u, m) jacobi_dn(u, m)
       elliptic_e(asin(jacobi_sn(u, m)), m)
- (u - ------------------------------------)/(2 m)
+ (u - ------------------------------------))/(2 m)
                      1 - m
-
             2
    jacobi_cn (u, m) jacobi_sn(u, m)
  + --------------------------------
               2 (1 - m)
+@end group
 @end example
 
 Some examples of elliptic integrals:
@@ -95,42 +103,65 @@ Some examples of elliptic integrals:
 @c diff (elliptic_f (phi, m), m);
 @c ===end===
 @example
+@group
 (%i1) elliptic_f (phi, m);
 (%o1)                  elliptic_f(phi, m)
+@end group
+@group
 (%i2) elliptic_f (phi, 0);
 (%o2)                          phi
+@end group
+@group
 (%i3) elliptic_f (phi, 1);
                                phi   %pi
 (%o3)                  log(tan(--- + ---))
                                 2     4
+@end group
+@group
 (%i4) elliptic_e (phi, 1);
-(%o4)                       sin(phi)
+                    phi                  phi
+(%o4)       2 round(---) - sin(%pi round(---) - phi)
+                    %pi                  %pi
+@end group
+@group
 (%i5) elliptic_e (phi, 0);
 (%o5)                          phi
+@end group
+@group
 (%i6) elliptic_kc (1/2);
-                                     1
-(%o6)                    elliptic_kc(-)
-                                     2
+                                3/2
+                             %pi
+(%o6)                      -----------
+                                  2 3
+                           2 gamma (-)
+                                    4
+@end group
+@group
 (%i7) makegamma (%);
-                                 2 1
-                            gamma (-)
-                                   4
+                                3/2
+                             %pi
 (%o7)                      -----------
-                           4 sqrt(%pi)
+                                  2 3
+                           2 gamma (-)
+                                    4
+@end group
+@group
 (%i8) diff (elliptic_f (phi, m), phi);
                                 1
 (%o8)                 ---------------------
                                     2
                       sqrt(1 - m sin (phi))
+@end group
+@group
 (%i9) diff (elliptic_f (phi, m), m);
        elliptic_e(phi, m) - (1 - m) elliptic_f(phi, m)
 (%o9) (-----------------------------------------------
                               m
-
                                  cos(phi) sin(phi)
                              - ---------------------)/(2 (1 - m))
                                              2
                                sqrt(1 - m sin (phi))
+@end group
 @end example
 
 Support for elliptic functions and integrals was written by Raymond
@@ -275,52 +306,74 @@ m4_mathdot(<<<{\rm dc}(u,m) =
 @closecatbox
 @end deffn
 
-@anchor{inverse_jacobi_sn}
-@deffn {Function} inverse_jacobi_sn (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function 
-m4_mathdot(<<<{\rm
-sn}(u,m)>>>, <<<sn(u,m)>>>)
-For 
-m4_mathcomma(-1\le u \le 1, -1 <= u <= 1) 
-it can also be written (@urldlmf{22.15.E12}):
-m4_displaymath(
-{\rm inverse\_jacobi\_sn}(u, m) = \int_0^u {dt\over \sqrt{(1-t^2)(1-mt^2)}},
-@example
-                                 u
-                                /
-                                [              1
-      inverse_jacobi_sn(u, m) = I  ------------------------- dt
-                                ]             2          2
-                                /  sqrt((1 - t ) (1 - m t ))
-                                 0
-@end example
-)
+@anchor{jacobi_am}
+@deffn {Function} jacobi_am (@var{u}, @var{m})
+The Jacobi amplitude function, @code{jacobi_am}, is defined implicitly by (see
+@url{http://functions.wolfram.com/09.24.02.0001.01})
+m4_math(<<<z = {\rm am}(w, m)>>>,<<<z = am(w, m)>>>)
+where @math{w = F(z,m)} where @math{F(z,m)} is the incomplete elliptic
+integral of the first kind (@pxref{elliptic_f}).  It is defined for
+all real and complex values of @math{z} and @math{m}.  In particular
+for real @math{z} and @math{m} with @math{|m|<1},
+m4_math(<<<{\rm am}(z,m)>>>,<<<am(z,m)>>>)
+maps the entire real line to the entire real line.  For other values
+of @math{z} and @math{m}, the following relationship is used:
+m4_mathdot(<<<{\rm am}(z,m) = \sin^{-1}({\rm jacobi\_sn}(z, m))>>>,
+<<<am(z,m) = asin(jacobi_sn(z,m))>>>)
 
-@opencatbox{Categories:}
-@category{Elliptic functions}
-@closecatbox
-@end deffn
-
-@anchor{inverse_jacobi_cn}
-@deffn {Function} inverse_jacobi_cn (@var{u}, @var{m})
-The inverse of the Jacobian elliptic function 
-m4_mathdot(<<<{\rm
-cn}(u,m)>>>, <<<cn(u,m)>>>)  
-For 
-m4_mathcomma(-1\le u \le 1, -1 <= u <= 1) 
-it can also be written (@urldlmf{22.15.E13}):
-m4_displaymath(
-{\rm inverse\_jacobi\_cn}(u, m) = \int_u^1 {dt\over \sqrt{(1-t^2)(1-m+mt^2)}},
+Some examples:
+@c ===beg===
+@c jacobi_am(z,0);
+@c jacobi_am(z,1);
+@c jacobi_am(0,m);
+@c jacobi_am(100, .5);
+@c jacobi_am(0.5, 1.5);
+@c jacobi_am(1.5b0, 1.5b0+%i);
+@c ===end===
 @example
-                               1
-                              /
-                              [                1
-    inverse_jacobi_cn(u, m) = I  ----------------------------- dt
-                              ]             2      2
-                              /  sqrt((1 - t ) (m t  - m + 1))
-                               u
+@group
+(%i1) jacobi_am(z,0);
+(%o1)                           z
+@end group
+@group
+(%i2) jacobi_am(z,1);
+                                 z    %pi
+(%o2)                   2 atan(%e ) - ---
+                                       2
+@end group
+@group
+(%i3) jacobi_am(0,m);
+(%o3)                           0
+@end group
+@group
+(%i4) jacobi_am(100, .5);
+(%o4)                   84.70311272411382
+@end group
+@group
+(%i5) jacobi_am(0.5, 1.5);
+(%o5)                  0.4707197897046991
+@end group
+@group
+(%i6) jacobi_am(1.5b0, 1.5b0+%i);
+(%o6)    9.340542168700782b-1 - 3.723960452146071b-1 %i
+@end group
 @end example
-)
+
+@c ===beg===
+@c plot2d([jacobi_am(x,.4),jacobi_am(x,.7),jacobi_am(x,.99),jacobi_am(x,.999999)],[x,0,10*%pi]);
+@c ===end===
+@example
+@group
+(%i1) plot2d([jacobi_am(x,.4),jacobi_am(x,.7),jacobi_am(x,.99),jacobi_am(x,.999999)],[x,0,10*%pi]);
+(%o1)                         false
+@end group
+@end example
+
+@ifnotinfo
+Compare this plot with the plot from @urldlmf{22.16.iv}:
+
+@image{figures/jacobi_am}
+@end ifnotinfo
 
 @opencatbox{Categories:}
 @category{Elliptic functions}
