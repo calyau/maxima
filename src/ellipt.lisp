@@ -5007,8 +5007,8 @@ first kind:
       ((setf args (complex-float-numerical-eval-p u m))
        (destructuring-bind (u m)
            args
-         (to (bigfloat::bf-jacobi-am ($float u)
-                                     ($float m)
+         (to (bigfloat::bf-jacobi-am (bigfloat:to ($float u))
+                                     (bigfloat:to ($float m))
                                      double-float-epsilon))))
       ((bigfloat-numerical-eval-p u m)
        (to (bigfloat::bf-jacobi-am (bigfloat:to ($bfloat u))
