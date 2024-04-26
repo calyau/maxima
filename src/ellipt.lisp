@@ -93,62 +93,6 @@
 	     (/ (* (1+ root-mu) new-sn)
 		(1+ (* root-mu new-sn new-sn))))))))
 
-;; AGM scale.  See A&S 17.6
-;;
-;; The AGM scale is
-;;
-;; a[n] = (a[n-1]+b[n-1])/2, b[n] = sqrt(a[n-1]*b[n-1]), c[n] = (a[n-1]-b[n-1])/2.
-;;
-;; We stop when abs(c[n]) <= 10*eps
-;;
-;; A list of (n a[n] b[n] c[n]) is returned.
-(defun agm-scale (a b c)
-  (loop for n from 0
-     while (> (abs c) (* 10 (epsilon c)))
-     collect (list n a b c)
-     do (psetf a (/ (+ a b) 2)
-	       b (sqrt (* a b))
-	       c (/ (- a b) 2))))
-
-;; WARNING: This seems to have accuracy problems when u is complex.  I
-;; (rtoy) do not know why.  For example (jacobi-agm #c(1e0 1e0) .7e0)
-;; returns
-;;
-;; #C(1.134045970915582 0.3522523454566013)
-;; #C(0.57149659007575 -0.6989899153338323)
-;; #C(0.6229715431044184 -0.4488635962149656)
-;;
-;; But the actual value of sn(1+%i, .7) is .3522523469224946 %i +
-;; 1.134045971912365.  We've lost about 7 digits of accuracy!
-(defun jacobi-agm (u m)
-  ;; A&S 16.4.
-  ;;
-  ;; Compute the AGM scale with a = 1, b = sqrt(1-m), c = sqrt(m).
-  ;;
-  ;; Then phi[N] = 2^N*a[N]*u and compute phi[n] from
-  ;;
-  ;; sin(2*phi[n-1] - phi[n]) = c[n]/a[n]*sin(phi[n])
-  ;;
-  ;; Finally,
-  ;;
-  ;; sn(u|m) = sin(phi[0]), cn(u|m) = cos(phi[0])
-  ;; dn(u|m) = cos(phi[0])/cos(phi[1]-phi[0])
-  ;;
-  ;; Returns the three values sn, cn, dn.
-  (let* ((agm-data (nreverse (rest (agm-scale 1 (sqrt (- 1 m)) (sqrt m)))))
-	 (phi (destructuring-bind (n a b c)
-		  (first agm-data)
-		(declare (ignore b c))
-		(* a u (ash 1 n))))
-	 (phi1 0e0))
-    (dolist (agm agm-data)
-      (destructuring-bind (n a b c)
-	  agm
-	(declare (ignore n b))
-	(setf phi1 phi
-	      phi (/ (+ phi (asin (* (/ c a) (sin phi)))) 2))))
-    (values (sin phi) (cos phi) (/ (cos phi) (cos (- phi1 phi))))))
-
 (defun sn (u m)
   (cond ((zerop m)
 	 ;; jacobi_sn(u,0) = sin(u).  Should we use A&S 16.13.1 if m
@@ -4858,6 +4802,9 @@ first kind:
 
 ;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
 ;; See https://dlmf.nist.gov/22.20.ii.
+;;
+;; Do not use this for computing jacobi sn.  It loses some 7 digits of
+;; accuracy for sn(1+%i,0.7).
 (let ((an (make-array 100 :fill-pointer 0))
       (bn (make-array 100 :fill-pointer 0))
       (cn (make-array 100 :fill-pointer 0)))
