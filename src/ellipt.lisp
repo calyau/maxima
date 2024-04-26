@@ -4924,3 +4924,25 @@ first kind:
       (t
        ;; Nothing to do
        (give-up)))))
+
+;; Derivative of jacobi_am wrt z:  diff(jacobi_am(z,m),z) = jacobi_dn(z,m);
+(defprop %jacobi_am
+    ((z m)
+    ;; WRT z.  From  http://functions.wolfram.com/09.24.20.0001.01
+    ;; jacobi_dn(z,m)
+    ((%jacobi_dn) $z $m)
+    ;; WRT m.  From http://functions.wolfram.com/09.24.20.0003.01.
+    ;; There are 5 different formulas listed; we chose the first,
+    ;; arbitrarily.
+    ;;
+    ;; (((m-1)*z+elliptic_e(jacobi_am(z,m),m))*jacobi_dn(z,m)
+    ;;   - m*jacobi_cn(z,m)*jacobi_sn(z,m))/(2*m*(m-1))
+    ((mtimes) ((rat) 1 2) ((mexpt) ((mplus) -1 $m) -1)
+     ((mexpt) $m -1)
+     ((mplus)
+      ((mtimes) -1 $m ((%jacobi_cn) $z $m) ((%jacobi_sn) $z $m))
+      ((mtimes) ((%jacobi_dn) $z $m)
+       ((mplus) ((mtimes) ((mplus) -1 $m) $z)
+        ((%elliptic_e) ((%jacobi_am) $z $m) $m)))))
+  nil)
+  grad)
