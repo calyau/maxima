@@ -4560,22 +4560,6 @@ first kind:
     (t
      (give-up))))
 
-#+nil
-(def-simplifier jacobi_am (u m)
-  (cond
-    ;; as it stands, BIGFLOAT::SN can't handle bigfloats or complex bigfloats,
-    ;; so handle only floats and complex floats here.
-    ((float-numerical-eval-p u m)
-     (cl:asin (bigfloat::sn ($float u) ($float m))))
-    ((complex-float-numerical-eval-p u m)
-     (let ((u-r ($realpart ($float u)))
-	   (u-i ($imagpart ($float u)))
-	   (m ($float m)))
-       (complexify (cl:asin (bigfloat::sn (complex u-r u-i) m)))))
-    (t
-     ;; Nothing to do
-     (give-up))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Integrals.  At present with respect to first argument only.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -4866,7 +4850,9 @@ first kind:
 			     den))))))))))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Jacobi amplitude function.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package #:bigfloat)
 
