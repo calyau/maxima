@@ -1089,6 +1089,41 @@ true$
 closeto(jacobi_am(2.0b0-.5b0*%i, .5b0+.5b0*%i) - (1.46937336079225563334301589326200829b0 - 0.72457112357459480134743514393673164b0*%i), 1.2422b-32);
 true$
 
+/*
+ * Test consistency of jacobi_am with jacobi_sn via
+ * sin(jacobi_am(u,m)) = jacobi_sn(u,m).
+ */
+makelist(block([z : 2*k, m : .5],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.5544e-15)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k, m : 2.5],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1e-16)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k, m : 1+.5*%i],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 3.3307e-16)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k*%i, m : .75],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 8.8818e-16)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k*%i, m : 1.75],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.7764e-15)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k*%i, m : 1.75+%i],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 4.9651e-16)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
