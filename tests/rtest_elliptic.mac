@@ -1123,6 +1123,37 @@ makelist(block([z : 2*k*%i, m : 1.75+%i],
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
+/* Do the same tests as above, but for bfloats */
+makelist(block([z : 2*k, m : .5b0],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.8489b-32)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k, m : 2.5b0],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.2326b-32)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k, m : 1+.5b0*%i],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 2.0672b-32)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k*%i, m : .75b0],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 4.9304b-32)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k*%i, m : 1.75b0],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 0b0)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
+makelist(block([z : 2*k*%i, m : 1.75b0+%i],
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 3.6978b-32)),
+  k, 0, 10);
+[true, true, true, true, true, true, true, true, true, true, true];
+
 
 
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
