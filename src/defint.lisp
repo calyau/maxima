@@ -2601,7 +2601,7 @@ in the interval of integration.")
 	 (caddr a))))
 
 (defun logcpi0 (n d ivar)
-  (prog (polelist dp rlm factors pl rl pl1 rl1)
+  (prog (polelist dp plm rlm factors pl rl pl1 rl1)
      (setq polelist
            (polelist-var ivar d #'upperhalf #'(lambda (j)
 					        (cond ((zerop1 j)
