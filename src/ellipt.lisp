@@ -93,62 +93,6 @@
 	     (/ (* (1+ root-mu) new-sn)
 		(1+ (* root-mu new-sn new-sn))))))))
 
-;; AGM scale.  See A&S 17.6
-;;
-;; The AGM scale is
-;;
-;; a[n] = (a[n-1]+b[n-1])/2, b[n] = sqrt(a[n-1]*b[n-1]), c[n] = (a[n-1]-b[n-1])/2.
-;;
-;; We stop when abs(c[n]) <= 10*eps
-;;
-;; A list of (n a[n] b[n] c[n]) is returned.
-(defun agm-scale (a b c)
-  (loop for n from 0
-     while (> (abs c) (* 10 (epsilon c)))
-     collect (list n a b c)
-     do (psetf a (/ (+ a b) 2)
-	       b (sqrt (* a b))
-	       c (/ (- a b) 2))))
-
-;; WARNING: This seems to have accuracy problems when u is complex.  I
-;; (rtoy) do not know why.  For example (jacobi-agm #c(1e0 1e0) .7e0)
-;; returns
-;;
-;; #C(1.134045970915582 0.3522523454566013)
-;; #C(0.57149659007575 -0.6989899153338323)
-;; #C(0.6229715431044184 -0.4488635962149656)
-;;
-;; But the actual value of sn(1+%i, .7) is .3522523469224946 %i +
-;; 1.134045971912365.  We've lost about 7 digits of accuracy!
-(defun jacobi-agm (u m)
-  ;; A&S 16.4.
-  ;;
-  ;; Compute the AGM scale with a = 1, b = sqrt(1-m), c = sqrt(m).
-  ;;
-  ;; Then phi[N] = 2^N*a[N]*u and compute phi[n] from
-  ;;
-  ;; sin(2*phi[n-1] - phi[n]) = c[n]/a[n]*sin(phi[n])
-  ;;
-  ;; Finally,
-  ;;
-  ;; sn(u|m) = sin(phi[0]), cn(u|m) = cos(phi[0])
-  ;; dn(u|m) = cos(phi[0])/cos(phi[1]-phi[0])
-  ;;
-  ;; Returns the three values sn, cn, dn.
-  (let* ((agm-data (nreverse (rest (agm-scale 1 (sqrt (- 1 m)) (sqrt m)))))
-	 (phi (destructuring-bind (n a b c)
-		  (first agm-data)
-		(declare (ignore b c))
-		(* a u (ash 1 n))))
-	 (phi1 0e0))
-    (dolist (agm agm-data)
-      (destructuring-bind (n a b c)
-	  agm
-	(declare (ignore n b))
-	(setf phi1 phi
-	      phi (/ (+ phi (asin (* (/ c a) (sin phi)))) 2))))
-    (values (sin phi) (cos phi) (/ (cos phi) (cos (- phi1 phi))))))
-
 (defun sn (u m)
   (cond ((zerop m)
 	 ;; jacobi_sn(u,0) = sin(u).  Should we use A&S 16.13.1 if m
@@ -4560,21 +4504,6 @@ first kind:
     (t
      (give-up))))
 
-(def-simplifier jacobi_am (u m)
-  (cond
-    ;; as it stands, BIGFLOAT::SN can't handle bigfloats or complex bigfloats,
-    ;; so handle only floats and complex floats here.
-    ((float-numerical-eval-p u m)
-     (cl:asin (bigfloat::sn ($float u) ($float m))))
-    ((complex-float-numerical-eval-p u m)
-     (let ((u-r ($realpart ($float u)))
-	   (u-i ($imagpart ($float u)))
-	   (m ($float m)))
-       (complexify (cl:asin (bigfloat::sn (complex u-r u-i) m)))))
-    (t
-     ;; Nothing to do
-     (give-up))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Integrals.  At present with respect to first argument only.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -4864,3 +4793,156 @@ first kind:
 			(div (mul -1 (mul param (mul s (mul c s1))))
 			     den))))))))))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Jacobi amplitude function.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(in-package #:bigfloat)
+
+;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
+;; See https://dlmf.nist.gov/22.20.ii.
+;;
+;; Do not use this for computing jacobi sn.  It loses some 7 digits of
+;; accuracy for sn(1+%i,0.7).
+(let ((an (make-array 100 :fill-pointer 0))
+      (bn (make-array 100 :fill-pointer 0))
+      (cn (make-array 100 :fill-pointer 0)))
+  ;; Instead of allocating these array anew each time, we'll reuse
+  ;; them and allow them to grow as needed.
+  (defun agm (a0 b0 c0 tol)
+    "Arithmetic-Geometric Mean algorithm for real or complex a0, b0, c0.
+    Algorithm continues until |c[n]| <= tol."
+
+    ;; DLMF (https://dlmf.nist.gov/22.20.ii) says for any real or
+    ;; complex a0 and b0, b0/a0 must not be real and negative.  Let's
+    ;; check that.
+    (let ((q (/ b0 a0)))
+      (when (and (= (imagpart q) 0)
+                 (minusp (realpart q)))
+        (error "Invalid arguments for AGM:  ~A ~A~%" a0 b0)))
+    (let ((nd (max (* 2 (ceiling (log (- (log tol 2))))) 8)))
+      ;; DLMF (https://dlmf.nist.gov/22.20.ii) says that |c[n]| <=
+      ;; C*2^(-2^n), for some constant C.  Solve C*2^(-2^n) = tol to
+      ;; get n = log(log(C/tol)/log(2))/log(2).  Arbitrarily assume C
+      ;; is one to get n = log(-(log(tol)/log(2)))/log(2).  Thus, the
+      ;; approximate number of term needed is n =
+      ;; 1.44*log(-(1.44*log(tol))).  Round to 2*log(-log2(tol)).
+      (setf (fill-pointer an) 0
+            (fill-pointer bn) 0
+            (fill-pointer cn) 0)
+      (vector-push-extend a0 an)
+      (vector-push-extend b0 bn)
+      (vector-push-extend c0 cn)
+
+      (do ((k 0 (1+ k)))
+          ((or (<= (abs (aref cn k)) tol)
+               (>= k nd))
+           (if (>= k nd)
+               (error "Failed to converge")
+               (values k an bn cn)))
+        (vector-push-extend (/ (+ (aref an k) (aref bn k)) 2) an)
+        ;; DLMF (https://dlmf.nist.gov/22.20.ii) has conditions on how
+        ;; to choose the square root depending on the phase of a[n-1]
+        ;; and b[n-1].  We don't check for that here.
+        (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
+        (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
+
+(defun jacobi-am-agm (u m tol)
+  "Evaluate the jacobi_am function from real u and m with |m| <= 1.  This
+  uses the AGM method until a tolerance of TOL is reached for the
+  error."
+  (multiple-value-bind (n an bn cn)
+      (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
+    (declare (ignore bn))
+    ;; See DLMF (https://dlmf.nist.gov/22.20.ii) for the algorithm.
+    (let ((phi (* u (aref an n) (expt 2 n))))
+      (loop for k from n downto 1
+            do
+               (setf phi (/ (+ phi (asin (* (/ (aref cn k)
+                                               (aref an k))
+                                            (sin phi))))
+                            2)))
+      phi)))
+
+;; Compute Jacobi am for real or complex values of U and M.  The args
+;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
+;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
+;; used.
+(defun bf-jacobi-am (u m tol)
+  (cond ((and (realp u) (realp m) (<= (abs m) 1))
+         ;; The case of real u and m with |m| <= 1.  We can use AGM to
+         ;; compute the result.
+         (jacobi-am-agm (to u)
+                        (to m)
+                        tol))
+        (t
+         ;; Otherwise, use the formula am(u,m) = asin(jacobi_sn(u,m)).
+         ;; (See DLMF https://dlmf.nist.gov/22.16.E1).  This appears
+         ;; to be what functions.wolfram.com is using in this case.
+         (asin (sn (to u) (to m))))))
+
+(in-package :maxima)
+(def-simplifier jacobi_am (u m)
+  (let (args)
+    (cond
+      ((zerop1 u)
+       ;; am(0,m) = 0
+       0)
+      ((zerop1 m)
+       ;; See https://dlmf.nist.gov/22.16.E4
+       ;;
+       ;; am(u,0) = u
+       u)
+      ((eql m 1)
+       ;; See https://dlmf.nist.gov/22.16.E5.  This is equivalent to
+       ;; the Gudermannian function.
+       ;;
+       ;; am(u,1) = 2*atan(exp(u))-%pi/2
+       (sub (mul 2 (ftake '%atan (ftake '%exp u)))
+            (div '$%pi 2)))
+      ((float-numerical-eval-p u m)
+       (to (bigfloat::bf-jacobi-am ($float u)
+                                   ($float m)
+                                   double-float-epsilon)))
+      ((setf args (complex-float-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (to (bigfloat::bf-jacobi-am (bigfloat:to ($float u))
+                                     (bigfloat:to ($float m))
+                                     double-float-epsilon))))
+      ((bigfloat-numerical-eval-p u m)
+       (to (bigfloat::bf-jacobi-am (bigfloat:to ($bfloat u))
+                                   (bigfloat:to ($bfloat m))
+                                   (expt 2 (- fpprec)))))
+      ((setf args (complex-bigfloat-numerical-eval-p u m))
+       (destructuring-bind (u m)
+           args
+         (to (bigfloat::bf-jacobi-am (bigfloat:to ($bfloat u))
+                                     (bigfloat:to ($bfloat m))
+                                     (expt 2 (- fpprec))))))
+      (t
+       ;; Nothing to do
+       (give-up)))))
+
+;; Derivative of jacobi_am wrt z and m.
+(defprop %jacobi_am
+    ((z m)
+    ;; WRT z.  From  http://functions.wolfram.com/09.24.20.0001.01
+    ;; jacobi_dn(z,m)
+    ((%jacobi_dn) $z $m)
+    ;; WRT m.  From http://functions.wolfram.com/09.24.20.0003.01.
+    ;; There are 5 different formulas listed; we chose the first,
+    ;; arbitrarily.
+    ;;
+    ;; (((m-1)*z+elliptic_e(jacobi_am(z,m),m))*jacobi_dn(z,m)
+    ;;   - m*jacobi_cn(z,m)*jacobi_sn(z,m))/(2*m*(m-1))
+    ((mtimes) ((rat) 1 2) ((mexpt) ((mplus) -1 $m) -1)
+     ((mexpt) $m -1)
+     ((mplus)
+      ((mtimes) -1 $m ((%jacobi_cn) $z $m) ((%jacobi_sn) $z $m))
+      ((mtimes) ((%jacobi_dn) $z $m)
+       ((mplus) ((mtimes) ((mplus) -1 $m) $z)
+        ((%elliptic_e) ((%jacobi_am) $z $m) $m)))))
+  nil)
+  grad)
