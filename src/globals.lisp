@@ -1095,7 +1095,7 @@
   polynomials of degree > n won't be factored, preventing huge memory
   allocations and stack overflows. Set to zero to deactivate."
   fixnum
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $savefactors nil "If t factors of ratreped forms will be saved")
 
@@ -1237,7 +1237,7 @@
   greater than or equal to 3."
   see-also ($expon $maxposex $expand)
   :type (integer 0)
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $expon 0
   "The largest negative exponent which will be automatically
@@ -1245,7 +1245,7 @@
   greater than or equal to 3."
   see-also ($expop $maxnegex $expand)
   :type (integer 0)
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $maxposex 1000.
   "The largest positive exponent which will be expanded by the EXPAND
@@ -1253,7 +1253,7 @@
   fixnum
   see-also ($maxnegex $expop $expand)
   ;; Check assignment to be a positive integer
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by the EXPAND
@@ -1261,7 +1261,7 @@
   fixnum
   see-also ($maxposex $expon $expand)
   ;; Check assignment to be a positive integer
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 ;; Lisp level variables
 (defmvar dosimp nil

@@ -1130,8 +1130,9 @@ wrapper for this."
       (merror (intl:gettext "assignment: attempting to assign read-only variable ~:M the value ~M")
 	      x assign-val)))
 
-;; Check assignment to be a positive integer including zero
-(defun posintegerset (x y)
+;; Check assignment that the assignment to the variable X is a
+;; non-negative integer Y.  If not signal an error.
+(defun non-negative-integer-set (x y)
   (if (or (not (integerp y))
           (not (>= y 0)))
       (merror
