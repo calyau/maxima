@@ -1235,7 +1235,6 @@
   "The largest positive exponent which will be automatically
   expanded.  (X+1)^3 will be automatically expanded if EXPOP is
   greater than or equal to 3."
-  fixnum
   see-also ($expon $maxposex $expand)
   :type (integer 0)
   :properties ((assign 'posintegerset)))
@@ -1244,7 +1243,6 @@
   "The largest negative exponent which will be automatically
   expanded.  (X+1)^(-3) will be automatically expanded if EXPON is
   greater than or equal to 3."
-  fixnum
   see-also ($expop $maxnegex $expand)
   :type (integer 0)
   :properties ((assign 'posintegerset)))
