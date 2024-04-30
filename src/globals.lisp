@@ -214,6 +214,12 @@
 			       ,val)
 			      *bindtest-deprecation-messages*))))
 	 (setf opts (rest opts)))
+        (:type
+         ;; Specifies that we should add a declaration about the type of the variable.
+         (format t "opts = ~A~%" (second opts))
+         (setf maybe-declare-type
+               `((declaim (type ,(second opts) ,var))))
+         (setf opts (rest opts)))
         (t
          (warn "Ignoring unknown defmvar option for ~S: ~S"
                var (car opts)))))
@@ -1230,14 +1236,18 @@
   expanded.  (X+1)^3 will be automatically expanded if EXPOP is
   greater than or equal to 3."
   fixnum
-  see-also ($expon $maxposex $expand))
+  see-also ($expon $maxposex $expand)
+  :type (integer 0)
+  :properties ((assign 'posintegerset)))
 
 (defmvar $expon 0
   "The largest negative exponent which will be automatically
   expanded.  (X+1)^(-3) will be automatically expanded if EXPON is
   greater than or equal to 3."
   fixnum
-  see-also ($expop $maxnegex $expand))
+  see-also ($expop $maxnegex $expand)
+  :type (integer 0)
+  :properties ((assign 'posintegerset)))
 
 (defmvar $maxposex 1000.
   "The largest positive exponent which will be expanded by the EXPAND
