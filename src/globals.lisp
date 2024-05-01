@@ -58,6 +58,12 @@
             (defmvar $foo foo-value
               \"Docstring for deprecated foo.\"
               :deprecated-p \"Use bar instead\")
+    :TYPE
+          Specifies the type of the variable.  This is used to make a
+          declaration for the type of the variable.  However, no check
+          is made if assignments to the variable satisfy the type.
+          You must use :SETTING-PREDICATE or set the 'ASSIGN property
+          for that.
 
   The list of properties has the form ((ind1 val1) (ind2 val2) ...)
   where IND1 is the name of the property and VAL1 is the value
@@ -110,6 +116,8 @@
 	 ;; We should also note that when this is fixed, we should
 	 ;; also add an 'assign property to verify that only fixnums,
 	 ;; etc., are allowed.
+         (format t "*** Deprecated defmvar option: ~A for ~A~%"
+                 (car opts) var)
          #+nil
 	 (setf maybe-declare-type
                `((declaim (type ,(car opts) ,var)))))
