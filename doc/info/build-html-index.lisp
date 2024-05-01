@@ -145,7 +145,8 @@
              ;; Don't need anything special for texinfo 7.1 and greater.
              t)
             ((>= *texinfo-version* (texinfo-version-number 7 0 2))
-             (dolist (item '("Euler's number"
+             (dolist (item '("Catalan's Constant"
+			     "Euler's number"
 		             "Introduction to Maxima's Database"))
 	       (update-entry item
 		             (pregexp::pregexp-replace* "'" item (string (code-char #x2019))))))))))
