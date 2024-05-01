@@ -176,7 +176,8 @@ rem ./configure sets a variable @CLISP_NAME@ which might be used instead of lisp
 rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
 rem which would be inserted here ==> do not use the variable @CLISP_NAME@ but just lisp.exe.
 set "path=%maxima_imagesdir%/binary-%lisp%;%maxima_prefix%/clisp-2.49/base;%path%"
-chcp 65001
+rem set codepage to unicode
+chcp 65001 >nul
 lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto :EOF
 
@@ -236,7 +237,8 @@ if "%MAXIMA_SIGNALS_THREAD%" == "" (
 ) else ( 
   set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
 )
-chcp 65001
+rem set codepage to unicode
+chcp 65001 >nul
 wx86cl64.exe -I "%maxima_image_base%.image" %lisp_options% -e %start_maxima% -- %*
 goto :EOF
 
