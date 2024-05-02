@@ -1129,27 +1129,6 @@
 ;; See
 ;; https://sourceforge.net/p/maxima/bugs/1842/
 ;; for an explanation.
-(defmacro fun-memoize (name f)
-  (let ((table-getter-name (intern (concatenate 'string (string name) "-TABLE")))
-        (table-clearer-name (intern (concatenate 'string "CLEAR_" (string name) "_TABLE"))))
-    `(let ((table (make-hash-table)))
-       (defun ,name ()
-         (let ((value (gethash fpprec table)))
-           (if value
-	       value
-	       (setf (gethash fpprec table) ,f))))
-       (defun ,table-getter-name ()
-         table)
-       (defun ,table-clearer-name ()
-         (clrhash table)))))
-
-(fun-memoize fpe (cdr fpe1))
-(fun-memoize fpi (cdr (fppi1)))
-(fun-memoize fpgamma (cdr (fpgamma1)))
-(fun-memoize fplog2 (comp-log2))
-(fun-memoize fpcatalan (cdr (fpcatalan1)))
-(fun-memoize fpphi (cdr fpphi1))
-
 (macrolet
     ((memoize (name compute-form)
        ;; Macro creates a closure over a hash table containing the
@@ -1188,74 +1167,6 @@
   (memoize fplog2 (comp-log2))
   (memoize fpcatalan (cdr (fpcatalan1)))
   (memoize fpphi (cdr (fpphi1))))
-
-#||
-(let ((table (make-hash-table)))
-  (defun fpe ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpe1))))))
-  (defun fpe-table ()
-    table)
-  (defun clear_fpe_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fppi ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fppi1))))))
-  (defun fppi-table ()
-    table)
-  (defun clear_fppi_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fpgamma ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpgamma1))))))
-  (defun fpgamma-table ()
-    table)
-  (defun clear_fpgamma_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fplog2 ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (comp-log2)))))
-  (defun fplog2-table ()
-    table)
-  (defun clear_fplog2_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fpcatalan ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpcatalan1))))))
-  (defun fpcatalan-table ()
-    table)
-  (defun clear_fpcatalan_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fpphi ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpphi1))))))
-  (defun fpphi-table ()
-    table)
-  (defun clear_fpphi_table ()
-    (clrhash table)))
-||#
 
 ;; This doesn't need a hash table because there's never a problem with
 ;; using a high precision value and rounding to a lower precision
