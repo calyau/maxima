@@ -18,6 +18,11 @@
   "Hash table containing all Maxima defmvar variables and their
   initial values")
 
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defvar *warn-deprecated-defmvar-options* nil
+    "Set to non-NIL to have DEFMVAR print out warnings about deprecated
+  options"))
+
 (defmacro defmvar (var &optional val doc &rest options)
   "Define a Maxima variable VAR that is user-visible.  It is
   initialized to the value VAL.  An associated documentation string
@@ -122,11 +127,9 @@
 	 ;; We should also note that when this is fixed, we should
 	 ;; also add an 'assign property to verify that only fixnums,
 	 ;; etc., are allowed.
-         (format t "*** Deprecated defmvar option: ~A for ~A~%"
-                 (car opts) var)
-         #+nil
-	 (setf maybe-declare-type
-               `((declaim (type ,(car opts) ,var)))))
+         (when *warn-deprecated-defmvar-options*
+           (format t "*** Deprecated defmvar option: ~A for ~A~%"
+                   (car opts) var)))
         (in-core
          ;; Ignore this
          )
