@@ -19,7 +19,7 @@
   initial values")
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (defvar *warn-deprecated-defmvar-options* nil
+  (defvar *warn-deprecated-defmvar-options* t
     "Set to non-NIL to have DEFMVAR print out warnings about deprecated
   options"))
 
@@ -63,17 +63,6 @@
             (defmvar $foo foo-value
               \"Docstring for deprecated foo.\"
               :deprecated-p \"Use bar instead\")
-    :TYPE
-          A list a Lisp type-specifier and a string.  The type specifier 
-          specifies the type of the variable.  This is used to make a
-          declaration for the type of the variable.  If no
-          :SETTING-PREDICATE option, :SETTING-LIST option, or a
-          :PROPERTIES option with the 'ASSIGN property is given, then
-          a function is created to check if the value has the
-          specified type. If not, an error is produced and the string
-          is used to explain what the expected type is.  For example,
-          a non-negative integer can be specified with ':TYPE ((INTEGER 0) \"
-          non-negative integer\")'.
 
   The list of properties has the form ((ind1 val1) (ind2 val2) ...)
   where IND1 is the name of the property and VAL1 is the value
@@ -86,8 +75,6 @@
   use a :PROPERTIES with an 'ASSIGN property.  :SETTING-PREDICATE and
   :SETTING-LIST sets the 'ASSIGN property to implement the
   functionality.
-
-  
 "
   (let ((maybe-reset
           ;; Default is to reset the variable to it's initial value.
@@ -100,8 +87,7 @@
 	setting-predicate-p
 	setting-list-p
 	assign-property-p
-	deprecated-p
-        maybe-check-type)
+	deprecated-p)
 
     (do ((opts options (rest opts)))
         ((null opts))
@@ -231,45 +217,9 @@
 			       ,val)
 			      *bindtest-deprecation-messages*))))
 	 (setf opts (rest opts)))
-        (:type
-         ;; Specifies that we should add a declaration about the type
-         ;; of the variable.  This is a list whose first element is a
-         ;; Lisp type specification and whose second element is a
-         ;; Maxima string describing the type.  The string is used in
-         ;; the error message to give the user a meaningful idea of
-         ;; the type instead of using the Lisp type specifier.
-         #+nil
-         (format t "opts = ~A~%" (second opts))
-         (destructuring-bind (lisp-type maxima-desc)
-             (second opts)
-           #+nil
-           (progn
-             (format t "lisp-type = ~S~%" lisp-type)
-             (format t "desc = ~S~%" maxima-desc))
-           (setf maybe-declare-type
-                 `((declaim (type ,lisp-type ,var))))
-           (let ((assign-func
-                   `#'(lambda (var val)
-                        (unless (typep val ',lisp-type)
-                          (mseterr var val
-                                   (format nil "Incorrect value.  Expected ~A"
-                                           ,maxima-desc))))))
-             (setf maybe-check-type
-                   `((putprop ',var ,assign-func 'assign))))
-           (setf opts (rest opts))))
         (t
          (warn "Ignoring unknown defmvar option for ~S: ~S"
                var (car opts)))))
-    (when (and maybe-check-type
-               (not (or setting-predicate-p setting-list-p assign-property-p)))
-      ;; We have a :type and no :setting-predicate or :setting-list or
-      ;; set the assign property via :properties, so use predicate for
-      ;; :type.
-      (setf maybe-predicate maybe-check-type))
-    #+nil
-    (progn
-      (format t "maybe-set-props = ~A~%" maybe-set-props)
-      (format t "maybe-predicate = ~A~%" maybe-predicate))
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
@@ -1291,7 +1241,6 @@
   expanded.  (X+1)^(-3) will be automatically expanded if EXPON is
   greater than or equal to 3."
   see-also ($expop $maxnegex $expand)
-  :type (integer 0)
   :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $maxposex 1000.
