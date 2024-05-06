@@ -911,10 +911,14 @@
             ;; -log2(tol)/2.  Since tol is basically 2^(-fpprec), n =
             ;; fpprec/2.
 	    (setq ans x x2 (fpminus (fptimes* x x)) term x)
-            (let ((max-n (floor fpprec 2)))
+            (let ((max-n fpprec))
 	      (do ((n 3 (+ n 2)))
 		  ((or (equal ans oans)
-                       (>= n max-n)))
+                       (>= n max-n))
+                   #+nil
+                   (progn
+                     (format t "n max-n ~A ~A~%" n max-n)
+                     (format t "ans oans = ~A ~A~%" ans oans)))
 	        (setq term (fptimes* term x2))
 	        (setq oans ans
 		      ans (fpplus ans (fpquotient term (intofp n))))))))
