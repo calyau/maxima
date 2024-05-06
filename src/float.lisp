@@ -901,12 +901,23 @@
 	   (t
 	    ;; |x| <= 1/2.  Use Taylor series (A&S 4.4.42, first
 	    ;; formula).
+            ;;
+            ;; The n'th term is (-1)^n*x^(2*n+1)/(2*n+1).  We want to
+            ;; stop summing when the relative error between the n'th
+            ;; term and the first is small.  That is
+            ;; |x^(2*n+1)/(2*n+1)/x| <= tol. Hence, |x^(2*n)|/(2*n+1)
+            ;; <= tol.  Or |x^(2*n)| <= tol.  But we know |x| <= 1/2,
+            ;; so (1/2)^(2*n) <= tol.  Then n = -log(tol)/2/log(2) =
+            ;; -log2(tol)/2.  Since tol is basically 2^(-fpprec), n =
+            ;; fpprec/2.
 	    (setq ans x x2 (fpminus (fptimes* x x)) term x)
-	    (do ((n 3 (+ n 2)))
-		((equal ans oans))
-	      (setq term (fptimes* term x2))
-	      (setq oans ans
-		    ans (fpplus ans (fpquotient term (intofp n)))))))
+            (let ((max-n (floor fpprec 2)))
+	      (do ((n 3 (+ n 2)))
+		  ((or (equal ans oans)
+                       (>= n max-n)))
+	        (setq term (fptimes* term x2))
+	        (setq oans ans
+		      ans (fpplus ans (fpquotient term (intofp n))))))))
      (return ans)))
 
 ;; atan(y/x) taking into account the quadrant.  (Also equal to
