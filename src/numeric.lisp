@@ -1155,9 +1155,9 @@
   (make-instance 'bigfloat
 		 :real (maxima::bcons (maxima::fpatan (cdr (real-value a))))))
 
-(defmethod one-arg-atan ((a complex-bigfloat))
+(defmethod one-arg-atan ((z complex-bigfloat))
   ;; atan(z) = -i * atanh(i*z)
-  (let* ((iz (complex (- (realpart z)) (imagpart z)))
+  (let* ((iz (complex (- (imagpart z)) (realpart z)))
          (result (atanh iz)))
     (complex (imagpart result)
              (- (realpart result)))))
