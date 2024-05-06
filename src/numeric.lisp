@@ -1156,13 +1156,11 @@
 		 :real (maxima::bcons (maxima::fpatan (cdr (real-value a))))))
 
 (defmethod one-arg-atan ((a complex-bigfloat))
-  ;; We should do something better than calling meval
-  (let* ((arg (maxima::add (real-value a)
-			   (maxima::mul 'maxima::$%i (imag-value a))))
-	 (result (maxima::meval `((maxima::%atan maxima::simp) ,arg))))
-    (make-instance 'complex-bigfloat
-		   :real (maxima::$realpart result)
-		   :imag (maxima::$imagpart result))))
+  ;; atan(z) = -i * atanh(i*z)
+  (let* ((iz (complex (- (realpart z)) (imagpart z)))
+         (result (atanh iz)))
+    (complex (imagpart result)
+             (- (realpart result)))))
 
 (defmethod two-arg-atan ((a real) (b real))
   (cl:atan a b))
