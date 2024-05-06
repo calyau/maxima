@@ -2343,7 +2343,7 @@
 ;; log(((1+x)^2+y^2)/((1-x)^2+y^2)) = log(1+4*x/((1-x)^2+y^2))
 ;;
 ;; When y = 0, Im atanh z = 1/2 (arg(1 + x) - arg(1 - x))
-;;                        = if x < -1 then %pi/2 else if x > 1 then -%pi/2 else <whatever>
+;;                        = if x < -1 then %pi/2 else if x > 1 then -%pi/2 else 0
 ;;
 ;; Otherwise, arg(1 - x + %i*(-y)) = - arg(1 - x + %i*y),
 ;; and Im atanh z = 1/2 (arg(1 + x + %i*y) + arg(1 - x + %i*y)).
@@ -2360,9 +2360,9 @@
 	 (beta (if (minusp (car fpx))
 		   (fpminus (fpone))
 		   (fpone)))
-     (x-lt-minus-1 (mevalp `((mlessp) ,x -1)))
-     (x-gt-plus-1 (mevalp `((mgreaterp) ,x 1)))
-     (y-equals-0 (like y '((bigfloat) 0 0)))
+         (x-lt-minus-1 (mevalp `((mlessp) ,x -1)))
+         (x-gt-plus-1 (mevalp `((mgreaterp) ,x 1)))
+         (y-equals-0 (like y '((bigfloat) 0 0)))
 	 (x (fptimes* beta fpx))
 	 (y (fptimes* beta (fpminus fpy)))
 	 ;; Kahan has rho = 4/most-positive-float.  What should we do
@@ -2378,21 +2378,25 @@
 				    (fpplus (fptimes* 1-x 1-x)
 					    t1^2)))
 	       (intofp 4)))
-     ;; If y = 0, then Im atanh z = %pi/2 or -%pi/2.
+         ;; If y = 0, then Im atanh z = %pi/2 or -%pi/2 or 0 depending
+         ;; on whether x > 1, x < -1 or |x| <=1, respectively.
+         ;;
 	 ;; Otherwise nu = 1/2*atan2(2*y,(1-x)*(1+x)-y^2)
 	 (nu (if y-equals-0
-	   ;; EXTRA FPMINUS HERE TO COUNTERACT FPMINUS IN RETURN VALUE
-	   (fpminus (if x-lt-minus-1
-			(cdr ($bfloat '((mquotient) $%pi 2)))
-			(if x-gt-plus-1
-			    (cdr ($bfloat '((mminus) ((mquotient) $%pi 2))))
-			    (merror "COMPLEX-ATANH: HOW DID I GET HERE?"))))
-	   (fptimes* (cdr bfhalf)
-		       (fpatan2 (fptimes* (intofp 2) y)
-				(fpdifference (fptimes* 1-x (fpplus (fpone) x))
-					      t1^2))))))
+	         ;; Extra fpminus here to counteract fpminus in return
+	         ;; value because we don't support signed zeroes.
+	         (fpminus (if x-lt-minus-1
+			      (cdr ($bfloat '((mquotient) $%pi 2)))
+			      (if x-gt-plus-1
+			          (cdr ($bfloat '((mminus) ((mquotient) $%pi 2))))
+			          '(0 0))))
+	         (fptimes* (cdr bfhalf)
+		           (fpatan2 (fptimes* (intofp 2) y)
+				    (fpdifference (fptimes* 1-x (fpplus (fpone) x))
+					          t1^2))))))
     (values (bcons (fptimes* beta eta))
-	;; WTF IS FPMINUS DOING HERE ??
+	    ;; Minus sign here because Kahan's algorithm assumed
+	    ;; signed zeroes, which we don't have in maxima.
 	    (bcons (fpminus (fptimes* beta nu))))))
 
 (defun big-float-atanh (x &optional y)
