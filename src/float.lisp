@@ -907,9 +907,9 @@
             ;; term and the first is small.  That is
             ;; |x^(2*n+1)/(2*n+1)/x| <= tol. Hence, |x^(2*n)|/(2*n+1)
             ;; <= tol.  Or |x^(2*n)| <= tol.  But we know |x| <= 1/2,
-            ;; so (1/2)^(2*n) <= tol.  Then n = -log(tol)/2/log(2) =
-            ;; -log2(tol)/2.  Since tol is basically 2^(-fpprec), n =
-            ;; fpprec/2.
+            ;; so (1/2)^(2*n) <= tol.  Then n = -log2(tol)/2.  Since
+            ;; tol is basically 2^(-fpprec), n = fpprec/2.  But double
+            ;; it so that the testsuite passes without differences.
 	    (setq ans x x2 (fpminus (fptimes* x x)) term x)
             (let ((max-n fpprec))
 	      (do ((n 3 (+ n 2)))
