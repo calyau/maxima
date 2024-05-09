@@ -84,6 +84,7 @@
         maybe-declare-type
         maybe-set-props
 	maybe-predicate
+        maybe-boolean-predicate
 	setting-predicate-p
 	setting-list-p
 	assign-property-p
@@ -98,7 +99,7 @@
 	 (unless deprecated-p
            ;; Don't reset the value
            (setf maybe-reset nil)))
-        ((fixnum boolean string flonum)
+        ((fixnum string flonum)
 	 ;; Don't declare the types yet.  There are testsuite failures
 	 ;; with sbcl that some things declared fixnum aren't assigned
 	 ;; fixnum values.  Some are clearly bugs in the code where we
@@ -119,6 +120,19 @@
         (in-core
          ;; Ignore this
          )
+        (boolean
+         ;; Vars declared as boolean create a setting-list so that
+         ;; only true and false can be assigned to the variable.
+         (let ((assign-func
+		  `#'(lambda (var val)
+		       (let ((possible-values '(true false)))
+			 (unless (member val possible-values)
+			   (mseterr var val
+				    (let ((*print-case* :downcase))
+				      (format nil "must be one of: ~{~A~^, ~}"
+					      (mapcar #'stripdollar possible-values)))))))))
+	     (setf maybe-boolean-predicate
+		   `((putprop ',var ,assign-func 'assign)))))
 	(:properties
 	 (unless deprecated-p
            (setf maybe-set-props
@@ -220,6 +234,13 @@
         (t
          (warn "Ignoring unknown defmvar option for ~S: ~S"
                var (car opts)))))
+    (when maybe-boolean-predicate
+      (if (or setting-predicate-p setting-list-p assign-property-p)
+          (error "Do not use BOOLEAN option when :SETTING-PREDICATE, :SETTING-LIST, or :PROPERTIES is used")
+          ;; Check that boolean predicate isn't used with any other
+          ;; predicate.  The other predicates supersede boolean.
+          (setf maybe-predicate maybe-boolean-predicate)))
+      
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
