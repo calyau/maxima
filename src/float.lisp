@@ -901,12 +901,27 @@
 	   (t
 	    ;; |x| <= 1/2.  Use Taylor series (A&S 4.4.42, first
 	    ;; formula).
+            ;;
+            ;; The n'th term is (-1)^n*x^(2*n+1)/(2*n+1).  We want to
+            ;; stop summing when the relative error between the n'th
+            ;; term and the first is small.  That is
+            ;; |x^(2*n+1)/(2*n+1)/x| <= tol. Hence, |x^(2*n)|/(2*n+1)
+            ;; <= tol.  Or |x^(2*n)| <= tol.  But we know |x| <= 1/2,
+            ;; so (1/2)^(2*n) <= tol.  Then n = -log2(tol)/2.  Since
+            ;; tol is basically 2^(-fpprec), n = fpprec/2.  But double
+            ;; it so that the testsuite passes without differences.
 	    (setq ans x x2 (fpminus (fptimes* x x)) term x)
-	    (do ((n 3 (+ n 2)))
-		((equal ans oans))
-	      (setq term (fptimes* term x2))
-	      (setq oans ans
-		    ans (fpplus ans (fpquotient term (intofp n)))))))
+            (let ((max-n fpprec))
+	      (do ((n 3 (+ n 2)))
+		  ((or (equal ans oans)
+                       (>= n max-n))
+                   #+nil
+                   (progn
+                     (format t "n max-n ~A ~A~%" n max-n)
+                     (format t "ans oans = ~A ~A~%" ans oans)))
+	        (setq term (fptimes* term x2))
+	        (setq oans ans
+		      ans (fpplus ans (fpquotient term (intofp n))))))))
      (return ans)))
 
 ;; atan(y/x) taking into account the quadrant.  (Also equal to
@@ -1129,27 +1144,6 @@
 ;; See
 ;; https://sourceforge.net/p/maxima/bugs/1842/
 ;; for an explanation.
-(defmacro fun-memoize (name f)
-  (let ((table-getter-name (intern (concatenate 'string (string name) "-TABLE")))
-        (table-clearer-name (intern (concatenate 'string "CLEAR_" (string name) "_TABLE"))))
-    `(let ((table (make-hash-table)))
-       (defun ,name ()
-         (let ((value (gethash fpprec table)))
-           (if value
-	       value
-	       (setf (gethash fpprec table) ,f))))
-       (defun ,table-getter-name ()
-         table)
-       (defun ,table-clearer-name ()
-         (clrhash table)))))
-
-(fun-memoize fpe (cdr fpe1))
-(fun-memoize fpi (cdr (fppi1)))
-(fun-memoize fpgamma (cdr (fpgamma1)))
-(fun-memoize fplog2 (comp-log2))
-(fun-memoize fpcatalan (cdr (fpcatalan1)))
-(fun-memoize fpphi (cdr fpphi1))
-
 (macrolet
     ((memoize (name compute-form)
        ;; Macro creates a closure over a hash table containing the
@@ -1188,74 +1182,6 @@
   (memoize fplog2 (comp-log2))
   (memoize fpcatalan (cdr (fpcatalan1)))
   (memoize fpphi (cdr (fpphi1))))
-
-#||
-(let ((table (make-hash-table)))
-  (defun fpe ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpe1))))))
-  (defun fpe-table ()
-    table)
-  (defun clear_fpe_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fppi ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fppi1))))))
-  (defun fppi-table ()
-    table)
-  (defun clear_fppi_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fpgamma ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpgamma1))))))
-  (defun fpgamma-table ()
-    table)
-  (defun clear_fpgamma_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fplog2 ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (comp-log2)))))
-  (defun fplog2-table ()
-    table)
-  (defun clear_fplog2_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fpcatalan ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpcatalan1))))))
-  (defun fpcatalan-table ()
-    table)
-  (defun clear_fpcatalan_table ()
-    (clrhash table)))
-
-(let ((table (make-hash-table)))
-  (defun fpphi ()
-    (let ((value (gethash fpprec table)))
-      (if value
-	  value
-	  (setf (gethash fpprec table) (cdr (fpphi1))))))
-  (defun fpphi-table ()
-    table)
-  (defun clear_fpphi_table ()
-    (clrhash table)))
-||#
 
 ;; This doesn't need a hash table because there's never a problem with
 ;; using a high precision value and rounding to a lower precision
@@ -2417,7 +2343,7 @@
 ;; log(((1+x)^2+y^2)/((1-x)^2+y^2)) = log(1+4*x/((1-x)^2+y^2))
 ;;
 ;; When y = 0, Im atanh z = 1/2 (arg(1 + x) - arg(1 - x))
-;;                        = if x < -1 then %pi/2 else if x > 1 then -%pi/2 else <whatever>
+;;                        = if x < -1 then %pi/2 else if x > 1 then -%pi/2 else 0
 ;;
 ;; Otherwise, arg(1 - x + %i*(-y)) = - arg(1 - x + %i*y),
 ;; and Im atanh z = 1/2 (arg(1 + x + %i*y) + arg(1 - x + %i*y)).
@@ -2434,9 +2360,9 @@
 	 (beta (if (minusp (car fpx))
 		   (fpminus (fpone))
 		   (fpone)))
-     (x-lt-minus-1 (mevalp `((mlessp) ,x -1)))
-     (x-gt-plus-1 (mevalp `((mgreaterp) ,x 1)))
-     (y-equals-0 (like y '((bigfloat) 0 0)))
+         (x-lt-minus-1 (mevalp `((mlessp) ,x -1)))
+         (x-gt-plus-1 (mevalp `((mgreaterp) ,x 1)))
+         (y-equals-0 (like y '((bigfloat) 0 0)))
 	 (x (fptimes* beta fpx))
 	 (y (fptimes* beta (fpminus fpy)))
 	 ;; Kahan has rho = 4/most-positive-float.  What should we do
@@ -2452,21 +2378,25 @@
 				    (fpplus (fptimes* 1-x 1-x)
 					    t1^2)))
 	       (intofp 4)))
-     ;; If y = 0, then Im atanh z = %pi/2 or -%pi/2.
+         ;; If y = 0, then Im atanh z = %pi/2 or -%pi/2 or 0 depending
+         ;; on whether x > 1, x < -1 or |x| <=1, respectively.
+         ;;
 	 ;; Otherwise nu = 1/2*atan2(2*y,(1-x)*(1+x)-y^2)
 	 (nu (if y-equals-0
-	   ;; EXTRA FPMINUS HERE TO COUNTERACT FPMINUS IN RETURN VALUE
-	   (fpminus (if x-lt-minus-1
-			(cdr ($bfloat '((mquotient) $%pi 2)))
-			(if x-gt-plus-1
-			    (cdr ($bfloat '((mminus) ((mquotient) $%pi 2))))
-			    (merror "COMPLEX-ATANH: HOW DID I GET HERE?"))))
-	   (fptimes* (cdr bfhalf)
-		       (fpatan2 (fptimes* (intofp 2) y)
-				(fpdifference (fptimes* 1-x (fpplus (fpone) x))
-					      t1^2))))))
+	         ;; Extra fpminus here to counteract fpminus in return
+	         ;; value because we don't support signed zeroes.
+	         (fpminus (if x-lt-minus-1
+			      (cdr ($bfloat '((mquotient) $%pi 2)))
+			      (if x-gt-plus-1
+			          (cdr ($bfloat '((mminus) ((mquotient) $%pi 2))))
+			          '(0 0))))
+	         (fptimes* (cdr bfhalf)
+		           (fpatan2 (fptimes* (intofp 2) y)
+				    (fpdifference (fptimes* 1-x (fpplus (fpone) x))
+					          t1^2))))))
     (values (bcons (fptimes* beta eta))
-	;; WTF IS FPMINUS DOING HERE ??
+	    ;; Minus sign here because Kahan's algorithm assumed
+	    ;; signed zeroes, which we don't have in maxima.
 	    (bcons (fpminus (fptimes* beta nu))))))
 
 (defun big-float-atanh (x &optional y)

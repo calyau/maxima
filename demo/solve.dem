@@ -1,0 +1,12 @@
+pyth:a^2+b^2=c^2;
+
+solve(pyth,b);
+
+eq1: x+y=1/2;
+eq2: 2*x+2*y=1;
+
+solve([eq1,eq2],x);
+
+eq3: x^2+y^2=1;
+
+solve([eq1,eq3], [x,y]);
