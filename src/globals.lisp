@@ -201,10 +201,14 @@
 		   `((putprop ',var ,assign-func 'assign)))))
 	 ;; Skip over the values.
 	 (setf opts (rest opts)))
-        ((see-also modified-commands setting-list)
+        ((see-also modified-commands)
          ;; Not yet supported, but we need to skip over the following
          ;; item too which is the parameter for this option.
          (setf opts (rest opts)))
+        (setting-list
+         ;; This has been replaced by :setting-list and is now an
+         ;; error to use this option.
+         (error "setting-list has been superseded by :setting-list"))
 	(:deprecated-p
 	 ;; This overrides everything and makes the variable
 	 ;; deprecated.  This means it's unbound, and the 'bindtest
