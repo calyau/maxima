@@ -19,6 +19,8 @@
   initial values")
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  ;; Set this to T before compiling Maxima to see all the uses of
+  ;; deprecated options.  When NIL, no such messages are printed.
   (defvar *warn-deprecated-defmvar-options* t
     "Set to non-NIL to have DEFMVAR print out warnings about deprecated
   options"))
