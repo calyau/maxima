@@ -741,7 +741,6 @@
 (defmvar $fpprintprec 0
   "Controls the number of significant digits printed for floats.  If
   0, then full precision is used."
-  fixnum
   :setting-predicate #'(lambda (val)
 			 ;; $fpprintprec must be a non-negative fixnum
 			 ;; and also cannot be equal to 1.
@@ -1118,7 +1117,6 @@
   "If set to an integer n, some potentially large (many factors)
   polynomials of degree > n won't be factored, preventing huge memory
   allocations and stack overflows. Set to zero to deactivate."
-  fixnum
   :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $savefactors nil "If t factors of ratreped forms will be saved")
@@ -1259,7 +1257,6 @@
   "The largest positive exponent which will be automatically
   expanded.  (X+1)^3 will be automatically expanded if EXPOP is
   greater than or equal to 3."
-  fixnum
   see-also ($expon $maxposex $expand)
   :properties ((assign 'non-negative-integer-set)))
 
@@ -1273,7 +1270,6 @@
 (defmvar $maxposex 1000.
   "The largest positive exponent which will be expanded by the EXPAND
   command."
-  fixnum
   see-also ($maxnegex $expop $expand)
   ;; Check assignment to be a positive integer
   :properties ((assign 'non-negative-integer-set)))
@@ -1281,7 +1277,6 @@
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by the EXPAND
   command."
-  fixnum
   see-also ($maxposex $expon $expand)
   ;; Check assignment to be a positive integer
   :properties ((assign 'non-negative-integer-set)))
