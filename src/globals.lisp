@@ -127,7 +127,7 @@
          ;; only true and false can be assigned to the variable.
          (let ((assign-func
 		  `#'(lambda (var val)
-		       (let ((possible-values '(true false)))
+		       (let ((possible-values '(t nil)))
 			 (unless (member val possible-values)
 			   (mseterr var val
 				    (let ((*print-case* :downcase))
