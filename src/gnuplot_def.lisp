@@ -357,7 +357,10 @@
                               "if (GPVAL_VERSION < 5.0) set style line 100 lt rgb ~s lw 1; set pm3d hidden3d 100~%"
                               (rgb-color meshcolor))
                       (format dest
-                              "if (GPVAL_VERSION >= 5.0) set pm3d hidden3d 100 border lw 0.5 lt rgb ~s~%"
+                              "if ((GPVAL_VERSION >= 5.0) && (GPVAL_VERSION < 6.0)) set pm3d hidden3d 100 border lw 0.5 lt rgb ~s~%"
+                              (rgb-color meshcolor))
+                      (format dest
+                              "if (GPVAL_VERSION >= 6.0) set pm3d hidden3d border lw 0.5 lt rgb ~s~%"
                               (rgb-color meshcolor))
                       (unless (getf plot-options '$gnuplot_4_0)
                         (format dest "set pm3d depthorder~%")))
