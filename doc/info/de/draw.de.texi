@@ -956,7 +956,7 @@ Here, @code{enhanced3d = -a} would be the shortcut for
 @example
 (%i1) load("draw")$
 (%i2) draw3d(
-         tube_extremes = [open, closed],
+         capping = [open, closed],
          palette = [26,15,-2],
          enhanced3d = [-foo, foo],
          tube(a, a, a^2, 1, a, -2, 2) )$
@@ -2126,8 +2126,8 @@ Example:
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{tube_extremes}
-@defvr {Graphic option} tube_extremes
+@anchor{capping}
+@defvr {Graphic option} capping
 Default value: @code{[open, open]}
 
 A list with two possible elements, @code{open} and @code{closed},
@@ -2139,7 +2139,7 @@ Example:
 @example
 (%i1) load("draw")$
 (%i2) draw3d(
-        tube_extremes = [open, closed],
+        capping = [open, closed],
         tube(0, 0, a, 1,
              a, 0, 8) )$
 @end example
@@ -4119,7 +4119,7 @@ perpendicular to it.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key},
-@code{wired_surface}, @code{enhanced3d}, @code{color}, and @code{tube_extremes}.
+@code{wired_surface}, @code{enhanced3d}, @code{color}, and @code{capping}.
 
 Example:
 
