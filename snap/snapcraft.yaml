@@ -87,10 +87,12 @@ parts:
      - to arm64,amd64,armhf:
        - clisp
        - gnuplot
+       - gnuplot-qt
        - sbcl
      - else:
        - clisp
        - gnuplot
+       - gnuplot-qt
     stage:
      - -usr/share/texmf/ls-R
 layout:
