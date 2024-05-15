@@ -30,6 +30,7 @@ Changes in the Windows installer:
  * Update Gnuplot
  * Update ABCL
  * Update wxMaxima
+ * Update wxWidgets
  * Update TCL/TK
  * Update SBCL
  * Support Clozure Common Lisp (for 64 bit installers)
