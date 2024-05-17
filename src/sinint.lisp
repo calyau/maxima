@@ -470,7 +470,8 @@
   ;;	(A^(1/3)*VAR^2 + B^(1/3)) *
   ;;	(A^(1/3)*VAR^2 - SQRT(3)*A^(1/6)*B^(1/6)*VAR + B^(1/3)) *
   ;;	(A^(1/3)*VAR^2 + SQRT(3)*A^(1/6)*B^(1/6)*VAR + B^(1/3))
-  (prog ($expop $expon a b term disvar $algebraic)
+  (prog (($expop 0) ($expon 0) a b term disvar $algebraic)
+     #+nil
      (setq $expop 0 $expon 0)
      (setq a (simplify (disrep (polcoef denom deg sinint-var) sinint-ratform))
 	   b (simplify (disrep (polcoef denom 0 sinint-var) sinint-ratform))

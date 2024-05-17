@@ -18,6 +18,13 @@
   "Hash table containing all Maxima defmvar variables and their
   initial values")
 
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  ;; Set this to T before compiling Maxima to see all the uses of
+  ;; deprecated options.  When NIL, no such messages are printed.
+  (defvar *warn-deprecated-defmvar-options* t
+    "Set to non-NIL to have DEFMVAR print out warnings about deprecated
+  options"))
+
 (defmacro defmvar (var &optional val doc &rest options)
   "Define a Maxima variable VAR that is user-visible.  It is
   initialized to the value VAL.  An associated documentation string
@@ -70,8 +77,6 @@
   use a :PROPERTIES with an 'ASSIGN property.  :SETTING-PREDICATE and
   :SETTING-LIST sets the 'ASSIGN property to implement the
   functionality.
-
-  
 "
   (let ((maybe-reset
           ;; Default is to reset the variable to it's initial value.
@@ -81,6 +86,7 @@
         maybe-declare-type
         maybe-set-props
 	maybe-predicate
+        maybe-boolean-predicate
 	setting-predicate-p
 	setting-list-p
 	assign-property-p
@@ -95,7 +101,7 @@
 	 (unless deprecated-p
            ;; Don't reset the value
            (setf maybe-reset nil)))
-        ((fixnum boolean string flonum)
+        ((fixnum string flonum)
 	 ;; Don't declare the types yet.  There are testsuite failures
 	 ;; with sbcl that some things declared fixnum aren't assigned
 	 ;; fixnum values.  Some are clearly bugs in the code where we
@@ -110,12 +116,25 @@
 	 ;; We should also note that when this is fixed, we should
 	 ;; also add an 'assign property to verify that only fixnums,
 	 ;; etc., are allowed.
-         #+nil
-	 (setf maybe-declare-type
-               `((declaim (type ,(car opts) ,var)))))
+         (when *warn-deprecated-defmvar-options*
+           (format t "*** Deprecated defmvar option: ~A for ~A~%"
+                   (car opts) var)))
         (in-core
          ;; Ignore this
          )
+        (boolean
+         ;; Vars declared as boolean create a setting-list so that
+         ;; only true and false can be assigned to the variable.
+         (let ((assign-func
+		  `#'(lambda (var val)
+		       (let ((possible-values '(t nil)))
+			 (unless (member val possible-values)
+			   (mseterr var val
+				    (let ((*print-case* :downcase))
+				      (format nil "must be one of: ~{~A~^, ~}"
+					      (mapcar #'stripdollar possible-values)))))))))
+	     (setf maybe-boolean-predicate
+		   `((putprop ',var ,assign-func 'assign)))))
 	(:properties
 	 (unless deprecated-p
            (setf maybe-set-props
@@ -184,10 +203,14 @@
 		   `((putprop ',var ,assign-func 'assign)))))
 	 ;; Skip over the values.
 	 (setf opts (rest opts)))
-        ((see-also modified-commands setting-list)
+        ((see-also modified-commands)
          ;; Not yet supported, but we need to skip over the following
          ;; item too which is the parameter for this option.
          (setf opts (rest opts)))
+        (setting-list
+         ;; This has been replaced by :setting-list and is now an
+         ;; error to use this option.
+         (error "setting-list has been superseded by :setting-list"))
 	(:deprecated-p
 	 ;; This overrides everything and makes the variable
 	 ;; deprecated.  This means it's unbound, and the 'bindtest
@@ -217,6 +240,13 @@
         (t
          (warn "Ignoring unknown defmvar option for ~S: ~S"
                var (car opts)))))
+    (when maybe-boolean-predicate
+      (if (or setting-predicate-p setting-list-p assign-property-p)
+          (error "Do not use BOOLEAN option when :SETTING-PREDICATE, :SETTING-LIST, or :PROPERTIES is used")
+          ;; Check that boolean predicate isn't used with any other
+          ;; predicate.  The other predicates supersede boolean.
+          (setf maybe-predicate maybe-boolean-predicate)))
+      
     `(progn
        ,@maybe-reset
        ,@maybe-declare-type
@@ -711,7 +741,6 @@
 (defmvar $fpprintprec 0
   "Controls the number of significant digits printed for floats.  If
   0, then full precision is used."
-  fixnum
   :setting-predicate #'(lambda (val)
 			 ;; $fpprintprec must be a non-negative fixnum
 			 ;; and also cannot be equal to 1.
@@ -1088,8 +1117,7 @@
   "If set to an integer n, some potentially large (many factors)
   polynomials of degree > n won't be factored, preventing huge memory
   allocations and stack overflows. Set to zero to deactivate."
-  fixnum
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $savefactors nil "If t factors of ratreped forms will be saved")
 
@@ -1229,31 +1257,29 @@
   "The largest positive exponent which will be automatically
   expanded.  (X+1)^3 will be automatically expanded if EXPOP is
   greater than or equal to 3."
-  fixnum
-  see-also ($expon $maxposex $expand))
+  see-also ($expon $maxposex $expand)
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $expon 0
   "The largest negative exponent which will be automatically
   expanded.  (X+1)^(-3) will be automatically expanded if EXPON is
   greater than or equal to 3."
-  fixnum
-  see-also ($expop $maxnegex $expand))
+  see-also ($expop $maxnegex $expand)
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $maxposex 1000.
   "The largest positive exponent which will be expanded by the EXPAND
   command."
-  fixnum
   see-also ($maxnegex $expop $expand)
   ;; Check assignment to be a positive integer
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by the EXPAND
   command."
-  fixnum
   see-also ($maxposex $expon $expand)
   ;; Check assignment to be a positive integer
-  :properties ((assign 'posintegerset)))
+  :properties ((assign 'non-negative-integer-set)))
 
 ;; Lisp level variables
 (defmvar dosimp nil
@@ -1509,7 +1535,8 @@
 
 (defmvar $linenum 1
   "The line number of the last expression."
-  fixnum no-reset)
+  fixnum
+  no-reset)
 
 (defmvar $file_output_append nil
   "Flag to tell file-writing functions whether to append or clobber the
