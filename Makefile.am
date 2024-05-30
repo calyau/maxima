@@ -10,7 +10,7 @@ if ENABLE_BUILD_DOCS
    DOC_DIR = doc
 endif
 
-SUBDIRS = admin crosscompile-windows src lisp-utils tests $(DOC_DIR) interfaces share demo plotting desktopintegration $(LOCALE_DIR)
+SUBDIRS = admin crosscompile-windows src lisp-utils $(DOC_DIR) interfaces share demo plotting desktopintegration $(LOCALE_DIR) tests
 
 EXTRA_DIST = \
   common.mk maxima.iss.in \
