@@ -68,7 +68,7 @@
 	 *pre-transl-forms*
 	 ($tr_numer $tr_numer)
 	 defined_variables
-	 local)
+	 *local*)
     ,@forms))
 
 (defun tr-format (sstring &rest argl &aux strs)
