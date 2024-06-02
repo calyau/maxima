@@ -12,15 +12,15 @@ description: |
   What a snappy app cannot provide is allowing an external web browser
   to open the offline manual it comes bundled with.
 grade: stable
-base: core22
+base: core24
 license: GPL-2.0+
 confinement: strict
-architectures:
-  - build-on: arm64
-  - build-on: armhf
-  - build-on: amd64
-  - build-on: ppc64el
-  - build-on: s390x
+platforms:
+  amd64:
+  arm64:
+  armhf:
+  ppc64el:
+  s390x:
 apps:
   maxima:
     command: usr/bin/maxima
