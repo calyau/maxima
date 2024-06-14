@@ -1500,6 +1500,8 @@ if @var{op} is equal to the operator of @var{expr}.
 @code{true} if some element @var{op_1}, @dots{}, @var{op_n} is equal to the
 operator of @var{expr}.
 
+@code{operatorp} observes the value of the global flag @mrefdot{inflag}
+
 @opencatbox{Categories:}
 @category{Operators}
 @category{Predicate functions}
