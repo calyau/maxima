@@ -1393,7 +1393,8 @@ terms @var{expr} has (if it is a sum).
 @deffn {Function} op (@var{expr})
 
 Returns the main operator of the expression @var{expr}.
-@code{op (@var{expr})} is equivalent to @code{part (@var{expr}, 0)}.
+This is equivalent to @code{part (@var{expr}, 0)} with @code{partswitch} set
+to @code{false}.
 
 @code{op} returns a string if the main operator is a built-in or user-defined
 prefix, binary or n-ary infix, postfix, matchfix, or nofix operator.

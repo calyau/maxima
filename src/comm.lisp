@@ -816,7 +816,8 @@
 ;;; These functions implement the Macsyma functions $op and $operatorp.
 ;;; Dan Stanger
 (defmfun $op (expr)
-  ($part expr 0))
+  (let (($partswitch nil))
+    ($part expr 0)))
 
 (defmfun $operatorp (expr oplist)
   (if ($listp oplist)

@@ -62,6 +62,7 @@ Bug fixes for numbered bugs:
  * \#4263: plot2d discrete with x range computes y range over all data, not restricted to x
  * \#4265: integrate(sin(m*x)*sin(n*x), x, 0, 2*%pi) unconditionally zero
  * \#4269: plot3d ignores the option gnuplot_postamble
+ * \#4307: partswitch affects op and operatorp
 
 Unnumbered bugs fixed:
 ---------------------

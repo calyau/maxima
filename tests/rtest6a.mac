@@ -91,6 +91,16 @@ false$
 operatorp(x+y,"*");
 false$
 
+/* Bug #4307: partswitch affects op and operatorp */
+block([partswitch:false],errcatch(op('x)));
+[];
+block([partswitch:true],errcatch(op('x)));
+[];
+block([partswitch:false],errcatch(operatorp('x,'end)));
+[];
+block([partswitch:true],errcatch(operatorp('x,'end)));
+[];
+
 subst(a,x+y,x+(x+y)^2+y);
 y+x+a^2;
 subst(-%i,%i,a+b*%i);
