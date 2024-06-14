@@ -252,18 +252,23 @@
      ;; look for A = B
      ((= a b))
      (t
-       ;; Implement test without involving floating-point arithmetic,
-       ;; to avoid errors which could occur with extreme values.
-       (let (a-significand a-expt a-sign b-significand b-expt b-sign)
-         (multiple-value-setq (a-significand a-expt a-sign) (decode-float a))
-         (multiple-value-setq (b-significand b-expt b-sign) (decode-float b))
-         (if (or (= a-sign b-sign) (>= $float_approx_equal_tolerance 1d0))
-           (let (a-b-significand a-b-expt a-b-sign tol-significand tol-expt tol-sign)
-             (multiple-value-setq (a-b-significand a-b-expt a-b-sign) (integer-decode-float (abs (- a b))))
-             (multiple-value-setq (tol-significand tol-expt tol-sign) (integer-decode-float $float_approx_equal_tolerance))
-             (or (< a-b-expt (+ tol-expt (min a-expt b-expt)))
-                 (and (= a-b-expt (+ tol-expt (min a-expt b-expt)))
-                      (<= a-b-significand tol-significand))))))))))
+      ;; Implement test without involving floating-point arithmetic,
+      ;; to avoid errors which could occur with extreme values.
+      (multiple-value-bind (a-significand a-expt a-sign)
+          (decode-float a)
+        (declare (ignore a-significand))
+        (multiple-value-bind (b-significand b-expt b-sign)
+            (decode-float b)
+          (declare (ignore b-significand))
+          (when (or (= a-sign b-sign)
+                    (>= $float_approx_equal_tolerance 1d0))
+            (multiple-value-bind (a-b-significand a-b-expt)
+                (integer-decode-float (abs (- a b)))
+              (multiple-value-bind (tol-significand tol-expt)
+                  (integer-decode-float $float_approx_equal_tolerance)
+                (or (< a-b-expt (+ tol-expt (min a-expt b-expt)))
+                    (and (= a-b-expt (+ tol-expt (min a-expt b-expt)))
+                         (<= a-b-significand tol-significand))))))))))))
 
 ;; Big float version of float_approx_equal. But for bfloat_approx_equal, the tolerance isn't
 ;; user settable; instead, it is 32 / 2^fpprec. The factor of 32 is too large, I suppose. But
