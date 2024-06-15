@@ -4,7 +4,12 @@
 ;;;; multiple files.  We gather them all here so that they are
 ;;;; consistently defined across the build and to make the dependencies
 ;;;; easier to track.
-
+;;;;
+;;;; WARNING: Be very careful about initializing variables to constant
+;;;; lists.  Lisp compilers can and will coalesce such constant lists
+;;;; into the same object.  This is problematic because Maxima
+;;;; sometimes uses destructive operations to modify these variables,
+;;;; which causes unrelated variables to also change in weird ways.
 (in-package "MAXIMA")
 
 ;; Distill various Unicode-related features into a single :lisp-unicode-capable.
