@@ -2276,7 +2276,7 @@ wrapper for this."
     ((not (null args))
        (merror (intl:gettext "return: too many arguments; found: ~M") `((mlist) ,x ,@args) ))
     ((and (not mprogp) (not mdop))
-       (merror (intl:gettext "return: not within 'block'")))
+       (merror (intl:gettext "return: not within 'block' or 'do'")))
     (t (throw 'mprog (ncons x)) ) ))
 
 (defmspec mgo (tag)
