@@ -3135,6 +3135,50 @@ true;
 (kill (foo, bar, baz), 0);
 0;
 
+/* Basic tests for error checking of translated return and go forms */
+
+(foo () := return (),
+ translate (foo));
+[];
+
+(foo () := do return (1),
+ translate_or_lose (foo),
+ foo ());
+1;
+
+(foo () := block (return (2)),
+ translate_or_lose (foo),
+ foo ());
+2;
+
+(foo () := go (x),
+ translate (foo));
+[];
+
+(foo () := block (go (f ())),
+ translate (foo));
+[];
+
+/* *cough* */
+(foo () := do (go (1), return (false), 1, return (true)),
+ translate_or_lose (foo),
+ foo ());
+true;
+
+/* *cough* */
+(foo () := block (block (go (x)), return (1), go (x), return (2), x, 3),
+ translate_or_lose (foo),
+ foo ());
+3;
+
+(foo () := block (go (end), return (0), end, 1),
+ translate_or_lose (foo),
+ foo ());
+1;
+
+(kill (foo), 0);
+0;
+
 
 
 
