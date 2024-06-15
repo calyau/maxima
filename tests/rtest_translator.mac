@@ -3179,6 +3179,38 @@ true;
 (kill (foo), 0);
 0;
 
+/* Bug #4260: translate fails with go tag in final position */
+
+block ([translate : false, l1, l2],
+  foo () :=
+    [block (),
+     block ([]),
+     block (1),
+     block (a),
+     block ('a),
+     block (done),
+     block ('done),
+     block (go (0), return (false), 0),
+     block (go (a), return (false), a),
+     block (go (done), return (false), done),
+     block (go (b), return (false), b, 1),
+     block (go (c), return (false), c, d),
+     block (go (f), return (false), f, 'g),
+     block (go (done), return (false), done, 'end),
+     block (go (2), return (false), 1, return (true), 2, go (1))],
+
+  l1 : foo (),
+
+  translate_or_lose (foo),
+
+  l2 : foo (),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
 
 
 

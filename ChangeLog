@@ -59,6 +59,7 @@ Bug fixes for numbered bugs:
  * \#4251: imaxima could not display image with Emacs 29.1
  * \#4254: plog returns unsimplfied results
  * \#4257: Incorrect change of variable in integral involving diff
+ * \#4260: translate fails with go tag in final position
  * \#4263: plot2d discrete with x range computes y range over all data, not restricted to x
  * \#4265: integrate(sin(m*x)*sin(n*x), x, 0, 2*%pi) unconditionally zero
  * \#4269: plot3d ignores the option gnuplot_postamble

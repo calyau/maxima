@@ -99,6 +99,7 @@
 (defmvar *local* nil "T if a $local statement is in the body.")
 (defmvar tr-progret t)
 (defmvar inside-mprog nil)
+(defmvar *go-forms* nil "list of `translate'd go forms in the block.")
 (defmvar *returns* nil "list of `translate'd return forms in the block.")
 (defmvar return-mode nil "the highest(?) mode of all the returns.")
 (defmvar need-prog? nil)
@@ -1047,6 +1048,7 @@ APPLY means like APPLY.")
 		      (inside-mprog t)
 		      (return-mode nil)
 		      (need-prog? nil)
+		      (*go-forms* nil)
 		      (*returns* nil) ;; not used but must be bound.
 		      )
   (do ((l nil))
@@ -1074,24 +1076,31 @@ APPLY means like APPLY.")
     ;; [4] translate a form in the body
     (let ((form (pop body)))
       (cond ((null body)
-	     ;; this is a really bad case.
-	     ;; we don't really know if the return mode
-	     ;; of the expression is for the value of the block.
-	     ;; Some people write RETURN at the end of a block
-	     ;; and some don't. In any case, the people not
-	     ;; use the PROG programming style won't be screwed
-	     ;; by this.
-	     (setq form (translate form))
-	     (setq return-mode (*union-mode (car form) return-mode))
-	     (setq form (cdr form))
-	     (if (and need-prog?
-		      (or (atom form)
-			  (not (eq (car form) 'return))))
-		 ;; put a RETURN on just in case.
-		 (setq form `(return ,form))))
-	    ((go-tag-p form))
-	    (t
-	     (setq form (dtranslate form))))
+             (cond ((and (go-tag-p form) (find form *go-forms* :key #'cadr))
+                    ; we treat the last expression in the body as a go tag
+                    ; if (1) it looks like a go tag, and (2) we have seen a
+                    ; go form with this tag.
+                    (push form l)
+                    (setq form '(return '$done)))
+                   (t
+                    ;; this is a really bad case.
+                    ;; we don't really know if the return mode
+                    ;; of the expression is for the value of the block.
+                    ;; Some people write RETURN at the end of a block
+                    ;; and some don't. In any case, the people not
+                    ;; use the PROG programming style won't be screwed
+                    ;; by this.
+                    (setq form (translate form))
+                    (setq return-mode (*union-mode (car form) return-mode))
+                    (setq form (cdr form))
+                    (if (and need-prog?
+                             (or (atom form)
+                                 (not (eq (car form) 'return))))
+                        ;; put a RETURN on just in case.
+                        (setq form `(return ,form))))))
+            ((go-tag-p form))
+            (t
+             (setq form (dtranslate form))))
       (push form l))))
 
 (def%tr mreturn (form)
@@ -1118,7 +1127,9 @@ APPLY means like APPLY.")
     (tr-abort)
     (return-from mgo nil))
   (setq need-prog? t)
-  `($any . (go ,(cadr form))))
+  (setq form `(go ,(cadr form)))
+  (push form *go-forms*)
+  `($any . ,form))
 
 (def%tr mqapply (form)
   (let     ((fn (cadr form)) (args (cddr form)) 
@@ -1195,7 +1206,7 @@ APPLY means like APPLY.")
 ;; Perhaps a mere expansion into an MPROG would be best.
 
 (def%tr mdo (form)
-  (let (*returns* assigns return-mode (inside-mprog t) need-prog?)
+  (let (*returns* *go-forms* assigns return-mode (inside-mprog t) need-prog?)
     (let (mode var init next test-form action varmode)
       (setq var (cond ((cadr form)) (t 'mdo)))
       (tbind var)
@@ -1235,7 +1246,7 @@ APPLY means like APPLY.")
 		     (t (list (cdr action)))))))))
 
 (def%tr mdoin (form)
-  (let (*returns* assigns return-mode (inside-mprog t) need-prog?)
+  (let (*returns* *go-forms* assigns return-mode (inside-mprog t) need-prog?)
     (prog (mode var init action)
        (setq var (tbind (cadr form))) (tbind 'mdo)
        (setq init (dtranslate (caddr form)))
