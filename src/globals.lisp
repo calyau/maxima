@@ -4,7 +4,12 @@
 ;;;; multiple files.  We gather them all here so that they are
 ;;;; consistently defined across the build and to make the dependencies
 ;;;; easier to track.
-
+;;;;
+;;;; WARNING: Be very careful about initializing variables to constant
+;;;; lists.  Lisp compilers can and will coalesce such constant lists
+;;;; into the same object.  This is problematic because Maxima
+;;;; sometimes uses destructive operations to modify these variables,
+;;;; which causes unrelated variables to also change in weird ways.
 (in-package "MAXIMA")
 
 ;; Distill various Unicode-related features into a single :lisp-unicode-capable.
@@ -463,7 +468,7 @@
 
 ;;------------------------------------------------------------------------
 ;; From algsys.lisp
-(defmvar $%rnum_list '((mlist))
+(defmvar $%rnum_list (list '(mlist))
   "Upon exit from ALGSYS this is bound to a list of the %RNUMS which
   where introduced into the expression. Useful for mapping over and
   using as an argument to SUBST.") 
@@ -598,7 +603,7 @@
   no-reset
   :properties ((assign 'neverset)))
 
-(defvar $activecontexts '((mlist))
+(defvar $activecontexts (list '(mlist))
   "A list of the currently activated contexts")
 
 (defvar *complexsign* nil
@@ -1029,7 +1034,7 @@
 (defvar transp nil)
 (defvar noevalargs nil)
 
-(defmvar $structures '((mlist))
+(defmvar $structures (list '(mlist))
   nil
   no-reset
   :properties ((assign 'neverset)))
@@ -1133,10 +1138,10 @@
 (defmvar $factorflag nil
   "If `t' constant factor of polynomial is also factored"
   :properties ((evflag t)))
-(defmvar $dontfactor '((mlist))
+(defmvar $dontfactor (list '(mlist))
   "A list of variables with respect to which factoring is not to occur.")
 (defmvar $norepeat t)
-(defmvar $ratweights '((mlist simp))
+(defmvar $ratweights (list '(mlist simp))
   "The list of weights assigned by 'ratweight'."
   :properties ((assign
 		#'(lambda (name val)
@@ -1160,7 +1165,7 @@
 			   (when (and val $ratwtlvl)
 			       (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time.")))))))
 
-(defmvar $ratvars '((mlist simp))
+(defmvar $ratvars (list '(mlist simp))
   "A list of the arguments of the function 'ratvars' when it was called
   most recently.  Each call to the function 'ratvars' resets the
   list."

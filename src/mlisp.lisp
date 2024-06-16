@@ -796,7 +796,7 @@ wrapper for this."
   ;; set the initialization
   (putprop (caar z) (initializersmostly z) 'defstruct-default)
   (setf (get (caar z) 'dimension) 'dimension-defstruct)
-  (nconc $structures (list (get (caar z) 'defstruct-default)))
+  (setf $structures (append $structures (list (get (caar z) 'defstruct-default))))
   (setf (get (caar z) 'translate) 'defstruct-translate)
   (get (caar z) 'defstruct-default))
 
