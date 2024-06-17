@@ -657,14 +657,14 @@ if test x"${enable_build_docs}" = xtrue ; then
 	dnl assuming that the end of the version string contains the
 	dnl version number consisting of digits separated by a period.
 	dnl This allows for version numbers like 6.8.90.
-	makeinfo_version_string=`expr "\`$MAKEINFO --version | head -1\`" : '.* \([[.0-9]]\+\)'`
+	makeinfo_version_string=`expr "\`$MAKEINFO --version | head -1\`" : '.* \([[.0-9]][[.0-9]]*\)'`
 	dnl echo Makeinfo version ${makeinfo_version}
 
 	dnl From makeinfo_version, extract out the major and minor
 	dnl version numbers.  We only need the major and minor version
 	dnl numbers.
-	makeinfo_major=`expr $makeinfo_version_string : '\([[0-9]]\+\)'`
-	makeinfo_minor=`expr $makeinfo_version_string : '[[0-9]]\+\.\([[0-9]]\+\)'`
+	makeinfo_major=`expr $makeinfo_version_string : '\([[0-9]][[0-9]]*\)'`
+	makeinfo_minor=`expr $makeinfo_version_string : '[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
 	dnl echo major ${makeinfo_major}
 	dnl echo minor ${makeinfo_minor}
 
@@ -903,9 +903,9 @@ if test x"${explicit_lisp}" = xfalse ; then
 	   dnl Assume GCL_VERSION looks like p.q.r where p, q, and r are
 	   dnl digits.	Then extract each set of digits to get the numbers to
 	   dnl create a version number for comparison.
-	   gcl_major=`expr $GCL_VERSION : '\([[0-9]]\+\)'`
-	   gcl_minor=`expr $GCL_VERSION : '[[0-9]]\+\.\([[0-9]]\+\)'`
-	   gcl_sub=`expr $GCL_VERSION : '[[0-9]]\+\.[[0-9]]\+\.\([[0-9]]\+\)'`
+	   gcl_major=`expr $GCL_VERSION : '\([[0-9]][[0-9]]*\)'`
+	   gcl_minor=`expr $GCL_VERSION : '[[0-9]][[0-9]*\.\([[0-9]][[0-9]]*\)'`
+	   gcl_sub=`expr $GCL_VERSION : '[[0-9]][[0-9]]*\.[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
 	   gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_sub}`
 	   if test ${gcl_version} -lt 20613; then
 		   AC_MSG_RESULT([GCL autodetected, but its version ${GCL_VERSION} is too old])
@@ -1041,9 +1041,9 @@ if test x"${gcl}" = xtrue; then
    dnl Assume GCL_VERSION looks like p.q.r where p, q, and r are
    dnl digits.  Then extract each set of digits to get the numbers to
    dnl create a version number for comparison.
-   gcl_major=`expr $GCL_VERSION : '\([[0-9]]\+\)'`
-   gcl_minor=`expr $GCL_VERSION : '[[0-9]]\+\.\([[0-9]]\+\)'`
-   gcl_sub=`expr $GCL_VERSION : '[[0-9]]\+\.[[0-9]]\+\.\([[0-9]]\+\)'`
+   gcl_major=`expr $GCL_VERSION : '\([[0-9]][[0-9]]*\)'`
+   gcl_minor=`expr $GCL_VERSION : '[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
+   gcl_sub=`expr $GCL_VERSION : '[[0-9]][[0-9]]*\.[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
    dnl echo gcl major = $gcl_major
    dnl echo gcl_minor = $gcl_minor
    dnl echo gcl_sub = $gcl_sub
