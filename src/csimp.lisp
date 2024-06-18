@@ -157,19 +157,20 @@
   (values nn* dn*))
 
 ;; Like NUMDEN but dependency on VAR is explicit.  Use this instead of
-;; NUMDEN if possible.
+;; NUMDEN if possible.  Also, we do not set the special variables DN*
+;; and NN*.  The callers are responsible for doing that, now.
 (defun numden-var (e var1)
-  (prog (varlist)
-     (setq varlist (list var1))
+  (let ((varlist (list var1))
+        dn nn)
      (newvar (setq e (fmt e)))
      (setq e (cdr (ratrep* e)))
-     (setq dn*
+     (setq dn
 	   (simplifya (pdis (ratdenominator e))
 		      nil))
-     (setq nn*
+     (setq nn
 	   (simplifya (pdis (ratnumerator e))
-		      nil)))
-  (values nn* dn*))
+		      nil))
+     (values nn dn)))
 
 (defun fmt (exp)
   (let (nn*)

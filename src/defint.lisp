@@ -708,21 +708,22 @@ in the interval of integration.")
 	  (t nil))))
 
 (defun kindp34 (ivar)
-  (numden-var exp ivar)
-  (let* ((d dn*)
-	 (a (cond ((and (zerop1 ($limit d ivar *ll* '$plus))
-			(eq (limit-pole (m+ exp (m+ (m- *ll*) ivar))
-					ivar *ll* '$plus)
-			    '$yes))
-		   t)
-		  (t nil)))
-	 (b (cond ((and (zerop1 ($limit d ivar *ul* '$minus))
-			(eq (limit-pole (m+ exp (m+ *ul* (m- ivar)))
-					ivar *ul* '$minus)
-			    '$yes))
-		   t)
-		  (t nil))))
-    (or a b)))
+  (multiple-value-bind (nn* dn*)
+      (numden-var exp ivar)
+    (let* ((d dn*)
+	   (a (cond ((and (zerop1 ($limit d ivar *ll* '$plus))
+			  (eq (limit-pole (m+ exp (m+ (m- *ll*) ivar))
+					  ivar *ll* '$plus)
+			      '$yes))
+		     t)
+		    (t nil)))
+	   (b (cond ((and (zerop1 ($limit d ivar *ul* '$minus))
+			  (eq (limit-pole (m+ exp (m+ *ul* (m- ivar)))
+					  ivar *ul* '$minus)
+			      '$yes))
+		     t)
+		    (t nil))))
+      (or a b))))
 
 (defun diverg nil
   (cond (*nodiverg (throw 'divergent 'divergent))
@@ -1223,61 +1224,62 @@ in the interval of integration.")
 ;; can handle some expressions with poles on real line, such as
 ;; sin(x)*cos(x)/x.
 (defun mtosc (grand ivar)
-  (numden-var grand ivar)
-  (let ((n nn*)
-	(d dn*)
-	ratterms ratans
-	plf bptu bptd s upans downans)
-    (cond ((not (or (polyinx d ivar nil)
-		    (and (setq grand (%einvolve-var d ivar))
-			 (among '$%i grand)
-			 (polyinx (setq d (sratsimp (m// d (m^t '$%e grand))))
-				  ivar
-				  nil)
-			 (setq n (m// n (m^t '$%e grand))))))  nil)
-	  ((equal (setq s (deg-var d ivar)) 0)  nil)
+  (multiple-value-bind (n d)
+      (numden-var grand ivar)
+    (let (#+nil (n nn*)
+	  #+nil (d dn*)
+	  ratterms ratans
+	  plf bptu bptd s upans downans)
+      (cond ((not (or (polyinx d ivar nil)
+		      (and (setq grand (%einvolve-var d ivar))
+			   (among '$%i grand)
+			   (polyinx (setq d (sratsimp (m// d (m^t '$%e grand))))
+				    ivar
+				    nil)
+			   (setq n (m// n (m^t '$%e grand))))))  nil)
+	    ((equal (setq s (deg-var d ivar)) 0)  nil)
 ;;;Above tests for applicability of this method.
-	  ((and (or (setq plf (polfactors n ivar))  t)
-		(setq n ($expand (cond ((car plf)
-					(m*t 'x* (sconvert (cadr plf) ivar)))
-				       (t (sconvert n ivar)))))
-		(cond ((mplusp n)  (setq n (cdr n)))
-		      (t (setq n (list n))))
-		(dolist (term n t)
-		  (cond ((polyinx term ivar nil)
-			 ;; call to $expand can create rational terms
-			 ;; with no exp(m*%i*x)
-			 (setq ratterms (cons term ratterms)))
-			((rib term s ivar))
-			(t (return nil))))
+	    ((and (or (setq plf (polfactors n ivar))  t)
+		  (setq n ($expand (cond ((car plf)
+					  (m*t 'x* (sconvert (cadr plf) ivar)))
+				         (t (sconvert n ivar)))))
+		  (cond ((mplusp n)  (setq n (cdr n)))
+		        (t (setq n (list n))))
+		  (dolist (term n t)
+		    (cond ((polyinx term ivar nil)
+			   ;; call to $expand can create rational terms
+			   ;; with no exp(m*%i*x)
+			   (setq ratterms (cons term ratterms)))
+			  ((rib term s ivar))
+			  (t (return nil))))
 ;;;Function RIB sets up the values of BPTU and BPTD
-		(cond ((car plf)
-		       (setq bptu (subst (car plf) 'x* bptu))
-		       (setq bptd (subst (car plf) 'x* bptd))
-		       (setq ratterms (subst (car plf) 'x* ratterms))
-		       t)	 ;CROCK, CROCK. This is TERRIBLE code.
-		      (t t))
+		  (cond ((car plf)
+		         (setq bptu (subst (car plf) 'x* bptu))
+		         (setq bptd (subst (car plf) 'x* bptd))
+		         (setq ratterms (subst (car plf) 'x* ratterms))
+		         t)	 ;CROCK, CROCK. This is TERRIBLE code.
+		        (t t))
 ;;;If there is BPTU then CSEMIUP must succeed.
 ;;;Likewise for BPTD.
-		(setq ratans
-		      (if ratterms
-			  (let (($intanalysis nil))
-			    ;; The original integrand was already
-			    ;; determined to have no poles by initial-analysis.
-			    ;; If individual terms of the expansion have poles, the poles 
-			    ;; must cancel each other out, so we can ignore them.
-			    (try-defint (m// (m+l ratterms) d) ivar '$minf '$inf))
-			0))
-		;; if integral of ratterms is divergent, ratans is nil, 
-		;; and mtosc returns nil
+		  (setq ratans
+		        (if ratterms
+			    (let (($intanalysis nil))
+			      ;; The original integrand was already
+			      ;; determined to have no poles by initial-analysis.
+			      ;; If individual terms of the expansion have poles, the poles 
+			      ;; must cancel each other out, so we can ignore them.
+			      (try-defint (m// (m+l ratterms) d) ivar '$minf '$inf))
+			    0))
+		  ;; if integral of ratterms is divergent, ratans is nil, 
+		  ;; and mtosc returns nil
 
-		(cond (bptu (setq upans (csemiup (m+l bptu) d ivar)))
-		      (t (setq upans 0)))
-		(cond (bptd (setq downans (csemidown (m+l bptd) d ivar)))
-		      (t (setq downans 0))))
+		  (cond (bptu (setq upans (csemiup (m+l bptu) d ivar)))
+		        (t (setq upans 0)))
+		  (cond (bptd (setq downans (csemidown (m+l bptd) d ivar)))
+		        (t (setq downans 0))))
 	   
-	   (sratsimp (m+ ratans
-			 (m* '$%pi (m+ upans (m- downans)))))))))
+	     (sratsimp (m+ ratans
+			   (m* '$%pi (m+ upans (m- downans))))))))))
 
 
 (defun evenfn (e ivar)
@@ -1332,7 +1334,8 @@ in the interval of integration.")
 		  sn nil)
 	    (setq dn* (m*l sd)
 		  sd nil))
-	   (t (numden-var grand ivar)))
+	   (t (multiple-value-setq (nn* dn*)
+                (numden-var grand ivar))))
 ;;;
 ;;;New section.
      (setq n (rmconst1 nn* ivar))
@@ -1474,7 +1477,8 @@ in the interval of integration.")
                             (cdr grand)))
 	    (setq nn* (m*l sn) sn nil)
 	    (setq dn* (m*l sd) sd nil))
-	   (t (numden-var grand ivar)))
+	   (t (multiple-value-setq (nn* dn*)
+                (numden-var grand ivar))))
      (setq n (rmconst1 nn* ivar))
      (setq d (rmconst1 dn* ivar))
      (setq nc (car n))
@@ -1773,7 +1777,8 @@ in the interval of integration.")
                             `((mexpt simp) ((%sin simp) ,arg) 2)
                             `((mplus) 1 ((mtimes) -1 ((mexpt) ((%cos) ,arg) 2)))
                             exp))
-     (numden-var exp ivar)
+     (multiple-value-setq (nn* dn*)
+       (numden-var exp ivar))
      (setq u nn*)
      (cond ((and (setq n (findp dn* ivar))
 		 (eq (ask-integer n '$integer) '$yes))
@@ -2477,24 +2482,25 @@ in the interval of integration.")
 ;; Evaluates the contour integral of GRAND around the unit circle
 ;; using residues.
 (defun unitcir (grand ivar)
-  (numden-var grand ivar)
-  (let* ((sgn nil)
-	 (result (princip (res-var ivar nn* dn* 
-			           #'(lambda (pt)
-				       ;; Is pt stricly inside the unit circle?
-				       (setq sgn (let ((limitp nil))
-					           ($asksign (m+ -1 (cabs pt)))))
-				       (eq sgn '$neg))
-			           #'(lambda (pt)
-				       (declare (ignore pt))
-				       ;; Is pt on the unit circle?  (Use
-				       ;; the cached value computed
-				       ;; above.)
-				       (prog1
-				           (eq sgn '$zero)
-				         (setq sgn nil)))))))
-    (when result
-      (m* '$%pi result))))
+  (multiple-value-bind (nn* dn*)
+      (numden-var grand ivar)
+    (let* ((sgn nil)
+	   (result (princip (res-var ivar nn* dn* 
+			             #'(lambda (pt)
+				         ;; Is pt stricly inside the unit circle?
+				         (setq sgn (let ((limitp nil))
+					             ($asksign (m+ -1 (cabs pt)))))
+				         (eq sgn '$neg))
+			             #'(lambda (pt)
+				         (declare (ignore pt))
+				         ;; Is pt on the unit circle?  (Use
+				         ;; the cached value computed
+				         ;; above.)
+				         (prog1
+				             (eq sgn '$zero)
+				           (setq sgn nil)))))))
+      (when result
+        (m* '$%pi result)))))
 
 
 (defun logx1 (exp *ll* *ul* ivar)
@@ -3274,7 +3280,8 @@ in the interval of integration.")
 	  ((not (null ind))
 ;;;Catches Unfactored forms.
 	   (setq m (m// (sdiff e ivar) e))
-           (numden-var m ivar)
+           (multiple-value-setq (nn* dn*)
+             (numden-var m ivar))
 	   (setq m nn*)
 	   (setq r dn*)
 	   (cond
