@@ -1226,9 +1226,7 @@ in the interval of integration.")
 (defun mtosc (grand ivar)
   (multiple-value-bind (n d)
       (numden-var grand ivar)
-    (let (#+nil (n nn*)
-	  #+nil (d dn*)
-	  ratterms ratans
+    (let (ratterms ratans
 	  plf bptu bptd s upans downans)
       (cond ((not (or (polyinx d ivar nil)
 		      (and (setq grand (%einvolve-var d ivar))
