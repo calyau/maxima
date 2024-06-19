@@ -2477,10 +2477,10 @@ in the interval of integration.")
 ;; Evaluates the contour integral of GRAND around the unit circle
 ;; using residues.
 (defun unitcir (grand ivar)
-  (multiple-value-bind (nn* dn*)
+  (multiple-value-bind (nn dn)
       (numden-var grand ivar)
     (let* ((sgn nil)
-	   (result (princip (res-var ivar nn* dn* 
+	   (result (princip (res-var ivar nn dn 
 			             #'(lambda (pt)
 				         ;; Is pt stricly inside the unit circle?
 				         (setq sgn (let ((limitp nil))
@@ -3274,21 +3274,19 @@ in the interval of integration.")
 	  ((setq r (bx**n+a e ivar))  (cons 1. r))
 	  ((not (null ind))
 ;;;Catches Unfactored forms.
-	   (setq m (m// (sdiff e ivar) e))
-           (multiple-value-setq (nn* dn*)
-             (numden-var m ivar))
-	   (setq m nn*)
-	   (setq r dn*)
-	   (cond
-	     ((and (setq r (bx**n+a (sratsimp r) ivar))
-		   (not (among ivar (setq m (m// m (m* (cadr r) (caddr r)
-						      (m^t ivar (m+t -1 (cadr r))))))))
-		   (setq e (m// (subin-var 0. e ivar) (m^t (car r) m))))
-	      (cond ((equal e 1.)
-		     (cons m r))
-		    (t (setq e (m^ e (m// 1. m)))
-		       (list m (m* e (car r)) (cadr r)
-			     (m* e (caddr r))))))))
+           (multiple-value-bind (m r)
+               (numden-var (m// (sdiff e ivar) e)
+                           ivar)
+	     (cond
+	       ((and (setq r (bx**n+a (sratsimp r) ivar))
+		     (not (among ivar (setq m (m// m (m* (cadr r) (caddr r)
+						         (m^t ivar (m+t -1 (cadr r))))))))
+		     (setq e (m// (subin-var 0. e ivar) (m^t (car r) m))))
+	        (cond ((equal e 1.)
+		       (cons m r))
+		      (t (setq e (m^ e (m// 1. m)))
+		         (list m (m* e (car r)) (cadr r)
+			       (m* e (caddr r)))))))))
 	  (t ()))))
 
 ;;;Is E = VAR raised to some power? If so return power or 0.
