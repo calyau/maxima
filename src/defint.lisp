@@ -124,7 +124,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special #+nil *def2* pcprntd *mtoinf*
+(declare-top (special pcprntd *mtoinf*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp
@@ -171,7 +171,7 @@ in the interval of integration.")
 	(integer-info ()) (integerl integerl) (nonintegerl nonintegerl))
     (with-new-context (context)
       (unwind-protect
-	   (let ((*defint-assumptions* ())  #+nil(*def2* ())  (*rad-poly-recur* ())
+	   (let ((*defint-assumptions* ()) (*rad-poly-recur* ())
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var ivar)
 		 (orig-ll *ll*)  (orig-ul *ul*)
@@ -351,8 +351,7 @@ in the interval of integration.")
 	      (equal ($imagpart *ll1*) 0)
 	      (equal ($imagpart *ul1*) 0)
 	      (not (alike1 *ll1* *ul1*)))
-	 (let (#+nil(*def2* t))
-	   (defint exp1 'yx *ll1* *ul1*)))))
+	 (defint exp1 'yx *ll1* *ul1*))))
 
 ;; converts limits of integration to values for new variable 'yx
 (defun intcv2 (d nv ivar)
@@ -694,8 +693,7 @@ in the interval of integration.")
     (cond ((mplusp exp)
 	   (let ((ans (catch 'divergent
 			(andmapcar #'(lambda (new-exp)
-				       (let (#+nil(*def2* t))
-					 (defint new-exp ivar *ll* *ul*)))
+				       (defint new-exp ivar *ll* *ul*))
 				   (cdr exp)))))
 	     (cond ((null ans) nil)
 		   ((eq ans 'divergent)
@@ -2968,8 +2966,7 @@ in the interval of integration.")
 		 (cond ((or (null p1-part1)
 			    (null p1-part2))
 			nil)
-		       (t (let ((p2 (let (#+nil(*def2* t))
-				      (defint p2 ivar a b))))
+		       (t (let ((p2 (defint p2 ivar a b)))
 			    (cond (p2 (add* p1-part1
 					    (m- p1-part2)
 					    (m- p2)))
@@ -3034,9 +3031,8 @@ in the interval of integration.")
 	      (return nil))
 	     ((and (eq arg ivar)
 		   (equal 0. (no-err-sub-var 0. ans ivar))
-		   (setq d (let (#+nil(*def2* t))
-			     (defint (m* ans (m^t ivar '*z*))
-				 ivar *ll* *ul*))))
+		   (setq d (defint (m* ans (m^t ivar '*z*))
+				 ivar *ll* *ul*)))
 	      ;; The arg of the log function is the same as the
 	      ;; integration variable.  We can do something a little
 	      ;; simpler than integration by parts.  We have something
