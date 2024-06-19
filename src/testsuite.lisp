@@ -309,8 +309,6 @@
      ((mlist simp) "rtest_engineering_format"
       #+abcl
       ((mlist simp) 6)
-      #+ccl
-      ((mlist simp) 6 8 10 12)
       ;; Tested with acl 10.1
       #+allegro
       ((mlist simp) 1 6 8 10 12 14))
