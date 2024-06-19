@@ -124,7 +124,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special pcprntd *mtoinf*
+(declare-top (special *mtoinf*
 		      *nodiverg exp1
 		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp
@@ -156,6 +156,11 @@ in the interval of integration.")
 
 (defmvar defintdebug () "If true Defint prints out debugging information")
 
+(defvar *pcprntd*
+  nil
+  "When NIL, print a message that the principal value of the integral has
+  been computed.")
+
 (defmfun $defint (exp ivar *ll* *ul*)
 
   ;; Distribute $defint over equations, lists, and matrices.
@@ -175,7 +180,7 @@ in the interval of integration.")
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var ivar)
 		 (orig-ll *ll*)  (orig-ul *ul*)
-		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  ; (limitp t)
+		 (*pcprntd* nil)  (*nodiverg nil)  ($logabs t)  ; (limitp t)
 		 (rp-polylogp ())
                  ($%edispflag nil) ; to get internal representation
 		 ($m1pbranch ())) ;Try this out.
@@ -1086,9 +1091,9 @@ in the interval of integration.")
 
 (defun principal nil
   (cond ($noprincipal (diverg))
-	((not pcprntd)
+	((not *pcprntd*)
 	 (format t "Principal Value~%")
-	 (setq pcprntd t))))
+	 (setq *pcprntd* t))))
 
 ;; e is of form poly(x)*exp(m*%i*x)
 ;; s is degree of denominator
@@ -1137,7 +1142,7 @@ in the interval of integration.")
 	(t (throw 'ptimes%e nil))))
 
 (defun csemidown (n d ivar)
-  (let ((pcprntd t)) ;Not sure what to do about PRINCIPAL values here.
+  (let ((*pcprntd* t)) ;Not sure what to do about PRINCIPAL values here.
     (princip
        (res-var ivar n d #'lowerhalf #'(lambda (x)
 				         (cond ((equal ($imagpart x) 0)  t)
@@ -1151,7 +1156,7 @@ in the interval of integration.")
 
 
 (defun csemiup (n d ivar)
-  (let ((pcprntd t)) ;I'm not sure what to do about PRINCIPAL values here.
+  (let ((*pcprntd* t)) ;I'm not sure what to do about PRINCIPAL values here.
     (princip
      (res-var ivar n d #'upperhalf #'(lambda (x)
 				        (cond ((equal ($imagpart x) 0)  t)
