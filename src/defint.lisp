@@ -126,7 +126,7 @@
 
 (declare-top (special *mtoinf*
 		      exp1
-		      *ul1* *ll1* *dflag bptu bptd zn
+		      *ul1* *ll1* *dflag bptu bptd #+nil zn
 		      *ul* *ll* exp
 		      nd*
 		      *scflag*
@@ -3073,7 +3073,7 @@ in the interval of integration.")
 ;; This basically picks off b*x^n+a and returns the list
 ;; (b n a).  It may also set the global *zd*.
 (defun maybpc (e ivar)
-  (let (zd)
+  (let (zd zn)
     (cond (*mtoinf* (throw 'ggrm (linpower0 e ivar)))
 	  ((and (not *mtoinf*)
 	        (null (setq e (bx**n+a e ivar)))) ;bx**n+a --> (a n b) or nil.
@@ -3141,7 +3141,7 @@ in the interval of integration.")
 ;;
 ;; which is the same form above.
 (defun ggr (e ind ivar)
-  (prog (c zd zn nn* dn* nd* dosimp $%emode)
+  (prog (c zd #+nil zn nn* dn* nd* dosimp $%emode)
      (setq nd* 0.)
      (cond (ind (setq e ($expand e))
 		(cond ((and (mplusp e)
