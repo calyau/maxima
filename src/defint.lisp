@@ -131,7 +131,7 @@
 		      nd*
 		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
-		      *dintexp-recur* defintdebug *defint-assumptions*
+		      *dintexp-recur* *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
 ;;;rsn* is in comdenom. does a ratsimp of numerator.
@@ -154,7 +154,10 @@
   "When @code{true}, definite integration tries to find poles in the integrand 
 in the interval of integration.")
 
-(defmvar defintdebug () "If true Defint prints out debugging information")
+;; Currently, if true, $solvetrigwarn is set to true.  No additional
+;; debugging information is displayed.
+(defvar *defintdebug* ()
+  "If true Defint prints out some debugging information.")
 
 (defvar *pcprntd*
   nil
@@ -3580,7 +3583,7 @@ in the interval of integration.")
 	   (eq ($asksign (m+ place (m- *ll*))) '$pos))))
 
 (defun real-roots (exp ivar)
-  (let (($solvetrigwarn (cond (defintdebug t) ;Rest of the code for
+  (let (($solvetrigwarn (cond (*defintdebug* t) ;Rest of the code for
 			      (t ())))	;TRIGS in denom needed.
 	($solveradcan (cond ((or (among '$%i exp)
 				 (among '$%e exp)) t)
