@@ -126,7 +126,7 @@
 
 (declare-top (special *mtoinf*
 		      exp1
-		      *ul1* *ll1* *dflag bptu bptd
+		      *ul1* *ll1* bptu bptd
 		      *ul* *ll* exp
 		      nd*
 		      *scflag*
@@ -168,6 +168,8 @@ in the interval of integration.")
   nil
   "When non-NIL, a divergent integral will throw to `divergent.
   Otherwise, an error is signaled that the integral is divergent.")
+
+(defvar *dflag* nil)
 
 (defmfun $defint (exp ivar *ll* *ul*)
 
@@ -525,7 +527,7 @@ in the interval of integration.")
 
 (defun dintegrate (exp ivar *ll* *ul*)
   (let ((ans nil) (arg nil) (*scflag* nil)
-	(*dflag nil) ($%emode t))
+	(*dflag* nil) ($%emode t))
 ;;;NOT COMPLETE for sin's and cos's.
     (cond ((and (not *sin-cos-recur*)
 		(oscip-var exp ivar)
@@ -1090,8 +1092,8 @@ in the interval of integration.")
 	    (return (diffhk fn1 n d k (m+ r (m- k)) ivar))))))
 
 (defun diffhk (fn1 n d r m ivar)
-  (prog (d1 *dflag)
-     (setq *dflag t)
+  (prog (d1 *dflag*)
+     (setq *dflag* t)
      (setq d1 (funcall fn1 n
 		       (m^ (m+t '*z* d) r)
 		       (m* r (deg-var d ivar))))
@@ -1400,7 +1402,7 @@ in the interval of integration.")
 	   (t (return nil)))))
 
 (defun ztorat (n d s ivar)
-  (cond ((and (null *dflag)
+  (cond ((and (null *dflag*)
 	      (setq s (difapply ivar n d s #'(lambda (n d s)
                                           (ztorat n d s ivar)))))
 	 s)
@@ -1425,7 +1427,7 @@ in the interval of integration.")
 	 (merror (intl:gettext "defint: keyhole integration failed.~%"))
 	 nil)))
 
-(setq *dflag nil)
+;;(setq *dflag* nil)
 
 (defun logquad0 (exp ivar)
   (let ((a ()) (b ())  (c ()))
@@ -1608,7 +1610,7 @@ in the interval of integration.")
 
 (defun mtorat (n d s ivar)
   (let ((*semirat* t))
-    (cond ((and (null *dflag)
+    (cond ((and (null *dflag*)
 		(setq s (difapply ivar n d s #'(lambda (n d s)
                                             (mtorat n d s ivar)))))
 	   s)
