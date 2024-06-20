@@ -126,7 +126,7 @@
 
 (declare-top (special *mtoinf*
 		      exp1
-		      *ul1* *ll1* bptu bptd
+		      *ul1* *ll1* ;;bptu bptd
 		      *ul* *ll* exp
 		      nd*
 		      *scflag*
@@ -170,6 +170,9 @@ in the interval of integration.")
   Otherwise, an error is signaled that the integral is divergent.")
 
 (defvar *dflag* nil)
+
+(defvar *bptu* nil)
+(defvar *bptd* nil)
 
 (defmfun $defint (exp ivar *ll* *ul*)
 
@@ -1107,11 +1110,11 @@ in the interval of integration.")
 
 ;; e is of form poly(x)*exp(m*%i*x)
 ;; s is degree of denominator
-;; adds e to bptu or bptd according to sign of m
+;; adds e to *bptu* or *bptd* according to sign of m
 (defun rib (e s ivar)
   (let (updn c)
     (cond ((or (mnump e) (constant e))
-	   (setq bptu (cons e bptu)))
+	   (setq *bptu* (cons e *bptu*)))
 	  (t (setq e (rmconst1 e ivar))
 	     (setq c (car e))
 	     (setq nn* (cdr e))
@@ -1120,8 +1123,8 @@ in the interval of integration.")
                (catch 'ptimes%e (ptimes%e nn* nd* ivar)))
 	     (cond ((null e) nil)
 		   (t (setq e (m* c e))
-		      (cond (updn (setq bptu (cons e bptu)))
-			    (t (setq bptd (cons e bptd))))))))))
+		      (cond (updn (setq *bptu* (cons e *bptu*)))
+			    (t (setq *bptd* (cons e *bptd*))))))))))
 
 ;; Check term is of form poly(x)*exp(m*%i*x)
 ;; n is degree of denominator.
@@ -1238,7 +1241,7 @@ in the interval of integration.")
   (multiple-value-bind (n d)
       (numden-var grand ivar)
     (let (ratterms ratans
-	  plf bptu bptd s upans downans)
+	  plf *bptu* *bptd* s upans downans)
       (cond ((not (or (polyinx d ivar nil)
 		      (and (setq grand (%einvolve-var d ivar))
 			   (among '$%i grand)
@@ -1263,8 +1266,8 @@ in the interval of integration.")
 			  (t (return nil))))
 ;;;Function RIB sets up the values of BPTU and BPTD
 		  (cond ((car plf)
-		         (setq bptu (subst (car plf) 'x* bptu))
-		         (setq bptd (subst (car plf) 'x* bptd))
+		         (setq *bptu* (subst (car plf) 'x* *bptu*))
+		         (setq *bptd* (subst (car plf) 'x* *bptd*))
 		         (setq ratterms (subst (car plf) 'x* ratterms))
 		         t)	 ;CROCK, CROCK. This is TERRIBLE code.
 		        (t t))
@@ -1282,9 +1285,9 @@ in the interval of integration.")
 		  ;; if integral of ratterms is divergent, ratans is nil, 
 		  ;; and mtosc returns nil
 
-		  (cond (bptu (setq upans (csemiup (m+l bptu) d ivar)))
+		  (cond (*bptu* (setq upans (csemiup (m+l *bptu*) d ivar)))
 		        (t (setq upans 0)))
-		  (cond (bptd (setq downans (csemidown (m+l bptd) d ivar)))
+		  (cond (*bptd* (setq downans (csemidown (m+l *bptd*) d ivar)))
 		        (t (setq downans 0))))
 	   
 	     (sratsimp (m+ ratans
