@@ -126,7 +126,7 @@
 
 (declare-top (special *mtoinf*
 		      exp1
-		      *ul1* *ll1* *dflag bptu bptd #+nil zn
+		      *ul1* *ll1* *dflag bptu bptd
 		      *ul* *ll* exp
 		      nd*
 		      *scflag*
