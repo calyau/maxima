@@ -125,7 +125,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *mtoinf*
-		      *nodiverg exp1
+		      exp1
 		      *ul1* *ll1* *dflag bptu bptd zn
 		      *ul* *ll* exp
 		      nd*
@@ -161,6 +161,11 @@ in the interval of integration.")
   "When NIL, print a message that the principal value of the integral has
   been computed.")
 
+(defvar *nodiverg*
+  nil
+  "When non-NIL, a divergent integral will throw to `divergent.
+  Otherwise, an error is signaled that the integral is divergent.")
+
 (defmfun $defint (exp ivar *ll* *ul*)
 
   ;; Distribute $defint over equations, lists, and matrices.
@@ -180,7 +185,7 @@ in the interval of integration.")
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var ivar)
 		 (orig-ll *ll*)  (orig-ul *ul*)
-		 (*pcprntd* nil)  (*nodiverg nil)  ($logabs t)  ; (limitp t)
+		 (*pcprntd* nil)  (*nodiverg* nil)  ($logabs t)  ; (limitp t)
 		 (rp-polylogp ())
                  ($%edispflag nil) ; to get internal representation
 		 ($m1pbranch ())) ;Try this out.
@@ -693,7 +698,7 @@ in the interval of integration.")
     (cons (simplify (rdis (car e))) (simplify (rdis (cadr e))))))
 
 
-(defun intbyterm (exp *nodiverg ivar)
+(defun intbyterm (exp *nodiverg* ivar)
   (let ((saved-exp exp))
     (cond ((mplusp exp)
 	   (let ((ans (catch 'divergent
@@ -702,7 +707,7 @@ in the interval of integration.")
 				   (cdr exp)))))
 	     (cond ((null ans) nil)
 		   ((eq ans 'divergent)
-		    (let ((*nodiverg nil))
+		    (let ((*nodiverg* nil))
 		      (cond ((setq ans (antideriv saved-exp ivar))
 			     (intsubs ans *ll* *ul* ivar))
 			    (t nil))))
@@ -727,7 +732,7 @@ in the interval of integration.")
     (or a b)))
 
 (defun diverg nil
-  (cond (*nodiverg (throw 'divergent 'divergent))
+  (cond (*nodiverg* (throw 'divergent 'divergent))
 	(t (merror (intl:gettext "defint: integral is divergent.")))))
 
 (defun make-defint-assumptions (ask-or-not ivar)
@@ -1377,7 +1382,7 @@ in the interval of integration.")
 	      (setq temp (ggr grand t ivar)))
 	    (return temp))
 	   ((mplusp grand)
-	    (cond ((let ((*nodiverg t))
+	    (cond ((let ((*nodiverg* t))
 		     (setq ans (catch 'divergent
 				 (andmapcar #'(lambda (g)
 						(ztoinf g ivar))
@@ -2094,7 +2099,7 @@ in the interval of integration.")
 ;; calls intsc with a wrapper to just return nil if integral is divergent,
 ;;  rather than generating an error.
 (defun try-intsc (sc b ivar)
-  (let* ((*nodiverg t)
+  (let* ((*nodiverg* t)
 	 (ans (catch 'divergent (intsc sc b ivar))))
     (if (eq ans 'divergent)
 	nil
@@ -2193,14 +2198,14 @@ in the interval of integration.")
 	  (t (try-intsubs exp *ll* *ul* ivar)))))
 
 (defun try-intsubs (exp *ll* *ul* ivar)
-  (let* ((*nodiverg t)
+  (let* ((*nodiverg* t)
 	 (ans (catch 'divergent (intsubs exp *ll* *ul* ivar))))
     (if (eq ans 'divergent)
 	nil
       ans)))
 
 (defun try-defint (exp ivar *ll* *ul*)
-  (let* ((*nodiverg t)
+  (let* ((*nodiverg* t)
 	 (ans (catch 'divergent (defint exp ivar *ll* *ul*))))
     (if (eq ans 'divergent)
 	nil
@@ -3137,7 +3142,7 @@ in the interval of integration.")
      (setq nd* 0.)
      (cond (ind (setq e ($expand e))
 		(cond ((and (mplusp e)
-			    (let ((*nodiverg t))
+			    (let ((*nodiverg* t))
 			      (setq e (catch 'divergent
 					(andmapcar
 					 #'(lambda (j)
