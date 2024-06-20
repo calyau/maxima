@@ -3141,7 +3141,7 @@ in the interval of integration.")
 ;;
 ;; which is the same form above.
 (defun ggr (e ind ivar)
-  (prog (c zd #+nil zn nn* dn* nd* dosimp $%emode)
+  (prog (c zd nn* dn* nd* dosimp $%emode)
      (setq nd* 0.)
      (cond (ind (setq e ($expand e))
 		(cond ((and (mplusp e)
