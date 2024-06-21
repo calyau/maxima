@@ -1524,18 +1524,18 @@ in the interval of integration.")
 			  (return (m* (m// nc dc) ans))))))))
 
      (labels
-         ((pppin%ex (nd* ivar)
+         ((pppin%ex (nd ivar)
             ;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set pp to
             ;; be p(x) and set pe to f(exp(x)).
-            (setq nd* ($factor nd*))
-            (cond ((polyinx nd* ivar nil)
-	           (setq pp (cons nd* pp)) t)
-	          ((catch 'pin%ex (pin%ex nd* ivar))
-	           (setq pe (cons nd* pe)) t)
-	          ((mtimesp nd*)
+            (setq nd ($factor nd))
+            (cond ((polyinx nd ivar nil)
+	           (setq pp (cons nd pp)) t)
+	          ((catch 'pin%ex (pin%ex nd ivar))
+	           (setq pe (cons nd pe)) t)
+	          ((mtimesp nd)
 	           (andmapcar #'(lambda (ex)
                                   (pppin%ex ex ivar))
-                              (cdr nd*))))))
+                              (cdr nd))))))
        (cond ((and (ratp grand ivar)
 	           (setq ans1 (zmtorat n
                                        (cond ((mtimesp d) d) (t ($sqfr d)))
