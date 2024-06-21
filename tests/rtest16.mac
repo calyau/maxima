@@ -2842,3 +2842,44 @@ true;
 
 closeto(bfloat(li[2](%i))-(9.15965594177219015054603b-1*%i - 2.05616758356028304559052b-1), 10*10^(-fpprec));
 true;
+
+/* Bug #4317: "Maxima doesn't know that signum(real) can only be -1, 0 or +1" */
+
+is(signum(x)<=1);
+true;
+
+is(signum(x)>=-1);
+true;
+
+is(signum(x)<2);
+true;
+
+is(signum(x)>-2);
+true;
+
+is(equal(signum(x),1));
+unknown;
+
+is(equal(signum(x),-1));
+unknown;
+
+is(equal(signum(x),0));
+unknown;
+
+is(equal(signum(x),1/2));
+false;
+
+is(equal(signum(x),-1/2));
+false;
+
+declare(x,complex);
+done;
+
+is(signum(x)<=1);
+unknown;
+
+is(signum(x)>=-1);
+unknown;
+
+kill(x);
+done;
