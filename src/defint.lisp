@@ -2941,11 +2941,12 @@ in the interval of integration.")
 	 (throw 'pin%ex nil))))
 
 (defun findsub (p ivar)
-  (cond ((findp p ivar) nil)
-	((setq nd* (bx**n p ivar))
-	 (m^t ivar (car nd*)))
-	((setq p (bx**n+a p ivar))
-	 (m* (caddr p) (m^t ivar (cadr p))))))
+  (let (nd)
+    (cond ((findp p ivar) nil)
+	  ((setq nd (bx**n p ivar))
+	   (m^t ivar (car nd)))
+	  ((setq p (bx**n+a p ivar))
+	   (m* (caddr p) (m^t ivar (cadr p)))))))
 
 ;; I think this is looking at f(exp(x)) and tries to find some
 ;; rational function R and some number k such that f(exp(x)) =
