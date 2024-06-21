@@ -129,7 +129,6 @@
 		      *ul1* *ll1*
 		      *ul* *ll* exp
 		      nd*
-		      *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* *defint-assumptions*
 		      *current-assumptions*
@@ -173,6 +172,9 @@ in the interval of integration.")
 
 (defvar *bptu* nil)
 (defvar *bptd* nil)
+
+;; Set to true when OSCIP-VAR returns true in DINTEGRATE.
+(defvar *scflag* nil)
 
 (defmfun $defint (exp ivar *ll* *ul*)
 
