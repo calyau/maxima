@@ -129,8 +129,7 @@
 		      *ul1* *ll1*
 		      *ul* *ll* exp
 		      nd*
-		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
-		      *dintexp-recur* *defint-assumptions*
+		      *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
 ;;;rsn* is in comdenom. does a ratsimp of numerator.
@@ -175,6 +174,19 @@ in the interval of integration.")
 
 ;; Set to true when OSCIP-VAR returns true in DINTEGRATE.
 (defvar *scflag* nil)
+
+(defvar *sin-cos-recur* nil
+  "Prevents recursion of integrals of sin and cos in intsc1.")
+
+(defvar *rad-poly-recur* nil
+  "Prevents recursion in method-radical-poly.")
+
+(defvar *dintlog-recur* nil
+  "Prevents recursion in dintlog.")
+
+(defvar *dintexp-recur* nil
+  "Prevents recursion in dintexp.")
+
 
 (defmfun $defint (exp ivar *ll* *ul*)
 
