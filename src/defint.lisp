@@ -136,7 +136,7 @@
 		      *global-defint-assumptions*)
 ;;;rsn* is in comdenom. does a ratsimp of numerator.
 					;expvar
-	     (special $intanalysis $noprincipal)
+	     (special $noprincipal)
 					;impvar
 	     (special *roots *failures
 		      context
