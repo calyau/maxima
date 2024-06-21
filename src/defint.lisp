@@ -3076,7 +3076,7 @@ in the interval of integration.")
 ;; MAYBPC returns (COEF EXPO CONST)
 ;;
 ;; This basically picks off b*x^n+a and returns the list
-;; (b n a).  It may also set the global *zd*.
+;; (b n a).
 (defun maybpc (e ivar)
   (let (zd zn)
     (cond (*mtoinf* (throw 'ggrm (linpower0 e ivar)))
