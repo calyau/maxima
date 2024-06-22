@@ -1558,7 +1558,7 @@
   ($do	   . ())
   ($for    . ($for))
   ($from   . ($in $from))
-  ($in     . ($in $from $step $next))
+  ($in     . ($in $from $step $next $thru))
   ($step   . ($in       $step $next))
   ($next   . ($in	$step $next))
   ($thru   . ($in $thru)) ;$IN didn't used to get checked for

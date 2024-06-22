@@ -746,6 +746,13 @@ true;
 errcatch (parse_string ("ex: ​23;"));
 [ex: 23];
 
+/* Bug #3191: parsing problem: thru 3 for i in [a,b] */
+
+errcatch (parse_string ("for i in [1, 2, 3, 4] thru 3 do print (i)"));
+[];
+errcatch (parse_string ("thru 3 for i in [1, 2, 3, 4] do print (i)"));
+[];
+
 /* other examples */
 
 ibase: 16.;
