@@ -125,7 +125,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *mtoinf*
-		      *ul1* *ll1*
+		      ;;*ul1* *ll1*
 		      *ul* *ll* exp
 		      *defint-assumptions*
 		      *current-assumptions*
@@ -376,6 +376,7 @@ in the interval of integration.")
 ;; d: original variable (ivar) as a function of 'yx
 ;; ind: boolean flag
 ;; nv: new variable ('yx) as a function of original variable (ivar)
+#+nil
 (defun intcv1 (d nv ivar)
   (let (exp-yx)
     (cond ((and (setq exp-yx (intcv2 d nv ivar))
@@ -384,6 +385,14 @@ in the interval of integration.")
 	        (not (alike1 *ll1* *ul1*)))
 	   (defint exp-yx 'yx *ll1* *ul1*)))))
 
+(defun intcv1 (d nv ivar)
+  (multiple-value-bind (exp-yx ll1 ul1)
+      (intcv2 d nv ivar)
+    (cond ((and (equal ($imagpart ll1) 0)
+	        (equal ($imagpart ul1) 0)
+	        (not (alike1 ll1 ul1)))
+	   (defint exp-yx 'yx ll1 ul1)))))
+
 ;; converts limits of integration to values for new variable 'yx
 (defun intcv2 (d nv ivar)
   (flet ((intcv3 (d nv ivar)
@@ -391,16 +400,17 @@ in the interval of integration.")
            ;; integrand in terms of 'yx, and returns the new
            ;; integrand.
            (let ((exp-yx (m* (sdiff d 'yx)
-		           (subst d ivar (subst 'yx nv exp)))))
+		             (subst d ivar (subst 'yx nv exp)))))
              (sratsimp exp-yx))))
-    (let ((exp-yx (intcv3 d nv ivar)))
+    (let ((exp-yx (intcv3 d nv ivar))
+          ll1 ul1)
       (and (cond ((and (zerop1 (m+ *ll* *ul*))
 		       (evenfn nv ivar))
 	          (setq exp-yx (m* 2 exp-yx)
-		        *ll1* (limcp nv ivar 0 '$plus)))
-	         (t (setq *ll1* (limcp nv ivar *ll* '$plus))))
-           (setq *ul1* (limcp nv ivar *ul* '$minus))
-           exp-yx))))
+		        ll1 (limcp nv ivar 0 '$plus)))
+	         (t (setq ll1 (limcp nv ivar *ll* '$plus))))
+           (setq ul1 (limcp nv ivar *ul* '$minus))
+           (values exp-yx ll1 ul1)))))
 
 ;; wrapper around limit, returns nil if 
 ;; limit not found (nounform returned), or undefined ($und or $ind)
