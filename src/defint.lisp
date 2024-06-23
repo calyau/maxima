@@ -124,19 +124,16 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special *def2* pcprntd *mtoinf*
-		      *nodiverg exp1
-		      *ul1* *ll1* *dflag bptu bptd zn
+(declare-top (special *mtoinf*
+		      exp1
+		      *ul1* *ll1*
 		      *ul* *ll* exp
-		      nd*
-		      *scflag*
-		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
-		      *dintexp-recur* defintdebug *defint-assumptions*
+		      *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
 ;;;rsn* is in comdenom. does a ratsimp of numerator.
 					;expvar
-	     (special $intanalysis $noprincipal)
+	     (special $noprincipal)
 					;impvar
 	     (special *roots *failures
 		      context
@@ -154,7 +151,41 @@
   "When @code{true}, definite integration tries to find poles in the integrand 
 in the interval of integration.")
 
-(defmvar defintdebug () "If true Defint prints out debugging information")
+;; Currently, if true, $solvetrigwarn is set to true.  No additional
+;; debugging information is displayed.
+(defvar *defintdebug* ()
+  "If true Defint prints out some debugging information.")
+
+(defvar *pcprntd*
+  nil
+  "When NIL, print a message that the principal value of the integral has
+  been computed.")
+
+(defvar *nodiverg*
+  nil
+  "When non-NIL, a divergent integral will throw to `divergent.
+  Otherwise, an error is signaled that the integral is divergent.")
+
+(defvar *dflag* nil)
+
+(defvar *bptu* nil)
+(defvar *bptd* nil)
+
+;; Set to true when OSCIP-VAR returns true in DINTEGRATE.
+(defvar *scflag* nil)
+
+(defvar *sin-cos-recur* nil
+  "Prevents recursion of integrals of sin and cos in intsc1.")
+
+(defvar *rad-poly-recur* nil
+  "Prevents recursion in method-radical-poly.")
+
+(defvar *dintlog-recur* nil
+  "Prevents recursion in dintlog.")
+
+(defvar *dintexp-recur* nil
+  "Prevents recursion in dintexp.")
+
 
 (defmfun $defint (exp ivar *ll* *ul*)
 
@@ -171,11 +202,11 @@ in the interval of integration.")
 	(integer-info ()) (integerl integerl) (nonintegerl nonintegerl))
     (with-new-context (context)
       (unwind-protect
-	   (let ((*defint-assumptions* ())  (*def2* ())  (*rad-poly-recur* ())
+	   (let ((*defint-assumptions* ()) (*rad-poly-recur* ())
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var ivar)
 		 (orig-ll *ll*)  (orig-ul *ul*)
-		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  ; (limitp t)
+		 (*pcprntd* nil)  (*nodiverg* nil)  ($logabs t)  ; (limitp t)
 		 (rp-polylogp ())
                  ($%edispflag nil) ; to get internal representation
 		 ($m1pbranch ())) ;Try this out.
@@ -351,8 +382,7 @@ in the interval of integration.")
 	      (equal ($imagpart *ll1*) 0)
 	      (equal ($imagpart *ul1*) 0)
 	      (not (alike1 *ll1* *ul1*)))
-	 (let ((*def2* t))
-	   (defint exp1 'yx *ll1* *ul1*)))))
+	 (defint exp1 'yx *ll1* *ul1*))))
 
 ;; converts limits of integration to values for new variable 'yx
 (defun intcv2 (d nv ivar)
@@ -397,7 +427,7 @@ in the interval of integration.")
 		  ($exptsubst t)
 		  (*loopstop* 0)
 		  ;; D (not used? -- cwh)
-		  ans nn* dn* nd* $noprincipal)
+		  ans nn* dn* $noprincipal)
 	      (cond ((setq ans (defint-list exp ivar *ll* *ul*))
 		     (return ans))
 		    ((or (zerop1 exp)
@@ -513,7 +543,7 @@ in the interval of integration.")
 
 (defun dintegrate (exp ivar *ll* *ul*)
   (let ((ans nil) (arg nil) (*scflag* nil)
-	(*dflag nil) ($%emode t))
+	(*dflag* nil) ($%emode t))
 ;;;NOT COMPLETE for sin's and cos's.
     (cond ((and (not *sin-cos-recur*)
 		(oscip-var exp ivar)
@@ -689,17 +719,16 @@ in the interval of integration.")
     (cons (simplify (rdis (car e))) (simplify (rdis (cadr e))))))
 
 
-(defun intbyterm (exp *nodiverg ivar)
+(defun intbyterm (exp *nodiverg* ivar)
   (let ((saved-exp exp))
     (cond ((mplusp exp)
 	   (let ((ans (catch 'divergent
 			(andmapcar #'(lambda (new-exp)
-				       (let ((*def2* t))
-					 (defint new-exp ivar *ll* *ul*)))
+				       (defint new-exp ivar *ll* *ul*))
 				   (cdr exp)))))
 	     (cond ((null ans) nil)
 		   ((eq ans 'divergent)
-		    (let ((*nodiverg nil))
+		    (let ((*nodiverg* nil))
 		      (cond ((setq ans (antideriv saved-exp ivar))
 			     (intsubs ans *ll* *ul* ivar))
 			    (t nil))))
@@ -724,7 +753,7 @@ in the interval of integration.")
     (or a b)))
 
 (defun diverg nil
-  (cond (*nodiverg (throw 'divergent 'divergent))
+  (cond (*nodiverg* (throw 'divergent 'divergent))
 	(t (merror (intl:gettext "defint: integral is divergent.")))))
 
 (defun make-defint-assumptions (ask-or-not ivar)
@@ -1079,8 +1108,8 @@ in the interval of integration.")
 	    (return (diffhk fn1 n d k (m+ r (m- k)) ivar))))))
 
 (defun diffhk (fn1 n d r m ivar)
-  (prog (d1 *dflag)
-     (setq *dflag t)
+  (prog (d1 *dflag*)
+     (setq *dflag* t)
      (setq d1 (funcall fn1 n
 		       (m^ (m+t '*z* d) r)
 		       (m* r (deg-var d ivar))))
@@ -1088,27 +1117,28 @@ in the interval of integration.")
 
 (defun principal nil
   (cond ($noprincipal (diverg))
-	((not pcprntd)
+	((not *pcprntd*)
 	 (format t "Principal Value~%")
-	 (setq pcprntd t))))
+	 (setq *pcprntd* t))))
 
 ;; e is of form poly(x)*exp(m*%i*x)
 ;; s is degree of denominator
-;; adds e to bptu or bptd according to sign of m
+;; adds e to *bptu* or *bptd* according to sign of m
 (defun rib (e s ivar)
-  (let (updn c)
-    (cond ((or (mnump e) (constant e))
-	   (setq bptu (cons e bptu)))
-	  (t (setq e (rmconst1 e ivar))
-	     (setq c (car e))
-	     (setq nn* (cdr e))
-	     (setq nd* s)
-	     (multiple-value-setq (e updn)
-               (catch 'ptimes%e (ptimes%e nn* nd* ivar)))
-	     (cond ((null e) nil)
-		   (t (setq e (m* c e))
-		      (cond (updn (setq bptu (cons e bptu)))
-			    (t (setq bptd (cons e bptd))))))))))
+  (cond ((or (mnump e) (constant e))
+	 (setq *bptu* (cons e *bptu*)))
+	(t
+         (let (updn c nd nn)
+           (setq e (rmconst1 e ivar))
+	   (setq c (car e))
+	   (setq nn (cdr e))
+	   (setq nd s)
+	   (multiple-value-setq (e updn)
+             (catch 'ptimes%e (ptimes%e nn nd ivar)))
+	   (cond ((null e) nil)
+		 (t (setq e (m* c e))
+		    (cond (updn (setq *bptu* (cons e *bptu*)))
+			  (t (setq *bptd* (cons e *bptd*))))))))))
 
 ;; Check term is of form poly(x)*exp(m*%i*x)
 ;; n is degree of denominator.
@@ -1139,7 +1169,7 @@ in the interval of integration.")
 	(t (throw 'ptimes%e nil))))
 
 (defun csemidown (n d ivar)
-  (let ((pcprntd t)) ;Not sure what to do about PRINCIPAL values here.
+  (let ((*pcprntd* t)) ;Not sure what to do about PRINCIPAL values here.
     (princip
        (res-var ivar n d #'lowerhalf #'(lambda (x)
 				         (cond ((equal ($imagpart x) 0)  t)
@@ -1153,7 +1183,7 @@ in the interval of integration.")
 
 
 (defun csemiup (n d ivar)
-  (let ((pcprntd t)) ;I'm not sure what to do about PRINCIPAL values here.
+  (let ((*pcprntd* t)) ;I'm not sure what to do about PRINCIPAL values here.
     (princip
      (res-var ivar n d #'upperhalf #'(lambda (x)
 				        (cond ((equal ($imagpart x) 0)  t)
@@ -1225,7 +1255,7 @@ in the interval of integration.")
   (multiple-value-bind (n d)
       (numden-var grand ivar)
     (let (ratterms ratans
-	  plf bptu bptd s upans downans)
+	  plf *bptu* *bptd* s upans downans)
       (cond ((not (or (polyinx d ivar nil)
 		      (and (setq grand (%einvolve-var d ivar))
 			   (among '$%i grand)
@@ -1250,8 +1280,8 @@ in the interval of integration.")
 			  (t (return nil))))
 ;;;Function RIB sets up the values of BPTU and BPTD
 		  (cond ((car plf)
-		         (setq bptu (subst (car plf) 'x* bptu))
-		         (setq bptd (subst (car plf) 'x* bptd))
+		         (setq *bptu* (subst (car plf) 'x* *bptu*))
+		         (setq *bptd* (subst (car plf) 'x* *bptd*))
 		         (setq ratterms (subst (car plf) 'x* ratterms))
 		         t)	 ;CROCK, CROCK. This is TERRIBLE code.
 		        (t t))
@@ -1269,9 +1299,9 @@ in the interval of integration.")
 		  ;; if integral of ratterms is divergent, ratans is nil, 
 		  ;; and mtosc returns nil
 
-		  (cond (bptu (setq upans (csemiup (m+l bptu) d ivar)))
+		  (cond (*bptu* (setq upans (csemiup (m+l *bptu*) d ivar)))
 		        (t (setq upans 0)))
-		  (cond (bptd (setq downans (csemidown (m+l bptd) d ivar)))
+		  (cond (*bptd* (setq downans (csemidown (m+l *bptd*) d ivar)))
 		        (t (setq downans 0))))
 	   
 	     (sratsimp (m+ ratans
@@ -1374,7 +1404,7 @@ in the interval of integration.")
 	      (setq temp (ggr grand t ivar)))
 	    (return temp))
 	   ((mplusp grand)
-	    (cond ((let ((*nodiverg t))
+	    (cond ((let ((*nodiverg* t))
 		     (setq ans (catch 'divergent
 				 (andmapcar #'(lambda (g)
 						(ztoinf g ivar))
@@ -1389,7 +1419,7 @@ in the interval of integration.")
 	   (t (return nil)))))
 
 (defun ztorat (n d s ivar)
-  (cond ((and (null *dflag)
+  (cond ((and (null *dflag*)
 	      (setq s (difapply ivar n d s #'(lambda (n d s)
                                           (ztorat n d s ivar)))))
 	 s)
@@ -1414,7 +1444,7 @@ in the interval of integration.")
 	 (merror (intl:gettext "defint: keyhole integration failed.~%"))
 	 nil)))
 
-(setq *dflag nil)
+;;(setq *dflag* nil)
 
 (defun logquad0 (exp ivar)
   (let ((a ()) (b ())  (c ()))
@@ -1506,18 +1536,18 @@ in the interval of integration.")
 			  (return (m* (m// nc dc) ans))))))))
 
      (labels
-         ((pppin%ex (nd* ivar)
+         ((pppin%ex (nd ivar)
             ;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set pp to
             ;; be p(x) and set pe to f(exp(x)).
-            (setq nd* ($factor nd*))
-            (cond ((polyinx nd* ivar nil)
-	           (setq pp (cons nd* pp)) t)
-	          ((catch 'pin%ex (pin%ex nd* ivar))
-	           (setq pe (cons nd* pe)) t)
-	          ((mtimesp nd*)
+            (setq nd ($factor nd))
+            (cond ((polyinx nd ivar nil)
+	           (setq pp (cons nd pp)) t)
+	          ((catch 'pin%ex (pin%ex nd ivar))
+	           (setq pe (cons nd pe)) t)
+	          ((mtimesp nd)
 	           (andmapcar #'(lambda (ex)
                                   (pppin%ex ex ivar))
-                              (cdr nd*))))))
+                              (cdr nd))))))
        (cond ((and (ratp grand ivar)
 	           (setq ans1 (zmtorat n
                                        (cond ((mtimesp d) d) (t ($sqfr d)))
@@ -1597,7 +1627,7 @@ in the interval of integration.")
 
 (defun mtorat (n d s ivar)
   (let ((*semirat* t))
-    (cond ((and (null *dflag)
+    (cond ((and (null *dflag*)
 		(setq s (difapply ivar n d s #'(lambda (n d s)
                                             (mtorat n d s ivar)))))
 	   s)
@@ -2091,7 +2121,7 @@ in the interval of integration.")
 ;; calls intsc with a wrapper to just return nil if integral is divergent,
 ;;  rather than generating an error.
 (defun try-intsc (sc b ivar)
-  (let* ((*nodiverg t)
+  (let* ((*nodiverg* t)
 	 (ans (catch 'divergent (intsc sc b ivar))))
     (if (eq ans 'divergent)
 	nil
@@ -2190,14 +2220,14 @@ in the interval of integration.")
 	  (t (try-intsubs exp *ll* *ul* ivar)))))
 
 (defun try-intsubs (exp *ll* *ul* ivar)
-  (let* ((*nodiverg t)
+  (let* ((*nodiverg* t)
 	 (ans (catch 'divergent (intsubs exp *ll* *ul* ivar))))
     (if (eq ans 'divergent)
 	nil
       ans)))
 
 (defun try-defint (exp ivar *ll* *ul*)
-  (let* ((*nodiverg t)
+  (let* ((*nodiverg* t)
 	 (ans (catch 'divergent (defint exp ivar *ll* *ul*))))
     (if (eq ans 'divergent)
 	nil
@@ -2923,11 +2953,12 @@ in the interval of integration.")
 	 (throw 'pin%ex nil))))
 
 (defun findsub (p ivar)
-  (cond ((findp p ivar) nil)
-	((setq nd* (bx**n p ivar))
-	 (m^t ivar (car nd*)))
-	((setq p (bx**n+a p ivar))
-	 (m* (caddr p) (m^t ivar (cadr p))))))
+  (let (nd)
+    (cond ((findp p ivar) nil)
+	  ((setq nd (bx**n p ivar))
+	   (m^t ivar (car nd)))
+	  ((setq p (bx**n+a p ivar))
+	   (m* (caddr p) (m^t ivar (cadr p)))))))
 
 ;; I think this is looking at f(exp(x)) and tries to find some
 ;; rational function R and some number k such that f(exp(x)) =
@@ -2968,8 +2999,7 @@ in the interval of integration.")
 		 (cond ((or (null p1-part1)
 			    (null p1-part2))
 			nil)
-		       (t (let ((p2 (let ((*def2* t))
-				      (defint p2 ivar a b))))
+		       (t (let ((p2 (defint p2 ivar a b)))
 			    (cond (p2 (add* p1-part1
 					    (m- p1-part2)
 					    (m- p2)))
@@ -3034,9 +3064,8 @@ in the interval of integration.")
 	      (return nil))
 	     ((and (eq arg ivar)
 		   (equal 0. (no-err-sub-var 0. ans ivar))
-		   (setq d (let ((*def2* t))
-			     (defint (m* ans (m^t ivar '*z*))
-				 ivar *ll* *ul*))))
+		   (setq d (defint (m* ans (m^t ivar '*z*))
+				 ivar *ll* *ul*)))
 	      ;; The arg of the log function is the same as the
 	      ;; integration variable.  We can do something a little
 	      ;; simpler than integration by parts.  We have something
@@ -3062,9 +3091,9 @@ in the interval of integration.")
 ;; MAYBPC returns (COEF EXPO CONST)
 ;;
 ;; This basically picks off b*x^n+a and returns the list
-;; (b n a).  It may also set the global *zd*.
-(defun maybpc (e ivar)
-  (let (zd)
+;; (b n a).
+(defun maybpc (e ivar nd-var)
+  (let (zd zn)
     (cond (*mtoinf* (throw 'ggrm (linpower0 e ivar)))
 	  ((and (not *mtoinf*)
 	        (null (setq e (bx**n+a e ivar)))) ;bx**n+a --> (a n b) or nil.
@@ -3082,7 +3111,7 @@ in the interval of integration.")
 		  (setq zn (m- zn)))
 	         (t (setq ivar 1)))
 	   ;; zd = exp(ivar*%i*%pi*(1+nd)/(2*n). (ZD is special!)
-	   (setq zd (m^t '$%e (m// (mul* ivar '$%i '$%pi (m+t 1 nd*))
+	   (setq zd (m^t '$%e (m// (mul* ivar '$%i '$%pi (m+t 1 nd-var))
 				  (m*t 2 (cadr e)))))
 	   ;; Return zn, n, a, zd.
 	   (values `(,(caddr e) ,(cadr e) ,(car e)) zd))
@@ -3132,11 +3161,11 @@ in the interval of integration.")
 ;;
 ;; which is the same form above.
 (defun ggr (e ind ivar)
-  (prog (c zd zn nn* dn* nd* dosimp $%emode)
-     (setq nd* 0.)
+  (prog (c zd nn* dn* nd-var dosimp $%emode)
+     (setq nd-var 0.)
      (cond (ind (setq e ($expand e))
 		(cond ((and (mplusp e)
-			    (let ((*nodiverg t))
+			    (let ((*nodiverg* t))
 			      (setq e (catch 'divergent
 					(andmapcar
 					 #'(lambda (j)
@@ -3148,7 +3177,7 @@ in the interval of integration.")
      (setq c (car e))
      (setq e (cdr e))
      (cond ((multiple-value-setq (e zd)
-              (ggr1 e ivar))
+              (ggr1 e ivar nd-var))
 	    ;; e = (m b n a).  That is, the integral is of the form
 	    ;; x^m*exp(b*x^n+a).  I think we want to compute
 	    ;; gamma((m+1)/n)/b^((m+1)/n)/n.
@@ -3190,7 +3219,7 @@ in the interval of integration.")
 
 
 ;; Match x^m*exp(b*x^n+a).  If it does, return (list m b n a).
-(defun ggr1 (e ivar)
+(defun ggr1 (e ivar nd-var)
   (let (zd)
     (cond ((atom e) nil)
 	  ((and (mexptp e)
@@ -3199,7 +3228,7 @@ in the interval of integration.")
 	   ;; of the form b*x^n+a, and return (list 0 b n a).  (The 0 is
 	   ;; so we can graft something onto it if needed.)
 	   (cond ((multiple-value-setq (e zd)
-                    (maybpc (caddr e) ivar))
+                    (maybpc (caddr e) ivar nd-var))
 		  (values (cons 0. e) zd))))
 	  ((and (mtimesp e)
 	        ;; E should be the product of exactly 2 terms
@@ -3209,15 +3238,15 @@ in the interval of integration.")
 	        ;; so, check the other term has the right form via
 	        ;; another call to ggr1.
 	        (or (and (setq dn* (xtorterm (cadr e) ivar))
-		         (ratgreaterp (setq nd* ($realpart dn*))
+		         (ratgreaterp (setq nd-var ($realpart dn*))
 				      -1.)
 		         (multiple-value-setq (nn* zd)
-                           (ggr1 (caddr e) ivar)))
+                           (ggr1 (caddr e) ivar nd-var)))
 		    (and (setq dn* (xtorterm (caddr e) ivar))
-		         (ratgreaterp (setq nd* ($realpart dn*))
+		         (ratgreaterp (setq nd-var ($realpart dn*))
 				      -1.)
 		         (multiple-value-setq (nn* zd)
-                           (ggr1 (cadr e) ivar)))))
+                           (ggr1 (cadr e) ivar nd-var)))))
 	   ;; Both terms have the right form and nn* contains the ivar of
 	   ;; the exponential term.  Put dn* as the car of nn*.  The
 	   ;; result is something like (m b n a) when we have the
@@ -3574,7 +3603,7 @@ in the interval of integration.")
 	   (eq ($asksign (m+ place (m- *ll*))) '$pos))))
 
 (defun real-roots (exp ivar)
-  (let (($solvetrigwarn (cond (defintdebug t) ;Rest of the code for
+  (let (($solvetrigwarn (cond (*defintdebug* t) ;Rest of the code for
 			      (t ())))	;TRIGS in denom needed.
 	($solveradcan (cond ((or (among '$%i exp)
 				 (among '$%e exp)) t)
