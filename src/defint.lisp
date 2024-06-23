@@ -128,7 +128,7 @@
 		      exp1
 		      *ul1* *ll1*
 		      *ul* *ll* exp
-		      nd*
+		      ;;nd*
 		      *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
@@ -3093,7 +3093,7 @@ in the interval of integration.")
 ;;
 ;; This basically picks off b*x^n+a and returns the list
 ;; (b n a).
-(defun maybpc (e ivar)
+(defun maybpc (e ivar nd*)
   (let (zd zn)
     (cond (*mtoinf* (throw 'ggrm (linpower0 e ivar)))
 	  ((and (not *mtoinf*)
@@ -3178,7 +3178,7 @@ in the interval of integration.")
      (setq c (car e))
      (setq e (cdr e))
      (cond ((multiple-value-setq (e zd)
-              (ggr1 e ivar))
+              (ggr1 e ivar nd*))
 	    ;; e = (m b n a).  That is, the integral is of the form
 	    ;; x^m*exp(b*x^n+a).  I think we want to compute
 	    ;; gamma((m+1)/n)/b^((m+1)/n)/n.
@@ -3220,7 +3220,7 @@ in the interval of integration.")
 
 
 ;; Match x^m*exp(b*x^n+a).  If it does, return (list m b n a).
-(defun ggr1 (e ivar)
+(defun ggr1 (e ivar nd*)
   (let (zd)
     (cond ((atom e) nil)
 	  ((and (mexptp e)
@@ -3229,7 +3229,7 @@ in the interval of integration.")
 	   ;; of the form b*x^n+a, and return (list 0 b n a).  (The 0 is
 	   ;; so we can graft something onto it if needed.)
 	   (cond ((multiple-value-setq (e zd)
-                    (maybpc (caddr e) ivar))
+                    (maybpc (caddr e) ivar nd*))
 		  (values (cons 0. e) zd))))
 	  ((and (mtimesp e)
 	        ;; E should be the product of exactly 2 terms
@@ -3242,12 +3242,12 @@ in the interval of integration.")
 		         (ratgreaterp (setq nd* ($realpart dn*))
 				      -1.)
 		         (multiple-value-setq (nn* zd)
-                           (ggr1 (caddr e) ivar)))
+                           (ggr1 (caddr e) ivar nd*)))
 		    (and (setq dn* (xtorterm (caddr e) ivar))
 		         (ratgreaterp (setq nd* ($realpart dn*))
 				      -1.)
 		         (multiple-value-setq (nn* zd)
-                           (ggr1 (cadr e) ivar)))))
+                           (ggr1 (cadr e) ivar nd*)))))
 	   ;; Both terms have the right form and nn* contains the ivar of
 	   ;; the exponential term.  Put dn* as the car of nn*.  The
 	   ;; result is something like (m b n a) when we have the
