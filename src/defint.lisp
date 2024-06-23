@@ -128,7 +128,6 @@
 		      exp1
 		      *ul1* *ll1*
 		      *ul* *ll* exp
-		      ;;nd*
 		      *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
@@ -428,7 +427,7 @@ in the interval of integration.")
 		  ($exptsubst t)
 		  (*loopstop* 0)
 		  ;; D (not used? -- cwh)
-		  ans nn* dn* nd* $noprincipal)
+		  ans nn* dn* $noprincipal)
 	      (cond ((setq ans (defint-list exp ivar *ll* *ul*))
 		     (return ans))
 		    ((or (zerop1 exp)
@@ -3093,7 +3092,7 @@ in the interval of integration.")
 ;;
 ;; This basically picks off b*x^n+a and returns the list
 ;; (b n a).
-(defun maybpc (e ivar nd*)
+(defun maybpc (e ivar nd-var)
   (let (zd zn)
     (cond (*mtoinf* (throw 'ggrm (linpower0 e ivar)))
 	  ((and (not *mtoinf*)
@@ -3112,7 +3111,7 @@ in the interval of integration.")
 		  (setq zn (m- zn)))
 	         (t (setq ivar 1)))
 	   ;; zd = exp(ivar*%i*%pi*(1+nd)/(2*n). (ZD is special!)
-	   (setq zd (m^t '$%e (m// (mul* ivar '$%i '$%pi (m+t 1 nd*))
+	   (setq zd (m^t '$%e (m// (mul* ivar '$%i '$%pi (m+t 1 nd-var))
 				  (m*t 2 (cadr e)))))
 	   ;; Return zn, n, a, zd.
 	   (values `(,(caddr e) ,(cadr e) ,(car e)) zd))
@@ -3162,8 +3161,8 @@ in the interval of integration.")
 ;;
 ;; which is the same form above.
 (defun ggr (e ind ivar)
-  (prog (c zd nn* dn* nd* dosimp $%emode)
-     (setq nd* 0.)
+  (prog (c zd nn* dn* nd-var dosimp $%emode)
+     (setq nd-var 0.)
      (cond (ind (setq e ($expand e))
 		(cond ((and (mplusp e)
 			    (let ((*nodiverg* t))
@@ -3178,7 +3177,7 @@ in the interval of integration.")
      (setq c (car e))
      (setq e (cdr e))
      (cond ((multiple-value-setq (e zd)
-              (ggr1 e ivar nd*))
+              (ggr1 e ivar nd-var))
 	    ;; e = (m b n a).  That is, the integral is of the form
 	    ;; x^m*exp(b*x^n+a).  I think we want to compute
 	    ;; gamma((m+1)/n)/b^((m+1)/n)/n.
@@ -3220,7 +3219,7 @@ in the interval of integration.")
 
 
 ;; Match x^m*exp(b*x^n+a).  If it does, return (list m b n a).
-(defun ggr1 (e ivar nd*)
+(defun ggr1 (e ivar nd-var)
   (let (zd)
     (cond ((atom e) nil)
 	  ((and (mexptp e)
@@ -3229,7 +3228,7 @@ in the interval of integration.")
 	   ;; of the form b*x^n+a, and return (list 0 b n a).  (The 0 is
 	   ;; so we can graft something onto it if needed.)
 	   (cond ((multiple-value-setq (e zd)
-                    (maybpc (caddr e) ivar nd*))
+                    (maybpc (caddr e) ivar nd-var))
 		  (values (cons 0. e) zd))))
 	  ((and (mtimesp e)
 	        ;; E should be the product of exactly 2 terms
@@ -3239,15 +3238,15 @@ in the interval of integration.")
 	        ;; so, check the other term has the right form via
 	        ;; another call to ggr1.
 	        (or (and (setq dn* (xtorterm (cadr e) ivar))
-		         (ratgreaterp (setq nd* ($realpart dn*))
+		         (ratgreaterp (setq nd-var ($realpart dn*))
 				      -1.)
 		         (multiple-value-setq (nn* zd)
-                           (ggr1 (caddr e) ivar nd*)))
+                           (ggr1 (caddr e) ivar nd-var)))
 		    (and (setq dn* (xtorterm (caddr e) ivar))
-		         (ratgreaterp (setq nd* ($realpart dn*))
+		         (ratgreaterp (setq nd-var ($realpart dn*))
 				      -1.)
 		         (multiple-value-setq (nn* zd)
-                           (ggr1 (cadr e) ivar nd*)))))
+                           (ggr1 (cadr e) ivar nd-var)))))
 	   ;; Both terms have the right form and nn* contains the ivar of
 	   ;; the exponential term.  Put dn* as the car of nn*.  The
 	   ;; result is something like (m b n a) when we have the
