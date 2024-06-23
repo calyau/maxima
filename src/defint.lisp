@@ -125,7 +125,6 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *mtoinf*
-		      ;;*ul1* *ll1*
 		      *ul* *ll* exp
 		      *defint-assumptions*
 		      *current-assumptions*
@@ -376,15 +375,6 @@ in the interval of integration.")
 ;; d: original variable (ivar) as a function of 'yx
 ;; ind: boolean flag
 ;; nv: new variable ('yx) as a function of original variable (ivar)
-#+nil
-(defun intcv1 (d nv ivar)
-  (let (exp-yx)
-    (cond ((and (setq exp-yx (intcv2 d nv ivar))
-	        (equal ($imagpart *ll1*) 0)
-	        (equal ($imagpart *ul1*) 0)
-	        (not (alike1 *ll1* *ul1*)))
-	   (defint exp-yx 'yx *ll1* *ul1*)))))
-
 (defun intcv1 (d nv ivar)
   (multiple-value-bind (exp-yx ll1 ul1)
       (intcv2 d nv ivar)
