@@ -125,7 +125,6 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *mtoinf*
-		      exp1
 		      *ul1* *ll1*
 		      *ul* *ll* exp
 		      *defint-assumptions*
@@ -378,21 +377,30 @@ in the interval of integration.")
 ;; ind: boolean flag
 ;; nv: new variable ('yx) as a function of original variable (ivar)
 (defun intcv1 (d nv ivar)
-  (cond ((and (intcv2 d nv ivar)
-	      (equal ($imagpart *ll1*) 0)
-	      (equal ($imagpart *ul1*) 0)
-	      (not (alike1 *ll1* *ul1*)))
-	 (defint exp1 'yx *ll1* *ul1*))))
+  (let (exp-yx)
+    (cond ((and (setq exp-yx (intcv2 d nv ivar))
+	        (equal ($imagpart *ll1*) 0)
+	        (equal ($imagpart *ul1*) 0)
+	        (not (alike1 *ll1* *ul1*)))
+	   (defint exp-yx 'yx *ll1* *ul1*)))))
 
 ;; converts limits of integration to values for new variable 'yx
 (defun intcv2 (d nv ivar)
-  (intcv3 d nv ivar)
-  (and (cond ((and (zerop1 (m+ *ll* *ul*))
-		   (evenfn nv ivar))
-	      (setq exp1 (m* 2 exp1)
-		    *ll1* (limcp nv ivar 0 '$plus)))
-	     (t (setq *ll1* (limcp nv ivar *ll* '$plus))))
-       (setq *ul1* (limcp nv ivar *ul* '$minus))))
+  (flet ((intcv3 (d nv ivar)
+           ;; rewrites exp, the integrand in terms of ivar, the
+           ;; integrand in terms of 'yx, and returns the new
+           ;; integrand.
+           (let ((exp-yx (m* (sdiff d 'yx)
+		           (subst d ivar (subst 'yx nv exp)))))
+             (sratsimp exp-yx))))
+    (let ((exp-yx (intcv3 d nv ivar)))
+      (and (cond ((and (zerop1 (m+ *ll* *ul*))
+		       (evenfn nv ivar))
+	          (setq exp-yx (m* 2 exp-yx)
+		        *ll1* (limcp nv ivar 0 '$plus)))
+	         (t (setq *ll1* (limcp nv ivar *ll* '$plus))))
+           (setq *ul1* (limcp nv ivar *ul* '$minus))
+           exp-yx))))
 
 ;; wrapper around limit, returns nil if 
 ;; limit not found (nounform returned), or undefined ($und or $ind)
@@ -403,13 +411,6 @@ in the interval of integration.")
 		    (among '$ind ans)
 		    (among '$und ans)))
 	   ans))))
-
-;; rewrites exp, the integrand in terms of ivar,
-;; into exp1, the integrand in terms of 'yx.
-(defun intcv3 (d nv ivar)
-  (setq exp1 (m* (sdiff d 'yx)
-		 (subst d ivar (subst 'yx nv exp))))
-  (setq exp1 (sratsimp exp1)))
 
 (defun integrand-changevar (d newvar exp ivar)
   (m* (sdiff d newvar)
