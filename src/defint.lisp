@@ -505,7 +505,7 @@ in the interval of integration.")
 		(setq ans (method-by-limits exp ivar *ll* *ul*)))
            ans)
 	  ((and (mplusp exp)
-		(setq ans (intbyterm exp t ivar)))
+		(setq ans (intbyterm exp t ivar *ll* *ul*)))
            ans)
 	  ((setq ans (method-by-limits exp ivar *ll* *ul*))  ans)
 	  (t ()))))
@@ -566,7 +566,7 @@ in the interval of integration.")
 			    ($trigexpand exp)))
 		(setq ans ($expand ans))
 		(not (alike1 ans exp))
-		(intbyterm ans t ivar)))
+		(intbyterm ans t ivar *ll* *ul*)))
 	  ;; Call ANTIDERIV with logabs disabled,
 	  ;; because the Risch algorithm assumes
 	  ;; the integral of 1/x is log(x), not log(abs(x)).
@@ -585,7 +585,7 @@ in the interval of integration.")
 		(setq result (antideriv exp ivar))
 		(intsubs result *ll* *ul* ivar)))
 	  ((and (ratp exp ivar)
-		(setq result (ratfnt exp ivar))))
+		(setq result (ratfnt exp ivar *ll* *ul*))))
 	  ((and (not *scflag*)
 		(not (eq *ul* '$inf))
 		(radicalp exp ivar)
@@ -679,7 +679,7 @@ in the interval of integration.")
 ;; Integrate rational functions over a finite interval by doing the
 ;; polynomial part directly, and converting the rational part to an
 ;; integral from 0 to inf.  This is evaluated via residues.
-(defun ratfnt (exp ivar)
+(defun ratfnt (exp ivar *ll* *ul*)
   (let ((e (pqr exp ivar)))
     ;; PQR divides the rational expression and returns the quotient
     ;; and remainder
@@ -720,7 +720,7 @@ in the interval of integration.")
     (cons (simplify (rdis (car e))) (simplify (rdis (cadr e))))))
 
 
-(defun intbyterm (exp *nodiverg* ivar)
+(defun intbyterm (exp *nodiverg* ivar *ll* *ul*)
   (let ((saved-exp exp))
     (cond ((mplusp exp)
 	   (let ((ans (catch 'divergent
