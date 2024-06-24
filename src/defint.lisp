@@ -590,7 +590,7 @@ in the interval of integration.")
 		(not (eq *ul* '$inf))
 		(radicalp exp ivar)
 		(kindp34 ivar)
-		(setq result (cv exp ivar))))
+		(setq result (cv exp ivar *ll* *ul*))))
 	  (t ()))))
 
 (defun principal-value-integral (exp ivar *ll* *ul* poles)
@@ -652,7 +652,7 @@ in the interval of integration.")
 ;; x = (b*y+a)/(y+1).
 ;;
 ;; (I'm guessing CV means Change Variable here.)
-(defun cv (exp ivar)
+(defun cv (exp ivar *ll* *ul*)
   (if (not (or (real-infinityp *ll*) (real-infinityp *ul*)))
       ;; FIXME!  This is a hack.  We apply the transformation with
       ;; symbolic limits and then substitute the actual limits later.
@@ -693,7 +693,7 @@ in the interval of integration.")
 	     (let ((ans (try-antideriv exp *ll* *ul*)))
 	       (if ans
 		   ans
-		   (cv exp ivar))))
+		   (cv exp ivar *ll* *ul*))))
 	    ((equal 0. (cdr e))
 	     ;; Only polynomial part
 	     (eezz (car e) *ll* *ul* ivar))
@@ -706,7 +706,7 @@ in the interval of integration.")
 			   ans))
 		     (t
 		      (m+t (eezz (car e) *ll* *ul* ivar)
-			   (cv (m// (cdr e) dn*) ivar))))))))))
+			   (cv (m// (cdr e) dn*) ivar *ll* *ul*))))))))))
 
 ;; I think this takes a rational expression E, and finds the
 ;; polynomial part.  A cons is returned.  The car is the quotient and
