@@ -332,7 +332,7 @@ in the interval of integration.")
     (alike1 val out2)))
 
 ;; integration change of variable
-(defun intcv (nv flag ivar)
+(defun intcv (nv flag ivar *ll* *ul*)
   (let ((d (bx**n+a nv ivar))
 	(*roots ())  (*failures ())  ($breakup ()))
     (cond ((and (eq *ul* '$inf)
@@ -2541,7 +2541,7 @@ in the interval of integration.")
 		     (cond ((not (eq *ul* '$inf))
 			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar)) ivar))
 			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar) ivar))))))
-	     (t (intcv arg nil ivar)))))))
+	     (t (intcv arg nil ivar *ll* *ul*)))))))
 
 
 ;; Wang 81-83.  Unfortunately, the pdf version has page 82 as all
@@ -3034,7 +3034,7 @@ in the interval of integration.")
 		  ;; limits are minf to inf.
 		  (setq ans (cadr ans))))
 	   ;; Apply the substitution and integrate it.
-	   (intcv ans nil ivar)))))
+	   (intcv ans nil ivar *ll* *ul*)))))
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
 (defun dintlog (exp arg ivar)
