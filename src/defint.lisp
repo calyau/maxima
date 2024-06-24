@@ -353,8 +353,8 @@ in the interval of integration.")
 		    (let ((root (power* (div (sub 'yx a) b) (inv n))))
 		      (cond (t
 			     (setq d root)
-			     (cond (flag (intcv2 d nv ivar))
-				   (t (intcv1 d nv ivar))))
+			     (cond (flag (intcv2 d nv ivar *ll* *ul*))
+				   (t (intcv1 d nv ivar *ll* *ul*))))
 			    ))))
 		 (t
 		  (putprop 'yx t 'internal);; keep ivar from appearing in questions to user
@@ -368,23 +368,23 @@ in the interval of integration.")
 					     (or (real-infinityp *ul*)
 						 (test-inverse nv ivar root 'yx *ul*)))
 					(return root))))
-			 (cond (flag (intcv2 d nv ivar))
-			       (t (intcv1 d nv ivar))))
+			 (cond (flag (intcv2 d nv ivar *ll* *ul*))
+			       (t (intcv1 d nv ivar *ll* *ul*))))
 			(t ()))))))))
 
 ;; d: original variable (ivar) as a function of 'yx
 ;; ind: boolean flag
 ;; nv: new variable ('yx) as a function of original variable (ivar)
-(defun intcv1 (d nv ivar)
+(defun intcv1 (d nv ivar *ll* *ul*)
   (multiple-value-bind (exp-yx ll1 ul1)
-      (intcv2 d nv ivar)
+      (intcv2 d nv ivar *ll* *ul*)
     (cond ((and (equal ($imagpart ll1) 0)
 	        (equal ($imagpart ul1) 0)
 	        (not (alike1 ll1 ul1)))
 	   (defint exp-yx 'yx ll1 ul1)))))
 
 ;; converts limits of integration to values for new variable 'yx
-(defun intcv2 (d nv ivar)
+(defun intcv2 (d nv ivar *ll* *ul*)
   (flet ((intcv3 (d nv ivar)
            ;; rewrites exp, the integrand in terms of ivar, the
            ;; integrand in terms of 'yx, and returns the new
@@ -2539,8 +2539,8 @@ in the interval of integration.")
        (cond ((eq arg ivar)
 	      (cond ((ratgreaterp 1. *ll*)
 		     (cond ((not (eq *ul* '$inf))
-			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar)) ivar))
-			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar) ivar))))))
+			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar)) ivar *ll* *ul*))
+			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar) ivar *ll* *ul*))))))
 	     (t (intcv arg nil ivar *ll* *ul*)))))))
 
 
