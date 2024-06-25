@@ -1340,7 +1340,7 @@ in the interval of integration.")
 		'$pos)
 	    (return nil))
 	   ((setq temp (or (scaxn grand ivar)
-			   (ssp grand ivar)))
+			   (ssp grand ivar *ll* *ul*)))
 	    (return temp))
 	   ((involve-var grand ivar '(%sin %cos %tan))
 	    (setq grand (sconvert grand ivar))
@@ -1482,7 +1482,7 @@ in the interval of integration.")
 	   ((involve-var grand ivar '(%sin %cos))
 	    (cond ((and (evenfn grand ivar)
 			(or (setq temp (scaxn grand ivar))
-			    (setq temp (ssp grand ivar))))
+			    (setq temp (ssp grand ivar *ll* *ul*))))
 		   (return (m*t 2. temp)))
 		  ((setq temp (mtosc grand ivar))
 		   (return temp))
@@ -1788,7 +1788,7 @@ in the interval of integration.")
 
 
 ;; integrate(a*sc(r*x)^k/x^n,x,0,inf).
-(defun ssp (exp ivar)
+(defun ssp (exp ivar *ll* *ul*)
   (prog (u n c arg)
      ;; Get the argument of the involved trig function.
      (when (null (setq arg (involve-var exp ivar '(%sin %cos))))
@@ -1813,13 +1813,13 @@ in the interval of integration.")
 	      ;; n is the power of the denominator.
 	      (cond ((setq c (skr u ivar))
 		     ;; The simple case.
-		     (return (scmp c n ivar)))
+		     (return (scmp c n ivar *ll* *ul*)))
 		    ((and (mplusp u)
 			  (setq c (andmapcar #'(lambda (uu)
                                                  (skr uu ivar))
                                              (cdr u))))
 		     ;; Do this for a sum of such terms.
-		     (return (m+l (mapcar #'(lambda (j) (scmp j n ivar))
+		     (return (m+l (mapcar #'(lambda (j) (scmp j n ivar *ll* *ul*))
 					  c))))))))))
 
 ;; We have an integral of the form sin(r*x)^k/x^n.  C is the list (1 r k).
@@ -1851,7 +1851,7 @@ in the interval of integration.")
 ;;
 ;; where q >= 2.
 ;;
-(defun scmp (c n ivar)
+(defun scmp (c n ivar *ll* *ul*)
   ;; Compute sign(r)*r^(n-1)*integrate(sin(y)^k/y^n,y,0,inf)
   (destructuring-bind (mult r k)
       c
