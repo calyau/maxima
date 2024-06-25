@@ -556,10 +556,10 @@ in the interval of integration.")
 		(method-radical-poly exp ivar *ll* *ul*)))
 	  ((and (not (equal *dintlog-recur* 2.))
 		(setq arg (involve-var exp ivar '(%log)))
-		(dintlog exp arg ivar)))
+		(dintlog exp arg ivar *ll* *ul*)))
 	  ((and (not *dintexp-recur*)
 		(setq arg (%einvolve-var exp ivar))
-		(dintexp exp ivar)))
+		(dintexp exp ivar *ll* *ul*)))
 	  ((and (not (ratp exp ivar))
 		(setq ans (let (($trigexpandtimes nil)
 				($trigexpandplus t))
@@ -1566,7 +1566,7 @@ in the interval of integration.")
 	      ;; p(x) is a polynomial.
 	      (cond ((null pp)
 		     ;; No polynomial
-		     (return (dintexp grand ivar)))
+		     (return (dintexp grand ivar *ll* *ul*)))
 		    ((not (and (zerop1 (get-limit grand ivar '$inf))
 			       (zerop1 (get-limit grand ivar '$minf))))
 		     ;; These limits must exist for the integral to converge.
@@ -3014,7 +3014,7 @@ in the interval of integration.")
 ;; to get integrate(f(y)/y,y,0,inf)/k.  If the limits are 0 to inf,
 ;; use the substitution s+1=exp(k*x) to get
 ;; integrate(f(s+1)/(s+1),s,0,inf).
-(defun dintexp (exp ivar &aux ans)
+(defun dintexp (exp ivar *ll* *ul* &aux ans)
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp ivar)     ;To be moved higher in the code.
 		(setq ans (antideriv exp ivar))
@@ -3037,7 +3037,7 @@ in the interval of integration.")
 	   (intcv ans nil ivar *ll* *ul*)))))
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
-(defun dintlog (exp arg ivar)
+(defun dintlog (exp arg ivar *ll* *ul*)
   (let ((*dintlog-recur* (1+ *dintlog-recur*))) ;recursion stopper
     (prog (ans d)
        (cond ((and (eq *ul* '$inf)
