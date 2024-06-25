@@ -862,7 +862,7 @@ in the interval of integration.")
 		  (setq *ll* (m- *ul*))
 		  (setq *ul* '$inf))
 		 ((or (eq *ll* '$inf)
-		      (equal (complm ask-or-not) -1))
+		      (equal (complm ask-or-not *ll* *ul*) -1))
 		  ; We have minf <= *ul* < *ll*
 		  ;
 		  ; Now substitute
@@ -875,7 +875,7 @@ in the interval of integration.")
 		  (rotatef *ll* *ul*)))
 	   t)))
 
-(defun complm (ask-or-not)
+(defun complm (ask-or-not *ll* *ul*)
   (let ((askflag (cond ((eq ask-or-not 'ask)  t)
 		       (t nil)))
 	(a ()))
