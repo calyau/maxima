@@ -2531,17 +2531,17 @@ in the interval of integration.")
         (m* '$%pi result)))))
 
 
-(defun logx1 (exp *ll* *ul* ivar)
+(defun logx1 (exp ll ul ivar)
   (let ((arg nil))
     (cond
       ((and (notinvolve-var exp ivar '(%sin %cos %tan %atan %asin %acos))
 	    (setq arg (involve-var exp ivar '(%log))))
        (cond ((eq arg ivar)
-	      (cond ((ratgreaterp 1. *ll*)
-		     (cond ((not (eq *ul* '$inf))
-			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar)) ivar *ll* *ul*))
-			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar) ivar *ll* *ul*))))))
-	     (t (intcv arg nil ivar *ll* *ul*)))))))
+	      (cond ((ratgreaterp 1. ll)
+		     (cond ((not (eq ul '$inf))
+			    (intcv1 (m^t '$%e (m- 'yx)) (m- `((%log) ,ivar)) ivar ll ul))
+			   (t (intcv1 (m^t '$%e 'yx) `((%log) ,ivar) ivar ll ul))))))
+	     (t (intcv arg nil ivar ll ul)))))))
 
 
 ;; Wang 81-83.  Unfortunately, the pdf version has page 82 as all
