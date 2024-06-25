@@ -524,10 +524,10 @@ in the interval of integration.")
     (unwind-protect
 	 (cond ((and (and (eq *ul* '$inf)
 			  (eq *ll* '$minf))
-		     (mtoinf exp ivar)))
+		     (mtoinf exp ivar *ll* *ul*)))
 	       ((and (and (eq *ul* '$inf)
 			  (equal *ll* 0.))
-		     (ztoinf exp ivar)))
+		     (ztoinf exp ivar *ll* *ul*)))
 ;;;This seems((and (and (eq *ul* '$inf)
 ;;;fairly losing	(setq exp (subin (m+ *ll* ivar) exp))
 ;;;			(setq *ll* 0.))
@@ -1330,7 +1330,7 @@ in the interval of integration.")
 	   t)
 	  (t nil))))
 
-(defun ztoinf (grand ivar)
+(defun ztoinf (grand ivar *ll* *ul*)
   (prog (n d sn sd varlist
 	 s nc dc
 	 ans r $savefactors *checkfactors* temp test-var
@@ -1408,7 +1408,7 @@ in the interval of integration.")
 	    (cond ((let ((*nodiverg* t))
 		     (setq ans (catch 'divergent
 				 (andmapcar #'(lambda (g)
-						(ztoinf g ivar))
+						(ztoinf g ivar *ll* *ul*))
 					    (cdr grand)))))
 		   (cond ((eq ans 'divergent) nil)
 			 (t (return (sratsimp (m+l ans)))))))))
@@ -1472,7 +1472,7 @@ in the interval of integration.")
 		(not (equal (ptterm (cddr exp) 0.) 0.)))
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
-(defun mtoinf (grand ivar)
+(defun mtoinf (grand ivar *ll* *ul*)
   (prog (ans ans1 sd sn pp pe n d s nc dc $savefactors *checkfactors* temp
          nn-var dn-var)
      (setq $savefactors t)
