@@ -398,6 +398,10 @@
   )
 )
 
+(defmfun $idiff (&rest args)
+  (let (derivlist)
+    (ideriv args)))
+
 (defun covdiff (e)                      ; The covariant derivative...
   (setq d ($idummy))
   (cond
@@ -721,9 +725,6 @@
 
 (defmfun $rediff (x) (meval '(($ev) x $idiff)))
 
-;;(defmfun $evundiff (x) ($rediff ($undiff x)))
-(defmfun $evundiff (x) (meval (list '($ev) ($undiff x) '$nouns)))
-
 (defmfun $undiff (x) 
   (cond
     ((atom x) x)
@@ -742,12 +743,15 @@
     )
     (t
       (mysubst0
-        (simplifya (cons (ncons (caar x)) (mapcar '$undiff (cdr x))) t)
+        (simplifya (cons (ncons (caar x)) (mapcar (symbol-function '$undiff) (cdr x))) t)
         x
       )
     )
   )
 )
+
+;;(defmfun $evundiff (x) ($rediff ($undiff x)))
+(defmfun $evundiff (x) (meval (list '($ev) ($undiff x) '$nouns)))
 
 (defun putinones (e) 
   (cond
@@ -818,10 +822,10 @@
     )
     (
       (eq (caar e) 'mplus)
-      (mysubst0 (simplus (cons '(mplus) (mapcar '$contract (cdr e))) 1. t) e)
+      (mysubst0 (simplus (cons '(mplus) (mapcar (symbol-function '$contract) (cdr e))) 1. t) e)
     )
     (t
-      (mysubst0 (simplifya (cons (car e) (mapcar '$contract (cdr e))) nil) e)
+      (mysubst0 (simplifya (cons (car e) (mapcar (symbol-function '$contract) (cdr e))) nil) e)
     )
   )
 )
@@ -2299,10 +2303,6 @@
             args)
            t)))))
 
-(defmfun $idiff (&rest args)
-  (let (derivlist)
-    (ideriv args)))
-
 (defmfun idiff (e x)
   (cond
          (($constantp e) 0.)
@@ -2628,7 +2628,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 		    (t e)))
 	     (t (subst0 (cons (ncons (caar e))
 			      (mapcar (function
-				       (lambda (q) ($flushnd q name n)))
+				       (lambda (q) (funcall (symbol-function '$flushnd) q name n)))
 				      (cdr e))) e))))
 
 (declare-top (special index n dumx))
@@ -2982,7 +2982,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   (cond ((> 1 (length ind)) ($ishow (meval (list '($ev) e))))
 	((> 2 (length ind)) ($ishow (cons smlist (mapcar (lambda (i) (meval (list '($ev) e (list '(mequal) (car ind) i)))) (numlist)))))
 	((> 3 (length ind)) ($ishow (list '(mequal) e (cons '($matrix simp) (mapcar (lambda (j) (cons smlist (mapcar (lambda (i) (meval (list '($ev) e (list '(mequal) (car ind) i) (list '(mequal) (cadr ind) j)))) (numlist)))) (numlist))))))
-	(t (mapcar (lambda (i)  ($showcomps ($substitute i (car (last ind)) e)) (and (> 4 (length ind)) (< i $dim) (setq $linenum (1+ $linenum)))) (numlist)))
+	(t (mapcar (lambda (i)  (funcall (symbol-function '$showcomps) ($substitute i (car (last ind)) e)) (and (> 4 (length ind)) (< i $dim) (setq $linenum (1+ $linenum)))) (numlist)))
   )
  )
 )
