@@ -1397,7 +1397,7 @@ in the interval of integration.")
 		   (return (m* (m// nc dc) ans)))
 		  (t (return nil)))))
      findout
-     (cond ((setq temp (batapp grand ivar))
+     (cond ((setq temp (batapp grand ivar *ll* *ul*))
 	    (return temp))
 	   (t nil))
      on
@@ -2471,7 +2471,7 @@ in the interval of integration.")
 
 
 ;; Handles beta integrals.
-(defun batapp (e ivar)
+(defun batapp (e ivar *ll* *ul*)
   (cond ((not (or (equal *ll* 0)
 		  (eq *ll* '$minf)))
 	 (setq e (subin-var (m+ *ll* ivar) e ivar))))
