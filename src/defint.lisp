@@ -3014,18 +3014,18 @@ in the interval of integration.")
 ;; to get integrate(f(y)/y,y,0,inf)/k.  If the limits are 0 to inf,
 ;; use the substitution s+1=exp(k*x) to get
 ;; integrate(f(s+1)/(s+1),s,0,inf).
-(defun dintexp (exp ivar *ll* *ul* &aux ans)
+(defun dintexp (exp ivar ll ul &aux ans)
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp ivar)     ;To be moved higher in the code.
 		(setq ans (antideriv exp ivar))
-		(setq ans (intsubs ans *ll* *ul* ivar)))
+		(setq ans (intsubs ans ll ul ivar)))
 	   ;; If we can integrate it directly, do so and take the
 	   ;; appropriate limits.
 	   )
 	  ((setq ans (funclogor%e exp ivar))
 	   ;; ans is the list (f(x) exp(k*x)).
-	   (cond ((and (equal *ll* 0.)
-		       (eq *ul* '$inf))
+	   (cond ((and (equal ll 0.)
+		       (eq ul '$inf))
 		  ;; Use the substitution s + 1 = exp(k*x).  The
 		  ;; integral becomes integrate(f(s+1)/(s+1),s,0,inf)
 		  (setq ans (m+t -1 (cadr ans))))
@@ -3034,7 +3034,7 @@ in the interval of integration.")
 		  ;; limits are minf to inf.
 		  (setq ans (cadr ans))))
 	   ;; Apply the substitution and integrate it.
-	   (intcv ans nil ivar *ll* *ul*)))))
+	   (intcv ans nil ivar ll ul)))))
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
 (defun dintlog (exp arg ivar *ll* *ul*)
