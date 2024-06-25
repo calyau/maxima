@@ -2471,10 +2471,10 @@ in the interval of integration.")
 
 
 ;; Handles beta integrals.
-(defun batapp (e ivar *ll* *ul*)
-  (cond ((not (or (equal *ll* 0)
-		  (eq *ll* '$minf)))
-	 (setq e (subin-var (m+ *ll* ivar) e ivar))))
+(defun batapp (e ivar ll ul)
+  (cond ((not (or (equal ll 0)
+		  (eq ll '$minf)))
+	 (setq e (subin-var (m+ ll ivar) e ivar))))
   (multiple-value-bind (k c)
       (bata0 e ivar)
     (cond ((null k)
