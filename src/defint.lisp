@@ -652,8 +652,8 @@ in the interval of integration.")
 ;; x = (b*y+a)/(y+1).
 ;;
 ;; (I'm guessing CV means Change Variable here.)
-(defun cv (exp ivar *ll* *ul*)
-  (if (not (or (real-infinityp *ll*) (real-infinityp *ul*)))
+(defun cv (exp ivar ll ul)
+  (if (not (or (real-infinityp ll) (real-infinityp ul)))
       ;; FIXME!  This is a hack.  We apply the transformation with
       ;; symbolic limits and then substitute the actual limits later.
       ;; That way method-by-limits (usually?) sees a simpler
@@ -662,17 +662,17 @@ in the interval of integration.")
       ;; See Bugs 938235 and 941457.  These fail because $FACTOR is
       ;; unable to factor the transformed result.  This needs more
       ;; work (in other places).
-      (let ((trans (integrand-changevar (m// (m+t '*ll* (m*t '*ul* 'yx))
+      (let ((trans (integrand-changevar (m// (m+t 'll (m*t 'ul 'yx))
 					     (m+t 1. 'yx))
 					'yx exp ivar)))
 	;; If the limit is a number, use $substitute so we simplify
 	;; the result.  Do we really want to do this?
-	(setf trans (if (mnump *ll*)
-			($substitute *ll* '*ll* trans)
-			(subst *ll* '*ll* trans)))
-	(setf trans (if (mnump *ul*)
-			($substitute *ul* '*ul* trans)
-			(subst *ul* '*ul* trans)))
+	(setf trans (if (mnump ll)
+			($substitute ll 'll trans)
+			(subst ll 'll trans)))
+	(setf trans (if (mnump ul)
+			($substitute ul 'ul trans)
+			(subst ul 'ul trans)))
 	(method-by-limits trans 'yx 0. '$inf))
       ()))
 
