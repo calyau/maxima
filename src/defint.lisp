@@ -3037,11 +3037,11 @@ in the interval of integration.")
 	   (intcv ans nil ivar ll ul)))))
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
-(defun dintlog (exp arg ivar *ll* *ul*)
+(defun dintlog (exp arg ivar ll ul)
   (let ((*dintlog-recur* (1+ *dintlog-recur*))) ;recursion stopper
     (prog (ans d)
-       (cond ((and (eq *ul* '$inf)
-		   (equal *ll* 0.)
+       (cond ((and (eq ul '$inf)
+		   (equal ll 0.)
 		   (eq arg ivar)
 		   (equal 1 (sratsimp (m// exp (m* (m- (subin-var (m^t ivar -1)
 							          exp
@@ -3050,13 +3050,13 @@ in the interval of integration.")
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
-             ((and (setq ans (let (($gamma_expand t)) (logx1 exp *ll* *ul* ivar)))
+             ((and (setq ans (let (($gamma_expand t)) (logx1 exp ll ul ivar)))
 		   (free ans '%limit))
 	      (return ans))
 	     ((setq ans (antideriv exp ivar))
 	      ;; It's easy if we have the antiderivative.
 	      ;; but intsubs sometimes gives results containing %limit
-	      (return (intsubs ans *ll* *ul* ivar))))
+	      (return (intsubs ans ll ul ivar))))
        ;; Ok, the easy cases didn't work.  We now try integration by
        ;; parts.  Set ANS to f(x).
        (setq ans (m// exp `((%log) ,arg)))
@@ -3066,7 +3066,7 @@ in the interval of integration.")
 	     ((and (eq arg ivar)
 		   (equal 0. (no-err-sub-var 0. ans ivar))
 		   (setq d (defint (m* ans (m^t ivar '*z*))
-				 ivar *ll* *ul*)))
+				 ivar ll ul)))
 	      ;; The arg of the log function is the same as the
 	      ;; integration variable.  We can do something a little
 	      ;; simpler than integration by parts.  We have something
@@ -3079,7 +3079,7 @@ in the interval of integration.")
 	      ;; f(x)*x^z, then we differentiate the result and
 	      ;; evaluate it at z = 0.
 	      (return (derivat '*z* 1. d 0.)))
-	     ((setq ans (dintbypart `((%log) ,arg) ans *ll* *ul* ivar))
+	     ((setq ans (dintbypart `((%log) ,arg) ans ll ul ivar))
 	      ;; Try integration by parts.
 	      (return ans))))))
 
