@@ -938,7 +938,7 @@ in the interval of integration.")
 ;; list begins with *ll* and ends with *ul*, and include any values between
 ;; *ll* and *ul*.
 ;; return '$no or '$unknown if no discontinuities found.
-(defun discontinuities-in-interval (exp ivar *ll* *ul*)
+(defun discontinuities-in-interval (exp ivar ll ul)
   (let* ((denom (discontinuities-denom exp ivar))
 	 (roots (real-roots denom ivar)))
     (cond ((eq roots '$failure)
@@ -949,13 +949,13 @@ in the interval of integration.")
 		  (pole-list nil))
 		 ((null dummy)
 		  (cond (pole-list
-			 (append (list *ll*)
+			 (append (list ll)
 				 (sortgreat pole-list)
-				 (list *ul*)))
+				 (list ul)))
 			(t '$no)))
 		 (let ((soltn (caar dummy)))
 		   ;; (multiplicity (cdar dummy)) ;; not used
-		   (if (strictly-in-interval soltn *ll* *ul*)
+		   (if (strictly-in-interval soltn ll ul)
 		       (push soltn pole-list))))))))
 
 
@@ -971,8 +971,8 @@ in the interval of integration.")
 		   (t (same-sheet-subs e a b ivar)))))))
 
 ;; Try easy substitutions.  Return NIL if we can't.
-(defun easy-subs (e *ll* *ul* ivar)
-  (cond ((or (infinityp *ll*) (infinityp *ul*))
+(defun easy-subs (e ll ul ivar)
+  (cond ((or (infinityp ll) (infinityp ul))
 	 ;; Infinite limits aren't easy
 	 nil)
 	(t
@@ -994,8 +994,8 @@ in the interval of integration.")
 		;;
 		;; So just try to substitute the limits into the
 		;; expression.  If no errors are produced, we're done.
-		(let ((ll-val (no-err-sub-var *ll* e ivar))
-		      (ul-val (no-err-sub-var *ul* e ivar)))
+		(let ((ll-val (no-err-sub-var ll e ivar))
+		      (ul-val (no-err-sub-var ul e ivar)))
 		  (cond ((or (eq ll-val t)
                              (eq ul-val t))
                          ;; no-err-sub has returned T. An error was catched.
