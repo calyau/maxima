@@ -679,7 +679,7 @@ in the interval of integration.")
 ;; Integrate rational functions over a finite interval by doing the
 ;; polynomial part directly, and converting the rational part to an
 ;; integral from 0 to inf.  This is evaluated via residues.
-(defun ratfnt (exp ivar *ll* *ul*)
+(defun ratfnt (exp ivar ll ul)
   (let ((e (pqr exp ivar)))
     ;; PQR divides the rational expression and returns the quotient
     ;; and remainder
@@ -690,23 +690,23 @@ in the interval of integration.")
 
       (cond ((equal 0. (car e))
 	     ;; No polynomial part
-	     (let ((ans (try-antideriv exp *ll* *ul*)))
+	     (let ((ans (try-antideriv exp ll ul)))
 	       (if ans
 		   ans
-		   (cv exp ivar *ll* *ul*))))
+		   (cv exp ivar ll ul))))
 	    ((equal 0. (cdr e))
 	     ;; Only polynomial part
-	     (eezz (car e) *ll* *ul* ivar))
+	     (eezz (car e) ll ul ivar))
 	    (t
 	     ;; A non-zero quotient and remainder.  Combine the results
 	     ;; together.
-	     (let ((ans (try-antideriv (m// (cdr e) dn*) *ll* *ul*)))
+	     (let ((ans (try-antideriv (m// (cdr e) dn*) ll ul)))
 	       (cond (ans
-		      (m+t (eezz (car e) *ll* *ul* ivar)
+		      (m+t (eezz (car e) ll ul ivar)
 			   ans))
 		     (t
-		      (m+t (eezz (car e) *ll* *ul* ivar)
-			   (cv (m// (cdr e) dn*) ivar *ll* *ul*))))))))))
+		      (m+t (eezz (car e) ll ul ivar)
+			   (cv (m// (cdr e) dn*) ivar ll ul))))))))))
 
 ;; I think this takes a rational expression E, and finds the
 ;; polynomial part.  A cons is returned.  The car is the quotient and
