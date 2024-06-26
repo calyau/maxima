@@ -1005,12 +1005,12 @@ in the interval of integration.")
 			(t nil))))
 	       (t nil)))))
 
-(defun limit-subs (e *ll* *ul* ivar)
+(defun limit-subs (e ll ul ivar)
   (cond ((involve-var e ivar '(%atan %gamma_incomplete %expintegral_ei))
 	 ())	; functions with discontinuities
 	(t (setq e ($multthru e))
-	   (let ((a1 ($limit e ivar *ll* '$plus))
-		 (a2 ($limit e ivar *ul* '$minus)))
+	   (let ((a1 ($limit e ivar ll '$plus))
+		 (a2 ($limit e ivar ul '$minus)))
 	     (combine-ll-ans-ul-ans a1 a2)))))
 
 ;; check for divergent integral
