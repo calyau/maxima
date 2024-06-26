@@ -1330,7 +1330,7 @@ in the interval of integration.")
 	   t)
 	  (t nil))))
 
-(defun ztoinf (grand ivar *ll* *ul*)
+(defun ztoinf (grand ivar ll ul)
   (prog (n d sn sd varlist
 	 s nc dc
 	 ans r $savefactors *checkfactors* temp test-var
@@ -1340,7 +1340,7 @@ in the interval of integration.")
 		'$pos)
 	    (return nil))
 	   ((setq temp (or (scaxn grand ivar)
-			   (ssp grand ivar *ll* *ul*)))
+			   (ssp grand ivar ll ul)))
 	    (return temp))
 	   ((involve-var grand ivar '(%sin %cos %tan))
 	    (setq grand (sconvert grand ivar))
@@ -1397,7 +1397,7 @@ in the interval of integration.")
 		   (return (m* (m// nc dc) ans)))
 		  (t (return nil)))))
      findout
-     (cond ((setq temp (batapp grand ivar *ll* *ul*))
+     (cond ((setq temp (batapp grand ivar ll ul))
 	    (return temp))
 	   (t nil))
      on
@@ -1408,7 +1408,7 @@ in the interval of integration.")
 	    (cond ((let ((*nodiverg* t))
 		     (setq ans (catch 'divergent
 				 (andmapcar #'(lambda (g)
-						(ztoinf g ivar *ll* *ul*))
+						(ztoinf g ivar ll ul))
 					    (cdr grand)))))
 		   (cond ((eq ans 'divergent) nil)
 			 (t (return (sratsimp (m+l ans)))))))))
@@ -1472,7 +1472,7 @@ in the interval of integration.")
 		(not (equal (ptterm (cddr exp) 0.) 0.)))
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
-(defun mtoinf (grand ivar *ll* *ul*)
+(defun mtoinf (grand ivar ll ul)
   (prog (ans ans1 sd sn pp pe n d s nc dc $savefactors *checkfactors* temp
          nn-var dn-var)
      (setq $savefactors t)
@@ -1482,7 +1482,7 @@ in the interval of integration.")
 	   ((involve-var grand ivar '(%sin %cos))
 	    (cond ((and (evenfn grand ivar)
 			(or (setq temp (scaxn grand ivar))
-			    (setq temp (ssp grand ivar *ll* *ul*))))
+			    (setq temp (ssp grand ivar ll ul))))
 		   (return (m*t 2. temp)))
 		  ((setq temp (mtosc grand ivar))
 		   (return temp))
@@ -1566,7 +1566,7 @@ in the interval of integration.")
 	      ;; p(x) is a polynomial.
 	      (cond ((null pp)
 		     ;; No polynomial
-		     (return (dintexp grand ivar *ll* *ul*)))
+		     (return (dintexp grand ivar ll ul)))
 		    ((not (and (zerop1 (get-limit grand ivar '$inf))
 			       (zerop1 (get-limit grand ivar '$minf))))
 		     ;; These limits must exist for the integral to converge.
