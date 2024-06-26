@@ -244,14 +244,14 @@ in the interval of integration.")
 		   (t `((%integrate) ,orig-exp ,orig-var ,orig-ll ,orig-ul))))
 	(forget-global-assumptions)))))
 
-(defun eezz (exp *ll* *ul* ivar)
+(defun eezz (exp ll ul ivar)
   (cond ((or (polyinx exp ivar nil)
 	     (catch 'pin%ex (pin%ex exp ivar)))
 	 (setq exp (antideriv exp ivar))
 	 ;; If antideriv can't do it, returns nil
 	 ;; use limit to evaluate every answer returned by antideriv.
 	 (cond ((null exp) nil)
-	       (t (intsubs exp *ll* *ul* ivar))))))
+	       (t (intsubs exp ll ul ivar))))))
 
 ;;;Hack the expression up for exponentials.
 
@@ -498,16 +498,16 @@ in the interval of integration.")
 	  ((eq pole '$unknown)  ())
 	  (t (principal-value-integral exp ivar *ll* *ul* pole)))))
 
-(defun parse-integrand (exp ivar *ll* *ul*)
+(defun parse-integrand (exp ivar ll ul)
   (let (ans)
-    (cond ((setq ans (eezz exp *ll* *ul* ivar))  ans)
+    (cond ((setq ans (eezz exp ll ul ivar))  ans)
 	  ((and (ratp exp ivar)
-		(setq ans (method-by-limits exp ivar *ll* *ul*)))
+		(setq ans (method-by-limits exp ivar ll ul)))
            ans)
 	  ((and (mplusp exp)
-		(setq ans (intbyterm exp t ivar *ll* *ul*)))
+		(setq ans (intbyterm exp t ivar ll ul)))
            ans)
-	  ((setq ans (method-by-limits exp ivar *ll* *ul*))  ans)
+	  ((setq ans (method-by-limits exp ivar ll ul))  ans)
 	  (t ()))))
 
 (defun rmconst1 (e ivar)
