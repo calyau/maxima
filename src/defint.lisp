@@ -1026,7 +1026,7 @@ in the interval of integration.")
 	(t (m- a2 a1))))
 
 ;;;This function works only on things with ATAN's in them now.
-(defun same-sheet-subs (exp *ll* *ul* ivar &aux ll-ans ul-ans)
+(defun same-sheet-subs (exp ll ul ivar &aux ll-ans ul-ans)
   ;; POLES-IN-INTERVAL doesn't know about the poles of tan(x).  Call
   ;; trigsimp to convert tan into sin/cos, which POLES-IN-INTERVAL
   ;; knows how to handle.
@@ -1039,21 +1039,21 @@ in the interval of integration.")
   ;; XXX Should the result try to convert sin/cos back into tan?  (A
   ;; call to trigreduce would do it, among other things.)
   (let* ((exp (mfuncall '$trigsimp exp))
-	 (poles (atan-poles exp *ll* *ul* ivar)))
+	 (poles (atan-poles exp ll ul ivar)))
     ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......)
     ;;We can then use $SUBSTITUTE
-    (setq ll-ans (limcp exp ivar *ll* '$plus))
+    (setq ll-ans (limcp exp ivar ll '$plus))
     (setq exp (sratsimp ($substitute poles exp)))
-    (setq ul-ans (limcp exp ivar *ul* '$minus))
+    (setq ul-ans (limcp exp ivar ul '$minus))
     (if (and ll-ans 
 	     ul-ans)
 	(combine-ll-ans-ul-ans ll-ans ul-ans)
       nil)))
 
-(defun atan-poles (exp *ll* *ul* ivar)
-  `((mlist) ,@(atan-pole1 exp *ll* *ul* ivar)))
+(defun atan-poles (exp ll ul ivar)
+  `((mlist) ,@(atan-pole1 exp ll ul ivar)))
 
-(defun atan-pole1 (exp *ll* *ul* ivar &aux ipart)
+(defun atan-pole1 (exp ll ul ivar &aux ipart)
   (cond
     ((mapatom exp)  ())
     ((matanp exp)	 ;neglect multiplicity and '$unknowns for now.
@@ -1062,14 +1062,14 @@ in the interval of integration.")
        ((not (equal (sratsimp ipart) 0))  ())
        (t (let ((pole (poles-in-interval (let (($algebraic t))
 					   (sratsimp (cadr exp)))
-					 ivar *ll* *ul*)))
+					 ivar ll ul)))
 	    (cond ((and pole (not (or (eq pole '$unknown)
 				      (eq pole '$no))))
 		   (do ((l pole (cdr l)) (llist ()))
 		       ((null l)  llist)
 		     (cond
-		       ((zerop1 (m- (caar l) *ll*)) t)  ; don't worry about discontinuity
- 		       ((zerop1 (m- (caar l) *ul*)) t)  ;  at boundary of integration
+		       ((zerop1 (m- (caar l) ll)) t)  ; don't worry about discontinuity
+ 		       ((zerop1 (m- (caar l) ul)) t)  ;  at boundary of integration
 		       (t (let ((low-lim ($limit (cadr exp) ivar (caar l) '$minus))
 				(up-lim ($limit (cadr exp) ivar (caar l) '$plus)))
 			    (cond ((and (not (eq low-lim up-lim))
@@ -1083,7 +1083,7 @@ in the interval of integration.")
     (t (do ((l (cdr exp) (cdr l))
 	    (llist ()))
 	   ((null l)  llist)
-	 (setq llist (append llist (atan-pole1 (car l) *ll* *ul* ivar)))))))
+	 (setq llist (append llist (atan-pole1 (car l) ll ul ivar)))))))
 
 (defun difapply (ivar n d s fn1)
   (prog (k m r $noprincipal)
