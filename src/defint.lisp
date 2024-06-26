@@ -3595,13 +3595,13 @@ in the interval of integration.")
 	(if (and (eq lesseq-ul '$yes) (eq greateq-ll '$yes)) '$yes '$no))))
 
 ;; returns true or nil
-(defun strictly-in-interval (place *ll* *ul*)
-  ;; real values for *ll* and *ul*; place can be imaginary.
+(defun strictly-in-interval (place ll ul)
+  ;; real values for ll and ul; place can be imaginary.
   (and (equal ($imagpart place) 0)
-       (or (eq *ul* '$inf) 
-	   (eq ($asksign (m+ *ul* (m- place))) '$pos))
-       (or (eq *ll* '$minf) 
-	   (eq ($asksign (m+ place (m- *ll*))) '$pos))))
+       (or (eq ul '$inf) 
+	   (eq ($asksign (m+ ul (m- place))) '$pos))
+       (or (eq ll '$minf) 
+	   (eq ($asksign (m+ place (m- ll))) '$pos))))
 
 (defun real-roots (exp ivar)
   (let (($solvetrigwarn (cond (*defintdebug* t) ;Rest of the code for
