@@ -1788,7 +1788,7 @@ in the interval of integration.")
 
 
 ;; integrate(a*sc(r*x)^k/x^n,x,0,inf).
-(defun ssp (exp ivar *ll* *ul*)
+(defun ssp (exp ivar ll ul)
   (prog (u n c arg)
      ;; Get the argument of the involved trig function.
      (when (null (setq arg (involve-var exp ivar '(%sin %cos))))
@@ -1813,13 +1813,13 @@ in the interval of integration.")
 	      ;; n is the power of the denominator.
 	      (cond ((setq c (skr u ivar))
 		     ;; The simple case.
-		     (return (scmp c n ivar *ll* *ul*)))
+		     (return (scmp c n ivar ll ul)))
 		    ((and (mplusp u)
 			  (setq c (andmapcar #'(lambda (uu)
                                                  (skr uu ivar))
                                              (cdr u))))
 		     ;; Do this for a sum of such terms.
-		     (return (m+l (mapcar #'(lambda (j) (scmp j n ivar *ll* *ul*))
+		     (return (m+l (mapcar #'(lambda (j) (scmp j n ivar ll ul))
 					  c))))))))))
 
 ;; We have an integral of the form sin(r*x)^k/x^n.  C is the list (1 r k).
@@ -1851,7 +1851,7 @@ in the interval of integration.")
 ;;
 ;; where q >= 2.
 ;;
-(defun scmp (c n ivar *ll* *ul*)
+(defun scmp (c n ivar ll ul)
   ;; Compute sign(r)*r^(n-1)*integrate(sin(y)^k/y^n,y,0,inf)
   (destructuring-bind (mult r k)
       c
@@ -1871,7 +1871,7 @@ in the interval of integration.")
                                        k)
                                 (power ivar n))))
 	    (m* mult
-		`((%integrate) ,integrand ,ivar ,*ll* ,*ul*)))))))
+		`((%integrate) ,integrand ,ivar ,ll ,ul)))))))
 
 ;; integrate(sin(x)^n/x^2,x,0,inf) = pi/2*binomial(n-3/2,n-1).
 ;; Express in terms of Gamma functions, though.
