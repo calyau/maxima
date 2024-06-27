@@ -2204,32 +2204,32 @@ in the interval of integration.")
 
 ;;;Is careful about substitution of limits where the denominator may be zero
 ;;;because of various assumptions made.
-(defun sin-cos-intsubs (exp ivar *ll* *ul*)
+(defun sin-cos-intsubs (exp ivar ll ul)
   (cond ((mplusp exp)
 	 (let ((l (mapcar #'(lambda (e)
-                              (sin-cos-intsubs1 e ivar *ll* *ul*))
+                              (sin-cos-intsubs1 e ivar ll ul))
                           (cdr exp))))
 	   (if (not (some #'null l))
 	       (m+l l))))
-	(t (sin-cos-intsubs1 exp ivar *ll* *ul*))))
+	(t (sin-cos-intsubs1 exp ivar ll ul))))
 
-(defun sin-cos-intsubs1 (exp ivar *ll* *ul*)
+(defun sin-cos-intsubs1 (exp ivar ll ul)
   (let* ((rat-exp ($rat exp))
 	 (denom (pdis (cddr rat-exp))))
     (cond ((equal ($csign denom) '$zero)
 	   '$und)
-	  (t (try-intsubs exp *ll* *ul* ivar)))))
+	  (t (try-intsubs exp ll ul ivar)))))
 
-(defun try-intsubs (exp *ll* *ul* ivar)
+(defun try-intsubs (exp ll ul ivar)
   (let* ((*nodiverg* t)
-	 (ans (catch 'divergent (intsubs exp *ll* *ul* ivar))))
+	 (ans (catch 'divergent (intsubs exp ll ul ivar))))
     (if (eq ans 'divergent)
 	nil
       ans)))
 
-(defun try-defint (exp ivar *ll* *ul*)
+(defun try-defint (exp ivar ll ul)
   (let* ((*nodiverg* t)
-	 (ans (catch 'divergent (defint exp ivar *ll* *ul*))))
+	 (ans (catch 'divergent (defint exp ivar ll ul))))
     (if (eq ans 'divergent)
 	nil
       ans)))
@@ -3466,7 +3466,7 @@ in the interval of integration.")
 	  (t exp))))
 
 ;;; LL and UL must be real otherwise this routine return $UNKNOWN.
-;;; Returns $no $unknown or a list of poles in the interval (*ll* *ul*)
+;;; Returns $no $unknown or a list of poles in the interval (ll ul)
 ;;; for exp w.r.t. ivar.
 ;;; Form of list ((pole . multiplicity) (pole1 . multiplicity) ....)
 (defun poles-in-interval (exp ivar ll ul)
