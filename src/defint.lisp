@@ -603,14 +603,14 @@ in the interval of integration.")
 
 ;; adds up integrals of ranges between each pair of poles.
 ;; checks if whole thing is divergent as limits of integration approach poles.
-(defun take-principal (anti-deriv *ll* *ul* ivar poles &aux ans merged-list)
+(defun take-principal (anti-deriv ll ul ivar poles &aux ans merged-list)
   ;;; calling $logcontract causes antiderivative of 1/(1-x^5) to blow up
   ;;  (setq anti-deriv (cond ((involve anti-deriv '(%log))
   ;;			  ($logcontract anti-deriv))
   ;;			 (t anti-deriv)))
   (setq ans 0.)
-  (multiple-value-setq (merged-list *ll* *ul)
-    (interval-list poles *ll* *ul*))
+  (multiple-value-setq (merged-list ll ul)
+    (interval-list poles ll ul))
   (do ((current-pole (cdr merged-list) (cdr current-pole))
        (previous-pole merged-list (cdr previous-pole)))
       ((null current-pole)  t)
