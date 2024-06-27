@@ -536,6 +536,15 @@ APPLY means like APPLY.")
 (defun translator-eval (x)
   (eval x))
 
+(defun tr-eval-when-situation (situation)
+  (ecase situation
+    (($compile compile :compile-toplevel)
+     :compile-toplevel)
+    (($load load :load-toplevel)
+     :load-toplevel)
+    (($eval eval :execute)
+     :execute)))
+
 ;; This basically tells the msetq def%tr to use defparameter instead
 ;; of setq because we're doing a setq at top-level, which isn't
 ;; specified by ANSI CL.
@@ -551,27 +560,20 @@ APPLY means like APPLY.")
   (cond ((atom form) nil)
 	((eq (caar form) '$eval_when)
 	 (let ((whens (cadr form))
-	       (body (cddr form)) tr-whens)
+	       (body (cddr form)))
 	   (setq whens (cond (($listp whens) (cdr whens))
 			     ((atom whens) (list whens))
 			     (t
 			      (tr-format (intl:gettext "error: 'eval_when' argument must be a list or atom; found: ~:M~%") (cadr form))
 			      nil)))
-	   (setq tr-whens (mapcar 'stripdollar whens))
 	   (cond ((member '$translate whens :test #'eq)
 		  (mapc 'meval body)))
 	   (cond ((member '$loadfile whens :test #'eq)
 		  `(progn
 		     ,@(mapcar 'translate-macexpr-toplevel body)))
-		 ((setq tr-whens (intersect tr-whens '(:compile-toplevel :load-toplevel :execute)))
-		  `(eval-when
-		       ,tr-whens
-		     ,@(mapcar 'translate-macexpr-toplevel body)))
-		 ((member '$compile whens :test #'eq)
-		  ;; strictly for the knowledgeable user.
-		  `(eval-when
-		       (:compile-toplevel)
-		       ,@(mapcar 'translate-macexpr-toplevel body))))))
+		 ((setq whens (intersect whens '($compile $load $eval)))
+		  `(eval-when ,(mapcar #'tr-eval-when-situation whens)
+		     ,@(mapcar 'translate-macexpr-toplevel body))))))
 	((member (caar form) translate-time-evalables :test #'eq)
 	 (meval1 form)
 	 `(eval-when
