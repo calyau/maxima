@@ -2631,7 +2631,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 				       (lambda (q) (funcall (symbol-function '$flushnd) q name n)))
 				      (cdr e))) e))))
 
-(declare-top (special index n dumx))
+(declare-top (special index n))
 
 (defmfun $rename nargs
  (cond ((= nargs 1) (setq index 1)) (t (setq index (arg 2)))) (rename (arg 1)))
@@ -2677,17 +2677,17 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 		(t (ncons e)))))
 	e))
 
-;;(defun itensor-cleanup (a n)((lambda (dumx)(cleanup1 a)) nil))        ;Sets DUMX to NIL
-(defun itensor-cleanup (a nn) (setq n nn dumx nil) (cleanup1 a))
+(let (dumx)
+  (defun itensor-cleanup (a nn) (setq n nn dumx nil) (cleanup1 a))
  
-(defun cleanup1 (a)
-  (and a (setq dumx (implode (nconc (exploden $idummyx)    ;Keep proper order of
-				    (exploden n))) n (1+ n))          ;indices
+  (defun cleanup1 (a)
+    (and a (setq dumx (implode (nconc (exploden $idummyx)    ;Keep proper order of
+				      (exploden n))) n (1+ n))          ;indices
 	(cond ((eq dumx (car a)) (cleanup1 (cdr a)))
-	      (t (cons (cons (car a) dumx) (cleanup1 (cdr a)))))))
+	        (t (cons (cons (car a) dumx) (cleanup1 (cdr a))))))))
 ;Make list of dotted pairs indicating substitutions i.e. ((a . #1) (b . #2))
 
-(declare-top (unspecial n dumx index))
+(declare-top (unspecial n index))
 
 (defun itensor-sort (l) (cond ((cdr l) (sort l 'less)) (t l)))
 ;Sort into ascending order
