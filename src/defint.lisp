@@ -3581,17 +3581,17 @@ in the interval of integration.")
 		  'epsilon))
 	     'epsilon 0 '$plus))
 
-(defun in-interval (place *ll* *ul*)
-  ;; real values for *ll* and *ul*; place can be imaginary.
-  (let ((order (ask-greateq *ul* *ll*)))
+(defun in-interval (place ll ul)
+  ;; real values for ll and ul; place can be imaginary.
+  (let ((order (ask-greateq ul ll)))
     (cond ((eq order '$yes))
-	  ((eq order '$no) (let ((temp *ul*)) (setq *ul* *ll* *ll* temp)))
+	  ((eq order '$no) (let ((temp ul)) (setq ul ll ll temp)))
 	  (t (merror (intl:gettext "defint: failed to order limits of integration:~%~M")
-		     (list '(mlist simp) *ll* *ul*)))))
+		     (list '(mlist simp) ll ul)))))
   (if (not (equal ($imagpart place) 0))
       '$no
-      (let ((lesseq-ul (ask-greateq *ul* place))
-	    (greateq-ll (ask-greateq place *ll*)))
+      (let ((lesseq-ul (ask-greateq ul place))
+	    (greateq-ll (ask-greateq place ll)))
 	(if (and (eq lesseq-ul '$yes) (eq greateq-ll '$yes)) '$yes '$no))))
 
 ;; returns true or nil
