@@ -351,8 +351,6 @@
 	   ((null l) a)
 	   (cond ((less (car l) (car a)) (setq a (cons (car l) n))))))
 
-(declare-top (special free-indices))
-
 (defun canprod (e f)
   (prog (scalars indexed)
     (cond
@@ -409,9 +407,8 @@
                   (
                     (lambda (x) (cond ($flipflag (reverse x)) (t x)))
                     (sort
-                      (progn
-                        (setq free-indices (nonumber (cdadr ($indices e))))
-                        (mapcar 'describe-tensor indexed)
+                      (let ((free-indices (nonumber (cdadr ($indices e)))))
+                        (mapcar (lambda (x) (describe-tensor free-indices x)) indexed)
                       )
                       #'tensorpred :key #'car
                     )
@@ -437,10 +434,10 @@
 					 ((null b) nil)
 					 (t (alphalessp a b)))))))
 
-(defun describe-tensor (f)
-       (cons (tdescript f) f))
+(defun describe-tensor (free-indices f)
+       (cons (tdescript free-indices f) f))
 
-(defun tdescript (f)
+(defun tdescript (free-indices f)
        (prog (name indices lcov lcontr lderiv)
 	     (setq name (caar f)
 		   indices (append (cdadr f) (cdaddr f) (cdddr f))
@@ -450,7 +447,4 @@
 	     (return (list (car (least (intersect indices free-indices)))
 		           (f+ lcov (f+ lcontr lderiv) )
 			   lderiv lcov name))))
-
-(declare-top (unspecial free-indices))
-
 
