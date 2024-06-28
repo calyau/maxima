@@ -422,7 +422,11 @@ in the interval of integration.")
         (limitp t))
     (unwind-protect
 	 (prog ()
+            #+nil
+            (format t "defint BEFORE ll ul = ~A ~A~%" *ll* *ul*)
 	    (setq *current-assumptions* (make-defint-assumptions 'noask ivar))
+            #+nil
+            (format t "defint AFTER ll ul = ~A ~A~%" *ll* *ul*)
 	    (let ((exp (resimplify exp))
 		  (ivar (resimplify ivar))
 		  ($exptsubst t)
@@ -518,7 +522,12 @@ in the interval of integration.")
 
 (defun method-by-limits (exp ivar *ll* *ul*)
   (let ((old-assumptions *defint-assumptions*))
+    #+nil
+    (format t "method-by-limits BEFORE ll ul = ~A ~A~%" *ll* *ul*)
     (setq *current-assumptions* (make-defint-assumptions 'noask ivar))
+    #+nil
+    (format t "method-by-limits AFTER ll ul = ~A ~A~%" *ll* *ul*)
+
     ;;Should be a PROG inside of unwind-protect, but Multics has a compiler
     ;;bug wrt. and I want to test this code now.
     (unwind-protect
@@ -597,9 +606,11 @@ in the interval of integration.")
   (let ((anti-deriv ()))
     (cond ((not (null (setq anti-deriv (antideriv exp ivar))))
 	   (cond ((not (null poles))
-		  (order-limits 'ask ivar)
-		  (cond ((take-principal anti-deriv ll ul ivar poles))
-			(t ()))))))))
+		  (multiple-value-bind (ignore new-ll new-ul)
+                      (order-limits 'ask ivar ll ul)
+                    (declare (ignore ignore))
+		    (cond ((take-principal anti-deriv new-ll new-ul ivar poles))
+			  (t ())))))))))
 
 ;; adds up integrals of ranges between each pair of poles.
 ;; checks if whole thing is divergent as limits of integration approach poles.
@@ -763,38 +774,42 @@ in the interval of integration.")
 	(t (merror (intl:gettext "defint: integral is divergent.")))))
 
 (defun make-defint-assumptions (ask-or-not ivar)
-  (cond ((null (order-limits ask-or-not ivar))  ())
+  (cond ((null
+          (multiple-value-setq (result *ll* *ul*)
+            (order-limits ask-or-not ivar *ll* *ul*)))
+         ())
 	(t (mapc 'forget *defint-assumptions*)
 	   (setq *defint-assumptions* ())
 	   (let ((sign-ll (cond ((eq *ll* '$inf)  '$pos)
-				((eq *ll* '$minf) '$neg)
-				(t ($sign ($limit *ll*)))))
-		 (sign-ul (cond ((eq *ul* '$inf)  '$pos)
-				((eq *ul* '$minf)  '$neg)
-				(t ($sign ($limit *ul*)))))
-		 (sign-ul-ll (cond ((and (eq *ul* '$inf)
-					 (not (eq *ll* '$inf)))  '$pos)
+			        ((eq *ll* '$minf) '$neg)
+			        (t ($sign ($limit *ll*)))))
+	         (sign-ul (cond ((eq *ul* '$inf)  '$pos)
+			        ((eq *ul* '$minf)  '$neg)
+			        (t ($sign ($limit *ul*)))))
+	         (sign-ul-ll (cond ((and (eq *ul* '$inf)
+				         (not (eq *ll* '$inf)))  '$pos)
 				   ((and (eq *ul* '$minf)
-					 (not (eq *ll* '$minf)))  '$neg)
+				         (not (eq *ll* '$minf)))  '$neg)
 				   (t ($sign ($limit (m+ *ul* (m- *ll*))))))))
 	     (cond ((eq sign-ul-ll '$pos)
 		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) ,ivar ,*ll*))
-			    ,(assume `((mgreaterp) ,*ul* ,ivar)))))
+			     ,(assume `((mgreaterp) ,*ul* ,ivar)))))
 		   ((eq sign-ul-ll '$neg)
 		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) ,ivar ,*ul*))
-			    ,(assume `((mgreaterp) ,*ll* ,ivar))))))
+			     ,(assume `((mgreaterp) ,*ll* ,ivar))))))
+             (format t "assumptions ~A~%" *defint-assumptions*)
 	     (cond ((and (eq sign-ll '$pos)
-			 (eq sign-ul '$pos))
+		         (eq sign-ul '$pos))
 		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) ,ivar 0))
-			    ,@*defint-assumptions*)))
+			     ,@*defint-assumptions*)))
 		   ((and (eq sign-ll '$neg)
-			 (eq sign-ul '$neg))
+		         (eq sign-ul '$neg))
 		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) 0 ,ivar))
-			    ,@*defint-assumptions*)))
+			     ,@*defint-assumptions*)))
 		   (t *defint-assumptions*))))))
 
 (defun restore-defint-assumptions (old-assumptions assumptions)
@@ -836,49 +851,53 @@ in the interval of integration.")
 	     ((null llist) t)
 	   (i-$remove `(,(cadar llist) ,(caddar llist)))))))
 
-(defun order-limits (ask-or-not ivar)
-  (cond ((or (not (equal ($imagpart *ll*) 0))
-	     (not (equal ($imagpart *ul*) 0)))  ())
-	(t (cond ((alike1 *ll* (m*t -1 '$inf))
-		  (setq *ll* '$minf)))
-	   (cond ((alike1 *ul* (m*t -1 '$inf))
-		  (setq *ul* '$minf)))
-	   (cond ((alike1 *ll* (m*t -1 '$minf))
-		  (setq *ll* '$inf)))
-	   (cond ((alike1 *ul* (m*t -1 '$minf))
-		  (setq *ul* '$inf)))
-	   (cond ((eq *ll* *ul*)
-		  ; We have minf <= *ll* = *ul* <= inf
-		  )
-		 ((eq *ul* '$inf)
-		  ; We have minf <= *ll* < *ul* = inf
-		  )
-		 ((eq *ll* '$minf)
-		  ; We have minf = *ll* < *ul* < inf
-		  ;
-		  ; Now substitute
-		  ;
-		  ;   ivar -> -ivar
-		  ;   *ll*  -> -*ul*
-		  ;   *ul*  -> inf
-		  ;
-		  ; so that minf < *ll* < *ul* = inf
-		  (setq exp (subin-var (m- ivar) exp ivar))
-		  (setq *ll* (m- *ul*))
-		  (setq *ul* '$inf))
-		 ((or (eq *ll* '$inf)
-		      (equal (complm ask-or-not *ll* *ul*) -1))
-		  ; We have minf <= *ul* < *ll*
-		  ;
-		  ; Now substitute
-		  ;
-		  ;   exp  -> -exp
-		  ;   *ll*  <-> *ul*
-		  ;
-		  ; so that minf <= *ll* < *ul*
-		  (setq exp (m- exp))
-		  (rotatef *ll* *ul*)))
-	   t)))
+(defun order-limits (ask-or-not ivar ll ul)
+  (values
+   (cond ((or (not (equal ($imagpart ll) 0))
+	      (not (equal ($imagpart ul) 0)))  ())
+	 (t (cond ((alike1 ll (m*t -1 '$inf))
+		   (setq ll '$minf)))
+	    (cond ((alike1 ul (m*t -1 '$inf))
+		   (setq ul '$minf)))
+	    (cond ((alike1 ll (m*t -1 '$minf))
+		   (setq ll '$inf)))
+	    (cond ((alike1 ul (m*t -1 '$minf))
+		   (setq ul '$inf)))
+	    (cond ((eq ll ul)
+                                        ; We have minf <= ll = ul <= inf
+		   )
+		  ((eq ul '$inf)
+                                        ; We have minf <= ll < ul = inf
+		   )
+		  ((eq ll '$minf)
+                                        ; We have minf = ll < ul < inf
+                                        ;
+                                        ; Now substitute
+                                        ;
+                                        ;   ivar -> -ivar
+                                        ;   ll  -> -ul
+                                        ;   ul  -> inf
+                                        ;
+                                        ; so that minf < ll < ul = inf
+		   (setq exp (subin-var (m- ivar) exp ivar))
+		   (setq ll (m- ul))
+		   (setq ul '$inf))
+		  ((or (eq ll '$inf)
+		       (equal (complm ask-or-not ll ul) -1))
+                                        ; We have minf <= ul < ll
+                                        ;
+                                        ; Now substitute
+                                        ;
+                                        ;   exp  -> -exp
+                                        ;   ll  <-> ul
+                                        ;
+                                        ; so that minf <= ll < ul
+		   (setq exp (m- exp))
+                   #+nil
+                   (format t "order-limits swapping ~A ~A~%" ll ul)
+		   (rotatef ll ul)))
+	    t))
+   ll ul))
 
 (defun complm (ask-or-not ll ul)
   (let ((askflag (cond ((eq ask-or-not 'ask)  t)
