@@ -422,11 +422,7 @@ in the interval of integration.")
         (limitp t))
     (unwind-protect
 	 (prog ()
-            #+nil
-            (format t "defint BEFORE ll ul = ~A ~A~%" *ll* *ul*)
 	    (setq *current-assumptions* (make-defint-assumptions 'noask ivar))
-            #+nil
-            (format t "defint AFTER ll ul = ~A ~A~%" *ll* *ul*)
 	    (let ((exp (resimplify exp))
 		  (ivar (resimplify ivar))
 		  ($exptsubst t)
@@ -522,11 +518,7 @@ in the interval of integration.")
 
 (defun method-by-limits (exp ivar *ll* *ul*)
   (let ((old-assumptions *defint-assumptions*))
-    #+nil
-    (format t "method-by-limits BEFORE ll ul = ~A ~A~%" *ll* *ul*)
     (setq *current-assumptions* (make-defint-assumptions 'noask ivar))
-    #+nil
-    (format t "method-by-limits AFTER ll ul = ~A ~A~%" *ll* *ul*)
 
     ;;Should be a PROG inside of unwind-protect, but Multics has a compiler
     ;;bug wrt. and I want to test this code now.
@@ -799,7 +791,6 @@ in the interval of integration.")
 		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) ,ivar ,*ul*))
 			     ,(assume `((mgreaterp) ,*ll* ,ivar))))))
-             (format t "assumptions ~A~%" *defint-assumptions*)
 	     (cond ((and (eq sign-ll '$pos)
 		         (eq sign-ul '$pos))
 		    (setq *defint-assumptions*
@@ -864,37 +855,35 @@ in the interval of integration.")
 	    (cond ((alike1 ul (m*t -1 '$minf))
 		   (setq ul '$inf)))
 	    (cond ((eq ll ul)
-                                        ; We have minf <= ll = ul <= inf
+                   ;; We have minf <= ll = ul <= inf
 		   )
 		  ((eq ul '$inf)
-                                        ; We have minf <= ll < ul = inf
+                   ;; We have minf <= ll < ul = inf
 		   )
 		  ((eq ll '$minf)
-                                        ; We have minf = ll < ul < inf
-                                        ;
-                                        ; Now substitute
-                                        ;
-                                        ;   ivar -> -ivar
-                                        ;   ll  -> -ul
-                                        ;   ul  -> inf
-                                        ;
-                                        ; so that minf < ll < ul = inf
+                   ;; We have minf = ll < ul < inf
+                   ;;
+                   ;; Now substitute
+                   ;;
+                   ;;   ivar -> -ivar
+                   ;;   ll  -> -ul
+                   ;;   ul  -> inf
+                   ;;
+                   ;; so that minf < ll < ul = inf
 		   (setq exp (subin-var (m- ivar) exp ivar))
 		   (setq ll (m- ul))
 		   (setq ul '$inf))
 		  ((or (eq ll '$inf)
 		       (equal (complm ask-or-not ll ul) -1))
-                                        ; We have minf <= ul < ll
-                                        ;
-                                        ; Now substitute
-                                        ;
-                                        ;   exp  -> -exp
-                                        ;   ll  <-> ul
-                                        ;
-                                        ; so that minf <= ll < ul
+                   ;; We have minf <= ul < ll
+                   ;;
+                   ;; Now substitute
+                   ;;
+                   ;;   exp  -> -exp
+                   ;;   ll  <-> ul
+                   ;;
+                   ;; so that minf <= ll < ul
 		   (setq exp (m- exp))
-                   #+nil
-                   (format t "order-limits swapping ~A ~A~%" ll ul)
 		   (rotatef ll ul)))
 	    t))
    ll ul))
