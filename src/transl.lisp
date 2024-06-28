@@ -1111,8 +1111,7 @@ APPLY means like APPLY.")
     (return-from mreturn nil))
   (setq need-prog? t)
   (setq form (translate (cadr form)))
-  (setq return-mode (if return-mode (*union-mode (car form) return-mode)
-			(car form)))
+  (setq return-mode (*union-mode (car form) return-mode))
   (setq form `(return ,(cdr form)))
   (push form *returns*) ;; USED by lusing MDO etc not yet re-written.
   ;; MODE here should be $PHANTOM or something.
