@@ -732,18 +732,18 @@ in the interval of integration.")
     (cons (simplify (rdis (car e))) (simplify (rdis (cadr e))))))
 
 
-(defun intbyterm (exp *nodiverg* ivar *ll* *ul*)
+(defun intbyterm (exp *nodiverg* ivar ll ul)
   (let ((saved-exp exp))
     (cond ((mplusp exp)
 	   (let ((ans (catch 'divergent
 			(andmapcar #'(lambda (new-exp)
-				       (defint new-exp ivar *ll* *ul*))
+				       (defint new-exp ivar ll ul))
 				   (cdr exp)))))
 	     (cond ((null ans) nil)
 		   ((eq ans 'divergent)
 		    (let ((*nodiverg* nil))
 		      (cond ((setq ans (antideriv saved-exp ivar))
-			     (intsubs ans *ll* *ul* ivar))
+			     (intsubs ans ll ul ivar))
 			    (t nil))))
 		   (t (sratsimp (m+l ans))))))
 ;;;If leadop isn't plus don't do anything.
