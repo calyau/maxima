@@ -422,7 +422,10 @@ in the interval of integration.")
         (limitp t))
     (unwind-protect
 	 (prog ()
-	    (setq *current-assumptions* (make-defint-assumptions 'noask ivar))
+            (multiple-value-setq (*current-assumptions* *ll* *ul*)
+	      (make-defint-assumptions 'noask ivar *ll* *ul*))
+            #+nil
+            (format t "new limits ~A ~A~%" *ll* *ul*)
 	    (let ((exp (resimplify exp))
 		  (ivar (resimplify ivar))
 		  ($exptsubst t)
@@ -518,7 +521,8 @@ in the interval of integration.")
 
 (defun method-by-limits (exp ivar *ll* *ul*)
   (let ((old-assumptions *defint-assumptions*))
-    (setq *current-assumptions* (make-defint-assumptions 'noask ivar))
+    (multiple-value-bind (*current-assumptions* *ll* *ul*)
+        (make-defint-assumptions 'noask ivar *ll* *ul*))
 
     ;;Should be a PROG inside of unwind-protect, but Multics has a compiler
     ;;bug wrt. and I want to test this code now.
@@ -765,43 +769,45 @@ in the interval of integration.")
   (cond (*nodiverg* (throw 'divergent 'divergent))
 	(t (merror (intl:gettext "defint: integral is divergent.")))))
 
-(defun make-defint-assumptions (ask-or-not ivar)
-  (cond ((null
-          (multiple-value-setq (result *ll* *ul*)
-            (order-limits ask-or-not ivar *ll* *ul*)))
-         ())
-	(t (mapc 'forget *defint-assumptions*)
-	   (setq *defint-assumptions* ())
-	   (let ((sign-ll (cond ((eq *ll* '$inf)  '$pos)
-			        ((eq *ll* '$minf) '$neg)
-			        (t ($sign ($limit *ll*)))))
-	         (sign-ul (cond ((eq *ul* '$inf)  '$pos)
-			        ((eq *ul* '$minf)  '$neg)
-			        (t ($sign ($limit *ul*)))))
-	         (sign-ul-ll (cond ((and (eq *ul* '$inf)
-				         (not (eq *ll* '$inf)))  '$pos)
-				   ((and (eq *ul* '$minf)
-				         (not (eq *ll* '$minf)))  '$neg)
-				   (t ($sign ($limit (m+ *ul* (m- *ll*))))))))
-	     (cond ((eq sign-ul-ll '$pos)
-		    (setq *defint-assumptions*
-			  `(,(assume `((mgreaterp) ,ivar ,*ll*))
-			     ,(assume `((mgreaterp) ,*ul* ,ivar)))))
-		   ((eq sign-ul-ll '$neg)
-		    (setq *defint-assumptions*
-			  `(,(assume `((mgreaterp) ,ivar ,*ul*))
-			     ,(assume `((mgreaterp) ,*ll* ,ivar))))))
-	     (cond ((and (eq sign-ll '$pos)
-		         (eq sign-ul '$pos))
-		    (setq *defint-assumptions*
-			  `(,(assume `((mgreaterp) ,ivar 0))
-			     ,@*defint-assumptions*)))
-		   ((and (eq sign-ll '$neg)
-		         (eq sign-ul '$neg))
-		    (setq *defint-assumptions*
-			  `(,(assume `((mgreaterp) 0 ,ivar))
-			     ,@*defint-assumptions*)))
-		   (t *defint-assumptions*))))))
+(defun make-defint-assumptions (ask-or-not ivar *ll* *ul*)
+  (values
+   (cond ((null
+           (multiple-value-setq (result *ll* *ul*)
+             (order-limits ask-or-not ivar *ll* *ul*)))
+          ())
+	 (t (mapc 'forget *defint-assumptions*)
+	    (setq *defint-assumptions* ())
+	    (let ((sign-ll (cond ((eq *ll* '$inf)  '$pos)
+			         ((eq *ll* '$minf) '$neg)
+			         (t ($sign ($limit *ll*)))))
+	          (sign-ul (cond ((eq *ul* '$inf)  '$pos)
+			         ((eq *ul* '$minf)  '$neg)
+			         (t ($sign ($limit *ul*)))))
+	          (sign-ul-ll (cond ((and (eq *ul* '$inf)
+				          (not (eq *ll* '$inf)))  '$pos)
+				    ((and (eq *ul* '$minf)
+				          (not (eq *ll* '$minf)))  '$neg)
+				    (t ($sign ($limit (m+ *ul* (m- *ll*))))))))
+	      (cond ((eq sign-ul-ll '$pos)
+		     (setq *defint-assumptions*
+			   `(,(assume `((mgreaterp) ,ivar ,*ll*))
+			      ,(assume `((mgreaterp) ,*ul* ,ivar)))))
+		    ((eq sign-ul-ll '$neg)
+		     (setq *defint-assumptions*
+			   `(,(assume `((mgreaterp) ,ivar ,*ul*))
+			      ,(assume `((mgreaterp) ,*ll* ,ivar))))))
+	      (cond ((and (eq sign-ll '$pos)
+		          (eq sign-ul '$pos))
+		     (setq *defint-assumptions*
+			   `(,(assume `((mgreaterp) ,ivar 0))
+			      ,@*defint-assumptions*)))
+		    ((and (eq sign-ll '$neg)
+		          (eq sign-ul '$neg))
+		     (setq *defint-assumptions*
+			   `(,(assume `((mgreaterp) 0 ,ivar))
+			      ,@*defint-assumptions*)))
+		    (t *defint-assumptions*)))))
+   *ll* *ul*))
 
 (defun restore-defint-assumptions (old-assumptions assumptions)
   (do ((llist assumptions (cdr llist)))
@@ -977,7 +983,7 @@ in the interval of integration.")
 (defun whole-intsubs (e a b ivar)
   (cond ((easy-subs e a b ivar))
 	(t (setq *current-assumptions*
-		 (make-defint-assumptions 'ask ivar)) ;get forceful!
+		 (make-defint-assumptions 'ask ivar *ll* *ul*)) ;get forceful!
 	   (let (($algebraic t))
 	     (setq e (sratsimp e))
 	     (cond ((limit-subs e a b ivar))
