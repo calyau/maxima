@@ -1056,7 +1056,6 @@ APPLY means like APPLY.")
   (do ((l nil))
       ((null body)
        ;; [5] hack the val-list for the mode context.
-       ;; Perhaps the only use of the function MAP in all of macsyma.
        (mapl #'(lambda (val-list arglist)
 		 (cond ((atom (car val-list))
 			(rplaca val-list
