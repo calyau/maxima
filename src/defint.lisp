@@ -424,8 +424,6 @@ in the interval of integration.")
 	 (prog ()
             (multiple-value-setq (*current-assumptions* ll ul)
 	      (make-defint-assumptions 'noask ivar ll ul))
-            #+nil
-            (format t "new limits ~A ~A~%" ll ul)
 	    (let ((exp (resimplify exp))
 		  (ivar (resimplify ivar))
 		  ($exptsubst t)
@@ -769,6 +767,9 @@ in the interval of integration.")
   (cond (*nodiverg* (throw 'divergent 'divergent))
 	(t (merror (intl:gettext "defint: integral is divergent.")))))
 
+;; May reorder the limits LL and UL so that LL <= UL.  (See
+;; ORDER-LIMITS.)  Hence, this function also returns the possibly
+;; updated values of LL and UL as additional values.
 (defun make-defint-assumptions (ask-or-not ivar ll ul)
   (values
    (cond ((null
@@ -848,6 +849,11 @@ in the interval of integration.")
 	     ((null llist) t)
 	   (i-$remove `(,(cadar llist) ,(caddar llist)))))))
 
+;; Order the limits LL and UL so that LL <= UL, as expected.  Of
+;; course, this changes the sign of the integrand (in EXP), so that's
+;; also updated as well.  Since the order can be changed, the possibly
+;; updated values of LL and UL are returned as additional values of
+;; this function.
 (defun order-limits (ask-or-not ivar ll ul)
   (values
    (cond ((or (not (equal ($imagpart ll) 0))
@@ -984,6 +990,11 @@ in the interval of integration.")
   (cond ((easy-subs e a b ivar))
 	(t
          (let (new-ll new-ul)
+           ;; Note: MAKE-DEFINT-ASSUMPTIONS may reorder the limits A
+           ;; and B, but I (rtoy) don't think that's should ever
+           ;; happen because the limits should already be in the
+           ;; correct order when this function is called.  We don't
+           ;; check for that, though.
            (multiple-value-setq (*current-assumptions* new-ll new-ul)
 	       (make-defint-assumptions 'ask ivar a b)) ;get forceful!
          
