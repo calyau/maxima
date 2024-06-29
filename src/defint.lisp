@@ -125,7 +125,8 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *mtoinf*
-		      *ul* *ll* exp
+		      ;;*ul* *ll*
+                      exp
 		      *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
@@ -185,7 +186,7 @@ in the interval of integration.")
   "Prevents recursion in dintexp.")
 
 
-(defmfun $defint (exp ivar *ll* *ul*)
+(defmfun $defint (exp ivar ll ul)
 
   ;; Distribute $defint over equations, lists, and matrices.
   (cond ((mbagp exp)
@@ -193,7 +194,7 @@ in the interval of integration.")
            (simplify
              (cons (car exp)
                    (mapcar #'(lambda (e)
-                               (simplify ($defint e ivar *ll* *ul*)))
+                               (simplify ($defint e ivar ll ul)))
                            (cdr exp)))))))
 
   (let ((*global-defint-assumptions* ())
@@ -203,7 +204,7 @@ in the interval of integration.")
 	   (let ((*defint-assumptions* ()) (*rad-poly-recur* ())
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var ivar)
-		 (orig-ll *ll*)  (orig-ul *ul*)
+		 (orig-ll ll)  (orig-ul ul)
 		 (*pcprntd* nil)  (*nodiverg* nil)  ($logabs t)  ; (limitp t)
 		 (rp-polylogp ())
                  ($%edispflag nil) ; to get internal representation
@@ -212,24 +213,24 @@ in the interval of integration.")
 	     (make-global-assumptions) ;sets *global-defint-assumptions*
 	     (setq exp (ratdisrep exp))
 	     (setq ivar (ratdisrep ivar))
-	     (setq *ll* (ratdisrep *ll*))
-	     (setq *ul* (ratdisrep *ul*))
+	     (setq ll (ratdisrep ll))
+	     (setq ul (ratdisrep ul))
 	     (cond (($constantp ivar)
 		    (merror (intl:gettext "defint: variable of integration cannot be a constant; found ~M") ivar))
 		   (($subvarp ivar)  (setq ivar (gensym))
 		    (setq exp ($substitute ivar orig-var exp))))
 	     (cond ((not (atom ivar))
 		    (merror (intl:gettext "defint: variable of integration must be a simple or subscripted variable.~%defint: found ~M") ivar))
-		   ((or (among ivar *ul*)
-			(among ivar *ll*))
+		   ((or (among ivar ul)
+			(among ivar ll))
 		    (setq ivar (gensym))
 		    (setq exp ($substitute ivar orig-var exp))))
-             (unless (lenient-extended-realp *ll*)
-               (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") *ll*))
-             (unless (lenient-extended-realp *ul*)
-               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") *ul*))
+             (unless (lenient-extended-realp ll)
+               (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
+             (unless (lenient-extended-realp ul)
+               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ul))
 
-	     (cond ((setq ans (defint exp ivar *ll* *ul*))
+	     (cond ((setq ans (defint exp ivar ll ul))
 		    (setq ans (subst orig-var ivar ans))
 		    (cond ((atom ans)  ans)
 			  ((and (free ans '%limit)
