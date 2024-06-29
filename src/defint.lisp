@@ -982,12 +982,19 @@ in the interval of integration.")
 ;; expression E.
 (defun whole-intsubs (e a b ivar)
   (cond ((easy-subs e a b ivar))
-	(t (setq *current-assumptions*
-		 (make-defint-assumptions 'ask ivar *ll* *ul*)) ;get forceful!
+	(t
+         (let (new-ll new-ul)
+           #+nil
+           (format t "BEFORE: *ll*, *ul* = ~A ~A ~A ~A~%" *ll* *ul* a b)
+           (multiple-value-setq (*current-assumptions* new-ll new-ul)
+	       (make-defint-assumptions 'ask ivar a b)) ;get forceful!
+           #+nil
+           (format t "AFTER: *ll*, *ul* = ~A ~A~%" new-ll new-ul)
+         
 	   (let (($algebraic t))
 	     (setq e (sratsimp e))
 	     (cond ((limit-subs e a b ivar))
-		   (t (same-sheet-subs e a b ivar)))))))
+		   (t (same-sheet-subs e a b ivar))))))))
 
 ;; Try easy substitutions.  Return NIL if we can't.
 (defun easy-subs (e ll ul ivar)
