@@ -540,7 +540,7 @@ in the interval of integration.")
 	       ((and (equal ll 0.)
 		     (freeof ivar ul)
 		     (eq ($asksign ul) '$pos)
-		     (zto1 exp ivar)))
+		     (zto1 exp ivar ul)))
 	       ;;	     ((and (and (equal ul 1.)
 	       ;;			(equal ll 0.))  (zto1 exp)))
 	       (t (dintegrate exp ivar ll ul)))
@@ -2380,7 +2380,7 @@ in the interval of integration.")
 ;; function might not even be called for some of these integrals.
 ;; However, this can be palliated by setting intanalysis:false.
 
-(defun zto1 (e ivar)
+(defun zto1 (e ivar ul)
   (when (or (mtimesp e) (mexptp e))
     (let ((m 0)
 	  (log (list '(%log) ivar)))
@@ -2394,7 +2394,7 @@ in the interval of integration.")
 		 (not (eq ($asksign m) '$neg)))
 	(setq e (m//t e (list '(mexpt) log m)))
 	(cond
-	  ((eq *ul* '$inf)
+	  ((eq ul '$inf)
 	   (multiple-value-bind (kk s d r cc)
 	       (batap-inf e ivar)
 	     ;; We have i(x^kk/(d+cc*x^r)^s,x,0,inf) =
@@ -2415,7 +2415,7 @@ in the interval of integration.")
 		      (list '(mequal) ivar kk)))))))
 	  (t
 	   (multiple-value-bind
-		 (k/n l n b) (batap-new e ivar)
+		 (k/n l n b) (batap-new e ivar ul)
 	     (when k/n
 	       (let ((beta (ftake* '%beta k/n l))
 		     (m (if (eq ($asksign m) '$zero) 0 m)))
@@ -2428,9 +2428,9 @@ in the interval of integration.")
 		   (m//t
 		    (m*t
 		     (m^t (m-t b) (m1-t l))
-		     (m^t *ul* (m*t n (m1-t l)))
+		     (m^t ul (m*t n (m1-t l)))
 		     (m^t n (m-t (m1+t m)))
-		     ($at ($diff (m*t (m^t *ul* (m*t n ivar))
+		     ($at ($diff (m*t (m^t ul (m*t n ivar))
 				      (list '(%beta) ivar l))
 				 ivar m)
 			  (list '(mequal) ivar k/n)))
@@ -2445,7 +2445,7 @@ in the interval of integration.")
 ;;; substitution; the log(x)s were just thrown in, which,
 ;;; of course would give wrong results.
 
-(defun batap-new (e ivar)
+(defun batap-new (e ivar ul)
   ;; Parse e
   (multiple-value-bind (k c)
       (bata0 e ivar)
@@ -2456,7 +2456,7 @@ in the interval of integration.")
 	(when (and (freeof ivar k)
 		   (freeof ivar n)
 		   (freeof ivar l)
-		   (alike1 a (m-t (m*t b (m^t *ul* n))))
+		   (alike1 a (m-t (m*t b (m^t ul n))))
 		   (eq ($asksign b) '$neg)
 		   (eq ($asksign (setq k (m1+t k))) '$pos)
 		   (eq ($asksign (setq l (m1+t l))) '$pos)
