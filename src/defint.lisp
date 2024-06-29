@@ -125,7 +125,6 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *mtoinf*
-		      ;;*ul* *ll*
                       exp
 		      *defint-assumptions*
 		      *current-assumptions*
@@ -955,8 +954,8 @@ in the interval of integration.")
                       (cdr exp))))))
 
 ;; returns list of places where exp might be discontinuous in ivar.
-;; list begins with *ll* and ends with *ul*, and include any values between
-;; *ll* and *ul*.
+;; list begins with ll and ends with ul, and include any values between
+;; ll and ul.
 ;; return '$no or '$unknown if no discontinuities found.
 (defun discontinuities-in-interval (exp ivar ll ul)
   (let* ((denom (discontinuities-denom exp ivar))
@@ -985,12 +984,8 @@ in the interval of integration.")
   (cond ((easy-subs e a b ivar))
 	(t
          (let (new-ll new-ul)
-           #+nil
-           (format t "BEFORE: *ll*, *ul* = ~A ~A ~A ~A~%" *ll* *ul* a b)
            (multiple-value-setq (*current-assumptions* new-ll new-ul)
 	       (make-defint-assumptions 'ask ivar a b)) ;get forceful!
-           #+nil
-           (format t "AFTER: *ll*, *ul* = ~A ~A~%" new-ll new-ul)
          
 	   (let (($algebraic t))
 	     (setq e (sratsimp e))
