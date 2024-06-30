@@ -32,7 +32,7 @@
 		      taylored logcombed
 		      $exponentialize lhp? lhcount
 		      loginprod? a context limit-assumptions
-		      limit-top #+nil old-integer-info))
+		      limit-top))
 
 (defconstant +behavior-count+ 4)
 (defvar *behavior-count-now*)
@@ -125,8 +125,7 @@
 	($%emode t) 
 	($%e_to_numlog nil)
 	(limit-top t))
-    (declare (special limit-assumptions #+nil old-integer-info
-		      limit-top))
+    (declare (special limit-assumptions limit-top))
     (unless limitp
       (setq *old-integer-info* *integer-info*)
       (setq *integer-info* ()))

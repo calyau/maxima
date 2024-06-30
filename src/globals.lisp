@@ -1930,5 +1930,5 @@
   for any symbol.")
 
 (defvar *integer-info* nil
-  "If LIMITP is non-null ask-integer conses its assumptions onto this
+  "If LIMITP is non-null ASK-INTEGER conses its assumptions onto this
   list.")

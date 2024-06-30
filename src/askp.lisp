@@ -32,8 +32,6 @@
 
 (macsyma-module askp)
 
-;;(declare-top (special integer-info))
-
 (defmfun $askinteger (x &optional (mode '$integer))
   (if (member mode '($even $odd $integer) :test #'eq)
       (ask-integer x mode)
