@@ -1928,3 +1928,7 @@
   contain exactly ~M which will be replaced by the variable in the
   error message.  This is useful for printing a deprecation message
   for any symbol.")
+
+(defvar *integer-info* nil
+  "If LIMITP is non-null ask-integer conses its assumptions onto this
+  list.")

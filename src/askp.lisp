@@ -32,7 +32,7 @@
 
 (macsyma-module askp)
 
-(declare-top (special integer-info))
+;;(declare-top (special integer-info))
 
 (defmfun $askinteger (x &optional (mode '$integer))
   (if (member mode '($even $odd $integer) :test #'eq)
@@ -78,7 +78,7 @@
   (cond ((atom x)
 	 (meval `(($declare) ,x ,property))
 	 (if limitp 
-	     (setq integer-info (cons `(($kind) ,x ,property) integer-info))))
+	     (setq *integer-info* (cons `(($kind) ,x ,property) *integer-info*))))
 	((and limitp (eq property '$integer))
 	 (setq integerl (cons x integerl)))
 	((and limitp (eq property '$noninteger))

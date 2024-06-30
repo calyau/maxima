@@ -138,9 +138,6 @@
 		      ;;LIMITP T Causes $ASKSIGN to do special things
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
 		      ;;take realpart and imagpart.
-		      integer-info
-		      ;;If LIMITP is non-null ask-integer conses
-		      ;;its assumptions onto this list.
 		      ))
 
 (defvar *loopstop* 0)
@@ -197,7 +194,7 @@ in the interval of integration.")
                            (cdr exp)))))))
 
   (let ((*global-defint-assumptions* ())
-	(integer-info ()) (integerl integerl) (nonintegerl nonintegerl))
+	(*integer-info* ()) (integerl integerl) (nonintegerl nonintegerl))
     (with-new-context (context)
       (unwind-protect
 	   (let ((*defint-assumptions* ()) (*rad-poly-recur* ())
@@ -844,8 +841,8 @@ in the interval of integration.")
   (do ((llist *global-defint-assumptions* (cdr llist)))
       ((null llist) t)
     (forget (car llist)))
-  (cond ((not (null integer-info))
-	 (do ((llist integer-info (cdr llist)))
+  (cond ((not (null *integer-info*))
+	 (do ((llist *integer-info* (cdr llist)))
 	     ((null llist) t)
 	   (i-$remove `(,(cadar llist) ,(caddar llist)))))))
 

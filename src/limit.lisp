@@ -32,11 +32,12 @@
 		      taylored logcombed
 		      $exponentialize lhp? lhcount
 		      loginprod? a context limit-assumptions
-		      limit-top integer-info old-integer-info))
+		      limit-top #+nil old-integer-info))
 
 (defconstant +behavior-count+ 4)
 (defvar *behavior-count-now*)
 (defvar *getsignl-asksign-ok* nil)
+(defvar *old-integer-info* nil)
 
 (load-macsyma-macros rzmac)
 
@@ -51,6 +52,7 @@
 
 (defmvar preserve-direction () "Makes `limit' return Direction info.")
 
+#+nil
 (unless (boundp 'integer-info) (setq integer-info ()))
 
 ;; For limits toward infinity for the gruntz code, we assume that the limit
@@ -116,18 +118,18 @@
 
 (defun toplevel-$limit (&rest args)
   (let ((limit-assumptions ())
-	(old-integer-info ())
+	(*old-integer-info* ())
 	($keepfloat t)
 	($numer nil)
 	($%enumer nil)
 	($%emode t) 
 	($%e_to_numlog nil)
 	(limit-top t))
-    (declare (special limit-assumptions old-integer-info
+    (declare (special limit-assumptions #+nil old-integer-info
 		      limit-top))
     (unless limitp
-      (setq old-integer-info integer-info)
-      (setq integer-info ()))
+      (setq *old-integer-info* *integer-info*)
+      (setq *integer-info* ()))
 
     (unwind-protect
 	 (let ((exp1 ()) (lhcount $lhospitallim) (*behavior-count-now* 0)
@@ -302,12 +304,12 @@
     (forget (car assumption-list)))
   (forget '((mgreaterp) lim-epsilon 0))
   (forget '((mgreaterp) prin-inf 100000000))
-  (cond ((and (not (null integer-info))
+  (cond ((and (not (null *integer-info*))
 	      (not limitp))
-	 (do ((list integer-info (cdr list)))
+	 (do ((list *integer-info* (cdr list)))
 	     ((null list) t)
 	   (i-$remove `(,(cadar list) ,(caddar list))))
-	 (setq integer-info old-integer-info))))
+	 (setq *integer-info* *old-integer-info*))))
 
 ;; The optional arg allows the caller to decide on the value of
 ;; preserve-direction.  Default is nil, since we immediately ridofab.
