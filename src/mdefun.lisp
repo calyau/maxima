@@ -21,13 +21,6 @@
 ;;; available. I have tried to generalize this enough to do
 ;;; macsyma macros also.
 
-;;; (DEFMTRFUN-EXTERNAL ($FOO <mode> <property> <&restp>))
-
-;;we don't make function type declarations yet.
-(defmacro defmtrfun-external (&rest ig)
-  (declare (ignore ig))
-  nil)
-
 ;;; (DEFMTRFUN ($FOO <mode> <property> <&restp>) <ARGL> . BODY)
 ;;; If the MODE is numeric it should do something about the
 ;;; number declarations for compiling. Also, the information about the

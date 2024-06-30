@@ -454,8 +454,6 @@ APPLY means like APPLY.")
 		   `(,name ,(car t-form) ,(caar form)
 		     ,and-restp ,(eq kind 'array))))
 	     (cond ((eq kind 'func)
-		    (push-pre-transl-form
-		     `(defmtrfun-external ,desc-header))
 		    (and (not (member (car t-form) '($any nil) :test #'eq))
 			 (putprop name (car t-form) 'function-mode)))
 		   ((eq kind 'array)
