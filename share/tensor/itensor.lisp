@@ -385,149 +385,152 @@
   )
 )
 
-(declare-top (special x temp d)) 
-
-(defmfun $covdiff nargs
-  (prog
-    (x e temp d i)
-    (and (< nargs 2) (merror "COVDIFF must have at least 2 args"))
-    (setq i 2 e (arg 1))
-    again (setq x (arg i) e (covdiff e) i (1+ i))
-    (and (> i nargs) (return e))
-    (go again)
-  )
-)
-
 (defmfun $idiff (&rest args)
   (let (derivlist)
     (ideriv args)))
 
-(defun covdiff (e)                      ; The covariant derivative...
-  (setq d ($idummy))
-  (cond
-    (               ; is the partial derivative for scalars (*** torsion?)
-      (or (atom e) (eq (caar e) 'rat))
-      (idiff e x)
+(declare-top (special x d)) 
+
+(let (temp)
+
+  (defmfun $covdiff nargs
+    (prog
+      (x e d i)
+      (and (< nargs 2) (merror "COVDIFF must have at least 2 args"))
+      (setq temp nil)
+      (setq i 2 e (arg 1))
+      again (setq x (arg i) e (covdiff e) i (1+ i))
+      (and (> i nargs) (return e))
+      (go again)
     )
-    (
-      (rpobj e)
-      (setq temp
-        (mapcar
-          #'(lambda (v)
-            (list '(mtimes)
-              (list (diffop) (list smlist d x) (list smlist v))
-              (consubst d v e)
-            )
-          )
-          (conti e)
-        )
+  )
+  
+  (defun covdiff (e)                      ; The covariant derivative...
+    (setq d ($idummy))
+    (cond
+      (               ; is the partial derivative for scalars (*** torsion?)
+        (or (atom e) (eq (caar e) 'rat))
+        (idiff e x)
       )
-      (simplus
-        (cons
-          '(mplus)
+      (
+        (rpobj e)
+        (setq temp
+          (mapcar
+            #'(lambda (v)
+              (list '(mtimes)
+                (list (diffop) (list smlist d x) (list smlist v))
+                (consubst d v e)
+              )
+            )
+            (conti e)
+          )
+        )
+        (simplus
           (cons
-            (idiff e x)
-            (cond
-              (
-                (or (covi e) (cdddr e))
-                (cons (list '(mtimes) -1.  (cons '(mplus)
-                      (nconc
-                        (mapcar
-                          #'(lambda (v)
-                            (list '(mtimes)
+            '(mplus)
+            (cons
+              (idiff e x)
+              (cond
+                (
+                  (or (covi e) (cdddr e))
+                  (cons (list '(mtimes) -1.  (cons '(mplus)
+                        (nconc
+                          (mapcar
+                            #'(lambda (v)
+                              (list '(mtimes)
+                                  (list
+                                    (diffop)
+                                    (list smlist v x)
+                                    (list smlist d)
+                                  )
+                                  (covsubst d v e)
+                              )
+                            )
+                            (covi e)
+                          )
+                          (mapcar
+                            #'(lambda (v)
+                              (list
+                                '(mtimes)
                                 (list
                                   (diffop)
                                   (list smlist v x)
                                   (list smlist d)
                                 )
-                                (covsubst d v e)
-                            )
-                          )
-                          (covi e)
-                        )
-                        (mapcar
-                          #'(lambda (v)
-                            (list
-                              '(mtimes)
-                              (list
-                                (diffop)
-                                (list smlist v x)
-                                (list smlist d)
+                                (dersubst d v e)
                               )
-                              (dersubst d v e)
                             )
+                            (cdddr e)
                           )
-                          (cdddr e)
                         )
                       )
                     )
+                    temp
                   )
-                  temp
                 )
+                (t temp)
               )
-              (t temp)
             )
           )
+          1. t
         )
-        1. t
       )
-    )
-    (
-      (eq (caar e) 'mtimes)     ; (a*b)'
-      (simplus
-        (covdifftimes (cdr e) x)
-        1 t
-      )
-    )
-    (
-      (eq (caar e) 'mplus)      ; (a+b)'=a'+b'
-      (simplifya
-        (cons
-          '(mplus)
-          (mapcar 'covdiff (cdr e))
+      (
+        (eq (caar e) 'mtimes)     ; (a*b)'
+        (simplus
+          (covdifftimes (cdr e) x)
+          1 t
         )
-        nil
       )
-    )
-    (
-      (eq (caar e) 'mexpt)      ; (a^b)'=b*a^(b-1)*a'
-      (simptimes
-        (list
-          '(mtimes)
-          (caddr e)
-          (list
-            '(mexpt)
-            (cadr e)
-            (list '(mplus) -1. (caddr e))
+      (
+        (eq (caar e) 'mplus)      ; (a+b)'=a'+b'
+        (simplifya
+          (cons
+            '(mplus)
+            (mapcar 'covdiff (cdr e))
           )
-          ($covdiff (cadr e) x)
+          nil
         )
-        1. nil
       )
+      (
+        (eq (caar e) 'mexpt)      ; (a^b)'=b*a^(b-1)*a'
+        (simptimes
+          (list
+            '(mtimes)
+            (caddr e)
+            (list
+              '(mexpt)
+              (cadr e)
+              (list '(mplus) -1. (caddr e))
+            )
+            ($covdiff (cadr e) x)
+          )
+          1. nil
+        )
+      )
+      (
+        (eq (caar e) 'mequal)
+        (list (car e) (covdiff (cadr e)) (covdiff (caddr e)))
+      )
+      ((and (eq (caar e) '%determinant) (eq (cadr e) $imetric))
+       (cond ((or $iframe_flag $itorsion_flag $inonmet_flag)
+             (prog (d1 d2) (setq d1 ($idummy) d2 ($idummy))
+                    (return (simptimes (list '(mtimes) e 
+                        (list (cons $imetric '(simp)) '((mlist simp)) (list '(mlist simp) d1 d2))
+                        (cond ((position '$extdiff *mlambda-call-stack*)  ; Special case, we're in extdiff()
+                         ($idiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
+                         (t ($covdiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
+                        )
+                    ) 1. t))
+             ))
+             (t 0)
+       )
+      )
+      (t (merror "Not acceptable to COVDIFF: ~M" (ishow e)))
     )
-    (
-      (eq (caar e) 'mequal)
-      (list (car e) (covdiff (cadr e)) (covdiff (caddr e)))
-    )
-    ((and (eq (caar e) '%determinant) (eq (cadr e) $imetric))
-     (cond ((or $iframe_flag $itorsion_flag $inonmet_flag)
-           (prog (d1 d2) (setq d1 ($idummy) d2 ($idummy))
-                  (return (simptimes (list '(mtimes) e 
-                      (list (cons $imetric '(simp)) '((mlist simp)) (list '(mlist simp) d1 d2))
-                      (cond ((position '$extdiff *mlambda-call-stack*)  ; Special case, we're in extdiff()
-                       ($idiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
-                       (t ($covdiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
-                      )
-                  ) 1. t))
-           ))
-           (t 0)
-     )
-    )
-    (t (merror "Not acceptable to COVDIFF: ~M" (ishow e)))
-  )
-)
-
-
+  ))
+  
+  
 (defun covdifftimes (l x) 
   (prog (sp left out) 
     (setq out (ncons '(mplus)))
@@ -546,7 +549,7 @@
   )
 ) 
 
-(declare-top (unspecial r temp d)) 
+(declare-top (unspecial r d)) 
 
 (defun vecdiff (v i j d) ;Add frame bracket contribution when iframe_flag:true
   (cond
