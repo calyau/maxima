@@ -389,15 +389,13 @@
   (let (derivlist)
     (ideriv args)))
 
-(declare-top (special x d)) 
-
-(let (temp)
+(let (temp x d)
 
   (defmfun $covdiff nargs
     (prog
-      (x e d i)
+      (e i)
       (and (< nargs 2) (merror "COVDIFF must have at least 2 args"))
-      (setq temp nil)
+      (setq temp nil d nil)
       (setq i 2 e (arg 1))
       again (setq x (arg i) e (covdiff e) i (1+ i))
       (and (> i nargs) (return e))
@@ -549,7 +547,7 @@
   )
 ) 
 
-(declare-top (unspecial r d)) 
+(declare-top (unspecial r)) 
 
 (defun vecdiff (v i j d) ;Add frame bracket contribution when iframe_flag:true
   (cond
