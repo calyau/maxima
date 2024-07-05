@@ -143,13 +143,10 @@
     (declare (ignore mode))
     (cons '$any `(cons '(mlist) (errcatch ,body)))))
 
-;;; The MODE of a CATCH could either be the MODE of the last of the PROGN
-;;; or the mode of the THROW. The THROW may be hard to find, so this goes
-;;; on the assumption that the mode of the PROGN is enough to tell.
-
 (def%tr $catch (form)
   (destructuring-bind (mode . body) (translate `((mprogn) . ,(cdr form)))
-    (cons mode `(mcatch ,body))))
+    (declare (ignore mode))
+    (cons '$any `(mcatch ,body))))
 
 (def%tr $throw (form)
   (destructuring-bind (mode . body) (translate (cadr form))

@@ -1998,6 +1998,24 @@ block ([translate : false, l1, l2],
   [l2, is (l1 = l2)]);
 [[3, 13], true];
 
+block ([translate : false, l1, l2],
+  local (foo, bar),
+
+  foo (p) := throw (if p then 1/2 else 'other),
+  bar (p) := 1 + catch (foo (p), 2),
+
+  l1 : [bar (true), bar (false)],
+
+  translate_or_lose (foo, bar),
+
+  l2 : [bar (true), bar (false)],
+
+  [l2, is (l1 = l2)]);
+[[3/2, 1 + 'other], true];
+
+(kill (foo, bar), 0);
+0;
+
 /* Translating a define_variable form with translate (but not
  * translate_file or compfile) used to invoke undefined behavior.
  * This would cause a lisp error during translation under some
