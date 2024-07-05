@@ -22,7 +22,7 @@ and start the crosscompiling-process:
 
 mkdir crosscompile-windows/build
 cd crosscompile-windows/build # change to the build directory
-cmake ..  # use the right CMake executable (CMake >= 3.10)
+cmake ..  # use the right CMake executable (CMake >= 3.16)
 make
 make package
 

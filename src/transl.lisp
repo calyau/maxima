@@ -1094,7 +1094,7 @@ APPLY means like APPLY.")
                     (setq form (cdr form))
                     (if (and need-prog?
                              (or (atom form)
-                                 (not (eq (car form) 'return))))
+                                 (not (memq (car form) '(go return)))))
                         ;; put a RETURN on just in case.
                         (setq form `(return ,form))))))
             ((go-tag-p form))

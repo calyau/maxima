@@ -21,7 +21,7 @@ set(CMAKE_C_COMPILER   ${HOST}-gcc)
 set(CMAKE_CXX_COMPILER ${HOST}-g++)
 set(CMAKE_RC_COMPILER  ${HOST}-windres)
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 project(maxima)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/ ${CMAKE_BINARY_DIR}/)
