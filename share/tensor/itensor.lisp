@@ -547,8 +547,6 @@
   )
 ) 
 
-(declare-top (unspecial r)) 
-
 (defun vecdiff (v i j d) ;Add frame bracket contribution when iframe_flag:true
   (cond
     (
