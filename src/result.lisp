@@ -262,7 +262,7 @@
 			 (t (go step3))))))))
 
 
-;; *** NOTE THAT MATRIX PRODUCED IS ALWAYS SYMETRIC
+;; *** NOTE THAT MATRIX PRODUCED IS ALWAYS SYMMETRIC
 ;; *** ABOUT THE MINOR DIAGONAL.
 
 (defmfun $bezout (p q var)

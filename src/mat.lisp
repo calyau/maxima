@@ -146,9 +146,9 @@
 
 ;; The author of the following programs is Tadatoshi Minamikawa (TM).
 ;; This program is one-step fraction-free Gaussian elimination with
-;; optimal pivotting.  DRB claims the hair in this program is not
+;; optimal pivoting.  DRB claims the hair in this program is not
 ;; necessary and that straightforward Gaussian elimination is sufficient,
-;; for sake of future implementors.
+;; for sake of future implementers.
 
 ;; To debug, delete the comments around PRINT and BREAK statements.
 
@@ -162,7 +162,7 @@
      (setq *col* (make-array (1+ m) :initial-element 0))
      (setq *row* (make-array (1+ n) :initial-element 0))
      (setq *colinv* (make-array (1+ m) :initial-element 0))
-     ;; (PRINT 'ONESTEP-LIPSON-WITH-PIVOTTING)
+     ;; (PRINT 'ONESTEP-LIPSON-WITH-PIVOTING)
      (setq nrow n)
      (setq nvar (cond (*rank* m) (*det* m) (*inv* n) (*ech* m) (*tri* m) (t (1- m))))
      (do ((i 1 (1+ i)))
@@ -186,7 +186,7 @@
      (return result)))
 
 ;;FORWARD ELIMINATION
-;;IF THE SWITCH *CPIVOT IS NIL, IT AVOIDS THE COLUMN PIVOTTING.
+;;IF THE SWITCH *CPIVOT IS NIL, IT AVOIDS THE COLUMN PIVOTING.
 (defun forward (*cpivot)
   (setq delta 1)		  ;DELTA HOLDS THE CURRENT DETERMINANT
   (do ((k 1 (1+ k))
@@ -344,7 +344,7 @@
       ((> j j2) t)
     (cond ((not (equal (aref ax (aref *row* i) (aref *col* j)) 0)) (return nil)))))
 
-;;PIVOTTING ALGORITHM
+;;PIVOTING ALGORITHM
 (defun pivot (ax k *cpivot)
   (prog (row/optimal col/optimal complexity/i/min complexity/j/min
 	 complexity/i complexity/j complexity/det complexity/det/min dummy)

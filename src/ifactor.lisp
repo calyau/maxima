@@ -153,7 +153,7 @@
     (return-from get-small-factors (values n factors))))
 
 ;;; get-large-factors returns the list of factors of integer n (n has
-;;; no small factor at this tage)
+;;; no small factor at this stage)
 
 (defun get-large-factors (n)
   (if (primep n)
@@ -807,11 +807,11 @@
   (incf n (nth (mmod n 210) deltaprimes))
   (loop
      (and
-      ;; gcd agaist product of primes in [11..31]
+      ;; gcd against product of primes in [11..31]
       (= (gcd n 955049953) 1)
-      ;; gcd agaist product of primes in [37..53]
+      ;; gcd against product of primes in [37..53]
       (= (gcd n 162490421) 1)
-      ;; gcd agaist product of primes in [59..2897]
+      ;; gcd against product of primes in [59..2897]
       (= (gcd n bigprimemultiple) 1)
       (primep n)
       (return-from next-prime-prob n))

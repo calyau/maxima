@@ -783,7 +783,7 @@
 (defun maxima-lisp-debugger-repl (condition me-or-my-encapsulation)
   (declare (ignore me-or-my-encapsulation))
   (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
-  (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
+  (format t "~&~%Automatically continuing.~%To re-enable the Lisp debugger set *debugger-hook* to nil.~%")
   (finish-output)
   (throw 'to-maxima-repl t))
 

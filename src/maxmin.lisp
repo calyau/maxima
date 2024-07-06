@@ -107,7 +107,7 @@
 ;;
 ;;  max(cos(x)^2+sin(x)^2,-107) --> cos(x)^2 + sin(x)^2 (*not* 1).
 ;;
-;; Since coeff is purely syntatic, we have
+;; Since coeff is purely syntactic, we have
 ;; 
 ;;   (%i1)	xxx : 42*x^(cos(a)^2+sin(a)^2) + x^(-107)$
 ;;   (%i2)	coeff(xxx,x, hipow(xxx,x));
@@ -286,7 +286,7 @@
   (cond 
 
     ;; We'll make compare(infinity, infinity) -> noncompareable, but
-    ;; compare(inf, inf) -> "=". Simiarly, an expression involving ind or und
+    ;; compare(inf, inf) -> "=". Similarly, an expression involving ind or und
     ;; is notcompareable.
     ((or (amongl '($infinity $ind $und) a)
          (amongl '($infinity $ind $und) b))

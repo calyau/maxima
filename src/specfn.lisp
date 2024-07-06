@@ -661,9 +661,9 @@
 ;; Used as initial guess for Halley's iteration. 
 ;; When W(z) is real, ensure that guess is real.
 (defun init-lambert-w-k (k z)
-  (let ( ; parameters for k = +/- 1 near branch pont z=-1/%e
+  (let ( ; parameters for k = +/- 1 near branch point z=-1/%e
         (branch-eps 0.2e0)
-	(branch-point (/ -1 %e-val))) ; branch pont z=-1/%e
+	(branch-point (/ -1 %e-val))) ; branch point z=-1/%e
     (cond 
       ; For principal branch k=0, use expression by Winitzki
       ((= k 0) (init-lambert-w-0 z))
@@ -1278,7 +1278,7 @@
 ;; This is an alternating series, so we can stop when the computed
 ;; term is below our desired accuracy.
 ;;
-;; The ratio between succesive terms is
+;; The ratio between successive terms is
 ;;
 ;;   a[n+1]/a[n] = -(3*k+5)/(3*k+2)*((k+1)/(2*k+3))^3
 ;;

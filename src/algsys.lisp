@@ -842,7 +842,7 @@
   (unless (pcoefp p)
     (cons
      (p-var p)       ; the main variable of poly
-     (loop           ; Recusively extract variables from coefficients.
+     (loop           ; Recursively extract variables from coefficients.
       for (nil ci) on (p-terms p) by #'cddr
       if (not (pcoefp ci)) append (p-allvars1 ci)))))
 
@@ -853,7 +853,7 @@
     ((pcoefp p) 0)              ; bare coefficient has degree 0
     ((eq (p-var p) v) (p-le p)) ; V is main variable - return leading exponent
     (t
-      (loop              ; Recusively search through coefficients of p
+      (loop              ; Recursively search through coefficients of p
         for (nil c) on (p-terms p) by #'cddr
         maximize (p-hipow-var c v)))))
 

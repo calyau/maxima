@@ -275,7 +275,7 @@
 
 ;;; ----------------------------------------------------------------------------
 
-;; Formating a mlabel-expression
+;; Formatting a mlabel-expression
 
 (defprop mlabel msize-mlabel grind)
 
@@ -286,7 +286,7 @@
 
 ;;; ----------------------------------------------------------------------------
 
-;; Formating a mtext-expression
+;; Formatting a mtext-expression
 
 (defprop mtext msize-mtext grind)
 
@@ -342,7 +342,7 @@
 
 ;;; ----------------------------------------------------------------------------
 
-;; Formating a mdefine or mdefmacro expression
+;; Formatting a mdefine or mdefmacro expression
 
 (defprop mdefine msz-mdef grind)
 (defprop mdefine (#\: #\=) strsym)

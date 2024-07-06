@@ -392,8 +392,8 @@
 					     trans ovar)))))
 	     (cond
 	       (nfun
-		;; nfun is basically the result of subtituting ovar
-		;; with tfun in the integratand (summand).
+		;; nfun is basically the result of substituting ovar
+		;; with tfun in the integrand (summand).
 		(cond	
 		  ((cdddr expr)
 		   ;; Handle definite integral, summation, or product.

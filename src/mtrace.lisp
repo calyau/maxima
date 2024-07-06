@@ -582,7 +582,7 @@
 			      (>= val 0)
 			      (<= val upper)))
 		     dlist
-		     "please reply with an integer from the menue.")))))
+		     "please reply with an integer from the menu.")))))
 
 ;; I GUESS ALL OF THE STRINGS IN THIS FUNCTION NEED TO BE GETTEXT'D TOO
 ;; JUST CAN'T BRING MYSELF TO DO IT

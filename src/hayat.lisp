@@ -987,7 +987,7 @@
 	    (setq strongest-term (if inf-var? (ps-gt p) (ps-lt p)))
 	    ;; If the strongest term has degree 0 in the mainvar then the singular
 	    ;; terms occur in some other weaker var. There may be terms in this
-	    ;; coef which arent singular (e.g. 1 in (1/x+1+...)+exp(-1/x)+...) so
+	    ;; coef which are not singular (e.g. 1 in (1/x+1+...)+exp(-1/x)+...) so
 	    ;; we must recursively psexpt-fn this term to get only what we need.
 	    (if (rczerop (e strongest-term))
 		(setq c (pstimes c (psexpt-fn (c strongest-term))))
@@ -1527,7 +1527,7 @@
 		       (setq trunc (emin trunc (t-o-var (gvar p)))))
 		    ;; When we've divided by the greatest term, all terms
 		    ;; have non-positive exponents and we must perform the
-		    ;; transformation x -> 1/x befor calling pslog1 and then
+		    ;; transformation x -> 1/x before calling pslog1 and then
 		    ;; perform the inverse afterwards.
 		    (when gt (setq l (invert-terms l)))
 		    (when (e> (rczero) inc) (setq inc (e- inc)))
@@ -1800,7 +1800,7 @@
 ;;;	(<name of the expanding routine for the function or
 ;;;	  (name . le of n-term) if expansion is of order 0>
 ;;;      <first term in the expansion or the name of a routine which
-;;;	  computes the order when it may depend on parameters (e.g subsripts)>
+;;;	  computes the order when it may depend on parameters (e.g subscripts)>
 ;;;      <data for the expanding routine>)
 
 
@@ -2804,7 +2804,7 @@
 	     e^c0 ord-e^c0)
 	  (unless (rczerop c0)
 	     (setq ord-e^c0 (ord-vector (setq e^c0 (psexpt-fn c0))))
-	     ;; Must emax with 0 so that new singular kernals won't be trunc'd
+	     ;; Must emax with 0 so that new singular kernels won't be trunc'd
 	     ;; e.g exp(1/x+...) to degree -2 should be exp(-1/x)+...
 	     ;; Also try taylor(screwa,x,0,-2).
 	     (mapc #'(lambda (d o) (push-pw d (emax (e- (current-trunc d) o)

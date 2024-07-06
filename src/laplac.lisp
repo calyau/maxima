@@ -112,7 +112,7 @@
 			   (t
 			    (lapdefint fun time-var parm)))))
                (when (isinop result '%integrate)
-                 ;; Laplace has not found a result but returns a definit
+                 ;; Laplace has not found a result but returns a definite
                  ;; integral. This integral can contain internal integration 
                  ;; variables. Replace such a result with the noun form.
                  (setq result (list '(%laplace) fun time-var parm)))
@@ -136,7 +136,7 @@
        (with-new-context (context)
          (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
          (setq res ($specint (mul fun (power '$%e (mul -1 time-var parm))) time-var)))
-       (if (or (isinop res '%specint) ; Both symobls are possible, that is
+       (if (or (isinop res '%specint) ; Both symbols are possible, that is
                (isinop res '$specint)) ; not consistent! Check it! 02/2009
            ;; $specint has not found a result.
            result

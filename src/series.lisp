@@ -647,7 +647,7 @@ integration / differentiation variable."))
               (negate-coeff-p))
          ;; If we know that the coefficient is not positive, switch the series
          ;; around (which gets rid of some ugly minus signs). If we're not sure,
-         ;; but the cofficient "looks negative" (so is something like -7*k),
+         ;; but the coefficient "looks negative" (so is something like -7*k),
          ;; switch it around too.
          (cond
            ((member coeff-sign '($neg $nz))

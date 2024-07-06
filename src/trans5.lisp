@@ -12,7 +12,7 @@
 
 (macsyma-module trans5)
 
-;;; these are TRANSLATE properies for the FSUBRS in JPG;COMM >
+;;; these are TRANSLATE properties for the FSUBRS in JPG;COMM >
 
 ;;; LDISPLAY is one of the most beastly of all macsyma idiot
 ;;; constructs. First of all it makes a variable name and sets it,

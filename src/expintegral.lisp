@@ -98,7 +98,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar $expintexpand nil
-  "When not nil we expand for a half integral parameter of the Exponetial 
+  "When not nil we expand for a half integral parameter of the Exponential 
    Integral in a series in terms of the Erfc or Erf function and for positive 
    integer in terms of the Ei function.")
 
@@ -491,10 +491,11 @@
 ;;;                                    m=0
 ;;;
 ;;; The evaluation stops if an accuracy better than *expint-eps* is achieved.
-;;; If the expansion don't converge within *expint-maxit* steps a Maxima
+;;; If the expansion does not converge within *expint-maxit* steps a Maxima
 ;;; Error is thrown.
 ;;;
-;;; The algorithm is based on technics desribed in Numerical Recipes, 2nd Ed. 
+;;; The algorithm is based on techniques
+;;; described in Numerical Recipes, 2nd Ed. 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Constants to terminate the numerical evaluation
@@ -1146,7 +1147,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; We have not modified the algorithm for Bigfloat numbers. It is only
-;;; generalized for Bigfloats. The calcualtion of the complex phase factor
+;;; generalized for Bigfloats. The calculation of the complex phase factor
 ;;; can be simplified to conditions about the sign of the realpart and 
 ;;; imagpart. We leave this for further work to optimize the speed of the
 ;;; calculation.

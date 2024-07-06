@@ -356,7 +356,7 @@
     ;; return nil for an indefinite integral
     ((and (eq (caar e) '%integrate) (alike x (third e)) (null (fourth e))) nil)
 	;; Return true for integrate(X,z,a,b) provided (a) freeof(x,X) (b) limit-ok(a,x)
-	;; and (c) limit-ok(b,x). The function simplim%integrate doesn't recoginize
+	;; and (c) limit-ok(b,x). The function simplim%integrate does not recognize
 	;; $limsubst, but this function does.
 	((eq (caar e) '%integrate) 
 	    (and (limit-ok (fourth e) x) (limit-ok (fifth e) x)) 
@@ -439,7 +439,7 @@
 
 ;; If one-sided limits assumed both lower and upper bounds for the limit 
 ;; variable (something like 0 < x < tiny for a limit of x toward 0 from above), 
-;; some subexpressions of the form abs(X) could be simplifed away before 
+;; some subexpressions of the form abs(X) could be simplified away before 
 ;; going through this function. 
 
 ;; This function was rewritten and algorithmally altered by Barton Willis in 
@@ -1085,7 +1085,7 @@ ignoring dummy variables and array indices."
 		       (m^ (cadr factor) (unrat (caddr factor)))))
 	      new-exp))))
 
-(defun unrat (exp)			;RETURNS UNRATTED EXPRESION
+(defun unrat (exp)			;RETURNS UNRATTED EXPRESSION
   (multiple-value-bind (n d)
       (numden* exp)
     (let ((tem ($divide n d)))
@@ -3979,7 +3979,7 @@ ignoring dummy variables and array indices."
 
 ;; user-level function equivalent to $limit.
 ;; direction must be specified if limit point is not infinite
-;; The arguments are checked and a failure of taylor is catched.
+;; The arguments are checked and a failure of taylor is caught.
 
 (defmfun $gruntz (expr var val &rest rest)
   (let (ans dir)
@@ -4051,7 +4051,7 @@ ignoring dummy variables and array indices."
 		 ((and var-present (member (caar e) (list '%sinh '%cosh '%tanh '%sech '%csch '%coth)))
 		 	(extra-simp ($exponentialize e)))
          ;; When X depends on var, apply reciprocal function identities such as
-		 ;; csc(X) --> 1/sin(X). Specifially, do this for operators '%sec, '%csc, 
+		 ;; csc(X) --> 1/sin(X). Specifically, do this for operators '%sec, '%csc, 
 		 ;; '%cot, '%jacobi_nc, '%jacobi_ns, %jacobi_cs, %jacobi_ds, and %jacobi_dc. 
 		 ;; Since the hyperbolics are exponentialized, we don't do this for the 
 		 ;; hyperbolics.
@@ -4078,7 +4078,7 @@ ignoring dummy variables and array indices."
 			  (mapcar #'extra-simp (subfunargs e))))
 		 (t (fapply (caar e) (mapcar #'extra-simp (cdr e)))))))
 
-;; Call extra-simp followed by a call to resimplify. This is analogus to 
+;; Call extra-simp followed by a call to resimplify. This is analogous to 
 ;; sratsimp.
 (defun resimp-extra-simp (e) (resimplify (extra-simp e)))
 

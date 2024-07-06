@@ -272,11 +272,11 @@
 ;;;       F(N):=LAMBDA([U],N*U);
 ;;;       `(LAMBDA (U) (gen-func U 'N)) without extend loaded.
 ;;; II. side effects.
-;;;    A. Those since effects need to be propogated to the environment
+;;;    A. Those side effects need to be propagated to the environment
 ;;;       where the LAMBDA was made. This is difficult to do in the
 ;;;       present translator. e.g.
 ;;;       F(L):=BLOCK([SUM:0],FULLMAP(LAMBDA([U],SUM:SUM+U),L),SUM);
-;;;       every function which guarantees the order of argument evalation
+;;;       every function which guarantees the order of argument evaluation
 ;;;       (MPROG and MPROGN), must translate and expression and get information
 ;;;       about environment propagation.
 ;;;       (PROGN (FULLMAP (PROGN (SET-ENV) '(LAMBDA ...)) L)
@@ -296,7 +296,7 @@
 ;;; be an upward funarg, that it is not possible (wanted)
 ;;; have two different lambda's generated from the same
 ;;; place. e.g. INTERPOLATE(SIN(X^2)=A,X,0,N) (implied lambda
-;;; which is contructed by the translation property for
+;;; which is constructed by the translation property for
 ;;; interpolate. MAP(LAMBDA([U],...),L) is another example)
 ;;; these forms will be called I-LAMBDA's, and will be generated
 ;;; from LAMBDA's by the functions that want to. All this

@@ -345,7 +345,7 @@
 
 ;; Predicate to see when obviously not to substitute for trigs.
 ;; A hack in the direction of expression properties-table driven
-;; substition. The "measure" of the expression is the total number
+;; substitution. The "measure" of the expression is the total number
 ;; of different kinds of trig functions in the expression.
 
 (defun trig-not-subst-p (vlist)

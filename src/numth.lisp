@@ -1118,7 +1118,7 @@
             cs (nconc (mapcar #'(lambda (c) (* c c1)) cs) (cdr ex)) ))))
 
 
-;; for educational puposes: tables of small residue class rings
+;; for educational purposes: tables of small residue class rings
 
 (defun zn-table-errchk (n fun)
   (unless (and (fixnump n) (< 1 n))
@@ -1703,7 +1703,7 @@
 ;; -----------------------------------------------------------------------------
 
 
-;; setting the finite field and retrieving basic informations ------------------
+;; setting the finite field and retrieving basic information ------------------
 ;;
 
 (defmfun $gf_set (p &optional a1 a2 a3) ;; deprecated
@@ -2116,8 +2116,8 @@
 ;; x^4 + 3*x^2 + 4       (4 1 2 3 0 4) 
 ;;
 ;; This representation uses the term part of the internal CRE representation.
-;; The coeffcients are exclusively positive: 1, 2, ..., (*gf-char* -1)
-;; Header informations are stored in *gf-rat-header*.
+;; The coefficients are exclusively positive: 1, 2, ..., (*gf-char* -1)
+;; Header information is stored in *gf-rat-header*.
 ;;
 ;; gf_set_data(5, 4)$
 ;; :lisp `(,*gf-char* ,*gf-exp*)
@@ -3633,7 +3633,7 @@
         (return nil) )
       ;; y must be irreducible:
       (unless (gf-irr-p y q n) (return nil))
-      ;; y dependend pre-computation and final check:
+      ;; y dependent pre-computation and final check:
       (return (gf-primpoly-p-exit y fs-r-base-q (gf-x^p-powers q n y))) )))
 ;;
 ;; -----------------------------------------------------------------------------

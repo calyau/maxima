@@ -49,7 +49,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; These are the methods that each plot class should define.
 ;; For each class (plot plot_format) there is a corresponding file
 ;;      plot_format_def.lisp
-;; where thoses methods are defined for the particular class.
+;; where those methods are defined for the particular class.
 
 (defgeneric plot-preamble (plot options)
     (:documentation "Plots the preamble for a plot."))

@@ -2262,7 +2262,7 @@
 (assert-equal "0.0b+0" (format nil "~e" (bigfloat:bigfloat 0d0)))
 ;; Fails because exponent is printed as "b0   " instead of "b+0000"
 (assert-equal "0.0b+0000" (format nil "~9,,4e" (bigfloat:bigfloat 0d0)))
-;; Fails because exponent is printed as "b4" isntead of "b+4"
+;; Fails because exponent is printed as "b4" instead of "b+4"
 (assert-equal "1.2345678901234567b+4" (format nil "~E"
 					      (bigfloat:bigfloat 1.234567890123456789d4)))
   

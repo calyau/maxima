@@ -686,7 +686,7 @@
     max-neg))
 
 ;; Compute the intersection of L1 and L2, possibly destructively
-;; modifying L2.  Perserves duplications in L1.
+;; modifying L2.  Preserves duplications in L1.
 (defun zl-intersection (arg-l1 arg-l2)
   (cond ((null arg-l1) nil)
 	((member (car arg-l1) arg-l2 :test #'equal)
@@ -1029,7 +1029,7 @@
   ;; and a'-b = a-p-b = 1/2.  Also, a'+b+1/2-c = a-p+b+1/2-c = q-p =
   ;; r, which is also an integer.
   ;;
-  ;; A&S 15.2.4 and 15.2.6 allows us to increase or decrese c.  Thus,
+  ;; A&S 15.2.4 and 15.2.6 allows us to increase or decrease c.  Thus,
   ;; we can write F(a',b;c;z) in terms of F(a',b;c',z) where c' =
   ;; c+r.  Now a'-b=1/2 and a'+b+1/2-c' = a-p+b+1/2-c-r =
   ;; a+b+1/2-c-p-r = q-p-(q-p)=0.
@@ -2669,7 +2669,7 @@
 	   (hypredincgm a z))
 	  ((eql a 1)
 	   ;; We have M(1,a,z)
-	   ;; Apply Kummer's tranformation to get the form M(a-1,a,z)
+	   ;; Apply Kummer's transformation to get the form M(a-1,a,z)
 	   ;;
 	   ;; (I don't think we ever get here, but just in case, we leave it.)
 	   (kummer (list a) (list c) z))

@@ -27,7 +27,7 @@
 ;; and should not be called externally.
 
 ;; I have added the macro DEFGRAD as an interface to the $DERIVATIVE function
-;; for use by macsyma programers who want to do a bit of lisp programming. -GJC
+;; for use by macsyma programmers who want to do a bit of lisp programming. -GJC
 
 (defmacro =0 (x) `(equal ,x 0))
 (defmacro =1 (x) `(equal ,x 1))

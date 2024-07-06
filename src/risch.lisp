@@ -195,7 +195,7 @@
   (let ((result (if hyperfunc
                     (sinint (resimplify exp) risch-var)
                     (rischint (resimplify exp) risch-var))))
-    ;; The result can contain solveable integrals. Look for this case.
+    ;; The result can contain solvable integrals. Look for this case.
     (if (isinop result '%integrate)
         ;; Found an integral. Evaluate the result again.
         ;; Set the flag *in-risch-p* to make sure that we do not call
@@ -214,7 +214,7 @@
       (setq result (sratsimp (if (and (freeof '$%i risch-*exp) (freeof '$li yyy))
                                  ($realpart yyy)
                                  ($rectform yyy))))
-      ;; The result can contain solveable integrals. Look for this case.
+      ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.
           ;; Set the flag *in-risch-p* to make sure that we do not call

@@ -36,7 +36,7 @@
 (def%tr $maybe (form)
   (tr-is/maybe '$maybe (cadr form)))
 
-;;; these don't have an imperitive predicate semantics outside of
+;;; these don't have an imperative predicate semantics outside of
 ;;; being used in MNOT, MAND, MOR, MCOND, $IS.
 
 (def%tr mnotequal (form)

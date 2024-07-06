@@ -62,7 +62,7 @@
 
 
 ;;; F is assumed to be a function of two arguments.  It is mapped down L
-;;; and applied to consequtive pairs of elements of the list.
+;;; and applied to consecutive pairs of elements of the list.
 ;;; Useful for iterating over property lists.
 
 (defun map2c (f l)

@@ -212,7 +212,7 @@
 
 ;; $integer_decode_float(f)
 ;;
-;;   A Maxima interfact to CL:INTEGER-DECODE-FLOAT which returns a
+;;   A Maxima interface to CL:INTEGER-DECODE-FLOAT which returns a
 ;; list of an integer, an exponent and a sign such that (* sign
 ;; (scale-float (float integer 1d0) exponent)) returns the original
 ;; number.

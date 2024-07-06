@@ -1182,7 +1182,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Called after transformation of a integrand to a new representation.
-;;; Evalutate the tansform of a sum as sum of transforms.
+;;; Evaluate the transform of a sum as sum of transforms.
 
 (defun sendexec (r a)
   (distrexecinit ($expand (mul (init r) a))))
@@ -1473,7 +1473,7 @@
 
 (defun f35p147 (c v a)
   ;; We have not done the calculation v->v+1 and a-> a^2/4
-  ;; and subsitute here accordingly.
+  ;; and substitute here accordingly.
   (let ((v (add v 1)))
     (mul c
          (take '(%gamma) (add v v))
@@ -1499,7 +1499,7 @@
     (cond ((or $prefer_d 
                (whittindtest (add (div v 2) inv4) inv4))
            ;; At this time the Parabolic Cylinder D function is not implemented
-           ;; as a simplifying function. We call nevertheless the simplifer
+           ;; as a simplifying function. We call nevertheless the simplifier
            ;; to simplify the arguments. When we implement the function
            ;; The symbol has to be changed to the noun form.
            (take '($parabolic_cylinder_d) v z))
@@ -2733,7 +2733,7 @@
 (defun hetd (x n)
   (mul (power '$%e (mul x x '((rat simp) 1 4)))
        ;; At this time the Parabolic Cylinder D function is not implemented
-       ;; as a simplifying function. We call nevertheless the simplifer.
+       ;; as a simplifying function. We call nevertheless the simplifier.
        (take '($parabolic_cylinder_d) n x)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2826,7 +2826,7 @@
          (inv (power '$%pi inv2))
          (power '$%e (mul -1 inv2 x x))
          ;; At this time the Parabolic Cylinder D function is not implemented
-         ;; as a simplifying function. We call nevertheless the simplifer
+         ;; as a simplifying function. We call nevertheless the simplifier
          ;; to simplify the arguments. When we implement the function
          ;; The symbol has to be changed to the noun form.
          (take '($parabolic_cylinder_d) -1 (mul (power 2 inv2) x)))))

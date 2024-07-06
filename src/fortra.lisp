@@ -58,7 +58,7 @@
 
   ;; Linearize the expression using MSTRING.  Some global state must be
   ;; modified for MSTRING to generate using Fortran syntax.  This must be
-  ;; undone so as not to modifiy the toplevel behavior of MSTRING.
+  ;; undone so as not to modify the toplevel behavior of MSTRING.
   (unwind-protect
        (defprop mexpt msize-infix grind)
     (defprop mminus 100. lbp)

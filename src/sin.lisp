@@ -1194,7 +1194,7 @@
 	(return
 	  (substint (let (($radexpand '$all))
 		      ;; Setting $radexpand to $all here gets rid of
-		      ;; ABS in the subtitution.  I think that's ok in
+		      ;; ABS in the substitution.  I think that's ok in
 		      ;; this case.  See Bug 1654183.
 		      (subliss w
 			       `((mexpt)
@@ -2044,7 +2044,7 @@
 ;;          u(x)  is an elementary expression in x
 ;;          u'(x) is its derivative
 ;;          op    is an elementary operator:
-;;                - the indentity, or
+;;                - the identity, or
 ;;                - any function that can be integrated by INTEGRALLOOKUPS
 ;;
 ;; The method of solution, once the problem has been determined to

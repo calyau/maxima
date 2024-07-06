@@ -941,7 +941,7 @@
 ;;;
 
 (defun parse (mode rbp)
-  (do ((left (nud-call (pop-c))		; Envoke the null left denotation
+  (do ((left (nud-call (pop-c))		; Invoke the null left denotation
 	     (led-call (pop-c) left)))	;  and keep calling LED ops as needed
       ((>= rbp (lbp (first-c)))		; Until next op lbp too low
        (convert left mode))))		;  in which case, return stuff seen

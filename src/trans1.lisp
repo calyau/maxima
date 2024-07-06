@@ -89,7 +89,7 @@
 ;;; we must send down an expression to PART1 which when evaluated has
 ;;; the proper environment for the compiled-away variable names in the
 ;;; environment of the calling function. 
-;;; It is possible to get unbelivebly strange results from the order of
+;;; It is possible to get unbelievably strange results from the order of
 ;;; evaluation of the arguments to $SUBSTPART, these crocks shall not
 ;;; be supported.
 ;;; The PIECE feature is not as often used as say,

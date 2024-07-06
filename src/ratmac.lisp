@@ -21,7 +21,7 @@
 ;; coefficients.
 ;;
 ;; For example, 42*x^2 + 1 might be stored as ($x 2 42 0 1). If, say,
-;; x*sin(x)+x^2 is respresented as a polynomial in x, we might expect it to come
+;; x*sin(x)+x^2 is represented as a polynomial in x, we might expect it to come
 ;; out as something like
 ;;
 ;;    ($x 2 1 1 ((%sin) $x)),
@@ -125,11 +125,11 @@
 ;;
 ;; Historical note from 2000 (presumably wfs):
 ;;
-;;   The PDP-10 implementation used to use the PRINTNAME of the gensym as a
-;;   place to store a VALUE. Somebody changed this to value-cell instead, even
-;;   though using the value-cell costs more. Anyway, in NIL I want it to use the
-;;   property list, as thats a lot cheaper than creating a value cell. Actually,
-;;   better to use the PACKAGE slot, a kludge is a kludge right?
+;;  The PDP-10 implementation used to use the PRINTNAME of the gensym as a
+;;  place to store a VALUE. Somebody changed this to value-cell instead, even
+;;  though using the value-cell costs more. Anyway, in NIL I want it to use the
+;;  property list, as that's a lot cheaper than creating a value cell. Actually,
+;;  better to use the PACKAGE slot, a kludge is a kludge right?
 (defmacro valget (item)
   `(symbol-value ,item))
 

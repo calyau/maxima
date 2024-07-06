@@ -650,7 +650,7 @@
 	   `(($matrix) . ,(mxc ans))))))
 
 ;;; THIS IS FOR TRANSPOSING THE ELEMENTS OF A MATRIX
-;;; A hack for Block matricies and tensors.
+;;; A hack for Block matrices and tensors.
 
 (defun transpose-els (elem)
   (cond ((eq $matrix_element_transpose '$transpose)

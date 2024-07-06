@@ -207,7 +207,7 @@
 ;;; the size of the output for purposes of allowing the TeX file to
 ;;; have a reasonable line-line. myprinc will break it at a space
 ;;; once it crosses a threshold.
-;;; this has nothign to do with breaking the resulting equations.
+;;; this has nothing to do with breaking the resulting equations.
 
 ;;-      arg:    chstr -  string or number to princ
 ;;-      scheme: This function keeps track of the current location

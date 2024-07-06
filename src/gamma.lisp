@@ -46,7 +46,7 @@
 ;;;                        - Enables transformation to a Hypergeometric
 ;;;                          representation for fresnel_s and fresnel_c
 ;;;
-;;; Maxima User variable (not definied in this file):
+;;; Maxima User variable (not defined in this file):
 ;;;
 ;;;   $factlim             - biggest integer for numerically evaluation
 ;;;                          of the Double factorial
@@ -1040,7 +1040,7 @@
 
 ;;; The numerical evaluation for CL float or complex values a and x
 ;;; When the flag regularized is T, the result is divided by gamma(a) and
-;;; Maxima returns the numercial result for gamma_incomplete_regularized
+;;; Maxima returns the numerical result for gamma_incomplete_regularized
 
 (defun gamma-incomplete (a x &optional (regularized nil))
   (setq x (+ x (cond ((complexp x) #C(0.0 0.0)) ((realp x) 0.0))))
@@ -2377,7 +2377,7 @@
    ((mtimes) -2 
       ((mexpt) $%pi ((rat) -1 2))
       ((mexpt) $%e ((mtimes) -1 ((mexpt) z1 2))))
-   ;; derviative wrt z2
+   ;; derivative wrt z2
    ((mtimes) 2 
       ((mexpt) $%pi ((rat) -1 2))
       ((mexpt) $%e ((mtimes) -1 ((mexpt) z2 2)))))

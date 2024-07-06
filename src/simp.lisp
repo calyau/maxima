@@ -927,7 +927,7 @@
 ;;;   $DOALLMXOPS, $DOMXMXOPS, $DOMXPLUS, $DOSCMXOPPS, $DOSCMXPLUS, $LISTARITH
 ;;;
 ;;; Notes:
-;;;   This routine should not be called directely. It is called by SIMPLIFYA.
+;;;   This routine should not be called directly. It is called by SIMPLIFYA.
 ;;;   A save access is to call the function ADD.
 ;;;-----------------------------------------------------------------------------
 
@@ -1057,7 +1057,7 @@
   (prog (fm *plusflag*)
      (if (mtimesp x) (setq x (testtneg x)))
      (when (and $numer (atom x) (eq x '$%e))
-       ;; Replace $%e with its numerical value, when $numer ist TRUE
+       ;; Replace $%e with its numerical value, when $numer is TRUE
        (setq x %e-val))
      (cond ((null out)
             ;; Initialize a form like ((mplus) <number> expr)
@@ -2542,7 +2542,7 @@
   start
      ;; Go through the list of terms in fm and look what is to do.
      (cond ((null (cdr fm))
-            ;; The list of terms is empty. The loop is finshed.
+            ;; The list of terms is empty. The loop is finished.
             (go less))
            ((or (and (mnump temp)
                      (not (or (integerp temp)

@@ -122,7 +122,7 @@
 	be useful in translation for MAXIMA-ERROR checking.")
 
 (defmvar tr-unique (gensym)
-  "this is just a unque object used for random purposes,
+  "this is just a unique object used for random purposes,
 	such as the second (file end) argument of READ.")
 
 
@@ -428,7 +428,7 @@ APPLY means like APPLY.")
 	   ;; like this allows all legal forms and also catches
 	   ;; errors. However, certain generalizations are also
 	   ;; allowed. They won't get passed the interpreter, but
-	   ;; interesting things may happen here. Thats what you
+	   ;; interesting things may happen here. That's what you
 	   ;; get from too much syntax, so don't sweat it.
 	   ;;
 	   ;; the allowed generalizations aren't necessarily subscripted

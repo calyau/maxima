@@ -93,7 +93,7 @@
       (setq stream *standard-output*))
     ;; This is all done via macros to save space,
     ;; (No functions, no special variable symbols.)
-    ;; If the lack of flexibilty becomes an issue then
+    ;; If the lack of flexibility becomes an issue then
     ;; it can be changed easily.
     (mformat-loop (output-text))
     ;; Keep from getting bitten by buffering.
