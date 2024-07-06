@@ -186,7 +186,7 @@
 ;;
 ;; Lawden says the derivative wrt to k but that's not what we want.
 ;;
-;; Here's the derivation we used, based on how Lawden get his results.
+;; Here's the derivation we used, based on how Lawden gets his results.
 ;;
 ;; Let
 ;;
