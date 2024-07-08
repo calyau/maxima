@@ -144,6 +144,12 @@
                          239 240 241 242 243 244 245 246 249
                          256 259 261 262 267 268 269 270 271 272
                          280 281 282))
+         ((mlist simp) "rtest_limit_gruntz"
+          ((mlist simp) 20 25 28 29 30 36 37 38 39 86 96 97))
+
+         ((mlist simp) "rtest_limit_wester"
+          ((mlist simp) 12 13))
+          
         "rtest_gcd"
 	;; The tests that failed with abcl 1.5.0
 	((mlist simp) "rtest_hg"

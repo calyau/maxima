@@ -31,8 +31,17 @@
 ;; Taylor cannot handle conjugate, ceiling, floor, unit_step, or signum 
 ;; expressions, so let's tell tlimit to *not* try. We also disallow 
 ;; expressions containing $ind.
-(defun tlimp (e)		
-  (not (amongl '($conjugate $floor $ceiling $ind $unit_step %signum) e)))
+(defun tlimp (e x)	
+  (or (and ($mapatom e) (not (eq e '$ind)) (not (eq e '$und)))
+	  (and (consp e) 
+	       (consp (car e)) 
+	       (or 
+		      (known-ps (caar e)) 
+			  (and (eq (caar e) 'mqapply) (known-ps (subfunname e)))
+	          (member (caar e) (list 'mplus 'mtimes 'mexpt '%log))
+			  (get (caar e) 'grad)
+			  ($freeof x e))
+		    (every #'(lambda (q) (tlimp q x)) (cdr e)))))
 
 ;; Dispatch Taylor, but recurse on the order until either the recursion
 ;; depth is 15 or the Taylor polynomial is nonzero. When Taylor 
@@ -73,7 +82,7 @@
 (defun taylim (e var val flag)
     (declare (ignore flag))
 	(let ((et nil))
-	  (when (tlimp e)
+	  (when (tlimp e var)
 		 (setq e (stirling0 e))
 	     (setq et (tlimit-taylor e var (ridofab val) $lhospitallim 0)))
 	  (if et (let ((taylored t)) (limit et var val 'think)) (limit1 e var val))))

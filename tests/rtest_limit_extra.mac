@@ -1113,16 +1113,6 @@ und$
     ans));
  -(((-1)^(1/4)*sqrt(%pi)*%e^-(%i*t*ω))/(2*ω))$
 
-/* #3054 limit(exp(exp(2*log(x**5 + x)*log(log(x)))) / exp(exp(10*log(x)*log(log(x)))), x, inf) 
-   This test is commented out for two reasons: (a) evalutating this limit multiple
-   times even with a kill(all) in between gives an bad error after four evaluations
-   (b) the value of this limit is, I think, inf, but currently Maxima gives a limit
-   of 1.*/
-
-/* limit(exp(exp(2*log(x**5 + x)*log(log(x)))) / exp(exp(10*log(x)*log(log(x)))), x, inf)$
-1$
-*/
-
 /* #4277 limit misses some constant expressions */
 block([limsubst : false], limit(sum(f(x),x,1,inf),x, 3));
 'sum(f(x),x,1,inf)$
@@ -1145,8 +1135,12 @@ block([limsubst : false], limit(diff(g(x,t),t,3),x,42));
 block([limsubst : true], limit(diff(g(x,t),t,3),x,42));
 'diff(g(42,t),t,3)$
 
+/* clean up*/
+(kill(values),0);
+0$
 
-/* Did any facts or contexts leak?*/
+/* Did any values, facts, or contexts leak?*/
+
 facts();
 []$
 

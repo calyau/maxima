@@ -1,0 +1,371 @@
+/*
+These tests are translated to Maxima from the SymPy tests. The orginal source is
+https://github.com/sympy/sympy/blob/master/sympy/series/tests/test_gruntz.py
+
+Translation errors are, of course, possible, and all such errors are mine.
+I thank the SymPy developers for making this resource available. 
+
+Copyright (c) 2006-2023 SymPy Development Team
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  a. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+  b. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  c. Neither the name of SymPy nor the names of its contributors
+     may be used to endorse or promote products derived from this software
+     without specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+*/
+
+/* Let's tidy our workspace. If you want to run this testsuite with a nondefault
+value for an option variable, say algebraic, you'll need to remove the reset command*/
+(map('remvalue, values),  map('forget, facts()), map('killcontext, contexts), reset(),0);
+0$
+
+/* The notorious Bug #3054--running this test multiple times gives an error. 
+Let's try it five times */
+
+block([xxx : exp(exp(2*log(x^5 + x)*log(log(x)))) / exp(exp(10*log(x)*log(log(x))))],
+  [limit(xxx,x,inf), limit(xxx,x,inf), limit(xxx,x,inf), limit(xxx,x,inf),limit(xxx,x,inf)]);
+[inf,inf,inf,inf,inf]$
+
+/* 8.1 - 8.20 */
+limit(exp(x)*(exp(1/x - exp(-x)) - exp(1/x)), x, inf);
+-1$
+
+limit(exp(x)*(exp(1/x + exp(-x) + exp(-x^2))- exp(1/x - exp(-exp(x)))), x, inf);
+1$
+
+limit(exp(exp(x - exp(-x))/(1 - 1/x)) - exp(exp(x)), x, inf);
+inf$
+
+limit(exp(exp(exp(x + exp(-x)))) / exp(exp(exp(x))), x, inf);
+inf$
+
+limit(exp(exp(exp(x))) / exp(exp(exp(x - exp(-exp(x))))),  x, inf);
+inf$
+
+limit(exp(exp(exp(x))) / exp(exp(exp(x - exp(-exp(exp(x)))))), x, inf);
+1$
+ 
+limit(exp(exp(x)) / exp(exp(x - exp(-exp(exp(x))))), x, inf);
+1$
+
+limit(log(x)^2*exp(sqrt(log(x))*(log(log(x)))^2
+ *exp(sqrt(log(log(x)))*(log(log(log(x))))^3))/sqrt(x),x, inf);
+0$
+
+limit((x*log(x)*(log(x*exp(x) - x^2))^2)/(log(log(x^2 + 2*exp(exp(3*x^3*log(x)))))), x, inf);
+1/3$
+
+limit((exp(x*exp(-x)/(exp(-x) + exp(-2*x^2/(x + 1)))) - exp(x))/x,x, inf);
+-exp(2)$
+
+limit((3^x + 5^x)^(1/x), x, inf);
+5$
+
+limit(x/log(x^(log(x^(log(2)/log(x))))), x, inf);
+inf$
+
+limit(exp(exp(2*log(x^5 + x)*log(log(x)))) / exp(exp(10*log(x)*log(log(x)))), x, inf);
+inf$
+
+block([factor_max_degree : 64000],
+  limit(%e^(8*%e^((54*x^(49/45))/17+(21*x^(6/11))/8+5/(2*x^(5/7))+2/x^8))/log(log(-log(4/(3*x^(5/14)))))^(7/6),x,inf));
+ inf$
+
+limit((exp(4*x*exp(-x)/(1/exp(x) + 1/exp(2*x^2/(x + 1)))) - exp(x))/ exp(x)^4, x, inf);
+1$
+
+limit(exp(x*exp(-x)/(exp(-x) + exp(-2*x^2/(x + 1))))/exp(x), x, inf);
+1$
+ 
+limit(log(x)*(log(log(x) + log(log(x))) - log(log(x))) / (log(log(x) + log(log(log(x))))), x, inf);
+1$
+
+/* 8.20 */
+limit(exp((log(log(x + exp(log(x)*log(log(x))))))/(log(log(log(exp(x) + x + log(x)))))), x, inf);
+%e$
+
+limit(exp(exp(exp(x + exp(-x))))/exp(exp(x)), x, inf);
+inf$
+
+limit(exp(exp(exp(x)/(1 - 1/x))) - exp(exp(exp(x)/(1 - 1/x - log(x)^(-log(x))))), x, inf);
+minf$
+
+limit((exp(exp(-x/(1 + exp(-x))))*exp(-x/(1 + exp(-x/(1 + exp(-x)))))*exp(exp(-x + exp(-x/(1 + exp(-x))))))
+    /(exp(-x/(1 + exp(-x))))^2 - exp(x) + x, x, inf);
+2$
+
+limit(exp(x)*(sin(1/x + exp(-x)) - sin(1/x + exp(-x^2))), x, inf);
+1$
+      
+limit((erf(x - exp(-exp(x))) - erf(x)) * exp(exp(x)) * exp(x^2), x, inf);
+2/sqrt(%pi)$
+
+limit(exp(exp(x)) * (exp(sin(1/x + exp(-exp(x)))) - exp(sin(1/x))),x, inf);
+1$
+
+limit(exp(x)*(gamma(x + exp(-x)) - gamma(x)), x, inf);
+inf$
+
+limit(exp(exp(psi[0](psi[0](x))))/x, x, inf);
+exp(-1/2)$
+
+limit(exp(exp(psi[0](log(x))))/x, x, inf);
+exp(-1/2)$
+
+limit(psi[0](psi[0](psi[0](x))), x, inf);
+inf$
+
+limit(log_gamma(log_gamma(x)), x, inf);
+inf$
+
+limit(((gamma(x + 1/gamma(x)) - gamma(x))/log(x) - cos(1/x))* x*log(x), x, inf);
+-1/2$
+
+limit(x * (gamma(x - 1/gamma(x)) - gamma(x) + log(x)), x, inf);
+1/2$
+
+limit((gamma(x + 1/gamma(x)) - gamma(x)) / log(x), x, inf);
+1$
+
+limit(gamma(x + 1)/sqrt(2*%pi)- exp(-x)*(x^(x + 1/2) + x^(x - 1/2/12)), x, inf);
+minf$ 
+
+limit(exp(exp(exp(psi[0](psi[0](psi[0](x))))))/x, x, inf);
+0$
+
+limit(exp(gamma(x - exp(-x))*exp(1/x)) - exp(gamma(x)), x, inf);
+inf$
+
+limit((expintegral_ei(x - exp(-exp(x))) - expintegral_ei(x)) *exp(-x)*exp(exp(x))*x, x, inf);
+-1$
+
+limit(exp((log(2) + 1)*x) * (zeta(x + exp(-x)) - zeta(x)), x, inf);
+-log(2)$
+
+limit(cosh(x), x, inf);
+inf$
+
+limit(cosh(x), x, minf);
+inf$
+
+limit(sinh(x), x, inf);
+inf$
+
+limit(sinh(x), x, minf);
+minf$
+
+limit(2*cosh(x)*exp(x), x, inf);
+inf$
+
+limit(2*cosh(x)*exp(x), x, minf);
+1$
+
+limit(2*sinh(x)*exp(x), x, inf);
+inf$
+
+limit(2*sinh(x)*exp(x), x, minf);
+-1$
+
+limit(tanh(x), x, inf);
+1$
+
+limit(tanh(x), x, minf);
+-1$
+
+limit(coth(x), x, inf);
+1$
+
+limit(coth(x), x, minf);
+-1$
+
+limit(x, x, inf);
+inf$
+
+limit(x, x, minf);
+minf$
+
+limit(-x, x, inf);
+minf$
+
+limit(x^2, x, minf);
+inf$
+
+limit(-x^2, x, inf);
+minf$
+
+limit(x*log(x), x, 0, plus);
+0$
+
+limit(1/x, x, inf);
+0$
+
+limit(exp(x), x, inf);
+inf$
+
+limit(-exp(x), x, inf);
+minf$
+
+limit(exp(x)/x, x, inf);
+inf$
+
+limit(1/x - exp(-x), x, inf);
+0$
+
+limit(x + 1/x, x, inf);
+inf$
+
+limit(x^x, x, 0, 'plus);
+1$
+
+limit((exp(x) - 1)/x, x, 0,'plus);
+1$
+
+limit(1 + 1/x, x, inf);
+1$
+
+limit(-exp(1/x), x, inf);
+-1$
+
+limit(x + exp(-x), x, inf);
+inf$
+
+limit(x + exp(-x^2), x, inf);
+inf$
+
+limit(x + exp(-exp(x)), x, inf);
+inf$
+
+limit(13 + 1/x - exp(-x), x, inf);
+13$
+
+limit(x - log(1 + exp(x)), x, inf);
+0$
+
+limit(x - log(a + exp(x)), x, inf);
+0$
+
+limit(exp(x)/(1 + exp(x)), x, inf);
+1$
+
+limit(exp(x)/(a + exp(x)), x, inf);
+1$
+
+limit((3^x + 5^x)^(1/x), x, inf);
+5$
+
+limit((3^(1/x) + 5^(1/x))^x, x, 0, 'plus);
+5$
+
+limit((x + 1)^(1/log(x + 1)), x, inf);
+%e$
+
+limit(1/gamma(x), x, inf);
+0$
+
+limit(1/log_gamma(x), x, inf);
+0$
+
+limit(gamma(x)/log_gamma(x), x, inf);
+inf$
+
+limit(exp(gamma(x))/gamma(x), x, inf);
+inf$
+
+limit(gamma(x), x, 3,'plus);
+2$
+
+limit(gamma(1/7 + 1/x), x, inf);
+(-(6/7))!$
+
+limit(log(x^x)/log(gamma(x)), x, inf);
+1$
+
+limit(log(gamma(gamma(x)))/exp(x), x, inf);
+inf$
+
+limit(1/log(atan(x)), x, inf);
+ 1/log(%pi/2)$
+
+limit(1/acot(x), x, minf);
+minf$
+
+limit(x/log(log(x*exp(x))), x, inf);
+inf$
+
+limit(((x^7 + x + 1)/(2^x + x^2))^(-1/x), x, inf);
+2$
+
+block([ans], 
+   declare(n,integer), 
+   assume(n > 0),
+   ans : limit((n + 1)*x^(n + 1)/(x^(n + 1) - 1) - x/(x - 1),x,1,'plus),
+   remove(n,integer),
+   forget(n>0),
+   ans);
+ (n+2)/2-1$
+
+limit(x - gamma(1/x), x, inf);
+%gamma$
+
+block([ans1,ans2,expr],
+   assume(r>0, p>0, m<-1),
+   declare(m,noninteger),
+   declare(p,noninteger),
+   expr : ((2*n*(n - r + 1)/(n + r*(n - r + 1)))^c + (r - 1)*(n*(n - r + 2)/(n + r*(n - r + 1)))^c - n)/(n^c - n),
+   expr : subst(c+1,c,expr),
+   ans1 : limit(subst(m,c,expr),n,inf),
+   ans2 : limit(subst(p,c,expr),n,inf),
+   forget(r>0, p>0, m<-1),
+   remove(m,noninteger),
+   remove(p,noninteger),
+  [ans1,ans2,factor(ans2)]);
+  [1,r*(r+1)^(-p-1)+2^(p+1)*(r+1)^(-p-1)-(r+1)^(-p-1), (r+1)^(-p-1)*(r+2^(p+1)-1)]$
+
+limit(1/gamma(x), x, 0,plus);
+0$
+
+limit(x*gamma(x), x, 0,plus);
+1$
+
+limit(exp(2*expintegral_ei(-x))/x^2, x, 0,plus);
+exp(2*%gamma)$
+
+limit(x^(-%pi), x, 0, 'minus);
+infinity$
+
+limit(exp(x)/(1+1/x)^x^2,x,inf);
+sqrt(%e)$
+
+limit(1/(exp(x)/(1+1/x)^x^2),x,inf);
+1/ sqrt(%e)$
+
+/* Any leftover facts, contexts, or values? */
+facts();
+[]$
+
+contexts;
+[initial, global]$
+
+values;
+[]$

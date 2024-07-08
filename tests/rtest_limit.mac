@@ -544,7 +544,7 @@ minf;
  * Bug ID: 1797296 - Crazy results when doing limit of 'diff
  */
 limit('diff(x+1,x),x,2);
-1;
+limit('diff(x+1,x),x,2);
 
 limit('integrate(x+1,x),x,2);
 'limit('integrate(x+1,x),x,2);
