@@ -2883,3 +2883,25 @@ unknown;
 
 kill(x);
 done;
+
+/* Bug #4326: "sin(asec(x)), cos(acsc(x)) and many more are incorrectly simplified" */
+
+(
+	err : 0.0,
+	for outer in [sin, cos, tan, csc, sec, cot] do
+	(
+		for inner in [asin, acos, atan, acsc, asec, acot] do
+		(
+			a : outer(inner(x)),
+			b : block([exponentialize : true, logarc : true, triginverses : false], outer(inner(x))),
+			for x in [-0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9] do
+			(
+				err : err + abs(at(a, 'x = x) - at(b, 'x = x))
+			)
+		)
+	),
+	is(err < 1e-10)
+);
+true$
+kill(err);
+done$
