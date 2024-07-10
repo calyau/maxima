@@ -205,14 +205,14 @@
               
 	      ;; Transform the limit value.
 	      (unless (infinityp val)
-		(unless (zerop2 val)
+	
 		  (let ((*atp* t) (realvar var))
 		    ;; *atp* prevents substitution from applying to vars 
 		    ;; bound by %sum, %product, %integrate, %limit
 		    (setq var (gensym))
 		    (putprop var t 'internal)
 		    (setq exp (derivative-subst exp val var realvar))
-		    (setq exp (maxima-substitute (m+ val var) realvar exp))))
+		    (setq exp (maxima-substitute (m+ val var) realvar exp)))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)
 				(t 0)))

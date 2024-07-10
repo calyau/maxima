@@ -1135,6 +1135,28 @@ block([limsubst : false], limit(diff(g(x,t),t,3),x,42));
 block([limsubst : true], limit(diff(g(x,t),t,3),x,42));
 'diff(g(42,t),t,3)$
 
+/* #4210 tlimit consults global assumptions for limit variable*/
+tlimit(atan(1/x),x,0,'minus);
+-%pi/2$
+
+tlimit(atan(1/x),x,0,'plus);
+%pi/2$
+
+block([ans],
+   assume(x > 0),
+   ans : tlimit(atan(1/x),x,0,'minus),
+   forget(x > 0),
+   ans);
+-%pi/2$
+
+block([ans],
+   assume(x > 0),
+   ans : limit(atan(1/x),x,0,'minus),
+   forget(x > 0),
+   ans);
+-%pi/2$
+
+
 /* clean up*/
 (kill(values),0);
 0$

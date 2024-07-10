@@ -877,12 +877,17 @@
 	((eq '$pnz x) '$pnz)	 ;COMPLEX expression encountered here.
 	(t '$zero)))
 
+;; When asksign is called on an expression that involves a symbol with the
+;; internal property and Maxima's sign function can only determine that the
+;; sign is pnz, nz, or similar, asksign1 returns '$pnz. This causes asksign01,
+;; and ultimately $asksign, to return zero. Lesson: be circumspect about calling
+;; asksign on an expression that might involve a symbol with the internal property.
 (defun asksign1 ($askexp)
   (let ($radexpand)
     (sign1 $askexp))
   (cond
-    ((has-int-symbols $askexp) '$pnz)
     ((member sign '($pos $neg $zero $imaginary) :test #'eq) sign)
+    ((has-int-symbols $askexp) '$pnz)
     (t
      (let ((domain sign) (squared nil))
        (cond
