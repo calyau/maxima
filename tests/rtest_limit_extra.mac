@@ -1156,6 +1156,15 @@ block([ans],
    ans);
 -%pi/2$
 
+/* #4191 limits of gamma_incomplete */
+limit(gamma_incomplete(3,x),x,minf);
+inf$
+
+limit(gamma_incomplete(3,sin(x)),x,inf);
+ind$
+
+limit(gamma_incomplete(3, sin(x)*exp(x)),x,inf);
+und$
 
 /* clean up*/
 (kill(values),0);

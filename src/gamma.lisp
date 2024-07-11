@@ -427,6 +427,8 @@
          (a (limit (cadr expr) var val 'think))
          (z (limit (caddr expr) var val 'think)))
   (cond
+   ;; when either a or z is und, return und
+   ((or (eql a '$und) (eql z '$und)) '$und)
    ;; z in {minf, inf, infinity}, use http://dlmf.nist.gov/8.11#i
    ((or (eq z '$infinity)	
         (eq z '$inf)
@@ -464,11 +466,11 @@
                           (ftake 'mfactorial a)) var val 'think))
               (t 
               (limit (sub (ftake '%gamma a) (div (ftake 'mexpt z a) a)) var val 'think))))
-     ;; z is on the branch cut. We need to know if the imaginary part of
+    ;; z is on the branch cut. We need to know if the imaginary part of
     ;; (caddr exp) approaches zero from above or below. The incomplete
-    ;; gamma function is continuous from above its branch cut.
-
-    ((eq t (mgrp 0 z))
+    ;; gamma function is continuous from above its branch cut. The check for
+    ;; $ind is needed to avoid calling sign on $ind.
+    ((and (not (eq z '$ind)) (eq t (mgrp 0 z)))
       (let ((im (behavior (cdr (risplit (caddr expr))) var val)))
           (cond ((eql im 1) ; use direct substitution
                    (ftake '%gamma_incomplete a z))
