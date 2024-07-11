@@ -46,6 +46,7 @@ Bug fixes for numbered bugs:
  * \#4176: fullratsubst(old = new, expr) returns incorrect result
  * \#4177: lratsubst1 in testsuite
  * \#4184: bessel_simplify error
+ * \#4191 limits of gamma_incomplete
  * \#4195: cmucl 21e intermittent lisp error in limit
  * \#4200: simplim%limit ignoring special variables
  * \#4210 tlimit consults global assumptions for limit variable
