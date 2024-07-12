@@ -1166,6 +1166,16 @@ ind$
 limit(gamma_incomplete(3, sin(x)*exp(x)),x,inf);
 und$
 
+/* #4185 limit of the form ind/ind */
+limit((5+cos(x))/(7+cos(x)),x,inf);
+ind$
+
+limit((5+cos(x))/(1+cos(x)),x,inf);
+und$
+
+limit((5+cos(x))/(cos(x)),x,inf);
+und$
+
 /* clean up*/
 (kill(values),0);
 0$

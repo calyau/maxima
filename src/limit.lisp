@@ -913,6 +913,9 @@ ignoring dummy variables and array indices."
 		    (return (liminv (m// n dn))))
 		   ((setq n1 (try-lhospital-quit n dn nil))
 		    (return n1))))
+       ;; when dn # 0, we have ind/ind = ind, otherwise ind/ind = und
+	   ((and (eq n1 '$ind) (eq d1 '$ind))
+	    (return (if (eq t (mnqp dn 0)) '$ind '$und)))
 	   ((and (zerop2 n1) (not (member d1 '($ind $und) :test #'eq))) (return 0))
 	   ((zerop2 d1)
 	    (setq n1 (ridofab n1))
