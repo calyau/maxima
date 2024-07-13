@@ -2623,12 +2623,16 @@
   ;; Look for the limit of the arguments.
   (let ((z (limit (cadr expr) var val 'think)))
     (cond
-      ;; Handle infinities at this place.
+      ;; Handle extended reals
       ((eq z '$inf) '$inf)
       ((eq z '$minf) '$minf)
+      ((eq z '$und) '$und)
+      ((eq z '$ind) '$ind)
+      ((or (eq z '$zerob) (eq z '$zeroa)) z)
+      ((eq z '$infinity) '$und)
       (t
        ;; All other cases are handled by the simplifier of the function.
-       (simplify (list '(%erfi) z))))))
+       (ftake '%erfi z)))))
 
 ;;; ----------------------------------------------------------------------------
 

@@ -1176,6 +1176,13 @@ und$
 limit((5+cos(x))/(cos(x)),x,inf);
 und$
 
+/* #4197 limits of erfi expressions & extended reals*/
+ limit(erfi(sin(x)*exp(x)),x,inf);
+ und$
+
+ limit(erfi(sin(x)),x,inf);
+ ind$
+
 /* clean up*/
 (kill(values),0);
 0$
