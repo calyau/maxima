@@ -1,4 +1,39 @@
+;;; command-line-options.el --- Regression tests for Maxima's command-line options  -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024 Leo Butler
+
+;; Author: Leo Butler <leo.butler@umanitoba.ca>
+;; Maintainer: Leo Butler <leo.butler@umanitoba.ca>
+;; Created: 15 Jul 2024
+;; Keywords: command-line options; regression tests
+;; Package-Requires: (ert maxima)
+;; URL: https://maxima.sourceforge.io/
+
+;; This file is part of Maxima.
+
+;; This file is free software. It is released under the terms of the
+;; GPLv2. For more information, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+;; Exercise various command-line options with various
+;; Lisps. Command-line options are defined in
+;; `maxima-cli--tests'. `maxima-cli-deftest' defines a single set of
+;; tests, one per Lisp; `maxima-cli-deftests' defines all tests.
+;;
+;; To execute the tests, do the following (in an *ielm* buffer, for
+;; example):
+;;   (maxima-cli-deftests maxima-cli--tests)  ;; define tests
+;;   (ert t)
+;;
+;; Note that `ert' is an Emacs command, so M-x ert RET also works.
+;;
+;; Currently, a bug in GCL, which prevents newlines from being printed
+;; in some cases, causes two test failures. See the definition of
+;; `maxima-cli-tests'.
+
+;;; Code:
 (require 'ert)
+(require 'maxima)
 
 (defvar maxima-cli--filter-regexps
   '("^;;; Loading #P"         ;; ECL -- (setq *load-verbose* nil) creates its own problems
@@ -72,4 +107,8 @@ Return nil if LINE is zero-length or it matches a regexp in
 
 A list of property lists of the form (:cmd MAXIMA-COMMAND :stdout
 EXPECTED-OUTPUT :stderr EXPECTED-ERROR-OUPUT :exit
-EXPECTED-EXIT-CODE).")
+EXPECTED-EXIT-CODE :lisps LIST-OF-LISPS :results
+LIST-OF-EXPECTED-RESULTS). To indicate an expected test failure,
+place NIL in LIST-OF-EXPECTED-RESULTS; otherwise, place T.")
+
+;;; command-line-options.el ends here
