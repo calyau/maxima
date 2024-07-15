@@ -1,0 +1,231 @@
+/* Test askinteger and asksign -- these are interactive,
+ * therefore this script SHOULD NOT be included in testsuite_files.
+ *
+ * You can run this script via batch("tests/rtest_ask.mac", test);
+ * and respond as indicated by the messages.
+ * The appropriate inputs are also contained in tests/rtest_ask_input.mac
+ * and therefore you can run all tests automatically like this:
+ *
+ * maxima --batch-string='batch("tests/rtest_ask.mac", test);' < tests/rtest_ask_input.mac
+ */
+
+(kill(all),0);
+0$
+
+/*
+(?trace(?\$asksign),0);
+0$
+*/
+
+/* commit 3137b946 tried to fix *LOCAL-SIGNS* craziness,
+ * but screwed up in its own way. Fixed for good this time?
+ * Nicked from mailing list circa 2013-08-28
+ */
+ 
+integrate(sin(omega*t)*exp(-s*t),t,0,inf); p;
+omega/(s^2+omega^2);
+
+[asksign (foo), sign (foo), sign (foo)]; p;
+[pos, pos, pos];
+
+[asksign (foo), sign (foo), sign (foo)]; n;
+[neg, neg, neg];
+
+[asksign (foo), sign (foo), sign (foo)]; z;
+[zero, zero, zero];
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf); p;
+1;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf); n;
+-1;
+
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf); z;
+0;
+
+/* mailing list 2017-11-25: "bug in Laplace transform"
+ * root cause is asksign(-a^2) forgot the minus sign,
+ * so include some cases to handle that and then the Laplace transform.
+ */
+
+asksign (a^2); z;
+zero;
+
+asksign (a^2); nz;
+pos;
+
+asksign (a^3); p;
+pos;
+
+asksign (a^3); n;
+neg;
+
+asksign (a^3);z;
+zero;
+
+asksign (-a^2);z;
+zero;
+
+asksign (-a^2);nz;
+neg;
+
+asksign (-a^3);p;
+neg;
+
+asksign (-a^3);n;
+pos;
+
+asksign (-a^3);z;
+zero;
+
+asksign (a^4);z;
+zero;
+
+asksign (a^4);nz;
+pos;
+
+asksign (a^5);p;
+pos;
+
+asksign (a^5);n;
+neg;
+
+asksign (a^5);z;
+zero;
+
+asksign (-a^4);z;
+zero;
+
+asksign (-a^4);nz;
+neg;
+
+asksign (-a^5);p;
+neg;
+
+asksign (-a^5);n;
+pos;
+
+asksign (-a^5);z;
+zero;
+
+asksign (a*b^2);p;
+pos;
+
+asksign (a*b^2);n;
+neg;
+
+asksign (a*b^2);z;
+zero;
+
+asksign (a*b^3);p;
+pos;
+
+asksign (a*b^3);n;
+neg;
+
+asksign (a*b^3);z;
+zero;
+
+asksign (-a*b^2);p;
+neg;
+
+asksign (-a*b^2);n;
+pos;
+
+asksign (-a*b^2);z;
+zero;
+
+asksign (-a*b^3);p;
+neg;
+
+asksign (-a*b^3);n;
+pos;
+
+asksign (-a*b^3);z;
+zero;
+
+asksign (a*b^4);p;
+pos;
+
+asksign (a*b^4);n;
+neg;
+
+asksign (a*b^4);z;
+zero;
+
+asksign (-a*b^4);p;
+neg;
+
+asksign (-a*b^4);n;
+pos;
+
+asksign (-a*b^4);z;
+zero;
+
+asksign (a^2*b^2);z;
+zero;
+
+asksign (a^2*b^2);nz;
+pos;
+
+asksign (a^2*b^3);p;
+pos;
+
+asksign (a^2*b^3);n;
+neg;
+
+asksign (a^2*b^3);z;
+zero;
+
+asksign (-a^2*b^2);z;
+zero;
+
+asksign (-a^2*b^2);nz;
+neg;
+
+asksign (-a^2*b^3);p;
+neg;
+
+asksign (-a^2*b^3);n;
+pos;
+
+asksign (-a^2*b^3);z;
+zero;
+
+asksign (a^2*b^4);z;
+zero;
+
+asksign (a^2*b^4);nz;
+pos;
+
+asksign (a^2*b^5);p;
+pos;
+
+asksign (a^2*b^5);n;
+neg;
+
+asksign (a^2*b^5);z;
+zero;
+
+asksign (-a^2*b^4);z;
+zero;
+
+asksign (-a^2*b^4);nz;
+neg;
+
+asksign (-a^2*b^5);p;
+neg;
+
+asksign (-a^2*b^5);n;
+pos;
+
+asksign (-a^2*b^5);z;
+zero;
+
+/* here's the Laplace transform that exposed the bug */
+
+laplace (delta (t - x^2), t, s);z;
+1;
+
+laplace (delta (t - x^2), t, s);nz;
+exp(-s*x^2);
