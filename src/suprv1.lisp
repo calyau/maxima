@@ -844,9 +844,9 @@
 
 ;; File-processing stuff.
 
-(defun mterpri ()
-   (terpri)
-   (finish-output))
+(defun mterpri (&optional (ostream *standard-output*))
+   (terpri ostream)
+   (finish-output ostream))
 
 (defmspec $status (form)
   (setq form (cdr form))
