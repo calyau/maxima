@@ -727,6 +727,12 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
   
   #+gcl (setq si::*readline-prefix* "BLURFLE:")
 
+  ;; CLISP needs to create distinct streams for stdout and stderr
+  ;; https://clisp.sourceforge.io/impnotes/streams-interactive.html
+  #+clisp
+  (setq *standard-output* (ext:make-stream :output :buffered t)
+	*error-output* (ext:make-stream :error :buffered t))
+
   (initialize-real-and-run-time)
   (intl::setlocale)
   (set-locale-subdir)
