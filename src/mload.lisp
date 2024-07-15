@@ -169,6 +169,7 @@
                &aux tem   (possible '(:demo :batch :test)))
   "giving a second argument makes it use demo mode, ie pause after evaluation
    of each command line"
+  (declare (special $batch_answers_from_file))
 
   ;; Try to get rid of testsuite failures on machines that are low on RAM.
   ($garbage_collect)
@@ -185,7 +186,7 @@
                                   '((mlist) $file_search_maxima)))))
       (cond
         ((eq demo :test)
-         (test-batch filename nil :show-all t)) ;; NEED TO ACCEPT INPUT STREAM HERE TOO
+         (test-batch filename nil :show-all t :in $batch_answers_from_file))
         (t
           (with-open-file (in-stream filename)
             (batch-stream in-stream demo)))))))
@@ -373,7 +374,7 @@
 ;;       fail but actually passed.
 ;;   4.  Total number of tests in the file
 (defun test-batch (filename expected-errors
-			    &key (out *standard-output*) (show-expected nil)
+			    &key (out *standard-output*) (in nil) (show-expected nil)
 			    (show-all nil) (showtime nil))
 
   (let (result
@@ -400,7 +401,9 @@
 	(test-start-run-time 0)
 	(test-end-run-time 0)
 	(test-start-real-time 0)
-	(test-end-real-time 0))
+	(test-end-real-time 0)
+	(*query-io* *query-io*)
+	(*standard-input* *standard-input*))
     
     (cond (*collect-errors*
 	   (setq error-log
@@ -416,6 +419,8 @@
     (unwind-protect 
 	(progn
 	  (setq strm (open filename :direction :input))
+	  (when in
+	    (setq *query-io* (make-two-way-stream strm out)))
 	  (setq start-real-time (get-internal-real-time))
 	  (setq start-run-time (get-internal-run-time))
 	  (while (not (eq 'eof (setq expr (mread strm 'eof))))
