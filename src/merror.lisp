@@ -112,8 +112,8 @@
 	   ($errormsg))
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
-	 (format t (intl:gettext "~& -- an error. To debug this try: debugmode(true);~%"))
-	 (finish-output)
+	 (format *standard-output* (intl:gettext "~& -- an error. To debug this try: debugmode(true);~%"))
+	 (finish-output *standard-output*)
          (if *quit-on-error* ($quit 1.))
 	 (throw 'macsyma-quit 'maxima-error)))))
 
