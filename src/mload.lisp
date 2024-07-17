@@ -921,7 +921,7 @@
 			      (multiple-value-setq (filename diff upass test-count)
 				(test-batch test-file-path
 					    expected-failures :show-expected display_known_bugs
-					    :show-all display_all :showtime time))
+					    :show-all display_all :showtime time :in $batch_answers_from_file))
 			      (incf total-count test-count)
 			      (when (or (rest diff) (rest upass))
 				(incf error-count (length (rest diff)))
