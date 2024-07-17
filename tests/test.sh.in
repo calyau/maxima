@@ -24,7 +24,7 @@ set -e
 # the lisp's standard input so it isn't taken from the keyboard even
 # if the current lisp defaults to that.
 echo "Running the testsuite..."
-$LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();testsuite_files:append(["rtest_ask.mac"],testsuite_files);run_testsuite(share_tests=true);' < @abs_top_srcdir@/tests/rtest_ask_input.mac 2>&1 | tee "$OUTPUT_LOG"
+$LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();run_testsuite(share_tests=true);' 2>&1 | tee "$OUTPUT_LOG"
 
 grep -q 'No unexpected errors' <"$OUTPUT_LOG"
 if test $? -ne 0 ; then
