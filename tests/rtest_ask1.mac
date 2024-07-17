@@ -1,12 +1,15 @@
-/* Test askinteger and asksign -- these are interactive,
- * therefore this script SHOULD NOT be included in testsuite_files.
+/* Test askinteger and asksign
  *
- * You can run this script via batch("tests/rtest_ask.mac", test);
- * and respond as indicated by the messages.
- * The appropriate inputs are also contained in tests/rtest_ask_input.mac
- * and therefore you can run all tests automatically like this:
+ * Note:
+ * This test file is intended to be run with `batch_answers_from_file' to true.
  *
- * maxima --batch-string='batch("tests/rtest_ask.mac", test);' < tests/rtest_ask_input.mac
+ * Sample Usage:
+ *
+ * maxima --batch-string='batch_answers_from_file:true; batch("tests/rtest_ask.mac", test);'
+ *
+ * Note that setting `batch_answers_from_file' to true is not needed when `batch(...,test)'
+ * is executed via the `batch-string' command-line option. It is needed if the test is done
+ * from within a Maxima session.
  */
 
 (kill(all),0);
