@@ -15,6 +15,7 @@
 ;;; expected to fail, e.g.  ((mlist simp) "testfile.mac" ((mlist) 7 9 13)).
 (defparameter $testsuite_files
       `((mlist simp)
+        "rtest_ask1"
         "rtest_sqdnst"
         "rtest_extensions"
 	((mlist simp) "rtest_rules"
