@@ -355,7 +355,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
          (format-prompt *query-io* "~M" msg)
 	 (mterpri *query-io*)))
   (let ((res (mread-noprompt *query-io* nil)))
-    (princ *general-display-prefix*)
+    (princ *general-display-prefix* *query-io*)
     (if (null res) (merror "RETRIEVE: End of file encountered.")
 	res)))
 
