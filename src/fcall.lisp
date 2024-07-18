@@ -79,6 +79,7 @@
   (cond ((functionp f)
 	 (apply f list-argl))
 	((macro-function f)
+	 (mfunction-call-warn f 'macro)
 	 (eval (cons f list-argl)))
 	((not (symbolp f)) (merror (intl:gettext "apply: expected symbol or function; found: ~M") f))
 	((setq f-prop (get f 'mfexpr*))
