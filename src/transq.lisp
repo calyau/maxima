@@ -37,8 +37,7 @@
 	     (get f 'once-translated)
 	     (get f 'translated))
 	 (cons f l1))
-	(t `(mfunction-call-aux ',f ', l1 (list ,@ l1) nil))))
-
+	(t `(mfunction-call-aux ',f ',l1 nil))))
 
 ;;; macros for compiled environments.
 

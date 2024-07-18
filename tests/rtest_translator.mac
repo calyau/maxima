@@ -3229,6 +3229,110 @@ true;
 (kill (foo), 0);
 0;
 
+/* We had cases of incorrect number of argument evaluations when going
+ * through MFUNCTION-CALL internally.
+ */
+
+(eval_string_lisp ("
+  (makunbound '$bar)
+  (fmakunbound '$bar)
+  (setf (symbol-plist '$bar) '())"),
+ 0);
+0;
+
+block ([translate : false, v1, v2],
+  foo () := block ([n : 0], bar (n : n + 1)),
+
+  v1 : foo (),
+
+  translate_or_lose (foo),
+
+  v2 : foo (),
+
+  [v2, is (v1 = v2)]);
+[bar (1), true];
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, v1, v2],
+  local (bar),
+
+  foo () := block ([n : 0], bar (n : n + 1)),
+
+  bar (q) := q,
+
+  v1 : foo (),
+
+  translate_or_lose (foo),
+
+  v2 : foo (),
+
+  [v2, is (v1 = v2)]);
+[1, true];
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, bar, v1, v2],
+  foo () := block ([n : 0], bar (n : n + 1)),
+
+  bar : lambda ([q], q),
+
+  v1 : foo (),
+
+  translate_or_lose (foo),
+
+  v2 : foo (), /* this used to yield 2 */
+
+  [v2, is (v1 = v2)]);
+[1, true];
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, transrun : true, v1, v2],
+  local (bar),
+
+  foo () := block ([n : 0], bar (n : n + 1), n),
+
+  translate_or_lose (foo),
+
+  bar ('q) := 123,
+
+  v1 : foo (), /* this used to yield 1 */
+
+  transrun : false,
+
+  v2 : foo (),
+
+  [v1, is (v1 = v2)]);
+[0, true];
+
+(kill (foo), 0);
+0;
+
+block ([translate : false, transrun : true, v1, v2],
+  foo () := block ([n : 0], bar (n : n + 1), n),
+
+  translate_or_lose (foo),
+
+  eval_string_lisp ("(defmspec $bar (q) (declare (ignore q)) 123)"),
+
+  v1 : foo (), /* this used to yield 1 */
+
+  transrun : false,
+
+  v2 : foo (),
+
+  [v1, is (v1 = v2)]);
+[0, true];
+
+(kill (foo, bar),
+ eval_string_lisp ("(setf (symbol-plist '$bar) '())"),
+ 0);
+0;
+
 
 
 

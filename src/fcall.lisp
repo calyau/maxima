@@ -73,14 +73,14 @@
       ;;loses if the argl could not be evaluated but macsyma &quote functions
       ;;but the translator should be fixed so that if (mget f 'mfexprp) is t
       ;;then it doesn't translate as an mfunction-call.
-      `(mfunction-call-aux ',f ',argl (list ,@ argl) nil)))
+      `(mfunction-call-aux ',f ',argl nil)))
 
-(defun mfunction-call-aux (f argl list-argl autoloaded-already? &aux f-prop)
+(defun mfunction-call-aux (f argl autoloaded-already? &aux f-prop)
   (cond ((functionp f)
-	 (apply f list-argl))
+	 (apply f (mapcar-eval argl)))
 	((macro-function f)
 	 (mfunction-call-warn f 'macro)
-	 (eval (cons f list-argl)))
+	 (eval (cons f argl)))
 	((not (symbolp f)) (merror (intl:gettext "apply: expected symbol or function; found: ~M") f))
 	((setq f-prop (get f 'mfexpr*))
 	 (funcall f-prop (cons nil argl)))
@@ -89,20 +89,19 @@
 		(mfunction-call-warn f 'mfexpr)
 		(meval (cons (list f) argl)))
 	       (t
-		(mlambda f-prop list-argl f t nil))))
+		(mlambda f-prop (mapcar-eval argl) f t nil))))
 	((setq f-prop (get f 'autoload))
 	 (cond (autoloaded-already?
 		(merror (intl:gettext "apply: function ~:@M undefined after loading file ~A") f (namestring (get f 'autoload))))
 	       (t
 		(funcall autoload (cons f f-prop))
-		(mfunction-call-aux f argl list-argl t))))
-
+		(mfunction-call-aux f argl t))))
 	((boundp f)
 	 (mfunction-call-warn f 'punt-nil)
 	 (mapply (eval f) (mapcar-eval argl) f))
 	(t
 	 (mfunction-call-warn f 'undefined)
-	 `((,f) ,@ list-argl))))
+	 `((,f) ,@(mapcar-eval argl)))))
 
 (defquote trd-msymeval (&rest l)
   (let ((a-var? (car l)))
