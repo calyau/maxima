@@ -98,7 +98,7 @@
 		(mfunction-call-aux f argl t))))
 	((boundp f)
 	 (mfunction-call-warn f 'punt-nil)
-	 (mapply (eval f) (mapcar-eval argl) f))
+	 (mapply (symbol-value f) (mapcar-eval argl) f))
 	(t
 	 (mfunction-call-warn f 'undefined)
 	 `((,f) ,@(mapcar-eval argl)))))
