@@ -157,7 +157,7 @@
 	   #:coerce
 	   )
   ;; If any of these exported symbols are updated, update the
-  ;; shadowing-import-from list for BIGFLOAT-USER too!
+  ;; shadowing-import-from list for BIGFLOAT too!
   
   ;; Export types
   (:export #:bigfloat
