@@ -187,6 +187,7 @@ and develop DOE Macsyma, now called Maxima.
 * Package ezunits::                Dimensional quantities.
 * Package f90::                    Maxima to fortran translator.
 * Package finance::                Financial.
+* Package format::                 Format formula output.
 * Package fractals::               Fractals.
 * Package gentran::                Generator of foreign computer-language code. 
 * Package ggf::                    Generating function of sequences.
@@ -518,6 +519,10 @@ Package f90
 Package finance
 * Introduction to finance::
 * Functions and Variables for finance::
+
+Package format
+* Introduction to format::
+* Functions and Variables for format::
 
 Package fractals
 * Introduction to fractals::
@@ -926,11 +931,15 @@ Understanding maxima's output
 @chapter Package f90
 @include f90.texi
 
-@node Package finance, Package fractals, Package f90, Top
+@node Package finance, Package format, Package f90, Top
 @chapter Package finance
 @include finance.texi
 
-@node Package fractals, Package gentran, Package finance, Top
+@node Package format, Package fractals, Package finance, Top
+@chapter Package format
+@include format.texi
+
+@node Package fractals, Package gentran, Package format, Top
 @chapter Package fractals
 @include fractals.texi
 
