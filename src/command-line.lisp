@@ -39,36 +39,28 @@
 	    (t (format nil "~a ~a" name arg)))
       name))
 
-#-gcl
+(defvar *wrap-help-string* t
+  "Wrap the help string when non-NIL")
+
 (defun print-help-string (help-string)
   "Print the help string neatly by breaking long lines as needed.
   This assumes that the HELP-STRING doesn't have any kind of manually
   inserted formatting."
   ;; Break the string into a list of words, where any number of
   ;; whitespace characters separates the words.
-  (let ((words (pregexp::pregexp-split "\\s+" help-string)))
-    ;; Print the list of words individually with a single space after,
-    ;; and inserting a newline as needed.  Each line is prefixed by 8
-    ;; spaces.  This bit of code is a slightly modified pprint-vector
-    ;; example from
-    ;; http://www.lispworks.com/documentation/HyperSpec/Body/22_bb.htm.
-    (let ((*print-right-margin* 80))
-      (pprint-logical-block (nil nil :prefix "        ")
-	(let ((end (length words))
-	      (k 0))
-	  (when (plusp end)
-	    (loop (pprint-pop)
-		  (princ (elt words k))
-		  (if (= (incf k) end) (return nil))
-		  (write-char #\space)
-		  (pprint-newline :fill))))))))
-
-;; Gcl doesn't have pprint-logical-block and friends and I (rtoy) am
-;; not going to try to implement it.  Just print the whole string out
-;; as we used to do before.
-#+gcl
-(defun print-help-string (help-string)
-  (format t "        ~a" help-string))
+  (cond
+    (*wrap-help-string*
+     ;; Break the help string into a list of words and print the list
+     ;; of words individually with a single space after, and inserting
+     ;; a newline as needed.
+     (let ((words (pregexp::pregexp-split "\\s+" help-string)))
+       ;; This format string is a modified version of the example in
+       ;; https://www.lispworks.com/documentation/HyperSpec/Body/22_cfb.htm.
+       ;; Each line is prefixed by 8 spaces and we wrap the line at 80
+       ;; columns.
+       (format t "        ~{~<~%        ~1,80:; ~A~>~^~}" words)))
+    (t
+     (format t "        ~a" help-string))))
 
 (defun list-cl-options (cl-option-list)
   (format t "options:~%")
