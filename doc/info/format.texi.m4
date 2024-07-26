@@ -134,147 +134,106 @@ be awkward. See the documentation of @code{coerce_bag} for a description
 of the coercions used. Targeting templates are basically shorthand
 equivalents of structuring templates using subtemplates.
 
-@deffn {keyword, algebraic} %poly (@var{x})
-Polynomial in @var{x}. Abbrev: @code{%p}
-@end deffn
+@noindent
+@multitable @columnfractions .3 .4 .4
+@strong{Class: @emph{Algebraic}}
+@headitem Template(w/abbrev.) @tab Coersion to @tab Pieces and Ordering
+@item @code{%poly(@var{x}@sub{1},...), %p} @tab polynomial in @var{x@sub{i}} @tab coefficients (ascending exps.)
+@item @code{%series(@emph{eps},@emph{n}), %s} @tab series in @emph{eps} through order @emph{n} @tab coefficients (ascending exps.)
+@item @code{%Taylor(@emph{eps},@emph{n})} @tab Taylor in @emph{eps} through order @emph{n} @tab coefficients (ascending exps.)
+@item @code{%monicpoly(@var{x@sub{1}},...),%mp} @tab monic polynomial in @var{x@sub{i}} @tab leading coef then coefs
+@item @code{%trig(@var{x@sub{1}},...), %t} @tab trigonometric sum in @var{x@sub{i}} @tab @code{sin} coefs (ascending), then @code{cos}
+@item @code{%coeff(@var{v},@var{n})} @tab polynomial in @var{v} @tab coefficient of @var{v@sup{n}} and remainder
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .4 .4
+@strong{Class: @emph{Sums}}
+@headitem Template(w/abbrev.) @tab Coersion to @tab Pieces and Ordering
+@item @code{%sum} @tab @emph{passive} @tab terms (@code{inpart} order)
+@item @code{%partfrac(@var{x}), %pf} @tab partial fraction decomp in @var{x} @tab terms (@code{inpart} order)
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .4 .4
+@strong{Class: @emph{Products}}
+@headitem Template(w/abbrev.) @tab Coersion to @tab Pieces and Ordering
+@item @code{%product, %prod} @tab @emph{passive} @tab factors (@code{inpart} order)
+@item @code{%factor, %f} @tab factored form @tab factors (@code{inpart} order)
+@item @code{%factor(@emph{minpoly}), %f} @tab factored with element adjoined @tab factors (@code{inpart} order)
+@item @code{%sqfr, %sf} @tab square-free factored form @tab factors (@code{inpart} order)
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .4 .4
+@strong{Class: @emph{Fractions}}
+@headitem Template(w/abbrev.) @tab Coersion to @tab Pieces and Ordering
+@item @code{%frac} @tab @emph{passive} @tab numerator and denominator
+@item @code{%ratsimp, %r} @tab rationally simplified @tab numerator and denominator
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .4 .4
+@strong{Class: @emph{Complex}}
+@headitem Template(w/abbrev.) @tab Coersion to @tab Pieces and Ordering
+@item @code{%rectform, %g} @tab gaussian form @tab real and imaginary parts
+@item @code{%polarform} @tab polar form @tab magnitude and phase
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .4 .4
+@strong{Class: @emph{Bags}}
+@headitem Template(w/abbrev.) @tab Coersion to @tab Pieces and Ordering
+@item @code{%equation, %eq} @tab equation @tab l.h.s. and r.h.s.
+@item @code{%relation(@var{r}), %rel} @tab relation; @var{r} in @code{(=,>,>=,<,<=,!=)}  @tab l.h.s. and r.h.s.
+@item @code{%list} @tab list @tab elements
+@item @code{%matrix} @tab matrix @tab rows (use @code{%list} for elements)
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .4 .4
+@strong{Class: @emph{General}}
+@headitem Template(w/abbrev.) @tab Coersion to @tab Pieces and Ordering
+@item @code{%expression, %expr} @tab @emph{passive} @tab the operands (@code{inpart} order)
+@item @code{%preformat(@var{T@sub{1}},...)} @tab format accord. to chain @var{T@sub{i}} @tab the result, not the parts
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .7
+@strong{Class: @emph{Targeting}}
+@headitem Template(w/abbrev.) @tab Function
+@item @code{%arg(n)} @tab formats the @code{n}-th argument
+@item @code{%lhs(@var{r})} @tab formats the l.h.s. of an eqn. or relation (default '=')
+@item @code{%rhs(@var{r})} @tab formats the l.h.s. of an eqn.
+@item @code{%element(i,...), %el} @tab formats an element of a matrix
+@item @code{%num, %denom} @tab formats the numerator or denominator of a fraction
+@item @code{%match(@var{P})} @tab formats all subexpressions for which @var{P(@emph{expr})} returns true
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .7
+@strong{Class: @emph{Control}}
+@headitem Template(w/abbrev.) @tab Function
+@item @code{%if(@var{P@sub{1}},...)[@var{T@sub{1}},...,@var{T@sub{n+1}}]} @tab Find first @var{P@sub{i}(@emph{expr})} @arrow{} @code{true}, then format @emph{expr} using @var{T@sub{i}}, else @var{T@sub{n+1}}
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .7
+@strong{Class: @emph{Subtemplate Aids}}
+@headitem Template(w/abbrev.) @tab Function
+@item @code{%noop} @tab does nothing; used to fill a subtemplate slot
+@item @code{[@var{T@sub{1}},@var{T@sub{2}},...]} @tab creates a template chain where an individual template was expected
+@item @code{%ditto(@var{T})} @tab repeats the template so that it applies to following pices
+@end multitable
+@*
+@noindent
+@multitable @columnfractions .3 .7
+@strong{Class: @emph{Convenience}}
+@headitem Template(w/abbrev.) @tab Function
+@item @code{%subst(@emph{eqns},...)} @tab substitutes @emph{eqns} into expression; result is formatted at next layer
+@item @code{%ratsubst(@emph{eqns},...)} @tab @code{lratsubst}'s @emph{eqns} into expression; result is formatted at next layer
+@end multitable
 
-@deffn {keyword, algebraic} %series (@var{e},@var{n})
-Series in @var{e} through order @var{n}. Abbrev: @code{%s}
-@end deffn
-
-@deffn {keyword, algebraic} %Taylor (@var{e},@var{n})
-Taylor in @var{e} through order @var{n}.
-@end deffn
-
-@deffn {keyword, algebraic} %monicpoly (@var{x1},...)
-Monic polynomial in @var{xi}. Abbrev: @code{%mp}
-@end deffn
-
-@deffn {keyword, algebraic} %trig (@var{x1},...)
-Trigonometric sum in @var{xi}. @code{sin} coefficients first, then
-@code{cos}. Abbrev: @code{%t}
-@end deffn
-
-@deffn {keyword, algebraic} %coeff (@var{v},@var{n})
-Coefficient of @var{v@sup{n}} and remainder.
-@end deffn
-
-@deffn {keyword, sums} %sum
-Passive.
-@end deffn
-
-@deffn {keyword, sums} %partfrac (@var{x})
-Partial fraction decomposition in @var{x}. Abbrev: @code{%pf}
-@end deffn
-
-@deffn {keyword, products} %product
-Passive. Abbrev @code{%prod}
-@end deffn
-
-@deffn {keyword, products} %factor
-Factored form. Abbrev @code{%f}
-@end deffn
-
-@deffn {keyword, products} %factor (minpoly)
-Factored with element adjoined. Abbrev @code{%f}
-@end deffn
-
-@deffn {keyword, products} %sqfr
-Square-free factored form. Abbrev @code{%sf}
-@end deffn
-
-@deffn {keyword, fractions} %frac
-Passive.
-@end deffn
-
-@deffn {keyword, fractions} %ratsimp
-Rationally simplified. Abbrev: @code{%r}
-@end deffn
-
-@deffn {keyword, complex} %rectform
-Gaussian form (real and imaginary parts). Abbrev: @code{%g}
-@end deffn
-
-@deffn {keyword, complex} %polarform
-Polar form (magnitude and phase).
-@end deffn
-
-@deffn {keyword, bags} %equation
-Equation (lhs and rhs). Abbrev: @code{%eq}
-@end deffn
-
-@deffn {keyword, bags} %relation (@var{r})
-Relation; @var{r} is one of @code{=,>,>=,<,<=,!=}. Abbrev: @code{%rel}
-@end deffn
-
-@deffn {keyword, bags} %list
-List of elements.
-@end deffn
-
-@deffn {keyword, bags} %matrix
-Matrix rows. Use @code{%list} to target elements.
-@end deffn
-
-@deffn {keyword, general} %expression
-Passive. Orders the operands. Abbrev: @code{%expr}
-@end deffn
-
-@deffn {keyword, general} %performat (@var{T@sub{1}},...)
-Format according to chain @var{T@sub{i}}. Orders the result, not the parts.
-@end deffn
-
-@deffn {keyword, targeting} %arg (@var{n})
-Formats the @var{n}-th argument.
-@end deffn
-
-@deffn {keyword, targeting} %lhs (@var{eqn})
-Formats the left hand side of an equation.
-@end deffn
-
-@deffn {keyword, targeting} %rhs (@var{eqn})
-Formats the right hand side of an equation.
-@end deffn
-
-@deffn {keyword, targeting} %element (@var{i},...)
-Formats an element of a matrix. Abbrev: @code{%el}
-@end deffn
-
-@deffn {keyword, targeting} %num
-Formats the numerator of a fraction.
-@end deffn
-
-@deffn {keyword, targeting} %denom
-Formats the denominator of a fraction.
-@end deffn
-
-@deffn {keyword, targeting} %match (@var{P})
-Formats all subexpressions for which @var{P(expr)} returns @code{true}.
-@end deffn
-
-@deffn {keyword, control} %if (@var{P@sub{1}},...)[@var{T@sub{1}},...,@var{T@sub{n+1}}]
-Find first @var{P@sub{i}(expr)} that evaluates to @code{true}, then format @var{expr}
-using @var{T@sub{i}}, else @var{T@sub{n+1}}.
-@end deffn
-
-@deffn {keyword, subtemplate aids} %noop
-Does nothing. Used to fill a subtemplate slot.
-@end deffn
-
-@deffn {keyword, subtemplate aids} [@var{T@sub{1}},@var{T@sub{2}},...]
-Creates a template chain where an individual template was expected.
-@end deffn
-
-@deffn {keyword, subtemplate aids} %ditto (T)
-Repeats the template so that it applies to following pieces.
-@end deffn
-
-@deffn {keyword, convenience} %subst (@var{eqns},...)
-Substitutes @code{eqns} into expression and the result is formatted at the next layer.
-@end deffn
-
-@deffn {keyword, convenience} %ratsubst (@var{eqns},...)
-@code{lratsubst}'s @code{eqns} into expression and the result is formatted at the next layer.
-@end deffn
 
 Example with simplification on subexpression:
 @c ===beg===
