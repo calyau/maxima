@@ -390,205 +390,209 @@
 	  (format t "version ~a, lisp ~a~%" (unix-like-basename version) lisp-string))))
     (bye)))
 
+(defvar *maxima-options* nil
+  "All of the recognized command line options for maxima")
+
 (defun process-maxima-args (input-stream batch-flag)
   ;;    (format t "processing maxima args = ")
   ;;    (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
   ;;    (terpri)
   ;;    (finish-output)
-  (let ((maxima-options nil))
-    ;; Note: The current option parsing code expects every short
-    ;; option to have an equivalent long option.  No check is made for
-    ;; this, so please make sure this holds.  Or change the code in
-    ;; process-args in command-line.lisp.
-    ;;
-    ;; The help strings should not have any special manual formatting
-    ;; but extraneous white space is ok.  They are automatically
-    ;; printed with extraneous whitespace (including newlines) removed
-    ;; and lines wrapped neatly.
-    (setf maxima-options
-	  (list
-	   (make-cl-option :names '("-b" "--batch")
-			   :argument "<file>"
-			   :action #'(lambda (file)
-				       (setf input-stream
-					     (make-string-input-stream
-					      (format nil "batch(\"~a\");"
-						      file)))
-				       (setf batch-flag :batch))
-			   :help-string
-			   "Process maxima file <file> in batch mode.")
-	   (make-cl-option :names '("--batch-lisp")
-			   :argument "<file>"
-			   :action #'(lambda (file)
-				       (setf input-stream
-					     (make-string-input-stream
-					      #-sbcl (format nil ":lisp (load \"~a\");" file)
-					      #+sbcl (format nil ":lisp (with-compilation-unit nil (load \"~a\"));" file)))
-				       (setf batch-flag :batch))
-			   :help-string
-			   "Process lisp file <file> in batch mode.")
-	   (make-cl-option :names '("--batch-string")
-			   :argument "<string>"
-			   :action #'(lambda (string)
-				       (setf input-stream
-					     (make-string-input-stream string))
-				       (setf batch-flag :batch))
-			   :help-string
-			   "Process maxima command(s) <string> in batch mode.")
-	   (make-cl-option :names '("-d" "--directories")
-			   :action #'(lambda () (print-directories) ($quit))
-			   :help-string
-			   "Display maxima internal directory information.")
-	   (make-cl-option :names '("--disable-readline")
-			   :action #'(lambda ()
-				       #+gcl
-				       (if (find :readline *features*)
-					   (si::readline-off)))
-			   :help-string "Disable readline support.")
-	   (make-cl-option :names '("-g" "--enable-lisp-debugger")
-			   :action #'(lambda ()
-				       (setf *debugger-hook* nil))
-			   :help-string
-			   "Enable underlying lisp debugger.")
-	   (make-cl-option :names '("-h" "--help")
-			   :action #'(lambda ()
-				       (format t "usage: maxima [options]~%")
-				       (list-cl-options maxima-options)
-				       (bye))
-			   :help-string "Display this usage message.")
-	   (make-cl-option :names '("--userdir")
-			   :argument "<directory>"
-			   :action nil
-			   :help-string "Use  <directory> for user directory (default is %USERPROFILE%/maxima for Windows, and $HOME/.maxima for other operating systems).")
- 	   (make-cl-option :names '("--init")
-			   :argument "<file>"
-			   :action
-			   #'(lambda (file)
-			       (flet
-				   ((get-base-name (f)
-				      ;; Strip off everything before
-				      ;; the last "/" (or "\").  Then
-				      ;; strip off everything after
-				      ;; the last dot.
-				      (let* ((dot (position #\. f :from-end t))
-					     (dir (position-if
-						   #'(lambda (c)
-						       (member c '(#\/ #\\)))
-						   f
-						   :from-end t))
-					     (base (subseq f (if dir (1+ dir) 0) dot)))
-					(when (or dot dir)
-					  (mtell (intl:gettext "Warning: Using basename ~S for init files instead of ~S" )
-						 base f))
-					base)))
-				 (let ((base-name (get-base-name file)))
-				   (setf *maxima-initmac*
-					 (concatenate 'string base-name ".mac"))
-				   (setf *maxima-initlisp*
-					 (concatenate 'string base-name ".lisp")))))
-			   :help-string (format nil "Set the base name of the Maxima & Lisp initialization files (default is ~s.)  The last extension and any directory parts are removed to form the base name.  The resulting files, <base>.mac and <base>.lisp are only searched for in userdir (see --userdir option).  This may be specified for than once, but only the last is used."
-						(subseq *maxima-initmac* 0
-							(- (length *maxima-initmac*) 4))))
- 	   #+nil
-	   (make-cl-option :names '("--init-mac")
-			   :argument "<file>"
-			   :action #'(lambda (file)
-				       (setf *maxima-initmac* file))
-			   :help-string (format nil "Set the name of the Maxima initialization file (default is ~s)"
-						*default-maxima-initmac*))
- 	   #+nil
-	   (make-cl-option :names '("--init-lisp")
-			   :argument "<file>"
-			   :action #'(lambda (file)
-				       (setf *maxima-initlisp* file))
-			   :help-string (format nil "Set the name of the Lisp initialization file (default is ~s)" *default-maxima-initlisp*))
-	   (make-cl-option :names '("-l" "--lisp")
-			   :argument "<lisp>"
-			   :action nil
-			   :help-string "Use lisp implementation <lisp>.")
-	   (make-cl-option :names '("--list-avail")
-			   :action 'list-avail-action
-			   :help-string
-			   "List the installed version/lisp combinations.")
-	   ;; --preload-lisp is left for backward compatibility.  We
-	   ;; no longer distinguish between mac and lisp files.  Any
-	   ;; file type that $LOAD supports is acceptable.
-	   ;; "--init-mac" and "--init-lisp" are now also (deprecated)
-	   ;; aliases for --preload.
-	   (make-cl-option :names '("-p" "--preload" "--preload-lisp" "--init-mac" "--init-lisp")
-			   :argument "<file>"
-			   :action #'(lambda (file)
-				       ;; $loadprint T so we can see the file being loaded.
-				       (let (($loadprint t))
+
+  ;; Note: The current option parsing code expects every short
+  ;; option to have an equivalent long option.  No check is made for
+  ;; this, so please make sure this holds.  Or change the code in
+  ;; process-args in command-line.lisp.
+  ;;
+  ;; The help strings should not have any special manual formatting
+  ;; but extraneous white space is ok.  They are automatically
+  ;; printed with extraneous whitespace (including newlines) removed
+  ;; and lines wrapped neatly.
+  (setf *maxima-options*
+	(list
+	 (make-cl-option :names '("-b" "--batch")
+			 :argument "<file>"
+			 :action #'(lambda (file)
+				     (setf input-stream
+					   (make-string-input-stream
+					    (format nil "batch(\"~a\");"
+						    file)))
+				     (setf batch-flag :batch))
+			 :help-string
+			 "Process maxima file <file> in batch mode.")
+	 (make-cl-option :names '("--batch-lisp")
+			 :argument "<file>"
+			 :action #'(lambda (file)
+				     (setf input-stream
+					   (make-string-input-stream
+					    #-sbcl (format nil ":lisp (load \"~a\");" file)
+					    #+sbcl (format nil ":lisp (with-compilation-unit nil (load \"~a\"));" file)))
+				     (setf batch-flag :batch))
+			 :help-string
+			 "Process lisp file <file> in batch mode.")
+	 (make-cl-option :names '("--batch-string")
+			 :argument "<string>"
+			 :action #'(lambda (string)
+				     (setf input-stream
+					   (make-string-input-stream string))
+				     (setf batch-flag :batch))
+			 :help-string
+			 "Process maxima command(s) <string> in batch mode.")
+	 (make-cl-option :names '("-d" "--directories")
+			 :action #'(lambda () (print-directories) ($quit))
+			 :help-string
+			 "Display maxima internal directory information.")
+	 (make-cl-option :names '("--disable-readline")
+			 :action #'(lambda ()
+				     #+gcl
+				     (if (find :readline *features*)
+					 (si::readline-off)))
+			 :help-string "Disable readline support.")
+	 (make-cl-option :names '("-g" "--enable-lisp-debugger")
+			 :action #'(lambda ()
+				     (setf *debugger-hook* nil))
+			 :help-string
+			 "Enable underlying lisp debugger.")
+	 (make-cl-option :names '("-h" "--help")
+			 :action #'(lambda ()
+				     (format t "usage: maxima [options]~%")
+				     (list-cl-options *maxima-options*)
+				     (bye))
+			 :help-string "Display this usage message.")
+	 (make-cl-option :names '("--userdir")
+			 :argument "<directory>"
+			 :action nil
+			 :help-string "Use  <directory> for user directory (default is %USERPROFILE%/maxima for Windows, and $HOME/.maxima for other operating systems).")
+ 	 (make-cl-option :names '("--init")
+			 :argument "<file>"
+			 :action
+			 #'(lambda (file)
+			     (flet
+				 ((get-base-name (f)
+				    ;; Strip off everything before
+				    ;; the last "/" (or "\").  Then
+				    ;; strip off everything after
+				    ;; the last dot.
+				    (let* ((dot (position #\. f :from-end t))
+					   (dir (position-if
+						 #'(lambda (c)
+						     (member c '(#\/ #\\)))
+						 f
+						 :from-end t))
+					   (base (subseq f (if dir (1+ dir) 0) dot)))
+				      (when (or dot dir)
+					(mtell (intl:gettext "Warning: Using basename ~S for init files instead of ~S" )
+					       base f))
+				      base)))
+			       (let ((base-name (get-base-name file)))
+				 (setf *maxima-initmac*
+				       (concatenate 'string base-name ".mac"))
+				 (setf *maxima-initlisp*
+				       (concatenate 'string base-name ".lisp")))))
+			 :help-string (format nil "Set the base name of the Maxima & Lisp initialization files (default is ~s.)  The last extension and any directory parts are removed to form the base name.  The resulting files, <base>.mac and <base>.lisp are only searched for in userdir (see --userdir option).  This may be specified for than once, but only the last is used."
+					      (subseq *maxima-initmac* 0
+						      (- (length *maxima-initmac*) 4))))
+ 	 #+nil
+	 (make-cl-option :names '("--init-mac")
+			 :argument "<file>"
+			 :action #'(lambda (file)
+				     (setf *maxima-initmac* file))
+			 :help-string (format nil "Set the name of the Maxima initialization file (default is ~s)"
+					      *default-maxima-initmac*))
+ 	 #+nil
+	 (make-cl-option :names '("--init-lisp")
+			 :argument "<file>"
+			 :action #'(lambda (file)
+				     (setf *maxima-initlisp* file))
+			 :help-string (format nil "Set the name of the Lisp initialization file (default is ~s)" *default-maxima-initlisp*))
+	 (make-cl-option :names '("-l" "--lisp")
+			 :argument "<lisp>"
+			 :action nil
+			 :help-string "Use lisp implementation <lisp>.")
+	 (make-cl-option :names '("--list-avail")
+			 :action 'list-avail-action
+			 :help-string
+			 "List the installed version/lisp combinations.")
+	 ;; --preload-lisp is left for backward compatibility.  We
+	 ;; no longer distinguish between mac and lisp files.  Any
+	 ;; file type that $LOAD supports is acceptable.
+	 ;; "--init-mac" and "--init-lisp" are now also (deprecated)
+	 ;; aliases for --preload.
+	 (make-cl-option :names '("-p" "--preload" "--preload-lisp" "--init-mac" "--init-lisp")
+			 :argument "<file>"
+			 :action #'(lambda (file)
+				     ;; $loadprint T so we can see the file being loaded.
+				     (let (($loadprint t))
 				       ($load file)))
-			   :help-string
-        "Preload <file>, which may be any file time accepted by
+			 :help-string
+                         "Preload <file>, which may be any file time accepted by
         Maxima's LOAD function.  The <file> is loaded before any other
         system initialization is done.  This will be searched for in
         the locations given by file_search_maxima and
         file_search_lisp.  This can be specified multiple times to
         load multiple files. The equivalent options --preload-lisp,
         --init-mac, and --init-lisp are deprecated.")
-	   (make-cl-option :names '("-q" "--quiet")
-			   :action #'(lambda ()
-				       (declare (special *maxima-quiet*))
-				       (setq *maxima-quiet* t))
-			   :help-string "Suppress Maxima start-up message.")
-	   (make-cl-option :names '("-r" "--run-string")
-			   :argument "<string>"
-			   :action #'(lambda (string)
-				       (declare (special *maxima-run-string*))
-				       (setq *maxima-run-string* t)
-				       (setf input-stream
-					     (make-string-input-stream string))
-				       (setf batch-flag nil))
-			   :help-string
-			   "Process maxima command(s) <string> in interactive mode.")
-	   (make-cl-option :names '("-s" "--server")
-			   :argument "<port>"
-			   :action #'(lambda (port-string)
-				       (start-client (parse-integer
-						      port-string))
-                                       (setf input-stream *standard-input*))
-			   :help-string "Connect Maxima to server on <port>.")
-	   (make-cl-option :names '("-u" "--use-version")
-			   :argument "<version>"
-			   :action nil
-			   :help-string "Use maxima version <version>.")
-	   (make-cl-option :names '("-v" "--verbose")
-			   :action nil
-			   :help-string
-			   "Display lisp invocation in maxima wrapper script.")
-	   (make-cl-option :names '("--version")
-			   :action #'(lambda ()
-				       (format t "Maxima ~a~%"
-					       *autoconf-version*)
-				       ($quit))
-			   :help-string
-			   "Display the default installed version.")
-	   (make-cl-option :names '("--very-quiet")
-			   :action #'(lambda ()
-				       (declare (special *maxima-quiet*))
-				       (setq *maxima-quiet* t *display-labels-p* nil))
-			   :help-string "Suppress expression labels and Maxima start-up message.")
-	   (make-cl-option :names '("-X" "--lisp-options")
-			   :argument "<Lisp options>"
-			   :action #'(lambda (&rest opts)
-				       (declare (special *maxima-quiet*))
-				       (unless *maxima-quiet*
-					 (format t "Lisp options: ~A" opts)))
-			   :help-string "Options to be given to the underlying Lisp")
-	   (make-cl-option :names '("--no-init" "--norc")
-			   :action #'(lambda ()
-				       (setf *maxima-load-init-files* nil))
-			   :help-string "Do not load the init file(s) on startup")
-	   (make-cl-option :names '("--no-verify-html-index")
-			   :action #'(lambda ()
-				       (setf *verify-html-index* nil))
-			   :help-string "Do not verify on startup that the set of html topics is consistent with text topics.")
-			   ))
-    (process-args (get-application-args) maxima-options))
+	 (make-cl-option :names '("-q" "--quiet")
+			 :action #'(lambda ()
+				     (declare (special *maxima-quiet*))
+				     (setq *maxima-quiet* t))
+			 :help-string "Suppress Maxima start-up message.")
+	 (make-cl-option :names '("-r" "--run-string")
+			 :argument "<string>"
+			 :action #'(lambda (string)
+				     (declare (special *maxima-run-string*))
+				     (setq *maxima-run-string* t)
+				     (setf input-stream
+					   (make-string-input-stream string))
+				     (setf batch-flag nil))
+			 :help-string
+			 "Process maxima command(s) <string> in interactive mode.")
+	 (make-cl-option :names '("-s" "--server")
+			 :argument "<port>"
+			 :action #'(lambda (port-string)
+				     (start-client (parse-integer
+						    port-string))
+                                     (setf input-stream *standard-input*))
+			 :help-string "Connect Maxima to server on <port>.")
+	 (make-cl-option :names '("-u" "--use-version")
+			 :argument "<version>"
+			 :action nil
+			 :help-string "Use maxima version <version>.")
+	 (make-cl-option :names '("-v" "--verbose")
+			 :action nil
+			 :help-string
+			 "Display lisp invocation in maxima wrapper script.")
+	 (make-cl-option :names '("--version")
+			 :action #'(lambda ()
+				     (format t "Maxima ~a~%"
+					     *autoconf-version*)
+				     ($quit))
+			 :help-string
+			 "Display the default installed version.")
+	 (make-cl-option :names '("--very-quiet")
+			 :action #'(lambda ()
+				     (declare (special *maxima-quiet*))
+				     (setq *maxima-quiet* t *display-labels-p* nil))
+			 :help-string "Suppress expression labels and Maxima start-up message.")
+	 (make-cl-option :names '("-X" "--lisp-options")
+			 :argument "<Lisp options>"
+			 :action #'(lambda (&rest opts)
+				     (declare (special *maxima-quiet*))
+				     (unless *maxima-quiet*
+				       (format t "Lisp options: ~A" opts)))
+			 :help-string "Options to be given to the underlying Lisp")
+	 (make-cl-option :names '("--no-init" "--norc")
+			 :action #'(lambda ()
+				     (setf *maxima-load-init-files* nil))
+			 :help-string "Do not load the init file(s) on startup")
+	 (make-cl-option :names '("--no-verify-html-index")
+			 :action #'(lambda ()
+				     (setf *verify-html-index* nil))
+			 :help-string "Do not verify on startup that the set of html topics is consistent with text topics.")
+	 ))
+  (process-args (get-application-args) *maxima-options*)
   (values input-stream batch-flag))
+
 
 ;; Delete all files *temp-files-list* contains.
 (defun delete-temp-files ()

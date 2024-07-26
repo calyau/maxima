@@ -70,19 +70,29 @@
 (defun print-help-string (help-string)
   (format t "        ~a" help-string))
 
-(defun list-cl-options (cl-option-list)
-  (format t "options:~%")
+(defun list-cl-options (cl-option-list &key texi-table-form)
+  (if texi-table-form
+      (format t "@need 100
+@table @code
+")
+      (format t "options:~%"))
   (dolist (opt cl-option-list)
     (let ((help-string (cl-option-help-string opt))
 	  (names (cl-option-names opt))
 	  (arg (cl-option-argument opt)))
+      (when texi-table-form
+        (format t "@need 150~%@item "))
       (format t "    ~a" (cl-option-description (first names) arg))
       (dolist (name (rest names))
 	(format t ", ~a" (cl-option-description name arg)))
       (terpri)
       (when help-string
 	(print-help-string help-string))
+      (when texi-table-form
+        (format t "~2%"))
       (terpri)))
+  (when texi-table-form
+    (format t "@end table~%"))
   (finish-output))
 
 (defun process-args (args cl-option-list)
