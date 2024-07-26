@@ -11,89 +11,124 @@ The following command line options are available for Maxima:
 @need 100
 @table @code
 @need 150
-@item -f file, --batch=@var{file}
-              Process file in noninteractive mode.
+@item     -b <file>, --batch=<file>
+        Process maxima file <file> in batch mode.
+
 
 @need 150
-@item  --batch-lisp=@var{file}
-              Process Lisp file file in noninteractive mode.
+@item     --batch-lisp=<file>
+        Process lisp file <file> in batch mode.
+
 
 @need 150
-@item --batch-string=@var{string}
-              Process string in noninteractive mode.
+@item     --batch-string=<string>
+        Process maxima command(s) <string> in batch mode.
+
 
 @need 150
-@item -d, --directories
-              Display Maxima directory information.
+@item     -d, --directories
+        Display maxima internal directory information.
+
 
 @need 150
-    @item --disable-readline
-              Disable readline support.
-@need 150
-    @item -g, --enable-lisp-debugger
-              Enable Lisp debugger.
-@need 150
-    @item -h, --help
-              Display a brief usage summary.
-@need 150
-    @item --init=string
-              Load the Maxima and Lisp initialization files @code{string.mac} and @code{string.lisp} at startup.
-@need 150
-    @item --init-mac=@var{file}
-              Load the Maxima initialization file file at startup.
+@item     --disable-readline
+        Disable readline support.
+
 
 @need 150
-    @item --init-lisp=@var{file}
-              Load the Lisp initialization file file at startup.
+@item     -g, --enable-lisp-debugger
+        Enable underlying lisp debugger.
 
- @need 150
-    @item -l  @var{lisp}, --lisp=@var{lisp}
-              Use Lisp implementation lisp. Use @code{--list-avail} to see the list of possible values.
-
- @need 150
-    @item --list-avail
-              List the available Lisp and Maxima versions.
-@need 150
-    @item -p  @var{lisp_file}, --preload-lisp=@var{lisp_file}
-              Preload @code{lisp_file}.
-
- @need 150
-    @item -q, --quiet
-              Suppress Maxima start-up message.
 
 @need 150
-    @item -r  @var{string}, --run-string=@var{string}
-              Process string in interactive mode.
+@item     -h, --help
+        Display this usage message.
 
- @need 150
-    @item -s  @var{port}, --server=@var{port}
-              Connect Maxima to server on port.  Note that this does not create a Maxima server; Maxima is the client.
 
 @need 150
-    @item -u  @var{version}, --use-version=@var{version}
-              Launch Maxima version version. Use @code{--list-avail} to see the list of possible values.
+@item     --userdir=<directory>
+        Use <directory> for user directory (default is %USERPROFILE%/maxima for
+        Windows, and $HOME/.maxima for other operating systems).
+
 
 @need 150
-    @item --userdir=@var{directory}
-              Use directory for user directory (default is @code{%USERPROFILE%/maxima} for Windows, @code{$HOME/.maxima} for others)
+@item     --init=<file>
+        Set the base name of the Maxima & Lisp initialization files (default is
+        "maxima-init".) The last extension and any directory parts are removed
+        to form the base name. The resulting files, <base>.mac and <base>.lisp
+        are only searched for in userdir (see --userdir option). This may be
+        specified for than once, but only the last is used.
+
 
 @need 150
-    @item -v, --verbose
-              Print extra information from the Maxima wrapper script.
-@need 150
-    @item --version
-              Print the (default) installed version.
+@item     -l <lisp>, --lisp=<lisp>
+        Use lisp implementation <lisp>.
+
 
 @need 150
-    @item --very-quiet
-              Suppress expression labels and the Maxima start-up message.
+@item     --list-avail
+        List the installed version/lisp combinations.
+
 
 @need 150
-    @item -X  @var{Lisp options}, --lisp-options=@var{Lisp options}
-              Options to be given to the underlying Lisp.
+@item     -p <file>, --preload=<file>, --preload-lisp=<file>, --init-mac=<file>, --init-lisp=<file>
+        Preload <file>, which may be any file time accepted by Maxima's LOAD
+        function. The <file> is loaded before any other system initialization
+        is done. This will be searched for in the locations given by
+        file_search_maxima and file_search_lisp. This can be specified multiple
+        times to load multiple files. The equivalent options --preload-lisp,
+        --init-mac, and --init-lisp are deprecated.
+
 
 @need 150
-    @item --no-init, --norc
-              Do not load the init file(s) on startup.
+@item     -q, --quiet
+        Suppress Maxima start-up message.
+
+
+@need 150
+@item     -r <string>, --run-string=<string>
+        Process maxima command(s) <string> in interactive mode.
+
+
+@need 150
+@item     -s <port>, --server=<port>
+        Connect Maxima to server on <port>.
+
+
+@need 150
+@item     -u <version>, --use-version=<version>
+        Use maxima version <version>.
+
+
+@need 150
+@item     -v, --verbose
+        Display lisp invocation in maxima wrapper script.
+
+
+@need 150
+@item     --version
+        Display the default installed version.
+
+
+@need 150
+@item     --very-quiet
+        Suppress expression labels and Maxima start-up message.
+
+
+@need 150
+@item     -X <Lisp options>, --lisp-options=<Lisp options>
+        Options to be given to the underlying Lisp
+
+
+@need 150
+@item     --no-init, --norc
+        Do not load the init file(s) on startup
+
+
+@need 150
+@item     --no-verify-html-index
+        Do not verify on startup that the set of html topics is consistent with
+        text topics.
+
 
 @end table
