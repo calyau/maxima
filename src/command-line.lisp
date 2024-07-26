@@ -71,10 +71,11 @@
   (format t "        ~a" help-string))
 
 (defun list-cl-options (cl-option-list &key texi-table-form)
+  "Prints all the command line options for Maxima in a neat form.  If
+  :TEXI-TABLE-FORM is non-NIL, the output is suitable for adding a
+  table to commandline-options.texi."
   (if texi-table-form
-      (format t "@need 100
-@table @code
-")
+      (format t "@need 100~%@table @code~%")
       (format t "options:~%"))
   (dolist (opt cl-option-list)
     (let ((help-string (cl-option-help-string opt))

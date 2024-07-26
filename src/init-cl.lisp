@@ -390,7 +390,7 @@
 	  (format t "version ~a, lisp ~a~%" (unix-like-basename version) lisp-string))))
     (bye)))
 
-(defvar *maxima-options* nil
+(defvar *maxima-commandline-options* nil
   "All of the recognized command line options for maxima")
 
 (defun process-maxima-args (input-stream batch-flag)
@@ -408,7 +408,12 @@
   ;; but extraneous white space is ok.  They are automatically
   ;; printed with extraneous whitespace (including newlines) removed
   ;; and lines wrapped neatly.
-  (setf *maxima-options*
+  ;;
+  ;; NOTE: If you add or remove command-line options, be sure to
+  ;; update doc/info/commandline-options.texi.  Use (list-cl-options
+  ;; *maxima-commandline-options* :texi-table-form t) to get the table
+  ;; to paste into commandline-options.texi.
+  (setf *maxima-commandline-options*
 	(list
 	 (make-cl-option :names '("-b" "--batch")
 			 :argument "<file>"
@@ -456,7 +461,7 @@
 	 (make-cl-option :names '("-h" "--help")
 			 :action #'(lambda ()
 				     (format t "usage: maxima [options]~%")
-				     (list-cl-options *maxima-options*)
+				     (list-cl-options *maxima-commandline-options*)
 				     (bye))
 			 :help-string "Display this usage message.")
 	 (make-cl-option :names '("--userdir")
@@ -590,7 +595,7 @@
 				     (setf *verify-html-index* nil))
 			 :help-string "Do not verify on startup that the set of html topics is consistent with text topics.")
 	 ))
-  (process-args (get-application-args) *maxima-options*)
+  (process-args (get-application-args) *maxima-commandline-options*)
   (values input-stream batch-flag))
 
 
