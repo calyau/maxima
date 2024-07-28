@@ -896,23 +896,8 @@ if test x"${explicit_lisp}" = xfalse ; then
 		lisps_enabled="${lisps_enabled} clisp"
 	fi
 	if test x"${gcl_found}" = xtrue ; then
-	   AC_MSG_CHECKING([if gcl version >= 2.6.13])
-	   dnl	     Check gcl version
-	   GCL_VERSION=`${GCL_NAME} -eval '(princ (lisp-implementation-version))' -batch | sed 's/GCL \([[0-9.]]\+\).*/\1/'`
-	´  dnl echo GCL version = $GCL_VERSION
-	   dnl Assume GCL_VERSION looks like p.q.r where p, q, and r are
-	   dnl digits.	Then extract each set of digits to get the numbers to
-	   dnl create a version number for comparison.
-	   gcl_major=`expr $GCL_VERSION : '\([[0-9]][[0-9]]*\)'`
-	   gcl_minor=`expr $GCL_VERSION : '[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
-	   gcl_sub=`expr $GCL_VERSION : '[[0-9]][[0-9]]*\.[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
-	   gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_sub}`
-	   if test ${gcl_version} -lt 20613; then
-		   AC_MSG_RESULT([GCL autodetected, but its version ${GCL_VERSION} is too old])
-	   else
-		   gcl=true
-		   lisps_enabled="${lisps_enabled} gcl"
-	   fi
+		gcl=true
+		lisps_enabled="${lisps_enabled} gcl"
 	fi
 	if test x"${cmucl_found}" = xtrue ; then
 		cmucl=true
@@ -1034,23 +1019,22 @@ script the SCL executable is the program exec'd by that shell script.])
 fi
 
 if test x"${gcl}" = xtrue; then
-   AC_MSG_CHECKING([if gcl version >= 2.6.13])
+   AC_MSG_CHECKING([if gcl version >= 2.6.14])
    dnl Check gcl version
-   GCL_VERSION=`${GCL_NAME} -eval '(princ (lisp-implementation-version))' -batch | sed 's/GCL \([[0-9.]]\+\).*/\1/'`
-   dnl echo GCL version = $GCL_VERSION
-   dnl Assume GCL_VERSION looks like p.q.r where p, q, and r are
-   dnl digits.  Then extract each set of digits to get the numbers to
-   dnl create a version number for comparison.
-   gcl_major=`expr $GCL_VERSION : '\([[0-9]][[0-9]]*\)'`
-   gcl_minor=`expr $GCL_VERSION : '[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
-   gcl_sub=`expr $GCL_VERSION : '[[0-9]][[0-9]]*\.[[0-9]][[0-9]]*\.\([[0-9]][[0-9]]*\)'`
+   dnl Perhaps could be done better, but this is easy to see that we're
+   dnl correctly getting the version number of gcl at the expense of
+   dnl calling gcl 3 times.
+   gcl_major=`${GCL_NAME} -batch -eval '(princ system::*gcl-major-version*)'`
+   gcl_minor=`${GCL_NAME} -batch -eval '(princ system::*gcl-minor-version*)'`
+   gcl_extra=`${GCL_NAME} -batch -eval '(princ system::*gcl-extra-version*)'`
+   GCL_VERSION="${gcl_major}.${gcl_minor}.${gcl_extra}"
    dnl echo gcl major = $gcl_major
    dnl echo gcl_minor = $gcl_minor
-   dnl echo gcl_sub = $gcl_sub
+   dnl echo gcl_extra = $gcl_extra
    dnl Create a numerical version number
-   gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_sub}`
+   gcl_version=`expr ${gcl_major} \* 10000 \+ ${gcl_minor} \* 100 \+ ${gcl_extra}`
 
-   if test ${gcl_version} -lt 20613; then
+   if test ${gcl_version} -lt 20614; then
        AC_MSG_ERROR([GCL version ${GCL_VERSION} too old])
    else
        AC_MSG_RESULT([${GCL_VERSION}])
