@@ -46,8 +46,6 @@
   "Print the help string neatly by breaking long lines as needed.
   This assumes that the HELP-STRING doesn't have any kind of manually
   inserted formatting."
-  ;; Break the string into a list of words, where any number of
-  ;; whitespace characters separates the words.
   (cond
     (*wrap-help-string*
      ;; Break the help string into a list of words and print the list
