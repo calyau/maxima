@@ -93,7 +93,7 @@ interfaces/emacs/ directory, the Emacs imaxima mode available from
 GCL <https://www.gnu.org/software/gcl/>
 ---------------------------------------
 
-GCL >= 2.6.13 is required to build Maxima.
+GCL >= 2.6.14 is required to build Maxima.
 
 GCL can be built with readline support, so Maxima has advanced
 command-line editing facilities when built with it.
