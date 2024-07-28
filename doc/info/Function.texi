@@ -642,7 +642,7 @@ Examples
 
 @c -----------------------------------------------------------------------------
 @anchor{apply}
-@deffn {Function} apply (@var{F}, [@var{x_1}, @dots{}, @var{x_n}])
+@deffn {Function} apply (@var{F}, [@var{arg_1}, @dots{}, @var{arg_n}])
 
 Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ...,
 @var{arg_n})}.
@@ -651,18 +651,17 @@ Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ...,
 function; when @var{F} is the name of a memoizing function, @code{apply} evaluates
 @code{@var{F}(...)} (that is, a function call with parentheses instead of square
 brackets).  @code{arrayapply} evaluates a function call with square brackets in
-this case.
+this case. See also @mref{funmake} and @mrefdot{args}
 
-See also @mref{funmake} and @mrefdot{args}
-
-Examples:
-
+@code{apply} is particularly useful in two circumstances. The first is
+where an ordinary function is applied to a list, as in the following
+example where @code{min} is applied to the value of @code{L}. Note that
 @code{apply} evaluates its arguments.
-In this example, @code{min} is applied to the value of @code{L}.
 
 @c ===beg===
 @c L : [1, 5, -10.2, 4, 3];
 @c apply (min, L);
+@c apply ("+", L);
 @c ===end===
 @example
 @group
@@ -673,9 +672,15 @@ In this example, @code{min} is applied to the value of @code{L}.
 (%i2) apply (min, L);
 (%o2)                        - 10.2
 @end group
+@group
+(%i3) apply ("+", L);
+(%o3)                         2.80000000
+@end group
 @end example
 
-@code{apply} evaluates arguments, even if the function @var{F} quotes them.
+The second case is where a function that does not evaluate its arguments
+can be made to do so, because @code{apply} evaluates arguments, even if the
+function @var{F} quotes them.
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -718,6 +723,23 @@ fundef: no such function: fname
 @end group
 @end example
 
+The next example illustrates how to create a function that
+@code{declare}'s all of its arguments to be @code{complex}.
+
+@c ===beg===
+@c g([u]):=apply('declare,[u,complex])$
+@c g(a,b,c)$
+@c facts();
+@c ===end===
+@example
+@group
+(%i1) g([u]) := apply('declare,[u,complex])$
+(%i2) g(a,b,c)$
+(%i3) facts();
+(%o3) [kind(a, complex), kind(b, complex), kind(c, complex)]
+@end group
+@end example
+
 @code{apply} evaluates the function name @var{F}.
 Single quote @code{'} defeats evaluation.
 @code{demoivre} is the name of a global variable and also a function.
@@ -748,7 +770,9 @@ apply: found false where a function was expected.
 @end group
 @end example
 
-How to convert a nested list into a matrix:
+One can convert a nested list into a matrix by calling @code{apply},
+illustrating how @code{apply} can handle a list of arguments of variable
+size.
 
 @c ===beg===
 @c a:[[1,2],[3,4]];
@@ -766,7 +790,6 @@ How to convert a nested list into a matrix:
                             [ 3  4 ]
 @end group
 @end example
-
 
 @opencatbox{Categories:}
 @category{Function application}
