@@ -60,13 +60,13 @@ It's up to you. See pois2m.ps & decide.
 If you want to run FORMAT without loading the alternate poisson
 package, you need these files:
 
-format.lisp          ; the source to the FORMAT procedure
+miller-format.lisp   ; the source to the FORMAT procedure
 coeflist.lisp        ; source for coefficient list extraction.
 autoload-m.macsyma   ; autoloading definitions
 
 If you want to use the poisson package, use these files:
 
-format.lisp          ; the source to the FORMAT procedure
+miller-format.lisp   ; the source to the FORMAT procedure
 coeflistp.lisp       ; source for coefficient list extraction (using Pois2m).
 pois2m.lisp          ; enhanced Poisson package.
 autoload-mp.macsyma  ; autoloading definitions
@@ -83,7 +83,7 @@ In anycase,
   1) put the files somewhere where macsyma will find them, (eg.
 in a directory in the (macsyma variable) FILE_SEARCH list; or prepend
 the directory containing the files to FILE_SEARCH),  
-  2) compile them w/ compile_file("format.lisp"); etc.
+  2) compile them w/ compile_file("miller-format.lisp"); etc.
   3) have your macsyma-init file load the appropriate autoload-m file so
 that macsyma will know where to find the procedures.
   

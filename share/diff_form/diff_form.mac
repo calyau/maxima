@@ -8,7 +8,7 @@ load("hodge_test3.mac")$
 load("f_star_test4.mac")$
 load("helpfunc.mac")$
 load("coeflist.lisp")$
-load("format.lisp")$
+load("format.mac")$
 load("diag")$
 load("poisson.mac")$
 load("frobenius.mac")$
