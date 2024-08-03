@@ -2630,12 +2630,14 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 				       (lambda (q) (funcall (symbol-function '$flushnd) q name n)))
 				      (cdr e))) e))))
 
-(declare-top (special index n))
+(declare-top (special n))
 
 (defmfun $rename nargs
- (cond ((= nargs 1) (setq index 1)) (t (setq index (arg 2)))) (rename (arg 1)))
+ (let (index)
+   (cond ((= nargs 1) (setq index 1)) (t (setq index (arg 2))))
+   (rename (arg 1) index)))
 
-(defun rename (e)                           ;Renames dummy indices consistently
+(defun rename (e index)                           ;Renames dummy indices consistently
        (cond
 	((atom e) e)
 	((or (rpobj e) (eq (caar e) 'mtimes););If an indexed object or a product
@@ -2648,7 +2650,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	  ))
 	(t            ;Otherwise map $RENAME on each of the subparts e.g. a sum
 	 (mysubst0 (simplifya  (cons (ncons (caar e))
-				  (mapcar 'rename (cdr e)))
+				  (mapcar (lambda (e) (rename e index)) (cdr e)))
 			    t)
 		   e))
 	))
@@ -2686,7 +2688,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	        (t (cons (cons (car a) dumx) (cleanup1 (cdr a))))))))
 ;Make list of dotted pairs indicating substitutions i.e. ((a . #1) (b . #2))
 
-(declare-top (unspecial n index))
+(declare-top (unspecial n))
 
 (defun itensor-sort (l) (cond ((cdr l) (sort l 'less)) (t l)))
 ;Sort into ascending order
