@@ -644,19 +644,24 @@ Examples
 @anchor{apply}
 @deffn {Function} apply (@var{F}, [@var{arg_1}, @dots{}, @var{arg_n}])
 
-Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ...,
-@var{arg_n})}.
+Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+The function arguments @code{[@var{arg_1}, @dots{}, @var{arg_n}]} may
+be of any length and comprise any expressions.
+@code{apply} evaluates all of its arguments, @var{F} and @var{arg_1}, @dots{}, @var{arg_n} alike,
+unless evaluation is prevented by quotation.
 
 @code{apply} does not attempt to distinguish a @mref{memoizing function} from an ordinary 
 function; when @var{F} is the name of a memoizing function, @code{apply} evaluates
 @code{@var{F}(...)} (that is, a function call with parentheses instead of square
 brackets).  @code{arrayapply} evaluates a function call with square brackets in
-this case. See also @mref{funmake} and @mrefdot{args}
+this case.
 
-@code{apply} is particularly useful in two circumstances. The first is
-where an ordinary function is applied to a list, as in the following
-example where @code{min} is applied to the value of @code{L}. Note that
-@code{apply} evaluates its arguments.
+See also @mref{funmake} and @mrefdot{args}
+
+Examples:
+
+The function arguments @code{[@var{arg_1}, @dots{}, @var{arg_n}]} may be of any length.
+Here @code{min} and @code{"+"} are applied to a list @code{L}.
 
 @c ===beg===
 @c L : [1, 5, -10.2, 4, 3];
@@ -678,9 +683,9 @@ example where @code{min} is applied to the value of @code{L}. Note that
 @end group
 @end example
 
-The second case is where a function that does not evaluate its arguments
-can be made to do so, because @code{apply} evaluates arguments, even if the
-function @var{F} quotes them.
+@code{apply} evaluates all of its arguments, unless evaluation is prevented by quotation.
+First example: @code{dispfun} ordinarily does not evaluate its argument,
+but we can ensure the evaluation of the argument via @code{apply}.
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -723,8 +728,8 @@ fundef: no such function: fname
 @end group
 @end example
 
-The next example illustrates how to create a function that
-@code{declare}'s all of its arguments to be @code{complex}.
+@code{apply} evaluates all of its arguments, unless evaluation is prevented by quotation.
+Second example: create a function that declares all of its arguments to be complex.
 
 @c ===beg===
 @c g([u]):=apply('declare,[u,complex])$
@@ -740,9 +745,10 @@ The next example illustrates how to create a function that
 @end group
 @end example
 
-@code{apply} evaluates the function name @var{F}.
-Single quote @code{'} defeats evaluation.
-@code{demoivre} is the name of a global variable and also a function.
+@code{apply} evaluates all of its arguments, unless evaluation is prevented by quotation.
+Third example: @code{apply} ordinarily evaluates its first argument,
+but single quote @code{'} prevents evaluation.
+Note that @code{demoivre} is the name of a global variable and also a function.
 
 @c ===beg===
 @c demoivre;
@@ -770,9 +776,9 @@ apply: found false where a function was expected.
 @end group
 @end example
 
-One can convert a nested list into a matrix by calling @code{apply},
-illustrating how @code{apply} can handle a list of arguments of variable
-size.
+The function arguments @code{[@var{arg_1}, @dots{}, @var{arg_n}]} may
+be of any length and comprise any expressions.
+Convert a nested list into a matrix by calling @code{apply}.
 
 @c ===beg===
 @c a:[[1,2],[3,4]];
