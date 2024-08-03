@@ -2630,7 +2630,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 				       (lambda (q) (funcall (symbol-function '$flushnd) q name n)))
 				      (cdr e))) e))))
 
-(declare-top (special n))
+(defvar itensor-n)
 
 (defmfun $rename nargs
  (let (index)
@@ -2645,7 +2645,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
              (or (eql (length e) 3) (eql (cadddr e) 1)))
     )
 	 ((lambda  (l) 
-	(simptimes (reorder (cond (l (sublis (itensor-cleanup l (setq n index)) e))(t e))) 1 t))
+	(simptimes (reorder (cond (l (sublis (itensor-cleanup l (setq itensor-n index)) e))(t e))) 1 t))
 	  (cdaddr ($indices e))                     ;Gets list of dummy indices
 	  ))
 	(t            ;Otherwise map $RENAME on each of the subparts e.g. a sum
@@ -2679,16 +2679,14 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	e))
 
 (let (dumx)
-  (defun itensor-cleanup (a nn) (setq n nn dumx nil) (cleanup1 a))
+  (defun itensor-cleanup (a nn) (setq itensor-n nn dumx nil) (cleanup1 a))
  
   (defun cleanup1 (a)
     (and a (setq dumx (implode (nconc (exploden $idummyx)    ;Keep proper order of
-				      (exploden n))) n (1+ n))          ;indices
+				      (exploden itensor-n))) itensor-n (1+ itensor-n))          ;indices
 	(cond ((eq dumx (car a)) (cleanup1 (cdr a)))
 	        (t (cons (cons (car a) dumx) (cleanup1 (cdr a))))))))
 ;Make list of dotted pairs indicating substitutions i.e. ((a . #1) (b . #2))
-
-(declare-top (unspecial n))
 
 (defun itensor-sort (l) (cond ((cdr l) (sort l 'less)) (t l)))
 ;Sort into ascending order
@@ -2791,7 +2789,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
               (setq prop (assoc idx (zl-get tensor 'texprs) :test #'equal))
               (sublis
                 (mapcar #'cons(cddr prop) subs)
-                ($rename (cadr prop) (cond ((boundp 'n) n) (t 1)))
+                ($rename (cadr prop) (cond ((boundp 'itensor-n) itensor-n) (t 1)))
               )
             )
             (
