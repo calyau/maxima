@@ -127,8 +127,7 @@
          (format st " pt ~d" (gnuplot-pointtypes types (fifth style)))
          (format st " pt ~d" (gnuplot-pointtypes types i)))
        (if (integerp (sixth style))
-         (format st " pointinterval ~d" (sixth style))
-         (format st " pointinterval 10" ))
+         (format st " pointinterval ~d" (sixth style)))
          )
       (t (format st "with lines lt ~d" (gnuplot-color colors i))))))
 
