@@ -68,7 +68,7 @@
 ;; The meaning of the numbers that follow the symbol are:
 ;;
 ;;   lines, linewidth, color
-;;   points, radius, color, pointtype, pointinterval
+;;   points, radius, color, pointtype
 ;;   linespoints, linewidth, radius, color, pointtype, pointinterval
 ;;   dots, color
 ;;
@@ -112,11 +112,7 @@
          (format st " lt ~d" (gnuplot-color colors i)))
        (if (integerp (fourth style))
          (format st " pt ~d" (gnuplot-pointtypes types (fourth style)))
-         (format st " pt ~d" (gnuplot-pointtypes types i)))
-       (if (integerp (fifth style))
-         (format st " pointinterval ~d" (fifth style))
-         (format st " pointinterval 10" ))
-         )
+         (format st " pt ~d" (gnuplot-pointtypes types i))))
       ($linespoints
        (format st "with linespoints")
        (if (realp (second style))
