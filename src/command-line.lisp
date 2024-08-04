@@ -73,10 +73,22 @@
 	  (arg (cl-option-argument opt)))
       (when texi-table-form
         (format t "@need 150~%@item "))
-      (format t "    ~a" (cl-option-description (first names) arg))
-      (dolist (name (rest names))
-	(format t ", ~a" (cl-option-description name arg)))
-      (terpri)
+      (let ((options (mapcar #'(lambda (name)
+                                 (cl-option-description name arg))
+                             names)))
+        ;; Wrap any long list of options, except we don't when
+        ;; producing output for the texi file.
+        (cond (texi-table-form
+               (format t "~{~A~^, ~}~%" options))
+              (t
+               ;; The output is 4 spaces, then each of the options
+               ;; separated by a ", ".  The output is wrapped at
+               ;; column 80.  This format string is a modified version
+               ;; of the example from
+               ;; https://www.lispworks.com/documentation/HyperSpec/Body/22_cfb.htm.
+               (format t "    ~{~<~%      ~1,80:;~A~>~^, ~}~%"
+                       options))))
+
       (when help-string
 	(print-help-string help-string))
       (when texi-table-form
