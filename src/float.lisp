@@ -930,6 +930,7 @@
          ;; atan(z) = -i*atanh(i*z)
          (multiple-value-bind (u v)
              (complex-atanh (neg y) x)
+           ;; -%i*(u+%i*v) = v - %i*u
            (sub v
                 (mul '$%i u))))
          (t
