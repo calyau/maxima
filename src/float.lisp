@@ -924,6 +924,17 @@
 		      ans (fpplus ans (fpquotient term (intofp n))))))))
      (return ans)))
 
+(defun big-float-atan (x &optional y)
+  "Compute atan(x+%i*y) when X and Y are bigfloat objects.  Y is optional." 
+  (cond (y
+         ;; atan(z) = -i*atanh(i*z)
+         (multiple-value-bind (u v)
+             (complex-atanh (neg y) x)
+           (sub v
+                (mul '$%i u))))
+         (t
+         (bcons (fpatan (cdr x))))))
+      
 ;; atan(y/x) taking into account the quadrant.  (Also equal to
 ;; arg(x+%i*y).)
 (defun fpatan2 (y x)
