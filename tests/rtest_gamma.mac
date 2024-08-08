@@ -4123,3 +4123,26 @@ map (lambda ([abx0], test_derivative (beta_incomplete_regularized (a, b, x), gra
 map (lambda ([abxy0], test_derivative (beta_incomplete_generalized (a, b, x, y), grad_beta_incomplete_generalized, [a, b, x, y], abxy0)), abxy0_list);
 ''(makelist (true, length (abxy0_list)));
 
+/******************************************************************************
+
+  Test the Beta function
+
+  Numerical values are taken from functions/wolfram.com.
+******************************************************************************/
+
+/* Derivatives of beta function */
+diff(beta(a,b),a);
+-(beta(a,b)*(psi[0](b+a)-psi[0](a)));
+
+diff(beta(a,b),b);
+-(beta(a,b)*(psi[0](b+a)-psi[0](b)));
+
+diff(beta(a,b),a,2);
+beta(a,b)*(psi[0](b+a)-psi[0](a))^2-beta(a,b)*(psi[1](b+a)-psi[1](a));
+
+diff(beta(a,b),b,2);
+beta(a,b)*(psi[0](b+a)-psi[0](b))^2-beta(a,b)*(psi[1](b+a)-psi[1](b));
+
+diff(beta(a,b),a,1,b,1);
+beta(a,b)*(psi[0](b+a)-psi[0](a))*(psi[0](b+a)-psi[0](b))
+ -beta(a,b)*psi[1](b+a);

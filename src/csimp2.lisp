@@ -368,6 +368,27 @@
            (power (simplify (list '($pochhammer) (add u n) (- n))) -1)
            (ftake* '%beta u v))))
 
+;; Derivative of beta function
+;;   https://en.wikipedia.org/wiki/Beta_function
+;;   https://functions.wolfram.com/GammaBetaErf/Beta/
+(defprop %beta
+  ((a b)
+    ; derivative wrt a
+    ((mtimes)
+      (($beta) a b)
+      ((mplus)
+        ((mqapply) (($psi array) 0) a)
+        ((mtimes) -1
+          ((mqapply) (($psi array) 0) ((mplus) a b)))))
+     ; derivative wrt b
+     ((mtimes)
+      (($beta) a b)
+      ((mplus)
+        ((mqapply) (($psi) 0) b)
+        ((mtimes) -1
+          ((mqapply) (($psi array) 0) ((mplus) a b))))))
+  grad)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Implementation of the Gamma function

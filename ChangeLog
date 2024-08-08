@@ -68,6 +68,7 @@ Bug fixes for numbered bugs:
  * \#4265: integrate(sin(m*x)*sin(n*x), x, 0, 2*%pi) unconditionally zero
  * \#4269: plot3d ignores the option gnuplot_postamble
  * \#4307: partswitch affects op and operatorp
+ * \#4325: Maxima can't differentiate beta function
 
 Unnumbered bugs fixed:
 ---------------------
