@@ -1,4 +1,4 @@
-Suggestions and tips for writing test files
+Suggestions and tips for writing and running test files
 Barton Willis
 
 (1) A test file contains pairs of expressions. The first
@@ -12,7 +12,7 @@ x - x;
 0$
 
 You may terminate each line with either a semicolon or a dollar
-sign. To keep the file somewhat organized, terminate the input line
+sign. To keep the file organized, terminate the input line
 with a semicolon and the expected output with a dollar sign. It's helpful to
 separate each input / expected output pair with a blank line.
 
@@ -21,7 +21,7 @@ For example, "rtest_abs.mac" is a good name for tests for the absolute
 value function.
 
 (3) If the input is something that doesn't need to be checked, make a
-compound statement with the last statement being 0. Thus
+compound statement with the last statement being 0. For example,
 
 (assume(x > 0), 0);
 0$
@@ -30,7 +30,7 @@ abs(x);
 x$
 
 (4) If a test needs to use a non-default value for an option variable, try to
-make the change local instead of global. For example
+make the change local instead of global. For example,
 
 is (x < 1), prederror : false;
 unknown$
@@ -68,8 +68,13 @@ include this data into testsuite.lisp. To illustrate, the tests
 are known bugs, append ((mlist) "rtest_abs" 42 43) to the file 
 list in testsuite.lisp.
 
-Finally, build Maxima and run the test suite. If all goes
-well, commit the new test file.
+Finally, build Maxima and run the test suite. If a test triggers an `asksign`, 
+unfortunately, Maxima doesn't print the 'asksign` question and it might appear 
+to stall while waiting for input. When Maxima appears to be stalled, enter a 
+bogus expression such as `[;`. Doing so will allow you discover the test that 
+triggers the 'asksign.' 
+
+Once your test file runs to completion, commit it.
 
 (9) Other:
 
@@ -77,17 +82,16 @@ well, commit the new test file.
 appending a new test to Maxima's test suite, make sure that run_testsuite() 
 runs multiple times without error.
 
-(b) Always test the simple cases: abs(0), abs(0.0), abs(0.0b0), ... Also,
+(b) Always test the simple cases: abs(0), abs(0.0), abs(0.0b0), and ... Also,
 check that functions work correctly for CRE expressions, arguments that
-contain '%i', empty lists, empty matrices, ... Thus always test
+contain '%i', empty lists, empty matrices, and ... Thus always test
 the 'boundary' cases; these are things like max(), min(), apply("*",[]), ....
 
-(c) Check the sourceforge bug list for all reported bugs for the functions(s)
+(c) Check the Maxima bug list for all reported bugs for the functions(s)
 you are testing. Include tests for these bugs; also put a comment in your
 test file that references the bug report:
 
-/*  See SF Bug #  771061 */
-
+/* #358 expand dot expr; fatal error/FIX */
 expand((vt . a^^(-1) . u+1)^^(-2));
 ((vt.a^^(-1).u)^^2+2*(vt.a^^(-1).u)+1)^^(-1)$
 
@@ -121,7 +125,7 @@ or
   makelist(sin(k * %pi),k,1,5);
   [0,0,0,0,0]$
 
-To get a test to pass,you may need to insert a few parenthesis in the 
+To get a test to pass, you may need to insert a few parenthesis in the 
 expected output; for example
 
   -a/2;
@@ -132,6 +136,9 @@ Another way to handle such things is to use explicit calls to ratsimp:
   ratsimp(-a/2);
   ''(ratsimp(-a/2))$
 
-To test a function such as factor, you do not want to apply ratsimp.
+Of course, to test a function such as factor, you do not want to apply ratsimp.
 
-
+(g) When the expected result is messy, I suggest that you *not* routinely use additional 
+simplifications (ratsimp, factor, radcan, ...) to make the expected result 
+nicer. Such simplifications can hide changes that might be useful for a developer to 
+know about. Of course, the simplification functions need their own testing. 
