@@ -51,10 +51,9 @@
 ;; This recursion on the order attempts to handle limits such as 
 ;; tlimit(2^n/n^5, n, inf) correctly. 
 
-;; We set up a reasonable environment for calling taylor. Arguably, setting
-;; these option variables is overly removes the users ability to adjust these
-;; option variables. When $taylor_logexpand is true, taylor does some
-;; principal branch violating transformations, so we set it to nil.
+;; We set up a reasonable environment for calling taylor. When $taylor_logexpand 
+;; is true, taylor does some principal branch violating transformations, so we set 
+;; it to nil.
 
 ;; I know of no compelling reason for defaulting the taylor order to 
 ;; lhospitallim, but this is documented in the user documentation). 
@@ -63,9 +62,12 @@
 	(let ((ee 0) 
 	      (silent-taylor-flag t) 
 	      ($taylordepth 8)
+		  ($radexpand nil)
+		  ($logexpand nil)
 		  ($taylor_logexpand nil)
-		  ($taylor_simplifier #'sratsimp))
-        (setq ee (ratdisrep (catch 'taylor-catch ($taylor e x pt n))))
+		  ($taylor_simplifier #'(lambda (q) (sratsimp (extra-simp q)))))
+		(setq e (partial-logarc e (list '%atan)))
+	    (setq ee  (catch 'taylor-catch (let (($logexpand t)) (ratdisrep ($taylor e x pt n)))))
 		(cond ((and ee (not (alike1 ee 0))) ee)
 			  ;; When taylor returns zero and the depth d is less than 16, 
 			  ;; declare a do-over; otherwise return nil.

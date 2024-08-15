@@ -403,8 +403,9 @@ block([domain : 'complex],limit(2/5*((3/4)^m - 1)*(a - 10) + 1/5*(3*(3/4)^m + 2)
  27/26$
 
  /* #2953 limit loops endlessly */
- limit((a/x^b + (1-a)/y^b)^(-1/b),b,0);
- x^a*y^(1-a)$
+ block([ans : limit((a/x^b + (1-a)/y^b)^(-1/b),b,0)],
+  [ans, ratsimp(ans)]);
+ [(x^(a-1)*%e^((log(x)/log(y)+1)*log(y)))/y^a,x^a*y^(1-a)]$
 
  /* #2899 Limit that once worked is broken */
  limit((1+sqrt(n+1))^(-n-1)/(1+sqrt(n))^(-n),n,inf);
@@ -704,8 +705,9 @@ log(sqrt(2)+1)-log(1-sqrt(2))-sqrt(2)$
 0$
 
 /* #2953 limit loops endlessly */
-limit((a/x^b + (1-a)/y^b)^(-1/b),b,0);
-x^a*y^(1-a)$
+block([ans : limit((a/x^b + (1-a)/y^b)^(-1/b),b,0)],
+  [ans, ratsimp(ans)]);
+ [(x^(a-1)*%e^((log(x)/log(y)+1)*log(y)))/y^a,x^a*y^(1-a)]$
 
 /* #2706 Limit runs forever, never returning (simplified bug) */
 block([ans1,ans2, ans3],
@@ -1182,6 +1184,29 @@ und$
 
  limit(erfi(sin(x)),x,inf);
  ind$
+
+/* #4321 limits of Newton quotients for some inverse trig */
+
+limit((cos(3+h)-cos(3))/h,h,0);
+-sin(3)$
+
+ limit((acos(3+h)-acos(3))/h,h,0);
+ %i/2^(3/2)$
+
+ limit((asin(3+h)-asin(3))/h,h,0);
+ -%i/2^(3/2)$
+
+limit((acos(x+h) - acos(x))/h,h,0);
+sqrt(1-x^2)/(x^2-1)$
+
+tlimit((acos(x+h) - acos(x))/h,h,0);
+sqrt(1-x^2)/(x^2-1)$
+
+limit((asin(x+h)-asin(x))/h,h,0);
+-sqrt(1-x^2)/(x^2-1)$
+
+tlimit((asin(x+h)-asin(x))/h,h,0);
+-sqrt(1-x^2)/(x^2-1)$
 
 /* clean up*/
 (kill(values),0);

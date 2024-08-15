@@ -2045,9 +2045,12 @@ integrate(x[1]*exp(x[1]), x[1]);
 exp(x[1])*(x[1]-1)$
 
 /* #2726: Integrate produces wrong answer for Gaussian Moments */
-(declare(m2726, even),
- block([tmp: integrate(exp(-x^2/2)/sqrt(2*%pi) * x^m2726, x, -1/4, 1/4)],
-   sign (subst(m2726 = 4, tmp))));
+block([tmp, m2726],
+   assume(m2726+1 > 0),
+   tmp : integrate(exp(-x^2/2)/sqrt(2*%pi) * x^m2726, x, -1/4, 1/4),
+   tmp : sign(subst(m2726 = 4, tmp)),
+   forget(m2726+1 > 0),
+   tmp);
 pos$
 
 /* # 2697: Inconsistent handling of Greek symbols */

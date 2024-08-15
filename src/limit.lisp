@@ -3918,17 +3918,38 @@ ignoring dummy variables and array indices."
 				 exp)
 	      exp))))
 
+;; When $domain is $real, substitute the rectangular form for log(+/- %i) in
+;; the expression e; when $domain is not $real, return the expression e unchanged.
+
+;; Maxima's general simplifier does not simplify log(+/- %i) to a rectangular form.
+;; This is due to Maxima's guideline of perserving multivalueness of log-like 
+;; expressions. Especially when $domain is true, I don't think users want to see 
+;; results such as limit(atan(x),x,inf) = -%i*log(%i). 
+(defun log-simp-plus-or-minus-i (e) 
+  (if (eq '$real $domain)
+        (maxima-substitute 
+	       (div (mul '$%i '$%pi) -2) 
+		   (ftake '%log (mul -1 '$%i)) 
+           (maxima-substitute (div (mul '$%i '$%pi) 2) (ftake '%log '$%i) e))
+	  e))
+
 ;; Generate $lhospitallim terms of taylor expansion.
 ;; Ideally we would use a lazy series representation that generates
 ;; more terms as higher order terms cancel.
 (defun calculate-series (exp var)
-  (let ((cntx ($supcontext)) ($taylor_simplifier #'extra-simp))
-		 ($activate cntx)
+    (let ((cntx ($supcontext)) 
+	      (silent-taylor-flag t) 
+          ($taylordepth 8) 
+		  ($radexpand nil) 
+		  ($logexpand nil)
+          ($taylor_simplifier #'(lambda (q) (sratsimp (extra-simp q)))))
+		  ($activate cntx)
 		 (unwind-protect 
 		 	 (progn
-				 (mfuncall '$assume (ftake 'mgreaterp var 0))
+				 (assume (ftake 'mgreaterp var 0))
 				 (putprop var t 'internal); keep var from appearing in questions to user
- 			     ($taylor exp var 0 $lhospitallim))
+ 			     (setq exp (partial-logarc exp (list '%atan)))
+			     (log-simp-plus-or-minus-i (catch 'taylor-catch ($taylor exp var 0 $lhospitallim))))
 			  (remprop var 'internal)	  
               ($killcontext cntx))))
 
