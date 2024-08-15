@@ -81,18 +81,23 @@
   (setf (gethash item *html-index*)
 	(cons file item-id)))
 
-(defun process-line (line matcher &key replace-dash-p (prefix "Add:"))
+(defun process-line (line matcher path &key replace-dash-p (prefix "Add:") truenamep)
   "Process the LINE using the function MATCHER to determine if this line
   contains something interesting to add to the index. REPLACE-DASH-P
   and PREFIX are passed to ADD-ENTRY."
   (multiple-value-bind (item item-id file line)
       (funcall matcher line)
     (when item
-      (add-entry item item-id file line
+      (format t "process-line: file, path = ~A ~A~%" file path)
+      (when truenamep
+        (setf file (truename (merge-pathnames file path))))
+      (add-entry item item-id
+                 file
+                 line
 		 :replace-dash-p replace-dash-p
 		 :prefix prefix))))
 
-(defun process-one-html-file (file matcher replace-dash-p prefix)
+(defun process-one-html-file (file matcher replace-dash-p prefix truenamep)
   "Process one html file named FILE using MATCHER to determine matches.
   REPLACE-DASH-P and PREFIX are passed to PROCESS-LINE which will
   handle these."
@@ -102,8 +107,10 @@
           while line
 	  do
 	     (process-line line matcher
+                           file
 			   :replace-dash-p replace-dash-p
-			   :prefix prefix))))
+			   :prefix prefix
+                           :truenamep truenamep))))
 
 (defun handle-special-cases ()
   "These HTML topics need special handling because we didn't quite
@@ -325,7 +332,7 @@
       (when (probe-file toc-path)
 	(return-from find-toc-file toc-path)))))
 
-(defun build-html-index (dir lang)
+(defun build-html-index (dir lang truenamep)
   (clrhash *html-index*)
   (let ((index-file (find-index-file dir lang)))
     (unless index-file
@@ -336,8 +343,8 @@
       (let ((toc-path (find-toc-file dir)))
 	(get-texinfo-version toc-path)
 	(format t "Texinfo Version ~A: ~D~%" *texinfo-version-string* *texinfo-version*)
-	(process-one-html-file index-file #'match-entries t "Add")
-	(process-one-html-file toc-path #'match-toc nil "TOC")
+	(process-one-html-file index-file #'match-entries t "Add" truenamep)
+	(process-one-html-file toc-path #'match-toc nil "TOC" truenamep)
 	(handle-special-cases)))))
 
 ;; Run this to build a hash table from the topic to the HTML file
@@ -346,13 +353,16 @@
 ;; topics.  For example it can be "<maxima-dir>/doc/info/*.html".  The
 ;; LANG arg specifies the language to use.  For English, either leave
 ;; the argument out, or use "".
-(defmfun $build_and_dump_html_index (dir &optional (lang ""))
-  (build-html-index dir lang)
+(defmfun $build_and_dump_html_index (dir &key
+                                         (output_file "maxima-index-html.lisp")
+                                         (lang "")
+                                         (truenamep nil))
+  (build-html-index dir lang truenamep)
   (let (entries)
     (maphash #'(lambda (k v)
 		 (push (list k (namestring (car v)) (cdr v)) entries))
 	     *html-index*)
-    (with-open-file (s "maxima-index-html.lisp"
+    (with-open-file (s output_file
 		       :direction :output
 		       :if-exists :supersede)
       (with-standard-io-syntax

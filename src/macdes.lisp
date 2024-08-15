@@ -160,12 +160,14 @@
     (when found-it
       (destructuring-bind (base-name . id)
 	  found-it
-	(let ((url (concatenate 'string
+	(let ((url (if (pathname-directory base-basename)
+                       base-name
+                       (concatenate 'string
 				$url_base
 				"/"
 				(namestring base-name)
 				"#"
-				id))
+				id)))
 	      command)
 	  (when *debug-display-html-help*
 	    (format *debug-io* "URL: ~S~%" url))
