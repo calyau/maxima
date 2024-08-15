@@ -160,14 +160,17 @@
     (when found-it
       (destructuring-bind (base-name . id)
 	  found-it
-	(let ((url (if (pathname-directory base-name)
-                       base-name
-                       (concatenate 'string
-				$url_base
+	(let ((url (concatenate 'string
+                                ;; If BASE-NAME is an absolute path,
+                                ;; use "FILE://" as the protocol.
+                                ;; Otherwise use $URL_BASE.
+                                (if (eq :absolute (car (pathname-directory base-name)))
+                                    "file://"
+				    $url_base)
 				"/"
 				(namestring base-name)
 				"#"
-				id)))
+				id))
 	      command)
 	  (when *debug-display-html-help*
 	    (format *debug-io* "URL: ~S~%" url))
