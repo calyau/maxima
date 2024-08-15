@@ -160,7 +160,7 @@
     (when found-it
       (destructuring-bind (base-name . id)
 	  found-it
-	(let ((url (if (pathname-directory base-basename)
+	(let ((url (if (pathname-directory base-name)
                        base-name
                        (concatenate 'string
 				$url_base
