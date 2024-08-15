@@ -17,6 +17,9 @@ The following projects are included in the installer:
 * ABCL (maybe)
   Website: https://www.abcl.org
   License: https://www.abcl.org/faq.shtml#license
+* CCL (maybe)
+  Website: https://ccl.clozure.com/
+  License: https://github.com/Clozure/ccl/blob/master/LICENSE
 * TCL/TK
   Website: https://tcl.tk
   License: https://tcl.tk/software/tcltk/license.html
