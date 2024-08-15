@@ -67,7 +67,7 @@
 ;; factor-if-small. We could locally set the value of factor_max_degree, but let's not.
 
 ;; Removing factor from (csign ($factor (mul (sub x pk) (sub qk x))) causes max
-;; to miss the simplification max(x^2,x^4,x^6) --> max(x^2, x^4). Arguably, csign
+;; to miss the simplification max(x^2,x^4,x^6) -->  max(x^2, x^6). Arguably, csign
 ;; should be more semantically neutral--until it is, let's keep factor in here.
 
 (defun betweenp (x p)
