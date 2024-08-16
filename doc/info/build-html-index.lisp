@@ -84,10 +84,13 @@
 (defun process-line (line matcher path &key replace-dash-p (prefix "Add:") truenamep)
   "Process the LINE using the function MATCHER to determine if this line
   contains something interesting to add to the index. REPLACE-DASH-P
-  and PREFIX are passed to ADD-ENTRY."
+  and PREFIX are passed to ADD-ENTRY.  If TRUENAMEP is non-NIL, the
+  entry is the full path to the file specified in the line based on
+  the value of PATH."
   (multiple-value-bind (item item-id file line)
       (funcall matcher line)
     (when item
+      #+nil
       (format t "process-line: file, path = ~A ~A~%" file path)
       (when truenamep
         (setf file (truename (merge-pathnames file path))))
