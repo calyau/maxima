@@ -348,15 +348,35 @@
 	(handle-special-cases)))))
 
 ;; Run this to build a hash table from the topic to the HTML file
-;; containing the documentation.  The single argument DIR should be a
-;; directory that contains the html files to be searched for the
-;; topics.  For example it can be "<maxima-dir>/doc/info/*.html".  The
-;; LANG arg specifies the language to use.  For English, either leave
-;; the argument out, or use "".
+;; containing the documentation.  It is written to the file given by
+;; OUTPUT_FILE.  The output can then subsequently be read back in to
+;; update Maxima's database of available HTML documentation.  However,
+;; fot this to work Maxima must have also have the updated index to
+;; the info files for the documentation.
 (defmfun $build_and_dump_html_index (dir &key
                                          (output_file "maxima-index-html.lisp")
                                          (lang "")
                                          (truenamep nil))
+  "Creates a file that contains data that maxima can use to produce
+ HTML documentation.  The parameters are:
+
+   DIR
+     Pathname to where the html files are.  This is usually a wildcard
+     pathname of the form \"<path>/*.html\".
+   :OUTPUT-FILE
+     Specifies the name of the file where the data is written.
+     Defaults to \"maxima-index-html.lisp\".
+   :LANG
+     Specifies the language to use.  Defaults to \"\" for English.
+     This is used primarly when building Maxima's user manual to
+     determine the name of file containing the function and variable
+     index.
+   :TRUENAMEP
+     If non-NIL, the data will use the full pathname to the html
+     files.  Defaults to NIL.  Otherwise, the data will be a relative
+     path.  This MUST be set to NIL when building Maxima's user
+     manual.
+"
   (build-html-index dir lang truenamep)
   (let (entries)
     (maphash #'(lambda (k v)
