@@ -334,6 +334,13 @@
 				     (nconc (list 'prog)
 					    (list (setq tem  (cdr (reverse topreflist))))
 					    `((declare (special ,@ tem)))
+
+                                            (when (not (atom pt))
+					      ;; Ensure that the expression to be matched is an array expression iff the pattern is.
+					      (if (member 'array (car pt))
+					        (list `(when (not (member 'array (kar ,a))) (matcherr)))
+					        (list `(when (member 'array (kar ,a)) (matcherr)))))
+
 					    program
 					    (list (list 'return
 							(cond (boundlist (cons 'retlist
@@ -400,6 +407,12 @@
 					  (list (setq tem (nconc boundlist
 								 (cdr (reverse topreflist)))))
 					  `((declare (special ,@ tem)))
+
+					  ;; Ensure that the expression to be matched is an array expression iff the pattern is.
+					  (if (member 'array (car pt))
+					    (list '(when (not (member 'array (kar x))) (matcherr)))
+					    (list '(when (member 'array (kar x)) (matcherr))))
+
 					  program
 					  (list (list 'return
 						      (list 'values (memqargs rhs) t))))))
@@ -484,6 +497,7 @@
          (list 'setq 'x (list 'simpargs1 'x 'ans 'a3)))
        (list
 	'cond
+
 	`(,my*afterflag x)
 	(list 't
 	      (nconc (list 'prog)
@@ -504,6 +518,12 @@
 					      (list (setq tem(nconc boundlist
 								    (cdr (reverse topreflist)))))
 					      `((declare (special ,@ tem)))
+
+                                              ;; Ensure that the expression to be matched is an array expression iff the pattern is.
+                                              (if (member 'array (car pt))
+                                                (list '(when (not (member 'array (kar x))) (matcherr)))
+                                                (list '(when (member 'array (kar x)) (matcherr))))
+
 					      program
                           (cond
                             ($announce_rules_firing
@@ -550,6 +570,13 @@
 					    (list (setq tem (nconc boundlist
 								   (cdr (reverse topreflist)))))
 					    `((declare (special ,@ tem)))
+
+                                            (when (not (atom pt))
+					      ;; Ensure that the expression to be matched is an array expression iff the pattern is.
+					      (if (member 'array (car pt))
+					        (list `(when (not (member 'array (kar ,a))) (matcherr)))
+					        (list `(when (member 'array (kar ,a)) (matcherr)))))
+
 					    program
 					    (list (list 'return
 							(list 'values (memqargs rhs) t)))))))

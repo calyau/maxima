@@ -1042,3 +1042,126 @@ quux (29, w[3] + m[7], blurf, b + c + d);
 r6b (29^blurf + w[3]);
 quux (w[3], blurf);
 
+/* SF bug #4349: "user-defined rules apply to expressions with square brackets as well as parentheses" */
+
+/* (1) verify pattern foo(...) only matches foo(...) and not foo[...] */
+
+(kill (all),
+ matchdeclare ([aa, bb], symbolp, [cc, dd], numberp),
+ tellsimpafter (glub(cc), 2*cc),
+ tellsimp (blart(aa, bb), aa + bb),
+ defrule (r1, froog(cc), 4*cc + 1),
+ defmatch (m1, zorg(cc, bb)),
+ 0);
+0;
+
+glub(123);
+246;
+
+glub[123];
+glub[123];
+
+blart(x, y);
+x + y;
+
+blart[x, y];
+blart[x, y];
+
+apply1 (froog(222), r1);
+889;
+
+apply1 (froog[222], r1);
+froog[222];
+
+m1 (zorg(3/2, y));
+[bb = y, cc = 3/2];
+
+m1 (zorg[3/2, y]);
+false;
+
+/* (2) verify pattern foo[...] only matches foo[...] and not foo(...) */
+
+(kill (all),
+ matchdeclare ([aa, bb], symbolp, [cc, dd], numberp),
+ tellsimpafter (glub[cc], cc - 3),
+ tellsimp (blart[aa, bb], bb - aa),
+ defrule (r2, froog[cc], blargle(cc)),
+ defmatch (m2, zorg[cc, bb]),
+ 0);
+0;
+
+glub(123);
+glub(123);
+
+glub[123];
+120;
+
+blart(x, y);
+blart(x, y);
+
+blart[x, y];
+y - x;
+
+apply1 (froog(222), r2);
+froog(222);
+
+apply1 (froog[222], r2);
+blargle(222);
+
+m2 (zorg(3/2, y));
+false;
+
+m2 (zorg[3/2, y]);
+[bb = y, cc = 3/2];
+
+/* (3) verify pattern foo(...) only matches foo(...), and pattern foo[...] only matches foo[...]. */
+
+(kill (all),
+ matchdeclare ([aa, bb], symbolp, [cc, dd], numberp),
+ tellsimpafter (glub(cc), 2*cc),
+ tellsimpafter (glub[cc], cc - 3),
+ tellsimp (blart(aa, bb), aa + bb),
+ tellsimp (blart[aa, bb], bb - aa),
+ defrule (r1, froog(cc), 4*cc + 1),
+ defrule (r2, froog[cc], blargle(cc)),
+ defmatch (m1, zorg(cc, bb)),
+ defmatch (m2, zorg[cc, bb]),
+ 0);
+0;
+
+glub(123);
+246;
+
+glub[123];
+120;
+
+blart(x, y);
+x + y;
+
+blart[x, y];
+y - x;
+
+apply1 (froog(222), r1);
+889;
+
+apply1 (froog[222], r1);
+froog[222];
+
+m1 (zorg(3/2, y));
+[bb = y, cc = 3/2];
+
+m1 (zorg[3/2, y]);
+false;
+
+apply1 (froog(222), r2);
+froog(222);
+
+apply1 (froog[222], r2);
+blargle(222);
+
+m2 (zorg(3/2, y));
+false;
+
+m2 (zorg[3/2, y]);
+[bb = y, cc = 3/2];
+
