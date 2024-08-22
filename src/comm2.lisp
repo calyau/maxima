@@ -808,9 +808,11 @@
 	 (cons (cons (getopr ary) '(array)) (cdr subs)))
 	(t (cons '(mqapply array) (cons ary (cdr subs))))))
 
-(defmspec $arrayinfo (ary)
-  (setq ary (cdr ary))
-  (arrayinfo-aux (car ary) (getvalue (car ary))))
+(defmspec $arrayinfo (e)
+  (let*
+    ((ary (second e))
+     (ary-value (if (or (arrayp ary) (hash-table-p ary)) ary (getvalue ary))))
+    (arrayinfo-aux ary ary-value)))
 
 (defun arrayinfo-aux (sym val)
   (prog (arra ary)

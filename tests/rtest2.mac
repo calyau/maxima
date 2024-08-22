@@ -746,10 +746,16 @@ listarray (mydeclared);
 arrayinfo (myvalue);
 [declared, 4, [1, 1, 1, 1]]; /* "declared" seems wrong here ... oh well */
 
+apply (arrayinfo, [myvalue]);
+[declared, 4, [1, 1, 1, 1]]; /* "declared" seems wrong here ... oh well */
+
 listarray (myvalue);
 [%pi + 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %e - 1];
 
 (arrayinfo (myfast), [%%[1], %%[2], sort (rest (%%, 2))]);
+[hash_table, true, [["mumble", "abc", "xy", "Z"], [foo, bar, baz], [sin(foo), 1 - baz]]];
+
+(apply (arrayinfo, [myfast]), [%%[1], %%[2], sort (rest (%%, 2))]);
 [hash_table, true, [["mumble", "abc", "xy", "Z"], [foo, bar, baz], [sin(foo), 1 - baz]]];
 
 sort (listarray (myfast));
@@ -1165,3 +1171,27 @@ block ([use_fast_arrays : false,
  xyz);
 123;
 
+/* SF bug #4350: "arrayinfo complains 'not an array' when supplied a Lisp array or hash table" */
+
+(kill (aa, bb, L),
+ aa: make_array (fixnum, 4),
+ bb: make_array (hashed, 1),
+ L: [aa, bb],
+ 0);
+0;
+
+arrayinfo (aa);
+[declared, 1, [3]];
+
+arrayinfo (bb);
+[hash_table, 1];
+
+/* arrayinfo complains if argument is neither a symbol nor an array value -- OK */
+errcatch (arrayinfo (L[1]));
+[];
+
+apply (arrayinfo, [L[1]]);
+[declared, 1, [3]];
+
+apply (arrayinfo, [L[2]]);
+[hash_table, 1];
