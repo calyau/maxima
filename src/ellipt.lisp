@@ -1192,11 +1192,11 @@ first kind:
 			 (k (sqrt m))
 			 (y (* (- 1 (* k sin-phi))
 			       (+ 1 (* k sin-phi)))))
-		    (to (- (* sin-phi
-			      (bigfloat::bf-rf (* cos-phi cos-phi) y 1.0))
-			   (* (/ m 3)
-			      (expt sin-phi 3)
-			      (bigfloat::bf-rd (* cos-phi cos-phi) y 1.0)))))))))
+		    (- (* sin-phi
+			  (bigfloat::bf-rf (* cos-phi cos-phi) y 1.0))
+		       (* (/ m 3)
+			  (expt sin-phi 3)
+			  (bigfloat::bf-rd (* cos-phi cos-phi) y 1.0))))))))
     ;; Elliptic E is quasi-periodic wrt to phi:
     ;;
     ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
