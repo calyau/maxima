@@ -1201,6 +1201,7 @@ first kind:
     ;;
     ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
     (let ((period (round (realpart phi) pi)))
+      (format t "period = ~A~%" period)
       (+ (base (- phi (* pi period)) m)
 	 (* 2 period (elliptic-ec m))))))
 
@@ -1215,9 +1216,17 @@ first kind:
 	 1.0)
 	(t
 	 (let* ((y (- 1 m)))
-	   (to (- (bigfloat::bf-rf 0.0 y 1.0)
-		  (* (/ m 3)
-		     (bigfloat::bf-rd 0.0 y 1.0))))))))
+           (format t "y = ~A~%" y)
+           (format t "bf-rf, bf-rd = ~A ~A~%"
+                   (bigfloat::bf-rf 0.0 y 1.0)
+                   (bigfloat::bf-rd 0.0 y 1.0))
+           (format t "result = ~A~%"
+                   (- (bigfloat::bf-rf 0.0 y 1.0)
+		      (* (/ m 3)
+		         (bigfloat::bf-rd 0.0 y 1.0))))
+	   (- (bigfloat::bf-rf 0.0 y 1.0)
+	      (* (/ m 3)
+		 (bigfloat::bf-rd 0.0 y 1.0)))))))
 
 
 ;; Define the elliptic integrals for maxima
@@ -1429,7 +1438,7 @@ first kind:
   (let (args)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
-	   (elliptic-e ($float phi) ($float m)))
+	   (complexify (elliptic-e ($float phi) ($float m))))
 	  ((complex-float-numerical-eval-p phi m)
 	   (complexify (bigfloat::bf-elliptic-e (complex ($float ($realpart phi)) ($float ($imagpart phi)))
 						(complex ($float ($realpart m)) ($float ($imagpart m))))))
