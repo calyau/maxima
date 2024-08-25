@@ -1637,7 +1637,7 @@ first kind:
   (let (args)
     (cond ((float-numerical-eval-p m)
 	   ;; Numerically evaluate it
-	   (elliptic-ec ($float m)))
+	   (complexify (elliptic-ec ($float m))))
 	  ((setf args (complex-float-numerical-eval-p m))
 	   (destructuring-bind (m)
 	       args
