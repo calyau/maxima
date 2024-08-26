@@ -30,22 +30,25 @@
 ;;; Note that m = k^2 and k = sin(alpha).
 ;;;
 
-;;
-;; Routines for computing the basic elliptic functions sn, cn, and dn.
-;;
-;;
-;; A&S gives several methods for computing elliptic functions
-;; including the AGM method (16.4) and ascending and descending Landen
-;; transformations (16.12 and 16.14).  The latter are actually quite
-;; fast, only requiring simple arithmetic and square roots for the
-;; transformation until the last step.  The AGM requires evaluation of
-;; several trigonometric functions at each stage.
-;;
-;; However, the Landen transformations appear to have some round-off
-;; issues.  For example, using the ascending transform to compute cn,
-;; cn(100,.7) > 1e10.  This is clearly not right since |cn| <= 1.
-;;
+;;;
+;;; Routines for computing the basic elliptic functions sn, cn, and dn.
+;;;
+;;;
+;;; A&S gives several methods for computing elliptic functions
+;;; including the AGM method (16.4) and ascending and descending Landen
+;;; transformations (16.12 and 16.14).  The latter are actually quite
+;;; fast, only requiring simple arithmetic and square roots for the
+;;; transformation until the last step.  The AGM requires evaluation of
+;;; several trigonometric functions at each stage.
+;;;
+;;; However, the Landen transformations appear to have some round-off
+;;; issues.  For example, using the ascending transform to compute cn,
+;;; cn(100,.7) > 1e10.  This is clearly not right since |cn| <= 1.
+;;;
 
+;;; All the routines in the BIGFLOAT package are collected here.
+;;; These functions compute numerical results for the elliptic
+;;; functions and integrals.
 (in-package #:bigfloat)
 
 (declaim (inline descending-transform ascending-transform))
