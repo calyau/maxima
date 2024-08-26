@@ -180,6 +180,513 @@
 		(/ (- (* d d) root-mu1)
 		   d)))))))
 
+;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
+;; See https://dlmf.nist.gov/22.20.ii.
+;;
+;; Do not use this for computing jacobi sn.  It loses some 7 digits of
+;; accuracy for sn(1+%i,0.7).
+(let ((an (make-array 100 :fill-pointer 0))
+      (bn (make-array 100 :fill-pointer 0))
+      (cn (make-array 100 :fill-pointer 0)))
+  ;; Instead of allocating these array anew each time, we'll reuse
+  ;; them and allow them to grow as needed.
+  (defun agm (a0 b0 c0 tol)
+    "Arithmetic-Geometric Mean algorithm for real or complex a0, b0, c0.
+    Algorithm continues until |c[n]| <= tol."
+
+    ;; DLMF (https://dlmf.nist.gov/22.20.ii) says for any real or
+    ;; complex a0 and b0, b0/a0 must not be real and negative.  Let's
+    ;; check that.
+    (let ((q (/ b0 a0)))
+      (when (and (= (imagpart q) 0)
+                 (minusp (realpart q)))
+        (error "Invalid arguments for AGM:  ~A ~A~%" a0 b0)))
+    (let ((nd (max (* 2 (ceiling (log (- (log tol 2))))) 8)))
+      ;; DLMF (https://dlmf.nist.gov/22.20.ii) says that |c[n]| <=
+      ;; C*2^(-2^n), for some constant C.  Solve C*2^(-2^n) = tol to
+      ;; get n = log(log(C/tol)/log(2))/log(2).  Arbitrarily assume C
+      ;; is one to get n = log(-(log(tol)/log(2)))/log(2).  Thus, the
+      ;; approximate number of term needed is n =
+      ;; 1.44*log(-(1.44*log(tol))).  Round to 2*log(-log2(tol)).
+      (setf (fill-pointer an) 0
+            (fill-pointer bn) 0
+            (fill-pointer cn) 0)
+      (vector-push-extend a0 an)
+      (vector-push-extend b0 bn)
+      (vector-push-extend c0 cn)
+
+      (do ((k 0 (1+ k)))
+          ((or (<= (abs (aref cn k)) tol)
+               (>= k nd))
+           (if (>= k nd)
+               (error "Failed to converge")
+               (values k an bn cn)))
+        (vector-push-extend (/ (+ (aref an k) (aref bn k)) 2) an)
+        ;; DLMF (https://dlmf.nist.gov/22.20.ii) has conditions on how
+        ;; to choose the square root depending on the phase of a[n-1]
+        ;; and b[n-1].  We don't check for that here.
+        (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
+        (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
+
+(defun jacobi-am-agm (u m tol)
+  "Evaluate the jacobi_am function from real u and m with |m| <= 1.  This
+  uses the AGM method until a tolerance of TOL is reached for the
+  error."
+  (multiple-value-bind (n an bn cn)
+      (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
+    (declare (ignore bn))
+    ;; See DLMF (https://dlmf.nist.gov/22.20.ii) for the algorithm.
+    (let ((phi (* u (aref an n) (expt 2 n))))
+      (loop for k from n downto 1
+            do
+               (setf phi (/ (+ phi (asin (* (/ (aref cn k)
+                                               (aref an k))
+                                            (sin phi))))
+                            2)))
+      phi)))
+
+;; Compute Jacobi am for real or complex values of U and M.  The args
+;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
+;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
+;; used.
+(defun bf-jacobi-am (u m tol)
+  (cond ((and (realp u) (realp m) (<= (abs m) 1))
+         ;; The case of real u and m with |m| <= 1.  We can use AGM to
+         ;; compute the result.
+         (jacobi-am-agm (to u)
+                        (to m)
+                        tol))
+        (t
+         ;; Otherwise, use the formula am(u,m) = asin(jacobi_sn(u,m)).
+         ;; (See DLMF https://dlmf.nist.gov/22.16.E1).  This appears
+         ;; to be what functions.wolfram.com is using in this case.
+         (asin (sn (to u) (to m))))))
+
+;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
+;; integrals from http://www.getnet.com/~cherry/elliptbf3.mac.
+;;
+;; The algorithms are based on B.C. Carlson's "Numerical Computation
+;; of Real or Complex Elliptic Integrals".  These are updated to the
+;; algorithms in Journal of Computational and Applied Mathematics 118
+;; (2000) 71-85 "Reduction Theorems for Elliptic Integrands with the
+;; Square Root of two quadritic factors"
+;;
+
+;; NOTE: Despite the names indicating these are for bigfloat numbers,
+;; the algorithms and routines are generic and will work with floats
+;; and bigfloats.
+
+(defun bferrtol (&rest args)
+  ;; Compute error tolerance as sqrt(2^(-fpprec)).  Not sure this is
+  ;; quite right, but it makes the routines more accurate as fpprec
+  ;; increases.
+  (sqrt (reduce #'min (mapcar #'(lambda (x)
+				  (if (rationalp (realpart x))
+				      maxima::+flonum-epsilon+
+				      (epsilon x)))
+			      args))))
+
+;; rc(x,y) = integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)
+;;
+;; log(x)  = (x-1)*rc(((1+x)/2)^2, x), x > 0
+;; asin(x) = x * rc(1-x^2, 1), |x|<= 1
+;; acos(x) = sqrt(1-x^2)*rc(x^2,1), 0 <= x <=1
+;; atan(x) = x * rc(1,1+x^2)
+;; asinh(x) = x * rc(1+x^2,1)
+;; acosh(x) = sqrt(x^2-1) * rc(x^2,1), x >= 1
+;; atanh(x) = x * rc(1,1-x^2), |x|<=1
+
+(defun bf-rc (x y)
+  (let ((yn y)
+	xn z w a an pwr4 n epslon lambda sn s)
+    (cond ((and (zerop (imagpart yn))
+		(minusp (realpart yn)))
+	   (setf xn (- x y))
+	   (setf yn (- yn))
+	   (setf z yn)
+	   (setf w (sqrt (/ x xn))))
+	  (t
+	   (setf xn x)
+	   (setf z yn)
+	   (setf w 1)))
+    (setf a (/ (+ xn yn yn) 3))
+    (setf epslon (/ (abs (- a xn)) (bferrtol x y)))
+    (setf an a)
+    (setf pwr4 1)
+    (setf n 0)
+    (loop while (> (* epslon pwr4) (abs an))
+       do
+	 (setf pwr4 (/ pwr4 4))
+	 (setf lambda (+ (* 2 (sqrt xn) (sqrt yn)) yn))
+	 (setf an (/ (+ an lambda) 4))
+	 (setf xn (/ (+ xn lambda) 4))
+	 (setf yn (/ (+ yn lambda) 4))
+	 (incf n))
+    ;; c2=3/10,c3=1/7,c4=3/8,c5=9/22,c6=159/208,c7=9/8
+    (setf sn (/ (* pwr4 (- z a)) an))
+    (setf s (* sn sn (+ 3/10
+			(* sn (+ 1/7
+				 (* sn (+ 3/8
+					  (* sn (+ 9/22
+						   (* sn (+ 159/208
+							    (* sn 9/8))))))))))))
+    (/ (* w (+ 1 s))
+       (sqrt an))))
+
+
+
+;; See https://dlmf.nist.gov/19.16.E5:
+;; 
+;; rd(x,y,z) = integrate(3/2/sqrt(t+x)/sqrt(t+y)/sqrt(t+z)/(t+z), t, 0, inf)
+;;
+;; rd(1,1,1) = 1
+;; E(K) = rf(0, 1-K^2, 1) - (K^2/3)*rd(0,1-K^2,1)
+;;
+;; B = integrate(s^2/sqrt(1-s^4), s, 0 ,1)
+;;   = beta(3/4,1/2)/4
+;;   = sqrt(%pi)*gamma(3/4)/gamma(1/4)
+;;   = 1/3*rd(0,2,1)
+
+(defun bf-rd (x y z)
+  (let* ((xn x)
+	 (yn y)
+	 (zn z)
+	 (a (/ (+ xn yn (* 3 zn)) 5))
+	 (epslon (/ (max (abs (- a xn))
+			 (abs (- a yn))
+			 (abs (- a zn)))
+		    (bferrtol x y z)))
+	 (an a)
+	 (sigma 0)
+	 (power4 1)
+	 (n 0)
+	 xnroot ynroot znroot lam)
+    (loop while (> (* power4 epslon) (abs an))
+       do
+	 (setf xnroot (sqrt xn))
+	 (setf ynroot (sqrt yn))
+	 (setf znroot (sqrt zn))
+	 (setf lam (+ (* xnroot ynroot)
+		      (* xnroot znroot)
+		      (* ynroot znroot)))
+	 (setf sigma (+ sigma (/ power4
+				 (* znroot (+ zn lam)))))
+	 (setf power4 (* power4 1/4))
+	 (setf xn (* (+ xn lam) 1/4))
+	 (setf yn (* (+ yn lam) 1/4))
+	 (setf zn (* (+ zn lam) 1/4))
+	 (setf an (* (+ an lam) 1/4))
+	 (incf n))
+    ;; c1=-3/14,c2=1/6,c3=9/88,c4=9/22,c5=-3/22,c6=-9/52,c7=3/26
+    (let* ((xndev (/ (* (- a x) power4) an))
+	   (yndev (/ (* (- a y) power4) an))
+	   (zndev (- (* (+ xndev yndev) 1/3)))
+	   (ee2 (- (* xndev yndev) (* 6 zndev zndev)))
+	   (ee3 (* (- (* 3 xndev yndev)
+		      (* 8 zndev zndev))
+		   zndev))
+	   (ee4 (* 3 (- (* xndev yndev) (* zndev zndev)) zndev zndev))
+	   (ee5 (* xndev yndev zndev zndev zndev))
+	   (s (+ 1
+		 (* -3/14 ee2)
+		 (* 1/6 ee3)
+		 (* 9/88 ee2 ee2)
+		 (* -3/22 ee4)
+		 (* -9/52 ee2 ee3)
+		 (* 3/26 ee5)
+		 (* -1/16 ee2 ee2 ee2)
+		 (* 3/10 ee3 ee3)
+		 (* 3/20 ee2 ee4)
+		 (* 45/272 ee2 ee2 ee3)
+		 (* -9/68 (+ (* ee2 ee5) (* ee3 ee4))))))
+    (+ (* 3 sigma)
+       (/ (* power4 s)
+	  (expt an 3/2))))))
+
+;; See https://dlmf.nist.gov/19.16.E1
+;;
+;; rf(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf);
+;;
+;; rf(1,1,1) = 1
+(defun bf-rf (x y z)
+  (let* ((xn x)
+	 (yn y)
+	 (zn z)
+	 (a (/ (+ xn yn zn) 3))
+	 (epslon (/ (max (abs (- a xn))
+			 (abs (- a yn))
+			 (abs (- a zn)))
+		    (bferrtol x y z)))
+	 (an a)
+	 (power4 1)
+	 (n 0)
+	 xnroot ynroot znroot lam)
+    (loop while (> (* power4 epslon) (abs an))
+       do
+       (setf xnroot (sqrt xn))
+       (setf ynroot (sqrt yn))
+       (setf znroot (sqrt zn))
+       (setf lam (+ (* xnroot ynroot)
+		    (* xnroot znroot)
+		    (* ynroot znroot)))
+       (setf power4 (* power4 1/4))
+       (setf xn (* (+ xn lam) 1/4))
+       (setf yn (* (+ yn lam) 1/4))
+       (setf zn (* (+ zn lam) 1/4))
+       (setf an (* (+ an lam) 1/4))
+       (incf n))
+    ;; c1=-3/14,c2=1/6,c3=9/88,c4=9/22,c5=-3/22,c6=-9/52,c7=3/26
+    (let* ((xndev (/ (* (- a x) power4) an))
+	   (yndev (/ (* (- a y) power4) an))
+	   (zndev (- (+ xndev yndev)))
+	   (ee2 (- (* xndev yndev) (* 6 zndev zndev)))
+	   (ee3 (* xndev yndev zndev))
+	   (s (+ 1
+		 (* -1/10 ee2)
+		 (* 1/14 ee3)
+		 (* 1/24 ee2 ee2)
+		 (* -3/44 ee2 ee3))))
+      (/ s (sqrt an)))))
+  
+(defun bf-rj1 (x y z p)
+  (let* ((xn x)
+	 (yn y)
+	 (zn z)
+	 (pn p)
+	 (en (* (- pn xn)
+		(- pn yn)
+		(- pn zn)))
+	 (sigma 0)
+	 (power4 1)
+	 (k 0)
+	 (a (/ (+ xn yn zn pn pn) 5))
+	 (epslon (/ (max (abs (- a xn))
+			 (abs (- a yn))
+			 (abs (- a zn))
+			 (abs (- a pn)))
+		    (bferrtol x y z p)))
+	 (an a)
+	 xnroot ynroot znroot pnroot lam dn)
+    (loop while (> (* power4 epslon) (abs an))
+       do
+       (setf xnroot (sqrt xn))
+       (setf ynroot (sqrt yn))
+       (setf znroot (sqrt zn))
+       (setf pnroot (sqrt pn))
+       (setf lam (+ (* xnroot ynroot)
+		    (* xnroot znroot)
+		    (* ynroot znroot)))
+       (setf dn (* (+ pnroot xnroot)
+		   (+ pnroot ynroot)
+		   (+ pnroot znroot)))
+       (setf sigma (+ sigma
+		      (/ (* power4
+			    (bf-rc 1 (+ 1 (/ en (* dn dn)))))
+			 dn)))
+       (setf power4 (* power4 1/4))
+       (setf en (/ en 64))
+       (setf xn (* (+ xn lam) 1/4))
+       (setf yn (* (+ yn lam) 1/4))
+       (setf zn (* (+ zn lam) 1/4))
+       (setf pn (* (+ pn lam) 1/4))
+       (setf an (* (+ an lam) 1/4))
+       (incf k))
+    (let* ((xndev (/ (* (- a x) power4) an))
+	   (yndev (/ (* (- a y) power4) an))
+	   (zndev (/ (* (- a z) power4) an))
+	   (pndev (* -0.5 (+ xndev yndev zndev)))
+	   (ee2 (+ (* xndev yndev)
+		   (* xndev zndev)
+		   (* yndev zndev)
+		   (* -3 pndev pndev)))
+	   (ee3 (+ (* xndev yndev zndev)
+		   (* 2 ee2 pndev)
+		   (* 4 pndev pndev pndev)))
+	   (ee4 (* (+ (* 2 xndev yndev zndev)
+		      (* ee2 pndev)
+		      (* 3 pndev pndev pndev))
+		   pndev))
+	   (ee5 (* xndev yndev zndev pndev pndev))
+	   (s (+ 1
+		 (* -3/14 ee2)
+		 (* 1/6 ee3)
+		 (* 9/88 ee2 ee2)
+		 (* -3/22 ee4)
+		 (* -9/52 ee2 ee3)
+		 (* 3/26 ee5)
+		 (* -1/16 ee2 ee2 ee2)
+		 (* 3/10 ee3 ee3)
+		 (* 3/20 ee2 ee4)
+		 (* 45/272 ee2 ee2 ee3)
+		 (* -9/68 (+ (* ee2 ee5) (* ee3 ee4))))))
+      (+ (* 6 sigma)
+	 (/ (* power4 s)
+	    (sqrt (* an an an)))))))
+
+(defun bf-rj (x y z p)
+  (let* ((xn x)
+	 (yn y)
+	 (zn z)
+	 (qn (- p)))
+    (cond ((and (and (zerop (imagpart xn)) (>= (realpart xn) 0))
+		(and (zerop (imagpart yn)) (>= (realpart yn) 0))
+		(and (zerop (imagpart zn)) (>= (realpart zn) 0))
+		(and (zerop (imagpart qn)) (> (realpart qn) 0)))
+	   (destructuring-bind (xn yn zn)
+	       (sort (list xn yn zn) #'<)
+	     (let* ((pn (+ yn (* (- zn yn) (/ (- yn xn) (+ yn qn)))))
+		    (s (- (* (- pn yn) (bf-rj1 xn yn zn pn))
+			  (* 3 (bf-rf xn yn zn)))))
+	       (setf s (+ s (* 3 (sqrt (/ (* xn yn zn)
+					  (+ (* xn zn) (* pn qn))))
+			       (bf-rc (+ (* xn zn) (* pn qn)) (* pn qn)))))
+	       (/ s (+ yn qn)))))
+	  (t
+	   (bf-rj1 x y z p)))))
+
+(defun bf-rg (x y z)
+  (* 0.5
+     (+ (* z (bf-rf x y z))
+	(* (- z x)
+	   (- y z)
+	   (bf-rd x y z)
+	   1/3)
+	(sqrt (/ (* x y) z)))))
+
+;; elliptic_f(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1)
+(defun bf-elliptic-f (phi m)
+  (flet ((base (phi m)
+	   (cond ((= m 1)
+		  ;; F(z|1) = log(tan(z/2+%pi/4))
+		  (log (tan (+ (/ phi 2) (/ (%pi phi) 4)))))
+		 (t
+		  (let ((s (sin phi))
+			(c (cos phi)))
+		    (* s (bf-rf (* c c) (- 1 (* m s s)) 1)))))))
+    ;; Handle periodicity (see elliptic-f)
+    (let* ((bfpi (%pi phi))
+	   (period (round (realpart phi) bfpi)))
+      (+ (base (- phi (* bfpi period)) m)
+	 (if (zerop period)
+	     0
+	     (* 2 period (bf-elliptic-k m)))))))
+
+;; elliptic_kc(k) = rf(0, 1-k^2,1)
+;;
+;; or
+;; elliptic_kc(m) = rf(0, 1-m,1)
+
+(defun bf-elliptic-k (m)
+  (cond ((= m 0)
+	 (if (maxima::$bfloatp m)
+	     (maxima::$bfloat (maxima::div 'maxima::$%pi 2))
+	     (float (/ pi 2) 1e0)))
+	((= m 1)
+	 (maxima::merror
+	  (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
+	(t
+	 (bf-rf 0 (- 1 m) 1))))
+
+;; elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
+;;    - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
+;;
+;;
+;; or 
+;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
+;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
+;;
+(defun bf-elliptic-e (phi m)
+  (flet ((base (phi m)
+	   (let* ((s (sin phi))
+		  (c (cos phi))
+		  (c2 (* c c))
+		  (s2 (- 1 (* m s s))))
+	     (- (* s (bf-rf c2 s2 1))
+		(* (/ m 3) (* s s s) (bf-rd c2 s2 1))))))
+    ;; Elliptic E is quasi-periodic wrt to phi:
+    ;;
+    ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
+    (let* ((bfpi (%pi phi))
+	   (period (round (realpart phi) bfpi)))
+      (+ (base (- phi (* bfpi period)) m)
+	 (* 2 period (bf-elliptic-ec m))))))
+    
+
+;; elliptic_ec(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
+;;
+;; or
+;; elliptic_ec(m) = rf(0,1-m,1) - (m/3)*rd(0,1-m,1);
+
+(defun bf-elliptic-ec (m)
+  (cond ((= m 0)
+	 (if (typep m 'bigfloat)
+	     (bigfloat (maxima::$bfloat (maxima::div 'maxima::$%pi 2)))
+	     (float (/ pi 2) 1e0)))
+	((= m 1)
+	 (if (typep m 'bigfloat)
+	     (bigfloat 1)
+	     1e0))
+	(t
+	 (let ((m1 (- 1 m)))
+	   (- (bf-rf 0 m1 1)
+	      (* m 1/3 (bf-rd 0 m1 1)))))))
+
+(defun bf-elliptic-pi-complete (n m)
+  (+ (bf-rf 0 (- 1 m) 1)
+     (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n)))))
+
+(defun bf-elliptic-pi (n phi m)
+  ;; Note: Carlson's DRJ has n defined as the negative of the n given
+  ;; in A&S.
+  (flet ((base (n phi m)
+	   (let* ((nn (- n))
+		  (sin-phi (sin phi))
+		  (cos-phi (cos phi))
+		  (k (sqrt m))
+		  (k2sin (* (- 1 (* k sin-phi))
+			    (+ 1 (* k sin-phi)))))
+	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
+		(* (/ nn 3) (expt sin-phi 3)
+		   (bf-rj (expt cos-phi 2) k2sin 1.0
+			  (- 1 (* n (expt sin-phi 2)))))))))
+    ;; FIXME: Reducing the arg by pi has significant round-off.
+    ;; Consider doing something better.
+    (let* ((bf-pi (%pi (realpart phi)))
+	   (cycles (round (realpart phi) bf-pi))
+	   (rem (- phi (* cycles bf-pi))))
+	(let ((complete (bf-elliptic-pi-complete n m)))
+	  (+ (* 2 cycles complete)
+	     (base n rem m))))))
+
+;; Compute inverse_jacobi_sn, for float or bigfloat args.
+(defun bf-inverse-jacobi-sn (u m)
+  (* u (bf-rf (- 1 (* u u))
+	      (- 1 (* m u u))
+	      1)))
+
+;; Compute inverse_jacobi_dn.  We use the following identity
+;; from Gradshteyn & Ryzhik, 8.153.6
+;;
+;;   w = dn(z|m) = cn(sqrt(m)*z, 1/m)
+;;
+;; Solve for z to get
+;;
+;;   z = inverse_jacobi_dn(w,m)
+;;     = 1/sqrt(m) * inverse_jacobi_cn(w, 1/m)
+(defun bf-inverse-jacobi-dn (w m)
+  (cond ((= w 1)
+	 (float 0 w))
+	((= m 1)
+	 ;; jacobi_dn(x,1) = sech(x) so the inverse is asech(x)
+	 (maxima::take '(maxima::%asech) (maxima::to w)))
+	(t
+	 ;; We should do something better to make sure that things
+	 ;; that should be real are real.
+	 (/ (to (maxima::take '(maxima::%inverse_jacobi_cn)
+			      (maxima::to w)
+			      (maxima::to (/ m))))
+	    (sqrt m)))))
+
 (in-package :maxima)
 
 ;; Tell maxima what the derivatives are.
@@ -1885,434 +2392,6 @@ first kind:
        ((rat) -1 2))
       ((%sin) ((mtimes) 2 z))))))
   grad)
-
-(in-package #:bigfloat)
-;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
-;; integrals from http://www.getnet.com/~cherry/elliptbf3.mac.
-;;
-;; The algorithms are based on B.C. Carlson's "Numerical Computation
-;; of Real or Complex Elliptic Integrals".  These are updated to the
-;; algorithms in Journal of Computational and Applied Mathematics 118
-;; (2000) 71-85 "Reduction Theorems for Elliptic Integrands with the
-;; Square Root of two quadritic factors"
-;;
-
-;; NOTE: Despite the names indicating these are for bigfloat numbers,
-;; the algorithms and routines are generic and will work with floats
-;; and bigfloats.
-
-(defun bferrtol (&rest args)
-  ;; Compute error tolerance as sqrt(2^(-fpprec)).  Not sure this is
-  ;; quite right, but it makes the routines more accurate as fpprec
-  ;; increases.
-  (sqrt (reduce #'min (mapcar #'(lambda (x)
-				  (if (rationalp (realpart x))
-				      maxima::+flonum-epsilon+
-				      (epsilon x)))
-			      args))))
-
-;; rc(x,y) = integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)
-;;
-;; log(x)  = (x-1)*rc(((1+x)/2)^2, x), x > 0
-;; asin(x) = x * rc(1-x^2, 1), |x|<= 1
-;; acos(x) = sqrt(1-x^2)*rc(x^2,1), 0 <= x <=1
-;; atan(x) = x * rc(1,1+x^2)
-;; asinh(x) = x * rc(1+x^2,1)
-;; acosh(x) = sqrt(x^2-1) * rc(x^2,1), x >= 1
-;; atanh(x) = x * rc(1,1-x^2), |x|<=1
-
-(defun bf-rc (x y)
-  (let ((yn y)
-	xn z w a an pwr4 n epslon lambda sn s)
-    (cond ((and (zerop (imagpart yn))
-		(minusp (realpart yn)))
-	   (setf xn (- x y))
-	   (setf yn (- yn))
-	   (setf z yn)
-	   (setf w (sqrt (/ x xn))))
-	  (t
-	   (setf xn x)
-	   (setf z yn)
-	   (setf w 1)))
-    (setf a (/ (+ xn yn yn) 3))
-    (setf epslon (/ (abs (- a xn)) (bferrtol x y)))
-    (setf an a)
-    (setf pwr4 1)
-    (setf n 0)
-    (loop while (> (* epslon pwr4) (abs an))
-       do
-	 (setf pwr4 (/ pwr4 4))
-	 (setf lambda (+ (* 2 (sqrt xn) (sqrt yn)) yn))
-	 (setf an (/ (+ an lambda) 4))
-	 (setf xn (/ (+ xn lambda) 4))
-	 (setf yn (/ (+ yn lambda) 4))
-	 (incf n))
-    ;; c2=3/10,c3=1/7,c4=3/8,c5=9/22,c6=159/208,c7=9/8
-    (setf sn (/ (* pwr4 (- z a)) an))
-    (setf s (* sn sn (+ 3/10
-			(* sn (+ 1/7
-				 (* sn (+ 3/8
-					  (* sn (+ 9/22
-						   (* sn (+ 159/208
-							    (* sn 9/8))))))))))))
-    (/ (* w (+ 1 s))
-       (sqrt an))))
-
-
-
-;; See https://dlmf.nist.gov/19.16.E5:
-;; 
-;; rd(x,y,z) = integrate(3/2/sqrt(t+x)/sqrt(t+y)/sqrt(t+z)/(t+z), t, 0, inf)
-;;
-;; rd(1,1,1) = 1
-;; E(K) = rf(0, 1-K^2, 1) - (K^2/3)*rd(0,1-K^2,1)
-;;
-;; B = integrate(s^2/sqrt(1-s^4), s, 0 ,1)
-;;   = beta(3/4,1/2)/4
-;;   = sqrt(%pi)*gamma(3/4)/gamma(1/4)
-;;   = 1/3*rd(0,2,1)
-
-(defun bf-rd (x y z)
-  (let* ((xn x)
-	 (yn y)
-	 (zn z)
-	 (a (/ (+ xn yn (* 3 zn)) 5))
-	 (epslon (/ (max (abs (- a xn))
-			 (abs (- a yn))
-			 (abs (- a zn)))
-		    (bferrtol x y z)))
-	 (an a)
-	 (sigma 0)
-	 (power4 1)
-	 (n 0)
-	 xnroot ynroot znroot lam)
-    (loop while (> (* power4 epslon) (abs an))
-       do
-	 (setf xnroot (sqrt xn))
-	 (setf ynroot (sqrt yn))
-	 (setf znroot (sqrt zn))
-	 (setf lam (+ (* xnroot ynroot)
-		      (* xnroot znroot)
-		      (* ynroot znroot)))
-	 (setf sigma (+ sigma (/ power4
-				 (* znroot (+ zn lam)))))
-	 (setf power4 (* power4 1/4))
-	 (setf xn (* (+ xn lam) 1/4))
-	 (setf yn (* (+ yn lam) 1/4))
-	 (setf zn (* (+ zn lam) 1/4))
-	 (setf an (* (+ an lam) 1/4))
-	 (incf n))
-    ;; c1=-3/14,c2=1/6,c3=9/88,c4=9/22,c5=-3/22,c6=-9/52,c7=3/26
-    (let* ((xndev (/ (* (- a x) power4) an))
-	   (yndev (/ (* (- a y) power4) an))
-	   (zndev (- (* (+ xndev yndev) 1/3)))
-	   (ee2 (- (* xndev yndev) (* 6 zndev zndev)))
-	   (ee3 (* (- (* 3 xndev yndev)
-		      (* 8 zndev zndev))
-		   zndev))
-	   (ee4 (* 3 (- (* xndev yndev) (* zndev zndev)) zndev zndev))
-	   (ee5 (* xndev yndev zndev zndev zndev))
-	   (s (+ 1
-		 (* -3/14 ee2)
-		 (* 1/6 ee3)
-		 (* 9/88 ee2 ee2)
-		 (* -3/22 ee4)
-		 (* -9/52 ee2 ee3)
-		 (* 3/26 ee5)
-		 (* -1/16 ee2 ee2 ee2)
-		 (* 3/10 ee3 ee3)
-		 (* 3/20 ee2 ee4)
-		 (* 45/272 ee2 ee2 ee3)
-		 (* -9/68 (+ (* ee2 ee5) (* ee3 ee4))))))
-    (+ (* 3 sigma)
-       (/ (* power4 s)
-	  (expt an 3/2))))))
-
-;; See https://dlmf.nist.gov/19.16.E1
-;;
-;; rf(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf);
-;;
-;; rf(1,1,1) = 1
-(defun bf-rf (x y z)
-  (let* ((xn x)
-	 (yn y)
-	 (zn z)
-	 (a (/ (+ xn yn zn) 3))
-	 (epslon (/ (max (abs (- a xn))
-			 (abs (- a yn))
-			 (abs (- a zn)))
-		    (bferrtol x y z)))
-	 (an a)
-	 (power4 1)
-	 (n 0)
-	 xnroot ynroot znroot lam)
-    (loop while (> (* power4 epslon) (abs an))
-       do
-       (setf xnroot (sqrt xn))
-       (setf ynroot (sqrt yn))
-       (setf znroot (sqrt zn))
-       (setf lam (+ (* xnroot ynroot)
-		    (* xnroot znroot)
-		    (* ynroot znroot)))
-       (setf power4 (* power4 1/4))
-       (setf xn (* (+ xn lam) 1/4))
-       (setf yn (* (+ yn lam) 1/4))
-       (setf zn (* (+ zn lam) 1/4))
-       (setf an (* (+ an lam) 1/4))
-       (incf n))
-    ;; c1=-3/14,c2=1/6,c3=9/88,c4=9/22,c5=-3/22,c6=-9/52,c7=3/26
-    (let* ((xndev (/ (* (- a x) power4) an))
-	   (yndev (/ (* (- a y) power4) an))
-	   (zndev (- (+ xndev yndev)))
-	   (ee2 (- (* xndev yndev) (* 6 zndev zndev)))
-	   (ee3 (* xndev yndev zndev))
-	   (s (+ 1
-		 (* -1/10 ee2)
-		 (* 1/14 ee3)
-		 (* 1/24 ee2 ee2)
-		 (* -3/44 ee2 ee3))))
-      (/ s (sqrt an)))))
-  
-(defun bf-rj1 (x y z p)
-  (let* ((xn x)
-	 (yn y)
-	 (zn z)
-	 (pn p)
-	 (en (* (- pn xn)
-		(- pn yn)
-		(- pn zn)))
-	 (sigma 0)
-	 (power4 1)
-	 (k 0)
-	 (a (/ (+ xn yn zn pn pn) 5))
-	 (epslon (/ (max (abs (- a xn))
-			 (abs (- a yn))
-			 (abs (- a zn))
-			 (abs (- a pn)))
-		    (bferrtol x y z p)))
-	 (an a)
-	 xnroot ynroot znroot pnroot lam dn)
-    (loop while (> (* power4 epslon) (abs an))
-       do
-       (setf xnroot (sqrt xn))
-       (setf ynroot (sqrt yn))
-       (setf znroot (sqrt zn))
-       (setf pnroot (sqrt pn))
-       (setf lam (+ (* xnroot ynroot)
-		    (* xnroot znroot)
-		    (* ynroot znroot)))
-       (setf dn (* (+ pnroot xnroot)
-		   (+ pnroot ynroot)
-		   (+ pnroot znroot)))
-       (setf sigma (+ sigma
-		      (/ (* power4
-			    (bf-rc 1 (+ 1 (/ en (* dn dn)))))
-			 dn)))
-       (setf power4 (* power4 1/4))
-       (setf en (/ en 64))
-       (setf xn (* (+ xn lam) 1/4))
-       (setf yn (* (+ yn lam) 1/4))
-       (setf zn (* (+ zn lam) 1/4))
-       (setf pn (* (+ pn lam) 1/4))
-       (setf an (* (+ an lam) 1/4))
-       (incf k))
-    (let* ((xndev (/ (* (- a x) power4) an))
-	   (yndev (/ (* (- a y) power4) an))
-	   (zndev (/ (* (- a z) power4) an))
-	   (pndev (* -0.5 (+ xndev yndev zndev)))
-	   (ee2 (+ (* xndev yndev)
-		   (* xndev zndev)
-		   (* yndev zndev)
-		   (* -3 pndev pndev)))
-	   (ee3 (+ (* xndev yndev zndev)
-		   (* 2 ee2 pndev)
-		   (* 4 pndev pndev pndev)))
-	   (ee4 (* (+ (* 2 xndev yndev zndev)
-		      (* ee2 pndev)
-		      (* 3 pndev pndev pndev))
-		   pndev))
-	   (ee5 (* xndev yndev zndev pndev pndev))
-	   (s (+ 1
-		 (* -3/14 ee2)
-		 (* 1/6 ee3)
-		 (* 9/88 ee2 ee2)
-		 (* -3/22 ee4)
-		 (* -9/52 ee2 ee3)
-		 (* 3/26 ee5)
-		 (* -1/16 ee2 ee2 ee2)
-		 (* 3/10 ee3 ee3)
-		 (* 3/20 ee2 ee4)
-		 (* 45/272 ee2 ee2 ee3)
-		 (* -9/68 (+ (* ee2 ee5) (* ee3 ee4))))))
-      (+ (* 6 sigma)
-	 (/ (* power4 s)
-	    (sqrt (* an an an)))))))
-
-(defun bf-rj (x y z p)
-  (let* ((xn x)
-	 (yn y)
-	 (zn z)
-	 (qn (- p)))
-    (cond ((and (and (zerop (imagpart xn)) (>= (realpart xn) 0))
-		(and (zerop (imagpart yn)) (>= (realpart yn) 0))
-		(and (zerop (imagpart zn)) (>= (realpart zn) 0))
-		(and (zerop (imagpart qn)) (> (realpart qn) 0)))
-	   (destructuring-bind (xn yn zn)
-	       (sort (list xn yn zn) #'<)
-	     (let* ((pn (+ yn (* (- zn yn) (/ (- yn xn) (+ yn qn)))))
-		    (s (- (* (- pn yn) (bf-rj1 xn yn zn pn))
-			  (* 3 (bf-rf xn yn zn)))))
-	       (setf s (+ s (* 3 (sqrt (/ (* xn yn zn)
-					  (+ (* xn zn) (* pn qn))))
-			       (bf-rc (+ (* xn zn) (* pn qn)) (* pn qn)))))
-	       (/ s (+ yn qn)))))
-	  (t
-	   (bf-rj1 x y z p)))))
-
-(defun bf-rg (x y z)
-  (* 0.5
-     (+ (* z (bf-rf x y z))
-	(* (- z x)
-	   (- y z)
-	   (bf-rd x y z)
-	   1/3)
-	(sqrt (/ (* x y) z)))))
-
-;; elliptic_f(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1)
-(defun bf-elliptic-f (phi m)
-  (flet ((base (phi m)
-	   (cond ((= m 1)
-		  ;; F(z|1) = log(tan(z/2+%pi/4))
-		  (log (tan (+ (/ phi 2) (/ (%pi phi) 4)))))
-		 (t
-		  (let ((s (sin phi))
-			(c (cos phi)))
-		    (* s (bf-rf (* c c) (- 1 (* m s s)) 1)))))))
-    ;; Handle periodicity (see elliptic-f)
-    (let* ((bfpi (%pi phi))
-	   (period (round (realpart phi) bfpi)))
-      (+ (base (- phi (* bfpi period)) m)
-	 (if (zerop period)
-	     0
-	     (* 2 period (bf-elliptic-k m)))))))
-
-;; elliptic_kc(k) = rf(0, 1-k^2,1)
-;;
-;; or
-;; elliptic_kc(m) = rf(0, 1-m,1)
-
-(defun bf-elliptic-k (m)
-  (cond ((= m 0)
-	 (if (maxima::$bfloatp m)
-	     (maxima::$bfloat (maxima::div 'maxima::$%pi 2))
-	     (float (/ pi 2) 1e0)))
-	((= m 1)
-	 (maxima::merror
-	  (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
-	(t
-	 (bf-rf 0 (- 1 m) 1))))
-
-;; elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
-;;    - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
-;;
-;;
-;; or 
-;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
-;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
-;;
-(defun bf-elliptic-e (phi m)
-  (flet ((base (phi m)
-	   (let* ((s (sin phi))
-		  (c (cos phi))
-		  (c2 (* c c))
-		  (s2 (- 1 (* m s s))))
-	     (- (* s (bf-rf c2 s2 1))
-		(* (/ m 3) (* s s s) (bf-rd c2 s2 1))))))
-    ;; Elliptic E is quasi-periodic wrt to phi:
-    ;;
-    ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
-    (let* ((bfpi (%pi phi))
-	   (period (round (realpart phi) bfpi)))
-      (+ (base (- phi (* bfpi period)) m)
-	 (* 2 period (bf-elliptic-ec m))))))
-    
-
-;; elliptic_ec(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
-;;
-;; or
-;; elliptic_ec(m) = rf(0,1-m,1) - (m/3)*rd(0,1-m,1);
-
-(defun bf-elliptic-ec (m)
-  (cond ((= m 0)
-	 (if (typep m 'bigfloat)
-	     (bigfloat (maxima::$bfloat (maxima::div 'maxima::$%pi 2)))
-	     (float (/ pi 2) 1e0)))
-	((= m 1)
-	 (if (typep m 'bigfloat)
-	     (bigfloat 1)
-	     1e0))
-	(t
-	 (let ((m1 (- 1 m)))
-	   (- (bf-rf 0 m1 1)
-	      (* m 1/3 (bf-rd 0 m1 1)))))))
-
-(defun bf-elliptic-pi-complete (n m)
-  (+ (bf-rf 0 (- 1 m) 1)
-     (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n)))))
-
-(defun bf-elliptic-pi (n phi m)
-  ;; Note: Carlson's DRJ has n defined as the negative of the n given
-  ;; in A&S.
-  (flet ((base (n phi m)
-	   (let* ((nn (- n))
-		  (sin-phi (sin phi))
-		  (cos-phi (cos phi))
-		  (k (sqrt m))
-		  (k2sin (* (- 1 (* k sin-phi))
-			    (+ 1 (* k sin-phi)))))
-	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
-		(* (/ nn 3) (expt sin-phi 3)
-		   (bf-rj (expt cos-phi 2) k2sin 1.0
-			  (- 1 (* n (expt sin-phi 2)))))))))
-    ;; FIXME: Reducing the arg by pi has significant round-off.
-    ;; Consider doing something better.
-    (let* ((bf-pi (%pi (realpart phi)))
-	   (cycles (round (realpart phi) bf-pi))
-	   (rem (- phi (* cycles bf-pi))))
-	(let ((complete (bf-elliptic-pi-complete n m)))
-	  (+ (* 2 cycles complete)
-	     (base n rem m))))))
-
-;; Compute inverse_jacobi_sn, for float or bigfloat args.
-(defun bf-inverse-jacobi-sn (u m)
-  (* u (bf-rf (- 1 (* u u))
-	      (- 1 (* m u u))
-	      1)))
-
-;; Compute inverse_jacobi_dn.  We use the following identity
-;; from Gradshteyn & Ryzhik, 8.153.6
-;;
-;;   w = dn(z|m) = cn(sqrt(m)*z, 1/m)
-;;
-;; Solve for z to get
-;;
-;;   z = inverse_jacobi_dn(w,m)
-;;     = 1/sqrt(m) * inverse_jacobi_cn(w, 1/m)
-(defun bf-inverse-jacobi-dn (w m)
-  (cond ((= w 1)
-	 (float 0 w))
-	((= m 1)
-	 ;; jacobi_dn(x,1) = sech(x) so the inverse is asech(x)
-	 (maxima::take '(maxima::%asech) (maxima::to w)))
-	(t
-	 ;; We should do something better to make sure that things
-	 ;; that should be real are real.
-	 (/ (to (maxima::take '(maxima::%inverse_jacobi_cn)
-			      (maxima::to w)
-			      (maxima::to (/ m))))
-	    (sqrt m)))))
-
-(in-package :maxima)
 
 ;; Define Carlson's elliptic integrals.
 
@@ -4798,91 +4877,6 @@ first kind:
 ;; Jacobi amplitude function.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package #:bigfloat)
-
-;; Arithmetic-Geometric Mean algorithm for real or complex numbers.
-;; See https://dlmf.nist.gov/22.20.ii.
-;;
-;; Do not use this for computing jacobi sn.  It loses some 7 digits of
-;; accuracy for sn(1+%i,0.7).
-(let ((an (make-array 100 :fill-pointer 0))
-      (bn (make-array 100 :fill-pointer 0))
-      (cn (make-array 100 :fill-pointer 0)))
-  ;; Instead of allocating these array anew each time, we'll reuse
-  ;; them and allow them to grow as needed.
-  (defun agm (a0 b0 c0 tol)
-    "Arithmetic-Geometric Mean algorithm for real or complex a0, b0, c0.
-    Algorithm continues until |c[n]| <= tol."
-
-    ;; DLMF (https://dlmf.nist.gov/22.20.ii) says for any real or
-    ;; complex a0 and b0, b0/a0 must not be real and negative.  Let's
-    ;; check that.
-    (let ((q (/ b0 a0)))
-      (when (and (= (imagpart q) 0)
-                 (minusp (realpart q)))
-        (error "Invalid arguments for AGM:  ~A ~A~%" a0 b0)))
-    (let ((nd (max (* 2 (ceiling (log (- (log tol 2))))) 8)))
-      ;; DLMF (https://dlmf.nist.gov/22.20.ii) says that |c[n]| <=
-      ;; C*2^(-2^n), for some constant C.  Solve C*2^(-2^n) = tol to
-      ;; get n = log(log(C/tol)/log(2))/log(2).  Arbitrarily assume C
-      ;; is one to get n = log(-(log(tol)/log(2)))/log(2).  Thus, the
-      ;; approximate number of term needed is n =
-      ;; 1.44*log(-(1.44*log(tol))).  Round to 2*log(-log2(tol)).
-      (setf (fill-pointer an) 0
-            (fill-pointer bn) 0
-            (fill-pointer cn) 0)
-      (vector-push-extend a0 an)
-      (vector-push-extend b0 bn)
-      (vector-push-extend c0 cn)
-
-      (do ((k 0 (1+ k)))
-          ((or (<= (abs (aref cn k)) tol)
-               (>= k nd))
-           (if (>= k nd)
-               (error "Failed to converge")
-               (values k an bn cn)))
-        (vector-push-extend (/ (+ (aref an k) (aref bn k)) 2) an)
-        ;; DLMF (https://dlmf.nist.gov/22.20.ii) has conditions on how
-        ;; to choose the square root depending on the phase of a[n-1]
-        ;; and b[n-1].  We don't check for that here.
-        (vector-push-extend (sqrt (* (aref an k) (aref bn k))) bn)
-        (vector-push-extend (/ (- (aref an k) (aref bn k)) 2) cn)))))
-
-(defun jacobi-am-agm (u m tol)
-  "Evaluate the jacobi_am function from real u and m with |m| <= 1.  This
-  uses the AGM method until a tolerance of TOL is reached for the
-  error."
-  (multiple-value-bind (n an bn cn)
-      (agm 1 (sqrt (- 1 m)) (sqrt m) tol)
-    (declare (ignore bn))
-    ;; See DLMF (https://dlmf.nist.gov/22.20.ii) for the algorithm.
-    (let ((phi (* u (aref an n) (expt 2 n))))
-      (loop for k from n downto 1
-            do
-               (setf phi (/ (+ phi (asin (* (/ (aref cn k)
-                                               (aref an k))
-                                            (sin phi))))
-                            2)))
-      phi)))
-
-;; Compute Jacobi am for real or complex values of U and M.  The args
-;; must be floats or bigfloat::bigfloats.  TOL is the tolerance used
-;; by the AGM algorithm.  It is ignored if the AGM algorithm is not
-;; used.
-(defun bf-jacobi-am (u m tol)
-  (cond ((and (realp u) (realp m) (<= (abs m) 1))
-         ;; The case of real u and m with |m| <= 1.  We can use AGM to
-         ;; compute the result.
-         (jacobi-am-agm (to u)
-                        (to m)
-                        tol))
-        (t
-         ;; Otherwise, use the formula am(u,m) = asin(jacobi_sn(u,m)).
-         ;; (See DLMF https://dlmf.nist.gov/22.16.E1).  This appears
-         ;; to be what functions.wolfram.com is using in this case.
-         (asin (sn (to u) (to m))))))
-
-(in-package :maxima)
 (def-simplifier jacobi_am (u m)
   (let (args)
     (cond
