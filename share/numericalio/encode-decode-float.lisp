@@ -45,6 +45,21 @@
           (byte 23 0)
           significand)))))
 
+(defun construct-float-32-from-integer (x)
+  (multiple-value-bind
+    (significand exponent sign)
+    (extract-smashed-float-32-from-integer x)
+    (* sign (scale-float (float significand 1f0) exponent))))
+
+(defun extract-smashed-float-32-from-integer (x)
+  (if (eql x 0)
+    (values 0 0 0)
+    (let
+      ((significand (dpb x (byte 23 0) #x800000))
+       (exponent (- (ldb (byte 8 23) x) 127 23))
+       (sign (if (eql (ldb (byte 1 31) x) 0) 1 -1)))
+      (values significand exponent sign))))
+
 (defun smash-decoded-float-64-into-integer (significand exponent sign)
   (if (= significand 0)
     0
