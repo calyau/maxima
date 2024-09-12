@@ -627,6 +627,13 @@ limit(-x*log(%e^x+1)-li[2](-%e^x)+x^2/2, x, inf);
 limit(li[3](x)/log(-x)^3,x,inf);
 -1/6;
 
+/* #4368 incorrect limit(li[2](2*exp(x*%i)), x, 0, plus) */
+limit(li[2](2*exp(x*%i)), x, 0, plus);
+(-4*%i*%pi*log(2)+%pi^2)/4;
+
+limit(li[2](2*exp(x*%i)), x, 0, minus);
+(4*%i*%pi*log(2)+%pi^2)/4;
+
 /* The initial problem which triggers this bug */
 declare(n,integer);
 done;

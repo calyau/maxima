@@ -3547,18 +3547,39 @@ ignoring dummy variables and array indices."
     (eq t (mgrp 1 (car z)))))    ; x < 1
 
 (defun simplim%li (expr x pt)
-  (let ((n (car (subfunsubs expr))) (e (car (subfunargs expr))))
+  (let* ((n (car (subfunsubs expr)))
+ 	 (e (car (subfunargs expr)))
+	 (elim (limit e x pt 'think))
+	 (dir))
     (cond ((freeof x n)
-	   (setq e (limit e x pt 'think))
-	   (cond ((and (eq e '$minf) (integerp n) (>= n 2))
+	   (cond ((and (eq elim '$minf) (integerp n) (>= n 2))
 		  '$minf)
-		 ((and (eq e '$inf) (integerp n) (>= n 2))
+		 ((and (eq elim '$inf) (integerp n) (>= n 2))
 		  '$infinity)
-		 ((or (eql (ridofab e) 1) (and (not (extended-real-p e)) (off-one-to-inf e)))
+		 ((or (eql (ridofab elim) 1) (and (not (extended-real-p elim)) (off-one-to-inf elim)))
 		  ;; Limit of li[s](1) can be evaluated by just
 		  ;; substituting in 1.
 		  ;; Same for li[s](x) when x is < 1.
-		  (subftake '$li (list n) (list e)))
+		  (subftake '$li (list n) (list elim)))
+
+		 ((and (not (extended-real-p elim))
+		       (not (off-one-to-inf elim)))
+		  ;; handle branch cut along line (1, inf).
+		  ;; if we approach from positive imaginary,
+		  ;;   result is the same as result on the line.
+		  ;; if we approach from negative imaginary,
+		  ;;   imaginary part of result has opposite sign
+		  ;;
+		  ;; this works for  limit(li[2](2*exp(x*%i)), x, 0, plus)
+		  ;; but currently does not work in general because maxima
+		  ;; thinks conjugate(li[n](x))  =>  li[n](x)
+		  (setq dir (behavior ($imagpart e) var val))
+		  (cond ((eq dir 1)
+			 (subftake '$li (list n) (list elim)))
+			((eq dir -1)
+			 (ftake '$conjugate (subftake '$li (list n) (list elim))))
+			(t (throw 'limit nil))))
+		 
 		 (t (throw 'limit nil))))
 	  ;; Claim ignorance when order depends on limit variable.	
 	  (t (throw 'limit nil)))))
