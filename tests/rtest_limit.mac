@@ -629,10 +629,10 @@ limit(li[3](x)/log(-x)^3,x,inf);
 
 /* #4368 incorrect limit(li[2](2*exp(x*%i)), x, 0, plus) */
 limit(li[2](2*exp(x*%i)), x, 0, plus);
-(-4*%i*%pi*log(2)+%pi^2)/4;
+%i*%pi*log(2)+%pi^2/4;
 
 limit(li[2](2*exp(x*%i)), x, 0, minus);
-(4*%i*%pi*log(2)+%pi^2)/4;
+-%i*%pi*log(2)+%pi^2/4;
 
 /* The initial problem which triggers this bug */
 declare(n,integer);

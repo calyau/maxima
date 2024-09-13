@@ -3565,18 +3565,18 @@ ignoring dummy variables and array indices."
 		 ((and (not (extended-real-p elim))
 		       (not (off-one-to-inf elim)))
 		  ;; handle branch cut along line (1, inf).
-		  ;; if we approach from positive imaginary,
-		  ;;   result is the same as result on the line.
 		  ;; if we approach from negative imaginary,
+		  ;;   result is the same as result on the line.
+		  ;; if we approach from positive imaginary,
 		  ;;   imaginary part of result has opposite sign
 		  ;;
 		  ;; this works for  limit(li[2](2*exp(x*%i)), x, 0, plus)
 		  ;; but currently does not work in general because maxima
 		  ;; thinks conjugate(li[n](x))  =>  li[n](x)
 		  (setq dir (behavior ($imagpart e) var val))
-		  (cond ((eq dir 1)
+		  (cond ((eq dir -1)
 			 (subftake '$li (list n) (list elim)))
-			((eq dir -1)
+			((eq dir 1)
 			 (ftake '$conjugate (subftake '$li (list n) (list elim))))
 			(t (throw 'limit nil))))
 		 
