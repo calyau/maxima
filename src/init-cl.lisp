@@ -795,10 +795,11 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
     (setf ext:*default-external-format* :utf-8))
   #+clisp
   (ignore-errors
-    (progn (setf custom:*default-file-encoding*
-		 (ext:make-encoding :input-error-action #\?))
-	   (setf custom:*terminal-encoding*
-		 custom:*default-file-encoding*))))
+   (setf custom:*terminal-encoding*
+         (ext:make-encoding
+          :charset "utf-8"
+          :line-terminator (ext:encoding-line-terminator custom:*terminal-encoding*))
+	 custom:*default-file-encoding* custom:*terminal-encoding*)))
 
 (import 'cl-user::run)
 

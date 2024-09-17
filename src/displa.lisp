@@ -836,12 +836,6 @@
                              t)))
 
 (defun display2d-unicode-enabled ()
-  #+(and clisp unicode)
-  (setf custom:*terminal-encoding*
-        (ext:make-encoding
-         :charset "utf-8"
-         :line-terminator
-         (ext:encoding-line-terminator custom:*terminal-encoding*)))
   #+lisp-unicode-capable
   (and $display2d_unicode
        ;; Makes sure the version of CLISP being used has Unicode support.
