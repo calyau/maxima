@@ -122,7 +122,7 @@
 	 ;; also add an 'assign property to verify that only fixnums,
 	 ;; etc., are allowed.
          (when *warn-deprecated-defmvar-options*
-           (format t "*** Deprecated defmvar option: ~A for ~A~%"
+           (warn "*** Deprecated defmvar option: ~A for ~A~%"
                    (car opts) var)))
         (in-core
          ;; Ignore this
