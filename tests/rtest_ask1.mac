@@ -5,7 +5,7 @@
  *
  * Sample Usage:
  *
- * maxima --batch-string='batch_answers_from_file:true; batch("tests/rtest_ask.mac", test);'
+ * maxima --batch-string='batch_answers_from_file:true; batch("tests/rtest_ask1.mac", test);'
  *
  * Note that setting `batch_answers_from_file' to true is not needed when `batch(...,test)'
  * is executed via the `batch-string' command-line option. It is needed if the test is done
