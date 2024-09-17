@@ -98,7 +98,7 @@ Return nil if LINE is zero-length or it matches a regexp in
     (:cmd "%s --lisp=%s --quit-on-error --very-very-quiet --no-init --batch-string='printf(true, \"HELLO~%%\");1/0;printf(true,\"Integral xdx = ~a~%%\",integrate(x,x));';"
 	  :stdout "HELLO" :stderr "expt: undefined: 0 to a negative exponent.\n -- an error. To debug this try: debugmode(true);"
 	  :exit 1 :lisps (gcl sbcl ecl clisp) :results (nil t t t))
-    maxima-cli--vvq+batch-string-question
+    maxima-cli--vq+batch-string-question
     (:cmd "%s --lisp=%s --very-quiet --no-init --batch-string='(display2d:false, integrate(x^n,x)); y;'"
 	  :stdout "(display2d:false,integrate(x^n,x))\nlog(x)" :stderr ""
 	  :exit 1 :lisps (gcl sbcl ecl clisp) :results (t t t t))
