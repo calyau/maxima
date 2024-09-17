@@ -18,11 +18,10 @@ set -e
 # This command doesn't exit with a helpful status if the lisp survives
 # but the test fails so we must check by hand that nothing untoward
 # happened.
-# 
-# Before we run the testsuite we add the interactive tests and feed them
-# with input over a pipe. ...and we change the input for questions to
-# the lisp's standard input so it isn't taken from the keyboard even
-# if the current lisp defaults to that.
+#
+# Since commit 76db0aec5 introduced the ability to read answers to
+# interactive tests from the input file, the regression test
+# rtest_ask1.mac is run as a regular regression test.
 echo "Running the testsuite..."
 $LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();run_testsuite(share_tests=true);' 2>&1 | tee "$OUTPUT_LOG"
 
