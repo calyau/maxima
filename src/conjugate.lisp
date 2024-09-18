@@ -1,4 +1,4 @@
-;;  Copyright 2005, 2006, 2020, 2021 by Barton Willis
+;;  Copyright 2005, 2006, 2020, 2021, 2024 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -180,7 +180,7 @@
   (setq x (car x))
   (cond ((off-negative-real-axisp x)
 	 (take '(%plog) (take '($conjugate) x)))
-	((on-negative-real-axisp x)
+	((on-negative-real-axisp x) ; simplified away--never happens
 	 (add (take '(%plog) (neg x)) (mul -1 '$%i '$%pi)))
 	(t (list '($conjugate simp)  (take '(%plog) x)))))
 
@@ -311,13 +311,19 @@
 		   (take '(%log_gamma) (take '($conjugate) z)) 
 		(list '($conjugate simp) (take '(%log_gamma) z))))
 
-;; conjugate of polylogarithm li[s](x), where z = (s,x). We have li[s](x) = x+x^2/2^s+x^3/3^s+...
-;; Since for all integers k, we have conjugate(x^k/k^s) = conjugate(x)^k/k^conjugate(s), we 
-;; commute conjugate with li.
+;; For z ∈ C \ [1,∞) and n ∈ {1,2,3,...}, replace conjugate(li[n](z)) by li[n](conjugate(z)). 
+;; For all other cases, return a conjugate nounform.
 (defun conjugate-li (z)
-	(let ((s (take '($conjugate) (first z))) (x (take '($conjugate) (second z))))
-	   (take '(mqapply) `(($li array) ,s) x)))
-
+   (let ((n (first z)) (zz (risplit (second z))))
+          (if (and ($featurep n '$integer)
+                   (eq t (mgrp n 0))
+                   ;; either the imagpart(z) ≠ 0 or the realpart(z) < 1
+                   (or (eq t (mnqp (cdr zz) 0)) (eq t (mgrp 1 (car zz)))))
+                       (subftake '$li (list n) (list (ftake '$conjugate (second z))))
+                       ;; give up and return conjugate nounform
+                       (list (list '$conjugate 'simp)
+                          (subftake '$li (list n) (list (second z)))))))
+             
 (defun conjugate-psi (z)
 	(let ((s (take '($conjugate) (first z))) (x (take '($conjugate) (second z))))
 	   (take '(mqapply) `(($psi array) ,s) x)))

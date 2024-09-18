@@ -643,8 +643,9 @@ conjugate(log_gamma(z))$
 conjugate(log_gamma(1-%i));
 log_gamma(1+%i)$
 
-conjugate(li[2](z));
-li[2](conjugate(z))$
+/* #4373 conjugate doesn't know li[n](x) is complex in general */
+block([w : conjugate(li[2](z))], [inpart(w,0), args(w)]);
+[conjugate,[li[2](z)]]$
 
 conjugate(psi[2](z));
 psi[2](conjugate(z))$
@@ -803,6 +804,46 @@ conjugate$
 (remove(z,complex), conjugate(z));
 z$
 
+/* More conjugate of li; see  #4373 conjugate doesn't know li[n](x) is complex in general */
+(declare(n,integer), assume(n > 0), assume(xx < 1),0);
+0$
+
+conjugate(li[n](2/3));
+li[n](2/3)$
+
+conjugate(li[2](2/3));
+li[2](2/3)$
+
+conjugate(li[n](2/3));
+li[n](2/3)$
+
+conjugate(li[n](xx));
+li[n](xx)$
+
+conjugate(li[n](x+%i));
+li[n](x-%i)$
+
+conjugate(li[3](x+%i));
+li[3](x-%i)$
+
+(declare(z,complex),0);
+0$
+
+tex1(conjugate(z + F(z)));
+"F\\left(z\\right)^{\\ast}+z^{\\ast}"$
+
+block([xxx : conjugate(sum(f(x),x,%i,inf))], [op(xxx), args(first(xxx))]);
+[conjugate,[f(x),x,%i,inf]]$
+
+block([xxx : conjugate(product(f(x),x,%i,inf))], [op(xxx), args(first(xxx))]);
+[conjugate,[f(x),x,%i,inf]]$
+
+block([xxx : conjugate(atanh(s))], [op(xxx), args(xxx)]);
+ [conjugate, [atanh(s)]]$
+
+(forget(z,complex), forget(n,integer), forget(n > 0),forget(xx < 1),0);
+0$
+
 (kill(all),0);
 0$
 
@@ -812,3 +853,6 @@ values;
 
 facts();
 []$
+
+contexts;
+[initial,global]$

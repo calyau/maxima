@@ -1208,6 +1208,19 @@ limit((asin(x+h)-asin(x))/h,h,0);
 tlimit((asin(x+h)-asin(x))/h,h,0);
 -sqrt(1-x^2)/(x^2-1)$
 
+/* #4338 limit((1+%i)^(2*a)*2^(-a),x,inf) when logexpand is true */
+block([logexpand : true], limit((1+%i)^(2*a)*2^(-a),a,inf));
+ind$
+
+block([logexpand : false], limit((1+%i)^(2*a)*2^(-a),a,inf));
+ind$
+
+block([logexpand : true], tlimit((1+%i)^(2*a)*2^(-a),a,inf));
+ind$
+
+block([logexpand : false], tlimit((1+%i)^(2*a)*2^(-a),a,inf));
+ind$
+
 /* clean up*/
 (kill(values),0);
 0$
