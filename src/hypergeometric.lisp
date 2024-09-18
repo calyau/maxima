@@ -85,7 +85,7 @@
 
 	  (t 'nonpolynomial))))
 
-;; The function simpcheck changes taylor polynomials to general form--that messes
+;; The function simpcheck changes taylor polynomials to general form--that makes
 ;; it harder to taylorize hypergeometrics (things like hypergeometric([5],[], taylor(x,x,0,3)) -->
 ;; a taylor polynomial. So use tsimpcheck: if e is a taylor polynomial, simplify; otherwise, simpcheck.
 
