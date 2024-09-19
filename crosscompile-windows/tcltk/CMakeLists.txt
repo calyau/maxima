@@ -10,11 +10,11 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(TCLVERSION "8.6.14")
-set(TKVERSION  "8.6.14")
+set(TCLVERSION "8.6.15")
+set(TKVERSION  "8.6.15")
 
-set(TCL_MD5 "c30b57c6051be28fa928d09aca82841e")
-set(TK_MD5  "cf2aaac0478ef468b48e65c10e6b0d07")
+set(TCL_MD5 "c13a4d5425b5ae335258342b38ba34c2")
+set(TK_MD5  "6d64b6eb021062f378017d403fedcbe6")
 
 set(TCL_URL "https://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL  "https://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
