@@ -616,7 +616,7 @@
   (let ((try (macsyma-fsymeval-sub fun)))
     (cond (try try)
 	  ((get fun 'autoload)
-	   (load-and-tell (get fun 'autoload))
+	   ($load (get fun 'autoload))
 	   (setq try (macsyma-fsymeval-sub fun))
 	   (or try
 	       (mtell (intl:gettext "trace: ~@:M has no functional properties after autoloading.~%")
