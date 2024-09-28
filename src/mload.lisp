@@ -192,6 +192,7 @@
             (batch-stream in-stream demo)))))))
 
 (defun batch-stream (in-stream demo)
+  (declare (special $batch_answers_from_file))
   (let ($load_pathname)
     (let*
       ((*read-base* 10.)
@@ -378,7 +379,7 @@
 (defun test-batch (filename expected-errors
 			    &key (out *standard-output*) (show-expected nil)
 			    (show-all nil) (showtime nil))
-
+  (declare (special $batch_answers_from_file))
   (let (result
 	next-result
 	next
