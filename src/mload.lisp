@@ -186,7 +186,7 @@
                                   '((mlist) $file_search_maxima)))))
       (cond
         ((eq demo :test)
-         (test-batch filename nil :show-all t :in $batch_answers_from_file))
+         (test-batch filename nil :show-all t))
         (t
           (with-open-file (in-stream filename)
             (batch-stream in-stream demo)))))))
@@ -199,7 +199,9 @@
        (in-stream-string-rep
         (if stream-truename
           (setq $load_pathname (cl:namestring stream-truename))
-          (format nil "~A" in-stream))))
+          (format nil "~A" in-stream)))
+       (*query-io* (if $batch_answers_from_file
+		       (make-two-way-stream in-stream (make-string-output-stream)) *query-io*)))
       (format t (intl:gettext "~%read and interpret ~A~%") in-stream-string-rep)
       (catch 'macsyma-quit (continue :stream in-stream :batch-or-demo-flag demo))
       (incf $linenum)
@@ -374,7 +376,7 @@
 ;;       fail but actually passed.
 ;;   4.  Total number of tests in the file
 (defun test-batch (filename expected-errors
-			    &key (out *standard-output*) (in nil) (show-expected nil)
+			    &key (out *standard-output*) (show-expected nil)
 			    (show-all nil) (showtime nil))
 
   (let (result
@@ -419,7 +421,7 @@
     (unwind-protect 
 	(progn
 	  (setq strm (open filename :direction :input))
-	  (when in
+	  (when $batch_answers_from_file
 	    (setq *query-io* (make-two-way-stream strm out)))
 	  (setq start-real-time (get-internal-real-time))
 	  (setq start-run-time (get-internal-run-time))
@@ -921,7 +923,7 @@
 			      (multiple-value-setq (filename diff upass test-count)
 				(test-batch test-file-path
 					    expected-failures :show-expected display_known_bugs
-					    :show-all display_all :showtime time :in $batch_answers_from_file))
+					    :show-all display_all :showtime time))
 			      (incf total-count test-count)
 			      (when (or (rest diff) (rest upass))
 				(incf error-count (length (rest diff)))
