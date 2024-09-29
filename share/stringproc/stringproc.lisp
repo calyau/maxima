@@ -727,14 +727,19 @@ Please use `unicode' for code points larger than 127." )))
 ;; Special Maxima characters
 ;;
 (defmvar $newline
-  (string #\newline) "Maxima newline character" string)
-;;  
-(defmvar $tab
-  (string #\tab)     "Maxima tab character"     string)
-;;  
-(defmvar $space
-  (string #\space)   "Maxima space character"   string)
+  (string #\newline) "Maxima newline character")
 
+(setf (get '$newline 'assign) (lambda (x y) (when (not (stringp y)) (mseterr x y "must be a string"))))
+
+(defmvar $tab
+  (string #\tab) "Maxima tab character")
+
+(setf (get '$tab 'assign) (lambda (x y) (when (not (stringp y)) (mseterr x y "must be a string"))))
+
+(defmvar $space
+  (string #\space) "Maxima space character")
+
+(setf (get '$space 'assign) (lambda (x y) (when (not (stringp y)) (mseterr x y "must be a string"))))
 
 (defun $tab () $tab) ;; returns Maxima tab character; can be autoloaded
 
