@@ -45,22 +45,27 @@
       (merror (intl:gettext "assignment: must assign a string to ~:M; found: ~M") var value))))
 
 (defun print-directories ()
-  (format t "~25a~a~%" "maxima-prefix:" *maxima-prefix*)
-  (format t "~25a~a~%" "maxima-topdir:" *maxima-topdir*)
-  (format t "~25a~a~%" "maxima-imagesdir:" *maxima-imagesdir*)
-  (format t "~25a~a~%" "maxima-sharedir:" *maxima-sharedir*)
-  (format t "~25a~a~%" "maxima-srcdir:" *maxima-srcdir*)
-  (format t "~25a~a~%" "maxima-demodir:" *maxima-demodir*)
-  (format t "~25a~a~%" "maxima-testsdir:" *maxima-testsdir*)
-  (format t "~25a~a~%" "maxima-docdir:" *maxima-docdir*)
-  (format t "~25a~a~%" "maxima-infodir:" *maxima-infodir*)
-  (format t "~25a~a~%" "maxima-htmldir:" *maxima-htmldir*)
-  (format t "~25a~a~%" "maxima-plotdir:" *maxima-plotdir*)
-  (format t "~25a~a~%" "maxima-layout-autotools:" *maxima-layout-autotools*)
-  (format t "~25a~a~%" "maxima-userdir:" *maxima-userdir*)
-  (format t "~25a~a~%" "maxima-tempdir:" *maxima-tempdir*)
-  (format t "~25a~a~%" "maxima-lang-subdir:" *maxima-lang-subdir*)
-  (format t "~25a~a~%" "maxima-objdir:" *maxima-objdir*))
+  (dolist (var '(*maxima-prefix*
+                 *maxima-topdir*
+                 *maxima-imagesdir*
+                 *maxima-sharedir*
+                 *maxima-srcdir*
+                 *maxima-demodir*
+                 *maxima-testsdir*
+                 *maxima-docdir*
+                 *maxima-infodir*
+                 *maxima-htmldir*
+                 *maxima-plotdir*
+                 *maxima-layout-autotools*
+                 *maxima-userdir*
+                 *maxima-tempdir*
+                 *maxima-lang-subdir*
+                 *maxima-objdir*))
+    ;; Neatly print out the name of the variable (sans *) and the
+    ;; corresponding value.
+    (format t "~a:~25t~a~%"
+            (string-trim "*" (string-downcase var))
+            (symbol-value var))))
 
 (defvar *maxima-lispname*
         #+clisp "clisp"
