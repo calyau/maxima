@@ -236,7 +236,8 @@
 	   ("de" "Index-der-Variablen-und-Funktionen.html" "Index der Variablen und Funktionen")
 	   ("pt" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")
 	   ("es" "Indice-de-Funciones-y-Variables.html" "Índice de Funciones y Variables")
-	   ("pt_BR" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")))
+	   ("pt_BR" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")
+           ("ja" "Function-and-Variable-Index.html" "Function and Variable Index")))
   (destructuring-bind (key &rest value)
       entry
     (setf (gethash key *index-file-name*) value)))
