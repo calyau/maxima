@@ -145,7 +145,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 * Пакет atensor::                    Вычисления с тензорными алгебрами.
 * Sums Products and Series::         Taylor and power series.
 * Теория чисел::                     Теория чисел.
-* Symmetries::                  
+* Package sym::                  
 * Groups::                           Abstract algebra.
 
 Продвинутые возможности и программирование
@@ -174,31 +174,31 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 * Пакет draw::                    Интерфейс Maxima к прогрпмме Gnuplot.
 * Пакет dynamics::                Графика для динамических систем и фракталов.
 * Пакет f90::                     Транслятор из Maxima в Fortran.
-* ggf-pkg::                       Generating function of sequences.
+* Package ggf::                       Generating function of sequences.
 * Пакет graphs::                  Теория графов.
 * Пакет grobner::                 Функции для работы с базисом Гребнера.
 * Пакет impdiff::                 Неявные производные.
 * Пакет implicit_plot::           Графики неявных функций.
 * Пакет interpol::                Интерполяция.
-* lapack-pkg::                    LAPACK functions for linear algebra.
-* lbfgs-pkg::                     L-BFGS unconstrained minimization package.
-* lindstedt-pkg::                 Lindstedt package.
-* linearalgebra-pkg::             Functions for linear algebra.
-* lsquares-pkg::                  Least squares.
-* makeOrders-pkg::                Polynomial utility.
-* mnewton-pkg::                   Newton's method.
-* numericalio-pkg::               Reading and writing files.
-* opsubst-pkg::                   Substitutions utility.
-* orthopoly-pkg::                 Orthogonal polynomials.
-* romberg-pkg::                   Romberg method for numerical integration.
-* simplex-pkg::                   Linear programming.
-* simplification-pkg::            Simplification rules and functions.
-* solve_rec-pkg::                 Linear recurrences.
-* stats-pkg::                     Statistical inference package.
+* Package lapack::                    LAPACK functions for linear algebra.
+* Package lbfgs::                     L-BFGS unconstrained minimization package.
+* Package lindstedt::                 Lindstedt package.
+* Package linearalgebra::             Functions for linear algebra.
+* Package lsquares::                  Least squares.
+* Package makeOrders::                Polynomial utility.
+* Package mnewton::                   Newton's method.
+* Package numericalio::               Reading and writing files.
+* Package opsubst::                   Substitutions utility.
+* Package orthopoly::                 Orthogonal polynomials.
+* Package romberg::                   Romberg method for numerical integration.
+* Package simplex::                   Linear programming.
+* Package simplification::            Simplification rules and functions.
+* Package solve_rec::                 Linear recurrences.
+* Package stats::                     Statistical inference package.
 * Пакет stirling::                Формула Стирлинга.
-* stringproc-pkg::                String processing.
-* unit-pkg::                      Units and dimensions package.
-* zeilberger-pkg::                Functions for hypergeometric summation.
+* Package stringproc::                String processing.
+* Package unit::                      Units and dimensions package.
+* Package zeilberger::                Functions for hypergeometric summation.
 
 
 Индекс
@@ -360,7 +360,7 @@ Sums Products and Series
 
 * Функции и переменные для теории чисел::  
 
-Symmetries
+Package sym
 
 * Functions and Variables for Symmetries::  
 
@@ -712,15 +712,15 @@ zeilberger
 @chapter Sums, Products, and Series
 @include Series.texi
 
-@node Теория чисел, Symmetries, Sums Products and Series, Top
+@node Теория чисел, Package sym, Sums Products and Series, Top
 @chapter Теория чисел
 @include Number.texi
 
-@node Symmetries, Groups, Теория чисел, Top
-@chapter Symmetries
+@node Package sym, Groups, Теория чисел, Top
+@chapter Package sym
 @include Symmetries.texi
 
-@node Groups, Окружение времени выполнения, Symmetries, Top
+@node Groups, Окружение времени выполнения, Package sym, Top
 @chapter Groups
 @include Groups.texi
 
@@ -790,15 +790,15 @@ zeilberger
 @chapter Пакет dynamics
 @include dynamics.texi
 
-@node Пакет f90, ggf-pkg, Пакет dynamics, Top
+@node Пакет f90, Package ggf, Пакет dynamics, Top
 @chapter Пакет f90
 @include f90.texi
 
-@node ggf-pkg, Пакет graphs, Пакет f90, Top
+@node Package ggf, Пакет graphs, Пакет f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node Пакет graphs, Пакет grobner, ggf-pkg, Top
+@node Пакет graphs, Пакет grobner, Package ggf, Top
 @chapter Пакет graphs
 @include graphs.texi
 
@@ -814,87 +814,87 @@ zeilberger
 @chapter Пакет implicit_plot
 @include implicit_plot.texi
 
-@node Пакет interpol, lapack-pkg, Пакет implicit_plot, Top
+@node Пакет interpol, Package lapack, Пакет implicit_plot, Top
 @chapter Пакет interpol
 @include interpol.texi
 
-@node lapack-pkg, lbfgs-pkg, Пакет interpol, Top
+@node Package lapack, Package lbfgs, Пакет interpol, Top
 @chapter lapack
 @include lapack.texi
 
-@node lbfgs-pkg, lindstedt-pkg, lapack-pkg, Top
+@node Package lbfgs, Package lindstedt, Package lapack, Top
 @chapter lbfgs
 @include lbfgs.texi
 
-@node lindstedt-pkg, linearalgebra-pkg, lbfgs-pkg, Top
+@node Package lindstedt, Package linearalgebra, Package lbfgs, Top
 @chapter lindstedt
 @include lindstedt.texi
 
-@node linearalgebra-pkg, lsquares-pkg, lindstedt-pkg, Top
+@node Package linearalgebra, Package lsquares, Package lindstedt, Top
 @chapter linearalgebra
 @include linearalgebra.texi
 
-@node lsquares-pkg, makeOrders-pkg, linearalgebra-pkg, Top
+@node Package lsquares, Package makeOrders, Package linearalgebra, Top
 @chapter lsquares
 @include lsquares.texi
 
-@node makeOrders-pkg, mnewton-pkg, lsquares-pkg, Top
+@node Package makeOrders, Package mnewton, Package lsquares, Top
 @chapter makeOrders
 @include makeOrders.texi
 
-@node mnewton-pkg, numericalio-pkg, makeOrders-pkg, Top
+@node Package mnewton, Package numericalio, Package makeOrders, Top
 @chapter mnewton
 @include mnewton.texi
 
-@node numericalio-pkg, opsubst-pkg, mnewton-pkg, Top
+@node Package numericalio, Package opsubst, Package mnewton, Top
 @chapter numericalio
 @include numericalio.texi
 
-@node opsubst-pkg, orthopoly-pkg, numericalio-pkg, Top
+@node Package opsubst, Package orthopoly, Package numericalio, Top
 @chapter opsubst
 @include opsubst.texi
 
-@node orthopoly-pkg, romberg-pkg, opsubst-pkg, Top
+@node Package orthopoly, Package romberg, Package opsubst, Top
 @chapter orthopoly
 @include orthopoly.texi
 
-@node romberg-pkg, simplex-pkg, orthopoly-pkg, Top
+@node Package romberg, Package simplex, Package orthopoly, Top
 @chapter romberg
 @include romberg.texi
 
-@node simplex-pkg, simplification-pkg, romberg-pkg, Top
+@node Package simplex, Package simplification, Package romberg, Top
 @chapter simplex
 @include simplex.texi
 
-@node simplification-pkg, solve_rec-pkg, simplex-pkg, Top
+@node Package simplification, Package solve_rec, Package simplex, Top
 @chapter simplification
 @include simplifications.texi
 
-@node solve_rec-pkg, stats-pkg, simplification-pkg, Top
+@node Package solve_rec, Package stats, Package simplification, Top
 @chapter solve_rec
 @include solve_rec.texi
 
-@node stats-pkg, Пакет stirling, solve_rec-pkg, Top
+@node Package stats, Пакет stirling, Package solve_rec, Top
 @chapter stats
 @include stats.texi
 
-@node Пакет stirling, stringproc-pkg, stats-pkg, Top
+@node Пакет stirling, Package stringproc, Package stats, Top
 @chapter Пакет stirling
 @include stirling.texi
 
-@node stringproc-pkg, unit-pkg, Пакет stirling, Top
+@node Package stringproc, Package unit, Пакет stirling, Top
 @chapter stringproc
 @include stringproc.texi
 
-@node unit-pkg, zeilberger-pkg, stringproc-pkg, Top
+@node Package unit, Package zeilberger, Package stringproc, Top
 @chapter unit
 @include unit.texi
 
-@node zeilberger-pkg, Указатель функций и переменных, unit-pkg, Top
+@node Package zeilberger, Указатель функций и переменных, Package unit, Top
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Указатель функций и переменных,  , zeilberger-pkg, Top
+@node Указатель функций и переменных,  , Package zeilberger, Top
 @chapter Указатель функций и переменных
 @include Indices.texi
 
