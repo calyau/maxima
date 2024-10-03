@@ -3,6 +3,11 @@ Maxima 5.47-post change log
 
 New items in core:
 ------------------
+ * Print errors and warnings to stderr instead of stdout
+ * New command-line option --quit-on-error to make Maxima quit upon first
+   runtime error
+ * New command-line option --very-very-quiet to silence Maxima
+ * New global variable batch_answers_from_file
  * New Unicode display2d and global variable display2d_unicode
  * A new function random-name in plot.lisp that generates a random string
 
