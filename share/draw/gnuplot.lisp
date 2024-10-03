@@ -1,7 +1,7 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
 ;;;  Copyright (C) 2007-2016 Mario Rodriguez Riotorto
-;;; Time-stamp: "2022-03-25 12:13:47 villate"
+;;;  Time-stamp: "2024-10-03 11:55:03 Leo Butler"
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -3364,6 +3364,16 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name)))
+        ($tikz (format cmdstorage "set terminal tikz ~a size ~a, ~a~%set out '~a.tikz'"
+                           (write-font-type)
+                           (/ (round (first (get-option '$dimensions))) 100.0)
+                           (/ (round (second (get-option '$dimensions))) 100.0)
+                           (get-option '$file_name)))
+        ($tikz_standalone (format cmdstorage "set terminal tikz standalone ~a size ~a, ~a~%set out '~a.tikz'"
+			  (write-font-type)
+                          (/ (round (first (get-option '$dimensions))) 100.0)
+                          (/ (round (second (get-option '$dimensions))) 100.0)
+                          (get-option '$file_name)))
         ($animated_gif (format cmdstorage "set terminal gif enhanced animate ~a size ~a, ~a delay ~a~%set out '~a.gif'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3695,6 +3705,16 @@
 			   (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
+                           (get-option '$file_name))))
+      ($tikz (setf str (format nil "set terminal tikz ~a size ~a, ~a~%set out '~a.tikz'"
+                           (write-font-type)
+                           (/ (round (first (get-option '$dimensions))) 100.0)
+                           (/ (round (second (get-option '$dimensions))) 100.0)
+                           (get-option '$file_name))))
+      ($tikz_standalone (setf str (format nil "set terminal tikz standalone ~a size ~a, ~a~%set out '~a.tikz'"
+                           (write-font-type)
+                           (/ (round (first (get-option '$dimensions))) 100.0)
+                           (/ (round (second (get-option '$dimensions))) 100.0)
                            (get-option '$file_name))))
       (otherwise (merror "draw: not a file format")))
    (send-gnuplot-command (format nil "~a~%replot~%unset output~%" str)) ))
