@@ -1,22 +1,26 @@
 #!/bin/sh
 
 usage () {
-    echo "build_html.sh [-lDFh?]"
-    echo "    -l   Specify language"
-    echo "    -D   Enable simple debugging of this script"
-    echo "    -F   Force makeinfo to build the docs"
-    echo "    -h   This help"
-    echo "    -?   This help"
+    echo "build_html.sh [-lDFh?L:]"
+    echo "    -l       Specify language"
+    echo "    -L lisp  Lisp implementation to use"
+    echo "    -D       Enable simple debugging of this script"
+    echo "    -F       Force makeinfo to build the docs"
+    echo "    -h       This help"
+    echo "    -?       This help"
     echo "Build the html version of the manual, including both the single"
     echo "page version and the multi-page version.  This also builds all the"
     echo "category information."
     exit 1
 }
 
-while getopts "h?DFl:" arg
+lispimpl=@DEFAULTLISP@
+
+while getopts "h?DFl:L:" arg
 do
   case $arg in
       l) language=$OPTARG ;;
+      L) lispimpl=$OPTARG ;;
       D) DEBUG=yes ;;
       F) FORCE=--force ;;
       h) usage ;;
@@ -111,40 +115,40 @@ do
   cat $f
 done | @AWK@ '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/ || /^.setq .filenamebase/ || /^.setq items nil/)' | @SED@ -f @abs_srcdir@/extract_categories1.sed | @AWK@ -f @abs_srcdir@/extract_categories1.awk > $catprogname 
 
-if [ "@DEFAULTLISP@" = "gcl" ]
+if [ "$lispimpl" = "gcl" ]
     then lispprog="@GCL_NAME@"
          lispargs="-batch -load $catprogname"
-elif [ "@DEFAULTLISP@" = "clisp" ]
+elif [ "$lispimpl" = "clisp" ]
     then lispprog="@CLISP_NAME@"
          lispargs="$catprogname"
-elif [ "@DEFAULTLISP@" = "cmucl" ]
+elif [ "$lispimpl" = "cmucl" ]
     then lispprog="@CMUCL_NAME@"
          lispargs="-load $catprogname -eval (quit)"
-elif [ "@DEFAULTLISP@" = "scl" ]
+elif [ "$lispimpl" = "scl" ]
     then lispprog="@SCL_NAME@"
          lispargs="-load $catprogname -eval (quit)"
-elif [ "@DEFAULTLISP@" = "ecl" ]
+elif [ "$lispimpl" = "ecl" ]
     then lispprog="@ECL_NAME@"
          lispargs="--shell $catprogname"
-elif [ "@DEFAULTLISP@" = "ccl64" ]
+elif [ "$lispimpl" = "ccl64" ]
     then lispprog="@CCL64_NAME@"
          lispargs="--load $catprogname --eval (quit)"
 # NOT SURE ABOUT OPENMCL; SAME ARGS AS CCL/CCL64 OR DIFFERENT ??
-elif [ "@DEFAULTLISP@" = "ccl" -o "@DEFAULTLISP@" = "openmcl" ]
+elif [ "$lispimpl" = "ccl" -o "$lispimpl" = "openmcl" ]
     then lispprog="@OPENMCL_NAME@"
          lispargs="--load $catprogname --eval (quit)"
-elif [ "@DEFAULTLISP@" = "sbcl" ]
+elif [ "$lispimpl" = "sbcl" ]
     then lispprog="@SBCL_NAME@"
          lispargs="--script $catprogname"
-elif [ "@DEFAULTLISP@" = "abcl" ]
+elif [ "$lispimpl" = "abcl" ]
     then lispprog="@JRE@"
          lispargs="-jar @ABCL_JAR@ --load $catprogname --eval (quit)"
-elif [ "@DEFAULTLISP@" = "acl" ]
+elif [ "$lispimpl" = "acl" ]
     then lispprog="@ACL_NAME@"
          lispargs="-L $catprogname --kill"
 else
-    echo "$0: DEFAULTLISP = @DEFAULTLISP@ not recognized, assume '@DEFAULTLISP@ $catprogname' is acceptable."
-    lispprog="@DEFAULTLISP@"
+    echo "$0: DEFAULTLISP = $lispimpl not recognized, assume '$lispimpl $catprogname' is acceptable."
+    lispprog="$lispimpl"
     lispargs="$catprogname"
 fi
 
