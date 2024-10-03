@@ -15,6 +15,7 @@ New items in share:
 -------------------
  * New example share/colnew/prob5.mac
  * Add raddenest radical denesting function
+ * New draw terminals: tikz and tikz_standalone
 
 Changes in core:
 ----------------
