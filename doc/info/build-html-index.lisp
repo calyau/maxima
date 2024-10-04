@@ -231,13 +231,17 @@
   index.")
 
 ;; Setup the hashtable.  The default (English) is the empty string.
+;; Each entry should be a list consisting of the language id, the name
+;; of the html file containing the function and variable index and
+;; finally the title of section, ignoring any section numbers/names.
 (dolist (entry 
 	 '(("" "Function-and-Variable-Index.html" "Function and Variable Index")
 	   ("de" "Index-der-Variablen-und-Funktionen.html" "Index der Variablen und Funktionen")
 	   ("pt" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")
 	   ("es" "Indice-de-Funciones-y-Variables.html" "Índice de Funciones y Variables")
 	   ("pt_BR" "Indice-de-Funcoes-e-Variaveis.html" "Índice de Funções e Variáveis")
-           ("ja" "Function-and-Variable-Index.html" "Function and Variable Index")))
+           ("ja" "Function-and-Variable-Index.html" "Function and Variable Index")
+           ("ru" "Ukazatelx-funkcii-i-peremennykh.html" "Указатель функций и переменных")))
   (destructuring-bind (key &rest value)
       entry
     (setf (gethash key *index-file-name*) value)))
