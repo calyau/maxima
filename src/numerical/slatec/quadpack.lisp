@@ -114,16 +114,16 @@
 	   (let (bnd inf)
 	     ;; Cases to handle: (minf, x), (x, inf), (minf, inf).
 	     ;; Everything else is an error.
-	     (cond ((eq low '$minf)
-		    (cond ((eq high '$inf)
+	     (cond ((eq ($limit low) '$minf)
+		    (cond ((eq ($limit high) '$inf)
 			   (setf bnd 0)
 			   (setf inf 2))
 			  (t
 			   (setq bnd ($float high))
-			   (setq inf low))))
-		   ((eq high '$inf)
+			   (setq inf ($limit low)))))
+		   ((eq ($limit high) '$inf)
 		    (setq bnd ($float low))
-		    (setq inf high))
+		    (setq inf ($limit high)))
 		   (t
 		    (merror "~M: Unexpected limits of integration: ~M, ~M~%"
 			    %%pretty-fname low high)))

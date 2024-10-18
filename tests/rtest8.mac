@@ -919,3 +919,12 @@ genmatrix(lambda([i,j],j-i),3,3);
 matrix([0,1,2],[-1,0,1],[-2,-1,0]);
 (kill(B),genmatrix(B,2));
 matrix([B[1,1],B[1,2]],[B[2,1],B[2,2]]);
+
+/* SF bug #4386: "quad_qagi doesn't recognize -inf as equivalent to minf" */
+
+quad_qagi (1/u^3, u, -inf, -1, epsrel=1.0E-8, epsabs=2e-3, limit=200);
+[- 0.5, 5.551115123125784E-15, 15, 0];
+
+quad_qagi (exp(-x^2), x, -inf, inf*inf, epsrel=1.0E-3, epsabs=2e-3, limit=100);
+[1.7724538509067376, 4.316364671314715e-6, 150, 0];
+
