@@ -818,7 +818,7 @@
   (cond ((null (cddr x))
 	 (if (null (cdr x))
 	     (tex-function x l r t)
-	     (tex (cadr x) (cons "+" l) r 'mplus rop)))
+	     (tex (cadr x) (append l (list "+")) r 'mplus rop)))
 	(t (setq l (tex (cadr x) l nil lop 'mplus)
 		 x (cddr x))
 	   (do ((nl l)  (dissym))

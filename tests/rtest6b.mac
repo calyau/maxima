@@ -109,6 +109,68 @@ baz: map (tex1, [log(x), log(x+1), log(x)^n]);
 map (lambda ([s], ssubst ("ln", "tan", s)), map (tex1, [tan(x), tan(x+1), tan(x)^n]));
 ''baz;
 
+/* SF bug #4388: "tex() output under simp:false, incorrect placement of `+`" */
+
+(kill (x, y, z, a, b, c), simp: false, 0);
+0;
+
+tex1 (x^(+5));
+"x^{+5}";
+
+tex1 (sin(+x));
+"\\sin \\left(+x\\right)";
+
+tex1 ([+x, +y, +z]);
+"\\left[ +x , +y , +z \\right] ";
+
+tex1 (abs (+a));
+"\\left| +a\\right| ";
+
+tex1(a + + b);
+"a+\\left(+b\\right)";
+
+tex1 (+a/b);
+"{{+a}\\over{b}}";
+
+tex1(+(a/b));
+"+{{a}\\over{b}}";
+
+tex1((+a)/b);
+"{{+a}\\over{b}}";
+
+tex1((+a)/(+b));
+"{{+a}\\over{+b}}";
+
+tex1 (x^(-5));
+"x^ {- 5 }";
+
+tex1 (sin(-x));
+"\\sin \\left(-x\\right)";
+
+tex1 ([-x, -y, -z]);
+"\\left[ -x , -y , -z \\right] ";
+
+tex1 (abs (-a));
+"\\left| -a\\right| ";
+
+tex1(a - - b);
+"a-\\left(-b\\right)";
+
+tex1 (-a/b);
+"{{-a}\\over{b}}";
+
+tex1(-(a/b));
+"-\\left({{a}\\over{b}}\\right)";
+
+tex1((-a)/b);
+"{{-a}\\over{b}}";
+
+tex1((-a)/(-b));
+"{{-a}\\over{-b}}";
+
+(reset (simp), 0);
+0;
+
 /* restore TeX properties */
 
 (kill (log),
