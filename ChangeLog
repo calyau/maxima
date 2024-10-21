@@ -19,6 +19,7 @@ New items in share:
 
 Changes in core:
 ----------------
+ * Add answers_from_file option to run_testsuite
  * Add rtest_raddenest to share_testsuite_files
  * In src/plot.lisp, clipping is no longer done when plot_format is xmaxima
  * The default y-range for plots is determined only by points within x-range
