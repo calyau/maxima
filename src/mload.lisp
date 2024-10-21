@@ -814,15 +814,17 @@
 		      :test #'string=))
 	   (mwarning "Unknown test: " test)))))
   
-(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug)
+(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug answers_from_file)
   "Run the testsuite.  Options are
   tests                List of tests to run
   display_all          Display output from each test entry
-  display_known_bugs   Include tests that are known to fail.
+  display_known_bugs   Include tests that are known to fail
   time                 Display time to run each test entry
   share_tests          Whether to include the share testsuite or not
-  debug                Set to enable some debugging prints.
+  debug                Set to enable some debugging prints
+  answers_from_file    Read interactive answers from source file.
 "
+  (declare (special $batch_answers_from_file))
   (enable-some-lisp-warnings)
   (let ((test-file)
 	(expected-failures)
@@ -836,9 +838,10 @@
       (merror (intl:gettext "run_testsuite: display_all must be true or false; found: ~M") display_all))
     (unless (member time '(t nil $all))
       (merror (intl:gettext "run_testsuite: time must be true, false, or all; found: ~M") time))
-
     (unless (member share_tests '(t nil $only))
       (merror (intl:gettext "run_testsuite: share_tests must be true, false or only: found ~M") share_tests))
+    (unless (member answers_from_file '(t nil))
+      (merror (intl:gettext "run_testsuite: answers_from_file must be true or false only; found ~M") answers_from_file))
     
     (setq *collect-errors* nil)
 
@@ -867,6 +870,7 @@
 	     (test-count 0)
 	     (total-count 0)
 	     (error-count 0)
+	     ($batch_answers_from_file answers_from_file)
 	     filename
 	     diff
 	     upass)
