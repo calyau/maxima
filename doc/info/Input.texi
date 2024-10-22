@@ -137,13 +137,16 @@ useful, when writing a test file.
 A suitable input file may be created by a text editor or by the
 @mref{stringout} function.
 
-@code{batch} reads each input expression from @var{filename}, displays the input
-to the console, computes the corresponding output expression, and displays the
-output expression.  Input labels are assigned to the input expressions and
-output labels are assigned to the output expressions.  @code{batch} evaluates
-every input expression in the file unless there is an error.  If user input is
-requested (by @mref{asksign} or @mrefcomma{askinteger} for example) @code{batch}
-pauses to collect the requisite input and then continue.
+@code{batch} reads each input expression from @var{filename}, displays
+the input to the console, computes the corresponding output expression,
+and displays the output expression. Input labels are assigned to the
+input expressions and output labels are assigned to the output
+expressions. @code{batch} evaluates every input expression in the file
+unless there is an error. If user input is requested (by @mref{asksign}
+or @mrefcomma{askinteger} for example) @code{batch} pauses to collect
+the requisite input and then continue; if @code{batch_answers_from_file}
+is @code{true}, the input is read from the file itself
+@mrefdot{batch_answers_from_file}
 
 @c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHOUGH IT SHOWS "User break") 
 @c KEEPS GOING !!! DON'T KNOW ABOUT GCL !!!
@@ -169,7 +172,8 @@ When called with the option @code{test}, the return value
 is a an empty list @code{[]} or a list with @var{filename} and the numbers of
 the tests which have failed.
 
-See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
+See also @mrefcomma{load} @mrefcomma{batchload}
+@mrefcomma{batch_answers_from_file} and @mrefdot{demo}
 
 @opencatbox{Categories:}
 @category{Session management}
@@ -225,6 +229,34 @@ Closes the transcript file opened by @mref{writefile} or @mrefdot{appendfile}
 @category{Console interaction}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{batch_answers_from_file}
+@defvr {Option variable} batch_answers_from_file
+Default value: @code{false}
+
+If @code{true}, then @code{batch} reads answers to interactive questions
+from its input file or stream.
+
+Example: Maxima's interactive testsuite includes something like
+following.
+
+@example
+[asksign (foo), sign (foo), sign (foo)];
+p;
+[pos, pos, pos];
+@end example
+
+The first line makes Maxima ask a question; when
+@code{batch_answers_from_file} is @code{true}, the second line is read
+as the answer to the question; and the third line provides the expected
+result. @mrefdot{run_testsuite}
+
+@opencatbox{Categories:}
+@category{File input}
+@category{Global flags}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{file_output_append}
