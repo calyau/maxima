@@ -16,6 +16,7 @@ New items in share:
  * New example share/colnew/prob5.mac
  * Add raddenest radical denesting function
  * New draw terminals: tikz and tikz_standalone
+ * ode2 now solves Modified Bessel differential equation
 
 Changes in core:
 ----------------
