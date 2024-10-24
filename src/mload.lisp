@@ -814,7 +814,7 @@
 		      :test #'string=))
 	   (mwarning "Unknown test: " test)))))
   
-(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug answers_from_file)
+(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug (answers_from_file t))
   "Run the testsuite.  Options are
   tests                List of tests to run
   display_all          Display output from each test entry

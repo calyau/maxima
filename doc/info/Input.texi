@@ -250,7 +250,12 @@ p;
 The first line makes Maxima ask a question; when
 @code{batch_answers_from_file} is @code{true}, the second line is read
 as the answer to the question; and the third line provides the expected
-result. @mrefdot{run_testsuite}
+result.
+
+The command-line option @code{--batch-string} binds
+@code{batch_answers_from_file} to @code{true}. The @code{run_testsuite}
+function, as a default, also binds @code{batch_answers_from_file} to
+@code{true}. @mref{command_line_options} and @mrefdot{run_testsuite}
 
 @opencatbox{Categories:}
 @category{File input}

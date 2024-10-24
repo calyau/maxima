@@ -41,8 +41,8 @@ Of course, the actual set of test that are run can be controlled by
 the @code{tests} option. The default is @code{false}.
 @item answers_from_file
 Read answers to interactive questions from the source file
-@mrefdot{batch_answers_from_file}. May only be @code{true} or
-@code{false} (default).
+@mrefdot{batch_answers_from_file} May only be @code{false} or
+@code{true} (default).
 @end table
 
 For example @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}

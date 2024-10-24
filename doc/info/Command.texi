@@ -9,6 +9,10 @@
 @section Introduction to Command Line
 @c -----------------------------------------------------------------------------
 
+This section documents Maxima's interactive command-line interface,
+called a read-eval-print loop (REPL).
+
+For information on command-line options, see @mrefdot{command_line_options}
 @c end concepts Command Line
 
 @c -----------------------------------------------------------------------------

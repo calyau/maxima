@@ -1,3 +1,4 @@
+@anchor{command_line_options}
 The following command line options are available for Maxima:
 
 @need 100
@@ -135,3 +136,7 @@ The following command line options are available for Maxima:
 
 
 @end table
+
+@opencatbox{Categories:}
+@category{Command-line Options}
+@closecatbox
