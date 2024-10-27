@@ -210,7 +210,7 @@
       (cons '$float (dconv-$float form))
       `($any $float ,(cdr form))))
 
-(def%tr $atan2 (form)
+(def%tr %atan2 (form)
   (setq form (cdr form))
   (let ((x (translate (car form))) (y (translate (cadr form))))
     (if (eq '$float (*union-mode (car x) (car y)))
