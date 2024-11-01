@@ -824,7 +824,6 @@
   debug                Set to enable some debugging prints
   answers_from_file    Read interactive answers from source file.
 "
-  (declare (special $batch_answers_from_file))
   (enable-some-lisp-warnings)
   (let ((test-file)
 	(expected-failures)
@@ -874,7 +873,7 @@
 	     filename
 	     diff
 	     upass)
-
+	(declare (special $batch_answers_from_file))
 	(validate-given-tests tests share_tests)
 
 	(when debug
