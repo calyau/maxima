@@ -354,7 +354,7 @@
 (defun hackit (exponent rest time-var parm)
   (cond ((equal exponent -1)
 	 (let ((parm (createname parm 1)))
-	   (laptimes rest parm time-var)))
+	   (laptimes rest time-var parm)))
 	(t
 	 (mydefint (hackit (1+ exponent) rest time-var parm)
 		   (createname parm (- -1 exponent))
@@ -411,7 +411,7 @@
   (let ((ab (islinear (cadr fun) time-var)))
     (cond (ab
 	   (cond (rest
-		  (compose (laptimes rest parm time-var)
+		  (compose (laptimes rest time-var parm)
 			   parm
 			   trigswitch
 			   (car ab)
