@@ -84,7 +84,7 @@ option(WITH_CCL64 "Include CCL64 in the installer." NO)
 #  - SBCL is fast, but sometimes runs out of memory in places it really shouldn't
 #    (Loading LAPACK on IA32, for example) and isn't too happy with changing to
 #    non-ascii-non-unicode pathnames (which wxMaxima works around by now, though,
-#    and which Xmaxima doesn't evven try to do)
+#    and which Xmaxima doesn't even try to do)
 #  - CLISP is slow. And version 2.49 only sends valid output over the network
 #    if the front-end is slow enough. Test cases: Running a demo, all commands
 #    with loads of compiler output (load("draw"); for the first time) or just
