@@ -248,8 +248,8 @@
 		   ((%cos $cos) 1)
 		   ((%sin $sin) 2)
                    (otherwise
-                    (merror "~M:  the name of the trig function should be sin or cos, not ~M."
-                            '$quad_qawo
+                    (merror "~M: the name of the trig function should be sin or cos, not ~M."
+                            %%pretty-fname
                             trig_name))))
          (*plot-realpart* nil))
     (handler-case
@@ -339,8 +339,8 @@
       ;; If there are invalid points, throw an error.
       (when invalid-points
         (merror
-         (intl:gettext "quad_qagp: singular points must be in the open interval (~M, ~M):  ~M")
-         a b (make-mlist-l invalid-points)))
+         (intl:gettext "~M: singular points must be in the open interval (~M, ~M):  ~M")
+         %%pretty-fname a b (make-mlist-l invalid-points)))
                               
       (handler-case
 	  (multiple-value-bind (junk z-a z-b z-npts z-points z-epsabs z-epsrel
