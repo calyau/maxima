@@ -206,9 +206,13 @@
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
-	 (integr (ecase trig
+	 (integr (case trig
 		   ((1 %cos $cos) 1)
-		   ((2 %sin $sin) 2)))
+		   ((2 %sin $sin) 2)
+                   (otherwise
+                    (merror "~M: the name of the trig function should be sin or cos, not ~M."
+                            %%pretty-fname
+                            trig))))
          (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-omega z-integr
