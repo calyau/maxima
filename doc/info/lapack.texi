@@ -29,6 +29,9 @@ All elements of @var{A} must be integer or floating point numbers.
 @var{A} must be square (same number of rows and columns).
 @var{A} might or might not be symmetric.
 
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
+
 @code{dgeev(@var{A})} computes only the eigenvalues of @var{A}.
 @code{dgeev(@var{A}, @var{right_p}, @var{left_p})} computes the eigenvalues of @var{A}
 and the right eigenvectors when @math{@var{right_p} = @code{true}}
@@ -110,6 +113,9 @@ Computes the QR decomposition of the matrix @var{A}.
 All elements of @var{A} must be integer or floating point numbers.
 @var{A} may or may not have the same number of rows and columns.
 
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
+
 A list of two items is returned.
 The first item is the matrix @var{Q}, which is a square, orthonormal matrix
 which has the same number of rows as @var{A}.
@@ -158,6 +164,9 @@ Computes the solution @var{x} of the linear equation @math{@var{A} @var{x} = @va
 where @var{A} is a square matrix, and @var{b} is a matrix of the same number of rows
 as @var{A} and any number of columns.
 The return value @var{x} is the same size as @var{b}.
+
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
 
 The elements of @var{A} and @var{b} must evaluate to real floating point numbers via @code{float};
 thus elements may be any numeric type, symbolic numerical constants, or expressions which evaluate to floats.
@@ -262,6 +271,9 @@ Computes the singular value decomposition (SVD) of a matrix @var{A},
 comprising the singular values and, optionally, the left and right singular vectors.
 All elements of @var{A} must be integer or floating point numbers.
 @var{A} might or might not be square (same number of rows and columns).
+
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
 
 Let @math{m} be the number of rows, and @math{n} the number of columns of @var{A}.
 The singular value decomposition of @var{A} comprises three matrices,
@@ -391,6 +403,9 @@ Computes a norm or norm-like function of the matrix @var{A}.  If
 @var{A} is a real matrix, use @code{dlange}.  For a matrix with
 complex elements, use @code{zlange}.
 
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
+
 @code{norm} specifies the kind of norm to be computed:
 @table @code
 @item max
@@ -423,6 +438,9 @@ a third matrix.
 
 In the simplest form, @code{dgemm(@var{A}, @var{B})} computes the
 product of the two real matrices, @var{A} and @var{B}.
+
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
 
 In the second form, @code{dgemm} computes the @math{@var{alpha} *
 @var{A} * @var{B} + @var{beta} * @var{C}} where @var{A}, @var{B},
@@ -550,6 +568,9 @@ for the product.  The default is @code{false}.
 
 Like @code{dgeev}, but the matrix @var{A} is complex.
 
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
+
 @opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
@@ -564,6 +585,9 @@ Like @code{dgeev}, but the matrix @var{A} is complex.
 Like @code{dgeev}, but the matrix @var{A} is assumed to be a square
 complex Hermitian matrix. If @var{eigvec_p} is @code{true}, then the
 eigenvectors of the matrix are also computed.
+
+To make use of this function, you must load the LaPack package via
+@code{load("lapack")}.
 
 No check is made that the matrix @var{A} is, in fact, Hermitian.
 
