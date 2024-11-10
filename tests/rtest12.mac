@@ -122,22 +122,6 @@ sin(x)^4;
 sin(x)^4$
 letsimp(%);
 cos(x)^4-2*cos(x)^2+1$
-matchdeclare([a,a1,a2],true);
-done$
-oneless(x,y):=is(x = y-1);
-oneless(x,y):=is(x = y-1)$
-let(a1*a2!,a1!,oneless,a2,a1);
-?mtext(a1*a2!,?\ \-\-\>\ ,a1!,?\ where\ ,oneless(a2,a1))$
-ev(let(a1!/a1,(a1-1)!),letrat);
-?mtext(a1!/a1,?\ \-\-\>\ ,(a1-1)!)$
-ev(letsimp(n*m!*(n-1)!/m),letrat);
-(m-1)!*n!$
-let(sin(a)^2,1-cos(a)^2);
-?mtext(sin(a)^2,?\ \-\-\>\ ,1-cos(a)^2)$
-sin(x)^4;
-sin(x)^4$
-letsimp(%);
-cos(x)^4-2*cos(x)^2+1$
 pfeformat:true;
 true$
 poissimp(sin(x)^2);

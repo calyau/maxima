@@ -631,17 +631,6 @@
    sin(x)^4;
    letsimp(%);
    
-&& letrules  
-   
-   matchdeclare([a,a1,a2],true);
-   oneless(x,y):=is(x=y-1)$
-   let(a1*a2!,a1!,oneless,a2,a1);
-   let(a1!/a1,(a1-1)!),letrat;
-   letsimp(n*m!*(n-1)!/m),letrat;
-   let(sin(a)^2,1-cos(a)^2);
-   sin(x)^4;
-   letsimp(%);
-
 && limit  
    
    limit(x*log(x),x,0,plus);

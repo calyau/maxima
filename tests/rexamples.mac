@@ -216,9 +216,6 @@ done;
 (kill(all),example(let));
 done;
 
-(kill(all),example(letrules));
-done;
-
 (kill(all),example(limit));
 done;
 
