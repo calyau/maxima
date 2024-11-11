@@ -42,16 +42,33 @@ The first item is a list of the eigenvalues.
 The second item is @code{false} or the matrix of right eigenvectors.
 The third item is @code{false} or the matrix of left eigenvectors.
 
-The right eigenvector @math{v(j)} (the @math{j}-th column of the right eigenvector matrix) satisfies
+The right eigenvector
+m4_math(<<<v_j>>>,<<<v_j>>>)
+(the @math{j}-th column of the right eigenvector matrix) satisfies
 
-@math{A . v(j) = lambda(j) . v(j)}
+m4_displaymath(
+<<<\mathbf{A} v_j = \lambda_j v_j>>>,
+<<<@math{A . v_j = lambda_j . v_j}>>>,
+<<<{\bf A} v_j = \lambda_j v_j>>>
+)
 
-where @math{lambda(j)} is the corresponding eigenvalue.
-The left eigenvector @math{u(j)} (the @math{j}-th column of the left eigenvector matrix) satisfies
+where
+m4_math(<<<\lambda_j>>>,<<<@math{lambda_j}>>>)
+is the corresponding eigenvalue.
+The left eigenvector
+m4_math(<<<u_j>>>,<<<u_j>>>)
+(the @math{j}-th column of the left eigenvector matrix) satisfies
 
-@math{u(j)**H . A = lambda(j) . u(j)**H}
+m4_displaymath(
+<<<u_j^\mathbf{H} \mathbf{A} = \lambda_j u_j^\mathbf{H}>>>,
+<<<@math{u_j^H . A = lambda_j . u_j^H}>>>,
+<<<u_j^{\bf H} {\bf A} = \lambda_j u_j^{\bf H}>>>
+)
 
-where @math{u(j)**H} denotes the conjugate transpose of @math{u(j)}.
+where
+m4_math(<<<u_j^\mathbf{H}>>>,<<<u_j^H>>>, <<<u_j^{\bf H}>>>)
+denotes the conjugate transpose of
+m4_mathdot(<<<u_j>>>,<<<u_j>>>)
 The Maxima function @code{ctranspose} computes the conjugate transpose.
 
 The computed eigenvectors are normalized to have Euclidean norm
