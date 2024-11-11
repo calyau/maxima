@@ -106,6 +106,9 @@ checklimits(%);
 false$
 remvalue(a,b,f,x);
 [a,b,f,x]$
+
+/* test cases extracted from reference manual for 'let' */
+
 (kill(all),matchdeclare([a,a1,a2],true));
 done$
 oneless(x,y):=is(x = y-1);
@@ -122,6 +125,57 @@ sin(x)^4;
 sin(x)^4$
 letsimp(%);
 cos(x)^4-2*cos(x)^2+1$
+
+/* test cases extracted from reference manual for 'letrat' */
+
+(kill (all), matchdeclare (n, true))$
+done;
+
+let (n!/n, (n-1)!);
+?mtext (n!/n, ?\ \-\-\>\ , (n - 1)!);
+
+(letrat: false, letsimp (a!/a));
+a!/a;
+
+(letrat: true, letsimp (a!/a));
+(a - 1)!;
+
+(reset (letrat), 0);
+0;
+
+/* test cases extracted from reference manual for 'letsimp' */
+
+(kill (all),
+ e0: e(k) = -(9*y(k))/(5*z)-u(k-1)/(5*z)+(4*y(k))/(5*z^2) +(3*u(k-1))/(5*z^2)+y(k)-(2*u(k-1))/5,
+ matchdeclare (h, any), 
+ let (u(h)/z, u(h - 1)));
+?mtext (u(h)/z, ?\ \-\-\>\ , u(h - 1));
+
+let (y(h)/z, y(h - 1));
+?mtext (y(h)/z, ?\ \-\-\>\ , y(h - 1));
+
+/* SF bug #4408: "letsimp doesn't simplify before returning result" */
+
+e1: letsimp (e0);
+e(k) = y(k)-(9*y(k-1))/5-(2*u(k-1))/5+(4*y(k-2))/5-u(k-2)/5+(3*u(k-3))/5$
+
+/* SF bug #4407: "letsimp doesn't commute with equation, list, matrix" */
+
+letsimp ([rhs (e0)]);
+[''(rhs (e1))];
+
+letsimp (matrix ([rhs (e0)]));
+matrix ([''(rhs (e1))]);
+
+letsimp (lhs (e0)) = letsimp (rhs (e0));
+''e1;
+
+[letsimp (rhs (e0))];
+[''(rhs (e1))];
+
+matrix ([letsimp (''(rhs (e0)))]);
+matrix ([''(rhs (e1))]);
+
 pfeformat:true;
 true$
 poissimp(sin(x)^2);
