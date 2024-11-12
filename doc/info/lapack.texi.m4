@@ -293,24 +293,59 @@ To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
 Let @math{m} be the number of rows, and @math{n} the number of columns of @var{A}.
-The singular value decomposition of @var{A} comprises three matrices,
-@var{U}, @var{Sigma}, and @var{V^T},
+The singular value decomposition of
+m4_math(<<<\mathbf{A}>>>,<<<@math{A}>>>, <<<{\bf A}>>>)
+comprises three matrices,
+m4_mathcomma(<<<\mathbf{U}>>>,<<<U>>>,<<<{\bf U}>>>)
+m4_mathcomma(<<<\mathbf{\Sigma}>>>,<<<@math{Sigma}>>>, <<<{\bf \Sigma}>>>)
+and
+m4_mathcomma(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
 such that
 
 @c this code breaks texi2pdf: @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
-@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
+@c @math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
 
-where @var{U} is an @math{m}-by-@math{m} unitary matrix,
-@var{Sigma} is an @math{m}-by-@math{n} diagonal matrix,
-and @var{V^T} is an @math{n}-by-@math{n} unitary matrix.
+m4_displaymath(
+<<<\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T>>>,
+<<<@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}>>>,
+<<<{\bf A} = {\bf U} {\bf \Sigma} {\bf V}^T>>>)
 
-Let @math{sigma[i]} be a diagonal element of @math{Sigma},
-that is, @math{@var{Sigma}[i, i] = @var{sigma}[i]}.
-The elements @math{sigma[i]} are the so-called singular values of @var{A};
+
+where
+m4_math(<<<\mathbf{U}>>>, <<<@math{U}>>>, <<<{\bf U}>>>)
+is an @math{m}-by-@math{m} unitary matrix,
+m4_math(<<<\mathbf{\Sigma}>>>, <<<@math{Sigma}>>>, <<<{\bf\Sigma}>>>)
+is an @math{m}-by-@math{n} diagonal matrix,
+and
+m4_math(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+is an @math{n}-by-@math{n} unitary matrix.
+
+Let
+m4_math(<<<\mathbf{\sigma}_i>>>, <<<@math{sigma[i]}>>>, <<<{\bf \sigma}_i>>>)
+be a diagonal element of
+m4_mathcomma(<<<\mathbf{\Sigma}>>>, <<<@math{Sigma}>>>, <<<{\bf \Sigma}>>>)
+that is,
+m4_mathdot(<<<\mathbf{\Sigma}_{ii} = \sigma_i>>>,
+<<<@math{@var{Sigma}[i, i]  = @var{sigma}[i]}>>>,
+<<<{\bf \Sigma}_{ii}  = \sigma_i>>>)
+The elements
+m4_math(<<<\sigma_i>>>, <<<@math{sigma[i]}>>>)
+are the so-called singular values of
+m4_mathpunc(<<<;>>>, <<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
 these are real and nonnegative, and returned in descending order.
-The first @math{min(m, n)} columns of @var{U} and @var{V} are
-the left and right singular vectors of @var{A}.
-Note that @code{dgesvd} returns the transpose of @var{V}, not @var{V} itself.
+The first
+m4_math(<<<\min(m, n)>>>, <<<min(m, n)>>>)
+columns of
+m4_math(<<<\mathbf{U}>>>, <<<@math{U}>>>, <<<{\bf U}>>>)
+and
+m4_math(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+are the left and right singular vectors of
+m4_mathdot(<<<\mathbf{A}>>>, <<<@math{A}>>>, <<<{\bf A}>>>)
+Note that @code{dgesvd} returns the transpose of
+m4_mathcomma(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+not
+m4_math(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+itself.
 
 @code{dgesvd(@var{A})} computes only the singular values of @var{A}.
 @code{dgesvd(@var{A}, @var{left_p}, @var{right_p})} computes the singular values of @var{A}
