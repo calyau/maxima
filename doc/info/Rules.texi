@@ -595,17 +595,18 @@ For other ways to do substitutions see also @mrefcomma{subst}
 @c                  +(3*u(k-1))/(5*z^2)+y(k)-(2*u(k-1))/5;
 @c matchdeclare(h,any)$
 @c let(u(h)/z,u(h-1));
-@c let(y(h)/z, y(h-1));
+@c let(y(h)/z,y(h-1));
 @c e1:letsimp(e0);
 @c ===end===
 @example
 @group
-(%i1) e0: e(k) = -(9*y(k))/(5*z)-u(k-1)/(5*z)+(4*y(k))/(5*z^2)
-                 +(3*u(k-1))/(5*z^2)+y(k)-(2*u(k-1))/5;
-                9 y(k)    u(k - 1)   4 y(k)   3 u(k - 1)
-(%o1) e(k) = (- ------) - -------- + ------ + ---------- + y(k)
-                 5 z        5 z          2          2
-                                      5 z        5 z
+(%i1) e0:e(k) = -(9*y(k))/(5*z)-u(k-1)/(5*z)+(4*y(k))/(5*z^2)
+                               +(3*u(k-1))/(5*z^2)+y(k)
+                               +(-(2*u(k-1)))/5;
+               9 y(k)   u(k - 1)   4 y(k)   3 u(k - 1)
+(%o1) e(k) = - ------ - -------- + ------ + ---------- + y(k)
+                5 z       5 z          2          2
+                                    5 z        5 z
                                                        2 u(k - 1)
                                                      - ----------
                                                            5
@@ -618,19 +619,19 @@ For other ways to do substitutions see also @mrefcomma{subst}
                          z
 @end group
 @group
-(%i4) let(y(h)/z, y(h-1));
+(%i4) let(y(h)/z,y(h-1));
                         y(h)
 (%o4)                   ---- --> y(h - 1)
                          z
 @end group
 @group
 (%i5) e1:letsimp(e0);
-                2 u(k - 1)           3 u(k - 3)   4 y(k - 2)
-(%o5) e(k) = (- ----------) + y(k) + ---------- + ----------
-                    5                    5            5
-                                       u(k - 2)       9 y(k - 1)
-                                  + (- --------) + (- ----------)
-                                          5               5
+                    9 y(k - 1)   2 u(k - 1)   4 y(k - 2)
+(%o5) e(k) = y(k) - ---------- - ---------- + ----------
+                        5            5            5
+                                            u(k - 2)   3 u(k - 3)
+                                          - -------- + ----------
+                                               5           5
 @end group
 @end example
 @opencatbox{Categories:}

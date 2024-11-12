@@ -219,7 +219,7 @@
 	   (setq x (nisnewlist x))
 	   (if x (nisletsimp ($ratexpand (cons '(mtimes) x))) e))
 	  ((member (caar e) '(mplus mequal mlist $matrix) :test #'eq)
-	   (cons (if (eq (caar e) 'mplus) '(mplus) (car e))
+	   (cons (remove 'simp (car e))
 		 (mapcar #'nisletsimp (cdr e))))
 	  ((or (eq (caar e) 'mrat) 
 	       (and (eq (caar e) 'mquotient) (setq e (ratf e))))
