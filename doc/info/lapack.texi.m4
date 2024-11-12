@@ -133,9 +133,24 @@ All elements of @var{A} must be integer or floating point numbers.
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
+The real square matrix
+m4_math(<<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
+can be decomposed as
+m4_displaymath(
+<<<\mathbf{A} = \mathbf{Q}\mathbf{R}>>>,
+<<<A = QR>>>,
+<<<{\bf A} = {\bf Q} {\bf R}>>>)
+
+where
+m4_math(<<<{\bf Q}>>>, {{{Q}}})
+is a square orthogonal matrix with the same number of rows as
+m4_math(<<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
+and
+m4_math(<<<{\bf R}>>>, {{{R}}})
+is an upper triangular matrix.
+
 A list of two items is returned.
-The first item is the matrix @var{Q}, which is a square, orthonormal matrix
-which has the same number of rows as @var{A}.
+The first item is the matrix @var{Q}.
 The second item is the matrix @var{R}, which is the same size as @var{A},
 and which has all elements equal to zero below the diagonal.
 The product @code{@var{Q} . @var{R}}, where "." is the noncommutative multiplication operator,
