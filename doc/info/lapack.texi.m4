@@ -136,24 +136,27 @@ To make use of this function, you must load the LaPack package via
 The real square matrix
 m4_math(<<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
 can be decomposed as
+
 m4_displaymath(
 <<<\mathbf{A} = \mathbf{Q}\mathbf{R}>>>,
 <<<A = QR>>>,
 <<<{\bf A} = {\bf Q} {\bf R}>>>)
 
 where
-m4_math(<<<{\bf Q}>>>, {{{Q}}})
+m4_math(<<<{\bf Q}>>>, <<<Q>>>)
 is a square orthogonal matrix with the same number of rows as
 m4_math(<<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
 and
-m4_math(<<<{\bf R}>>>, {{{R}}})
-is an upper triangular matrix.
+m4_math(<<<{\bf R}>>>, <<<R>>>)
+is an upper triangular matrix and is the same size as
+m4_mathdot(<<<{\bf A}>>>, A)
 
 A list of two items is returned.
-The first item is the matrix @var{Q}.
-The second item is the matrix @var{R}, which is the same size as @var{A},
-and which has all elements equal to zero below the diagonal.
-The product @code{@var{Q} . @var{R}}, where "." is the noncommutative multiplication operator,
+The first item is the matrix
+m4_mathdot(<<<{\bf Q}>>>, Q)
+The second item is the matrix
+m4_mathcomma(<<<{\bf R}>>>, R)
+The product @math{Q . R}, where "." is the noncommutative multiplication operator,
 is equal to @var{A} (ignoring floating point round-off errors).
 
 @c ===beg===
@@ -192,10 +195,14 @@ is equal to @var{A} (ignoring floating point round-off errors).
 @anchor{dgesv}
 @deffn {Function} dgesv (@var{A}, @var{b})
 
-Computes the solution @var{x} of the linear equation @math{@var{A} @var{x} = @var{b}},
-where @var{A} is a square matrix, and @var{b} is a matrix of the same number of rows
-as @var{A} and any number of columns.
-The return value @var{x} is the same size as @var{b}.
+Computes the solution @var{x} of the linear equation
+m4_mathcomma(<<<{\bf A} x = b>>>, <<<@var{A} @var{x} = @var{b}>>>)
+where
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is a square matrix, and @math{b} is a matrix of the same number of rows
+as
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>) and any number of columns.
+The return value @math{x} is the same size as @math{b}.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
@@ -322,7 +329,7 @@ such that
 
 m4_displaymath(
 <<<\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T>>>,
-<<<@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}>>>,
+<<<@math{{A} = {U} . {Sigma} . {V}^T}>>>,
 <<<{\bf A} = {\bf U} {\bf \Sigma} {\bf V}^T>>>)
 
 
