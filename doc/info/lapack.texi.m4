@@ -527,10 +527,23 @@ product of the two real matrices, @var{A} and @var{B}.
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
-In the second form, @code{dgemm} computes the @math{@var{alpha} *
-@var{A} * @var{B} + @var{beta} * @var{C}} where @var{A}, @var{B},
-@var{C} are real matrices of the appropriate sizes and @var{alpha} and
-@var{beta} are real numbers.  Optionally, @var{A} and/or @var{B} can
+In the second form, @code{dgemm} computes
+m4_math(<<<\alpha {\bf A} {\bf B} + \beta {\bf C}>>>,
+<<<@var{alpha} * @var{A} * @var{B} + @var{beta} * @var{C}>>>)
+where
+m4_mathcomma(<<<{\bf A}>>>, <<<@var{A}>>>)
+m4_mathcomma(<<<{\bf B}>>>, <<<@var{B}>>>)
+and
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+are real matrices of the appropriate sizes and
+m4_math(<<<\alpha>>>, <<<alpha>>>)
+and
+m4_math(<<<\beta>>>, <<<beta>>>)
+are real numbers.  Optionally,
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+and/or
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
+can
 be transposed before computing the product.  The extra parameters are
 specified by optional keyword arguments: The keyword arguments are
 optional and may be specified in any order.  They all take the form
@@ -538,21 +551,42 @@ optional and may be specified in any order.  They all take the form
 
 @table @code
 @item C
-The matrix @var{C} that should be added.  The default is @code{false},
+The matrix
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+that should be added.  The default is @code{false},
 which means no matrix is added.
 @item alpha
-The product of @var{A} and @var{B} is multiplied by this value.  The
+The product of
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+and
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
+is multiplied by this value.  The
 default is 1.
 @item beta
-If a matrix @var{C} is given, this value multiplies @var{C} before it
-is added.  The default value is 0, which implies that @var{C} is not
-added, even if @var{C} is given.  Hence, be sure to specify a non-zero
-value for @var{beta}.
+If a matrix
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+is given, this value multiplies
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+before it
+is added.  The default value is 0, which implies that
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+is not
+added, even if
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+is given.  Hence, be sure to specify a non-zero
+value for
+m4_mathdot(<<<\beta>>>, <<<@math{beta}>>>)
 @item transpose_a
-If @code{true}, the transpose of @var{A} is used instead of @var{A}
+If @code{true}, the transpose of
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is used instead of
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
 for the product.  The default is @code{false}.
 @item transpose_b
-If @code{true}, the transpose of @var{B} is used instead of @var{B}
+If @code{true}, the transpose of
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
+is used instead of
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
 for the product.  The default is @code{false}.
 @end table
 
