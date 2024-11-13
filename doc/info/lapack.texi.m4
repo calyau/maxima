@@ -201,7 +201,8 @@ where
 m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
 is a square matrix, and @math{b} is a matrix of the same number of rows
 as
-m4_math(<<<{\bf A}>>>, <<<@var{A}>>>) and any number of columns.
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+and any number of columns.
 The return value @math{x} is the same size as @math{b}.
 
 To make use of this function, you must load the LaPack package via
@@ -483,17 +484,27 @@ To make use of this function, you must load the LaPack package via
 @code{norm} specifies the kind of norm to be computed:
 @table @code
 @item max
-Compute @math{max(abs(A(i, j)))} where @math{i} and @math{j} range over
-the rows and columns, respectively, of @var{A}.
+Compute
+m4_math(<<<\max(|{\bf A}_{ij}|)>>>, <<<max(abs(A(i, j)))>>>)
+where @math{i} and @math{j} range over
+the rows and columns, respectively, of
+m4_mathdot(<<<{\bf A}>>>, <<<A>>>)
 Note that this function is not a proper matrix norm.
 @item one_norm
-Compute the @math{L[1]} norm of @var{A},
+Compute the
+m4_math(<<<L_1>>>, <<<L[1]>>>)
+norm of
+m4_mathcomma(<<<{\bf A}>>>, <<<A>>>)
 that is, the maximum of the sum of the absolute value of elements in each column.
 @item inf_norm
-Compute the @math{L[inf]} norm of @var{A},
+Compute the
+m4_math(<<<L_\infty>>>, <<<L[inf]>>>)
+norm of
+m4_mathcomma(<<<{\bf A}>>>, <<<A>>>)
 that is, the maximum of the sum of the absolute value of elements in each row.
 @item frobenius
-Compute the Frobenius norm of @var{A},
+Compute the Frobenius norm of
+m4_mathcomma(<<<{\bf A}>>>, <<<A>>>)
 that is, the square root of the sum of squares of the matrix elements.
 @end table
 
