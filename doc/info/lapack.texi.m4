@@ -20,9 +20,8 @@ as obtained from the SLATEC project.
 @section Functions and Variables for lapack
 
 @anchor{dgeev}
-@deffn {Function} dgeev @
-@fname{dgeev} (@var{A}) @
-@fname{dgeev} (@var{A}, @var{right_p}, @var{left_p})
+@deffn {Function} dgeev (@var{A})
+@deffnx {Function} dgeev (@var{A}, @var{right_p}, @var{left_p})
 
 Computes the eigenvalues and, optionally, the eigenvectors of a matrix @var{A}.
 All elements of @var{A} must be integer or floating point numbers.
@@ -42,17 +41,35 @@ The first item is a list of the eigenvalues.
 The second item is @code{false} or the matrix of right eigenvectors.
 The third item is @code{false} or the matrix of left eigenvectors.
 
-The right eigenvector @math{v(j)} (the @math{j}-th column of the right eigenvector matrix) satisfies
+The right eigenvector
+m4_math(<<<v_j>>>,<<<v_j>>>)
+(the @math{j}-th column of the right eigenvector matrix) satisfies
 
-@math{A . v(j) = lambda(j) . v(j)}
+m4_displaymath(
+<<<\mathbf{A} v_j = \lambda_j v_j>>>,
+<<<@math{A . v_j = lambda_j . v_j}>>>,
+<<<{\bf A} v_j = \lambda_j v_j>>>
+)
 
-where @math{lambda(j)} is the corresponding eigenvalue.
-The left eigenvector @math{u(j)} (the @math{j}-th column of the left eigenvector matrix) satisfies
+where
+m4_math(<<<\lambda_j>>>,<<<@math{lambda_j}>>>)
+is the corresponding eigenvalue.
+The left eigenvector
+m4_math(<<<u_j>>>,<<<u_j>>>)
+(the @math{j}-th column of the left eigenvector matrix) satisfies
 
-@math{u(j)**H . A = lambda(j) . u(j)**H}
+m4_displaymath(
+<<<u_j^\mathbf{H} \mathbf{A} = \lambda_j u_j^\mathbf{H}>>>,
+<<<@math{u_j^H . A = lambda_j . u_j^H}>>>,
+<<<u_j^{\bf H} {\bf A} = \lambda_j u_j^{\bf H}>>>
+)
 
-where @math{u(j)**H} denotes the conjugate transpose of @math{u(j)}.
-The Maxima function @code{ctranspose} computes the conjugate transpose.
+where
+m4_math(<<<u_j^\mathbf{H}>>>,<<<u_j^H>>>, <<<u_j^{\bf H}>>>)
+denotes the conjugate transpose of
+m4_mathdot(<<<u_j>>>,<<<u_j>>>)
+For a Maxima function to compute the conjugate transpose, @pxref{ctranspose}.
+
 
 The computed eigenvectors are normalized to have Euclidean norm
 equal to 1, and largest component has imaginary part equal to zero.
@@ -116,12 +133,30 @@ All elements of @var{A} must be integer or floating point numbers.
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
+The real square matrix
+m4_math(<<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
+can be decomposed as
+
+m4_displaymath(
+<<<\mathbf{A} = \mathbf{Q}\mathbf{R}>>>,
+<<<A = QR>>>,
+<<<{\bf A} = {\bf Q} {\bf R}>>>)
+
+where
+m4_math(<<<{\bf Q}>>>, <<<Q>>>)
+is a square orthogonal matrix with the same number of rows as
+m4_math(<<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
+and
+m4_math(<<<{\bf R}>>>, <<<R>>>)
+is an upper triangular matrix and is the same size as
+m4_mathdot(<<<{\bf A}>>>, A)
+
 A list of two items is returned.
-The first item is the matrix @var{Q}, which is a square, orthonormal matrix
-which has the same number of rows as @var{A}.
-The second item is the matrix @var{R}, which is the same size as @var{A},
-and which has all elements equal to zero below the diagonal.
-The product @code{@var{Q} . @var{R}}, where "." is the noncommutative multiplication operator,
+The first item is the matrix
+m4_mathdot(<<<{\bf Q}>>>, Q)
+The second item is the matrix
+m4_mathcomma(<<<{\bf R}>>>, R)
+The product @math{Q . R}, where "." is the noncommutative multiplication operator,
 is equal to @var{A} (ignoring floating point round-off errors).
 
 @c ===beg===
@@ -160,10 +195,15 @@ is equal to @var{A} (ignoring floating point round-off errors).
 @anchor{dgesv}
 @deffn {Function} dgesv (@var{A}, @var{b})
 
-Computes the solution @var{x} of the linear equation @math{@var{A} @var{x} = @var{b}},
-where @var{A} is a square matrix, and @var{b} is a matrix of the same number of rows
-as @var{A} and any number of columns.
-The return value @var{x} is the same size as @var{b}.
+Computes the solution @var{x} of the linear equation
+m4_mathcomma(<<<{\bf A} x = b>>>, <<<@var{A} @var{x} = @var{b}>>>)
+where
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is a square matrix, and @math{b} is a matrix of the same number of rows
+as
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+and any number of columns.
+The return value @math{x} is the same size as @math{b}.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
@@ -263,9 +303,8 @@ The elements of @var{A} and @var{b} must evaluate to real floating point numbers
 @end deffn
 
 @anchor{dgesvd}
-@deffn {Function} dgesvd @
-@fname{dgesvd} (@var{A}) @
-@fname{dgesvd} (@var{A}, @var{left_p}, @var{right_p})
+@deffn {Function} dgesvd (@var{A})
+@deffnx {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
 
 Computes the singular value decomposition (SVD) of a matrix @var{A},
 comprising the singular values and, optionally, the left and right singular vectors.
@@ -276,24 +315,59 @@ To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
 Let @math{m} be the number of rows, and @math{n} the number of columns of @var{A}.
-The singular value decomposition of @var{A} comprises three matrices,
-@var{U}, @var{Sigma}, and @var{V^T},
+The singular value decomposition of
+m4_math(<<<\mathbf{A}>>>,<<<@math{A}>>>, <<<{\bf A}>>>)
+comprises three matrices,
+m4_mathcomma(<<<\mathbf{U}>>>,<<<U>>>,<<<{\bf U}>>>)
+m4_mathcomma(<<<\mathbf{\Sigma}>>>,<<<@math{Sigma}>>>, <<<{\bf \Sigma}>>>)
+and
+m4_mathcomma(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
 such that
 
 @c this code breaks texi2pdf: @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
-@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
+@c @math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
 
-where @var{U} is an @math{m}-by-@math{m} unitary matrix,
-@var{Sigma} is an @math{m}-by-@math{n} diagonal matrix,
-and @var{V^T} is an @math{n}-by-@math{n} unitary matrix.
+m4_displaymath(
+<<<\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T>>>,
+<<<@math{{A} = {U} . {Sigma} . {V}^T}>>>,
+<<<{\bf A} = {\bf U} {\bf \Sigma} {\bf V}^T>>>)
 
-Let @math{sigma[i]} be a diagonal element of @math{Sigma},
-that is, @math{@var{Sigma}[i, i] = @var{sigma}[i]}.
-The elements @math{sigma[i]} are the so-called singular values of @var{A};
+
+where
+m4_math(<<<\mathbf{U}>>>, <<<@math{U}>>>, <<<{\bf U}>>>)
+is an @math{m}-by-@math{m} unitary matrix,
+m4_math(<<<\mathbf{\Sigma}>>>, <<<@math{Sigma}>>>, <<<{\bf\Sigma}>>>)
+is an @math{m}-by-@math{n} diagonal matrix,
+and
+m4_math(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+is an @math{n}-by-@math{n} unitary matrix.
+
+Let
+m4_math(<<<\mathbf{\sigma}_i>>>, <<<@math{sigma[i]}>>>, <<<{\bf \sigma}_i>>>)
+be a diagonal element of
+m4_mathcomma(<<<\mathbf{\Sigma}>>>, <<<@math{Sigma}>>>, <<<{\bf \Sigma}>>>)
+that is,
+m4_mathdot(<<<\mathbf{\Sigma}_{ii} = \sigma_i>>>,
+<<<@math{@var{Sigma}[i, i]  = @var{sigma}[i]}>>>,
+<<<{\bf \Sigma}_{ii}  = \sigma_i>>>)
+The elements
+m4_math(<<<\sigma_i>>>, <<<@math{sigma[i]}>>>)
+are the so-called singular values of
+m4_mathpunc(<<<;>>>, <<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
 these are real and nonnegative, and returned in descending order.
-The first @math{min(m, n)} columns of @var{U} and @var{V} are
-the left and right singular vectors of @var{A}.
-Note that @code{dgesvd} returns the transpose of @var{V}, not @var{V} itself.
+The first
+m4_math(<<<\min(m, n)>>>, <<<min(m, n)>>>)
+columns of
+m4_math(<<<\mathbf{U}>>>, <<<@math{U}>>>, <<<{\bf U}>>>)
+and
+m4_math(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+are the left and right singular vectors of
+m4_mathdot(<<<\mathbf{A}>>>, <<<@math{A}>>>, <<<{\bf A}>>>)
+Note that @code{dgesvd} returns the transpose of
+m4_mathcomma(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+not
+m4_math(<<<\mathbf{V}>>>, <<<@math{V}>>>, <<<{\bf V}>>>)
+itself.
 
 @code{dgesvd(@var{A})} computes only the singular values of @var{A}.
 @code{dgesvd(@var{A}, @var{left_p}, @var{right_p})} computes the singular values of @var{A}
@@ -409,17 +483,27 @@ To make use of this function, you must load the LaPack package via
 @code{norm} specifies the kind of norm to be computed:
 @table @code
 @item max
-Compute @math{max(abs(A(i, j)))} where @math{i} and @math{j} range over
-the rows and columns, respectively, of @var{A}.
+Compute
+m4_math(<<<\max(|{\bf A}_{ij}|)>>>, <<<max(abs(A(i, j)))>>>)
+where @math{i} and @math{j} range over
+the rows and columns, respectively, of
+m4_mathdot(<<<{\bf A}>>>, <<<A>>>)
 Note that this function is not a proper matrix norm.
 @item one_norm
-Compute the @math{L[1]} norm of @var{A},
+Compute the
+m4_math(<<<L_1>>>, <<<L[1]>>>)
+norm of
+m4_mathcomma(<<<{\bf A}>>>, <<<A>>>)
 that is, the maximum of the sum of the absolute value of elements in each column.
 @item inf_norm
-Compute the @math{L[inf]} norm of @var{A},
+Compute the
+m4_math(<<<L_\infty>>>, <<<L[inf]>>>)
+norm of
+m4_mathcomma(<<<{\bf A}>>>, <<<A>>>)
 that is, the maximum of the sum of the absolute value of elements in each row.
 @item frobenius
-Compute the Frobenius norm of @var{A},
+Compute the Frobenius norm of
+m4_mathcomma(<<<{\bf A}>>>, <<<A>>>)
 that is, the square root of the sum of squares of the matrix elements.
 @end table
 
@@ -430,9 +514,8 @@ that is, the square root of the sum of squares of the matrix elements.
 @end deffn
 
 @anchor{dgemm}
-@deffn {Function} dgemm @
-@fname{dgemm} (@var{A}, @var{B}) @
-@fname{dgemm} (@var{A}, @var{B}, @var{options})
+@deffn {Function} dgemm (@var{A}, @var{B})
+@deffnx {Function} dgemm (@var{A}, @var{B}, @var{options})
 Compute the product of two matrices and optionally add the product to
 a third matrix.
 
@@ -442,10 +525,23 @@ product of the two real matrices, @var{A} and @var{B}.
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
-In the second form, @code{dgemm} computes the @math{@var{alpha} *
-@var{A} * @var{B} + @var{beta} * @var{C}} where @var{A}, @var{B},
-@var{C} are real matrices of the appropriate sizes and @var{alpha} and
-@var{beta} are real numbers.  Optionally, @var{A} and/or @var{B} can
+In the second form, @code{dgemm} computes
+m4_math(<<<\alpha {\bf A} {\bf B} + \beta {\bf C}>>>,
+<<<@var{alpha} * @var{A} * @var{B} + @var{beta} * @var{C}>>>)
+where
+m4_mathcomma(<<<{\bf A}>>>, <<<@var{A}>>>)
+m4_mathcomma(<<<{\bf B}>>>, <<<@var{B}>>>)
+and
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+are real matrices of the appropriate sizes and
+m4_math(<<<\alpha>>>, <<<alpha>>>)
+and
+m4_math(<<<\beta>>>, <<<beta>>>)
+are real numbers.  Optionally,
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+and/or
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
+can
 be transposed before computing the product.  The extra parameters are
 specified by optional keyword arguments: The keyword arguments are
 optional and may be specified in any order.  They all take the form
@@ -453,21 +549,42 @@ optional and may be specified in any order.  They all take the form
 
 @table @code
 @item C
-The matrix @var{C} that should be added.  The default is @code{false},
+The matrix
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+that should be added.  The default is @code{false},
 which means no matrix is added.
 @item alpha
-The product of @var{A} and @var{B} is multiplied by this value.  The
+The product of
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+and
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
+is multiplied by this value.  The
 default is 1.
 @item beta
-If a matrix @var{C} is given, this value multiplies @var{C} before it
-is added.  The default value is 0, which implies that @var{C} is not
-added, even if @var{C} is given.  Hence, be sure to specify a non-zero
-value for @var{beta}.
+If a matrix
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+is given, this value multiplies
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+before it
+is added.  The default value is 0, which implies that
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+is not
+added, even if
+m4_math(<<<{\bf C}>>>, <<<@var{C}>>>)
+is given.  Hence, be sure to specify a non-zero
+value for
+m4_mathdot(<<<\beta>>>, <<<@math{beta}>>>)
 @item transpose_a
-If @code{true}, the transpose of @var{A} is used instead of @var{A}
+If @code{true}, the transpose of
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is used instead of
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
 for the product.  The default is @code{false}.
 @item transpose_b
-If @code{true}, the transpose of @var{B} is used instead of @var{B}
+If @code{true}, the transpose of
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
+is used instead of
+m4_math(<<<{\bf B}>>>, <<<@var{B}>>>)
 for the product.  The default is @code{false}.
 @end table
 
@@ -562,11 +679,12 @@ for the product.  The default is @code{false}.
 @end deffn
 
 @anchor{zgeev}
-@deffn {Function} zgeev @
-@fname{zgeev} (@var{A}) @
-@fname{zgeev} (@var{A}, @var{right_p}, @var{left_p})
+@deffn {Function} zgeev (@var{A})
+@deffnx {Function} zgeev (@var{A}, @var{right_p}, @var{left_p})
 
-Like @code{dgeev}, but the matrix @var{A} is complex.
+Like @mrefcomma{dgeev} but the matrix
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is complex.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
@@ -578,18 +696,21 @@ To make use of this function, you must load the LaPack package via
 @end deffn
 
 @anchor{zheev}
-@deffn {Function} zheev @
-@fname{zheev} (@var{A}) @
-@fname{zheev} (@var{A}, @var{eigvec_p})
+@deffn {Function} zheev (@var{A})
+@deffnx {Function} zheev (@var{A}, @var{eigvec_p})
 
-Like @code{dgeev}, but the matrix @var{A} is assumed to be a square
+Like @mrefcomma{dgeev} but the matrix
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is assumed to be a square
 complex Hermitian matrix. If @var{eigvec_p} is @code{true}, then the
 eigenvectors of the matrix are also computed.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
-No check is made that the matrix @var{A} is, in fact, Hermitian.
+No check is made that the matrix
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is, in fact, Hermitian.
 
 A list of two items is returned, as in @code{dgeev}: a list of
 eigenvalues, and @code{false} or the matrix of the eigenvectors.
