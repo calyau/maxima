@@ -705,7 +705,7 @@ To make use of this function, you must load the LaPack package via
 @fname{zheev} (@var{A}, @var{eigvec_p})
 
 Like @code{dgeev}, but the matrix
-m4_math<<<<{\bf A}>>>, <<<@var{A}>>>)
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
 is assumed to be a square
 complex Hermitian matrix. If @var{eigvec_p} is @code{true}, then the
 eigenvectors of the matrix are also computed.
