@@ -69,7 +69,8 @@ where
 m4_math(<<<u_j^\mathbf{H}>>>,<<<u_j^H>>>, <<<u_j^{\bf H}>>>)
 denotes the conjugate transpose of
 m4_mathdot(<<<u_j>>>,<<<u_j>>>)
-The Maxima function @code{ctranspose} computes the conjugate transpose.
+For a Maxima function to compute the conjugate transpose, @pxref{ctranspose}.
+
 
 The computed eigenvectors are normalized to have Euclidean norm
 equal to 1, and largest component has imaginary part equal to zero.
