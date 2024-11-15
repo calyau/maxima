@@ -686,7 +686,9 @@ for the product.  The default is @code{false}.
 @fname{zgeev} (@var{A}) @
 @fname{zgeev} (@var{A}, @var{right_p}, @var{left_p})
 
-Like @code{dgeev}, but the matrix @var{A} is complex.
+Like @code{dgeev}, but the matrix
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is complex.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
@@ -702,14 +704,18 @@ To make use of this function, you must load the LaPack package via
 @fname{zheev} (@var{A}) @
 @fname{zheev} (@var{A}, @var{eigvec_p})
 
-Like @code{dgeev}, but the matrix @var{A} is assumed to be a square
+Like @code{dgeev}, but the matrix
+m4_math<<<<{\bf A}>>>, <<<@var{A}>>>)
+is assumed to be a square
 complex Hermitian matrix. If @var{eigvec_p} is @code{true}, then the
 eigenvectors of the matrix are also computed.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
 
-No check is made that the matrix @var{A} is, in fact, Hermitian.
+No check is made that the matrix
+m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
+is, in fact, Hermitian.
 
 A list of two items is returned, as in @code{dgeev}: a list of
 eigenvalues, and @code{false} or the matrix of the eigenvectors.
