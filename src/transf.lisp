@@ -23,16 +23,18 @@ then ACOS(X) will be of mode FLOAT if and only if X is of mode FLOAT.")
 ;;; some floating point translations. with tricks.
 
 (defun translate-with-flonum-op (form can-branch-p)
-  (let ((arg (translate (cadr form)))
-        (lisp-function (gethash (caar form) *flonum-op*)))
-    (if (and (eq (car arg) '$float)
-             lisp-function)
-        (let ((call `(funcall ,lisp-function ,(cdr arg))))
-          (if (and can-branch-p
-                   $tr_float_can_branch_complex)
-              `($any . (complexify ,call))
-              `($float . ,call)))
-        `($any . (simplify (list '(,(caar form)) ,(cdr arg)))))))
+  (destructuring-bind (mode . targs)
+      (translate-args/union-mode (cdr form))
+    (let ((args (mapcar (lambda (a) (dconv a mode)) targs))
+          (lisp-function (gethash (caar form) *flonum-op*)))
+      (if (and (eq mode '$float)
+               lisp-function)
+          (let ((call `(funcall ,lisp-function ,@args)))
+            (if (and can-branch-p
+                     $tr_float_can_branch_complex)
+                `($any . (complexify ,call))
+                `($float . ,call)))
+          `($any . (simplify (list '(,(caar form)) ,@args)))))))
 
 (def%tr %sin (form)
   (translate-with-flonum-op form nil))
