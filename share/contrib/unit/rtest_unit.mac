@@ -1,0 +1,235 @@
+/* tests for share/contrib/unit package, derived from doc/info/unit.texi */
+
+(if not ?boundp ('globalbaseunitlisting) then load ("unit.mac"), 0);
+0;
+
+N;
+kg*m/s^2;
+
+dyn;
+?rat(1, 100000)*kg*m/s^2;
+
+g;
+?rat(1, 1000)*kg;
+
+centigram*inch/minutes^2;
+?rat(127, 1800000000000)*kg*m/s^2;
+
+setunits([centigram,inch,minute]);
+done;
+
+N;
+?rat(1800000000000, 127)*%in*cg/%min^2;
+
+dyn;
+?rat(18000000, 127)*%in*cg/%min^2;
+
+g;
+100*cg;
+
+centigram*inch/minutes^2;
+%in*cg/%min^2;
+
+setunits([kg,m,s]);
+done;
+
+centigram*inch/minutes^2;
+?rat(127, 1800000000000)*kg*m/s^2;
+
+setunits(N);
+done;
+
+N;
+N;
+
+dyn;
+?rat(1, 100000)*N;
+
+kg*m/s^2;
+N;
+
+centigram*inch/minutes^2;
+?rat(127, 1800000000000)*N;
+
+setunits(dyn);
+done;
+
+kg*m/s^2;
+100000*dyn;
+
+centigram*inch/minutes^2;
+?rat(127, 18000000)*dyn;
+
+uforget(dyn);
+false;
+
+kg*m/s^2;
+kg*m/s^2;
+
+centigram*inch/minutes^2;
+?rat(127, 1800000000000)*kg*m/s^2;
+
+setunits([centigram,inch,minute]);
+done;
+
+centigram*inch/minutes^2;
+%in*cg/%min^2;
+
+uforget([cg,%in,%min]);
+[false, false, false];
+
+centigram*inch/minutes^2;
+?rat(127, 1800000000000)*kg*m/s^2;
+
+kg*m/s^2;
+kg*m/s^2;
+
+convert(kg*m/s^2,[g,km,s]);
+g*km/s^2;
+
+convert(kg*m/s^2,[g,inch,minute]);
+?rat(18000000000, 127)*%in*g/%min^2;
+
+convert(kg*m/s^2,[N]);
+N;
+
+convert(kg*m^2/s^2,[N]);
+m*N;
+
+setunits([N,J]);
+done;
+
+convert(kg*m^2/s^2,[N]);
+m*N;
+
+convert(kg*m^2/s^2,[N,inch]);
+?rat(5000, 127)*%in*N;
+
+convert(kg*m^2/s^2,[J]);
+J;
+
+kg*m^2/s^2;
+J;
+
+setunits([g,inch,s]);
+done;
+
+kg*m/s^2;
+N;
+
+uforget(N);
+false;
+
+kg*m/s^2;
+?rat(5000000, 127)*%in*g/s^2;
+
+convert(kg*m/s^2,[g,inch,s]);
+?rat(5000000, 127)*%in*g/s^2;
+
+/* omit examples for usersetunits, since that's hard to test */
+
+setunits([N, J]);
+done;
+
+kg*m/s^2;
+N;
+
+kg*m^2/s^2;
+J;
+
+setunits([dyn,eV]);
+done;
+
+kg*m/s^2;
+100000*dyn;
+
+kg*m^2/s^2;
+6241509596477042688*eV;
+
+kg*m^3/s^2;
+6241509596477042688*eV*m;
+
+kg*m*km/s^2;
+6241509596477042688000*eV;
+
+uforget([dyn,eV]);
+[false, false];
+
+kg*m/s^2;
+N;
+
+kg*m^2/s^2;
+J;
+
+dontusedimension(N);
+[%force];
+
+dontusedimension(J);
+[%energy, %force];
+
+kg*m/s^2;
+kg*m/s^2;
+
+kg*m^2/s^2;
+kg*m^2/s^2;
+
+setunits([dyn,eV]);
+done;
+
+kg*m/s^2;
+kg*m/s^2;
+
+kg*m^2/s^2;
+kg*m^2/s^2;
+
+uforget([dyn,eV]);
+[false, false];
+
+kg*m/s^2;
+kg*m/s^2;
+
+kg*m^2/s^2;
+kg*m^2/s^2;
+
+usedimension(N);
+true;
+
+usedimension(J);
+true;
+
+kg*m/s^2;
+kg*m/s^2;
+
+kg*m^2/s^2;
+kg*m^2/s^2;
+
+setunits([dyn,eV]);
+done;
+
+kg*m/s^2;
+100000*dyn;
+
+kg*m^2/s^2;
+6241509596477042688*eV;
+
+uforget([dyn,eV]);
+[false, false];
+
+kg*m/s^2;
+N;
+
+kg*m^2/s^2;
+J;
+
+kill(usersetunits);
+done;
+
+uforget([dyn,eV]);
+[false, false];
+
+kg*m/s^2;
+kg*m/s^2;
+
+kg*m^2/s^2;
+kg*m^2/s^2;
+
