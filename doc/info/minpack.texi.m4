@@ -20,10 +20,7 @@ Fortran library @url{https://www.netlib.org/minpack/, MINPACK as obtained from N
 @section Functions and Variables for minpack
 
 @anchor{minpack_lsquares}
-@deffn {Function} minpack_lsquares @
-@fname{minpack_lsquares} (@var{flist}, @var{varlist}, @var{guess}) @
-@fname{minpack_lsquares} (..., 'tolerance = @var{tolerance}) @
-@fname{minpack_lsquares} (..., 'jacobian = @var{jacobian})
+@deffn {Function} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess}, ['tolerance = @var{tolerance}, 'jacobian = @var{jacobian}])
 
 Compute the point that minimizes the sum of the squares of the
 functions in the list @var{flist}.  The variables are in the list
@@ -50,12 +47,19 @@ m4_displaymath(
 
 
 The optional keyword arguments, @var{tolerance} and @var{jacobian}
-provide some control over the algorithm.  @var{tolerance} is the
-estimated relative error desired in the sum of squares.
-@var{jacobian} can be used to specify the Jacobian.  If @var{jacobian}
+provide some control over the algorithm.
+
+@table @code
+@item tolerance
+the estimated relative error desired in the sum of squares.  The
+default value is approximately
+m4_mathdot(<<<1.0537\times 10^{-8}>>>, <<<1.0537e-8>>>)
+@item jacobian
+specifies the Jacobian.  If @var{jacobian}
 is not given or is @code{true} (the default), the Jacobian is computed
 from @var{flist}.  If @var{jacobian} is @code{false}, a numerical
-approximation is used.
+approximation is used.  @xref{jacobian, Jacobian}.
+@end table
 
 @code{minpack_lsquares} returns a list of three items as follows:
 @enumerate
