@@ -54,6 +54,7 @@ then ACOS(X) will be of mode FLOAT if and only if X is of mode FLOAT.")
 (def-same%tr %asinh %sin)
 (def-same%tr %acsch %sin)
 (def-same%tr %atan %sin)
+(def-same%tr %atan2 %sin)
 (def-same%tr %erf %sin)
 (def-same%tr %exp %sin)
 
