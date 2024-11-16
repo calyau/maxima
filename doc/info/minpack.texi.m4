@@ -135,10 +135,7 @@ Same problem but use numerical approximation to Jacobian.
 @end deffn
 
 @anchor{minpack_solve}
-@deffn {Function} minpack_solve @
-@fname{minpack_solve} (@var{flist}, @var{varlist}, @var{guess}) @
-@fname{minpack_solve} (..., 'tolerance = @var{tolerance}) @
-@fname{minpack_solve} (..., 'jacobian = @var{jacobian})
+@deffn {Function} minpack_solve (@var{flist}, @var{varlist}, @var{guess}, ['tolerance = @var{tolerance}, 'jacobian = @var{jacobian}])
 
 Solve a system of @code{n} equations in @code{n} unknowns.
 The @code{n} equations are given in the list @var{flist}, and the
@@ -155,12 +152,19 @@ m4_displaymath(
 <<<f_i(x_1, x_2, ..., x_n) = 0>>>)
 
 The optional keyword arguments, @var{tolerance} and @var{jacobian}
-provide some control over the algorithm.  @var{tolerance} is the
-estimated relative error desired in the sum of squares.
-@var{jacobian} can be used to specify the Jacobian.  If @var{jacobian}
+provide some control over the algorithm.
+
+@table @code
+@item tolerance
+the estimated relative error desired in the sum of squares.  The
+default value is approximately
+m4_mathdot(<<<1.0537\times 10^{-8}>>>, <<<1.0537e-8>>>)
+@item jacobian
+specifies the Jacobian.  If @var{jacobian}
 is not given or is @code{true} (the default), the Jacobian is computed
 from @var{flist}.  If @var{jacobian} is @code{false}, a numerical
-approximation is used.
+approximation is used.  @xref{jacobian, Jacobian}.
+@end table
 
 @code{minpack_solve} returns a list of three items as follows:
 @enumerate
