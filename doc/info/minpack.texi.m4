@@ -7,7 +7,7 @@
 @section Introduction to minpack
 
 @code{Minpack} is a Common Lisp translation (via @code{f2cl}) of the
-Fortran library MINPACK, as obtained from Netlib.
+Fortran library @url{https://www.netlib.org/minpack/, MINPACK as obtained from Netlib}.
 
 @opencatbox{Categories:}
 @category{Numerical methods} 
