@@ -85,36 +85,38 @@ tol is too small. no further improvement in the approximate solution x
 is possible. 
 @end table
 
+Here is an example using Powell's singular function.
 @c ===beg===
 @c load("minpack")$
-@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
 @c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
 @c ===end===
 @example
-/* Problem 6: Powell singular function */
-(%i1) powell(x1,x2,x3,x4) := 
-         [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, 
-              sqrt(10)*(x1-x4)^2]$
-(%i2) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], 
-                       [3,-1,0,1]);
-(%o2) [[1.652117596168394e-17, - 1.652117596168393e-18, 
-        2.643388153869468e-18, 2.643388153869468e-18], 
-       6.109327859207777e-34, 4] 
+(%i1) load("minpack")$
+(%i2) powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
+@group
+(%i3) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
+(%o3) [[1.6521175961683935e-17, - 1.6521175961683934e-18, 
+2.6433881538694683e-18, 2.6433881538694683e-18], 
+6.109327859207777e-34, 4]
+@end group
 @end example
 
-
+Same problem but use numerical approximation to Jacobian.
 @c ===beg===
 @c load("minpack")$
-@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
 @c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1], jacobian = false);
 @c ===end===
 @example
-/* Same problem but use numerical approximation to Jacobian */
-(%i3) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], 
-                       [3,-1,0,1], jacobian = false);
+(%i1) load("minpack")$
+(%i2) powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
+@group
+(%i3) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1], jacobian = false);
 (%o3) [[5.060282149485331e-11, - 5.060282149491206e-12, 
-        2.179447843547218e-11, 2.179447843547218e-11], 
-       3.534491794847031e-21, 5]
+2.1794478435472183e-11, 2.1794478435472183e-11], 
+3.534491794847031e-21, 5]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -171,28 +173,31 @@ Iteration is not making good progress.
 @end table
 
 @c ===beg===
-@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
+@c load("minpack")$
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
 @c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
 @c ===end===
 @example
-/* Problem 6: Powell singular function */
-(%i1) powell(x1,x2,x3,x4) := 
-         [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, 
-              sqrt(10)*(x1-x4)^2]$
-(%i2) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], 
-                       [3,-1,0,1]);
-(%o2) [[8.586306796471285e-19, - 8.586306796471285e-20, 
-       1.902656479186597e-18, 1.902656479186597e-18], 1.552862701642987e-35, 4]
+(%i1) load("minpack")$
+(%i2) powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
+@group
+(%i3) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
+(%o3) [[1.6521175961683935e-17, - 1.6521175961683934e-18, 
+2.6433881538694683e-18, 2.6433881538694683e-18], 
+6.109327859207777e-34, 4]
+@end group
 @end example
 In this particular case, we can solve this analytically:
 @c ===beg===
-@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2,
-@c sqrt(10)*(x1-x4)^2];
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
 @c solve(powell(x1,x2,x3,x4),[x1,x2,x3,x4]);
 @c ===end===
 @example
-(%i3) solve(powell(x1,x2,x3,x4),[x1,x2,x3,x4]);
-(%o3)       [[x1 = 0, x2 = 0, x3 = 0, x4 = 0]] 
+(%i1) powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
+@group
+(%i2) solve(powell(x1,x2,x3,x4),[x1,x2,x3,x4]);
+(%o2)          [[x1 = 0, x2 = 0, x3 = 0, x4 = 0]]
+@end group
 @end example
 and we see that the numerical solution is quite close the analytical one.
 
