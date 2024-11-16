@@ -86,7 +86,7 @@ is possible.
 @end table
 
 @c ===beg===
-@c load("minpack");
+@c load("minpack")$
 @c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
 @c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
 @c ===end===
@@ -104,7 +104,7 @@ is possible.
 
 
 @c ===beg===
-@c load("minpack");
+@c load("minpack")$
 @c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
 @c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1], jacobian = false);
 @c ===end===
@@ -170,6 +170,10 @@ possible.
 Iteration is not making good progress.
 @end table
 
+@c ===beg===
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
+@c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
+@c ===end===
 @example
 /* Problem 6: Powell singular function */
 (%i1) powell(x1,x2,x3,x4) := 
@@ -181,6 +185,11 @@ Iteration is not making good progress.
        1.902656479186597e-18, 1.902656479186597e-18], 1.552862701642987e-35, 4]
 @end example
 In this particular case, we can solve this analytically:
+@c ===beg===
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2,
+@c sqrt(10)*(x1-x4)^2];
+@c solve(powell(x1,x2,x3,x4),[x1,x2,x3,x4]);
+@c ===end===
 @example
 (%i3) solve(powell(x1,x2,x3,x4),[x1,x2,x3,x4]);
 (%o3)       [[x1 = 0, x2 = 0, x3 = 0, x4 = 0]] 
