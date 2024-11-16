@@ -28,7 +28,26 @@ Fortran library MINPACK, as obtained from Netlib.
 Compute the point that minimizes the sum of the squares of the
 functions in the list @var{flist}.  The variables are in the list
 @var{varlist}.  An initial guess of the optimum point must be provided
-in @var{guess}.  
+in @var{guess}.
+
+Let @var{flist} be a list of @math{m} functions,
+m4_mathdot(<<<f_i(x_1, x_2, ..., x_n)>>>, <<<f_i(x_1, x_2, ..., x_n)>>>)
+Then this function can be used to find the values of
+m4_math(<<<x_1, x_2, ..., x_n>>>, <<<x_1, x_2, ..., x_n>>>)
+that solve the least squares problem
+
+m4_displaymath(
+<<<\sum_i^m f_i(x_1, x_2,...,x_n)^2>>>,
+<<<
+               m
+              ____
+              ╲      2
+               ⟩    f (x_1, x_2,..., x_n)
+              ╱      i
+              ‾‾‾‾
+              i = 1
+>>>)
+
 
 The optional keyword arguments, @var{tolerance} and @var{jacobian}
 provide some control over the algorithm.  @var{tolerance} is the
@@ -66,6 +85,11 @@ tol is too small. no further improvement in the approximate solution x
 is possible. 
 @end table
 
+@c ===beg===
+@c load("minpack");
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
+@c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
+@c ===end===
 @example
 /* Problem 6: Powell singular function */
 (%i1) powell(x1,x2,x3,x4) := 
@@ -78,6 +102,12 @@ is possible.
        6.109327859207777e-34, 4] 
 @end example
 
+
+@c ===beg===
+@c load("minpack");
+@c powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2];
+@c minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1], jacobian = false);
+@c ===end===
 @example
 /* Same problem but use numerical approximation to Jacobian */
 (%i3) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], 
@@ -103,6 +133,15 @@ Solve a system of @code{n} equations in @code{n} unknowns.
 The @code{n} equations are given in the list @var{flist}, and the
 unknowns are in @var{varlist}.  An initial guess of the solution must
 be provided in @var{guess}.
+
+Let @var{flist} be a list of @math{m} functions,
+m4_mathdot(<<<f_i(x_1, x_2, ..., x_n)>>>, <<<f_i(x_1, x_2, ..., x_n)>>>)
+Then this functions solves the system of @math{m} nonlinear equations
+in @math{n} variables:
+
+m4_displaymath(
+<<<f_i(x_1, x_2, ..., x_n) = 0>>>,
+<<<f_i(x_1, x_2, ..., x_n) = 0>>>)
 
 The optional keyword arguments, @var{tolerance} and @var{jacobian}
 provide some control over the algorithm.  @var{tolerance} is the
