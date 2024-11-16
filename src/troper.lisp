@@ -29,11 +29,7 @@
 	(t `($any . (*mminus ,(cdr form))))))
 
 (def%tr mplus (form)
-  (let   (args mode)
-    (do ((l (cdr form) (cdr l))) ((null l))
-      (setq args (cons (translate (car l)) args)
-	    mode (*union-mode (car (car args)) mode)))
-    (setq args (nreverse args))
+  (destructuring-bind (mode . args) (translate-args/union-mode (cdr form))
     (cond ((eq '$fixnum mode) `($fixnum + . ,(mapcar #'cdr args)))
 	  ((eq '$float mode) `($float + . ,(mapcar #'dconv-$float args)))
 	  ((eq '$rational mode) `($rational rplus . ,(mapcar #'cdr args)))
@@ -41,19 +37,14 @@
 	  (t `($any add* . ,(mapcar #'dconvx args))))))
 
 (def%tr mtimes (form)
-  (let (args mode)
-    (cond ((equal -1 (cadr form))
-	   (translate `((mminus) ((mtimes) . ,(cddr form)))))
-	  (t
-	   (do ((l (cdr form) (cdr l)))
-	       ((null l))
-	     (setq args (cons (translate (car l)) args)
-		   mode (*union-mode (car (car args)) mode)))
-	   (setq args (nreverse args))
-	   (cond ((eq '$fixnum mode) `($fixnum * . ,(mapcar #'cdr args)))
-		 ((eq '$float mode) `($float * . ,(mapcar #'dconv-$float args)))
-		 ((eq '$rational mode) `($rational rtimes . ,(mapcar #'cdr args)))
-		 ((eq '$number mode) `($number * . ,(mapcar #'cdr args)))
+  (cond ((equal -1 (cadr form))
+         (translate `((mminus) ((mtimes) . ,(cddr form)))))
+        (t
+         (destructuring-bind (mode . args) (translate-args/union-mode (cdr form))
+           (cond ((eq '$fixnum mode) `($fixnum * . ,(mapcar #'cdr args)))
+                 ((eq '$float mode) `($float * . ,(mapcar #'dconv-$float args)))
+                 ((eq '$rational mode) `($rational rtimes . ,(mapcar #'cdr args)))
+                 ((eq '$number mode) `($number * . ,(mapcar #'cdr args)))
 		 (t `($any mul* . ,(mapcar #'dconvx args))))))))
 
 

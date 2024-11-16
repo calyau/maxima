@@ -343,6 +343,20 @@ APPLY means like APPLY.")
 	  (exp (car (last loc))))
       (cons mode exp))))
 
+; Returns (UNION-MODE . TARGS) where TARGS are the translated ARGS
+; (with individual mode info present) and UNION-MODE is the union
+; of their modes as determined by *UNION-MODE.
+;
+; If ARGS is NIL then both UNION-MODE and TARGS will be NIL.
+(defun translate-args/union-mode (args)
+  (do ((l args (cdr l))
+       (args '())
+       (mode nil))
+      ((null l)
+       (cons mode (nreverse args)))
+    (setq args (cons (translate (car l)) args)
+          mode (*union-mode (car (car args)) mode))))
+
 (defun tr-args (form)
   (mapcar #'(lambda (x) (dconvx (translate x))) form))
 
