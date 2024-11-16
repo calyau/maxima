@@ -57,33 +57,38 @@ is not given or is @code{true} (the default), the Jacobian is computed
 from @var{flist}.  If @var{jacobian} is @code{false}, a numerical
 approximation is used.
 
-@code{minpack_lsquares} returns a list.  The first item is the
-estimated solution; the second is the sum of squares, and the third
-indicates the success of the algorithm.  The possible values are
-
-@table @code
-@item 0
+@code{minpack_lsquares} returns a list of three items as follows:
+@enumerate
+@item
+The estimated solution
+@item
+The sum of squares
+@item
+The success of the algorithm. The possible values are
+@enumerate 0
+@item 
 improper input parameters.
-@item 1
+@item 
 algorithm estimates that the relative error in the sum of squares is
 at most @code{tolerance}. 
-@item 2
+@item 
 algorithm estimates that the relative error between x and the solution
 is at most @code{tolerance}. 
-@item 3
+@item 
 conditions for info = 1 and info = 2 both hold.
-@item 4
+@item 
 fvec is orthogonal to the columns of the jacobian to machine
 precision. 
-@item 5
+@item 
 number of calls to fcn with iflag = 1 has reached 100*(n+1).
-@item 6
+@item 
 tol is too small. no further reduction in the sum of squares is
 possible. 
-@item 7
+@item 
 tol is too small. no further improvement in the approximate solution x
 is possible. 
-@end table
+@end enumerate
+@end enumerate
 
 Here is an example using Powell's singular function.
 @c ===beg===
@@ -153,24 +158,29 @@ is not given or is @code{true} (the default), the Jacobian is computed
 from @var{flist}.  If @var{jacobian} is @code{false}, a numerical
 approximation is used.
 
-@code{minpack_solve} returns a list.  The first item is the
-estimated solution; the second is the sum of squares, and the third
-indicates the success of the algorithm.  The possible values are
-
-@table @code
-@item 0
+@code{minpack_solve} returns a list of three items as follows:
+@enumerate
+@item
+The estimated solution
+@item
+The sum of squares
+@item
+The success of the algorithm.  The possible values are
+@enumerate 0
+@item
 improper input parameters.
-@item 1
+@item
 algorithm estimates that the relative error in the solution is
 at most @code{tolerance}. 
-@item 2
+@item
 number of calls to fcn with iflag = 1 has reached 100*(n+1).
-@item 3
+@item
 tol is too small. no further reduction in the sum of squares is
 possible. 
-@item 4
+@item
 Iteration is not making good progress.
-@end table
+@end enumerate
+@end enumerate
 
 @c ===beg===
 @c load("minpack")$
