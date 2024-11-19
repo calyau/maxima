@@ -226,6 +226,8 @@
     ;;  and abcl 1.5.0
 
     #-sbcl
+    ((mlist simp) "rtest_dgemm")
+    #-sbcl
     ((mlist simp) "rtest_dgeqrf")
     #-sbcl
     ((mlist simp) "rtest_dgesv")
