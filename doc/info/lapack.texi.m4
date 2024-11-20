@@ -716,8 +716,8 @@ A list of two items is returned, as in @code{dgeev}: a list of
 eigenvalues, and @code{false} or the matrix of the eigenvectors.
 
 @c ===beg===
-@c load("lapack")
-@c A: matrix(
+@c load("lapack")$
+@c M: matrix(
 @c      [9.14 +%i*0.00 ,   -4.37 -%i*9.22 ,  -1.98 -%i*1.72 ,  -8.96 -%i*9.50],
 @c      [-4.37 +%i*9.22 ,  -3.35 +%i*0.00 ,   2.25 -%i*9.51 ,   2.57 +%i*2.40],
 @c      [-1.98 +%i*1.72 ,   2.25 +%i*9.51 ,  -4.82 +%i*0.00 ,  -3.24 +%i*2.04],
