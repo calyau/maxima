@@ -245,7 +245,11 @@
 		    o
 		  (declare (ignore mequal))
 		  (if (or (null valid-keywords)
-			  (member opt valid-keywords))
+                          ;; The valid keywords are always verb forms
+                          ;; ($foo), so we need to convert OPT to a
+                          ;; verb form to be able to match the
+                          ;; keywords.
+			  (member ($verbify opt) valid-keywords))
 		      (flet ((keywordify (x)
 			       (intern (subseq (symbol-name x) 1) :keyword)))
 			(list (keywordify opt) val))
@@ -642,6 +646,13 @@
 
 	 ;; Set up properties
 	 (defprop ,noun-name ,simp-name operators)
+
+         ;; The noun property is needed so that $verbify returns the
+         ;; verb form.  Without this, things like ($verbify '%beta)
+         ;; doesn't return $beta because beta is a function and a
+         ;; variable (used by dgemm).
+         (defprop ,noun-name ,verb-name noun)
+
 	 ;; The verb and alias properties are needed to make things like
 	 ;; quad_qags(jacobi_sn(x,.5)...) work.
 	 (defprop ,verb-name ,noun-name verb)
