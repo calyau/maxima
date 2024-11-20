@@ -726,6 +726,7 @@ eigenvalues, and @code{false} or the matrix of the eigenvectors.
 @c E: zheev(M,true)$
 @c E[1];
 @c E[2];
+@c ===end===
 An example of computing the eigenvalues and then eigenvalues and
 eigenvectors of an Hermitian matrix.
 @example
