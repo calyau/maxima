@@ -600,7 +600,7 @@ for the product.  The default is @code{false}.
 @c dgemm(A,B,c=C,beta=1);
 @c A . B + C;
 @c dgemm(A,B,c=C,beta=1, alpha=-1);
-@c -A . B + C
+@c -A . B + C;
 @c ===end===
 @example
 (%i1) load ("lapack")$
