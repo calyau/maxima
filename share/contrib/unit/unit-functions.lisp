@@ -97,6 +97,15 @@
 (defmvar $allunitslist `((mlist)))
 (defmvar $unitformatresults t)
 
+;; Ensure that units formatting isn't invoked by letsimp.
+;; Unless unitformatresults is bound to NIL, letsimp runs into
+;; an infinite recursion via NFORMAT.
+
+(let ((builtin-letsimp (get '$letsimp 'mfexpr*)))
+  (defmspec $letsimp (e)
+    (let (($unitformatresults nil))
+      (funcall builtin-letsimp e))))
+
 ;; Code to enable correct display of multiplication by units via nformat
 (defun notunitfree (form)
   ;;returns t if expression contains units, nil otherwise

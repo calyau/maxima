@@ -368,3 +368,25 @@ bar ();
  0);
 0;
 
+/* SF bug #4417: "letsimp treats minus expressions as -1 times something" */
+
+(kill (X, W, A),
+ matchdeclare (X, all),
+ let (W*X, X),
+ 0);
+0;
+
+letsimp (-W);
+-W;
+
+letsimp (expand ((A - W)^3));
+A^3-3*A^2+3*A-W^3;
+
+(let (W^2, W), 0);
+0;
+
+letsimp (expand ((A - W)^3));
+A^3-3*A^2+3*A-W;
+
+letsimp (expand ((A + W)^3));
+A^3+3*A^2+3*A+W;

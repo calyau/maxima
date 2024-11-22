@@ -207,9 +207,9 @@
 	  ;; representation, the original expr might be in CRE form.
 	  ;; Regardless, we use ratf to make sure varlist and genvar
 	  ;; know of expr's kernels.
-	  (setq expr (nisletsimp (if (atom expr)
+	  (setq expr (nisletsimp (nformat (if (atom expr)
 				     expr
-				     (ratf expr)))))))))
+				     (ratf expr))))))))))
 
 (defun nisletsimp (e) 
   (let (x)
@@ -218,7 +218,7 @@
 	       (and (eq (caar e) 'mtimes) (setq x (cdr e))))
 	   (setq x (nisnewlist x))
 	   (if x (nisletsimp ($ratexpand (cons '(mtimes) x))) e))
-	  ((member (caar e) '(mplus mequal mlist $matrix) :test #'eq)
+	  ((member (caar e) '(mplus mequal mlist $matrix mminus) :test #'eq)
 	   (cons (remove 'simp (car e))
 		 (mapcar #'nisletsimp (cdr e))))
 	  ((or (eq (caar e) 'mrat) 
