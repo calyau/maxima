@@ -179,13 +179,8 @@ is equal to @var{A} (ignoring floating point round-off errors).
 @c M : matrix ([1, -3.2, 8], [-11, 2.7, 5.9]);
 @c [q, r] : dgeqrf (M);
 @c q . r - M;
-@c mat_norm (%);
+@c mat_norm (%, 1);
 @c ===end===
-Too few arguments supplied to mat_norm(m, p); found: 
-                 [ - 7.77156e-16   1.77636e-15   - 8.88178e-16 ]
-                [[                                             ]]
-                 [      0.0       - 1.33227e-15   8.88178e-16  ]
- -- an error. To debug this try: debugmode(true);
 @example
 (%i1) load ("lapack")$
 @group
@@ -214,8 +209,8 @@ Too few arguments supplied to mat_norm(m, p); found:
          [      0.0       - 1.33227e-15   8.88178e-16  ]
 @end group
 @group
-(%i6) mat_norm (%);
-#0: mat_norm(_l=[matrix([-7.77156e-16,1.77636e-15,-8.88178e-16],[0.0,-1.33227e-15,8.88178e-16])])
+(%i6) mat_norm (%, 1);
+(%o6)                      3.10862e-15
 @end group
 @end example
 
