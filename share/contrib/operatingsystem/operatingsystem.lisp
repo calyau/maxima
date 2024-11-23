@@ -19,6 +19,7 @@
 ; tested with clisp, ccl, sbcl, ecl
 (defun os-chdir (dir)
   "Change the working directory."
+  #+abcl (setf *default-pathname-defaults* (truename dir))
   #+allegro (excl:chdir dir)
   #+clisp (ext:cd dir)
   #+cmu (setf (ext:default-directory) dir)
@@ -30,7 +31,7 @@
   #+sbcl (setf *default-pathname-defaults* (sb-ext:native-pathname (format nil "~A~A" (sb-posix:getcwd) "/")))
   #+ccl (ccl:cwd dir)
   #+ecl (si:chdir dir)
-  #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl)
+  #-(or abcl allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl)
   (error 'not-implemented :proc (list 'chdir dir)))
 
 ; tested with clisp, ccl, sbcl, ecl
@@ -44,7 +45,8 @@
   #+sbcl (sb-unix:unix-mkdir (directory-namestring (sb-ext:native-pathname dir)) #o777)
   #+ccl (ensure-directories-exist dir)
   #+ecl (ensure-directories-exist dir)
-  #-(or allegro clisp cmu gcl lispworks sbcl ccl ecl)
+  #+abcl (ensure-directories-exist dir)
+  #-(or abcl allegro clisp cmu gcl lispworks sbcl ccl ecl)
   (error 'not-implemented :proc (list 'mkdir dir)))
   
 ; tested with clisp, ccl, sbcl, ecl
