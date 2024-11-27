@@ -2284,11 +2284,21 @@ for details.
 @node Trigonometric and Hyperbolic Functions, Options Controlling Simplification, Functions and Variables for Trigonometric, Functions and Variables for Trigonometric
 @subsubsection Trigonometric and Hyperbolic Functions
 
+@c Use this to make the same cross-references to variables that
+@c control simplification of trig (and hyperbolic) functions.
+@macro xreftrigvars{}
+For variables that control simplification @pxref{%piargs},
+@ref{%iargs}, @ref{halfangles}, @ref{triginverses}, and
+@ref{trigsign}.
+
+@end macro
 @c -----------------------------------------------------------------------------
 @anchor{acos}
 @deffn {Function} acos (@var{x})
 
 -- Arc Cosine.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
@@ -2301,6 +2311,8 @@ for details.
 
 -- Hyperbolic Arc Cosine.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
@@ -2311,6 +2323,8 @@ for details.
 @deffn {Function} acot (@var{x})
 
 -- Arc Cotangent.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
@@ -2323,6 +2337,8 @@ for details.
 
 -- Hyperbolic Arc Cotangent.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
@@ -2333,6 +2349,8 @@ for details.
 @deffn {Function} acsc (@var{x})
 
 -- Arc Cosecant.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
@@ -2345,6 +2363,8 @@ for details.
 
 -- Hyperbolic Arc Cosecant.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
@@ -2355,6 +2375,8 @@ for details.
 @deffn {Function} asec (@var{x})
 
 -- Arc Secant.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
@@ -2367,6 +2389,8 @@ for details.
 
 -- Hyperbolic Arc Secant.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
@@ -2378,6 +2402,8 @@ for details.
 
 -- Arc Sine.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2388,6 +2414,8 @@ for details.
 @deffn {Function} asinh (@var{x})
 
 -- Hyperbolic Arc Sine.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
@@ -2401,6 +2429,8 @@ for details.
 -- Arc Tangent.
 
 See also @mref{atan2}.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Trigonometric functions}
@@ -2425,6 +2455,8 @@ Along the branch cut with @math{y = 0} and @math{x < 0}, @code{atan2}
 is continuous with the second quadrant.
 See also @mref{atan}.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2435,6 +2467,8 @@ See also @mref{atan}.
 @deffn {Function} atanh (@var{x})
 
 -- Hyperbolic Arc Tangent.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
@@ -2447,6 +2481,8 @@ See also @mref{atan}.
 
 -- Cosine.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2457,6 +2493,8 @@ See also @mref{atan}.
 @deffn {Function} cosh (@var{x})
 
 -- Hyperbolic Cosine.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
@@ -2469,6 +2507,8 @@ See also @mref{atan}.
 
 -- Cotangent.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2479,6 +2519,8 @@ See also @mref{atan}.
 @deffn {Function} coth (@var{x})
 
 -- Hyperbolic Cotangent.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
@@ -2491,6 +2533,8 @@ See also @mref{atan}.
 
 -- Cosecant.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2501,6 +2545,8 @@ See also @mref{atan}.
 @deffn {Function} csch (@var{x})
 
 -- Hyperbolic Cosecant.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
@@ -2513,6 +2559,8 @@ See also @mref{atan}.
 
 -- Secant.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2523,6 +2571,8 @@ See also @mref{atan}.
 @deffn {Function} sech (@var{x})
 
 -- Hyperbolic Secant.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
@@ -2535,6 +2585,8 @@ See also @mref{atan}.
 
 -- Sine.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2545,6 +2597,8 @@ See also @mref{atan}.
 @deffn {Function} sinh (@var{x})
 
 -- Hyperbolic Sine.
+
+@xreftrigvars{}
 
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
@@ -2557,6 +2611,8 @@ See also @mref{atan}.
 
 -- Tangent.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
@@ -2568,11 +2624,14 @@ See also @mref{atan}.
 
 -- Hyperbolic Tangent.
 
+@xreftrigvars{}
+
 @opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
 
+@unmacro xreftrigvars
 
 @node Options Controlling Simplification, Explicit Simplifications Using Identities, Trigonometric and Hyperbolic Functions, Functions and Variables for Trigonometric
 @subsubsection Options Controlling Simplification
