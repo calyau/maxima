@@ -1,4 +1,17 @@
 $options->{"EXTRA_HEAD"} = '<link rel="icon" href="figures/favicon.ico">
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6>"></script>
+<!-- HighlightJs for highlighting examples in the manual -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/default.min.css">
+<!-- Theme to use -->
+<link href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/default.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<!-- and it is easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/maxima.min.js"></script>
+<script>
+  hljs.configure({
+      languages: ["Maxima"],
+      cssSelector: ".example-preformatted",
+  })
+</script>
 @NEED_MATHJAX@';
 
