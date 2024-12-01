@@ -189,9 +189,7 @@
   (setq form (translate (cadr form)))
   (cond ((eq '$fixnum (car form)) form)
         ((member (car form) '($float $number) :test #'eq)
-	 (if (eq 'sqrt (cadr form))
-	     `($fixnum $isqrt ,(caddr form))
-	     `($fixnum floor ,(cdr form))))
+	 `($fixnum floor ,(cdr form)))
         (t `(,(if (eq (car form) '$rational) '$fixnum '$any)
 	     $entier ,(cdr form)))))
 
