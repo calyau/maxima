@@ -791,15 +791,15 @@
 (defun collision-check (op active-bitmask key)
   (let ((key-bitmask (get key op)))
     (if (not key-bitmask)
-	(mread-synerr "~A is an unknown keyword in a ~A statement."
+	(mread-synerr "`~A' is an unknown keyword in a `~A' statement."
 		      (mopstrip key) (mopstrip op)))
     (let ((collision (collision-lookup op active-bitmask key-bitmask)))
       (if collision
 	  (if (eq collision key)
-	      (mread-synerr "This ~A's ~A slot is already filled."
-			    (mopstrip op)
-			    (mopstrip key))
-	      (mread-synerr "A ~A cannot have a ~A with a ~A field."
+              (mread-synerr "The `~A' slot for `~A' is already filled."
+			    (mopstrip key)
+                            (mopstrip op))
+	      (mread-synerr "A `~A' cannot have a `~A' with a `~A' field."
 			    (mopstrip op)
 			    (mopstrip key)
 			    (mopstrip collision))))
