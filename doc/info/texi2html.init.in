@@ -1,4 +1,3 @@
 $options->{"EXTRA_HEAD"} = '<link rel="icon" href="figures/favicon.ico">
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6>"></script>
 @NEED_MATHJAX@';
 
