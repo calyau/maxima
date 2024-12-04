@@ -28,12 +28,12 @@
   "If true, pwilt includes hstep in all terms of the result.")
 
 (defun pwilt-add-parts (a b)
-  (flet ((merge (ap bp) (cons (car ap) (add (cdr ap) (cdr bp)))))
+  (flet ((pwilt-merge (ap bp) (cons (car ap) (add (cdr ap) (cdr bp)))))
     (let ((r '()))
       (loop (cond ((endp a) (return (nreconc r b)))
 		  ((endp b) (return (nreconc r a)))
 		  ((alike1 (caar a) (caar b))
-		   (push (merge (pop a) (pop b)) r))
+		   (push (pwilt-merge (pop a) (pop b)) r))
 		  ((great (caar a) (caar b))
 		   (push (pop a) r))
 		  (t

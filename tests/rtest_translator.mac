@@ -3335,6 +3335,33 @@ block ([translate : false, transrun : true, v1, v2],
  0);
 0;
 
+/* Attempting to translate an entier call with a simple float arg
+ * would cause a lisp error during translation
+ */
+
+block ([translate : false, transrun : true, l1, l2],
+  foo () :=
+    [entier (2),
+     entier (2.0),
+     entier (2.3),
+     entier (5/2),
+     entier (2.3b0),
+     entier (%i),
+     entier (2.3 + %i),
+     entier ('x)],
+
+  l1 : foo(),
+
+  translate_or_lose (foo),
+
+  l2 : foo(),
+
+  is (l1 = l2));
+true;
+
+(kill (foo), 0);
+0;
+
 
 
 

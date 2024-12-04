@@ -1,7 +1,7 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
 ;;;  Copyright (C) 2007-2016 Mario Rodriguez Riotorto
-;;;  Time-stamp: "2024-10-03 11:55:03 Leo Butler"
+;;;  Time-stamp: "2024-11-28 17:39:24 Leo Butler"
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -899,20 +899,20 @@
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
-           (setf pltcmd (format nil " ~a w filledcurves~a xy=~a,~a lc ~a axis ~a"
+           (setf pltcmd (format nil " ~a w filledcurves xy=~a,~a ~alc ~a axis ~a"
                                     (make-obj-title (get-option '$key))
-                                    (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                     fxc fyc
+                                    (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                     (hex-to-rgb (get-option '$fill_color))
                                     (axes-to-plot)))
            (setf grps '((2 0)))
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        (t ; no transparent with border
-             (setf pltcmd (list (format nil " ~a w filledcurves~a xy=~a,~a lc ~a axis ~a"
+             (setf pltcmd (list (format nil " ~a w filledcurves xy=~a,~a ~a lc ~a axis ~a"
                                             (make-obj-title (get-option '$key))
-                                            (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                             fxc fyc
+                                            (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                             (hex-to-rgb (get-option '$fill_color))
                                             (axes-to-plot))
                                 (format nil " t '' w l lw ~a lt ~a lc ~a axis ~a"
@@ -1359,7 +1359,7 @@
              (setf result-array (make-array (length result)
                                             :element-type 'flonum 
                                             :initial-contents result))
-             (setf pltcmd (format nil " ~a w filledcurves~a x1 lc ~a axis ~a"
+             (setf pltcmd (format nil " ~a w filledcurves x1 ~a lc ~a axis ~a"
                                       (make-obj-title (get-option '$key))
                                       (format nil "~@[ fillstyle solid ~a~]" (get-option '$fill_density))
                                       (hex-to-rgb (get-option '$fill_color))

@@ -784,6 +784,14 @@ execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx2)
 execute_test (draw2d (xlabel = printf (false, "x = ~a", sanitize_nonfinite (xx2)), ylabel = printf (false, "y = ~a", sanitize_nonfinite (yy2)), terminal = 'png, point_type = 7, points_joined = true, points (xx - 0.1, yy - 0.1), color = red, points (transpose (matrix (xx2, yy2))), title = "points(matrix), 2 columns"), 0);
 0;
 
+/* SF bug #4424: "draw2d doesnt accept fill_density in order to create opaque shapes" */
+
+execute_test (draw2d (title = "fill\\_density works!", proportional_axes = 'xy, grid = true, xrange = [-4, 0], yrange = [-3, 3], xlabel = "Re(h λ)", ylabel = "Im(h λ)", key = "stability region", transparent = false, color = blue, line_width = 1, fill_color = light_pink, fill_density = 0.3, nticks = 80, ellipse(-1, 0, 1, 1, 0, 360), terminal = 'png), 0);
+0;
+
+execute_test (draw2d(fill_color = red, filled_func = true, fill_density = 0.5, explicit(-sin(x),x,0,%pi), terminal = 'png), 0);
+0;
+
 block ([L: flatten (rest (arrayinfo (draw_tests), 2)), linel: 1000],
        with_stdout (sconcat (maxima_tempdir, "/draw-tests-summary.txt"),
            for f in L do print (f, "pertains to", string (draw_tests[f]))),

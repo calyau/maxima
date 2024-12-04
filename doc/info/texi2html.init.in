@@ -1,5 +1,4 @@
 $options->{"EXTRA_HEAD"} = q{<link rel="icon" href="figures/favicon.ico">
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6>"></script>
 <!-- HighlightJs for highlighting examples in the manual -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/default.min.css">
 <!-- Theme to use -->
