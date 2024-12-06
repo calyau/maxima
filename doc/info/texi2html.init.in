@@ -1,4 +1,4 @@
-texinfo_set_from_init_file("EXTRA_HEAD", q{<link rel="icon" href="figures/favicon.ico">
+@TEXI_EXTRA_HEAD@ q{<link rel="icon" href="figures/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/default.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
 <!-- and it's easy to individually load additional languages -->
@@ -8,8 +8,8 @@ texinfo_set_from_init_file("EXTRA_HEAD", q{<link rel="icon" href="figures/favico
 <script>
   hljs.configure({
       languages: ['Maxima'],
-      cssSelector: 'example-preformatted',
+      cssSelector: @HLJS_CSS_SELECTOR@
   });
   hljs.highlightAll();
 </script>
-@NEED_MATHJAX@});
+@NEED_MATHJAX@};

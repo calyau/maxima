@@ -681,6 +681,18 @@ if test x"${enable_build_docs}" = xtrue ; then
             AC_MSG_RESULT([${makeinfo_version_string} (6.8 or later preferred)])
 	fi
 
+        dnl Enable JS highlighting of examples in the HTML docs.
+        dnl The API has changed between 6.8 and 7.0, so we need to substitute the
+        dnl the appropriate things.
+        if test ${makeinfo_version} -le 608; then
+           TEXI_EXTRA_HEAD='$options->{"EXTRA_HEAD"} = '
+           HLJS_CSS_SELECTOR="'pre.example'"
+        else
+           TEXI_EXTRA_HEAD='texinfo_set_from_init_file("EXTRA_HEAD", '
+           HLJS_CSS_SELECTOR="'.example-preformatted'"
+        fi
+        AC_SUBST(TEXI_EXTRA_HEAD)
+        AC_SUBST(HLJS_CSS_SELECTOR)
         TEXI2HTML=texi2html.init
         AC_SUBST(TEXI2HTML)
 
