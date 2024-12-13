@@ -27,6 +27,9 @@ distrib.texi
 orthopoly.texi
 zeilberger.texi
 trigtools.texi
+format.texi
+lapack.texi
+minpack.texi
 
 *.chm
 *.t2p
