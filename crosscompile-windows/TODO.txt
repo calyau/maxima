@@ -36,6 +36,9 @@ crosscompiling) and they just released a ZIP file, which one can easy extract.
 Now SBCL is also included (the MSI-Installer can be extracted using 7z and
 a small shell script).
 
+ABCL (Java based) works too, but is slow. It is included in the nightly build
+for testing, but not the release.
+
 Using other LISPs might be a good idea (I tried it), but there are some issues:
 
 GCL released exe installers (currently only for older versions), crosscompiling
@@ -44,11 +47,10 @@ did not work for me.
 Crosscompiling ECL works and it seems to work with 'wine', but only in bytecode-mode -
 and Maxima can currently not compiled, if ECL uses the bytecode compiler.
 
-CCL64 suppport works now. Compiling a 32 bit version with CCL does not work because
+CCL64 support works now. Compiling a 32 bit version with CCL does not work because
 of a compiler bug (see: https://sourceforge.net/p/maxima/mailman/message/37296110/)
-(Tested - on 2024-02-28 the crosscompiliation procedure with CCL 1.12.2, it still
-has the same bug. And the CCL team considers 32 bit support close to be obsolete
-according to their bug report: https://github.com/Clozure/ccl/issues/377
+That bug was fixed, but is not included in a release.
+See: https://github.com/Clozure/ccl/issues/377
 
 
 Wolfgang Dautermann

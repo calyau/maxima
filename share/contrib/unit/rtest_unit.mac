@@ -1,0 +1,147 @@
+/* tests for share/contrib/unit package, derived from doc/info/unit.texi */
+
+(if not ?boundp ('globalbaseunitlisting) then load ("unit.mac"), 0);
+0;
+
+/* Evaluate all test inputs via TOPLEVEL-MACSYMA-EVAL, since the unit package
+ * redefines that function to call the pre- and post-processing functions,
+ * which produce the results that one would see if the input were entered
+ * at the console input prompt. The code for processing test cases
+ * (TEST-BATCH in src/mload.lisp) calls MEVAL*, not TOPLEVEL-MACSYMA-EVAL,
+ * so it misses the pre- and post-evaluation functions, and so the test
+ * outputs don't come out the same as if they were entered at the input prompt.
+ *
+ * I'm leaning towards thinking the pre- and post-evaluation functions
+ * should be called somehow from MEVAL, since as it stands, working with units
+ * within functions won't produce the same results as console inputs, since only
+ * MEVAL is called within functions and not TOPLEVEL-MACSYMA-EVAL (nor MEVAL*
+ * for that matter). Be that as it may, I will let it stand and work around
+ * the issue with explicit calls to TOPLEVEL-MACSYMA-EVAL here.
+ */
+
+?toplevel\-macsyma\-eval (N);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (dyn);
+?rat(1, 100000)*kg*m/s^2;
+
+?toplevel\-macsyma\-eval (g);
+?rat(1, 1000)*kg;
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+?rat(127, 1800000000000)*kg*m/s^2;
+
+setunits([centigram,inch,minute]);
+done;
+
+?toplevel\-macsyma\-eval (N);
+?rat(1800000000000, 127)*%in*cg/%min^2;
+
+?toplevel\-macsyma\-eval (dyn);
+?rat(18000000, 127)*%in*cg/%min^2;
+
+?toplevel\-macsyma\-eval (g);
+100*cg;
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+%in*cg/%min^2;
+
+setunits([kg,m,s]);
+done;
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+?rat(127, 1800000000000)*kg*m/s^2;
+
+setunits(N);
+done;
+
+?toplevel\-macsyma\-eval (N);
+N;
+
+?toplevel\-macsyma\-eval (dyn);
+?rat(1, 100000)*N;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+N;
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+?rat(127, 1800000000000)*N;
+
+setunits(dyn);
+done;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+100000*dyn;
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+?rat(127, 18000000)*dyn;
+
+uforget(dyn);
+false;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+?rat(127, 1800000000000)*kg*m/s^2;
+
+setunits([centigram,inch,minute]);
+done;
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+%in*cg/%min^2;
+
+uforget([cg,%in,%min]);
+[false, false, false];
+
+?toplevel\-macsyma\-eval (centigram*inch/minutes^2);
+?rat(127, 1800000000000)*kg*m/s^2;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (convert(kg*m/s^2,[g,km,s]));
+g*km/s^2;
+
+?toplevel\-macsyma\-eval (convert(kg*m/s^2,[g,inch,minute]));
+?rat(18000000000, 127)*%in*g/%min^2;
+
+?toplevel\-macsyma\-eval (convert(kg*m/s^2,[N]));
+N;
+
+?toplevel\-macsyma\-eval (convert(kg*m^2/s^2,[N]));
+m*N;
+
+setunits([N,J]);
+done;
+
+?toplevel\-macsyma\-eval (convert(kg*m^2/s^2,[N]));
+m*N;
+
+?toplevel\-macsyma\-eval (convert(kg*m^2/s^2,[N,inch]));
+?rat(5000, 127)*%in*N;
+
+?toplevel\-macsyma\-eval (convert(kg*m^2/s^2,[J]));
+J;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+J;
+
+setunits([g,inch,s]);
+done;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+N;
+
+uforget(N);
+false;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+?rat(5000000, 127)*%in*g/s^2;
+
+?toplevel\-macsyma\-eval (convert(kg*m/s^2,[g,inch,s]));
+?rat(5000000, 127)*%in*g/s^2;
+
+uforget (%in);
+false;
+

@@ -116,7 +116,7 @@ m4_dnl This is like m4_math, but `punc` is placed at the end of the formulas
 m4_dnl so that the punctuation is not separated by too much space.
 m4_define(<<<m4_mathpunc>>>,
 <<<m4_ifelse(<<<$#>>>, <<<4>>>,
-  <<<m4_math(<<<$2$1>>>, <<<$3$1>>>, <<<$3$1>>>)>>>,
+  <<<m4_math(<<<$2$1>>>, <<<$3$1>>>, <<<$4$1>>>)>>>,
   <<<m4_math(<<<$2$1>>>, <<<$3$1>>>)>>>)>>>)m4_dnl
 m4_dnl
 m4_dnl m4_mathdot(jax, info) or m4_mathdot(jax, info, tex)

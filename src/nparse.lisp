@@ -126,7 +126,7 @@
 	       (read-line *parse-stream* nil nil))))
       (terpri)
       (finish-output)
-      (throw-macsyma-top))))
+      (if *quit-on-error* ($quit 1.) (throw-macsyma-top)))))
 
 (defun tyi-parse-int (stream eof)
   (or *parse-window*

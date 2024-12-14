@@ -660,6 +660,10 @@ s^((-%i*v)-1)*gamma(%i*v+1);
 assuming (u > -1, laplace (t^(u + v*%i), t, s));
 s^((-%i*v)-u-1)*gamma(%i*v+u+1);
 
+/* Bug 4398 */
+assuming(a > 0, laplace(delta(t - a) * sin(b*t), t, s));
+-(((%i*%e^(2*%i*a*b)-%i)*%e^(-(a*s)-%i*a*b))/2);
+
 (kill (z),
  declare (z, complex), assume (realpart (z) > -1), 0);
 0;

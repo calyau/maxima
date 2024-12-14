@@ -1,0 +1,151 @@
+/* Tests for usersetunits.
+ * Need to ensure usersetunits is assigned before loading the unit package.
+ */
+
+(usersetunits : [N,J],
+ if not ?boundp ('globalbaseunitlisting)
+     then load ("unit.mac")
+     else error ("rtest_unit_usersetunits: unit package is loaded already, but this script must run in a clean session."),
+ 0);
+0;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+N;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+J;
+
+?toplevel\-macsyma\-eval (kg*m^3/s^2);
+J*m;
+
+?toplevel\-macsyma\-eval (kg*m*km/s^2);
+1000*J;
+
+setunits([dyn,eV]);
+done;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+100000*dyn;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+6241509596477042688*eV;
+
+?toplevel\-macsyma\-eval (kg*m^3/s^2);
+6241509596477042688*eV*m;
+
+?toplevel\-macsyma\-eval (kg*m*km/s^2);
+6241509596477042688000*eV;
+
+uforget([dyn,eV]);
+[done, done];
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+N;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+J;
+
+?toplevel\-macsyma\-eval (kg*m^3/s^2);
+J*m;
+
+?toplevel\-macsyma\-eval (kg*m*km/s^2);
+1000*J;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+N;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+J;
+
+setunits([dyn,eV]);
+done;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+100000*dyn;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+6241509596477042688*eV;
+
+uforget([dyn,eV]);
+[done, done];
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+N;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+J;
+
+dontusedimension(N);
+[%force];
+
+dontusedimension(J);
+[%energy, %force];
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+kg*m^2/s^2;
+
+setunits([dyn,eV]);
+done;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+kg*m^2/s^2;
+
+uforget([dyn,eV]);
+[done, done];
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+kg*m^2/s^2;
+
+usedimension(N);
+true;
+
+usedimension(J);
+true;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+kg*m^2/s^2;
+
+setunits([dyn,eV]);
+done;
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+100000*dyn;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+6241509596477042688*eV;
+
+uforget([dyn,eV]);
+[done, done];
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+N;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+J;
+
+kill(usersetunits);
+done;
+
+uforget([dyn,eV]);
+[false, false];
+
+?toplevel\-macsyma\-eval (kg*m/s^2);
+kg*m/s^2;
+
+?toplevel\-macsyma\-eval (kg*m^2/s^2);
+kg*m^2/s^2;
+
+
+

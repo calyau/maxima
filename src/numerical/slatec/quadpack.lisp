@@ -114,16 +114,16 @@
 	   (let (bnd inf)
 	     ;; Cases to handle: (minf, x), (x, inf), (minf, inf).
 	     ;; Everything else is an error.
-	     (cond ((eq low '$minf)
-		    (cond ((eq high '$inf)
+	     (cond ((eq ($limit low) '$minf)
+		    (cond ((eq ($limit high) '$inf)
 			   (setf bnd 0)
 			   (setf inf 2))
 			  (t
 			   (setq bnd ($float high))
-			   (setq inf low))))
-		   ((eq high '$inf)
+			   (setq inf ($limit low)))))
+		   ((eq ($limit high) '$inf)
 		    (setq bnd ($float low))
-		    (setq inf high))
+		    (setq inf ($limit high)))
 		   (t
 		    (merror "~M: Unexpected limits of integration: ~M, ~M~%"
 			    %%pretty-fname low high)))
@@ -206,9 +206,13 @@
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
-	 (integr (ecase trig
+	 (integr (case trig
 		   ((1 %cos $cos) 1)
-		   ((2 %sin $sin) 2)))
+		   ((2 %sin $sin) 2)
+                   (otherwise
+                    (merror "~M: the name of the trig function should be sin or cos, not ~M."
+                            %%pretty-fname
+                            trig))))
          (*plot-realpart* nil))
     (handler-case
 	(multiple-value-bind (junk z-a z-omega z-integr
@@ -248,8 +252,8 @@
 		   ((%cos $cos) 1)
 		   ((%sin $sin) 2)
                    (otherwise
-                    (merror "~M:  the name of the trig function should be sin or cos, not ~M."
-                            '$quad_qawo
+                    (merror "~M: the name of the trig function should be sin or cos, not ~M."
+                            %%pretty-fname
                             trig_name))))
          (*plot-realpart* nil))
     (handler-case
@@ -339,8 +343,8 @@
       ;; If there are invalid points, throw an error.
       (when invalid-points
         (merror
-         (intl:gettext "quad_qagp: singular points must be in the open interval (~M, ~M):  ~M")
-         a b (make-mlist-l invalid-points)))
+         (intl:gettext "~M: singular points must be in the open interval (~M, ~M):  ~M")
+         %%pretty-fname a b (make-mlist-l invalid-points)))
                               
       (handler-case
 	  (multiple-value-bind (junk z-a z-b z-npts z-points z-epsabs z-epsrel

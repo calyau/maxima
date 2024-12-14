@@ -663,9 +663,10 @@ xformtoconstcoeff;
 
 /* Kamke 2. 276  */ 
 (pn_(276),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(-4*x^2-1)*y-4*x^(3/2)*%e^x,y,x));
-[y=((2*x-1)*%e^x)/(4*sqrt(x))+(%k2*%e^x)/sqrt(x)+(%k1*%e^-x)/sqrt(x)];
+[y = (%e^-x*(4*x*%e^x*sinh(x)-%e^(2*x)+2*x))/(4*sqrt(x))
+         +(%k1*sinh(x)+%k2*%e^-x)/sqrt(x)];
 [method,ode_check(eqn,ans[1])];
-[kovacic,0];
+[variationofparameters,0];
 
 /* Kamke 2. 277  */ 
 (pn_(277),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(-a*x^2-1)*y,y,x));

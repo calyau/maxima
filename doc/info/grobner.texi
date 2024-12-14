@@ -468,12 +468,16 @@ h^n \in I \}$.@*
 
 @ifnottex
 The @emph{k-th elimination Ideal} @math{I_k} of an Ideal @math{I} over @math{K[ x[1],...,x[n] ]} is the ideal @math{intersect(I, K[ x[k+1],...,x[n] ])}.@*
+
 @noindent
 The @emph{colon ideal} @math{I:J} is the ideal @math{@{h|for all w in J: w*h in I@}}.@*
+
 @noindent
 The ideal @math{I:p^inf} is the ideal @math{@{h| there is a n in N: p^n*h in I@}}.@*
+
 @noindent
 The ideal @math{I:J^inf} is the ideal @math{@{h| there is a n in N and a p in J: p^n*h in I@}}.@*
+
 @noindent
 The @emph{radical ideal} @math{sqrt(I)} is the ideal 
 @math{@{h| there is a n in N : h^n in I @}}.

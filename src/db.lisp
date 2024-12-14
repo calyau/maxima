@@ -714,7 +714,7 @@
 
 (defun mark+3 (dat)
   (if (/= 0 (logand (unlab (+labz (caddar dat)))
-		    (unlab (dbv (+labz (cadar dat)) (-labz (caar dat))))))
+		    (dbv (+labz (cadar dat)) (-labz (caar dat)))))
       (beg- (sel dat wn) *world*)))
 
 (defun mark+0 (cl lab fact)

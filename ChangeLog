@@ -16,9 +16,11 @@ New items in share:
  * New example share/colnew/prob5.mac
  * Add raddenest radical denesting function
  * New draw terminals: tikz and tikz_standalone
+ * ode2 now solves Modified Bessel differential equation
 
 Changes in core:
 ----------------
+ * Add answers_from_file option to run_testsuite
  * Add rtest_raddenest to share_testsuite_files
  * In src/plot.lisp, clipping is no longer done when plot_format is xmaxima
  * The default y-range for plots is determined only by points within x-range

@@ -722,7 +722,7 @@
 
 (defmfun $liediff (v e) (liediff v e 1))
 
-(defmfun $rediff (x) (meval '(($ev) x $idiff)))
+(defmfun $rediff (x) (meval `(($ev) ,x $idiff)))
 
 (defmfun $undiff (x) 
   (cond

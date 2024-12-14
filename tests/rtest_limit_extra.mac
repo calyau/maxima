@@ -1221,6 +1221,44 @@ ind$
 block([logexpand : false], tlimit((1+%i)^(2*a)*2^(-a),a,inf));
 ind$
 
+/* #4416 limit of Newton quotient involving asin */
+
+(xxx : (asin(x+h)-asin(x))/h,0);
+0$
+
+tlimit(xxx,h,0);
+-sqrt(1-x^2)/(x^2-1)$
+
+tlimit(subst(h=-h,xxx),h,0);
+-sqrt(1-x^2)/(x^2-1)$
+
+tlimit(subst(h=h*cos(h),xxx),h,0);
+-sqrt(1-x^2)/(x^2-1)$
+
+(xxx : (acos(x+h)-acos(x))/h,0);
+0$
+
+tlimit(xxx,h,0);
+sqrt(1-x^2)/(x^2-1)$
+
+tlimit(subst(h=-h,xxx),h,0);
+sqrt(1-x^2)/(x^2-1)$
+
+tlimit(subst(h=h*cos(h),xxx),h,0);
+sqrt(1-x^2)/(x^2-1)$
+
+(xxx : (atan(x+h)-atan(x))/h,0);
+0$
+
+tlimit(xxx,h,0);
+1/(1+x^2)$
+
+tlimit(subst(h=-h,xxx),h,0);
+1/(1+x^2)$
+
+tlimit(subst(h=h*cos(h),xxx),h,0);
+1/(1+x^2)$
+
 /* clean up*/
 (kill(values),0);
 0$

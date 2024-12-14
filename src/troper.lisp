@@ -29,11 +29,7 @@
 	(t `($any . (*mminus ,(cdr form))))))
 
 (def%tr mplus (form)
-  (let   (args mode)
-    (do ((l (cdr form) (cdr l))) ((null l))
-      (setq args (cons (translate (car l)) args)
-	    mode (*union-mode (car (car args)) mode)))
-    (setq args (nreverse args))
+  (destructuring-bind (mode . args) (translate-args/union-mode (cdr form))
     (cond ((eq '$fixnum mode) `($fixnum + . ,(mapcar #'cdr args)))
 	  ((eq '$float mode) `($float + . ,(mapcar #'dconv-$float args)))
 	  ((eq '$rational mode) `($rational rplus . ,(mapcar #'cdr args)))
@@ -41,19 +37,14 @@
 	  (t `($any add* . ,(mapcar #'dconvx args))))))
 
 (def%tr mtimes (form)
-  (let (args mode)
-    (cond ((equal -1 (cadr form))
-	   (translate `((mminus) ((mtimes) . ,(cddr form)))))
-	  (t
-	   (do ((l (cdr form) (cdr l)))
-	       ((null l))
-	     (setq args (cons (translate (car l)) args)
-		   mode (*union-mode (car (car args)) mode)))
-	   (setq args (nreverse args))
-	   (cond ((eq '$fixnum mode) `($fixnum * . ,(mapcar #'cdr args)))
-		 ((eq '$float mode) `($float * . ,(mapcar #'dconv-$float args)))
-		 ((eq '$rational mode) `($rational rtimes . ,(mapcar #'cdr args)))
-		 ((eq '$number mode) `($number * . ,(mapcar #'cdr args)))
+  (cond ((equal -1 (cadr form))
+         (translate `((mminus) ((mtimes) . ,(cddr form)))))
+        (t
+         (destructuring-bind (mode . args) (translate-args/union-mode (cdr form))
+           (cond ((eq '$fixnum mode) `($fixnum * . ,(mapcar #'cdr args)))
+                 ((eq '$float mode) `($float * . ,(mapcar #'dconv-$float args)))
+                 ((eq '$rational mode) `($rational rtimes . ,(mapcar #'cdr args)))
+                 ((eq '$number mode) `($number * . ,(mapcar #'cdr args)))
 		 (t `($any mul* . ,(mapcar #'dconvx args))))))))
 
 
@@ -198,9 +189,7 @@
   (setq form (translate (cadr form)))
   (cond ((eq '$fixnum (car form)) form)
         ((member (car form) '($float $number) :test #'eq)
-	 (if (eq 'sqrt (cadr form))
-	     `($fixnum $isqrt ,(caddr form))
-	     `($fixnum floor ,(cdr form))))
+	 `($fixnum floor ,(cdr form)))
         (t `(,(if (eq (car form) '$rational) '$fixnum '$any)
 	     $entier ,(cdr form)))))
 
@@ -210,9 +199,3 @@
       (cons '$float (dconv-$float form))
       `($any $float ,(cdr form))))
 
-(def%tr $atan2 (form)
-  (setq form (cdr form))
-  (let ((x (translate (car form))) (y (translate (cadr form))))
-    (if (eq '$float (*union-mode (car x) (car y)))
-	`($float atan ,(dconv-$float x) ,(dconv-$float y))
-	`($any simplify (list '(%atan2) ,(cdr x) ,(cdr y))))))

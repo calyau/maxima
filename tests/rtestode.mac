@@ -307,3 +307,42 @@ y=(-t^3/6)+%k2*t+%k1;
 forget(equal(a,0));
 [equal(a,0)];
 
+
+/* Feature request #192 Modified Bessel's differential equation DLMF 10.25.1
+ *
+ * x^2*'diff(y,x,2)+x*'diff(y,x)-(x^2+n^2)*y = 0
+ *
+ */
+
+mbde:x^2*'diff(y,x,2)+x*'diff(y,x)+(-x^2-n^2)*y = 0;
+x^2*'diff(y,x,2)+x*'diff(y,x)+(-x^2-n^2)*y = 0;
+
+s:ode2(eq:subst(n=1,mbde),y,x);
+y = bessel_k(1,x)*%k2+bessel_i(1,x)*%k1;
+method;
+modifiedbessel;
+
+s:ode2(eq:subst(n=2,mbde),y,x);
+y = bessel_k(2,x)*%k2+bessel_i(2,x)*%k1;
+method;
+modifiedbessel;
+
+s:ode2(eq:subst(n=1/2,mbde),y,x);
+y = (%k1*sinh(x)+%k2*%e^-x)/sqrt(x);
+method;
+modifiedbessel;
+
+s:ode2(eq:subst(n=3/2,mbde),y,x);
+y = bessel_i(-(3/2),x)*%k2+bessel_i(3/2,x)*%k1;
+method;
+modifiedbessel;
+
+declare(n,integer);
+done;
+ode2(mbde,y,x);
+y = %k2*bessel_k(n,x)+%k1*bessel_i(n,x);
+method;
+modifiedbessel;
+
+(kill(all),remove(n,integer));
+done;

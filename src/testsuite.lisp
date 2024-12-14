@@ -67,7 +67,7 @@
         ((mlist simp) "rtest3" ((mlist simp) 146))
 	;; ECL 16.1.2 still fails in #104
 	((mlist simp) "rtest8")
-        "rtest12"
+        ((mlist) "rtest12" 68 69 70)
         "rexamples"
         ((mlist simp) "rtesthyp"
 	 ((mlist simp) 105 112 113 123 124 128))
@@ -143,7 +143,7 @@
                          124 125 126 127 132 133 135 136 137
                          224 238 
                          239 240 241 242 243 244 245 246 249
-                         256 259 261 262 267 268 269 270 271 272
+                         259 261 262 267 268 269 270 271 272
                          280 281 282))
          ((mlist simp) "rtest_limit_gruntz"
           ((mlist simp) 20 25 28 29 30 36 37 38 39 86 96 97))
@@ -225,6 +225,8 @@
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
 
+    #-sbcl
+    ((mlist simp) "rtest_dgemm")
     #-sbcl
     ((mlist simp) "rtest_dgeqrf")
     #-sbcl

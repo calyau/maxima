@@ -187,8 +187,12 @@
 ;; "Bessel-Functions" and then the title of the subsection, without
 ;; the section numbers, "Bessel Functions".  
 ;; Further subsections are ignored.
-(let ((regexp (pregexp:pregexp "<a id=\"toc-.*\" href=\"([^#\"]+)(#([^\"]+))\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)</a>")))
-  (defun match-toc (line)
+;; Conditional expression allows us to handle earlier versions of Texinfo.
+(defun match-toc (line)
+  (let ((regexp (cond 
+          ((>= *texinfo-version* (texinfo-version-number 6 8 )) (pregexp:pregexp "<a id=\"toc-.*\" href=\"([^#\"]+)(#([^\"]+))\">[[:digit:]]+\.[[:digit:]]+ ([^\"]+?)</a>"))
+          (t (pregexp:pregexp "<a (?:name|id)=\"toc-.*\" href=\"([^#\"]+)(#([^\"]+))\">[[:digit:]]+\\.[[:digit:]]+ ([^\"]+?)</a>(?!.*maxima_100.html)")))
+       ))
     (let ((match (pregexp:pregexp-match regexp line)))
       (when match
 	(destructuring-bind (whole file item# id item)

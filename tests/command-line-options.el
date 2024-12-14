@@ -102,6 +102,14 @@ Return nil if LINE is zero-length or it matches a regexp in
     (:cmd "%s --lisp=%s --very-quiet --no-init --batch-string='(display2d:false, integrate(x^n,x)); y;'"
 	  :stdout "(display2d:false,integrate(x^n,x))\nlog(x)" :stderr ""
 	  :exit 1 :lisps (gcl sbcl ecl clisp) :results (t t t t))
+    maxima-cli--vvq+batch-syntax-error
+    (:cmd "%s --lisp=%s --no-init --very-very-quiet --quit-on-error --batch-string='x:;'"
+	  :stdout "" :stderr "incorrect syntax: Premature termination of input at ;.\nx:;\n ^"
+	  :exit 1 :lisps (gcl sbcl ecl clisp) :results (t t t t))
+    maxima-cli--vvq+batch-syntax-error2
+    (:cmd "%s --lisp=%s --no-init --very-very-quiet --quit-on-error --batch-string='x'"
+	  :stdout "" :stderr "incorrect syntax: end of file while scanning expression.\n ^"
+	  :exit 1 :lisps (gcl sbcl ecl clisp) :results (nil t t t))
     )
   "List of tests of command-line switches.
 

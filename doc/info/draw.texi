@@ -5485,7 +5485,9 @@ Example:
 @c gnuplot_pipes is the default value here, it might also be gnuplot?
 Default value: @code{gnuplot_pipes}
 
-When @code{draw_renderer} is set to @code{'vtk}, the VTK interface is used for draw.
+The only permitted values are @code{gnuplot_pipes}, @code{gnuplot},
+@code{vtk}, @code{vtk6} or @code{vtk7}. When @code{draw_renderer} is set
+to @code{vtk}, the VTK interface is used for draw.
 
 @opencatbox{Categories:}
 @category{Package draw}

@@ -11,7 +11,7 @@ eval_when(translate,
 declare_translated(boundtest,noteqn,nlxy,nly,nlx,xcc2,bessel2,euler2,
    pttest,exact2,cc2,genhom,solvebernoulli,solvehom,integfactor,exact,
    separable,solvelnr,solve1,linear2,reduce,hom2,pr2,varp,desimp,failure,
-   ode1a,ftest,ode2a));
+   ode1a,ftest,ode2a,modifiedbessel2));
 
 block(local(eq,yold,x),
 ode2(eq,yold,x):=block([derivsubst:false,ynew],
@@ -172,8 +172,9 @@ hom2(a1,a2,a3):=block([ap,aq,pt],
    if ftest(cc2(ap,aq,y,x)) then return(%q%),
    if ftest(exact2(a1,a2,a3)) then return(%q%),
    if (pt: pttest(ap)) = false then go(end),
-   if ftest(euler2(ap,aq)) then return(%q%),
-   if ftest(bessel2(ap,aq)) then return(%q%),
+   if ftest(euler2(ap,aq,pt)) then return(%q%),
+   if ftest(bessel2(ap,aq,pt)) then return(%q%),
+   if ftest(modifiedbessel2(ap,aq,pt)) then return(%q%),
  end, 
    if ftest(xcc2(ap,aq)) then return(%q%) else return(false)))$
 
@@ -293,8 +294,8 @@ pttest(a):=block([a1,a2,a3],
    a3: coeff(a1,x,0),
    if not(a1 = a2*x + a3) then return(false) else return(-a3/a2)))$
 
-block(local(a,b),
-euler2(a,b):=block([dc,rp,ip,alpha,beta,sign,radexpand:false,%k1,%k2,pos,zero],
+block(local(a,b,pt),
+euler2(a,b,pt):=block([dc,rp,ip,alpha,beta,sign,radexpand:false,%k1,%k2,pos,zero],
    if not(freeof(x,y,beta: ratsimp(b*(x-pt)^2))) then return(false),
    method: 'euler, alpha: a*(x-pt),
    dc: ratsimp((alpha-1)^2 - 4*beta),
@@ -306,8 +307,9 @@ euler2(a,b):=block([dc,rp,ip,alpha,beta,sign,radexpand:false,%k1,%k2,pos,zero],
    dc: -dc, ip: sqrt(dc)/2,
    return(y = (x-pt)^rp * (%k1*sin(ip*log(x-pt)) + %k2*cos(ip*log(x-pt))))))$
 
-block(local(a,b),
-bessel2(a,b):=block([nu,b1,intp,radexpand:'all,%k1,%k2],
+/* Bessel’s Equation DLMF 10.2.1 */
+block(local(a,b,pt),
+bessel2(a,b,pt):=block([nu,b1,intp,radexpand:'all,%k1,%k2],
    if not(freeof(x,y,b1: ratsimp((1-b)*(x-pt)^2))) then return(false),
    if ratsimp(a*(x-pt)) # 1 then return(false),
    nu: sqrt(b1), method: 'bessel,
@@ -315,6 +317,20 @@ bessel2(a,b):=block([nu,b1,intp,radexpand:'all,%k1,%k2],
    intp:askinteger(nu),
    if intp = 'yes then return(y = %k1*bessel_j(nu,x-pt) + %k2*bessel_y(nu,x-pt)),
    return(y = %k1*bessel_j(nu,x-pt) + %k2*bessel_j(-nu,x-pt))))$
+
+/* Modified Bessel's Equation DLMF 10.25.1
+   Arfken, Weber and Harris, Mathematical Methods for Physicists 7th ed (2012)
+   Section 14.5
+*/
+block(local(a,b,pt),
+modifiedbessel2(a,b,pt):=block([nu,b1,intp,radexpand:'all,%k1,%k2],
+   if not(freeof(x,y,b1: ratsimp(-(1+b)*(x-pt)^2))) then return(false),
+   if ratsimp(a*(x-pt)) # 1 then return(false),
+   nu: sqrt(b1), method: 'modifiedbessel,
+   if nu = 1/2 then return(y = (%k1*sinh(x-pt) + %k2*exp(-(x-pt)))/sqrt(x-pt)),
+   intp:askinteger(nu),
+   if intp = 'yes then return(y = %k1*bessel_i(nu,x-pt) + %k2*bessel_k(nu,x-pt)),
+   return(y = %k1*bessel_i(nu,x-pt) + %k2*bessel_i(-nu,x-pt))))$
 
 block(local(soln,xc,yc),
 ic1(soln,xc,yc):=

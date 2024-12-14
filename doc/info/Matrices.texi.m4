@@ -969,6 +969,9 @@ If @code{eigen.mac} is not already loaded,
 After loading, all functions and variables in the package are available.
 @c REFER TO OVERVIEW OF PACKAGE (INCLUDING LIST OF FUNCTIONS) HERE
 
+For matrices consisting of only floating-point values, see also
+@mrefdot{dgeev}
+
 @c NEED EXAMPLES HERE
 @opencatbox{Categories:}
 @category{Package eigen}
@@ -1027,6 +1030,9 @@ functions to reduce them to something simpler.  Following simplification,
 to @code{true}.
 
 See also @mrefdot{eigenvalues}
+
+For matrices consisting of only floating-point values, see also
+@mrefdot{dgeev}
 
 Examples:
 

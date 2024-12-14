@@ -28,6 +28,8 @@ make package
 
 The build directory should be called "build", because the Maxima code
 is copied during the build and this directory will be excluded.
+Be sure, that the Maxima sourcetree is 'clean', i.e. that no (in-source)
+build for another operating system has been done before.
 
 This will download the required Software (CLISP, SBCL, Gnuplot, wxMaxima,
 wxWidgets, Tcl, Tk, VTK, Texinfo, maybe ABCL and CCL) from the Internet
@@ -189,7 +191,7 @@ More packages could be included in the Windows installer.
   (and neither termcap nor ncurses can be crosscompiled here...)
 - Other Lisp versions: 
   Must have a Windows port or be crosscompileable and be usable in Wine.
-  I tried other Lisps, but currently only CLISP, SBCL and ABCL work.
+  I tried other Lisps, but currently only CLISP, SBCL, CCL64 and ABCL work.
   And including many more Lisp versions might confuse ordinary users.
 
 

@@ -1548,10 +1548,15 @@ neg$
 block([ans], assume(x < 0), ans : sign(ceiling(x)), forget(x < 0), ans);
 nz$
 
+/* SF bug #2910: "In maxima 5.35.1 powerseries fail if there complex root" */
+
+niceindices(powerseries(1/(z+%i),z,0));
+'sum((-1)^((i-1)/2)*z^i,i,0,inf);
+
 
 /* Clean up!*/
 
-(kill(a,b,c),killcontext(learndata),0);
+(kill(all),0);
 0$
 
 facts();
