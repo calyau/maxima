@@ -32,9 +32,9 @@
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
-(defvar *verify-html-index* t
+(defvar *verify-html-index* nil
   "If non-NIL, verify the contents of the html index versus the text
-  index.  Set via the command-line option --no-verify-html-index.")
+  index.  Set via the command-line option --verify-html-index.")
 (defvar *quit-on-error* nil
   "If a run-time error or warning is called, then $QUIT Maxima with a
 non-zero exit code. Should only be set by the command-line option
@@ -625,10 +625,10 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 			 :action #'(lambda ()
 				     (setf *maxima-load-init-files* nil))
 			 :help-string "Do not load the init file(s) on startup")
-	 (make-cl-option :names '("--no-verify-html-index")
+	 (make-cl-option :names '("--verify-html-index")
 			 :action #'(lambda ()
-				     (setf *verify-html-index* nil))
-			 :help-string "Do not verify on startup that the set of html topics is consistent with text topics.")
+				     (setf *verify-html-index* t))
+			 :help-string "Verify on startup that the set of html topics is consistent with text topics.")
 	 ))
   (process-args (get-application-args) *maxima-commandline-options*)
   (values input-stream batch-flag))

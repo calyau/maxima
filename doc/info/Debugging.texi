@@ -469,7 +469,8 @@ If @code{timer (f)} is in effect, then @code{trace (f)} has no effect;
 
 @c -----------------------------------------------------------------------------
 @anchor{trace_options}
-@deffn  {Function} trace_options (@var{f}, @var{option_1}, @dots{}, @var{option_n}) @
+@deffn  {Function} trace_options @
+@fname{trace_options} (@var{f}, @var{option_1}, @dots{}, @var{option_n}) @
 @fname{trace_options} (@var{f})
 
 Sets the trace options for function @var{f}.
@@ -479,69 +480,196 @@ is also called (either before or after @code{trace_options}).
 
 @code{trace_options (@var{f})} resets all options to their default values.
 
-The option keywords are:
+The following option keywords are recognized.
+The presence of the option keyword alone enables the option unconditionally.
+Specifying an option keyword with a predicate function @var{p} as its argument
+makes the option conditional on the predicate.
 
 @itemize @bullet
 @item
-@code{noprint}
+@code{noprint}, @code{noprint(@var{p})}
 Do not print a message at function entry and exit.
 @item
-@code{break}
-Put a breakpoint before the function is entered,
-and after the function is exited.  See @code{break}.
+@code{break}, @code{break(@var{p})}
+Stop execution before the function is entered, and after the function is exited.
+See also @code{break}.
+The arguments of the function and its return value are available as @code{trace_break_arg}
+when entering and exiting the function, respectively.
 @item
-@code{lisp_print}
+@code{lisp_print}, @code{lisp_print(@var{p})}
 Display arguments and return values as Lisp objects.
 @item
-@code{info}
-Print @code{-> true} at function entry and exit.
+@code{info}, @code{info(@var{p})}
+Display the return value of @var{p} at function entry and exit.
+The function @var{p} may also have side effects,
+such as displaying output or modifying global variables.
 @item
-@code{errorcatch}
+@code{errorcatch}, @code{errorcatch(@var{p})}
 Catch errors, giving the option to signal an error,
 retry the function call, or specify a return value.
 @end itemize
 
-Trace options are specified in two forms.  The presence of the option 
-keyword alone puts the option into effect unconditionally.
-(Note that option @var{foo} is not put into effect by specifying 
-@code{@var{foo}: true} or a similar form; note also that keywords need not
-be quoted.) Specifying the option keyword with a predicate
-function makes the option conditional on the predicate.
+The predicate function, if supplied, is called with four arguments.
 
-The argument list to the predicate function is always 
-@code{[level, direction, function, item]} where @code{level} is the recursion
-level for the function,  @code{direction} is either @code{enter} or @code{exit},
-@code{function} is the name of the function, and @code{item} is the argument
-list (on entering) or the return value (on exiting).
+@itemize
+@item
+The recursion level for the function, an integer.
+@item
+Whether the function is being entered or exited, indicated by a symbol, either @code{enter} or @code{exit}, respectively.
+@item
+The name of the function, a symbol.
+@item
+The arguments of the traced function (on entering) or the function return value (on exiting).
+@end itemize
 
-Here is an example of unconditional trace options:
+If the predicate function returns @code{false},
+the corresponding trace option is disabled;
+if any value other than @code{false} value is returned, the trace option is enabled.
 
+@code{trace_options} quotes (does not evaluate) its arguments.
+
+Examples:
+
+The presence of the option keyword alone enables the option unconditionally.
+
+@c Omit beg/end markers for this next example, since it triggers user interaction.
+@c ff(n) := if equal(n, 0) then 1 else n * ff(n - 1);
+@c trace (ff);
+@c trace_options (ff, lisp_print, break);
+@c ff(3);
 @example
-(%i1) ff(n) := if equal(n, 0) then 1 else n * ff(n - 1)$
-
-(%i2) trace (ff)$
-
-(%i3) trace_options (ff, lisp_print, break)$
-
+(%i1) ff(n) := if equal(n, 0) then 1 else n * ff(n - 1);
+(%o1)    ff(n) := if equal(n, 0) then 1 else n ff(n - 1)
+(%i2) trace (ff);
+(%o2)                         [ff]
+(%i3) trace_options (ff, lisp_print, break);
+(%o3)                  [lisp_print, break]
 (%i4) ff(3);
+Trace entering ff level 1 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_trace_break_arg;
+[3]
+_exit;
+(1 ENTER $FF (3))
+Trace entering ff level 2 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_exit;
+ (2 ENTER $FF (2))
+Trace entering ff level 3 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_exit;
+  (3 ENTER $FF (1))
+Trace entering ff level 4 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_exit;
+   (4 ENTER $FF (0))
+Trace exiting ff level 4 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_exit;
+   (4 EXIT $FF 1)
+Trace exiting ff level 3 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_exit;
+  (3 EXIT $FF 1)
+Trace exiting ff level 2 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_exit;
+ (2 EXIT $FF 2)
+Trace exiting ff level 1 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_trace_break_arg;
+6
+_exit;
+(1 EXIT $FF 6)
+(%o4)                           6
 @end example
 
-Here is the same function, with the @code{break} option conditional
-on a predicate:
+Specifying an option keyword with a predicate function @var{p} as its argument
+makes the option conditional on the predicate.
 
+@c Omit beg/end markers for this next example, since it triggers user interaction.
+@c ff(n) := if equal(n, 0) then 1 else n * ff(n - 1);
+@c trace (ff);
+@c trace_options (ff, break(pp));
+@c pp (level, direction, fnname, item) := (print (item), fnname = 'ff and level = 3 and direction = 'exit);
+@c ff(6);
 @example
-(%i5) trace_options (ff, break(pp))$
+(%i1) ff(n) := if equal(n, 0) then 1 else n * ff(n - 1);
+(%o1)    ff(n) := if equal(n, 0) then 1 else n ff(n - 1)
+(%i2) trace (ff);
+(%o2)                         [ff]
+(%i3) trace_options (ff, break(pp));
+(%o3)                      [break(pp)]
+(%i4) pp (level, direction, fnname, item) := (print (item), fnname = 'ff and level = 3 and direction = 'exit);
+(%o4) pp(level, direction, fnname, item) := 
+(print(item), (fnname = 'ff) and (level = 3)
+ and (direction = 'exit))
+(%i5) ff(6);
+[6] 
+1 Enter ff [6]
+[5] 
+ 2 Enter ff [5]
+[4] 
+  3 Enter ff [4]
+[3] 
+   4 Enter ff [3]
+[2] 
+    5 Enter ff [2]
+[1] 
+     6 Enter ff [1]
+[0] 
+      7 Enter ff [0]
+1 
+      7 Exit  ff 1
+1 
+     6 Exit  ff 1
+2 
+    5 Exit  ff 2
+6 
+   4 Exit  ff 6
+24 
+Trace exiting ff level 3 
 
-(%i6) pp (level, direction, function, item) := block (print (item),
-    return (function = 'ff and level = 3 and direction = exit))$
-
-(%i7) ff(6);
+Entering a Maxima break point. Type 'exit;' to resume.
+_trace_break_arg;
+24
+_exit;
+  3 Exit  ff 24
+120 
+ 2 Exit  ff 120
+720 
+1 Exit  ff 720
+(%o5)                          720
 @end example
 
 @opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{trace_break_arg}
+@defvr {Debugging variable} trace_break_arg
+
+When a traced function stops at a breakpoint,
+@code{trace_break_arg} is bound to the value of function arguments when entering the function,
+or the return value of the function, when exiting.
+
+Breakpoints for traced functions are specified by the option keyword @code{break} of the function @code{trace_options},
+which see.
+
+@opencatbox{Categories:}
+@category{Debugging}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{untrace}

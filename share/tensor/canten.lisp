@@ -19,7 +19,7 @@
 
 (declare-top (special frei bouni $canterm breaklist smlist $idummyx))
 
-(setq nodown '($ichr2 $ichr1 %ichr2 %ichr1 $kdelta %kdelta))
+(defvar nodown '($ichr2 $ichr1 %ichr2 %ichr1 $kdelta %kdelta))
 
 (defun ndown (x) (putprop x t 'nodown))
 
