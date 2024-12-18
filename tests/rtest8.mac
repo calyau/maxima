@@ -928,3 +928,60 @@ first( quad_qagi (1/u^3, u, -inf, -1, epsrel=1.0E-8, epsabs=2e-3, limit=200) );
 first( quad_qagi (exp(-x^2), x, -inf, inf*inf, epsrel=1.0E-3, epsabs=2e-3, limit=100) );
 1.7724538509067376;
 
+
+/* SF bug #4430: "solve calls eval on its arguments" */
+
+
+(kill (all), 0);
+0;
+
+solve([a=3],[a]);
+[a=3];
+
+solve('[a=3],'[a]);
+[a=3];
+
+solve('(a=3),'(a));
+[a=3];
+
+(a: 999, 0);
+0;
+
+solve('[a=3],'[a]);
+[a = 3];
+
+(q1:'q2, q2:'q3, 0);
+0;
+
+solve('q1,'q1);
+[q1 = 0];
+
+solve('q1,'[q1]);
+[q1 = 0];
+
+solve('[q1],'q1);
+[q1 = 0];
+
+solve('[q1],'[q1]);
+[q1 = 0];
+
+solve('(x=print(23)),x);
+[x=print(23)];
+
+solve('[x=print(23)],x);
+[x=print(23)];
+
+(a : b, b : c, c : d, d : e,e  : f, 0);
+0;
+
+solve(a*x+b=0,x);
+[x=-(c/b)];
+
+solve([a*x+b = 0],x);
+[x=-(c/b)];
+
+solve([a*x+b = 0],[x]);
+[x=-(c/b)];
+
+solve([(a*x+b)*(c*x+d)*(d*x + e)],[x]);
+[x = -(f/e), x = -(e/d), x = -(c/b)];
