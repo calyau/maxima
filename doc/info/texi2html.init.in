@@ -12,4 +12,5 @@
   });
   hljs.highlightAll();
 </script>
-@NEED_MATHJAX@};
+@NEED_MATHJAX@}
+@TEXI_EXTRA_TAIL@;

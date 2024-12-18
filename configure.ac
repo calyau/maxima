@@ -687,12 +687,15 @@ if test x"${enable_build_docs}" = xtrue ; then
         if test ${makeinfo_version} -le 608; then
            TEXI_EXTRA_HEAD='$options->{"EXTRA_HEAD"} = '
            HLJS_CSS_SELECTOR="'pre.example'"
+           TEXI_EXTRA_TAIL=''
         else
            TEXI_EXTRA_HEAD='texinfo_set_from_init_file("EXTRA_HEAD", '
            HLJS_CSS_SELECTOR="'.example-preformatted'"
+           TEXI_EXTRA_TAIL=')'
         fi
         AC_SUBST(TEXI_EXTRA_HEAD)
         AC_SUBST(HLJS_CSS_SELECTOR)
+        AC_SUBST(TEXI_EXTRA_TAIL)
         TEXI2HTML=texi2html.init
         AC_SUBST(TEXI2HTML)
 
