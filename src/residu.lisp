@@ -503,15 +503,6 @@
         (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var) -1) 1)
         (merror (intl:gettext "residue: taylor failed."))))
 
-(defun resm1 (e pole)
-    ;; Call taylor with silent-taylor-flag t and catch an error.
-    (if (setq e (catch 'taylor-catch
-                  (let ((silent-taylor-flag t))
-                    ;; Things like residue(s/(s^2-a^2),s,a) fails if use -1.
-                    ($taylor e var pole 1))))
-        (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var) -1) 1)
-        (merror (intl:gettext "residue: taylor failed."))))
-
 (defun resm1-var (var1 e pole)
     ;; Call taylor with silent-taylor-flag t and catch an error.
     (if (setq e (catch 'taylor-catch

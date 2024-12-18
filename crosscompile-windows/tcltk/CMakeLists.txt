@@ -19,19 +19,13 @@ set(TK_MD5  "6d64b6eb021062f378017d403fedcbe6")
 set(TCL_URL "https://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL  "https://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 
-if(BUILD_64BIT)
-    set(CONFIGURE64BIT "--enable-64bit")
-else()
-    set(CONFIGURE64BIT "")
-endif()
-
 
 # build tcl/tk (required for xmaxima and the Lisp selection tool)
 externalproject_add(tcl
   URL "${TCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TCL_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --enable-shared=no --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl/win/configure --build=${BUILDHOST} --host=${HOST} --enable-shared=no --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   BUILD_COMMAND $(MAKE)
         COMMAND $(MAKE) install
 )
@@ -42,7 +36,7 @@ externalproject_add(tk
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TK_MD5}
   DEPENDS tcl
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tk-prefix/src/tk/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --enable-shared=no --with-tcl=${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl-build/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/lib --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tk-prefix/src/tk/win/configure --build=${BUILDHOST} --host=${HOST} --enable-shared=no --with-tcl=${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl-build/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/lib --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   BUILD_COMMAND $(MAKE)
         COMMAND $(MAKE) install
 )

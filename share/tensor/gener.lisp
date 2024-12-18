@@ -262,17 +262,15 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 				1.
 				nil)))) 
 
-(declare-top (special tensr))
-
-(defmfun $average n ((lambda (tensr) (simplifya (average (arg 1)) nil))
+(defmfun $average n ((lambda (tensr) (simplifya (average tensr (arg 1)) nil))
 		   (and (= n 2) (arg 2))))
 
-(defun average (e)
+(defun average (tensr e)
        (cond ((atom e ) e)
 	     ((rpobj e) (cond ((or (not tensr) (eq (caar e) tensr))
 			       (average1 e))
 			      (t e)))
-	     (t (cons (ncons (caar e)) (mapcar (function average) (cdr e))))))
+	     (t (cons (ncons (caar e)) (mapcar (lambda (e1) (funcall (function average) tensr e1)) (cdr e))))))
 
 (defun average1 (e)
        (cond ((= (length (cdadr e)) 2)
@@ -291,7 +289,6 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 
 (defun arev (l) (list (car l) (caddr l) (cadr l)))
 
-(declare-top (unspecial tensr))
 (add2lnc '(($average) $tensor) $funcs)
 
 (defun $conmetderiv (e g)

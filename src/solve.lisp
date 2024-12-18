@@ -76,7 +76,7 @@
              ;; If we have a list of equations, move everything over
              ;; to one side, so x=5 -> x-5=0.
              ((eq (g-rep-operator *eql) 'mlist)
-              (mapcar 'meqhk (mapcar 'meval (cdr *eql))))
+              (mapcar 'meqhk (cdr *eql)))
              ;; We can't solve inequalities
              ((member (g-rep-operator *eql)
                       '(mnotequal mgreaterp mlessp mgeqp mleqp) :test #'eq)
@@ -94,13 +94,12 @@
                 (cdr ($listofvars *eql))))
         (if varl (setq varl (remc varl)))) ; Remove all constants
 
-       ;; If we have got a variable list then if it's a list apply
-       ;; meval to each entry and then weed out duplicates. Else, just
-       ;; cons it.
+       ;; If VARL is a list of variables, filter out duplicates.
+       ;; Otherwise, just cons it.
        (t
         (setq varl
               (cond (($listp varl) (remove-duplicates
-                                    (mapcar #'meval (cdr varl))))
+                                    (cdr varl)))
                     (t (list varl))))))
 
      ;; Some sanity checks and warning messages.
