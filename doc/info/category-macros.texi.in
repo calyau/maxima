@@ -7,7 +7,7 @@
 
 @ifhtml
 @macro fname {name}
-@*@ @ @ @ @t{\name\}
+@*@ @ @ @ @b{\name\}
 @end macro
 @end ifhtml
 @iftex
