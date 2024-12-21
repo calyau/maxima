@@ -42,6 +42,10 @@ Changes in the Windows installer:
  * Update TCL/TK
  * Update SBCL
  * Support Clozure Common Lisp (for 64 bit installers)
+ * Use configured paths to Lisp compilers, this should help,
+   if one is building Maxima on Windows (native) and uses
+   special paths to the Lisp compilers.
+ * Fix calculation of %maxima_prefix% in maxima.bat.in.
 
 Bug fixes for numbered bugs:
 ----------------------------

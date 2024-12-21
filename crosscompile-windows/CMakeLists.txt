@@ -80,7 +80,7 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 option(WITH_ABCL "Include ABCL in the installer." NO)
 option(WITH_CCL64 "Include CCL64 in the installer." NO)
 
-# SBCL and CLISP have both advantages and disadvantages:
+# Concerning the used Lisp versions:
 #  - SBCL is fast, but sometimes runs out of memory in places it really shouldn't
 #    (Loading LAPACK on IA32, for example) and isn't too happy with changing to
 #    non-ascii-non-unicode pathnames (which wxMaxima works around by now, though,
@@ -92,6 +92,7 @@ option(WITH_CCL64 "Include CCL64 in the installer." NO)
 #    front-ends use have evolved in the last years it has become easy to
 #    trigger this => Setting SBCL to be the default.
 #  - ABCL (optional) is a Java based Lisp.
+#  - CCL64 (optional) support is very new.
 if(WITH_ABCL)
     set(WITH_DEFAULT_LISP "sbcl" CACHE STRING "Which Lisp should be used by default (clisp/sbcl/abcl)?")
     set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl" "abcl")
@@ -262,10 +263,15 @@ externalproject_add(maxima
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
             COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" ${CCL64_ENABLE} "${CCL64_EXECUTABLE}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
+  # during the crosscompiling procedure, we call configure with shell scripts (wine-xyz.sh) to use the Windows versions.
+  # change that after compiliation to the real binaries (lisp.exe for CLISP, sbcl.exe for SBCL, wx86cl64.exe for CCL64).
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk
         COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE)
         COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) pdf
+        COMMAND sed -i s+^.*wine-clisp.sh+lisp.exe+g src/maxima.bat
+        COMMAND sed -i s+^.*wine-sbcl.sh+sbcl.exe+g src/maxima.bat
+        COMMAND sed -i s+^.*wine-ccl.sh+wx86cl64.exe+g src/maxima.bat
   INSTALL_COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
           COMMAND PATH=${CMAKE_BINARY_DIR}/texinfo-installroot/bin:$ENV{PATH} LANG=C $(MAKE) extradocinstall DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
