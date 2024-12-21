@@ -20,8 +20,9 @@ as obtained from the SLATEC project.
 @section Functions and Variables for lapack
 
 @anchor{dgeev}
-@deffn {Function} dgeev (@var{A})
-@deffnx {Function} dgeev (@var{A}, @var{right_p}, @var{left_p})
+@deffn {Function} dgeev @
+@fname{dgeev} (@var{A}) @
+@fname{dgeev} (@var{A}, @var{right_p}, @var{left_p})
 
 Computes the eigenvalues and, optionally, the eigenvectors of a matrix @var{A}.
 All elements of @var{A} must be integer or floating point numbers.
@@ -377,8 +378,9 @@ The elements of @var{A} and @var{b} must evaluate to real floating point numbers
 @end deffn
 
 @anchor{dgesvd}
-@deffn {Function} dgesvd (@var{A})
-@deffnx {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
+@deffn {Function} dgesvd @
+@fname{dgesvd} (@var{A}) @
+@fname{dgesvd} (@var{A}, @var{left_p}, @var{right_p})
 
 Computes the singular value decomposition (SVD) of a matrix @var{A},
 comprising the singular values and, optionally, the left and right singular vectors.
@@ -608,8 +610,9 @@ that is, the square root of the sum of squares of the matrix elements.
 @end deffn
 
 @anchor{dgemm}
-@deffn {Function} dgemm (@var{A}, @var{B})
-@deffnx {Function} dgemm (@var{A}, @var{B}, @var{options})
+@deffn {Function} dgemm @
+@fname{dgemm} (@var{A}, @var{B}) @
+@fname{dgemm} (@var{A}, @var{B}, @var{options})
 Compute the product of two matrices and optionally add the product to
 a third matrix.
 
@@ -794,8 +797,9 @@ for the product.  The default is @code{false}.
 @end deffn
 
 @anchor{zgeev}
-@deffn {Function} zgeev (@var{A})
-@deffnx {Function} zgeev (@var{A}, @var{right_p}, @var{left_p})
+@deffn {Function} zgeev @
+@fname{zgeev} (@var{A}) @
+@fname{zgeev} (@var{A}, @var{right_p}, @var{left_p})
 
 Like @mrefcomma{dgeev} but the matrix
 m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
@@ -811,8 +815,9 @@ To make use of this function, you must load the LaPack package via
 @end deffn
 
 @anchor{zheev}
-@deffn {Function} zheev (@var{A})
-@deffnx {Function} zheev (@var{A}, @var{eigvec_p})
+@deffn {Function} zheev @
+@fname{zheev} (@var{A}) @
+@fname{zheev} (@var{A}, @var{eigvec_p})
 
 Like @mrefcomma{dgeev} but the matrix
 m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
