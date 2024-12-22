@@ -640,13 +640,6 @@
 	  (t
 	   (or mprops lprops fcell-props)))))
 
-(defprop expr expr hook-type)
-(defprop mexpr expr hook-type)
-(defprop subr expr hook-type)
-(defprop lsubr expr hook-type)
-(defprop mfexpr* macro hook-type)
-(defprop mfexpr*s macro hook-type)
-
 (defun make-trace-hook (fun type handler)
   ;; Argument handling according to FUN's TYPE is already done
   ;; elsewhere: HANDLER, meval...
