@@ -661,9 +661,7 @@
     (case type
       ((mexpr)
        (mapply prop largs "A traced function"))
-      ((expr)
-       (apply prop largs))
-      ((subr lsubr)
+      ((expr subr lsubr)
        (apply prop largs))
       ((mfexpr* mfexpr*s)
        (funcall prop (car largs))))))
