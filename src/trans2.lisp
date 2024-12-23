@@ -25,7 +25,7 @@
 
 (def%tr mcall (form)
   (setq form (cdr form))
-  (let ((mode (cond ((atom (car form))
+  (let ((mode (cond ((symbolp (car form))
 		     (function-mode (car form)))
 		    (t '$any))))
     (setq form (tr-args form))
@@ -172,7 +172,7 @@
 
 (def%tr marrayref (form)
   (setq form (cdr form))
-  (let ((mode (cond ((atom (car form))
+  (let ((mode (cond ((symbolp (car form))
 		     (get (car form) 'array-mode)))))
     (cond ((null mode) (setq mode '$any)))
     (setq form (tr-args form))
@@ -185,7 +185,7 @@
 
 (def%tr marrayset (form)
   (setq form (cdr form))
-  (let ((mode (cond ((atom (cadr form))
+  (let ((mode (cond ((symbolp (cadr form))
 		     (get (cadr form) 'array-mode)))))
     (when (null mode) (setq mode '$any))
     (setq form (tr-args form))
