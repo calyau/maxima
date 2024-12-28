@@ -504,9 +504,8 @@ APPLY means like APPLY.")
 				   (func 'mexpr)))
 			  out-forms)))
 	     ;;once a function has been translated we want to make sure mfunction-call is eliminated.
-	     (progn
-	       (remprop (car desc-header) 'undefined-warnp)
-	       (setf (get (car desc-header) 'once-translated) "I was once translated"))
+	     (remprop (car desc-header) 'undefined-warnp)
+	     (setf (get (car desc-header) 'once-translated) "I was once translated")
 	     `(progn
 		,@(nreverse out-forms)
 		(defmtrfun ,desc-header ,@(cdr (cdr t-form))))))
