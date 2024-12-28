@@ -462,8 +462,12 @@ APPLY means like APPLY.")
 	   (setq kind (cond ((eq (caar form) 'mdefmacro) 'macro)
 			    ((member 'array flags :test #'eq) 'array)
 			    (t 'func)))
-	   (let* ((t-form
-		   (tr-lambda `((lambda) ((mlist) ,@a-args) ,body)))
+	   (let* ((t-expr `((lambda) ((mlist) ,@a-args) ,body))
+		  (t-form
+                   (let ((once (get name 'once-translated)))
+                     (setf (get name 'once-translated) t)
+                     (unwind-protect (tr-lambda t-expr)
+                       (setf (get name 'once-translated) once))))
 		  (desc-header
 		   `(,name ,(car t-form) ,(caar form)
 		     ,and-restp ,(eq kind 'array))))
