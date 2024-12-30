@@ -1416,34 +1416,38 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 @closecatbox
 @end deffn
 
-@c DESCRIBE lratsubst INDEPENDENTLY OF subst
-@c THIS ITEM NEEDS MORE WORK
-
 @c -----------------------------------------------------------------------------
 @anchor{lratsubst}
-@deffn {Function} lratsubst (@var{new}, @var{old}, @var{expr}) @
+@deffn {Function} lratsubst @
+@fname{lratsubst} (@var{new}, @var{old}, @var{expr}) @
 @fname{lratsubst} (@code{@var{old} = @var{new}}, @var{expr}) @
 @fname{lratsubst} (@code{[ @var{old_1} = @var{new_1}, @dots{}, @var{old_n} = @var{new_n} ]}, @var{expr})
 
 @code{lratsubst} is analogous to @mref{subst} except that it uses
 @code{ratsubst} to perform substitutions.
 
-The first argument of @code{lratsubst} is an equation, a list of
-equations or a list of unit length whose first element is a list of
-equations (that is, the first argument is identical in format to that
-accepted by @code{subst}). The substitutions are made in the order given
+When @code{lratsubst} is given two arguments,
+the first argument may be an equation,
+a list of equations,
+or a list of exactly one element, which is a list of equations.
+
+Substitutions are made in the order given
 by the list of equations, that is, from left to right.
+
+Multiple substitutions are serial, not parallel.
+That is, later substitutions are performed on the results of earlier ones.
+
+When @code{lratsubst} is given three arguments @var{new}, @var{old}, and @var{expr},
+it is equivalent to @code{lratsubst(@var{old} = @var{new}, @var{expr})}.
 
 Examples:
 
 @c EXPRESSIONS ADAPTED FROM demo ("lrats")
 @c THIS STUFF CAN PROBABLY STAND REVISION -- EXAMPLES DON'T SEEM VERY ENLIGHTENING
 
-@itemize @bullet
-@item
-@code{subst} can carry out multiple substitutions.
+@code{lratsubst} can carry out multiple substitutions.
 @code{lratsubst} is analogous to @code{subst}.
-@end itemize
+
 @c ===beg===
 @c lratsubst ([a = b, c = d], a + c);
 @c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
@@ -1454,11 +1458,10 @@ Examples:
 (%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
 (%o3)                (d + a c) e + a d + b c
 @end example
-@itemize @bullet
-@item
+
 If only one substitution is desired, then a single
 equation may be given as first argument.
-@end itemize
+
 @c ===beg===
 @c lratsubst (a^2 = b, a^3);
 @c ===end===
@@ -1466,27 +1469,18 @@ equation may be given as first argument.
 (%i4) lratsubst (a^2 = b, a^3);
 (%o4)                          a b
 @end example
-@itemize @bullet
-@item
-A nested list of substitutions can be used--but it must contain only one list.
-@end itemize
+
+The first argument may be a list of exactly one element,
+which is a list of equations.
+
 @c ===beg===
 @c lratsubst ([[a^2=b*a, b=c]], a^3);
-@c lratsubst ([[a^2=b*a, b=c],[a=b]], a^3);
 @c ===end===
 @example
 (%i5) lratsubst ([[a^2=b*a, b=c]], a^3);
 
                                       2
 (%o5)                               a  c
-(%i6) lratsubst ([[a^2=b*a, b=c],[a=b]], a^3);
-
-
-                                 2
-lratsubst: improper argument: [[a  = a b, b = c], [a = b]]
-#0: lratsubst(listofeqns=[[a^2 = a*b,b = c],[a = b]],expr=a^3)
- -- an error. To debug this try: debugmode(true);
-
 @end example
 
 See also @mref{fullratsubst}.
