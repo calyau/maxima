@@ -1814,13 +1814,19 @@ The following function composes @code{L = [e_1, ..., e_n]} as functions in
 Re-express above example using @code{compose}:
 
 @c ===beg===
+@c compose (L, x) :=
+@c   block ([r : x], for e in L do r : subst (e, x, r), r) $
 @c polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
 @c ===end===
 @example
 @group
-(%i1) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
-                          2       3
-(%o1)          [compose([x  - a, x  - x - 1], x)]
+(%i1) compose (L, x) :=
+  block ([r : x], for e in L do r : subst (e, x, r), r) $
+@end group
+@group
+(%i2) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+                        2       3
+(%o2)                 [x  - a, x  - x - 1]
 @end group
 @end example
 
@@ -1830,19 +1836,27 @@ returns @var{p} (unexpanded), @code{polydecomp (compose ([@var{p_1}, ...,
 @code{[@var{p_1}, ..., @var{p_n}]}:
 
 @c ===beg===
+@c compose (L, x) :=
+@c   block ([r : x], for e in L do r : subst (e, x, r), r) $
 @c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
 @c polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
 @c ===end===
 @example
 @group
-(%i1) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
-                           2             2
-(%o1)           [compose([x  + 2 x + 3, x ], x)]
+(%i1) compose (L, x) :=
+  block ([r : x], for e in L do r : subst (e, x, r), r) $
 @end group
 @group
-(%i2) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
-                        2           2
-(%o2)        [compose([x  + x + 1, x  + x + 1], x)]
+(%i2) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+                          2       2
+(%o2)                   [x  + 2, x  + 1]
+@end group
+@group
+(%i3) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+                      2       2
+                     x  + 3  x  + 5
+(%o3)               [------, ------, 2 x + 1]
+                       4       2
 @end group
 @end example
 
