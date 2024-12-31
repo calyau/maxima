@@ -1131,6 +1131,8 @@ of the polynomials @var{p_1} and @var{p_2}, and whose remaining elements are
 the polynomials divided by the greatest common divisor.
 
 @c ===beg===
+@c p1:6*x^3+19*x^2+19*x+6 $
+@c p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x $
 @c ezgcd(p1, p2);
 @c ===end===
 @example
