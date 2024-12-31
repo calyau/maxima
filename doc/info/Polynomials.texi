@@ -125,16 +125,22 @@ Examples:
 @c resultant(a*x+b, c*x^2+d, x);
 @c ===end===
 @example
+@group
 (%i1) bezout(a*x+b, c*x^2+d, x);
                          [ b c  - a d ]
 (%o1)                    [            ]
                          [  a     b   ]
+@end group
+@group
 (%i2) determinant(%);
                             2      2
 (%o2)                      a  d + b  c
+@end group
+@group
 (%i3) resultant(a*x+b, c*x^2+d, x);
                             2      2
 (%o3)                      a  d + b  c
+@end group
 @end example
 @opencatbox{Categories:}
 @category{Polynomials}
@@ -161,11 +167,15 @@ Example:
 @c islinear ((r^2 - (x - r)^2)/x, x);
 @c ===end===
 @example
+@group
 (%i1) islinear (expr, x) := block ([c],
         c: bothcoef (rat (expr, x), x),
         is (freeof (x, c) and c[1] # 0))$
+@end group
+@group
 (%i2) islinear ((r^2 - (x - r)^2)/x, x);
 (%o2)                         true
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -368,8 +378,8 @@ Examples:
 @c content (2*x*y + 4*x^2*y^2, y);
 @c ===end===
 @example
-(%i1) content (2*x*y + 4*x^2*y^2, y);
 @group
+(%i1) content (2*x*y + 4*x^2*y^2, y);
                                    2
 (%o1)                   [2 x, 2 x y  + y]
 @end group
@@ -443,10 +453,14 @@ Examples:
 @c divide (x + y, x - y);
 @c ===end===
 @example
+@group
 (%i1) divide (x + y, x - y, x);
 (%o1)                       [1, 2 y]
+@end group
+@group
 (%i2) divide (x + y, x - y);
 (%o2)                      [- 1, 2 x]
+@end group
 @end example
 
 @noindent
@@ -479,20 +493,27 @@ Example:
 @c eliminate ([expr3, expr2, expr1], [y, z]);
 @c ===end===
 @example
+@group
 (%i1) expr1: 2*x^2 + y*x + z;
                                       2
 (%o1)                    z + x y + 2 x
+@end group
+@group
 (%i2) expr2: 3*x + 5*y - z - 1;
 (%o2)                  - z + 5 y + 3 x - 1
+@end group
+@group
 (%i3) expr3: z^2 + x - y^2 + 5;
                           2    2
 (%o3)                    z  - y  + x + 5
+@end group
+@group
 (%i4) eliminate ([expr3, expr2, expr1], [y, z]);
              8         7         6          5          4
 (%o4) [7425 x  - 1170 x  + 1299 x  + 12076 x  + 22887 x
-
                                     3         2
                             - 5154 x  - 1291 x  + 7688 x + 15376]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -527,22 +548,30 @@ gcd is first calculated with the function @code{gcd} and then with the function
 @c ezgcd(p1, p2, p3);
 @c ===end===
 @example
+@group
 (%i1) p1 : 6*x^3-17*x^2+14*x-3;
                         3       2
 (%o1)                6 x  - 17 x  + 14 x - 3
+@end group
+@group
 (%i2) p2 : 4*x^4-14*x^3+12*x^2+2*x-3;
                     4       3       2
 (%o2)            4 x  - 14 x  + 12 x  + 2 x - 3
+@end group
+@group
 (%i3) p3 : -8*x^3+14*x^2-x-3;
                           3       2
 (%o3)                - 8 x  + 14 x  - x - 3
-
+@end group
+@group
 (%i4) gcd(p1, gcd(p2, p3));
 (%o4)                        2 x - 3
-
+@end group
+@group
 (%i5) ezgcd(p1, p2, p3);
                    2               3      2           2
 (%o5) [2 x - 3, 3 x  - 4 x + 1, 2 x  - 4 x  + 1, - 4 x  + x + 1]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -628,104 +657,120 @@ Examples:
 @c factor (1 + x^99);
 @c ===end===
 @example
+@group
 (%i1) factor (2^63 - 1);
                     2
 (%o1)              7  73 127 337 92737 649657
+@end group
+@group
 (%i2) factor (-8*y - 4*x + z^2*(2*y + x));
 (%o2)               (2 y + x) (z - 2) (z + 2)
+@end group
+@group
 (%i3) -1 - 2*x - x^2 + y^2 + 2*x*y^2 + x^2*y^2;
                 2  2        2    2    2
 (%o3)          x  y  + 2 x y  + y  - x  - 2 x - 1
-(%i4) block ([dontfactor: [x]], factor (%/36/(1 + 2*y + y^2)));
+@end group
 @group
+(%i4) block ([dontfactor: [x]], factor (%/36/(1 + 2*y + y^2)));
                        2
                      (x  + 2 x + 1) (y - 1)
 (%o4)                ----------------------
                            36 (y + 1)
 @end group
+@group
 (%i5) factor (1 + %e^(3*x));
                       x         2 x     x
 (%o5)              (%e  + 1) (%e    - %e  + 1)
+@end group
+@group
 (%i6) factor (1 + x^4, a^2 - 2);
                     2              2
 (%o6)             (x  - a x + 1) (x  + a x + 1)
+@end group
+@group
 (%i7) factor (-y^2*z^2 - x*z^2 + x^2*y^2 + x^3);
                        2
 (%o7)              - (y  + x) (z - x) (z + x)
+@end group
+@group
 (%i8) (2 + x)/(3 + x)/(b + x)/(c + x)^2;
                              x + 2
 (%o8)               ------------------------
                                            2
                     (x + 3) (x + b) (x + c)
-(%i9) ratsimp (%);
+@end group
 @group
+(%i9) ratsimp (%);
                 4                  3
 (%o9) (x + 2)/(x  + (2 c + b + 3) x
-
      2                       2             2                   2
  + (c  + (2 b + 6) c + 3 b) x  + ((b + 3) c  + 6 b c) x + 3 b c )
 @end group
+@group
 (%i10) partfrac (%, x);
            2                   4                3
 (%o10) - (c  - 4 c - b + 6)/((c  + (- 2 b - 6) c
-
      2              2         2                2
  + (b  + 12 b + 9) c  + (- 6 b  - 18 b) c + 9 b ) (x + c))
-
                  c - 2
  - ---------------------------------
      2                             2
    (c  + (- b - 3) c + 3 b) (x + c)
-
                          b - 2
  + -------------------------------------------------
              2             2       3      2
    ((b - 3) c  + (6 b - 2 b ) c + b  - 3 b ) (x + b)
-
                          1
  - ----------------------------------------------
              2
    ((b - 3) c  + (18 - 6 b) c + 9 b - 27) (x + 3)
-(%i11) map ('factor, %);
+@end group
 @group
+(%i11) map ('factor, %);
               2
              c  - 4 c - b + 6                 c - 2
 (%o11) - ------------------------- - ------------------------
                 2        2                                  2
          (c - 3)  (c - b)  (x + c)   (c - 3) (c - b) (x + c)
-
                        b - 2                        1
             + ------------------------ - ------------------------
                              2                          2
               (b - 3) (c - b)  (x + b)   (b - 3) (c - 3)  (x + 3)
 @end group
+@group
 (%i12) ratsimp ((x^5 - 1)/(x - 1));
                        4    3    2
 (%o12)                x  + x  + x  + x + 1
+@end group
+@group
 (%i13) subst (a, x, %);
                        4    3    2
 (%o13)                a  + a  + a  + a + 1
+@end group
+@group
 (%i14) factor (%th(2), %);
                        2        3        3    2
 (%o14)   (x - a) (x - a ) (x - a ) (x + a  + a  + a + 1)
+@end group
+@group
 (%i15) factor (1 + x^12);
                        4        8    4
 (%o15)               (x  + 1) (x  - x  + 1)
+@end group
+@group
 (%i16) factor (1 + x^99);
                  2            6    3
 (%o16) (x + 1) (x  - x + 1) (x  - x  + 1)
-
    10    9    8    7    6    5    4    3    2
  (x   - x  + x  - x  + x  - x  + x  - x  + x  - x + 1)
-
    20    19    17    16    14    13    11    10    9    7    6
  (x   + x   - x   - x   + x   + x   - x   - x   - x  + x  + x
-
     4    3            60    57    51    48    42    39    33
  - x  - x  + x + 1) (x   + x   - x   - x   + x   + x   - x
-
     30    27    21    18    12    9    3
  - x   - x   + x   + x   - x   - x  + x  + 1)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -867,15 +912,18 @@ Example:
 @c factorsum (%);
 @c ===end===
 @example
+@group
 (%i1) expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
            2      2                            2      2
 (%o1) a x z  + a z  + 2 a w x z + 2 a w z + a w  x + v  x
-
                                      2        2    2            2
                         + 2 u v x + u  x + a w  + v  + 2 u v + u
+@end group
+@group
 (%i2) factorsum (%);
                                    2          2
 (%o2)            (x + 1) (a (z + w)  + (v + u) )
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -927,27 +975,35 @@ Example:
 @c rat (expr);
 @c ===end===
 @example
+@group
 (%i1) expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
                        a/2     2   a/2     2
                      (x    - 1)  (x    + 1)
 (%o1)                -----------------------
                               a
                              x  - 1
+@end group
+@group
 (%i2) ratsimp (expr);
                           2 a      a
                          x    - 2 x  + 1
 (%o2)                    ---------------
                               a
                              x  - 1
+@end group
+@group
 (%i3) fullratsimp (expr);
                               a
 (%o3)                        x  - 1
+@end group
+@group
 (%i4) rat (expr);
                        a/2 4       a/2 2
                      (x   )  - 2 (x   )  + 1
 (%o4)/R/             -----------------------
                               a
                              x  - 1
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -984,10 +1040,14 @@ Examples:
 @c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
 @c ===end===
 @example
-(%i2) subst ([a = b, c = d], a + c);
-(%o2)                         d + b
-(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
-(%o3)                (d + a c) e + a d + b c
+@group
+(%i1) subst ([a = b, c = d], a + c);
+(%o1)                         d + b
+@end group
+@group
+(%i2) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o2)                (d + a c) e + a d + b c
+@end group
 @end example
 @itemize @bullet
 @item
@@ -998,8 +1058,10 @@ equation may be given as first argument.
 @c lratsubst (a^2 = b, a^3);
 @c ===end===
 @example
-(%i4) lratsubst (a^2 = b, a^3);
-(%o4)                          a b
+@group
+(%i1) lratsubst (a^2 = b, a^3);
+(%o1)                          a b
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1011,12 +1073,16 @@ except that it recurses until its result stops changing.
 @c fullratsubst (b*a, a^2, a^3);
 @c ===end===
 @example
-(%i5) ratsubst (b*a, a^2, a^3);
+@group
+(%i1) ratsubst (b*a, a^2, a^3);
                                2
-(%o5)                         a  b
-(%i6) fullratsubst (b*a, a^2, a^3);
+(%o1)                         a  b
+@end group
+@group
+(%i2) fullratsubst (b*a, a^2, a^3);
                                  2
-(%o6)                         a b
+(%o2)                         a b
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1028,11 +1094,15 @@ equation as first argument.
 @c fullratsubst (a^2 = b*a, a^3);
 @c ===end===
 @example
-(%i7) fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
-(%o7)                           b
-(%i8) fullratsubst (a^2 = b*a, a^3);
+@group
+(%i1) fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+(%o1)                           b
+@end group
+@group
+(%i2) fullratsubst (a^2 = b*a, a^3);
                                  2
-(%o8)                         a b
+(%o2)                         a b
+@end group
 @end example
 @itemize @bullet
 @item
@@ -1042,10 +1112,12 @@ equation as first argument.
 @c fullratsubst (b*a^2, a^2, a^3), lrats_max_iter=15;
 @c ===end===
 @example
-(%i9) fullratsubst (b*a^2, a^2, a^3), lrats_max_iter=15;
-Warning: fullratsubst1(substexpr,forexpr,expr): reached maximum iterations of 15 . Increase `lrats_max_iter' to increase this limit.
-                                     3  15
-(%o7)                               a  b
+@group
+(%i1) fullratsubst (b*a^2, a^2, a^3), lrats_max_iter=15;
+Warning: fullratsubst2(listofeqns,expr): reached maximum iterations of 15 . Increase `lrats_max_iter' to increase this limit.
+                              3  15
+(%o1)                        a  b
+@end group
 @end example
 
 See also @mref{lrats_max_iter} and @mref{fullratsubstflag}.
@@ -1110,20 +1182,30 @@ Example:
 @c p2/gcd(p1, p2), ratsimp;
 @c ===end===
 @example
-(%i1) p1:6*x^3+19*x^2+19*x+6; 
+@group
+(%i1) p1:6*x^3+19*x^2+19*x+6;
                         3       2
 (%o1)                6 x  + 19 x  + 19 x + 6
+@end group
+@group
 (%i2) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
                   5       4       3       2
 (%o2)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+@end group
+@group
 (%i3) gcd(p1, p2);
                             2
 (%o3)                    6 x  + 13 x + 6
+@end group
+@group
 (%i4) p1/gcd(p1, p2), ratsimp;
 (%o4)                         x + 1
+@end group
+@group
 (%i5) p2/gcd(p1, p2), ratsimp;
                               3
 (%o5)                        x  + x
+@end group
 @end example
 
 @mref{ezgcd} returns a list whose first element is the greatest common divisor
@@ -1136,9 +1218,13 @@ the polynomials divided by the greatest common divisor.
 @c ezgcd(p1, p2);
 @c ===end===
 @example
-(%i6) ezgcd(p1, p2);
+(%i1) p1:6*x^3+19*x^2+19*x+6 $
+(%i2) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x $
+@group
+(%i3) ezgcd(p1, p2);
                     2                     3
-(%o6)           [6 x  + 13 x + 6, x + 1, x  + x]
+(%o3)           [6 x  + 13 x + 6, x + 1, x  + x]
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1252,8 +1338,10 @@ Example:
 @c gfactor (x^4 - 1);
 @c ===end===
 @example
+@group
 (%i1) gfactor (x^4 - 1);
 (%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1300,16 +1388,26 @@ Examples:
 @c hipow (expand ((x + y)^5), x + y);
 @c ===end===
 @example
+@group
 (%i1) hipow (y^3 * x^2 + x * y^4, x);
 (%o1)                           2
+@end group
+@group
 (%i2) hipow ((x + y)^5, x);
 (%o2)                           1
+@end group
+@group
 (%i3) hipow (expand ((x + y)^5), x);
 (%o3)                           5
+@end group
+@group
 (%i4) hipow ((x + y)^5, x + y);
 (%o4)                           5
+@end group
+@group
 (%i5) hipow (expand ((x + y)^5), x + y);
 (%o5)                           0
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1367,7 +1465,6 @@ Examples:
 @example
 @group
 (%i1) rat(x/2.0);
-
 rat: replaced 0.5 by 1/2 = 0.5
                                 x
 (%o1)/R/                        -
@@ -1387,7 +1484,6 @@ rat: replaced 0.5 by 1/2 = 0.5
 @example
 @group
 (%i1) solve(1.0-x,x), keepfloat;
-
 rat: replaced 1.0 by 1/1 = 1.0
 (%o1)                        [x = 1]
 @end group
@@ -1409,8 +1505,10 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 @c lopow ((x+y)^2 + (x+y)^a, x+y);
 @c ===end===
 @example
+@group
 (%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
-(%o1)                       min(a, 2)
+(%o1)                       min(2, a)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1455,10 +1553,14 @@ Examples:
 @c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
 @c ===end===
 @example
-(%i2) lratsubst ([a = b, c = d], a + c);
-(%o2)                         d + b
-(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
-(%o3)                (d + a c) e + a d + b c
+@group
+(%i1) lratsubst ([a = b, c = d], a + c);
+(%o1)                         d + b
+@end group
+@group
+(%i2) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o2)                (d + a c) e + a d + b c
+@end group
 @end example
 
 If only one substitution is desired, then a single
@@ -1468,8 +1570,10 @@ equation may be given as first argument.
 @c lratsubst (a^2 = b, a^3);
 @c ===end===
 @example
-(%i4) lratsubst (a^2 = b, a^3);
-(%o4)                          a b
+@group
+(%i1) lratsubst (a^2 = b, a^3);
+(%o1)                          a b
+@end group
 @end example
 
 The first argument may be a list of exactly one element,
@@ -1479,10 +1583,11 @@ which is a list of equations.
 @c lratsubst ([[a^2=b*a, b=c]], a^3);
 @c ===end===
 @example
-(%i5) lratsubst ([[a^2=b*a, b=c]], a^3);
-
-                                      2
-(%o5)                               a  c
+@group
+(%i1) lratsubst ([[a^2=b*a, b=c]], a^3);
+                               2
+(%o1)                         a  c
+@end group
 @end example
 
 See also @mref{fullratsubst}.
@@ -1548,26 +1653,42 @@ Examples:
 @c polymod(%);
 @c ===end===
 @example
+@group
 (%i1) modulus:7;
 (%o1)                           7
+@end group
+@group
 (%i2) polymod([0,1,2,3,4,5,6,7]);
 (%o2)            [0, 1, 2, 3, - 3, - 2, - 1, 0]
+@end group
+@group
 (%i3) modulus:false;
 (%o3)                         false
+@end group
+@group
 (%i4) poly:x^6+x^2+1;
                             6    2
 (%o4)                      x  + x  + 1
+@end group
+@group
 (%i5) factor(poly);
                             6    2
 (%o5)                      x  + x  + 1
+@end group
+@group
 (%i6) modulus:13;
 (%o6)                          13
+@end group
+@group
 (%i7) factor(poly);
                       2        4      2
 (%o7)               (x  + 6) (x  - 6 x  - 2)
+@end group
+@group
 (%i8) polymod(%);
                             6    2
 (%o8)                      x  + x  + 1
+@end group
 @end example
 @opencatbox{Categories:}
 @category{Integers}
@@ -1779,10 +1900,14 @@ The polynomial needn't be expanded:
 @c polynomialp ((x + 1)*(x + 2)^a, [x]);
 @c ===end===
 @example
+@group
 (%i1) polynomialp ((x + 1)*(x + 2), [x]);
 (%o1)                         true
+@end group
+@group
 (%i2) polynomialp ((x + 1)*(x + 2)^a, [x]);
 (%o2)                         false
+@end group
 @end example
 
 An example using non-default values for coeffp and exponp:
@@ -1793,11 +1918,15 @@ An example using non-default values for coeffp and exponp:
 @c                                                        numberp);
 @c ===end===
 @example
+@group
 (%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 (%o1)                         true
+@end group
+@group
 (%i2) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp,
-                                                        numberp);
+                                                       numberp);
 (%o2)                         true
+@end group
 @end example
 
 Polynomials with two variables:
@@ -1807,10 +1936,14 @@ Polynomials with two variables:
 @c polynomialp (x^2 + 5*x*y + y^2, [x, y]);
 @c ===end===
 @example
+@group
 (%i1) polynomialp (x^2 + 5*x*y + y^2, [x]);
 (%o1)                         false
+@end group
+@group
 (%i2) polynomialp (x^2 + 5*x*y + y^2, [x, y]);
 (%o2)                         true
+@end group
 @end example
 
 Polynomial in one variable and accepting any expression free of @code{x} as a coefficient.
@@ -1820,10 +1953,14 @@ Polynomial in one variable and accepting any expression free of @code{x} as a co
 @c polynomialp (a*x^2 + b*x + c, [x], lambda([ex], freeof(x, ex)));
 @c ===end===
 @example
+@group
 (%i1) polynomialp (a*x^2 + b*x + c, [x]);
 (%o1)                         false
+@end group
+@group
 (%i2) polynomialp (a*x^2 + b*x + c, [x], lambda([ex], freeof(x, ex)));
 (%o2)                         true
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -1982,8 +2119,10 @@ Example:
 @c ===end===
 @example
 (%i1) s: a*x + b*x + 5$
+@group
 (%i2) ratcoef (s, a + b);
 (%o2)                           x
+@end group
 @end example
 @c NEED MORE EXAMPLES HERE
 
@@ -2041,40 +2180,48 @@ Examples:
 @c ratexpand (expr2);
 @c ===end===
 @example
+@group
 (%i1) expr: (x^2 + x + 1)/(y^2 + 7);
                             2
                            x  + x + 1
 (%o1)                      ----------
                               2
                              y  + 7
+@end group
 (%i2) ratdenomdivide: true$
+@group
 (%i3) ratexpand (expr);
                        2
                       x        x        1
 (%o3)               ------ + ------ + ------
                      2        2        2
                     y  + 7   y  + 7   y  + 7
+@end group
 (%i4) ratdenomdivide: false$
-(%i5) ratexpand (expr);
 @group
+(%i5) ratexpand (expr);
                             2
                            x  + x + 1
 (%o5)                      ----------
                               2
                              y  + 7
 @end group
+@group
 (%i6) expr2: a^2/(b^2 + 3) + b/(b^2 + 3);
                                      2
                            b        a
 (%o6)                    ------ + ------
                           2        2
                          b  + 3   b  + 3
+@end group
+@group
 (%i7) ratexpand (expr2);
                                   2
                              b + a
 (%o7)                        ------
                               2
                              b  + 3
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2119,32 +2266,42 @@ Example:
 @c ratdiff (expr, a + b);
 @c ===end===
 @example
-(%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
 @group
+(%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
                            3
                         4 x  + 10 x - 11
 (%o1)                   ----------------
                               5
                              x  + 5
 @end group
+@group
 (%i2) ratdiff (expr, x);
                     7       5       4       2
                  8 x  + 40 x  - 55 x  - 60 x  - 50
 (%o2)          - ---------------------------------
                           10       5
                          x   + 10 x  + 25
+@end group
+@group
 (%i3) expr: f(x)^3 - f(x)^2 + 7;
                          3       2
 (%o3)                   f (x) - f (x) + 7
+@end group
+@group
 (%i4) ratdiff (expr, f(x));
                            2
 (%o4)                   3 f (x) - 2 f(x)
+@end group
+@group
 (%i5) expr: (a + b)^3 + (a + b)^2;
                               3          2
 (%o5)                  (b + a)  + (b + a)
+@end group
+@group
 (%i6) ratdiff (expr, a + b);
                     2                    2
 (%o6)            3 b  + (6 a + 2) b + 3 a  + 2 a
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2213,27 +2370,33 @@ Examples:
 @c ratexpand (expr);
 @c ===end===
 @example
+@group
 (%i1) ratexpand ((2*x - 3*y)^3);
                      3         2       2        3
 (%o1)          - 27 y  + 54 x y  - 36 x  y + 8 x
+@end group
+@group
 (%i2) expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
                          x - 1       1
 (%o2)                   -------- + -----
                                2   x - 1
                         (x + 1)
-(%i3) expand (expr);
+@end group
 @group
+(%i3) expand (expr);
                     x              1           1
 (%o3)          ------------ - ------------ + -----
                 2              2             x - 1
                x  + 2 x + 1   x  + 2 x + 1
 @end group
+@group
 (%i4) ratexpand (expr);
                         2
                      2 x                 2
 (%o4)           --------------- + ---------------
                  3    2            3    2
                 x  + x  - x - 1   x  + x  - x - 1
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2362,36 +2525,42 @@ Examples:
 @c x^(a + 1/a), ratsimpexpons: true;
 @c ===end===
 @example
-(%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
 @group
+(%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
                                          2      2
                    x         (log(x) + 1)  - log (x)
 (%o1)        sin(------) = %e
                   2
                  x  + x
 @end group
+@group
 (%i2) ratsimp (%);
                              1          2
 (%o2)                  sin(-----) = %e x
                            x + 1
-(%i3) ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
+@end group
 @group
+(%i3) ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
                        3/2
                 (x - 1)    - sqrt(x - 1) (x + 1)
 (%o3)           --------------------------------
                      sqrt((x - 1) (x + 1))
 @end group
+@group
 (%i4) ratsimp (%);
                            2 sqrt(x - 1)
 (%o4)                    - -------------
                                  2
                            sqrt(x  - 1)
+@end group
+@group
 (%i5) x^(a + 1/a), ratsimpexpons: true;
                                2
                               a  + 1
                               ------
                                 a
 (%o5)                        x
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2558,19 +2727,24 @@ list @code{VARLIST}.
 @c ===end===
 @example
 (%i1) ratvarswitch:true$
-
+@group
 (%i2) rat(2*x+y^2);
                              2
 (%o2)/R/                    y  + 2 x
+@end group
+@group
 (%i3) :lisp varlist
 ($X $Y)
-
+@end group
+@group
 (%i3) rat(2*a+b^2);
                              2
 (%o3)/R/                    b  + 2 a
-
+@end group
+@group
 (%i4) :lisp varlist
 ($A $B)
+@end group
 @end example
 
 If @code{ratvarswitch} is @code{false}, the main variables from the last 
@@ -2584,20 +2758,25 @@ evaluation are still present.
 @c :lisp varlist
 @c ===end===
 @example
-(%i4) ratvarswitch:false$
-
-(%i5) rat(2*x+y^2);
+(%i1) ratvarswitch:false$
+@group
+(%i2) rat(2*x+y^2);
                              2
-(%o5)/R/                    y  + 2 x
-(%i6) :lisp varlist
+(%o2)/R/                    y  + 2 x
+@end group
+@group
+(%i3) :lisp varlist
 ($X $Y)
-
-(%i6) rat(2*a+b^2);
+@end group
+@group
+(%i3) rat(2*a+b^2);
                              2
-(%o6)/R/                    b  + 2 a
-
-(%i7) :lisp varlist
+(%o3)/R/                    b  + 2 a
+@end group
+@group
+(%i4) :lisp varlist
 ($A $B $X $Y)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2635,15 +2814,21 @@ Examples:
 @c expr1^2;
 @c ===end===
 @example
+@group
 (%i1) ratweight (a, 1, b, 1);
 (%o1)                     [a, 1, b, 1]
+@end group
 (%i2) expr1: rat(a + b + 1)$
+@group
 (%i3) expr1^2;
                   2                  2
 (%o3)/R/         b  + (2 a + 2) b + a  + 2 a + 1
+@end group
 (%i4) ratwtlvl: 1$
+@group
 (%i5) expr1^2;
 (%o5)/R/                  2 b + 2 a + 1
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2730,24 +2915,33 @@ Examples:
 @c determinant(%);
 @c ===end===
 @example
+@group
 (%i1) resultant(2*x^2+3*x+1, 2*x^2+x+1, x);
 (%o1)                           8
+@end group
+@group
 (%i2) resultant(x+1, x+1, x);
 (%o2)                           0
+@end group
+@group
 (%i3) resultant((x+1)*x, (x+1), x);
 (%o3)                           0
+@end group
+@group
 (%i4) resultant(a*x^2+b*x+1, c*x + 2, x);
                          2
 (%o4)                   c  - 2 b c + 4 a
-
-(%i5) bezout(a*x^2+b*x+1, c*x+2, x);
+@end group
 @group
+(%i5) bezout(a*x^2+b*x+1, c*x+2, x);
                         [ 2 a  2 b - c ]
 (%o5)                   [              ]
                         [  c      2    ]
 @end group
+@group
 (%i6) determinant(%);
 (%o6)                   4 a - (2 b - c) c
+@end group
 @end example
 @opencatbox{Categories:}
 @category{Polynomials}
@@ -2833,9 +3027,11 @@ Example:
 @c sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
 @c ===end===
 @example
+@group
 (%i1) sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
                                 2   2
 (%o1)                  (2 x + 1)  (x  - 1)
+@end group
 @end example
 
 @opencatbox{Categories:}
@@ -2894,28 +3090,41 @@ Examples:
 @c tellrat (y^2 = x^2);
 @c ===end===
 @example
+@group
 (%i1) 10*(%i + 1)/(%i + 3^(1/3));
                            10 (%i + 1)
 (%o1)                      -----------
                                   1/3
                             %i + 3
+@end group
+@group
 (%i2) ev (ratdisrep (rat(%)), algebraic);
              2/3      1/3              2/3      1/3
 (%o2)    (4 3    - 2 3    - 4) %i + 2 3    + 4 3    - 2
+@end group
+@group
 (%i3) tellrat (1 + a + a^2);
                             2
 (%o3)                     [a  + a + 1]
+@end group
+@group
 (%i4) 1/(a*sqrt(2) - 1) + a/(sqrt(3) + sqrt(2));
                       1                 a
 (%o4)           ------------- + -----------------
                 sqrt(2) a - 1   sqrt(3) + sqrt(2)
+@end group
+@group
 (%i5) ev (ratdisrep (rat(%)), algebraic);
-         (7 sqrt(3) - 10 sqrt(2) + 2) a - 2 sqrt(2) - 1
-(%o5)    ----------------------------------------------
-                               7
+                              3/2           3/2
+              (7 sqrt(3) - 5 2    + 2) a - 2    - 1
+(%o5)         -------------------------------------
+                                7
+@end group
+@group
 (%i6) tellrat (y^2 = x^2);
                         2    2   2
 (%o6)                 [y  - x , a  + a + 1]
+@end group
 @end example
 
 @opencatbox{Categories:}
