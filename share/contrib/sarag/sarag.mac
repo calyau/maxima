@@ -13,7 +13,7 @@ modLoad(modName) :=
 
 modLoad("sarag_initialization.mac");
 
-modLoad("settings.mac");
+modLoad("sarag_settings.mac");
 
 modLoad("aliases.mac");
 

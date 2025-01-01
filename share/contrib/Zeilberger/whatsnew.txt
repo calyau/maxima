@@ -65,7 +65,7 @@ recurrence variable, dimension of the solutions higher than one, etc...).
 (iii) Numerical/Modular test for discarding zero-solution systems
 in "parGosper" and "Zeilberger".
 
-(iv) Lots of settings available (see "readme.txt" and "settings.mac").
+(iv) Lots of settings available (see "readme.txt" and "zeilberger_settings.mac").
 
 (v)  Cleaner code.
 
