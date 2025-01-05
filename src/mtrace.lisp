@@ -716,7 +716,7 @@
        (total-calls 0))
       ((null l)
        `(($matrix simp)
-	 ((mlist simp) $function $time//call $calls $runtime $gctime)
+	 ((mlist simp) $function $time/call $calls $runtime $gctime)
 	 ,.(nreverse v)
 	 ,(timer-mlist '$total total-calls total-runtime total-gctime)))
     (let*
