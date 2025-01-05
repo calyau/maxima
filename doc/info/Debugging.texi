@@ -354,7 +354,28 @@ total time elapsed.
 If @code{trace(f)} is in effect, then @code{timer(f)} has no effect;
 @code{trace} and @code{timer} cannot both be in effect at the same time.
 
-See also @mrefdot{timer_devalue}
+See also @mref{timer_reset} and @mrefdot{timer_devalue}
+
+@opencatbox{Categories:}
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{timer_reset}
+@deffn  {Function} timer_reset @
+    @fname{timer_reset} (@var{f_1}, @dots{}, @var{f_n}) @
+    @fname{timer_reset} ()
+
+Given functions @var{f_1}, @dots{}, @var{f_n},
+@code{timer_reset} sets the accumulated elapsed time
+for each function
+to zero.
+
+With no arguments,
+@code{timer_reset} sets the accumulated elapsed time
+for each function on the global timer list
+to zero.
 
 @opencatbox{Categories:}
 @category{Debugging}
@@ -425,7 +446,7 @@ can also be obtained by the @code{get} function:
 get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @end example
 
-See also @mrefdot{timer}
+See also @mref{timer} and @mrefdot{timer_reset}
 
 @opencatbox{Categories:}
 @category{Debugging}

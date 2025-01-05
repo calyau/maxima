@@ -730,15 +730,23 @@
 	(incf total-gctime gctime)
 	(push (timer-mlist (car l) calls runtime gctime) v)))))
 
+(defun timer-reset-1 (fun)
+  (let ((fun-opr (getopr fun)))
+    ($put fun-opr 0 '$runtime)
+    ($put fun-opr 0 '$gctime)
+    ($put fun-opr 0 '$calls)))
+
 (defun macsyma-timer (fun)
   (prog1
       (macsyma-trace-sub fun 'timer-handler $timer)
-      (let ((fun-opr (getopr fun)))
-        ($put fun-opr 0 '$runtime)
-        ($put fun-opr 0 '$gctime)
-        ($put fun-opr 0 '$calls))))
+      (timer-reset-1 fun)))
 
 (defun macsyma-untimer (fun) (macsyma-untrace-sub fun 'timer-handler $timer))
+
+(defun $timer_reset (&rest maybe-funs)
+  (let ((funs (or maybe-funs (cdr $timer))))
+    (mapcar #'timer-reset-1 funs)
+    (cons '(mlist) funs)))
 
 (defvar runtime-devalue 0)
 (defvar gctime-devalue 0)
