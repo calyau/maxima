@@ -320,6 +320,7 @@
 	  (t '$unknown))))
 
 (defmspec $maybe (form)
+  (oneargcheck form)
   (let* ((pat (cadr form))
 	 (x (let (($prederror nil)) (mevalp1 pat)))
 	 (ans (car x)))
