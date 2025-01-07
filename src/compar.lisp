@@ -311,9 +311,7 @@
 	`((,(caar x) simp) ,a))))
 
 (defmspec $is (form)
-  (unless (= 1 (length (rest form)))
-    (merror (intl:gettext "is() expects a single argument. Found ~A")
-            (length (rest form))))
+  (oneargcheck form)
   (destructuring-bind (answer patevalled)
       (mevalp1 (cadr form))
     (cond ((member answer '(t nil) :test #'eq) answer)
