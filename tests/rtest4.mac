@@ -254,6 +254,18 @@ block ([var1, var5, var6, diff_expr3],
  D*r^(D - 1)*sqrt(Some*D^5)*z[D],
  -r^(2*D - 1)*Some*D^5*z[D]];
 
+/* additional tests for #2905 */
+
+(kill (all),
+ h:s*u^5,
+ -((r^u*sqrt(h))/u)    *(r^(u-1)*u*sqrt(h)*v),
+ h);
+s*u^5;
+
+(2*sqrt(h)*r*sqrt(h)*w,
+ h);
+s*u^5;
+
 /* SF #4308: "gfactor throws Lisp error" */
 
 gfactor (((%i*t-1)*z*(z^2-3*t^2-3))/(sqrt(2)*sqrt(3)*(t^4+4*%i*t^3-6*t^2-4*%i*t+1)));

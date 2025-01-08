@@ -1645,12 +1645,12 @@
 			      (or (not (eq (caar w) 'mlist)) $listarith)
 			      (not (eq *inv* '$detout)))
 			 (stimex matrixflag w))
-			(t (setq res (tms (copy-tree w) 1 (copy-tree res))) matrixflag)))
+			(t (setq res (tms w 1 res)) matrixflag)))
 	    (go start))
 	   ((and (eq (caar w) '%sum) $sumexpand)
 	    (setq sumflag (sumtimes sumflag w))
 	    (go start)))
-     (setq res (tms (copy-tree w) 1 (copy-tree res)))
+     (setq res (tms w 1 res))
      (go start)
   end
      (cond ((mtimesp res) (setq res (testt res))))
@@ -2581,7 +2581,7 @@
                                  ;; Multiply the factors of the base with
                                  ;; the list of all remaining products.
                                  (setq *rulesw* t)
-                                 (return (muln (nconc y (cdar x)) t)))
+                                 (return (muln (concatenate 'list y (cdar x)) t)))
                                 (t (return (rplaca (cdr fm) (car x))))))
                          (t
                           (go spcheck))))
