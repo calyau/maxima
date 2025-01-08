@@ -853,6 +853,17 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 	(kind x '$constant)
 	(setf (get x 'sysconst) t))))
 
+;; Optimizes a symbol's property list by moving properties that are frequently
+;; accessed by the simplifier to the front of the list (unless it's empty),
+;; adding an explicit nil entry for absent properties.
+(defun optimize-symbol-plist (s)
+  (when (symbol-plist s)
+    (dolist (key '(msimpind operators distribute_over opers))
+      (let ((val (get s key)))
+        (when val
+          (remprop s key))
+        (putprop s val key)))))
+
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.
 
@@ -861,12 +872,14 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;;; into *builtin-symbol-props* would cause a hang.  Therefore
 ;;; the properties are copied into *builtin-symbol-props* before
 ;;; initializing the assume database.
+;;; At the same time, optimize the symbols' property lists for faster lookup.
 (let ((maxima-package (find-package :maxima)))
   (do-symbols (s maxima-package)
     (when (and (eql (symbol-package s) maxima-package)
 	       (not (eq s '||))
 	       (member (char (symbol-name s) 0) '(#\$ #\%) :test #'char=))
       (push s *builtin-symbols*)
+      (optimize-symbol-plist s)
       (setf (gethash s *builtin-symbol-props*)
 	    (copy-tree (symbol-plist s))))))
 
@@ -874,6 +887,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;; e.g. MPLUS, MTIMES, etc.
 ;; Here we find them via the MHEADER property, which is used by the parser.
 ;; I don't know any better way to find these properties.
+;; At the same time, optimize the symbols' property lists for faster lookup.
 
 (let ((maxima-package (find-package :maxima)))
   (do-symbols (s maxima-package)
@@ -882,6 +896,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
         (let ((s1 (first h)))
           (unless (gethash s1 *builtin-symbol-props*)
             (push s1 *builtin-symbols*)
+            (optimize-symbol-plist s1)
             (setf (gethash s1 *builtin-symbol-props*)
                   (copy-tree (symbol-plist s1)))))))))
 
