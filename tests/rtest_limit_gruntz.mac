@@ -1,5 +1,5 @@
 /*
-These tests are translated to Maxima from the SymPy tests. The orginal source is
+These tests are translated to Maxima from the SymPy tests. The original source is
 https://github.com/sympy/sympy/blob/master/sympy/series/tests/test_gruntz.py
 
 Translation errors are, of course, possible, and all such errors are mine.
