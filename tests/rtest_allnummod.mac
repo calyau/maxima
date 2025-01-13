@@ -1766,6 +1766,16 @@ sublist (makelist (i, i, 1, 1000), lambda ([i], mod (bfloat(i), bfloat(i)) # 0b0
 'min(1,1);
 1$
 
+/* #4442 rationalize applied to subscribted */
+rationalize(2.3 + li[2](x));
+li[2](x)+2589569785738035/1125899906842624$
+
+rationalize(0.1b0*li[2](x));
+(57646075230342349*li[2](x))/576460752303423488$
+
+rationalize(li[1.5](x));
+li[3/2](x)$
+
 values;
 []$
 
