@@ -71,14 +71,18 @@
 
 (defmvar $ratvarswitch t) ; If T, start an evaluation with a fresh list VARLIST.
 
-(defun meval* (expr)
+(defmacro with-top-level-environment (&rest body)
   ;; Make sure that clearsign is called after the evaluation.
-  (unwind-protect
+  `(unwind-protect
     (let (*refchkl* *checkfactors*)
       (if $ratvarswitch (setq varlist (cdr $ratvars)))
-      (meval expr))
+      ,@ body)
     ;; Clear the facts from asksign and friends.
     (clearsign)))
+
+(defun meval* (expr)
+  (with-top-level-environment
+    (meval expr)))
 
 (defun makelabel10 (x)
   (let (*print-radix*
