@@ -620,7 +620,9 @@
 ;; simplification.  Call this in the default case for the COND.
 
 (defmacro def-simplifier (base-name-and-options lambda-list &body body)
-  (destructuring-bind (base-name &key (simpcheck :default))
+  (destructuring-bind (base-name &key
+                                   (simpcheck :default)
+                                   (subarg-list nil))
       (if (symbolp base-name-and-options)
 	  (list base-name-and-options)
 	  base-name-and-options)
@@ -639,48 +641,78 @@
 			 (loop for arg in lambda-list
 			       and count from 1
 			       collect (list arg `(simpcheck (nth ,count ,form-arg) ,z-arg)))))))
-      `(progn
-	 ;; Define the noun function.
-	 (defmfun ,verb-name (,@lambda-list)
-	   (ftake ',noun-name ,@lambda-list))
+      (cond
+        (subarg-list
+         ;; Handle the case of subscripted functions like li[s](x) and psi[s](x).
+         `(progn
+            ;; These kinds of simplifiers need the specsimp property!
+            (defprop ,verb-name ,simp-name specsimp)
 
-	 ;; Set up properties
-	 (defprop ,noun-name ,simp-name operators)
+            (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
+	      (declare (ignore ,unused-arg))
+              (multiple-value-bind (,@subarg-list)
+                  (values-list (mapcar #'(lambda (arg)
+                                           (simpcheck arg ,z-arg))
+                                       (subfunsubs ,form-arg)))
+                (multiple-value-bind (,@lambda-list)
+                    (values-list (mapcar #'(lambda (arg)
+                                             (simpcheck arg ,z-arg))
+                                         (subfunargs ,form-arg)))
+                  (flet ((give-up (&key
+                                     (fun-subs (list ,@subarg-list))
+                                     (fun-args (list ,@lambda-list)))
+		           ;; Should this also return from the function?
+		           ;; That would fit in better with giving up.
+		           (eqtest (subfunmakes ',verb-name
+                                                fun-subs
+                                                fun-args)
+                                   ,form-arg)))
+                    ,@body))))))
+        (t
+         ;; 
+         `(progn
+	    ;; Define the noun function.
+	    (defmfun ,verb-name (,@lambda-list)
+	      (ftake ',noun-name ,@lambda-list))
 
-         ;; The noun property is needed so that $verbify returns the
-         ;; verb form.  Without this, things like ($verbify '%beta)
-         ;; doesn't return $beta because beta is a function and a
-         ;; variable (used by dgemm).
-         (defprop ,noun-name ,verb-name noun)
+	    ;; Set up properties
+	    (defprop ,noun-name ,simp-name operators)
 
-	 ;; The verb and alias properties are needed to make things like
-	 ;; quad_qags(jacobi_sn(x,.5)...) work.
-	 (defprop ,verb-name ,noun-name verb)
-	 (defprop ,verb-name ,noun-name alias)
-	 ;; The reversealias property is needed by grind to print out
-	 ;; the right thing.  Without it, grind(jacobi_sn(x,m)) prints
-	 ;; '?%jacobi_sn(x,m)".  Also needed for labels in plots which
-	 ;; would show up as %jacobi_sn instead of jacobi_sn.
-	 (defprop ,noun-name ,verb-name reversealias)
+            ;; The noun property is needed so that $verbify returns the
+            ;; verb form.  Without this, things like ($verbify '%beta)
+            ;; doesn't return $beta because beta is a function and a
+            ;; variable (used by dgemm).
+            (defprop ,noun-name ,verb-name noun)
 
-	 ;; Define the simplifier
-	 (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
-	   (declare (ignore ,unused-arg)
-		    (ignorable ,z-arg))
-	   (arg-count-check ,(length lambda-list)
-			    ,form-arg)
-	   (let ,arg-forms
-	     ;; Allow args to give-up if the default args won't work.
-	     ;; Useful for the (rare?) case like genfact where we want
-	     ;; to give up but want different values for args.
-	     (flet ((give-up (&optional ,@(mapcar #'(lambda (a)
-						      (list a a))
-						  lambda-list))
-		      ;; Should this also return from the function?
-		      ;; That would fit in better with giving up.
-		      (eqtest (list '(,noun-name) ,@lambda-list) ,form-arg)))
-	       ,@body)))))))
+	    ;; The verb and alias properties are needed to make things like
+	    ;; quad_qags(jacobi_sn(x,.5)...) work.
+	    (defprop ,verb-name ,noun-name verb)
+	    (defprop ,verb-name ,noun-name alias)
+	    ;; The reversealias property is needed by grind to print out
+	    ;; the right thing.  Without it, grind(jacobi_sn(x,m)) prints
+	    ;; '?%jacobi_sn(x,m)".  Also needed for labels in plots which
+	    ;; would show up as %jacobi_sn instead of jacobi_sn.
+	    (defprop ,noun-name ,verb-name reversealias)
 
+	    ;; Define the simplifier
+	    (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
+	      (declare (ignore ,unused-arg)
+		       (ignorable ,z-arg))
+	      (arg-count-check ,(length lambda-list)
+			       ,form-arg)
+	      (let ,arg-forms
+	        ;; Allow args to give-up if the default args won't work.
+	        ;; Useful for the (rare?) case like genfact where we want
+	        ;; to give up but want different values for args.
+	        (flet ((give-up (&optional ,@(mapcar #'(lambda (a)
+						         (list a a))
+						     lambda-list))
+		         ;; Should this also return from the function?
+		         ;; That would fit in better with giving up.
+		         (eqtest (list '(,noun-name) ,@lambda-list) ,form-arg)))
+	          ,@body)))))))))
+
+#+nil
 (defmacro def-simp-mqapply (base-name subarg-list lambda-list &body body)
   (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
 	 (verb-name (intern (concatenate 'string "$" (string base-name))))

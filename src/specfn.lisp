@@ -87,7 +87,7 @@
         (eqtest (subfunmakes '$li (ncons s) (ncons a))
                 expr))))
 
-(def-simp-mqapply li (s) (a)
+(def-simplifier (li :subarg-list (s)) (a)
   (let (($zerobern t))
     (or (cond ((zerop1 a) a)
 	      ((and (mnump s) (ratgreaterp s 1) (eql a 1))
@@ -603,7 +603,7 @@
 			  (meval dif)))
 		   (m*t (factorial s) (m^t (m-t a) (1- (- s))))))))))))
 
-(def-simp-mqapply psi (s) (a)
+(def-simplifier (psi :subarg-list (s)) (a)
   (let ((z (integer-representation-p a)))
     (and z
          (< z 1)
