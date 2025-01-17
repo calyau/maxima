@@ -702,14 +702,14 @@
                (values-list (mapcar #'(lambda (arg)
                                         (simpcheck arg ,z-arg))
                                     (subfunargs ,form-arg)))
-             (flet ((give-up (&optional ,@(mapcar #'(lambda (a)
-						      (list a a))
-						  lambda-list))
+             (flet ((give-up (&key
+                                (fun-subs (list ,@subarg-list))
+                                (fun-args (list ,@lambda-list)))
 		      ;; Should this also return from the function?
 		      ;; That would fit in better with giving up.
 		      (eqtest (subfunmakes ',verb-name
-                                           (list ,@subarg-list)
-                                           (list ,@lambda-list))
+                                           fun-subs
+                                           fun-args)
                               ,form-arg)))
                ,@body)))))))
          
