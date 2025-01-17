@@ -38,7 +38,7 @@
 (declare-top (special tlist))
 
 ;; Simplifier for li[s](a).
-(def-simplifier (li :subarg-list (s)) (a)
+(def-simplifier (li :subfun-arglist (s)) (a)
   (let (($zerobern t))
     (or (cond ((zerop1 a) a)
 	      ((and (mnump s) (ratgreaterp s 1) (eql a 1))
@@ -328,7 +328,7 @@
 
 
 ;; Simplifier for psi[s](a).
-(def-simplifier (psi :subarg-list (s)) (a)
+(def-simplifier (psi :subfun-arglist (s)) (a)
   (let ((z (integer-representation-p a)))
     (and z
          (< z 1)

@@ -564,50 +564,19 @@
 
 
 ;; Defines a simplifying function for Maxima whose name is BASE-NAME.
-;; The noun and verb properties are set up appropriately, along with
-;; setting the operator property.  The noun form is created from the
-;; BASE-NAME by prepending a "%"; the verb form, by prepending "$".
-;; The verb function is defined appropriately too.
-;;
-;; For example, let's say we want to define a Maxima function named
-;; foo of two args with a corresponding simplifier to simplify special
-;; cases or numerically evaluate it.  Then:
-;;
-;; (def-simplifier foo (x y)
-;;   (cond ((float-numerical-eval-p x y)
-;;          (foo-eval x y))
-;;         (t
-;;          (give-up))))
-;;
-;; This expands to 
-;;         
-;; (progn
-;;   (defprop %foo simp-%foo operators)
-;;   (defprop $foo %foo verb)
-;;   (defprop %foo $foo noun)
-;;   (defprop $foo %foo alias)
-;;   (defprop %foo $foo reversealias)
-;;   (defun simp-%foo (form #:unused-5230 %%simpflag)
-;;     (declare (ignore #:unused-5230))
-;;     (let ((x (simpcheck (nth 1 form) #:z-5229))
-;;           (y (simpcheck (nth 2 form) #:z-5229)))
-;;       (arg-count-check 2 form)
-;;       (macrolet ((give-up ()
-;;                    '(eqtest (list '(%foo) x y) form)))
-;;         (cond
-;;           ((float-numerical-eval-p x y)
-;;            (foo-eval x y))
-;;           (t
-;;            (give-up))))))
-;;
-;; The body can reference FORM and %%SIMPFLAG.
+;; This supports simplifying regular functions and also subscripted
+;; functions.
 ;;
 ;; The base name can also be a lambda-list of the form (name &key
-;; (simpcheck :default)).  The NAME is the BASE-NAME of the
-;; simpiflier.  The keyword arg :SIMPCHECK supports two values:
-;; :DEFAULT and :CUSTOM, with :DEFAULT as the default.  :CUSTOM means
-;; the generated code does not call SIMPCHECK on the args, as shown
-;; above.  It is up to the body to do the necessary work.
+;; (simpcheck :default) (subfun-arglist arg-list)).  The NAME is the
+;; BASE-NAME of the simpiflier.  The keyword arg :SIMPCHECK supports
+;; two values: :DEFAULT and :CUSTOM, with :DEFAULT as the default.
+;; :CUSTOM means the generated code does not call SIMPCHECK on the
+;; args, as shown above.  It is up to the body to do the necessary
+;; work.  The keyword arg :SUBFUN-ARG-LIST indicates that this is a
+;; simplifier for subscripted functions like li[s](x).  The argument
+;; must be a list of the names of the subscripts of the function.  For
+;; li[s](x), we only have one arg, S, so use ":SUBFUN-ARG-LIST (S)."
 ;;
 ;; Note also that the args for the simplifier only supports a fixed
 ;; set of required arguments.  Not optional or rest arguments are
@@ -618,11 +587,89 @@
 ;; Note carefully that the expansion defines a macro GIVE-UP to
 ;; handle the default case of the simplifier when we can't do any
 ;; simplification.  Call this in the default case for the COND.
-
+;;
+;; The body can reference FORM and %%SIMPFLAG.
+;;
+;; Regular functions:
+;;   The noun and verb properties are set up appropriately, along with
+;;   setting the operator property.  The noun form is created from the
+;;   BASE-NAME by prepending a "%"; the verb form, by prepending "$".
+;;   The verb function is defined appropriately too.
+;;  
+;;   For example, let's say we want to define a Maxima function named
+;;   foo of two args with a corresponding simplifier to simplify special
+;;   cases or numerically evaluate it.  Then:
+;;  
+;;   (def-simplifier foo (x y)
+;;     (cond ((float-numerical-eval-p x y)
+;;            (foo-eval x y))
+;;           (t
+;;            (give-up (add 1 x) (add 1 y)))))
+;;  
+;;   This expands to 
+;;           
+;;   (progn
+;;     (defmfun $foo (x y) (ftake '%foo x y))
+;;     (defprop %foo simp-%foo operators)
+;;     (defprop %foo $foo noun)
+;;     (defprop $foo %foo verb)
+;;     (defprop $foo %foo alias)
+;;     (defprop %foo $foo reversealias)
+;;     (defun simp-%foo (form unused-7315580 %%simpflag)
+;;       (declare (ignore unused-7315580) (ignorable %%simpflag))
+;;       (arg-count-check 2 form)
+;;       (let ((x (simpcheck (nth 1 form) %%simpflag))
+;;             (y (simpcheck (nth 2 form) %%simpflag)))
+;;         (flet ((give-up (&optional (x x) (y y))
+;;                  (eqtest (list '(%foo) x y) form)))
+;;           (cond
+;;             ((float-numerical-eval-p x y)
+;;              (foo-eval x y))
+;;             (t
+;;              (give-up (add 1 x) (add 1 y))))))))
+;;
+;;   The local function GIVE-UP is used when the simplifier doesn't
+;;   have any more simplifications and wants to give up trying.
+;;   GIVE-UP takes optional args if the result is the same function
+;;   but with different parameter values.
+;;  
+;; Subscripted functions:
+;;   Subscripted functions are functions like li[s](x).  To indicate
+;;   that, use the :subfun-arglist keyword arg.  Thus, to define a
+;;   simplifier for li[s](x), do:
+;;
+;;   (def-simplifier (li :subfun-arglist (s)) (x)
+;;     (or (lisimp s x)
+;;         (give-up :fun-subs (list (add 1 s)) :fun-args (list (sub a 1)))))
+;;
+;;   This expands to
+;;
+;;   (progn
+;;     (defprop $li simp-%li specsimp)
+;;     (defun simp-%li (form unused-7315579 %%simpflag)
+;;       (declare (ignore unused-7315579))
+;;       (multiple-value-bind (s)
+;;           (values-list
+;;            (mapcar #'(lambda (arg) (simpcheck arg %%simpflag))
+;;                    (subfunsubs form)))
+;;         (multiple-value-bind (x)
+;;             (values-list
+;;              (mapcar #'(lambda (arg) (simpcheck arg %%simpflag))
+;;                      (subfunargs form)))
+;;           (flet ((give-up (&key (fun-subs (list s)) (fun-args (list x)))
+;;                    (eqtest (subfunmakes '$li fun-subs fun-args) form)))
+;;             (or (lisimp s a)
+;;                 (give-up :fun-subs (list (add 1 s)) :fun-args
+;;                  (list (sub a 1)))))))))
+;;
+;;   A GIVE-UP function is also defined, but it takes two keyword
+;;   args: FUN-SUBS and FUN-ARGS.  Each of these takes lists for new
+;;   values (if desired).
+;;
 (defmacro def-simplifier (base-name-and-options lambda-list &body body)
   (destructuring-bind (base-name &key
                                    (simpcheck :default)
-                                   (subarg-list nil))
+                                   (subfun-arglist nil))
       (if (symbolp base-name-and-options)
 	  (list base-name-and-options)
 	  base-name-and-options)
@@ -642,7 +689,7 @@
 			       and count from 1
 			       collect (list arg `(simpcheck (nth ,count ,form-arg) ,z-arg)))))))
       (cond
-        (subarg-list
+        (subfun-arglist
          ;; Handle the case of subscripted functions like li[s](x) and psi[s](x).
          `(progn
             ;; These kinds of simplifiers need the specsimp property!
@@ -650,7 +697,7 @@
 
             (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
 	      (declare (ignore ,unused-arg))
-              (multiple-value-bind (,@subarg-list)
+              (multiple-value-bind (,@subfun-arglist)
                   (values-list (mapcar #'(lambda (arg)
                                            (simpcheck arg ,z-arg))
                                        (subfunsubs ,form-arg)))
@@ -659,7 +706,7 @@
                                              (simpcheck arg ,z-arg))
                                          (subfunargs ,form-arg)))
                   (flet ((give-up (&key
-                                     (fun-subs (list ,@subarg-list))
+                                     (fun-subs (list ,@subfun-arglist))
                                      (fun-args (list ,@lambda-list)))
 		           ;; Should this also return from the function?
 		           ;; That would fit in better with giving up.
