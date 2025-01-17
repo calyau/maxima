@@ -37,6 +37,7 @@
 
 (declare-top (special tlist))
 
+#+nil
 (defun lisimp (expr vestigial z)
   (declare (ignore vestigial))
   (let ((s (simpcheck (car (subfunsubs expr)) z))
@@ -85,6 +86,49 @@
 		      (to (bigfloat::li-s-simp s (bigfloat:to a)))))))
         (eqtest (subfunmakes '$li (ncons s) (ncons a))
                 expr))))
+
+(def-simp-mqapply li (s) (a)
+  (let (($zerobern t))
+    (or (cond ((zerop1 a) a)
+	      ((and (mnump s) (ratgreaterp s 1) (eql a 1))
+	       ;; li[s](a) = zeta(s) if s > 1 and if a = 1.  We
+	       ;; simplify this only if s is a rational number and a
+	       ;; is the integer 1.
+	       (ftake '%zeta s))
+              ((not (integerp s)) ())
+              ((= s 1)
+               (if (onep1 a)
+                   (simp-domain-error
+                     (intl:gettext "li: li[~:M](~:M) is undefined.") s a)
+                   (neg (take '(%log) (sub 1 a)))))
+              ((= s 0) (div a (sub 1 a)))
+              ((< s 0) (lisimp-negative-integer s a))
+              ((and (integerp a) (> s 1)
+                    (cond ((= a 1) (take '(%zeta) s))
+                          ((= a -1)
+			   ;; li[s](-1) = (2^(1-s)-1)*zeta(s)
+                           (mul (add -1 (inv (expt 2 (- s 1))))
+                                (take '(%zeta) s))))))
+              ((= s 2) (li2simp a))
+              ((= s 3) (li3simp a))
+	      ((or (complex-float-numerical-eval-p a)
+		   (complex-bigfloat-numerical-eval-p a))
+	       (cond ((bigfloat:= 1 (bigfloat:to a))
+		      ;; li[s](1) -> zeta(s)
+		      (let ((result ($zeta s)))
+			(if (floatp a)
+			    ($float result)
+			    ($bfloat result))))
+		     ((bigfloat:= -1 (bigfloat:to a))
+		      ;; li[s](-1) = (2^(1-s)-1)*zeta(s)
+		      (let ((result (mul (add -1 (inv (expt 2 (- s 1))))
+					 (take '(%zeta) s))))
+			(if (floatp a)
+			    ($float result)
+			    ($bfloat result))))
+		     ((integerp s)
+		      (to (bigfloat::li-s-simp s (bigfloat:to a)))))))
+        (give-up))))
 
 ;; Expand the Polylogarithm li[s](z) for a negative integer parameter s.
 (defun lisimp-negative-integer (s z)

@@ -689,6 +689,9 @@
          (z-arg (intern "%%SIMPFLAG"))
 	 (unused-arg (gensym "UNUSED-")))
     `(progn
+       ;; These kinds of simplifier need the specsimp property!
+       (defprop ,verb-name ,simp-name specsimp)
+
        (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
 	 (declare (ignore ,unused-arg))
          (multiple-value-bind (,@subarg-list)
