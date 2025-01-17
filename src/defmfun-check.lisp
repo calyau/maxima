@@ -758,37 +758,3 @@
 		         ;; That would fit in better with giving up.
 		         (eqtest (list '(,noun-name) ,@lambda-list) ,form-arg)))
 	          ,@body)))))))))
-
-#+nil
-(defmacro def-simp-mqapply (base-name subarg-list lambda-list &body body)
-  (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
-	 (verb-name (intern (concatenate 'string "$" (string base-name))))
-         (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
-         (form-arg (intern "FORM"))
-         (z-arg (intern "%%SIMPFLAG"))
-	 (unused-arg (gensym "UNUSED-")))
-    `(progn
-       ;; These kinds of simplifier need the specsimp property!
-       (defprop ,verb-name ,simp-name specsimp)
-
-       (defun ,simp-name (,form-arg ,unused-arg ,z-arg)
-	 (declare (ignore ,unused-arg))
-         (multiple-value-bind (,@subarg-list)
-             (values-list (mapcar #'(lambda (arg)
-                                      (simpcheck arg ,z-arg))
-                                  (subfunsubs ,form-arg)))
-           (multiple-value-bind (,@lambda-list)
-               (values-list (mapcar #'(lambda (arg)
-                                        (simpcheck arg ,z-arg))
-                                    (subfunargs ,form-arg)))
-             (flet ((give-up (&key
-                                (fun-subs (list ,@subarg-list))
-                                (fun-args (list ,@lambda-list)))
-		      ;; Should this also return from the function?
-		      ;; That would fit in better with giving up.
-		      (eqtest (subfunmakes ',verb-name
-                                           fun-subs
-                                           fun-args)
-                              ,form-arg)))
-               ,@body)))))))
-         
