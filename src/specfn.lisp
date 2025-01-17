@@ -362,8 +362,6 @@
 	(t (merror (intl:gettext "Pole encountered in: ~M") exp))))
 
 
-(defprop $psi psisimp specsimp)
-
 ;; Integral of psi function psi[n](x)
 (putprop '$psi
   `((n x)
@@ -377,6 +375,10 @@
       (t nil))))
      'integral)
 
+#+nil
+(defprop $psi psisimp specsimp)
+
+#+nil
 (defun psisimp (expr a z)
   (let ((s (simpcheck (car (subfunsubs expr)) z)))
     (subargcheck expr 1 1 '$psi)
@@ -388,6 +390,7 @@
 
 ;; This gets pretty hairy now.
 
+#+nil
 (defun psisimp1 (s a)
   (let ((*k*))
     (declare (special *k*))
@@ -494,7 +497,231 @@
 		   (m*t (factorial s) (m^t (m-t a) (1- (- s)))))))))
      (subfunmakes '$psi (ncons s) (ncons a)))))
 
+#+nil
+(defun psisimp1 (s a)
+  (let ((*k*))
+    (declare (special *k*))
+    (or
+     (and (integerp s) (>= s 0) (mnumericalp a)
+	  (let (($float2bf t)) ($float (mfuncall '$bfpsi s a 18))))
+     (and (integerp s) (>= s 0) ($bfloatp a)
+	  (mfuncall '$bfpsi s a $fpprec))
+     (and (not $numer) (not $float) (integerp s) (> s -1)
+	  (cond
+	    ((integerp a)
+	     (and (not (> a $maxpsiposint)) ; integer values
+		  (m*t (expt -1 s) (factorial s)
+		       (m- (msum (inv (m^t '*k* (1+ s))) 1 (1- a))
+			   (cond ((zerop s) '$%gamma)
+				 (($zeta (1+ s))))))))
+	    ((or (not (ratnump a)) (ratgreaterp a $maxpsiposint)) ())
+	    ((ratgreaterp a 0)
+	     (cond
+	       ((ratgreaterp a 1)
+		(let* ((int ($entier a)) ; reduction to fractional values
+		       (frac (m-t a int)))
+		  (m+t
+		   (psisimp1 s frac)
+		   (if (> int $maxpsiposint)
+		       (subfunmakes '$psi (ncons s) (ncons int))
+		       (m*t (expt -1 s) (factorial s)
+			    (msum (m^t (m+t (m-t a int) '*k*)
+				       (1- (- s)))
+				  0 (1- int)))))))
+	       ((= s 0)
+		(let ((p (cadr a)) (q (caddr a)))
+		  (cond
+		    ((or (> p $maxpsifracnum)
+			 (> q $maxpsifracdenom) (bignump p) (bignump q)) ())
+		    ((and (= p 1)
+			  (cond ((= q 2)
+				 (m+ (m* -2 '((%log) 2)) (m- '$%gamma)))
+				((= q 3)
+				 (m+ (m* '((rat simp) -1 2)
+					 (m^t 3 '((rat simp) -1 2)) '$%pi)
+				     (m* '((rat simp) -3 2) '((%log) 3))
+				     (m- '$%gamma)))
+				((= q 4)
+				 (m+ (m* '((rat simp) -1 2) '$%pi)
+				     (m* -3 '((%log) 2)) (m- '$%gamma)))
+				((= q 6)
+				 (m- (m+ (m* '((rat simp) 3 2) '((%log) 3))
+					 (m* 2 '((%log) 2))
+					 (m* '((rat simp) 1 2) '$%pi
+					     (m^t 3 '((rat simp) 1 2)))
+					 '$%gamma))))))
+		    ((and (= p 2) (= q 3))
+		     (m+ (m* '((rat simp) 1 2)
+			     (m^t 3 '((rat simp) -1 2)) '$%pi)
+			 (m* '((rat simp) -3 2) '((%log) 3))
+			 (m- '$%gamma)))
+		    ((and (= p 3) (= q 4))
+		     (m+ (m* '((rat simp) 1 2) '$%pi)
+			 (m* -3 '((%log) 2)) (m- '$%gamma)))
+		    ((and (= p 5) (= q 6))
+		     (m- (m* '((rat simp) 1 2) '$%pi
+			     (m^t 3 '((rat simp) 1 2)))
+			 (m+ (m* '((rat simp) 3 2) '((%log) 3))
+			     (m* 2 '((%log) 2))
+			     '$%gamma)))
+		    ;; Gauss's Formula
+		    ((let ((f (m* `((%cos) ,(m* 2 a '$%pi '*k*))
+				  `((%log) ,(m-t 2 (m* 2 `((%cos)
+							   ,(m//t (m* 2 '$%pi '*k*)
+								  q))))))))
+		       (m+t (msum f 1 (1- (truncate q 2)))
+			    (let ((*k* (truncate q 2)))
+			      (declare (special *k*))
+			      (m*t (meval f)
+				   (cond ((oddp q) 1)
+					 ('((rat simp) 1 2)))))
+			    (m-t (m+ (m* '$%pi '((rat simp) 1 2)
+					 `((%cot) ((mtimes simp) ,a $%pi)))
+				     `((%log) ,q)
+				     '$%gamma))))))))
+	       ((alike1 a '((rat) 1 2))
+		(m*t (expt -1 (1+ s)) (factorial s)
+		     (1- (expt 2 (1+ s))) (simplify ($zeta (1+ s)))))
+	       ((and (ratgreaterp a '((rat) 1 2))
+		     (ratgreaterp 1 a))
+		(m*t
+		 (expt -1 s)
+		 (m+t (psisimp1 s (m- 1 a))
+		      (let ((dif (m* '$%pi
+				     ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
+			    ($z (m-t a)))
+			(declare (special $z))
+			(meval dif)))))))
+	    ((ratgreaterp a $maxpsinegint)  ;;; Reflection Formula
+	     (m*t
+	      (expt -1 s)
+	      (m+t (m+t (psisimp1 s (m- a))
+			(let ((dif (m* '$%pi
+				       ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
+			      ($z (m-t a)))
+			  (declare (special $z))
+			  (meval dif)))
+		   (m*t (factorial s) (m^t (m-t a) (1- (- s))))))))))))
 
+(def-simp-mqapply psi (s) (a)
+  (let ((z (integer-representation-p a)))
+    (and z
+         (< z 1)
+         (pole-err form)))
+  (labels
+      ((psisimp1 (s a)
+         (let ((*k*))
+           (declare (special *k*))
+           (or
+            (and (integerp s) (>= s 0) (mnumericalp a)
+	         (let (($float2bf t)) ($float (mfuncall '$bfpsi s a 18))))
+            (and (integerp s) (>= s 0) ($bfloatp a)
+	         (mfuncall '$bfpsi s a $fpprec))
+            (and (not $numer) (not $float) (integerp s) (> s -1)
+	         (cond
+	           ((integerp a)
+	            (and (not (> a $maxpsiposint)) ; integer values
+		         (m*t (expt -1 s) (factorial s)
+		              (m- (msum (inv (m^t '*k* (1+ s))) 1 (1- a))
+			          (cond ((zerop s) '$%gamma)
+				        (($zeta (1+ s))))))))
+	           ((or (not (ratnump a)) (ratgreaterp a $maxpsiposint)) ())
+	           ((ratgreaterp a 0)
+	            (cond
+	              ((ratgreaterp a 1)
+		       (let* ((int ($entier a)) ; reduction to fractional values
+		              (frac (m-t a int)))
+		         (m+t
+		          (psisimp1 s frac)
+		          (if (> int $maxpsiposint)
+		              (progn
+                                #+nil
+                                (format t "int, frac ~A ~A~%" int frac)
+                                (give-up :fun-args (list frac)))
+		              (m*t (expt -1 s) (factorial s)
+			           (msum (m^t (m+t (m-t a int) '*k*)
+				              (1- (- s)))
+				         0 (1- int)))))))
+	              ((= s 0)
+		       (let ((p (cadr a)) (q (caddr a)))
+		         (cond
+		           ((or (> p $maxpsifracnum)
+			        (> q $maxpsifracdenom) (bignump p) (bignump q)) ())
+		           ((and (= p 1)
+			         (cond ((= q 2)
+				        (m+ (m* -2 '((%log) 2)) (m- '$%gamma)))
+				       ((= q 3)
+				        (m+ (m* '((rat simp) -1 2)
+					        (m^t 3 '((rat simp) -1 2)) '$%pi)
+				            (m* '((rat simp) -3 2) '((%log) 3))
+				            (m- '$%gamma)))
+				       ((= q 4)
+				        (m+ (m* '((rat simp) -1 2) '$%pi)
+				            (m* -3 '((%log) 2)) (m- '$%gamma)))
+				       ((= q 6)
+				        (m- (m+ (m* '((rat simp) 3 2) '((%log) 3))
+					        (m* 2 '((%log) 2))
+					        (m* '((rat simp) 1 2) '$%pi
+					            (m^t 3 '((rat simp) 1 2)))
+					        '$%gamma))))))
+		           ((and (= p 2) (= q 3))
+		            (m+ (m* '((rat simp) 1 2)
+			            (m^t 3 '((rat simp) -1 2)) '$%pi)
+			        (m* '((rat simp) -3 2) '((%log) 3))
+			        (m- '$%gamma)))
+		           ((and (= p 3) (= q 4))
+		            (m+ (m* '((rat simp) 1 2) '$%pi)
+			        (m* -3 '((%log) 2)) (m- '$%gamma)))
+		           ((and (= p 5) (= q 6))
+		            (m- (m* '((rat simp) 1 2) '$%pi
+			            (m^t 3 '((rat simp) 1 2)))
+			        (m+ (m* '((rat simp) 3 2) '((%log) 3))
+			            (m* 2 '((%log) 2))
+			            '$%gamma)))
+		           ;; Gauss's Formula
+		           ((let ((f (m* `((%cos) ,(m* 2 a '$%pi '*k*))
+				         `((%log) ,(m-t 2 (m* 2 `((%cos)
+							          ,(m//t (m* 2 '$%pi '*k*)
+								       q))))))))
+		              (m+t (msum f 1 (1- (truncate q 2)))
+			           (let ((*k* (truncate q 2)))
+			             (declare (special *k*))
+			             (m*t (meval f)
+				          (cond ((oddp q) 1)
+					        ('((rat simp) 1 2)))))
+			           (m-t (m+ (m* '$%pi '((rat simp) 1 2)
+					        `((%cot) ((mtimes simp) ,a $%pi)))
+				            `((%log) ,q)
+				            '$%gamma))))))))
+	              ((alike1 a '((rat) 1 2))
+		       (m*t (expt -1 (1+ s)) (factorial s)
+		            (1- (expt 2 (1+ s))) (simplify ($zeta (1+ s)))))
+	              ((and (ratgreaterp a '((rat) 1 2))
+		            (ratgreaterp 1 a))
+		       (m*t
+		        (expt -1 s)
+		        (m+t (psisimp1 s (m- 1 a))
+		             (let ((dif (m* '$%pi
+				            ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
+			           ($z (m-t a)))
+			       (declare (special $z))
+			       (meval dif)))))))
+	           ((ratgreaterp a $maxpsinegint) ;;; Reflection Formula
+	            (m*t
+	             (expt -1 s)
+	             (m+t (m+t (psisimp1 s (m- a))
+			       (let ((dif (m* '$%pi
+				              ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
+			             ($z (m-t a)))
+			         (declare (special $z))
+			         (meval dif)))
+		          (m*t (factorial s) (m^t (m-t a) (1- (- s)))))))))
+            (progn
+              #+nil
+              (format t "final give-up s a = ~A ~A~%" s a)
+              (give-up :fun-args (list a)))))))
+    (psisimp1 s a)))
+  
 ;; subtitle polygamma tayloring routines
 
 ;; These routines are specially coded to be as fast as possible given the
