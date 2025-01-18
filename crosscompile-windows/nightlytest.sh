@@ -35,9 +35,10 @@ make dist VERBOSE=1 >logfile-makedist.txt 2>&1
 # limit GCLs memory consumption to 20% of the main memory:
 export GCL_MEM_MULTIPLE=0.2
 
-~/maxima-test/installroot/bin/maxima --batch-string="build_info();" >logfile-buildinfo.txt
 commands=$(
 for lisp in abcl clisp ecl sbcl gcl ccl64 cmucl acl ; do
+      ~/maxima-test/installroot/bin/maxima -l $lisp --batch-string="build_info();" >>logfile-buildinfo.txt
+      echo "-------------------------------------------" >>logfile-buildinfo.txt
       echo "echo Running Maxima testsuite with $lisp ; /usr/bin/time --portability --output=logfile-timing-testsuite-$lisp.txt ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite();' >logfile-testsuite-$lisp.txt 2>&1"
       echo "echo Running Maxima share testsuite with $lisp ; /usr/bin/time --portability --output=logfile-timing-share-testsuite-$lisp.txt ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite(share_tests=only);' >logfile-share-testsuite-$lisp.txt 2>&1"
 done
