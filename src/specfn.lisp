@@ -361,16 +361,14 @@
 		         (m+t
 		          (psisimp1 s frac)
 		          (if (> int $maxpsiposint)
-		              (progn
-                                #+nil
-                                (format t "int, frac ~A ~A~%" int frac)
-                                (give-up :fun-args (list frac)))
+                              (give-up :fun-args (list frac))
 		              (m*t (expt -1 s) (factorial s)
 			           (msum (m^t (m+t (m-t a int) '*k*)
 				              (1- (- s)))
 				         0 (1- int)))))))
 	              ((= s 0)
 		       (let ((p (cadr a)) (q (caddr a)))
+                         ;; a is a rational of the form p/q.
 		         (cond
 		           ((or (> p $maxpsifracnum)
 			        (> q $maxpsifracdenom) (bignump p) (bignump q)) ())
@@ -410,6 +408,8 @@
 				         `((%log) ,(m-t 2 (m* 2 `((%cos)
 							          ,(m//t (m* 2 '$%pi '*k*)
 								       q))))))))
+                              (format t "f = ~A~%" f)
+                              (break)
 		              (m+t (msum f 1 (1- (truncate q 2)))
 			           (let ((*k* (truncate q 2)))
 			             (declare (special *k*))
@@ -443,10 +443,7 @@
 			         (declare (special $z))
 			         (meval dif)))
 		          (m*t (factorial s) (m^t (m-t a) (1- (- s)))))))))
-            (progn
-              #+nil
-              (format t "final give-up s a = ~A ~A~%" s a)
-              (give-up :fun-args (list a)))))))
+            (give-up :fun-args (list a))))))
     (psisimp1 s a)))
   
 ;; subtitle polygamma tayloring routines
