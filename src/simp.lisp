@@ -83,6 +83,7 @@
 	(%product simpprod)
 	($matrix simpmatrix) (%matrix simpmatrix)))
 
+#+nil
 (defprop $li lisimp specsimp)
 (defprop $psi psisimp specsimp)
 
