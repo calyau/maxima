@@ -17,6 +17,7 @@ New items in share:
  * Add raddenest radical denesting function
  * New draw terminals: tikz and tikz_standalone
  * ode2 now solves Modified Bessel differential equation
+ * Documentation for share/contrib/levin
 
 Changes in core:
 ----------------
