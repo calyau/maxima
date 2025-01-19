@@ -298,6 +298,7 @@
 
 ;; gross efficiency hack, exp is a function of *k*, *k* should be mbind'ed
 
+#+nil
 (defun msum (exp lo hi)
   (if (< hi lo)
       0
@@ -306,6 +307,14 @@
 	    ((> *k* hi) sum)
 	  (declare (special *k*))
 	  (setq sum (add2 sum (meval exp)))))))
+
+(defun msum (exp lo hi)
+  (if (< hi lo)
+      0
+      (let ((sum 0))
+	(do ((k lo (1+ k)))
+	    ((> k hi) sum)
+	  (setq sum (add2 sum (funcall exp k)))))))
 
 
 (defun pole-err (exp)
@@ -360,7 +369,9 @@
                     ;;   psi[s](a) = (-1)^s*s!*(sum(1/k^(s+1),k,1,a-1) - zeta(1+s))
 	            (and (not (> a $maxpsiposint)) ; integer values
 		         (m*t (expt -1 s) (factorial s)
-		              (m- (msum (inv (m^t '*k* (1+ s))) 1 (1- a))
+		              (m- (msum #'(lambda (k)
+                                            (inv (m^t k (1+ s))))
+                                        1 (1- a))
 			          (cond ((zerop s) '$%gamma)
 				        (($zeta (1+ s))))))))
 	           ((or (not (ratnump a)) (ratgreaterp a $maxpsiposint)) ())
@@ -379,8 +390,9 @@
 		          (if (> int $maxpsiposint)
                               (give-up :fun-args (list frac))
 		              (m*t (expt -1 s) (factorial s)
-			           (msum (m^t (m+t (m-t a int) '*k*)
-				              (1- (- s)))
+			           (msum #'(lambda (k)
+                                             (m^t (m+t (m-t a int) k)
+				                  (1- (- s))))
 				         0 (1- int)))))))
 	              ((= s 0)
 		       (let ((p (cadr a)) (q (caddr a)))
@@ -444,14 +456,15 @@
                            ;;   log(sqrt(1-cos(2*%pi*k/q))/sqrt(2)) =
                            ;;     1/2*log(1-cos(2*%pi*k/q)) - log(2)/2.
                            ;;
-		           ((let ((f (m* `((%cos) ,(m* 2 a '$%pi '*k*))
-				         `((%log) ,(m-t 2 (m* 2 `((%cos)
-							          ,(m//t (m* 2 '$%pi '*k*)
-								       q))))))))
+		           ((let ((f (lambda (k)
+                                       (m* `((%cos) ,(m* 2 a '$%pi k))
+				           `((%log) ,(m-t 2 (m* 2 `((%cos)
+							            ,(m//t (m* 2 '$%pi k)
+								         q)))))))))
 		              (m+t (msum f 1 (1- (truncate q 2)))
 			           (let ((*k* (truncate q 2)))
 			             (declare (special *k*))
-			             (m*t (meval f)
+			             (m*t (funcall f (truncate q 2))
 				          (cond ((oddp q) 1)
 					        ('((rat simp) 1 2)))))
 			           (m-t (m+ (m* '$%pi '((rat simp) 1 2)
