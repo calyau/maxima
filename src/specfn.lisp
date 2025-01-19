@@ -323,9 +323,9 @@
          (pole-err form)))
   (labels
       ((msum (exp lo hi)
-         ;; Compute the sum of EXP with the index ranging from LO to
-         ;; HI.  EXP must be a lambda that takes a single arg which is
-         ;; the index of the summation.
+         ;; Compute the sum(exp(k), k, lo, hi).  EXP must be a
+         ;; function that takes a single arg which is the index of the
+         ;; summation.  If HI < LO, immediately return 0.
          (if (< hi lo)
              0
              (let ((sum 0))
