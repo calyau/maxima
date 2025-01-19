@@ -410,23 +410,23 @@
                                       ;; psi[0](1/6) = -%gamma -sqrt(3)*%pi/2-2*log(2)-3/2*log(3)
 				      (m- (m+ (m* '((rat simp) 3 2) '((%log) 3))
 					      (m* 2 '((%log) 2))
-					      (m* '((rat simp) 1 2) '$%pi
-					          (m^t 3 '((rat simp) 1 2)))
+					      (m* 1//2 '$%pi
+					          (m^t 3 1//2))
 					      '$%gamma))))))
 		         ((and (= p 2) (= q 3))
                           ;; psi[0](2/3) = (sqrt(3)*%pi-9*log(3))/6-%gamma
-		          (m+ (m* '((rat simp) 1 2)
+		          (m+ (m* 1//2
 			          (m^t 3 '((rat simp) -1 2)) '$%pi)
 			      (m* '((rat simp) -3 2) '((%log) 3))
 			      (m- '$%gamma)))
 		         ((and (= p 3) (= q 4))
                           ;; psi[0](3/4) = %pi/2-log(8)-%gamma
-		          (m+ (m* '((rat simp) 1 2) '$%pi)
+		          (m+ (m* 1//2 '$%pi)
 			      (m* -3 '((%log) 2)) (m- '$%gamma)))
 		         ((and (= p 5) (= q 6))
                           ;; psi[0](5/6) = -%gamma+sqrt(3)*%pi/2-2*log(2)-3/2*log(3)
-		          (m- (m* '((rat simp) 1 2) '$%pi
-			          (m^t 3 '((rat simp) 1 2)))
+		          (m- (m* 1//2 '$%pi
+			          (m^t 3 1//2))
 			      (m+ (m* '((rat simp) 3 2) '((%log) 3))
 			          (m* 2 '((%log) 2))
 			          '$%gamma)))
@@ -451,8 +451,9 @@
 								    q)))))))))
 		            (m+t (msum f 1 (1- (truncate q 2)))
 			         (m*t (funcall f (truncate q 2))
-				      (cond ((oddp q) 1)
-					    ('((rat simp) 1 2))))
+                                      (if (oddp q)
+                                          1
+                                          1//2))
 			         (m-t (m+ (m* '$%pi 1//2
 					      `((%cot) ((mtimes simp) ,a $%pi)))
 				          `((%log) ,q)
