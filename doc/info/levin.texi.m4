@@ -178,24 +178,20 @@ The sum is evaluated using both @mref{levin_u_sum} and
 @mref{bflevin_u_sum} with two values of bigfloat precision @mref{fpprec}.
 
 @c ===beg===
-@c (load("levin"),exact:%pi^2/6,done);
-@c s:levin_u_sum(1/n^2,n,1,10);
+@c (load("levin"), exact: %pi^2/6, done);
+@c s: levin_u_sum(1/n^2, n, 1, 10);
 @c float(s);
-@c float(s-exact);
-@c s:bflevin_u_sum(1/n^2,n,1);
-@c s-bfloat(exact);
-@c /* Increase fpprec */
-@c  fpprec:32;
-@c s:bflevin_u_sum(1/n^2,n,1);
-@c s-bfloat(exact);
+@c float(s - exact);
+@c s: bflevin_u_sum(1/n^2, n, 1);
+@c s - bfloat(exact);
 @c ===end===
 @example
 @group
-(%i1) (load("levin"),exact:%pi^2/6,done);
+(%i1) (load("levin"), exact: %pi^2/6, done);
 (%o1)                         done
 @end group
 @group
-(%i2) s:levin_u_sum(1/n^2,n,1,10);
+(%i2) s: levin_u_sum(1/n^2, n, 1, 10);
                            3899836039
 (%o2)                      ----------
                            2370816000
@@ -205,28 +201,37 @@ The sum is evaluated using both @mref{levin_u_sum} and
 (%o3)                   1.644934081345832
 @end group
 @group
-(%i4) float(s-exact);
+(%i4) float(s - exact);
 (%o4)                 1.4497605782537448e-8
 @end group
 @group
-(%i5) s:bflevin_u_sum(1/n^2,n,1);
+(%i5) s: bflevin_u_sum(1/n^2, n, 1);
 (%o5)                  1.644934066848226b0
 @end group
 @group
-(%i6) s-bfloat(exact);
+(%i6) s - bfloat(exact);
 (%o6)                 2.775557561562891b-17
 @end group
+@end example
+
+Now increase @code{fpprec} and try the same example again.
+
+@c ===beg===
+@c fpprec: 32;
+@c s: bflevin_u_sum(1/n^2, n, 1);
+@c s - bfloat(exact);
+@c ===end===
+@example
 @group
-(%i7) /* Increase fpprec */
- fpprec:32;
+(%i7) fpprec: 32;
 (%o7)                          32
 @end group
 @group
-(%i8) s:bflevin_u_sum(1/n^2,n,1);
+(%i8) s: bflevin_u_sum(1/n^2, n, 1);
 (%o8)          1.644934066848226436472415166646b0
 @end group
 @group
-(%i9) s-bfloat(exact);
+(%i9) s - bfloat(exact);
 (%o9)        - 3.0814879110195773648895647081359b-33
 @end group
 @end example
@@ -242,22 +247,22 @@ is shown in the following example.  Note that the error calculation is
 performed in bigfloats with a higher precision.
 
 @c ===beg===
-@c (load("levin"), fpprec:64, fpprintprec:3, done);
+@c (load("levin"), fpprec: 64, fpprintprec: 3, done);
 @c for t: 5 step 5 thru 40 do
-@c  block([s,exact:%pi^2/6],
-@c  s:levin_u_sum(1/n^2,n,1,t),
-@c  print(t,"  ",bfloat(s-exact)));
+@c  block([s, exact: %pi^2/6],
+@c        s: levin_u_sum(1/n^2, n, 1, t),
+@c        print(t, "  ", bfloat(s - exact)));
 @c ===end===
 @example
 @group
-(%i1) (load("levin"), fpprec:64, fpprintprec:3, done);
+(%i1) (load("levin"), fpprec: 64, fpprintprec: 3, done);
 (%o1)                         done
 @end group
 @group
 (%i2) for t: 5 step 5 thru 40 do
- block([s,exact:%pi^2/6],
- s:levin_u_sum(1/n^2,n,1,t),
- print(t,"  ",bfloat(s-exact)));
+ block([s, exact: %pi^2/6],
+       s: levin_u_sum(1/n^2, n, 1, t),
+       print(t, "  ", bfloat(s - exact)));
 5    - 1.42b-3 
 10    1.45b-8 
 15    - 3.29b-13 
@@ -293,33 +298,33 @@ m4_displaymath(
 with anti-limit equal to log(3) = 1.0986122886681098...
 
 @c ===beg===
-@c (load("levin"),done);
-@c levin_u_sum(-(-2)^n/n,n,1,10);
-@c s:float(%);
-@c exact:log(3.0);
-@c s-exact;
+@c (load("levin"), done);
+@c levin_u_sum(-(-2)^n/n, n, 1, 10);
+@c s: float(%);
+@c exact: log(3.0);
+@c s - exact;
 @c ===end===
 @example
 @group
-(%i1) (load("levin"),done);
+(%i1) (load("levin"), done);
 (%o1)                         done
 @end group
 @group
-(%i2) levin_u_sum(-(-2)^n/n,n,1,10);
+(%i2) levin_u_sum(-(-2)^n/n, n, 1, 10);
                            3641179708
 (%o2)                      ----------
                            3314344635
 @end group
 @group
-(%i3) s:float(%);
+(%i3) s: float(%);
 (%o3)                  1.0986122775370342
 @end group
 @group
-(%i4) exact:log(3.0);
+(%i4) exact: log(3.0);
 (%o4)                  1.0986122886681098
 @end group
 @group
-(%i5) s-exact;
+(%i5) s - exact;
 (%o5)                - 1.1131075616788166e-8
 @end group
 @end example
