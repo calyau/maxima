@@ -308,6 +308,7 @@
 	  (declare (special *k*))
 	  (setq sum (add2 sum (meval exp)))))))
 
+#+nil
 (defun msum (exp lo hi)
   (if (< hi lo)
       0
@@ -343,7 +344,17 @@
          (< z 1)
          (pole-err form)))
   (labels
-      ((psisimp1 (s a)
+      ((msum (exp lo hi)
+         ;; Compute the sum of EXP with the index ranging from LO to
+         ;; HI.  EXP must be a lambda that takes a single arg which is
+         ;; the index of the summation.
+         (if (< hi lo)
+             0
+             (let ((sum 0))
+	       (do ((k lo (1+ k)))
+	           ((> k hi) sum)
+	         (setq sum (add2 sum (funcall exp k)))))))
+       (psisimp1 (s a)
          ;; This gets pretty hairy now.
 
          (let ((*k*))
@@ -462,11 +473,9 @@
 							            ,(m//t (m* 2 '$%pi k)
 								         q)))))))))
 		              (m+t (msum f 1 (1- (truncate q 2)))
-			           (let ((*k* (truncate q 2)))
-			             (declare (special *k*))
-			             (m*t (funcall f (truncate q 2))
-				          (cond ((oddp q) 1)
-					        ('((rat simp) 1 2)))))
+			           (m*t (funcall f (truncate q 2))
+				        (cond ((oddp q) 1)
+					      ('((rat simp) 1 2))))
 			           (m-t (m+ (m* '$%pi '((rat simp) 1 2)
 					        `((%cot) ((mtimes simp) ,a $%pi)))
 				            `((%log) ,q)
