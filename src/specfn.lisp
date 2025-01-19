@@ -335,166 +335,164 @@
        (psisimp1 (s a)
          ;; This gets pretty hairy now.
 
-         (let ((*k*))
-           (declare (special *k*))
-           (or
-            (and (integerp s) (>= s 0) (mnumericalp a)
-	         (let (($float2bf t)) ($float (mfuncall '$bfpsi s a 18))))
-            (and (integerp s) (>= s 0) ($bfloatp a)
-	         (mfuncall '$bfpsi s a $fpprec))
-            (and (not $numer) (not $float) (integerp s) (> s -1)
-	         (cond
-	           ((integerp a)
-                    ;; For s >= 1,
-                    ;;   psi[s](a) = (-1)^(s+1)*s!*(zeta(1+s) - sum(1/k^(s+1),k,1,a-1)
-                    ;;
-                    ;; The same formula can be used for s = 0 if we
-                    ;; replace zeta(1) with -%gamma.
-                    ;;
-                    ;; See https://en.wikipedia.org/wiki/Polygamma_function
-                    ;;
-                    ;; The computation below is
-                    ;;
-                    ;;   psi[s](a) = (-1)^s*s!*(sum(1/k^(s+1),k,1,a-1) - zeta(1+s))
-	            (and (not (> a $maxpsiposint)) ; integer values
-		         (m*t (expt -1 s) (factorial s)
-		              (m- (msum #'(lambda (k)
-                                            (inv (m^t k (1+ s))))
-                                        1 (1- a))
-			          (cond ((zerop s) '$%gamma)
-				        (($zeta (1+ s))))))))
-	           ((or (not (ratnump a)) (ratgreaterp a $maxpsiposint)) ())
-	           ((ratgreaterp a 0)
-	            (cond
-	              ((ratgreaterp a 1)
-		       (let* ((int ($entier a)) ; reduction to fractional values
-		              (frac (m-t a int)))
-                         ;; Uses the recurrence relation
+         (or
+          (and (integerp s) (>= s 0) (mnumericalp a)
+	       (let (($float2bf t)) ($float (mfuncall '$bfpsi s a 18))))
+          (and (integerp s) (>= s 0) ($bfloatp a)
+	       (mfuncall '$bfpsi s a $fpprec))
+          (and (not $numer) (not $float) (integerp s) (> s -1)
+	       (cond
+	         ((integerp a)
+                  ;; For s >= 1,
+                  ;;   psi[s](a) = (-1)^(s+1)*s!*(zeta(1+s) - sum(1/k^(s+1),k,1,a-1)
+                  ;;
+                  ;; The same formula can be used for s = 0 if we
+                  ;; replace zeta(1) with -%gamma.
+                  ;;
+                  ;; See https://en.wikipedia.org/wiki/Polygamma_function
+                  ;;
+                  ;; The computation below is
+                  ;;
+                  ;;   psi[s](a) = (-1)^s*s!*(sum(1/k^(s+1),k,1,a-1) - zeta(1+s))
+	          (and (not (> a $maxpsiposint)) ; integer values
+		       (m*t (expt -1 s) (factorial s)
+		            (m- (msum #'(lambda (k)
+                                          (inv (m^t k (1+ s))))
+                                      1 (1- a))
+			        (cond ((zerop s) '$%gamma)
+				      (($zeta (1+ s))))))))
+	         ((or (not (ratnump a)) (ratgreaterp a $maxpsiposint)) ())
+	         ((ratgreaterp a 0)
+	          (cond
+	            ((ratgreaterp a 1)
+		     (let* ((int ($entier a)) ; reduction to fractional values
+		            (frac (m-t a int)))
+                       ;; Uses the recurrence relation
+                       ;;
+                       ;; psi[s](z+m) = psi[s](z) + (-1)^s*s!*sum(1/(z+k)^(s+1),k,0,m-1)
+                       ;;
+                       ;; where a = z + m, m = int, frac = a - int.
+		       (m+t
+		        (psisimp1 s frac)
+		        (if (> int $maxpsiposint)
+                            (give-up :fun-args (list frac))
+		            (m*t (expt -1 s) (factorial s)
+			         (msum #'(lambda (k)
+                                           (m^t (m+t (m-t a int) k)
+				                (1- (- s))))
+				       0 (1- int)))))))
+	            ((= s 0)
+		     (let ((p (cadr a)) (q (caddr a)))
+                       ;; a is a rational of the form p/q.
+                       (cond
+		         ((or (> p $maxpsifracnum)
+			      (> q $maxpsifracdenom)
+                              (bignump p) (bignump q))
+                          ;; Give up if the numerator or denominator is too big.
+                          ())
+                         ;; These can be found at
+                         ;; https://mathworld.wolfram.com/GausssDigammaTheorem.html
+		         ((and (= p 1)
+			       (cond ((= q 2)
+                                      ;; psi[0](1/2) = -%gamma - log(4)
+				      (m+ (m* -2 '((%log) 2)) (m- '$%gamma)))
+				     ((= q 3)
+                                      ;; psi[0](1/3) = -3/2*log(3)-%pi/(2*sqrt(3))-%gamma
+				      (m+ (m* '((rat simp) -1 2)
+					      (m^t 3 '((rat simp) -1 2)) '$%pi)
+				          (m* '((rat simp) -3 2) '((%log) 3))
+				          (m- '$%gamma)))
+				     ((= q 4)
+                                      ;; psi[0](1/4) = -%pi/2-log(8)-%gamma
+				      (m+ (m* '((rat simp) -1 2) '$%pi)
+				          (m* -3 '((%log) 2)) (m- '$%gamma)))
+				     ((= q 6)
+                                      ;; psi[0](1/6) = -%gamma -sqrt(3)*%pi/2-2*log(2)-3/2*log(3)
+				      (m- (m+ (m* '((rat simp) 3 2) '((%log) 3))
+					      (m* 2 '((%log) 2))
+					      (m* '((rat simp) 1 2) '$%pi
+					          (m^t 3 '((rat simp) 1 2)))
+					      '$%gamma))))))
+		         ((and (= p 2) (= q 3))
+                          ;; psi[0](2/3) = (sqrt(3)*%pi-9*log(3))/6-%gamma
+		          (m+ (m* '((rat simp) 1 2)
+			          (m^t 3 '((rat simp) -1 2)) '$%pi)
+			      (m* '((rat simp) -3 2) '((%log) 3))
+			      (m- '$%gamma)))
+		         ((and (= p 3) (= q 4))
+                          ;; psi[0](3/4) = %pi/2-log(8)-%gamma
+		          (m+ (m* '((rat simp) 1 2) '$%pi)
+			      (m* -3 '((%log) 2)) (m- '$%gamma)))
+		         ((and (= p 5) (= q 6))
+                          ;; psi[0](5/6) = -%gamma+sqrt(3)*%pi/2-2*log(2)-3/2*log(3)
+		          (m- (m* '((rat simp) 1 2) '$%pi
+			          (m^t 3 '((rat simp) 1 2)))
+			      (m+ (m* '((rat simp) 3 2) '((%log) 3))
+			          (m* 2 '((%log) 2))
+			          '$%gamma)))
+		         ;; Gauss's Formula.
                          ;;
-                         ;; psi[s](z+m) = psi[s](z) + (-1)^s*s!*sum(1/(z+k)^(s+1),k,0,m-1)
+                         ;; psi[0](p/q) = -%gamma - log(2*q) - %pi/2*cot(p/q*%pi)
+                         ;;   + 2 * sum(cos(2*%pi*p*k/q)*log(sin(%pi*k/q)), k, 1, floor(q/2)-1).
                          ;;
-                         ;; where a = z + m, m = int, frac = a - int.
-		         (m+t
-		          (psisimp1 s frac)
-		          (if (> int $maxpsiposint)
-                              (give-up :fun-args (list frac))
-		              (m*t (expt -1 s) (factorial s)
-			           (msum #'(lambda (k)
-                                             (m^t (m+t (m-t a int) k)
-				                  (1- (- s))))
-				         0 (1- int)))))))
-	              ((= s 0)
-		       (let ((p (cadr a)) (q (caddr a)))
-                         ;; a is a rational of the form p/q.
-                         (cond
-		           ((or (> p $maxpsifracnum)
-			        (> q $maxpsifracdenom)
-                                (bignump p) (bignump q))
-                            ;; Give up if the numerator or denominator is too big.
-                            ())
-                           ;; These can be found at
-                           ;; https://mathworld.wolfram.com/GausssDigammaTheorem.html
-		           ((and (= p 1)
-			         (cond ((= q 2)
-                                        ;; psi[0](1/2) = -%gamma - log(4)
-				        (m+ (m* -2 '((%log) 2)) (m- '$%gamma)))
-				       ((= q 3)
-                                        ;; psi[0](1/3) = -3/2*log(3)-%pi/(2*sqrt(3))-%gamma
-				        (m+ (m* '((rat simp) -1 2)
-					        (m^t 3 '((rat simp) -1 2)) '$%pi)
-				            (m* '((rat simp) -3 2) '((%log) 3))
-				            (m- '$%gamma)))
-				       ((= q 4)
-                                        ;; psi[0](1/4) = -%pi/2-log(8)-%gamma
-				        (m+ (m* '((rat simp) -1 2) '$%pi)
-				            (m* -3 '((%log) 2)) (m- '$%gamma)))
-				       ((= q 6)
-                                        ;; psi[0](1/6) = -%gamma -sqrt(3)*%pi/2-2*log(2)-3/2*log(3)
-				        (m- (m+ (m* '((rat simp) 3 2) '((%log) 3))
-					        (m* 2 '((%log) 2))
-					        (m* '((rat simp) 1 2) '$%pi
-					            (m^t 3 '((rat simp) 1 2)))
-					        '$%gamma))))))
-		           ((and (= p 2) (= q 3))
-                            ;; psi[0](2/3) = (sqrt(3)*%pi-9*log(3))/6-%gamma
-		            (m+ (m* '((rat simp) 1 2)
-			            (m^t 3 '((rat simp) -1 2)) '$%pi)
-			        (m* '((rat simp) -3 2) '((%log) 3))
-			        (m- '$%gamma)))
-		           ((and (= p 3) (= q 4))
-                            ;; psi[0](3/4) = %pi/2-log(8)-%gamma
-		            (m+ (m* '((rat simp) 1 2) '$%pi)
-			        (m* -3 '((%log) 2)) (m- '$%gamma)))
-		           ((and (= p 5) (= q 6))
-                            ;; psi[0](5/6) = -%gamma+sqrt(3)*%pi/2-2*log(2)-3/2*log(3)
-		            (m- (m* '((rat simp) 1 2) '$%pi
-			            (m^t 3 '((rat simp) 1 2)))
-			        (m+ (m* '((rat simp) 3 2) '((%log) 3))
-			            (m* 2 '((%log) 2))
-			            '$%gamma)))
-		           ;; Gauss's Formula.
-                           ;;
-                           ;; psi[0](p/q) = -%gamma - log(2*q) - %pi/2*cot(p/q*%pi)
-                           ;;   + 2 * sum(cos(2*%pi*p*k/q)*log(sin(%pi*k/q)), k, 1, floor(q/2)-1).
-                           ;;
-                           ;; However, the formula here is different.
-                           ;; Instead of log(sin(%pi*k/q)), we use
-                           ;; log(sin((2*%pi*k/q)/2)) and the
-                           ;; halfangle formula to get
-                           ;;
-                           ;;   log(sqrt(1-cos(2*%pi*k/q))/sqrt(2)) =
-                           ;;     1/2*log(1-cos(2*%pi*k/q)) - log(2)/2.
-                           ;;
-		           ((let ((f (lambda (k)
-                                       (m* `((%cos) ,(m* 2 a '$%pi k))
-				           `((%log) ,(m-t 2 (m* 2 `((%cos)
-							            ,(m//t (m* 2 '$%pi k)
-								         q)))))))))
-		              (m+t (msum f 1 (1- (truncate q 2)))
-			           (m*t (funcall f (truncate q 2))
-				        (cond ((oddp q) 1)
-					      ('((rat simp) 1 2))))
-			           (m-t (m+ (m* '$%pi '((rat simp) 1 2)
-					        `((%cot) ((mtimes simp) ,a $%pi)))
-				            `((%log) ,q)
-				            '$%gamma))))))))
-	              ((alike1 a '((rat) 1 2))
-                       ;; psi[s](1/2) = (-1)^(s+1)*s!*(2^(s+1)-1)*zeta(s+1)
-                       ;; See https://dlmf.nist.gov/5.15.E3
-		       (m*t (expt -1 (1+ s)) (factorial s)
-		            (1- (expt 2 (1+ s))) (simplify ($zeta (1+ s)))))
-	              ((and (ratgreaterp a '((rat) 1 2))
-		            (ratgreaterp 1 a))
-                       ;; psi[s](a) where a > 1/2 and 1 > a.
-                       ;;
-                       ;; From https://dlmf.nist.gov/5.15.E6:
-                       ;;
-                       ;;   psi[s](1-z) + (-1)^(s-1)*psi[s](z) = (-1)^s*%pi*diff(cot(%pi*z),z,s)
-                       ;;
-                       ;; Solve for psi[s](z):
-                       ;;
-                       ;;   psi[s](z) = -%pi*diff(cot(%pi*z),z,s) - (-1)^(s-1)*psi[s](1-z)
-                       ;;             = (-1)^s*%pi*diff(cot(-%pi*z),z,s) + (-1)^s*psi[s](1-z)
-                       ;;             = (-1)^s*(psi[s](1-z) + %pi*diff(cot(-%pi*z),z,s))
-		       (m*t
-		        (expt -1 s)
-		        (m+t (psisimp1 s (m- 1 a))
-		             (let ((dif (m* '$%pi
+                         ;; However, the formula here is different.
+                         ;; Instead of log(sin(%pi*k/q)), we use
+                         ;; log(sin((2*%pi*k/q)/2)) and the
+                         ;; halfangle formula to get
+                         ;;
+                         ;;   log(sqrt(1-cos(2*%pi*k/q))/sqrt(2)) =
+                         ;;     1/2*log(1-cos(2*%pi*k/q)) - log(2)/2.
+                         ;;
+		         ((let ((f (lambda (k)
+                                     (m* `((%cos) ,(m* 2 a '$%pi k))
+				         `((%log) ,(m-t 2 (m* 2 `((%cos)
+							          ,(m//t (m* 2 '$%pi k)
+								       q)))))))))
+		            (m+t (msum f 1 (1- (truncate q 2)))
+			         (m*t (funcall f (truncate q 2))
+				      (cond ((oddp q) 1)
+					    ('((rat simp) 1 2))))
+			         (m-t (m+ (m* '$%pi '((rat simp) 1 2)
+					      `((%cot) ((mtimes simp) ,a $%pi)))
+				          `((%log) ,q)
+				          '$%gamma))))))))
+	            ((alike1 a '((rat) 1 2))
+                     ;; psi[s](1/2) = (-1)^(s+1)*s!*(2^(s+1)-1)*zeta(s+1)
+                     ;; See https://dlmf.nist.gov/5.15.E3
+		     (m*t (expt -1 (1+ s)) (factorial s)
+		          (1- (expt 2 (1+ s))) (simplify ($zeta (1+ s)))))
+	            ((and (ratgreaterp a '((rat) 1 2))
+		          (ratgreaterp 1 a))
+                     ;; psi[s](a) where a > 1/2 and 1 > a.
+                     ;;
+                     ;; From https://dlmf.nist.gov/5.15.E6:
+                     ;;
+                     ;;   psi[s](1-z) + (-1)^(s-1)*psi[s](z) = (-1)^s*%pi*diff(cot(%pi*z),z,s)
+                     ;;
+                     ;; Solve for psi[s](z):
+                     ;;
+                     ;;   psi[s](z) = -%pi*diff(cot(%pi*z),z,s) - (-1)^(s-1)*psi[s](1-z)
+                     ;;             = (-1)^s*%pi*diff(cot(-%pi*z),z,s) + (-1)^s*psi[s](1-z)
+                     ;;             = (-1)^s*(psi[s](1-z) + %pi*diff(cot(-%pi*z),z,s))
+		     (m*t
+		      (expt -1 s)
+		      (m+t (psisimp1 s (m- 1 a))
+		           (let ((dif (m* '$%pi
+				          ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
+			         ($z (m-t a)))
+			     (declare (special $z))
+			     (meval dif)))))))
+	         ((ratgreaterp a $maxpsinegint) ;;; Reflection Formula
+	          (m*t
+	           (expt -1 s)
+	           (m+t (m+t (psisimp1 s (m- a))
+			     (let ((dif (m* '$%pi
 				            ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
 			           ($z (m-t a)))
 			       (declare (special $z))
-			       (meval dif)))))))
-	           ((ratgreaterp a $maxpsinegint) ;;; Reflection Formula
-	            (m*t
-	             (expt -1 s)
-	             (m+t (m+t (psisimp1 s (m- a))
-			       (let ((dif (m* '$%pi
-				              ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
-			             ($z (m-t a)))
-			         (declare (special $z))
-			         (meval dif)))
-		          (m*t (factorial s) (m^t (m-t a) (1- (- s)))))))))
-            (give-up :fun-args (list a))))))
+			       (meval dif)))
+		        (m*t (factorial s) (m^t (m-t a) (1- (- s)))))))))
+          (give-up :fun-args (list a)))))
     (psisimp1 s a)))
   
 ;; subtitle polygamma tayloring routines
