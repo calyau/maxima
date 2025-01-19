@@ -30,6 +30,9 @@ Function @mref{bflevin_u_sum} uses bigfloat precision.
 It uses error estimates to increase the number of terms and the bigfloat
 arithmetic precision to meet an accuracy target. 
 
+See @mref{Examples for levin} for examples.
+See @mref{References for levin} for further information.
+
 @opencatbox{Categories:}
 @category{Share packages}
 @category{Package levin}
@@ -42,54 +45,65 @@ arithmetic precision to meet an accuracy target.
 
 
 @anchor{levin_u_sum}
-@deffn {Function} levin_u_sum (@var{a},@var{n},@var{n_0},@var{nterms},[@var{mode}])
+@deffn {Function} levin_u_sum @
+@fname{levin_u_sum} (@var{a}, @var{n}, @var{n_0}, @var{nterms}, @var{mode}) @
+@fname{levin_u_sum} (@var{a}, @var{n}, @var{n_0}, @var{nterms})
 
-Estimate the sum(a(n),n,n_0,infinity) using at most @var{nterms}
+Estimate @code{sum(@var{a}(@var{n}), @var{n}, @var{n_0}, inf)} using at most @var{nterms}
 terms using the Levin u-transform @pxref{levin-1973,,Levin 1973}.
 
-If the optional argument @var{mode} has the value can take the values:
+The following values are recognized for the optional argument @var{mode}.
+If @var{mode} is not supplied, it is assumed to be @code{levin_algebraic}.
 
 @table @code
 
 @item levin_algebraic
-(default) The calculation is exact.  The function returns the result.
-
+The calculation is performed in exact arithmetic. @code{levin_u_sum} returns the result.
 
 @item levin_numeric
 The calculation is performed in bigfloat arithmetic.
-The return value is a list [result,variance].
-The variance is in units of 10^(-2*fpprec).
+The return value is a list @code{[@var{result}, @var{variance}]}
+where @var{result} is the result of the bigfloat calculation,
+and @var{variance} is in units of @code{10^(-2*fpprec)}.
 
 @end table
 
 @code{load("levin")} loads this function.
 
+See @mref{Examples for levin} for examples.
+
 @opencatbox{Categories:}
 @category{Package levin}
+@category{Sums and products}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
 
 
 @anchor{bflevin_u_sum}
-@deffn {Function} bflevin_u_sum (@var{a},@var{n},@var{n_0})
+@deffn {Function} bflevin_u_sum (@var{a}, @var{n}, @var{n_0})
 
-Estimate the sum(a(n),n,n_0,infinity) using the
+Estimate @code{sum(@var{a}(@var{n}), @var{n}, @var{n_0}, inf)} using the
 Levin u-transform in bigfloat arithmetic.
 
 @c In the precision absolute or relative?
-The function attempts to return the sum of the infinite series
-with a precision given by @mref{fpprec} using bigfloat arithmetic.
+@code{bflevin_u_sum} attempts to return the sum of the infinite series
+with a precision given by the global variable @mref{fpprec} using bigfloat arithmetic.
 
 See @mref{levin_options} for options to control this function.
-It uses an adaptive algorithm to increase both the number of
+@code{bflevin_u_sum} uses an adaptive algorithm to increase both the number of
 terms and the bigfloat precision used for internal calculations
 until the estimated error is acceptable.
 
 @code{load("levin")} loads this function.
 
+See @mref{Examples for levin} for examples.
+
 @opencatbox{Categories:}
 @category{Package levin}
+@category{Sums and products}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
@@ -98,35 +112,38 @@ until the estimated error is acceptable.
 @anchor{levin_options}
 @deffn {Variable} levin_options
 
-Function @mref{bflevin_u_sum} attempts to return the sum of the infinite series
-with a precision given by @mref{fpprec} using bigfloat arithmetic.
-It uses an adaptive algorithm to increase both the number of
+Function @mref{bflevin_u_sum} attempts to return the sum of an infinite series
+with a precision given by the global variable @mref{fpprec} using bigfloat arithmetic.
+@code{bflevin_u_sum} uses an adaptive algorithm to increase both the number of
 terms used and the bigfloat precision used for internal calculations
 until the estimated error is acceptable.
 
-@var{levin_options} contains options for controlling the @var{bflevin_sum}.
+The undeclared array @code{levin_options} contains options for controlling @code{bflevin_u_sum}.
+Note that the subscript values for @code{levin_options} are strings.
 
 @table @code
 
 @item levin_options["debug"]
-when true the function generates additional output, default(false)
+When @code{true}, @code{bflevin_u_sum} generates additional output. Default: @code{false}
 
 @item levin_options["min_terms"] 
-Minimum number of terms used, default(5)
+Minimum number of terms used by @code{bflevin_u_sum}. Default: 5
 
 @item levin_options["max_terms"]
-Maximum number of terms used, default(640=5*2^7)
+Maximum number of terms used by @code{bflevin_u_sum}. Default: 640 (equal to 5*2^7)
 
 @item levin_options["min_precision"]
-Initial bigfloat precision, default(16)
+Initial bigfloat precision for @code{bflevin_u_sum}. Default: 16
 
 @item levin_options["max_precision"]
-Maximum bigfloat precision, default(1000)
+Maximum bigfloat precision for @code{bflevin_u_sum}. Default: 1000
 
 @end table
 
 @opencatbox{Categories:}
 @category{Package levin}
+@category{Sums and products}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn

@@ -572,6 +572,8 @@ Package lbfgs
 Package levin
 * Introduction to levin::
 * Functions and Variables for levin::
+* Examples for levin::
+* References for levin::
 
 Package lindstedt
 * Functions and Variables for lindstedt::
