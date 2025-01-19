@@ -445,14 +445,15 @@
                          ;;
 		         ((let ((f (lambda (k)
                                      (m* `((%cos) ,(m* 2 a '$%pi k))
-				         `((%log) ,(m-t 2 (m* 2 `((%cos)
-							          ,(m//t (m* 2 '$%pi k)
-								       q)))))))))
+				         `((%log) ,(m-t 2
+                                                       (m* 2 `((%cos)
+							       ,(m//t (m* 2 '$%pi k)
+								    q)))))))))
 		            (m+t (msum f 1 (1- (truncate q 2)))
 			         (m*t (funcall f (truncate q 2))
 				      (cond ((oddp q) 1)
 					    ('((rat simp) 1 2))))
-			         (m-t (m+ (m* '$%pi '((rat simp) 1 2)
+			         (m-t (m+ (m* '$%pi 1//2
 					      `((%cot) ((mtimes simp) ,a $%pi)))
 				          `((%log) ,q)
 				          '$%gamma))))))))
