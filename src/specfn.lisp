@@ -296,28 +296,6 @@
 
 ;; subtitle polygamma routines
 
-;; gross efficiency hack, exp is a function of *k*, *k* should be mbind'ed
-
-#+nil
-(defun msum (exp lo hi)
-  (if (< hi lo)
-      0
-      (let ((sum 0))
-	(do ((*k* lo (1+ *k*)))
-	    ((> *k* hi) sum)
-	  (declare (special *k*))
-	  (setq sum (add2 sum (meval exp)))))))
-
-#+nil
-(defun msum (exp lo hi)
-  (if (< hi lo)
-      0
-      (let ((sum 0))
-	(do ((k lo (1+ k)))
-	    ((> k hi) sum)
-	  (setq sum (add2 sum (funcall exp k)))))))
-
-
 (defun pole-err (exp)
   (cond (errorsw (throw 'errorsw t))
 	(t (merror (intl:gettext "Pole encountered in: ~M") exp))))
