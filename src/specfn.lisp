@@ -639,16 +639,22 @@
 ;;
 ;; See also http://en.wikipedia.org/wiki/Lambert's_W_function
 
+#+nil
 (defmfun $lambert_w (z)
   (ftake* '%lambert_w z))
 
 ;;; Set properties to give full support to the parser and display
+#+nil
 (defprop $lambert_w %lambert_w alias)
+#+nil
 (defprop $lambert_w %lambert_w verb)
+#+nil
 (defprop %lambert_w $lambert_w reversealias)
+#+nil
 (defprop %lambert_w $lambert_w noun)
 
 ;;; lambert_w is a simplifying function
+#+nil
 (defprop %lambert_w simp-lambertw operators)
 
 ;;; Derivative of lambert_w
@@ -672,6 +678,7 @@
     ((mexpt) ((%lambert_w) x) -1)))
   integral)
 
+#+nil
 (defun simp-lambertw (x yy z)
   (declare (ignore yy))
   (oneargcheck x)
@@ -700,6 +707,32 @@
 	((complex-bigfloat-numerical-eval-p x)
 	 (to (bigfloat::lambert-w-k 0 (bigfloat:to x))))
 	(t (list '(%lambert_w simp) x))))
+
+(def-simplifier lambert_w (x)
+  (cond ((equal x 0) 0)
+	((equal x 0.0) 0.0)
+	((zerop1 x) ($bfloat 0))	;bfloat case
+	((alike1 x '$%e)
+	 ;; W(%e) = 1
+	 1)
+	((alike1 x '((mtimes simp) ((rat simp) -1 2) ((%log simp) 2)))
+	 ;; W(-log(2)/2) = -log(2)
+	 '((mtimes simp) -1 ((%log simp) 2)))
+	((alike1 x '((mtimes simp) -1 ((mexpt simp) $%e -1)))
+	 ;; W(-1/e) = -1
+	 -1)
+	((alike1 x '((mtimes) ((rat) -1 2) $%pi))
+	 ;; W(-%pi/2) = %i*%pi/2
+	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
+        ;; numerical evaluation
+	((complex-float-numerical-eval-p x)
+          ;; x may be an integer.  eg "lambert_w(1),numer;"
+	  (if (integerp x)
+	    (to (bigfloat::lambert-w-k 0 (bigfloat:to ($float x))))
+	    (to (bigfloat::lambert-w-k 0 (bigfloat:to x)))))
+	((complex-bigfloat-numerical-eval-p x)
+	 (to (bigfloat::lambert-w-k 0 (bigfloat:to x))))
+	(t (give-up))))
 
 ;; An approximation of the k-branch of generalized Lambert W function
 ;;   k integer
