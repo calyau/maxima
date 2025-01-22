@@ -83,10 +83,6 @@
 	(%product simpprod)
 	($matrix simpmatrix) (%matrix simpmatrix)))
 
-#+nil
-(defprop $li lisimp specsimp)
-(defprop $psi psisimp specsimp)
-
 (defprop $equal t binary)
 (defprop $notequal t binary)
 
