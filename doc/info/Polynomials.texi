@@ -785,7 +785,7 @@ Examples:
 @defvr {Option variable} factor_max_degree
 Default value: @code{1000}
 
-When factor_max_degree is set to a positive integer @code{n}, it will prevent
+When @code{factor_max_degree} is set to a positive integer @code{n}, it will prevent
 Maxima from attempting to factor certain polynomials whose degree in any
 variable exceeds @code{n}. If @mref{factor_max_degree_print_warning} is true,
 a warning message will be printed. @code{factor_max_degree} can be used to
