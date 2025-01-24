@@ -423,6 +423,11 @@ Das Paket @code{simplify_sum} enth@"alt die Funktion
 @mrefcomma{simplify_sum} mit der Summen zu einer geschlossenen Form vereinfacht
 werden k@"onnen.
 
+Es ist zu beachten, dass @code{sum} bei symbolischen Summen, die viele Terme
+ergeben, langsam ist, z. B. @code{sum(x^i, i, 1, 10000)}. In solchen F@"allen
+ist die Verwendung von @code{makelist} und @code{tree_reduce} signifikant
+schneller, z. B. @code{tree_reduce("+", makelist(x^i, i, 1, 10000))}.
+
 Siehe auch @mrefcomma{sumcontract}  @mrefcomma{sumexpand}@w{}
 @mrefcomma{intosum} @mrefcomma{bashindices} @mrefcomma{niceindices}@w{}
 @mref{cauchysum} und @mrefdot{zeilberger}
