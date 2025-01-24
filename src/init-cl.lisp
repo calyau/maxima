@@ -815,18 +815,6 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 (defun to-maxima ()
   (throw 'to-maxima t))
 
-(defvar / nil
-  "Holds a list of all the values returned by the most recent top-level EVAL.")
-(defvar // nil "Gets the previous value of / when a new value is computed.")
-(defvar /// nil "Gets the previous value of // when a new value is computed.")
-(defvar * nil "Holds the value of the most recent top-level EVAL.")
-(defvar ** nil "Gets the previous value of * when a new value is computed.")
-(defvar *** nil "Gets the previous value of ** when a new value is computed.")
-(defvar + nil "Holds the value of the most recent top-level READ.")
-(defvar ++ nil "Gets the previous value of + when a new value is read.")
-(defvar +++ nil "Gets the previous value of ++ when a new value is read.")
-(defvar - nil "Holds the form curently being evaluated.")
-
 (defun interactive-eval (form)
   "Evaluate FORM, returning whatever it returns but adjust ***, **, *, +++, ++,
   +, ///, //, /, and -."
