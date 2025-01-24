@@ -10,14 +10,19 @@ New items in core:
  * New global variable batch_answers_from_file
  * New Unicode display2d and global variable display2d_unicode
  * A new function random-name in plot.lisp that generates a random string
+ * New function timer_reset: set accumulated elapsed time to zero
+ * New functions float_infinity_p, float_nan_p: recognize float infinity and not-a-number
 
 New items in share:
 -------------------
  * New example share/colnew/prob5.mac
- * Add raddenest radical denesting function
+ * New package raddenest: radical denesting function
  * New draw terminals: tikz and tikz_standalone
  * ode2 now solves Modified Bessel differential equation
  * Documentation for share/contrib/levin
+ * New package guess: guess a formula for a sequence of numbers
+ * New package gamma_simp: simplification of gamma function
+ * Package descriptive: function cov accepts optional argument for per-datum weights
 
 Changes in core:
 ----------------
@@ -25,6 +30,7 @@ Changes in core:
  * Add rtest_raddenest to share_testsuite_files
  * In src/plot.lisp, clipping is no longer done when plot_format is xmaxima
  * The default y-range for plots is determined only by points within x-range
+ * Function chinese renamed to solve_congruences
 
 Changes in share:
 -----------------
@@ -50,14 +56,17 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
+ * \#2905: Assigning variable twice yields different results
  * \#3054: limit(exp(exp(2*log(x**5 + x)*log(log(x)))) / exp(exp(10*log(x)*log(log(x)))), x, inf)
  * \#3191: parsing problem: thru 3 for i in [a,b]
  * \#3755: Insecure tmpdir usage
  * \#3803: Xmaxima should reopen the browser when needed
  * \#4117: Unexpected Behaviour of run_viewer and gnu_term dumb
  * \#4154: Some info nodes have bad headers (and no "Up"s)
+ * \#4160: LISP error when integrating
  * \#4176: fullratsubst(old = new, expr) returns incorrect result
  * \#4177: lratsubst1 in testsuite
+ * \#4179: [XMaxima] Pb in maximizing window
  * \#4184: bessel_simplify error
  * \#4191 limits of gamma_incomplete
  * \#4195: cmucl 21e intermittent lisp error in limit
@@ -80,13 +89,28 @@ Bug fixes for numbered bugs:
  * \#4263: plot2d discrete with x range computes y range over all data, not restricted to x
  * \#4265: integrate(sin(m*x)*sin(n*x), x, 0, 2*%pi) unconditionally zero
  * \#4269: plot3d ignores the option gnuplot_postamble
+ * \#4287: 2d pretty printer ignores successive empty lines
  * \#4307: partswitch affects op and operatorp
  * \#4325: Maxima can't differentiate beta function
+ * \#4349: user-defined rules apply to expressions with square brackets as well as parentheses
+ * \#4350: arrayinfo complains "not an array" when supplied a Lisp array or hash table
+ * \#4386: quad_qagi doesn't recognize -inf as equivalent to minf
+ * \#4388: tex() output under simp:false, incorrect placement of `+`
+ * \#4408: letsimp doesn't simplify before returning result
+ * \#4417: letsimp treats minus expressions as -1 times something
+ * \#4424: draw2d doesnt accept fill_density in order to create opaque shapes
+ * \#4426: Remove repeated function resm1
+ * \#4427: Turn number to cell in mark+3@db.lisp
+ * \#4430: solve calls eval on its arguments
+ * \#4434: polydecomp documentation wrong
+ * \#4441: gf_factor in ASDF build
 
 Unnumbered bugs fixed:
 ---------------------
  * Correct failing test in share/contrib/diffequations/tests
  * plotdf sliders hidden (reported on the mailing list on 2023/11/26)
+ * mailing list 2023-11-25: Possibilities for basic image processing
+ * mailing list 2023-09-25: Casting SPELs
 
 Documentation:
 --------------
