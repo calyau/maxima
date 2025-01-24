@@ -815,6 +815,27 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 (defun to-maxima ()
   (throw 'to-maxima t))
 
+(defun interactive-eval (form)
+  "Evaluate FORM, returning whatever it returns but adjust ***, **, *, +++, ++,
+  +, ///, //, /, and -."
+  (setf - form)
+  (let ((results (multiple-value-list (eval form))))
+    (setf /// //
+	  // /
+	  / results
+	  *** **
+	  ** *
+	  * (car results)))
+  (setf +++ ++
+	++ +
+	+ -)
+  (unless (boundp '*)
+    ;; The bogon returned an unbound marker.
+    (setf * nil)
+    (cerror (intl:gettext "Go on with * set to NIL.")
+	    (intl:gettext "EVAL returned an unbound marker.")))
+  /)
+
 (defun maxima-read-eval-print-loop ()
   (when *debugger-hook*
     ; Only set a new debugger hook if *DEBUGGER-HOOK* has not been set to NIL
@@ -829,7 +850,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
           (when (eq input eof)
             (fresh-line)
             (to-maxima))
-          (format t "~{~&~S~}" (multiple-value-list (eval input))))))))
+          (format t "~{~&~S~}" (interactive-eval input)))))))
 
 (defun maxima-lisp-debugger-repl (condition me-or-my-encapsulation)
   (declare (ignore me-or-my-encapsulation))
