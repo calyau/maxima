@@ -37,7 +37,6 @@
   (:nicknames :cl-macsyma :cl-maxima :macsyma)
   (:import-from :cl-sloop #:sloop)
   (:shadow continue		 ;(macsys): part of the top-level loop
-	   //                           ;(clmacs): arithmetic operator
 	   float		  ;(clmacs): has 1.0 as default format
 	   functionp                    ;(commac): accepts symbols
 	   array                        ;(commac)
