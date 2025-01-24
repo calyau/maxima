@@ -2998,8 +2998,10 @@
 	 (cond ((atom y)
 		(cond ((numberp x)
 		       (cond ((numberp y)
+			      ;; If x - y > 0, then x is "greater" than y.
+				  ;; If x - y = 0 and x is a float and y is not, then x is "greater" than y.
 			      (setq y (- x y))
-			      (cond ((zerop y) (floatp x)) (t (plusp y))))))
+			      (cond ((zerop y) (and (floatp x) (not (floatp y)))) (t (plusp y))))))
 		      ((constant x)
 		       (cond ((constant y) (alphalessp y x)) (t (numberp y))))
 		      ((mget x '$scalar)
