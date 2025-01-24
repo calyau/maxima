@@ -292,7 +292,7 @@
     (let* ((title (get-index-title lang))
 	   (search-item (format nil "<title>.*~A" title)))
       (format t "Looking for function and variable index: ~A~%" title)
-      (dolist (file (last files 2))
+      (dolist (file (last files 3))
 	(when (grep-l search-item file)
 	  (format t "Function index: ~S.~%"
 		  (namestring file))
