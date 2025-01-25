@@ -2979,3 +2979,9 @@ map(orderlessp,
 	[0,    1,    -1,   0.0,   1.0,   -1.0],
 	[0.0,  1.0,  -1.0, 0,     1,     -1]);
 	[true, true, true, false, false, false];
+
+/* Ordering of a^b and (a^b)^c */
+map(orderlessp,
+	[ a^b,      (a^b)^0.5, (a^b)^1.5, (a^b)^2.5,  (-1)^a,      ((-1)^a)^0.5, ((-1)^a)^1.5, ((-1)^a)^2.5],
+	[(a^b)^0.5,  a^b,      (a^b)^2.5, (a^b)^1.5, ((-1)^a)^0.5,  (-1)^a,      ((-1)^a)^2.5, ((-1)^a)^1.5]);
+	[ false,     true,     true,      false,      false,        true,        true,         false];
