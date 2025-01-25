@@ -3000,8 +3000,8 @@
 		       (cond ((numberp y)
 			      ;; If x - y > 0, then x is "greater" than y.
 				  ;; If x - y = 0 and x is a float and y is not, then x is "greater" than y.
-			      (setq y (- x y))
-			      (cond ((zerop y) (and (floatp x) (not (floatp y)))) (t (plusp y))))))
+			      (let ((diff (- x y)))
+			        (cond ((zerop diff) (and (floatp x) (not (floatp y)))) (t (plusp diff)))))))
 		      ((constant x)
 		       (cond ((constant y) (alphalessp y x)) (t (numberp y))))
 		      ((mget x '$scalar)

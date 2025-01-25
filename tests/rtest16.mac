@@ -2972,3 +2972,8 @@ psi[2](1/8)-2*%pi^3*cot((7*%pi)/8)*csc((7*%pi)/8)^2;
 /* psi[s](a) for a > maxpsinegint, which uses the reflection formula */
 psi[1](-5/2);
 %pi^2/2+964/225;
+
+/* Ordering of integers and floats that have the same value. */
+map(orderlessp, [0,   1,   -1,   0.0, 1.0, -1.0],
+                [0.0, 1.0, -1.0, 0,   1,   -1]);
+[true, true, true, false, false, false];
