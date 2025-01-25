@@ -45,7 +45,7 @@
   (setf (get x 'distribute_over) '(mlist $matrix mequal)))
 
 (defun domain-error (x f)
-  (merror (intl:gettext "~A: argument ~:M isn't in the domain of ~A.") f (complexify x) f))
+  (merror (intl:gettext "~A: argument ~:M isn't in the domain of ~A.") f (if (complexp x) (complexify x) x) f))
 
 ;; Some Lisp implementations goof up branch cuts for ASIN, ACOS, and/or ATANH.
 ;; Here are definitions which have the right branch cuts
@@ -603,7 +603,7 @@
       (cond ((zerop1 sin-of-coeff-pi) 
 	     0)		;; tan(integer*%pi)
 	    ((zerop1 cos-of-coeff-pi)
-	     (merror (intl:gettext "tan: ~M isn't in the domain of tan.") x))
+	     (domain-error x 'tan))
 	    (cos-of-coeff-pi
 	     (div sin-of-coeff-pi cos-of-coeff-pi))))
 
