@@ -2889,8 +2889,9 @@ done;
 
 /* Bug #4326: "sin(asec(x)), cos(acsc(x)) and many more are incorrectly simplified" */
 
+block
 (
-	err : 0.0,
+	[err : 0.0, a, b],
 	for outer in [sin, cos, tan, csc, sec, cot] do
 	(
 		for inner in [asin, acos, atan, acsc, asec, acot] do
@@ -2906,7 +2907,7 @@ done;
 	is(err < 1e-10)
 );
 true$
-kill(err);
+kill(err); /* No longer needed, but kept here so that test numbers don't change. */
 done$
 
 /* Bug #4450:  add tests for psi */
