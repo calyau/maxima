@@ -484,7 +484,7 @@
 	((eq (caar x) 'rat) (*red1 x))
 	;; Enforced resimplification: Reset dosimp and strip 'simp tags from x.
 	(dosimp (let ((dosimp nil)) (simplifya (unsimplify x) y)))
-	((member 'simp (cdar x)) x)
+	((member 'simp (cdar x) :test #'eq) x)
 	((eq (caar x) 'mrat) x)
 	((stringp (caar x))
 	 (simplifya (cons (cons ($verbify (caar x)) (rest (car x))) (rest x)) y))
@@ -535,14 +535,14 @@
     (cond ((or (atom x)
 	       (eq (caar x) 'rat)
 	       (eq (caar x) 'mrat)
-	       (member 'simp (cdar x)))
+	       (member 'simp (cdar x) :test #'eq))
 	   x)
 	  ((and (eq (caar x) (caar check))
 		(equal (cdr x) (cdr check)))
 	   (cond ((and (null (cdar check))
 		       (setq y (get (caar check) 'msimpind)))
 		  (cons y (cdr check)))
-		 ((member 'simp (cdar check))
+		 ((member 'simp (cdar check) :test #'eq)
 		  check)
 		 (t
 		  (cons (cons (caar check)
@@ -701,7 +701,7 @@
 ;;;-----------------------------------------------------------------------------
 
 (defun *red1 (x)
-  (cond ((member 'simp (cdar x))
+  (cond ((member 'simp (cdar x) :test #'eq)
 	 (if $float (fpcofrat x) x))
 	(t (*red (cadr x) (caddr x)))))
 
@@ -1355,7 +1355,7 @@
         ;; Check evaluation in floating point precision.
         ((flonum-eval (mop form) y))
         ;; Check evaluation in bigfloag precision.
-        ((and (not (member 'simp (car form)))
+        ((and (not (member 'simp (car form) :test #'eq))
               (big-float-eval (mop form) y)))
         ((eq y '$%e) 1)
         ((mexptp y)
@@ -2219,7 +2219,7 @@
            ;; Check for numerical evaluation of the sqrt.
            ((and (alike1 pot '((rat) 1 2))
                  (or (setq res (flonum-eval '%sqrt gr))
-                     (and (not (member 'simp (car x)))
+                     (and (not (member 'simp (car x) :test #'eq))
                           (setq res (big-float-eval '%sqrt gr)))))
             (return res))
            ((eq gr '$%i)
@@ -2386,7 +2386,7 @@
               ;; Numerically evaluate if the power is a (complex)
               ;; big-float.  (This is basically the guts of
               ;; big-float-eval, but we can't use big-float-eval.)
-              (when (and (not (member 'simp (car x)))
+              (when (and (not (member 'simp (car x) :test #'eq))
                          (complex-number-p pot 'bigfloat-or-number-p))
                 (let ((x ($realpart pot))
                       (y ($imagpart pot)))
