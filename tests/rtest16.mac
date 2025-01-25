@@ -2974,6 +2974,7 @@ psi[1](-5/2);
 %pi^2/2+964/225;
 
 /* Ordering of integers and floats that have the same value. */
-map(orderlessp, [0,   1,   -1,   0.0, 1.0, -1.0],
-                [0.0, 1.0, -1.0, 0,   1,   -1]);
-[true, true, true, false, false, false];
+map(orderlessp,
+	[0,    1,    -1,   0.0,   1.0,   -1.0],
+	[0.0,  1.0,  -1.0, 0,     1,     -1]);
+	[true, true, true, false, false, false];
