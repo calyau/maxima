@@ -45,7 +45,7 @@
 
 (def-simplifier cosh (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) 1)))
 	((and $%iargs (multiplep y '$%i)) (ftake* '%cos (coeff y '$%i 1)))
@@ -77,7 +77,7 @@
 
 (def-simplifier tanh (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) 0)))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (ftake* '%tan (coeff y '$%i 1))))
@@ -105,7 +105,7 @@
 
 (def-simplifier coth (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) (domain-error y 'coth))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%cot (coeff y '$%i 1))))
@@ -119,7 +119,7 @@
 
 (def-simplifier csch (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) (domain-error y 'csch)))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%csc (coeff y '$%i 1))))
@@ -133,7 +133,7 @@
 
 (def-simplifier sech (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (zerop1 y)) 1)
 	((and $%iargs (multiplep y '$%i)) (ftake* '%sec (coeff y '$%i 1)))
@@ -147,7 +147,7 @@
 
 (def-simplifier asin (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs
 	      ;; Recognize some special values
@@ -192,7 +192,7 @@
 
 (def-simplifier acos (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs 
 	      ;; Recognize some special values
@@ -235,7 +235,7 @@
 
 (def-simplifier acot (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
         ((and $%piargs
               (cond ((zerop1 y) (div '$%pi 2))
@@ -266,7 +266,7 @@
 
 (def-simplifier acsc (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
         ((and $%piargs
               (cond ((equal 1 y) (div '$%pi 2))
@@ -293,7 +293,7 @@
 
 (def-simplifier asec (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
         ((and $%piargs 
               (cond ((equal 1 y) 0) 
@@ -318,7 +318,7 @@
 
 (def-simplifier asinh (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) y)))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (ftake* '%asin (coeff y '$%i 1))))
@@ -331,7 +331,7 @@
 
 (def-simplifier acosh (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (equal y 1) 0)))
 	((and (eq $triginverses '$all) (not (atom y))
@@ -341,7 +341,7 @@
 
 (def-simplifier atanh (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 0)
 			     ((or (equal y 1) (equal y -1)) (domain-error y 'atanh)))))
@@ -355,7 +355,7 @@
 
 (def-simplifier acoth (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (or (equal y 1) (equal y -1)) (domain-error y 'acoth))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%acot (coeff y '$%i 1))))
@@ -368,7 +368,7 @@
 
 (def-simplifier acsch (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) (domain-error y 'acsch))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%acsc (coeff y '$%i 1))))
@@ -381,7 +381,7 @@
 
 (def-simplifier asech (y)
   (cond ((flonum-eval (mop form) y))
-	((and (not (member 'simp (car form) :test #'eq)) (big-float-eval (mop form) y)))
+	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((equal y 1) 0)
 			     ((zerop1 y) (domain-error y 'asech)))))

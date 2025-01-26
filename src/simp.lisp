@@ -601,7 +601,7 @@
 (defun unsimplify (x)
   (if (or (atom x) (specrepp x))
       x
-      (cons (remove 'simp (car x) :count 1) (mapcar #'unsimplify (cdr x)))))
+      (cons (remove 'simp (car x) :test #'eq :count 1) (mapcar #'unsimplify (cdr x)))))
 
 (defun simpargs (x y)
   (if (or (and (eq (get (caar x) 'dimension) 'dimension-infix)
