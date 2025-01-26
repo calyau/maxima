@@ -659,3 +659,12 @@ foo(1)(x)^3;
 [acos(1), acos(1.0), acos(1b0)];
 [0, 0.0, 0b0];
 
+/* Bug 4346:  csc(0b0) produces a funny message
+ * Test that the error message has the expected value
+ */
+block([errormsg: false], errcatch(csc(0b0)), error);
+["~A: argument ~:M isn't in the domain of ~A.", csc, 0.0b0, csc];
+
+block([errormsg: false], errcatch(cot(0b0)), error);
+["~A: argument ~:M isn't in the domain of ~A.", cot, 0.0b0, cot];
+
