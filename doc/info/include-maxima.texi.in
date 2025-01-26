@@ -171,6 +171,7 @@ and develop DOE Macsyma, now called Maxima.
 * Package bernstein::              Bernstein polynomials.
 * Package bitwise::                Manipulate bits of integers.
 * Package bode::                   Bode gain and phase plots.
+* Package cartan::                 Cartan differential forms package
 * Package celine::                 Sister Celine's method 
 * Package clebsch_gordan::         Clebsch-Gordan and Wigner coefficients
 * Package cobyla::                 Nonlinear optimization with inequality constraints.
@@ -455,6 +456,10 @@ Package bitwise
 
 Package bode
 * Functions and Variables for bode::
+
+Package cartan
+* Introduction to cartan::
+* Functions and Variables for cartan::
 
 Package clebsch_gordan
 * Functions and Variables for clebsch_gordan::
@@ -874,9 +879,13 @@ Understanding maxima's output
 @chapter Package bitwise
 @include bitwise.texi
 
-@node Package bode, Package celine, Package bitwise, Top
+@node Package bode, Package cartan, Package bitwise, Top
 @chapter Package bode
 @include bode.texi
+
+@node Package cartan, Package celine, Package bode, Top
+@chapter Package cartan
+@include cartan.texi
 
 @node Package celine, Package clebsch_gordan, Package bode, Top
 @chapter Package celine

@@ -1,0 +1,156 @@
+@c end concepts Cartan
+@menu
+* Introduction to cartan::
+* Functions and Variables for cartan::
+@end menu
+
+@node Introduction to cartan, Functions and Variables for cartan, Package cartan, Package cartan
+@section Introduction to cartan
+
+@code{cartan} is a package which implements the calculus of differential
+forms. Included are facilities for computing exterior products,
+contraction of vectors and forms, exterior derivatives, and Lie
+derivatives. The differential forms are given in terms of the natural
+basis forms derived from the coordinates on the manifold. Type
+@code{load(cartan);} to load this package. For a demonstration, type
+@code{demo(cartan);}
+
+@code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
+
+@opencatbox{Categories:}
+@category{Differential geometry}
+@category{Share packages}
+@category{Package cartan}
+@closecatbox
+
+
+@node Functions and Variables for cartan,  , Introduction to cartan, Package cartan
+@section Functions and Variables for cartan
+
+@anchor{init_cartan}
+@deffn {Function} init_cartan ([@var{x_1}, @dots{}, @var{x_m}])
+Initializes some global variables for the package. The argument, a
+Maxima list, is an ordered list of coordinates. The coordinate list is
+stored as the value of the variable @code{cartan_coords}. The value of
+the variable @code{cartan_basis} is a list of the basis 1-forms. The
+dimension is stored as the value of the variable @code{cartan_dim}.
+@end deffn
+
+@c ===beg===
+@c load("cartan")$
+@c init_cartan([x,y,z]);
+@c cartan_basis;
+@c cartan_dim;
+@c ===end===
+@example
+(%i1) load("cartan")$
+(%i2) init_cartan([x,y,z]);
+(%o2)                            [dx, dy, dz]
+(%i3) cartan_basis;
+(%o3)                            [dx, dy, dz]
+(%i4) cartan_dim;
+(%o4)                                  3
+@end example
+
+@anchor{form1~form2}
+@deffn {Infix Operator} @var{form@sub{1} ~ form@sub{2}}
+The tilde ``~'' is an infix operator which denotes the exterior (wedge)
+product. The canonical ordering of the products is determined by the
+order in which the coordinates were specified. For example, if the
+coordinate list is specified as @code{[x,y,z]}, then the two-form
+@code{dy~dx} simplifies to @code{-dx~dy}.
+@end deffn
+
+@c ===beg===
+@c load("cartan")$
+@c init_cartan([x,y,z]);
+@c vr:[v1,v2,v3];
+@c f1:x~dy+z~dz;
+@c f2:dz~f1;
+@c ===end===
+@example
+(%i1) init_cartan([x,y,z]);
+(%o1)                            [dx, dy, dz]
+(%i2) vr:[v1,v2,v3];
+(%o2)                            [v1, v2, v3]
+(%i3) f1:x~dy+z~dz;
+(%o3)                             z dz + x dy
+(%i4) f2:dz~f1;
+(%o4)                              - x dy dz
+@end example
+
+
+@anchor{vec|form}
+@deffn {Infix Operator} @var{vector | form}
+The bar ``|'' is an infix operator which defines the contraction of a
+vector on a form. The vector should be given on the left.
+@end deffn
+
+@anchor{ext_diff}
+@deffn {Function} ext_diff(@var{form})
+The exterior derivative operator. It takes one argument, which should be a differential form.
+@end deffn
+
+@anchor{lie_diff}
+@deffn {Function} lie_diff(@var{vector1},[@var{vector2},@var{form}])
+The Lie derivative operator. The first argument is a vector field. The
+second argument may be either a vector field or a differential form.
+@end deffn
+
+(Note: display2d is set to false in the following example.)
+
+@c ===beg===
+@c load("cartan")$
+@c init_cartan([x,y,z]);
+@c vr:[v1,v2,v3];
+@c f1:x~dy+z~dz;
+@c vr | f1;
+@c f2:dz~f1;
+@c ext_diff(f1);
+@c ext_diff(f3(x,y,z)~dx);
+@c depends([v1,v2,v3],[x,y,z]);
+@c lie_diff(vr,f2);
+@c depends([w1,w2,w3],[x,y,z]);
+@c wr:[w1,w2,w3];
+@c lie_diff(vr,wr);
+@c ===end===
+@example
+(%i1) init_cartan([x,y,z]);
+(%o1) [dx,dy,dz]
+(%i2) vr:[v1,v2,v3];
+(%o2) [v1,v2,v3]
+(%i3) f1:x ~ dy+z ~ dz;
+(%o3) z*dz+x*dy
+(%i4) vr | f1;
+(%o4) v3*z+v2*x
+(%i5) f2:dz ~ f1;
+(%o5) -(x*dy*dz)
+(%i6) ext_diff(f1);
+(%o6) dx*dy
+(%i7) ext_diff(f3(x,y,z) ~ dx);
+(%o7) -('diff(f3(x,y,z),z,1)*dx*dz)-'diff(f3(x,y,z),y,1)*dx*dy
+(%i8) depends([v1,v2,v3],[x,y,z]);
+(%o8) [v1(x,y,z),v2(x,y,z),v3(x,y,z)]
+(%i9) lie_diff(vr,f2);
+(%o9) -('diff(v3,z,1)*x*dy*dz)-'diff(v2,y,1)*x*dy*dz-v1*dy*dz
+                               -'diff(v2,x,1)*x*dx*dz+'diff(v3,x,1)*x*dx*dy
+(%i10) depends([w1,w2,w3],[x,y,z]);
+(%o10) [w1(x,y,z),w2(x,y,z),w3(x,y,z)]
+(%i11) wr:[w1,w2,w3];
+(%o11) [w1,w2,w3]
+(%i12) lie_diff(vr,wr);
+(%o12) [-('diff(v1,z,1)*w3)-'diff(v1,y,1)*w2+v3*'diff(w1,z,1)+v2*'diff(w1,y,1)
+                           +v1*'diff(w1,x,1)-'diff(v1,x,1)*w1,
+        -('diff(v2,z,1)*w3)+v3*'diff(w2,z,1)+v2*'diff(w2,y,1)+v1*'diff(w2,x,1)
+                           -'diff(v2,y,1)*w2-'diff(v2,x,1)*w1,
+        v3*'diff(w3,z,1)+v2*'diff(w3,y,1)+v1*'diff(w3,x,1)-'diff(v3,z,1)*w3
+                        -'diff(v3,y,1)*w2-'diff(v3,x,1)*w1]
+@end example
+
+
+@opencatbox{Categories:}
+@category{Package cartan}
+@closecatbox
+
+
+
