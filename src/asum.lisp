@@ -561,7 +561,7 @@
       (if (not (eq t (csign hi))) (mfuncall '$assume `((mgeqp) ,hi ,i)))
 
       (setq ex (subst i k e))
-      (setq ex (subst i k ex))
+      (setq ex (subst i k ex)) ; Why substitute again?
 
       (setq acc
             (cond ((and (eq n '$inf) ($freeof i ex))
@@ -597,6 +597,11 @@
         (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
           (setq acc (simpsum1-save e i i0 i1))))
 
+      ; If the expression is no longer a %sum, resimplify.
+      ; Ordering of expressions may change due to the gensym -> index substitution.
+      (unless (op-equalp acc '%sum)
+        (setq acc (resimplify acc)))
+
       acc)))
 
 (defun simpprod1 (e k lo hi)
@@ -612,7 +617,7 @@
       (if (not (eq t (csign hi))) (mfuncall '$assume `((mgeqp) ,hi ,i)))
 
       (setq ex (subst i k e))
-      (setq ex (subst i k ex))
+      (setq ex (subst i k ex)) ; Why substitute again?
 
       (setq acc
             (cond
@@ -653,6 +658,11 @@
           (setq acc (simpprod1-save e i i0 i1))))
 
       (setq acc (subst k i acc))
+
+      ; If the expression is no longer a %product, resimplify.
+      ; Ordering of expressions may change due to the gensym -> index substitution.
+      (unless (op-equalp acc '%product)
+        (setq acc (resimplify acc)))
 
       acc)))
 
