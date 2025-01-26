@@ -184,6 +184,10 @@ The sum is evaluated using both @mref{levin_u_sum} and
 @c float(s - exact);
 @c s: bflevin_u_sum(1/n^2, n, 1);
 @c s - bfloat(exact);
+@c /* Now increase fpprec and try the same example again. */
+@c  fpprec: 32;
+@c s: bflevin_u_sum(1/n^2, n, 1);
+@c s - bfloat(exact);
 @c ===end===
 @example
 @group
@@ -212,15 +216,22 @@ The sum is evaluated using both @mref{levin_u_sum} and
 (%i6) s - bfloat(exact);
 (%o6)                 2.775557561562891b-17
 @end group
+@group
+(%i7) /* Now increase fpprec and try the same example again. */
+ fpprec: 32;
+(%o7)                          32
+@end group
+@group
+(%i8) s: bflevin_u_sum(1/n^2, n, 1);
+(%o8)          1.644934066848226436472415166646b0
+@end group
+@group
+(%i9) s - bfloat(exact);
+(%o9)        - 3.0814879110195773648895647081359b-33
+@end group
 @end example
 
-Now increase @code{fpprec} and try the same example again.
 
-@c ===beg===
-@c fpprec: 32;
-@c s: bflevin_u_sum(1/n^2, n, 1);
-@c s - bfloat(exact);
-@c ===end===
 @example
 @group
 (%i7) fpprec: 32;
