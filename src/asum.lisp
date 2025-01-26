@@ -586,7 +586,6 @@
                      (setq acc (add acc (resimplify (subst (add j lo) i ex))))))
 
                   (t
-                   (setq ex (subst '%sum '$sum ex))
                    `((%sum simp) ,(subst k i ex) ,k ,lo ,hi))))
 
       (setq acc (subst k i acc))
@@ -594,7 +593,7 @@
       ;; If expression is still a summation,
       ;; punt to previous simplification code.
 
-      (if (and $simpsum (op-equalp acc '$sum '%sum))
+      (if (and $simpsum (op-equalp acc '%sum))
         (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
           (setq acc (simpsum1-save e i i0 i1))))
 
@@ -644,18 +643,16 @@
                  (setq acc (mult acc (resimplify (subst (add j lo) i ex))))))
 
               (t
-               (setq ex (subst '%product '$product ex))
                `((%product simp) ,(subst k i ex) ,k ,lo ,hi))))
 
       ;; Hmm, this is curious... don't call existing product simplifications
       ;; if index range is infinite -- what's up with that??
 
-      (if (and $simpproduct (op-equalp acc '$product '%product) (not (like n '$inf)))
+      (if (and $simpproduct (op-equalp acc '%product) (not (like n '$inf)))
         (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
           (setq acc (simpprod1-save e i i0 i1))))
 
       (setq acc (subst k i acc))
-      (setq acc (subst '%product '$product acc))
 
       acc)))
 

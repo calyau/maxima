@@ -1177,3 +1177,8 @@ ratdisrep (test1(taylor(cos(x), x, 0, 4)));
 sum((2^(k+i))/(2^(k+i)+2^(i)),i,0,k), simpsum;
 (2^k*(1 + k))/(1 + 2^k);
 
+/* Bug #4464: simpsum1/simpprod1 replace $sum/$product with %sum/%product */
+block([s : sum(sum^i, i, 1, n)], subst(sum = x, s));
+'sum(x^i, i, 1, n);
+block([p : product(product + i, i, 1, n)], subst(product = x, p));
+'product(x + i, i, 1, n);
