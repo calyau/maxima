@@ -724,7 +724,12 @@ This doesn't fix it.
 	 ((decimalfpp e) (cl-rat-to-maxima (* (cadr e)(expt 10 (caddr e)))))
 	
 	(($mapatom e) e)
-	(t (simplify (cons (list (mop e)) (mapcar #'$rationalize (margs e)))))))
+	(($subvarp (mop e)) ;subscripted function
+		     (subfunmake 
+		      (subfunname e) 
+			  (mapcar #'$rationalize (subfunsubs e)) 
+			  (mapcar #'$rationalize (subfunargs e))))
+	(t (recur-apply #'$rationalize e))))
 
 ;; from trigi
 

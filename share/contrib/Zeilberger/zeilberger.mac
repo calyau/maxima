@@ -9,7 +9,7 @@ modLoad("constants.mac");
 
 modLoad("numerical.mac");
 
-modLoad("settings.mac");
+modLoad("zeilberger_settings.mac");
 
 modLoad("algUtil.mac");
 

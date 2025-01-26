@@ -32,9 +32,9 @@
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
-(defvar *verify-html-index* t
+(defvar *verify-html-index* nil
   "If non-NIL, verify the contents of the html index versus the text
-  index.  Set via the command-line option --no-verify-html-index.")
+  index.  Set via the command-line option --verify-html-index.")
 (defvar *quit-on-error* nil
   "If a run-time error or warning is called, then $QUIT Maxima with a
 non-zero exit code. Should only be set by the command-line option
@@ -625,10 +625,10 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 			 :action #'(lambda ()
 				     (setf *maxima-load-init-files* nil))
 			 :help-string "Do not load the init file(s) on startup")
-	 (make-cl-option :names '("--no-verify-html-index")
+	 (make-cl-option :names '("--verify-html-index")
 			 :action #'(lambda ()
-				     (setf *verify-html-index* nil))
-			 :help-string "Do not verify on startup that the set of html topics is consistent with text topics.")
+				     (setf *verify-html-index* t))
+			 :help-string "Verify on startup that the set of html topics is consistent with text topics.")
 	 ))
   (process-args (get-application-args) *maxima-commandline-options*)
   (values input-stream batch-flag))
@@ -815,6 +815,27 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 (defun to-maxima ()
   (throw 'to-maxima t))
 
+(defun interactive-eval (form)
+  "Evaluate FORM, returning whatever it returns but adjust ***, **, *, +++, ++,
+  +, ///, //, /, and -."
+  (setf - form)
+  (let ((results (multiple-value-list (eval form))))
+    (setf /// //
+	  // /
+	  / results
+	  *** **
+	  ** *
+	  * (car results)))
+  (setf +++ ++
+	++ +
+	+ -)
+  (unless (boundp '*)
+    ;; The bogon returned an unbound marker.
+    (setf * nil)
+    (cerror (intl:gettext "Go on with * set to NIL.")
+	    (intl:gettext "EVAL returned an unbound marker.")))
+  /)
+
 (defun maxima-read-eval-print-loop ()
   (when *debugger-hook*
     ; Only set a new debugger hook if *DEBUGGER-HOOK* has not been set to NIL
@@ -829,7 +850,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
           (when (eq input eof)
             (fresh-line)
             (to-maxima))
-          (format t "~{~&~S~}" (multiple-value-list (eval input))))))))
+          (format t "~{~&~S~}" (interactive-eval input)))))))
 
 (defun maxima-lisp-debugger-repl (condition me-or-my-encapsulation)
   (declare (ignore me-or-my-encapsulation))
@@ -853,6 +874,17 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 	(kind x '$constant)
 	(setf (get x 'sysconst) t))))
 
+;; Optimizes a symbol's property list by moving properties that are frequently
+;; accessed by the simplifier to the front of the list (unless it's empty),
+;; adding an explicit nil entry for absent properties.
+(defun optimize-symbol-plist (s)
+  (when (symbol-plist s)
+    (dolist (key '(msimpind operators distribute_over opers))
+      (let ((val (get s key)))
+        (when val
+          (remprop s key))
+        (putprop s val key)))))
+
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.
 
@@ -861,12 +893,14 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;;; into *builtin-symbol-props* would cause a hang.  Therefore
 ;;; the properties are copied into *builtin-symbol-props* before
 ;;; initializing the assume database.
+;;; At the same time, optimize the symbols' property lists for faster lookup.
 (let ((maxima-package (find-package :maxima)))
   (do-symbols (s maxima-package)
     (when (and (eql (symbol-package s) maxima-package)
 	       (not (eq s '||))
 	       (member (char (symbol-name s) 0) '(#\$ #\%) :test #'char=))
       (push s *builtin-symbols*)
+      (optimize-symbol-plist s)
       (setf (gethash s *builtin-symbol-props*)
 	    (copy-tree (symbol-plist s))))))
 
@@ -874,6 +908,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;; e.g. MPLUS, MTIMES, etc.
 ;; Here we find them via the MHEADER property, which is used by the parser.
 ;; I don't know any better way to find these properties.
+;; At the same time, optimize the symbols' property lists for faster lookup.
 
 (let ((maxima-package (find-package :maxima)))
   (do-symbols (s maxima-package)
@@ -882,6 +917,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
         (let ((s1 (first h)))
           (unless (gethash s1 *builtin-symbol-props*)
             (push s1 *builtin-symbols*)
+            (optimize-symbol-plist s1)
             (setf (gethash s1 *builtin-symbol-props*)
                   (copy-tree (symbol-plist s1)))))))))
 

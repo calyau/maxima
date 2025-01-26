@@ -348,4 +348,9 @@
 	   (cl-rat-to-maxima (* sign significand (expt 2 expon)))))
 	(($bfloatp e) (cl-rat-to-maxima (* (cadr e)(expt 2 (- (caddr e) (third (car e)))))))
 	(($mapatom e) e)
-	(t (simplify (cons (list (mop e)) (mapcar #'$rationalize (margs e)))))))
+  (($subvarp (mop e)) ;subscripted function
+		     (subfunmake 
+		      (subfunname e) 
+			  (mapcar #'$rationalize (subfunsubs e)) 
+			  (mapcar #'$rationalize (subfunargs e))))
+	(t (recur-apply #'$rationalize e))))

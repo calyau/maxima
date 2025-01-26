@@ -221,8 +221,10 @@ Otherwise, @code{false} is returned.
 @c ===end===
 @example
 @group
-(%i1) assoc (abc, [[x, 111], [y, 222], [z, 333]], none); 
+(%i1) assoc (abc, [[x, 111], [y, 222], [z, 333]], none);
 (%o1)                         none
+@end group
+@group
 (%i2) assoc (abc, [[x, 111], [y, 222], [z, 333]]);
 (%o2)                         false
 @end group
@@ -1131,17 +1133,17 @@ Examples:
 @code{/} is the division operator.
 
 @c ===beg===
-@c lreduce ("^", args ({a, b, c, d}));
-@c lreduce ("/", args ({a, b, c, d}));
+@c lreduce ("^", [a, b, c, d]);
+@c lreduce ("/", [a, b, c, d]);
 @c ===end===
 @example
 @group
-(%i1) lreduce ("^", args (@{a, b, c, d@}));
+(%i1) lreduce ("^", [a, b, c, d]);
                                b c d
 (%o1)                       ((a ) )
 @end group
 @group
-(%i2) lreduce ("/", args (@{a, b, c, d@}));
+(%i2) lreduce ("/", [a, b, c, d]);
                                 a
 (%o2)                         -----
                               b c d
@@ -1516,19 +1518,19 @@ Examples:
 @code{/} is the division operator.
 
 @c ===beg===
-@c rreduce ("^", args ({a, b, c, d}));
-@c rreduce ("/", args ({a, b, c, d}));
+@c rreduce ("^", [a, b, c, d]);
+@c rreduce ("/", [a, b, c, d]);
 @c ===end===
 @example
 @group
-(%i1) rreduce ("^", args (@{a, b, c, d@}));
+(%i1) rreduce ("^", [a, b, c, d]);
                                  d
                                 c
                                b
 (%o1)                         a
 @end group
 @group
-(%i2) rreduce ("/", args (@{a, b, c, d@}));
+(%i2) rreduce ("/", [a, b, c, d]);
                                a c
 (%o2)                          ---
                                b d
@@ -1786,7 +1788,7 @@ and all other elements the same as @code{orderlessp}.
 @c ===end===
 @example
 @group
-(%i1) L: [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0,1,2,3, 1.0, 1.0b0];
+(%i1) L: [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1,2,3, 1.0, 1.0b0];
 (%o1) [%i, %i + 1, 2 x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 
                                                            1.0b0]
 @end group
@@ -2109,6 +2111,7 @@ stack or a fifo:
 (%i1) l:[Test,1,2,3,4];
 (%o1)                  [Test, 1, 2, 3, 4]
 @end group
+@group
 (%i2) while l # [] do
    disp(pop(l));
                               Test
@@ -2122,6 +2125,7 @@ stack or a fifo:
                                 4
 
 (%o2)                         done
+@end group
 @end example
 Another even faster example would be:
 @c ===beg===
@@ -2134,6 +2138,7 @@ Another even faster example would be:
 (%i1) l:[Test,1,2,3,4];
 (%o1)                  [Test, 1, 2, 3, 4]
 @end group
+@group
 (%i2) for i in l do
    disp(pop(l));
                               Test
@@ -2147,6 +2152,7 @@ Another even faster example would be:
                                 4
 
 (%o2)                         done
+@end group
 @end example
 
 Beginning traversal with the last element of a list is possible after

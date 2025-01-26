@@ -640,13 +640,6 @@
 	  (t
 	   (or mprops lprops fcell-props)))))
 
-(defprop expr expr hook-type)
-(defprop mexpr expr hook-type)
-(defprop subr expr hook-type)
-(defprop lsubr expr hook-type)
-(defprop mfexpr* macro hook-type)
-(defprop mfexpr*s macro hook-type)
-
 (defun make-trace-hook (fun type handler)
   ;; Argument handling according to FUN's TYPE is already done
   ;; elsewhere: HANDLER, meval...
@@ -661,9 +654,7 @@
     (case type
       ((mexpr)
        (mapply prop largs "A traced function"))
-      ((expr)
-       (apply prop largs))
-      ((subr lsubr)
+      ((expr subr lsubr)
        (apply prop largs))
       ((mfexpr* mfexpr*s)
        (funcall prop (car largs))))))
@@ -725,7 +716,7 @@
        (total-calls 0))
       ((null l)
        `(($matrix simp)
-	 ((mlist simp) $function $time//call $calls $runtime $gctime)
+	 ((mlist simp) $function $time/call $calls $runtime $gctime)
 	 ,.(nreverse v)
 	 ,(timer-mlist '$total total-calls total-runtime total-gctime)))
     (let*
@@ -739,15 +730,23 @@
 	(incf total-gctime gctime)
 	(push (timer-mlist (car l) calls runtime gctime) v)))))
 
+(defun timer-reset-1 (fun)
+  (let ((fun-opr (getopr fun)))
+    ($put fun-opr 0 '$runtime)
+    ($put fun-opr 0 '$gctime)
+    ($put fun-opr 0 '$calls)))
+
 (defun macsyma-timer (fun)
   (prog1
       (macsyma-trace-sub fun 'timer-handler $timer)
-      (let ((fun-opr (getopr fun)))
-        ($put fun-opr 0 '$runtime)
-        ($put fun-opr 0 '$gctime)
-        ($put fun-opr 0 '$calls))))
+      (timer-reset-1 fun)))
 
 (defun macsyma-untimer (fun) (macsyma-untrace-sub fun 'timer-handler $timer))
+
+(defun $timer_reset (&rest maybe-funs)
+  (let ((funs (or maybe-funs (cdr $timer))))
+    (mapcar #'timer-reset-1 funs)
+    (cons '(mlist) funs)))
 
 (defvar runtime-devalue 0)
 (defvar gctime-devalue 0)

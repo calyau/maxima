@@ -1676,9 +1676,6 @@
 
 (defprop %hankel_1 (mlist $matrix mequal) distribute_over)
 
-#+nil
-(defprop %hankel_1 simp-hankel-1 operators)
-
 ; Derivatives of the Hankel 1 function
 (defprop %hankel_1
     ((n x)
@@ -1767,9 +1764,6 @@
 
 (defprop %hankel_2 (mlist $matrix mequal) distribute_over)
 
-#+nil
-(defprop %hankel_2 simp-hankel-2 operators)
-
 ; Derivatives of the Hankel 2 function
 (defprop %hankel_2
     ((n x)
@@ -1857,9 +1851,6 @@
 ;; struve_h distributes over lists, matrices, and equations
 
 (defprop %struve_h (mlist $matrix mequal) distribute_over)
-
-#+nil
-(defprop %struve_h simp-struve-h operators)
 
 ; Derivatives of the Struve H function
 (defprop %struve_h

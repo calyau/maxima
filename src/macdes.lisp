@@ -232,6 +232,10 @@
   (declare (ignore wanted))
   (merror (intl:gettext "output_format_for_help: frontend not implemented.")))
 
+(defvar *verify-html-index-on-output-format* t
+  "Verify the html index when the output format is set to html.  This
+  check is only done once.")
+
 (defun set-output-format-for-help (assign-var val)
   "When $output_format_for_help is set, this function validates the
   value and sets *help-display-function* to the function to display
@@ -244,7 +248,14 @@
     ($text
      (setf *help-display-function* 'display-text-topics))
     ($html
-     (setf *help-display-function* 'display-html-topics))
+     (setf *help-display-function* 'display-html-topics)
+     (when *verify-html-index-on-output-format*
+       (setf *verify-html-index-on-output-format* nil)
+       ;; Verify the html index.  This happens only when the output
+       ;; format is set to html the first time.  It is also
+       ;; independent of the value of *verify-html-index* (set via the
+       ;; command-line option --verify-html-index).
+       ($verify_html_index)))
     ($frontend
      (if $maxima_frontend
 	 (setf *help-display-function* 'display-frontend-topics)

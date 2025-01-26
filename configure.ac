@@ -525,9 +525,39 @@ fi
 
 dnl n.b. ccl64_default_name is hardcoded in "with" message
 dnl We assume we're running on an x86 processor.  The user has to
-dnl select a different executable name to match his system, if neceessary.
+dnl select a different executable name to match his system, if necessary.
 
+dnl use as default the macos binary (as before)
 ccl64_default_name=dx86cl64
+dnl try to detect the target system
+dnl TODO: Binary names are documented here: https://ccl.clozure.com/docs/ccl.html#tab_platform-specific-filename-conventions)
+dnl       Are these checks (especially Windows, Linux PPC64) okay?
+dnl Probably at the end we could check if another - CCL64 unsupported - OS was used.
+dnl
+dnl of course the ccl directory needs to be in the path.
+dnl another possibilty would be to default to "ccl64", which is - MAYBE - a platform independent
+dnl startscript in /usr/local/bin.
+case "${host_os}" in
+    *linux-powerpc64*)
+        ccl64_default_name=ppccl64
+        ;;
+    *linux*)
+        ccl64_default_name=lx86cl64
+        ;;
+    *cygwin*|*mingw*|*windows*)
+        ccl64_default_name=wx86cl64.exe
+        ;;
+    *darwin*)
+        ccl64_default_name=dx86cl64
+        ;;
+    *solaris*)
+        ccl64_default_name=sx86cl64
+        ;;
+    *freebsd*)
+        ccl64_default_name=fx86cl64
+        ;;
+esac
+
 AC_ARG_ENABLE(ccl64,
 	[  --enable-ccl64               Use CCL (Clozure Common Lisp), 64-bit],
      	[case "${enableval}" in
@@ -539,7 +569,7 @@ AC_ARG_ENABLE(ccl64,
      	esac],
 	[ccl64=false])
 AC_ARG_WITH(ccl64,
-	[  --with-ccl64=<prog>          Use ccl64 executable <prog> (default dx86cl64)],
+	[  --with-ccl64=<prog>          Use ccl64 executable <prog> (default ${ccl64_default_name})],
 	[ccl64=true
 	lisps_enabled="${lisps_enabled} ccl64"
 	explicit_lisp=true
@@ -681,6 +711,21 @@ if test x"${enable_build_docs}" = xtrue ; then
             AC_MSG_RESULT([${makeinfo_version_string} (6.8 or later preferred)])
 	fi
 
+        dnl Enable JS highlighting of examples in the HTML docs.
+        dnl The API has changed between 6.8 and 7.0, so we need to substitute the
+        dnl the appropriate things.
+        if test ${makeinfo_version} -le 608; then
+           TEXI_EXTRA_HEAD='$options->{"EXTRA_HEAD"} = '
+           HLJS_CSS_SELECTOR="'pre.example'"
+           TEXI_EXTRA_TAIL=''
+        else
+           TEXI_EXTRA_HEAD='texinfo_set_from_init_file("EXTRA_HEAD", '
+           HLJS_CSS_SELECTOR="'.example-preformatted'"
+           TEXI_EXTRA_TAIL=')'
+        fi
+        AC_SUBST(TEXI_EXTRA_HEAD)
+        AC_SUBST(HLJS_CSS_SELECTOR)
+        AC_SUBST(TEXI_EXTRA_TAIL)
         TEXI2HTML=texi2html.init
         AC_SUBST(TEXI2HTML)
 
@@ -835,7 +880,7 @@ AC_ARG_ENABLE(xmaxima_exe,
    [xmaxima_exe=false])
 AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe = xtrue)
 
-dnl Optionally build xmaxima.exe under windows
+dnl Optionally build winkill.exe under windows
 dnl default to false as additional software
 AC_ARG_ENABLE(winkill_exe,
   [  --enable-winkill             Build Windows winkill.exe and winkill_lib.dll for installer],

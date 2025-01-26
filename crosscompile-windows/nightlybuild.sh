@@ -16,7 +16,7 @@ LANG=C.UTF-8
 export LANG
 # Use a recent CMake - installlers build with older versions
 # seem to have problems when uninstalling the old version.
-CMAKE=/opt/cmake-3.28.1-linux-x86_64/bin/cmake
+CMAKE=/opt/cmake-3.30.1-linux-x86_64/bin/cmake
 test -x $CMAKE || exit 1
 
 buildinformation () {
@@ -41,7 +41,8 @@ buildprocess () {
     echo "$1 build log:"
     if [ "$1" == "win64" ]
     then
-        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DBUILD_64BIT=YES ..
+        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DWITH_CCL64=YES -DBUILD_64BIT=YES ..
+        make ccl
     else
         $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DBUILD_64BIT=NO ..
     fi

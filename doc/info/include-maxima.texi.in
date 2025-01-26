@@ -198,6 +198,7 @@ and develop DOE Macsyma, now called Maxima.
 * Package interpol::               Interpolation.
 * Package lapack::                 LAPACK functions for linear algebra.
 * Package lbfgs::                  L-BFGS unconstrained minimization.
+* Package levin::                  Levin transforms to accelerate convergence of series
 * Package lindstedt::              Lindstedt.
 * Package linearalgebra::          Functions for linear algebra.
 * Package lsquares::               Least squares.
@@ -567,6 +568,12 @@ Package lapack
 Package lbfgs
 * Introduction to lbfgs::
 * Functions and Variables for lbfgs::
+
+Package levin
+* Introduction to levin::
+* Functions and Variables for levin::
+* Examples for levin::
+* References for levin::
 
 Package lindstedt
 * Functions and Variables for lindstedt::
@@ -975,11 +982,15 @@ Understanding maxima's output
 @chapter Package lapack
 @include lapack.texi
 
-@node Package lbfgs, Package lindstedt, Package lapack, Top
+@node Package lbfgs, Package levin, Package lapack, Top
 @chapter Package lbfgs
 @include lbfgs.texi
 
-@node Package lindstedt, Package linearalgebra, Package lbfgs, Top
+@node Package levin, Package lindstedt, Package lbfgs, Top
+@chapter Package levin
+@include levin.texi
+
+@node Package lindstedt, Package linearalgebra, Package levin, Top
 @chapter Package lindstedt
 @include lindstedt.texi
 

@@ -254,7 +254,7 @@ SETTINGS
 
 The package provides many settings set by the
 following variables whose default values are defined
-in the file "settings.mac".
+in the file "zeilberger_settings.mac".
 
 --------------------------------------------------------------------------
 General settings

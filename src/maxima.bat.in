@@ -27,8 +27,10 @@ FOR %%A IN ("%~dp0.") DO SET "prefix=%%~dpA"
 rem remove trailing "\":
 if "%prefix:~-1%"=="\" set "prefix=%prefix:~0,-1%"
 
-rem change "\" to "/" in that path. Works too and causes less troubles (e.g. with xmaxima).
-set "prefix=%prefix:\=/%"
+rem Change "\" to "/" in that path. Works too and causes less troubles (e.g. with xmaxima).
+rem Don't know, why the "//" must be written instead of "/" - but it appears to work with "//".
+rem And a double "//" should work anyways, so that does not hurt.
+set "prefix=%prefix:\=//%"
 set "maxima_prefix=%prefix%"
 set "package=@PACKAGE@"
 set verbose=false
@@ -172,13 +174,10 @@ if "%layout_autotools%" == "true" goto clisp_autotools
 goto :EOF
 
 :clisp_autotools
-rem ./configure sets a variable @CLISP_NAME@ which might be used instead of lisp.exe,
-rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
-rem which would be inserted here ==> do not use the variable @CLISP_NAME@ but just lisp.exe.
 set "path=%maxima_imagesdir%/binary-%lisp%;%maxima_prefix%/clisp-2.49/base;%path%"
 rem set codepage to unicode
 chcp 65001 >nul
-lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
+@CLISP_NAME@ %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto :EOF
 
 :clisp_exec
@@ -212,10 +211,7 @@ if exist "%maxima_prefix%/bin/libgcc_s_seh-1.dll" (
     rem I am a 32 bit build - the SBCL workaround for load(lapack) will not work
 )
 
-rem ./configure sets a variable @SBCL_NAME@ which might be used instead of sbcl.exe,
-rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
-rem which would be inserted here ==> do not use the variable @SBCL_NAME@ but just sbcl.exe.
-sbcl.exe --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
+@SBCL_NAME@ --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
 goto :EOF
 
 :dosbcl_exec
@@ -239,9 +235,8 @@ if "%MAXIMA_SIGNALS_THREAD%" == "" (
 )
 rem set codepage to unicode
 chcp 65001 >nul
-wx86cl64.exe -I "%maxima_image_base%.image" %lisp_options% -e %start_maxima% -- %*
+@CCL64_NAME@ -I "%maxima_image_base%.image" %lisp_options% -e %start_maxima% -- %*
 goto :EOF
-
 
 :doabcl
 set "MAXIMA_IMAGESDIR_BIN=%maxima_imagesdir%/binary-%lisp%"

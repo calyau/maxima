@@ -103,7 +103,7 @@ The library is contained in the following files:
 
 sarag.mac (it loads all the files)
 
-settings.mac (general settings)
+sarag_settings.mac (general settings)
 constants.mac
 sarag_initialization.mac
 aliases.mac (name conventions)
@@ -173,10 +173,10 @@ be included soon.
 ---------------------------------------------------------------
 SETTINGS
 
-settings.mac
+sarag_settings.mac
 ---------------------------------------------------------------
 
-The library contains some settings in the file "settings.mac".
+The library contains some settings in the file "sarag_settings.mac".
 
 The main settings and their default values are:
 
@@ -213,7 +213,7 @@ Name of the postscript file output for "drawTopology"
 
 
 For the other settings we refer to file 
-settings.mac
+sarag_settings.mac
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------

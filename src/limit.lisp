@@ -217,6 +217,12 @@
 				((eq dr '$minus) '$zerob)
 				(t 0)))
 		(setq origval 0))
+
+        ;; Convert a limit from below to a limit from above.
+		(when (and (not (infinityp val)) (eq dr '$minus))
+			(setq exp (maxima-substitute (mul -1 var) var exp))
+			(setq dr '$plus)
+			(setq val '$zeroa))
               
 	      ;; Make assumptions about limit var being very small or very large.
 	      ;; Assumptions are forgotten upon exit.
@@ -649,8 +655,18 @@ ignoring dummy variables and array indices."
 				       (subst (m^ '$minf -1) '$zerob small))))
 	          (simpinf new-small)))))
 			
-    
+(defun has-float (e)
+    "Return true iff the expression e contains either a binary64 or a Maxima big float number."
+	(cond (($mapatom e) (or (floatp e) ($bfloatp e)))
+		  (t (some #'has-float (cdr e)))))	
+
 ;;;*I* INDICATES: T => USE LIMIT1,THINK, NIL => USE SIMPLIMIT.
+
+;; The function `limit1` dispatches `factor` on the expression `exp`. When 
+;; the expression involves a floating point number, these numbers are converted 
+;; to rational approximations. This can cause bugs for limit calculations. 
+;; Although a bit inelegant, this code dispatches `simplimit` when `exp` a 
+;; floating point number.
 (defun limit (exp var val *i*)
   (cond
     ((among '$und exp)  '$und)
@@ -669,6 +685,7 @@ ignoring dummy variables and array indices."
 				  (tlimp exp var))
 			     (taylim exp var val *i*))
 			    ((ratp exp var) (ratlim exp))
+				((has-float exp) (simplimit exp var val))
 			    ((or (eq *i* t) (radicalp exp var))
 			     (limit1 exp var val))
 			    ((eq *i* 'think)
@@ -3464,6 +3481,7 @@ ignoring dummy variables and array indices."
 	  ((eq lim '$und) '$und)                 ;asin(und)=und
 	  ((in-domain-of-asin lim)               ;direct substitution
 	   (ftake '%asin lim))
+	  ((freeof x e) e) ;limit of constant--it happens!
 	  (t 
 	   (setq e (trisplit (cadr e))) ;overwrite e!
 	   (setq dir (behavior (cdr e) x pt))

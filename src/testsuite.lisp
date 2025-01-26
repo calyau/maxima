@@ -79,7 +79,7 @@
                 ((mlist simp) 16 17 40 52 53 57 97 109))
         "rtestconjugate"
         ((mlist simp) "rtestsum"
-	 ((mlist simp) 23 24 38 95))
+	 ((mlist simp) 23 24 38))
 	;; Tested with acl 10.1
 	((mlist simp) "rtest_trig"
 	 #+allegro ((mlist simp) 58))
@@ -129,7 +129,7 @@
         "rtestdefstruct"
 	;; Tested with acl 10.1
 	((mlist simp) "rtest_limit"
-         ((mlist simp) 113 158 159 231))
+         ((mlist simp) 113 158 159))
         "rtest_powerseries"
         ((mlist simp) "rtest_laplace"
 	 ((mlist simp) 29 49 50 51 59 60 61 62 78 80))
@@ -139,14 +139,14 @@
 	"rtest_polynomialp"
         ((mlist simp) "rtest_limit_extra" 
           ((mlist simp)  42 59 61 82 83 84 89 
-                         94 96 104 111
+                         96 104 111
                          124 125 126 127 132 133 135 136 137
                          224 238 
                          239 240 241 242 243 244 245 246 249
                          259 261 262 267 268 269 270 271 272
                          280 281 282))
          ((mlist simp) "rtest_limit_gruntz"
-          ((mlist simp) 20 25 28 29 30 36 37 38 39 86 96 97))
+          ((mlist simp) 20 25 28 29 30 36 37 38 39 86 96))
 
          ((mlist simp) "rtest_limit_wester"
           ((mlist simp) 12 13))
@@ -318,8 +318,6 @@
      ((mlist simp) "rtest_engineering_format"
       #+abcl
       ((mlist simp) 6)
-      #+ccl
-      ((mlist simp) 6 8 10 12)
       ;; Tested with acl 10.1
       #+allegro
       ((mlist simp) 1 6 8 10 12 14))

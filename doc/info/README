@@ -9,6 +9,33 @@ There are some guidelines, though:
  * order exposition by decreasing importance
  * be precise, be complete, get to the point
 
+Defining functions
+------------------
+When defining a single functions use `deffn`.  When defining related
+functions, but with different names, use `deffn` and `deffnx`.  For
+example, `bfpsi` and `bfpsi0` are closely related functions that are
+described together in the same text.  This uses `deffn` and `deffnx`:
+```
+@deffn  {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
+```
+
+However, for the function `array`, there are three related functions
+of the same name but with different arguments.  In this case, use
+`deffn` and `@fname` to define these functions:
+```
+@deffn  {Function} array @
+@fname{array} (@var{name}, @var{dim_1}, @dots{}, @var{dim_n}) @
+@fname{array} (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n}) @
+@fname{array} ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
+```
+
+Defining functions this way is very helpful when the user asks for
+help.  If `deffnx` were used to define the different forms of the
+`array` function, `? array` would say there are three functions and
+the user would need to select one (or all) without knowing how they
+differ.  But using `@fname`, there's only one function and the help is
+imediately displayed.
 
 How to test the documentation?
 ==============================
@@ -32,12 +59,12 @@ have proven helpful:
   to select xetex for building it.
 
 
-- Do all of the documentation types look like they should
+- Do all of the documentation types look like they should?
 
 - Is the documentation accessible to the ? and ?? commands of maxima?
 
-Documentation interna
-=====================
+Documentation internals
+=======================
 
 The central file the documentation is generated from
 include-maxima.texi.in
@@ -58,7 +85,11 @@ to update the "texinfo.tex" files shipped with maxima from time to time.
 The files header.hhp, maxima.hhp (and the generated files contents.hhc and index.hhk)
 are for the generation of Microsoft HTML Help (Option --enable-chm).
 
-
+The file `texi2html.init` (generated from `texi2html.init.in`)
+contains customizations for `makeinfo` when generating the HTML
+version of the user manual.  This includes things like loading MathJax
+(for nice display of formulas) and syntax highlighting for the
+examples.
 
 TO DO
 =====
@@ -88,3 +119,4 @@ Documented TODOs
 
 The .texi sources of the manual contain many comments that show excellent
 starting points on where to start when wanting to improve the manual.
+

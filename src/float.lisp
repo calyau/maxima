@@ -747,7 +747,21 @@
 		      (setq y ($bfloat (logarc (caar x) y)))
 		      (if (free y '$%i)
 			  y (let ($ratprint) (fparcsimp ($rectform y)))))
-		     ((member (caar x) '(%cot %sec %csc) :test #'eq)
+                     ((eq (caar x) '%sec)
+                      ;; sec(x) = 1/cos(x).  Note that cos(x) /= 0 for
+                      ;; any bfloat value of x, so we should never
+                      ;; divide by zero.
+                      (invertbigfloat
+		       ($bfloat (list (ncons (safe-get (caar x) 'recip)) y))))
+		     ((member (caar x) '(%cot %csc) :test #'eq)
+                      ;; cot(x) = 1/tan(x) and csc(x) = 1/sin(x)
+                      ;;
+                      ;; But x = 0 is not in the domain, so check for
+                      ;; that and signal a domain error if so.  There
+                      ;; are no other bfloat values where tan(x) or
+                      ;; sin(x) is zero.
+                      (when (equal (second x) bigfloatzero)
+                        (domain-error (second x) (caar x)))
 		      (invertbigfloat
 		       ($bfloat (list (ncons (safe-get (caar x) 'recip)) y))))
 		     (t ($bfloat (exponentialize (caar x) y))))

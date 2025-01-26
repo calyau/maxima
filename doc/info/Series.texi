@@ -235,6 +235,11 @@ summation, when an automatically generated index is needed.
 When @code{gensumnum} is @code{false}, an automatically-generated index is only
 @code{genindex} with no numeric suffix.
 
+Note that @code{sum} is slow for symbolic sums that result in many terms,
+such as @code{sum(x^i, i, 1, 10000)}. For such cases, using @code{tree_reduce}
+and @code{makelist} is significantly faster, e.g.
+@code{tree_reduce("+", makelist(x^i, i, 1, 10000))}.
+
 See also @mrefcomma{lsum} @mrefcomma{sumcontract} @mrefcomma{intosum}
 @mrefcomma{bashindices} @mrefcomma{niceindices}
 @mrefcomma{nouns} @mrefcomma{evflag} and @ref{Package zeilberger}

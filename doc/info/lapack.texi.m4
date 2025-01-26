@@ -20,8 +20,9 @@ as obtained from the SLATEC project.
 @section Functions and Variables for lapack
 
 @anchor{dgeev}
-@deffn {Function} dgeev (@var{A})
-@deffnx {Function} dgeev (@var{A}, @var{right_p}, @var{left_p})
+@deffn {Function} dgeev @
+@fname{dgeev} (@var{A}) @
+@fname{dgeev} (@var{A}, @var{right_p}, @var{left_p})
 
 Computes the eigenvalues and, optionally, the eigenvectors of a matrix @var{A}.
 All elements of @var{A} must be integer or floating point numbers.
@@ -248,38 +249,35 @@ Examples:
 @code{dgesv} computes the solution of the linear equation @math{@var{A} @var{x} = @var{b}}.
 
 @c ===beg===
+@c load("lapack")$
 @c A : matrix ([1, -2.5], [0.375, 5]);
 @c b : matrix ([1.75], [-0.625]);
 @c x : dgesv (A, b);
 @c dlange (inf_norm, b - A . x);
 @c ===end===
 @example
+(%i1) load("lapack")$
 @group
-(%i1) A : matrix ([1, -2.5], [0.375, 5]);
+(%i2) A : matrix ([1, -2.5], [0.375, 5]);
                         [   1    - 2.5 ]
-(%o1)                   [              ]
+(%o2)                   [              ]
                         [ 0.375    5   ]
 @end group
 @group
-(%i2) b : matrix ([1.75], [-0.625]);
+(%i3) b : matrix ([1.75], [-0.625]);
                            [  1.75   ]
-(%o2)                      [         ]
+(%o3)                      [         ]
                            [ - 0.625 ]
 @end group
 @group
-(%i3) x : dgesv (A, b);
-                    [   1    - 2.5 ]  [  1.75   ]
-(%o3)         dgesv([              ], [         ])
-                    [ 0.375    5   ]  [ - 0.625 ]
+(%i4) x : dgesv (A, b);
+                    [  1.2105263157894737   ]
+(%o4)               [                       ]
+                    [ - 0.21578947368421053 ]
 @end group
 @group
-(%i4) dlange (inf_norm, b - A . x);
-                       [  1.75   ]
-(%o4) dlange(inf_norm, [         ]
-                       [ - 0.625 ]
-         [   1    - 2.5 ]         [   1    - 2.5 ]  [  1.75   ]
-       - [              ] . dgesv([              ], [         ]))
-         [ 0.375    5   ]         [ 0.375    5   ]  [ - 0.625 ]
+(%i5) dlange (inf_norm, b - A . x);
+(%o5)                          0.0
 @end group
 @end example
 
@@ -287,85 +285,73 @@ Examples:
 @var{x} is the same size as @var{b}.
 
 @c ===beg===
+@c load ("lapack")$
 @c A : matrix ([1, -0.15], [1.82, 2]);
 @c b : matrix ([3.7, 1, 8], [-2.3, 5, -3.9]);
 @c x : dgesv (A, b);
 @c dlange (inf_norm, b - A . x);
 @c ===end===
 @example
+(%i1) load ("lapack")$
 @group
-(%i1) A : matrix ([1, -0.15], [1.82, 2]);
+(%i2) A : matrix ([1, -0.15], [1.82, 2]);
                         [  1    - 0.15 ]
-(%o1)                   [              ]
+(%o2)                   [              ]
                         [ 1.82    2    ]
 @end group
 @group
-(%i2) b : matrix ([3.7, 1, 8], [-2.3, 5, -3.9]);
+(%i3) b : matrix ([3.7, 1, 8], [-2.3, 5, -3.9]);
                        [  3.7   1    8   ]
-(%o2)                  [                 ]
+(%o3)                  [                 ]
                        [ - 2.3  5  - 3.9 ]
 @end group
 @group
-(%i3) x : dgesv (A, b);
-                [  1    - 0.15 ]  [  3.7   1    8   ]
-(%o3)     dgesv([              ], [                 ])
-                [ 1.82    2    ]  [ - 2.3  5  - 3.9 ]
+(%i4) x : dgesv (A, b);
+(%o4) 
+ [ 3.1038275406951175   1.2098548174219095  6.7817861856577215  ]
+ [                                                              ]
+ [ - 3.974483062032557  1.3990321161460624  - 8.121425428948527 ]
 @end group
 @group
-(%i4) dlange (inf_norm, b - A . x);
-                       [  3.7   1    8   ]
-(%o4) dlange(inf_norm, [                 ]
-                       [ - 2.3  5  - 3.9 ]
-   [  1    - 0.15 ]         [  1    - 0.15 ]
- - [              ] . dgesv([              ], 
-   [ 1.82    2    ]         [ 1.82    2    ]
-[  3.7   1    8   ]
-[                 ]))
-[ - 2.3  5  - 3.9 ]
+(%i5) dlange (inf_norm, b - A . x);
+(%o5)                1.1102230246251565e-15
 @end group
 @end example
 
 The elements of @var{A} and @var{b} must evaluate to real floating point numbers.
 
 @c ===beg===
+@c load ("lapack")$
 @c A : matrix ([5, -%pi], [1b0, 11/17]);
 @c b : matrix ([%e], [sin(1)]);
 @c x : dgesv (A, b);
 @c dlange (inf_norm, b - A . x);
 @c ===end===
 @example
+(%i1) load ("lapack")$
 @group
-(%i1) A : matrix ([5, -%pi], [1b0, 11/17]);
+(%i2) A : matrix ([5, -%pi], [1b0, 11/17]);
                         [   5    - %pi ]
                         [              ]
-(%o1)                   [         11   ]
+(%o2)                   [         11   ]
                         [ 1.0b0   --   ]
                         [         17   ]
 @end group
 @group
-(%i2) b : matrix ([%e], [sin(1)]);
+(%i3) b : matrix ([%e], [sin(1)]);
                            [   %e   ]
-(%o2)                      [        ]
+(%o3)                      [        ]
                            [ sin(1) ]
 @end group
 @group
-(%i3) x : dgesv (A, b);
-                     [   5    - %pi ]
-                     [              ]  [   %e   ]
-(%o3)          dgesv([         11   ], [        ])
-                     [ 1.0b0   --   ]  [ sin(1) ]
-                     [         17   ]
+(%i4) x : dgesv (A, b);
+                     [ 0.6903756431559864  ]
+(%o4)                [                     ]
+                     [ 0.23351098255295172 ]
 @end group
 @group
-(%i4) dlange (inf_norm, b - A . x);
-                       [   %e   ]
-(%o4) dlange(inf_norm, [        ]
-                       [ sin(1) ]
-          [   5    - %pi ]         [   5    - %pi ]
-          [              ]         [              ]  [   %e   ]
-        - [         11   ] . dgesv([         11   ], [        ]))
-          [ 1.0b0   --   ]         [ 1.0b0   --   ]  [ sin(1) ]
-          [         17   ]         [         17   ]
+(%i5) dlange (inf_norm, b - A . x);
+(%o5)                 2.220446049250313e-16
 @end group
 @end example
 
@@ -377,8 +363,9 @@ The elements of @var{A} and @var{b} must evaluate to real floating point numbers
 @end deffn
 
 @anchor{dgesvd}
-@deffn {Function} dgesvd (@var{A})
-@deffnx {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
+@deffn {Function} dgesvd @
+@fname{dgesvd} (@var{A}) @
+@fname{dgesvd} (@var{A}, @var{left_p}, @var{right_p})
 
 Computes the singular value decomposition (SVD) of a matrix @var{A},
 comprising the singular values and, optionally, the left and right singular vectors.
@@ -608,8 +595,9 @@ that is, the square root of the sum of squares of the matrix elements.
 @end deffn
 
 @anchor{dgemm}
-@deffn {Function} dgemm (@var{A}, @var{B})
-@deffnx {Function} dgemm (@var{A}, @var{B}, @var{options})
+@deffn {Function} dgemm @
+@fname{dgemm} (@var{A}, @var{B}) @
+@fname{dgemm} (@var{A}, @var{B}, @var{options})
 Compute the product of two matrices and optionally add the product to
 a third matrix.
 
@@ -794,8 +782,9 @@ for the product.  The default is @code{false}.
 @end deffn
 
 @anchor{zgeev}
-@deffn {Function} zgeev (@var{A})
-@deffnx {Function} zgeev (@var{A}, @var{right_p}, @var{left_p})
+@deffn {Function} zgeev @
+@fname{zgeev} (@var{A}) @
+@fname{zgeev} (@var{A}, @var{right_p}, @var{left_p})
 
 Like @mrefcomma{dgeev} but the matrix
 m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
@@ -811,8 +800,9 @@ To make use of this function, you must load the LaPack package via
 @end deffn
 
 @anchor{zheev}
-@deffn {Function} zheev (@var{A})
-@deffnx {Function} zheev (@var{A}, @var{eigvec_p})
+@deffn {Function} zheev @
+@fname{zheev} (@var{A}) @
+@fname{zheev} (@var{A}, @var{eigvec_p})
 
 Like @mrefcomma{dgeev} but the matrix
 m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)
