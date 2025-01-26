@@ -668,3 +668,12 @@ block([errormsg: false], errcatch(csc(0b0)), error);
 block([errormsg: false], errcatch(cot(0b0)), error);
 ["~A: argument ~:M isn't in the domain of ~A.", cot, 0.0b0, cot];
 
+/* Bug 4461: funny error message from sec(%pi/2)
+ *
+ * Test that the error messages are reasonable and correct now.
+ */
+block([errormsg: false], errcatch(sec(%pi/2)), error);
+["~A: argument ~:M isn't in the domain of ~A.",sec,%pi/2,sec];
+
+block([errormsg: false], errcatch(cot(%pi)), error);
+["~A: argument ~:M isn't in the domain of ~A.",cot,%pi,cot];
