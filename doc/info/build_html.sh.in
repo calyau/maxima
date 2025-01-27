@@ -236,7 +236,7 @@ MAKEINFO_VERSION=`@MAKEINFO@ --version | head -n1 | sed 's/.* \([0-9][0-9]*\.[0-
 MIVERSION_MAJOR=`echo "$MAKEINFO_VERSION" | cut -d. -f1`
 MIVERSION_MINOR=`echo "$MAKEINFO_VERSION" | cut -d. -f2`
 
-if [ "$MIVERSION_MAJOR" -lt 6 ] || { [ "$MIVERSION_MAJOR" -eq 6 ] && [ "$MIVERSION_MINOR" -lt 6 ]; }; then
+if [ "$MIVERSION_MAJOR" -lt 6 ] || { [ "$MIVERSION_MAJOR" -eq 6 ] && [ "$MIVERSION_MINOR" -lt 8 ]; }; then
         echo "makeinfo version less than 6.8 detected. Copying maxima_0.html to index.html."; \
         if [ -f maxima_0.html ] && [ ! -f index.html ]; then \
                 cp maxima_0.html index.html; \

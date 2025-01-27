@@ -174,7 +174,7 @@ m4_displaymath(
 @end example>>>
 )
 
-The sum is evaluated using both @mref{levin_u_sum} and  
+The sum is evaluated using both: @mref{levin_u_sum} using modes levin_algebraic and levin_numeric; and  
 @mref{bflevin_u_sum} with two values of bigfloat precision @mref{fpprec}.
 
 @c ===beg===
@@ -182,6 +182,12 @@ The sum is evaluated using both @mref{levin_u_sum} and
 @c s: levin_u_sum(1/n^2, n, 1, 10);
 @c float(s);
 @c float(s - exact);
+@c s: levin_u_sum(1/n^2, n, 1, 10, 'levin_numeric);
+@c bfloat(s[1] - exact);
+@c s: bflevin_u_sum(1/n^2, n, 1);
+@c s - bfloat(exact);
+@c /* Now increase fpprec and try the same example again. */
+@c  fpprec: 32;
 @c s: bflevin_u_sum(1/n^2, n, 1);
 @c s - bfloat(exact);
 @c ===end===
@@ -205,72 +211,94 @@ The sum is evaluated using both @mref{levin_u_sum} and
 (%o4)                 1.4497605782537448e-8
 @end group
 @group
-(%i5) s: bflevin_u_sum(1/n^2, n, 1);
-(%o5)                  1.644934066848226b0
+(%i5) s: levin_u_sum(1/n^2, n, 1, 10, 'levin_numeric);
+(%o5)     [1.644934081345756b0, 1.882785043290232b-12]
 @end group
 @group
-(%i6) s - bfloat(exact);
-(%o6)                 2.775557561562891b-17
-@end group
-@end example
-
-Now increase @code{fpprec} and try the same example again.
-
-@c ===beg===
-@c fpprec: 32;
-@c s: bflevin_u_sum(1/n^2, n, 1);
-@c s - bfloat(exact);
-@c ===end===
-@example
-@group
-(%i7) fpprec: 32;
-(%o7)                          32
+(%i6) bfloat(s[1] - exact);
+(%o6)                 1.449752928817105b-8
 @end group
 @group
-(%i8) s: bflevin_u_sum(1/n^2, n, 1);
-(%o8)          1.644934066848226436472415166646b0
+(%i7) s: bflevin_u_sum(1/n^2, n, 1);
+(%o7)                  1.644934066848226b0
 @end group
 @group
-(%i9) s - bfloat(exact);
-(%o9)        - 3.0814879110195773648895647081359b-33
+(%i8) s - bfloat(exact);
+(%o8)                 2.775557561562891b-17
+@end group
+@group
+(%i9) /* Now increase fpprec and try the same example again. */
+ fpprec: 32;
+(%o9)                          32
+@end group
+@group
+(%i10) s: bflevin_u_sum(1/n^2, n, 1);
+(%o10)         1.644934066848226436472415166646b0
+@end group
+@group
+(%i11) s - bfloat(exact);
+(%o11)       - 3.0814879110195773648895647081359b-33
 @end group
 @end example
 
 Using 10 terms in the series we were able to extrapolate
-to the exact sum with an error of approximately 10^-8.
+to the exact sum with an error of approximately @math{10^{-8}}.
 This would require
-around 10^8 terms by direct summation.
+around @math{10^{8}} terms by direct summation.
+In this case the two modes of @var{levin_u_sum} returned
+results of similar accuracy.
 
 
-The effect of the number of terms on the accuracy of @var{levin_u_sum}
-is shown in the following example.  Note that the error calculation is
-performed in bigfloats with a higher precision.
+The effect of the number of terms @var{nterms} on the accuracy of @var{levin_u_sum}
+is shown in the following example.  The sum of the series and the approximation error
+is evaluated for
+increasing values of argument @var{nterms} for both values of the optional argument @var{mode}:
+@var{levin_algebraic} and @var{levin_numeric}.  The numeric calcuations are performed
+with bigfloat precision @var{fpprec} of 16.  Errors are calculated with @var{fpprec} equal to 64.
+
+The results are reported in three columns:
+@var{nterms}, the number of terms used;
+@var{errora}, the difference between the algebraic result and the exact
+sum; 
+and @var{errorn}, the difference between numeric result and the exact sum.
+For small values of @var{nterms} the two modes return similar results.
+As @var{nterms} increases above 12, the error
+for mode @var{levin_algebraic} continues to decrease.  However, for mode
+@var{levin_numeric} the error increases with @var{nterms} to due to roundoff.
+This behavior is commonly encountered, and can be addressed by increasing
+@var{fpprec}.
 
 @c ===beg===
-@c (load("levin"), fpprec: 64, fpprintprec: 3, done);
-@c for t: 5 step 5 thru 40 do
-@c  block([s, exact: %pi^2/6],
-@c        s: levin_u_sum(1/n^2, n, 1, t),
-@c        print(t, "  ", bfloat(s - exact)));
+@c (load("levin"), fpprec: 32, fpprintprec: 3, exact: %pi^2/6, done);
+@c for nterms: 6 step 2 thru 24 do (
+@c      sa: levin_u_sum(1/n^2, n, 1, nterms),
+@c      sn: block([fpprec: 16], levin_u_sum(1/n^2, n, 1, nterms, 'levin_numeric)),
+@c      errora: abs(bfloat(sa - exact)),
+@c      errorn: abs(bfloat(sn[1] - exact)),
+@c      print(nterms, "     ", errora, "   ", errorn));
 @c ===end===
 @example
 @group
-(%i1) (load("levin"), fpprec: 64, fpprintprec: 3, done);
+(%i1) (load("levin"), fpprec: 32, fpprintprec: 3, exact: %pi^2/6, done);
 (%o1)                         done
 @end group
 @group
-(%i2) for t: 5 step 5 thru 40 do
- block([s, exact: %pi^2/6],
-       s: levin_u_sum(1/n^2, n, 1, t),
-       print(t, "  ", bfloat(s - exact)));
-5    - 1.42b-3 
-10    1.45b-8 
-15    - 3.29b-13 
-20    - 1.36b-17 
-25    - 3.49b-22 
-30    - 6.8b-27 
-35    - 8.06b-32 
-40    9.37b-37 
+(%i2) for nterms: 6 step 2 thru 24 do (
+     sa: levin_u_sum(1/n^2, n, 1, nterms),
+     sn: block([fpprec: 16], levin_u_sum(1/n^2, n, 1, nterms, 'levin_numeric)),
+     errora: abs(bfloat(sa - exact)),
+     errorn: abs(bfloat(sn[1] - exact)),
+     print(nterms, "     ", errora, "   ", errorn));
+6       2.58b-4     2.58b-4 
+8       3.51b-6     3.51b-6 
+10       1.45b-8     1.45b-8 
+12       2.44b-10     2.44b-10 
+14       5.16b-12     3.78b-11 
+16       3.54b-14     4.5b-10 
+18       3.75b-16     3.21b-11 
+20       1.36b-17     8.66b-9 
+22       1.73b-19     4.48b-7 
+24       4.45b-22     4.25b-6 
 (%o2)                         done
 @end group
 @end example
