@@ -1553,6 +1553,18 @@ nz$
 niceindices(powerseries(1/(z+%i),z,0));
 'sum((-1)^((i-1)/2)*z^i,i,0,inf);
 
+/* Tests for #4462 sign(1/sqrt(x))*/
+sign(1/sqrt(x));
+pos$
+
+sign(sqrt(x));
+pz$
+
+sign(x^(-3/4));
+pos$
+
+sign(x^(3/4));
+pz$
 
 /* Clean up!*/
 

@@ -1688,6 +1688,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		 (t (setq sign '$pz minus nil
 			  evens (nconc odds evens)
 			  odds nil))))
+    ;; (pnz, pos, pz or pn)^(-odd/even) = pos & (pnz, pos, pz or pn)^(odd/even) = pz.
+    ;; This makes, for example, sign(1/sqrt(x)) = pos & sign(sqrt(x) = pz.
+    ((and (eq sign-expt '$neg) ($ratnump expt) ($evenp ($denom expt))
+          (member sign-base '($pnz $pos $pz $pn) :test #'eq))
+      (setq sign (if (eq sign-expt '$neg)'$pos '$pz)))
 	  ((and (member sign-expt '($neg $nz) :test #'eq)
 		(member sign-base '($nz $pz $pnz) :test #'eq))
 	   (setq sign (if (eq sign-base '$pz)
