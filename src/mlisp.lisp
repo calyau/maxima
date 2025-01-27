@@ -798,7 +798,27 @@ wrapper for this."
   (setf (get (caar z) 'dimension) 'dimension-defstruct)
   (setf $structures (append $structures (list (get (caar z) 'defstruct-default))))
   (setf (get (caar z) 'translate) 'defstruct-translate)
+  (setf (get (caar z) 'operators) 'simpstruct)
   (get (caar z) 'defstruct-default))
+
+;;; SIMPSTRUCT is the general simplifier for all structures defined via DEFSTRUCT.
+;;; Its purpose is to prevent Maxima functions such as "append", "cons", "delete"
+;;; or "rest" from being used on structure instances and create invalid ones.
+;;; SIMPSTRUCT raises an error if the number of arguments doesn't match the number
+;;; of fields of the structure.
+;;; SIMPSTRUCT simplifies the structure's values like SIMPLIFYA would do.
+;;;
+(defun simpstruct (expr unused args-simplified)
+  (declare (ignore unused))
+  (let* ((struct (caar expr))
+         (template (get struct 'defstruct-template))
+         (num-fields (length (cdr template)))
+         (num-args (length (cdr expr))))
+    (unless (= num-args num-fields)
+      (merror
+        (intl:gettext "structure ~M: wrong number of arguments; expected ~M, not ~M.")
+        struct num-fields num-args)))
+  (simpargs expr args-simplified))
 
 (defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)
   (cons (car r)(mapcar #'(lambda(z)

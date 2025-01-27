@@ -284,6 +284,7 @@
           (remprop x 'defstruct-template)
           (remprop x 'defstruct-default)
           (remprop x 'translate)
+          (remprop x 'operators)
           (setf $structures (delete y $structures :count 1 :test #'equal))))
       (when (and (member x *builtin-symbols* :test #'equal)
 		 (gethash x *builtin-symbol-props*))

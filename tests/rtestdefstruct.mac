@@ -98,3 +98,26 @@ errcatch (defstruct (xx));
 errcatch (defstruct (xx (1)));
 [];
 
+/* Error on invalid number of arguments both for with and without "new". */
+block([result],
+	defstruct(foo(a, b)),
+	result : [errcatch(new(foo(2))),
+			  errcatch(foo(2)),
+			  errcatch(new(foo(2, 3, 4))),
+			  errcatch(foo(2, 3, 4))],
+	kill(foo),
+	result);
+[[], [], [], []];
+
+/* Error on trying to use Maxima functions like "append" to create invalid structure instances. */
+block([f, result],
+	defstruct(foo(a, b)),
+	f : new(foo(2, 3)),
+	result : [errcatch(append(f, f)),
+			  errcatch(cons(1, f)),
+			  errcatch(delete(2, f)),
+			  errcatch(endcons(4, f)),
+			  errcatch(rest(f))],
+	kill(foo),
+	result);
+[[], [], [], [], []];
