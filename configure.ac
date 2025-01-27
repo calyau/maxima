@@ -659,11 +659,12 @@ AC_ARG_ENABLE(build-docs,
 AM_CONDITIONAL(ENABLE_BUILD_DOCS, test x$enable_build_docs = xtrue)
 
 AC_ARG_VAR([MAKEINFO], [The path to the 'makeinfo' executable to use])
-AC_PATH_PROG([MAKEINFO], [makeinfo])
-makeinfo_found=true
-if test -z "$MAKEINFO"; then
-  makeinfo_found=false
-  AC_MSG_ERROR(
+if test x"${enable_build_docs}" = xtrue ; then
+  AC_PATH_PROG([MAKEINFO], [makeinfo])
+  makeinfo_found=true
+  if test -z "$MAKEINFO"; then
+    makeinfo_found=false
+    AC_MSG_ERROR(
 [makeinfo not found; Maxima needs makeinfo to build docs.
 If you have makeinfo installed somewhere not in PATH,
 specify where it is by using
@@ -671,6 +672,7 @@ specify where it is by using
 Or disable building of the docs using
   ./configure --disable-build-docs
 ])
+  fi
 fi
 
 if test x"${enable_build_docs}" = xtrue ; then
