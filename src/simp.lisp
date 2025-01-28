@@ -1406,9 +1406,14 @@
         ((taylorize (mop form) (second form)))
         (t (give-up))))
 
+;;; SIMPLN1 computes LOG(W), where W is an MEXPT expression.
+;;; It's called by ORDMEXPT in cases where (TAKE '(%LOG) ...) could result
+;;; in infinite recursion.
+;;;
 (defun simpln1 (w)
-  (simplifya (list '(mtimes) (caddr w)
-		   (simplifya (list '(%log) (cadr w)) t)) t))
+  (let ((simped (member 'simp (cdar w))))
+    (simplifya (list '(mtimes) (caddr w) ; Don't lie to SIMPLIFYA (2nd arg)!
+      (simplifya (list '(%log) (cadr w)) simped)) simped)))
 
 ;;; ----------------------------------------------------------------------------
 

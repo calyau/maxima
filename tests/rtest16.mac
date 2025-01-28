@@ -2985,3 +2985,7 @@ map(orderlessp,
 	[ a^b,      (a^b)^0.5, (a^b)^1.5, (a^b)^2.5,  (-1)^a,      ((-1)^a)^0.5, ((-1)^a)^1.5, ((-1)^a)^2.5],
 	[(a^b)^0.5,  a^b,      (a^b)^2.5, (a^b)^1.5, ((-1)^a)^0.5,  (-1)^a,      ((-1)^a)^2.5, ((-1)^a)^1.5]);
 	[ false,     true,     true,      false,      false,        true,        true,         false];
+
+/* Bug #4458: orderlessp(A, B) with unsimplified A can modify A in place by marking it as simplified, when it's not */
+block([simp : false, a], a : %e^(z/1), orderlessp(a, (simp : true, -log(z+1))), a^2);
+%e^(2*z);
