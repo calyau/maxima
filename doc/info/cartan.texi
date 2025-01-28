@@ -52,8 +52,8 @@ dimension is stored as the value of the variable @code{cartan_dim}.
 (%o4)                                  3
 @end example
 
-@anchor{form1~form2}
-@deffn {Infix Operator} @var{form@sub{1} ~ form@sub{2}}
+@anchor{cartan-~}
+@deffn {Infix Operator} ~
 The tilde ``~'' is an infix operator which denotes the exterior (wedge)
 product. The canonical ordering of the products is determined by the
 order in which the coordinates were specified. For example, if the
@@ -80,8 +80,8 @@ coordinate list is specified as @code{[x,y,z]}, then the two-form
 @end example
 
 
-@anchor{vec|form}
-@deffn {Infix Operator} @var{vector | form}
+@anchor{cartan-|}
+@deffn {Infix Operator} |
 The bar ``|'' is an infix operator which defines the contraction of a
 vector on a form. The vector should be given on the left.
 @end deffn
