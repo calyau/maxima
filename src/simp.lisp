@@ -1451,7 +1451,7 @@
 	 ;; Call BIGFLOATP to ensure that arguments have same precision.
 	 ;; Otherwise FPQUOTIENT could return a spurious value.
 	 (bcons (fpquotient (cdr (bigfloatp (cadr x))) (cdr (bigfloatp (caddr x))))))
-	(t (setq y (simplifya (cadr x) z))
+	(t (setq y (if z (cadr x) (simplifya (cadr x) nil)))
 	   (setq x (simplifya (list '(mexpt) (caddr x) -1) z))
 	   (if (equal y 1) x (simplifya (list '(mtimes) y x) t)))))
 
@@ -1583,10 +1583,10 @@
   (declare (ignore vestigial))
   (cond ((null (cdr x)) 0)
         ((null (cddr x))
-         (mul -1 (simplifya (cadr x) z)))
+         (mul -1 (if z (cadr x) (simplifya (cadr x) nil))))
         (t
          ;; ((mminus) a b ...) -> ((mplus) a ((mtimes) -1 b) ...)
-         (sub (simplifya (cadr x) z) (addn (cddr x) z)))))
+         (sub (if z (cadr x) (simplifya (cadr x) nil)) (addn (cddr x) z)))))
 
 (defun simptimes (x w z)		; W must be 1
   (prog (res check eqnflag matrixflag sumflag)
