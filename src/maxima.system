@@ -122,24 +122,14 @@
   #+ecl :compiler-options #+ecl (:system-p t)
   #+ecl :compiler #+ecl do-compile-ecl
   :components
-  (#+gcl
-   (:module proclaim
-     :source-pathname ""
-     :load-only t
-     :components
-     ((:file "maxima-package")
-      (:file "numerical/f2cl-lib-package")
-      (:file "numerical/slatec")
-      (:file "command-line")
-      (:file "pregexp")))
-   (:module package
+  ((:module package
      :source-pathname ""
      ;; On ECL all runtime alterations to the system (i.e from repl)
      ;; at runtime are not part of the final executable if they aren't.
      ;; compiled.
      #-ecl :load-only #-ecl t
      :components
-     (#-gcl
+     (;;#-gcl
       (:file "maxima-package")
       #+ecl (:file "ecl-port")
       ;; If a file is declared as private-file it is loaded
@@ -329,7 +319,10 @@
      :components
      ((:file "ratmac")
       (:file "mhayat")))
-   #+gcl (:file "optimize")		; jfa check this
+   ;; Disabling this for now.  We probably don't really need this.  If
+   ;; so, remove this at some later date.
+   #+(and nil gcl)
+   (:file "optimize")
    (:module utilities
      :source-pathname ""
      :depends-on ("globals" "defmfun" "utility-macros" "compatibility-macros"
@@ -681,8 +674,7 @@
         :depends-on ("rpart"))))
    (:module numeric-bigfloat
      :source-pathname ""
-     :depends-on ("globals" "defmfun" #-gcl "package"
-			              #+gcl "proclaim")
+     :depends-on ("globals" "defmfun" "package")
      :components
      ((:file "numeric")))
    (:module server
