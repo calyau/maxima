@@ -129,8 +129,7 @@
      ;; compiled.
      #-ecl :load-only #-ecl t
      :components
-     (;;#-gcl
-      (:file "maxima-package")
+     ((:file "maxima-package")
       #+ecl (:file "ecl-port")
       ;; If a file is declared as private-file it is loaded
       ;; from the build tree (which makes an out-of-tree
