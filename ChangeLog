@@ -17,3 +17,5 @@ Changes in the Windows installer:
  * Update SBCL
  * Update wxWidgets
  * Update wxMaxima
+ * Add basic support for ECL. Not yet fully functional.
+   (loading additional packages does not work. Why?)
