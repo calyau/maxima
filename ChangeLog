@@ -16,3 +16,4 @@ Changes in the Windows installer:
 ---------------------------------
  * Update SBCL
  * Update wxWidgets
+ * Update wxMaxima
