@@ -43,7 +43,7 @@
 	  ;; below, a clause in the original mcond is translated into
 	  ;; two (body, condition) pairs in nl: one to execute if the
 	  ;; original condition is true, and one to add a clause
-	  ;; to the unevaluated mcond if the condition if unknown
+	  ;; to the unevaluated mcond if the condition is unknown
           (if (eq pred-mode '$boolean)
 	      ;; pred-tr is either T or NIL
               (setq nl (list* `(setq unevaluated-mcond (append unevaluated-mcond (list ,pred-tr (mcond-eval-symbols-tr ',(cadr l)))))
