@@ -143,7 +143,7 @@
                          262 267 268 269 270 272
                          281 282 357 358))
          ((mlist simp) "rtest_limit_gruntz"
-          ((mlist simp) 20 25 28 29 30 37 39 86 96))
+          ((mlist simp) 20 25 28 29 30 37 39 86))
 
          ((mlist simp) "rtest_limit_wester"
           ((mlist simp) 12 13))

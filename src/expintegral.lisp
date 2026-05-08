@@ -831,6 +831,15 @@
 		 (m* `((mfactorial) ,k)
 		     (m^ z (m- k)))))))
 
+;; computes first pw terms of powerseries expansion of expintegral_ei(z)
+;; DLMF 6.6.1			for limits as z -> 0
+(defun ei-powerseries (pw z)
+  (m+ '$%gamma
+      (take '(%log) z)
+      (m+l (loop for k from 1 to pw collect
+		 (m// (m^ z k)
+		      (m* k `((mfactorial) ,k)))))))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
