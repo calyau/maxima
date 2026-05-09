@@ -116,9 +116,6 @@
       (symbol-value var)
       var))
 
-;;; These are the LAMBDA forms. They have macro properties that set
-;;; up very different things in compiled code.
-
 ;;; (FUNGEN&ENV-for-meval <eval vars list> <late eval vars list>  <EXP>)
 ;;won't work in cl.  fix later.
 (defquote fungen&env-for-meval (&rest args)
