@@ -57,8 +57,8 @@
 (defun tr-maset (ar val  inds)
   ;; Top-level forms need to define the variable first.
   (if *macexpr-top-level-form-p* 
-      `(nil progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
-      `(nil maset ,val ,ar  ,@ inds)))
+      `($any progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
+      `($any maset ,val ,ar  ,@ inds)))
 
 (defun maset1 (val ar &rest inds)
   (cond
@@ -118,7 +118,7 @@
 ;;in maref in transl now
 
 (defun tr-maref (ar inds)
-  `(nil maref , ar ,@ (copy-list inds)))
+  `($any maref , ar ,@ (copy-list inds)))
 
 (defun maref1 (ar &rest inds)
   (cond
