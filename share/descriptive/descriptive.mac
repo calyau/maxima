@@ -960,7 +960,7 @@ make_skyline (xx, yy, fill_color, fill_density) :=
             'points (skyline_points)]);
 
 histogram_description(m,[select]):=
-   block([fr,amp,scen,before,localopts,num_classes,v,lbels, my_fill_color, my_fill_density,
+   block([n_data,fr,amp,scen,before,localopts,num_classes,v,lbels, my_fill_color, my_fill_density,
           /* specific options */
           my_nclasses:10, my_frequency:'absolute, my_htics:'auto, histogram_bars, histogram_drawing],
       [before, localopts]: extract_options (select, 'nclasses, 'frequency, 'htics, 'fill_color, 'fill_density),
@@ -1039,13 +1039,15 @@ histogram_description(m,[select]):=
                  then my_nclasses: num_classes:
                         ceiling(1 + log(length(m)) / 0.6931471805599453), /* <-- log(2) */
                fr: float(continuous_freq(m,my_nclasses)),
+               n_data: length (m),
                if member(my_frequency, ['relative, 'percent])
-                 then fr: [first(fr), second(fr) / apply("+", second(fr))],
+                 then fr: [first(fr), second(fr) / n_data],
                if my_frequency = 'percent
                  then fr[2]: fr[2] * 100.0,
                amp: makelist(fr[1][i+1]-fr[1][i], i, 1, length(fr[1])-1),
                if my_frequency = 'density
-                 then fr: [first(fr), second(fr) / apply("+", second(fr) * amp)],
+                 then block ([listarith: true],
+                             fr: [first(fr), second(fr) / n_data / amp]),
 
                /* histogram tics */
                if my_htics = 'auto

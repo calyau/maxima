@@ -32,7 +32,8 @@
      "boxplot: Windspeed in knots from wind.data",
      "boxplot: Horizontal boxes",
      "histogram: pi digits from pidigits.data",
-     "histogram + explicit: Random data from normal distribution",
+     "histogram + explicit: Random data from normal distribution, uniform bins",
+     "histogram + explicit: Random data from normal distribution, nonuniform bins",
      "piechart: Digit frequencies in pi from pidigits.data",
      "scatterplot: 1-dimensional random data",
      "starplot: Two random samples"
@@ -130,13 +131,26 @@ block([m: 14, s: 2, s2],
   s2: random_normal(m, s, 1000),
   draw2d(
     grid   = true,
-    xrange = [5, 25],
-    title = title_cache ["histogram + explicit: Random data from normal distribution"],
+    title = title_cache ["histogram + explicit: Random data from normal distribution, uniform bins"],
     histogram_description(
       s2,
       nclasses     = 9,
       frequency    = density,
       fill_density = 0.5),
+    xrange = [5, 25],
+    explicit(pdf_normal(x,m,s), x, m - 3*s, m + 3* s)));
+
+block([m: 14, s: 2, s2],
+  s2: random_normal(m, s, 1000),
+  draw2d(
+    grid   = true,
+    title = title_cache ["histogram + explicit: Random data from normal distribution, nonuniform bins"],
+    histogram_description(
+      s2,
+      nclasses     = setify (makelist (float (quantile_normal (k/13, m, s)), k, 1, 12)),
+      frequency    = density,
+      fill_density = 0.5),
+    xrange = [5, 25],
     explicit(pdf_normal(x,m,s), x, m - 3*s, m + 3* s)));
 
 piechart(

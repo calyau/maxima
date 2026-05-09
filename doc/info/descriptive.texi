@@ -3364,10 +3364,30 @@ That is, the right endpoint of one interval is equal to the left endpoint of the
 
 @item
 @code{frequency} (default, @code{absolute}): indicates the scale of the vertical axis.
-Possible values are:  @code{absolute} (heights of bars add up to number of data),
-@code{relative} (heights of bars add up to 1),
-@code{percent} (heights of bars add up to 100),
-and @code{density} (total area of histogram is 1).
+In the following, let @math{M} be the number of data which fall into the bins specified by @code{nclasses},
+and let @math{N} be the total number of data.
+(When all data are covered by @code{nclasses}, @math{M} is equal to @math{N}.)
+Let @math{m[k]} be the number of data falling into the @math{k}'th bin,
+and let @math{w[k]} be the width of the @math{k}'th bin.
+Then the possible values of @code{frequency} are as follows.
+
+@itemize @bullet
+@item
+@code{absolute} Height of each bar is equal to @math{m[k]},
+                and the sum of all heights is @math{M}.
+
+@item
+@code{relative} Height of each bar is equal to @math{m[k]/N},
+                and the sum of all heights is @math{M/N}.
+
+@item
+@code{percent}  Height of each bar is equal to 100 times @math{m[k]/N},
+                and the sum of all heights is 100 times @math{M/N}.
+
+@item
+@code{density}  Height of each bar is equal to @math{m[k]/N/w[k]},
+                and the sum of all bar areas (width times height) is equal to @math{M/N}.
+@end itemize
 
 @item
 @code{htics} (default, @code{auto}): format of tic marks on the horizontal axis.
