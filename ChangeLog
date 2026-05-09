@@ -5,7 +5,7 @@ Bug fixes for numbered bugs:
 ----------------------------
  * \#4585 Taylor polynomials involving tangent & a quotient
  * \#4634 Divergent integral simplifies to -1/4 with simplify_sum
- # \#4724 xreduce with init arg and declared nary function
+ * \#4724 xreduce with init arg and declared nary function
  * \#4729 rtest_limit.mac: Problem 230 (line 866) 
 
 Bug fixes for unnumbered bugs:
