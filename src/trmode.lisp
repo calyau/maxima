@@ -110,8 +110,11 @@
 	  (mtell (intl:gettext "modedeclare: ~M is not a built-in type; assuming it is a Maxima extension type.") x)))))
 
 (def%tr $modedeclare (form)
+  ; if we really wanted to we could cons up a list
+  ; here at translate time and return it to match
+  ; the return value in the interpreted case
   (do ((l (cdr form) (cddr l)))
-      ((null l))
+      ((null l) `($any . nil))
     (declmode (car l) (ir-or-extend (cadr l)) t)))
 
 (defun ass-eq-ref (table key &optional dflt)
