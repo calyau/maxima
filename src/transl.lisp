@@ -984,7 +984,7 @@ APPLY means like APPLY.")
 				  arglist))))))))
 
 
-(defun make-declares (varlist localp &aux (dl) (fx) (fl) specs)
+(defun make-declares (varlist localp &aux (dl) (fx) (fl) (bl) specs)
   (do ((l varlist (cdr l))
        (mode) (var))
       ((null l))
@@ -1001,9 +1001,11 @@ APPLY means like APPLY.")
       (setq specs (cons var specs))
 
       (cond ((eq '$fixnum mode) (pushnew var fx :test #'eq))
-	    ((eq '$float mode)  (pushnew var fl :test #'eq)))))
+	    ((eq '$float mode)  (pushnew var fl :test #'eq))
+	    ((eq '$boolean mode)  (pushnew var bl :test #'eq)))))
   (if fx (pushnew `(fixnum  . ,fx) dl :test #'eq))
   (if fl (pushnew `(type flonum  . ,fl) dl :test #'eq))
+  (if bl (pushnew `(type boolean  . ,bl) dl :test #'eq))
   (if specs (pushnew `(special  . ,specs) dl :test #'eq))
   (if dl `(declare . ,dl)))
 
