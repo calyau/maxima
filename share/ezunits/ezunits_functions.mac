@@ -454,7 +454,8 @@ block ([L],
  */
 
 matchdeclare
-   (aa%, lambda ([e%], numberp (e%) or (atom (e%) and not symbolp (e%))),
+   (/* are there other nonnumerical constants similar to %i ?? */
+    aa%, lambda ([e%], numberp (e%) or (atom (e%) and (not symbolp (e%) or e% = %i))),
     bb%, lambda ([e%], symbolp (e%) and member (e%, fundamental_dimensions)),
     cc%, lambda ([e%], symbolp (e%) and get (e%, 'units) # false),
     dd%, lambda ([e%], symbolp (e%) and get (e%, 'constvalue) # false),

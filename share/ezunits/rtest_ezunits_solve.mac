@@ -61,9 +61,9 @@ foo : dimensionally (solve (E = %A * %T^4 * sigma_sb, %T));
  %T = -%i*(E/(%A*sigma_sb))^(1/4),%T = (E/(%A*sigma_sb))^(1/4)];
 
 dimensions (foo);
-['dimensions(%T) = 'dimensions(%i)*('dimensions(E)/('dimensions(%A)*'dimensions(sigma_sb)))^(1/4),
+['dimensions(%T) = ('dimensions(E)/('dimensions(%A)*'dimensions(sigma_sb)))^(1/4),
  'dimensions(%T) = -('dimensions(E)/('dimensions(%A)*'dimensions(sigma_sb)))^(1/4),
- 'dimensions(%T) = -'dimensions(%i)*('dimensions(E)/('dimensions(%A)*'dimensions(sigma_sb)))^(1/4),
+ 'dimensions(%T) = -('dimensions(E)/('dimensions(%A)*'dimensions(sigma_sb)))^(1/4),
  'dimensions(%T) = ('dimensions(E)/('dimensions(%A)*'dimensions(sigma_sb)))^(1/4)];
 
 foo_late : subst ([E = 7 ` kW, %A = 11 ` m^2, sigma_sb = 56697/10000/10^8 ` W/m^2/K^4], foo);

@@ -446,6 +446,12 @@ map (units, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 [dimensions (1), dimensions (1729), dimensions (%e)];
 [1, 1, 1];
 
+dimensions (%i);
+1;
+
+fundamental_units (%i);
+1;
+
 [dimensions (0 ` m/s), dimensions (0 ` kg/m^3), dimensions (0 ` W/kg)];
 [length/time, mass/length^3, length^2/time^3];
 
