@@ -73,8 +73,10 @@ wc_systematic(wc_x,[wc_valuespertol]):=block(
     
     /* Default the number of values per tolerance parameter to 3 */
     if wc_valuespertol=[] then wc_valuespertol:wc_defaultvaluespertol else wc_valuespertol:first(wc_valuespertol),
-    if (wc_valuespertol < 2) and (wc_valuespertol >-1) then
-       error("wc_systematic: The optional parameter needs to be <= -1 or >= 2"),
+    if not integerp(wc_valuespertol) then
+       error("wc_systematic: The optional parameter needs to be an integer"),
+    if wc_valuespertol < 2 then
+       error("wc_systematic: The optional parameter needs to be >= 2"),
     makelist(
         (
             subst(
@@ -102,8 +104,8 @@ wc_montecarlo(wc_x,wc_samples):=block(
         %wc_tols:%wc_tols(wc_x),
         wc_numoftols
     ],
-    if not integerp(wc_samples) then error("wc_montecarlo: The second parameter needs to be a integer"),
-    if wc_samples<0 then error("wc_montecarlo: The second parameter needs to be positive"),
+    if not integerp(wc_samples) then error("wc_montecarlo: The second parameter needs to be an integer"),
+    if wc_samples<=0 then error("wc_montecarlo: The second parameter needs to be positive"),
     wc_numoftols:length(%wc_tols),
     
     makelist(
@@ -148,6 +150,11 @@ wc_mintypmax(wc_x,[wc_params]):=block([wc_allvalues,wc_param1,min,wc_typ,max],
         wc_param1:wc_defaultvaluespertol
     else
         wc_param1:inpart(wc_params,1),
+
+    if not integerp(wc_param1) then
+        error("wc_mintypmax: The optional parameter needs to be an integer"),
+    if (wc_param1 > -1) and (wc_param1 < 2) then
+        error("wc_mintypmax: The optional parameter needs to be <= -1 or >= 2"),
     
     if wc_param1 > 0 then
         wc_allvalues:wc_systematic(wc_x,wc_param1)
@@ -163,22 +170,30 @@ wc_mintypmax(wc_x,[wc_params]):=block([wc_allvalues,wc_param1,min,wc_typ,max],
 /* Make this function map over equations */
  ?putprop('wc_mintypmax, ?cdr([?mlist,?mequal]), '?distribute_over)$
 
-/* wc_mintypmax, but solves wc_equation numerically to wx_var,
-expecting ec_var to lie between wc_var_min and wc_var_max */
+/* wc_mintypmax, but solves wc_equation numerically to wc_var,
+expecting wc_var to lie between wc_var_min and wc_var_max */
 wc_mintypmax_num(wc_equation, wc_var, wc_var_min, wc_var_max, [wc_params]):=
 block([wc_allvalues, wc_param1, min, wc_typ,max],
     if length(wc_params) < 1 then
         wc_param1:wc_defaultvaluespertol
     else
         wc_param1:inpart(wc_params,1),
-    
+
+    if not integerp(wc_param1) then
+        error("wc_mintypmax_num: The optional parameter needs to be an integer"),
+    if (wc_param1 > -1) and (wc_param1 < 2) then
+        error("wc_mintypmax_num: The optional parameter needs to be <= -1 or >= 2"),
+
     wc_allvalues:makelist(
         apply(
             'find_root,
             [i,wc_var,wc_var_min,wc_var_max]
         ),
         i,
-        wc_systematic(wc_equation, wc_param1)
+        if wc_param1 > 0 then
+            wc_systematic(wc_equation, wc_param1)
+        else
+            wc_montecarlo(wc_equation, -wc_param1)
     ),
     min:apply('min,wc_allvalues),
     wc_typ:find_root(wc_typicalvalues(wc_equation),wc_var,wc_var_min,wc_var_max),
@@ -315,8 +330,8 @@ wc_distrib2rssparams(data):=block([wc_mu,wc_sigma,wc_len],
     if not listp(data) then error("wc_distrib2rssparams: Input data needs to be a list of sample values"),
     wc_len:length(data),
     if wc_len<2 then error("wc_distrib2rssparams: Input data needs to be at least 2 samples long"),
-    wc_mu:lsum(i,i,data)/wc_len,
-    wc_sigma:sqrt(lsum((i-wc_mu)^2,i,data)/(wc_len-1)),
+    wc_mu:apply("+",data)/wc_len,
+    wc_sigma:sqrt(apply("+",map(lambda([x],(x-wc_mu)^2),data))/(wc_len-1)),
     return(new(wc_rssparams(wc_sigma,wc_mu)))
 );
 
@@ -490,7 +505,7 @@ wc_toltaylor(x,[maxorder]):=block(
                   wc_diffofwctollimit:wc_neglimit
            ),
            /* Add the taylor term we just learned about to the result */
-           retval:retval+wc_tol^wc_difforder/factorial(wc_difforder)*wc_typicalvalues(wc_diffofwctollimit)
+           retval:retval+wc_tol^wc_difforder/wc_difforder!*wc_typicalvalues(wc_diffofwctollimit)
         ),
    return(retval)
 );
