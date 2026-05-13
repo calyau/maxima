@@ -1,7 +1,7 @@
 /* %wc_tols lists all tol[n] contained in the list, nested list 
 or equation it gets as its argument. */
 
-%wc_tols(wc_x):=block([vars,retval:[]],
+%wc_tols(wc_x):=block([vars,retval:[],i],
     /* A list of all variables contained in wc_x */
     vars:listofvars(wc_x),
     for i in vars do 
@@ -39,7 +39,7 @@ wc_tolappend([x]):=block([wc_usedTols:[],wc_tolCntr:1,retval:[]],
                     if numberp(wc_arg) then
                         if wc_arg >= wc_tolCntr then wc_tolCntr:wc_arg+1,
     
-    /* Iterate over all parameters f this function */
+    /* Iterate over all parameters of this function */
     for wc_param in x do
         (
             /* Iterate over all tol[n] of this parameter*/
@@ -49,7 +49,6 @@ wc_tolappend([x]):=block([wc_usedTols:[],wc_tolCntr:1,retval:[]],
                 if member(wc_arg,wc_usedTols)  then
                 /* It is already in use => substitute it by a new one. */
                 (
-                    disp(used=wc_arg),
                     wc_param:subst(tol[wc_arg]=tol[wc_tolCntr],wc_param),
                     wc_tolCntr:wc_tolCntr+1
                 ),
@@ -75,7 +74,7 @@ wc_systematic(wc_x,[wc_valuespertol]):=block(
     /* Default the number of values per tolerance parameter to 3 */
     if wc_valuespertol=[] then wc_valuespertol:wc_defaultvaluespertol else wc_valuespertol:first(wc_valuespertol),
     if (wc_valuespertol < 2) and (wc_valuespertol >-1) then
-       error("wc_mintypmax_num: The optional parameter needs to be negative or > 2"),
+       error("wc_systematic: The optional parameter needs to be <= -1 or >= 2"),
     makelist(
         (
             subst(
@@ -162,7 +161,7 @@ wc_mintypmax(wc_x,[wc_params]):=block([wc_allvalues,wc_param1,min,wc_typ,max],
         ['min=min,'typ=wc_typ,'max=max]
 );
 /* Make this function map over equations */
- ?putprop('mintypmax, ?cdr([?mlist,?mequal]), '?distribute_over)$
+ ?putprop('wc_mintypmax, ?cdr([?mlist,?mequal]), '?distribute_over)$
 
 /* wc_mintypmax, but solves wc_equation numerically to wx_var,
 expecting ec_var to lie between wc_var_min and wc_var_max */
@@ -179,7 +178,7 @@ block([wc_allvalues, wc_param1, min, wc_typ,max],
             [i,wc_var,wc_var_min,wc_var_max]
         ),
         i,
-        wc_systematic(wc_equation)
+        wc_systematic(wc_equation, wc_param1)
     ),
     min:apply('min,wc_allvalues),
     wc_typ:find_root(wc_typicalvalues(wc_equation),wc_var,wc_var_min,wc_var_max),
@@ -202,7 +201,7 @@ wc_inputvalues_max(wc_x):=
         i,wc_x
     );
 
-/* A function that sets all the input values to their max value */
+/* A function that sets all the input values to their min value */
 wc_inputvalues_min(wc_x):=
     makelist(
         apply(op(i),[lhs(i),wc_min(rhs(i))]),
@@ -245,12 +244,11 @@ wc_inputvalueassumptions(wc_x):=block([wc_line,wc_assumptions:[]],
 );
 
 /* A function that creates assumptions on the range the tol[n] of wc_x are in */
-wc_tolassumptions(wc_x):=block([wc_line,wc_assumptions:[]],
+wc_tolassumptions(wc_x):=block([wc_assumptions:[]],
     for wc_i in %wc_tols(wc_x) do
         (
-            wc_line:wc_mintypmax(rhs(wc_i)),
-            push(lhs(wc_i)<=1,wc_assumptions),
-            push(lhs(wc_i)>=-1,wc_assumptions)
+            push(wc_i<=1,wc_assumptions),
+            push(wc_i>=-1,wc_assumptions)
         ),
     apply('assume,wc_assumptions)
 );
@@ -261,7 +259,7 @@ wc_mintypmax2tol(wc_tol,wc_min,wc_typ,wc_max):=block([wc_try],
     if wc_typ>wc_max then warning("wc_mintypmax2tol: Max value smaller than typ value"),
     /* Try to find a linear equation that hits all three points */
     wc_try:wc_typ+(wc_max-wc_typ)*wc_tol,
-    /* Let's see if the quadratic equation hitss the targets */
+    /* Let's see if the linear equation hits the targets */
     if subst (wc_tol=-1,wc_try) = wc_min then
         return(wc_try)
     else
@@ -325,10 +323,10 @@ wc_distrib2rssparams(data):=block([wc_mu,wc_sigma,wc_len],
 /* Generates input data for the tolerance parameters from measurement data */
 wc_distrib2toldata(tol,data,[sigmas]):=block(
     [wc_rssparams:wc_distrib2rssparams(data),wc_sigmas:wc_defaultsigma],
-    if length(sigmas) > 1 then error("wc_distrib2toldata: More than 3 parameters)"),
+    if length(sigmas) > 1 then error("wc_distrib2toldata: Too many optional parameters"),
     if length(sigmas) = 1 then 
     (
-        if not numberp(sigmas[1]) then error("wc_distrib2toldata: sigmas needs to be a number)"),
+        if not numberp(sigmas[1]) then error("wc_distrib2toldata: sigmas needs to be a number"),
         wc_sigmas:sigmas[1]
     ),
     wc_rssparams@sigma*wc_sigmas*tol+wc_rssparams@mu
@@ -372,7 +370,7 @@ brute-force step.
 
 defs allows to add things like
   tol[1]=0 for preventing tol[1] from being merged, or
-  tol[2]=1 for preventing tol[1] from being merged and assuming it to read 1.
+  tol[2]=1 for preventing tol[2] from being merged and assuming it to read 1.
 */
 wc_ewc_simplify(x,[defs]):=block(
     [
@@ -452,7 +450,7 @@ wc_ewc_simplify(x,[defs]):=block(
 );
 
 /* Sometimes the secret of engineering is simplifying something, for example by
-approximating it by a taylor series. This is what this function does do */
+approximating it by a taylor series. This is what this function does */
 wc_toltaylor(x,[maxorder]):=block(
     [
         /* The derivate of x to the tol[n] we currently look at */
@@ -492,7 +490,7 @@ wc_toltaylor(x,[maxorder]):=block(
                   wc_diffofwctollimit:wc_neglimit
            ),
            /* Add the taylor term we just learned about to the result */
-           retval:retval+wc_tol^wc_difforder/wc_difforder*wc_typicalvalues(wc_diffofwctollimit)
+           retval:retval+wc_tol^wc_difforder/factorial(wc_difforder)*wc_typicalvalues(wc_diffofwctollimit)
         ),
    return(retval)
 );
