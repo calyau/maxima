@@ -318,7 +318,7 @@ wc_distrib2rssparams(data):=block([wc_mu,wc_sigma,wc_len],
     wc_len:length(data),
     if wc_len<2 then error("wc_distrib2rssparams: Input data needs to be at least 2 samples long"),
     wc_mu:lsum(i,i,data)/wc_len,
-    wc_sigma:lsum((i-wc_mu)^2,i,data)/(wc_len-1),
+    wc_sigma:sqrt(lsum((i-wc_mu)^2,i,data)/(wc_len-1)),
     return(new(wc_rssparams(wc_sigma,wc_mu)))
 );
 
@@ -349,7 +349,7 @@ wc_mintypmax_rss(x,sigmas):=float(block([rssparams:wc_getrssparams(x)],
 wc_mintypmax_rss_percent(x,sigmas):=block([rssparams:wc_getrssparams(x)],
     [
         'min=((rssparams@mu-sigmas*rssparams@sigma)/rssparams@mu-1)*100*"%",
-        'typ=wc_typicalvalues(x),
+        'typ=rssparams@mu,
         'max=((rssparams@mu+sigmas*rssparams@sigma)/rssparams@mu-1)*100*"%",
         Fail=float(1-(erf(sigmas/sqrt(2))))*1e6*"ppm"
     ]
