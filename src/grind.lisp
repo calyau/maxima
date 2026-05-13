@@ -81,7 +81,7 @@
 		  (t (setq *chrps* 0) (sterpri) (styotbsp i)))
 		(strprint (car l)))))))
 
-(defun styo (x) (setq *grind-charlist* (cons x *grind-charlist*) *chrps* (1+ chrps)))
+(defun styo (x) (setq *grind-charlist* (cons x *grind-charlist*) *chrps* (1+ *chrps*)))
 
 (defun sterpri () (setq *grind-charlist* (cons #\newline *grind-charlist*) *chrps* 0))
 
