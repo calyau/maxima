@@ -119,7 +119,7 @@ limit(exp(x)*(sin(1/x + exp(-x)) - sin(1/x + exp(-x^2))), x, inf);
 1$
       
 limit((erf(x - exp(-exp(x))) - erf(x)) * exp(exp(x)) * exp(x^2), x, inf);
-2/sqrt(%pi)$
+-2/sqrt(%pi)$
 
 limit(exp(exp(x)) * (exp(sin(1/x + exp(-exp(x)))) - exp(sin(1/x))),x, inf);
 1$
