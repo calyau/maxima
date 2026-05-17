@@ -1,0 +1,52 @@
+/* derived from maxima-discuss circa 2026-05-07, subject: "Simplifying Units in Ezunits Package" */
+
+(C_2: 10 `nF,
+ C_1: 100 `pF,
+ R_1: 10 `kOhm,
+ e1a: 1/(R_1 * (C_1 + C_2)),
+ e1b: all_units_fundamental (e1a),
+ e1c: e1b `` Hz,
+ approximately_equal (x, y, d) := units(x) = units(y) and is (abs (qty(x) - qty(y)) <= d),
+ approximately_equal (e1c, 9900.9901 ` Hz, 0.00005));
+true;
+
+(H(s, C, R_1, R_2) := (1/(s * C)) / (R_1 + R_2 + 1/(s * C)),
+ e2a: H(s, 18`nF, 1`kOhm, 1`kOhm),
+ e2b: subst (s = 2*%pi*%i*50 ` Hz, e2a),
+ f_1: all_units_fundamental (e2b),
+ u: fundamental_units (f_1),
+ [ u, e2c: f_1 `` u ]);
+[ 1, -((5000000*%i)/(9*(2000-(5000000*%i)/(9*%pi))*%pi)) ];
+
+(e3a: diff(H(s, x, R, R), x, 1),
+ e3b: subst(x = C, %%),
+ e3c: subst(%i*ω, s, %%),
+ e3d: f_2: subst([R = 1`kOhm, C = 1`nF, ω = 2*%pi*10`Hz], %%),
+ e3e: all_units_fundamental (%%),
+ e3f: ratsimp (e3e),
+ e3g: dimensionally (rectform (e3f)), /* FWIW dimensionally(...) can't contain %% since it's a macro that expands into block(...) */
+ e3h: float (%%),
+ e3i: %% `` 1/F);
+(-(125663.70019038678*%i)-31.582733086016873) ` 1/F;
+
+(e4a: func: hstep(1000 ` Hz * 1 ` ms - 1),
+ e4b: all_units_fundamental (func));
+1/2;
+
+(e5a: subst (s = 2*%pi*%i*50 ` Hz, (1/(s*C_2))/(R_1 + 1/(s*C_2))),
+ e5b: all_units_fundamental (e5a),
+ e5c: dimensionally (cabs (e5b)),
+ e5d: float (e5c),
+ e5e: approximately_equal (e5d, 0.9995, 0.00005));
+true;
+
+(e6a: (1/(s*x))/(R_1 + 1/(s*x)),
+ e6b: diff (e6a, x),
+ e6c: subst ([s = 2*%pi*%i*50 ` Hz, x = C_2], e6b),
+ e6d: all_units_fundamental (e6c),
+ e6e: dimensionally (cabs (e6d)),
+ e6f: float (e6e),
+ e6g: e6f `` 1/nF,
+ e6h: approximately_equal (e6g, 0.0031 ` (1/nF), 0.00005));
+true;
+
