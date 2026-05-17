@@ -464,7 +464,9 @@ matchdeclare
     ff%, lambda ([e%], symbolp (e%)),
     gg%, lambda ([e%], not atom (e%) and op (e%) = "`"),
     hh%, lambda ([e%], not atom (e%) and op (e%) = "^"),
-    ii%, lambda ([e%], not mapatom (e%) and member (op (e%), ["+", "-", "*", "/"])));
+    ii%, lambda ([e%], not mapatom (e%) and member (op (e%), ["*", "/"])),
+    jj%, lambda ([e%], not mapatom (e%) and op (e%) = "+"),
+    kk%, lambda ([e%], not mapatom (e%) and op (e%) = "-"));
 
 simp : false;
 defrule (raa, 'dimensions (aa%), 1);
@@ -483,7 +485,9 @@ defrule (rgg, 'dimensions (gg%), (constvalue (first (gg%)), if unitp (%%) then d
 matchdeclare (aa%, all, bb%, constantp_not1);
 defrule (rhh, 'dimensions (aa%^bb%), dimensions (aa%) ^ bb%);
 defrule (rii, 'dimensions (ii%), map (dimensions, ii%));
-/* ??? defrule (rjj, 'dimensions (sqrt (aa%)), sqrt (dimensions (aa%))); */
+defrule (rjj, 'dimensions (jj%), apply ("+", unique (map (dimensions, args (jj%)))));
+defrule (rkk, 'dimensions (kk%), apply ("+", unique (map (dimensions, args (kk%)))));
+/* ??? defrule (rfoo, 'dimensions (sqrt (aa%)), sqrt (dimensions (aa%))); */
 simp : true;
 
 dimensions (expr) :=
@@ -497,7 +501,7 @@ dimensions (expr) :=
 dimensions1 (expr) :=
     if not atom (expr) and (setp (expr) or listp (expr) or matrixp (expr) or op (expr) = "=")
         then map (dimensions, expr)
-        else apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, ree1, rff, rgg, rhh, rii]);
+        else apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, ree1, rff, rgg, rhh, rii, rjj, rkk]);
 
 /* Adapted from dimensions_as_list in share/physics/dimension.mac.
  * Thanks to Barton Willis.
@@ -528,6 +532,10 @@ fundamental_units ([L]) :=
                     if listp (d)
                         then apply ("*", map ("^", fundamental_units (), d))
                         else 'fundamental_units (L [1]));
+
+all_units_fundamental (e) := applyb1 (e, fundamental_units_rule);
+
+defrule (fundamental_units_rule, uu%, uu% `` fundamental_units (uu%));
 
 /* Adapted from dimensionless in share/physics/dimension.mac.
  * Thanks to Barton Willis.
