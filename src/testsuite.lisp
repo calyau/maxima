@@ -273,7 +273,9 @@
      ((mlist simp) 27 61)
      #+cmucl
      ((mlist simp) 61)
-     #-(or clisp cmucl gcl ecl abcl ccl allegro)
+     #+sbcl
+     ((mlist simp) 61 63 65 69)
+     #-(or clisp cmucl gcl ecl abcl ccl allegro sbcl)
      ((mlist simp) 38 61 63 65 69)
      )
     "rtest_simplex"
