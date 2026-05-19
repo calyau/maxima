@@ -58,8 +58,19 @@
 ; ------------------ search help topics ------------------
 
 (defun maxima::combine-path (&rest list)
-  "splice a '/' between the path components given as arguments"
-  (format nil "~{~A~^/~}" list))
+  "Splice a \"/\" between the path components given as arguments,
+   collapsing multiple consecutive slashes into a single slash."
+  (let ((raw-path (format nil "~{~A~^/~}" list)))
+    (with-output-to-string (out)
+      (let ((prev-slash))
+        (loop for char across raw-path
+              do (if (char= char #\/)
+                     (unless prev-slash
+                       (write-char char out)
+                       (setf prev-slash t))
+                     (progn
+                       (write-char char out)
+                       (setf prev-slash nil))))))))
 
 (defun load-primary-index ()
   ;; Is with-standard-io-syntax too much for what we want?
