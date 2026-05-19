@@ -916,8 +916,8 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
   that are specific to the Maxima version, Lisp implementation and Lisp version.
   If the user has overridden $maxima_objdir manually, return the directory itself.
   A trailing slash is always added, if necessary.
-  Example for default path: '/home/user/.maxima/binary/5_47post/sbcl/2_6_3'
-                         -> '/home/user/.maxima/binary/'"
+  Example for default path: \"/home/user/.maxima/binary/5_47post/sbcl/2_6_3\"
+                         -> \"/home/user/.maxima/binary/\""
   (let ((path (pathname (combine-path *maxima-objdir* "")))) ; ensure trailing slash
     (if (string= *maxima-objdir* (gethash '$maxima_objdir *variable-initial-values*))
       ;; *MAXIMA-OBJDIR* has its default value: strip the last 3 subdirectories

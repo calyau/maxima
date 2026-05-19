@@ -67,19 +67,19 @@ Examples:
 
 A file is simply an area on a particular storage device which contains data 
 or text.  Files on the disks are figuratively grouped into "directories".
-A directory is just a list of files.  Commands which deal with files are:
+A directory is just a list of files.  Commands and variables which deal with files are:
 
 @verbatim
-   appendfile          batch                batchload
-   closefile           file_output_append   filename_merge
-   file_search         file_search_cache    file_search_maxima
-   file_search_lisp    file_search_demo     file_search_usage
-   file_search_tests   file_type            file_type_lisp
-   file_type_maxima    load                 load_pathname
-   loadfile            loadprint            pathname_directory
-   pathname_name       pathname_type        printfile
-   save                stringout            with_stdout
-   writefile
+   appendfile           batch                batchload
+   closefile            file_output_append   filename_merge
+   file_search          file_search_cache    file_search_ignore_dirs
+   file_search_maxima   file_search_lisp     file_search_demo
+   file_search_usage    file_search_tests    file_type
+   file_type_lisp       file_type_maxima     load
+   load_pathname        loadfile             loadprint
+   pathname_directory   pathname_name        pathname_type
+   printfile            save                 stringout
+   with_stdout          writefile
 @end verbatim
 
 When a file name is passed to functions like @mrefcomma{plot2d}@w{}
@@ -371,14 +371,28 @@ See also @mrefdot{file_search_cache}
 Default value: @code{auto}
 
 @code{file_search_cache} controls the use of a cache by @code{file_search} in
-order to speed up the search.  Currently, it can only speed up searches where
-the filename part does not contain wildcards (but the directory part may).
+order to speed up the search.
 
 When @code{file_search_cache} is @code{auto} (the default value), the cache
 will be activated if a one-time check determines that the system (Lisp
 implementation, file system) fulfills the requirements.  This can be overridden
 by setting @code{file_search_cache} to @code{true}, which is not recommended.
 The value @code{false} prevents the use of the cache.
+
+See also @mrefdot{file_search}
+
+@opencatbox{Categories:}
+@category{File input}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{file_search_ignore_dirs}
+@defvr {Option variable} file_search_ignore_dirs
+Default value: @code{[".bzr", ".git", ".github", ".hg", ".svn", ".eclipse", ".idea", ".vs", ".vscode", ".zed"]}
+
+@code{file_search_ignore_dirs} contains directory names (not complete paths)
+that are excluded in the file search in order to speed up the search.
 
 See also @mrefdot{file_search}
 

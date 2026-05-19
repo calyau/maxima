@@ -694,6 +694,142 @@
        (not (pathname-component-present-p (pathname-name path)))
        (not (pathname-component-present-p (pathname-type path)))))
 
+(defun directory-exists-p (path)
+  "Check whether PATH is an existing directory using
+  implementation-specific functions, since Common Lisp does not
+  specify a way to check whether a path is a file or a directory.
+  Falls back to PROBE-FILE and checking whether the returned pathname
+  looks like a directory."
+  (ignore-errors
+    #+abcl
+    (extensions:probe-directory (ensure-pathname-as-directory path))
+    #+allegro
+    (excl:file-directory-p path)
+    #+clisp
+    (ext:probe-directory (ensure-pathname-as-directory path))
+    #+gcl
+    (eq (si:stat (namestring path)) :directory)
+    #+lispworks
+    (lw:file-directory-p path)
+    #-(or abcl allegro clisp gcl lispworks)
+    (let ((p (probe-file path)))
+      (and p (apparently-a-directory-p p)))))
+
+(defun ensure-pathname-as-directory (path)
+  "Ensure PATH is a directory pathname (name and type both absent).
+  If PATH already looks like a directory pathname, return it unchanged.
+  Otherwise push the name (and type) into the directory component list."
+  (let ((p (pathname path)))
+    (if (not (apparently-a-directory-p p))
+      (make-pathname
+       :directory (append (or (pathname-directory p) '(:relative))
+                          (list (file-namestring p)))
+       :name nil
+       :type nil
+       :defaults p)
+      p)))
+
+(defun immediate-subdirectories (dir-path)
+  "Return a list of pathnames for the immediate subdirectories of DIR-PATH.
+  The function uses implementation-specific mechanisms where available to avoid
+  returning regular files."
+  (let* ((dir (ensure-pathname-as-directory dir-path))
+         (wild-dir (make-pathname :directory
+                                  #+(or abcl allegro lispworks)
+                                  (pathname-directory dir)
+                                  #-(or abcl allegro lispworks)
+                                  (append (pathname-directory dir) '(:wild))
+                                  :name
+                                  #+(or abcl allegro lispworks)
+                                  :wild
+                                  #-(or abcl allegro lispworks)
+                                  nil
+                                  :type nil
+                                  :defaults dir)))
+    #+(or clisp cmucl ecl gcl sbcl)
+    (directory wild-dir)
+    #+allegro
+    (remove-if-not #'apparently-a-directory-p
+                   (directory wild-dir :directories-are-files nil))
+    #+ccl
+    (directory wild-dir :directories t)
+    #-(or allegro ccl clisp cmucl ecl gcl sbcl)
+    (remove-if-not #'apparently-a-directory-p
+                   (directory wild-dir))))
+
+(defun pathname-versionless-match-p (p1 p2)
+  ;; Work around an ECL bug where pathnames returned by DIRECTORY
+  ;; carry :VERSION :NEWEST, while pathnames constructed via
+  ;; MAKE-PATHNAME use default :VERSION NIL, causing PATHNAME-MATCH-P
+  ;; to return NIL even though all visible components are identical.
+  ;; Normalizing both sides to :VERSION NIL makes the comparison
+  ;; correct on ECL without affecting other implementations.
+  (pathname-match-p
+   (make-pathname :version nil :defaults p1)
+   (make-pathname :version nil :defaults p2)))
+
+(defun collect-directories (pathname &key (descendp (constantly t)))
+  "Return all directories matching the directory part of PATHNAME, which
+  can include wild components (:WILD, :WILD-INFERIORS, or string patterns
+  such as \"a*\" or \"a?\", if the implementation supports them).
+  Before descending into any directory due to a wildcard expansion,
+  DESCENDP is called with that directory as its argument; the directory is
+  skipped unless DESCENDP returns T.
+  Typical use: Pass a DESCENDP that returns NIL for directories that should
+  be ignored, such as \".git\", avoiding needless traversal of large or
+  irrelevant subtrees."
+  (let ((p (merge-pathnames pathname)))
+    (labels
+      ((expand (parent remaining)
+         ;; PARENT is a concrete directory pathname built so far.
+         ;; REMAINING is the list of directory components yet to be matched.
+         (if (null remaining)
+           (list parent)
+           (let ((component (car remaining))
+                 (rest (cdr remaining)))
+             (if (eq component :wild-inferiors)
+               (let ((subdirs (remove-if-not descendp
+                                             (immediate-subdirectories parent))))
+                 (append
+                  ;; Zero levels: Skip :wild-inferiors entirely.
+                  (expand parent rest)
+                  ;; One or more levels: Descend, keeping :wild-inferiors active.
+                  (mapcan (lambda (subdir)
+                            (expand subdir remaining))
+                          subdirs)))
+               (if (wild-pathname-p
+                    (make-pathname :directory (list :relative component))
+                    :directory)
+                 ;; :WILD or a string pattern like "a*" or "a?": Filter matching
+                 ;; subdirectories via the filesystem.
+                 (let* ((pattern (make-pathname
+                                  :directory (append (pathname-directory parent)
+                                                     (list component))
+                                  :name nil :type nil
+                                  :defaults parent))
+                        (subdirs (remove-if-not
+                                  (lambda (subdir)
+                                    (pathname-versionless-match-p subdir pattern))
+                                  (remove-if-not
+                                   descendp
+                                   (immediate-subdirectories parent)))))
+                   (mapcan (lambda (subdir)
+                             (expand subdir rest))
+                           subdirs))
+                 ;; Concrete component: Check existence and step in directly
+                 ;; without calling DESCENDP (the caller named it explicitly).
+                 (let ((next (make-pathname
+                              :directory (append (pathname-directory parent)
+                                                 (list component))
+                              :name nil :type nil
+                              :defaults parent)))
+                   (when (directory-exists-p next)
+                     (expand next rest)))))))))
+      (expand (make-pathname :directory (list (car (pathname-directory p)))
+                             :name nil :type nil
+                             :defaults p)
+              (cdr (pathname-directory p))))))
+
 ;; We keep these here in case we want to optimize the search.  To
 ;; speed things up, we might want to support search lists like
 ;; "share/**/*.{mac,wxm,mc}" so that we only descend the directory
@@ -799,10 +935,9 @@
 
 (defun test-directory-cached ()
   "Tests whether the directory cache can be used.
-  It checks that creating a file/directory within a parent directory updates the
-  parent directory's modification timestamp.
-  It also checks that the Lisp implementation's DIRECTORY function lists only
-  (sub)directories and no regular files when giving it a path like '/foo/**/'.
+  It checks that creating a file/directory within a parent directory updates
+  the parent directory's modification timestamp.
+  It also checks that the helper function COLLECT-DIRECTORIES work as expected.
   The special return value :TRY-LATER means that the test cannot be performed
   reliably at the moment due to limited timestamp precision."
   (macrolet ((dbg (string &rest args)
@@ -865,24 +1000,31 @@
             (dbg "test failed")
             (return-from test-directory-cached nil)))
         ;; Create nested subdirectories inside *MAXIMA-USERDIR* and files
-        ;; in them. Make sure that DIRECTORY finds only the (sub)directories,
-        ;; not the files, when giving it a path that ends with "/**/".
-        ;; Some Lisp implementations (like ABCL, ACL and LispWorks) always list
-        ;; everything.
+        ;; in them. Make sure that our helper function COLLECT-DIRECTORIES works
+        ;; as expected, as the directory cache relies on it.
         (let ((test-dir (test-directory-cached-dir)))
           (dbg "create test directories and files in \"~A\"" test-dir)
           (ensure-directories-exist (combine-path test-dir "dir" ""))
+          (ensure-directories-exist (combine-path test-dir "dir" "dir" ""))
           (create-empty-file test-dir "file")
           (create-empty-file test-dir "dir" "file")
-          (dbg "list test directories")
-          (let ((items (directory (combine-path test-dir "**" ""))))
-            (dbg "items listed: ~A" (length items))
+          (create-empty-file test-dir "dir" "dir" "file")
+          (dbg "list test directories (immediate subdirectories)")
+          (let ((items (collect-directories (combine-path test-dir "*" "*"))))
+            (dbg "items listed (expect 1 directory): ~A" items)
             (cond
-              ((and (= (length items) 2) (every #'apparently-a-directory-p items))
-                ;; It worked!
+              ((and (= (length items) 1) (every #'directory-exists-p items))
                 (dbg "test succeeded"))
               (t
-                ;; It didn't work!
+                (dbg "test failed")
+                (return-from test-directory-cached nil))))
+          (dbg "list test directories (recursive)")
+          (let ((items (collect-directories (combine-path test-dir "**" "*"))))
+            (dbg "items listed (expect 3 directories): ~A" items)
+            (cond
+              ((and (= (length items) 3) (every #'directory-exists-p items))
+                (dbg "test succeeded"))
+              (t
                 (dbg "test failed")
                 (return-from test-directory-cached nil))))
           ;; If we made it till here, everything works as expected.
@@ -934,17 +1076,73 @@
                 (dbg "file created? ~A" (file-exists-p unsuccessful-file))))
             result))
         (t
-          ;; The cache can not be used.
+          ;; The cache cannot be used.
           (dbg "previous test unsuccessful, not using cache")
           nil)))))
 
-(defun directory-cached (path mtime-cache)
-  "Behaves like DIRECTORY, but speeds up certain cases, which are common when
-  loading files in Maxima, using a cache.
-  When searching for a file whose name doesn't contain wildcards, but the
-  directory does contain wildcards, e.g. '/home/username/.maxima/**/package.mac',
-  then a list of all directories, their modification timestamps and a hash
-  table of previous searches inside these directories are cached.
+(defmvar $file_search_ignore_dirs '((mlist) ".bzr" ".git" ".github" ".hg" ".svn"
+                                            ".eclipse" ".idea" ".vs" ".vscode" ".zed")
+  "List of directory names to ignore during file search, e.g. \".git\".
+  These should only be simple directory names, not \"dir/subdir\" or \".*\"."
+  :setting-predicate
+  #'(lambda (val)
+      (or (and (listp val)
+               (eq (caar val) 'mlist)
+               (every #'stringp (cdr val)))
+          (values nil "Must be a list of strings or an empty list"))))
+
+(defun pathname-without-file-components (path)
+  "Returns a pathname for PATH with :NAME, :TYPE and :VERSION set to NIL."
+  (make-pathname :name nil :type nil :version nil :defaults path))
+
+(defun pathname-directory-prefix-p (p1 p2)
+  "Returns T iff P1 is a prefix of P2, taking into account :HOST, :DEVICE
+  and :DIRECTORY."
+  (let* ((p1 (pathname p1))
+         (p2 (pathname p2))
+         (dir1 (pathname-directory p1))
+         (dir2 (pathname-directory p2)))
+    (and (equal (pathname-host p1) (pathname-host p2))
+         (equal (pathname-device p1) (pathname-device p2))
+         (<= (length dir1) (length dir2))
+         (not (mismatch dir1 dir2
+                        :end2 (length dir1)
+                        :test #'equal)))))
+
+(defun make-directory-cached-filterp ()
+  "Returns a predicate function that can be used for filtering directories
+  to be searched and files to be returned during file search in order to
+  exclude certain files/directories."
+  (let ((ignore-dirs (cdr $file_search_ignore_dirs))
+        (test-dir-base (pathname-without-file-components (test-directory-cached-dir-base)))
+        (obj-dir-base (pathname-without-file-components (maxima-objdir-base)))
+        (obj-dir (pathname-without-file-components *maxima-objdir*)))
+    #'(lambda (path)
+        (cond
+          ((let ((dir (pathname-without-file-components path)))
+             ;; Ignore paths containing directory names
+             ;; on the $file_search_ignore_dirs list.
+             (and (not (some #'(lambda (part)
+                                 (member part ignore-dirs :test #'string=))
+                             (cdr (pathname-directory dir))))
+                  ;; Ignore paths under the test directory for the directory cache.
+                  (not (pathname-directory-prefix-p test-dir-base dir))
+                  ;; Ignore paths containing foreign binaries
+                  ;; belonging to other Maxima/Lisp versions.
+                  (not (and (pathname-directory-prefix-p obj-dir-base dir)
+                            (not (pathname-directory-prefix-p dir obj-dir))
+                            (not (pathname-directory-prefix-p obj-dir dir)))))))
+          (t
+            (when *debug-directory-cached*
+              (format *debug-io* "directory-cached: ignore \"~A\"~%" path))
+            nil)))))
+
+(defun directory-cached (path mtime-cache &key (filterp (constantly t)))
+  "Behaves like DIRECTORY, but speeds up the search using a cache.
+  For each unique directory component containing wildcards,
+  such as \"/home/username/.maxima/**/\", a list of all (sub)directories,
+  their modification timestamps and a hash table of previous searches inside
+  these directories are cached.
   When querying the cache, the current modification timestamps are compared to
   the cached ones. Only if they match, the cache can be used.
   If any directory was modified within the last *DIRECTORY-CACHE-MDELTA*
@@ -955,9 +1153,16 @@
   MTIME-CACHE must be a hash table. It will be used to cache modification
   timestamps of directories. NEW-FILE-SEARCH can call DIRECTORY-CACHED multiple
   times per search. This cache allows to minimize the number of file system
-  queries, but the same cache should only be used during 'atomic' operations,
+  queries, but the same cache should only be used during \"atomic\" operations,
   i.e. not persist across multiple searches. Otherwise, file system modifications
-  could go unnoticed."
+  could go unnoticed.
+  FILTERP is an optional predicate that controls which paths are visited and
+  returned. A path is included only if FILTERP returns non-NIL for it.
+  FILTERP must be monotone with respect to the directory hierarchy: if it
+  returns NIL for a directory, it must also return NIL for every file and
+  subdirectory contained within it. This constraint allows the search to prune
+  entire subtrees without descending into them, which is the primary mechanism
+  by which FILTERP speeds up the search."
   (macrolet ((dbg (string &rest args)
                `(when *debug-directory-cached*
                   (format *debug-io*
@@ -983,152 +1188,156 @@
                  (not (member *test-directory-cached-result* '(t nil))))
         ;; Check whether the cache can be used.
         (setq *test-directory-cached-result* (check-directory-cached)))
-      (cond
-        ((or (not $file_search_cache) (eq *test-directory-cached-result* nil))
-          ;; Cache disabled, use regular DIRECTORY.
-          (directory path))
-        ((wild-pathname-p path)
-          ;; At least one wildcard appears in the path. Get the filename part.
-          (let ((query-file (make-pathname :host nil :device nil :directory nil :defaults path)))
-            (cond
-              ((wild-pathname-p query-file)
-                ;; We only handle cases without wildcards in the filename part.
-                ;; Let the regular DIRECTORY function handle cases like "/dir/foo.*".
-                ;; When loading files in Maxima with $LOAD, this case typically
-                ;; doesn't occur.
-                (dbg "using DIRECTORY (wildcard in filename)")
-                (directory path))
-              (t
-                (let ((query-dir (make-pathname :name nil :type nil :version nil :defaults path))
-                      (do-cache t)
-                      (mtime-threshold (- (get-universal-time) *directory-cache-mdelta*))
-                      dirs
-                      rcache)
-                  ;; Look up the cache for the directory part of the path.
-                  (multiple-value-bind (entry cached) (gethash query-dir *directory-cache*)
-                    (cond
-                      (cached
-                        ;; Cache hit! The cache entry is of the form:
-                        ;; ((DIRECTORY . MTIME)* . RCACHE)
-                        ;; DIRECTORY is any directory to be searched for the file.
-                        ;; MTIME is the directory's modification timestamp.
-                        ;; RCACHE is a hash table for caching individual file search results.
-                        (dbg "hit")
-                        (destructuring-bind (cached-dirs . cached-rcache) entry
-                          ;; Update the directory information, getting the current
-                          ;; modification timestamps and removing directories that
-                          ;; no longer exist.
-                          (setq dirs (existing-path-mtime-pairs (mapcar #'car cached-dirs)))
-                          (cond
-                            ((null dirs)
-                              ;; No directories from the cache entry exist any more.
-                              ;; Possibly, the search root directory was deleted/renamed/moved.
-                              ;; Don't use the cache entry (it will be removed).
-                              (dbg "invalid (no directories exist any more)")
-                              (setq cached nil))
-                            ((some-mtime-gt dirs mtime-threshold)
-                              ;; Some directory was modified too recently (within the
-                              ;; last *DIRECTORY-CACHE-MDELTA* seconds). We cannot use
-                              ;; the cache entry (it will be removed) and won't create
-                              ;; a new cache entry at this time.
-                              (dbg "invalid (some directory modified too recently)")
-                              (setq cached nil
-                                    do-cache nil))
-                            ((not (equal dirs cached-dirs))
-                              ;; Some directory has had its modification time changed.
-                              ;; A file or directory may have been added, renamed or
-                              ;; deleted. We cannot use the cache entry (it will be removed).
-                              (dbg "invalid (some directory modified)")
-                              (setq cached nil))
-                            (t
-                              ;; All directories are still there, and they still have the
-                              ;; same modification timestamps as in the cache entry.
-                              ;; This means that there are no new, renamed or deleted
-                              ;; files or directories inside. We can use the cache entry.
-                              (dbg "valid")
-                              (setq rcache cached-rcache)))
-                          (unless cached
-                            ;; The cache entry cannot be used - remove it.
-                            (dbg "remove")
-                            (remhash query-dir *directory-cache*))))
-                      (t
-                        ;; Cache miss!
-                        (dbg "miss")))
-                    (unless cached
-                      ;; We don't have a cache entry or cannot use it.
-                      ;; Get the current list of directories using DIRECTORY.
-                      ;; This is the expensive operation that we're trying to minimize.
-                      (setq dirs (existing-path-mtime-pairs (directory query-dir)))
+      (remove-if-not
+        filterp
+        (cond
+          ((or (not $file_search_cache) (eq *test-directory-cached-result* nil))
+            ;; Cache disabled, use regular DIRECTORY.
+            (directory path))
+          ((wild-pathname-p path)
+            ;; At least one wildcard appears in the path. Get the filename part.
+            (let ((query-file (make-pathname :host nil :device nil :directory nil :defaults path))
+                  (query-dir (pathname-without-file-components path))
+                  (do-cache t)
+                  (mtime-threshold (- (get-universal-time) *directory-cache-mdelta*))
+                  dirs
+                  rcache)
+              ;; Look up the cache for the directory part of the path.
+              (multiple-value-bind (entry cached) (gethash query-dir *directory-cache*)
+                (cond
+                  (cached
+                    ;; Cache hit! The cache entry is of the form:
+                    ;; ((DIRECTORY . MTIME)* . RCACHE)
+                    ;; DIRECTORY is any directory to be searched for the file.
+                    ;; MTIME is the directory's modification timestamp.
+                    ;; RCACHE is a hash table for caching individual file search results.
+                    (dbg "hit")
+                    (destructuring-bind (cached-dirs . cached-rcache) entry
+                      ;; Update the directory information, getting the current
+                      ;; modification timestamps and removing directories that
+                      ;; no longer exist.
+                      (setq dirs (existing-path-mtime-pairs (mapcar #'car cached-dirs)))
                       (cond
                         ((null dirs)
-                          ;; There are no directories, so there can be no files.
-                          ;; Return NIL immediately, don't cache this.
-                          (dbg "no directories exist")
-                          (return-from directory-cached nil))
+                          ;; No directories from the cache entry exist any more.
+                          ;; Possibly, the search root directory was deleted/renamed/moved.
+                          ;; Don't use the cache entry (it will be removed).
+                          (dbg "invalid (no directories exist any more)")
+                          (setq cached nil))
                         ((some-mtime-gt dirs mtime-threshold)
-                          ;; Some directory was modified too recently, don't cache.
-                          (dbg "don't cache (some directory modified too recently)")
-                          (setq do-cache nil)))
-                      (cond
-                        (do-cache
-                          ;; Write into the cache.
-                          (dbg "write")
-                          (setq rcache (make-hash-table :test #'equal))
-                          (setf (gethash query-dir *directory-cache*) (cons dirs rcache)))
+                          ;; Some directory was modified too recently (within the
+                          ;; last *DIRECTORY-CACHE-MDELTA* seconds). We cannot use
+                          ;; the cache entry (it will be removed) and won't create
+                          ;; a new cache entry at this time.
+                          (dbg "invalid (some directory modified too recently)")
+                          (setq cached nil
+                                do-cache nil))
+                        ((not (equal dirs cached-dirs))
+                          ;; Some directory has had its modification time changed.
+                          ;; A file or directory may have been added, renamed or
+                          ;; deleted. We cannot use the cache entry (it will be removed).
+                          (dbg "invalid (some directory modified)")
+                          (setq cached nil))
                         (t
-                          ;; Don't write into the cache.
-                          (dbg "no-write"))))
-                    ;; Check if the search result for the given filename is cached in RCACHE
-                    ;; (but no need to check if RCACHE has just been created).
-                    (multiple-value-bind (entry cached) (if cached
-                                                          (gethash query-file rcache)
-                                                          (values nil nil))
-                      (cond
-                        (cached
-                          ;; Cache hit! Return the cached result.
-                          (dbg "result hit")
-                          entry)
-                        (t
-                          ;; Cache miss! Perform the file search by looping over all
-                          ;; directories and testing whether a file with the given name
-                          ;; exists in there. Build a list of all files found.
-                          ;; Ignore any directories that were created for testing the cache
-                          ;; and foreign binary directories (those for other Maxima/Lisp versions).
-                          (dbg "result miss")
-                          (let (result
-                                (test-dir-base (test-directory-cached-dir-base))
-                                (obj-dir-base (maxima-objdir-base)))
-                            (loop
-                              for dir in dirs
-                              for dir-path = (car dir)
-                              for dir-ns = (namestring dir-path)
-                              ;; Skip any cache test directories.
-                              unless (prefixp test-dir-base dir-ns)
-                              ;; Skip foreign binary directories.
-                              unless (and (prefixp obj-dir-base dir-ns)
-                                          (not (prefixp *maxima-objdir* dir-ns)))
-                              do
-                              (let ((merged (merge-pathnames query-file dir-path)))
+                          ;; All directories are still there, and they still have the
+                          ;; same modification timestamps as in the cache entry.
+                          ;; This means that there are no new, renamed or deleted
+                          ;; files or directories inside. We can use the cache entry.
+                          (dbg "valid")
+                          (setq rcache cached-rcache)))
+                      (unless cached
+                        ;; The cache entry cannot be used - remove it.
+                        (dbg "remove")
+                        (remhash query-dir *directory-cache*))))
+                  (t
+                    ;; Cache miss!
+                    (dbg "miss")))
+                (unless cached
+                  ;; We don't have a cache entry or cannot use it.
+                  ;; Get the current list of directories using COLLECT-DIRECTORIES.
+                  ;; This is the expensive operation that we're trying to minimize.
+                  (setq dirs (existing-path-mtime-pairs
+                               (collect-directories path
+                                                    :descendp filterp)))
+                  (cond
+                    ((null dirs)
+                      ;; There are no directories, so there can be no files.
+                      ;; Return NIL immediately, don't cache this.
+                      (dbg "no directories exist")
+                      (return-from directory-cached nil))
+                    ((some-mtime-gt dirs mtime-threshold)
+                      ;; Some directory was modified too recently, don't cache.
+                      (dbg "don't cache (some directory modified too recently)")
+                      (setq do-cache nil)))
+                  (cond
+                    (do-cache
+                      ;; Write into the cache.
+                      (dbg "write")
+                      (setq rcache (make-hash-table :test #'equal))
+                      (setf (gethash query-dir *directory-cache*) (cons dirs rcache)))
+                    (t
+                      ;; Don't write into the cache.
+                      (dbg "no-write"))))
+                ;; Check if the search result for the given filename is cached in RCACHE
+                ;; (but no need to check if RCACHE has just been created).
+                (multiple-value-bind (entry cached) (if cached
+                                                      (gethash query-file rcache)
+                                                      (values nil nil))
+                  (cond
+                    (cached
+                      ;; Cache hit! Return the cached result.
+                      (dbg "result hit")
+                      entry)
+                    (t
+                      ;; Cache miss! Perform the file search by looping over all
+                      ;; directories and searching/probing a file with the given name in there.
+                      ;; Build a list of all files found.
+                      (dbg "result miss")
+                      (let ((filename-is-wild (wild-pathname-p query-file))
+                            result)
+                        (dolist (dir dirs)
+                          (let* ((dir-path (car dir))
+                                 (merged (merge-pathnames query-file dir-path)))
+                            (cond
+                              (filename-is-wild
+                                ;; The filename part contains wildcards, e.g. "*.lisp".
+                                ;; Use DIRECTORY to find the files and make sure to return
+                                ;; only regular files, not directories.
+                                (dbg "search \"~A\"" merged)
+                                (let ((files (remove-if #'apparently-a-directory-p
+                                                        (directory merged))))
+                                  (when files
+                                    (dbg "found ~{\"~A\"~^, ~}"
+                                         (mapcar #'(lambda (p)
+                                                     (make-pathname :host nil
+                                                                    :device nil
+                                                                    :directory nil
+                                                                    :defaults p))
+                                                 files))
+                                    (setq result (append files result)))))
+                              (t
+                                ;; The filename part is concrete, e.g. "test.lisp".
+                                ;; Simply check for existence via FILE-EXISTS-P.
                                 (dbg "probe \"~A\"" merged)
                                 (when (file-exists-p merged)
-                                  (dbg "found in \"~A\"" dir-path)
-                                  (push (truename merged) result))))
-                            (cond
-                              (do-cache
-                                ;; Store the result (list of files found) in the cache entry's
-                                ;; result cache. Return a copy of the list, since
-                                ;; destructive modification may be used on the list.
-                                (dbg "result write")
-                                (copy-list (setf (gethash query-file rcache) result)))
-                              (t
-                                (dbg "result no-write")
-                                result))))))))))))
-        (t
-          ;; A path entirely without wildcards, e.g. "/dir/foo.mac".
-          ;; No need for extra work, just check directly whether the file exists.
-          (if (file-exists-p path)
-            (list (truename path))
-            nil))))))
+                                (dbg "found")
+                                (push (truename merged) result))))))
+                        (cond
+                          (do-cache
+                            ;; Store the result (list of files found) in the cache entry's
+                            ;; result cache. Return a copy of the list, since
+                            ;; destructive modification may be used on the list.
+                            (dbg "result write")
+                            (copy-list (setf (gethash query-file rcache) result)))
+                          (t
+                            (dbg "result no-write")
+                            result)))))))))
+          (t
+            ;; A path entirely without wildcards, e.g. "/dir/foo.mac".
+            ;; No need for extra work, just check directly whether the file exists.
+            (if (file-exists-p path)
+              (list (truename path))
+              nil)))))))
 
 (defvar *debug-new-file-search* nil)
 
@@ -1142,26 +1351,16 @@
 	 (let* ((filename (pathname name))
             (merged-pathnames
               ;; Use DELETE-DUPLICATES to avoid searching for the same thing
-              ;; twice when the filename contains a type (e.g. '.mac').
+              ;; twice when the filename contains a type (e.g. ".mac").
               (delete-duplicates
                 (mapcar #'(lambda (p) (merge-pathnames filename p)) template)
                 :test #'equal))
-            (mtime-cache (make-hash-table :test #'equal)))
+            (mtime-cache (make-hash-table :test #'equal))
+            (filterp (make-directory-cached-filterp)))
 	   (dolist (path merged-pathnames)
-	     (let ((pathnames (directory-cached path mtime-cache)))
+	     (let ((pathnames (directory-cached path mtime-cache :filterp filterp)))
 	       (when *debug-new-file-search*
 		 (format *debug-io* "wildpath ~S~%" path))
-           ;; Remove files inside directory cache test directories and
-           ;; foreign binary directories (those for other Maxima/Lisp versions).
-           (let ((test-dir-base (test-directory-cached-dir-base))
-                 (obj-dir-base (maxima-objdir-base)))
-             (setf pathnames
-               (remove-if #'(lambda (path)
-                              (let ((ns (namestring path)))
-                                (or (prefixp test-dir-base ns)
-                                    (and (prefixp obj-dir-base ns)
-                                         (not (prefixp *maxima-objdir* ns))))))
-                          pathnames)))
 	       (when pathnames
          ;; We MUST sort the results in alphabetical order
 		 ;; because that's how the old search paths were

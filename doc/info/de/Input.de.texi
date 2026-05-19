@@ -60,16 +60,16 @@ Beispiele:
 Folgende Funktionen und Variablen arbeiten mit Dateien:
 
 @verbatim
-   appendfile          batch                batchload
-   closefile           file_output_append   filename_merge
-   file_search         file_search_cache    file_search_maxima
-   file_search_lisp    file_search_demo     file_search_usage
-   file_search_tests   file_type            file_type_lisp
-   file_type_maxima    load                 load_pathname
-   loadfile            loadprint            pathname_directory
-   pathname_name       pathname_type        printfile
-   save                stringout            with_stdout
-   writefile
+   appendfile           batch                batchload
+   closefile            file_output_append   filename_merge
+   file_search          file_search_cache    file_search_ignore_dirs
+   file_search_maxima   file_search_lisp     file_search_demo
+   file_search_usage    file_search_tests    file_type
+   file_type_lisp       file_type_maxima     load
+   load_pathname        loadfile             loadprint
+   pathname_directory   pathname_name        pathname_type
+   printfile            save                 stringout
+   with_stdout          writefile
 @end verbatim
 
 @c -----------------------------------------------------------------------------
@@ -256,9 +256,7 @@ Siehe auch @mrefdot{file_search_cache}
 Standardwert: @code{auto}
 
 @code{file_search_cache} steuert die Verwendung eines Caches durch
-@code{file_search}, um die Suche nach Dateien zu beschleunigen.  Derzeit
-k@"onnen nur solche Suchanfragen beschleunigt werden, bei denen der Dateiname
-selbst keine Wildcards enth@"alt (doch das Verzeichnis darf diese enthalten).
+@code{file_search}, um die Suche nach Dateien zu beschleunigen.
 
 Wenn @code{file_search_cache} auf @code{auto} gesetzt ist (Standardwert), wird
 der Cache aktiviert, wenn eine einmalige Pr@"ufung ergibt, dass das System
@@ -266,6 +264,17 @@ der Cache aktiviert, wenn eine einmalige Pr@"ufung ergibt, dass das System
 Verwendung des Caches kann erzwungen werden, indem @code{file_search_cache} auf
 @code{true} gesetzt wird, doch dies wird nicht empfohlen.  Der Wert @code{false}
 verhindert die Verwendung des Caches.
+
+Siehe auch @mrefdot{file_search}
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{file_search_ignore_dirs}
+@defvr {Optionsvariable} file_search_ignore_dirs
+Standardwert: @code{[".bzr", ".git", ".github", ".hg", ".svn", ".eclipse", ".idea", ".vs", ".vscode", ".zed"]}
+
+@code{file_search_ignore_dirs} enthält Verzeichnisnamen (nicht komplette Pfade),
+die bei der Suche nach Dateien ignoriert werden, um die Suche zu beschleunigen.
 
 Siehe auch @mrefdot{file_search}
 @end defvr
