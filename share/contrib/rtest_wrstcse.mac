@@ -121,14 +121,20 @@ subst(wc_mintypmax_rss(tol[1]+.5*tol[2]+4,3),'max),ratprint=false;
 subst(wc_mintypmax_rss(tol[1]+.5*tol[2]+4,3),'Fail)/"ppm",ratprint=false;
 2699.796063260207;
 
-subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'min),ratprint=false;
-100*((4-sqrt(5)/4)/4-1)*"%";
+float_approx_equal(
+  subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'min)/"%",
+  100*((4-sqrt(5)/4)/4-1)
+),ratprint=false;
+true;
 
 subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'typ),ratprint=false;
 4;
 
-subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'max),ratprint=false;
-100*((sqrt(5)/4+4)/4-1)*"%";
+float_approx_equal(
+  subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'max)/"%",
+  100*((sqrt(5)/4+4)/4-1)
+),ratprint=false;
+true;
 
 subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'Fail)/"ppm",ratprint=false;
 2699.796063260207;

@@ -299,29 +299,19 @@ wc_getrssparams(x):=block([tols:[],derivates_linearized,derivates,sigmaval,meanv
             push(i,tols),
     /* Create the mean value */
     meanval:wc_typicalvalues(x),
-    /* Create a list of derivatives, linearized over the point that all tol[x] are 0.*/
-    derivates:makelist(block(
-        [diffofwctol:%wc_typicalvalues(diff(x,i),i),derivate],
-        derivate:limit(diffofwctol,i,0),
-        if derivate='ind then block([wc_poslimit,wc_neglimit],
-           /* We have two derivates. As we are performing a worst case
-              calculation we make a worst-case assumption and use the bigger
-              one ignoring its sign */
-           wc_poslimit:limit(diffofwctol,i,0,'plus),
-           wc_neglimit:limit(diffofwctol,i,0,'minus),
-           derivate:max(abs(wc_poslimit),abs(wc_neglimit)),
-           /* If we can determine which of the limits is bigger we can
-              do without the abs() */
-           if abs(wc_poslimit) > abs(wc_neglimit) then
-              derivate:wc_poslimit,
-           if abs(wc_poslimit) < abs(wc_neglimit) then
-              derivate:wc_neglimit
-           ),
-        derivate),
+    /* The original here was to create a list of derivatives, linearized over the point
+       that all tol[n] are 0. Turned out that setting all tol[n] to zero and varying one
+       tol[n] to -1 and 1 to see what difference that makes is provides better results:
+       For example if the dependence on this tol[n] is a quadratic equation its derivate
+       isn't assumed to be zero, if done using this method. */
+    derivates:makelist(
+        max(
+            abs(wc_typicalvalues(x)-%wc_typicalvalues(subst(i=1,x),i)),
+            abs(wc_typicalvalues(x)-%wc_typicalvalues(subst(i=-1,x),i))
+        ),
         i,tols),
-    derivates_linearized:makelist(taytorat(taylor(i)),i,derivates),
     /* Compile the RMS value assuming that all input tolerances were 6-sigma ones*/
-    sigmaval:sqrt(lsum(i^2,i,derivates_linearized/wc_defaultsigma)),
+    sigmaval:sqrt(lsum(i^2,i,derivates/wc_defaultsigma)),
     return(new(wc_rssparams(sigmaval,meanval)))
 );
 
