@@ -552,8 +552,14 @@
 			 (1+ k)))))))
 
 (defun plygam-ord (subl)
-  (if (equal (car subl) -1) (ncons (rcone))
-      `((,(m- (m1+ (car subl))) . 1))))
+  (let ((sub (car subl)))
+    (cond
+      ((equal sub -1)
+        (ncons (rcone)))
+      ((or (not (integerp sub)) (< sub -1))
+        (tay-err "Unable to expand at a subscript in"))
+      (t
+        `((,(m- (m1+ sub)) . 1))))))
 
 (defun plygam-pole (a c func)
   (if (rcmintegerp c)
