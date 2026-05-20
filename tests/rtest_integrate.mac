@@ -6334,3 +6334,7 @@ fullratsimp(diff(integrate(1/(x^4+%i+1),x),x) - 1/(x^4+%i+1));
 0;
 fullratsimp(diff(integrate(1/(x^6+%i+1),x),x) - 1/(x^6+%i+1));
 0;
+
+/* Bug #4067: "integrate(sqrt(u)/(sqrt(u-u*v)),u) --> expt: undefined: 0 to a negative exponent" */
+integrate(sqrt(u)/(sqrt(u-u*v)),u);
+u/sqrt(1-v);

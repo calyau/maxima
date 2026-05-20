@@ -1631,6 +1631,8 @@
 
 ;; Integrate things like sqrt(c*x^2+b*x))/x^m.
 (defun case1 (negpowlist c b x ec-1)
+  (when (eql b 0)
+    (return-from case1 nil)) ; don't handle degenerate case (would divide by zero)
   (let ((exp1 (power c -1//2)) ;; exp1 = 1/sqrt(c)
 	(eb-1 (inv b)))	       ;; eb-1 = 1/b
     (prog ((result 0) (controlpow (caar negpowlist)) (coef (cadar negpowlist))
