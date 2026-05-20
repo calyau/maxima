@@ -6328,3 +6328,9 @@ integrate (f, x);
 
 integrate (f, x, 0, 1);
 %pi/6;
+
+/* Bug #4592: "integrate causes sign: argument cannot be imaginary error" */
+fullratsimp(diff(integrate(1/(x^4+%i+1),x),x) - 1/(x^4+%i+1));
+0;
+fullratsimp(diff(integrate(1/(x^6+%i+1),x),x) - 1/(x^6+%i+1));
+0;

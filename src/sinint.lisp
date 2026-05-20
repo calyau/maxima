@@ -479,7 +479,7 @@
 	   num (simplify (disrep num sinint-ratform))
 	   cont (simplify (disrep cont sinint-ratform)))
      (cond ((= deg 4)
-	    (if (eq '$neg ($asksign b))
+	    (if (and (eql ($imagpart b) 0) (eq '$neg ($asksign b)))
 		(setq denom
 		      (mul2 (add2 (mul2 (power a '((rat simp) 1 2)) (power disvar 2))
 				  (power (mul -1 b) '((rat simp) 1 2)))
@@ -508,7 +508,7 @@
 				    (add2 denom term) (sub denom term))
 			      t)))
 	   (t
-	    (if (eq '$neg ($asksign b))
+	    (if (and (eql ($imagpart b) 0) (eq '$neg ($asksign b)))
 		(setq denom
 		      (mul2 (add2 (mul2 (power a '((rat simp) 1 2)) (power disvar 3))
 				  (power (mul -1 b) '((rat simp) 1 2)))
