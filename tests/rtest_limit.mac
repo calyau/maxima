@@ -1073,3 +1073,7 @@ errcatch (limit(x,x,box(inf)));
 /* provokes "integral is divergent" */
 errcatch (integrate(x,x,0,box(inf)));
 [];
+
+/* Bug #4742: limit result contains "false" */
+limit((gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x))/2,x,0,plus);
+'limit(gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x),x,0,plus)/2;

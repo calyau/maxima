@@ -2287,6 +2287,10 @@ ignoring dummy variables and array indices."
       (let* ((loginprod? (involve term '(%log)))
              (y (catch 'lip? (limit term var val 'think))))
         (cond
+          ;; Limit failed
+          ((null y)
+            (return-from simplimtimes (throw 'limit t)))
+          
           ;; limit failed due to log in product
           ((eq y 'lip!)
            (return-from simplimtimes (liminv (cons '(mtimes simp) exp))))
