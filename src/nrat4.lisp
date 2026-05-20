@@ -169,7 +169,7 @@
 	    (setq b (cons (car b) 1))))
      (setq c
 	   (cond ((member (car b) '(0 1) :test #'equal)
-		  (ratf (maxima-substitute (rdis a) b (rdis c))))
+		  (ratf (maxima-substitute (rdis a) (rdis b) (rdis c))))
 		 (t (cons (list 'mrat 'simp varlist genvar)
 			  (if (equal (cdr a) 1)
 			      (ratreduce (everysubst0 (car a) (car b) (car c))
