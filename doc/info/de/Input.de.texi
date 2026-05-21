@@ -273,7 +273,7 @@ Siehe auch @mrefdot{file_search}
 @defvr {Optionsvariable} file_search_ignore_dirs
 Standardwert: @code{[".bzr", ".git", ".github", ".hg", ".svn", ".eclipse", ".idea", ".vs", ".vscode", ".zed"]}
 
-@code{file_search_ignore_dirs} enthält Verzeichnisnamen (nicht komplette Pfade),
+@code{file_search_ignore_dirs} enth@"alt Verzeichnisnamen (nicht komplette Pfade),
 die bei der Suche nach Dateien ignoriert werden, um die Suche zu beschleunigen.
 
 Siehe auch @mrefdot{file_search}
