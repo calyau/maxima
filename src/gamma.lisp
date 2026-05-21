@@ -2073,6 +2073,15 @@
     ((zerop1 z) z)
     ((eq z '$inf) 1)
     ((eq z '$minf) -1)
+    
+    ;; erf(inverse_erf(x)) = x for -1 < x < 1
+    ((and (listp z)
+          (eq (caar z) '%inverse_erf)
+          (destructuring-let (((rpart . ipart) (trisplit (cadr z))))
+            (and (eq t (meqp 0 ipart))
+                 (eq t (mgrp rpart -1))
+                 (eq t (mgrp 1 rpart)))))
+      (cadr z))
 
     ;; Check for numerical evaluation
 
@@ -2449,6 +2458,15 @@
     ((zerop1 z) 1)
     ((eq z '$inf) 0)
     ((eq z '$minf) 2)
+    
+    ;; erfc(inverse_erfc(x)) = x for 0 < x < 2
+    ((and (listp z)
+          (eq (caar z) '%inverse_erfc)
+          (destructuring-let (((rpart . ipart) (trisplit (cadr z))))
+            (and (eq t (meqp 0 ipart))
+                 (eq t (mgrp rpart 0))
+                 (eq t (mgrp 2 rpart)))))
+      (cadr z))
 
     ;; Check for numerical evaluation.
 
@@ -2656,6 +2674,13 @@
      (simp-domain-error 
        (intl:gettext "inverse_erf: inverse_erf(~:M) is undefined.") z))
     ((zerop1 z) z)
+    
+    ;; inverse_erf(erf(x)) = x for real x
+    ((and (listp z)
+          (eq (caar z) '%erf)
+          (eq t (meqp 0 ($imagpart (cadr z)))))
+      (cadr z))
+    
     ((numerical-eval-p z)
      (to (bigfloat::bf-inverse-erf (bigfloat:to z))))
     ((taylorize (mop form) (cadr form)))
@@ -2726,6 +2751,13 @@
      (simp-domain-error 
        (intl:gettext "inverse_erfc: inverse_erfc(~:M) is undefined.") z))
     ((onep1 z) 0)
+    
+    ;; inverse_erfc(erfc(x)) = x for real x
+    ((and (listp z)
+          (eq (caar z) '%erfc)
+          (eq t (meqp 0 ($imagpart (cadr z)))))
+      (cadr z))
+    
     ((numerical-eval-p z)
      (to (bigfloat::bf-inverse-erfc (bigfloat:to z))))
     ((taylorize (mop form) (cadr form)))

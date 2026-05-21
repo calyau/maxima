@@ -4165,3 +4165,39 @@ beta(a,b)*(psi[0](b+a)-psi[0](b))^2-beta(a,b)*(psi[1](b+a)-psi[1](b));
 diff(beta(a,b),a,1,b,1);
 beta(a,b)*(psi[0](b+a)-psi[0](a))*(psi[0](b+a)-psi[0](b))
  -beta(a,b)*psi[1](b+a);
+
+/* Bug #4690: "inverse_erf(erf(x)) and erf(inverse_erf(x)) don't simplify to x, even if x is real" */
+(kill(x, x1, x2, x3, z), assume(x1 > -1, x2 < 1, x3 > -1, x3 < 1), declare(z, complex), done);
+done;
+erf(inverse_erf(x));
+erf(inverse_erf(x));
+erf(inverse_erf(x1));
+erf(inverse_erf(x1));
+erf(inverse_erf(x2));
+erf(inverse_erf(x2));
+erf(inverse_erf(x3));
+x3;
+inverse_erf(erf(x));
+x;
+inverse_erf(erf(z));
+inverse_erf(erf(z));
+(kill(x, x1, x2, x3, z), done);
+done;
+
+/* Analogous for erfc and inverse_erfc ... */
+(kill(x, x1, x2, x3, z), assume(x1 > 0, x2 < 2, x3 > 0, x3 < 2), declare(z, complex), done);
+done;
+erfc(inverse_erfc(x));
+erfc(inverse_erfc(x));
+erfc(inverse_erfc(x1));
+erfc(inverse_erfc(x1));
+erfc(inverse_erfc(x2));
+erfc(inverse_erfc(x2));
+erfc(inverse_erfc(x3));
+x3;
+inverse_erfc(erfc(x));
+x;
+inverse_erfc(erfc(z));
+inverse_erfc(erfc(z));
+(kill(x, x1, x2, x3, z), done);
+done;
