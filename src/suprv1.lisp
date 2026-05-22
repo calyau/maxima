@@ -267,6 +267,8 @@
 	      (copy-tree (gethash x *builtin-symbol-props*))))
       (when (member x *builtin-numeric-constants*)
 	(initialize-numeric-constant x))	;; reset db value for $%pi, $%e, etc
+      (when (member x '($zeroa $zerob))
+        (initialize-zeroab x)) ;; restore db assumptions for $zeroa and $zerob
       (if z (kill1 z)))))
 
 (defun kill1 (x)

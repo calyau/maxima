@@ -2717,6 +2717,24 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (learn `((mequal) ,c ,(mget c '$numer)) t))
   (setq %initiallearnflag nil))
 
+(defun initialize-zeroab (c)
+  "Adds database assumptions for $zeroa and $zerob to the global context"
+  (let ((context '$global) (%initiallearnflag t))
+    (cond
+      ((eq c '$zeroa)
+        (learn `((mgreaterp) $zeroa 0) t)
+        ;; The following line is still commented out, because it causes a
+        ;; stack overflow in this test from rtestint.mac:
+        ;; assume(l > 0, x > 0)$
+        ;; integrate(integrate((acos(x/l)+acos(y/l)-%pi/2)/(2*%pi),y,0,sqrt(l^2-x^2)),x,0,l);
+        ;(learn `((mlessp) $zeroa ,+least-positive-flonum+) t)
+        )
+      ((eq c '$zerob)
+        (learn `((mlessp) $zerob 0) t)
+        ;; See above.
+        ;(learn `((mgreaterp) $zerob ,+least-negative-flonum+) t)
+        ))))
+
 (eval-when (:load-toplevel :execute)
   (mapc #'true*
 	'(;; even and odd are integer

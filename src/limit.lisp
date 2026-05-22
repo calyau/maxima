@@ -3236,20 +3236,11 @@ ignoring dummy variables and array indices."
      (return (simplimtimes (list n1 d1)))))
 
 (defun maybe-asksign (e)
-  "Return the sign of `e` in a super context where `zerob < 0` and `zeroa > 0`.
-   When `*getsignl-asksign-ok*` is true, call `asksign`, otherwise call `csign`."
-  (let ((cntx ($supcontext)))
-    (unwind-protect
-        (progn
-          ;; Set up assumptions for the super context
-          (assume (ftake 'mgreaterp '$zeroa 0))
-          (assume (ftake 'mgreaterp 0 '$zerob))
-          ;; Determine which function to call based on *getsignl-asksign-ok*
-          (if *getsignl-asksign-ok*
-              ($asksign e)
-              ($csign e)))
-      ;; remove the super context
-      ($killcontext cntx))))
+  "When `*getsignl-asksign-ok*` is true, call `asksign`, otherwise call `csign`."
+  ;; Determine which function to call based on *getsignl-asksign-ok*
+  (if *getsignl-asksign-ok*
+    ($asksign e)
+    ($csign e)))
 
 ;;; Limit(log(XXX), var, 0, val), where val is either zerob (limit from below)
 ;;; or zeroa (limit from above).

@@ -73,7 +73,7 @@
         "rtestmt19937"
         "rtest_allnummod"
         ((mlist simp) "rtest_maxmin" 
-                ((mlist simp) 16 17 40 52 53 57 97 109))
+                ((mlist simp) 40 52 53 57 97 109))
         "rtestconjugate"
         ((mlist simp) "rtestsum"
 	 ((mlist simp) 23 24 38))
