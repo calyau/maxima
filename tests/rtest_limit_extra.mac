@@ -536,13 +536,15 @@ limit(atan2(-exp(x),x),x,minf);
 limit(atan2(x^2-2,x^3-2*x),x,sqrt(2),minus);
 atan(1/sqrt(2))-%pi$
 
-(assume(zeroa > 0, zerob < 0),0);
+/* No longer necessary, but not removed to keep problem numbering. */
+(/*assume(zeroa > 0, zerob < 0),*/0);
 0$
 
 limit(atan2(x^2-2,x^3-2*x),x,sqrt(2),minus);
 atan(1/sqrt(2))-%pi$
 
-(forget(zeroa > 0, zerob < 0),0);
+/* No longer necessary, but not removed to keep problem numbering. */
+(/*forget(zeroa > 0, zerob < 0),*/0);
 0$
 
 /* #3866 limit(log(sinh(x)),x,0,'plus) --> infinity */
@@ -1478,8 +1480,8 @@ limit(signum(exp(%i*x)*exp(x))/x,x,inf);
 0$
 
 /* clean up*/
-(kill(values),0);
-0$
+/*(kill(values),0);
+0$*/
 
 /* Did any values, facts, or contexts leak?*/
 
