@@ -920,6 +920,8 @@
       
 ;; atan(y/x) taking into account the quadrant.  (Also equal to
 ;; arg(x+%i*y).)
+;;
+;; See also http://functions.wolfram.com/01.15.27.0006.01
 (defun fpatan2 (y x)
   (cond ((equal (car x) 0)
 	 ;; atan(y/0) = atan(inf), but what sign?
@@ -934,12 +936,12 @@
 	((signp g (car x))
 	 ;; x > 0.  atan(y/x) is the correct value.
 	 (fpatan (fpquotient y x)))
-	((signp g (car y))
-	 ;; x < 0, and y > 0.  We're in quadrant II, so the angle we
-	 ;; want is pi+atan(y/x).
+	((signp ge (car y))
+	 ;; x < 0, and y >= 0.  We're in quadrant II or on the
+	 ;; negative real axis, so the angle we want is pi+atan(y/x).
 	 (fpplus (fppi) (fpatan (fpquotient y  x))))
 	(t
-	 ;; x <= 0 and y <= 0.  We're in quadrant III, so the angle we
+	 ;; x < 0 and y < 0.  We're in quadrant III, so the angle we
 	 ;; want is atan(y/x)-pi.
 	 (fpdifference (fpatan (fpquotient y x)) (fppi)))))
 
