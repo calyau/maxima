@@ -1,5 +1,5 @@
 ;; Author: Barton Willis with help from Richard Fateman
-;; Updated Feb 2025
+;; Updated Feb 2025, May 2026
 
 #|
 To simplify a sum with n terms, the standard simplus function calls
@@ -62,7 +62,7 @@ Error(s) found:
    rtest14.mac problems:    (62 153)
    rtest_gamma.mac problems:    (384 390)
    rtest_powerseries.mac problems:    (53 63)
-  C:/Users/barto/maxima-code-pure/maxima-code/share/solve_rec/rtest_simplify_sum.mac problems:
+   solve_rec/rtest_simplify_sum.mac problems:
     (3 4 5 6 7 10 11 12 13 14 16 17 19 20 21 22 23 28 29 53 67 68 69 70 71 72)
   rtest_linalg.mac problems:    (92 94)
   rtest_abs_integrate.mac problems:   (74 89 139)
@@ -73,6 +73,27 @@ Tests that were expected to fail but passed:
    rtest_limit_extra.mac problem:    (125)
 41 tests failed out of 19,015 total tests.
 
+24 May 2026:
+
+With $use_extended_real_arithmetic : false; Error summary:
+Error(s) found:
+  rtest13.mac problem: (27)
+  rtest14.mac problems: (62 153)
+
+Tests that were expected to fail but passed:
+  rtest3.mac problem:  (146)
+
+3 tests failed out of 14,906 total tests.
+
+With $use_extended_real_arithmetic : true; Error(s) found:
+  rtest13.mac problem: (27)
+  rtest14.mac problems:  (62 153)
+  rtest_powerseries.mac problems: (53 63)
+
+Tests that were expected to fail but passed:
+  rtest3.mac problem: (146)
+  test_maxmin.mac problem: (109)
+  rtest_limit_extra.mac problem:  (125)
 
 Speculation on how to speed up simplification of sums:
 
@@ -93,7 +114,7 @@ would possibly speed the code.
 ;; simpexpt do not have an option of doing correct extended real number arithmetic, this feature of
 ;; simplus is limited.
 
-(defmvar $use_extended_real_arithmetic nil)
+(defmvar $use_extended_real_arithmetic t)
 
 (define-modify-macro mincf (&optional (i 1)) addk)
 
@@ -278,6 +299,37 @@ would possibly speed the code.
 ;; The binary64 value of %e.
 (defvar %e-float64 (exp 1.0d0))
 
+;;; In the main DOLIST, each term of the sum is converted to coefficient form
+;;; N . E, where N is a Maxima number and E is the base expression.  For example,
+;;; 42*x becomes (42 . x).  These pairs are inserted into a hash table whose keys
+;;; are the base expressions E, using EQUAL as the test.  When two terms have
+;;; literally identical base expressions, the hash table combines them by adding
+;;; their coefficients and storing a single updated entry.
+;;;
+;;; If EQUAL does not recognize two terms as identical, no harm is done: both
+;;; entries are stored separately.  In that case the table may contain entries
+;;; (n1 . E1) and (n2 . E2) even when E1 and E2 are alike1 but not EQUAL.  The
+;;; hash table therefore performs only a *partial* common‑term combination.
+;;;
+;;; After the DOLIST, the hash table entries are collected into a list and sorted
+;;; with the predicate GREAT.  This ordering makes algebraically similar
+;;; expressions adjacent to one another.  The subsequent WHILE loop then performs
+;;; the full combination of common terms by using ALIKE1, which recognizes
+;;; expressions that are alike1 even when they are not EQUAL.  Thus some common
+;;; terms are combined during the hash‑table phase, and the remainder are
+;;; combined in the WHILE loop.
+;;;
+;;; The hash table is optional: the WHILE loop alone is sufficient for correctness.
+;;; The table exists only as an optimization.  It speeds up cases where many terms
+;;; are literally identical, but provides little benefit when most common terms
+;;; are alike1 but not EQUAL.
+;;;
+;;; The DO-OVER mechanism handles a special case: when combining coefficients
+;;; produces ±1 times an expression that is itself an MPLUS, for example
+;;; 5*(a+b) - 4*(a+b) + a.  Without the DO-OVER scheme, this expression would
+;;; simplify only to (a+b) + a, rather than to the fully simplified result.
+
+
 (defun simplus (l w z)
   (declare (ignore w))
   
@@ -335,7 +387,7 @@ would possibly speed the code.
       (setq x (pop l))
       (setq cf (cdr x))
       (setq x (car x))
-      (while (and l (like x (caar l)))
+      (while (and l (alike1 x (caar l)))
       	(mincf cf (cdr (pop l))))
         (when (and (or (eql cf 1) (eql cf -1)) (mplusp x)) 
           (setq do-over t))
