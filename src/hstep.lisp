@@ -20,6 +20,8 @@
 
 (in-package :maxima)
 
+(declaim (special preserve-direction))
+
 ($put '$hstep 1 '$version)
 
 (setf (get '%hstep 'simplim%function) 'simplim%hstep)
