@@ -6,4 +6,4 @@ export WINEPREFIX
 WINEDLLOVERRIDES="mscoree,mshtml="
 export WINEDLLOVERRIDES
 unset DISPLAY
-WINEPATH="@CMAKE_BINARY_DIR@/mingw/bin" @WINE_EXE@ @CMAKE_BINARY_DIR@/ecl-cross-root/ecl.exe "$@"
+WINEPATH="@CMAKE_BINARY_DIR@/w64devkit/w64devkit/bin" @WINE_EXE@ @CMAKE_BINARY_DIR@/ecl-cross-root/ecl.exe "$@"

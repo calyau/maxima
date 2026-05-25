@@ -184,7 +184,7 @@ goto :EOF
 
 :doecl
 chcp 65001 >nul
-set "path=%maxima_prefix%/ecl;%maxima_prefix%/winlibs/bin;%path%"
+set "path=%maxima_prefix%/ecl;%maxima_prefix%/w64devkit/bin;%path%"
 set "MAXIMA_IMAGESDIR_BIN=%maxima_imagesdir%/binary-%lisp%"
 @ECL_NAME@  --eval "(load \"%MAXIMA_IMAGESDIR_BIN%/defsystem.lisp\")" --eval "(mk:add-registry-location \"%MAXIMA_IMAGESDIR_BIN%\")" --eval "(funcall (intern (symbol-name :operate-on-system) :mk) \"maxima\" :load :verbose nil)" --eval "(cl-user::run)" -- %*
 goto :EOF
