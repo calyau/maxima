@@ -157,6 +157,13 @@
            ($rectform
             ($bfloat
              ($makegamma (list '(%binomial) ($bfloat u) ($bfloat v))))))
+          ((and (mplusp v)
+                (or (not (mplusp (setq y (sub u v))))
+                    (< (length (cdr y)) (length (cdr v)))))
+            ;; We have binomial(u, v), where v is a sum (or difference),
+            ;; and y = u-v is either no longer a sum or has fewer terms than v.
+            ;; In this case, simplify to binomial(u, u-v).
+            (ftake '%binomial u y))
           (t (give-up)))))
 
 (defun bincomp (u v) 

@@ -4201,3 +4201,14 @@ inverse_erfc(erfc(z));
 inverse_erfc(erfc(z));
 (kill(x, x1, x2, x3, z), done);
 done;
+
+/* Bug #4673: "binomial(a,a-b) doesn't simplify to binomial(a,b)" */
+
+binomial(a, a - b);
+binomial(a, b);
+
+binomial(a + b, a - b);
+binomial(a + b, 2 * b);
+
+binomial(a + b + c, a + b + c - d - e - f);
+binomial(a + b + c, d + e + f);
