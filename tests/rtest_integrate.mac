@@ -6338,3 +6338,30 @@ fullratsimp(diff(integrate(1/(x^6+%i+1),x),x) - 1/(x^6+%i+1));
 /* Bug #4067: "integrate(sqrt(u)/(sqrt(u-u*v)),u) --> expt: undefined: 0 to a negative exponent" */
 integrate(sqrt(u)/(sqrt(u-u*v)),u);
 u/sqrt(1-v);
+
+/* Bug #4037: "Error in symbolic integral" */
+/* Test that the antiderivatives of a whole family of functions are correct. */
+/* Certain cases are left out because they print "CQUOTIENT: quotient is not exact" errors. */
+map(
+  lambda([e],
+    block([f, u],
+      f : x^e[1]*log(x)^e[2]/(1+x^e[3]),
+      u : integrate(f, x),
+      freeof('integrate, u) and zeroequiv(diff(u, x) - f, x) = true
+    )
+  ),
+  [[1,1,1],[1,1,2],[1,1,4],[1,2,1],[1,2,2],[1,2,4],[1,3,1],[1,3,2],[1,4,1],
+   [1,4,2],[1,5,1],[1,5,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2],[2,3,1],[2,3,2],
+   [2,4,1],[2,4,2],[2,5,1],[2,5,2],[3,1,1],[3,1,2],[3,1,4],[3,2,1],[3,2,2],
+   [3,2,4],[3,3,1],[3,3,2],[3,3,4],[3,4,1],[3,4,2],[3,4,4],[3,5,1],[3,5,2],
+   [3,5,4],[4,1,1],[4,1,2],[4,1,5],[4,2,1],[4,2,2],[4,2,5],[4,3,1],[4,3,2],
+   [4,3,5],[4,4,1],[4,4,2],[4,4,5],[4,5,1],[4,5,2],[4,5,5],[5,1,1],[5,1,2],
+   [5,1,4],[5,2,1],[5,2,2],[5,3,1],[5,3,2],[5,4,1],[5,4,2],[5,5,1],[5,5,2]]
+);
+[true, true, true, true, true, true, true, true, true,
+ true, true, true, true, true, true, true, true, true,
+ true, true, true, true, true, true, true, true, true,
+ true, true, true, true, true, true, true, true, true,
+ true, true, true, true, true, true, true, true, true,
+ true, true, true, true, true, true, true, true, true,
+ true, true, true, true, true, true, true, true, true];

@@ -611,7 +611,7 @@
 		 narg (rdis rn)))
 	  ((and (= k 1) (> j 1))
 	   (setq ro (ratexpt ro j)
-		 coef (div coef (f* j risch-degree))
+		 coef (div coef (power j risch-degree))
 		 olog (mul j olog))))
     (desetq (rc . rd) (ratdivide rn ro))
     (let
