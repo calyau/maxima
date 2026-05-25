@@ -391,7 +391,7 @@
        (limit (div (ftake 'mexpt z (sub a 1)) (ftake 'mexpt '$%e z)) var val 'think)
        (throw 'limit t)))
 
-     ((and (eql a 0) (eq t (mgrp 0 z)))
+     ((and (eql a 0) (not (eq z '$ind)) (not (eq a '$ind)) (eq t (mgrp 0 z)))
       (let ((im (behavior (cdr (risplit (caddr expr))) var val)))
       (cond ((eql im -1)
               (sub (mul '$%i '$%pi) (ftake '%expintegral_ei (mul -1 z))))

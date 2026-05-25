@@ -1479,6 +1479,20 @@ ind$
 limit(signum(exp(%i*x)*exp(x))/x,x,inf);
 0$
 
+/* \#4740 limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf);*/
+block([expintrep : gamma_incomplete],
+   limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf));
+gamma(1/4)$
+
+block([expintrep : false],
+   limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf));
+gamma(1/4)$
+
+/* \#4747 limits of some exonential integrals when expintrep : gamma_incomplete*/
+block([expintrep : gamma_incomplete], 
+     limit(expintegral_ci(5 + cos(x)), x, inf));
+ind$
+
 /* clean up*/
 /*(kill(values),0);
 0$*/

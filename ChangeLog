@@ -9,7 +9,9 @@ Bug fixes for numbered bugs:
  * \#4729 rtest_limit.mac: Problem 230 (line 866) 
  * \#4735 rtest_limit_gruntz problem 21, line 121 has sign error in expected limit
  * \#4737 atan2 with bfloat arg(s) is inconsistent on negative x-axis
-
+ * \#4740 limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf)
+ * \#4747 limits of some exponential integrals when expintrep : gamma_incomplete
+ 
 Bug fixes for unnumbered bugs:
 -----------------------------
 * rtest_gruntz test #38

@@ -32,6 +32,7 @@
 		      taylored logcombed
 		      $exponentialize lhp? lhcount
 		      loginprod? context *limit-assumptions*
+			  $expintrep
 		      limit-top))
 
 (defconstant +behavior-count+ 4)
@@ -4461,7 +4462,13 @@ ignoring dummy variables and array indices."
 		  (extra-simp ($fibtophi e)))	
 		 ;; convert log_gamma(X) to log(gamma(X))
 		((and var-present (eq '%log_gamma (caar e)))
-		  (extra-simp (ftake '%log (ftake '%gamma (cadr e)))))	  
+		  (extra-simp (ftake '%log (ftake '%gamma (cadr e)))))
+        ;; convert expintegral_e to an incomplete gamma expression
+        ((and var-present (eq (caar e) '%expintegral_e))
+		  (let* ((p (extra-simp (cadr e)))
+				 (arg (extra-simp (caddr e))))
+				(mul (ftake 'mexpt arg (sub p 1))
+				     (ftake '%gamma_incomplete (sub 1 p) arg))))
 	     (($subvarp (mop e)) ;subscripted function
 		     (subfunmake 
 		      (subfunname e) 
