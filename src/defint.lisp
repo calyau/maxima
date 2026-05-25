@@ -2588,6 +2588,7 @@ in the interval of integration.")
 (defun logx1 (exp ll ul ivar)
   (let ((arg nil))
     (cond
+      ((eq ivar 'yx) nil) ; new ivar cannot be same as old ivar
       ((and (notinvolve-var exp ivar '(%sin %cos %tan %atan %asin %acos))
 	    (setq arg (involve-var exp ivar '(%log))))
        (cond ((eq arg ivar)

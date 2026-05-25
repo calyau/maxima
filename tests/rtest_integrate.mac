@@ -6339,6 +6339,14 @@ fullratsimp(diff(integrate(1/(x^6+%i+1),x),x) - 1/(x^6+%i+1));
 integrate(sqrt(u)/(sqrt(u-u*v)),u);
 u/sqrt(1-v);
 
+/* Bug #4581: "integrate ((log (1 - t)) / t, t, 0, x) is wrong" */
+assume(x > 0, x < 1);
+[x > 0, x < 1];
+diff(integrate((log(1 - t)) / t, t, 0, x), x);
+log(1 - x) / x;
+forget(x > 0, x < 1);
+[x > 0, x < 1];
+
 /* Bug #4037: "Error in symbolic integral" */
 /* Test that the antiderivatives of a whole family of functions are correct. */
 /* Certain cases are left out because they print "CQUOTIENT: quotient is not exact" errors. */
