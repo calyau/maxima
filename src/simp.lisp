@@ -920,7 +920,7 @@
 ;;;-----------------------------------------------------------------------------
 
 (defun plusin (x fm)
-  (prog (x1 x2 flag check v w xnew a n m c)
+  (prog (x1 x2 flag check v w xnew a n m c int-base-expt-p)
      (setq w 1)
      (setq v 1)
      (cond ((mtimesp x)
@@ -930,23 +930,23 @@
            (t (setq x (ncons x))))
      (setq x1 (if (null (cdr x)) (car x) (cons '(mtimes) x))
            xnew (list* '(mtimes) w x))
+     ;; Remember whether X1 is an MEXPT with an integer base.
+     (setq int-base-expt-p (and (mexptp x1) (integerp (cadr x1))))
   start
      (cond ((null (cdr fm)))
-           ((and (alike1 x1 (cadr fm)) (null (cdr x)))
+           ((and (null (cdr x)) (alike1 x1 (cadr fm)))
             (go equ))
            ;; Implement the simplification of
            ;;   v*a^(c+n)+w*a^(c+m) -> (v*a^n+w*a^m)*a^c
            ;; where a, v, w, and (n-m) are integers.
-           ((and (or (and (mexptp (setq x2 (cadr fm)))
+           ((and int-base-expt-p
+                 (or (and (mexptp (setq x2 (cadr fm)))
                           (setq v 1))
                      (and (mtimesp x2)
-                          (not (alike1 x1 x2))
                           (null (cadddr x2))
                           (integerp (setq v (cadr x2)))
                           (mexptp (setq x2 (caddr x2)))))
-                 (integerp (setq a (cadr x2)))
-                 (mexptp x1)
-                 (equal a (cadr x1))
+                 (equal (setq a (cadr x2)) (cadr x1))
                  (integerp (sub (caddr x2) (caddr x1))))
             (setq n (if (and (mplusp (caddr x2))
                              (mnump (cadr (caddr x2))))
@@ -1024,7 +1024,7 @@
                              ;; This clause should never be reached.
                              (t (merror "Internal error in simplus."))))))))
            ((mtimesp (cadr fm))
-            (cond ((alike1 x1 (cadr fm))
+            (cond ((and (cdr x) (alike1 x1 (cadr fm)))
                    (go equt))
                   ((and (mnump (cadadr fm)) (alike x (cddadr fm)))
                    (setq flag t) ; found common factor
