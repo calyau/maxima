@@ -887,14 +887,15 @@
 ;;; Arguments and values:
 ;;;   X      - a Maxima expression or atom
 ;;;   FM     - a list with the terms of an addition
-;;;   result - part of the list fm, which starts at the inserted expression
+;;;   result - part of the list FM (see below)
 ;;;
 ;;; Description:
 ;;;   Adds X into running list of additive terms FM. The routine modifies
 ;;;   the argument FM destructively, but does not return the modified list as
 ;;;   a result. The return value is a part of the list FM, which starts at the
-;;;   inserted term. PLUSIN can not handle Maxima numbers. PLUSIN is called 
-;;;   only from the routine PLS.
+;;;   place where the calling routine (PLS) can safely resume scanning to insert
+;;;   subsequent, canonically sorted terms. PLUSIN is called only from the
+;;;   routine PLS.
 ;;;
 ;;; Examples:
 ;;;   (setq fm '(0))
@@ -920,7 +921,8 @@
 ;;;-----------------------------------------------------------------------------
 
 (defun plusin (x fm)
-  (prog (x1 x2 flag check v w xnew a n m c int-base-expt-p)
+  (prog (x1 x2 flag check v w xnew a n m c int-base-expt-p base-match-p
+         canonical-insert-fm cluster-start-fm)
      (setq w 1)
      (setq v 1)
      (cond ((mtimesp x)
@@ -931,10 +933,20 @@
      (setq x1 (if (null (cdr x)) (car x) (cons '(mtimes) x))
            xnew (list* '(mtimes) w x))
      ;; Remember whether X1 is an MEXPT with an integer base.
+     ;; In that case, it can potentially merge with an already existing
+     ;; term in such a way that the resulting term needs to be moved to a
+     ;; different place to maintain canonical ordering.
+     ;; Example: X = 7*2^(1/4) gets added into FM = 2^(1/4) + 2^(3/8)
+     ;; 7*2^(1/4) merges with 2^(1/4) to 8*2^(1/4), but this term is fed into
+     ;; SIMPTIMES, which recognizes that 8 = 2^3, pushes the 3 into the
+     ;; exponent and returns 2^(13/4). But 2^(13/4) now must come before the
+     ;; already existing term 2^(3/8) to maintain canonical ordering.
      (setq int-base-expt-p (and (mexptp x1) (integerp (cadr x1))))
   start
+     (setq base-match-p nil)
      (cond ((null (cdr fm)))
            ((and (null (cdr x)) (alike1 x1 (cadr fm)))
+            (setq cluster-start-fm (or cluster-start-fm fm))
             (go equ))
            ;; Implement the simplification of
            ;;   v*a^(c+n)+w*a^(c+m) -> (v*a^n+w*a^m)*a^c
@@ -947,6 +959,8 @@
                           (integerp (setq v (cadr x2)))
                           (mexptp (setq x2 (caddr x2)))))
                  (equal (setq a (cadr x2)) (cadr x1))
+                 (setq base-match-p t
+                       cluster-start-fm (or cluster-start-fm fm))
                  (integerp (sub (caddr x2) (caddr x1))))
             (setq n (if (and (mplusp (caddr x2))
                              (mnump (cadr (caddr x2))))
@@ -1025,54 +1039,80 @@
                              (t (merror "Internal error in simplus."))))))))
            ((mtimesp (cadr fm))
             (cond ((and (cdr x) (alike1 x1 (cadr fm)))
+                   (setq cluster-start-fm (or cluster-start-fm fm))
                    (go equt))
                   ((and (mnump (cadadr fm)) (alike x (cddadr fm)))
                    (setq flag t) ; found common factor
+                   (setq cluster-start-fm (or cluster-start-fm fm))
                    (go equt))
                   ((great xnew (cadr fm)) (go gr))))
            ((great x1 (cadr fm)) (go gr)))
+     (when base-match-p
+       (when (null canonical-insert-fm)
+         (setq canonical-insert-fm fm))
+       (setq fm (cdr fm))
+       (go start))
      (setq xnew (eqtest (testt xnew) (or check '((foo)))))
+     (when canonical-insert-fm
+       (setq fm canonical-insert-fm))
      (return (cdr (rplacd fm (cons xnew (cdr fm)))))
   gr 
      (setq fm (cdr fm))
      (go start)
   equ
-     (rplaca (cdr fm)
+     (setq x1
              (if (equal w -1)
                  (list* '(mtimes simp) 0 x)
                  ;; Call muln to get a simplified product.
                  (if (mtimesp (setq x1 (muln (cons (addk 1 w) x) t)))
                      (testtneg x1)
                      x1)))
+     (go equt2)
   del
      (cond ((not (mtimesp (cadr fm)))
             (go check))
            ((onep (cadadr fm))
             ;; Do this simplification for an integer 1, not for 1.0 and 1.0b0
             (rplacd (cadr fm) (cddadr fm))
-            (return (cdr fm)))
+            (return (if int-base-expt-p cluster-start-fm (cdr fm))))
            ((not (zerop1 (cadadr fm)))
-            (return (cdr fm)))
+            (return (if int-base-expt-p cluster-start-fm (cdr fm))))
            ;; Handle the multiplication with a zero.
            ((and (or (not $listarith) (not $doallmxops))
                  (mxorlistp (caddr (cadr fm))))
-            (return (rplacd fm 
-                            (cons (constmx 0 (caddr (cadr fm))) (cddr fm))))))
+            (rplacd fm 
+                    (cons (constmx 0 (caddr (cadr fm))) (cddr fm)))
+            (return (if int-base-expt-p cluster-start-fm fm))))
      ;; (cadadr fm) is zero. If the first term of fm is a number,
      ;;  add it to preserve the type.
      (when (mnump (car fm))
        (rplaca fm (addk (car fm) (cadadr fm))))
-     (return (rplacd fm (cddr fm)))
+     (rplacd fm (cddr fm))
+     (return (if int-base-expt-p cluster-start-fm fm))
   equt
      ;; Call muln to get a simplified product.
      (setq x1 (muln (cons (addk w (if flag (cadadr fm) 1)) x) t))
      ;; Make a mplus expression to guarantee that x1 is added again into the sum
      (setq x1 (list '(mplus) x1))
   equt2
-     (rplaca (cdr fm)
-             (if (zerop1 x1)
-                 (list* '(mtimes) x1 x)
-                 (if (mtimesp x1) (testtneg x1) x1)))
+     (setq x1 (if (zerop1 x1)
+                (list* '(mtimes) x1 x)
+                (if (mtimesp x1) (testtneg x1) x1)))
+     (cond
+       (int-base-expt-p
+         ;; Potentially unstable order: The new term, resulting from merging X
+         ;; with an already existing term, may have structurally changed and
+         ;; may need to go to a different place in the output sum.
+         ;; Remove the matched term, rewind the sum pointer back to the cluster
+         ;; start, and scan forward to find the correct insertion place.
+         (rplacd fm (cddr fm))
+         (setq fm cluster-start-fm)
+         (while (and (cdr fm) (great x1 (cadr fm)))
+           (setq fm (cdr fm)))
+         (rplacd fm (cons x1 (cdr fm))))
+       (t
+         ;; Safe case, merged term has same structure. Inline replacement.
+         (rplaca (cdr fm) x1)))
      (if (not (mtimesp (cadr fm))) (go check))
      (when (and (onep (cadadr fm)) flag (null (cdddr (cadr fm))))
        ;; Do this simplification for an integer 1, not for 1.0 and 1.0b0
@@ -1080,7 +1120,7 @@
      (go del)
   check
      (if (mplusp (cadr fm)) (setq *plusflag* t)) ; A nested mplus expression
-     (return (cdr fm))))
+     (return (if int-base-expt-p cluster-start-fm (cdr fm)))))
 
 ;;;-----------------------------------------------------------------------------
 
