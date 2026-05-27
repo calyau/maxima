@@ -1493,6 +1493,22 @@ block([expintrep : gamma_incomplete],
      limit(expintegral_ci(5 + cos(x)), x, inf));
 ind$
 
+/* \#4689 limit of a spherical_bessel_j function */
+limit(spherical_bessel_j(1,x)^2,x,inf);
+0$
+
+limit(spherical_bessel_j(1,x)^2,x,minf);
+0$
+
+limit(spherical_bessel_j(1,x),x,inf);
+0$
+
+limit(spherical_bessel_j(3,x),x,inf);
+0$
+
+limit(spherical_bessel_j(3,x),x,minf);
+0$
+
 /* clean up*/
 /*(kill(values),0);
 0$*/

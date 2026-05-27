@@ -1512,27 +1512,48 @@ ignoring dummy variables and array indices."
 	(t ($gcd (getexp (car list))
 		 (getexplist (cdr list))))))
 
-(defun limroot (exp power)
-  (cond ((or (atom exp) (not (member (caar exp) '(mtimes mexpt) :test #'eq)))
-	 (limroot (list '(mexpt) exp 1) power)) ;This is strange-JIM.
-	((mexptp exp)  (m^ (cadr exp)
-			   (sratsimp (m* (caddr exp) (m^ power -1.)))))
-	(t (m*l (mapcar #'(lambda (x)
-			    (limroot x power))
-			(cdr exp))))))
+(defun limroot (&rest args)
+  "limroot is deprecated and no longer available."
+  (declare (ignore args))
+  (merror "limroot is deprecated and no longer available."))
 
-;;NUMERATOR AND DENOMINATOR HAVE EXPONENTS WITH GCD OF GCP.
-;;; Used to call simplimit but some of the transformations used here
-;;; were not stable w.r.t. the simplifier, so try keeping exponent separate
-;;; from bas.
+(defun freeof-extended-real (e)
+  "Return T iff e is semantically free of extended-real numbers."
+  ($freeof '$minf '$zerob '$zeroa '$ind '$und '$inf '$infinity e))
+
+;; colexpt returns limit(n/dn, var, val). Assumptions:
+;;   (a) n  has the form a^P
+;;   (b) dn has the form b^Q
+;;   (c) gcp is a positive integer
+;;
+;; The function colexpt attempts to compute limit(a^P/b^Q, x, pt) using the identity
+;;     limit(a^P / b^Q, x, pt) = limit(a^(P/gcp) / b^(Q/gcp), x, pt)^gcp.
+;; The value of gcp is passed to colexpt; the logic for finding a suitable gcp
+;; is not part of colexpt.
+;;
+;; When the assumptions are unmet, or when Maxima is unsuccessful in finding
+;; limit(a^(P/gcp) / b^(Q/gcp), x, pt), colexpt throws to 'limit.
+;;
+;; After determining lim = limit(a^(P/gcp) / b^(Q/gcp), x, pt), the code
+;; evaluates infsimp(lim^gcp). The function infsimp cleans up some cases, such
+;; as inf^2, but it misses others such as ind^2. To avoid returning expressions
+;; such as ind^2, the code performs a semantic check to determine whether the
+;; expression is either an extended real or does not involve an extended real.
 
 (defun colexpt (n dn gcp)
-  (let ((bas (m* (limroot n gcp) (limroot dn (m* -1 gcp))))
-	(expo gcp)
-	baslim expolim)
-    (setq baslim (limit bas var val 'think))
-    (setq expolim (limit expo var val 'think))
-    (simplimexpt bas expo baslim expolim)))
+	 (cond ((and (mexptp n) (mexptp dn) (integerp gcp) (> gcp 0))
+	    (let* ((a (second n))
+		       (p (div (third n) gcp))
+		       (b (second dn)) 
+			   (q (div (third dn) gcp))
+			   (lim (limit (div (ftake 'mexpt a p) (ftake 'mexpt b q)) var val 'think))
+			   (lim^gcp (if (successful-limit-result-p lim)
+			                (infsimp (ftake 'mexpt lim gcp))
+							nil)))
+		(if (and lim^gcp (or (extended-real-p lim^gcp) (freeof-extended-real lim^gcp)))
+		         lim^gcp
+			     (throw 'limit nil))))
+		(t (throw 'limit nil))))
 
 (defun zero-fixup (e x pt)
   "Assuming `substitute(pt, x, e)` vanishes, attempt to determine if the zero is `zerob` or `zeroa`.
