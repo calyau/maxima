@@ -277,7 +277,7 @@
    (let ((r (first a))
          (i (second a)))
      (declare (integer r i))
-     (list (+ (* r r) (* i i)) (ash (* r i) 1))))
+     (list (- (* r r) (* i i)) (ash (* r i) 1))))
 
 (defun gctime1 (a b)
   (gctimes (car a) (cadr a) (car b) (cadr b)))
