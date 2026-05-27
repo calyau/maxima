@@ -266,8 +266,14 @@
 		(setq minpoly* (cadr (ratrep* *alpha*)))
 		(when (or (pcoefp minpoly*)
 			  (not (univar (cdr minpoly*)))
-			  (< (cadr minpoly*) 2))
-		  (merror (intl:gettext "factor: second argument must be a nonlinear, univariate polynomial; found: ~M") *alpha*))
+			  (< (cadr minpoly*) 2)
+              ;; Detect a reducible polynomial: factor MINPOLY* with GAUSS = NIL,
+              ;; skip over the content and see if there is more than one factor
+              ;; or the single factor has a multiplicity > 1.
+              (let* ((pfac (let (gauss) (pfactor minpoly*)))
+                     (facs (if (pcoefp (car pfac)) (cddr pfac) pfac)))
+                (or (cddr facs) (> (cadr facs) 1))))
+		  (merror (intl:gettext "factor: second argument must be an irreducible, nonlinear, univariate polynomial; found: ~M") *alpha*))
 		(setq *alpha* (pdis (list (car minpoly*) 1 1))
 		      mm* (cadr minpoly*))
 		(unless (equal (caddr minpoly*) 1)
