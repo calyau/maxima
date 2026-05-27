@@ -20,8 +20,6 @@
 
 (in-package :maxima)
 
-(declaim (special preserve-direction))
-
 ($put '$hstep 1 '$version)
 
 (setf (get '%hstep 'simplim%function) 'simplim%hstep)
@@ -65,7 +63,7 @@
 
 (defun simplim%hstep (e x pt)  
  "Return limit(e,x,pt), where e = hstep(X)."
-  (let* ((preserve-direction t) 
+  (let* ((*preserve-direction* t) 
          (lim (limit (cadr e) x pt 'think))
 	       (sgn (mnqp lim 0)))
     (cond 

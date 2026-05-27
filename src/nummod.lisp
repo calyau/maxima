@@ -26,8 +26,6 @@
 
 (in-package :maxima)
 
-(declare-top (special preserve-direction))
-		
 (macsyma-module nummod)
 
 ;; Let's have version numbers 1,2,3,...
@@ -253,7 +251,7 @@
 (defun simplim%floor (expr var val)
   (let* ((arg (cadr expr))
 	 (b (behavior arg var val))
-	 (arglimab (let ((preserve-direction t)) (limit arg var val 'think))) ; with $zeroa $zerob
+	 (arglimab (let ((*preserve-direction* t)) (limit arg var val 'think))) ; with $zeroa $zerob
 	 (arglim (ridofab arglimab)))
     (cond 
 	  ((eq arglim '$ind) (throw 'limit nil))
@@ -325,7 +323,7 @@
 (defun simplim%ceiling (expr var val)
   (let* ((arg (cadr expr))
 	 (b (behavior arg var val))
-	 (arglimab (let ((preserve-direction t)) (limit arg var val 'think))) ; with $zeroa $zerob
+	 (arglimab (let ((*preserve-direction* t)) (limit arg var val 'think))) ; with $zeroa $zerob
 	 (arglim (ridofab arglimab)))
     (cond 
 	  ((eq arglim '$ind) (throw 'limit nil))
@@ -415,7 +413,7 @@
 (defun simplim%round (expr var val)
   (let* ((arg (cadr expr))
 	 (b (behavior arg var val))
-	 (arglimab (let ((preserve-direction t)) (limit arg var val 'think))) ; with $zeroa $zerob
+	 (arglimab (let ((*preserve-direction* t)) (limit arg var val 'think))) ; with $zeroa $zerob
 	 (arglim (ridofab arglimab)))
     (cond
 	  ((eq arglim '$ind) (throw 'limit nil))

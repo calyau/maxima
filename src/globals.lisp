@@ -1905,3 +1905,8 @@
 (defvar *integer-info* nil
   "If LIMITP is non-null ASK-INTEGER conses its assumptions onto this
   list.")
+
+;; Originally from limits.lisp, but used in other files.
+(defmvar *preserve-direction* ()
+  "Makes `limit' return Direction info.")
+

@@ -76,7 +76,7 @@
 
 (defun simplim%sinc (e x pt)  
  "Return limit(sinc(X),x,pt)."
-  (let* ((preserve-direction t) 
+  (let* ((*preserve-direction* t) 
          (lim (limit (cadr e) x pt 'think)))
      (cond ((eq lim '$ind) '$ind) ; sinc(ind) = ind
            ((or (eq lim '$minf) (eq lim '$inf)) 0) ; sinc(minf) = 0 & sinc(inf) = 0
