@@ -1481,7 +1481,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun signdiff-special (xlhs xrhs)
   ;; xlhs may be a constant
-  (let ((sgn nil))
+  (let ((sgn nil) flip-sign)
     (when (or (and (realp xrhs) (minusp xrhs)
 		   (not (atom xlhs)) (eq (sign* xlhs) '$pos))
 					; e.g. sign(a^3+%pi-1) where a>0
@@ -1506,7 +1506,16 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		   (eq (sign* (sub (cadr xlhs) 1)) '$pos)
 		   (eq (sign* (sub (caddr xlhs) (caddr xrhs))) '$pos)))
       (setq sgn '$pos))
-
+    
+    ;; For the following test, swap XLHS and XRHS, if necessary, so that XLHS
+    ;; is one of the operators that we can handle, and remember to flip the result.
+    (let ((operators '(%sin %cos %cosh %sech %signum mabs)))
+      (when (and (not (atom xrhs))
+                 (member (caar xrhs) operators :test #'eq)
+                 (or (atom xlhs)
+                     (not (member (caar xlhs) operators :test #'eq))))
+        (psetq xlhs xrhs xrhs xlhs flip-sign (not flip-sign))))
+    
     ;; sign(sin(x)+c)
     (when (and (not (atom xlhs))
 	       (member (caar xlhs) '(%sin %cos))
@@ -1556,10 +1565,46 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         (setq sgn '$pnz))
       (t  ;; -1 < c < 1, but c # 0
         (setq sgn '$pn))))
-	   
+    
+    ;; sign(abs(a) - b) = sign_max(sign(a - b), sign(-a - b)) with real a, b
+    (when (and (null sgn)
+               (not (atom xlhs))
+               (eq (caar xlhs) 'mabs)
+               (zerop1 ($imagpart (cadr xlhs)))
+               (zerop1 ($imagpart xrhs)))
+      (let* ((a (cadr xlhs))
+             (b xrhs)
+             (s1 (sign* (sub a b)))
+             (s2 (sign* (sub (neg a) b)))
+             (max-sign (sminmax '$max s1 s2)))
+        (when (not (eq max-sign '$pnz))
+          (setq sgn max-sign))))
+    
+    ;; For the following test, swap XLHS and XRHS, if necessary, so that XRHS is
+    ;; the number, e.g. x^2 - 3 -> 3 - x^2, and remember to flip the result.
+    (when (and (mnump xlhs) (not (mnump xrhs)))
+      (psetq xlhs xrhs xrhs xlhs flip-sign (not flip-sign)))
+    
+    ;; sign(a^pos_int - b) = sign(abs_if_even(a) - b^(1/pos_int))
+    ;; with real a, b >= 0 (for even pos_int), and b^(1/pos_int) being the real root
+    (when (and (null sgn)
+               (mnump xrhs)
+               (mexptp xlhs)
+               (integerp (caddr xlhs))
+               (> (caddr xlhs) 0)
+               (or (oddp (caddr xlhs)) (not (mnegp xrhs)))
+               (zerop1 ($imagpart (cadr xlhs))))
+      (let* ((exponent (caddr xlhs))
+             (root (mul (if (mnegp xrhs) -1 1) (power (ftake 'mabs xrhs) (div 1 exponent))))
+             (base (cadr xlhs))
+             (maybe-abs-base (if (evenp exponent) (ftake 'mabs base) base))
+             (diff-sign (sign* (sub maybe-abs-base root))))
+        (when (not (eq diff-sign '$pnz))
+          (setq sgn diff-sign))))
+    
     (when (and $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
       (setq sgn (signdiff-minmax xlhs xrhs)))
-    (when sgn (setq sign sgn minus nil odds nil evens nil)
+    (when sgn (setq sign (if flip-sign (flip sgn) sgn) minus nil odds nil evens nil)
 	  t)))
 
 ;;; Look for symbols with an assumption a > n or a < -n, where n is a number.

@@ -1606,3 +1606,62 @@ block ([S: make_string_output_stream (), S1],
        S1);
 "sign: sign undefined for foo
 ";
+
+/* Bug #2288: "x^2<1 can't get x^2<2, but can get x^2<100" */
+/* and related tests */
+
+assume(x > -1, x < 1);
+[x > -1, x < 1];
+
+[sign(abs(x) - 1), sign(1 - abs(x))];
+[neg, pos];
+
+[sign(abs(x) - 2), sign(2 - abs(x))];
+[neg, pos];
+
+[sign(abs(x) - 1/2), sign(1/2 - abs(x))];
+[pnz, pnz];
+
+[sign(x^2 - 1), sign(1 - x^2)];
+[neg, pos];
+
+[sign(x^2 - 2), sign(2 - x^2)];
+[neg, pos];
+
+[sign(x^2 - 1/2), sign(1/2 - x^2)];
+[pnz, pnz];
+
+[sign(x^2 - 100), sign(100 - x^2)];
+[neg, pos];
+
+[sign(x^2 - 10000), sign(10000 - x^2)];
+[neg, pos];
+
+[sign(x^4 - 2), sign(2 - x^4)];
+[neg, pos];
+
+[sign(x^3 - 1), sign(1 - x^3)];
+[neg, pos];
+
+[sign(x^3 - 2), sign(2 - x^3)];
+[neg, pos];
+
+[sign(x^3 - 1/2), sign(1/2 - x^3)];
+[pnz, pnz];
+
+[sign(x^3 + 1), sign(-1 - x^3)];
+[pos, neg];
+
+[sign(x^3 + 2), sign(-2 - x^3)];
+[pos, neg];
+
+[sign(x^3 + 1/2), sign(-1/2 - x^3)];
+[pnz, pnz];
+
+forget(x > -1, x < 1);
+[x > -1, x < 1];
+
+/* Bug #3155: "is(abs(cos(x))<=1) is unknown, but is(cos(x)<=1) and is(cos(x)>=-1) are true" */
+
+is(abs(cos(x)) <= 1);
+true;
