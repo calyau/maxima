@@ -368,8 +368,8 @@
 (defprop %gamma_incomplete simplim%gamma_incomplete simplim%function)
 
 (defun simplim%gamma_incomplete (expr var val)
-  ;; Set preserve-direction to true and find the limit of each argument.
-  (let* ((preserve-direction t) 
+  ;; Set *preserve-direction* to true and find the limit of each argument.
+  (let* ((*preserve-direction* t) 
          (a (limit (cadr expr) var val 'think))
          (z (limit (caddr expr) var val 'think)))
   (cond

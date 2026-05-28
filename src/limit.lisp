@@ -52,8 +52,6 @@
 (defmvar limit-using-taylor ()
   "Is the current limit computation using taylor expansion?")
 
-(defmvar preserve-direction () "Makes `limit' return Direction info.")
-
 #+nil
 (unless (boundp 'integer-info) (setq integer-info ()))
 
@@ -265,7 +263,7 @@
 
 (defun clean-limit-exp (exp)
   (setq exp (restorelim exp))
-  (if preserve-direction exp (ridofab exp)))
+  (if *preserve-direction* exp (ridofab exp)))
 
 ;; Users who want limit to map over equality (mequal) will need to do that 
 ;; manually.
@@ -319,9 +317,9 @@
 	 (setq *integer-info* *old-integer-info*))))
 
 ;; The optional arg allows the caller to decide on the value of
-;; preserve-direction.  Default is nil, since we immediately ridofab.
+;; *preserve-direction*.  Default is nil, since we immediately ridofab.
 (defun both-side (exp var val &optional (preserve nil))
-  (let* ((preserve-direction preserve)
+  (let* ((*preserve-direction* preserve)
          (la (toplevel-$limit exp var val '$plus)) lb)
     ; Immediately propagate an und without trying the
     ; other direction
@@ -409,7 +407,7 @@
 ;; it doesn't.
 (defun getsignl (z)
     (let ((sgn))
-      (setq z (let ((preserve-direction nil)) (limit-catch z var val)))
+      (setq z (let ((*preserve-direction* nil)) (limit-catch z var val)))
   	  (cond
 	    ;; Don't call csign on ind, und, infinity, zeroa, or zerob.
 		;; When z is either zeroa or zerob, return 0.
@@ -651,7 +649,7 @@ ignoring dummy variables and array indices."
 	((not (free small '$ind)) '$ind) ;Not exactly right but not
 	((not (free small '$und)) '$und) ;causing trouble now.
 	((mapatom small)  small)
-	(t (let ((preserve-direction t)
+	(t (let ((*preserve-direction* t)
 		  (new-small (subst (m^ '$inf -1) '$zeroa
 				       (subst (m^ '$minf -1) '$zerob small))))
 	          (simpinf new-small)))))
@@ -2177,7 +2175,7 @@ ignoring dummy variables and array indices."
 		  ;; We're looking at (neg + {zerob, 0 zeroa} %i)^el. We need to 
 		  ;; do a rectform on bas and decide if the imaginary part is
 		  ;; zerob, 0, or zeroa.
-		  (let ((x) (y) (xlim) (ylim) (preserve-direction t))
+		  (let ((x) (y) (xlim) (ylim) (*preserve-direction* t))
 		    (setq bas (risplit bas))
 			(setq x (car bas)
 			      y (cdr bas))
@@ -2211,7 +2209,7 @@ ignoring dummy variables and array indices."
 	(t (equal (getsignl (m1- `((mabs) ,bl))) 0))))
 
 (defun simplimit (exp var val)
- (let ((preserve-direction t) (op nil))
+ (let ((*preserve-direction* t) (op nil))
   (cond
     ((eq var exp) val)
 	
@@ -2290,7 +2288,7 @@ ignoring dummy variables and array indices."
   (setq e (resimplify (subst (m// 1 var) var e)))
   (let ((new-val (cond ((eq val '$zeroa)  '$inf)
 		       ((eq val '$zerob)  '$minf))))
-    (if new-val (let ((preserve-direction t))
+    (if new-val (let ((*preserve-direction* t))
 		  (toplevel-$limit e var new-val)) (throw 'limit t))))
 
 (defun simplimtimes (exp)
@@ -2462,12 +2460,12 @@ ignoring dummy variables and array indices."
 	  (throw 'limit t))
 
 	;; Blend the zerob, zeroa, and sum terms. When there are both zerob
-	;; and zeroa terms, ignore them. When preserve-direction is true and
+	;; and zeroa terms, ignore them. When *preserve-direction* is true and
 	;; there are zerob terms, push zerob into the sum terms. And do the same
 	;; for zeroa. After that, add the terms in the list sum.
-	 (when (and preserve-direction zerobl (null zeroal)) 
+	 (when (and *preserve-direction* zerobl (null zeroal)) 
 	 	(push '$zerob sum))
-     (when (and preserve-direction zeroal (null zerobl)) 
+     (when (and *preserve-direction* zeroal (null zerobl)) 
 	 	(push '$zeroa sum))
 
      ;; When indl has two or more members, we attempt to condense the 
@@ -3267,7 +3265,7 @@ ignoring dummy variables and array indices."
 ;;; Limit(log(XXX), var, 0, val), where val is either zerob (limit from below)
 ;;; or zeroa (limit from above).
 (defun simplimln (expr var val)
-  (let ((arglim (let ((preserve-direction t)) (limit (cadr expr) var val 'think))) (dir))
+  (let ((arglim (let ((*preserve-direction* t)) (limit (cadr expr) var val 'think))) (dir))
     ;; When arglim is 0, try using behavior to determine if the limit is zerob or zeroa.
     (when (eql arglim 0)
 		(setq dir (behavior expr var val))
@@ -3477,8 +3475,8 @@ ignoring dummy variables and array indices."
         (ylim-z)
 		(dir)
         (q))
-    (setq xlim (let ((preserve-direction t)) (limit x v pt 'think)))
-    (setq ylim (let ((preserve-direction t)) (limit y v pt 'think)))
+    (setq xlim (let ((*preserve-direction* t)) (limit x v pt 'think)))
+    (setq ylim (let ((*preserve-direction* t)) (limit y v pt 'think)))
 
 	(when (eql 0 xlim)
 		(setq dir (behavior x v pt))

@@ -10,7 +10,7 @@
 
 (in-package :maxima)
 
-(declare-top (special taylored *limit-assumptions* preserve-direction *getsignl-asksign-ok*))
+(declare-top (special taylored *limit-assumptions* *getsignl-asksign-ok*))
 
 (declaim (special *limit-method-depth* *already-processed-limits*))
 
@@ -239,7 +239,7 @@
          (new-val   (liminv-new-val val)))
     (cond
       (new-val
-       (let ((preserve-direction t))
+       (let ((*preserve-direction* t))
          (taylim ee var new-val nil)))
       (t
        (throw 'limit t)))))
