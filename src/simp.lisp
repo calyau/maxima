@@ -939,8 +939,8 @@
      ;; Example: X = 7*2^(1/4) gets added into FM = 2^(1/4) + 2^(3/8)
      ;; 7*2^(1/4) merges with 2^(1/4) to 8*2^(1/4), but this term is fed into
      ;; SIMPTIMES, which recognizes that 8 = 2^3, pushes the 3 into the
-     ;; exponent and returns 2^(13/4). But 2^(13/4) now must come before the
-     ;; already existing term 2^(3/8) to maintain canonical ordering.
+     ;; exponent and returns 2^(13/4). But 2^(13/4) now must come after the
+     ;; already existing term 2^(3/8) in FM to maintain canonical ordering.
      (setq int-base-expt-p (and (mexptp x1) (integerp (cadr x1))))
   start
      (setq base-match-p nil)
