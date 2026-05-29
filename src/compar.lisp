@@ -1582,7 +1582,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     
     ;; For the following test, swap XLHS and XRHS, if necessary, so that XRHS is
     ;; the number, e.g. x^2 - 3 -> 3 - x^2, and remember to flip the result.
-    (when (and (mnump xlhs) (not (mnump xrhs)))
+    (when (and (null sgn) (mnump xlhs) (not (mnump xrhs)))
       (psetq xlhs xrhs xrhs xlhs flip-sign (not flip-sign)))
     
     ;; sign(a^pos_int - b) = sign((if evenp(pos_int) then abs(a) else a) - b^(1/pos_int))
