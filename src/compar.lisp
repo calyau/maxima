@@ -1566,7 +1566,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (t  ;; -1 < c < 1, but c # 0
         (setq sgn '$pn))))
     
-    ;; sign(abs(a) - b) = sign_max(sign(a - b), sign(-a - b)) with real a, b
+    ;; sign(abs(a) - b) = sign_max(sign(a - b), sign(-a - b)) with real a, real b
     (when (and (null sgn)
                (not (atom xlhs))
                (eq (caar xlhs) 'mabs)
@@ -1585,8 +1585,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (when (and (mnump xlhs) (not (mnump xrhs)))
       (psetq xlhs xrhs xrhs xlhs flip-sign (not flip-sign)))
     
-    ;; sign(a^pos_int - b) = sign(abs_if_even(a) - b^(1/pos_int))
-    ;; with real a, b >= 0 (for even pos_int), and b^(1/pos_int) being the real root
+    ;; sign(a^pos_int - b) = sign((if evenp(pos_int) then abs(a) else a) - b^(1/pos_int))
+    ;; with real a, real b (>= 0 for evenp(pos_int)), and b^(1/pos_int) being the real root
     (when (and (null sgn)
                (mnump xrhs)
                (mexptp xlhs)
