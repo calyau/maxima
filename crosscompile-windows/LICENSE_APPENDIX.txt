@@ -1,7 +1,7 @@
 
 
 
-This installer for Maxima does not contain only Maxima, but also other free software, which is required for Maxima.
+This Windows installer for Maxima does not contain only Maxima, but also other free software, which is required for Maxima.
 
 The following projects are included in the installer:
 
@@ -20,6 +20,15 @@ The following projects are included in the installer:
 * CCL (maybe)
   Website: https://ccl.clozure.com/
   License: https://github.com/Clozure/ccl/blob/master/LICENSE
+* ECL (maybe)
+  Website: https://ecl.common-lisp.dev/
+  License: https://gitlab.com/embeddable-common-lisp/ecl/-/blob/develop/COPYING
+* w64devkit (maybe)
+  Website: https://github.com/skeeto/w64devkit
+  License: https://github.com/skeeto/w64devkit/blob/master/UNLICENSE
+* Gmplib (maybe)
+  Website: https://gmplib.org/
+  License: https://gmplib.org/manual/Copying
 * TCL/TK
   Website: https://tcl.tk
   License: https://tcl.tk/software/tcltk/license.html
