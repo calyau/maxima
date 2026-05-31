@@ -84,7 +84,7 @@
 ;;   (VALUES YES NO),
 ;;
 ;; where YES and NO are lists consisting of elements for which PREDICATE is true
-;; or false, respectively.
+;; or false, respectively. The order of elements is reversed compared to SEQ.
 (defun partition-by (predicate seq)
   (let ((yes) (no))
     (map nil
@@ -118,14 +118,13 @@
       (t
        (multiple-value-bind (constant variable)
            (partition-by (lambda (x) (freeof var1 x)) (cdr exp))
+        (let ((header (if (member 'simp (cdar exp)) (get op 'msimpind) (list op))))
          (cons (cond ((null constant) k)
                      ((null (cdr constant)) (car constant))
-                     (t (simplifya
-                         (cons (list op) (nreverse constant)) t)))
+                     (t (cons header (nreverse constant))))
                (cond ((null variable) k)
                      ((null (cdr variable)) (car variable))
-                     (t (simplifya
-                         (cons (list op) (nreverse variable)) t)))))))))
+                     (t (cons header (nreverse variable)))))))))))
 
 ;;To use this INTEGERINFO and *ASK* need to be special.
 ;;(defun integerpw (x)
