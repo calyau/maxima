@@ -2165,8 +2165,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	((mnump x) nil)
         ((and (symbolp x)
               (or (kindp x '$integer)
-                  (kindp x '$even)
-                  (kindp x '$odd)
                   (check-integer-facts x))))
 	(t (let ((x-op (and (consp x) (consp (car x)) (caar x))) ($prederror nil))
 	     (cond ((null x-op) nil)
@@ -2209,9 +2207,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                   ;; Case equal(x,expr): Test expr to be an integer.
                   (cond ((symbolp (caddr fact))
                          (cond ((and (eq mode 'integer)
-                                     (or (kindp (caddr fact) '$integer)
-                                         (kindp (caddr fact) '$odd)
-                                         (kindp (caddr fact) '$even)))
+                                     (kindp (caddr fact) '$integer))
                                 (return t))
                                ((eq mode 'evod)
                                 (cond ((kindp (caddr fact) '$odd)
@@ -2231,9 +2227,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                   ;; Case equal(expr,x): Test expr to be an integer.
                   (cond ((symbolp (caddr fact))
                          (cond ((and (eq mode 'integer)
-                                     (or (kindp (cadr fact) '$integer)
-                                         (kindp (cadr fact) '$odd)
-                                         (kindp (cadr fact) '$even)))
+                                     (kindp (cadr fact) '$integer))
                                 (return t))
                                ((eq mode 'evod)
                                 (cond ((kindp (cadr fact) '$odd)
@@ -2250,7 +2244,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                (t (return nil)))))))))))
 
 (defun nonintegerp (e)
-  (cond ((and (symbolp e) (or (kindp e '$noninteger) (check-noninteger-facts e) (kindp e '$irrational)))) ;declared noninteger
+  (cond ((and (symbolp e) (or (kindp e '$noninteger) (check-noninteger-facts e)))) ;declared noninteger
     ((mnump e)
      (if (integerp e) nil t)) ;all floats are noninteger and integers are not nonintegers
     (($ratp e)
@@ -2601,14 +2595,27 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (let (prop2)
     (cond ((truep (list 'kind var prop)) t)
 	  ((or (falsep (list 'kind var prop))
-	       (and (setq prop2 (assoc prop '(($integer . $noninteger)
+	       (and (setq prop2 (assoc prop
+					    ;; Note that the following list of inconsistent type
+					    ;; declaration pairs intentionally omits cases that are
+					    ;; handled by the inferencing engine in the above FALSEP
+					    ;; call, e.g., ($even . $odd).
+					    ;; Similarly, the pair ($imaginary . $real) also covers
+					    ;; $rational, $irrational, $integer, $even and $odd on
+					    ;; the right hand side via inferencing in the below
+					    ;; TRUEP call.
+					    '(($integer . $noninteger)
 					      ($noninteger . $integer)
+					      ($even . $noninteger)
+					      ($odd . $noninteger)
+					      ($rational . $imaginary)   ; Maxima doesn't seem to think of zero
+					      ($irrational . $imaginary) ; as an imaginary number,
+					      ($real . $imaginary)       ; therefore these pairs are all
+					      ($imaginary . $real)       ; inconsistent.
 					      ($increasing . $decreasing)
 					      ($decreasing . $increasing)
 					      ($symmetric . $antisymmetric)
 					      ($antisymmetric . $symmetric)
-					      ($rational . $irrational)
-					      ($irrational . $rational)
 					      ($oddfun . $evenfun)
 					      ($evenfun . $oddfun)) :test #'eq))
 		    (truep (list 'kind var (cdr prop2)))))
@@ -2782,35 +2789,34 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (eval-when (:load-toplevel :execute)
   (mapc #'true*
-	'(;; even and odd are integer
+	'(;; Even and odd numbers partition the integers.
 	  (par ($even $odd) $integer)
 
-; Cutting out inferences for integer, rational, real, complex (DK 10/2009).
-;	  (kind $integer $rational)
-;	  (par ($rational $irrational) $real)
-;	  (par ($real $imaginary) $complex)
+      ;; Integers are rationals.
+	  (kind $integer $rational)
+      
+      ;; Irrationals are nonintegers.
+      (kind $irrational $noninteger)
+      
+      ;; Rationals and irrationals partition the reals.
+	  (par ($rational $irrational) $real)
 	  
-	  ;; imaginary is complex
+	  ;; Imaginary numbers are complex and nonintegers
+      ;; (Maxima doesn't seem to think of zero as an imaginary number).
 	  (kind $imaginary $complex)
+      (kind $imaginary $noninteger)
+      
+      ;; Declarations for constants
+      (kind $%i       $imaginary)
+      (kind $%e       $irrational)
+      (kind $%pi      $irrational)
+      (kind $%gamma   $noninteger) ; when proven irrational,
+      (kind $%gamma   $real)       ; replace with a single $irrational
+      (kind $%phi     $irrational)
+      (kind $%catalan $noninteger) ; when proven irrational,
+      (kind $%catalan $real)       ; replace with a single $irrational
 	  
-          ;; Declarations for constants
-          (kind $%i     $noninteger)
-          (kind $%i     $imaginary)
-          (kind $%e     $noninteger)
-          (kind $%e     $real)
-          (kind $%pi    $noninteger)
-          (kind $%pi    $real)
-          (kind $%gamma $noninteger)
-          (kind $%gamma $real)
-          (kind $%phi   $noninteger)
-          (kind $%phi   $real)
-          (kind $%pi $irrational)
-	  (kind $%e $irrational)
-	  (kind $%phi $irrational)
-          (kind $%catalan $noninteger)
-          (kind $%catalan $real)
-	  
-          ;; Declarations for functions
+      ;; Declarations for functions
 	  (kind %log $increasing)
 	  (kind %asin $increasing) (kind %asin $oddfun)
 	  (kind %atan $increasing) (kind %atan $oddfun)

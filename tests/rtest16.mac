@@ -3293,6 +3293,99 @@ factor(a^2*g+a*g-a^2, second(factor(g^3-1)));
 kill(x);
 done$
 
+/*
+Bug #4749: "Declaring a symbol both real and complex or real and imaginary"
+Test all(?) pairs of inconsistent declarations and make sure they cause errors.
+*/
+
+sublist
+(
+	[
+		['integer, 'noninteger],
+		['even, 'noninteger],
+		['odd, 'noninteger],
+		['rational, 'irrational],
+		['integer, 'irrational],
+		['even, 'irrational],
+		['odd, 'irrational],
+		['real, 'imaginary],
+		['rational, 'imaginary],
+		['irrational, 'imaginary],
+		['integer, 'imaginary],
+		['even, 'imaginary],
+		['odd, 'imaginary],
+		['even, 'odd],
+		['increasing, 'decreasing],
+		['symmetric, 'antisymmetric],
+		['evenfun, 'oddfun],
+		['scalar, 'nonscalar]
+	],
+	lambda
+	(
+		[pair],
+		block
+		(
+			[[a, b] : pair],
+			/* first a, then b */
+			kill(x),
+			apply('declare, ['x, a]),
+			if errcatch(apply('declare, ['x, b])) # [] then return(true),
+			/* first b, then a */
+			kill(y),
+			apply('declare, ['y, b]),
+			if errcatch(apply('declare, ['y, a])) # [] then return(true),
+			false
+		)
+	)
+);
+[];
+
+kill(x, y);
+done;
+
+/*
+Test inferencing, e.g. irrational -> noninteger
+A list entry ['rational, ['rational, 'real, -'irrational, -'imaginary]] means
+that for a symbol x declared rational,
+featurep(x, rational) and featurep(x, real) should return true, and
+featurep(x, irrational) and featurep(x, imaginary) should return false.
+*/
+
+sublist
+(
+	[
+		['even, ['even, 'integer, 'rational, 'real, -'odd, -'noninteger, -'imaginary]],
+		['odd, ['odd, 'integer, 'rational, 'real, -'even, -'noninteger, -'imaginary]],
+		['integer, ['integer, 'rational, 'real, -'noninteger, -'imaginary]],
+		['rational, ['rational, 'real, -'irrational, -'imaginary]],
+		['irrational, ['irrational, 'real, 'noninteger, -'rational, -'integer, -'even, -'odd, -'imaginary]],
+		['imaginary, ['imaginary, 'complex, 'noninteger, -'real, -'rational, -'irrational, -'integer, -'even, -'odd]]
+	],
+	lambda
+	(
+		[entry],
+		block
+		(
+			[[source, targets] : entry, failed : false, expected, res],
+			kill(x),
+			apply('declare, ['x, source]),
+			for target in targets do
+			(
+				if atom(target) then expected : true
+				else [target, expected] : [-target, false],
+				if apply('featurep, ['x, target]) # expected then failed : true
+			),
+			failed
+		)
+	)
+);
+[];
+
+kill(x);
+done;
+
+
+
+/* Leave this at the end of the file! */
 contexts;
 [initial, global]$
-
