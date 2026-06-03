@@ -411,6 +411,40 @@
           (return t)
           (mark+ p (+labs p))))))
 
+(defun kind-any-of (x kinds)
+  "Looks up the kind information on symbol X and returns the first kind that is
+  encountered that is a member of KINDS. The order of symbols in KINDS doesn't
+  affect the result. This function should only be used for mutually exclusive
+  kinds, e.g. '$EVEN and '$ODD. Returns NIL if no matching kind is found.
+  This is faster than (OR (KINDP X K1) (KINDP X K2) ...), since it only requires
+  a single database query."
+  (when (and (symbolp x) (get x 'data))
+    (clear)
+    (beg x 1)
+    (do ((p (dq+) (dq+)))
+        ((null p))
+        (let ((k (member p kinds :test #'eq)))
+        (if k
+          (return (car k))
+          (mark+ p (+labs p)))))))
+
+(defun kind-all-of-p (x kinds)
+  "Returns T iff (KINDP X K) would return T for all K in KINDS. This is faster
+  than (AND (KINDP X K1) (KINDP X K2) ...), since it only requires a single
+  database query. The implementation relies on counting matching kinds, therefore
+  KINDS should not contain repeated items."
+  (let ((remaining (length kinds)))
+    (when (and (symbolp x) (get x 'data))
+      (clear)
+      (beg x 1)
+      (do ((p (dq+) (dq+)))
+          ((or (null p)
+               (zerop remaining)))
+          (when (member p kinds :test #'eq)
+            (decf remaining))
+          (mark+ p (+labs p))))
+  (zerop remaining)))
+
 (defun true* (pat)
   (let ((dum (semant pat)))
     (if dum

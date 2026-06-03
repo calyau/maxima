@@ -1349,6 +1349,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '$li #'(lambda (x) 
 			(let ((z (first (margs x))) (n (cadadr x)))
 			  (if (and (mnump n) (eq t (mgrp z 0)) (eq t (mgrp 1 z))) (sign z) (sign-any x)))))))
+
 (defun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
 	((and *complexsign* (symbolp x) (eq x '$%i))
@@ -1364,9 +1365,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	((and (not (specrepp x)) ($subvarp (mop x)) (get (mop (mop x)) 'sign-function))
 	 (funcall (get (mop (mop x)) 'sign-function) x))
 	((specrepp x) (sign (specdisrep x)))
-	((kindp (caar x) '$posfun) (sign-posfun x))
-	((kindp (caar x) '$oddfun) (sign-oddfun x))
-	(t (sign-any x))))
+	(t
+	  (let ((kind (kind-any-of (caar x) '($posfun $oddfun))))
+		(cond
+		  ((eq kind '$posfun) (sign-posfun x))
+		  ((eq kind '$oddfun) (sign-oddfun x))
+		  (t (sign-any x)))))))
 
 (defun sign-any (x)
   (cond ((and *complexsign*
@@ -2074,10 +2078,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	evens nil))
 
 (defun sign-oddfun (x)
-  (cond ((kindp (caar x) '$increasing)
+ (let ((kind (kind-any-of (caar x) '($increasing $decreasing))))
+  (cond ((eq kind '$increasing)
          ; Take the sign of the argument
          (sign (cadr x)))
-        ((kindp (caar x) '$decreasing)
+        ((eq kind '$decreasing)
          ; Take the sign of negative of the argument
          (sign (neg (cadr x))))
         (t
@@ -2085,7 +2090,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          ; the function value is the same).  Otherwise, punt to SIGN-ANY.
          (sign (cadr x))
          (unless (eq sign '$zero)
-           (sign-any x)))))
+           (sign-any x))))))
 
 (defun imag-err (x)
   (if sign-imag-errp
@@ -2210,11 +2215,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                      (kindp (caddr fact) '$integer))
                                 (return t))
                                ((eq mode 'evod)
-                                (cond ((kindp (caddr fact) '$odd)
-                                       (return '$odd))
-                                      ((kindp (caddr fact) '$even)
-                                       (return '$even))
-                                      (t (return nil))))
+                                (kind-any-of (caddr fact) '($even $odd)))
                                (t (return nil))))
                         (t
                          (cond ((eq mode 'integer)
@@ -2230,11 +2231,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                      (kindp (cadr fact) '$integer))
                                 (return t))
                                ((eq mode 'evod)
-                                (cond ((kindp (cadr fact) '$odd)
-                                       (return '$odd))
-                                      ((kindp (cadr fact) '$even)
-                                       (return '$even))
-                                      (t (return nil))))
+                                (kind-any-of (cadr fact) '($even $odd)))
                                (t (return nil))))
                         (t
                          (cond ((eq mode 'integer)
@@ -2295,11 +2292,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun evod (e)
   (cond ((integerp e) (if (oddp e) '$odd '$even))
 	((mnump e) nil)
-        ((atom e)
-         (cond ((kindp e '$odd) '$odd)
-	       ((kindp e '$even) '$even)
-	       ;; Check the database for facts.
-	       ((symbolp e) (check-integer-facts e 'evod))))
+    ((symbolp e)
+      (or (kind-any-of e '($even $odd))
+	      ;; Check the database for facts.
+	      (check-integer-facts e 'evod)))
 	((eq 'mtimes (caar e)) (evod-mtimes e))
 	((eq 'mplus (caar e)) (evod-mplus e))
 	((eq 'mabs (caar e)) (evod (cadr e))) ;; extra code
@@ -2526,8 +2522,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (if (and (equal rhs 0)
              (or (mexptp lhs)
                  (and (not (atom lhs))
-                      (kindp (caar lhs) '$oddfun)
-                      (kindp (caar lhs) '$increasing))))
+                      (kind-all-of-p (caar lhs) '($oddfun $increasing)))))
         (setq lhs (cadr lhs)))
     (values lhs rhs)))
 
