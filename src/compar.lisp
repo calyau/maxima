@@ -1373,20 +1373,17 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		  (t (sign-any x)))))))
 
 (defun sign-any (x)
+ (let (op)
   (cond ((and *complexsign*
               (symbolp x)
               (decl-complexp x))
          ;; In Complex Mode look for symbols declared to be complex.
-         (if ($featurep x '$imaginary)
-             (setq sign '$imaginary)
-             (setq sign '$complex)))
+         (setq sign (if (decl-imaginaryp x) '$imaginary '$complex)))
         ((and *complexsign*
               (not (atom x))
-              (decl-complexp (caar x)))
-         ;; A function f(x), where f is declared to be imaginary or complex.
-         (if ($featurep (caar x) '$imaginary)
-             (setq sign '$imaginary)
-             (setq sign '$complex)))
+              (decl-complexp (setq op (if (mqapplyp x) (subfunname x) (caar x)))))
+         ;; A function f(x) or f[n](x), where f is declared to be imaginary or complex.
+         (setq sign (if (decl-imaginaryp op) '$imaginary '$complex)))
 	(t
 	 (dcompare x 0)
 	 (if (and $assume_pos
@@ -1399,7 +1396,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	     (setq sign '$pos))
 	 (setq minus nil evens nil
 	       odds (if (not (member sign '($pos $neg $zero) :test #'eq))
-			(ncons x))))))
+			(ncons x)))))))
 
 (defun sign-mtimes (x)
   (setq x (cdr x))

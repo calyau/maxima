@@ -1665,3 +1665,17 @@ forget(x > -1, x < 1);
 
 is(abs(cos(x)) <= 1);
 true;
+
+/* Bug #4752: "csign doesn't handle subscripted functions like li correctly" */
+
+csign(li[n](x));
+complex;
+
+declare(f, imaginary);
+done;
+
+csign(f[n](x));
+imaginary;
+
+forget(kind(f, imaginary));
+[kind(f, imaginary)];

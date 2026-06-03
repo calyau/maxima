@@ -2779,10 +2779,14 @@
 (defun decl-complexp (e)
   (kindp e '$complex))
 
-;; TRUE, if the symbol e is declared to be $real, $rational, $irrational
-;; or $integer
+;; TRUE, if the symbol e is declared to be $real, $rational, $irrational,
+;; $integer, $even or $odd.
 (defun decl-realp (e)
   (kindp e '$real))
+
+;; TRUE, if the symbol e is declared to be $imaginary.
+(defun decl-imaginaryp (e)
+  (kindp e '$imaginary))
 
 ;; WARNING:  Exercise extreme caution when modifying this function!
 ;;
