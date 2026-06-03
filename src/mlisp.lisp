@@ -58,6 +58,9 @@ or if apply is being used are printed.")
   "Holds the value to which a variable is about to be set when a
   'setcheckbreak' occurs.")
 
+(defconstant +hasher-mod+ 32768
+  "Modulus used by the HASHER function - must be a power of 2.")
+
 
 (defun mapply1 (fn args fnname form)
   (cond ((atom fn)
@@ -1948,9 +1951,6 @@ wrapper for this."
     (case (car arrfun)
       (aexpr (mapply1 (cadr arrfun) subs (cadr arrfun) form))
       (a-subr (apply (cadr arrfun) subs)))))
-
-(defconstant +hasher-mod+ 32768
-  "Modulus used by the HASHER function - must be a power of 2.")
 
 (defun hasher (l)  ; This is not the best way to write a hasher.  But,
   (if (null l)	   ; please don't change this code or you're liable to
