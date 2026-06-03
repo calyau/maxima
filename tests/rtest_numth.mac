@@ -811,14 +811,6 @@ gcfactor (%i / 2);
  */
 
 /* Bug #4623: "gcfactor(4), expand(%%) => -4" */
-
-create_list(is(a + %i * b = expand(gcfactor(a + %i * b))), a, makelist(i, i, -4, 4), b, makelist(i, i, -4, 4));
-[true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true,
- true, true, true, true, true, true, true, true, true];
+sublist(create_list([r, i], r, makelist(r, r, -4, 4), i, makelist(i, i, -4, 4)),
+        lambda([ri], ri[1] + %i * ri[2] # expand(gcfactor(ri[1] + %i * ri[2]))));
+[];
