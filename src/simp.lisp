@@ -384,12 +384,19 @@
       (twoargcheck x))
   (if (and (member 'array (cdar x)) (null (margs x)))
       (merror (intl:gettext "SIMPARGS: subscripted variable found with no subscripts.")))
-  (eqtest (let ((flag (member (caar x) '(mlist mequal))))
-		    (cons (ncons (caar x))
-			  (mapcar #'(lambda (u)
-				      (if flag (simplifya u y)
-					  (simpcheck u y)))
-				  (cdr x))))
+  (eqtest (if (member (caar x) '(mlist mequal))
+		    ;; MLIST or MEQUAL: Arguments will not be converted from special
+		    ;; representations to the general form.
+		    (if y
+		      ;; Arguments are already simplified - nothing to do here.
+		      x
+		      ;; Arguments are not simplified. Strip any flags from the header,
+		      ;; and simplify arguments.
+		      (cons (ncons (caar x)) (mapcar #'simplify (cdr x))))
+		    ;; Not MLIST or MEQUAL. Strip any flags from the header, and call
+		    ;; SIMPMAP, which will convert special representations to general
+		    ;; form and simplify, if necessary (depending on flag Y).
+		    (cons (ncons (caar x)) (simpmap (cdr x) y)))
 	  x))
 
 ;;;-----------------------------------------------------------------------------
