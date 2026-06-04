@@ -1275,6 +1275,7 @@
 (defprop %sqrt simp-sqrt operators)
 
 (defun simp-sqrt (x y z)
+  (declare (ignore y))
   (oneargcheck x)
   (let ((arg (cadr x)))
     (simplifya (list '(mexpt) (if z arg (simplifya arg nil)) '((rat simp) 1 2)) t)))
