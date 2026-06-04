@@ -1285,20 +1285,25 @@
 ;;; Simplification of the "/" operator.
 
 (defun simpquot (x y z)
+  (declare (ignore y))
   (twoargcheck x)
-  (cond ((and (integerp (cadr x)) (integerp (caddr x)) (not (zerop (caddr x))))
-	 (*red (cadr x) (caddr x)))
-	((and (numberp (cadr x)) (numberp (caddr x)) (not (zerop (caddr x))))
-	 (/ (cadr x) (caddr x)))
-	((and (floatp (cadr x)) (floatp (caddr x)) #-ieee-floating-point (not (zerop (caddr x))))
-	 (/ (cadr x) (caddr x)))
-	((and ($bfloatp (cadr x)) ($bfloatp (caddr x)) (not (equal *bigfloatzero* (caddr x))))
+  (let ((num (if z (cadr x) (simplifya (cadr x) nil)))
+        (den (if z (caddr x) (simplifya (caddr x) nil))))
+  (cond ((and (integerp num) (integerp den) (not (zerop den)))
+	 (*red num den))
+	((and (numberp num) (numberp den) (not (zerop den)))
+	 (/ num den))
+	((and (floatp num) (floatp den) #-ieee-floating-point (not (zerop den)))
+	 (/ num den))
+	((and ($bfloatp num) ($bfloatp den) (not (equal *bigfloatzero* den)))
 	 ;; Call BIGFLOATP to ensure that arguments have same precision.
 	 ;; Otherwise FPQUOTIENT could return a spurious value.
-	 (bcons (fpquotient (cdr (bigfloatp (cadr x))) (cdr (bigfloatp (caddr x))))))
-	(t (setq y (if z (cadr x) (simplifya (cadr x) nil)))
-	   (setq x (simplifya (list '(mexpt) (caddr x) -1) z))
-	   (if (equal y 1) x (simplifya (list '(mtimes) y x) t)))))
+	 (bcons (fpquotient (cdr (bigfloatp num)) (cdr (bigfloatp den)))))
+	(t
+      (let ((inv-den (simplifya (list '(mexpt) den -1) t)))
+        (if (equal num 1)
+          inv-den
+          (simplifya (list '(mtimes) num inv-den) t)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
