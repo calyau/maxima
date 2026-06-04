@@ -2712,15 +2712,15 @@
 
 (defun simpmatrix (x vestigial z)
   (declare (ignore vestigial))
+  (let ((x (cons (car x) (simpmap (cdr x) z))))
   (if (and (null (cddr x))
 	   $scalarmatrixp
 	   (or (eq $scalarmatrixp '$all) (member 'mult (cdar x)))
 	   ($listp (cadr x)) (cdadr x) (null (cddadr x)))
-      (if z (cadadr x) (simplifya (cadadr x) nil))
-      (let ((badp (dolist (row (cdr x)) (if (not ($listp row)) (return t))))
-	    (args (simpmap (cdr x) z)))
-	(if (and args (not badp)) (matcheck args))
-	(cons (if badp '(%matrix simp) '($matrix simp)) args))))
+      (cadadr x)
+      (let ((badp (dolist (row (cdr x)) (if (not ($listp row)) (return t)))))
+	(if (and (cdr x) (not badp)) (matcheck (cdr x)))
+	(cons (if badp '(%matrix simp) '($matrix simp)) (cdr x))))))
 
 (defun %itopot (pot)
   (if (fixnump pot)
