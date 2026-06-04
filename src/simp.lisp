@@ -1689,9 +1689,10 @@
 (defprop %exp simp-exp operators)
 
 (defun simp-exp (x y z)
+  (declare (ignore y))
   (oneargcheck x)
-  (setq y (list '(mexpt) '$%e (cadr x)))
-  (if z y (simplifya y nil)))
+  (let ((arg (if z (cadr x) (simplifya (cadr x) nil))))
+    (simplifya (list '(mexpt) '$%e arg) t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
