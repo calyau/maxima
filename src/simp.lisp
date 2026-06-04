@@ -105,12 +105,14 @@
 (defun sratsimp (e) (simplifya ($ratsimp e) nil))
 
 (defun simpcheck (e flag)
-  (cond ((specrepp e) (specdisrep e))
-        (flag e)
-        (t (let (($%enumer $numer))
-             ;; Switch $%enumer on, when $numer is TRUE to allow
-             ;; simplification of $%e to its numerical value.
-             (simplifya e nil)))))
+  (let ((e (if flag
+               e
+               ;; Switch $%enumer on, when $numer is TRUE to allow
+               ;; simplification of $%e to its numerical value.
+              (let (($%enumer $numer)) (simplifya e nil)))))
+    (if (specrepp e)
+      (specdisrep e)
+      e)))
 
 (defun mratcheck (e) (if ($ratp e) (ratdisrep e) e))
 
