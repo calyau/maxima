@@ -1295,7 +1295,7 @@
 	 (/ num den))
 	((and (floatp num) (floatp den) #-ieee-floating-point (not (zerop den)))
 	 (/ num den))
-	((and ($bfloatp num) ($bfloatp den) (not (equal *bigfloatzero* den)))
+	((and ($bfloatp num) ($bfloatp den) (not (zerop (cadr den))))
 	 ;; Call BIGFLOATP to ensure that arguments have same precision.
 	 ;; Otherwise FPQUOTIENT could return a spurious value.
 	 (bcons (fpquotient (cdr (bigfloatp num)) (cdr (bigfloatp den)))))
