@@ -642,8 +642,8 @@ dimensionally (e%) ::=
       units_gensyms : make_array ('hashed),
       unitless_args : applyb1 (e%_args, rununitify),
       reunitification_eqs : map (lambda ([e], lhs (e) = 1 ` rhs (e)), inverse_gensym_map (units_gensyms)),
-      reunitified : subst (reunitification_eqs, apply (e%_op, unitless_args)),
-      rezeroified : subst (makelist (x = 0, x, listarray (qtys_gensyms)), reunitified),
+      reunitified : sublis (reunitification_eqs, apply (e%_op, unitless_args)),
+      rezeroified : sublis (makelist (x = 0, x, listarray (qtys_gensyms)), reunitified),
       killcontext (context_name),
       rezeroified));
 

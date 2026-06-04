@@ -50,3 +50,23 @@ true;
  e6h: approximately_equal (e6g, 0.0031 ` (1/nF), 0.00005));
 true;
 
+/* maxima-discuss 2026-06-01, "Solving Equation with Ezunits Problem" */
+
+(R_1: 1 `kOhm,
+ R_2: 100 `Ohm,
+ V_1: 10 `V,
+ I: 3/2 `mA,
+ expr: V_1 = (R_1 + R_2) * I + V_2);
+10 ` V=V_2+(3/2 ` mA)*(100 ` Ohm+1 ` kOhm);
+
+foo1: solve(expr, V_2)[1];
+V_2=10 ` V+-(3/2) ` kOhm*mA+-150 ` Ohm*mA;
+
+rhs(foo1) ``V;
+167/20 ` V;
+
+foo2: dimensionally(solve(expr, V_2))[1];
+V_2 = -((300 ` Ohm*mA+3 ` kOhm*mA+(-20) ` V)/2);
+
+rhs(foo2) ``V;
+167/20 ` V;
