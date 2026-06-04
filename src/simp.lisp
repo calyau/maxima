@@ -1276,8 +1276,8 @@
 
 (defun simp-sqrt (x y z)
   (oneargcheck x)
-  (setq y (list '(mexpt) (cadr x) '((rat simp) 1 2)))
-  (if z y (simplifya y nil)))
+  (let ((arg (cadr x)))
+    (simplifya (list '(mexpt) (if z arg (simplifya arg nil)) '((rat simp) 1 2)) t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
