@@ -980,11 +980,11 @@ limit(signum(x)*x/sin(x),x,0);
 ind;
 
 /* #895 limit x->inf sin(100/x)*x very slow */
-block([start : absolute_real_time()],
+block([start : elapsed_real_time()],
   [limit(sin(100/x)*x,x,inf), 
    limit(sin(10000/x)*x,x,inf),
    limit(sin(10000000/x)*x,x,inf),
-   is(absolute_real_time()-start < 1)]);
+   is(elapsed_real_time()-start < 1)]);
  [100, 10000, 10000000, true]$
 
 /* #4273 limit(integrate(f(x)*g(x), x), x, a) incorrect results */
