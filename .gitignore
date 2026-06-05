@@ -42,5 +42,6 @@ src/tools
 gp_image_01.png
 
 interfaces/emacs/imaxima/texinfo.tex
+interfaces/emacs/imaxima/doc/texinfo.tex
 auto/
 /build-html-index.log
