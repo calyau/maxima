@@ -229,8 +229,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/icons
 %{_datadir}/mime
 %{_datadir}/metainfo/
-%dir %{_libexecdir}/maxima
-%{_libexecdir}/maxima/*
+# %dir %{_libexecdir}/maxima
+# %{_libexecdir}/maxima/*
 %{_infodir}/*
 %exclude %{_infodir}/xmaxima.info*
 %if %{enable_lang_es}
