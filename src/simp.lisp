@@ -2224,7 +2224,6 @@
                   (return (exptrl gr pot)))))
            ((eq gr '$%e)
             ;; Numerically evaluate if the power is a flonum.
-            (when $%emode
               (let ((val (flonum-eval '%exp pot)))
 		(when (float-inf-p val)
 		    ;; needed for gcl and sbcl - (sometimes) no trap of overflow
@@ -2242,7 +2241,7 @@
                         ((or ($bfloatp x) ($bfloatp y))
                          (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
                            (setq z ($rectform `((mexpt simp) $%e ,z)))
-                           (return ($bfloat z))))))))
+                           (return ($bfloat z)))))))
             (cond ((and $logsimp (among '%log pot)) (return (%etolog pot)))
                   ((and $demoivre (setq z (demoivre pot))) (return z))
                   ((and $%emode

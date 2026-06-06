@@ -3384,6 +3384,20 @@ sublist
 kill(x);
 done;
 
+/* Bug #4757: "%e^2.0, %emode:false stays %e^2.0" */
+
+%e^2.0, %emode: true;
+7.38905609893065;
+
+%e^2.0, %emode: false;
+7.38905609893065;
+
+%e^(%i*%pi), %emode: true;
+-1;
+
+string(%e^(%i*%pi)), %emode: false;
+"%e^(%i*%pi)";
+
 
 
 /* Leave this at the end of the file! */
