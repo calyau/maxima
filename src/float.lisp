@@ -728,7 +728,7 @@
                       ;; that and signal a domain error if so.  There
                       ;; are no other bfloat values where tan(x) or
                       ;; sin(x) is zero.
-                      (when (equal (second x) *bigfloatzero*)
+                      (when (zerop1 (second x))
                         (domain-error (second x) (caar x)))
 		      (invertbigfloat
 		       ($bfloat (list (ncons (safe-get (caar x) 'recip)) y))))
