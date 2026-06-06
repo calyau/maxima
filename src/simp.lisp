@@ -2215,7 +2215,7 @@
                   ;; A numeric constant like %e, %pi, ... and 
                   ;; exponent is a float or bigfloat value.
                   (return (if (and (member gr *builtin-numeric-constants*)
-                                   (equal pot *bigfloatone*))
+                                   ($bfloatp pot))
                               ;; Return a bigfloat value.
                               ($bfloat gr)
                               ;; Return a float value.
