@@ -3,16 +3,86 @@ Maxima 5.49-post change log
 
 Bug fixes for numbered bugs:
 ----------------------------
+ * \#282 EZGCD: ratsimp((%i+2)/(%i+1)),gcd:ez inf loop
+ * \#895 limit x->inf sin(100/x)*x very slow
+ * \#1700 Lisp error in factor
+ * \#2140 integrate: needless nounform return
+ * \#2288 x^2<1 can't get x^2<2, but can get x^2<100
+ * \#2366 limit of gamma_incomplete
+ * \#3155 is(abs(cos(x))<=1) is unknown, but is(cos(x)<=1) and is(cos(x)>=-1) are true
+ * \#3386 documentation: assoc actually allows non-list arguments
+ * \#3826 limit returns temp variable expression
+ * \#4037 Error in symbolic integral
+ * \#4067 integrate(sqrt(u)/(sqrt(u-u*v)),u) --> expt: undefined: 0 to a negative exponent
+ * \#4085 limit((2-%i)^a/a!,a,inf);
+ * \#4236 Repeated run_testsuite leads to out of memory error
+ * \#4338 limit((1+%i)^(2*a)*2^(-a),x,inf) when logexpand is true
+ * \#4399 recent commit involving display2d breaks imaxima and drawdf
+ * \#4425 Frame_bracket fix in ctensor.mac
+ * \#4452 configure --disable-build-docs not working
+ * \#4457 simplus or great bug
+ * \#4517 Maxima crashes on repeated run of rtest_rules (SBCL 2.5.2)
+ * \#4558 Can't control matrix 2d print formatting
  * \#4585 Taylor polynomials involving tangent & a quotient
+ * \#4592 integrate causes sign: argument cannot be imaginary error
+ * \#4623 gcfactor(4), expand(%%) => -4
+ * \#4630 expand not idempotent (simplus)
  * \#4634 Divergent integral simplifies to -1/4 with simplify_sum
+ * \#4655 sign("foo") => Lisp error
+ * \#4656 lurkmathml broken
+ * \#4657 lurkmathml uses mfenced
+ * \#4658 factor should check that second argument is irreducible
+ * \#4661 gives bogus error message something about compile which i never asked it to do and hangs when it shouldn't
+ * \#4662 apply1 sets match to zero when instead the replacement is zero.
+ * \#4663 Bucket table for undeclared array keeps growing beyond 32768 buckets
+ * \#4664 verbify("!!")
+ * \#4667 rk_adpative test suite failure
+ * \#4669 non numeric value for factlim
+ * \#4671 build_info outputs extraneous empty lines
+ * \#4673 binomial(a,a-b) doesn't simplify to binomial(a,b)
+ * \#4677 Read should respect the batch_answers_from_file flag
+ * \#4678 deffnx in Texinfo leads to redundant items in documentation index
+ * \#4680 lurkmathml uses deprecated mathspace lengths
+ * \#4681 lurkmathml produces non-validating mathml
+ * \#4682 draw with terminal=epslatex_standalone generate faulty latex file
+ * \#4683 lurkmathml does not typeset z[2]^3 correctly
+ * \#4684 lurkmathml does not typeset x_1 correctly
+ * \#4688 sign(zeroa) should be pos
  * \#4689 limit of a spherical_bessel_j function
+ * \#4690 inverse_erf(erf(x)) and erf(inverse_erf(x)) don't simplify to x, even if x is real
+ * \#4693 makelist completely fails with simp:false
+ * \#4694 lurkmathml does not know how to typeset box
+ * \#4695 tex output for an input label %i1 is inconsistent
+ * \#4697 Symbol $box being changed to mbox
+ * \#4698 alt-display breaks trace's output
+ * \#4699 displa, tex and lurkmathml display of partial derivatives is incorrect
+ * \#4703 Remove sys-proclaim stuff used by gcl
+ * \#4704 Fix dependencies in maxima.system and maxima.asd
+ * \#4707 No derivatives for gamma_incomplete_lower
+ * \#4710 lurkmathml does not know how to typeset del
+ * \#4711 Pretty-printer slightly incorrect output for 'product(...)
+ * \#4712 Circular dependencies in maxima.system
+ * \#4714 lurkmathml does not co-operate with ordergreat/less
+ * \#4715 rtest_gamma test with makelist(k!!, k, -1, 2) fails
+ * \#4717 limit(signum(exp(%i*x)*exp(x)),x,inf);
+ * \#4718 Restructure module translated packages
+ * \#4721 test-directory-cached is slow
  * \#4724 xreduce with init arg and declared nary function
- * \#4729 rtest_limit.mac: Problem 230 (line 866) 
+ * \#4728 Building German documentation fails with texinfo-7.3
+ * \#4729 rtest_limit.mac: Problem 230 (line 866)
+ * \#4730 ei-asymptotic-expansion
+ * \#4731 draw() does not work on new debian 13 installation
+ * \#4732 histogram incorrectly normalized when frequency = density
  * \#4735 rtest_limit_gruntz problem 21, line 121 has sign error in expected limit
+ * \#4736 Taylor called on polygamma function with symbolic order
  * \#4737 atan2 with bfloat arg(s) is inconsistent on negative x-axis
- * \#4740 limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf)
+ * \#4739 ratsubst(0,exp(-x),2);
+ * \#4740 limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf);
+ * \#4742 limit result contains "false"
  * \#4747 limits of some exponential integrals when expintrep : gamma_incomplete
- 
+ * \#4752 csign doesn't handle subscripted functions like li correctly
+ * \#4757 %e^2.0, %emode:false stays %e^2.0
+
 Bug fixes for unnumbered bugs:
 -----------------------------
 * rtest_gruntz test #38
