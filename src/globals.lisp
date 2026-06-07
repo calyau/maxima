@@ -1910,3 +1910,6 @@
 (defmvar *preserve-direction* ()
   "Makes `limit' return Direction info.")
 
+(defvar *rule-symbol-pool* nil
+  "List of symbols used by deleted rules, ready to be re-used in order to
+  prevent thread-local storage (TLS) exhaustion on SBCL.")

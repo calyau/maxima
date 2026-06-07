@@ -206,6 +206,8 @@
       (when (member x (cdr $contexts) :test #'equal)
 	($killcontext x))
       (when (mget x '$rule)
+	(free-rule-symbols (get x 'rule-symbols))
+	(remprop x 'rule-symbols)
 	(let ((y (ruleof x)))
 	  (cond (y ($remrule y x))
 		(t (when (not (member x *builtin-$rules* :test #'equal))
