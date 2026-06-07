@@ -413,7 +413,7 @@
 ;;;   ADDK adds two Maxima numbers and returns a simplified Maxima number.
 ;;;   ADDK can be called in Lisp code, whenever the arguments are valid
 ;;;   Maxima numbers, these are integer, float, Maxima rational, or
-;;;   Maxima bigfloat numbers. The arguments must not be simplified. The
+;;;   Maxima bigfloat numbers. The arguments must be simplified. The
 ;;;   precision of a bigfloat result depends on the setting of the
 ;;;   global variable $FPPREC. If the option variable $FLOAT is T, a
 ;;;   Maxima rational number as a result is converted to a float number.
@@ -511,7 +511,7 @@
 ;;;   TIMESK Multiplies two Maxima numbers and returns a simplified Maxima
 ;;;   number. TIMESK can be called in Lisp code, whenever the arguments are
 ;;;   valid Maxima numbers, these are integer, float, Maxima rational, or
-;;;   Maxima bigfloat numbers. The arguments must not be simplified. The
+;;;   Maxima bigfloat numbers. The arguments must be simplified. The
 ;;;   precision of a bigfloat result depends on the setting of the
 ;;;   global variable $FPPREC. If the option variable $FLOAT is T, a
 ;;;   Maxima rational number as a result is converted to a float number.
