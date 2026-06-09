@@ -22,6 +22,7 @@ Bug fixes for numbered bugs:
  * \#4452 configure --disable-build-docs not working
  * \#4457 simplus or great bug
  * \#4517 Maxima crashes on repeated run of rtest_rules (SBCL 2.5.2)
+ * \#4543 solve returns unsimplified result for cubic
  * \#4558 Can't control matrix 2d print formatting
  * \#4585 Taylor polynomials involving tangent & a quotient
  * \#4591 solve called on degree six gives 0^0 error

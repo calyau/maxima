@@ -3411,6 +3411,12 @@ solve(x^3+3*%i*x^2+3*x^2+6*%i*x+2*%i-2);
 [x = -((3*%i+3)/3),x = (-(3*%i)-3)/3];
 
 
+/* Bug #4543: "solve returns unsimplified result for cubic" */
+
+solve(expand((x+sqrt(3))^3),x);
+[x = -sqrt(3)];
+
+
 
 /* Leave this at the end of the file! */
 contexts;
