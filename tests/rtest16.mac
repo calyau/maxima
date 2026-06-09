@@ -3399,6 +3399,18 @@ string(%e^(%i*%pi)), %emode: false;
 "%e^(%i*%pi)";
 
 
+/* Bug #4591: "solve called on degree six gives 0^0 error" */
+
+solve((x^2+1+%i)^3);
+[x = -sqrt(-%i-1),x = sqrt(-%i-1)];
+
+solve(expand((x^2+1+%i)^3));
+[x = -sqrt(-%i-1),x = sqrt(-%i-1)];
+
+solve(x^3+3*%i*x^2+3*x^2+6*%i*x+2*%i-2);
+[x = -((3*%i+3)/3),x = (-(3*%i)-3)/3];
+
+
 
 /* Leave this at the end of the file! */
 contexts;

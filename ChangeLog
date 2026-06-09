@@ -24,6 +24,7 @@ Bug fixes for numbered bugs:
  * \#4517 Maxima crashes on repeated run of rtest_rules (SBCL 2.5.2)
  * \#4558 Can't control matrix 2d print formatting
  * \#4585 Taylor polynomials involving tangent & a quotient
+ * \#4591 solve called on degree six gives 0^0 error
  * \#4592 integrate causes sign: argument cannot be imaginary error
  * \#4623 gcfactor(4), expand(%%) => -4
  * \#4630 expand not idempotent (simplus)
