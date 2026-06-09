@@ -97,10 +97,11 @@
     `(macrolet ,macros (let* ,(nreverse binds) ,@body))))
 
 ;;; Borrowed from cmucl src/compiler/proclaim.lisp
+;;; (with handling of &MORE removed, since it's not in the CL standard)
 
 ;;; Parse-Lambda-List  --  Interface
 ;;;
-;;;    Break a lambda-list into its component parts.  We return eleven values:
+;;;    Break a lambda-list into its component parts.  We return 8 values:
 ;;;  1] A list of the required args.
 ;;;  2] A list of the optional arg specs.
 ;;;  3] True if a rest arg was specified.
@@ -109,9 +110,6 @@
 ;;;  6] A list of the keyword arg specs.
 ;;;  7] True if &allow-other-keys was specified.
 ;;;  8] A list of the &aux specifiers.
-;;;  9] True if a more arg was specified.
-;;; 10] The &more context var
-;;; 11] The &more count var
 ;;;
 ;;; The top-level lambda-list syntax is checked for validity, but the arg
 ;;; specifiers are just passed through untouched.  If something is wrong, we
@@ -129,9 +127,6 @@
 	     (apply #'warn args)))
       (let ((restp nil)
 	    (rest nil)
-	    (morep nil)
-	    (more-context nil)
-	    (more-count nil)
 	    (keyp nil)
 	    (allowp nil)
 	    (state :required))
@@ -156,13 +151,8 @@
 		 (unless (member state '(:required &optional))
 		   (compiler-error "Misplaced &rest in lambda-list: ~S." list))
 		 (setq state '&rest))
-		(&more
-		 (unless (member state '(:required &optional))
-		   (compiler-error "Misplaced &more in lambda-list: ~S." list))
-		 (setq morep t  state '&more-context))
 		(&key
-		 (unless (member state '(:required &optional :post-rest
-					 :post-more))
+		 (unless (member state '(:required &optional :post-rest))
 		   (compiler-error "Misplaced &key in lambda-list: ~S." list))
 		 (setq keyp t)
 		 (setq state '&key))
@@ -171,7 +161,7 @@
 		   (compiler-error "Misplaced &allow-other-keys in lambda-list: ~S." list))
 		 (setq allowp t  state '&allow-other-keys))
 		(&aux
-		 (when (member state '(&rest &more-context &more-count))
+		 (when (eq state '&rest)
 		   (compiler-error "Misplaced &aux in lambda-list: ~S." list))
 		 (setq state '&aux)))
 	      (case state
@@ -179,10 +169,6 @@
 		(&optional (optional arg))
 		(&rest
 		 (setq restp t  rest arg  state :post-rest))
-		(&more-context
-		 (setq more-context arg  state '&more-count))
-		(&more-count
-		 (setq more-count arg  state :post-more))
 		(&key (keys arg))
 		(&aux (aux arg))
 		(t
@@ -191,8 +177,7 @@
 	(when (eq state '&rest)
 	  (compiler-error "&rest not followed by required variable."))
       
-	(values (required) (optional) restp rest keyp (keys) allowp (aux)
-		morep more-context more-count)))))
+	(values (required) (optional) restp rest keyp (keys) allowp (aux))))))
 
 (defun parse-body (body environment &optional (doc-string-allowed t))
   "This function is to parse the declarations and doc-string out of the body of
