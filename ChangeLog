@@ -18,6 +18,7 @@ Bug fixes for numbered bugs:
  * \#4236 Repeated run_testsuite leads to out of memory error
  * \#4250 Unsimplified solution to cubic
  * \#4338 limit((1+%i)^(2*a)*2^(-a),x,inf) when logexpand is true
+ * \#4342 rectform((-1)^(5/6)) is bizarre
  * \#4399 recent commit involving display2d breaks imaxima and drawdf
  * \#4425 Frame_bracket fix in ctensor.mac
  * \#4452 configure --disable-build-docs not working

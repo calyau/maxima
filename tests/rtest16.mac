@@ -3417,6 +3417,15 @@ solve(expand((x+sqrt(3))^3),x);
 [x = -sqrt(3)];
 
 
+/* Bug #4342: "rectform((-1)^(5/6)) is bizarre" */
+
+realpart((-1)^(5/6));
+-(sqrt(3)/2);
+
+realpart((-2)^(5/6));
+-(sqrt(3)/2^(1/6));
+
+
 
 /* Leave this at the end of the file! */
 contexts;

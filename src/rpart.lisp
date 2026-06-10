@@ -297,7 +297,7 @@
   (case (cond ((mnegp base) '$neg)
               (implicit-real '$pos)
               (t ($sign base)))    ; Use $sign not asksign
-    ($neg (risplit (mul2 (power -1 power) (power (neg base) power))))
+    ($neg (risplit-expt-general-form (neg base) '$%pi power 0))
     ($zero (cons (power 0 power) 0))
     ($pos (cons (power base power) 0))
     (t
