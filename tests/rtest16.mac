@@ -3461,6 +3461,20 @@ errcatch(0*log(0));
 0b0;
 
 
+/* Bug #3110: "x*x/abs(x) differs from x/abs(x)*x" */
+
+x*x/abs(x);
+abs(x);
+
+x/abs(x)*x;
+abs(x);
+
+1/abs(x)*x*x;
+abs(x);
+
+x/abs(x)*x*x;
+x*abs(x);
+
 
 /* Leave this at the end of the file! */
 contexts;

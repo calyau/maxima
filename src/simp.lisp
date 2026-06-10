@@ -2696,11 +2696,20 @@
   spcheck
      (setq z (list '(mexpt) (car x) w))
      (cond ((alike1 (setq x (simplifya z t)) z)
-            (return (rplaca (cdr fm) x)))
-           (t
-            (rplacd fm (cddr fm))
-            (setq *rulesw* t)
-            (return (muln (cons x y) t))))
+             ;; Extract the merged term and re-insert it into the product
+             ;; so it can trigger simplifications with existing factors.
+             ;; This is necessary to make x/abs(x)*x -> abs(x) work.
+             ;; Maybe this doesn't need to be done always?
+             (rplacd fm (cddr fm))
+             (setq temp x
+                   x (if (mexptp x) (cdr x) (list x 1)))
+             (setq w (cadr x)
+                   fm y)
+             (go start))
+            (t
+             (rplacd fm (cddr fm))
+             (setq *rulesw* t)
+             (return (muln (cons x y) t))))
   const
      (rplacd fm (cddr fm))
      (setq x (car x) check nil)

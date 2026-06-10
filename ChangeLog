@@ -9,6 +9,7 @@ Bug fixes for numbered bugs:
  * \#2140 integrate: needless nounform return
  * \#2288 x^2<1 can't get x^2<2, but can get x^2<100
  * \#2366 limit of gamma_incomplete
+ * \#3110 x*x/abs(x) differs from x/abs(x)*x
  * \#3155 is(abs(cos(x))<=1) is unknown, but is(cos(x)<=1) and is(cos(x)>=-1) are true
  * \#3184 0 * 0.0 --> 0, but 0.0 * 0 --> 0.0
  * \#3386 documentation: assoc actually allows non-list arguments
