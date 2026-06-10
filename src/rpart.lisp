@@ -208,8 +208,8 @@
 	  (t
 	   (do ((rpart 1) (ipart 0) (m (cdr risl) (cdr m)))
 	       ((null m)
-		(cons (muln (cons rpart (car risl)) t)
-		      (muln (cons ipart (car risl)) t)))
+		(cons (if (=0 rpart) 0 (muln (cons rpart (car risl)) t))
+		      (if (=0 ipart) 0 (muln (cons ipart (car risl)) t))))
 	     (psetq rpart (sub (mul rpart (caar m)) (mul ipart (cdar m)))
 		    ipart (add (mul ipart (caar m)) (mul rpart (cdar m)))))))))
 

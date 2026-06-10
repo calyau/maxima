@@ -1446,7 +1446,18 @@
         ;; A zero factor was found. But we still need to simplify any remaining
         ;; factors to catch errors like division by zero or log(0).
         (when x
-          (mapcar #'simplify x))
+          (let ((float-found (floatp res))
+                (bigfloat-found ($bfloatp res)))
+            (mapcar
+              #'(lambda (f)
+                  (let ((f (simplifya f nil)))
+                    (cond ((and (not float-found) (floatp f))
+                            (setq float-found t))
+                          ((and (not bigfloat-found) ($bfloatp f))
+                            (setq bigfloat-found t)))))
+              x)
+            (cond (bigfloat-found (setq res *bigfloatzero*))
+                  (float-found (setq res 0.0)))))
 	    (cond ($mx0simp
 		   (cond ((and matrixflag (mxorlistp1 matrixflag))
 			  (return (constmx res matrixflag)))

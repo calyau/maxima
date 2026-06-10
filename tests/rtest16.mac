@@ -3437,6 +3437,30 @@ errcatch(0*log(0));
 [];
 
 
+/* Bug #4764: "0 * 0.0 and 0 * 0.0b0 remaining 0" */
+
+0 * 0.0;
+0.0;
+
+0 * 0b0;
+0b0;
+
+0 * 0.0 * 0b0;
+0b0;
+
+0.0 * 0;
+0.0;
+
+0.0 * 0b0;
+0b0;
+
+0b0 * 0;
+0b0;
+
+0b0 * 0.0;
+0b0;
+
+
 
 /* Leave this at the end of the file! */
 contexts;
