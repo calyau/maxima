@@ -1360,11 +1360,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 ;; Numbers and symbols are the only atoms for which sign is defined.
 	 ;; If we get this far, any atom triggers an error.
 	 (merror (intl:gettext "sign: sign undefined for ~M") x))
-	((and (symbolp (caar x)) (not (specrepp x)) (get (caar x) 'sign-function))
-	 (funcall (get (caar x) 'sign-function) x))
-	((and (not (specrepp x)) ($subvarp (mop x)) (get (mop (mop x)) 'sign-function))
-	 (funcall (get (mop (mop x)) 'sign-function) x))
 	((specrepp x) (sign (specdisrep x)))
+	((and (symbolp (caar x)) (get (caar x) 'sign-function))
+	 (funcall (get (caar x) 'sign-function) x))
+	((and ($subvarp (mop x)) (get (mop (mop x)) 'sign-function))
+	 (funcall (get (mop (mop x)) 'sign-function) x))
 	(t
 	  (let ((kind (kind-any-of (caar x) '($posfun $oddfun))))
 		(cond
