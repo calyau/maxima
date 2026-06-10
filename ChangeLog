@@ -10,6 +10,7 @@ Bug fixes for numbered bugs:
  * \#2288 x^2<1 can't get x^2<2, but can get x^2<100
  * \#2366 limit of gamma_incomplete
  * \#3155 is(abs(cos(x))<=1) is unknown, but is(cos(x)<=1) and is(cos(x)>=-1) are true
+ * \#3184 0 * 0.0 --> 0, but 0.0 * 0 --> 0.0
  * \#3386 documentation: assoc actually allows non-list arguments
  * \#3826 limit returns temp variable expression
  * \#4011 Substitution order and zero-divide
@@ -25,6 +26,7 @@ Bug fixes for numbered bugs:
  * \#4425 Frame_bracket fix in ctensor.mac
  * \#4452 configure --disable-build-docs not working
  * \#4457 simplus or great bug
+ * \#4470 Floats/bigfloats are not contagious in multiplication by zero
  * \#4517 Maxima crashes on repeated run of rtest_rules (SBCL 2.5.2)
  * \#4543 solve returns unsimplified result for cubic
  * \#4558 Can't control matrix 2d print formatting
