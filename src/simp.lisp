@@ -1443,6 +1443,10 @@
   start
      (setq x (cdr x))
      (cond ((zerop1 res)
+        ;; A zero factor was found. But we still need to simplify any remaining
+        ;; factors to catch errors like division by zero or log(0).
+        (when x
+          (mapcar #'simplify x))
 	    (cond ($mx0simp
 		   (cond ((and matrixflag (mxorlistp1 matrixflag))
 			  (return (constmx res matrixflag)))

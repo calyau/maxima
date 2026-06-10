@@ -12,6 +12,7 @@ Bug fixes for numbered bugs:
  * \#3155 is(abs(cos(x))<=1) is unknown, but is(cos(x)<=1) and is(cos(x)>=-1) are true
  * \#3386 documentation: assoc actually allows non-list arguments
  * \#3826 limit returns temp variable expression
+ * \#4011 Substitution order and zero-divide
  * \#4037 Error in symbolic integral
  * \#4067 integrate(sqrt(u)/(sqrt(u-u*v)),u) --> expt: undefined: 0 to a negative exponent
  * \#4085 limit((2-%i)^a/a!,a,inf);
@@ -20,6 +21,7 @@ Bug fixes for numbered bugs:
  * \#4338 limit((1+%i)^(2*a)*2^(-a),x,inf) when logexpand is true
  * \#4342 rectform((-1)^(5/6)) is bizarre
  * \#4399 recent commit involving display2d breaks imaxima and drawdf
+ * \#4410 'at' incorrectly returns 0 instead of error for 0/0
  * \#4425 Frame_bracket fix in ctensor.mac
  * \#4452 configure --disable-build-docs not working
  * \#4457 simplus or great bug
