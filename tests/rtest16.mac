@@ -3476,6 +3476,13 @@ x/abs(x)*x*x;
 x*abs(x);
 
 
+/* Bug #3264: "Integral of asin(2*x)^3/(1-4*x^2) wrong" */
+
+block([int : asin(2*x)^3/(1-4*x^2), ratprint : false],
+  zeroequiv(diff(integrate(int, x), x) - int, x));
+true;
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

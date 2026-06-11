@@ -12,6 +12,7 @@ Bug fixes for numbered bugs:
  * \#3110 x*x/abs(x) differs from x/abs(x)*x
  * \#3155 is(abs(cos(x))<=1) is unknown, but is(cos(x)<=1) and is(cos(x)>=-1) are true
  * \#3184 0 * 0.0 --> 0, but 0.0 * 0 --> 0.0
+ * \#3264 Integral of asin(2*x)^3/(1-4*x^2) wrong
  * \#3386 documentation: assoc actually allows non-list arguments
  * \#3741 simp flag is missing from an mnctimes expression
  * \#3826 limit returns temp variable expression

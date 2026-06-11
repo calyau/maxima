@@ -212,16 +212,20 @@
     (let ((rischp risch-var)
 	  (rp-polylogp t)
 	  $logarc $exponentialize result)
-      (setq result (sratsimp (if (and (freeof '$%i risch-*exp) (freeof '$li yyy))
-                                 ($realpart yyy)
-                                 ($rectform yyy))))
+     (destructuring-let (((yyy-re . yyy-im) (risplit yyy)))
+      (setq result (sratsimp (if (and (freeof '$%i risch-*exp) (freeof '$li yyy)
+                                      ;; Don't strip away the imaginary part if
+                                      ;; it contains unsolved integrals!
+                                      (not (isinop yyy-im '%integrate)))
+                                 yyy-re
+                                 (add yyy-re (mul '$%i yyy-im))))))
       ;; The result can contain solvable integrals. Look for this case.
       (if (isinop result '%integrate)
           ;; Found an integral. Evaluate the result again.
           ;; Set the flag *in-risch-p* to make sure that we do not call
           ;; rischint again from the integrator. This avoids endless loops.
           (let ((*in-risch-p* t)) 
-            (meval (list '($ev) result '$nouns)))
+            (sratsimp (meval (list '($ev) result '$nouns))))
           result))))
 
 (defun tryrisch (exp risch-mainvar risch-ratform risch-intvar risch-liflag risch-degree risch-var)
