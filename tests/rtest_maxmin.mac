@@ -58,8 +58,8 @@ max(und,%pi)$
  zerob$
 
 /* #3146 max() runs out of memory when comparing exponential functions */
-max(2.103-7.053*%e^(-4.0681*10^5*t), 2.0325-6.9825*%e^(-4.9238*10^5*t));
-max(2.0325-6.9825*%e^(-492380.0*t),2.103-7.053*%e^(-406810.0*t))$
+block([factor_max_degree_print_warning : false], length(errcatch(max(2.103-7.053*%e^(-4.0681*10^5*t), 2.0325-6.9825*%e^(-4.9238*10^5*t)))));
+1$
 
 /* #1498 min and max of imaginary and real numbers */
 min(%i*inf,inf);

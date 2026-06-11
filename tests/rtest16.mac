@@ -2448,15 +2448,15 @@ sign(((-1)-%e^-(4.075321792706671E-4*d_1))*%e^-(4.075321792706671E-4*d_2)+%e^-(8
 pnz$
 factor(a^1000000+a+1);
 a^1000000+a+1$
-max(2.0325-6.9825*%e^-(492380.0*t),2.103-7.053*%e^-(406810.0*t));
-'max(2.0325-6.9825*%e^-(492380.0*t),2.103-7.053*%e^-(406810.0*t))$
-sign(exp(-492380*t)-2793);
+block([ratprint : false, factor_max_degree_print_warning : false], length(errcatch(max(2.0325-6.9825*%e^-(492380.0*t),2.103-7.053*%e^-(406810.0*t)))));
+1;
+block([factor_max_degree_print_warning : false], sign(exp(-492380*t)-2793));
 pnz$
 
 /* Bug #3147: sign of expressions with exponents crashes */
 assume(t>0);
 [t>0]$
-sign(2^(500005*t)-2^(500001*t));
+block([factor_max_degree_print_warning : false], sign(2^(500005*t)-2^(500001*t)));
 pos$
 kill(t);
 done$
