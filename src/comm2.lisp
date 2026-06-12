@@ -549,8 +549,8 @@
 (setf (get 'mbox 'operators)
       (lambda (x y z)
         (declare (ignore y))
-        (let ((mbox-args (if z (mapcar (lambda (a) (simplifya a z)) (cdr x)) (cdr x))))
-          (apply 'make-mbox mbox-args))))
+        (let ((mbox-args (if z (cdr x) (mapcar #'simplify (cdr x)))))
+          (eqtest (apply 'make-mbox mbox-args) x))))
 
 (defun box-label (x)
   (if (atom x)

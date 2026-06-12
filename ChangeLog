@@ -37,6 +37,7 @@ Bug fixes for numbered bugs:
  * \#4591 solve called on degree six gives 0^0 error
  * \#4592 integrate causes sign: argument cannot be imaginary error
  * \#4623 gcfactor(4), expand(%%) => -4
+ * \#4629 box expression missing simp flags & expand applied to boxed objects
  * \#4630 expand not idempotent (simplus)
  * \#4634 Divergent integral simplifies to -1/4 with simplify_sum
  * \#4655 sign("foo") => Lisp error
