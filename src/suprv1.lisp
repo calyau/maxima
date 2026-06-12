@@ -231,7 +231,7 @@
 		 (let ((xopval (get x 'operators)))
 		   (or (eq xopval 'simpargs1) (eq xopval nil))))
 	    (remprop x 'operators)))
-      (when (member x (cdr $props) :test #'equal)
+      (when (member (or (get x 'op) x) (cdr $props) :test #'equal)
 	(remprop x 'sp2)
 	(killframe x)
 	(i-$remove (list x $features)))

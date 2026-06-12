@@ -3484,6 +3484,14 @@ block([int : asin(2*x)^3/(1-4*x^2), ratprint : false],
 true;
 
 
+/* Bug #4770: "kill doesn't remove operator declarations" */
+
+(infix("myop"), declare("myop", lassociative), kill("myop"), infix("myop"), featurep(verbify("myop"), lassociative));
+false;
+kill("myop");
+done;
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

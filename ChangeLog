@@ -95,6 +95,7 @@ Bug fixes for numbered bugs:
  * \#4752 csign doesn't handle subscripted functions like li correctly
  * \#4757 %e^2.0, %emode:false stays %e^2.0
  * \#4764 0 * 0.0 and 0 * 0.0b0 remaining 0
+ * \#4770 kill doesn't remove operator declarations
 
 Bug fixes for unnumbered bugs:
 -----------------------------
