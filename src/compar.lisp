@@ -2113,6 +2113,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defmfun $featurep (e ind)
   (setq e ($ratdisrep e))
+  (when (and (atom e) (not (eq ind '$alphabetic)))
+    ;; Match the behavior of declare: If declare("operatorname", ...) works,
+    ;; then featurep("operatorname", ...) should work, too.
+    (setq e (getopr e)))
   (cond ((not (symbolp ind))
          (merror 
            (intl:gettext "featurep: second argument must be a symbol; found ~M")

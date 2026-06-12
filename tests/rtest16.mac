@@ -3486,7 +3486,7 @@ true;
 
 /* Bug #4770: "kill doesn't remove operator declarations" */
 
-(infix("myop"), declare("myop", lassociative), kill("myop"), infix("myop"), featurep(verbify("myop"), lassociative));
+(infix("myop"), declare("myop", lassociative), kill("myop"), infix("myop"), featurep("myop", lassociative));
 false;
 kill("myop");
 done;
