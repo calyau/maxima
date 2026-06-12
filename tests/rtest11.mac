@@ -123,7 +123,7 @@ g(g(a,b),g(c,d));
 g(g(g(a,b),c),d)$
 g(g(a,b),g(c,d))-g(a,g(b,g(c,d)));
 0$
-declare(g,rassociative);
+(kill(g),declare(g,rassociative));
 done$
 g(g(a,b),g(c,d));
 g(g(g(a,b),c),d)$

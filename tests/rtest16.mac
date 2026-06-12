@@ -3318,6 +3318,7 @@ sublist
 		['increasing, 'decreasing],
 		['symmetric, 'antisymmetric],
 		['evenfun, 'oddfun],
+		[lassociative, rassociative],
 		['scalar, 'nonscalar]
 	],
 	lambda
