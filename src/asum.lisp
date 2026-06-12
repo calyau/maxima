@@ -1060,8 +1060,8 @@
     ((ans0 (oper-apply (cons (car e) (total-nary e)) z))
      (ans (if (consp ans0) (cdr ans0))))
     (cond ((or (null (cddr ans)) (not (eq (caar ans0) (caar e)))) ans0)
-          ((do ((newans (list (car e) (car ans) (cadr ans))
-                        (list (car e) newans (car ans)))
+          ((do ((newans (list (car ans0) (car ans) (cadr ans))
+                        (list (car ans0) newans (car ans)))
                 (ans (cddr ans) (cdr ans)))
                ((null ans) newans))))))
 
@@ -1074,8 +1074,8 @@
      (ans (if (consp ans0) (cdr ans0))))
     (cond ((or (null (cddr ans)) (not (eq (caar ans0) (caar e)))) ans0)
 	  (t (setq ans (nreverse ans))
-	     (do ((newans (list (car e) (cadr ans) (car ans))
-			  (list (car e) (car ans) newans))
+	     (do ((newans (list (car ans0) (cadr ans) (car ans))
+			          (list (car ans0) (car ans) newans))
 		  (ans (cddr ans) (cdr ans)))
 		 ((null ans) newans))))))
 
