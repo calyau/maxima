@@ -542,7 +542,7 @@
 	(t 
       (cond
         ((eq (caar pat) '$kind)
-         (unkind (second pat) (third pat)))
+         (unkind (getopr (second pat)) (third pat)))
         (t (untrue (munformat pat))))
       pat)))
 
