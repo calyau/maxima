@@ -1731,9 +1731,11 @@
   		     lbp rbp			; Binding power info
   		     lpos rpos pos		; Part-Of-Speech info
   		     grind dimension dissym	; Display info
-  		     op))			; Operator info
+  		     op			; Operator info
+             verb))
       (mapc #'(lambda (x) (remprop noun-form x))
-   	  '(dimension dissym lbp rbp)))))
+   	  '(dimension dissym lbp rbp noun))
+      )))
 
 
 
