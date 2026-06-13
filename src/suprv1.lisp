@@ -263,6 +263,8 @@
           (remprop x 'translate)
           (remprop x 'operators)
           (setf $structures (delete y $structures :count 1 :test #'equal))))
+      (remprop x 'noun)
+      (remprop x 'verb)
       (when (and (member x *builtin-symbols* :test #'equal)
 		 (gethash x *builtin-symbol-props*))
 	(setf (symbol-plist x)
