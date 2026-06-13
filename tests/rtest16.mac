@@ -3485,10 +3485,28 @@ true;
 
 /* Bug #4770: "kill doesn't remove operator declarations" */
 
-(infix("myop"), declare("myop", lassociative), kill("myop"), infix("myop"), featurep("myop", lassociative));
+(infix("myop"), declare("myop", lassociative), kill("myop"), infix("myop"),
+ featurep("myop", lassociative));
 false;
+
 kill("myop");
 done;
+
+(infix("myop"),
+ [member("myop", props), member(operator, properties("myop"))]);
+[true, true];
+
+(declare("myop", lassociative), remove("myop", lassociative),
+ [member("myop", props), member(operator, properties("myop"))]);
+[true, true];
+
+(remove("myop", operator),
+ [member("myop", props), member(operator, properties("myop"))]);
+[false, false];
+
+(kill("myop"),
+ properties("myop"));
+[];
 
 
 /* Leave this at the end of the file! */

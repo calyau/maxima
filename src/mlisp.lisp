@@ -1566,16 +1566,19 @@ wrapper for this."
     (if (not (fboundp fun)) (zl-remprop fun 'translated))))
 
 (defun rempropchk (var)
+ (let ((opr (getopr var)))
   (if (and 
         (or
-          (not (symbolp var))
+          (not (symbolp opr))
           (and
-            (not (mgetl var '($nonscalar $scalar $mainvar $numer
+            (not (mgetl opr '($nonscalar $scalar $mainvar $numer
                                         matchdeclare $atomgrad atvalues)))
-            (not (getl var '(evfun evflag translated nonarray bindtest
-                                   sp2 operators opers data autoload mode)))))
+            (not (getl opr '(evfun evflag translated nonarray bindtest
+                                   sp2 operators opers data autoload mode)))
+            (let ((op (get opr 'op)))
+              (or (null op) (member op *mopl* :test #'equal)))))
 	   (not (member var *builtin-$props* :test #'equal)))
-      (delete var $props :count 1 :test #'equal)))
+      (delete var $props :count 1 :test #'equal))))
 
 (defmspec $remfunction (l)
   (setq l (cdr l))
