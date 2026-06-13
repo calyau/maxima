@@ -506,6 +506,8 @@
 	   (merror (intl:gettext "assume: argument cannot be an '=' expression; found ~M~%assume: maybe you want 'equal'.") (car x)))
 	  ((eq (caaar x) 'mnotequal)
 	   (merror (intl:gettext "assume: argument cannot be a '#' expression; found ~M~%assume: maybe you want 'not equal'.") (car x)))
+	  ((eq (caaar x) '$kind)
+	   (merror (intl:gettext "assume: argument cannot be a 'kind' expression; found ~M~%assume: use 'declare' instead.") (car x)))
 	  (t (push (assume (meval (car x))) nl)))
     (setq x (cdr x))))
 
