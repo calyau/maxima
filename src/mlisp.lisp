@@ -1427,6 +1427,16 @@ wrapper for this."
           (cond
             ((eq mpropp 'kind) (declarekind var prop))
             ((eq mpropp 'opers)
+              (let ((lbp (get var 'lbp))
+                    (rbp (get var 'rbp)))
+                (when (and lbp rbp)
+                  (cond 
+                    ((and (eq prop '$rassociative) (>= lbp rbp))
+                     (mtell (intl:gettext "Warning: Declaring ~M right-associative, but its parser binding powers (LBP ~M >= RBP ~M) make it parse left-to-right.")
+                            var lbp rbp))
+                    ((and (eq prop '$lassociative) (< lbp rbp))
+                     (mtell (intl:gettext "Warning: Declaring ~M left-associative, but its parser binding powers (LBP ~M < RBP ~M) make it parse right-to-left.")
+                            var lbp rbp)))))
              (putprop (setq var (linchk var)) t prop) (putprop var t 'opers))
             (mpropp
               (if (and (member prop '($scalar $nonscalar) :test #'eq)
