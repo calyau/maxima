@@ -366,5 +366,10 @@ false;
 powerseries(log(1+x),x,0);
 -'sum(((-1)^i*x^i)/i,i,1,inf);
 
+powerseries(1/x, x, -inf) - powerseries(1/x, x, minf);
+0;
+powerseries(1/x, x, -minf) - powerseries(1/x, x, inf);
+0;
+
 (kill(all), 0);
 0$

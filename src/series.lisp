@@ -40,6 +40,7 @@
 ;; The top-level routine for $powerseries, which calls this function after
 ;; spotting invalid arguments.
 (defun powerseries (expr var pt)
+  (setq pt (canonicalize+-inf pt))
   (handler-case
       (if (and (signp e pt) (symbolp var))
           (seriesexpand* expr)
