@@ -98,6 +98,7 @@ Bug fixes for numbered bugs:
  * \#4768 Custom operators don't get SIMP flag
  * \#4769 Custom operators don't play nice with tellsimp
  * \#4770 kill doesn't remove operator declarations
+ * \#4774 taylor should accept -inf and -minf
 
 Bug fixes for unnumbered bugs:
 -----------------------------

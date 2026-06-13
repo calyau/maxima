@@ -91,7 +91,7 @@
 	 ((mlist simp) 157 160))
         "rtest_abs"
         ((mlist simp) "rtest_taylor"
-	 ((mlist simp) 88 91 97 104 128 129))
+	 ((mlist simp) 88 91 97 104 129))
         ((mlist simp) "rtest_dot")
         "rtest_mset"
         "rtest_boolean"

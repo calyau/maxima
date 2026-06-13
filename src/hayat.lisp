@@ -1928,7 +1928,7 @@
 (defun parse-tay-args1 (l)
    (if ($listp (car l)) (parse-tay-args2 l)
       (let ((v (car l))
-	    (pt ($ratdisrep (cadr l)))
+	    (pt (canonicalize+-inf ($ratdisrep (cadr l))))
 	    (ord (tay-order (caddr l)))
 	    (switches (make-switch-list (cdddr l))))
 	 (push (list v ord pt switches) tlist))))
@@ -1960,9 +1960,15 @@
       (cond ((not ptl) (merror "PARSE-TAY-ARGS2: ran out of matching points of expansion."))
 	    (t
 	     (push
-	      (list (car vl) (tay-order (car ordl)) (car ptl)
+	      (list (car vl) (tay-order (car ordl)) (canonicalize+-inf (car ptl))
 		    (cons (list 'multi label (timesk lcm (expta (car ordl) -1))) switches))
 	      tlist))))))
+
+(defun canonicalize+-inf (expr)
+  "Turns -inf into minf and -minf into inf, leaves everything else alone."
+  (cond ((alike1 expr '((mtimes) -1 $inf)) '$minf)
+        ((alike1 expr '((mtimes) -1 $minf)) '$inf)
+        (t expr)))
 
 (defun make-switch-list (l)
   (mapcar #'(lambda (q) (cons q t)) l))

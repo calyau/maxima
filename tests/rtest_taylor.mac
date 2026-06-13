@@ -665,7 +665,13 @@ taylor(cot(x)/(x-%pi-1),x,%pi+1,2);
 1/(tan(1)*(x-%pi-1))-(tan(1)^2+1)/tan(1)^2
                           +((tan(1)^2+1)*(x-%pi-1))/tan(1)^3
                           -((tan(1)^4+4*tan(1)^2+3)*(x-%pi-1)^2)/(3*tan(1)^4)$
-                          
+
+/* Bug #4774: "taylor should accept -inf and -minf" */
+ratdisrep(taytorat(taylor(1/x^2,x,-inf,2) - taylor(1/x^2,x,minf,2)));
+0;
+ratdisrep(taytorat(taylor(1/x^2,x,-minf,2) - taylor(1/x^2,x,inf,2)));
+0;
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
