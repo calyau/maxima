@@ -304,7 +304,7 @@
 	((consp plist) (setq plist (cdr plist)))
 	(t (return-from getl nil)))
   (loop for tail on plist by #'cddr
-	 when (member (car tail) indicator-list :test #'eq)
+	 when (and (cadr tail) (member (car tail) indicator-list :test #'eq))
 	 do (return tail)))
 
 (declaim (inline safe-get safe-getl))
