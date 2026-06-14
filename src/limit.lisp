@@ -1283,7 +1283,7 @@ ignoring dummy variables and array indices."
 					       (sub 
 					         (simplifya (subfunmake '$psi (list 0) (list (add (neg aaa) 1))) nil)
 						     (ftake '%log z)))
-						 (mul (ftake 'mexpt z (neg aaa)) s)))))
+						 (mul (ftake 'mexpt z aaa) s)))))
 	       ;; Case 3: fall back			
            (t (ftake '%gamma_incomplete aaa z)))))
 

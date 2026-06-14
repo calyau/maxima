@@ -6367,3 +6367,13 @@ sublist(
   )
 );
 [];
+
+/* Bug #4778: "integrate(sin(x)/x^3, x, -1, 1) should be divergent" */
+errcatch(integrate(sin(x)/x^3, x, -1, 1));
+[];
+error;
+["defint: integral is divergent."];
+errcatch(integrate(sin(x)/x^5, x, -1, 1));
+[];
+error;
+["defint: integral is divergent."];
