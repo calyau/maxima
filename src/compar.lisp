@@ -1717,8 +1717,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun factor-if-small (x)
   (if (< (conssize x) 51.)
-      (let ($ratprint)
-	(declare (special $ratprint))
+      (let ($ratprint $factor_max_degree_print_warning)
+	(declare (special $ratprint)) ; Really necessary? $RATPRINT is in globals.lisp!
 	(factor x)) x))
 
 (defun sign-mexpt (x)
