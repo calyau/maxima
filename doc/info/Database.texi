@@ -2321,11 +2321,12 @@ If the expression has poles on the real line, there may be errors
 in the result (but this is unlikely to occur).
 @item
 If the expression contains functions which are not solutions to first order
-differential equations (e.g. Bessel functions) there may be incorrect results.
+differential equations (e.g.@: Bessel functions) there may be incorrect results.
 @item
 The algorithm uses evaluation at randomly chosen points for carefully selected
 subexpressions.  This is always a somewhat hazardous business, although the
-algorithm tries to minimize the potential for error.
+algorithm tries to minimize the potential for error.  The tolerance of the
+numeric test is controlled by @mref{rootsepsilon}.
 @end enumerate
 
 For example @code{zeroequiv (sin(2 * x) - 2 * sin(x) * cos(x), x)} returns
