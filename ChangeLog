@@ -100,6 +100,8 @@ Bug fixes for numbered bugs:
  * \#4770 kill doesn't remove operator declarations
  * \#4774 taylor should accept -inf and -minf
  * \#4778 integrate(sin(x)/x^3, x, -1, 1) should be divergent
+ * \#4782 Improve discontinuity detection for definite integrals
+ * \#4783 Definite integration: Maxima orders discontinuities incorrectly using GREAT instead of MGRP
 
 Bug fixes for unnumbered bugs:
 -----------------------------

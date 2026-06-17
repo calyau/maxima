@@ -952,30 +952,45 @@ in the interval of integration.")
 		 (whole-intsubs e a1 b1 ivar)
 		 total))))))
 
-;; look for terms with a negative exponent
-;;
-;; recursively traverses exp in order to find discontinuities such as
-;;  erfc(1/x-x) at x=0
-(defun discontinuities-denom (exp ivar)
-  (cond ((atom exp) 1)
-	((and (eq (caar exp) 'mexpt)
-	      (not (freeof ivar (cadr exp)))
-	      (not (member ($sign (caddr exp)) '($pos $pz))))
-	 (m^ (cadr exp) (m- (caddr exp))))
-	(t 
-	 (m*l (mapcar #'(lambda (e)
-                          (discontinuities-denom e ivar))
-                      (cdr exp))))))
+(defun discontinuities (expr ivar)
+  "Returns a list of unique expressions whose roots identify possible
+  discontinuities of EXPR with respect to IVAR."
+  (let (result)
+    (labels ((add-unique (item)
+               (pushnew item result :test #'alike1))
+             (walk (e)
+               (unless (atom e)
+                 (cond
+                   ;; x^(-y) potentially has a discontinuity where x = 0,
+                   ;; unless we can prove that -y is strictly positive.
+                   ((and (eq (caar e) 'mexpt)
+                         (among ivar (cadr e))
+                         (not (eq ($sign (caddr e)) '$pos)))
+                     (add-unique (cadr e)))
+                   ;; gamma_incomplete(a, z), unless a is a positive integer, has a
+                   ;; discontinuity at z = 0 and potentially when crossing the real
+                   ((and (eq (caar e) '%gamma_incomplete)
+                         (among ivar (caddr e))
+                         (not (and (maxima-integerp (cadr e))
+                                   (eq ($sign (cadr e)) '$pos))))
+                     (add-unique (caddr e))
+                     (destructuring-bind (re . im) (risplit (caddr e))
+                       (when (among ivar re) (add-unique re))
+                       (when (among ivar im) (add-unique im)))))
+                   ;; TODO: Handle discontinuities of %LOG, %TAN, %ACOT, ...
+                 ;; Recursively process the arguments.
+                 (dolist (arg (cdr e))
+                   (walk arg)))))
+      (walk expr)
+      result)))
 
 ;; returns list of places where exp might be discontinuous in ivar.
 ;; list begins with ll and ends with ul, and include any values between
 ;; ll and ul.
-;; return '$no or '$unknown if no discontinuities found.
+;; return '$no if no discontinuities found.
 (defun discontinuities-in-interval (exp ivar ll ul)
-  (let* ((denom (discontinuities-denom exp ivar))
-	 (roots (real-roots denom ivar)))
-    (cond ((eq roots '$failure)
-	   '$unknown)
+  (let ((roots (real-roots (discontinuities exp ivar) ivar :multi t)))
+    (cond
 	  ((eq roots '$no)
 	   '$no)
 	  (t (do ((dummy roots (cdr dummy))
@@ -983,11 +998,12 @@ in the interval of integration.")
 		 ((null dummy)
 		  (cond (pole-list
 			 (append (list ll)
-				 (sortgreat pole-list)
+				 (sort pole-list
+                       #'(lambda (x y)
+                           (eq ($asksign (sub y x)) '$pos)))
 				 (list ul)))
 			(t '$no)))
-		 (let ((soltn (caar dummy)))
-		   ;; (multiplicity (cdar dummy)) ;; not used
+		 (let ((soltn (car dummy)))
 		   (if (strictly-in-interval soltn ll ul)
 		       (push soltn pole-list))))))))
 
@@ -3535,9 +3551,8 @@ in the interval of integration.")
 	 (roots (real-roots denom ivar))
 	 (ll-pole (limit-pole exp ivar ll '$plus))
 	 (ul-pole (limit-pole exp ivar ul '$minus)))
-    (cond ((or (eq roots '$failure)
-	       (null ll-pole)
-	       (null ul-pole))   '$unknown)
+    (cond ((or (null ll-pole)
+	           (null ul-pole)) '$unknown)
 	  ((and (or (eq roots '$no)
 		    (member ($csign denom) '($pos $neg $pn)))
 		    ;; this clause handles cases where we can't find the exact roots,
@@ -3658,7 +3673,23 @@ in the interval of integration.")
        (or (eq ll '$minf) 
 	   (eq ($asksign (m+ place (m- ll))) '$pos))))
 
-(defun real-roots (exp ivar)
+(defun real-roots (exp ivar &key multi)
+ "If :MULTI is NIL, solves EXP = 0 for IVAR and returns a list consisting of
+ (SOLUTION . MULTIPLICITY) pairs, or $NO if no solutions were found.
+ If :MULTI is non-NIL, EXP is expected to be a Lisp list of expressions, and
+ and each will be solved. All solutions are returned as a single list, without
+ multiplicities, with duplicate solutions removed."
+ (if multi
+  (or (delete-duplicates (apply #'nconc
+                                (mapcar #'(lambda (e)
+                                            (let ((ans (real-roots e ivar)))
+                                              (if (eq ans '$no)
+                                                nil
+                                                (mapcar #'car ans))))
+                                        exp))
+                          :test #'alike1)
+      '$no)
+  ;; Normal mode of operation: EXP is a single expression.
   (let (($solvetrigwarn (cond (*defintdebug* t) ;Rest of the code for
 			      (t ())))	;TRIGS in denom needed.
 	($solveradcan (cond ((or (among '$%i exp)
@@ -3680,7 +3711,7 @@ in the interval of integration.")
 			    (cons (cons
 				   ($rectform (caddar dummy))
 				   (cadr dummy))
-				  rootlist)))))))))
+				  rootlist))))))))))
 
 (defun ask-greateq (x y)
 ;;; Is x > y. X or Y can be $MINF or $INF, zeroA or zeroB.
