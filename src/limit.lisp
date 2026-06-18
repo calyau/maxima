@@ -2243,7 +2243,6 @@ ignoring dummy variables and array indices."
 				(limit (caddr exp) var val 'think)))
     ((member (caar exp) '(%sin %cos) :test #'eq)
      (simplimsc exp (caar exp) (limit (cadr exp) var val 'think)))
-    ((eq (caar exp) '%tan) (simplim%tan (cadr exp)))
     ((member (caar exp) '(%sinh %cosh) :test #'eq)
      (simplimsch (caar exp) (limit (cadr exp) var val 'think)))
     ((member (caar exp) '(%erf %tanh) :test #'eq)
@@ -3570,49 +3569,40 @@ ignoring dummy variables and array indices."
 		   (simplify (list (ncons fn) (ridofab arg)))
 		   fn))))
 
-(defun simplim%tan (arg)
-  (let ((arglim (limit arg var val 'think)))
+(defun simplim%tan (expr var val)
+  (let* ((*preserve-direction* t)
+         (z (cadr expr))
+         (lim (limit z var val 'think))
+         (two-lim-over-pi (div (mul 2 lim) '$%pi)))
     (cond
-      ((member arglim '($inf $minf $ind) :test #'eq)
-       '$ind)
-      ((member arglim '($und $infinity) :test #'eq)
-       (throw 'limit nil))
+      ;; tan(zeroa) = zeroa, tan(zerob) = zerob
+      ((member lim '($zeroa $zerob) :test #'eq) lim)
+
+      ;; tan{minf, inf, und, infinity} is undefined
+      ((member lim '($inf $minf $und $infinity) :test #'eq) '$und)
+
+      ;; When limit(z,var,val) = ind and Maxima can determine that
+      ;; cos(z) is nonvanishing, return ind; otherwise return und.
+      ((eq lim '$ind)
+       (if (eq t (mnqp (ftake '%cos z) 0))
+           '$ind
+           '$und))
+
+      ;; When 2*lim/%pi is an odd integer, tangent has a pole.
+      ((and ($featurep two-lim-over-pi '$integer)
+            (eq '$yes (ask-integer two-lim-over-pi '$odd)))
+       (let ((sgn (zero-fixup  ($ratdisrep (tlimit-taylor (sub z lim) var val 0)) var val))) ;local analysis of pole
+         (cond ((eq sgn '$zerob) '$inf)
+               ((eq sgn '$zeroa) '$minf)
+               (t (throw 'limit nil)))))
+
+      ;; Direct substitution.
+      ((successful-limit-result-p lim)
+       (ftake '%tan lim))
+
       (t
-       ;; Write the limit of the argument as c*%pi + rest.
-       (let*
-	   ((c (or (pip arglim) 0))
-	    (rest (sratsimp (m- arglim (m* '$%pi c))))
-	    (hit-zero))
-	 ;; Check if tan(x) has a zero or pole at x=arglim.
-	 ;; zero: tan(n*%pi + 0*)
-	 ;; pole: tan((2*n+1)*%pi/2 + 0*)
-	 ;; 0* can be $zeroa, $zerob or 0.
-	 (if (and (member rest '(0 $zeroa $zerob) :test #'equal)
-		  (or (setq hit-zero (integerp c))
-		      (and (ratnump c) (equal (caddr c) 2))))
-	     ;; This is a zero or a pole.
-	     ;; Determine on which side of the zero/pole we are.
-	     ;; If rest is $zeroa or $zerob, use that.
-	     ;; Otherwise (rest = 0), try to determine the side
-	     ;; using the behavior of the argument.
-	     (let
-		 ((side (cond ((eq rest '$zeroa) 1)
-			      ((eq rest '$zerob) -1)
-			      (t (behavior arg var val)))))
-	       (if hit-zero
-		   ;; For a zero, if we don't know the side, just return 0.
-		   (cond
-		     ((equal side 1) '$zeroa)
-		     ((equal side -1) '$zerob)
-		     (t 0))
-		   ;; For a pole, we need to know the side.
-		   ;; Otherwise, we can't determine the limit.
-		   (cond
-		     ((equal side 1) '$minf)
-		     ((equal side -1) '$inf)
-		     (t (throw 'limit t)))))
-	     ;; No zero or pole - substitute in the limit of the argument.
-	     (take '(%tan) (ridofab arglim))))))))
+       (throw 'limit nil)))))
+(setf (get '%tan 'simplim%function) 'simplim%tan)
 
 (defun simplim%asinh (arg)
   (cond ((member arg '($inf $minf $zeroa $zerob $ind $und) :test #'eq)

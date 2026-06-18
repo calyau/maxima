@@ -97,8 +97,10 @@ Bug fixes for numbered bugs:
  * \#4764 0 * 0.0 and 0 * 0.0b0 remaining 0
  * \#4768 Custom operators don't get SIMP flag
  * \#4769 Custom operators don't play nice with tellsimp
- * \#4770 kill doesn't remove operator declarations
- * \#4774 taylor should accept -inf and -minf
+ * \#4770 kill doesn't remove operator 
+ * \#4772 limits of tan expressions toward infinity
+ * \#4774 taylor should accept -inf and -
+ * \#4777 limits of tan toward odd x integer / 2
  * \#4778 integrate(sin(x)/x^3, x, -1, 1) should be divergent
  * \#4782 Improve discontinuity detection for definite integrals
  * \#4783 Definite integration: Maxima orders discontinuities incorrectly using GREAT instead of MGRP
