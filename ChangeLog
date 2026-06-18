@@ -103,6 +103,7 @@ Bug fixes for numbered bugs:
  * \#4782 Improve discontinuity detection for definite integrals
  * \#4783 Definite integration: Maxima orders discontinuities incorrectly using GREAT instead of MGRP
  * \#4786 mk-defsystem doesn't handle loading failures e.g. due to corrupt binary files
+ * \#4787 taylor(a,b,c) gives internal error
 
 Bug fixes for unnumbered bugs:
 -----------------------------
