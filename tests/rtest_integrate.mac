@@ -6350,6 +6350,8 @@ forget(x > 0, x < 1);
 /* Bug #4037: "Error in symbolic integral" */
 /* Test that the antiderivatives of a whole family of functions are correct. */
 /* Certain cases are left out because they print "CQUOTIENT: quotient is not exact" errors. */
+assume(x > 0);
+[x > 0];
 sublist(
   [[1,1,1],[1,1,2],[1,1,4],[1,2,1],[1,2,2],[1,2,4],[1,3,1],[1,3,2],[1,4,1],
    [1,4,2],[1,5,1],[1,5,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2],[2,3,1],[2,3,2],
@@ -6359,14 +6361,17 @@ sublist(
    [4,3,5],[4,4,1],[4,4,2],[4,4,5],[4,5,1],[4,5,2],[4,5,5],[5,1,1],[5,1,2],
    [5,1,4],[5,2,1],[5,2,2],[5,3,1],[5,3,2],[5,4,1],[5,4,2],[5,5,1],[5,5,2]],
   lambda([e],
-    block([f, u],
+    block([f, F, g],
       f : x^e[1]*log(x)^e[2]/(1+x^e[3]),
-      u : integrate(f, x),
-      not freeof('integrate, u) or is(diff(u, x) = f) # true
+      F : integrate(f, x),
+      g : diff(F, x),
+      not freeof('integrate, F) or (radcan(g - f) # 0 and radcan(rectform(g - f)) # 0)
     )
   )
 );
 [];
+forget(x > 0);
+[x > 0];
 
 /* Bug #4778: "integrate(sin(x)/x^3, x, -1, 1) should be divergent" */
 errcatch(integrate(sin(x)/x^3, x, -1, 1));
