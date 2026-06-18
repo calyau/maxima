@@ -6362,7 +6362,7 @@ sublist(
     block([f, u],
       f : x^e[1]*log(x)^e[2]/(1+x^e[3]),
       u : integrate(f, x),
-      not freeof('integrate, u) or is(diff(u, x) = f) # true
+      not freeof('integrate, u) or is(rectform(logcontract(ratsimp(logarc(diff(u,x)-f)))) # 0)
     )
   )
 );
