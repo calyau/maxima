@@ -4828,10 +4828,36 @@ or does not contain valid compiled code."
 	    ((and binary-exists load-binary)
 	     (with-tell-user ("Loading binary"   component :binary)
 	       (or *oos-test*
+               (if source-exists
+                 ;; Source file exists. If loading the binary fails, try to recompile and load once.
+                 ;; This is to handle corrupt or incomplete binary files.
+                 ;; Catching errors during compilation isn't always possible.
+                 (handler-case
+                   (progn
+                     (funcall (load-function component) binary-pname)
+                     (setf (component-load-time component)
+                           (file-write-date binary-pname)))
+                   (error (condition)
+                     (format *error-output*
+                             "MK:DEFSYSTEM: Error loading ~A: ~A~%; Deleting binary and recompiling...~%"
+                             binary-pname condition)
+                     ;; Catch and report deletion errors without halting recovery
+                     (handler-case (delete-file binary-pname)
+                       (error (del-err)
+                         (format *error-output*
+                                 "MK:DEFSYSTEM: Warning: Could not delete ~A: ~A~%; Recompiling anyways...~%"
+                                 binary-pname del-err)))
+                     ;; Force recompilation
+                     (compile-file-operation component t)
+                     ;; Final load attempt
+                     (funcall (load-function component) binary-pname)
+                     (setf (component-load-time component)
+                           (file-write-date binary-pname))))
+		   ;; No source file - can't do anything if loading the binary fails.
 		   (progn
 		     (funcall (load-function component) binary-pname)
 		     (setf (component-load-time component)
-			   (file-write-date binary-pname)))))
+			   (file-write-date binary-pname))))))
 	     t)
 	    ((and (not binary-exists) (not source-exists))
 	     (tell-user-no-files component :force)
