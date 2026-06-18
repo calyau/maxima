@@ -55,7 +55,7 @@
   (declare (special var v s))
   (prog (r r1 r2)
      (declare (special r1 r2))
-     (setq r (+ 0.01 (random 0.8)))
+     (setq r (+ 0.1 (random 0.8)))
      (setq v (maxima-substitute r var (ratdisrep (cons s (cons v 1)))))
      (setq v (meval '(($ev) v $numer)))
      (cond ((and (numberp v) (< (abs v) $rootsepsilon))
