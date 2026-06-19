@@ -3537,13 +3537,13 @@ is(radcan(taylor(atan(a)^x, x, inf, 0)) = atan(a)^x);
 true;
 is(radcan(taylor(atanh(a)^x, x, inf, 0)) = atanh(a)^x);
 true;
-is(radcan(taylor(asin(x + a), x, 1, 0)) = asin(x + 1));
+is(radcan(taylor(asin(a + x), x, 1, 0)) = asin(a + 1));
 true;
-is(radcan(taylor(asinh(x + a), x, 1, 0)) = asinh(x + 1));
+is(radcan(taylor(asinh(a + x), x, 1, 0)) = asinh(a + 1));
 true;
-is(radcan(taylor(atan(x + a), x, 1, 0)) = atan(x + 1));
+is(radcan(taylor(atan(a + x), x, 1, 0)) = atan(a + 1));
 true;
-is(radcan(taylor(atanh(x + a), x, 1, 0)) = atanh(x + 1));
+is(radcan(taylor(atanh(a + x), x, 1, 0)) = atanh(a + 1));
 true;
 
 
