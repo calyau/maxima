@@ -2445,6 +2445,14 @@
 	   argord (ps-le* psarg))
      (if (rczerop argord)
 	 (cond ((member funame '(%atan %asin %asinh %atanh) :test #'eq)
+        ;; Only convert these to logarithmic form (done by ATRIGH) when
+        ;; DIFF-EXPAND would fail (singularity at the expansion point).
+        (let* ((silent-taylor-flag t)
+               (ans (catch 'tay-err (diff-expand (ftake funame arg) tlist))))
+          ;; Objects thrown to the TAY-ERR tag have an atomic CAR,
+          ;; that's how we can detect that we caught an error.
+          (unless (and (consp ans) (atom (car ans)))
+            (return (taylor2 ans))))
 		(return (atrigh arg func)))
 	       ((setq temp (assoc funame const-exp-funs :test #'eq))
 		(return (funcall (cdr temp) arg psarg func)))
@@ -2807,7 +2815,7 @@
 	 (t (tsexpt-red (list (list '(%log) b) e)))))
 
 (defun tsexpt-red (l)
-   (*bind* ((free) (nfree) (full-log) ($logarc t) (expt) (ps)
+   (*bind* ((free) (nfree) (full-log) (expt) (ps)
 	    (log-1 '((mtimes) $%i $%pi))
 	    (log%i '((mtimes) ((rat) 1 2) $%i $%pi)))
     a  (do ((l l (cdr l)))
@@ -2819,9 +2827,9 @@
 	     ((eq (caaar nfree) '%log)
 	      (return (tsexpt1 (cadar nfree) (m*l free))))
 	     ((member (caaar nfree) *psacirc :test #'eq)
-	      (setq l (ncons (simplifya	 ;; simplify after removing simp flag
-			      (cons (ncons (caaar nfree)) (cdar nfree))
-			      () ))
+	      (setq l (ncons (let (($logarc t)) (simplifya	 ;; simplify after removing simp flag
+			      (cons (ncons (caaar nfree)) (cdar nfree)) ;; and convert to logarithmic form
+			      () )))
 		    nfree (cdr nfree))
 	      (go a)))
        ;; Must have truncs > 0 so that logs in the expt aren't trunc'd.

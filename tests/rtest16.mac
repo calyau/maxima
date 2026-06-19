@@ -3525,6 +3525,28 @@ freeof(sin(0), cos(0), taylor(atan(%pi)^x, x, inf, 0)), simp : false;
 true;
 
 
+/* Bug #4788: "taylor(a^x, x, inf, 0) vs. taylor(f(a)^x, x, inf, 0) for f = atan, asin, asinh" */
+
+is(radcan(taylor(a^x, x, inf, 0)) = a^x);
+true;
+is(radcan(taylor(asin(a)^x, x, inf, 0)) = asin(a)^x);
+true;
+is(radcan(taylor(asinh(a)^x, x, inf, 0)) = asinh(a)^x);
+true;
+is(radcan(taylor(atan(a)^x, x, inf, 0)) = atan(a)^x);
+true;
+is(radcan(taylor(atanh(a)^x, x, inf, 0)) = atanh(a)^x);
+true;
+is(radcan(taylor(asin(x + a), x, 1, 0)) = asin(x + 1));
+true;
+is(radcan(taylor(asinh(x + a), x, 1, 0)) = asinh(x + 1));
+true;
+is(radcan(taylor(atan(x + a), x, 1, 0)) = atan(x + 1));
+true;
+is(radcan(taylor(atanh(x + a), x, 1, 0)) = atanh(x + 1));
+true;
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$
