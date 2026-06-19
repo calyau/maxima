@@ -1202,14 +1202,9 @@ ignoring dummy variables and array indices."
 	  -1)))
 
 (defun limfact (n d)
-  (let ((ans ()))
-    (setq n (stirling0 n)
-	  d (stirling0 d))
-    (setq ans (toplevel-$limit (m// n d) var '$inf))
-    (cond ((and (atom ans)
-		(not (member ans '(und ind ) :test #'eq)))  ans)
-	  ((eq (caar ans) '%limit)  ())
-	  (t ans))))
+  (let ((ans (toplevel-$limit (div (stirling0 n) (stirling0 d)) var val)))
+    (when (successful-limit-result-p ans)
+      ans)))
 
 ;; substitute asymptotic approximations for gamma, factorial,
 ;; polylogarithm, and expintegral_ei
