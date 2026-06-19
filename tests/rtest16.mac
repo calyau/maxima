@@ -3509,6 +3509,16 @@ done;
 [];
 
 
+/* Bug #4343: "Lisp error for taylor when taylor_logexpand : false" */
+
+assume(n > 0);
+[n > 0];
+ratdisrep(taylor((atan(n/%pi)+%pi/2)^n/%pi^n, n, inf, 0)), taylor_logexpand : false;
+%e^((2*%pi)/(%i*log(%i/%pi)-%i*log(-(%i/%pi))-%pi));
+forget(n > 0);
+[n > 0];
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

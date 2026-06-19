@@ -1145,12 +1145,22 @@
 	    (psexpt (poly->ps (cdr rat)) (rcmone))))
 
 (defun poly->ps (poly)
-  (if (or (pcoefp poly) (mfree (pdis poly) tvars)) (prep1 poly)
+  (let ((polyd (pdis poly)))
+    (if (mfree polyd tvars)
+      (prep1 polyd)
       (let ((g (p-var poly)) datum (pow (rcone)))
 	(if (setq datum (key-var-pow g)) (desetq (g . pow) datum)
 	    (desetq (g . pow) (adjoin-pvar g)))
-	(if (and (not (atom g)) (psp g))
-	    g
+	(if (consp g)
+      ;; G is an evaluated PSCOEF or PS. Evaluate POLY(G) mathematically.
+      (do ((po-terms (p-terms poly) (p-red po-terms))
+           (ans (rczero)))
+          ((null po-terms) ans)
+          (setq ans
+            (psplus ans
+                    (pstimes (poly->ps (pt-lc po-terms))
+                             (psexpt g (e* pow (prep1 (pt-le po-terms))))))))
+      ;; Normal case: G is a GENSYM. Build the PS structurally.
 	    (progn
 	      (setq datum (gvar-data g))
 	      (do ((po-terms (p-terms poly) (p-red po-terms))
@@ -1167,7 +1177,7 @@
 		   (make-ps (int-var datum)
 			    (ncons (current-trunc datum))
 			    (if (eq g (data-gvar datum)) ps-terms
-				(invert-terms ps-terms))))))))))
+				(invert-terms ps-terms)))))))))))
 
 (defun key-var-pow (g)
    (let ((var2 (get-key-var g)) datum)
