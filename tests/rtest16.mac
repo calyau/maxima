@@ -3519,6 +3519,12 @@ forget(n > 0);
 [n > 0];
 
 
+/* Bug #4791: "taylor(atan(%pi)^x, x, inf, 0) contains unsimplified sin(0) and cos(0)" */
+
+freeof(sin(0), cos(0), taylor(atan(%pi)^x, x, inf, 0)), simp : false;
+true;
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

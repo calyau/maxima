@@ -107,6 +107,7 @@ Bug fixes for numbered bugs:
  * \#4783 Definite integration: Maxima orders discontinuities incorrectly using GREAT instead of MGRP
  * \#4786 mk-defsystem doesn't handle loading failures e.g. due to corrupt binary files
  * \#4787 taylor(a,b,c) gives internal error
+ * \#4791 taylor(atan(%pi)^x, x, inf, 0) contains unsimplified sin(0) and cos(0)
 
 Bug fixes for unnumbered bugs:
 -----------------------------

@@ -1195,9 +1195,9 @@
 	     (eq (caar expt) 'mtimes) (not (mfree expt (ncons '$%i))))
 	(destructuring-let (((rpart . ipart) (trisplit expt)))
 	   (cons (pstimes (prep1 (m^ '$%e rpart))
-			  (psplus (adjoin-tvar `((%cos) ,ipart))
+			  (psplus (adjoin-tvar (ftake '%cos ipart))
 				  (pstimes (prep1 '$%i)
-					   (adjoin-tvar `((%sin) ,ipart)))))
+					   (adjoin-tvar (ftake '%sin ipart)))))
 			  pow))
 	(progn
 	  (when (eq (caar kernel) 'mexpt)
