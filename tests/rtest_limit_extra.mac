@@ -1509,6 +1509,152 @@ limit(spherical_bessel_j(3,x),x,inf);
 limit(spherical_bessel_j(3,x),x,minf);
 0$
 
+/* \#4772 limits of tan expressions toward infinity */
+limit(tan(x),x,minf);
+und$
+
+limit(tan(x),x,inf);
+und$
+
+limit(tan(x)/x,x,minf);
+und$
+
+limit(tan(x)/x,x,inf);
+und$
+
+/* \# 4777 limits of tan toward odd x integer / 2 */
+block([ans],
+     declare(n,odd),
+     ans : limit(tan(x),x,n*%pi/2,minus),
+     remove(n,odd),
+     ans);
+  inf$
+
+  block([ans],
+      declare(n,odd),
+      ans : limit(tan(x),x,n*%pi/2,plus),
+      remove(n,odd),
+      ans);
+  minf$
+
+/* additoinal limit of tangent expression tests */
+/* #4772 limits of tan expressions toward infinity */
+limit(tan(x),x,minf);
+und$
+
+limit(tan(x),x,inf);
+und$
+
+limit(tan(x)/x,x,minf);
+und$
+
+limit(tan(x)/x,x,inf);
+und$
+
+/* #4777 limits of tan toward odd x integer / 2 */
+block([ans],
+     declare(n,odd),
+     ans : limit(tan(x),x,n*%pi/2,minus),
+     remove(n,odd),
+     ans);
+inf$
+
+block([ans],
+     declare(n,odd),
+     ans : limit(tan(x),x,n*%pi/2,plus),
+     remove(n,odd),
+     ans);
+minf$
+
+/* Additional tests for limits of tan(X) */
+
+limit(tan(x), x, 0);
+0$
+
+limit(tan(x), x, 1);
+tan(1)$
+
+limit(tan(x), x, -2);
+-tan(2)$
+
+limit(tan(a), a, b);
+tan(b)$
+
+limit(tan(x+1), x, 2);
+tan(3)$
+
+limit(tan(x), x, 0, minus);
+0$
+
+limit(tan(x), x, 0, plus);
+0$
+
+limit(tan(1/x), x, 0, plus);
+und$
+
+limit(tan(1/x), x, 0, minus);
+und$
+
+limit(tan(exp(x)), x, inf);
+und$
+
+limit(tan(x), x, %pi/2);
+infinity$
+
+limit(tan(x), x, 3*%pi/2);
+infinity$
+
+limit(tan(x), x, %pi);
+0$
+
+limit(tan(x), x, 2*%pi);
+0$
+
+limit(tan(x), x, %pi/2, minus);
+inf$
+
+limit(tan(x), x, %pi/2, plus);
+minf$
+
+limit(tan(x), x, -%pi/2, minus);
+inf$
+
+limit(tan(x), x, -%pi/2, plus);
+minf$
+
+limit(tan(x + %pi/2), x, 0, minus);
+inf$
+
+limit(tan(x + %pi/2), x, 0, plus);
+minf$
+
+limit(tan(sin(1/x)), x, 0);
+ind$
+
+limit(tan(sin(1/x))/x, x, 0);
+und$
+
+limit(tan(%pi/2 + sin(1/x)), x, 0);
+und$
+
+limit(tan(%pi * sin(107*x)/2),x,inf);
+und$
+
+limit(tan(%pi * sin(107*x)/3),x,inf);
+ind$
+
+limit(tan(%pi/2 + 1/x), x, inf);
+minf$
+
+block([ans], declare(k,even), ans : limit(tan(x), x, k*%pi/2), remove(k,even), ans);
+0$
+
+block([ans], declare(k,odd), ans : limit(tan(x), x, k*%pi/2, minus), remove(k,odd), ans);
+inf$
+
+block([ans], declare(k,odd), ans : limit(tan(x), x, k*%pi/2, plus), remove(k,odd), ans);
+minf$
+
 /* clean up*/
 /*(kill(values),0);
 0$*/
