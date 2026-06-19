@@ -6383,5 +6383,9 @@ round(1000 * integrate('diff(1/(atan(1/x)+5), x), x, -1, 1));
 75;
 
 /* Bug #4783: "Definite integration: Maxima orders discontinuities incorrectly using GREAT instead of MGRP" */
-round(1000 * integrate('diff(sin(x-4)/(x-4) + sin(x-%pi)/(x-%pi) + sin(x-3)/(x-3), x), x, 0, 5));
-1954;
+round(100000000 * integrate('diff(sin(x-4)/(x-4) + sin(x-%pi)/(x-%pi) + sin(x-3)/(x-3), x), x, 0, 5));
+195427283;
+
+/* Bug #4526: "integrate(sin(x)/x,x,-1,1);" */
+round(100000000 * expand(float(integrate(sin(x)/x, x, -1, 1))));
+189216614;

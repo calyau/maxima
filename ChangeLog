@@ -32,6 +32,7 @@ Bug fixes for numbered bugs:
  * \#4457 simplus or great bug
  * \#4470 Floats/bigfloats are not contagious in multiplication by zero
  * \#4517 Maxima crashes on repeated run of rtest_rules (SBCL 2.5.2)
+ * \#4526 integrate(sin(x)/x,x,-1,1);
  * \#4543 solve returns unsimplified result for cubic
  * \#4558 Can't control matrix 2d print formatting
  * \#4585 Taylor polynomials involving tangent & a quotient

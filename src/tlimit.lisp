@@ -107,6 +107,19 @@
               (mapcar #'atan2-to-atan (subfunargs e)))) ; map onto the arguments
         (t (fapply (caar e) (mapcar #'atan2-to-atan (cdr e))))))
 
+(defun has-complex-singular-log-p (expr var pt)
+  "Returns T iff EXPR contains a %LOG subexpression that involves VAR and %I,
+   and whose argument becomes zero at PT."
+  (cond ((atom expr) nil)
+        ((eq (caar expr) '%log)
+          (let ((arg (cadr expr)))
+            (and (among var arg)
+                 (among '$%i arg)
+                 (or (zerop1 (no-err-sub-var pt arg var))
+                     (has-complex-singular-log-p arg var pt)))))
+        (t (some #'(lambda (arg) (has-complex-singular-log-p arg var pt))
+                 (cdr expr)))))
+
 ;; Dispatch Taylor, but recurse on the order until either the recursion
 ;; depth reaches 15 or the Taylor polynomial is nonzero. If Taylor 
 ;; fails to find a nonzero Taylor polynomial or the recursion depth 
@@ -132,6 +145,7 @@
 ;; Since `taylor` fails on some `atan2` expressions, we convert `atan2` expressions to
 ;; log form. An example where `taylor` fails is `taylor(atan2(exp(x)-cos(x), -x*sin(x)),x,0,4)`.
 ;; Of course, we should fix `taylor`, but until that happens, we'll use this workaround.
+
 (defun tlimit-taylor (e x pt n &optional (d 0))
   "Compute the Taylor series expansion of `e` at `pt` with respect to `x`. 
    If the expansion vanishes and the recursion depth `d` is less than 16, 
@@ -141,9 +155,15 @@
 	      (silent-taylor-flag t) 
 	      ($taylordepth 8)
 		    ($radexpand nil)
-        ($taylor_logexpand t)
+          ;; As stated above, in general, we want $TAYLOR_LOGEXPAND to be T,
+          ;; but when we're taking a limit of log(%i*x) at x = 0, e.g. during
+          ;; integrate(sin(x)/x, x, -1, 1), we must prevent log(%i*x) from
+          ;; becoming log(%i)+log(x), as that would cause incorrect results.
+          ;;
+          ;; TODO: Once TLIMIT-TAYLOR no longer needs $TAYLOR_LOGEXPAND = T,
+          ;;       this can probably be removed.
+          ($taylor_logexpand (not (has-complex-singular-log-p e x pt)))
 		    ($logexpand nil))
-    
     (cond
       ((eq pt '$infinity) nil) ; infinity is an illegitimate limit point
       (t
