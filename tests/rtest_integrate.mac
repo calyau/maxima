@@ -6389,3 +6389,7 @@ round(100000000 * integrate('diff(sin(x-4)/(x-4) + sin(x-%pi)/(x-%pi) + sin(x-3)
 /* Bug #4526: "integrate(sin(x)/x,x,-1,1);" */
 round(100000000 * expand(float(integrate(sin(x)/x, x, -1, 1))));
 189216614;
+
+/* Bug #4142: "integrate(1/(x^4-%i),x) gives sign error" */
+block([f, F], f : 1/(x^4-%i), F : integrate(f, x), freeof('integrate, F) and radcan(diff(F, x) - f) = 0);
+true;
