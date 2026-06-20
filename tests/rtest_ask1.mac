@@ -25,25 +25,25 @@
  * Nicked from mailing list circa 2013-08-28
  */
  
-integrate(sin(omega*t)*exp(-s*t),t,0,inf); p;
+integrate(sin(omega*t)*exp(-s*t),t,0,inf), ask_hide_prompt; p;
 omega/(s^2+omega^2);
 
-[asksign (foo), sign (foo), sign (foo)]; p;
+[asksign (foo), sign (foo), sign (foo)], ask_hide_prompt; p;
 [pos, pos, pos];
 
-[asksign (foo), sign (foo), sign (foo)]; n;
+[asksign (foo), sign (foo), sign (foo)], ask_hide_prompt; n;
 [neg, neg, neg];
 
-[asksign (foo), sign (foo), sign (foo)]; z;
+[asksign (foo), sign (foo), sign (foo)], ask_hide_prompt; z;
 [zero, zero, zero];
 
-limit((exp(a*x)-1)/(exp(a*x)+1),x,inf); p;
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf), ask_hide_prompt; p;
 1;
 
-limit((exp(a*x)-1)/(exp(a*x)+1),x,inf); n;
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf), ask_hide_prompt; n;
 -1;
 
-limit((exp(a*x)-1)/(exp(a*x)+1),x,inf); z;
+limit((exp(a*x)-1)/(exp(a*x)+1),x,inf), ask_hide_prompt; z;
 0;
 
 /* mailing list 2017-11-25: "bug in Laplace transform"
@@ -51,186 +51,186 @@ limit((exp(a*x)-1)/(exp(a*x)+1),x,inf); z;
  * so include some cases to handle that and then the Laplace transform.
  */
 
-asksign (a^2); z;
+asksign (a^2), ask_hide_prompt; z;
 zero;
 
-asksign (a^2); nz;
+asksign (a^2), ask_hide_prompt; nz;
 pos;
 
-asksign (a^3); p;
+asksign (a^3), ask_hide_prompt; p;
 pos;
 
-asksign (a^3); n;
+asksign (a^3), ask_hide_prompt; n;
 neg;
 
-asksign (a^3);z;
+asksign (a^3), ask_hide_prompt; z;
 zero;
 
-asksign (-a^2);z;
+asksign (-a^2), ask_hide_prompt; z;
 zero;
 
-asksign (-a^2);nz;
+asksign (-a^2), ask_hide_prompt; nz;
 neg;
 
-asksign (-a^3);p;
+asksign (-a^3), ask_hide_prompt; p;
 neg;
 
-asksign (-a^3);n;
+asksign (-a^3), ask_hide_prompt; n;
 pos;
 
-asksign (-a^3);z;
+asksign (-a^3), ask_hide_prompt; z;
 zero;
 
-asksign (a^4);z;
+asksign (a^4), ask_hide_prompt; z;
 zero;
 
-asksign (a^4);nz;
+asksign (a^4), ask_hide_prompt; nz;
 pos;
 
-asksign (a^5);p;
+asksign (a^5), ask_hide_prompt; p;
 pos;
 
-asksign (a^5);n;
+asksign (a^5), ask_hide_prompt; n;
 neg;
 
-asksign (a^5);z;
+asksign (a^5), ask_hide_prompt; z;
 zero;
 
-asksign (-a^4);z;
+asksign (-a^4), ask_hide_prompt; z;
 zero;
 
-asksign (-a^4);nz;
+asksign (-a^4), ask_hide_prompt; nz;
 neg;
 
-asksign (-a^5);p;
+asksign (-a^5), ask_hide_prompt; p;
 neg;
 
-asksign (-a^5);n;
+asksign (-a^5), ask_hide_prompt; n;
 pos;
 
-asksign (-a^5);z;
+asksign (-a^5), ask_hide_prompt; z;
 zero;
 
-asksign (a*b^2);p;
+asksign (a*b^2), ask_hide_prompt; p;
 pos;
 
-asksign (a*b^2);n;
+asksign (a*b^2), ask_hide_prompt; n;
 neg;
 
-asksign (a*b^2);z;
+asksign (a*b^2), ask_hide_prompt; z;
 zero;
 
-asksign (a*b^3);p;
+asksign (a*b^3), ask_hide_prompt; p;
 pos;
 
-asksign (a*b^3);n;
+asksign (a*b^3), ask_hide_prompt; n;
 neg;
 
-asksign (a*b^3);z;
+asksign (a*b^3), ask_hide_prompt; z;
 zero;
 
-asksign (-a*b^2);p;
+asksign (-a*b^2), ask_hide_prompt; p;
 neg;
 
-asksign (-a*b^2);n;
+asksign (-a*b^2), ask_hide_prompt; n;
 pos;
 
-asksign (-a*b^2);z;
+asksign (-a*b^2), ask_hide_prompt; z;
 zero;
 
-asksign (-a*b^3);p;
+asksign (-a*b^3), ask_hide_prompt; p;
 neg;
 
-asksign (-a*b^3);n;
+asksign (-a*b^3), ask_hide_prompt; n;
 pos;
 
-asksign (-a*b^3);z;
+asksign (-a*b^3), ask_hide_prompt; z;
 zero;
 
-asksign (a*b^4);p;
+asksign (a*b^4), ask_hide_prompt; p;
 pos;
 
-asksign (a*b^4);n;
+asksign (a*b^4), ask_hide_prompt; n;
 neg;
 
-asksign (a*b^4);z;
+asksign (a*b^4), ask_hide_prompt; z;
 zero;
 
-asksign (-a*b^4);p;
+asksign (-a*b^4), ask_hide_prompt; p;
 neg;
 
-asksign (-a*b^4);n;
+asksign (-a*b^4), ask_hide_prompt; n;
 pos;
 
-asksign (-a*b^4);z;
+asksign (-a*b^4), ask_hide_prompt; z;
 zero;
 
-asksign (a^2*b^2);z;
+asksign (a^2*b^2), ask_hide_prompt; z;
 zero;
 
-asksign (a^2*b^2);nz;
+asksign (a^2*b^2), ask_hide_prompt; nz;
 pos;
 
-asksign (a^2*b^3);p;
+asksign (a^2*b^3), ask_hide_prompt; p;
 pos;
 
-asksign (a^2*b^3);n;
+asksign (a^2*b^3), ask_hide_prompt; n;
 neg;
 
-asksign (a^2*b^3);z;
+asksign (a^2*b^3), ask_hide_prompt; z;
 zero;
 
-asksign (-a^2*b^2);z;
+asksign (-a^2*b^2), ask_hide_prompt; z;
 zero;
 
-asksign (-a^2*b^2);nz;
+asksign (-a^2*b^2), ask_hide_prompt; nz;
 neg;
 
-asksign (-a^2*b^3);p;
+asksign (-a^2*b^3), ask_hide_prompt; p;
 neg;
 
-asksign (-a^2*b^3);n;
+asksign (-a^2*b^3), ask_hide_prompt; n;
 pos;
 
-asksign (-a^2*b^3);z;
+asksign (-a^2*b^3), ask_hide_prompt; z;
 zero;
 
-asksign (a^2*b^4);z;
+asksign (a^2*b^4), ask_hide_prompt; z;
 zero;
 
-asksign (a^2*b^4);nz;
+asksign (a^2*b^4), ask_hide_prompt; nz;
 pos;
 
-asksign (a^2*b^5);p;
+asksign (a^2*b^5), ask_hide_prompt; p;
 pos;
 
-asksign (a^2*b^5);n;
+asksign (a^2*b^5), ask_hide_prompt; n;
 neg;
 
-asksign (a^2*b^5);z;
+asksign (a^2*b^5), ask_hide_prompt; z;
 zero;
 
-asksign (-a^2*b^4);z;
+asksign (-a^2*b^4), ask_hide_prompt; z;
 zero;
 
-asksign (-a^2*b^4);nz;
+asksign (-a^2*b^4), ask_hide_prompt; nz;
 neg;
 
-asksign (-a^2*b^5);p;
+asksign (-a^2*b^5), ask_hide_prompt; p;
 neg;
 
-asksign (-a^2*b^5);n;
+asksign (-a^2*b^5), ask_hide_prompt; n;
 pos;
 
-asksign (-a^2*b^5);z;
+asksign (-a^2*b^5), ask_hide_prompt; z;
 zero;
 
 /* here's the Laplace transform that exposed the bug */
 
-laplace (delta (t - x^2), t, s);z;
+laplace (delta (t - x^2), t, s), ask_hide_prompt; z;
 1;
 
-laplace (delta (t - x^2), t, s);nz;
+laplace (delta (t - x^2), t, s), ask_hide_prompt; nz;
 exp(-s*x^2);
 
 /* Test READ and READONLY

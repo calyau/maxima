@@ -1913,3 +1913,9 @@
 (defvar *rule-symbol-pool* nil
   "List of symbols used by deleted rules, ready to be re-used in order to
   prevent thread-local storage (TLS) exhaustion on SBCL.")
+
+(defmvar $ask_hide_prompt nil
+  "If T, $ASK... functions don't print any prompt messages, e.g.,
+  \"Is x positive, negative or zero?\"."
+  boolean
+  :properties ((evflag t)))

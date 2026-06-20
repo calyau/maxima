@@ -1173,6 +1173,20 @@ they are subcontexts of the current context.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ask_hide_prompt}
+@defvr {Option variable} ask_hide_prompt
+Default value: @code{false}
+
+When set to @code{true}, the functions @code{askequal}, @code{askinteger}, and
+@code{asksign} do not print a prompt when requesting input from the user. This
+is useful for reducing in non-interactive sessions or automated tests.
+
+@opencatbox{Categories:}
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{askequal}
 @deffn  {Function} askequal @
 @fname{askequal} (@var{expr1}, @var{expr2})

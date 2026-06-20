@@ -712,7 +712,8 @@
     (cond ((eq answer t) '$yes)
 	  ((eq answer nil) '$no)
 	  (t
-	   (setq answer (retrieve `((mtext) ,(intl:gettext "Is ") ,a ,(intl:gettext " equal to ") ,b ,(intl:gettext "?")) nil))
+	   (setq answer (retrieve `((mtext) ,(intl:gettext "Is ") ,a ,(intl:gettext " equal to ") ,b ,(intl:gettext "?"))
+                              (if $ask_hide_prompt 'noprint)))
 	   (cond ((member answer '($no |$n| |$N|) :test #'eq)
 		  (tdpn (sub b a))
 		  '$no)
@@ -956,7 +957,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                      ($nz  " negative or zero?")
                                      ($pn  " positive or negative?"))))
                            " positive, negative or zero?"))
-                 nil))))
+                 (if $ask_hide_prompt 'noprint)))))
 
 ;; During one evaluation phase asksign writes answers from the user into the
 ;; global context '$initial. These facts are removed by clearsign after

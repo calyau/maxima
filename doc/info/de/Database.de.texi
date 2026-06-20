@@ -1014,6 +1014,17 @@ der Liste @code{activecontexts} enthalten.  Siehe auch die Funktion
 @mref{contexts} f@"ur eine Liste aller vorhandenen Kontexte.
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ask_hide_prompt}
+@defvr {Optionsvariable} ask_hide_prompt
+Standardwert: @code{false}
+
+Wenn auf @code{true} gesetzt, geben die Funktionen @code{askequal},
+@code{askinteger} und @code{asksign} keine Eingabeaufforderung aus, wenn
+Eingaben vom Benutzer angefordert werden. Dies ist n@"utzlich, um die Ausgabe
+in nicht-interaktiven Sitzungen oder automatisierten Tests zu reduzieren.
+@end defvr
+
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{askinteger}
 @deffn  {Funktion} askinteger (@var{expr}, integer)
