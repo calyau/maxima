@@ -6393,3 +6393,11 @@ round(100000000 * expand(float(integrate(sin(x)/x, x, -1, 1))));
 /* Bug #4142: "integrate(1/(x^4-%i),x) gives sign error" */
 block([f, F], f : 1/(x^4-%i), F : integrate(f, x), freeof('integrate, F) and radcan(diff(F, x) - f) = 0);
 true;
+
+/* Bug #3961: "integrate(a^2*(1-cos(t))^2*sqrt(a^2*sin(t)^2+a^2*(1-cos(t))^2), t, 0, 2*%pi) wrong result" */
+integrate(a^2*(1-cos(t))^2*sqrt(a^2*sin(t)^2+a^2*(1-cos(t))^2), t, 0, 2*%pi);
+256*a^3/15;
+
+/* Bug #4282: "integrate((1-cos(x))^(3/2), x, 0, 2*%pi) wrong by factor of 2, correct in earlier version" */
+integrate((1-cos(x))^(3/2), x, 0, 2*%pi);
+2^(9/2)/3;

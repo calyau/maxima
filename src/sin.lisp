@@ -27,6 +27,10 @@
 ;; integrator to avoid endless loops when calling the integrator from risch.
 (defvar *in-risch-p* nil)
 
+(defvar *risch-use-triginv-all* nil
+  "Dynamically bound flag set to T by TRIGINT to tell INTEGRATOR to use
+  $TRIGINVERSES = '$ALL when ultimately trying RISCHINT")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Predicate functions
@@ -282,7 +286,7 @@
 
   (defun integrator (*exp* var2 &optional stack)
     (declare (special *exp*))
-    (prog (y const w arcpart coef integrand result)
+    (prog (y const w arcpart coef integrand result *risch-use-triginv-all*)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
@@ -434,7 +438,13 @@
 				  (setq y (powerlist *exp* var2)))
 			     y)
 			    ((and (not *in-risch-p*) ; Not called from rischint
-			          (setq y (rischint *exp* var2))
+			          (setq y
+                        ;; Call RISCHINT, dynamically binding $TRIGINVERSES to
+                        ;; '$ALL if we earlier remembered to do so.
+                        (let (($triginverses (if *risch-use-triginv-all*
+                                                '$all
+                                                $triginverses)))
+                          (rischint *exp* var2)))
 				  ;; rischint has not found an integral but
 				  ;; returns a noun form. Do not return that
 				  ;; noun form as result at this point, but
@@ -1672,6 +1682,11 @@
        (format t "~&   : repl = ~A~%" repl))
      ;; See Bug 2880797.  We want atan(tan(x)) to simplify to x, so
      ;; set $triginverses to '$all.
+     ;; In case INTEGRATOR fails below, the calling INTEGRATOR will eventually
+     ;; try RISCHINT. Remember to use $TRIGINVERSES = '$ALL when doing so, as
+     ;; this allows Maxima to correctly compute many definite integrals involving
+     ;; trigonometric functions, e.g., integrate((1-cos(x))^(3/2), x, 0, 2*%pi).
+     (setq *risch-use-triginv-all* t)
      (return
        ;; Do not integrate for the global variable VAR, but substitute it.
        ;; This way possible assumptions on VAR are no longer present. The
