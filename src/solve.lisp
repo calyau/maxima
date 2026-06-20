@@ -840,16 +840,30 @@
 			 (member op '(%sin %cos %tan %sec %csc %cot %cosh %sech) :test #'eq))
 		(mtell (intl:gettext "~&solve: using arc-trig functions to get a solution.~%Some solutions will be lost.~%"))
 		(setq $solvetrigwarn nil))
+          ;; Sanity check: return NIL (no solutions) if either
+          ;; - simplifying INVERSE(EXP) causes an error
+          ;;   (e.g., tan(%pi/2) when solving atan(x) = %pi/2)
+          ;; - simplifying OP(INVERSE(EXP)) causes an error
+          ;; - MEQP says that OP(INVERSE(EXP)) is definitely not equal to EXP
+          ;;   (e.g., tan(2) as a solution to atan(x) = 2)
+          (let* ((inverse-exp-l (errcatch (ftake* inverse exp)))
+                 (check-l (and inverse-exp-l (errcatch (ftake op (car inverse-exp-l))))))
+            (if (or (null inverse-exp-l)
+                    (null check-l)
+                    (not (meqp (car check-l) exp)))
+              (return nil)
 	      `((mplus) ((mminus) ,(cadr *myvar))
-		((,inverse) ,exp)))
+		,(car inverse-exp-l)))))
 	     ((eq op '%log)
 	      `((mplus) ((mminus) ,(cadr *myvar))
 		((mexpt) $%e ,exp)))
 	     (t (go fail))))
 
+     ;; Return NIL (no solutions) if simplification causes an error.
+     ;; Otherwise, keep solving.
      (setq inverse (errcatch (simplify inverse)))
-     (when inverse
-       (return (solve (car inverse) *var mult)))
+     (return (if inverse
+               (solve (car inverse) *var mult)))
 
      fail (return (setq *failures
 			(cons (simplify `((mequal) ,*myvar ,exp))

@@ -3547,6 +3547,18 @@ is(radcan(taylor(atanh(a + x), x, 1, 0)) = atanh(a + 1));
 true;
 
 
+/* Bug #4781: "solve(atan(x)=2) gives a non-solution" */
+
+solve(atan(x) = 1);
+[x = tan(1)];
+solve(atan(x) = 2);
+[];
+solve(atan(x) = %pi/2);
+[];
+solve(atan(x) = a, x);
+[x = tan(a)];
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

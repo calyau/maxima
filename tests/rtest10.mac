@@ -239,11 +239,9 @@ integrate((1+sin(x)^2)/(1+tan(x)),x,0,%pi/6), intanalysis = false;
 integrate((1+sin(x)^2)/(1+tan(x)),x,0,%pi/6);
 (3*log(1/sqrt(3)+1))/4-(3*log(4/3))/8+%pi/12-sqrt(3)/16+1/16;
 
-/* these next two 'solve' results are obviously suboptimal -- these tests only verify the error isn't triggered */
-
 solve(tan(x)^2 + 1, x);
-[tan(x) = -%i,tan(x) = %i];
+[];
 
 solve(tan(x) + %i, x);
-[tan(x) = -%i];
+[];
 
