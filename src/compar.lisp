@@ -2789,6 +2789,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         ))))
 
 (eval-when (:load-toplevel :execute)
+ (let ((context '$global))
   (mapc #'true*
 	'(;; Even and odd numbers partition the integers.
 	  (par ($even $odd) $integer)
@@ -2836,7 +2837,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  (kind %atanh $increasing) (kind %atanh $oddfun)
 	  (kind $li $complex)
 	  (kind $lambert_w $complex)
-	  (kind %cabs $complex)))
+	  (kind %cabs $complex))))
 
   ;; Create an initial context for the user which is a subcontext of $global.
   ($newcontext '$initial))
