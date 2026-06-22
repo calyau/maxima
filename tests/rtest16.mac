@@ -3559,6 +3559,12 @@ solve(atan(x) = a, x);
 [x = tan(a)];
 
 
+/* Bug #4795: "realpart(li[2](2*%e^(%i*0.1)))" crashes Maxima */
+
+round(1000000 * realpart(li[2](2*%e^(%i*0.1))));
+2163217;
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

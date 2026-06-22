@@ -49,10 +49,11 @@
           ((eq (setq sgn ($csign z)) '$imaginary)
            0)
           ((eq sgn '$complex)
-           (cond ((complex-number-p ($expand z) 'bigfloat-or-number-p)
-                  ($realpart z))
+           (let ((z-expanded ($expand z)))
+           (cond ((complex-number-p z-expanded 'bigfloat-or-number-p)
+                  ($realpart z-expanded))
                  (t
-                  (give-up))))
+                  (give-up)))))
           (t
            (give-up)))))
 
@@ -71,10 +72,11 @@
           ((eq (setq sgn ($csign z)) '$imaginary)
            (mul -1 '$%i z))
           ((eq sgn '$complex)
-           (cond ((complex-number-p ($expand z) 'bigfloat-or-number-p)
-                  ($imagpart z))
+           (let ((z-expanded ($expand z)))
+           (cond ((complex-number-p z-expanded 'bigfloat-or-number-p)
+                  ($imagpart z-expanded))
                  (t
-                  (give-up))))
+                  (give-up)))))
           (t
            (give-up)))))
 
