@@ -109,9 +109,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 (defun maybe-realpart (x)
   (if *plot-realpart*
       ($realpart x)
-      (if (zerop1 ($imagpart x))
-          ($realpart x)
-          nil)))
+      (destructuring-bind (re . im) (trisplit x)
+        (if (zerop1 im) re))))
 
 (defvar *missing-data-indicator* "NaN")
 
