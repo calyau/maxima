@@ -6401,3 +6401,7 @@ integrate(a^2*(1-cos(t))^2*sqrt(a^2*sin(t)^2+a^2*(1-cos(t))^2), t, 0, 2*%pi);
 /* Bug #4282: "integrate((1-cos(x))^(3/2), x, 0, 2*%pi) wrong by factor of 2, correct in earlier version" */
 integrate((1-cos(x))^(3/2), x, 0, 2*%pi);
 2^(9/2)/3;
+
+/* Bug #4290: "integrate(log(cos(x)),x,0,%pi2) has non-zero imaginary component" */
+expand(integrate(log(cos(x)), x, 0, %pi/2));
+-%pi*log(4)/4;
