@@ -1736,6 +1736,13 @@ und$
 
 /* end of tests for limit(a^b,x,pt), mostly when limit(a,x,pt) = ind */
 
+/* \#4794 limit(1/(acos(x)-%pi/2),x,0) causes division by zero error */
+limit(1/(acos(x)-%pi/2),x,0, 'minus);
+inf$
+
+limit(1/(acos(x)-%pi/2),x,0, 'plus);
+minf$
+
 /* clean up*/
 /*(kill(values),0);
 0$*/

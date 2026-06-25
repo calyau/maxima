@@ -3781,10 +3781,15 @@ ignoring dummy variables and array indices."
 
 (defun simplim%acos (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
-    (cond ((in-domain-of-asin lim)      ;direct substitution
-	   (ftake '%acos lim))
+    (cond 
+	   ((member lim '($zerob $zeroa)) ;acsos(zerob or zeroa) = %pi/2
+	     (ftake '%acos (ridofab lim)))
 	  ((member lim '($und $ind $inf $minf $infinity)) ;boundary cases
-	   '$und)	
+	   '$und)
+	  ((not (successful-limit-result-p lim))
+	    (throw 'limit nil))
+	  ((in-domain-of-asin lim) ;direct substitution-both asin & acos have the same branches
+	   (ftake '%acos lim))
 	  (t 
 	   (setq e (trisplit (cadr e))) ;overwrite e!
 	   (setq dir (behavior (cdr e) x pt))
