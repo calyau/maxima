@@ -2049,8 +2049,120 @@ ignoring dummy variables and array indices."
        ($radcan ($limit (ftake 'mexpt '$%e ans)))
 	   nil)))
 
+;; Return
+;;  (a) pos-real-inside if 0 < x < 1
+;;  (b) inside if |e| < 1
+;;  (c) one if e = 1
+;;  (d) zero if e = 0
+;;  (e) on if |e| = 1
+;;  (f) pos-real-outside if real(e) > 1 & imag(e)=0
+;;  (g) outside if |e| > 1
+;;  (h) nil if all other tests fail
+(defun inside-outside-unit-circle (e)
+	(setq e (risplit e))
+	(let* ((re (car e)) (im (cdr e)) (x (add (mul re re) (mul im im))))
+		(cond 
+		      ((and (eq t (meqp 0 re)) (eq t (meqp 0 im))) 'zero)
+			  ((and (eq t (meqp im 0)) (eq t (meqp re 1))) 'one)
+			  ((and (eql im 0) (eq t (mgrp re 0)) (eq t (mgrp 1 re)))
+		       'pos-real-inside)
+		      ((eq t (mgrp 1 x)) 'inside)
+			  ((eq t (meqp 1 x)) 'on)
+			  ((and (eq t (meqp im 0)) (eq t (mgrp re 1))) 'pos-real-outside)
+			  ((eq t (mgrp x 1)) 'outside)
+			  (t nil))))
+
+
+;; A subset U of the complex numbers is *bounded away from zero* if |U| has a positive lower bound.
+;; For example, the set (1,inf) is bounded away from zero because 1/2 is a lower bound
+;; for |(1,inf)|, and the set (-inf,-1) union (1,inf) is bounded away from zero becuse 1/2
+;; is a lower bound for |(-inf,-1) union (1,inf)| = (1,inf). But the set (0,1) is  not bounded 
+;; away from zero because every lower bound for |(0,1)| must be in the open interval (-inf, 0),
+;; so|(0,1)| does not have a positive lower bound.
+
+;; Maxima should have a function that determines lower and and upper bounds for a set, and ideally the
+;; bounds should be as close as possible to the infimum and supremum. But it doesn't. For now we'll
+;; determine if a set U is bounded away from zero by showing that |U| > tiny-positive, where the user
+;; can choose tiny-positive.
+(defun bounded-away-from-zero (e &optional tiny-positive)
+  "Return t if Maxima can show that |e|^2 > tiny-positive, otherwise, return false.
+   Default tiny-positive to 1/*large-positive-number*."
+  (let* ((tiny-positive (or tiny-positive (div 1 *large-positive-number*)))
+         (z (risplit e))
+         (re (car z))
+         (im (cdr z))
+         (r2 (add (mul re re) (mul im im)))) ; r2 = |e|^2
+    ;; We want r2 > tiny-positive
+    (eq t (mgrp r2 tiny-positive))))
+
+(defun limit-ind-to-power (bas expo el)
+(declare (ignore expo)) ;for now don't need expo, but include if its ever needed.
+  (cond
+    ;; Case 1: ind^ind: when bas is bounded away from zero, return ind, else und. 
+	((eq el '$ind)
+         (if (bounded-away-from-zero bas); base is bounded away from zero.
+          '$ind
+          '$und))
+
+    ;; Case 2: Limit of exponent is 0.
+    ((zerop2 el)
+        (if (eq t (mnqp bas 0)) ; (nonvanishing ind)^0 = 1
+           1
+           '$und)) ; (possibly vanishing ind)^0 = und
+
+    ;; Case 3: Exponent is either inf, minf, or infinity
+    ((member el '($minf $inf $infinity))
+       (let ((mag (inside-outside-unit-circle bas))
+	         (b-nz (eq t (mnqp bas 0)))) ; is the base nonzero?
+
+	      (cond ((and (eq el '$inf) (eq mag 'pos-real-inside)) ; (0 < x < 1)^inf = $zeroa
+		        '$zeroa)
+
+               ((and (eq el '$minf) (eq mag 'pos-real-inside)) ; (0 < x < 1)^minf = $inf
+		        '$inf)
+
+			   ((and b-nz (eq el '$inf) (eq mag 'inside)) ; (0 < |x| < 1)^inf = 0
+			    0)
+
+               ((and b-nz (eq el '$minf) (eq mag 'inside)) ; (0 < |x| < 1)^minf = infinity
+			      '$infinity)
+
+			   ((eq mag 'one) ; (+/- 1)^inf or (+/- 1)^minf -- throw to limit
+			    (throw 'limit nil))
+
+               ((eq mag 'on);(on unit circle, but not (+/-1)^{minf, inf,infinity} = ind 
+			      '$ind)
+
+               ((eq mag 'pos-real-outside) ; (x > 1)^inf = inf & (x > 1)^minf = zeroa
+			    (if (eq el '$inf)
+				     '$inf
+					 '$zeroa))
+
+                ((eq mag 'outside) 
+				  (cond ((eq el '$minf) 0) ; (|x|>1)^minf = 0
+				        ((eq el '$inf) '$infinity) ; (|x|>1)^inf = infinity
+						(t (throw 'limit nil)))) ; (|x| > 1)^infinity = throw to limit
+
+				(t (throw 'limit nil)))))
+
+	;; Case 4: (nonvanising ind)^finite = ind
+	((eq t (mnqp bas 0))  '$ind)
+	
+	;; Case 5: Exponent is finite and positive (el > 0)
+	((eq t (mgrp el 0)) '$ind)
+
+    ;; Case 6: Exponent is finite and negative (el < 0)
+    ((eq t (mgrp 0 el))
+     (if (bounded-away-from-zero bas) '$ind '$und))  ; Safe only if base is bounded away from zero
+
+    ;; Default fallback
+    (t '$und)))
+
 (defun simplimexpt (bas expo bl el)
   (cond ((or (eq bl '$und) (eq el '$und)) '$und)
+        ;; Handle ind^XXX, from now on it is safe to assume that bl =/= $ind
+        ((eq bl '$ind)
+			(limit-ind-to-power bas expo el))
         ((zerop2 bl)
          (cond ((eq el '$inf) (if (eq bl '$zeroa) bl 0))
                ((eq el '$minf) (if (eq bl '$zeroa) '$inf '$infinity))
@@ -2124,9 +2236,6 @@ ignoring dummy variables and array indices."
          (if (infinityp el) (bylog expo bas) 1))
         ((and (equal (ridofab bl) -1)
             (infinityp el))  '$ind)	;LB
-        ((eq bl '$ind)  (cond ((or (zerop2 el) (infinityp el)) '$und)
-                              ((not (equal (getsignl el) -1)) '$ind)
-                              (t '$und)))
         ((eq el '$inf)  (cond ((abeq1 bl)
                                (if (equal (getsignl bl) 1) 1 '$ind))
                               ((abless1 bl)

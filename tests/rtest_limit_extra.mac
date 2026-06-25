@@ -1655,6 +1655,87 @@ inf$
 block([ans], declare(k,odd), ans : limit(tan(x), x, k*%pi/2, plus), remove(k,odd), ans);
 minf$
 
+/* tests for limit(a^b,x,pt), mostly when limit(a,x,pt) = ind */
+limit((9 + sin(x))^-2, x, inf);
+ind$
+
+limit((-5 + cos(x))^-1, x, inf);
+ind$
+
+limit(sin(x)^-1, x, inf);
+und$
+
+limit((9 + sin(x))^z, x, inf);
+ind$
+
+limit((1/2)^x, x, inf);
+0$
+
+limit((1/2)^x, x, minf);
+inf$
+
+limit((%i/2)^x, x, inf);
+0$
+
+limit((%i)^x, x, inf);
+ind$
+
+limit(2^x, x, inf);
+inf$
+
+limit(2^x, x, minf);
+0$
+
+limit((2*%i)^x, x, minf);
+0$
+
+limit((2*%i)^x, x, inf);
+infinity$
+
+limit((1 + 1/x)^x, x, inf);
+%e$
+
+limit(x^x, x, 0);
+1$
+
+limit(x^(1/x), x, inf);
+1$
+
+limit((sin(1/x) + 2)^sin(1/x), x, 0);
+ind$
+
+limit((2*sin(1/x))^sin(1/x), x, 0);
+und$
+
+limit((sin(1/x) + 2)^(1/(1/x^2 + 1)), x, 0);
+1$
+
+limit((sin(1/x))^(1/(1/x^2 + 1)), x, 0);
+und$
+
+limit((sin(1/x)/2)^(1/x^2), x, 0);
+0$
+
+limit((sin(1/x) + 3)^(1/x^2), x, 0);
+inf$
+
+limit((sin(1/x) + 3)^(-1/x^2), x, 0);
+0$
+
+limit((3 * %i * sin(1/x))^(-2/x^2), x, 0);
+0$
+
+limit((sin(1/x) + 2)^3, x, 0);
+ind$
+
+limit((sin(1/x) + 2)^-3, x, 0);
+ind$
+
+limit(sin(1/x)^-2, x, 0);
+und$
+
+/* end of tests for limit(a^b,x,pt), mostly when limit(a,x,pt) = ind */
+
 /* clean up*/
 /*(kill(values),0);
 0$*/

@@ -124,9 +124,11 @@ limit([x2,-x3,2]^x,x,minf);
 limit([x3,-x2,-2]^x,x,minf);
 [0,0,0];
 
-/* limit(x^minf) -> 1 for x=1, and ind for x= -1, %i and -%i */
+/* limit(x^minf) -> 1 for x=1, and ind for x= -1, %i and -%i 
+   See \#4798 limit((-1)^x,x,minf) */
+
 limit([1,-1,%i,-%i]^x,x,minf);
-[1,und,und,und];
+[1,ind,ind,ind];
 
 /* ---------- General characteristics --------------------------------------- */
 

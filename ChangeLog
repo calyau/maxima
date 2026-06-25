@@ -116,7 +116,7 @@ Bug fixes for numbered bugs:
  * \#4788 taylor(a^x, x, inf, 0) vs. taylor(f(a)^x, x, inf, 0) for f = atan, asin, asinh
  * \#4791 taylor(atan(%pi)^x, x, inf, 0) contains unsimplified sin(0) and cos(0)
  * \#4795 realpart(li[2](2*%e^(%i*0.1))) crashes Maxima
-
+ * \#4798 limit((-1)^x,x,minf)
 Bug fixes for unnumbered bugs:
 -----------------------------
 * rtest_gruntz test #38
