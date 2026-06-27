@@ -135,6 +135,8 @@
 
 (defmfun $integrate (expr x &optional lo hi)
   (declare (special *in-risch-p* context))
+  (if (and lo (null hi))
+    (wna-err '$integrate))
   (let ($ratfac)
     (if (not hi)
 	(with-new-context (context)
