@@ -941,14 +941,24 @@
  "Return the product of the absolute values of the nonvanishing factors that are common to p and q. This code
   doesn't factor p or q, so it only considers factors that are explict. When there are no
   such factors, return one, that is, the empty product."
-  (let* ((pp (fapply '$set (if (mtimesp p) (cdr p) (list p))))
-         (qq (fapply '$set (if (mtimesp q) (cdr q) (list q))))
+ (flet ((factors (e)
+          (if (mtimesp e)
+            (if (mnegp (cadr e))
+              ;; Split a negative numerical factor into two factors,
+              ;; e.g., -5 is split into factors -1 and 5.
+              (cons -1 (cons (neg (cadr e)) (cddr e)))
+              (cdr e))
+            (list e))))
+  (let* ((p-factors (factors p))
+         (q-factors (factors q))
+         (pp (fapply '$set p-factors))
+         (qq (fapply '$set q-factors))
          (ss (cdr ($intersection pp qq)))
          (ll nil))
       (dolist (sx ss)
         (when (eq t (mnqp sx 0))
           (push (ftake 'mabs sx) ll)))
-      (fapply 'mtimes ll)))
+      (fapply 'mtimes ll))))
 
 ;; Outside the one call to this function in the atan2 simplifier, this code likely isn't particulary useful.
 (defun polar-angle-if-sinusoids (x y)

@@ -682,3 +682,23 @@ block([errormsg: false], errcatch(sec(%pi/2)), error);
 
 block([errormsg: false], errcatch(cot(%pi)), error);
 ["~A: argument ~:M isn't in the domain of ~A.",cot,%pi,cot];
+
+/* Make sure that the atan2 simplifier handles
+   atan2(+-n*sin(x), +-n*cos(x)) and
+   atan2(+-n*cos(x), +-n*sin(x)). */
+is(atan2(2*sin(x), 2*cos(x)) = atan2(sin(x), cos(x)));
+true;
+is(atan2(2*sin(x), -2*cos(x)) = atan2(sin(x), -cos(x)));
+true;
+is(atan2(-2*sin(x), 2*cos(x)) = atan2(-sin(x), cos(x)));
+true;
+is(atan2(-2*sin(x), -2*cos(x)) = atan2(-sin(x), -cos(x)));
+true;
+is(atan2(2*cos(x), 2*sin(x)) = atan2(cos(x), sin(x)));
+true;
+is(atan2(2*cos(x), -2*sin(x)) = atan2(cos(x), -sin(x)));
+true;
+is(atan2(-2*cos(x), 2*sin(x)) = atan2(-cos(x), sin(x)));
+true;
+is(atan2(-2*cos(x), -2*sin(x)) = atan2(-cos(x), -sin(x)));
+true;
