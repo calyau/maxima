@@ -865,14 +865,9 @@ in the interval of integration.")
   (values
    (cond ((or (not (equal ($imagpart ll) 0))
 	      (not (equal ($imagpart ul) 0)))  ())
-	 (t (cond ((alike1 ll (m*t -1 '$inf))
-		   (setq ll '$minf)))
-	    (cond ((alike1 ul (m*t -1 '$inf))
-		   (setq ul '$minf)))
-	    (cond ((alike1 ll (m*t -1 '$minf))
-		   (setq ll '$inf)))
-	    (cond ((alike1 ul (m*t -1 '$minf))
-		   (setq ul '$inf)))
+	 (t
+        (setq ll (canonicalize+-inf ll)
+              ul (canonicalize+-inf ul))
 	    (cond ((eq ll ul)
                    ;; We have minf <= ll = ul <= inf
 		   )
