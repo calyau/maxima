@@ -1033,8 +1033,10 @@ the hashtable.")
         (setq y (div y w))
         (setq x (div x w))))
 
-  (let ((signy) (signx))
-
+  (let ((signy) (signx)
+        x-numfactor x-rest x-op
+        y-numfactor y-rest y-op
+        arg)
     (cond ((and (zerop1 y) (zerop1 x))
            (merror (intl:gettext "atan2: atan2(0,0) is undefined.")))
           (;; float contagion
@@ -1106,6 +1108,32 @@ the hashtable.")
                        ;; -%pi/4 depending on the sign of x.
                        (cond ((eq signx '$neg) (mul 3 (div '$%pi 4)))
                              ((member signx '($pos $pz)) (div '$%pi -4)))))))
+
+          ;; If $TRIGINVERSES is '$ALL, convert
+          ;; atan2(sin(x), cos(x)) to x,
+          ;; atan2(sin(x), -cos(x)) to %pi - x,
+          ;; atan2(-sin(x), cos(x)) to -x,
+          ;; atan2(-sin(x), -cos(x)) to x - %pi,
+          ;; atan2(cos(x), sin(x)) to %pi/2 - x,
+          ;; atan2(cos(x), -sin(x)) to %pi/2 + x,
+          ;; atan2(-cos(x), sin(x)) to x - %pi/2,
+          ;; atan2(-cos(x), -sin(x)) to -x - %pi/2.
+          ;; At this point, X and Y have already been freed of common factors.
+          ((and (eq $triginverses '$all)
+                (consp (setq x-rest (div x (setq x-numfactor ($numfactor x)))))
+                (member x-numfactor '(1 -1) :test #'equal)
+                (member (setq x-op (caar x-rest)) '(%sin %cos))
+                (consp (setq y-rest (div y (setq y-numfactor ($numfactor y)))))
+                (member y-numfactor '(1 -1) :test #'equal)
+                (member (setq y-op (caar y-rest)) '(%sin %cos))
+                (not (eq x-op y-op))
+                (alike1 (ftake 'mabs x-numfactor) (ftake 'mabs y-numfactor))
+                (alike1 (setq arg (cadr x-rest)) (cadr y-rest)))
+            (if (eq x-op '%sin)
+              ;; atan2(+-cos(arg), +-sin(arg))
+              (mul y-numfactor (sub (div '$%pi 2) (mul x-numfactor arg)))
+              ;; atan2(+-sin(arg), +-cos(arg))
+              (mul y-numfactor (if (= 1 x-numfactor) arg (sub '$%pi arg)))))
 
           ;; atan2((+/-)sin(angle),(+/-)cos(angle)) = angle reduced to (-pi,pi] mod 2 pi. 
           ;; and similarly for atan2((+/-)cos(angle),(+/-)sin(angle))

@@ -702,3 +702,21 @@ is(atan2(-2*cos(x), 2*sin(x)) = atan2(-cos(x), sin(x)));
 true;
 is(atan2(-2*cos(x), -2*sin(x)) = atan2(-cos(x), -sin(x)));
 true;
+
+/* Test atan2 simplifier with triginverses : all */
+atan2(2*sin(x), 2*cos(x)), triginverses : all;
+x;
+atan2(2*sin(x), -2*cos(x)), triginverses : all;
+%pi - x;
+atan2(-2*sin(x), 2*cos(x)), triginverses : all;
+-x;
+atan2(-2*sin(x), -2*cos(x)), triginverses : all;
+x - %pi;
+atan2(2*cos(x), 2*sin(x)), triginverses : all;
+%pi/2 - x;
+atan2(2*cos(x), -2*sin(x)), triginverses : all;
+%pi/2 + x;
+atan2(-2*cos(x), 2*sin(x)), triginverses : all;
+x - %pi/2;
+atan2(-2*cos(x), -2*sin(x)), triginverses : all;
+-x - %pi/2;
