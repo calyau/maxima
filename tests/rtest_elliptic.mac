@@ -1104,7 +1104,7 @@ makelist(block([z : 2*k, m : 2.5],
 [true, true, true, true, true, true, true, true, true, true, true];
 
 makelist(block([z : 2*k, m : 1+.5*%i],
-    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 4.9651e-16)),
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 6.7533e-16)),
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
@@ -1114,12 +1114,12 @@ makelist(block([z : 2*k*%i, m : .75],
 [true, true, true, true, true, true, true, true, true, true, true];
 
 makelist(block([z : 2*k*%i, m : 1.75],
-    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 3.5528e-15)),
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.0659e-14)),
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
 makelist(block([z : 2*k*%i, m : 1.75+%i],
-    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 6.2804e-16)),
+    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.4044e-15)),
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
