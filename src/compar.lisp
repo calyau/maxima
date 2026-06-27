@@ -2820,15 +2820,23 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  
       ;; Declarations for functions
 	  (kind %log $increasing)
+      (kind mabs $evenfun)
+      (kind %signum $oddfun)
+      (kind %sin $oddfun)
+      (kind %cos $evenfun)
+      (kind %tan $oddfun)
+      (kind %csc $oddfun)
+      (kind %sec $evenfun)
+      (kind %cot $oddfun)
 	  (kind %asin $increasing) (kind %asin $oddfun)
 	  (kind %atan $increasing) (kind %atan $oddfun)
 	  (kind $delta $evenfun)
 	  (kind %sinh $increasing) (kind %sinh $oddfun)
-	  (kind %cosh $posfun)
+	  (kind %cosh $posfun)     (kind %cosh $evenfun)
 	  (kind %tanh $increasing) (kind %tanh $oddfun)
 	  (kind %coth $oddfun)
 	  (kind %csch $oddfun)
-	  (kind %sech $posfun)
+	  (kind %sech $evenfun) (kind %sech $posfun)
 	  (kind %asinh $increasing) (kind %asinh $oddfun)
 	  ;; It would be nice to say %acosh is $posfun, but then
 	  ;; assume(xn<0); abs(acosh(xn)) -> acosh(xn), which is wrong
