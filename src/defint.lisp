@@ -958,29 +958,67 @@ in the interval of integration.")
   (let (result)
     (labels ((add-unique (item)
                (pushnew item result :test #'alike1))
+             (varyingp (e)
+               (not (free e ivar)))
              (walk (e)
-               (unless (atom e)
+               (unless (or (atom e) (not (varyingp e)))
+                (let ((op (caar e))
+                      (args (cdr e))
+                      denom-op)
                  (cond
-                   ;; x^(-y) potentially has a discontinuity where x = 0,
-                   ;; unless we can prove that -y is strictly positive.
-                   ((and (eq (caar e) 'mexpt)
-                         (among ivar (cadr e))
-                         (not (eq ($sign (caddr e)) '$pos)))
-                     (add-unique (cadr e)))
+                   ;; x^y potentially has a discontinuity where x = 0,
+                   ;; unless we can prove that y is strictly positive.
+                   ((eq op 'mexpt)
+                     (let ((base (first args))
+                           (exponent (second args)))
+                       (when (and (varyingp base)
+                                  (not (eq ($sign exponent) '$pos)))
+                         (add-unique base))))
+                   ;; log(x) has a discontinuity in the imaginary part at x = 0.
+                   ((eq op '%log)
+                     (add-unique (first args)))
+                   ;; tan(x) = sin(x)/cos(x), csc(x) = 1/sin(x), sec(x) = 1/cos(x),
+                   ;; cot(x) = cos(x)/sin(x), so these have discontinuities where
+                   ;; the denominator becomes zero. The same applies to the
+                   ;; hyperbolic functions, but we can ignore tanh(x) and sech(x),
+                   ;; because cosh(x) cannot be zero.
+                   ((setq denom-op (cdr (assoc op '((%tan . %cos)
+                                                    (%csc . %sin)
+                                                    (%sec . %cos)
+                                                    (%cot . %sin)
+                                                    (%csch . %sinh)
+                                                    (%coth . %sinh)))))
+                     (add-unique (ftake denom-op (first args))))
+                   ;; atan2(y, x) has a discontinuity at y = 0 when x <= 0.
+                   ((eq op '%atan2)
+                     (let ((y (first args))
+                           (x (second args)))
+                       (unless (eq ($csign x) '$pos)
+                         (cond
+                           ((and (zerop1 y) (varyingp x))
+                             (add-unique x))
+                           ((varyingp y)
+                             (add-unique y))))))
                    ;; gamma_incomplete(a, z), unless a is a positive integer, has a
-                   ;; discontinuity at z = 0 and potentially when crossing the real
-                   ((and (eq (caar e) '%gamma_incomplete)
-                         (among ivar (caddr e))
-                         (not (and (maxima-integerp (cadr e))
-                                   (eq ($sign (cadr e)) '$pos))))
-                     (add-unique (caddr e))
-                     (destructuring-bind (re . im) (risplit (caddr e))
-                       (when (among ivar re) (add-unique re))
-                       (when (among ivar im) (add-unique im)))))
-                   ;; TODO: Handle discontinuities of %LOG, %TAN, %ACOT, ...
+                   ;; discontinuity at z = 0 and when crossing the negative real axis.
+                   ((eq op '%gamma_incomplete)
+                     (let ((a (first args))
+                           (z (second args)))
+                       (when (and (varyingp z)
+                                  (not (and (maxima-integerp a)
+                                            (eq ($sign a) '$pos))))
+                         (add-unique z)
+                         (destructuring-bind (re-z . im-z) (risplit z)
+                           (when (and (varyingp im-z)
+                                      (not (member ($sign re-z) '($pos $pz))))
+                             (add-unique im-z)))))))
+                   ;; TODO: Handle discontinuities of:
+                   ;;       - inverse trigonometric functions
+                   ;;       - inverse hyperbolic functions
+                   ;;       - more special functions
                  ;; Recursively process the arguments.
-                 (dolist (arg (cdr e))
-                   (walk arg)))))
+                 (dolist (arg args)
+                   (walk arg))))))
       (walk expr)
       result)))
 
