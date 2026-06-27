@@ -3387,3 +3387,9 @@
 	  (let ((term (if (equal pow 1) var (power var pow))))
 	    (if (memalike term (cdr e)) ($delete term e 1) 0)))
 	 (t 0))))
+
+(defun canonicalize+-inf (expr)
+  "Turns -inf into minf and -minf into inf, leaves everything else alone."
+  (cond ((alike1 expr '((mtimes) -1 $inf)) '$minf)
+        ((alike1 expr '((mtimes) -1 $minf)) '$inf)
+        (t expr)))

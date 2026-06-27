@@ -1012,16 +1012,9 @@ the hashtable.")
 ;; `block([radexpand: false], limit(atan2(x^2 - 2, x^3 - 3*x), x, sqrt(2), minus))`.
 ;; Arguably, this fix is inelegant and should be revisited. (Barton Willis, April 2025)
 (def-simplifier atan2 (y x)
-  ;; for both x & y, convert -inf to minf.
-  (when (alike1 y (mul -1 '$inf))
-    (setq y '$minf))
-  (when (alike1 x (mul -1 '$inf))
-    (setq x '$minf))  
-  ;; for both x & y, convert -minf to inf.
-  (when (alike1 y (mul -1 '$minf))
-    (setq y '$inf))
-  (when (alike1 x (mul -1 '$minf))
-    (setq x '$inf)) 
+  ;; for both x & y, convert -inf to minf and -minf to inf.
+  (setq y (canonicalize+-inf y)
+        x (canonicalize+-inf x))
 
   ;; Divide both x & y by the absolute value of common factors that are
   ;; nonvanishing. Skip this when either x or y depend on an extended real.

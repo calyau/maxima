@@ -1974,12 +1974,6 @@
 		    (cons (list 'multi label (timesk lcm (expta (car ordl) -1))) switches))
 	      tlist))))))
 
-(defun canonicalize+-inf (expr)
-  "Turns -inf into minf and -minf into inf, leaves everything else alone."
-  (cond ((alike1 expr '((mtimes) -1 $inf)) '$minf)
-        ((alike1 expr '((mtimes) -1 $minf)) '$inf)
-        (t expr)))
-
 (defun make-switch-list (l)
   (mapcar #'(lambda (q) (cons q t)) l))
 
