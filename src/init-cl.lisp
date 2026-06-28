@@ -836,6 +836,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
       (declare (special context))
       (dolist (x '($%pi $%i $%e $%phi %i $%gamma $%catalan  ;numeric constants
                    $inf $minf $und $ind $infinity ;pseudo-constants
+                   $zeroa $zerob                  ;infinitesimals
                    t nil))                        ;logical constants (Maxima names: true, false)
 	(kind x '$constant)
 	(setf (get x 'sysconst) t))))

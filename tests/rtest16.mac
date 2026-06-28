@@ -3580,6 +3580,12 @@ diff(atan2(y, x), y);
 x/(y^2+x^2);
 
 
+/* Bug #4800: "zeroa, zerob are listed by listofvars" */
+
+listofvars(zeroa + zerob + inf + minf + infinity + ind + und);
+[];
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

@@ -119,6 +119,7 @@ Bug fixes for numbered bugs:
  * \#4794 limit(1/(acos(x)-%pi/2),x,0) causes division by zero error
  * \#4798 limit((-1)^x,x,minf)
  * \#4801 Bogus derivatives when arguments match variable names in DEFGRAD
+ * \#4800 zeroa, zerob are listed by listofvars
 
 Bug fixes for unnumbered bugs:
 -----------------------------
