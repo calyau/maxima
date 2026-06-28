@@ -381,9 +381,14 @@
                    (mapcar 
                      #'mul2
                      (cdr 
-                       (substitutel
-                         (cdr e) 
-                         (car grad)
+                       ;; Need to substitute in parallel to avoid trouble when
+                       ;; function arguments match the placeholder names of the
+                       ;; DEFGRAD expression.
+                       ($psubstitute
+                         (append '((mlist)) (mapcar #'(lambda (a b)
+                                                        (list '(mequal) a b))
+                                                    (car grad)
+                                                    (cdr e)))
                          (do ((l1 (cdr grad) (cdr l1))
                               (args args (cdr args)) 
                               (l2))
