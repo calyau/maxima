@@ -39,10 +39,10 @@
   "Create a directory."
   #+allegro (excl:make-directory dir)
   #+clisp (ext:make-directory dir)
-  #+cmu (unix:unix-mkdir (directory-namestring dir) #o777)
+  #+cmu (unix:unix-mkdir dir #o777)
   #+gcl (si::mkdir dir)
   #+lispworks (system:make-directory dir)
-  #+sbcl (sb-unix:unix-mkdir (directory-namestring (sb-ext:native-pathname dir)) #o777)
+  #+sbcl (sb-unix:unix-mkdir (namestring (sb-ext:native-pathname dir)) #o777)
   #+ccl (ensure-directories-exist dir)
   #+ecl (ensure-directories-exist dir)
   #+abcl (ensure-directories-exist dir)

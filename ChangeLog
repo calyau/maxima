@@ -124,6 +124,7 @@ Bug fixes for numbered bugs:
 Bug fixes for unnumbered bugs:
 -----------------------------
 * rtest_gruntz test #38
+* mkdir ignoring drive letter on SBCL/Windows
 
 Changes in the Windows installer:
 ---------------------------------
