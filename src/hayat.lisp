@@ -2520,6 +2520,60 @@
 (mapc #'(lambda (q) (putprop q 'atrig-trans 'tay-trans))
       '(%acos %acot %asec %acsc %acosh %acoth %asech %acsch))
 
+(defun ps-lt-sign (ps)
+  "Evaluates the asymptotic sign of the power series PS' leading term."
+  (if (pscoefp ps)
+    (coef-sign (rcdisrep ps))
+    (let* ((c-sign (ps-lt-sign (ps-lc ps))) ; recursively get coefficient sign
+           (v-lim (lim-power (gvar-lim (gvar ps)) (ps-le ps)))) ; limit of v^e
+      (cond
+        ((member v-lim '($minf $zerob $neg))
+         ;; v^e is negative, so flip the coefficient's sign.
+         (cond
+           ((eq c-sign '$pos) '$neg)
+           ((eq c-sign '$neg) '$pos)
+           (t c-sign)))
+        (t c-sign))))) ; otherwise, retain coefficient's sign
+
+(defun atan2-trans (args func)
+  (declare (ignore func))
+  (let* ((y (first args))
+         (x (second args))
+         ;; GET-LEXP finds the first non-zero term.
+         (lexp-y (get-lexp y nil nil))
+         (lexp-x (get-lexp x nil nil))
+         ;; Get their signs.
+         (sign-y (ps-lt-sign lexp-y))
+         (sign-x (ps-lt-sign lexp-x)))
+    (if (eq sign-x '$zero)
+      (cond
+        ((eq sign-y '$pos)
+          (taylor2 (div '$%pi 2)))
+        ((eq sign-y '$neg)
+          (taylor2 (div '$%pi -2)))
+        (t
+          (tay-error (intl:gettext "atan2: atan2(0, 0) is undefined.") nil)))
+      (if (eq sign-y '$zero)
+        (taylor2 (if (eq sign-x '$pos) 0 '$%pi))
+        (let ((ord-y (if (psp lexp-y) (ps-le lexp-y) (rczero)))
+              (ord-x (if (psp lexp-x) (ps-le lexp-x) (rczero))))
+          ;; Compare relative growth rates to avoid atan(inf) or atan(minf).
+          ;; If x approaches 0 faster than y (ORD-X > ORD-Y),
+          ;; atan(y/x) has an essential singularity; use the identity:
+          ;; atan2(y, x) = sign(y)*%pi/2 - atan(x/y).
+          ;; Otherwise, rewrite as atan(y/x) + offset, depending on quadrant.
+          (if (e> ord-x ord-y)
+            (let ((offset (div '$%pi (if (eq sign-y '$pos) 2 -2))))
+              (taylor2 (sub offset (ftake '%atan (div x y)))))
+            (let ((offset (if (eq sign-x '$pos)
+                            0
+                            (if (eq sign-y '$neg)
+                              (neg '$%pi)
+                              '$%pi))))
+              (taylor2 (add offset (ftake '%atan (div y x)))))))))))
+
+(defprop %atan2 atan2-trans tay-trans)
+
 (defprop mfactorial factorial-trans tay-trans)
 
 (defun factorial-trans (arg func)

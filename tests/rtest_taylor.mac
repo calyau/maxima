@@ -672,6 +672,117 @@ ratdisrep(taytorat(taylor(1/x^2,x,-inf,2) - taylor(1/x^2,x,minf,2)));
 ratdisrep(taytorat(taylor(1/x^2,x,-minf,2) - taylor(1/x^2,x,inf,2)));
 0;
 
+/* Taylor expansion of atan2: continuous regions (Q1 and Q4) */
+ratdisrep(taylor(atan2(x, 1), x, 0, 3));
+x - x^3/3;
+ratdisrep(taylor(atan2(-x, 1), x, 0, 3));
+-x + x^3/3;
+ratdisrep(taylor(atan2(0, 1+x), x, 0, 3));
+0;
+
+/* Taylor expansion of atan2: branch cut on the negative real axis (Q2 and Q3) */
+ratdisrep(taylor(atan2(x, -1), x, 0, 3));
+%pi - x + x^3/3;
+ratdisrep(taylor(atan2(-x, -1), x, 0, 3));
+-%pi + x - x^3/3;
+ratdisrep(taylor(atan2(x^2, -1), x, 0, 3));
+%pi - x^2;
+ratdisrep(taylor(atan2(-x^2, -1), x, 0, 3));
+-%pi + x^2;
+ratdisrep(taylor(atan2(0, -1+x), x, 0, 3));
+%pi;
+
+/* Taylor expansion of atan2: approaches to the y-axis */
+ratdisrep(taylor(atan2(1, x), x, 0, 1));
+%pi/2 - x;
+ratdisrep(taylor(atan2(1, -x), x, 0, 1));
+%pi/2 + x;
+ratdisrep(taylor(atan2(-1, x), x, 0, 1));
+-%pi/2 + x;
+ratdisrep(taylor(atan2(-1, -x), x, 0, 1));
+-%pi/2 - x;
+
+/* Taylor expansion of atan2: identically zero arguments
+   (expressions disguised to bypass the simplifier) */
+ratdisrep(taylor(atan2(1, sin(x)^2+cos(x)^2-1), x, 0, 3));
+%pi/2;
+ratdisrep(taylor(atan2(-1, sin(x)^2+cos(x)^2-1), x, 0, 3));
+-%pi/2;
+ratdisrep(taylor(atan2(1+x, sin(x)^2+cos(x)^2-1), x, 0, 2));
+%pi/2;
+errcatch(taylor(atan2(cosh(x)^2-sinh(x)^2-1, sin(x)^2+cos(x)^2-1), x, 0, 3));
+[];
+
+/* Taylor expansion of atan2: arguments requiring terms of higher order than requested */
+ratdisrep(taylor(atan2(5*sin(4*x)-10*sin(2*x), 5*cos(4*x)-10*cos(2*x)+1), x, 0, 1));
+-%pi;
+ratdisrep(taylor(atan2(5*sin(4*x)-10*sin(2*x), 5*cos(4*x)-10*cos(2*x)+1), x, 0, 2));
+-%pi;
+ratdisrep(taylor(atan2(5*sin(4*x)-10*sin(2*x), 5*cos(4*x)-10*cos(2*x)+1), x, 0, 3));
+-%pi + 10*x^3;
+
+/* Taylor expansion of atan2: symbolic parameters */
+assume(a > 0);
+[a > 0];
+ratdisrep(taylor(atan2(a*x^3, -1), x, 0, 3));
+%pi - a*x^3;
+ratdisrep(taylor(atan2(a*x^3, 0), x, 0, 3));
+%pi/2;
+forget(a > 0);
+[a > 0];
+assume(a < 0);
+[a < 0];
+ratdisrep(taylor(atan2(a*x^3, -1), x, 0, 3));
+-%pi - a*x^3;
+ratdisrep(taylor(atan2(a*x^3, 0), x, 0, 3));
+-%pi/2;
+forget(a < 0);
+[a < 0];
+
+/* Taylor expansion of atan2: limits to infinity (negative orders) */
+ratdisrep(taylor(atan2(x, x^2), x, inf, 3));
+1/x - 1/(3*x^3);
+ratdisrep(taylor(atan2(x^2, x), x, inf, 3));
+%pi/2 - 1/x + 1/(3*x^3);
+
+/* Taylor expansion of atan2: limits to negative infinity (quadrant check at infinity) */
+ratdisrep(taylor(atan2(x, x^2), x, minf, 3));
+1/x - 1/(3*x^3);
+ratdisrep(taylor(atan2(x^2, x), x, minf, 3));
+%pi/2 - 1/x + 1/(3*x^3);
+
+/* Taylor expansion of atan2: differing rates to zero */
+ratdisrep(taylor(atan2(x, x^2), x, 0, 3));
+%pi/2 - x + x^3/3;
+ratdisrep(taylor(atan2(-x, x^2), x, 0, 3));
+-%pi/2 + x - x^3/3;
+ratdisrep(taylor(atan2(x^2, x), x, 0, 3));
+x - x^3/3;
+ratdisrep(taylor(atan2(x^2, -x), x, 0, 3));
+%pi - x + x^3/3;
+
+/* Taylor expansion of atan2: transcendentals */
+ratdisrep(taylor(atan2(log(1+x), exp(x)-1-x), x, 0, 2));
+%pi/2 - x/2 - (5*x^2)/12;
+ratdisrep(taylor(atan2(sin(x)-x, cos(x)-1), x, 0, 3));
+-%pi + x/3 - x^3/810;
+
+/* Taylor expansion of atan2: composite variables & asymptotic sign evaluation */
+ratdisrep(taylor(atan2(x*log(x), -1), x, 0, 2));
+-%pi - x*log(x);
+ratdisrep(taylor(atan2(x*log(x), 1), x, 0, 2));
+x*log(x);
+ratdisrep(taylor(atan2(exp(-1/x), -1), x, 0, 1));
+%pi - %e^(-1/x);
+ratdisrep(taylor(atan2(-exp(-1/x), -1), x, 0, 1));
+-%pi + %e^(-1/x);
+
+/* Taylor expansion of atan2: composite variable dominance flips */
+ratdisrep(taylor(atan2(x, log(x)), x, 0, 2));
+%pi + x/log(x);
+ratdisrep(taylor(atan2(log(x), x), x, 0, 2));
+-%pi/2 - x/log(x);
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

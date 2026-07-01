@@ -1077,3 +1077,17 @@ errcatch (integrate(x,x,0,box(inf)));
 /* Bug #4742: limit result contains "false" */
 limit((gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x))/2,x,0,plus);
 'limit(gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x),x,0,plus)/2;
+
+/* Bug #4797: "limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus) is wrong" */
+limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus), tlimswitch : false;
+-%pi;
+limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, minus), tlimswitch : false;
+%pi;
+gruntz(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus);
+-%pi;
+gruntz(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, minus);
+%pi;
+tlimit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus);
+-%pi;
+tlimit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, minus);
+%pi;
