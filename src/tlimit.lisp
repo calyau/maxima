@@ -142,10 +142,6 @@
 ;; There is no compelling reason to default the Taylor order to 
 ;; lhospitallim, but this is documented in the user documentation.
 
-;; Since `taylor` fails on some `atan2` expressions, we convert `atan2` expressions to
-;; log form. An example where `taylor` fails is `taylor(atan2(exp(x)-cos(x), -x*sin(x)),x,0,4)`.
-;; Of course, we should fix `taylor`, but until that happens, we'll use this workaround.
-
 (defun tlimit-taylor (e x pt n &optional (d 0))
   "Compute the Taylor series expansion of `e` at `pt` with respect to `x`. 
    If the expansion vanishes and the recursion depth `d` is less than 16, 
@@ -167,7 +163,6 @@
     (cond
       ((eq pt '$infinity) nil) ; infinity is an illegitimate limit point
       (t
-       (setq e (atan2-to-atan e))
        (setq ee ($totaldisrep (catch 'taylor-catch ($taylor e x pt n))))
 
        (cond

@@ -2001,7 +2001,7 @@ block([ans : integrate(log(cot(x)-1),x,0,%pi/4)], [ans, expand(float(ans))]);
 
 /* A better answer is -%pi*log(4)/4, but this is correct.*/
 integrate(log(cos(x)),x,0,%pi/2);
-(%i*%pi^2)/24-(2*%pi*log(4)+(%i*%pi^2)/3)/8$
+(-2*%pi*log(4)-(%i*%pi^2)/3)/8+(%i*%pi^2)/24$
 
 map(lambda([x], featurep(x, noninteger)),[sqrt(5),%pi,%pi/3, %pi/8,log(42),99/2013]);
 [true,true,true,true,true,true]$

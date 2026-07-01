@@ -6405,3 +6405,11 @@ integrate((1-cos(x))^(3/2), x, 0, 2*%pi);
 /* Bug #4290: "integrate(log(cos(x)),x,0,%pi2) has non-zero imaginary component" */
 expand(integrate(log(cos(x)), x, 0, %pi/2));
 -%pi*log(4)/4;
+
+/* Bug #3295: "Incorrect integral of rational expression of trigonometric function" */
+integrate((2*cos(2*%pi*x) - cos(4*%pi*x)) / (5 - 4*cos(2*%pi*x)), x, 0, 1);
+1/4;
+
+/* Bug #4369: "incorrect atan2 --> atan substitution in definite integral" */
+round(100000000 * expand(bfloat(integrate(log(5 - 4*cos(x)), x, 0, %pi))));
+435517218;

@@ -301,8 +301,7 @@ in the interval of integration.")
   (let ((limitp nil) ;setting limitp to true causes testsuite failures and asksign called on gensyms
         (ans nil)
 		($numer nil)
-        ($logabs nil)
-        (generate-atan2 nil))
+        ($logabs nil))
       (setq ans (sinint a ivar))
       (if (among '%integrate ans) nil ans)))
 

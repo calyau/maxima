@@ -1891,7 +1891,7 @@ integrate (a*sin(5*w)+b*cos(7*w), w, minf, 1);
  * First just verify it's not zero (the previous, incorrect result).
  */
 
-is ((I: integrate (e, x, 0, t)) # 0);
+is ((I: integrate (e, x)) # 0);
 true;
 
 /* Now try some random intervals and see if the antiderivative
@@ -1910,7 +1910,7 @@ block ([t1, t2, I_defint_numerical, I_defint_FTC],
     do (t1: random(5.0),
         t2: t1 + random(0.5),
         I_defint_numerical: first (quad_qags (e, x, t1, t2)),
-        I_defint_FTC: float (ev (I, t = t2) - ev (I, t = t1)),
+        I_defint_FTC: float (ev (I, x = t2) - ev (I, x = t1)),
         if abs (I_defint_numerical - I_defint_FTC) < 1e-4
           then (printf (true, "re: #3718, apparently valid antiderivative on (~f, ~f)~%", t1, t2),
                 return(true))
