@@ -3586,6 +3586,18 @@ listofvars(zeroa + zerob + inf + minf + infinity + ind + und);
 [];
 
 
+/* Bug #4756: "expand(sin(%e^x)), numer incorrectly replaces %e with numerical value" */
+
+expand(sin(%e^x)), numer;
+sin(%e^x);
+
+[%pi, %e], numer;
+[3.141592653589793, 2.718281828459045];
+
+[%pi, %e^x], numer;
+[3.141592653589793, %e^x];
+
+
 /* Leave this at the end of the file! */
 contexts;
 [initial, global]$

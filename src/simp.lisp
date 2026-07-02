@@ -105,11 +105,7 @@
 (defun sratsimp (e) (simplifya ($ratsimp e) nil))
 
 (defun simpcheck (e flag)
-  (let ((e (if flag
-               e
-               ;; Switch $%enumer on, when $numer is TRUE to allow
-               ;; simplification of $%e to its numerical value.
-              (let (($%enumer $numer)) (simplifya e nil)))))
+  (let ((e (if flag e (simplifya e nil))))
     (if (specrepp e)
       (specdisrep e)
       e)))
@@ -238,13 +234,7 @@
 
 (defun simplifya (x y)
  (let (op)
-  (cond ((not $simp) x)
-        ((atom x)
-         (cond ((and (eq x '$%e) $%enumer $numer)
-                ;; Replace $%e with its numerical value,
-                ;; when %enumer and $numer TRUE
-                (setq x %e-val))
-               (t x)))
+  (cond ((or (atom x) (not $simp)) x)
 	((atom (car x))
 	 (cond ((and (cdr x) (atom (cdr x)))
 		(merror (intl:gettext "simplifya: malformed expression (atomic cdr).")))
@@ -836,9 +826,6 @@
 (defun pls (x out)
   (prog (fm *plusflag*)
      (if (mtimesp x) (setq x (testtneg x)))
-     (when (and (eq x '$%e) $numer)
-       ;; Replace $%e with its numerical value, when $numer is TRUE
-       (setq x %e-val))
      (cond ((null out)
             ;; Initialize a form like ((mplus) <number> expr)
             (return
@@ -2013,12 +2000,7 @@
      (twoargcheck x)
      (cond (z (setq gr (cadr x) pot (caddr x)) (go cont)))
      (setq gr (simplifya (cadr x) nil))
-     (setq pot
-           (let (($%enumer $numer))
-             ;; Switch $%enumer on, when $numer is TRUE to allow 
-             ;; simplification of $%e to its numerical value.
-             (simplifya (if $ratsimpexpons ($ratsimp (caddr x)) (caddr x))
-                        nil)))
+     (setq pot (simplifya (if $ratsimpexpons ($ratsimp (caddr x)) (caddr x)) nil))
   cont  
      (cond (($ratp pot)
             (setq pot (ratdisrep pot))

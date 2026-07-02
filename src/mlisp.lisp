@@ -229,8 +229,7 @@ is EQ to FNNAME if the latter is non-NIL."
      (prog (val)
        (cond ((not (symbolp form)) (return form))
              ((and $numer
-                   (setq val (safe-mget form '$numer))
-                   (or (not (eq form '$%e)) $%enumer))
+                   (setq val (safe-mget form '$numer)))
               (return (meval1 val)))
              ((not (boundp form))
 	      (let ((bindtest-value (safe-get form 'bindtest)))
@@ -373,8 +372,19 @@ is EQ to FNNAME if the latter is non-NIL."
          (cond ((or (null u)
                     (and (safe-get (caar form) 'operators) (not aryp))
                     (eq (caar form) (setq u (symbol-value (caar form)))))
-                (let ((args-simplified (not noevalargs)))
-                  (setq form (meval2 (mevalargs (cdr form)) form))
+                (let* ((args-simplified (not noevalargs))
+                       (evaled-args (mevalargs (cdr form))))
+                  ;; If $NUMER is non-NIL, $%ENUMER is at its default value of
+                  ;; NIL, FORM is %e^exponent, and the exponent doesn't evaluate
+                  ;; to a number, then prevent the base %e from being replaced
+                  ;; with its numerical value.
+                  (when (and $numer
+                             (not $%enumer)
+                             (eq 'mexpt (caar form))
+                             (eq '$%e (cadr form))
+                             (not (mnump (cadr evaled-args))))
+                    (setf (car evaled-args) '$%e))
+                  (setq form (meval2 evaled-args form))
                   (let ((at-form (and (safe-mget (caar form) 'atvalues)
                                       (at1 form))))
                     (if at-form
@@ -954,8 +964,6 @@ wrapper for this."
 	($expop $expop) ($expon $expon) ($doallmxops $doallmxops)
 	($doscmxops $doscmxops) (derivflag derivflag) ($detout $detout)
 	(*nounsflag* *nounsflag*) (rulefcnl rulefcnl))
-    (if (and (cdr l) (null (cddr l)) (eq (car l) '$%e) (eq (cadr l) '$numer))
-	(setq l (append l '($%enumer))))
     (do ((l (cdr l) (cdr l)) (bndvars) (bndvals) (locvars) (exp (car l))
 	 (subsl) (evflg 0) (ratf) (derivlist) (evfunl) (funcl) (predflg)
 	 (noeval (member '$noeval (cdr l) :test #'eq)))
@@ -976,8 +984,6 @@ wrapper for this."
 	 ; function definitions if we run into an error
 	 (unwind-protect
 	   (mbinding (bndvars bndvals)
-		     (if (and $numer noeval $%enumer)
-			 (setq exp (maxima-substitute %e-val '$%e exp)))
 		     (setq exp (if noeval
 				   (resimplify exp)
 				   (simplify (if predflg (mevalp exp) (meval1 exp)))))

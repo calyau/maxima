@@ -866,7 +866,8 @@
   functions and variables.")
 (defmvar $%enumer nil
   "When true, '%e' is replaced by its numeric value 2.718... whenever
-  'numer' is 'true'."
+  'numer' is 'true'. When false, this is prevented for a base '%e' with
+  an exponent that doesn't evaluate to a number."
   :properties ((evflag t)))
 (defmvar $float nil
   "Causes non-integral rational numbers and bigfloat numbers to be
