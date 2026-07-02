@@ -783,6 +783,12 @@ ratdisrep(taylor(atan2(x, log(x)), x, 0, 2));
 ratdisrep(taylor(atan2(log(x), x), x, 0, 2));
 -%pi/2 - x/log(x);
 
+/* Bug #4799: "taylor contagion" */
+ratdisrep(2*%e^taylor(x, x, inf, 2));
+2*%e^x;
+ratdisrep(1+%e^taylor(x, x, inf, 2));
+%e^x+1;
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

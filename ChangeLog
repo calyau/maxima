@@ -122,6 +122,7 @@ Bug fixes for numbered bugs:
  * \#4794 limit(1/(acos(x)-%pi/2),x,0) causes division by zero error
  * \#4797 limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus) is wrong
  * \#4798 limit((-1)^x,x,minf)
+ * \#4799 taylor contagion
  * \#4801 Bogus derivatives when arguments match variable names in DEFGRAD
  * \#4800 zeroa, zerob are listed by listofvars
 

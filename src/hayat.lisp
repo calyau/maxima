@@ -2277,8 +2277,17 @@
       ;; Put back the old disrpes so rcdisrep's will work correctly.
       (mapc #'(lambda (g v) (putprop g v 'disrep)) old-genvar old-varlist)
       (setup-multivar-disrep mrat)
-      (setq old-ivars (mapcar #'(lambda (g v) (cons g v))
-			      old-genvar old-varlist))
+      ;; Singular exponentials (such as those adjoined during expansion
+      ;; at infinity) are not placed on GENVAR or VARLIST, meaning they
+      ;; will be missing from OLD-GENVAR and OLD-VARLIST.
+      ;; We extract their internal-to-external variable mappings from
+      ;; OLD-TLIST and append them to OLD-IVARS. If we do not do this,
+      ;; RE-TAYLOR-RECURSE fails to find the variable, ignores the exponent,
+      ;; and collapses the term down to just its coefficient.
+      (setq old-ivars (nconc (mapcar #'(lambda (g v) (cons g v))
+                                     old-genvar old-varlist)
+                             (mapcar #'(lambda (d) (cons (data-gvar d) (datum-var d)))
+                                     old-tlist)))
       (prog1 (re-taylor-recurse (mrat-ps mrat))
 	     ;; Restore the correct disreps.
 	     (mapc #'(lambda (g v) (putprop g v 'disrep)) genvar varlist)
