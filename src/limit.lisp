@@ -4266,21 +4266,21 @@ ignoring dummy variables and array indices."
 ;; Ideally we would use a lazy series representation that generates
 ;; more terms as higher order terms cancel.
 (defun calculate-series (exp var)
-    (let ((cntx ($supcontext)) 
-	      (silent-taylor-flag t) 
-          ($taylordepth 8) 
-		  ($radexpand nil) 
-		  ($logexpand nil)
-          ($taylor_simplifier #'(lambda (q) (sratsimp (extra-simp q)))))
-		  ($activate cntx)
-		 (unwind-protect 
-		 	 (progn
-				 (assume (ftake 'mgreaterp var 0))
-				 (putprop var t 'internal); keep var from appearing in questions to user
- 			     (setq exp (partial-logarc exp (list '%atan)))
-			     (log-simp-plus-or-minus-i (catch 'taylor-catch ($taylor exp var 0 $lhospitallim))))
-			  (remprop var 'internal)	  
-              ($killcontext cntx))))
+  (let ((cntx ($supcontext)) 
+        (silent-taylor-flag t) 
+        ($taylordepth 8) 
+        ($radexpand nil) 
+        ($logexpand nil)
+        ($taylor_simplifier #'(lambda (q) (sratsimp (extra-simp q))))
+        (was-internal (get var 'internal)))
+    (unwind-protect 
+         (progn
+           (putprop var t 'internal) 
+           (let ((texp (partial-logarc exp (list '%atan))))
+             (log-simp-plus-or-minus-i (catch 'taylor-catch ($taylor texp var 0 $lhospitallim)))))
+	  ($killcontext cntx)
+      (unless was-internal
+        (remprop var 'internal)))))     
 
 ;; Given a Maxima expression e and a variable x, mrv-sign(e,x) returns the sign 
 ;; of e in a neighborhood of real infinity. The sign is encoded as -1 for 
