@@ -789,6 +789,10 @@ ratdisrep(2*%e^taylor(x, x, inf, 2));
 ratdisrep(1+%e^taylor(x, x, inf, 2));
 %e^x+1;
 
+/* Bug #4792: "taylor(%e^(-%i*x), x, inf, 0) = false + . . ." */
+string(taylor(%e^(-%i*x), x, inf, 0));
+"+0";
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

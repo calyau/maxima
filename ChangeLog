@@ -118,6 +118,7 @@ Bug fixes for numbered bugs:
  * \#4787 taylor(a,b,c) gives internal error
  * \#4788 taylor(a^x, x, inf, 0) vs. taylor(f(a)^x, x, inf, 0) for f = atan, asin, asinh
  * \#4791 taylor(atan(%pi)^x, x, inf, 0) contains unsimplified sin(0) and cos(0)
+ * \#4792 taylor(%e^(-%i*x), x, inf, 0) = false + . . .
  * \#4795 realpart(li[2](2*%e^(%i*0.1))) crashes Maxima
  * \#4794 limit(1/(acos(x)-%pi/2),x,0) causes division by zero error
  * \#4797 limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus) is wrong
