@@ -126,6 +126,7 @@ Bug fixes for numbered bugs:
  * \#4799 taylor contagion
  * \#4801 Bogus derivatives when arguments match variable names in DEFGRAD
  * \#4800 zeroa, zerob are listed by listofvars
+ * \#4806 Taylor: bad singular datum
 
 Bug fixes for unnumbered bugs:
 -----------------------------

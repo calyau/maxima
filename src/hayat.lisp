@@ -1125,14 +1125,21 @@
 		 (terms a)))))
 
 (defun adjoin-sing-datum (d)
-   (let ((r (prep1 (datum-var d))) (g (gensym)) (kernel (datum-var d))
+   (let ((r (prep1 (datum-var d))) (g (gensym)) (kernel (datum-var d)) (pg nil)
 	 (no (1+ (cdr (int-var (car (last tlist)))))))
-      (unless (and (equal (car r) 1) (equal (cddr r) '(1 1)))
-	 (break "bad singular datum"))
+      (cond
+        ((and (equal (cdr r) 1) (consp (car r)) (equal (cdar r) '(1 1)))
+          ;; Direct polynomial case: ((G 1 1) . 1)
+          (setq pg (caar r)))
+        ((and (equal (car r) 1) (consp (cdr r)) (equal (cddr r) '(1 1)))
+          ;; Reciprocal case: (1 . (G 1 1))
+          (setq pg (cadr r)))
+        (t 
+          (break "bad singular datum")))
       (putprop g kernel 'disrep)
       (rplacd (cdddr d) (cons g no))
       (adjoin-datum d)
-      (push (cons (cadr r) kernel) key-vars)
+      (push (cons pg kernel) key-vars)
       (push (cons g kernel) key-vars)
       (push (car key-vars) ivars)
       ;(push (cons kernel (cons (pget g) 1)) genpairs)
@@ -3197,10 +3204,15 @@
 ;;; x and y above. See the comment above taylor* for the $MAXTAYORDER problem.
 
 (defun psdisrep+ (p plush &aux lowest-degree-term)
-  (if;; An exact sum of one arg is just that arg.
-   (and (null (cdr p)) (eq (cadr plush) 'exact))
-   (car p)
-   (progn
+  (cond
+    ((null p) 
+      ;; An empty sum is mathematically zero.
+      ;; If exact, return clean 0. If truncated, return 0 + ...
+      (if (eq (cadr plush) 'exact) 0 (cons plush '(0))))
+    ((and (null (cdr p)) (eq (cadr plush) 'exact))
+      ;; Exact sum of one arg is just that arg (preserves taylor(false...) edge case).
+      (car p))
+    (t
      ;; Since the DISPLAY package prints trunc'd sum's arguments
      ;; from right to left we must put the terms of any constant term
      ;; in decreasing order. Note that only a constant (wrt to the

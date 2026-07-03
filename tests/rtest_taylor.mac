@@ -793,6 +793,14 @@ ratdisrep(1+%e^taylor(x, x, inf, 2));
 string(taylor(%e^(-%i*x), x, inf, 0));
 "+0";
 
+/* Bug #4806: "Taylor: bad singular datum" */
+assume(equal(a, 0));
+[equal(a, 0)];
+ratdisrep(exp(-(taylor(x,x,inf,2)-a)^2) - exp(-(taylor(x,x,inf,2)+a)^2));
+0;
+forget(equal(a, 0));
+[equal(a, 0)];
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
