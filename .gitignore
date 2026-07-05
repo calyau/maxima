@@ -1,5 +1,6 @@
 Makefile
 Makefile.in
+CLAUDE.md
 package-lock.json
 /config.cache
 /config.log
