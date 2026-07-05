@@ -1,6 +1,6 @@
 Makefile
 Makefile.in
-
+package-lock.json
 /config.cache
 /config.log
 /config.status
