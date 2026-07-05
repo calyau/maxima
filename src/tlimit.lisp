@@ -179,13 +179,15 @@
 ;; new limit-by-methods scheme. As a result, the last argument of taylim 
 ;; is now unused (orphaned).
 
-;; Occasionally, the taylor code does an asksign (see function coef-sign). When
-;; that happens and asksign determines that the sign is zero, the taylor code
-;; appends this fact to *limit-assumptions*. Often this fact is rather crucial, so after
-;; the first effort to determine the taylor series, the code loops through
-;; *limit-assumptions* and looks for facts of the form equal(XXX,0); when it
-;; finds such a fact, it substitutes 0 for XXX in the expression and tries again
-;; to find the taylor series.
+;; Occasionally, the taylor code calls asksign (for example, the function coef-sign).
+;; When that happens, asksign temporarily stores the user-supplied fact in the
+;; *initial* context (which may differ from the *current* context). If the user
+;; responds "zero", asksign records an equality of the form equal(expr,0) in the
+;; initial context. 
+;;
+;; For the limit code, this means that any zero-facts learned by asksign must be
+;; retrieved from the initial context, not from the current context. To make use
+;; of these temporary equalities, we apply them directly to the expression.
 
 (defun taylim (e var val &optional (flag nil))
   "Attempt to compute the limit of `e` as `var` approaches `val` using a
@@ -202,25 +204,28 @@
   (let ((*already-processed-limits* *already-processed-limits*)
         (*limit-method-depth*       *limit-method-depth*)
         (*getsignl-asksign-ok*      nil)
+        (redo nil)
         (et nil))
 
     (when (tlimp e var)
       (let* ((e1  (stirling0 e))
-             (pt  (ridofab val))
-             (redo nil))
+             (pt  (ridofab val)))
 
         ;; First Taylor attempt
         (setq et (tlimit-taylor e1 var pt $lhospitallim 0))
-
-        ;; Examine any assumptions recorded during Taylor
-        (dolist (fct *limit-assumptions*)
+        ;; When asksign appends temporary facts, they are stored in the '$inital context.
+        ;; Substitute all such facts into e1 and try again.
+        (dolist (fct (cdr ($facts '$initial)))
           (when (and (consp fct) (eq '$equal (caar fct)))
             (setq redo t)
-            (setq e1 (maxima-substitute (third fct) (second fct) e1))))
-
+            (setq fct (sort (cdr fct) #'great))
+            (setq e1 (errcatch (maxima-substitute (cadr fct) (car fct) e1)))
+            (if (null e1)
+               (throw 'limit nil)
+               (setq e1 (car e1)))))
         ;; Retry Taylor after rewriting, if needed
         (when redo
-          (setq et (tlimit-taylor e1 var pt $lhospitallim 0)))))
+           (setq et (tlimit-taylor e1 var pt $lhospitallim 0)))
 
     ;; If Taylor succeeded, set taylored to true and dispatch methods on et; otherwise
     ;; dispatch methods on e.
@@ -235,7 +240,7 @@
                           (list 
                                 'limit-method-think 
                                 'limit1
-                                'limit-method-reciprocal-limit-point)))))
+                                'limit-method-reciprocal-limit-point)))))))
 
 (defun limit-method-think (e x pt)
   (limit e x pt 'think))
