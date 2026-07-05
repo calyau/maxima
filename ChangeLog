@@ -141,3 +141,7 @@ Changes in the Windows installer:
  * Update TCL/TK
  * Add basic support for ECL. Not yet fully functional.
    (loading additional packages does not work. Why?)
+
+Other changes:
+--------------
+ * Linux/Mac: If the default maxima isn't found choose an installed flavour of the same version

@@ -5,6 +5,48 @@ unixize () {
     echo "$1" | sed -e 's%\\\\%/%g' | sed -e 's%^\([A-Za-z]\):%/\1%'
 }
 
+# Preference order to try when the configured default lisp turns out not to
+# be usable (roughly fastest-first, per the run_testsuite() timing
+# comparison in README-lisps.md).
+MAXIMA_LISP_FALLBACK_ORDER="sbcl gcl cmucl scl ccl64 openmcl acl ecl clisp abcl"
+
+# Can lisp implementation $1 actually be run on this machine? Either a
+# self-contained executable image was built for it (needs nothing else
+# installed), or the external lisp runtime it depends on is present.
+#
+# This distinction matters for distros (e.g. Debian) that package each lisp
+# backend separately: "binary-$1" can exist on disk (shipped as part of the
+# maxima package) while the lisp runtime it needs is a different package
+# that was never installed. Checking only for the directory, as this script
+# used to, can't detect that case.
+lisp_is_usable() {
+    lisp=$1
+    dir="$MAXIMA_IMAGESDIR/binary-$lisp"
+    [ -d "$dir" ] || return 1
+    case "$lisp" in
+        clisp)
+            [ -x "$dir/maxima" ] || [ -x "$dir/@CLISP_RUNTIME@" ] || command -v "@CLISP_NAME@" >/dev/null 2>&1 ;;
+        cmucl)
+            [ -x "$dir/maxima" ] || [ -x "$dir/@CMUCL_RUNTIME@" ] || command -v "@CMUCL_NAME@" >/dev/null 2>&1 ;;
+        scl)
+            [ -x "$dir/@SCL_RUNTIME@" ] || command -v "@SCL_NAME@" >/dev/null 2>&1 ;;
+        gcl|ecl)
+            [ -x "$dir/maxima" ] ;;
+        acl)
+            command -v "@ACL_NAME@" >/dev/null 2>&1 ;;
+        openmcl)
+            [ -x "$dir/maxima" ] || command -v "@OPENMCL_NAME@" >/dev/null 2>&1 ;;
+        ccl64)
+            [ -x "$dir/maxima" ] || command -v "@CCL64_NAME@" >/dev/null 2>&1 ;;
+        abcl)
+            [ -x "$dir/maxima" ] && command -v java >/dev/null 2>&1 ;;
+        sbcl)
+            [ -x "$dir/maxima" ] || command -v "@SBCL_NAME@" >/dev/null 2>&1 ;;
+        *)
+            return 1 ;;
+    esac
+}
+
 setup_vars() {
   if [ -z "$MAXIMA_VERSION" ]; then
     MAXIMA_VERSION="@VERSION@"
@@ -34,10 +76,18 @@ setup_vars() {
       fi  
   fi
   MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
-  # If the the binary directory for the default lisp is not present,
-  # choose the first one we find.
-  if [ ! -d "$MAXIMA_IMAGESDIR/binary-$MAXIMA_DEFAULT_LISP" ]; then
-    MAXIMA_DEFAULT_LISP=$(ls -1 $MAXIMA_IMAGESDIR 2>/dev/null | head -n 1 | sed 's/binary-//')
+  # If the configured default lisp isn't actually usable on this machine
+  # (its binary directory is missing, or present but the lisp runtime it
+  # needs isn't installed), silently fall back to the fastest usable
+  # alternative we can find.
+  if ! lisp_is_usable "$MAXIMA_DEFAULT_LISP"; then
+    for candidate in $MAXIMA_LISP_FALLBACK_ORDER \
+        $(ls -1 "$MAXIMA_IMAGESDIR" 2>/dev/null | sed -n 's/^binary-//p'); do
+      if lisp_is_usable "$candidate"; then
+        MAXIMA_DEFAULT_LISP=$candidate
+        break
+      fi
+    done
   fi
   if [ -z "$MAXIMA_LISP" ]; then
     MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
