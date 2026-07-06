@@ -13,3 +13,5 @@ info_TEXINFOS = nelder_mead.texi
 AM_MAKEINFOHTMLFLAGS = --no-split
 
 EXTRA_DIST = nelder_mead-index.lisp
+
+CLEANFILES = nelder_mead-index.lisp

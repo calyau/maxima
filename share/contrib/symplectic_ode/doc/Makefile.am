@@ -20,3 +20,5 @@ AM_MAKEINFOHTMLFLAGS = --no-split
 info_TEXINFOS = symplectic_ode.texi
 
 EXTRA_DIST = symplectic_ode-index.lisp
+
+CLEANFILES = symplectic_ode-index.lisp

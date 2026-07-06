@@ -82,18 +82,38 @@
 			    (if (and x (not (string= x ""))) (list x)))
 			  :epilogue-code '(progn (cl-user::run)))))))
 
+;; CMUCL, SCL, SBCL and LispWorks build an absolute binary pathname
+;; here (rather than the bare relative directory name the other lisps
+;; use below, which is resolved against the process's current
+;; directory instead) because historically it was derived from
+;; *LOAD-TRUENAME*, i.e. wherever maxima.system was actually loaded
+;; from. For an out-of-tree build that is the source directory, which
+;; makes the compiler write all of its output back into the pristine
+;; source tree instead of the build tree. The Makefile sets
+;; CL-USER::*MAXIMA-BINARY-DIRECTORY* (to $(abs_top_builddir)/src/)
+;; before loading this file precisely so that binaries can be
+;; redirected to the build directory instead; when it isn't bound
+;; (e.g. this file is loaded by hand, outside of the Makefile-driven
+;; build) this falls back to the previous *LOAD-TRUENAME*-based
+;; behavior.
+(defun maxima-build-directory ()
+  (if (and (boundp 'cl-user::*maxima-binary-directory*)
+	   (symbol-value 'cl-user::*maxima-binary-directory*))
+      (parse-namestring (symbol-value 'cl-user::*maxima-binary-directory*))
+      *load-truename*))
+
 (defun maxima-binary-pathname ()
   #+clisp
   "binary-clisp"
   #+cmu
   (make-pathname :name "binary-cmucl"
-		 :directory (pathname-directory *load-truename*))
+		 :directory (pathname-directory (maxima-build-directory)))
   #+scl
   (make-pathname :name "binary-scl"
-		 :directory (pathname-directory *load-truename*))
+		 :directory (pathname-directory (maxima-build-directory)))
   #+sbcl
   (make-pathname :name "binary-sbcl"
-		 :directory (pathname-directory *load-truename*))
+		 :directory (pathname-directory (maxima-build-directory)))
   #+gcl
   "binary-gcl"
   #+allegro
@@ -106,7 +126,7 @@
   "binary-abcl"
   #+lispworks
   (make-pathname :name "binary-lispworks"
-		 :directory (pathname-directory *load-truename*))
+		 :directory (pathname-directory (maxima-build-directory)))
   #+ecl
   "binary-ecl"
   #-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks ecl)

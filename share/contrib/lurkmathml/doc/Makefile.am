@@ -16,3 +16,5 @@ info_TEXINFOS = mathml.texi
 AM_MAKEINFOHTMLFLAGS = --no-split
 
 EXTRA_DIST = mathml-index.lisp
+
+CLEANFILES = mathml-index.lisp

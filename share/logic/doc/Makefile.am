@@ -13,3 +13,5 @@ info_TEXINFOS = logic.texi
 AM_MAKEINFOHTMLFLAGS = --no-split
 
 EXTRA_DIST = logic-index.lisp
+
+CLEANFILES = logic-index.lisp

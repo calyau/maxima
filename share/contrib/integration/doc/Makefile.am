@@ -13,3 +13,5 @@ info_TEXINFOS = abs_integrate.texi
 AM_MAKEINFOHTMLFLAGS = --no-split
 
 EXTRA_DIST = integration-index.lisp
+
+CLEANFILES = integration-index.lisp

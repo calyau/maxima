@@ -200,6 +200,9 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 * Package unit::                      Units and dimensions package.
 * Package zeilberger::                Functions for hypergeometric summation.
 
+* Package pslq::                      Integer relation algorithm.
+* Package rk_adaptive::               Adaptive step size Runge-Kutta method.
+
 
 Индекс
 
@@ -890,11 +893,35 @@ zeilberger
 @chapter unit
 @include unit.texi
 
-@node Package zeilberger, Указатель функций и переменных, Package unit, Top
+@node Package zeilberger, Package pslq, Package unit, Top
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Указатель функций и переменных,  , Package zeilberger, Top
+@c pslq.texi and rk_adaptive.texi are not yet translated into Russian, so
+@c the English originals are included as-is (same fallback approach
+@c already used above for e.g. Special.texi, Equations.texi). Unlike
+@c Database.texi/DataTypes.texi/Evaluation.texi/MathFunctions.texi (also
+@c untranslated), these two don't drag in a cascade of further
+@c cross-references to chapters/anchors missing from the Russian manual,
+@c so a whole-chapter fallback is safe here; the others are handled with
+@c targeted per-anchor fixes in the files that actually reference them.
+
+@node Package pslq, Package rk_adaptive, Package zeilberger, Top
+@chapter pslq
+@include pslq.texi
+
+@node Package rk_adaptive, Untranslated Entries, Package pslq, Top
+@chapter rk_adaptive
+@include rk_adaptive.texi
+
+@c Individual entries (not whole chapters) with no Russian translation
+@c anywhere in this manual, needed because other, already-translated
+@c files reference them. See ru/untranslated-entries.texi for details.
+@node Untranslated Entries, Указатель функций и переменных, Package rk_adaptive, Top
+@chapter Untranslated Entries
+@include untranslated-entries.texi
+
+@node Указатель функций и переменных,  , Untranslated Entries, Top
 @chapter Указатель функций и переменных
 @include Indices.texi
 

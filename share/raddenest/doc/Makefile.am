@@ -13,3 +13,5 @@ info_TEXINFOS = raddenest.texi
 AM_MAKEINFOHTMLFLAGS = --no-split
 
 EXTRA_DIST = raddenest-index.lisp
+
+CLEANFILES = raddenest-index.lisp

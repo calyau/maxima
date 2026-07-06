@@ -13,3 +13,5 @@ info_TEXINFOS = guess.texi
 AM_MAKEINFOHTMLFLAGS = --no-split
 
 EXTRA_DIST = guess-index.lisp
+
+CLEANFILES = guess-index.lisp

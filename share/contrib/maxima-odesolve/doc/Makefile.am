@@ -19,3 +19,5 @@ AM_MAKEINFOHTMLFLAGS = --no-split
 info_TEXINFOS = kovacicODE.texi
 
 EXTRA_DIST = maxima-odesolve-index.lisp
+
+CLEANFILES = maxima-odesolve-index.lisp

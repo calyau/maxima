@@ -1687,7 +1687,6 @@ if test x"${ecl}" = xtrue ; then
 		echo "Compiling maxima using \"${ECL_NAME}\""
 	else
 		echo "ECL enabled. Executable name: \"${ECL_NAME}\""
-		AC_MSG_ERROR(For ECL out-of-tree builds aren't supported. See src/maxima.system for details.)
 	fi
 fi
 
@@ -1696,7 +1695,6 @@ if test x"${abcl}" = xtrue ; then
 		echo "Compiling maxima using \"${ABCL_JAR}\""
 	else
 		echo "ABCL enabled. ABCL jarfile: \"${ABCL_JAR}\""
-		AC_MSG_ERROR(For ABCL out-of-tree builds aren't supported. See src/maxima.system for details.)
 	fi
 fi
 

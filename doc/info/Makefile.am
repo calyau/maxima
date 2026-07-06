@@ -86,6 +86,7 @@ maxima-index.lisp: build_index.pl maxima.info
 # index to prevent spurious warnings.  Then after it's done, run
 # maxima to verify the index.
 maxima-index-html.lisp : index.html build-html-index.lisp
+	$(MAKE) -C $(top_builddir)/src
 	../../maxima-local --no-init --preload=$(top_srcdir)/doc/info/build-html-index.lisp --batch-string='build_and_dump_html_index("./*.html");'
 	../../maxima-local --no-init --verify-html-index --batch-string="quit();"
 
@@ -130,8 +131,9 @@ uninstall-maxima-index: maxima-index.lisp maxima-index-html.lisp
 clean-local: clean-info clean-html
 
 clean-info:
-	rm -f $(wildcard maxima.info* maxima-index.lisp maxima-index-html.lisp)
-	rm -f maxima.fns
+	rm -f $(wildcard maxima.info* maxima-info.info* maxima-index.lisp maxima-index-html.lisp)
+	rm -f maxima.fns build-html-index.log
+	rm -f $(patsubst $(srcdir)/%.texi.m4,%.texi,$(wildcard $(srcdir)/*.texi.m4))
 
 clean-html:
 	rm -f $(wildcard *.html) \
