@@ -29,6 +29,28 @@ with n=startnum */
     
 );
 
+/* %wc_subtol_merges returns the list of substitutions that merge all
+detailled tolerances tol[n,m] contained in wc_x into their common tol[n]
+by dropping every subscript but the first one. */
+
+%wc_subtol_merges(wc_x):=block([wc_substs:[]],
+    for wc_tol in %wc_tols(wc_x) do
+        if subvarp(wc_tol) and length(args(wc_tol))>1 then
+            push(wc_tol=tol[first(args(wc_tol))],wc_substs),
+    wc_substs
+);
+
+/* %wc_merge_ewc_subtols merges all detailled tolerances tol[n,m] contained
+in wc_x into their common tol[n] by dropping every subscript but the first
+one. Detailled tolerances like tol["R_1","initial"] and tol["R_1","aging"]
+describe contributions that are orthogonal to each other, which the rss
+methods profit from. The EWC methods only look at the extreme cases anyway,
+so after this merge they get away with fewer tol[n], which saves memory
+and computing power; the merged contributions are treated as fully
+correlated from then on. */
+
+%wc_merge_ewc_subtols(wc_x):=psubst(%wc_subtol_merges(wc_x),wc_x);
+
 /* wc_tolappend appends a list of element values to an independent list of element
 values renaming all tol[n] found in one list if they would coincide with a tol[n]
 with the same n in the other. */
@@ -64,19 +86,28 @@ values between -1 and 1. */
 
 wc_systematic(wc_x,[wc_valuespertol]):=block(
     [
-        %wc_tols:%wc_tols(wc_x),
+        %wc_tols,
         /* The index x of the tol[x] being currently assigned a value to */
         wc_tolnum,
         wc_numoftols
     ],
-    wc_numoftols:length(%wc_tols),
-    
     /* Default the number of values per tolerance parameter to 3 */
     if wc_valuespertol=[] then wc_valuespertol:wc_defaultvaluespertol else wc_valuespertol:first(wc_valuespertol),
     if not integerp(wc_valuespertol) then
        error("wc_systematic: The optional parameter needs to be an integer"),
+    /* Negative values mean: use the monte carlo method with that many samples.
+       No merging of detailled tolerances in this case: monte carlo needs the
+       orthogonal contributions to stay independent. */
+    if wc_valuespertol < 0 then
+       return(wc_montecarlo(wc_x,-wc_valuespertol)),
     if wc_valuespertol < 2 then
-       error("wc_systematic: The optional parameter needs to be >= 2"),
+       error("wc_systematic: The optional parameter needs to be >= 2 or negative"),
+    /* The extreme worst case only lies in the corners of the tol[n] space,
+       so merging the detailled tolerances tol[n,m] into tol[n] saves memory
+       and computing power. */
+    wc_x:%wc_merge_ewc_subtols(wc_x),
+    %wc_tols:%wc_tols(wc_x),
+    wc_numoftols:length(%wc_tols),
     makelist(
         (
             subst(
@@ -183,6 +214,12 @@ block([wc_allvalues, wc_param1, min, wc_typ,max],
         error("wc_mintypmax_num: The optional parameter needs to be an integer"),
     if (wc_param1 > -1) and (wc_param1 < 2) then
         error("wc_mintypmax_num: The optional parameter needs to be <= -1 or >= 2"),
+
+    /* For the systematic (EWC) case merge the detailled tolerances tol[n,m]
+       into tol[n]; the monte carlo case (negative wc_param1) needs the
+       orthogonal contributions to stay independent. */
+    if wc_param1 > 0 then
+        wc_equation:%wc_merge_ewc_subtols(wc_equation),
 
     wc_allvalues:makelist(
         apply(
@@ -291,6 +328,28 @@ wc_defaultsigma:6;
 wc_defaultvaluespertol:3;
 defstruct(wc_rssparams(sigma,mu));
 
+/* wc_tol_sigmas declares that for the given tol[n] (or detailled tolerance
+tol[n,m]) the range -1...1 represents wc_sigmas sigmas of its tolerance
+distribution instead of wc_defaultsigma. As we cannot assign properties to
+an array element like tol[n] these declarations are stored in the hashed
+array %wc_tolsigmas. */
+wc_tol_sigmas(wc_tol,wc_sigmas):=(
+    if freeof('tol,wc_tol) or not subvarp(wc_tol) then
+        error("wc_tol_sigmas: The first parameter needs to be a tol[n] or tol[n,m]"),
+    if not numberp(wc_sigmas) then
+        error("wc_tol_sigmas: The second parameter needs to be a number"),
+    if wc_sigmas<=0 then
+        error("wc_tol_sigmas: The second parameter needs to be positive"),
+    %wc_tolsigmas[wc_tol]:wc_sigmas
+);
+
+/* %wc_gettolsigmas returns how many sigmas of the tolerance distribution of
+wc_tol the range -1...1 represents: the value declared with wc_tol_sigmas,
+or wc_defaultsigma if none was declared. */
+%wc_gettolsigmas(wc_tol):=block([wc_sigmas:%wc_tolsigmas[wc_tol]],
+    if numberp(wc_sigmas) then wc_sigmas else wc_defaultsigma
+);
+
 /* Determines the rss parameters of the tolerance of x */
 wc_getrssparams(x):=block([tols:[],derivates_linearized,derivates,sigmaval,meanval,diffofwctol],
     /* Compile a list of tolerances */
@@ -310,8 +369,10 @@ wc_getrssparams(x):=block([tols:[],derivates_linearized,derivates,sigmaval,meanv
             abs(wc_typicalvalues(x)-%wc_typicalvalues(subst(i=-1,x),i))
         ),
         i,tols),
-    /* Compile the RMS value assuming that all input tolerances were 6-sigma ones*/
-    sigmaval:sqrt(lsum(i^2,i,derivates/wc_defaultsigma)),
+    /* Compile the RMS value, honoring how many sigmas wide the range -1...1
+       of each input tolerance is (wc_defaultsigma, unless wc_tol_sigmas
+       declared something else for it) */
+    sigmaval:sqrt(lsum(i^2,i,map(lambda([wc_t,wc_d],wc_d/%wc_gettolsigmas(wc_t)),tols,derivates))),
     return(new(wc_rssparams(sigmaval,meanval)))
 );
 
@@ -325,15 +386,19 @@ wc_distrib2rssparams(data):=block([wc_mu,wc_sigma,wc_len],
     return(new(wc_rssparams(wc_sigma,wc_mu)))
 );
 
-/* Generates input data for the tolerance parameters from measurement data */
+/* Generates input data for the tolerance parameters from measurement data.
+By construction the range -1...1 of tol spans wc_sigmas sigmas of the
+measured distribution, so this is also recorded via wc_tol_sigmas in order
+to keep the root sum square functions consistent with the generated data. */
 wc_distrib2toldata(tol,data,[sigmas]):=block(
     [wc_rssparams:wc_distrib2rssparams(data),wc_sigmas:wc_defaultsigma],
     if length(sigmas) > 1 then error("wc_distrib2toldata: Too many optional parameters"),
-    if length(sigmas) = 1 then 
+    if length(sigmas) = 1 then
     (
         if not numberp(sigmas[1]) then error("wc_distrib2toldata: sigmas needs to be a number"),
         wc_sigmas:sigmas[1]
     ),
+    wc_tol_sigmas(tol,wc_sigmas),
     wc_rssparams@sigma*wc_sigmas*tol+wc_rssparams@mu
 );
 
@@ -387,7 +452,9 @@ wc_ewc_simplify(x,[defs]):=block(
         /* Is the tol[n] we merge as many tolerances as we can to positive? */
         wc_mergedtoldirection:1,
         /* x with defs temporarily substituted into it */
-        x_defs
+        x_defs,
+        /* the substitutions that merge the detailled tolerances tol[n,m] */
+        wc_subtolmerges
     ],
 
     /* substitute the tol[n] our defs give us values to into x */
@@ -397,6 +464,14 @@ wc_ewc_simplify(x,[defs]):=block(
             'wc_success
         ) # ['wc_success] then
             error ("wc_ewc_simplify: parameters 2...n need to be assignments to tol[n]."),
+
+    /* Merge the detailled tolerances tol[n,m] into tol[n]. The list of
+       merges is compiled from x_defs so that sub-tolerances that were given
+       a value by defs (and therefore no more appear in x_defs) are left
+       untouched in x. */
+    wc_subtolmerges:%wc_subtol_merges(x_defs),
+    x_defs:psubst(wc_subtolmerges,x_defs),
+    x     :psubst(wc_subtolmerges,x),
 
     /* Now let's see we can merge the remaining tol[n] */
     wc_toltyp:wc_typicalvalues(x_defs),
