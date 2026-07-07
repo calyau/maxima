@@ -988,11 +988,11 @@ block([start : elapsed_real_time()],
  [100, 10000, 10000000, true]$
 
 /* #4273 limit(integrate(f(x)*g(x), x), x, a) incorrect results */
- limit(integrate (abs(x) * cos(x), x), x, 1);
- 'limit('integrate(cos(x)*abs(x),x),x,1);
+ limit(integrate (unit_step(x) * cos(x), x), x, 1);
+ 'limit('integrate(unit_step(x) * cos(x),x),x,1);
 
-limit(integrate (abs(x) * exp(x), x), x, 1);
-'limit(integrate (abs(x) * exp(x), x), x, 1);
+limit(integrate (unit_step(x) * exp(x), x), x, 1);
+'limit(integrate (unit_step(x) * exp(x), x), x, 1);
 
 limit(integrate (bessel_j(0, x) * exp(x), x), x, 1);
 'limit(integrate (bessel_j(0, x) * exp(x), x), x, 1);
