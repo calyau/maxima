@@ -993,6 +993,9 @@ in the interval of integration.")
                              (add-unique x))
                            ((varyingp y)
                              (add-unique y))))))
+                   ;; signum(x) has a discontinuity at x = 0.
+                   ((eq op '%signum)
+                     (add-unique (first args)))
                    ;; gamma_incomplete(a, z), unless a is a positive integer, has a
                    ;; discontinuity at z = 0 and when crossing the negative real axis.
                    ((eq op '%gamma_incomplete)
@@ -1070,7 +1073,7 @@ in the interval of integration.")
 	(t
 	 (cond ((or (polyinx e ivar ())
 		    (and (not (involve-var e ivar '(%log %asin %acos %atan %asinh %acosh %atanh %atan2
-						%gamma_incomplete %expintegral_ei)))
+						%gamma_incomplete %expintegral_ei %signum)))
 			 (free ($denom e) ivar)))
 		;; It's easy if we have a polynomial.  I (rtoy) think
 		;; it's also easy if the denominator is free of the
