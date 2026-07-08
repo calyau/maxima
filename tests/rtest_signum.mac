@@ -273,6 +273,83 @@ signum(3.4 + %i/15);
 signum(3.4b0 + %i/15);
 1.96040749344455786124536b-2*%i+9.99807821656724509235131b-1$
 
+
+/* Simplifications involving signum */
+
+signum(x)^4;
+signum(x)^2;
+
+signum(x)^7;
+signum(x);
+
+1/signum(x)^6;
+1/signum(x)^2;
+
+1/signum(x)^3;
+1/signum(x);
+
+signum(x)^2;
+signum(x)^2;
+
+1/signum(x)^2;
+1/signum(x)^2;
+
+signum(x^3);
+signum(x);
+
+signum(x^4);
+signum(x)^2;
+
+signum(x^-1);
+1/signum(x);
+
+signum(sqrt(x));
+sqrt(signum(x));
+
+signum(x^%i);
+signum(x^%i);
+
+signum(x^(2 + %i));
+signum(x^(2 + %i));
+
+assume(notequal(x, 0));
+[notequal(x, 0)];
+
+signum(x)^2;
+1;
+
+1/signum(x)^2;
+1;
+
+signum(x)^4;
+1;
+
+signum(x)^3;
+signum(x);
+
+1/signum(x);
+1/signum(x);
+
+forget(notequal(x, 0));
+[notequal(x, 0)];
+
+declare(z, complex);
+done;
+
+signum(z^3);
+signum(z)^3;
+
+signum(z^4);
+signum(z)^4;
+
+remove(z, complex);
+done;
+
+
+/***********************************************************/
+/* Guard against leaks, leave this at the end of the file! */
+/***********************************************************/
+
 facts();
 []$
 

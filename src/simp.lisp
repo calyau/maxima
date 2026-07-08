@@ -1358,8 +1358,17 @@
 		 ((and (mexptp x) (eq '$neg ($csign (second x))))
 		  ($cabs x))
 
-		 ;; When x # 0, we have abs(signum(x)) = 1.
+		 ;; abs(signum(x)) = 1 for signum(x) real and non-zero.
 		 ((and (eq '$pn sgn) (consp x) (consp (car x)) (eq (caar x) '%signum)) 1)
+         
+         ;; abs(signum(x)^int) = 1 for signum(x)^int real and non-zero
+		 ((and (eq '$pn sgn)
+		       (mexptp x)
+		       (consp (cadr x))
+		       (consp (caadr x))
+		       (eq (caaadr x) '%signum)
+		       ($featurep (caddr x) '$integer))
+		   1)
 		 		  		 		 
 		 ;; multiplicative property: abs(x*y) = abs(x) * abs(y). We would like
 		 ;; assume(a*b > 0), abs(a*b) --> a*b. Thus the multiplicative property
@@ -1904,6 +1913,11 @@
 		 ;; Reflection rule: signum(-x) --> -signum(x).
 		 ((great (neg x) x)
 		  (neg (take '(%signum) (neg x))))
+         
+         ;; signum(z^real) = signum(z)^real
+         ((and (mexptp x)
+               (apparently-real-to-judge-by-$csign-p (caddr x)))
+           (power (ftake '%signum (cadr x)) (caddr x)))
 	
 		 ;; nounform return
 		 (t (give-up)))))))
@@ -1995,7 +2009,7 @@
 		      1 t)))))
 
 (defun simpexpt (x y z)
-  (prog (gr pot check res *rulesw* w mlpgr mlppot)
+  (prog (gr pot check res *rulesw* w mlpgr mlppot arg-sign)
      (setq check x)
      (twoargcheck x)
      (cond (z (setq gr (cadr x) pot (caddr x)) (go cont)))
@@ -2105,6 +2119,22 @@
                              gr))
                 (return (mul (power (cadr gr) (add pot 1))
                              (inv gr)))))
+           
+           ;; signum(real)^int = signum(real)^{-2, -1, 1, 2} or 1, depending on
+           ;; the sign and parity of int, and whether real can be zero.
+           ((and (eq (caar gr) '%signum)
+                 (integerp pot)
+                 (not (member (setq arg-sign ($csign (cadr gr))) '($complex $imaginary))))
+             (if (member arg-sign '($zero $pnz $pz $nz))
+               ;; real can be zero, so if the exponent is negative, it has to stay negative.
+               (let ((new-pot (* (signum pot) (if (evenp pot) 2 1))))
+                 (if (= new-pot pot)
+                   (go up)
+                   (return (power gr new-pot))))
+               ;; real cannot be zero. Simplify signum(real)^int to 1 for even
+               ;; int and signum(real) for odd int.
+               (return (if (evenp pot) 1 gr))))
+           
            ((eq (caar gr) 'mequal)
             (return (eqtest (list (ncons (caar gr))
                                   (power (cadr gr) pot)

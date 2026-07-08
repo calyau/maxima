@@ -418,7 +418,7 @@ abs(%i^2);
 abs((%i+x)^2 + 1);
 abs((%i + x)^2 + 1);
 
-(reset(domain), 0);
+(reset(domain), remove([a, b], real), 0);
 0;
 
 /* SF bug #2549: "function sqrt gives incorrect result"
@@ -486,3 +486,47 @@ abs(z)^2;
 
 abs(sqrt(sin(theta) - 1));
 abs(sqrt(sin(theta) - 1))$
+
+
+/* Simplifications involving signum */
+
+abs(signum(1/x));
+1;
+
+abs(1/signum(x)^3);
+1;
+
+abs(signum(x)^2);
+abs(signum(x))^2;
+
+assume(notequal(x, 0));
+[notequal(x, 0)];
+
+abs(signum(x)^2);
+1;
+
+forget(notequal(x, 0));
+[notequal(x, 0)];
+
+declare(z, complex);
+done;
+
+abs(signum(1/z));
+1/abs(signum(z));
+
+abs(signum(z)^3);
+abs(signum(z))^3;
+
+remove(z, complex);
+done;
+
+
+/***********************************************************/
+/* Guard against leaks, leave this at the end of the file! */
+/***********************************************************/
+
+facts();
+[]$
+
+contexts;
+[initial, global]$
