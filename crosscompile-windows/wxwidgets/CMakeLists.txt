@@ -10,8 +10,8 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXWIDGETSVERSION "3.3.2")
-set(WXWIDGETS_MD5 "361dd5312350f49c41829f62083fdc1e")
+set(WXWIDGETSVERSION "3.3.3")
+set(WXWIDGETS_MD5 "6b80ff2eae7043a12e6ba3d4ebd7204d")
 set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
 
 # WxWidgets Webview/Edge needs this package
