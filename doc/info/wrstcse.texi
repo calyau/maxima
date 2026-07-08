@@ -347,6 +347,15 @@ to @var{wc_defaultvaluespertol}. Negative values for @var{num} make
 @code{wc_systematic} use the monte carlo method with @var{num} samples,
 instead.
 
+Detailled tolerances with more than one subscript, like
+@code{tol["R_1","initial"]} and @code{tol["R_1","aging"]}, describe
+contributions that are orthogonal to each other, which the rss methods
+profit from. Since the extreme worst case only lies in the corners of the
+@code{tol[n]} space, @code{wc_systematic} merges them into their common
+@code{tol[n]} (here: @code{tol["R_1"]}) first, which saves memory and
+computing power. The monte carlo method (negative @var{num}) keeps them
+independent, instead.
+
 If an equation uses the following values with tolerances:
 
 @code{vals:[R_1=100+tol[1],R_2=100+tol[2]];}
@@ -415,6 +424,11 @@ as many @code{tol[n]}, as possible. The result is an expression that might run m
 faster through @code{wc_mintypmax} and @code{wc_systematic}, but that, if the derivate
 of @var{expression} doesn't change sign in the @var{tol[n]} space, still yields the
 same results for the brute-force approaches to worst-case analysis.
+
+As a first step, detailled tolerances with more than one subscript, like
+@code{tol["R_1","initial"]} and @code{tol["R_1","aging"]}, are merged into
+their common @code{tol[n]} (here: @code{tol["R_1"]}). Giving a detailled
+tolerance a value in @var{definitions} excempts it from this merge, too.
 
 Note that changing the number of @var{tol[n]} will change the statistical distribution
 of the results over the @var{tol[n]} space and therefore will change the statistical
@@ -700,6 +714,11 @@ of @var{var} that solves @var{equation}. Expects the value of @var{var} to be in
 @var{range_min}...@var{range_max}. Additionally expects @code{lhs(equation)-rhs(equation)}
 to change sign within that range.
 
+Unless @var{n} is negative (which selects the monte carlo method), detailled
+tolerances with more than one subscript like @code{tol["R_1","aging"]} are
+merged into their common @code{tol[n]} first, the same way
+@mref{wc_systematic} does.
+
 See also @mrefcomma{wc_mintypmax}
 
 Example:
@@ -933,6 +952,109 @@ Example:
 @end example
 @end deffn
 
+@anchor{wc_getrssparams}
+@deffn {Function} wc_getrssparams (@var{expression})
+
+Determines the parameters of a root sum square tolerance calculation for
+@var{expression}: Returns a @code{wc_rssparams} structure whose field
+@code{mu} contains the typical value of @var{expression} and whose field
+@code{sigma} contains the sigma of the distribution of @var{expression},
+assuming that all input tolerances are gauss-shaped and orthogonal to each
+other.
+
+How many sigmas of an input value's tolerance distribution its range of
+@var{tol[n]}=-1...1 corresponds to is taken from @mrefcomma{wc_defaultsigma}
+unless @mref{wc_tol_sigmas} declared something else for that tolerance.
+
+See also @mref{wc_mintypmax_rss} and @mrefdot{wc_distrib2rssparams}
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c ratprint:false$
+@c wc_getrssparams(100*(1+0.01*tol[1])+100*(1+0.01*tol[2]));
+@c ===end===
+@example maxima
+(%i1) load("wrstcse")$
+(%i2) ratprint:false$
+@group
+(%i3) wc_getrssparams(100*(1+0.01*tol[1])+100*(1+0.01*tol[2]));
+(%o3)         wc_rssparams(sigma = 0.23570226039551585, mu = 200)
+@end group
+@end example
+@end deffn
+
+@anchor{wc_distrib2rssparams}
+@deffn {Function} wc_distrib2rssparams (@var{data})
+
+Determines root sum square parameters from measured data: Returns a
+@code{wc_rssparams} structure containing the mean value (field @code{mu})
+and the standard deviation (field @code{sigma}) of the list of sample
+values @var{data}.
+
+See also @mref{wc_getrssparams} and @mrefdot{wc_distrib2toldata}
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c ratprint:false$
+@c wc_distrib2rssparams([1,2,2,1]);
+@c ===end===
+@example maxima
+(%i1) load("wrstcse")$
+(%i2) ratprint:false$
+@group
+(%i3) wc_distrib2rssparams([1,2,2,1]);
+                                             1          3
+(%o3)                wc_rssparams(sigma = -------, mu = -)
+                                          sqrt(3)       2
+@end group
+@end example
+@end deffn
+
+@anchor{wc_distrib2toldata}
+@deffn {Function} wc_distrib2toldata (@var{tol}, @var{data}, [@var{sigmas}])
+
+Generates the value of an input parameter, expressed by the tolerance
+parameter @var{tol} (a @var{tol[n]} or a detailled tolerance
+@var{tol[n,m]}), from the distribution of the measured sample values
+@var{data}. The range @var{tol}=-1...1 of the result spans @var{sigmas}
+sigmas of the measured distribution; if no @var{sigmas} is given it
+defaults to @mrefdot{wc_defaultsigma}
+
+This sigma width is also declared via @mref{wc_tol_sigmas} so that the
+root sum square functions stay consistent with the generated data, as the
+example shows: feeding the generated value back into
+@mref{wc_getrssparams} reproduces the measured distribution even though
+@var{sigmas} differs from @mrefdot{wc_defaultsigma}
+
+See also @mref{wc_distrib2rssparams} and @mrefdot{wc_tol_sigmas}
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c ratprint:false$
+@c wc_distrib2toldata(tol[1],[1,2,2,1],3);
+@c wc_getrssparams(%);
+@c ===end===
+@example maxima
+(%i1) load("wrstcse")$
+(%i2) ratprint:false$
+@group
+(%i3) wc_distrib2toldata(tol[1],[1,2,2,1],3);
+                                              3
+(%o3)                          sqrt(3) tol  + -
+                                          1   2
+@end group
+@group
+(%i4) wc_getrssparams(%);
+                                             1          3
+(%o4)                wc_rssparams(sigma = -------, mu = -)
+                                          sqrt(3)       2
+@end group
+@end example
+@end deffn
+
 @anchor{wc_defaultsigma}
 @defvr {Option variable} wc_defaultsigma
 Default value: @code{6}
@@ -1002,6 +1124,64 @@ Example:
 @end group
 @end example
 @end defvr
+
+@anchor{wc_tol_sigmas}
+@deffn {Function} wc_tol_sigmas (@var{tol}, @var{sigmas})
+
+Declares that for the given @var{tol[n]} (or detailled tolerance
+@var{tol[n,m]}) the range -1...1 represents @var{sigmas} sigmas of its
+tolerance distribution instead of @mrefdot{wc_defaultsigma} This allows to
+mix input values whose tolerance ranges are known to different confidence
+levels in one root sum square calculation.
+
+The declarations are stored in the hashed array @code{%wc_tolsigmas};
+@code{remarray(%wc_tolsigmas)} therefore makes all tolerances use
+@mref{wc_defaultsigma} again.
+
+See also @mref{wc_defaultsigma} and @mrefdot{wc_mintypmax_rss}
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c ratprint:false$
+@c vals: [
+@c    R_1= 1000.0*(1+tol[1]*.01),
+@c    R_2= 1000.0*(1+tol[2]*.01)
+@c  ];
+@c assume(U_In>0);
+@c divider:U_Out=U_In*R_1/(R_1+R_2);
+@c wc_tol_sigmas(tol[1],3)$
+@c lhs(divider)=wc_mintypmax_rss(subst(vals,rhs(divider)),6);
+@c ===end===
+@example maxima
+(%i1) load("wrstcse")$
+(%i2) ratprint:false$
+@group
+(%i3) vals: [
+   R_1= 1000.0*(1+tol[1]*.01),
+   R_2= 1000.0*(1+tol[2]*.01)
+ ];
+(%o3) [R_1 = 1000.0 (0.01 tol  + 1),
+                             1
+                                    R_2 = 1000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+(%i4) assume(U_In>0);
+(%o4)                            [U_In > 0]
+@group
+(%i5) divider:U_Out=U_In*R_1/(R_1+R_2);
+                                R_1 U_In
+(%o5)                   U_Out = ---------
+                                R_2 + R_1
+@end group
+(%i6) wc_tol_sigmas(tol[1],3)$
+@group
+(%i7) lhs(divider)=wc_mintypmax_rss(subst(vals,rhs(divider)),6);
+(%o7) U_Out = [min = 0.4943817387500006 U_In, typ = 0.5 U_In,
+ max = 0.5056182612499994 U_In, Fail = 0.0019731752898266565 ppm]
+@end group
+@end example
+@end deffn
 
 @anchor{wc_defaultvaluespertol}
 @defvr {Option variable} wc_defaultvaluespertol
