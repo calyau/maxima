@@ -11,11 +11,13 @@
 # updated setup-file automatically.
 
 set(WXWIDGETSVERSION "3.3.3")
-set(WXWIDGETS_MD5 "6b80ff2eae7043a12e6ba3d4ebd7204d")
+set(WXWIDGETS_MD5 "a804b52a1faff69d77bdfbf8bc50ce5a")
 set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
 
 # WxWidgets Webview/Edge needs this package
-file(DOWNLOAD https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/1.0.4022.49 ${CMAKE_SOURCE_DIR}/downloads/microsoft.web.webview2.1.0.4022.49.nupkg EXPECTED_HASH MD5=c6afa3240de0b466b6bb652a3fd1ae66 SHOW_PROGRESS)
+set(MSWEBVIEWVERSION "1.0.4078.44")
+set(MSWEBVIEW_MD5 "f6e097a767ff6840d55049876ba2dee1")
+file(DOWNLOAD https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/${MSWEBVIEWVERSION} ${CMAKE_SOURCE_DIR}/downloads/microsoft.web.webview2.${MSWEBVIEWVERSION}.nupkg EXPECTED_HASH MD5=${MSWEBVIEW_MD5} SHOW_PROGRESS)
 
 externalproject_add(wxwidgets
   URL "${WXWIDGETS_URL}"
