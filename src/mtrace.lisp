@@ -181,7 +181,9 @@
     (defmacro trace-options (x)
       `($get ,x '$trace_options))
     (defmacro trace-oldfun (x)
-      `(mget ,x 'trace-oldfun)))
+      `(mget ,x 'trace-oldfun))
+    (defmacro trace-hook (x)
+      `(mget ,x 'trace-hook)))
 
 ;;; User interface functions.
 
@@ -233,11 +235,16 @@
   (cond ((not (symbolp (setq fun (getopr fun))))
 	 (mtell (intl:gettext "trace: argument is apparently not a function or operator: ~M~%") fun)
 	 nil)
-	((trace-p fun)
-	 ;; Things which redefine should be expected to reset this
-	 ;; to NIL.
-	 (if (not trace-allp) (mtell (intl:gettext "trace: function ~@:M is already traced.~%") fun))
+	((and (trace-p fun) trace-allp)
+	 ;; If trace(all) is invoked, quietly skip already traced functions.
 	 nil)
+	(t
+	 ;; If it's already traced, untrace it first before proceeding.
+	 (when (trace-p fun)
+	   (mtell (intl:gettext "trace: function ~@:M is already traced; untracing it first.~%") fun)
+	   (macsyma-untrace-sub fun handler ilist))
+	 ;; Now proceed with standard tracing.
+	 (cond
 	((member fun hard-to-trace :test #'eq)
 	 (mtell (intl:gettext "trace: ~@:M cannot be traced.~%") fun)
 	 nil)
@@ -253,7 +260,7 @@
 	 (list (getop fun)))
 	(t
 	 (mtell (intl:gettext "trace: ~@:M is an unknown type of function.~%") fun)
-	 nil)))
+	 nil)))))
 
 (defvar trace-handling-stack ())
 
@@ -296,6 +303,7 @@
   (or (member fun trace-handling-stack :test #'eq)
       (setf (trace-level fun) nil))
   (setf (trace-type fun) nil)
+  (setf (trace-hook fun) nil)
   (setq ilist (delete (getop fun) ilist :test #'eq))
   (list fun))
 
@@ -326,6 +334,7 @@
 
 (defun trace-fshadow (fun type value)
   (let ((shadow (get! type 'shadow)))
+    (setf (trace-hook fun) value)
     (cond ((and (eq type 'mexpr)
 		(mget fun 'mfexprp))
 	   ; We're tracing an mexpr with special evaluation rules (mfexpr).
@@ -375,10 +384,17 @@
 	      (safe-get fun 'mfexpr))
 	 (remprop fun 'mfexpr))
 	((member type '(expr subr) :test #'eq)
-	 (let ((oldf (trace-oldfun fun)))
+	 (let ((oldf (trace-oldfun fun))
+	       (currentf (and (fboundp fun) (symbol-function (or (get fun 'impl-name) fun))))
+	       (hookf (trace-hook fun)))
+	  (if (eq currentf hookf)
+	   ;; Function hasn't been redefined, safe to restore old definition.
 	   (if (not (null oldf))
 	       (setf (symbol-function (or (get fun 'impl-name) fun))  oldf)
-	       (fmakunbound fun))))
+	       (fmakunbound fun))
+	   ;; Function has been redefined (e.g. by loading a Lisp file).
+	   ;; Don't restore the old definition.
+	   (mtell (intl:gettext "untrace: function ~@:M was redefined while traced; leaving new definition intact.~%") fun))))
 	(t (remprop fun (get! type 'shadow))
 	   (fmakunbound fun))))
 
