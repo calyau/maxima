@@ -1579,7 +1579,7 @@ ignoring dummy variables and array indices."
   (cond ((member val '($inf $infinity) :test #'eq)
 	 (setq e (maxima-substitute (m^t 'x -1) var e)))
 	((eq val '$minf)
-	 (setq e (maxima-substitute (m^t -1 (m^t 'x -1)) var e)))
+	 (setq e (maxima-substitute (m- (m^t 'x -1)) var e)))
 	((eq val '$zerob)
 	 (setq e (maxima-substitute (m- 'x) var e)))
 	((eq val '$zeroa)
