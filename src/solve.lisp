@@ -99,7 +99,7 @@
        (t
         (setq varl
               (cond (($listp varl) (remove-duplicates
-                                    (cdr varl)))
+                                    (cdr varl) :test #'equal))
                     (t (list varl))))))
 
      ;; Some sanity checks and warning messages.

@@ -3755,6 +3755,12 @@ done;
 0b0;
 
 
+/* Bug #4862: "solve doesn't deduplicate subscripted variables correctly" */
+
+solve(p[1] = 5, [p[1], p[1]]);
+[p[1] = 5];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
