@@ -3636,7 +3636,7 @@ ignoring dummy variables and array indices."
       ((and (eql xlim 1) (eql ylim '$inf))
        (div '$%pi 2))
       ((and (eql xlim -1) (eql ylim 0))
-       '$ind)
+       (if (eq t (meqp y 0)) '$%pi '$ind))
 					 
       ;; Use direct substitution when ylim-z # 0 or xlim-z > 0. We need
       ;; to check that xlim-z & ylim-z are real too.

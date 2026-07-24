@@ -1109,3 +1109,9 @@ infinity;
 
 limit(acos(x), x, minf);
 infinity;
+
+
+/* Bug #4864: "limit(atan2(0, cos(x)), x, %pi) gives ind instead of %pi" */
+
+limit(atan2(0, cos(x)), x, %pi);
+%pi;
