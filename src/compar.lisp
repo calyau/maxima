@@ -1920,6 +1920,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (sign (cadr x))
     (cond ((member sign '($pos $zero) :test #'eq))
 	  ((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
+	  ((eq t (mnqp 0 (cadr x))) (setq sign '$pos)) ; abs(nonzero) > 0
 	  (t (setq sign '$pz minus nil evens (nconc odds evens) odds nil)))))
 
 (defun sign-asin/acos/atanh (x)

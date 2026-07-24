@@ -1551,7 +1551,7 @@ nz$
 /* SF bug #2910: "In maxima 5.35.1 powerseries fail if there complex root" */
 
 niceindices(powerseries(1/(z+%i),z,0));
-'sum((-1)^((i-1)/2)*z^i,i,0,inf);
+-%i*'sum((-1)^(i/2)*z^i,i,0,inf);
 
 /* Tests for #4462 sign(1/sqrt(x))*/
 sign(1/sqrt(x));
@@ -1821,6 +1821,12 @@ nz;
 
 (forget(x > 0, x <= %pi, y > %pi/2, y <= 3*%pi/2), killcontext(learndata), 0);
 0;
+
+
+/* Bug #4863: "sign(abs(x+%i)) returns pz instead of pos" */
+
+sign(abs(x+%i));
+pos;
 
 
 /* Leave this at the end of the file! */
