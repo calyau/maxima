@@ -1547,7 +1547,7 @@
     
     (cond
       ((or (member sign-order '($complex $imaginary))
-           (member sign-arg '($complex '$imaginary)))
+           (member sign-arg '($complex $imaginary)))
        (risplit-noun expr))
       ;; At this point order and arg are real valued.
       ;; We have to look for some special cases involing a negative arg

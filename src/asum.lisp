@@ -457,7 +457,7 @@
 	      neg-part)
 	     (t (m+ neg-part pos-part)))))
 	((or (eq lo '$minf)
-	     (alike1 lo '((mtimes simp) -1 '$inf)))
+	     (alike1 lo '((mtimes simp) -1 $inf)))
 	 (simpsum2 (maxima-substitute (m- i) i exp) i (m- hi) '$inf))
 	(t (simpsum2 exp i lo hi))))
 

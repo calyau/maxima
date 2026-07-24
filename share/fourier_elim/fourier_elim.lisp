@@ -31,7 +31,7 @@
 	(($bfloatp x) (number-sign (second x)))
 	((eq '$minf x) '$neg)
 	((member x '($inf $%pi $%e $%phi) :test #'eq) '$pos)
-	((member x '($%i '$infinity) :test #'eq) '$complex)
+	((member x '($%i $infinity) :test #'eq) '$complex)
 	(($constantp x) (constant-expression-sign x))
 	(t nil)))
 	 
