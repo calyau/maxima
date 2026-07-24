@@ -1100,3 +1100,12 @@ infinity;
 
 limit(asin(x), x, minf);
 infinity;
+
+
+/* Bug #4860: "simplim%acos: acos(±inf) returns und rather than infinity" */
+
+limit(acos(x), x, inf);
+infinity;
+
+limit(acos(x), x, minf);
+infinity;

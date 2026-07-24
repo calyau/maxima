@@ -168,6 +168,7 @@ Bug fixes for numbered bugs:
  * \#4846 psubstitute doesn't validate its first argument
  * \#4847 pop evaluates its argument twice, can cause bugs
  * \#4857 simplim%asin: mis-quoted member list — asin(inf) / asin(infinity) never matched
+ * \#4860 simplim%acos: acos(±inf) returns und rather than infinity
 
 Bug fixes for unnumbered bugs:
 -----------------------------

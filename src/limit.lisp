@@ -3784,8 +3784,9 @@ ignoring dummy variables and array indices."
     (cond 
 	   ((member lim '($zerob $zeroa)) ;acsos(zerob or zeroa) = %pi/2
 	     (ftake '%acos (ridofab lim)))
-	  ((member lim '($und $ind $inf $minf $infinity)) ;boundary cases
-	   '$und)
+	  ((member lim '($minf $inf $infinity)) '$infinity)
+	  ((eq lim '$ind) '$ind)                 ;acos(ind)=ind 
+	  ((eq lim '$und) '$und)                 ;acos(und)=und
 	  ((not (successful-limit-result-p lim))
 	    (throw 'limit nil))
 	  ((in-domain-of-asin lim) ;direct substitution-both asin & acos have the same branches
