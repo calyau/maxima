@@ -1902,8 +1902,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun sign-log (x)
   (setq x (cadr x))
+  (sign x)
   (setq sign
-	(cond ((eq t (mgrp x 0))
+	(cond ((eq sign '$zero) (log0-err `((%log) ,x))) ; log(0) is undefined.
+          ((member sign '($pos $pz)) ; accept $PZ - we already handled definitely 0
 	       (cond ((eq t (mgrp 1 x)) '$neg)
 		     ((eq t (meqp x 1)) '$zero);; log(1) = 0.
 		     ((eq t (mgqp 1 x)) '$nz)
@@ -1913,7 +1915,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		     (t '$pnz)))
 	      ((and  *complexsign* (eql 1 (cabs x))) '$imaginary)
 	      (*complexsign* '$complex)
-	      (t '$pnz))))
+	      ((eq sign '$pnz) '$pnz)
+	      (t (imag-err `((%log) ,x))))))
 
 (defun sign-mabs (x)
   (let ((*complexsign* t))
@@ -2168,6 +2171,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun dbzs-err (x)
   (merror (intl:gettext "sign: division by zero in ~M") x))
+
+(defun log0-err (x)
+  (merror (intl:gettext "sign: encountered log(0) in ~M") x))
 
 ;; Return true iff e is an expression with operator op1, op2,...,or opn.
 

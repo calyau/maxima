@@ -1829,6 +1829,30 @@ sign(abs(x+%i));
 pos;
 
 
+/* Bug #4866: "csign(log(abs(x))) = complex" */
+
+csign(log(abs(x)));
+pnz;
+
+csign(imagpart(acos(x)));
+pnz;
+
+(assume(equal(x, 0)), 0);
+0;
+
+errcatch(csign(log(x)));
+[];
+
+(forget(equal(x, 0)), 0);
+0;
+
+
+/* Bug #4867: "sign(log(-1-x^2)) returns pnz" */
+
+errcatch(sign(log(-1-x^2)));
+[];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
