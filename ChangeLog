@@ -170,6 +170,7 @@ Bug fixes for numbered bugs:
  * \#4857 simplim%asin: mis-quoted member list — asin(inf) / asin(infinity) never matched
  * \#4860 simplim%acos: acos(±inf) returns und rather than infinity
  * \#4863 sign(abs(x+%i)) returns pz instead of pos
+ * \#4865 Some elementary integrals not solved by risch
 
 Bug fixes for unnumbered bugs:
 -----------------------------

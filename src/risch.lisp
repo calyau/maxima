@@ -830,12 +830,10 @@
 			     (polcoef s risch-gamma risch-var))))))
      (setq risch-y 0)
    loop
-     (setq yn (polcoef (ratnumerator tt) k risch-var)
-	   yd (r* (ratdenominator tt)	;DENOM MAY BE 0
-		  (cond ((zerop risch-alphar)
-			 (polcoef s risch-gamma risch-var))
-			(t
-			 (funcall denom)))))
+     (setq yn (polcoef (ratnumerator tt) (if (zerop risch-alphar) risch-gamma k) risch-var)
+      yd (r* (ratdenominator tt) ;DENOM MAY BE 0
+             (cond ((zerop risch-alphar) (polcoef s risch-gamma risch-var))
+                   (t (funcall denom)))))
      (cond ((rzerop yd)
 	    (cond ((pzerop yn)
 		   (setq k (1- k) risch-alphar (1- risch-alphar))

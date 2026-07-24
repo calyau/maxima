@@ -6608,3 +6608,12 @@ diff(risch(log(x)^2/(1+x) + log(x)/(x^2+x+1), x), x) - (log(x)^2/(1+x) + log(x)/
 
 trigrat(diff(integrate(sin(x^2), x), x));
 sin(x^2);
+
+
+/* Bug #4865: "Some elementary integrals not solved by risch" */
+
+risch((1 + 1/x + 1/x^2)*%e^(-1/x), x);
+%e^-(1/x)*(x+1);
+
+risch((2 + 2/x^2 + 5/x^3)*%e^(-1/(2*x^2)), x);
+%e^-(1/(2*x^2))*(2*x+5);
