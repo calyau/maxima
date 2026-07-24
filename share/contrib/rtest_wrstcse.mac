@@ -101,10 +101,10 @@ wc_ewc_simplify(7*(tol[1]+.1)/(6*tol[2]-.1));
 (7*(tol[1]+0.1))/(6*tol[2]-0.1);
 
 wc_mintypmax_percent(tol[1]+.5*tol[2]+4,3);
-[min=-(37.5*"%"),typ=4,max=37.5*"%"];
+[min=-(37.5*"%"),typ=4.0,max=37.5*"%"];
 
 wc_mintypmax(tol[1]+.5*tol[2]+4,3);
-[min=2.5,typ=4,max=5.5];
+[min=2.5,typ=4.0,max=5.5];
 
 wc_ewc_simplify(7*(tol[1]+.1)/(6*tol[2]-10));
 (7*(tol[2]+0.1))/(6*tol[2]-10);
@@ -128,7 +128,7 @@ float_approx_equal(
 true;
 
 subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'typ),ratprint=false;
-4;
+4.0;
 
 float_approx_equal(
   subst(wc_mintypmax_rss_percent(tol[1]+.5*tol[2]+4,3),'max)/"%",

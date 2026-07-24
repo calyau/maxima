@@ -1441,17 +1441,15 @@
      (cond ((zerop1 res)
         ;; A zero factor was found. But we still need to simplify any remaining
         ;; factors to catch errors like division by zero or log(0).
+        ;; Also apply (big)float contagion so that 0 * 0.0 becomes 0.0 and
+        ;; 0 * 0b0 becomes 0b0.
         (when x
           (let ((float-found (floatp res))
                 (bigfloat-found ($bfloatp res)))
-            (mapcar
-              #'(lambda (f)
-                  (let ((f (simplifya f nil)))
-                    (cond ((and (not float-found) (floatp f))
-                            (setq float-found t))
-                          ((and (not bigfloat-found) ($bfloatp f))
-                            (setq bigfloat-found t)))))
-              x)
+            (dolist (f x)
+                  (let ((f (if z f (simplifya f nil))))
+                    (cond ((floatp f) (setq float-found t))
+                          (($bfloatp f) (setq bigfloat-found t)))))
             (cond (bigfloat-found (setq res *bigfloatzero*))
                   (float-found (setq res 0.0)))))
 	    (cond ($mx0simp
@@ -1606,6 +1604,9 @@
 		  (if errorsw
 		      (throw 'errorsw t)
 		      (merror (intl:gettext "Division by 0"))))
+		 ((mtimesp product)
+          ;; Factor is a zero, but use ZERORES for (big)float contagion.
+		  (zerores factor (cadr product)))
 		 (t factor)))
 	  ((and (null product)
 		(or (and (mtimesp factor) (equal power 1))

@@ -3746,6 +3746,15 @@ kill(i, idx, L);
 done;
 
 
+/* More tests for bug #4764 */
+
+1.0 * 0;
+0.0;
+
+1b0 * 0;
+0b0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
