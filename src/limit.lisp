@@ -4499,6 +4499,7 @@ ignoring dummy variables and array indices."
       (merror
         (intl:gettext "gruntz: too many arguments; expected just 3 or 4")))
     (setq dir (car rest))
+    (setq val (canonicalize+-inf val))
     (when (and (not (member val '($inf $minf $zeroa $zerob)))
                (not (member dir '($plus $minus))))
       (merror
