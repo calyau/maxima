@@ -274,7 +274,6 @@
 
 (defun limit-context (var val direction) ;Only works on entry!
   (cond (limit-top
-	 (assume (ftake 'mgreaterp 'lim-epsilon 0))
 	 (assume (ftake 'mgreaterp 'prin-inf *large-positive-number*))
 	 (setq *limit-assumptions* (make-limit-assumptions var val direction))
 	 (setq limit-top ()))
@@ -307,7 +306,6 @@
   (do ((assumption-list *limit-assumptions* (cdr assumption-list)))
       ((null assumption-list) t)
     (forget (car assumption-list)))
-  (forget (ftake 'mgreaterp 'lim-epsilon 0))
   (forget (ftake 'mgreaterp 'prin-inf *large-positive-number*))
   (cond ((and (not (null *integer-info*))
 	      (not limitp))
@@ -4634,7 +4632,6 @@ ignoring dummy variables and array indices."
 	   	    (unwind-protect
  	         (progn
 				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* newvar)) ; *large-positive-number* < newvar
-                  (mfuncall '$assume (ftake 'mlessp 0 'lim-epsilon)) ; 0 < lim-epsilon
 				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* 'prin-inf)) ; *large-positive-number* < prin-inf
 				  (mfuncall '$activate cx) ;not sure this is needed, but OK	
 				  (setq exp (resimplify exp)) ;simplify in new context
