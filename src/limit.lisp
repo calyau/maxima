@@ -274,8 +274,9 @@
 
 (defun limit-context (var val direction) ;Only works on entry!
   (cond (limit-top
-	 (assume (ftake 'mgreaterp 'prin-inf *large-positive-number*))
-	 (setq *limit-assumptions* (make-limit-assumptions var val direction))
+	 (setq *limit-assumptions*
+           (cons (assume (ftake 'mgreaterp 'prin-inf *large-positive-number*))
+                 (make-limit-assumptions var val direction)))
 	 (setq limit-top ()))
 	(t ()))
   *limit-assumptions*)
@@ -306,7 +307,6 @@
   (do ((assumption-list *limit-assumptions* (cdr assumption-list)))
       ((null assumption-list) t)
     (forget (car assumption-list)))
-  (forget (ftake 'mgreaterp 'prin-inf *large-positive-number*))
   (cond ((and (not (null *integer-info*))
 	      (not limitp))
 	 (do ((list *integer-info* (cdr list)))
