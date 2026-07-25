@@ -555,7 +555,7 @@
          (body (cdr arg))
          result)
         (dolist (v body)
-          (setq result (meval* v)))
+          (setq result (meval v)))
         result)
       (let*
         ((fname (namestring (maxima-string output)))
@@ -568,7 +568,7 @@
           `(with-open-file ,filespec
              (let ((body ',(cdr arg)) result)
                (dolist (v body)
-                 (setq result (meval* v)))
+                 (setq result (meval v)))
                result)))))))
 
 (defmfun $sconcat (&rest x)
