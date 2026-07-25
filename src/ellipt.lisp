@@ -4267,7 +4267,7 @@ first kind:
     ((mexpt simp) m ((rat simp) -1 2))
     ((mexpt simp)
      ((mplus simp) 1
-      ((mtimes simp) -1 $m ((mexpt simp) ((%jacobi_cd simp) u m) 2)))
+      ((mtimes simp) -1 m ((mexpt simp) ((%jacobi_cd simp) u m) 2)))
      ((rat simp) 1 2))
     ((%jacobi_dn simp) u m)
     ((%asin simp)

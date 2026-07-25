@@ -192,6 +192,7 @@ Bug fixes for unnumbered bugs:
 * antiderivative of acoth(x) not respecting logabs
 * ultraspherical(1, -1/2, x) causes division by zero error
 * ematrix doesn't check that i, j are within the matrix' bounds
+* antiderivative of jacobi_sd contains a stray "m" variable
 
 Changes in the Windows installer:
 ---------------------------------
