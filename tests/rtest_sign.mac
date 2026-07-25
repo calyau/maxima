@@ -1883,6 +1883,21 @@ killcontext(learndata);
 done;
 
 
+/* Bug #4873: "limit can destroy pre-existing facts" (actually not a limit bug, so the test is here) */
+
+(assume(notequal(x, 0)), 0);
+0;
+
+limit(sqrt(x^2 + a), a, 0), ask_hide_prompt; pos;
+x;
+
+facts();
+[notequal(x, 0)];
+
+(forget(notequal(x, 0)), 0);
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

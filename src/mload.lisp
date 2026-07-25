@@ -1621,6 +1621,9 @@
 			(or
 			  (errset
 			    (progn
+			      ;; Set $BATCH_ANSWERS_FROM_FILE here (again) before each test,
+			      ;; because some tests call reset(), which resets it to NIL.
+			      (setq $batch_answers_from_file answers_from_file)
 			      (multiple-value-setq (filename diff upass test-count)
 				(test-batch test-file-path
 					    expected-failures :show-expected display_known_bugs

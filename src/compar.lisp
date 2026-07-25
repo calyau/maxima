@@ -759,10 +759,9 @@
 		     (t exp)))))
 
 (defun asksign-p-or-n (e)
-  (unwind-protect (prog2
-		      (assume `(($notequal) ,e 0))
-		      ($asksign e))
-    (forget `(($notequal) ,e 0))))
+ (let ((fact (assume `(($notequal) ,e 0))))
+   (unwind-protect ($asksign e)
+     (forget fact))))
 
 (defun asksign01 (a)
   (let ((e (sign-prep a)))
