@@ -366,10 +366,10 @@
 	   (setq arg arg1)
 	   (if implicit-real
 	       (cons arg 0)
+	       (let ((fact (assume `(($notequal) ,arg 0))))
 	       (unwind-protect
-		    (prog2 (assume `(($notequal) ,arg 0))
-			(absarg arg))
-		 (forget `(($notequal) ,arg 0)))))
+			(absarg arg)
+			(forget fact)))))
 	  (t (absarg arg)))))
 
 ;;;	Main function

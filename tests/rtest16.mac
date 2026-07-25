@@ -3761,6 +3761,21 @@ solve(p[1] = 5, [p[1], p[1]]);
 [p[1] = 5];
 
 
+/* Bug #4874: "realpart/imagpart can destroy facts" */
+
+(assume(notequal(x, 0)), 0);
+0;
+
+realpart(log(x));
+log(abs(x));
+
+facts();
+[notequal(x, 0)];
+
+(forget(notequal(x, 0)), 0);
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

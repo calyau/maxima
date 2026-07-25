@@ -178,6 +178,7 @@ Bug fixes for numbered bugs:
  * \#4870 asksign(sin(x)+1) asks "Is 1 zero or nonzero?"
  * \#4871 assume(g >= 0, h >= 0); asksign(-g*h) asks if g*h is negative or zero
  * \#4873 limit can destroy pre-existing facts
+ * \#4874 realpart/imagpart can destroy facts
 
 Bug fixes for unnumbered bugs:
 -----------------------------
