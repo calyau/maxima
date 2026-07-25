@@ -40,6 +40,34 @@
 ;; finishes to discard them.
 (defmvar *local-signs* nil)
 
+;; SIGN, MINUS, ODDS and EVENS are set together by the sign code (SIGN1 and the
+;; SIGN-<OP> handlers) and must be kept mutually consistent. For a weak result,
+;; it is NOT enough to set SIGN: ASKSIGN1 and SIGN-MTIMES read the other three.
+;; Model the expression whose sign was just computed as
+;;
+;;     (MINUS ? -1 : 1) * product(ODDS) * product(EVENS)^2,
+;;
+;; so the invariant maintained is
+;;
+;;     SIGN = (MINUS ? flip) sign(product(ODDS) * product(EVENS)^2).
+;;
+;; SIGN:  The sign class: $POS, $NEG, $ZERO, or the weak $PZ (>= 0), $NZ (<= 0),
+;;        $PN (# 0), $PNZ (unknown); also $COMPLEX/$IMAGINARY in complex mode.
+;; ODDS:  Factors whose sign genuinely matters (odd multiplicity); their product
+;;        carries the sign. For a weak result ($PZ/$NZ/$PN/$PNZ), record here
+;;        the sub-expression(s) ASKSIGN should actually ask the user about.
+;; EVENS: Factors that are non-negative by construction (even power, square, or
+;;        abs): Each factor E enters as E^2, so only whether it is zero matters,
+;;        never its sign. ASKSIGN treats these as "nonzero => pos".
+;; MINUS: T iff the true sign is the flip of that product (a negative value was
+;;        factored out), NIL otherwise.
+;;
+;; ASKSIGN1 questions the user about product(ODDS) * product(EVENS)^2 and then
+;; flips by MINUS, so all four must describe the WHOLE expression SIGN refers
+;; to, not a leftover sub-part, and not stale values left by an earlier call.
+;; They are NOT optional: A handler that sets a weak SIGN without setting them
+;; makes ASKSIGN ask about the wrong thing.
+;;
 (defmvar sign nil)
 (defmvar minus nil)
 (defmvar odds nil)
@@ -1481,6 +1509,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                 ((signdiff-special lhs rhs))))))
     (if swapped
       (setq sign (flip sign)))
+    ;; The MABS clause above and SIGNDIFF-SPECIAL blank odds/evens on a weak
+    ;; sign, which makes ASKSIGN1 ask about (LMUL NIL) = 1. Restore the whole
+    ;; expression so the question (and any enclosing product) refers to X.
+    (when (and retval
+               (null odds)
+               (member sign '($pz $nz $pn $pnz)))
+      (setq odds (ncons x) evens nil minus nil))
     retval))
 
 (defun expt-of-base (expr q)
@@ -1849,7 +1884,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  '$pn)))
 	  ((member sign-expt '($pz $nz $pnz) :test #'eq)
 	   (cond ((member sign-base '($neg $nz) :test #'eq)
-		  (setq odds (ncons x) sign (if (eq sign-base '$neg) '$pn '$pnz)))))
+		  (setq odds (ncons x) evens nil minus nil sign (if (eq sign-base '$neg) '$pn '$pnz)))))
 	  ((eq sign-expt '$pn)
 	   (cond ((eq sign-base '$neg)
 		  (setq sign '$pn))
@@ -1895,8 +1930,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		 (*complexsign*
 		  (setq sign '$complex))
 		 ((eq sign-base '$neg)
-		  (setq sign '$pn))
-		 (t (setq sign '$pnz)))))))
+		  (setq sign '$pn odds (ncons x) evens nil minus nil))
+		 (t (setq sign '$pnz odds (ncons x) evens nil minus nil)))))))
 
 ;;; Determine the sign of log(expr). This function changes the special variable sign.
 
@@ -1987,7 +2022,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                 (cond ((and (eq sign '$pos) (not (eq t (mgrp '$%pi x))))
                        (setq sign '$pz odds (ncons e) evens nil minus nil))
                       ((and (eq sign '$neg) (not (eq t (mgrp x (mul -1 '$%pi)))))
-                       (setq sign '$nz odds (ncons e) evens nil minus nil))))
+                       (setq sign '$nz odds (ncons e) evens nil minus nil))
+                      ((member sign '($pz $nz $pn $pnz))
+                       (setq odds (ncons e) evens nil minus nil))))
               ;; When *complexsign* is true & y # 0, set sign to complex.
               ;; To test y # 0, we'll use (not (eql y 0)))
               ((and *complexsign* (not (eql y 0)))
@@ -2016,7 +2053,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
             (cond ((and (eq sign '$pos) (not (eq t (mgrp x (div '$%pi -2)))))
                    (setq sign '$pz odds (ncons e) evens nil minus nil))
                   ((and (eq sign '$neg) (not (eq t (mgrp (div (mul 3 '$%pi) 2) x))))
-                   (setq sign '$nz odds (ncons e) evens nil minus nil))))
+                   (setq sign '$nz odds (ncons e) evens nil minus nil))
+                  ((member sign '($pz $nz $pn $pnz))
+                   (setq odds (ncons e) evens nil minus nil))))
           ;; When *complexsign* is true & y # 0, set sign to complex.
           ;; To test y # 0, we'll use (not (eql y 0)))
           ((and *complexsign* (not (eql y 0)))
