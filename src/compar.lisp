@@ -926,7 +926,7 @@
                 domain '$znz
                 squared t))
          (t
-          (if minus (setq sign (flip sign)))
+          (if minus (setq sign (flip sign) domain (flip domain)))
           (setq $askexp
                 (lmul (nconc odds (mapcar #'(lambda (l) (power l 2)) evens))))))
        (setq sign (cdr (assol $askexp *local-signs*)))
