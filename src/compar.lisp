@@ -2006,7 +2006,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
      (let ((x (cadr e)) (y 0))
        ;; When *complexsign* is true, find the rectangular form of 
        ;; the argument to sin.
-       (when *complexsign* 
+       (when *complexsign*
           (setq x (risplit x))
           (setq y (cdr x)
                 x (car x)))
@@ -2018,12 +2018,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                 (sign x)
                 ;; sin(x) = 0 at the closed endpoints x = -%pi and %pi, so a
                 ;; strict interior sign weakens to include zero when x can reach
-                ;; the nearer endpoint.
+                ;; the nearer endpoint; a nonzero-but-unsigned x ($pn) that can
+                ;; reach an endpoint likewise weakens to $pnz.
                 (cond ((and (eq sign '$pos) (not (eq t (mgrp '$%pi x))))
                        (setq sign '$pz odds (ncons e) evens nil minus nil))
                       ((and (eq sign '$neg) (not (eq t (mgrp x (mul -1 '$%pi)))))
                        (setq sign '$nz odds (ncons e) evens nil minus nil))
-                      ((member sign '($pz $nz $pn $pnz))
+                      ((eq sign '$pn)
+                       (unless (and (eq t (mgrp '$%pi x))
+                                    (eq t (mgrp x (mul -1 '$%pi))))
+                         (setq sign '$pnz))
+                       (setq odds (ncons e) evens nil minus nil))
+                      ((member sign '($pz $nz $pnz))
                        (setq odds (ncons e) evens nil minus nil))))
               ;; When *complexsign* is true & y # 0, set sign to complex.
               ;; To test y # 0, we'll use (not (eql y 0)))
@@ -2049,15 +2055,19 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
             (sign (sub (div '$%pi 2) x))
             ;; cos(x) = 0 at the closed endpoints x = -%pi/2 and 3*%pi/2, so a
             ;; strict interior sign weakens to include zero when x can reach
-            ;; that endpoint.
+            ;; that endpoint; a nonzero-but-unsigned x ($pn) that can reach an
+            ;; endpoint likewise weakens to $pnz.
             (cond ((and (eq sign '$pos) (not (eq t (mgrp x (div '$%pi -2)))))
                    (setq sign '$pz odds (ncons e) evens nil minus nil))
                   ((and (eq sign '$neg) (not (eq t (mgrp (div (mul 3 '$%pi) 2) x))))
                    (setq sign '$nz odds (ncons e) evens nil minus nil))
-                  ((member sign '($pz $nz $pn $pnz))
+                  ((eq sign '$pn)
+                   (unless (and (eq t (mgrp x (div '$%pi -2)))
+                                (eq t (mgrp (div (mul 3 '$%pi) 2) x)))
+                     (setq sign '$pnz))
+                   (setq odds (ncons e) evens nil minus nil))
+                  ((member sign '($pz $nz $pnz))
                    (setq odds (ncons e) evens nil minus nil))))
-          ;; When *complexsign* is true & y # 0, set sign to complex.
-          ;; To test y # 0, we'll use (not (eql y 0)))
           ((and *complexsign* (not (eql y 0)))
               (setf sign '$complex))
 			    (t (setf sign '$pnz))))

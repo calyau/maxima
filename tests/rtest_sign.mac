@@ -1853,6 +1853,36 @@ errcatch(sign(log(-1-x^2)));
 [];
 
 
+/* some more tests for bug #4837 */
+
+second([assume(x > 0, x <= %pi), sign(sin(x)), forget(facts(x))]);
+pz;
+
+second([assume(x >= -%pi, x < 0), sign(sin(x)), forget(facts(x))]);
+nz;
+
+second([assume(x >= -%pi, x <= %pi, notequal(x, 0)), sign(sin(x)), forget(facts(x))]);
+pnz;
+
+second([assume(x >= -%pi/2, x < %pi/2), sign(cos(x)), forget(facts(x))]);
+pz;
+
+second([assume(x > %pi/2, x <= 3*%pi/2), sign(cos(x)), forget(facts(x))]);
+nz;
+
+second([assume(x >= -%pi/2, x <= 3*%pi/2, notequal(x, %pi/2)), sign(cos(x)), forget(facts(x))]);
+pnz;
+
+second([assume(x > 0, x < %pi), sign(sin(x)), forget(facts(x))]);
+pos;
+
+second([assume(x > -%pi/2, x < %pi/2), sign(cos(x)), forget(facts(x))]);
+pos;
+
+killcontext(learndata);
+done;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
