@@ -521,6 +521,12 @@ remove(z, complex);
 done;
 
 
+/* Bug #4869: "cabs(abs(x+%i))" */
+
+cabs(abs(x+%i));
+sqrt(x^2 + 1);
+
+
 /***********************************************************/
 /* Guard against leaks, leave this at the end of the file! */
 /***********************************************************/

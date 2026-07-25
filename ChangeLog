@@ -175,6 +175,7 @@ Bug fixes for numbered bugs:
  * \#4865 Some elementary integrals not solved by risch
  * \#4866 csign(log(abs(x))) = complex
  * \#4867 sign(log(-1-x^2)) returns pnz
+ * \#4869 cabs(abs(x+%i))
  * \#4870 asksign(sin(x)+1) asks "Is 1 zero or nonzero?"
  * \#4871 assume(g >= 0, h >= 0); asksign(-g*h) asks if g*h is negative or zero
  * \#4873 limit can destroy pre-existing facts

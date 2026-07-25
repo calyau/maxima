@@ -104,6 +104,8 @@
   (car (absarg xx t)))
 
 (def-simplifier cabs (z)
+  (if (and (consp z) (eq (caar z) 'mabs))
+  (ftake '%cabs (cadr z)) ; cabs(abs(x)) = cabs(x)
   (let ((sgn ($csign z)))
     (cond ((member sgn '($complex $imaginary))
            (cabs z))
@@ -114,7 +116,7 @@
           ((eq sgn '$neg)
            (mul -1 z))
           (t
-           (cabs z)))))
+           (cabs z))))))
 
 ;;; Carg gives the complex argument.
 
