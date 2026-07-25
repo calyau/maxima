@@ -1936,7 +1936,7 @@ wrapper for this."
 		  (if $use_fast_arrays
 		    (progn
 		      ;; (format t "ARRSTORE: use_fast_arrays=true; allocate a new value hash table for ~S~%" fun)
-		      (meval* `((mset) ,fun ,(make-equal-hash-table (cdr (mevalargs (cdr l)))))))
+		      (meval `((mset) ,fun ,(make-equal-hash-table (cdr (mevalargs (cdr l)))))))
 		    (progn
 		      ;; (format t "ARRSTORE: use_fast_arrays=false; allocate a new property hash table for ~S~%" fun)
 		  (add2lnc fun $arrays)

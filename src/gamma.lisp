@@ -335,9 +335,9 @@
              ;; function and the Generalized Incomplete Gamma function 
              ;; (functions.wolfram.com), only for a>0.
              ;;
-             ;; We need to call meval* ourselves here to make sure the
+             ;; We need to call meval ourselves here to make sure the
              ;; expression is simplified as expected.
-             (meval*
+             (meval
               #$$ (gamma_incomplete(a,z)-gamma(a))*log(z)+gamma(a)^2
                                         *hypergeometric_regularized(
                                          [a,a],[a+1,a+1],-z)*z^a

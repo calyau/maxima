@@ -280,7 +280,7 @@
       (list (* neg (position rel vars)))
       (case (caar rel)
 	(mnctimes (apply #'append (mapcar #'(lambda (rel) (coerce-rel neg vars rel)) (cdr rel))))
-	(mncexpt (let* ((n (meval* (third rel)))
+	(mncexpt (let* ((n (meval (third rel)))
 			(neg (signum n))
 			(v (coerce-rel neg vars (second rel))))
 		   (loop for i below (abs (third rel))

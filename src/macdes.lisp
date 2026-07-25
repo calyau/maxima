@@ -90,18 +90,18 @@
   (cons '(mlist) (apply #'create-list1 (cadr l) (cddr l))))
 
 (defun create-list1 (form &rest l &aux lis var1 top)
-  (cond ((null l) (list (meval* form)))
+  (cond ((null l) (list (meval form)))
 	(t
 	 (setq var1 (first l)
 	       lis (second l)
 	       l (cddr l))
 	 (unless (symbolp var1) (merror (intl:gettext "create_list: expected a symbol; found: ~A") var1))
- 	 (setq lis (meval* lis))
+ 	 (setq lis (meval lis))
 	 (mbinding ((list var1))
 	   (cond ((and (numberp lis)
 		       (progn
 			 (setq top (car l) l (cdr l))
-			 (setq top (meval* top))
+			 (setq top (meval top))
 			 (numberp top)))
 		  (loop for i from lis to top
 		     do (mset var1 i)

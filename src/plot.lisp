@@ -85,7 +85,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
       (merror (intl:gettext "join: both arguments must be lists."))))
 
-(defun coerce-float (x) ($float (meval* x)))
+(defun coerce-float (x) ($float (meval x)))
 
 ;; Global plot options list; this is a property list.. It is not a
 ;; Maxima variable, to discourage users from changing it directly; it
@@ -552,7 +552,7 @@ vertices of a triangle or a quadrilateral."
 		 ;; because the function is not defined there,
 		 ;; not because of some other maxima error.
 		 (let ((result
-			 (errcatch (,float-fun (maybe-realpart (meval* ',expr))))))
+			 (errcatch (,float-fun (maybe-realpart (meval ',expr))))))
 
 		   ;; Nothing interpolated here when there are no
 		   ;; subscripted variables.
@@ -2029,10 +2029,10 @@ vertices of a triangle or a quadrilateral."
                   $triangle $delta $wedge $nabla $diamond $lozenge)) t nil))
 
 ;; tries to convert az into a floating-point number between 0 and 360
-(defun parse-azimuth (az) (mod (coerce-float (meval* az)) 360))
+(defun parse-azimuth (az) (mod (coerce-float (meval az)) 360))
 
 ;; tries to convert el into a floating-poitn number between -180 and 180
-(defun parse-elevation (el) (- (mod (+ 180 (coerce-float (meval* el))) 360) 180))
+(defun parse-elevation (el) (- (mod (+ 180 (coerce-float (meval el))) 360) 180))
 
 ;; The following functions check the value of an option returning an atom
 ;;  when there is only one argument or a list when there are several arguments
@@ -2432,8 +2432,8 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
   (or (and ($listp range)
            (setq tem (cdr range))
            (or (symbolp (car tem)) ($subvarp (car tem)))
-           (numberp (setq a ($float (meval* (second tem)))))
-           (numberp (setq b ($float (meval* (third tem)))))
+           (numberp (setq a ($float (meval (second tem)))))
+           (numberp (setq b ($float (meval (third tem)))))
            (< a b))
       (if range
           (merror 
