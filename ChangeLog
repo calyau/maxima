@@ -163,6 +163,7 @@ Bug fixes for numbered bugs:
  * \#4838 risch returns incomplete noun form
  * \#4839 absarg returns the wrong argument (phase) for tanh of a complex number
  * \#4842 Risch integrator returns a noun for elementary ∫ eᵃ⁽ˣ⁾·r(x) dx
+ * \#4843 Undefined variable GNUPLOT-PREAMBLE on Windows
  * \#4844 Can't integrate the derivative of fresnel_s(x)
  * \#4845 float(log(1/2 + %i/2)) is wrong
  * \#4846 psubstitute doesn't validate its first argument
