@@ -1021,8 +1021,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; niceindicespref.
 
 (defun meqp-by-csign (z a b)
+ ;; $NICEINDICES completely rebuilds the expression and canonicalizes
+ ;; the dummy variables of sums and products. Only pay that price when
+ ;; our expression actually contains a sum or product.
+ (when (amongl '(%sum %product) z)
   (let (($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
-    (setq z ($niceindices z))
+    (setq z ($niceindices z))))
+ (progn
     (setq z (if ($constantp z) ($rectform z) (sratsimp z)))
     (let ((sgn ($csign z))
           (dunno `(($equal) ,a ,b)))
@@ -1037,8 +1042,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
              (handler-case
                  (with-safe-recursion meqp-by-csign z
                    (let* ((ri-parts (trisplit z))
-                          (rsgn ($csign (car ri-parts)))
-                          (isgn ($csign (cdr ri-parts))))
+                          ;; No need to call $CSIGN again on realpart(Z) if
+                          ;; that's just Z, because we already know that it's
+                          ;; not '$ZERO from the call above.
+                          (rsgn (unless (alike1 (car ri-parts) z)
+                                  ($csign (car ri-parts))))
+                          (isgn (if (zerop1 (cdr ri-parts))
+                                  '$zero ($csign (cdr ri-parts)))))
                      (cond ((and (eq '$zero rsgn)
                                  (eq '$zero isgn)) t)
 
