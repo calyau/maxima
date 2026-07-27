@@ -445,6 +445,22 @@
           (mark+ p (+labs p))))
   (zerop remaining)))
 
+(defun decl-complex-kind (x)
+  "Returns '$IMAGINARY if the symbol X is declared imaginary, '$COMPLEX if it is
+  declared complex but not imaginary, else NIL. This is faster than two checks."
+  (when (and (symbolp x) (get x 'data))
+    (clear)
+    (beg x 1)
+    (let (complexp)
+      (do ((p (dq+) (dq+)))
+          ((null p) (and complexp '$complex))
+        (if (eq p '$imaginary)
+          (return '$imaginary)
+          (progn
+            (when (eq p '$complex)
+              (setq complexp t))
+            (mark+ p (+labs p))))))))
+
 (defun true* (pat)
   (let ((dum (semant pat)))
     (if dum

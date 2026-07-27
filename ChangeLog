@@ -181,6 +181,7 @@ Bug fixes for numbered bugs:
  * \#4871 assume(g >= 0, h >= 0); asksign(-g*h) asks if g*h is negative or zero
  * \#4873 limit can destroy pre-existing facts
  * \#4874 realpart/imagpart can destroy facts
+ * \#4876 sign(%i) gives error, but sign(declared_imaginary) doesn't
 
 Bug fixes for unnumbered bugs:
 -----------------------------

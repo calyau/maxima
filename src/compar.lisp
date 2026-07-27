@@ -1413,17 +1413,23 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		  (t (sign-any x)))))))
 
 (defun sign-any (x)
- (let (op)
-  (cond ((and *complexsign*
-              (symbolp x)
-              (decl-complexp x))
-         ;; In Complex Mode look for symbols declared to be complex.
-         (setq sign (if (decl-imaginaryp x) '$imaginary '$complex)))
-        ((and *complexsign*
-              (not (atom x))
-              (decl-complexp (setq op (if (mqapplyp x) (subfunname x) (caar x)))))
-         ;; A function f(x) or f[n](x), where f is declared to be imaginary or complex.
-         (setq sign (if (decl-imaginaryp op) '$imaginary '$complex)))
+ ;; Find out whether X is a symbol or a (subscripted) function that is declared
+ ;; complex or imaginary. DECL-COMPLEX-KIND returns the strongest type, and it
+ ;; returns NIL for non-symbols.
+ (let ((complex-kind (decl-complex-kind (if (atom x)
+                                          x
+                                          (if (mqapplyp x)
+                                            (subfunname x)
+                                            (caar x))))))
+  (cond ((eq complex-kind '$imaginary)
+          ;; A symbol or a (subscripted) function that's declared imaginary.
+          (if *complexsign*
+            (setq sign '$imaginary)
+            ;; In non-complex mode, imaginary -> error.
+            (imag-err x)))
+        ((and *complexsign* (eq complex-kind '$complex))
+          ;; A symbol or a (subscripted) function that's declared complex.
+          (setq sign '$complex))
 	(t
 	 (dcompare x 0)
 	 (if (and $assume_pos

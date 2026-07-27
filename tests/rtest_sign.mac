@@ -1898,6 +1898,24 @@ facts();
 0;
 
 
+/* Bug #4876: "sign(%i) gives error, but sign(declared_imaginary) doesn't" */
+
+declare(j, imaginary);
+done;
+
+errcatch(sign(j));
+[];
+
+errcatch(sign(j(x)));
+[];
+
+errcatch(sign(j[n](x)));
+[];
+
+remove(j, imaginary);
+done;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
