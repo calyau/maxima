@@ -1503,7 +1503,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (let (dum)
         (setq retval
           (cond ((or (equal rhs 0) (mplusp lhs)) nil)
-                ((and (member (constp rhs) '(numer symbol) :test #'eq)
+                ((and (not (mnump rhs))
+                      (member (constp rhs) '(numer symbol) :test #'eq)
                       (numberp (setq dum (numer rhs)))
                       (prog2 (setq rhs dum) nil)))
                 ((mplusp rhs) nil)
