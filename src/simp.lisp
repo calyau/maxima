@@ -721,9 +721,13 @@
                    (go st1))
                   (t
                    (return
+                    ;; Bind VARLIST and GENVAR so kernels from this
+                    ;; conversion don't accumulate in the global table.
+                    ;; The MRAT returned carries its own copies.
+                    (let ((varlist varlist) (genvar genvar))
                      (ratf (cons '(mplus)
                                  (nconc (mapcar #'simplify (cons w (cdr x)))
-                                        (cdr res))))))))
+                                        (cdr res)))))))))
            ((eq (caar w) 'mequal)
             (setq eqnflag
                   (if (not eqnflag)
@@ -1486,9 +1490,13 @@
 	           (go st1))
 	          (t
 	           (return 
+                ;; Bind VARLIST and GENVAR so kernels from this
+                ;; conversion don't accumulate in the global table.
+                ;; The MRAT returned carries its own copies.
+	            (let ((varlist varlist) (genvar genvar))
 	             (ratf (cons '(mtimes)
 			         (nconc (mapcar #'simplify (cons w (cdr x)))
-					(cdr res))))))))
+					(cdr res)))))))))
 	   ((eq (caar w) 'mequal)
 	    (setq eqnflag
 		  (if (not eqnflag)
