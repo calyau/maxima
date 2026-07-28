@@ -63,7 +63,6 @@
 (defvar ulabs nil)
 
 
-(defvar *world*)
 (defvar *db*)
 
 ;; Macro for indirecting through the contents of a cell.
@@ -123,7 +122,7 @@
   selector)
 
 (defmode datum ()
-  (atom (selector ulabs) (selector con) (selector wn))
+  (atom (selector ulabs) (selector con))
   selector)
 
 (defmode context ()
@@ -668,8 +667,7 @@
   (zl-remprop cl '-labs)
   (zl-remprop cl 'obj)
   (zl-remprop cl 'var)
-  (zl-remprop cl 'fact)
-  (zl-remprop cl 'wn))
+  (zl-remprop cl 'fact))
 
 (defun activate (&rest l)
   (dolist (e l)
@@ -778,21 +776,13 @@
     (prlab lab))
   (mapc #'(lambda (lis) (mark+0 cl lab lis)) (sel cl data)))
 
-(defun mark+3 (dat)
-  (if (/= 0 (logand (unlab (+labz (caddar dat)))
-		    (dbv (+labz (cadar dat)) (-labz (caar dat)))))
-      (beg- (sel dat wn) *world*)))
-
 (defun mark+0 (cl lab fact)
   (when *dbcheck*
     (format *trace-output* "~%MARK+0: checking ~a from ~A+" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))
-	((null (sel fact wn)) (mark+1 cl lab fact))
-	((onp (sel fact wn) *world*) (mark+1 cl lab fact))
-	((offp (sel fact wn) *world*) nil)
-	(t (mark+3 fact))))
+	(t (mark+1 cl lab fact))))
 
 (defun mark+1 (cl lab dat)
   (cond ((eq (caar dat) 'kind)
@@ -825,9 +815,7 @@
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))
-	((null (sel fact wn)) (mark-1 cl lab fact))
-	((onp (sel fact wn) *world*) (mark-1 cl lab fact))
-	((offp (sel fact wn) *world*) nil)))
+	(t (mark-1 cl lab fact))))
 
 (defun mark-1 (cl lab dat)
   (cond ((eq (caar dat) 'kind)
