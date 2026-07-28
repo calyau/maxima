@@ -2469,7 +2469,17 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun dcomp (x y)
   (let (mgqp mlqp)
-    (setq x (dinternp x) y (dinternp y))
+    ;; DINTERNP always interns numbers, but not objects (e.g. sin(x)).
+    ;; So make sure to call DINTERNP on the non-number first and only proceed if
+    ;; that returns non-NIL (otherwise, the answer is guaranteed to be '$PNZ).
+    ;; Every internal call path to DCOMP ensures that X and Y aren't both numbers.
+    (if (mnump x)
+      ;; X is a number, so check Y first.
+      (when (setq y (dinternp y))
+        (setq x (dinternp x)))
+      ;; Y is a number, or neither is - check X first.
+      (when (setq x (dinternp x))
+        (setq y (dinternp y))))
     (cond ((or (null x) (null y)) '$pnz)
 	  ((progn (clear) (deq x y) (sel y +labs)))
 	  (t '$pnz))))
