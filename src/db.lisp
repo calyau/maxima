@@ -551,6 +551,17 @@
 	   (car dobjects))))
 
 (defun dintnum (x &aux foo)
+ (flet ((unlink-edge-below (node)
+          (dolist (d (sel node data))
+              (let ((p (car d)))
+                (when (and (eq 'mgrp (car p))
+                           (eq node (cadr p))
+                           (null (zl-get d 'con)))
+                  (remov d)
+                  (putprop 'global
+                           (delete d (get 'global 'data) :test #'eq :count 1)
+                           'data)
+                  (return))))))
   (cond ((assol x *nobjects*))
 	((progn (setq x (dbnode x)) nil))
 	((null *nobjects*)
@@ -579,11 +590,16 @@
               (rplacd lis (cons x (cdr lis)))
               (return x))
          ((eq '$pos foo)
+		  ;; X goes strictly between (CAR LIS) and (CADR LIS). Drop the edge
+		  ;; leaving (CAR LIS) so that the number nodes stay a chain and don't
+		  ;; become a DAG.
+		  (unlink-edge-below (car lis))
+		  ;; Insert the new edge.
 		  (let ((context 'global))
 		    (fact 'mgrp (car lis) x)
 		    (fact 'mgrp x (cadr lis)))
 		  (rplacd lis (cons x (cdr lis)))
-		  (return x)))))))
+		  (return x))))))))
 
 (defun doutern (x)
   (if (atom x) x (car x)))
