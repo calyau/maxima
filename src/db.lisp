@@ -161,6 +161,13 @@
 (defun dbvarp (x)
   (getl x '(un ex)))
 
+(declaim (inline dnump))
+(defun dnump (nd)
+  "Is ND a node cell standing for a number?"
+  ;; Symbols are atoms, and expression nodes have a non-MNUMP CAR,
+  ;; so this separates the three kinds cleanly:
+  (and (consp nd) (mnump (car nd))))
+
 (defun lab (n)
   (ash 1 (1- n)))
 
@@ -368,7 +375,7 @@
 (defun truep (pat)
   (clear)
   (cond ((atom pat) pat)
-	((prog2 (setq pat (mapcar #'semant pat)) nil))
+	((prog2 (setq pat (mapcar #'query-semant pat)) nil))
 	((eq (car pat) 'kind)
 	 (beg (cadr pat) 1)
 	 (beg- (caddr pat) 1)
@@ -537,8 +544,14 @@
 	((db-mnump pat) (dintnum pat))
 	(t (mapcar #'semant pat))))
 
+(defun query-semant (pat)
+  (cond ((symbolp pat) (or (get pat 'var) pat))
+	((db-mnump pat) (or (dinternp pat) (dbnode pat)))
+	(t (mapcar #'query-semant pat))))
+
 (defun dinternp (x)
-  (cond ((mnump x) (dintnum x))
+  "The database node for X, or NIL when the database has none."
+  (cond ((mnump x) (assol x *nobjects*))
 	((atom x) x)
 	((assol x dobjects))))
 
@@ -548,6 +561,24 @@
 	((assol x dobjects))
 	(t (setq dobjects (cons (dbnode x) dobjects))
 	   (car dobjects))))
+
+(defun dnum-neighbors (x)
+  "Where the number X belongs in the *NOBJECTS* chain, without putting it there.
+   Returns three values: the node X is numerically equal to, if there is one;
+   otherwise the nearest node above X and the nearest node below X, either of
+   which is NIL when that side is empty. These are precisely the nodes DINTNUM
+   links a new number to, located by the same scan - the two must stay in step.
+   *NOBJECTS* is sorted descending, so the scan stops as soon as it has passed
+   X: at once for a number above everything on record."
+  (do ((lis *nobjects* (cdr lis))
+       (above nil)
+       (r))
+      ((null lis) (values nil above nil))
+    (setq r (rgrp x (caar lis)))
+    (cond
+      ((eq '$zero r) (return (values (car lis) nil nil)))
+      ((eq '$pos r) (return (values nil above (car lis))))
+      (t (setq above (car lis))))))
 
 (defun dintnum (x &aux foo)
  (flet ((unlink-edge-below (node)

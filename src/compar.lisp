@@ -2453,42 +2453,126 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defmacro c-dobj (&rest x)
   `(list ,@x))
 
+;;; DCOMPARE is the database's answer to "How do X and Y compare?". It leaves
+;;; the verdict in SIGN, the sign of X - Y, as one of '$POS, '$NEG, '$ZERO,
+;;; '$PZ, '$NZ, '$PN and '$PNZ, and the difference itself in ODDS, where the
+;;; callers in the sign machinery pick both up.
+;;;
+;;; The infinities are settled here rather than in DCOMP: They are symbols, so
+;;; the search would treat them as ordinary nodes, and their comparisons are
+;;; definite without consulting any fact.
+
 (defun dcompare (x y)
   (setq odds (list (sub x y)) evens nil minus nil
 	sign (cond ((eq x y) '$zero)
 		   ((or (eq '$inf x) (eq '$minf y)) '$pos)
 		   ((or (eq '$minf x) (eq '$inf y)) '$neg)
-		   ((and (mnump x) (mnump y))
-		     ;; Two numbers: RGRP is exactly what DCOMP would conclude from
-		     ;; the chain DINTNUM builds, without interning anything.
-		     (rgrp x y))
-		   ((or (and (symbolp x) (null (get x 'data)))
-                (and (symbolp y) (null (get y 'data))))
-             '$pnz) ; fast track for symbols without database information
 		   (t (dcomp x y)))))
+
+;;; The order search.
+;;;
+;;; DCOMP (X Y) answers "What is the sign of X - Y?" with a depth-first walk
+;;; over the fact graph. The two operands play different roles:
+;;;
+;;; X is the source. The walk starts there and leaves through the facts on
+;;;   the node's DATA property, so the source must be a node that carries
+;;;   facts - there is nothing to walk out of otherwise.
+;;; Y is the target. The answer accumulates on it as a label, which DCOMP
+;;;   reads back at the end. The target is only ever written to, so it needs
+;;;   to be a cell, not necessarily a registered node.
+;;;
+;;; Symbols are their own nodes, while numbers and compound expressions are
+;;; one-element cells whose CDR serves as a property list. Only the ASSUME path
+;;; registers nodes - DINTERN and DINTNUM - so nothing here adds to DOBJECTS,
+;;; *NOBJECTS* or any DATA list.
+;;;
+;;; DEQ, DGR, DLS, DGQ, DLQ and DNQ are the six states of the walk. Reaching a
+;;; node N in state DGR means "X > N is established"; DEQ means "X = N",
+;;; DLS "X < N", DGQ "X >= N", DLQ "X <= N", DNQ "X # N". Each records its state
+;;; on N with DMARK, so the label on any node is the sign of X - N, and then
+;;; follows N's facts, composing its relation with each fact to choose the state
+;;; to enter at the far end. That composition is what the DEQF/DGRF/DLSF/DGQF/
+;;; DLQF/DNQF helpers encode. A branch ends when DMARK finds its label already
+;;; present, and succeeds on reaching the target.
+;;;
+;;; MGQP and MLQP record that the target was reached along a ">=" path and along
+;;; a "<=" path. Together those make an equality, which is why DGQ and DLQ
+;;; return NIL on arrival: A weak answer is no reason to stop looking for a
+;;; stronger one. Conversely, DGR gives up its branch once MLQP is set, and DLS
+;;; once MGQP is set - with the target already reached from the other side, a
+;;; strict inequality in the opposite direction has nothing left to contribute.
 
 (defun dcomp (x y)
   (let (mgqp mlqp)
-    ;; DINTERNP always interns numbers, but not objects (e.g. sin(x)).
-    ;; So make sure to call DINTERNP on the non-number first and only proceed if
-    ;; that returns non-NIL (otherwise, the answer is guaranteed to be '$PNZ).
-    ;; Every internal call path to DCOMP ensures that X and Y aren't both numbers.
-    (if (mnump x)
-      ;; X is a number, so check Y first.
-      (when (setq y (dinternp y))
-        (setq x (dinternp x)))
-      ;; Y is a number, or neither is - check X first.
-      (when (setq x (dinternp x))
-        (setq y (dinternp y))))
-    (cond ((or (null x) (null y)) '$pnz)
-	  ((progn (clear) (deq x y) (sel y +labs)))
-	  (t '$pnz))))
+    (flet ((resolve-object (z)
+             ;; The node for a symbol or a compound expression, provided it
+             ;; carries facts. A node with no DATA can neither start a path nor
+             ;; be arrived at, since every fact naming a node is pushed onto
+             ;; that node's own DATA, so "no node" and "empty node" are the same
+             ;; answer, '$PNZ.
+             (let ((nd (dinternp z)))
+               (and nd (sel nd data) nd))))
+      (cond
+        ((mnump x)
+         ;; Two numbers are pure arithmetic: RGRP computes what the chain of
+         ;; MGRP edges among the number nodes encodes, and nothing else in the
+         ;; database can refine it.
+         (when (mnump y)
+           (return-from dcomp (rgrp x y)))
+         ;; A number on the left is the source, and is resolved below, where
+         ;; the walk starts. Settle the other side first: A miss makes the
+         ;; answer '$PNZ and saves that work entirely.
+         (setq y (resolve-object y)))
+        ((mnump y)
+         (when (setq x (resolve-object x))
+           ;; The target only has to carry the answer. Its own node if the
+           ;; database has one, so that the facts attached to it take part in
+           ;; the walk; otherwise a bare cell - never registered in *NOBJECTS*,
+           ;; never linked to anything. The walk still recognises it, because
+           ;; arrival at a number is decided by comparing values rather than by
+           ;; identity.
+           (setq y (or (dinternp y) (dbnode y)))))
+        (t
+         (when (setq x (resolve-object x))
+           (setq y (resolve-object y)))))
+      (cond
+        ((or (null x) (null y)) '$pnz)
+        (t
+         (clear)
+         (if (mnump x)
+           ;; The source must have edges to leave by, so a bare cell will not
+           ;; do here. Use the number's own node when the database has one;
+           ;; otherwise, enter the graph at the two chain nodes it belongs
+           ;; between, with the relation each one licenses. DINTNUM emits the
+           ;; upper edge first and ADDF pushes, so the lower neighbor is the
+           ;; one that a walk out of an interned node would reach first.
+           (let ((nd (dinternp x)))
+             (if nd
+               (deq nd y)
+               (multiple-value-bind (same above below) (dnum-neighbors x)
+                 (cond (same (deq same y))
+                       (t (or (and below (dgr below y))
+                              (and above (dls above y))))))))
+           (deq x y))
+         ;; Whatever the walk established about the target, if anything.
+         (or (sel y +labs) '$pnz))))))
 
 (defun deq (x y)
-  (cond ((dmark x '$zero) nil)
-	((eq x y))
-	(t (do ((l (sel x data) (cdr l))) ((null l))
-	     (if (and (visiblep (car l)) (deqf x y (car l))) (return t))))))
+  (cond
+    ((dmark x '$zero) nil)
+    ((eq x y))
+    (t
+     (or
+      ;; X = (car x), so X against (car y) is exactly the numeric
+      ;; comparison - always conclusive, in one of the three directions.
+      (and (dnump x) (dnump y)
+           (let ((r (rgrp (car x) (car y))))
+             (cond ((eq r '$zero) (deq y y))
+                   ((eq r '$pos) (dgr y y))
+                   (t (dls y y)))))
+      (do ((l (sel x data) (cdr l))) ((null l))
+        (if (and (visiblep (car l)) (deqf x y (car l)))
+          (return t)))))))
 
 (defun deqf (x y f)
   (cond ((eq 'meqp (caar f))
@@ -2501,12 +2585,20 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (if (eq x (cadar f)) (dnq (caddar f) y) (dnq (cadar f) y)))))
 
 (defun dgr (x y)
-  (cond ((dmark x '$pos) nil)
-	((eq x y))
-	(t (do ((l (sel x data) (cdr l)))
-	       ((null l))
-	     (when (or mlqp (and (visiblep (car l)) (dgrf x y (car l))))
-	       (return t))))))
+  (cond
+    ((dmark x '$pos) nil)
+    ((eq x y))
+    (t
+     (or
+      ;; X > (car x), so (car x) >= (car y) gives X > (car y).
+      ;; A smaller (car x) says nothing.
+      (and (dnump x) (dnump y)
+           (member (rgrp (car x) (car y)) '($pos $zero))
+           (dgr y y))
+      (do ((l (sel x data) (cdr l)))
+          ((null l))
+        (if (or mlqp (and (visiblep (car l)) (dgrf x y (car l))))
+          (return t)))))))
 
 (defun dgrf (x y f)
   (cond ((eq 'mgrp (caar f)) (if (eq x (cadar f)) (dgr (caddar f) y)))
@@ -2517,12 +2609,19 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	     (dgr (cadar f) y)))))
 
 (defun dls (x y)
-  (cond ((dmark x '$neg) nil)
-	((eq x y))
-	(t (do ((l (sel x data) (cdr l)))
-	       ((null l))
-	     (when (or mgqp (and (visiblep (car l)) (dlsf x y (car l))))
-	       (return t))))))
+  (cond
+    ((dmark x '$neg) nil)
+    ((eq x y))
+    (t
+     (or
+      ;; X < (car x), so (car x) <= (car y) gives X < (car y).
+      (and (dnump x) (dnump y)
+           (member (rgrp (car x) (car y)) '($neg $zero))
+           (dls y y))
+      (do ((l (sel x data) (cdr l)))
+          ((null l))
+        (if (or mgqp (and (visiblep (car l)) (dlsf x y (car l))))
+          (return t)))))))
 
 (defun dlsf (x y f)
   (cond ((eq 'mgrp (caar f)) (if (eq x (caddar f)) (dls (cadar f) y)))
@@ -2531,14 +2630,29 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (if (eq x (cadar f)) (dls (caddar f) y) (dls (cadar f) y)))))
 
 (defun dgq (x y)
- (let ((sgn (sel x +labs)))
-  (cond ((member sgn '($pos $zero) :test #'eq) nil)
-	((eq '$nz sgn) (deq x y))
-	((eq '$pn sgn) (dgr x y))
-	((dmark x '$pz) nil)
-	((eq x y) (setq mgqp t) nil)
-	(t (do ((l (sel x data) (cdr l))) ((null l))
-	     (if (and (visiblep (car l)) (dgqf x y (car l))) (return t)))))))
+  (let ((sgn (sel x +labs)))
+    ;; A label already on X combines with "X >= this node": $NZ makes it an
+    ;; equality, $PN a strict inequality, and $POS or $ZERO is already at least
+    ;; this strong.
+    (cond
+      ((member sgn '($pos $zero)) nil)
+      ((eq '$nz sgn) (deq x y))
+      ((eq '$pn sgn) (dgr x y))
+      ((dmark x '$pz) nil)
+      ((eq x y) (setq mgqp t) nil)
+      (t
+       (or
+        ;; X >= (car x). A larger (car x) gives X > (car y); an equal one
+        ;; reaches the target with the same >= relation this state carries,
+        ;; which is what DGQ on (Y Y) records. A smaller one concludes nothing,
+        ;; and the inner COND yields NIL.
+        (and (dnump x) (dnump y)
+             (let ((r (rgrp (car x) (car y))))
+               (cond ((eq r '$pos) (dgr y y))
+                     ((eq r '$zero) (dgq y y)))))
+        (do ((l (sel x data) (cdr l))) ((null l))
+          (if (and (visiblep (car l)) (dgqf x y (car l)))
+            (return t))))))))
 
 (defun dgqf (x y f)
   (cond ((eq 'mgrp (caar f)) (if (eq x (cadar f)) (dgr (caddar f) y)))
@@ -2547,14 +2661,23 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (if (eq x (cadar f)) (dgq (caddar f) y) (dgq (cadar f) y)))))
 
 (defun dlq (x y)
- (let ((sgn (sel x +labs)))
-  (cond ((member sgn '($neg $zero) :test #'eq) nil)
-	((eq '$pz sgn) (deq x y))
-	((eq '$pn sgn) (dls x y))
-	((dmark x '$nz) nil)
-	((eq x y) (setq mlqp t) nil)
-	(t (do ((l (sel x data) (cdr l))) ((null l))
-	     (if (and (visiblep (car l)) (dlqf x y (car l))) (return t)))))))
+  (let ((sgn (sel x +labs)))
+    (cond
+      ((member sgn '($neg $zero)) nil)
+      ((eq '$pz sgn) (deq x y))
+      ((eq '$pn sgn) (dls x y))
+      ((dmark x '$nz) nil)
+      ((eq x y) (setq mlqp t) nil)
+      (t
+       (or
+        ;; X <= (car x); mirrors DGQ.
+        (and (dnump x) (dnump y)
+             (let ((r (rgrp (car x) (car y))))
+               (cond ((eq r '$neg) (dls y y))
+                     ((eq r '$zero) (dlq y y)))))
+        (do ((l (sel x data) (cdr l))) ((null l))
+          (if (and (visiblep (car l)) (dlqf x y (car l)))
+            (return t))))))))
 
 (defun dlqf (x y f)
   (cond ((eq 'mgrp (caar f)) (if (eq x (caddar f)) (dls (cadar f) y)))
@@ -2563,14 +2686,23 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (if (eq x (cadar f)) (dlq (caddar f) y) (dlq (cadar f) y)))))
 
 (defun dnq (x y)
- (let ((sgn (sel x +labs)))
-  (cond ((member sgn '($pos $neg) :test #'eq) nil)
-	((eq '$pz sgn) (dgr x y))
-	((eq '$nz sgn) (dls x y))
-	((dmark x '$pn) nil)
-	((eq x y) nil)
-	(t (do ((l (sel x data) (cdr l))) ((null l))
-	     (if (and (visiblep (car l)) (dnqf x y (car l))) (return t)))))))
+  (let ((sgn (sel x +labs)))
+    (cond
+      ((member sgn '($pos $neg)) nil)
+      ((eq '$pz sgn) (dgr x y))
+      ((eq '$nz sgn) (dls x y))
+      ((dmark x '$pn) nil)
+      ((eq x y) nil)
+      (t
+       (or
+        ;; X # (car x) constrains (car y) only where the two numbers are
+        ;; equal. DNQF likewise follows nothing but MEQP.
+        (and (dnump x) (dnump y)
+             (eq '$zero (rgrp (car x) (car y)))
+             (dnq y y))
+        (do ((l (sel x data) (cdr l))) ((null l))
+          (if (and (visiblep (car l)) (dnqf x y (car l)))
+            (return t))))))))
 
 (defun dnqf (x y f)
   (cond ((eq 'meqp (caar f))
