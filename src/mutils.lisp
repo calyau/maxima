@@ -37,10 +37,14 @@
 ;;;  Meta-Synonym:	(ASS #'ALIKE1 ITEM ALIST)
 
 (defun assol (item alist)
- (if (symbolp item)
-  (and alist (assoc item alist :test #'eq))
+ (cond
+   ((symbolp item)
+     (and alist (assoc item alist :test #'eq)))
+   ((integerp item)
+     (and alist (assoc item alist :test #'eql)))
+   (t
   (dolist (pair alist)
-    (if (alike1 item (car pair)) (return pair)))))
+    (if (alike1 item (car pair)) (return pair))))))
 
 (declaim (inline assolike))
 (defun assolike (item alist) 
