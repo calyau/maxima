@@ -1116,8 +1116,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		      (and (mexptp b) (not (eq '$minf (third b))) (zerop1 a) (eq t (mnqp (second b) 0))))
 		  nil)
 
-		 ;; DCOMPARE emits new stuff (via DINTERNP) into the assume database.
-		 ;; Let's avoid littering the database with numbers.
+		;; Two numbers: Answer arithmetically. Not merely a shortcut - ZEROP1 of the
+		;; simplified difference uses float contagion, so equal(0.1, 1/10) is true,
+		;; whereas the database compares exactly via RGRP and would call them different.
+		;; Also keeps DCOMPARE from clobbering ODDS/EVENS/MINUS, since MEQP is reached
+		;; from inside sign computations.
 		 ((and (mnump a) (mnump b)) (zerop1 (sub a b)))
 
 		 ;; lookup in assumption database
@@ -2455,6 +2458,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	sign (cond ((eq x y) '$zero)
 		   ((or (eq '$inf x) (eq '$minf y)) '$pos)
 		   ((or (eq '$minf x) (eq '$inf y)) '$neg)
+		   ((and (mnump x) (mnump y))
+		     ;; Two numbers: RGRP is exactly what DCOMP would conclude from
+		     ;; the chain DINTNUM builds, without interning anything.
+		     (rgrp x y))
 		   ((or (and (symbolp x) (null (get x 'data)))
                 (and (symbolp y) (null (get y 'data))))
              '$pnz) ; fast track for symbols without database information
