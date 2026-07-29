@@ -861,6 +861,15 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;;; the properties are copied into *builtin-symbol-props* before
 ;;; initializing the assume database.
 ;;; At the same time, optimize the symbols' property lists for faster lookup.
+
+;;; Build-time DECLARE calls probe the database with TRUEP and FALSEP (see
+;;; DECLAREKIND), and the last search's transient +LABS/-LABS marks are still
+;;; sitting on the probed symbols' property lists - by design, they persist
+;;; until the next CLEAR. Sweep them now, so that they don't get copied into
+;;; *BUILTIN-SYMBOL-PROPS* below and later resurrected by KILL as stale labels
+;;; on symbols that are no longer on the sweep lists.
+(clear)
+
 (let ((maxima-package (find-package :maxima)))
   (do-symbols (s maxima-package)
     (when (and (eql (symbol-package s) maxima-package)
