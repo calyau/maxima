@@ -233,7 +233,8 @@
 	 (putprop dat (copyn lab) 'ulabs))))
 
 (defun queue+p (nd lab)
-  (cond ((null (setq *db* (+labs nd)))
+  (cond ((atom (setq *db* (+labs nd)))
+	 ;; No label, or a stale sign symbol left by DMARK: Start fresh.
 	 (push nd +labs)
 	 (setq lab (unlab lab))
 	 (putprop nd (copyn (logior +lab-high-bit+ lab)) '+labs))

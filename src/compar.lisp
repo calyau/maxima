@@ -2588,6 +2588,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond
     ((dmark x '$pos) nil)
     ((eq x y))
+    ;; The target has already been reached along a "<=" path, so in a
+    ;; consistent database, no ">" path can reach it too: This branch is
+    ;; fruitless. Give it up - NIL - so the caller goes on with its
+    ;; remaining facts. Returning T here, as the loop below formerly did
+    ;; on every iteration once MLQP was set, declared the whole search
+    ;; finished and froze whatever weak label the target had accumulated.
+    ;; Since the latch may be set before or after the strong fact gets its
+    ;; turn, that made the answer's strength depend on the order of the
+    ;; DATA lists. The check sits at the entry rather than in the loop
+    ;; because DGRF re-enters nothing but DGR, so MLQP cannot change
+    ;; below this frame.
+    (mlqp nil)
     (t
      (or
       ;; X > (car x), so (car x) >= (car y) gives X > (car y).
@@ -2597,7 +2609,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
            (dgr y y))
       (do ((l (sel x data) (cdr l)))
           ((null l))
-        (if (or mlqp (and (visiblep (car l)) (dgrf x y (car l))))
+        (if (and (visiblep (car l)) (dgrf x y (car l)))
           (return t)))))))
 
 (defun dgrf (x y f)
@@ -2612,6 +2624,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond
     ((dmark x '$neg) nil)
     ((eq x y))
+    ;; Mirror of the MLQP clause in DGR: The target is reachable along a
+    ;; ">=" path, so a "<" path never arrives. Abandon the branch, not
+    ;; the search.
+    (mgqp nil)
     (t
      (or
       ;; X < (car x), so (car x) <= (car y) gives X < (car y).
@@ -2620,7 +2636,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
            (dls y y))
       (do ((l (sel x data) (cdr l)))
           ((null l))
-        (if (or mgqp (and (visiblep (car l)) (dlsf x y (car l))))
+        (if (and (visiblep (car l)) (dlsf x y (car l)))
           (return t)))))))
 
 (defun dlsf (x y f)
@@ -2708,18 +2724,53 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (cond ((eq 'meqp (caar f))
 	 (if (eq x (cadar f)) (dnq (caddar f) y) (dnq (cadar f) y)))))
 
-;; mark sign of x to be m, relative to current comparison point for dcomp.
-;; returns true if this fact is already known, nil otherwise.
+;; The six sign labels stand for sets of possible signs of X - node:
+;; $POS={+}, $ZERO={0}, $NEG={-}, $PZ={0,+}, $NZ={-,0}, $PN={-,+}
+;; and their conjunction is set intersection.
+
+(declaim (inline sign-label-bits))
+(defun sign-label-bits (s)
+  (case s ($pos 1) ($zero 2) ($pz 3) ($neg 4) ($pn 5) ($nz 6) (t 7)))
+
+(declaim (inline sign-label-meet))
+(defun sign-label-meet (a b)
+  "The conjunction of two sign labels, or NIL when they contradict."
+  (svref #(nil $pos $zero $pz $neg $pn $nz $pnz)
+    (logand (sign-label-bits a) (sign-label-bits b))))
+
+;; Mark the sign of X, relative to the current comparison point for DCOMP,
+;; to be M. The label already on X and M are both established relations, so what
+;; X ends up carrying is their conjunction.
+;; Returns T if that leaves nothing new (including the contradictory empty meet,
+;; which only an inconsistent fact base can produce - the old label is
+;; is kept), so the caller closes its branch; NIL when the label tightened, so
+;; the caller explores. Because a label can only ever shrink, a node is explored
+;; at most twice per search, which bounds the search even on inconsistent fact
+;; bases, where the overwriting DMARK that this replaces could oscillate and
+;; never return.
+
 (defun dmark (x m)
-  (cond ((eq m (sel x +labs)))
-	((and dbtrace (prog1
-			  t
-			(mtell (intl:gettext "DMARK: marking ~M ~M") (if (atom x) x (car x)) m))
-	      nil))
-	(t
-	 (push x +labs)
-	 (push+sto (sel x +labs) m)
-	 nil)))
+  (let ((old (sel x +labs)))
+    ;; A label left by the BEG/QUEUE+P engine is a bit cell, not a sign
+    ;; symbol: treat it as no label. CLEAR normally prevents this, but a
+    ;; stale label must not poison the walk.
+    (unless (symbolp old) (setq old nil))
+    (cond
+      ((eq m old))
+      (t
+       (let ((meet (if old (sign-label-meet old m) m)))
+     (cond
+       ((null meet))   ; Contradiction: Keep OLD, close the branch.
+       ((eq meet old)) ; Nothing new: Close the branch.
+       (t
+        (when dbtrace
+          (mtell (intl:gettext "DMARK: marking ~M ~M") (if (atom x) x (car x)) meet))
+        ;; Push on EVERY store, not only the first: If the label was
+        ;; stale (the node no longer on +LABS), this relists it so the
+        ;; next CLEAR sweeps it (the pre-meet DMARK did the same).
+        (push x +labs)
+        (push+sto (sel x +labs) meet)
+        nil)))))))
 
 (defun daddgr (flag x)
   (with-compsplt (lhs rhs x)
