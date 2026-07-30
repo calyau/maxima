@@ -182,6 +182,7 @@ Bug fixes for numbered bugs:
  * \#4873 limit can destroy pre-existing facts
  * \#4874 realpart/imagpart can destroy facts
  * \#4876 sign(%i) gives error, but sign(declared_imaginary) doesn't
+ * \#4884 Contradicting facts in different contexts can cause stack overflow
 
 Bug fixes for unnumbered bugs:
 -----------------------------
