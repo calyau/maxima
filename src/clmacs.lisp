@@ -298,6 +298,12 @@
   (cond ((symbolp sym) (get sym tag))
 	((consp sym) (getf (cdr sym) tag))))
 
+(defun zl-remprop (sym indicator)
+  (if (symbolp sym)
+      (remprop sym indicator)
+      (unless (atom sym)
+        (remf (cdr sym) indicator))))
+
 (defun getl (plist indicator-list )
   (cond ((symbolp plist)
 	 (setq plist (symbol-plist plist)))
