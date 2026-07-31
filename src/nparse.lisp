@@ -258,6 +258,27 @@
 ;;it could not handle things produced by the extensions
 ;;the following was broken for prefixes 
 
+(defun operator-terminated-p (sym)
+  ;; When we have an operator, which starts with a literal, we check if the
+  ;; operator is followed by a whitespace. With this code, Maxima parses an
+  ;; expression grad x or grad(x) as '(($GRAD) $X) and gradef(x) as
+  ;; '(($GRADEF) $X) when grad is defined as a prefix operator. See bug #1925.
+  ;;
+  ;; Both cases of READ-COMMAND-TOKEN-AUX need this test: the leaf case, when
+  ;; no longer operator starts with this name, and the general case, when one
+  ;; does, e.g. %or and %ore, or %or declared twice. Otherwise, %orb is read
+  ;; as the operator %or applied to b instead of as the symbol %orb.
+  ;;
+  ;; SYMBOL-NAME rather than EXPLODEN: the name is "$%or", "$<", ... and only
+  ;; its first character is of interest, so there is no reason to cons up a
+  ;; fresh list on every operator token. EXPLODEN prints the symbol through an
+  ;; :INVERT readtable, which only ever changes case, and ALPHABETP does not
+  ;; distinguish case, so the two agree.
+  (let ((name (symbol-name sym)))
+    (or (< (length name) 2)
+        (not (alphabetp (char name 1)))
+        (member (parse-tyipeek) *whitespace-chars*))))
+
 (defun read-command-token-aux (obj)
   (let* (result
 	 (ch (parse-tyipeek))
@@ -282,18 +303,14 @@
 		  ;; starting with this.
 		  (setq result
 		        (and (eql (car (cadr lis)) 'ans)
-		             ;; When we have an operator, which starts with a
-		             ;; literal, we check, if the operator is
-		             ;; followed with a whitespace. With this code
-		             ;; Maxima parses an expression grad x or grad(x)
-		             ;; as (($grad) x) and gradef(x) as (($gradef) x),
-		             ;; when grad is defined as a prefix operator.
-		             ;; See bug report ID: 2970792.
-		             (or (not (alphabetp (cadr (exploden (cadr (cadr lis))))))
-		                 (member (parse-tyipeek) *whitespace-chars*))
+		             (operator-terminated-p (cadr (cadr lis)))
 		             (cadr (cadr lis)))))
 	         (t
+		  ;; LIS is something like (#\< (ANS $<) (#\= (ANS $<=))):
+		  ;; An answer here and at least one longer operator starting with it, so the
+		  ;; answer needs the same delimiter check as in the leaf case above.
 		  (let ((res   (and (eql (car (cadr lis)) 'ans)
+				    (operator-terminated-p (cadr (cadr lis)))
 				    (cadr (cadr lis))))
 			(com-token (read-command-token-aux (cddr lis) )))
 		    (setq result (or com-token res
