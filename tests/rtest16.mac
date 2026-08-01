@@ -3791,6 +3791,22 @@ f[2];
 0;
 
 
+/* Bug #4890: "A failed local() permanently destroys definitions" */
+
+(kill(f),
+ f(x) := 111,
+ errcatch(block([], local(f, 1), 0)),
+ f(1));
+111;
+
+(kill(f, a),
+ f(x) := 111,
+ a(x) := 222,
+ block([], local(a), a(x) := 333, errcatch(block([], local(f, 1), 0)), 0),
+ [f(1), a(1)]);
+[111, 222];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

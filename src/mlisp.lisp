@@ -578,6 +578,11 @@ wrapper for this."
        (merror (intl:gettext "local: argument cannot be a declared array; found: ~M") var)))
     (setq mproplist (cons (get var 'mprops) mproplist)
 	  factlist (cons (get var 'data) factlist))
+    ;; Record VAR on the LOCLIST frame right away, in lock-step with the
+    ;; MPROPLIST/FACTLIST pushes above, so that MUNLOCAL restores
+    ;; everything processed so far even if a later argument turns out to
+    ;; be invalid.
+    (rplaca loclist (cons var (car loclist)))
     (dolist (fact (car factlist))
       (putprop fact -1 'ulabs))
     (progn
@@ -587,7 +592,6 @@ wrapper for this."
     (setf $arrays (delete var $arrays :count 1 :test #'eq))
     (zl-remprop var 'mprops)
     (zl-remprop var 'data))
-  (rplaca loclist (reverse l))
   (setq mlocp nil)
   '$done)
 

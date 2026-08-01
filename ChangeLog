@@ -189,6 +189,7 @@ Bug fixes for numbered bugs:
  * \#4887 Removed fact still listed by facts()
  * \#4888 Facts created in local block still listed by facts() afterwards
  * \#4889 array on a memoizing function returns huge junk values
+ * \#4890 A failed local() permanently destroys definitions
 
 Bug fixes for unnumbered bugs:
 -----------------------------
