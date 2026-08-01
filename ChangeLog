@@ -188,6 +188,7 @@ Bug fixes for numbered bugs:
  * \#4886 forget(number > number) works
  * \#4887 Removed fact still listed by facts()
  * \#4888 Facts created in local block still listed by facts() afterwards
+ * \#4889 array on a memoizing function returns huge junk values
 
 Bug fixes for unnumbered bugs:
 -----------------------------

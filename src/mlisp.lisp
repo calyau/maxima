@@ -1845,8 +1845,14 @@ wrapper for this."
 	                                               (fixnum 0)
 	                                               (flonum 0.0)
 	                                               (otherwise munbound))))
-	     (when (or funp (arrfunp fun))
-	       (fillarray new (list (if (eq compp 'fixnum) fixunbound flounbound))))
+	     ;; A memoizing function needs MUNBOUND in the unset cells so
+	     ;; that ARRFIND calls the function. The arrays created above
+	     ;; are never specialized, so MUNBOUND can be stored even in
+	     ;; FIXNUM/FLONUM declared arrays, and ARRFIND only recognizes
+	     ;; MUNBOUND as "unset" (ARRAY-ELEMENT-TYPE is always T).
+	     (when (and (or funp (arrfunp fun))
+	                (member compp '(fixnum flonum) :test #'eq))
+	       (fillarray new (list munbound)))
 	     (cond ((null (setq old (mget fun 'hashar)))
 		    (mputprop fun new 'array))
 		   (t (unless (= (aref (symbol-array old) 2) (length diml))

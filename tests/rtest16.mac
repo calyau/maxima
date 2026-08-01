@@ -3776,6 +3776,21 @@ facts();
 0;
 
 
+/* Bug #4889: "array on a memoizing function returns huge junk values" */
+
+(kill(f), f[i] := i^2, array(f, 5), f[2]);
+4;
+
+(kill(f), f[i] := i^2, array(f, fixnum, 5), f[2]);
+4;
+
+(kill(f), array(f, 5, function), f[2]);
+f[2];
+
+(kill(f), 0);
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
