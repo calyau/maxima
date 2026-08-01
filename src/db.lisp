@@ -796,6 +796,58 @@
     (cond (cm (putprop con (1- cm) 'cmark)))
     (mapc #'cunmrk (zl-get con 'subc))))
 
+;;; Garbage collection of the interning tables.
+;;;
+;;; DOBJECTS and *NOBJECTS* hold the nodes that give a Maxima object its place
+;;; in the database. A node is worth keeping exactly as long as some fact names
+;;; it, and the node itself answers that: ADDF puts every fact naming a node on
+;;; that node's own DATA property, and MAXIMA-REMF, KILL3 and REMOV4 take it off
+;;; again.
+;;;
+;;; Number nodes carry the MGRP/MEQP edges that order them against their
+;;; neighbors on top of that. Those are bookkeeping, not information: DINTNUM
+;;; makes them in the pseudo-context GLOBAL, the one context CNTXT stores no
+;;; back pointer for, so they are exactly the datums with no CON property. A
+;;; number node whose DATA holds nothing else is a waypoint on the chain and
+;;; can go, once the chain is closed up behind it.
+
+(defun dnode-live-p (nd)
+  "Does some fact still name the node ND?"
+  (and (zl-get nd 'data) t))
+
+(defun dnum-live-p (nd)
+  "Does some fact other than its own chain edges name the number node ND?"
+  (dolist (dat (zl-get nd 'data))
+    (when (zl-get dat 'con) (return t))))
+
+(defun db-gc ()
+  "Drop the database nodes that no longer carry a fact."
+  (db-gc-dobjects)
+  (db-gc-nobjects))
+
+(defun db-gc-dobjects ()
+  (unless (every #'dnode-live-p dobjects)
+    (setq dobjects (remove-if-not #'dnode-live-p dobjects))))
+
+(defun db-gc-nobjects ()
+  (unless (every #'dnum-live-p *nobjects*)
+    ;; Take the chain down ...
+    (dolist (dat (get 'global 'data)) (remov dat))
+    (remprop 'global 'data)
+    (setq *nobjects* (remove-if-not #'dnum-live-p *nobjects*))
+    ;; ... and lay it again over what is left. *NOBJECTS* is sorted
+    ;; descending, so linking each node to its successor reproduces both what
+    ;; DINTNUM builds and the order it builds it in: The edge to the smaller
+    ;; neighbor is pushed onto a node's DATA last and so is tried first.
+    ;; Reachability among the surviving nodes is unchanged, since a node that
+    ;; goes carried no fact and was only ever a waypoint between the two nodes
+    ;; that are now joined directly.
+    (let ((context 'global))
+      (do ((l *nobjects* (cdr l)))
+	  ((null (cdr l)))
+	(fact (if (eq '$zero (rgrp (caar l) (caadr l))) 'meqp 'mgrp)
+	      (car l) (cadr l))))))
+
 (defun killc (con)
   (contextmark)
   (unless (null con)

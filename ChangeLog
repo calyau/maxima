@@ -182,6 +182,7 @@ Bug fixes for numbered bugs:
  * \#4873 limit can destroy pre-existing facts
  * \#4874 realpart/imagpart can destroy facts
  * \#4876 sign(%i) gives error, but sign(declared_imaginary) doesn't
+ * \#4882 Entries from dobjects and *nobjects* don't get deleted
  * \#4883 Redefining an operator to be infix/postfix/nary causes a parser bug
  * \#4884 Contradicting facts in different contexts can cause stack overflow
  * \#4886 forget(number > number) works

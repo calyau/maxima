@@ -184,6 +184,7 @@
 (defmspec $kill (form)
   (clear)	;; get assume db into consistent state
   (mapc #'kill1 (cdr form))
+  (db-gc)
   '$done)
 
 ;;; The following *builtin- variables are used to keep/restore builtin

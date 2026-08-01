@@ -217,6 +217,7 @@
     (if (symbolp c)
 	(killcontext c)
 	(nc-err '$killcontext c)))
+  (db-gc)
   (if (and (= (length args) 1) (eq (car args) '$global))
       '$not_done
       '$done))
@@ -224,13 +225,14 @@
 (defun killallcontexts ()
   (mapcar #'killcontext (cdr $contexts))
   (setq $context '$initial context '$initial current '$initial
-	$contexts '((mlist) $initial $global) dobjects ())
+	$contexts '((mlist) $initial $global))
   ;;The DB variables
   ;;conmark, conunmrk, conindex, connumber, and contexts
   ;;concern garbage-collectible contexts, and so we're
   ;;better off not resetting them.
   (defprop $global 1 cmark) (defprop $initial 1 cmark)
-  (defprop $initial ($global) subc))
+  (defprop $initial ($global) subc)
+  (db-gc))
 
 (defun killcontext (x)
   (cond ((not (member x $contexts :test #'eq))
@@ -649,7 +651,7 @@
 (defmspec $forget (x)
   (setq x (cdr x))
   (do ((nl))
-      ((null x) (cons '(mlist) (nreverse nl)))
+      ((null x) (db-gc) (cons '(mlist) (nreverse nl)))
     (cond ((atom (car x)) (push (forget (meval (car x))) nl))
 	  ((eq 'mand (caaar x))
 	   (mapc #'(lambda (l) (push (forget (meval l)) nl)) (cdar x)))
