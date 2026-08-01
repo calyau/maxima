@@ -1232,7 +1232,14 @@ wrapper for this."
 			  (funcer (arg 1) argl))
 			 ((and (= n 2) (mapatom (arg 2)))
 			  (improper-arg-err (arg 2) '$map))
-			 (t (merror (intl:gettext "map: arguments must have same main operator; found: ~M, ~M") op (mop (first argl)))))
+			 (t (merror (intl:gettext "map: arguments must have same main operator; found: ~M, ~M")
+			            ;; OP is literally T when the last argument
+			            ;; is a mapatom; print the argument itself
+			            ;; then. Same for the first argument, on
+			            ;; which MOP would signal a Lisp error.
+			            (if (eq op t) (arg n) op)
+			            (let ((u (first argl)))
+			              (if (mapatom u) u (mop u))))))
 		   (mcons-op-args op (apply #'mmapcar (cons (arg 1) cdrl)))))))
 
 (defmspec ($maplist :properties ((evok t))) (l)
