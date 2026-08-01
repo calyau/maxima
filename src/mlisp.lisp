@@ -611,7 +611,7 @@ wrapper for this."
 	     (add2lnc (cons (ncons var) y) $dependencies))
 	    (t (mfunction-delete var $dependencies)))
       (rempropchk var)
-      (mapc #'remov (get var 'data))
+      (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (get var 'data))
       (cput var fact 'data)
       (dolist (u fact)
 	(zl-remprop u 'ulabs))

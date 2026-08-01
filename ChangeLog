@@ -184,6 +184,9 @@ Bug fixes for numbered bugs:
  * \#4876 sign(%i) gives error, but sign(declared_imaginary) doesn't
  * \#4883 Redefining an operator to be infix/postfix/nary causes a parser bug
  * \#4884 Contradicting facts in different contexts can cause stack overflow
+ * \#4886 forget(number > number) works
+ * \#4887 Removed fact still listed by facts()
+ * \#4888 Facts created in local block still listed by facts() afterwards
 
 Bug fixes for unnumbered bugs:
 -----------------------------

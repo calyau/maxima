@@ -1916,6 +1916,35 @@ remove(j, imaginary);
 done;
 
 
+/* Bug #4886: "forget(number > number) works" */
+
+(assume(x > 1e-100, y < -1e-99),
+ forget(1e-100 > 0),
+ ?dcomp(x, y));
+pos;
+
+(forget(x > 1e-100, y < -1e-99), 0);
+0;
+
+
+/* Bug #4887: "Removed fact still listed by facts()" */
+
+(assume(x > 5),
+ newcontext(other),
+ forget(x > 5),
+ context : initial,
+ kill(other),
+ facts());
+[];
+
+
+/* Bug #4888: "Facts created in local block still listed by facts() afterwards" */
+
+(block(local(x), assume(x > sin(y))),
+ facts());
+[];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

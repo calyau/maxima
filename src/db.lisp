@@ -506,21 +506,32 @@
 (defun maxima-remf (dat nd)
   (push+sto (sel nd data) (fdel dat (sel nd data))))
 
+(defun uncntxt (dat)
+  (let* ((ctxt (or (zl-get dat 'con) 'global))
+         (l (zl-get ctxt 'data)))
+    (when l
+      (putprop ctxt (delete dat l :test #'eq :count 1) 'data)))
+  dat)
+
 (defun fdel (fact data)
-  (cond ((and (eq (car fact) (caaar data))
+  (cond ((and (zl-get (car data) 'con)
+	      (eq (car fact) (caaar data))
 	      (eq (cadr fact) (cadaar data))
 	      (eq (caddr fact) (caddar (car data))))
-	 (cdr data))
+	 (let ((rest (cdr data)))
+	   (uncntxt (car data))
+	   rest))
 	(t
 	 (do ((ds data (cdr ds))
-	      (d))
+	      (dat))
 	     ((null (cdr ds)))
-	   (setq d (caadr ds))
-	   (cond ((and (eq (car fact) (car d))
-		       (eq (cadr fact) (cadr d))
-		       (eq (caddr fact) (caddr d)))
-		  (push+sto (sel d con data) (delete d (sel d con data) :test #'eq))
-		  (rplacd ds (cddr ds)) (return t))))
+	   (setq dat (cadr ds))
+	   (cond ((and (zl-get dat 'con)
+		       (eq (car fact) (caar dat))
+		       (eq (cadr fact) (cadar dat))
+		       (eq (caddr fact) (caddar dat)))
+		  (rplacd ds (cddr ds))
+		  (uncntxt dat) (return t))))
 	 data)))
 
 (defun semantics (pat)
@@ -637,26 +648,39 @@
   (kill2 fun arg val val))
 
 (defun kill2 (fun arg val cl)
-  (cond ((not (atom cl)) (mapc #'(lambda (lis) (kill2 fun arg val lis)) cl))
-	((numberp cl))
-	(t (push+sto (sel cl data) (kill3 fun arg val (sel cl data))))))
+  (cond ((numberp cl))			;a bare number is not a node
+	((atom cl)			;a symbol is its own node
+	 (push+sto (sel cl data) (kill3 fun arg val (sel cl data))))
+	((mnump (car cl))		;the node standing for a number
+	 (push+sto (sel cl data) (kill3 fun arg val (sel cl data))))
+	((or (atom (car cl))		;an operator list such as (%SIN), or
+	     (atom (caar cl)))		;a Maxima expression: Do its parts
+	 (mapc #'(lambda (lis) (kill2 fun arg val lis)) cl))
+	((atom (caaar cl))		;the node standing for a compound
+					;expression: the node itself, and then the
+					;parts of the expression, where the facts
+					;built by IND/IND1 sit
+	 (push+sto (sel cl data) (kill3 fun arg val (sel cl data)))
+	 (mapc #'(lambda (lis) (kill2 fun arg val lis)) (car cl)))))
 
 (defun kill3 (fun arg val data)
   (cond ((and (eq fun (caaar data))
 	      (eq arg (cadaar data))
 	      (eq val (caddar (car data))))
-	 (cdr data))
+	 (let ((rest (cdr data)))
+	   (uncntxt (car data))
+	   rest))
 	(t
 	 (do ((ds data (cdr ds))
-	      (d))
+	      (dat))
 	     ((null (cdr ds)))
-	 (setq d (caadr ds))
-	 (cond ((not (and (eq fun (car d))
-			  (eq arg (cadr d))
-			  (eq val (caddr d))))
+	 (setq dat (cadr ds))
+	 (cond ((not (and (eq fun (caar dat))
+			  (eq arg (cadar dat))
+			  (eq val (caddar dat))))
 		t)
-	       (t (push+sto (sel d con data) (delete d (sel d con data) :test #'eq))
-		  (rplacd ds (cddr ds)) (return t))))
+	       (t (rplacd ds (cddr ds))
+		  (uncntxt dat) (return t))))
 	 data)))
 
 (defun unkind (x y)
@@ -665,8 +689,7 @@
   (maxima-remf y x))
 
 (defun remov (fact)
-  (remov4 fact (cadar fact))
-  (remov4 fact (caddar fact)))
+  (mapc #'(lambda (arg) (remov4 fact arg)) (cdar fact)))
 
 (defun remov4 (fact cl)
   (cond ((or (symbolp cl)		;if CL is a symbol or
@@ -676,19 +699,22 @@
 	((or (atom cl) (atom (car cl)))) ;if CL is an atom (not a symbol)
 					;or its CAR is an atom then we don't want to do
 					;anything to it.
-	(t
-	 (mapc #'(lambda (lis) (remov4 fact lis))
-	       (cond ((atom (caar cl)) (cdr cl)) ;if CL's CAAR is
-					;an atom, then CL is an expression, and
-					;we want to REMOV4 FACT from the parts
-					;of the expression.
-		     ((atom (caaar cl)) (cdar cl)))))))
-					;if CL's CAAAR is an atom, then CL is a
-					;fact, and we want to REMOV4 FACT from
-					;the parts of the fact.
+	((atom (caar cl))		;if CL's CAAR is an atom, then CL is an
+					;expression, and we want to REMOV4 FACT
+					;from the parts of the expression.
+	 (mapc #'(lambda (lis) (remov4 fact lis)) (cdr cl)))
+	((atom (caaar cl))		;if CL's CAAAR is an atom, then CL is the
+					;node that DINTERN made for a compound
+					;expression. MFACT hangs the fact on that
+					;node itself, so take it off there; the
+					;recursion below reaches only the symbols
+					;inside the expression, which is where
+					;IND/IND1 put the facts they build.
+	 (push+sto (sel cl data) (delete fact (sel cl data) :test #'eq))
+	 (mapc #'(lambda (lis) (remov4 fact lis)) (cdar cl)))))
 
 (defun killframe (cl)
-  (mapc #'remov (sel cl data))
+  (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (sel cl data))
   (zl-remprop cl '+labs)
   (zl-remprop cl '-labs)
   (zl-remprop cl 'obj)
