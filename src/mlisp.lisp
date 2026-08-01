@@ -2529,7 +2529,9 @@ wrapper for this."
      expansion)
     (($displace)
      (mmacro-displace form expansion))
-    (t (mtell (intl:gettext "warning: unrecognized value of 'macroexpansion'.")))))
+    (t (mtell (intl:gettext "warning: unrecognized value of 'macroexpansion'.~%"))
+       ;; Behave like the default setting (false).
+       expansion)))
 
 
 ;;; EVALUATING A MACRO CALL ;;;
