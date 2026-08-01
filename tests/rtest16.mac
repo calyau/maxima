@@ -3807,6 +3807,13 @@ f[2];
 [111, 222];
 
 
+/* Bug #4892: "Assigning an option variable its own name bypasses its validator" */
+
+(errcatch(expop : 'expop),
+ integerp(expop));
+true;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

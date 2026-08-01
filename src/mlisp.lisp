@@ -31,6 +31,11 @@ or if apply is being used are printed.")
 (defvar dsksetp nil)
 (defvar rulefcnl nil)
 
+(defvar mbindp nil
+  "Bound to T while MBIND-DOIT binds block/function variables. MSET uses
+  it to tell the self-binding of a plain block variable apart from a
+  user-level assignment X: 'X, which must go through the ASSIGN check.")
+
 (defmvar $refcheck nil
   "When true, Maxima prints a message each time a bound variable is used
   for the first time in a computation.")
@@ -502,7 +507,8 @@ wrapper for this."
       (when (not (every 'symbolp (cdr ($listofvars var))))
 	  (merror (intl:gettext "Only symbols can be bound; found: ~M") var))
       (let ((value (symbol-values-in var)))
-	(mset var (car args))
+	(let ((mbindp t))
+	  (mset var (car args)))
 	(psetq bindlist (cons var bindlist)
 	       mspeclist (cons value mspeclist))))))
 
@@ -658,8 +664,13 @@ wrapper for this."
 	    (when (and munbindp (eq y munbound))
 	      (munbind-makunbound x)
           (return nil))
+	    ;; Run the ASSIGN check. Skip it only for the self-binding
+	    ;; (MSET VAR VAR) that MBIND-DOIT performs for plain block and
+	    ;; lambda variables, and for MUNBIND restoring such a binding;
+	    ;; a user-level X: 'X must be checked.
 	    (let ((f (get x 'assign)))
 	      (if (and f (or (not (eq x y))
+			     (not (or mbindp munbindp))
 			     (member f '(neverset) :test #'eq)))
 		  (if (eq (funcall f x y) 'munbindp) (return nil))))
             (let ((f (get x 'setter-method)))

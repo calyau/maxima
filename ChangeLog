@@ -191,6 +191,7 @@ Bug fixes for numbered bugs:
  * \#4889 array on a memoizing function returns huge junk values
  * \#4890 A failed local() permanently destroys definitions
  * \#4891 An error during ev's setup destroys or leaks local function definitions
+ * \#4892 Assigning an option variable its own name bypasses its validator
 
 Bug fixes for unnumbered bugs:
 -----------------------------
