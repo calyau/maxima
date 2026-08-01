@@ -1,0 +1,232 @@
+/* Tests for the syntax-extension functions prefix, infix, nary, postfix,
+   nofix and matchfix.
+
+   Redeclaring an operator, or declaring two operators where one name is a
+   strict prefix of the other, used to corrupt the tokenizer's operator trie
+   so that an ordinary identifier beginning with the operator name was split
+   into the operator plus the rest.  For example, after nary("%or") had been
+   run twice -- which happens whenever to_poly_solve is loaded a second time,
+   since to_poly_solve.mac loads to_poly_solve_extra.lisp unconditionally and
+   that file calls nary("%and") and nary("%or") at top level -- the identifier
+   %orb was tokenized as %or followed by b, giving
+   "incorrect syntax: %or is not a prefix operator".
+
+   NOTE ON STYLE: every operator name and every expression that uses one is
+   written inside a string and exercised through parse_string/eval_string,
+   never in this file's own syntax.  Two reasons:
+
+     1. Declaring an operator changes how the *rest* of this file is read,
+        because batch parses one statement at a time.  Keeping the names in
+        strings makes each test independent of the ones before it.
+
+     2. A tokenizer regression is a read error, and a read error in the file
+        itself would abort the whole file rather than fail one test.  Inside
+        eval_string the same failure is an ordinary Maxima error confined to
+        a single test, so the rest of the file still runs and the harness
+        reports exactly which cases broke.
+
+   Expected values are given as parse trees, written as "op"(a,b), which do
+   not depend on the printer.  Once per fixity the printed form is checked as
+   well, since that is what notices if def-operator stops rebuilding the
+   dissym property. */
+
+(kill(all), load("eval_string"), 0);
+0$
+
+/* ----------------------------------------------------------------------
+   Declaring an operator twice must not change how a longer identifier
+   beginning with that operator name is tokenized.  All six declarators
+   route through def-operator -> define-symbol, so all six are affected.
+   ---------------------------------------------------------------------- */
+
+(eval_string("pfxfoo(a,b) := a+b"), prefix("pfx"), prefix("pfx"),
+ eval_string("pfxfoo(1,3)"));
+4$
+
+(eval_string("ifxfoo(a,b) := a+b"), infix("ifx"), infix("ifx"),
+ eval_string("ifxfoo(1,3)"));
+4$
+
+(eval_string("nryfoo(a,b) := a+b"), nary("nry"), nary("nry"),
+ eval_string("nryfoo(1,3)"));
+4$
+
+(eval_string("psxfoo(a,b) := a+b"), postfix("psx"), postfix("psx"),
+ eval_string("psxfoo(1,3)"));
+4$
+
+(eval_string("nfxfoo(a,b) := a+b"), nofix("nfx"), nofix("nfx"),
+ eval_string("nfxfoo(1,3)"));
+4$
+
+(eval_string("mfxfoo(a,b) := a+b"), matchfix("mfx","xfm"), matchfix("mfx","xfm"),
+ eval_string("mfxfoo(1,3)"));
+4$
+
+/* ----------------------------------------------------------------------
+   ... and the operator itself must still parse after being declared twice.
+   ---------------------------------------------------------------------- */
+
+parse_string("pfx x");
+"pfx"(x)$
+
+parse_string("a ifx b");
+"ifx"(a,b)$
+
+parse_string("a nry b nry c");
+"nry"(a,b,c)$
+
+parse_string("a psx");
+"psx"(a)$
+
+parse_string("nfx");
+"nfx"()$
+
+parse_string("mfx a,b xfm");
+"mfx"(a,b)$
+
+/* the printed form as well, once per fixity: this is what checks that
+   def-operator rebuilt the dissym property, which the tree form cannot see */
+
+string(parse_string("pfx x"));
+"pfx x"$
+
+string(parse_string("a ifx b"));
+"a ifx b"$
+
+string(parse_string("a nry b nry c"));
+"a nry b nry c"$
+
+string(parse_string("a psx"));
+"a psx"$
+
+string(parse_string("nfx"));
+"nfx"$
+
+string(parse_string("mfx a,b xfm"));
+"mfxa,bxfm"$
+
+/* ----------------------------------------------------------------------
+   Two distinct operators where one name is a strict prefix of the other.
+   This reaches the same tokenizer defect with no redeclaration involved:
+   the node for "cfx" carries both an answer and a branch for "cfxl", which
+   used to bypass the check that an operator starting with an alphabetic
+   character must be followed by whitespace.
+   ---------------------------------------------------------------------- */
+
+(eval_string("cfxfoo(a,b) := a+b"), infix("cfx"), infix("cfxl"),
+ eval_string("cfxfoo(1,3)"));
+4$
+
+parse_string("a cfx b");
+"cfx"(a,b)$
+
+parse_string("a cfxl b");
+"cfxl"(a,b)$
+
+/* ----------------------------------------------------------------------
+   The reported case: names beginning with %, as used by to_poly_solve,
+   which declares nary("%and") and nary("%or").
+   ---------------------------------------------------------------------- */
+
+(eval_string("%orfoo(a,b) := a+b"), nary("%or"), nary("%or"),
+ eval_string("%orfoo(1,3)"));
+4$
+
+parse_string("a %or b");
+"%or"(a,b)$
+
+(eval_string("%anfoo(a,b) := a+b"), nary("%an"), nary("%ane"),
+ eval_string("%anfoo(1,3)"));
+4$
+
+/* ----------------------------------------------------------------------
+   The operator name may also be a symbol.  def-operator extends the
+   tokenizer's operator table only for a string argument, so the symbol form
+   cannot reach this defect at all; it is here as the control case.
+   ---------------------------------------------------------------------- */
+
+(eval_string("symfoo(a,b) := a+b"), infix('sym), infix('sym),
+ eval_string("symfoo(1,3)"));
+4$
+
+parse_string("a sym b");
+"sym"(a,b)$
+
+/* ----------------------------------------------------------------------
+   Redeclaring an operator must still take effect.  These guard against a
+   fix that suppresses the duplicate too aggressively: the operator trie
+   maps a character sequence to a symbol and carries no type or binding
+   power, so rebuilding it is a no-op, but the properties set by
+   def-operator must still be updated on every call.
+   ---------------------------------------------------------------------- */
+
+/* prefix redeclared as infix; the printed form changes with the dissym */
+(prefix("rdf"), string(parse_string("rdf x")));
+"rdf x"$
+
+(infix("rdf"), string(parse_string("a rdf b")));
+"a rdf b"$
+
+/* binding powers: at 110 the operator binds tighter than +, at 90 looser */
+(infix("bpx",110,110), parse_string("a bpx b + c"));
+"bpx"(a,b) + c$
+
+(infix("bpx",90,90), parse_string("a bpx b + c"));
+"bpx"(a, b+c)$
+
+/* associativity follows from the binding powers: lbp<rbp is left
+   associative, so the left operand of the outer operator is "a apy b";
+   lbp>rbp is right associative, so it is just "a" */
+(infix("apy",100,101), first(args(parse_string("a apy b apy c"))));
+"apy"(a,b)$
+
+(infix("apy",101,100), first(args(parse_string("a apy b apy c"))));
+a$
+
+/* a matchfix operator may be given a new right delimiter */
+(matchfix("dlx","xld"), string(parse_string("dlx a,b xld")));
+"dlxa,bxld"$
+
+(matchfix("dlx","xdl"), string(parse_string("dlx a,b xdl")));
+"dlxa,bxdl"$
+
+/* kill and redeclare */
+(eval_string("klxfoo(a,b) := a+b"), infix("klx"), infix("klx"),
+ eval_string("klxfoo(1,3)"));
+4$
+
+(kill("klx"), eval_string("klxfoo(1,3)"));
+4$
+
+(infix("klx"), parse_string("a klx b"));
+"klx"(a,b)$
+
+/* ----------------------------------------------------------------------
+   Remove the operators declared above so that they cannot affect any test
+   file run after this one, and check that an identifier beginning with a
+   former operator name is read as a plain symbol again.
+   ---------------------------------------------------------------------- */
+
+/* kill does not evaluate its argument, so kill(s) inside the lambda would
+   kill the symbol s itself and leave the operators in place; apply supplies
+   the value of s instead */
+(map(lambda([s], apply(kill, [s])),
+     ["pfx","ifx","nry","psx","nfx","mfx","xfm","cfx","cfxl","%or","%an",
+      "%ane","sym","rdf","bpx","apy","dlx","xld","xdl","klx"]), 0);
+0$
+
+/* the operators really are gone: an expression that used one no longer
+   parses, so errcatch returns the empty list.  Each of these prints an
+   "incorrect syntax" message into the test log; that is expected. */
+errcatch(parse_string("a ifx b"));
+[]$
+
+errcatch(parse_string("mfx a,b xfm"));
+[]$
+
+(eval_string("pfxbar(a,b) := a+b"), eval_string("pfxbar(1,3)"));
+4$
+
+(kill(all), 0);
+0$
