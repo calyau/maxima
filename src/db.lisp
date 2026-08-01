@@ -90,12 +90,6 @@
 (defun markp (x)
   (and (symbolp x) (get x 'mark)))
 
-(defun zl-remprop (sym indicator)
-  (if (symbolp sym)
-      (remprop sym indicator)
-      (unless (atom sym)
-        (remf (cdr sym) indicator))))
-
 (defun unmrk (x)
   (zl-remprop x 'mark))
 
