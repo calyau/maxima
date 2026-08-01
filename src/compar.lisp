@@ -2774,21 +2774,21 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun daddgr (flag x)
   (with-compsplt (lhs rhs x)
-    (mdata flag 'mgrp (dintern lhs) (dintern rhs))
+    (mdata flag 'mgrp lhs rhs)
     (if (or (mnump lhs) (constant lhs))
         (list '(mlessp) rhs lhs)
         (list '(mgreaterp) lhs rhs))))
 
 (defun daddgq (flag x)
   (with-compsplt (lhs rhs x)
-    (mdata flag 'mgqp (dintern lhs) (dintern rhs))
+    (mdata flag 'mgqp lhs rhs)
     (if (or (mnump lhs) (constant lhs))
         (list '(mleqp) rhs lhs)
         (list '(mgeqp) lhs rhs))))
 
 (defun daddeq (flag x)
   (with-compsplt-eq (lhs rhs x)
-    (mdata flag 'meqp (dintern lhs) (dintern rhs))
+    (mdata flag 'meqp lhs rhs)
     (list '($equal) lhs rhs)))
 
 (defun daddnq (flag x)
@@ -2798,11 +2798,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           ((and (mexptp lhs) (mexptp rhs)
                 (integerp (caddr lhs)) (integerp (caddr rhs))
                 (equal (caddr lhs) (caddr rhs)))
-           (mdata flag 'mnqp (dintern (cadr lhs)) (dintern (cadr rhs)))
+           (mdata flag 'mnqp (cadr lhs) (cadr rhs))
            (cond ((not (oddp (caddr lhs)))
-                  (mdata flag 'mnqp (dintern (cadr lhs))
-                         (dintern (neg (cadr rhs)))))))
-          (t (mdata flag 'mnqp (dintern lhs) (dintern rhs))))
+                  (mdata flag 'mnqp (cadr lhs) (neg (cadr rhs))))))
+          (t (mdata flag 'mnqp lhs rhs)))
     (list '(mnot) (list '($equal) lhs rhs))))
 
 ;; The following functions are used by asksign to write answers into the 
@@ -2851,8 +2850,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun mdata (flag r x y)
   (if flag
-      (mfact r x y)
-      (mkill r x y)))
+      (mfact r (dintern x) (dintern y))
+      (let ((x (dinternp x)) (y (dinternp y)))
+        (when (and x y) (mkill r x y)))))
 
 (defun mfact (r x y)
   (let ((f (datum (list r x y))))
