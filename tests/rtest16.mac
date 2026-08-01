@@ -3824,6 +3824,23 @@ third([
 9;
 
 
+/* Bug #4895: "map inside a function called by maplist skips the operator check" */
+
+third([
+ kill(f),
+ f(e) := map("+", e, [10, 20]),
+ errcatch(maplist(f, [a+b])), /* <-- third */
+ kill(f)]);
+[];
+
+third([
+ kill(f),
+ f(e) := map("+", e, [10, 20]),
+ maplist(f, [[1, 2]]), /* <-- third */
+ kill(f)]);
+[[11, 22]];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

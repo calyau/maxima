@@ -194,6 +194,7 @@ Bug fixes for numbered bugs:
  * \#4892 Assigning an option variable its own name bypasses its validator
  * \#4893 With an out-of-range value of the option variable macroexpansion, every Maxima macro call evaluates to false
  * \#4894 map crashes when an argument is an atom
+ * \#4895 map inside a function called by maplist skips the operator check
 
 Bug fixes for unnumbered bugs:
 -----------------------------

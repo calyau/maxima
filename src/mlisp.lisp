@@ -1217,13 +1217,17 @@ wrapper for this."
   (apply #'map1 (mmapev l)))
 
 (defun-maclisp map1 n
+ ;; MAPLP tells MAP1 that it was invoked by MAPLIST. Capture it and
+ ;; rebind the special to NIL so that a nested MAP inside a function
+ ;; called from MAPLIST does not see MAPLIST's binding.
+ (let ((maplistp maplp) (maplp nil))
   (do ((i n (1- i))
        (argi (setarg n (format1 (arg n))) (format1 (arg (1- i))))
        (op (or (mapatom (arg n)) (mop (arg n))))
        (flag (mapatom (arg n))
 	     (or flag
 		 (setq flag (mapatom argi))
-		 (and (not maplp) (not (alike1 (mop argi) op)))))
+		 (and (not maplistp) (not (alike1 (mop argi) op)))))
        (argl nil (cons argi argl))
        (cdrl nil (or flag (cons (margs argi) cdrl))))
       ((= i 1) (if flag
@@ -1240,7 +1244,7 @@ wrapper for this."
 			            (if (eq op t) (arg n) op)
 			            (let ((u (first argl)))
 			              (if (mapatom u) u (mop u))))))
-		   (mcons-op-args op (apply #'mmapcar (cons (arg 1) cdrl)))))))
+		   (mcons-op-args op (apply #'mmapcar (cons (arg 1) cdrl))))))))
 
 (defmspec ($maplist :properties ((evok t))) (l)
   (let ((maplp t) res)
