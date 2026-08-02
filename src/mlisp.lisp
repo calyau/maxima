@@ -897,6 +897,10 @@ wrapper for this."
 
        (copy-tree (get recordname 'defstruct-default)))
 
+      ;; Not a symbol and not a call like new (f(5,6,7)): Complain!
+      ((atom recordname)
+       (merror (intl:gettext "new: no such structure ~M") recordname))
+
       ;; assume there is some initialization here e.g. new (f(5,6,7))
       (t
         (let ((recordop (caar recordname)) (recordargs (cdr recordname)))
