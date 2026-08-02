@@ -2346,7 +2346,6 @@ wrapper for this."
 (defun mcond-eval-symbols (ev form)
   (cond ((symbolp form) (funcall ev form))
 	((atom form) form)
-	((eq (caar form) 'mquote) (cadr form))
 	((and (getl (caar form) '(mfexpr*))
 	      (not (member (caar form) '(mcond mand mor mnot mprogn mdo mdoin) :test #'eq)))
 	 form)

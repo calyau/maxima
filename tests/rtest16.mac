@@ -3949,6 +3949,17 @@ block([a], local(a),
 4;
 
 
+/* Bug #4907: "A deferred if strips quotes from its branches" */
+
+block([e, p, foo],
+ local(e, p, foo),
+ foo : 99,
+ e : if p then 'foo else 1,
+ p : true,
+ ev(e));
+foo;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
