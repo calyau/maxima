@@ -832,6 +832,12 @@ diff(taylor(x*log(x),x,0,3), x) - (log(x)+1);
 0;
 
 
+/* Bug #4912: "taylor of an unevaluated sum with expansion order inf crashes" */
+
+taylor('sum(x^k,k,0,3), x,0,inf) - (x^3+x^2+x+1);
+0;
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

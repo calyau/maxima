@@ -3060,10 +3060,13 @@
   (or (equal x 1) (equal x 1.0)))
 
 (defun [max-trunc] ()
+   ;; An infinite truncation level is represented as NIL and must not
+   ;; reach the TRUNCATE call below, so skip it when maximizing.
    (do ((l tlist (cdr l)) (emax (rczero)))
        ((null l) (1+ (truncate (car emax) (cdr emax))))
-      (when (e> (current-trunc (car l)) emax)
-	 (setq emax (orig-trunc (car l))))))
+     (let ((trunc (current-trunc (car l))))
+       (when (and (not (infp trunc)) (e> trunc emax))
+         (setq emax trunc)))))
 
 (defun tsprsum (f l type)
   (if (mfree f tvars) (newsym f)

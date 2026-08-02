@@ -211,6 +211,7 @@ Bug fixes for numbered bugs:
  * \#4909 taylor applied to diff noun forms mishandles multiple differentiation variables
  * \#4910 taylor drops terms of finite sums and products
  * \#4911 diff of a Taylor series with singular kernels crashes or loses terms
+ * \#4912 taylor of an unevaluated sum with expansion order inf crashes
 
 Bug fixes for unnumbered bugs:
 -----------------------------
