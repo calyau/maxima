@@ -202,6 +202,7 @@ Bug fixes for numbered bugs:
  * \#4900 Subscripted assignment to a string-valued variable crashes
  * \#4901 Redefining a structure leaves a stale entry in structures
  * \#4902 use_fast_arrays: first subscripted assignment to a bound variable hangs
+ * \#4903 use_fast_arrays: array(a, n) mistakes the dimension for an array type
 
 Bug fixes for unnumbered bugs:
 -----------------------------

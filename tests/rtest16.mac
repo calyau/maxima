@@ -3902,6 +3902,19 @@ kill(a, b, c, f);
 done;
 
 
+/* Bug #4903: "use_fast_arrays: array(a, n) mistakes the dimension for an array type" */
+
+block([use_fast_arrays : true, result],
+ kill(a, n),
+ n : 2,
+ array(a, n),
+ a[1] : 7,
+ result : a[1],
+ kill(a, n),
+ result);
+7;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

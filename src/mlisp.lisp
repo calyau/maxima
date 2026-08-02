@@ -1856,9 +1856,12 @@ wrapper for this."
   (cond
 	((symbolp (car x))
      (if $use_fast_arrays
-         (let ((type (if (symbolp (cadr x)) (cadr x) '$any))
-               (name (car x))
-               (diml (if (symbolp (cadr x)) (cddr x) (cdr x))))
+         ;; Only the known type keywords denote an element type; any other
+         ;; symbol is a (symbolic) dimension.
+         (let* ((typep (member (cadr x) '($any $fixnum $flonum $float $hashed $functional)))
+                (type (if typep (cadr x) '$any))
+                (name (car x))
+                (diml (if typep (cddr x) (cdr x))))
            (mset name
                  (apply '$make_array
                         type
