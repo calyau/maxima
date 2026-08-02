@@ -3858,6 +3858,17 @@ abc(2);
 5;
 
 
+/* Bug #4900: "Subscripted assignment to a string-valued variable crashes" */
+
+fourth([
+ kill(s),
+ s : "abc",
+ s[1] : 5,
+ [s, s[1]], /* <-- fourth */
+ kill(s)]);
+["abc", 5];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

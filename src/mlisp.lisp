@@ -1970,14 +1970,17 @@ wrapper for this."
                        (< num-buckets +hasher-mod+))
               (arraysize fun (min +hasher-mod+ (* 2 num-buckets)))))
 		  r)
-		 ((and (eq fun 'mqapply) (or (mxorlistp (setq ary (meval (cadr l)))) (arrayp ary))
+		 ((and (eq fun 'mqapply) (or (mxorlistp (setq ary (meval (cadr l))))
+		                             ;; strings are Lisp arrays but not
+		                             ;; something to store into
+		                             (and (arrayp ary) (not (stringp ary))))
 		       (prog2
 			   (setq mqapplyp t l (cdr l))
 			   nil)))
 		 ((and (not mqapplyp)
 		       (or (not (boundp fun))
 		           (not (or (mxorlistp (setq ary (symbol-value fun)))
-		                    (arrayp ary)
+		                    (and (arrayp ary) (not (stringp ary)))
 		                    (typep ary 'hash-table)
 		                    (eq (type-of ary) 'mgenarray)))))
 		  (if (member fun '(mqapply $%) :test #'eq) (merror (intl:gettext "assignment: cannot assign to ~M") l))
