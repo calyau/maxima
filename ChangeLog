@@ -208,6 +208,7 @@ Bug fixes for numbered bugs:
  * \#4906 Hashed arrays keep growing their bucket table past the hash range
  * \#4907 A deferred if strips quotes from its branches
  * \#4908 savedef : all makes a translated function ignore redefinition
+ * \#4909 taylor applied to diff noun forms mishandles multiple differentiation variables
 
 Bug fixes for unnumbered bugs:
 -----------------------------

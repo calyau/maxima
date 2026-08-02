@@ -3086,7 +3086,9 @@
 	      ;; other than one of the taylor variables.
 	      ;; If so, give up; let the caller handle it.
 	      (or n (return nil))
-	      (if u (setq e (meval (cons '($diff) (cons e l)))))
+	      ;; U holds the differentiations wrt non-Taylor variables only,
+	      ;; the Taylor variables in N/V are handled below via PSDP.
+	      (if u (setq e (meval (cons '($diff) (cons e u)))))
 	      (setq l (mapcar #'(lambda (x) (get-datum x)) v))
 	      (mapcar #'(lambda (datum pw)
 			  (push-pw datum (e+ (current-trunc datum) (prep1 pw))))
@@ -3099,7 +3101,9 @@
 		  (do ((i 1 (1+ i)))
 		      ((> i (car nl)) )
 		      (mapc #'(lambda (a b)
-				(putprop a (prep1 (sdiff b (car v)))
+				;; (CAR VL) is the variable
+				;; we are currently differentiating wrt.
+				(putprop a (prep1 (sdiff b (car vl)))
 					 'diff))
 			    genvar varlist)
 		      (setq e (psdp e))))))
