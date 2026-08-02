@@ -1888,7 +1888,7 @@
       ;; Set trunc levels in the local tlist to correspond to the maximum
       ;; level occurring in any series.
       (do ((data tlist (cdr data))
-	   (truncs (trunc-vector (mrat-ps x) () )))
+	   (truncs (trunc-vector (mrat-ps x) () ) (cdr truncs)))
 	  ((null data))
 	 (when (and (car truncs) (e> (car truncs) (current-trunc (car data))))
 	    (setf (current-trunc (car data)) (car truncs))))

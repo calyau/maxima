@@ -853,6 +853,14 @@ errcatch(taylor(exp(exp(%i/x)/x), x, 0, 2));
 [];
 
 
+/* Bug #4914: "Taylor: SRF applies the truncation level of the first variable to all variables" */
+
+block([t],
+ t : taylor(x, y,0,2, x,0,8),
+ taylorinfo(t^2));
+[[y,0,2],[x,0,9]];
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
