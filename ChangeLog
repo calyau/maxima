@@ -201,6 +201,7 @@ Bug fixes for numbered bugs:
  * \#4899 declare(symbol, alphabetic) crashes
  * \#4900 Subscripted assignment to a string-valued variable crashes
  * \#4901 Redefining a structure leaves a stale entry in structures
+ * \#4902 use_fast_arrays: first subscripted assignment to a bound variable hangs
 
 Bug fixes for unnumbered bugs:
 -----------------------------

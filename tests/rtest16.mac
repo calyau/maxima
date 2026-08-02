@@ -3882,6 +3882,26 @@ fourth([
 0;
 
 
+/* Bug #4902: "use_fast_arrays: first subscripted assignment to a bound variable hangs" */
+
+block([use_fast_arrays : true],
+ kill(a, b),
+ a : b,
+ a[1] : 10,
+ [a[1], b]);
+[10, b];
+
+block([use_fast_arrays : true],
+ kill(a, c, f),
+ c : 0,
+ f(x) := (c : c + 1, x),
+ a[f(1)] : 99, [a[1], c]);
+[99, 1];
+
+kill(a, b, c, f);
+done;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

@@ -1991,9 +1991,12 @@ wrapper for this."
 		                    (eq (type-of ary) 'mgenarray)))))
 		  (if (member fun '(mqapply $%) :test #'eq) (merror (intl:gettext "assignment: cannot assign to ~M") l))
 		  (if $use_fast_arrays
-		    (progn
-		      ;; (format t "ARRSTORE: use_fast_arrays=true; allocate a new value hash table for ~S~%" fun)
-		      (meval `((mset) ,fun ,(make-equal-hash-table (cdr (mevalargs (cdr l)))))))
+		    ;; Call MSET directly. Going through MEVAL of an MSET form evaluates
+		    ;; FUN a second time, so for a bound FUN, the table ended up on
+		    ;; FUN's value (looping forever), and the subscripts were evaluated
+		    ;; twice. The hash table argument is only an arity flag, so the raw
+		    ;; subscript list (CDDR L) does fine.
+		    (mset fun (make-equal-hash-table (cddr l)))
 		    (progn
 		      ;; (format t "ARRSTORE: use_fast_arrays=false; allocate a new property hash table for ~S~%" fun)
 		  (add2lnc fun $arrays)
