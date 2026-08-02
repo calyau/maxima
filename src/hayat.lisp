@@ -2432,10 +2432,25 @@
 		  (essen-sing-err)
 		  (go begin-expansion)))
 	     (t
-	      (if (and (eq funame '%atan)
-		       (eq (coef-sign arg) '$neg))
-		  (return (psplus (atrigh arg func) (taylor2 (m- '$%pi))))
-		  (return (atrigh arg func))))))
+		  ;; ATRIGH expands the LOGARC form. For ATAN at a pole of the argument,
+		  ;; the constant of that expansion comes out as %pi/2 or -%pi/2
+		  ;; depending on how the internal log(-1)s fall out for the particular
+		  ;; form of ARG (compare 1/x with sin(x)/(cos(x)-1)). So read off the
+		  ;; constant actually produced and force it to the sign of the leading
+		  ;; series term of ARG. Deciding the shift from the raw argument instead
+		  ;; (COEF-SIGN) ends in ASKSIGN for arguments like 1/x and picks the
+		  ;; wrong branch for others.
+		  (let ((ans (atrigh arg func)) (sgn nil) (c0 nil))
+		    (when (and (eq funame '%atan)
+				       (member (setq sgn (ps-lt-sign psarg)) '($pos $neg)))
+			  (setq c0 (rcdisrep (if (psp ans) (psterm (terms ans) (rczero)) ans)))
+			    ;; force the constant term to sgn * %pi/2
+			    (setq ans (psplus ans
+					              (taylor2 (m- (if (eq sgn '$neg)
+						                         (m- half%pi)
+						                         half%pi)
+						                       c0)))))
+		    (return ans)))))
      (setq temp (t-o-var (gvar psarg)))
      (when (e> (e* funord argord) temp) (return (rczero)))
      ;; the following form need not be executed if psarg is really exact.

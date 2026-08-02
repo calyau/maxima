@@ -838,6 +838,15 @@ taylor('sum(x^k,k,0,3), x,0,inf) - (x^3+x^2+x+1);
 0;
 
 
+/* Bug #4913: "taylor(atan(1/x),x,0,3) asks for the sign of x" */
+
+taylor(atan(1/x), x,0,3) - (%pi/2 - x + x^3/3);
+0$
+
+taylor(atan(-1/x), x,0,3) - (-%pi/2 + x - x^3/3);
+0$
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

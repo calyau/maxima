@@ -3514,7 +3514,7 @@ done;
 assume(n > 0);
 [n > 0];
 ratdisrep(taylor((atan(n/%pi)+%pi/2)^n/%pi^n, n, inf, 0)), taylor_logexpand : false;
-%e^((2*%pi)/(%i*log(%i/%pi)-%i*log(-(%i/%pi))-%pi));
+1/%e;
 forget(n > 0);
 [n > 0];
 

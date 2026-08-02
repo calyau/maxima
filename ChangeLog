@@ -212,6 +212,7 @@ Bug fixes for numbered bugs:
  * \#4910 taylor drops terms of finite sums and products
  * \#4911 diff of a Taylor series with singular kernels crashes or loses terms
  * \#4912 taylor of an unevaluated sum with expansion order inf crashes
+ * \#4913 taylor(atan(1/x),x,0,3) asks for the sign of x
 
 Bug fixes for unnumbered bugs:
 -----------------------------
