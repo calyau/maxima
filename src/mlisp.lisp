@@ -1465,8 +1465,11 @@ wrapper for this."
       (if (eq mpropp '$alphabetic)
         ; Explode var into characters and put each one on the *alphabet* list,
         ; which is used by src/nparse.lisp .
-        (dolist (1-char (coerce var 'list))
-          (add2lnc 1-char *alphabet*))
+        (progn
+          (unless (stringp var)
+            (merror (intl:gettext "declare: alphabetic declaration requires a string; found: ~M") var))
+          (dolist (1-char (coerce var 'list))
+            (add2lnc 1-char *alphabet*)))
         (progn
           (setq var (getopr var))
           (cond
