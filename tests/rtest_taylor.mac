@@ -847,6 +847,12 @@ taylor(atan(-1/x), x,0,3) - (-%pi/2 + x - x^3/3);
 0$
 
 
+/* Bug #4915: "Dead finite*inf check in lim-times lets taylor accept oscillating kernels" */
+
+errcatch(taylor(exp(exp(%i/x)/x), x, 0, 2));
+[];
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

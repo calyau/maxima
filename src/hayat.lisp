@@ -1097,7 +1097,9 @@
 	 ((and (lim-zerop lim1) (lim-zerop lim2)) (setq lim '$pos))
 	 ((or (when (lim-finitep lim2) (rotatef lim1 lim2) 't)
 	      (lim-finitep lim1))
-	  (when (and (eq lim1 '$finite) (lim-infp lim1))
+	  ;; After the ROTATEF above, LIM1 is the finite one, so the
+	  ;; infinity test must look at LIM2.
+	  (when (and (eq lim1 '$finite) (lim-infp lim2))
 	     (tay-error "Undefined finite*inf in lim-times" lim2))
 	  (setq lim (lim-abs lim2)))
 	 (t (tay-error "Undefined limit product in lim-times" (list (list 'mtimes) lim1 lim2))))

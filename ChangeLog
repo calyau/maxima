@@ -213,6 +213,7 @@ Bug fixes for numbered bugs:
  * \#4911 diff of a Taylor series with singular kernels crashes or loses terms
  * \#4912 taylor of an unevaluated sum with expansion order inf crashes
  * \#4913 taylor(atan(1/x),x,0,3) asks for the sign of x
+ * \#4914 Dead finite*inf check in lim-times lets taylor accept oscillating kernels
 
 Bug fixes for unnumbered bugs:
 -----------------------------
