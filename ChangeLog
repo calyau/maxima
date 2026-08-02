@@ -196,6 +196,9 @@ Bug fixes for numbered bugs:
  * \#4894 map crashes when an argument is an atom
  * \#4895 map inside a function called by maplist skips the operator check
  * \#4896 Calling a variable whose value is a string crashes the evaluator
+ * \#4897 Parallel list assignment crashes on non-symbol atomic targets
+ * \#4898 new() crashes on a string or number argument
+ * \#4899 declare(symbol, alphabetic) crashes
  * \#4900 Subscripted assignment to a string-valued variable crashes
 
 Bug fixes for unnumbered bugs:
