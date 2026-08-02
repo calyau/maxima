@@ -1836,8 +1836,11 @@ wrapper for this."
      (setq sub (ncons (cons sub y)))
      (cond (iteml (nconc iteml sub)) (t (setf (aref ary lispsub) sub)))
      (setf (aref ary 1) (setq nitems (1+ (aref ary 1))))
-     (cond ((> nitems (setq ncells (aref ary 0)))
-	    (arraysize (caar form) (+ ncells ncells))))
+     ;; Same growth rule as in ARRSTORE: HASHER only produces values below
+     ;; +HASHER-MOD+, so growing past that many buckets is pure waste.
+     (cond ((and (> nitems (setq ncells (aref ary 0)))
+		 (< ncells +hasher-mod+))
+	    (arraysize (caar form) (min +hasher-mod+ (* 2 ncells)))))
      (return y)))
 
 (defun arrfind (form)
