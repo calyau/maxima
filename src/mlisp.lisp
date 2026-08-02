@@ -76,7 +76,7 @@ or if apply is being used are printed.")
 	       ((and (symbolp fn) (symbol-array fn))
 		(mapply1 (symbol-array fn) args fn form))
 	       (t
-		(setq fn (getopr fn))
+		(setq fn (getopr (amperchk fn)))
 		(badfunchk fnname fn nil)
 		(let ((noevalargs t))
 		  (meval (cons (ncons fn) args))))))
@@ -368,7 +368,7 @@ is EQ to FNNAME if the latter is non-NIL."
                  (t
                   (apply (cadr u) (mevalargs (cdr form))))))
        b 
-         (if (and (not aryp) (load-function (caar form) t)) (go a))
+         (if (and (not aryp) (symbolp (caar form)) (load-function (caar form) t)) (go a))
          (badfunchk (caar form) (caar form) nil)
          (if (symbolp (caar form))
              (setq u (boundp (caar form)))
@@ -403,7 +403,9 @@ is EQ to FNNAME if the latter is non-NIL."
                                    args-simplified))))
                ((atom u)
                 (badfunchk (caar form) u nil)
-                (setq form (cons (cons (getopr u) aryp) (cdr form)))
+                ;; AMPERCHK turns a string into the same symbol the parser
+                ;; would use, so F : "abc"$ F(2) behaves like "abc"(2).
+                (setq form (cons (cons (getopr (amperchk u)) aryp) (cdr form)))
                 (go a))
                ((eq (caar u) 'lambda)
                 (if aryp

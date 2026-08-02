@@ -3841,6 +3841,23 @@ third([
 [[11, 22]];
 
 
+/* Bug #4896: "Calling a variable whose value is a string crashes the evaluator" */
+
+(kill(f, abc),
+ f : "abc",
+ f(2));
+abc(2);
+
+(kill(abc),
+ apply("abc", [2]));
+abc(2);
+
+(kill(f),
+ f : "+",
+ f(2, 3));
+5;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
