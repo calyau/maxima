@@ -3869,6 +3869,19 @@ fourth([
 ["abc", 5];
 
 
+/* Bug #4901: "Redefining a structure leaves a stale entry in structures" */
+
+(kill(f),
+ defstruct(f(x, y)),
+ defstruct(f(x, y, z)),
+ length(sublist(structures, lambda([s], is(op(s) = 'f)))));
+1;
+
+(kill(f),
+ length(sublist(structures, lambda([s], is(op(s) = 'f)))));
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

@@ -847,7 +847,13 @@ wrapper for this."
   ;; set the initialization
   (putprop (caar z) (initializersmostly z) 'defstruct-default)
   (setf (get (caar z) 'dimension) 'dimension-defstruct)
-  (setf $structures (append $structures (list (get (caar z) 'defstruct-default))))
+  ;; Replace any entry for the same structure so that a redefinition does
+  ;; not leave a stale duplicate behind (KILL only removes one entry).
+  (setf $structures
+        (cons '(mlist)
+              (append (remove (caar z) (cdr $structures)
+                              :key #'caar :test #'eq :count 1)
+                      (list (get (caar z) 'defstruct-default)))))
   (setf (get (caar z) 'translate) 'defstruct-translate)
   (setf (get (caar z) 'operators) 'simpstruct)
   (get (caar z) 'defstruct-default))

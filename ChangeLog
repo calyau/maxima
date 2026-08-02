@@ -200,6 +200,7 @@ Bug fixes for numbered bugs:
  * \#4898 new() crashes on a string or number argument
  * \#4899 declare(symbol, alphabetic) crashes
  * \#4900 Subscripted assignment to a string-valued variable crashes
+ * \#4901 Redefining a structure leaves a stale entry in structures
 
 Bug fixes for unnumbered bugs:
 -----------------------------
