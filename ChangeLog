@@ -204,6 +204,7 @@ Bug fixes for numbered bugs:
  * \#4902 use_fast_arrays: first subscripted assignment to a bound variable hangs
  * \#4903 use_fast_arrays: array(a, n) mistakes the dimension for an array type
  * \#4904 ev with expand(m, n) does not evaluate the arguments
+ * \#4905 kill on an element of a fixnum/flonum behaves incorrectly
 
 Bug fixes for unnumbered bugs:
 -----------------------------

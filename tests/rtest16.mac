@@ -3924,6 +3924,31 @@ block([n : 2], ev((x + 1)^2 / (y + 1)^2, expand(n, n)));
 x^2/(y^2+2*y+1)+2*x/(y^2+2*y+1)+1/(y^2+2*y+1);
 
 
+/* Bug #xxxx: "kill on an element of a fixnum/flonum array behaves incorrectly" */
+
+block([a], local(a),
+ array(a, fixnum, 2, 2),
+ a[1, 1] : 7,
+ kill(a[1, 1]),
+ a[1, 1]);
+0;
+
+block([a], local(a),
+ array(a, flonum, 2, 2),
+ a[1, 1] : 7.5,
+ kill(a[1, 1]),
+ a[1, 1]);
+0.0;
+
+block([a], local(a),
+ f[i] := i^2,
+ array(f, fixnum, 5),
+ f[2],
+ kill(f[2]),
+ f[2]);
+4;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

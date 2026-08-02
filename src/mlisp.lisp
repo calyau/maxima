@@ -1690,8 +1690,18 @@ wrapper for this."
 				 x)))))))
 
 (defun remarrelem (ary form)
-  (let ((y (car (arraydims (cadr ary)))))
-    (arrstore form (cond ((eq y 'fixnum) 0) ((eq y 'flonum) 0.0) (t munbound)))))
+  ;; ARRAY-ELEMENT-TYPE is always T for arrays created by $ARRAY (they
+  ;; are never specialized), so consult the ARRAY-MODE property as well:
+  ;; per the LISTARRAY documentation, unbound elements of FIXNUM/FLONUM
+  ;; arrays read as 0/0.0. For an array with an associated function,
+  ;; store MUNBOUND instead so that the next read recomputes the
+  ;; element rather than finding a made-up 0.
+  (let ((mode (safe-get (caar form) 'array-mode))
+        (y (car (arraydims (cadr ary)))))
+    (arrstore form (cond ((arrfunp (caar form)) munbound)
+                         ((or (eq y 'fixnum) (eq mode '$fixnum)) 0)
+                         ((or (eq y 'flonum) (eq mode '$float)) 0.0)
+                         (t munbound)))))
 
 (defun remrule (l)
   (do ((l l (cdr l)) (u))
