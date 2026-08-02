@@ -3051,6 +3051,9 @@
 (defun tsprsum (f l type)
   (if (mfree f tvars) (newsym f)
       (let ((li (ncons (car l))) (hi (caddr l)) (lv (ncons (cadr l))) a aa
+	    ;; With numeric bounds the loop below is finite, so neither the early
+	    ;; exits nor the TAYLORDEPTH guard is needed.
+	    (finite? (and (numberp (cadr l)) (numberp (caddr l))))
 	    ($maxtayorder () ));; needed to determine when terms are 0
 	(if (and (numberp (car lv)) (numberp hi) (> (car lv) hi))
 	    (if (eq type '%sum) (taylor2 0) (taylor2 1))
@@ -3063,8 +3066,13 @@
 		(rplaca lv (m1+ (car lv)))
 		;; A cheap heuristic to catch infinite recursion when
 		;; possible, should be improved in the future
-		(if (> k m) (exp-pt-err)
-		    (setq a		;(mlet li lv (taylor2 (setq aa (meval f))))
+		(if (and (> k m) (not finite?)) (exp-pt-err)
+		    ;; AA is the unexpanded term, the early exits below check it to
+		    ;; leave identically zero or one terms alone. For finite bounds, it
+		    ;; is pinned to 0 or 1, which disables the early exits entirely.
+		    (setq aa (if finite? (if type 1 0)
+				 (maxima-substitute (car lv) (car li) f))
+			  a
 			  (taylor2 (maxima-substitute (car lv) (car li) f))))
 		(if type
 		    (if (and (1p (car a)) (1p (cdr a)) (not (1p aa)))

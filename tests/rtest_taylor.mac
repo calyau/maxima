@@ -811,6 +811,18 @@ taylor('diff(x^3*z^2,x,1,z,1), x,0,4) - 6*x^2*z;
 0;
 
 
+/* Bug #4910: "taylor drops terms of finite sums and products" */
+
+taylor('sum((k-2)*x^k,k,1,3), x,0,3) - (x^3-x);
+0;
+
+taylor('product(1+(k-2)*x,k,1,3), x,0,3) - (1-x^2);
+0;
+
+taylor('sum(x^(10-k),k,1,9), x,0,3) - (x^3+x^2+x);
+0;
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$
