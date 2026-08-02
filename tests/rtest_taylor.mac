@@ -823,6 +823,15 @@ taylor('sum(x^(10-k),k,1,9), x,0,3) - (x^3+x^2+x);
 0;
 
 
+/* Bug #4911: "diff of a Taylor series with singular kernels crashes or loses terms" */
+
+diff(taylor(exp(-1/x),x,0,3), x) - exp(-1/x)/x^2;
+0;
+
+diff(taylor(x*log(x),x,0,3), x) - (log(x)+1);
+0;
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

@@ -864,6 +864,15 @@
 		       (make-ps (gvar-o p) (ncons (inf))
 				(list (term (cdr temp) (rcone)))))
 	      temp2))
+	 ;; A gvar without DIFF property belongs to an adjoined singular kernel
+	 ;; (e.g. log(x) or %e^(-1/x)) whose derivative the DIFF property scheme
+	 ;; cannot express. RATDX re-expands such series before calling us, so this
+	 ;; is only reachable via TSDIFF. Note that the OR clause above tolerates
+	 ;; TEMP = NIL, (CAR NIL) is NIL.
+	 ((null temp)
+	  (merror
+	   (intl:gettext "taylor: unable to differentiate series in ~:M")
+	   (getdisrep (gvar-o p))))
 	 (t (psdp1 (gvar-o p)
 		   (trunc-lvl p) (cons 0 (terms p))
 		   (list 0) temp)))))
@@ -873,7 +882,15 @@
 	   ((or (mono-term? l) (e> (le (n-term l)) trunc))
 	    (psplus c (pscheck varh (list (e1- trunc)) (cdr ans))))
 	   (setq l (n-term l))
-	   (if (rczerop (le l)) (setq c (psdp (lc l)))
+	   ;; Product rule: A term a*v^e contributes PSDP(a)*v^e from the
+	   ;; coefficient, on top of the e*dx*a*v^(e-1) kernel part that the
+	   ;; ADD-TERM-&-POP below emits for e # 0.
+	   (unless (rczerop (le l))
+	      (let ((cd (psdp (lc l))))
+		 (unless (rczerop cd)
+		    (setq c (psplus c (make-ps varh (list (e1- trunc))
+					       (ncons (term (le l) cd))))))))
+	   (if (rczerop (le l)) (setq c (psplus c (psdp (lc l))))
 	       (add-term-&-pop
 		a (e1- (le l)) (pstimes (le l) (pstimes dx (lc l)))))))
 

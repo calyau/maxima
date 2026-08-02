@@ -31,6 +31,17 @@
      (declare (special v* *a flag trunclist))
      (and (member 'trunc (car e) :test #'eq) (setq trunclist (cadddr (cdar e))))
      (cond ((not (eq (caar e) (quote mrat))) (setq e (ratf e))))
+     ;; A tlist with non-atomic kernels means the series contains adjoined
+     ;; singular kernels like log(x) or %e^(-1/x). Their derivatives cannot be
+     ;; expressed in the DIFF property scheme used below, so differentiate the
+     ;; disrep'd expression and re-expand, following the pattern of RE-ERAT
+     ;; EXACT-POLY has no global binding, so bind it here as TAYLOR* would.
+     (and trunclist
+	  (find-if-not #'tvar? trunclist :key #'car)
+	  (return (let (exact-poly)
+		    (declare (special exact-poly))
+		    (taylor1 (sdiff ($ratdisrep e) *x*)
+			     (list (mapcar #'copy-tree trunclist))))))
      (setq varlist (caddar e))
      (setq genvar (car (cdddar e)))
      ;; Next cond could be flushed if genvar would shrink with varlist
