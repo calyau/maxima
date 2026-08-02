@@ -2618,6 +2618,10 @@ When @code{savedef} is @code{true}, the Maxima version of a user function is
 preserved when the function is translated.  This permits the definition to be
 displayed by @code{dispfun} and allows the function to be edited.
 
+When @code{savedef} is @code{all}, files written by @code{translate_file} and
+@code{compfile} additionally contain the Maxima version of each translated
+function, so that it is preserved even when the translated file is loaded.
+
 When @code{savedef} is @code{false}, the names of translated functions are
 removed from the @code{functions} list.
 

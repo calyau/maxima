@@ -1609,7 +1609,7 @@ wrapper for this."
 (defun remove-transl-fun-props (fun)
   (if (mget fun 'trace)
       (macsyma-untrace fun))
-  (when (and (get fun 'translated) (not (eq $savedef '$all)))
+  (when (get fun 'translated)
     (fmakunbound fun)
     (setf (compiler-macro-function fun) nil)
     (let ((impl (get fun 'impl-name)))
@@ -1624,7 +1624,7 @@ wrapper for this."
 	(zl-remprop fun 'translated))))
 
 (defun remove-transl-array-fun-props (fun)
-  (when (and (get fun 'translated) (not (eq $savedef '$all)))
+  (when (get fun 'translated)
     (zl-remprop fun 'a-subr)
     (zl-remprop fun 'arrayfun-mode)
     (if (not (fboundp fun)) (zl-remprop fun 'translated))))

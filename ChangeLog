@@ -207,6 +207,7 @@ Bug fixes for numbered bugs:
  * \#4905 kill on an element of a fixnum/flonum behaves incorrectly
  * \#4906 Hashed arrays keep growing their bucket table past the hash range
  * \#4907 A deferred if strips quotes from its branches
+ * \#4908 savedef : all makes a translated function ignore redefinition
 
 Bug fixes for unnumbered bugs:
 -----------------------------

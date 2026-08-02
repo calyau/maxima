@@ -3367,7 +3367,23 @@ true;
 0;
 
 
+/* Bug #4908: "savedef : all makes a translated function ignore redefinition" */
 
+(block([f, x],
+ local(f),
+ f(x) := x^2,
+ translate(f),
+ block([savedef : all], f(x) := x^3),
+ f(2)));
+8;
+
+(block([f, x],
+ local(f),
+ f(x) := x^2,
+ translate(f),
+ block([savedef : all], remove(f, transfun)),
+ member('transfun, properties(f))));
+false;
 
 
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
