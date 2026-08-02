@@ -662,7 +662,9 @@ wrapper for this."
 	      (if munbindp (return nil))
 	      (if (mget x '$numer)
 		  (merror (intl:gettext "assignment: cannot assign to ~M; it is a declared numeric quantity.") x)
-		  (merror (intl:gettext "assignment: cannot assign to ~M") x)))
+		 (if (stringp x)
+		  (merror (intl:gettext "assignment: cannot assign to string \"~M\"") x)
+		  (merror (intl:gettext "assignment: cannot assign to ~M") x))))
 	    (when (and munbindp (eq y munbound))
 	      (munbind-makunbound x)
           (return nil))
@@ -962,7 +964,9 @@ wrapper for this."
         `((mlist)
           ,@(mapcar
               #'(lambda (x)
-                        (if (or (symbolp x) (get (caar x) 'mset_extension_operator))
+                        ;; Let atoms through to MSET, which gives the
+                        ;; regular error for non-symbols.
+                        (if (or (atom x) (get (caar x) 'mset_extension_operator))
                             x
                             `(,(car x) ,@(mapcar #'meval (cdr x)))))
               (cdr tlist))))
