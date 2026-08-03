@@ -2339,24 +2339,26 @@
            (t (go up)))
   e1 
      ;; At this point we have an expression: (z^a)^b with gr = z^a and pot = b
+   (let (base-csign)
+    (flet ((base-csign () (or base-csign (setq base-csign ($csign (cadr gr))))))
      (cond ((or (eq $radexpand '$all)
                 ;; b is an integer or an odd rational
                 (simplexpon pot)
                 (and (eq $domain '$complex)
                      (not (member ($csign (caddr gr)) '($complex $imaginary)))
                          ;; z >= 0 and a not a complex
-                     (or (member ($csign (cadr gr)) '($pos $pz $zero))
+                     (or (member (base-csign) '($pos $pz $zero))
                          ;; -1 < a <= 1
                          (and (mnump (caddr gr))
                               (eq ($sign (sub 1 (take '(mabs) (caddr gr))))
                                   '$pos))))
                 (and (eq $domain '$real)
-                     (member ($csign (cadr gr)) '($pos $pz $zero)))
+                     (member (base-csign) '($pos $pz $zero)))
                 ;; (1/z)^a -> 1/z^a when z a constant complex
                 (and (eql (caddr gr) -1)
                      (or (and $radexpand
                               (eq $domain '$real))
-                         (and (eq ($csign (cadr gr)) '$complex)
+                         (and (eq (base-csign) '$complex)
                               ($constantp (cadr gr)))))
                 ;; This does (1/z)^a -> 1/z^a. This is in general wrong.
                 ;; We switch this type of simplification on, when
@@ -2374,7 +2376,7 @@
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
-                 (not (apparently-complex-to-judge-by-$csign-p (cadr gr)))
+                 (not (member (base-csign) '($complex $imaginary)))
                  (evnump (caddr gr)))
             ;; Simplify (x^a)^b -> abs(x)^(a*b)
             (setq pot (mul pot (caddr gr))
@@ -2385,7 +2387,7 @@
             ;; Simplify (1/z^a)^b -> 1/(z^a)^b
             (setq pot (neg pot)
                   gr (power (cadr gr) (neg (caddr gr)))))
-           (t (go up)))
+           (t (go up)))))
      (go cont)))
 
 (defun apparently-complex-to-judge-by-$csign-p (e)
