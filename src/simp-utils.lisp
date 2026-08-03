@@ -133,9 +133,10 @@
 
 ;; Check if EXP is a multiple of VAR.
 (defun multiplep (exp var)
-  (and (not (zerop1 exp))
-       (zerop1 (sub exp
-                    (mul var (coeff exp var 1))))))
+  (let (c)
+    (and (not (zerop1 exp))
+         (not (zerop1 (setq c (coeff exp var 1))))
+         (zerop1 (sub exp (mul var c))))))
 
 (defun margs (form)
   (if (eq (caar form) 'mqapply)
