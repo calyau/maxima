@@ -182,8 +182,8 @@
       (do ((pow (ash pow -1) (ash pow -1))
            (s (if (oddp pow) base 1)))
           ((zerop pow) s)
-        (setq base (rem (* base base) modulus))
-        (when (oddp pow) (setq s (rem (* s base) modulus))))))
+        (setq base (cmod (* base base)))
+        (when (oddp pow) (setq s (cmod (* s base)))))))
 
 ;; SET-MODULUS
 ;;

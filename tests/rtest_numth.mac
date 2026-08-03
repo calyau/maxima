@@ -832,3 +832,10 @@ gcd(-(z-1)*(2*z-%i-2)^2, -(2*z-%i-2)*(6*z-%i-6)), gcd : spmod, algebraic;
 
 gcd(x^2 - 2*sqrt(2)* x + 2, x - sqrt(2)), algebraic;
 x-sqrt(2);
+
+
+/* Bug #4916: "CEXPT does not reduce results to the balanced range when modulus is set" */
+
+block([modulus : 5],
+ [ratdisrep(rat(3)^2), ratdisrep(rat(3)*rat(3)), ratdisrep(rat(3)^rat(2))]);
+[-1, -1, -1];
