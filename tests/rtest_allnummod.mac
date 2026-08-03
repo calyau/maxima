@@ -1218,10 +1218,10 @@ min(a,b,c,d)$
 /*--non-comparable cases--*/
 
 (xx : max(und,false,true,%i,ind,3,4,5), cons(op(xx), args(xx)));
-[max, 5, %i, ind, und, true, false]$
+[max, 5, %i, ind, und, false, true]$
 
 (xx : min(und,false,true,%i,ind,3,4,5), cons(op(xx), args(xx)));
-[min, 3, %i, ind, und, true, false]$
+[min, 3, %i, ind, und, false, true]$
 
 (xx : max(a < b, a,a,b), cons(op(xx), args(xx)));
 [max, a, a < b, b]$

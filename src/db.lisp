@@ -406,11 +406,11 @@
   (when (and (symbolp x) (get x 'data))
     (clear)
     (beg x 1)
-    (do ((p (dq+) (dq+)))
-        ((null p))
+    (do () ((null +s))
+      (let ((p (dq+)))
         (if (eq y p)
           (return t)
-          (mark+ p (+labs p))))))
+          (mark+ p (+labs p)))))))
 
 (defun kind-any-of (x kinds)
   "Looks up the kind information on symbol X and returns the first kind that is
@@ -861,12 +861,15 @@
   (do ((x)
        (lab))
       (nil)
-    (cond ((setq x (dq+))
+    (cond
+	  (+s
+	   (setq x (dq+))
 	   (setq lab (+labs x))
 	   (if (zerop (logand (unlab lab) (unlab (-labz x))))
 	       (mark+ x lab)
 	       (return t)))
-	  ((setq x (dq-))
+	  (-s
+	   (setq x (dq-))
 	   (setq lab (-labs x))
 	   (if (zerop (logand (unlab lab) (unlab (+labz x))))
 	       (mark- x lab)

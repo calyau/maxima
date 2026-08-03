@@ -216,6 +216,7 @@ Bug fixes for numbered bugs:
  * \#4914 Taylor: SRF applies the truncation level of the first variable to all variables
  * \#4915 Dead finite*inf check in lim-times lets taylor accept oscillating kernels
  * \#4916 CEXPT does not reduce results to the balanced range when modulus is set
+ * \#4917 false is declared constant, but featurep(false, constant) is false
 
 Bug fixes for unnumbered bugs:
 -----------------------------
