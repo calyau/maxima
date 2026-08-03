@@ -2268,7 +2268,7 @@
               (if (and y (floatp y) (or $numer (not (equal pot 1))))
                   ;; A numeric constant like %e, %pi, ... and 
                   ;; exponent is a float or bigfloat value.
-                  (return (if (and (member gr *builtin-numeric-constants*)
+                  (return (if (and (member gr *builtin-numeric-constants* :test #'eq)
                                    ($bfloatp pot))
                               ;; Return a bigfloat value.
                               ($bfloat gr)
@@ -2316,7 +2316,7 @@
                    (or (floatp pot)
                        ;; The exponent is a bigfloat. Convert base to bigfloat.
                        (and ($bfloatp pot)
-                            (member gr *builtin-numeric-constants*)
+                            (member gr *builtin-numeric-constants* :test #'eq)
                             (setq y ($bfloat gr)))
                        (and $numer (integerp pot)))
                    (return (exptrl y pot))))))

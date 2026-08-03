@@ -270,7 +270,7 @@
 		 (gethash x *builtin-symbol-props*))
 	(setf (symbol-plist x)
 	      (copy-tree (gethash x *builtin-symbol-props*))))
-      (when (member x *builtin-numeric-constants*)
+      (when (member x *builtin-numeric-constants* :test #'eq)
 	(initialize-numeric-constant x))	;; reset db value for $%pi, $%e, etc
       (when (member x '($zeroa $zerob))
         (initialize-zeroab x)) ;; restore db assumptions for $zeroa and $zerob
