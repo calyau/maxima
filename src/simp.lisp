@@ -2159,12 +2159,26 @@
                          (an gr (simptimes (list '(mtimes) an gr) 1 t)))
                         ((signp e i) an))))
            ((equal pot -1) 
-            (return (eqtest (testt (tms gr pot nil)) check)))
+            (return (eqtest (if (and (not (mtimesp gr))
+                                     (eq (get 'mexpt 'operators) 'simpexpt))
+                                ;; The MEXPT simplifier is original (no tellsimp).
+                                ;; TMS/TIMESIN can only rebuild GR^POT unchanged
+                                ;; here, at the price of a second full pass through
+                                ;; SIMPLIFYA -> SIMPEXPT -> TMS -> TIMESIN.
+                                ;; Skip the unnecessary work.
+                                (list '(mexpt simp) gr pot)
+                                (testt (tms gr pot nil)))
+                            check)))
            ((fixnump pot)
             (return (eqtest (cond ((and (mplusp gr)
                                         (not (or (> pot $expop)
                                                  (> (- pot) $expon))))
                                    (expandexpt gr pot))
+                                  ((and (not (mtimesp gr))
+                                        (eq (get 'mexpt 'operators) 'simpexpt)
+                                        (eq (get 'mtimes 'operators) 'simptimes))
+                                   ;; See comment above.
+                                   (list '(mexpt simp) gr pot))
                                   (t (simplifya (tms gr pot nil) t)))
                             check))))
      
