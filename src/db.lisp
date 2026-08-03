@@ -439,12 +439,12 @@
       (clear)
       (beg x 1)
       (do ((p (dq+) (dq+)))
-          ((or (null p)
-               (zerop remaining)))
-          (when (member p kinds :test #'eq)
-            (decf remaining))
+          ((null p))
+          (when (and (member p kinds :test #'eq)
+                     (zerop (decf remaining)))
+            (return))
           (mark+ p (+labs p))))
-  (zerop remaining)))
+    (zerop remaining)))
 
 (defun decl-complex-kind (x)
   "Returns '$IMAGINARY if the symbol X is declared imaginary, '$COMPLEX if it is
