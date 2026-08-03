@@ -2039,6 +2039,11 @@
            ((or (setq mlpgr (mxorlistp gr))
                 (setq mlppot (mxorlistp pot)))
             (go matrix))
+           
+           ;; Fast-path for a symbolic base other than %i (handled separately):
+           ((and (symbolp gr) (not (eq gr '$%i)))
+            (if (zerop1 pot) (go retno) (go atgr)))
+           
            ((onep1 pot) (go atgr))
            ((or (zerop1 pot) (onep1 gr)) (go retno))
            
