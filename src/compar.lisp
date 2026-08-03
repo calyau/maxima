@@ -2334,8 +2334,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			 (some #'(lambda (s) ($featurep s '$even)) (rest (margs x)))))
 		   ((eq x-op 'mexpt)
 		    (and (every #'maxima-integerp (margs x))
-			 (or (null (mevalp (mlsp (caddr x) 0)))
-                 (eql (cadr x) -1))))
+			 (or (eql (cadr x) -1)
+                 (null (mevalp (mlsp (caddr x) 0))))))
 		   ;; ! in Maxima allows real arguments
 		   ((eq x-op 'mfactorial)
 		    (and (maxima-integerp (cadr x))
