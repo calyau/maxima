@@ -1195,7 +1195,7 @@
         ;; Check evaluation in floating point precision.
         ((flonum-eval (mop form) y))
         ;; Check evaluation in bigfloag precision.
-        ((and (not (member 'simp (car form)))
+        ((and (not (member 'simp (cdar form)))
               (big-float-eval (mop form) y)))
         ((eq y '$%e) 1)
         ((mexptp y)
@@ -2091,7 +2091,7 @@
            ;; Check for numerical evaluation of the sqrt.
            ((and (alike1 pot '((rat) 1 2))
                  (or (setq res (flonum-eval '%sqrt gr))
-                     (and (not (member 'simp (car x)))
+                     (and (not (member 'simp (cdar x)))
                           (setq res (big-float-eval '%sqrt gr)))))
             (return res))
            ((eq gr '$%i)
@@ -2287,7 +2287,7 @@
               ;; Numerically evaluate if the power is a (complex)
               ;; big-float.  (This is basically the guts of
               ;; big-float-eval, but we can't use big-float-eval.)
-              (when (and (not (member 'simp (car x)))
+              (when (and (not (member 'simp (cdar x)))
                          (complex-number-p pot 'bigfloat-or-number-p))
                 (destructuring-bind (x . y) (trisplit pot)
                   (cond ((and ($bfloatp x) (eql 0 y))
