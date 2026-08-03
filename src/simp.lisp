@@ -2376,8 +2376,8 @@
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
-                 (not (member (base-csign) '($complex $imaginary)))
-                 (evnump (caddr gr)))
+                 (evnump (caddr gr))
+                 (not (member (base-csign) '($complex $imaginary))))
             ;; Simplify (x^a)^b -> abs(x)^(a*b)
             (setq pot (mul pot (caddr gr))
                   gr (radmabs (cadr gr))))
@@ -2824,7 +2824,9 @@
 	((or (floatp r1) (floatp r2)) 0.0)
 	(t 0)))
 
-(defun evnump (n) (or (even n) (and (ratnump n) (even (cadr n)))))
+(defun evnump (n) (or (and (integerp n) (evenp n))
+		      (and (ratnump n) (evenp (cadr n)))))
+
 (defun odnump (n) (or (and (integerp n) (oddp n))
 		      (and (ratnump n) (oddp (cadr n)))))
 
