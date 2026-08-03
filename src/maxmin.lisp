@@ -305,7 +305,7 @@
          
  	    (t (let ((sgn))
           (setq a (sub a b))
-          (when (and (>= $maxmin_effort 10) (lenient-extended-realp a) (amongl '($minf $inf) a))
+          (when (and (>= $maxmin_effort 10) (amongl '($minf $inf) a) (lenient-extended-realp a))
             (setq a ($limit a)))
 
           (when (>= $maxmin_effort 10)
