@@ -119,7 +119,7 @@
        (member (caar e) '(mrat mpois)) t))
 
 (defun constant (x)
-  (cond ((symbolp x) (kindp x '$constant))
+  (cond ((symbolp x) (or (get x 'sysconst) (kindp x '$constant)))
 	(($subvarp x)
 	 (and (kindp (caar x) '$constant)
 	      (do ((x (cdr x) (cdr x))) ((null x) t)
@@ -127,7 +127,7 @@
 
 (defun maxima-constantp (x)
   (or (numberp x)
-      (and (symbolp x) (kindp x '$constant))))
+      (and (symbolp x) (or (get x 'sysconst) (kindp x '$constant)))))
 
 (defun scalar-or-constant-p (x flag)
   (if flag (not ($nonscalarp x)) ($scalarp x)))
