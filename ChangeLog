@@ -108,6 +108,7 @@ Bug fixes for numbered bugs:
  * \#4739 ratsubst(0,exp(-x),2);
  * \#4740 limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf);
  * \#4742 limit result contains "false"
+ * \#4746 calling forget gives stack overflow and forgets facts in global context
  * \#4747 limits of some exponential integrals when expintrep : gamma_incomplete
  * \#4752 csign doesn't handle subscripted functions like li correctly
  * \#4756 expand(sin(%e^x)), numer incorrectly replaces %e with numerical value

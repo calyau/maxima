@@ -513,8 +513,16 @@
       (putprop ctxt (delete dat l :test #'eq :count 1) 'data)))
   dat)
 
+(defun removablep (dat)
+  "Can the datum DAT be removed from the current context? A datum with no CON
+  is one of DINTNUM's chain edges, which is not a fact and must survive. A datum
+  owned by $GLOBAL is a built-in assertion: It can only be removed from within
+  $GLOBAL itself (which the user cannot set as the current context)."
+  (let ((con (zl-get dat 'con)))
+    (and con (or (not (eq con '$global)) (eq context '$global)))))
+
 (defun fdel (fact data)
-  (cond ((and (zl-get (car data) 'con)
+  (cond ((and (removablep (car data))
 	      (eq (car fact) (caaar data))
 	      (eq (cadr fact) (cadaar data))
 	      (eq (caddr fact) (caddar (car data))))
@@ -526,7 +534,7 @@
 	      (dat))
 	     ((null (cdr ds)))
 	   (setq dat (cadr ds))
-	   (cond ((and (zl-get dat 'con)
+	   (cond ((and (removablep dat)
 		       (eq (car fact) (caar dat))
 		       (eq (cadr fact) (cadar dat))
 		       (eq (caddr fact) (caddar dat)))

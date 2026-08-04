@@ -931,6 +931,9 @@ Entfernt die Eigenschaft @var{indicator} vom Atom @var{atom}.
 
 Entfernt Eigenschaften von Atomen.
 
+Aussagen im Kontext @code{global} sind fest in Maxima eingebaut und k@"onnen
+mit @code{remove} nicht entfernt werden.
+
 @code{remove(@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})} entfernt die
 Eigenschaft @code{p_k} von dem Atom @code{a_k}.
 
@@ -1415,6 +1418,10 @@ mit den Funktionen @mref{forget} oder @mref{remove} gel@"oscht werden.
 Weiterhin kann der gesamte Kontext mit der Funktion @mref{killcontext} entfernt
 werden.
 
+Der Kontext @code{global} kann nicht ver@"andert werden: Er kann nicht zum
+aktuellen Kontext gemacht werden, und die Fakten in ihm k@"nnen nicht entfernt
+werden.
+
 Beispiel:
 
 Das folgende Beispiel zeigt wie ein Kontext @code{mycontext} angelegt wird.  Der
@@ -1499,6 +1506,9 @@ Beispiel:
 Entfernt Aussagen, die mit @code{assume} einem Kontext hinzugef@"ugt wurden.
 Die Aussagen k@"onnen Ausdr@"ucke sein, die @"aquivalent aber nicht unbedingt
 identisch zu vorherigen Fakten sind.
+
+Aussagen im Kontext @code{global} sind fest in Maxima eingebaut und k@"onnen
+mit @code{forget} nicht entfernt werden.
 
 @code{forget(@var{L})} entfernt alle Aussagen, die in der Liste @var{L}
 enthalten sind.

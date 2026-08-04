@@ -195,6 +195,8 @@
 (defun asscontext (xx y)
   (declare (ignore xx))
   (cond ((not (symbolp y)) (nc-err "context assignment" y))
+	((eq y '$global)
+	 (merror (intl:gettext "context: ~M cannot be made the current context.") y))
 	((member y $contexts :test #'eq) (setq context y $context y))
 	(t ($newcontext y))))
 

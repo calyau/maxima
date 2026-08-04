@@ -1059,6 +1059,9 @@ when @code{rem} was called, or @code{false} if it had no such property.
 
 Removes properties associated with atoms.
 
+Assertions in the context @code{global} are built into Maxima and cannot be
+removed by @code{remove}.
+
 @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
 removes property @code{p_k} from atom @code{a_k}.
 
@@ -1603,6 +1606,10 @@ of the active context.
 When a fresh Maxima is started up, the user is in a
 context called @code{initial}, which has @code{global} as a subcontext.
 
+The context @code{global} cannot be modified: It cannot be made the current
+context, and the facts it contains cannot be removed. @mref{facts} can still be
+used to inspect it.
+
 See also @mrefcomma{facts} @mrefcomma{newcontext} @mrefcomma{supcontext}@w{}
 @mrefcomma{killcontext} @mrefcomma{activate} @mrefcomma{deactivate}@w{}
 @mrefcomma{assume} and @mrefdot{forget}
@@ -1677,6 +1684,9 @@ are active, but in a different context, are not listed.
 Removes predicates established by @mrefdot{assume}
 The predicates may be expressions equivalent to (but not necessarily identical
 to) those previously assumed.
+
+Assertions in the context @code{global} are built into Maxima and are not
+removed by @code{forget}.
 
 @code{forget (@var{L})}, where @var{L} is a list of predicates,
 forgets each item on the list.

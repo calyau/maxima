@@ -2080,6 +2080,57 @@ facts();
 0;
 
 
+/* Bug #4746: The built-in assertions in global survive forget() and remove(),
+   and "global" cannot be made the current context. */
+
+(kill(k),
+ ctx : supcontext(),
+ num_facts : length(facts(global)),
+ 0);
+0;
+
+(forget(kind(%pi, constant)),
+ featurep(%pi, constant));
+true;
+
+(remove(%pi, constant),
+ featurep(%pi, constant));
+true;
+
+(forget(kind(%i, imaginary)),
+ featurep(%i, imaginary));
+true;
+
+(remove(acosh, complex),
+ featurep(acosh, complex));
+true;
+
+(forget(zeroa > 0),
+ sign(zeroa));
+pos;
+
+(forget(zerob < 0),
+ sign(zerob));
+neg;
+
+length(facts(global)) - num_facts;
+0;
+
+errcatch(context : global);
+[];
+
+killcontext(global);
+not_done;
+
+is(context = ctx);
+true;
+
+(killcontext(ctx),
+ kill(k, ctx, num_facts),
+ 0);
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
