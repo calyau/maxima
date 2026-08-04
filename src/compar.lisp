@@ -567,15 +567,17 @@
 (defun assume (pat)
   (if (and (not (atom pat))
 	   (eq (caar pat) 'mnot)
+	   (not (atom (cadr pat)))
 	   (eq (caaadr pat) '$equal))
       (setq pat `(($notequal) ,@(cdadr pat))))
-  (if (and (consp pat) (eq (caar pat) '$kind))
-  (assume-kind pat)
-  (let ((dummy (let ($assume_pos) (car (mevalp1 pat)))))
-    (cond ((eq dummy t) '$redundant)
-	  ((null dummy) '$inconsistent)
-	  ((atom dummy) '$meaningless)
-	  (t (learn pat t))))))
+  (cond ((not (learnablep pat)) '$meaningless)
+	((eq (caar pat) '$kind) (assume-kind pat))
+	(t
+	 (let ((dummy (let ($assume_pos) (car (mevalp1 pat)))))
+	   (cond ((eq dummy t) '$redundant)
+		 ((null dummy) '$inconsistent)
+		 ((atom dummy) '$meaningless)
+		 (t (learn pat t)))))))
 
 (defun assume-kind (pat)
   "assume() on a kind(x, property) expression, restricted to the features that
@@ -591,6 +593,18 @@
        '$inconsistent)
       (t
        (meval `(($declare) ,var ,prop)) pat))))
+
+(defvar *learnable-operators*
+  '(mlessp mleqp mgreaterp mgeqp mequal $equal mnotequal $notequal $kind)
+  "Operators of the expressions that LEARN can add to or remove from the
+  database.")
+
+(defun learnablep (pat)
+  (and (not (atom pat))
+       (not (atom (car pat)))
+       (or (member (caar pat) *learnable-operators* :test #'eq)
+	   (zl-get (caar pat) 'learn)
+	   (zl-get (caar pat) 'unlearn))))
 
 (defun learn (pat flag)
   (cond ((atom pat))
@@ -610,13 +624,9 @@
 	 (daddnq flag (sub (cadr pat) (caddr pat))))
 	((eq (caar pat) 'mleqp) (daddgq flag (sub (caddr pat) (cadr pat))))
 	((eq (caar pat) 'mlessp) (daddgr flag (sub (caddr pat) (cadr pat))))
-	(flag (true* (munformat pat)))
-	(t 
-      (cond
-        ((eq (caar pat) '$kind)
-         (unkind (getopr (second pat)) (third pat)))
-        (t (untrue (munformat pat))))
-      pat)))
+	((eq (caar pat) '$kind)
+	 (unless flag (unkind (getopr (second pat)) (third pat)))
+	 pat)))
 
 ;;; When abs(x)<a is in the pattern, where a is a positive expression,
 ;;; then learn x<a and -x<a too. The additional facts are put into the context
@@ -710,9 +720,12 @@
 (defun forget1 (pat)
   (cond ((and (not (atom pat))
 	      (eq (caar pat) 'mnot)
+	      (not (atom (cadr pat)))
 	      (eq (caaadr pat) '$equal))
 	 (setq pat `(($notequal) ,@(cdadr pat)))))
-  (learn pat nil))
+  (if (learnablep pat)
+    (learn pat nil)
+    '$meaningless))
 
 (defun restore-facts (factl)		; used by SAVE
   (dolist (fact factl)

@@ -2030,6 +2030,56 @@ true;
 0;
 
 
+/* Bug #4918: "assume(not foo(...)) returns [not con]"
+   assume() and forget() accept only what the database can hold. */
+
+(kill(k),
+ ctx : supcontext(),
+ 0);
+0;
+
+assume(not k);
+[meaningless];
+
+forget(not k);
+[meaningless];
+
+assume(not kind(k, complex));
+[meaningless];
+
+forget(not kind(k, complex));
+[meaningless];
+
+assume(k[1]);
+[meaningless];
+
+forget(k[1]);
+[meaningless];
+
+forget(F(%phi, constant));
+[meaningless];
+
+forget(2*k);
+[meaningless];
+
+forget(k);
+[meaningless];
+
+facts();
+[];
+
+(assume(not equal(k, 0)), facts(k));
+[not equal(k, 0)];
+
+(forget(not equal(k, 0)), facts(k));
+[];
+
+(killcontext(ctx),
+ kill(k, ctx),
+ 0);
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
