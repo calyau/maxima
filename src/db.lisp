@@ -463,9 +463,11 @@
               (mark+ p (+labs p)))))))))
 
 (defun true* (pat)
-  (let ((dum (semant pat)))
+  (if (eq (car pat) 'kind)
+   (mkind (cadr pat) (caddr pat))
+   (let ((dum (semant pat)))
     (if dum
-	(cntxt (ind (ncons dum)) context))))
+	(cntxt (ind (ncons dum)) context)))))
 
 (defun fact (fun arg val)
   (cntxt (ind (datum (list fun arg val))) context))
