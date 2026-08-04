@@ -640,49 +640,6 @@
 (defun doutern (x)
   (if (atom x) x (car x)))
 
-(defun untrue (pat)
-  (kill (car pat) (semant (cadr pat)) (semant (caddr pat))))
-
-(defun kill (fun arg val)
-  (kill2 fun arg val arg)
-  (kill2 fun arg val val))
-
-(defun kill2 (fun arg val cl)
-  (cond ((numberp cl))			;a bare number is not a node
-	((atom cl)			;a symbol is its own node
-	 (push+sto (sel cl data) (kill3 fun arg val (sel cl data))))
-	((mnump (car cl))		;the node standing for a number
-	 (push+sto (sel cl data) (kill3 fun arg val (sel cl data))))
-	((or (atom (car cl))		;an operator list such as (%SIN), or
-	     (atom (caar cl)))		;a Maxima expression: Do its parts
-	 (mapc #'(lambda (lis) (kill2 fun arg val lis)) cl))
-	((atom (caaar cl))		;the node standing for a compound
-					;expression: the node itself, and then the
-					;parts of the expression, where the facts
-					;built by IND/IND1 sit
-	 (push+sto (sel cl data) (kill3 fun arg val (sel cl data)))
-	 (mapc #'(lambda (lis) (kill2 fun arg val lis)) (car cl)))))
-
-(defun kill3 (fun arg val data)
-  (cond ((and (eq fun (caaar data))
-	      (eq arg (cadaar data))
-	      (eq val (caddar (car data))))
-	 (let ((rest (cdr data)))
-	   (uncntxt (car data))
-	   rest))
-	(t
-	 (do ((ds data (cdr ds))
-	      (dat))
-	     ((null (cdr ds)))
-	 (setq dat (cadr ds))
-	 (cond ((not (and (eq fun (caar dat))
-			  (eq arg (cadar dat))
-			  (eq val (caddar dat))))
-		t)
-	       (t (rplacd ds (cddr ds))
-		  (uncntxt dat) (return t))))
-	 data)))
-
 (defun unkind (x y)
   (setq y (car (datum (list 'kind x y))))
   (kcntxt y context)
