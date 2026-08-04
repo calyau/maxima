@@ -19,7 +19,7 @@
 (defvar *debug-compar* nil
   "Enables debugging code for this file.")
 
-(defvar %initiallearnflag)
+(defvar %initiallearnflag nil)
 
 (defmvar complexsign nil
   "If T, COMPAR attempts to work in a complex mode.
@@ -3086,10 +3086,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; %initiallearnflag is only necessary so that %PI, %E, etc. can be LEARNed.
 
 (defun initialize-numeric-constant (c)
-  (setq %initiallearnflag t)
-  (let ((context '$global))
-    (learn `((mequal) ,c ,(mget c '$numer)) t))
-  (setq %initiallearnflag nil))
+  (let ((context '$global) (%initiallearnflag t))
+    (learn `((mequal) ,c ,(mget c '$numer)) t)))
 
 (defun initialize-zeroab (c)
   "Adds database assumptions for $zeroa and $zerob to the global context"
