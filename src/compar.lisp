@@ -75,6 +75,31 @@
 
 (defvar $useminmax t)
 
+(defvar *inconsistent-declarations*
+  ;; Note that the following list of inconsistent type declaration pairs
+  ;; intentionally omits cases that can be detected by the inferencing engine,
+  ;; e.g., ($even . $odd). Similarly, the pair ($imaginary . $real) also covers
+  ;; $rational, $irrational, $integer, $even and $odd on the right hand side via
+  ;; inferencing.
+  '(($integer . $noninteger)
+    ($noninteger . $integer)
+    ($even . $noninteger)
+    ($odd . $noninteger)
+    ($rational . $imaginary)   ; Maxima doesn't seem to think of zero
+    ($irrational . $imaginary) ; as an imaginary number,
+    ($real . $imaginary)       ; therefore these pairs are all
+    ($imaginary . $real)       ; inconsistent.
+    ($increasing . $decreasing)
+    ($decreasing . $increasing)
+    ($symmetric . $antisymmetric)
+    ($antisymmetric . $symmetric)
+    ($oddfun . $evenfun)
+    ($evenfun . $oddfun)
+    ($lassociative . $rassociative)
+    ($rassociative . $lassociative))
+  "Pairs of declarations that cannot both hold, excluding those that the
+  inferencing engine can detect")
+
 ;; Remove this (nil'ed out) function after a while.  We should be
 ;; using POWER instead of POW.
 #+nil
@@ -536,8 +561,6 @@
 	   (merror (intl:gettext "assume: argument cannot be an '=' expression; found ~M~%assume: maybe you want 'equal'.") (car x)))
 	  ((eq (caaar x) 'mnotequal)
 	   (merror (intl:gettext "assume: argument cannot be a '#' expression; found ~M~%assume: maybe you want 'not equal'.") (car x)))
-	  ((eq (caaar x) '$kind)
-	   (merror (intl:gettext "assume: argument cannot be a 'kind' expression; found ~M~%assume: use 'declare' instead.") (car x)))
 	  (t (push (assume (meval (car x))) nl)))
     (setq x (cdr x))))
 
@@ -546,11 +569,28 @@
 	   (eq (caar pat) 'mnot)
 	   (eq (caaadr pat) '$equal))
       (setq pat `(($notequal) ,@(cdadr pat))))
+  (if (and (consp pat) (eq (caar pat) '$kind))
+  (assume-kind pat)
   (let ((dummy (let ($assume_pos) (car (mevalp1 pat)))))
     (cond ((eq dummy t) '$redundant)
 	  ((null dummy) '$inconsistent)
 	  ((atom dummy) '$meaningless)
-	  (t (learn pat t)))))
+	  (t (learn pat t))))))
+
+(defun assume-kind (pat)
+  "assume() on a kind(x, property) expression, restricted to the features that
+  facts() can emit, so that the output of facts() can be fed back to assume()."
+  (let ((var (getopr (cadr pat)))
+	(prop (caddr pat)))
+    (cond
+      ((not (member prop (cdr $features) :test #'eq))
+       '$meaningless)
+      ((truep (list 'kind var prop))
+       '$redundant)
+      ((declaration-inconsistent-p var prop)
+       '$inconsistent)
+      (t
+       (meval `(($declare) ,var ,prop)) pat))))
 
 (defun learn (pat flag)
   (cond ((atom pat))
@@ -2911,38 +2951,21 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       form
       (cons (caar form) (mapcar #'munformat (cdr form)))))
 
+(defun declaration-inconsistent-p (var prop)
+  (let ((prop2 (assoc prop *inconsistent-declarations* :test #'eq)))
+    (or (falsep (list 'kind var prop))
+        (and prop2 (truep (list 'kind var (cdr prop2)))))))
+
 (defun declarekind (var prop)	; This function is for $DECLARE to use.
-  (let (prop2)
-    (cond ((truep (list 'kind var prop)) t)
-	  ((or (falsep (list 'kind var prop))
-	       (and (setq prop2 (assoc prop
-					    ;; Note that the following list of inconsistent type
-					    ;; declaration pairs intentionally omits cases that are
-					    ;; handled by the inferencing engine in the above FALSEP
-					    ;; call, e.g., ($even . $odd).
-					    ;; Similarly, the pair ($imaginary . $real) also covers
-					    ;; $rational, $irrational, $integer, $even and $odd on
-					    ;; the right hand side via inferencing in the below
-					    ;; TRUEP call.
-					    '(($integer . $noninteger)
-					      ($noninteger . $integer)
-					      ($even . $noninteger)
-					      ($odd . $noninteger)
-					      ($rational . $imaginary)   ; Maxima doesn't seem to think of zero
-					      ($irrational . $imaginary) ; as an imaginary number,
-					      ($real . $imaginary)       ; therefore these pairs are all
-					      ($imaginary . $real)       ; inconsistent.
-					      ($increasing . $decreasing)
-					      ($decreasing . $increasing)
-					      ($symmetric . $antisymmetric)
-					      ($antisymmetric . $symmetric)
-					      ($oddfun . $evenfun)
-					      ($evenfun . $oddfun)
-                          ($lassociative . $rassociative)
-                          ($rassociative . $lassociative)) :test #'eq))
-		    (truep (list 'kind var (cdr prop2)))))
-	   (merror (intl:gettext "declare: inconsistent declaration ~:M") `(($declare) ,var ,prop)))
-	  (t (mkind var prop) t))))
+  (cond
+    ((truep (list 'kind var prop))
+     t)
+    ((declaration-inconsistent-p var prop)
+     (merror (intl:gettext "declare: inconsistent declaration ~:M")
+                           `(($declare) ,var ,prop)))
+    (t
+     (mkind var prop)
+     t)))
 
 ;;;  These functions reformat expressions to be stored in the data base.
 

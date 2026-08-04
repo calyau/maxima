@@ -262,3 +262,4 @@ Other changes:
  * basic support for solving equations involving abs and signum
  * acsc(0) and asec(0) now throw domain errors just like acsch(0) and asech(0)
  * package ezunits: significant performance improvement
+ * assume(kind(...)) now supported as an alternative to declare(...), forget(kind(...)) was already working as an alternative to remove(...)

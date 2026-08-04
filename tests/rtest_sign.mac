@@ -1945,6 +1945,91 @@ pos;
 [];
 
 
+/* assume(kind(...)) */
+
+(kill(k1, k2, k3, k4, k5, k6, k7), ctx: supcontext(), 0);
+0;
+
+/* Basic functionality: assume(kind(...)) */
+assume(kind(k1, complex));
+[kind(k1, complex)];
+featurep(k1, complex);
+true;
+facts(k1);
+[kind(k1, complex)];
+member(k1, props);
+true;
+
+/* remove() and forget() both undo what assume() did. */
+(remove(k1, complex), [featurep(k1, complex), facts(k1)]);
+[false, []];
+(assume(kind(k1, complex)), forget(kind(k1, complex)), facts(k1));
+[];
+
+/* Redundant, stated directly and derived. */
+(declare(k2, integer), assume(kind(k2, integer)));
+[redundant];
+assume(kind(k2, rational));
+[redundant];
+
+/* Inconsistent - the fact must not be installed. */
+(declare(k3, integer), assume(kind(k3, noninteger)));
+[inconsistent];
+featurep(k3, noninteger);
+false;
+(declare(k4, even), assume(kind(k4, odd)));
+[inconsistent];
+featurep(k4, odd);
+false;
+
+/* Properties that facts() cannot emit are not kind facts. */
+assume(kind(k5, mainvar));
+[meaningless];
+assume(kind(k5, no_such_property));
+[meaningless];
+facts(k5);
+[];
+
+/* Same input, two reports: assume() answers, declare() signals. */
+assume(kind(%pi, constant));
+[redundant];
+assume(kind(%pi, imaginary));
+[inconsistent];
+errcatch(declare(%pi, imaginary));
+[];
+featurep(%pi, imaginary);
+false;
+
+/* Several facts at once, and the "and" form. */
+assume(kind(k6, integer), kind(k7, complex));
+[kind(k6, integer), kind(k7, complex)];
+(forget(kind(k6, integer), kind(k7, complex)),
+ assume(kind(k6, integer) and kind(k7, complex)));
+[kind(k6, integer), kind(k7, complex)];
+
+/* A kind fact belongs to the context it was assumed in. */
+(ctx2: supcontext(), assume(kind(k5, complex)), featurep(k5, complex));
+true;
+(killcontext(ctx2), featurep(k5, complex));
+false;
+
+/* The round trip that motivates the change: facts() fed back into assume() */
+(forget(facts()),
+ assume(k6 > 0, kind(k6, integer), kind(k7, complex)),
+ f: facts(),
+ 0);
+0;
+(forget(f), facts());
+[];
+(apply(assume, f), is(sort(facts()) = sort(f)));
+true;
+
+(killcontext(ctx),
+ kill(k1, k2, k3, k4, k5, k6, k7, f, ctx, ctx2),
+ 0);
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
