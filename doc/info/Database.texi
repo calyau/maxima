@@ -1060,7 +1060,9 @@ when @code{rem} was called, or @code{false} if it had no such property.
 Removes properties associated with atoms.
 
 Assertions in the context @code{global} are built into Maxima and cannot be
-removed by @code{remove}.
+removed by @code{remove}. In this case, @code{remove} returns @code{not_done}.
+The return value @code{done} does not imply that any of the properties was
+present, though.
 
 @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
 removes property @code{p_k} from atom @code{a_k}.
@@ -1688,6 +1690,12 @@ to) those previously assumed.
 Assertions in the context @code{global} are built into Maxima and are not
 removed by @code{forget}.
 
+@code{forget} returns the facts it removed, @code{redundant} for facts not in
+the database, and @code{not_done} for built-in assertions in the context
+@code{global}. Note that this refers to the stored facts, not to what can be
+deduced from them: After @code{assume(x > 1)}, @code{forget(x > 0)} removes
+nothing and @code{is(x > 0)} is still @code{true}.
+
 @code{forget (@var{L})}, where @var{L} is a list of predicates,
 forgets each item on the list.
 
@@ -1814,7 +1822,10 @@ currently active, either because it is a subcontext of the current
 context, or by use of the function @mrefdot{activate}
 
 @code{killcontext} evaluates its arguments.
-@code{killcontext} returns @code{done}.
+
+@code{killcontext} returns @code{not_done} if any of the named contexts could
+not be killed, because it does not exist, is currently active, or is the context
+@code{global}. Otherwise, it returns @code{done}.
 
 @opencatbox{Categories:}
 @category{Declarations and inferences}

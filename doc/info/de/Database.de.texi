@@ -932,7 +932,9 @@ Entfernt die Eigenschaft @var{indicator} vom Atom @var{atom}.
 Entfernt Eigenschaften von Atomen.
 
 Aussagen im Kontext @code{global} sind fest in Maxima eingebaut und k@"onnen
-mit @code{remove} nicht entfernt werden.
+mit @code{remove} nicht entfernt werden. In diesem Fall gibt @code{remove}
+@code{not_done} zur@"uck. Der R@"uckgabewert @code{done} bedeutet jedoch nicht,
+dass die angegebene Eigenschaft tats@"chlich vorhanden war.
 
 @code{remove(@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})} entfernt die
 Eigenschaft @code{p_k} von dem Atom @code{a_k}.
@@ -1510,6 +1512,13 @@ identisch zu vorherigen Fakten sind.
 Aussagen im Kontext @code{global} sind fest in Maxima eingebaut und k@"onnen
 mit @code{forget} nicht entfernt werden.
 
+@code{forget} gibt die entfernten Fakten zur@"uck, @code{redundant} f@"ur
+Fakten, die nicht in der Datenbank gefunden wurden, und @code{not_done} f@"ur
+eingebaute Fakten aus dem Kontext @code{global}. Dies bezieht sich nur auf
+gespeicherte Fakten, nicht darauf, was von ihnen abgeleitet werden kann:
+Nach @code{assume(x > 1)} wird durch @code{forget(x > 0)} nichts entfernt, und
+@code{is(x > 0)} ist immer noch @code{true}.
+
 @code{forget(@var{L})} entfernt alle Aussagen, die in der Liste @var{L}
 enthalten sind.
 @end deffn
@@ -1591,8 +1600,12 @@ leerer Kontext @code{initial} erzeugt.
 des aktuellen Kontextes ist oder wenn der Kontext mit der Funktion 
 @code{activate} aktiviert wurde.
 
-@code{killcontext} wertet die Argumente aus.  @code{killcontext} gibt 
-@code{done} zur@"uck.
+@code{killcontext} wertet die Argumente aus.
+
+@code{killcontext} gibt @code{not_done} zur@"uck, wenn einer der angegebenen
+Kontexte nicht gel@"oscht werden konnte, da er nicht existiert, gerade aktiv ist
+oder der Kontext @code{global} ist. Anderenfalls wird @code{done}
+zur@"ckgegeben.
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------

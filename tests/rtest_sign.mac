@@ -2131,6 +2131,90 @@ true;
 0;
 
 
+/* Bugs #4919 and #4920: forget() and remove() report what they did */
+
+(kill(k1, k2, ctx),
+ supcontext(ctx),
+ 0);
+0;
+
+forget(k1 > 0);
+[redundant];
+
+forget(kind(k1, complex));
+[redundant];
+
+(assume(k1 > 0),
+ forget(k1 > 0));
+[k1 > 0];
+
+forget(k1 > 0);
+[redundant];
+
+(assume(kind(k1, complex)),
+ forget(kind(k1, complex)));
+[kind(k1, complex)];
+
+forget(kind(k1, complex));
+[redundant];
+
+/* Datums, not knowledge: k1 > 0 was derivable but never stored. */
+(assume(k1 > 1),
+ forget(k1 > 0));
+[redundant];
+
+is(k1 > 0);
+true;
+
+(forget(k1 > 1), 0);
+0;
+
+/* One answer per argument, in order. */
+(assume(k1 > 0),
+ forget(k1 > 0, k1 < 5));
+[k1 > 0, redundant];
+
+/* Built-in facts are declined, and say so. */
+forget(kind(%pi, constant));
+[not_done];
+
+forget(zeroa > 0);
+[not_done];
+
+remove(%pi, constant);
+not_done;
+
+featurep(%pi, constant);
+true;
+
+/* remove() reports a refusal, not an absence. */
+(declare(k2, integer),
+ remove(k2, integer));
+done;
+
+remove(k2, integer);
+done;
+
+(kill(k1, k2, ctx), 0);
+0;
+
+(kill(ctx), 0);
+0;
+
+(newcontext(ctx),
+ killcontext(global, ctx));
+not_done;
+
+member(ctx, contexts);
+false;
+
+killcontext(ctx);
+not_done;
+
+context;
+initial;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

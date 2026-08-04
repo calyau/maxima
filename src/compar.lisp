@@ -240,14 +240,13 @@
 ;;; This function kills a context or a list of contexts
 
 (defmfun $killcontext (&rest args)
+ (let ((done t))
   (dolist (c args)
     (if (symbolp c)
-	(killcontext c)
-	(nc-err '$killcontext c)))
+	  (unless (killcontext c) (setq done nil))
+	  (nc-err '$killcontext c)))
   (db-gc)
-  (if (and (= (length args) 1) (eq (car args) '$global))
-      '$not_done
-      '$done))
+  (if done '$done '$not_done)))
 
 (defun killallcontexts ()
   (mapcar #'killcontext (cdr $contexts))
@@ -262,15 +261,19 @@
   (db-gc))
 
 (defun killcontext (x)
+  "Kills the context X and returns T. Complains and returns NIL when X is not a
+  context or is currently active, and returns NIL for the global context."
   (cond ((not (member x $contexts :test #'eq))
-	 (mtell (intl:gettext "killcontext: no such context ~M.") x))
-	((eq x '$global) '$global)
+	 (mtell (intl:gettext "killcontext: no such context ~M.") x)
+	 nil)
+	((eq x '$global) nil)
 	((eq x '$initial)
 	 (mapc #'remov (zl-get '$initial 'data))
 	 (remprop '$initial 'data)
-	 '$initial)
+	 t)
 	((and (not (eq $context x)) (contextmark) (< 0 (zl-get x 'cmark)))
-	 (mtell (intl:gettext "killcontext: context ~M is currently active.") x))
+	 (mtell (intl:gettext "killcontext: context ~M is currently active.") x)
+	 nil)
         (t (if (member x $activecontexts)
                ;; Context is on the list of active contexts. The test above 
                ;; checks for active contexts, but it seems not to work in all
@@ -287,7 +290,7 @@
 		  (setq $context (car (zl-get x 'subc)))
 		  (setq context (car (zl-get x 'subc)))))
 	   (killc x)
-	   x)))
+	   t)))
 
 (defun nc-err (fn x)
   (merror (intl:gettext "~M: context name must be a symbol; found ~M") fn x))
@@ -726,7 +729,13 @@
 	      (eq (caaadr pat) '$equal))
 	 (setq pat `(($notequal) ,@(cdadr pat)))))
   (if (learnablep pat)
-    (learn pat nil)
+    (let* ((*fact-removed* nil)
+	       (*fact-protected* nil)
+	       (result (learn pat nil)))
+      (cond
+        (*fact-removed* result)
+        (*fact-protected* '$not_done)
+        (t '$redundant)))
     '$meaningless))
 
 (defun restore-facts (factl)		; used by SAVE

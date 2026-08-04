@@ -1920,3 +1920,13 @@
   \"Is x positive, negative or zero?\"."
   boolean
   :properties ((evflag t)))
+
+;;------------------------------------------------------------------------
+
+(defvar *fact-removed* nil
+  "Set by FDEL when it unlinks a datum.")
+
+(defvar *fact-protected* nil
+  "Set by REMOVABLEP when it declines a datum that belongs to $GLOBAL.")
+
+;;------------------------------------------------------------------------

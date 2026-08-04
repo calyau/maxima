@@ -1509,7 +1509,9 @@ wrapper for this."
       var))
 
 (defmspec $remove (form)
-  (i-$remove (cdr form)))
+  (let ((*fact-protected* nil))
+    (i-$remove (cdr form))
+    (if *fact-protected* '$not_done '$done)))
 
 (defun i-$remove (l)
   (when (oddp (length l))
