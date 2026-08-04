@@ -112,6 +112,7 @@ Bug fixes for numbered bugs:
  * \#4752 csign doesn't handle subscripted functions like li correctly
  * \#4756 expand(sin(%e^x)), numer incorrectly replaces %e with numerical value
  * \#4757 %e^2.0, %emode:false stays %e^2.0
+ * \#4760 crazy question: Is "1" zero or nonzero? from one-arg limit
  * \#4764 0 * 0.0 and 0 * 0.0b0 remaining 0
  * \#4765 gfactor not idempotent
  * \#4768 Custom operators don't get SIMP flag
