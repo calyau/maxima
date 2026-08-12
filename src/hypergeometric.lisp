@@ -447,16 +447,17 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 (defun hypergeometric-by-series (a b x)
   ;; es = running error for e and ez running error for z.
 
-  (let ((s 0) (s0 1) (k 0) (z 1) (es 0) (ez 1) (n) (p) (q) (stop 20000) (dig))
+  (let ((s 0) (s0 1) (k 0) (z 1) (es 0) (ez 1) (n) (p) (q) (r) (stop 20000) (dig))
     (setq n (* 2 (+ (length a) (length b) 1)))
     (maxima::while (and (< k stop) (/= s s0)) ;; (not (= s s0)))
       (setq s s0)
       (setq p (reduce #'* (mapcar #'(lambda (s) (+ s k)) a))) ;; p adds and p-1 multiplications
       (setq q (reduce #'* (mapcar #'(lambda (s) (+ s k)) b))) ;; q adds and q-1 multiplications
       (incf k)
-      (setq z (* z (/ (* p x) (* q k))))
+      (setq r (/ (* p x) (* q k)))
+      (setq z (* z r))
       ;;(setq ez (+ (* n (abs z)) ez))
-      (setq ez (+ (* (abs (/ (* x p) (* q k))) ez) (* (abs z) n)))
+      (setq ez (+ (* (abs r) ez) (* (abs z) n)))
       (setq s0 (+ s z))
       (setq es (+ es ez (abs s0))))
    
