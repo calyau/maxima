@@ -6,6 +6,15 @@
 nelder_mead(if x<0 then -x else x^2, [x], [4]);
 [x = 9.536387892694628e-11];
 
+nelder_mead(if x<0 then -x else x^2, [x], [4], nm_verbose = true);
+[x = 9.536387892694628e-11];
+
+nelder_mead(if x<0 then -x else x^2, [x], [4], maxfuncalls = 20);
+[x = - 3.552713678800501e-15];
+
+nelder_mead(if x<0 then -x else x^2, [x], [4], maxfuncalls = 20, nm_verbose = true);
+[x = - 3.552713678800501e-15];
+
 (f(x) := if x<0 then -x else x^2, 0);
 0;
 

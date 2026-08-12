@@ -48,11 +48,19 @@ References
 @node Definitions for package nelder_mead, Function and variable index, Introduction to package nelder_mead, Top
 @section Definitions for package nelder_mead
 
-@deffn {Function} nelder_mead (@var{obj}, @var{vars}, @var{init})
+@deffn {Function} nelder_mead (@var{obj}, @var{vars}, @var{init}, nm_verbose = @var{boolean}, maxfuncalls = @var{integer})
 
 Returns an approximate minimum of the objective function @var{obj},
 as a function of the variables @var{vars},
 starting at the initial point @var{init}.
+
+@code{nm_verbose} tells @code{nelder_mead} to output additional information during the solution process.
+By default, it is @code{false}.
+
+@code{maxfuncalls} tells @code{nelder_mead} to limit objective function evaluations to the number given.
+By default, there is no limit.
+
+@code{nm_verbose} and @code{maxfuncalls} are optional, and may be omitted.
 
 The objective function may be discontinuous,
 but if it is continuous,
