@@ -729,6 +729,19 @@
        :defaults p)
       p)))
 
+(defun parent-directory (path)
+  "Return the parent directory of PATH as a directory pathname, or NIL if there
+  is no parent, e.g. if PATH is a root directory or its last directory component
+  isn't a plain name. PATH may denote a file or a directory. In contrast to
+  appending \"..\" to PATH, the returned path does not lead through PATH itself,
+  so it can be used even if PATH doesn't exist."
+  (let* ((dir (ensure-pathname-as-directory path))
+         (components (pathname-directory dir)))
+    (when (and (cdr components)
+               (stringp (car (last components))))
+      (make-pathname :directory (butlast components)
+                     :defaults dir))))
+
 (defun immediate-subdirectories (dir-path)
   "Return a list of pathnames for the immediate subdirectories of DIR-PATH.
   The function uses implementation-specific mechanisms where available to avoid
@@ -966,16 +979,28 @@
           ;; We will try to create the directory and observe whether the parent
           ;; directory's modification timestamp changes.
           (dbg "could not get mtime of Maxima user directory \"~A\"" *maxima-userdir*)
-          (setq parent-dir (combine-path *maxima-userdir* ".."))))
+          (setq parent-dir (parent-directory *maxima-userdir*))
+          (unless parent-dir
+            ;; There is no parent directory whose mtime we could observe.
+            (dbg "could not determine parent directory of \"~A\"" *maxima-userdir*)
+            (return-from test-directory-cached nil))))
       (let ((parent-dir-mtime (file-mtime-or-nil parent-dir)))
         (cond
           ((not parent-dir-mtime)
             ;; The parent directory doesn't exist, or there was an error.
             (dbg "could not get mtime of parent directory \"~A\"" parent-dir)
             (return-from test-directory-cached nil))
-          ((> parent-dir-mtime mtime-threshold)
+          ((and parent-dir-mtime (> parent-dir-mtime mtime-threshold))
             ;; The parent directory has been modified (or created) too recently.
             ;; We cannot reliably test right now, try again later.
+            ;; If the Maxima user directory doesn't exist yet, create it now, so
+            ;; that the next attempt can watch that directory itself instead of
+            ;; depending on its parent again. Errors are ignored here, because
+            ;; this is only a shortcut for the next attempt.
+            (unless userdir-mtime
+              (dbg "ensure Maxima user directory \"~A\" exists" *maxima-userdir*)
+              (ignore-errors
+                (ensure-directories-exist (combine-path *maxima-userdir* ""))))
             (dbg "parent directory modified too recently, retry later")
             (return-from test-directory-cached :try-later)))
         ;; The parent directory exists and hasn't been modified too recently.
@@ -1287,7 +1312,7 @@
                     (cached
                       ;; Cache hit! Return the cached result.
                       (dbg "result hit")
-                      entry)
+                      (copy-list entry))
                     (t
                       ;; Cache miss! Perform the file search by looping over all
                       ;; directories and searching/probing a file with the given name in there.

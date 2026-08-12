@@ -224,7 +224,7 @@ Bug fixes for numbered bugs:
  * \#4920 remove() always returns "done" no matter if something was actually removed
 
 Bug fixes for unnumbered bugs:
------------------------------
+------------------------------
 * rtest_gruntz test #38
 * mkdir ignoring drive letter on SBCL/Windows
 * package descriptive: in 'histogram', correct bar height calculation for frequency = density
@@ -237,6 +237,7 @@ Bug fixes for unnumbered bugs:
 * ultraspherical(1, -1/2, x) causes division by zero error
 * ematrix doesn't check that i, j are within the matrix' bounds
 * antiderivative of jacobi_sd contains a stray "m" variable
+* file_search_cache disabled on a fresh install
 
 Changes in the Windows installer:
 ---------------------------------
