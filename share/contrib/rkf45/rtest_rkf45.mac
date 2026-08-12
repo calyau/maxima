@@ -11,6 +11,16 @@
 /* One differential equation of first order.                                  */
 rkf45(-3*x*y^2+1/(x^3+1),y,0,[x,0,5],full_solution=false);
 [5.0,0.039682302083817]$
+
+/* repeat test with first argument being a function */
+
+rkf45(lambda ([x, y], [ -3*x*y^2+1/(x^3+1) ]),y,0,[x,0,5],full_solution=false);
+[5.0,0.039682302083817]$
+
+(foo (x, y) := [ -3*x*y^2+1/(x^3+1) ],
+rkf45('foo,y,0,[x,0,5],full_solution=false));
+[5.0,0.039682302083817]$
+
 /* ---------------------------------------------------------------------------*/
 /* An initial value problem with threshold effect.                            */
 rkf45(0.206-1.51*f+3.03*f^2/(1+f^2),f,0,[t,0,100],full_solution=false);
@@ -19,6 +29,16 @@ rkf45(0.206-1.51*f+3.03*f^2/(1+f^2),f,0,[t,0,100],full_solution=false);
 /* A system of two first-order differential equations.                        */
 rkf45([1.89247311827957*(C-L),52.757793764988*(32-C)+42.20623501199041*(L-C)],
       [L,C],[150,150],[t,0,2],full_solution=false);
+[2.0,46.84310577179979,38.67012732884611]$
+
+/* repeat test with first argument being a function */
+
+rkf45(lambda ([t, L, C], [1.89247311827957*(C-L),52.757793764988*(32-C)+42.20623501199041*(L-C)]),
+      [L,C],[150,150],[t,0,2],full_solution=false);
+[2.0,46.84310577179979,38.67012732884611]$
+
+(foo (t, L, C) := [1.89247311827957*(C-L),52.757793764988*(32-C)+42.20623501199041*(L-C)],
+rkf45('foo, [L,C],[150,150],[t,0,2],full_solution=false));
 [2.0,46.84310577179979,38.67012732884611]$
 /* ---------------------------------------------------------------------------*/
 /* A second-order differential equation: the van der Pol equation.            */
@@ -56,6 +76,24 @@ block([vx,x,t,dx_dt,dvx_dt,ode],
   dvx_dt : -4*%pi^2*x + 100*sin(4*%pi*t + %pi/4)/(0.5 + t^2),
   ode : [dx_dt,  dvx_dt],
   errcatch(rkfsoln : rkf45 (ode, [x, vx], [1, 0], [t, 0, 1])),
+  is(%% = []));
+false $
+
+/* repeat test with first argument being a function */
+
+block([vx,x,t,dx_dt,dvx_dt,ode],
+  dx_dt : vx,
+  dvx_dt : -4*%pi^2*x + 100*sin(4*%pi*t + %pi/4)/(0.5 + t^2),
+  ode : lambda ([t, x, vx], [''dx_dt, ''dvx_dt]),
+  errcatch(rkfsoln : rkf45 (ode, [x, vx], [1, 0], [t, 0, 1])),
+  is(%% = []));
+false $
+
+block([vx,x,t,dx_dt,dvx_dt,ode],
+  dx_dt : vx,
+  dvx_dt : -4*%pi^2*x + 100*sin(4*%pi*t + %pi/4)/(0.5 + t^2),
+  foo (t, x, vx) := [''dx_dt, ''dvx_dt],
+  errcatch(rkfsoln : rkf45 ('foo, [x, vx], [1, 0], [t, 0, 1])),
   is(%% = []));
 false $
 

@@ -86,10 +86,10 @@ See rkf45.dem for more examples. Detailed documentation and several examples
 discussed in detail can be found at the accompanying document rkf45.pdf.
 --------------------------------------------------------------------------------
 */
-rkf45(odes,funcs,initial,interval,[options]):=block(
+rkf45(ode_expression_or_function,funcs,initial,interval,[options]):=block(
   [numer:true,atol,save_steps,maxit,show_report,xi,xc,yi,h,not_ok,
    k1,k2,k3,k4,k5,k6,trunc_error,min_trunc_error,h_optimal,estimated_errors,step_extrema,
-   x_tiny,bad_steps:0,sol],
+   x_tiny,bad_steps:0,sol, f_rhs],
   /* Check interval for errors */
   if (not(listp(interval))) or length(interval)<3 then error("Error: interval should be a list of the independent variable, start and end times and optionally, a stepsize. Found",interval,"instead."),
   x_tiny:1e-7*interval[3],
@@ -103,22 +103,24 @@ rkf45(odes,funcs,initial,interval,[options]):=block(
   /* define setter of h_optimal */
   rkf45_h_optimal:lambda([h,atol,trunc_error],min(max(0.84089641525371*(atol/max(min_trunc_error,trunc_error))^0.25,0.1),4)*h),
   /* Convert arguments to lists, if necessary */
-  if (not(listp(odes))) then odes:[odes],
   if (not(listp(funcs))) then funcs:[funcs],
   if (not(listp(initial))) then initial:[initial],
-  /* coerce odes, interval and initial to floats */
-  [odes,interval,initial]:float([odes,interval,initial]),
+  /* coerce interval and initial to floats */
+  [interval,initial]:float([interval,initial]),
   /* Define right-hand-side function */
   local(f_rhs),
-  block([vars:cons(interval[1],funcs)],
-    define(funmake(f_rhs,vars),buildq([odes:odes,v:funmake(mode_declare,flatten(map(lambda([t],[t,'float]),vars)))],block(v,odes)))),
-  translate(f_rhs),
+  if symbolp (ode_expression_or_function) or (not atom (ode_expression_or_function) and op (ode_expression_or_function) = 'lambda)
+      /* PROBABLY SHOULD ENSURE (1) RETURN VALUES ARE FLOATS, (2) NON-LIST BECOMES A LIST OF ONE ELEMENT */
+      then f_rhs: ode_expression_or_function
+      else block([vars:cons(interval[1],funcs)],
+                 define(funmake(f_rhs,vars),buildq([odes:float(if listp(ode_expression_or_function) then ode_expression_or_function else [ode_expression_or_function]),v:funmake(mode_declare,flatten(map(lambda([t],[t,'float]),vars)))],block(v,odes))),
+                 translate(f_rhs)),
   /* Initialize */
   xi:interval[2], yi:initial,
   /* Check initial values */
   if not every(map(numberp,initial)) then  error("Error: initial should be a list of numbers, but found",initial,"instead."),
   block([initial_values:apply(f_rhs,cons(xi,yi))],
-    if not every(map(numberp,initial_values)) then error("Error: odes should evaluate to a list of numbers at initial, but found",initial_values,"instead.")),
+    if not every(map(numberp,initial_values)) then error("Error: right-hand side should evaluate to a list of numbers at initial, but found",initial_values,"instead.")),
   /* Set up the rest */
   estimated_errors:[1e30,-1e30],
   step_extrema:[1e30,-1e30],
