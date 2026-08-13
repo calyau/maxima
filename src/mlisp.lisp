@@ -66,6 +66,38 @@ or if apply is being used are printed.")
 (defconstant +hasher-mod+ 32768
   "Modulus used by the HASHER function - must be a power of 2.")
 
+(defvar *lambda-expr-funs* (make-hash-table :test 'eq)
+  "Compiled functions for the Lisp lambda expressions applied by MAPPLY1,
+  keyed by the expression itself. Used to reduce compiler invocations.")
+
+(defvar *lambda-expr-funs-max* 128
+  "Number of entries *LAMBDA-EXPR-FUNS* is limited to. The cache keeps
+  every expression it has compiled alive, so it must not grow without bound.
+  A value of 0 disables the cache.")
+
+(defvar *lambda-expr-funs-random* (make-random-state nil)
+  "Random state for picking an entry from *LAMBDA-EXPR-FUNS* to drop.")
+
+(defun lambda-expr-fun (fn)
+  "Get the compiled function for the Lisp lambda expression FN, using
+  *LAMBDA-EXPR-FUNS* as a cache to reduce compiler invocations."
+  (cond
+    ((= 0 *lambda-expr-funs-max*)
+      (coerce fn 'function))
+    ((gethash fn *lambda-expr-funs*))
+    (t
+      (when (>= (hash-table-count *lambda-expr-funs*)
+                *lambda-expr-funs-max*)
+        ;; Hash table at the limit - drop a random entry.
+        (with-hash-table-iterator (next *lambda-expr-funs*)
+          (let ((n (random (hash-table-count *lambda-expr-funs*)
+                           *lambda-expr-funs-random*)))
+            (dotimes (i n) (next)))
+          (multiple-value-bind (foundp key) (next)
+            (when foundp
+              (remhash key *lambda-expr-funs*)))))
+      (setf (gethash fn *lambda-expr-funs*) (coerce fn 'function)))))
+
 
 (defun mapply1 (fn args fnname form)
   (cond ((atom fn)
@@ -92,7 +124,7 @@ or if apply is being used are printed.")
 	((and (consp fn) (consp (car fn)) (symbolp (mop fn)) (get (mop fn) 'mapply1-extension)
 	      (apply (get (mop fn) 'mapply1-extension) (list fn args fnname form))))
 	((eq (car fn) 'lambda)
-	 (apply (coerce fn 'function) args))
+	 (apply (lambda-expr-fun fn) args))
 	((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
 	((eq (caar fn) 'mquote) (cons (append (cdr fn) aryp) args))
 	((and aryp (member (caar fn) '(mlist $matrix) :test #'eq))
