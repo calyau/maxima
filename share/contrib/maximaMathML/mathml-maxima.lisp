@@ -131,7 +131,7 @@
      (t
        ;; Dunno what we could do here to handle an arbitrary type.
        ;; For now, just raise an error.
-       (merror "Unrecognized type ``%a'' in <cn> tag.~%" type)))
+       (merror "Unrecognized type ``~a'' in <cn> tag.~%" type)))
    (get-token) ;; skip to >
    (return number)))
 

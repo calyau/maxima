@@ -319,13 +319,13 @@
       (progn
 	(format t
 		(intl:gettext
-		 "~%Bugs affecting UI and display should be reported to the frontend's homepage.~%")
-		(if $maxima_frontend_bugreportinfo
-		    (format t (intl:gettext "The front end provides the following info:~%~a~%")
-			    $maxima_frontend_bugreportinfo)
-		    (format t (intl:gettext
-			       "The front end doesn't provide any additional bug report info.~%"))
-		    ))))
+		 "~%Bugs affecting UI and display should be reported to the frontend's homepage.~%"))
+	(if $maxima_frontend_bugreportinfo
+	    (format t (intl:gettext "The front end provides the following info:~%~a~%")
+		    $maxima_frontend_bugreportinfo)
+	    (format t (intl:gettext
+		       "The front end doesn't provide any additional bug report info.~%"))
+	    )))
   (format t (intl:gettext "Please include the following information with your bug report:~%"))
   (format t "-------------------------------------------------------------~%")
   ; Display the 2D-formatted build information

@@ -831,7 +831,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	      do (setq simp ($dotsimp (sub* pol  (ncmul* (meval*(second v)) (meval* (third v))))))
 		 (cond ((pzerop simp)(format t "~%soln ~A is correct:" i)
 			(displa (list '(mequal) pol (cons '(mnctimes) (cdr v) ))))
-		       (t(format t "~%soln ~A is not correct ****************"))))))
+		       (t(format t "~%soln ~A is not correct ****************" i))))))
   answ)
 
 (defun $degless (u v &aux (u-deg ($nc_degree u)) (v-deg ($nc_degree v)))

@@ -666,7 +666,7 @@
 
 (defun sc^n (%n v fn fl coef)
   (when (minusp %n)
-    (merror "trigreduce: internal error; %N must be nonnegative, found: ~M") %n)
+    (merror "trigreduce: internal error; %N must be nonnegative, found: ~M" %n))
   (m* (list '(rat) 1 (expt 2 %n))
       (m+ (if fl
               (list '(%binomial) %n (ash %n -1))

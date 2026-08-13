@@ -238,6 +238,10 @@ Bug fixes for unnumbered bugs:
 * ematrix doesn't check that i, j are within the matrix' bounds
 * antiderivative of jacobi_sd contains a stray "m" variable
 * file_search_cache disabled on a fresh install
+* error messages losing their argument, or breaking outright, because a
+  format argument sat outside the call or the directive was missing
+* affine, algebra/grob1: broken calls that error out as soon as they are reached
+* bug_report() printing the front end information before its heading
 
 Changes in the Windows installer:
 ---------------------------------

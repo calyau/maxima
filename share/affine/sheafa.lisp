@@ -1508,8 +1508,8 @@
 	  (1 (format t "~%  Case: ~A"(string-grind (car tem)))
 		  (cond (full-format  (i-$grind v))))
 	  (2 (format t "~%    Subcase ~A"(string-grind (second tem))))
-	  (3 (format t "~%       Subsubcase ~A") (string-grind (third tem)))
-	  (t (format t "~%         Sub......~A" ) (string-grind (nthcdr 3 tem)))))
+	  (3 (format t "~%       Subsubcase ~A" (string-grind (third tem))))
+	  (t (format t "~%         Sub......~A" (string-grind (nthcdr 3 tem))))))
   '$done)
 
 (defun $eliminate_nonzero_factors (system &rest l)

@@ -205,6 +205,6 @@
 	    (setq new (caddr lk))
 	    (setq old (if (stringp old) (amperchk old) old))
 	    (push (cons old new) alist))
-	(merror "Each substitution must be an equation; found" lk)))
+	(merror "Each substitution must be an equation; found ~M" lk)))
     (setq e (resimplify (sublis alist ($ratdisrep e) :test #'alike))) ;;or like?
     (if is-a-rat ($rat e) e)))

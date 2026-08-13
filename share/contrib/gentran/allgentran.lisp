@@ -1068,7 +1068,7 @@
 		     (not (minusp (cadr x))))
 		(implode (fpformat x)))
 	       (t
-		(merror "atomic arg required" x))))
+		(merror "atomic arg required; found ~M" x))))
 	((numberp x)
 	 x)
 	((member (char (string x) 0) '(#\$ #\%))
