@@ -853,12 +853,31 @@
      (cond ((null (cdr vfact)) (return (list u)))
 	   (t (return (mapcar #'oldrep vfact))))))
 
+;; A tuple is a sorted list of distinct positive indices - ORDE builds them
+;; that way, and the (MEMBER L TUPLE) guard keeps them distinct - so the set of
+;; indices is a faithful key for it, and as a bitmask it is a fixnum for the
+;; factor counts that occur in practice.
+(defun nprod-tuple-key (l)
+  (let ((k 0))
+    (dolist (i l k)
+      (setq k (logior k (ash 1 i))))))
 
+(defun nprod-reindex (h lt)
+  (clrhash h)
+  (dolist (e lt)
+    (when e
+      (setf (gethash (nprod-tuple-key e) h) t))))
 
 (defun nprod (lc u lfunct)
   (prog (stage v d2 af0 r lcindex factor llc ltuple lprod lindex qnt af
-	 funct tuple ltemp lpr f l li lf modulus)
+	 funct tuple ltemp lpr f l li lf modulus seen ltemp-tail lpr-tail)
      (setq lpr (copy-tree (setq ltemp (cons nil nil))))
+     ;; SEEN mirrors the set of tuples in LTEMP, so that "Have we tried this
+     ;; combination?" is a hash lookup instead of a walk of a list that grows
+     ;; to binomial(r, stage). The tails make appending to LTEMP and LPR O(1)
+     ;; instead of re-walking them on every candidate. Neither changes what
+     ;; is searched, in what order, or what is returned.
+     (setq seen (make-hash-table :test #'eql) ltemp-tail ltemp lpr-tail lpr)
      (setq lprod (cons nil lfunct))
      (setq d2 (ash (cadr u) -1))
      (remov0 lprod d2)
@@ -890,7 +909,7 @@
      (setq lf (cdr lf))
      (cond ((and (not (member l tuple :test #'equal))
 		 (not (> (+ (cadr f) (cadr funct)) d2))
-		 (not (member (setq l (orde l tuple)) ltemp :test #'equal)))
+		 (not (gethash (nprod-tuple-key (setq l (orde l tuple))) seen)))
 	    (set-modulus plim)
 	    (setq af0 (setq af (ptimes(pmod f) (pmod funct))))
 	    (cond (llc (setq af (ptimes (pmod (lchk llc lcindex l)) af))))
@@ -911,12 +930,20 @@
 		   (remov1 l ltuple lprod d2)
 		   (remov1 l ltemp lpr d2)
 		   (remov2 l lindex lfunct d2)
+		   (nprod-reindex seen ltemp)
+		   (setq ltemp-tail (last ltemp) lpr-tail (last lpr))
 		   (setq r (- r stage))
 		   (setq li nil))	; exit iloop
-		  (t (setq ltemp (nconc ltemp (list l)))
-		     (setq lpr (nconc lpr (list af0)))))))
+		  (t (if ltemp-tail
+			 (setq ltemp-tail (setf (cdr ltemp-tail) (list l)))
+			 (setq ltemp (setq ltemp-tail (list l))))
+		     (setf (gethash (nprod-tuple-key l) seen) t)
+		     (if lpr-tail
+			 (setq lpr-tail (setf (cdr lpr-tail) (list af0)))
+			 (setq lpr (setq lpr-tail (list af0))))))))
      (cond (li (go iloop)) ((cdr ltuple) (go nextuple)))
-     (setq ltuple ltemp lprod lpr ltemp nil lpr nil)
+     (setq ltuple ltemp lprod lpr ltemp nil lpr nil ltemp-tail nil lpr-tail nil)
+     (clrhash seen)
      (go tloop)))
 
 (defun remov2 (a b c d2)
