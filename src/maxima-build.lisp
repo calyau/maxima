@@ -1,7 +1,8 @@
 #+lispworks (in-package "CL-USER")
 
-#-lispworks(load "../lisp-utils/defsystem.lisp")
-#+lispworks(load (current-pathname "../lisp-utils/defsystem.lisp"))
+(with-compilation-unit ()
+  #-lispworks (load "../lisp-utils/defsystem.lisp")
+  #+lispworks (load (current-pathname "../lisp-utils/defsystem.lisp")))
 
 #+ecl (load "maxima-package.lisp")
 #+ecl
