@@ -184,11 +184,13 @@
   	        ;; Do not add more than one entry to the list.
   	        (not (member '$transfun l))
   	        (not (member '$rule l))
-  		(not (member "system function" l :test #'equal)))
+  		(not (member "system function" l :test #'equal))
+  		(progn
   	   (nconc l
   		  (list (cond ((get x 'translated) '$transfun)
   			      ((mgetl x '($rule ruleof)) '$rule)
-  			      (t "system function")))))
+  			      (t "system function"))))
+  		  nil)))
   	  ((and (eq (car y) 'autoload) 
   	        (not (member "system function" l :test #'equal)))
   	   (nconc l (ncons (if (member x (cdr $props) :test #'eq)
