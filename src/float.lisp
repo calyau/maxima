@@ -976,6 +976,44 @@
 	(t
          (list (fpround l) (+ *m fpprec)))))
 
+;; The number of bits in the magnitude of L.
+;;
+;; (INTEGER-LENGTH L) is not that for a negative L: It counts the bits of
+;; |L|-1, so it is one short exactly when |L| is a power of two.
+;;
+;; (INTEGER-LENGTH (1- L)) would give the right count directly, but 1- conses
+;; a fresh bignum. Therefore, apply the correction only when it's necessary:
+;; For negative L, LOGCOUNT counts the zero bits of the two's complement, and
+;; that count equals (INTEGER-LENGTH L) exactly when |L| is a power of two.
+;;
+;; LOGCOUNT still has to walk the whole number to answer, so reject first on
+;; the low bits alone. A negative L that is not a fixnum has a magnitude above
+;; MOST-POSITIVE-FIXNUM, so if such an L were -2^k, the whole mask would sit
+;; below bit k, where the two's complement of -2^k is zero. A nonzero LOGAND
+;; therefore proves L is not -2^k. The FIXNUM check is not an optimization:
+;; The mask is nonzero for a fixnum -2^k, so dropping it would make
+;; (FPMAGNITUDE-LENGTH -1) answer 0 instead of 1.
+;;
+;; For this to work, we need MOST-POSITIVE-FIXNUM <= -MOST-NEGATIVE-FIXNUM, and
+;; MOST-POSITIVE-FIXNUM as a LOGAND bitmask requires it to be of the form 2^n-1.
+;; ANSI promises neither, so both are checked when this file is read, and the
+;; shortcut is compiled in only if they hold. Every Lisp Maxima supports passes.
+;; Anywhere else, use INTEGER-LENGTH and get the same answer, only slower.
+;;
+(defun fpmagnitude-length (l)
+  "Returns the number of bits in the magnitude of L."
+  #.(if (and (<= most-positive-fixnum (- most-negative-fixnum))
+             (eql (logcount most-positive-fixnum)
+                  (integer-length most-positive-fixnum)))
+      '(let ((n (integer-length l)))
+         (if (and (minusp l)
+                  (or (typep l 'fixnum)
+                      (zerop (logand l most-positive-fixnum)))
+                  (eql (logcount l) n))
+           (1+ n)
+           n))
+      '(integer-length (if (minusp l) (1- l) l))))
+
 ;; It seems to me that this function gets called on an integer
 ;; and returns the mantissa portion of the mantissa/exponent pair.
 
@@ -989,7 +1027,7 @@
        ((null *decfp)
 	;;*M will be positive if the precision of the argument is greater than
 	;;the current precision being used.
-	(setq *m (- (integer-length l) fpprec))
+	(setq *m (- (fpmagnitude-length l) fpprec))
 	(when (= *m 0)
 	  (setq *cancelled 0)
 	  (return l))
@@ -997,7 +1035,7 @@
 	(setq adjust (fpshift 1 (1- *m)))
 	(when (minusp l) (setq adjust (- adjust)))
 	(incf l adjust)
-	(setq *m (- (integer-length l) fpprec))
+	(setq *m (- (fpmagnitude-length l) fpprec))
 	(setq *cancelled (abs *m))
 	(cond ((zerop (hipart l (- *m)))
 					;ONLY ZEROES SHIFTED OFF

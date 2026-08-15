@@ -3960,6 +3960,12 @@ block([e, p, foo],
 foo;
 
 
+/* Bug #4989: "is(bfloat(-1) = -1.0b0) = false" */
+
+is(bfloat(-1) = -1.0b0);
+true;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
