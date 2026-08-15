@@ -712,7 +712,7 @@
 	  ;; headed by a literal -1, so this case is worth optimizing.
 	  ((and (eq (caar x) 'mtimes) (eql (cadr x) -1) (cddr x))
 	   (let* ((args (mapcar #'$bfloat (cddr x)))
-              (fun (safe-get (caar x) 'floatprog))
+              (fun (get 'mtimes 'floatprog))
 	          (prod (funcall fun args)))
 	     (if ($bfloatp prod)
 	       (bcons (fpminus (cdr prod)))
