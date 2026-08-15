@@ -309,9 +309,17 @@
 	 (setq plist (symbol-plist plist)))
 	((consp plist) (setq plist (cdr plist)))
 	(t (return-from getl nil)))
+  (cond ((null indicator-list) nil)
+	((null (cdr indicator-list))
+	 ;; Fast path for the common case of a single-element INDICATOR-LIST:
+	 (let ((indicator (car indicator-list)))
+	   (loop for tail on plist by #'cddr
+		 when (and (cadr tail) (eq (car tail) indicator))
+		 do (return tail))))
+	(t
   (loop for tail on plist by #'cddr
 	 when (and (cadr tail) (member (car tail) indicator-list :test #'eq))
-	 do (return tail)))
+	 do (return tail)))))
 
 (declaim (inline safe-get safe-getl))
 (defun safe-get (sym prop)
