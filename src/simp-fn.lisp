@@ -24,7 +24,8 @@
 	(t 1)))
 
 (defmfun $constantp (x)
-  (cond ((atom x) (or ($numberp x) (kindp x '$constant)))
+  (cond ((numberp x) t)
+	((atom x) (and (symbolp x) (or (get x 'sysconst) (kindp x '$constant))))
 	((member (caar x) '(rat bigfloat)) t)
 	((specrepp x) ($constantp (specdisrep x)))
 	((or (mopp (caar x)) (kindp (caar x) '$constant))
