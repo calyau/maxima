@@ -841,16 +841,47 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 	(kind x '$constant)
 	(setf (get x 'sysconst) t))))
 
+(defvar *plist-pad-cutoff* 6
+  "Shortest property list, in pairs, that will be padded with explicit NIL
+  entries for absent properties.")
+
+(defun optimized-plist (plist)
+  "Builds an optimized version of the symbol property list PLIST, distinguishing
+  between symbols that denote an operator, e.g. 'MTIMES, and those that don't,
+  e.g. '$%PI. The properties on the list are reordered in such a way that those
+  accessed most are close to the front, which speeds up GET. For small enough
+  property lists (see *PLIST-PAD-CUTOFF*), absent properties are explicitly
+  added with a value of NIL."
+  (if (null plist)
+    plist
+    (let* ((simplifier (getf plist 'operators))
+           (keys (if simplifier
+                     '(operators distribute_over opers msimpind mprops noun)
+                     '(mprops mfexpr* noun translated-mmacro translated)))
+           (front nil)
+           (tail nil)
+           (real-pairs 0))
+      (do ((rest plist (cddr rest)))
+          ((null rest))
+        (let ((key (car rest)) (val (cadr rest)))
+          (unless (and (null val) (member key keys :test #'eq))
+            (incf real-pairs)
+            (unless (member key keys :test #'eq)
+              (push key tail)
+              (push val tail)))))
+      (setq tail (nreverse tail))
+      (let ((pad (or simplifier (> real-pairs *plist-pad-cutoff*))))
+        (dolist (key (reverse keys))
+          (let ((val (getf plist key)))
+            (when (or val pad)
+              (setq front (list* key val front))))))
+      (nconc front tail))))
+
 ;; Optimizes a symbol's property list by moving properties that are frequently
 ;; accessed by the simplifier to the front of the list (unless it's empty),
 ;; adding an explicit nil entry for absent properties.
 (defun optimize-symbol-plist (s)
-  (when (symbol-plist s)
-    (dolist (key '(msimpind operators distribute_over opers))
-      (let ((val (get s key)))
-        (when val
-          (remprop s key))
-        (putprop s val key)))))
+  (setf (symbol-plist s) (optimized-plist (symbol-plist s))))
 
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.
@@ -860,7 +891,6 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;;; into *builtin-symbol-props* would cause a hang.  Therefore
 ;;; the properties are copied into *builtin-symbol-props* before
 ;;; initializing the assume database.
-;;; At the same time, optimize the symbols' property lists for faster lookup.
 
 ;;; Build-time DECLARE calls probe the database with TRUEP and FALSEP (see
 ;;; DECLAREKIND), and the last search's transient +LABS/-LABS marks are still
@@ -876,7 +906,6 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 	       (not (eq s '||))
 	       (member (char (symbol-name s) 0) '(#\$ #\%) :test #'char=))
       (push s *builtin-symbols*)
-      (optimize-symbol-plist s)
       (setf (gethash s *builtin-symbol-props*)
 	    (copy-tree (symbol-plist s))))))
 
@@ -884,7 +913,6 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;; e.g. MPLUS, MTIMES, etc.
 ;; Here we find them via the MHEADER property, which is used by the parser.
 ;; I don't know any better way to find these properties.
-;; At the same time, optimize the symbols' property lists for faster lookup.
 
 (let ((maxima-package (find-package :maxima)))
   (do-symbols (s maxima-package)
@@ -893,7 +921,6 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
         (let ((s1 (first h)))
           (unless (gethash s1 *builtin-symbol-props*)
             (push s1 *builtin-symbols*)
-            (optimize-symbol-plist s1)
             (setf (gethash s1 *builtin-symbol-props*)
                   (copy-tree (symbol-plist s1)))))))))
 
@@ -910,6 +937,14 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
 ;; Make sure derivatives defined by DEFGRAD are simplified and that
 ;; the variables and derivatives are consistent.
 (process-defgrad)
+
+;; Optimize the property lists of built-in symbols for faster access,
+;; also the ones stored in *BUILTIN-SYMBOL-PROPS*.
+(dolist (s *builtin-symbols*)
+  (optimize-symbol-plist s)
+  (let ((saved (gethash s *builtin-symbol-props*)))
+    (when saved
+      (setf (gethash s *builtin-symbol-props*) (optimized-plist saved)))))
 
 (dolist (s *builtin-symbols*)
   (when (boundp s)
