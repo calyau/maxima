@@ -760,15 +760,16 @@
 
 (defun addbigfloat (h)
   (prog (fans tst r nfans)
-     (setq fans (setq tst *bigfloatzero*) nfans 0)
+     (setq fans (setq tst *bigfloatzero*))
      (do ((l h (cdr l)))
 	 ((null l))
-       (cond ((setq r (bigfloatp (car l)))
-	      (setq fans (bcons (fpplus (cdr r) (cdr fans)))))
-	     (t (setq nfans (list '(mplus) (car l) nfans)))))
-     (return (cond ((equal nfans 0) fans)
-		   ((equal fans tst) nfans)
-		   (t (simplify (list '(mplus) fans nfans)))))))
+       (if (setq r (bigfloatp (car l)))
+	   (setq fans (bcons (fpplus (cdr r) (cdr fans))))
+	   (push (car l) nfans)))
+     (setq nfans (nreverse nfans))
+     (return (cond ((null nfans) fans)
+		   ((equal fans tst) (cons '(mplus) nfans))
+		   (t (simplify (list* '(mplus) fans nfans)))))))
 
 (defun ratbigfloat (r)
   ;; R is a Maxima ratio, represented as a list of the numerator and
@@ -1800,16 +1801,16 @@
 
 (defun timesbigfloat (h)
   (prog (fans r nfans)
-     (setq nfans 1)
      (do ((l h (cdr l)))
 	 ((null l))
        (if (setq r (bigfloatp (car l)))
 	   (setq fans (if fans (bcons (fptimes* (cdr r) (cdr fans))) r))
-	   (setq nfans (list '(mtimes) (car l) nfans))))
+	   (push (car l) nfans)))
      (unless fans (setq fans (bcons (fpone))))
-     (return (if (equal nfans 1)
-		 fans
-		 (simplify (list '(mtimes) fans nfans))))))
+     (setq nfans (nreverse nfans))
+     (return (if nfans
+		 (simplify (list* '(mtimes) fans nfans))
+		 fans))))
 
 (defun invertbigfloat (a)
   ;; If A is a bigfloat, be sure to round it to the current precision.
