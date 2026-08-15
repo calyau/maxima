@@ -1788,12 +1788,13 @@
 
 (defun timesbigfloat (h)
   (prog (fans r nfans)
-     (setq fans (bcons (fpone)) nfans 1)
+     (setq nfans 1)
      (do ((l h (cdr l)))
 	 ((null l))
        (if (setq r (bigfloatp (car l)))
-	   (setq fans (bcons (fptimes* (cdr r) (cdr fans))))
+	   (setq fans (if fans (bcons (fptimes* (cdr r) (cdr fans))) r))
 	   (setq nfans (list '(mtimes) (car l) nfans))))
+     (unless fans (setq fans (bcons (fpone))))
      (return (if (equal nfans 1)
 		 fans
 		 (simplify (list '(mtimes) fans nfans))))))
