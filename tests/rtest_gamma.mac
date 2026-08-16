@@ -4224,3 +4224,21 @@ true;
 
 block([numer:true], is(abs(erfc(-1)/1.8427007929497149 - 1) < 1e-14));
 true;
+
+
+/* Bug #4930: "log_gamma at bigfloat precision is off by 2*%pi*%i for complex arguments" */
+
+block([fpprec:30], is(abs(bfloat(log_gamma(1+%i)) - bfloat(log(gamma(1+%i)))) < 1b-25));
+true;
+
+block([fpprec:30], is(abs(bfloat(log_gamma(3+2*%i)) - bfloat(log(gamma(3+2*%i)))) < 1b-25));
+true;
+
+block([fpprec:30], is(abs(bfloat(log_gamma(%i/2)) - bfloat(log(gamma(%i/2)))) < 1b-25));
+true;
+
+block([fpprec:30], is(abs(bfloat(log_gamma(2+3*%i)) - bfloat(log(gamma(2+3*%i)))) < 1b-25));
+true;
+
+block([fpprec:30], is(abs(bfloat(log_gamma(1+%i)) - log_gamma(1.0+%i)) < 1e-14));
+true;
