@@ -768,7 +768,7 @@
 	   (push (car l) nfans)))
      (setq nfans (nreverse nfans))
      (return (cond ((null nfans) fans)
-		   ((equal fans tst) (cons '(mplus) nfans))
+		   ((equal fans tst) (simplify (cons '(mplus) nfans)))
 		   (t (simplify (list* '(mplus) fans nfans)))))))
 
 (defun ratbigfloat (r)
