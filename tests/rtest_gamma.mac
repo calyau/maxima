@@ -4212,3 +4212,15 @@ binomial(a + b, 2 * b);
 
 binomial(a + b + c, a + b + c - d - e - f);
 binomial(a + b + c, d + e + f);
+
+
+/* Bug #4929: "erfc loses half its precision on exact arguments" */
+
+block([numer:true], is(abs(erfc(1)/0.15729920705028513 - 1) < 1e-14));
+true;
+
+block([numer:true], is(abs(erfc(2)/0.004677734981047266 - 1) < 1e-14));
+true;
+
+block([numer:true], is(abs(erfc(-1)/1.8427007929497149 - 1) < 1e-14));
+true;

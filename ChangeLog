@@ -223,6 +223,7 @@ Bug fixes for numbered bugs:
  * \#4919 forget() return value doesn't tell whether something was actually forgotten
  * \#4920 remove() always returns "done" no matter if something was actually removed
  * \#4927 expintegral_chi(2.0) is non-real and the function is even
+ * \#4929 erfc loses half its precision on exact arguments
  * \#4989 is(bfloat(-1) = -1.0b0) = false
 
 Bug fixes for unnumbered bugs:

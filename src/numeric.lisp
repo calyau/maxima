@@ -2341,9 +2341,9 @@
 ;;; %PI - External
 ;;;
 ;;;   Return a value of pi with the same precision as the argument.
-;;; For rationals, we return a single-float approximation.
+;;; For rationals, we return a double-float approximation.
 (defmethod %pi ((x cl:rational))
-  (cl:coerce cl:pi 'single-float))
+  (cl:coerce cl:pi 'double-float))
 
 (defmethod %pi ((x cl:float))
   (cl:float cl:pi x))
@@ -2360,9 +2360,9 @@
 ;;; %e - External
 ;;;
 ;;;   Return a value of e with the same precision as the argument.
-;;;   For rationals, we return a single-float approximation.
+;;;   For rationals, we return a double-float approximation.
 (defmethod %e ((x cl:rational))
-  (cl:coerce maxima::%e-val 'single-float))
+  (cl:coerce maxima::%e-val 'double-float))
 
 (defmethod %e ((x cl:float))
   (cl:float maxima::%e-val x))
