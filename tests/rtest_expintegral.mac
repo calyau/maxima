@@ -3272,6 +3272,22 @@ true;
 errcatch(expintrep:42);
 [];
 
+
+/* Bug #4927: "expintegral_chi(2.0) is non-real and the function is even" */
+
+imagpart(expintegral_chi(2.0));
+0;
+
+is(abs(expintegral_chi(2.0) - 2.452666922646914) < 1e-14);
+true;
+
+is(abs(expintegral_chi(0.5) + 0.05277684495649361) < 1e-14);
+true;
+
+is(abs(expintegral_chi(-2.0) - expintegral_chi(2.0) - %i*%pi) < 1e-14);
+true;
+
+
 (reset(expintrep), expintrep);
 false;
      

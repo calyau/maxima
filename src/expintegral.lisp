@@ -1971,13 +1971,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-chi (z)
+ (let ((z (if (and (complexp z) (zerop (imagpart z)))
+            (realpart z)
+            z)))
   (* 
     -0.5
     (+
       (expintegral-e 1 z)
       (expintegral-e 1 (- z))
       (log (- z))
-      (- (log z)))))
+      (- (log z))))))
 
 (defun bfloat-expintegral-chi (z)
   (let ((mz (mul -1 z)))
