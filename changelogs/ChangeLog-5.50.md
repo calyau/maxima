@@ -1,0 +1,274 @@
+Maxima 5.49-post change log
+===========================
+
+Bug fixes for numbered bugs:
+----------------------------
+ * \#282 EZGCD: ratsimp((%i+2)/(%i+1)),gcd:ez inf loop
+ * \#895 limit x->inf sin(100/x)*x very slow
+ * \#1700 Lisp error in factor
+ * \#2140 integrate: needless nounform return
+ * \#2288 x^2<1 can't get x^2<2, but can get x^2<100
+ * \#2366 limit of gamma_incomplete
+ * \#3110 x*x/abs(x) differs from x/abs(x)*x
+ * \#3155 is(abs(cos(x))<=1) is unknown, but is(cos(x)<=1) and is(cos(x)>=-1) are true
+ * \#3163 Possibly wrong result: integrate(asin(10*x^2+5*x-9),x) gives %pi*x/2
+ * \#3184 0 * 0.0 --> 0, but 0.0 * 0 --> 0.0
+ * \#3264 Integral of asin(2*x)^3/(1-4*x^2) wrong
+ * \#3295 Incorrect integral of rational expression of trigonometric function
+ * \#3386 documentation: assoc actually allows non-list arguments
+ * \#3741 simp flag is missing from an mnctimes expression
+ * \#3826 limit returns temp variable expression
+ * \#3961 integrate(a^2*(1-cos(t))^2*sqrt(a^2*sin(t)^2+a^2*(1-cos(t))^2), t, 0, 2*%pi) wrong result
+ * \#4011 Substitution order and zero-divide
+ * \#4037 Error in symbolic integral
+ * \#4067 integrate(sqrt(u)/(sqrt(u-u*v)),u) --> expt: undefined: 0 to a negative exponent
+ * \#4085 limit((2-%i)^a/a!,a,inf);
+ * \#4075 factor(...,p^2) => internal error
+ * \#4108 limit code & nondefault value of taylor_logexpand
+ * \#4142 integrate(1/(x^4-%i),x) gives sign error
+ * \#4169 spmod bug when algebraic is true
+ * \#4170 Loading decfp breaks raddenest
+ * \#4236 Repeated run_testsuite leads to out of memory error
+ * \#4250 Unsimplified solution to cubic
+ * \#4282 integrate((1-cos(x))^(3/2), x, 0, 2*%pi) wrong by factor of 2, correct in earlier version
+ * \#4318 is(x^a > x) with x > 1 & a > 1 gives stack overflow exception
+ * \#4327 integrate(1/((x+3)*sqrt(x^2-1)),x) gives wrong result
+ * \#4338 limit((1+%i)^(2*a)*2^(-a),x,inf) when logexpand is true
+ * \#4342 rectform((-1)^(5/6)) is bizarre
+ * \#4343 Lisp error for taylor when taylor_logexpand : false
+ * \#4369 incorrect atan2 --> atan substitution in definite integral
+ * \#4399 recent commit involving display2d breaks imaxima and drawdf
+ * \#4410 'at' incorrectly returns 0 instead of error for 0/0
+ * \#4425 Frame_bracket fix in ctensor.mac
+ * \#4452 configure --disable-build-docs not working
+ * \#4457 simplus or great bug
+ * \#4470 Floats/bigfloats are not contagious in multiplication by zero
+ * \#4517 Maxima crashes on repeated run of rtest_rules (SBCL 2.5.2)
+ * \#4526 integrate(sin(x)/x,x,-1,1);
+ * \#4543 solve returns unsimplified result for cubic
+ * \#4558 Can't control matrix 2d print formatting
+ * \#4585 Taylor polynomials involving tangent & a quotient
+ * \#4591 solve called on degree six gives 0^0 error
+ * \#4592 integrate causes sign: argument cannot be imaginary error
+ * \#4618 li[2] evaluated near one is slow
+ * \#4623 gcfactor(4), expand(%%) => -4
+ * \#4629 box expression missing simp flags & expand applied to boxed objects
+ * \#4630 expand not idempotent (simplus)
+ * \#4634 Divergent integral simplifies to -1/4 with simplify_sum
+ * \#4655 sign("foo") => Lisp error
+ * \#4656 lurkmathml broken
+ * \#4657 lurkmathml uses mfenced
+ * \#4658 factor should check that second argument is irreducible
+ * \#4661 gives bogus error message something about compile which i never asked it to do and hangs when it shouldn't
+ * \#4662 apply1 sets match to zero when instead the replacement is zero.
+ * \#4663 Bucket table for undeclared array keeps growing beyond 32768 buckets
+ * \#4664 verbify("!!")
+ * \#4667 rk_adpative test suite failure
+ * \#4669 non numeric value for factlim
+ * \#4671 build_info outputs extraneous empty lines
+ * \#4673 binomial(a,a-b) doesn't simplify to binomial(a,b)
+ * \#4677 Read should respect the batch_answers_from_file flag
+ * \#4678 deffnx in Texinfo leads to redundant items in documentation index
+ * \#4680 lurkmathml uses deprecated mathspace lengths
+ * \#4681 lurkmathml produces non-validating mathml
+ * \#4682 draw with terminal=epslatex_standalone generate faulty latex file
+ * \#4683 lurkmathml does not typeset z[2]^3 correctly
+ * \#4684 lurkmathml does not typeset x_1 correctly
+ * \#4687 integrate(1/x,x,-1,1) should issue Principal Value warning
+ * \#4688 sign(zeroa) should be pos
+ * \#4689 limit of a spherical_bessel_j function
+ * \#4690 inverse_erf(erf(x)) and erf(inverse_erf(x)) don't simplify to x, even if x is real
+ * \#4693 makelist completely fails with simp:false
+ * \#4694 lurkmathml does not know how to typeset box
+ * \#4695 tex output for an input label %i1 is inconsistent
+ * \#4697 Symbol $box being changed to mbox
+ * \#4698 alt-display breaks trace's output
+ * \#4699 displa, tex and lurkmathml display of partial derivatives is incorrect
+ * \#4703 Remove sys-proclaim stuff used by gcl
+ * \#4704 Fix dependencies in maxima.system and maxima.asd
+ * \#4707 No derivatives for gamma_incomplete_lower
+ * \#4710 lurkmathml does not know how to typeset del
+ * \#4711 Pretty-printer slightly incorrect output for 'product(...)
+ * \#4712 Circular dependencies in maxima.system
+ * \#4714 lurkmathml does not co-operate with ordergreat/less
+ * \#4715 rtest_gamma test with makelist(k!!, k, -1, 2) fails
+ * \#4717 limit(signum(exp(%i*x)*exp(x)),x,inf);
+ * \#4718 Restructure module translated packages
+ * \#4721 test-directory-cached is slow
+ * \#4724 xreduce with init arg and declared nary function
+ * \#4728 Building German documentation fails with texinfo-7.3
+ * \#4729 rtest_limit.mac: Problem 230 (line 866)
+ * \#4730 ei-asymptotic-expansion
+ * \#4731 draw() does not work on new debian 13 installation
+ * \#4732 histogram incorrectly normalized when frequency = density
+ * \#4734 histogram_description clobbers xrange
+ * \#4735 rtest_limit_gruntz problem 21, line 121 has sign error in expected limit
+ * \#4736 Taylor called on polygamma function with symbolic order
+ * \#4737 atan2 with bfloat arg(s) is inconsistent on negative x-axis
+ * \#4739 ratsubst(0,exp(-x),2);
+ * \#4740 limit(expintegral_e(3/4,-log(1-1/x))*(-log(1-1/x))^(1/4),x,inf);
+ * \#4742 limit result contains "false"
+ * \#4746 calling forget gives stack overflow and forgets facts in global context
+ * \#4747 limits of some exponential integrals when expintrep : gamma_incomplete
+ * \#4752 csign doesn't handle subscripted functions like li correctly
+ * \#4756 expand(sin(%e^x)), numer incorrectly replaces %e with numerical value
+ * \#4757 %e^2.0, %emode:false stays %e^2.0
+ * \#4760 crazy question: Is "1" zero or nonzero? from one-arg limit
+ * \#4764 0 * 0.0 and 0 * 0.0b0 remaining 0
+ * \#4765 gfactor not idempotent
+ * \#4768 Custom operators don't get SIMP flag
+ * \#4769 Custom operators don't play nice with tellsimp
+ * \#4770 kill doesn't remove operator 
+ * \#4772 limits of tan expressions toward infinity
+ * \#4774 taylor should accept -inf and -
+ * \#4777 limits of tan toward odd x integer / 2
+ * \#4778 integrate(sin(x)/x^3, x, -1, 1) should be divergent
+ * \#4781 solve(atan(x)=2) gives a non-solution
+ * \#4782 Improve discontinuity detection for definite integrals
+ * \#4783 Definite integration: Maxima orders discontinuities incorrectly using GREAT instead of MGRP
+ * \#4786 mk-defsystem doesn't handle loading failures e.g. due to corrupt binary files
+ * \#4787 taylor(a,b,c) gives internal error
+ * \#4788 taylor(a^x, x, inf, 0) vs. taylor(f(a)^x, x, inf, 0) for f = atan, asin, asinh
+ * \#4791 taylor(atan(%pi)^x, x, inf, 0) contains unsimplified sin(0) and cos(0)
+ * \#4792 taylor(%e^(-%i*x), x, inf, 0) = false + . . .
+ * \#4795 realpart(li[2](2*%e^(%i*0.1))) crashes Maxima
+ * \#4794 limit(1/(acos(x)-%pi/2),x,0) causes division by zero error
+ * \#4797 limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus) is wrong
+ * \#4798 limit((-1)^x,x,minf)
+ * \#4799 taylor contagion
+ * \#4801 Bogus derivatives when arguments match variable names in DEFGRAD
+ * \#4800 zeroa, zerob are listed by listofvars
+ * \#4803 limit(1+zerob), numer : true vs limit(1+zeroa), numer : true;
+ * \#4806 Taylor: bad singular datum
+ * \#4808 ?a(; causes Lisp error
+ * \#4809 integrate(sqrt(x^2+x^3),x,-1,1) asks for the sign of x
+ * \#4810 risch(sqrt(sin(x)^2-1),x) = 0
+ * \#4814 Default GCD algorithm can't handle algebraic
+ * \#4816 csign(imaginary + imaginary) = complex
+ * \#4817 integrate(1/(x*sqrt(3*x^2 + 2*x + 1/3), x) and integrate(sqrt(3*x^2 + 2*x + 1/3)/x, x) contain a bogus oscillating factor
+ * \#4818 integrate(x^2 * exp(a*x^2 - 1/x^2), x) wrong
+ * \#4819 integrate((x - x^2)^(3/2) / x, x ) wrong
+ * \#4820 integrate(1/sqrt(x^2+2*x+1), x) & similar wrong
+ * \#4821 integrate(sec(x)*tan(x)^3.0, x) is wrong
+ * \#4823 specint asks the sign of a silent variable
+ * \#4824 sinint substitutes without changing the variable, letting facts from the original variable intact
+ * \#4826 division by zero computing a Jacobi polynomial
+ * \#4827 integrate(x^2*sin(x)^2/(x^2+1), x, minf, inf) gives negative value
+ * \#4828 Change of variable takes the wrong root / doubles without checking parity - wrong answers
+ * \#4829 j^2/abs(j) simplified incorrectly for j declared imaginary
+ * \#4831 ordlist: great returns T in both directions for alike sums
+ * \#4832 great/ordfna: float vs. bignum ordering overflows instead of comparing
+ * \#4833 negative rational base + integral float exponent stays a noun
+ * \#4834 integrate(sin(x)^(1/3)*cos(x)^(1/3), x, 0, 2*%pi) wrong
+ * \#4836 Integer/parity inferencing through equal not working
+ * \#4837 sign-sin / sign-cos return a strict sign at closed endpoints where the value is 0
+ * \#4838 risch returns incomplete noun form
+ * \#4839 absarg returns the wrong argument (phase) for tanh of a complex number
+ * \#4842 Risch integrator returns a noun for elementary ∫ eᵃ⁽ˣ⁾·r(x) dx
+ * \#4843 Undefined variable GNUPLOT-PREAMBLE on Windows
+ * \#4844 Can't integrate the derivative of fresnel_s(x)
+ * \#4845 float(log(1/2 + %i/2)) is wrong
+ * \#4846 psubstitute doesn't validate its first argument
+ * \#4847 pop evaluates its argument twice, can cause bugs
+ * \#4857 simplim%asin: mis-quoted member list — asin(inf) / asin(infinity) never matched
+ * \#4860 simplim%acos: acos(±inf) returns und rather than infinity
+ * \#4862 solve doesn't deduplicate subscripted variables correctly
+ * \#4863 sign(abs(x+%i)) returns pz instead of pos
+ * \#4864 limit(atan2(0, cos(x)), x, %pi) gives ind instead of %pi
+ * \#4865 Some elementary integrals not solved by risch
+ * \#4866 csign(log(abs(x))) = complex
+ * \#4867 sign(log(-1-x^2)) returns pnz
+ * \#4869 cabs(abs(x+%i))
+ * \#4870 asksign(sin(x)+1) asks "Is 1 zero or nonzero?"
+ * \#4871 assume(g >= 0, h >= 0); asksign(-g*h) asks if g*h is negative or zero
+ * \#4873 limit can destroy pre-existing facts
+ * \#4874 realpart/imagpart can destroy facts
+ * \#4876 sign(%i) gives error, but sign(declared_imaginary) doesn't
+ * \#4882 Entries from dobjects and *nobjects* don't get deleted
+ * \#4883 Redefining an operator to be infix/postfix/nary causes a parser bug
+ * \#4884 Contradicting facts in different contexts can cause stack overflow
+ * \#4886 forget(number > number) works
+ * \#4887 Removed fact still listed by facts()
+ * \#4888 Facts created in local block still listed by facts() afterwards
+ * \#4889 array on a memoizing function returns huge junk values
+ * \#4890 A failed local() permanently destroys definitions
+ * \#4891 An error during ev's setup destroys or leaks local function definitions
+ * \#4892 Assigning an option variable its own name bypasses its validator
+ * \#4893 With an out-of-range value of the option variable macroexpansion, every Maxima macro call evaluates to false
+ * \#4894 map crashes when an argument is an atom
+ * \#4895 map inside a function called by maplist skips the operator check
+ * \#4896 Calling a variable whose value is a string crashes the evaluator
+ * \#4897 Parallel list assignment crashes on non-symbol atomic targets
+ * \#4898 new() crashes on a string or number argument
+ * \#4899 declare(symbol, alphabetic) crashes
+ * \#4900 Subscripted assignment to a string-valued variable crashes
+ * \#4901 Redefining a structure leaves a stale entry in structures
+ * \#4902 use_fast_arrays: first subscripted assignment to a bound variable hangs
+ * \#4903 use_fast_arrays: array(a, n) mistakes the dimension for an array type
+ * \#4904 ev with expand(m, n) does not evaluate the arguments
+ * \#4905 kill on an element of a fixnum/flonum behaves incorrectly
+ * \#4906 Hashed arrays keep growing their bucket table past the hash range
+ * \#4907 A deferred if strips quotes from its branches
+ * \#4908 savedef : all makes a translated function ignore redefinition
+ * \#4909 taylor applied to diff noun forms mishandles multiple differentiation variables
+ * \#4910 taylor drops terms of finite sums and products
+ * \#4911 diff of a Taylor series with singular kernels crashes or loses terms
+ * \#4912 taylor of an unevaluated sum with expansion order inf crashes
+ * \#4913 taylor(atan(1/x),x,0,3) asks for the sign of x
+ * \#4914 Taylor: SRF applies the truncation level of the first variable to all variables
+ * \#4915 Dead finite*inf check in lim-times lets taylor accept oscillating kernels
+ * \#4916 CEXPT does not reduce results to the balanced range when modulus is set
+ * \#4917 false is declared constant, but featurep(false, constant) is false
+ * \#4918 assume(not foo(...)) returns [not con]
+ * \#4919 forget() return value doesn't tell whether something was actually forgotten
+ * \#4920 remove() always returns "done" no matter if something was actually removed
+ * \#4927 expintegral_chi(2.0) is non-real and the function is even
+ * \#4929 erfc loses half its precision on exact arguments
+ * \#4989 is(bfloat(-1) = -1.0b0) = false
+
+Bug fixes for unnumbered bugs:
+------------------------------
+* rtest_gruntz test #38
+* mkdir ignoring drive letter on SBCL/Windows
+* package descriptive: in 'histogram', correct bar height calculation for frequency = density
+* maxima-discuss 2026-06-01: "Solving Equation with Ezunits Problem"
+* maxima-discuss 2026-04-02: "Recent changes to "box" has broken plot options"
+* nthroot not checking whether its input is a polynomial
+* fr1 early exit incorrect for symbols when $algebraic or $ratwtlvl is set
+* featurep((-1)^n, integer) returning false for n declared integer
+* antiderivative of acoth(x) not respecting logabs
+* ultraspherical(1, -1/2, x) causes division by zero error
+* ematrix doesn't check that i, j are within the matrix' bounds
+* antiderivative of jacobi_sd contains a stray "m" variable
+* file_search_cache disabled on a fresh install
+
+Changes in the Windows installer:
+---------------------------------
+ * Update SBCL
+ * Update wxWidgets
+ * Update wxMaxima
+ * Update TCL/TK
+ * Add basic support for ECL. Not yet fully functional.
+   (loading additional packages does not work. Why?)
+ * Update Gnuplot
+
+Other changes:
+--------------
+ * Linux/Mac: If the default maxima isn't found choose an installed flavour of the same version
+ * new function 'at_difference' to represent difference of "at" expressions
+ * new function 'ranks' to compute rank of each item in a list
+ * new function 'ordering' to construct an ordering permutation of a list
+ * new function 'accumulate' to construct generalized running total of a list
+ * new function 'has_key' to return whether an undeclared array or hash table contains a given key
+ * extend "for" loop syntax to handle destructuring assignment to loop variables
+ * extend "for" loop to iterate over undeclared arrays and hash tables
+ * merge double_factorial function with operator "!!"
+ * compute k!! for negative odd integer k via identity
+ * workaround for SBCL bug https://bugs.launchpad.net/sbcl/+bug/2138812 (print base for loading files)
+ * package ezunits: additional examples thanks to M. Mroz
+ * package ezunits: new function all_units_fundamental to convert all units in an expression to fundamental units
+ * improved tracing of Lisp functions (detect when traced functions have changed)
+ * basic support for solving equations involving abs and signum
+ * acsc(0) and asec(0) now throw domain errors just like acsch(0) and asech(0)
+ * package ezunits: significant performance improvement
+ * assume(kind(...)) now supported as an alternative to declare(...), forget(kind(...)) was already working as an alternative to remove(...)
