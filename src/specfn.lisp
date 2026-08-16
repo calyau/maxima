@@ -493,7 +493,7 @@
 			           ($z (m-t a)))
 			       (declare (special $z))
 			       (meval dif)))
-		        (m*t (factorial s) (m^t (m-t a) (1- (- s)))))))))
+		        (m*t (expt -1 s) (factorial s) (m^t (m-t a) (1- (- s)))))))))
           (give-up :fun-args (list a)))))
     (psisimp1 s a)))
   
