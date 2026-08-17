@@ -3,8 +3,6 @@ Maxima 5.50-post change log
 
 Bug fixes for numbered bugs:
 ----------------------------
- * \#4930 log_gamma at bigfloat precision is off by 2*%pi*%i for complex arguments
- * \#4932 psi[s] is wrong at negative rational arguments for odd s
 
 Bug fixes for unnumbered bugs:
 ------------------------------
