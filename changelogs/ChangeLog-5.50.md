@@ -1,5 +1,5 @@
-Maxima 5.49-post change log
-===========================
+Maxima 5.50 change log
+======================
 
 Bug fixes for numbered bugs:
 ----------------------------
