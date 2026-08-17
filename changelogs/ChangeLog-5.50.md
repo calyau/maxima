@@ -224,6 +224,8 @@ Bug fixes for numbered bugs:
  * \#4920 remove() always returns "done" no matter if something was actually removed
  * \#4927 expintegral_chi(2.0) is non-real and the function is even
  * \#4929 erfc loses half its precision on exact arguments
+ * \#4930 log_gamma at bigfloat precision is off by 2*%pi*%i for complex arguments
+ * \#4932 psi[s] is wrong at negative rational arguments for odd s
  * \#4989 is(bfloat(-1) = -1.0b0) = false
 
 Bug fixes for unnumbered bugs:

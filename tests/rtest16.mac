@@ -2972,8 +2972,9 @@ psi[2](7/8);
 psi[2](1/8)-2*%pi^3*cot((7*%pi)/8)*csc((7*%pi)/8)^2;
 
 /* psi[s](a) for a > maxpsinegint, which uses the reflection formula */
+/* Also bug #4932: "psi[s] is wrong at negative rational arguments for odd s" */
 psi[1](-5/2);
-%pi^2/2+964/225;
+%pi^2/2+1036/225;
 
 /* Ordering of integers and floats that have the same value. */
 map(orderlessp,

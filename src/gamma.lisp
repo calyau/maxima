@@ -1997,14 +1997,16 @@
          (complex-bfloat-log-gamma z))))
     (t
      (let* ((k (* 2 (+ 1 ($entier (* 0.41 $fpprec)))))
-            (m ($bfloat *bigfloatone*))
+            (logm ($bfloat *bigfloatzero*))
             (z+k (add z k -1))
             (y ($rectform (power z+k 2)))
             (x ($bfloat *bigfloatzero*))
             (ii))
        (dotimes (i (/ k 2))
          (setq ii (* 2 (+ i 1)))
-         (setq m ($rectform (mul m (add z ii -2) (add z ii -1))))
+         (setq logm ($rectform (add logm
+                                    (ftake '%log (add z ii -2))
+                                    (ftake '%log (add z ii -1)))))
          (setq x ($rectform
                    (div
                      (add x 
@@ -2015,7 +2017,7 @@
          (add
            (div (simplify (list '(%log) (mul 2 bigfloat%pi z+k))) 2)
            (mul z+k (add (simplify (list '(%log) z+k)) x -1))
-           (mul -1 (simplify (list '(%log) m))))))))))
+           (neg logm))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
