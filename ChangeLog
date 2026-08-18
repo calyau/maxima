@@ -3,6 +3,7 @@ Maxima 5.50-post change log
 
 Bug fixes for numbered bugs:
 ----------------------------
+* \#4992 quad_* can leave temporary variable assignments in place
 
 Bug fixes for unnumbered bugs:
 ------------------------------
@@ -14,4 +15,4 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
-...
+* Bigfloat optimizations and less memory consumption

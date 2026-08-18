@@ -3967,6 +3967,17 @@ is(bfloat(-1) = -1.0b0);
 true;
 
 
+/* Bug #4992: "quad_* can leave temporary variable assignments in place" */
+
+block([g, ex, y],
+ local(g, ex, y),
+ g(u) := if u > 1.0 then throw(u) else sin(u),
+ ex : funmake(g, [y[3]]),
+ catch(quad_qags(ex, y[3], 0, %pi)),
+ floatnump(y[3]));
+false;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

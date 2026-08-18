@@ -42,17 +42,16 @@
 	 (iwork (make-array liw :element-type 'f2cl-lib:integer4))
 	 (fjac (when (= mf 21)
 		 ;; Jacobian is needed only for mf = 21, so compute only then.
-		 (compile nil
 			  (coerce-float-fun
 			   (meval `(($jacobian) ,f ,(list* '(mlist) (cddr vars))))
-			   vars)))))
+			   vars))))
     ;; Make sure neq is consistent with the number of elements in f
     ;; and vars
     (unless (= (1+ neq) ($length vars))
       (merror "Expected ~M variables but got ~M: ~M"
 	      (1+ neq) ($length vars) vars))
     (make-mlist
-     (make-mlist '$f (compile nil (coerce-float-fun f vars)))
+     (make-mlist '$f (coerce-float-fun f vars))
      (make-mlist '$vars vars)
      (make-mlist '$mf mf)
      (make-mlist '$neq neq)

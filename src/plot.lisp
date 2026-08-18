@@ -420,6 +420,11 @@ vertices of a triangle or a quadrilateral."
                      (setf (elt pts (+ 1 i)) (funcall fy x1 x2 x3))
                      (setf (elt pts (+ 2 i)) (funcall fz x1 x2 x3)))))))
 
+(declaim (inline %coerce-float-fun-check-args))
+(defun %coerce-float-fun-check-args (actuals nargs)
+  (unless (= (length actuals) nargs)
+    (error "invalid number of arguments: ~d" (length actuals))))
+
 ;; Return value is a Lisp function which evaluates EXPR to a float.
 ;; COERCE-FLOAT-FUN always returns a function and never returns a symbol,
 ;; even if EXPR is a symbol.
@@ -444,7 +449,7 @@ vertices of a triangle or a quadrilateral."
     (0 (setq lvars nil) (setq fname "coerce-float-fun"))
     (1 (setq lvars (first rest)) (setq fname "coerce-float-fun"))
     (2 (setq lvars (first rest)) (setq fname (second rest)))
-    (t (merror (intl:gettext "coerce-float-fun: two many arguments given."))))
+    (t (merror (intl:gettext "coerce-float-fun: too many arguments given."))))
   (cond ((and (consp expr) (functionp expr))
          (let ((args (if lvars (cdr lvars) (list (gensym)))))
            (coerce-lisp-function-or-lisp-lambda args expr :float-fun float-fun)))
@@ -489,79 +494,70 @@ vertices of a triangle or a quadrilateral."
 	   (coerce-maxima-function-or-maxima-lambda
             args expr :float-fun float-fun)))
         (t
-         (let* ((vars (or lvars ($sort ($listofvars expr))))
-		(subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
-		gensym-vars save-list-gensym subscripted-vars-save
-		subscripted-vars-mset subscripted-vars-restore)
+         (let* ((%cff-vars (cdr (or lvars ($sort (let ($listconstvars) ($listofvars expr))))))
+		(%cff-subscripted (remove-if #'atom %cff-vars))
+		(%cff-symbols (remove-if-not #'atom %cff-vars))
+		(%cff-nargs (length %cff-vars))
+		(%cff-numer
+		  ;; We don't want to set $numer to T when coercing
+		  ;; to a bigfloat.  By doing so, things like
+		  ;; log(400)^400 get converted to double-floats,
+		  ;; which causes a double-float overflow.  But the
+		  ;; whole point of coercing to bfloat is to use
+		  ;; bfloats, not doubles.
+		  ;;
+		  ;; Perhaps we don't even need to do this for
+		  ;; double-floats?  It would be nice to remove
+		  ;; this.  For backward compatibility, we bind
+		  ;; numer to T if we're not trying to bfloat.
+		  (not (eq float-fun '$bfloat))))
 
-	   ;; VARS and SUBSCRIPTED-VARS are Maxima lists.  Other lists are
-	   ;; Lisp lists.
-	   (when (cdr subscripted-vars)
-	     (setq gensym-vars (mapcar #'(lambda (ign) (declare (ignore ign)) (gensym))
-				       (cdr subscripted-vars)))
-	     (mapcar #'(lambda (a b) (setq vars (subst b a vars :test 'equal)))
-		     (cdr subscripted-vars) gensym-vars)
+	   ;; The lambda expression this used to build was the same code every
+	   ;; time.  Only three things varied -- the variables it binds, which
+	   ;; float function it calls, and the expression it MEVALs -- and the
+	   ;; last of those was interpolated as a quoted constant, not as code.
+	   ;; So there was nothing for the compiler to do, yet COERCE ran on
+	   ;; every call at about a megabyte a time.  Close over the three and
+	   ;; bind the variables at call time instead.
+	   (flet ((evaluate ()
+		    ;; Catch any errors from evaluating the
+		    ;; function.  We're assuming that if an error
+		    ;; is caught, the result is not a number.  We
+		    ;; also assume that for such errors, it's
+		    ;; because the function is not defined there,
+		    ;; not because of some other maxima error.
+		    (let (($ratprint nil) ($numer %cff-numer) (*nounsflag* t))
+		      (let ((%cff-result (errcatch (funcall float-fun
+						      (maybe-realpart (meval expr))))))
+			(if %cff-result (car %cff-result) t)))))
+	     (if (null %cff-subscripted)
+		 #'(lambda (&rest %cff-actuals)
+		     (declare (dynamic-extent %cff-actuals))
+		     (%coerce-float-fun-check-args %cff-actuals %cff-nargs)
+		     (progv %cff-vars %cff-actuals (evaluate)))
+		 ;; A subscripted variable is not a symbol and cannot be bound,
+		 ;; so it is MSET around the call and its old value put back.
+		 ;; Generated code needed a name for every incoming argument and
+		 ;; minted a gensym per subscripted variable to get one, then
+		 ;; declared it special; SBCL allocates a thread-local storage
+		 ;; slot the first time a symbol is dynamically bound and never
+		 ;; reclaims it, so that leaked a slot on every coercion.  A
+		 ;; closure has the arguments as data and needs no names.
+		 #'(lambda (&rest %cff-actuals)
+		     (declare (dynamic-extent %cff-actuals))
+		     (%coerce-float-fun-check-args %cff-actuals %cff-nargs)
+		     (let* ((%cff-saved (mapcar #'meval %cff-subscripted))
+			    (%cff-vals (loop for %cff-v in %cff-vars
+					for %cff-a in %cff-actuals
+					when (atom %cff-v) collect %cff-a
+					  else do (mset %cff-v %cff-a))))
+		       ;; The restore has to run even when the evaluation exits
+		       ;; non-locally, or the caller's variable is left holding
+		       ;; whatever this happened to be probing at.
+		       (unwind-protect
+			    (progv %cff-symbols %cff-vals (evaluate))
+			 (mapc #'mset %cff-subscripted %cff-saved))))))))))
 
-	     ;; This stuff about saving and restoring array variables
-	     ;; should go into MBINDING, and the lambda expression
-	     ;; constructed below should call MBINDING.  (At present
-	     ;; MBINDING barfs on array variables.)
-	     (setq save-list-gensym (gensym))
-	     (setq subscripted-vars-save
-		   (mapcar #'(lambda (a) `(push (meval ',a) ,save-list-gensym))
-			   (cdr subscripted-vars)))
-	     (setq subscripted-vars-mset
-		   (mapcar #'(lambda (a b) `(mset ',a ,b))
-			   (cdr subscripted-vars) gensym-vars))
-	     (setq subscripted-vars-restore
-		   (mapcar #'(lambda (a) `(mset ',a (pop ,save-list-gensym)))
-			   (reverse (cdr subscripted-vars)))))
-
-	   (coerce
-	    `(lambda ,(cdr vars)
-	       (declare (special ,@(cdr vars)))
-
-	       ;; Nothing interpolated here when there are no subscripted
-	       ;; variables.
-	       ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
-
-	       ;; Nothing interpolated here when there are no subscripted
-	       ;; variables.
-	       ,@(if (cdr subscripted-vars)
-		     `((progn (setq ,save-list-gensym nil)
-			      ,@(append subscripted-vars-save subscripted-vars-mset))))
-
-	       (let (($ratprint nil)
-		     ;; We don't want to set $numer to T when coercing
-		     ;; to a bigfloat.  By doing so, things like
-		     ;; log(400)^400 get converted to double-floats,
-		     ;; which causes a double-float overflow.  But the
-		     ;; whole point of coercing to bfloat is to use
-		     ;; bfloats, not doubles.
-		     ;;
-		     ;; Perhaps we don't even need to do this for
-		     ;; double-floats?  It would be nice to remove
-		     ;; this.  For backward compatibility, we bind
-		     ;; numer to T if we're not trying to bfloat.
-		     ($numer ,(not (eq float-fun '$bfloat)))
-		     (*nounsflag* t))
-		 ;; Catch any errors from evaluating the
-		 ;; function.  We're assuming that if an error
-		 ;; is caught, the result is not a number.  We
-		 ;; also assume that for such errors, it's
-		 ;; because the function is not defined there,
-		 ;; not because of some other maxima error.
-		 (let ((result
-			 (errcatch (,float-fun (maybe-realpart (meval ',expr))))))
-
-		   ;; Nothing interpolated here when there are no
-		   ;; subscripted variables.
-		   ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
-
-		   (if result
-		       (car result)
-		       t))))
-	    'function)))))
 ;; coerce-float-fun must be given an expression and one or two other optional
 ;; arguments: a Maxima list of variables on which that expression depends
 ;; and string that will identify the name of the responsible function
