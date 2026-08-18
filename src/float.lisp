@@ -1087,17 +1087,29 @@
 	(when (= *m 0)
 	  (setq *cancelled 0)
 	  (return l))
-	;;FPSHIFT is essentially LSH.
-	(setq adjust (fpshift 1 (1- *m)))
-	(when (minusp l) (setq adjust (- adjust)))
-	(incf l adjust)
-	(setq *m (- (fpmagnitude-length l) fpprec))
-	(setq *cancelled (abs *m))
-	(cond ((hipart-zerop l (- *m))
-					;ONLY ZEROES SHIFTED OFF
-	       (return (fpshift (fpshift l (- -1 *m))
-				1)))	; ROUND TO MAKE EVEN
-	      (t (return (fpshift l (- *m))))))
+	(when (< *m 0)
+	  ;; Nothing is shifted off the low end, so this is an exact left shift.
+	  (setq *cancelled (- *m))
+	  (return (ash l (- *m))))
+	;; *M > 0. Round the magnitude of L to FPPREC bits, half to even. Bit *M-1
+	;; of the magnitude is the round bit, bits 0 to *M-2 are the sticky bits.
+	(let* ((minus (minusp l))
+	       (u (if minus (- l) l))
+	       (q (ash u (- *m))))
+	  (when (and (logbitp (1- *m) u)
+		     ;; The round bit is set, so round up - unless L is exactly halfway,
+		     ;; which is ONLY ZEROES SHIFTED OFF below the round bit, and Q is
+		     ;; even already.
+		     (or (logbitp 0 q)	; ROUND TO MAKE EVEN
+			 (not (hipart-zerop u (- 1 *m)))))
+	    (setq q (1+ q))
+	    (when (> (integer-length q) fpprec)
+	      ;; The carry ran off the top: Q is 2^FPPREC and needs one more shift
+	      ;; to fit, which costs another cancelled bit.
+	      (setq q (ash q -1))
+	      (incf *m)))
+	  (setq *cancelled *m)
+	  (return (if minus (- q) q))))
        (t
 	(setq *m (- (flatsize (abs l)) fpprec))
 	(setq adjust (fpshift 1 (1- *m)))
