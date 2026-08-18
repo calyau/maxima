@@ -1111,10 +1111,12 @@
 (defun fpshift (l n)
   (cond ((null *decfp)
 	 (cond ((and (minusp n) (minusp l))
-		;; Left shift of negative number requires some
-		;; care. (That is, (truncate l (expt 2 n)), but use
-		;; shifts instead.)
-		(- (ash (- l) n)))
+		;; Right shift of a negative number requires some care: This truncates
+		;; towards zero, while ASH floors. The two differ by exactly 1 iff a
+		;; shifted-off bit is set, so there's no need to build -L, which is as
+		;; wide as L (consing!).
+		(let ((q (ash l n)))
+		  (if (hipart-zerop l n) q (1+ q))))
 	       (t
 		(ash l n))))
 	((> n 0)
