@@ -33,6 +33,13 @@
     (proclaim (list 'ext:notspecial symbol)))
   symbol)
 
+#+abcl
+(defun make-unspecial (symbol)
+  (when (and (ext:special-variable-p symbol)
+             (not (constantp symbol)))
+    (java:jcall "setSpecial" symbol java:+false+))
+  symbol)
+
 (defmacro declare-top (&rest decl-specs)
   `(eval-when
     ,(cond (*macro-file*  '(:compile-toplevel :load-toplevel :execute) )
@@ -43,11 +50,11 @@
 	     when (eql (car v) 'unspecial)
 	     collect `(progn
 		       ,@(loop for w in (cdr v)
-				collect #-(or gcl scl cmu ecl sbcl clisp)
+				collect #-(or gcl scl cmu ecl sbcl clisp abcl)
                                        `(remprop ',w
 						 #-excl 'special
 						 #+excl 'excl::.globally-special.)
-				#+(or gcl scl cmu ecl sbcl clisp)
+				#+(or gcl scl cmu ecl sbcl clisp abcl)
 			        `(make-unspecial ',w)))
 	     else collect `(proclaim ',v))))
 
