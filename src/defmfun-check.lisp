@@ -242,6 +242,9 @@
 			      fname opt))))
 	    options)))
 
+(defun defmfun-arity-error (control fname expected nargs &rest args)
+  (merror control fname expected nargs (list* '(mlist) args)))
+
 ;; Internal macro to do the heavy lifting of defining a function that
 ;; checks the number of arguments of a function.  This is intended to
 ;; give nice error messages to user-callable functions when the number
@@ -402,36 +405,40 @@
 		      ;; args.
 		      (unless (null required-args)
 			`((when (< ,nargs ,required-len)
-			    (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+			    (apply #'defmfun-arity-error
+				    (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
 				    ',pretty-fname
 				    ,required-len
 				    ,nargs
-				    (list* '(mlist) ,args))))))
+				    ,args)))))
 		     (optional-args
 		      ;; There are optional args (but no rest
 		      ;; arg). Verify that we don't have too many args,
 		      ;; and that we still have all the required args.
 		      `(
 			(when (> ,nargs ,(+ required-len optional-len))
-			  (merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
+			  (apply #'defmfun-arity-error
+				  (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
 				  ',pretty-fname
 				  ,(+ required-len optional-len)
 				  ,nargs
-				  (list* '(mlist) ,args)))
+				  ,args))
 			(when (< ,nargs ,required-len)
-			  (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+			  (apply #'defmfun-arity-error
+				  (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
 				  ',pretty-fname
 				  ,required-len
 				  ,nargs
-				  (list* '(mlist) ,args)))))
+				  ,args))))
 		     (t
 		      ;; We only have required args.
 		      `((unless (= ,nargs ,required-len)
-			  (merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
+			  (apply #'defmfun-arity-error
+				  (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
 				  ',pretty-fname
 				  ,required-len
 				  ,nargs
-				  (list* '(mlist) ,args))))))
+				  ,args)))))
 		 ,(cond
 		    (keywords-present-p
 		     `(apply #',impl-name
