@@ -26,6 +26,13 @@
     (sb-int:clear-info :variable :kind symbol))
   symbol)
 
+#+clisp
+(defun make-unspecial (symbol)
+  (when (and (ext:special-variable-p symbol)
+             (not (constantp symbol)))
+    (proclaim (list 'ext:notspecial symbol)))
+  symbol)
+
 (defmacro declare-top (&rest decl-specs)
   `(eval-when
     ,(cond (*macro-file*  '(:compile-toplevel :load-toplevel :execute) )
@@ -36,11 +43,11 @@
 	     when (eql (car v) 'unspecial)
 	     collect `(progn
 		       ,@(loop for w in (cdr v)
-				collect #-(or gcl scl cmu ecl sbcl)
+				collect #-(or gcl scl cmu ecl sbcl clisp)
                                        `(remprop ',w
 						 #-excl 'special
 						 #+excl 'excl::.globally-special.)
-				#+(or gcl scl cmu ecl sbcl)
+				#+(or gcl scl cmu ecl sbcl clisp)
 			        `(make-unspecial ',w)))
 	     else collect `(proclaim ',v))))
 
