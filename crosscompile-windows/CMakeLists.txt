@@ -291,7 +291,7 @@ if(WITH_ECL)
 else()
     set(ECL_CONFIGURE "")
     set(ECL_DEPENDS "")
-    set(ECL_ENABLED 1)
+    set(ECL_ENABLED 0)
 endif()
 
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
