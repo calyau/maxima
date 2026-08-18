@@ -1718,8 +1718,51 @@
 ;;----------------------------------------------------------------------------;;
 
 
+(declaim (inline fpplusminus))
+(defun fpplusminus (a b subtract)
+  "Computes A+B or A-B, depending on whether SUBTRACT is NIL or non-NIL."
+  (prog (*m exp man sticky)
+     (setq *cancelled 0)
+     (cond ((equal (car a) 0)
+	    (return (if (and subtract (not (equal (car b) 0)))
+			(list (- (car b)) (cadr b))
+			b)))
+	   ((equal (car b) 0) (return a)))
+     (setq exp (- (cadr a) (cadr b)))
+     (setq man (cond ((equal exp 0)
+		      (setq sticky 0)
+		      (fpshift (if subtract
+				   (- (car a) (car b))
+				   (+ (car a) (car b)))
+			       2))
+		     ((> exp 0)
+					; COMPUTE STICKY BIT
+		      (setq sticky (cond ((hipart-zerop (car b) (- 1 exp)) 0)
+					 ;; the sign B enters the sum with
+					 ((if subtract
+					      (signp g (car b))
+					      (signp l (car b)))
+					  -1)
+					 (t 1)))
+					; MAKE ROOM FOR GUARD DIGIT & STICKY BIT
+		      (let ((ma (fpshift (car a) 2))
+			    (mb (fpshift (car b) (- 2 exp))))
+			(if subtract (- ma mb) (+ ma mb))))
+		     (t (setq sticky (cond ((hipart-zerop (car a) (1+ exp)) 0)
+					   ((signp l (car a)) -1)
+					   (t 1)))
+			(let ((ma (fpshift (car a) (+ 2 exp)))
+			      (mb (fpshift (car b) 2)))
+			  (if subtract (- ma mb) (+ ma mb))))))
+     (unless (zerop sticky)
+     (setq man (+ man sticky)))
+     (return (cond ((equal man 0) '(0 0))
+		   (t (setq man (fpround man))
+		      (setq exp (+ -2 *m (max (cadr a) (cadr b))))
+		      (list man exp))))))
+
 (defun fpdifference (a b)
-  (fpplus a (fpminus b)))
+  (fpplusminus a b t))
 
 (defun fpminus (x)
   (if (equal (car x) 0)
@@ -1727,33 +1770,7 @@
       (list (- (car x)) (cadr x))))
 
 (defun fpplus (a b)
-  (prog (*m exp man sticky)
-     (setq *cancelled 0)
-     (cond ((equal (car a) 0) (return b))
-	   ((equal (car b) 0) (return a)))
-     (setq exp (- (cadr a) (cadr b)))
-     (setq man (cond ((equal exp 0)
-		      (setq sticky 0)
-		      (fpshift (+ (car a) (car b)) 2))
-		     ((> exp 0)
-					; COMPUTE STICKY BIT
-		      (setq sticky (cond ((hipart-zerop (car b) (- 1 exp)) 0)
-					 ((signp l (car b)) -1)
-					 (t 1)))
-		      (+ (fpshift (car a) 2)
-					; MAKE ROOM FOR GUARD DIGIT & STICKY BIT
-			    (fpshift (car b) (- 2 exp))))
-		     (t (setq sticky (cond ((hipart-zerop (car a) (1+ exp)) 0)
-					   ((signp l (car a)) -1)
-					   (t 1)))
-			(+ (fpshift (car b) 2)
-			      (fpshift (car a) (+ 2 exp))))))
-     (unless (zerop sticky)
-     (setq man (+ man sticky)))
-     (return (cond ((equal man 0) '(0 0))
-		   (t (setq man (fpround man))
-		      (setq exp (+ -2 *m (max (cadr a) (cadr b))))
-		      (list man exp))))))
+  (fpplusminus a b nil))
 
 (defun fptimes* (a b)
   (if (or (zerop (car a)) (zerop (car b)))
