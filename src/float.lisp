@@ -31,6 +31,14 @@
     (:compile-toplevel :load-toplevel :execute)
     (defconstant +machine-fixnum-precision+ (integer-length most-positive-fixnum)))
 
+;; The widest byte whose mask is certainly a fixnum, so that masking with it
+;; conses nothing. +MACHINE-FIXNUM-PRECISION+ is INTEGER-LENGTH and would be
+;; one bit too wide where MOST-POSITIVE-FIXNUM is not of the form 2^N-1, which
+;; ANSI does not require.
+(eval-when
+    (:compile-toplevel :load-toplevel :execute)
+    (defconstant +hipart-fixnum-width+ (logcount most-positive-fixnum)))
+
 ;; Internal specials
 
 ;; FPROUND uses this to return a second value, i.e. it sets it before
@@ -60,6 +68,41 @@
   (if (bignump nn)
       (abs x)
       (haipart x nn)))
+
+(defun hipart-zerop (x nn)
+  "Equivalent to (ZEROP (HIPART ...)). HIPART can be expensive (lots of consing
+  with bignums). This function handles many common cases more efficiently."
+  (declare (integer x))
+  (cond
+    ;; HIPART of 0 is always 0 for all NN.
+    ((zerop x) t)
+     ;; NN >= 0: The NN most significant bits of X # 0 vanish only when NN = 0.
+    ((not (minusp nn))
+     (zerop nn))
+    (t
+     ;; At this point, NN < 0, so let K = -NN. The question to answer now is
+     ;; whether the K least significant bits of X are all zero.
+     (let ((k (- nn)))
+       (cond
+         ((<= k +hipart-fixnum-width+)
+          ;; The mask is a fixnum, so LOGAND does no consing. X may be negative:
+          ;; X and -X agree on "the low K bits are all zero".
+          (zerop (logand x (1- (ash 1 k)))))
+         ((not (zerop (logand x #.(1- (ash 1 +hipart-fixnum-width+)))))
+          ;; The lowest fixnum-wide byte alone settles many cases (about 75% in
+          ;; the test suite), and it requires no consing.
+          nil)
+         ;; |X| < 2^K means the low K bits are all of X, which we already know
+         ;; is non-zero. This keeps an astronomically large K (bigfloat exponent
+         ;; differences are unbounded) from building a bitmask to match. <, not
+         ;; <=, because for X = -2^K, the length is exactly K, and the low K
+         ;; bits really are zero.
+         ((< (integer-length x) k)
+          nil)
+         (t
+          ;; Check using LOGAND and a wide bitmask. This is the expensive case,
+          ;; because it requires consing, reached last.
+          (zerop (logand x (1- (ash 1 k))))))))))
 
 (defun fpprec1 (assign-var q)
   (declare (ignore assign-var))
@@ -1050,7 +1093,7 @@
 	(incf l adjust)
 	(setq *m (- (fpmagnitude-length l) fpprec))
 	(setq *cancelled (abs *m))
-	(cond ((zerop (hipart l (- *m)))
+	(cond ((hipart-zerop l (- *m))
 					;ONLY ZEROES SHIFTED OFF
 	       (return (fpshift (fpshift l (- -1 *m))
 				1)))	; ROUND TO MAKE EVEN
@@ -1679,16 +1722,14 @@
 		      (setq sticky 0)
 		      (fpshift (+ (car a) (car b)) 2))
 		     ((> exp 0)
-		      (setq sticky (hipart (car b) (- 1 exp)))
-		      (setq sticky (cond ((signp e sticky) 0)
+					; COMPUTE STICKY BIT
+		      (setq sticky (cond ((hipart-zerop (car b) (- 1 exp)) 0)
 					 ((signp l (car b)) -1)
 					 (t 1)))
-					; COMPUTE STICKY BIT
 		      (+ (fpshift (car a) 2)
 					; MAKE ROOM FOR GUARD DIGIT & STICKY BIT
 			    (fpshift (car b) (- 2 exp))))
-		     (t (setq sticky (hipart (car a) (1+ exp)))
-			(setq sticky (cond ((signp e sticky) 0)
+		     (t (setq sticky (cond ((hipart-zerop (car a) (1+ exp)) 0)
 					   ((signp l (car a)) -1)
 					   (t 1)))
 			(+ (fpshift (car b) 2)
