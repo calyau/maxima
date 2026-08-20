@@ -1797,7 +1797,7 @@
 (defun simpderiv (x y z)
   (prog (flag w u)
      (cond ((not (even (length x)))
-	    (cond ((and (cdr x) (null (cdddr x))) (nconc x '(1)))
+	    (cond ((and (cdr x) (null (cdddr x))) (setq x (append x (list 1))))
 		  (t (wna-err '%derivative)))))
      (setq w (cons '(%derivative) (simpmap (cdr x) z)))
      (setq y (cadr w))
