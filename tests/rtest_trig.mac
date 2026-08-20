@@ -731,3 +731,9 @@ block([errormsg: false], errcatch(acsc(0)));
 
 block([errormsg: false], errcatch(asec(0)));
 [];
+
+
+/* But #4933: "asech is treated as an even function" */
+
+asech(-2);
+asech(-2);

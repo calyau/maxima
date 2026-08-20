@@ -362,7 +362,6 @@
 
 (setf (get '%asinh 'reflection-rule) 'odd-function-reflect)
 (setf (get '%atanh 'reflection-rule) 'odd-function-reflect)
-(setf (get '%asech 'reflection-rule) 'even-function-reflect)
 (setf (get '%acsch 'reflection-rule) 'odd-function-reflect)
 (setf (get '%acoth 'reflection-rule) 'odd-function-reflect)
 
