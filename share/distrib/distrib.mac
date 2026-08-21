@@ -516,11 +516,15 @@ mle_exp (x, [w]) :=
 pdf_lognormal(x,m,s) :=
    if maybe(s > 0) = false
      then error("pdf_lognormal: parameter s must be greater than 0")
+   else
+     if equal(x, 0) then 0
      else exp(-(log(x)-m)^2/(2*s^2))/(sqrt(2*%pi)*s*x) * unit_step(x) $
 
 cdf_lognormal(x,m,s) :=
    if maybe(s > 0) = false
      then error("cdf_lognormal: parameter s must be greater than 0")
+   else
+     if equal(x, 0) then 0
      else (1/2+erf((log(x)-m)/(s*sqrt(2)))/2) * unit_step(x) $
 
 /* R: qlnorm(p,m,s)*/

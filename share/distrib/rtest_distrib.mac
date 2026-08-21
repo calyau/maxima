@@ -680,6 +680,16 @@ kurtosis_inverse_gamma (4.75, 1e-6);
  foo (5, 4.25, 1000, 1e-6));
 true;
 
+
+/* Bug #4967: "cdf_lognormal and pdf_lognormal error at x = 0" */
+
+cdf_lognormal(0, 0, 1);
+0;
+
+pdf_lognormal(0, 0, 1);
+0;
+
+
 (set_random_state(rnd_state),
  float_approx_equal_tolerance : save_tolerance,
  0);
