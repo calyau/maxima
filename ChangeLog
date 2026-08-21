@@ -5,6 +5,7 @@ Bug fixes for numbered bugs:
 ----------------------------
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
 * \#4933 asech is treated as an even function
+* \#4976 integer_partitions(n,0) claims the empty list is a partition of n
 * \#4992 quad_* can leave temporary variable assignments in place
 
 Bug fixes for unnumbered bugs:

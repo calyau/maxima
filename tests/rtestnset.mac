@@ -2175,3 +2175,11 @@ tree_reduce ("and", [1, 2, 3, 4], 13)$
 
 /* End of tests related to bug #4724 */
 
+
+/* Bug #4976: "integer_partitions(n,0) claims the empty list is a partition of n" */
+
+integer_partitions(5, 0);
+{};
+
+integer_partitions(0, 0);
+{[]};

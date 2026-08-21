@@ -765,7 +765,7 @@
 	   (setq acc (cond ((= n 0) nil)
 			   ((integerp len) (fixed-length-partitions n n len))
 	               (t (integer-partitions n))))
-           (if (not acc)
+           (if (and (not acc) (= n 0))
                (setq acc `(((mlist simp))))
                (setq acc (mapcar #'(lambda (x) (simplify (cons '(mlist) x))) acc)))
 	   `(($set simp) ,@acc))
