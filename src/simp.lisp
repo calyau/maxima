@@ -2906,11 +2906,14 @@
 	 (cond ((eq (caar y) 'rat)
 		(> (* (caddr y) (cadr x)) (* (caddr x) (cadr y))))))
 	((eq (caar y) 'rat))
+	((eq (caar x) 'bigfloat)
+	 ;; A bigfloat is "less" than every other non-atomic expression,
+	 ;; but "greater" than a rational number.
+	 (cond ((eq (caar y) 'bigfloat) (ordbfloat x y))))
+	((eq (caar y) 'bigfloat))
 	((or (member (caar x) '(mtimes mplus mexpt %del))
 	     (member (caar y) '(mtimes mplus mexpt %del)))
 	 (ordfn x y))
-	((and (eq (caar x) 'bigfloat) (eq (caar y) 'bigfloat))
-      (ordbfloat x y))
 	((or (eq (caar x) 'mrat) (eq (caar y) 'mrat))
 	 (error "GREAT: internal error: unexpected MRAT argument"))
 	(t (do ((x1 (margs x) (cdr x1)) (y1 (margs y) (cdr y1))) (())
