@@ -1232,6 +1232,34 @@ string (a %and b);
 string (a %and b %and c %and d);
 "a %and b %and c %and d";
 
+
+/* Bug #2458: "to_poly_solve gives a wrong solution for cos(x)=sin(3x)" */
+
+nicedummies(to_poly_solve(cos(x)-sin(3*x),x));
+%union([x = (4*%pi*%z0+%pi)/4],[x = (4*%pi*%z1+%pi)/8]);
+
+
+/* Bug #2558: "to_poly_solve hangs" */
+
+block([s, e : 6*cos(2*x+1)*sin(2*x+1)^2, v],
+  s : nicedummies(to_poly_solve(6*cos(2*x+1)*(sin(2*x+1))^2, x)),
+  v : flatten(makelist(makelist(float(subst(subst([%z0 = k, %z1 = k], part(s,j)), e)), k, -2, 2), j, 1, length(s))),
+  [length(s), is(lmax(abs(v)) < 1e-12)]);
+[2, true];
+
+
+/* Bug #3276: "regression in to_poly_solve" */
+
+to_poly_solve(Q*sqrt(Q^2 + 2) = 1, Q);
+%union([Q = -sqrt(-sqrt(2)-1)],[Q = (sqrt(2)-1)*sqrt(sqrt(2)+1)]);
+
+
+/* Bug #3626: "to_poly_solve yields an expression rather than an equation/inequality" */
+
+to_poly_solve([x > 0, x <= 2*y, x <= 2 - 2*y], x);
+%union([0 < x, x < min(2-2*y,2*y), -(2*(y-1)) > 0, 2*y > 0],[x = 2-2*y, 2*(2*y-1) > 0, -(2*(y-1)) > 0],[x = 2*y, 2*y > 0, -(2*(2*y-1)) > 0],[x = 2*y, 2*y > 0, 2*y-1 = 0]);
+
+
 /* clean up */
 (print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 400),true);
 true$

@@ -772,3 +772,12 @@ unknown;
 is (foo > 0);
 unknown;
 
+
+/* Bug #2392: "is (equal (...)) with realpart" */
+
+block([bex : 1/sqrt(sin(x))], is(equal(bex, realpart(bex))));
+unknown;
+
+sign((sqrt(abs(sin(x))) - cos(atan2(0, sin(x))/2)*sqrt(sin(x)))
+     /(sqrt(sin(x))*sqrt(abs(sin(x)))));
+pnz;

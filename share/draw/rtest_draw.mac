@@ -797,3 +797,18 @@ block ([L: flatten (rest (arrayinfo (draw_tests), 2)), linel: 1000],
            for f in L do print (f, "pertains to", string (draw_tests[f]))),
        0);
 0;
+
+
+/* Bug #2902: "The geomap examples from the manual are broken" */
+
+(load("worldmap"), 0);
+0;
+
+execute_test(draw2d(terminal = 'png, geomap([Canada, United_States, Mexico, Cuba])), 0);
+0;
+
+gnuplot_contains_string(sconcat("index ", length(unique(flatten([Canada, United_States, Mexico, Cuba]))) - 1, " t ''"));
+true;
+
+execute_test(draw(terminal = 'png, columns = 2, gr2d(geomap(Africa)), gr2d(geomap([Oceania, China, Japan])), gr2d(geomap([France, Portugal, Spain, Morocco, Western_Sahara]))), 0);
+0;

@@ -128,3 +128,24 @@ apply(ev,[contract(apply(ev,[contract(apply(ev,[det(H),nouns,expand])),nouns])),
 /*ic_convert(f([a],[b])=g([],[b,c])*(B([a],[],c)-C([],[d])*g([a,d],[],c)));
 for a thru dim do (for b thru dim do f[a,b]:sum(ug[b,c]*diff(B[a],ct_coords[c]),c,1,dim)-sum(sum(ug[b,c]*C[d]*diff(lg[a,d],ct_coords[c]),c,1,dim),d,1,dim));*/
 /* TODO: torsion, nonmetricity tensors, connection coeffs */
+
+
+/* Bug #1541: "covdiff yields nonsense result" */
+
+rename(covdiff(v([-i],[]),j));
+v([],[i],j)+ichr2([%1,j],[i])*v([],[%1]);
+
+ratsimp(rename(covdiff(v([-i],[]),j))-rename(covdiff(v([],[i]),j)));
+0;
+
+
+/* Bug #2227: "Odd itensor wedge product behavior" */
+
+[(a([i],[])*X)~a([j],[]), (a([i],[])*X[1])~a([j],[]), (a([i],[])*X[k])~a([j],[])];
+[0,0,0];
+
+[(o([i],[])*s([j],[]))~o([k],[]), (o([j],[])*s([i],[]))~o([k],[])];
+[0,0];
+
+(a([i],[])*X[1])~b([j],[]);
+X[1]*(a([i],[])*b([j],[])-a([j],[])*b([i],[]))/2;

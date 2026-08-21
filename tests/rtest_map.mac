@@ -449,3 +449,24 @@ true;
 
 errcatch (map (f, '(s@x)));
 [];
+
+
+/* Bug #4293: "map with multiple arguments runs into Lisp error when some argument isn't a list" */
+
+errcatch(map(f, a, b));
+[];
+
+errcatch(map(f, [1, 2], a));
+[];
+
+errcatch(map(f, a, 2));
+[];
+
+errcatch(map(f, a, b, c));
+[];
+
+errcatch(maplist(f, a, b));
+[];
+
+map(f, a, b), maperror : false;
+f(a, b);

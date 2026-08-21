@@ -1126,3 +1126,18 @@ radcan (sqrt(-1/(sqrt(-3)+1)));
 
 radcan (sqrt(1/(sqrt(-3)+1))*sqrt(2));
 sqrt(2)/sqrt((sqrt(3)*%i + 1));
+
+
+/* Bug #2967: "rectform / polarform bug for -sqrt(2+1/x)" */
+
+block([e, r], declare(xc, complex),
+ e : -sqrt(2+1/xc),
+ r : create_list(block([domain : d, m1pbranch : b],
+                       subst(xc = -1/11, [e, rectform(e), polarform(e)])),
+                 d, ['real, 'complex], b, [true, false]),
+ remove(xc, complex),
+ r);
+[[-3*%i, -3*%i, -3*%i],
+ [-3*%i, -3*%i, -3*%i],
+ [-3*%i, -3*%i, -3*%i],
+ [-3*%i, -3*%i, -3*%i]];

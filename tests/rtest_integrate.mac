@@ -6617,3 +6617,30 @@ risch((1 + 1/x + 1/x^2)*%e^(-1/x), x);
 
 risch((2 + 2/x^2 + 5/x^3)*%e^(-1/(2*x^2)), x);
 %e^-(1/(2*x^2))*(2*x+5);
+
+
+/* Bug #4542: "some definite integrals involving gamma_incomplete" */
+
+round(1000000 * expand(float(integrate(sin(x)/x, x, -2, inf))));
+3176209;
+
+round(1000000 * expand(float(integrate(sin(x)/x, x, 2, inf))));
+-34617;
+
+
+/* Bug #504: "bogus PV integral [defint(exp(a*x),x,0,inf)]" */
+
+block([r], assume(a < 0), r: defint(exp(a*x),x,0,inf), forget(a < 0), r);
+-1/a;
+
+block([r], assume(a > 0), r: errcatch(defint(exp(a*x),x,0,inf)), forget(a > 0), r);
+[];
+
+error;
+["defint: integral is divergent."];
+
+errcatch(defint(exp(0*x),x,0,inf));
+[];
+
+error;
+["defint: integral is divergent."];

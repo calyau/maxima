@@ -839,3 +839,12 @@ x-sqrt(2);
 block([modulus : 5],
  [ratdisrep(rat(3)^2), ratdisrep(rat(3)*rat(3)), ratdisrep(rat(3)^rat(2))]);
 [-1, -1, -1];
+
+
+/* Bug #2469: "gcfactor requires explicit gaussian integer" */
+
+gcfactor(74*%i-11*(%i+1)^2*(%i+2)*(2*%i+1));
+%i*(1+%i)^3*(2+3*%i)^3;
+
+expand(74*%i-11*(%i+1)^2*(%i+2)*(2*%i+1) - gcfactor(74*%i-11*(%i+1)^2*(%i+2)*(2*%i+1)));
+0;

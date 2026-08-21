@@ -1170,6 +1170,22 @@ true;
 closeto(elliptic_e(1,2b0) - (9.3112921772178507209815461615034b-2*%i+5.9907011736779610371996124614016b-1), 3.1055b-33);
 true;
 
+
+/* Bug #3745: "Quoting either elliptic_f  inhibits simplification" */
+
+'elliptic_f(phi, 0);
+phi;
+
+'elliptic_e(phi, 0);
+phi;
+
+closeto('elliptic_f(1.0, 0.5) - 1.0832167728451687, 1e-15);
+true;
+
+closeto('elliptic_e(1.0, 0.5) - 0.9273298836244401, 1e-15);
+true;
+
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 

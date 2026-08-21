@@ -3990,6 +3990,57 @@ block([scalarmatrixp: all], matrix([2])^^-1);
 1/2;
 
 
+/* Bug #2265: "scalar product with a list" */
+
+block([x, a, b, c], x[1]*[a, b, c]);
+[a*x[1], b*x[1], c*x[1]];
+
+block([x, a, b, c, t], x[1](t)*[a, b, c]);
+[a*x[1](t), b*x[1](t), c*x[1](t)];
+
+
+/* Bug #3034: "display_format_internal doesn't work" */
+
+block([a, b], string([a/b, b^(1/2), b^(-1/2)]));
+"[a/b,sqrt(b),1/sqrt(b)]";
+
+block([a, b, display_format_internal : true], string([a/b, b^(1/2), b^(-1/2)]));
+"[a*b^-1,b^(1/2),b^(-1/2)]";
+
+
+/* Bug #3082: "incorrect simplification of MTIMES expression containing MEXPT" */
+
+block([x], diff(%e^4*gamma_incomplete(-4/7, -x^7), x));
+-7*%e^(x^7+4)/x^5;
+
+block([x], 2*x*%e^x*%e^2);
+2*%e^(x+2)*x;
+
+
+/* Bug #3348: "solve gives wrong solution to linear system" */
+
+block([A, B, C, D, E, F, aa, bb, cc, eqns, sol],
+ eqns : [D+C+cc, cc+bb*B, aa*A+2*A+1234567, aa*D+bb*C, (bb+1)*E, (bb+1)*F],
+ sol : solve(eqns, [A, B, C, D, E, F]),
+ [length(sol), ratsimp(subst(sol[1], A)), factor(subst(sol[1], eqns))]);
+[1, -1234567/(aa+2), [0, 0, 0, 0, 0, 0]];
+
+
+/* Bug #3777: "rat fails on denormalized floats" */
+
+block([ratprint : false], ratdisrep(rat(1.0e-320)) - 2024/2^1074);
+0;
+
+
+/* Bug #3954: "plot3d should end with error message instead of sending wrong data to Gnuplot" */
+
+errcatch(plot3d(x^2-q^2, [x, -2, 2], [y, -2, 2]));
+[];
+
+errcatch(plot2d(x^2-q^2, [x, -2, 2]));
+[];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

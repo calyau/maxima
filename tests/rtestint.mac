@@ -1598,11 +1598,6 @@ integrate (taylor (f(x), x, 0, 1), x, a, b);
 
 /* mailing list 2015-11-08: "un-nerving behavior of numer... yikes!" */
 
-/* disable this test pending resolution of SF bug #3097 !!
-integrate(x*sin(%pi/2*x), x,0,1 ),    numer;
-0.4052847345693511;
- */
-
 integrate(x*sin(1.5*x), x,0,1 ),    numer;
 0.3961729707122222;
 
@@ -2009,6 +2004,11 @@ block([ans],
  -log(2*%e^(-x-14)*sqrt(%e^(2*(x+14)-28)+%e^(x+14)+1)+2*%e^(-x-14)+1)
  +(%e^14*log(2*%e^-14*sqrt(%e^(2*(x+14)-28)+%e^(x+14)+1)+2*%e^(x-14)+1))/2
  +sqrt(%e^(2*(x+14)-28)+%e^(x+14)+1)$
+
+
+integrate(x*sin(%pi/2*x), x,0,1 ), numer;
+0.4052847345693511;
+
 
 (kill(values),0);
 0$

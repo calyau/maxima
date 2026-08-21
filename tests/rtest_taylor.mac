@@ -861,6 +861,53 @@ block([t],
 [[y,0,2],[x,0,9]];
 
 
+/* Bug #585: "taylor(taylor(exp(-x^2)...)) errors" */
+
+block([r],
+ r : taylor(taylor(exp(-x^2),x,inf,2),x,inf,2),
+ [taylorinfo(r), ratdisrep(r)]);
+[[[%e^-x^2, zeroa, 2], [x, inf, 2]], %e^-x^2];
+
+ratdisrep(taylor(taylor(exp(-x^2)/sqrt(%pi),x,inf,2),x,inf,2));
+%e^-x^2/sqrt(%pi);
+
+
+/* Bug #1152: "inverse of matrix with taylor-exprs wrong" */
+
+block([m, mi],
+ m : matrix([1,taylor(x,x,0,1)],[taylor(y,y,0,1),1]),
+ mi : m^^-1,
+ [ratdisrep(mi), ratsimp(m . mi), ratsimp(mi . m)]);
+[matrix([x*y+1,-x],[-y,x*y+1]), matrix([1,0],[0,1]), matrix([1,0],[0,1])];
+
+block([ratmx : true, m, mi],
+ m : matrix([1,taylor(x,x,0,1)],[taylor(y,y,0,1),1]),
+ mi : m^^-1,
+ ratsimp(ratdisrep(mi) - matrix([-1/(x*y-1),x/(x*y-1)],[y/(x*y-1),-1/(x*y-1)])));
+matrix([0,0],[0,0]);
+
+
+/* Bug #1715: "Taylor of double diff error" */
+
+block([r],
+ r : taylor('diff(f(x,y),x,1,y,1), x,0,1),
+ [taylorinfo(r), ratdisrep(r) - ('at('diff(f(x,y),x,1,y,1),x = 0)+('at('diff(f(x,y),x,2,y,1),x = 0))*x)]);
+[[[x,0,1]], 0];
+
+ratsimp(ratdisrep(taylor('diff(exp(x)*sin(y)+x^3*y^2,x,1,y,1), x,0,1)) - (x+1)*cos(y));
+0;
+
+
+/* Bug #2860: "taylor causes stack overflow" */
+
+errcatch(taylor(x^3*(cos(x)*abs(sin(x))/sin(x)-2*cos(x)*sin(x)/abs(sin(x)))/6,x,0,1));
+[];
+
+ratsimp(ratdisrep(taylor(x^3*(cos(x)*abs(sin(x))/sin(x)-2*cos(x)*sin(x)/abs(sin(x)))/6,x,1,1))
+        - (-cos(1)/6-((3*cos(1)-sin(1))*(x-1))/6));
+0;
+
+
 /* clean up & checks */
 (remvalue(m, mi, ts, old, qq, foo),0);
 0$

@@ -2215,6 +2215,61 @@ context;
 initial;
 
 
+/* Bug #3676: "asksign(x*cos(y) - x) --> incorrect result, without assume(x > 0)" */
+
+[asksign(x*cos(y) - x), sign(x)], ask_hide_prompt; p;
+[pos, pnz];
+
+[asksign(x*(cos(y) - 1)), sign(x)], ask_hide_prompt; n;
+[neg, pnz];
+
+[asksign(x*sin(y) - x), sign(x)], ask_hide_prompt; p;
+[pos, pnz];
+
+
+/* Bug #3677: "asksign(x*cos(y) - x) --> "Is 1 zero or nonzero?" with assume(x > 0)" */
+
+block([r], assume(x > 0), r: asksign(x*cos(y) - x), forget(x > 0), r), ask_hide_prompt; neg;
+neg;
+
+block([r], assume(x > 0), r: asksign(x*cos(y) - x), forget(x > 0), r), ask_hide_prompt; zero;
+zero;
+
+block([r], assume(x2 > 0), r: asksign(4*x2^2*cos(y)^2 - 4*x2^2), forget(x2 > 0), r), ask_hide_prompt; neg;
+neg;
+
+
+/* Bug #3999: "asksign(cos^2 - 1)" */
+
+asksign(cos(phi) - 1), ask_hide_prompt; n;
+neg;
+
+asksign(cos(phi)^2 - 1), ask_hide_prompt; n;
+neg;
+
+[asksign((cos(x) - 1)*phi^3), sign(phi)], ask_hide_prompt; n;
+[neg, pnz];
+
+block([r],
+ assume(4*cos(phi)^2 - 4 < 0, sin(phi) > 0),
+ r: integrate(1/(1 - cos(phi)^2*sin(x)^2), x, 0, %pi/2),
+ forget(4*cos(phi)^2 - 4 < 0, sin(phi) > 0),
+ r);
+%pi/(2*sin(phi));
+
+
+/* Bug #2213: "sign of an array" */
+
+errcatch(sign(array(aaa, 3))), use_fast_arrays: true;
+[];
+
+(kill(aaa), sign(array(aaa, 3)));
+pnz;
+
+(kill(aaa), 0);
+0;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

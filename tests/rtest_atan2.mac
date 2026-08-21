@@ -281,6 +281,23 @@ atan2 (1.0b0, -1.0b0);
 atan2 (0.0b0, -1.0b0);
 3.141592653589793b0;
 
+
+/* Bug #2478: "function atan2 has bug" */
+
+map(atan2, -[x, f(x), sin(x), cos(x)], [y, y, y, y]);
+[atan2(-x, y), atan2(-f(x), y), atan2(-sin(x), y), atan2(-cos(x), y)];
+
+map(atan2, -[abs(x), x^2, sqrt(x), exp(x)], [y, y, y, y]);
+[atan2(-abs(x), y), atan2(-x^2, y), atan2(-sqrt(x), y), -atan2(%e^x, y)];
+
+block([ans],
+ assume(x > 0),
+ ans : map(atan2, -[abs(x), x^2, sqrt(x), exp(x)], [y, y, y, y]),
+ forget(x > 0),
+ ans);
+[-atan2(x, y), -atan2(x^2, y), -atan2(sqrt(x), y), -atan2(%e^x, y)];
+
+
 (kill(values),0);
 0$ 
 

@@ -122,3 +122,45 @@ makelist(block([common_factor],
 is(equal(gcd(expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^3*(a^2*s^2+r^2-2*m)), expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^2)),
          expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^2)));
 true$
+
+
+/* Bug #3335: "PTPTQUOTIENT: Polynomial quotient is not exact" */
+
+block([expr, sub, gcd: spmod],
+      expr: ((2*(GM_N+GMBS_N+GDS_N)+GDS_E)*GM_P-((C_COMP*GDS_N*GM_F-(2*GDS_P+GDS_N))*GM_N+C_COMP*GDS_N*(GMBS_N+GDS_N)*GM_F)+(2*GDS_P+GDS_N)*GMBS_N+(2*GDS_N+GDS_E)*GDS_P+GDS_N*(GDS_N+GDS_E))/(GM_F*((2*(GM_N+GMBS_N+GDS_N)+GDS_E)*GM_P+(2*GDS_P+GDS_N)*(GM_N+GMBS_N)+(2*GDS_N+GDS_E)*GDS_P+GDS_N*(GDS_N+GDS_E)))+(GDS_F*((2*(C_COMP*(GDS_P+GDS_N)+1)*(GM_N+GMBS_N)+C_COMP*(2*GDS_N+GDS_E)*GDS_P+GDS_N*(C_COMP*(2*GDS_N+GDS_E)+2)+GDS_E)*GM_P+(2*GDS_P*(C_COMP*(GDS_P+GDS_N)+1)+GDS_N)*(GM_N+GMBS_N)+GDS_P*(C_COMP*(2*GDS_N+GDS_E)*GDS_P+2*GDS_N*(C_COMP*(GDS_N+GDS_E)+1)+GDS_E)+GDS_N*((C_COMP*GDS_E+1)*GDS_N+GDS_E))*(GDS_F*(2*(GM_N+GMBS_N+GDS_N)+GDS_E)*GM_P+(GDS_N*GM_F+GDS_F*(2*GDS_P+GDS_N))*GM_N+GDS_N*(GMBS_N+GDS_N+GDS_E)*GM_F+GDS_F*((2*GDS_P+GDS_N)*GMBS_N+(2*GDS_N+GDS_E)*GDS_P+GDS_N*(GDS_N+GDS_E))))/((GDS_P+GDS_N)*(2*(GM_N+GMBS_N+GDS_N)+GDS_E)*(GM_P+GDS_P)*(GDS_F*GM_F*((2*(GM_N+GMBS_N+GDS_N)+GDS_E)*GM_P+(2*GDS_P+GDS_N)*(GM_N+GMBS_N)+(2*GDS_N+GDS_E)*GDS_P+GDS_N*(GDS_N+GDS_E)))),
+      sub: [GM_N=3,GMBS_N=5,GDS_N=7,GDS_E=11,GM_P=13,GDS_P=17,C_COMP=19,GM_F=23,GDS_F=29],
+      map(lambda([e], ratsimp(subst(sub,e))), [expr, rat(expr), ratsimp(expr), fullratsimp(expr)]));
+[394913/14760,394913/14760,394913/14760,394913/14760];
+
+
+/* Bug #3832: "Bug in spmod gcd algorithm for polynomials" */
+
+block([p1, p2, g, gcd: spmod],
+ p1: sin(theta)^4*(cos(theta)^4*(4*a^6*m^2*r^2-8*a^6*m^3+4*a^8*m^2)
+                  +cos(theta)^2*(8*a^4*m^2*r^4+r^2*(-16*a^4*m^3+8*a^6*m^2))
+                  +4*a^2*m^2*r^6+r^4*(-8*a^2*m^3+4*a^4*m^2))
+    +cos(theta)^10*(a^8*r^4+r^2*(-2*a^8*m+a^10))
+    +cos(theta)^8*(4*a^6*r^6+r^4*(-10*a^6*m+4*a^8)+r^2*(4*a^6*m^2-2*a^8*m))
+    +cos(theta)^6*(6*a^4*r^8+r^6*(-18*a^4*m+6*a^6)+r^4*(12*a^4*m^2-6*a^6*m))
+    +cos(theta)^4*(4*a^2*r^10+r^8*(-14*a^2*m+4*a^4)+r^6*(12*a^2*m^2-6*a^4*m))
+    +cos(theta)^2*(r^12+r^10*(-4*m+a^2)+r^8*(4*m^2-2*a^2*m)),
+ p2: sin(theta)^8*(16*a^8*m^4*cos(theta)^4+32*a^6*m^4*r^2*cos(theta)^2+16*a^4*m^4*r^4)
+    +sin(theta)^4*(8*a^10*m^2*r^2*cos(theta)^10+cos(theta)^8*(32*a^8*m^2*r^4-16*a^8*m^3*r^2)
+                   +cos(theta)^6*(48*a^6*m^2*r^6-48*a^6*m^3*r^4)
+                   +cos(theta)^4*(32*a^4*m^2*r^8-48*a^4*m^3*r^6)
+                   +cos(theta)^2*(8*a^2*m^2*r^10-16*a^2*m^3*r^8))
+    +a^12*r^4*cos(theta)^16+cos(theta)^14*(6*a^10*r^6-4*a^10*m*r^4)
+    +cos(theta)^12*(15*a^8*r^8-20*a^8*m*r^6+4*a^8*m^2*r^4)
+    +cos(theta)^10*(20*a^6*r^10-40*a^6*m*r^8+16*a^6*m^2*r^6)
+    +cos(theta)^8*(15*a^4*r^12-40*a^4*m*r^10+24*a^4*m^2*r^8)
+    +cos(theta)^6*(6*a^2*r^14-20*a^2*m*r^12+16*a^2*m^2*r^10)
+    +cos(theta)^4*(r^16-4*m*r^14+4*m^2*r^12),
+ g: gcd(p1,p2),
+ [ratsimp(p1/g), ratexpand(g-block([gcd: subres], gcd(p1,p2)))]);
+[r^2-2*m+a^2, 0];
+
+block([e, s, gcd: spmod, fpprec: 40],
+ e: 1/(16*(a^8*m^4*cos(theta)^4+2*a^6*m^4*r^2*cos(theta)^2+a^4*m^4*r^4)*sin(theta)^8+8*(a^10*m^2*r^2*cos(theta)^10+2*(2*a^8*m^2*r^4-a^8*m^3*r^2)*cos(theta)^8+6*(a^6*m^2*r^6-a^6*m^3*r^4)*cos(theta)^6+2*(2*a^4*m^2*r^8-3*a^4*m^3*r^6)*cos(theta)^4+(a^2*m^2*r^10-2*a^2*m^3*r^8)*cos(theta)^2)*sin(theta)^4+a^12*r^4*cos(theta)^16+2*(3*a^10*r^6-2*a^10*m*r^4)*cos(theta)^14+(15*a^8*r^8-20*a^8*m*r^6+4*a^8*m^2*r^4)*cos(theta)^12+4*(5*a^6*r^10-10*a^6*m*r^8+4*a^6*m^2*r^6)*cos(theta)^10+(15*a^4*r^12-40*a^4*m*r^10+24*a^4*m^2*r^8)*cos(theta)^8+2*(3*a^2*r^14-10*a^2*m*r^12+8*a^2*m^2*r^10)*cos(theta)^6+(r^16-4*m*r^14+4*m^2*r^12)*cos(theta)^4)+1/(4*((a^6*m^2*r^2-2*a^6*m^3+a^8*m^2)*cos(theta)^4+2*(a^4*m^2*r^4+(a^6*m^2-2*a^4*m^3)*r^2)*cos(theta)^2+a^2*m^2*r^6+(a^4*m^2-2*a^2*m^3)*r^4)*sin(theta)^4+(a^8*r^4+(a^10-2*a^8*m)*r^2)*cos(theta)^10+2*(2*a^6*r^6+(2*a^8-5*a^6*m)*r^4-(a^8*m-2*a^6*m^2)*r^2)*cos(theta)^8+6*(a^4*r^8+(a^6-3*a^4*m)*r^6-(a^6*m-2*a^4*m^2)*r^4)*cos(theta)^6+2*(2*a^2*r^10+(2*a^4-7*a^2*m)*r^8-3*(a^4*m-2*a^2*m^2)*r^6)*cos(theta)^4+(r^12+(a^2-4*m)*r^10-2*(a^2*m-2*m^2)*r^8)*cos(theta)^2),
+ s: trigsimp(trigexpand(e)),
+ is(abs(bfloat(subst([a=7/10,m=13/10,r=21/10,theta=6/10], s-e))) < 10^-30));
+true;

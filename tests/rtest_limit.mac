@@ -1115,3 +1115,192 @@ infinity;
 
 limit(atan2(0, cos(x)), x, %pi);
 %pi;
+
+
+/* Bug #3352: "limit fails" */
+
+block([f, L], assume(y > 0, z > 0),
+ f : (-x^2*atan((x*z)/(y*sqrt(z^2+y^2+x^2)+y^2+x^2))
+      -y^2*atan((y*z)/(x*sqrt(z^2+y^2+x^2)+y^2+x^2))
+      +2*x*y*log(sqrt(z^2+y^2+x^2)+z)+2*x*z*log(sqrt(z^2+y^2+x^2)+y)
+      +y*(2*z*log(sqrt(z^2+y^2+x^2)+x)-3*z)
+      -2*x^2*atan((y*z)/(x*sqrt(z^2+y^2+x^2)))
+      -2*y^2*atan((x*z)/(y*sqrt(z^2+y^2+x^2)))
+      +z^2*(atan(y/z)-atan((x*y)/(z*sqrt(z^2+y^2+x^2))))
+      +2*y^2*atan(z/y)+3*x^2*atan(z/x)-2*x*z)/2,
+ L : limit(f, x, 0),
+ forget(y > 0, z > 0),
+ [ratsimp(L - (y*z*log(z^2+y^2)+y^2*atan(z/y)+z^2*atan(y/z)-3*y*z)/2),
+  is(abs(float(ev(L, y = 1, z = 3, numer)) - 1.0262780204750857) < 1e-12)]);
+[0, true];
+
+block([f, L], assume(x > 0, z > 0),
+ f : (-x^2*atan((x*z)/(y*sqrt(z^2+y^2+x^2)+y^2+x^2))
+      -y^2*atan((y*z)/(x*sqrt(z^2+y^2+x^2)+y^2+x^2))
+      +2*x*y*log(sqrt(z^2+y^2+x^2)+z)+2*x*z*log(sqrt(z^2+y^2+x^2)+y)
+      +y*(2*z*log(sqrt(z^2+y^2+x^2)+x)-3*z)
+      -2*x^2*atan((y*z)/(x*sqrt(z^2+y^2+x^2)))
+      -2*y^2*atan((x*z)/(y*sqrt(z^2+y^2+x^2)))
+      +z^2*(atan(y/z)-atan((x*y)/(z*sqrt(z^2+y^2+x^2))))
+      +2*y^2*atan(z/y)+3*x^2*atan(z/x)-2*x*z)/2,
+ L : limit(f, y, 0),
+ forget(x > 0, z > 0),
+ [ratsimp(L - (x*z*log(z^2+x^2)/2+x^2*atan(z/x)-x*z)),
+  is(abs(float(ev(L, x = 1, z = 3, numer)) - 1.7029234118893233) < 1e-12)]);
+[0, true];
+
+
+/* Bug #3051: "limit(2/5*((3/4)^m - 1)*(a - 10) + 1/5*(3*(3/4)^m + 2)*a, m, inf) with domain: complex" */
+
+block([domain : 'complex], limit((c+3)*(3/4)^m, m, inf));
+0;
+
+block([domain : 'real], limit((c+3)*(3/4)^m, m, inf));
+0;
+
+
+/* Bug #3053: "limit with branch cuts" */
+
+block([domain : 'real], limit(sqrt(-1 + %i*x), x, 0));
+ind;
+
+block([domain : 'real], limit(sqrt(-1 - %i*x), x, 0));
+ind;
+
+block([domain : 'complex], limit(sqrt(-1 + %i*x), x, 0));
+ind;
+
+block([domain : 'complex], limit(sqrt(-1 - %i*x), x, 0));
+ind;
+
+limit(sqrt(-1 + %i*x), x, 0, plus);
+%i;
+
+limit(sqrt(-1 - %i*x), x, 0, minus);
+%i;
+
+
+/* Bug #3067: "Simple limit fails: x^a*(1-x)^b, x->0 (a < -1)" */
+
+block([ans], assume(a < -1), ans : limit(x^a*(1-x),x,0), forget(a < -1), ans);
+infinity;
+
+block([ans], assume(a < -1), ans : limit(x^a*(1-x)^b,x,0), forget(a < -1), ans);
+infinity;
+
+block([ans], assume(a < -1), ans : limit(x^a*(1-x),x,0,plus), forget(a < -1), ans);
+inf;
+
+
+/* Bug #3345: "bug in limit" */
+
+block([ans], assume(y > 0), ans : limit(%e^(-sqrt(2*s-1)*atan(y)), s, inf), forget(y > 0), ans);
+0;
+
+block([ans], assume(y < 0), ans : limit(%e^(-sqrt(2*s-1)*atan(y)), s, inf), forget(y < 0), ans);
+inf;
+
+
+/* Bug #3794: "assuming zerob < 0 & zeroa > 0 gives bugs for some limits" */
+
+assume(zeroa > 0, zerob < 0);
+[redundant, redundant];
+
+limit(atan2(x^2-2,x^3-2*x),x,sqrt(2),minus);
+atan(1/sqrt(2))-%pi;
+
+gruntz(atan2(x^2-2,x^3-2*x),x,sqrt(2),minus);
+atan(1/sqrt(2))-%pi;
+
+
+/* Bug #3816: "limit of difference of logs" */
+
+rectform(limit((%i*log(x^2+1))/6-(%i*log(x-2*%i))/3, x, minf));
+-%pi/3;
+
+limit(rectform((%i*log(x^2+1))/6-(%i*log(x-2*%i))/3), x, minf);
+-%pi/3;
+
+
+/* Bug #3846: "limit gives quotient by zero error" */
+
+limit(gamma(1/x)/gamma(x),x,0,plus);
+inf;
+
+limit(1/(gamma(1/x)/gamma(x)),x,0,plus);
+0;
+
+
+/* Bug #3861: "function simplimsubst problems" */
+
+limit(floor(x),x,5/2);
+2;
+
+limit(ceiling(x),x,5/2);
+3;
+
+limit(floor(x),x,2);
+ind;
+
+limit(floor(x),x,2,minus);
+1;
+
+limit(floor(x),x,2,plus);
+2;
+
+
+/* Bug #4087: "limit((%i+1)^a/(2^(a/2)),a,inf) => 0 (wrong)" */
+
+cabs((%i+1)^a*2^(-a/2));
+1;
+
+rectform((%i+1)^a*2^(-a/2));
+%i*sin(%pi*a/4)+cos(%pi*a/4);
+
+tlimit((%i+1)^a*2^(-a/2),a,inf);
+ind;
+
+limit((%i+1)^a*2^(-a),a,inf);
+0;
+
+limit((%i+1)^a,a,inf);
+infinity;
+
+
+/* Bug #4095: "limit involving compositions of factorials" */
+
+limit((1/2+x!)!/(x!)!,x,inf);
+inf;
+
+limit(((1/2+x!)!/(x!)!)/sqrt(x!),x,inf);
+1;
+
+limit((x!)!/(1/2+x!)!,x,inf);
+0;
+
+
+/* Bug #4185: "limit of the form ind/ind" */
+
+limit((5+cos(x))/(7+cos(x)),x,minf);
+ind;
+
+tlimit((5+cos(x))/(7+cos(x)),x,inf);
+ind;
+
+limit((5+cos(x))/(1+cos(x)),x,minf);
+und;
+
+
+/* Bug #4416: "limit of Newton quotient involving asin" */
+
+tlimit((asin(x-h)-asin(x))/h,h,0);
+sqrt(1-x^2)/(x^2-1);
+
+ratsimp(tlimit((asin(x-h)-asin(x))/h,h,0)+1/sqrt(1-x^2));
+0;
+
+limit((asin(x-h)-asin(x))/h,h,0);
+sqrt(1-x^2)/(x^2-1);
+
+subst([h=0,x=0], taylor(asin(x+h)-asin(x),h,0,1));
+0;
