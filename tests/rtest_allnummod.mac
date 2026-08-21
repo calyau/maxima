@@ -1802,6 +1802,19 @@ max(b,sqrt(1-(2-min(c,sqrt(x))^2)^2))$
 block([Z : max(sqrt(min(c, sqrt(x))), b)], not(mapatom(Z)) and op(Z)='max and args(Z) = [b,sqrt(min(c,sqrt(x)))]);
 true$
 
+
+/* Bug #4978: "mod(x, 0.0) raises a Lisp error while mod(x, 0) returns x" */
+
+mod(5.0, 0.0);
+5.0;
+
+mod(5, 0.0);
+5;
+
+mod(5, 0.0b0);
+5;
+
+
 /*Let's make sure that everything is tidy*/
 values;
 []$

@@ -358,7 +358,7 @@
   (twoargcheck e)
   (let ((x (maybe-simplifya (specrepcheck (cadr e)) z))
 	(y (maybe-simplifya (specrepcheck (caddr e)) z)))
-    (cond ((or (equal 0 y) (equal 0 x)) x)
+    (cond ((or (zerop1 y) (zerop1 x)) x)
 	  ((equal 1 y) (sub x (ftake* '$floor x)))
 	  ((and ($constantp x) ($constantp y))
 	   (sub x (mul y (ftake* '$floor (div x y)))))
