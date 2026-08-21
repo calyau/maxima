@@ -3447,3 +3447,9 @@
   (cond ((alike1 expr '((mtimes) -1 $inf)) '$minf)
         ((alike1 expr '((mtimes) -1 $minf)) '$inf)
         (t expr)))
+
+(defun real-if-real (z)
+  "Drop an imaginary part of the CL complex Z that is exactly zero."
+  (if (and (complexp z) (zerop (imagpart z)))
+    (realpart z)
+    z))

@@ -1444,12 +1444,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-si (z)
-  (let ((z (coerce z '(complex flonum))))
+  (let* ((z (coerce z '(complex flonum)))
+         (-iz (real-if-real (* (complex 0.0 -1.0) z)))
+         (+iz (real-if-real (* (complex 0.0 1.0) z))))
     (* (complex 0 0.5)
-       (+ (expintegral-e 1 (* (complex 0 -1) z))
-	  (- (expintegral-e 1 (* (complex 0 1) z)))
-	  (log (* (complex 0 -1) z))
-	  (- (log (* (complex 0 1) z)))))))
+       (+ (expintegral-e 1 -iz)
+	  (- (expintegral-e 1 +iz))
+	  (log -iz)
+	  (- (log +iz))))))
 
 (defun bfloat-expintegral-si (z)
   (let ((z*%i (cmul '$%i z))
@@ -1788,12 +1790,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-ci (z)
-  (let ((z (coerce z '(complex flonum))))
+  (let* ((z (coerce z '(complex flonum)))
+         (-iz (real-if-real (* (complex 0 -1) z)))
+         (+iz (real-if-real (* (complex 0 1) z))))
     (+ (* -0.5
-	  (+ (expintegral-e 1 (* (complex 0 -1) z))
-	     (expintegral-e 1 (* (complex 0 1) z))
-	     (log (* (complex 0 -1) z))
-	     (log (* (complex 0 1) z))))
+	  (+ (expintegral-e 1 -iz)
+	     (expintegral-e 1 +iz)
+	     (log -iz)
+	     (log +iz)))
        (log z))))
 
 (defun bfloat-expintegral-ci (z)
@@ -1971,9 +1975,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-chi (z)
- (let ((z (if (and (complexp z) (zerop (imagpart z)))
-            (realpart z)
-            z)))
+ (let ((z (real-if-real z)))
   (* 
     -0.5
     (+

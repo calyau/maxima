@@ -3288,6 +3288,18 @@ is(abs(expintegral_chi(-2.0) - expintegral_chi(2.0) - %i*%pi) < 1e-14);
 true;
 
 
+/* Bug #4928: "expintegral_si and expintegral_ci are wrong on the imaginary axis" */
+
+is(abs(expintegral_si(2.0 * %i) + expintegral_si(-2.0 * %i)) < 1e-14);
+true;
+
+is(abs(expintegral_si(-2.0 * %i) - block([fpprec : 25], bfloat(expintegral_si(-2 * %i)))) < 1e-14);
+true;
+
+is(abs(expintegral_ci(-2.0 * %i) - block([fpprec : 25], bfloat(expintegral_ci(-2 * %i)))) < 1e-14);
+true;
+
+
 (reset(expintrep), expintrep);
 false;
      
