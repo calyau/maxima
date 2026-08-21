@@ -7,6 +7,7 @@ Bug fixes for numbered bugs:
 * \#4933 asech is treated as an even function
 * \#4967 cdf_lognormal and pdf_lognormal error at x = 0
 * \#4976 integer_partitions(n,0) claims the empty list is a partition of n
+* \#4977 M^^(-n) fails for every 1x1 matrix
 * \#4978 mod(x, 0.0) raises a Lisp error while mod(x, 0) returns x
 * \#4992 quad_* can leave temporary variable assignments in place
 

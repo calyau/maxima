@@ -530,7 +530,7 @@
 	    (return (list '(mncexpt simp) mat x)))
 	   ((= x 1) (return mat))
 	   ((minusp x)
-	    (setq x (- x) mat ($invert mat))
+	    (setq x (- x) mat (let ($scalarmatrixp) ($invert mat)))
 	    (cond ($detout
 		   (return (let ((*inv* '$detout))
 			     (mul2* (power* (cadr mat) x)

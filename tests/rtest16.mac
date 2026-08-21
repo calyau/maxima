@@ -3978,6 +3978,18 @@ block([g, ex, y],
 false;
 
 
+/* Bug #4977: "M^^(-n) fails for every 1x1 matrix" */
+
+matrix([2])^^-1;
+matrix([1/2]);
+
+matrix([2])^^-2;
+matrix([1/4]);
+
+block([scalarmatrixp: all], matrix([2])^^-1);
+1/2;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
