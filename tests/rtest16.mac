@@ -4041,6 +4041,12 @@ errcatch(plot2d(x^2-q^2, [x, -2, 2]));
 [];
 
 
+/* Bug #5169: "GREAT says a[1] > a[1]" */
+
+[?great(a[1], a[1]), ?great(a(1), a(1)), ?great(a[1, 2], a[1, 2]), ?great(a[1][2], a[1][2])];
+[false, false, false, false]$
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

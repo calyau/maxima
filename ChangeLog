@@ -10,6 +10,7 @@ Bug fixes for numbered bugs:
 * \#4977 M^^(-n) fails for every 1x1 matrix
 * \#4978 mod(x, 0.0) raises a Lisp error while mod(x, 0) returns x
 * \#4992 quad_* can leave temporary variable assignments in place
+* \#5169 GREAT says a[1] > a[1]
 
 Bug fixes for unnumbered bugs:
 ------------------------------
