@@ -4063,6 +4063,33 @@ map(lambda([e], ordergreatp(1.0b0, e)),
 [true, true, true, true, true, false, false, false, false, false, false, false, false];
 
 
+/* Bug #5051: "4^n/2/2 and 4^n/4 are different expressions" */
+
+4^n/2/2;
+4^(n-1);
+
+(1/2)*4^n*(1/2);
+4^(n-1);
+
+4^n/2/2 - 4^n/2/2;
+0;
+
+4^n/2/2 - 4^n/4;
+0;
+
+2*4^n*2;
+4^(n+1);
+
+4^n/sqrt(2)/sqrt(8);
+4^(n-1);
+
+block([e : 4^n], for i thru 40 do e : e/2, e);
+4^(n-20);
+
+4^n/2/2.0;
+0.25*4^n;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

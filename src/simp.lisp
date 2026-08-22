@@ -2403,12 +2403,13 @@
   (let ((s ($csign e)))
     (and (member s '($pos $neg $zero $pn $pnz $pz $nz)) t)))
 
-;; Basically computes log of m base b.  Except if m is not a power
-;; of b, we return nil.  m is a positive integer and base an integer
-;; not equal to +/-1.
 (defun exponent-of (m base)
-  ;; Just compute base^k until base^k >= m.  Then check if they're equal.
-  ;; If so, we have the exponent.  Otherwise, give up.
+  "Returns the multiplicity of BASE in M, that is the largest k with BASE^k
+  dividing M, or NIL if there is none. M is a positive integer, and BASE is an
+  integer not equal to 0 or +/-1. M need not be a power of BASE:
+  (EXPONENT-OF 8 4) is 1, and callers divide the extracted BASE^k back out of M
+  themselves."
+  ;; Divide by BASE for as long as it goes evenly.
   (let ((expo 0))
     (loop
       (multiple-value-bind (q r)
@@ -2461,7 +2462,19 @@
                           (cond ((mnump (setq x (if (mnump (car x))
                                                     (exptrl (car x) w)
                                                     (power (car x) w))))
-                                 (return (rplaca y (timesk (car y) x))))
+                                 ;; Do not return the number directly. Rescan it
+                                 ;; like any other result, so that a rational
+                                 ;; such as 2^(-1/2)*2^(-3/2) = 1/4 still meets
+                                 ;; the powers left in the list. Zero is the
+                                 ;; exception: EXPONENT-OF does not terminate
+                                 ;; for M = 0.
+                                 (when (zerop1 x)
+                                   (return (rplaca y (timesk (car y) x))))
+                                 (setq temp x
+                                       x (list x 1)
+                                       w 1
+                                       fm y)
+                                 (go start))
                                 ((mtimesp x)
                                  (go times))
                                 (t
@@ -2632,7 +2645,23 @@
   less
      (cond ((mnump temp)
            ;; Multiply a number into the list of products.
-           (return (rplaca y (timesk (car y) temp))))
+           (setq temp (timesk (car y) temp))
+           (cond ((and (not (onep1 (car y)))
+                       (or (ratnump temp)
+                           (and (integerp temp)
+                                (not (onep temp))
+                                (not (zerop temp)))))
+                  ;; The new coefficient can combine with a power of an integer
+                  ;; base, even though neither factor did, e.g. in 1/2*(1/2*4^n)
+                  ;; neither 1/2 is a power of 4, but 1/4 = 1/2*1/2 is.
+                  ;; Rescan the list of products with it.
+                  (rplaca y 1)
+                  (setq x (list temp 1)
+                        w 1
+                        fm y)
+                  (go start))
+                 (t
+                  (return (rplaca y temp)))))
            ((and (eq (car x) '$%i)
                  (fixnump w))
             (go %i))
