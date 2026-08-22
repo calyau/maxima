@@ -709,7 +709,7 @@
 
 (defmfun $zn_carmichael_lambda (m)
   (cond 
-    ((integerp m)
+    ((and (integerp m) (> m 0))
       (if (= m 1) 1 (zn-characteristic-factors m t)) )
     (t (gf-merror (intl:gettext 
          "`zn_carmichael_lambda': Argument must be a positive integer." )))))
