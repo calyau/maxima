@@ -848,3 +848,9 @@ gcfactor(74*%i-11*(%i+1)^2*(%i+2)*(2*%i+1));
 
 expand(74*%i-11*(%i+1)^2*(%i+2)*(2*%i+1) - gcfactor(74*%i-11*(%i+1)^2*(%i+2)*(2*%i+1)));
 0;
+
+
+/* Bug #4975: "zn_order returns a negative order for a negative modulus" */
+
+[zn_order(2, -7), zn_order(2, 0)];
+[false, false];

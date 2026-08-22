@@ -8,6 +8,7 @@ Bug fixes for numbered bugs:
 * \#4933 asech is treated as an even function
 * \#4965 recttopolar and polartorect are silent no-ops on lists
 * \#4967 cdf_lognormal and pdf_lognormal error at x = 0
+* \#4975 zn_order returns a negative order for a negative modulus
 * \#4976 integer_partitions(n,0) claims the empty list is a partition of n
 * \#4977 M^^(-n) fails for every 1x1 matrix
 * \#4978 mod(x, 0.0) raises a Lisp error while mod(x, 0) returns x

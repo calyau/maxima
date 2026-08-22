@@ -321,6 +321,8 @@
       (if fs-phi 
         (list '($zn_order) x n fs-phi)
         (list '($zn_order) x n) )))
+  (when (< n 1)
+    (return-from $zn_order nil))
   (setq x (mod x n))
   (cond 
     ((= 0 x) nil)
