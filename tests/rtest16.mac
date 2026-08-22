@@ -4116,6 +4116,74 @@ kill(g_c, g_s, g_m, g_cs, g_cm, g_sm, g_csm, g_L);
 done;
 
 
+/* Bug #5048: "e - e doesn't simplify to 0: like-base power terms are not merged when another term sorts between them" */
+
+-2*3^(3/2) + (-1)^(1/4)*3^(1/4) - 7/3^(3/2);
+(-1)^(1/4)*3^(1/4) - 61/3^(3/2);
+
+-2*3^(3/2) - 7/3^(3/2) + (-1)^(1/4)*3^(1/4);
+(-1)^(1/4)*3^(1/4) - 61/3^(3/2);
+
+(-1)^(1/4)*3^(1/4) - 7/3^(3/2) - 2*3^(3/2);
+(-1)^(1/4)*3^(1/4) - 61/3^(3/2);
+
+block([e : -2*3^(3/2) + (-1)^(1/4)*3^(1/4) - 7/3^(3/2)], e - e);
+0;
+
+/* The merge partner can sit in front of the term that gets added. */
+
+3^(-5/3) + (4*3^(-1/3) - 3^(13/3));
+4/3^(1/3) - 728/3^(5/3);
+
+sqrt(2) + (zz*2^(3/4) + 2^(3/2));
+zz*2^(3/4) + 3*sqrt(2);
+
+(sqrt(2) + sqrt(3)) + (2^(3/4) + 2^(3/2));
+sqrt(3) + 2^(3/4) + 3*sqrt(2);
+
+/* A nested mplus expression, which PLS still has to add into the sum again,
+   must not stop the scan, and the merge must not be preempted by plain
+   coefficient addition: The two split v*a^n+w*a^m in a different way. */
+
+block([e : (-1)^(1/4)/7^(9/4) - 4.5b0/((-1)^(3/4)*3^(7/4))], e - e);
+0.0b0;
+
+2^(3/2) + 1.75b0*2^(3/2);
+5.5b0*sqrt(2);
+
+1.75b0*2^(3/2) + 2^(3/2);
+5.5b0*sqrt(2);
+
+apply("+", [-4/(3*6^(5/3)), -8/(3*6^(5/3)), -6^(4/3), 6^(4/3), 3*7^(7/3)/2]);
+(3*7^(7/3))/2 - 2/(3*6^(2/3));
+
+apply("+", [3*7^(7/3)/2, 6^(4/3), -6^(4/3), -8/(3*6^(5/3)), -4/(3*6^(5/3))]);
+(3*7^(7/3))/2 - 2/(3*6^(2/3));
+
+/* The merge must not be attempted when its arithmetic runs out of range. */
+
+1.0*2^(1/2) + 2^(2049/2);
+2^(2049/2) + 1.0*sqrt(2);
+
+2^(2049/2) + 1.0*2^(1/2);
+2^(2049/2) + 1.0*sqrt(2);
+
+
+/* Bug #5049: "a + b and b + a give different results when the like-base term's coefficient is a rational or a float" */
+
+(1/3)*2^(1/4) + 5*2^(5/4);
+(31*2^(1/4))/3;
+
+5*2^(5/4) + (1/3)*2^(1/4);
+(31*2^(1/4))/3;
+
+1.5*2^(1/4) + 5*2^(5/4);
+11.5*2^(1/4);
+
+5*2^(5/4) + 1.5*2^(1/4);
+11.5*2^(1/4);
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

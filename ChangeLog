@@ -13,6 +13,8 @@ Bug fixes for numbered bugs:
 * \#4992 quad_* can leave temporary variable assignments in place
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
 * \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
+* \#5048 e - e doesn't simplify to 0: like-base power terms are not merged when another term sorts between them
+* \#5049 a + b and b + a give different results when the like-base term's coefficient is a rational or a float
 * \#5169 GREAT says a[1] > a[1]
 
 Bug fixes for unnumbered bugs:

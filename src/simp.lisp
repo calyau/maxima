@@ -232,6 +232,19 @@
      ((atom l) (return (free l free-var)))	;; second element of a pair
      ((not (free (car l) free-var)) (return nil)))))
 
+(declaim (inline last-factor))
+(defun last-factor (x)
+  "Return the last factor of X, if X is a product, otherwise X itself."
+  (if (mtimesp x) (car (last x)) x))
+
+(defun integer-difference-p (e1 e2)
+  "Is E1 - E2 an integer? Two rational exponents are compared with Lisp
+  arithmetic efficiently instead of going through the simplifier."
+  (if (and (or (integerp e1) (ratnump e1))
+           (or (integerp e2) (ratnump e2)))
+      (integerp (- (/ (num1 e1) (denom1 e1)) (/ (num1 e2) (denom1 e2))))
+      (integerp (sub e1 e2))))
+
 (defun simplifya (x y)
  (let (op)
   (cond ((or (atom x) (not $simp)) x)
@@ -921,8 +934,8 @@
 ;;;-----------------------------------------------------------------------------
 
 (defun plusin (x fm)
-  (prog (x1 x2 flag check v w xnew a n m c int-base-expt-p base-match-p
-         canonical-insert-fm cluster-start-fm)
+  (prog (x1 x2 flag check v w xnew a merged int-base-expt-p in-cluster-p
+         cluster-base canonical-insert-fm cluster-start-fm)
      (setq w 1)
      (setq v 1)
      (cond ((mtimesp x)
@@ -942,112 +955,74 @@
      ;; exponent and returns 2^(13/4). But 2^(13/4) now must come after the
      ;; already existing term 2^(3/8) in FM to maintain canonical ordering.
      (setq int-base-expt-p (and (mexptp x1) (integerp (cadr x1))))
+     ;; Remember the base of the power at the end of X, if it is an integer.
+     ;; All terms of the sum which end in a power of that base form one
+     ;; uninterrupted cluster, because GREAT compares products by their last
+     ;; factor (ORDLIST) and powers of different bases by their bases alone
+     ;; (ORDMEXPT). X can merge with any power in that cluster, so the whole
+     ;; cluster has to be searched, and PLS has to be sent back to its start:
+     ;; The term that PLS adds next may need a partner in front of X.
+     (setq cluster-base (let ((f (last-factor x1)))
+                          (and (mexptp f) (integerp (cadr f)) (cadr f))))
   start
-     (setq base-match-p nil)
+     ;; A nested MPLUS expression is a term which PLS still has to add into
+     ;; the sum again (see EQUT and EQUTM). Its place in the list says nothing
+     ;; about the ordering, so step over it before anything compares against
+     ;; it, and never make it the place where X is inserted.
+     (when (and (cdr fm) (mplusp (cadr fm)))
+       (setq fm (cdr fm))
+       (go start))
+     (setq in-cluster-p (and cluster-base
+                             (cdr fm)
+                             (let ((f (last-factor (cadr fm))))
+                               (and (mexptp f) (equal (cadr f) cluster-base)))))
+     (when (and in-cluster-p (null cluster-start-fm))
+       (setq cluster-start-fm fm))
      (cond ((null (cdr fm)))
-           ((and (null (cdr x)) (alike1 x1 (cadr fm)))
-            (setq cluster-start-fm (or cluster-start-fm fm))
+           ;; A power of an integer is left to the merge below, which always
+           ;; splits the result the same way. SIMPTIMES does not: It folds an
+           ;; integer factor into the exponent but leaves a rational or float
+           ;; one outside, so 4*6^(-5/3) and (-2/3)*6^(-2/3) are both stable
+           ;; forms of one value. Adding the coefficients here would produce
+           ;; the one, the merge below the other, and the result of a sum
+           ;; would depend on the order of its terms again.
+           ((and (null (cdr x)) (alike1 x1 (cadr fm)) (not int-base-expt-p))
             (go equ))
            ;; Implement the simplification of
            ;;   v*a^(c+n)+w*a^(c+m) -> (v*a^n+w*a^m)*a^c
-           ;; where a, v, w, and (n-m) are integers.
+           ;; where a and (n-m) are integers and v and w are numbers.
+           ;; The coefficient V of the term which is already in the sum has to
+           ;; be admitted exactly like the coefficient W of the term which is
+           ;; added, otherwise the result depends on the order of the terms.
+           ;; MERGE-POWER-TERMS answers NIL if its arithmetic ran out of
+           ;; range; the clause then does not apply and the scan goes on.
            ((and int-base-expt-p
                  (or (and (mexptp (setq x2 (cadr fm)))
                           (setq v 1))
                      (and (mtimesp x2)
                           (null (cadddr x2))
-                          (integerp (setq v (cadr x2)))
+                          (mnump (setq v (cadr x2)))
                           (mexptp (setq x2 (caddr x2)))))
                  (equal (setq a (cadr x2)) (cadr x1))
-                 (setq base-match-p t
-                       cluster-start-fm (or cluster-start-fm fm))
-                 (integerp (sub (caddr x2) (caddr x1))))
-            (setq n (if (and (mplusp (caddr x2))
-                             (mnump (cadr (caddr x2))))
-                        (cadr (caddr x2))
-                        (if (mnump (caddr x2))
-                            (caddr x2)
-                            0)))
-            (setq m (if (and (mplusp (caddr x1))
-                             (mnump (cadr (caddr x1))))
-                        (cadr (caddr x1))
-                        (if (mnump (caddr x1))
-                            (caddr x1)
-                            0)))
-            (setq c (sub (caddr x2) n))
-            (cond ((integerp n)
-                   ;; The simple case:
-                   ;; n and m are integers and the result is (v*a^n+w*a^m)*a^c.
-                   (setq x1 (mul (addk (timesk v (exptb a n))
-                                       (timesk w (exptb a m)))
-                                 (power a c)))
-                   (go equt2))
-                  (t
-                   ;; n and m are rational numbers: The difference n-m is an
-                   ;; integer. The rational numbers might be improper fractions.
-                   ;; The mixed numbers are: n = n1 + d1/r and m = n2 + d2/r,
-                   ;; where r is the common denominator. We have two cases:
-                   ;; I)  d1 = d2: e.g. 2^(1/3+c)+2^(4/3+c)
-                   ;;     The result is (v*a^n1+w*a^n2)*a^(c+d1/r)
-                   ;; II) d1 # d2: e.g. 2^(1/2+c)+2^(-1/2+c)
-                   ;;     In this case one of the exponents d1 or d2 must
-                   ;;     be negative. The negative exponent is factored out.
-                   ;;     This guarantees that the factor (v*a^n1+w*a^n2)
-                   ;;     is an integer. But the positive exponent has to be
-                   ;;     adjusted accordingly. E.g. when we factor out
-                   ;;     a^(d2/r) because d2 is negative, then we have to
-                   ;;     adjust the positive exponent to n1 -> n1+(d1-d2)/r.
-                   ;; Remark:
-                   ;; Part of the simplification is done in simptimes. E.g.
-                   ;; this algorithm simplifies the sum sqrt(2)+3*sqrt(2)
-                   ;; to 4*sqrt(2). In simptimes this is further simplified
-                   ;; to 2^(5/2).
-                   (multiple-value-bind (n1 d1)
-                       (truncate (num1 n) (denom1 n))
-                     (multiple-value-bind (n2 d2)
-                         (truncate (num1 m) (denom1 m))
-                       (cond ((equal d1 d2)
-                              ;; Case I: -> (v*a^n1+w*a^n2)*a^(c+d1/r)
-                              (setq x1
-                                    (mul (addk (timesk v (exptb a n1))
-                                               (timesk w (exptb a n2)))
-                                         (power a
-                                                (add c
-                                                     (div d1 (denom1 n))))))
-                              (go equt2))
-                             ((minusp d2)
-                              ;; Case II:: d2 is negative, adjust n1.
-                              (setq n1 (add n1 (div (sub d1 d2) (denom1 n))))
-                              (setq x1
-                                    (mul (addk (timesk v (exptb a n1))
-                                               (timesk w (exptb a n2)))
-                                         (power a
-                                                (add c
-                                                     (div d2 (denom1 n))))))
-                              (go equt2))
-                             ((minusp d1)
-                              ;; Case II: d1 is negative, adjust n2.
-                              (setq n2 (add n2 (div (sub d2 d1) (denom1 n))))
-                              (setq x1
-                                    (mul (addk (timesk v (exptb a n1))
-                                               (timesk w (exptb a n2)))
-                                         (power a 
-                                                (add c
-                                                     (div d1 (denom1 n))))))
-                              (go equt2))
-                             ;; This clause should never be reached.
-                             (t (merror "Internal error in simplus."))))))))
+                 (integer-difference-p (caddr x1) (caddr x2))
+                 (setq merged
+                       (merge-power-terms v (caddr x2) w (caddr x1) a)))
+            (setq x1 merged)
+            (go equtm))
            ((mtimesp (cadr fm))
             (cond ((and (cdr x) (alike1 x1 (cadr fm)))
-                   (setq cluster-start-fm (or cluster-start-fm fm))
                    (go equt))
                   ((and (mnump (cadadr fm)) (alike x (cddadr fm)))
                    (setq flag t) ; found common factor
-                   (setq cluster-start-fm (or cluster-start-fm fm))
                    (go equt))
                   ((great xnew (cadr fm)) (go gr))))
            ((great x1 (cadr fm)) (go gr)))
-     (when base-match-p
+     ;; This is the place where X belongs in the canonically ordered sum, but
+     ;; X can still merge with a power further down in the same cluster. The
+     ;; terms in between need not have the base of X, they only have to end
+     ;; in a power of it, e.g. (-1)^(1/4)*3^(1/4) sits between 3^(-3/2) and
+     ;; 3^(3/2). Remember this place and pass them by.
+     (when (and int-base-expt-p in-cluster-p)
        (when (null canonical-insert-fm)
          (setq canonical-insert-fm fm))
        (setq fm (cdr fm))
@@ -1055,64 +1030,64 @@
      (setq xnew (eqtest (testt xnew) (or check '((foo)))))
      (when canonical-insert-fm
        (setq fm canonical-insert-fm))
-     (return (cdr (rplacd fm (cons xnew (cdr fm)))))
+     (setq fm (cdr (rplacd fm (cons xnew (cdr fm)))))
+     (return (or cluster-start-fm fm))
   gr 
      (setq fm (cdr fm))
      (go start)
   equ
-     (setq x1
-             (if (equal w -1)
-                 (list* '(mtimes simp) 0 x)
-                 ;; Call muln to get a simplified product.
-                 (if (mtimesp (setq x1 (muln (cons (addk 1 w) x) t)))
-                     (testtneg x1)
-                     x1)))
-     (go equt2)
+     (when (equal w -1)
+       (setq x1 (list* '(mtimes simp) 0 x))
+       (go equt2))
+     ;; Call muln to get a simplified product.
+     (setq x1 (muln (cons (addk 1 w) x) t))
+     (if (mtimesp x1) (setq x1 (testtneg x1)))
+     (go equtm)
   del
      (cond ((not (mtimesp (cadr fm)))
             (go check))
            ((onep (cadadr fm))
             ;; Do this simplification for an integer 1, not for 1.0 and 1.0b0
             (rplacd (cadr fm) (cddadr fm))
-            (return (if int-base-expt-p cluster-start-fm (cdr fm))))
+            (return (or cluster-start-fm (cdr fm))))
            ((not (zerop1 (cadadr fm)))
-            (return (if int-base-expt-p cluster-start-fm (cdr fm))))
+            (return (or cluster-start-fm (cdr fm))))
            ;; Handle the multiplication with a zero.
            ((and (or (not $listarith) (not $doallmxops))
                  (mxorlistp (caddr (cadr fm))))
             (rplacd fm 
                     (cons (constmx 0 (caddr (cadr fm))) (cddr fm)))
-            (return (if int-base-expt-p cluster-start-fm fm))))
+            (return (or cluster-start-fm fm))))
      ;; (cadadr fm) is zero. If the first term of fm is a number,
      ;;  add it to preserve the type.
      (when (mnump (car fm))
        (rplaca fm (addk (car fm) (cadadr fm))))
      (rplacd fm (cddr fm))
-     (return (if int-base-expt-p cluster-start-fm fm))
+     (return (or cluster-start-fm fm))
   equt
      ;; Call muln to get a simplified product.
      (setq x1 (muln (cons (addk w (if flag (cadadr fm) 1)) x) t))
      ;; Make a mplus expression to guarantee that x1 is added again into the sum
      (setq x1 (list '(mplus) x1))
+     (go equt2)
+  equtm
+     ;; A merged power of an integer can be structurally different from the
+     ;; term it replaces, because SIMPTIMES pushes an integer factor into the
+     ;; exponent: 2^(1/4)+7*2^(1/4) -> 8*2^(1/4) -> 2^(13/4). Such a term can
+     ;; belong at another place in the sum, and it can be mergeable with a
+     ;; term which is already there. Make an MPLUS expression of it, so that it
+     ;; is added into the sum again from the start, instead of splicing it
+     ;; into the list of terms unexamined. A merged term which ends in the same
+     ;; power keeps its place and its partners, it can stay where it is.
+     (when (and int-base-expt-p
+                (not (zerop1 x1))
+                (not (alike1 (last-factor x1) (last-factor (cadr fm)))))
+       (setq x1 (list '(mplus) x1)))
   equt2
      (setq x1 (if (zerop1 x1)
                 (list* '(mtimes) x1 x)
                 (if (mtimesp x1) (testtneg x1) x1)))
-     (cond
-       (int-base-expt-p
-         ;; Potentially unstable order: The new term, resulting from merging X
-         ;; with an already existing term, may have structurally changed and
-         ;; may need to go to a different place in the output sum.
-         ;; Remove the matched term, rewind the sum pointer back to the cluster
-         ;; start, and scan forward to find the correct insertion place.
-         (rplacd fm (cddr fm))
-         (setq fm cluster-start-fm)
-         (while (and (cdr fm) (great x1 (cadr fm)))
-           (setq fm (cdr fm)))
-         (rplacd fm (cons x1 (cdr fm))))
-       (t
-         ;; Safe case, merged term has same structure. Inline replacement.
-         (rplaca (cdr fm) x1)))
+     (rplaca (cdr fm) x1)
      (if (not (mtimesp (cadr fm))) (go check))
      (when (and (onep (cadadr fm)) flag (null (cdddr (cadr fm))))
        ;; Do this simplification for an integer 1, not for 1.0 and 1.0b0
@@ -1120,7 +1095,82 @@
      (go del)
   check
      (if (mplusp (cadr fm)) (setq *plusflag* t)) ; A nested mplus expression
-     (return (if int-base-expt-p cluster-start-fm (cdr fm)))))
+     (return (or cluster-start-fm (cdr fm)))))
+
+;;;-----------------------------------------------------------------------------
+;;; MERGE-POWER-TERMS (V E1 W E2 A)
+;;;
+;;; Arguments and values:
+;;;   V, W   - numbers
+;;;   E1, E2 - exponents whose difference is an integer
+;;;   A      - an integer, the common base
+;;;   result - a simplified form of v*a^e1+w*a^e2, or NIL
+;;;
+;;; Description:
+;;;   Implements the simplification
+;;;     v*a^(c+n)+w*a^(c+m) -> (v*a^n+w*a^m)*a^c
+;;;   for PLUSIN. The exponents are split into an integer part and a
+;;;   remainder; the remainder stays in the power, so that the result of a
+;;;   sum does not depend on which two of its terms are merged first.
+;;;
+;;;   n and m are rational numbers, and their difference is an integer. The
+;;;   rational numbers might be improper fractions. The mixed numbers are:
+;;;   n = n1 + d1/r and m = n2 + d2/r, where r is the common denominator.
+;;;   We have two cases:
+;;;   I)  d1 = d2: e.g. 2^(1/3+c)+2^(4/3+c)
+;;;       The result is (v*a^n1+w*a^n2)*a^(c+d1/r)
+;;;   II) d1 # d2: e.g. 2^(1/2+c)+2^(-1/2+c)
+;;;       In this case one of the exponents d1 or d2 must be negative. The
+;;;       negative exponent is factored out. This guarantees that the factor
+;;;       (v*a^n1+w*a^n2) is an integer. But the positive exponent has to be
+;;;       adjusted accordingly. E.g. when we factor out a^(d2/r) because d2 is
+;;;       negative, then we have to adjust the positive exponent to
+;;;       n1 -> n1+(d1-d2)/r.
+;;;
+;;;   a^n1 and a^n2 can be astronomically large, so the arithmetic can run out
+;;;   of range with a float coefficient. The result is NIL then, and PLUSIN
+;;;   leaves the two terms alone.
+;;;
+;;; Notes:
+;;;   Part of the simplification is done in SIMPTIMES, e.g., this algorithm
+;;;   simplifies the sum sqrt(2)+3*sqrt(2) to 4*sqrt(2). In SIMPTIMES, this is
+;;;   further simplified to 2^(5/2).
+;;;-----------------------------------------------------------------------------
+
+(defun merge-power-terms (v e1 w e2 a)
+  (let* ((n (cond ((and (mplusp e1) (mnump (cadr e1))) (cadr e1))
+                  ((mnump e1) e1)
+                  (t 0)))
+         (m (cond ((and (mplusp e2) (mnump (cadr e2))) (cadr e2))
+                  ((mnump e2) e2)
+                  (t 0)))
+         (c (sub e1 n)))
+    (handler-case
+        (if (integerp n)
+            ;; The simple case:
+            ;; n and m are integers and the result is (v*a^n+w*a^m)*a^c.
+            (mul (addk (timesk v (exptb a n)) (timesk w (exptb a m)))
+                 (power a c))
+            (multiple-value-bind (n1 d1)
+                (truncate (num1 n) (denom1 n))
+              (multiple-value-bind (n2 d2)
+                  (truncate (num1 m) (denom1 m))
+                (cond ((equal d1 d2)
+                       ;; Case I: -> (v*a^n1+w*a^n2)*a^(c+d1/r)
+                       (setq c (add c (div d1 (denom1 n)))))
+                      ((minusp d2)
+                       ;; Case II: d2 is negative, adjust n1.
+                       (setq n1 (add n1 (div (sub d1 d2) (denom1 n))))
+                       (setq c (add c (div d2 (denom1 n)))))
+                      ((minusp d1)
+                       ;; Case II: d1 is negative, adjust n2.
+                       (setq n2 (add n2 (div (sub d2 d1) (denom1 n))))
+                       (setq c (add c (div d1 (denom1 n)))))
+                      ;; This clause should never be reached.
+                      (t (merror "Internal error in simplus.")))
+                (mul (addk (timesk v (exptb a n1)) (timesk w (exptb a n2)))
+                     (power a c)))))
+      (arithmetic-error () nil))))
 
 ;;;-----------------------------------------------------------------------------
 
