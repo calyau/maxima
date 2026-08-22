@@ -748,3 +748,9 @@ block([s1, s2, v : [x = 0.7, a = 1.1, b = 0.4], r1, r2],
  r2 : trigsimp(s2),
  [ratsimp(subst([y = a, z = b], r1) - r2), is(abs(subst(v, r2) - subst(v, s2)) < 1e-10)]);
 [0, true];
+
+
+/* Bug #4980: "acot of a bigfloat zero raises a Lisp error" */
+
+acot(0b0) - bfloat(%pi / 2);
+0b0;
