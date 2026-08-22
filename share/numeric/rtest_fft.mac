@@ -416,5 +416,19 @@ false;
 (errcatch(bf_inverse_fft([1,2,3])), error);
 ["bf_inverse_fft: size of input must be a power of 2, not ~M",3];
 
+
+/* Bug #4965: "recttopolar and polartorect are silent no-ops on lists" */
+
+block([pol],
+ pol : recttopolar([3.0], [4.0]),
+ is(abs(pol[1][1] - 5.0) + abs(pol[2][1] - float(atan(4/3))) < float_approx_equal_tolerance));
+true;
+
+block([rec],
+ rec : polartorect([5.0], [float(atan(4/3))]),
+ is(abs(rec[1][1] - 3.0) + abs(rec[2][1] - 4.0) < float_approx_equal_tolerance));
+true;
+
+
 (reset(float_approx_equal_tolerance),0);
 0$

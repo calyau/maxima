@@ -5,19 +5,30 @@
 
 (in-package :maxima)
 
+;; An array argument is converted in place, but a list is copied into a
+;; work array first, so the converted values have to be handed back.
+(defun fft-converted (ary fast-ary)
+  (if ($listp ary)
+    (cons '(mlist simp) (coerce fast-ary 'list))
+    ary))
+
 ;; These functions perhaps need revision if they are
 ;; needed at all. Output ignores the type of input.
 (defun $recttopolar (rary iary)
   (let ((fast-rary (maxima-fft:fft-arg-check '$recttopolar rary))
 	(fast-iary (maxima-fft:fft-arg-check '$recttopolar iary)))
     (maxima-fft:complex-to-polar fast-rary fast-iary)
-    (list '(mlist) rary iary)))
+    (list '(mlist simp)
+          (fft-converted rary fast-rary)
+          (fft-converted iary fast-iary))))
 
 (defun $polartorect (rary iary)
   (let ((fast-rary (maxima-fft:fft-arg-check '$polartorect rary))
 	(fast-iary (maxima-fft:fft-arg-check '$polartorect iary)))
     (maxima-fft:polar-to-complex fast-rary fast-iary)
-    (list '(mlist) rary iary)))
+    (list '(mlist simp)
+          (fft-converted rary fast-rary)
+          (fft-converted iary fast-iary))))
 
 ;; Maxima's forward FFT routine.
 (defun $fft (input)
