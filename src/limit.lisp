@@ -1613,6 +1613,14 @@ ignoring dummy variables and array indices."
 			     (throw 'limit t))
 			    ((equal e 1) '$inf)
 			    ((equal e -1) '$minf)
+			    ;; The leading coefficient is zero, so that term is not there at
+			    ;; all. Drop it, and start over on what is left, which is what
+			    ;; makes limit(a*x^2+b*x+c, x, inf) ask about b once it has been
+			    ;; told that a = 0. What goes back in is a function of x, the
+			    ;; variable substituted for VAR at the top, so the substitution
+			    ;; there is a no-op, and the same CRE comes back.
+			    ((setq n (droplo n g))
+			     (ratlim ($ratdisrep `(,h ,n . ,d))))
 			    (t 0))))
 
 (defun lodeg (n x)
@@ -1624,6 +1632,14 @@ ignoring dummy variables and array indices."
   (if (or (atom n) (not (eq (car n) x)))
       n
       (car (last n))))
+
+;; N is a polynomial in X, stored as (x exp coef exp coef ...) in descending
+;; powers, so its lowest-degree term is the last pair. Return N without that
+;; term, or NIL when it was the only one.
+(defun droplo (n x)
+  (if (or (atom n) (not (eq (car n) x)) (null (cdddr n)))
+      nil
+      (butlast n 2)))
 
 ;; This function tries to determine the increasing/decreasing
 ;; behavior of an expression exp with respect to some variable var.

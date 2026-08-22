@@ -1304,3 +1304,21 @@ sqrt(1-x^2)/(x^2-1);
 
 subst([h=0,x=0], taylor(asin(x+h)-asin(x),h,0,1));
 0;
+
+
+/* Bug #5170: "limit(a*x+b, x, inf) = 0 when answering that a=0" */
+
+limit(a*x+b, x, inf), ask_hide_prompt; zero;
+b;
+
+limit(a*x^2+b*x+c, x, inf), ask_hide_prompt; zero; zero;
+c;
+
+limit(a*x^2+b*x+c, x, inf), ask_hide_prompt; zero; pos;
+inf;
+
+limit(a*x^2+b*x+c, x, minf), ask_hide_prompt; zero; pos;
+minf;
+
+limit(a*b*x+c, x, inf), ask_hide_prompt; zero;
+c;
