@@ -1017,7 +1017,7 @@
         (setq parent-dir-mtime (file-mtime-or-nil parent-dir))
         (dbg "parent directory mtime after: ~A" parent-dir-mtime)
         (cond
-          ((and parent-dir-mtime) (> parent-dir-mtime mtime-threshold)
+          ((and parent-dir-mtime (> parent-dir-mtime mtime-threshold))
             ;; It worked!
             (dbg "test succeeded"))
           (t
@@ -1139,9 +1139,9 @@
   to be searched and files to be returned during file search in order to
   exclude certain files/directories."
   (let ((ignore-dirs (cdr $file_search_ignore_dirs))
-        (test-dir-base (pathname-without-file-components (test-directory-cached-dir-base)))
-        (obj-dir-base (pathname-without-file-components (maxima-objdir-base)))
-        (obj-dir (pathname-without-file-components *maxima-objdir*)))
+        (test-dir-base (ensure-pathname-as-directory (test-directory-cached-dir-base)))
+        (obj-dir-base (ensure-pathname-as-directory (maxima-objdir-base)))
+        (obj-dir (ensure-pathname-as-directory *maxima-objdir*)))
     #'(lambda (path)
         (cond
           ((let ((dir (pathname-without-file-components path)))
