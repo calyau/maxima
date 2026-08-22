@@ -1587,36 +1587,46 @@ ignoring dummy variables and array indices."
 		       (g (genfind h 'x))
 		       (nd (lodeg n g))
 		       (dd (lodeg d g)))
-		      (cond ((and (setq e
-					(subst var
-					       'x
-					       (sratsimp (m// ($ratdisrep `(,h ,(locoef n g) . 1))
-							      ($ratdisrep `(,h ,(locoef d g) . 1))))))
-				  (> nd dd))
-			     (cond ((not (member val '($zerob $zeroa $inf $minf) :test #'eq))
-				    0)
-				   ((not (equal ($imagpart e) 0))
-				    0)
-				   ((null (setq e (getsignl ($realpart e))))
-				    0)
-				   ((equal e 1) '$zeroa)
-				   ((equal e -1) '$zerob)
-				   (t 0)))
-			    ((equal nd dd) e)
-			    ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
-			     (throw 'limit t))
-			    ((eq val '$infinity)  '$infinity)
-			    ;; E is only the ratio of the leading coefficients, so a
-			    ;; lower-order imaginary term never reaches it:
-			    ;; limit(x^2+%i*x, x, inf) has E = 1.  Ask the whole
-			    ;; function whether it is real.
-			    ((not (equal ($imagpart ($ratdisrep `(,h ,n . ,d))) 0))
-			     '$infinity)
-			    ((null (setq e (getsignl ($realpart e))))
-			     (throw 'limit t))
-			    ((equal e 1) '$inf)
-			    ((equal e -1) '$minf)
-			    (t 0))))
+    (prog ()
+     next-term
+       (return
+	(cond ((and (setq e
+			  (subst var
+				 'x
+				 (sratsimp (m// ($ratdisrep `(,h ,(locoef n g) . 1))
+						($ratdisrep `(,h ,(locoef d g) . 1))))))
+		    (> nd dd))
+	       (cond ((not (member val '($zerob $zeroa $inf $minf) :test #'eq))
+		      0)
+		     ((not (equal ($imagpart e) 0))
+		      0)
+		     ((null (setq e (getsignl ($realpart e))))
+		      0)
+		     ((equal e 1) '$zeroa)
+		     ((equal e -1) '$zerob)
+		     (t 0)))
+	      ((equal nd dd) e)
+	      ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
+	       (throw 'limit t))
+	      ((eq val '$infinity)  '$infinity)
+	      ;; E is only the ratio of the leading coefficients, so a
+	      ;; lower-order imaginary term never reaches it:
+	      ;; limit(x^2+%i*x, x, inf) has E = 1.  Ask the whole
+	      ;; function whether it is real.
+	      ((not (equal ($imagpart ($ratdisrep `(,h ,n . ,d))) 0))
+	       '$infinity)
+	      ((null (setq e (getsignl ($realpart e))))
+	       (throw 'limit t))
+	      ((equal e 1) '$inf)
+	      ((equal e -1) '$minf)
+	      ;; The leading coefficient is zero, so that term is not there at
+	      ;; all.  Drop it and let the next one down decide, which is what
+	      ;; makes limit(a*x^2+b*x+c, x, inf) ask about B once it has been
+	      ;; told that A is zero.
+	      ((setq n (droplo n g))
+	       (setq nd (lodeg n g))
+	       (go next-term))
+	      (t 0))))))
 
 (defun lodeg (n x)
   (if (or (atom n) (not (eq (car n) x)))
@@ -1627,6 +1637,14 @@ ignoring dummy variables and array indices."
   (if (or (atom n) (not (eq (car n) x)))
       n
       (car (last n))))
+
+;; N is a polynomial in X, stored as (x exp coef exp coef ...) in descending
+;; powers, so its lowest-degree term is the last pair.  Return N without that
+;; term, or NIL when it was the only one.
+(defun droplo (n x)
+  (if (or (atom n) (not (eq (car n) x)) (null (cdddr n)))
+      nil
+      (cons (car n) (butlast (cdr n) 2))))
 
 ;; This function tries to determine the increasing/decreasing
 ;; behavior of an expression exp with respect to some variable var.

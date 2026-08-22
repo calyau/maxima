@@ -21,7 +21,7 @@ Bug fixes for numbered bugs:
 
 Bug fixes for unnumbered bugs:
 ------------------------------
-...
+* limit(a*x+b, x, inf) answers 0 when told that a is zero
 
 Changes in the Windows installer:
 ---------------------------------

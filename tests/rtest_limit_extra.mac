@@ -1801,6 +1801,27 @@ infinity$
 limit((x+%i)*(x-%i),x,inf);
 inf$
 
+/* RATLIM decided the divergent case from the ratio of the leading
+   coefficients and answered 0 when that ratio was zero, discarding every
+   remaining term.  Dropping the term instead lets the next coefficient down
+   decide, and be asked about. */
+limit(a*x+b, x, inf), ask_hide_prompt; zero;
+b$
+
+limit(a*x^2+b*x+c, x, inf), ask_hide_prompt; zero; zero;
+c$
+
+limit(a*x^2+b*x+c, x, inf), ask_hide_prompt; zero; pos;
+inf$
+
+limit(a*x^2+b*x+c, x, minf), ask_hide_prompt; zero; pos;
+minf$
+
+/* The coefficient asked about need not be a symbol, so putting a zero back
+   into the function would not do: nothing here says that A or B is zero. */
+limit(a*b*x+c, x, inf), ask_hide_prompt; zero;
+c$
+
 /* Did any values, facts, or contexts leak?*/
 
 facts();
