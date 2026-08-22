@@ -3675,7 +3675,11 @@ in the interval of integration.")
 		   (t '$no))))
     (cond ((eq ans '$no)   '$no)
 	  ((null ans)   nil)
-	  ((eq ans '$und) '$no)
+	  ;; INFINITY says the modulus grows without bound but says nothing
+	  ;; about the direction, so it establishes no pole that TAKE-PRINCIPAL
+	  ;; could cancel across.  Treat it like UND, as in
+	  ;; integrate(exp(-%i*x^2),x,0,inf).
+	  ((member ans '($und $infinity) :test #'eq) '$no)
 	  ((equal ans 0.)   '$no)
 	  (t '$yes))))
 

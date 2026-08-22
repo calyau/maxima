@@ -2595,11 +2595,14 @@ ignoring dummy variables and array indices."
 	 (setq sum (fapply 'mplus sum))
 
      (cond (undl
-	     ;; When there are inf, minf, or infinity terms, the limit might not be und.
-         ;; For example, limit(x^2+x*sin(x),x,inf). For such cases, append the und 
-         ;; terms to the infinity terms and continue processing. But when there are 
-		 ;; no infinity terms, the limit is und; for example limit(1 + x*sin(x),x,inf)
-         (cond ((or infl minfl infinityl)
+	     ;; When there are inf or minf terms, the limit might not be und.
+         ;; For example, limit(x^2+x*sin(x),x,inf). For such cases,
+         ;; append the und terms to the infinity terms and continue
+		 ;; processing. An infinity term carries no direction, so it cannot
+		 ;; dominate an und term that way; and with no directed infinity the
+		 ;; limit is und, as in limit(1 + x*sin(x),x,inf) and
+		 ;; limit(x*exp(%i*x)+x*sin(x),x,inf).
+         (cond ((or infl minfl)
                    (setq infinityl (append undl infinityl)))
                  (t (return '$und))))
 	   ((not (or infl minfl indl infinityl))
