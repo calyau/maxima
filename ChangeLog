@@ -19,7 +19,7 @@ Bug fixes for numbered bugs:
 
 Bug fixes for unnumbered bugs:
 ------------------------------
-...
+* file search picking up FASL files built by another Maxima or Lisp version
 
 Changes in the Windows installer:
 ---------------------------------

@@ -238,3 +238,15 @@ verbify ("!!");
 nounify ("!!");
 '?\%genfact;
 
+/* The file search must ignore the object directories of other Maxima or Lisp
+ * versions, so that e.g. a FASL file compiled by another version of the Lisp
+ * is never picked up.  The first path below is inside the current object
+ * directory and must be accepted, the second one is beside it and must be
+ * rejected.
+ */
+
+block ([filter : ?make\-directory\-cached\-filterp ()],
+       map (lambda ([path], ?funcall (filter, path)),
+            [sconcat (maxima_objdir, "/share/foo.fasl"),
+             sconcat (maxima_objdir, "_other_version/share/foo.fasl")]));
+[true, false];
