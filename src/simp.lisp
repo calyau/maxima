@@ -237,13 +237,16 @@
   "Return the last factor of X, if X is a product, otherwise X itself."
   (if (mtimesp x) (car (last x)) x))
 
-(defun integer-difference-p (e1 e2)
-  "Is E1 - E2 an integer? Two rational exponents are compared with Lisp
-  arithmetic efficiently instead of going through the simplifier."
-  (if (and (or (integerp e1) (ratnump e1))
-           (or (integerp e2) (ratnump e2)))
-      (integerp (- (/ (num1 e1) (denom1 e1)) (/ (num1 e2) (denom1 e2))))
-      (integerp (sub e1 e2))))
+(defun integer-difference-p (x y)
+  "Is X - Y an integer? If possible, avoid going through the simplifier."
+  (cond
+    ((integerp x) (integerp y))
+    ((ratnump x) (and (ratnump y)
+                      (integerp (- (/ (cadr x) (caddr x))
+                                   (/ (cadr y) (caddr y))))))
+    (t (and (not (integerp y))
+            (not (ratnump y))
+            (integerp (sub x y))))))
 
 (defun simplifya (x y)
  (let (op)
@@ -1004,7 +1007,7 @@
                           (mnump (setq v (cadr x2)))
                           (mexptp (setq x2 (caddr x2)))))
                  (equal (setq a (cadr x2)) (cadr x1))
-                 (integer-difference-p (caddr x1) (caddr x2))
+                 (integer-difference-p (caddr x2) (caddr x1))
                  (setq merged
                        (merge-power-terms v (caddr x2) w (caddr x1) a)))
             (setq x1 merged)
