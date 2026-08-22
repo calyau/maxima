@@ -126,7 +126,7 @@
         "rtestdefstruct"
 	;; Tested with acl 10.1
 	((mlist simp) "rtest_limit"
-         ((mlist simp) 113 159 160))
+         ((mlist simp) 159 160))
         "rtest_powerseries"
         ((mlist simp) "rtest_laplace"
 	 ((mlist simp) 29 49 50 51 59 60 61 62 78 80))
@@ -139,7 +139,7 @@
                          96 104 
                          124 125 126 127 132 133 135 136 137
                          240 243 244 245 246 249
-                         267 268 269 270 272
+                         267 272
                          281 282 357 358))
          ((mlist simp) "rtest_limit_gruntz"
           ((mlist simp) 20 25 28 29 30 37 39 86))

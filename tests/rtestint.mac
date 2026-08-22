@@ -2010,6 +2010,17 @@ integrate(x*sin(%pi/2*x), x,0,1 ), numer;
 0.4052847345693511;
 
 
+/* \#4020 limit(x*exp(-%i*x^2),x,inf) is infinity, and LIMIT-POLE must not
+   read that as a pole: an infinity fixes no direction, so TAKE-PRINCIPAL has
+   nothing to cancel across and would evaluate erf on the ray arg(z) = %pi/4,
+   where its limit does not exist.  Fresnel: the answer is
+   (1/2)*sqrt(%pi/2)*(1-%i). */
+ratsimp(integrate(exp(-%i*x^2),x,0,inf) - (%e^-((%i*%pi)/4)*sqrt(%pi))/2);
+0$
+
+ratsimp(integrate(exp(-%i*x^3),x,0,inf) - (%e^-((%i*%pi)/6)*gamma(1/3))/3);
+0$
+
 (kill(values),0);
 0$
 

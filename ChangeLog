@@ -16,6 +16,7 @@ Bug fixes for numbered bugs:
 * \#5048 e - e doesn't simplify to 0: like-base power terms are not merged when another term sorts between them
 * \#5049 a + b and b + a give different results when the like-base term's coefficient is a rational or a float
 * \#5169 GREAT says a[1] > a[1]
+* \#4020 limit(x*exp(%i*x), x, inf): a product of an infinity with an indeterminate factor of constant nonzero modulus
 
 Bug fixes for unnumbered bugs:
 ------------------------------

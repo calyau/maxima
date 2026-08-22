@@ -2403,7 +2403,7 @@ ignoring dummy variables and array indices."
 
   (let ((prod 1) (num 1) (denom 1)
         (zf nil) (ind-flag nil) (inf-type nil)
-        (constant-zero nil) (constant-infty nil))
+        (constant-zero nil) (constant-infty nil) (ind-prod 1))
     (dolist (term exp)
       (let* ((loginprod? (involve term '(%log)))
              (y (catch 'lip? (limit term var val 'think))))
@@ -2432,7 +2432,8 @@ ignoring dummy variables and array indices."
            (setq prod (m* prod y)))
 
           ((eq y '$und) (return-from simplimtimes '$und))
-          ((eq y '$ind) (setq ind-flag t))
+          ((eq y '$ind)
+           (setq ind-flag t ind-prod (m* ind-prod term)))
 
           ;; Some form of infinity
           (t
@@ -2475,7 +2476,17 @@ ignoring dummy variables and array indices."
       ((equal num 1)
        (let ((sign ($csign prod)))
          (cond
-           (ind-flag '$und)
+           ;; A non-real indeterminate factor of constant modulus leaves the
+           ;; modulus of the product infinite and only its phase unknown.  A
+           ;; real one instead alternates in sign, which is undefined rather
+           ;; than an infinity of arbitrary phase.  The realness test must be
+           ;; $CSIGN and not $IMAGPART: imagpart((-1)^floor(x)) is
+           ;; sin(%pi*floor(x)), which is zero but does not simplify to it.
+           (ind-flag (if (and (mnump (ftake 'mabs ind-prod))
+                              (member ($csign ind-prod) '($complex $imaginary)
+                                      :test #'eq))
+                         '$infinity
+                         '$und))
            ((eq sign '$pos) inf-type)
            ((eq sign '$neg) (case inf-type
                               ($inf '$minf)

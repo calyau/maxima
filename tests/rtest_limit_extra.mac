@@ -943,8 +943,11 @@ inf$
 limit(x*exp(%i*x),x,inf);
 infinity$
 
+/* x+x*exp(%i*x) is 2*x*cos(x/2)*exp(%i*x/2), which vanishes at every odd
+   multiple of %pi.  Its modulus therefore does not diverge, so the limit is
+   und and not infinity. */
 limit(x+x*exp(%i*x),x,inf);
-infinity$
+und$
 
 limit(1+x*exp(%i*x),x,inf); 
 infinity$
@@ -1469,8 +1472,12 @@ block([ans : limit(x < 8)], [inpart(ans,0),args(ans)]);
 /* \#4634 Divergent integral simplifies to -1/4 with simplify_sum */
 /* I put the test simplify_sum( sum(n*(-1)^n,n,1,inf)) into rtest_simplify_sum. Here is
 the other test mentioned in ticket 4634. */
+/* N is not declared to be an integer, so this limit is taken over the reals,
+   where (-1)^N is %e^(%i*%pi*N) and runs around the unit circle: the modulus
+   diverges and only the phase is unknown.  The integer index, which is what
+   ticket 4634 is about, is tested at the end of this file. */
 limit(((-1)^N*(2*N+1))/4-1/4,N,inf);
-und$
+infinity$
 
 /* \#4717 limit(signum(exp(%i*x)*exp(x)),x,inf);*/
 limit(signum(exp(%i*x)*exp(x)),x,inf);
@@ -1746,6 +1753,31 @@ minf$
 /* clean up*/
 /*(kill(values),0);
 0$*/
+
+/* \#4020 a product of an infinity with an indeterminate factor of constant
+   nonzero modulus.  The factor has to be non-real: (-1)^floor(x) is real and
+   merely alternates in sign, which is und rather than an infinity of
+   arbitrary phase.  Maxima knows floor(x) and round(x) are integers, so the
+   realness test must ask CSIGN and not look for a zero imaginary part --
+   imagpart((-1)^floor(x)) is sin(%pi*floor(x)), which does not simplify. */
+limit(x*(-1)^floor(x),x,inf);
+und$
+
+limit(x*(-1)^round(x),x,inf);
+und$
+
+/* An infinity summand has no direction, so it cannot dominate an und summand
+   the way inf does in limit(x^2+x*sin(x),x,inf). */
+limit(x*exp(%i*x)+x*sin(x),x,inf);
+und$
+
+/* \#4634 with an integer index: (-1)^n is then real and the partial sums
+   alternate along the real axis. */
+block([ans], declare(n4634, integer),
+  ans : limit(((-1)^n4634*(2*n4634+1))/4-1/4, n4634, inf),
+  remove(n4634, integer),
+  ans);
+und$
 
 /* Did any values, facts, or contexts leak?*/
 
