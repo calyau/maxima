@@ -2920,13 +2920,23 @@
 			      (cond ((> x y) t)
 			            ((< x y) nil)
 			            (t (and (floatp x) (not (floatp y))))))))
+		      ;; An atom belongs to the class of the first clause below that
+		      ;; applies to it: number, constant, scalar, mainvar, plain symbol.
+		      ;; In that order, the classes are increasingly "great". A symbol
+		      ;; can carry several of these declarations, so the tests on Y must
+		      ;; also rule out the classes preceding X's, or GREAT is not total.
 		      ((constant x)
 		       (cond ((constant y) (alphalessp y x)) (t (numberp y))))
 		      ((mget x '$scalar)
-		       (cond ((mget y '$scalar) (alphalessp y x))
+		       (cond ((mget y '$scalar)
+		              (if (constant y) t (alphalessp y x)))
 		             (t (maxima-constantp y))))
 		      ((mget x '$mainvar)
-		       (cond ((mget y '$mainvar) (alphalessp y x)) (t t)))
+		       (cond ((mget y '$mainvar)
+		              (if (or (mget y '$scalar) (constant y))
+		                  t
+		                  (alphalessp y x)))
+		             (t t)))
 		      (t (or (maxima-constantp y) (mget y '$scalar)
 			     (and (not (mget y '$mainvar)) (not (null (alphalessp y x))))))))
 	       (t (not (ordfna y x)))))

@@ -3,6 +3,7 @@ Maxima 5.50-post change log
 
 Bug fixes for numbered bugs:
 ----------------------------
+* \#4830 Non-total ordering between constant & scalar and scalar
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
 * \#4933 asech is treated as an even function
 * \#4967 cdf_lognormal and pdf_lognormal error at x = 0

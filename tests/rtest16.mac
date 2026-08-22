@@ -4090,6 +4090,32 @@ block([e : 4^n], for i thru 40 do e : e/2, e);
 0.25*4^n;
 
 
+/* Bug #4830: "Non-total ordering between constant & scalar and scalar" */
+
+(kill(g_c, g_s, g_m, g_cs, g_cm, g_sm, g_csm),
+ declare(g_c, constant, g_s, scalar, g_m, mainvar,
+         g_cs, [constant, scalar], g_cm, [constant, mainvar],
+         g_sm, [scalar, mainvar], g_csm, [constant, scalar, mainvar]),
+ g_L: [g_c, g_s, g_m, g_cs, g_cm, g_sm, g_csm],
+ 0);
+0;
+
+/* For two distinct atoms, exactly one of ordergreatp(x, y), ordergreatp(y, x) must hold. */
+sublist(create_list([i, j], i, 1, 7, j, 1, 7),
+        lambda([p],
+         p[1] # p[2] and
+         (if ordergreatp(g_L[p[1]], g_L[p[2]]) then 0 else 1) +
+         (if ordergreatp(g_L[p[2]], g_L[p[1]]) then 0 else 1) # 1));
+[];
+
+/* Constants come before scalars, and scalars before mainvars. */
+sort(g_L);
+[g_c, g_cm, g_cs, g_csm, g_s, g_sm, g_m];
+
+kill(g_c, g_s, g_m, g_cs, g_cm, g_sm, g_csm, g_L);
+done;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
