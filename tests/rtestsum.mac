@@ -921,8 +921,13 @@ bashindices (sum (product (sum (F (l, m, n), l, 0, m), m, 0, n), n, 0, N));
 /* Since sum(f(i), i, 1, inf) is free of j, another result
  * such as limit(sum(f(i), i, 1, inf)^n, n, inf) would be OK, too.
  * In any event, inf (observed in the bug report) is not OK.
+ *
+ * The right hand side is quoted so that it is a literal noun and not a
+ * second evaluation of the left hand side; unquoted, the comparison would
+ * hold whatever product returned, inf included.
  */
-(kill(f), block ([x : product (sum (f(i), i, 1, inf), j, 1, inf)], block ([simp : false], is (x = 'product ('sum (f(i), i, 1, inf), j, 1, inf)))));
+(kill(f), is (product (sum (f(i), i, 1, inf), j, 1, inf)
+              = 'product ('sum (f(i), i, 1, inf), j, 1, inf)));
 
 true;
 

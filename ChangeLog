@@ -17,6 +17,7 @@ Bug fixes for numbered bugs:
 * \#5049 a + b and b + a give different results when the like-base term's coefficient is a rational or a float
 * \#5169 GREAT says a[1] > a[1]
 * \#4020 limit(x*exp(%i*x), x, inf): a product of an infinity with an indeterminate factor of constant nonzero modulus
+* \#4020 limit(x^2+%i*x, x, inf): a rational function whose leading coefficient is real but which is not itself real
 
 Bug fixes for unnumbered bugs:
 ------------------------------

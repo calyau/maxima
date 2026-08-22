@@ -1779,6 +1779,28 @@ block([ans], declare(n4634, integer),
   ans);
 und$
 
+/* RATLIM decided the divergent case from the ratio of the leading
+   coefficients alone, so a lower-order imaginary term never reached it and
+   these came back inf.  None of them is a real function, so the answer is an
+   infinity of arbitrary phase. */
+limit(x^2+%i*x,x,inf);
+infinity$
+
+limit(x^3+%i*x^2,x,inf);
+infinity$
+
+limit(x^2+%i,x,inf);
+infinity$
+
+limit(x^2+%i*x,x,minf);
+infinity$
+
+/* A real rational function must not be pushed to infinity by the same test.
+   IMAGPART and not CSIGN here: csign((x+%i)*(x-%i)) is complex, because it
+   does not expand, while the function is real. */
+limit((x+%i)*(x-%i),x,inf);
+inf$
+
 /* Did any values, facts, or contexts leak?*/
 
 facts();

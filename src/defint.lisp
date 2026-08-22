@@ -3171,8 +3171,12 @@ in the interval of integration.")
 		(setq ans (antideriv exp ivar))
 		(setq ans (intsubs ans ll ul ivar)))
 	   ;; If we can integrate it directly, do so and take the
-	   ;; appropriate limits.
-	   )
+	   ;; appropriate limits.  INTSUBS builds the difference of two
+	   ;; endpoint limits without simplifying across it, so the parts
+	   ;; that cancel have to be brought together here.  $EXPAND and not
+	   ;; SRATSIMP: SRATSIMP refactors results that are already reduced,
+	   ;; turning 18+2*%e^-9 into %e^-9*(8*%e^9+1)+%e^-9+10.
+	   (setq ans ($expand ans)))
 	  ((setq ans (funclogor%e exp ivar))
 	   ;; ans is the list (f(x) exp(k*x)).
 	   (cond ((and (equal ll 0.)

@@ -1570,8 +1570,6 @@ ignoring dummy variables and array indices."
            ans)))
     (t nil)))
 
-;; this function is responsible for the following bug:
-;; limit(x^2 + %i*x, x, inf)  -> inf	(should be infinity)
 (defun ratlim (e)
   (setq e (sratsimp ($trigreduce e)))
   (cond ((member val '($inf $infinity) :test #'eq)
@@ -1608,7 +1606,12 @@ ignoring dummy variables and array indices."
 			    ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
 			     (throw 'limit t))
 			    ((eq val '$infinity)  '$infinity)
-			    ((not (equal ($imagpart e) 0)) '$infinity)
+			    ;; E is only the ratio of the leading coefficients, so a
+			    ;; lower-order imaginary term never reaches it:
+			    ;; limit(x^2+%i*x, x, inf) has E = 1.  Ask the whole
+			    ;; function whether it is real.
+			    ((not (equal ($imagpart ($ratdisrep `(,h ,n . ,d))) 0))
+			     '$infinity)
 			    ((null (setq e (getsignl ($realpart e))))
 			     (throw 'limit t))
 			    ((equal e 1) '$inf)
