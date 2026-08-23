@@ -1570,8 +1570,6 @@ ignoring dummy variables and array indices."
            ans)))
     (t nil)))
 
-;; this function is responsible for the following bug:
-;; limit(x^2 + %i*x, x, inf)  -> inf	(should be infinity)
 (defun ratlim (e)
   (setq e (sratsimp ($trigreduce e)))
   (cond ((member val '($inf $infinity) :test #'eq)
@@ -1608,7 +1606,20 @@ ignoring dummy variables and array indices."
 			    ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
 			     (throw 'limit t))
 			    ((eq val '$infinity)  '$infinity)
-			    ((not (equal ($imagpart e) 0)) '$infinity)
+			    ;; E is only the ratio of the leading coefficients, so a lower-
+			    ;; order imaginary term never reaches it:
+			    ;; limit(x^2+%i*x, x, inf) has E = 1. Ask the whole function
+			    ;; whether it is real - but only the part of it that survives
+			    ;; the limit. The quotient is x^(ND-DD)*(c0 + c1*x + ...), and
+			    ;; everything past c(DD-ND) goes to zero; those coefficients
+			    ;; need the numerator only up to degree DD and the denominator
+			    ;; only up to degree 2*DD-ND. So neither the %i/x of x^2+%i/x
+			    ;; nor the %i*x^2 of x^3/(x^2+%i) makes the limit infinity.
+			    ((not (equal 0 ($imagpart
+					  ($ratdisrep
+					   `(,h ,(droptop n g dd)
+					     . ,(droptop d g (- (* 2 dd) nd)))))))
+			     '$infinity)
 			    ((null (setq e (getsignl ($realpart e))))
 			     (throw 'limit t))
 			    ((equal e 1) '$inf)
@@ -1640,6 +1651,16 @@ ignoring dummy variables and array indices."
   (if (or (atom n) (not (eq (car n) x)) (null (cdddr n)))
       nil
       (butlast n 2)))
+
+;; N is a polynomial in X in descending powers. Return N without the terms
+;; of degree greater than K. RATLIM uses this to cut a quotient down to the
+;; part of it that the limit still sees.
+(defun droptop (n x k)
+  (if (or (atom n) (not (eq (car n) x)))
+    n
+    (do ((l (cdr n) (cddr l)))
+        ((or (null l) (not (> (car l) k)))
+        (if l (cons (car n) l) 0)))))
 
 ;; This function tries to determine the increasing/decreasing
 ;; behavior of an expression exp with respect to some variable var.

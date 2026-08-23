@@ -3170,9 +3170,11 @@ in the interval of integration.")
     (cond ((and (sinintp exp ivar)     ;To be moved higher in the code.
 		(setq ans (antideriv exp ivar))
 		(setq ans (intsubs ans ll ul ivar)))
-	   ;; If we can integrate it directly, do so and take the
-	   ;; appropriate limits.
-	   )
+	   ;; If we can integrate it directly, do so and take the appropriate
+	   ;; limits. INTSUBS builds the difference of two endpoint limits without
+	   ;; simplifying across it, so the parts that cancel have to be brought
+	   ;; together here.
+	   (setq ans ($expand ans)))
 	  ((setq ans (funclogor%e exp ivar))
 	   ;; ans is the list (f(x) exp(k*x)).
 	   (cond ((and (equal ll 0.)

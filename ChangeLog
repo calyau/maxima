@@ -22,6 +22,7 @@ Bug fixes for numbered bugs:
 * \#5049 a + b and b + a give different results when the like-base term's coefficient is a rational or a float
 * \#5169 GREAT says a[1] > a[1]
 * \#5170 limit(a*x+b, x, inf) = 0 when answering that a=0
+* \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
 
 Bug fixes for unnumbered bugs:
 ------------------------------

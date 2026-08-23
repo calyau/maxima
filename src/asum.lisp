@@ -555,7 +555,10 @@
       (setq hi ($ratdisrep hi))
 
       (setq n ($limit (add 1 (sub hi lo))))
-      (setq sgn ($sign n))
+      ;; N is the number of terms. $SIGN errors out on a complex value,
+      ;; and the count is complex whenever a bound is. $CSIGN answers complex
+      ;; instead, which falls through to the noun form below.
+      (setq sgn ($csign n))
 
       (if (not (eq t (csign lo))) (mfuncall '$assume `((mgeqp) ,i ,lo)))
       (if (not (eq t (csign hi))) (mfuncall '$assume `((mgeqp) ,hi ,i)))
@@ -611,7 +614,10 @@
       (setq lo ($ratdisrep lo))
       (setq hi ($ratdisrep hi))
       (setq n ($limit (add 1 (sub hi lo))))
-      (setq sgn ($sign n))
+      ;; N is the number of terms. $SIGN errors out on a complex value,
+      ;; and the count is complex whenever a bound is. $CSIGN answers complex
+      ;; instead, which falls through to the noun form below.
+      (setq sgn ($csign n))
 
       (if (not (eq t (csign lo))) (mfuncall '$assume `((mgeqp) ,i ,lo)))
       (if (not (eq t (csign hi))) (mfuncall '$assume `((mgeqp) ,hi ,i)))
