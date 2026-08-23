@@ -6644,3 +6644,107 @@ errcatch(defint(exp(0*x),x,0,inf));
 
 error;
 ["defint: integral is divergent."];
+
+
+/* Bug #2200: "gcd : red  bug" */
+
+integrate((sqrt(2-2*x^2) * (sqrt(2) + sqrt(2) * x^2))/(4-4*x^2),x,0,1), gcd : red;
+(3*%pi)/8;
+
+
+/* Bug #2297: "Definite integral doesn't use indefinite integral" */
+
+integrate(1/(sqrt(x)*((1+sqrt(x))^2)),x,1,9);
+1/2;
+
+integrate(1/(sqrt(x)*((1+sqrt(x))^2)),x);
+-(2/(sqrt(x)+1));
+
+
+/* Bug #2339: "integrate(sin(x)/x,x,0,1)" */
+
+is(abs(rectform(float(integrate(sin(x)/x,x,0,1))) - 0.9460830703671831) < 1e-12);
+true;
+
+
+/* Bug #2384: "Call stack overflow in evaluating a definite integral" */
+
+block([fpprec: 40, r],
+ r: integrate(x^2*exp(x)/(1+exp(x))^2,x,-1000,1000),
+ is(abs(bfloat(r) - bfloat(%pi^2/3)) < 1b-30));
+true;
+
+
+/* Bug #2425: "No result for definite integral" */
+
+block([r], assume(a > 0), r: integrate(sin(a*x)^2/x^2,x,0,inf), forget(a > 0), r);
+(%pi*a)/2;
+
+integrate(sin(3*x)^2/x^2,x,0,inf);
+(3*%pi)/2;
+
+
+/* Bug #2631: "Wrong integral: integrate(integrate(exp(-(x-y)^2), y, 0, 1), x, -inf, inf)" */
+
+integrate(integrate(exp(-(x-y)^2), y, 0, 1), x, minf, inf);
+sqrt(%pi);
+
+
+/* Bug #2788: "says integral is divergent when it clearly is not" */
+
+block([res],
+ assume(a > 0),
+ res: integrate(integrate(exp(-a*r+%i*k*r*w)*r^2,w,-1,1),r,0,inf),
+ forget(a > 0),
+ res);
+(4*a)/(k^4+2*a^2*k^2+a^4);
+
+
+/* Bug #2889: "integrate(sin(x)*x*exp(-x^2/2),x,minf,minf) returns wrong result" */
+
+integrate(sin(x)*x*exp(-x^2/2),x,minf,inf);
+(sqrt(2)*sqrt(%pi))/sqrt(%e);
+
+
+/* Bug #3129: "Wrong answer: integrate(-asin(2/%e^x-1),x)" */
+
+radcan(integrate(-asin(2/%e^x-1),x));
+-'integrate(x/sqrt(%e^x-1),x)-atan2(2-%e^x,2*sqrt(%e^x-1))*x;
+
+
+/* Bug #3193: "incorrect sign (negative vs positive) from integrate(log(sqrt(x^2 + y^2)), x, -10, -1)" */
+
+integrate(log(sqrt(x^2 + y^2)), x, -10, -1);
+(20*log(y^2+100)-2*log(y^2+1)+4*atan(10/y)*y-4*atan(1/y)*y-36)/4;
+
+block([r], r: integrate(log(sqrt(x^2 + y^2)), x, -10, -1), is(abs(float(subst(y=4, r)) - 17.132589429726387) < 1e-9));
+true;
+
+block([domain: complex], integrate(log(sqrt(x^2 + y^2)), x, -10, -1));
+(20*log(y^2+100)-2*log(y^2+1)+4*atan(10/y)*y-4*atan(1/y)*y-36)/4;
+
+
+/* Bug #3544: "diff of result of integral not the original function" */
+
+block([f, g, d, v],
+ assume(a > 0, b > 0),
+ f: sqrt(a^2+b^2*sin(x)^2)/sin(x),
+ g: integrate(f,x),
+ d: diff(g,x) - f,
+ v: float(subst([a=1.3, b=0.4, x=2.3], d)),
+ forget(a > 0, b > 0),
+ is(abs(v) < 1e-12));
+true;
+
+
+/* Bug #3649: "Wrong integrate(log(cot(x)-1),x,0,%pi/4) (regression)" */
+
+block([ans: expand(float(integrate(log(cot(x)-1),x,0,%pi/4)))],
+  [is(abs(imagpart(ans)) < 1e-12), is(abs(ans - %pi*log(2)/8) < 1e-12)]);
+[true, true];
+
+
+/* Bug #3781: "integrate(exp( -(1-x)^2 - x^4),x,minf,inf) --> error" */
+
+integrate(exp( -(1-x)^2 - x^4),x,minf,inf);
+'integrate(%e^(-x^4-(1-x)^2),x,minf,inf);
