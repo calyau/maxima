@@ -2419,7 +2419,7 @@ ignoring dummy variables and array indices."
 
   (let ((prod 1) (num 1) (denom 1)
         (zf nil) (ind-flag nil) (inf-type nil)
-        (constant-zero nil) (constant-infty nil))
+        (constant-zero nil) (constant-infty nil) (ind-prod 1))
     (dolist (term exp)
       (let* ((loginprod? (involve term '(%log)))
              (y (catch 'lip? (limit term var val 'think))))
@@ -2448,7 +2448,8 @@ ignoring dummy variables and array indices."
            (setq prod (m* prod y)))
 
           ((eq y '$und) (return-from simplimtimes '$und))
-          ((eq y '$ind) (setq ind-flag t))
+          ((eq y '$ind)
+           (setq ind-flag t ind-prod (m* ind-prod term)))
 
           ;; Some form of infinity
           (t
@@ -2491,7 +2492,14 @@ ignoring dummy variables and array indices."
       ((equal num 1)
        (let ((sign ($csign prod)))
          (cond
-           (ind-flag '$und)
+           ;; A non-real indeterminate factor of constant modulus leaves the
+           ;; modulus of the product infinite and only its phase unknown. A real
+           ;; one instead alternates in sign, which is undefined rather than
+           ;; an infinity of arbitrary phase.
+           (ind-flag (if (and (mnump (ftake 'mabs ind-prod))
+                              (member ($csign ind-prod) '($complex $imaginary)))
+                       '$infinity
+                       '$und))
            ((eq sign '$pos) inf-type)
            ((eq sign '$neg) (case inf-type
                               ($inf '$minf)
@@ -2611,11 +2619,14 @@ ignoring dummy variables and array indices."
 	 (setq sum (fapply 'mplus sum))
 
      (cond (undl
-	     ;; When there are inf, minf, or infinity terms, the limit might not be und.
-         ;; For example, limit(x^2+x*sin(x),x,inf). For such cases, append the und 
-         ;; terms to the infinity terms and continue processing. But when there are 
-		 ;; no infinity terms, the limit is und; for example limit(1 + x*sin(x),x,inf)
-         (cond ((or infl minfl infinityl)
+	     ;; When there are inf or minf terms, the limit might not be und.
+         ;; For example, limit(x^2+x*sin(x),x,inf). For such cases,
+         ;; append the und terms to the infinity terms and continue
+		 ;; processing. An infinity term carries no direction, so it cannot
+		 ;; dominate an und term that way; and with no directed infinity the
+		 ;; limit is und, as in limit(1 + x*sin(x),x,inf) and
+		 ;; limit(x*exp(%i*x)+x*sin(x),x,inf).
+         (cond ((or infl minfl)
                    (setq infinityl (append undl infinityl)))
                  (t (return '$und))))
 	   ((not (or infl minfl indl infinityl))

@@ -3,6 +3,8 @@ Maxima 5.50-post change log
 
 Bug fixes for numbered bugs:
 ----------------------------
+* \#3994 limits of some gamma_incomplete expressions
+* \#4020 various limit bugs with exp(%i*x)
 * \#4830 Non-total ordering between constant & scalar and scalar
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
 * \#4933 asech is treated as an even function

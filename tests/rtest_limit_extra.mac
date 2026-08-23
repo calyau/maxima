@@ -943,8 +943,11 @@ inf$
 limit(x*exp(%i*x),x,inf);
 infinity$
 
+/* x+x*exp(%i*x) is 2*x*cos(x/2)*exp(%i*x/2), which vanishes at every odd
+   multiple of %pi. Its modulus therefore does not diverge, so the limit is
+   und. */
 limit(x+x*exp(%i*x),x,inf);
-infinity$
+und$
 
 limit(1+x*exp(%i*x),x,inf); 
 infinity$
@@ -1469,8 +1472,12 @@ block([ans : limit(x < 8)], [inpart(ans,0),args(ans)]);
 /* \#4634 Divergent integral simplifies to -1/4 with simplify_sum */
 /* I put the test simplify_sum( sum(n*(-1)^n,n,1,inf)) into rtest_simplify_sum. Here is
 the other test mentioned in ticket 4634. */
+/* N is not declared to be an integer, so this limit is taken over the reals,
+   where (-1)^N is %e^(%i*%pi*N) and runs around the unit circle: the modulus
+   diverges and only the phase is unknown. The integer index, which is what
+   ticket 4634 is about, is tested at the end of this file. */
 limit(((-1)^N*(2*N+1))/4-1/4,N,inf);
-und$
+infinity$
 
 /* \#4717 limit(signum(exp(%i*x)*exp(x)),x,inf);*/
 limit(signum(exp(%i*x)*exp(x)),x,inf);
@@ -1742,6 +1749,7 @@ inf$
 
 limit(1/(acos(x)-%pi/2),x,0, 'plus);
 minf$
+
 
 /* clean up*/
 /*(kill(values),0);

@@ -6748,3 +6748,15 @@ block([ans: expand(float(integrate(log(cot(x)-1),x,0,%pi/4)))],
 
 integrate(exp( -(1-x)^2 - x^4),x,minf,inf);
 'integrate(%e^(-x^4-(1-x)^2),x,minf,inf);
+
+
+/* #4020 limit(x*exp(-%i*x^2),x,inf) is infinity, and LIMIT-POLE must not
+   read that as a pole: An infinity fixes no direction, so TAKE-PRINCIPAL has
+   nothing to cancel across and would evaluate erf on the ray arg(z) = %pi/4,
+   where its limit does not exist. */
+
+ratsimp(integrate(exp(-%i*x^2),x,0,inf) - (%e^-((%i*%pi)/4)*sqrt(%pi))/2);
+0;
+
+ratsimp(integrate(exp(-%i*x^3),x,0,inf) - (%e^-((%i*%pi)/6)*gamma(1/3))/3);
+0;

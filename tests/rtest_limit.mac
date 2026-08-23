@@ -1322,3 +1322,39 @@ minf;
 
 limit(a*b*x+c, x, inf), ask_hide_prompt; zero;
 c;
+
+
+/* Bug #3994: "limits of some gamma_incomplete expressions" */
+
+limit(x*gamma_incomplete(1/2,x^2+%i*x), x, inf);
+0;
+
+limit(x*gamma_incomplete(1,x^2+%i*x), x, inf);
+0;
+
+
+/* #4020 a product of an infinity with an indeterminate factor of constant
+   nonzero modulus. The factor has to be non-real: (-1)^floor(x) is real and
+   merely alternates in sign, which is und rather than an infinity of arbitrary
+   phase. */
+
+limit(x*(-1)^floor(x),x,inf);
+und$
+
+limit(x*(-1)^round(x),x,inf);
+und$
+
+
+/* An infinity summand has no direction, so it cannot dominate an und summand
+   the way inf does in limit(x^2+x*sin(x),x,inf). */
+
+limit(x*exp(%i*x)+x*sin(x),x,inf);
+und$
+
+
+/* #4634 with an integer index: (-1)^n is then real and the partial sums
+   alternate along the real axis. */
+
+block([N], local(N), declare(N, integer),
+  limit(((-1)^N*(2*N+1))/4-1/4,N,inf));
+und$

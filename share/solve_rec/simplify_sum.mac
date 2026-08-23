@@ -190,6 +190,8 @@ simplify_sum(expr) :=
  
 
     /*** Now let's try the Gosper algorithm *****************************/
+    /* The declarations below must not outlive this attempt. */
+    supcontext(ss_new_context),
     if errcatch(
       if use_gosper and not(atom(sm1)) and not freeof_sum(sm1) then block(
         [hi1 : ?gensym(), lo1 : ?gensym()],
@@ -197,6 +199,14 @@ simplify_sum(expr) :=
         sm1 : block([ttyoff:ttyoff], nusum(summand, var, lo1, hi1)),
         if freeof_sum(sm1) then (
           ss_print_message(1, "Gosper returns:", sm1),
+          /* A placeholder runs over the other bound plus an integer, so it is
+             an integer exactly when that other bound is one. The limits below
+             need to be told, otherwise (-1)^hi1 looks like a point running
+             around the unit circle. */
+          if hi=inf and featurep(lo, integer) then
+            apply(declare, [hi1, integer]),
+          if (lo=minf or lo=-inf) and featurep(hi, integer) then
+            apply(declare, [lo1, integer]),
           if lo=minf or lo=-inf then
             sm1 : limit(sm1, lo1, lo)
           else
@@ -207,9 +217,12 @@ simplify_sum(expr) :=
             sm1 : subst(hi1=hi, sm1),
           if not freeof_limit(sm1) or not freeof('und, sm1) then sm1: expr)
         else sm1 : expr)) = [] then sm1 : expr,
+    killcontext(ss_new_context),
 
 
     /*** Try the extended Gosper algorithm ******************************/
+    /* Also see comments above in the regular Gosper algorithm. */
+    supcontext(ss_new_context),
     if errcatch(
       if use_gosper and not(atom(sm1)) and not freeof_sum(sm1) then block(
         [hi1 : ?gensym(), lo1 : ?gensym()],
@@ -217,6 +230,10 @@ simplify_sum(expr) :=
         sm1 : block([ttyoff:ttyoff], extended_nusum(summand, var, lo1, hi1)),
         if freeof_sum(sm1) then (
           ss_print_message(1, "Extended Gosper returns:", sm1),
+          if hi=inf and featurep(lo, integer) then
+            apply(declare, [hi1, integer]),
+          if (lo=minf or lo=-inf) and featurep(hi, integer) then
+            apply(declare, [lo1, integer]),
           if lo=minf or lo=-inf then
             sm1 : limit(sm1, lo1, lo)
           else
@@ -227,6 +244,7 @@ simplify_sum(expr) :=
             sm1 : subst(hi1=hi, sm1),
           if not freeof_limit(sm1) then sm1 : expr)
         else sm1 : expr)) = [] then sm1 : expr,
+    killcontext(ss_new_context),
 
     /*** Try converting the sum to finite sum of psi functions **********/
     if use_ratfun and not(atom(sm1)) and not( freeof_sum(sm1) ) and ?ratp(summand, var)
