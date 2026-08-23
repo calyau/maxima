@@ -339,13 +339,13 @@ Per-file `P/P passed` **excludes** registered known failures; the headline
 contract. Edit `test.sh.in`; `tests/test.sh` and every `tests/*.log` are
 generated and gitignored.
 
-**Baseline before blaming your change.** The core suite is meant to be green,
-core + share is not, so `make check` can be red before you touch anything, at
-problem numbers no registry mentions. Nor is every share failure Maxima's:
-results move between Lisp implementations and between versions of one, and the
-older and less-used ones fail tests SBCL passes -- numeric printing is a
-recurring culprit (`README-lisps.md` compares them). Record your own baseline,
-build and Lisp before the change and compare against that.
+**Baseline before blaming your change.** On SBCL both the core suite and core +
+share are expected green, and normally are, so a red run is a real signal and
+not the status quo. It still need not be yours: results move between Lisp
+implementations and between versions of one, and the older and less-used ones
+fail tests SBCL passes -- numeric printing is a recurring culprit
+(`README-lisps.md` compares them). Record your own baseline, build and Lisp
+before the change and compare against that.
 
 ### The known-failure registry
 
