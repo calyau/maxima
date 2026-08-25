@@ -1419,6 +1419,36 @@ block([a, b],
  log(-b) + %i*%pi, log(-b) - %i*%pi];
 
 
+/* Bug #5171: "limits of the form inf * constant" */
+
+limit(x*log(a), x, inf), ask_hide_prompt; pos;
+inf;
+
+limit(x*log(a), x, inf), ask_hide_prompt; neg;
+minf;
+
+limit(x*log(a), x, inf), ask_hide_prompt; zero;
+0;
+
+limit(x*log(a), x, minf), ask_hide_prompt; pos;
+minf;
+
+limit(x*log(-1), x, inf);
+infinity;
+
+limit(%i*x, x, inf);
+infinity;
+
+limit(x^k, k, inf), ask_hide_prompt; pos; pos;
+inf;
+
+limit(x^k, k, inf), ask_hide_prompt; pos; neg;
+infinity;
+
+limit(x^k, k, minf), ask_hide_prompt; pos; pos;
+0;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

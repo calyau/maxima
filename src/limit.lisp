@@ -413,7 +413,16 @@
 		  ((eq z '$zeroa) 0)
 		  ((eq z '$zerob) 0)
 		  (t
-            (setq sgn (maybe-asksign z))
+            ;; SIGN-PREP refuses to ask about an expression whose imaginary part
+            ;; is not EQUAL to 0, e.g. log(a), whose imaginary part is atan2(0, a).
+            ;; Z is a limit value, free of the limit variable, so ask about it
+            ;; with LIMITP bound to NIL - the way CSIGN does, imaginary guard
+            ;; included.
+            (setq sgn (if (and *getsignl-asksign-ok*
+                               (freeof-extended-real z))
+                        (let (sign-imag-errp limitp)
+                          (catch 'sign-imag-err ($asksign z)))
+                        ($csign z)))
             (cond ((eq sgn '$pos) 1)
                   ((eq sgn '$neg) -1)
                   ((eq sgn '$zero) 0)
@@ -1606,6 +1615,10 @@ ignoring dummy variables and array indices."
 			    ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
 			     (throw 'limit t))
 			    ((eq val '$infinity)  '$infinity)
+			    ;; A leading coefficient that is not real leaves an infinity
+			    ;; of arbitrary phase, whatever the rest of the quotient does.
+			    ((and (freeof-extended-real e) (eq t (csign e)))
+			     '$infinity)
 			    ;; E is only the ratio of the leading coefficients, so a lower-
 			    ;; order imaginary term never reaches it:
 			    ;; limit(x^2+%i*x, x, inf) has E = 1. Ask the whole function
@@ -1615,12 +1628,16 @@ ignoring dummy variables and array indices."
 			    ;; need the numerator only up to degree DD and the denominator
 			    ;; only up to degree 2*DD-ND. So neither the %i/x of x^2+%i/x
 			    ;; nor the %i*x^2 of x^3/(x^2+%i) makes the limit infinity.
+			    ;; Divide E out of it first: imagpart(log(a)) is atan2(0, a), so
+			    ;; a coefficient that is real for the right sign of A must not
+			    ;; decide this test - that one is GETSIGNL's question below.
 			    ((not (equal 0 ($imagpart
-					  ($ratdisrep
-					   `(,h ,(droptop n g dd)
-					     . ,(droptop d g (- (* 2 dd) nd)))))))
+			                     (div ($ratdisrep
+			                            `(,h ,(droptop n g dd)
+			                              . ,(droptop d g (- (* 2 dd) nd))))
+			                          e))))
 			     '$infinity)
-			    ((null (setq e (getsignl ($realpart e))))
+			    ((null (setq e (getsignl e)))
 			     (throw 'limit t))
 			    ((equal e 1) '$inf)
 			    ((equal e -1) '$minf)
@@ -2358,7 +2375,20 @@ ignoring dummy variables and array indices."
     ;; When exp is freeof var, optionally apply simplify followed by simpinf. Yes, the
 	;; call to simplify is needed: sometimes exp has the form XXX^1, for example.
 	((freeof var exp)
-	  (if (or (atom exp) (mnump exp)) exp (simpinf (simplify exp))))
+	  (if (or (atom exp) (mnump exp))
+	      exp
+	      (let ((r (simpinf (simplify exp))))
+	        ;; SIMPINF could not absorb an ordinary factor into the infinity it
+	        ;; multiplies - inf*log(a) and the like. That is a failure, not a
+	        ;; limit value, and returning it hides the failure from $LIMIT.
+	        ;; A numeric coefficient is fine.
+	        (if (and (mtimesp r)
+	                 (notevery #'freeof-extended-real (cdr r))
+	                 (some #'(lambda (f)
+	                           (and (freeof-extended-real f) (not (mnump f))))
+	                       (cdr r)))
+	          (throw 'limit t)
+	          r))))
 
     ;; Lookup and dispatch a simplim%function from the property list  
     ((setq op (safe-get (mop exp) 'simplim%function))
@@ -2526,7 +2556,24 @@ ignoring dummy variables and array indices."
                               ($inf '$minf)
                               ($minf '$inf)
                               (t '$infinity)))
-           ((member sign '($complex $imaginary)) '$infinity)
+           ((member sign '($complex $imaginary))
+            ;; $CSIGN answers '$COMPLEX whenever it cannot show PROD is real,
+            ;; so here we see both a genuinely complex PROD, where '$INFINITY
+            ;; is the right answer, and one that is real, where it need not be.
+            ;; Regular $(ASK)SIGN has the opposite problem, often returning an
+            ;; answer instead of erroring out on genuinely complex expressions.
+            ;; So settle realness from the imaginary part, and read the sign
+            ;; verdict only for whether PROD can vanish: '$PNZ, '$PZ and '$NZ
+            ;; all admit zero, and there the limit may be 0 rather than an
+            ;; infinity at all, so '$INFINITY would be false - decline there,
+            ;; giving a chance to another method or a second try.
+            ;; '$PN does not admit zero, so the product diverges whichever sign
+            ;; it has. The exclusion of '$PN matters, because CSIGN answers '$PN
+            ;; for (-1)^a, whose imaginary part is not provably nonzero.
+            (if (and (member (csign prod) '($pnz $pz $nz))
+                     (not (eq t (mnqp 0 ($imagpart prod)))))
+              (throw 'limit t)
+              '$infinity))
            ; sign is '$zero, $pnz, $pz, etc
            (t (throw 'limit t)))))
       ;; Both zeros and infinities
