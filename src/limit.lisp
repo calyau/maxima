@@ -413,7 +413,7 @@
 		  ((eq z '$zeroa) 0)
 		  ((eq z '$zerob) 0)
 		  (t
-            (setq sgn (if *getsignl-asksign-ok* ($asksign z) ($csign z)))
+            (setq sgn (maybe-asksign z))
             (cond ((eq sgn '$pos) 1)
                   ((eq sgn '$neg) -1)
                   ((eq sgn '$zero) 0)
@@ -3411,6 +3411,14 @@ ignoring dummy variables and array indices."
     ($asksign e)
     ($csign e)))
 
+(defun maybe-asksign-real (e)
+  "When `*getsignl-asksign-ok*` is true, call `asksign`, otherwise call `sign`."
+  (if *getsignl-asksign-ok*
+    ($asksign e)
+    ;; LIMITP gives SIGN-PREP's normalization, but for a PRIN-INF expression,
+    ;; SIGN-PREP answers about the limit, not the value.
+    (let ((limitp (and limitp (free e 'prin-inf)))) ($sign e))))
+
 ;;; Limit(log(XXX), var, 0, val), where val is either zerob (limit from below)
 ;;; or zeroa (limit from above).
 (defun simplimln (expr var val)
@@ -3457,13 +3465,17 @@ ignoring dummy variables and array indices."
 
 	    (t
 	       (let* ((z (trisplit arglim)) (xx (car z))  (yy (cdr z)) (sgn))
-           ;; When yy vanishes, find the sign of xx. But when the sign is 'pnz', 
+           ;; When yy vanishes, find the sign of xx. But when the sign isn't definitive,
 		   ;; use asksign. We could use 'meqp' or 'askequal' to  test for a vanishing yy,
 		   ;; but for now, we'll test for a syntactic zero
 			(when (eql 0 yy)
-				(setq sgn (maybe-asksign xx))
-				(when (eq sgn '$pnz)
-		   	      (setq sgn (let ((*getsignl-asksign-ok* t)) (maybe-asksign xx)))))
+				(setq sgn (maybe-asksign-real xx))
+				(unless (member sgn '($pos $neg $zero))
+		   	      ;; Probably it would be better to (THROW 'LIMIT T) here, for the sake
+		   	      ;; of consistency (first try without asking). But if we do this, some
+		   	      ;; cases don't reach the second pass where we would ask, because Gruntz
+		   	      ;; answers, and it does so incorrectly. So we just ask forcefully.
+		   	      (setq sgn (let ((*getsignl-asksign-ok* t)) (maybe-asksign-real xx)))))
 
 	        (cond 
   		  	  ((and (eql 0 yy) (eq sgn '$neg)) ; arglim on the negative real axis
@@ -3567,7 +3579,7 @@ ignoring dummy variables and array indices."
 			  ((equal rlim '$minf) -1)))
 		   ((eq fn '%erf)
 		    (setq ans (limit (m* rpart (m^t ipart -1)) var origval 'think))
-		    (setq ans ($asksign (m+ `((mabs) ,ans) -1)))
+		    (setq ans (maybe-asksign-real (m+ `((mabs) ,ans) -1)))
 		    (cond ((or (eq ans '$pos) (eq ans '$zero))
 			   (cond ((eq rlim '$inf) 1)
 				 ((eq rlim '$minf) -1)
@@ -4379,9 +4391,7 @@ ignoring dummy variables and array indices."
 (defun mrv-sign-constant (e)
    (if (member e extended-reals)
       (throw 'taylor-catch nil)
-      (mrv-sign-to-number (if *getsignl-asksign-ok*
-                              ($asksign e)
-                              ($sign e)))))
+      (mrv-sign-to-number (maybe-asksign e))))
 
 ;; Return the mrv-sign of e, where e is a sum.
 (defun mrv-sign-sum (e x)	
@@ -4477,8 +4487,7 @@ ignoring dummy variables and array indices."
 	  ((and (eql a 0) (or (eql b 1) (eql b 2))) 0)
 	  ;; For all other cases, let's dispatch csign or asksign
 	  (t 
-	    (mrv-sign-to-number 
-	      (if *getsignl-asksign-ok* ($asksign e) ($csign e)))))))
+	    (mrv-sign-to-number (maybe-asksign e))))))
 
 (defun atanp (e)
 	(and (consp e) (eq '%atan (caar e))))

@@ -23,6 +23,7 @@ Bug fixes for numbered bugs:
 * \#5169 GREAT says a[1] > a[1]
 * \#5170 limit(a*x+b, x, inf) = 0 when answering that a=0
 * \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
+* \#5173 assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)
 
 Bug fixes for unnumbered bugs:
 ------------------------------

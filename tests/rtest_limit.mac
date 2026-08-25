@@ -34,8 +34,8 @@ limit(erf(nn*zz), nn, inf);
 0$
 limit(tanh(nn*zz), nn, inf);
 0$
-limit(nn^zz, nn, 0);
-1$
+[limit(nn^zz, nn, 0), forget(equal(zz, 0))];
+[1, [equal(zz, 0)]]$
 
 /* Bug 1281737, fixed in limit.lisp rev 1.15 */
 limit(atan(x)/(1/exp(1)-exp(-(1+x)^2)),x,inf,plus);
@@ -277,8 +277,8 @@ tlimit(atan(x^-1), x, 0, minus);
 -%pi/2;
 
 /* [ 1973399 ] F(x) := 1/%pi*(atan(x) + %pi/2) */
-(assume(c>0), limit(((1/%pi)*(atan(n/%pi) + %pi/2))^n, n, inf));
-%e^(-1);
+(assume(c>0), [limit(((1/%pi)*(atan(n/%pi) + %pi/2))^n, n, inf), forget(c > 0)]);
+[%e^(-1), [c > 0]];
 
 /* [ 1103515 ] limit(atan2(x,-1),x,0) wrong */
 limit(atan2(x,-1), x, 0, minus);
@@ -697,7 +697,7 @@ und;
 0$
 limit(r^(b-2)*(x-r)^2,r,0);
 inf$
-(forget(equal(b,0)),notequal(x,0),0);
+(forget(equal(b,0),notequal(x,0)),0);
 0$
 
 /* Bug ID: 221642 limit needs %piargs to be true
@@ -1406,3 +1406,22 @@ infinity$
 
 limit(x^4/(x^2+%i),x,inf);
 infinity$
+
+
+/* Bug #5173: "assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)" */
+
+block([a, b],
+ local(a, b),
+ assume(a <= 0, b < 0),
+ [limit(log(a + %i*x), x, 0, plus), limit(log(a - %i*x), x, 0, plus),
+  limit(log(b + %i*x), x, 0, plus), limit(log(b - %i*x), x, 0, plus)]), ask_hide_prompt; neg;
+[log(-a) + %i*%pi, log(-a) - %i*%pi,
+ log(-b) + %i*%pi, log(-b) - %i*%pi];
+
+
+/**************************************/
+/* Leave this at the end of the file! */
+/**************************************/
+
+[facts(), contexts];
+[[], [initial, global]]$
