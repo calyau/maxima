@@ -16,6 +16,7 @@ Bug fixes for numbered bugs:
 * \#4978 mod(x, 0.0) raises a Lisp error while mod(x, 0) returns x
 * \#4980 acot of a bigfloat zero raises a Lisp error
 * \#4992 quad_* can leave temporary variable assignments in place
+* \#4994 simplify_sum no longer queries for assumptions
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
 * \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
 * \#5048 e - e doesn't simplify to 0: like-base power terms are not merged when another term sorts between them
