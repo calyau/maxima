@@ -298,6 +298,21 @@ block([ans],
 [-atan2(x, y), -atan2(x^2, y), -atan2(sqrt(x), y), -atan2(%e^x, y)];
 
 
+/* Bug #4987: "translate changes float values, including the sign of an atan2 result" */
+
+(w(y, x) := (mode_declare([y, x], float), atan2(y, x)), translate(w), 0);
+0$
+
+errcatch(w(0.0, 0.0));
+[]$
+
+w(1.0, -1.0);
+2.356194490192345$
+
+(kill(w), 0);
+0$
+
+
 (kill(values),0);
 0$ 
 

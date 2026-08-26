@@ -304,7 +304,13 @@
   (frob $max #'cl:max)
   (frob $min #'cl:min)
   (frob %signum #'cl:signum)
-  (frob %atan2 #'cl:atan))
+  (frob %atan2
+        #'(lambda (y x)
+            ;; CL:ATAN is defined at (0, 0), Maxima's atan2 is not.
+            (if (and (zerop y) (zerop x))
+                (merror
+                  (intl:gettext "atan2: atan2(0,0) is undefined."))
+                (cl:atan y x)))))
 
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *big-float-op*) ,dfun)))
   ;; All big-float implementation functions MUST support a required x

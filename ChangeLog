@@ -19,6 +19,7 @@ Bug fixes for numbered bugs:
 * \#4977 M^^(-n) fails for every 1x1 matrix
 * \#4978 mod(x, 0.0) raises a Lisp error while mod(x, 0) returns x
 * \#4980 acot of a bigfloat zero raises a Lisp error
+* \#4987 translate changes float values, including the sign of an atan2 result
 * \#4992 quad_* can leave temporary variable assignments in place
 * \#4994 simplify_sum no longer queries for assumptions
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
