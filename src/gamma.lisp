@@ -1112,7 +1112,8 @@
 		    (an (- a 1.0) (* i (- a i)))
 		    (b (+ 3.0 x (- a)) (+ b 2.0))
 		    (c (/ 1.0 gm-min))
-		    (d (/ 1.0 (- b 2.0)))
+		    (d (let ((b0 (- b 2.0)))
+			 (/ 1.0 (if (< (abs b0) gm-min) gm-min b0))))
 		    (h d)
 		    (del 0.0))
 		   ((> i gm-maxit)
@@ -1168,7 +1169,11 @@
 		(an (sub a 1.0) (mul i (sub a i)))
 		(b (add 3.0 x (mul -1 a)) (add b 2.0))
 		(c (div 1.0 gm-min))
-		(d (div 1.0 (sub b 2.0)))
+		(d (let ((b0 (sub b 2.0)))
+		     (div 1.0
+		          (if (eq ($sign (sub (ftake 'mabs b0) gm-min)) '$neg)
+		            gm-min
+		            b0))))
 		(h d)
 		(del 0.0))
 	       ((> i gm-maxit)
@@ -1276,7 +1281,11 @@
 		(an (sub a 1.0) (mul i (sub a i)))
 		(b (add 3.0 x (mul -1 a)) (add b 2.0))
 		(c (cdiv 1.0 gm-min))
-		(d (cdiv 1.0 (sub b 2.0)))
+		(d (let ((b0 (sub b 2.0)))
+		     (cdiv 1.0
+		           (if (eq ($sign (sub (ftake 'mabs b0) gm-min)) '$neg)
+		             gm-min
+		             b0))))
 		(h d)
 		(del 0.0))
 	       ((> i gm-maxit)

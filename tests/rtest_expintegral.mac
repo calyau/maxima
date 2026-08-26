@@ -3300,6 +3300,12 @@ is(abs(expintegral_ci(-2.0 * %i) - block([fpprec : 25], bfloat(expintegral_ci(-2
 true;
 
 
+/* Bug #4954: "Unguarded division by zero in three numeric iterations" */
+
+is(abs(expintegral_e(-5/2, 2.5) - 2.5^(-7/2)*gamma_incomplete(7/2, 2.5)) < 1e-14);
+true;
+
+
 (reset(expintrep), expintrep);
 false;
      
