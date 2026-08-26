@@ -2021,22 +2021,34 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;;; Determine the sign of log(expr). This function changes the special variable sign.
 
 (defun sign-log (x)
-  (setq x (cadr x))
-  (sign x)
+ (let* ((arg (cadr x))
+        (dummy (sign arg)) ;; SIGN sets SIGN, MINUS, ODDS, EVENS, describing ARG.
+        (arg-sign sign))   ;; Its return value is meaningless.
+  (declare (ignore dummy))
   (setq sign
-	(cond ((eq sign '$zero) (log0-err `((%log) ,x))) ; log(0) is undefined.
+	(cond ((eq sign '$zero) (log0-err x)) ; log(0) is undefined.
           ((member sign '($pos $pz)) ; accept $PZ - we already handled definitely 0
-	       (cond ((eq t (mgrp 1 x)) '$neg)
-		     ((eq t (meqp x 1)) '$zero);; log(1) = 0.
-		     ((eq t (mgqp 1 x)) '$nz)
-		     ((eq t (mgrp x 1)) '$pos)
-		     ((eq t (mgqp x 1)) '$pz)
-		     ((eq t (mnqp x 1)) '$pn)
+	       (cond ((eq t (mgrp 1 arg)) '$neg)
+		     ((eq t (meqp arg 1)) '$zero);; log(1) = 0.
+		     ((eq t (mgqp 1 arg)) '$nz)
+		     ((eq t (mgrp arg 1)) '$pos)
+		     ((eq t (mgqp arg 1)) '$pz)
+		     ((eq t (mnqp arg 1)) '$pn)
 		     (t '$pnz)))
-	      ((and  *complexsign* (eql 1 (cabs x))) '$imaginary)
+	      ((and  *complexsign* (eql 1 (cabs arg))) '$imaginary)
 	      (*complexsign* '$complex)
 	      ((eq sign '$pnz) '$pnz)
-	      (t (imag-err `((%log) ,x))))))
+	      (t (imag-err x))))
+  ;; If SIGN isn't '$POS, '$NEG or '$ZERO, $ASKSIGN will ask for the sign of the
+  ;; expression described by MINUS, ODDS and EVENS. Set them to name an
+  ;; expression of the same sign as log(ARG). For a nonnegative ARG, that is
+  ;; ARG - 1, and the fact stored by $ASKSIGN then is about ARG itself, and not
+  ;; only the logarithm. Where ARG may be negative, it has to be log(ARG) itself.
+  ;; (It would be nice if $ASKSIGN could store different facts based on what the
+  ;; user answers: Answering log(ARG) > 0 could then store ARG > 1.)
+  (setq minus nil evens nil
+        odds (unless (member sign '($pos $neg $zero))
+               (ncons (if (member arg-sign '($pos $pz)) (sub arg 1) x))))))
 
 (defun sign-mabs (x)
   (let ((*complexsign* t))

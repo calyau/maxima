@@ -2270,6 +2270,27 @@ pnz;
 0;
 
 
+/* Bug #5175: "asksign(log(x)) records the wrong fact" */
+
+[asksign(log(a)), sign(log(a)), facts()], ask_hide_prompt; pos;
+[pos, pos, [log(a) > 0]];
+
+[asksign(log(a)), sign(log(a)), facts()], ask_hide_prompt; neg;
+[neg, neg, [0 > log(a)]];
+
+[asksign(log(a)), sign(log(a)), facts()], ask_hide_prompt; zero;
+[zero, zero, [equal(log(a), 0)]];
+
+block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), is(a > 1), facts()]), ask_hide_prompt; pos;
+[pos, pos, true, [a > 0, a > 1]];
+
+block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), facts()]), ask_hide_prompt; neg;
+[neg, neg, [a > 0, 1 > a]];
+
+block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), facts()]), ask_hide_prompt; zero;
+[zero, zero, [a > 0, equal(a, 1)]];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
