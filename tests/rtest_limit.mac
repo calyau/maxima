@@ -196,6 +196,10 @@ ind;
 tlimit(exp(-t+%i*t),t,inf);
 0;
 
+/* #4162 limit(exp(x^2+%i*x),x,inf) */
+limit(exp(x^2+%i*x),x,inf);
+infinity$
+
 /* [ 1811503 ] computing a wrong result */
 limit((((1+1/x)^(x^2))+1)^(1/x),x,inf);
 %e;
