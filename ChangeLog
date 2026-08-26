@@ -14,6 +14,7 @@ Bug fixes for numbered bugs:
 * \#4946 scaled_bessel_i0, scaled_bessel_i1, scaled_bessel_i silently demote a bigfloat to a double
 * \#4954 Unguarded division by zero in three numeric iterations
 * \#4959 rectform of a complex float raised to a power is off by thirteen orders of magnitude
+* \#4964 linsolve_by_lu raises a raw Lisp error on a singular float matrix
 * \#4965 recttopolar and polartorect are silent no-ops on lists
 * \#4967 cdf_lognormal and pdf_lognormal error at x = 0
 * \#4975 zn_order returns a negative order for a negative modulus

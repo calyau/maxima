@@ -237,6 +237,10 @@
 	(setq acc (m-elem bb id-perm i q))
 	(loop for j from (+ 1 i) to c do
 	  (setq acc (funcall fsub acc (funcall fmult (m-elem mat perm i j) (m-elem bb id-perm j q)))))
+	(when (eq t (meqp (funcall (mring-mring-to-maxima fld)
+				   (m-elem mat perm i i))
+			  0))
+	  (merror (intl:gettext "lu_backsub: matrix is singular.")))
 	(setmatelem bb (funcall fdiv acc (m-elem mat perm i i)) i q)))
     
     (setq bb (matrix-map (mring-mring-to-maxima fld) bb))

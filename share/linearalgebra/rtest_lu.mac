@@ -308,6 +308,16 @@ block([matrix_element_mult : ".", mm : get_lu_factors(lu_factor(mat, 'noncommuti
   zeromatrixp(mat - first(mm) . second(mm) . third(mm)));
 true$
 
+
+/* Bug #4964: "linsolve_by_lu raises a raw Lisp error on a singular float matrix" */
+
+(errcatch(linsolve_by_lu(matrix([1.0,2.0],[2.0,4.0]), matrix([1.0],[2.0]))), first(error)), errormsg : false;
+"lu_backsub: matrix is singular.";
+
+(errcatch(linsolve_by_lu(matrix([1,2],[2,4]), matrix([1],[2]))), first(error)), errormsg : false;
+"lu_backsub: matrix is singular."$
+
+
 (reset(ratprint, float2bf, matrix_element_mult, matrix_element_transpose),0);
 0$
 
@@ -316,14 +326,3 @@ true$
 
 (kill(values),0);
 0$
-
-
-
-
-
-
-
-
-
-
-
