@@ -4235,6 +4235,18 @@ block([fpprec: 40], is(abs(scaled_bessel_i(2, bfloat(3))/(exp(-3b0)*bessel_i(2, 
 true;
 
 
+/* Bug #4958: "nroots returns a wrong root count for float or bigfloat interval endpoints" */
+
+[nroots(3*x-1, 0.3333333333333333, 1), nroots(3*x-1, 0, 0.3333333333333333)], ratprint : false;
+[1, 0];
+
+[nroots(x^2-2, 1.414213562373095, 2), nroots(x^2-2, 1, 1.414213562373095)], ratprint : false;
+[1, 0];
+
+nroots(x^10-2*x^4+1/2, -6, 9.1), ratprint : false;
+4;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$

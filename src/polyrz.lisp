@@ -168,8 +168,7 @@
 (defun makpoint (pt)
   (cond ((eq pt '$inf) 1)
 	((eq pt '$minf) -1)
-	(t (makrat (let (($numer t))
-		     (meval pt))))))
+	(t (makrat ($rationalize (let (($numer t)) (meval pt)))))))
 
 (defmfun $nroots (exp &optional (l '$minf) (r '$inf))
   (let (varlist $keepfloat $ratfac)
