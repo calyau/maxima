@@ -236,6 +236,9 @@
            (risplit-expt-real^rat base pow)
            (risplit-expt-sqrt-pow base sp pow)))
 
+      ((and (or (floatp pow) ($bfloatp pow)) (spcomplexnump sp))
+       (risplit-expt-inexact-pow sp pow))
+
       ((and (floatp base) (floatp pow))
        (risplit (let (($numer t)) (exptrl base pow))))
 
@@ -263,7 +266,7 @@
            (let ((abs2 (spabs sp)))
              (cons (div real abs2) (mul -1 (div imag abs2))))))
 
-      ((> (abs power) $maxposex)
+      ((and (> (abs power) $maxposex) (not (spinexactp sp)))
        (if (=0 imag)
            (cons (powers real power) 0)
            (let ((abs^n (powers (spabs sp) (*red power 2)))
@@ -272,11 +275,11 @@
                    (mul abs^n (take '(%sin) natan))))))
 
       ((> power 0)
-       (expanintexpt sp power))
+       (spintexpt sp power))
 
       (t
        (let ((abbas (powers (spabs sp) (- power)))
-             (basspli (expanintexpt sp (- power))))
+             (basspli (spintexpt sp (- power))))
          (cons (div (car basspli) abbas)
                (neg (div (cdr basspli) abbas))))))))
 
@@ -294,6 +297,21 @@
                    (mul alpha theta))))
     (cons (mul pre (take '(%cos) post))
           (mul pre (take '(%sin) post)))))
+
+;; Split BASE^POW into real and imaginary parts. SP is (RISPLIT BASE) and is
+;; assumed to be a complex number, POW is assumed to be a float or a bigfloat.
+(defun risplit-expt-inexact-pow (sp pow)
+  (let ((sp (if (or ($bfloatp (car sp)) ($bfloatp (cdr sp)) ($bfloatp pow))
+                (cons ($bfloat (car sp)) ($bfloat (cdr sp)))
+                (cons ($float (car sp)) ($float (cdr sp)))))
+        (n (integer-representation-p pow)))
+    (if n
+      ;; BASE^POW is the integer power BASE^N, whose argument is N times the
+      ;; argument of BASE. Multiplying that out spends the leading digits of the
+      ;; product on a multiple of 2*%pi, so raise BASE to the N instead.
+      (risplit-expt-fixnum-pow sp n)
+      (destructuring-bind (r . theta) (absarg1 (add (car sp) (mul '$%i (cdr sp))))
+        (risplit-expt-general-form r theta pow 0)))))
 
 ;; Split BASE^POWER into real and imaginary parts. We assume that BASE is real
 ;; and that POWER is a rational number.
@@ -342,7 +360,7 @@
          ;; imag > 0. To see that the first argument of the PORM call below is
          ;; correct, write out the 2x2 truth table...
          (divcarcdr
-          (expanintexpt
+          (spintexpt
            (cons (power (add abs real) 1//2)
                  (porm (eq (eq imag-sign '$pos) pos?)
                        (power (sub abs real) 1//2)))
@@ -575,6 +593,41 @@
 (defun divcarcdr (a b)
   (cons (div (car a) b) (div (cdr a) b)))
 
+
+(defun spcomplexnump (sp)
+  "Is SP, a (<real part> . <imaginary part>) pair, a complex number?"
+  (and (mnump (car sp))
+       (mnump (cdr sp))
+       (not (zerop1 (cdr sp)))))
+
+(defun spinexactp (sp)
+  "Is SP a complex number with a float or a bigfloat part?"
+  (and (spcomplexnump sp)
+       (or (floatp (car sp))
+           (floatp (cdr sp))
+           ($bfloatp (car sp))
+           ($bfloatp (cdr sp)))))
+
+(defun spmult (sp1 sp2)
+  "Multiply SP1 and SP2, both (<real part> . <imaginary part>) pairs"
+  (cons (sub (mul (car sp1) (car sp2)) (mul (cdr sp1) (cdr sp2)))
+        (add (mul (car sp1) (cdr sp2)) (mul (cdr sp1) (car sp2)))))
+
+(defun spintexpt (base n)
+  "Compute base^N, where base is (<real part> . <imaginary part>), and N is a
+  positive integer"
+  (if (and (spinexactp base) (> n 0))
+    ;; The binomial expansion in EXPANINTEXPT is exact as long as BASE is,
+    ;; but its terms are larger than their sum by a factor of about
+    ;; binomial(n, n/2), so for an inexact BASEBASE the cancellation eats every
+    ;; significant digit. Use exponentiation by squaring instead, which costs
+    ;; only the rounding error of 2*log2(n) multiplications.
+    (do ((acc base)
+         (i (- (integer-length n) 2) (1- i)))
+        ((< i 0) acc)
+      (setq acc (spmult acc acc))
+      (when (logbitp i n) (setq acc (spmult acc base))))
+    (expanintexpt base n)))
 
 ;;Expand bas^n, where bas is (<real part> . <imaginary part>)
 

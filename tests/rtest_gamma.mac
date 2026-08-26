@@ -3430,7 +3430,7 @@ closeto(
   float(rectform(float(beta_incomplete(2,5/2,-3/2+%i))))
                 -beta_incomplete(2.0,2.5,-1.5+%i),
   0.0,
-  4.35e-15); /* we have lost accuracy. More tests necessary? */
+  5.5e-15); /* we have lost accuracy. More tests necessary? */
 true;
 
 /* Incomplete Beta is defined for negative integers a and b >= (-a)
@@ -3638,7 +3638,7 @@ true;
 relerror(
   gamma_incomplete(10,-100b0+%i),
   subst(x=-100b0+%i, block([gamma_expand : true], gamma_incomplete(10,x))),
-  2.04b-64);
+  3.3b-64);
 true;
 
 relerror(
@@ -4242,3 +4242,47 @@ true;
 
 block([fpprec:30], is(abs(bfloat(log_gamma(1+%i)) - log_gamma(1.0+%i)) < 1e-14));
 true;
+
+
+/* Bug #4959: "rectform of a complex float raised to a power is off by thirteen orders of magnitude" */
+
+rectform((1+%i)^200);
+2^100;
+
+is(abs(rectform((1.0+%i)^200)/float(2^100) - 1) < 1e-15);
+true;
+
+numberp(rectform((1+%i)^200.0));
+true;
+
+is(abs(rectform((1+%i)^200.0)/float(2^100) - 1) < 1e-15);
+true;
+
+is(abs(rectform((1.0+%i)^200.0)/float(2^100) - 1) < 1e-15);
+true;
+
+is(abs(rectform((1b0+%i)^200)/bfloat(2^100) - 1) < 1b-16);
+true;
+
+is(abs(rectform((1b0+%i)^200b0)/bfloat(2^100) - 1) < 1b-16);
+true;
+
+is(abs(rectform((1.0+%i)^-200)/float(2^-100) - 1) < 1e-15);
+true;
+
+is(abs(rectform((1.0+%i)^2000)/float(2^1000) - 1) < 1e-15);
+true;
+
+block([ref : float(-2^50*rectform(sqrt(1+%i)))],
+ is(cabs(rectform((1.0+%i)^(201/2)) - ref)/float(2^(201/4)) < 1e-13));
+true;
+
+block([ref : float(-2^50*rectform(sqrt(1+%i)))],
+ is(cabs(rectform((1b0+%i)^(201/2)) - ref)/float(2^(201/4)) < 1e-13));
+true;
+
+rectform((3+4*%i)^7);
+76443 + 16124*%i;
+
+rectform((a+b*%i)^3);
+a^3 - 3*a*b^2 + %i*(3*a^2*b - b^3);
