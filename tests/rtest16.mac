@@ -4261,6 +4261,9 @@ block([fpprec : 50], length(bfallroots((x-3)^4*(x+1))));
 (imagpart(atan(2*y)^(y+1.5)), facts());
 [];
 
+(forget(assume(equal(atan(2*x), 0))), facts());
+[];
+
 
 /* Leave this at the end of the file! */
 [facts(), contexts];
