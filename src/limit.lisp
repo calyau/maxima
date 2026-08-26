@@ -1631,11 +1631,11 @@ ignoring dummy variables and array indices."
 			    ;; Divide E out of it first: imagpart(log(a)) is atan2(0, a), so
 			    ;; a coefficient that is real for the right sign of A must not
 			    ;; decide this test - that one is GETSIGNL's question below.
-			    ((not (equal 0 ($imagpart
+			    ((not (equal 0 ($imagpart (sratsimp
 			                     (div ($ratdisrep
 			                            `(,h ,(droptop n g dd)
 			                              . ,(droptop d g (- (* 2 dd) nd))))
-			                          e))))
+			                          e)))))
 			     '$infinity)
 			    ((null (setq e (getsignl e)))
 			     (throw 'limit t))

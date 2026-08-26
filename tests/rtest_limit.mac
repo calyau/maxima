@@ -1448,6 +1448,30 @@ infinity;
 limit(x^k, k, minf), ask_hide_prompt; pos; pos;
 0;
 
+limit(x*log(a)^2, x, inf), ask_hide_prompt; pos;
+inf;
+
+limit(x*log(a)^2, x, inf), ask_hide_prompt; zero;
+0;
+
+limit(-x*log(a)^2, x, inf), ask_hide_prompt; pos;
+minf;
+
+limit(x*(log(a) + log(b)), x, inf), ask_hide_prompt; pos;
+inf;
+
+limit(x*sqrt(a), x, inf), ask_hide_prompt; pos;
+inf;
+
+limit(a^x*b^x, x, inf), ask_hide_prompt; pos; pos;
+inf;
+
+limit(a^x*b^x, x, inf), ask_hide_prompt; neg; neg;
+0;
+
+limit(x*acos(2), x, inf);
+infinity;
+
 
 /**************************************/
 /* Leave this at the end of the file! */
