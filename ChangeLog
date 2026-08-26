@@ -25,6 +25,7 @@ Bug fixes for numbered bugs:
 * \#5170 limit(a*x+b, x, inf) = 0 when answering that a=0
 * \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
 * \#5171 limits of the form inf * constant
+* \#5172 assume(a>1,b>0)$ is(a*b>1) -> true
 * \#5173 assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)
 * \#5175 asksign(log(x)) records the wrong fact
 

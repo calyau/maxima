@@ -1799,6 +1799,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
            (let ((acctimes) (flag))
              ;; Go through the factors of the multiplication.
              (dolist (ll (cdar l))
+              (let (factor-shifted)
                (cond ((symbolp ll)
                       ;; Get the facts related to the symbol (car l)
                       ;; Reverse the order to test the newest facts first.
@@ -1809,18 +1810,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                                     (eq ($sign (caddr f)) '$pos))
                                ;; The case a > n, where a is a symbol and n a
                                ;; number. Add the number to the list of terms.
-                               (setq flag t)
+                               (setq flag t factor-shifted t)
                                (return (push (add ll (caddr f)) acctimes)))
                               ((and (eq (caar f) 'mgreaterp)
                                     (mnump (cadr f))
                                     (eq ($sign (cadr f)) '$neg))
                                ;; The case a < -n, where a is a symbol and n a
                                ;; number. Add the number to the list of terms.
-                               (setq flag t)
+                               (setq flag t factor-shifted t)
                                (return (push (add ll (cadr f)) acctimes)))))
-                        (when (not flag) (push ll acctimes)))
+                        (unless factor-shifted (push ll acctimes)))
                      (t
-                      (push ll acctimes))))
+                      (push ll acctimes)))))
              (if flag
                  ;; If a shift has been done expand the factors.
                  (push ($multthru (muln acctimes nil)) acc)

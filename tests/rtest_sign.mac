@@ -2291,6 +2291,15 @@ block([a], local(a), assume(a > 0), [asksign(log(a)), sign(a - 1), facts()]), as
 [zero, zero, [a > 0, equal(a, 1)]];
 
 
+/* Bug #5172: "assume(a>1,b>0)$ is(a*b>1) -> true" */
+
+block([a, b], local(a, b), assume(a > 1, b > 0), is(a * b > 1));
+unknown;
+
+block([a, b], local(a, b), assume(a > 1, b > 1), is(a * b > 1));
+true;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
