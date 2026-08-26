@@ -96,15 +96,52 @@
 		   (div (power z 3)
 			9)))))
 
+(defun airy-cancellation-digits (z)
+  "Decimal digits destroyed by cancellation in the hypergeometric form of Ai and
+  Ai'. Both terms there grow like Bi, that is like exp(2/3*z^(3/2)), while the
+  combination decays like exp(-2/3*z^(3/2)), so the sum sheds about
+  2*realpart(2/3*z^(3/2)) nepers, or that over log(10) digits. On the negative
+  real axis, realpart(z^(3/2)) is zero and nothing is lost."
+  (let ((w (ignore-errors
+             (realpart
+               (* 4/3 (expt (complex ($float ($realpart z)) ($float ($imagpart z)))
+                            3/2))))))
+    (if (and (realp w) (plusp w))
+      (ceiling (/ w (log 10.0d0)))
+      0)))
+
+;; Evaluate BUILDER's hypergeometric form of an Airy function at enough extra
+;; precision to survive the cancellation, then round back to the caller's FPPREC.
+;; Without this, bfloat(airy_ai(20)) returned 0.0b0, and bfloat(airy_ai(30))
+;; returned 2.097152b6 = 2^21 - pure roundoff residue, where the true values are
+;; 1.69b-27 and 3.21b-49.
+;;
+;; HYPERGEOMETRIC-BY-SERIES has its own precision loop, but it cannot see this
+;; cancellation: Each series is computed to full relative accuracy, and the
+;; digits die in the outer sum. That loop doubles its working precision twice
+;; before giving up at $MAX_FPPREC, so anything needing more than a quarter of
+;; $MAX_FPPREC is out of reach - there we return NIL and let the caller give up,
+;; leaving the expression unevaluated rather than handing back a number that is
+;; wrong by hundreds of orders of magnitude.
+;;
+(defun airy-bfloat-with-guard-digits (z builder)
+  (let ((needed (+ $fpprec (airy-cancellation-digits z) 10)))
+    (declare (special $max_fpprec))
+    (when (< (* 4 needed) $max_fpprec)
+      ;; BUILDER is called inside the widened scope on purpose: It forms z^3/9,
+      ;; and building that at the caller's FPPREC would round the argument
+      ;; before the extra digits could do any good.
+      (let ((hi (bind-fpprec needed ($rectform ($bfloat (funcall builder z))))))
+        ($rectform ($bfloat hi))))))
+
 (def-simplifier airy_ai (z)
   (cond ((equal z 0)	     ; A&S 10.4.4: Ai(0) = 3^(-2/3)/gamma(2/3)
 	 (div (power 3 (div -2 3))
 	      (take '(%gamma) (div 2 3))))
 	((flonum-eval (mop form) z))
-	((or (bigfloat-numerical-eval-p z)
-	     (complex-bigfloat-numerical-eval-p z))
-	 ($rectform
-	  ($bfloat (airy-ai-hypergeometric z))))
+	((and (or (bigfloat-numerical-eval-p z)
+		  (complex-bigfloat-numerical-eval-p z))
+	      (airy-bfloat-with-guard-digits z #'airy-ai-hypergeometric)))
 	($hypergeometric_representation
 	 (airy-ai-hypergeometric z))
 	(t (give-up))))
@@ -169,10 +206,9 @@
 	      (mul (power 3 (div 1 3))
 		   (take '(%gamma) (div 1 3)))))
 	((flonum-eval (mop form) z))
-	((or (bigfloat-numerical-eval-p z)
-	     (complex-bigfloat-numerical-eval-p z))
-	 ($rectform
-	  ($bfloat (airy-dai-hypergeometric z))))
+	((and (or (bigfloat-numerical-eval-p z)
+		  (complex-bigfloat-numerical-eval-p z))
+	      (airy-bfloat-with-guard-digits z #'airy-dai-hypergeometric)))
 	($hypergeometric_representation
 	 (airy-dai-hypergeometric z))
 	(t (give-up))))

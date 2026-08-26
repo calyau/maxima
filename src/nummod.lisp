@@ -91,13 +91,6 @@
 (setf (get '$entier 'distribute_over) '(mlist $matrix mequal))
 (setf (get '$fix 'distribute_over) '(mlist $matrix mequal))
 
-;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
-
-(defmacro bind-fpprec (val &body exprs)
-  `(let (fpprec *bigfloatzero* *bigfloatone* *bfhalf* *bfmhalf*)
-     (let (($fpprec (fpprec1 nil ,val)))
-       ,@exprs)))
-
 ;; Return true if the expression can be formed using rational numbers, logs, mplus, mexpt, or mtimes.
 
 (defun use-radcan-p (e)

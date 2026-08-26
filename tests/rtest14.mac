@@ -1115,13 +1115,13 @@ true;
 closeto(airy_dbi(1.5)-airy_dbi(1.5b0), 3.2752b-15);
 true;
 
-closeto(airy_ai(1.5+%i)-airy_ai(1.5b0+%i), 2.9022b-16);
+closeto(airy_ai(1.5+%i)-airy_ai(1.5b0+%i), 3.0b-16);
 true;
 
 closeto(airy_bi(1.5+%i)-airy_bi(1.5b0+%i), 3.0b-16);
 true;
 
-closeto(airy_dai(1.5+%i)-airy_dai(1.5b0+%i), 8.7591b-16);
+closeto(airy_dai(1.5+%i)-airy_dai(1.5b0+%i), 9.0b-16);
 true;
 
 closeto(airy_dbi(1.5+%i)-airy_dbi(1.5b0+%i), 3.3631b-16);

@@ -4193,6 +4193,36 @@ airy_ai(150.0);
 0.0;
 
 
+/* Bug #4931: "airy_ai and airy_dai return nonsense at bigfloat precision" */
+
+block([fpprec:25], is(abs(bfloat(airy_ai(20))/airy_ai(20.0) - 1) < 1e-13));
+true;
+
+block([fpprec:25], is(abs(bfloat(airy_ai(30))/airy_ai(30.0) - 1) < 1e-13));
+true;
+
+block([fpprec:25], is(abs(bfloat(airy_ai(40))/airy_ai(40.0) - 1) < 1e-13));
+true;
+
+block([fpprec:25], is(abs(bfloat(airy_dai(20))/airy_dai(20.0) - 1) < 1e-13));
+true;
+
+block([fpprec:25], is(abs(bfloat(airy_dai(30))/airy_dai(30.0) - 1) < 1e-13));
+true;
+
+block([fpprec:40], is(abs(bfloat(airy_ai(20))/airy_ai(20.0) - 1) < 1e-13));
+true;
+
+block([fpprec:25], is(abs(bfloat(airy_ai(-30))/airy_ai(-30.0) - 1) < 1e-13));
+true;
+
+block([fpprec:25], is(abs(bfloat(airy_bi(20))/airy_bi(20.0) - 1) < 1e-13));
+true;
+
+block([fpprec:25], numberp(bfloat(airy_ai(100))));
+false$
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
