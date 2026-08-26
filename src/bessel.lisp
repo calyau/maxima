@@ -1583,23 +1583,24 @@
 ;; evaluations.
 
 (defmfun $scaled_bessel_i0 ($x)
-  (cond ((mnump $x)
+  (cond ((and (mnump $x) (not ($bfloatp $x)))
 	 ;; XXX Should we return noun forms if $x is rational?
 	 (slatec:dbsi0e ($float $x)))
 	(t
 	 (mul (power '$%e (neg (simplifya `((mabs) ,$x) nil)))
-	      `((%bessel_i) 0 ,$x)))))
+	      ($bessel_i 0 $x)))))
 
 (defmfun $scaled_bessel_i1 ($x)
-  (cond ((mnump $x)
+  (cond ((and (mnump $x) (not ($bfloatp $x)))
 	 ;; XXX Should we return noun forms if $x is rational?
 	 (slatec:dbsi1e ($float $x)))
 	(t
 	 (mul (power '$%e (neg (simplifya `((mabs) ,$x) nil)))
-	      `((%bessel_i) 1 ,$x)))))
+	      ($bessel_i 1 $x)))))
 
 (defmfun $scaled_bessel_i ($n $x)
-  (cond ((and (mnump $x) (mnump $n))
+  (cond ((and (mnump $x) (mnump $n)
+	      (not ($bfloatp $x)) (not ($bfloatp $n)))
 	 ;; XXX Should we return noun forms if $n and $x are rational?
 	 (multiple-value-bind (n alpha) (floor ($float $n))
 	   (let ((iarray (make-array (1+ n) :element-type 'flonum)))

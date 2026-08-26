@@ -4223,6 +4223,18 @@ block([fpprec:25], numberp(bfloat(airy_ai(100))));
 false$
 
 
+/* Bug #4946: "scaled_bessel_i0, scaled_bessel_i1, scaled_bessel_i silently demote a bigfloat to a double" */
+
+block([fpprec: 40], is(abs(scaled_bessel_i0(bfloat(1))/(exp(-1b0)*bessel_i(0, 1b0)) - 1) < 1b-38));
+true;
+
+block([fpprec: 40], is(abs(scaled_bessel_i1(bfloat(1))/(exp(-1b0)*bessel_i(1, 1b0)) - 1) < 1b-38));
+true;
+
+block([fpprec: 40], is(abs(scaled_bessel_i(2, bfloat(3))/(exp(-3b0)*bessel_i(2, 3b0)) - 1) < 1b-38));
+true;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
