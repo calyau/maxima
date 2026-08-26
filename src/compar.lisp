@@ -2924,8 +2924,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
              (or (mexptp lhs)
                  (and (not (atom lhs))
                       (kind-all-of-p (caar lhs) '($oddfun $increasing)))))
-        (setq lhs (cadr lhs)))
-    (values lhs rhs)))
+        (compsplt-eq (cadr lhs))
+        (values lhs rhs))))
 
 (defun mdata (flag r x y)
   (if flag

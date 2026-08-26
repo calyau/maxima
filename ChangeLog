@@ -27,10 +27,11 @@ Bug fixes for numbered bugs:
 * \#4987 translate changes float values, including the sign of an atan2 result
 * \#4992 quad_* can leave temporary variable assignments in place
 * \#4994 simplify_sum no longer queries for assumptions
-* \#5051 4^n/2/2 and 4^n/4 are different expressions
-* \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
 * \#5048 e - e doesn't simplify to 0: like-base power terms are not merged when another term sorts between them
 * \#5049 a + b and b + a give different results when the like-base term's coefficient is a rational or a float
+* \#5051 4^n/2/2 and 4^n/4 are different expressions
+* \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
+* \#5057 realpart/imagpart/rectform permanently add entries to the global fact database
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5169 GREAT says a[1] > a[1]
 * \#5170 limit(a*x+b, x, inf) = 0 when answering that a=0

@@ -4256,6 +4256,12 @@ block([fpprec : 50], length(bfallroots((x-3)^4*(x+1))));
 5;
 
 
+/* Bug #5057: "realpart/imagpart/rectform permanently add entries to the global fact database" */
+
+(imagpart(atan(2*y)^(y+1.5)), facts());
+[];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]]$
