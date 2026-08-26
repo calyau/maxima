@@ -2038,7 +2038,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		     (t '$pnz)))
 	      ((and  *complexsign* (eql 1 (cabs arg))) '$imaginary)
 	      (*complexsign* '$complex)
-	      ((eq sign '$pnz) '$pnz)
+	      ((member sign '($pnz $pn)) '$pnz)
 	      (t (imag-err x))))
   ;; If SIGN isn't '$POS, '$NEG or '$ZERO, $ASKSIGN will ask for the sign of the
   ;; expression described by MINUS, ODDS and EVENS. Set them to name an

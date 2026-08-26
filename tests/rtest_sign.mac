@@ -2300,6 +2300,12 @@ block([a, b], local(a, b), assume(a > 1, b > 1), is(a * b > 1));
 true;
 
 
+/* Bug #5093: "After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error" */
+
+block([x], local(x), assume(notequal(x, 0)), sign(log(x)));
+pnz;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
