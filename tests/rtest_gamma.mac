@@ -4286,3 +4286,16 @@ rectform((3+4*%i)^7);
 
 rectform((a+b*%i)^3);
 a^3 - 3*a*b^2 + %i*(3*a^2*b - b^3);
+
+
+/* Bug #4935: "erfc has the wrong sign of the imaginary part on the negative imaginary axis" */
+
+is(abs(erfc(-2.0*%i) - (2 - erfc(2.0*%i))) < 1e-14);
+true;
+
+is(abs(erfc(-1.0*%i) - conjugate(erfc(1.0*%i))) < 1e-14);
+true;
+
+block([fpprec: 30],
+ is(abs(erfc(-1.0b0*%i) - (2 - erfc(1.0b0*%i))) < 1b-25));
+true;

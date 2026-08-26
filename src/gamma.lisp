@@ -2262,7 +2262,9 @@
 	      (bigfloat:to (maxima::$bfloat
 			    (maxima::complex-bfloat-gamma-incomplete (maxima::$bfloat maxima::1//2)
 								     (maxima::to z))))))))
-  (if (>= (realpart z) 0)
+  (if (if (zerop (realpart z))
+            (not (minusp (imagpart z)))
+            (> (realpart z) 0))
       (/ (gamma-inc (* z z))
 	 (sqrt (%pi z)))
       (- 2
