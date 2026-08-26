@@ -1727,7 +1727,10 @@
 	   (setq *nz* 2)
 	   (return nil)))
     (setq j (1+ j))
-    (and (> j 20) (return nil))
+    ;; At a root of multiplicity m this iteration converges only
+    ;; linearly, so the budget has to grow with the working precision.
+    ;; The factor 20 is a heuristic, measured rather than derived.
+    (and (> j (* 20 (ceiling fpprec 56))) (return nil))
     (cond ((not (or (< j 2)
 		    (fpgreaterp relstp (intofp 1e-2))
 		    (not (fpgreaterp mp omp))
@@ -1788,7 +1791,8 @@
 	   (setq *nz* 1 *szr* *s* *szi* (intofp 0))
 	   (return 0)))
     (setq j (1+ j))
-    (and (> j 10) (return 0))
+    ;; See comment in BF-QUADIT-SL.
+    (and (> j (* 10 (ceiling fpprec 56))) (return 0))
     (cond ((not (or (< j 2)
 		    (fpgreaterp (fpabs t1)
 				(fptimes* (intofp 1e-3) (fpabs (fpdifference *s* t1))))

@@ -15,6 +15,7 @@ Bug fixes for numbered bugs:
 * \#4954 Unguarded division by zero in three numeric iterations
 * \#4958 nroots returns a wrong root count for float or bigfloat interval endpoints
 * \#4959 rectform of a complex float raised to a power is off by thirteen orders of magnitude
+* \#4962 bfallroots fails on polynomials with multiple roots
 * \#4964 linsolve_by_lu raises a raw Lisp error on a singular float matrix
 * \#4965 recttopolar and polartorect are silent no-ops on lists
 * \#4967 cdf_lognormal and pdf_lognormal error at x = 0
