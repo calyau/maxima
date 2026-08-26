@@ -8,6 +8,7 @@ Bug fixes for numbered bugs:
 * \#4830 Non-total ordering between constant & scalar and scalar
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
 * \#4933 asech is treated as an even function
+* \#4938 airy_ai returns 0.0 for real x >= 92.57 while the complex path works
 * \#4959 rectform of a complex float raised to a power is off by thirteen orders of magnitude
 * \#4965 recttopolar and polartorect are silent no-ops on lists
 * \#4967 cdf_lognormal and pdf_lognormal error at x = 0

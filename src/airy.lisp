@@ -333,11 +333,13 @@
 (defun airy-ai-real (z)
   " Airy function Ai(z) for real z"
   (declare (type flonum z))
-  ;; slatec:dai issues underflow warning for z > zmax.  See dai.{f,lisp}
-  ;; This value is correct for IEEE double precision
-  (let ((zmax 92.5747007268))
-    (declare (type flonum zmax))
-    (if (< z zmax) (slatec:dai z) 0.0))) 
+  ;; slatec:dai gives up at 92.5747007268, but Ai(z) is an ordinary double up to
+  ;; about 107.3. Above dai's cutoff use the formula dai itself uses there,
+  ;; see dai.f label 30. The upper test keeps z*sqrt(z) from overflowing for a
+  ;; huge z.
+  (cond ((< z 92.5747007268) (slatec:dai z))
+	((< z 108.0) (* (slatec::daie z) (exp (/ (* -2.0 z (sqrt z)) 3.0))))
+	(t 0.0)))
 
 (defun airy-ai-complex (z)
   "Airy function Ai(z) for complex z"
