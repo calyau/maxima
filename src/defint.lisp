@@ -1002,9 +1002,14 @@ in the interval of integration.")
                        (when (and (varyingp base)
                                   (not (eq ($csign exponent) '$pos)))
                          (add-unique base))))
-                   ;; log(x) has a discontinuity in the imaginary part at x = 0.
+                   ;; log(x) has a discontinuity in the imaginary part at x = 0
+                   ;; and when crossing the negative real axis.
                    ((eq op '%log)
-                     (add-unique (first args)))
+                     (add-unique (first args))
+                     (destructuring-bind (re . im) (risplit (first args))
+                       (when (and (varyingp im)
+                                  (not (member ($csign re) '($pos $pz))))
+                         (add-unique im))))
                    ;; tan(x) = sin(x)/cos(x), csc(x) = 1/sin(x), sec(x) = 1/cos(x),
                    ;; cot(x) = cos(x)/sin(x), so these have discontinuities where
                    ;; the denominator becomes zero. The same applies to the

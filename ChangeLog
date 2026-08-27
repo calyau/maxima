@@ -43,6 +43,7 @@ Bug fixes for numbered bugs:
 * \#5173 assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)
 * \#5175 asksign(log(x)) records the wrong fact
 * \#5178 inconsistent Principal Value message
+* \#5180 Integral crossing the discontinuity of log(z) along the negative real axis
 
 Bug fixes for unnumbered bugs:
 ------------------------------
