@@ -1022,7 +1022,7 @@ ignoring dummy variables and array indices."
 			       val))))
      (cond ((and (not (and (eq val '$inf) (expp n) (expp dn)))
 		 (setq n1 (try-lhospital-quit n dn nil))
-		 (not (eq n1 '$und)))
+		 (not (amongl '($und $ind) n1)))
 	    (return n1)))
      (throw 'limit t)))
 

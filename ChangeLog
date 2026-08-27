@@ -42,6 +42,7 @@ Bug fixes for numbered bugs:
 * \#5172 assume(a>1,b>0)$ is(a*b>1) -> true
 * \#5173 assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)
 * \#5175 asksign(log(x)) records the wrong fact
+* \#5178 inconsistent Principal Value message
 
 Bug fixes for unnumbered bugs:
 ------------------------------
