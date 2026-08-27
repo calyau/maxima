@@ -2306,6 +2306,21 @@ block([x], local(x), assume(notequal(x, 0)), sign(log(x)));
 pnz;
 
 
+/* Bug #5120: "forget(notequal(a*b,0)) deletes an assumed notequal(a,0) that the database never entailed" */
+
+block([a, b],
+ local(a, b),
+ assume(notequal(a, 0)),
+ [forget(notequal(a * b, 0)), is(notequal(a, 0))]);
+[[redundant], true];
+
+block([a, b],
+ local(a, b),
+ assume(notequal(a * b, 0)),
+ [forget(notequal(a * b, 0)), is(notequal(a * b, 0))]);
+[[notequal(a * b, 0)], unknown];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

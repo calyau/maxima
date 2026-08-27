@@ -2873,7 +2873,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun daddnq (flag x)
   (with-compsplt-eq (lhs rhs x)
     (cond ((and (mtimesp lhs) (equal rhs 0))
-           (dolist (term (cdr lhs)) (daddnq flag term)))
+           ;; A product is non-zero iff all factors are non-zero, so learn that
+           ;; all factors are non-zero. Always learn, but unlearn only if ALL
+           ;; factors are known to be non-zero.
+           (when (or flag
+                     (every #'(lambda (term) (eq t (mnqp term 0))) (cdr lhs)))
+             (dolist (term (cdr lhs)) (daddnq flag term))))
           ((and (mexptp lhs) (mexptp rhs)
                 (integerp (caddr lhs)) (integerp (caddr rhs))
                 (equal (caddr lhs) (caddr rhs)))
