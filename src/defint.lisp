@@ -1036,6 +1036,10 @@ in the interval of integration.")
                                                     (%csch . %sinh)
                                                     (%coth . %sinh)))))
                      (add-unique (ftake denom-op (first args))))
+                   ;; Rewrite an inverse trigonometric/hyperbolic function into
+                   ;; its logarithmic form, and process that.
+                   ((arcp op)
+                     (return-from walk (walk (logarc op (first args)))))
                    ;; atan2(y, x) has a discontinuity at y = 0 when x <= 0.
                    ((eq op '%atan2)
                      (let ((y (first args))
@@ -1063,8 +1067,6 @@ in the interval of integration.")
                                       (not (member ($csign re-z) '($pos $pz))))
                              (add-unique im-z)))))))
                    ;; TODO: Handle discontinuities of:
-                   ;;       - inverse trigonometric functions
-                   ;;       - inverse hyperbolic functions
                    ;;       - more special functions
                  ;; Recursively process the arguments.
                  (dolist (arg args)
