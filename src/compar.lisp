@@ -645,7 +645,13 @@
                         (member ($sign (caddr pat)) '($pos $pz)))
                    (and (member (caar pat) '(mgreaterp mgeqp))
                         (member ($sign (cadr pat)) '($pos $pz))
-                        (isinop (caddr pat) 'mabs))))
+                        (isinop (caddr pat) 'mabs)))
+               ;; abs(x) < a holds iff x < a and -x < a both hold, so learn
+               ;; both. Always learn, but unlearn only if the abs() relation is
+               ;; itself known, which is the same test: It holds exactly when
+               ;; both of the derived facts do.
+               (or flag
+                   (eq t (mevalp2 pat (caar pat) (cadr pat) (caddr pat)))))
       (let ((oldcontext context))
         (if (eq oldcontext '$initial)
             (asscontext nil '$learndata)) ; switch to context '$learndata
@@ -2884,9 +2890,15 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           ((and (mexptp lhs) (mexptp rhs)
                 (integerp (caddr lhs)) (integerp (caddr rhs))
                 (equal (caddr lhs) (caddr rhs)))
-           (mdata flag 'mnqp (cadr lhs) (cadr rhs))
-           (cond ((not (oddp (caddr lhs)))
-                  (mdata flag 'mnqp (cadr lhs) (neg (cadr rhs))))))
+           ;; x^n # y^n is x # y for odd n, and x # y and x # -y for even n,
+           ;; so learn those. Always learn, but unlearn only if ALL of them
+           ;; are known to be non-equal.
+           (let ((parts (if (oddp (caddr lhs))
+                            (list (cadr rhs))
+                            (list (cadr rhs) (neg (cadr rhs))))))
+             (when (or flag
+                       (every #'(lambda (u) (eq t (mnqp (cadr lhs) u))) parts))
+               (dolist (u parts) (mdata flag 'mnqp (cadr lhs) u)))))
           (t (mdata flag 'mnqp lhs rhs)))
     (list '(mnot) (list '($equal) lhs rhs))))
 

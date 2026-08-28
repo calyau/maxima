@@ -2336,6 +2336,45 @@ block([x, y],
 pnz;
 
 
+/* Bug #5176: "forget() over-removes facts" */
+
+block([x],
+ local(x),
+ assume(x < 1),
+ [is(x < 1), forget(abs(x) < 1), is(x < 1)]);
+[true, [redundant], true];
+
+block([x],
+ local(x),
+ assume(x > -1),
+ [is(x > -1), forget(abs(x) < 1), is(x > -1)]);
+[true, [redundant], true];
+
+block([x],
+ local(x),
+ assume(abs(x) < 1),
+ [is(abs(x) < 1), forget(abs(x) < 1), is(x < 1), is(x > -1), killcontext(learndata)]);
+[true, [abs(x) < 1], unknown, unknown, done];
+
+block([p, q],
+ local(p, q),
+ assume(notequal(p, q)),
+ [is(notequal(p, q)), forget(notequal(p^2, q^2)), is(notequal(p, q))]);
+[true, [redundant], true];
+
+block([p, q],
+ local(p, q),
+ assume(notequal(p^2, q^2)),
+ [/*is(notequal(p^2, q^2)),*/ forget(notequal(p^2, q^2)), is(notequal(p, q)), is(notequal(p, -q))]);
+[/*true,*/ [notequal(p^2, q^2)], unknown, unknown];
+
+block([p, q],
+ local(p, q),
+ assume(notequal(p^3, q^3)),
+ [/*is(notequal(p^3, q^3)),*/ forget(notequal(p^3, q^3)), is(notequal(p, q))]);
+[/*true,*/ [notequal(p^3, q^3)], unknown];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

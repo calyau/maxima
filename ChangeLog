@@ -43,6 +43,7 @@ Bug fixes for numbered bugs:
 * \#5172 assume(a>1,b>0)$ is(a*b>1) -> true
 * \#5173 assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)
 * \#5175 asksign(log(x)) records the wrong fact
+* \#5176 forget() over-removes facts
 * \#5178 inconsistent Principal Value message
 * \#5180 Integral crossing the discontinuity of log(z) along the negative real axis
 * \#5182 integrate(sqrt(%i*x-1),x,-1,1) wrong due to missing branch cut
