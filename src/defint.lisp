@@ -958,17 +958,19 @@ in the interval of integration.")
 ;; the integral has a discontinuity at x=0.
 ;;
 (defun intsubs (e a b ivar)
-  (let (($float nil)
+  (let* (($float nil)
+	 ;; DISCONTINUITIES is asked once, here: Its answer says both where
+	 ;; to split and, passed on to WHOLE-INTSUBS, whether plain substitution
+	 ;; at the ends of a piece, instead of taking limits, is safe.
+	 (sexp (let (($algebraic t)) (sratsimp e)))
+	 (discont (and $intanalysis (discontinuities sexp ivar)))
         (edges (cond ((not $intanalysis)
 		      '$no)		;don't do any checking.
-		    (t (discontinuities-in-interval 
-			(let (($algebraic t)) 
-			  (sratsimp e))
-			ivar a b)))))
+		    (t (discontinuities-in-interval discont ivar a b)))))
 
     (cond ((or (eq edges '$no)
 	       (eq edges '$unknown))
-	   (whole-intsubs e a b ivar))
+	   (whole-intsubs e a b ivar discont))
 	  (t
 	   (do* ((l edges (cdr l))
 		 (total nil)
@@ -977,7 +979,7 @@ in the interval of integration.")
 		((null (cdr l)) (if (every (lambda (x) x) total)
 				    (m+l total)))
 		(push
-		 (whole-intsubs e a1 b1 ivar)
+		 (whole-intsubs e a1 b1 ivar discont)
 		 total))))))
 
 (defun discontinuities (expr ivar)
@@ -996,12 +998,24 @@ in the interval of integration.")
                  (cond
                    ;; x^y potentially has a discontinuity where x = 0,
                    ;; unless we can prove that y is strictly positive.
+                   ;; Also, x^y is discontinuous where x crosses the negative
+                   ;; real axis, unless y is provably an integer.
+                   ;; Note: "crossing the negative real axis" part cannot be
+                   ;; expressed in a SOLVE-compatible way. So we detect a possible
+                   ;; discontinuity wherever Im(x) = 0, unless we can show that
+                   ;; Re(x) cannot be negative. False positives don't cause wrong
+                   ;; answers, just more splitting.
                    ((eq op 'mexpt)
                      (let ((base (first args))
                            (exponent (second args)))
-                       (when (and (varyingp base)
-                                  (not (eq ($csign exponent) '$pos)))
-                         (add-unique base))))
+                       (when (varyingp base)
+                         (unless (member ($csign exponent) '($pos $pz))
+                           (add-unique base))
+                         (unless (maxima-integerp exponent)
+                           (destructuring-bind (re . im) (risplit base)
+                             (when (and (varyingp im)
+                                        (not (member ($csign re) '($pos $pz))))
+                               (add-unique im)))))))
                    ;; log(x) has a discontinuity in the imaginary part at x = 0
                    ;; and when crossing the negative real axis.
                    ((eq op '%log)
@@ -1058,12 +1072,13 @@ in the interval of integration.")
       (walk expr)
       result)))
 
-;; returns list of places where exp might be discontinuous in ivar.
+;; returns list of places where the expressions in EXPRS, as returned by
+;; DISCONTINUITIES, have a root in ivar.
 ;; list begins with ll and ends with ul, and include any values between
 ;; ll and ul.
 ;; return '$no if no discontinuities found.
-(defun discontinuities-in-interval (exp ivar ll ul)
-  (let ((roots (real-roots (discontinuities exp ivar) ivar :multi t)))
+(defun discontinuities-in-interval (exprs ivar ll ul)
+  (let ((roots (real-roots exprs ivar :multi t)))
     (cond
 	  ((eq roots '$no)
 	   '$no)
@@ -1084,8 +1099,8 @@ in the interval of integration.")
 
 ;; Carefully substitute the integration limits A and B into the
 ;; expression E.
-(defun whole-intsubs (e a b ivar)
-  (cond ((easy-subs e a b ivar))
+(defun whole-intsubs (e a b ivar &optional discontinuousp)
+  (cond ((easy-subs e a b ivar discontinuousp))
 	(t
            ;; Note: MAKE-DEFINT-ASSUMPTIONS may reorder the limits A
            ;; and B, but I (rtoy) don't think that's should ever
@@ -1105,7 +1120,7 @@ in the interval of integration.")
 		   (t (same-sheet-subs e a b ivar)))))))
 
 ;; Try easy substitutions.  Return NIL if we can't.
-(defun easy-subs (e ll ul ivar)
+(defun easy-subs (e ll ul ivar &optional discontinuousp)
   (cond ((or (infinityp ll) (infinityp ul))
 	 ;; Infinite limits aren't easy
 	 nil)
@@ -1113,6 +1128,10 @@ in the interval of integration.")
 	 (cond ((or (polyinx e ivar ())
 		    (and (not (involve-var e ivar '(%log %asin %acos %atan %asinh %acosh %atanh %atan2
 						%gamma_incomplete %expintegral_ei %signum)))
+			 ;; The list above is only a coarse screen.
+			 ;; DISCONTINUITIES, asked by INTSUBS, knows more, such as
+			 ;; the branch cut of a power with a non-integer exponent.
+			 (not discontinuousp)
 			 (free ($denom e) ivar)))
 		;; It's easy if we have a polynomial.  I (rtoy) think
 		;; it's also easy if the denominator is free of the

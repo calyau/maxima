@@ -44,6 +44,7 @@ Bug fixes for numbered bugs:
 * \#5175 asksign(log(x)) records the wrong fact
 * \#5178 inconsistent Principal Value message
 * \#5180 Integral crossing the discontinuity of log(z) along the negative real axis
+* \#5182 integrate(sqrt(%i*x-1),x,-1,1) wrong due to missing branch cut
 
 Bug fixes for unnumbered bugs:
 ------------------------------
