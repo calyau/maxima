@@ -203,7 +203,6 @@
   ;; invokes limit-by-methods, so we set up the guard context here.
   (let ((*already-processed-limits* *already-processed-limits*)
         (*limit-method-depth*       *limit-method-depth*)
-        (*getsignl-asksign-ok*      nil)
         (redo nil)
         (et nil))
 
@@ -384,12 +383,12 @@ but that condition is not checked."
           (cond
             ((eql pk 0) ck)  ;; Leading term is ck x^0, so limit is ck
             ((eq t (mgrp pk 0)) ;; Leading term is ck x^pk where pk > 0
-             (setq sgn (let ((*getsignl-asksign-ok* t)) (maybe-asksign ck)))
+             (setq sgn (maybe-asksign-real ck))
              (cond
                ((eq sgn '$neg) (if (eq pt '$inf) '$minf '$inf))
                ((eq sgn '$pos) (if (eq pt '$inf) '$inf '$minf))
-               ((eq sgn '$imaginary) '$infinity)
-               ((eq sgn '$complex) '$infinity)
+               ;((eq sgn '$imaginary) '$infinity)
+               ;((eq sgn '$complex) '$infinity)
                (t nil)))
             ((eq t (mgrp 0 pk)) ;leading term is ck x^pk where pk < 0
               ;; the limit is a zero, so dispatch `zero-fixup`

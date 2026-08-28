@@ -1477,6 +1477,33 @@ limit(x*acos(2), x, inf);
 infinity;
 
 
+/* Unreported: "tlimit never asks the sign questions that limit asks" */
+
+tlimit(x*log(a), x, inf), ask_hide_prompt; pos;
+inf;
+
+tlimit(x*log(a), x, inf), ask_hide_prompt; neg;
+minf;
+
+tlimit(x*log(a), x, inf), ask_hide_prompt; zero;
+0;
+
+tlimit(a^x, x, inf), ask_hide_prompt; pos;
+inf;
+
+tlimit(a^x, x, inf), ask_hide_prompt; neg;
+0;
+
+tlimit(a^x/x, x, inf), ask_hide_prompt; pos;
+inf;
+
+tlimit(a^x*b^x, x, inf), ask_hide_prompt; pos;
+inf;
+
+tlimit(x^k, k, inf), ask_hide_prompt; pos;
+inf;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
