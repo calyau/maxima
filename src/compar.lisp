@@ -1526,8 +1526,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ((and *complexsign* (eq sign '$imaginary))
 	   ;; Found an imaginary factor. Look if we have already one.
 	   (cond ((eq s '$imaginary)
-		  ;; imaginary*imaginary is real. But remember the sign in m.
-		  (setq s (if m '$pos '$neg) m (not m)))
+		  ;; imaginary*imaginary is real, but $IMAGINARY says nothing
+		  ;; about the sign of the imaginary parts, so the sign of
+		  ;; their product is unknown.
+		  (setq s '$pnz))
 		 (t (setq s sign))))
 	  ((and *complexsign* (eq s '$imaginary))) ; continue the loop
 	  ((eq sign '$pos))

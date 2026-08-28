@@ -2321,6 +2321,21 @@ block([a, b],
 [[notequal(a * b, 0)], unknown];
 
 
+/* Bug #5115: "csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number" */
+
+block([j],
+ local(j),
+ declare(j, imaginary),
+ [csign(%i*j), abs(%i*j)]);
+[pnz, abs(j)];
+
+block([x, y],
+ local(x, y),
+ assume(x < 0, y < 0),
+ csign(sqrt(x) * y^(3/2)));
+pnz;
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];
