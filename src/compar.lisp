@@ -2890,15 +2890,21 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           ((and (mexptp lhs) (mexptp rhs)
                 (integerp (caddr lhs)) (integerp (caddr rhs))
                 (equal (caddr lhs) (caddr rhs)))
-           ;; x^n # y^n is x # y for odd n, and x # y and x # -y for even n,
-           ;; so learn those. Always learn, but unlearn only if ALL of them
-           ;; are known to be non-equal.
+           ;; x^n # y^n is x # y for odd n, and x # y and x # -y for even
+           ;; n, so learn those - as differences, which is what DADDNQ takes.
+           ;; Always learn, but unlearn only if ALL of them are known to be
+           ;; non-zero. Going back through DADDNQ rather than calling MDATA on
+           ;; the pair, as the product branch above already does, is what files
+           ;; a derived fact the way COMPSPLT-EQ files an assumed one:
+           ;; otherwise x # -y is stored where assume(notequal(x, -y)) stores
+           ;; x + y # 0, and is() and forget() do not see the two as one fact.
            (let ((parts (if (oddp (caddr lhs))
-                            (list (cadr rhs))
-                            (list (cadr rhs) (neg (cadr rhs))))))
+                          (list (sub (cadr lhs) (cadr rhs)))
+                          (list (sub (cadr lhs) (cadr rhs))
+                                (add (cadr lhs) (cadr rhs))))))
              (when (or flag
-                       (every #'(lambda (u) (eq t (mnqp (cadr lhs) u))) parts))
-               (dolist (u parts) (mdata flag 'mnqp (cadr lhs) u)))))
+                       (every #'(lambda (d) (eq t (mnqp d 0))) parts))
+               (dolist (d parts) (daddnq flag d)))))
           (t (mdata flag 'mnqp lhs rhs)))
     (list '(mnot) (list '($equal) lhs rhs))))
 
