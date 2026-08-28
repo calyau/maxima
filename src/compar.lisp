@@ -2890,21 +2890,25 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           ((and (mexptp lhs) (mexptp rhs)
                 (integerp (caddr lhs)) (integerp (caddr rhs))
                 (equal (caddr lhs) (caddr rhs)))
-           ;; x^n # y^n is x # y for odd n, and x # y and x # -y for even
-           ;; n, so learn those - as differences, which is what DADDNQ takes.
-           ;; Always learn, but unlearn only if ALL of them are known to be
-           ;; non-zero. Going back through DADDNQ rather than calling MDATA on
-           ;; the pair, as the product branch above already does, is what files
-           ;; a derived fact the way COMPSPLT-EQ files an assumed one:
-           ;; otherwise x # -y is stored where assume(notequal(x, -y)) stores
-           ;; x + y # 0, and is() and forget() do not see the two as one fact.
-           (let ((parts (if (oddp (caddr lhs))
-                          (list (sub (cadr lhs) (cadr rhs)))
-                          (list (sub (cadr lhs) (cadr rhs))
-                                (add (cadr lhs) (cadr rhs))))))
-             (when (or flag
-                       (every #'(lambda (d) (eq t (mnqp d 0))) parts))
-               (dolist (d parts) (daddnq flag d)))))
+           ;; File the relation itself, and the facts that follow from it:
+           ;; x^n # y^n implies x # y, and x # -y as well when n is even. The
+           ;; relation is filed too because the database cannot get back to it
+           ;; from those: MEQP takes the sign of the difference, and only for
+           ;; n = 2 does that factor into exactly the derived facts. The
+           ;; derived facts go as differences, which is what DADDNQ takes, and
+           ;; through DADDNQ rather than MDATA, as the product branch above
+           ;; does, so that COMPSPLT-EQ files them the way it files an assumed
+           ;; one: otherwise x # -y is stored where assume(notequal(x, -y))
+           ;; stores x + y # 0, and is() and forget() do not see the two as
+           ;; one fact. Always learn, but unlearn only if the relation is
+           ;; itself known, as in LEARN-ABS.
+           (when (or flag (eq t (mnqp lhs rhs)))
+             (mdata flag 'mnqp lhs rhs)
+             (dolist (d (if (oddp (caddr lhs))
+                            (list (sub (cadr lhs) (cadr rhs)))
+                            (list (sub (cadr lhs) (cadr rhs))
+                                  (add (cadr lhs) (cadr rhs)))))
+               (daddnq flag d))))
           (t (mdata flag 'mnqp lhs rhs)))
     (list '(mnot) (list '($equal) lhs rhs))))
 

@@ -2338,6 +2338,7 @@ pnz;
 
 /* Bug #5176: "forget() over-removes facts" */
 /* Bug #5177: "Some sub-facts are not normalized and cannot be removed via forget()" */
+/* Bug #5188: "assume(notequal(x^3, y^3)) -> is(notequal(x^3, y^3)) = unknown" */
 
 block([x],
  local(x),
@@ -2372,8 +2373,8 @@ block([p, q],
 block([p, q],
  local(p, q),
  assume(notequal(p^3, q^3)),
- [/*is(notequal(p^3, q^3)),*/ forget(notequal(p^3, q^3)), is(notequal(p, q))]);
-[/*true,*/ [notequal(p^3, q^3)], unknown];
+ [is(notequal(p^3, q^3)), forget(notequal(p^3, q^3)), is(notequal(p, q))]);
+[true, [notequal(p^3, q^3)], unknown];
 
 
 /* Leave this at the end of the file! */

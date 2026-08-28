@@ -49,6 +49,7 @@ Bug fixes for numbered bugs:
 * \#5180 Integral crossing the discontinuity of log(z) along the negative real axis
 * \#5182 integrate(sqrt(%i*x-1),x,-1,1) wrong due to missing branch cut
 * \#5186 Definite integration doesn't see discontinuities of inverse trigonometric/hyperbolic functions
+* \#5188 assume(notequal(x^3, y^3)) -> is(notequal(x^3, y^3)) = unknown
 
 Bug fixes for unnumbered bugs:
 ------------------------------
