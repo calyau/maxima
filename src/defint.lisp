@@ -994,7 +994,8 @@ in the interval of integration.")
                (unless (or (atom e) (not (varyingp e)))
                 (let ((op (caar e))
                       (args (cdr e))
-                      denom-op)
+                      denom-op
+                      cut-arg)
                  (cond
                    ;; x^y potentially has a discontinuity where x = 0,
                    ;; unless we can prove that y is strictly positive.
@@ -1065,9 +1066,42 @@ in the interval of integration.")
                          (destructuring-bind (re-z . im-z) (risplit z)
                            (when (and (varyingp im-z)
                                       (not (member ($csign re-z) '($pos $pz))))
-                             (add-unique im-z)))))))
-                   ;; TODO: Handle discontinuities of:
-                   ;;       - more special functions
+                             (add-unique im-z))))))
+                   ;; The exponential integrals: expintegral_e1, expintegral_ei,
+                   ;; expintegral_ci and expintegral_chi have a logarithmic
+                   ;; singularity at 0 and a branch cut along the negative real axis.
+                   ;; expintegral_e(n, z) has the same, except for a non-positive
+                   ;; integer n, where it is elementary. expintegral_li(z) is
+                   ;; expintegral_ei(log(z)), so its cut is the real axis to the left
+                   ;; of 1. expintegral_si and expintegral_shi are entire.
+                   ((setq cut-arg
+                          (case op
+                            ((%expintegral_e1 %expintegral_ei
+                              %expintegral_ci %expintegral_chi)
+                             (first args))
+                            (%expintegral_li
+                             (sub (first args) 1))
+                            (%expintegral_e
+                             (unless (and (maxima-integerp (first args))
+                                          (member ($csign (first args)) '($neg $nz $zero)))
+                               (second args)))))
+                     (when (varyingp cut-arg)
+                       (add-unique cut-arg)
+                       (destructuring-bind (re . im) (risplit cut-arg)
+                         (when (and (varyingp im)
+                                    (not (member ($csign re) '($pos $pz))))
+                           (add-unique im)))))
+                   ;; The polylogarithm li[s](z) has a branch point at z = 1
+                   ;; and a branch cut along the real axis to the right of it.
+                   ((polylogp e)
+                     (let ((z (first (subfunargs e))))
+                       (when (varyingp z)
+                         (add-unique (sub z 1))
+                         (destructuring-bind (re . im) (risplit z)
+                           (when (and (varyingp im)
+                                      (not (member ($csign (sub re 1)) '($neg $nz))))
+                             (add-unique im)))))))
+                   ;; TODO: Handle discontinuities of more special functions.
                  ;; Recursively process the arguments.
                  (dolist (arg args)
                    (walk arg))))))
