@@ -421,10 +421,19 @@
           (cond ((eql im 1) ; use direct substitution
                    (ftake '%gamma_incomplete a z))
                 ((eql im -1)
-                    (sub
-                       (ftake '%gamma a)
-                       (mul (ftake 'mexpt '$%e (mul -2 '$%i '$%pi a))
-                            (sub (ftake '%gamma a) (ftake '%gamma_incomplete a z)))))
+                 (if (and ($featurep a '$integer) (eq t (mgrp 0 a)))
+                     ;; For a negative integer A the factor exp(-2*%i*%pi*a)
+                     ;; below is 1 and gamma(A) is a pole. The limit of that
+                     ;; formula as A approaches the integer is the jump
+                     ;; 2*%i*%pi*(-1)^a/gamma(1-a).
+                     (add (ftake '%gamma_incomplete a z)
+                          (div (mul 2 '$%i '$%pi (ftake 'mexpt -1 a))
+                               (ftake '%gamma (sub 1 a))))
+                     (sub
+                        (ftake '%gamma a)
+                        (mul (ftake 'mexpt '$%e (mul -2 '$%i '$%pi a))
+                             (sub (ftake '%gamma a)
+                                  (ftake '%gamma_incomplete a z))))))
                 ((eql im 0)
                   (throw 'limit nil)))))
 

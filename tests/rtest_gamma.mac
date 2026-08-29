@@ -4305,3 +4305,12 @@ true;
 
 is(abs(gamma_incomplete(1+3*%i, 3.0*%i) + gamma_incomplete_lower(1+3*%i, 3.0*%i) - gamma(1.0+3.0*%i)) < 1e-14);
 true;
+
+
+/* Bug #5189: "Incorrect limit of gamma_incomplete" */
+
+limit(gamma_incomplete(-1,%i*x-1),x,0,minus);
+gamma_incomplete(-1,-1)-2*%i*%pi;
+
+limit(gamma_incomplete(-2,%i*x-1),x,0,minus);
+gamma_incomplete(-2,-1)+%i*%pi;
