@@ -52,6 +52,7 @@ Bug fixes for numbered bugs:
 * \#5186 Definite integration doesn't see discontinuities of inverse trigonometric/hyperbolic functions
 * \#5188 assume(notequal(x^3, y^3)) -> is(notequal(x^3, y^3)) = unknown
 * \#5189 Incorrect limit of gamma_incomplete
+* \#5190 limit(1/erfc(x), x, 0, minus) recurses infinitely
 
 Bug fixes for unnumbered bugs:
 ------------------------------

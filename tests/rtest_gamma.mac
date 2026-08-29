@@ -4314,3 +4314,42 @@ gamma_incomplete(-1,-1)-2*%i*%pi;
 
 limit(gamma_incomplete(-2,%i*x-1),x,0,minus);
 gamma_incomplete(-2,-1)+%i*%pi;
+
+
+/* Bug #5190: "limit(1/erfc(x), x, 0, minus) recurses infinitely" */
+
+limit(1/erfc(x), x, 0, minus);
+1;
+
+limit(erfc(x), x, 0, minus);
+1;
+
+limit(1/erfc(x), x, 0);
+1;
+
+limit(1/(1 - erfc(x)), x, 0, minus);
+minf;
+
+limit(1/(1 - erfc(x)), x, 0, plus);
+inf;
+
+limit(erf_generalized(x, 1), x, 0, minus);
+erf(1);
+
+limit(erf_generalized(x, 1), x, 0, plus);
+erf(1);
+
+limit(1/erf_generalized(x, 1), x, 0, minus);
+1/erf(1);
+
+limit(1/erf_generalized(1, x), x, 0, minus);
+-1/erf(1);
+
+limit(erf_generalized(x, y), x, 0, minus);
+erf(y);
+
+limit(1/erf_generalized(x, 2*x), x, 0, minus);
+minf;
+
+limit(erf_generalized(x, 1/x), x, 0, minus);
+-1;

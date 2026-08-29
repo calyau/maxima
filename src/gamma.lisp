@@ -2345,6 +2345,22 @@
       ((or (eq z1 '$minf)
            (alike1 z1 '((mtimes) -1 $inf)))
        (add (take '(%erf) z2) 1))
+      ;; erf_generalized(z1, z2) is erf(z2) - erf(z1), and erf maps an
+      ;; infinitesimal to an infinitesimal of the same sign, so negating one
+      ;; exchanges zeroa and zerob. Alike argument limits go to the simplifier,
+      ;; which returns zero; otherwise an unevaluated erf_generalized of an
+      ;; infinitesimal sends SIMPAB back into the limit code, which then
+      ;; recurses without bound.
+      ((and (not (eq z1 z2))
+            (or (member z1 '($zeroa $zerob))
+                (member z2 '($zeroa $zerob))))
+       (add (if (member z2 '($zeroa $zerob))
+                z2
+                (take '(%erf) z2))
+            (case z1
+              ($zeroa '$zerob)
+              ($zerob '$zeroa)
+              (t (mul -1 (take '(%erf) z1))))))
       (t
        ;; All other cases are handled by the simplifier of the function.
        (simplify (list '(%erf_generalized) z1 z2))))))
@@ -2466,6 +2482,12 @@
 				       (t '$und)))
 				(t '$und))))
       ((eq z '$ind) '$ind)
+      ;; erfc decreases through erfc(0) = 1, so an argument approaching zero
+      ;; from above gives a limit approaching 1 from below, and vice versa.
+      ;; An unevaluated erfc of an infinitesimal instead sends SIMPAB back
+      ;; into the limit code, which then recurses without bound.
+      ((eq z '$zeroa) (add 1 '$zerob))
+      ((eq z '$zerob) (add 1 '$zeroa))
       (t
        ;; All other cases are handled by the simplifier of the function.
        (simplify (list '(%erfc) z))))))
