@@ -6780,8 +6780,37 @@ is(abs(float(expand(integrate('diff(asin(2+%i*x),x),x,-1,1))) - 0.30478769488673
 true;
 
 
-/* Definite integrals crossing and not crossing the branch cuts of some special functions: */
-/* TODO: Add expintegral_* once limit() treats them properly. */
+/* Bug #5181: "limit ignores the branch cut of the exponential integrals" */
+
+is(abs(float(expand(integrate('diff(expintegral_ei(%i*x-1),x),x,-1,1))) + 0.3586490700787179*%i) < 1e-12);
+true;
+
+integrate('diff(expintegral_ei(%i*x+1),x),x,-1,1);
+expintegral_ei(%i+1)-expintegral_ei(1-%i);
+
+is(abs(float(expand(integrate('diff(expintegral_e1(%i*x-1),x),x,-1,1))) - 4.775539703021045*%i) < 1e-12);
+true;
+
+integrate('diff(expintegral_e1(%i*x+1),x),x,-1,1);
+expintegral_e1(%i+1)-expintegral_e1(1-%i);
+
+is(abs(float(expand(integrate('diff(expintegral_ci(%i*x-1),x),x,-1,1))) + 0.5744982670399119*%i) < 1e-12);
+true;
+
+integrate('diff(expintegral_ci(%i*x+1),x),x,-1,1);
+expintegral_ci(%i+1)-expintegral_ci(1-%i);
+
+is(abs(float(expand(integrate('diff(expintegral_chi(%i*x-1),x),x,-1,1))) + 2.567094386549881*%i) < 1e-12);
+true;
+
+integrate('diff(expintegral_chi(%i*x+1),x),x,-1,1);
+expintegral_chi(%i+1)-expintegral_chi(1-%i);
+
+is(abs(float(expand(integrate('diff(expintegral_li(%i*x-1),x),x,-1,1))) - 0.04143708399105857*%i) < 1e-12);
+true;
+
+integrate('diff(expintegral_li(%i*x+2),x),x,-1,1);
+expintegral_li(%i+2)-expintegral_li(2-%i);
 
 is(abs(float(expand(integrate('diff(li[2](%i*x+2),x),x,-1,1))) - 0.4603093580843397*%i) < 1e-12);
 true;

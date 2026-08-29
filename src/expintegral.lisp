@@ -177,6 +177,28 @@
 
 (defprop %expintegral_e simplim%expintegral_e simplim%function)
 
+;; The exponential integrals with a branch cut along the negative real axis
+;; take different values on the two sides of it, so a limit onto the cut
+;; depends on the direction from which it is approached. VALUE is what the
+;; simplifier of the function returns on the cut itself, and ARG is the
+;; argument of the function. For expintegral_ei, and for expintegral_li
+;; between 0 and 1, that value is the principal value, the mean of the two
+;; one-sided limits, and PRINCIPAL-VALUE-P is true. For the others it is the
+;; limit from the upper half plane, whose mirror image is the limit from the
+;; lower one. A path that runs along the cut itself meets no jump. Returns
+;; NIL when the direction cannot be determined.
+(defun expintegral-cut-limit (value arg var val principal-value-p)
+  (let ((im ($imagpart arg)))
+    (if (zerop1 im)
+        value
+        (let ((direction (behavior im var val)))
+          (cond ((eql direction 1)
+                 (if principal-value-p (add value (mul '$%i '$%pi)) value))
+                ((eql direction -1)
+                 (if principal-value-p
+                     (sub value (mul '$%i '$%pi))
+                     (ftake '$conjugate value))))))))
+
 (defun simplim%expintegral_e (expr var val)
   ;; Look for the limit of the arguments.
   (let ((a (limit (cadr expr) var val 'think))
@@ -898,7 +920,10 @@
      '$inf)
     (t
      ;; All other cases are handled by the simplifier of the function.
-     (take '(%expintegral_e1) z)))))
+     (let ((value (take '(%expintegral_e1) z)))
+       (cond ((not (on-negative-real-axisp z)) value)
+             ((expintegral-cut-limit value (cadr expr) var val nil))
+             (t (throw 'limit nil))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1009,7 +1034,10 @@
      '$minf)
     (t
      ;; All other cases are handled by the simplifier of the function.
-     (take '(%expintegral_ei) z)))))
+     (let ((value (take '(%expintegral_ei) z)))
+       (cond ((not (on-negative-real-axisp z)) value)
+             ((expintegral-cut-limit value (cadr expr) var val t))
+             (t (throw 'limit nil))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1203,7 +1231,18 @@
     ((onep1 z) '$minf)
     (t
      ;; All other cases are handled by the simplifier of the function.
-     (take '(%expintegral_li) z)))))
+     (let ((value (take '(%expintegral_li) z)))
+       (cond
+         ;; Below zero the value on the cut is the one from above it,
+         ;; between zero and one it is the principal value.
+         ((on-negative-real-axisp z)
+          (or (expintegral-cut-limit value (cadr expr) var val nil)
+              (throw 'limit nil)))
+         ((and (on-negative-real-axisp (sub z 1))
+               (eql t (mgrp z 0)))
+          (or (expintegral-cut-limit value (cadr expr) var val t)
+              (throw 'limit nil)))
+         (t value)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1686,7 +1725,11 @@
 		    ((eql lim 0) '$minf)
 	      ((eq lim '$und) (throw 'limit nil))
         ;; The general simplifier for expintegral_ci handles inputs minf & inf
-		    (t (ftake '%expintegral_ci lim)))))
+		    (t
+		     (let ((value (ftake '%expintegral_ci lim)))
+		       (cond ((not (on-negative-real-axisp lim)) value)
+		             ((expintegral-cut-limit value (cadr e) x pt nil))
+		             (t (throw 'limit nil))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1872,7 +1915,10 @@
      '$inf)
     (t
      ;; All other cases are handled by the simplifier of the function.
-     (take '(%expintegral_chi) z)))))
+     (let ((value (take '(%expintegral_chi) z)))
+       (cond ((not (on-negative-real-axisp z)) value)
+             ((expintegral-cut-limit value (cadr expr) var val nil))
+             (t (throw 'limit nil))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
