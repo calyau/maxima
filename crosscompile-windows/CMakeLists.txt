@@ -83,6 +83,8 @@ option(WITH_ABCL "Include ABCL in the installer." NO)
 option(WITH_CCL64 "Include CCL64 in the installer." NO)
 option(WITH_ECL "Include ECL in the installer." NO)
 
+option(WITH_WXMAXIMA "Include WxMaxima in the installer." YES)
+
 # Concerning the used Lisp versions:
 #  - SBCL is fast, but sometimes runs out of memory in places it really shouldn't
 #    (Loading LAPACK on IA32, for example) and isn't too happy with changing to
@@ -220,16 +222,14 @@ add_subdirectory("gnuplot/")
 
 add_subdirectory("tcltk/")
 
-# the MSWEBVIEW version is needed for the subdirectory mswebview and wxwidgets - set it here.
-
-set(MSWEBVIEWVERSION "1.0.4129.50")
-set(MSWEBVIEW_MD5 "d54d1416f5617fc564df3683b9642def")
-
-add_subdirectory("mswebview/")
-
-add_subdirectory("wxwidgets/")
-
-add_subdirectory("wxmaxima/")
+if(WITH_WXMAXIMA)
+    # the MSWEBVIEW version is needed for the subdirectory mswebview and wxwidgets - set it here.
+    set(MSWEBVIEWVERSION "1.0.4191.47")
+    set(MSWEBVIEW_MD5 "c2073c1fa5c6ed370a103023cce5b2b2")
+    add_subdirectory("mswebview/")
+    add_subdirectory("wxwidgets/")
+    add_subdirectory("wxmaxima/")
+endif()
 
 if(USE_VTK)
     add_subdirectory("vtk/")
@@ -422,8 +422,11 @@ endif()
 cpack_add_component(Gnuplot
                     DESCRIPTION "Gnuplot is the main graphic toolkit.\nInstallation is strongly recommended.")
 
-cpack_add_component(wxMaxima
+if(WITH_WXMAXIMA)
+    cpack_add_component(wxMaxima
                     DESCRIPTION "wxMaxima is an advanced GUI for Maxima based on wxWidgets.\nInstallation is strongly recommended.")
+endif()
+
 if(WITH_CLISP)
     cpack_add_component(Clisp
                         DESCRIPTION "The CLISP Lisp compiler.\nOne Lisp compiler is required.")
