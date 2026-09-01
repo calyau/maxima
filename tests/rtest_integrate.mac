@@ -6852,6 +6852,15 @@ is(abs(float(expand(integrate(1/sqrt(1-(%i*x+2)^2), x, -1, 1))) - 0.304787694886
 true;
 
 
+/* Bug #4822: "Antiderivative of acoth is complex where acoth is real" */
+
+integrate(acoth(x), x);
+x*acoth(x) + log(x^2-1)/2;
+
+imagpart(subst(x = 2, integrate(acoth(x), x)));
+0;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

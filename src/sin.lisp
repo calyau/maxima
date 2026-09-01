@@ -735,7 +735,7 @@
 
 ;; ... the same for acoth(x) ...
 (defun integrate-acoth (x)
-  (add (mul x (ftake '%acoth x)) (mul '((rat simp) 1 2) (log-or-logabs (sub 1 (power x 2))))))
+  (add (mul x (ftake '%acoth x)) (mul '((rat simp) 1 2) (log-or-logabs (sub (power x 2) 1)))))
 (putprop '%acoth `((x), 'integrate-acoth) 'integral)
 
 ;; integrate(x^n,x) = if n # -1 then x^(n+1)/(n+1) else log-or-logabs(x).
