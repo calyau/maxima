@@ -1576,6 +1576,17 @@ inf;
 [inf, infinity, minf, infinity];
 
 
+/* Limits of atanh at infinity with an imaginary part */
+
+[limit(atanh(x + %i), x, inf), limit(atanh(x - %i), x, inf),
+ limit(atanh(x + %i), x, minf), limit(atanh(x - %i), x, minf)];
+[%i*%pi/2, -%i*%pi/2, %i*%pi/2, -%i*%pi/2];
+
+[limit(atanh(%i*x), x, inf), limit(atanh(x + %i/x), x, inf),
+ limit(atanh(x - %i/x), x, inf), limit(atanh(x^2), x, inf)];
+[%i*%pi/2, %i*%pi/2, -%i*%pi/2, -%i*%pi/2];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
