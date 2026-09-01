@@ -781,3 +781,26 @@ unknown;
 sign((sqrt(abs(sin(x))) - cos(atan2(0, sin(x))/2)*sqrt(sin(x)))
      /(sqrt(sin(x))*sqrt(abs(sin(x)))));
 pnz;
+
+
+/* Bug #5194: "sign(1/inf) & is(equal(1/inf,0)) vs. sign(2/inf) & is(equal(2/inf,0))" */
+
+[is(notequal(2/sqrt(x), 0)), is(notequal(1/(sqrt(x)*y), 0)),
+ is(notequal(%e^x/sqrt(y), 0)), is(notequal(1/(sqrt(x)+1), 0))];
+[true, true, true, true];
+
+[is(equal(sqrt(x), 0)), is(equal(x^(1/3), 0)), is(equal(x^2, 0)),
+ is(equal(x/sqrt(y), 0))];
+[unknown, unknown, unknown, unknown];
+
+[is(equal(1/inf, 0)), is(equal(1/minf, 0)), is(equal(2^minf, 0)),
+ is(equal(1/(inf+1), 0)), is(equal(1/sqrt(inf), 0))];
+[true, true, true, true, true];
+
+
+/**************************************/
+/* Leave this at the end of the file! */
+/**************************************/
+
+[facts(), contexts];
+[[], [initial, global]]$

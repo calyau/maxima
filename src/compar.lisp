@@ -1152,6 +1152,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
    (mget x 'hashar)
    (get (mget x 'hashar) 'array)))
 
+;; A helper for MEQP. It must not call MEQP by itself!
+(defun provably-nonzero-p (e)
+  (cond
+    ((mnump e)
+     (not (zerop1 e)))
+    ((mtimesp e)
+     (every #'provably-nonzero-p (cdr e)))
+    ((mexptp e)
+     (and (free-infp e)
+          (or (and (mnump (third e)) (mnegp (third e)))
+          (eq t (mnqp (second e) 0)))))))
+
 (defun meqp (a b)
   ;; Check for some particular types before falling into the general case.
   (cond ((stringp a)
@@ -1183,9 +1195,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			(t nil)))
 		 ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
 		 (($setp a) (set-meqp a b))
-		 ;; 0 isn't in the range of an exponential function.
-		 ((or (and (mexptp a) (not (eq '$minf (third a))) (zerop1 b) (eq t (mnqp (second a) 0)))
-		      (and (mexptp b) (not (eq '$minf (third b))) (zerop1 a) (eq t (mnqp (second b) 0))))
+		 ;; 0 isn't in the range of an exponential function, and a power
+		 ;; with a negative exponent is undefined at a zero base, not zero.
+		 ((or (and (zerop1 b) (provably-nonzero-p a))
+		      (and (zerop1 a) (provably-nonzero-p b)))
 		  nil)
 
 		;; Two numbers: Answer arithmetically. Not merely a shortcut - ZEROP1 of the
