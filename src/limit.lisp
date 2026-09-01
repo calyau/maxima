@@ -3891,17 +3891,22 @@ ignoring dummy variables and array indices."
   ;; take into account which direction we're approaching it.
   (let ((lim (limit (cadr e) x pt 'think)) (value))
     (cond ((zerop2 lim) lim)
-          ((member lim '($ind $und $infinity $minf $inf) :test #'eq) '$und)
+          ;; The two ends of the real axis are the far ends of the branch
+          ;; cuts, and atanh is continuous along them. A complex infinity
+          ;; picks out no side of a cut, so it stays undefined.
+          ((eq lim '$inf) #$-%i*%pi/2$)
+          ((eq lim '$minf) #$%i*%pi/2$)
+          ((member lim '($ind $und $infinity) :test #'eq) '$und)
           ((equal (setq lim (ridofab lim)) 1.)
            ;; The limit at 1 should be complex infinity because atanh(x)
            ;; is complex for x > 1, but inf if we're approaching 1 from
            ;; below.
-           (if (eq pt '$zerob)
+           (if (eql -1 (behavior (sub (cadr e) 1) x pt))
                '$inf
                '$infinity))
           ((equal lim -1.)
            ;; Same as above, except for the limit is at -1.
-           (if (eq pt '$zeroa)
+           (if (eql 1 (behavior (add (cadr e) 1) x pt))
                '$minf
                '$infinity))
           (t

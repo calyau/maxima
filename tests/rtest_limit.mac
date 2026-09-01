@@ -1559,6 +1559,23 @@ inf;
 [infinity, infinity];
 
 
+/* Bug #5191: "limit(atanh(x),x,inf) is wrong" */
+
+[limit(atanh(x), x, inf), limit(atanh(x), x, minf)];
+[-%i*%pi/2, %i*%pi/2];
+
+[limit(acoth(x), x, 0, plus), limit(acoth(x), x, 0, minus)];
+[-%i*%pi/2, %i*%pi/2];
+
+[limit(atanh(x), x, 1, minus), limit(atanh(x), x, 1, plus),
+ limit(atanh(x), x, -1, plus), limit(atanh(x), x, -1, minus)];
+[inf, infinity, minf, infinity];
+
+[limit(acoth(x), x, 1, plus), limit(acoth(x), x, 1, minus),
+ limit(acoth(x), x, -1, minus), limit(acoth(x), x, -1, plus)];
+[inf, infinity, minf, infinity];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
