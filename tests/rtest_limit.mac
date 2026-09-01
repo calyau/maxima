@@ -1550,6 +1550,15 @@ inf;
 [infinity, 0];
 
 
+/* Bug #5198: "limit(asin(inf)) should be infinity" */
+
+[limit(asin(x), x, inf), limit(asin(x), x, minf)];
+[infinity, infinity];
+
+[limit(acos(x), x, inf), limit(acos(x), x, minf)];
+[infinity, infinity];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

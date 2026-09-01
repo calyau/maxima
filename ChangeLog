@@ -57,6 +57,7 @@ Bug fixes for numbered bugs:
 * \#5189 Incorrect limit of gamma_incomplete
 * \#5190 limit(1/erfc(x), x, 0, minus) recurses infinitely
 * \#5192 acosh and asech derivatives are incorrect
+* \#5198 limit(asin(inf)) should be infinity
 
 Bug fixes for unnumbered bugs:
 ------------------------------
