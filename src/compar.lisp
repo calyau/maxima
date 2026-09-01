@@ -1940,9 +1940,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	   (setq sign '$complex))
 
 	  ((and *complexsign*
-		(eq sign-base '$neg)
+		(member sign-base '($neg $nz))
 		(eq (evod ($expand (mul 2 expt))) '$odd))
-	   ;; Base is negative and the double of the exponent is odd.
+	   ;; Base is non-positive and the double of the exponent is odd.
 	   ;; Result is imaginary.
 	   (when *debug-compar*
 	     (format t "~&in SIGN-MEXPT for ~A, sign is $imaginary.~%" x))

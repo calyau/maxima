@@ -2398,7 +2398,7 @@ block([b], local(b), assume(b < 0), [csign(1/sqrt(b)), csign(b^(-1/4))]);
 [imaginary, complex];
 
 block([b], local(b), assume(b <= 0), csign(1/sqrt(b)));
-complex;
+imaginary;
 
 block([b], local(b), assume(notequal(b, 0)),
       [csign(1/sqrt(b)), csign(b^(-1/4)), sign(1/sqrt(b))]);
@@ -2435,7 +2435,7 @@ block([b, domain : complex],
  local(b),
  assume(b <= 0),
  [csign(b^(1/3)), csign(b^(-1/2))]);
-[complex, complex];
+[complex, imaginary];
 
 block([b, domain : complex],
  local(b),
