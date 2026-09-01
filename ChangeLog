@@ -49,6 +49,7 @@ Bug fixes for numbered bugs:
 * \#5180 Integral crossing the discontinuity of log(z) along the negative real axis
 * \#5181 limit ignores the branch cut of the exponential integrals
 * \#5182 integrate(sqrt(%i*x-1),x,-1,1) wrong due to missing branch cut
+* \#5183 One-sided limits of %e^(asin(2+%i*x)/x) at x = 0 swapped
 * \#5184 limit(acos(2+%i*x),x,0,plus) is wrong
 * \#5185 integrate(1/sqrt(1-(%i*x+2)^2), x, -1, 1) wrong
 * \#5186 Definite integration doesn't see discontinuities of inverse trigonometric/hyperbolic functions

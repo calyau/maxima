@@ -2304,13 +2304,16 @@ ignoring dummy variables and array indices."
         ((eq el '$infinity)
          (if (equal val '$infinity)
              '$und			      ;Not enough info to do anything.
-             (destructuring-bind (real-el . imag-el)
-                 (trisplit expo)
-               (setq real-el (limit real-el var origval nil))
+             ;; Which way the power goes is decided by the real part of the
+             ;; exponent: the modulus of the power grows without bound when
+             ;; that part tends to inf and vanishes when it tends to minf,
+             ;; whatever the imaginary part does. The real part of a
+             ;; one-sided limit has to be taken from the same side, not from
+             ;; both, or the two sides come back with each other's value.
+             (let ((real-el (limit (car (trisplit expo)) var val nil)))
                (cond ((eq real-el '$minf)
                       0)
-                     ((and (eq real-el '$inf)
-                         (not (equal (ridofab (limit imag-el var origval nil)) 0)))
+                     ((eq real-el '$inf)
                       '$infinity)
                      ((eq real-el '$infinity)
                       (throw 'limit t))	;; don't really know real component

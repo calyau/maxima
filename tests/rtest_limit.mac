@@ -1543,6 +1543,13 @@ inf;
 [acos(1/2), atanh(1/2)];
 
 
+/* Bug #5183: "One-sided limits of %e^(asin(2+%i*x)/x) at x = 0 swapped" */
+
+[limit(%e^(asin(2 + %i*x)/x), x, 0, plus),
+ limit(%e^(asin(2 + %i*x)/x), x, 0, minus)];
+[infinity, 0];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
