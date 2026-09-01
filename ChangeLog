@@ -62,6 +62,7 @@ Bug fixes for numbered bugs:
 * \#5194 sign(1/inf) & is(equal(1/inf,0)) vs. sign(2/inf) & is(equal(2/inf,0))
 * \#5195 csign(1/sqrt(x)) vs. csign(sqrt(x))
 * \#5198 limit(asin(inf)) should be infinity
+* \#5202 csign(negative^(1/odd)) under domain : complex
 
 Bug fixes for unnumbered bugs:
 ------------------------------

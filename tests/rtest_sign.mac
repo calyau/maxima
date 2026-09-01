@@ -2405,6 +2405,63 @@ block([b], local(b), assume(notequal(b, 0)),
 [complex, complex, pos];
 
 
+/* Bug #5202: "csign(negative^(1/odd)) under domain : complex" */
+
+block([domain : complex], [csign((-1)^(1/3)), csign((-8)^(1/3)), csign((-1)^(2/3))]);
+[complex, complex, complex]$
+
+block([b, domain : complex],
+ local(b),
+ assume(b < 0),
+ [csign(b^(1/3)), csign(b^(2/3)), csign(b^(5/3))]);
+[complex, complex, complex];
+
+block([b, domain : complex],
+ local(b),
+ assume(b < 0),
+ sign(b^(1/3)));
+neg;
+
+block([u],
+ local(u),
+ block([domain : complex], assume(u^(1/3) > 0)),
+ [facts(), forget(u^(1/3) > 0), facts()]);
+[[u > 0], [u > 0], []];
+
+[csign(x^(1/3)), csign(x^(2/3)), csign(x^(-1/3)), csign(x^(-5/3))], domain : complex;
+[complex, complex, complex, complex];
+
+block([b, domain : complex],
+ local(b),
+ assume(b <= 0),
+ [csign(b^(1/3)), csign(b^(-1/2))]);
+[complex, complex];
+
+block([b, domain : complex],
+ local(b),
+ assume(notequal(b, 0)),
+ [csign(b^(1/3)), csign(b^(-3/2))]);
+[complex, complex];
+
+block([b],
+ local(b),
+ assume(b < 0),
+ [csign(b^(1/3)), csign(b^(2/3))]);
+[neg, pos];
+
+block([b],
+ local(b),
+ assume(b^(1/3) > 0),
+ [facts(), csign(b^(1/3)), csign(b)]);
+[[b > 0], pos, pos];
+
+block([b, domain : complex],
+ local(b),
+ assume(b^(1/3) > 0),
+ [facts(), csign(b^(1/3)), csign(b)]);
+[[b > 0], pos, pos];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

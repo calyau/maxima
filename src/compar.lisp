@@ -1962,6 +1962,19 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	     (t (setq sign '$complex))))
 
 	  ((and *complexsign*
+		(eq $domain '$complex)
+		(ratnump expt)
+		(member sign-base '($neg $nz $pn $pnz) :test #'eq))
+	   ;; With domain : complex, a base that might be negative raised to a
+	   ;; non-integer rational power is on the principal branch, which is
+	   ;; never real. With domain : real, Maxima takes the real root
+	   ;; instead, as (-8)^(1/3) simplifies to -2, and the clauses below apply.
+	   (when *debug-compar*
+	     (format t "~&in SIGN-MEXPT for ~A, branch is complex.~%" x))
+	   (setq sign '$complex))
+
+
+	  ((and *complexsign*
 		(not evod)
 		(not (ratnump expt))
 		(not (member sign-base '($pos $pz $zero) :test #'eq)))
@@ -3067,12 +3080,21 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 ;; Rewrite a^b to a simpler expression that has the same sign:
 ;; If b is odd or 1/b is odd, remove the exponent, e.g. x^3 becomes x.
+;; The 1/b case does not hold in complex mode with domain : complex, where an
+;; odd root is the principal branch and does not have the sign of its
+;; argument. (-8)^(1/3) is 1+sqrt(3)*%i, not -2. Only sign queries are
+;; excused: COMPSPLT also canonicalizes facts for ASSUME and FORGET, which
+;; run in real mode, and those two must agree on the form they store and
+;; look up even if $DOMAIN changes in between.
 ;; If b has a negative sign, return a^-b, e.g. 1/x^a becomes x^a.
 ;; Otherwise, do nothing.
 (defun rewrite-mexpt-retaining-sign (x)
   (if (mexptp x)
     (let ((base (cadr x)) (exponent (caddr x)))
-      (cond ((or (eq (evod exponent) '$odd) (eq (evod (inv exponent)) '$odd)) base)
+      (cond ((or (eq (evod exponent) '$odd)
+		 (and (not (and *complexsign* (eq $domain '$complex)))
+		      (eq (evod (inv exponent)) '$odd)))
+	     base)
 	    ((negp exponent) (inv x))
 	    (t x)))
     x))
