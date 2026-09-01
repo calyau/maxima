@@ -2416,12 +2416,6 @@ ignoring dummy variables and array indices."
      (simplimsch (caar exp) (limit (cadr exp) var val 'think)))
     ((member (caar exp) '(%erf %tanh) :test #'eq)
      (simplim%erf-%tanh (caar exp) (cadr exp)))
-    ((eq (caar exp) '%atanh)
-     (simplim%atanh (limit (cadr exp) var val 'think) val))
-    ((eq (caar exp) '%acosh)
-     (simplim%acosh (limit (cadr exp) var val 'think)))
-    ((eq (caar exp) '%asinh)
-     (simplim%asinh (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%inverse_jacobi_ns)
      (simplim%inverse_jacobi_ns (limit (cadr exp) var val 'think) (third exp)))
     ((eq (caar exp) '%inverse_jacobi_nc)
@@ -3813,41 +3807,121 @@ ignoring dummy variables and array indices."
        (throw 'limit nil)))))
 (setf (get '%tan 'simplim%function) 'simplim%tan)
 
-(defun simplim%asinh (arg)
-  (cond ((member arg '($inf $minf $zeroa $zerob $ind $und) :test #'eq)
-	 arg)
-	((eq arg '$infinity) '$und)
-	(t (simplify (list '(%asinh) (ridofab arg))))))
+;; The inverse trigonometric and hyperbolic functions are discontinuous across
+;; their branch cuts, so the limit of one of them at a point on a cut depends
+;; on the side from which the cut is approached. CUT-PART is the part of the
+;; argument that vanishes on the cut: the imaginary part for a cut along the
+;; real axis, the real part for one along the imaginary axis. VALUE is the
+;; value of the function on the cut itself, that is, what its simplifier
+;; returns there, and MIRROR is its limit from the other side. SIDE is 1 when
+;; the function is continuous from the side on which CUT-PART is positive, and
+;; -1 when it is continuous from the other one. A path that runs along the cut
+;; itself meets no jump. Return NIL when the side cannot be determined.
+(defun branch-cut-limit (cut-part side value mirror var val)
+  (if (zerop1 cut-part)
+      value
+      (let ((direction (behavior cut-part var val)))
+        (cond ((eql direction side) value)
+              ((eql direction (- side)) mirror)
+              (t nil)))))
 
-(defun simplim%acosh (arg)
-  (cond ((equal (ridofab arg) 1) '$zeroa)
-	((eq arg '$inf) arg)
-	((eq arg '$minf) '$infinity)
-	((member arg '($und $ind $infinity) :test #'eq) '$und)
-	(t (simplify (list '(%acosh) (ridofab arg))))))
+(defun simplim%asinh (e x pt)
+  (let ((lim (limit (cadr e) x pt 'think)) (w) (value))
+    (cond ((member lim '($inf $minf $zeroa $zerob $ind $und) :test #'eq) lim)
+          ((eq lim '$infinity) '$und)
+          (t
+           (setq lim (ridofab lim))
+           (setq value (ftake '%asinh lim))
+           ;; Since asinh(z) = -%i*asin(%i*z), asinh is continuous at LIM
+           ;; exactly when asin is continuous at %i*LIM, and the branch cuts
+           ;; of asinh run along the imaginary axis from %i to %i*inf and
+           ;; from -%i to -%i*inf. On the first one asinh is continuous from
+           ;; the right and its value from the left is %i*%pi - asinh(z); on
+           ;; the second one it is continuous from the left and its value
+           ;; from the right is -%i*%pi - asinh(z). The real part of the
+           ;; argument vanishes on both cuts.
+           (setq w (mul '$%i lim))
+           (cond ((in-domain-of-asin w) value) ;direct substitution
+                 (t
+                  (let ((re (car (trisplit (cadr e)))))
+                    (or (cond
+                          ((eq t (mgqp -1 w))
+                           (branch-cut-limit
+                             re 1 value (sub (mul '$%i '$%pi) value) x pt))
+                          ((eq t (mgqp w 1))
+                           (branch-cut-limit
+                             re -1 value (sub (mul -1 '$%i '$%pi) value)
+                             x pt)))
+                        (throw 'limit t)))))))))
+(setf (get '%asinh 'simplim%function) 'simplim%asinh)
 
-(defun simplim%atanh (arg dir)
-  ;; Compute limit(atanh(x),x,arg).  If ARG is +/-1, we need to take
-  ;; into account which direction we're approaching ARG.
-  (cond ((zerop2 arg) arg)
-	((member arg '($ind $und $infinity $minf $inf) :test #'eq)
-	 '$und)
-	((equal (setq arg (ridofab arg)) 1.)
-	 ;; The limit at 1 should be complex infinity because atanh(x)
-	 ;; is complex for x > 1, but inf if we're approaching 1 from
-	 ;; below.
-	 (if (eq dir '$zerob)
-	     '$inf
-	     '$infinity))
-	((equal arg -1.)
-	 ;; Same as above, except for the limit is at -1.
-	 (if (eq dir '$zeroa)
-	     '$minf
-	     '$infinity))
-	(t (simplify (list '(%atanh) arg)))))
+(defun simplim%acosh (e x pt)
+  (let ((lim (limit (cadr e) x pt 'think)) (value))
+    (cond ((equal (ridofab lim) 1) '$zeroa)
+          ((eq lim '$inf) lim)
+          ((eq lim '$minf) '$infinity)
+          ((member lim '($und $ind $infinity) :test #'eq) '$und)
+          (t
+           (setq lim (ridofab lim))
+           (setq value (ftake '%acosh lim))
+           ;; Direct substitution when the argument stays off the cut.
+           (cond ((off-negative-real-axisp (sub lim 1)) value)
+                 (t
+                  ;; The argument approaches the branch cut of acosh, which
+                  ;; runs along the real axis from 1 to minf. There acosh is
+                  ;; continuous from above, and just below the cut its value
+                  ;; is the mirror image of its value on the cut: -acosh(x)
+                  ;; between -1 and 1, where acosh is purely imaginary, and
+                  ;; acosh(x) - 2*%i*%pi below -1.
+                  (let ((im (cdr (trisplit (cadr e)))))
+                    (or (cond
+                          ((eq t (mgqp -1 lim))
+                           (branch-cut-limit
+                             im 1 value (sub value (mul 2 '$%i '$%pi)) x pt))
+                          ((and (eq t (mgqp 1 lim)) (eq t (mgqp lim -1)))
+                           (branch-cut-limit im 1 value (neg value) x pt)))
+                        (throw 'limit t)))))))))
+(setf (get '%acosh 'simplim%function) 'simplim%acosh)
+
+(defun simplim%atanh (e x pt)
+  ;; Compute limit(atanh(z),x,pt).  If the limit of Z is +/-1, we need to
+  ;; take into account which direction we're approaching it.
+  (let ((lim (limit (cadr e) x pt 'think)) (value))
+    (cond ((zerop2 lim) lim)
+          ((member lim '($ind $und $infinity $minf $inf) :test #'eq) '$und)
+          ((equal (setq lim (ridofab lim)) 1.)
+           ;; The limit at 1 should be complex infinity because atanh(x)
+           ;; is complex for x > 1, but inf if we're approaching 1 from
+           ;; below.
+           (if (eq pt '$zerob)
+               '$inf
+               '$infinity))
+          ((equal lim -1.)
+           ;; Same as above, except for the limit is at -1.
+           (if (eq pt '$zeroa)
+               '$minf
+               '$infinity))
+          (t
+           (setq value (ftake '%atanh lim))
+           (cond ((in-domain-of-asin lim) value) ;direct substitution
+                 (t
+                  ;; The argument approaches one of the branch cuts of atanh,
+                  ;; which are those of asin. Just above the cut from 1 to
+                  ;; inf the value of atanh is atanh(x) + %i*%pi, and just
+                  ;; below the cut from -1 to minf it is atanh(x) - %i*%pi.
+                  (let ((im (cdr (trisplit (cadr e)))))
+                    (or (cond
+                          ((eq t (mgqp lim 1))
+                           (branch-cut-limit
+                             im -1 value (add value (mul '$%i '$%pi)) x pt))
+                          ((eq t (mgqp -1 lim))
+                           (branch-cut-limit
+                             im 1 value (sub value (mul '$%i '$%pi)) x pt)))
+                        (throw 'limit t)))))))))
+(setf (get '%atanh 'simplim%function) 'simplim%atanh)
 
 (defun simplim%asin (e x pt)
-  (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
+  (let ((lim (limit (cadr e) x pt 'think)) (im))
     (cond ((member lim '($zeroa $zerob)) lim) ;asin(zeoroa/b) = zeroa/b
 	  ((member lim '($minf $inf $infinity)) '$infinity)
 	  ((eq lim '$ind) '$ind)                 ;asin(ind)=ind 
@@ -3856,36 +3930,32 @@ ignoring dummy variables and array indices."
 	   (ftake '%asin lim))
 	  ((freeof x e) e) ;limit of constant--it happens!
 	  (t 
-	   (setq e (trisplit (cadr e))) ;overwrite e!
-	   (setq dir (behavior (cdr e) x pt))
-	   (setq lim-sgn ($csign (car e))) ;lim-sgn = sign limit(Re(e))
-	   (cond 			  
-	     ((eql dir 0)
-	      (throw 'limit t)) ;unable to find behavior of imaginary part
-
-	     ;; For the values of asin on the branch cuts, see DLMF 4.23.20 & 4.23.21
-	     ;; Diagram of the values of asin just above and below the branch cuts
-	     ;; 
-	     ;;  asin(x)                           pi - asin(x) 
-	     ;;................ -1 ....0.... 1  ...............
-             ;; -pi - asin(x)                        asin(x)
-	     ;;
-	     ;; Let's start in northwest and rotate counterclockwise:
-	     ((and (eq '$neg lim-sgn) (eq dir 1))
-	      (ftake '%asin lim))
-	     ((and (eq '$pos lim-sgn) (eq dir 1))
-	      (sub '$%pi (ftake '%asin lim)))
-	     ((and (eq '$pos lim-sgn) (eq dir -1))
-	      (ftake '%asin lim))
-	     ((and (eq '$neg lim-sgn) (eq dir -1))
-	      (sub (mul -1 '$%pi) (ftake '%asin lim)))
-	     (t
-              ;; unable to find sign of real part of lim.
-              (throw 'limit t)))))))
+	   ;; The argument approaches one of the branch cuts of asin, which run
+	   ;; along the real axis from 1 to inf and from -1 to minf. For the
+	   ;; values of asin on the branch cuts, see DLMF 4.23.20 & 4.23.21
+	   ;; Diagram of the values of asin just above and below the branch cuts
+	   ;; 
+	   ;;  asin(x)                           pi - asin(x) 
+	   ;;................ -1 ....0.... 1  ...............
+	   ;; -pi - asin(x)                        asin(x)
+	   ;;
+	   ;; So asin is continuous from above on the cut below -1 and from
+	   ;; below on the cut above 1. The branch points 1 and -1 are excluded:
+	   ;; there the two sides agree and the limit has no direction to find.
+	   (setq im (cdr (trisplit (cadr e)))) ;imaginary part of the argument
+	   (or (cond
+		 ((eq t (mgrp lim 1))
+		  (branch-cut-limit im -1 (ftake '%asin lim)
+				    (sub '$%pi (ftake '%asin lim)) x pt))
+		 ((eq t (mgrp -1 lim))
+		  (branch-cut-limit im 1 (ftake '%asin lim)
+				    (sub (mul -1 '$%pi) (ftake '%asin lim))
+				    x pt)))
+	       (throw 'limit t))))))
 (setf (get '%asin 'simplim%function) 'simplim%asin)
 
 (defun simplim%acos (e x pt)
-  (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
+  (let ((lim (limit (cadr e) x pt 'think)) (im))
     (cond 
 	   ((member lim '($zerob $zeroa)) ;acsos(zerob or zeroa) = %pi/2
 	     (ftake '%acos (ridofab lim)))
@@ -3897,20 +3967,23 @@ ignoring dummy variables and array indices."
 	  ((in-domain-of-asin lim) ;direct substitution-both asin & acos have the same branches
 	   (ftake '%acos lim))
 	  (t 
-	   (setq e (trisplit (cadr e))) ;overwrite e!
-	   (setq dir (behavior (cdr e) x pt))
-	   (setq lim-sgn ($csign lim))
-	   (cond 			  
-	     ((eql dir 0)
-	      (throw 'limit t)) ;unable to find behavior of imaginary part
-	     ;; for the values of acos on the branch cuts, see DLMF 4.23.24 & 4.23.25
-	     ;; http://dlmf.nist.gov/4.23.E24
-	     ((or (eq '$pos lim-sgn) (eq '$neg lim-sgn))
-	      ;; continuous from above
-	      (if (eql dir 1) (ftake '%acos lim) (sub (mul 2 '$%pi) (ftake '%acos lim))))
-	     (t
-              ;; unable to find sign of real part of lim.
-              (throw 'limit t)))))))
+	   ;; The argument approaches one of the branch cuts of acos, which are
+	   ;; those of asin. For the values of acos on the branch cuts, see DLMF
+	   ;; 4.23.24 & 4.23.25, http://dlmf.nist.gov/4.23.E24 Just above the
+	   ;; cut from 1 to inf, where acos is purely imaginary, its value is
+	   ;; -acos(x), and just below the cut from -1 to minf its value is
+	   ;; 2*%pi - acos(x). The branch points 1 and -1 are excluded: there
+	   ;; the two sides agree and the limit has no direction to find.
+	   (setq im (cdr (trisplit (cadr e)))) ;imaginary part of the argument
+	   (or (cond
+		 ((eq t (mgrp lim 1))
+		  (branch-cut-limit im -1 (ftake '%acos lim)
+				    (neg (ftake '%acos lim)) x pt))
+		 ((eq t (mgrp -1 lim))
+		  (branch-cut-limit im 1 (ftake '%acos lim)
+				    (sub (mul 2 '$%pi) (ftake '%acos lim))
+				    x pt)))
+	       (throw 'limit t))))))
 (setf (get '%acos 'simplim%function) 'simplim%acos)
 
 ;; Limit of an %integrate expression. For a definite integral

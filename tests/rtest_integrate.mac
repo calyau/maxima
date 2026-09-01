@@ -6828,6 +6828,30 @@ is(abs(float(integrate(acosh(x), x, -3, -2)) - (1.557949411090311 + %pi*%i)) < 1
 true;
 
 
+/* Bug #5184: "limit(acos(2+%i*x),x,0,plus) is wrong" */
+
+is(abs(float(expand(integrate('diff(acos(2+%i*x),x),x,-1,1))) + 0.3047876948867371*%i) < 1e-12);
+true;
+
+is(abs(float(expand(integrate('diff(atanh(2+%i*x),x),x,-1,1))) + 0.4636476090008061*%i) < 1e-12);
+true;
+
+is(abs(float(expand(integrate('diff(asinh(2*%i+x),x),x,-1,1))) - 0.3047876948867371) < 1e-12);
+true;
+
+is(abs(float(expand(integrate('diff(acosh(-2+%i*x),x),x,-1,1))) + 1.014712606434289*%i) < 1e-12);
+true;
+
+is(abs(float(expand(integrate('diff(asech(-2+%i*x),x),x,-1,1))) - 0.2440247678609850*%i) < 1e-12);
+true;
+
+
+/* Bug #5185: "integrate(1/sqrt(1-(%i*x+2)^2), x, -1, 1) wrong" */
+
+is(abs(float(expand(integrate(1/sqrt(1-(%i*x+2)^2), x, -1, 1))) - 0.30478769488673) < 1e-12);
+true;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

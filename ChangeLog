@@ -49,6 +49,8 @@ Bug fixes for numbered bugs:
 * \#5180 Integral crossing the discontinuity of log(z) along the negative real axis
 * \#5181 limit ignores the branch cut of the exponential integrals
 * \#5182 integrate(sqrt(%i*x-1),x,-1,1) wrong due to missing branch cut
+* \#5184 limit(acos(2+%i*x),x,0,plus) is wrong
+* \#5185 integrate(1/sqrt(1-(%i*x+2)^2), x, -1, 1) wrong
 * \#5186 Definite integration doesn't see discontinuities of inverse trigonometric/hyperbolic functions
 * \#5188 assume(notequal(x^3, y^3)) -> is(notequal(x^3, y^3)) = unknown
 * \#5189 Incorrect limit of gamma_incomplete

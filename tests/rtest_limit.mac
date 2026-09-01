@@ -1504,6 +1504,45 @@ tlimit(x^k, k, inf), ask_hide_prompt; pos;
 inf;
 
 
+/* Bug #5184: "limit(acos(2+%i*x),x,0,plus) is wrong" */
+
+[limit(asin(2 + %i*x), x, 0, plus), limit(asin(2 + %i*x), x, 0, minus)];
+[%pi - asin(2), asin(2)];
+
+[limit(asin(-2 + %i*x), x, 0, plus), limit(asin(-2 + %i*x), x, 0, minus)];
+[asin(-2), -%pi - asin(-2)];
+
+[limit(acos(2 + %i*x), x, 0, plus), limit(acos(2 + %i*x), x, 0, minus)];
+[-acos(2), acos(2)];
+
+[limit(acos(-2 + %i*x), x, 0, plus), limit(acos(-2 + %i*x), x, 0, minus)];
+[acos(-2), 2*%pi - acos(-2)];
+
+[limit(acosh(-2 + %i*x), x, 0, plus), limit(acosh(-2 + %i*x), x, 0, minus)];
+[acosh(-2), acosh(-2) - 2*%i*%pi];
+
+[limit(acosh(1/2 + %i*x), x, 0, plus), limit(acosh(1/2 + %i*x), x, 0, minus)];
+[acosh(1/2), -acosh(1/2)];
+
+[limit(atanh(2 + %i*x), x, 0, plus), limit(atanh(2 + %i*x), x, 0, minus)];
+[atanh(2) + %i*%pi, atanh(2)];
+
+[limit(atanh(-2 + %i*x), x, 0, plus), limit(atanh(-2 + %i*x), x, 0, minus)];
+[atanh(-2), atanh(-2) - %i*%pi];
+
+[limit(asinh(2*%i + x), x, 0, plus), limit(asinh(2*%i + x), x, 0, minus)];
+[asinh(2*%i), %i*%pi - asinh(2*%i)];
+
+[limit(asinh(-2*%i + x), x, 0, plus), limit(asinh(-2*%i + x), x, 0, minus)];
+[-%i*%pi - asinh(-2*%i), asinh(-2*%i)];
+
+[limit(acos(2 + x), x, 0, plus), limit(asinh(2*%i + %i*x), x, 0, plus)];
+[acos(2), asinh(2*%i)];
+
+[limit(acos(1/2 + %i*x), x, 0, plus), limit(atanh(1/2 + %i*x), x, 0, minus)];
+[acos(1/2), atanh(1/2)];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
