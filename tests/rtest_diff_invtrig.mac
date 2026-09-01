@@ -70,3 +70,25 @@ diff(acosh(x+%i*y),x,2) + diff(acosh(x+%i*y),y,2);
 
 diff(atanh(x+%i*y),x,2) + diff(atanh(x+%i*y),y,2);
 0$
+
+
+/* Bug #5192: "acosh and asech derivatives are incorrect" */
+
+diff(acosh(x),x);
+1/(sqrt(x-1)*sqrt(x+1));
+
+diff(asech(x),x);
+-1/(x^2*sqrt(1/x-1)*sqrt(1/x+1));
+
+map(lambda([f], ratsimp(diff(f(x),x) - diff(logarc(f(x)),x))),
+    [asin, acos, atan, acot, asec, acsc, asinh, acosh, atanh, acoth, asech, acsch]);
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+block([h : 10^-6, fail : [], ratprint : false, prederror : true],
+ for f in [asin, acos, atan, acot, asec, acsc, asinh, acosh, atanh, acoth, asech, acsch] do
+  for r in [-5/4, -3/4, -1/4, 1/4, 3/4, 5/4] do
+   for i in [-2, -3/2, -1, -1/2, 0, 1/2, 1, 3/2, 2] do
+    if abs(float(subst(z = r+i*%i, diff(f(z),z) - (f(z+h)-f(z-h))/(2*h)))) > 1e-6 then
+     push([f, r+i*%i], fail),
+ fail);
+[];

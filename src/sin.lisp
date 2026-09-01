@@ -693,10 +693,10 @@
 (defprop %asec ((x) ((mplus) ((mtimes) ((rat) 1 2) ((%log) ((mplus) 1 ((mtimes) -1 ((mexpt) ((mplus) 1 ((mtimes) -1 ((mexpt) x -2))) ((rat) 1 2)))))) ((mtimes) ((rat) -1 2) ((%log) ((mplus) 1 ((mexpt) ((mplus) 1 ((mtimes) -1 ((mexpt) x -2))) ((rat) 1 2))))) ((mtimes) x ((%asec) x)))) integral)
 (defprop %acot ((x) ((mplus) ((mtimes) x ((%acot) x)) ((mtimes) ((rat) 1 2) ((%log) ((mplus) 1 ((mexpt) x 2)))))) integral)
 (defprop %asinh ((x) ((mplus) ((mtimes) -1 ((mexpt) ((mplus) 1 ((mexpt) x 2)) ((rat) 1 2))) ((mtimes) x ((%asinh) x)))) integral)
-(defprop %acosh ((x) ((mplus) ((mtimes) -1 ((mexpt) ((mplus) -1 ((mexpt) x 2)) ((rat) 1 2))) ((mtimes) x ((%acosh) x)))) integral)
+(defprop %acosh ((x) ((mplus) ((mtimes) -1 ((mexpt) ((mplus) -1 x) ((rat) 1 2)) ((mexpt) ((mplus) 1 x) ((rat) 1 2))) ((mtimes) x ((%acosh) x)))) integral)
 (defprop %atanh ((x) ((mplus) ((mtimes) x ((%atanh) x)) ((mtimes) ((rat) 1 2) ((%log) ((mplus) 1 ((mtimes) -1 ((mexpt) x 2))))))) integral)
 (defprop %acsch ((x) ((mplus) ((mtimes) ((rat) -1 2) ((%log) ((mplus) -1 ((mexpt) ((mplus) 1 ((mexpt) x -2)) ((rat) 1 2))))) ((mtimes) ((rat) 1 2) ((%log) ((mplus) 1 ((mexpt) ((mplus) 1 ((mexpt) x -2)) ((rat) 1 2))))) ((mtimes) x ((%acsch) x)))) integral)
-(defprop %asech ((x) ((mplus) ((mtimes) -1 ((%atan) ((mexpt) ((mplus) -1 ((mexpt) x -2)) ((rat) 1 2)))) ((mtimes) x ((%asech) x)))) integral)
+(defprop %asech ((x) ((mplus) ((mtimes) -1 ((%atan) ((mtimes) ((mexpt) ((mplus) -1 ((mexpt) x -1)) ((rat) 1 2)) ((mexpt) ((mplus) 1 ((mexpt) x -1)) ((rat) 1 2))))) ((mtimes) x ((%asech) x)))) integral)
 
 ;; Define a little helper function to be used in antiderivatives.
 ;; Depending on the logabs flag, it either returns log(x) or log(abs(x)).

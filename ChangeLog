@@ -53,6 +53,7 @@ Bug fixes for numbered bugs:
 * \#5188 assume(notequal(x^3, y^3)) -> is(notequal(x^3, y^3)) = unknown
 * \#5189 Incorrect limit of gamma_incomplete
 * \#5190 limit(1/erfc(x), x, 0, minus) recurses infinitely
+* \#5192 acosh and asech derivatives are incorrect
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -468,11 +468,13 @@
 	  (%sech ((mtimes) -1 ((%sech) x) ((%tanh) x)))
 	  (%csch ((mtimes) -1 ((%coth) x) ((%csch) x)))
 	  (%asinh ((mexpt) ((mplus) 1 ((mexpt) x 2)) ((rat) -1 2)))
-	  (%acosh ((mexpt) ((mplus) -1 ((mexpt) x 2)) ((rat) -1 2)))
+	  (%acosh ((mtimes) ((mexpt) ((mplus) -1 x) ((rat) -1 2))
+		   ((mexpt) ((mplus) 1 x) ((rat) -1 2))))
 	  (%atanh ((mexpt) ((mplus) 1 ((mtimes) -1 ((mexpt) x 2))) -1))
 	  (%acoth ((mtimes) -1 ((mexpt) ((mplus) -1 ((mexpt) x 2)) -1)))
 	  (%asech ((mtimes) -1
-		   ((mexpt) ((mplus) -1 ((mexpt) x -2)) ((rat) -1 2))
+		   ((mexpt) ((mplus) -1 ((mexpt) x -1)) ((rat) -1 2))
+		   ((mexpt) ((mplus) 1 ((mexpt) x -1)) ((rat) -1 2))
 		   ((mexpt) x -2)))
 	  (%acsch ((mtimes) -1
 		   ((mexpt) ((mplus) 1 ((mexpt) x -2)) ((rat) -1 2))
