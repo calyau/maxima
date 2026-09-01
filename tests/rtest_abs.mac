@@ -527,6 +527,24 @@ cabs(abs(x+%i));
 sqrt(x^2 + 1);
 
 
+/* Bug #5195: "csign(1/sqrt(x)) vs. csign(sqrt(x))" */
+
+block([ans : abs(1/sqrt(x))], [op(ans), args(ans)]);
+[abs, [1/sqrt(x)]];
+
+block([ans : abs(x^(-1/4))], [op(ans), args(ans)]);
+[abs, [x^(-1/4)]];
+
+block([ans : abs(x^(-3/2))], [op(ans), args(ans)]);
+[abs, [x^(-3/2)]];
+
+abs(1/sqrt(-4));
+1/2;
+
+block([x], local(x), assume(x > 0), [abs(1/sqrt(x)), abs(x^(-1/4))]);
+[1/sqrt(x), x^(-1/4)];
+
+
 /***********************************************************/
 /* Guard against leaks, leave this at the end of the file! */
 /***********************************************************/

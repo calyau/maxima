@@ -346,6 +346,21 @@ remove(z, complex);
 done;
 
 
+/* Bug #5195: "csign(1/sqrt(x)) vs. csign(sqrt(x))" */
+
+signum(1/sqrt(x));
+1/sqrt(signum(x));
+
+signum(sqrt(x)) * signum(1/sqrt(x));
+1;
+
+signum(x^(-1/4));
+1/signum(x)^(1/4);
+
+signum(1/sqrt(-4));
+-%i;
+
+
 /***********************************************************/
 /* Guard against leaks, leave this at the end of the file! */
 /***********************************************************/

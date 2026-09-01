@@ -2377,6 +2377,34 @@ block([p, q],
 [true, [notequal(p^3, q^3)], unknown];
 
 
+/* Bug #5195: "csign(1/sqrt(x)) vs. csign(sqrt(x))" */
+
+csign(1/sqrt(x));
+complex;
+
+csign(x^(-3/2));
+complex;
+
+csign(x^(-1/4));
+complex;
+
+sign(1/sqrt(x));
+pos;
+
+block([b], local(b), assume(b > 0), [csign(1/sqrt(b)), csign(b^(-1/4))]);
+[pos, pos];
+
+block([b], local(b), assume(b < 0), [csign(1/sqrt(b)), csign(b^(-1/4))]);
+[imaginary, complex];
+
+block([b], local(b), assume(b <= 0), csign(1/sqrt(b)));
+complex;
+
+block([b], local(b), assume(notequal(b, 0)),
+      [csign(1/sqrt(b)), csign(b^(-1/4)), sign(1/sqrt(b))]);
+[complex, complex, pos];
+
+
 /* Leave this at the end of the file! */
 [facts(), contexts];
 [[], [initial, global]];

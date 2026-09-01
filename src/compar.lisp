@@ -1981,11 +1981,21 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			  odds nil))))
     ;; (pnz, pos, pz or pn)^(-odd/even) = pos & (pnz, pos, pz or pn)^(odd/even) = pz.
     ;; This makes, for example, sign(1/sqrt(x)) = pos & sign(sqrt(x) = pz.
+    ;; In complex mode, a base that may be negative is not real here, so let
+    ;; the (RATNUMP EXPT) clause below compute the sign instead.
     ((and (eq sign-expt '$neg) ($ratnump expt) ($evenp ($denom expt))
-          (member sign-base '($pnz $pos $pz $pn) :test #'eq))
+          (member sign-base '($pnz $pos $pz $pn) :test #'eq)
+          (or (not *complexsign*)
+              (member sign-base '($pos $pz) :test #'eq)))
       (setq sign '$pos))
 	  ((and (member sign-expt '($neg $nz) :test #'eq)
-		(member sign-base '($nz $pz $pnz) :test #'eq))
+		(member sign-base '($nz $pz $pnz) :test #'eq)
+		;; Same exception: in Complex Mode an even denominator over a
+		;; base that may be negative is not real.
+		(not (and *complexsign*
+			  ($ratnump expt)
+			  ($evenp ($denom expt))
+			  (member sign-base '($nz $pnz)))))
 	   (setq sign (if (eq sign-base '$pz)
 			  '$pos
 			  '$pn)))
