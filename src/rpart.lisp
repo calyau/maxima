@@ -28,16 +28,20 @@
 ;; user works in the real domain.
 (defvar *risplit-domain* nil)
 
-;; True when POW is a rational number with an odd denominator and the user's
-;; $domain is real.  A real quantity raised to such a power is then real,
-;; since the simplifier takes the real root: (-8)^(1/3) simplifies to -2 and
-;; (x^3)^(1/3) to x, and csign, abs and signum agree with it.  With
-;; domain : complex, or an even denominator, the power is on the principal
-;; branch and may be complex.
+;; True when POW is a root with an integer numerator and an odd denominator,
+;; as 1/3, 2/3 or 1/n with n declared odd, and the user's $domain is real.
+;; A real quantity raised to such a power is then real, since the simplifier
+;; takes the real root: (-8)^(1/3) simplifies to -2 and (x^3)^(1/3) to x,
+;; and csign, abs and signum agree with it.  With domain : complex, or an
+;; even denominator, the power is on the principal branch and may be
+;; complex.  An integer power, with the denominator 1, is left to the
+;; clauses for integer exponents.
 (defun real-odd-root-p (pow)
-  (and (ratnump pow)
-       (oddp (caddr pow))
-       (eq (or *risplit-domain* $domain) '$real)))
+  (let ((den ($denom pow)))
+    (and (eq (or *risplit-domain* $domain) '$real)
+         (not (eql den 1))
+         (maxima-integerp ($num pow))
+         (eq (evod den) '$odd))))
 
 ;;; Realpart gives the real part of an expr.
 

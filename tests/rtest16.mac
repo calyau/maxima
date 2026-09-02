@@ -4337,7 +4337,23 @@ block([domain : complex],
        rectform((-8)^(1/3)) - (1 + sqrt(3)*%i)]);
 [0, 0]$
 
-(forget(xn < 0, yn < 0), 0);
+/* An exponent whose denominator is only declared odd, with an integer
+   numerator, is a real root too, as csign says; an even or an unknown
+   parity is not. */
+(declare(nodd, odd, mint, integer), 0);
+0$
+
+[rectform(xn^(1/nodd)), imagpart(xn^(mint/nodd)), carg(xn^(1/nodd)),
+ rectform(xn^(2/nodd))];
+[xn^(1/nodd), 0, %pi, xn^(2/nodd)]$
+
+subst(nodd = 3, rectform(xn^(1/nodd)));
+xn^(1/3)$
+
+[is(imagpart(xn^(1/(2*mint))) = 0), is(imagpart(xn^(1/mint)) = 0)];
+[false, false]$
+
+(remove(nodd, odd), remove(mint, integer), forget(xn < 0, yn < 0), 0);
 0$
 
 
