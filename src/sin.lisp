@@ -3314,6 +3314,7 @@
 ;;; Do a facsum for the exponent of power functions.
 ;;; This is necessary to integrate all general forms. The pattern matcher is
 ;;; not powerful enough to do the job.
+
 (defun facsum-exponent (expr var2)
   ;; Make sure that expr has the form ((mtimes) factor1 factor2 ...)
   (when (not (mtimesp expr)) (setq expr (list '(mtimes) expr)))
