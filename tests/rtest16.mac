@@ -4265,6 +4265,33 @@ block([fpprec : 50], length(bfallroots((x-3)^4*(x+1))));
 [];
 
 
+/* Bug #5203: "trigreduce drops terms, causing wrong answers" */
+
+trigreduce(tan(x)^2 + tan(y)^2 + 2);
+tan(y)^2 + tan(x)^2 + 2;
+
+trigreduce(cot(x)^2 + cot(y)^2 + 2);
+cot(y)^2 + cot(x)^2 + 2;
+
+trigreduce(tan(2*x)^2 + tan(x)^2 + 2);
+tan(2*x)^2 + tan(x)^2 + 2;
+
+trigreduce(a*tan(x)^2 + b*tan(y)^2 + a + b);
+b*tan(y)^2 + a*tan(x)^2 + b + a;
+
+trigreduce(tan(x)^2 + 3*tan(x)^2 + 4);
+4*sec(x)^2;
+
+trigreduce(a*tan(x)^2 + a);
+a*sec(x)^2;
+
+trigreduce(cot(x)^2 + 1);
+csc(x)^2;
+
+
+/**************************************/
 /* Leave this at the end of the file! */
+/**************************************/
+
 [facts(), contexts];
 [[], [initial, global]]$

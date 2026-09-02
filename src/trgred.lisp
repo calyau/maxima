@@ -17,16 +17,16 @@
 (load-macsyma-macros rzmac)
 
 (defvar *trans-list-plus*
-  '((((mplus) ((coeffpt) (c true) ((mexpt) ((%tan) (x true)) 2))
+  '((((mplus) ((coeffpt) (c true) ((mexpt) ((%tan) (var* (uvar) x true)) 2))
        (var* (uvar) c))
       ((mtimes) c ((mexpt) ((%sec) x) 2)))
-    (((mplus) ((coeffpt) (c true) ((mexpt) ((%cot) (x true)) 2))
+    (((mplus) ((coeffpt) (c true) ((mexpt) ((%cot) (var* (uvar) x true)) 2))
       (var* (uvar) c))
      ((mtimes) c ((mexpt) ((%csc) x) 2)))
-    (((mplus) ((coeffpt) (c true) ((mexpt) ((%tanh) (x true)) 2))
+    (((mplus) ((coeffpt) (c true) ((mexpt) ((%tanh) (var* (uvar) x true)) 2))
       ((mtimes) -1 (var* (uvar) c)))
      ((mtimes) -1 c ((mexpt) ((%sech) x) 2)))
-    (((mplus) ((coeffpt) (c true) ((mexpt) ((%coth) (x true)) 2))
+    (((mplus) ((coeffpt) (c true) ((mexpt) ((%coth) (var* (uvar) x true)) 2))
       ((mtimes) -1 (var* (uvar) c)))
      ((mtimes) c ((mexpt) ((%csch) x) 2)))))
 

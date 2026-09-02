@@ -64,6 +64,7 @@ Bug fixes for numbered bugs:
 * \#5198 limit(asin(inf)) should be infinity
 * \#5201 limits involving acosh: strange question
 * \#5202 csign(negative^(1/odd)) under domain : complex
+* \#5203 trigreduce drops terms, causing wrong answers
 
 Bug fixes for unnumbered bugs:
 ------------------------------
