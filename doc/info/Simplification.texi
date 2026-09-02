@@ -611,9 +611,14 @@ raised to a power with an integer numerator and an odd denominator, as in
 @code{odd}, is taken to be the real root: @code{(-8)^(1/3)} simplifies to
 @code{-2} and @code{(x^3)^(1/3)} to @code{x}, and @mref{rectform},
 @mref{realpart}, @mref{imagpart}, @mref{polarform} and @mref{carg} treat
-such a power of a real quantity as real.  When @code{domain} is set to
-@code{complex}, such a power is on the principal branch, and
-@code{(-8)^(1/3)} is @code{1 + sqrt(3) %i}; see also @mrefdot{m1pbranch}
+such a power of a real quantity as real.  @mref{integrate}, the derivative
+of @mref{gamma_incomplete} and its expansion with @code{gamma_expand} keep
+to the principal branch of @code{gamma_incomplete}, and write the power of
+its argument that comes with it, as @code{(-x^3)^(-1/3)} with
+@code{gamma_incomplete(1/3, -x^3)}, in terms of @code{x/abs(x)}.  When
+@code{domain} is set to @code{complex}, such a power is on the principal
+branch, and @code{(-8)^(1/3)} is @code{1 + sqrt(3) %i}; see also
+@mrefdot{m1pbranch}
 
 @c PRESERVE EDITORIAL COMMENT -- MAY HAVE SOME SIGNIFICANCE NOT YET UNDERSTOOD !!!
 @c The notion of a "domain" of simplification is still in its infancy,

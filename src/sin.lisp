@@ -2485,35 +2485,35 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; The principal value of (k*var2^n)^s for a real var2, an odd integer n and
-;; a k free of var2, as abs(k)^s*abs(var2)^(n*s)*%e^(%i*s*arg), where arg is
-;; the argument of k*var2, which is that of k*var2^n: 0 or %pi for a real k,
-;; %pi/2 or -%pi/2 for an imaginary k, both by the sign of var2.  A power of
-;; k*var2^n itself does not survive the simplifier when s has an odd
-;; denominator: with domain : real it takes the real root of a negative base,
-;; as (-x^3)^(-1/3) becomes -1/x, and its (a*b)^s = a^s*b^s leaves the
-;; principal branch for a negative var2, while GAMMA_INCOMPLETE always stays
-;; on that branch.  The sign of var2 enters as atan2(0, var2), the argument
-;; of a real var2 as CARG returns it, which differentiates to 0 and which
-;; RISPLIT keeps: an atan2 with a zero second argument it would turn into
-;; logarithms, which LOGEXPAND takes apart.
-(defun principal-odd-power (k var2 n s)
-  (destructuring-bind (re . im) (trisplit k)
-    (let* ((a (take '(%atan2) 0 var2))
-           (arg (cond ((zerop1 im)
-                       (cond ((and (mnump re) (not (mnegp re))) a)
-                             ((mnump re) (sub '$%pi a))
-                             (t (take '(%atan2) 0 (mul re var2)))))
-                      ((zerop1 re)
-                       (cond ((and (mnump im) (not (mnegp im)))
-                              (sub (div '$%pi 2) a))
-                             ((mnump im) (sub a (div '$%pi 2)))
-                             (t (sub (div '$%pi 2)
-                                     (take '(%atan2) 0 (mul im var2))))))
-                      (t (take '(%atan2) (mul im var2) (mul re var2))))))
-      (mul (power (cabs k) s)
-           (power (take '(mabs) var2) (mul n s))
-           (power '$%e (mul '$%i s arg))))))
+;; gamma_incomplete(alpha, z) and var^m*z^s, for s = -alpha, of the
+;; antiderivatives below: (values gamma power var^m), with var^m folded
+;; into the power and 1 in its place where the treatment applies.  A power
+;; of z = k*var^n does not survive the simplifier when alpha has an odd
+;; denominator: with domain : real it takes the real root of a negative
+;; base, as (-x^3)^(-1/3) becomes -1/x, and its (a*b)^s = a^s*b^s leaves
+;; the principal branch for a negative var, while gamma_incomplete stays
+;; on that branch; so the power is written by PRINCIPAL-POWER-TIMES.  Its
+;; phase is then one constant for a positive var and another for a
+;; negative one when the sign of var^n is that of var, and the
+;; antiderivative, gamma(alpha) times the phase at var = 0 where alpha > 0
+;; and z goes to 0 with var, would jump there: gamma(alpha) is taken from
+;; gamma_incomplete to make it 0 at var = 0 from both sides.
+(defun gamma-incomplete-and-power (alpha s z var m)
+  (multiple-value-bind (k w n nonneg) (real-power-factors z)
+    (declare (ignore w))
+    (if (and k (odd-root-p alpha))
+        (let ((g (take '(%gamma_incomplete) alpha z)))
+          (values (if (and (not nonneg)
+                           (sign-varies-p n)
+                           (eq ($sign n) '$pos)
+                           (eq ($sign alpha) '$pos))
+                      (sub g (take '(%gamma) alpha))
+                      g)
+                  (principal-power-times var m z s)
+                  1))
+        (values (take '(%gamma_incomplete) alpha z)
+                (power z s)
+                (power var m)))))
 
 (defun integrate-exp-special (expr var2 &aux w const)
 
@@ -2531,31 +2531,20 @@
      (when *debug-integrate*
        (format t "~&Type 1a: (a^(c*(z^r)^p+d)^v : w = ~A~%" w))
 
-     (mul -1
-	  const
-	  ;; 1/(p*r*(a^(c*v*(var2^r)^p)))
-	  (inv (mul p r (power a (mul c v (power (power var2 r) p)))))
-	  var2
-	  ;; (a^(d+c*(var2^r)^p))^v
-	  (power (power a (add d (mul c (power (power var2 r) p)))) v)
-	  ;; gamma_incomplete(1/(p*r), -c*v*(var2^r)^p*log(a)), less gamma(1/(p*r))
-	  ;; when p*r is a positive odd integer: the last factor is then one
-	  ;; constant for a positive var2 and another for a negative one, and the
-	  ;; antiderivative, 0 at var2 = 0 this way, would jump there otherwise
-	  (let ((n (mul r p))
-		(g (take '(%gamma_incomplete)
-			 (inv (mul p r))
-			 (mul -1 c v (power (power var2 r) p) (take '(%log) a)))))
-	    (if (and (integerp n) (oddp n) (plusp n))
-		(sub g (take '(%gamma) (inv n)))
-		g))
-	  ;; (-c*v*(var2^r)^p*log(a))^(-1/(p*r)), on the principal branch when
-	  ;; p*r is odd, where the simplifier would not keep it there
-	  (let ((n (mul r p)))
-	    (if (and (integerp n) (oddp n))
-		(principal-odd-power (mul -1 c v (take '(%log) a)) var2 n (div -1 n))
-		(power (mul -1 c v (power (power var2 r) p) (take '(%log) a))
-		       (div -1 (mul p r)))))))
+     (multiple-value-bind (g pw vp)
+	 (gamma-incomplete-and-power
+	  (inv (mul p r))
+	  (div -1 (mul p r))
+	  (mul -1 c v (power (power var2 r) p) (take '(%log) a))
+	  var2 1)
+       (mul -1
+	    const
+	    ;; 1/(p*r*(a^(c*v*(var2^r)^p)))
+	    (inv (mul p r (power a (mul c v (power (power var2 r) p)))))
+	    vp
+	    ;; (a^(d+c*(var2^r)^p))^v
+	    (power (power a (add d (mul c (power (power var2 r) p)))) v)
+	    g pw)))
 
     ((m2-exp-type-2 (facsum-exponent expr var2) var2)
      (a b d v r)
@@ -2563,33 +2552,29 @@
      (when *debug-integrate*
        (format t "~&Type 2: z^v*a^(b*z^r+d) : w = ~A~%" w))
 
-     (mul
-      const
-      (div -1 r)
-      (power a d)
-      (power var2 (add v 1))
-      ($gamma_incomplete
-       (div (add v 1) r)
-       (mul -1 b (power var2 r) ($log a)))
-      (power
-       (mul -1 b (power var2 r) ($log a))
-       (mul -1 (div (add v 1) r)))))
+     (multiple-value-bind (g pw vp)
+         (gamma-incomplete-and-power (div (add v 1) r)
+                                     (mul -1 (div (add v 1) r))
+                                     (mul -1 b (power var2 r) ($log a))
+                                     var2 (add v 1))
+       (mul const (div -1 r) (power a d) vp g pw)))
 
     ((m2-exp-type-2-1 (facsum-exponent expr var2) var2)
      (a b v r u)
      (when *debug-integrate*
        (format t "~&Type 2-1: z^v*(%e^(a*z^r+b))^u : w = ~A~%" w))
 
-     (mul const
-          -1
-          (inv r)
-          (power '$%e (mul -1 a u (power var2 r)))
-          (power (power '$%e (add (mul a (power var2 r)) b)) u)
-          (power var2 (add v 1))
-          (power (mul -1 a u (power var2 r)) (div (mul -1 (add v 1)) r))
-          (take '(%gamma_incomplete)
-                (div (add v 1) r)
-                (mul -1 a u (power var2 r)))))
+     (multiple-value-bind (g pw vp)
+         (gamma-incomplete-and-power (div (add v 1) r)
+                                     (div (mul -1 (add v 1)) r)
+                                     (mul -1 a u (power var2 r))
+                                     var2 (add v 1))
+       (mul const
+            -1
+            (inv r)
+            (power '$%e (mul -1 a u (power var2 r)))
+            (power (power '$%e (add (mul a (power var2 r)) b)) u)
+            vp pw g)))
     
     ((m2-exp-type-3 (expand-base-of-exp (facsum-exponent expr var2) var2) var2)
       (a b c d p)
@@ -3329,7 +3314,6 @@
 ;;; Do a facsum for the exponent of power functions.
 ;;; This is necessary to integrate all general forms. The pattern matcher is
 ;;; not powerful enough to do the job.
-
 (defun facsum-exponent (expr var2)
   ;; Make sure that expr has the form ((mtimes) factor1 factor2 ...)
   (when (not (mtimesp expr)) (setq expr (list '(mtimes) expr)))

@@ -78,6 +78,7 @@ Bug fixes for unnumbered bugs:
 * rectform, realpart, imagpart, polarform and carg take the principal branch of an odd root of a negative real quantity, where the simplifier takes the real root with domain : real
 * csign(x^(m/n)) with an integer m and n declared odd is complex for x < 0 with domain : real, where the power is the real root (x^(1/n))^m
 * integrate(%e^(x^3), x) and integrate(sin(x^3), x) are wrong for x > 0: the (-x^3)^(-1/3) of the integrator is taken as the real root while gamma_incomplete stays on the principal branch
+* integrate(x*%e^(x^3), x), and the definite integrals that substitute in the integrand, as integrate(%e^(x^3), x, -1, 1) and integrate(exp(sqrt(x^3)), x, 0, 1), take the real root of the power that comes with gamma_incomplete the same way
 * diff(gamma_incomplete(a, z), x) and gamma_incomplete(a, z) with gamma_expand take the real root of z^(a-1) with domain : real for a z such as -x^3, where the function is on the principal branch: the antiderivative of %e^(x^3) did not differentiate back to it
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
