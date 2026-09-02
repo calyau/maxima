@@ -23,6 +23,22 @@
 (declare-top (special $radexpand
 		      $keepfloat))
 
+;; $domain as it was when RISPLIT was entered.  RISPLIT binds $domain to
+;; $complex while it works, so its helpers read this to learn whether the
+;; user works in the real domain.
+(defvar *risplit-domain* nil)
+
+;; True when POW is a rational number with an odd denominator and the user's
+;; $domain is real.  A real quantity raised to such a power is then real,
+;; since the simplifier takes the real root: (-8)^(1/3) simplifies to -2 and
+;; (x^3)^(1/3) to x, and csign, abs and signum agree with it.  With
+;; domain : complex, or an even denominator, the power is on the principal
+;; branch and may be complex.
+(defun real-odd-root-p (pow)
+  (and (ratnump pow)
+       (oddp (caddr pow))
+       (eq (or *risplit-domain* $domain) '$real)))
+
 ;;; Realpart gives the real part of an expr.
 
 (defun risplit-signum (x) ;rectangular form for a signum expression
@@ -227,6 +243,12 @@
       ((fixnump pow)
        (risplit-expt-fixnum-pow sp pow))
 
+      ((and (=0 (cdr sp)) (real-odd-root-p pow))
+       ;; A real base to a rational power with an odd denominator is real
+       ;; with domain : real.  Simplify the power in that domain, since
+       ;; RISPLIT binds $domain to $complex.
+       (cons (let (($domain '$real)) (power (car sp) pow)) 0))
+
       ((and (ratnump pow)
             (fixnump (cadr pow))
             (not (< (cadr pow) (- $maxnegex)))
@@ -397,7 +419,8 @@
 ;;; (<Real part> . <imaginary part>).
 
 (defun risplit (l)
-  (let (($domain '$complex) ($m1pbranch t) $logarc op)
+  (let* ((*risplit-domain* (or *risplit-domain* $domain))
+         ($domain '$complex) ($m1pbranch t) $logarc op)
     (cond ((atom l)
            ;; Symbols are assumed to represent real values, unless they have
            ;; been declared to be complex. If they have been declared to be both
@@ -762,7 +785,11 @@
 	   (unless n
 	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
 	   (setq abars (absarg (car n) absflag))))
-        ((eq (caar l) 'mexpt)
+        ((and (eq (caar l) 'mexpt)
+              ;; With domain : real an odd root of a real quantity is a
+              ;; real quantity, and the last clause handles it as one.
+              (not (and (real-odd-root-p (caddr l))
+                        (=0 (cdr (risplit (cadr l)))))))
          ;; An expression z^a
          (let ((aa (absarg (cadr l) nil)) ; (abs(z) . arg(z))
                (sp (risplit (caddr l)))   ; (realpart(a) . imagpart(a))

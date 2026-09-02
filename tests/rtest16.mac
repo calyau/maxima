@@ -4290,6 +4290,57 @@ csc(x)^2;
 
 
 /**************************************/
+/* rectform, realpart, imagpart, polarform and carg take the same branch as
+   the simplifier for an odd root of a real quantity with domain : real:
+   (-8)^(1/3) simplifies to -2, so x^(1/3) is real for every real x. */
+
+(assume(xn < 0, yn < 0), 0);
+0$
+
+rectform(xn^(1/3));
+xn^(1/3)$
+
+[realpart(xn^(1/3)), imagpart(xn^(1/3))];
+[xn^(1/3), 0]$
+
+[rectform(xn^(2/3)), rectform(xn^(-1/3)), rectform(xn^(7/5))];
+[xn^(2/3), 1/xn^(1/3), xn^(7/5)]$
+
+/* carg and polarform agree with each other and with the simplifier */
+[carg(xn^(1/3)), cabs(xn^(1/3)),
+ block([%emode : false], is(polarform(xn^(1/3)) = -%e^(%i*%pi)*xn^(1/3)))];
+[%pi, -xn^(1/3), true]$
+
+/* The simplifier distributes an odd root over a product on the real
+   branch only, and the rectangular form has to be on the same branch. */
+rectform((xn*yn)^(1/3));
+xn^(1/3)*yn^(1/3)$
+
+subst(xn = -8, rectform(xn^(1/3)));
+-2$
+
+/* an unknown sign */
+[rectform(x^(1/3)), carg(x^(1/3))];
+[x^(1/3), atan2(0, x^(1/3))]$
+
+/* A power that was simplified with domain : complex */
+rectform(block([domain : complex], (-8)^(1/3)));
+-2$
+
+/* Even denominators stay on the principal branch */
+[rectform(sqrt(xn)), rectform(xn^(1/6))];
+[%i*sqrt(-xn), sqrt(3)*(-xn)^(1/6)/2 + %i*(-xn)^(1/6)/2]$
+
+/* domain : complex is unchanged */
+block([domain : complex],
+      [rectform(xn^(1/3)) - ((-xn)^(1/3)/2 + sqrt(3)*%i*(-xn)^(1/3)/2),
+       rectform((-8)^(1/3)) - (1 + sqrt(3)*%i)]);
+[0, 0]$
+
+(forget(xn < 0, yn < 0), 0);
+0$
+
+
 /* Leave this at the end of the file! */
 /**************************************/
 
