@@ -1587,6 +1587,12 @@ inf;
 [%i*%pi/2, %i*%pi/2, -%i*%pi/2, -%i*%pi/2];
 
 
+/* Bug #5201: "limits involving acosh: strange question and infinite recursion" */
+
+limit((acosh(-1+x)-acosh(-1))/x, x, 0);
+infinity;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

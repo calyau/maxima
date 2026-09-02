@@ -419,7 +419,8 @@
             ;; with LIMITP bound to NIL - the way CSIGN does, imaginary guard
             ;; included.
             (setq sgn (if (and *getsignl-asksign-ok*
-                               (freeof-extended-real z))
+                               (freeof-extended-real z)
+                               (not (eq t (mnqp ($imagpart z) 0))))
                         (let (sign-imag-errp limitp)
                           (catch 'sign-imag-err ($asksign z)))
                         ($csign z)))
@@ -1617,7 +1618,9 @@ ignoring dummy variables and array indices."
 			    ((eq val '$infinity)  '$infinity)
 			    ;; A leading coefficient that is not real leaves an infinity
 			    ;; of arbitrary phase, whatever the rest of the quotient does.
-			    ((and (freeof-extended-real e) (eq t (csign e)))
+			    ((and (freeof-extended-real e)
+			          (or (eq t (csign e))
+			              (eq t (mnqp 0 ($imagpart e)))))
 			     '$infinity)
 			    ;; E is only the ratio of the leading coefficients, so a lower-
 			    ;; order imaginary term never reaches it:
