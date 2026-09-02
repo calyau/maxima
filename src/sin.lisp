@@ -2485,6 +2485,27 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; The principal value of (k*var2^n)^s for a real var2, an odd integer n and
+;; a k free of var2, as abs(k)^s*abs(var2)^(n*s)*%e^(%i*s*arg), where arg is
+;; the argument of k*var2, which is that of k*var2^n: 0 or %pi for a real k,
+;; %pi/2 or -%pi/2 for an imaginary k, both by the sign of var2.  A power of
+;; k*var2^n itself does not survive the simplifier when s has an odd
+;; denominator: with domain : real it takes the real root of a negative base,
+;; as (-x^3)^(-1/3) becomes -1/x, and its (a*b)^s = a^s*b^s leaves the
+;; principal branch for a negative var2, while GAMMA_INCOMPLETE always stays
+;; on that branch.  An atan2 of var2 would not survive either: RISPLIT turns
+;; it into logarithms, which LOGEXPAND takes apart.
+(defun principal-odd-power (k var2 n s)
+  (destructuring-bind (re . im) (trisplit k)
+    (let ((arg (cond ((zerop1 im)
+		      (mul '$%pi (div (sub 1 (take '(%signum) (mul re var2))) 2)))
+		     ((zerop1 re)
+		      (mul '$%pi (div (take '(%signum) (mul im var2)) 2)))
+		     (t (take '(%atan2) (mul im var2) (mul re var2))))))
+      (mul (power (cabs k) s)
+	   (power (take '(mabs) var2) (mul n s))
+	   (power '$%e (mul '$%i s arg))))))
+
 (defun integrate-exp-special (expr var2 &aux w const)
 
   ;; First factor the expression.
@@ -2512,9 +2533,13 @@
 	  (take '(%gamma_incomplete)
 		(inv (mul p r))
 		(mul -1 c v (power (power var2 r) p) (take '(%log) a)))
-	  ;; (-c*v*(var2^r)^p*log(a))^(-1/(p*r))
-	  (power (mul -1 c v (power (power var2 r) p) (take '(%log) a))
-		 (div -1 (mul p r)))))
+	  ;; (-c*v*(var2^r)^p*log(a))^(-1/(p*r)), on the principal branch when
+	  ;; p*r is odd, where the simplifier would not keep it there
+	  (let ((n (mul r p)))
+	    (if (and (integerp n) (oddp n))
+		(principal-odd-power (mul -1 c v (take '(%log) a)) var2 n (div -1 n))
+		(power (mul -1 c v (power (power var2 r) p) (take '(%log) a))
+		       (div -1 (mul p r)))))))
 
     ((m2-exp-type-2 (facsum-exponent expr var2) var2)
      (a b d v r)
