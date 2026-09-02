@@ -790,10 +790,16 @@
 	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
 	   (setq abars (absarg (car n) absflag))))
         ((and (eq (caar l) 'mexpt)
-              ;; With domain : real an odd root of a real quantity is a
-              ;; real quantity, and the last clause handles it as one.
-              (not (and (real-odd-root-p (caddr l))
-                        (=0 (cdr (risplit (cadr l)))))))
+              (real-odd-root-p (caddr l))
+              (=0 (cdr (risplit (cadr l)))))
+         ;; With domain : real an odd root of a real quantity is real: its
+         ;; modulus is the root of the modulus of the base, and its
+         ;; argument is 0 or %pi, by its sign.  The last clause must not
+         ;; handle it: its ABSARG-MABS would call SIMPABS, which sends a
+         ;; power of a negative base back to CABS.
+         (cons (power (car (absarg (cadr l) absflag)) (caddr l))
+               (if absflag 0 (genatan 0 l))))
+        ((eq (caar l) 'mexpt)
          ;; An expression z^a
          (let ((aa (absarg (cadr l) nil)) ; (abs(z) . arg(z))
                (sp (risplit (caddr l)))   ; (realpart(a) . imagpart(a))

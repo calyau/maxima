@@ -2474,6 +2474,38 @@ block([a, b],
 
 
 /**************************************/
+/* With domain : real, x^(m/n) with an integer m and an odd n is the real
+   root (x^(1/n))^m, and csign judges it by the parity of m, as it does
+   x^(2/3) and x^(1/3); a denominator merely declared odd counts, an
+   unknown numerator does not. */
+
+block([b, n, m, p, u],
+ local(b, n, m, p, u),
+ declare(n, odd, m, integer, p, odd),
+ assume(b < 0),
+ [csign(b^(2/n)), csign(b^(m/n)), csign(b^(p/n)), csign(b^(-2/n)),
+  csign(b^(1/n)), csign(b^(u/n)), csign(b^(1/m)), csign(b^(1/(2*n))),
+  csign((-8)^(2/n)), csign((-8)^(p/n))]);
+[pos, pnz, pn, pos, neg, complex, complex, complex, pos, pn];
+
+block([b, n, m, p],
+ local(b, n, m, p),
+ declare(n, odd, m, integer, p, odd),
+ [csign(b^(2/n)), csign(b^(m/n)), csign(b^(p/n)), csign(b^(-2/n)),
+  sign(b^(2/n)), sign(b^(p/n))]);
+[pz, pnz, pnz, pz, pz, pnz];
+
+/* sign answers the same in real mode, and there regardless of domain, as
+   it does for x^(2/3); csign returns to complex with domain : complex */
+block([b, n, p],
+ local(b, n, p),
+ declare(n, odd, p, odd),
+ assume(b < 0),
+ [sign(b^(2/n)), sign(b^(p/n)),
+  block([domain : complex], [sign(b^(2/n)), csign(b^(2/n))])]);
+[pos, pn, [pos, complex]];
+
+
 /* Leave this at the end of the file! */
 /**************************************/
 

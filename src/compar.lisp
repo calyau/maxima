@@ -1920,6 +1920,19 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (let* ((expt (caddr x)) (base1 (cadr x))
 	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
 	 (evod (evod expt)))
+    ;; With domain : real, or in real mode, x^(m/n) with an integer m and an
+    ;; odd n is (x^(1/n))^m, whose sign is that of x^m: judge the exponent
+    ;; by its numerator.  SIGN-EXPT stays the sign of m/n, which decides
+    ;; whether the power can be zero.  A rational exponent has its own
+    ;; clause below.
+    (when (and (or (not *complexsign*) (eq $domain '$real))
+	       (not (mnump expt)))
+      (let ((den ($denom expt)))
+	(when (and (not (eql den 1))
+		   (maxima-integerp ($num expt))
+		   (eq (evod den) '$odd))
+	  (setq expt ($num expt)
+		evod (evod expt)))))
     ;; The variable sign is now equal to sign-base. This is used below
     ;; in some places to avoid an assignment operation for sign.
     (cond ((and (eq sign-base '$zero)
