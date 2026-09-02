@@ -3451,20 +3451,46 @@ ignoring dummy variables and array indices."
 	   (t (return ($radcan (ridofab (subin val e))))))
      (return (simplimtimes (list n1 d1)))))
 
+(defun non-real-sign (e)
+  "When E can be shown to be non-real, return '$COMPLEX or '$IMAGINARY,
+  otherwise return NIL."
+  (let ((z (risplit e)))
+    (when (eq t (mnqp (cdr z) 0))
+      (if (eq t (meqp (car z) 0))
+        '$imaginary
+        '$complex))))
+
 (defun maybe-asksign (e)
-  "When `*getsignl-asksign-ok*` is true, call `asksign`, otherwise call `csign`."
-  ;; Determine which function to call based on *getsignl-asksign-ok*
-  (if *getsignl-asksign-ok*
-    ($asksign e)
-    ($csign e)))
+  "When `*getsignl-asksign-ok*` is true, call `asksign`, otherwise call `csign`.
+  A provably non-real sign is returned without asking."
+  ;; Consult NON-REAL-SIGN first: Neither $ASKSIGN nor $SIGN can report that an
+  ;; expression is not real - $ASKSIGN offers the user only positive, negative
+  ;; and zero, and $SIGN throws to SIGN-IMAG-ERR - so without it they put a
+  ;; nonsensical question, or fail outright, on a value we can see is not
+  ;; real. $CSIGN's own $IMAGINARY and $COMPLEX are passed on as $CSIGN means
+  ;; them: Realness could not be shown, which admits a real E, and a vanishing
+  ;; one. A caller needing the proof must ask NON-REAL-SIGN itself.
+  (or (non-real-sign e)
+      ;; Determine which function to call based on *getsignl-asksign-ok*
+      (if *getsignl-asksign-ok*
+        ($asksign e)
+        ($csign e))))
 
 (defun maybe-asksign-real (e)
-  "When `*getsignl-asksign-ok*` is true, call `asksign`, otherwise call `sign`."
-  (if *getsignl-asksign-ok*
-    ($asksign e)
-    ;; LIMITP gives SIGN-PREP's normalization, but for a PRIN-INF expression,
-    ;; SIGN-PREP answers about the limit, not the value.
-    (let ((limitp (and limitp (free e 'prin-inf)))) ($sign e))))
+  "When `*getsignl-asksign-ok*` is true, call `asksign`, otherwise call `sign`.
+  A provably non-real sign is returned without asking."
+  ;; See MAYBE-ASKSIGN for the NON-REAL-SIGN call. Here $IMAGINARY and
+  ;; $COMPLEX can only be that proof: $ASKSIGN never returns them, and neither
+  ;; does $SIGN once *COMPLEXSIGN* is NIL. Bind it, because it is a global that
+  ;; $CSIGN binds around $SIGN, so an outer $CSIGN that re-entered LIMIT leaves
+  ;; it true and puts $SIGN in complex mode.
+  (let ((*complexsign* nil))
+    (or (non-real-sign e)
+        (if *getsignl-asksign-ok*
+          ($asksign e)
+          ;; LIMITP gives SIGN-PREP's normalization, but for a PRIN-INF
+          ;; expression, SIGN-PREP answers about the limit, not the value.
+          (let ((limitp (and limitp (free e 'prin-inf)))) ($sign e))))))
 
 ;;; Limit(log(XXX), var, 0, val), where val is either zerob (limit from below)
 ;;; or zeroa (limit from above).

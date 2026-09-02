@@ -1593,6 +1593,15 @@ limit((acosh(-1+x)-acosh(-1))/x, x, 0);
 infinity;
 
 
+/* Bug #5216: "limit(%i*x + sqrt(x), x, inf) stays noun-form" */
+
+limit(%i*x + sqrt(x), x, inf);
+infinity;
+
+tlimit(%i*x + sqrt(x), x, inf);
+infinity;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

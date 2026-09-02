@@ -387,8 +387,7 @@ but that condition is not checked."
              (cond
                ((eq sgn '$neg) (if (eq pt '$inf) '$minf '$inf))
                ((eq sgn '$pos) (if (eq pt '$inf) '$inf '$minf))
-               ;((eq sgn '$imaginary) '$infinity)
-               ;((eq sgn '$complex) '$infinity)
+               ((member sgn '($complex $imaginary)) '$infinity)
                (t nil)))
             ((eq t (mgrp 0 pk)) ;leading term is ck x^pk where pk < 0
               ;; the limit is a zero, so dispatch `zero-fixup`
