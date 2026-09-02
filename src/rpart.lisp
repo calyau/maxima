@@ -29,19 +29,147 @@
 (defvar *risplit-domain* nil)
 
 ;; True when POW is a root with an integer numerator and an odd denominator,
-;; as 1/3, 2/3 or 1/n with n declared odd, and the user's $domain is real.
-;; A real quantity raised to such a power is then real, since the simplifier
-;; takes the real root: (-8)^(1/3) simplifies to -2 and (x^3)^(1/3) to x,
-;; and csign, abs and signum agree with it.  With domain : complex, or an
-;; even denominator, the power is on the principal branch and may be
-;; complex.  An integer power, with the denominator 1, is left to the
-;; clauses for integer exponents.
-(defun real-odd-root-p (pow)
+;; as 1/3, 2/3 or 1/n with n declared odd.  With domain : real the
+;; simplifier takes the real root of a real quantity raised to such a
+;; power: (-8)^(1/3) simplifies to -2 and (x^3)^(1/3) to x.  An integer
+;; power, with the denominator 1, is not one.
+(defun odd-root-p (pow)
   (let ((den ($denom pow)))
-    (and (eq (or *risplit-domain* $domain) '$real)
-         (not (eql den 1))
+    (and (not (eql den 1))
          (maxima-integerp ($num pow))
          (eq (evod den) '$odd))))
+
+;; ODD-ROOT-P with the user's $domain real: a real quantity raised to the
+;; power is then real, and csign, abs and signum agree with it.  With
+;; domain : complex, or an even denominator, the power is on the principal
+;; branch and may be complex.
+(defun real-odd-root-p (pow)
+  (and (eq (or *risplit-domain* $domain) '$real) (odd-root-p pow)))
+
+;; The functions below write z^s on the principal branch for a z = k*w^n
+;; with a constant k, a real w and a rational n, where with domain : real
+;; the simplifier takes the real root instead, as (-x^3)^(-1/3) to -1/x:
+;; the power of z that comes with gamma_incomplete(a, z), in the
+;; antiderivatives of INTEGRATE-EXP-SPECIAL, in the derivative and in the
+;; recurrences of gamma_expand, is on the principal branch as the function
+;; is.  The argument of z is that of k for a positive w^n and that of -k
+;; for a negative one, so
+;;
+;;   z^s = abs(k)^s * abs(w)^(n*s) * (alpha + beta*w/abs(w))
+;;
+;; with alpha + beta the phase %e^(%i*s*carg(k)) and alpha - beta the
+;; phase %e^(%i*s*carg(-k)).  The sign w/abs(w) and the powers of abs(w)
+;; are rational in w and abs(w), and abs(w)^2 simplifies to w^2, so that
+;; the product of two such powers, as of an antiderivative and of its
+;; derivative, reduces under expand or ratsimp, where an atan2(0, w) in
+;; an exponent would not.
+
+;; %e^(%i*s*arg(z)) as alpha + beta*SIGMA for SIGMA the sign w/abs(w) of w
+;; in z = k*w^n, with RE and IM the real and imaginary parts of k.  The
+;; constants are expanded to give them one form wherever they come from,
+;; as one instance has to cancel another.
+(defun principal-phase (s re im sigma)
+  (let ((plus (power '$%e (mul '$%i s (take '(%atan2) im re))))
+        (minus (power '$%e (mul '$%i s (take '(%atan2) (neg im) (neg re))))))
+    (add ($expand (div (add plus minus) 2))
+         (mul ($expand (div (sub plus minus) 2)) sigma))))
+
+;; The integrator substitutes an internal variable for an even root and
+;; declares it complex, as the root is complex for a negative radicand;
+;; where the integrand is real, the variable is a nonnegative real.
+(defun nonneg-internal-p (w)
+  (and (symbolp w) (get w 'internal) (kindp w '$complex)))
+
+;; Z as k*w^n, for a constant k and a real w that is not constant, with n
+;; an integer or a rational number: (values k w n nonneg), NONNEG saying
+;; that w is known to be nonnegative; nil when z is not of this form, or
+;; when n is 1 and k positive, where the simplifier leaves z^s as k^s*w^s
+;; and commits to no branch.
+(defun real-power-factors (z)
+  (let ((k 1) (w z) (n 1))
+    (when (mtimesp z)
+      (let ((consts (remove-if-not #'$constantp (cdr z))))
+        (when consts
+          (setq k (muln consts t)
+                w (muln (remove-if #'$constantp (cdr z)) t)))))
+    (when (and (mexptp w) (or (integerp (caddr w)) (ratnump (caddr w))))
+      (setq n (caddr w) w (cadr w)))
+    (cond (($constantp w) nil)
+          ((and (eql n 1) (member ($csign k) '($pos $pz))) nil)
+          ((nonneg-internal-p w) (values k w n t))
+          ((member ($csign w) '($complex $imaginary)) nil)
+          (t (values k w n nil)))))
+
+;; True when the sign of w^n, for a real w, is that of w: n is an odd
+;; integer, or with domain : real an odd numerator over an odd denominator,
+;; where the root is the real one.  Otherwise w^n is nonnegative wherever
+;; it is real.
+(defun sign-varies-p (n)
+  (and (oddp ($num n)) (oddp ($denom n))))
+
+;; z^s on the principal branch, as above, or Z^S itself where the
+;; treatment does not apply.
+(defun principal-power (z s)
+  (multiple-value-bind (k w n nonneg) (real-power-factors z)
+    (if (and k (odd-root-p s))
+        (destructuring-bind (re . im) (trisplit k)
+          (let ((qodd (and (not nonneg) (oddp ($denom n)))))
+            (mul (power (cabs k) s)
+                 (if qodd
+                     (power (take '(mabs) w) (mul n s))
+                     (power (power w n) s))
+                 (principal-phase s re im
+                                  (if (and qodd (sign-varies-p n))
+                                      (div w (take '(mabs) w))
+                                      1)))))
+        (power z s))))
+
+;; w^m * z^s for the integrator, with the sign w/abs(w) of an odd integer
+;; m multiplied into the phase, where its square is 1.
+(defun principal-power-times (w m z s)
+  (multiple-value-bind (k w2 n nonneg) (real-power-factors z)
+    (if (and k (odd-root-p s) (alike1 w2 w) (integerp m))
+        (destructuring-bind (re . im) (trisplit k)
+          (let* ((qodd (and (not nonneg) (oddp ($denom n))))
+                 (varies (and qodd (sign-varies-p n)))
+                 (sigma (if varies (div w (take '(mabs) w)) 1))
+                 (phase (principal-phase s re im sigma)))
+            (mul (power (cabs k) s)
+                 (if qodd
+                     (power (take '(mabs) w) (add (mul n s) m))
+                     (mul (power w m) (power (power w n) s)))
+                 (if (and varies (oddp m))
+                     ($expand (mul sigma phase))
+                     phase))))
+        (mul (power w m) (principal-power z s)))))
+
+;; z^s on the principal branch as a template in the symbol Z-NAME for the
+;; derivative of gamma_incomplete, which SDIFFGRAD fills in by substituting
+;; the argument for the symbol; unsimplified, as (-z^2)^(s/2) for an
+;; imaginary z would not survive the simplifier with the symbol in it.
+;; The modulus is (z*conjugate(z))^(s/2) with conjugate(k)/k a constant,
+;; and the sign of w is that of z, or its inverse for a negative n, times
+;; that of k.  Nil where the treatment does not apply, or where k has the
+;; symbol a or Z-NAME in it, which the substitution would replace.
+(defun principal-power-template (z z-name s)
+  (multiple-value-bind (k w n nonneg) (real-power-factors z)
+    (declare (ignore w))
+    (when (and k (odd-root-p s) ($freeof '$a k) ($freeof z-name k))
+      (destructuring-bind (re . im) (trisplit k)
+        (list '(mtimes)
+              (list '(mexpt)
+                    (list '(mtimes) (div (sub re (mul '$%i im)) k)
+                          (list '(mexpt) z-name 2))
+                    (div s 2))
+              (principal-phase s re im
+                               (cond ((or nonneg (not (sign-varies-p n))) 1)
+                                     ((eq ($sign n) '$pos)
+                                      (mul (div (cabs k) k)
+                                           (div z-name (take '(mabs) z-name))))
+                                     (t
+                                      (mul (div k (cabs k))
+                                           (div (take '(mabs) z-name)
+                                                z-name))))))))))
 
 ;;; Realpart gives the real part of an expr.
 

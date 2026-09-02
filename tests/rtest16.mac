@@ -4010,8 +4010,10 @@ block([a, b, display_format_internal : true], string([a/b, b^(1/2), b^(-1/2)]));
 
 /* Bug #3082: "incorrect simplification of MTIMES expression containing MEXPT" */
 
+/* with domain : real the (-x^7)^(-11/7) of the derivative is on the principal
+   branch of gamma_incomplete, as an expression in x/abs(x): see rtest_gamma */
 block([x], diff(%e^4*gamma_incomplete(-4/7, -x^7), x));
--7*%e^(x^7+4)/x^5;
+(7*%e^(x^7+4)*(((%e^((3*%i*%pi)/7)/2-1/2)*x)/abs(x)+%e^((3*%i*%pi)/7)/2+1/2))/(x^4*abs(x));
 
 block([x], 2*x*%e^x*%e^2);
 2*%e^(x+2)*x;
