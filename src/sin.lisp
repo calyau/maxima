@@ -2538,10 +2538,17 @@
 	  var2
 	  ;; (a^(d+c*(var2^r)^p))^v
 	  (power (power a (add d (mul c (power (power var2 r) p)))) v)
-	  ;; gamma_incomplete(1/(p*r), -c*v*(var2^r)^p*log(a))
-	  (take '(%gamma_incomplete)
-		(inv (mul p r))
-		(mul -1 c v (power (power var2 r) p) (take '(%log) a)))
+	  ;; gamma_incomplete(1/(p*r), -c*v*(var2^r)^p*log(a)), less gamma(1/(p*r))
+	  ;; when p*r is a positive odd integer: the last factor is then one
+	  ;; constant for a positive var2 and another for a negative one, and the
+	  ;; antiderivative, 0 at var2 = 0 this way, would jump there otherwise
+	  (let ((n (mul r p))
+		(g (take '(%gamma_incomplete)
+			 (inv (mul p r))
+			 (mul -1 c v (power (power var2 r) p) (take '(%log) a)))))
+	    (if (and (integerp n) (oddp n) (plusp n))
+		(sub g (take '(%gamma) (inv n)))
+		g))
 	  ;; (-c*v*(var2^r)^p*log(a))^(-1/(p*r)), on the principal branch when
 	  ;; p*r is odd, where the simplifier would not keep it there
 	  (let ((n (mul r p)))

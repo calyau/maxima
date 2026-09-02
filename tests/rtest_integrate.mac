@@ -6870,28 +6870,37 @@ imagpart(subst(x = 2, integrate(acoth(x), x)));
 0$
 
 integrate(%e^(xp^3), xp);
--(((1/2-(sqrt(3)*%i)/2)*gamma_incomplete(1/3,-xp^3))/3)$
+-(((1/2-(sqrt(3)*%i)/2)*(gamma_incomplete(1/3,-xp^3)-gamma(1/3)))/3)$
 
 integrate(sin(xp^3), xp);
 -(((sqrt(3)*%i+1)*gamma_incomplete(1/3,%i*xp^3)
-   +(1-sqrt(3)*%i)*gamma_incomplete(1/3,-(%i*xp^3)))/12)$
+   +(1-sqrt(3)*%i)*gamma_incomplete(1/3,-(%i*xp^3))-2*gamma(1/3))/12)$
 
 (forget(xp > 0), 0);
 0$
 
-/* on both sides of 0, and with domain : complex, against quad_qags */
+/* on both sides of 0 and across it, where the antiderivative must not jump,
+   and with domain : complex, against quad_qags */
 (chk(I, f) := block([a : float(rectform(subst(x = 1.5, I) - subst(x = 0.5, I))),
-                     b : float(rectform(subst(x = -0.5, I) - subst(x = -1.5, I)))],
+                     b : float(rectform(subst(x = -0.5, I) - subst(x = -1.5, I))),
+                     c : float(rectform(subst(x = 0.5, I) - subst(x = -0.5, I)))],
               [is(abs(a - quad_qags(f, x, 0.5, 1.5)[1]) < 1e-9),
-               is(abs(b - quad_qags(f, x, -1.5, -0.5)[1]) < 1e-9)]), 0);
+               is(abs(b - quad_qags(f, x, -1.5, -0.5)[1]) < 1e-9),
+               is(abs(c - quad_qags(f, x, -0.5, 0.5)[1]) < 1e-9)]), 0);
 0$
 
 [chk(integrate(%e^(x^3), x), %e^(x^3)), chk(integrate(sin(x^3), x), sin(x^3))];
-[[true, true], [true, true]]$
+[[true, true, true], [true, true, true]]$
 
 block([domain : complex],
       [chk(integrate(%e^(x^3), x), %e^(x^3)), chk(integrate(sin(x^3), x), sin(x^3))]);
-[[true, true], [true, true]]$
+[[true, true, true], [true, true, true]]$
+
+/* a negative odd power: the gamma_incomplete of 1/x^3 is 0 at x = 0 already */
+block([r : integrate(%e^(-1/x^3), x)],
+      is(abs(float(rectform(subst(x = -0.5, r) - subst(x = -1.5, r)))
+             - quad_qags(%e^(-1/x^3), x, -1.5, -0.5)[1]) < 1e-9));
+true$
 
 (remfunction(chk), 0);
 0$
