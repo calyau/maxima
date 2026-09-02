@@ -2493,18 +2493,27 @@
 ;; denominator: with domain : real it takes the real root of a negative base,
 ;; as (-x^3)^(-1/3) becomes -1/x, and its (a*b)^s = a^s*b^s leaves the
 ;; principal branch for a negative var2, while GAMMA_INCOMPLETE always stays
-;; on that branch.  An atan2 of var2 would not survive either: RISPLIT turns
-;; it into logarithms, which LOGEXPAND takes apart.
+;; on that branch.  The sign of var2 enters as atan2(0, var2), the argument
+;; of a real var2 as CARG returns it, which differentiates to 0 and which
+;; RISPLIT keeps: an atan2 with a zero second argument it would turn into
+;; logarithms, which LOGEXPAND takes apart.
 (defun principal-odd-power (k var2 n s)
   (destructuring-bind (re . im) (trisplit k)
-    (let ((arg (cond ((zerop1 im)
-		      (mul '$%pi (div (sub 1 (take '(%signum) (mul re var2))) 2)))
-		     ((zerop1 re)
-		      (mul '$%pi (div (take '(%signum) (mul im var2)) 2)))
-		     (t (take '(%atan2) (mul im var2) (mul re var2))))))
+    (let* ((a (take '(%atan2) 0 var2))
+           (arg (cond ((zerop1 im)
+                       (cond ((and (mnump re) (not (mnegp re))) a)
+                             ((mnump re) (sub '$%pi a))
+                             (t (take '(%atan2) 0 (mul re var2)))))
+                      ((zerop1 re)
+                       (cond ((and (mnump im) (not (mnegp im)))
+                              (sub (div '$%pi 2) a))
+                             ((mnump im) (sub a (div '$%pi 2)))
+                             (t (sub (div '$%pi 2)
+                                     (take '(%atan2) 0 (mul im var2))))))
+                      (t (take '(%atan2) (mul im var2) (mul re var2))))))
       (mul (power (cabs k) s)
-	   (power (take '(mabs) var2) (mul n s))
-	   (power '$%e (mul '$%i s arg))))))
+           (power (take '(mabs) var2) (mul n s))
+           (power '$%e (mul '$%i s arg))))))
 
 (defun integrate-exp-special (expr var2 &aux w const)
 
