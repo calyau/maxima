@@ -47,6 +47,7 @@ Bug fixes for numbered bugs:
 * \#5176 forget() over-removes facts
 * \#5177 Some sub-facts are not normalized and cannot be removed via forget()
 * \#5178 inconsistent Principal Value message
+* \#5179 Duplicate facts, forget(facts()) doesn't clear, have to call forget() multiple times
 * \#5180 Integral crossing the discontinuity of log(z) along the negative real axis
 * \#5181 limit ignores the branch cut of the exponential integrals
 * \#5182 integrate(sqrt(%i*x-1),x,-1,1) wrong due to missing branch cut

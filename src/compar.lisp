@@ -157,9 +157,7 @@
        (u))
       ((null l) (cons '(mlist) nl))
     (when (visiblep (car l))
-      (setq u (intext (caaar l) (cdaar l)))
-      (unless (memalike u nl)
-	(push u nl)))))
+      (push (intext (caaar l) (cdaar l)) nl))))
 
 ;; Look up facts from the database which contain expr. expr can be a symbol or 
 ;; a more general expression.

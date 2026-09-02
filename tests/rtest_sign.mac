@@ -2462,6 +2462,20 @@ block([b, domain : complex],
 [[b > 0], pos, pos];
 
 
+/* Bug #5179: "Duplicate facts, forget(facts()) doesn't clear, have to call forget() multiple times" */
+
+block([a, b],
+ local(a, b),
+ assume(notequal(a, 0)),
+ assume(notequal(a * b, 0)),
+ forget(facts()),
+ facts());
+[];
+
+
+/**************************************/
 /* Leave this at the end of the file! */
+/**************************************/
+
 [facts(), contexts];
 [[], [initial, global]];
