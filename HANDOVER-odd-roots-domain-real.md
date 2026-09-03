@@ -1339,9 +1339,33 @@ assume(x > 0)$ integrate(%e^(x^3), x);
 - `diff(gamma_incomplete(a, z), x)` and `gamma_incomplete(a, z)` with `gamma_expand : true` change the same way, only with `domain : real`, a numeric `a`, and a `z` for which the simplifier commits to the real root: `diff(gamma_incomplete(1/3, x), x)`, a symbolic order, and an even denominator are unchanged.
 - The round trip `diff(integrate(f, x), x)` needs `expand` in general, since Maxima never multiplies out a product of two sums by itself, `trigrat` for the trigonometric integrands, and one more `ratsimp` if `ratsimp` is used instead of `expand`, because `abs(x)^2` is reduced to `x^2` only on the way out of the rational form. `integrate(2^(x^3), x)` differentiates to `%e^(log(2)*x^3)`, which `ratsimp` does not identify with `2^(x^3)`; that is how the old code behaved too.
 - `rectform`, `polarform` and `carg` of an odd root of a negative real quantity give the real root with `domain : real`, and `csign` of `b^(2/n)` for a declared odd `n` is `pos` for `b < 0`. `domain : complex` is unchanged everywhere.
-- Things noticed but left alone, as separate bugs: `rectform(atan2(x, 0))` has an imaginary part; `carg(-x^3)` and `carg(-log(a))` are not reduced modulo `2*%pi` (`absarg` adds the arguments of the factors of a product); numerical evaluation of `gamma_incomplete(1/3, %i)` inside a larger expression leaves products of floats and sums unsimplified.
+- Things noticed but left alone are in section 7, with bug reports for the three that are bugs.
 
-## 7. Proposed commit message
+## 7. Workarounds, and what a fix would have simplified
+
+Things the change works around rather than fixes, roughly in the order of how much a fix would have shortened the work. The first three are bugs; reports ready for the SourceForge tracker are in `BUG-rectform-atan2.md`, `BUG-carg-product-argument.md` and `BUG-gamma_incomplete_lower-float.md` next to this file.
+
+1. **`rectform(atan2(y, 0))` is wrong for `y < 0` and carries a spurious imaginary part.** `rectform(atan2(y,0))` is `(2*%pi*ceiling((2*atan2(0,y)-%pi)/(2*%pi))+%pi)/2-%i*log(abs(y)/sqrt(y^2))`, which is `3*%pi/2` at `y = -2` where `atan2(-2, 0)` is `-%pi/2`; the imaginary part is zero but is not simplified, since `sqrt(y^2)` was produced with `$domain` bound to `complex` inside `risplit`. This is what broke the `atan2` phase for the imaginary constant behind `sin(x^3)` and forced two redesigns. Even fixed, an `atan2` in an exponent would not cancel against the derivative under `expand`, so the rational form is the better end point; the detour would have been shorter.
+
+2. **`absarg` does not reduce the argument of a product.** `carg(-x)` is `atan2(0,x)+%pi`, which is `2*%pi` at `x = -8`; `rectform(sqrt(-x))` gives `-2^(3/2)` at `x = -8`; with `domain : complex`, `rectform((-x)^(1/3))` gives `sqrt(3)*%i-1` there, where the value is 2. A power gets the `ceiling` reduction, a product does not. So `carg(k)` could not be used for the phase of a symbolic constant `k`; `principal-phase` takes `atan2` of the real and imaginary parts of `k` and `-k` instead. With `absarg` fixed, `polarform` could have written the principal power directly.
+
+3. **`gamma_incomplete_lower(a, z)` with a rational `a` and a float `z` is not evaluated**, `gamma_incomplete_lower(1/3, 8.0)` is `gamma(1/3)-7.799182611869946e-5`, and it has no conjugate property, so `rectform` of it gives `realpart` and `imagpart` noun forms where `gamma_incomplete` gets the mirror symmetry. The natural continuous antiderivative of `%e^(x^3)` is `gamma_incomplete_lower(1/3, -x^3)` times the phase; the change writes `gamma_incomplete(1/3, -x^3) - gamma(1/3)` instead.
+
+4. **`sdiffgrad` re-substitutes the result of a lambda derivative.** A `defgrad` lambda gets the actual arguments, but its result is run through `psubstitute` with the placeholder symbols `a` and `z`, so a derivative built from the actual `z` is corrupted whenever the user's variable is named `z` or `a`. That is why `gamma-incomplete-z-derivative` returns an unsimplified template in the placeholder, why the modulus is `(z^2*conjugate(k)/k)^(s/2)` rather than `abs(z)^s`, why `k` is checked with `freeof`, and why a symbolic order, one declared odd, is refused. A contract where a lambda's result is final, as the special case for `hypergeometric` in `sdiffgrad` already is, would make the rule a direct call of `principal-power` and let declared-odd orders through. This is a trap in the interface rather than wrong behaviour, so no report.
+
+5. **`risplit` cannot run with `$domain` left as `real`.** Removing its binding of `$domain` to `$complex` exhausts the control stack in rtestint problem 300. Hence `*risplit-domain*`, which the helpers read to learn the user's domain.
+
+6. **The integrator declares its substitution variable for an even root complex** (`make-new-var` in sin.lisp, because `csign` of the root is `complex`), although it is a nonnegative real wherever the integrand is real. Hence `nonneg-internal-p`. Without it `exp(sqrt(x^3))` and `expintegral_ei(x^(-3/4))` would keep the wrong branch.
+
+7. **Two normal forms for one sign.** The simplifier gives `abs(x)/x` for `x^(-1)*abs(x)` but `x/abs(x)` for `x*abs(x)^(-1)`, and `abs(-x^3)^(-1/3)` becomes `x^(-2/3)*abs(x)^(-1/3)`. Not bugs, but they are why `principal-power-times` multiplies the sign into the phase by the parity of `m`, and why the template's modulus is written through `z^2`; the recombination of `exp(-x^3)/x^4` in rtest_gamma 789 under `expand` depends on it. In the same family, `ratsimp` does not know `abs(x)^2 = x^2` inside the rational form, which is why the trigonometric round trips need `trigrat`, or a second `ratsimp`.
+
+8. **`(x^3)^y` simplifies to `x^(3*y)` with `domain : real`** for a symbolic `y`, so the powers of `z` in the `gamma_expand` recurrence could not be recognized once expanded; they are expanded with a symbol for `z` and put back afterwards. Intended behaviour of the real domain, not a bug.
+
+9. **`diff(signum(x), x)` has no rule**, so the first variant of the phase, with `signum`, could never differentiate back; `signum` is also rarely produced by Maxima. A rule would not have made it cancel under `expand` either.
+
+10. **Numeric evaluation of an expression with `gamma_incomplete(1/3, %i)` in it**, as `float(rectform(integrate(sin(x^3), x, 0, 1)))`, leaves products of floats and sums unexpanded; the values were checked by substituting float points into the antiderivative and against `quad_qags` instead. A nuisance in verification, not a wrong result.
+
+## 8. Proposed commit message
 
 ```
 Take the principal branch of odd roots consistently with domain : real
