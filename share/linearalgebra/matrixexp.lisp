@@ -1,4 +1,4 @@
-;;  Copyright 2004 by Barton Willis
+;;  Copyright 2004, 2026 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -19,22 +19,27 @@
 
 ;;  (3) set ratvars to an empty list at the start of most functions.
 
-;; I didn't try to find the real cause for these bugs.  The function
-;; spectral_rep does check its output. Although these checks are slow,
-;; I recommend that they stay.
-  
-;; Map the CL function f over the elements of a Maxima matrix mat and
-;; return a Maxima matrix. The first argument should be a CL function.
+;; I didn't try to find the real cause for these bugs.  
 
-($put '$matrixexp 1 '$version)
+;; The function spectral_rep does a quick check its output. The test isn't exhaustive, but
+;; it is fast.
+  
+(in-package :maxima)
+
+($put '$matrixexp 2026 '$version)
+
+;; Standard environment and function for simplification in this package.
+(defun matrixexp-simp (e)
+     ($fullratsimp e nil))
 
 (defmfun $spectral_rep (mat)
   ($require_square_matrix mat '$first '$spectral_rep)
-  (let (($gcd '$spmod) ($algebraic t) ($resultant '$subres) (ord) (zi)
+  ($require_unblockedmatrix mat '$first '$spectral_rep)
+  (setq mat ($ratdisrep mat))
+  (let (($ratmx nil) ($domain '$complex) ($gcd '$spmod) ($algebraic t) ($resultant '$subres) (ord) (zi)
 	($ratfac nil) (z (gensym)) (res) (m) (n ($length ($args mat))) 
-	(p) (p1) (p2) (sp) (proj) ($scalarmatrixp nil))
+	(p) (p1) (p2) (sp) (proj))
 
-    ($ratvars)
     (setq p ($newdet (sub mat (mul z ($ident n)))))
     (if (oddp n) (setq p (mul -1 p)))
 
@@ -45,7 +50,6 @@
     (setq p2 ($resultant p1 ($diff p1 z) z))
 
     (cond ((and (not ($constantp p2)) (not (alike1 0 p2)))
-	   ($ratvars)
 	   (setq p2 ($sqfr p2))
 	   (if (mminusp p2) (setq p2 (mul -1 p2)))
 	   (setq p2 (if (mtimesp p2) (margs p2) (list p2)))
@@ -56,11 +60,9 @@
     (setq sp ($solve p z))
     (setq sp (mapcar '$rhs (cdr sp)))
     (cond ((not (eql n (apply #'+ (cdr $multiplicities))))
-	   (print `(ratvars = ,$ratvars gcd = '$gcd algebraic = ,$algebraic))
-	   (print `(ratfac = ,$ratfac))
 	   (merror "Unable to find the spectrum")))
    
-    (setq res ($fullratsimp (ncpower (sub (mul z ($ident n)) mat) -1) z))
+    (setq res (matrixexp-simp (ncpower (sub (mul z ($ident n)) mat) -1)))
     (setq m (length sp))
     (dotimes (i m)
       (setq zi (nth i sp))
@@ -70,55 +72,62 @@
 
     (setq proj (nreverse proj))
     (setq m (length proj))
-    (dotimes (i m)
-      (setq mat (sub mat (mul (nth i sp) (nth i proj)))))
-       
-    (cond ((check-spectral-rep proj n)
-            (ftake 'mlist (fapply 'mlist sp) (fapply 'mlist proj) ($fullratsimp mat nil)))
+    (let ((remainder mat))
+       (dotimes (i m)
+         (setq remainder (sub remainder (mul (nth i sp) (nth i proj)))))
+        
+       (setq remainder (matrixexp-simp remainder))
+       ;; When nilpotent-p can determine that remainder is nilpotent, return
+       ;; the spectral representation; otherwise merror.
+       (cond ((nilpotent-p remainder)
+               (ftake 'mlist (fapply 'mlist sp) (fapply 'mlist proj) remainder))
 	        (t
-	          (merror "Unable to find the spectral representation")))))
+	          (merror "Unable to find the spectral representation"))))))
   
-(defun check-spectral-rep (proj n)
-  (let* ((m (length proj)) (okay) (zip ($zeromatrix n n)) (qi) 
-	 ($gcd '$spmod) ($algebraic t) ($ratfac nil))
-    ($ratvars)
+(defun nilpotent-p (mat)
+  "Return T if the Maxima matrix MAT is nilpotent, NIL otherwise.
+   Uses repeated multiplication up to the matrix dimension."
 
-    (setq proj (mapcar #'(lambda (s) ($fullratsimp s nil)) proj))
-    (setq okay (like ($ident n) ($fullratsimp (apply 'add proj) nil)))
-    
-    (dotimes (i m)
-      (setq qi (nth i proj))
-      (setq qi ($fullratsimp (sub qi (ncmul2 qi qi)) nil))
-      (setq okay (and okay (like zip qi))))
-    
-    (dotimes (i m)
-      (setq qi (nth i proj))
-      (dotimes (j i)
-	(setq okay (and okay (alike1 zip ($fullratsimp
-					(ncmul2 qi (nth j proj)) nil))))
-	(setq okay (and okay (alike1 zip ($fullratsimp 
-					(ncmul2 (nth j proj) qi) nil))))))
-    okay))  
-      
+  (let* ((n ($length mat))
+         (zero ($zeromatrix n n))
+         (power mat))
+
+    ;; If already zero, nilpotent
+    (when (alike1 (matrixexp-simp mat) zero)
+      (return-from nilpotent-p t))
+
+    ;; Try powers mat^2, mat^3, ..., mat^n
+    (dotimes (k n)
+      (setq power (ncmul2 power mat))
+      (when (alike1 (matrixexp-simp power) zero)
+        (return-from nilpotent-p t)))
+    ;; No zero power found
+    nil))
+
 ;; When mat is a square matrix, return exp(mat * x). The second 
 ;; argument is optional and it defaults to 1.
 
 (defmfun $matrixexp (mat &optional (x 1))
-  (let ((sp) (d) (p) (id) (n ($length ($args mat))) (f) ($scalarmatrixp nil))
+  (let (($ratmx nil) ($gcd '$spmod) (sp) (d) (p) (id) (n ($length ($args mat))) (f))
     ($ratvars)
     ($require_square_matrix mat '$first '$matrixexp)
     (setq mat ($spectral_rep mat))
     (setq sp ($first mat))
     (setq p ($second mat))
-    (setq sp (cons '(mlist simp) 
-		   (mapcar #'(lambda (s) ($exp (mul s x))) (cdr sp))))
+    (setq sp
+      (fapply 'mlist
+              (mapcar #'(lambda (s)
+                          (ftake 'mexpt '$%e (mul s x)))
+                      (cdr sp))))
     (setq d (mul x ($third mat)))
     (setq id ($ident n))
     (setq f id)
     (setq n (+ n 1))
+    ;; Horner scheme
     (dotimes (i n)
       (setq f (add id (div (ncmul2 d f) (- n i)))))
-    ($fullratsimp (ncmul2 (ncmul2 sp p) f) nil)))
+    (matrixexp-simp (ncmul2 (ncmul2 sp p) f))))
+    
 
 ;; Let f(var) = expr.  This function returns f(mat), where 'mat' is a 
 ;; square matrix.  Here expr is an expression---it isn't a function!
@@ -132,14 +141,13 @@
       (merror "The ~:M argument to `~:M' must be a lambda form with ~:M variable(s)" pos fun-name n))))
 
 (defmfun $matrixfun (lamexpr mat)
-  (let ((z (gensym)) (expr) (var) (sp) (d) (p) (di) 
-	(n ($length ($args mat))) (f 0) ($scalarmatrixp nil))
+  (let (($gcd '$spmod) ($ratmx nil) (z (gensym)) (expr) (var) (sp) (d) (p) (di) 
+	(n ($length ($args mat))) (f 0))
 
     ($require_square_matrix mat '$second '$matrixexp)
     (setq expr (require-lambda lamexpr 1 '$first '$matrixfun))
     (setq var (nth 0 (nth 0 expr)))
     (setq expr (nth 1 expr))
-    ($ratvars)
     (setq expr ($substitute z var expr))
     (setq mat ($spectral_rep mat))
     (setq sp ($first mat))  
@@ -148,15 +156,10 @@
     (setq di ($ident n))
     (setq sp (cdr sp))
     (dotimes (i (+ n 1))
-      (setq f (add 
-	       f
-	       (ncmul2 di (ncmul2 
-			   (cons '(mlist simp) 
-				 (mapcar #'(lambda (s) 
-					     ($substitute s z expr)) sp)) p))))
+      (setq f (add f (ncmul2 di (ncmul2 (fapply 'mlist (mapcar #'(lambda (s) (maxima-substitute s z expr)) sp)) p))))
       (setq di (ncmul2 di d))
       (setq expr (div ($diff expr z) (factorial (+ i 1))))) 
-    ($fullratsimp (simplify f) nil)))
+    (matrixexp-simp f)))
      
 ;; Return the residue of the rational expression e with respect to the
 ;; variable var at the point pt.  Assumptions:
@@ -164,22 +167,18 @@
 ;;  (1) the denominator of e divides ker,
 ;;  (2) e is a rational expression,
 ;;  (3) ker is a polynomial,
-;;  (4) pt is z zero of ker and ord is its order.
+;;  (4) pt is a zero of ker and ord is its order.
 
 (defun rational-residue (e var pt ker ord)
   (let (($gcd '$spmod) ($algebraic t) ($ratfac nil) (p) (q) (f (sub var pt)))
-    ($ratvars)
-    (setq e ($fullratsimp e var))
+    (setq e (sratsimp e))
     (setq p ($num e))
     (setq q ($denom e))
     (setq p (mul p ($quotient ker q var)))
-    (setq e ($fullratsimp (div p ($quotient ker (power f ord) var)) var))
-    ($fullratsimp
-     ($substitute pt var (div ($diff e var (- ord 1)) (factorial (- ord 1))))
-     nil)))
+    (setq e (div p ($quotient ker (power f ord) var)))
+    (matrixexp-simp
+     (maxima-substitute pt var (div ($diff e var (- ord 1)) (factorial (- ord 1)))))))
 
-
-      
 
     
     

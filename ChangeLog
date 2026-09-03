@@ -3,6 +3,7 @@ Maxima 5.50-post change log
 
 Bug fixes for numbered bugs:
 ----------------------------
+* \#2596 error in matrix exponentiation
 * \#3994 limits of some gamma_incomplete expressions
 * \#4020 various limit bugs with exp(%i*x)
 * \#4162 limit(exp(x^2+%i*x),x,inf)
@@ -34,6 +35,7 @@ Bug fixes for numbered bugs:
 * \#5051 4^n/2/2 and 4^n/4 are different expressions
 * \#5055 GREAT is not a valid ordering when a bigfloat is compared with another expression
 * \#5057 realpart/imagpart/rectform permanently add entries to the global fact database
+* \#5091 spectral_rep prints raw Lisp debug output when the spectrum cannot be found
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
 * \#5120 forget(notequal(a*b,0)) deletes an assumed notequal(a,0) that the database never entailed

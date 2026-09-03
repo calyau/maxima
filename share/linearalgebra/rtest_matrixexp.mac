@@ -1,4 +1,4 @@
-(load("matrixexp.lisp"),0);
+(load("linearalgebra"),load("matrixexp.lisp"), 0);
 0$
 
 (remvalue(a,b,c,x),0);
@@ -9,9 +9,6 @@
    is(fullratsimp(a) = fullratsimp(b)) or 
       is(fullratsimp(rectform(a)) = fullratsimp(rectform(b)))),0);
 0$
-
-scalarmatrixp : false;
-false$
 
 (check(mat,n) := block([s, okay, z : gensym(), i : 0, m],
 
@@ -56,10 +53,22 @@ false$
   okay), 0);
 0$
 
-check(matrix([1]),1);
+(mat : matrix([1,2],[3,4]), errcatch(spectral_rep(matrix([mat,mat],[mat,mat]))));
+[]$
+
+ratsimp(subst([a=1,b=0,c=0,d=-1], matrixexp(matrix([a,b],[c,d]))));
+matrix([%e,0],[0,%e^-1])$
+
+spectral_rep(matrix([rat(x),0],[0,2]));
+[[x,2],[matrix([1,0],[0,0]),matrix([0,0],[0,1])],matrix([0,0],[0,0])]$
+
+spectral_rep(matrix([taylor(x,x,0,4),0],[0,2]));
+[[x,2],[matrix([1,0],[0,0]),matrix([0,0],[0,1])],matrix([0,0],[0,0])]$
+
+block([scalarmatrixp : false], check(matrix([1]),1));
 true$
 
-check(matrix([x]),1);
+block([scalarmatrixp : false], check(matrix([x]),1));
 true$
 
 check(matrix([1,0],[0,1]),2);
@@ -254,17 +263,50 @@ xequal(matrixfun(lambda([x],1+x^5), m), ident(3)+m^^5);
 true$
 
 /* \#2596 error in matrix exponentiation */
-block([keepfloat : true,ratmx : true], matrixexp(matrix([%i*%pi])));
+block([scalarmatrixp : false], matrixexp(matrix([%i*%pi])));
 matrix([-1])$
 
-block([keepfloat : true,ratmx : false], matrixexp(matrix([%i*%pi])));
+block([scalarmatrixp : false], matrixexp(matrix([%i*%pi])));
 matrix([-1])$
 
-block([keepfloat : false,ratmx : true], matrixexp(matrix([%i*%pi])));
+block([scalarmatrixp : false], matrixexp(matrix([%i*%pi])));
 matrix([-1])$
 
-block([keepfloat : false,ratmx : false], matrixexp(matrix([%i*%pi])));
+block([scalarmatrixp : false], matrixexp(matrix([%i*%pi])));
 matrix([-1])$
 
+/* 2596 error in matrix exponentiation */
+(mat : %i*matrix([1,2,3],[3,2,0],[1,2,1]),0);
+0$
 
+matrixfun(lambda([x],x - 1/x),mat);
+matrix([(5*%i)/4,(5*%i)/2,(9*%i)/4],[(21*%i)/8,(7*%i)/4,(9*%i)/8], [(3*%i)/2,2*%i,%i/2])$
+
+(xxx : spectral_rep(mat),0);
+0$
+
+(zzz : block([listarith : true], first(xxx).second(xxx)+third(xxx) - mat),0);
+0$
+
+(rrr  : expand(float(rectform(zzz))),0);
+0$
+
+every(lambda([q], abs(q) < 1.0e-12), rrr);
+true$
+
+(reset(ratmx),0);
+0$
+
+(mat : matrix([x,1,0],[1,1,1],[0,1,1]), mat.mat - matrixfun(lambda([x],x^2),mat));
+matrix([0,0,0],[0,0,0],[0,0,0])$
+
+matrixfun(lambda([x],x+1/x),mat);
+matrix([x,2,-1],[2,1-x,x+1],[-1,x+1,2-x])$
+
+mat+mat^^-1;
+matrix([x,2,-1],[2,1-x,x+1],[-1,x+1,2-x])$
+
+
+(kill(s,m,mat,xxx,zzz,rrr,xequal,check), 0);
+0$
 
