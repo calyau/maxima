@@ -1,6 +1,6 @@
 # gamma_incomplete_lower(a, z) with a rational order a and a float z is not evaluated
 
-**Status: fixed at the base of branch `claude/maxima-rectform-root-branch-pp1qu1`**, commit *gamma_incomplete_lower(a, z): a number for an exact a and a float z*, with the conjugate rule; `HANDOVER-gamma_incomplete_lower-float.md` carries it as patches against `master`.
+**Status: fixed at the base of branch `claude/maxima-rectform-root-branch-pp1qu1`**, commit *gamma.lisp: the value at a special point is a number where the arguments are*, which treats the other special points of the gamma, error and beta functions the same way and adds the conjugate rule; `HANDOVER-gamma_incomplete_lower-float.md` carries it as patches against `master`.
 
 **Version:** Maxima git master (5.50post), SBCL.
 
