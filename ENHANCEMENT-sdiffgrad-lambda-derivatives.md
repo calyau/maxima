@@ -1,5 +1,16 @@
 # Let a derivative defined by a DEFGRAD lambda return a final expression
 
+**Status: fixed at the base of branch `claude/maxima-rectform-root-branch-pp1qu1`**, commit *SDIFFGRAD: let a derivative given as a function return a final result*, by the first option below: a lambda that returns `t` as a second value has its result taken as it is, and a lambda returning one value is substituted into as before. And it was a bug after all, not only a trap: the one lambda in the tree, the derivative of `gamma_incomplete` with respect to its order, evaluated its template with `meval`, so a value of the Maxima variable `a` or `z` went into the derivative of any `gamma_incomplete`:
+
+```
+(%i1) a : 5$
+(%i2) assume(b > 0)$
+(%i3) diff(gamma_incomplete(b, y), b);
+(%o3) (gamma_incomplete(5,y)-24)*log(y)+576*hypergeometric_regularized([5,5],[6,6],-y)*y^5+24*(25/12-%gamma)
+```
+
+That lambda now builds its result from its arguments and returns it with the second value, and so do the `z` derivatives of the branch, which call `principal-power` directly, without the template described below. The rest of this note is as it was written.
+
 **Version:** Maxima git master (5.50post), SBCL. Not a bug in current behaviour, a trap in the Lisp interface for defining derivatives, and a request to give it a second calling convention.
 
 `DEFGRAD` (src/mopers.lisp) lets a derivative be given as a lambda, which `SDIFFGRAD` (src/comm.lisp) applies to the actual arguments of the function. The result is then treated like the other kind of derivative, a template in the placeholder symbols of the argument list: `SDIFFGRAD` runs it through `$psubstitute`, replacing each placeholder by the corresponding actual argument. So a lambda has to return a template as well, as the one derivative in the tree that is a lambda does (the derivative of `gamma_incomplete` with respect to its order, in src/gamma.lisp, returns `(meval #$$ ... a ... z $)`). A lambda that builds its result from the actual arguments gets it corrupted whenever an actual argument contains a symbol that happens to be named like a placeholder. The derivative below, for a dummy function `foo(a, z)` with `d/dz foo(a, z) = 2*z`, is right for the variable `y` and wrong for the variable `z`:

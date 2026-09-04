@@ -2,7 +2,7 @@
 
 Branch `claude/maxima-rectform-root-branch-pp1qu1` on the GitHub mirror, on top of upstream `c5762fd` (*Fixes for bugs: #2596, #5091*). The mirror is overwritten on every sync, so this document carries the whole change as find-and-replace patches against upstream, the tests, and a commit message, ready for SourceForge.
 
-Everything below was built and verified on SBCL with `./configure --enable-sbcl && make`. The full core plus share suite, `run_testsuite(share_tests=true)`, passes: 21,099 tests, the only failure the pre-existing environmental one in `share/stringproc/rtestprintf.mac` problem 38.
+Everything below was built and verified on SBCL with `./configure --enable-sbcl && make`. The full core plus share suite, `run_testsuite(share_tests=true)`, passes: 21,108 tests, the only failure the pre-existing environmental one in `share/stringproc/rtestprintf.mac` problem 38.
 
 ## 1. The problem
 
@@ -51,7 +51,7 @@ Apply them to upstream `master`. Each block quotes the upstream text with three 
 
 ### 3.1 `src/rpart.lisp`
 
-Four hunks. The first adds `*risplit-domain*` (`risplit` binds `$domain` to `$complex` while it works, so its helpers read the user's domain from here), `odd-root-p`, `real-odd-root-p`, and the principal-power machinery: `principal-phase`, `nonneg-internal-p`, `real-power-factors`, `sign-varies-p`, `principal-power`, `principal-power-times` (for the integrator: `var^m` times the power, multiplied through the phase so that the sign of `var^m` folds into it) and `principal-power-template` (for the derivative rule: a template in the placeholder symbol that `sdiffgrad` substitutes into, built unsimplified so that `(-z^2)^(s/2)` survives; its modulus is `abs(k)^s*(z^2/k^2)^(s/2)`, the constant outside the root in the form the integrator gives it, so that the two cancel under `expand`). The second adds the clause of `risplit-expt` that keeps an odd root of a real base real, simplified with `$domain` bound back to `$real`. The third records the domain in `risplit`. The fourth adds the `absarg` clause for such a power, placed before the general `mexpt` clause because that one would send a power of a negative base back through `simpabs` and `cabs` and loop.
+Four hunks. The first adds `*risplit-domain*` (`risplit` binds `$domain` to `$complex` while it works, so its helpers read the user's domain from here), `odd-root-p`, `real-odd-root-p`, and the principal-power machinery: `principal-phase`, `nonneg-internal-p`, `real-power-factors`, `sign-varies-p`, `principal-power`, and `principal-power-times` (for the integrator: `var^m` times the power, multiplied through the phase so that the sign of `var^m` folds into it); the derivative of `gamma_incomplete` calls `principal-power` itself. The second adds the clause of `risplit-expt` that keeps an odd root of a real base real, simplified with `$domain` bound back to `$real`. The third records the domain in `risplit`. The fourth adds the `absarg` clause for such a power, placed before the general `mexpt` clause because that one would send a power of a negative base back through `simpabs` and `cabs` and loop.
 
 **Hunk 1.** Insert the helpers after the `defvar` block at the top of the file.
 
@@ -179,33 +179,6 @@ Four hunks. The first adds `*risplit-domain*` (`risplit` binds `$domain` to `$co
 (defun principal-power-times (w m z s)
   (let ((p (mul (power w m) (principal-power z s))))
     (if (integerp m) ($multthru p) p)))
-
-;; z^s on the principal branch as a template in the symbol Z-NAME for the
-;; derivative of gamma_incomplete, which SDIFFGRAD fills in by substituting
-;; the argument for the symbol; unsimplified, as (-z^2)^(s/2) for an
-;; imaginary z would not survive the simplifier with the symbol in it.
-;; The modulus is abs(k)^s * (z^2/k^2)^(s/2), where z^2/k^2 is w^(2*n):
-;; the constant stays outside the root, in the form the integrator gives
-;; it, so that the two cancel.  The sign of w is that of z times that of
-;; k.  Nil where the treatment does not apply, or where k has the symbol a
-;; or Z-NAME in it, which the substitution would replace.
-(defun principal-power-template (z z-name s)
-  (multiple-value-bind (k w n nonneg) (real-power-factors z)
-    (declare (ignore w))
-    (when (and k (odd-root-p s) ($freeof '$a k) ($freeof z-name k))
-      (destructuring-bind (re . im) (trisplit k)
-        (list '(mtimes)
-              (power (cabs k) s)
-              (list '(mexpt)
-                    (list '(mtimes) (inv (power k 2))
-                          (list '(mexpt) z-name 2))
-                    (div s 2))
-              (principal-phase s re im
-                               (if (or nonneg (not (sign-varies-p n)))
-                                   1
-                                   (mul (div (cabs k) k)
-                                        (div z-name
-                                             (take '(mabs) z-name))))))))))
 
 ;;; Realpart gives the real part of an expr.
 
@@ -566,11 +539,97 @@ One hunk at the top of `sign-mexpt`: with `domain : real`, or in real mode, an e
     (cond ((and (eq sign-base '$zero)
 ```
 
-### 3.4 `src/gamma.lisp`
+### 3.4 `src/comm.lisp`
 
-Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a template in the placeholder symbol, with the power on the principal branch, when `$domain` is real, the order is numeric and the argument parses as `k*w^n`; otherwise it returns nil and the old template is used. The three `defgrad` forms get a lambda for the `z` derivative that tries it first. `subst-power-order` and `subst-rational-order` serve the three `gamma_expand` clauses for a rational order: the recurrence is now expanded with a fresh symbol for `z` as well as for the order, so that the powers `z^(ord + m)` can be put back as `z^m` times the principal `z^order` before the order is substituted; with `domain : complex` the plain power is used.
+One hunk, a bug fix in `sdiffgrad`. A derivative in a `grad` property is either an expression in the placeholder names of the `defgrad` or a function of the arguments. `sdiffgrad` substituted the arguments for the placeholder names into the results of both, so a function could not build its result from the arguments it was given: an argument named like a placeholder would have been substituted a second time. The only such function in the tree, the derivative of `gamma_incomplete` with respect to its order, therefore evaluated a template in the placeholder names `a` and `z` and picked up the values of the Maxima variables `a` and `z` on the way; with `a : 5`, `diff(gamma_incomplete(b, y), b)` came out with `gamma_incomplete(5,y)` in it. A function may now return `t` as a second value, and `sdiffgrad` then takes its result as it is; a function returning one value is substituted into as before, so nothing outside the tree changes. That derivative builds its result from its arguments and returns it that way (hunk 1 of section 3.5), and so do the `z` derivatives, which call `principal-power` directly. The `defgrad` docstring in `src/mopers.lisp` describes both conventions (section 3.6). Committed on its own at the base of the branch, with the first part of the block in section 4.3 as its test.
 
-**Hunk 1.** Insert before `(defgrad %gamma_incomplete ($a $z)`.
+**Hunk 1.** The body of `sdiffgrad` after the `mqapply` and argument-count clauses.
+
+**Find this** (upstream line 376):
+
+```lisp
+	           (length (car grad))))
+	  (t
+           (setq args (sdiffmap (cdr e) x))
+           (setq result
+                 (addn
+                   (mapcar 
+                     #'mul2
+                     (cdr 
+                       ;; Need to substitute in parallel to avoid trouble when
+                       ;; function arguments match the placeholder names of the
+                       ;; DEFGRAD expression.
+                       ($psubstitute
+                         (append '((mlist)) (mapcar #'(lambda (a b)
+                                                        (list '(mequal) a b))
+                                                    (car grad)
+                                                    (cdr e)))
+                         (do ((l1 (cdr grad) (cdr l1))
+                              (args args (cdr args)) 
+                              (l2))
+                             ((null l1) (cons '(mlist) (nreverse l2)))
+                           (setq l2
+                                 (cons (cond ((equal (car args) 0) 0)
+                                             ((functionp (car l1))
+                                              ;; Evaluate a lambda expression
+                                              ;; given as a derivative.
+                                              (apply (car l1) (cdr e)))
+                                             (t (car l1)))
+                                       l2)))))
+                     args)
+                   t))
+           (if (or (null result) (not (freeof nil result)))
+               ;; A derivative has returned NIL. Return a noun form.
+               (if (not (depends e x))
+```
+
+**Replace it with this:**
+
+```lisp
+	           (length (car grad))))
+	  (t
+           (setq args (sdiffmap (cdr e) x))
+           ;; A derivative given as an expression is in the placeholder
+           ;; names of the DEFGRAD and gets the arguments substituted for
+           ;; them, in parallel, as an argument may itself be a placeholder
+           ;; name.  A derivative given as a function gets the arguments;
+           ;; its result is substituted into the same way, unless it is
+           ;; returned with a second value of T, which says that it was
+           ;; built from the arguments and is final.
+           (let ((subst (append '((mlist))
+                                (mapcar #'(lambda (a b) (list '(mequal) a b))
+                                        (car grad)
+                                        (cdr e)))))
+             (setq result
+                   (addn
+                     (mapcar
+                       #'mul2
+                       (do ((l1 (cdr grad) (cdr l1))
+                            (args args (cdr args))
+                            (l2))
+                           ((null l1) (nreverse l2))
+                         (setq l2
+                               (cons (cond ((equal (car args) 0) 0)
+                                           ((functionp (car l1))
+                                            (multiple-value-bind (d final)
+                                                (apply (car l1) (cdr e))
+                                              (if final
+                                                  d
+                                                  ($psubstitute subst d))))
+                                           (t ($psubstitute subst (car l1))))
+                                     l2)))
+                       args)
+                     t)))
+           (if (or (null result) (not (freeof nil result)))
+               ;; A derivative has returned NIL. Return a noun form.
+               (if (not (depends e x))
+```
+
+### 3.5 `src/gamma.lisp`
+
+Six hunks. Hunk 1 rewrites the derivative of `gamma_incomplete` with respect to its order to build its result from its arguments and return it with the second value (the `sdiffgrad` fix of section 3.4), adds `gamma-incomplete-z-derivative`, which builds the `z` derivative the same way with the power written by `principal-power` when `$domain` is real and as the plain power otherwise, and makes the `z` derivative a function that calls it; hunks 2 and 5 do the same for `gamma_incomplete_lower` and for `z1` and `z2` of `gamma_incomplete_generalized`. `subst-power-order` and `subst-rational-order` serve the three `gamma_expand` clauses for a rational order: the recurrence is now expanded with a fresh symbol for `z` as well as for the order, so that the powers `z^(ord + m)` can be put back as `z^m` times the principal `z^order` before the order is substituted; with `domain : complex` the plain power is used.
+
+**Hunk 1.** The `defgrad` of `%gamma_incomplete`, with `gamma-incomplete-z-derivative` inserted before it.
 
 **Find this** (upstream line 321):
 
@@ -581,41 +640,26 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
 (defgrad %gamma_incomplete ($a $z)
   ;; wrt a
   #'(lambda ($a $z)
-```
-
-**Replace it with this:**
-
-```lisp
-      ((mexpt) z ((mplus) -1 a))))
-  'grad)
-
-;; The derivative of gamma_incomplete(a, z) with respect to z, times SIGN,
-;; as a template in the placeholder symbol Z-NAME for SDIFFGRAD, or nil for
-;; the usual -z^(a-1)*%e^-z.  With domain : real the simplifier takes the
-;; real root of z^(a-1) for a z such as -x^3 or x^3, where the function is
-;; on the principal branch, so the power is written by PRINCIPAL-POWER-
-;; TEMPLATE: the antiderivatives of INTEGRATE-EXP-SPECIAL, written the same
-;; way, are then differentiated back to their integrands by expand.
-(defun gamma-incomplete-z-derivative (a z z-name sign)
-  (let ((s (sub a 1)) p)
-    (when (and (eq $domain '$real)
-               (mnump s)
-               (setq p (principal-power-template z z-name s)))
-      (list '(mtimes)
-            sign
-            (list '(mexpt) '$%e (list '(mtimes) -1 z-name))
-            p))))
-
-(defgrad %gamma_incomplete ($a $z)
-  ;; wrt a
-  #'(lambda ($a $z)
-```
-
-**Hunk 2.** The `z` derivative in the `defgrad` of `%gamma_incomplete`.
-
-**Find this** (upstream line 347):
-
-```lisp
+      ;; Variable names MUST be $A and $Z because we use #$$...$ to
+      ;; define the derivative.
+      ;;
+      ;; Compiler may not see that $z is used, so declare it ignorable
+      ;; to get rid of a warning that it's unused.
+      (declare (ignorable $z))
+      (cond ((member ($sign $a) '($pos $pz))
+             ;; The derivative wrt a in terms of hypergeometric_regularized 2F2
+             ;; function and the Generalized Incomplete Gamma function 
+             ;; (functions.wolfram.com), only for a>0.
+             ;;
+             ;; We need to call meval ourselves here to make sure the
+             ;; expression is simplified as expected.
+             (meval
+              #$$ (gamma_incomplete(a,z)-gamma(a))*log(z)+gamma(a)^2
+                                        *hypergeometric_regularized(
+                                         [a,a],[a+1,a+1],-z)*z^a
+                                       +psi[0](a)*gamma(a)$
+             ))
+            (t
              ;; No derivative. Maxima generates a noun form.
              nil)))
   ;; The derivative wrt z
@@ -628,18 +672,56 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
 **Replace it with this:**
 
 ```lisp
+      ((mexpt) z ((mplus) -1 a))))
+  'grad)
+
+;; The derivative of gamma_incomplete(a, z) with respect to z, times SIGN,
+;; built from the actual argument and returned with a second value of T,
+;; so that SDIFFGRAD takes it as it is.  With domain : real the
+;; simplifier takes the real root of z^(a-1) for a z such as -x^3 or x^3,
+;; where the function is on the principal branch, so the power is written
+;; by PRINCIPAL-POWER: the antiderivatives of INTEGRATE-EXP-SPECIAL,
+;; written the same way, are then differentiated back to their integrands
+;; by expand.
+(defun gamma-incomplete-z-derivative (a z sign)
+  (let ((s (sub a 1)))
+    (values (mul sign
+                 (power '$%e (neg z))
+                 (if (eq $domain '$real) (principal-power z s) (power z s)))
+            t)))
+
+(defgrad %gamma_incomplete ($a $z)
+  ;; wrt a
+  #'(lambda ($a $z)
+      ;; The result is built from the actual arguments and returned with
+      ;; a second value of T, so that SDIFFGRAD takes it as it is.
+      (cond ((member ($sign $a) '($pos $pz))
+             ;; The derivative wrt a in terms of hypergeometric_regularized 2F2
+             ;; function and the Generalized Incomplete Gamma function 
+             ;; (functions.wolfram.com), only for a>0.
+             (let ((g (ftake '%gamma $a)))
+               (values
+                 (add (mul (sub (ftake '%gamma_incomplete $a $z) g)
+                           (ftake '%log $z))
+                      (mul (power g 2)
+                           (take '($hypergeometric_regularized)
+                                 (list '(mlist) $a $a)
+                                 (list '(mlist) (add $a 1) (add $a 1))
+                                 (neg $z))
+                           (power $z $a))
+                      (mul (take '(mqapply) '(($psi array) 0) $a) g))
+                 t)))
+            (t
              ;; No derivative. Maxima generates a noun form.
              nil)))
   ;; The derivative wrt z
-  #'(lambda ($a $z)
-      (or (gamma-incomplete-z-derivative $a $z '$z -1)
-          (meval #$$ -(%e^-z*z^(a-1))$)))
+  #'(lambda ($a $z) (gamma-incomplete-z-derivative $a $z -1))
   )
 
 ;;; Integral of the Incomplete Gamma function
 ```
 
-**Hunk 3.** The `z` derivative in the `defgrad` of `%gamma_incomplete_lower`, and right after it the two recurrence helpers, inserted before `(def-simplifier gamma_incomplete_lower (a z)`.
+**Hunk 2.** The `z` derivative in the `defgrad` of `%gamma_incomplete_lower`, and right after it the two recurrence helpers, inserted before `(def-simplifier gamma_incomplete_lower (a z)`.
 
 **Find this** (upstream line 487):
 
@@ -665,9 +747,7 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
   nil
   ;; wrt z
   ;; Obvious from the definition of gamma_incomplete_lower
-  #'(lambda ($a $z)
-      (or (gamma-incomplete-z-derivative $a $z '$z 1)
-          (meval #$$ z^(a-1)*exp(-z) $)))
+  #'(lambda ($a $z) (gamma-incomplete-z-derivative $a $z 1))
   )
 
 ;;
@@ -704,7 +784,7 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
     ((or
 ```
 
-**Hunk 4.** The rational-order clause of the `gamma_incomplete_lower` simplifier.
+**Hunk 3.** The rational-order clause of the `gamma_incomplete_lower` simplifier.
 
 **Find this** (upstream line 612):
 
@@ -733,7 +813,7 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
 	 nil)))
 ```
 
-**Hunk 5.** The rational-order clause of the `gamma_incomplete` simplifier.
+**Hunk 4.** The rational-order clause of the `gamma_incomplete` simplifier.
 
 **Find this** (upstream line 915):
 
@@ -762,7 +842,7 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
        ;; See http://functions.wolfram.com/06.06.26.0002.01
 ```
 
-**Hunk 6.** The `z1` and `z2` derivatives in the `defgrad` of `%gamma_incomplete_generalized`.
+**Hunk 5.** The `z1` and `z2` derivatives in the `defgrad` of `%gamma_incomplete_generalized`.
 
 **Find this** (upstream line 1419):
 
@@ -786,19 +866,17 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
   ;; The derivative wrt z1
   #'(lambda ($a $z1 $z2)
       (declare (ignore $z2))
-      (or (gamma-incomplete-z-derivative $a $z1 '$z1 -1)
-          (meval #$$-(z1^(a-1)*%e^-z1)$)))
+      (gamma-incomplete-z-derivative $a $z1 -1))
 
   ;; The derivative wrt z2
   #'(lambda ($a $z1 $z2)
       (declare (ignore $z1))
-      (or (gamma-incomplete-z-derivative $a $z2 '$z2 1)
-          (meval #$$z2^(a-1)*%e^-z2$))))
+      (gamma-incomplete-z-derivative $a $z2 1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ```
 
-**Hunk 7.** The rational-order clause of the `gamma_incomplete_regularized` simplifier.
+**Hunk 6.** The rational-order clause of the `gamma_incomplete_regularized` simplifier.
 
 **Find this** (upstream line 1775):
 
@@ -827,7 +905,68 @@ Seven hunks. `gamma-incomplete-z-derivative` builds the `z` derivative as a temp
        ;; gamma_incomplete_regularized(a,z)
 ```
 
-### 3.5 `src/sin.lisp`
+### 3.6 `src/mopers.lisp`
+
+Two hunks, the comment above `defgrad` and its docstring: a lambda returning `t` as a second value has its result taken as it is.
+
+**Hunk 1.**
+
+**Find this** (upstream line 200):
+
+```lisp
+;;
+;; The derivative forms can also be lambda's.  See gamma_incomplete.
+;; But if the lambda also uses #$$...$, it MUST call meval* itself to
+;; make sure the result is appropriately simplified.
+
+(defmacro defgrad (name arguments &body body)
+  "DEFGRAD defines derivatives for the function NAME having arguments ARGUMENTS.
+```
+
+**Replace it with this:**
+
+```lisp
+;;
+;; The derivative forms can also be lambda's.  See gamma_incomplete.
+;; But if the lambda also uses #$$...$, it MUST call meval* itself to
+;; make sure the result is appropriately simplified.  A lambda that
+;; builds its result from the actual arguments returns T as a second
+;; value, so that SDIFFGRAD substitutes nothing into it.
+
+(defmacro defgrad (name arguments &body body)
+  "DEFGRAD defines derivatives for the function NAME having arguments ARGUMENTS.
+```
+
+**Hunk 2.**
+
+**Find this** (upstream line 218):
+
+```lisp
+  quoted list of the maxima internal representation of the derivative.
+
+  The derivative may also be a lambda expression that returns the
+  derivative or NIL."
+  ;; Check that the argument variables show up somewhere in the body.
+  ;; Otherwise, the defintion of the derivative is potentially
+  ;; incorrect.
+```
+
+**Replace it with this:**
+
+```lisp
+  quoted list of the maxima internal representation of the derivative.
+
+  The derivative may also be a lambda expression that returns the
+  derivative or NIL.  Its result is substituted into like an expression
+  in the placeholder names, unless it returns T as a second value: the
+  result is then taken as it is, which lets it be built from the actual
+  arguments."
+  ;; Check that the argument variables show up somewhere in the body.
+  ;; Otherwise, the defintion of the derivative is potentially
+  ;; incorrect.
+```
+
+### 3.7 `src/sin.lisp`
 
 Three hunks. `gamma-incomplete-and-power` returns the `gamma_incomplete` factor (less `gamma(alpha)` where the phase is a step), the power, and the `var^m` factor, which is 1 when it has been folded into the power. Types 1a, 2 and 2-1 of `integrate-exp-special` call it in place of building the two factors themselves; the products keep the same factors in the same order as before, and the exponent of `z` is computed exactly as each clause computed it, since the form of a symbolic exponent decides how the simplifier combines the factors (rtest_integrate 98, 572 and 573 depend on it).
 
@@ -1011,7 +1150,7 @@ Three hunks. `gamma-incomplete-and-power` returns the `gamma_incomplete` factor 
       (a b c d p)
 ```
 
-### 3.6 `doc/info/Simplification.texi`
+### 3.8 `doc/info/Simplification.texi`
 
 The entry of the `domain` option variable gets a paragraph. Check the manual with `make` and `?? domain` afterwards.
 
@@ -1054,7 +1193,7 @@ branch, and @code{(-8)^(1/3)} is @code{1 + sqrt(3) %i}; see also
 @c and controls little more than this at the moment.
 ```
 
-### 3.7 `ChangeLog`
+### 3.9 `ChangeLog`
 
 Two hunks: under *Bug fixes for unnumbered bugs*, and two lines under *Other changes*.
 
@@ -1068,6 +1207,9 @@ Bug fixes for unnumbered bugs:
 ------------------------------
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
+
+Changes in the Windows installer:
+---------------------------------
 ```
 
 **Replace it with this:**
@@ -1084,6 +1226,10 @@ Bug fixes for unnumbered bugs:
 * diff(gamma_incomplete(a, z), x) and gamma_incomplete(a, z) with gamma_expand take the real root of z^(a-1) with domain : real for a z such as -x^3, where the function is on the principal branch: the antiderivative of %e^(x^3) did not differentiate back to it
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
+* the derivative of gamma_incomplete with respect to its first argument picks up values of the variables a and z
+
+Changes in the Windows installer:
+---------------------------------
 ```
 
 **Hunk 2.**
@@ -1293,7 +1439,7 @@ block([b, n, p],
 
 ### 4.3 `tests/rtest_gamma.mac`
 
-One block appended at the end: the derivative of `gamma_incomplete(1/3, -x^3)`, checked at `x = 2` against `3*%e^8*%e^(-2*%i*%pi/3)`, the cases that must stay as they were, and the `gamma_expand` recurrence checked at `x = -2` against `gamma_incomplete` itself.
+One block appended at the end, in two parts. The first belongs to the `sdiffgrad` fix: the derivative of `gamma_incomplete` with respect to its order with the variables `a` and `z` given values, and with the arguments named `z` and `a`. The second is the derivative of `gamma_incomplete(1/3, -x^3)`, checked at `x = 2` against `3*%e^8*%e^(-2*%i*%pi/3)`, the cases that must stay as they were, the `gamma_expand` recurrence checked at `x = -2` against `gamma_incomplete` itself, and the derivative again with the variable named `z`.
 
 
 **Hunk 1.**
@@ -1310,6 +1456,31 @@ limit(erf_generalized(x, 1/x), x, 0, minus);
 ```maxima
 limit(erf_generalized(x, 1/x), x, 0, minus);
 -1;
+
+/* The derivative of gamma_incomplete with respect to its first argument is
+   built from the actual arguments.  A value of a or z, the placeholders in
+   its definition, must not leak into it, and arguments named like them
+   must not be confused with them. */
+(kill(a, b, y, z), a : 5, z : 7, assume(b > 0), 0);
+0$
+
+diff(gamma_incomplete(b, y), b);
+(gamma_incomplete(b,y)-gamma(b))*log(y)+gamma(b)^2*hypergeometric_regularized([b,b],[b+1,b+1],-y)*y^b+psi[0](b)*gamma(b)$
+
+diff(gamma_incomplete(b, y), y);
+-(%e^-y*y^(b-1))$
+
+(remvalue(a, z), assume(z > 0), 0);
+0$
+
+diff(gamma_incomplete(z, a), z);
+(gamma_incomplete(z,a)-gamma(z))*log(a)+gamma(z)^2*hypergeometric_regularized([z,z],[z+1,z+1],-a)*a^z+psi[0](z)*gamma(z)$
+
+diff(gamma_incomplete(z, a), a);
+-(%e^-a*a^(z-1))$
+
+(forget(b > 0, z > 0), 0);
+0$
 
 /* With domain : real, diff and gamma_expand keep gamma_incomplete(a, z) on
    the principal branch of z^(a-1) for a z, as -x^3 or x^3, that the
@@ -1334,11 +1505,15 @@ is(cabs(float(rectform(subst(x = -2, block([gamma_expand : true],
                                             gamma_incomplete(-1/3, x^3)))
                        - gamma_incomplete(-1/3, -8)))) < 1e-9);
 true$
+
+/* the variable named like a placeholder of the derivative rule */
+diff(gamma_incomplete(1/3, -z^3), z);
+3*%e^z^3*(((-((sqrt(3)*%i)/4)-3/4)*z)/abs(z)-(sqrt(3)*%i)/4+1/4)$
 ```
 
 ### 4.4 `tests/rtest_integrate.mac`
 
-Two blocks appended, one before and one after the final facts check that closes the file. The first pins the antiderivatives of `%e^(x^3)` and `sin(x^3)` for a positive variable and checks them, and `%e^(-1/x^3)`, against `quad_qags` on both sides of 0, across 0 and under `domain : complex`. The second, extended at its end by the round trips with a constant coefficient in the exponent, checks that `expand` differentiates the antiderivatives back to their integrands and `trigrat` does for `sin(x^3)`, pins `integrate(x*%e^(x^3), x)`, checks the definite integrals through 0 and of `exp(sqrt(x^3))` and `expintegral_ei(x^(-3/4))` numerically, and that infinite limits are as they were.
+Two blocks appended, one before and one after the final facts check that closes the file. The first pins the antiderivatives of `%e^(x^3)` and `sin(x^3)` for a positive variable and checks them, and `%e^(-1/x^3)`, against `quad_qags` on both sides of 0, across 0 and under `domain : complex`. The second, extended at its end by the round trips with a constant coefficient in the exponent and with the variable named `z` or `a`, checks that `expand` differentiates the antiderivatives back to their integrands and `trigrat` does for `sin(x^3)`, pins `integrate(x*%e^(x^3), x)`, checks the definite integrals through 0 and of `exp(sqrt(x^3))` and `expintegral_ei(x^(-3/4))` numerically, and that infinite limits are as they were.
 
 
 **Hunk 1.**
@@ -1476,6 +1651,10 @@ expand(diff(integrate(%e^(3*x^5), x), x) - %e^(3*x^5));
 
 trigrat(diff(integrate(sin(2*x^3), x), x) - sin(2*x^3));
 0$
+
+/* the variable named like a placeholder of the derivative rule */
+[expand(diff(integrate(%e^(z^3), z), z)), trigrat(diff(integrate(sin(a^3), a), a))];
+[%e^z^3, sin(a^3)]$
 ```
 
 ### 4.5 `tests/rtest_integrate_special.mac`
@@ -1733,11 +1912,12 @@ assume(x > 0)$ integrate(%e^(x^3), x);
 - `rectform`, `polarform` and `carg` of an odd root of a negative real quantity give the real root with `domain : real`, and `csign` of `b^(2/n)` for a declared odd `n` is `pos` for `b < 0`. `domain : complex` is unchanged everywhere.
 - With `domain : complex` `abs(x)^(2/3)` stays as it is; it used to become `x^(2/3)`, which is on the principal branch there and differs for a negative `x` (`BUG-abs-even-numerator-domain-complex.md`). `abs(x)^2` is still `x^2` in both domains.
 - Two simplifier improvements, valid for any `x` that `csign` does not report complex: `abs(x)/x` is `x/abs(x)`, and with `domain : real` a rational power of `x` with an even numerator combines with a power of `abs(x)`, so `(x^2*abs(x))^(1/3)`, `abs(x^3)^(1/3)` and `x^(2/3)*abs(x)^(1/3)` are `abs(x)` and `abs(-x^3)^(-1/3)` is `1/abs(x)`. Both were checked on `master` with randomized products of powers of a base and of its `abs`, evaluated numerically at real points, with the base declared complex at complex points, and under `domain : complex`; no result changed value. One weakness they share with every `abs` rule of `timesin` and `simpexpt`: `csign` reports `pnz` for `gamma(z)`, `tan(z)`, `erfc(z)`, `zeta(z)`, a `bessel_j`, an undefined `f(z)` and others when `z` is declared complex, so those rules fire on such an argument, as `abs(gamma(z))^3` becoming `gamma(z)^2*abs(gamma(z))` already shows on `master`; `BUG-csign-function-of-complex-argument.md` describes it.
+- The derivative of `gamma_incomplete(a, z)` with respect to `a` no longer picks up values of the variables `a` and `z` (section 3.4). A `defgrad` lambda in code outside the tree keeps its meaning; returning `t` as a second value is the new option.
 - Things noticed but left alone are in section 7, with bug reports for the three that are bugs.
 
 ## 7. Workarounds, and what a fix would have simplified
 
-Things the change works around rather than fixes, roughly in the order of how much a fix would have shortened the work. The first three are bugs; reports ready for the SourceForge tracker are in `BUG-rectform-atan2.md`, `BUG-carg-product-argument.md` and `BUG-gamma_incomplete_lower-float.md` next to this file, and item 11 is a fourth, fixed here. Item 4 is not a bug and item 7 was a missed simplification, since fixed on this branch; `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` and `ENHANCEMENT-abs-sign-normal-form.md` put them as requests, with reproducers.
+Things the change works around rather than fixes, roughly in the order of how much a fix would have shortened the work. The first three are bugs; reports ready for the SourceForge tracker are in `BUG-rectform-atan2.md`, `BUG-carg-product-argument.md` and `BUG-gamma_incomplete_lower-float.md` next to this file, and item 11 is a fourth, fixed here. Items 4 and 7 are fixed on this branch too: item 4 turned out to be a bug as well, item 7 was a missed simplification; `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` and `ENHANCEMENT-abs-sign-normal-form.md` put them as requests, with reproducers.
 
 1. **`rectform(atan2(y, 0))` is wrong for `y < 0` and carries a spurious imaginary part.** `rectform(atan2(y,0))` is `(2*%pi*ceiling((2*atan2(0,y)-%pi)/(2*%pi))+%pi)/2-%i*log(abs(y)/sqrt(y^2))`, which is `3*%pi/2` at `y = -2` where `atan2(-2, 0)` is `-%pi/2`; the imaginary part is zero but is not simplified, since `sqrt(y^2)` was produced with `$domain` bound to `complex` inside `risplit`. This is what broke the `atan2` phase for the imaginary constant behind `sin(x^3)` and forced two redesigns. Even fixed, an `atan2` in an exponent would not cancel against the derivative under `expand`, so the rational form is the better end point; the detour would have been shorter.
 
@@ -1745,13 +1925,13 @@ Things the change works around rather than fixes, roughly in the order of how mu
 
 3. **`gamma_incomplete_lower(a, z)` with a rational `a` and a float `z` is not evaluated**, `gamma_incomplete_lower(1/3, 8.0)` is `gamma(1/3)-7.799182611869946e-5`, and it has no conjugate property, so `rectform` of it gives `realpart` and `imagpart` noun forms where `gamma_incomplete` gets the mirror symmetry. The natural continuous antiderivative of `%e^(x^3)` is `gamma_incomplete_lower(1/3, -x^3)` times the phase; the change writes `gamma_incomplete(1/3, -x^3) - gamma(1/3)` instead.
 
-4. **`sdiffgrad` re-substitutes the result of a lambda derivative.** A `defgrad` lambda gets the actual arguments, but its result is run through `psubstitute` with the placeholder symbols `a` and `z`, so a derivative built from the actual `z` is corrupted whenever the user's variable is named `z` or `a`. That is why `gamma-incomplete-z-derivative` returns an unsimplified template in the placeholder, why the modulus is `(z^2*conjugate(k)/k)^(s/2)` rather than `abs(z)^s`, why `k` is checked with `freeof`, and why a symbolic order, one declared odd, is refused. A contract where a lambda's result is final, as the special case for `hypergeometric` in `sdiffgrad` already is, would make the rule a direct call of `principal-power` and let declared-odd orders through. This is a trap in the interface rather than wrong behaviour; `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` shows it with a dummy function whose derivative is right for the variable `y` and wrong for the variable `z`.
+4. **`sdiffgrad` re-substituted the result of a lambda derivative, fixed at the base of this branch (section 3.4).** A `defgrad` lambda gets the actual arguments, but its result was run through `psubstitute` with the placeholder symbols `a` and `z`, so a derivative built from the actual `z` was corrupted whenever the user's variable was named `z` or `a`; the one lambda in the tree, the derivative of `gamma_incomplete` with respect to its order, evaluated a template in the placeholders instead, and picked up values of the Maxima variables `a` and `z` on the way. Until the fix, `gamma-incomplete-z-derivative` returned an unsimplified template in the placeholder, with the modulus written as `abs(k)^s*(z^2/k^2)^(s/2)`, `k` checked with `freeof` against the placeholders and a symbolic order refused. Now a lambda returning `t` as a second value has its result taken as it is, as it already was for the special case of `hypergeometric` in `sdiffgrad`, a lambda returning one value is treated as before, the derivative is one call of `principal-power`, and the template and its guards are gone. `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` has the reproducers.
 
 5. **`risplit` cannot run with `$domain` left as `real`.** Removing its binding of `$domain` to `$complex` exhausts the control stack in rtestint problem 300. Hence `*risplit-domain*`, which the helpers read to learn the user's domain.
 
 6. **The integrator declares its substitution variable for an even root complex** (`make-new-var` in sin.lisp, because `csign` of the root is `complex`), although it is a nonnegative real wherever the integrand is real. Hence `nonneg-internal-p`. Without it `exp(sqrt(x^3))` and `expintegral_ei(x^(-3/4))` would keep the wrong branch.
 
-7. **Two normal forms for one sign, now fixed on this branch.** The simplifier gave `abs(x)/x` for `x^(-1)*abs(x)` but `x/abs(x)` for `x*abs(x)^(-1)`, which is why `principal-power-times` used to multiply the sign into the phase by the parity of `m` by hand, and why the derivative template had a separate case for a negative `n`; the recombination of `exp(-x^3)/x^4` in rtest_gamma 789 under `expand` depended on that care. `ENHANCEMENT-abs-sign-normal-form.md` asked for one canonical form; the two-comparison change in `timesin` (section 3.2) gives it, was verified against master in a separate session, and let both workarounds go. The second member of the family, `abs(-x^3)^(-1/3)` becoming `x^(-2/3)*abs(x)^(-1/3)`, is fixed on this branch too (hunks 2, 4 and 5 of section 3.2, verified the same way), but it simplified no code: the derivative template writes its modulus through `z^2` because of the even denominators, where `abs(x^(3/2))` does not reduce and `(z^2/k^2)^(s/2)` does, and `abs(z)^s` would only cover the odd ones. Trying `abs(z)^s` there showed something else: with the constant inside the root, `(4*x^6)^(-1/3)` against the integrator's `2^(-2/3)`, the round trip of `%e^(2*x^3)` left `2^(2/3)/4^(1/3) - 1`; the modulus is now `abs(k)^s*(z^2/k^2)^(s/2)`, the constant outside, and those round trips are exact (rtest_integrate, last block). What remains: `ratsimp` does not know `abs(x)^2 = x^2` inside the rational form, which is why the trigonometric round trips need `trigrat`, or a second `ratsimp`.
+7. **Two normal forms for one sign, now fixed on this branch.** The simplifier gave `abs(x)/x` for `x^(-1)*abs(x)` but `x/abs(x)` for `x*abs(x)^(-1)`, which is why `principal-power-times` used to multiply the sign into the phase by the parity of `m` by hand, and why the derivative template had a separate case for a negative `n`; the recombination of `exp(-x^3)/x^4` in rtest_gamma 789 under `expand` depended on that care. `ENHANCEMENT-abs-sign-normal-form.md` asked for one canonical form; the two-comparison change in `timesin` (section 3.2) gives it, was verified against master in a separate session, and let both workarounds go. The second member of the family, `abs(-x^3)^(-1/3)` becoming `x^(-2/3)*abs(x)^(-1/3)`, is fixed on this branch too (hunks 2, 4 and 5 of section 3.2, verified the same way), but it simplified no code: the derivative template of the time wrote its modulus through `z^2` because of the even denominators, where `abs(x^(3/2))` does not reduce and `(z^2/k^2)^(s/2)` does. With the template gone (item 4) the derivative writes the modulus exactly as the integrator does, `abs(k)^s*abs(w)^(n*s)` with the constant outside the root, and the round trips with a constant coefficient in the exponent are exact (rtest_integrate, last block). What remains: `ratsimp` does not know `abs(x)^2 = x^2` inside the rational form, which is why the trigonometric round trips need `trigrat`, or a second `ratsimp`.
 
 8. **`(x^3)^y` simplifies to `x^(3*y)` with `domain : real`** for a symbolic `y`, so the powers of `z` in the `gamma_expand` recurrence could not be recognized once expanded; they are expanded with a symbol for `z` and put back afterwards. Intended behaviour of the real domain, not a bug.
 
@@ -1761,7 +1941,35 @@ Things the change works around rather than fixes, roughly in the order of how mu
 
 11. **`abs(x)^(2/3)` became `x^(2/3)` with `domain : complex`, fixed on this branch.** The `simpexpt` clause accepted an even-numerator fraction in both domains, although the identity holds only for the real root; hunk 1 of section 3.2 restricts the fraction to `domain : real`. It came to light while checking the root combination of item 7 under `domain : complex`: the combination was wrong there, and the other session had justified it by this rule. `BUG-abs-even-numerator-domain-complex.md` has the report; `BUG-csign-function-of-complex-argument.md` records a weakness of the `csign` guard that all the `abs` rules share and that is not fixed here.
 
-## 8. Proposed commit message
+## 8. Proposed commit messages
+
+Two commits: the `sdiffgrad` fix first, on its own, then the rest.
+
+```
+SDIFFGRAD: let a derivative given as a function return a final result
+
+A derivative in a GRAD property is either an expression in the
+placeholder names of the DEFGRAD or a function of the arguments.
+SDIFFGRAD substituted the arguments for the placeholder names into
+both, so a function could not build its result from the arguments it
+was given: an argument named like a placeholder would then have been
+substituted a second time.  The only such function, the derivative of
+gamma_incomplete with respect to its first argument, therefore
+evaluated a template in the placeholder names a and z instead, and
+picked up the values of the Maxima variables a and z on the way:
+
+    a : 5$
+    assume(b > 0)$
+    diff(gamma_incomplete(b, y), b);
+    /* (gamma_incomplete(5,y)-24)*log(y)+576*hypergeometric_regularized(
+        [5,5],[6,6],-y)*y^5+24*(25/12-%gamma) */
+
+A function may now return T as a second value, and SDIFFGRAD then
+takes its result as it is; a function returning one value is
+substituted into as before.  The derivative of gamma_incomplete builds
+its result from its arguments with ADD, MUL and friends and returns it
+that way.  Tests appended to rtest_gamma.mac.
+```
 
 ```
 Take the principal branch of odd roots consistently with domain : real
