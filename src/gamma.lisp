@@ -352,13 +352,17 @@
              ;; (functions.wolfram.com), only for a>0.
              ;;
              ;; We need to call meval ourselves here to make sure the
-             ;; expression is simplified as expected.
-             (meval
-              #$$ (gamma_incomplete(a,z)-gamma(a))*log(z)+gamma(a)^2
-                                        *hypergeometric_regularized(
-                                         [a,a],[a+1,a+1],-z)*z^a
-                                       +psi[0](a)*gamma(a)$
-             ))
+             ;; expression is simplified as expected.  The Maxima variables
+             ;; a and z are bound to themselves meanwhile: the expression is
+             ;; a template in these names, which SDIFFGRAD substitutes the
+             ;; arguments for, and a value of either would go into it.
+             (mbinding ('($a $z) '($a $z))
+               (meval
+                #$$ (gamma_incomplete(a,z)-gamma(a))*log(z)+gamma(a)^2
+                                          *hypergeometric_regularized(
+                                           [a,a],[a+1,a+1],-z)*z^a
+                                         +psi[0](a)*gamma(a)$
+                )))
             (t
              ;; No derivative. Maxima generates a noun form.
              nil)))

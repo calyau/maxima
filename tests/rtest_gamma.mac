@@ -4417,3 +4417,35 @@ gamma_incomplete_lower(1/3, x)$
 
 [beta_incomplete_regularized(1/3, 1/2, 0.0), beta_incomplete_regularized(1/3, 1/2, 0)];
 [0.0, 0]$
+
+/* The derivative of gamma_incomplete with respect to its first argument is
+   a template in the names a and z.  A value of a or z must not leak into
+   it, and arguments named like them must not be confused with them.  The
+   comparison goes through expand, as above, since this file defines
+   hypergeometric_regularized for its beta tests and it stays defined. */
+(kill(a, b, y, z), a : 5, z : 7, assume(b > 0), 0);
+0$
+
+expand(diff(gamma_incomplete(b, y), b)
+       - ((gamma_incomplete(b,y)-gamma(b))*log(y)
+          +gamma(b)^2*hypergeometric_regularized([b,b],[b+1,b+1],-y)*y^b
+          +psi[0](b)*gamma(b)));
+0$
+
+diff(gamma_incomplete(b, y), y);
+-(%e^-y*y^(b-1))$
+
+(remvalue(a, z), assume(z > 0), 0);
+0$
+
+expand(diff(gamma_incomplete(z, a), z)
+       - ((gamma_incomplete(z,a)-gamma(z))*log(a)
+          +gamma(z)^2*hypergeometric_regularized([z,z],[z+1,z+1],-a)*a^z
+          +psi[0](z)*gamma(z)));
+0$
+
+diff(gamma_incomplete(z, a), a);
+-(%e^-a*a^(z-1))$
+
+(forget(b > 0, z > 0), 0);
+0$
