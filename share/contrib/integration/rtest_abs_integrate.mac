@@ -729,7 +729,7 @@ expand(ii);
 0$
 
 hypergeometric_simp(hyper_int(x*abs(x-a),x));
--(a*x^2*(1-(2*x)/(3*a))*abs(x-a))/(2*(x-a))$
+-(a*x^2*(x-a)*(1-(2*x)/(3*a)))/(2*abs(x-a))$
 
 /* #3863 Wrong result for abs_integrate applied to unit_step */
 integrate( x*unit_step(x-1), x,0,2 ); 

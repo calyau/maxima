@@ -545,6 +545,30 @@ block([x], local(x), assume(x > 0), [abs(1/sqrt(x)), abs(x^(-1/4))]);
 [1/sqrt(x), x^(-1/4)];
 
 
+/* Bug #5223: "The sign of x has two normal forms, x/abs(x) and abs(x)/x, and their difference does not simplify" */
+
+abs(x)/x;
+x/abs(x);
+
+x/abs(x) - abs(x)/x;
+0;
+
+expand((1 + x/abs(x))*(1 - abs(x)/x));
+0;
+
+abs(x-1)/(x-1);
+(x-1)/abs(x-1);
+
+abs(sin(x))/sin(x);
+sin(x)/abs(sin(x));
+
+block([z],
+ local(z),
+ declare(z, complex),
+ is(abs(z)/z # z/abs(z)));
+true;
+
+
 /***********************************************************/
 /* Guard against leaks, leave this at the end of the file! */
 /***********************************************************/
