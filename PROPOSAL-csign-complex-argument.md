@@ -10,7 +10,7 @@
 
 Four parts, all in complex mode only, so that `sign`, `is` and `asksign` in real mode do not change, except that a declared `posfun` or `oddfun` now applies to a subscripted function in both modes.
 
-**1. `sign-any`** in `src/compar.lisp` consults the arguments when nothing else decided: an application, the database answering `pnz`, the function not declared `real`, and an argument that is complex or imaginary, is `complex`. The database comes first, so `assume(g(z) > 0)` still gives `pos`; `declare(f, real)`, which `featurep` already understands for a function, opts a user function out. A function is real-valued when `risplit`'s `real-valued` property says so. A symbol argument is complex when declared so; an expression is asked with `csign`, with lists, matrices and equations passed over and an error there, as `csign(hstep(z))` raises one, counting as not known; a number is real and a string has no sign.
+**1. `sign-any`** in `src/compar.lisp` consults the arguments when nothing else decided: an application, the database answering `pnz`, the function not declared `real`, and an argument that is complex or imaginary, is `complex`. The database comes first, so `assume(g(z) > 0)` still gives `pos`; `declare(f, real)`, which `featurep` already understands for a function, opts a user function out. A function is real-valued when `risplit`'s `real-valued` property says so. A symbol argument is complex when declared so. An expression is first tested by its shape, without asking anything: a number, an undeclared symbol, an integer power, or an application of an operator without the `conjugate-function` property with parts that pass the same test, is real, since that property marks exactly the functions that are complex for some real argument, `log`, `sqrt` and the inverse trigonometric functions among them, and it is what `risplit` reads for the same decision. Only an argument that fails the shape test is asked with `csign`, with lists, matrices and equations passed over and an error there, as `csign(hstep(z))` raises one, counting as not known; a number is real and a string has no sign. The shape test is what keeps the cost down, since `csign` of `sin(x)` in complex mode computes a `rectform`.
 
 Find this:
 
@@ -76,19 +76,50 @@ replace it with this:
 			       (ncons x)))))))))
 ```
 
-With this helper before `sign-any`:
+With these two helpers before `sign-any`:
 
 ```lisp
+;; True when X is real by its shape, without asking csign: a number, a
+;; symbol not declared complex or imaginary, an integer power, or an
+;; application of an operator that has no CONJUGATE-FUNCTION, the property
+;; of the functions that are complex for some real argument, as log and
+;; the inverse trigonometric functions are, with parts that are real by
+;; the same test.  An unknown function of real arguments is real, as csign
+;; has always taken it.
+(defun surely-real-p (x)
+  (cond ((numberp x) t)
+        ((symbolp x)
+         (not (or (member x '($%i $infinity $und $ind))
+                  (decl-complex-kind x))))
+        ((atom x) nil)
+        ((member (caar x) '(rat bigfloat)) t)
+        ((specrepp x) nil)
+        ((mexptp x)
+         (and (integerp (caddr x)) (surely-real-p (cadr x))))
+        ((mqapplyp x)
+         (let ((op (subfunname x)))
+           (or (get op 'real-valued)
+               (and (not (get op 'conjugate-function))
+                    (not (decl-complex-kind op))
+                    (every #'surely-real-p (subfunsubs x))
+                    (every #'surely-real-p (margs x))))))
+        ((and (symbolp (caar x)) (not (mbagp x)))
+         (let ((op (caar x)))
+           (or (get op 'real-valued)
+               (and (not (get op 'conjugate-function))
+                    (not (decl-complex-kind op))
+                    (every #'surely-real-p (cdr x))))))
+        (t nil)))
+
 ;; True when an argument of the application X, a subscript of a subscripted
-;; function included, is complex or imaginary: a
-;; symbol when it is declared so, an expression that is not a list, matrix
-;; or equation by $csign, with an error there, as for hstep(z), counting
-;; as not known.  A number is real, and a string or another atom has no
-;; sign.
+;; function included, is complex or imaginary: a symbol when it is declared
+;; so, an expression that is not a list, matrix or equation and not real by
+;; its shape by $csign, with an error there, as for hstep(z), counting as
+;; not known.  A number is real, and a string or another atom has no sign.
 (defun complex-argument-p (x)
   (some #'(lambda (arg)
             (cond ((symbolp arg) (decl-complex-kind arg))
-                  ((and (consp arg) (not (mbagp arg)))
+                  ((and (consp arg) (not (mbagp arg)) (not (surely-real-p arg)))
                    (member (car (let (($errormsg nil)) (errcatch ($csign arg))))
                            '($complex $imaginary)))))
         (if (mqapplyp x)
@@ -203,17 +234,45 @@ replace it with this:
            (sign-any x))))))
 ```
 
-`risplit` reads the subscripted name for a declaration `complex` but takes the subscripted operator itself, not a symbol, when it looks for `real-valued` or a declaration `real`, so `rectform(f[1](z))` gives nouns for an `f` declared real where `csign` now answers `pnz`; that is the one place where `risplit` could follow `csign`.
+**5. `risplit` follows.** It reads the subscripted name for a declaration `complex` but took the subscripted operator itself, not a symbol, when it looked for `real-valued` or a declaration `real`, so `rectform(f[1](z))` gave nouns for an `f` declared real where `csign` now answers `pnz`. In `src/rpart.lisp`, in `risplit`. Find this:
+
+```lisp
+          ((or (safe-get (mop l) 'real-valued)
+               (decl-realp (mop l)))
+           ;; Simplification for a real-valued function
+           (cons l 0))
+```
+
+replace it with this:
+
+```lisp
+          ((let ((op (if (mqapplyp l) (subfunname l) (caar l))))
+             (or (safe-get op 'real-valued)
+                 (decl-realp op)))
+           ;; Simplification for a real-valued function, a subscripted one
+           ;; under its name, as csign takes it.
+           (cons l 0))
+```
+
+With it `rectform(f[1](z))` is `f[1](z)` for an `f` declared real, `realpart(f[1](z))` is `f[1](z)` and `imagpart(f[1,2](z, x))` is 0, while `g[1](z)` and `li[2](z)` keep their nouns. For `tests/rtest16.mac`, in the `rectform` block before the final facts check:
+
+```
+(declare(f, real), declare(z, complex), [rectform(f[1](z)), realpart(f[1](z)), imagpart(f[1,2](z, x))]);
+[f[1](z), f[1](z), 0];
+
+(remove(f, real), remove(z, complex), 0);
+0;
+```
 
 **3. Functions real for any argument** need nothing: the clause reads the `real-valued` property that `risplit` reads for the same purpose, set in `src/conjugate.lisp` for `realpart`, `imagpart`, `carg`, `abs`, `hstep`, `kron_delta` and `charfun`, so the two keep one list.
 
 ## Agreement with risplit
 
-`risplit` in `src/rpart.lisp` decides the same question for `rectform`, in this order: a `risplit-function` of its own; the `real-valued` property or a declaration `real` gives a real value; a `commutes-with-conjugate` or `conjugate-function` property lets it write the real and imaginary parts through `conjugate` when that simplifies, which is how `gamma(x)` comes out real and `gamma(z)` does not; a declaration `complex` gives `realpart` and `imagpart` nouns; and an unknown function gives the nouns whatever its arguments are. The fix follows the same list where `csign` has an answer for it, and the two now agree on every class but the last:
+`risplit` in `src/rpart.lisp` decides the same question for `rectform`, in this order: a `risplit-function` of its own; the `real-valued` property or a declaration `real` gives a real value; a `commutes-with-conjugate` or `conjugate-function` property lets it write the real and imaginary parts through `conjugate` when that simplifies, which is how `gamma(x)` comes out real and `gamma(z)` does not; a declaration `complex` gives `realpart` and `imagpart` nouns; and an unknown function gives the nouns whatever its arguments are. The fix follows the same list where `csign` has an answer for it, part 5 brings `risplit` level on subscripted names, and the two now agree on every class but the last:
 
 | | `rectform` | `csign` before | `csign` after |
 | --- | --- | --- | --- |
-| `real-valued` or declared real: `realpart(z)`, `charfun(z > 0)`, `h(z)` | real | `pnz` | `pnz` |
+| `real-valued` or declared real: `realpart(z)`, `charfun(z > 0)`, `h(z)`, and with part 5 `h[1](z)` | real | `pnz` | `pnz` |
 | declared complex: `k(z)`, `k(x)` | nouns | `complex` | `complex` |
 | conjugate property, real arguments: `gamma(x)`, `erfc(x)`, `tan(x)` | real | `pnz` | `pnz` |
 | conjugate property, complex argument: `gamma(z)`, `gamma(%i*x)`, `tan(z)`, `zeta(z)`, `bessel_j(0,z)` | nouns | `pnz` | `complex` |
@@ -326,8 +385,8 @@ sqrt(f(z)^2*conjugate(f(z))^2);
 
 ## Cost
 
-Nothing for an application whose arguments are symbols or numbers: `csign(f(x))` and `abs(f(x))^3` time the same as before. An application with several composite arguments pays one `csign` per argument, about 30 microseconds each: `csign(f(x, y, sin(x), x+1, x^2))` goes from 5 to 30 microseconds a call. Only applications with no rule of their own and nothing in the database pay it.
+Measured twice each, alternating, on the full core plus share suite: 137.3 s and 135.0 s without the fix, 137.1 s and 137.3 s with it, the same within the noise of the runs. Without the shape test the same suite took 145 to 150 s, a tenth more, because `csign` was asked about every composite argument of every application without a rule, and `csign(sin(x))` in complex mode computes a `rectform`. With it, `csign(f(x))` and `abs(f(x))^3` time the same as before on a loop of 20,000 calls, `csign(f(z))` for a `z` declared complex takes 3.1 rather than 2.6 microseconds, the cost of one declaration lookup per argument, and `csign(f(x, y, sin(x), x+1, x^2))` takes 6 microseconds against 5 before, where the first version took 30. What still pays is an argument that fails the shape test, such as `sqrt(x)` or `log(x)`, one `csign` each, which is the question being asked.
 
 ## Suite
 
-With the fix loaded at runtime into the built image of the branch, `run_testsuite(share_tests=true)` reports 21,099 tests and, besides the environmental `share/stringproc/rtestprintf.mac` 38, exactly the two `rtest_abs.mac` problems re-pinned above, 126 and 127; with the re-pins in place and the `rtest_sign.mac` block appended, both files pass in full (`rtest_abs` 182/182, `rtest_sign` at its registered known failures only). An earlier version of the helper asked `csign` of every argument and broke `rtestnset.mac` 592, where the argument is a string; the guard on atoms is what fixed that. The suite ran in 145 to 150 s with the fix against 131 to 134 s without it, so the extra `csign` calls do show in the total, at roughly a tenth.
+With the fix loaded at runtime into the built image of the branch, `run_testsuite(share_tests=true)` reports 21,099 tests and, besides the environmental `share/stringproc/rtestprintf.mac` 38, exactly the two `rtest_abs.mac` problems re-pinned above, 126 and 127; with the re-pins in place and the `rtest_sign.mac` block appended, both files pass in full (`rtest_abs` 182/182, `rtest_sign` at its registered known failures only). An earlier version of the helper asked `csign` of every argument and broke `rtestnset.mac` 592, where the argument is a string; the guard on atoms is what fixed that. A trial of `rtest_sign.mac` run through `batch(file, test)` from a `-b` file rather than through `run_testsuite` stalls at problem 567 waiting for an `asksign` answer, before and after; that is `batch_answers_from_file`, not the fix.
