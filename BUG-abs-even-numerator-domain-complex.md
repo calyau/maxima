@@ -1,5 +1,7 @@
 # abs(x)^(2/3) simplifies to x^(2/3) with domain : complex, where x^(2/3) is on the principal branch
 
+**Status: fixed in `master` as bug #5225** (*Don't simplify abs(x)^(2/3) to x^(2/3) under domain : complex*).
+
 With `domain : real` the simplifier takes the real root, `(-8)^(2/3)` is 4, so `abs(x)^(2/3)` and `x^(2/3)` are the same function of a real `x` and the simplifier rightly rewrites the one as the other. With `domain : complex` the power is on the principal branch, `(-8)^(2/3)` is `4*(-1)^(2/3)`, and the two differ for every negative `x`. The rewrite happens anyway:
 
 ```

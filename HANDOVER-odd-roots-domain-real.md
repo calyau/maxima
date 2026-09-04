@@ -1,8 +1,8 @@
 # Handover: odd roots under `domain : real`, from `rectform` to `integrate`
 
-Branch `claude/maxima-rectform-root-branch-pp1qu1` on the GitHub mirror, on top of upstream `c5762fd` (*Fixes for bugs: #2596, #5091*). The mirror is overwritten on every sync, so this document carries the whole change as find-and-replace patches against upstream, the tests, and a commit message, ready for SourceForge.
+Branch `claude/maxima-rectform-root-branch-pp1qu1` on the GitHub mirror, on top of upstream `d24eaa0` (*Combine powers of x and abs(x) when possible*). The mirror is overwritten on every sync, so this document carries the whole change as find-and-replace patches against upstream, the tests, and the commit messages, ready for SourceForge. Three simplifier changes that were on this branch are in `master` since, in the three commits before that one: the normal form of the sign of a real `x` (bug #5223), `abs(x)^(2/3)` left alone with `domain : complex` (bug #5225), and the combination of `x^(2/3)*abs(x)^(1/3)` into `abs(x)`; the design section still explains the first, since the phases rely on it.
 
-Everything below was built and verified on SBCL with `./configure --enable-sbcl && make`. The full core plus share suite, `run_testsuite(share_tests=true)`, passes: 21,108 tests, the only failure the pre-existing environmental one in `share/stringproc/rtestprintf.mac` problem 38.
+Everything below was built and verified on SBCL with `./configure --enable-sbcl && make`. The full core plus share suite, `run_testsuite(share_tests=true)`, passes: 21,102 tests, the only failure the pre-existing environmental one in `share/stringproc/rtestprintf.mac` problem 38.
 
 ## 1. The problem
 
@@ -41,7 +41,7 @@ z^s = abs(k)^s * abs(w)^(n*s) * (alpha + beta*w/abs(w))
 
 with `alpha + beta` the phase `%e^(%i*s*carg(k))` and `alpha - beta` the phase `%e^(%i*s*carg(-k))`. The sign `w/abs(w)` and the powers of `abs(w)` are rational in `w` and `abs(w)`, and the simplifier reduces `abs(w)^2` to `w^2`, `(w/abs(w))^2` to 1 and `w^2/abs(w)^3` to `1/abs(w)`, so the product of two such powers, as of an antiderivative and of its derivative, reduces under `expand` or `ratsimp`. An `atan2(0, w)` or a `signum(w)` in an exponent would not: `signum` has no derivative rule, and `risplit` turns an `atan2` with a zero second argument into logarithms. The same construction serves the integrator (types 1a, 2 and 2-1 of `integrate-exp-special`), the `z` derivatives of `gamma_incomplete`, `gamma_incomplete_lower` and `gamma_incomplete_generalized`, and the `gamma_expand` recurrences for a rational order, which had the same bug. Where the simplifier commits to no branch, `(k*x)^s` with `k > 0`, nothing changes.
 
-**The sign of a real `x` gets one normal form, `x/abs(x)`.** The simplifier already cancels even powers between `abs(x)` and `x` (`abs(x)^3` is `x^2*abs(x)`, `abs(x)/x^2` is `1/abs(x)`), but left `abs(x)/x` and `x/abs(x)` as two forms of the same thing, so a phase written by one route and a phase written by another cancelled under `expand` only if both happened to write the sign the same way. Two comparisons in `timesin` admit the exponent 1 in the clauses that move `abs` into the denominator; the clauses in the opposite direction keep their guard, so the rules do not chase each other; the existing `csign` test keeps a declared-complex `z` out of it, where `abs(z)/z` and `z/abs(z)` differ. This was verified separately against master before it was taken onto the branch; with it, the integrator multiplies `var^m` through the phase and lets the simplifier normalize, and the derivative template needs no case for a negative `n`.
+**The sign of a real `x` gets one normal form, `x/abs(x)`, now in `master`.** The simplifier already cancels even powers between `abs(x)` and `x` (`abs(x)^3` is `x^2*abs(x)`, `abs(x)/x^2` is `1/abs(x)`), but left `abs(x)/x` and `x/abs(x)` as two forms of the same thing, so a phase written by one route and a phase written by another cancelled under `expand` only if both happened to write the sign the same way. Two comparisons in `timesin` admit the exponent 1 in the clauses that move `abs` into the denominator; the clauses in the opposite direction keep their guard, so the rules do not chase each other; the existing `csign` test keeps a declared-complex `z` out of it, where `abs(z)/z` and `z/abs(z)` differ. It is in `master` now (bug #5223), as are the combination of `x^(2/3)*abs(x)^(1/3)` into `abs(x)` and the `abs(x)^(2/3)` fix for `domain : complex` (bug #5225); with it, the integrator multiplies `var^m` through the phase and lets the simplifier normalize, and the derivative needs no case for a negative `n`.
 
 Two consequences worth knowing before reading the patches. With the phase a step at `x = 0`, the antiderivative, `gamma_incomplete(alpha, 0)` times the phase, would jump there, so `gamma(alpha)` is taken from `gamma_incomplete` where `alpha > 0` and `z` goes to 0 with `x`: the antiderivative of `%e^(x^3)` is 0 at 0 from both sides and real for real `x`. And the integrator's substitution variable for an even root, which it declares complex, is treated as nonnegative, which it is wherever the integrand is real; that is what makes `exp(sqrt(x^3))` and `expintegral_ei(x^(-3/4))` work.
 
@@ -276,229 +276,7 @@ Four hunks. The first adds `*risplit-domain*` (`risplit` binds `$domain` to `$co
          (let ((aa (absarg (cadr l) nil)) ; (abs(z) . arg(z))
 ```
 
-### 3.2 `src/simp.lisp`
-
-Six hunks. Hunk 1 is a bug fix in `simpexpt`: the clause that rewrites `abs(x)^pot` as `x^pot` accepted an even-numerator fraction such as `2/3` in both domains, but the identity holds only for the real root, so with `domain : complex` `abs(x)^(2/3)` became `x^(2/3)`, which is `4*(-1)^(2/3)` rather than 4 at `x = -8`; the fraction is now accepted with `domain : real` only, an even integer and a declared even exponent in both. The other five are in `timesin`, two simplifier improvements that were each verified against upstream `master` in a session of their own before they were taken here. Hunks 2 and 4 are one comparison each: the exponent 1 is admitted in the two clauses that move `abs` into the denominator, so that the sign of a real `x` has the one form `x/abs(x)`. The two clauses in the opposite direction, commented `x^n/abs(x) -> x^(n-2)*abs(x)` and `1/abs(x)*x^n -> x^(n-2)*abs(x)`, must keep their `(> ... 1)`. Hunks 3, 5 and 6 combine `u^a*abs(u)^b` into `abs(u)^(a+b)` with `domain : real` for a rational `a` that is not an integer and has an even numerator, since `u^a` is then the real root `abs(u)^a`: `(x^2*abs(x))^(1/3)`, the distributed root of `abs(x^3)`, is `abs(x)`, and `abs(-x^3)^(-1/3)` is `1/abs(x)`. Three clauses, since either factor can arrive first and the `abs` in the product list can be a bare `abs(u)`; all three end in the new `absmerge` label, which rescans the product with the merged power after `simpexpt` has normalized it. An integer `a` is left to the clauses that split `abs(x)^3` into `x^2*abs(x)`, so no rule undoes another; the `csign` guard is the one the neighbouring clauses use.
-
-**Hunk 1.** In `simpexpt`, the `mabs` clause before the one commented `abs(x)^(2*n+1) -> abs(x)*x^(2*n)`.
-
-**Find this** (upstream line 2168):
-
-```lisp
-            (go cont))
-           ((atom gr) (go atgr))
-           ((and (eq (caar gr) 'mabs)
-                 (or (evnump pot)
-                     (mevenp pot))
-                 (or (and (eq $domain '$real) (not (apparently-complex-to-judge-by-$csign-p (cadr gr))))
-                     (and (eq $domain '$complex) (apparently-real-to-judge-by-$csign-p (cadr gr)))))
-            (return (power (cadr gr) pot)))
-```
-
-**Replace it with this:**
-
-```lisp
-            (go cont))
-           ((atom gr) (go atgr))
-           ((and (eq (caar gr) 'mabs)
-                 (or (mevenp pot)
-                     ;; abs(x)^(2*m/n) -> x^(2*m/n) only for the real root
-                     ;; of x^(1/n), which the principal branch is not.
-                     (and (eq $domain '$real) (evnump pot)))
-                 (or (and (eq $domain '$real) (not (apparently-complex-to-judge-by-$csign-p (cadr gr))))
-                     (and (eq $domain '$complex) (apparently-real-to-judge-by-$csign-p (cadr gr)))))
-            (return (power (cadr gr) pot)))
-```
-
-**Hunk 2.** The clause commented `1/x^n*abs(x) -> 1/(x^(n-2)*abs(x))`.
-
-**Find this** (upstream line 2600):
-
-```lisp
-                        (eq (caar (car x)) 'mabs)
-                        (equal (cadr x) 1)
-                        (integerp (caddr (cadr fm)))
-                        (< (caddr (cadr fm)) -1)
-                        (alike1 (cadr (car x)) (cadr (cadr fm)))
-                        (not (member ($csign (cadr (car x)))
-                                     '($complex $imaginary))))
-```
-
-**Replace it with this:**
-
-```lisp
-                        (eq (caar (car x)) 'mabs)
-                        (equal (cadr x) 1)
-                        (integerp (caddr (cadr fm)))
-                        (< (caddr (cadr fm)) 0)
-                        (alike1 (cadr (car x)) (cadr (cadr fm)))
-                        (not (member ($csign (cadr (car x)))
-                                     '($complex $imaginary))))
-```
-
-**Hunk 3.** Two clauses inserted before the `great` fallthrough that follows the clause commented `1/abs(x)*x^n -> x^(n-2)*abs(x)`.
-
-**Find this** (upstream line 2658):
-
-```lisp
-                   (setq w (cadr x))
-                   (go start))
-                  
-                  ((or (maxima-constantp (car x))
-                       (maxima-constantp (cadadr fm)))
-                   (if (great temp (cadr fm))
-```
-
-**Replace it with this:**
-
-```lisp
-                   (setq w (cadr x))
-                   (go start))
-                  
-                  ((and (eq $domain '$real)
-                        (not (atom (car x)))
-                        (eq (caar (car x)) 'mabs)
-                        (or (integerp (cadr x))
-                            (ratnump (cadr x)))
-                        (ratnump (caddr (cadr fm)))
-                        (evenp (cadr (caddr (cadr fm))))
-                        (alike1 (cadr (car x)) (cadadr fm))
-                        (not (member ($csign (cadr (car x)))
-                                     '($complex $imaginary))))
-                   ;; abs(x)^b*x^a -> abs(x)^(a+b), where a a ratio with an
-                   ;; even numerator, so that with domain : real x^a is the
-                   ;; real root abs(x)^a, and b any rational number.
-                   ;; Remove x^a.
-                   (setq x (power (car x) (add (cadr x) (caddr (cadr fm)))))
-                   (rplacd fm (cddr fm))
-                   (go absmerge))
-
-                  ((and (eq $domain '$real)
-                        (not (atom (cadr (cadr fm))))
-                        (eq (caaadr (cadr fm)) 'mabs)
-                        (or (integerp (caddr (cadr fm)))
-                            (ratnump (caddr (cadr fm))))
-                        (ratnump (cadr x))
-                        (evenp (cadr (cadr x)))
-                        (alike1 (cadadr (cadr fm)) (car x))
-                        (not (member ($csign (cadadr (cadr fm)))
-                                     '($complex $imaginary))))
-                   ;; x^a*abs(x)^b -> abs(x)^(a+b), where a a ratio with an
-                   ;; even numerator and b any rational number.
-                   ;; Remove abs(x)^b.
-                   (setq x (power (cadr (cadr fm))
-                                  (add (cadr x) (caddr (cadr fm)))))
-                   (rplacd fm (cddr fm))
-                   (go absmerge))
-
-                  ((or (maxima-constantp (car x))
-                       (maxima-constantp (cadadr fm)))
-                   (if (great temp (cadr fm))
-```
-
-**Hunk 4.** The clause commented `abs(x)/x^n -> 1/(x^(n-2)*abs(x))`.
-
-**Find this** (upstream line 2675):
-
-```lisp
-           ((and (not (atom (cadr fm)))
-                 (eq (caar (cadr fm)) 'mabs)
-                 (integerp (cadr x))
-                 (< (cadr x) -1)
-                 (alike1 (cadr (cadr fm)) (car x))
-                 (not (member ($csign (cadr (cadr fm)))
-                                     '($complex $imaginary))))
-```
-
-**Replace it with this:**
-
-```lisp
-           ((and (not (atom (cadr fm)))
-                 (eq (caar (cadr fm)) 'mabs)
-                 (integerp (cadr x))
-                 (< (cadr x) 0)
-                 (alike1 (cadr (cadr fm)) (car x))
-                 (not (member ($csign (cadr (cadr fm)))
-                                     '($complex $imaginary))))
-```
-
-**Hunk 5.** One clause inserted before the `great` fallthrough that follows it, outside the `mexptp` branch.
-
-**Find this** (upstream line 2690):
-
-```lisp
-            (setq w (cadr x))
-            (go start))
-           
-           ((maxima-constantp (car x))
-            (when (great temp (cadr fm))
-              (go gr)))
-```
-
-**Replace it with this:**
-
-```lisp
-            (setq w (cadr x))
-            (go start))
-           
-           ((and (eq $domain '$real)
-                 (not (atom (cadr fm)))
-                 (eq (caar (cadr fm)) 'mabs)
-                 (ratnump (cadr x))
-                 (evenp (cadr (cadr x)))
-                 (alike1 (cadr (cadr fm)) (car x))
-                 (not (member ($csign (cadr (cadr fm)))
-                              '($complex $imaginary))))
-            ;; x^a*abs(x) -> abs(x)^(a+1), where a a ratio with an even
-            ;; numerator.  Remove abs(x).
-            (setq x (power (cadr fm) (add (cadr x) 1)))
-            (rplacd fm (cddr fm))
-            (go absmerge))
-
-           ((maxima-constantp (car x))
-            (when (great temp (cadr fm))
-              (go gr)))
-```
-
-**Hunk 6.** The `absmerge` label, between `const` and `times`.
-
-**Find this** (upstream line 2837):
-
-```lisp
-     (rplacd fm (cddr fm))
-     (setq x (car x) check nil)
-     (go top)
-  times
-     (setq z (tms x 1 (setq temp (cons '(mtimes) y))))
-     (return (cond ((eq z temp)
-```
-
-**Replace it with this:**
-
-```lisp
-     (rplacd fm (cddr fm))
-     (setq x (car x) check nil)
-     (go top)
-  absmerge
-     ;; Rescan the list of products with the merged power of abs(x).  SIMPEXPT
-     ;; has normalized it as it does any power of abs: an even numerator gives
-     ;; a power of x, an odd integer gives x^(2*n)*abs(x).
-     (cond ((mnump x)
-            (return (rplaca y (timesk (car y) x))))
-           ((mtimesp x)
-            (go times))
-           (t
-            (setq temp x
-                  x (if (mexptp x) (cdr x) (list x 1)))
-            (setq w (cadr x)
-                  fm y)
-            (go start)))
-  times
-     (setq z (tms x 1 (setq temp (cons '(mtimes) y))))
-     (return (cond ((eq z temp)
-```
-
-### 3.3 `src/compar.lisp`
+### 3.2 `src/compar.lisp`
 
 One hunk at the top of `sign-mexpt`: with `domain : real`, or in real mode, an exponent `m/n` with an integer `m` and an odd `n` is judged by its numerator. `sign-expt` keeps the sign of `m/n`, which decides whether the power can be zero.
 
@@ -539,9 +317,9 @@ One hunk at the top of `sign-mexpt`: with `domain : real`, or in real mode, an e
     (cond ((and (eq sign-base '$zero)
 ```
 
-### 3.4 `src/comm.lisp`
+### 3.3 `src/comm.lisp`
 
-One hunk, a bug fix in `sdiffgrad`. A derivative in a `grad` property is either an expression in the placeholder names of the `defgrad` or a function of the arguments. `sdiffgrad` substituted the arguments for the placeholder names into the results of both, so a function could not build its result from the arguments it was given: an argument named like a placeholder would have been substituted a second time. The only such function in the tree, the derivative of `gamma_incomplete` with respect to its order, therefore evaluated a template in the placeholder names `a` and `z` and picked up the values of the Maxima variables `a` and `z` on the way; with `a : 5`, `diff(gamma_incomplete(b, y), b)` came out with `gamma_incomplete(5,y)` in it. A function may now return `t` as a second value, and `sdiffgrad` then takes its result as it is; a function returning one value is substituted into as before, so nothing outside the tree changes. That derivative builds its result from its arguments and returns it that way (hunk 1 of section 3.5), and so do the `z` derivatives, which call `principal-power` directly. The `defgrad` docstring in `src/mopers.lisp` describes both conventions (section 3.6). Committed on its own at the base of the branch, with the first part of the block in section 4.3 as its test.
+One hunk, a bug fix in `sdiffgrad`. A derivative in a `grad` property is either an expression in the placeholder names of the `defgrad` or a function of the arguments. `sdiffgrad` substituted the arguments for the placeholder names into the results of both, so a function could not build its result from the arguments it was given: an argument named like a placeholder would have been substituted a second time. The only such function in the tree, the derivative of `gamma_incomplete` with respect to its order, therefore evaluated a template in the placeholder names `a` and `z` and picked up the values of the Maxima variables `a` and `z` on the way; with `a : 5`, `diff(gamma_incomplete(b, y), b)` came out with `gamma_incomplete(5,y)` in it. A function may now return `t` as a second value, and `sdiffgrad` then takes its result as it is; a function returning one value is substituted into as before, so nothing outside the tree changes. That derivative builds its result from its arguments and returns it that way (hunk 1 of section 3.4), and so do the `z` derivatives, which call `principal-power` directly. The `defgrad` docstring in `src/mopers.lisp` describes both conventions (section 3.5). Committed on its own at the base of the branch, with the first part of the block in section 4.3 as its test.
 
 **Hunk 1.** The body of `sdiffgrad` after the `mqapply` and argument-count clauses.
 
@@ -625,9 +403,9 @@ One hunk, a bug fix in `sdiffgrad`. A derivative in a `grad` property is either 
                (if (not (depends e x))
 ```
 
-### 3.5 `src/gamma.lisp`
+### 3.4 `src/gamma.lisp`
 
-Six hunks. Hunk 1 rewrites the derivative of `gamma_incomplete` with respect to its order to build its result from its arguments and return it with the second value (the `sdiffgrad` fix of section 3.4), adds `gamma-incomplete-z-derivative`, which builds the `z` derivative the same way with the power written by `principal-power` when `$domain` is real and as the plain power otherwise, and makes the `z` derivative a function that calls it; hunks 2 and 5 do the same for `gamma_incomplete_lower` and for `z1` and `z2` of `gamma_incomplete_generalized`. `subst-power-order` and `subst-rational-order` serve the three `gamma_expand` clauses for a rational order: the recurrence is now expanded with a fresh symbol for `z` as well as for the order, so that the powers `z^(ord + m)` can be put back as `z^m` times the principal `z^order` before the order is substituted; with `domain : complex` the plain power is used.
+Six hunks. Hunk 1 rewrites the derivative of `gamma_incomplete` with respect to its order to build its result from its arguments and return it with the second value (the `sdiffgrad` fix of section 3.3), adds `gamma-incomplete-z-derivative`, which builds the `z` derivative the same way with the power written by `principal-power` when `$domain` is real and as the plain power otherwise, and makes the `z` derivative a function that calls it; hunks 2 and 5 do the same for `gamma_incomplete_lower` and for `z1` and `z2` of `gamma_incomplete_generalized`. `subst-power-order` and `subst-rational-order` serve the three `gamma_expand` clauses for a rational order: the recurrence is now expanded with a fresh symbol for `z` as well as for the order, so that the powers `z^(ord + m)` can be put back as `z^m` times the principal `z^order` before the order is substituted; with `domain : complex` the plain power is used.
 
 **Hunk 1.** The `defgrad` of `%gamma_incomplete`, with `gamma-incomplete-z-derivative` inserted before it.
 
@@ -905,7 +683,7 @@ Six hunks. Hunk 1 rewrites the derivative of `gamma_incomplete` with respect to 
        ;; gamma_incomplete_regularized(a,z)
 ```
 
-### 3.6 `src/mopers.lisp`
+### 3.5 `src/mopers.lisp`
 
 Two hunks, the comment above `defgrad` and its docstring: a lambda returning `t` as a second value has its result taken as it is.
 
@@ -966,7 +744,7 @@ Two hunks, the comment above `defgrad` and its docstring: a lambda returning `t`
   ;; incorrect.
 ```
 
-### 3.7 `src/sin.lisp`
+### 3.6 `src/sin.lisp`
 
 Three hunks. `gamma-incomplete-and-power` returns the `gamma_incomplete` factor (less `gamma(alpha)` where the phase is a step), the power, and the `var^m` factor, which is 1 when it has been folded into the power. Types 1a, 2 and 2-1 of `integrate-exp-special` call it in place of building the two factors themselves; the products keep the same factors in the same order as before, and the exponent of `z` is computed exactly as each clause computed it, since the form of a symbolic exponent decides how the simplifier combines the factors (rtest_integrate 98, 572 and 573 depend on it).
 
@@ -1150,7 +928,7 @@ Three hunks. `gamma-incomplete-and-power` returns the `gamma_incomplete` factor 
       (a b c d p)
 ```
 
-### 3.8 `doc/info/Simplification.texi`
+### 3.7 `doc/info/Simplification.texi`
 
 The entry of the `domain` option variable gets a paragraph. Check the manual with `make` and `?? domain` afterwards.
 
@@ -1193,13 +971,13 @@ branch, and @code{(-8)^(1/3)} is @code{1 + sqrt(3) %i}; see also
 @c and controls little more than this at the moment.
 ```
 
-### 3.9 `ChangeLog`
+### 3.8 `ChangeLog`
 
-Two hunks: under *Bug fixes for unnumbered bugs*, and two lines under *Other changes*.
+One hunk, under *Bug fixes for unnumbered bugs*.
 
 **Hunk 1.**
 
-**Find this** (upstream line 72):
+**Find this** (upstream line 75):
 
 ```text
 
@@ -1218,7 +996,6 @@ Changes in the Windows installer:
 
 Bug fixes for unnumbered bugs:
 ------------------------------
-* abs(x)^(2/3) no longer simplifies to x^(2/3) with domain : complex, where x^(2/3) is on the principal branch
 * rectform, realpart, imagpart, polarform and carg take the principal branch of an odd root of a negative real quantity, where the simplifier takes the real root with domain : real
 * csign(x^(m/n)) with an integer m and n declared odd is complex for x < 0 with domain : real, where the power is the real root (x^(1/n))^m
 * integrate(%e^(x^3), x) and integrate(sin(x^3), x) are wrong for x > 0: the (-x^3)^(-1/3) of the integrator is taken as the real root while gamma_incomplete stays on the principal branch
@@ -1230,26 +1007,6 @@ Bug fixes for unnumbered bugs:
 
 Changes in the Windows installer:
 ---------------------------------
-```
-
-**Hunk 2.**
-
-**Find this** (upstream line 82):
-
-```text
-Other changes:
---------------
-* Bigfloat optimizations and less memory consumption
-```
-
-**Replace it with this:**
-
-```text
-Other changes:
---------------
-* Bigfloat optimizations and less memory consumption
-* The sign of a real x has one normal form: abs(x)/x now simplifies to x/abs(x)
-* x^(2/3)*abs(x)^(1/3) simplifies to abs(x), so (x^2*abs(x))^(1/3) and abs(x^3)^(1/3) do too
 ```
 
 ## 4. Tests
@@ -1735,152 +1492,6 @@ integrate(exp(sqrt(x^3)),x,0,1);
    integrate(exp(sqrt(x^3)),x)  ->  -2*gamma_incomplete(2/3,-x^(3/2))/3
 ```
 
-### 4.7 `tests/rtest_abs.mac`
-
-Three blocks appended before the final leak guard: the `simpexpt` fix (`abs(x)^(2/3)` stays with `domain : complex`, is 4 at `x = -8` there, and even integer and declared even powers still become powers of `x`), the normal form of the sign, and the combination of `x^(2/3)*abs(x)^(1/3)`, with the declared-complex `z` and `domain : complex` left alone. The file is registered without known-failure numbers, so the shift of the two guard problems is harmless. Where an expected value would be simplified into something else with the default domain, the problem returns a string, because the harness simplifies the expected side at comparison time.
-
-
-**Hunk 1.**
-
-**Find this** (upstream line 546):
-
-```maxima
-
-
-/***********************************************************/
-/* Guard against leaks, leave this at the end of the file! */
-```
-
-**Replace it with this:**
-
-```maxima
-
-
-/* abs(x)^(2/3) is x^(2/3) for the real root, which x^(2/3) is with
- * domain : real and not with domain : complex; an even integer power and
- * a declared even one are x^n in both.  The expected value of the first
- * problem is a string, as the comparison would simplify it with the
- * default domain.
- */
-
-block([domain : complex], string(abs(x)^(2/3)));
-"abs(x)^(2/3)";
-
-block([domain : complex], subst(x = -8, abs(x)^(2/3)));
-4;
-
-block([domain : complex], [abs(x)^2, abs(x)^4, abs(x)^(-2)]);
-[x^2, x^4, 1/x^2];
-
-(declare(n, even), block([domain : complex], abs(x)^n));
-x^n;
-
-remove(n, even);
-done;
-
-[abs(x)^(2/3), subst(x = -8, abs(x)^(2/3)), abs(x)^(4/5)];
-[x^(2/3), 4, x^(4/5)];
-
-/* One normal form for the sign of a real x: abs(x)*x^(-1) is x*abs(x)^(-1) */
-
-abs(x)/x;
-x/abs(x);
-
-x/abs(x) - abs(x)/x;
-0;
-
-expand((1 + x/abs(x))*(1 - abs(x)/x));
-0;
-
-abs(x-1)/(x-1);
-(x-1)/abs(x-1);
-
-abs(sin(x))/sin(x);
-sin(x)/abs(sin(x));
-
-/* A declared complex z keeps both forms, they are not equal for it. */
-
-(declare(z, complex), [abs(z)/z, z/abs(z)]);
-[abs(z)/z, z/abs(z)];
-
-remove(z, complex);
-done;
-
-/* x^a*abs(x)^b combines into abs(x)^(a+b) for a ratio a with an even
- * numerator, so that a root of abs(x^n) is a power of abs(x) again.
- */
-
-(x^2*abs(x))^(1/3);
-abs(x);
-
-abs(-x^3)^(-1/3);
-1/abs(x);
-
-abs(x^3)^(2/3);
-x^2;
-
-x^(2/3)*abs(x)^(1/3);
-abs(x);
-
-x^(2/3)/abs(x);
-1/abs(x)^(1/3);
-
-subst(x = -8, (x^2*abs(x))^(1/3));
-8;
-
-/* The normal forms of an integer power are not touched. */
-
-[x^2*abs(x), abs(x)^(5/3)];
-[x^2*abs(x), abs(x)^(5/3)];
-
-/* A declared complex z keeps the two factors apart. */
-
-(declare(z, complex), [(z^2*abs(z))^(1/3), z^(2/3)*abs(z)^(1/3), abs(z^3)^(1/3)]);
-[z^(2/3)*abs(z)^(1/3), z^(2/3)*abs(z)^(1/3), abs(z)];
-
-remove(z, complex);
-done;
-
-/* With domain : complex x^(2/3) is on the principal branch and is not
- * abs(x)^(2/3); the expected value is a string, as the comparison would
- * simplify it with the default domain.
- */
-
-block([domain : complex], string(x^(2/3)*abs(x)^(1/3)));
-"x^(2/3)*abs(x)^(1/3)";
-
-
-/***********************************************************/
-/* Guard against leaks, leave this at the end of the file! */
-```
-
-### 4.8 `share/contrib/integration/rtest_abs_integrate.mac`
-
-Problem 219 pinned its answer with the sign as `abs(x-a)/(x-a)`; same value, new form.
-
-
-**Hunk 1.** Problem 219.
-
-**Find this** (upstream line 730):
-
-```maxima
-
-hypergeometric_simp(hyper_int(x*abs(x-a),x));
--(a*x^2*(1-(2*x)/(3*a))*abs(x-a))/(2*(x-a))$
-
-/* #3863 Wrong result for abs_integrate applied to unit_step */
-```
-
-**Replace it with this:**
-
-```maxima
-
-hypergeometric_simp(hyper_int(x*abs(x-a),x));
--(a*x^2*(x-a)*(1-(2*x)/(3*a)))/(2*abs(x-a))$
-
-/* #3863 Wrong result for abs_integrate applied to unit_step */
-```
-
 ## 5. Verifying
 
 ```sh
@@ -1910,14 +1521,13 @@ assume(x > 0)$ integrate(%e^(x^3), x);
 - `diff(gamma_incomplete(a, z), x)` and `gamma_incomplete(a, z)` with `gamma_expand : true` change the same way, only with `domain : real`, a numeric `a`, and a `z` for which the simplifier commits to the real root: `diff(gamma_incomplete(1/3, x), x)`, a symbolic order, and an even denominator are unchanged.
 - The round trip `diff(integrate(f, x), x)` needs `expand` in general, since Maxima never multiplies out a product of two sums by itself, `trigrat` for the trigonometric integrands, and one more `ratsimp` if `ratsimp` is used instead of `expand`, because `abs(x)^2` is reduced to `x^2` only on the way out of the rational form. `integrate(2^(x^3), x)` differentiates to `%e^(log(2)*x^3)`, which `ratsimp` does not identify with `2^(x^3)`; that is how the old code behaved too.
 - `rectform`, `polarform` and `carg` of an odd root of a negative real quantity give the real root with `domain : real`, and `csign` of `b^(2/n)` for a declared odd `n` is `pos` for `b < 0`. `domain : complex` is unchanged everywhere.
-- With `domain : complex` `abs(x)^(2/3)` stays as it is; it used to become `x^(2/3)`, which is on the principal branch there and differs for a negative `x` (`BUG-abs-even-numerator-domain-complex.md`). `abs(x)^2` is still `x^2` in both domains.
-- Two simplifier improvements, valid for any `x` that `csign` does not report complex: `abs(x)/x` is `x/abs(x)`, and with `domain : real` a rational power of `x` with an even numerator combines with a power of `abs(x)`, so `(x^2*abs(x))^(1/3)`, `abs(x^3)^(1/3)` and `x^(2/3)*abs(x)^(1/3)` are `abs(x)` and `abs(-x^3)^(-1/3)` is `1/abs(x)`. Both were checked on `master` with randomized products of powers of a base and of its `abs`, evaluated numerically at real points, with the base declared complex at complex points, and under `domain : complex`; no result changed value. One weakness they share with every `abs` rule of `timesin` and `simpexpt`: `csign` reports `pnz` for `gamma(z)`, `tan(z)`, `erfc(z)`, `zeta(z)`, a `bessel_j`, an undefined `f(z)` and others when `z` is declared complex, so those rules fire on such an argument, as `abs(gamma(z))^3` becoming `gamma(z)^2*abs(gamma(z))` already shows on `master`; `BUG-csign-function-of-complex-argument.md` describes it.
-- The derivative of `gamma_incomplete(a, z)` with respect to `a` no longer picks up values of the variables `a` and `z` (section 3.4). A `defgrad` lambda in code outside the tree keeps its meaning; returning `t` as a second value is the new option.
+- Three simplifier changes that were on this branch are in `master` since: `abs(x)/x` is `x/abs(x)` (bug #5223), `abs(x)^(2/3)` stays as it is with `domain : complex` (bug #5225), and with `domain : real` a rational power of `x` with an even numerator combines with a power of `abs(x)`, so `(x^2*abs(x))^(1/3)` and `abs(-x^3)^(-1/3)` are `abs(x)` and `1/abs(x)`. One weakness they share with every `abs` rule of `timesin` and `simpexpt`: `csign` reports `pnz` for `gamma(z)`, `tan(z)`, `erfc(z)`, `zeta(z)`, a `bessel_j`, an undefined `f(z)` and others when `z` is declared complex, so those rules fire on such an argument, as `abs(gamma(z))^3` becoming `gamma(z)^2*abs(gamma(z))` already shows on `master`; `BUG-csign-function-of-complex-argument.md` describes it.
+- The derivative of `gamma_incomplete(a, z)` with respect to `a` no longer picks up values of the variables `a` and `z` (section 3.3). A `defgrad` lambda in code outside the tree keeps its meaning; returning `t` as a second value is the new option.
 - Things noticed but left alone are in section 7, with bug reports for the three that are bugs.
 
 ## 7. Workarounds, and what a fix would have simplified
 
-Things the change works around rather than fixes, roughly in the order of how much a fix would have shortened the work. The first three are bugs; reports ready for the SourceForge tracker are in `BUG-rectform-atan2.md`, `BUG-carg-product-argument.md` and `BUG-gamma_incomplete_lower-float.md` next to this file, and item 11 is a fourth, fixed here. Items 4 and 7 are fixed on this branch too: item 4 turned out to be a bug as well, item 7 was a missed simplification; `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` and `ENHANCEMENT-abs-sign-normal-form.md` put them as requests, with reproducers.
+Things the change works around rather than fixes, roughly in the order of how much a fix would have shortened the work. The first three are bugs; reports ready for the SourceForge tracker are in `BUG-rectform-atan2.md`, `BUG-carg-product-argument.md` and `BUG-gamma_incomplete_lower-float.md` next to this file, and item 11 is a fourth, fixed in `master` since (bug #5225). Items 4 and 7 are fixed too, item 4 at the base of this branch, where it turned out to be a bug as well, item 7, a missed simplification, in `master` (bug #5223); `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` and `ENHANCEMENT-abs-sign-normal-form.md` put them as requests, with reproducers.
 
 1. **`rectform(atan2(y, 0))` is wrong for `y < 0` and carries a spurious imaginary part.** `rectform(atan2(y,0))` is `(2*%pi*ceiling((2*atan2(0,y)-%pi)/(2*%pi))+%pi)/2-%i*log(abs(y)/sqrt(y^2))`, which is `3*%pi/2` at `y = -2` where `atan2(-2, 0)` is `-%pi/2`; the imaginary part is zero but is not simplified, since `sqrt(y^2)` was produced with `$domain` bound to `complex` inside `risplit`. This is what broke the `atan2` phase for the imaginary constant behind `sin(x^3)` and forced two redesigns. Even fixed, an `atan2` in an exponent would not cancel against the derivative under `expand`, so the rational form is the better end point; the detour would have been shorter.
 
@@ -1925,13 +1535,13 @@ Things the change works around rather than fixes, roughly in the order of how mu
 
 3. **`gamma_incomplete_lower(a, z)` with a rational `a` and a float `z` is not evaluated**, `gamma_incomplete_lower(1/3, 8.0)` is `gamma(1/3)-7.799182611869946e-5`, and it has no conjugate property, so `rectform` of it gives `realpart` and `imagpart` noun forms where `gamma_incomplete` gets the mirror symmetry. The natural continuous antiderivative of `%e^(x^3)` is `gamma_incomplete_lower(1/3, -x^3)` times the phase; the change writes `gamma_incomplete(1/3, -x^3) - gamma(1/3)` instead.
 
-4. **`sdiffgrad` re-substituted the result of a lambda derivative, fixed at the base of this branch (section 3.4).** A `defgrad` lambda gets the actual arguments, but its result was run through `psubstitute` with the placeholder symbols `a` and `z`, so a derivative built from the actual `z` was corrupted whenever the user's variable was named `z` or `a`; the one lambda in the tree, the derivative of `gamma_incomplete` with respect to its order, evaluated a template in the placeholders instead, and picked up values of the Maxima variables `a` and `z` on the way. Until the fix, `gamma-incomplete-z-derivative` returned an unsimplified template in the placeholder, with the modulus written as `abs(k)^s*(z^2/k^2)^(s/2)`, `k` checked with `freeof` against the placeholders and a symbolic order refused. Now a lambda returning `t` as a second value has its result taken as it is, as it already was for the special case of `hypergeometric` in `sdiffgrad`, a lambda returning one value is treated as before, the derivative is one call of `principal-power`, and the template and its guards are gone. `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` has the reproducers.
+4. **`sdiffgrad` re-substituted the result of a lambda derivative, fixed at the base of this branch (section 3.3).** A `defgrad` lambda gets the actual arguments, but its result was run through `psubstitute` with the placeholder symbols `a` and `z`, so a derivative built from the actual `z` was corrupted whenever the user's variable was named `z` or `a`; the one lambda in the tree, the derivative of `gamma_incomplete` with respect to its order, evaluated a template in the placeholders instead, and picked up values of the Maxima variables `a` and `z` on the way. Until the fix, `gamma-incomplete-z-derivative` returned an unsimplified template in the placeholder, with the modulus written as `abs(k)^s*(z^2/k^2)^(s/2)`, `k` checked with `freeof` against the placeholders and a symbolic order refused. Now a lambda returning `t` as a second value has its result taken as it is, as it already was for the special case of `hypergeometric` in `sdiffgrad`, a lambda returning one value is treated as before, the derivative is one call of `principal-power`, and the template and its guards are gone. `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` has the reproducers.
 
 5. **`risplit` cannot run with `$domain` left as `real`.** Removing its binding of `$domain` to `$complex` exhausts the control stack in rtestint problem 300. Hence `*risplit-domain*`, which the helpers read to learn the user's domain.
 
 6. **The integrator declares its substitution variable for an even root complex** (`make-new-var` in sin.lisp, because `csign` of the root is `complex`), although it is a nonnegative real wherever the integrand is real. Hence `nonneg-internal-p`. Without it `exp(sqrt(x^3))` and `expintegral_ei(x^(-3/4))` would keep the wrong branch.
 
-7. **Two normal forms for one sign, now fixed on this branch.** The simplifier gave `abs(x)/x` for `x^(-1)*abs(x)` but `x/abs(x)` for `x*abs(x)^(-1)`, which is why `principal-power-times` used to multiply the sign into the phase by the parity of `m` by hand, and why the derivative template had a separate case for a negative `n`; the recombination of `exp(-x^3)/x^4` in rtest_gamma 789 under `expand` depended on that care. `ENHANCEMENT-abs-sign-normal-form.md` asked for one canonical form; the two-comparison change in `timesin` (section 3.2) gives it, was verified against master in a separate session, and let both workarounds go. The second member of the family, `abs(-x^3)^(-1/3)` becoming `x^(-2/3)*abs(x)^(-1/3)`, is fixed on this branch too (hunks 2, 4 and 5 of section 3.2, verified the same way), but it simplified no code: the derivative template of the time wrote its modulus through `z^2` because of the even denominators, where `abs(x^(3/2))` does not reduce and `(z^2/k^2)^(s/2)` does. With the template gone (item 4) the derivative writes the modulus exactly as the integrator does, `abs(k)^s*abs(w)^(n*s)` with the constant outside the root, and the round trips with a constant coefficient in the exponent are exact (rtest_integrate, last block). What remains: `ratsimp` does not know `abs(x)^2 = x^2` inside the rational form, which is why the trigonometric round trips need `trigrat`, or a second `ratsimp`.
+7. **Two normal forms for one sign, now fixed in `master` (bug #5223).** The simplifier gave `abs(x)/x` for `x^(-1)*abs(x)` but `x/abs(x)` for `x*abs(x)^(-1)`, which is why `principal-power-times` used to multiply the sign into the phase by the parity of `m` by hand, and why the derivative template had a separate case for a negative `n`; the recombination of `exp(-x^3)/x^4` in rtest_gamma 789 under `expand` depended on that care. `ENHANCEMENT-abs-sign-normal-form.md` asked for one canonical form; the two-comparison change in `timesin` gives it, was verified against master in a separate session before it was landed, and let both workarounds go. The second member of the family, `abs(-x^3)^(-1/3)` becoming `x^(-2/3)*abs(x)^(-1/3)`, is in `master` too (the combination of `x^(2/3)*abs(x)^(1/3)`, verified the same way), but it simplified no code: the derivative template of the time wrote its modulus through `z^2` because of the even denominators, where `abs(x^(3/2))` does not reduce and `(z^2/k^2)^(s/2)` does. With the template gone (item 4) the derivative writes the modulus exactly as the integrator does, `abs(k)^s*abs(w)^(n*s)` with the constant outside the root, and the round trips with a constant coefficient in the exponent are exact (rtest_integrate, last block). What remains: `ratsimp` does not know `abs(x)^2 = x^2` inside the rational form, which is why the trigonometric round trips need `trigrat`, or a second `ratsimp`.
 
 8. **`(x^3)^y` simplifies to `x^(3*y)` with `domain : real`** for a symbolic `y`, so the powers of `z` in the `gamma_expand` recurrence could not be recognized once expanded; they are expanded with a symbol for `z` and put back afterwards. Intended behaviour of the real domain, not a bug.
 
@@ -1939,7 +1549,7 @@ Things the change works around rather than fixes, roughly in the order of how mu
 
 10. **Numeric evaluation of an expression with `gamma_incomplete(1/3, %i)` in it**, as `float(rectform(integrate(sin(x^3), x, 0, 1)))`, leaves products of floats and sums unexpanded; the values were checked by substituting float points into the antiderivative and against `quad_qags` instead. A nuisance in verification, not a wrong result.
 
-11. **`abs(x)^(2/3)` became `x^(2/3)` with `domain : complex`, fixed on this branch.** The `simpexpt` clause accepted an even-numerator fraction in both domains, although the identity holds only for the real root; hunk 1 of section 3.2 restricts the fraction to `domain : real`. It came to light while checking the root combination of item 7 under `domain : complex`: the combination was wrong there, and the other session had justified it by this rule. `BUG-abs-even-numerator-domain-complex.md` has the report; `BUG-csign-function-of-complex-argument.md` records a weakness of the `csign` guard that all the `abs` rules share and that is not fixed here.
+11. **`abs(x)^(2/3)` became `x^(2/3)` with `domain : complex`, fixed in `master` since (bug #5225).** The `simpexpt` clause accepted an even-numerator fraction in both domains, although the identity holds only for the real root; the fix restricts the fraction to `domain : real`. It came to light while checking the root combination of item 7 under `domain : complex`: the combination was wrong there, and the other session had justified it by this rule. `BUG-abs-even-numerator-domain-complex.md` has the report; `BUG-csign-function-of-complex-argument.md` records a weakness of the `csign` guard that all the `abs` rules share and that is not fixed here.
 
 ## 8. Proposed commit messages
 
@@ -1989,14 +1599,6 @@ and definite integrals such as integrate(%e^(x^3), x, -1, 1) are right,
 and expand brings the derivative of each antiderivative back to its
 integrand.
 
-The sign of a real x gets the one form x/abs(x) in the simplifier,
-which the phases rely on, and with domain : real a rational power of x
-with an even numerator combines with a power of abs(x), so that
-(x^2*abs(x))^(1/3) and abs(-x^3)^(-1/3) are abs(x) and 1/abs(x).
-With domain : complex abs(x)^(2/3) no longer becomes x^(2/3), which is
-on the principal branch there.
-
-Tests in rtest16, rtest_sign, rtest_gamma, rtest_integrate and
-rtest_abs; the answers of rtestint 100, rtest_integrate_special 27 and
-31 and rtest_abs_integrate 219 change.
+Tests in rtest16, rtest_sign, rtest_gamma and rtest_integrate; the
+answers of rtestint 100 and rtest_integrate_special 27 and 31 change.
 ```

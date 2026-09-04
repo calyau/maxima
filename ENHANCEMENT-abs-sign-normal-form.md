@@ -1,5 +1,7 @@
 # The sign of a real x has two normal forms, x/abs(x) and abs(x)/x, and their difference does not simplify
 
+**Status: in `master` as bug #5223** (*Let the simplifier canonicalize x/abs(x) and abs(x)/x for real x*), together with the combination of `x^(2/3)*abs(x)^(1/3)` into `abs(x)` (*Combine powers of x and abs(x) when possible*).
+
 **Version:** Maxima git master (5.50post), SBCL, `domain : real`. A missed simplification rather than a wrong result.
 
 For an `x` that `csign` does not report as `complex` or `imaginary`, the simplifier knows that `abs(x)^2` is `x^2`: it reduces `(x/abs(x))^2` and `(abs(x)/x)^2` to 1, `abs(x)^3` to `x^2*abs(x)`, `x^2/abs(x)^3` to `1/abs(x)`, `abs(x)/x^2` to `1/abs(x)` and `x/abs(x)^2` to `1/x`, so at most one power of `abs(x)` survives in a product and the even part is moved to `x`. But it has no single form for the sign of such an `x`: `x*abs(x)^(-1)` stays `x/abs(x)` and `abs(x)*x^(-1)` stays `abs(x)/x`, and the difference of the two is not recognized as 0 by the simplifier or by `expand`, only by `ratsimp` and `radcan`, which happen to produce `abs(x)^2 - x^2` on the way.
