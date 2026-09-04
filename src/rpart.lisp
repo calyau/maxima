@@ -59,10 +59,10 @@
 ;;
 ;; with alpha + beta the phase %e^(%i*s*carg(k)) and alpha - beta the
 ;; phase %e^(%i*s*carg(-k)).  The sign w/abs(w) and the powers of abs(w)
-;; are rational in w and abs(w), and abs(w)^2 simplifies to w^2, so that
-;; the product of two such powers, as of an antiderivative and of its
-;; derivative, reduces under expand or ratsimp, where an atan2(0, w) in
-;; an exponent would not.
+;; are rational in w and abs(w), abs(w)^2 simplifies to w^2 and the sign
+;; has that one form, so that the product of two such powers, as of an
+;; antiderivative and of its derivative, reduces under expand or ratsimp,
+;; where an atan2(0, w) in an exponent would not.
 
 ;; %e^(%i*s*arg(z)) as alpha + beta*SIGMA for SIGMA the sign w/abs(w) of w
 ;; in z = k*w^n, with RE and IM the real and imaginary parts of k.  The
@@ -124,33 +124,21 @@
                                       1)))))
         (power z s))))
 
-;; w^m * z^s for the integrator, with the sign w/abs(w) of an odd integer
-;; m multiplied into the phase, where its square is 1.
+;; w^m * z^s for the integrator, multiplied through the phase for an
+;; integer m, so that the sign of w^m folds into it: the sign of a real w
+;; has the one form w/abs(w), whose square is 1.
 (defun principal-power-times (w m z s)
-  (multiple-value-bind (k w2 n nonneg) (real-power-factors z)
-    (if (and k (odd-root-p s) (alike1 w2 w) (integerp m))
-        (destructuring-bind (re . im) (trisplit k)
-          (let* ((qodd (and (not nonneg) (oddp ($denom n))))
-                 (varies (and qodd (sign-varies-p n)))
-                 (sigma (if varies (div w (take '(mabs) w)) 1))
-                 (phase (principal-phase s re im sigma)))
-            (mul (power (cabs k) s)
-                 (if qodd
-                     (power (take '(mabs) w) (add (mul n s) m))
-                     (mul (power w m) (power (power w n) s)))
-                 (if (and varies (oddp m))
-                     ($expand (mul sigma phase))
-                     phase))))
-        (mul (power w m) (principal-power z s)))))
+  (let ((p (mul (power w m) (principal-power z s))))
+    (if (integerp m) ($multthru p) p)))
 
 ;; z^s on the principal branch as a template in the symbol Z-NAME for the
 ;; derivative of gamma_incomplete, which SDIFFGRAD fills in by substituting
 ;; the argument for the symbol; unsimplified, as (-z^2)^(s/2) for an
 ;; imaginary z would not survive the simplifier with the symbol in it.
 ;; The modulus is (z*conjugate(z))^(s/2) with conjugate(k)/k a constant,
-;; and the sign of w is that of z, or its inverse for a negative n, times
-;; that of k.  Nil where the treatment does not apply, or where k has the
-;; symbol a or Z-NAME in it, which the substitution would replace.
+;; and the sign of w is that of z times that of k.  Nil where the treatment
+;; does not apply, or where k has the symbol a or Z-NAME in it, which the
+;; substitution would replace.
 (defun principal-power-template (z z-name s)
   (multiple-value-bind (k w n nonneg) (real-power-factors z)
     (declare (ignore w))
@@ -162,14 +150,11 @@
                           (list '(mexpt) z-name 2))
                     (div s 2))
               (principal-phase s re im
-                               (cond ((or nonneg (not (sign-varies-p n))) 1)
-                                     ((eq ($sign n) '$pos)
-                                      (mul (div (cabs k) k)
-                                           (div z-name (take '(mabs) z-name))))
-                                     (t
-                                      (mul (div k (cabs k))
-                                           (div (take '(mabs) z-name)
-                                                z-name))))))))))
+                               (if (or nonneg (not (sign-varies-p n)))
+                                   1
+                                   (mul (div (cabs k) k)
+                                        (div z-name
+                                             (take '(mabs) z-name))))))))))
 
 ;;; Realpart gives the real part of an expr.
 
