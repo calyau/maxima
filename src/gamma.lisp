@@ -338,21 +338,19 @@
   'grad)
 
 ;; The derivative of gamma_incomplete(a, z) with respect to z, times SIGN,
-;; as a template in the placeholder symbol Z-NAME for SDIFFGRAD, or nil for
-;; the usual -z^(a-1)*%e^-z.  With domain : real the simplifier takes the
-;; real root of z^(a-1) for a z such as -x^3 or x^3, where the function is
-;; on the principal branch, so the power is written by PRINCIPAL-POWER-
-;; TEMPLATE: the antiderivatives of INTEGRATE-EXP-SPECIAL, written the same
-;; way, are then differentiated back to their integrands by expand.
-(defun gamma-incomplete-z-derivative (a z z-name sign)
-  (let ((s (sub a 1)) p)
-    (when (and (eq $domain '$real)
-               (mnump s)
-               (setq p (principal-power-template z z-name s)))
-      (list '(mtimes)
-            sign
-            (list '(mexpt) '$%e (list '(mtimes) -1 z-name))
-            p))))
+;; built from the actual argument and returned with a second value of T,
+;; so that SDIFFGRAD takes it as it is.  With domain : real the
+;; simplifier takes the real root of z^(a-1) for a z such as -x^3 or x^3,
+;; where the function is on the principal branch, so the power is written
+;; by PRINCIPAL-POWER: the antiderivatives of INTEGRATE-EXP-SPECIAL,
+;; written the same way, are then differentiated back to their integrands
+;; by expand.
+(defun gamma-incomplete-z-derivative (a z sign)
+  (let ((s (sub a 1)))
+    (values (mul sign
+                 (power '$%e (neg z))
+                 (if (eq $domain '$real) (principal-power z s) (power z s)))
+            t)))
 
 (defgrad %gamma_incomplete ($a $z)
   ;; wrt a
@@ -384,9 +382,7 @@
              ;; No derivative. Maxima generates a noun form.
              nil)))
   ;; The derivative wrt z
-  #'(lambda ($a $z)
-      (or (gamma-incomplete-z-derivative $a $z '$z -1)
-          (meval #$$ -(%e^-z*z^(a-1))$)))
+  #'(lambda ($a $z) (gamma-incomplete-z-derivative $a $z -1))
   )
 
 ;;; Integral of the Incomplete Gamma function
@@ -547,9 +543,7 @@
   nil
   ;; wrt z
   ;; Obvious from the definition of gamma_incomplete_lower
-  #'(lambda ($a $z)
-      (or (gamma-incomplete-z-derivative $a $z '$z 1)
-          (meval #$$ z^(a-1)*exp(-z) $)))
+  #'(lambda ($a $z) (gamma-incomplete-z-derivative $a $z 1))
   )
 
 ;;
@@ -1511,14 +1505,12 @@
   ;; The derivative wrt z1
   #'(lambda ($a $z1 $z2)
       (declare (ignore $z2))
-      (or (gamma-incomplete-z-derivative $a $z1 '$z1 -1)
-          (meval #$$-(z1^(a-1)*%e^-z1)$)))
+      (gamma-incomplete-z-derivative $a $z1 -1))
 
   ;; The derivative wrt z2
   #'(lambda ($a $z1 $z2)
       (declare (ignore $z1))
-      (or (gamma-incomplete-z-derivative $a $z2 '$z2 1)
-          (meval #$$z2^(a-1)*%e^-z2$))))
+      (gamma-incomplete-z-derivative $a $z2 1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

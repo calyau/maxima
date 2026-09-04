@@ -131,33 +131,6 @@
   (let ((p (mul (power w m) (principal-power z s))))
     (if (integerp m) ($multthru p) p)))
 
-;; z^s on the principal branch as a template in the symbol Z-NAME for the
-;; derivative of gamma_incomplete, which SDIFFGRAD fills in by substituting
-;; the argument for the symbol; unsimplified, as (-z^2)^(s/2) for an
-;; imaginary z would not survive the simplifier with the symbol in it.
-;; The modulus is abs(k)^s * (z^2/k^2)^(s/2), where z^2/k^2 is w^(2*n):
-;; the constant stays outside the root, in the form the integrator gives
-;; it, so that the two cancel.  The sign of w is that of z times that of
-;; k.  Nil where the treatment does not apply, or where k has the symbol a
-;; or Z-NAME in it, which the substitution would replace.
-(defun principal-power-template (z z-name s)
-  (multiple-value-bind (k w n nonneg) (real-power-factors z)
-    (declare (ignore w))
-    (when (and k (odd-root-p s) ($freeof '$a k) ($freeof z-name k))
-      (destructuring-bind (re . im) (trisplit k)
-        (list '(mtimes)
-              (power (cabs k) s)
-              (list '(mexpt)
-                    (list '(mtimes) (inv (power k 2))
-                          (list '(mexpt) z-name 2))
-                    (div s 2))
-              (principal-phase s re im
-                               (if (or nonneg (not (sign-varies-p n)))
-                                   1
-                                   (mul (div (cabs k) k)
-                                        (div z-name
-                                             (take '(mabs) z-name))))))))))
-
 ;;; Realpart gives the real part of an expr.
 
 (defun risplit-signum (x) ;rectangular form for a signum expression

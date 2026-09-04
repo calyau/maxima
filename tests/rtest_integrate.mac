@@ -6968,3 +6968,7 @@ expand(diff(integrate(%e^(3*x^5), x), x) - %e^(3*x^5));
 
 trigrat(diff(integrate(sin(2*x^3), x), x) - sin(2*x^3));
 0$
+
+/* the variable named like a placeholder of the derivative rule */
+[expand(diff(integrate(%e^(z^3), z), z)), trigrat(diff(integrate(sin(a^3), a), a))];
+[%e^z^3, sin(a^3)]$
