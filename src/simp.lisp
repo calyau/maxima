@@ -2168,8 +2168,10 @@
             (go cont))
            ((atom gr) (go atgr))
            ((and (eq (caar gr) 'mabs)
-                 (or (evnump pot)
-                     (mevenp pot))
+                 (or (mevenp pot)
+                     ;; abs(x)^(2*m/n) -> x^(2*m/n) only for the real root of x^(1/n),
+                     ;; not for the principal branch (domain : complex).
+                     (and (eq $domain '$real) (evnump pot)))
                  (or (and (eq $domain '$real) (not (apparently-complex-to-judge-by-$csign-p (cadr gr))))
                      (and (eq $domain '$complex) (apparently-real-to-judge-by-$csign-p (cadr gr)))))
             (return (power (cadr gr) pot)))

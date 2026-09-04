@@ -569,6 +569,15 @@ block([z],
 true;
 
 
+/* Bug #5225: "abs(x)^(2/3) becomes x^(2/3) with domain : complex" */
+
+is(abs(x)^(2/3) = x^(2/3)), domain : real;
+true;
+
+is(abs(x)^(2/3) = x^(2/3)), domain : complex;
+false;
+
+
 /***********************************************************/
 /* Guard against leaks, leave this at the end of the file! */
 /***********************************************************/
