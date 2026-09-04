@@ -1,0 +1,232 @@
+# Proposed fix: csign of a function with no sign rule of its own is complex when an argument is
+
+`BUG-csign-function-of-complex-argument.md` reports the problem: with `z` declared `complex`, `csign(gamma(z))`, `csign(tan(z))`, `csign(erfc(z))`, `csign(f(z))` and many more are `pnz`, real of unknown sign, and the `abs` rules of the simplifier, which are guarded by `csign`, act on them. This is a fix, prototyped by redefining the functions at runtime in a built image and run through the full test suite that way, and not yet committed to `src/`.
+
+## Where the answer comes from
+
+`sign` in `src/compar.lisp` dispatches on the operator of an application: a `sign-function` property (`mtimes`, `mplus`, `mexpt`, `%log`, `mabs`, `%sin`, `%cos`, `%gamma`, `$floor`, ...), then a declared `posfun` or `oddfun` kind, else `sign-any`. `sign-any` looks at the operator alone: declared `imaginary` or `complex` gives that answer, anything else goes to the fact database with `dcompare`, which knows nothing about `f(z)` and answers `pnz`. The arguments are never looked at. `sign-oddfun` ends in `sign-any` too, which is how `tan(z)` gets there, and `gamma-sign` in `src/csimp2.lisp` computes `csign` of its argument itself and then folds `complex` into `pnz` along with everything else it does not recognize.
+
+## The fix
+
+Three parts, all in complex mode only, so that `sign`, `is` and `asksign` in real mode do not change.
+
+**1. `sign-any`** in `src/compar.lisp` consults the arguments when nothing else decided: an application, the database answering `pnz`, the function not declared `real`, and an argument that is complex or imaginary, is `complex`. The database comes first, so `assume(g(z) > 0)` still gives `pos`; `declare(f, real)`, which `featurep` already understands for a function, opts a user function out. A function is real-valued when `risplit`'s `real-valued` property says so. A symbol argument is complex when declared so; an expression is asked with `csign`, with lists, matrices and equations passed over and an error there, as `csign(hstep(z))` raises one, counting as not known; a number is real and a string has no sign.
+
+Find this:
+
+```lisp
+ (let ((complex-kind (decl-complex-kind (if (atom x)
+                                          x
+                                          (if (mqapplyp x)
+                                            (subfunname x)
+                                            (caar x))))))
+```
+
+replace it with this:
+
+```lisp
+ (let* ((op (if (atom x) x (if (mqapplyp x) (subfunname x) (caar x))))
+        (complex-kind (decl-complex-kind op)))
+```
+
+Then the last clause of the same `cond`. Find this:
+
+```lisp
+	(t
+	 (dcompare x 0)
+	 (if (and $assume_pos
+		  (member sign '($pnz $pz $pn) :test #'eq)
+		  (if $assume_pos_pred
+		      (let ((*x* x))
+			(declare (special *x*))
+			(is '(($assume_pos_pred) *x*)))
+		      (mapatom x)))
+	     (setq sign '$pos))
+	 (setq minus nil evens nil
+	       odds (if (not (member sign '($pos $neg $zero) :test #'eq))
+			(ncons x)))))))
+```
+
+replace it with this:
+
+```lisp
+	(t
+	 (dcompare x 0)
+	 (cond ((and *complexsign*
+		     (not (atom x))
+		     (eq sign '$pnz)
+		     (not (or (get op 'real-valued) (kindp op '$real)))
+		     (complex-argument-p x))
+		;; An application with no rule of its own, about which the
+		;; database knows nothing, of a function that is neither
+		;; real-valued, as RISPLIT knows it, nor declared real, with
+		;; a complex or imaginary argument: complex.
+		(setq sign '$complex minus nil odds nil evens nil))
+	       (t
+		(if (and $assume_pos
+			 (member sign '($pnz $pz $pn) :test #'eq)
+			 (if $assume_pos_pred
+			     (let ((*x* x))
+			       (declare (special *x*))
+			       (is '(($assume_pos_pred) *x*)))
+			     (mapatom x)))
+		    (setq sign '$pos))
+		(setq minus nil evens nil
+		      odds (if (not (member sign '($pos $neg $zero) :test #'eq))
+			       (ncons x)))))))))
+```
+
+With this helper before `sign-any`:
+
+```lisp
+;; True when an argument of the application X is complex or imaginary: a
+;; symbol when it is declared so, an expression that is not a list, matrix
+;; or equation by $csign, with an error there, as for hstep(z), counting
+;; as not known.  A number is real, and a string or another atom has no
+;; sign.
+(defun complex-argument-p (x)
+  (some #'(lambda (arg)
+            (cond ((symbolp arg) (decl-complex-kind arg))
+                  ((and (consp arg) (not (mbagp arg)))
+                   (member (car (let (($errormsg nil)) (errcatch ($csign arg))))
+                           '($complex $imaginary)))))
+        (margs x)))
+```
+
+`$csign` binds the four sign specials afresh, so calling it from inside `sign-any` does not disturb the answer being built; `gamma-sign` has always done the same.
+
+**2. `gamma-sign`** in `src/csimp2.lisp` passes a complex or imaginary argument through. Find this:
+
+```lisp
+(let ((sgn ($csign (second x)))) ;; careful! x = ((%gamma) XXX)
+		(setq sign
+			  (cond ((eql sgn '$pos) '$pos)
+				    ((or (eql sgn '$neg) (eql sgn '$pn)) '$pn)
+				    (t '$pnz)))))
+```
+
+replace it with this:
+
+```lisp
+(let ((sgn ($csign (second x)))) ;; careful! x = ((%gamma) XXX)
+		(setq sign
+			  (cond ((eql sgn '$pos) '$pos)
+				    ((or (eql sgn '$neg) (eql sgn '$pn)) '$pn)
+				    ((and *complexsign* (member sgn '($complex $imaginary))) '$complex)
+				    (t '$pnz)))))
+```
+
+**3. Functions real for any argument** need nothing: the clause reads the `real-valued` property that `risplit` reads for the same purpose, set in `src/conjugate.lisp` for `realpart`, `imagpart`, `carg`, `abs`, `hstep`, `kron_delta` and `charfun`, so the two keep one list.
+
+## Agreement with risplit
+
+`risplit` in `src/rpart.lisp` decides the same question for `rectform`, in this order: a `risplit-function` of its own; the `real-valued` property or a declaration `real` gives a real value; a `commutes-with-conjugate` or `conjugate-function` property lets it write the real and imaginary parts through `conjugate` when that simplifies, which is how `gamma(x)` comes out real and `gamma(z)` does not; a declaration `complex` gives `realpart` and `imagpart` nouns; and an unknown function gives the nouns whatever its arguments are. The fix follows the same list where `csign` has an answer for it, and the two now agree on every class but the last:
+
+| | `rectform` | `csign` before | `csign` after |
+| --- | --- | --- | --- |
+| `real-valued` or declared real: `realpart(z)`, `charfun(z > 0)`, `h(z)` | real | `pnz` | `pnz` |
+| declared complex: `k(z)`, `k(x)` | nouns | `complex` | `complex` |
+| conjugate property, real arguments: `gamma(x)`, `erfc(x)`, `tan(x)` | real | `pnz` | `pnz` |
+| conjugate property, complex argument: `gamma(z)`, `gamma(%i*x)`, `tan(z)`, `zeta(z)`, `bessel_j(0,z)` | nouns | `pnz` | `complex` |
+| no property, complex argument: `f(z)`, `lambert_w(z)`, `expintegral_e1(z)` | nouns | `pnz` | `complex` |
+| no property, real arguments: `f(x)`, `lambert_w(x)` | nouns | `pnz` | `pnz` |
+
+The last row is the one remaining difference, and it is deliberate. `rectform(f(x))` is `'realpart(f(x)) + %i*'imagpart(f(x))`, while `csign(f(x))` has always been `pnz`, and `abs(f(x))^2` is `f(x)^2` on that account; the comment above that clause of `risplit` records that the integrators assume an unknown function real. Making `csign` return `complex` for every `f(x)` would follow `risplit` to the letter and change a great deal for the sake of an argument that is real. Making `risplit` treat `f(x)` as real would follow `csign` and is the other way to close the gap; it is a separate change with its own suite run.
+
+`csign` decides a real argument by its own means rather than by `conjugate`, which is slightly more cautious: `conjugate(x^(1/3))` does not simplify with `domain : real`, so `rectform(gamma(x^(1/3)))` gives nouns, while `csign(x^(1/3))` is `pnz` there and `csign(gamma(x^(1/3)))` stays `pnz`.
+
+## What changes
+
+With `z` declared `complex`, before and after:
+
+| expression | before | after |
+| --- | --- | --- |
+| `gamma(z)`, `tan(z)`, `erfc(z)`, `zeta(z)`, `bessel_j(0,z)`, `psi[0](z)`, `expintegral_e1(z)`, `log_gamma(z)`, `beta(z,w)`, `gamma_incomplete(2,z)`, `lambert_w(z)`, `airy_ai(z)`, `f(z)`, `f(x, z)`, `f(z^2)`, `f(f(z))` | `pnz` | `complex` |
+| `gamma(%i*x)`, `gamma(x+%i)`, `f(%i)`, `f(x+%i*y)`, `f(sqrt(x))`, `f(log(x))` | `pnz` | `complex` |
+| `realpart(z)`, `imagpart(z)`, `carg(z)`, `charfun(z > 0)` | `pnz` | `pnz` |
+| `f(x)`, `f(x, y)`, `f([z])`, `f("s")`, `f(abs(z))`, `f(hstep(z))`, `gamma(x)`, `gamma(x+1)` | `pnz` | `pnz` |
+| `csign(h(z))` after `declare(h, real)` | `pnz` | `pnz` |
+| `csign(g(z))` after `assume(g(z) > 0)` | `pos` | `pos` |
+| `sign(f(z))`, real mode | `pnz` | `pnz` |
+| `abs(gamma(z))^3` | `gamma(z)^2*abs(gamma(z))` | unchanged |
+| `abs(f(z))^(2/3)`, `abs(f(z))/f(z)`, `f(z)^(2/3)*abs(f(z))^(1/3)` | `f(z)^(2/3)`, `f(z)/abs(f(z))`, `abs(f(z))` | unchanged |
+| `abs(f(x))^3` | `f(x)^2*abs(f(x))` | `f(x)^2*abs(f(x))` |
+| `sqrt(f(z)^2*conjugate(f(z))^2)` | `abs(f(z))*sqrt(conjugate(f(z))^2)` | unchanged |
+
+`f(sqrt(x))` becoming `complex` is by design: `csign(sqrt(x))` is `complex` for an undeclared `x`, and a function of it cannot be assumed real. The last row is the one test the suite pins the other way, from SF bug #2549: `sqrt(f(z)^2)` becoming `abs(f(z))` was the same mistake one level up, and the old answer is `%i` rather than 1 where `f(z)` is `%i`; the fixed one is right but not reduced (`abs(f(z))^2` would be).
+
+The randomized check of products of powers of a base and of its `abs`, 300 products with `q1` and `q2` declared complex at complex points, had 4 wrong results on `master` and 10 with the `x^(2/3)*abs(x)^(1/3)` combination, every one of them a function of `q1` that `csign` called real; with this fix it has none.
+
+## Tests
+
+For `tests/rtest_sign.mac`, before its final facts check; the file is registered in `src/testsuite.lisp` with the known failures 21, 25, 30, 40 and 145, all far below the appended block.
+
+```
+/* csign of a function with no sign rule of its own and a complex or
+   imaginary argument is complex, unless the database knows the sign of the
+   application or the function is declared real */
+
+(declare(z, complex), map(csign, [gamma(z), tan(z), erfc(z), zeta(z), bessel_j(0, z), f(z), psi[0](z), f(x, z)]));
+[complex, complex, complex, complex, complex, complex, complex, complex];
+
+map(csign, [gamma(%i*x), gamma(x+%i), f(%i), f(x+%i*y), f(sqrt(x))]);
+[complex, complex, complex, complex, complex];
+
+map(csign, [realpart(z), imagpart(z), carg(z), charfun(z > 0), f(x), f([z]), f("s"), gamma(x)]);
+[pnz, pnz, pnz, pnz, pnz, pnz, pnz, pnz];
+
+(declare(h, real), csign(h(z)));
+pnz;
+
+(assume(g(z) > 0), csign(g(z)));
+pos;
+
+sign(f(z));
+pnz;
+
+[abs(gamma(z))^3, abs(f(z))^(2/3), abs(f(x))^3];
+[abs(gamma(z))^3, abs(f(z))^(2/3), f(x)^2*abs(f(x))];
+
+(forget(g(z) > 0), remove(z, complex), remove(h, real), 0);
+0;
+```
+
+And in `tests/rtest_abs.mac`, problems 126 and 127 re-pinned. Find this:
+
+```
+sqrt(foo);
+/* a better result would be abs('diff(z(q),q,1))^2 but at least this result is not incorrect */
+abs('diff(z(q),q,1))*sqrt(conjugate('diff(z(q),q,1))^2);
+
+sqrt(f(z)^2*conjugate(f(z))^2);
+abs(f(z))*sqrt(conjugate(f(z))^2);
+```
+
+replace it with this:
+
+```
+sqrt(foo);
+/* a better result would be abs('diff(z(q),q,1))^2; the earlier result
+   abs('diff(z(q),q,1))*sqrt(conjugate('diff(z(q),q,1))^2) took the
+   derivative of the complex z(q) for a real quantity, and is %i rather
+   than 1 where the derivative is %i */
+sqrt(('diff(z(q),q,1))^2*('diff(conjugate(z(q)),q,1))^2);
+
+sqrt(f(z)^2*conjugate(f(z))^2);
+sqrt(f(z)^2*conjugate(f(z))^2);
+```
+
+## Not part of this fix
+
+- `cosh(z)` is `pos` and `max(1, z)` is `pos` for a complex `z`: the `posfun` path and `sign-minmax` never look at the arguments either. The same treatment would fit there, one rule at a time.
+- `csign(hstep(z))` signals an error for a complex `z`, before and after; the helper only keeps it from spreading to `f(hstep(z))`, at the price of leaving the message in the `error` variable.
+- `csign(f(z)*conjugate(f(z)))` is `complex`, although the product is real; that is the sign of a product, not of an application.
+- In real mode `sign(z)` is `pnz` for a `z` declared complex, as it always was; this fix only touches complex mode.
+
+## Cost
+
+Nothing for an application whose arguments are symbols or numbers: `csign(f(x))` and `abs(f(x))^3` time the same as before. An application with several composite arguments pays one `csign` per argument, about 30 microseconds each: `csign(f(x, y, sin(x), x+1, x^2))` goes from 5 to 30 microseconds a call. Only applications with no rule of their own and nothing in the database pay it.
+
+## Suite
+
+With the fix loaded at runtime into the built image of the branch, `run_testsuite(share_tests=true)` reports 21,099 tests and, besides the environmental `share/stringproc/rtestprintf.mac` 38, exactly the two `rtest_abs.mac` problems re-pinned above, 126 and 127; with the re-pins in place and the `rtest_sign.mac` block appended, both files pass in full (`rtest_abs` 182/182, `rtest_sign` at its registered known failures only). An earlier version of the helper asked `csign` of every argument and broke `rtestnset.mac` 592, where the argument is a string; the guard on atoms is what fixed that. The suite ran in 145 to 150 s with the fix against 131 to 134 s without it, so the extra `csign` calls do show in the total, at roughly a tenth.
