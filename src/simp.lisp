@@ -2660,6 +2660,40 @@
                    (setq w (cadr x))
                    (go start))
                   
+                  ((and (eq $domain '$real)
+                        (not (atom (car x)))
+                        (eq (caar (car x)) 'mabs)
+                        (or (integerp (cadr x))
+                            (ratnump (cadr x)))
+                        (ratnump (caddr (cadr fm)))
+                        (evenp (cadr (caddr (cadr fm))))
+                        (alike1 (cadr (car x)) (cadadr fm))
+                        (not (member ($csign (cadr (car x)))
+                                     '($complex $imaginary))))
+                   ;; abs(x)^b*x^a -> abs(x)^(a+b), where "a" is a ratio with an
+                   ;; even numerator, so that with domain : real, x^a is the
+                   ;; real root abs(x)^a, and b any rational number. Remove x^a.
+                   (setq x (power (car x) (add (cadr x) (caddr (cadr fm)))))
+                   (rplacd fm (cddr fm))
+                   (go absmerge))
+
+                  ((and (eq $domain '$real)
+                        (not (atom (cadr (cadr fm))))
+                        (eq (caaadr (cadr fm)) 'mabs)
+                        (or (integerp (caddr (cadr fm)))
+                            (ratnump (caddr (cadr fm))))
+                        (ratnump (cadr x))
+                        (evenp (cadr (cadr x)))
+                        (alike1 (cadadr (cadr fm)) (car x))
+                        (not (member ($csign (cadadr (cadr fm)))
+                                     '($complex $imaginary))))
+                   ;; x^a*abs(x)^b -> abs(x)^(a+b), where "a" is a ratio with an
+                   ;; even numerator and b any rational number. Remove abs(x)^b.
+                   (setq x (power (cadr (cadr fm))
+                                  (add (cadr x) (caddr (cadr fm)))))
+                   (rplacd fm (cddr fm))
+                   (go absmerge))
+
                   ((or (maxima-constantp (car x))
                        (maxima-constantp (cadadr fm)))
                    (if (great temp (cadr fm))
@@ -2692,6 +2726,20 @@
             (setq w (cadr x))
             (go start))
            
+           ((and (eq $domain '$real)
+                 (not (atom (cadr fm)))
+                 (eq (caar (cadr fm)) 'mabs)
+                 (ratnump (cadr x))
+                 (evenp (cadr (cadr x)))
+                 (alike1 (cadr (cadr fm)) (car x))
+                 (not (member ($csign (cadr (cadr fm)))
+                              '($complex $imaginary))))
+            ;; x^a*abs(x) -> abs(x)^(a+1), where a a ratio with an even
+            ;; numerator. Remove abs(x).
+            (setq x (power (cadr fm) (add (cadr x) 1)))
+            (rplacd fm (cddr fm))
+            (go absmerge))
+
            ((maxima-constantp (car x))
             (when (great temp (cadr fm))
               (go gr)))
@@ -2839,6 +2887,20 @@
      (rplacd fm (cddr fm))
      (setq x (car x) check nil)
      (go top)
+  absmerge
+     ;; Rescan the list of products with the merged power of abs(x). SIMPEXPT
+     ;; has normalized it as it does any power of abs: En even numerator gives
+     ;; a power of x, an odd integer gives x^(2*n)*abs(x).
+     (cond ((mnump x)
+            (return (rplaca y (timesk (car y) x))))
+           ((mtimesp x)
+            (go times))
+           (t
+            (setq temp x
+                  x (if (mexptp x) (cdr x) (list x 1))
+                  w (cadr x)
+                  fm y)
+            (go start)))
   times
      (setq z (tms x 1 (setq temp (cons '(mtimes) y))))
      (return (cond ((eq z temp)
