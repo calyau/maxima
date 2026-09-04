@@ -29,6 +29,13 @@ compound statement with the last statement being 0. For example,
 abs(x);
 x$
 
+If possible, prefer `block` and `local` to make declarations and assumptions
+on a variable local and have them be undone automatically after the `block` is
+left. This makes tests self-contained and immune to reordering. For example:
+
+block([n], local(n), declare(n, integer), assume(n > 0), n / abs(n) * floor(n));
+n$
+
 (4) If a test needs to use a non-default value for an option variable, try to
 make the change local instead of global. For example,
 
