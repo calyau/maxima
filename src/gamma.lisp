@@ -94,6 +94,22 @@
 	(mheader '$!!)
 	(convert left '$expr)))
 
+;;; The value of a function at a special point is a number where the
+;;; arguments are: X as a float or a bigfloat where the numerical clauses of
+;;; the simplifiers below would evaluate a function of ARGS, and X itself
+;;; otherwise.  So gamma(a) for gamma_incomplete(a, 0), 1 for erfc(0) and the
+;;; like come out as floats, bigfloats or their complex kinds for such
+;;; arguments, and exact for exact or symbolic ones.
+
+(defun number-for-numerical-eval (x &rest args)
+  (cond ((or (apply #'float-numerical-eval-p x args)
+             (apply #'complex-float-numerical-eval-p x args))
+         ($float x))
+        ((or (apply #'bigfloat-numerical-eval-p x args)
+             (apply #'complex-bigfloat-numerical-eval-p x args))
+         ($bfloat x))
+        (t x)))
+
 ;; Pretty-printer display double_factorial(n) as n!! .
 ;; Apply display properties to both noun and verb forms; that matches current behavior of ordinary factorial.
 
@@ -476,6 +492,27 @@
 
 (defprop %gamma_incomplete_lower (mlist $matrix mequal) distribute_over)
 
+;;; Lower Incomplete Gamma function has not mirror symmetry for z on the
+;;; negative real axis, as gamma_incomplete has not, being gamma(a) less it.
+;;; We support a conjugate-function which test this case.
+
+(defprop %gamma_incomplete_lower conjugate-gamma-incomplete-lower conjugate-function)
+
+(defun conjugate-gamma-incomplete-lower (args)
+  (let ((a (first args)) (z (second args)))
+    (cond ((off-negative-real-axisp z)
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
+           (simplify
+             (list
+              '(%gamma_incomplete_lower)
+               (simplify (list '($conjugate) a))
+               (simplify (list '($conjugate) z)))))
+          (t
+           ;; On the negative real axis or no information. Unsimplified.
+           (list
+            '($conjugate simp)
+             (simplify (list '(%gamma_incomplete_lower) a z)))))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defgrad %gamma_incomplete_lower ($a $z)
@@ -639,7 +676,8 @@
                   (intl:gettext 
                     "gamma_incomplete: gamma_incomplete(~:M,~:M) is undefined.")
                     a z))
-               ((member sgn '($pos $pz)) ($gamma a))
+               ((member sgn '($pos $pz))
+                ($gamma (number-for-numerical-eval a z)))
                (t (give-up)))))
               
       ((eq z '$inf) 0)
@@ -1438,9 +1476,10 @@
        (let ((sgn ($sign ($realpart a))))
          (cond 
            ((member sgn '($pos $pz))
-            (sub
-              (simplify (list '(%gamma_incomplete) a z1))
-              (simplify (list '(%gamma) a))))
+            (let ((a (number-for-numerical-eval a z1 z2)))
+              (sub
+                (simplify (list '(%gamma_incomplete) a z1))
+                (simplify (list '(%gamma) a)))))
            (t 
             (give-up)))))
 
@@ -1448,13 +1487,14 @@
        (let ((sgn ($sign ($realpart a))))
          (cond 
            ((member sgn '($pos $pz))
-            (sub
-              (simplify (list '(%gamma) a))
-              (simplify (list '(%gamma_incomplete) a z2))))
+            (let ((a (number-for-numerical-eval a z1 z2)))
+              (sub
+                (simplify (list '(%gamma) a))
+                (simplify (list '(%gamma_incomplete) a z2)))))
            (t 
             (give-up)))))
 
-      ((zerop1 (sub z1 z2)) 0)
+      ((zerop1 (sub z1 z2)) (number-for-numerical-eval 0 a z1 z2))
 
       ((eq z2 '$inf) (simplify (list '(%gamma_incomplete) a z1)))
       ((eq z1 '$inf) (mul -1 (simplify (list '(%gamma_incomplete) a z2))))
@@ -1619,10 +1659,10 @@
                   (intl:gettext 
                     "gamma_incomplete_regularized: gamma_incomplete_regularized(~:M,~:M) is undefined.")
                     a z))
-               ((member sgn '($pos $pz)) 1)
+               ((member sgn '($pos $pz)) (number-for-numerical-eval 1 a z))
                (t (give-up)))))  
 
-      ((zerop1 a) 0)
+      ((zerop1 a) (number-for-numerical-eval 0 a z))
       ((eq z '$inf) 0)
 
       ;; Check for numerical evaluation in Float or Bigfloat precision
@@ -2372,7 +2412,7 @@
       
     ;; Check for specific values
       
-    ((and (zerop1 z1) (zerop1 z2)) 0)
+    ((and (zerop1 z1) (zerop1 z2)) (number-for-numerical-eval 0 z1 z2))
     ((zerop1 z1) (take '(%erf) z2))
     ((zerop1 z2) (mul -1 (take '(%erf) z1)))
     ((or (eq z2 '$inf)
@@ -2499,7 +2539,7 @@
 
     ;; Check for specific values
 
-    ((zerop1 z) 1)
+    ((zerop1 z) (number-for-numerical-eval 1 z))
     ((eq z '$inf) 0)
     ((eq z '$minf) 2)
     
@@ -3936,7 +3976,7 @@
                     "beta_incomplete_regularized: beta_incomplete_regularized(~:M,~:M,~:M) is undefined.") 
                     a b z))
                ((member sgn '($pos $pz)) 
-                0)
+                (number-for-numerical-eval 0 a b z))
                (t 
                 (give-up)))))
 

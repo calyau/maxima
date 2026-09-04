@@ -4353,3 +4353,67 @@ minf;
 
 limit(erf_generalized(x, 1/x), x, 0, minus);
 -1;
+
+/* With an exact order and a float or bigfloat argument, gamma_incomplete
+   at zero, gamma_incomplete_generalized with a zero limit and so
+   gamma_incomplete_lower are numbers, as gamma_incomplete is elsewhere:
+   the value gamma(a) is taken at the precision of the arguments.  Exact
+   arguments stay exact, and so does a symbolic order. */
+(kill(a, x, z), 0);
+0$
+
+closeto(gamma_incomplete_lower(1/3, 8.0), 2.6788605428816297, 1e-14);
+true$
+
+closeto(gamma_incomplete_lower(3/2, 8.0), 0.8852219580421099, 1e-14);
+true$
+
+closeto(gamma_incomplete_lower(1/3, 8.0*%i), 0.10901538887260959*%i + 2.900511055275193, 1e-14);
+true$
+
+closeto(gamma_incomplete_lower(1/3, 8.0b0), 2.678860542881629b0, 1b-14);
+true$
+
+closeto(gamma_incomplete(1/3, 0.0), 2.6789385347077483, 1e-14);
+true$
+
+closeto(gamma_incomplete_generalized(1/3, 0, 8.0), 2.6788605428816297, 1e-14);
+true$
+
+closeto(gamma_incomplete_generalized(1/3, 8.0, 0), -2.6788605428816297, 1e-14);
+true$
+
+[gamma_incomplete_lower(1/3, 0.0), gamma_incomplete_generalized(1/3, 0.0, 0)];
+[0.0, 0.0]$
+
+[gamma_incomplete(1/3, 0), gamma_incomplete_lower(1/3, 8), gamma_incomplete_lower(a, 8.0)];
+[gamma(1/3), gamma_incomplete_lower(1/3, 8), gamma_incomplete_lower(a, 8.0)]$
+
+/* undefined at zero for an order that is not positive, float or not */
+[errcatch(gamma_incomplete(-1, 0.0)), errcatch(gamma_incomplete(0, 0.0))];
+[[], []]$
+
+/* mirror symmetry off the negative real axis, as for gamma_incomplete */
+[conjugate(gamma_incomplete_lower(1/3, %i*x)), conjugate(gamma_incomplete_lower(a, z))];
+[gamma_incomplete_lower(1/3, -%i*x), conjugate(gamma_incomplete_lower(a, z))]$
+
+(assume(x > 0), conjugate(gamma_incomplete_lower(1/3, x)));
+gamma_incomplete_lower(1/3, x)$
+
+(forget(x > 0), realpart(gamma_incomplete_lower(1/3, %i*x)));
+(gamma_incomplete_lower(1/3, %i*x) + gamma_incomplete_lower(1/3, -%i*x))/2$
+
+/* the same at the other special points of the family */
+[gamma_incomplete_regularized(1/3, 0.0), gamma_incomplete_regularized(1/3, 0.0b0),
+ gamma_incomplete_regularized(0, 8.0), gamma_incomplete_regularized(1/3, 0)];
+[1.0, 1.0b0, 0.0, 1]$
+
+[gamma_incomplete_generalized(1/3, 8.0, 8.0), gamma_incomplete_generalized(1/3, 8.0b0, 8),
+ gamma_incomplete_generalized(1/3, x, x)];
+[0.0, 0.0b0, 0]$
+
+[erfc(0.0), erfc(0.0b0), erfc(0), erf_generalized(0.0, 0)];
+[1.0, 1.0b0, 1, 0.0]$
+
+[beta_incomplete_regularized(1/3, 1/2, 0.0), beta_incomplete_regularized(1/3, 1/2, 0)];
+[0.0, 0]$
