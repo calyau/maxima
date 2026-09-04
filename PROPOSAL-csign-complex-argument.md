@@ -385,8 +385,25 @@ sqrt(f(z)^2*conjugate(f(z))^2);
 
 ## Cost
 
-Measured twice each, alternating, on the full core plus share suite: 137.3 s and 135.0 s without the fix, 137.1 s and 137.3 s with it, the same within the noise of the runs. Without the shape test the same suite took 145 to 150 s, a tenth more, because `csign` was asked about every composite argument of every application without a rule, and `csign(sin(x))` in complex mode computes a `rectform`. With it, `csign(f(x))` and `abs(f(x))^3` time the same as before on a loop of 20,000 calls, `csign(f(z))` for a `z` declared complex takes 3.1 rather than 2.6 microseconds, the cost of one declaration lookup per argument, and `csign(f(x, y, sin(x), x+1, x^2))` takes 6 microseconds against 5 before, where the first version took 30. What still pays is an argument that fails the shape test, such as `sqrt(x)` or `log(x)`, one `csign` each, which is the question being asked.
+Measured on the full core plus share suite over one warmed object directory, the configurations interleaved round by round, the first round discarded, medians of the remaining five. Loaded at runtime into the image of the branch, three configurations in six rounds:
+
+| configuration | rounds 2 to 6 | median |
+| --- | --- | --- |
+| without the fix | 134.1, 134.7, 143.5, 134.4, 133.9 | 134.4 s |
+| the fix, arguments always asked with `csign` | 146.7, 157.4, 151.4, 147.7, 146.4 | 147.7 s |
+| the fix with the shape test | 139.2, 136.8, 144.6, 138.5, 136.6 | 138.5 s |
+
+Every run without the shape test is slower than every run without the fix, a tenth: `csign` was being asked about every composite argument of every application without a rule, and `csign(sin(x))` in complex mode computes a `rectform`. The shape test recognizes such an argument as real without asking and leaves a small residue.
+
+Compiled into the image with `make`, which is how it would ship, the fix against the unchanged build, again interleaved, six rounds, first discarded:
+
+| configuration | rounds 2 to 6 | median |
+| --- | --- | --- |
+| unchanged build | 134.5, 133.9, 135.3, 133.9, 137.3 | 134.5 s |
+| the fix compiled in | 135.0, 136.2, 139.6, 137.4, 139.3 | 137.4 s |
+
+The paired differences, fix less baseline in each round, are 0.5, 2.3, 4.3, 3.4 and 1.9 s: consistently positive, about 2%, and smaller than the spread within either configuration. What pays is an argument that fails the shape test, `sqrt(x)`, `log(x)`, a non-integer power, one `csign` each, and that is the question being asked. On a loop of 20,000 calls `csign(f(x))` and `abs(f(x))^3` time the same as before, `csign(f(z))` for a `z` declared complex takes 3.1 rather than 2.6 microseconds, one declaration lookup per argument, and `csign(f(x, y, sin(x), x+1, x^2))` 6 against 5 microseconds, where the version without the shape test took 30.
 
 ## Suite
 
-With the fix loaded at runtime into the built image of the branch, `run_testsuite(share_tests=true)` reports 21,099 tests and, besides the environmental `share/stringproc/rtestprintf.mac` 38, exactly the two `rtest_abs.mac` problems re-pinned above, 126 and 127; with the re-pins in place and the `rtest_sign.mac` block appended, both files pass in full (`rtest_abs` 182/182, `rtest_sign` at its registered known failures only). An earlier version of the helper asked `csign` of every argument and broke `rtestnset.mac` 592, where the argument is a string; the guard on atoms is what fixed that. A trial of `rtest_sign.mac` run through `batch(file, test)` from a `-b` file rather than through `run_testsuite` stalls at problem 567 waiting for an `asksign` answer, before and after; that is `batch_answers_from_file`, not the fix.
+With the fix loaded at runtime into the built image of the branch, `run_testsuite(share_tests=true)` reports 21,099 tests and, besides the environmental `share/stringproc/rtestprintf.mac` 38, exactly the two `rtest_abs.mac` problems re-pinned above, 126 and 127; with the re-pins in place and the `rtest_sign.mac` block appended, both files pass in full (`rtest_abs` 182/182, `rtest_sign` at its registered known failures only). The same three failures come from an image with the fix compiled in by `make`, in all six runs of the timing below. An earlier version of the helper asked `csign` of every argument and broke `rtestnset.mac` 592, where the argument is a string; the guard on atoms is what fixed that. A trial of `rtest_sign.mac` run through `batch(file, test)` from a `-b` file rather than through `run_testsuite` stalls at problem 567 waiting for an `asksign` answer, before and after; that is `batch_answers_from_file`, not the fix.
