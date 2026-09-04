@@ -1602,6 +1602,12 @@ tlimit(%i*x + sqrt(x), x, inf);
 infinity;
 
 
+/* Bug #5224: "limit(abs(a+%i)*x, x, inf) gives infinity" */
+
+limit(abs(a+%i)*x, x, inf);
+inf;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

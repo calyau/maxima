@@ -69,6 +69,7 @@ Bug fixes for numbered bugs:
 * \#5202 csign(negative^(1/odd)) under domain : complex
 * \#5203 trigreduce drops terms, causing wrong answers
 * \#5216 limit(%i*x + sqrt(x), x, inf) stays noun-form
+* \#5224 limit(abs(a+%i)*x, x, inf) gives infinity
 
 Bug fixes for unnumbered bugs:
 ------------------------------

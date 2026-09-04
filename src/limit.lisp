@@ -1596,7 +1596,8 @@ ignoring dummy variables and array indices."
 		       ((h n . d) e)
 		       (g (genfind h 'x))
 		       (nd (lodeg n g))
-		       (dd (lodeg d g)))
+		       (dd (lodeg d g))
+		       (sgn nil))
 		      (cond ((and (setq e
 					(subst var
 					       'x
@@ -1616,12 +1617,6 @@ ignoring dummy variables and array indices."
 			    ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
 			     (throw 'limit t))
 			    ((eq val '$infinity)  '$infinity)
-			    ;; A leading coefficient that is not real leaves an infinity
-			    ;; of arbitrary phase, whatever the rest of the quotient does.
-			    ((and (freeof-extended-real e)
-			          (or (eq t (csign e))
-			              (eq t (mnqp 0 ($imagpart e)))))
-			     '$infinity)
 			    ;; E is only the ratio of the leading coefficients, so a lower-
 			    ;; order imaginary term never reaches it:
 			    ;; limit(x^2+%i*x, x, inf) has E = 1. Ask the whole function
@@ -1640,10 +1635,19 @@ ignoring dummy variables and array indices."
 			                              . ,(droptop d g (- (* 2 dd) nd))))
 			                          e)))))
 			     '$infinity)
-			    ((null (setq e (getsignl e)))
-			     (throw 'limit t))
-			    ((equal e 1) '$inf)
-			    ((equal e -1) '$minf)
+			    ;; No sign for E, and on the asking pass the user had none
+			    ;; either, so there is no direction. But a coefficient that
+			    ;; cannot vanish still leaves an infinite magnitude, whatever
+			    ;; the rest of the quotient does, and that is INFINITY. One
+			    ;; that may vanish leaves a limit that may be finite, and
+			    ;; there is nothing to say. An extended real is neither: MNQP
+			    ;; calls IND nonzero, but ind*inf is not an infinity.
+			    ((null (setq sgn (getsignl e)))
+			     (if (and (freeof-extended-real e) (eq t (mnqp e 0)))
+				 '$infinity
+				 (throw 'limit t)))
+			    ((equal sgn 1) '$inf)
+			    ((equal sgn -1) '$minf)
 			    ;; The leading coefficient is zero, so that term is not there at
 			    ;; all. Drop it, and start over on what is left, which is what
 			    ;; makes limit(a*x^2+b*x+c, x, inf) ask about b once it has been
