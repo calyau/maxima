@@ -10,7 +10,7 @@
 
 Four parts, all in complex mode only, so that `sign`, `is` and `asksign` in real mode do not change, except that a declared `posfun` or `oddfun` now applies to a subscripted function in both modes.
 
-**1. `sign-any`** in `src/compar.lisp` consults the arguments when nothing else decided: an application, the database answering `pnz`, the function not declared `real`, and an argument that is complex or imaginary, is `complex`. The database comes first, so `assume(g(z) > 0)` still gives `pos`; `declare(f, real)`, which `featurep` already understands for a function, opts a user function out. A function is real-valued when `risplit`'s `real-valued` property says so. A symbol argument is complex when declared so. An expression is first tested by its shape, without asking anything, and the test claims real only where `csign` itself would: a real number; a symbol not declared complex or imaginary; an integer power of such an expression, or a power of `%e` or of a positive number with such an exponent; and an application whose operator is `real-valued`, or commutes with the conjugate, which a function real for a real argument does and which `sin`, `cos`, `gamma`, `erf` and the arithmetic operators are marked with in `src/conjugate.lisp`, or has no sign rule and no conjugate rule of its own, which `csign` takes as real for real arguments, with arguments and subscripts that pass the same test. Everything else, a root, a logarithm, `acosh`, a non-integer power, a declared complex function, is asked with `csign`, with lists, matrices and equations passed over and an error there, as `csign(hstep(z))` raises one, counting as not known; a number is real and a string has no sign. The shape test is what keeps the cost down, and part 6 is what makes it sound.
+**1. `sign-any`** in `src/compar.lisp` consults the arguments when nothing else decided: an application, the database answering `pnz`, the function not declared `real`, and an argument that is complex or imaginary, is `complex`. The database comes first, so `assume(g(z) > 0)` still gives `pos`; `declare(f, real)`, which `featurep` already understands for a function, opts a user function out. A function is real-valued when `risplit`'s `real-valued` property says so. A symbol argument is complex when declared so. An expression is first tested by its shape, without asking anything, and the test claims real only where `csign` itself would: a real number; a symbol not declared complex or imaginary; an integer power of such an expression, or a power of `%e` or of a positive number with such an exponent; and an application whose operator is `real-valued`, or commutes with the conjugate, which a function real for a real argument does and which `sin`, `cos`, `gamma`, `erf` and the arithmetic operators are marked with in `src/conjugate.lisp`, or has no sign rule and no conjugate rule of its own, which `csign` takes as real for real arguments, with arguments and subscripts that pass the same test. Everything else, a root, a logarithm, `acosh`, a non-integer power, a declared complex function, is asked with `sign*`, the helper of `src/compar.lisp` that runs `sign1` under fresh bindings of the four sign specials, so that the description of `x` being built in them is left alone; lists, matrices and equations are passed over, and an error there, as `hstep(z)` raises one, counts as not known; a number is real and a string has no sign. The shape test is what keeps the cost down, and part 6 is what makes it sound.
 
 Find this:
 
@@ -119,20 +119,21 @@ With these two helpers before `sign-any`:
 ;; True when an argument of the application X, a subscript of a subscripted
 ;; function included, is complex or imaginary: a symbol when it is declared
 ;; so, an expression that is not a list, matrix or equation and not real by
-;; its shape by $csign, with an error there, as for hstep(z), counting as
-;; not known.  A number is real, and a string or another atom has no sign.
+;; its shape by SIGN*, which leaves the sign specials of the caller alone,
+;; with an error there, as for hstep(z), counting as not known.  A number
+;; is real, and a string or another atom has no sign.
 (defun complex-argument-p (x)
   (some #'(lambda (arg)
             (cond ((symbolp arg) (decl-complex-kind arg))
                   ((and (consp arg) (not (mbagp arg)) (not (surely-real-p arg)))
-                   (member (car (let (($errormsg nil)) (errcatch ($csign arg))))
+                   (member (car (let (($errormsg nil)) (errcatch (sign* arg))))
                            '($complex $imaginary)))))
         (if (mqapplyp x)
             (append (subfunsubs x) (margs x))
             (margs x))))
 ```
 
-`$csign` binds the four sign specials afresh, so calling it from inside `sign-any` does not disturb the answer being built; `gamma-sign` has always done the same.
+`sign*` is the idiom of `src/compar.lisp` for a sign asked in the middle of computing another, in `sign-mexpt` among others; `gamma-sign` and `hstep-sign`, in other files, call `$csign` instead, which binds the specials as well.
 
 **2. `gamma-sign`** in `src/csimp2.lisp` passes a complex or imaginary argument through. Find this:
 
@@ -269,7 +270,7 @@ With it `rectform(f[1](z))` is `f[1](z)` for an `f` declared real, `realpart(f[1
 0;
 ```
 
-**6. `sin`, `cos` and `sinc` decide by the argument.** Their sign rules decided whether the value is complex by taking `rectform` of the argument and looking at its imaginary part. For an unknown function that part is the noun `imagpart(f(x))`, so `csign(sin(f(x)))` was `complex` while `csign(f(x))` was `pnz`: `csign` contradicted itself one level up, and a shape test that trusts `sin` of a real argument contradicted `csign` with it, as the check below found. The three rules now ask `csign` of the argument instead, which is the same question, consistent with `sign-any`, and cheaper, since no `rectform` is computed; the interval logic that gives `sin(x)` a sign for `0 < x < %pi` is untouched, as the argument is then the real part. In `src/compar.lisp`. Find this:
+**6. `sin`, `cos` and `sinc` decide by the argument.** Their sign rules decided whether the value is complex by taking `rectform` of the argument and looking at its imaginary part. For an unknown function that part is the noun `imagpart(f(x))`, so `csign(sin(f(x)))` was `complex` while `csign(f(x))` was `pnz`: `csign` contradicted itself one level up, and a shape test that trusts `sin` of a real argument contradicted `csign` with it, as the check below found. The three rules now take `sign*` of the argument once, at the top, the helper of `src/compar.lisp` that returns a sign and leaves the four sign specials alone; a complex or imaginary argument in complex mode gives `complex`, and otherwise the sign already in hand settles one bound of the interval test for free, `x >= 0` gives `x >= -%pi` and `x <= 0` gives `x <= %pi`, so only the other bound is asked with `mgqp`. The imaginary part `y` that the old code tested is gone with the `rectform`. The interval logic that gives `sin(x)` a sign for `0 < x < %pi` is otherwise as it was, and every branch now sets the four specials itself to describe the sine, where the old code called `sign` on the argument inside the interval branch and left the rest as it found them; `asksign(sin(y))` still stores a fact about `sin(y)`. On the unmodified build and with the rewrite, a probe of 32 arguments, 17 assumed intervals and 5 `asksign` questions differs in exactly the four intended values, `sin`, `cos` and `sinc` of an unknown function. In `src/compar.lisp`. Find this:
 
 ```lisp
 (defun sign-sin (e) ; e = sin(x)
@@ -313,39 +314,39 @@ replace it with this:
 
 ```lisp
 (defun sign-sin (e) ; e = sin(x)
-     (let ((x (cadr e)) (y 0))
-       ;; When *complexsign* is true, the argument decides: complex or
-       ;; imaginary by csign, as f(x) is not, the value is complex.
-       (when (and *complexsign*
-                  (member ($csign x) '($complex $imaginary)))
-          (setq y 1))
-       (cond 
-             ;; When y = 0 and -%pi <= x <= %pi, sign(sin(x)) = sign(x) 
-             ((and (eql y 0)
-                   (eq t (mgqp x (mul -1 '$%pi))) 
-                   (eq t (mgqp '$%pi x)))
-                (sign x)
+     (let* ((x (cadr e))
+            (s (sign* x)))
+       (cond
+             ;; When *complexsign* is true and x is complex or imaginary,
+             ;; so is sin(x).
+             ((and *complexsign* (member s '($complex $imaginary)))
+                (setq sign '$complex odds (ncons e) evens nil minus nil))
+             ;; When -%pi <= x <= %pi, sign(sin(x)) = sign(x).  The sign of
+             ;; x settles one bound: x >= 0 gives x >= -%pi, and x <= 0
+             ;; gives x <= %pi.
+             ((and (or (member s '($pos $pz $zero))
+                       (eq t (mgqp x (mul -1 '$%pi))))
+                   (or (member s '($neg $nz $zero))
+                       (eq t (mgqp '$%pi x))))
                 ;; sin(x) = 0 at the closed endpoints x = -%pi and %pi, so a
                 ;; strict interior sign weakens to include zero when x can reach
                 ;; the nearer endpoint; a nonzero-but-unsigned x ($pn) that can
                 ;; reach an endpoint likewise weakens to $pnz.
-                (cond ((and (eq sign '$pos) (not (eq t (mgrp '$%pi x))))
-                       (setq sign '$pz odds (ncons e) evens nil minus nil))
-                      ((and (eq sign '$neg) (not (eq t (mgrp x (mul -1 '$%pi)))))
-                       (setq sign '$nz odds (ncons e) evens nil minus nil))
-                      ((eq sign '$pn)
-                       (unless (and (eq t (mgrp '$%pi x))
-                                    (eq t (mgrp x (mul -1 '$%pi))))
-                         (setq sign '$pnz))
-                       (setq odds (ncons e) evens nil minus nil))
-                      ((member sign '($pz $nz $pnz))
-                       (setq odds (ncons e) evens nil minus nil))))
-              ;; When *complexsign* is true & y # 0, set sign to complex.
-              ;; To test y # 0, we'll use (not (eql y 0)))
-              ((and *complexsign* (not (eql y 0)))
-                (setf sign '$complex))
-			        (t (setf sign '$pnz))))
-		nil)
+                (setq sign (cond ((and (eq s '$pos) (not (eq t (mgrp '$%pi x))))
+                                  '$pz)
+                                 ((and (eq s '$neg)
+                                       (not (eq t (mgrp x (mul -1 '$%pi)))))
+                                  '$nz)
+                                 ((and (eq s '$pn)
+                                       (not (and (eq t (mgrp '$%pi x))
+                                                 (eq t (mgrp x (mul -1 '$%pi))))))
+                                  '$pnz)
+                                 (t s))
+                      odds (if (member sign '($pos $neg $zero)) nil (ncons e))
+                      evens nil
+                      minus nil))
+             (t (setq sign '$pnz odds (ncons e) evens nil minus nil))))
+     nil)
 ```
 
 Find this:
@@ -390,37 +391,40 @@ replace it with this:
 
 ```lisp
 (defun sign-cos (e) ; e = cos(x)
-     (let ((x (cadr e)) (y 0))
-       ;; When *complexsign* is true, the argument decides: complex or
-       ;; imaginary by csign, as f(x) is not, the value is complex.
-       (when (and *complexsign*
-                  (member ($csign x) '($complex $imaginary)))
-          (setq y 1))
-       (cond 
-          ;; When y = 0 and -%pi/2 <= x <= 3 %pi/2, sign(cos(x)) = sign(%pi/2-x)
-          ((and (eql y 0)
-                (eq t (mgqp x (div '$%pi -2))) 
-                (eq t (mgqp (div (mul 3 '$%pi) 2) x)))
-            (sign (sub (div '$%pi 2) x))
+     (let* ((x (cadr e))
+            (s (sign* x)))
+       (cond
+          ;; When *complexsign* is true and x is complex or imaginary, so
+          ;; is cos(x).
+          ((and *complexsign* (member s '($complex $imaginary)))
+             (setq sign '$complex odds (ncons e) evens nil minus nil))
+          ;; When -%pi/2 <= x <= 3 %pi/2, sign(cos(x)) = sign(%pi/2-x).  The
+          ;; sign of x settles one bound: x >= 0 gives x >= -%pi/2, and
+          ;; x <= 0 gives x <= 3 %pi/2.
+          ((and (or (member s '($pos $pz $zero))
+                    (eq t (mgqp x (div '$%pi -2))))
+                (or (member s '($neg $nz $zero))
+                    (eq t (mgqp (div (mul 3 '$%pi) 2) x))))
+            (setq s (sign* (sub (div '$%pi 2) x)))
             ;; cos(x) = 0 at the closed endpoints x = -%pi/2 and 3*%pi/2, so a
             ;; strict interior sign weakens to include zero when x can reach
             ;; that endpoint; a nonzero-but-unsigned x ($pn) that can reach an
             ;; endpoint likewise weakens to $pnz.
-            (cond ((and (eq sign '$pos) (not (eq t (mgrp x (div '$%pi -2)))))
-                   (setq sign '$pz odds (ncons e) evens nil minus nil))
-                  ((and (eq sign '$neg) (not (eq t (mgrp (div (mul 3 '$%pi) 2) x))))
-                   (setq sign '$nz odds (ncons e) evens nil minus nil))
-                  ((eq sign '$pn)
-                   (unless (and (eq t (mgrp x (div '$%pi -2)))
-                                (eq t (mgrp (div (mul 3 '$%pi) 2) x)))
-                     (setq sign '$pnz))
-                   (setq odds (ncons e) evens nil minus nil))
-                  ((member sign '($pz $nz $pnz))
-                   (setq odds (ncons e) evens nil minus nil))))
-          ((and *complexsign* (not (eql y 0)))
-              (setf sign '$complex))
-			    (t (setf sign '$pnz))))
-		nil)
+            (setq sign (cond ((and (eq s '$pos) (not (eq t (mgrp x (div '$%pi -2)))))
+                              '$pz)
+                             ((and (eq s '$neg)
+                                   (not (eq t (mgrp (div (mul 3 '$%pi) 2) x))))
+                              '$nz)
+                             ((and (eq s '$pn)
+                                   (not (and (eq t (mgrp x (div '$%pi -2)))
+                                             (eq t (mgrp (div (mul 3 '$%pi) 2) x)))))
+                              '$pnz)
+                             (t s))
+                  odds (if (member sign '($pos $neg $zero)) nil (ncons e))
+                  evens nil
+                  minus nil))
+          (t (setq sign '$pnz odds (ncons e) evens nil minus nil))))
+     nil)
 ```
 
 And in `src/sinc.lisp`. Find this:
@@ -459,31 +463,29 @@ replace it with this:
 
 ```lisp
 (defun sign-sinc (e) ; e = sinc(x)
-     (let ((x (cadr e)) (y 0))
-       ;; When *complexsign* is true, the argument decides: complex or
-       ;; imaginary by csign, as f(x) is not, the value is complex.
-       (when (and *complexsign*
-                  (member ($csign x) '($complex $imaginary)))
-          (setq y 1))
-       (cond 
-             ;; When y = 0 and -%pi < x < %pi, sign(sinc(x)) = $pos
-             ((and (eql y 0)
-                   (eq t (mgrp x (mul -1 '$%pi))) 
-                   (eq t (mgrp '$%pi x)))
-                (setf sign '$pos))
-
-            ;; When y = 0 and -%pi <= x <= %pi, sign(sinc(x)) = $pz
-             ((and (eql y 0)
-                   (eq t (mgqp x (mul -1 '$%pi))) 
-                   (eq t (mgqp '$%pi x)))
-                (setf sign '$pz))
-           
-              ;; When *complexsign* is true & y # 0, set sign to complex.
-              ;; To test y # 0, we'll use (not (eql y 0)))
-              ((and *complexsign* (not (eql y 0)))
-                (setf sign '$complex))
-			        (t (setf sign '$pnz))))
-		nil)
+     (let* ((x (cadr e))
+            (s (sign* x)))
+       (cond
+             ;; When *complexsign* is true and x is complex or imaginary,
+             ;; so is sinc(x).
+             ((and *complexsign* (member s '($complex $imaginary)))
+                (setq sign '$complex odds (ncons e) evens nil minus nil))
+             ;; When -%pi < x < %pi, sign(sinc(x)) = $pos.  The sign of x
+             ;; settles one bound: x >= 0 gives x > -%pi, and x <= 0 gives
+             ;; x < %pi.
+             ((and (or (member s '($pos $pz $zero))
+                       (eq t (mgrp x (mul -1 '$%pi))))
+                   (or (member s '($neg $nz $zero))
+                       (eq t (mgrp '$%pi x))))
+                (setq sign '$pos odds nil evens nil minus nil))
+             ;; When -%pi <= x <= %pi, sign(sinc(x)) = $pz
+             ((and (or (member s '($pos $pz $zero))
+                       (eq t (mgqp x (mul -1 '$%pi))))
+                   (or (member s '($neg $nz $zero))
+                       (eq t (mgqp '$%pi x))))
+                (setq sign '$pz odds (ncons e) evens nil minus nil))
+             (t (setq sign '$pnz odds (ncons e) evens nil minus nil))))
+     nil)
 ```
 
 One value moves the other way: `csign(sin(z*conjugate(z)))` was `pnz`, since `rectform` sees the product as real, and is `complex` now, since `csign(z*conjugate(z))` is; the product is the place to fix that.
@@ -653,7 +655,7 @@ sqrt(f(z)^2*conjugate(f(z))^2);
 ## Not part of this fix
 
 - `max(1, z)` is `pos` for a complex `z`: `sign-minmax` never looks at the arguments. `cosh(z)` was `pos` through the `posfun` path and is `complex` with part 4.
-- `csign(hstep(z))` signals an error for a complex `z`, before and after; the helper only keeps it from spreading to `f(hstep(z))`, at the price of leaving the message in the `error` variable.
+- `csign(hstep(z))` signals an error for a complex `z`, before and after, and so does `csign(sin(hstep(z)))`, whose interval test asks the sign of `hstep(z) + %pi`; the helper only keeps the error from spreading to `f(hstep(z))`, at the price of leaving the message in the `error` variable.
 - `csign(f(z)*conjugate(f(z)))` is `complex`, although the product is real; that is the sign of a product, not of an application.
 - In real mode `sign(z)` is `pnz` for a `z` declared complex, as it always was; this fix only touches complex mode.
 
@@ -673,14 +675,14 @@ Measured on the full core plus share suite over one warmed object directory, the
 | the fix, arguments always asked with `csign` | 146.7, 157.4, 151.4, 147.7, 146.4 | 147.7 s |
 | the fix with the shape test | 139.2, 136.8, 144.6, 138.5, 136.6 | 138.5 s |
 
-Every run without the shape test is slower than every run without the fix, a tenth: `csign` was being asked about every composite argument of every application without a rule, and `csign(sin(x))` computed a `rectform`. Then parts 1 to 6 compiled into the image with `make`, which is how they would ship, against the unchanged build, six rounds, first discarded:
+Every run without the shape test is slower than every run without the fix, a tenth: `csign` was being asked about every composite argument of every application without a rule, and `csign(sin(x))` computed a `rectform`. Then parts 1 to 6 in their final form compiled into the image with `make`, which is how they would ship, against the unchanged build, six rounds, first discarded:
 
 | configuration | rounds 2 to 6 | median |
 | --- | --- | --- |
-| unchanged build | 137.0, 136.0, 142.5, 134.8, 137.7 | 137.0 s |
-| the fix compiled in | 135.9, 141.9, 137.8, 136.2, 137.2 | 137.2 s |
+| unchanged build | 143.2, 139.7, 137.5, 136.6, 138.2 | 138.2 s |
+| the fix compiled in | 138.6, 139.3, 136.9, 140.2, 136.3 | 138.6 s |
 
-The paired differences, fix less baseline in each round, are -1.2, 5.9, -4.7, 1.4 and -0.5 s: no measurable cost. Before part 6 the same measurement showed about 2%, the shape test walking and `csign` being asked about a root or a logarithm; part 6 gives that back, since `csign` of a `sin` or `cos` no longer computes a `rectform` anywhere. On a loop of 20,000 calls `csign(f(x))` and `abs(f(x))^3` time the same as before, `csign(f(z))` for a `z` declared complex takes 3.1 rather than 2.6 microseconds, one declaration lookup per argument, and `csign(f(x, y, sin(x), x+1, x^2))` 6 against 5 microseconds, where the version without the shape test took 30.
+The paired differences, fix less baseline in each round, are -4.6, -0.4, -0.6, 3.6 and -1.9 s: no measurable cost. Before part 6 the same measurement showed about 2%, the shape test walking and `csign` being asked about a root or a logarithm; part 6 gives that back, since `csign` of a `sin` or `cos` no longer computes a `rectform` anywhere, and the sign of the argument, once in hand, spares one of the two endpoint comparisons whenever it is definite. On a loop of 20,000 calls `csign(f(x))` and `abs(f(x))^3` time the same as before, `csign(f(z))` for a `z` declared complex takes 3.1 rather than 2.6 microseconds, one declaration lookup per argument, and `csign(f(x, y, sin(x), x+1, x^2))` 6 against 5 microseconds, where the version without the shape test took 30.
 
 ## Suite
 
