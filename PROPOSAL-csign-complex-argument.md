@@ -8,7 +8,7 @@
 
 ## The fix
 
-Three parts, all in complex mode only, so that `sign`, `is` and `asksign` in real mode do not change.
+Four parts, all in complex mode only, so that `sign`, `is` and `asksign` in real mode do not change, except that a declared `posfun` or `oddfun` now applies to a subscripted function in both modes.
 
 **1. `sign-any`** in `src/compar.lisp` consults the arguments when nothing else decided: an application, the database answering `pnz`, the function not declared `real`, and an argument that is complex or imaginary, is `complex`. The database comes first, so `assume(g(z) > 0)` still gives `pos`; `declare(f, real)`, which `featurep` already understands for a function, opts a user function out. A function is real-valued when `risplit`'s `real-valued` property says so. A symbol argument is complex when declared so; an expression is asked with `csign`, with lists, matrices and equations passed over and an error there, as `csign(hstep(z))` raises one, counting as not known; a number is real and a string has no sign.
 
@@ -79,7 +79,8 @@ replace it with this:
 With this helper before `sign-any`:
 
 ```lisp
-;; True when an argument of the application X is complex or imaginary: a
+;; True when an argument of the application X, a subscript of a subscripted
+;; function included, is complex or imaginary: a
 ;; symbol when it is declared so, an expression that is not a list, matrix
 ;; or equation by $csign, with an error there, as for hstep(z), counting
 ;; as not known.  A number is real, and a string or another atom has no
@@ -90,7 +91,9 @@ With this helper before `sign-any`:
                   ((and (consp arg) (not (mbagp arg)))
                    (member (car (let (($errormsg nil)) (errcatch ($csign arg))))
                            '($complex $imaginary)))))
-        (margs x)))
+        (if (mqapplyp x)
+            (append (subfunsubs x) (margs x))
+            (margs x))))
 ```
 
 `$csign` binds the four sign specials afresh, so calling it from inside `sign-any` does not disturb the answer being built; `gamma-sign` has always done the same.
@@ -115,6 +118,92 @@ replace it with this:
 				    ((and *complexsign* (member sgn '($complex $imaginary))) '$complex)
 				    (t '$pnz)))))
 ```
+
+**4. Subscripted functions.** `sign-any` already took the name of a subscripted function for the declarations, and `margs` gives the arguments of `f[1](z)` as it does for `f(z)`; the helper looks at the subscripts as well, so `g[z](x)` is complex for a complex `z`. Two things next to it were not subscript-aware and are made so, since they decide the same question: the lookup of a declared `posfun` or `oddfun` in `sign`, which read `(caar x)`, `mqapply` for a subscripted function, so that `p[1](x)` was `pnz` where `p(x)` is `pos`; and `sign-oddfun`, which took `(cadr x)` for the argument, the subscripted operator in that case. `sign-posfun` also answers `complex` for a complex argument in complex mode, so that `p(z)` and `p[1](z)` agree with each other and with the rest. In `src/compar.lisp`, in `sign`. Find this:
+
+```lisp
+	(t
+	  (let ((kind (kind-any-of (caar x) '($posfun $oddfun))))
+		(cond
+		  ((eq kind '$posfun) (sign-posfun x))
+		  ((eq kind '$oddfun) (sign-oddfun x))
+		  (t (sign-any x)))))))
+```
+
+replace it with this:
+
+```lisp
+	(t
+	  (let ((kind (kind-any-of (if (mqapplyp x) (subfunname x) (caar x))
+	                           '($posfun $oddfun))))
+		(cond
+		  ((eq kind '$posfun) (sign-posfun x))
+		  ((eq kind '$oddfun) (sign-oddfun x))
+		  (t (sign-any x)))))))
+```
+
+Find this:
+
+```lisp
+(defun sign-posfun (xx)
+  (declare (ignore xx))
+  (setq sign '$pos
+	minus nil
+	odds nil
+	evens nil))
+```
+
+replace it with this:
+
+```lisp
+(defun sign-posfun (xx)
+  (setq sign (if (and *complexsign* (complex-argument-p xx)) '$complex '$pos)
+	minus nil
+	odds nil
+	evens nil))
+```
+
+Find this:
+
+```lisp
+(defun sign-oddfun (x)
+ (let ((kind (kind-any-of (caar x) '($increasing $decreasing))))
+  (cond ((eq kind '$increasing)
+         ; Take the sign of the argument
+         (sign (cadr x)))
+        ((eq kind '$decreasing)
+         ; Take the sign of negative of the argument
+         (sign (neg (cadr x))))
+        (t
+         ; If the sign of the argument is zero, then we're done (the sign of
+         ; the function value is the same).  Otherwise, punt to SIGN-ANY.
+         (sign (cadr x))
+         (unless (eq sign '$zero)
+           (sign-any x))))))
+```
+
+replace it with this:
+
+```lisp
+(defun sign-oddfun (x)
+ (let ((kind (kind-any-of (if (mqapplyp x) (subfunname x) (caar x))
+                          '($increasing $decreasing)))
+       (arg (car (margs x))))
+  (cond ((eq kind '$increasing)
+         ; Take the sign of the argument
+         (sign arg))
+        ((eq kind '$decreasing)
+         ; Take the sign of negative of the argument
+         (sign (neg arg)))
+        (t
+         ; If the sign of the argument is zero, then we're done (the sign of
+         ; the function value is the same).  Otherwise, punt to SIGN-ANY.
+         (sign arg)
+         (unless (eq sign '$zero)
+           (sign-any x))))))
+```
+
+`risplit` reads the subscripted name for a declaration `complex` but takes the subscripted operator itself, not a symbol, when it looks for `real-valued` or a declaration `real`, so `rectform(f[1](z))` gives nouns for an `f` declared real where `csign` now answers `pnz`; that is the one place where `risplit` could follow `csign`.
 
 **3. Functions real for any argument** need nothing: the clause reads the `real-valued` property that `risplit` reads for the same purpose, set in `src/conjugate.lisp` for `realpart`, `imagpart`, `carg`, `abs`, `hstep`, `kron_delta` and `charfun`, so the two keep one list.
 
@@ -148,6 +237,10 @@ With `z` declared `complex`, before and after:
 | `csign(h(z))` after `declare(h, real)` | `pnz` | `pnz` |
 | `csign(g(z))` after `assume(g(z) > 0)` | `pos` | `pos` |
 | `sign(f(z))`, real mode | `pnz` | `pnz` |
+| `g[1](z)`, `g[z](x)`, `psi[0](z)`, `f[1](x, z)` | `pnz` | `complex` |
+| `g[1](x)`, `psi[0](x)`, `h[1](z)` with `h` declared real | `pnz` | `pnz` |
+| `p[1](x)` with `p` declared `posfun` | `pnz` | `pos` |
+| `p(z)`, `p[1](z)` with `p` declared `posfun`, `cosh(z)` | `pos` | `complex` |
 | `abs(gamma(z))^3` | `gamma(z)^2*abs(gamma(z))` | unchanged |
 | `abs(f(z))^(2/3)`, `abs(f(z))/f(z)`, `f(z)^(2/3)*abs(f(z))^(1/3)` | `f(z)^(2/3)`, `f(z)/abs(f(z))`, `abs(f(z))` | unchanged |
 | `abs(f(x))^3` | `f(x)^2*abs(f(x))` | `f(x)^2*abs(f(x))` |
@@ -187,7 +280,15 @@ pnz;
 [abs(gamma(z))^3, abs(f(z))^(2/3), abs(f(x))^3];
 [abs(gamma(z))^3, abs(f(z))^(2/3), f(x)^2*abs(f(x))];
 
-(forget(g(z) > 0), remove(z, complex), remove(h, real), 0);
+/* subscripted functions, the subscript included, and posfun */
+
+map(csign, [g[1](z), g[1](x), g[z](x), h[1](z), psi[0](z), psi[0](x)]);
+[complex, pnz, complex, pnz, complex, pnz];
+
+(declare(p, posfun), map(csign, [p(x), p[1](x), p(z), p[1](z)]));
+[pos, pos, complex, complex];
+
+(forget(g(z) > 0), remove(z, complex), remove(h, real), remove(p, posfun), 0);
 0;
 ```
 
@@ -218,7 +319,7 @@ sqrt(f(z)^2*conjugate(f(z))^2);
 
 ## Not part of this fix
 
-- `cosh(z)` is `pos` and `max(1, z)` is `pos` for a complex `z`: the `posfun` path and `sign-minmax` never look at the arguments either. The same treatment would fit there, one rule at a time.
+- `max(1, z)` is `pos` for a complex `z`: `sign-minmax` never looks at the arguments. `cosh(z)` was `pos` through the `posfun` path and is `complex` with part 4.
 - `csign(hstep(z))` signals an error for a complex `z`, before and after; the helper only keeps it from spreading to `f(hstep(z))`, at the price of leaving the message in the `error` variable.
 - `csign(f(z)*conjugate(f(z)))` is `complex`, although the product is real; that is the sign of a product, not of an application.
 - In real mode `sign(z)` is `pnz` for a `z` declared complex, as it always was; this fix only touches complex mode.
