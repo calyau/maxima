@@ -6954,3 +6954,17 @@ true$
 /* infinite limits are as they were */
 [integrate(%e^(-x^3), x, 0, inf), integrate(x*%e^(-x^3), x, 0, inf)];
 [gamma(1/3)/3, gamma(2/3)/3]$
+
+/* a constant coefficient in the exponent: the derivative of gamma_incomplete
+   keeps it outside the root, in the form the integrator gives it */
+expand(diff(integrate(%e^(2*x^3), x), x) - %e^(2*x^3));
+0$
+
+expand(diff(integrate(%e^(-x^3/2), x), x) - %e^(-x^3/2));
+0$
+
+expand(diff(integrate(%e^(3*x^5), x), x) - %e^(3*x^5));
+0$
+
+trigrat(diff(integrate(sin(2*x^3), x), x) - sin(2*x^3));
+0$

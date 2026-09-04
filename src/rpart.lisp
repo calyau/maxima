@@ -135,18 +135,20 @@
 ;; derivative of gamma_incomplete, which SDIFFGRAD fills in by substituting
 ;; the argument for the symbol; unsimplified, as (-z^2)^(s/2) for an
 ;; imaginary z would not survive the simplifier with the symbol in it.
-;; The modulus is (z*conjugate(z))^(s/2) with conjugate(k)/k a constant,
-;; and the sign of w is that of z times that of k.  Nil where the treatment
-;; does not apply, or where k has the symbol a or Z-NAME in it, which the
-;; substitution would replace.
+;; The modulus is abs(k)^s * (z^2/k^2)^(s/2), where z^2/k^2 is w^(2*n):
+;; the constant stays outside the root, in the form the integrator gives
+;; it, so that the two cancel.  The sign of w is that of z times that of
+;; k.  Nil where the treatment does not apply, or where k has the symbol a
+;; or Z-NAME in it, which the substitution would replace.
 (defun principal-power-template (z z-name s)
   (multiple-value-bind (k w n nonneg) (real-power-factors z)
     (declare (ignore w))
     (when (and k (odd-root-p s) ($freeof '$a k) ($freeof z-name k))
       (destructuring-bind (re . im) (trisplit k)
         (list '(mtimes)
+              (power (cabs k) s)
               (list '(mexpt)
-                    (list '(mtimes) (div (sub re (mul '$%i im)) k)
+                    (list '(mtimes) (inv (power k 2))
                           (list '(mexpt) z-name 2))
                     (div s 2))
               (principal-phase s re im
