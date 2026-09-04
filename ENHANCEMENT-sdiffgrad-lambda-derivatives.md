@@ -1,6 +1,6 @@
 # Let a derivative defined by a DEFGRAD lambda return a final expression
 
-**Status: fixed at the base of branch `claude/maxima-rectform-root-branch-pp1qu1`**, commit *SDIFFGRAD: let a derivative given as a function return a final result*, by the first option below: a lambda that returns `t` as a second value has its result taken as it is, and a lambda returning one value is substituted into as before. And it was a bug after all, not only a trap: the one lambda in the tree, the derivative of `gamma_incomplete` with respect to its order, evaluated its template with `meval`, so a value of the Maxima variable `a` or `z` went into the derivative of any `gamma_incomplete`:
+**Status: fixed at the base of branch `claude/maxima-rectform-root-branch-pp1qu1`**, in two commits. The first, *gamma_incomplete: keep the values of a and z out of the derivative wrt a*, stands on its own and fixes what turned out to be a bug, not only a trap: the one lambda in the tree, the derivative of `gamma_incomplete` with respect to its order, evaluated its template with `meval`, so a value of the Maxima variable `a` or `z` went into the derivative of any `gamma_incomplete`:
 
 ```
 (%i1) a : 5$
@@ -9,7 +9,7 @@
 (%o3) (gamma_incomplete(5,y)-24)*log(y)+576*hypergeometric_regularized([5,5],[6,6],-y)*y^5+24*(25/12-%gamma)
 ```
 
-That lambda now builds its result from its arguments and returns it with the second value, and so do the `z` derivatives of the branch, which call `principal-power` directly, without the template described below. The rest of this note is as it was written.
+That lambda now evaluates its template with `a` and `z` bound to themselves, by `mbinding`, and stays a template. The second commit, *SDIFFGRAD: let a derivative given as a function return a final result*, takes the first option below: a lambda that returns `t` as a second value has its result taken as it is, and a lambda returning one value is substituted into as before. The `z` derivatives of the branch use it to call `principal-power` directly, without the template described below. The rest of this note is as it was written.
 
 **Version:** Maxima git master (5.50post), SBCL. Not a bug in current behaviour, a trap in the Lisp interface for defining derivatives, and a request to give it a second calling convention.
 
