@@ -492,9 +492,11 @@
 ;;; to functions known by risplit, such as the more useless trigonometrics.
 	  ((let ((foot (coversinemyfoot l)))
 	     (and foot (risplit foot))))
-          ((or (safe-get (mop l) 'real-valued)
-               (decl-realp (mop l)))
-           ;; Simplification for a real-valued function
+          ((let ((op (if (mqapplyp l) (subfunname l) (caar l))))
+             (or (safe-get op 'real-valued)
+                 (decl-realp op)))
+           ;; Simplification for a real-valued function, a subscripted one
+           ;; under its name, as csign takes it.
            (cons l 0))
       ((and (or (safe-get (mop l) 'commutes-with-conjugate)
                 (safe-get (mop l) 'conjugate-function))

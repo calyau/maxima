@@ -4289,6 +4289,15 @@ trigreduce(cot(x)^2 + 1);
 csc(x)^2;
 
 
+/* #5228: "rectform doesn't check "real" declaration on subscripted functions" */
+
+block([fun, z],
+ local(fun, z),
+ declare(fun, real, z, complex),
+ [imagpart(fun(z)), imagpart(fun[1](z))]);
+[0, 0];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

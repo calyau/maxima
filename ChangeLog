@@ -72,6 +72,7 @@ Bug fixes for numbered bugs:
 * \#5223 The sign of x has two normal forms, x/abs(x) and abs(x)/x, and their difference does not simplify
 * \#5224 limit(abs(a+%i)*x, x, inf) gives infinity
 * \#5225 abs(x)^(2/3) becomes x^(2/3) with domain : complex
+* \#5228 rectform doesn't check "real" declaration on subscripted functions
 
 Bug fixes for unnumbered bugs:
 ------------------------------
