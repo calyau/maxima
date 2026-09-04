@@ -1,8 +1,8 @@
 # Handover: odd roots under `domain : real`, from `rectform` to `integrate`
 
-Branch `claude/maxima-rectform-root-branch-pp1qu1` on the GitHub mirror, on top of upstream `d24eaa0` (*Combine powers of x and abs(x) when possible*). The mirror is overwritten on every sync, so this document carries the whole change as find-and-replace patches against upstream, the tests, and the commit messages, ready for SourceForge. Three simplifier changes that were on this branch are in `master` since, in the three commits before that one: the normal form of the sign of a real `x` (bug #5223), `abs(x)^(2/3)` left alone with `domain : complex` (bug #5225), and the combination of `x^(2/3)*abs(x)^(1/3)` into `abs(x)`; the design section still explains the first, since the phases rely on it.
+Branch `claude/maxima-rectform-root-branch-pp1qu1` on the GitHub mirror, on top of upstream `d24eaa0` (*Combine powers of x and abs(x) when possible*). The mirror is overwritten on every sync, so this document carries the whole change as find-and-replace patches against upstream, the tests, and the commit messages, ready for SourceForge. Three simplifier changes that were on this branch are in `master` since, in the three commits before that one: the normal form of the sign of a real `x` (bug #5223), `abs(x)^(2/3)` left alone with `domain : complex` (bug #5225), and the combination of `x^(2/3)*abs(x)^(1/3)` into `abs(x)`; the design section still explains the first, since the phases rely on it. Two stand-alone fixes sit at the base of the branch and can land on their own, `gamma_incomplete_lower` with a float argument (`HANDOVER-gamma_incomplete_lower-float.md`, first) and the derivative of `gamma_incomplete` with respect to its order (hunk 2 of section 3.4); the `sdiffgrad` interface follows them.
 
-Everything below was built and verified on SBCL with `./configure --enable-sbcl && make`. The full core plus share suite, `run_testsuite(share_tests=true)`, passes: 21,102 tests, the only failure the pre-existing environmental one in `share/stringproc/rtestprintf.mac` problem 38.
+Everything below was built and verified on SBCL with `./configure --enable-sbcl && make`. The full core plus share suite, `run_testsuite(share_tests=true)`, passes: 21,116 tests, the only failure the pre-existing environmental one in `share/stringproc/rtestprintf.mac` problem 38.
 
 ## 1. The problem
 
@@ -405,7 +405,7 @@ One hunk in `sdiffgrad`, an addition to the interface. A derivative in a `grad` 
 
 ### 3.4 `src/gamma.lisp`
 
-Seven hunks. Hunk 2 carries the first commit at the base of the branch, a bug fix that stands on its own: the derivative of `gamma_incomplete` with respect to its order evaluates a template in the placeholder names `a` and `z` with `meval`, which also put in the values of the Maxima variables `a` and `z`, so that with `a : 5`, `diff(gamma_incomplete(b, y), b)` came out with `gamma_incomplete(5,y)` in it; the template is now evaluated with `a` and `z` bound to themselves, by `mbinding`, the idiom of `asum.lisp`. Hunk 1 adds `gamma-incomplete-z-derivative`, which builds the `z` derivative the same way with the power written by `principal-power` when `$domain` is real and as the plain power otherwise, and hunk 2 makes the `z` derivative a function that calls it; hunks 3 and 6 do the same for `gamma_incomplete_lower` and for `z1` and `z2` of `gamma_incomplete_generalized`. `subst-power-order` and `subst-rational-order` serve the three `gamma_expand` clauses for a rational order: the recurrence is now expanded with a fresh symbol for `z` as well as for the order, so that the powers `z^(ord + m)` can be put back as `z^m` times the principal `z^order` before the order is substituted; with `domain : complex` the plain power is used.
+Twelve hunks. Hunks 3, 6, 7, 10 and 11 are the `gamma_incomplete_lower` fix of `HANDOVER-gamma_incomplete_lower-float.md`, the first commit at the base of the branch, reproduced here so that the file's patches apply in order. Hunk 2 carries the second commit, a bug fix that stands on its own too: the derivative of `gamma_incomplete` with respect to its order evaluates a template in the placeholder names `a` and `z` with `meval`, which also put in the values of the Maxima variables `a` and `z`, so that with `a : 5`, `diff(gamma_incomplete(b, y), b)` came out with `gamma_incomplete(5,y)` in it; the template is now evaluated with `a` and `z` bound to themselves, by `mbinding`, the idiom of `asum.lisp`. Hunk 1 adds `gamma-incomplete-z-derivative`, which builds the `z` derivative the same way with the power written by `principal-power` when `$domain` is real and as the plain power otherwise, and hunk 2 makes the `z` derivative a function that calls it; hunks 4 and 9 do the same for `gamma_incomplete_lower` and for `z1` and `z2` of `gamma_incomplete_generalized`. `subst-power-order` and `subst-rational-order` serve the three `gamma_expand` clauses for a rational order: the recurrence is now expanded with a fresh symbol for `z` as well as for the order, so that the powers `z^(ord + m)` can be put back as `z^m` times the principal `z^order` before the order is substituted; with `domain : complex` the plain power is used.
 
 **Hunk 1.** `gamma-incomplete-z-derivative`, inserted before `(defgrad %gamma_incomplete ($a $z)`.
 
@@ -446,7 +446,7 @@ Seven hunks. Hunk 2 carries the first commit at the base of the branch, a bug fi
   #'(lambda ($a $z)
 ```
 
-**Hunk 2.** The `defgrad` of `%gamma_incomplete`: the `mbinding` is the stand-alone fix, the `z` derivative belongs with hunk 1.
+**Hunk 2.** The `defgrad` of `%gamma_incomplete`: the `mbinding` is the stand-alone derivative fix, the `z` derivative belongs with hunk 1.
 
 **Find this** (upstream line 336):
 
@@ -498,7 +498,52 @@ Seven hunks. Hunk 2 carries the first commit at the base of the branch, a bug fi
 ;;; Integral of the Incomplete Gamma function
 ```
 
-**Hunk 3.** The `z` derivative in the `defgrad` of `%gamma_incomplete_lower`, and right after it the two recurrence helpers, inserted before `(def-simplifier gamma_incomplete_lower (a z)`.
+**Hunk 3.** The `conjugate-function` of `%gamma_incomplete_lower`, after its `distribute_over` property (the `gamma_incomplete_lower` fix).
+
+**Find this** (upstream line 476):
+
+```lisp
+
+(defprop %gamma_incomplete_lower (mlist $matrix mequal) distribute_over)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgrad %gamma_incomplete_lower ($a $z)
+```
+
+**Replace it with this:**
+
+```lisp
+
+(defprop %gamma_incomplete_lower (mlist $matrix mequal) distribute_over)
+
+;;; Lower Incomplete Gamma function has not mirror symmetry for z on the
+;;; negative real axis, as gamma_incomplete has not, being gamma(a) less it.
+;;; We support a conjugate-function which test this case.
+
+(defprop %gamma_incomplete_lower conjugate-gamma-incomplete-lower conjugate-function)
+
+(defun conjugate-gamma-incomplete-lower (args)
+  (let ((a (first args)) (z (second args)))
+    (cond ((off-negative-real-axisp z)
+           ;; Definitely not on the negative real axis for z. Mirror symmetry.
+           (simplify
+             (list
+              '(%gamma_incomplete_lower)
+               (simplify (list '($conjugate) a))
+               (simplify (list '($conjugate) z)))))
+          (t
+           ;; On the negative real axis or no information. Unsimplified.
+           (list
+            '($conjugate simp)
+             (simplify (list '(%gamma_incomplete_lower) a z)))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgrad %gamma_incomplete_lower ($a $z)
+```
+
+**Hunk 4.** The `z` derivative in the `defgrad` of `%gamma_incomplete_lower`, and right after it the two recurrence helpers, inserted before `(def-simplifier gamma_incomplete_lower (a z)`.
 
 **Find this** (upstream line 487):
 
@@ -561,7 +606,7 @@ Seven hunks. Hunk 2 carries the first commit at the base of the branch, a bug fi
     ((or
 ```
 
-**Hunk 4.** The rational-order clause of the `gamma_incomplete_lower` simplifier.
+**Hunk 5.** The rational-order clause of the `gamma_incomplete_lower` simplifier.
 
 **Find this** (upstream line 612):
 
@@ -590,7 +635,71 @@ Seven hunks. Hunk 2 carries the first commit at the base of the branch, a bug fi
 	 nil)))
 ```
 
-**Hunk 5.** The rational-order clause of the `gamma_incomplete` simplifier.
+**Hunk 6.** `order-for-numerical-eval`, inserted before `(def-simplifier gamma_incomplete (a z)` (the `gamma_incomplete_lower` fix).
+
+**Find this** (upstream line 622):
+
+```lisp
+
+;;; Incomplete Gamma function is a simplifying function
+
+(def-simplifier gamma_incomplete (a z)
+  (let (($simpsum t)
+        (ratorder))
+```
+
+**Replace it with this:**
+
+```lisp
+
+;;; Incomplete Gamma function is a simplifying function
+
+;; The order A as a float or a bigfloat where the numerical clauses of the
+;; simplifiers below would evaluate the function of A and ZS, and A itself
+;; otherwise: for the value at an exact point, gamma(a) for
+;; gamma_incomplete(a, 0), which is to be a number where the arguments are.
+(defun order-for-numerical-eval (a &rest zs)
+  (cond ((or (apply #'float-numerical-eval-p a zs)
+             (apply #'complex-float-numerical-eval-p a zs))
+         ($float a))
+        ((or (apply #'bigfloat-numerical-eval-p a zs)
+             (apply #'complex-bigfloat-numerical-eval-p a zs))
+         ($bfloat a))
+        (t a)))
+
+(def-simplifier gamma_incomplete (a z)
+  (let (($simpsum t)
+        (ratorder))
+```
+
+**Hunk 7.** The zero clause of the `gamma_incomplete` simplifier (the `gamma_incomplete_lower` fix).
+
+**Find this** (upstream line 639):
+
+```lisp
+                  (intl:gettext 
+                    "gamma_incomplete: gamma_incomplete(~:M,~:M) is undefined.")
+                    a z))
+               ((member sgn '($pos $pz)) ($gamma a))
+               (t (give-up)))))
+              
+      ((eq z '$inf) 0)
+```
+
+**Replace it with this:**
+
+```lisp
+                  (intl:gettext 
+                    "gamma_incomplete: gamma_incomplete(~:M,~:M) is undefined.")
+                    a z))
+               ((member sgn '($pos $pz))
+                ($gamma (order-for-numerical-eval a z)))
+               (t (give-up)))))
+              
+      ((eq z '$inf) 0)
+```
+
+**Hunk 8.** The rational-order clause of the `gamma_incomplete` simplifier.
 
 **Find this** (upstream line 915):
 
@@ -619,7 +728,7 @@ Seven hunks. Hunk 2 carries the first commit at the base of the branch, a bug fi
        ;; See http://functions.wolfram.com/06.06.26.0002.01
 ```
 
-**Hunk 6.** The `z1` and `z2` derivatives in the `defgrad` of `%gamma_incomplete_generalized`.
+**Hunk 9.** The `z1` and `z2` derivatives in the `defgrad` of `%gamma_incomplete_generalized`.
 
 **Find this** (upstream line 1419):
 
@@ -653,7 +762,65 @@ Seven hunks. Hunk 2 carries the first commit at the base of the branch, a bug fi
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ```
 
-**Hunk 7.** The rational-order clause of the `gamma_incomplete_regularized` simplifier.
+**Hunk 10.** The `(zerop1 z2)` clause of the `gamma_incomplete_generalized` simplifier (the `gamma_incomplete_lower` fix).
+
+**Find this** (upstream line 1438):
+
+```lisp
+       (let ((sgn ($sign ($realpart a))))
+         (cond 
+           ((member sgn '($pos $pz))
+            (sub
+              (simplify (list '(%gamma_incomplete) a z1))
+              (simplify (list '(%gamma) a))))
+           (t 
+            (give-up)))))
+```
+
+**Replace it with this:**
+
+```lisp
+       (let ((sgn ($sign ($realpart a))))
+         (cond 
+           ((member sgn '($pos $pz))
+            (let ((a (order-for-numerical-eval a z1 z2)))
+              (sub
+                (simplify (list '(%gamma_incomplete) a z1))
+                (simplify (list '(%gamma) a)))))
+           (t 
+            (give-up)))))
+```
+
+**Hunk 11.** The `(zerop1 z1)` clause of the same simplifier (the `gamma_incomplete_lower` fix).
+
+**Find this** (upstream line 1448):
+
+```lisp
+       (let ((sgn ($sign ($realpart a))))
+         (cond 
+           ((member sgn '($pos $pz))
+            (sub
+              (simplify (list '(%gamma) a))
+              (simplify (list '(%gamma_incomplete) a z2))))
+           (t 
+            (give-up)))))
+```
+
+**Replace it with this:**
+
+```lisp
+       (let ((sgn ($sign ($realpart a))))
+         (cond 
+           ((member sgn '($pos $pz))
+            (let ((a (order-for-numerical-eval a z1 z2)))
+              (sub
+                (simplify (list '(%gamma) a))
+                (simplify (list '(%gamma_incomplete) a z2)))))
+           (t 
+            (give-up)))))
+```
+
+**Hunk 12.** The rational-order clause of the `gamma_incomplete_regularized` simplifier.
 
 **Find this** (upstream line 1775):
 
@@ -972,7 +1139,7 @@ branch, and @code{(-8)^(1/3)} is @code{1 + sqrt(3) %i}; see also
 
 ### 3.8 `ChangeLog`
 
-One hunk, under *Bug fixes for unnumbered bugs*.
+One hunk, under *Bug fixes for unnumbered bugs*; its first line is the `gamma_incomplete_lower` fix.
 
 **Hunk 1.**
 
@@ -1002,6 +1169,7 @@ Bug fixes for unnumbered bugs:
 * diff(gamma_incomplete(a, z), x) and gamma_incomplete(a, z) with gamma_expand take the real root of z^(a-1) with domain : real for a z such as -x^3, where the function is on the principal branch: the antiderivative of %e^(x^3) did not differentiate back to it
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
+* gamma_incomplete_lower(a, z) with an exact order a and a float z, as gamma_incomplete(a, 0.0), keeps gamma(a) exact instead of giving a number; gamma_incomplete_lower gets the mirror symmetry of gamma_incomplete for conjugate
 * the derivative of gamma_incomplete with respect to its first argument picks up values of the variables a and z
 
 Changes in the Windows installer:
@@ -1195,7 +1363,7 @@ block([b, n, p],
 
 ### 4.3 `tests/rtest_gamma.mac`
 
-One block appended at the end, in two parts. The first belongs to the stand-alone `gamma_incomplete` fix: the derivative of `gamma_incomplete` with respect to its order with the variables `a` and `z` given values, and with the arguments named `z` and `a`; compared through `expand`, like the existing test of that derivative, because `hypergeometric_regularized` is evaluated once the `hypergeometric` package is loaded, which an earlier file of the suite does. The second is the derivative of `gamma_incomplete(1/3, -x^3)`, checked at `x = 2` against `3*%e^8*%e^(-2*%i*%pi/3)`, the cases that must stay as they were, the `gamma_expand` recurrence checked at `x = -2` against `gamma_incomplete` itself, and the derivative again with the variable named `z`.
+One block appended at the end, in three parts. The first is the `gamma_incomplete_lower` fix, as in its own handover. The second belongs to the stand-alone derivative fix: the derivative of `gamma_incomplete` with respect to its order with the variables `a` and `z` given values, and with the arguments named `z` and `a`; compared through `expand`, like the existing test of that derivative, because `hypergeometric_regularized` is evaluated once the `hypergeometric` package is loaded, which an earlier file of the suite does. The third is the derivative of `gamma_incomplete(1/3, -x^3)`, checked at `x = 2` against `3*%e^8*%e^(-2*%i*%pi/3)`, the cases that must stay as they were, the `gamma_expand` recurrence checked at `x = -2` against `gamma_incomplete` itself, and the derivative again with the variable named `z`.
 
 
 **Hunk 1.**
@@ -1212,6 +1380,55 @@ limit(erf_generalized(x, 1/x), x, 0, minus);
 ```maxima
 limit(erf_generalized(x, 1/x), x, 0, minus);
 -1;
+
+/* With an exact order and a float or bigfloat argument, gamma_incomplete
+   at zero, gamma_incomplete_generalized with a zero limit and so
+   gamma_incomplete_lower are numbers, as gamma_incomplete is elsewhere:
+   the value gamma(a) is taken at the precision of the arguments.  Exact
+   arguments stay exact, and so does a symbolic order. */
+(kill(a, x, z), 0);
+0$
+
+closeto(gamma_incomplete_lower(1/3, 8.0), 2.6788605428816297, 1e-14);
+true$
+
+closeto(gamma_incomplete_lower(3/2, 8.0), 0.8852219580421099, 1e-14);
+true$
+
+closeto(gamma_incomplete_lower(1/3, 8.0*%i), 0.10901538887260959*%i + 2.900511055275193, 1e-14);
+true$
+
+closeto(gamma_incomplete_lower(1/3, 8.0b0), 2.678860542881629b0, 1b-14);
+true$
+
+closeto(gamma_incomplete(1/3, 0.0), 2.6789385347077483, 1e-14);
+true$
+
+closeto(gamma_incomplete_generalized(1/3, 0, 8.0), 2.6788605428816297, 1e-14);
+true$
+
+closeto(gamma_incomplete_generalized(1/3, 8.0, 0), -2.6788605428816297, 1e-14);
+true$
+
+[gamma_incomplete_lower(1/3, 0.0), gamma_incomplete_generalized(1/3, 0.0, 0)];
+[0.0, 0.0]$
+
+[gamma_incomplete(1/3, 0), gamma_incomplete_lower(1/3, 8), gamma_incomplete_lower(a, 8.0)];
+[gamma(1/3), gamma_incomplete_lower(1/3, 8), gamma_incomplete_lower(a, 8.0)]$
+
+/* undefined at zero for an order that is not positive, float or not */
+[errcatch(gamma_incomplete(-1, 0.0)), errcatch(gamma_incomplete(0, 0.0))];
+[[], []]$
+
+/* mirror symmetry off the negative real axis, as for gamma_incomplete */
+[conjugate(gamma_incomplete_lower(1/3, %i*x)), conjugate(gamma_incomplete_lower(a, z))];
+[gamma_incomplete_lower(1/3, -%i*x), conjugate(gamma_incomplete_lower(a, z))]$
+
+(assume(x > 0), conjugate(gamma_incomplete_lower(1/3, x)));
+gamma_incomplete_lower(1/3, x)$
+
+(forget(x > 0), realpart(gamma_incomplete_lower(1/3, %i*x)));
+(gamma_incomplete_lower(1/3, %i*x) + gamma_incomplete_lower(1/3, -%i*x))/2$
 
 /* The derivative of gamma_incomplete with respect to its first argument is
    a template in the names a and z.  A value of a or z must not leak into
@@ -1533,13 +1750,13 @@ assume(x > 0)$ integrate(%e^(x^3), x);
 
 ## 7. Workarounds, and what a fix would have simplified
 
-Things the change works around rather than fixes, roughly in the order of how much a fix would have shortened the work. The first three are bugs; reports ready for the SourceForge tracker are in `BUG-rectform-atan2.md`, `BUG-carg-product-argument.md` and `BUG-gamma_incomplete_lower-float.md` next to this file, and item 11 is a fourth, fixed in `master` since (bug #5225). Items 4 and 7 are fixed too, item 4 at the base of this branch, where it turned out to be a bug as well, item 7, a missed simplification, in `master` (bug #5223); `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` and `ENHANCEMENT-abs-sign-normal-form.md` put them as requests, with reproducers.
+Things the change works around rather than fixes, roughly in the order of how much a fix would have shortened the work. The first three are bugs; reports ready for the SourceForge tracker are in `BUG-rectform-atan2.md`, `BUG-carg-product-argument.md` and `BUG-gamma_incomplete_lower-float.md` next to this file, the third fixed at the base of the branch, and item 11 is a fourth, fixed in `master` since (bug #5225). Items 4 and 7 are fixed too, item 4 at the base of this branch, where it turned out to be a bug as well, item 7, a missed simplification, in `master` (bug #5223); `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` and `ENHANCEMENT-abs-sign-normal-form.md` put them as requests, with reproducers.
 
 1. **`rectform(atan2(y, 0))` is wrong for `y < 0` and carries a spurious imaginary part.** `rectform(atan2(y,0))` is `(2*%pi*ceiling((2*atan2(0,y)-%pi)/(2*%pi))+%pi)/2-%i*log(abs(y)/sqrt(y^2))`, which is `3*%pi/2` at `y = -2` where `atan2(-2, 0)` is `-%pi/2`; the imaginary part is zero but is not simplified, since `sqrt(y^2)` was produced with `$domain` bound to `complex` inside `risplit`. This is what broke the `atan2` phase for the imaginary constant behind `sin(x^3)` and forced two redesigns. Even fixed, an `atan2` in an exponent would not cancel against the derivative under `expand`, so the rational form is the better end point; the detour would have been shorter.
 
 2. **`absarg` does not reduce the argument of a product.** `carg(-x)` is `atan2(0,x)+%pi`, which is `2*%pi` at `x = -8`; `rectform(sqrt(-x))` gives `-2^(3/2)` at `x = -8`; with `domain : complex`, `rectform((-x)^(1/3))` gives `sqrt(3)*%i-1` there, where the value is 2. A power gets the `ceiling` reduction, a product does not. So `carg(k)` could not be used for the phase of a symbolic constant `k`; `principal-phase` takes `atan2` of the real and imaginary parts of `k` and `-k` instead. With `absarg` fixed, `polarform` could have written the principal power directly.
 
-3. **`gamma_incomplete_lower(a, z)` with a rational `a` and a float `z` is not evaluated**, `gamma_incomplete_lower(1/3, 8.0)` is `gamma(1/3)-7.799182611869946e-5`, and it has no conjugate property, so `rectform` of it gives `realpart` and `imagpart` noun forms where `gamma_incomplete` gets the mirror symmetry. The natural continuous antiderivative of `%e^(x^3)` is `gamma_incomplete_lower(1/3, -x^3)` times the phase; the change writes `gamma_incomplete(1/3, -x^3) - gamma(1/3)` instead.
+3. **`gamma_incomplete_lower(a, z)` with a rational `a` and a float `z` was not evaluated, fixed at the base of this branch.** `gamma_incomplete_lower(1/3, 8.0)` was `gamma(1/3)-7.799182611869946e-5`, because the zero clauses of `gamma_incomplete` and `gamma_incomplete_generalized` put in `gamma(a)` of the exact order, and it had no conjugate property, so `rectform` of it gave `realpart` and `imagpart` noun forms where `gamma_incomplete` gets the mirror symmetry. The natural continuous antiderivative of `%e^(x^3)` is `gamma_incomplete_lower(1/3, -x^3)` times the phase; the change was written before the fix and still uses `gamma_incomplete(1/3, -x^3) - gamma(1/3)`, which is the same function. `BUG-gamma_incomplete_lower-float.md` is the report, `HANDOVER-gamma_incomplete_lower-float.md` the fix, the first commit of the branch.
 
 4. **`sdiffgrad` re-substituted the result of a lambda derivative, and the one lambda in the tree picked up values of `a` and `z`; both fixed at the base of this branch (sections 3.3 and 3.4).** A `defgrad` lambda gets the actual arguments, but its result was run through `psubstitute` with the placeholder symbols `a` and `z`, so a derivative built from the actual `z` was corrupted whenever the user's variable was named `z` or `a`. The one lambda in the tree, the derivative of `gamma_incomplete` with respect to its order, evaluated a template in the placeholders instead, and picked up values of the Maxima variables `a` and `z` on the way: that is a bug of its own, fixed first and on its own by evaluating the template with `a` and `z` bound to themselves. Until the interface fix, `gamma-incomplete-z-derivative` returned an unsimplified template in the placeholder, with the modulus written as `abs(k)^s*(z^2/k^2)^(s/2)`, `k` checked with `freeof` against the placeholders and a symbolic order refused. Now a lambda returning `t` as a second value has its result taken as it is, as it already was for the special case of `hypergeometric` in `sdiffgrad`, a lambda returning one value is treated as before, the derivative is one call of `principal-power`, and the template and its guards are gone. `ENHANCEMENT-sdiffgrad-lambda-derivatives.md` has the reproducers.
 
@@ -1559,7 +1776,7 @@ Things the change works around rather than fixes, roughly in the order of how mu
 
 ## 8. Proposed commit messages
 
-Three commits: the stand-alone `gamma_incomplete` fix, which can land on its own; the `sdiffgrad` interface; then the rest.
+Four commits: the `gamma_incomplete_lower` fix, whose message is in `HANDOVER-gamma_incomplete_lower-float.md`; the stand-alone `gamma_incomplete` derivative fix; the `sdiffgrad` interface; then the rest.
 
 ```
 gamma_incomplete: keep the values of a and z out of the derivative wrt a

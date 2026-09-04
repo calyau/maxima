@@ -1,5 +1,7 @@
 # gamma_incomplete_lower(a, z) with a rational order a and a float z is not evaluated
 
+**Status: fixed at the base of branch `claude/maxima-rectform-root-branch-pp1qu1`**, commit *gamma_incomplete_lower(a, z): a number for an exact a and a float z*, with the conjugate rule; `HANDOVER-gamma_incomplete_lower-float.md` carries it as patches against `master`.
+
 **Version:** Maxima git master (5.50post), SBCL.
 
 For an exact order that is not a positive integer, `gamma_incomplete_lower` with a float or bigfloat argument returns `gamma(a) - gamma_incomplete(a, z)` with `gamma(a)` left exact, instead of a number: `gamma_incomplete_lower(3/2, 8.0)` is `sqrt(%pi)/2-0.001004967410648176`. The upper function evaluates, and so does `gamma_incomplete_lower` for a float order or, with `gamma_expand`, a positive integer one.
