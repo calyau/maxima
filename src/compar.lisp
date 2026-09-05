@@ -2355,7 +2355,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun imag-err (x)
   (if sign-imag-errp
-      (merror (intl:gettext "sign: argument cannot be imaginary; found ~M") x)
+      (merror (intl:gettext "sign: argument cannot be non-real; found ~M") x)
       (throw 'sign-imag-err t)))
 
 (defun dbzs-err (x)
