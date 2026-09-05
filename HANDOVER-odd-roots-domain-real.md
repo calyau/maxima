@@ -1480,7 +1480,7 @@ block([b, n, p],
 
 ### 4.3 `tests/rtest_gamma.mac`
 
-One block appended at the end, in three parts. The first is the special-values change, as in its own handover. The second belongs to the stand-alone derivative fix: the derivative of `gamma_incomplete` with respect to its order with the variables `a` and `z` given values, and with the arguments named `z` and `a`; compared through `expand`, like the existing test of that derivative, because `hypergeometric_regularized` is evaluated once the `hypergeometric` package is loaded, which an earlier file of the suite does. The third is the derivative of `gamma_incomplete(1/3, -x^3)`, checked at `x = 2` against `3*%e^8*%e^(-2*%i*%pi/3)`, the cases that must stay as they were, the `gamma_expand` recurrence checked at `x = -2` against `gamma_incomplete` itself, and the derivative again with the variable named `z`.
+One block appended at the end, in three parts. The first is the special-values change, as in its own handover. The second belongs to the stand-alone derivative fix: the derivative of `gamma_incomplete` with respect to its order with the variables `a` and `z` given values, and with the arguments named `z` and `a`; compared through `expand`, like the existing test of that derivative, because the file defines `hypergeometric_regularized` for its beta tests and the definition stays in force to the end. The third is the derivative of `gamma_incomplete(1/3, -x^3)`, checked at `x = 2` against `3*%e^8*%e^(-2*%i*%pi/3)`, the cases that must stay as they were, the `gamma_expand` recurrence checked at `x = -2` against `gamma_incomplete` itself, and the derivative again with the variable named `z`.
 
 
 **Hunk 1.**
@@ -1565,8 +1565,8 @@ gamma_incomplete_lower(1/3, x)$
 /* The derivative of gamma_incomplete with respect to its first argument is
    a template in the names a and z.  A value of a or z must not leak into
    it, and arguments named like them must not be confused with them.  The
-   comparison goes through expand, as above, since hypergeometric_regularized
-   is evaluated once the hypergeometric package is loaded. */
+   comparison goes through expand, as above, since this file defines
+   hypergeometric_regularized for its beta tests and it stays defined. */
 (kill(a, b, y, z), a : 5, z : 7, assume(b > 0), 0);
 0$
 
