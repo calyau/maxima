@@ -337,12 +337,13 @@
              ;;
              ;; We need to call meval ourselves here to make sure the
              ;; expression is simplified as expected.
+             (mbinding ('($a $z) '($a $z))
              (meval
               #$$ (gamma_incomplete(a,z)-gamma(a))*log(z)+gamma(a)^2
                                         *hypergeometric_regularized(
                                          [a,a],[a+1,a+1],-z)*z^a
                                        +psi[0](a)*gamma(a)$
-             ))
+             )))
             (t
              ;; No derivative. Maxima generates a noun form.
              nil)))

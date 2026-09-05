@@ -4353,3 +4353,12 @@ minf;
 
 limit(erf_generalized(x, 1/x), x, 0, minus);
 -1;
+
+
+/* Bug #5229: "Variables a and z leak into derivative of gamma_incomplete" */
+
+block([a : foo, z : bar, b],
+ local(b),
+ assume(b > 0),
+ freeof(foo, bar, diff(gamma_incomplete(b, y), b)));
+true;

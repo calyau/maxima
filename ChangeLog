@@ -73,6 +73,7 @@ Bug fixes for numbered bugs:
 * \#5224 limit(abs(a+%i)*x, x, inf) gives infinity
 * \#5225 abs(x)^(2/3) becomes x^(2/3) with domain : complex
 * \#5228 rectform doesn't check "real" declaration on subscripted functions
+* \#5229 Variables a and z leak into derivative of gamma_incomplete
 
 Bug fixes for unnumbered bugs:
 ------------------------------
