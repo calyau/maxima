@@ -115,8 +115,6 @@
 ;; would not not need to apply the operator to the argument to the conjugate function, instead it 
 ;; could simply paste ($conjugate simp) onto the expression.
 
-;; Not done: conjugate-functions for all the inverse trigonometric functions.
-
 ;; Trig like and hypergeometric like functions
 
 (setf (get '%log 'conjugate-function) 'conjugate-log)
@@ -128,6 +126,12 @@
 (setf (get '%atanh 'conjugate-function) 'conjugate-atanh)
 (setf (get '%asec 'conjugate-function) 'conjugate-asec)
 (setf (get '%acsc 'conjugate-function) 'conjugate-acsc)
+(setf (get '%acot 'conjugate-function) 'conjugate-acot)
+(setf (get '%asinh 'conjugate-function) 'conjugate-asinh)
+(setf (get '%acosh 'conjugate-function) 'conjugate-acosh)
+(setf (get '%asech 'conjugate-function) 'conjugate-asech)
+(setf (get '%acsch 'conjugate-function) 'conjugate-acsch)
+(setf (get '%acoth 'conjugate-function) 'conjugate-acoth)
 
 (setf (get '%bessel_j 'conjugate-function) 'conjugate-bessel-j)
 (setf (get '%bessel_y 'conjugate-function) 'conjugate-bessel-y)
@@ -174,6 +178,40 @@
       (and
 	     (eq t (mgrp x -1))     ; x > -1
 	     (eq t (mgrp 1 x)))))) ; x < 1
+
+;; Return T iff Maxima can prove that Z is off the segment of the imaginary
+;; axis that runs from -%i to %i, excluding zero itself. Both acot(z) =
+;; atan(1/z) and acsch(z) = asinh(1/z) commute with the conjugate on that set;
+;; in particular they commute everywhere on the real axis, where acot is real
+;; valued (acot(0) is %pi/2) and acsch is real valued except for its pole at
+;; zero.
+(defun in-domain-of-acot (z)
+  (setq z (trisplit z))
+  (let ((x (car z)) (y (cdr z))) ; z = x+%i*y
+    (or
+      (eq t (mnqp x 0))     ; x # 0
+      (eq t (meqp y 0))     ; y = 0
+      (eq t (mgrp y 1))     ; y > 1
+      (eq t (mgrp -1 y))))) ; -1 > y
+
+;; Return T iff Maxima can prove that Z is off the branch cut
+;; (-infinity, 1] of acosh.
+(defun in-domain-of-acosh (z)
+  (setq z (trisplit z))
+  (or
+    (eq t (mnqp (cdr z) 0))    ; y # 0
+    (eq t (mgrp (car z) 1))))  ; x > 1
+
+;; Return T iff Maxima can prove that Z is off the branch cuts
+;; (-infinity, 0] and [1, infinity) of asech.
+(defun in-domain-of-asech (z)
+  (setq z (trisplit z))
+  (let ((x (car z)) (y (cdr z))) ; z = x+%i*y
+    (or
+      (eq t (mnqp y 0)) ; y # 0
+      (and
+        (eq t (mgrp x 0))     ; x > 0
+        (eq t (mgrp 1 x)))))) ; x < 1
 
 ;; Return conjugate(log(x)). Actually, x is a lisp list (x).
 
@@ -273,6 +311,42 @@
   (setq x (car x))
   (if (in-domain-of-asin x) (take '(%atanh) (take '($conjugate) x))
     (list '($conjugate simp) (take '(%atanh) x))))
+
+(defun conjugate-acot (x)
+  (let ((x (car x)))
+    (if (in-domain-of-acot x)
+      (ftake '%acot (ftake '$conjugate x))
+      (list '($conjugate simp) (take '(%acot) x)))))
+
+(defun conjugate-acsch (x)
+  (let ((x (car x)))
+    (if (in-domain-of-acot x)
+      (ftake '%acsch (ftake '$conjugate x))
+      (list '($conjugate simp) (ftake '%acsch x)))))
+
+(defun conjugate-asinh (x)
+  (let ((x (car x)))
+    (if (in-domain-of-asin (mul '$%i x))
+      (ftake '%asinh (ftake '$conjugate x))
+      (list '($conjugate simp) (ftake '%asinh x)))))
+
+(defun conjugate-acoth (x)
+  (let ((x (car x)))
+    (if (off-negative-one-to-onep x)
+      (ftake '%acoth (ftake '$conjugate x))
+      (list '($conjugate simp) (ftake '%acoth x)))))
+
+(defun conjugate-acosh (x)
+  (let ((x (car x)))
+    (if (in-domain-of-acosh x)
+      (ftake '%acosh (ftake '$conjugate x))
+      (list '($conjugate simp) (ftake '%acosh x)))))
+
+(defun conjugate-asech (x)
+  (let ((x (car x)))
+    (if (in-domain-of-asech x)
+      (ftake '%asech (ftake '$conjugate x))
+      (list '($conjugate simp) (ftake '%asech x)))))
 
 ;; Integer order Bessel functions are entire; thus they commute with the
 ;; conjugate (Schwartz refection principle). But non-integer order Bessel

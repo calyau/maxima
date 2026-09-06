@@ -826,10 +826,10 @@ li[n](x-%i)$
 conjugate(li[3](x+%i));
 li[3](x-%i)$
 
-(declare(z,complex),0);
+(remove(n, integer), forget(n > 0), forget(xx < 1), 0);
 0$
 
-tex1(conjugate(z + F(z)));
+block([z], local(z), declare(z, complex), tex1(conjugate(z + F(z))));
 "F\\left(z\\right)^{\\ast}+z^{\\ast}"$
 
 block([xxx : conjugate(sum(f(x),x,%i,inf))], [op(xxx), args(first(xxx))]);
@@ -848,6 +848,73 @@ conjugate(psi(x));
 'conjugate(psi(x));
 conjugate(atan[i](x));
 'conjugate(atan[i](x));
+
+
+/* Bug #5231: "conjugate of acot, asinh, acosh, asech, acsch, acoth always noun-form" */
+
+map('conjugate, [acot(x), acsch(x), asinh(x)]);
+[acot(x), acsch(x), asinh(x)];
+
+map('conjugate, [acot(3/2 + %i), acsch(3/2 + %i), asinh(3/2 + %i)]);
+[acot(3/2 - %i), acsch(3/2 - %i), asinh(3/2 - %i)];
+
+map('conjugate, [acot(3*%i), acsch(3*%i), asinh(%i/2)]);
+[%i*acoth(3), %i*acsc(3), -%i*%pi/6];
+
+conjugate(asinh(3*%i));
+-%i*conjugate(asin(3));
+
+map('conjugate, [acosh(3), acosh(5/2 + %i), acosh(3/2 - %i)]);
+[acosh(3), acosh(5/2 - %i), acosh(3/2 + %i)];
+
+map('conjugate, [acosh(1/2), acosh(-3), acosh(0)]);
+[conjugate(acosh(1/2)), conjugate(acosh(-3)), conjugate(acosh(0))];
+
+map('conjugate, [asech(1/2), asech(1/2 + %i), asech(-2 - %i)]);
+[asech(1/2), asech(1/2 - %i), asech(-2 + %i)];
+
+map('conjugate, [asech(2), asech(-1/2)]);
+[conjugate(asech(2)), conjugate(asech(-1/2))];
+
+map('conjugate, [acoth(3), acoth(-3), acoth(1/2 + %i)]);
+[acoth(3), -acoth(3), acoth(1/2 - %i)];
+
+map('conjugate, [acoth(1/2), acoth(-1/2)]);
+[conjugate(acoth(1/2)), -conjugate(acoth(1/2))];
+
+(declare(zz, complex), assume(notequal(imagpart(zz), 0)), 0);
+0;
+
+map('conjugate, [acosh(zz), asech(zz), acoth(zz)]);
+[acosh(conjugate(zz)), asech(conjugate(zz)), acoth(conjugate(zz))];
+
+(forget(notequal(imagpart(zz), 0)), 0);
+0;
+
+map('conjugate, [acosh(zz), asech(zz), acoth(zz),
+                 acot(zz), acsch(zz), asinh(zz)]);
+[conjugate(acosh(zz)), conjugate(asech(zz)), conjugate(acoth(zz)),
+ conjugate(acot(zz)), conjugate(acsch(zz)), conjugate(asinh(zz))];
+
+(remove(zz, complex), assume(xx > 1), 0);
+0;
+
+map('conjugate, [acosh(xx), acoth(xx), asech(xx)]);
+[acosh(xx), acoth(xx), conjugate(asech(xx))];
+
+(forget(xx > 1), assume(yy > 0, yy < 1), 0);
+0;
+
+map('conjugate, [asech(yy), acosh(yy), acoth(yy)]);
+[asech(yy), conjugate(acosh(yy)), conjugate(acoth(yy))];
+
+(forget(yy > 0, yy < 1), 0);
+0;
+
+
+/**************************************/
+/* Leave this at the end of the file! */
+/**************************************/
 
 (forget(z,complex), forget(n,integer), forget(n > 0),forget(xx < 1),0);
 0$
