@@ -14,41 +14,30 @@
 
   s : spectral_rep(mat),
   okay : xequal(mat - s[1] . s[2] - s[3] , zeromatrix(n,n)),
-  print(i : i + 1, okay),
 
   okay : okay and xequal(mat . s[3], s[3] . mat),
-  print(i : i + 1, okay),
 
   okay : okay and xequal(s[3]^^n, zeromatrix(n,n)),
-  print(i : i + 1, okay),
 
   okay : okay and xequal(matrixfun(lambda([x],1), mat), ident(n)),
-  print(i : i + 1, okay),
 
   okay : okay and xequal(matrixfun(lambda([x], 1+x+x^2), mat), ident(n) + mat + mat . mat),
-  print(i : i + 1, okay),
 
   okay : okay and xequal(matrixfun(lambda([x], x^2/5), mat), mat . mat / 5),
-  print(i : i + 1, okay),
 
   okay : okay and xequal(matrixfun(lambda([x],x^8),mat), mat^^8),
-  print(i : i + 1, okay),
 
   m : errcatch(matrixfun(lambda([z],sqrt(z)), mat)),
   okay : okay and if m = [ ] then member(0, s[1]) else xequal(m[1] . m[1], mat),
-  print(i : i + 1, okay),
 
   m : errcatch(matrixfun(lambda([mat], 1/mat^2), mat)),
   okay : okay and if m = [ ] then member(0, s[1]) else xequal(m[1], mat^^-2),   
-  print(i : i + 1, okay),
 
   m : fullratsimp(matrixexp(mat,z) . matrixexp(mat, -z)),
   okay : okay and xequal(m, ident(n)),
-  print(i : i + 1, okay),
 
   m : matrixexp(mat,z),
   okay : okay and xequal(diff(m,z) - m . mat, zeromatrix(n,n)),
-  print(i : i + 1, okay),
 
   okay), 0);
 0$
