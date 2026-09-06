@@ -26,6 +26,8 @@
   
 (in-package :maxima)
 
+(declare-top (special $matrix_elmement_mult $matrix_elmement_add))
+
 ($put '$matrixexp 2026 '$version)
 
 ;; Standard environment and function for simplification in this package.
@@ -38,7 +40,7 @@
   (setq mat ($ratdisrep mat))
   (let (($ratmx nil) ($domain '$complex) ($gcd '$spmod) ($algebraic t) ($resultant '$subres) (ord) (zi)
 	($ratfac nil) (z (gensym)) (res) (m) (n ($length ($args mat))) 
-	(p) (p1) (p2) (sp) (proj))
+	(p) (p1) (p2) (sp) (proj) ($matrix_elmement_mult "*") ($matrix_elmement_add "+"))
 
     (setq p ($newdet (sub mat (mul z ($ident n)))))
     (if (oddp n) (setq p (mul -1 p)))
@@ -108,9 +110,11 @@
 ;; argument is optional and it defaults to 1.
 
 (defmfun $matrixexp (mat &optional (x 1))
-  (let (($ratmx nil) ($gcd '$spmod) (sp) (d) (p) (id) (n ($length ($args mat))) (f))
+  (let (($ratmx nil) ($gcd '$spmod) (sp) (d) (p) (id) (n ($length ($args mat))) (f)
+        ($matrix_elmement_mult "*") ($matrix_elmement_add "+"))
     ($ratvars)
     ($require_square_matrix mat '$first '$matrixexp)
+    ($require_unblockedmatrix mat '$first '$matrixexp)
     (setq mat ($spectral_rep mat))
     (setq sp ($first mat))
     (setq p ($second mat))
@@ -142,9 +146,11 @@
 
 (defmfun $matrixfun (lamexpr mat)
   (let (($gcd '$spmod) ($ratmx nil) (z (gensym)) (expr) (var) (sp) (d) (p) (di) 
-	(n ($length ($args mat))) (f 0))
+	      (n ($length ($args mat))) (f 0)  ($matrix_elmement_mult "*") ($matrix_elmement_add "+"))
 
     ($require_square_matrix mat '$second '$matrixexp)
+    ($require_unblockedmatrix mat '$second '$matrixexp)
+    
     (setq expr (require-lambda lamexpr 1 '$first '$matrixfun))
     (setq var (nth 0 (nth 0 expr)))
     (setq expr (nth 1 expr))
