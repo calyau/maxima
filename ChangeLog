@@ -91,6 +91,8 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
+* read_matrix and the other numericalio text readers are about twice as
+  fast on files of plain numbers
 * Bigfloat optimizations and less memory consumption
 * load() and batch() read wxMaxima .wxmx worksheets
 * A file that is being loaded finds the files beside it, as a C

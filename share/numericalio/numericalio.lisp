@@ -317,11 +317,146 @@
       (read-list stream-or-filename nil 'binary n))))
 
 (defun make-mlist-from-string (s sep-ch)
+  (or (fast-mlist-from-string s sep-ch)
+      (slow-mlist-from-string s sep-ch)))
+
+;; SCAN-ONE-TOKEN-G understands every Maxima expression there is, and a
+;; data file of plain numbers pays for all of it: it is where nearly the
+;; whole time of READ_MATRIX and the other text readers goes.  A line
+;; that holds nothing but numbers is therefore scanned here instead.
+;; Anything else -- a symbol, an expression, a bigfloat, a separator or
+;; a read base this does not handle -- makes FAST-MLIST-FROM-STRING
+;; return NIL, and the line is read by SLOW-MLIST-FROM-STRING below as
+;; it always was.  Both hand the characters of a number to
+;; READ-FROM-STRING the way MAKE-NUMBER (src/nparse.lisp) does, so the
+;; two cannot disagree about the value of one they both read.
+
+(defun fast-mlist-from-string (s sep-ch)
+  ;; The scan below reads digits and an exponent marker, which is what
+  ;; they mean in base ten and not necessarily in another base.
+  (when (eql *read-base* 10.)
+    (let ((separator (fast-separator-char sep-ch)))
+      (cond
+        ((null separator) nil)
+        ((eql separator #\space) (fast-whitespace-fields s))
+        (t (fast-separated-fields s separator))))))
+
+(defun fast-separator-char (sep-ch)
+  "The character GET-INPUT-SEP-CH's separator stands for, or NIL for one
+  this does not read."
+  (cond
+    ((eql sep-ch #\space) #\space)
+    ((eq sep-ch '$\,) #\,)
+    ((eq sep-ch '$\|) #\|)
+    ((eq sep-ch '$\;) #\;)
+    (t nil)))
+
+(defun fast-whitespace-fields (s)
+  "The whitespace separated numbers of S as a Maxima list, or NIL if S
+  holds anything else."
+  (let ((n (length s)) (i 0) (fields nil))
+    (loop
+      (loop while (and (< i n) (member (char s i) *whitespace-chars*))
+            do (incf i))
+      (when (>= i n)
+        (return (cons '(mlist) (nreverse fields))))
+      (let ((start i))
+        (loop while (and (< i n) (not (member (char s i) *whitespace-chars*)))
+              do (incf i))
+        (let ((value (scan-plain-number s start i)))
+          (when (null value)
+            (return nil))
+          (push value fields))))))
+
+(defun fast-separated-fields (s separator)
+  "The SEPARATOR separated numbers of S as a Maxima list, or NIL if S
+  holds anything else.  An empty field stands for no value, as it does
+  in the general reader below."
+  (let ((n (length s)) (start 0) (fields nil) (found nil))
+    (loop
+      (let* ((stop (position separator s :start start))
+             (end (or stop n)))
+        (if (fast-blank-p s start end)
+          (push nil fields)
+          (let ((value (scan-plain-number s (fast-skip-blanks s start end)
+                                          (fast-back-over-blanks s start end))))
+            (when (null value)
+              (return nil))
+            (setq found t)
+            (push value fields)))
+        (cond
+          (stop
+            (setq found t)
+            (setq start (1+ stop)))
+          (t
+            ;; A line with neither a number nor a separator is empty.
+            (return (if found (cons '(mlist) (nreverse fields)) '((mlist))))))))))
+
+(defun fast-blank-p (s start end)
+  (do ((i start (1+ i)))
+      ((>= i end) t)
+    (unless (member (char s i) *whitespace-chars*)
+      (return nil))))
+
+(defun fast-skip-blanks (s start end)
+  (do ((i start (1+ i)))
+      ((or (>= i end) (not (member (char s i) *whitespace-chars*))) i)))
+
+(defun fast-back-over-blanks (s start end)
+  (do ((i end (1- i)))
+      ((or (<= i start) (not (member (char s (1- i)) *whitespace-chars*))) i)))
+
+(defun scan-plain-number (s start end)
+  "The number S spells between START and END, read as MAKE-NUMBER would
+  read it, or NIL if what stands there is not a number this handles.  A
+  bigfloat is not: its value depends on FPPREC and on
+  $FAST_BFLOAT_CONVERSION, which is not something to reproduce here."
+  (let ((i start) (digits nil) (marker nil) (marker-index nil))
+    (when (and (< i end) (member (char s i) '(#\+ #\-)))
+      (incf i))
+    (loop while (and (< i end) (digit-char-p (char s i)))
+          do (setq digits t) (incf i))
+    (when (and (< i end) (char= (char s i) #\.))
+      (incf i)
+      (loop while (and (< i end) (digit-char-p (char s i)))
+            do (setq digits t) (incf i)))
+    (unless digits
+      (return-from scan-plain-number nil))
+    (when (< i end)
+      (setq marker (char s i))
+      (setq marker-index i)
+      (unless (member marker '(#\e #\E #\f #\F #\s #\S #\d #\D #\l #\L))
+        (return-from scan-plain-number nil))
+      (incf i)
+      (when (and (< i end) (member (char s i) '(#\+ #\-)))
+        (incf i))
+      (let ((exponent-digits nil))
+        (loop while (and (< i end) (digit-char-p (char s i)))
+              do (setq exponent-digits t) (incf i))
+        (unless exponent-digits
+          (return-from scan-plain-number nil))))
+    (unless (= i end)
+      (return-from scan-plain-number nil))
+    (let ((text (subseq s start end)))
+      ;; SCAN-DIGITS hands MAKE-NUMBER the exponent marker upper cased,
+      ;; and MAKE-NUMBER puts +FLONUM-EXPONENT-MARKER+ in its place, so
+      ;; that a number written with any marker is read as a flonum.  Do
+      ;; just that, or 1.5f2 would be read here as a single float while
+      ;; the general reader makes it a flonum.
+      (when marker
+        (setf (char text (- marker-index start)) +flonum-exponent-marker+))
+      (values (read-from-string text)))))
+
+(defun slow-mlist-from-string (s sep-ch)
   ; scan-one-token-g isn't happy with symbol at end of string.
   (setq s (concatenate 'string s " "))
 
   (with-input-from-string (*parse-stream* s)
     (let ((token) (L) (LL) (sign) (found-token) (found-sep))
+      ;; L, the fields of the line, and LL, the tokens of the field being
+      ;; read, are built up in reverse and turned around when the field
+      ;; and the line end.  Appending one token at a time instead copies
+      ;; the whole list per token, which costs a line of n fields O(n^2).
       (loop
         (setq token (scan-one-token-g t 'eof))
         (cond
@@ -331,10 +466,10 @@
               (format t "numericalio: trailing sign (~S) at end of line; strange, but just eat it.~%" sign)))
            (cond
              ((eql sep-ch #\space)
-              (return (cons '(mlist) LL)))
+              (return (cons '(mlist) (nreverse LL))))
              (t
                (if (or found-token found-sep)
-                 (return (cons '(mlist) (appropriate-append L LL)))
+                 (return (cons '(mlist) (nreverse (cons-appropriate-field LL L))))
                  ;; We reached EOF without encountering a token or a separator;
                  ;; this is an empty line.
                  (return '((mlist))))))))
@@ -349,22 +484,25 @@
             (cond
               ((eql sep-ch #\space)
                (setq found-token token)
-               (setq LL (append LL (list token))))
+               (push token LL))
               (t
                 (cond
                   ((eql token sep-ch)
                    (setq found-sep token)
-                   (setq L (appropriate-append L LL))
+                   (setq L (cons-appropriate-field LL L))
                    (setq LL nil))
                   (t
                     (setq found-token token)
-                    (setq LL (append LL (list token)))))))))))))
+                    (push token LL)))))))))))
 
-(defun appropriate-append (L LL)
+(defun cons-appropriate-field (LL L)
+  "Prefix onto the reversed field list L the field whose tokens are the
+  reversed list LL: no token stands for no value, one token for that
+  token, and more than one for a list of them."
   (cond
-    ((null LL) (append L '(nil)))
-    ((= (length LL) 1) (append L LL))
-    (t (append L (list (append '((mlist)) LL))))))
+    ((null LL) (cons nil L))
+    ((null (cdr LL)) (cons (car LL) L))
+    (t (cons (cons '(mlist) (reverse LL)) L))))
 
 ;; ----- begin backwards compatibility stuff ... sigh -----
 (defun $read_lisp_array (file-name A &optional sep-ch-flag)

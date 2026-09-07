@@ -724,3 +724,33 @@ read_from_string (read_nested_list, zz, 'comma);
  [888,999,1111,2222],
  [],
  []];
+
+/* A line that holds nothing but numbers is read without the general
+ * Maxima lexer.  Both readers must return the very same numbers, so
+ * compare with ?equal rather than =: a float of the wrong type would
+ * pass an = but not that.  A trailing symbol on the second copy of the
+ * line is what makes the general reader read the whole of it.
+ */
+
+(plain_line: "1 -2 +3 007 3.14 -0.5 +.25 .5 5. 1. -0.0 0.0 1e2 1E2 1e-2 1.5f2 1.5S2 1.5d2 1.5l2",
+ fast_row: first (read_from_string (read_matrix, plain_line)),
+ slow_row: rest (first (read_from_string (read_matrix, sconcat (plain_line, " zz"))), -1),
+ [?equal (fast_row, slow_row), length (fast_row)]);
+[true, 19];
+
+(plain_line: "1,-2,,3.5,1e2,,-0.0",
+ fast_row: first (read_from_string (read_matrix, plain_line, 'comma)),
+ slow_row: rest (first (read_from_string (read_matrix, sconcat (plain_line, ",zz"), 'comma)), -1),
+ [?equal (fast_row, slow_row), length (fast_row)]);
+[true, 7];
+
+/* A bigfloat depends on fpprec, so it is left to the general reader */
+read_from_string (read_matrix, "1.5b0 2b0");
+matrix ([1.5b0, 2.0b0]);
+
+/* A line that is not all numbers is read as it always was */
+read_from_string (read_matrix, "1 abc 3");
+matrix ([1, abc, 3]);
+
+(kill (plain_line, fast_row, slow_row), 0);
+0;
