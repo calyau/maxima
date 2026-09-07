@@ -2236,6 +2236,21 @@ ignoring dummy variables and array indices."
                                        (if (eq (ask-integer el '$even) '$yes)
                                            '$inf
                                            '$minf)))) ;Gotta be ODD.
+                               ;; A zero with no direction: The modulus of
+                               ;; BAS^EXPO still diverges. When a factor of BAS
+                               ;; has constant modulus and an ind limit and is
+                               ;; not shown real, the phase of BAS rotates, and
+                               ;; the power is infinity, as the infinity branch
+                               ;; of SIMPLIMTIMES concludes from such a factor.
+                               ((and (mtimesp bas)
+                                     (some #'(lambda (f)
+                                               (and (eq (limit f var val 'think)
+                                                        '$ind)
+                                                    (mnump (ftake 'mabs f))
+                                                    (member ($csign f)
+                                                            '($complex $imaginary))))
+                                           (cdr bas)))
+                                '$infinity)
                                (t (setq bas (behavior bas var val))
                                   (cond ((equal bas 1) '$inf)
                                         ((equal bas -1) '$minf)
@@ -2537,6 +2552,15 @@ ignoring dummy variables and array indices."
        (if (null zf)
            0
            (let ((sign (getsignl prod)))
+             ;; A factor with an ind limit is bounded but has no limit. It keeps
+             ;; the direction of the zero only when its sign is known, otherwise
+             ;; the sign of the product alternates, and only the zero survives.
+             (when (and ind-flag (fixnump sign))
+               (setq sign (case (and (freeof-extended-real ind-prod)
+                                     ($csign ind-prod))
+                            ($pos sign)
+                            ($neg (- sign))
+                            (t nil))))
              (if (or (not sign) (eq sign 'complex))
                  0
                  (ecase (* zf sign)
@@ -2686,7 +2710,9 @@ ignoring dummy variables and array indices."
 				(push ans undl))
 			  ((or (eq r '$minf) (eq r '$inf) (eq r '$infinity))
 			    (throw 'limit t))
-			  (t (push r sum))))
+			  ;; A finite limit, 0 included, condenses the ind terms.
+			  (r (push r sum)
+			     (setq indl nil))))
 	 ;; Add the members of the list sum.
 	 (setq sum (fapply 'mplus sum))
 
