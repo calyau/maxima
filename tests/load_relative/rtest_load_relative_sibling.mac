@@ -1,0 +1,5 @@
+/* Loaded by outer.mac without an extension, so that the search list's
+ * wildcard templates have to be tried beside the loading file.
+ */
+
+load_relative_sibling : 2$

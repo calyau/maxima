@@ -663,6 +663,29 @@
 ;; the empty parts are filled successively from defaults in templates in
 ;; the path.   A template may use multiple {a,b,c} constructions to indicate
 ;; multiple possibilities.  eg foo.l{i,}sp or foo.{dem,dm1,dm2}
+
+;; A file that is being loaded looks for its neighbours the way a C
+;; include directive does: TEMPLATES, moved to the directory of the file
+;; $LOAD_PATHNAME names, are searched before the search list proper.
+;; Only the name and type of each template are kept, so a template that
+;; descends into subdirectories does not do so here.  NIL when no file
+;; is being loaded, which is every interactive call.
+(defun load-relative-templates (templates)
+  (let ((loaded (and $load_pathname
+                     (ignore-errors (pathname $load_pathname)))))
+    (when loaded
+      ;; The search list names one directory after another with the same
+      ;; few extensions; beside the loaded file they all collapse into
+      ;; one template per extension.
+      (delete-duplicates
+        (mapcar #'(lambda (template)
+                    (let ((template (pathname template)))
+                      (make-pathname :name (pathname-name template)
+                                     :type (pathname-type template)
+                                     :defaults loaded)))
+                templates)
+        :test #'equal))))
+
 (defmfun $file_search (name &optional paths)
   (if (and (symbolp name)
 	   (char= (char (symbol-name name) 0) #\$))
@@ -672,7 +695,8 @@
   (or paths (setq paths ($append $file_search_lisp  $file_search_maxima
 				 $file_search_demo)))
   (atomchk paths '$file_search t)
-  (new-file-search (string name) (cdr paths)))
+  (new-file-search (string name)
+                   (append (load-relative-templates (cdr paths)) (cdr paths))))
 
 ;; Returns T if NAME exists and it does not appear to be a directory.
 ;; Note that Clisp throws an error from PROBE-FILE if NAME exists

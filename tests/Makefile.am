@@ -88,6 +88,6 @@ abcl-test.sh: test.sh Makefile
 endif
 
 genericdir = $(insttestsdir)
-genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp *.wxm wester_problems/*))
+genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp *.wxm load_relative/* wester_problems/*))
 
 EXTRA_DIST = $(genericdirDATA) test.sh.in

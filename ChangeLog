@@ -90,3 +90,5 @@ Changes in the Windows installer:
 Other changes:
 --------------
 * Bigfloat optimizations and less memory consumption
+* A file that is being loaded finds the files beside it, as a C
+  include directive does

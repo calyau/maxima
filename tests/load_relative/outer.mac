@@ -1,0 +1,8 @@
+/* Loaded by tests/rtest_load_relative.mac from a directory that is on
+ * none of the file search lists.  Both loads below can only succeed if
+ * a file that is being loaded is searched beside itself.
+ */
+
+load("rtest_load_relative_inner.mac")$
+
+load(rtest_load_relative_sibling)$
