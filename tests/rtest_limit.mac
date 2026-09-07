@@ -1608,6 +1608,26 @@ limit(abs(a+%i)*x, x, inf);
 inf;
 
 
+/* A vanishing factor times a bounded oscillating factor has no direction.
+   limit(atan2(x*sin(1/x), -1), x, 0, plus) gave %pi, and the reciprocal of
+   such a product with a rotating phase gave inf instead of infinity. */
+
+limit(atan2(x*sin(1/x), -1), x, 0, plus);
+ind;
+
+limit(atan2(-x*sin(1/x), -1), x, 0, plus);
+ind;
+
+limit(1/(x*sin(1/x)), x, 0, plus);
+und;
+
+limit(unit_step(x*sin(1/x)), x, 0, plus);
+ind;
+
+limit(1/(x*(-1)^(1/x)), x, 0, plus);
+infinity;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -80,6 +80,8 @@ Bug fixes for unnumbered bugs:
 ------------------------------
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
+* limit of a vanishing factor times a bounded oscillating factor keeps a
+  direction it does not have, so limit(atan2(x*sin(1/x),-1),x,0,plus) was %pi
 
 Changes in the Windows installer:
 ---------------------------------
