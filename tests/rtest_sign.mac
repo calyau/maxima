@@ -2473,6 +2473,18 @@ block([a, b],
 [];
 
 
+/* Bug #5235: "asksign(log(x) - log(x-y)) gives wrong answer" */
+
+[asksign(log(x) - log(x-y)), facts()], ask_hide_prompt; pos;
+[pos, [y > 0]]$
+
+asksign(log(x) - log(x-y)), ask_hide_prompt; neg;
+neg$
+
+asksign(log(x-y) - log(x)), ask_hide_prompt; pos;
+neg$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

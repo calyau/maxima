@@ -1611,8 +1611,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                       (alike1 (cadr lhs) rhs))
                  (setq sign '$pz minus nil odds nil evens nil) t)
                 ((signdiff-special lhs rhs))))))
+    ;; ODDS, EVENS and MINUS describe the swapped difference, so MINUS flips
+    ;; with SIGN.
     (if swapped
-      (setq sign (flip sign)))
+      (setq sign (flip sign) minus (not minus)))
     ;; The MABS clause above and SIGNDIFF-SPECIAL blank odds/evens on a weak
     ;; sign, which makes ASKSIGN1 ask about (LMUL NIL) = 1. Restore the whole
     ;; expression so the question (and any enclosing product) refers to X.
