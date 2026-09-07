@@ -336,6 +336,15 @@ search directories, which are specified by the
 before attempting to match it to ``wildcard'' file search patterns.
 See @mref{file_search_maxima} concerning file search patterns.
 
+While a file is being loaded, that is while @mref{load_pathname} names a file,
+@code{file_search} looks for @var{filename} in the directory of that file
+before it searches the path list.  A file that is loaded thus finds the files
+beside it whatever directory Maxima was started in, the way a C
+@code{#include "..."} directive does.  The search patterns of the path list
+are reused for that directory, so a neighbour is found under its base name
+alone as well as under its full name.  A file the name passed names outright
+still wins over both.
+
 The argument @var{filename} can be a path and file name, or just a file name,
 or, if a file search directory includes a file search pattern, just the base of
 the file name (without an extension).  For example,
@@ -581,7 +590,9 @@ The @mref{numericalio} chapter describes many functions
 for loading csv and other data files.
 
 During Maxima file loading, the variable @mref{load_pathname} is bound to the pathname of the file
-being loaded.
+being loaded.  A @code{load} inside the file being loaded therefore searches
+the directory of that file before the usual search lists; see
+@mrefdot{file_search}
 
 @code{load} evaluates its argument.
 

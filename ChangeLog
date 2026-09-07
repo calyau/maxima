@@ -93,3 +93,5 @@ Other changes:
 --------------
 * Bigfloat optimizations and less memory consumption
 * load() and batch() read wxMaxima .wxmx worksheets
+* A file that is being loaded finds the files beside it, as a C
+  include directive does

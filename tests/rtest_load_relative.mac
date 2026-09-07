@@ -1,0 +1,26 @@
+/* A file that is being loaded finds its neighbours: the loads in
+ * tests/load_relative/outer.mac name files that sit beside it in a
+ * directory on none of the file search lists.
+ */
+
+(kill(all), 0);
+0$
+
+(load_relative_dir : sconcat(pathname_directory(file_search(rtest_load_relative,
+                                                            file_search_tests)),
+                             "load_relative/"),
+ 0);
+0$
+
+(load(sconcat(load_relative_dir, "outer.mac")),
+ [load_relative_inner, load_relative_sibling]);
+[1, 2]$
+
+/* The control: that directory is on no search list, so outside a load
+ * nothing reaches the files the loads above found.
+ */
+file_search("rtest_load_relative_inner.mac");
+false$
+
+(remvalue(load_relative_dir, load_relative_inner, load_relative_sibling), 0);
+0$
