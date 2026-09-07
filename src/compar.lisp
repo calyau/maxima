@@ -2047,7 +2047,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		  (setq sign '$pnz))))
 	  ((ratnump expt)
 	   (cond ((mevenp (cadr expt))
-		  (cond ((member sign-base '($pn $neg) :test #'eq)
+		  (cond ((and (eq $domain '$complex) (eq sign-base '$neg))
+			 ;; With domain : complex, a negative base raised to a non-integer
+			 ;; rational power is on the principal branch, which is never real.
+			 ;; With domain : real, Maxima takes the real root instead,
+			 ;; as (-8)^(2/3) simplifies to 4.
+			 (imag-err x))
+			((member sign-base '($pn $neg) :test #'eq)
 			 (setq sign-base '$pos))
 			((member sign-base '($pnz $nz) :test #'eq)
 			 (setq sign-base '$pz)))
