@@ -76,6 +76,7 @@ Bug fixes for numbered bugs:
 * \#5229 Variables a and z leak into derivative of gamma_incomplete
 * \#5231 conjugate of acot, asinh, acosh, asech, acsch, acoth always noun-form
 * \#5235 asksign(log(x) - log(x-y)) gives wrong answer
+* \#5236 asksign(x*atan(x)) asks if x^2 is positive, negative(!) or zero
 
 Bug fixes for unnumbered bugs:
 ------------------------------

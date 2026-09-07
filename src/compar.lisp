@@ -1532,7 +1532,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun sign-mtimes (x)
   (setq x (cdr x))
-  (do ((s '$pos) (m) (o) (e)) ((null x) (setq sign s minus m odds o evens e))
+  (do ((s '$pos) (m) (o) (e)) ((null x) (sign-mtimes-finish s m o e))
     (sign1 (car x))
     (cond ((eq sign '$zero) (return t))
 	  ((and *complexsign* (eq sign '$complex))
@@ -1561,6 +1561,31 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	   (setq s '$nz))
 	  (t (setq s '$pnz)))
     (setq x (cdr x))))
+
+;; Store the sign of a product, from the accumulators of SIGN-MTIMES.
+;; Two ALIKE1 members of O, the factors of unknown sign, combine to a square and
+;; belong in E, so do a member and its negative, with the sign flipped.
+;; With nothing left in O, the product is a square times a known sign, which
+;; makes x*atan(x) >= 0, and (a-b)*(atan(a)-atan(b)) as well, since both factors
+;; leave a-b in O. ASKSIGN then asks whether the paired factor is zero.
+(defun sign-mtimes-finish (s m o e)
+  (when (member s '($pnz $pz $nz $pn))
+    (let ((rest nil))
+      (loop while o do
+        (let ((a (pop o)))
+          (cond ((member a o :test #'alike1)
+                 (setq o (remove a o :test #'alike1 :count 1))
+                 (push a e))
+                ((member a o :test #'(lambda (u w) (alike1 (neg u) w)))
+                 (setq o (remove (neg a) o :test #'alike1 :count 1)
+                       m (not m))
+                 (push a e))
+                (t (push a rest)))))
+      (setq o (nreverse rest))
+      (when (and (null o) e)
+        (let ((base (if (eq s '$pn) '$pos '$pz)))
+          (setq s (if m (flip base) base))))))
+  (setq sign s minus m odds o evens e))
 
 (defun sign-mplus (x &aux s o e m)
   (cond ((signdiff x))

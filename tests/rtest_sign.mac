@@ -2476,13 +2476,61 @@ block([a, b],
 /* Bug #5235: "asksign(log(x) - log(x-y)) gives wrong answer" */
 
 [asksign(log(x) - log(x-y)), facts()], ask_hide_prompt; pos;
-[pos, [y > 0]]$
+[pos, [y > 0]];
 
 asksign(log(x) - log(x-y)), ask_hide_prompt; neg;
-neg$
+neg;
 
 asksign(log(x-y) - log(x)), ask_hide_prompt; pos;
-neg$
+neg;
+
+
+/* Bug #5236: "asksign(x*atan(x)) asks if x^2 is positive, negative(!) or zero" */
+
+sign(x*atan(x));
+pz;
+
+sign(x*sinh(x));
+pz;
+
+sign(x*erf(x));
+pz;
+
+sign(x*signum(x));
+pz;
+
+sign(-x*atan(x));
+nz;
+
+sign(x^3*atan(x));
+pz;
+
+sign(x*y*atan(x)*atan(y));
+pz;
+
+sign(x*abs(x));
+pnz;
+
+sign((x-y)*(y-x));
+nz;
+
+sign((a-b)*(atan(a) - atan(b)));
+pz;
+
+block([x], local(x), assume(x > -1), sign(x*log(x+1)));
+pz;
+
+block([x], local(x), assume(notequal(x, 0)), sign(x*atan(x)));
+pos;
+
+asksign(x*atan(x)), ask_hide_prompt; zero;
+zero;
+
+asksign(x*atan(x)), ask_hide_prompt; nonzero;
+pos;
+
+asksign(-x*atan(x)), ask_hide_prompt; nonzero;
+neg;
 
 
 /**************************************/
