@@ -95,15 +95,20 @@
       (batchload-stream filename-or-stream)
     (let
       ((filename ($file_search1 filename-or-stream '((mlist) $file_search_maxima))))
-      (with-open-file (in-stream filename)
-        (batchload-stream in-stream)))))
+      (if (wxmx-file-p filename)
+        (with-input-from-string (in-stream (wxmx-input-string filename))
+          (batchload-stream in-stream :truename (namestring filename)))
+        (with-open-file (in-stream filename)
+          (batchload-stream in-stream))))))
 
-(defun batchload-stream (in-stream &key autoloading-p)
+(defun batchload-stream (in-stream &key autoloading-p truename)
   (let ($load_pathname)
     (let*
       ((noevalargs nil)
        (*read-base* 10.)
-       (stream-truename (get-stream-truename in-stream))
+       ;; A .wxmx worksheet is read from a string stream, which has no
+       ;; truename of its own; TRUENAME names the worksheet it came from.
+       (stream-truename (or truename (get-stream-truename in-stream)))
        (in-stream-string-rep
         (if stream-truename
           (setq $load_pathname (cl:namestring stream-truename))
@@ -171,7 +176,14 @@
     (list '(mlist) "l" "lsp" "lisp"))
 
 (defmvar $file_type_maxima
-    (list '(mlist) "mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt" "wxm"))
+    (list '(mlist) "mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt" "wxm"
+          "wxmx"))
+
+;; A wxMaxima .wxmx worksheet is a Maxima batch file wrapped in a .zip
+;; container, so $FILE_TYPE calls it maxima and $LOAD batches it -- but
+;; it has to be unwrapped first (src/wxmx.lisp).
+(defmvar $file_type_wxmx
+    (list '(mlist) "wxmx"))
 
 (defmfun $file_type (fil)
   (let ((typ ($pathname_type fil)))
@@ -194,6 +206,10 @@
 (defmfun $pathname_type (path)
   (let ((pathname (pathname path)))
     (pathname-type pathname)))
+
+(defun wxmx-file-p (filename)
+  "Does FILENAME name a wxMaxima .wxmx worksheet?"
+  (member ($pathname_type filename) (cdr $file_type_wxmx) :test #'string=))
   
 
 ;; Following GENERIC-AUTOLOAD is copied from orthopoly/orthopoly-init.lisp.
@@ -259,6 +275,9 @@
       (cond
         ((eq demo :test)
          (test-batch filename nil :show-all t))
+        ((wxmx-file-p filename)
+          (with-input-from-string (in-stream (wxmx-input-string filename))
+            (batch-stream in-stream demo :truename (namestring filename))))
         (t
           (with-open-file (in-stream filename)
             (batch-stream in-stream demo)))))))
@@ -269,12 +288,12 @@
 		    filename '$file_search_demo))
     ($batch tem	'$demo)))
 
-(defun batch-stream (in-stream demo)
+(defun batch-stream (in-stream demo &key truename)
   (declare (special $batch_answers_from_file))
   (let ($load_pathname)
     (let*
       ((*read-base* 10.)
-      (stream-truename (get-stream-truename in-stream))
+      (stream-truename (or truename (get-stream-truename in-stream)))
        (in-stream-string-rep
         (if stream-truename
           (setq $load_pathname (cl:namestring stream-truename))
