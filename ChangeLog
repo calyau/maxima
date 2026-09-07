@@ -90,3 +90,4 @@ Changes in the Windows installer:
 Other changes:
 --------------
 * Bigfloat optimizations and less memory consumption
+* load() and batch() read wxMaxima .wxmx worksheets

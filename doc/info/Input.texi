@@ -148,6 +148,10 @@ useful, when writing a test file.
 A suitable input file may be created by a text editor or by the
 @mref{stringout} function.
 
+@var{filename} may also be a wxMaxima worksheet, that is a file with the
+extension @code{wxmx}.  Then @code{batch} reads the input cells of the
+worksheet and ignores the rest of it, as @mref{load} does; see @mrefdot{load}
+
 @code{batch} reads each input expression from @var{filename}, displays
 the input to the console, computes the corresponding output expression,
 and displays the output expression. Input labels are assigned to the
@@ -518,7 +522,7 @@ See also @mrefdot{file_type}
 @c -----------------------------------------------------------------------------
 @anchor{file_type_maxima}
 @defvr {Option variable} file_type_maxima
-Default value:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt, wxm]}
+Default value:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt, wxm, wxmx]}
 
 @code{file_type_maxima} is a list of file extensions that maxima recognizes
 as denoting a Maxima source file.
@@ -551,6 +555,19 @@ files and @mref{batchload} to load Maxima files.
 while processing @var{filename}, the global variables @code{_}, @code{__},
 @code{%}, and @code{%th} have whatever bindings they had when @code{load} was
 called.
+
+A wxMaxima worksheet, that is a file with the extension @code{wxmx}, is loaded
+as a Maxima file: @code{load} evaluates the input cells of the worksheet, in
+the order the worksheet has them, and ignores everything else it holds --- the
+title, section and text cells, and the output wxMaxima stored with the input.
+The answers a worksheet may have recorded for questions @mref{asksign} and
+friends asked are not replayed either; a worksheet that asks a question asks it
+again while it is loaded.
+
+A @code{wxmx} file is a @code{zip} container, but @code{load} reads it without
+a @code{zip} decompressor, because wxMaxima stores the worksheet itself
+uncompressed.  Should a worksheet ever be met whose text part is compressed,
+@code{load} says so instead of loading part of it.
 
 Note also that structures will only be read back as structures if
 they have been defined by @code{defstruct} before the @code{load} command

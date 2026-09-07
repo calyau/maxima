@@ -1,0 +1,49 @@
+/* Loading a wxMaxima .wxmx worksheet.  The worksheet read here,
+ * rtest_wxmx_data.wxmx, holds the input cells the tests below expect
+ * plus a title cell, two text cells and one stored output cell, none of
+ * which are input.
+ */
+
+(kill(all), 0);
+0$
+
+(load(file_search(rtest_wxmx_data, file_search_tests)), 0);
+0$
+
+wxmx_test_a;
+42$
+
+/* A cell whose input spans several lines */
+wxmx_test_f(3);
+10$
+
+/* A cell wxMaxima wrote as one <line> element per line */
+wxmx_test_l;
+[1, 2, 3]$
+
+/* The XML escapes of the input come back as the characters they stand
+ * for, and only once: &amp;notarealentity; is text, not a reference.
+ */
+wxmx_test_s;
+"a < b & c > d \"e\" 'f' &notarealentity;"$
+
+/* The same character written as UTF-8, as a hexadecimal and as a
+ * decimal character reference
+ */
+[is(wxmx_test_u[1] = wxmx_test_u[2]), is(wxmx_test_u[2] = wxmx_test_u[3])];
+[true, true]$
+
+/* The title, text and output cells of the worksheet are not input */
+wxmx_test_leak;
+wxmx_test_leak$
+
+/* batch reads a worksheet as well */
+(kill(wxmx_test_a), batch(file_search(rtest_wxmx_data, file_search_tests)),
+ wxmx_test_a);
+42$
+
+file_type("worksheet.wxmx");
+maxima$
+
+(kill(wxmx_test_a, wxmx_test_f, wxmx_test_l, wxmx_test_s, wxmx_test_u), 0);
+0$

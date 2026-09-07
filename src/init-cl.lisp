@@ -203,7 +203,7 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
   $file_search_demo, $file_search_usage, and $file_search_test."
   (let* ((ext (pathname-type (compile-file-pathname "foo.lisp")))
 	 (lisp-patterns (list ext "lisp"))
-	 (maxima-patterns '("mac" "wxm"))
+	 (maxima-patterns '("mac" "wxm" "wxmx"))
 	 (lisp+maxima-patterns (append lisp-patterns maxima-patterns))
 	 (demo-patterns '("dem" "demo"))
 	 (usage-patterns '("usg")))
