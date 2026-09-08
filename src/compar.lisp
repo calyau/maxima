@@ -1469,7 +1469,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '%asin 'sign-asin/acos/atanh)
 	 (list '%acosh 'sign-acosh)
 	 (list '%atanh 'sign-asin/acos/atanh)
-
+	 (list '%asec 'sign-asec/acsc/asech/acoth)
+	 (list '%acsc 'sign-asec/acsc/asech/acoth)
+	 (list '%asech 'sign-asec/acsc/asech/acoth)
+	 (list '%acoth 'sign-asec/acsc/asech/acoth)
 	 (list '%signum #'(lambda (x) (sign (cadr x))))
 	 (list '%erf #'(lambda (x) (sign (cadr x))))
 	 (list '$li #'(lambda (x) 
@@ -2153,6 +2156,25 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (sign-posfun x))
 	(t ; x >= 1
 	 (setq sign '$pz))))
+
+;; The functions asec, acsc, asech and acoth are reciprocal argument forms of
+;; functions that already have a sign function: asec(x) = acos(1/x),
+;; acsc(x) = asin(1/x), asech(x) = acosh(1/x) and acoth(x) = atanh(1/x).
+;;
+(defun sign-asec/acsc/asech/acoth (x)
+  (if (zerop1 (cadr x))
+    ;; Of these four, acoth(0) = %i*%pi/2 is the only one defined at zero.
+    ;; The others should have been caught by the simplifier already before
+    ;; reaching this code, but better safe than sorry. At zero, there's a
+    ;; division by zero in their logarithmic form, so use DBZS-ERR.
+    (if (eq (caar x) '%acoth)
+      (if *complexsign*
+        (setq sign '$imaginary)
+        (imag-err x))
+      (dbzs-err x))
+    ;; Not zero. Rewrite asec(x) = acos(1/x) etc., and call SIGN on that.
+    (let ((f (get (get (get (caar x) '$inverse) 'recip) '$inverse)))
+      (sign (ftake f (inv (cadr x)))))))
 
 ;; This code handles sign(sin(x)), where -%pi <= x <= %pi. Of course, at the 
 ;; expense of a great deal of additional complexity, this code could catch far 

@@ -74,6 +74,7 @@ Bug fixes for numbered bugs:
 * \#5225 abs(x)^(2/3) becomes x^(2/3) with domain : complex
 * \#5228 rectform doesn't check "real" declaration on subscripted functions
 * \#5229 Variables a and z leak into derivative of gamma_incomplete
+* \#5230 csign of asec, acsc, asech, acoth reported real when complex
 * \#5231 conjugate of acot, asinh, acosh, asech, acsch, acoth always noun-form
 * \#5233 sign of odd root raised to even power under domain : complex
 * \#5235 asksign(log(x) - log(x-y)) gives wrong answer

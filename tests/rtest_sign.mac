@@ -2573,6 +2573,41 @@ block([b, domain : complex],
 [pos, pos];
 
 
+/* Bug #5230: "csign of asec, acsc, asech, acoth reported real when complex" */
+
+[csign(asec(1/2)), csign(acsc(1/2)), csign(acoth(1/2)), csign(asech(2))];
+[complex, complex, complex, complex];
+
+[csign(acos(2)), csign(asin(2)), csign(atanh(2)), csign(acosh(1/2))];
+[complex, complex, complex, complex];
+
+[csign(asech(-1/2)), csign(asech(-2))];
+[complex, complex];
+
+[csign(asec(2)), csign(asec(-2)), csign(acsc(2)), csign(acsc(-2))];
+[pos, pos, pos, neg];
+
+[csign(acoth(3)), csign(acoth(-3)), csign(asech(1/2))];
+[pos, neg, pos];
+
+block([b],
+ local(b),
+ [csign(asec(b)), csign(acsc(b)), csign(acoth(b)), csign(asech(b))]);
+[complex, complex, complex, complex];
+
+block([b],
+ local(b),
+ assume(b > 1),
+ [csign(asec(b)), csign(acsc(b)), csign(acoth(b)), csign(asech(b))]);
+[pos, pos, pos, complex];
+
+block([b],
+ local(b),
+ assume(b > 0, b < 1),
+ [csign(asech(b)), csign(asec(b))]);
+[pos, complex];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
