@@ -77,6 +77,7 @@ Bug fixes for numbered bugs:
 * \#5230 csign of asec, acsc, asech, acoth reported real when complex
 * \#5231 conjugate of acot, asinh, acosh, asech, acsch, acoth always noun-form
 * \#5233 sign of odd root raised to even power under domain : complex
+* \#5234 sign of odd root of negative number under domain : complex
 * \#5235 asksign(log(x) - log(x-y)) gives wrong answer
 * \#5236 asksign(x*atan(x)) asks if x^2 is positive, negative(!) or zero
 * \#5237 limit(atan2(x*sin(1/x), -1), x, 0, plus) gives %pi

@@ -2419,8 +2419,8 @@ block([b, domain : complex],
 block([b, domain : complex],
  local(b),
  assume(b < 0),
- sign(b^(1/3)));
-neg;
+ csign(b^(1/3)));
+complex;
 
 block([u],
  local(u),

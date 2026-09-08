@@ -100,6 +100,9 @@
   "Pairs of declarations that cannot both hold, excluding those that the
   inferencing engine can detect")
 
+(defvar *compsplt-for-sign* nil
+  "T only while COMPSPLT is splitting in order to derive a sign")
+
 ;; Remove this (nil'ed out) function after a while.  We should be
 ;; using POWER instead of POW.
 #+nil
@@ -1413,7 +1416,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		  (t (setq sign '$pnz evens nil odds (ncons x) minus nil)
 		     (return sign)))))
      (or (and (not (atom x)) (not (mnump x)) (equal x exp)
-	      (let (s o e m)
+	      (let (s o e m (*compsplt-for-sign* t))
                 (with-compsplt (lhs rhs x)
                   (dcompare lhs rhs)
                   (cond ((member sign '($pos $neg) :test #'eq))
@@ -2049,19 +2052,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		 ((eq sign-base '$nz)
 		  (setq sign '$pnz))))
 	  ((ratnump expt)
-	   (cond ((mevenp (cadr expt))
-		  (cond ((and (eq $domain '$complex) (eq sign-base '$neg))
+	   (cond ((and (eq $domain '$complex) (eq sign-base '$neg))
 			 ;; With domain : complex, a negative base raised to a non-integer
 			 ;; rational power is on the principal branch, which is never real.
 			 ;; With domain : real, Maxima takes the real root instead,
-			 ;; as (-8)^(2/3) simplifies to 4.
+			 ;; as (-8)^(1/3) simplifies to -2.
 			 (imag-err x))
-			((member sign-base '($pn $neg) :test #'eq)
+		 ((mevenp (cadr expt))
+		  (cond ((member sign-base '($pn $neg) :test #'eq)
 			 (setq sign-base '$pos))
 			((member sign-base '($pnz $nz) :test #'eq)
 			 (setq sign-base '$pz)))
-		  (setq evens (nconc odds evens)
-			odds nil minus nil))
+		  (setq evens (nconc odds evens) odds nil minus nil))
 		 ((mevenp (caddr expt))
 		  (cond (*complexsign*
 			 (when (not (member sign-base '($pos $pz)))
@@ -3145,7 +3147,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (if (mexptp x)
     (let ((base (cadr x)) (exponent (caddr x)))
       (cond ((or (eq (evod exponent) '$odd)
-		 (and (not (and *complexsign* (eq $domain '$complex)))
+		 (and (not (and *compsplt-for-sign* (eq $domain '$complex)))
 		      (eq (evod (inv exponent)) '$odd)))
 	     base)
 	    ((negp exponent) (inv x))
