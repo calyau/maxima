@@ -89,6 +89,7 @@ Bug fixes for unnumbered bugs:
 ------------------------------
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
+* various merror calls were missing arguments
 
 Changes in the Windows installer:
 ---------------------------------
