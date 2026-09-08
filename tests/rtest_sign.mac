@@ -2608,6 +2608,39 @@ block([b],
 [pos, complex];
 
 
+/* Bug #5238: "sign(signum(x) - a) says pn" */
+
+sign(signum(x) - a);
+pnz;
+
+[sign(1 - erf(x)),
+ sign(erf(x) + 1),
+ sign(1 - tanh(x)),
+ sign(tanh(x) + 1),
+ sign(%pi/2 - atan(x)),
+ sign(atan(x) + %pi/2),
+ sign(atan(x) - 2),
+ sign(erf(x) - 1/2)];
+[pos, pos, pos, pos, pos, pos, neg, pnz];
+
+[sign(erfc(x)),
+ sign(erfc(x) - 2),
+ sign(2 - erfc(x)),
+ sign(sin(x) - 1),
+ sign(cosh(x) - 1),
+ sign(sech(x) - 2),
+ sign(signum(x) - 1/2)];
+[pos, neg, pos, nz, pz, neg, pn];
+
+block([b],
+ local(b),
+ assume(b >= 1),
+ [sign(sin(x) - b),
+  sign(sech(x) - b),
+  sign(b - cos(x))]);
+[nz, nz, pz];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

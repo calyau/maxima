@@ -81,6 +81,7 @@ Bug fixes for numbered bugs:
 * \#5235 asksign(log(x) - log(x-y)) gives wrong answer
 * \#5236 asksign(x*atan(x)) asks if x^2 is positive, negative(!) or zero
 * \#5237 limit(atan2(x*sin(1/x), -1), x, 0, plus) gives %pi
+* \#5238 sign(signum(x) - a) says pn
 
 Bug fixes for unnumbered bugs:
 ------------------------------

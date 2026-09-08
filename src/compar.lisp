@@ -1482,6 +1482,37 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			(let ((z (first (margs x))) (n (cadadr x)))
 			  (if (and (mnump n) (eq t (mgrp z 0)) (eq t (mgrp 1 z))) (sign z) (sign-any x)))))))
 
+;; The REAL-RANGE property of a function that is real for every real
+;; argument: The bounds of its values as a list (LO HI), each end NIL for no
+;; bound, else (BOUND INCLUSIVE-P), where BOUND is in simplified form and
+;; INCLUSIVE-P indicates whether the bound can actually be attained.
+;; A bound is not required to be tight, only true. SIGNDIFF-SPECIAL reads it to
+;; compare f(x)-c with zero, through SIGN-FROM-RANGE.
+(mapc #'(lambda (s) (putprop (first s) (second s) 'real-range))
+  '((%sin ((-1 t) (1 t)))
+    (%cos ((-1 t) (1 t)))
+    (%signum ((-1 t) (1 t)))
+    (%cosh ((1 t) nil))
+    (%sech ((0 nil) (1 t)))
+    (%erf ((-1 nil) (1 nil)))
+    (%erfc ((0 nil) (2 nil)))
+    (%tanh ((-1 nil) (1 nil)))
+    (%atan ((((mtimes simp) ((rat simp) -1 2) $%pi) nil)
+            (((mtimes simp) ((rat simp) 1 2) $%pi) nil)))))
+
+;; The sign of f-C for a function f whose values lie in RANGE, see the
+;; REAL-RANGE property, or NIL when the range does not decide it.
+(defun sign-from-range (range c)
+  (destructuring-bind (lo hi) range
+    (or (and lo
+             (case (sign* (sub c (car lo)))
+               ($neg '$pos)
+               (($zero $nz) (if (cadr lo) '$pz '$pos))))
+        (and hi
+             (case (sign* (sub c (car hi)))
+               ($pos '$neg)
+               (($zero $pz) (if (cadr hi) '$nz '$neg)))))))
+
 (defun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
 	((and *complexsign* (symbolp x) (eq x '$%i))
@@ -1700,64 +1731,29 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		   (eq (sign* (sub (caddr xlhs) (caddr xrhs))) '$pos)))
       (setq sgn '$pos))
     
-    ;; For the following test, swap XLHS and XRHS, if necessary, so that XLHS
-    ;; is one of the operators that we can handle, and remember to flip the result.
-    (let ((operators '(%sin %cos %cosh %sech %signum mabs)))
-      (when (and (not (atom xrhs))
-                 (member (caar xrhs) operators :test #'eq)
-                 (or (atom xlhs)
-                     (not (member (caar xlhs) operators :test #'eq))))
+    ;; Swap XLHS and XRHS, if necessary, so that XLHS is the function with a
+    ;; known range, or the abs for the clause further below, and remember to
+    ;; flip the result.
+    (flet ((ranged-p (e)
+             (and (not (atom e))
+                  (or (get (caar e) 'real-range) (eq (caar e) 'mabs)))))
+      (when (and (ranged-p xrhs) (not (ranged-p xlhs)))
         (psetq xlhs xrhs xrhs xlhs flip-sign (not flip-sign))))
-    
-    ;; sign(sin(x)+c)
-    (when (and (not (atom xlhs))
-	       (member (caar xlhs) '(%sin %cos))
-	       (zerop1 ($imagpart (cadr xlhs))))
-      (cond ((eq (sign* (add xrhs 1)) '$neg)	;; c > 1
-	     (setq sgn '$pos))
-	    ((eq (sign* (add xrhs -1)) '$pos)	;; c < -1
-	     (setq sgn '$neg))
-		((zerop1 (add xrhs 1))				;; c = 1
-	     (setq sgn '$pz))
-		((zerop1 (add xrhs -1))				;; c = -1
-		 (setq sgn '$nz))))
-    
-    ;; sign(cosh(x)+c)
-    (when (and (not (atom xlhs))
-               (eq (caar xlhs) '%cosh)
-               (zerop1 ($imagpart (cadr xlhs))))
-      (cond
-        ((eq (sign* (add xrhs -1)) '$neg)
-          (setq sgn '$pos))
-        ((zerop1 (add xrhs -1))
-          (setq sgn '$pz))))
 
-    ;; sign(sech(x)+c)
-    (when (and (not (atom xlhs))
-               (eq (caar xlhs) '%sech)
+    ;; sign(f(x) - c) for a function f whose REAL-RANGE property gives the
+    ;; bounds of its values.
+    (when (and (null sgn) (not (atom xlhs)) (get (caar xlhs) 'real-range)
                (zerop1 ($imagpart (cadr xlhs))))
-      (cond
-        ((eq (sign* (add xrhs -1)) '$pos)
-          (setq sgn '$neg))
-        ((zerop1 (add xrhs -1))
-          (setq sgn '$nz))))
-    
-    ;; sign(signum(x)+c)
-    (when (and (not (atom xlhs))
-	          (eq (caar xlhs) '%signum)
-	          (zerop1 ($imagpart (cadr xlhs))))
-      (cond ((eq (sign* (add xrhs 1)) '$neg) ;; c > 1
-	      (setq sgn '$pos))
-	    ((eq (sign* (add xrhs -1)) '$pos)	;; c < -1
-	      (setq sgn '$neg))
-		  ((zerop1 (add xrhs 1))  ;; c = 1
-	      (setq sgn '$pz))
-		  ((zerop1 (add xrhs -1))  ;; c = -1
-		    (setq sgn '$nz))
-      ((zerop1 xrhs)  ;; c = 0 (necessary?)
-        (setq sgn '$pnz))
-      (t  ;; -1 < c < 1, but c # 0
-        (setq sgn '$pn))))
+      (setq sgn (sign-from-range (get (caar xlhs) 'real-range) xrhs)))
+
+    ;; signum takes no value strictly between -1 and 1 but 0, so
+    ;; signum(x) - c is nonzero for a c known to lie there and to be nonzero.
+    (when (and (null sgn) (not (atom xlhs)) (eq (caar xlhs) '%signum)
+               (zerop1 ($imagpart (cadr xlhs)))
+               (eq (sign* (add xrhs 1)) '$pos)
+               (eq (sign* (sub 1 xrhs)) '$pos)
+               (member (sign* xrhs) '($pos $neg $pn)))
+      (setq sgn '$pn))
     
     ;; sign(abs(a) - b) = sign_max(sign(a - b), sign(-a - b)) with real a, real b
     (when (and (null sgn)
@@ -3345,6 +3341,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  (kind %coth $oddfun)
 	  (kind %csch $oddfun)
 	  (kind %sech $evenfun) (kind %sech $posfun)
+      (kind %erfc $posfun)
 	  (kind %asinh $increasing) (kind %asinh $oddfun)
 	  ;; It would be nice to say %acosh is $posfun, but then
 	  ;; assume(xn<0); abs(acosh(xn)) -> acosh(xn), which is wrong
