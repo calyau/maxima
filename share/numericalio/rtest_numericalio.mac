@@ -754,3 +754,92 @@ matrix ([1, abc, 3]);
 
 (kill (plain_line, fast_row, slow_row), 0);
 0;
+
+/* read_struct reads a source whose first line names the fields and
+ * whose later lines hold one value for each of them.  Each column comes
+ * back as one field of the structure returned.
+ */
+
+(ss: "t,U_In,U_Out
+0,0.0,0.1
+1,1.5,2.9
+2,3.0,5.8
+",
+ dd: read_from_string (read_struct, ss, 'measurement, 'comma),
+ [dd@t, dd@U_In, dd@U_Out]);
+[[0, 1, 2], [0.0, 1.5, 3.0], [0.1, 2.9, 5.8]];
+
+/* Without a separator flag a stream is read as whitespace separated */
+(dd: read_from_string (read_struct, "t U_In
+0 0.0
+1 1.5
+", 'measurement),
+ [dd@t, dd@U_In]);
+[[0, 1], [0.0, 1.5]];
+
+/* A heading in quotes names the same field as one written plainly */
+(d1: read_from_string (read_struct, "\"t\",\"U_In\"
+1,2
+", 'measurement, 'comma),
+ d2: read_from_string (read_struct, "t,U_In
+1,2
+", 'measurement, 'comma),
+ is (d1 = d2));
+true;
+
+/* An empty line is no row, which is what lets a file end in a newline */
+(dd: read_from_string (read_struct, "t,U_In
+1,2
+
+3,4
+
+", 'measurement, 'comma),
+ [dd@t, dd@U_In]);
+[[1, 3], [2, 4]];
+
+/* A line that does not hold one value for each field is an error */
+errcatch (read_from_string (read_struct, "t,U_In
+1,2
+3
+", 'measurement, 'comma));
+[];
+
+/* So is a first line that names one field twice */
+errcatch (read_from_string (read_struct, "t,t
+1,2
+", 'measurement, 'comma));
+[];
+
+/* So is a source with no first line to name the fields */
+errcatch (read_from_string (read_struct, "", 'measurement, 'comma));
+[];
+
+/* A source of nothing but a first line has every field empty */
+(dd: read_from_string (read_struct, "t,U_In
+", 'measurement, 'comma),
+ [dd@t, dd@U_In]);
+[[], []];
+
+/* Named by gensym, every call defines a structure of its own: read
+ * under one name, the structure read first would end up carrying the
+ * fields of the one read last, since the fields hang on the template
+ * the name carries.
+ */
+(d1: read_from_string (read_struct, "t,U_In
+1,2
+", 'comma),
+ d2: read_from_string (read_struct, "a,b,c
+1,2,3
+", 'comma),
+ [is (op (d1) # op (d2)), d1@t, d2@c]);
+[true, [1], [3]];
+
+/* Read from a file, the generated name carries the name of the file */
+(dd: read_struct (file_search ("rectangular.csv")),
+ [?search ("rectangular", sconcat (op (dd))), dd@XX, dd@KEY[1]]);
+[0, [7, 31, 61, 19, 13, 19, 16, 28, 10, 7], aa46];
+
+(apply (kill, [op (d1)]), apply (kill, [op (d2)]), apply (kill, [op (dd)]),
+ kill (measurement, ss, dd, d1, d2),
+ structures);
+[];

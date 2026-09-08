@@ -316,6 +316,125 @@
     (let ((n (car args)))
       (read-list stream-or-filename nil 'binary n))))
 
+;; ---- functions to read a structure
+
+;; The first line of the source names the fields and the lines after it
+;; hold one value per field, the shape a .csv file exported by a
+;; measuring instrument or a spreadsheet usually has.  READ_STRUCT
+;; gathers each column into a list and returns one structure whose
+;; fields are those lists, so that the column headed t is read back as
+;; data@t.
+
+(defun $read_struct (stream-or-filename &rest args)
+  (let ((name nil) (sep-ch-flag nil))
+    (dolist (arg args)
+      (if (read-struct-separator-flag-p arg)
+        (setq sep-ch-flag arg)
+        (setq name arg)))
+    (if (streamp stream-or-filename)
+      (read-struct-from-stream stream-or-filename sep-ch-flag
+                               (or name ($gensym "data")))
+      (let ((file-name (require-string stream-or-filename)))
+        (with-open-file (in
+                          #+sbcl (sb-ext:native-namestring file-name)
+                          #-sbcl file-name
+                          :if-does-not-exist nil)
+          (if (not (null in))
+            (read-struct-from-stream in sep-ch-flag
+                                     (or name (read-struct-default-name file-name)))
+            (merror "read_struct: no such file `~a'" file-name)))))))
+
+(defun read-struct-separator-flag-p (arg)
+  "Is ARG a separator flag, and not the name to give the structure?
+  The flags GET-OUTPUT-SEP-CH knows are reserved, so a structure cannot
+  be named after one of them without saying so."
+  (or (stringp arg)
+      (member arg '($space $tab $comma $pipe $semicolon $csv))))
+
+(defun read-struct-default-name (file-name)
+  "A name of its own for the structure read from FILE-NAME.  The fields
+  of a structure hang on the template its name carries, so two sources
+  read under one name would leave the structure read first with the
+  fields of the one read last; a fresh name per call cannot collide.
+  The name of the file is kept as the stem of it, to say where the
+  structure came from."
+  ($gensym (read-struct-name-stem file-name)))
+
+(defun read-struct-name-stem (file-name)
+  "The name of the file, with every character that cannot stand in a
+  Maxima name replaced by an underscore.  This has to answer something
+  usable whatever it is handed: PATHNAME-NAME gives a pattern object and
+  not a string for a name holding a wildcard character, a name of
+  nothing but punctuation leaves nothing to keep, and a name may begin
+  with a digit or run to any length."
+  (let ((base (ignore-errors (pathname-name (pathname file-name)))))
+    (unless (stringp base)
+      (setq base "data"))
+    (setq base (map 'string
+                    #'(lambda (c)
+                        (if (or (alphanumericp c) (char= c #\_)) c #\_))
+                    base))
+    (when (> (length base) 32)
+      (setq base (subseq base 0 32)))
+    (if (or (zerop (length base)) (digit-char-p (char base 0)))
+      (concatenate 'string "_" base)
+      base)))
+
+(defun read-struct-field-name (field)
+  "The name FIELD stands for, as a symbol.  A header written in quotes
+  arrives here as a string, one written plainly as a symbol already."
+  (cond
+    ((and (symbolp field) (not (null field))) field)
+    ((stringp field) (intern-invert-case (concatenate 'string "$" field)))
+    (t
+      (merror (intl:gettext "read_struct: ~M does not name a field; expected a symbol or a string.")
+              field))))
+
+(defun read-struct-repeated-name (fields)
+  "The first name FIELDS holds more than once, or NIL if it holds none."
+  (do ((rest fields (cdr rest)))
+      ((null rest) nil)
+    (when (member (car rest) (cdr rest))
+      (return (car rest)))))
+
+(defun read-struct-from-stream (in sep-ch-flag name)
+  (let* ((sep-ch (get-input-sep-ch sep-ch-flag in))
+         (header (read-line in nil 'eof)))
+    (when (eq header 'eof)
+      (merror (intl:gettext "read_struct: the source is empty; expected a first line naming the fields.")))
+    (let* ((fields (mapcar #'read-struct-field-name
+                           (cdr (make-mlist-from-string header sep-ch))))
+           (n (length fields))
+           (columns (make-list n))
+           (line-number 1))
+      (when (zerop n)
+        (merror (intl:gettext "read_struct: the first line of the source names no fields.")))
+      ;; Two fields of one name would leave the second unreachable: @
+      ;; finds a field by the first place its name has in the template.
+      (let ((repeated (read-struct-repeated-name fields)))
+        (when repeated
+          (merror (intl:gettext "read_struct: the first line of the source names ~M twice.")
+                  repeated)))
+      (loop
+        (let ((line (read-line in nil 'eof)))
+          (when (eq line 'eof)
+            (return))
+          (incf line-number)
+          (let ((values (cdr (make-mlist-from-string line sep-ch))))
+            ;; An empty line is no row, as it is none to READ_MATRIX;
+            ;; that is what lets a file end in a newline.
+            (unless (null values)
+              (unless (= (length values) n)
+                (merror (intl:gettext "read_struct: line ~M holds ~M values, but ~M fields were named.")
+                        line-number (length values) n))
+              ;; Each value is pushed onto its column, which is turned
+              ;; around once at the end.
+              (setq columns (mapcar #'cons values columns))))))
+      (defstruct1 (cons (list name) fields))
+      (cons (list name)
+            (mapcar #'(lambda (column) (cons '(mlist) (nreverse column)))
+                    columns)))))
+
 (defun make-mlist-from-string (s sep-ch)
   (or (fast-mlist-from-string s sep-ch)
       (slow-mlist-from-string s sep-ch)))
