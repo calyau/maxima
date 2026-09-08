@@ -810,7 +810,7 @@
 			   (ratqu lcm p))
 			  (t
 			   (list (r* (ratqu lcm p)
-				     (cons (list expg n 1) 1))
+				     (ratexpt (cons (list expg 1 1) 1) n))
 				 0))))))
      (go l3)
    down2
@@ -861,7 +861,7 @@
 		 ((null flag)
 		  (return (ratqu ytemp p)))
 		 (t
-		  (return (list (ratqu (r* ytemp (cons (list expg n 1) 1))
+		  (return (list (ratqu (r* ytemp (ratexpt (cons (list expg 1 1) 1) n))
 				       p)
 				0)))))
 	      ((null flag)
@@ -870,13 +870,13 @@
 		    $erfflag
 		    (equal (pdegree (car (get expg 'rischarg)) risch-mainvar) 2)
 		    (equal (pdegree (cdr (get expg 'rischarg)) risch-mainvar) 0))
-	       (return (list (ratqu (r* ytemp (cons (list expg n 1) 1)) p)
+	       (return (list (ratqu (r* ytemp (ratexpt (cons (list expg 1 1) 1) n)) p)
 			     (erfarg2 (r* n (get expg 'rischarg))
 				      ttemp risch-ratform risch-intvar risch-mainvar))))
 	      (t
 	       (return
 		 (cxerfarg
-		  (ratqu (r* risch-y (cons (list expg n 1) 1)) p)
+		  (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
 		  expg
 		  n
 		  (ratqu tt lcm)
@@ -1075,9 +1075,9 @@
 			 (ratqu risch-y p)
 			 nil)))
 	    ((rzerop tt)
-	     (return (cons (ratqu (r* risch-y (cons (list expg n 1) 1)) p) '(0))))
+	     (return (cons (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p) '(0))))
 	    (t
-	     (return (cxerfarg (ratqu (r* risch-y (cons (list expg n 1) 1)) p)
+	     (return (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
 			       expg
 			       n
 			       (ratqu tt lcm)
@@ -1109,7 +1109,7 @@
        (return (cond ((null flag)
 		      nil)
 		     (t
-		      (return (cxerfarg (ratqu (r* risch-y (cons (list expg n 1) 1)) p)
+		      (return (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
 					expg n (ratqu tt lcm)
 					risch-ratform risch-intvar risch-mainvar))))))
      (setq risch-y (r+ risch-y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu)))))
@@ -1125,10 +1125,10 @@
 		       (ratqu risch-y p))
 		      (t nil))))
        ((rzerop tt)
-	(return (cons (ratqu (r* risch-y (cons (list expg n 1) 1)) p)
+	(return (cons (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
 		      '(0))))
        (t
-	(return (cxerfarg (ratqu (r* risch-y (cons (list expg n 1) 1)) p)
+	(return (cxerfarg (ratqu (r* risch-y (ratexpt (cons (list expg 1 1) 1) n)) p)
 			  expg
 			  n
 			  (ratqu tt lcm)
@@ -1199,7 +1199,7 @@
        (go l3))
      (return (if (null flag)
 		 (ratqu risch-y p)
-		 (cons (r* (list expg n 1) (ratqu risch-y p)) '(0))))))
+		 (cons (r* (ratexpt (cons (list expg 1 1) 1) n) (ratqu risch-y p)) '(0))))))
 
 
 (defun erfarg (exparg coef risch-ratform risch-mainvar)

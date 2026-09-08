@@ -14,7 +14,7 @@ It asked is a pos answred yes
 kill(all);
 done;
 risch(x^2*erf(x),x);
-(%pi*x^3*erf(x)+(sqrt(%pi)*x^2+sqrt(%pi))*%e^-x^2)/(3*%pi);
+(%e^-x^2*(%e^x^2*%pi*x^3*erf(x)+sqrt(%pi)*x^2+sqrt(%pi)))/(3*%pi);
 ev(diff(%,x),ratsimp);
 x^2*erf(x);
 assume(a>0);

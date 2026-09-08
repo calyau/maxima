@@ -188,7 +188,7 @@ is(equal(limit(i,x,1,'minus), limit(i,x,1,'plus)));
 true$
 
 (i : integrate(abs(x^2-1)*exp(-x),x));
-(((-x^2-2*x-2)*%e^-x+%e^-x+4*%e^-1)*signum(x-1)+4*%e^-1)*signum(x+1)$
+(signum(x-1)*(-(%e^-x*(x^2+2*x+2))+%e^-x+4*%e^-1)+4*%e^-1)*signum(x+1);
 
 block([cntx : newcontext()],
    unwind_protect((assume(-1<x,x<1), i : expand(i,0,0), ratsimp(diff(i,x))), killcontext(cntx)));

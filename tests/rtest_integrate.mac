@@ -6143,9 +6143,9 @@ integrate(z*%e^(2*c*z)/(b*%e^(c*z)+a),z);
 
 /* Problem 794: OK */
 integrate(z*%e^-(2*c*z)/(b*%e^(c*z)+a),z);
--b^2*(log(%e^(c*z))*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(a^3*c^2)
- +b^2*log(%e^(c*z))^2/(2*a^3*c^2)
- +((4*b*c*z+4*b)*%e^-(c*z)+(-2*a*c*z-a)*%e^-(2*c*z))/(4*a^2*c^2)$
+(%e^-(2*c*z)*(%e^(c*z)*(4*b*c*z+4*b)-2*a*c*z-a))/(4*a^2*c^2)
+ -(b^2*(log(%e^(c*z))*log((%e^(c*z)*b)/a+1)+li[2](-((%e^(c*z)*b)/a))))/(a^3*c^2)
+ +(log(%e^(c*z))^2*b^2)/(2*a^3*c^2)$
 
 /* Problem 795: OK */
 integrate(z*%e^(c*z)/(b*%e^(c*z)+a),z);
@@ -6858,6 +6858,21 @@ integrate(acoth(x), x);
 x*acoth(x) + log(x^2-1)/2;
 
 imagpart(subst(x = 2, integrate(acoth(x), x)));
+0;
+
+
+/* Bug #5240: "Risch integrator drops negative powers of exponential" */
+
+block([f, F],
+ f : x*(%e^x+1)^2/%e^x + 1/(%e^x+1),
+ F : risch(f, x),
+ if freeof('integrate, F) then ratsimp(diff(F, x) - f) else 'fail);
+0;
+
+block([f, F],
+ f : x*cos(x)*log(cos(x)+1),
+ F : risch(f, x),
+ if freeof('integrate, F) then block([logexpand : all], ratsimp(exponentialize(diff(F, x) - f))) else 'fail);
 0;
 
 
