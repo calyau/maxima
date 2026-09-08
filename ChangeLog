@@ -83,6 +83,7 @@ Bug fixes for numbered bugs:
 * \#5237 limit(atan2(x*sin(1/x), -1), x, 0, plus) gives %pi
 * \#5238 sign(signum(x) - a) says pn
 * \#5240 Risch integrator drops negative powers of exponential
+* \#5241 Risch integrator drops algebraic unit from a denominator
 
 Bug fixes for unnumbered bugs:
 ------------------------------

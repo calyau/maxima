@@ -6876,6 +6876,21 @@ block([f, F],
 0;
 
 
+/* Bug #5241: "Risch integrator drops algebraic unit from a denominator" */
+
+block([f, F],
+ f : x*sin(x)*log(sin(x)+1),
+ F : risch(f, x),
+ if freeof('integrate, F) then block([exponentialize : true, logarc : true, logexpand : super], radcan(diff(F, x) - f)) else 'fail);
+0;
+
+block([f, F],
+ f : (x+%i)*(%e^x+1)^2/%e^x + 1/(%e^x+%i),
+ F : risch(f, x),
+ if freeof('integrate, F) then ratsimp(diff(F, x) - f) else 'fail);
+0;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
