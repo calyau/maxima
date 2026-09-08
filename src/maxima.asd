@@ -559,8 +559,9 @@
       (:file "macsys"
         :depends-on ("prompt-util" "suprv1"))
       (:file "testsuite")
+      (:file "wxmx")
       (:file "mload"
-        :depends-on ("prompt-util" "suprv1" "macsys" "testsuite"))
+        :depends-on ("prompt-util" "suprv1" "macsys" "testsuite" "wxmx"))
       (:file "mactex"
         :depends-on ("prompt-util" "suprv1"))
       (:file "dskfn"
