@@ -856,7 +856,7 @@
 	       (loop for v in dif-eqns
 		  collecting (setq tem (any-linearp v gg :variables-to-exclude newvar))
 		  when (null tem) do
-		    (merror "this equation contains no linear " (sh v))))))
+		    (merror "this equation contains no linear ~M" v)))))
   (setq other-variables (loop for v in *xxx*
 			   for i below dim
 			   when (not (member v variables :test #'eq))
