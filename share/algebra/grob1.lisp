@@ -647,7 +647,7 @@
 ;La avriete est vide(i.e. de dim. -1) si l'escalier est reduit au vecteur nul
 ;(monome constant)
 (defun dim-1 (esc)
-	(apply 'and (mapcar 'zerop (car esc))) )
+	(every 'zerop (car esc)) )
 
 ;La dimension est 0 si il y a un element de l'escalier sur chaque axe.
 ;On suppose la base reduite, ce qui implique qu'il n'y a pas 2 elements de 
@@ -685,8 +685,7 @@
 ;sousp est utilise par sous-esc pour tester si un monome est au sous
 ;l'escalier
 (defun sousp (mon esc)
-	(apply 'and
-	       (mapcar #'(lambda (u) (notdivmon mon u)) esc)))
+	(every #'(lambda (u) (notdivmon mon u)) esc))
 
 ;ICI, IL FAUT RANGER LE RESULTAT DE LA FONCTION PRECEDENTE POUR L'ORDRE
 ;COMPATIBLE CHOISI; CE RESULTAT EST UTILISE SOUS LE NOM DE basli
