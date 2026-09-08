@@ -93,7 +93,7 @@
 		    (t (setq current-pls new-pls)))
 	      (format t "~%Taking the ~A open with history " ii)
 	      (return 'done)
-	    else do (format t "~%The ~A open is empty")
+	    else do (format t "~%The ~A open is empty" ii)
 	    finally (return-from sue (append already-blown-up blew-up)))
        finally (return (list (append already-blown-up blew-up) i)))))
 
