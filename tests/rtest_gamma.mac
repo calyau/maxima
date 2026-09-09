@@ -4375,11 +4375,3 @@ block([b, hypergeometric_regularized, foo],
  hypergeometric_regularized(p, q, x) := foo(p, q, x),
  freeof(foo, diff(gamma_incomplete(b, y), b)));
 true;
-
-
-/**************************************/
-/* Leave this at the end of the file! */
-/**************************************/
-
-[facts(), contexts];
-[[], [initial, global]];

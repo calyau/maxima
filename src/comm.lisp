@@ -376,33 +376,37 @@
 	           (length (car grad))))
 	  (t
            (setq args (sdiffmap (cdr e) x))
-           (setq result
-                 (addn
-                   (mapcar 
-                     #'mul2
-                     (cdr 
-                       ;; Need to substitute in parallel to avoid trouble when
-                       ;; function arguments match the placeholder names of the
-                       ;; DEFGRAD expression.
-                       ($psubstitute
-                         (append '((mlist)) (mapcar #'(lambda (a b)
-                                                        (list '(mequal) a b))
-                                                    (car grad)
-                                                    (cdr e)))
-                         (do ((l1 (cdr grad) (cdr l1))
-                              (args args (cdr args)) 
-                              (l2))
-                             ((null l1) (cons '(mlist) (nreverse l2)))
-                           (setq l2
-                                 (cons (cond ((equal (car args) 0) 0)
-                                             ((functionp (car l1))
-                                              ;; Evaluate a lambda expression
-                                              ;; given as a derivative.
-                                              (apply (car l1) (cdr e)))
-                                             (t (car l1)))
-                                       l2)))))
-                     args)
-                   t))
+           ;; A derivative given as an expression is in the placeholder
+           ;; names of the DEFGRAD and gets the arguments substituted for
+           ;; them, in parallel, as an argument may itself be a placeholder
+           ;; name.  A derivative given as a function gets the arguments;
+           ;; its result is substituted into the same way, unless it is
+           ;; returned with a second value of T, which says that it was
+           ;; built from the arguments and is final.
+           (let ((subst (append '((mlist))
+                                (mapcar #'(lambda (a b) (list '(mequal) a b))
+                                        (car grad)
+                                        (cdr e)))))
+             (setq result
+                   (addn
+                     (mapcar
+                       #'mul2
+                       (do ((l1 (cdr grad) (cdr l1))
+                            (args args (cdr args))
+                            (l2))
+                           ((null l1) (nreverse l2))
+                         (setq l2
+                               (cons (cond ((equal (car args) 0) 0)
+                                           ((functionp (car l1))
+                                            (multiple-value-bind (d final)
+                                                (apply (car l1) (cdr e))
+                                              (if final
+                                                  d
+                                                  ($psubstitute subst d))))
+                                           (t ($psubstitute subst (car l1))))
+                                     l2)))
+                       args)
+                     t)))
            (if (or (null result) (not (freeof nil result)))
                ;; A derivative has returned NIL. Return a noun form.
                (if (not (depends e x))

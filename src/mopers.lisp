@@ -200,7 +200,9 @@
 ;;
 ;; The derivative forms can also be lambda's.  See gamma_incomplete.
 ;; But if the lambda also uses #$$...$, it MUST call meval* itself to
-;; make sure the result is appropriately simplified.
+;; make sure the result is appropriately simplified.  A lambda that
+;; builds its result from the actual arguments returns T as a second
+;; value, so that SDIFFGRAD substitutes nothing into it.
 
 (defmacro defgrad (name arguments &body body)
   "DEFGRAD defines derivatives for the function NAME having arguments ARGUMENTS.
@@ -218,7 +220,10 @@
   quoted list of the maxima internal representation of the derivative.
 
   The derivative may also be a lambda expression that returns the
-  derivative or NIL."
+  derivative or NIL.  Its result is substituted into like an expression
+  in the placeholder names, unless it returns T as a second value: the
+  result is then taken as it is, which lets it be built from the actual
+  arguments."
   ;; Check that the argument variables show up somewhere in the body.
   ;; Otherwise, the defintion of the derivative is potentially
   ;; incorrect.
