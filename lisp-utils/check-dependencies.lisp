@@ -48,7 +48,8 @@
 (defun ckids (c) (funcall (mkf "COMPONENT-COMPONENTS") c))
 (defun cdeps (c) (funcall (mkf "COMPONENT-DEPENDS-ON") c))
 (defun ccomplete-p (c) (funcall (mkf "COMPONENT-DEPENDENCIES-COMPLETE") c))
-(defun cfile (c) (ignore-errors (funcall (mkf "COMPONENT-FULL-PATHNAME") c :source)))
+(defun cfile (c)
+  (ignore-errors (funcall (mkf "COMPONENT-FULL-PATHNAME") c :source)))
 
 (defun dep-name (d)
   "A :DEPENDS-ON entry is a string, a symbol, or an already-resolved component."
@@ -88,8 +89,9 @@ never the sequence."
                        (setf (gethash k file->node) n))))
                  ;; a module's files are its children's files
                  (unless (n-files n)
-                   (setf (n-files n) (mapcan (lambda (k) (copy-list (n-files k)))
-                                             (n-kids n))))
+                   (setf (n-files n)
+                         (mapcan (lambda (k) (copy-list (n-files k)))
+                                 (n-kids n))))
                  n)))
       (let ((root (walk root-component nil)))
         (values root (nreverse all) file->node)))))
@@ -134,7 +136,8 @@ never the sequence."
               it would pass without examining anything."))))
 
 (defun collect-edges (file->node)
-  "FROM-node -> TO-node -> list of (kind . symbol), for compile-time edges only."
+  "FROM-node -> TO-node -> list of (kind . symbol).
+Compile-time edges only."
   (let ((edges (make-hash-table :test 'eq))
         (seen (make-hash-table :test 'eq)))
     (flet ((note (from-path to-node kind sym)
@@ -154,14 +157,16 @@ never the sequence."
                           (sb-introspect:find-definition-sources-by-name
                            sym (if macro-p :macro :function))))
                    (to (and def
-                            (gethash (let ((p (sb-introspect:definition-source-pathname
-                                               (first def))))
-                                       (and p (namestring p)))
-                                     file->node))))
+                            (gethash
+                             (let ((p (sb-introspect:definition-source-pathname
+                                       (first def))))
+                               (and p (namestring p)))
+                             file->node))))
               (when to
                 (cond
                   (macro-p
-                   (dolist (r (ignore-errors (sb-introspect:who-macroexpands sym)))
+                   (dolist (r (ignore-errors
+                                (sb-introspect:who-macroexpands sym)))
                      (note (sb-introspect:definition-source-pathname (cdr r))
                            to :macro sym)))
                   ((compile-affecting-callee-p sym)
@@ -178,6 +183,51 @@ the definition and no coupling was created."
     (when (and fo to-o (> fo to-o))
       (let ((per-from (gethash from edges)))
         (and per-from (gethash to per-from))))))
+
+;;; ------------------------------------------------------------------
+;;; Global compiler policy
+;;;
+;;; A top-level (DECLAIM (OPTIMIZE ...)) is global: it stays in force for
+;;; every file compiled after it, not just the rest of its own file.  That
+;;; is a compile-time dependency on every later file at once, which no
+;;; :DEPENDS-ON can express and which no cross-reference records -- a
+;;; proclamation is not a reference to a symbol, so the xref pass above is
+;;; blind to it.  It has to be checked directly.
+;;;
+;;; The convention this enforces is that a file which changes the policy
+;;; restores it before its end, so the proclamations come in pairs.
+
+(defun optimize-proclamations (path)
+  "Line numbers of top-level OPTIMIZE proclamations in PATH.
+Scanned textually rather than with READ: every top-level form in src/
+starts at column 0, and reading these files needs the Maxima readtable."
+  (let ((hits '()) (n 0))
+    (with-open-file (s path :if-does-not-exist nil)
+      (when s
+        (loop for line = (read-line s nil nil)
+              while line
+              do (incf n)
+                 (when (and (plusp (length line))
+                            (char= (char line 0) #\()
+                            (or (search "(declaim (optimize" line)
+                                (search "(proclaim '(optimize" line)
+                                (search "(proclaim (quote (optimize" line)))
+                   (push n hits)))))
+    (nreverse hits)))
+
+(defun policy-leaks (root)
+  "Files that change the global policy an odd number of times, i.e. leave
+it changed for whatever the build compiles next."
+  (let ((out '()))
+    (labels ((walk (n)
+               (when (and (eq (ctype (n-component n)) :file) (n-files n))
+                 (let* ((path (first (n-files n)))
+                        (hits (optimize-proclamations path)))
+                   (when (oddp (length hits))
+                     (push (list (cname (n-component n)) path hits) out))))
+               (mapc #'walk (n-kids n))))
+      (walk root))
+    (nreverse out)))
 
 ;;; ------------------------------------------------------------------
 ;;; The invariant
@@ -234,6 +284,21 @@ does not mark itself as changed for the siblings that follow it."
 ;;; ------------------------------------------------------------------
 ;;; Reporting
 
+(defun report-policy-leaks (leaks stream)
+  (when leaks
+    (format stream "~&check-dependencies: ~D file~:P change~:[~;s~] the global ~
+                    compiler policy without restoring it.~2%"
+            (length leaks) (= 1 (length leaks)))
+    (dolist (l leaks)
+      (destructuring-bind (name path lines) l
+        (declare (ignore path))
+        (format stream "  ~A.lisp proclaims OPTIMIZE at line~P ~{~D~^, ~}~%"
+                name (length lines) lines)
+        (format stream "      DECLAIM is global: every file compiled after ~
+                        this one inherits~%      the policy, and no ~
+                        :DEPENDS-ON can express that.  Restore it with a~%~
+                        ~6Tsecond proclamation at the end of the file.~2%")))))
+
 (defun report (violations stream)
   (if (null violations)
       (format stream "~&check-dependencies: no undeclared compile-time ~
@@ -245,13 +310,17 @@ does not mark itself as changed for the siblings that follow it."
           (destructuring-bind (parent from to refs) v
             (format stream "  module ~A: ~A is compiled against ~A ~
                             but does not declare it~%" parent from to)
-            (let ((shown (sort (remove-duplicates (copy-list refs) :test #'equal)
-                               #'string< :key (lambda (r) (string (cdr r))))))
+            (let ((shown (sort (remove-duplicates (copy-list refs)
+                                                  :test #'equal)
+                               #'string<
+                               :key (lambda (r) (string (cdr r))))))
               (dolist (r (subseq shown 0 (min 6 (length shown))))
                 (format stream "        ~(~6A~) ~A~%" (car r) (cdr r)))
               (when (> (length shown) 6)
-                (format stream "        ... and ~D more~%" (- (length shown) 6))))
-            (format stream "      fix: give ~A  :depends-on (\"~A\")~2%" from to))))))
+                (format stream "        ... and ~D more~%"
+                        (- (length shown) 6))))
+            (format stream "      fix: give ~A  :depends-on (\"~A\")~2%"
+                    from to))))))
 
 (defun check (root &key (stream *standard-output*))
   "Verify maxima.system under ROOT.  Returns the list of violations."
@@ -260,7 +329,8 @@ does not mark itself as changed for the siblings that follow it."
     (multiple-value-bind (tree nodes file->node) (build-tree system)
       (declare (ignore nodes))
       (when (zerop (hash-table-count file->node))
-        (error "check-dependencies: no source files resolved from maxima.system."))
+        (error "check-dependencies: no source files resolved from ~
+                maxima.system."))
       (let ((edges (collect-edges file->node)))
         ;; If maxima.system's pathnames and the ones the compiler recorded
         ;; do not agree -- a VPATH build, a symlinked tree -- every lookup
@@ -272,9 +342,11 @@ does not mark itself as changed for the siblings that follow it."
                   compiler are probably not the same; the check would pass ~
                   vacuously."
                  (hash-table-count file->node)))
-        (let ((v (violations tree edges)))
+        (let ((v (violations tree edges))
+              (leaks (policy-leaks tree)))
           (report v stream)
-          v)))))
+          (report-policy-leaks leaks stream)
+          (append v leaks))))))
 
 (defun check-and-exit (root)
   (let ((v (handler-case (check root)
