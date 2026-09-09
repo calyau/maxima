@@ -1,0 +1,10 @@
+# ChangeLog is append-only in practice: every branch adds its own lines
+# under the headings for the current cycle, and two branches adding
+# entries are not really in conflict.  The built-in "union" merge driver
+# resolves such a hunk by keeping the lines from both sides instead of
+# leaving conflict markers.
+#
+# Note that union never reports a conflict, so a genuine disagreement --
+# two branches rewording the same line -- silently yields both versions.
+# Read the merged ChangeLog before committing a merge.
+ChangeLog merge=union
