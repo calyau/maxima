@@ -74,18 +74,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 ;; Convenience functions used to check values of plot arguments and options
 
-(defun ensure-string (x)
-  (cond
-    ((stringp x) x)
-    ((symbolp x) (print-invert-case (stripdollar x)))
-    (t (maybe-invert-string-case (string (implode (strgrind x)))))))
-
 (defmfun $join (x y)
   (if (and ($listp x) ($listp y))
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
       (merror (intl:gettext "join: both arguments must be lists."))))
-
-(defun coerce-float (x) ($float (meval x)))
 
 ;; Global plot options list; this is a property list.. It is not a
 ;; Maxima variable, to discourage users from changing it directly; it
@@ -2012,10 +2004,6 @@ vertices of a triangle or a quadrilateral."
 ;; positive real numbers predicate
 (defun realpositivep (x) (or (and (realp x) (> x 0)) nil))
 
-(defun real01p (x)
-  "Test for real numbers between 0 and 1"
-  (or (and (realp x) (>= x 0) (<= x 1)) nil))
-
 ;; possible values for the axes option
 (defun axesoptionp (o) (if (member o '($x $y $solid)) t nil))
 
@@ -2127,7 +2115,6 @@ keyword $hue, $saturation, $value or $gradient; the first three types must be
 followed by 4 floating-point numbers, while gradient must be followed by a
 list of at least two valid colors.
 It returns the definition of the palette, if it is valid, or nil."
-  (declare (special *plot-palettes*))
   (let ((palette (cadr option)))
     (cond
      ((atom palette)

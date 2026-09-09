@@ -1245,16 +1245,25 @@
       (:file "elim")
       (:file "invert")
       (:file "todd-coxeter")
-      (:file "plot")))
+      ;; plotcolors is the lowest layer of the plotting stack: it holds
+      ;; the colour table, the palettes and the small helpers that
+      ;; plot.lisp and every graphics driver use.  It must be compiled
+      ;; before plot.lisp, which calls PLOTCOLORP and reads
+      ;; *PLOT-PALETTES*.
+      (:file "plotcolors")
+      (:file "plot"
+        :depends-on ("plotcolors"))))
    (:module graphics-drivers
      :source-pathname ""
-     :depends-on ("defmfun")
+     ;; Every driver calls into plot.lisp and plotcolors.lisp, both of
+     ;; which live in translated-packages.
+     :depends-on ("defmfun" "translated-packages")
      ;; Module is a clean DAG at every level: function calls,
-     ;; macros, special-variable references.
+     ;; macros, special-variable references.  The drivers are
+     ;; independent of one another.
      :dependencies-complete t
      :components
-     ((:file "plotcolors")
-      (:file "gnuplot_def")
+     ((:file "gnuplot_def")
       (:file "xmaxima_def")
       (:file "geomview_def")))
    (:module final

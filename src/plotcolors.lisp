@@ -16,6 +16,23 @@
 
 (in-package :maxima)
 
+;; Helpers shared by the colour code below, by plot.lisp and by the
+;; graphics drivers.  They live here because this file is the lowest
+;; layer of the plotting stack: everything else in it may use them, and
+;; nothing here may call back up into plot.lisp.
+
+(defun ensure-string (x)
+  (cond
+    ((stringp x) x)
+    ((symbolp x) (print-invert-case (stripdollar x)))
+    (t (maybe-invert-string-case (string (implode (strgrind x)))))))
+
+(defun coerce-float (x) ($float (meval x)))
+
+(defun real01p (x)
+  "Test for real numbers between 0 and 1"
+  (or (and (realp x) (>= x 0) (<= x 1)) nil))
+
 (defun atom-to-downcased-string (val)
 "Down-case a string, removing spaces, minus signs, and underscores.
 It is used to allow valid color names to be written as DarkBlue,
