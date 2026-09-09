@@ -156,10 +156,14 @@
   :components
   ((:module package
      :source-pathname ""
-     ;; On ECL all runtime alterations to the system (i.e from repl)
-     ;; at runtime are not part of the final executable if they aren't.
-     ;; compiled.
-     #-ecl :load-only #-ecl t
+     ;; maxima-package.lisp is compiled even where the rest of this
+     ;; module is only loaded.  Its DEFPACKAGE forms decide which
+     ;; package every later file's symbols are read into, but a
+     ;; :LOAD-ONLY component is never compiled and so has no binary
+     ;; whose write date could tell DEFSYSTEM it changed -- editing it
+     ;; used to recompile nothing at all.  It holds DEFPACKAGE forms
+     ;; and load-time EXPORT calls only, so there is nothing here that
+     ;; has to stay interpreted.
      :components
      ((:file "maxima-package")
       #+ecl (:file "ecl-port")
@@ -168,8 +172,10 @@
       ;; build possible), but not compiled (which means
       ;; with ECL or ABCL it won't end up in the final image)
       ;; => no out-of-tree build for ECL.
-      #-(or ecl abcl lispworks) (:private-file "autoconf-variables")
-      #+(or ecl abcl lispworks) (:file "autoconf-variables")
+      #-(or ecl abcl lispworks) (:private-file "autoconf-variables"
+                                 #-ecl :load-only #-ecl t)
+      #+(or ecl abcl lispworks) (:file "autoconf-variables"
+                                 #-ecl :load-only #-ecl t)
       ))
    (:module float-format
      :source-pathname ""
@@ -289,7 +295,8 @@
      ;; function calls.  Can't really do anything about that.
      ;; and can't depend on those modules because that causes a
      ;; circular dependency.
-     :depends-on ("prerequisites" "defmfun")
+     :depends-on ("prerequisites" "defmfun"
+                  "destructuring-let" "compatibility-macros")
      ;; Module is a clean DAG at every level.
      :components
      ((:file "mopers")
@@ -321,7 +328,8 @@
       (:file "basic-util")))
    (:module m2-pattern-matcher
      :source-pathname ""
-     :depends-on ("simp-utilities")
+     :depends-on ("simp-utilities"
+                  "declarations")
      ;; Module is a clean DAG at every level: function calls,
      ;; macros, special-variable references.
      :dependencies-complete t
@@ -365,7 +373,8 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "utility-macros" "compatibility-macros"
                   "compatibility-macros1" "declarations" "fundamental-macros"
-                  "prerequisites")
+                  "prerequisites"
+                  "simp-utilities")
      ;; Module is a clean DAG at every level: function calls,
      ;; macros, special-variable references.
      :dependencies-complete t
@@ -384,7 +393,8 @@
                   "declarations" "fundamental-macros" "prerequisites"
                   "utility-macros"
                   "simp-utilities"
-                  "basic-utilities")
+                  "basic-utilities"
+                  "rat-macros")
      :dependencies-complete t
      :components
      ((:file "comm")
@@ -711,6 +721,7 @@
                   "simp-utilities")
      ;; Module is a clean DAG at every level: function calls,
      ;; macros, special-variable references.
+     :dependencies-complete t
      :components
      ((:file "simp-fn")
       (:file "csimp")
@@ -762,7 +773,8 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1"
                   "declarations" "fundamental-macros" "other-macros"
-                  "prerequisites" "rat-macros" "utilities")
+                  "prerequisites" "rat-macros" "utilities"
+                  "simp-utilities")
      ;; Compile-time deps form a DAG.  Runtime cycle by design:
      ;; factor <-> algfac (7+7 calls) -- factor's general
      ;; factoring dispatches to algfac for algebraic
@@ -818,6 +830,7 @@
      ;; and its tightly-coupled helpers: trans2 (array
      ;; dispatch), trutil (defvar pushing), trmode (mode
      ;; system).
+     :dependencies-complete t
      :components
      ((:file "transl")
       (:file "transs"
@@ -861,7 +874,8 @@
      :depends-on ("globals" "defmfun" "trigonometry" "algebraic-database" 
                   "utility-macros" "reader"
                   "fundamental-macros" "other-macros" "prerequisites"
-                  "numerical" "numerical-utilities")
+                  "numerical" "numerical-utilities"
+                  "simplification")
      ;; Module is a clean DAG at every level: function calls, macros,
      ;; special-variable references.
      :dependencies-complete t
@@ -873,7 +887,8 @@
      :depends-on ("globals" "defmfun" "trigonometry" "algebraic-database" 
                   "utility-macros" "reader"
                   "fundamental-macros" "other-macros" "prerequisites"
-                  "numerical-utilities")
+                  "numerical-utilities"
+                  "numeric-bigfloat")
      :dependencies-complete t
      :components
      ((:file "ellipt")))
@@ -881,7 +896,8 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "algebraic-database" 
                   "utility-macros" "reader"
-                  "fundamental-macros" "other-macros" "prerequisites")
+                  "fundamental-macros" "other-macros" "prerequisites"
+                  "maxima-language-compiler-macros" "numeric-bigfloat")
      :dependencies-complete t
      :components
      ((:file "intpol")))
@@ -890,7 +906,8 @@
      ;; displa.lisp calls nparse's DEF-RBP.
      :depends-on ("globals" "defmfun" "compatibility-macros1" "declarations"
                   "fundamental-macros" "prerequisites" "reader"
-                  "simp-utilities")
+                  "simp-utilities"
+                  "other-macros")
      ;; Module is a clean DAG at every level: function calls, macros,
      ;; special-variable references.
      :dependencies-complete t
@@ -904,7 +921,8 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "declarations" "destructuring-let"
                   "fundamental-macros" "prerequisites" 
-                  "rat-macros" "utilities")
+                  "rat-macros" "utilities"
+                  "simp-utilities")
      ;; Module is a clean DAG at every level: function calls,
      ;; macros, special-variable references.
      :dependencies-complete t
@@ -950,7 +968,8 @@
      :depends-on ("compatibility-macros1" "declarations" "defmfun" "errset" "globals"
                   "miscellaneous" "other-macros" "prerequisites" "utility-macros"
                   "m2-pattern-matcher"
-                  "variable-predicates")
+                  "variable-predicates"
+                  "simplification" "numeric-bigfloat")
      ;; Module is a clean DAG at every level: function calls, macros,
      ;; special-variable references.
      :dependencies-complete t
@@ -972,7 +991,8 @@
                   "destructuring-let" "errset" "fundamental-macros"
                   "prerequisites" "rat-macros" "utility-macros"
                   "m2-pattern-matcher"
-                  "variable-predicates")
+                  "variable-predicates"
+                  "other-macros")
      ;; Compile-time deps form a DAG.  Runtime: risch.lisp and
      ;; sin.lisp are mutually recursive by design -- risch's
      ;; hypertrigint1 falls back to sin's sinint when Risch
@@ -1040,7 +1060,8 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "reader" "utility-macros"
                   "other-macros" "rat-macros"
-                  "numerical-utilities")
+                  "numerical-utilities"
+                  "numeric-bigfloat")
      :dependencies-complete t
      :components
      ((:file "specfn")))
@@ -1051,7 +1072,8 @@
                   "fundamental-macros"
                   "maxima-language-compiler-macros"
                   "prerequisites" "utility-macros"
-                  "destructuring-let" "utilities")
+                  "destructuring-let" "utilities"
+                  "simp-utilities" "maxima-language-compiler")
      ;; Module is a clean DAG at every level: function calls, macros,
      ;; special-variable references.
      :dependencies-complete t
@@ -1065,7 +1087,8 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "declarations"
                   "maxima-language-compiler-macros"
-                  "prerequisites")
+                  "prerequisites"
+                  "simp-utilities" "maxima-language-compiler")
      ;; Module is a clean DAG at every level: function calls,
      ;; macros, special-variable references.
      :dependencies-complete t
@@ -1093,7 +1116,8 @@
                   "declarations" "destructuring-let"
                   "errset" "fundamental-macros"
                   "other-macros" "prerequisites"
-                  "utilities" "utility-macros")
+                  "utilities" "utility-macros"
+                  "simp-utilities")
      ;; Compile-time deps form a DAG.  Runtime cycle limit <->
      ;; tlimit is structural (mutual dispatch between limit and
      ;; Taylor-limit).
@@ -1105,7 +1129,8 @@
      :depends-on ("globals" "defmfun" "compatibility-macros1" "compatibility-macros"
                   "declarations" "fundamental-macros"
                   "other-macros" "prerequisites" "rat-macros"
-                  "utilities" "utility-macros")
+                  "utilities" "utility-macros"
+                  "simp-utilities")
      ;; Compile-time deps form a DAG.  Two runtime call cycles
      ;; remain by design: solve <-> psolve (cubic/quartic
      ;; formulas tightly coupled to solve's display
@@ -1128,7 +1153,8 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "compatibility-macros1" "compatibility-macros"
                   "declarations" "fundamental-macros"
-                  "prerequisites" "utility-macros")
+                  "prerequisites" "utility-macros"
+                  "simp-utilities")
      ;; Module is a clean DAG at every level: function calls,
      ;; macros, special-variable references.
      :dependencies-complete t
@@ -1138,7 +1164,8 @@
    (:module gamma-expint
      :source-pathname ""
      ;; gamma.lisp calls nparse's DEF-MHEADER and DEF-LED.
-     :depends-on ("numerical-utilities" "m2-pattern-matcher" "reader")
+     :depends-on ("numerical-utilities" "m2-pattern-matcher" "reader"
+                  "destructuring-let" "numeric-bigfloat")
      ;; Module is a clean DAG at every level: function calls, macros,
      ;; special-variable references.
      :dependencies-complete t
@@ -1193,7 +1220,8 @@
    (:module poisson-series
      :source-pathname ""
      :depends-on ("defmfun" "declarations" "fundamental-macros"
-                  "prerequisites")
+                  "prerequisites"
+                  "simp-utilities")
      ;; Module is a clean DAG at every level: function calls, macros,
      ;; special-variable references.
      :dependencies-complete t
@@ -1207,7 +1235,8 @@
 		  "compatibility-macros1"
 		  "defmfun" "declarations" "errset"
                   "miscellaneous" "other-macros" "prerequisites"
-                  "utility-macros")
+                  "utility-macros"
+                  "maxima-language-compiler")
      ;; Module is a clean DAG at every level: function calls,
      ;; macros, special-variable references.
      :dependencies-complete t
