@@ -398,7 +398,8 @@
      :dependencies-complete t
      :components
      ((:file "comm")
-      (:file "comm2")))
+      (:file "comm2"           ; calls comm's $FIRST, $NUM, $DENOM, ...
+        :depends-on ("comm"))))
    (:module evaluator
      :source-pathname ""
      :depends-on ("globals" "defmfun" "utility-macros" "compatibility-macros"
@@ -724,14 +725,15 @@
      :dependencies-complete t
      :components
      ((:file "simp-fn")
-      (:file "csimp")
+      (:file "csimp"            ; calls simp-fn's $SQRT and $EXPAND
+        :depends-on ("simp-fn"))
       (:file "logarc")
-      (:file "rpart"
-        :depends-on ("logarc"))
+      (:file "rpart"            ; also calls simp-fn's $EXPAND
+        :depends-on ("logarc" "simp-fn"))
       (:file "float"
         :depends-on ("logarc" "rpart"))
-      (:file "csimp2"
-        :depends-on ("csimp" "float" "rpart"))
+      (:file "csimp2"           ; also calls simp-fn's $EXPAND
+        :depends-on ("csimp" "float" "rpart" "simp-fn"))
       (:file "zero"
         :depends-on ("rpart"))
       (:file "halfangle"
@@ -765,8 +767,8 @@
       (:file "wxmx")
       (:file "mload"
         :depends-on ("prompt-util" "suprv1" "macsys" "testsuite" "wxmx"))
-      (:file "mactex"
-        :depends-on ("prompt-util" "suprv1"))
+      (:file "mactex"           ; also calls macsys's $SCONCAT
+        :depends-on ("prompt-util" "suprv1" "macsys"))
       (:file "dskfn"
         :depends-on ("prompt-util" "suprv1"))))
    (:module factoring
@@ -817,8 +819,10 @@
       (:file "rat3d")
       (:file "rat3c")
       (:file "rat3e")
-      (:file "nrat4")
-      (:file "ratout")))
+      (:file "nrat4"            ; calls rat3e's $RAT, $RATSIMP, ...
+        :depends-on ("rat3e"))
+      (:file "ratout"           ; calls rat3e's $RAT, $SQFR, ...
+        :depends-on ("rat3e"))))
    (:module maxima-language-compiler
      :source-pathname ""
      :depends-on ("globals" "defmfun" "maxima-language-compiler-macros" "evaluator"
@@ -951,8 +955,9 @@
      :components
      ((:file "inmis")
       (:file "db")
-      (:file "compar"           ; expands db's inline DNUMP
-        :depends-on ("db"))
+      (:file "compar"           ; expands db's inline DNUMP,
+                                ; calls inmis's $LISTOFVARS
+        :depends-on ("db" "inmis"))
       (:file "askp"))		;does this belong here?
      )
    (:module variable-predicates
@@ -978,8 +983,8 @@
       ;; Note: nummod uses apply-reflection-rule from trigi.
       ;; This should be updated.
       (:file "nummod")
-      (:file "hypergeometric"
-        :depends-on ("nummod"))
+      (:file "hypergeometric"   ; calls hyp's $HGFRED
+        :depends-on ("nummod" "hyp"))
       (:file "nfloat"
 	;; Comment in nfloat says hypergeometric needs to
 	;; be loaded first.
@@ -1207,7 +1212,8 @@
       (:file "combin")
       ;; nset needs $random.
       (:file "nset")
-      (:file "maxmin")
+      (:file "maxmin"           ; calls nset's $UNION, $INTERSECTION, ...
+        :depends-on ("nset"))
       (:file "conjugate")
       (:file "hstep")
       (:file "sinc")
