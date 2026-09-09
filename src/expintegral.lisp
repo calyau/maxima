@@ -765,8 +765,7 @@
   (let ((*expint-eps* (power ($bfloat 10.0) (- $fpprec)))
         (*expint-maxit* 5000) ; arbitrarily chosen, we need a better choice
         (bigfloattwo (add *bigfloatone* *bigfloatone*))
-        (bigfloat%e ($bfloat '$%e))
-        (bigfloat%gamma ($bfloat '$%gamma)))
+        (bigfloat%e ($bfloat '$%e)))
 
     (when *debug-expintegral*
       (format t "~&FRAC-BFLOAT-EXPINTEGRAL-E called with:~%")

@@ -174,7 +174,6 @@
 (defun gnuplot-terminal-and-file (plot-options)
   (let ((gstrings
          (if (getf plot-options '$gnuplot_strings) "enhanced" "noenhanced"))
-        (gnuplot-svg-background (getf plot-options '$gnuplot_svg_background))
         terminal-command out-file (preserve-file t))
     (cond
      ((getf plot-options '$svg_file)
