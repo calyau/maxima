@@ -100,6 +100,15 @@ the Lisp, which loads `lisp-utils/defsystem.lisp` and runs `mk:defsystem` over
 ### configure options
 
 `./configure --help` lists every option; the `--enable-<lisp>` flags combine.
+**Passing none of them is not "just SBCL"**: with no `--enable-<lisp>` at all,
+`configure` probes for every supported Lisp and enables each one it finds
+(`configure.ac`, the `explicit_lisp` branch), and `make` then builds one image
+per Lisp -- so the same bare `./configure` yields a different configuration on
+the same tree once another Lisp is installed. `src/binary-<lisp>` directories
+are what a tree was actually built for. Before reconfiguring a tree you did not
+configure yourself, read the original invocation out of `config.status`
+(`ac_cs_config=`) or the `Invocation command line was` line near the top of
+`config.log` -- re-running `configure` overwrites both.
 `--with-<lisp>=<prog>` names an explicit executable, absolute path or PATH name
 (ABCL instead takes `--with-abcl-jar=<jarfile>`); an
 `sbcl executable "..." not found in PATH` warning always means configure did not
@@ -338,6 +347,15 @@ Per-file `P/P passed` **excludes** registered known failures; the headline
 **`No unexpected errors`** -- that string, not a failure count, is the pass/fail
 contract. Edit `test.sh.in`; `tests/test.sh` and every `tests/*.log` are
 generated and gitignored.
+
+**Under SBCL `make check` runs a second test.** `tests/sbcl-depcheck.sh` wraps
+`tests/depcheck.sh` (generated from `depcheck.sh.in`) and loads
+`lisp-utils/check-dependencies.lisp` into the built image, checking
+`src/maxima.system`'s `:dependencies-complete` claims against SBCL's
+cross-reference data (sec. 13). It exits 1 on an undeclared compile-time
+dependency and 2 when it cannot run at all, so unlike the suite its exit
+status is the contract and there is no log to grep. SBCL-only -- no other
+Lisp exposes the xref. Run it alone with `cd tests && ./depcheck.sh`.
 
 **Baseline before blaming your change.** On SBCL both the core suite and core +
 share are expected green, and normally are, so a red run is a real signal and
@@ -721,6 +739,19 @@ right for a reason it does not give. Read them as archaeology, not specification
 every file. `src/Makefile.am` needs no edit: it globs `$(srcdir)/*.lisp` plus
 `numerical/` and `numerical/slatec/` -- only a new *subdirectory* needs one.
 Never hand-edit `src/*-depends.mk`.
+
+A module marked `:dependencies-complete t` tells `defsystem` that its declared
+`:depends-on` edges are the whole truth, so it stops adding its own "anything
+compiled after a changed file may have been compiled against it" edges. An
+undeclared edge then leaves a stale fasl on the next incremental build, and no
+test can see it -- the answers stay right until someone changes the file that
+was never rebuilt. Three things create such an edge: a macro, an inline
+function or source transform, and -- the one the module comments miss -- a
+call to a `defmfun`, since `defmfun` defines a compiler-macro rewriting
+`($foo ...)` to `(FOO-IMPL ...)` at the call site, making an ordinary
+Maxima-level call a *compile-time* dependency. A plain `defun` call or a read
+of a special is late-bound and creates none. `make check` verifies this under
+SBCL (sec. 5).
 
 **`tests/`** -- `$testsuite_files` (`src/testsuite.lisp`) only;
 `tests/Makefile.am` globs `*.mac`; adding to an existing file needs neither

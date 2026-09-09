@@ -31,6 +31,16 @@ sbcl-test.sh: test.sh Makefile
 	echo "#!/bin/sh" > $@
 	echo "./test.sh sbcl" >> $@
 	chmod +x "$@"
+
+## Verifies src/maxima.system's :DEPENDENCIES-COMPLETE claims against the
+## compiler's cross-reference data.  SBCL-only, so it is attached here
+## rather than to the general per-lisp driver.
+TESTS += sbcl-depcheck.sh
+CLEANFILES += sbcl-depcheck.sh
+sbcl-depcheck.sh: depcheck.sh Makefile
+	echo "#!/bin/sh" > $@
+	echo "./depcheck.sh" >> $@
+	chmod +x "$@"
 endif
 
 if GCL
@@ -90,4 +100,4 @@ endif
 genericdir = $(insttestsdir)
 genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp *.wxm *.wxmx load_relative/* wester_problems/*))
 
-EXTRA_DIST = $(genericdirDATA) test.sh.in
+EXTRA_DIST = $(genericdirDATA) test.sh.in depcheck.sh.in

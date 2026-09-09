@@ -8,5 +8,7 @@ multipage.eps
 a4portrait.eps
 multipage.eps
 test.sh
+depcheck.sh
+*-depcheck.sh*
 bin
 
