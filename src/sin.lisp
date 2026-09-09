@@ -1931,20 +1931,26 @@
        (add (mul f g)
 	    (mul -1 (integrator (mul f (sdiff g var2)) var2)))))))
 
-;; returns t if argument of every trig operation in y matches arg
-(defun every-trigarg-alike (y arg)
+;; returns t if argument of every trig operation in y matches arg,
+;; optionally filtering by occurrence of VAR
+(defun every-trigarg-alike (y arg &optional var)
   (cond ((atom y) t)
-	((optrig (caar y)) (alike1 arg (cadr y)))
+	((optrig (caar y))
+	 (or (and var (freevar2 (cadr y) var))
+	     (alike1 arg (cadr y))))
 	(t (every (lambda (expr)
-		    (every-trigarg-alike expr arg))
+		    (every-trigarg-alike expr arg var))
 		  (cdr y)))))
 
-;; return argument of first trig operation encountered in y
-(defun find-first-trigarg (y)
+;; return argument of first trig operation encountered in y,
+;; optionally filtering by occurrence of VAR
+(defun find-first-trigarg (y &optional var)
   (cond ((atom y) nil)
-	((optrig (caar y)) (cadr y))
+	((and (optrig (caar y))
+	      (not (and var (freevar2 (cadr y) var))))
+	 (cadr y))
 	(t (some (lambda (expr)
-		   (find-first-trigarg expr))
+		   (find-first-trigarg expr var))
 		 (cdr y)))))
 
 ;; return constant factor that makes elements of alist match elements of blist
