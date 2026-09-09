@@ -1,5 +1,9 @@
 (in-package :maxima)
 
+;; DECLAIM is global, not file-local, so this policy stays in force for
+;; every file compiled after this one -- the last thirteen of the build,
+;; from expintegral.lisp to geomview_def.lisp.  It is restored to the
+;; standard default at the end of the file.
 (declaim (optimize (safety 2) (space 3)))
 
 (eval-when
@@ -748,3 +752,11 @@ Command      Description~%~
       (fresh-line *debug-io*)
       (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
     (values)))
+
+;; Undo the (safety 2) (space 3) proclaimed at the top of this file, so it
+;; applies to the debugger and not to whatever the build compiles next.
+;; GCL open-codes PROGV's symbol check at safety 2 by calling
+;; FEinvalid_variable, which does not exist in GCL 2.6.15pre20, and its
+;; gcc is invoked with -Werror=implicit-function-declaration, so the leak
+;; broke the GCL build at plot.lisp's PROGV in %COERCE-FLOAT-FUN.
+(declaim (optimize (safety 1) (space 1) (speed 1) (debug 1)))
