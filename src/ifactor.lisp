@@ -20,21 +20,32 @@
 
 (defmvar $save_primes nil "Save primes found." boolean)
 
-(defmvar $primep_number_of_tests 25 "Number of Miller-Rabin tests." fixnum)
+(defmvar $primep_number_of_tests 25 "Number of Miller-Rabin tests."
+  :setting-predicate #'integer-predicate)
 
-(defmvar $pollard_rho_limit 16000 "Limit for pollard-rho factorization depth." fixnum)
-(defmvar $pollard_pm1_limit 25000 "Limit for pollard-p1 factorization depth." fixnum)
+(defmvar $pollard_rho_limit 16000 "Limit for pollard-rho factorization depth."
+  :setting-predicate #'integer-predicate)
+(defmvar $pollard_pm1_limit 25000 "Limit for pollard-p1 factorization depth."
+  :setting-predicate #'integer-predicate)
 
-(defmvar $pollard_rho_tests 5 "Number of pollard-rho rounds." fixnum)
-(defmvar $pollard_pm1_tests 3 "Number of pollard-p-1 rounds." fixnum)
+(defmvar $pollard_rho_tests 5 "Number of pollard-rho rounds."
+  :setting-predicate #'integer-predicate)
+(defmvar $pollard_pm1_tests 3 "Number of pollard-p-1 rounds."
+  :setting-predicate #'integer-predicate)
 
-(defmvar $pollard_rho_limit_step 1000 "Step for pollard-rho factorization limit." fixnum)
-(defmvar $pollard_pm1_limit_step 5000 "Step for pollard-p-1 factorization limit." fixnum)
+(defmvar $pollard_rho_limit_step 1000 "Step for pollard-rho factorization limit."
+  :setting-predicate #'integer-predicate)
+(defmvar $pollard_pm1_limit_step 5000 "Step for pollard-p-1 factorization limit."
+  :setting-predicate #'integer-predicate)
 
-(defmvar $ecm_number_of_curves 50 "Number of curves tried in one round of ecm." fixnum)
-(defmvar $ecm_limit       200  "Starting smootheness limit for ecm method." fixnum)
-(defmvar $ecm_max_limit 51199  "Maximum smootheness for ecm method." fixnum)
-(defmvar $ecm_limit_delta 200  "Increase smoothness limit for ecm method after each round." fixnum)
+(defmvar $ecm_number_of_curves 50 "Number of curves tried in one round of ecm."
+  :setting-predicate #'integer-predicate)
+(defmvar $ecm_limit       200  "Starting smootheness limit for ecm method."
+  :setting-predicate #'integer-predicate)
+(defmvar $ecm_max_limit 51199  "Maximum smootheness for ecm method."
+  :setting-predicate #'integer-predicate)
+(defmvar $ecm_limit_delta 200  "Increase smoothness limit for ecm method after each round."
+  :setting-predicate #'integer-predicate)
 
 (defmvar $ifactor_verbose nil "Display factorization steps." boolean)
 (defmvar $factors_only nil  "Return a list of factors only." boolean)

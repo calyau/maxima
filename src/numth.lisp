@@ -300,7 +300,8 @@
 ;;
 
 ;; Maxima option variables:
-(defmvar $zn_primroot_limit 1000 "Upper bound for `zn_primroot'." fixnum)
+(defmvar $zn_primroot_limit 1000 "Upper bound for `zn_primroot'."
+  :setting-predicate #'integer-predicate)
 (defmvar $zn_primroot_verbose nil "Print message when `zn_primroot_limit' is reached." boolean)
 (defmvar $zn_primroot_pretest nil "`zn_primroot' pretests whether (Z/nZ)* is cyclic." boolean)
 
@@ -1269,7 +1270,7 @@
 
 
 (defmvar $gf_coeff_limit 256 
-  "`gf_coeff_limit' limits the coeffs when searching for irreducible and primitive polynomials." fixnum)
+  "`gf_coeff_limit' limits the coeffs when searching for irreducible and primitive polynomials.")
 
 (putprop '$gf_coeff_limit 'gf-coeff-check 'assign)
 
