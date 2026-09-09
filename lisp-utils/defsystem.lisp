@@ -1338,6 +1338,15 @@
   "If both the source and binary files are missing, signal a continuable
    error instead of just a warning.")
 
+(defvar *sequential-dependencies* t
+  "If T, a component that had to be recompiled also forces recompilation of
+every component compiled after it, not only of those that name it in their
+:DEPENDS-ON list.  DEFSYSTEM compiles and loads in a single pass, so the
+compilation of any file can depend on macros, inline functions, constants,
+structures, types and compile-time side effects established by any file
+compiled before it, whether or not that dependency was declared.  Components
+marked :DEPENDENCIES-COMPLETE T are exempt.")
+
 (defvar *operations-propagate-to-subsystems* t
   "If T, operations like :COMPILE and :LOAD propagate to subsystems
    of a system that are defined either using a component-type of :system
@@ -2336,6 +2345,14 @@ D
 					; refer only to the components
 					; at the same level as this
 					; one.
+  (dependencies-complete nil)		; If T, the :DEPENDS-ON edges in
+					; and around this component are
+					; complete: nothing it compiles can
+					; affect how a later sibling is
+					; compiled, and its own children
+					; declare every dependency among
+					; themselves.  *SEQUENTIAL-DEPENDENCIES*
+					; then adds no implicit edges here.
   proclamations				; Compiler options, such as
 					; '(optimize (safety 3)).
   initially-do				; Form to evaluate before the
@@ -3984,27 +4001,33 @@ the system definition, if provided."
 (defun operate-on-components (component operation force changed)
   (with-tell-user (operation component)
     (if (component-components component)
-	(dolist (module (component-components component))
-	  (when (operate-on-component module operation
-		  (cond ((and (module-depends-on-changed module changed)
-			      #||(some #'(lambda (dependent)
-					(member dependent changed))
-				    (component-depends-on module))||#
-			      (or (non-empty-listp force)
-				  (eq force :new-source-and-dependents)))
-			 ;; The component depends on a changed file
-			 ;; and force agrees.
-			 (if (eq force :new-source-and-dependents)
-			     :new-source-all
-			   :all))
-			((and (non-empty-listp force)
-			      (member (component-name module) force
-				      :test #'string-equal :key #'string))
-			 ;; Force is a list of modules
-			 ;; and the component is one of them.
-			 :all)
-			(t force)))
-	    (push module changed)))
+	(let ((sequential (and *sequential-dependencies*
+			       (not (component-dependencies-complete component))))
+	      (any-changed nil))
+	  (dolist (module (component-components component))
+	    (when (operate-on-component module operation
+		    (cond ((and (or (module-depends-on-changed module changed)
+				    ;; Anything compiled after a component
+				    ;; that changed may have been compiled
+				    ;; against it, declared or not.
+				    (and sequential any-changed))
+				(or (non-empty-listp force)
+				    (eq force :new-source-and-dependents)))
+			   ;; The component depends on a changed file
+			   ;; and force agrees.
+			   (if (eq force :new-source-and-dependents)
+			       :new-source-all
+			     :all))
+			  ((and (non-empty-listp force)
+				(member (component-name module) force
+					:test #'string-equal :key #'string))
+			   ;; Force is a list of modules
+			   ;; and the component is one of them.
+			   :all)
+			  (t force)))
+	      (push module changed)
+	      (unless (component-dependencies-complete module)
+		(setq any-changed t)))))
 	(case operation
 	  ((compile :compile)
 	   (eval (component-compile-form component)))

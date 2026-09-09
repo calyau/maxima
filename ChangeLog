@@ -105,3 +105,9 @@ Other changes:
 * load() and batch() read wxMaxima .wxmx worksheets
 * A file that is being loaded finds the files beside it, as a C
   include directive does
+* Incremental builds no longer leave stale object files behind:
+  defsystem recompiles everything that was compiled after a file that
+  changed, not only the files whose dependency on it happened to be
+  declared in src/maxima.system.  A module whose declared dependencies
+  are known to be complete is marked :dependencies-complete and keeps
+  the narrower behaviour
