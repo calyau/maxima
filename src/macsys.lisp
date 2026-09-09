@@ -582,6 +582,7 @@
     ans))
 
 (defmfun $system (&rest args)
+  (declare (special *socket-connection*))
   ;; If XMaxima is running, direct output from command into *SOCKET-CONNECTION*.
   (let ((s (and (boundp '*socket-connection*) *socket-connection*))
 	shell shell-opt)

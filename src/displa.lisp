@@ -35,6 +35,29 @@
 (defmvar $lmxchar "["  "Character used for drawing the left edge of a matrix.")
 (defmvar $rmxchar "]"  "Character used for drawing the right edge of a matrix.")
 
+(defmvar $display2d_unicode
+  #+lisp-unicode-capable t
+  #-lisp-unicode-capable nil
+  "Enable use of unicode characters for 2D display"
+  :setting-predicate #'(lambda (arg)
+                         ;; For Unicode-capable Lisps, check that we
+                         ;; only assign true or false.  If not,
+                         ;; produce an error with an appropriate
+                         ;; message.
+                         #+lisp-unicode-capable
+                         (values (member arg '(nil t))
+                                 (let ((*print-case* :downcase))
+                                   (format nil "must be one of: ~{~A~^, ~}"
+                                           (mapcar #'stripdollar '($false $true)))))
+                         ;; For Lisps that don't support Unicode, It's
+                         ;; an error if we try to set this to anything
+                         ;; other than false (NIL).  Tell the user
+                         ;; that it's not supported.
+                         #-lisp-unicode-capable
+                         (if arg
+                             (values nil "2D Unicode display not supported with this Lisp")
+                             t)))
+
 (defvar linearray (make-array 1000. :initial-element nil))
 
 (defun maxima-display (form &key (stream *standard-output*) )
@@ -797,29 +820,6 @@
 
 (defvar at-char-unicode
   (get-unicode-char :box-drawings-light-vertical))
-
-(defmvar $display2d_unicode
-  #+lisp-unicode-capable t
-  #-lisp-unicode-capable nil
-  "Enable use of unicode characters for 2D display"
-  :setting-predicate #'(lambda (arg)
-                         ;; For Unicode-capable Lisps, check that we
-                         ;; only assign true or false.  If not,
-                         ;; produce an error with an appropriate
-                         ;; message.
-                         #+lisp-unicode-capable
-                         (values (member arg '(nil t))
-                                 (let ((*print-case* :downcase))
-                                   (format nil "must be one of: ~{~A~^, ~}"
-                                           (mapcar #'stripdollar '($false $true)))))
-                         ;; For Lisps that don't support Unicode, It's
-                         ;; an error if we try to set this to anything
-                         ;; other than false (NIL).  Tell the user
-                         ;; that it's not supported.
-                         #-lisp-unicode-capable
-                         (if arg
-                             (values nil "2D Unicode display not supported with this Lisp")
-                             t)))
 
 (defun display2d-unicode-enabled ()
   #+lisp-unicode-capable

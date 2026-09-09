@@ -2127,6 +2127,7 @@ keyword $hue, $saturation, $value or $gradient; the first three types must be
 followed by 4 floating-point numbers, while gradient must be followed by a
 list of at least two valid colors.
 It returns the definition of the palette, if it is valid, or nil."
+  (declare (special *plot-palettes*))
   (let ((palette (cadr option)))
     (cond
      ((atom palette)
