@@ -4362,3 +4362,24 @@ block([a : foo, z : bar, b],
  assume(b > 0),
  freeof(foo, bar, diff(gamma_incomplete(b, y), b)));
 true;
+
+block([z],
+ local(z),
+ assume(z > 0),
+ diff(gamma_incomplete(z, a), z));
+(gamma_incomplete(z,a)-gamma(z))*log(a)+gamma(z)^2*hypergeometric_regularized([z,z],[z+1,z+1],-a)*a^z+psi[0](z)*gamma(z);
+
+block([b, hypergeometric_regularized, foo],
+ local(b, hypergeometric_regularized, foo),
+ assume(b > 0),
+ hypergeometric_regularized(p, q, x) := foo(p, q, x),
+ freeof(foo, diff(gamma_incomplete(b, y), b)));
+true;
+
+
+/**************************************/
+/* Leave this at the end of the file! */
+/**************************************/
+
+[facts(), contexts];
+[[], [initial, global]];

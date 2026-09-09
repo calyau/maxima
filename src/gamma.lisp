@@ -323,27 +323,25 @@
 
 (defgrad %gamma_incomplete ($a $z)
   ;; wrt a
-  #'(lambda ($a $z)
-      ;; Variable names MUST be $A and $Z because we use #$$...$ to
-      ;; define the derivative.
-      ;;
-      ;; Compiler may not see that $z is used, so declare it ignorable
-      ;; to get rid of a warning that it's unused.
-      (declare (ignorable $z))
-      (cond ((member ($sign $a) '($pos $pz))
+  #'(lambda (a z)
+      ;; Built from the actual arguments and returned with a second value
+      ;; of T, so that SDIFFGRAD takes it as it is.
+      (cond ((member ($sign a) '($pos $pz))
              ;; The derivative wrt a in terms of hypergeometric_regularized 2F2
              ;; function and the Generalized Incomplete Gamma function 
              ;; (functions.wolfram.com), only for a>0.
-             ;;
-             ;; We need to call meval ourselves here to make sure the
-             ;; expression is simplified as expected.
-             (mbinding ('($a $z) '($a $z))
-               (meval
-                 #$$ (gamma_incomplete(a,z)-gamma(a))*log(z)+gamma(a)^2
-                                        *hypergeometric_regularized(
-                                         [a,a],[a+1,a+1],-z)*z^a
-                                       +psi[0](a)*gamma(a)$
-               )))
+             (let ((g (ftake '%gamma a)))
+               (values
+                 (add (mul (sub (ftake '%gamma_incomplete a z) g)
+                           (ftake '%log z))
+                      (mul (power g 2)
+                           (ftake '$hypergeometric_regularized
+                                  (list '(mlist) a a)
+                                  (list '(mlist) (add a 1) (add a 1))
+                                  (neg z))
+                           (power z a))
+                      (mul (ftake 'mqapply '(($psi array) 0) a) g))
+                 t)))
             (t
              ;; No derivative. Maxima generates a noun form.
              nil)))
