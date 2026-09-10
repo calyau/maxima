@@ -1,0 +1,1044 @@
+/* Tests of the TeX output of tex().
+ *
+ * These are the expressions from tests/rtest_tex.mac, which is a LaTeX
+ * document generator meant to be read by a human.  It is in neither
+ * $testsuite_files nor $share_testsuite_files, so none of its output was
+ * ever checked automatically.  Here each expression is paired with the
+ * string tex() returns, so that a change is noticed.
+ *
+ * Every expected string was checked to be well-formed LaTeX -- balanced
+ * braces, balanced \\left and \\right, $$ delimiters -- before being
+ * recorded.  That check found a real defect: texput of a TeX control word
+ * ran it into the following letter, giving TeX that does not compile.
+ * Without fixing that first, this file would have pinned it in place.
+ *
+ * The setup statements between the tests are not decoration.  They
+ * declare operators, install texput and index properties, toggle
+ * stringdisp, and kill names that later expressions reuse, so keep them
+ * in this order.
+ *
+ * Expressions that read the input or output history are left out -- %%,
+ * _ and the two calling labels() -- because their value depends on their
+ * own position in the file.
+ */
+
+(kill (all), 0);
+0;
+
+(linel:2^10, 0);
+0;
+
+((prefix ("fooprefix"), infix ("implies"), infix ("iff"), nary ("foonary"), postfix ("foopostfix"), matchfix ("<<", ">>"), nofix ("foonofix")), 0);
+0;
+
+(infix ("-->"), 0);
+0;
+
+(texput ("-->", "\\rightarrow", infix), 0);
+0;
+
+('((aa or bb) and not (cc or dd)), 0);
+0;
+
+tex (riffraff, false);
+"$${\\it riffraff}$$
+";
+
+tex (riff_raff, false);
+"$${\\it riff\\_raff}$$
+";
+
+tex ([inf, minf, true, false, done], false);
+"$$\\left[ \\infty  ,  -\\infty  , \\mathbf{true} , \\mathbf{false} , \\mathbf{done} \\right] $$
+";
+
+(map (tex, [inf, minf, true, false, done]), 0);
+0;
+
+tex (%pi + %e + %i + %gamma, false);
+"$$\\pi+i+\\gamma+e$$
+";
+
+tex ('gamma(x), false);
+"$$\\Gamma\\left(x\\right)$$
+";
+
+tex ([alpha, beta, verbify (gamma), delta, epsilon, zeta, eta, theta, iota, kappa, lambda, mu], false);
+"$$\\left[ \\alpha , \\beta , \\gamma , \\delta , \\varepsilon , \\zeta , \\eta , \\vartheta , \\iota , \\kappa , \\lambda , \\mu \\right] $$
+";
+
+tex ([nu, xi, omicron, pi, rho, sigma, tau, upsilon, phi, chi, psi, omega], false);
+"$$\\left[ \\nu , \\xi ,  o , \\pi , \\rho , \\sigma , \\tau , \\upsilon , \\varphi , \\chi , \\psi , \\omega \\right] $$
+";
+
+tex ([Alpha, Beta, Gamma, Delta, Epsilon, Zeta, Eta, Theta, Iota, Kappa, Lambda, Mu], false);
+"$$\\left[ {\\rm A} , {\\rm B} , \\Gamma , \\Delta , {\\rm E} , {\\rm Z} , {\\rm H} , \\Theta , {\\rm I} , {\\rm K} , \\Lambda , {\\rm M} \\right] $$
+";
+
+tex ([Nu, Xi, Omicron, Pi, Rho, Sigma, Tau, Upsilon, Phi, Chi, Psi, Omega], false);
+"$$\\left[ {\\rm N} , \\Xi , {\\rm O} , \\Pi , {\\rm P} , \\Sigma , {\\rm T} , \\Upsilon , \\Phi , {\\rm X} , \\Psi , \\Omega \\right] $$
+";
+
+tex (A1 + B2 + C3 + A_1 + B_2 + C_3, false);
+"$$C_{3}+C_{3}+B_{2}+B_{2}+A_{1}+A_{1}$$
+";
+
+tex (A1a + B2b + C3c + A1_a + B2_b + C3_c, false);
+"$${\\it C3c}+{\\it C3\\_c}+{\\it B2b}+{\\it B2\\_b}+{\\it A1a}+{\\it A1\\_a}$$
+";
+
+tex (Foo[1] + BAR[2] + baz[3], false);
+"$${\\it baz}_{3}+{\\it BAR}_{2}+{\\it Foo}_{1}$$
+";
+
+tex (Mumble[i,j] + blurf[a][b], false);
+"$${\\it Mumble}_{i,j}+\\left({\\it blurf}_{a}\\right)_{b}$$
+";
+
+tex (\2F1 + ?lisp_symbol, false);
+"$${\\it lisp\\_symbol}+{\\it 2F}_{1}$$
+";
+
+(tex (embedded\$dollar + embedded%percent + embedded_underscore + embedded\&ampersand), 0);
+0;
+
+tex ('[%i1,%o1,%i], false);
+"$$\\left[ {\\it {\\%i}}_{1} , {\\it \\%o}_{1} , i \\right] $$
+";
+
+tex ([ABC123, ABC_123, ABC__123, ABC___123, ABC[123]], false);
+"$$\\left[ {\\it ABC}_{123} , {\\it ABC}_{123} , {\\it ABC}_{123} , {\\it ABC}_{123} , {\\it ABC}_{123} \\right] $$
+";
+
+tex ([abc123, abc_123, abc__123, abc___123, abc[123]], false);
+"$$\\left[ {\\it abc}_{123} , {\\it abc}_{123} , {\\it abc}_{123} , {\\it abc}_{123} , {\\it abc}_{123} \\right] $$
+";
+
+tex ([Abc123, Abc_123, Abc__123, Abc___123, Abc[123]], false);
+"$$\\left[ {\\it Abc}_{123} , {\\it Abc}_{123} , {\\it Abc}_{123} , {\\it Abc}_{123} , {\\it Abc}_{123} \\right] $$
+";
+
+tex ([ABC_1_2_3, ABC[1, 2, 3]], false);
+"$$\\left[ {\\it ABC}_{1,2,3} , {\\it ABC}_{1,2,3} \\right] $$
+";
+
+tex ([%A_1_B_2_C_3, %A_1_B_2_C[3]], false);
+"$$\\left[ {\\it \\%A\\_1\\_B\\_2\\_C}_{3} , {\\it \\%A\\_1\\_B\\_2\\_C}_{3} \\right] $$
+";
+
+tex ([%gamma3, %gamma_3, %gamma[3]], false);
+"$$\\left[ \\gamma_{3} , \\gamma_{3} , \\gamma_{3} \\right] $$
+";
+
+tex (x[aa,bb,cc,dd], false);
+"$$x_{{\\it aa},{\\it bb},{\\it cc},{\\it dd}}$$
+";
+
+tex (x[a + 1,b - 1,2*c,d^2], false);
+"$$x_{a+1,b-1,2\\,c,d^2}$$
+";
+
+tex ((1 - x[a + 1,b - 1,2*c,d^2])/(1 + x[a + 1,b - 1,2*c,d^2]), false);
+"$${{1-x_{a+1,b-1,2\\,c,d^2}}\\over{x_{a+1,b-1,2\\,c,d^2}+1}}$$
+";
+
+tex (sqrt (x[a + 1,b - 1,2*c,d^2]), false);
+"$$\\sqrt{x_{a+1,b-1,2\\,c,d^2}}$$
+";
+
+(texput (U, "\\mathrm{U}"), 0);
+0;
+
+(texput (Th, "\\mathrm{Th}"), 0);
+0;
+
+(texput (Pa, "\\mathrm{Pa}"), 0);
+0;
+
+tex (U[92,238] --> Th[90,234] --> Pa[234,91] --> U[234,92], false);
+"$$\\mathrm{U}_{92,238}\\rightarrow \\mathrm{Th}_{90,234}\\rightarrow \\mathrm{Pa}_{234,91}\\rightarrow \\mathrm{U}_{234,92}$$
+";
+
+(declare_index_properties (x, [postsubscript, postsuperscript, presuperscript, presubscript]), 0);
+0;
+
+tex (x[aa,bb,cc,dd], false);
+"$${}_{{\\it dd}}^{{\\it cc}}x_{{\\it aa}}^{{\\it bb}}$$
+";
+
+tex (x[a + 1,b - 1,2*c,d^2], false);
+"$${}_{d^2}^{2\\,c}x_{a+1}^{b-1}$$
+";
+
+tex ((1 - x[a + 1,b - 1,2*c,d^2])/(1 + x[a + 1,b - 1,2*c,d^2]), false);
+"$${{1-{}_{d^2}^{2\\,c}x_{a+1}^{b-1}}\\over{{}_{d^2}^{2\\,c}x_{a+1}^{b-1}+1}}$$
+";
+
+tex (sqrt (x[a + 1,b - 1,2*c,d^2]), false);
+"$$\\sqrt{{}_{d^2}^{2\\,c}x_{a+1}^{b-1}}$$
+";
+
+(declare_index_properties (U, [presubscript, presuperscript]), 0);
+0;
+
+(declare_index_properties (Th, [presubscript, presuperscript]), 0);
+0;
+
+(declare_index_properties (Pa, [presubscript, presuperscript]), 0);
+0;
+
+tex (U[92,238] --> Th[90,234] --> Pa[234,91] --> U[234,92], false);
+"$${}_{92}^{238}\\mathrm{U}\\rightarrow {}_{90}^{234}\\mathrm{Th}\\rightarrow {}_{234}^{91}\\mathrm{Pa}\\rightarrow {}_{234}^{92}\\mathrm{U}$$
+";
+
+tex ([%gamma = ev (%gamma, numer), Gamma, nounify (gamma), verbify (gamma)], false);
+"$$\\left[ \\gamma=0.5772156649015329 , \\Gamma , \\gamma , \\gamma \\right] $$
+";
+
+tex ([gamma (z), gamma_incomplete (a, z), gamma_incomplete_regularized (a, z), gamma_incomplete_generalized (a, z[1], z[2]), gamma_incomplete_lower (a, z)], false);
+"$$\\left[ \\Gamma\\left(z\\right) , \\Gamma\\left(a , z\\right) , Q\\left(a , z\\right) , \\Gamma\\left(a , z_{1} , z_{2}\\right) , \\gamma\\left(a , z\\right) \\right] $$
+";
+
+tex (make_array(fixnum,5), false);
+"$$\\mbox{ \"{Lisp Array: \\#(0 0 0 0 0)}\" }$$
+";
+
+tex (gf_set_data(3,x^4+x+1), false);
+"$$\\mbox{ Structure [GF-DATA] }$$
+";
+
+tex ("riff", false);
+"$$\\mbox{ riff }$$
+";
+
+tex ("Riff Raff", false);
+"$$\\mbox{ Riff Raff }$$
+";
+
+(stringdisp: true, 0);
+0;
+
+tex ("Riff Raff (enclosed in `quote marks')", false);
+"$$\\mbox{ ``Riff Raff (enclosed in `quote marks')'' }$$
+";
+
+(stringdisp: false, 0);
+0;
+
+tex ("String containing a newline.", false);
+"$$\\mbox{ String containing a newline. }$$
+";
+
+tex ("String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands.", false);
+"$$\\mbox{ String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands. }$$
+";
+
+tex ("Some characters \\{ \\ \\^ % _ $ \\# \\~ & \\} which might be special to \\TeX\\ and \\LaTeX.", false);
+"$$\\mbox{ Some characters \\{ \\ \\^ \\% \\_ \\$ \\# \\~ \\& \\} which might be special to \\TeX\\ and \\LaTeX. }$$
+";
+
+(ev (tex (1 + 1/1 + 1.0 + 1e0 + 1b0), simp=false), 0);
+0;
+
+(ev (tex (12345678901234567890 + 1/12345678901234567890), simp=false), 0);
+0;
+
+(ev (tex (12345678901234567890e200 + 12345678901234567890b-200), simp=false, fpprec=20), 0);
+0;
+
+tex (123b456/a + 123d42/b + (123/456)/c, false);
+"$${{41}\\over{152\\,c}}+{{1.23 \\times 10^{44}}\\over{b}}+{{1.23_B \\times 10^{458}}\\over{a}}$$
+";
+
+tex (123 + 456*x + 789.0*x^2 + 987e50*x^3 + 654b-50*x^4 + 1729b+42*x^5, false);
+"$$1.729_B \\times 10^{45}\\,x^5+6.54_B \\times 10^{-48}\\,x^4+9.87 \\times 10^{52}\\,x^3+789.0\\,x^2+456\\,x+123$$
+";
+
+tex (123b-456^a + 123d-45^b + sqrt (123b-456) + sqrt (123d-45), false);
+"$$\\left(1.23_B \\times 10^{-454}\\right)^{a}+\\left(1.23 \\times 10^{-43}\\right)^{b}+3.507135583350036_B \\times 10^{-22}$$
+";
+
+tex (1.234^m + 5.678^n - 1.234b0^m + 5.678b0^n, false);
+"$$\\left(5.678_B \\times 10^{0}\\right)^{n}-\\left(1.234_B \\times 10^{0}\\right)^{m}+5.678^{n}+1.234^{m}$$
+";
+
+tex (1.234^m * 5.678^n . 1.234b0^m * 5.678b0^n, false);
+"$$1.234^{m}\\,\\left(5.678_B \\times 10^{0}\\right)^{n}\\,5.678^{n}\\cdot \\left(1.234_B \\times 10^{0}\\right)^{m}$$
+";
+
+tex ((1.234^m) ^ (5.678^n) ^^ (1.234b0^m) ^ (5.678b0^n), false);
+"$$1.234^{\\left(5.678^{n}\\right)^{\\langle \\left(1.234_B \\times 10^{0}\\right)^{\\left(5.678_B \\times 10^{0}\\right)^{n}\\,m}\\rangle}\\,m}$$
+";
+
+tex (a + b, false);
+"$$b+a$$
+";
+
+tex (a - b, false);
+"$$a-b$$
+";
+
+tex (a*b, false);
+"$$a\\,b$$
+";
+
+tex (a.b, false);
+"$$a\\cdot b$$
+";
+
+tex (a.b * c.d + (a*b).(c*d), false);
+"$$a\\cdot b\\,c\\cdot d+\\left(a\\,b\\right)\\cdot \\left(c\\,d\\right)$$
+";
+
+tex (a/b, false);
+"$${{a}\\over{b}}$$
+";
+
+(ev (tex ((a/b)/(c/d)), simp=false), 0);
+0;
+
+tex (a^b, false);
+"$$a^{b}$$
+";
+
+tex (a!, false);
+"$$a!$$
+";
+
+tex (-a, false);
+"$$-a$$
+";
+
+tex ('(a : b), false);
+"$$a:b$$
+";
+
+tex ('(a :: b), false);
+"$$a::b$$
+";
+
+tex (sin(a) + cos(a) + tan(a) + sec(a) + csc(a) + cot(a), false);
+"$$\\tan a+\\sin a+\\sec a+\\csc a+\\cot a+\\cos a$$
+";
+
+tex (asin(a) + acos(a) + atan(a) + atan2(b,a) + asec(a) + acsc(a) + acot(a), false);
+"$${\\rm atan2}\\left(b , a\\right)+\\arctan a+\\arcsin a+{\\rm arcsec}\\; a+{\\rm arccsc}\\; a+{\\rm arccot}\\; a+\\arccos a$$
+";
+
+tex (sinh(a) + cosh(a) + tanh(a) + sech(a) + csch(a) + coth(a), false);
+"$$\\tanh a+\\sinh a+{\\rm sech}\\; a+{\\rm csch}\\; a+\\coth a+\\cosh a$$
+";
+
+tex (asinh(a) + acosh(a) + atanh(a) + asech(a) + acsch(a) + acoth(a), false);
+"$${\\rm atanh}\\; a+{\\rm asinh}\\; a+{\\rm asech}\\; a+{\\rm acsch}\\; a+{\\rm acoth}\\; a+{\\rm acosh}\\; a$$
+";
+
+tex (exp(x) + log(a) + erf(a), false);
+"$$\\log a+\\mathrm{erf}\\left(a\\right)+e^{x}$$
+";
+
+tex (sin(%pi*a/n) + cos(%pi*a/n) + tan(%pi*a/n) + sec(%pi*a/n) + csc(%pi*a/n) + cot(%pi*a/n), false);
+"$$\\tan \\left({{\\pi\\,a}\\over{n}}\\right)+\\sin \\left({{\\pi\\,a}\\over{n}}\\right)+\\sec \\left({{\\pi\\,a}\\over{n}}\\right)+\\csc \\left({{\\pi\\,a}\\over{n}}\\right)+\\cot \\left({{\\pi\\,a}\\over{n}}\\right)+\\cos \\left({{\\pi\\,a}\\over{n}}\\right)$$
+";
+
+tex (asin(%pi*a/n) + acos(%pi*a/n) + atan(%pi*a/n) + atan2(%pi*a/n,%pi*b/n) + asec(%pi*a/n) + acsc(%pi*a/n) + acot(%pi*a/n), false);
+"$${\\rm atan2}\\left({{a\\,n}\\over{\\left| n\\right| }} , {{b\\,n}\\over{\\left| n\\right| }}\\right)+\\arctan \\left({{\\pi\\,a}\\over{n}}\\right)+\\arcsin \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm arcsec}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm arccsc}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm arccot}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+\\arccos \\left({{\\pi\\,a}\\over{n}}\\right)$$
+";
+
+tex (sinh(%pi*a/n) + cosh(%pi*a/n) + tanh(%pi*a/n) + sech(%pi*a/n) + csch(%pi*a/n) + coth(%pi*a/n), false);
+"$$\\tanh \\left({{\\pi\\,a}\\over{n}}\\right)+\\sinh \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm sech}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm csch}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+\\coth \\left({{\\pi\\,a}\\over{n}}\\right)+\\cosh \\left({{\\pi\\,a}\\over{n}}\\right)$$
+";
+
+tex (asinh(%pi*a/n) + acosh(%pi*a/n) + atanh(%pi*a/n) + asech(%pi*a/n) + acsch(%pi*a/n) + acoth(%pi*a/n), false);
+"$${\\rm atanh}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm asinh}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm asech}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm acsch}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm acoth}\\; \\left({{\\pi\\,a}\\over{n}}\\right)+{\\rm acosh}\\; \\left({{\\pi\\,a}\\over{n}}\\right)$$
+";
+
+tex (exp(1 + x + x^2 + x^3) + exp (exp (-x)), false);
+"$$e^{x^3+x^2+x+1}+e^{e^ {- x }}$$
+";
+
+tex (log(b + a) + log((b + a)/(b - a)), false);
+"$$\\log \\left({{b+a}\\over{b-a}}\\right)+\\log \\left(b+a\\right)$$
+";
+
+tex ('integrate (exp(-a*x^2), x, minf, inf), false);
+"$$\\int_{ -\\infty }^{\\infty }{e^ {- \\left(a\\,x^2\\right) }\\;dx}$$
+";
+
+tex ('sum (1/k^2, k, 1, inf), false);
+"$$\\sum_{k=1}^{\\infty }{{{1}\\over{k^2}}}$$
+";
+
+tex ('lsum (1/k^2, k, Z), false);
+"$$\\sum_{k\\in{Z}}{{{1}\\over{k^2}}}$$
+";
+
+tex (diff (Omega (omega)), false);
+"$${{d}\\over{d\\,\\omega}}\\,\\Omega\\left(\\omega\\right)\\,d\\omega$$
+";
+
+tex ('diff (F, x), false);
+"$${{\\partial}\\over{\\partial\\,x}}\\,F$$
+";
+
+tex ('diff (exp (-a*x), x), false);
+"$${{\\partial}\\over{\\partial\\,x}}\\,e^ {- \\left(a\\,x\\right) }$$
+";
+
+tex ('diff (a(x) * 'diff (F, x), x) + a(x) * 'diff (F, x, 2), false);
+"$${{\\partial}\\over{\\partial\\,x}}\\,\\left({{\\partial}\\over{\\partial\\,x}}\\,F\\,a\\left(x\\right)\\right)+{{\\partial^2}\\over{\\partial\\,x^2}}\\,F\\,a\\left(x\\right)$$
+";
+
+tex ('limit (exp (-a*x), x, inf), false);
+"$$\\lim_{x\\rightarrow \\infty }{e^ {- \\left(a\\,x\\right) }}$$
+";
+
+tex ('limit (exp (-a*x), x, 0, plus), false);
+"$$\\lim_{x\\downarrow 0}{e^ {- \\left(a\\,x\\right) }}$$
+";
+
+tex ('limit (exp (-a*x), x, 0, minus), false);
+"$$\\lim_{x\\uparrow 0}{e^ {- \\left(a\\,x\\right) }}$$
+";
+
+tex ('(a and b), false);
+"$$a\\land b$$
+";
+
+tex ('(a or b), false);
+"$$a\\lor b$$
+";
+
+tex ('(not a), false);
+"$$\\neg a$$
+";
+
+tex ('((riff or raff) and not (roff or ruff)), false);
+"$$\\left({\\it riff}\\lor {\\it raff}\\right)\\land \\left(\\neg {\\it roff}\\land \\neg {\\it ruff}\\right)$$
+";
+
+tex ('(not foo ((a + b)^2/(a - b)^2) or bar (x and baz (sqrt(y^n)) or z)), false);
+"$$\\neg {\\it foo}\\left({{\\left(b+a\\right)^2}\\over{\\left(a-b\\right)^2}}\\right)\\lor {\\it bar}\\left(x\\land {\\it baz}\\left(\\sqrt{y^{n}}\\right)\\lor z\\right)$$
+";
+
+(block([f,F,G], tex ((depends(F,[x]),'diff(F,x))), tex ('diff(F,x,3)), tex ('diff(F,y)), tex ((depends(G,[x,y]),'diff(G,x))), tex ('diff(G,y)), tex ('diff(G,x,1,y,1)), tex ('diff(G,x,1,y,2)), tex ('diff(G,x,2,y,1)), tex ('diff(G,x,4,y,2)), tex ((f : cos(x+y)+%e, 'diff(f,x))), tex ('diff(f,y)), tex ('diff(f,x,1,y,1)), tex ('diff(f,x,1,y,2)), tex ('diff(f,x,2,y,1)), tex ('diff(f,x,4,y,2)), tex ((f : cos(x)+%e, 'diff(f,x))), tex ('diff(f,y)), tex ('diff(f,x,1,y,1)), tex ('diff(f,x,1,y,2)), tex ('diff(f,x,2,y,1)), tex ('diff(f,x,4,y,2))), 0);
+0;
+
+tex ([a, b, c, d, e], false);
+"$$\\left[ a , b , c , d , e \\right] $$
+";
+
+tex ([a + b, a*b, a/b, a^b, a^b^c], false);
+"$$\\left[ b+a , a\\,b , {{a}\\over{b}} , a^{b} , a^{b^{c}} \\right] $$
+";
+
+tex (matrix ([a, b], [c, d]), false);
+"$$\\ifx\\endpmatrix\\undefined\\pmatrix{\\else\\begin{pmatrix}\\fi a&b\\cr c&d\\cr \\ifx\\endpmatrix\\undefined}\\else\\end{pmatrix}\\fi $$
+";
+
+tex (matrix ([a + b, a*b], [a^b, a^b^c]), false);
+"$$\\ifx\\endpmatrix\\undefined\\pmatrix{\\else\\begin{pmatrix}\\fi b+a&a\\,b\\cr a^{b}&a^{b^{c}}\\cr \\ifx\\endpmatrix\\undefined}\\else\\end{pmatrix}\\fi $$
+";
+
+tex ({a, b, c, d, e}, false);
+"$$\\left \\{a , b , c , d , e \\right \\}$$
+";
+
+tex ({a + b, a*b, a/b, a^b, a^b^c}, false);
+"$$\\left \\{a^{b} , a^{b^{c}} , {{a}\\over{b}} , a\\,b , b+a \\right \\}$$
+";
+
+tex (xyz + binomial (foo(a)/foo(b), bar(a)/bar(b)) + abc, false);
+"$${\\it xyz}+{{{{{\\it foo}\\left(a\\right)}\\over{{\\it foo}\\left(b\\right)}}}\\choose{{{{\\it bar}\\left(a\\right)}\\over{{\\it bar}\\left(b\\right)}}}}+{\\it abc}$$
+";
+
+tex ('("Before texput" : [foo, signum(x)]), false);
+"$$\\mbox{ Before texput }:\\left[ {\\it foo} , {\\it signum}\\left(x\\right) \\right] $$
+";
+
+(texput (signum, "\\sgn"), 0);
+0;
+
+(texput (foo, "\\phi\\upsilon"), 0);
+0;
+
+tex ('("After texput" : [foo, signum(x)]), false);
+"$$\\mbox{ After texput }:\\left[ \\phi\\upsilon  , \\sgn \\left(x\\right) \\right] $$
+";
+
+tex ('("Before texput" : [grad(x), fooprefix x, grad (fooprefix x)]), false);
+"$$\\mbox{ Before texput }:\\left[ {\\it grad}\\left(x\\right) , {\\it fooprefix}\\left(x\\right) , {\\it grad}\\left({\\it fooprefix}\\left(x\\right)\\right) \\right] $$
+";
+
+(texput (grad, "\\nabla ", prefix), 0);
+0;
+
+(texput ("fooprefix", "\\mathrm{foo}\\;", prefix), 0);
+0;
+
+tex ('("After texput" : [grad(x), fooprefix x, grad (fooprefix x)]), false);
+"$$\\mbox{ After texput }:\\left[ \\nabla x , \\mathrm{foo}\\;x , \\nabla \\mathrm{foo}\\;x \\right] $$
+";
+
+tex ('("Before texput" : ((foo or bar) implies (baz or quux))), false);
+"$$\\mbox{ Before texput }:{\\it implies}\\left(\\phi\\upsilon \\lor {\\it bar} , {\\it baz}\\lor {\\it quux}\\right)$$
+";
+
+(texput ("implies", "\\Rightarrow", infix), 0);
+0;
+
+tex ('("After texput" : ((foo or bar) implies (baz or quux))), false);
+"$$\\mbox{ After texput }:\\left(\\phi\\upsilon \\lor {\\it bar}\\right)\\Rightarrow \\left({\\it baz}\\lor {\\it quux}\\right)$$
+";
+
+tex ('("Before texput" : ((foo or bar) iff (baz or quux))), false);
+"$$\\mbox{ Before texput }:{\\it iff}\\left(\\phi\\upsilon \\lor {\\it bar} , {\\it baz}\\lor {\\it quux}\\right)$$
+";
+
+(texput ("iff", "\\Leftrightarrow", infix), 0);
+0;
+
+tex ('("After texput" : ((foo or bar) iff (baz or quux))), false);
+"$$\\mbox{ After texput }:\\left(\\phi\\upsilon \\lor {\\it bar}\\right)\\Leftrightarrow \\left({\\it baz}\\lor {\\it quux}\\right)$$
+";
+
+tex ('("Before texput" : aa foonary bb foonary cc foonary dd), false);
+"$$\\mbox{ Before texput }:{\\it foonary}\\left({\\it aa} , {\\it bb} , {\\it cc} , {\\it dd}\\right)$$
+";
+
+(texput ("foonary", "\\;\\mathbf{foo}\\;", nary), 0);
+0;
+
+tex ('("After texput" : aa foonary bb foonary cc foonary dd), false);
+"$$\\mbox{ After texput }:{\\it aa}\\;\\mathbf{foo}\\;{\\it bb}\\;\\mathbf{foo}\\;{\\it cc}\\;\\mathbf{foo}\\;{\\it dd}$$
+";
+
+tex ('("Before texput" : [degrees_F(85), x foopostfix, degrees_F (x foopostfix)]), false);
+"$$\\mbox{ Before texput }:\\left[ {\\it degrees\\_F}\\left(85\\right) , {\\it foopostfix}\\left(x\\right) , {\\it degrees\\_F}\\left({\\it foopostfix}\\left(x\\right)\\right) \\right] $$
+";
+
+(texput (degrees_F, "^o\\;{\\rm F}", postfix), 0);
+0;
+
+(texput ("foopostfix", "\\;\\mathit{foo}", postfix), 0);
+0;
+
+tex ('("After texput" : [degrees_F(85), x foopostfix, degrees_F (x foopostfix)]), false);
+"$$\\mbox{ After texput }:\\left[ 85^o\\;{\\rm F} , x\\;\\mathit{foo} , x\\;\\mathit{foo}^o\\;{\\rm F} \\right] $$
+";
+
+tex ('("Before texput" : <<x, y>>), false);
+"$$\\mbox{ Before texput }:{\\it <<}\\left(x , y\\right)$$
+";
+
+(texput ("<<", [" \\langle ", " \\rangle "], matchfix), 0);
+0;
+
+tex ('("After texput" : <<x, y>>), false);
+"$$\\mbox{ After texput }: \\langle x , y \\rangle $$
+";
+
+tex ('("Before texput" : foonofix), false);
+"$$\\mbox{ Before texput }:{\\it foonofix}\\left(\\right)$$
+";
+
+(texput ("foonofix", "\\;\\mathsf{foo}\\;", nofix), 0);
+0;
+
+tex ('("After texput" : foonofix), false);
+"$$\\mbox{ After texput }:\\;\\mathsf{foo}\\;$$
+";
+
+tex ('("All together now" : <<fooprefix foo foonary foo foonary foonofix foopostfix>>), false);
+"$$\\mbox{ All together now }: \\langle \\mathrm{foo}\\;\\phi\\upsilon \\;\\mathbf{foo}\\;\\phi\\upsilon \\;\\mathbf{foo}\\;\\;\\mathsf{foo}\\;\\;\\mathit{foo} \\rangle $$
+";
+
+tex ('diff (y(x), x, 3) + 'diff (y(x), x, 2) + 'diff (y(x), x) + y(x) + a = 0, false);
+"$${{d^3}\\over{d\\,x^3}}\\,y\\left(x\\right)+{{d^2}\\over{d\\,x^2}}\\,y\\left(x\\right)+{{d}\\over{d\\,x}}\\,y\\left(x\\right)+y\\left(x\\right)+a=0$$
+";
+
+tex ('diff (y(t), t, 3) + 'diff (y(t), t, 2) + 'diff (y(t), t) + y(t) + a = 0, false);
+"$${{d^3}\\over{d\\,t^3}}\\,y\\left(t\\right)+{{d^2}\\over{d\\,t^2}}\\,y\\left(t\\right)+{{d}\\over{d\\,t}}\\,y\\left(t\\right)+y\\left(t\\right)+a=0$$
+";
+
+tex ('diff (f(x, t), x) + 'diff(f(x, t), t) = c, false);
+"$${{\\partial}\\over{\\partial\\,x}}\\,f\\left(x , t\\right)+{{\\partial}\\over{\\partial\\,t}}\\,f\\left(x , t\\right)=c$$
+";
+
+(texput (nounify (diff), lambda ([e], if not mapatom (first (e)) and length (args (first (e))) = 1 then if third (e) = 1 then sconcat (tex1 (op (first (e))), "'\\left(", tex1 (first (args (first (e)))), "\\right)"))), 0);
+0;
+
+(texput (nounify (diff), lambda ([e], if second (e) = 't and third (e) =1 then sconcat ("\\dot ", tex1 (first (e))) elseif second (e) = 't and third (e) = 2 then sconcat ("\\ddot ", tex1 (first (e))))), 0);
+0;
+
+tex ('diff (y(x), x, 3) + 'diff (y(x), x, 2) + 'diff (y(x), x) + y(x) + a = 0, false);
+"$${{d^3}\\over{d\\,x^3}}\\,y\\left(x\\right)+{{d^2}\\over{d\\,x^2}}\\,y\\left(x\\right)+y'\\left(x\\right)+y\\left(x\\right)+a=0$$
+";
+
+tex ('diff (y(t), t, 3) + 'diff (y(t), t, 2) + 'diff (y(t), t) + y(t) + a = 0, false);
+"$${{d^3}\\over{d\\,t^3}}\\,y\\left(t\\right)+\\ddot y\\left(t\\right)+\\dot y\\left(t\\right)+y\\left(t\\right)+a=0$$
+";
+
+tex ('diff (f(x, t), x) + 'diff(f(x, t), t) = c, false);
+"$${{\\partial}\\over{\\partial\\,x}}\\,f\\left(x , t\\right)+\\dot f\\left(x , t\\right)=c$$
+";
+
+tex (1/(1 + 'diff (u, t)), false);
+"$${{1}\\over{\\dot u+1}}$$
+";
+
+tex (1/(1 + ('diff (u, t))^n), false);
+"$${{1}\\over{\\left(\\dot u\\right)^{n}+1}}$$
+";
+
+tex ('integrate ('diff (g(a, b), b) * 'diff (h(c - a, b), a), b, minf, inf), false);
+"$$\\int_{ -\\infty }^{\\infty }{{{\\partial}\\over{\\partial\\,b}}\\,g\\left(a , b\\right)\\,\\left({{\\partial}\\over{\\partial\\,a}}\\,h\\left(c-a , b\\right)\\right)\\;db}$$
+";
+
+(texput (baz, lambda ([e], if mapatom (first (e)) then sconcat ("\\hat{", tex1 (first (e)), "}"))), 0);
+0;
+
+tex (%pi + %phi / baz (%gamma[2]), false);
+"$${{\\varphi}\\over{\\hat{\\gamma_{2}}}}+\\pi$$
+";
+
+tex (%pi + %phi / baz (3 + %gamma[2]), false);
+"$${{\\varphi}\\over{{\\it baz}\\left(\\gamma_{2}+3\\right)}}+\\pi$$
+";
+
+(texput (quux, lambda ([e], sconcat ("\\mathrm{", string (op (e)), "}", tex1 (subst (quux = ?mprogn, e))))), 0);
+0;
+
+(texput (quux, lambda ([e], if mapatom (first (e)) then sconcat ("\\hat{", tex1 (first (e)), "}"))), 0);
+0;
+
+tex (%pi + %phi / quux (%gamma[2]), false);
+"$${{\\varphi}\\over{\\hat{\\gamma_{2}}}}+\\pi$$
+";
+
+tex (%pi + %phi / quux (3 + %gamma[2]), false);
+"$${{\\varphi}\\over{\\mathrm{quux}\\left(\\gamma_{2}+3\\right)}}+\\pi$$
+";
+
+tex ('((aa or bb) and not (cc or dd)), false);
+"$$\\left({\\it aa}\\lor {\\it bb}\\right)\\land \\left(\\neg {\\it cc}\\land \\neg {\\it dd}\\right)$$
+";
+
+('((aa or bb) and not (cc or dd)), 0);
+0;
+
+('((aa or bb) and not (cc or dd)), 0);
+0;
+
+(foo () := (tex ('integrate (x^n, x, 0, inf)), tex ('sum (x^n, n, 1, inf)), tex ('limit (x^n, x, inf)), tex ('diff (x^n, x))), 0);
+0;
+
+tex (foo, false);
+"
+\\begin{verbatim}
+foo():=(tex('integrate(x^n,x,0,inf)),tex('sum(x^n,n,1,inf)),tex('limit(x^n,x,inf)),tex('diff(x^n,x)));
+\\end{verbatim}
+
+";
+
+(foo (), 0);
+0;
+
+tex ("Capture standard output as a string.", false);
+"$$\\mbox{ Capture standard output as a string. }$$
+";
+
+/* tex(expr, filename) and tex(expr, stream) are branches of $TEX that
+   tex(expr, false) does not reach.  Write into maxima_tempdir and
+   delete both files at the end of this file, so a suite run leaves
+   nothing behind. */
+(tmpfile_c : sconcat (maxima_tempdir, "/rtest-mactex-c.tex"),
+ tmpfile_d : sconcat (maxima_tempdir, "/rtest-mactex-d.tex"), 0);
+0;
+
+(tex ("Write output directly to a named file.", tmpfile_c), 0);
+0;
+
+(s : openw (tmpfile_d), 0);
+0;
+
+(tex ("Write output to an open output stream.", s), 0);
+0;
+
+(close (s), 0);
+0;
+
+/* The three settings below are global and survive kill(all): a leaked
+   one changes tex() output in every later file of the test suite.  Save
+   what they were; the end of this file puts them back. */
+(saved_tex_env_default : get_tex_environment_default (),
+ saved_tex_env_mdefine : get_tex_environment (":="), 0);
+0;
+
+(set_tex_environment_default (" \\begin{equation} ", " \\end{equation} "), 0);
+0;
+
+(set_tex_environment ("=", "$", "$"), 0);
+0;
+
+(set_tex_environment (":=", "$$", "$$"), 0);
+0;
+
+tex ((a + b)/(c + d), false);
+" \\begin{equation} {{b+a}\\over{d+c}} \\end{equation} 
+";
+
+tex (sin(x)/(1-sin(x)), false);
+" \\begin{equation} {{\\sin x}\\over{1-\\sin x}} \\end{equation} 
+";
+
+tex (erf(x)*gamma(x), false);
+" \\begin{equation} \\mathrm{erf}\\left(x\\right)\\,\\Gamma\\left(x\\right) \\end{equation} 
+";
+
+tex (b - a = d - c, false);
+"$b-a=d-c$
+";
+
+tex (foo(x) := 1 - 1/x, false);
+"$$foo(x):=1-1/x$$
+";
+
+tex (x + y + z + t = x * y * z * t, false);
+"$z+y+x+t=t\\,x\\,y\\,z$
+";
+
+(ordergreat (x, y, z, t), 0);
+0;
+
+tex (x + y + z + t = x * y * z * t, false);
+"$x+y+z+t=t\\,z\\,y\\,x$
+";
+
+(unorder (), 0);
+0;
+
+(kill (a, b, c, d, foo, bar, baz, quux, u, v, w, x, y, z), 0);
+0;
+
+tex ('at (f (u), u = 0), false);
+" \\begin{equation} \\left.f\\left(u\\right)\\right|_{u=0} \\end{equation} 
+";
+
+tex (1 / (1 - 'at (diff (f (u), u), u = 0)), false);
+" \\begin{equation} {{1}\\over{1-\\left.f'\\left(u\\right)\\right|_{u=0}}} \\end{equation} 
+";
+
+tex ('at_difference (f (u), u, a, b), false);
+" \\begin{equation} \\left.f\\left(u\\right)\\right|_{u=a}^{u=b} \\end{equation} 
+";
+
+tex ('at_difference ('integrate (g (w), w), w, 1 - %pi^2, epsilon[3]^4), false);
+" \\begin{equation} \\left.\\int {g\\left(w\\right)}{\\;dw}\\right|_{w=1-\\pi^2}^{w=\\varepsilon_{3}^4} \\end{equation} 
+";
+
+tex ('at_difference (exp (-(1/2)*((z - mu)/sigma)^2) / sigma / sqrt (2*%pi), z, minf, inf), false);
+" \\begin{equation} \\left.{{e^ {- \\left({{\\left(z-\\mu\\right)^2}\\over{2\\,\\sigma^2}}\\right) }}\\over{\\sqrt{2}\\,\\sqrt{\\pi}\\,\\sigma}}\\right|_{z= -\\infty }^{z=\\infty } \\end{equation} 
+";
+
+tex ([0b0, 1b0, -1b0, 1b100], false);
+" \\begin{equation} \\left[ 0.0_B \\times 10^{0} , 1.0_B \\times 10^{0} , -1.0_B \\times 10^{0} , 1.0_B \\times 10^{100} \\right]  \\end{equation} 
+";
+
+tex ((foo (0b0) + bar (1b0))/(baz (-1b0) - quux (1b100)), false);
+" \\begin{equation} {{{\\it bar}\\left(1.0_B \\times 10^{0}\\right)+\\phi\\upsilon \\left(0.0_B \\times 10^{0}\\right)}\\over{\\hat{-1.0_B \\times 10^{0}}-\\hat{1.0_B \\times 10^{100}}}} \\end{equation} 
+";
+
+tex ('binomial (N, M), false);
+" \\begin{equation} {{N}\\choose{M}} \\end{equation} 
+";
+
+tex ((a + 'binomial (f (u), sqrt (v)))^(1/2), false);
+" \\begin{equation} \\sqrt{{{f\\left(u\\right)}\\choose{\\sqrt{v}}}+a} \\end{equation} 
+";
+
+tex (cubrt (%pi), false);
+" \\begin{equation} \\root 3 \\of{\\pi} \\end{equation} 
+";
+
+tex (sin (cubrt (1 - %pi)), false);
+" \\begin{equation} \\sin \\root 3 \\of{1-\\pi} \\end{equation} 
+";
+
+tex (kron_delta (0, u), false);
+" \\begin{equation} \\delta_{0, u}  \\end{equation} 
+";
+
+tex ((x - kron_delta (cos (y), sin (z)))^n, false);
+" \\begin{equation} \\left(x-\\delta_{\\cos y, \\sin z} \\right)^{n} \\end{equation} 
+";
+
+tex (if 'a > 'b then a else b, false);
+" \\begin{equation} \\mathbf{if}\\;a>b\\;\\mathbf{then}\\;a\\;\\mathbf{else}\\;b \\end{equation} 
+";
+
+tex (if 'a > 'b then (if 'a > 'c then 'a else 'c) else b, false);
+" \\begin{equation} \\mathbf{if}\\;a>b\\;\\mathbf{then}\\;\\mathbf{if}\\;\\mbox{{}'{}}a>\\mbox{{}'{}}c\\;\\mathbf{then}\\;\\mbox{{}'{}}a\\;\\mathbf{else}\\;\\mbox{{}'{}}c\\;\\mathbf{else}\\;b \\end{equation} 
+";
+
+tex (if 'a > 'b then a elseif 'c > 'b then c else b, false);
+" \\begin{equation} \\mathbf{if}\\;a>b\\;\\mathbf{then}\\;a\\;\\mathbf{elseif}\\;\\mbox{{}'{}}c>\\mbox{{}'{}}b\\;\\mathbf{then}\\;c\\;\\mathbf{else}\\;b \\end{equation} 
+";
+
+tex (1 + if 'a > 'b then sqrt(a) else b^3, false);
+" \\begin{equation} \\left(\\mathbf{if}\\;a>b\\;\\mathbf{then}\\;\\sqrt{a}\\;\\mathbf{else}\\;b^3\\right)+1 \\end{equation} 
+";
+
+tex ('if 'a > 'b then a else b, false);
+" \\begin{equation} \\mathbf{if}\\;a>b\\;\\mathbf{then}\\;a\\;\\mathbf{else}\\;b \\end{equation} 
+";
+
+tex ('if 'a > 'b then ('if 'a > 'c then 'a else 'c) else b, false);
+" \\begin{equation} \\mathbf{if}\\;a>b\\;\\mathbf{then}\\;\\mathbf{if}\\;a>c\\;\\mathbf{then}\\;a\\;\\mathbf{else}\\;c\\;\\mathbf{else}\\;b \\end{equation} 
+";
+
+tex ('if 'a > 'b then a elseif 'c > 'b then c else b, false);
+" \\begin{equation} \\mathbf{if}\\;a>b\\;\\mathbf{then}\\;a\\;\\mathbf{elseif}\\;c>b\\;\\mathbf{then}\\;c\\;\\mathbf{else}\\;b \\end{equation} 
+";
+
+tex (1 + 'if 'a > 'b then sqrt(a) else b^3, false);
+" \\begin{equation} \\left(\\mathbf{if}\\;a>b\\;\\mathbf{then}\\;\\sqrt{a}\\;\\mathbf{else}\\;b^3\\right)+1 \\end{equation} 
+";
+
+tex ('for i thru n do print (i), false);
+"i 
+ \\begin{equation} \\mathbf{for}\\;i\\;\\mathbf{thru}\\;n\\;\\mathbf{do}\\;i \\end{equation} 
+";
+
+tex (m * 'for i thru floor ((n + 1)/7) do print (i), false);
+"i 
+ \\begin{equation} \\left(\\mathbf{for}\\;i\\;\\mathbf{thru}\\;\\left \\lfloor {{n+1}\\over{7}} \\right \\rfloor\\;\\mathbf{do}\\;i\\right)\\,m \\end{equation} 
+";
+
+tex ('(for i thru n do print (i)), false);
+" \\begin{equation} \\mathbf{for}\\;i\\;\\mathbf{thru}\\;n\\;\\mathbf{do}\\;{\\it print}\\left(i\\right) \\end{equation} 
+";
+
+tex (m * '(for i thru floor ((n + 1)/7) do print (i)), false);
+" \\begin{equation} \\left(\\mathbf{for}\\;i\\;\\mathbf{thru}\\;\\left \\lfloor {{n+1}\\over{7}} \\right \\rfloor\\;\\mathbf{do}\\;{\\it print}\\left(i\\right)\\right)\\,m \\end{equation} 
+";
+
+tex ('(for i in L do print (i)), false);
+" \\begin{equation} \\mathbf{for}\\;i\\;\\mathbf{in}\\;L\\;\\mathbf{do}\\;{\\it print}\\left(i\\right) \\end{equation} 
+";
+
+tex ((1 - a) / '(for i in foo (L[1], L[2]) do print (i)), false);
+" \\begin{equation} {{1-a}\\over{\\mathbf{for}\\;i\\;\\mathbf{in}\\;\\phi\\upsilon \\left(L_{1} , L_{2}\\right)\\;\\mathbf{do}\\;{\\it print}\\left(i\\right)}} \\end{equation} 
+";
+
+tex ('for i in L do print (i), false);
+"i 
+ \\begin{equation} \\mathbf{for}\\;i\\;\\mathbf{in}\\;L\\;\\mathbf{do}\\;i \\end{equation} 
+";
+
+tex ((1 - a) / 'for i in foo (L[1], L[2]) do print (i), false);
+"i 
+ \\begin{equation} {{1-a}\\over{\\mathbf{for}\\;i\\;\\mathbf{in}\\;\\phi\\upsilon \\left(L_{1} , L_{2}\\right)\\;\\mathbf{do}\\;i}} \\end{equation} 
+";
+
+tex (F[x](y), false);
+" \\begin{equation} F_{x}(y) \\end{equation} 
+";
+
+tex (log (F[mod (x, m)](y!)), false);
+" \\begin{equation} \\log F_{x \\rm{mod} m}(y!) \\end{equation} 
+";
+
+tex (ratsimp (17/19), false);
+" \\begin{equation} {{17}\\over{19}} \\end{equation} 
+";
+
+tex (1/(a + ratsimp (17/19)), false);
+" \\begin{equation} {{1}\\over{a+{{17}\\over{19}}}} \\end{equation} 
+";
+
+tex (sqrt (u), false);
+" \\begin{equation} \\sqrt{u} \\end{equation} 
+";
+
+tex (z - bessel_j (0, sqrt (1/(1 - u))), false);
+" \\begin{equation} z-{\\it bessel\\_j}\\left(0 , {{1}\\over{\\sqrt{1-u}}}\\right) \\end{equation} 
+";
+
+tex (sin(x)^2, false);
+" \\begin{equation} \\sin ^2x \\end{equation} 
+";
+
+tex (sec(x)^2, false);
+" \\begin{equation} \\sec ^2x \\end{equation} 
+";
+
+tex (f(x)^2, false);
+" \\begin{equation} f\\left(x\\right)^2 \\end{equation} 
+";
+
+tex (sin(x)^n, false);
+" \\begin{equation} \\sin ^{n}x \\end{equation} 
+";
+
+tex (sec(x)^n, false);
+" \\begin{equation} \\sec ^{n}x \\end{equation} 
+";
+
+tex (f(x)^n, false);
+" \\begin{equation} f\\left(x\\right)^{n} \\end{equation} 
+";
+
+tex (sin(x)^-2, false);
+" \\begin{equation} {{1}\\over{\\sin ^2x}} \\end{equation} 
+";
+
+tex (sec(x)^-2, false);
+" \\begin{equation} {{1}\\over{\\sec ^2x}} \\end{equation} 
+";
+
+tex (f(x)^-2, false);
+" \\begin{equation} {{1}\\over{f\\left(x\\right)^2}} \\end{equation} 
+";
+
+(simp:false, 0);
+0;
+
+tex (sin(x)^-2, false);
+" \\begin{equation} \\left(\\sin x\\right)^ {- 2 } \\end{equation} 
+";
+
+tex (sec(x)^-2, false);
+" \\begin{equation} \\left(\\sec x\\right)^ {- 2 } \\end{equation} 
+";
+
+tex (f(x)^-2, false);
+" \\begin{equation} f\\left(x\\right)^ {- 2 } \\end{equation} 
+";
+
+(simp:true, 0);
+0;
+
+tex ('integrate(f(x),x,0,inf)^4, false);
+" \\begin{equation} \\left(\\int_{0}^{\\infty }{f\\left(x\\right)\\;dx}\\right)^4 \\end{equation} 
+";
+
+tex ('sum(f(x),x,0,n)^4, false);
+" \\begin{equation} \\left(\\sum_{x=0}^{n}{f\\left(x\\right)}\\right)^4 \\end{equation} 
+";
+
+tex ('integrate(f(x)^n,x,0,inf)^4, false);
+" \\begin{equation} \\left(\\int_{0}^{\\infty }{f\\left(x\\right)^{n}\\;dx}\\right)^4 \\end{equation} 
+";
+
+tex ('sum(f(x)^x,x,0,n)^4, false);
+" \\begin{equation} \\left(\\sum_{x=0}^{n}{f\\left(x\\right)^{x}}\\right)^4 \\end{equation} 
+";
+
+(simp: false, 0);
+0;
+
+(declare ([x, y, z], complex), 0);
+0;
+
+(declare ([a, b, c], real), 0);
+0;
+
+tex (conjugate (x), false);
+" \\begin{equation} x^{\\ast} \\end{equation} 
+";
+
+tex (conjugate (conjugate (x)), false);
+" \\begin{equation} \\left(x^{\\ast}\\right)^{\\ast} \\end{equation} 
+";
+
+tex (conjugate (x)^2, false);
+" \\begin{equation} \\left(x^{\\ast}\\right)^2 \\end{equation} 
+";
+
+tex (conjugate (x)^(k + 2), false);
+" \\begin{equation} \\left(x^{\\ast}\\right)^{k+2} \\end{equation} 
+";
+
+tex (conjugate (x^2), false);
+" \\begin{equation} \\left(x^2\\right)^{\\ast} \\end{equation} 
+";
+
+tex (conjugate (x + y), false);
+" \\begin{equation} \\left(x+y\\right)^{\\ast} \\end{equation} 
+";
+
+tex (conjugate (x + y)^m, false);
+" \\begin{equation} \\left(\\left(x+y\\right)^{\\ast}\\right)^{m} \\end{equation} 
+";
+
+tex (conjugate (x*y), false);
+" \\begin{equation} \\left(x\\,y\\right)^{\\ast} \\end{equation} 
+";
+
+tex (conjugate (x*y)^n, false);
+" \\begin{equation} \\left(\\left(x\\,y\\right)^{\\ast}\\right)^{n} \\end{equation} 
+";
+
+tex (conjugate (x/y), false);
+" \\begin{equation} \\left({{x}\\over{y}}\\right)^{\\ast} \\end{equation} 
+";
+
+tex (conjugate (x/y)^k, false);
+" \\begin{equation} \\left(\\left({{x}\\over{y}}\\right)^{\\ast}\\right)^{k} \\end{equation} 
+";
+
+tex (conjugate ((-1)^%i), false);
+" \\begin{equation} \\left(\\left(-1\\right)^{i}\\right)^{\\ast} \\end{equation} 
+";
+
+tex (conjugate (sin (x)), false);
+" \\begin{equation} \\left(\\sin x\\right)^{\\ast} \\end{equation} 
+";
+
+tex (sin (conjugate (x)), false);
+" \\begin{equation} \\sin \\left(x^{\\ast}\\right) \\end{equation} 
+";
+
+tex (conjugate (sin (x))^n, false);
+" \\begin{equation} \\left(\\left(\\sin x\\right)^{\\ast}\\right)^{n} \\end{equation} 
+";
+
+tex (sin (conjugate (x))^n, false);
+" \\begin{equation} \\sin ^{n}\\left(x^{\\ast}\\right) \\end{equation} 
+";
+
+tex (conjugate (sin (x)^n), false);
+" \\begin{equation} \\left(\\sin ^{n}x\\right)^{\\ast} \\end{equation} 
+";
+
+tex (sin (conjugate (x)^n), false);
+" \\begin{equation} \\sin \\left(x^{\\ast}\\right)^{n} \\end{equation} 
+";
+
+(simp: true, 0);
+0;
+
+(linel:79, 0);
+0;
+
+/* Leave the environment as we found it.  "=" had no environment of its
+   own before, and there is no way to take one away again; giving it the
+   default back is equivalent, since get-tex-environment falls through to
+   the default exactly when the property is absent. */
+(set_tex_environment_default (saved_tex_env_default[1],
+                              saved_tex_env_default[2]),
+ set_tex_environment ("=", saved_tex_env_default[1],
+                           saved_tex_env_default[2]),
+ set_tex_environment (":=", saved_tex_env_mdefine[1],
+                            saved_tex_env_mdefine[2]), 0);
+0;
+
+[get_tex_environment_default (), get_tex_environment ("=")];
+[["$$", "$$"], ["$$", "$$"]];
+
+(?delete\-file (tmpfile_c), ?delete\-file (tmpfile_d), 0);
+0;
+
+(kill (all), 0);
+0;

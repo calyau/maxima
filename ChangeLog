@@ -119,3 +119,7 @@ Other changes:
   the narrower behaviour
 * The derivative of gamma_incomplete with respect to its first argument is built
   by the simplifier and no longer evaluated.
+* tests/rtest_mactex.mac: the expressions of tests/rtest_tex.mac, which
+  is a LaTeX document generator whose output nothing ever checked, are
+  now paired with the string tex() returns and run as part of the test
+  suite

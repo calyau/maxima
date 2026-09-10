@@ -85,6 +85,7 @@
         "rtest_scalarp"
         "rtest_everysome"
         ((mlist simp) "rtestint" ((mlist simp)))
+        "rtest_mactex"
         "rtest_numth"
         "rtestifactor"
         ((mlist simp) "rtest_equal"
