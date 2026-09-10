@@ -444,8 +444,10 @@ difference proves nothing, and `is(equal(a,b))` answers `unknown`, not `false`
 not). When they agree, re-baseline the test -- its comment says why the old
 value was chosen -- rather than contorting code to match it.
 
-**Not in the suite**: `tests/testbench_*_manual.wxm` (visual, needs a human) and
-`share/contrib/diffequations/tests/` (own harness).
+**Not in the suite**: `tests/testbench_*_manual.wxm` (visual, needs a human),
+`tests/rtest_tex.mac` (despite the name -- it is a LaTeX *document generator*,
+not input/expected pairs, and is in neither registry; its own header says to
+run it with `batch`) and `share/contrib/diffequations/tests/` (own harness).
 
 ---
 

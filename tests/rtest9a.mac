@@ -611,3 +611,33 @@ printf (false, "~m", (n!)!!);
 printf (false, "~m", n!!*m!!);
 "m!! n!!
 ";
+
+
+/* TEX-NARY and TEX-MCOND are the tex handlers on the tex property of
+   mtimes, mand, mor and mcond.  Neither was reached by any registered
+   test: the tex tests above all go through mplus, which has a handler of
+   its own, and tests/rtest_tex.mac is a LaTeX document generator that is
+   deliberately not in $testsuite_files.  The expected strings below are
+   ordinary LaTeX -- \, is a thin space between implicit factors, \land
+   and \lor are the usual connectives, \; separates the bold keywords. */
+
+tex(a*b*c, false);
+"$$a\\,b\\,c$$
+";
+
+tex(a and b, false);
+"$$a\\land b$$
+";
+
+tex(a or b, false);
+"$$a\\lor b$$
+";
+
+tex(if x>0 then 1 else 2, false);
+"$$\\mathbf{if}\\;x>0\\;\\mathbf{then}\\;1\\;\\mathbf{else}\\;2$$
+";
+
+/* a conditional with no else branch must not emit an empty \mathbf{else} */
+tex(if x>0 then 1, false);
+"$$\\mathbf{if}\\;x>0\\;\\mathbf{then}\\;1$$
+";
