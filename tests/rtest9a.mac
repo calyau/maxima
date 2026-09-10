@@ -697,3 +697,24 @@ tex(matrix([1,2],[3,4]), false);
 "$$\\ifx\\endpmatrix\\undefined\\pmatrix{\\else\\begin{pmatrix}\\fi 1&2\\cr 3&4\\cr 
  \\ifx\\endpmatrix\\undefined}\\else\\end{pmatrix}\\fi $$
 ";
+
+
+/* A TeX control word swallows the letters that follow it, so \rightarrow
+   written directly before b is read as the undefined control sequence
+   \rightarrowb and the document does not compile.  The built-in operators
+   carry a trailing space in their texword, as "\\infty " does; strings
+   given to texput were stored verbatim.  A digit or a backslash ends a
+   control word on its own, so only a following letter was at risk. */
+(infix ("-->"), texput ("-->", "\\rightarrow", infix), 0);
+0;
+
+tex (a --> b, false);
+"$$a\\rightarrow b$$
+";
+
+tex (a --> 1, false);
+"$$a\\rightarrow 1$$
+";
+
+(kill ("-->"), 0);
+0;
