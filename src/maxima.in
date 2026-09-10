@@ -296,13 +296,23 @@ elif [ "$MAXIMA_LISP" = "abcl" ]; then
     
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then
 # Use executable image if it exists.
-# Since compiling lapack already needed >1200 Megabytes of RAM in August of 2015 
-# one has to extend the amount of memory sbcl will be able to claim by using the
-# switch --dynamic-space-size in order to do so.
+#
+# Compiling share/lapack needs more heap than Debian and Ubuntu build sbcl
+# with: dgesvd.lisp is f2cl's translation of dgesvd.f as one 7,483-line
+# function and peaks over a gigabyte by itself, against a 1 GB default.
+# Give sbcl more with, for instance,
+#
+#     MAXIMA_LISP_OPTIONS="--dynamic-space-size 2048" maxima
+#
+# --disable-ldb is passed so that running out of heap ends the process.
+# Without it sbcl drops into its low-level debugger, which blocks reading
+# /dev/tty, ignores SIGTERM and holds the whole heap until it is killed --
+# and shows up in top as "sbcl", not as maxima, so it is easy to miss.
+# Drop the switch if you need ldb to debug a crash in the runtime.
   if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
-    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
+    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform --disable-ldb $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   else
-    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
+    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform --disable-ldb $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   fi
 
 else
