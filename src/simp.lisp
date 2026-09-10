@@ -1205,6 +1205,7 @@
   (and (= (length x1) (length x2)) (or (and (null (rest x1)) (null (rest x2))) (= (length (second x1)) (length (second x2))))))
 
 (defun addmx (x1 x2)
+  (declare (special $maperror))
 
   ;; When maperror = true, ensure that arguments are conformable, in the sense of not causing an error in fullmap.
   ;; In practice this means the following:

@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Check that the :DEPENDENCIES-COMPLETE claims in src/maxima.system agree
+# with the dependencies the compiler actually recorded.  See
+# lisp-utils/check-dependencies.lisp for what counts as a dependency and
+# why an undeclared one matters.
+#
+# This is processed by config.status into tests/depcheck.sh, in the same
+# way test.sh.in becomes tests/test.sh.
+#
+# SBCL only: the check reads SBCL's cross-reference data, which the other
+# Lisps do not provide.  tests/Makefile.am adds it to TESTS under "if
+# SBCL", so it is simply absent elsewhere.
+
+LOCAL_MAXIMA=@top_builddir@/maxima-local
+
+# The checker resolves maxima.system and the source tree from this root,
+# so give it an absolute path rather than one relative to tests/.
+SRCDIR=`cd "@top_srcdir@" && pwd`
+
+# Die if a command fails.  MAXIMA-DEPCHECK:CHECK-AND-EXIT exits 1 when it
+# finds an undeclared dependency and 2 when it cannot run at all, so the
+# exit status is meaningful on its own and needs no log grepping.
+set -e
+
+echo "Checking the dependency declarations in maxima.system..."
+# One :lisp form, so nothing echoes a value: the package does not exist
+# when the line is read, hence FUNCALL/INTERN rather than a plain call.
+$LOCAL_MAXIMA --no-init -q --lisp=sbcl --batch-string=":lisp (progn (load \"$SRCDIR/lisp-utils/check-dependencies.lisp\") (funcall (intern \"CHECK-AND-EXIT\" \"MAXIMA-DEPCHECK\") \"$SRCDIR/\"))"

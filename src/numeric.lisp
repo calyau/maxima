@@ -824,7 +824,7 @@
 ;; Smith's algorithm for complex division for (complex single-float).
 ;; We convert the parts to double-floats before computing the result.
 (defun cdiv-single-float (x y)
-  (declare (type (complex single-float) x y))
+  (declare (type (cl:complex single-float) x y))
   (let ((a (float (realpart x) 1d0))
 	(b (float (imagpart x) 1d0))
 	(c (float (realpart y) 1d0))

@@ -362,7 +362,6 @@
                    fun (third xrange) (fourth xrange) (third yrange)
                    (fourth yrange) (first (getf options '$grid))
                    (second (getf options '$grid))))
-                 (colors (getf options '$color))
                  (palette (getf options '$palette))
                  (meshcolor (if (member '$mesh_lines_color options)
                               (getf options '$mesh_lines_color)

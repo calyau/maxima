@@ -18,6 +18,10 @@
 
 (in-package :maxima)
 
+(defmvar $gnuplot_command "gnuplot"
+  "The command (a string) that runs gnuplot"
+  :setting-predicate #'string-predicate)
+
 ;; Given a list of valid colors (see plotcolors.lisp) and an object c
 ;; that can be a real number or a string, produces a gnuplot color
 ;; specification for c; when c is real, its nearest integer is assigned
@@ -174,7 +178,6 @@
 (defun gnuplot-terminal-and-file (plot-options)
   (let ((gstrings
          (if (getf plot-options '$gnuplot_strings) "enhanced" "noenhanced"))
-        (gnuplot-svg-background (getf plot-options '$gnuplot_svg_background))
         terminal-command out-file (preserve-file t))
     (cond
      ((getf plot-options '$svg_file)
@@ -722,10 +725,6 @@
 
 (defvar *gnuplot-stream* nil)
 (defvar *gnuplot-command* "")
-
-(defmvar $gnuplot_command "gnuplot"
-  "The command (a string) that runs gnuplot"
-  :setting-predicate #'string-predicate)
 
 (defun start-gnuplot-process (path)
   ;; TODO: Forward gnuplot's stderr stream to maxima's stderr output

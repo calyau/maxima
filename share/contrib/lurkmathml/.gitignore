@@ -1,5 +1,7 @@
-mathml-test-sbcl.xml
-mathml-test-sbcl.xml.sh
-mathml-test-sbcl.xml.sh.log
-mathml-test-sbcl.xml.sh.trs
+# Makefile.am generates mathml-test-<lisp>.xml.sh, and automake its .log and
+# .trs, once per configured lisp -- not just for sbcl.
+mathml-test-*.xml
+mathml-test-*.xml.sh
+mathml-test-*.xml.sh.log
+mathml-test-*.xml.sh.trs
 test-suite.log

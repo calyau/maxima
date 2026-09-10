@@ -313,6 +313,13 @@
       (setf (getf (cdr sym) indic) val)
       (setf (get sym indic) val)))
 
+;; For function defmvar :setting-predicate.  Checks that the argument
+;; is an integer.  The second value is the message to use when the
+;; argument is not an integer.
+(defun integer-predicate (val)
+  (values (integerp val)
+          "must be an integer"))
+
 ;;------------------------------------------------------------------------
 ;; From limit.lisp
 ;;
@@ -1475,8 +1482,8 @@
 
 (defmvar $linenum 1
   "The line number of the last expression."
-  fixnum
-  no-reset)
+  no-reset
+  :setting-predicate #'integer-predicate)
 
 (defmvar $file_output_append nil
   "Flag to tell file-writing functions whether to append or clobber the

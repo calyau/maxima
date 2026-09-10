@@ -698,7 +698,6 @@
 
 (defmvar $trace_max_indent 15.
   "max number of spaces it will go right"
-  fixnum
   :properties ((assign 'assign-mode-check)
 	       (mode '$fixnum)))
 

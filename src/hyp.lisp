@@ -2931,7 +2931,6 @@
 	 (mul (add a (1- n))
 	      (fctrl a (1- n))))))
 
-(setq *par* '$p)                           
 
 (defun vfvp (exp arg)
   ;; Check to see if EXP is free of ARG. (Used to call freevarpar2,

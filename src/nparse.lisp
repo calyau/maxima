@@ -1747,6 +1747,7 @@
     (add2lnc dummy $props)))
 
 (defun kill-operator (op)
+  (declare (special *builtin-$props*))
   (let
     ((opr (get op 'op))
      (noun-form ($nounify op)))

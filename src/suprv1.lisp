@@ -814,6 +814,7 @@
 ;; 2-d pretty printer display for antiderivative-like expressions
 
 (defun dimension-%at_difference (form result)
+  (declare (special $absboxchar at-char-unicode))
 
   (unless (= (length (cdr form)) 4)
     (return-from dimension-%at_difference (dimension-function form result)))

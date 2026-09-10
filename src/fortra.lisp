@@ -23,7 +23,6 @@
 (defmvar $fortindent 0
   "The number of spaces (beyond 6) to indent Fortran statements as they
    are printed."
-  fixnum
   modified-commands '$fortran
   :setting-predicate #'(lambda (val)
 			 ;; The value must be non-negative fixnum
