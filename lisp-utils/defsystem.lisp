@@ -4659,6 +4659,39 @@ the system definition, if provided."
    ;; (Would NIL be better?)
    (values pathspec t)))
 
+(defparameter *gc-after-compile-growth* (* 32 1024 1024)
+  "Collect after compiling a file that grew the heap by more than this many
+bytes.  NIL disables the collection.")
+
+;;; Compiling a big file leaves garbage a nursery collection will not
+;;; reclaim: it survives a minor GC, is promoted to an older generation,
+;;; and only a full collection frees it.  Over a system with many files the
+;;; floor ratchets upward.  Compiling share/lapack, whose f2cl output holds
+;;; single functions thousands of lines long, dgesdd alone left 95 MB
+;;; behind; the floor climbed from 22 MB past 176 MB and kept going until
+;;; SBCL hit the 1 GB dynamic space Debian and Ubuntu build it with.
+;;;
+;;; The files that cause this are the ones that allocate heavily, so the
+;;; test is how much a file grew the heap, not how big the heap has got.
+;;; Maxima's own sources rarely trip it, which keeps the cost off the core
+;;; build; the f2cl output trips it repeatedly.  Only implemented where the
+;;; heap can be measured -- elsewhere this is a no-op rather than a guess.
+
+(defun heap-bytes-in-use ()
+  "Bytes currently allocated, or NIL if this Lisp does not say."
+  #+sbcl (sb-kernel:dynamic-usage)
+  #+(or cmu scl) (lisp::dynamic-usage)
+  #-(or sbcl cmu scl) nil)
+
+(defun collect-garbage-after-compile (bytes-before)
+  (let ((bytes-now (and bytes-before *gc-after-compile-growth*
+                        (heap-bytes-in-use))))
+    (when (and bytes-now
+               (> (- bytes-now bytes-before) *gc-after-compile-growth*))
+      #+sbcl (sb-ext:gc :full t)
+      #+(or cmu scl) (ext:gc :full t)
+      nil)))
+
 (defun compile-file-operation (component force)
   ;; Returns T if the file had to be compiled.
   (let ((must-compile
@@ -4673,7 +4706,8 @@ the system definition, if provided."
 
     (cond ((and must-compile (probe-file source-pname))
 	   (with-tell-user ("Compiling source" component :source)
-	     (let ((output-file
+	     (let ((bytes-before (heap-bytes-in-use))
+		   (output-file
 		    #+:lucid
 		     (unmunge-lucid (component-full-pathname component
 							     :binary))
@@ -4705,7 +4739,8 @@ the system definition, if provided."
 			  #+CMU
 			  *cmu-errors-to-terminal*
 			  (component-compiler-options component)
-			  ))))
+			  ))
+	       (collect-garbage-after-compile bytes-before)))
 	   must-compile)
 	  (must-compile
 	   (tell-user "Source file not found. Not compiling"
