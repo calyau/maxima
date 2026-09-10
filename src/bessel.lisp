@@ -775,8 +775,13 @@
      ;; bessel_i(v,inf)
      '$inf)
     ((eq z '$minf)
-     ;; bessel_i(v,minf)
-     '$infinity)
+     ;; bessel_i(v,minf).  For an integer order bessel_i(v,-x) equals
+     ;; (-1)^v bessel_i(v,x), so the limit along the negative real axis is
+     ;; signed by the parity of the order.  For any other order the
+     ;; negative axis is a branch cut and the limit is complex infinity.
+     (cond ((not (integerp v)) '$infinity)
+           ((evenp v) '$inf)
+           (t '$minf)))
     (t
      ;; All other cases are handled by the simplifier of the function.
      (simplify (list '(%bessel_i) v z))))))

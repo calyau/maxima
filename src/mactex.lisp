@@ -1189,6 +1189,24 @@
 
 ;;  The texput function was written by Barton Willis.
 
+;; A TeX control word is a backslash followed by letters, and it swallows
+;; any letters that follow it: \\rightarrow written directly before b is
+;; read as the single control sequence \\rightarrowb, which is undefined.
+;; The built-in operators avoid this by carrying a trailing space in their
+;; texword, as in "\\infty ".  Strings arriving through texput get the same
+;; treatment here, so that texput("-->", "\\rightarrow", infix) produces
+;; TeX that compiles.
+(defun tex-space-after-control-word (s)
+  (if (and (stringp s) (plusp (length s))
+           (alpha-char-p (char s (1- (length s)))))
+      (let ((bs (position #\\ s :from-end t)))
+        (if (and bs
+                 (< (1+ bs) (length s))
+                 (every #'alpha-char-p (subseq s (1+ bs))))
+            (concatenate 'string s " ")
+            s))
+      s))
+
 (defmfun $texput (e s &optional tx)
 
   (cond
@@ -1198,6 +1216,7 @@
      (merror (intl:gettext "texput: first argument must be a string or a symbol; found: ~M") e)))
 
   (setq s (if ($listp s) (margs s) (list s)))
+  (setq s (mapcar #'tex-space-after-control-word s))
   
   (cond
     ((null tx)

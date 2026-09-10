@@ -854,3 +854,61 @@ expand(74*%i-11*(%i+1)^2*(%i+2)*(2*%i+1) - gcfactor(74*%i-11*(%i+1)^2*(%i+2)*(2*
 
 [zn_order(2, -7), zn_order(2, 0)];
 [false, false];
+
+
+/* The seven functions below are documented in doc/info/Number.texi but no
+   test called any of them.  Every expected value here is derived from the
+   definition rather than read back out of Maxima, so that a wrong answer
+   fails the test instead of being recorded by it. */
+
+/* lambda(1) = 1; every element of (Z/8)* squares to 1, so lambda(8) = 2;
+   lambda(15) = lcm(lambda(3), lambda(5)) = lcm(2, 4);
+   lambda(35) = lcm(lambda(5), lambda(7)) = lcm(4, 6);
+   lambda(p) = p - 1 for p prime. */
+[zn_carmichael_lambda(1), zn_carmichael_lambda(8), zn_carmichael_lambda(15),
+ zn_carmichael_lambda(35), zn_carmichael_lambda(7)];
+[1, 2, 4, 12, 6];
+
+/* (Z/8)* = Z2 x Z2, (Z/15)* = Z2 x Z4, (Z/16)* = Z2 x Z4, and (Z/7)* is
+   cyclic of order 6.  The factors are the invariant factors, so each one
+   divides the next. */
+[zn_characteristic_factors(8), zn_characteristic_factors(15),
+ zn_characteristic_factors(7), zn_characteristic_factors(16)];
+[[2, 2], [2, 4], [6], [2, 4]];
+
+zn_factor_generators(15);
+[11, 7];
+
+zn_factor_generators(8);
+[7, 3];
+
+zn_factor_generators(7);
+[3];
+
+/* the generators returned above must have exactly the orders of the
+   characteristic factors: [2, 4] for 15, [2, 2] for 8 and [6] for 7 */
+[zn_order(11, 15), zn_order(7, 15), zn_order(7, 8), zn_order(3, 8),
+ zn_order(3, 7)];
+[2, 4, 2, 2, 6];
+
+/* x^2 = 4 (mod 7) has the two roots 2 and 5.  3 is not a quadratic residue
+   modulo 7, where the residues are 1, 2 and 4.  Cubing is a bijection on
+   (Z/11)* because gcd(3, 10) = 1, so 8 has the single cube root 2. */
+[zn_nth_root(4, 2, 7), zn_nth_root(3, 2, 7), zn_nth_root(8, 3, 11)];
+[[2, 5], false, [2]];
+
+zn_add_table(3);
+matrix([0, 1, 2], [1, 2, 0], [2, 0, 1]);
+
+zn_mult_table(5);
+matrix([1, 2, 3, 4], [2, 4, 1, 3], [3, 1, 4, 2], [4, 3, 2, 1]);
+
+/* rows are the powers of each element of (Z/nZ)*, columns the exponents 1
+   to lambda(n), so the table ends in a column of ones.  lambda(8) = 2, and
+   3 is a primitive root modulo 7 while 6 = -1 has order 2. */
+zn_power_table(8);
+matrix([1, 1], [3, 1], [5, 1], [7, 1]);
+
+zn_power_table(7);
+matrix([1, 1, 1, 1, 1, 1], [2, 4, 1, 2, 4, 1], [3, 2, 6, 4, 5, 1],
+       [4, 2, 1, 4, 2, 1], [5, 4, 6, 2, 3, 1], [6, 1, 6, 1, 6, 1]);

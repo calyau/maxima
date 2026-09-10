@@ -2208,6 +2208,43 @@ false;
 a[t], nouns;
 false;
 
+/* SIMPLIM%BESSEL_I and SIMPLIM%BESSEL_Y are the limit handlers hung on
+   the simplim%function property of %bessel_i and %bessel_y.  An sb-cover
+   run of the whole testsuite showed neither was ever entered.  The
+   expected values below come from the asymptotics, not from Maxima. */
+
+/* bessel_i(v,-x) = (-1)^v bessel_i(v,x) for integer v, so along the
+   negative real axis the limit is signed by the parity of the order:
+   numerically bessel_i(1,-10.0) = -bessel_i(1,10.0), and bessel_i(1,-x)
+   grows without bound as -4.2e7 at x = 20 and -7.7e11 at x = 30. */
+[limit(bessel_i(0,x),x,minf), limit(bessel_i(1,x),x,minf),
+ limit(bessel_i(2,x),x,minf), limit(bessel_i(3,x),x,minf)];
+[inf, minf, inf, minf];
+
+/* a non-integer order puts the negative axis on a branch cut --
+   bessel_i(1/2,-10.0) is purely imaginary -- so the limit is unsigned */
+limit(bessel_i(1/2,x),x,minf);
+infinity;
+
+/* bessel_i(0,0) = 1, bessel_i(n,0) = 0 for n > 0, and
+   bessel_i(0,x) ~ exp(x)/sqrt(2*%pi*x) -> inf */
+[limit(bessel_i(0,x),x,0), limit(bessel_i(2,x),x,0),
+ limit(bessel_i(0,x),x,inf)];
+[1, 0, inf];
+
+/* bessel_y(0,x) ~ (2/%pi)*log(x/2) -> minf, and for n > 0
+   bessel_y(n,x) ~ -((n-1)!/%pi)*(2/x)^n, which is even in x for even n
+   and changes sign with x for odd n */
+[limit(bessel_y(0,x),x,0), limit(bessel_y(2,x),x,0)];
+[minf, minf];
+
+[limit(bessel_y(1,x),x,0,plus), limit(bessel_y(1,x),x,0,minus)];
+[minf, inf];
+
+/* bessel_y(v,x) ~ sqrt(2/(%pi*x))*sin(x - v*%pi/2 - %pi/4) -> 0 */
+[limit(bessel_y(0,x),x,inf), limit(bessel_y(3,x),x,inf)];
+[0, 0];
+
 (remvalue(a,result,answer),0);
 0$
 
