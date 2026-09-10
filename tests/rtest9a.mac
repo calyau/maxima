@@ -641,3 +641,59 @@ tex(if x>0 then 1 else 2, false);
 tex(if x>0 then 1, false);
 "$$\\mathbf{if}\\;x>0\\;\\mathbf{then}\\;1$$
 ";
+
+
+/* More tex handlers that no registered test reached: TEX-INT, TEX-SUM,
+   TEX-LSUM, TEX-LIMIT, TEX-MATRIX, TEX-CHOOSE, TEX-D/TEX-DABBREV, TEX-AT
+   and TEX-BIGFLOAT.  Each expected string is ordinary LaTeX: \int with
+   sub- and superscripts for the bounds, \sum_{k=1}^{n}, \lim with
+   \rightarrow, {n}\choose{k}, d^2/dx^2 built with \over, and the
+   evaluation bar \left.  \right|_{x=1}. */
+
+tex('integrate(f(x),x), false);
+"$$\\int {f\\left(x\\right)}{\\;dx}$$
+";
+
+tex('integrate(f(x),x,a,b), false);
+"$$\\int_{a}^{b}{f\\left(x\\right)\\;dx}$$
+";
+
+tex('sum(k^2,k,1,n), false);
+"$$\\sum_{k=1}^{n}{k^2}$$
+";
+
+tex('sum(k,k,1,inf), false);
+"$$\\sum_{k=1}^{\\infty }{k}$$
+";
+
+tex('lsum(k,k,[1,2]), false);
+"$$\\sum_{k\\in{\\left[ 1 , 2 \\right] }}{k}$$
+";
+
+tex('limit(f(x),x,0), false);
+"$$\\lim_{x\\rightarrow 0}{f\\left(x\\right)}$$
+";
+
+tex(binomial(n,k), false);
+"$${{n}\\choose{k}}$$
+";
+
+tex('diff(f(x),x,2), false);
+"$${{d^2}\\over{d\\,x^2}}\\,f\\left(x\\right)$$
+";
+
+tex('at(f(x),x=1), false);
+"$$\\left.f\\left(x\\right)\\right|_{x=1}$$
+";
+
+/* the bigfloat marker is a subscript B, and the exponent is explicit */
+tex(1.5b0, false);
+"$$1.5_B \\times 10^{0}$$
+";
+
+/* plain TeX has no pmatrix environment, so the output tests for it and
+   falls back to \pmatrix{...}; rows are separated by \cr */
+tex(matrix([1,2],[3,4]), false);
+"$$\\ifx\\endpmatrix\\undefined\\pmatrix{\\else\\begin{pmatrix}\\fi 1&2\\cr 3&4\\cr 
+ \\ifx\\endpmatrix\\undefined}\\else\\end{pmatrix}\\fi $$
+";
