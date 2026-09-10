@@ -175,9 +175,12 @@
 		     sinint-logptdx))))
 
 (defun logmabs (x)
-  (list '(%log) (if $logabs
-		    (simplify (list '(mabs) x))
-		    x)))
+  (let ((x (if (and $logabs
+                    (not (member ($csign (simplify x))
+                                 '($complex $imaginary))))
+               (ftake 'mabs x)
+               x)))
+    (list '(%log) x)))
 
 (defun npask (npask-exp)
   (cond ((freeof '$%i npask-exp)

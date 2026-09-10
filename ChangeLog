@@ -85,6 +85,7 @@ Bug fixes for numbered bugs:
 * \#5238 sign(signum(x) - a) says pn
 * \#5240 Risch integrator drops negative powers of exponential
 * \#5241 Risch integrator drops algebraic unit from a denominator
+* \#5244 logabs:true applies abs to a complex log argument, collapsing the antiderivative to zero
 
 Bug fixes for unnumbered bugs:
 ------------------------------

@@ -699,9 +699,15 @@
 (defprop %asech ((x) ((mplus) ((mtimes) -1 ((%atan) ((mtimes) ((mexpt) ((mplus) -1 ((mexpt) x -1)) ((rat) 1 2)) ((mexpt) ((mplus) 1 ((mexpt) x -1)) ((rat) 1 2))))) ((mtimes) x ((%asech) x)))) integral)
 
 ;; Define a little helper function to be used in antiderivatives.
-;; Depending on the logabs flag, it either returns log(x) or log(abs(x)).
+;; Depending on the logabs flag and whether x can be non-real,
+;; it either returns log(x) or log(abs(x)).
 (defun log-or-logabs (x)
-  (take '(%log) (if $logabs (take '(mabs) x) x)))
+  (let ((x (if (and $logabs
+                    (not (member ($csign x)
+                                 '($complex $imaginary))))
+               (ftake 'mabs x)
+               x)))
+    (ftake '%log x)))
 
 ;; Define the antiderivative of tan(x), taking logabs into account.
 (defun integrate-tan (x)

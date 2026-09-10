@@ -6891,6 +6891,21 @@ block([f, F],
 0;
 
 
+/* Bug #5244: "logabs:true applies abs to a complex log argument, collapsing the antiderivative to zero" */
+
+integrate(1/(x+%i),x), logabs;
+log(x+%i);
+
+integrate(1/x,x), logabs;
+log(abs(x));
+
+integrate(1/(x^2-sqrt(-a)*a),x), logabs;
+log((2*x-2*sqrt(sqrt(-a)*a))/(2*x+2*sqrt(sqrt(-a)*a)))/(2*sqrt(sqrt(-a)*a));
+
+integrate(1/(x^2-a^2),x), logabs;
+log(abs(x-a))/(2*a)-log(abs(x+a))/(2*a);
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
