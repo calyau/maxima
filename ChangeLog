@@ -92,6 +92,7 @@ Bug fixes for unnumbered bugs:
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
 * various merror calls were missing arguments
+* limit of bessel_i at minf ignored the parity of an integer order
 
 Changes in the Windows installer:
 ---------------------------------
