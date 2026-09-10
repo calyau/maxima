@@ -86,6 +86,7 @@ Bug fixes for numbered bugs:
 * \#5240 Risch integrator drops negative powers of exponential
 * \#5241 Risch integrator drops algebraic unit from a denominator
 * \#5244 logabs:true applies abs to a complex log argument, collapsing the antiderivative to zero
+* \#5249 integrate(%e^(2*x)*tan(%e^x)^2,x) is non-real
 
 Bug fixes for unnumbered bugs:
 ------------------------------

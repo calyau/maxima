@@ -6906,6 +6906,16 @@ integrate(1/(x^2-a^2),x), logabs;
 log(abs(x-a))/(2*a)-log(abs(x+a))/(2*a);
 
 
+/* Bug #5249: "integrate(%e^(2*x)*tan(%e^x)^2,x) is non-real" */
+
+block([f, F, dF],
+ f : %e^(2*x)*tan(%e^x)^2,
+ F : integrate(f, x),
+ dF : diff(F, x),
+ [freeof('integrate, F), trigrat(dF - f), trigrat(imagpart(F))]);
+[true, 0, 0];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

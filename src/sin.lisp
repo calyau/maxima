@@ -776,14 +776,31 @@
   - adding the 'INTERNAL property (so that no questions are asked about it),
   - adding an assumption that the new variable is MEQUAL to EXPR, if EXPR is non-NIL,
   - adding a declaration that the new variable is '$COMPLEX/'$IMAGINARY if EXPR's
-    sign, as determined by $CSIGN, is '$COMPLEX/'$IMAGINARY."
-  (let ((new-var (gensym prefix)))
+    sign, as determined by $CSIGN, is '$COMPLEX/'$IMAGINARY, or adding an assumption
+    about the new variable's sign."
+  (let ((expr (simplify expr))
+        (new-var (gensym prefix)))
     (putprop new-var t 'internal)
-    (assume (list '(mequal) new-var expr))
-    (if expr
+    (when expr
+      (assume (ftake '$equal new-var expr))
       (let ((expr-sign ($csign expr)))
-        (when (member expr-sign '($complex $imaginary))
-          (declare1 (list new-var) t expr-sign 'kind))))
+        (if (member expr-sign '($complex $imaginary))
+          (declare1 (list new-var) t expr-sign 'kind)
+          ;; The following code only ensures that NEW-VAR gets the sign of EXPR.
+          ;; It would be much better to preserve any known lower/upper bounds,
+          ;; e.g. if EXPR = log(x) and we know that 2 < x < 3, then assume that
+          ;; log(2) < NEW-VAR < log(3).
+          ;; Note that nothing of this would be necessary if SIGN made more use
+          ;; of $EQUAL facts.
+          (let ((rel (case expr-sign
+                       ($pos 'mgreaterp)
+                       ($pz 'mgeqp)
+                       ($pn '$notequal)
+                       ($zero '$equal)
+                       ($neg 'mlessp)
+                       ($nz 'mleqp))))
+            (if rel
+              (assume (ftake rel new-var 0)))))))
     new-var))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1742,6 +1759,7 @@
 
 ;; This is the top level of the integrator
 (defun sinint (expr var2)
+ (with-new-context (context)
   ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
   ;; INTEGRATOR for more details.  Initialize it here.
   (let ((*integrator-level* 0))
@@ -1788,7 +1806,7 @@
 		       (integrator expr var2 nil)))))
 	     (if (sum-of-intsp ans var2)
 		 (list '(%integrate) expr var2)
-		 ans))))))
+		 ans)))))))
 
 ;; SUM-OF-INTSP
 ;;
