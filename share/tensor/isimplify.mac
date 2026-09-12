@@ -17,10 +17,10 @@
  *
  */
 
-isimplify(T):=block([T:T],
-  T:rename(contract(contract(canform(rename(simpmetderiv(expand(T))))))),
+isimplify(T,[L]):=block([T:T,[D,L]:if length(L)>0 then [100,L[1]] else [0,1]],
+  T:rename(contract(contract(canform(rename(simpmetderiv(expand(T)),L)))),L+D),
   flipflag: not flipflag,
-  T:rename(contract(contract(canform(rename(simpmetderiv(expand(T))))))),
+  T:rename(contract(contract(canform(rename(simpmetderiv(expand(T)),L+2*D)))),L+3*D),
   flipflag:not flipflag,
-  rename(simpmetderiv(canform(T))));
+  rename(simpmetderiv(rename(canform(T),L+4*D)),L+5*D));
 
