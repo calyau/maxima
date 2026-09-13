@@ -692,7 +692,11 @@
 
 (displa-def %derivative dim-%derivative 125.)
 
-(defun dim-derivative-sym (form &optional (d #\d) (di #+lisp-unicode-capable #.(code-char #x2202) #-lisp-unicode-capable #\d))
+;; determine whether form is a partial derivative, and returns d or di
+;; d is symbol to use for regular derivative, usually "d"
+;; di is symbol to use for partial derivative, can be unicode 2202
+;;						or "\\partial" for tex
+(defun dim-derivative-sym (form d di)
   (labels ((dependencies (expr)
 	     "A Lisp list of variables on which the expression depends."
 	     (cond ((atom expr)
@@ -705,7 +709,7 @@
 		    (dvars (dependencies `((mlist) ,@(cddr x)))) (d (length dvars))
 		    (evars (dependencies expr))                  (e (length evars)))
 	       (or (> e 1) (> d 1) (not (equal dvars evars))))))
-    (if (and $display2d_unicode (dim-partial-derivative-p form)) di d)))
+    (if (dim-partial-derivative-p form) di d)))
 
 (defun dim-%derivative (form result)
   (prog ()
@@ -738,7 +742,10 @@
      (return result)))
 
 (defun dmderivlong (form result)
-  (prog (num (w1 0) (h1 0) (d1 0) den (w2 0)( h2 0)  (d2 0) (dsym (dim-derivative-sym form)))
+  (prog (num (w1 0) (h1 0) (d1 0) den (w2 0)( h2 0)  (d2 0)
+	 (dsym (dim-derivative-sym form #\d (if (display2d-unicode-enabled)
+						#.(code-char #x2202)
+						#\d))))
      (setq num (list (cadddr form))
 	   den (cond ((equal 1 (cadddr form))
 		      (dimension (caddr form)
