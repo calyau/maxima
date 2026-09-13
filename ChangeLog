@@ -82,6 +82,8 @@ Bug fixes for unnumbered bugs:
 * limits of atanh at an infinity ignore the imaginary part of the argument
 * limit of a vanishing factor times a bounded oscillating factor keeps a
   direction it does not have, so limit(atan2(x*sin(1/x),-1),x,0,plus) was %pi
+* limit(3^x*cos(x)+x,x,inf) gives inf instead of und: an und term next to a
+  directed infinity was ignored, however large
 
 Changes in the Windows installer:
 ---------------------------------

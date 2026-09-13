@@ -2719,15 +2719,14 @@ ignoring dummy variables and array indices."
 	 (setq sum (fapply 'mplus sum))
 
      (cond (undl
-	     ;; When there are inf or minf terms, the limit might not be und.
-         ;; For example, limit(x^2+x*sin(x),x,inf). For such cases,
-         ;; append the und terms to the infinity terms and continue
-		 ;; processing. An infinity term carries no direction, so it cannot
-		 ;; dominate an und term that way; and with no directed infinity the
-		 ;; limit is und, as in limit(1 + x*sin(x),x,inf) and
-		 ;; limit(x*exp(%i*x)+x*sin(x),x,inf).
+	     ;; When there are inf or minf terms, the limit might not be und:
+	     ;; the infinities may dominate the und terms, as in
+	     ;; limit(x^2+x*sin(x),x,inf); SIMPLIMPLUS-UND decides. Without
+	     ;; them the limit is und, as in limit(1 + x*sin(x),x,inf) and
+	     ;; limit(x*exp(%i*x)+x*sin(x),x,inf): an infinity term carries no
+	     ;; direction, so it cannot dominate an und term that way.
          (cond ((or infl minfl)
-                   (setq infinityl (append undl infinityl)))
+                   (return (simplimplus-und undl (append infl minfl))))
                  (t (return '$und))))
 	   ((not (or infl minfl indl infinityl))
 	    (return (cond ((atom sum)  sum)
@@ -2758,6 +2757,35 @@ ignoring dummy variables and array indices."
 	   ((infinityp y)  (return y))
 	   (indl (return '$ind))
 	   (t (return (m+ sum y))))))
+
+;; The limit of a sum of terms with und limits, UNDL, and terms with inf or
+;; minf limits, INFL. The infinities decide the limit when they dominate the
+;; und terms, as in limit(x^2+x*sin(x),x,inf). When the und terms are the
+;; larger ones, as in limit(3^x*cos(x)+x,x,inf), they alternate in sign and
+;; the sum has no limit. For a bounded ratio r of the two the sum is
+;; I*(1+r), and the sign of 1+r decides, as in limit(x*cos(x)+2*x,x,inf).
+(defun simplimplus-und (undl infl)
+  (let* ((u (fapply 'mplus undl))
+         (i (fapply 'mplus infl))
+         (ilim (limit i var val 'think))
+         (ratio nil)
+         (sgn nil))
+    (cond ((or (null ilim) (eq ilim t)) (throw 'limit t))
+          ((not (infinityp ilim)) '$und)
+          (t
+           (setq ratio (limit (div u i) var val 'think))
+           (cond ((or (null ratio) (eq ratio t)) (throw 'limit t))
+                 ((zerop2 ratio) ilim)
+                 ;; infinity has no direction to dominate with
+                 ((not (member ilim '($inf $minf))) '$und)
+                 ((member ratio '($inf $minf $infinity $und)) '$und)
+                 (t
+                  (setq sgn ($csign (if (eq ratio '$ind)
+                                        (add 1 (div u i))
+                                        (add 1 ratio))))
+                  (cond ((eq sgn '$pos) ilim)
+                        ((eq sgn '$neg) (if (eq ilim '$inf) '$minf '$inf))
+                        (t (throw 'limit t)))))))))
 
 ;; Limit n/d, using heuristics on the order of growth.
 (defun sheur0 (n d)

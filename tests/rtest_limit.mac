@@ -1628,6 +1628,25 @@ limit(1/(x*(-1)^(1/x)), x, 0, plus);
 infinity;
 
 
+/* A directed infinity plus an und term: the larger one decides.
+   limit(3^x*cos(x)+x, x, inf) gave inf. */
+
+limit(3^x*cos(x)+x, x, inf);
+und;
+
+limit(x^2*cos(x)+x, x, inf);
+und;
+
+limit(exp(x)*sin(x)+x^3, x, inf);
+und;
+
+limit(x*cos(x)+2*x, x, inf);
+inf;
+
+limit(x*sin(x)-x^2, x, inf);
+minf;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
