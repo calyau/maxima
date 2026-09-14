@@ -78,16 +78,21 @@ true$
  is(contexts = c0));
 true$
 
-/* --- facts a body establishes belong to that body ---
+/* --- assumptions ---
 
-   Each runner works in a context of its own, a child of the one its
-   caller was in, so the two directions differ on purpose: assumptions
-   already in force are inherited and still apply, while assumptions a
-   body makes are its own and go when the region ends.  Sharing the
-   second kind would make results depend on which runner got there
-   first. */
+   An assumption made before a parallel region is in force inside it,
+   and one a body makes goes into the same shared database a serial loop
+   would have put it in.  Bodies must still not depend on each other's
+   assumptions: nothing stops one body seeing another's, so a loop
+   written that way gives an answer that depends on which core got
+   there first.
 
-/* inherited: an assumption made before the region reaches the bodies */
+   Giving each runner its own context, so that a body's facts stayed its
+   own, is written and measured in src/parallel.lisp and deliberately
+   not enabled: the visibility counts it relies on are global and their
+   updates are not atomic, so concurrent regions unmark contexts holding
+   real assumptions.  It took this very test from right every time to
+   wrong 157 times in 200.  See the comment there, and issue #3. */
 
 (assume(zz > 0),
  is(parallel_makelist(sign(zz), i, 1, 4) = makelist(sign(zz), i, 1, 4)));
@@ -96,24 +101,13 @@ true$
 (forget(zz > 0), kill(all), 0);
 0$
 
-/* A body can also see the assumption it just made -- scoping the facts
-   would be no use if a body could not use its own -- but that is not
-   asserted here, because the database underneath is not thread-safe
-   yet and the assertion would fail about one run in a hundred.
-
-   Measured: parallel_makelist((assume(cc[i]>0), sign(cc[i])), i, 1, 4)
-   gave [pos,pos,pos,pnz] -- one body's own assumption not visible to
-   its own sign() -- 2 times in 200 with threads, and 0 times in 200 on
-   the serial path, which creates and kills exactly the same contexts.
-   So the scoping is right and it is the fact database that still races:
-   it lives on shared symbol plists, which no binding can make private.
-   That is issue #3's remaining subject. */
+/* a body's assumptions reach the database, the same as a serial loop's */
 
 (kill(all), makelist(assume(aa[i] > 0), i, 1, 4), length(facts()));
 4$
 
 (kill(all), parallel_makelist(assume(bb[i] > 0), i, 1, 4), length(facts()));
-0$
+4$
 
 (kill(all), 0);
 0$

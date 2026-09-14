@@ -347,7 +347,7 @@ MDOIN's hashed-array shapes, which is left to MDOIN itself."
 ;;; runner finished first.
 
 (defstruct (parallel-job (:conc-name job-))
-  thunks results errors (next 0) lock count specials)
+  thunks results errors (next 0) lock count captured)
 
 ;;; Maxima binds a user variable by saving the symbol's value, MSETting
 ;;; it, and putting the old value back when the binding ends
@@ -364,20 +364,34 @@ MDOIN's hashed-array shapes, which is left to MDOIN itself."
 ;;; values onto, and two runners pushing and popping one stack corrupt
 ;;; each other's unwinding.
 
-(defun call-with-private-bindings (symbols thunk)
-  "Run THUNK with a binding of each of SYMBOLS private to this thread,
-starting from the value it has now, or unbound if it has none."
-  (let ((bound (mapcar #'boundp symbols)))
-    (progv symbols
-        (mapcar (lambda (symbol) (and (boundp symbol) (symbol-value symbol)))
-                symbols)
-      ;; PROGV cannot make a single binding unbound, so the ones that
-      ;; had no value are emptied again here.  MAKUNBOUND on a variable
-      ;; bound by PROGV empties that binding, not the global one.
-      (loop for symbol in symbols
-            for was-bound in bound
-            unless was-bound do (makunbound symbol))
-      (funcall thunk))))
+;;; The values have to be read in the thread that starts the workers,
+;;; not in the workers.  A new thread inherits no dynamic bindings, only
+;;; global values, so a worker reading a variable for itself sees the
+;;; session-wide value and not what its caller had -- and for the
+;;; context variables that is wrong rather than merely different: a
+;;; parallel region nested inside a parallel body would hang its
+;;; contexts off the global one and lose every assumption the outer body
+;;; had made.  Measured before this was captured: the inner bodies of a
+;;; nested region answered pnz for a fact the outer body had just
+;;; asserted.
+
+(defun capture-bindings (symbols)
+  "What each of SYMBOLS is worth here and now, for a runner to start from."
+  (mapcar (lambda (symbol)
+            (list symbol (boundp symbol) (and (boundp symbol)
+                                              (symbol-value symbol))))
+          symbols))
+
+(defun call-with-captured-bindings (captured thunk)
+  "Run THUNK with each captured variable bound privately to this thread,
+starting from the value CAPTURE-BINDINGS recorded."
+  (progv (mapcar #'first captured) (mapcar #'third captured)
+    ;; PROGV cannot make a single binding unbound, so the ones that had
+    ;; no value are emptied again here.  MAKUNBOUND on a variable bound
+    ;; by PROGV empties that binding, not the global one.
+    (loop for (symbol bound-p nil) in captured
+          unless bound-p do (makunbound symbol))
+    (funcall thunk)))
 
 (defun job-take (job)
   "Index of the next unclaimed item, or NIL when they are all taken."
@@ -442,46 +456,61 @@ than for the computation."
 ;;; the same context's plist and every thread still sees it.  What is
 ;;; per-thread here is only which context a thread is currently in and
 ;;; its own list of context names.
-(defun job-specials-to-bind (job)
+;;; CURRENT (src/db.lisp) is deliberately NOT in this list, though it
+;;; looks like it belongs: it records which context the fact database
+;;; has marked, and CONTEXTMARK does nothing when it already equals
+;;; CONTEXT, so sharing it is why a nested parallel region cannot see
+;;; the facts of the body that started it.
+;;;
+;;; Binding it makes things worse, not better, and the reason is the one
+;;; the bigfloat six taught: CURRENT is half of a pair.  The other half
+;;; is the CMARK counters on the context symbols' plists, which no
+;;; binding can make private.  A runner with its own CURRENT unmarks its
+;;; caller's chain, marks its own, and then loses the binding on the way
+;;; out while the counters it changed stay changed -- so the caller's
+;;; contexts are left unmarked and its facts invisible.  Measured:
+;;; binding it took a plain inherited assumption from 0 wrong in 200 to
+;;; 200 wrong in 200.  The pair has to move together or not at all,
+;;; which means the counters need to stop being global first (issue #3).
+(defun specials-to-bind (specials)
   (list* 'bindlist 'mspeclist 'loclist
          '$context 'context '$contexts '$activecontexts
-         (job-specials job)))
+         specials))
 
-;;; Facts a runner establishes belong to that runner.
+;;; Giving each runner a context of its own -- so that facts a body
+;;; asserts belong to that body and go away with it -- is written and
+;;; measured, and is NOT enabled, because it corrupts the database it
+;;; was meant to tidy.
 ;;;
-;;; The database is not in a variable -- it hangs off symbol plists
-;;; keyed by the context a fact was asserted in -- so no binding can
-;;; make it per-thread.  But Maxima already has a scoping mechanism for
-;;; facts, and it is the context tree: a context sees its parent's facts
-;;; through the SUBC chain, and killing it takes its own facts with it.
-;;; So a runner works in a context of its own, a child of the one its
-;;; caller was in.
+;;; The scoping itself is right: a context sees its parent's facts
+;;; through the SUBC chain and killing it takes its own with it, and on
+;;; the serial path 200 regions in a row left every inherited assumption
+;;; intact.  What it cannot survive is concurrency.  Deciding which
+;;; facts are visible goes through CONTEXTMARK (src/db.lisp), which
+;;; keeps a count on each context symbol's plist and walks the chain
+;;; incrementing and decrementing it.  Those counts are global and the
+;;; updates are a read, an add and a write, so runners marking and
+;;; unmarking at the same time lose each other's updates and the count
+;;; on a context holding real assumptions drifts to zero.  Measured with
+;;; this enabled: a plain inherited assume() went from right every time
+;;; to wrong 157 times in 200, getting worse the more regions had run,
+;;; against 0 in 200 on the serial path.
 ;;;
-;;; That gives the reading and the writing directions different answers,
-;;; which is the point.  An assume() made before a parallel region is
-;;; still in force inside it, because the runner's context descends from
-;;; the one holding it.  An assume() made by a body reaches only that
-;;; body's own iterations, and is gone when the region ends -- where
-;;; sharing it would have made the result depend on which runner got
-;;; there first.  A serial loop accumulating facts in a definite order
-;;; cannot be reproduced by a parallel one in any case, so sharing buys
-;;; nothing and costs repeatability.
+;;; A lock around the counter walk would stop the updates being lost and
+;;; still not be correct: the count is a count, so two runners' chains
+;;; are marked at once and each can see the other's facts -- the exact
+;;; leak the scoping exists to prevent.  Marking has to become per
+;;; thread before this can be turned on, which means the counts have to
+;;; stop living on shared plists.  That is issue #3.
 ;;;
-;;; The calling thread does this too, not only the workers.  Otherwise
-;;; the same loop would keep its facts when it ran out of threads and
-;;; drop them when it had some, which is exactly the difference the
-;;; serial path is supposed not to make.
-
-(defun call-in-own-context (thunk)
-  (let ((name (gensym "$CTXT")))
-    (mfuncall '$supcontext name $context)
-    (unwind-protect (funcall thunk)
-      ($killcontext name))))
+;;; Until then a body's facts stay where they always went, and the
+;;; documented rule stands on its own: iterations must not depend on
+;;; each other, assumptions included.
 
 (defun call-as-runner (job worker-p)
-  (call-with-private-bindings
-   (job-specials-to-bind job)
-   (lambda () (call-in-own-context (lambda () (run-items job worker-p))))))
+  (call-with-captured-bindings
+   (job-captured job)
+   (lambda () (run-items job worker-p))))
 
 (defun run-worker (job)
   "A worker's whole life.  WITH-THREAD-LOCAL-ENVIRONMENT must be entered
@@ -510,7 +539,11 @@ serially when it allows none -- the answers are the same either way."
                      :errors (make-array count :initial-element nil)
                      :lock (%make-lock "maxima parallel job")
                      :count count
-                     :specials (remove-if-not #'symbolp specials)))
+                     ;; Read here, in the thread that is about to start
+                     ;; the workers: they cannot read it for themselves.
+                     :captured (capture-bindings
+                                (specials-to-bind
+                                 (remove-if-not #'symbolp specials)))))
                ;; One item stays with the calling thread, so asking for
                ;; COUNT-1 workers is asking for a runner per item.
                (granted (claim-workers (1- count)))
