@@ -66,6 +66,36 @@
 ;;;; on the work, and the state most likely to corrupt silently is the
 ;;;; state this tool is worst at finding.  Locking that is a separate job
 ;;;; from the binding this survey plans.
+;;;;
+;;;;   - specials outside package MAXIMA.  The survey walks MAXIMA only,
+;;;;     so CL:*QUERY-IO* and its friends never appear -- and those are
+;;;;     the ones that decide whether a background computation can ask
+;;;;     the user a question.  *FOREIGN-SPECIALS* below lists them by
+;;;;     hand; BIND-LIST prints them alongside the rest.
+;;;;
+;;;; ASKING THE USER.  A computation on a worker thread can reach
+;;;; ASKSIGN, ASKINTEGER or READ.  RETRIEVE (macsys.lisp) prompts and
+;;;; reads on *QUERY-IO*, so binding that per thread redirects or closes
+;;;; the question channel; mload.lisp already does exactly this for
+;;;; $BATCH_ANSWERS_FROM_FILE.  Three caveats, all measured:
+;;;;
+;;;;   - $READONLY reads *STANDARD-INPUT* under SBCL and CMUCL and
+;;;;     *QUERY-IO* everywhere else -- the #+(or sbcl cmu) in macsys.lisp.
+;;;;     Offering 99 on query-io and 42 on standard-input, read() returns
+;;;;     42 under SBCL and 99 under CCL.  A thread must bind both.
+;;;;
+;;;;   - a closed channel makes ASKSIGN fail cleanly: "RETRIEVE: End of
+;;;;     file encountered.", caught by ERRCATCH, session unharmed.  But
+;;;;     READ merely returns NIL, silently.  Forbidding questions needs an
+;;;;     explicit refusal, not just an empty stream.
+;;;;
+;;;;   - the answer is not private.  $ASKSIGN records a reduced fact in
+;;;;     the database -- symbol-plist state every thread shares -- so
+;;;;     routing a question correctly still leaves its answer global.
+;;;;
+;;;; A NEW THREAD INHERITS NO BINDINGS.  It starts from each variable's
+;;;; global value, so every binding here must be established inside the
+;;;; thread's own entry point.  Wrapping the spawn in a LET does nothing.
 
 ;;; Wrapped in EVAL-WHEN so that the SB-INTROSPECT: symbols further down
 ;;; can be READ when this file is compiled, not only when it is loaded.
@@ -108,6 +138,16 @@
      "$URL_BASE" "*MAXIMA-LANG-SUBDIR*"))
   "Each entry is (CATEGORY RATIONALE . VARIABLE-NAMES).  Everything else
 that is assigned anywhere is reported as :UNTRIAGED.")
+
+(defparameter *foreign-specials*
+  '("*QUERY-IO*"        ; asksign/askinteger prompt and answer here
+    "*STANDARD-INPUT*"  ; ...but read() uses this one under SBCL and CMUCL
+    "*STANDARD-OUTPUT*" ; so a thread's output can be attributed to its cell
+    "*ERROR-OUTPUT*"
+    "*TRACE-OUTPUT*")
+  "Specials outside package MAXIMA that a thread entry point must also
+bind.  SPECIALS walks package MAXIMA, so it cannot find these; they are
+listed by hand and printed by BIND-LIST.")
 
 (defun category-of (symbol)
   (let ((name (symbol-name symbol)))
@@ -302,12 +342,17 @@ form or mutated in place -- see WHAT THIS CANNOT SEE above."
          (entries (remove-if-not (lambda (e) (member (entry-category e) wanted))
                                  (variables))))
     (format stream "~&;; ~D variable~:P to bind per evaluation thread~%"
-            (length entries))
+            (+ (length entries) (length *foreign-specials*)))
     (format stream "(let (")
     (loop for e in (sort entries #'string< :key (lambda (e) (symbol-name (entry-variable e))))
           for first = t then nil
           do (format stream "~:[~%      ~;~]~A~@[  ; ~(~A~)~]"
                      first (entry-variable e)
                      (when (eq (entry-category e) :untriaged) "untriaged")))
+    (loop for name in *foreign-specials*
+          do (format stream "~%      cl:~(~A~)" name))
     (format stream ")~%  ...)~%")
+    (format stream ";; The last ~D are outside package MAXIMA and were listed~%~
+                    ;; by hand: the survey cannot see them.~%"
+            (length *foreign-specials*))
     (values)))
