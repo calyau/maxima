@@ -1,6 +1,11 @@
 Maxima 5.50-post change log
 ===========================
 
+* Parallel bodies explicitly refuse interactive input, including read() and
+  readonly(), while preserving answers established without a question.
+* Fix the serial fallback of parallel computations on Lisps without native
+  threads: do not reference the unavailable thread-joining function.
+
 Bug fixes for numbered bugs:
 ----------------------------
 * \#2596 error in matrix exponentiation

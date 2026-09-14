@@ -763,6 +763,22 @@ definite order, and a parallel one has no order to offer in its place.
 
 @subsubheading What cannot be asked for
 
+A parallel body cannot request interactive input.  @mref{read} and
+@mref{readonly} signal an error before printing a prompt or consuming
+input.  @mref{asksign}, @mref{askinteger}, and computations that use
+them still return an answer when it can be established without asking;
+if an answer from the user is needed, they signal an error instead.
+Supply the necessary facts before the parallel computation, or use an
+ordinary sequential computation to answer its questions interactively.
+
+This rule also applies to @mref{parallel_makelist}, @mref{do_parallel},
+and loops evaluated in parallel by @mrefdot{parallel} It holds for the
+calling thread, nested parallel bodies, and the serial fallback,
+including @code{parallel_threads:1}.  Thus the availability of input
+does not depend on which runner evaluates a body.  Expressions which
+@code{parallel} evaluates unchanged, without entering a parallel loop,
+keep their ordinary input behavior.
+
 @code{thru_parallel} and @code{in_parallel} cannot be combined with
 @code{while}, @code{unless} or @code{next}, and writing that is a syntax
 error rather than a loop that quietly runs on one core. Those three

@@ -34,6 +34,9 @@
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
 (defvar *general-display-prefix* "")
+(defvar *parallel-input-forbidden* nil
+  "Bound by each parallel runner. Refuse interactive input before prompting
+or reading; a closed input stream alone can silently return NIL.")
 (defvar $alt_format_prompt nil "If NIL, use DEFAULT-FORMAT-PROMPT to print input prompt; if a function, use it to print input prompt.")
 
 (defun format-prompt (destination control-string &rest arguments)

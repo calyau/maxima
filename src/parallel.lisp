@@ -530,7 +530,12 @@ than for the computation."
 (defun call-as-runner (job worker-p)
   (call-with-captured-bindings
    (job-captured job)
-   (lambda () (run-items job worker-p))))
+   (lambda ()
+     ;; The caller and the serial fallback obey the same rule as workers:
+     ;; whether an item may ask must not depend on who happened to take it.
+     ;; Bind inside the runner; new threads do not inherit LET bindings.
+     (let ((*parallel-input-forbidden* t))
+       (run-items job worker-p)))))
 
 (defun run-worker (job)
   "A worker's whole life.  WITH-THREAD-LOCAL-ENVIRONMENT must be entered
@@ -567,6 +572,8 @@ serially when it allows none -- the answers are the same either way."
                ;; One item stays with the calling thread, so asking for
                ;; COUNT-1 workers is asking for a runner per item.
                (granted (claim-workers (1- count)))
+               #+(or sb-thread (and ccl openmcl-native-threads)
+                     (and ecl threads))
                (threads '()))
           (unwind-protect
                (progn
@@ -582,6 +589,8 @@ serially when it allows none -- the answers are the same either way."
                  ;; every runner is isolated the same way and the two
                  ;; paths cannot differ in what they leave behind.
                  (call-as-runner job nil)
+                 #+(or sb-thread (and ccl openmcl-native-threads)
+                       (and ecl threads))
                  (mapc #'%join threads))
             (release-workers granted))
           ;; Report the first failure by index, so the same input always
