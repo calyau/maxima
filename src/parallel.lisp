@@ -102,11 +102,18 @@
                                   (string= "processor" line :end2 9)))))
           (when (plusp n) n))))))
 
+;;; ECL has no branch here on purpose.  SI:GET-NUMBER-OF-PROCESSORS does
+;;; not exist in ECL 21.2.1, and naming a symbol that a package does not
+;;; export is a READER error -- it happens before any of this code runs,
+;;; so IGNORE-ERRORS cannot catch it and the file simply fails to
+;;; compile.  It took Maxima's whole ECL build down with it:
+;;; "Cannot find the external symbol GET-NUMBER-OF-PROCESSORS in SI".
+;;; ECL therefore takes its count from MAXIMA_NUM_CORES, which is what
+;;; src/maxima.in is for, and from /proc after that.
 (defun parallel-cpu-count ()
   "Number of cores available to this process, or 1 if it cannot be found."
   (or (cpu-count-from-environment)
       #+(and ccl openmcl-native-threads) (ignore-errors (ccl:cpu-count))
-      #+(and ecl threads) (ignore-errors (si:get-number-of-processors))
       (cpu-count-from-proc)
       1))
 
