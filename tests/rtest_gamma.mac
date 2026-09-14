@@ -4375,3 +4375,18 @@ block([b, hypergeometric_regularized, foo],
  hypergeometric_regularized(p, q, x) := foo(p, q, x),
  freeof(foo, diff(gamma_incomplete(b, y), b)));
 true;
+
+
+/* Bug #5254: "limit(gamma_incomplete(-1,x), x, 0, plus) -> minf" */
+
+limit(gamma_incomplete(-1,x),x,0,plus);
+inf;
+
+limit(gamma_incomplete(-3,x),x,0,plus);
+inf;
+
+limit(gamma_incomplete(-1,%i*x),x,0,plus);
+infinity;
+
+limit(x*gamma_incomplete(-1,x),x,0,plus);
+1;
