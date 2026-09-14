@@ -282,8 +282,19 @@ than for the computation."
         (incf *items-run-by-workers* mine)))
     mine))
 
+;;; LOCLIST belongs here because ERRCATCH saves (cons bindlist loclist)
+;;; and ERRLFUN1 (src/suprv1.lisp) unwinds by calling MUNLOCAL until
+;;; LOCLIST is EQ to the cons it saved.  Shared between runners, that
+;;; cons is no longer anywhere in this thread's chain, so the loop pops
+;;; an already-empty LOCLIST for ever: an error in one element left the
+;;; whole run spinning at full CPU, on about one run in five.
+;;;
+;;; MUNLOCAL also pops MPROPLIST and FACTLIST, which MLOCAL pushes
+;;; alongside LOCLIST.  They are not bound here because nothing yet
+;;; measures what a local() inside a parallel body does to them; a body
+;;; using local() is still to be checked rather than assumed safe.
 (defun job-specials-to-bind (job)
-  (list* 'bindlist 'mspeclist (job-specials job)))
+  (list* 'bindlist 'mspeclist 'loclist (job-specials job)))
 
 (defun run-worker (job)
   "A worker's whole life.  WITH-THREAD-LOCAL-ENVIRONMENT must be entered
