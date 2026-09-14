@@ -207,6 +207,88 @@ true$
  is(parallel_peak_workers() < parallel_cores()));
 true$
 
+/* --- thru_parallel and in_parallel ---
+
+   The keyword forms, which unlike parallel() refuse a loop they cannot
+   spread instead of quietly running it on one core. */
+
+(e: make_array(fixnum, 11),
+ for i: 1 thru_parallel 10 do e[i]: i^2,
+ listarray(e));
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]$
+
+(f: make_array(fixnum, 11),
+ for i: 2 step 3 thru_parallel 10 do f[i]: i,
+ listarray(f));
+[0, 0, 2, 0, 0, 5, 0, 0, 8, 0, 0]$
+
+(g: make_array(fixnum, 4),
+ for x in_parallel [7, 8, 9] do g[x - 6]: x*2,
+ listarray(g));
+[0, 14, 16, 18]$
+
+for i: 1 thru_parallel 3 do 1;
+done$
+
+/* and they really do run on more than one thread */
+
+(parallel_reset_counters(),
+ for i: 1 thru_parallel 16 do ?sleep(0.02),
+ if parallel_threads_available()
+     then is(parallel_worker_items() > 0)
+     else is(parallel_worker_items() = 0));
+true$
+
+(parallel_reset_counters(),
+ for x in_parallel [1, 2, 3, 4, 5, 6, 7, 8] do ?sleep(0.02),
+ if parallel_threads_available()
+     then is(parallel_worker_items() > 0)
+     else is(parallel_worker_items() = 0));
+true$
+
+/* nested keyword loops share the one session-wide budget */
+
+(parallel_reset_counters(),
+ for i: 1 thru_parallel 4 do (for j: 1 thru_parallel 4 do ?sleep(0.01)),
+ is(parallel_peak_workers() < parallel_cores()));
+true$
+
+/* --- do_parallel ---
+
+   The other direction: not one expression over many values, but many
+   different expressions at once. */
+
+do_parallel([1, 2, 3]);
+done$
+
+(h: make_array(fixnum, 4),
+ do_parallel([h[1]: 11, h[2]: 22, h[3]: 33]),
+ listarray(h));
+[0, 11, 22, 33]$
+
+/* the arguments may be given as a list or on their own */
+
+(k: make_array(fixnum, 4),
+ do_parallel(k[1]: 11, k[2]: 22, k[3]: 33),
+ listarray(k));
+[0, 11, 22, 33]$
+
+do_parallel();
+done$
+
+(parallel_reset_counters(),
+ do_parallel([?sleep(0.02), ?sleep(0.02), ?sleep(0.02), ?sleep(0.02),
+              ?sleep(0.02), ?sleep(0.02), ?sleep(0.02), ?sleep(0.02)]),
+ if parallel_threads_available()
+     then is(parallel_worker_items() > 0)
+     else is(parallel_worker_items() = 0));
+true$
+
+/* an error in one of them reaches the caller rather than vanishing */
+
+errcatch(do_parallel([1, 1/0, 3]));
+[]$
+
 (parallel_threads: 0, 0);
 0$
 

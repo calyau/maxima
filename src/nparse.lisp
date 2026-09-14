@@ -1529,9 +1529,13 @@
 	($from		(setf (mdo-from left) data))
 	($in		(setf (mdo-op   left) 'mdoin)
 			(setf (mdo-from left) data))
+	($in_parallel	(setf (mdo-op   left) 'mdoin-parallel)
+			(setf (mdo-from left) data))
 	($step		(setf (mdo-step left) data))
 	($next		(setf (mdo-next left) data))
 	($thru		(setf (mdo-thru left) data))
+	($thru_parallel	(setf (mdo-op   left) 'mdo-parallel)
+			(setf (mdo-thru left) data))
 	(($unless $while)
 			(if (eq op '$while)
 			    (setq data (list (mheader '$not) data)))
@@ -1546,6 +1550,7 @@
 (def-lbp $step   25.)
 (def-lbp $next   25.)
 (def-lbp $thru   25.)
+(def-lbp $thru_parallel 25.)
 (def-lbp $unless 25.)
 (def-lbp $while  25.)
 (def-lbp $do	 25.)
@@ -1555,6 +1560,7 @@
 (def-nud-equiv $step   parse-$do)
 (def-nud-equiv $next   parse-$do)
 (def-nud-equiv $thru   parse-$do)
+(def-nud-equiv $thru_parallel parse-$do)
 (def-nud-equiv $unless parse-$do)
 (def-nud-equiv $while  parse-$do)
 (def-nud-equiv $do     parse-$do)
@@ -1566,6 +1572,8 @@
 (def-rbp $step    95.)
 (def-rbp $next    45.)
 (def-rbp $thru    95.)
+(def-rbp $thru_parallel 95.)
+(def-rbp $in_parallel   95.)
 (def-rbp $unless  45.)
 (def-rbp $while	  45.)
 
@@ -1575,20 +1583,37 @@
 (def-rpos $step   $expr)
 (def-rpos $next   $any)
 (def-rpos $thru   $expr)
+(def-rpos $thru_parallel $expr)
 (def-rpos $unless $clause)
 (def-rpos $while  $clause)
 
 
+;; THRU_PARALLEL and IN_PARALLEL collide with NEXT, WHILE and UNLESS on
+;; purpose, so that asking for a loop to run in parallel and then
+;; describing a sequential one is a syntax error rather than a loop that
+;; quietly runs on one core.  NEXT computes each value from the one
+;; before it, and WHILE and UNLESS decide only after a body has run
+;; whether there is another iteration; none of the three can say what
+;; the iterations are before running them, which is what handing work to
+;; several cores requires.
+;;
+;; Both directions have to be listed: COLLISION-CHECK tests the keyword
+;; being read against the ones already seen, so leaving out the reverse
+;; entry would let one of the two orders through.
 (def-collisions $do
   ($do	   . ())
   ($for    . ($for))
-  ($from   . ($in $from))
-  ($in     . ($in $from $step $next $thru))
-  ($step   . ($in       $step $next))
-  ($next   . ($in	$step $next))
-  ($thru   . ($in $thru)) ;$IN didn't used to get checked for
-  ($unless . ())
-  ($while  . ()))
+  ($from   . ($in $in_parallel $from))
+  ($in     . ($in $in_parallel $from $step $next $thru $thru_parallel))
+  ($in_parallel . ($in $in_parallel $from $step $next $thru $thru_parallel
+		   $unless $while))
+  ($step   . ($in $in_parallel $step $next))
+  ($next   . ($in $in_parallel $step $next $thru_parallel))
+  ($thru   . ($in $in_parallel $thru $thru_parallel)) ;$IN didn't used to get checked for
+  ($thru_parallel . ($in $in_parallel $thru $thru_parallel $next
+		     $unless $while))
+  ($unless . ($in_parallel $thru_parallel))
+  ($while  . ($in_parallel $thru_parallel)))
 
 (def-mheader   |$$| (nodisplayinput))
 (def-nud-equiv |$$| premterm-err)

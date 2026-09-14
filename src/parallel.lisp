@@ -245,7 +245,27 @@ this is positive is one the serial path cannot pass by accident."
     (when (and (numberp span) (not (minusp span)))
       (1+ (floor span)))))
 
+(defun parallel-loop (variable values body)
+  "Evaluate BODY once per element of VALUES, with VARIABLE set to it.
+Every runner has its own binding of VARIABLE, so the assignment below
+stays inside the runner that made it."
+  (call-in-parallel
+   (mapcar (lambda (value)
+             (lambda ()
+               (mset variable value)
+               (let ((mdop t))
+                 (when (catch 'mprog (prog2 (meval body) nil))
+                   (merror (intl:gettext "parallel: 'return' cannot leave a ~
+                                          parallel do loop"))))
+               nil))
+           values)
+   (list variable))
+  '$done)
+
 (defun parallel-mdo (form)
+  "A counted do loop, spread over the cores when its values can be known
+before any body runs, and evaluated as the ordinary loop it is when they
+cannot."
   (let* ((parts (cdr form))
          (variable (car parts))
          (from (if (cadr parts) (meval (cadr parts)) 1))
@@ -258,27 +278,64 @@ this is positive is one the serial path cannot pass by accident."
                      (numberp from) (numberp step) (not (zerop step))
                      (parallel-mdo-count from step (meval limit)))))
     (if (null count)
-        ;; Not a shape whose iterations are known in advance.
-        (meval form)
-        (progn
-          (call-in-parallel
-           (mapcar (lambda (value)
-                     (lambda ()
-                       (mset variable value)
-                       (let ((mdop t))
-                         (when (catch 'mprog (prog2 (meval body) nil))
-                           (merror (intl:gettext "parallel: 'return' cannot ~
-                                                  leave a parallel do loop"))))
-                       nil))
-                   (parallel-mdo-values from step count))
-           (list variable))
-          '$done))))
+        (meval (cons '(mdo) parts))
+        (parallel-loop variable (parallel-mdo-values from step count) body))))
+
+(defun parallel-mdoin (form)
+  "A do loop over the members of a list.  The members are known before
+any body runs, so this needs no counting -- but an ATOM here is one of
+MDOIN's hashed-array shapes, which is left to MDOIN itself."
+  (let* ((parts (cdr form))
+         (variable (car parts))
+         (set (format1 (meval (cadr parts))))
+         (limit (car (cddddr parts)))
+         (until (cadr (cddddr parts)))
+         (body (caddr (cddddr parts))))
+    (if (or (null variable) limit until ($atom set))
+        (meval (cons '(mdoin) parts))
+        (parallel-loop variable (margs set) body))))
+
+;;; The two operators the reader makes out of THRU_PARALLEL and
+;;; IN_PARALLEL.  They carry exactly MDO's and MDOIN's own argument
+;;; shapes, so falling back means handing the same parts to the ordinary
+;;; operator.
+
+(defmspec mdo-parallel (form)
+  (parallel-mdo form))
+
+(defmspec mdoin-parallel (form)
+  (parallel-mdoin form))
 
 (defmspec $parallel (form)
   (let ((argument (cadr form)))
-    (if (and (consp argument) (consp (car argument)) (eq (caar argument) 'mdo))
-        (parallel-mdo argument)
+    (if (and (consp argument) (consp (car argument)))
+        (case (caar argument)
+          ((mdo mdo-parallel) (parallel-mdo argument))
+          ((mdoin mdoin-parallel) (parallel-mdoin argument))
+          (t (meval argument)))
         (meval argument))))
+
+;;; do_parallel is the other half of the picture: PARALLEL_MAKELIST and
+;;; a parallel do loop run one expression over many values, while this
+;;; runs many different expressions at once.
+;;;
+;;; Its arguments must not be evaluated on the way in -- that is the
+;;; whole point.  Evaluating them to pass them along would compute every
+;;; one of them, sequentially, before the first thread ever started.
+
+(defmspec $do_parallel (form)
+  (let* ((arguments (cdr form))
+         ;; do_parallel([a, b, c]) and do_parallel(a, b, c) both read as
+         ;; "run these three", so a lone list argument is its elements.
+         (expressions (if (and (null (cdr arguments))
+                               (consp (car arguments))
+                               (consp (caar arguments))
+                               (eq (caaar arguments) 'mlist))
+                          (cdar arguments)
+                          arguments)))
+    (call-in-parallel
+     (mapcar (lambda (expression) (lambda () (meval expression))) expressions))
+    '$done))
 
 ;;; ------------------------------------------------------------------
 ;;; Running the work.

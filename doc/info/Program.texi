@@ -286,6 +286,8 @@ functions, including the currently active function.
 @anchor{step}
 @anchor{next}
 @anchor{in}
+@anchor{thru_parallel}
+@anchor{in_parallel}
 @deffn {Special operator} do
 @deffnx {Special operator} while
 @deffnx {Special operator} unless
@@ -295,6 +297,8 @@ functions, including the currently active function.
 @deffnx {Special operator} step
 @deffnx {Special operator} next
 @deffnx {Special operator} in
+@deffnx {Special operator} thru_parallel
+@deffnx {Special operator} in_parallel
 
 The @code{do} statement is used for performing iteration. The general
 form of the @code{do} statements maxima supports is:
@@ -686,6 +690,245 @@ these may be useful to work with the key-value pairs of a hash table.
 (%o2)                         done
 @end group
 @end example
+
+@subsubheading Running the iterations on several cores
+
+Writing @code{thru_parallel} in place of @code{thru}, or
+@code{in_parallel} in place of @code{in}, asks for the iterations to be
+evaluated on as many processor cores as are available instead of one
+after another:
+
+@example
+for i: 1 thru_parallel 20 do slow_computation (i)
+for x in_parallel [a, b, c] do slow_computation (x)
+@end example
+
+@code{step} may be given as usual. The value of the loop is
+@code{done}, as it is for an ordinary @code{do}.
+
+@subsubheading The iterations must not depend on each other
+
+This is the whole of what the writer of the loop is promising, and
+nothing checks it.
+
+Iterations run at the same time, in no particular order, and one may
+well finish before another starts. So no iteration may use anything
+that another iteration produces --- in particular, nothing a
+@emph{previous} pass through the loop computed. A loop that carries a
+value forward from one pass to the next is exactly what cannot be made
+parallel:
+
+@example
+/* WRONG: every pass reads what the pass before it wrote */
+s: 0$
+for i: 1 thru_parallel 10 do s: s + f(i)$
+
+/* WRONG: each pass is defined in terms of the one before */
+x: 1$
+for i: 1 thru_parallel 10 do x: g(x)$
+
+/* right: the passes have nothing to say to one another */
+a: make_array (fixnum, 11)$
+for i: 1 thru_parallel 10 do a[i]: f(i)$
+@end example
+
+The first two report no error. They quietly give an answer that depends
+on which core happened to finish first, and it may differ from one run
+to the next. Anything of the shape ``add it up as we go'', ``keep the
+best one so far'', or ``append it to a list'' carries a value forward in
+this way, however it is written.
+
+For the same reason output from the bodies is interleaved in no defined
+order, and @code{return} inside a parallel loop is an error rather than
+a race, since it would name one iteration's exit out of many happening
+at once.
+
+@subsubheading What cannot be asked for
+
+@code{thru_parallel} and @code{in_parallel} cannot be combined with
+@code{while}, @code{unless} or @code{next}, and writing that is a syntax
+error rather than a loop that quietly runs on one core. Those three
+decide what the next iteration is --- or whether there is one at all ---
+only after a body has run, so the iterations cannot be known in advance,
+and knowing them in advance is what handing work to several cores
+requires.
+
+@subsubheading When there is only one core to run on
+
+On a Lisp without usable threads --- GCL has none, and CLISP's are not
+usable --- and whenever @mref{parallel_threads} is 1, the iterations run
+one after another. The answers are the same; only the time taken
+differs. The same path runs when a parallel loop is reached from inside
+another one that has already taken every thread the limit allows, so
+nesting parallel loops is safe rather than a way to start an unbounded
+number of threads.
+
+@opencatbox{Categories:}
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@anchor{parallel_threads}
+@defvr {Option variable} parallel_threads
+Default value: 0
+
+The greatest number of threads Maxima may use at once, counting the one
+it is already running on. Parallel evaluation never starts more than
+this many, however many parallel loops are nested inside one another.
+
+0, the default, means to use every core the machine offers. 1 turns
+parallel evaluation off without changing any answers: everything then
+runs one iteration after another, which is also what happens on a Lisp
+that has no usable threads.
+
+The number of cores is found by the script that starts Maxima and passed
+in the environment variable @code{MAXIMA_NUM_CORES}, so setting that
+variable before starting Maxima fixes what @mref{parallel_cores}
+reports.
+
+@opencatbox{Categories:}
+@category{Programming}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+
+@anchor{parallel_cores}
+@deffn {Function} parallel_cores ()
+Returns the number of threads Maxima will use at once, which is
+@mref{parallel_threads} when that is positive and the number of cores
+the machine reports otherwise.
+
+@opencatbox{Categories:}
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@anchor{parallel_threads_available}
+@deffn {Function} parallel_threads_available ()
+Returns @code{false} on a Lisp where parallel evaluation falls back to
+running one iteration after another --- GCL has no threads, and CLISP's
+are not usable --- and @code{true} where it does not.
+
+A @code{false} here does not mean a parallel loop will fail. It means
+it will produce the same answers, taking as long as an ordinary loop.
+
+@opencatbox{Categories:}
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@anchor{parallel_makelist}
+@deffn {Function} parallel_makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1}, @var{step})
+Constructs the same list as @mref{makelist}, evaluating the elements on
+several cores. Every argument form @code{makelist} accepts is accepted
+here and means the same thing, and the list is built in index order
+however the work was shared out.
+
+The elements must not depend on one another, exactly as described for
+@code{thru_parallel} under @mrefdot{do} An element that reads what
+another element writes gives an answer that depends on which core
+finished first.
+
+@example
+(%i1) parallel_makelist (f(i), i, 1, 100)$
+@end example
+
+@code{makelist} itself is never parallel: whether the elements are
+independent is something only the person writing them can know, so it
+has to be asked for.
+
+@opencatbox{Categories:}
+@category{Programming}
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@anchor{parallel}
+@deffn {Special operator} parallel (@var{expr})
+Evaluates @var{expr} on several cores where it can. When @var{expr} is
+a counted @code{do} loop or a @code{do} loop over a list, this is
+another way of writing @code{thru_parallel} or @code{in_parallel}:
+
+@example
+parallel (for i: 1 thru 20 do slow_computation (i))
+@end example
+
+Anything else, including a loop whose iterations cannot be known before
+they run, is simply evaluated as it stands. Wrapping an expression in
+@code{parallel} therefore never changes what it means --- at worst it
+does nothing --- but unlike @code{thru_parallel} it also gives no
+warning when that is what has happened. Prefer the keywords, which
+refuse a loop they cannot spread.
+
+The iterations must be independent; see @mref{do} for what that rules
+out.
+
+@opencatbox{Categories:}
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@anchor{do_parallel}
+@deffn {Special operator} do_parallel @
+@fname{do_parallel} (@var{expr_1}, @var{expr_2}, @dots{}) @
+@fname{do_parallel} ([@var{expr_1}, @var{expr_2}, @dots{}])
+
+Evaluates the expressions on several cores at once and returns
+@code{done}. The arguments may be given separately or as one list; the
+two mean the same thing.
+
+Where @mref{parallel_makelist} and a parallel @code{do} loop run
+@emph{one} expression over many values, this runs @emph{many different}
+expressions at the same time:
+
+@example
+do_parallel ([slow_a (x), slow_b (y), slow_c (z)])$
+@end example
+
+The arguments are not evaluated before they are handed out --- that is
+the whole point, since evaluating them to pass them along would compute
+every one of them, one after another, before any thread started.
+
+The expressions must not depend on one another, for the reasons given
+for @code{thru_parallel} under @mrefdot{do} They finish in no
+particular order, so none of them may use what another one produces,
+and their printed output is interleaved. An error in any of them
+reaches the caller.
+
+@opencatbox{Categories:}
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+
+@anchor{parallel_peak_workers}
+@deffn {Function} parallel_peak_workers ()
+@deffnx {Function} parallel_worker_items ()
+@deffnx {Function} parallel_reset_counters ()
+@code{parallel_peak_workers} returns the greatest number of worker
+threads that were running at once since the counters were last reset,
+not counting the thread that started them.
+@code{parallel_worker_items} returns how many elements or iterations
+those workers evaluated. @code{parallel_reset_counters} sets both back
+to zero.
+
+These exist for testing. A parallel computation that quietly ran on one
+core returns exactly the right answers, so a test that only compares
+answers cannot tell the two apart and passes whatever happened;
+@code{parallel_worker_items} is zero in that case and positive
+otherwise, which lets such a test fail when it ought to.
 
 @opencatbox{Categories:}
 @category{Programming}
