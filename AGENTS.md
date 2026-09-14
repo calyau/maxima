@@ -744,7 +744,10 @@ Never hand-edit `src/*-depends.mk`.
 
 A module marked `:dependencies-complete t` tells `defsystem` that its declared
 `:depends-on` edges are the whole truth, so it stops adding its own "anything
-compiled after a changed file may have been compiled against it" edges. An
+compiled after a changed file may have been compiled against it" edges. The
+option is Maxima's addition to MK:DEFSYSTEM, so every use in `maxima.system` is
+written `#+mk-deps-complete :dependencies-complete #+mk-deps-complete t` --
+grep for `:dependencies-complete`, not for the whole `t`-terminated phrase. An
 undeclared edge then leaves a stale fasl on the next incremental build, and no
 test can see it -- the answers stay right until someone changes the file that
 was never rebuilt. Three things create such an edge: a macro, an inline

@@ -1083,6 +1083,16 @@
 
 (pushnew :mk-defsystem *features*)
 
+;;; Advertise the :DEPENDENCIES-COMPLETE component option, which stock
+;;; MK:DEFSYSTEM does not have -- see the DEPENDENCIES-COMPLETE slot of
+;;; the COMPONENT structure below.  A system definition can then guard
+;;; its use of the option with #+MK-DEPS-COMPLETE and stay readable by a
+;;; defsystem that lacks it, which would otherwise stop with "Unknown
+;;; &KEY argument: :DEPENDENCIES-COMPLETE".  Dropping the option only
+;;; costs recompilation: without it *SEQUENTIAL-DEPENDENCIES* assumes
+;;; every component may affect the ones compiled after it.
+(pushnew :mk-deps-complete *features*)
+
 ;;; Some compatibility issues.  Mostly for CormanLisp.
 ;;; 2002-02-20 Marco Antoniotti
 

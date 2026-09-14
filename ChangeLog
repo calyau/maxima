@@ -98,6 +98,10 @@ Bug fixes for unnumbered bugs:
 * limit of bessel_i at minf ignored the parity of an integer order
 * texput of a TeX control word ran it into a following letter, as in
   \rightarrowb, producing TeX that does not compile
+* Maxima built with CCL printed a float's exponent with an explicit
+  plus sign and an upper case marker, as in 9.87E+52 where every other
+  lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
+  generated
 
 Changes in the Windows installer:
 ---------------------------------
@@ -125,3 +129,14 @@ Other changes:
   is a LaTeX document generator whose output nothing ever checked, are
   now paired with the string tex() returns and run as part of the test
   suite
+* Building with CCL (Clozure Common Lisp) works again: the openmcl and
+  ccl64 rules asked the lisp to (require :defsystem), which CCL does not
+  provide, instead of loading Maxima's own lisp-utils/defsystem.lisp the
+  way the rules for every other lisp do.  ./configure now also enables
+  CCL when it finds it and no lisp was named explicitly
+* src/maxima.system can again be read by a defsystem other than the one
+  Maxima ships: :DEPENDENCIES-COMPLETE, Maxima's own addition to
+  MK:DEFSYSTEM, is guarded by #+MK-DEPS-COMPLETE, the feature
+  lisp-utils/defsystem.lisp pushes to say it understands the option.
+  Without it the file stopped at "Unknown &KEY argument:
+  :DEPENDENCIES-COMPLETE"

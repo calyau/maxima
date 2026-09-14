@@ -58,7 +58,8 @@ clean-local: $(CLEAN_TARGETS)
 ## Tell make clean to delete all the <foo>-depends.mk files.
 DEPENDS_FILES = \
   clisp-depends.mk cmucl-depends.mk scl-depends.mk acl-depends.mk \
-  sbcl-depends.mk gcl-depends.mk openmcl-depends.mk ecl-depends.mk abcl-depends.mk
+  sbcl-depends.mk gcl-depends.mk openmcl-depends.mk ccl64-depends.mk \
+  ecl-depends.mk abcl-depends.mk
 CLEANFILES = $(DEPENDS_FILES)
 
 ## Similarly, we do something hacky with the install rule. Most of the
@@ -373,20 +374,21 @@ openmcllib_DATA = $(OPENMCL_MAXIMA)
 omcl_flag =
 endif
 
-EXECUTEOPENMCL = $(OPENMCL_NAME)
+## --batch makes CCL exit at end of input and, unlike most lisps here,
+## exit non-zero when a form signals an error, so a failed compile really
+## does fail the build.
+EXECUTEOPENMCL = "$(OPENMCL_NAME)" --no-init --batch --quiet
 BUILT_FILES += $(OPENMCL_MAXIMA)
 
-COMPILE_OMCL = echo '$(QUIET) (require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL)
-WRITE_OMCL = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTEOPENMCL)
+COMPILE_OMCL = echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (ccl:quit)' | $(EXECUTEOPENMCL)
+WRITE_OMCL = echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl:quit)' | $(EXECUTEOPENMCL)
 BUILD_OMCL = $(COMPILE_OMCL) && $(WRITE_OMCL)
 
 openmcl: $(OPENMCL_MAXIMA)
 
 $(OPENMCL_MAXIMA):
+	$(MAKE) bd
 	$(BUILD_OMCL)
-	echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL) \
-	   && \
-	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTEOPENMCL)
 
 openmcl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"$(OPENMCL_MAXIMA)",openmcl-depends.mk.tmp,(ccl:quit)) | $(EXECUTEOPENMCL)
@@ -405,35 +407,34 @@ CLEAN_TARGETS += clean-openmcl
 if CCL64
 
 ccl64libdir = $(verpkglibdir)/binary-ccl64
-EXTRA_SCRIPTS += $(OPENMCL_MAXIMA)
+EXTRA_SCRIPTS += $(CCL64_MAXIMA)
 
 if CCL64_EXEC
 CCL64_MAXIMA = binary-ccl64/maxima$(EXEEXT)
 ccl64lib_SCRIPTS = $(CCL64_MAXIMA)
-omcl_flag = :prepend-kernel t
+ccl64_flag = :prepend-kernel t
 else
 CCL64_MAXIMA = binary-ccl64/maxima.image
 ccl64lib_DATA = $(CCL64_MAXIMA)
-omcl_flag =
+ccl64_flag =
 endif
 
-EXECUTECCL64 = $(CCL64_NAME)
+EXECUTECCL64 = "$(CCL64_NAME)" --no-init --batch --quiet
 BUILT_FILES += $(CCL64_MAXIMA)
 
-COMPILE_CCL64 = $(EXECUTECCL64) --eval '$(QUIET)' --eval '(require :defsystem)' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '$(DEFSYSTEMCOMPILE)' --eval '(ccl::quit)'
-WRITE_CCL64 = $(EXECUTECCL64) --eval '(require :defsystem)' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '$(DEFSYSTEMLOAD)' --eval '(ccl:save-application "$@")' --eval '(ccl::quit)'
+COMPILE_CCL64 = echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (ccl:quit)' | $(EXECUTECCL64)
+WRITE_CCL64 = echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(ccl64_flag)) (ccl:quit)' | $(EXECUTECCL64)
 BUILD_CCL64 = $(COMPILE_CCL64) && $(WRITE_CCL64)
 
 ccl64: $(CCL64_MAXIMA)
 
 $(CCL64_MAXIMA):
+	$(MAKE) bd
 	$(BUILD_CCL64)
-	$(EXECUTECCL64) --eval '(require :defsystem)' --eval '$(DEFSYSTEMCOMPILE)' --eval '(ccl::quit)' && \
-	$(EXECUTECCL64) --eval '(require :defsystem)' --eval '$(DEFSYSTEMLOAD)' --eval '(ccl:save-application "$@" $(omcl_flag))' --eval '(ccl::quit)'
 
 ccl64-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) >ccl64-depends.mk.tmp
-	$(EXECUTECCL64) --load ccl64-depends.mk.tmp | sed -e "s#\\\\#/#g" > ccl64-depends.mk
+	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) | $(EXECUTECCL64)
+	sed -e "s#\\\\#/#g" < ccl64-depends.mk.tmp > ccl64-depends.mk
 
 -include ccl64-depends.mk
 
