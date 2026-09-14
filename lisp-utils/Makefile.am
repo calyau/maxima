@@ -5,4 +5,4 @@ genericdir = $(sharedir)/lisp-utils
 genericdirDATA = defsystem.lisp
 
 EXTRA_DIST = defsystem.lisp make-depends.lisp makealbertdoc.lisp \
-              check-dependencies.lisp
+              check-dependencies.lisp thread-safety-survey.lisp
