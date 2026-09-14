@@ -508,6 +508,11 @@ than for the computation."
 (defun specials-to-bind (specials)
   (list* 'bindlist 'mspeclist 'loclist
          '$context 'context '$contexts '$activecontexts
+         ;; A new worker's environment initially sees global precision.
+         ;; Capture all six values from its caller, including temporary
+         ;; working precision; rebuilding from $FPPREC would lose that.
+         ;; The calling runner needs these private bindings as well.
+         '$fpprec 'fpprec '*bigfloatone* '*bigfloatzero* '*bfhalf* '*bfmhalf*
          '*standard-output* '*error-output* '*trace-output*
          '*query-io* '*standard-input*
          specials))

@@ -750,6 +750,16 @@ order, and @code{return} inside a parallel loop is an error rather than
 a race, since it would name one iteration's exit out of many happening
 at once.
 
+@subsubheading Bigfloat precision in parallel computations
+
+Each runner begins with the caller's current bigfloat precision.
+Changing @mref{fpprec} inside a parallel body changes that runner's
+precision; it does not change the caller's precision after the computation,
+including after an error.  This also holds for the serial fallback.
+Use @code{block([fpprec:80], ...)} to limit a change to an individual body.
+A nested parallel computation inherits the current precision of the body
+that starts it.
+
 @subsubheading Assumptions made inside a parallel body
 
 An @mref{assume} made before the loop is in force inside it, as it would

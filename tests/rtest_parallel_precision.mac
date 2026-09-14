@@ -1,0 +1,60 @@
+/* Precision is a six-value environment, inherited from the caller. */
+(kill(all), 0);
+0$
+
+(load(file_search("parallel-input-check.lisp", file_search_tests)),
+ load(file_search("parallel-precision-check.lisp", file_search_tests)), 0);
+0$
+
+/* SERIALLY inside a private environment: characterize the numeric oracle. */
+map(lambda([p], parallel_precision_inherited(serial,p)), [4,16,32,80,160]);
+[true,true,true,true,true]$
+
+map(lambda([p], parallel_precision_inherited(fallback,p)), [4,16,32,80,160]);
+[true,true,true,true,true]$
+
+map(lambda([p], parallel_precision_inherited(caller,p)), [4,16,32,80,160]);
+[true,true,true,true,true]$
+
+if parallel_threads_available() then
+ map(lambda([p], parallel_precision_inherited(worker,p)), [4,16,32,80,160])
+else [true,true,true,true,true];
+[true,true,true,true,true]$
+
+map(lambda([p], parallel_precision_inherited(public,p)), [4,16,32,80,160]);
+[true,true,true,true,true]$
+
+parallel_precision_random();
+true$
+
+/* A runner's precision changes are local, including on exceptional exit. */
+map(lambda([m], parallel_precision_restored(m,false)), [fallback,caller,public]);
+[true,true,true]$
+
+map(lambda([m], parallel_precision_restored(m,true)), [fallback,caller,public]);
+[true,true,true]$
+
+if parallel_threads_available() then
+ [parallel_precision_restored(worker,false),parallel_precision_restored(worker,true)]
+else [true,true];
+[true,true]$
+
+map(parallel_precision_internal,[serial,fallback,caller,public]);
+[true,true,true,true]$
+
+if parallel_threads_available() then parallel_precision_internal(worker) else true;
+true$
+
+parallel_makelist(block([fpprec:40+20*i],
+                       parallel_makelist(fpprec,j,1,4)),i,1,2);
+[[60,60,60,60],[80,80,80,80]]$
+
+block([fpprec:47], parallel_makelist((fpprec:83,i),i,1,1), fpprec);
+47$
+
+/* Ordinary sequential MAKELIST keeps its existing assignment semantics. */
+block([fpprec:47], makelist((fpprec:83,i),i,1,1), fpprec);
+83$
+
+(kill(all), 0);
+0$
