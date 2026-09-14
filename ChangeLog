@@ -108,6 +108,9 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
+* make check verifies the per-thread environment on every configured Lisp,
+  with a separate, synchronized race check on threaded SBCL and CCL and an
+  explicit skip elsewhere
 * New function read_struct: reads a .csv file whose first line names
   the columns into a structure, so that data@t is the column headed t
 * read_matrix and the other numericalio text readers are about twice as
