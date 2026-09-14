@@ -180,7 +180,8 @@
 	"rtest_parallel_precision"
 	"rtest_parallel_lifecycle"
 	"rtest_parallel_database"
-	"rtest_literal_prompt"))
+	"rtest_literal_prompt"
+	"rtest_zeta_dispatch"))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima

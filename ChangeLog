@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Fix compiled bigfloat zeta and polylogarithm evaluation on ECL by
+  guarding argument classification before accessing complex components.
+
 * Format literal fragments in input prompts correctly, preserving prompt
   markers, decimal number printing and the custom prompt callback protocol.
 

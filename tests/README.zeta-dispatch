@@ -1,0 +1,31 @@
+Compiled zeta argument and accuracy checks
+=========================================
+
+  ./maxima-local --no-init --lisp=ecl \
+    --batch-string='run_testsuite(tests=[rtest_zeta_dispatch,rtest_log]);'
+
+Run every configured Lisp. The regression targets ECL21.2.1's native
+compilation of TYPECASE with a compound COMPLEX type. Loading an interpreted
+replacement for FLOAT-ZETA can hide the defect: test the built executable.
+Require the expected test count and "No unexpected errors"; a zero process
+status alone is insufficient because Maxima can catch Lisp load errors.
+
+The 12 examples characterize conversion of rational, complex rational,
+machine-float and real/complex bigfloat arguments. CLISP can also construct
+mixed rational/float complex numbers; both components must be rational before
+the old conversion to complex machine float applies. The helper captures the
+first numerical operation and restores its temporary replacement on exit;
+run this file in an otherwise idle Maxima process.
+
+For numerical accuracy, use the independent alternating Apéry series for
+zeta(3), DLMF25.6.9 (https://dlmf.nist.gov/25.6.E9). CL integer/rational
+arithmetic forms exact successive partial sums bracketing the limit.
+The computed bigfloat's stored binary value is decoded exactly and must be
+within that interval plus 10^(2-digits), a rounding allowance relative to the
+requested decimal precision. Checks use 12,30,80,160digits and32 generated
+precisions from12 to81digits, and verify the input expression is unchanged.
+
+Other examples check zeta(2), zeta(-1), negative even trivial zeros and the
+near-zero expansion. Forced one-item native-worker jobs and the serial
+fallback must retain the same accuracy. Existing logarithm/polylogarithm
+regressions remain unchanged and exercise the original failing consumers.

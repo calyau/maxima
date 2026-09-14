@@ -631,8 +631,12 @@
   (typecase s
     (rational
      (setf s (float s)))
-    ((complex rational)
-     (setf s (coerce s '(complex flonum)))))
+    (complex
+     ;; ECL 21.2.1 compiles (COMPLEX RATIONAL) without guarding REALPART
+     ;; against non-CL numbers, including our bigfloat objects. Check the
+     ;; primitive type first; CLISP can have mixed rational/float components.
+     (when (and (rationalp (realpart s)) (rationalp (imagpart s)))
+       (setf s (coerce s '(complex flonum))))))
 
   (let ((sigma (bigfloat:realpart s))
         (tau (bigfloat:imagpart s)))
