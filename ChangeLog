@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Format literal fragments in input prompts correctly, preserving prompt
+  markers, decimal number printing and the custom prompt callback protocol.
+
 * Protect complete assumption-database queries and graph mutations with
   a shared transaction lock, including context selection, number interning
   and temporary fact restoration. Concurrent queries no longer overwrite

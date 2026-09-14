@@ -1,0 +1,35 @@
+/* Flat literal prompt fragments and input must survive formatting. */
+(kill(all),0);
+0$
+
+(load(file_search("parallel-input-check.lisp",file_search_tests)),
+ load(file_search("literal-prompt-check.lisp",file_search_tests)),0);
+0$
+
+literal_prompt_default_check();
+true$
+
+literal_prompt_read_check();
+true$
+
+/* Custom callbacks keep their control string, argument list and settings. */
+literal_prompt_custom_check(false);
+true$
+
+literal_prompt_custom_check(true);
+true$
+
+literal_prompt_refusal_check();
+true$
+
+literal_prompt_error_check();
+true$
+
+literal_prompt_random_check();
+true$
+
+literal_prompt_long_check();
+true$
+
+(kill(all),0);
+0$

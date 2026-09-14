@@ -100,4 +100,4 @@ endif
 genericdir = $(insttestsdir)
 genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp *.wxm *.wxmx load_relative/* wester_problems/*))
 
-EXTRA_DIST = $(genericdirDATA) test.sh.in depcheck.sh.in README.parallel-input README.parallel-loop README.parallel-precision README.parallel-lifecycle README.parallel-database
+EXTRA_DIST = $(genericdirDATA) test.sh.in depcheck.sh.in README.parallel-input README.parallel-loop README.parallel-precision README.parallel-lifecycle README.parallel-database README.literal-prompt

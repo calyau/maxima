@@ -1,0 +1,28 @@
+Literal input prompt regression tests
+=====================================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_literal_prompt,rtest_parallel_input,rtest_ask1]);'
+
+Run each configured Lisp. Require the expected test count and "No unexpected
+errors" in the log; a zero process status alone is insufficient. The new file
+is also appended to the complete suite.
+
+The 11 examples cover default formatting, empty prompts, literal tildes,
+Unicode, numbers, symbols, shared list fragments, prompt markers, return
+values and printer-setting restoration. Reading the following answer proves
+that formatting consumed no extra input. End-of-file and malformed fragment
+lists exercise error handling. Actual worker jobs and the serial fallback
+must refuse a question before any callback, output or input consumption.
+
+Custom callbacks receive the original control string and original fragment
+list under the caller's printer settings. A callback can delegate to the
+default formatter, which retains its decimal and Maxima-specific ~A output.
+
+A private fixed generator checks 128 varied fragment lists against decimal
+integer/string references, with signed integers up to 39 digits. A 2048-part
+prompt checks that the implementation does not require an argument per
+fragment in a single function call.
+
+This supports RETRIEVE's exact flat literal pattern, "~{~A~}". It does not
+extend the general AFORMAT grammar or alter mathematical display controls.
