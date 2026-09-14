@@ -134,6 +134,8 @@
 	  varlist genvar vlist		; CRE's variables and their ordering
 	  linearray			; DISPLA's layout scratch
 	  tstack *local-signs*
+	  fpprec *bigfloatone* *bigfloatzero*	; bigfloat precision, and the
+	  *bfhalf* *bfmhalf*			; constants derived from it
 	  $multiplicities $%rnum_list $error $error_syms
 	  $linenum $gensumnum $integration_constant_counter))
 
@@ -176,6 +178,18 @@
 	 (linearray (make-array 1000. :initial-element nil))
 	 (sign sign) (minus minus) (odds odds) (evens evens)
 	 (tstack tstack) (*local-signs* *local-signs*)
+	 ;; Bigfloat precision is six variables, not one, and they have to
+	 ;; move together.  $FPPREC carries an ASSIGN property of FPPREC1
+	 ;; (globals.lisp), so an ordinary "fpprec: 30" in user code runs
+	 ;; FPPREC1, which SETQs the working precision FPPREC and rebuilds
+	 ;; *BIGFLOATONE*, *BIGFLOATZERO*, *BFHALF* and *BFMHALF* from it --
+	 ;; globally, in one go.  Binding only FPPREC would leave a thread
+	 ;; whose precision disagrees with the constants it computes with,
+	 ;; which is worse than sharing all six.  Observed moving during a
+	 ;; run_testsuite(), where the static survey rates them 1 set each.
+	 ($fpprec $fpprec) (fpprec fpprec)
+	 (*bigfloatone* *bigfloatone*) (*bigfloatzero* *bigfloatzero*)
+	 (*bfhalf* *bfhalf*) (*bfmhalf* *bfmhalf*)
 	 ($multiplicities $multiplicities) ($%rnum_list $%rnum_list)
 	 ($error $error) ($error_syms $error_syms)
 	 ($linenum $linenum) ($gensumnum $gensumnum)
