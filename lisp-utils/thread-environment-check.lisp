@@ -103,7 +103,18 @@ look right and fix nothing."
 ;;; The race.  SIGN is the one worth racing: it is how COMPAR returns an
 ;;; answer, so if binding fixes SIGN it fixes the pattern generally.
 
-#+(or sb-thread (and ccl openmcl-native-threads))
+(defun threadcheck-wait-for-token (try-token timeout)
+  ;; ECL 21.2.1 has no timed semaphore wait. Poll its nonblocking operation
+  ;; with a deadline so a missing peer cannot leave a worker stuck forever.
+  ;; Keep this small algorithm portable so all configured Lisps can test it.
+  (let ((deadline (+ (get-internal-real-time)
+                     (* timeout internal-time-units-per-second))))
+    (loop
+      (when (funcall try-token) (return t))
+      (when (>= (get-internal-real-time) deadline) (return nil))
+      (sleep 0.001))))
+
+#+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
 (defun check-race (&optional (stream *debug-io*))
   ;; Two rendezvous per round: both writes precede either read, and both
   ;; reads precede the next write.  The unbound control must therefore
@@ -111,18 +122,25 @@ look right and fix nothing."
   ;; alone cannot ensure that the threads actually overlap.
   (labels ((make-gate ()
              #+sb-thread (sb-thread:make-semaphore)
-             #-sb-thread (ccl:make-semaphore))
+             #+(and ccl openmcl-native-threads) (ccl:make-semaphore)
+             #+(and ecl threads) (mp:make-semaphore :count 0))
            (signal-gate (gate)
              #+sb-thread (sb-thread:signal-semaphore gate)
-             #-sb-thread (ccl:signal-semaphore gate))
+             #+(and ccl openmcl-native-threads) (ccl:signal-semaphore gate)
+             #+(and ecl threads) (mp:signal-semaphore gate))
            (wait-gate (gate)
              (unless
                  #+sb-thread (sb-thread:wait-on-semaphore gate :timeout 10)
-                 #-sb-thread (ccl:timed-wait-on-semaphore gate 10)
+                 #+(and ccl openmcl-native-threads)
+                 (ccl:timed-wait-on-semaphore gate 10)
+                 #+(and ecl threads)
+                 (threadcheck-wait-for-token
+                  (lambda () (mp:try-get-semaphore gate)) 10)
                (error "thread-environment-check: rendezvous timed out")))
            (join-worker (thread)
              #+sb-thread (sb-thread:join-thread thread)
-             #-sb-thread (ccl:join-process thread))
+             #+(and ccl openmcl-native-threads) (ccl:join-process thread)
+             #+(and ecl threads) (mp:process-join thread))
            (race (wrap)
              (let ((gates (vector (make-gate) (make-gate)))
                    (results (vector nil nil))
@@ -153,9 +171,11 @@ look right and fix nothing."
                             do (push
                                 #+sb-thread
                                 (sb-thread:make-thread function)
-                                #-sb-thread
+                                #+(and ccl openmcl-native-threads)
                                 (ccl:process-run-function "threadcheck"
                                                           function)
+                                #+(and ecl threads)
+                                (mp:process-run-function "threadcheck" function)
                                 threads))
                    (mapc #'join-worker threads)))
                (loop for result across results
@@ -169,7 +189,7 @@ look right and fix nothing."
               unbound bound)
       (and (= unbound 2000) (zerop bound)))))
 
-#-(or sb-thread (and ccl openmcl-native-threads))
+#-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
 (defun check-race (&optional (stream *debug-io*))
   (format stream "~&  race skipped: no thread support known for this lisp~%")
   :skipped)

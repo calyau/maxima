@@ -45,10 +45,10 @@
                      (lambda (&optional stream) (declare (ignore stream)) nil))
                (verify (null (check-thread-environment output)))
                (setf (symbol-function 'check-race)
-                     #+(or sb-thread (and ccl openmcl-native-threads))
+                     #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
                      (lambda (&optional stream)
                        (declare (ignore stream)) t)
-                     #-(or sb-thread (and ccl openmcl-native-threads)) race)
+                     #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads)) race)
                (verify (eq t (check-thread-environment output))))
           (setf (symbol-function 'check-race) race)))
       ;; Properties across varied initial values and nonlocal exits:
@@ -77,5 +77,20 @@
                                (mapcar #'symbol-value symbols)))))
             (verify (eq linearray outer))
             (verify (every #'eq values (mapcar #'symbol-value symbols))))))
+      ;; Older ECL needs a bounded poll around its nonblocking semaphore
+      ;; operation. Exercise the wait algorithm on every Lisp as well.
+      (let ((attempts 0))
+        (verify (eq t (threadcheck-wait-for-token
+                       (lambda () (incf attempts) (>= attempts 3)) 1)))
+        (verify (= attempts 3)))
+      (let ((attempts 0))
+        (verify (null (threadcheck-wait-for-token
+                       (lambda () (incf attempts) nil) 0)))
+        (verify (= attempts 1)))
+      (verify (eq t (threadcheck-wait-for-token (lambda () :available) 0)))
+      (let ((start (get-internal-real-time)))
+        (verify (null (threadcheck-wait-for-token (lambda () nil) 1/50)))
+        (verify (>= (- (get-internal-real-time) start)
+                    (* 1/50 internal-time-units-per-second))))
       (format stream "~&threadcheck: ~D regression assertions passed~%" checks)
       t)))

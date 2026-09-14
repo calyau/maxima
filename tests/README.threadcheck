@@ -5,14 +5,15 @@ make check runs two additional tests for every configured Lisp:
 
   <lisp>-thread-bindings.sh
     Always runs.  Checks all 31 required dynamic bindings and the fresh
-    LINEARRAY, then runs 774 regression assertions.  These include a
+    LINEARRAY, then runs 781 regression assertions.  These include a
     deliberately missing pair of bindings and 128 reproducible trials of
     nested environments, varied values and nonlocal exits.
 
   <lisp>-thread-race.sh
-    Runs on SBCL built with threads and on native-threaded CCL.  On other
+    Runs on SBCL built with threads, native-threaded CCL and threaded ECL.
+    ECL also runs 2306 semaphore regression assertions. On other
     Lisps it exits 77, which Automake reports as SKIP.  This says nothing
-    about whether that Lisp has threads: only these two backends are
+    about whether that Lisp has threads: only these three backends are
     implemented in this checker.  The portable binding test still runs.
 
 The race uses two workers, each writing SIGN and checking its own answer.
@@ -25,12 +26,20 @@ timeout, and worker errors are reported in the parent.  The unbound control
 deliberately overwrites global SIGN; run the race in a fresh batch image,
 as the driver does, rather than alongside an interactive computation.
 
+ECL 21.2.1 has no timeout argument on WAIT-ON-SEMAPHORE. Its adapter polls
+TRY-GET-SEMAPHORE with a deadline and a short sleep. The portable assertions
+test immediate availability, zero and positive timeouts, and later
+availability. ECL-specific checks use 128 generated token counts plus a
+delayed native producer to verify acquisition, consumption and empty waits.
+
 Run the checks separately from the tests directory of a configured build:
 
   ./threadcheck.sh sbcl bindings
   ./threadcheck.sh sbcl race
   ./threadcheck.sh ccl64 bindings
   ./threadcheck.sh ccl64 race
+  ./threadcheck.sh ecl bindings
+  ./threadcheck.sh ecl race
   ./threadcheck.sh clisp bindings
   ./threadcheck.sh clisp race       # expected exit 77
 

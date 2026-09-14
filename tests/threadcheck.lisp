@@ -29,7 +29,12 @@
                   (setf status (case (run 'check-race)
                                  (:skipped 77)
                                  ((nil) 1)
-                                 (otherwise 0))))
+                                 (otherwise 0)))
+                  #+(and ecl threads)
+                  (when (zerop status)
+                    (load (merge-pathnames "threadcheck-ecl-regression.lisp" directory))
+                    (unless (run 'check-ecl-threadcheck-regressions)
+                      (setf status 1))))
                  (t (error "Unknown threadcheck mode: ~S" mode)))
                (format t "~&threadcheck: ~A~%"
                        (case status (0 "PASS") (77 "SKIP") (otherwise "FAIL"))))
