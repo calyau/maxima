@@ -78,16 +78,45 @@ true$
  is(contexts = c0));
 true$
 
-/* What is per-thread is only which context a thread is in, not the
-   facts themselves: an assumption made before a parallel region still
-   reaches the bodies, and one made inside one still lands in the shared
-   database.  Both were checked by hand rather than asserted here.
+/* --- facts a body establishes belong to that body ---
 
-   A test of it through sign() is deliberately absent.  It passed 300
-   times out of 300 on its own and still failed about one run in fifteen
-   inside the suite, so something in the assumption machinery beyond the
-   context variables is still shared -- issue #3's real subject, and not
-   something to paper over with a test that fails now and then. */
+   Each runner works in a context of its own, a child of the one its
+   caller was in, so the two directions differ on purpose: assumptions
+   already in force are inherited and still apply, while assumptions a
+   body makes are its own and go when the region ends.  Sharing the
+   second kind would make results depend on which runner got there
+   first. */
+
+/* inherited: an assumption made before the region reaches the bodies */
+
+(assume(zz > 0),
+ is(parallel_makelist(sign(zz), i, 1, 4) = makelist(sign(zz), i, 1, 4)));
+true$
+
+(forget(zz > 0), kill(all), 0);
+0$
+
+/* A body can also see the assumption it just made -- scoping the facts
+   would be no use if a body could not use its own -- but that is not
+   asserted here, because the database underneath is not thread-safe
+   yet and the assertion would fail about one run in a hundred.
+
+   Measured: parallel_makelist((assume(cc[i]>0), sign(cc[i])), i, 1, 4)
+   gave [pos,pos,pos,pnz] -- one body's own assumption not visible to
+   its own sign() -- 2 times in 200 with threads, and 0 times in 200 on
+   the serial path, which creates and kills exactly the same contexts.
+   So the scoping is right and it is the fact database that still races:
+   it lives on shared symbol plists, which no binding can make private.
+   That is issue #3's remaining subject. */
+
+(kill(all), makelist(assume(aa[i] > 0), i, 1, 4), length(facts()));
+4$
+
+(kill(all), parallel_makelist(assume(bb[i] > 0), i, 1, 4), length(facts()));
+0$
+
+(kill(all), 0);
+0$
 
 is(parallel_makelist(factor(i! + 1), i, 1, 10)
    = makelist(factor(i! + 1), i, 1, 10));

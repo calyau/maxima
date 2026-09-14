@@ -447,15 +447,49 @@ than for the computation."
          '$context 'context '$contexts '$activecontexts
          (job-specials job)))
 
+;;; Facts a runner establishes belong to that runner.
+;;;
+;;; The database is not in a variable -- it hangs off symbol plists
+;;; keyed by the context a fact was asserted in -- so no binding can
+;;; make it per-thread.  But Maxima already has a scoping mechanism for
+;;; facts, and it is the context tree: a context sees its parent's facts
+;;; through the SUBC chain, and killing it takes its own facts with it.
+;;; So a runner works in a context of its own, a child of the one its
+;;; caller was in.
+;;;
+;;; That gives the reading and the writing directions different answers,
+;;; which is the point.  An assume() made before a parallel region is
+;;; still in force inside it, because the runner's context descends from
+;;; the one holding it.  An assume() made by a body reaches only that
+;;; body's own iterations, and is gone when the region ends -- where
+;;; sharing it would have made the result depend on which runner got
+;;; there first.  A serial loop accumulating facts in a definite order
+;;; cannot be reproduced by a parallel one in any case, so sharing buys
+;;; nothing and costs repeatability.
+;;;
+;;; The calling thread does this too, not only the workers.  Otherwise
+;;; the same loop would keep its facts when it ran out of threads and
+;;; drop them when it had some, which is exactly the difference the
+;;; serial path is supposed not to make.
+
+(defun call-in-own-context (thunk)
+  (let ((name (gensym "$CTXT")))
+    (mfuncall '$supcontext name $context)
+    (unwind-protect (funcall thunk)
+      ($killcontext name))))
+
+(defun call-as-runner (job worker-p)
+  (call-with-private-bindings
+   (job-specials-to-bind job)
+   (lambda () (call-in-own-context (lambda () (run-items job worker-p))))))
+
 (defun run-worker (job)
   "A worker's whole life.  WITH-THREAD-LOCAL-ENVIRONMENT must be entered
 here, inside the thread: a new thread inherits no dynamic bindings, so
 wrapping the spawn in a LET binds nothing the worker will ever see."
   (lambda ()
     (with-thread-local-environment
-      (call-with-private-bindings
-       (job-specials-to-bind job)
-       (lambda () (run-items job t))))))
+      (call-as-runner job t))))
 
 (defun call-in-parallel (thunks &optional specials)
   "Call each thunk and return their values as a list, in order.
@@ -494,9 +528,7 @@ serially when it allows none -- the answers are the same either way."
                  ;; takes the same private bindings as a worker, so
                  ;; every runner is isolated the same way and the two
                  ;; paths cannot differ in what they leave behind.
-                 (call-with-private-bindings
-                  (job-specials-to-bind job)
-                  (lambda () (run-items job)))
+                 (call-as-runner job nil)
                  (mapc #'%join threads))
             (release-workers granted))
           ;; Report the first failure by index, so the same input always
