@@ -124,3 +124,8 @@ Other changes:
   is a LaTeX document generator whose output nothing ever checked, are
   now paired with the string tex() returns and run as part of the test
   suite
+* Building with CCL (Clozure Common Lisp) works again: the openmcl and
+  ccl64 rules asked the lisp to (require :defsystem), which CCL does not
+  provide, instead of loading Maxima's own lisp-utils/defsystem.lisp the
+  way the rules for every other lisp do.  ./configure now also enables
+  CCL when it finds it and no lisp was named explicitly

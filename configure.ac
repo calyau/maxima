@@ -573,6 +573,21 @@ AC_ARG_ENABLE(ccl64-exec,
 	[ccl64_exec=false
 	 CCL64_EXEC=false])
 
+if test x"${ccl64}" = xtrue ; then
+	if test `echo "$CCL64_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
+		if test -x "$CCL64_NAME" ; then
+			ccl64_found=true
+		else
+			ccl64_found=false
+		fi
+	else
+		AC_CHECK_PROG(ccl64_found,$CCL64_NAME,true,false)
+	fi
+	if test x"${ccl64_found}" = xfalse ; then
+		AC_MSG_WARN(ccl64 executable ${CCL64_NAME} not found in PATH)
+	fi
+fi
+
 dnl n.b. ecl_default_name is hardcoded in "with" message
 ecl_default_name=ecl
 AC_ARG_ENABLE(ecl,
@@ -1210,12 +1225,20 @@ if test x"${explicit_lisp}" = xfalse ; then
 		acl=true
 		lisps_enabled="${lisps_enabled} acl"
 	fi
+	if test x"${openmcl_found}" = xtrue ; then
+		openmcl=true
+		lisps_enabled="${lisps_enabled} openmcl"
+	fi
+	if test x"${ccl64_found}" = xtrue ; then
+		ccl64=true
+		lisps_enabled="${lisps_enabled} ccl64"
+	fi
 	if test x"${ecl_found}" = xtrue ; then
 		ecl=true
 		lisps_enabled="${lisps_enabled} ecl"
 	fi
 	if test x"${lisps_enabled}" = x; then
-		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL),${ecl_default_name}(ECL)] were found in PATH)
+		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL),${ccl64_default_name}(CCL),${ecl_default_name}(ECL)] were found in PATH)
 	fi
 fi
 

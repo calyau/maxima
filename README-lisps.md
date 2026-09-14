@@ -133,6 +133,19 @@ all platforms where ccl runs including Linux, Mac OSX, and Windows.
 There are appear to be some bugs in the 32-bit version of CCL, but
 the 64-bit version passes all tests.
 
+Build the 64-bit version with `--enable-ccl64`, the 32-bit one with
+`--enable-openmcl`. CCL names its executables after the platform they
+run on -- `lx86cl64` on 64-bit Linux, `dx86cl64` on Mac OSX,
+`wx86cl64.exe` on Windows and so on -- so `configure` derives the
+default name from the host it is configuring for and accepts
+`--with-ccl64=<prog>` for anything else.
+
+A CCL executable finds its heap image beside itself, under its own name
+plus `.image`. Copying just the executable into a directory on PATH
+therefore gives a lisp that cannot start; install the whole `ccl`
+directory and point at the executable inside it, or use the `ccl`/`ccl64`
+shell script CCL ships, which sets `CCL_DEFAULT_DIRECTORY` for you.
+
 
 ECL <https://common-lisp.net/project/ecl/>
 ------------------------------------------
