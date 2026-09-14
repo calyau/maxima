@@ -727,26 +727,30 @@
 
 ;; Main routine for computing the n'th Fibonacci number where n is an
 ;; integer.
-(let (prevfib)
-  (defun ffib (%n)
-    (declare (fixnum %n))
-    (cond ((= %n -1)
-	   (setq prevfib -1)
-	   1)
-	  ((zerop %n)
-	   (setq prevfib 1)
-	   0)
-	  (t
-	   (let* ((f2 (ffib (ash (logandc2 %n 1) -1))) ; f2 = fib(n/2) or fib((n-1)/2)
-		  (x (+ f2 prevfib))
-		  (y (* prevfib prevfib))
-		  (z (* f2 f2)))
-	     (setq f2 (- (* x x) y)
-		   prevfib (+ y z))
-	     (when (oddp %n)
-	       (psetq prevfib f2
-		      f2 (+ f2 prevfib)))
-	     f2)))))
+(defun ffib (%n)
+  (declare (fixnum %n))
+  ;; Share scratch state within this recursion, independently of other calls.
+  (let (prevfib)
+    (labels ((ffib-step (%n)
+               (declare (fixnum %n))
+               (cond ((= %n -1)
+                      (setq prevfib -1)
+                      1)
+                     ((zerop %n)
+                      (setq prevfib 1)
+                      0)
+                     (t
+                      (let* ((f2 (ffib-step (ash (logandc2 %n 1) -1))) ; fib(n/2) or fib((n-1)/2)
+                             (x (+ f2 prevfib))
+                             (y (* prevfib prevfib))
+                             (z (* f2 f2)))
+                        (setq f2 (- (* x x) y)
+                              prevfib (+ y z))
+                        (when (oddp %n)
+                          (psetq prevfib f2
+                                 f2 (+ f2 prevfib)))
+                        f2)))))
+      (ffib-step %n))))
 
 ;; Returns the N'th Lucas number defined by the following recursion,
 ;; where L(n) is the n'th Lucas number:

@@ -1,0 +1,34 @@
+/* Each Fibonacci call owns its recursive scratch state. */
+(kill(all),0);
+0$
+
+(load(file_search("parallel-fibonacci-check.lisp",file_search_tests)),0);
+0$
+
+fibonacci_serial_check();
+true$
+
+fibonacci_random_check();
+true$
+
+fibonacci_parallel_check(true);
+true$
+
+fibonacci_parallel_check(false);
+true$
+
+fibonacci_native_check();
+true$
+
+/* Explicit exact values and symbolic behavior remain unchanged. */
+makelist(fib(k),k,-10,10);
+[-55,34,-21,13,-8,5,-3,2,-1,1,0,1,1,2,3,5,8,13,21,34,55]$
+
+[fib(100),fib(-100),fib(x),fib(3/2),fib(2.0)];
+[354224848179261915075,-354224848179261915075,fib(x),fib(3/2),fib(2.0)]$
+
+parallel_makelist(fib(i),i,0,20);
+[0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181,6765]$
+
+(kill(all),0);
+0$

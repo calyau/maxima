@@ -1,0 +1,31 @@
+Concurrent Fibonacci regression checks
+======================================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_fibonacci]);'
+
+Run every configured Lisp. Require all 11 examples and "No unexpected
+errors"; Maxima can catch Lisp errors while returning process status zero.
+
+The original FFIB keeps PREVFIB in a closure shared by every root call.
+Overlapping computations can overwrite it and return incorrect integers.
+FFIB now allocates that state per root and uses a local recursive function.
+The doubling formulas, negative-index behavior, number of returned values
+and public handling of non-fixnum arguments are unchanged.
+
+The reference uses the defining addition/subtraction recurrence, independently
+of the production doubling algorithm. It checks every index from -256 to 256,
+128 generated indices from -2000 to 2000 and Cassini's identity, exact large
+values, negative indices, symbolic arguments and the serial fallback.
+
+Six batches of 48 adjacent indices starting at 20000 exercise ordinary
+parallel scheduling. A second check starts two native workers with a bounded
+rendezvous so each worker must claim one job item. Each computes six batches
+of 32 exact values, compared with the independent reference. Cleanup attempts
+every recorded join, including after partial startup failure. Without native
+threads, that check returns true and the fallback tests still run.
+
+Overlap inside the short recursive calculation depends on scheduling. Run
+these checks repeatedly in fresh processes when investigating concurrency;
+the rendezvous ensures two active workers, not a particular instruction
+interleaving. No timing or throughput target is asserted.
