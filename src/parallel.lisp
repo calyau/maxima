@@ -64,7 +64,7 @@
 (progn
   ;; No threads: the lock is a placeholder so the accounting code below
   ;; reads the same on every lisp.  Nothing ever contends for it.
-  (defun %make-lock (name) (declare (ignore name)) nil)
+  (defun %make-lock (lock-name) (declare (ignore lock-name)) nil)
   (defmacro %with-lock ((lock) &body body)
     (declare (ignore lock))
     `(progn ,@body)))
@@ -239,18 +239,30 @@ this is positive is one the serial path cannot pass by accident."
 ;;; exit out of many happening at once, so that is an error rather than
 ;;; a race.
 
-(defun parallel-mdo-values (from step count)
-  (loop repeat count
-        for value = from then (let (($simp t)) (meval `((mplus) ,step ,value)))
-        collect value))
-
-(defun parallel-mdo-count (from step limit)
-  "How many times a counted loop runs, or NIL if that cannot be decided."
-  (let ((span (let (($simp t))
-                ($float (meval `((mtimes) ((mplus) ,limit ((mtimes) ,from -1))
-                                 ((mexpt) ,step -1)))))))
-    (when (and (numberp span) (not (minusp span)))
-      (1+ (floor span)))))
+(defun parallel-mdo-values (parts)
+  "Collect the iteration values with MDO's own stepping and bound checks."
+  (let ((collecting-parts (copy-list parts))
+        (iteration-values nil))
+    ;; A private Lisp closure avoids a user variable or a shared collector.
+    ;; Only the body is replaced; MDO still checks the bound at each step.
+    ;; In particular, neither exact bounds nor repeated floating addition
+    ;; can be replaced by FLOOR of a floating-point quotient.
+    (setf (seventh collecting-parts)
+          (list (list (lambda (iteration-value)
+                        (when (and iteration-values
+                                   (alike1 iteration-value
+                                           (car iteration-values)))
+                          (merror (intl:gettext
+                                   "parallel: the loop step does not advance the iteration variable.")))
+                        (push iteration-value iteration-values)
+                        nil))
+                (first parts)))
+    ;; MDO uses MSET to bind its variable. A nested collector must not
+    ;; overwrite the value being used by another runner's loop.
+    (call-with-captured-bindings
+     (capture-bindings (list (first parts)))
+     (lambda () (meval (cons '(mdo) collecting-parts))))
+    (nreverse iteration-values)))
 
 (defun parallel-loop (variable values body)
   "Evaluate BODY once per element of VALUES, with VARIABLE set to it.
@@ -273,20 +285,23 @@ stays inside the runner that made it."
   "A counted do loop, spread over the cores when its values can be known
 before any body runs, and evaluated as the ordinary loop it is when they
 cannot."
-  (let* ((parts (cdr form))
-         (variable (car parts))
-         (from (if (cadr parts) (meval (cadr parts)) 1))
-         (step (if (caddr parts) (meval (caddr parts)) 1))
-         (next (cadddr parts))
-         (limit (car (cddddr parts)))
-         (until (cadr (cddddr parts)))
-         (body (caddr (cddddr parts)))
-         (count (and variable limit (null next) (null until)
-                     (numberp from) (numberp step) (not (zerop step))
-                     (parallel-mdo-count from step (meval limit)))))
-    (if (null count)
+  (let* ((parts (copy-list (cdr form)))
+         (variable (first parts)))
+    ;; Delegate unsupported shapes before evaluating any controls. MDO
+    ;; must see their side effects exactly once, in its ordinary order.
+    (if (or (null variable) (not (symbolp variable))
+            (null (fifth parts)) (fourth parts) (sixth parts))
         (meval (cons '(mdo) parts))
-        (parallel-loop variable (parallel-mdo-values from step count) body))))
+        ;; MDO evaluates STEP before FROM. Quote their evaluated values
+        ;; when handing them back to MDO, including on the fallback path.
+        (let* ((step (if (third parts) (meval (third parts)) 1))
+               (from (if (second parts) (meval (second parts)) 1)))
+          (setf (second parts) (list '(mquote) from)
+                (third parts) (list '(mquote) step))
+          (if (and (numberp from) (numberp step) (not (zerop step)))
+              (parallel-loop variable (parallel-mdo-values parts)
+                             (seventh parts))
+              (meval (cons '(mdo) parts)))))))
 
 (defun parallel-mdoin (form)
   "A do loop over the members of a list.  The members are known before

@@ -1,6 +1,10 @@
 Maxima 5.50-post change log
 ===========================
 
+* Preserve exact bounds, floating-point stepping, and control-expression
+  evaluation order in counted parallel loops by reusing the ordinary loop
+  evaluator. Report a non-advancing floating-point step explicitly.
+
 * Parallel bodies explicitly refuse interactive input, including read() and
   readonly(), while preserving answers established without a question.
 * Fix the serial fallback of parallel computations on Lisps without native

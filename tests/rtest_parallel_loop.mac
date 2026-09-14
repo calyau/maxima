@@ -1,0 +1,120 @@
+/* Exact bounds, floating-point stepping and single evaluation of controls. */
+(kill(all), 0);
+0$
+
+(load(file_search("parallel-loop-check.lisp", file_search_tests)), 0);
+0$
+
+parallel_loop_random_check(serial);
+true$
+
+parallel_loop_random_check(parallel);
+true$
+
+parallel_loop_values(0, 2^54, 2^54-1, serial);
+[0]$
+
+parallel_loop_values(0, 2^54, 2^54-1, parallel);
+[0]$
+
+parallel_loop_values(0, -2^54, 1-2^54, parallel);
+[0]$
+
+parallel_loop_values(0, 10^500, 10^500-1, parallel);
+[0]$
+
+parallel_loop_values(0, 1, 1-2^-60, parallel);
+[0]$
+
+/* Repeated floating addition, not rounded division, decides the endpoint. */
+parallel_loop_values(1.0, 0.1, 1.3, serial);
+[1.0, 1.1, 1.2000000000000002]$
+
+parallel_loop_values(1.0, 0.1, 1.3, parallel);
+[1.0, 1.1, 1.2000000000000002]$
+
+is(parallel_loop_values(-0.3, 0.1, 0.6, parallel)
+   = parallel_loop_values(-0.3, 0.1, 0.6, serial));
+true$
+
+is(parallel_loop_values(-1.0, -0.1, -1.3, parallel)
+   = parallel_loop_values(-1.0, -0.1, -1.3, serial));
+true$
+
+parallel_loop_values(5, 1, 4, parallel);
+[]$
+
+parallel_loop_values(4, -1, 5, parallel);
+[]$
+
+parallel_loop_values(5, 1, 5, parallel);
+[5]$
+
+parallel_loop_values(1/2, 1/3, 3/2, parallel);
+[1/2, 5/6, 7/6, 3/2]$
+
+/* MDO evaluates STEP before FROM. No expression may run twice because
+ * the dispatcher later chooses the ordinary sequential evaluator. */
+(events:[],
+ parallel(for i:(events:endcons("from",events),1)
+          step (events:endcons("step",events),1) thru 2 do 1),
+ events);
+["step", "from"]$
+
+(events:[],
+ parallel(for i:(events:endcons("from",events),1)
+          step (events:endcons("step",events),1) thru 0 do 1),
+ events);
+["step", "from"]$
+
+(events:[],
+ parallel(for i:(events:endcons("from",events),1/2)
+          step (events:endcons("step",events),1/3) thru 1 do 1),
+ events);
+["step", "from"]$
+
+(events:[],
+ parallel(for i:(events:endcons("from",events),1)
+          step (events:endcons("step",events),1) thru 3 while i<2 do 1),
+ events);
+["step", "from"]$
+
+(events:[],
+ parallel(for i:(events:endcons("from",events),1)
+          next i+1 thru 3 do 1),
+ events);
+["from"]$
+
+/* The bound is checked for each candidate value, including the first
+ * excluded one, just as in the sequential evaluator. */
+(events:[],
+ parallel(for i:1 thru (events:endcons("bound",events),2) do 1),
+ events);
+["bound", "bound", "bound"]$
+
+/* Dynamic binding cleanup on normal and exceptional exits. */
+(i:99, parallel(for i:1 thru 3 do 1), i);
+99$
+
+(i:99, errcatch(parallel(for i:1 thru error("bound") do 1)), i);
+99$
+
+block([parallel_threads:1], parallel_loop_random_check(parallel));
+true$
+
+/* A zero step can still terminate through RETURN on the serial fallback. */
+parallel(for i:1 step 0 thru 2 do return(7));
+7$
+
+/* A finite precomputed range is impossible when floating addition stalls. */
+errcatch(parallel_loop_values(1.0e16, 1, 1.0e16+2, parallel));
+[]$
+
+(a:make_array(fixnum,16),
+ for i:0 thru_parallel 3 do
+   (for j:0 thru_parallel 3 do a[4*i+j]:4*i+j+1),
+ listarray(a));
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]$
+
+(kill(all), 0);
+0$

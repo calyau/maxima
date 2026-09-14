@@ -706,6 +706,13 @@ for x in_parallel [a, b, c] do slow_computation (x)
 @code{step} may be given as usual. The value of the loop is
 @code{done}, as it is for an ordinary @code{do}.
 
+Iteration values follow the stepping and stopping rules of an ordinary
+loop, including floating-point rounding.  They are determined before
+the bodies run.  A body must therefore not change the iteration variable
+or any expression controlling the loop.  If floating-point addition
+leaves the iteration variable unchanged before the loop can terminate, an
+error is signaled: such a range cannot be prepared for parallel evaluation.
+
 @subsubheading The iterations must not depend on each other
 
 This is the whole of what the writer of the loop is promising, and

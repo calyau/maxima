@@ -1,0 +1,23 @@
+Parallel loop regression tests
+==============================
+
+  timeout 180 ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_loop,rtest_parallel]);'
+
+Use each configured Lisp and require "No unexpected errors" in the log;
+Maxima can continue after a Lisp error and still exit with status zero.
+
+The 30 examples include exact and floating bounds, empty and descending
+ranges, control evaluation order and side effects, cleanup after errors,
+the serial fallback, nested loops and a floating step which stops making
+progress. The complete suite includes this file automatically.
+
+parallel-loop-check.lisp supplies a body which records values under a
+lock, then sorts them after all workers have joined. Iteration order is
+intentionally unspecified; the multiset of values must be correct. A
+private deterministic LCG produces 192 short ranges with signed steps,
+large integers, and rational limits extremely close to a step boundary.
+Expected values are calculated independently in exact Common Lisp
+arithmetic. The same cases run through the ordinary evaluator, parallel
+evaluation and the forced one-core fallback. Test collection does not
+modify Maxima's random state or share its accumulator between jobs.
