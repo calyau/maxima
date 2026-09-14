@@ -472,9 +472,22 @@ than for the computation."
 ;;; binding it took a plain inherited assumption from 0 wrong in 200 to
 ;;; 200 wrong in 200.  The pair has to move together or not at all,
 ;;; which means the counters need to stop being global first (issue #3).
+;;; The streams are captured for the same reason as everything else
+;;; here, and it shows up in the test suite.  RUN_TESTSUITE rebinds
+;;; *STANDARD-OUTPUT* around each problem to catch whatever it prints
+;;; (TEST-BATCH, src/mload.lisp), and WITH-THREAD-LOCAL-ENVIRONMENT
+;;; rebinds the streams too -- but inside the worker, where it can only
+;;; see the session-wide values.  So a message printed by a worker went
+;;; past the harness and into the log, while the same message printed by
+;;; the calling thread was caught: the suite's output changed from run to
+;;; run depending on which runner happened to take the failing element.
+;;; Binding them from what the caller had puts every runner's output
+;;; where the caller's would have gone.
 (defun specials-to-bind (specials)
   (list* 'bindlist 'mspeclist 'loclist
          '$context 'context '$contexts '$activecontexts
+         '*standard-output* '*error-output* '*trace-output*
+         '*query-io* '*standard-input*
          specials))
 
 ;;; Giving each runner a context of its own -- so that facts a body
