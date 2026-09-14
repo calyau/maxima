@@ -141,6 +141,72 @@ true$
 (parallel_threads: 1, is(parallel_cores() = 1));
 true$
 
+/* Back to using every core before the tests below, which measure what
+   the workers did and would otherwise be measuring the serial path */
+
+(parallel_threads: 0, 0);
+0$
+
+/* --- parallel(for ...) ---
+
+   "for" is reader syntax, so it cannot be called as parallel_for(...);
+   the loop is handed to parallel() unevaluated instead. */
+
+parallel(for i: 1 thru 3 do 1);
+done$
+
+/* Every iteration runs exactly once, with the value it would have had.
+   The array is a lisp one via make_array, so distinct indices really
+   are distinct storage. */
+
+(a: make_array(fixnum, 11),
+ parallel(for i: 1 thru 10 do a[i]: i^2),
+ listarray(a));
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]$
+
+(b: make_array(fixnum, 11),
+ parallel(for i: 2 step 3 thru 10 do b[i]: i),
+ listarray(b));
+[0, 0, 2, 0, 0, 5, 0, 0, 8, 0, 0]$
+
+/* Shapes whose iteration sequence is not known before the loop runs
+   cannot be spread, and must still give the ordinary answer: "while"
+   and "unless" decide after each body, and "next" computes each value
+   from the one before. */
+
+(c: 0, parallel(for i: 1 thru 5 while i < 4 do c: c + 1), c);
+3$
+
+(d: 0, parallel(for i: 1 next i + 2 thru 9 do d: d + 1), d);
+5$
+
+/* Wrapping something that is not a loop at all is allowed and does
+   nothing, so parallel() is never the reason an expression breaks */
+
+parallel(2 + 3);
+5$
+
+/* "return" would name one iteration's exit out of many at once */
+
+errcatch(parallel(for i: 1 thru 4 do (if i = 2 then return(9))));
+[]$
+
+/* It really is spread across threads, same control as for makelist */
+
+(parallel_reset_counters(),
+ parallel(for i: 1 thru 16 do ?sleep(0.02)),
+ if parallel_threads_available()
+     then is(parallel_worker_items() > 0)
+     else is(parallel_worker_items() = 0));
+true$
+
+/* and it draws on the same one session-wide budget */
+
+(parallel_reset_counters(),
+ parallel(for i: 1 thru 4 do parallel(for j: 1 thru 4 do ?sleep(0.01))),
+ is(parallel_peak_workers() < parallel_cores()));
+true$
+
 (parallel_threads: 0, 0);
 0$
 

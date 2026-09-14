@@ -208,6 +208,79 @@ this is positive is one the serial path cannot pass by accident."
     (setq *items-run-by-workers* 0)))
 
 ;;; ------------------------------------------------------------------
+;;; parallel(...) -- a do loop across cores.
+;;;
+;;; "for" is reader syntax, not a function: it parses to an MDO form, so
+;;; there is no way to spell parallel_for(i, 1, ...) that anyone would
+;;; want to type.  A wrapper taking the loop unevaluated keeps the
+;;; loop's own syntax, and reads much the way OpenMP's pragma sits above
+;;; the loop it applies to:
+;;;
+;;;     parallel(for i: 1 thru 20 do heavy(i))
+;;;
+;;; Only a counted loop can be spread: the iteration values have to be
+;;; known before any of them runs.  A "next" clause computes each value
+;;; from the one before, and "while" and "unless" decide after each body
+;;; whether there is another -- both are sequential by construction.
+;;; Rather than refuse those, this evaluates them as the ordinary loop
+;;; they are, so wrapping anything in parallel() is always safe and at
+;;; worst does nothing.
+;;;
+;;; A do loop is run for its effects, and whether those are independent
+;;; is the caller's claim to make -- the same bargain OpenMP strikes.
+;;; What it cannot allow is "return", which would name one iteration's
+;;; exit out of many happening at once, so that is an error rather than
+;;; a race.
+
+(defun parallel-mdo-values (from step count)
+  (loop repeat count
+        for value = from then (let (($simp t)) (meval `((mplus) ,step ,value)))
+        collect value))
+
+(defun parallel-mdo-count (from step limit)
+  "How many times a counted loop runs, or NIL if that cannot be decided."
+  (let ((span (let (($simp t))
+                ($float (meval `((mtimes) ((mplus) ,limit ((mtimes) ,from -1))
+                                 ((mexpt) ,step -1)))))))
+    (when (and (numberp span) (not (minusp span)))
+      (1+ (floor span)))))
+
+(defun parallel-mdo (form)
+  (let* ((parts (cdr form))
+         (variable (car parts))
+         (from (if (cadr parts) (meval (cadr parts)) 1))
+         (step (if (caddr parts) (meval (caddr parts)) 1))
+         (next (cadddr parts))
+         (limit (car (cddddr parts)))
+         (until (cadr (cddddr parts)))
+         (body (caddr (cddddr parts)))
+         (count (and variable limit (null next) (null until)
+                     (numberp from) (numberp step) (not (zerop step))
+                     (parallel-mdo-count from step (meval limit)))))
+    (if (null count)
+        ;; Not a shape whose iterations are known in advance.
+        (meval form)
+        (progn
+          (call-in-parallel
+           (mapcar (lambda (value)
+                     (lambda ()
+                       (mset variable value)
+                       (let ((mdop t))
+                         (when (catch 'mprog (prog2 (meval body) nil))
+                           (merror (intl:gettext "parallel: 'return' cannot ~
+                                                  leave a parallel do loop"))))
+                       nil))
+                   (parallel-mdo-values from step count))
+           (list variable))
+          '$done))))
+
+(defmspec $parallel (form)
+  (let ((argument (cadr form)))
+    (if (and (consp argument) (consp (car argument)) (eq (caar argument) 'mdo))
+        (parallel-mdo argument)
+        (meval argument))))
+
+;;; ------------------------------------------------------------------
 ;;; Running the work.
 ;;;
 ;;; Workers and the calling thread all take items from one shared index,
