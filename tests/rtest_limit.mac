@@ -1079,8 +1079,8 @@ errcatch (integrate(x,x,0,box(inf)));
 [];
 
 /* Bug #4742: limit result contains "false" */
-limit((gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x))/2,x,0,plus);
-'limit(gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x),x,0,plus)/2;
+freeof(false, limit((gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x))/2,x,0,plus));
+true;
 
 /* Bug #4797: "limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus) is wrong" */
 limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus), tlimswitch : false;
@@ -1624,6 +1624,66 @@ ind;
 
 limit(1/(x*(-1)^(1/x)), x, 0, plus);
 infinity;
+
+
+/* Bug #4137: "simplimplus bugs" */
+
+limit(3^x*cos(x) + sin(x), x, inf);
+und;
+
+limit(3^x*cos(x) + x, x, inf);
+und;
+
+limit(x^2*cos(x) + x, x, inf);
+und;
+
+limit(exp(x)*sin(x) + x^3, x, inf);
+und;
+
+limit(x*cos(x) + 2*x, x, inf);
+inf;
+
+limit(x*sin(x)-x^2, x, inf);
+minf;
+
+limit(x^2*exp(%i*x) + x, x, inf);
+infinity;
+
+limit(x*exp(%i*x) + x^2, x, inf);
+inf;
+
+limit(3^x + (9 + %i)^x, x, inf);
+infinity;
+
+block([a, b],
+ local(a, b),
+ assume(a > 1, b > 1, a > b),
+ limit(a^x * cos(x) + b^x,x,inf));
+und;
+
+block([a, b],
+ local(a, b),
+ assume(a > 1, b > 1, a < b),
+ limit(a^x * cos(x) + b^x,x,inf));
+inf;
+
+block([a, b],
+ local(a, b),
+ assume(a > 0, a < 1, b > 1),
+ limit(a^x * cos(x) + b^x,x,inf));
+inf;
+
+block([a, b],
+ local(a, b),
+ assume(a > 1, b > 0, b < 1),
+ limit(a^x * cos(x) + b^x,x,inf));
+und;
+
+block([a, b],
+ local(a, b),
+ assume(a > 0, a < 1, b > 0, b < 1),
+ limit(a^x * cos(x) + b^x,x,inf));
+0;
 
 
 /**************************************/

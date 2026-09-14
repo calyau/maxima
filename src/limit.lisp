@@ -2612,7 +2612,7 @@ ignoring dummy variables and array indices."
 
        (let ((ans (limit2 num (m^ denom -1) var val)))
          (if ans
-             (simplimtimes (list prod ans))
+             (simplimtimes (list prod ans ind-prod))
              (throw 'limit t)))))))
 
 ;;;PUT CODE HERE TO ELIMINATE FAKE SINGULARITIES??
@@ -2675,10 +2675,13 @@ ignoring dummy variables and array indices."
 					 ((eq r '$inf) (push infinityl-sum infl))
 					 (t (push r sum)))))))
 					 
-	;; Unfortunately, this code does not handle the case of one or more
-	;; infinity terms and either a minf or inf term. So we throw an error.
+	;; An infinity term next to inf or minf terms: The larger side decides.
+	;; With und terms around as well, give up.
 	(when (and infinityl (or minfl infl))
-	  (throw 'limit t))
+	  (if undl
+	      (throw 'limit t)
+	      (return (simplimplus-dominance infinityl (append infl minfl)
+					     '$infinity))))
 
 	;; Blend the zerob, zeroa, and sum terms. When there are both zerob
 	;; and zeroa terms, ignore them. When *preserve-direction* is true and
@@ -2717,15 +2720,15 @@ ignoring dummy variables and array indices."
 	 (setq sum (fapply 'mplus sum))
 
      (cond (undl
-	     ;; When there are inf or minf terms, the limit might not be und.
-         ;; For example, limit(x^2+x*sin(x),x,inf). For such cases,
-         ;; append the und terms to the infinity terms and continue
-		 ;; processing. An infinity term carries no direction, so it cannot
-		 ;; dominate an und term that way; and with no directed infinity the
-		 ;; limit is und, as in limit(1 + x*sin(x),x,inf) and
-		 ;; limit(x*exp(%i*x)+x*sin(x),x,inf).
+	     ;; When there are inf or minf terms, the limit might not be und:
+	     ;; the infinities may dominate the und terms, as in
+	     ;; limit(x^2+x*sin(x),x,inf); SIMPLIMPLUS-DOMINANCE decides.
+	     ;; Without them the limit is und, as in limit(1 + x*sin(x),x,inf)
+	     ;; and limit(x*exp(%i*x)+x*sin(x),x,inf): an infinity term carries
+	     ;; no direction, so it cannot dominate an und term that way.
          (cond ((or infl minfl)
-                   (setq infinityl (append undl infinityl)))
+                   (return (simplimplus-dominance undl (append infl minfl)
+						  '$und)))
                  (t (return '$und))))
 	   ((not (or infl minfl indl infinityl))
 	    (return (cond ((atom sum)  sum)
@@ -2756,6 +2759,66 @@ ignoring dummy variables and array indices."
 	   ((infinityp y)  (return y))
 	   (indl (return '$ind))
 	   (t (return (m+ sum y))))))
+
+;; The limit of TERM/I, or NIL. LIMIT cannot always place an und numerator over
+;; an infinite denominator - SIMPLIMTIMES on the factors of the ratio can.
+(defun simplimplus-term-ratio (term i)
+  (let ((r (div term i)))
+    (or (limit-catch r var val)
+        (and (mtimesp r)
+             (let ((y (catch 'limit (simplimtimes (cdr r)))))
+               (if (eq y t) nil y))))))
+
+;; The limit of a sum of TERMS, whose limits are all und or all infinity, and
+;; INFL, whose limits are inf or minf. The infinities decide the limit when they
+;; dominate every term, as in limit(x^2+x*sin(x),x,inf). When a term outgrows
+;; them, the limit is ANSWER: und for und terms, which alternate in sign, as in
+;; limit(3^x*cos(x)+x,x,inf), and infinity for infinity terms, as in
+;; limit(3^x+(9+%i)^x,x,inf). When the ratios r of the terms to the infinities
+;; are bounded, the sum is I*(1+r), and the sign of 1+r decides, as in
+;; limit(x*cos(x)+2*x,x,inf).
+(defun simplimplus-dominance (terms infl answer)
+  (let* ((i (fapply 'mplus infl))
+         (ilim (limit-catch i var val))
+         ratios
+         sgn)
+    (cond 
+      ((null ilim)
+       (throw 'limit t))
+      ((not (infinityp ilim))
+       '$und)
+      (t
+       (setq ratios (mapcar #'(lambda (term)
+                                (simplimplus-term-ratio term i))
+                            terms))
+       (cond
+         ((member nil ratios)
+          (throw 'limit t))
+         ((every #'zerop2 ratios)
+          ilim)
+         ((some #'infinityp ratios)
+          answer)
+         ((member '$und ratios)
+          '$und)
+         ;; infinity has no direction to dominate with.
+         ((not (member ilim '($inf $minf)))
+          '$und)
+         (t
+          ;; ind ratios stand for the expressions, the others for their values.
+          (setq sgn ($csign
+                     (add 1 (fapply 'mplus
+                                    (mapcar #'(lambda (term r)
+                                                (if (eq r '$ind)
+                                                  (div term i)
+                                                  r))
+                                            terms ratios)))))
+          (cond
+            ((eq sgn '$pos)
+             ilim)
+            ((eq sgn '$neg)
+             (if (eq ilim '$inf) '$minf '$inf))
+            (t
+             (throw 'limit t)))))))))
 
 ;; Limit n/d, using heuristics on the order of growth.
 (defun sheur0 (n d)
