@@ -481,8 +481,8 @@ than for the computation."
 ;;; CURRENT (src/db.lisp) is deliberately NOT in this list, though it
 ;;; looks like it belongs: it records which context the fact database
 ;;; has marked, and CONTEXTMARK does nothing when it already equals
-;;; CONTEXT, so sharing it is why a nested parallel region cannot see
-;;; the facts of the body that started it.
+;;; CONTEXT. Without a transaction covering both context selection and
+;;; lookup, concurrent queries can therefore use the wrong context marks.
 ;;;
 ;;; Binding it makes things worse, not better, and the reason is the one
 ;;; the bigfloat six taught: CURRENT is half of a pair.  The other half
@@ -493,7 +493,9 @@ than for the computation."
 ;;; contexts are left unmarked and its facts invisible.  Measured:
 ;;; binding it took a plain inherited assumption from 0 wrong in 200 to
 ;;; 200 wrong in 200.  The pair has to move together or not at all,
-;;; which means the counters need to stop being global first (issue #3).
+;;; which requires private counters or complete database transactions.
+;;; DB.LISP now protects context selection and lookup with one shared
+;;; transaction lock. Binding CURRENT alone would still break that pair.
 ;;; The streams are captured for the same reason as everything else
 ;;; here, and it shows up in the test suite.  RUN_TESTSUITE rebinds
 ;;; *STANDARD-OUTPUT* around each problem to catch whatever it prints
@@ -539,9 +541,11 @@ than for the computation."
 ;;; A lock around the counter walk would stop the updates being lost and
 ;;; still not be correct: the count is a count, so two runners' chains
 ;;; are marked at once and each can see the other's facts -- the exact
-;;; leak the scoping exists to prevent.  Marking has to become per
-;;; thread before this can be turned on, which means the counts have to
-;;; stop living on shared plists.  That is issue #3.
+;;; leak the scoping exists to prevent. DB.LISP now locks the complete
+;;; query/mutation, including context selection and use of its marks,
+;;; rather than only the counter walk. This keeps each lookup coherent.
+;;; Automatic per-runner assumption scoping remains disabled here to
+;;; preserve the currently documented assumption behavior.
 ;;;
 ;;; Until then a body's facts stay where they always went, and the
 ;;; documented rule stands on its own: iterations must not depend on

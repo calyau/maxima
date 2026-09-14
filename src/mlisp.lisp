@@ -617,21 +617,18 @@ wrapper for this."
        ;; THE ARRAY IS JUST A PROPERTY LIKE ANY OTHER, IS IT NOT ??
        (merror (intl:gettext "local: argument cannot be a declared array; found: ~M") var)))
     (setq mproplist (cons (get var 'mprops) mproplist)
-	  factlist (cons (get var 'data) factlist))
+	  factlist (cons (db-local-facts var) factlist))
     ;; Record VAR on the LOCLIST frame right away, in lock-step with the
     ;; MPROPLIST/FACTLIST pushes above, so that MUNLOCAL restores
     ;; everything processed so far even if a later argument turns out to
     ;; be invalid.
     (rplaca loclist (cons var (car loclist)))
-    (dolist (fact (car factlist))
-      (putprop fact -1 'ulabs))
     (progn
       (mfunction-delete var $functions)
       (mfunction-delete var $macros)
       (mfunction-delete var $dependencies))
     (setf $arrays (delete var $arrays :count 1 :test #'eq))
-    (zl-remprop var 'mprops)
-    (zl-remprop var 'data))
+    (zl-remprop var 'mprops))
   (setq mlocp nil)
   '$done)
 
@@ -655,10 +652,7 @@ wrapper for this."
 	     (add2lnc (cons (ncons var) y) $dependencies))
 	    (t (mfunction-delete var $dependencies)))
       (rempropchk var)
-      (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (get var 'data))
-      (cput var fact 'data)
-      (dolist (u fact)
-	(zl-remprop u 'ulabs))
+      (db-restore-local-facts var fact)
       (setq mproplist (cdr mproplist)
 	    factlist (cdr factlist))))
   (setq loclist (cdr loclist)))

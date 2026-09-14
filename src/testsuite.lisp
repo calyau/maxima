@@ -178,7 +178,8 @@
 	"rtest_parallel_input"
 	"rtest_parallel_loop"
 	"rtest_parallel_precision"
-	"rtest_parallel_lifecycle"))
+	"rtest_parallel_lifecycle"
+	"rtest_parallel_database"))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima

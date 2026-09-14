@@ -709,7 +709,7 @@
      :pathname ""
      :depends-on (globals defmfun compatibility-macros1 declarations
                   evaluator fundamental-macros other-macros
-                  prerequisites utility-macros)
+                  prerequisites utility-macros i-o)
      ;; Compile-time deps form a DAG.  Two runtime cycles are
      ;; structural: compar <-> db (sign/comparison logic vs the
      ;; fact database) and askp <-> compar (interactive
@@ -717,7 +717,8 @@
      ;; them).
      :components ((:file "inmis")
                   (:file "db")
-                  (:file "compar")
+                  (:file "compar"
+                    :depends-on ("db" "inmis"))
                   (:file "askp")))
    (:module variable-predicates
      :pathname ""

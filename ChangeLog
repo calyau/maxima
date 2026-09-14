@@ -1,6 +1,11 @@
 Maxima 5.50-post change log
 ===========================
 
+* Protect complete assumption-database queries and graph mutations with
+  a shared transaction lock, including context selection, number interning
+  and temporary fact restoration. Concurrent queries no longer overwrite
+  each other's search marks. Shared-assumption semantics are unchanged.
+
 * Join already-started parallel workers during error unwinding before
   releasing their worker reservation; attempt remaining joins even when
   one join reports an error. Preserve the original caller failure.
