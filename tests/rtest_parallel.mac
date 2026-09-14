@@ -58,14 +58,36 @@ is(parallel_makelist(solve(x^2 - i, x), i, 1, 8)
    = makelist(solve(x^2 - i, x), i, 1, 8));
 true$
 
-/* integrate() is deliberately not tested here.  It calls supcontext(),
-   and $CONTEXT and $CONTEXTS are shared on purpose -- two threads are
-   meant to see one fact database -- so two workers each making and
-   killing a temporary context race, and one of them loses its own:
-   "supcontext: no such context ctxt576", measured at 6 occurrences in
-   40 runs where factor(), expand(), ratsimp() and solve() gave none.
-   That is issue #3, not something this file can assert around: a test
-   of it would fail six times in forty, which is worse than no test. */
+/* integrate() is the interesting one: it works inside a scratch context
+   made by with_new_context(), so before each runner had its own context
+   variables two workers would lose one of the two names out of the one
+   shared list and the loser failed with "supcontext: no such context
+   ctxt<n>".  Every one of 30 runs failed that way, and a scratch
+   context was left behind in the user-visible contexts list. */
+
+is(parallel_makelist(integrate(x^i, x), i, 1, 8)
+   = makelist(integrate(x^i, x), i, 1, 8));
+true$
+
+/* A parallel region must leave the context list exactly as it found it:
+   a scratch context surviving is what the lost update looked like from
+   the outside. */
+
+(c0: contexts,
+ parallel_makelist(integrate(x^i, x), i, 1, 8),
+ is(contexts = c0));
+true$
+
+/* What is per-thread is only which context a thread is in, not the
+   facts themselves: an assumption made before a parallel region still
+   reaches the bodies, and one made inside one still lands in the shared
+   database.  Both were checked by hand rather than asserted here.
+
+   A test of it through sign() is deliberately absent.  It passed 300
+   times out of 300 on its own and still failed about one run in fifteen
+   inside the suite, so something in the assumption machinery beyond the
+   context variables is still shared -- issue #3's real subject, and not
+   something to paper over with a test that fails now and then. */
 
 is(parallel_makelist(factor(i! + 1), i, 1, 10)
    = makelist(factor(i! + 1), i, 1, 10));

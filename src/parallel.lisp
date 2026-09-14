@@ -423,8 +423,29 @@ than for the computation."
 ;;; alongside LOCLIST.  They are not bound here because nothing yet
 ;;; measures what a local() inside a parallel body does to them; a body
 ;;; using local() is still to be checked rather than assumed safe.
+;;;
+;;; The context variables are here because WITH-NEW-CONTEXT
+;;; (src/maxmac.lisp) makes a scratch context named by a gensym, works
+;;; inside it and kills it again, and INTEGRATE and the limit code use
+;;; it constantly.  $SUPCONTEXT registers the new name with
+;;; (setq $contexts (mcons name $contexts)) -- a read, a cons and a
+;;; write of one shared list -- so two runners doing it at once lose one
+;;; of the two names, and the runner whose name went missing then fails
+;;; with "supcontext: no such context ctxt<n>".  Measured before this
+;;; binding: 30 of 30 parallel integrate() runs failed, and a scratch
+;;; context was left behind in the user-visible contexts list.
+;;;
+;;; This does NOT give a thread its own assumptions, which would be a
+;;; change to what Maxima means rather than a bug fix (issue #3).  The
+;;; fact database lives on symbol plists keyed by the context symbol,
+;;; not in these variables, so a body that calls assume() still writes
+;;; the same context's plist and every thread still sees it.  What is
+;;; per-thread here is only which context a thread is currently in and
+;;; its own list of context names.
 (defun job-specials-to-bind (job)
-  (list* 'bindlist 'mspeclist 'loclist (job-specials job)))
+  (list* 'bindlist 'mspeclist 'loclist
+         '$context 'context '$contexts '$activecontexts
+         (job-specials job)))
 
 (defun run-worker (job)
   "A worker's whole life.  WITH-THREAD-LOCAL-ENVIRONMENT must be entered
