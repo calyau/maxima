@@ -268,7 +268,8 @@
         ;; Skip the fix up unless we know it's needed for the Lisp implementation.
         #+(or clisp abcl) (fix-up-exponent-in-place s)
         #+ecl (insert-zero-before-exponent s)
-        #-(or clisp abcl ecl) s))))
+        #+ccl (normalize-exponent s)
+        #-(or clisp abcl ecl ccl) s))))
 
 ;; (1) If string looks like "n.nnnD0" or "n.nnnd0", return just "n.nnn".
 ;; (2) Otherwise, replace #\D or #\d (if present) with #\E or #\e, respectively.
@@ -301,6 +302,25 @@
           (concatenate 'string (subseq s 0 (1+ i)) "0" (subseq s (1+ i) n))
           s))
     s)))
+
+;; Lower case the exponent marker and drop a #\+ in front of a positive
+;; exponent: CCL prints "9.87E+52" where every other lisp here prints
+;; "9.87e52", and output must not depend on which lisp Maxima was built
+;; with. Both halves matter -- TEXNUMFORMAT copies whatever follows the
+;; marker into the TeX exponent verbatim, so the #\+ reaches the printed
+;; page, and the marker's case reaches every consumer that compares
+;; strings case sensitively.
+
+(defun normalize-exponent (s)
+  (let ((i (position-if #'alpha-char-p s :start 1)))
+    (if (and i (< (1+ i) (length s)))
+      (concatenate 'string
+                   (subseq s 0 i)
+                   (string (char-downcase (aref s i)))
+                   (if (eql (aref s (1+ i)) #\+)
+                     (subseq s (+ i 2))
+                     (subseq s (1+ i))))
+      s)))
 
 (defun exploden-format-float-pretty (symb)
   (let ((a (abs symb)) string)
