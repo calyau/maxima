@@ -1080,7 +1080,7 @@ errcatch (integrate(x,x,0,box(inf)));
 
 /* Bug #4742: limit result contains "false" */
 limit((gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x))/2,x,0,plus);
-inf;
+infinity;
 
 /* Bug #4797: "limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus) is wrong" */
 limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus), tlimswitch : false;
@@ -1650,9 +1650,9 @@ limit(x^2*exp(%i*x) + x, x, inf);
 infinity;
 
 limit(x*exp(%i*x) + x^2, x, inf);
-inf;
+infinity;
 
-limit(3^x + (9 + %i)^x, x, inf);
+limit(3^x + (9+%i)^x, x, inf);
 infinity;
 
 block([a, b],

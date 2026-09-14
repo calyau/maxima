@@ -2676,9 +2676,12 @@ ignoring dummy variables and array indices."
 					 (t (push r sum)))))))
 					 
 	;; An infinity term next to inf or minf terms: The larger side decides.
-	;; With und terms around as well, give up.
+	;; Give up with und terms around as well, and when an infinity term carries
+	;; PRIN-INF, DEFINT's stand-in for a large real number: Sign questions about
+	;; it are answered for the limit at infinity, so log(sin(prin-inf)) is
+	;; labelled infinity.
 	(when (and infinityl (or minfl infl))
-	  (if undl
+	  (if (or undl (not (free (fapply 'mplus infinityl) 'prin-inf)))
 	      (throw 'limit t)
 	      (return (simplimplus-dominance infinityl (append infl minfl)
 					     '$infinity))))
@@ -2795,7 +2798,9 @@ ignoring dummy variables and array indices."
          ((member nil ratios)
           (throw 'limit t))
          ((every #'zerop2 ratios)
-          ilim)
+           ;; The infinities dominate. An infinity term still keeps
+           ;; the sum from being real, and inf and minf are real.
+          (if (eq answer '$infinity) '$infinity ilim))
          ((some #'infinityp ratios)
           answer)
          ((member '$und ratios)
