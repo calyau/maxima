@@ -84,6 +84,113 @@
   (with-top-level-environment
     (meval expr)))
 
+;; WITH-TOP-LEVEL-ENVIRONMENT above is the per-evaluation scope: it resets
+;; state between one input and the next.  This is the other one.  Some
+;; state belongs to a whole line of computation and has to survive from
+;; one input to the next inside it -- SOLVE sets $MULTIPLICITIES on one
+;; line and the user reads it on the next -- so it cannot be reset per
+;; evaluation, only kept out of the way of anyone computing in parallel.
+;;
+;; Maxima runs in one thread and nothing calls this yet.  It is the
+;; binding a thread would enter once, around everything it evaluates.
+;; Each variable is bound to its own current value, so the session's
+;; state flows in and the thread's changes do not flow back out; that is
+;; the same idiom test-batch uses for *QUERY-IO* in mload.lisp.
+;;
+;; Three things this has to get right, measured rather than assumed --
+;; lisp-utils/thread-safety-survey.lisp has the evidence:
+;;
+;;   A LET on a special binds per thread under SBCL, CCL, ECL and ABCL,
+;;   so every SETQ underneath lands in that binding.  That covers the
+;;   assignments which are how a callee returns its answer rather than a
+;;   flag it sets -- SIGN, MINUS, ODDS and EVENS carry COMPAR's result
+;;   between them -- and it makes that protocol thread-safe without
+;;   changing one caller or callee, which is what keeps the share
+;;   packages that reach into it working.
+;;
+;;   A new thread inherits no bindings, only global values.  So this has
+;;   to be entered inside the thread; wrapping it around whatever spawns
+;;   the thread does nothing.
+;;
+;;   The SPECIAL declaration below is not redundant.  These are declared
+;;   across half a dozen files -- WIDTH and friends in displm.lisp,
+;;   TSTACK in transl.lisp, $INTEGRATION_CONSTANT_COUNTER in sin.lisp --
+;;   and a LET on a special the compiler has not seen declared yet binds
+;;   lexically and silently does nothing.  Declaring them here makes the
+;;   macro independent of where it is used and of the order files are
+;;   compiled in.
+
+;; DECLAIM, not DECLARE-TOP.  DECLARE-TOP (lmdcls.lisp) proclaims inside
+;; an EVAL-WHEN that includes :LOAD-TOPLEVEL only in a macro module, and
+;; suprv1 is not one, so its declaration would hold while this file
+;; compiles and be gone from the saved image.  Every variable below
+;; except VLIST is special anyway because something DEFVARs or DEFMVARs
+;; it; VLIST is declared only by a DECLARE-TOP in rat3e.lisp, which is
+;; not a macro module either, so in the built image VLIST is not special
+;; at all -- and a LET on it binds lexically and isolates nothing.
+(declaim
+ (special sign minus odds evens		; COMPAR's answer, in four parts
+	  width height depth		; DISPLA's box dimensions
+	  varlist genvar vlist		; CRE's variables and their ordering
+	  linearray			; DISPLA's layout scratch
+	  tstack *local-signs*
+	  $multiplicities $%rnum_list $error $error_syms
+	  $linenum $gensumnum $integration_constant_counter))
+
+(defmacro with-thread-local-environment (&rest body)
+  `(let (;; WIDTH, HEIGHT and DEPTH are declared special in displm.lisp
+	 ;; but never given a global value -- DISPLA binds them itself --
+	 ;; so unlike the rest they cannot be bound to their own value.
+	 width height depth
+	 ;; VLIST is scratch in the same way.  VARLIST and GENVAR are not:
+	 ;; they carry CRE's variables, and ORDERPOINTER renumbers the whole
+	 ;; GENVAR list in place -- (prenumber genvar 1) writes each
+	 ;; symbol's value cell, which is what POINTERGP orders by.  Two
+	 ;; threads sharing that list would renumber each other's variables
+	 ;; mid-computation.  A worker therefore needs its own.
+	 ;;
+	 ;; The consequence is worth knowing before anyone builds on this:
+	 ;; each worker numbers its genvars from 1, so CRE objects made in
+	 ;; different workers carry inconsistent orderings and must not be
+	 ;; combined directly -- take them apart with RATDISREP, or rebuild
+	 ;; with RATF, in the thread that is going to use them.  (Read off
+	 ;; ORDERPOINTER and PRENUMBER in rat3e.lisp, not measured.)
+	 vlist
+	 (varlist varlist) (genvar genvar)
+	 ;; A FRESH array, not the one we were handed: LINEARRAY is DISPLA's
+	 ;; scratch for laying a expression out, so sharing it is the whole
+	 ;; problem.  Two threads displaying at once scribble over each
+	 ;; other here, before a character reaches any stream -- which is
+	 ;; why a lock around the writing would not have helped.
+	 ;;
+	 ;; With this and the stream bindings below, concurrent display
+	 ;; needs no lock held across any computation, and that is what
+	 ;; keeps it from deadlocking: a thread renders into its own
+	 ;; LINEARRAY and its own *STANDARD-OUTPUT*, exactly as test-batch
+	 ;; already does per test problem in mload.lisp, and only the final
+	 ;; handing-over of finished text needs to be atomic.  Note a
+	 ;; recursive lock would NOT have made a lock safe here: a thread
+	 ;; holding it that starts a parallel loop is not the thread its
+	 ;; workers run in, so they would block on it and it would wait for
+	 ;; them.
+	 (linearray (make-array 1000. :initial-element nil))
+	 (sign sign) (minus minus) (odds odds) (evens evens)
+	 (tstack tstack) (*local-signs* *local-signs*)
+	 ($multiplicities $multiplicities) ($%rnum_list $%rnum_list)
+	 ($error $error) ($error_syms $error_syms)
+	 ($linenum $linenum) ($gensumnum $gensumnum)
+	 ($integration_constant_counter $integration_constant_counter)
+	 ;; Streams too, so a thread can point its own output and its own
+	 ;; question channel somewhere without disturbing anyone else.
+	 ;; Both input streams matter: RETRIEVE reads *QUERY-IO* but
+	 ;; $READONLY reads *STANDARD-INPUT* under SBCL and CMUCL.
+	 (*standard-output* *standard-output*)
+	 (*error-output* *error-output*)
+	 (*trace-output* *trace-output*)
+	 (*query-io* *query-io*)
+	 (*standard-input* *standard-input*))
+     ,@body))
+
 (defun makelabel10 (x)
   (let (*print-radix*
 	(*print-base* 10.))
