@@ -1,6 +1,10 @@
 Maxima 5.50-post change log
 ===========================
 
+* Join already-started parallel workers during error unwinding before
+  releasing their worker reservation; attempt remaining joins even when
+  one join reports an error. Preserve the original caller failure.
+
 * Parallel workers inherit the caller's complete bigfloat precision state,
   including in nested computations. Precision changes in a runner do not
   leak back to its caller, including after errors and on the serial fallback.

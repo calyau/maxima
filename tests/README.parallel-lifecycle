@@ -1,0 +1,31 @@
+Parallel worker lifecycle regression tests
+==========================================
+
+  timeout 180 ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_lifecycle]);'
+
+Run each configured Lisp and require "No unexpected errors" in the log.
+A zero exit status alone does not prove that Maxima had no Lisp errors.
+The new file is included in the complete suite automatically.
+
+The helper temporarily replaces the worker primitives in an otherwise idle
+Maxima process. Real workers wait behind locked gates which only their join
+wrapper releases. This deterministically detects returning before a worker
+finishes: passing cannot depend on the scheduler finishing it early. A
+10-second deadline and emergency cleanup prevent a failing regression from
+leaving its own worker behind. The result is sampled before that cleanup.
+
+The 19 examples cover success, failure of the first or second spawn, caller
+errors and throws, one or multiple join errors, combined failures, empty and singleton jobs,
+and the serial fallback. A private deterministic generator adds 64 cases
+with different item counts, worker budgets and failure modes. Every started
+worker must be joined, the budget must remain reserved while joining, and
+its original value must return afterwards. The first caller error or throw
+must survive a secondary join error. With normal caller return, the first
+join error must be reported after attempts to join the remaining workers.
+
+The helper restores replaced functions and diagnostic counters after each
+case. CLISP exercises the applicable serial cases and skips native workers.
+These tests cover ordinary Lisp error/throw unwinding. They do not establish
+a cancellation policy for nonterminating computations or arbitrary external
+thread termination; waiting for an existing worker still waits for its body.

@@ -594,6 +594,9 @@ serially when it allows none -- the answers are the same either way."
                (granted (claim-workers (1- count)))
                #+(or sb-thread (and ccl openmcl-native-threads)
                      (and ecl threads))
+               (join-error nil)
+               #+(or sb-thread (and ccl openmcl-native-threads)
+                     (and ecl threads))
                (threads '()))
           (unwind-protect
                (progn
@@ -608,11 +611,24 @@ serially when it allows none -- the answers are the same either way."
                  ;; takes the same private bindings as a worker, so
                  ;; every runner is isolated the same way and the two
                  ;; paths cannot differ in what they leave behind.
-                 (call-as-runner job nil)
-                 #+(or sb-thread (and ccl openmcl-native-threads)
-                       (and ecl threads))
-                 (mapc #'%join threads))
-            (release-workers granted))
+                 (call-as-runner job nil))
+            ;; A failed spawn or caller must not leave earlier workers
+            ;; running after their reservation has already been released.
+            ;; Attempt every join even if one signals an error. Preserve
+            ;; an error or throw already unwinding the caller; on normal
+            ;; return, report the first join error after cleanup finishes.
+            (unwind-protect
+                 (progn
+                   #+(or sb-thread (and ccl openmcl-native-threads)
+                         (and ecl threads))
+                   (dolist (thread threads)
+                     (handler-case (%join thread)
+                       (error (condition)
+                         (unless join-error (setq join-error condition))))))
+              (release-workers granted)))
+          #+(or sb-thread (and ccl openmcl-native-threads)
+                (and ecl threads))
+          (when join-error (error join-error))
           ;; Report the first failure by index, so the same input always
           ;; reports the same error however the work was distributed.
           (let ((failed (position-if-not #'null (job-errors job))))

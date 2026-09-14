@@ -804,6 +804,14 @@ only after a body has run, so the iterations cannot be known in advance,
 and knowing them in advance is what handing work to several cores
 requires.
 
+@subsubheading Errors and worker completion
+
+If starting a worker or running the calling thread fails, Maxima waits for
+workers already started before returning the failure.  Those workers keep
+their slots in the shared thread limit while they finish.  An error reported
+by one join does not prevent attempts to join the remaining workers.
+This does not cancel a body which is still computing.
+
 @subsubheading When there is only one core to run on
 
 On a Lisp without usable threads --- GCL has none, and CLISP's are not

@@ -1,0 +1,59 @@
+/* No started worker may escape ordinary unwinding of its caller. */
+(kill(all), 0);
+0$
+
+(load(file_search("parallel-lifecycle-check.lisp", file_search_tests)), 0);
+0$
+
+if parallel_threads_available() then parallel_lifecycle_check(success) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(spawn_first) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(spawn_second) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(caller_error) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(caller_throw) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(join_error) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(join_errors) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(both_errors) else true;
+true$
+
+if parallel_threads_available() then parallel_lifecycle_check(throw_join_error) else true;
+true$
+
+/* The calling path also works when no native worker can be created. */
+parallel_lifecycle_check(success,false);
+true$
+
+parallel_lifecycle_check(caller_error,false);
+true$
+
+parallel_lifecycle_check(caller_throw,false);
+true$
+
+parallel_lifecycle_check(success,parallel_threads_available(),0,4);
+true$
+
+parallel_lifecycle_check(success,parallel_threads_available(),1,4);
+true$
+
+parallel_lifecycle_random();
+true$
+
+/* After injected infrastructure failures the session still computes. */
+parallel_makelist(i^2,i,1,4);
+[1,4,9,16]$
+
+(kill(all), 0);
+0$
