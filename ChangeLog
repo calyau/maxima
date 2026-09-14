@@ -133,3 +133,9 @@ Other changes:
   provide, instead of loading Maxima's own lisp-utils/defsystem.lisp the
   way the rules for every other lisp do.  ./configure now also enables
   CCL when it finds it and no lisp was named explicitly
+* src/maxima.system can again be read by a defsystem other than the one
+  Maxima ships: :DEPENDENCIES-COMPLETE, Maxima's own addition to
+  MK:DEFSYSTEM, is guarded by #+MK-DEPS-COMPLETE, the feature
+  lisp-utils/defsystem.lisp pushes to say it understands the option.
+  Without it the file stopped at "Unknown &KEY argument:
+  :DEPENDENCIES-COMPLETE"
