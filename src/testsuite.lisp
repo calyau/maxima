@@ -173,7 +173,8 @@
          ((mlist simp) 2))
 	"rtest_operators"
 	"rtest_wxmx"
-	"rtest_load_relative"))
+	"rtest_load_relative"
+	"rtest_parallel"))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima

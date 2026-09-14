@@ -758,7 +758,7 @@
    (:module i-o
      :source-pathname ""
      :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1"
-                  "declarations" "fundamental-macros" "other-macros"
+                  "declarations" "errset" "fundamental-macros" "other-macros"
                   "prerequisites" "utilities" "utility-macros"
                   "evaluator")
      ;; Module is a clean DAG at every level: function calls,
@@ -768,6 +768,8 @@
      ((:file "prompt-util")
       (:file "suprv1"
         :depends-on ("prompt-util"))
+      (:file "parallel"         ; suprv1's WITH-THREAD-LOCAL-ENVIRONMENT
+        :depends-on ("prompt-util" "suprv1"))
       (:file "macsys"
         :depends-on ("prompt-util" "suprv1"))
       (:file "testsuite")

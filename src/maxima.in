@@ -5,6 +5,33 @@ unixize () {
     echo "$1" | sed -e 's%\\\\%/%g' | sed -e 's%^\([A-Za-z]\):%/\1%'
 }
 
+# How many cores may this process use?  Passed to lisp as MAXIMA_NUM_CORES
+# and read by PARALLEL-CPU-COUNT (src/parallel.lisp), which otherwise has
+# nothing portable to ask: SBCL 2.2 exposes no core count at all, and
+# reading /proc is Linux-only.
+#
+# nproc comes first because it is the only one of the three that respects
+# CPU affinity: pinned to two cores with taskset it reports 2, where
+# getconf and /proc/cpuinfo both still report 4 and a parallel
+# computation would start twice the threads it can actually run.  sysctl
+# covers macOS and the BSDs, where the other two are missing.
+#
+# A value already in the environment is left alone: that is how a user
+# pins the count by hand.
+if [ -z "$MAXIMA_NUM_CORES" ]; then
+    MAXIMA_NUM_CORES=$(nproc 2>/dev/null ||
+                       getconf _NPROCESSORS_ONLN 2>/dev/null ||
+                       sysctl -n hw.ncpu 2>/dev/null)
+    # Anything but a plain positive number is no answer: pass nothing on
+    # rather than something lisp would have to second-guess.
+    case "$MAXIMA_NUM_CORES" in
+        '' | *[!0-9]* | 0) MAXIMA_NUM_CORES= ;;
+    esac
+    if [ -n "$MAXIMA_NUM_CORES" ]; then
+        export MAXIMA_NUM_CORES
+    fi
+fi
+
 # Preference order to try when the configured default lisp turns out not to
 # be usable (roughly fastest-first, per the run_testsuite() timing
 # comparison in README-lisps.md).

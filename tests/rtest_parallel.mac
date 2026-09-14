@@ -1,0 +1,136 @@
+/* Tests for parallel_makelist.
+
+   Two things are being asserted here, and they need different kinds of
+   test.  That the answers are right is ordinary: compare against
+   makelist, which computes the same thing serially.  That the work
+   actually happened on more than one thread is not, because a parallel
+   run that quietly fell back to the serial path returns exactly the
+   right answers and would pass every comparison in this file.
+
+   So the comparisons are paired with parallel_worker_items(), which
+   counts elements evaluated by a worker thread and which the serial
+   path cannot make nonzero.  Those tests assert the count is positive
+   where threads exist and zero where they do not, so they can fail in
+   either direction rather than only in one. */
+
+(kill(all), 0);
+0$
+
+/* --- the same answers as makelist, in every argument shape --- */
+
+is(parallel_makelist() = makelist());
+true$
+
+is(parallel_makelist(5, 3) = makelist(5, 3));
+true$
+
+is(parallel_makelist(i^2, i, 1, 10) = makelist(i^2, i, 1, 10));
+true$
+
+is(parallel_makelist(x, x, [a, b, c]) = makelist(x, x, [a, b, c]));
+true$
+
+is(parallel_makelist(i, i, 2, 8) = makelist(i, i, 2, 8));
+true$
+
+is(parallel_makelist(i, i, 2, 8, 3) = makelist(i, i, 2, 8, 3));
+true$
+
+/* An empty range is empty, not a one-element list */
+
+is(parallel_makelist(i, i, 1, 0) = makelist(i, i, 1, 0));
+true$
+
+/* --- symbolic work, where the two could plausibly disagree ---
+
+   Rational arithmetic is the interesting case: workers renumber CRE
+   variables, so if per-thread isolation of varlist/genvar/vlist were
+   incomplete these would come back wrong rather than merely slow. */
+
+is(parallel_makelist(ratsimp((x^i - 1)/(x - 1)), i, 1, 12)
+   = makelist(ratsimp((x^i - 1)/(x - 1)), i, 1, 12));
+true$
+
+is(parallel_makelist(integrate(x^i, x), i, 1, 8)
+   = makelist(integrate(x^i, x), i, 1, 8));
+true$
+
+is(parallel_makelist(factor(i! + 1), i, 1, 10)
+   = makelist(factor(i! + 1), i, 1, 10));
+true$
+
+is(parallel_makelist(expand((x + i)^5), i, 1, 10)
+   = makelist(expand((x + i)^5), i, 1, 10));
+true$
+
+/* --- the same answers twice: results must not depend on timing --- */
+
+is(parallel_makelist(ratsimp((x^i - 1)/(x - 1)), i, 1, 12)
+   = parallel_makelist(ratsimp((x^i - 1)/(x - 1)), i, 1, 12));
+true$
+
+/* --- did the work really happen on another thread? ---
+
+   The sleep is what makes this meaningful: with an instant body the
+   calling thread can finish every element before a worker starts, and
+   a zero count would say nothing about whether threading works. */
+
+(parallel_reset_counters(),
+ parallel_makelist(?sleep(0.02), i, 1, 16),
+ if parallel_threads_available()
+     then is(parallel_worker_items() > 0)
+     else is(parallel_worker_items() = 0));
+true$
+
+/* --- the cap holds, and holds across nesting ---
+
+   Sixteen elements over four nested regions must still respect one
+   session-wide limit.  Were the budget per region instead of shared,
+   the inner regions would each start a full set of workers and the
+   peak would reach the limit several times over. */
+
+(parallel_reset_counters(),
+ parallel_makelist(parallel_makelist(?sleep(0.01), j, 1, 4), i, 1, 4),
+ is(parallel_peak_workers() < parallel_cores()));
+true$
+
+/* A nested parallel region still computes the right thing */
+
+is(parallel_makelist(parallel_makelist(i*j, j, 1, 4), i, 1, 4)
+   = makelist(makelist(i*j, j, 1, 4), i, 1, 4));
+true$
+
+/* --- errors inside a body reach the caller --- */
+
+errcatch(parallel_makelist(if i = 3 then 1/0 else i, i, 1, 5));
+[]$
+
+/* --- the serial fallback: same answers, and provably serial ---
+
+   parallel_threads:1 leaves one thread for the whole session, which is
+   the same path a lisp without threads takes.  This is the only way to
+   exercise that path on a lisp that has them. */
+
+(parallel_threads: 1,
+ parallel_reset_counters(),
+ parallel_makelist(?sleep(0.01), i, 1, 8),
+ is(parallel_worker_items() = 0));
+true$
+
+(parallel_threads: 1,
+ is(parallel_makelist(ratsimp((x^i - 1)/(x - 1)), i, 1, 8)
+    = makelist(ratsimp((x^i - 1)/(x - 1)), i, 1, 8)));
+true$
+
+/* Setting the limit has to take effect when it is set, not once per
+   session: a limit read only the first time anything ran in parallel
+   would accept this and ignore it. */
+
+(parallel_threads: 1, is(parallel_cores() = 1));
+true$
+
+(parallel_threads: 0, 0);
+0$
+
+(kill(all), 0);
+0$

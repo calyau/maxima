@@ -556,6 +556,8 @@
      ((:file "prompt-util")
       (:file "suprv1"
         :depends-on ("prompt-util"))
+      (:file "parallel"         ; suprv1's WITH-THREAD-LOCAL-ENVIRONMENT
+        :depends-on ("prompt-util" "suprv1"))
       (:file "macsys"
         :depends-on ("prompt-util" "suprv1"))
       (:file "testsuite")

@@ -14,6 +14,13 @@ rem and causes troubles (at least with Clisp, maybe other Lisps too),
 rem so unset this variable.
 set LANGUAGE=
 
+rem How many cores may this process use?  Read by PARALLEL-CPU-COUNT
+rem (src/parallel.lisp), which has no portable way to ask lisp itself.
+rem Windows sets NUMBER_OF_PROCESSORS for every process, so unlike the
+rem Unix script there is nothing to run to find out.  A value already in
+rem the environment is left alone: that is how a user pins the count.
+if not defined MAXIMA_NUM_CORES set "MAXIMA_NUM_CORES=%NUMBER_OF_PROCESSORS%"
+
 set "lisp=@DEFAULTLISP@"
 set lisp_options=
 set "version=@VERSION@"
