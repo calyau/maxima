@@ -1685,6 +1685,48 @@ block([a, b],
  limit(a^x * cos(x) + b^x,x,inf));
 0;
 
+limit(x + %i*sqrt(x), x, inf);
+infinity;
+
+
+/* Bug #5255: "limit(1/x+%i/sqrt(x), x, 0, plus) -> inf" */
+
+limit(1/x + %i/sqrt(x), x, 0, plus);
+infinity;
+
+limit(1/x + 1/sqrt(x), x, 0, plus);
+inf;
+
+limit(1/x^(3/2) + %i/x, x, 0, plus);
+infinity;
+
+limit(%i/sqrt(x) - 1/x, x, 0, plus);
+infinity;
+
+limit(1/x + %i*sqrt(x), x, 0, plus);
+inf;
+
+limit(x^(1/3) / (x^(2/3) + 1), x, inf);
+0;
+
+limit(1/x + %i/2^x, x, 0, plus);
+infinity;
+
+limit(-1/x + %i/2^x, x, 0, plus);
+infinity;
+
+limit(exp(x) + %i, x, inf);
+infinity;
+
+limit(exp(x)*sin(x) + exp(2*x) + %i, x, inf);
+infinity;
+
+limit(1/x + %i*x, x, 0, plus);
+inf;
+
+limit(1/x + a/2^x, x, 0, plus);
+inf;
+
 
 /**************************************/
 /* Leave this at the end of the file! */
