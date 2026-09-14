@@ -67,6 +67,13 @@
 ;;;; state this tool is worst at finding.  Locking that is a separate job
 ;;;; from the binding this survey plans.
 ;;;;
+;;;;   - assignment from Maxima level.  Setting an option the ordinary
+;;;;     way, "display2d:false", goes through MSET, which assigns
+;;;;     generically; there is no per-variable SETQ for WHO-SETS to find.
+;;;;     $DISPLAY2D, $RATEPSILON and TR-UNIQUE were all observed moving
+;;;;     with a static count of zero.  For a user-settable DEFMVAR a
+;;;;     count of zero is therefore not evidence of anything.
+;;;;
 ;;;;   - specials outside package MAXIMA.  The survey walks MAXIMA only,
 ;;;;     so CL:*QUERY-IO* and its friends never appear -- and those are
 ;;;;     the ones that decide whether a background computation can ask
@@ -104,7 +111,8 @@
 
 (defpackage #:maxima-thread-survey
   (:use #:common-lisp)
-  (:export #:survey #:variables #:bind-list))
+  (:export #:survey #:variables #:bind-list
+           #:start-observing #:observed-changed #:report-observed))
 
 (in-package #:maxima-thread-survey)
 
@@ -117,15 +125,25 @@
 (defparameter *classification*
   '((:out-parameter
      "callee hands its answer back through this; bind it at the thread
-      entry point and every assignment below lands in that binding"
+      entry point and every assignment below lands in that binding.
+      SIGN and its three companions are one answer in four variables, so
+      they move together or not at all; LINEARRAY must be bound to a
+      FRESH array, since sharing DISPLA's layout scratch is what corrupts
+      concurrent output before a character reaches any stream"
      "SIGN" "MINUS" "ODDS" "EVENS"
-     "WIDTH" "HEIGHT" "DEPTH")
+     "WIDTH" "HEIGHT" "DEPTH" "LINEARRAY")
     (:per-computation
      "belongs to one evaluation; bind it at the thread entry point and it
-      becomes per-thread for free"
+      becomes per-thread for free.  The bigfloat six are one piece of
+      state, not six: $FPPREC carries an ASSIGN of FPPREC1, so ordinary
+      user code saying fpprec:30 rewrites the working precision and all
+      four derived constants at once, and binding a subset leaves a
+      thread whose precision disagrees with its own constants"
      "$ERROR" "$ERROR_SYMS" "*LOCAL-SIGNS*" "$MULTIPLICITIES"
      "$%RNUM_LIST" "$LINENUM" "TSTACK" "$GENSUMNUM"
-     "$INTEGRATION_CONSTANT_COUNTER")
+     "$INTEGRATION_CONSTANT_COUNTER"
+     "$FPPREC" "FPPREC" "*BIGFLOATONE*" "*BIGFLOATZERO*"
+     "*BFHALF*" "*BFMHALF*")
     (:shared-environment
      "user-visible session state; sharing it is correct, so this wants a
       lock or an explicit per-thread environment, never a binding"
@@ -333,6 +351,80 @@ form or mutated in place -- see WHAT THIS CANNOT SEE above."
 ;;; called out, because an unreviewed variable that is assigned somewhere
 ;;; is likelier to want binding than not -- but each one still has to be
 ;;; looked at before anybody relies on this list.
+
+;;; ------------------------------------------------------------------
+;;; The other half: what a computation actually disturbs.
+;;;
+;;; WHO-SETS answers "could this be assigned"; over a thousand variables
+;;; that leaves a long tail nobody has time to read.  This answers "was
+;;; it assigned, by real work", by snapshotting every special, running
+;;; something substantial -- run_testsuite() is the obvious workload --
+;;; and reporting which value cells moved.
+;;;
+;;; The two disagree in both directions, and each direction is useful.
+;;; Statically assigned but never observed moving: low priority, or only
+;;; reachable through code no computation runs.  Observed moving: real,
+;;; whatever the static picture says, and that includes variables this
+;;; survey cannot see being assigned at all -- the ones written by a
+;;; top-level form or mutated in place.
+;;;
+;;; The blind spot is the save-and-restore idiom: a function that binds
+;;; nothing, assigns, and puts the old value back leaves no net change,
+;;; and that is precisely a thread-unsafe pattern.  So a quiet result
+;;; here is weaker evidence than a noisy one.  Use it to rank the static
+;;; list, never to prune it.
+
+(defvar *snapshot* nil)
+
+(defun snapshot-candidates ()
+  (append (remove-if-not #'boundp (specials))
+          (remove-if-not #'boundp
+                         (mapcar (lambda (n) (find-symbol n "COMMON-LISP"))
+                                 *foreign-specials*))))
+
+(defun start-observing ()
+  "Record the current value of every bound special, to diff against later."
+  (let ((table (make-hash-table :test #'eq)))
+    (dolist (symbol (snapshot-candidates))
+      (setf (gethash symbol table) (symbol-value symbol)))
+    (setf *snapshot* table)
+    (format *debug-io* "~&thread-safety-survey: watching ~D variables~%"
+            (hash-table-count table))
+    (values)))
+
+(defun observed-changed ()
+  "Symbols whose value cell moved since START-OBSERVING."
+  (unless *snapshot*
+    (error "thread-safety-survey: call START-OBSERVING first."))
+  (let ((out '()))
+    (maphash (lambda (symbol before)
+               (when (and (boundp symbol)
+                          (not (eq before (symbol-value symbol))))
+                 (push symbol out)))
+             *snapshot*)
+    (sort out #'string< :key #'symbol-name)))
+
+(defun report-observed (&key (stream *standard-output*))
+  "Compare what moved against what the static survey predicted."
+  (let* ((moved (observed-changed))
+         (entries (variables))
+         (static (make-hash-table :test #'eq)))
+    (dolist (e entries) (setf (gethash (entry-variable e) static) e))
+    (format stream "~&thread-safety-survey: ~D of ~D watched variables moved~2%"
+            (length moved) (hash-table-count *snapshot*))
+    (format stream "~&  ~10A ~28A ~A~%" "CATEGORY" "VARIABLE" "STATIC")
+    (dolist (symbol moved)
+      (let ((e (gethash symbol static)))
+        (format stream "  ~(~10A~) ~28A ~:[no assignment visible to xref~;~
+                        ~:*~D set~:P, ~D bind~:P~]~%"
+                (if e (entry-category e) (category-of symbol))
+                symbol
+                (and e (entry-sets e)) (and e (entry-binds e)))))
+    (let ((unseen (remove-if (lambda (e) (member (entry-variable e) moved))
+                             entries)))
+      (format stream "~&~%~D variable~:P the static survey flags but nothing ~
+                      moved during this run.~%" (length unseen)))
+    (values)))
 
 (defun bind-list (&key (stream *standard-output*) (include-untriaged t))
   "Print a LET list of the variables a per-thread evaluation must bind."
