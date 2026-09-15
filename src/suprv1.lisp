@@ -133,6 +133,7 @@
 	  width height depth		; DISPLA's box dimensions
 	  varlist genvar vlist		; CRE's variables and their ordering
 	  linearray			; DISPLA's layout scratch
+	  bindlist mspeclist loclist	; MBIND's and MLOCAL's stacks
 	  tstack *local-signs*
 	  fpprec *bigfloatone* *bigfloatzero*	; bigfloat precision, and the
 	  *bfhalf* *bfmhalf*			; constants derived from it
@@ -151,12 +152,14 @@
 	 ;; threads sharing that list would renumber each other's variables
 	 ;; mid-computation.  A worker therefore needs its own.
 	 ;;
-	 ;; The consequence is worth knowing before anyone builds on this:
-	 ;; each worker numbers its genvars from 1, so CRE objects made in
-	 ;; different workers carry inconsistent orderings and must not be
-	 ;; combined directly -- take them apart with RATDISREP, or rebuild
-	 ;; with RATF, in the thread that is going to use them.  (Read off
-	 ;; ORDERPOINTER and PRENUMBER in rat3e.lisp, not measured.)
+	 ;; An earlier version of this comment warned that CRE objects made
+	 ;; in different workers would carry inconsistent orderings and
+	 ;; could not be combined.  That was read off ORDERPOINTER and
+	 ;; PRENUMBER and never run, and it is wrong: measured across four
+	 ;; workers, both elementwise and summed, results of rat() from
+	 ;; different runners agree with the serial answer -- including for
+	 ;; variables the session had never seen, where each runner does
+	 ;; make its own genvar.  Keep the bindings; drop the warning.
 	 vlist
 	 (varlist varlist) (genvar genvar)
 	 ;; A FRESH array, not the one we were handed: LINEARRAY is DISPLA's
@@ -178,6 +181,25 @@
 	 (linearray (make-array 1000. :initial-element nil))
 	 (sign sign) (minus minus) (odds odds) (evens evens)
 	 (tstack tstack) (*local-signs* *local-signs*)
+	 ;; MBIND pushes saved values onto BINDLIST and MSPECLIST, MLOCAL
+	 ;; onto LOCLIST.  These are not mere accounting: ERRCATCH
+	 ;; (errset.lisp) saves (cons bindlist loclist), and ERRLFUN1 below
+	 ;; unwinds by calling MUNLOCAL until LOCLIST is EQ to that cons.
+	 ;; Shared between threads that cons is not in the unwinding
+	 ;; thread's chain at all, so the loop pops an empty LOCLIST for
+	 ;; ever.  Measured by Paxipu while building the parallel runner: an
+	 ;; error in one element of a parallel makelist left the run
+	 ;; spinning at full CPU with its workers already gone, on half the
+	 ;; runs of the error test and one full suite run in five; 0 of 30
+	 ;; with LOCLIST bound per runner.
+	 ;;
+	 ;; Binding these does NOT make a Maxima variable binding
+	 ;; thread-safe.  MBIND saves the old value here and then assigns
+	 ;; the symbol's global value cell, so the stack is private and the
+	 ;; cell is not; block([x], ...) in two threads still writes one
+	 ;; cell.  Measured: wrong in 10 of 10 threaded runs, 0 of 10
+	 ;; serial.
+	 (bindlist bindlist) (mspeclist mspeclist) (loclist loclist)
 	 ;; Bigfloat precision is six variables, not one, and they have to
 	 ;; move together.  $FPPREC carries an ASSIGN property of FPPREC1
 	 ;; (globals.lisp), so an ordinary "fpprec: 30" in user code runs

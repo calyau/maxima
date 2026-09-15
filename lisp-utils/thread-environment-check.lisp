@@ -38,6 +38,8 @@
     width height depth linearray
     ;; CRE's variables and their ordering
     varlist genvar vlist
+    ;; MBIND's and MLOCAL's save stacks
+    bindlist mspeclist loclist
     ;; bigfloat precision: six variables holding one piece of state
     $fpprec fpprec *bigfloatone* *bigfloatzero* *bfhalf* *bfmhalf*
     ;; state belonging to one line of computation
