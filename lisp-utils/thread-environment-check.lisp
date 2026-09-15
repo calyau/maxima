@@ -302,3 +302,66 @@ worker refuse a question instead of hanging or poisoning the session."
                        (check-both-input-streams-contain-read stream)
                        (check-asksign-refuses-cleanly stream))))
     (every #'identity results)))
+
+;;; ------------------------------------------------------------------
+;;; A known-open bug, with a detector for it.
+;;;
+;;; GET-RULE-SYMBOL (src/matcom.lisp) draws from *RULE-SYMBOL-POOL*, a
+;;; free list of symbols released by deleted rules:
+;;;
+;;;     (if *rule-symbol-pool* (pop *rule-symbol-pool*) (intern ...))
+;;;
+;;; The test and the POP are not one operation, so two threads can take
+;;; the same head and the same interned symbol is handed to two different
+;;; rules.  FREE-RULE-SYMBOLS then makes it worse: it MAKUNBOUNDs,
+;;; FMAKUNBOUNDs and empties the plist of a symbol before returning it to
+;;; the pool, so recycling one another thread is still using erases it.
+;;;
+;;; Measured here, two threads drawing 2000 each from a pre-filled pool,
+;;; five trials: SBCL handed out 3558 duplicates, CCL none.  Trials one
+;;; and five on SBCL were themselves clean, so a single trial proves
+;;; nothing either way.
+;;;
+;;; This is NOT called by CHECK-THREAD-ENVIRONMENT, because it fails and
+;;; `make check` has to stay green.  The fix wants the lock abstraction
+;;; in parallel.lisp rather than a second one here; run this by hand to
+;;; confirm the fix, then wire it in.
+;;;
+;;; *CURRENT-RULE-SYMBOLS* needs nothing: matcom.lisp already LET-binds it
+;;; at all three of its entry points.
+
+(defun check-rule-symbol-pool (&key (draws 2000) (trials 5)
+                                    (stream *debug-io*))
+  "Returns the number of duplicate symbols the pool handed out.
+Zero is the fixed state; anything else is the race above."
+  #-(or ccl sbcl)
+  (progn (format stream "~&  rule-pool check skipped: no threads~%") 0)
+  #+(or ccl sbcl)
+  (let ((duplicates 0))
+    (dotimes (trial trials)
+      (setq *rule-symbol-pool*
+            (loop repeat (* 4 draws)
+                  collect (intern (symbol-name (gensym "POOLCHECK-")) :maxima)))
+      (let ((got (make-array 2 :initial-element nil)))
+        (flet ((draw (slot)
+                 (lambda ()
+                   (let ((*current-rule-symbols* nil) (mine '()))
+                     (dotimes (i draws) (push (get-rule-symbol) mine))
+                     (setf (aref got slot) mine)))))
+          #+ccl (let ((done (ccl:make-semaphore)))
+                  (dotimes (s 2)
+                    (let ((f (draw s)))
+                      (ccl:process-run-function
+                       "poolcheck"
+                       (lambda () (funcall f) (ccl:signal-semaphore done)))))
+                  (dotimes (i 2) (ccl:wait-on-semaphore done)))
+          #+sbcl (mapc #'sb-thread:join-thread
+                       (loop for s below 2
+                             collect (sb-thread:make-thread (draw s)))))
+        (let ((all (append (aref got 0) (aref got 1))))
+          (incf duplicates (- (length all)
+                              (length (remove-duplicates all)))))))
+    (setq *rule-symbol-pool* nil)
+    (format stream "~&  rule pool: ~D duplicate hand-out~:P in ~D trial~:P~%"
+            duplicates trials)
+    duplicates))
