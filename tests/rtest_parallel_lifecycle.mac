@@ -1493,3 +1493,99 @@ true$
 
 (kill(all),0);
 0$
+
+/* #35: asynchronous interruption must not lose startup ownership. */
+(kill(all),load(file_search("parallel-startup-interrupt-check.lisp",file_search_tests)),0);
+0$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(claim,'error,4,3) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(claim,'throw,4,3) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_first,'error,4,3) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_first,'throw,4,3) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_second,'error,4,3) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_second,'throw,4,3) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(claim,'error,9,4) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(claim,'throw,9,4) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_first,'error,9,4) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_first,'throw,9,4) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_second,'error,9,4) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_second,'throw,9,4) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(claim,'error,20,6) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(claim,'throw,20,6) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_first,'error,20,6) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_first,'throw,20,6) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_second,'error,20,6) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_interrupt_check(spawn_second,'throw,20,6) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_delivery_check() else true;
+true$
+
+if parallel_threads_available() then parallel_startup_random_check() else true;
+true$
+
+parallel_startup_policy_check(normal);
+true$
+
+parallel_startup_policy_check(disabled);
+true$
+
+parallel_startup_policy_check(nested);
+true$
+
+parallel_startup_policy_check(disabled_nested);
+true$
+
+parallel_startup_policy_check(empty);
+true$
+
+if parallel_threads_available() then parallel_startup_worker_check() else true;
+true$
+
+(kill(all),0);
+0$
+
+/* Queued callbacks retain an outer mask; collection can finish inside it. */
+if parallel_threads_available() then parallel_startup_mask_check(policy) else true;
+true$
+
+if parallel_threads_available() then parallel_startup_mask_check(gc) else true;
+true$
+
+/* ECL 21.2.1 must also fall back when more than one thread is requested. */
+parallel_startup_fallback_check();
+true$

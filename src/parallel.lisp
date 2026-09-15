@@ -33,8 +33,23 @@
 
 (defun parallel-threads-p ()
   "True when this lisp can run Maxima code on more than one thread."
-  #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads)) t
+  #+(or sb-thread (and ccl openmcl-native-threads)) t
+  #+(and ecl threads (not sb-thread) (not ccl))
+  ;; 21.2.1 can dispatch interrupts inside WITHOUT-INTERRUPTS, losing
+  ;; startup ownership. Keep mathematical evaluation available serially.
+  (not (string= (lisp-implementation-version) "21.2.1"))
   #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads)) nil)
+
+(defmacro %without-interrupts (&body body)
+  ;; Only use this while recording ownership of a reservation or thread.
+  ;; Mathematical evaluation and joins must remain outside these scopes.
+  #+sb-thread `(sb-sys:without-interrupts ,@body)
+  #+(and ccl openmcl-native-threads (not sb-thread))
+  `(ccl:without-interrupts ,@body)
+  #+(and ecl threads (not sb-thread) (not ccl))
+  `(mp:without-interrupts ,@body)
+  #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
+  `(progn ,@body))
 
 #+sb-thread
 (progn
@@ -655,9 +670,7 @@ serially when it allows none -- the answers are the same either way."
                      :captured (capture-bindings
                                 (specials-to-bind
                                  (remove-if-not #'symbolp specials)))))
-               ;; One item stays with the calling thread, so asking for
-               ;; COUNT-1 workers is asking for a runner per item.
-               (granted (claim-workers (1- count)))
+               (granted 0)
                #+(or sb-thread (and ccl openmcl-native-threads)
                      (and ecl threads))
                (join-error nil)
@@ -666,12 +679,20 @@ serially when it allows none -- the answers are the same either way."
                (threads '()))
           (unwind-protect
                (progn
+                 ;; Install cleanup before claiming the budget, and record
+                 ;; the reservation before an interrupt can unwind us.
+                 ;; One item stays with the calling thread.
+                 (%without-interrupts
+                   (setq granted (claim-workers (1- count))))
                  #+(or sb-thread (and ccl openmcl-native-threads)
                        (and ecl threads))
                  (dotimes (i granted)
-                   (push (%spawn (run-worker job)
-                                 (format nil "maxima worker ~D" i))
-                         threads))
+                   ;; A created thread must be registered before delivery
+                   ;; of an interrupt, so cleanup can always join it.
+                   (%without-interrupts
+                     (push (%spawn (run-worker job)
+                                   (format nil "maxima worker ~D" i))
+                           threads)))
                  ;; The calling thread is a runner too, which is what
                  ;; makes a region with no workers simply serial.  It
                  ;; takes the same private bindings as a worker, so

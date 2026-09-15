@@ -949,6 +949,11 @@ Returns @code{false} on a Lisp where parallel evaluation falls back to
 running one iteration after another --- GCL has no threads, and CLISP's
 are not usable --- and @code{true} where it does not.
 
+ECL 21.2.1 also uses serial evaluation, even when @code{parallel_threads}
+is greater than one. Its interrupt handling can bypass a disabled-interrupt
+scope and lose ownership of a worker during startup. Mathematical operations
+remain available through the serial fallback.
+
 A @code{false} here does not mean a parallel loop will fail. It means
 it will produce the same answers, taking as long as an ordinary loop.
 

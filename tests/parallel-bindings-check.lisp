@@ -120,7 +120,7 @@
 
 (defun $bindings_native_check (kind root-bound)
   #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
-  (and (parallel-threads-p) (bindings-native-probe kind root-bound))
+  (bindings-native-probe kind root-bound)
   #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
   ($bindings_scope_check '$fallback kind root-bound))
 
@@ -393,7 +393,7 @@
 
 (defun $bindings_registry_native_check ()
   #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
-  (and (parallel-threads-p) (bindings-native-registry-probe))
+  (bindings-native-registry-probe)
   #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
   ($bindings_registry_generated_check '$fallback))
 

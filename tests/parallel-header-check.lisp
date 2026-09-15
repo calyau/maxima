@@ -83,7 +83,8 @@
   #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
   (return-from $parallel_header_native ($parallel_header_numeric))
   #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
-  (when (parallel-threads-p)
+  ;; Keep the raw native state probe active with serial scheduling.
+  (progn
     (let* ((lock (%make-lock "parallel header regression"))
            (entered (vector nil nil)) (finished (vector nil nil))
            (cancelled nil) (threads nil) (jobs nil))

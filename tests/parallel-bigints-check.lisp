@@ -114,7 +114,8 @@
   (return-from $parallel_bigints_native_check
     ($parallel_bigints_site_check '$fallback maxima-p))
   #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
-  (when (parallel-threads-p)
+  ;; Keep the raw native arithmetic probe active with serial scheduling.
+  (progn
    (let* ((cases (bigint-test-cases))
          (lock (%make-lock "bignum arithmetic regression"))
          (entered (vector nil nil)) (finished (vector nil nil))

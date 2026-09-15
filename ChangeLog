@@ -1,6 +1,10 @@
 Maxima 5.50-post change log
 ===========================
 
+* Preserve worker reservations and thread ownership when an asynchronous
+  interrupt arrives during parallel startup. Use serial scheduling on ECL
+  21.2.1, whose interrupt deferral can lose worker ownership.
+
 * Reject file loading and first-use autoload initialization in parallel bodies,
   preserving serial loading and calls to fully initialized functions.
 

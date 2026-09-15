@@ -90,10 +90,9 @@
   (case mode
     ($public t)
     ($worker
-     #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
-     (and (parallel-threads-p) (not (eq parent-thread (loading-test-thread))))
-     #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
-     (eq parent-thread (loading-test-thread)))
+     (if (parallel-threads-p)
+         (not (eq parent-thread (loading-test-thread)))
+         (eq parent-thread (loading-test-thread))))
     (otherwise (eq parent-thread (loading-test-thread)))))
 
 (defun loading-test-results-p (result mode)

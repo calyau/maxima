@@ -108,7 +108,8 @@
   #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
   (return-from $unbinding_native_check ($unbinding_scope_check '$fallback '$primitive))
   #+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
-  (when (parallel-threads-p)
+  ;; Exercise native binding primitives even if scheduling uses a fallback.
+  (progn
     (let* ((symbol (make-symbol "$UNBINDING-SHARED"))
            (root (list :global))
            (lock (%make-lock "unbinding regression"))
