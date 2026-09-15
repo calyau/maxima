@@ -143,17 +143,35 @@
      "$%RNUM_LIST" "$LINENUM" "TSTACK" "$GENSUMNUM"
      "$INTEGRATION_CONSTANT_COUNTER"
      "$FPPREC" "FPPREC" "*BIGFLOATONE*" "*BIGFLOATZERO*"
-     "*BFHALF*" "*BFMHALF*")
+     "*BFHALF*" "*BFMHALF*" "*BFLOAT-HEADER*" "*BFLOAT-HEADER-PREC*"
+     ;; reader, printer and debugger state for one line of computation
+     "*CHRPS*" "*PARSE-WINDOW*" "*PARSE-STRING-INPUT-STREAM*"
+     "*LAST-MEVAL1-FORM*" "*LAST-DBM-COMMAND*" "ACCUMULATED-TIME"
+     "$_" "$__" "*LINELABEL*"
+     ;; the translator's working state
+     "*COLLECT-ERRORS*" "*CURRENT-LINE-INFO*" "TR-UNIQUE"
+     "*UNTRANSLATED-FUNCTIONS-CALLED*")
     (:shared-environment
      "user-visible session state; sharing it is correct, so this wants a
       lock or an explicit per-thread environment, never a binding"
      "$VALUES" "$FUNCTIONS" "$RULES" "$ARRAYS" "$PROPS" "$CONTEXT"
      "$CONTEXTS" "$LABELS" "$STRUCTURES" "$%" "$RATVARS" "$RATWEIGHTS"
-     "*RATWEIGHTS" "$FEATURES")
+     "*RATWEIGHTS" "$FEATURES"
+     ;; the fact database, which lives on plists as much as in these
+     "+LABS" "*NOBJECTS*" "$ACTIVECONTEXTS" "$DEPENDENCIES" "$GRADEFS"
+     ;; registries: a second thread must see what the first defined
+     "*MOPL*" "MACSYMA-OPERATORS" "SYMBOLS-DEFINED" "*MAXIMA-ARRAYS*"
+     "*AUTOLOADED-FILES*" "*STREAM-ALIST*"
+     ;; a shared free list -- two threads popping it can be handed the
+     ;; same symbol; its own docstring already mentions threads
+     "*RULE-SYMBOL-POOL*"
+     ;; option variables the user sets and both threads should see
+     "$RATEPSILON" "$DONTFACTOR" "*TEX-ENVIRONMENT-DEFAULT*"
+     "*PLOT-OPTIONS*")
     (:startup
      "set while starting up and read thereafter; nothing to do"
      "$MAXIMA_OBJDIR" "$MAXIMA_TEMPDIR" "$MAXIMA_USERDIR" "$BROWSER"
-     "$URL_BASE" "*MAXIMA-LANG-SUBDIR*"))
+     "$URL_BASE" "*MAXIMA-LANG-SUBDIR*" "*MAXIMA-BUILD-INFO*"))
   "Each entry is (CATEGORY RATIONALE . VARIABLE-NAMES).  Everything else
 that is assigned anywhere is reported as :UNTRIAGED.")
 

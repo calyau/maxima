@@ -136,7 +136,8 @@
 	  bindlist mspeclist loclist	; MBIND's and MLOCAL's stacks
 	  tstack *local-signs*
 	  fpprec *bigfloatone* *bigfloatzero*	; bigfloat precision, and the
-	  *bfhalf* *bfmhalf*			; constants derived from it
+	  *bfhalf* *bfmhalf*			; constants derived from it,
+	  *bfloat-header* *bfloat-header-prec*	; and the header memoized on it
 	  $multiplicities $%rnum_list $error $error_syms
 	  $linenum $gensumnum $integration_constant_counter))
 
@@ -212,6 +213,22 @@
 	 ($fpprec $fpprec) (fpprec fpprec)
 	 (*bigfloatone* *bigfloatone*) (*bigfloatzero* *bigfloatzero*)
 	 (*bfhalf* *bfhalf*) (*bfmhalf* *bfmhalf*)
+	 ;; Eight, not six.  BFLOAT-HEADER (float.lisp) memoizes the header
+	 ;; cons on the precision it was built for and hands it to every
+	 ;; bigfloat made since:
+	 ;;    (unless (eql fpprec *bfloat-header-prec*)
+	 ;;      (setq *bfloat-header* `(bigfloat simp ,fpprec)
+	 ;;            *bfloat-header-prec* fpprec))
+	 ;;    (cons *bfloat-header* s)
+	 ;; Binding FPPREC per thread and leaving the cache shared is the
+	 ;; worst of both: a thread working at one precision can cons its
+	 ;; mantissa onto a header another thread built for a different one,
+	 ;; and the result is a bigfloat labelled with a precision it does
+	 ;; not have.  Found by triaging what a run_testsuite() disturbs --
+	 ;; and note *BFLOAT-HEADER-PREC* itself does not show up there,
+	 ;; because it ends the run at the value it started with.
+	 (*bfloat-header* *bfloat-header*)
+	 (*bfloat-header-prec* *bfloat-header-prec*)
 	 ($multiplicities $multiplicities) ($%rnum_list $%rnum_list)
 	 ($error $error) ($error_syms $error_syms)
 	 ($linenum $linenum) ($gensumnum $gensumnum)

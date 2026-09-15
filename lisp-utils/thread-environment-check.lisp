@@ -45,6 +45,7 @@
     bindlist mspeclist loclist
     ;; bigfloat precision: six variables holding one piece of state
     $fpprec fpprec *bigfloatone* *bigfloatzero* *bfhalf* *bfmhalf*
+    *bfloat-header* *bfloat-header-prec*
     ;; state belonging to one line of computation
     tstack *local-signs* $multiplicities $%rnum_list $error $error_syms
     $linenum $gensumnum $integration_constant_counter
