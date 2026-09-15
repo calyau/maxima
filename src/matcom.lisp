@@ -31,7 +31,19 @@
   existing one from the symbol pool (*RULE-SYMBOL-POOL*)."
   (let ((sym (if *rule-symbol-pool*
                 (pop *rule-symbol-pool*)
-                (intern (symbol-name (gensym "RULE-SYMBOL-")) :maxima))))
+                ;; Retry until the name is one nobody has interned.
+                ;; GENSYM's counter is not atomic on every lisp -- SBCL
+                ;; hands the same name to two threads about once in 8000
+                ;; -- and interning a name turns that harmless collision
+                ;; into the same SYMBOL given to two rules, which is
+                ;; fatal here because FREE-RULE-SYMBOLS empties a
+                ;; symbol's value, function and plist when recycling it.
+                ;; INTERN's second value says whether it already existed,
+                ;; so the loser of the race simply draws again.
+                (loop for name = (symbol-name (gensym "RULE-SYMBOL-"))
+                      do (multiple-value-bind (symbol existed)
+                             (intern name :maxima)
+                           (unless existed (return symbol)))))))
     (push sym *current-rule-symbols*)
     sym))
 

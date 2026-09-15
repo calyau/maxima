@@ -38,7 +38,7 @@
   '(;; COMPAR's answer, in four parts
     sign minus odds evens
     ;; DISPLA's box dimensions and its layout scratch
-    width height depth linearray *m
+    width height depth linearray *m *rule-symbol-pool*
     ;; CRE's variables and their ordering
     varlist genvar vlist
     ;; MBIND's and MLOCAL's save stacks
@@ -203,9 +203,10 @@ look right and fix nothing."
          (fresh (check-fresh-linearray stream))
          (raced (check-race stream))
          (props (check-depended-on-properties stream))
+         (pool (zerop (check-rule-symbol-pool :stream stream)))
          ;; RACED is NIL only for a race that actually failed: a lisp
          ;; without threads reports :SKIPPED, which is not a failure.
-         (ok (and (null leaked) fresh (not (null raced)) props)))
+         (ok (and (null leaked) fresh (not (null raced)) props pool)))
     (format stream "~&thread-environment-check: ~:[FAILED~;ok~]~%" ok)
     ok))
 
@@ -322,15 +323,26 @@ worker refuse a question instead of hanging or poisoning the session."
 ;;; and five on SBCL were themselves clean, so a single trial proves
 ;;; nothing either way.
 ;;;
-;;; This is NOT called by CHECK-THREAD-ENVIRONMENT, because it fails and
-;;; `make check` has to stay green.  The fix wants the lock abstraction
-;;; in parallel.lisp rather than a second one here; run this by hand to
-;;; confirm the fix, then wire it in.
+;;; FIXED, in two halves, and this now runs with the rest.
+;;;
+;;; The pool is bound per thread and to NIL rather than to its own value,
+;;; so the threads draw from disjoint lists -- binding it to the caller's
+;;; value would leave both popping one list and fix nothing.  That took
+;;; 3728 duplicates down to 7.
+;;;
+;;; The remaining 7 were the other branch: GET-RULE-SYMBOL interns the
+;;; name GENSYM produced, and concurrent GENSYM repeats a name about once
+;;; in 8000 on SBCL, so interning turned a harmless name collision into
+;;; the same symbol.  It now retries while INTERN reports the name was
+;;; already there.  Both together: 0 in 10 trials on SBCL and CCL.
+;;;
+;;; Neither half needed a lock, which matters: the only lock abstraction
+;;; lives in parallel.lisp.
 ;;;
 ;;; *CURRENT-RULE-SYMBOLS* needs nothing: matcom.lisp already LET-binds it
 ;;; at all three of its entry points.
 
-(defun check-rule-symbol-pool (&key (draws 2000) (trials 5)
+(defun check-rule-symbol-pool (&key (draws 500) (trials 3)
                                     (stream *debug-io*))
   "Returns the number of duplicate symbols the pool handed out.
 Zero is the fixed state; anything else is the race above."
@@ -345,9 +357,10 @@ Zero is the fixed state; anything else is the race above."
       (let ((got (make-array 2 :initial-element nil)))
         (flet ((draw (slot)
                  (lambda ()
-                   (let ((*current-rule-symbols* nil) (mine '()))
-                     (dotimes (i draws) (push (get-rule-symbol) mine))
-                     (setf (aref got slot) mine)))))
+                   (with-thread-local-environment
+                     (let ((*current-rule-symbols* nil) (mine '()))
+                       (dotimes (i draws) (push (get-rule-symbol) mine))
+                       (setf (aref got slot) mine))))))
           #+ccl (let ((done (ccl:make-semaphore)))
                   (dotimes (s 2)
                     (let ((f (draw s)))

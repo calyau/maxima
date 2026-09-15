@@ -134,7 +134,7 @@
 	  varlist genvar vlist		; CRE's variables and their ordering
 	  linearray			; DISPLA's layout scratch
 	  bindlist mspeclist loclist	; MBIND's and MLOCAL's stacks
-	  tstack *local-signs* *m $%rnum
+	  tstack *local-signs* *m $%rnum *rule-symbol-pool*
 	  fpprec *bigfloatone* *bigfloatzero*	; bigfloat precision, and the
 	  *bfhalf* *bfmhalf*			; constants derived from it,
 	  *bfloat-header* *bfloat-header-prec*	; and the header memoized on it
@@ -149,6 +149,20 @@
 	 ;; *M (float.lisp) is declared with no value, like the display
 	 ;; three, so it cannot be bound to its own.
 	 *m
+	 ;; NIL, not its own value.  *RULE-SYMBOL-POOL* is the free list
+	 ;; GET-RULE-SYMBOL draws from, and its (if pool (pop pool) (intern))
+	 ;; is a check and an act rather than one operation: measured, two
+	 ;; threads drawing 2000 each handed out 3728 duplicate symbols on
+	 ;; SBCL over five trials, and one symbol serving two rules is fatal
+	 ;; because FREE-RULE-SYMBOLS empties a symbol's value, function and
+	 ;; plist before recycling it.  Binding it to the caller's value
+	 ;; would leave both threads popping one shared list and fix
+	 ;; nothing; starting each thread empty makes the pools disjoint.
+	 ;; The pool exists to stop SBCL's thread-local storage filling up
+	 ;; with rule symbols, and a pool per thread bounds that just as
+	 ;; well.  No lock needed, which matters because the only lock
+	 ;; abstraction lives in parallel.lisp.
+	 *rule-symbol-pool*
 	 ;; VLIST is scratch in the same way.  VARLIST and GENVAR are not:
 	 ;; they carry CRE's variables, and ORDERPOINTER renumbers the whole
 	 ;; GENVAR list in place -- (prenumber genvar 1) writes each
