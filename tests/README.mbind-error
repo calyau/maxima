@@ -36,9 +36,12 @@ restored values must belong to the first invocation. Deadlines, cancellation
 and worker joins bound the checks; cleanup restores the shared scratch cell
 when running the deliberately faulty parent. CLISP checks portable fallback.
 
-The initially unbound option check requires the saved MUNBOUND marker and
-scratch restoration. ECL 21.2.1 leaves a PROGV binding bound after MAKUNBOUND,
-reproduced in a standalone Common Lisp expression without Maxima. The check
-compares post-unbinding BOUNDP with that Lisp's direct primitive behavior;
-it does not claim to repair ECL's separate unbinding behavior. SBCL, CCL and
-CLISP also check actual unbound restoration through that comparison.
+The initially unbound option check requires the saved MUNBOUND markers,
+scratch restoration and preservation of the enclosing option value. It calls
+MBIND directly inside a PROGV fixture, which owns and unwinds the temporary
+values. It deliberately does not call MUNBIND on the initially unbound option:
+ECL 21.2.1's MAKUNBOUND removes the global cell while leaving a PROGV binding
+bound. This was reproduced without Maxima; a test using it on $ERRORMSG leaked
+state into later tests. The fixture now checks the enclosing BOUNDP/value as
+well. Ordinary bound-variable and error cleanup remain covered by the other
+checks. This PR does not repair ECL's separate unbinding behavior.

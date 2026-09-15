@@ -56,30 +56,29 @@
 
 (defun $mbind_error_unbound_check ()
   (let* (($values (copy-list $values)) ($myoptions (copy-list $myoptions))
-         (bindlist nil) (mspeclist nil)
          (*$errormsg-value* :outside-mbind)
-         (probe-symbol (make-symbol "MBIND-UNBOUND-REFERENCE"))
-         ;; ECL 21.2.1 leaves a PROGV binding bound after MAKUNBOUND, even
-         ;; without Maxima. Characterize that underlying Lisp behavior while
-         ;; requiring the saved MUNBOUND marker and scratch restoration.
-         (bound-after-makunbound
-           (progv (list probe-symbol) nil
-             (setf (symbol-value probe-symbol) t)
-             (makunbound probe-symbol)
-             (boundp probe-symbol))))
+         (original-bound-p (boundp '$errormsg))
+         (original-value (and original-bound-p $errormsg))
+         (probe-symbol (make-symbol "$MBIND-UNBOUND-PROBE")))
     (setf (get probe-symbol 'assign)
           (lambda (assigned-symbol assigned-value)
             (declare (ignore assigned-symbol assigned-value))
             ;; Make the option bound after MBIND has captured its unbound
             ;; state, so SYMBOL-VALUES-IN must use the captured marker.
             (when (and mbindp (not munbindp)) (setq $errormsg t))))
-    (progv (list '$errormsg probe-symbol) nil
-      (and (not (boundp '$errormsg))
-           (mbinding ((list probe-symbol '$errormsg) '(17 t))
-             (and $errormsg (eq (car mspeclist) munbound)))
-           (eq (boundp '$errormsg) bound-after-makunbound)
-           (eq *$errormsg-value* :outside-mbind)
-           (null bindlist) (null mspeclist)))))
+    (and
+     (let ((bindlist nil) (mspeclist nil))
+       (progv (list '$errormsg probe-symbol) nil
+         (and (not (boundp '$errormsg))
+              (progn (mbind (list probe-symbol '$errormsg) '(17 t) nil) t)
+              $errormsg
+              (equal mspeclist (list munbound munbound))
+              (equal bindlist (list '$errormsg probe-symbol))
+              (eq *$errormsg-value* :outside-mbind))))
+     ;; PROGV owns this fixture's values; do not call MUNBIND here. ECL's
+     ;; MAKUNBOUND can remove the global cell instead of the local binding.
+     (eq (boundp '$errormsg) original-bound-p)
+     (or (not original-bound-p) (eq $errormsg original-value)))))
 
 (defun $mbind_error_empty_check (initial)
   (let (($errormsg initial) (bindlist nil) (mspeclist nil)
