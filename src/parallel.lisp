@@ -509,7 +509,9 @@ than for the computation."
 ;;; Binding them from what the caller had puts every runner's output
 ;;; where the caller's would have gone.
 (defun specials-to-bind (specials)
-  (list* 'bindlist 'mspeclist 'loclist '*mlambda-call-stack*
+  (remove-duplicates
+   (append *private-maxima-variables*
+   (list* '*private-maxima-variables* '$values '$myoptions 'bindlist 'mspeclist 'loclist '*mlambda-call-stack*
          '$context 'context '$contexts '$activecontexts
          ;; A new worker's environment initially sees global precision.
          ;; Capture all six values from its caller, including temporary
@@ -518,7 +520,7 @@ than for the computation."
          '$fpprec 'fpprec '*bigfloatone* '*bigfloatzero* '*bfhalf* '*bfmhalf*
          '*standard-output* '*error-output* '*trace-output*
          '*query-io* '*standard-input*
-         specials))
+         specials))))
 
 ;;; Giving each runner a context of its own -- so that facts a body
 ;;; asserts belong to that body and go away with it -- is written and
@@ -552,15 +554,48 @@ than for the computation."
 ;;; documented rule stands on its own: iterations must not depend on
 ;;; each other, assumptions included.
 
-(defvar *parallel-evaluation-p* nil
-  "Non-NIL while evaluating an item of CALL-IN-PARALLEL.")
-
 (defun ensure-serial-execution (operation)
   "Signal a Maxima error for OPERATION inside a parallel evaluation."
   (when *parallel-evaluation-p*
     (merror (intl:gettext
              "~M: this function cannot run in a parallel computation.")
             operation)))
+
+(defvar *parallel-registry-lock* (%make-lock "maxima variable registries"))
+(defun merge-parallel-registry (original current parent excluded)
+  ;; Both input snapshots belong to one runner. Preserve entries that its
+  ;; dynamic variable bindings own, and merge append/delete effects into
+  ;; the shared parent without dropping another completed runner's additions.
+  (let* ((before (remove-if (lambda (item) (member item excluded)) (cdr original)))
+         (after (remove-if (lambda (item) (member item excluded)) (cdr current))))
+    (unless (equal before after)
+      (let ((remaining before) (tail after) (retained (make-hash-table :test 'eq)))
+        ;; Registry operations delete entries or append them. The longest
+        ;; initial subsequence still at the front identifies retained entries;
+        ;; an old entry later in AFTER was removed and appended again.
+        (loop for found = (and tail (member (car tail) remaining))
+              while found
+              do (setf (gethash (car tail) retained) t
+                       remaining (cdr found) tail (cdr tail)))
+        (let ((removed (make-hash-table :test 'eq)))
+          (dolist (item before)
+            (unless (gethash item retained) (setf (gethash item removed) t)))
+          (setf (cdr parent)
+                (remove-if (lambda (item) (gethash item removed)) (cdr parent))))
+        (dolist (item tail) (add2lnc item parent)))))
+  parent)
+(defun call-with-private-parallel-registries (excluded thunk)
+  (let ((parent-values $values) (parent-options $myoptions)
+        (initial-values nil) (initial-options nil))
+    (%with-lock (*parallel-registry-lock*)
+      (setf initial-values (copy-list $values)
+            initial-options (copy-list $myoptions)))
+    (let (($values (copy-list initial-values))
+          ($myoptions (copy-list initial-options)))
+      (unwind-protect (funcall thunk)
+        (%with-lock (*parallel-registry-lock*)
+          (merge-parallel-registry initial-values $values parent-values excluded)
+          (merge-parallel-registry initial-options $myoptions parent-options nil))))))
 
 (defun copy-parallel-call-stack (stack)
   "Return independent, adjustable storage for STACK's active frames."
@@ -574,17 +609,22 @@ than for the computation."
   (call-with-captured-bindings
    (job-captured job)
    (lambda ()
+     (call-with-private-parallel-registries
+      (mapcar #'first (job-captured job))
+      (lambda ()
      ;; The caller and the serial fallback obey the same rule as workers:
      ;; whether an item may ask or call an explicitly guarded operation
      ;; must not depend on who happened to take it.
      ;; Bind inside the runner; new threads do not inherit LET bindings.
      (let ((*parallel-input-forbidden* t)
            (*parallel-evaluation-p* t)
+           ;; Include the runner's own loop variables in nested capture.
+           (*private-maxima-variables* (mapcar #'first (job-captured job)))
            ;; MLAMBDA mutates the array and its fill pointer. Copy after
            ;; capture so nested workers retain their caller's active frames.
            (*mlambda-call-stack*
              (copy-parallel-call-stack *mlambda-call-stack*)))
-       (run-items job worker-p)))))
+       (run-items job worker-p)))))))
 
 (defun run-worker (job)
   "A worker's whole life.  WITH-THREAD-LOCAL-ENVIRONMENT must be entered

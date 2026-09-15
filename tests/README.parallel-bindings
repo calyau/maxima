@@ -1,0 +1,55 @@
+Private Maxima bindings in parallel computations
+================================================
+
+The appended tests in rtest_mset.mac load parallel-bindings-check.lisp.
+Run the complete file using the usual harness:
+
+  timeout 180 ./maxima-local --no-init \
+    --batch-string='run_testsuite(tests=["rtest_mset"]);'
+
+WITH-PRIVATE-MAXIMA-BINDINGS surrounds MBIND, the body, and MUNBIND in
+MLAMBDA and MBINDING-SUB. Arguments and initializers keep their existing
+order of evaluation. While evaluating a parallel item, symbol value cells
+are bound with PROGV, preserving both inherited values and unboundness.
+Ordinary serial evaluation uses no additional symbol bindings. The macro
+keeps the body inline, including lexical GO/RETURN and multiple values.
+
+A nested worker captures active local variables and the enclosing runner's
+iteration variables. Builtin list assignment may bind nested lists of
+symbols. Custom assignment targets can modify arrays, records or arbitrary
+shared state; parallel local bindings reject them before invoking their
+assignment extension. Ordinary serial bindings keep their existing behavior.
+
+VALUES and MYOPTIONS have private list storage in each runner. Otherwise
+registering or removing a temporary local would mutate another runner's
+list. When the runner unwinds, its nonlocal registration/removal effects
+are merged into its captured parent, including removal followed by
+reassignment and additions from other completed runners. Historical
+MYOPTIONS entries are retained. A short lock protects snapshots and merges;
+mathematical evaluation holds no registry lock. A captured local variable's
+registration does not escape into the parent's VALUES. Nonlocal variable
+values themselves retain the existing assignment behavior.
+
+Tests cover bound/unbound parameter and block cells, explicit nested worker
+capture, direct and nested list binding, argument order, duplicate/rest/
+quoted parameters, multiple bodies, ASSIGN and setter hooks, argument-count
+and partial-binding failures, errors/THROW/GO/RETURN, and multiple values.
+The symbol-macro cases verify that a constant-valued macro is not treated
+as a constant variable and that binding does not execute its expander.
+A fixed generator compares 128 streams of 20 registry operations against
+an independent append/delete model. Synchronized native workers overlap on
+the same variable and independently update registry entries. Their waits
+are bounded and threads are joined during cleanup. Threadless runtimes
+exercise portable scopes and the serial fallback. End-to-end examples use
+ordinary Maxima lambdas and the public parallel_makelist scheduler.
+
+This is not a guarantee for every infolist or shared data structure.
+FUNCTIONS, arrays, symbol properties, assumptions and other shared objects
+retain their own restrictions. A body must still be independent of other
+bodies; private local cells do not make intentional writes to the same
+nonlocal variable safe.
+
+A separate THROW probe exits the whole runner and checks that additions,
+removals and option registrations still reach the parent. Ordinary item errors
+are caught inside RUN-ONE-ITEM and do not exercise that unwinding path. The
+probe covers direct scope, caller, worker and serial fallback execution.

@@ -750,6 +750,23 @@ order, and @code{return} inside a parallel loop is an error rather than
 a race, since it would name one iteration's exit out of many happening
 at once.
 
+@subsubheading Local variables in parallel computations
+
+Function parameters and @mref{block} locals have private value cells in a
+parallel computation. Nested parallel computations inherit the current
+values of enclosing locals and iteration variables. Builtin list bindings
+can bind nested lists of symbols. Local bindings through custom assignment
+extensions are rejected in parallel computations because they can modify
+shared arrays, records or other objects.
+
+Each runner has private copies of the @mref{values} and @mref{myoptions}
+lists. Temporary local registrations stay private. When a runner finishes,
+including after an error, its nonlocal registration and removal effects
+are carried back to the caller. This also applies to the serial fallback.
+Assigning a nonlocal variable still assigns that variable; two bodies must
+not depend on one another's assignments. Other infolists and shared objects
+are not made private by local variable bindings.
+
 @subsubheading Bigfloat precision in parallel computations
 
 Each runner begins with the caller's current bigfloat precision.

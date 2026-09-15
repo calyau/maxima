@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Give parallel function parameters and block locals private value cells,
+  preserving nested bindings and nonlocal variable registration effects.
+
 * Apply the detected SBCL thread-local storage limit during both image builds
   and startup, while preserving explicit runtime option overrides.
 

@@ -933,6 +933,12 @@
 ;; function call.
 (defvar *mlambda-call-stack* (make-array 30 :fill-pointer 0 :adjustable t ))
 
+(defvar *parallel-evaluation-p* nil
+  "Non-NIL while evaluating an item of CALL-IN-PARALLEL.")
+
+(defvar *private-maxima-variables* nil
+  "Dynamically private Maxima variables to capture for nested runners.")
+
 ;; If this is T then arrays are stored in the value cell,
 ;; whereas if it is false they are stored in the function cell
 (defmvar $use_fast_arrays nil

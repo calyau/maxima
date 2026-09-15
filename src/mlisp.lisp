@@ -175,6 +175,35 @@ is EQ to FNNAME if the latter is non-NIL."
 		  fnname mlambda))
 	(decf mlambda-pointer 5)))))
 
+(defun binding-constant-variable-p (symbol)
+  ;; CONSTANTP may expand a symbol macro on some Lisps. Its expansion is
+  ;; not the variable cell we intend to bind, and must not execute here.
+  (catch 'binding-symbol-macro
+    (let ((*macroexpand-hook*
+            (lambda (expander form environment)
+              (declare (ignore expander form environment))
+              (throw 'binding-symbol-macro nil))))
+      (constantp symbol))))
+
+(defun private-binding-symbols (variables)
+  "Collect the symbol cells owned by supported local binding targets."
+  (let ((symbols nil))
+    (labels ((collect-symbols (target)
+               (cond ((symbolp target)
+                      (unless (binding-constant-variable-p target)
+                        (pushnew target symbols)))
+                     ;; Let MBIND/MSET report invalid atomic targets as before.
+                     ((atom target) nil)
+                     ((and ($listp target)
+                           (eq (get 'mlist 'mset_extension_operator) 'mlist-assign))
+                      (mapc #'collect-symbols (cdr target)))
+                     (t
+                      (merror (intl:gettext
+                               "parallel: a local binding target must be a symbol or a list of symbols; found: ~M")
+                              target)))))
+      (mapc #'collect-symbols variables))
+    (nreverse symbols)))
+
 (defun mlambda (fn args fnname noeval form)
   ; We assume that the lambda expression handed to us has been simplified,
   ; or at least that it's well-formed.  This is because various checks are
@@ -195,6 +224,7 @@ is EQ to FNNAME if the latter is non-NIL."
 				 (t (meval (car args)))) a)))
 	    (t (merror (intl:gettext "lambda: formal argument must be a symbol or quoted symbol; found: ~M") (car params))))
       (setq args (cdr args) params (cdr params)))
+    (with-private-maxima-bindings params
     (let (finish2033 (finish2032 params) (ar *mlambda-call-stack*))
       (declare (type (vector t) ar))
       (unwind-protect
@@ -218,7 +248,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	    (progn
 	      (incf (fill-pointer *mlambda-call-stack*) -5)
 	      (munlocal)
-	      (munbind finish2032)))))))
+	      (munbind finish2032))))))))
 
 
 (defmspec mprogn (form)
