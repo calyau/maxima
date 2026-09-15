@@ -1079,8 +1079,8 @@ errcatch (integrate(x,x,0,box(inf)));
 [];
 
 /* Bug #4742: limit result contains "false" */
-freeof(false, limit((gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x))/2,x,0,plus));
-true;
+limit((gamma_incomplete(-1/2,%i*x)+gamma_incomplete(-1,x))/2,x,0,plus);
+infinity;
 
 /* Bug #4797: "limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus) is wrong" */
 limit(atan2(5*sin(4*x)-10*sin(2*x),5*cos(4*x)-10*cos(2*x)+1), x, 0, plus), tlimswitch : false;
@@ -1650,9 +1650,9 @@ limit(x^2*exp(%i*x) + x, x, inf);
 infinity;
 
 limit(x*exp(%i*x) + x^2, x, inf);
-inf;
+infinity;
 
-limit(3^x + (9 + %i)^x, x, inf);
+limit(3^x + (9+%i)^x, x, inf);
 infinity;
 
 block([a, b],
@@ -1684,6 +1684,48 @@ block([a, b],
  assume(a > 0, a < 1, b > 0, b < 1),
  limit(a^x * cos(x) + b^x,x,inf));
 0;
+
+limit(x + %i*sqrt(x), x, inf);
+infinity;
+
+
+/* Bug #5255: "limit(1/x+%i/sqrt(x), x, 0, plus) -> inf" */
+
+limit(1/x + %i/sqrt(x), x, 0, plus);
+infinity;
+
+limit(1/x + 1/sqrt(x), x, 0, plus);
+inf;
+
+limit(1/x^(3/2) + %i/x, x, 0, plus);
+infinity;
+
+limit(%i/sqrt(x) - 1/x, x, 0, plus);
+infinity;
+
+limit(1/x + %i*sqrt(x), x, 0, plus);
+inf;
+
+limit(x^(1/3) / (x^(2/3) + 1), x, inf);
+0;
+
+limit(1/x + %i/2^x, x, 0, plus);
+infinity;
+
+limit(-1/x + %i/2^x, x, 0, plus);
+infinity;
+
+limit(exp(x) + %i, x, inf);
+infinity;
+
+limit(exp(x)*sin(x) + exp(2*x) + %i, x, inf);
+infinity;
+
+limit(1/x + %i*x, x, 0, plus);
+inf;
+
+limit(1/x + a/2^x, x, 0, plus);
+inf;
 
 
 /**************************************/
