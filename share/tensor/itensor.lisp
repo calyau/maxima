@@ -1572,6 +1572,14 @@
   )
 )
 
+;Helpers with new index notation
+;; -j is represented as ((MTIMES [SIMP]) -1 $J)
+(defun sdiff-negindexp (i)
+  (and (consp i) (eq (caar i) 'mtimes) (eql (cadr i) -1)
+       (consp (cddr i)) (null (cdddr i))))
+
+(defun sdiff-negindex-base (i) (caddr i))
+
 ;Redefined so that the derivative of any indexed object appends on the
 ;coordinate index in sorted order unless the indexed object was declared
 ;constant in which case 0 is returned.
@@ -2045,25 +2053,41 @@
              )
             )
 
-
             ((and
                (eq (caar e) (caar x))
                (eql (length (cdadr e)) (length (cdadr x)))
                (eql (length (cdaddr e)) (length (cdaddr x)))
                (eql (length (cdddr e)) (length (cdddr x)))
+               ;; New: signs in the covariant lists must agree slot by slot
+               (every #'(lambda (u v)
+                          (eq (null (sdiff-negindexp u))
+                              (null (sdiff-negindexp v))))
+                      (cdadr e) (cdadr x))
              )
              (cons '(mtimes)
               (cons 1
                (append
                  (mapcar
                    #'(lambda (x y)
-                       (list
-                         '(%kdelta simp)
-                         (list '(mlist simp) x)
-                         (list '(mlist simp) y)
+                       (cond
+                         ((sdiff-negindexp x)
+                          ;; -j in e, -b in x: dT^j/dT^b = kdelta([b],[j])
+                          (list
+                            '(%kdelta simp)
+                            (list '(mlist simp) (sdiff-negindex-base y))
+                            (list '(mlist simp) (sdiff-negindex-base x))
+                          ))
+                         (t
+                          (list
+                            '(%kdelta simp)
+                            (list '(mlist simp) x)
+                            (list '(mlist simp) y)
+                          ))
                        )
                      ) (cdadr e) (cdadr x)
                  )
+
+
                  (mapcar
                    #'(lambda (x y)
                        (list
