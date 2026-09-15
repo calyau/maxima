@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Preserve bigfloat header caches and rounding scratch in every parallel
+  runner, including the caller and nested computations.
+
 * Test exact large-integer arithmetic and input preservation across parallel
   runners, including native worker overlap and portable serial fallback.
 
