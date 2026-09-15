@@ -134,12 +134,12 @@
 	  varlist genvar vlist		; CRE's variables and their ordering
 	  linearray			; DISPLA's layout scratch
 	  bindlist mspeclist loclist	; MBIND's and MLOCAL's stacks
-	  tstack *local-signs* *m $%rnum *rule-symbol-pool*
+	  tstack *local-signs* *m *rule-symbol-pool*
 	  fpprec *bigfloatone* *bigfloatzero*	; bigfloat precision, and the
 	  *bfhalf* *bfmhalf*			; constants derived from it,
 	  *bfloat-header* *bfloat-header-prec*	; and the header memoized on it
 	  $multiplicities $%rnum_list $error $error_syms
-	  $linenum $gensumnum $integration_constant_counter))
+	  $linenum $integration_constant_counter))
 
 (defmacro with-thread-local-environment (&rest body)
   `(let (;; WIDTH, HEIGHT and DEPTH are declared special in displm.lisp
@@ -246,13 +246,22 @@
 	 ;; because it ends the run at the value it started with.
 	 (*bfloat-header* *bfloat-header*)
 	 (*bfloat-header-prec* *bfloat-header-prec*)
-	 ;; $%RNUM is the counter $%RNUM_LIST is the list of: MAT.LISP makes
-	 ;; each new %r with (incf $%rnum).  Binding the list and sharing the
-	 ;; counter would let two threads hand out the same %r name.
+	 ;; $%RNUM_LIST is per computation -- it is this evaluation's list of
+	 ;; generated parameters.  $%RNUM, the counter MAT.LISP does
+	 ;; (incf $%rnum) on, is deliberately NOT bound, and neither is
+	 ;; $GENSUMNUM: both exist to make a name nobody else will make, and
+	 ;; both are interned, so uniqueness has to hold across the whole
+	 ;; image.  Giving each thread its own counter makes them count from
+	 ;; the same place and generate the same names.  Measured, two
+	 ;; threads making 50 parameters each: shared counter 100 distinct
+	 ;; out of 100, counter bound per thread 50 distinct out of 100 --
+	 ;; every symbol collided.  This is the opposite of the pair rule:
+	 ;; state that must agree gets bound together, state that must be
+	 ;; unique must not be bound at all.
 	 ($multiplicities $multiplicities)
-	 ($%rnum_list $%rnum_list) ($%rnum $%rnum)
+	 ($%rnum_list $%rnum_list)
 	 ($error $error) ($error_syms $error_syms)
-	 ($linenum $linenum) ($gensumnum $gensumnum)
+	 ($linenum $linenum)
 	 ($integration_constant_counter $integration_constant_counter)
 	 ;; Streams too, so a thread can point its own output and its own
 	 ;; question channel somewhere without disturbing anyone else.
