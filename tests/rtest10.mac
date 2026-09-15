@@ -245,3 +245,54 @@ solve(tan(x)^2 + 1, x);
 solve(tan(x) + %i, x);
 [];
 
+
+
+/* Per-invocation factorial simplification state (GitHub #3/#9). */
+(kill(all),0);
+0$
+
+(load(file_search("parallel-input-check.lisp",file_search_tests)),
+ load(file_search("parallel-factorial-check.lisp",file_search_tests)),0);
+0$
+
+factorial_reentry_check('serial);
+true$
+
+factorial_reentry_check('worker);
+true$
+
+factorial_reentry_check('throw);
+true$
+
+factorial_exact_check();
+true$
+
+factorial_parallel_check(true);
+true$
+
+factorial_parallel_check(false);
+true$
+
+factcomb((x+1)*(x+2)*(x+3)*x!);
+(x+3)!$
+
+factcomb((x+1)^2*x!^2);
+(x+1)!^2$
+
+factcomb(x!/(x*(x-1)*(x-2)));
+(x-3)!$
+
+map(factcomb,[0,1,x,sin(x),x!]);
+[0,1,x,sin(x),x!]$
+
+(kill(all),0);
+0$
+
+factorial_rational_state_check();
+true$
+
+/* Rational representation and a caller's existing CRE stay usable. */
+block([e:rat((x+1)*x!),result],
+ result:factcomb(e),
+ [ratp(result),ratdisrep(result),ratdisrep(e)]);
+[true,(x+1)!,(x+1)*x!]$

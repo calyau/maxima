@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Give factorial simplification its own processed-factorial list and rational
+  conversion symbols, preserving results across nested and parallel calls.
+
 * Synchronize Bernoulli and Euler cache access, preserve growing storage
   and publish completed exact values before making them available to readers.
 
