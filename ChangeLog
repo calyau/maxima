@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Apply the detected SBCL thread-local storage limit during both image builds
+  and startup, while preserving explicit runtime option overrides.
+
 * Preserve enclosing variable values when removing a local binding on ECL,
   including interpreter, debugger, parallel and value-removal paths.
 

@@ -12,3 +12,4 @@ depcheck.sh
 *-depcheck.sh*
 bin
 
+sbcl-runtime-options.sh

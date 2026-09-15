@@ -1582,6 +1582,7 @@ AC_CONFIG_FILES([src/startmaxima_abcl.sh], chmod +x src/startmaxima_abcl.sh)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([tests/depcheck.sh], chmod +x tests/depcheck.sh)
+AC_CONFIG_FILES([tests/sbcl-runtime-options.sh], chmod +x tests/sbcl-runtime-options.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
 AC_CONFIG_FILES([src/maxima], chmod +x src/maxima)
 AC_CONFIG_FILES([src/maxima.bat])
@@ -1636,12 +1637,10 @@ share/raddenest/doc/Makefile \
 share/draw/Makefile share/logic/Makefile \
 share/draw/doc/Makefile share/logic/doc/Makefile \
 src/lisp])
-AC_OUTPUT
-
 # The default of 4096 is sometimes too little for the test suite.
 if test x"${sbcl}" = xtrue ; then
-   AC_MSG_CHECKING(if sbcl complains if we try to enlarge the thread-local storage)
-   echo "(quit)" | ${SBCL_NAME} --tls-limit 8192 > /dev/null 2>&1
+   AC_MSG_CHECKING(whether SBCL accepts a larger thread-local storage limit)
+   echo "(quit)" | "${SBCL_NAME}" --tls-limit 8192 --no-sysinit --no-userinit > /dev/null 2>&1
    if test "$?" = "0" ; then
 	SBCL_EXTRA_ARGS="--tls-limit 8192"
 	AC_MSG_RESULT(Yes)
@@ -1651,6 +1650,7 @@ if test x"${sbcl}" = xtrue ; then
    fi
 fi
 AC_SUBST(SBCL_EXTRA_ARGS)
+AC_OUTPUT
 
 echo
 echo "Summary:"

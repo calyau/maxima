@@ -1,0 +1,24 @@
+SBCL runtime options
+====================
+
+From a configured tree, run ./tests/sbcl-runtime-options.sh.  Automake also
+runs it in make check when SBCL is enabled.  It needs a POSIX shell, the
+configured SBCL executable, make, and the usual shell utilities; no Maxima image
+is required.
+
+The test independently probes --tls-limit support and checks that configure
+substituted the detected setting.  It also executes the generated build
+command, checking that runtime flags precede SBCL Lisp options.  It then runs the generated Unix launcher
+with a recording runtime in both core and executable image layouts.  Sixteen
+cases check the default limit, environment and command-line overrides, runtime
+option ordering, and paths and Maxima arguments containing spaces.  The
+configured default precedes user runtime options so an explicit limit wins.
+A successful run exits zero and prints its case count; a mismatch exits
+nonzero.  Temporary launchers and recordings are removed on exit.
+
+The probe accepts older SBCL versions that reject --tls-limit: their generated
+launchers must omit the unsupported default.  These tests exercise argument
+forwarding and substitution rather than allocating thousands of Lisp symbols.
+They do not execute the Windows batch launcher or test its command interpreter.
+The same configured default is inserted before user options in both Windows
+SBCL image layouts.

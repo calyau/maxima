@@ -1,0 +1,100 @@
+#!/bin/sh
+# Check the configured TLS setting and both Unix launcher image layouts.
+set -eu
+script_dir=$(CDPATH= cd "$(dirname "$0")" && pwd)
+build_root=$(CDPATH= cd "$script_dir/.." && pwd)
+configured_args='@SBCL_EXTRA_ARGS@'
+if printf '(quit)\n' | "@SBCL_NAME@" --tls-limit 8192 --no-sysinit --no-userinit >/dev/null 2>&1; then
+    expected_args='--tls-limit 8192'
+    configured_limit=8192
+else
+    expected_args=''
+    configured_limit=''
+fi
+if [ "$configured_args" != "$expected_args" ]; then
+    echo "SBCL runtime options: configure did not preserve the detected TLS setting" >&2
+    exit 1
+fi
+
+test_tmp=$(mktemp -d "${TMPDIR:-/tmp}/maxima-sbcl-options.XXXXXX")
+trap 'rm -rf "$test_tmp"' 0
+trap 'exit 1' 1 2 15
+# Exercise the actual build invocation too: runtime options must precede
+# --noprint, which starts SBCL's Lisp option section.
+{
+    printf '%s\n' 'SBCL_NAME = @SBCL_NAME@' 'SBCL_EXTRA_ARGS = @SBCL_EXTRA_ARGS@'
+    sed -n '/^EXECUTESBCL =/p' "$build_root/src/Makefile"
+    printf '%s\n' '.PHONY: all' 'all:'
+    printf '\t%s\n' "@printf '(quit)\\n' | \$(EXECUTESBCL)"
+} > "$test_tmp/build-options.mk"
+"${MAKE:-make}" -s -f "$test_tmp/build-options.mk"
+
+fixture="$test_tmp/with spaces"
+mkdir -p "$fixture/src/binary-sbcl" "$fixture/user"
+cat > "$fixture/runtime" <<'STUB'
+#!/bin/sh
+printf '%s\n' "$@" > "$TLS_TEST_OUTPUT"
+STUB
+chmod +x "$fixture/runtime"
+# Change only the source-directory assignment and the external SBCL command.
+# All argument construction comes from the generated production launcher.
+# Keep the fixture path in an environment variable so shell metacharacters in
+# TMPDIR remain data when the temporary launcher reads it.
+TLS_TEST_FIXTURE=$fixture
+export TLS_TEST_FIXTURE
+sed -e 's|^  top_srcdir=.*|  top_srcdir="$TLS_TEST_FIXTURE"|' \
+    -e '/^[[:space:]]*exec .* --core /s|exec "[^"]*"|exec "$TLS_TEST_FIXTURE/runtime"|' \
+    "$build_root/src/maxima" > "$fixture/launcher"
+
+TLS_TEST_OUTPUT="$test_tmp/arguments"
+MAXIMA_USERDIR="$fixture/user"
+MAXIMA_LAYOUT_AUTOTOOLS=false
+MAXIMA_LISP=sbcl
+MAXIMA_NUM_CORES=1
+export TLS_TEST_OUTPUT MAXIMA_USERDIR MAXIMA_LAYOUT_AUTOTOOLS MAXIMA_LISP MAXIMA_NUM_CORES
+
+check_launch () {
+    expected_limit=$1
+    shift
+    sh "$fixture/launcher" --no-init --lisp=sbcl '--batch-string=1 + 2;' "$@"
+    actual=$(awk '$0 == "--tls-limit" {getline; print}' "$TLS_TEST_OUTPUT")
+    expected=$configured_limit
+    if [ -n "$expected_limit" ]; then
+        if [ -n "$expected" ]; then
+            expected="$expected
+$expected_limit"
+        else
+            expected=$expected_limit
+        fi
+    fi
+    if [ "$actual" != "$expected" ]; then
+        echo "SBCL runtime options: wrong TLS arguments or override order ($layout)" >&2
+        exit 1
+    fi
+    grep -F -x -e '--batch-string=1 + 2;' "$TLS_TEST_OUTPUT" >/dev/null
+    if [ "$layout" = core ]; then
+        grep -F -x -e "$fixture/src/binary-sbcl/maxima.core" "$TLS_TEST_OUTPUT" >/dev/null
+    elif grep -F -x -e '--core' "$TLS_TEST_OUTPUT" >/dev/null; then
+        echo "SBCL runtime options: executable image was given a core argument" >&2
+        exit 1
+    fi
+}
+
+for layout in core executable; do
+    if [ "$layout" = executable ]; then
+        cp "$fixture/runtime" "$fixture/src/binary-sbcl/maxima"
+        chmod +x "$fixture/src/binary-sbcl/maxima"
+    fi
+    MAXIMA_LISP_OPTIONS=''
+    export MAXIMA_LISP_OPTIONS
+    check_launch ''
+    MAXIMA_LISP_OPTIONS='--tls-limit 9000'
+    check_launch 9000
+    check_launch 10000 -X '--tls-limit 10000'
+    check_launch 11000 '--lisp-options=--tls-limit 11000'
+    for limit in 8193 16384 32768 65536; do
+        MAXIMA_LISP_OPTIONS="--dynamic-space-size 2048 --tls-limit $limit"
+        check_launch "$limit"
+    done
+done
+printf '%s\n' 'SBCL runtime options: build command and 16 launcher cases passed'

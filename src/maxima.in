@@ -337,9 +337,9 @@ elif [ "$MAXIMA_LISP" = "sbcl" ]; then
 # and shows up in top as "sbcl", not as maxima, so it is easy to miss.
 # Drop the switch if you need ldb to debug a crash in the runtime.
   if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
-    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform --disable-ldb $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
+    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" --noinform --disable-ldb @SBCL_EXTRA_ARGS@ $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   else
-    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform --disable-ldb $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
+    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform --disable-ldb @SBCL_EXTRA_ARGS@ $MAXIMA_LISP_OPTIONS --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$@"
   fi
 
 else
