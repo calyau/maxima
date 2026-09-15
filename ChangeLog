@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Give parallel runners independent, adjustable function-call stacks while
+  preserving inherited frames and the caller's stack during errors.
+
 * Reject parallel LAPACK package loading and the eigenvalue, SVD and QR
   interfaces that use unsafe shared initialization, retaining serial behavior.
 

@@ -508,7 +508,7 @@ than for the computation."
 ;;; Binding them from what the caller had puts every runner's output
 ;;; where the caller's would have gone.
 (defun specials-to-bind (specials)
-  (list* 'bindlist 'mspeclist 'loclist
+  (list* 'bindlist 'mspeclist 'loclist '*mlambda-call-stack*
          '$context 'context '$contexts '$activecontexts
          ;; A new worker's environment initially sees global precision.
          ;; Capture all six values from its caller, including temporary
@@ -561,6 +561,14 @@ than for the computation."
              "~M: this function cannot run in a parallel computation.")
             operation)))
 
+(defun copy-parallel-call-stack (stack)
+  "Return independent, adjustable storage for STACK's active frames."
+  (let ((copy (make-array (array-total-size stack)
+                          :fill-pointer (fill-pointer stack)
+                          :adjustable t :initial-element nil)))
+    (replace copy stack)
+    copy))
+
 (defun call-as-runner (job worker-p)
   (call-with-captured-bindings
    (job-captured job)
@@ -570,7 +578,11 @@ than for the computation."
      ;; must not depend on who happened to take it.
      ;; Bind inside the runner; new threads do not inherit LET bindings.
      (let ((*parallel-input-forbidden* t)
-           (*parallel-evaluation-p* t))
+           (*parallel-evaluation-p* t)
+           ;; MLAMBDA mutates the array and its fill pointer. Copy after
+           ;; capture so nested workers retain their caller's active frames.
+           (*mlambda-call-stack*
+             (copy-parallel-call-stack *mlambda-call-stack*)))
        (run-items job worker-p)))))
 
 (defun run-worker (job)
