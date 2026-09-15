@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Isolate sum simplification results and monomial-matching scratch state
+  per invocation, including nested simplification and concurrent workers.
+
 * Give each Fibonacci computation its own recursive scratch state, preventing
   concurrent calls from corrupting each other's exact integer results.
 

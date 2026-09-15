@@ -1,0 +1,33 @@
+Sum simplification isolation checks
+===================================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_summation,rtestsum]);'
+
+Run every configured Lisp. Require all 17 new examples and the complete
+requested test count; Maxima can catch Lisp errors and still exit zero.
+
+SUMSUM previously shared its computed and unevaluated-term accumulators
+between all calls. They now belong to each invocation. Its five internal
+helpers are local recursive functions. The coefficient and exponent returned
+by SMONO through *A and *N are dynamically bound for this invocation, so
+matching also preserves the caller's state. The mathematical formulas and
+public SUM behavior are unchanged.
+
+The deterministic re-entry checks temporarily intercept SIMPLIFYA at the
+outer call's numeric argument and finish an inner sum before resuming. One
+uses a native worker (the serial fallback on a threadless Lisp); another
+throws out of an inner sum while the outer already has a computed term.
+Both computed and unevaluated terms must stay isolated. The original
+simplifier is restored with UNWIND-PROTECT. Run in an otherwise idle Maxima
+process; the temporary interception is test instrumentation only.
+
+128 generated rational-coefficient polynomial cases compare against exact
+finite addition, independently of the Bernoulli formulas. Another 48 cases
+run through ordinary parallel scheduling and the serial fallback. Inputs
+must remain unchanged; direct checks retain SUMSUM's one-value unevaluated
+and two-value partial/computed results. Examples also cover finite and
+infinite geometric sums, binomial sums, partial sums and divergence.
+
+This isolates this summation group's scratch state. It does not certify
+all simplifier callbacks, shared caches or the entire parallel evaluator.
