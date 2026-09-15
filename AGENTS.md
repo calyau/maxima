@@ -357,6 +357,13 @@ dependency and 2 when it cannot run at all, so unlike the suite its exit
 status is the contract and there is no log to grep. SBCL-only -- no other
 Lisp exposes the xref. Run it alone with `cd tests && ./depcheck.sh`.
 
+**The per-thread environment is checked on every configured Lisp.**
+`tests/threadcheck.sh <lisp> bindings` checks dynamic bindings, fresh display
+scratch and nested-scope regressions. A separate `race` mode runs a synchronized
+negative control on threaded SBCL and CCL, or exits 77 (Automake SKIP) elsewhere.
+Both modes are in `make check`; unsupported races do not skip the portable
+checks. `tests/README.threadcheck` describes the exit codes and driver tests.
+
 **Baseline before blaming your change.** On SBCL both the core suite and core +
 share are expected green, and normally are, so a red run is a real signal and
 not the status quo. It still need not be yours: results move between Lisp

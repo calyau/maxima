@@ -1,0 +1,63 @@
+Checking the per-thread environment
+===================================
+
+make check runs two additional tests for every configured Lisp:
+
+  <lisp>-thread-bindings.sh
+    Always runs.  Checks all 31 required dynamic bindings and the fresh
+    LINEARRAY, then runs 781 regression assertions.  These include a
+    deliberately missing pair of bindings and 128 reproducible trials of
+    nested environments, varied values and nonlocal exits.
+
+  <lisp>-thread-race.sh
+    Runs on SBCL built with threads, native-threaded CCL and threaded ECL.
+    ECL also runs 2306 semaphore regression assertions. On other
+    Lisps it exits 77, which Automake reports as SKIP.  This says nothing
+    about whether that Lisp has threads: only these three backends are
+    implemented in this checker.  The portable binding test still runs.
+
+The race uses two workers, each writing SIGN and checking its own answer.
+Two semaphore rendezvous per round ensure both writes precede either read
+and both reads precede the next write.  Over 2,000 rounds the unbound
+control must lose exactly 2,000 of 4,000 answers; the bound run must lose
+none.  Thus a scheduler that happens to run workers serially cannot give
+a false pass.  Each worker counts privately.  Rendezvous have a ten-second
+timeout, and worker errors are reported in the parent.  The unbound control
+deliberately overwrites global SIGN; run the race in a fresh batch image,
+as the driver does, rather than alongside an interactive computation.
+
+ECL 21.2.1 has no timeout argument on WAIT-ON-SEMAPHORE. Its adapter polls
+TRY-GET-SEMAPHORE with a deadline and a short sleep. The portable assertions
+test immediate availability, zero and positive timeouts, and later
+availability. ECL-specific checks use 128 generated token counts plus a
+delayed native producer to verify acquisition, consumption and empty waits.
+
+Run the checks separately from the tests directory of a configured build:
+
+  ./threadcheck.sh sbcl bindings
+  ./threadcheck.sh sbcl race
+  ./threadcheck.sh ccl64 bindings
+  ./threadcheck.sh ccl64 race
+  ./threadcheck.sh ecl bindings
+  ./threadcheck.sh ecl race
+  ./threadcheck.sh clisp bindings
+  ./threadcheck.sh clisp race       # expected exit 77
+
+Exit codes: 0 = pass, 1 = failed isolation or missing completion marker,
+2 = a checker load/runtime error (including a regression assertion),
+77 = unsupported race.  Launch failures retain
+their nonzero exit code.  The driver also requires the exact PASS or SKIP
+completion line: Maxima can auto-continue a Lisp load error and exit 0.
+It passes the source path via an environment variable rather than inserting
+it into Lisp source.  Separate source/build trees are supported; configure
+retains its existing restrictions on directory names.  MAXIMA may name an
+alternative maxima-local executable, including a path with spaces.
+
+threadcheck-driver-test.sh checks 86 combinations of status, completion
+marker and invalid arguments using a mock executable with spaces in its
+path.  It also verifies temporary-log cleanup.  This runs under make check
+without a Lisp of its own.
+
+These tests cover the isolation claimed by WITH-THREAD-LOCAL-ENVIRONMENT.
+They do not establish that the whole evaluator, the assumption database,
+or share packages are safe for concurrent use.

@@ -1,0 +1,42 @@
+#!/bin/sh
+# Separate portable binding checks from the optionally supported race.
+# A zero process status alone is insufficient: Maxima can auto-continue
+# Lisp read/load errors and then exit successfully at EOF.
+set -eu
+
+if test "$#" -ne 2; then
+    echo "Usage: $0 <lisp> <bindings|race>" >&2
+    exit 2
+fi
+case "$2" in
+    bindings|race) ;;
+    *) echo "Unknown threadcheck mode: $2" >&2; exit 2 ;;
+esac
+
+LOCAL_MAXIMA=${MAXIMA:-@abs_top_builddir@/maxima-local}
+MAXIMA_THREADCHECK_MODE=$2
+MAXIMA_THREADCHECK_FILE='@abs_top_srcdir@/tests/threadcheck.lisp'
+export MAXIMA_THREADCHECK_MODE MAXIMA_THREADCHECK_FILE
+
+# Use a private log so simultaneous manual invocations cannot overwrite
+# each other's evidence.  Automake keeps the complete output in its log.
+CHECK_DIR=$(mktemp -d "${TMPDIR:-/tmp}/maxima-threadcheck.XXXXXXXX")
+trap 'rm -rf "$CHECK_DIR"' 0
+trap 'exit 2' 1 2 3 15
+status=0
+"$LOCAL_MAXIMA" --no-init --lisp="$1" \
+    --batch-string=':lisp (load (maxima-getenv "MAXIMA_THREADCHECK_FILE"))' \
+    >"$CHECK_DIR/output" 2>&1 || status=$?
+cat "$CHECK_DIR/output"
+
+case "$status" in
+    0) grep -qx 'threadcheck: PASS' "$CHECK_DIR/output" ;;
+    77)
+        # Only the race can be unsupported.  Portable checks must run.
+        if test "$2" = race &&
+            grep -qx 'threadcheck: SKIP' "$CHECK_DIR/output"; then
+            exit 77
+        fi
+        exit 1 ;;
+    *) exit "$status" ;;
+esac

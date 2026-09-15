@@ -28,6 +28,9 @@
 ;;;;     ./maxima-local --no-init
 ;;;;     :lisp (load "lisp-utils/thread-environment-check.lisp")
 ;;;;     :lisp (maxima::check-thread-environment)
+;;;;
+;;;; MAKE CHECK runs the portable checks and the race as separate tests.
+;;;; See tests/README.threadcheck for their status and regression checks.
 
 (in-package :maxima)
 
@@ -67,15 +70,26 @@ what a lexical binding, or an omission from the macro, looks like."
                                      (make-broadcast-stream)
                                      (list :thread-environment-marker))))
                          *thread-environment-variables*)))
-    (with-thread-local-environment
-      (loop for (symbol . marker) in markers do (set symbol marker)))
-    (loop for (symbol . marker) in markers
-          when (and (boundp symbol) (eq (symbol-value symbol) marker))
-            do (push symbol leaked))
+    ;; A failed check must not leave markers in the caller's state (or
+    ;; redirect its output streams).  Preserve unbound variables too.
+    (let ((saved (loop for symbol in *thread-environment-variables*
+                       collect (list symbol (boundp symbol)
+                                     (when (boundp symbol)
+                                       (symbol-value symbol))))))
+      (unwind-protect
+           (progn
+             (with-thread-local-environment
+               (loop for (symbol . marker) in markers do (set symbol marker)))
+             (loop for (symbol . marker) in markers
+                   when (and (boundp symbol) (eq (symbol-value symbol) marker))
+                     do (push symbol leaked)))
+        (loop for (symbol bound value) in saved
+              do (if bound (set symbol value) (makunbound symbol)))))
+    (setq leaked (nreverse leaked))
     (format stream "~&thread-environment-check: ~D variable~:P~%"
             (length *thread-environment-variables*))
     (format stream "~&  leaked out of the binding: ~:[none~;~:*~a~]~%"
-            (nreverse leaked))
+            leaked)
     leaked))
 
 (defun check-fresh-linearray (&optional (stream *debug-io*))
@@ -91,47 +105,96 @@ look right and fix nothing."
 ;;; The race.  SIGN is the one worth racing: it is how COMPAR returns an
 ;;; answer, so if binding fixes SIGN it fixes the pattern generally.
 
-#+(or ccl sbcl)
+(defun threadcheck-wait-for-token (try-token timeout)
+  ;; ECL 21.2.1 has no timed semaphore wait. Poll its nonblocking operation
+  ;; with a deadline so a missing peer cannot leave a worker stuck forever.
+  ;; Keep this small algorithm portable so all configured Lisps can test it.
+  (let ((deadline (+ (get-internal-real-time)
+                     (* timeout internal-time-units-per-second))))
+    (loop
+      (when (funcall try-token) (return t))
+      (when (>= (get-internal-real-time) deadline) (return nil))
+      (sleep 0.001))))
+
+#+(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
 (defun check-race (&optional (stream *debug-io*))
-  (flet ((race (wrap)
-           (let ((bad 0) (threads '()))
-             (declare (ignorable threads))
-             (flet ((worker (tag)
-                      (lambda ()
-                        (funcall wrap
-                                 (lambda ()
-                                   (dotimes (i 2000)
-                                     (setq sign tag)
-                                     #+ccl (ccl:process-allow-schedule)
-                                     #+sbcl (sb-thread:thread-yield)
-                                     (unless (eq sign tag) (incf bad))))))))
-               #+ccl
-               (let ((done (ccl:make-semaphore)))
-                 (dolist (tag '($pos $neg))
-                   (let ((f (worker tag)))
-                     (ccl:process-run-function
-                      "w" (lambda () (funcall f) (ccl:signal-semaphore done)))))
-                 (dotimes (i 2) (ccl:wait-on-semaphore done)))
-               #+sbcl
-               (progn
-                 (dolist (tag '($pos $neg))
-                   (push (sb-thread:make-thread (worker tag)) threads))
-                 (mapc #'sb-thread:join-thread threads)))
-             bad)))
+  ;; Two rendezvous per round: both writes precede either read, and both
+  ;; reads precede the next write.  The unbound control must therefore
+  ;; lose exactly one answer per round, even on a single CPU.  Yielding
+  ;; alone cannot ensure that the threads actually overlap.
+  (labels ((make-gate ()
+             #+sb-thread (sb-thread:make-semaphore)
+             #+(and ccl openmcl-native-threads) (ccl:make-semaphore)
+             #+(and ecl threads) (mp:make-semaphore :count 0))
+           (signal-gate (gate)
+             #+sb-thread (sb-thread:signal-semaphore gate)
+             #+(and ccl openmcl-native-threads) (ccl:signal-semaphore gate)
+             #+(and ecl threads) (mp:signal-semaphore gate))
+           (wait-gate (gate)
+             (unless
+                 #+sb-thread (sb-thread:wait-on-semaphore gate :timeout 10)
+                 #+(and ccl openmcl-native-threads)
+                 (ccl:timed-wait-on-semaphore gate 10)
+                 #+(and ecl threads)
+                 (threadcheck-wait-for-token
+                  (lambda () (mp:try-get-semaphore gate)) 10)
+               (error "thread-environment-check: rendezvous timed out")))
+           (join-worker (thread)
+             #+sb-thread (sb-thread:join-thread thread)
+             #+(and ccl openmcl-native-threads) (ccl:join-process thread)
+             #+(and ecl threads) (mp:process-join thread))
+           (race (wrap)
+             (let ((gates (vector (make-gate) (make-gate)))
+                   (results (vector nil nil))
+                   (threads '()))
+               (labels ((rendezvous (index)
+                          (signal-gate (aref gates (- 1 index)))
+                          (wait-gate (aref gates index)))
+                        (worker (index tag)
+                          (lambda ()
+                            ;; Each worker owns one result slot.  Counting
+                            ;; into a shared BAD would itself be a race.
+                            (setf (aref results index)
+                                  (handler-case
+                                      (funcall
+                                       wrap
+                                       (lambda ()
+                                         (loop repeat 2000
+                                               do (setq sign tag)
+                                                  (rendezvous index)
+                                               count (not (eq sign tag))
+                                               do (rendezvous index))))
+                                    (error (e) e))))))
+                 ;; Join even if creating the second worker fails.  Its
+                 ;; peer's wait is bounded, and errors reach the parent.
+                 (unwind-protect
+                      (loop for index below 2 for tag in '($pos $neg)
+                            for function = (worker index tag)
+                            do (push
+                                #+sb-thread
+                                (sb-thread:make-thread function)
+                                #+(and ccl openmcl-native-threads)
+                                (ccl:process-run-function "threadcheck"
+                                                          function)
+                                #+(and ecl threads)
+                                (mp:process-run-function "threadcheck" function)
+                                threads))
+                   (mapc #'join-worker threads)))
+               (loop for result across results
+                     unless (integerp result)
+                       do (error "thread-environment-check: worker failed: ~A"
+                                 result))
+               (reduce #'+ results))))
     (let ((unbound (race (lambda (f) (funcall f))))
           (bound   (race (lambda (f) (with-thread-local-environment (funcall f))))))
       (format stream "~&  race on SIGN: ~D wrong of 4000 unbound, ~D bound~%"
               unbound bound)
-      (when (zerop unbound)
-        (format stream "~&  NOTE: the unbound race found nothing, so this run ~
-                        proves little;~%        the threads probably did not ~
-                        interleave.~%"))
-      (zerop bound))))
+      (and (= unbound 2000) (zerop bound)))))
 
-#-(or ccl sbcl)
+#-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads))
 (defun check-race (&optional (stream *debug-io*))
   (format stream "~&  race skipped: no thread support known for this lisp~%")
-  t)
+  :skipped)
 
 (defun check-thread-environment (&optional (stream *debug-io*))
   "Returns T if the environment isolates everything it claims to."
@@ -139,7 +202,9 @@ look right and fix nothing."
          (fresh (check-fresh-linearray stream))
          (raced (check-race stream))
          (props (check-depended-on-properties stream))
-         (ok (and (null leaked) fresh raced props)))
+         ;; RACED is NIL only for a race that actually failed: a lisp
+         ;; without threads reports :SKIPPED, which is not a failure.
+         (ok (and (null leaked) fresh (not (null raced)) props)))
     (format stream "~&thread-environment-check: ~:[FAILED~;ok~]~%" ok)
     ok))
 

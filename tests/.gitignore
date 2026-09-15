@@ -1,5 +1,6 @@
 *.log
 *-test.sh*
+!threadcheck-driver-test.sh
 test-suite.log
 300.png
 600.png
@@ -10,5 +11,8 @@ multipage.eps
 test.sh
 depcheck.sh
 *-depcheck.sh*
+threadcheck.sh
+*-thread-bindings.sh*
+*-thread-race.sh*
 bin
 
