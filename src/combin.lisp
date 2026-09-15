@@ -335,6 +335,15 @@
 (putprop '*eu* 11 'lim)
 (putprop 'bern 16 'lim)
 
+;; Only lookup, allocation and publication hold these locks. Recurrences
+;; call simplifiers, which may start and join another computation.
+(defvar *bern-cache-lock* (%make-lock "maxima Bernoulli cache"))
+(defvar *euler-cache-lock* (%make-lock "maxima Euler cache"))
+
+(defun ensure-combin-cache-capacity (array size)
+  ;; Another producer may already have reserved space beyond its cache limit.
+  (if (< (array-total-size array) size) (adjust-array array size) array))
+
 (defun nxtbincoef (m nom combin-a)
   (truncate (* nom (- combin-a m)) m))
 
@@ -343,8 +352,9 @@
      (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& combin-a (1+ %a*))
      a	(cond ((zerop %k)
 	       (setq e (- e))
-	       (setf (aref *eu* (1- (ash %a* -1))) e)
-	       (putprop '*eu* (ash %a* -1) 'lim)
+	       (%with-lock (*euler-cache-lock*)
+	         (setf (aref *eu* (1- (ash %a* -1))) e)
+	         (putprop '*eu* (max (get '*eu* 'lim) (ash %a* -1)) 'lim))
 	       (return e)))
      (setq nom (nxtbincoef (1+ (- %a* %k)) nom combin-a) %k (1- %k))
      (cond ((setq fl (null fl))
@@ -356,21 +366,24 @@
   (flet
       (($euler (s)
 	 (setq s
-	       (let ((%n 0) $float)
-		 (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
-		       ((zerop (setq %n s)) 1)
-		       ($zerobern
-			(cond ((oddp %n) 0)
-			      ((null (> (ash %n -1) (get '*eu* 'lim)))
-			       (aref *eu* (1- (ash %n -1))))
-			      ((eq $zerobern '%$/#&)
-			       (euler %n))
-			      ((setq *eu* (adjust-array *eu* (1+ (ash %n -1))))
-			       (euler %n))))
-		       ((<= %n (get '*eu* 'lim))
-			(aref *eu* (1- %n)))
-		       ((setq *eu* (adjust-array *eu* (1+ %n)))
-			(euler (* 2 %n))))))
+	       (let ((%n 0) $float cache-index cached)
+		 (setq cached
+		       (%with-lock (*euler-cache-lock*)
+                         (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
+                               ((zerop (setq %n s)) 1)
+                               ($zerobern
+                                (cond ((oddp %n) 0)
+                                      ((null (> (ash %n -1) (get '*eu* 'lim)))
+                                       (aref *eu* (1- (ash %n -1))))
+                                      ((eq $zerobern '%$/#&)
+                                       (setq cache-index %n))
+                                      ((setq *eu* (ensure-combin-cache-capacity *eu* (1+ (ash %n -1))))
+                                       (setq cache-index %n))))
+                               ((<= %n (get '*eu* 'lim))
+                                (aref *eu* (1- %n)))
+                               ((setq *eu* (ensure-combin-cache-capacity *eu* (1+ %n)))
+                                (setq cache-index (* 2 %n))))))
+		 (if cache-index (euler cache-index) cached)))
 	 (simplify s)))
   (if (and (fixnump u) (>= u 0))
 	($euler u)
@@ -388,9 +401,11 @@
 	   combin-a (1+ %a*))
      a	(cond ((= %k l)
 	       (setq bb (*red a (* -1 b %a*)))
-	       (putprop 'bern (setq %a* (1- (ash %a* -1))) 'lim)
-	       (setf (aref *bn* %a*) (cadr bb))
-	       (setf (aref *bd* %a*) (caddr bb))
+	       (setq %a* (1- (ash %a* -1)))
+	       (%with-lock (*bern-cache-lock*)
+	         (setf (aref *bn* %a*) (cadr bb))
+	         (setf (aref *bd* %a*) (caddr bb))
+	         (putprop 'bern (max (get 'bern 'lim) %a*) 'lim))
 	       (return bb)))
      (incf %k)
      (setq a (+ (* b (setq nom (nxtbincoef %k nom combin-a))
@@ -405,26 +420,29 @@
   (flet
       (($bern (s)
 	 (setq s
-	       (let ((%n 0) $float)
-		 (cond ((or (not (fixnump s)) (< s 0)) (list '($bern) s))
-		       ((= (setq %n s) 0) 1)
-		       ((= %n 1) '((rat) -1 2))
-		       ((= %n 2) '((rat) 1 6))
-		       ($zerobern
-			(cond ((oddp %n) 0)
-			      ((null (> (setq %n (1- (ash %n -1))) (get 'bern 'lim)))
-			       (list '(rat) (aref *bn* %n) (aref *bd* %n)))
-			      ((eq $zerobern '$/#&) (bern  (* 2 (1+ %n))))
-			      (t
-			       (setq *bn* (adjust-array *bn* (setq %n (1+ %n))))
-			       (setq *bd* (adjust-array *bd* %n))
-			       (bern  (* 2 %n)))))
-		       ((null (> %n (get 'bern 'lim)))
-			(list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
-		       (t
-			(setq *bn* (adjust-array *bn* (1+ %n)))
-			(setq *bd* (adjust-array *bd* (1+ %n)))
-			(bern (* 2 (1- %n)))))))
+	       (let ((%n 0) $float cache-index cached)
+		 (setq cached
+		       (%with-lock (*bern-cache-lock*)
+                         (cond ((or (not (fixnump s)) (< s 0)) (list '($bern) s))
+                               ((= (setq %n s) 0) 1)
+                               ((= %n 1) '((rat) -1 2))
+                               ((= %n 2) '((rat) 1 6))
+                               ($zerobern
+                                (cond ((oddp %n) 0)
+                                      ((null (> (setq %n (1- (ash %n -1))) (get 'bern 'lim)))
+                                       (list '(rat) (aref *bn* %n) (aref *bd* %n)))
+                                      ((eq $zerobern '$/#&) (setq cache-index (* 2 (1+ %n))))
+                                      (t
+                                       (setq *bn* (ensure-combin-cache-capacity *bn* (setq %n (1+ %n))))
+                                       (setq *bd* (ensure-combin-cache-capacity *bd* %n))
+                                       (setq cache-index (* 2 %n)))))
+                               ((null (> %n (get 'bern 'lim)))
+                                (list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
+                               (t
+                                (setq *bn* (ensure-combin-cache-capacity *bn* (1+ %n)))
+                                (setq *bd* (ensure-combin-cache-capacity *bd* (1+ %n)))
+                                (setq cache-index (* 2 (1- %n)))))))
+		 (if cache-index (bern cache-index) cached)))
 	 (simplify s)))
     (if (and (fixnump u) (not (< u 0)))
 	($bern u)

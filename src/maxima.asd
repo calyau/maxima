@@ -902,7 +902,7 @@
                   reader utility-macros commands
                   destructuring-let errset other-macros
                   rat-macros declarations fundamental-macros
-                  numerical-utilities m2-pattern-matcher random)
+                  numerical-utilities m2-pattern-matcher random i-o)
      :components ((:file "scs")
                   (:file "asum")
                   (:file "fortra")

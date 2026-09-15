@@ -1202,7 +1202,7 @@
                   "reader" "utility-macros" "commands"
                   "destructuring-let" "errset" "other-macros"
                   "rat-macros" "declarations"  "fundamental-macros"
-                  "numerical-utilities"
+                  "numerical-utilities" "i-o"
                   "m2-pattern-matcher"
                   "random")
      #+mk-deps-complete :dependencies-complete #+mk-deps-complete t

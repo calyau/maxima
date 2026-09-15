@@ -1,0 +1,34 @@
+Bernoulli and Euler cache checks
+================================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest16]);'
+
+Run every configured Lisp, then the complete core+share suite. The appended
+checks retain the existing problem numbers in rtest16. Require the complete
+requested count and compare its error summary with the Lisp's baseline;
+Maxima can catch Lisp errors and still exit zero.
+
+Each cache has a lock covering lookup, growth and publication. Storage only
+grows; a completed prefix never retreats when a smaller producer finishes.
+Bernoulli numerator and denominator slots are filled before their limit is
+published. Recurrences and nested simplification run outside the lock so a
+callback can join another worker. A competing cache miss may duplicate exact
+computation. Both zerobern conventions and float conversion remain intact.
+
+The helper computes exact reference coefficients by reciprocal power series:
+Bernoulli t/(exp(t)-1) and Euler 1/cosh(t), as defined in NIST DLMF 24.2,
+https://dlmf.nist.gov/24.2.E1 and https://dlmf.nist.gov/24.2.E6.
+It does not call Maxima's binomial recurrence. Sixty-four generated finite
+power sums also check Bernoulli polynomials against direct integer addition.
+
+Tests reset the actual cache arrays in an otherwise idle process, exercise
+cold/warm caches and native/fallback scheduling, and restore the original
+arrays and limit properties after joining all workers. A temporary PUTPROP
+observer reads B36 at publication. Other checks simulate reserved capacity,
+completion in decreasing index order, recurrence failure, and nested/native
+callbacks through NXTBINCOEF. Intercepted functions are restored on unwinding.
+These interceptions are test instrumentation, not application interfaces.
+
+These checks establish this cache contract; other mutable simplifier state
+and asynchronous interruption policy require their own verification.
