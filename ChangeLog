@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Test exact large-integer arithmetic and input preservation across parallel
+  runners, including native worker overlap and portable serial fallback.
+
 * Give parallel function parameters and block locals private value cells,
   preserving nested bindings and nonlocal variable registration effects.
 
