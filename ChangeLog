@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Expose an internal parallel execution context and a guard for operations
+  that explicitly require serial execution, consistently across runners.
+
 * Synchronize temporary plot-file registration and take a consistent snapshot
   for cleanup, keeping filesystem operations outside the registry lock.
 

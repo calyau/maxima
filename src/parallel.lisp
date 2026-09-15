@@ -551,14 +551,26 @@ than for the computation."
 ;;; documented rule stands on its own: iterations must not depend on
 ;;; each other, assumptions included.
 
+(defvar *parallel-evaluation-p* nil
+  "Non-NIL while evaluating an item of CALL-IN-PARALLEL.")
+
+(defun ensure-serial-execution (operation)
+  "Signal a Maxima error for OPERATION inside a parallel evaluation."
+  (when *parallel-evaluation-p*
+    (merror (intl:gettext
+             "~M: this function cannot run in a parallel computation.")
+            operation)))
+
 (defun call-as-runner (job worker-p)
   (call-with-captured-bindings
    (job-captured job)
    (lambda ()
      ;; The caller and the serial fallback obey the same rule as workers:
-     ;; whether an item may ask must not depend on who happened to take it.
+     ;; whether an item may ask or call an explicitly guarded operation
+     ;; must not depend on who happened to take it.
      ;; Bind inside the runner; new threads do not inherit LET bindings.
-     (let ((*parallel-input-forbidden* t))
+     (let ((*parallel-input-forbidden* t)
+           (*parallel-evaluation-p* t))
        (run-items job worker-p)))))
 
 (defun run-worker (job)
