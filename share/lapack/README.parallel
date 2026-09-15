@@ -1,0 +1,52 @@
+Parallel execution and LAPACK
+=============================
+
+Load LAPACK during serial execution. Loading through LAPACK.MAC is refused
+inside CALL-IN-PARALLEL before initialization; LOAD-LAPACK.LISP also protects
+direct Lisp loading. The public entry preserves the operation-named Maxima
+error, which LOADFILE would otherwise replace with a generic load failure.
+
+DGEEV, DGESVD, ZGEEV, ZHEEV and DGEQRF require serial execution. Their translated
+call paths reach shared initialization in DLAMCH, which publishes FIRST before
+DLAMC2 has filled EPS. A concurrent first call can read zero instead of the
+machine precision. DGEQRF reaches it through DGEQR2 and DLARFG. The handwritten
+adapters refuse before matrix conversion; generated code and serial arithmetic
+are unchanged. The same rule applies to native workers, caller participation
+and the one-runner fallback, including PARALLEL_THREADS = 1.
+
+The present DGESV/DGETF2 path does not call DLAMCH. DGESV, DGEMM, DLANGE and
+ZLANGE remain available after serial package loading. This does not certify
+arbitrary surrounding evaluator state, unmarked foreign Lisp threads or
+asynchronous interruption as safe.
+
+Tests append to RTEST_DGEQRF.MAC, preserving previous problem numbers:
+
+  run_testsuite(share_tests=true,
+                tests=["rtest_dgemm", "rtest_dgeqrf", "rtest_dgesv"]);
+
+On SBCL those files are excluded from the default registry because package
+compilation needs considerable heap. Start a fresh process with
+MAXIMA_LISP_OPTIONS="--dynamic-space-size 4096", then first register them:
+
+  share_testsuite_files:append(share_testsuite_files,
+                              ["rtest_dgemm", "rtest_dgeqrf", "rtest_dgesv"])$
+
+Always use --no-init and a process timeout. A Lisp error can exit zero; require
+both completion of all 50 examples and the "No unexpected errors" summary.
+
+The helper LAPACK-PARALLEL-CHECK.LISP uses PARALLEL-INPUT-CHECK.LISP to force
+execution sites. Converter and loader hooks stop the unguarded negative
+control before translated code or compilation, and are restored after worker
+joins. Tests assert the operation-named error and that the body was not entered,
+including when the independent input flag is cleared. Both public and direct
+Lisp loader paths are covered.
+
+Serial reference tests check 24 generated samples, all optional vector flags,
+known real and complex spectra, eigenvector residuals and normalization, QR
+reconstruction and orthogonality, and SVD reconstruction, ordering and the
+Frobenius norm identity. Zero, singleton, wide and tall matrices exercise
+boundaries without prescribing a basis for repeated eigenvalues. References
+use small independent Common Lisp matrix calculations and a fixed local LCG;
+no LAPACK routine computes its own expected answer. Input matrices must remain
+unchanged. Native/fallback batches also check 32 exact LU solutions, products
+and real/complex norms. No previous expected mathematical value is weakened.

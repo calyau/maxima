@@ -72,6 +72,7 @@ A list of three items is returned.  The first item is a list of the
 eigenvectors.  The second item is false or the matrix of right
 eigenvectors.  The last itme is false or the matrix of left
 eigenvectors."
+  (ensure-serial-execution '$dgeev)
   (flet ((make-eigval (wr wi)
 	   `((mlist) ,@(map 'list #'(lambda (r i)
 				      (add r (mul '$%i i)))
@@ -181,6 +182,7 @@ non-zero elements of SIGMA.  If jobu is not false, The second element
 is the matrix U.  Otherwise it is false.  Similarly, the third element
 is V**T or false, depending on jobvt."
   
+  (ensure-serial-execution '$dgesvd)
   (flet ((maxify-vector (v)
 	   `((mlist) ,@(coerce v 'list)))
 	 (fixup-jobu (arg)
@@ -323,6 +325,7 @@ A list of three items is returned.  The first item is a list of the
 eigenvectors.  The second item is false or the matrix of right
 eigenvectors.  The last itme is false or the matrix of left
 eigenvectors."
+  (ensure-serial-execution '$zgeev)
   (flet ((make-eigval (w)
 	   `((mlist) ,@(map 'list #'(lambda (z)
 				      (add (realpart z) (mul '$%i (imagpart z))))
@@ -371,6 +374,7 @@ eigenvectors."
 	      `((mlist) ,e-val ,e-vec-right ,e-vec-left))))))))
 
 (defun $zheev (a &optional eigen-vector-p)
+  (ensure-serial-execution '$zheev)
   (flet ((make-eigval (w)
 	   `((mlist) ,@(map 'list #'(lambda (z)
 				      (add (realpart z) (mul '$%i (imagpart z))))

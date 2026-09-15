@@ -97,3 +97,63 @@ block ([a, q, r],
   if %% < 1e-12 then true else [a, q, r, %%]);
 true;
 
+
+/* Parallel guards and independent serial references: GitHub issue #14. */
+(kill(all),0);
+0$
+
+(load(lapack),
+ load(file_search("parallel-input-check.lisp",file_search_tests)),
+ load(file_search("lapack-parallel-check.lisp",file_search_lisp)),0);
+0$
+
+lapack_parallel_guard_check(caller,false);
+true$
+
+lapack_parallel_guard_check(worker,false);
+true$
+
+lapack_parallel_guard_check(fallback,false);
+true$
+
+lapack_parallel_guard_check(public,false);
+true$
+
+lapack_parallel_guard_check(worker,true);
+true$
+
+lapack_parallel_load_check(caller);
+true$
+
+lapack_parallel_load_check(worker);
+true$
+
+lapack_parallel_load_check(fallback);
+true$
+
+lapack_parallel_load_check(caller,true);
+true$
+
+lapack_parallel_load_check(worker,true);
+true$
+
+lapack_parallel_load_check(fallback,true);
+true$
+
+lapack_serial_eigen_check();
+true$
+
+lapack_serial_factorization_check();
+true$
+
+lapack_serial_boundary_check();
+true$
+
+lapack_parallel_supported_check(true);
+true$
+
+lapack_parallel_supported_check(false);
+true$
+
+(kill(all),0);
+0$

@@ -8,6 +8,7 @@
 ;; a is not modified.
 
 (defun $dgeqrf (a)
+  (ensure-serial-execution '$dgeqrf)
 
   (multiple-value-bind (a-nrow a-ncol)
       (maxima-matrix-dims a)

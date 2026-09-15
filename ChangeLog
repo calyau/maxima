@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Reject parallel LAPACK package loading and the eigenvalue, SVD and QR
+  interfaces that use unsafe shared initialization, retaining serial behavior.
+
 * Expose an internal parallel execution context and a guard for operations
   that explicitly require serial execution, consistently across runners.
 
