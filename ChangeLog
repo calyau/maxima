@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Preserve the caller's Common Lisp random state when generating plot
+  filenames, including when generation signals an error.
+
 * Give factorial simplification its own processed-factorial list and rational
   conversion symbols, preserving results across nested and parallel calls.
 
