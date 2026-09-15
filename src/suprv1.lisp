@@ -134,7 +134,7 @@
 	  varlist genvar vlist		; CRE's variables and their ordering
 	  linearray			; DISPLA's layout scratch
 	  bindlist mspeclist loclist	; MBIND's and MLOCAL's stacks
-	  tstack *local-signs*
+	  tstack *local-signs* *m $%rnum
 	  fpprec *bigfloatone* *bigfloatzero*	; bigfloat precision, and the
 	  *bfhalf* *bfmhalf*			; constants derived from it,
 	  *bfloat-header* *bfloat-header-prec*	; and the header memoized on it
@@ -146,6 +146,9 @@
 	 ;; but never given a global value -- DISPLA binds them itself --
 	 ;; so unlike the rest they cannot be bound to their own value.
 	 width height depth
+	 ;; *M (float.lisp) is declared with no value, like the display
+	 ;; three, so it cannot be bound to its own.
+	 *m
 	 ;; VLIST is scratch in the same way.  VARLIST and GENVAR are not:
 	 ;; they carry CRE's variables, and ORDERPOINTER renumbers the whole
 	 ;; GENVAR list in place -- (prenumber genvar 1) writes each
@@ -229,7 +232,11 @@
 	 ;; because it ends the run at the value it started with.
 	 (*bfloat-header* *bfloat-header*)
 	 (*bfloat-header-prec* *bfloat-header-prec*)
-	 ($multiplicities $multiplicities) ($%rnum_list $%rnum_list)
+	 ;; $%RNUM is the counter $%RNUM_LIST is the list of: MAT.LISP makes
+	 ;; each new %r with (incf $%rnum).  Binding the list and sharing the
+	 ;; counter would let two threads hand out the same %r name.
+	 ($multiplicities $multiplicities)
+	 ($%rnum_list $%rnum_list) ($%rnum $%rnum)
 	 ($error $error) ($error_syms $error_syms)
 	 ($linenum $linenum) ($gensumnum $gensumnum)
 	 ($integration_constant_counter $integration_constant_counter)

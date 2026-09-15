@@ -38,7 +38,7 @@
   '(;; COMPAR's answer, in four parts
     sign minus odds evens
     ;; DISPLA's box dimensions and its layout scratch
-    width height depth linearray
+    width height depth linearray *m
     ;; CRE's variables and their ordering
     varlist genvar vlist
     ;; MBIND's and MLOCAL's save stacks
@@ -47,7 +47,7 @@
     $fpprec fpprec *bigfloatone* *bigfloatzero* *bfhalf* *bfmhalf*
     *bfloat-header* *bfloat-header-prec*
     ;; state belonging to one line of computation
-    tstack *local-signs* $multiplicities $%rnum_list $error $error_syms
+    tstack *local-signs* $multiplicities $%rnum_list $%rnum $error $error_syms
     $linenum $gensumnum $integration_constant_counter
     ;; output attribution and the question channel
     *standard-output* *error-output* *trace-output*

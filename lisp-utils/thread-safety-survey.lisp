@@ -150,7 +150,9 @@
      "$_" "$__" "*LINELABEL*"
      ;; the translator's working state
      "*COLLECT-ERRORS*" "*CURRENT-LINE-INFO*" "TR-UNIQUE"
-     "*UNTRANSLATED-FUNCTIONS-CALLED*")
+     "*UNTRANSLATED-FUNCTIONS-CALLED*"
+     ;; found by widening the workload to the share tests
+     "$%RNUM" "$PIECE" "*M")
     (:shared-environment
      "user-visible session state; sharing it is correct, so this wants a
       lock or an explicit per-thread environment, never a binding"
@@ -167,11 +169,13 @@
      "*RULE-SYMBOL-POOL*"
      ;; option variables the user sets and both threads should see
      "$RATEPSILON" "$DONTFACTOR" "*TEX-ENVIRONMENT-DEFAULT*"
-     "*PLOT-OPTIONS*")
+     "*PLOT-OPTIONS*" "$LINSOLVEWARN" "$MATRIX_ELEMENT_ADD"
+     "$MATRIX_ELEMENT_MULT" "$VERBOSE" "$OPPROPERTIES"
+     "OPERS" "*OPERS-LIST" "*TEST-DIRECTORY-CACHED-RESULT*")
     (:startup
      "set while starting up and read thereafter; nothing to do"
      "$MAXIMA_OBJDIR" "$MAXIMA_TEMPDIR" "$MAXIMA_USERDIR" "$BROWSER"
-     "$URL_BASE" "*MAXIMA-LANG-SUBDIR*" "*MAXIMA-BUILD-INFO*"))
+     "$URL_BASE" "*MAXIMA-LANG-SUBDIR*" "*MAXIMA-BUILD-INFO*" "*MAXIMA-TEMPDIR*"))
   "Each entry is (CATEGORY RATIONALE . VARIABLE-NAMES).  Everything else
 that is assigned anywhere is reported as :UNTRIAGED.")
 
@@ -401,10 +405,18 @@ form or mutated in place -- see WHAT THIS CANNOT SEE above."
                                  *foreign-specials*))))
 
 (defun start-observing ()
-  "Record the current value of every bound special, to diff against later."
+  "Record the current value of every bound special, to diff against later.
+
+Weakly: holding a thousand values for the length of a run_testsuite()
+pins everything they reference, and a core-plus-share run died of it.
+A weak pointer costs nothing and loses nothing, because a value that
+gets collected is a value the variable no longer holds -- if it still
+held it, it would still be reachable.  So a broken pointer means the
+variable moved, which is the answer we wanted anyway."
   (let ((table (make-hash-table :test #'eq)))
     (dolist (symbol (snapshot-candidates))
-      (setf (gethash symbol table) (symbol-value symbol)))
+      (setf (gethash symbol table)
+            (sb-ext:make-weak-pointer (symbol-value symbol))))
     (setf *snapshot* table)
     (format *debug-io* "~&thread-safety-survey: watching ~D variables~%"
             (hash-table-count table))
@@ -415,10 +427,12 @@ form or mutated in place -- see WHAT THIS CANNOT SEE above."
   (unless *snapshot*
     (error "thread-safety-survey: call START-OBSERVING first."))
   (let ((out '()))
-    (maphash (lambda (symbol before)
-               (when (and (boundp symbol)
-                          (not (eq before (symbol-value symbol))))
-                 (push symbol out)))
+    (maphash (lambda (symbol pointer)
+               (multiple-value-bind (before live) (sb-ext:weak-pointer-value pointer)
+                 (when (and (boundp symbol)
+                            (or (not live)
+                                (not (eq before (symbol-value symbol)))))
+                   (push symbol out))))
              *snapshot*)
     (sort out #'string< :key #'symbol-name)))
 
