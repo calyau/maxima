@@ -112,7 +112,8 @@
 (defpackage #:maxima-thread-survey
   (:use #:common-lisp)
   (:export #:survey #:variables #:bind-list
-           #:start-observing #:observed-changed #:report-observed))
+           #:start-observing #:observed-changed #:report-observed
+           #:mutated-in-place #:report-mutated))
 
 (in-package #:maxima-thread-survey)
 
@@ -397,6 +398,38 @@ form or mutated in place -- see WHAT THIS CANNOT SEE above."
 ;;; list, never to prune it.
 
 (defvar *snapshot* nil)
+(defvar *contents* nil)
+
+;;; Identity is not enough.  Most of the sharing that has actually caused
+;;; bugs was a structure reached through a variable and mutated in place,
+;;; which leaves the variable pointing exactly where it did: LINEARRAY
+;;; written through AREF, *MLAMBDA-CALL-STACK* through its fill pointer,
+;;; $PROPS extended with NCONC.  Comparing what the variable holds finds
+;;; those; comparing the variable does not.
+;;;
+;;; The fingerprint is deliberately cheap and shallow -- a type, a size
+;;; and SXHASH over a bounded prefix.  SXHASH descends only a few levels
+;;; into a list, so this under-reports deep edits, and two different
+;;; contents can collide.  It is a finder, not a proof: everything it
+;;; reports wants confirming by reading the code.
+
+(defun content-fingerprint (value)
+  "A cheap summary of what VALUE contains, or NIL if it cannot change in
+place."
+  (flet ((mix (acc x) (logxor (* acc 31) (ldb (byte 32 0) (sxhash x)))))
+    (typecase value
+      (cons (let ((n 0) (h 7))
+              (loop for tail = value then (cdr tail)
+                    while (consp tail) repeat 300
+                    do (incf n) (setf h (mix h (car tail))))
+              (list :cons n h)))
+      (hash-table (list :hash (hash-table-count value)))
+      ((and vector (not string))
+       (let ((h 7))
+         (loop for i below (min (length value) 300)
+               do (setf h (mix h (aref value i))))
+         (list :vector (length value) h)))
+      (t nil))))
 
 (defun snapshot-candidates ()
   (append (remove-if-not #'boundp (specials))
@@ -418,6 +451,11 @@ variable moved, which is the answer we wanted anyway."
       (setf (gethash symbol table)
             (sb-ext:make-weak-pointer (symbol-value symbol))))
     (setf *snapshot* table)
+    (let ((contents (make-hash-table :test #'eq)))
+      (dolist (symbol (snapshot-candidates))
+        (let ((print (ignore-errors (content-fingerprint (symbol-value symbol)))))
+          (when print (setf (gethash symbol contents) print))))
+      (setf *contents* contents))
     (format *debug-io* "~&thread-safety-survey: watching ~D variables~%"
             (hash-table-count table))
     (values)))
@@ -435,6 +473,33 @@ variable moved, which is the answer we wanted anyway."
                    (push symbol out))))
              *snapshot*)
     (sort out #'string< :key #'symbol-name)))
+
+(defun mutated-in-place ()
+  "Symbols still holding the very object they held, whose contents moved."
+  (let ((out '()))
+    (maphash (lambda (symbol pointer)
+               (multiple-value-bind (before live) (sb-ext:weak-pointer-value pointer)
+                 (when (and live (boundp symbol) (eq before (symbol-value symbol)))
+                   (let ((was (gethash symbol *contents*))
+                         (now (ignore-errors
+                                (content-fingerprint (symbol-value symbol)))))
+                     (when (and was now (not (equal was now)))
+                       (push (list symbol was now) out))))))
+             *snapshot*)
+    (sort out #'string< :key (lambda (r) (symbol-name (first r))))))
+
+(defun report-mutated (&key (stream *standard-output*))
+  "Report what was changed without the variable ever being assigned."
+  (let ((rows (mutated-in-place)))
+    (format stream "~&thread-safety-survey: ~D variable~:P mutated in place~%"
+            (length rows))
+    (format stream "~&  ~28A ~18A ~A~%" "VARIABLE" "WAS" "NOW")
+    (dolist (row rows)
+      (destructuring-bind (symbol was now) row
+        (format stream "  ~28A ~18A ~A~%" symbol
+                (format nil "~(~a~) ~a" (first was) (second was))
+                (format nil "~(~a~) ~a" (first now) (second now)))))
+    (values)))
 
 (defun report-observed (&key (stream *standard-output*))
   "Compare what moved against what the static survey predicted."
