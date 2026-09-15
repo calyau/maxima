@@ -580,7 +580,7 @@ wrapper for this."
   (values))
 
 (defun munbind-makunbound (var)
-  (makunbound var)
+  (maxima-makunbound var)
   (setf $values (delete var $values :count 1 :test #'eq)))
 
 (defun munbind (vars)

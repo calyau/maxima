@@ -428,7 +428,7 @@
 	      (dolist (u (cdr $labels))
 		(cond ((and allbutl (member u allbutl :test #'equal))
 		       (setq z (nconc z (ncons u))))
-		      (t (makunbound u) (remprop u 'time)
+		      (t (maxima-makunbound u) (remprop u 'time)
 			 (remprop u 'nodisp))))
 	      (setq $labels (cons '(mlist simp) z) $linenum 0))
 	     ((member x '($values $arrays $aliases $rules $props
@@ -503,13 +503,13 @@
 		  (cond (y (setf $values (delete x $values :count 1 :test #'eq)))
 			(t (setf $labels (delete x $labels :count 1 :test #'eq))
 			   (remprop x 'time) (remprop x 'nodisp)))
-		  (makunbound x)
+		  (maxima-makunbound x)
 		  (when (member x *builtin-symbols-with-values* :test #'equal)
 		    (setf (symbol-value x)
 			  (gethash x *builtin-symbol-values*)))
 		  t)
 		 ((get x 'reset-on-kill)
-		  (makunbound x)
+		  (maxima-makunbound x)
 		  (when (member x *builtin-symbols-with-values* :test #'equal)
 		    (setf (symbol-value x)
 			  (gethash x *builtin-symbol-values*)))
@@ -522,7 +522,7 @@
 		 ((eq (symbol-value x) x) t)
 		 (t
 		  (mtell (intl:gettext "remvalue: ~M doesn't appear to be a known variable; just unbind it anyway.~%") x)
-		  (makunbound x)
+		  (maxima-makunbound x)
 		  t))))))
 
 (defun ruleof (rule)

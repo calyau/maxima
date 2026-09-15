@@ -17,8 +17,7 @@ Run with a timeout and --no-init:
 
   ./maxima-local --no-init --batch-string='run_testsuite(tests=["rtest_mset"]);'
 
-Require all 143 examples and the completed suite summary. A Lisp error can
-exit zero. The 30 appended examples preserve all previous problem numbers
+Require the completed rtest_mset suite summary. A Lisp error can exit zero. The 30 appended examples preserve all previous problem numbers
 and mathematical expectations. MBIND-ERROR-CHECK.LISP uses the existing
 PARALLEL-INPUT-CHECK.LISP execution-site helper.
 
@@ -44,4 +43,5 @@ ECL 21.2.1's MAKUNBOUND removes the global cell while leaving a PROGV binding
 bound. This was reproduced without Maxima; a test using it on $ERRORMSG leaked
 state into later tests. The fixture now checks the enclosing BOUNDP/value as
 well. Ordinary bound-variable and error cleanup remain covered by the other
-checks. This PR does not repair ECL's separate unbinding behavior.
+checks. Maxima's compatibility helper and the separate current-binding
+removal tests are described in README.unbinding.

@@ -409,10 +409,11 @@ MDOIN's hashed-array shapes, which is left to MDOIN itself."
 starting from the value CAPTURE-BINDINGS recorded."
   (progv (mapcar #'first captured) (mapcar #'third captured)
     ;; PROGV cannot make a single binding unbound, so the ones that had
-    ;; no value are emptied again here.  MAKUNBOUND on a variable bound
-    ;; by PROGV empties that binding, not the global one.
+    ;; no value are emptied again here. The compatibility helper removes
+    ;; the current binding's value even on ECL, whose MAKUNBOUND can
+    ;; otherwise remove the global value.
     (loop for (symbol bound-p nil) in captured
-          unless bound-p do (makunbound symbol))
+          unless bound-p do (maxima-makunbound symbol))
     (funcall thunk)))
 
 (defun job-take (job)

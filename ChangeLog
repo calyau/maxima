@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Preserve enclosing variable values when removing a local binding on ECL,
+  including interpreter, debugger, parallel and value-removal paths.
+
 * Preserve saved error-output settings across nested and concurrent
   variable bindings.
 
