@@ -136,6 +136,101 @@ look right and fix nothing."
   (let* ((leaked (check-bindings stream))
          (fresh (check-fresh-linearray stream))
          (raced (check-race stream))
-         (ok (and (null leaked) fresh raced)))
+         (props (check-depended-on-properties stream))
+         (ok (and (null leaked) fresh raced props)))
     (format stream "~&thread-environment-check: ~:[FAILED~;ok~]~%" ok)
     ok))
+
+;;; ------------------------------------------------------------------
+;;; Properties the groundwork depends on.
+;;;
+;;; Each of these started as a one-off measurement, and each was nearly
+;;; left as a sentence in a commit message.  They are here because prose
+;;; does not fail when someone breaks it.
+;;;
+;;; They assert the property relied on, never the behaviour observed.
+;;; "Concurrent GENSYM collides on SBCL" is a fact about today's SBCL and
+;;; a test of it would fail the day SBCL fixed it -- which would be good
+;;; news reported as breakage.  What Maxima actually needs is that equal
+;;; names do not make equal variables, and that stays true either way.
+
+(defun check-binding-not-inherited (&optional (stream *debug-io*))
+  "A new thread starts from each variable's GLOBAL value and inherits no
+binding from whoever spawned it.  This is why the environment has to be
+entered inside the worker; wrapping the spawn in a LET does nothing.  If
+this ever became false the macro would still work -- but RUN-WORKER's
+reason for existing would have quietly evaporated."
+  #+(or ccl sbcl)
+  (let ((seen :not-run))
+    (let ((sign :binding-in-the-spawning-thread))
+      #+ccl (let ((done (ccl:make-semaphore)))
+              (ccl:process-run-function
+               "inherit" (lambda () (setq seen sign)
+                           (ccl:signal-semaphore done)))
+              (ccl:wait-on-semaphore done))
+      #+sbcl (sb-thread:join-thread
+              (sb-thread:make-thread (lambda () (setq seen sign)))))
+    (let ((ok (not (eq seen :binding-in-the-spawning-thread))))
+      (format stream "~&  a spawned thread does not inherit the spawner's ~
+                      binding: ~a~%" ok)
+      ok))
+  #-(or ccl sbcl)
+  (progn (format stream "~&  binding-inheritance check skipped: no threads~%") t))
+
+(defun check-gensym-names-are-not-identity (&optional (stream *debug-io*))
+  "Two uninterned symbols with the same name are different variables.
+Concurrent GENSYM can hand out duplicate NAMES -- measured on SBCL, not
+on CCL -- and that is harmless only because CRE tells variables apart by
+identity and by SYMBOL-VALUE, never by name.  If that ever stopped being
+true, duplicate names would silently merge distinct variables."
+  (let* ((a (make-symbol "G1")) (b (make-symbol "G1"))
+         (ok (and (string= (symbol-name a) (symbol-name b))
+                  (not (eq a b)))))
+    (setf (symbol-value a) 1 (symbol-value b) 2)
+    (setq ok (and ok (= (symbol-value a) 1) (= (symbol-value b) 2)))
+    (format stream "~&  equal-named uninterned symbols stay distinct: ~a~%" ok)
+    ok))
+
+(defun check-both-input-streams-contain-read (&optional (stream *debug-io*))
+  "Binding *QUERY-IO* and *STANDARD-INPUT* together contains read().
+Which of the two it actually uses differs by lisp -- $READONLY reads
+*STANDARD-INPUT* under SBCL and CMUCL and *QUERY-IO* elsewhere, the
+#+(or sbcl cmu) in macsys.lisp -- so this asserts that binding both is
+enough, without caring which one answers."
+  (flet ((closed () (make-two-way-stream (make-string-input-stream "")
+                                         (make-string-output-stream))))
+    (let* ((answered (let ((*query-io* (closed)) (*standard-input* (closed)))
+                       (errcatch ($readonly))))
+           ;; NIL from ERRCATCH is an error; (NIL) is a successful NIL.
+           (ok (or (null answered) (null (car answered)))))
+      (format stream "~&  read() is contained when both streams are bound: ~a~%"
+              ok)
+      ok)))
+
+(defun check-asksign-refuses-cleanly (&optional (stream *debug-io*))
+  "With no answers available, ASKSIGN fails as an ordinary Maxima error
+that ERRCATCH sees, and the session keeps working.  That is what lets a
+worker refuse a question instead of hanging or poisoning the session."
+  ;; $ERRORMSG nil keeps the expected "RETRIEVE: End of file encountered."
+  ;; out of the report: a passing check that prints an error reads as a
+  ;; failure to whoever runs it.
+  (let* (($errormsg nil)
+         (refused (let ((*query-io* (make-two-way-stream
+                                     (make-string-input-stream "")
+                                     (make-string-output-stream)))
+                        (*standard-input* (make-two-way-stream
+                                           (make-string-input-stream "")
+                                           (make-string-output-stream))))
+                    (errcatch ($asksign '$some-unknown-quantity))))
+         (alive (equal (meval '((mplus) 2 2)) 4))
+         (ok (and (null refused) alive)))
+    (format stream "~&  asksign refuses cleanly and the session survives: ~a~%"
+            ok)
+    ok))
+
+(defun check-depended-on-properties (&optional (stream *debug-io*))
+  (let ((results (list (check-binding-not-inherited stream)
+                       (check-gensym-names-are-not-identity stream)
+                       (check-both-input-streams-contain-read stream)
+                       (check-asksign-refuses-cleanly stream))))
+    (every #'identity results)))

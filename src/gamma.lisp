@@ -404,8 +404,11 @@
         ;; Revert a & z to the arguments of gamma_incomplete.
         (setq a (cadr expr))
         (setq z (caddr expr))
-        (cond ((and ($featurep a '$integer) (eq t (mgqp 0 a)))
-              ;; gamma_incomplete(a,n) = - (-1)^(-a) log(z)/(-a)! + ...
+        (cond ((and ($featurep a '$integer) (eq t (mgrp 0 a)))
+              ;; gamma_incomplete(a,z) = z^a/(-a) + ... for a negative integer a
+              (limit (div (ftake 'mexpt z a) (mul -1 a)) var val 'think))
+              ((and ($featurep a '$integer) (eq t (mgqp 0 a)))
+              ;; gamma_incomplete(0,z) = -log(z) + ...
               (setq a (sub 0 a))
               (limit (div (mul -1 (ftake 'mexpt -1 a) (ftake '%log z))
                           (ftake 'mfactorial a)) var val 'think))

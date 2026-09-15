@@ -702,7 +702,11 @@ ignoring dummy variables and array indices."
 				   (or
 				     (limit-of-polynomial exp var val)
 					 (ratlim exp)))
-			  
+				
+				;; Rational in a root of VAR: RATLIM
+				;; after VAR = T^K.
+				((ratlim-in-root exp var val))
+				
 				((has-float exp) (simplimit exp var val))
 			    ((or (eq *i* t) (radicalp exp var))
 			     (limit1 exp var val))
@@ -711,6 +715,57 @@ ignoring dummy variables and array indices."
 				    (limit1 exp var val))
 				   (t (simplimit exp var val))))
 			    (t (simplimit exp var val)))))))
+
+;; The least K such that E is a rational function of VAR^(1/K), or NIL when VAR
+;; occurs in E other than as a rational power of itself.
+(defun root-order (e var)
+  (cond ((eq e var) 1)
+        ((atom e) 1)
+        ((and (mexptp e) (eq (cadr e) var))
+         (let ((p (caddr e)))
+           (cond ((integerp p) 1)
+                 ((ratnump p) (caddr p))
+                 (t nil))))
+        ((mexptp e)
+         (and (integerp (caddr e)) (root-order (cadr e) var)))
+        ((member (caar e) '(mplus mtimes))
+         (let ((k 1))
+           (dolist (f (cdr e) k)
+             (let ((kf (root-order f var)))
+               (if kf (setq k (lcm k kf)) (return nil))))))
+        ((free e var) 1)
+        (t nil)))
+
+;; E with VAR^(P/Q) replaced by T^(P*K/Q) and VAR by T^K, built without the
+;; simplifier so that no absolute values appear - ROOT-ORDER must have accepted
+;; E with this K.
+(defun root-subst (e var k tvar)
+  (cond ((eq e var) (list '(mexpt) tvar k))
+        ((atom e) e)
+        ((and (mexptp e) (eq (cadr e) var))
+         (let ((p (caddr e)))
+           (list '(mexpt) tvar (if (integerp p)
+                                   (* k p)
+                                   (/ (* k (cadr p)) (caddr p))))))
+        ((free e var) e)
+        (t (cons (list (caar e))
+                 (mapcar #'(lambda (f) (root-subst f var k tvar)) (cdr e))))))
+
+;; For E rational in a root of VAR and VAL zeroa or inf, where VAR = T^K is
+;; exact, the limit of E through RATLIM; otherwise NIL. An extended real
+;; in E, such as the zeroa factor that DEFINT's limits carry, is a constant
+;; to RATLIM, which would then call zeroa*sqrt(VAR) zero at inf; those stay
+;; with SIMPLIMIT.
+(defun ratlim-in-root (exp var val)
+  (let ((k (and (member val '($zeroa $inf)) (root-order exp var))))
+    (when (and k (> k 1) (freeof-extended-real exp))
+      (let* ((tvar (gensym "t"))
+             (e (simplify (root-subst exp var k tvar))))
+        (putprop tvar t 'internal)
+        (when (ratp e tvar)
+          (let ((var tvar))
+            (declare (special var))
+            (ratlim e)))))))
 
 (defun limitsimp (exp var)
   (limitsimp-expt (sin-sq-cos-sq-sub exp) var))
@@ -2675,13 +2730,19 @@ ignoring dummy variables and array indices."
 					 ((eq r '$inf) (push infinityl-sum infl))
 					 (t (push r sum)))))))
 					 
-	;; An infinity term next to inf or minf terms: The larger side decides.
-	;; With und terms around as well, give up.
+	;; An infinity term next to inf or minf terms: the larger side decides,
+	;; and when neither does, the terms are re-summed below like inf and minf
+	;; terms. Give up with und terms around as well, and when an infinity term
+	;; carries PRIN-INF, DEFINT's stand-in for a large real number: Sign
+	;; questions about it are answered for the limit at infinity,
+	;; so log(sin(prin-inf)) is labelled infinity.
 	(when (and infinityl (or minfl infl))
-	  (if undl
+	  (if (or undl (not (free (fapply 'mplus infinityl) 'prin-inf)))
 	      (throw 'limit t)
-	      (return (simplimplus-dominance infinityl (append infl minfl)
-					     '$infinity))))
+	      (let ((d (simplimplus-dominance infinityl (append infl minfl)
+					     '$infinity)))
+		(when d
+		  (return (simplimplus-with-finite d (fapply 'mplus sum)))))))
 
 	;; Blend the zerob, zeroa, and sum terms. When there are both zerob
 	;; and zeroa terms, ignore them. When *preserve-direction* is true and
@@ -2727,8 +2788,9 @@ ignoring dummy variables and array indices."
 	     ;; and limit(x*exp(%i*x)+x*sin(x),x,inf): an infinity term carries
 	     ;; no direction, so it cannot dominate an und term that way.
          (cond ((or infl minfl)
-                   (return (simplimplus-dominance undl (append infl minfl)
-						  '$und)))
+                   (return (simplimplus-with-finite
+                             (simplimplus-dominance undl (append infl minfl) '$und)
+                             sum)))
                  (t (return '$und))))
 	   ((not (or infl minfl indl infinityl))
 	    (return (cond ((atom sum)  sum)
@@ -2737,9 +2799,12 @@ ignoring dummy variables and array indices."
 			   (simpab sum))
 			  (t sum))))
 	   (t (cond ((null infinityl)
-		     (cond (infl (cond ((null minfl) (return '$inf))
+		     (cond (infl (cond ((null minfl)
+					(return
+					  (simplimplus-with-finite '$inf sum)))
 				       (t (go oon))))
-			        (minfl (return '$minf))
+			        (minfl
+			         (return (simplimplus-with-finite '$minf sum)))
                     (indl (return '$ind))))
 		    (t (setq infl (append infl infinityl))))))
 
@@ -2756,7 +2821,7 @@ ignoring dummy variables and array indices."
 	   (t (setq y (limit y var val 'think))))
      (cond ((or (eq y ())
 		(eq y t))  (return ()))
-	   ((infinityp y)  (return y))
+	   ((infinityp y)  (return (simplimplus-with-finite y sum)))
 	   (indl (return '$ind))
 	   (t (return (m+ sum y))))))
 
@@ -2795,7 +2860,9 @@ ignoring dummy variables and array indices."
          ((member nil ratios)
           (throw 'limit t))
          ((every #'zerop2 ratios)
-          ilim)
+           ;; The infinities dominate. An infinity term still keeps
+           ;; the sum from being real, and inf and minf are real.
+          (if (eq answer '$infinity) '$infinity ilim))
          ((some #'infinityp ratios)
           answer)
          ((member '$und ratios)
@@ -2817,8 +2884,21 @@ ignoring dummy variables and array indices."
              ilim)
             ((eq sgn '$neg)
              (if (eq ilim '$inf) '$minf '$inf))
-            (t
-             (throw 'limit t)))))))))
+            ;; 1+r is 0: the leading terms cancel, so nothing
+            ;; here decides. Infinity terms go back to the sum
+            ;; for SIMPLIMPLUS1 to re-sum with the others.
+            ((and (eq sgn '$zero) (eq answer '$infinity)) nil)
+            (t (throw 'limit t)))))))))
+
+;; ANS, the inf or minf SIMPLIMPLUS1 found for the infinite terms of a
+;; sum, unless the finite terms SUM keep the sum off the real line: inf
+;; and minf are real, so a non-vanishing imaginary part makes it
+;; infinity, as in limit(exp(x)+%i,x,inf).
+(defun simplimplus-with-finite (ans sum)
+  (if (and (member ans '($inf $minf))
+           (member ($csign sum) '($imaginary $complex)))
+      '$infinity
+      ans))
 
 ;; Limit n/d, using heuristics on the order of growth.
 (defun sheur0 (n d)
