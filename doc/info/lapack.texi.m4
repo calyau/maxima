@@ -9,6 +9,20 @@
 @code{lapack} is a Common Lisp translation (via the program @code{f2cl}) of the Fortran library LAPACK,
 as obtained from the SLATEC project.
 
+Load this package with @code{load("lapack")} during ordinary serial
+execution.  Loading it inside a parallel computation signals an error
+before package initialization.
+
+The functions @code{dgeev}, @code{dgesvd}, @code{zgeev}, @code{zheev}, and
+@code{dgeqrf} also signal an error inside a parallel computation, including
+when @code{parallel_threads} is 1.  Their translated routines use shared
+initialization state which is not safe for concurrent calls.  Use these
+functions outside parallel computations; their serial behavior is unchanged.
+
+This restriction does not apply to @code{dgesv}, @code{dgemm}, @code{dlange},
+or @code{zlange} after serial package loading.  Other operations used in a
+parallel computation must also support parallel execution.
+
 @opencatbox{Categories:}
 @category{Numerical methods}
 @category{Share packages}
@@ -31,6 +45,8 @@ All elements of @var{A} must be integer or floating point numbers.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
+This function requires serial execution; see
+@ref{Introduction to lapack}.
 
 @code{dgeev(@var{A})} computes only the eigenvalues of @var{A}.
 @code{dgeev(@var{A}, @var{right_p}, @var{left_p})} computes the eigenvalues of @var{A}
@@ -147,6 +163,8 @@ All elements of @var{A} must be integer or floating point numbers.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
+This function requires serial execution; see
+@ref{Introduction to lapack}.
 
 The real square matrix
 m4_math(<<<\mathbf{A}>>>, <<<A>>>, <<<{\bf A}>>>)
@@ -374,6 +392,8 @@ All elements of @var{A} must be integer or floating point numbers.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
+This function requires serial execution; see
+@ref{Introduction to lapack}.
 
 Let @math{m} be the number of rows, and @math{n} the number of columns of @var{A}.
 The singular value decomposition of
@@ -792,6 +812,8 @@ is complex.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
+This function requires serial execution; see
+@ref{Introduction to lapack}.
 
 @opencatbox{Categories:}
 @category{Package lapack}
@@ -812,6 +834,8 @@ eigenvectors of the matrix are also computed.
 
 To make use of this function, you must load the LaPack package via
 @code{load("lapack")}.
+This function requires serial execution; see
+@ref{Introduction to lapack}.
 
 No check is made that the matrix
 m4_math(<<<{\bf A}>>>, <<<@var{A}>>>)

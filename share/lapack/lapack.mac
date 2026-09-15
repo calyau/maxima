@@ -1,1 +1,3 @@
+/* Refuse here so LOADFILE does not replace the error with a load failure. */
+?ensure\-serial\-execution('lapack)$
 load("load-lapack.lisp");

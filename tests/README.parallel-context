@@ -1,0 +1,31 @@
+Parallel execution-context checks
+=================================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_lifecycle]);'
+
+Run every configured Lisp and the complete core+share suite. The 28 appended
+examples preserve all previous expected values and problem numbers. Check
+the full count and diagnostic output even when Maxima exits zero.
+
+*PARALLEL-EVALUATION-P* is an internal special, NIL outside the scheduler's
+execution scopes. CALL-AS-RUNNER binds it to T after applying captured
+bindings, for native workers, caller participation and the serial fallback.
+Nested calls preserve their enclosing scope; normal return and unwinding
+restore the caller's value. Input restrictions have a separate flag.
+
+A package adapter can call (ENSURE-SERIAL-EXECUTION '$operation) before an
+operation that requires serial execution. The helper returns NIL in ordinary
+serial use and signals a localized Maxima error in a parallel scope. This
+is an explicit guard, not a new user option or a mathematical algorithm.
+
+Tests force each execution site, inspect exact guard error data and verify
+that a guarded body's side effects are not reached. They cover conflicting
+captured values, nested regions, caller errors/nonlocal exits, empty jobs,
+outer true/false values, and independence from the interactive-input flag.
+A reproducible generator exercises 32 nested job trees with varying depths,
+widths and worker limits, checking exact integer squares at their leaves.
+
+The flag describes CALL-IN-PARALLEL execution. Bare threads created by
+external Lisp code need their own coordination. It is not a certification
+that every unguarded operation is safe to run concurrently.

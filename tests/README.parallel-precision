@@ -1,0 +1,28 @@
+Parallel precision regression tests
+===================================
+
+  timeout 180 ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_precision,rtest_parallel_input,rtest_parallel_loop,rtest_parallel,rtest_ask1]);'
+
+Run each configured Lisp and require "No unexpected errors" in the log.
+A zero process status alone does not prove that Maxima had no Lisp errors.
+The new file is included in the complete suite automatically.
+
+The 17 examples cover five fixed decimal precisions, inherited working
+precision, the four associated constants, error cleanup, the one-core
+fallback, actual workers and nested parallel computations. The forced
+worker helper comes from parallel-input-check.lisp, so inheritance does
+not pass merely because the calling thread took every queued item.
+
+Numerical assertions decode the stored bigfloat to an exact binary
+rational, then compare it with an independent rational reference and a
+relative error bound determined by the requested decimal precision.
+They also compare all six precision-state values with the caller's
+snapshot. A private deterministic LCG generates 64 further cases with
+12 through 200 decimal digits and signed rational inputs. It does not
+change Maxima's random state.
+
+Temporary changes to the internal working bit precision are copied
+unchanged; recomputing it from the public decimal precision would lose
+valid caller state. Precision assignments made in an ordinary sequential
+MAKELIST retain their existing behavior.

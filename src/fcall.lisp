@@ -96,6 +96,7 @@
 	 (cond (autoloaded-already?
 		(merror (intl:gettext "apply: function ~:@M undefined after loading file ~A") f (namestring (get f 'autoload))))
 	       (t
+		(ensure-serial-execution '$load)
 		(funcall autoload (cons f f-prop))
 		(mfunction-call-aux f argl t))))
 	((boundp f)

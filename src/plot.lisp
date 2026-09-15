@@ -1680,11 +1680,19 @@ vertices of a triangle or a quadrilateral."
 ;; random-file-name
 ;; Creates a random word of 'count' alphanumeric characters
 (defun random-name (count)
-  (let ((chars "0123456789abcdefghijklmnopqrstuvwxyz") (name ""))
-    (setf *random-state* (make-random-state t))
+  (let ((chars "0123456789abcdefghijklmnopqrstuvwxyz") (name "")
+        (*random-state* (make-random-state t)))
     (dotimes (i count)
       (setq name (format nil "~a~a" name (aref chars (random 36)))))
     name))
+
+(defvar *temp-files-lock* (%make-lock "maxima temporary files"))
+
+(defun registered-temp-files ()
+  ;; Return a consistent snapshot without holding the lock during file I/O.
+  (%with-lock (*temp-files-lock*)
+    (loop for filename being the hash-keys of *temp-files-list*
+          collect filename)))
 
 (defun plot-temp-file0 (file &optional (preserve-file nil))
   (let ((filename 
@@ -1692,7 +1700,8 @@ vertices of a triangle or a quadrilateral."
 	     (format nil "~a/~a" *maxima-tempdir* file)
 	   file)))
     (unless preserve-file
-      (setf (gethash filename *temp-files-list*) t))
+      (%with-lock (*temp-files-lock*)
+        (setf (gethash filename *temp-files-list*) t)))
     (format nil "~a" filename)
     ))
 

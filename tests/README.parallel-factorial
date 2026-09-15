@@ -1,0 +1,30 @@
+Factorial invocation state checks
+=================================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest10,rtest_gamma]);'
+
+Run every configured Lisp and the complete core+share suite. New examples
+are appended to rtest10, preserving previous problem numbers. Require the
+complete test count and inspect the error summary, including Lisp errors.
+
+FACTPLUSCOMB owns its processed-factorial list and four local helpers for
+each invocation. FACTCOMB also binds GENVAR to NIL, so its rational conversions
+allocate private generated symbols; copying a list of shared symbols would
+still permit ORDERPOINTER to overwrite their values in another computation.
+The factorial formulas and public expression representation remain intact.
+
+The helper intercepts FACTEXPAND before an outer root scans its factorials.
+An inner call processes x! either serially, in a forced worker, or while
+throwing to a handler inside the hook. The outer (x+1)*x! must still simplify
+to (x+1)!. Instrumentation restores FACTEXPAND after joining the worker.
+A separate check verifies that caller-owned GENVAR symbols retain their
+values. Run these checks in an otherwise idle Maxima process.
+
+Ninety-six generated cases compare symbolic products/powers with their
+expected shifted factorial, verify input preservation, then substitute a
+positive integer and compare with independent exact integer multiplication.
+Native/fallback batches exercise 24 distinct jobs in eight rounds. Examples
+also cover quotients, constants, symbolic expressions and factorial powers.
+These invocation boundaries do not certify every rational/simplifier entry
+point or arbitrary concurrently shared CRE inputs.

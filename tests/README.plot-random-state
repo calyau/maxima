@@ -1,0 +1,26 @@
+Plot filename random-state checks
+=================================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_plotoptions]);'
+
+Run every configured Lisp and the complete core+share suite. Eleven appended
+examples preserve previous test numbers. Require the full count and inspect
+unexpected errors; Maxima can catch Lisp errors and still exit zero.
+
+RANDOM-NAME binds its fresh Common Lisp random state locally. Filename
+character selection stays the same, while the caller retains its state
+object and sequence on return or unwinding. The test helper compares the
+next 32 random values with an untouched state copy. Tests cover empty and
+negative counts, invalid counts, 128 generated lengths, native/fallback
+jobs, and the actual Gnuplot script-name/path registration helper.
+
+Maxima's user-visible MT19937 generator is separate and has its own
+preservation check. A repeated-name smoke check catches accidentally cloning
+the same unchanged caller state for every filename. Random names are not a
+formal guarantee of uniqueness. The path test uses a private registration
+table and writes no file; actual rendering is not part of that test.
+
+This isolates filename generation's RNG. Shared temporary-file registration,
+Gnuplot pipe access and draw's separate state require their own concurrency
+checks. No mathematical plotting or simplification formula changes here.

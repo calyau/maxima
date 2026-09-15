@@ -34,6 +34,9 @@
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
 (defvar *general-display-prefix* "")
+(defvar *parallel-input-forbidden* nil
+  "Bound by each parallel runner. Refuse interactive input before prompting
+or reading; a closed input stream alone can silently return NIL.")
 (defvar $alt_format_prompt nil "If NIL, use DEFAULT-FORMAT-PROMPT to print input prompt; if a function, use it to print input prompt.")
 
 (defun format-prompt (destination control-string &rest arguments)
@@ -55,21 +58,20 @@ prompt; otherwise MFUNCALL $ALT_FORMAT_PROMPT to print prompt."
 function deals correctly with the ~M control character, but only when
 DESTINATION is an actual stream (rather than nil for a string)."
   (let ((*print-circle* nil) (*print-base* 10.) *print-radix*)
-    (if (null destination)
-	;; return value string is important
-	(concatenate 'string
-		     *prompt-prefix*		     
-		     (apply #'aformat destination
-			    control-string
-			    arguments)
-		     *prompt-suffix*)
-      (progn
-	(format destination "~A~A~A"
-		*prompt-prefix*		     
-		(apply #'aformat nil
-		       control-string
-		       arguments)
-		*prompt-suffix*)))))
+    (let ((text
+           (if (string= control-string "~{~A~}")
+               ;; RETRIEVE uses this flat list of literal fragments. AFORMAT
+               ;; has no iteration directive; retain its ~A formatting for
+               ;; each fragment without changing the custom prompt protocol.
+               (destructuring-bind (pieces &rest ignored) arguments
+                 (declare (ignore ignored))
+                 (with-output-to-string (output)
+                   (dolist (piece pieces)
+                     (aformat output "~A" piece))))
+               (apply #'aformat nil control-string arguments))))
+      (if (null destination)
+          (concatenate 'string *prompt-prefix* text *prompt-suffix*)
+          (format destination "~A~A~A" *prompt-prefix* text *prompt-suffix*)))))
     
 
 (defvar $default_format_prompt (symbol-function 'default-format-prompt))

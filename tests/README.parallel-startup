@@ -1,0 +1,49 @@
+Parallel worker startup and asynchronous interrupts
+===================================================
+
+Run ./maxima-local --no-init --batch-string='run_testsuite(tests=["rtest_parallel_lifecycle"]);'
+The existing lifecycle file gains 31 cases, for 526 in total. Run this
+fixture in an otherwise idle Maxima process: it temporarily wraps the shared
+worker primitives and models unrelated budget reservations.
+
+A controller sends a real runtime interrupt after worker budget is acquired,
+after the first thread is created, or after the second thread is created.
+Callbacks signal a distinct error or throw to a private parent tag. Per-thread
+records separately observe creation, completion and joining before the
+fixture performs any emergency cleanup. The full reservation must remain held
+until the registered workers have joined, and the original count must return.
+The test never joins a completed CCL process twice.
+
+Eighteen explicit transitions cover varied item counts and worker limits;
+a fixed-seed 64-case property also varies existing budget reservations.
+A separate body test forces both caller and worker participation and requires
+actual interrupt delivery to both before checking two exact integer results.
+Five portable controls check normal, disabled, nested and empty execution;
+another probe runs startup from a real worker instead of the session thread.
+Sixty-four queued-callback cases retain an outer disabled policy, and ten
+collections must complete while the caller is inside a startup mask.
+SBCL and CCL run the native tests. ECL 21.2.1 uses serial scheduling because
+its native interrupt deferral is unreliable; a separate regression requests
+eight threads, forbids spawning, and checks three exact integer results.
+ECL 21.2.1, CLISP and threadless builds retain the portable policy/mathematical
+checks. Other ECL versions retain the existing backend but were not validated
+here. Native tests are explicitly gated by the scheduler's availability.
+
+The correction defers interrupts only while recording a reservation or a
+new thread handle. Mathematical evaluation and worker joining are outside
+these new defer scopes, and an outer disabled policy remains disabled.
+ECL 21.2.1 can dispatch a queued callback from a C interrupt guard while
+Lisp interrupts are disabled. Its contended GET-LOCK also enables interrupts.
+An attempted native signal-mask workaround passed narrow probes but hung
+existing lifecycle tests, and was rejected. The version-specific serial
+fallback preserves mathematical behavior without installing that workaround.
+
+Scope limits
+------------
+This verifies ownership during startup. Interrupted joins on SBCL/ECL and
+cancelling a whole region or an individual long-running calculation remain
+separate work under issue #35. CCL already defers interrupts in cleanup.
+These runtime callback tests do not execute keyboard handling or the Windows
+shared-memory signal transport. No mathematical algorithm or old expected
+answer changes, no arbitrary thread termination, and no masking of an
+unbounded join are part of this startup change.

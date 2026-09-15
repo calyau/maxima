@@ -1,0 +1,44 @@
+Current-binding removal
+=======================
+
+rtest_mset.mac loads unbinding-check.lisp. The appended checks cover
+MAXIMA-MAKUNBOUND and the interpreter, debugger, parallel runner, REMVALUE
+and label-removal paths which use it. Run them with the ordinary suite:
+
+  timeout 120 ./maxima-local --no-init \
+    --batch-string='run_testsuite(tests=["rtest_mset"]);'
+
+On ECL 21.2.1, CL:MAKUNBOUND removes the global symbol value while leaving
+an active PROGV binding unchanged. ECL's tagged src/c/assignment.d uses
+ECL_SET for CL_MAKUNBOUND and ECL_SETQ for CL_SET. The Maxima compatibility
+helper uses the latter accessor for a nonconstant symbol's current value.
+Invalid arguments and constants retain CL:MAKUNBOUND's checks and errors.
+The helper checks the actual constant flag; CONSTANTP may expand a symbol
+macro and does not identify a constant variable reliably. Symbol-macro
+regressions also require that removal does not invoke the macroexpander.
+On other Lisps the helper delegates to CL:MAKUNBOUND. The Common Lisp
+function itself is unchanged. References:
+
+https://gitlab.com/embeddable-common-lisp/ecl/-/blob/21.2.1/src/c/assignment.d
+https://www.lispworks.com/documentation/HyperSpec/Body/f_makunb.htm
+https://www.lispworks.com/documentation/HyperSpec/Body/s_progv.htm
+
+The tests use fresh uninterned symbols with separately checked global,
+outer and inner values. They cover bound/unbound scopes, normal return,
+errors and THROW; MBINDING cleanup; debugger removal and restoration;
+captured unbound values and multiple return values; REMVALUE's known,
+reset and unknown variables; label removal; invalid inputs/constants;
+and 64 generated global-value cases. Every outer value is checked again
+after unwinding, so a locally plausible result cannot hide global damage.
+
+Execution sites include serial calls, forced calling runners and workers,
+the serial fallback and the public scheduler. On native SBCL, CCL and ECL,
+two synchronized threads also remove the value of the same symbol from
+their respective PROGV bindings while checking both local and global
+state. Waits are bounded; started threads are joined during cleanup.
+Threadless Lisps retain the portable checks.
+
+This change corrects value removal. It does not yet give ordinary Maxima
+function parameters or BLOCK locals their own dynamic bindings. Those
+shared value cells require a separate change to the scopes owning MBIND.
+It also does not make shared symbol properties private.

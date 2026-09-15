@@ -37,7 +37,9 @@
 	 (cond ((equal 1 (fourth x)) nil)
 	       ((fourth x) `($step ,(fourth x)))
 	       ((fifth x)  `($next ,(fifth x))))
-	 (cond ((sixth x)  `($thru ,(sixth x))))
+	 (cond ((sixth x)
+		`(,(if (eq (caar x) 'mdo-parallel) '$thru_parallel '$thru)
+		  ,(sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((and (consp (seventh x)) (eq 'mnot (caar (seventh x))))
 		`($while ,(cadr (seventh x))))
@@ -47,7 +49,9 @@
 ;;; Format a Maxima `do in' form (mdoin) as a flat keyword-tagged list,
 ;;; suitable for grinding.  Pure data builder.
 (defun strmdoin (x)
-  (nconc `($for ,(second x) $in ,(third x))
+  (nconc `($for ,(second x)
+	   ,(if (eq (caar x) 'mdoin-parallel) '$in_parallel '$in)
+	   ,(third x))
 	 (cond ((sixth x) `($thru ,(sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((and (consp (seventh x)) (eq 'mnot (caar (seventh x))))
@@ -560,6 +564,18 @@
 (defprop %mdo 25. lbp)
 (defprop %mdo 25. rbp)
 
+;; The binding powers matter as much as the GRIND property: DIMENSION
+;; (displa.lisp) compares them before it looks for a printer, so an
+;; operator left at the default 200 is shown as a function call and
+;; never reaches MSZ-MDO or DIM-MDO at all.
+(defprop mdo-parallel msz-mdo grind)
+(defprop mdo-parallel 25. lbp)
+(defprop mdo-parallel 25. rbp)
+
+(defprop %mdo-parallel msz-mdo grind)
+(defprop %mdo-parallel 25. lbp)
+(defprop %mdo-parallel 25. rbp)
+
 (defun msz-mdo (x l r)
   (msznary (cons '(mdo) (strmdo x)) l r '(#\space)))
 
@@ -570,6 +586,14 @@
 (defprop %mdoin msz-mdoin grind)
 (defprop %mdoin 30. lbp)
 (defprop %mdoin 30. rbp)
+
+(defprop mdoin-parallel msz-mdoin grind)
+(defprop mdoin-parallel 30. lbp)
+(defprop mdoin-parallel 30. rbp)
+
+(defprop %mdoin-parallel msz-mdoin grind)
+(defprop %mdoin-parallel 30. lbp)
+(defprop %mdoin-parallel 30. rbp)
 
 (defun msz-mdoin (x l r)
   (msznary (cons '(mdo) (strmdoin x)) l r '(#\space)))

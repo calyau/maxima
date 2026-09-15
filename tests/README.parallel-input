@@ -1,0 +1,31 @@
+Parallel input regression tests
+===============================
+
+Run from the build root, for each configured Lisp, for example:
+
+  timeout 180 ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_input,rtest_parallel,rtest_ask1]);'
+
+Require the log to contain "No unexpected errors". A Lisp error can be
+caught by Maxima's top level even when the process exits with status zero.
+The complete `make check` suite includes these tests automatically.
+
+rtest_parallel_input.mac loads parallel-input-check.lisp through the
+normal test search path. Its 33 examples check the public parallel forms,
+nesting, empty jobs, failure cleanup, known signs and integer properties,
+ordinary serial questions, and exact integration on the serial path.
+Concurrent integration still has shared database failures (issue #3); this
+test does not certify its thread safety.
+
+The helpers additionally check 12 input cases in each of the serial
+fallback, calling runner, forced native worker, and public dispatcher.
+They use separate STANDARD-INPUT and QUERY-IO streams and assert that
+neither input was consumed and no question was printed. Native-worker
+checks run only on a Lisp with supported threads. A private deterministic
+LCG exercises 128 large signed integer inputs without changing Maxima's
+random state. Ordinary READ and READONLY behavior is checked before and
+after the failures.
+
+The execution-site test creates a one-item job and explicitly runs it in
+the caller or a joined native worker. It therefore does not rely on a
+scheduler delay to prove that a worker exercised the refusal.

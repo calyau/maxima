@@ -37,77 +37,93 @@
 (defun lessthan (a b)
   (great b a))
 
+;; The argument shapes of MAKELIST, reduced to one plan: the body, the
+;; variable to bind, and the values to bind it to in turn.  The one- and
+;; two-argument shapes bind no variable, so ARG comes back NIL and the
+;; values are placeholders whose only content is how many there are.
+;;
+;; $MAKELIST and $PARALLEL_MAKELIST share this so that the two cannot
+;; come to disagree about what they accept or how many elements they
+;; produce -- which is exactly what a test comparing them would have to
+;; assume, and could not check.
+(defun makelist-plan (x)
+  (let ((n (length x)) form arg a b c d lv)
+    (cond
+      ((= n 0) (values nil nil '()))
+      ((= n 1) (values (first x) nil '(nil)))
+      ((= n 2)
+       (setq form (first x))
+       (setq b (let (($simp t)) ($float (meval (second x)))))
+       (if (numberp b)
+           (values form nil (loop for m from 1 while (not (> m b))
+                                  collect nil))
+           (merror (intl:gettext "makelist: second argument must evaluate to a number; found: ~M") b)))
+      ((= n 3)
+       (setq form (first x))
+       (setq arg (second x))
+       (setq b (meval (third x)))
+       (if ($listp b)
+           (values form arg (mapcar #'(lambda (u) (list '(mquote) u)) (cdr b)))
+           (progn
+             (setq b (let (($simp t)) ($float (meval b))))
+             (if ($numberp b)
+                 (values form arg (loop for m from 1 while (not (> m b))
+                                        collect m))
+                 (merror (intl:gettext "makelist: third argument must be a number or a list; found: ~M") b)))))
+      ((= n 4)
+       (setq form (first x))
+       (setq arg (second x))
+       (setq a (meval (third x)))
+       (setq b (meval (fourth x)))
+       (setq d (let (($simp t)) ($float (meval `((mplus) ,b ((mtimes) ,a -1))))))
+       (if (numberp d)
+           (values form arg (interval2 a 1 d))
+           (merror (intl:gettext "makelist: the fourth argument minus the third one must evaluate to a number; found: ~M") d)))
+      ((= n 5)
+       (setq form (first x))
+       (setq arg (second x))
+       (setq a (meval (third x)))
+       (setq b (meval (fourth x)))
+       (setq c (meval (fifth x)))
+       (setq d (let (($simp t)) ($float
+                (meval
+                 `((mtimes) ((mplus) ,b ((mtimes) ,a -1)) ((mexpt) ,c -1))))))
+       (if (numberp d)
+           (values form arg (interval2 a c d))
+           (merror (intl:gettext "makelist: the fourth argument minus the third one, divided by the fifth one must evaluate to a number; found: ~M") d)))
+      (t (merror (intl:gettext "makelist: maximum 5 arguments allowed; found: ~M.~%To create a list with sublists, use nested makelist commands.") n)))))
+
+;; One element of a MAKELIST, as a form to be MEVALed.  Built in the
+;; calling thread rather than in the worker that evaluates it, so that a
+;; parallel run and a serial run evaluate identical forms.
+(defun makelist-element-form (form arg value)
+  (if arg
+      `(($ev) ,(list '(mquote) form) ,(list '(mequal) arg value))
+      `(($ev) ,(list '(mquote) form))))
+
 (defmspec $makelist (x)
-  (setq x (cdr x))
-  (simplifya
-    (prog (n form arg a b c d lv)
-     (setq n (length x))
-     (cond
-       ((= n 0) (return '((mlist))))
-       ((= n 1)
-        (setq form (first x))
-        (return
-          `((mlist) ,(meval `(($ev) ,@(list (list '(mquote) form)))))))
-       ((= n 2)
-        (setq form (first x))
-        (setq b (let (($simp t)) ($float (meval (second x)))))
-        (if (numberp b)
-            (return
-              (do
-               ((m 1 (1+ m)) (ans))
-               ((> m b) (cons '(mlist) (nreverse ans)))
-                (push (meval `(($ev) ,@(list (list '(mquote) form))))
-                      ans)))
-            (merror (intl:gettext "makelist: second argument must evaluate to a number; found: ~M") b)))
-       ((= n 3)
-        (setq form (first x))
-        (setq arg (second x))
-        (setq b (meval (third x)))
-        (if ($listp b)
-            (setq lv (mapcar #'(lambda (u) (list '(mquote) u)) (cdr b)))
-            (progn
-              (setq b (let (($simp t)) ($float (meval b))))
-              (if ($numberp b)
-                  (return
-                    (do
-                     ((m 1 (1+ m)) (ans))
-                     ((> m b) (cons '(mlist) (nreverse ans)))
-                      (push
-                       (meval
-                        `(($ev) ,@(list (list '(mquote) form)
-                                        (list '(mequal) arg m)))) ans)))
-                (merror (intl:gettext "makelist: third argument must be a number or a list; found: ~M") b)))))
-       ((= n 4)
-        (setq form (first x))
-        (setq arg (second x))
-        (setq a (meval (third x)))
-        (setq b (meval (fourth x)))
-        (setq d (let (($simp t)) ($float (meval `((mplus) ,b ((mtimes) ,a -1))))))
-        (if (numberp d)
-            (setq lv (interval2 a 1 d))
-            (merror (intl:gettext "makelist: the fourth argument minus the third one must evaluate to a number; found: ~M") d)))
-       ((= n 5)
-        (setq form (first x))
-        (setq arg (second x))
-        (setq a (meval (third x)))
-        (setq b (meval (fourth x)))
-        (setq c (meval (fifth x)))
-        (setq d (let (($simp t)) ($float
-                 (meval 
-                  `((mtimes) ((mplus) ,b ((mtimes) ,a -1)) ((mexpt) ,c -1))))))
-        (if (numberp d)
-            (setq lv (interval2 a c d))
-            (merror (intl:gettext "makelist: the fourth argument minus the third one, divided by the fifth one must evaluate to a number; found: ~M") d)))
-       (t (merror (intl:gettext "makelist: maximum 5 arguments allowed; found: ~M.~%To create a list with sublists, use nested makelist commands.") n)))
-     (return 
-       (do ((lv lv (cdr lv))
-	    (ans))
-	   ((null lv) (cons '(mlist) (nreverse ans)))
-	 (push (meval `(($ev)
-			,@(list (list '(mquote) form)
-				(list '(mequal) arg (car lv)))))
-	       ans))))
-    t))
+  (multiple-value-bind (form arg lv) (makelist-plan (cdr x))
+    (simplifya
+     (cons '(mlist)
+           (mapcar #'(lambda (value)
+                       (meval (makelist-element-form form arg value)))
+                   lv))
+     t)))
+
+(defmspec $parallel_makelist (x)
+  (multiple-value-bind (form arg lv) (makelist-plan (cdr x))
+    (simplifya
+     (cons '(mlist)
+           (call-in-parallel
+            (mapcar #'(lambda (value)
+                        (let ((element (makelist-element-form form arg value)))
+                          #'(lambda () (meval element))))
+                    lv)
+            ;; The loop variable is bound by MSET into the symbol's one
+            ;; global value cell, so every runner needs its own binding
+            ;; of it or they overwrite each other's iteration.
+            (and arg (atom arg) (list arg))))
+     t)))
 
 (defun interval2 (i s d)
   (do ((nn i (let (($simp t)) (meval `((mplus) ,s ,nn))))

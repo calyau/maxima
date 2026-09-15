@@ -33,7 +33,7 @@ endif
 if SBCL
 THREAD_BINDING_TESTS += sbcl-thread-bindings.sh
 THREAD_RACE_TESTS += sbcl-thread-race.sh
-TESTS += sbcl-test.sh
+TESTS += sbcl-test.sh sbcl-runtime-options.sh
 CLEANFILES += sbcl-test.sh sbcl.log sbcl_share.log
 sbcl-test.sh: test.sh Makefile
 	echo "#!/bin/sh" > $@
@@ -135,5 +135,17 @@ $(THREAD_RACE_TESTS): threadcheck.sh Makefile
 genericdir = $(insttestsdir)
 genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp *.wxm *.wxmx load_relative/* wester_problems/*))
 
-EXTRA_DIST = $(genericdirDATA) test.sh.in depcheck.sh.in threadcheck.sh.in \
-             threadcheck-driver-test.sh README.threadcheck
+EXTRA_DIST = $(genericdirDATA) test.sh.in depcheck.sh.in \
+             threadcheck.sh.in threadcheck-driver-test.sh README.threadcheck \
+             sbcl-runtime-options.sh.in README.sbcl-runtime-options \
+             README.parallel-input README.parallel-loop \
+             README.parallel-precision README.parallel-lifecycle \
+             README.parallel-database README.literal-prompt \
+             README.zeta-dispatch README.parallel-fibonacci \
+             README.parallel-summation README.combinatorial-cache \
+             README.parallel-factorial README.plot-random-state \
+             README.temp-file-registry README.parallel-context \
+             README.parallel-callstack README.mbind-error README.unbinding \
+             README.parallel-bindings README.parallel-bigints \
+             README.parallel-header README.parallel-loading \
+             README.parallel-startup

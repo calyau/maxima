@@ -67,14 +67,28 @@
 	    (t
 	     (maxima-error "Bad variable specification: ~a" variable-specification)))))
 
-(defmacro mbinding-sub (variables values function-name &rest body &aux (win (gensym)))
-  `(let ((,win nil))
-     (unwind-protect
-	  (progn
-	    (mbind ,variables ,values ,function-name)
-	    (setq ,win t)
-	    ,@body)
-       (if ,win (munbind ,variables)))))
+;; Keep the interpreter's MBIND/MUNBIND protocol inside real Lisp dynamic
+;; bindings. An empty PROGV retains serial behavior without allocating a
+;; closure for every ordinary function or block call.
+(defmacro with-private-maxima-bindings (variables &body body)
+  (let ((captured (gensym "CAPTURED")) (entry (gensym "ENTRY")))
+    `(let* ((,captured (when *parallel-evaluation-p*
+                        (capture-bindings (private-binding-symbols ,variables))))
+            (*private-maxima-variables*
+              (append (mapcar #'first ,captured) *private-maxima-variables*)))
+       (progv (mapcar #'first ,captured) (mapcar #'third ,captured)
+         (dolist (,entry ,captured)
+           (unless (second ,entry) (maxima-makunbound (first ,entry))))
+         ,@body))))
+
+(defmacro mbinding-sub (variables values function-name &rest body)
+  (let ((vars (gensym)) (vals (gensym)) (name (gensym)) (win (gensym)))
+    `(let* ((,vars ,variables) (,vals ,values) (,name ,function-name))
+       (with-private-maxima-bindings ,vars
+         (let ((,win nil))
+           (unwind-protect
+                (progn (mbind ,vars ,vals ,name) (setq ,win t) ,@body)
+             (when ,win (munbind ,vars))))))))
 
 ;; How About MTYPEP like (MTYPEP EXP 'ATAN) or (MTYPEP EXP '*) - Jim.
 ;; Better, (EQ (MTYPEP EXP) 'ATAN).

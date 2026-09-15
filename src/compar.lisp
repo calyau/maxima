@@ -154,13 +154,14 @@
       (facts2 ctxt)))
 
 (defun facts1 (con)
-  (contextmark)
-  (do ((l (zl-get con 'data) (cdr l))
-       (nl)
-       (u))
-      ((null l) (cons '(mlist) nl))
-    (when (visiblep (car l))
-      (push (intext (caaar l) (cdaar l)) nl))))
+  (with-database-transaction
+    (contextmark)
+    (do ((l (zl-get con 'data) (cdr l))
+         (nl)
+         (u))
+        ((null l) (cons '(mlist) nl))
+      (when (visiblep (car l))
+        (push (intext (caaar l) (cdaar l)) nl)))))
 
 ;; Look up facts from the database which contain expr. expr can be a symbol or 
 ;; a more general expression.
@@ -206,19 +207,20 @@
 ;;; If no argument supplied, then invent a name via gensym and use that.
 
 (defmfun $newcontext (&rest args)
-  (if (null args)
-    ($newcontext ($gensym "context")) ;; make up a name and try again
-    (if (> (length args) 1)
-      (merror "newcontext: found more than one argument.")
-      (let ((x (first args)))
-        (cond
-          ((not (symbolp x)) (nc-err '$newcontext x))
-          ((member x $contexts :test #'eq)
-           (mtell (intl:gettext "newcontext: context ~M already exists.") x) nil)
-          (t
-            (setq $contexts (mcons x $contexts))
-            (putprop x '($global) 'subc)
-            (setq context x $context x)))))))
+  (with-database-transaction
+    (if (null args)
+      ($newcontext ($gensym "context")) ;; make up a name and try again
+      (if (> (length args) 1)
+        (merror "newcontext: found more than one argument.")
+        (let ((x (first args)))
+          (cond
+            ((not (symbolp x)) (nc-err '$newcontext x))
+            ((member x $contexts :test #'eq)
+             (mtell (intl:gettext "newcontext: context ~M already exists.") x) nil)
+            (t
+              (setq $contexts (mcons x $contexts))
+              (putprop x '($global) 'subc)
+              (setq context x $context x))))))))
 
 ;;; This function creates a supercontext.  If given one argument, it
 ;;; makes the current context be the subcontext of the argument.  If
@@ -227,16 +229,17 @@
 ;;; If no arguments supplied, then invent a name via gensym and use that.
 
 (defmfun $supcontext (&rest x)
-  (cond ((null x) ($supcontext ($gensym "context"))) ;; make up a name and try again
-	((caddr x) (merror (intl:gettext "supcontext: found more than two arguments.")))
-	((not (symbolp (car x))) (nc-err '$supcontext (car x)))
-	((member (car x) $contexts :test #'eq)
-	 (merror (intl:gettext "supcontext: context ~M already exists.") (car x)))
-	((and (cadr x) (not (member (cadr x) $contexts :test #'eq)))
-	 (merror (intl:gettext "supcontext: no such context ~M") (cadr x)))
-	(t (setq $contexts (mcons (car x) $contexts))
-	   (putprop (car x) (ncons (or (cadr x) $context)) 'subc)
-	   (setq context (car x) $context (car x)))))
+  (with-database-transaction
+    (cond ((null x) ($supcontext ($gensym "context"))) ;; make up a name and try again
+          ((caddr x) (merror (intl:gettext "supcontext: found more than two arguments.")))
+          ((not (symbolp (car x))) (nc-err '$supcontext (car x)))
+          ((member (car x) $contexts :test #'eq)
+           (merror (intl:gettext "supcontext: context ~M already exists.") (car x)))
+          ((and (cadr x) (not (member (cadr x) $contexts :test #'eq)))
+           (merror (intl:gettext "supcontext: no such context ~M") (cadr x)))
+          (t (setq $contexts (mcons (car x) $contexts))
+             (putprop (car x) (ncons (or (cadr x) $context)) 'subc)
+             (setq context (car x) $context (car x))))))
 
 ;;; This function kills a context or a list of contexts
 
@@ -250,48 +253,50 @@
   (if done '$done '$not_done)))
 
 (defun killallcontexts ()
-  (mapcar #'killcontext (cdr $contexts))
-  (setq $context '$initial context '$initial current '$initial
-	$contexts '((mlist) $initial $global))
-  ;;The DB variables
-  ;;conmark, conunmrk, conindex, connumber, and contexts
-  ;;concern garbage-collectible contexts, and so we're
-  ;;better off not resetting them.
-  (defprop $global 1 cmark) (defprop $initial 1 cmark)
-  (defprop $initial ($global) subc)
-  (db-gc))
+  (with-database-transaction
+    (mapcar #'killcontext (cdr $contexts))
+    (setq $context '$initial context '$initial current '$initial
+          $contexts '((mlist) $initial $global))
+    ;;The DB variables
+    ;;conmark, conunmrk, conindex, connumber, and contexts
+    ;;concern garbage-collectible contexts, and so we're
+    ;;better off not resetting them.
+    (defprop $global 1 cmark) (defprop $initial 1 cmark)
+    (defprop $initial ($global) subc)
+    (db-gc)))
 
 (defun killcontext (x)
   "Kills the context X and returns T. Complains and returns NIL when X is not a
   context or is currently active, and returns NIL for the global context."
-  (cond ((not (member x $contexts :test #'eq))
-	 (mtell (intl:gettext "killcontext: no such context ~M.") x)
-	 nil)
-	((eq x '$global) nil)
-	((eq x '$initial)
-	 (mapc #'remov (zl-get '$initial 'data))
-	 (remprop '$initial 'data)
-	 t)
-	((and (not (eq $context x)) (contextmark) (< 0 (zl-get x 'cmark)))
-	 (mtell (intl:gettext "killcontext: context ~M is currently active.") x)
-	 nil)
-        (t (if (member x $activecontexts)
-               ;; Context is on the list of active contexts. The test above 
-               ;; checks for active contexts, but it seems not to work in all
-               ;; cases. So deactivate the context at this place to remove it 
-               ;; from the list of active contexts before it is deleted.
-               ($deactivate x))
-	   (setq $contexts ($delete x $contexts))
-	   (cond ((and (eq x $context)
-		       (equal ;;replace eq ?? wfs
-			(zl-get x 'subc) '($global)))
-		  (setq $context '$initial)
-		  (setq context '$initial))
-		 ((eq x $context)
-		  (setq $context (car (zl-get x 'subc)))
-		  (setq context (car (zl-get x 'subc)))))
-	   (killc x)
-	   t)))
+  (with-database-transaction
+    (cond ((not (member x $contexts :test #'eq))
+           (mtell (intl:gettext "killcontext: no such context ~M.") x)
+           nil)
+          ((eq x '$global) nil)
+          ((eq x '$initial)
+           (mapc #'remov (zl-get '$initial 'data))
+           (remprop '$initial 'data)
+           t)
+          ((and (not (eq $context x)) (contextmark) (< 0 (zl-get x 'cmark)))
+           (mtell (intl:gettext "killcontext: context ~M is currently active.") x)
+           nil)
+          (t (if (member x $activecontexts)
+                 ;; Context is on the list of active contexts. The test above
+                 ;; checks for active contexts, but it seems not to work in all
+                 ;; cases. So deactivate the context at this place to remove it
+                 ;; from the list of active contexts before it is deleted.
+                 ($deactivate x))
+             (setq $contexts ($delete x $contexts))
+             (cond ((and (eq x $context)
+                         (equal ;;replace eq ?? wfs
+                          (zl-get x 'subc) '($global)))
+                    (setq $context '$initial)
+                    (setq context '$initial))
+                   ((eq x $context)
+                    (setq $context (car (zl-get x 'subc)))
+                    (setq context (car (zl-get x 'subc)))))
+             (killc x)
+             t))))
 
 (defun nc-err (fn x)
   (merror (intl:gettext "~M: context name must be a symbol; found ~M") fn x))
@@ -2677,59 +2682,60 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;;; strict inequality in the opposite direction has nothing left to contribute.
 
 (defun dcomp (x y)
-  (let (mgqp mlqp)
-    (flet ((resolve-object (z)
-             ;; The node for a symbol or a compound expression, provided it
-             ;; carries facts. A node with no DATA can neither start a path nor
-             ;; be arrived at, since every fact naming a node is pushed onto
-             ;; that node's own DATA, so "no node" and "empty node" are the same
-             ;; answer, '$PNZ.
-             (let ((nd (dinternp z)))
-               (and nd (sel nd data) nd))))
-      (cond
-        ((mnump x)
-         ;; Two numbers are pure arithmetic: RGRP computes what the chain of
-         ;; MGRP edges among the number nodes encodes, and nothing else in the
-         ;; database can refine it.
-         (when (mnump y)
-           (return-from dcomp (rgrp x y)))
-         ;; A number on the left is the source, and is resolved below, where
-         ;; the walk starts. Settle the other side first: A miss makes the
-         ;; answer '$PNZ and saves that work entirely.
-         (setq y (resolve-object y)))
-        ((mnump y)
-         (when (setq x (resolve-object x))
-           ;; The target only has to carry the answer. Its own node if the
-           ;; database has one, so that the facts attached to it take part in
-           ;; the walk; otherwise a bare cell - never registered in *NOBJECTS*,
-           ;; never linked to anything. The walk still recognises it, because
-           ;; arrival at a number is decided by comparing values rather than by
-           ;; identity.
-           (setq y (or (dinternp y) (dbnode y)))))
-        (t
-         (when (setq x (resolve-object x))
-           (setq y (resolve-object y)))))
-      (cond
-        ((or (null x) (null y)) '$pnz)
-        (t
-         (clear)
-         (if (mnump x)
-           ;; The source must have edges to leave by, so a bare cell will not
-           ;; do here. Use the number's own node when the database has one;
-           ;; otherwise, enter the graph at the two chain nodes it belongs
-           ;; between, with the relation each one licenses. DINTNUM emits the
-           ;; upper edge first and ADDF pushes, so the lower neighbor is the
-           ;; one that a walk out of an interned node would reach first.
-           (let ((nd (dinternp x)))
-             (if nd
-               (deq nd y)
-               (multiple-value-bind (same above below) (dnum-neighbors x)
-                 (cond (same (deq same y))
-                       (t (or (and below (dgr below y))
-                              (and above (dls above y))))))))
-           (deq x y))
-         ;; Whatever the walk established about the target, if anything.
-         (or (sel y +labs) '$pnz))))))
+  (with-database-transaction
+    (let (mgqp mlqp)
+      (flet ((resolve-object (z)
+               ;; The node for a symbol or a compound expression, provided it
+               ;; carries facts. A node with no DATA can neither start a path nor
+               ;; be arrived at, since every fact naming a node is pushed onto
+               ;; that node's own DATA, so "no node" and "empty node" are the same
+               ;; answer, '$PNZ.
+               (let ((nd (dinternp z)))
+                 (and nd (sel nd data) nd))))
+        (cond
+          ((mnump x)
+           ;; Two numbers are pure arithmetic: RGRP computes what the chain of
+           ;; MGRP edges among the number nodes encodes, and nothing else in the
+           ;; database can refine it.
+           (when (mnump y)
+             (return-from dcomp (rgrp x y)))
+           ;; A number on the left is the source, and is resolved below, where
+           ;; the walk starts. Settle the other side first: A miss makes the
+           ;; answer '$PNZ and saves that work entirely.
+           (setq y (resolve-object y)))
+          ((mnump y)
+           (when (setq x (resolve-object x))
+             ;; The target only has to carry the answer. Its own node if the
+             ;; database has one, so that the facts attached to it take part in
+             ;; the walk; otherwise a bare cell - never registered in *NOBJECTS*,
+             ;; never linked to anything. The walk still recognises it, because
+             ;; arrival at a number is decided by comparing values rather than by
+             ;; identity.
+             (setq y (or (dinternp y) (dbnode y)))))
+          (t
+           (when (setq x (resolve-object x))
+             (setq y (resolve-object y)))))
+        (cond
+          ((or (null x) (null y)) '$pnz)
+          (t
+           (clear)
+           (if (mnump x)
+             ;; The source must have edges to leave by, so a bare cell will not
+             ;; do here. Use the number's own node when the database has one;
+             ;; otherwise, enter the graph at the two chain nodes it belongs
+             ;; between, with the relation each one licenses. DINTNUM emits the
+             ;; upper edge first and ADDF pushes, so the lower neighbor is the
+             ;; one that a walk out of an interned node would reach first.
+             (let ((nd (dinternp x)))
+               (if nd
+                 (deq nd y)
+                 (multiple-value-bind (same above below) (dnum-neighbors x)
+                   (cond (same (deq same y))
+                         (t (or (and below (dgr below y))
+                                (and above (dls above y))))))))
+             (deq x y))
+           ;; Whatever the walk established about the target, if anything.
+           (or (sel y +labs) '$pnz)))))))
 
 (defun deq (x y)
   (cond
@@ -3044,25 +3050,29 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         (values lhs rhs))))
 
 (defun mdata (flag r x y)
-  (if flag
-      (mfact r (dintern x) (dintern y))
-      (let ((x (dinternp x)) (y (dinternp y)))
-        (when (and x y) (mkill r x y)))))
+  (with-database-transaction
+    (if flag
+        (mfact r (dintern x) (dintern y))
+        (let ((x (dinternp x)) (y (dinternp y)))
+          (when (and x y) (mkill r x y))))))
 
 (defun mfact (r x y)
-  (let ((f (datum (list r x y))))
-    (cntxt f context)
-    (addf f x)
-    (addf f y)))
+  (with-database-transaction
+    (let ((f (datum (list r x y))))
+      (cntxt f context)
+      (addf f x)
+      (addf f y))))
 
 (defun mkill (r x y)
-  (let ((f (car (datum (list r x y)))))
-    (kcntxt f context)
-    (maxima-remf f x)
-    (maxima-remf f y)))
+  (with-database-transaction
+    (let ((f (car (datum (list r x y)))))
+      (kcntxt f context)
+      (maxima-remf f x)
+      (maxima-remf f y))))
 
 (defun mkind (x y)
-  (kind (dintern x) (dintern y)))
+  (with-database-transaction
+    (kind (dintern x) (dintern y))))
 
 ;; To guess from the previous incarnation of this code,
 ;; each argument is assumed to be a float, bigfloat, integer, or Maxima rational.
@@ -3110,15 +3120,16 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         (and prop2 (truep (list 'kind var (cdr prop2)))))))
 
 (defun declarekind (var prop)	; This function is for $DECLARE to use.
-  (cond
-    ((truep (list 'kind var prop))
-     t)
-    ((declaration-inconsistent-p var prop)
-     (merror (intl:gettext "declare: inconsistent declaration ~:M")
-                           `(($declare) ,var ,prop)))
-    (t
-     (mkind var prop)
-     t)))
+  (with-database-transaction
+    (cond
+      ((truep (list 'kind var prop))
+       t)
+      ((declaration-inconsistent-p var prop)
+       (merror (intl:gettext "declare: inconsistent declaration ~:M")
+                             `(($declare) ,var ,prop)))
+      (t
+       (mkind var prop)
+       t))))
 
 ;;;  These functions reformat expressions to be stored in the data base.
 

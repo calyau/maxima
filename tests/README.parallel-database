@@ -1,0 +1,41 @@
+Parallel database regression tests
+==================================
+
+  timeout 180 ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_parallel_database,rtest_parallel,rtest_ask1]);'
+
+Run each configured Lisp. Require the expected test count and "No unexpected
+errors" in the log; a zero process status alone is insufficient. These tests
+are also appended to the complete suite.
+
+The 20 examples exercise both query engines (kind/propagation and numeric
+comparison), exact definite integrals, inherited facts, two different explicit
+temporary contexts, errors/throws and LOCAL's normal/error restoration.
+Actual workers use separate one-item jobs, so all work cannot silently be
+taken by the caller. Threadless Lisps exercise the same serial expectations.
+
+A fixed private generator mixes 512 queries over eight database predicates.
+Two workers each insert, compare and collect 96 generated signed rational
+numbers, up to 39 digits, using identical seeds to exercise shared numeric
+nodes. Expected comparison signs come from exact Common Lisp rational
+arithmetic independently of the database's comparison algorithm.
+
+The overlap probes pause each of eight query entry points at BEG or DMARK,
+then let a second worker attempt the other query engine. Their shared +LABS
+representation differs, and the competitor's CLEAR must not enter while the
+first query is paused. A 50ms opportunity window exposes the
+old interference: a very delayed competitor can miss the old race, while a
+correctly serialized query cannot falsely appear to overlap. The randomized
+queries and mathematical checks provide complementary coverage.
+
+A LEARN callback starts database workers: a lock held across the callback
+would deadlock. Query fault injection tests both errors and nonlocal throws,
+then verifies that another query can use the database again. Helpers restore
+replaced functions and join their workers during cleanup; gate deadlines fail
+the test instead of letting an abandoned worker wait indefinitely. Run in an
+otherwise idle Maxima process, since the overlap/fault helpers temporarily
+replace internal functions.
+
+This change retains shared assumption writes. It does not enable automatic
+private contexts for parallel runners, or certify unrelated shared symbol
+properties and concurrent user-state mutation as safe.

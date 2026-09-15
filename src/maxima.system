@@ -758,7 +758,7 @@
    (:module i-o
      :source-pathname ""
      :depends-on ("globals" "defmfun" "compatibility-macros" "compatibility-macros1"
-                  "declarations" "fundamental-macros" "other-macros"
+                  "declarations" "errset" "fundamental-macros" "other-macros"
                   "prerequisites" "utilities" "utility-macros"
                   "evaluator")
      ;; Module is a clean DAG at every level: function calls,
@@ -768,6 +768,8 @@
      ((:file "prompt-util")
       (:file "suprv1"
         :depends-on ("prompt-util"))
+      (:file "parallel"         ; suprv1's WITH-THREAD-LOCAL-ENVIRONMENT
+        :depends-on ("prompt-util" "suprv1"))
       (:file "macsys"
         :depends-on ("prompt-util" "suprv1"))
       (:file "testsuite")
@@ -952,7 +954,7 @@
      :source-pathname ""
      :depends-on ("globals" "defmfun" "compatibility-macros1" "declarations"
                   "evaluator" "fundamental-macros" "other-macros"
-                  "prerequisites" "utility-macros")
+                  "prerequisites" "utility-macros" "i-o")
      ;; Compile-time deps form a DAG.  Two runtime cycles are
      ;; structural: compar <-> db (sign/comparison logic vs the
      ;; fact database) and askp <-> compar (interactive
@@ -1200,7 +1202,7 @@
                   "reader" "utility-macros" "commands"
                   "destructuring-let" "errset" "other-macros"
                   "rat-macros" "declarations"  "fundamental-macros"
-                  "numerical-utilities"
+                  "numerical-utilities" "i-o"
                   "m2-pattern-matcher"
                   "random")
      #+mk-deps-complete :dependencies-complete #+mk-deps-complete t

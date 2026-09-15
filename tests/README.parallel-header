@@ -1,0 +1,32 @@
+Bigfloat header and rounding state in parallel runners
+=======================================================
+
+Run ./maxima-local --no-init --batch-string='run_testsuite(tests=["rtest_parallel_precision"]);'
+The appended 28 cases bring that registered file to 45 problems.
+
+The existing six precision variables and the memoized *BFLOAT-HEADER* /
+*BFLOAT-HEADER-PREC* pair must be captured from the same caller. FPROUND
+returns an exponent adjustment through *M; its scratch also needs a private
+binding in caller, worker and fallback runners. A worker-only environment
+does not protect the calling runner or inherit nested state.
+
+Scope checks cover inherited values, initially unbound *M, normal return,
+errors and THROW, and caller/worker nesting. THROW checks cross the calling
+runner's scope; they do not attempt a nonlocal exit into a different thread.
+Expected fixture error text goes to a broadcast stream; the checks assert
+the conditions and state, without concurrent writes to a shared string stream.
+A public scheduler can give several items to one runner. Its probe restores
+each item's scratch before the next one checks that runner's entry state;
+the actual runner is not required to reset state between items.
+
+Two distinct native workers install different valid header/precision pairs
+and rounding adjustments. Rendezvous ensure both writes precede either read.
+Their results must retain their own complete state. Both workers remain alive
+until their reads finish; missing workers and setup errors have bounded waits
+and cleanup joins. Threadless configurations run the portable numeric check.
+
+Sixty-four generated precision/rational-input combinations use the existing
+exact binary bigfloat decoder and rational error bound, independently of a
+serial BFLOAT result. No arithmetic algorithm or old expected answer changes.
+These checks address precision state; generated solution-parameter identities
+and other shared state require separate validation.

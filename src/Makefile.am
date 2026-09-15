@@ -283,7 +283,7 @@ sbcllib_DATA = $(SBCL_MAXIMA)
 sb_slad = (sb-ext:save-lisp-and-die "$@")
 endif
 
-EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint $(SBCL_EXTRA_ARGS)
+EXECUTESBCL = "$(SBCL_NAME)" $(SBCL_EXTRA_ARGS) --noinform --noprint
 BUILT_FILES += $(SBCL_MAXIMA)
 
 COMPILE_SBCL = echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit)' | $(EXECUTESBCL) 

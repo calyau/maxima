@@ -173,7 +173,17 @@
          ((mlist simp) 2))
 	"rtest_operators"
 	"rtest_wxmx"
-	"rtest_load_relative"))
+	"rtest_load_relative"
+	"rtest_parallel"
+	"rtest_parallel_input"
+	"rtest_parallel_loop"
+	"rtest_parallel_precision"
+	"rtest_parallel_lifecycle"
+	"rtest_parallel_database"
+	"rtest_literal_prompt"
+	"rtest_zeta_dispatch"
+	"rtest_parallel_fibonacci"
+	"rtest_parallel_summation"))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima

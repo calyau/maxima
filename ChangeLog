@@ -1,6 +1,89 @@
 Maxima 5.50-post change log
 ===========================
 
+* Preserve worker reservations and thread ownership when an asynchronous
+  interrupt arrives during parallel startup. Use serial scheduling on ECL
+  21.2.1, whose interrupt deferral can lose worker ownership.
+
+* Reject file loading and first-use autoload initialization in parallel bodies,
+  preserving serial loading and calls to fully initialized functions.
+
+* Clarify shared data, local function properties, package initialization and
+  serial fallback in the parallel programming documentation.
+
+* Preserve bigfloat header caches and rounding scratch in every parallel
+  runner, including the caller and nested computations.
+
+* Test exact large-integer arithmetic and input preservation across parallel
+  runners, including native worker overlap and portable serial fallback.
+
+* Give parallel function parameters and block locals private value cells,
+  preserving nested bindings and nonlocal variable registration effects.
+
+* Apply the detected SBCL thread-local storage limit during both image builds
+  and startup, while preserving explicit runtime option overrides.
+
+* Preserve enclosing variable values when removing a local binding on ECL,
+  including interpreter, debugger, parallel and value-removal paths.
+
+* Preserve saved error-output settings across nested and concurrent
+  variable bindings.
+
+* Give parallel runners independent, adjustable function-call stacks while
+  preserving inherited frames and the caller's stack during errors.
+
+* Reject parallel LAPACK package loading and the eigenvalue, SVD and QR
+  interfaces that use unsafe shared initialization, retaining serial behavior.
+
+* Expose an internal parallel execution context and a guard for operations
+  that explicitly require serial execution, consistently across runners.
+
+* Synchronize temporary plot-file registration and take a consistent snapshot
+  for cleanup, keeping filesystem operations outside the registry lock.
+
+* Preserve the caller's Common Lisp random state when generating plot
+  filenames, including when generation signals an error.
+
+* Give factorial simplification its own processed-factorial list and rational
+  conversion symbols, preserving results across nested and parallel calls.
+
+* Synchronize Bernoulli and Euler cache access, preserve growing storage
+  and publish completed exact values before making them available to readers.
+
+* Isolate sum simplification results and monomial-matching scratch state
+  per invocation, including nested simplification and concurrent workers.
+
+* Give each Fibonacci computation its own recursive scratch state, preventing
+  concurrent calls from corrupting each other's exact integer results.
+
+* Fix compiled bigfloat zeta and polylogarithm evaluation on ECL by
+  guarding argument classification before accessing complex components.
+
+* Format literal fragments in input prompts correctly, preserving prompt
+  markers, decimal number printing and the custom prompt callback protocol.
+
+* Protect complete assumption-database queries and graph mutations with
+  a shared transaction lock, including context selection, number interning
+  and temporary fact restoration. Concurrent queries no longer overwrite
+  each other's search marks. Shared-assumption semantics are unchanged.
+
+* Join already-started parallel workers during error unwinding before
+  releasing their worker reservation; attempt remaining joins even when
+  one join reports an error. Preserve the original caller failure.
+
+* Parallel workers inherit the caller's complete bigfloat precision state,
+  including in nested computations. Precision changes in a runner do not
+  leak back to its caller, including after errors and on the serial fallback.
+
+* Preserve exact bounds, floating-point stepping, and control-expression
+  evaluation order in counted parallel loops by reusing the ordinary loop
+  evaluator. Report a non-advancing floating-point step explicitly.
+
+* Parallel bodies explicitly refuse interactive input, including read() and
+  readonly(), while preserving answers established without a question.
+* Fix the serial fallback of parallel computations on Lisps without native
+  threads: do not reference the unavailable thread-joining function.
+
 Bug fixes for numbered bugs:
 ----------------------------
 * \#2596 error in matrix exponentiation

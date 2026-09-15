@@ -1,0 +1,47 @@
+Saved error-output state during variable binding
+================================================
+
+MBIND captures the current $ERRORMSG value for SYMBOL-VALUES-IN. Assignment
+hooks may perform another binding before the outer invocation saves that
+option, and concurrent invocations may overlap. A shared SETQ lets either
+call overwrite the other's saved value, so MUNBIND restores the wrong option.
+MBIND now dynamically binds *$ERRORMSG-VALUE* for its own invocation.
+
+The existing capture-at-entry behavior, assignment validation, binding and
+unwinding bodies are preserved. WITH-$ERROR currently changes the condition-
+signalling flag; older comments saying it also binds $ERRORMSG to NIL were
+stale and have been corrected. This scratch-state fix does not isolate the
+separate shared value cells of arbitrary BLOCK locals or function parameters.
+
+Run with a timeout and --no-init:
+
+  ./maxima-local --no-init --batch-string='run_testsuite(tests=["rtest_mset"]);'
+
+Require the completed rtest_mset suite summary. A Lisp error can exit zero. The 30 appended examples preserve all previous problem numbers
+and mathematical expectations. MBIND-ERROR-CHECK.LISP uses the existing
+PARALLEL-INPUT-CHECK.LISP execution-site helper.
+
+Checks cover true/false options, nested assignment hooks, empty bindings,
+multiple return values, controlled body errors and nonlocal exits, parameter
+count errors, rejected assignments before/after partial progress, and binding
+and call-stack restoration. A fixed private generator varies execution site,
+option, nesting depth and exit mode over 64 cases. Temporary symbols and
+fixture-local option registries avoid the separate variable-cell defect.
+
+Four native handshakes pause one binding before it saves $ERRORMSG until a
+second worker binds with the opposite setting. They cover both a completed
+second binding and two active bindings unwinding in the opposite order. Both saved and
+restored values must belong to the first invocation. Deadlines, cancellation
+and worker joins bound the checks; cleanup restores the shared scratch cell
+when running the deliberately faulty parent. CLISP checks portable fallback.
+
+The initially unbound option check requires the saved MUNBOUND markers,
+scratch restoration and preservation of the enclosing option value. It calls
+MBIND directly inside a PROGV fixture, which owns and unwinds the temporary
+values. It deliberately does not call MUNBIND on the initially unbound option:
+ECL 21.2.1's MAKUNBOUND removes the global cell while leaving a PROGV binding
+bound. This was reproduced without Maxima; a test using it on $ERRORMSG leaked
+state into later tests. The fixture now checks the enclosing BOUNDP/value as
+well. Ordinary bound-variable and error cleanup remain covered by the other
+checks. Maxima's compatibility helper and the separate current-binding
+removal tests are described in README.unbinding.

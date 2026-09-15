@@ -556,6 +556,8 @@
      ((:file "prompt-util")
       (:file "suprv1"
         :depends-on ("prompt-util"))
+      (:file "parallel"         ; suprv1's WITH-THREAD-LOCAL-ENVIRONMENT
+        :depends-on ("prompt-util" "suprv1"))
       (:file "macsys"
         :depends-on ("prompt-util" "suprv1"))
       (:file "testsuite")
@@ -707,7 +709,7 @@
      :pathname ""
      :depends-on (globals defmfun compatibility-macros1 declarations
                   evaluator fundamental-macros other-macros
-                  prerequisites utility-macros)
+                  prerequisites utility-macros i-o)
      ;; Compile-time deps form a DAG.  Two runtime cycles are
      ;; structural: compar <-> db (sign/comparison logic vs the
      ;; fact database) and askp <-> compar (interactive
@@ -715,7 +717,8 @@
      ;; them).
      :components ((:file "inmis")
                   (:file "db")
-                  (:file "compar")
+                  (:file "compar"
+                    :depends-on ("db" "inmis"))
                   (:file "askp")))
    (:module variable-predicates
      :pathname ""
@@ -899,7 +902,7 @@
                   reader utility-macros commands
                   destructuring-let errset other-macros
                   rat-macros declarations fundamental-macros
-                  numerical-utilities m2-pattern-matcher random)
+                  numerical-utilities m2-pattern-matcher random i-o)
      :components ((:file "scs")
                   (:file "asum")
                   (:file "fortra")

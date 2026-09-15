@@ -737,7 +737,7 @@ Command      Description~%~
 	 (push var *diff-bindlist*)
 	 (push (symbol-value var) *diff-mspeclist*)
 	 (cond ((eq (car mspeclist) munbound)
-		(makunbound var) 
+		(maxima-makunbound var)
 	        (setq $values (delete var $values :count 1 :test #'eq)))
 	       (t (let ((munbindp t)) (mset var (car mspeclist)))))
 	 (setq mspeclist (cdr mspeclist) bindlist (cdr bindlist))))

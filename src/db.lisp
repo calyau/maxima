@@ -20,6 +20,16 @@
 ;; almost completely uncommented.  Someone with nothing better to do should go
 ;; through it, figure out how it works, and write it down.
 
+;;; One transaction covers context selection, every use of the search marks,
+;;; and mutations of the fact graph. Locking only individual plist stores or
+;;; CONTEXTMARK would let a different query replace the marks before use.
+;;; CURRENT and the shared CMARK properties deliberately stay one global pair.
+(defvar *database-lock* (%make-lock "maxima fact database"))
+
+(defmacro with-database-transaction (&body body)
+  "Protect a short database operation, never a user computation or callback."
+  `(%with-lock (*database-lock*) ,@body))
+
 ;; External specials
 
 (defvar context 'global)
@@ -346,71 +356,76 @@
 		     -sl nil))))))
 
 (defun clear ()
-  (when dbtrace
-    (format *trace-output* "~%CLEAR: clearing ~A" *marks*))
-  (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
-  (mapc #'(lambda (sym) (push+sto (sel sym -labs) nil)) -labs)
-  (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
-  (setq +s nil
-	+sm nil
-	+sl nil
-	-s nil
-	-sm nil
-	-sl nil
-	*labs* nil
-	*lprs* nil
-	*labindex* 0
-	*lprindex* +labnumber+
-	*marks* 0
-	+labs nil
-	-labs nil
-	ulabs nil)
-  (contextmark))
+  (with-database-transaction
+    (when dbtrace
+      (format *trace-output* "~%CLEAR: clearing ~A" *marks*))
+    (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
+    (mapc #'(lambda (sym) (push+sto (sel sym -labs) nil)) -labs)
+    (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
+    (setq +s nil
+          +sm nil
+          +sl nil
+          -s nil
+          -sm nil
+          -sl nil
+          *labs* nil
+          *lprs* nil
+          *labindex* 0
+          *lprindex* +labnumber+
+          *marks* 0
+          +labs nil
+          -labs nil
+          ulabs nil)
+    (contextmark)))
 
 (defun truep (pat)
-  (clear)
-  (cond ((atom pat) pat)
-	((prog2 (setq pat (mapcar #'query-semant pat)) nil))
-	((eq (car pat) 'kind)
-	 (beg (cadr pat) 1)
-	 (beg- (caddr pat) 1)
-	 (propg))
-	(t
-	 (beg (cadr pat) 1)
-	 (beg- (caddr pat) 2)
-	 (beg (car pat) (lpr 1 2))
-	 (propg))))
+  (with-database-transaction
+    (clear)
+    (cond ((atom pat) pat)
+          ((prog2 (setq pat (mapcar #'query-semant pat)) nil))
+          ((eq (car pat) 'kind)
+           (beg (cadr pat) 1)
+           (beg- (caddr pat) 1)
+           (propg))
+          (t
+           (beg (cadr pat) 1)
+           (beg- (caddr pat) 2)
+           (beg (car pat) (lpr 1 2))
+           (propg)))))
 
 (defun falsep (pat)
-  (clear)
-  (cond ((eq (car pat) 'kind)
-	 (beg (cadr pat) 1)
-	 (beg (caddr pat) 1)
-	 (propg))))
+  (with-database-transaction
+    (clear)
+    (cond ((eq (car pat) 'kind)
+           (beg (cadr pat) 1)
+           (beg (caddr pat) 1)
+           (propg)))))
 
 (defun isp (pat)
-  (let ((isp 'unknown) #+ccl (err t))
-    (ignore-errors
-      (setq isp
-	    (cond ((truep pat))
-		  ((falsep pat) nil)
-		  (t 'unknown)))
-      #+ccl (setq err nil))
-    #+ccl
-    (when err
-      (setq +labs nil))
-    isp))
+  (with-database-transaction
+    (let ((isp 'unknown) #+ccl (err t))
+      (ignore-errors
+        (setq isp
+              (cond ((truep pat))
+                    ((falsep pat) nil)
+                    (t 'unknown)))
+        #+ccl (setq err nil))
+      #+ccl
+      (when err
+        (setq +labs nil))
+      isp)))
 
 ;; Return NIL for all non-symbols.
 (defun kindp (x y)
-  (when (and (symbolp x) (get x 'data))
-    (clear)
-    (beg x 1)
-    (do () ((null +s))
-      (let ((p (dq+)))
-        (if (eq y p)
-          (return t)
-          (mark+ p (+labs p)))))))
+  (with-database-transaction
+    (when (and (symbolp x) (get x 'data))
+      (clear)
+      (beg x 1)
+      (do () ((null +s))
+        (let ((p (dq+)))
+          (if (eq y p)
+            (return t)
+            (mark+ p (+labs p))))))))
 
 (defun kind-any-of (x kinds)
   "Looks up the kind information on symbol X and returns the first kind that is
@@ -419,76 +434,84 @@
   kinds, e.g. '$EVEN and '$ODD. Returns NIL if no matching kind is found.
   This is faster than (OR (KINDP X K1) (KINDP X K2) ...), since it only requires
   a single database query."
-  (when (and (symbolp x) (get x 'data))
-    (clear)
-    (beg x 1)
-    (do () ((null +s))
-      (let* ((p (dq+))
-             (k (member p kinds :test #'eq)))
-        (if k
-          (return (car k))
-          (mark+ p (+labs p)))))))
+  (with-database-transaction
+    (when (and (symbolp x) (get x 'data))
+      (clear)
+      (beg x 1)
+      (do () ((null +s))
+        (let* ((p (dq+))
+               (k (member p kinds :test #'eq)))
+          (if k
+            (return (car k))
+            (mark+ p (+labs p))))))))
 
 (defun kind-all-of-p (x kinds)
   "Returns T iff (KINDP X K) would return T for all K in KINDS. This is faster
   than (AND (KINDP X K1) (KINDP X K2) ...), since it only requires a single
   database query. The implementation relies on counting matching kinds, therefore
   KINDS should not contain repeated items."
-  (let ((remaining (length kinds)))
-    (when (and (symbolp x) (get x 'data))
-      (clear)
-      (beg x 1)
-      (do () ((null +s))
-        (let ((p (dq+)))
-          (when (and (member p kinds :test #'eq)
-                     (zerop (decf remaining)))
-            (return))
-          (mark+ p (+labs p)))))
-    (zerop remaining)))
+  (with-database-transaction
+    (let ((remaining (length kinds)))
+      (when (and (symbolp x) (get x 'data))
+        (clear)
+        (beg x 1)
+        (do () ((null +s))
+          (let ((p (dq+)))
+            (when (and (member p kinds :test #'eq)
+                       (zerop (decf remaining)))
+              (return))
+            (mark+ p (+labs p)))))
+      (zerop remaining))))
 
 (defun decl-complex-kind (x)
   "Returns '$IMAGINARY if the symbol X is declared imaginary, '$COMPLEX if it is
   declared complex but not imaginary, else NIL. This is faster than two checks."
-  (when (and (symbolp x) (get x 'data))
-    (clear)
-    (beg x 1)
-    (let (complexp)
-      (do () ((null +s) (and complexp '$complex))
-        (let ((p (dq+)))
-          (if (eq p '$imaginary)
-            (return '$imaginary)
-            (progn
-              (when (eq p '$complex)
-                (setq complexp t))
-              (mark+ p (+labs p)))))))))
+  (with-database-transaction
+    (when (and (symbolp x) (get x 'data))
+      (clear)
+      (beg x 1)
+      (let (complexp)
+        (do () ((null +s) (and complexp '$complex))
+          (let ((p (dq+)))
+            (if (eq p '$imaginary)
+              (return '$imaginary)
+              (progn
+                (when (eq p '$complex)
+                  (setq complexp t))
+                (mark+ p (+labs p))))))))))
 
 (defun true* (pat)
-  (if (eq (car pat) 'kind)
-   (mkind (cadr pat) (caddr pat))
-   (let ((dum (semant pat)))
-    (if dum
-	(cntxt (ind (ncons dum)) context)))))
+  (with-database-transaction
+    (if (eq (car pat) 'kind)
+     (mkind (cadr pat) (caddr pat))
+     (let ((dum (semant pat)))
+      (if dum
+          (cntxt (ind (ncons dum)) context))))))
 
 (defun fact (fun arg val)
-  (cntxt (ind (datum (list fun arg val))) context))
+  (with-database-transaction
+    (cntxt (ind (datum (list fun arg val))) context)))
 
 (defun kind (x y)
-  (setq y (datum (list 'kind x y)))
-  (cntxt y context)
-  (addf y x))
+  (with-database-transaction
+    (setq y (datum (list 'kind x y)))
+    (cntxt y context)
+    (addf y x)))
 
 (defun par (s y)
-  (setq y (datum (list 'par s y)))
-  (cntxt y context)
-  (mapc #'(lambda (lis) (addf y lis)) s))
+  (with-database-transaction
+    (setq y (datum (list 'par s y)))
+    (cntxt y context)
+    (mapc #'(lambda (lis) (addf y lis)) s)))
 
 (defun datum (pat)
   (ncons pat))
 
 (defun ind (dat)
-  (mapc #'(lambda (lis) (ind1 dat lis)) (cdar dat))
-  (mapc #'ind2 (cdar dat))
-  dat)
+  (with-database-transaction
+    (mapc #'(lambda (lis) (ind1 dat lis)) (cdar dat))
+    (mapc #'ind2 (cdar dat))
+    dat))
 
 (defun ind1 (dat pat)
   (cond ((not (nodep pat))
@@ -508,12 +531,29 @@
 (defun maxima-remf (dat nd)
   (push+sto (sel nd data) (fdel dat (sel nd data))))
 
+(defun db-local-facts (variable)
+  "Temporarily hide VARIABLE's facts and return them for LOCAL's frame."
+  (with-database-transaction
+    (let ((facts (get variable 'data)))
+      (dolist (fact facts) (putprop fact -1 'ulabs))
+      (zl-remprop variable 'data)
+      facts)))
+
+(defun db-restore-local-facts (variable facts)
+  "Remove LOCAL's temporary facts and restore its saved facts."
+  (with-database-transaction
+    (mapc #'(lambda (datum) (uncntxt datum) (remov datum))
+          (get variable 'data))
+    (cput variable facts 'data)
+    (dolist (fact facts) (zl-remprop fact 'ulabs))))
+
 (defun uncntxt (dat)
-  (let* ((ctxt (or (zl-get dat 'con) 'global))
-         (l (zl-get ctxt 'data)))
-    (when l
-      (putprop ctxt (delete dat l :test #'eq :count 1) 'data)))
-  dat)
+  (with-database-transaction
+    (let* ((ctxt (or (zl-get dat 'con) 'global))
+           (l (zl-get ctxt 'data)))
+      (when l
+        (putprop ctxt (delete dat l :test #'eq :count 1) 'data)))
+    dat))
 
 (defun removablep (dat)
   "Can the datum DAT be removed from the current context? A datum with no CON
@@ -574,16 +614,18 @@
 
 (defun dinternp (x)
   "The database node for X, or NIL when the database has none."
-  (cond ((mnump x) (assol x *nobjects*))
-	((atom x) x)
-	((assol x dobjects))))
+  (with-database-transaction
+    (cond ((mnump x) (assol x *nobjects*))
+          ((atom x) x)
+          ((assol x dobjects)))))
 
 (defun dintern (x)
-  (cond ((mnump x) (dintnum x))
-	((atom x) x)
-	((assol x dobjects))
-	(t (setq dobjects (cons (dbnode x) dobjects))
-	   (car dobjects))))
+  (with-database-transaction
+    (cond ((mnump x) (dintnum x))
+          ((atom x) x)
+          ((assol x dobjects))
+          (t (setq dobjects (cons (dbnode x) dobjects))
+             (car dobjects)))))
 
 (defun dnum-neighbors (x)
   "Where the number X belongs in the *NOBJECTS* chain, without putting it there.
@@ -593,77 +635,81 @@
    links a new number to, located by the same scan - the two must stay in step.
    *NOBJECTS* is sorted descending, so the scan stops as soon as it has passed
    X: at once for a number above everything on record."
-  (do ((lis *nobjects* (cdr lis))
-       (above nil)
-       (r))
-      ((null lis) (values nil above nil))
-    (setq r (rgrp x (caar lis)))
-    (cond
-      ((eq '$zero r) (return (values (car lis) nil nil)))
-      ((eq '$pos r) (return (values nil above (car lis))))
-      (t (setq above (car lis))))))
+  (with-database-transaction
+    (do ((lis *nobjects* (cdr lis))
+         (above nil)
+         (r))
+        ((null lis) (values nil above nil))
+      (setq r (rgrp x (caar lis)))
+      (cond
+        ((eq '$zero r) (return (values (car lis) nil nil)))
+        ((eq '$pos r) (return (values nil above (car lis))))
+        (t (setq above (car lis)))))))
 
 (defun dintnum (x &aux foo)
- (flet ((unlink-edge-below (node)
-          (dolist (d (sel node data))
-              (let ((p (car d)))
-                (when (and (eq 'mgrp (car p))
-                           (eq node (cadr p))
-                           (null (zl-get d 'con)))
-                  (remov d)
-                  (putprop 'global
-                           (delete d (get 'global 'data) :test #'eq :count 1)
-                           'data)
-                  (return))))))
-  (cond ((assol x *nobjects*))
-	((progn (setq x (dbnode x)) nil))
-	((null *nobjects*)
-	 (setq *nobjects* (list x))
-	 x)
-	((eq '$zero (setq foo (rgrp (car x) (caar *nobjects*))))
-	 (let ((context 'global))
-	   (fact 'meqp x (car *nobjects*)))
-	 (push x *nobjects*)
-	 x)
-	((eq '$pos foo)
-	 (let ((context 'global))
-	   (fact 'mgrp x (car *nobjects*)))
-	 (push x *nobjects*)
-	 x)
-	(t
-	 (do ((lis *nobjects* (cdr lis))
-	      (context '$global))
-	     ((null (cdr lis))
-	      (let ((context 'global))
-		(fact 'mgrp (car lis) x))
-	      (rplacd lis (list x)) x)
-	   (cond ((eq '$zero (setq foo (rgrp (car x) (caadr lis))))
-              (let ((context 'global))
-                (fact 'meqp (cadr lis) x))
-              (rplacd lis (cons x (cdr lis)))
-              (return x))
-         ((eq '$pos foo)
-		  ;; X goes strictly between (CAR LIS) and (CADR LIS). Drop the edge
-		  ;; leaving (CAR LIS) so that the number nodes stay a chain and don't
-		  ;; become a DAG.
-		  (unlink-edge-below (car lis))
-		  ;; Insert the new edge.
-		  (let ((context 'global))
-		    (fact 'mgrp (car lis) x)
-		    (fact 'mgrp x (cadr lis)))
-		  (rplacd lis (cons x (cdr lis)))
-		  (return x))))))))
+ (with-database-transaction
+    (flet ((unlink-edge-below (node)
+            (dolist (d (sel node data))
+                (let ((p (car d)))
+                  (when (and (eq 'mgrp (car p))
+                             (eq node (cadr p))
+                             (null (zl-get d 'con)))
+                    (remov d)
+                    (putprop 'global
+                             (delete d (get 'global 'data) :test #'eq :count 1)
+                             'data)
+                    (return))))))
+    (cond ((assol x *nobjects*))
+          ((progn (setq x (dbnode x)) nil))
+          ((null *nobjects*)
+           (setq *nobjects* (list x))
+           x)
+          ((eq '$zero (setq foo (rgrp (car x) (caar *nobjects*))))
+           (let ((context 'global))
+             (fact 'meqp x (car *nobjects*)))
+           (push x *nobjects*)
+           x)
+          ((eq '$pos foo)
+           (let ((context 'global))
+             (fact 'mgrp x (car *nobjects*)))
+           (push x *nobjects*)
+           x)
+          (t
+           (do ((lis *nobjects* (cdr lis))
+                (context '$global))
+               ((null (cdr lis))
+                (let ((context 'global))
+                  (fact 'mgrp (car lis) x))
+                (rplacd lis (list x)) x)
+             (cond ((eq '$zero (setq foo (rgrp (car x) (caadr lis))))
+                (let ((context 'global))
+                  (fact 'meqp (cadr lis) x))
+                (rplacd lis (cons x (cdr lis)))
+                (return x))
+           ((eq '$pos foo)
+                    ;; X goes strictly between (CAR LIS) and (CADR LIS). Drop the edge
+                    ;; leaving (CAR LIS) so that the number nodes stay a chain and don't
+                    ;; become a DAG.
+                    (unlink-edge-below (car lis))
+                    ;; Insert the new edge.
+                    (let ((context 'global))
+                      (fact 'mgrp (car lis) x)
+                      (fact 'mgrp x (cadr lis)))
+                    (rplacd lis (cons x (cdr lis)))
+                    (return x)))))))))
 
 (defun doutern (x)
   (if (atom x) x (car x)))
 
 (defun unkind (x y)
-  (setq y (car (datum (list 'kind x y))))
-  (kcntxt y context)
-  (maxima-remf y x))
+  (with-database-transaction
+    (setq y (car (datum (list 'kind x y))))
+    (kcntxt y context)
+    (maxima-remf y x)))
 
 (defun remov (fact)
-  (mapc #'(lambda (arg) (remov4 fact arg)) (cdar fact)))
+  (with-database-transaction
+    (mapc #'(lambda (arg) (remov4 fact arg)) (cdar fact))))
 
 (defun remov4 (fact cl)
   (cond ((or (symbolp cl)		;if CL is a symbol or
@@ -688,61 +734,68 @@
 	 (mapc #'(lambda (lis) (remov4 fact lis)) (cdar cl)))))
 
 (defun killframe (cl)
-  (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (sel cl data))
-  (zl-remprop cl '+labs)
-  (zl-remprop cl '-labs)
-  (zl-remprop cl 'obj)
-  (zl-remprop cl 'var)
-  (zl-remprop cl 'fact))
+  (with-database-transaction
+    (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (sel cl data))
+    (zl-remprop cl '+labs)
+    (zl-remprop cl '-labs)
+    (zl-remprop cl 'obj)
+    (zl-remprop cl 'var)
+    (zl-remprop cl 'fact)))
 
 (defun activate (&rest l)
-  (dolist (e l)
-    (cond ((member e contexts :test #'eq) nil)
-	  (t (push e contexts)
-	     (cmark e)))))
+  (with-database-transaction
+    (dolist (e l)
+      (cond ((member e contexts :test #'eq) nil)
+            (t (push e contexts)
+               (cmark e))))))
 
 (defun deactivate (&rest l)
-  (dolist (e l)
-    (cond ((not (member e contexts :test #'eq))
-	   nil)
-	  (t
-	   (cunmrk e)
-	   (setq contexts (delete e contexts :test #'eq))))))
+  (with-database-transaction
+    (dolist (e l)
+      (cond ((not (member e contexts :test #'eq))
+             nil)
+            (t
+             (cunmrk e)
+             (setq contexts (delete e contexts :test #'eq)))))))
 
 (defun gccon ()
-  (gccon1)
-  (when (> *conindex* *connumber*)
-    #+gc (gc)
+  (with-database-transaction
     (gccon1)
     (when (> *conindex* *connumber*)
-      (merror (intl:gettext "context: too many contexts.")))))
+      #+gc (gc)
+      (gccon1)
+      (when (> *conindex* *connumber*)
+        (merror (intl:gettext "context: too many contexts."))))))
 
 (defun gccon1 ()
-  (setq *conindex* 0)
-  (do ((i 0 (1+ i)))
-      ((> i *connumber*))
-    (cond ((not (eq (aref conmark i) (cdr (aref conunmrk i))))
-	   (killc (aref conmark i)))
-	  (t
-	   (setf (aref conunmrk *conindex*) (aref conunmrk i))
-	   (setf (aref conmark *conindex*) (aref conmark i))
-	   (incf *conindex*)))))
+  (with-database-transaction
+    (setq *conindex* 0)
+    (do ((i 0 (1+ i)))
+        ((> i *connumber*))
+      (cond ((not (eq (aref conmark i) (cdr (aref conunmrk i))))
+             (killc (aref conmark i)))
+            (t
+             (setf (aref conunmrk *conindex*) (aref conunmrk i))
+             (setf (aref conmark *conindex*) (aref conmark i))
+             (incf *conindex*))))))
 
 (defun cntxt (dat con)
-  (unless (atom con)
-    (setq con (cdr con)))
-  (putprop con (cons dat (zl-get con 'data)) 'data)
-  (unless (eq 'global con)
-    (putprop dat con 'con))
-  dat)
+  (with-database-transaction
+    (unless (atom con)
+      (setq con (cdr con)))
+    (putprop con (cons dat (zl-get con 'data)) 'data)
+    (unless (eq 'global con)
+      (putprop dat con 'con))
+    dat))
 
 (defun kcntxt (fact con)
-  (unless (atom con)
-    (setq con (cdr con)))
-  (putprop con (fdel fact (zl-get con 'data)) 'data)
-  (unless (eq 'global con)
-    (zl-remprop fact 'con))
-  fact)
+  (with-database-transaction
+    (unless (atom con)
+      (setq con (cdr con)))
+    (putprop con (fdel fact (zl-get con 'data)) 'data)
+    (unless (eq 'global con)
+      (zl-remprop fact 'con))
+    fact))
 
 (defun cntp (f)
   (cond ((not (setq f (sel f con))))
@@ -750,11 +803,12 @@
 	 (> f 0))))
 
 (defun contextmark ()
-  (let ((con context))
-    (unless (eq current con)
-      (cunmrk current)
-      (setq current con)
-      (cmark con))))
+  (with-database-transaction
+    (let ((con context))
+      (unless (eq current con)
+        (cunmrk current)
+        (setq current con)
+        (cmark con)))))
 
 (defun cmark (con)
   (unless (atom con)
@@ -796,8 +850,9 @@
 
 (defun db-gc ()
   "Drop the database nodes that no longer carry a fact."
-  (db-gc-dobjects)
-  (db-gc-nobjects))
+  (with-database-transaction
+    (db-gc-dobjects)
+    (db-gc-nobjects)))
 
 (defun db-gc-dobjects ()
   (unless (every #'dnode-live-p dobjects)
@@ -823,13 +878,14 @@
 	      (car l) (cadr l))))))
 
 (defun killc (con)
-  (contextmark)
-  (unless (null con)
-    (mapc #'remov (zl-get con 'data))
-    (zl-remprop con 'data)
-    (zl-remprop con 'cmark)
-    (zl-remprop con 'subc))
-  t)
+  (with-database-transaction
+    (contextmark)
+    (unless (null con)
+      (mapc #'remov (zl-get con 'data))
+      (zl-remprop con 'data)
+      (zl-remprop con 'cmark)
+      (zl-remprop con 'subc))
+    t))
 
 (defun propg ()
   (do ((x)

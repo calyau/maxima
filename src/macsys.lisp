@@ -263,6 +263,9 @@
 
 (defun retrieve (msg flag &aux (print? nil))
   (declare (special msg flag print?))
+  (when *parallel-input-forbidden*
+    (merror (intl:gettext
+             "parallel: interactive input is not allowed in a parallel computation.")))
   (or (eq flag 'noprint) (setq print? t))
   (cond ((not print?)
 	 (setq print? t)
@@ -299,6 +302,9 @@
   (meval (apply #'$readonly l)))
 
 (defmfun $readonly (&rest l)
+  (when *parallel-input-forbidden*
+    (merror (intl:gettext
+             "parallel: interactive input is not allowed in a parallel computation.")))
   (let ((*mread-prompt*
 	 (if l
 	     (string-right-trim '(#\n)

@@ -1,0 +1,44 @@
+Parallel function-call stacks
+=============================
+
+CALL-AS-RUNNER needs its own *MLAMBDA-CALL-STACK* array, not only a binding
+of the variable to a shared array. MLAMBDA pushes five fields per frame,
+changes the fill pointer and grows the adjustable vector. Sharing that
+storage allows concurrent calls to overwrite frames or decrement the fill
+pointer below zero.
+
+SPECIALS-TO-BIND captures the caller's stack. COPY-PARALLEL-CALL-STACK copies
+its active sequence into an independent adjustable vector, preserving the
+fill pointer and capacity. CALL-AS-RUNNER binds that copy inside captured
+bindings, so native workers inherit active caller frames, including through
+nested parallel regions. Caller participation and one-runner fallback use
+the same rule. A runner may reuse its array across several items; normal
+MLAMBDA entry and unwinding balance each item's frames.
+
+This fixes call-stack storage. It does not isolate arbitrary Maxima variable
+value cells: BLOCK locals and function parameters need separate work. It
+also makes no promise about debugger mutation of objects referenced by
+inherited frames or unmarked foreign Lisp threads.
+
+Run in a fresh process, with a timeout and --no-init:
+
+  ./maxima-local --no-init --batch-string='run_testsuite(tests=["rtest_parallel_lifecycle"]);'
+
+Require all 67 examples and the completed suite summary; a Lisp error may
+exit zero. The 20 new examples append without shifting previous problem
+numbers or changing mathematical expectations. PARALLEL-CALLSTACK-CHECK.LISP
+uses the existing PARALLEL-INPUT-CHECK.LISP execution-site helper.
+
+Checks cover distinct storage and inherited frames, empty/full arrays,
+adjustment, caller preservation, nested caller/worker combinations, errors
+and nonlocal exits. A fixed private generator exercises 64 frame/capacity
+combinations. Scratch mutations are unwound between items of the same runner.
+
+Three native checks hold two actual MLAMBDA frames active together using
+handshakes, rather than depending on scheduling luck. Their functions have
+no Maxima parameters, separating the stack defect from the value-cell defect.
+Both runners must retain their own frame and inherited prefix. B unwinds
+before A, keeping the old negative control from corrupting the test image.
+The checks have deadlines, release cancellation paths, join workers and
+restore the temporary Lisp function hook. CLISP exercises portable fallback
+storage/nesting properties instead of claiming a native race check.

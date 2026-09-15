@@ -1,0 +1,40 @@
+/* Preserve compiled zeta argument handling and bigfloat mathematics. */
+(kill(all),0);
+0$
+
+(load(file_search("parallel-input-check.lisp",file_search_tests)),
+ load(file_search("zeta-dispatch-check.lisp",file_search_tests)),0);
+0$
+
+zeta_dispatch_check();
+true$
+
+map(lambda([p],zeta_bigfloat_check(p,serial)),[12,30,80,160]);
+[true,true,true,true]$
+
+map(lambda([p],zeta_bigfloat_check(p,fallback)),[12,30,80]);
+[true,true,true]$
+
+if parallel_threads_available() then
+ map(lambda([p],zeta_bigfloat_check(p,worker)),[12,30,80])
+else [true,true,true];
+[true,true,true]$
+
+zeta_random_check();
+true$
+
+/* Other exact/analytic zeta values, including reflection and trivial zeros. */
+block([fpprec:40],is(abs(zeta(2b0)-bfloat(%pi^2/6))<1b-37));
+true$
+
+block([fpprec:40],is(abs(zeta(-1b0)+1b0/12)<1b-37));
+true$
+
+map(lambda([k],is(equal(zeta(bfloat(-2*k)),0))),[1,2,3,4]);
+[true,true,true,true]$
+
+block([fpprec:40],is(abs(zeta(1b-100)+1b0/2)<1b-37));
+true$
+
+(kill(all),0);
+0$

@@ -1,0 +1,74 @@
+Exact large integers in parallel runners
+=======================================
+
+Run ./maxima-local --no-init --batch-string='run_testsuite(tests=["rtest_parallel"]);'
+The appended cases are also part of the normal core and core/share suites.
+They require neither GMP nor a Python installation. They exercise the Lisp
+runtime already selected by Maxima; no arithmetic primitive is replaced.
+
+The helper constructs 64 cases with 1..8192-bit operands, including limb
+boundaries, all sign combinations, zero results and multiplication by zero
+and one. Thirteen exact results cover sum, difference, product, gcd, floor,
+modulus, integer square roots of a square and its neighbors, and cancellation.
+References are constructed from binary identities rather than by repeating
+serial multiplication. For example, (2^n-1)(2^n+1)=2^(2n)-1. A dividend's
+reference quotient/remainder is constructed with shifts and additions, and
+negative dividends check floor rather than truncation toward zero.
+
+Both Common Lisp primitives and Maxima arithmetic helpers must match those
+integer references exactly. Caller, worker, serial fallback, public scheduler
+and nested runs are checked. Native probes synchronize two distinct workers
+before arithmetic and keep both alive until their repeated checks finish.
+They share the same input integer objects and verify unchanged decimal input
+snapshots. A missing worker, early exit, changed input, non-integer result or
+empty/truncated case set cannot satisfy the checks. Unsupported native thread
+configurations still run the portable fallback cases. The probes join their
+workers even if setup fails; waits are bounded.
+
+GMP and the selected runtime
+----------------------------
+
+GMP's reentrancy contract permits simultaneous reads of an operand. Concurrent
+read/write or write/write of the same mutable GMP object is not supported.
+Global allocation hooks, default floating precision and random-state APIs
+have separate restrictions. See https://gmplib.org/manual/Reentrancy .
+Immutable Common Lisp integer values are distinct from foreign mutable mpz_t
+objects. These tests do not exercise shared writable foreign objects or alter
+GMP configuration, and passing them cannot certify every build or extension.
+
+Record build_info(), the enabled module and loaded library before attributing
+results to GMP. ECL's big-integer implementation uses GMP; its source maps
+_ecl_big_mul to mpz_mul in src/h/number.h. The exact library still depends on
+the installed ECL build. Default SBCL and SBCL with its optional SB-GMP module
+are separate configurations. Requiring SB-GMP installs runtime dispatch
+patches; large products use GMP while smaller operations can retain native
+paths. The SBCL source documents that dispatch:
+https://github.com/sbcl/sbcl/blob/sbcl-2.2.9/contrib/sb-gmp/gmp.lisp
+
+For an optional SB-GMP comparison, start a fresh SBCL process, require :sb-gmp
+on its own :lisp line, inspect SB-GMP:*GMP-VERSION* and *GMP-DISABLED*, then run
+rtest_parallel. Reject any run reporting a Lisp load/error message; a suite
+headline alone does not prove that the module loaded. Keep this comparison
+separate from the default-runtime run. No optional module is enabled by the
+standard tests, and a Lisp implementation's name alone does not establish its
+GMP version or linkage.
+
+The initial reference generator was independently checked against Python's
+exact integer operations on four Lisps. Fault probes distinguish wrong signs,
+word truncation, floor/truncate confusion, adjacent roots, approximate results,
+input mutation, omitted cases and bypassed native execution. This is evidence
+for these arithmetic paths, not an asynchronous-interrupt or GC-stress test.
+
+
+An observed version-specific limitation
+--------------------------------------
+
+The optional SB-GMP shipped with SBCL 2.2.9 fails on complex rational powers;
+Maxima exposes it in rtest_bernstein problem 11. It reproduces without these
+new tests and without parallel execution. The upstream fix sends non-rational
+bases back to the original exponentiation routine:
+https://github.com/sbcl/sbcl/commit/c998d48297f773621fdbd6a6bb8939060c3eeeba
+
+The integer checks pass in that configuration, while the full suite still
+detects this separate loss of complex arithmetic. Validate the exact runtime
+and module together; passing bignum checks does not replace the full suite.

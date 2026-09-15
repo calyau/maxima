@@ -1,5 +1,8 @@
 (in-package #:maxima)
 
+;; Also protect direct Lisp loading, before any package initialization.
+(ensure-serial-execution '$lapack)
+
 #+nil
 (progn
   (format t "path = ~A~%" (combine-path *maxima-sharedir* "lapack"))

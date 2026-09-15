@@ -4304,3 +4304,63 @@ block([fun, z],
 
 [facts(), contexts];
 [[], [initial, global]]$
+
+
+/* Concurrent Bernoulli/Euler cache publication and growth (GitHub #3/#9). */
+/* Shared cache state must preserve exact Bernoulli and Euler numbers. */
+(kill(all),0);
+0$
+
+(load(file_search("parallel-input-check.lisp",file_search_tests)),
+ load(file_search("combinatorial-cache-check.lisp",file_search_tests)),0);
+0$
+
+combin_cache_reference_check();
+true$
+
+combin_cache_indexing_check();
+true$
+
+combin_cache_publication_check();
+true$
+
+combin_cache_progress_check();
+true$
+
+combin_cache_capacity_check();
+true$
+
+combin_cache_parallel_check(true);
+true$
+
+combin_cache_parallel_check(false);
+true$
+
+combin_cache_callback_check('serial);
+true$
+
+combin_cache_callback_check('worker);
+true$
+
+block([zerobern:true],makelist(bern(k),k,0,10));
+[1,-1/2,1/6,0,-1/30,0,1/42,0,-1/30,0,5/66]$
+
+block([zerobern:true],makelist(euler(k),k,0,10));
+[1,0,-1,0,5,0,-61,0,1385,0,-50521]$
+
+[bern(-1),bern(x),bern(1/2),euler(-1),euler(x),euler(1/2)];
+[bern(-1),bern(x),bern(1/2),euler(-1),euler(x),euler(1/2)]$
+
+combin_cache_polynomial_check();
+true$
+
+combin_cache_error_check();
+true$
+
+(kill(all),0);
+0$
+
+
+/* Leave this environment check at the end of the file. */
+[facts(), contexts];
+[[], [initial, global]]$

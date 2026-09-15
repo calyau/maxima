@@ -1,0 +1,33 @@
+Temporary-file registry checks
+==============================
+
+  ./maxima-local --no-init --lisp=sbcl \
+    --batch-string='run_testsuite(tests=[rtest_plotoptions]);'
+
+Run every configured Lisp and the complete core+share suite. Fourteen
+appended examples retain previous problem numbers and expected results.
+Require the full test count and inspect errors even when Maxima exits zero.
+
+PLOT-TEMP-FILE0 protects registration with a short portable lock.
+REGISTERED-TEMP-FILES copies the registered keys under the same lock.
+DELETE-TEMP-FILES processes that snapshot outside the lock, retaining the
+registry and its existing handling of directories, absent files and probe
+errors. A filename registered during cleanup is eligible on the next call.
+Filename formatting, preserve flags and the random naming algorithm retain
+their existing behavior. These helpers do not provide atomic file creation.
+
+Tests replace the actual shared registry only in an otherwise idle test
+process and restore it after workers join. They cover 63 path/preserve
+combinations, equal duplicate keys, an independent snapshot list, 4,096
+unique registrations, concurrent prefix-consistent snapshots, and native
+and one-runner fallback execution. Four readers each take 16 snapshots.
+
+Cleanup tests create their own files with :IF-EXISTS :ERROR and remove them
+on exit. They check missing/malformed keys, preserved files and a worker
+registering a later file during cleanup. A custom pathname printer verifies
+that user Lisp callbacks and errors occur outside the lock. Tests neither
+render plots nor launch Gnuplot.
+
+Ordinary locking does not make arbitrary external accesses to the hash safe,
+coordinate concurrent process shutdown, or certify asynchronous worker
+termination. Gnuplot pipe state and draw options require separate work.

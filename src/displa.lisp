@@ -1085,9 +1085,17 @@
 
 (displa-def mdo dim-mdo)
 (displa-def %mdo dim-mdo)
+(displa-def mdo-parallel dim-mdo)
+(displa-def %mdo-parallel dim-mdo)
 
+;; The keyword has to be read off the operator before the SETQ below
+;; walks FORM past its own header, and it has to be printed rather than
+;; dropped: GRIND and STRING output is meant to read back in, and a loop
+;; that printed "thru" would read back as a sequential one.
 (defun dim-mdo (form result)
-  (prog ((w 0) (h 0) (d 0) brkflag)
+  (prog ((w 0) (h 0) (d 0) brkflag
+	 (thru-word (if (eq (caar form) 'mdo-parallel)
+			"thru_parallel " "thru ")))
      (cond ((not (null (cadr form)))
 	    (push-string "for " result)
 	    (setq result (cons #\space (dimension (cadr form) result 'mdo 'mparen 4 right))
@@ -1107,7 +1115,7 @@
 	    (setq result (cons #\space (dimension (cadr form) result 'mdo 'mparen (+ 6 w) 0))
 		  w (+ 6 w width) h (max h height) d (max d depth))))
      (cond ((not (null (caddr form)))
-	    (push-string "thru " result)
+	    (push-string thru-word result)
 	    (setq result (cons #\space (dimension (caddr form) result 'mdo 'mparen (+ 6 w) 0))
 		  w (+ 6 w width) h (max h height) d (max d depth) brkflag t)))
      (cond ((not (null (cadddr form)))
@@ -1128,13 +1136,17 @@
 
 (displa-def mdoin dim-mdoin)
 (displa-def %mdoin dim-mdoin)
+(displa-def mdoin-parallel dim-mdoin)
+(displa-def %mdoin-parallel dim-mdoin)
 
 (defun dim-mdoin (form result)
-  (prog ((w 0) (h 0) ( d 0))
+  (prog ((w 0) (h 0) ( d 0)
+	 (in-word (if (eq (caar form) 'mdoin-parallel)
+		      " in_parallel " " in ")))
      (push-string "for " result)
      (setq result (dimension (cadr form) result 'mdo 'mparen 4 0)
 	   w (+ 4 width) h height d depth)
-     (push-string " in " result)
+     (push-string in-word result)
      (setq result (dimension (caddr form) result 'mdo 'mparen (+ 4 w) 0)
 	   w (+ 4 w width) h (max h height) d (max d depth))
      (setq form (cdr (cddddr form)))

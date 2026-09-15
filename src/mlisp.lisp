@@ -175,6 +175,35 @@ is EQ to FNNAME if the latter is non-NIL."
 		  fnname mlambda))
 	(decf mlambda-pointer 5)))))
 
+(defun binding-constant-variable-p (symbol)
+  ;; CONSTANTP may expand a symbol macro on some Lisps. Its expansion is
+  ;; not the variable cell we intend to bind, and must not execute here.
+  (catch 'binding-symbol-macro
+    (let ((*macroexpand-hook*
+            (lambda (expander form environment)
+              (declare (ignore expander form environment))
+              (throw 'binding-symbol-macro nil))))
+      (constantp symbol))))
+
+(defun private-binding-symbols (variables)
+  "Collect the symbol cells owned by supported local binding targets."
+  (let ((symbols nil))
+    (labels ((collect-symbols (target)
+               (cond ((symbolp target)
+                      (unless (binding-constant-variable-p target)
+                        (pushnew target symbols)))
+                     ;; Let MBIND/MSET report invalid atomic targets as before.
+                     ((atom target) nil)
+                     ((and ($listp target)
+                           (eq (get 'mlist 'mset_extension_operator) 'mlist-assign))
+                      (mapc #'collect-symbols (cdr target)))
+                     (t
+                      (merror (intl:gettext
+                               "parallel: a local binding target must be a symbol or a list of symbols; found: ~M")
+                              target)))))
+      (mapc #'collect-symbols variables))
+    (nreverse symbols)))
+
 (defun mlambda (fn args fnname noeval form)
   ; We assume that the lambda expression handed to us has been simplified,
   ; or at least that it's well-formed.  This is because various checks are
@@ -195,6 +224,7 @@ is EQ to FNNAME if the latter is non-NIL."
 				 (t (meval (car args)))) a)))
 	    (t (merror (intl:gettext "lambda: formal argument must be a symbol or quoted symbol; found: ~M") (car params))))
       (setq args (cdr args) params (cdr params)))
+    (with-private-maxima-bindings params
     (let (finish2033 (finish2032 params) (ar *mlambda-call-stack*))
       (declare (type (vector t) ar))
       (unwind-protect
@@ -218,7 +248,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	    (progn
 	      (incf (fill-pointer *mlambda-call-stack*) -5)
 	      (munlocal)
-	      (munbind finish2032)))))))
+	      (munbind finish2032))))))))
 
 
 (defmspec mprogn (form)
@@ -498,18 +528,14 @@ is EQ to FNNAME if the latter is non-NIL."
             (merror (intl:gettext "apply: found ~M evaluates to ~M where ~A was expected.") fnname val type)
             (merror (intl:gettext "apply: found ~M where ~A was expected.") val type)))))
 
-;; To store the value of $errormsg in mbind. This value is looked up in the
-;; routine mbind-doit. This is a hack to get the expected behavior, when the
-;; option variable $errormsg is used as a local variable in a block.
+;; Value of $errormsg saved for symbol-values-in during mbind.
 (defvar *$errormsg-value* nil)
 
 (defun symbol-values-in (expr)
   (if (atom expr)
     (if (symbolp expr)
       (if (boundp expr)
-        ;; Do not take the actual value of $errormsg. It is
-        ;; always NIL at this point, but the value which
-        ;; is stored in *$errormsg-value*.
+        ;; Use the value captured at mbind entry for this option.
         (if (eq expr '$errormsg) *$errormsg-value* (symbol-value expr))
         munbound)
       expr)
@@ -549,12 +575,12 @@ wrapper for this."
 (defun mbind (lamvars fnargs fnname)
   "Error-handling wrapper around MBIND-DOIT."
   (handler-case
-      (let ((old-bindlist bindlist) win)
+      (let ((old-bindlist bindlist)
+            ;; Assignment hooks can re-enter mbind, and other threads can
+            ;; bind variables concurrently. Keep this invocation's value.
+            (*$errormsg-value* (if (boundp '$errormsg) $errormsg munbound))
+            win)
 	(declare (special bindlist))
-        ;; At this point store the value of $errormsg in a global. The macro
-        ;; with-$error sets the value of $errormsg to NIL, but we need the
-        ;; actual value in the routine mbind-doit.
-        (setq *$errormsg-value* (if (boundp '$errormsg) $errormsg munbound))
 	(unwind-protect
 	     (prog1
 		 (with-$error (mbind-doit lamvars fnargs fnname))
@@ -584,7 +610,7 @@ wrapper for this."
   (values))
 
 (defun munbind-makunbound (var)
-  (makunbound var)
+  (maxima-makunbound var)
   (setf $values (delete var $values :count 1 :test #'eq)))
 
 (defun munbind (vars)
@@ -617,21 +643,18 @@ wrapper for this."
        ;; THE ARRAY IS JUST A PROPERTY LIKE ANY OTHER, IS IT NOT ??
        (merror (intl:gettext "local: argument cannot be a declared array; found: ~M") var)))
     (setq mproplist (cons (get var 'mprops) mproplist)
-	  factlist (cons (get var 'data) factlist))
+	  factlist (cons (db-local-facts var) factlist))
     ;; Record VAR on the LOCLIST frame right away, in lock-step with the
     ;; MPROPLIST/FACTLIST pushes above, so that MUNLOCAL restores
     ;; everything processed so far even if a later argument turns out to
     ;; be invalid.
     (rplaca loclist (cons var (car loclist)))
-    (dolist (fact (car factlist))
-      (putprop fact -1 'ulabs))
     (progn
       (mfunction-delete var $functions)
       (mfunction-delete var $macros)
       (mfunction-delete var $dependencies))
     (setf $arrays (delete var $arrays :count 1 :test #'eq))
-    (zl-remprop var 'mprops)
-    (zl-remprop var 'data))
+    (zl-remprop var 'mprops))
   (setq mlocp nil)
   '$done)
 
@@ -655,10 +678,7 @@ wrapper for this."
 	     (add2lnc (cons (ncons var) y) $dependencies))
 	    (t (mfunction-delete var $dependencies)))
       (rempropchk var)
-      (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (get var 'data))
-      (cput var fact 'data)
-      (dolist (u fact)
-	(zl-remprop u 'ulabs))
+      (db-restore-local-facts var fact)
       (setq mproplist (cdr mproplist)
 	    factlist (cdr factlist))))
   (setq loclist (cdr loclist)))

@@ -14,6 +14,13 @@ rem and causes troubles (at least with Clisp, maybe other Lisps too),
 rem so unset this variable.
 set LANGUAGE=
 
+rem How many cores may this process use?  Read by PARALLEL-CPU-COUNT
+rem (src/parallel.lisp), which has no portable way to ask lisp itself.
+rem Windows sets NUMBER_OF_PROCESSORS for every process, so unlike the
+rem Unix script there is nothing to run to find out.  A value already in
+rem the environment is left alone: that is how a user pins the count.
+if not defined MAXIMA_NUM_CORES set "MAXIMA_NUM_CORES=%NUMBER_OF_PROCESSORS%"
+
 set "lisp=@DEFAULTLISP@"
 set lisp_options=
 set "version=@VERSION@"
@@ -212,11 +219,11 @@ if exist "%maxima_prefix%/bin/libgcc_s_seh-1.dll" (
     rem I am a 32 bit build - the SBCL workaround for load(lapack) will not work
 )
 
-@SBCL_NAME@ --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
+@SBCL_NAME@ --core "%maxima_image_base%.core" --noinform @SBCL_EXTRA_ARGS@ %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
 goto :EOF
 
 :dosbcl_exec
-"%maxima_image_base%.exe" %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
+"%maxima_image_base%.exe" @SBCL_EXTRA_ARGS@ %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
 goto :EOF
 
 :doopenmcl
