@@ -135,3 +135,5 @@ Other changes:
   provide, instead of loading Maxima's own lisp-utils/defsystem.lisp the
   way the rules for every other lisp do.  ./configure now also enables
   CCL when it finds it and no lisp was named explicitly
+* csign(imaginary^...) now gives precise results not only for integer exponents,
+  but also for exponents involving variables declared even/odd.

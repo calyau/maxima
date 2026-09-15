@@ -1981,11 +1981,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	   (when *debug-compar*
 	     (format t "~&in SIGN-MEXPT for ~A, base is $imaginary.~%" x))
 	   (cond
-	     ((and (integerp expt) (eq evod '$even))
-	      (setq sign (if (eql (mod expt 4) 0) '$pz '$nz)))
-	     ((and (integerp expt) (eq evod '$odd))
+	     ((eq evod '$even)
+	      (let ((evod-half (evod ($distrib (div expt 2)))))
+	        (setq sign (cond ((eq evod-half '$even) '$pz)
+	                         ((eq evod-half '$odd) '$nz)
+	                         (t '$pnz)))))
+	     ((eq evod '$odd)
 	      (setq sign '$imaginary
-		    minus (if (eql (mod (- expt 1) 4) 0) t nil)))
+	            minus (eq (evod ($distrib (div (sub expt 1) 2))) '$odd)))
 	     (t (setq sign '$complex))))
 
 	  ((and *complexsign*

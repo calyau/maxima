@@ -713,7 +713,7 @@ create_list(errcatch(csign(x^y)),
  [complex], [complex], [complex], [complex], [complex], [pos], [complex], [pos], [pn], [complex], [complex],  /* xpn^y */
  [zero], [], [zero], [], [zero], [], [zero], [zero], [zero], [zero], [zero],                                  /* xzero^y */
  [complex], [complex], [complex], [complex], [complex], [pos], [complex], [pz], [pnz], [complex], [complex],  /* xpnz^y */
- [complex], [complex], [complex], [complex], [complex], [pos], [complex], [complex], [complex], [complex], [complex], /* ximag^y */
+ [complex], [complex], [complex], [complex], [complex], [pos], [complex], [pnz], [imaginary], [complex], [complex], /* ximag^y */
  [complex], [complex], [complex], [complex], [complex], [pos], [complex], [complex], [complex], [complex], [complex]]$  /* xcomplex^y */
 
 (forget(xpos > 0), forget(xneg < 0), forget(xpz >= 0), forget(xnz <= 0), forget(notequal(xpn, 0)), forget(equal(xzero, 0)),
@@ -2640,6 +2640,30 @@ block([b],
   sign(b - cos(x))]);
 [nz, nz, pz];
 
+
+/* csign(imaginary^(even|odd)) for declared imaginary, even */
+
+block([j, e, o],
+ local(j, e, o),
+ declare(j, imaginary, e, even, o, odd),
+ map(csign, [j,
+             j^e, j^(e+1), j^(e+2), j^(e+3),
+             j^o, j^(o+1), j^(o+2), j^(o+3),
+             j^(2*e), j^(2*e+1), j^(2*e+2), j^(2*e+3),
+             j^(2*o), j^(2*o+1), j^(2*o+2), j^(2*o+3),
+             j^(3*e), j^(3*e+1), j^(3*e+2), j^(3*e+3),
+             j^(3*o), j^(3*o+1), j^(3*o+2), j^(3*o+3),
+             j^(4*e), j^(4*e+1), j^(4*e+2), j^(4*e+3),
+             j^(4*o), j^(4*o+1), j^(4*o+2), j^(4*o+3)]));
+[imaginary,
+ pnz, imaginary, pnz, imaginary,
+ imaginary, pnz, imaginary, pnz,
+ pz, imaginary, nz, imaginary,
+ nz, imaginary, pz, imaginary,
+ pnz, imaginary, pnz, imaginary,
+ imaginary, pnz, imaginary, pnz,
+ pz, imaginary, nz, imaginary,
+ pz, imaginary, nz, imaginary];
 
 /**************************************/
 /* Leave this at the end of the file! */
