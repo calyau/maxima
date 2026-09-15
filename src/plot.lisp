@@ -1686,13 +1686,22 @@ vertices of a triangle or a quadrilateral."
       (setq name (format nil "~a~a" name (aref chars (random 36)))))
     name))
 
+(defvar *temp-files-lock* (%make-lock "maxima temporary files"))
+
+(defun registered-temp-files ()
+  ;; Return a consistent snapshot without holding the lock during file I/O.
+  (%with-lock (*temp-files-lock*)
+    (loop for filename being the hash-keys of *temp-files-list*
+          collect filename)))
+
 (defun plot-temp-file0 (file &optional (preserve-file nil))
   (let ((filename 
 	 (if *maxima-tempdir* 
 	     (format nil "~a/~a" *maxima-tempdir* file)
 	   file)))
     (unless preserve-file
-      (setf (gethash filename *temp-files-list*) t))
+      (%with-lock (*temp-files-lock*)
+        (setf (gethash filename *temp-files-list*) t)))
     (format nil "~a" filename)
     ))
 

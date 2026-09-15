@@ -85,3 +85,47 @@ true$
 plot_rng_fresh_check();
 true$
 
+
+/* Temporary-file registration and cleanup under concurrent plotting. */
+(kill(all),0);
+0$
+
+(load(file_search("parallel-input-check.lisp",file_search_tests)),
+ load(file_search("temp-file-registry-check.lisp",file_search_tests)),0);
+0$
+
+temp_registry_paths_check();
+true$
+
+temp_registry_duplicate_check();
+true$
+
+temp_registry_empty_check();
+true$
+
+temp_registry_cleanup_check(false);
+true$
+
+temp_registry_cleanup_check(true);
+true$
+
+temp_registry_parallel_check(true);
+true$
+
+temp_registry_parallel_check(false);
+true$
+
+temp_registry_print_check(false,false);
+true$
+
+temp_registry_print_check(true,false);
+true$
+
+temp_registry_print_check(false,true);
+true$
+
+temp_registry_print_check(true,true);
+true$
+
+(kill(all),0);
+0$

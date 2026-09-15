@@ -600,15 +600,14 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
   (values input-stream batch-flag))
 
 
-;; Delete all files *temp-files-list* contains.
+;; Delete a snapshot of registered files; later registrations remain for
+;; the next cleanup. File operations take place outside the registry lock.
 (defun delete-temp-files ()
-  (maphash #'(lambda(filename param)
-	       (declare (ignore param))
-	       (let ((file (ignore-errors (probe-file filename))))
-		 (if file
-		     (if (not (apparently-a-directory-p file))
-			 (delete-file file)))))
-	   *temp-files-list*))
+  (dolist (filename (registered-temp-files))
+    (let ((file (ignore-errors (probe-file filename))))
+      (if file
+          (if (not (apparently-a-directory-p file))
+              (delete-file file))))))
 
 (defun cl-user::run ()
   "Run Maxima in its own package."

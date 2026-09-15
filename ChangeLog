@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Synchronize temporary plot-file registration and take a consistent snapshot
+  for cleanup, keeping filesystem operations outside the registry lock.
+
 * Preserve the caller's Common Lisp random state when generating plot
   filenames, including when generation signals an error.
 
