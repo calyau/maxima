@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Preserve saved error-output settings across nested and concurrent
+  variable bindings.
+
 * Give parallel runners independent, adjustable function-call stacks while
   preserving inherited frames and the caller's stack during errors.
 

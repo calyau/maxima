@@ -498,18 +498,14 @@ is EQ to FNNAME if the latter is non-NIL."
             (merror (intl:gettext "apply: found ~M evaluates to ~M where ~A was expected.") fnname val type)
             (merror (intl:gettext "apply: found ~M where ~A was expected.") val type)))))
 
-;; To store the value of $errormsg in mbind. This value is looked up in the
-;; routine mbind-doit. This is a hack to get the expected behavior, when the
-;; option variable $errormsg is used as a local variable in a block.
+;; Value of $errormsg saved for symbol-values-in during mbind.
 (defvar *$errormsg-value* nil)
 
 (defun symbol-values-in (expr)
   (if (atom expr)
     (if (symbolp expr)
       (if (boundp expr)
-        ;; Do not take the actual value of $errormsg. It is
-        ;; always NIL at this point, but the value which
-        ;; is stored in *$errormsg-value*.
+        ;; Use the value captured at mbind entry for this option.
         (if (eq expr '$errormsg) *$errormsg-value* (symbol-value expr))
         munbound)
       expr)
@@ -549,12 +545,12 @@ wrapper for this."
 (defun mbind (lamvars fnargs fnname)
   "Error-handling wrapper around MBIND-DOIT."
   (handler-case
-      (let ((old-bindlist bindlist) win)
+      (let ((old-bindlist bindlist)
+            ;; Assignment hooks can re-enter mbind, and other threads can
+            ;; bind variables concurrently. Keep this invocation's value.
+            (*$errormsg-value* (if (boundp '$errormsg) $errormsg munbound))
+            win)
 	(declare (special bindlist))
-        ;; At this point store the value of $errormsg in a global. The macro
-        ;; with-$error sets the value of $errormsg to NIL, but we need the
-        ;; actual value in the routine mbind-doit.
-        (setq *$errormsg-value* (if (boundp '$errormsg) $errormsg munbound))
 	(unwind-protect
 	     (prog1
 		 (with-$error (mbind-doit lamvars fnargs fnname))
