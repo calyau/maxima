@@ -1,0 +1,58 @@
+Parallel file loading and initialization
+========================================
+
+Run ./maxima-local --no-init --batch-string='run_testsuite(tests=["rtest_parallel_lifecycle"]);'
+The existing registered lifecycle file gains 428 cases, for 495 in total.
+The two parallel-load-fixture files are initialization inputs, not registered
+input/expected regression files. The Lisp helper installs their observer.
+Run these checks in an otherwise idle process.
+
+A parallel body may not load or initialize files. LOAD, LOADFILE, BATCHLOAD,
+BATCH/DEMO, core autoload factories, stock and custom autoload hooks, and
+translated-call dispatch are checked before initialization. The same rule
+applies to caller, worker, nested scopes and the one-thread fallback.
+ENSURE-SERIAL-EXECUTION retains its implementation and is defined earlier
+in SUPRV1, before the core loader entry points which now call it.
+
+Twenty-one operation variants have real serial initialization controls.
+Sixteen file-based variants also use provably absent paths: refusal must
+precede path lookup/opening, not merely the execution of a file body.
+Each fixture increments a separately locked count and installs an exact
+square function under a fresh symbol. Guarded calls must report the precise
+translated Maxima error, leave file/stream initialization untouched, consume
+neither input channel and preserve the autoload registry. Each refused first
+use must then succeed when retried serially after the runners finish. Serial
+preloading then parallel calls must return exact squares for negative, zero and positive
+inputs without another initialization. Undefined symbolic functions must
+remain symbolic. Worker mode falls back on threadless runtimes. Independent
+body counts and actual runtime thread identities verify execution and the requested site;
+public results must contain all eight scheduled observations.
+
+DEMO needs its own input: BATCH_ANSWERS_FROM_FILE is disabled for that probe,
+MAXIMA-RUN-STRING is locally NIL to exercise actual demo mode, and TERMINAL-IO
+uses the observer's private QUERY-IO stream on Lisps which read that channel.
+Plain batch probes also bind MAXIMA-RUN-STRING locally so they cannot change
+the enclosing batch-string driver. These are fixture bindings, not changes
+to ordinary serial loading behavior.
+
+The observer restores its global test state and the prior autoload registry
+and removes the fresh function/property definitions after runners have joined.
+This setup is intentionally outside the parallel body, including for nested
+checks. Serial readiness controls establish that a refusal cannot pass merely
+because a fixture or hook did nothing.
+
+Why a registry lock is insufficient
+----------------------------------
+A synchronized first-use probe under SBCL, CCL and ECL returns an unevaluated
+call while another worker is loading its definition. Publishing the function
+before finishing initialization instead produces 25 in one worker and 50 in
+another, with 50 after loading completes. The second caller already sees a
+function and bypasses autoload, so locking only the registry cannot protect
+it. The reproductions use temporary source files, no compiled-file damage.
+See https://github.com/gunterkoenigsmann/maxima-multithreading/issues/41
+
+This guard does not establish that every loaded package is thread-safe, and
+arbitrary raw Common Lisp operations are outside its Maxima API contract.
+Load packages and complete their initialization before starting independent
+parallel computations. Existing mathematical algorithms and expected answers
+are unchanged.

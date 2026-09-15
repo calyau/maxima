@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Reject file loading and first-use autoload initialization in parallel bodies,
+  preserving serial loading and calls to fully initialized functions.
+
 * Clarify shared data, local function properties, package initialization and
   serial fallback in the parallel programming documentation.
 

@@ -558,13 +558,6 @@ than for the computation."
 ;;; documented rule stands on its own: iterations must not depend on
 ;;; each other, assumptions included.
 
-(defun ensure-serial-execution (operation)
-  "Signal a Maxima error for OPERATION inside a parallel evaluation."
-  (when *parallel-evaluation-p*
-    (merror (intl:gettext
-             "~M: this function cannot run in a parallel computation.")
-            operation)))
-
 (defvar *parallel-registry-lock* (%make-lock "maxima variable registries"))
 (defun merge-parallel-registry (original current parent excluded)
   ;; Both input snapshots belong to one runner. Preserve entries that its

@@ -66,7 +66,8 @@
                              ($load (or load-path "lapack"))))
                        (lapack-test-mode mode)))
                     "" "")))
-             (and (not entered) (lapack-test-error-p observation '$lapack))))
+             (and (not entered)
+                  (lapack-test-error-p observation (if direct-p '$lapack '$load)))))
       (setf (symbol-function 'maxima-load-pathname-directory) original))))
 
 (defun lapack-test-maxima-matrix (matrix-rows)

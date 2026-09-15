@@ -287,10 +287,20 @@
 
 (defvar autoload 'generic-autoload)
 
+(defun ensure-serial-execution (operation)
+  "Signal a Maxima error for OPERATION inside a parallel evaluation."
+  (when *parallel-evaluation-p*
+    (merror (intl:gettext
+             "~M: this function cannot run in a parallel computation.")
+            operation)))
+
 (defun load-function (func mexprp)	; The dynamic loader
   (declare (ignore mexprp))
   (let ((file (get func 'autoload)))
-    (if file (funcall autoload (cons func file)))))
+    (if file
+        (progn
+          (ensure-serial-execution '$load)
+          (funcall autoload (cons func file))))))
 
 (defmspec $loadfile (form)
   (loadfile (namestring (maxima-string (meval (cadr form)))) nil
@@ -312,6 +322,7 @@
       (getl func '(translated-mmacro mfexpr* mfexpr*s))))
 
 (defun loadfile (file findp printp)
+  (ensure-serial-execution '$loadfile)
   (and findp (member $loadprint '(nil $loadfile) :test #'equal) (setq printp nil))
   ;; Should really get the truename of FILE.
   (if printp (format t (intl:gettext "loadfile: loading ~A.~%") file))

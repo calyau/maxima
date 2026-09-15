@@ -809,6 +809,16 @@ caches, arrays, declarations or other mutable state, and first use may
 trigger further loading or initialization. Use only operations whose
 parallel behavior has been checked for the intended computation.
 
+File loading with @mrefcomma{load} @mrefcomma{loadfile}
+@mrefcomma{batchload} @mrefcomma{batch} or @mref{demo} is refused inside a
+parallel body. Autoloading on first use is also refused before file
+initialization or autoload bookkeeping. Load the required code and complete
+its initialization outside the parallel computation; already initialized
+functions remain callable subject to the independence rules above.
+
+These restrictions also apply to the calling thread, nested parallel
+computations and the serial fallback, including @code{parallel_threads:1}.
+
 The parallel forms do not automatically detect these dependencies or
 prevent all unsafe operations. A successful run, or a successful run with
 @code{parallel_threads:1}, does not establish that a body is independent of

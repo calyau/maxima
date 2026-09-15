@@ -91,6 +91,7 @@
 
 (defmfun $batchload (filename-or-stream &aux (*mread-prompt* ""))
   (declare (special *mread-prompt*))
+  (ensure-serial-execution '$batchload)
   (if (streamp filename-or-stream)
       (batchload-stream filename-or-stream)
     (let
@@ -102,6 +103,7 @@
           (batchload-stream in-stream))))))
 
 (defun batchload-stream (in-stream &key autoloading-p truename)
+  (ensure-serial-execution '$batchload)
   (let ($load_pathname)
     (let*
       ((noevalargs nil)
@@ -153,6 +155,7 @@
   convenience for writers of packages and users of the macsyma->lisp
   translator."
 
+  (ensure-serial-execution '$load)
   (if (or (stringp filename) (symbolp filename) (pathnamep filename))
     (let ((searched-for
   	 ($file_search1 filename
@@ -222,6 +225,7 @@
 ;; ...).
 
 (defun generic-autoload (file &aux type)
+  (ensure-serial-execution '$load)
   (unless (member file *autoloaded-files* :test #'equal)
     (push file *autoloaded-files*)
     (setq file (pathname (cdr file)))
@@ -259,6 +263,7 @@
                &aux tem   (possible '(:demo :batch :test)))
   "giving a second argument makes it use demo mode, ie pause after evaluation
    of each command line"
+  (ensure-serial-execution '$batch)
   ;; Try to get rid of testsuite failures on machines that are low on RAM.
   ($garbage_collect)
   (cond
@@ -283,6 +288,7 @@
             (batch-stream in-stream demo)))))))
 
 (defmfun $demo (filename)
+  (ensure-serial-execution '$batch)
   (let ((tem ($file_search filename $file_search_demo)))
     (or tem (merror (intl:gettext "demo: could not find ~M in ~M.")
 		    filename '$file_search_demo))

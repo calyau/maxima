@@ -1,0 +1,2 @@
+/* Loading fixture; this is not an input/expected regression file. */
+parallel_load_test_initialize()$

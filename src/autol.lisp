@@ -5,6 +5,7 @@
 ;;(aload "plot.o")
 
 (defun aload (file &aux *load-verbose* tem)
+  (ensure-serial-execution '$load)
   (let ((*read-base* 10.)
 	($system  (list '(mlist))))
     (declare (special $system))
@@ -12,6 +13,7 @@
     (and tem #-sbcl (load tem) #+sbcl (with-compilation-unit nil (load tem)))))
 
 (defmfun $aload_mac (file)
+  (ensure-serial-execution '$batchload)
   (let ((tem ($file_search1 file '((mlist) $file_search_maxima))))
     (when tem
       (with-open-file (in-stream tem)
