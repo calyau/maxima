@@ -1,6 +1,9 @@
 Maxima 5.50-post change log
 ===========================
 
+* Clarify shared data, local function properties, package initialization and
+  serial fallback in the parallel programming documentation.
+
 * Preserve bigfloat header caches and rounding scratch in every parallel
   runner, including the caller and nested computations.
 

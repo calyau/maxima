@@ -2092,6 +2092,11 @@ which @code{local} appears; otherwise such declarations are global declarations.
 or in the body of a function definition or @code{lambda} expression,
 and only one occurrence is permitted in each.
 
+In a parallel computation, these properties remain shared between runners.
+Saving and restoring them does not make a temporary function definition or
+declaration private to a thread. See the parallel-computation restrictions
+under @mrefdot{do}
+
 @code{local} quotes its arguments.
 @code{local} returns @code{done}.
 

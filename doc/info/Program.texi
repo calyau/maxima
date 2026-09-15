@@ -767,6 +767,54 @@ Assigning a nonlocal variable still assigns that variable; two bodies must
 not depend on one another's assignments. Other infolists and shared objects
 are not made private by local variable bindings.
 
+Use a @code{block} local for scratch values that each iteration assigns:
+
+@example maxima
+(%i1) parallel_makelist
+        (block ([scratch], scratch:i^2, scratch+1), i, 1, 4);
+(%o1)                         [2, 5, 10, 17]
+@end example
+
+A private variable binding does not copy the object stored in that variable.
+For example, binding a local name to an existing array still refers to the
+same array. Two bodies must not read and write overlapping parts of shared
+data. To combine results, return each body's value with
+@mref{parallel_makelist} and combine the completed list afterwards, instead
+of updating a shared accumulator during the computation.
+
+@subsubheading Function definitions and declarations
+
+Define named functions before entering a parallel computation. A definition
+with @code{:=}, and declarations or property changes such as
+@mref{local}, modify shared symbol properties. @code{local} saves and
+restores those properties when its scope ends; it does not give each thread
+an independent function definition. Another runner can see the temporary
+definition while that scope is active.
+
+A @mref{lambda} value in a @code{block} local avoids defining a shared
+function name. Its body must obey the same independence rules:
+
+@example maxima
+(%i1) parallel_makelist
+        (block ([square:lambda([x],x^2)], square(i)), i, 1, 4);
+(%o1)                          [1, 4, 9, 16]
+@end example
+
+@subsubheading Packages and shared state
+
+Load packages and perform their initialization before starting parallel
+computations. A package being loaded successfully does not establish that
+its functions can be called concurrently. Package functions may use shared
+caches, arrays, declarations or other mutable state, and first use may
+trigger further loading or initialization. Use only operations whose
+parallel behavior has been checked for the intended computation.
+
+The parallel forms do not automatically detect these dependencies or
+prevent all unsafe operations. A successful run, or a successful run with
+@code{parallel_threads:1}, does not establish that a body is independent of
+other bodies. Where an operation explicitly requires serial evaluation,
+call it outside the parallel body.
+
 @subsubheading Bigfloat precision in parallel computations
 
 Each runner begins with the caller's current bigfloat precision.
@@ -833,8 +881,8 @@ This does not cancel a body which is still computing.
 
 On a Lisp without usable threads --- GCL has none, and CLISP's are not
 usable --- and whenever @mref{parallel_threads} is 1, the iterations run
-one after another. The answers are the same; only the time taken
-differs. The same path runs when a parallel loop is reached from inside
+one after another. For bodies obeying the independence rules above, the
+answers are the same; only the time taken differs. The same path runs when a parallel loop is reached from inside
 another one that has already taken every thread the limit allows, so
 nesting parallel loops is safe rather than a way to start an unbounded
 number of threads.
@@ -854,10 +902,11 @@ The greatest number of threads Maxima may use at once, counting the one
 it is already running on. Parallel evaluation never starts more than
 this many, however many parallel loops are nested inside one another.
 
-0, the default, means to use every core the machine offers. 1 turns
-parallel evaluation off without changing any answers: everything then
-runs one iteration after another, which is also what happens on a Lisp
-that has no usable threads.
+0, the default, means to use every core the machine offers. 1 runs the
+iterations one after another, as on a Lisp without usable threads.
+The body still follows the rules for parallel computations, including
+the restriction on interactive input. Bodies that depend on other
+iterations can behave differently when more threads are enabled.
 
 The number of cores is found by the script that starts Maxima and passed
 in the environment variable @code{MAXIMA_NUM_CORES}, so setting that
