@@ -229,7 +229,7 @@ binding from whoever spawned it.  This is why the environment has to be
 entered inside the worker; wrapping the spawn in a LET does nothing.  If
 this ever became false the macro would still work -- but RUN-WORKER's
 reason for existing would have quietly evaporated."
-  #+(or ccl sbcl)
+  #+(or ccl sbcl (and ecl threads))
   (let ((seen :not-run))
     (let ((sign :binding-in-the-spawning-thread))
       #+ccl (let ((done (ccl:make-semaphore)))
@@ -238,12 +238,15 @@ reason for existing would have quietly evaporated."
                            (ccl:signal-semaphore done)))
               (ccl:wait-on-semaphore done))
       #+sbcl (sb-thread:join-thread
-              (sb-thread:make-thread (lambda () (setq seen sign)))))
+              (sb-thread:make-thread (lambda () (setq seen sign))))
+      #+(and ecl threads (not ccl) (not sbcl))
+      (mp:process-join
+       (mp:process-run-function "inherit" (lambda () (setq seen sign)))))
     (let ((ok (not (eq seen :binding-in-the-spawning-thread))))
       (format stream "~&  a spawned thread does not inherit the spawner's ~
                       binding: ~a~%" ok)
       ok))
-  #-(or ccl sbcl)
+  #-(or ccl sbcl (and ecl threads))
   (progn (format stream "~&  binding-inheritance check skipped: no threads~%") t))
 
 (defun check-gensym-names-are-not-identity (&optional (stream *debug-io*))

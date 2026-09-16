@@ -6,6 +6,9 @@ Maxima 5.50-post change log
   releases older than 24, whose interrupt deferral can lose worker
   ownership.
 
+* Check on ECL, as well as CCL and SBCL, that a new thread does not inherit
+  the creating thread's dynamic bindings.
+
 * Reject file loading and first-use autoload initialization in parallel bodies,
   preserving serial loading and calls to fully initialized functions.
 
