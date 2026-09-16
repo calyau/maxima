@@ -4298,6 +4298,33 @@ block([fun, z],
 [0, 0];
 
 
+/* Issue #5257: "Provide $num_denom and use it internally" */
+
+block([errors : [], l, nd, n, d, %edispflag, exptdispflag],
+ l : [1, x, 2^x, %e^x, a^x, sin(x), sqrt(x)],
+ l : append(l, 1+l),
+ l : append(l, 2*l),
+ l : append(l, 1/l),
+ l : append(l, l^2),
+ l : append(l, -l),
+ l : append(l, rat(l)),
+ l : append(l, map("[", l)),
+ for %edispflag in [true, false] do (
+  for exptdispflag in [true, false] do (
+   for e in l do (
+    nd : num_denom(e),
+    n : num(e),
+    d : denom(e),
+    if nd # [n, d] then (
+     push([e, nd, n, d], errors)
+    )
+   )
+  )
+ ),
+ errors);
+[];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -137,3 +137,4 @@ Other changes:
   CCL when it finds it and no lisp was named explicitly
 * csign(imaginary^...) now gives precise results not only for integer exponents,
   but also for exponents involving variables declared even/odd.
+* New function num_denom(x) = [num(x), denom(x)], which is more efficient

@@ -394,9 +394,12 @@ Examples:
 @anchor{denom}
 @deffn {Function} denom (@var{expr})
 
-Returns the denominator of the rational expression @var{expr}.
+Returns the denominator of @var{expr} if it is a ratio.
+If @var{expr} is not a ratio, @code{1} is returned.
+For exponentials @code{%e^-x} or @code{a^-x}, the behavior depends on
+@mref{%edispflag} and @mrefcomma{exptdispflag} respectively.
 
-See also @mref{num}
+See also @mref{num} and @mrefdot{num_denom}
 
 @c ===beg===
 @c g1:(x+2)*(x+1)/((x+3)^2);
@@ -1713,10 +1716,12 @@ Examples:
 
 Returns the numerator of @var{expr} if it is a ratio.
 If @var{expr} is not a ratio, @var{expr} is returned.
+For exponentials @code{%e^-x} or @code{a^-x}, the behavior depends on
+@mref{%edispflag} and @mrefcomma{exptdispflag} respectively.
 
 @code{num} evaluates its argument.
 
-See also @mref{denom}
+See also @mref{denom} and @mrefdot{num_denom}
 
 @c ===beg===
 @c g1:(x+2)*(x+1)/((x+3)^2);
@@ -1749,6 +1754,60 @@ See also @mref{denom}
 @end example
 
 @c NEED SOME EXAMPLES HERE
+@opencatbox{Categories:}
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{num_denom}
+@deffn {Function} num_denom (@var{expr})
+
+Returns a list @code{[num(@var{expr}), denom(@var{expr})]}, but does so more
+efficiently.
+
+@code{num_denom} evaluates its argument.
+
+See also @mref{num} and @mrefdot{denom}
+
+@c ===beg===
+@c g1:(x+2)*(x+1)/((x+3)^2);
+@c num_denom(g1);
+@c g2:sin(x)/10*cos(x)/y;
+@c num_denom(g2);
+@c ===end===
+@example maxima
+@group
+(%i1) g1:(x+2)*(x+1)/((x+3)^2);
+                         (x + 1) (x + 2)
+(%o1)                    ---------------
+                                   2
+                            (x + 3)
+@end group
+@group
+(%i2) num_denom(g1);
+                                            2
+(%o2)              [(x + 1) (x + 2), (x + 3) ]
+@end group
+@group
+(%i3) g2:sin(x)/10*cos(x)/y;
+                          cos(x) sin(x)
+(%o3)                     -------------
+                              10 y
+@end group
+@group
+(%i4) num_denom(g2);
+(%o4)                 [cos(x) sin(x), 10 y]
+@end group
+@group
+(%i5) [n, d] : num_denom(g2)$
+@end group
+@group
+(%i6) print("The numerator is", n, "and the denominator is", d)$
+The numerator is cos(x) sin(x) and the denominator is 10 y
+@end group
+@end example
+
 @opencatbox{Categories:}
 @category{Expressions}
 @closecatbox

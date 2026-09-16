@@ -325,11 +325,13 @@ Beispiel:
 @deffn {Funktion} denom (@var{expr})
 
 Gibt den Nenner des Ausdrucks @var{expr} zur@"uck, wenn dieser ein
-Quotient ist.  Ist der Ausdruck @var{expr} kein Quotient wird @var{expr}
-zur@"uckgegeben.
+Quotient ist.  Ist der Ausdruck @var{expr} kein Quotient, wird @code{1}
+zur@"uckgegeben.  F@"ur Exponentialfunktionen @code{%e^-x} oder @code{a^-x}
+h@"ngt das Verhalten von den Optionen @mref{%edispflag} bzw. @mref{exptdispflag}
+ab.
 
-Die Funktion @code{denom} wertet das Argument aus.  Siehe auch die Funktion
-@mrefdot{num}
+Die Funktion @code{denom} wertet das Argument aus.  Siehe auch die Funktionen
+@mref{num} und @mrefdot{num_denom}
 
 Beispiel:
 
@@ -1492,11 +1494,13 @@ Beispiele:
 @c @code{num} evaluates its argument.
 
 Gibt den Z@"ahler des Ausdrucks @var{expr} zur@"uck, wenn dieser ein
-Quotient ist.  Ist der Ausdruck @var{expr} kein Quotient wird @var{expr}
-zur@"uckgegeben.
+Quotient ist.  Ist der Ausdruck @var{expr} kein Quotient, wird @var{expr}
+zur@"uckgegeben.  F@"ur Exponentialfunktionen @code{%e^-x} oder @code{a^-x}
+h@"ngt das Verhalten von den Optionen @mref{%edispflag} bzw. @mref{exptdispflag}
+ab.
 
-Die Funktion @code{num} wertet das Argument aus.  Siehe auch die Funktion
-@mrefdot{denom}
+Die Funktion @code{num} wertet das Argument aus.  Siehe auch die Funktionen
+@mref{denom} und @mrefdot{num_denom}
 
 Beispiel:
 
@@ -1504,6 +1508,29 @@ Beispiel:
 (%i1) num(x^2/(x+1));
                                 2
 (%o1)                          x
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{num_denom}
+@deffn {Funktion} num_denom (@var{expr})
+
+Gibt eine Liste @code{[num(@var{expr}), denom(@var{expr})]} zur@"uck, jedoch
+auf effizientere Weise.
+
+Die Funktion @code{num_denom} wertet das Argument aus.  Siehe auch die Funktionen
+@mref{num} und @mrefdot{denom}
+
+Beispiel:
+
+@example
+(%i1) num_denom(x^2/(x+1));
+                            2
+(%o1)                     [x , x + 1]
+(%i2) [n, d] : num_denom(x^2/(x+1))$
+(%i3) print("Der Zaehler ist", n, "und der Nenner ist", d)$
+                 2
+Der Zaehler ist x  und der Nenner ist x + 1
 @end example
 @end deffn
 
