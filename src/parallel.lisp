@@ -36,8 +36,17 @@
   #+(or sb-thread (and ccl openmcl-native-threads)) t
   #+(and ecl threads (not sb-thread) (not ccl))
   ;; 21.2.1 can dispatch interrupts inside WITHOUT-INTERRUPTS, losing
-  ;; startup ownership. Keep mathematical evaluation available serially.
-  (not (string= (lisp-implementation-version) "21.2.1"))
+  ;; startup ownership; measured on 21.2.1, and measured absent on
+  ;; 24.5.10.  Nothing between the two has been tried.  Testing for the
+  ;; one version known to be bad would hand every untested release the
+  ;; threaded path on the assumption it is fine; this asks instead for a
+  ;; version somebody has actually run, because being serial costs only
+  ;; speed while guessing wrong costs correct answers.  Raise the bound
+  ;; when an older release is measured, rather than lowering the bar.
+  (let ((major (ignore-errors
+                 (parse-integer (lisp-implementation-version)
+                                :junk-allowed t))))
+    (and major (>= major 24)))
   #-(or sb-thread (and ccl openmcl-native-threads) (and ecl threads)) nil)
 
 (defmacro %without-interrupts (&body body)
