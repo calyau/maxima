@@ -39,6 +39,8 @@
     sign minus odds evens
     ;; DISPLA's box dimensions and its layout scratch
     width height depth linearray *m *rule-symbol-pool*
+    ;; MAPPLY1's compiled-lambda cache and its eviction randomness
+    *lambda-expr-funs* *lambda-expr-funs-random*
     ;; CRE's variables and their ordering
     varlist genvar vlist
     ;; MBIND's and MLOCAL's save stacks
@@ -101,6 +103,24 @@ look right and fix nothing."
     (with-thread-local-environment (setq inner linearray))
     (let ((ok (and (not (eq outer inner)) (= (length inner) (length outer)))))
       (format stream "~&  linearray is a distinct array of the same size: ~a~%" ok)
+      ok)))
+
+(defun check-fresh-lambda-cache (&optional (stream *debug-io*))
+  "*LAMBDA-EXPR-FUNS* and its random state must be fresh objects too.
+Binding them to the caller's would pass the leak check above and still
+leave every thread writing one hash table, which is the whole problem."
+  (let ((outer-table *lambda-expr-funs*)
+        (outer-random *lambda-expr-funs-random*)
+        inner-table inner-random)
+    (with-thread-local-environment
+      (setq inner-table *lambda-expr-funs*
+            inner-random *lambda-expr-funs-random*))
+    (let ((ok (and (hash-table-p inner-table)
+                   (not (eq outer-table inner-table))
+                   (zerop (hash-table-count inner-table))
+                   (random-state-p inner-random)
+                   (not (eq outer-random inner-random)))))
+      (format stream "~&  lambda cache and its random state are fresh: ~a~%" ok)
       ok)))
 
 ;;; The race.  SIGN is the one worth racing: it is how COMPAR returns an
@@ -201,12 +221,13 @@ look right and fix nothing."
   "Returns T if the environment isolates everything it claims to."
   (let* ((leaked (check-bindings stream))
          (fresh (check-fresh-linearray stream))
+         (cache (check-fresh-lambda-cache stream))
          (raced (check-race stream))
          (props (check-depended-on-properties stream))
          (pool (zerop (check-rule-symbol-pool :stream stream)))
          ;; RACED is NIL only for a race that actually failed: a lisp
          ;; without threads reports :SKIPPED, which is not a failure.
-         (ok (and (null leaked) fresh (not (null raced)) props pool)))
+         (ok (and (null leaked) fresh cache (not (null raced)) props pool)))
     (format stream "~&thread-environment-check: ~:[FAILED~;ok~]~%" ok)
     ok))
 

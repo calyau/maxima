@@ -6,6 +6,10 @@ Maxima 5.50-post change log
   releases older than 24, whose interrupt deferral can lose worker
   ownership.
 
+* Give each parallel runner its own compiled-lambda cache and eviction
+  random state, so MAPPLY1's cache is not one unsynchronized hash table
+  written by every worker.
+
 * Publish an undeclared array's grown bucket vector only once it is filled.
   A parallel loop over a memoizing function could otherwise leave the array
   unusable for the rest of the session, ordinary serial calls included.

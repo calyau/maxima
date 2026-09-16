@@ -133,6 +133,8 @@
 	  width height depth		; DISPLA's box dimensions
 	  varlist genvar vlist		; CRE's variables and their ordering
 	  linearray			; DISPLA's layout scratch
+	  *lambda-expr-funs*		; MAPPLY1's compiled-lambda cache
+	  *lambda-expr-funs-random*	; and the state it evicts with
 	  bindlist mspeclist loclist	; MBIND's and MLOCAL's stacks
 	  tstack *local-signs* *m *rule-symbol-pool*
 	  fpprec *bigfloatone* *bigfloatzero*	; bigfloat precision, and the
@@ -197,6 +199,34 @@
 	 ;; workers run in, so they would block on it and it would wait for
 	 ;; them.
 	 (linearray (make-array 1000. :initial-element nil))
+	 ;; Fresh for the same reason, by a different remedy.
+	 ;; *LAMBDA-EXPR-FUNS* (mlisp.lisp) is the bounded cache
+	 ;; LAMBDA-EXPR-FUN keeps compiled Lisp lambdas in for MAPPLY1.
+	 ;; An unsynchronized hash table written by two threads does not
+	 ;; merely lose entries: measured on SBCL 2.6.4, two threads
+	 ;; writing 5000 disjoint keys each gave a wrong count in 20 of 20
+	 ;; runs, every one signalling "Unsafe concurrent operations ...
+	 ;; detected", and two of them breaking SBCL's own invariant with
+	 ;; "failed AVER: (= HWM (HASH-TABLE-PAIRS-CAPACITY
+	 ;; OLD-KV-VECTOR))".
+	 ;;
+	 ;; :SYNCHRONIZED T would not be enough: LAMBDA-EXPR-FUN evicts
+	 ;; with WITH-HASH-TABLE-ITERATOR, and adding an entry during that
+	 ;; iteration -- exactly what another thread's SETF GETHASH does --
+	 ;; is undefined.  Synchronization is per operation, not per
+	 ;; iteration.  A per-thread table shares nothing, so it needs
+	 ;; neither a lock nor iterator discipline.
+	 ;;
+	 ;; Nothing is lost by starting cold: it is a pure cache, so a
+	 ;; worker pays one extra COERCE per distinct lambda and then hits
+	 ;; its own table for the rest of the loop, and
+	 ;; *LAMBDA-EXPR-FUNS-MAX* goes on bounding it per thread.
+	 (*lambda-expr-funs* (make-hash-table :test 'eq))
+	 ;; RANDOM mutates the state it is handed, so the shared
+	 ;; RANDOM-STATE is a race of its own, independent of the table.
+	 ;; T, not NIL: NIL would copy *RANDOM-STATE*, reading an object
+	 ;; other threads are mutating, and eviction is arbitrary anyway.
+	 (*lambda-expr-funs-random* (make-random-state t))
 	 (sign sign) (minus minus) (odds odds) (evens evens)
 	 (tstack tstack) (*local-signs* *local-signs*)
 	 ;; MBIND pushes saved values onto BINDLIST and MSPECLIST, MLOCAL
