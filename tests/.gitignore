@@ -16,4 +16,4 @@ threadcheck.sh
 *-thread-race.sh*
 bin
 
-sbcl-runtime-options.sh
+sbcl-runtime-options.sh*
