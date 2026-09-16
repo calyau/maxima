@@ -2123,17 +2123,34 @@ wrapper for this."
 			     (hasher (cdr l)))))))))
 
 (defun arraysize (fun n)
-  (prog (old new indx ncells cell item i y)
+  ;; NEWSYM goes on FUN's plist only once the vector it names is
+  ;; complete.  Publishing it any earlier leaves the symbol reachable
+  ;; while SYMBOL-ARRAY is still NIL, while slot 1 is still the NIL an
+  ;; :INITIAL-ELEMENT NIL array starts with, and while the entries are
+  ;; still being rehashed.  Serially nothing looks in during that
+  ;; window; with a parallel loop another thread does.  Measured on SBCL
+  ;; 2.6.4, "for i: 1 thru_parallel 3000 do f[i]" on a memoizing
+  ;; f[n] := n^2: slot 1 came back NIL in 5 runs of 5 and every later
+  ;; f[7] -- an ordinary serial call -- signalled a lisp error, so the
+  ;; damage outlives the loop that caused it.  Publishing last: 0 errors
+  ;; in 3 runs of 3 and all 3000 values correct.
+  ;;
+  ;; This does not make growth atomic.  Entries stored into OLD after it
+  ;; is read here are still dropped, which costs the memoizing that the
+  ;; table exists for and not correctness, because a lookup checks the
+  ;; key it finds with ALIKE and recomputes on a miss.  Measured, same
+  ;; loop: 2866 to 2886 of 3000 entries retained.
+  (prog (old new newsym indx ncells cell item i y)
      (setq old (symbol-array (mget fun 'hashar)))
-     (setq new (gensym))
-     (mputprop fun new 'hashar)
-     (setf (symbol-array new) (make-array (+ n 3) :initial-element nil))
-     (setq new (symbol-array new))
+     (setq newsym (gensym))
+     (setf (symbol-array newsym) (make-array (+ n 3) :initial-element nil))
+     (setq new (symbol-array newsym))
      (setf (aref new 0) n)
      (setf (aref new 1) (aref old 1))
      (setf (aref new 2) (aref old 2))
      (setq indx 2 ncells (+ 2 (aref old 0)))
-     a    (if (> (setq indx (1+ indx)) ncells) (return t))
+     a    (if (> (setq indx (1+ indx)) ncells)
+	      (progn (mputprop fun newsym 'hashar) (return t)))
      (setq cell (aref old indx))
      b    (if (null cell) (go a))
      (setq i (+ 3 (rem (hasher (car (setq item (car cell)))) n)))
