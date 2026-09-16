@@ -146,3 +146,6 @@ taylor(x+x^3,x,0,2);
 ordergreat(z,y,x)$ x+y+z;
 orderless(t,u,v)$ v+u+t;
 make_array (fixnum, 10);
+t(x);
+t[x];
+t[x](y);

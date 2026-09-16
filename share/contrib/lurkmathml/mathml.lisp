@@ -348,9 +348,9 @@ else if $MATHML_UNDERSCORE_IS_SUBSCRIPT is at least one, then
   (append l x))
 
 (defun mathmlsym (x) (or (get x 'mathmlsym) (get x 'strsym)(get x 'dissym)
-		      (stripdollar x)))
+		      (mathml-stripdollar x)))
 
-(defun mathmlword (x)(or (get x 'mathmlword) (stripdollar x)))
+(defun mathmlword (x)(or (get x 'mathmlword) (get x 'reversealias) (mathml-stripdollar x)))
 
 (defprop bigfloat mathml-bigfloat mathml)
 
