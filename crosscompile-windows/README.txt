@@ -32,7 +32,7 @@ Be sure, that the Maxima sourcetree is 'clean', i.e. that no (in-source)
 build for another operating system has been done before.
 
 This will download the required Software (CLISP, SBCL, Gnuplot, wxMaxima,
-wxWidgets, Tcl, Tk, VTK, Texinfo, maybe ABCL and CCL) from the Internet
+wxWidgets, Tcl, Tk, VTK, maybe ABCL and CCL) from the Internet
 into the directory "crosscompile-windows/download".
 
 The packages will be compiled (if necessary) and a Windows 
@@ -90,6 +90,9 @@ Then use the following commands to build a 32 bit installer:
 cmake -DBUILD_64BIT=NO ..
 make
 make package
+
+As some projects do no longer support 32 bit Windows, older packages
+will be included (e.g. SBCL, Gnuplot, ...)
 
 
 Example with Github actions
@@ -173,6 +176,14 @@ the deinstallation) works properly. To test Maxima, try the following:
    Open that file and then select "Cells/Evaluate all cells" in this
    file and check if the file is processed correctly.
 
+Creating a release
+==================
+
+- After the tests worked, check the created installer with online
+  virus checking tools (Virustotal or others), if the installer is
+  "clean". As the (cross)compiliation is done on Linux, an infection
+  with a (Windows) virus is very unlikely, but there may be false
+  positives.
 
 Further development / TODO:
 ===========================
@@ -197,6 +208,8 @@ More packages could be included in the Windows installer.
   Must have a Windows port or be crosscompileable and be usable in Wine.
   I tried other Lisps, but currently only CLISP, SBCL, CCL64 and ABCL work.
   And including many more Lisp versions might confuse ordinary users.
+  ECL is work in progress. The base system works, but no loading of packages.
+  Further work required (using the option "-DWITH_ECL=YES").
 
 
 Wolfgang Dautermann
