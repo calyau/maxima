@@ -2561,15 +2561,16 @@ block([b],
 block([b, domain : complex],
  local(b),
  assume(b <= 0),
- [errcatch(sign(b^(2/3))),
+ [sign(b^(2/3)),
   csign(b^(2/3))]);
-[[pz], complex];
+/* With domain : complex, no negative b makes b^(2/3) real, leaving only b = 0 -> zero. */
+[zero, complex];
 
 block([b, domain : complex],
  local(b),
  assume(b > 0),
  [sign(b^(2/3)),
- sign(b^(1/3))]);
+  sign(b^(1/3))]);
 [pos, pos];
 
 
@@ -2664,6 +2665,118 @@ block([j, e, o],
  imaginary, pnz, imaginary, pnz,
  pz, imaginary, nz, imaginary,
  pz, imaginary, nz, imaginary];
+
+
+/* Tests originating from bug #5256: "csign(negative^(2/odd)) -> complex" */
+
+/* csign(negative^(n/odd)): with domain : real, the real odd root is taken,
+   so the sign is that of negative^n. */
+block([negative, o, e, n, u],
+ local(negative, o, e, n, u),
+ assume(negative < 0),
+ declare(o, odd, e, even, n, integer),
+ [map(csign, [negative^(1/o), negative^(2/o), negative^(3/o),
+              negative^(-1/o), negative^(-2/o), negative^(-3/o),
+              negative^(e/o), negative^((o+2)/o), negative^(o/3),
+              negative^(1/(3*o)), negative^(2/(3*o)), negative^(o/(o+2)),
+              negative^(1/(2*o)), negative^(3/(2*o)), negative^(u/o),
+              (negative-1)^(2/o), (negative-1)^(-2/o),
+              negative^(n/o), negative^((n+1)/o), negative^(n/(2*o))]),
+  map(sign, [negative^(2/o), negative^(3/o)]),
+  /* Display settings must not change the sign. */
+  block([exptdispflag : false, pfeformat : true],
+        map(csign, [negative^(1/o), negative^(2/o), negative^(o/3)])),
+  /* With domain : complex, an odd root is the principal branch. */
+  block([domain : complex],
+        map(csign, [negative^(1/o), negative^(2/o), negative^(3/o)]))]);
+[[neg, pos, neg,
+  neg, pos, neg,
+  pos, neg, neg,
+  neg, pos, neg,
+  complex, complex, complex,
+  pos, pos,
+  pnz, pnz, complex],
+ [pos, neg],
+ [neg, pos, neg],
+ [complex, complex, complex]];
+
+/* Literal exponent numerators, symbolic odd numerators */
+block([xnz, xpn, xpnz, o],
+ local(xnz, xpn, xpnz, o),
+ assume(xnz <= 0, notequal(xpn, 0)),
+ declare(o, odd),
+ map(csign, [xnz^(2/o), xnz^(3/o), xpn^(2/o), xpn^(3/o),
+             xpnz^(2/o), xpnz^(3/o)]));
+[pz, nz, pos, pn, pz, pnz];
+
+/* No real odd root of a non-real base, so a^(n/o) does not have the sign
+   of a^n: %e^(%i*%pi) is -1. abs(%e^(%i*%pi/5)) must stay 1. */
+block([j, c, o],
+ local(j, c, o),
+ declare(j, imaginary, c, complex, o, odd),
+ [map(csign, [j^(2/o), j^(3/o), c^(2/o), c^(3/o), %e^(%i*%pi/5)]), abs(%e^(%i*%pi/5))]);
+[[complex, complex, complex, complex, complex], 1];
+
+block([y, o],
+ local(y, o),
+ assume(y < 0),
+ declare(o, odd),
+ [is(y^(3/o) < 0), is(y^(2/o) > 0), is(y^(-3/o) < 0)]);
+[true, true, true];
+
+/* negative^(odd/even) is an even root of a negative number in either
+   domain: an error, like sign(sqrt(negative)). Other bases are assumed
+   non-negative, as for numeric exponents. csign does not change. */
+block([negative, xnz, xpn, xpnz, o, e, u],
+ local(negative, xnz, xpn, xpnz, o, e, u),
+ assume(negative < 0, xnz <= 0, notequal(xpn, 0)),
+ declare(o, odd, e, even),
+ [map(lambda([x], errcatch(sign(x))),
+      [negative^(1/(2*o)), negative^(3/(2*o)), negative^(1/e), negative^(o/e),
+       negative^(1/(6*o)), negative^(o/2), negative^(-1/(2*o)),
+       negative^(e/(2*o)), negative^(u/(2*o)),
+       xnz^(1/(2*o)), xpn^(1/(2*o)), xpnz^(1/(2*o))]),
+  block([domain : complex],
+        map(lambda([x], errcatch(sign(x))),
+            [negative^(1/(2*o)), negative^(1/e), xpn^(1/(2*o))])),
+  map(csign, [negative^(1/(2*o)), negative^(o/2), negative^(1/e)])]);
+[[[], [], [], [], [], [], [], [pn], [pn], [zero], [pos], [pz]],
+ [[], [], [pos]],
+ [complex, imaginary, complex]];
+
+/* A negative exponent rules out zero, so an even root of xnz <= 0 is not real. */
+block([xnz, xpn, xpnz, o],
+ local(xnz, xpn, xpnz, o),
+ assume(xnz <= 0, notequal(xpn, 0), o > 0),
+ declare(o, odd),
+ map(lambda([x], errcatch(sign(x))),
+     [xpnz^(-1/(2*o)), xpn^(-1/(2*o)), xnz^(-1/(2*o)),
+      1/sqrt(xpnz), 1/sqrt(xpn), 1/sqrt(xnz), xnz^(-3/2), sqrt(xnz)]));
+[[pos], [pos], [], [pos], [pos], [], [], [zero]];
+
+/* An odd power or (domain : real) odd root of a non-positive base has the base's
+   sign. A negative exponent rules out zero. With domain : complex, a non-integer
+   power of a negative number is not real, so it is treated like an even root. */
+block([negative, xnz, xpn, xpnz, o],
+ local(negative, xnz, xpn, xpnz, o),
+ assume(negative < 0, xnz <= 0, notequal(xpn, 0)),
+ declare(o, odd),
+ [map(lambda([x], errcatch(sign(x))),
+      [xnz^(-1/3), xnz^(-3/5), xnz^(-2/3), xnz^(-3), xnz^(1/3), xpnz^(-2/3),
+       (negative-1)^o, (negative-1)^(-o), (negative-1)^(1/o),
+       (negative-1)^(-3/o), (xnz-1)^o, (xnz-1)^(-1/o)]),
+  map(csign, [xnz^(-1/3), xnz^(-3), (negative-1)^o, (negative-1)^(-3/o)]),
+  block([domain : complex],
+        map(lambda([x], errcatch(sign(x))),
+            [xnz^(-1/3), xnz^(-2/3), xnz^(1/3), xnz^(2/3), xnz^(-3),
+             xpn^(1/3), xpnz^(-1/3), (negative-1)^o]))]);
+[[[neg], [neg], [pos], [neg], [nz], [pos],
+  [neg], [neg], [neg],
+  [neg], [neg], [neg]],
+ [neg, neg, neg, neg],
+ [[], [], [zero], [zero], [neg],
+  [pos], [pos], [neg]]];
+
 
 /**************************************/
 /* Leave this at the end of the file! */

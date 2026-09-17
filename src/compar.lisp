@@ -1948,11 +1948,33 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun sign-mexpt (x)
   (let* ((expt (caddr x)) (base1 (cadr x))
 	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
-	 (evod (evod expt)))
+	 (evod (evod expt))
+	 (expt-num expt)
+	 even-root)
+
+    ;; With domain : real and an odd denominator, base^(num/denom) has the sign
+    ;; of base^num, so use the parity of num (and, below, whether it is an
+    ;; integer) instead. An odd num over an even denominator is an even root -
+    ;; not real for a negative base, for both settings of domain. Only a base
+    ;; that may be negative needs this, and EVOD can be expensive, so don't call
+    ;; it otherwise.
+    (when (and (null evod)
+               (not (mnump expt))
+               (member sign-base '($neg $nz $pn $pnz)))
+      (destructuring-bind (num . denom) (let (($exptdispflag t) $pfeformat)
+                                          (num-denom-split expt))
+        (unless (eql denom 1)
+          (let ((evod-denom (evod denom)))
+            (cond ((and (eq evod-denom '$odd) (not (eq $domain '$complex)))
+                   (setq evod (evod num)
+                         expt-num num))
+                  ((eq evod-denom '$even)
+                   (setq even-root (eq (evod num) '$odd))))))))
+
     ;; The variable sign is now equal to sign-base. This is used below
     ;; in some places to avoid an assignment operation for sign.
     (cond ((and (eq sign-base '$zero)
-		(member sign-expt '($zero $neg $nz) :test #'eq))
+		(member sign-expt '($zero $neg $nz)))
 	   (dbzs-err x))
 	  ((eq sign-expt '$zero) (setq sign '$pos))
 	  ((eq sign-base '$zero))
@@ -1994,7 +2016,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ((and *complexsign*
 		(eq $domain '$complex)
 		(ratnump expt)
-		(member sign-base '($neg $nz $pn $pnz) :test #'eq))
+		(member sign-base '($neg $nz $pn $pnz)))
 	   ;; With domain : complex, a base that might be negative raised to a
 	   ;; non-integer rational power is on the principal branch, which is
 	   ;; never real. With domain : real, Maxima takes the real root
@@ -2003,47 +2025,64 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	     (format t "~&in SIGN-MEXPT for ~A, branch is complex.~%" x))
 	   (setq sign '$complex))
 
-
 	  ((and *complexsign*
 		(not evod)
 		(not (ratnump expt))
-		(not (member sign-base '($pos $pz $zero) :test #'eq)))
+		(not (member sign-base '($pos $pz $zero))))
 	   (when *debug-compar*
 	     (format t "~&in SIGN-MEXPT for ~A, base is not $pos, $pz or $zero.~%" x))
-	   (setq sign (if (maxima-integerp expt) '$pnz '$complex)))
+	   (setq sign (if (maxima-integerp expt-num) '$pnz '$complex)))
+
+	  (even-root
+	   ;; Real mode (complex mode was handled above): An even root of a
+	   ;; negative base is an error; otherwise assume the base is not
+	   ;; negative, as the (RATNUMP EXPT) clause does for numbers.
+	   (cond ((or (eq sign-base '$neg)
+	              (and (eq sign-base '$nz) (eq sign-expt '$neg)))
+	          (imag-err x))
+	         ((or (eq sign-base '$pn) (eq sign-expt '$neg))
+	          (setq sign '$pos))
+	         ((eq sign-base '$nz) (setq sign '$zero))
+	         (t (setq sign '$pz))))
+
 	  ((eq sign-base '$pos))
 	  ((eq evod '$even)
 	   (cond ((eq sign-expt '$neg)
 		  (setq sign '$pos minus nil evens (ncons base1) odds nil))
-		 ((member sign-base '($pn $neg) :test #'eq)
+		 ((member sign-base '($pn $neg))
 		  (setq sign '$pos minus nil
 			evens (nconc odds evens)
 			odds nil))
 		 (t (setq sign '$pz minus nil
 			  evens (nconc odds evens)
 			  odds nil))))
+
+	  ((and (eq evod '$odd) (member sign-base '($neg $nz)))
+	   ;; An odd power (or odd root, see above) of a non-positive base
+	   ;; has the sign of the base. A negative exponent rules out zero.
+	   (when (and (eq sign-base '$nz)
+	              (member sign-expt '($neg $nz)))
+	     (setq sign '$neg)))
+
     ;; (pnz, pos, pz or pn)^(-odd/even) = pos & (pnz, pos, pz or pn)^(odd/even) = pz.
     ;; This makes, for example, sign(1/sqrt(x)) = pos & sign(sqrt(x) = pz.
     ;; In complex mode, a base that may be negative is not real here, so let
     ;; the (RATNUMP EXPT) clause below compute the sign instead.
     ((and (eq sign-expt '$neg) ($ratnump expt) ($evenp ($denom expt))
-          (member sign-base '($pnz $pos $pz $pn) :test #'eq)
+          (member sign-base '($pnz $pos $pz $pn))
           (or (not *complexsign*)
-              (member sign-base '($pos $pz) :test #'eq)))
+              (member sign-base '($pos $pz))))
       (setq sign '$pos))
-	  ((and (member sign-expt '($neg $nz) :test #'eq)
-		(member sign-base '($nz $pz $pnz) :test #'eq)
-		;; Same exception: in Complex Mode an even denominator over a
-		;; base that may be negative is not real.
-		(not (and *complexsign*
-			  ($ratnump expt)
-			  ($evenp ($denom expt))
-			  (member sign-base '($nz $pnz)))))
+	  ((and (member sign-expt '($neg $nz))
+	        (member sign-base '($nz $pz $pnz))
+	        ;; Leave rational exponents to the (RATNUMP EXPT) clause, which
+	        ;; knows their parity: xnz^(-1/3) is neg, not pn.
+	        (not (ratnump expt)))
 	   (setq sign (if (eq sign-base '$pz)
 			  '$pos
 			  '$pn)))
-	  ((member sign-expt '($pz $nz $pnz) :test #'eq)
-	   (cond ((member sign-base '($neg $nz) :test #'eq)
+	  ((member sign-expt '($pz $nz $pnz))
+	   (cond ((member sign-base '($neg $nz))
 		  (setq odds (ncons x) evens nil minus nil sign (if (eq sign-base '$neg) '$pn '$pnz)))))
 	  ((eq sign-expt '$pn)
 	   (cond ((eq sign-base '$neg)
@@ -2057,13 +2096,15 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			 ;; With domain : real, Maxima takes the real root instead,
 			 ;; as (-8)^(1/3) simplifies to -2.
 			 (imag-err x))
-		 ((mevenp (cadr expt))
-		  (cond ((member sign-base '($pn $neg) :test #'eq)
+		 ((and (not (eq $domain '$complex)) (mevenp (cadr expt)))
+		  (cond ((member sign-base '($pn $neg))
 			 (setq sign-base '$pos))
-			((member sign-base '($pnz $nz) :test #'eq)
+			((member sign-base '($pnz $nz))
 			 (setq sign-base '$pz)))
 		  (setq evens (nconc odds evens) odds nil minus nil))
-		 ((mevenp (caddr expt))
+		 ((or (eq $domain '$complex) (mevenp (caddr expt)))
+		  ;; No real value for a negative base: An even root, or any non-integer
+		  ;; power with domain : complex.
 		  (cond (*complexsign*
 			 (when (not (member sign-base '($pos $pz)))
 			   ;; In Complex Mode the sign is $complex.
@@ -2082,7 +2123,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			 (setq sign-base '$zero))
 			(t (setq sign-base '$pz)))))
 	   (cond ((eq sign-expt '$neg)
-		  (cond ((eq sign-base '$zero) (dbzs-err x))
+		  ;; $ZERO here came from $NZ. A negative exponent rules out zero, leaving a
+		  ;; negative base: Not real -> error (we're in real mode here).
+		  (cond ((eq sign-base '$zero) (imag-err x))
 			((eq sign-base '$pz)
 			 (setq sign-base '$pos))
 			((eq sign-base '$nz)
@@ -2090,7 +2133,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			((eq sign-base '$pnz)
 			 (setq sign-base '$pn)))))
 	   (setq sign sign-base))
-	  ((member sign-base '($neg $nz) :test #'eq)
+	  ((member sign-base '($neg $nz))
 	   (cond ((eq evod '$odd))
 		 (*complexsign*
 		  (setq sign '$complex))
@@ -3132,25 +3175,34 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (remove-if (lambda (sym) (mget sym '$numer))
                (cdr ($listofvars x)))))
 
-;; Rewrite a^b to a simpler expression that has the same sign:
-;; If b is odd or 1/b is odd, remove the exponent, e.g. x^3 becomes x.
-;; The 1/b case does not hold in complex mode with domain : complex, where an
-;; odd root is the principal branch and does not have the sign of its
-;; argument. (-8)^(1/3) is 1+sqrt(3)*%i, not -2. Only sign queries are
-;; excused: COMPSPLT also canonicalizes facts for ASSUME and FORGET, which
-;; run in real mode, and those two must agree on the form they store and
-;; look up even if $DOMAIN changes in between.
+;; Rewrite X = a^b to a simpler expression that has the same sign:
+;; If b is odd, or b = n/d with n and d odd, remove the exponent, e.g. x^3 and
+;; x^(3/d) become x. Don't replace b by n for an even n: a^(2/d) has the sign
+;; of a^2, but %i^2 is -1, so leave that to SIGN-MEXPT.
+;; The n/d case does not hold in complex mode with domain : complex, where an
+;; odd root is the principal branch and does not have the sign of its argument.
+;; (-8)^(1/3) is 1+sqrt(3)*%i, not -2. Only sign queries are excused: COMPSPLT
+;; also canonicalizes facts for ASSUME and FORGET, which run in real mode, and
+;; those two must agree on the form they store and look up even if $DOMAIN
+;; changes in between.
 ;; If b has a negative sign, return a^-b, e.g. 1/x^a becomes x^a.
-;; Otherwise, do nothing.
+;; Otherwise, do nothing (return X unmodified).
 (defun rewrite-mexpt-retaining-sign (x)
   (if (mexptp x)
     (let ((base (cadr x)) (exponent (caddr x)))
-      (cond ((or (eq (evod exponent) '$odd)
-		 (and (not (and *compsplt-for-sign* (eq $domain '$complex)))
-		      (eq (evod (inv exponent)) '$odd)))
-	     base)
-	    ((negp exponent) (inv x))
-	    (t x)))
+      (cond 
+        ((or (eq (evod exponent) '$odd)
+             (and (not (and *compsplt-for-sign* (eq $domain '$complex)))
+                  ;; A denominator of 1 means b is not a quotient, so don't
+                  ;; bother EVOD with it.
+                  (destructuring-bind (num . denom) (let (($exptdispflag t) $pfeformat)
+                                                      (num-denom-split exponent))
+                    (and (not (eql denom 1))
+                         (eq (evod denom) '$odd)
+                         (eq (evod num) '$odd)))))
+         base)
+        ((negp exponent) (inv x))
+        (t x)))
     x))
 
 ;; COMPSPLT

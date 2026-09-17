@@ -91,6 +91,7 @@ Bug fixes for numbered bugs:
 * \#5249 integrate(%e^(2*x)*tan(%e^x)^2,x) is non-real
 * \#5254 limit(gamma_incomplete(-1,x), x, 0, plus) -> minf
 * \#5255 limit(1/x+%i/sqrt(x), x, 0, plus) -> inf
+* \#5256 csign(negative^(2/odd)) -> complex
 * \#5260 lurkmathml typesets t(x) incorrectly
 
 Bug fixes for unnumbered bugs:
@@ -140,3 +141,15 @@ Other changes:
 * csign(imaginary^...) now gives precise results not only for integer exponents,
   but also for exponents involving variables declared even/odd.
 * New function num_denom(x) = [num(x), denom(x)], which is more efficient
+* csign(negative^(n/odd)) returned complex for any integer n other than 1,
+  although with domain : real, the real odd root is taken. Now,
+  csign(negative^(2/odd)) is pos, csign(negative^(3/odd)) is neg and
+  csign(negative^(n/odd)) is pnz for an n only declared integer.
+* sign(negative^(odd/even)), e.g. sign(negative^(1/(2*odd))), returned pn,
+  although there is no real even root of a negative number. It now signals
+  that the argument is not real, as sign(sqrt(negative)) does.
+  So does sign(1/sqrt(xnz)) for xnz <= 0, which returned pn.
+* sign(xnz^(-1/3)) and sign(xnz^(-3)) for xnz <= 0 returned pn instead of
+  neg, as did sign((negative-1)^odd), and sign(xnz^(-2/3)) pn instead of
+  pos. With domain : complex, a non-integer rational power of a base that
+  may be negative now gets the same treatment as an even root.
