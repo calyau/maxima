@@ -47,6 +47,13 @@
          (progn ,@forms)
          ($killcontext ,my-context)))))
 
+(defmacro with-default-quotient-dispflags (&body body)
+  "Bind the display flags that decide what NFORMAT puts into a denominator
+  to their defaults, so that $NUM, $DENOM and NUM-DENOM-SPLIT give the
+  same split whatever the user set for display."
+  `(let (($exptdispflag t) $pfeformat $%edispflag)
+     ,@body))
+
 ;; For creating a macsyma evaluator variable binding context.
 ;; (MBINDING (VARIABLES &OPTIONAL VALUES FUNCTION-NAME)
 ;;    ... BODY ...)

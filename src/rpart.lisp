@@ -86,6 +86,12 @@
   (let ((ris (trisplit xx)))
     (add (car ris) (mul (cdr ris) '$%i))))
 
+(defmfun $real_imag_part (e)
+  "Return real and imaginary part of E as a list.
+  Equivalent to [realpart(x), imagpart(x)], but more efficient."
+  (destructuring-bind (re . im) (trisplit e)
+    (list '(mlist simp) re im)))
+
 ;;; Polarform gives a result of the form a*%e^(%i*b).
 
 (defmfun ($polarform :properties ((evfun t))) (xx)

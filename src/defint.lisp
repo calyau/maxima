@@ -258,8 +258,9 @@ in the interval of integration.")
     (expr (factor expr))
 	(numer nil)
 	(denom nil))
-    (setq numer ($num expr))
-    (setq denom ($denom expr))
+    (destructuring-bind (n . d) (with-default-quotient-dispflags
+                                  (num-denom-split expr))
+      (setq numer n denom d))
     (cond ((polyinx numer ivar nil)
 	   (cond ((and (polyinx denom ivar nil)
 		       (deg-lessp denom ivar 2))
@@ -1168,7 +1169,7 @@ in the interval of integration.")
 			 ;; DISCONTINUITIES, asked by INTSUBS, knows more, such as
 			 ;; the branch cut of a power with a non-integer exponent.
 			 (not discontinuousp)
-			 (free ($denom e) ivar)))
+			 (free (with-default-quotient-dispflags ($denom e)) ivar)))
 		;; It's easy if we have a polynomial.  I (rtoy) think
 		;; it's also easy if the denominator is free of the
 		;; integration variable and also if the expression
@@ -3664,16 +3665,16 @@ in the interval of integration.")
 ;;; Temporary fix for a lacking in taylor, which loses with %i in denom.
 ;;; Besides doesn't seem like a bad thing to do in general.
 (defun %i-out-of-denom (exp)
-  (let ((denom ($denom exp)))
+  (destructuring-bind (num . denom) (with-default-quotient-dispflags
+                                      (num-denom-split exp))
     (cond ((among '$%i denom)
 	   ;; Multiply the denominator by it's conjugate to get rid of
 	   ;; %i.
 	   (let* ((den-conj (maxima-substitute (m- '$%i) '$%i denom))
-		  (num ($num exp))
 		  (new-denom (sratsimp (m* denom den-conj)))
 		  (new-exp (sratsimp (m// (m* num den-conj) new-denom))))
 	     ;; If the new denominator still contains %i, just give up.
-	     (if (among '$%i ($denom new-exp))
+	     (if (among '$%i (with-default-quotient-dispflags ($denom new-exp)))
 		 exp
 		 new-exp)))
 	  (t exp))))
@@ -3684,12 +3685,13 @@ in the interval of integration.")
 ;;; Form of list ((pole . multiplicity) (pole1 . multiplicity) ....)
 (defun poles-in-interval (exp ivar ll ul)
   (let* ((denom (cond ((mplusp exp)
-		       ($denom (sratsimp exp)))
+		       (with-default-quotient-dispflags
+			 ($denom (sratsimp exp))))
 		      ((and (mexptp exp)
 			    (free (caddr exp) ivar)
 			    (eq ($asksign (caddr exp)) '$neg))
 		       (m^ (cadr exp) (m- (caddr exp))))
-		      (t ($denom exp))))
+		      (t (with-default-quotient-dispflags ($denom exp)))))
 	 (roots (real-roots denom ivar))
 	 (ll-pole (limit-pole exp ivar ll '$plus))
 	 (ul-pole (limit-pole exp ivar ul '$minus)))

@@ -1961,7 +1961,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (when (and (null evod)
                (not (mnump expt))
                (member sign-base '($neg $nz $pn $pnz)))
-      (destructuring-bind (num . denom) (let (($exptdispflag t) $pfeformat)
+      (destructuring-bind (num . denom) (with-default-quotient-dispflags
                                           (num-denom-split expt))
         (unless (eql denom 1)
           (let ((evod-denom (evod denom)))
@@ -3195,7 +3195,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
              (and (not (and *compsplt-for-sign* (eq $domain '$complex)))
                   ;; A denominator of 1 means b is not a quotient, so don't
                   ;; bother EVOD with it.
-                  (destructuring-bind (num . denom) (let (($exptdispflag t) $pfeformat)
+                  (destructuring-bind (num . denom) (with-default-quotient-dispflags
                                                       (num-denom-split exponent))
                     (and (not (eql denom 1))
                          (eq (evod denom) '$odd)

@@ -982,6 +982,9 @@
 (defmvar $%edispflag nil
   "When true, Maxima displays '%e' to a negative exponent as a
   quotient.")
+(defmvar $exptdispflag t
+  "When true, Maxima displays expressions with negative exponents as
+  quotients.")
 (defmvar $sqrtdispflag t
   "When false, causes 'sqrt' to display with exponent 1/2.")
 

@@ -12,7 +12,6 @@
 
 (macsyma-module nforma)
 
-(defmvar $exptdispflag t)
 (defmvar $negsumdispflag t)
 
 (setq in-p nil)

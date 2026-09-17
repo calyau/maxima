@@ -6916,6 +6916,13 @@ block([f, F, dF],
 [true, 0, 0];
 
 
+/* Bug #5261: "Result of integrate(1/(x+%i),x,0,1) depends on exptdispflag" */
+
+  block([exptdispflag : false], integrate(1/(x+%i), x, 0, 1))
+- block([exptdispflag : true], integrate(1/(x+%i), x, 0, 1));
+0;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

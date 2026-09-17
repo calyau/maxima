@@ -974,7 +974,7 @@
     ;; We try to find a constant denominator. This is necessary to get results
     ;; for integrands like u(t)/(a+b+c+...).
 
-    (let ((den ($denom form)))
+    (let ((den (with-default-quotient-dispflags ($denom form))))
       (when (and (not (equal 1 den)) ($freeof var2 den))
 	(return-from defintegrate
 	  (div (defintegrate (mul den form) var2) den))))

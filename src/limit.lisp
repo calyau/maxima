@@ -1798,8 +1798,11 @@ ignoring dummy variables and array indices."
 	   ans)
 	  ;; Handle 1 / f(x):
 	  ;; behavior(1 / f(x)) = -behavior(f(x))
-	  ((equal ($num exp) 1)
-		(- (behavior ($denom exp) var val)))
+	  ((destructuring-bind (num . denom)
+	       (with-default-quotient-dispflags (num-denom-split exp))
+	     (and (equal num 1)
+		  (setq ans (- (behavior denom var val)))))
+	   ans)
 	  ;; Handle c^f(x) for c > 1:
 	  ;; behavior(c^f(x)) = behavior(f(x))
 	  ((and (mexptp exp)

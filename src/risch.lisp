@@ -207,8 +207,9 @@
 
 (defun trigin1 (risch-*exp risch-var)
   (let ((yyy (hypertrigint1 risch-*exp risch-var nil)))
-    (setq yyy (div ($expand ($num yyy))
-		   ($expand ($denom yyy))))
+    (setq yyy (destructuring-bind (num . denom)
+		  (with-default-quotient-dispflags (num-denom-split yyy))
+		(div ($expand num) ($expand denom))))
     (let ((rischp risch-var)
 	  (rp-polylogp t)
 	  $logarc $exponentialize result)

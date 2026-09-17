@@ -3329,8 +3329,9 @@
       ((mexptp (car l))
        ;; Found an power function. Factor the exponent with facsum.
        (let* ((fac (mfuncall '$facsum (caddr (car l)) var2))
-              (num ($num fac))
-              (den ($denom fac)))
+              (nd (with-default-quotient-dispflags (num-denom-split fac)))
+              (num (car nd))
+              (den (cdr nd)))
          (setq result
                (cons (cons (list 'mexpt) 
                            (cons (cadr (car l))

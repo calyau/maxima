@@ -2254,13 +2254,16 @@
             (go start))
            ((and (or (not (numberp (cadr gr)))
                      (equal (cadr gr) -1))
-                 (equal -1 ($num gr)) ; only for -1
+                 ;; Only for -1. W gets the denominator.
+                 (destructuring-bind (num . denom)
+                     (with-default-quotient-dispflags (num-denom-split gr))
+                   (and (equal -1 num) (setq w denom)))
                  ;; Do not simplify for a complex base.
                  (not (member ($csign gr) '($complex $imaginary)))
                  (and (eq $domain '$real) $radexpand))
             ;; (-1/x)^a -> 1/(-x)^a for x negative
             ;; For all other cases (-1)^a/x^a
-            (if (eq ($csign (setq w ($denom gr))) '$neg)
+            (if (eq ($csign w) '$neg)
                 (return (inv (power (neg w) pot)))
                 (return (div (power -1 pot)
                              (power w pot)))))

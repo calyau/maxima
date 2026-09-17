@@ -93,6 +93,7 @@ Bug fixes for numbered bugs:
 * \#5255 limit(1/x+%i/sqrt(x), x, 0, plus) -> inf
 * \#5256 csign(negative^(2/odd)) -> complex
 * \#5260 lurkmathml typesets t(x) incorrectly
+* \#5261 Result of integrate(1/(x+%i),x,0,1) depends on exptdispflag
 
 Bug fixes for unnumbered bugs:
 ------------------------------
