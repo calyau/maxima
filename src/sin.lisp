@@ -3328,17 +3328,16 @@
     (cond
       ((mexptp (car l))
        ;; Found an power function. Factor the exponent with facsum.
-       (let* ((fac (mfuncall '$facsum (caddr (car l)) var2))
-              (nd (with-default-quotient-dispflags (num-denom-split fac)))
-              (num (car nd))
-              (den (cdr nd)))
-         (setq result
-               (cons (cons (list 'mexpt) 
-                           (cons (cadr (car l))
-                                 (if (equal 1 den)
-                                     (list num)
-                                     (list ($multthru (inv den) num)))))
-                     result))))
+       (let ((fac (mfuncall '$facsum (caddr (car l)) var2)))
+         (multiple-value-bind (num den)
+             (with-default-quotient-dispflags (num-denom-split fac))
+           (setq result
+                 (cons (cons (list 'mexpt) 
+                             (cons (cadr (car l))
+                                   (if (equal 1 den)
+                                       (list num)
+                                       (list ($multthru (inv den) num)))))
+                       result)))))
       (t
        ;; Nothing to do.
        (setq result (cons (car l) result))))))

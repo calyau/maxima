@@ -1798,7 +1798,7 @@ ignoring dummy variables and array indices."
 	   ans)
 	  ;; Handle 1 / f(x):
 	  ;; behavior(1 / f(x)) = -behavior(f(x))
-	  ((destructuring-bind (num . denom)
+	  ((multiple-value-bind (num denom)
 	       (with-default-quotient-dispflags (num-denom-split exp))
 	     (and (equal num 1)
 		  (setq ans (- (behavior denom var val)))))

@@ -2255,7 +2255,7 @@
            ((and (or (not (numberp (cadr gr)))
                      (equal (cadr gr) -1))
                  ;; Only for -1. W gets the denominator.
-                 (destructuring-bind (num . denom)
+                 (multiple-value-bind (num denom)
                      (with-default-quotient-dispflags (num-denom-split gr))
                    (and (equal -1 num) (setq w denom)))
                  ;; Do not simplify for a complex base.

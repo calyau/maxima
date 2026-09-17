@@ -207,7 +207,7 @@
 
 (defun trigin1 (risch-*exp risch-var)
   (let ((yyy (hypertrigint1 risch-*exp risch-var nil)))
-    (setq yyy (destructuring-bind (num . denom)
+    (setq yyy (multiple-value-bind (num denom)
 		  (with-default-quotient-dispflags (num-denom-split yyy))
 		(div ($expand num) ($expand denom))))
     (let ((rischp risch-var)

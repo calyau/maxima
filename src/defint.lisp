@@ -258,9 +258,8 @@ in the interval of integration.")
     (expr (factor expr))
 	(numer nil)
 	(denom nil))
-    (destructuring-bind (n . d) (with-default-quotient-dispflags
-                                  (num-denom-split expr))
-      (setq numer n denom d))
+    (multiple-value-setq (numer denom)
+      (with-default-quotient-dispflags (num-denom-split expr)))
     (cond ((polyinx numer ivar nil)
 	   (cond ((and (polyinx denom ivar nil)
 		       (deg-lessp denom ivar 2))
@@ -3665,8 +3664,8 @@ in the interval of integration.")
 ;;; Temporary fix for a lacking in taylor, which loses with %i in denom.
 ;;; Besides doesn't seem like a bad thing to do in general.
 (defun %i-out-of-denom (exp)
-  (destructuring-bind (num . denom) (with-default-quotient-dispflags
-                                      (num-denom-split exp))
+  (multiple-value-bind (num denom) (with-default-quotient-dispflags
+                                     (num-denom-split exp))
     (cond ((among '$%i denom)
 	   ;; Multiply the denominator by it's conjugate to get rid of
 	   ;; %i.

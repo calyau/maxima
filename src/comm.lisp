@@ -961,33 +961,33 @@
   (setq x (specrepcheck x)) (symbolp x))
 
 (defun num-denom-split (e)
-  "Return (($NUM E) . ($DENOM E)) more efficiently."
+  "Return ($NUM E) and ($DENOM E) as two values, more efficiently."
   (if (atom e)
-    (cons e 1)
+    (values e 1)
     (let ((op (caar e)))
       (cond ((eq op 'mrat)
              (setq e (taychk2rat e))
-             (cons (cons (car e) (cons (cadr e) 1))
-                   (cons (car e) (cons (cddr e) 1))))
+             (values (cons (car e) (cons (cadr e) 1))
+                     (cons (car e) (cons (cddr e) 1))))
             ((eq op 'rat)
-             (cons (cadr e) (caddr e)))
+             (values (cadr e) (caddr e)))
             (t
              (let* ((x (nformat e)) (op (caar x)))
                (cond ((eq op 'mquotient)
-                      (cons (simplify (cadr x))
-                            (simplify (caddr x))))
+                      (values (simplify (cadr x))
+                              (simplify (caddr x))))
                      ((eq op 'mminus)
                       (setq x (cadr x))
                       (if (and (consp x) (eq (caar x) 'mquotient))
-                        (cons (simplify (list '(mtimes) -1 (cadr x)))
-                              (simplify (caddr x)))
-                        (cons e 1)))
-                     (t (cons e 1)))))))))
+                        (values (simplify (list '(mtimes) -1 (cadr x)))
+                                (simplify (caddr x)))
+                        (values e 1)))
+                     (t (values e 1)))))))))
 
 (defmfun $num_denom (e)
   "Return numerator and denominator of E as a list.
   Equivalent to [num(e), denom(e)], but more efficient."
-  (destructuring-bind (num . denom) (num-denom-split e)
+  (multiple-value-bind (num denom) (num-denom-split e)
     (list '(mlist simp) num denom)))
 
 (defmfun $num (e)
