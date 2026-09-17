@@ -768,6 +768,11 @@ Maxima den Imagin@"arteil mit der Funktion @mrefcomma{rectform} die einen
 Ausdruck in den Realteil und in den Imagin@"arteil zerlegt.  Daher treffen die
 Ausf@"uhrungen zu @code{rectform} auch auf die Funktion @code{imagpart} zu.
 
+Wenn sowohl der Realteil als auch der Imagin@"arteil eines Ausdrucks von
+Interesse sind, ist der Aufruf von @mref{rectform} oder @mref{real_imag_part}
+effizienter als der Aufruf von @code{realpart} und @code{imagpart} auf demselben
+Ausdruck.
+
 Wie die Funktion @code{rectform} ist auch die Funktion @code{imagpart} eine
 Verbfunktion, mit der nicht symbolisch gerechnet werden kann.
 
@@ -777,9 +782,8 @@ auf die beiden Seiten von Gleichungen angewendet.  Siehe
 
 Mit der Funktion @mref{realpart} wird der Realteil eines Ausdrucks berechnet.
 
-Siehe auch die Funktionen @mrefcomma{cabs} @mref{carg} und
-@mref{conjugate} f@"ur das Rechnen mit komplexen Zahlen.  Mit der Funktion
-@mref{polarform} kann ein komplexer Ausdruck in die Polarform gebracht werden.
+Siehe auch die Funktionen @mrefcomma{cabs} @mrefcomma{carg}
+@mrefcomma{conjugate} @mref{polarform} und @mrefdot{real_imag_part}
 
 Beispiele:
 
@@ -883,6 +887,32 @@ verhindert, dass Maxima komplexe Ausdr@"ucke mit der Exponentialfunktion
 @end example
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{real_imag_part}
+@deffn {Funktion} real_imag_part (@var{expr})
+
+Gibt eine Liste @code{[a, b]} zur@"uck, so dass @code{a + b %i} zu @var{expr}
+@"aquivalent ist und @var{a} und @var{b} rein reell sind.
+
+Beispiele:
+
+@example
+(%i1) real_imag_part(sqrt(2)*%e^(%i*%pi/4));
+(%o1)                        [1, 1]
+(%i2) real_imag_part(sqrt(b^2+a^2)*%e^(%i*atan2(b, a)));
+(%o2)                        [a, b]
+(%i3) real_imag_part(sqrt(5)*%e^(%i*atan(2)));
+(%o3)                        [1, 2]
+(%i4) [r, i] : real_imag_part(log(x))$
+(%i5) print("Der Realteil ist", r, "und der Imaginaerteil ist", i)$
+Der Realteil ist log(abs(x)) und der Imaginaerteil ist atan2(0, x)
+@end example
+
+@opencatbox{Kategorien:}
+@category{Komplexe Variablen}
+@closecatbox
+@end deffn
+
 @c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{realpart}
 @deffn {Funktion} realpart (@var{expr})
@@ -891,6 +921,11 @@ Gibt den Realteil des Ausdrucks @var{expr} zur@"uck.  Intern berechnet Maxima
 den Realteil mit der Funktion @mrefcomma{rectform} die einen Ausdruck in den
 Realteil und in den Imagin@"arteil zerlegt.  Daher treffen die Ausf@"uhrungen
 zu @code{rectform} auch auf die Funktion @code{realpart} zu.
+
+Wenn sowohl der Realteil als auch der Imagin@"arteil eines Ausdrucks von
+Interesse sind, ist der Aufruf von @mref{rectform} oder @mref{real_imag_part}
+effizienter als der Aufruf von @code{realpart} und @code{imagpart} auf
+demselben Ausdruck.
 
 Wie die Funktion @code{rectform} ist auch die Funktion @code{realpart} eine
 Verbfunktion, mit der nicht symbolisch gerechnet werden kann.
@@ -902,9 +937,9 @@ auf die beiden Seiten von Gleichungen angewendet.  Siehe
 Mit der Funktion @mref{imagpart} wird der Imagin@"arteil eines Ausdrucks
 berechnet.
 
-Siehe auch die Funktionen @mrefcomma{cabs} @mref{carg} und
-@mref{conjugate} f@"ur das Rechnen mit komplexen Zahlen.  Mit der Funktion
-@mref{polarform} kann ein komplexer Ausdruck in die Polarform gebracht werden.
+Siehe auch die Funktionen @mrefcomma{cabs} @mrefcomma{carg}
+@mrefcomma{conjugate} @mrefcomma{polarform} @mref{rectform} und
+@mrefdot{real_imag_part}
 
 Beispiele:
 
@@ -933,7 +968,8 @@ F@"ur weitere Erl@"auterungen dieser Beispiele siehe auch die Funktion
 
 Zerlegt den Ausdruck @var{expr} in den Realteil @code{a} und den Imagin@"arteil
 @code{b} und gibt den komplexen Ausdruck in der Standardform @code{a + b %i}
-zur@"uck.
+zur@"uck. Um @var{a} und @var{b} direkt zu erhalten, kann stattdessen die
+Funktion @mref{real_imag_part} verwendet werden.
 
 Die Funktion @code{rectform} nutzt Symmetrieeigenschaften und implementierte
 Eigenschaften komplexer Funktionen, um den Realteil und Imagin@"arteil eines
@@ -954,8 +990,8 @@ Die Funktionen @mref{realpart} und @mref{imagpart} geben jeweils allein den
 Realteil und den Imagin@"arteil eines Ausdrucks zur@"uck.  Um einen Ausdruck in
 die Polarform zu bringen, kann die Funktion @mref{polarform} verwendet werden.
 
-Siehe auch die Funktionen @mrefcomma{cabs} @mref{carg} und
-@mref{conjugate} f@"ur das Rechnen mit komplexen Zahlen.
+Siehe auch die Funktionen @mrefcomma{cabs} @mrefcomma{carg}
+@mrefcomma{conjugate} @mref{polarform} und @mrefdot{real_imag_part}.
 
 Beispiele:
 

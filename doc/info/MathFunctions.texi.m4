@@ -735,8 +735,8 @@ When applied to a list or matrix, @code{cabs} automatically distributes over
 the terms.  Similarly, it distributes over both sides of an equation.
 
 For further ways to compute with complex numbers, see the functions
-@mrefcomma{rectform} @mrefcomma{realpart} @mrefcomma{imagpart}@w{}
-@mrefcomma{carg} @mref{conjugate} and @mrefdot{polarform}
+@mrefcomma{rectform} @mrefcomma{real_imag_part} @mrefcomma{realpart}@w{}
+@mrefcomma{imagpart}@w{} @mrefcomma{carg} @mref{conjugate} and @mrefdot{polarform}
 
 Examples:
 
@@ -810,7 +810,8 @@ where @code{r} is the magnitude of @var{z}.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 
 See also @mref{abs} (complex magnitude), @mrefcomma{polarform}@w{}
-@mrefcomma{rectform} @mrefcomma{realpart} and @mrefdot{imagpart}
+@mrefcomma{rectform} @mrefcomma{real_imag_part} @mrefcomma{realpart} and
+@mrefdot{imagpart}
 
 Examples:
 
@@ -942,14 +943,17 @@ Returns the complex conjugate of @var{x}.
 @anchor{imagpart}
 @deffn {Function} imagpart (@var{expr})
 
-Returns the imaginary part of the expression @var{expr}.
+Returns the imaginary part of the expression @var{expr}. If both the real and
+the imaginary part of an expression are of interest, then calling @mref{rectform}
+or @mref{real_imag_part} is more efficient than calling @code{realpart} and
+@code{imagpart} on the same expression.
 
 @code{imagpart} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
 See also @mrefcomma{abs} @mrefcomma{carg} @mrefcomma{polarform}@w{}
-@mrefcomma{rectform} and @mrefdot{realpart}
+@mrefcomma{rectform} @mrefcomma{real_imag_part} and @mrefdot{realpart}
 
 Example:
 
@@ -1026,12 +1030,63 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{real_imag_part}
+@deffn {Function} real_imag_part (@var{expr})
+
+Returns a list @code{[a, b]} such that @code{a + b %i} is equivalent to @var{expr}
+and @var{a} and @var{b} are purely real.
+
+Example:
+
+@c ===beg===
+@c real_imag_part(sqrt(2)*%e^(%i*%pi/4));
+@c real_imag_part(sqrt(b^2+a^2)*%e^(%i*atan2(b, a)));
+@c real_imag_part(sqrt(5)*%e^(%i*atan(2)));
+@c [r, i] : real_imag_part(log(x))$
+@c print("The real part is", r, "and the imaginary part is", i)$
+@c ===end===
+@example maxima
+@group
+(%i1) real_imag_part(sqrt(2)*%e^(%i*%pi/4));
+(%o1)                        [1, 1]
+@end group
+@group
+(%i2) real_imag_part(sqrt(b^2+a^2)*%e^(%i*atan2(b, a)));
+(%o2)                        [a, b]
+@end group
+@group
+(%i3) real_imag_part(sqrt(5)*%e^(%i*atan(2)));
+(%o3)                        [1, 2]
+@end group
+@group
+(%i4) [r, i] : real_imag_part(log(x))$
+@end group
+@group
+(%i5) print("The real part is", r, "and the imaginary part is", i)$
+The real part is log(abs(x)) and the imaginary part is atan2(0, x)
+@end group
+@end example
+
+@opencatbox{Categories:}
+@category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{realpart}
 @deffn {Function} realpart (@var{expr})
 
 Returns the real part of @var{expr}.  @code{realpart} and @mref{imagpart} will
 work on expressions involving trigonometric and hyperbolic functions,
-as well as square root, logarithm, and exponentiation.
+as well as square root, logarithm, and exponentiation. If both the real and
+the imaginary part of an expression are of interest, then calling @mref{rectform}
+or @mref{real_imag_part} is more efficient than calling @code{realpart} and
+@code{imagpart} on the same expression.
+
+@code{realpart} is a computational function, not a simplifying function.
+
+See also @mrefcomma{abs} @mrefcomma{carg} @mrefcomma{polarform}@w{}
+@mrefcomma{rectform} @mrefcomma{real_imag_part} and @mrefdot{imagpart}
 
 Example:
 
@@ -1070,7 +1125,8 @@ Example:
 @deffn {Function} rectform (@var{expr})
 
 Returns an expression @code{a + b %i} equivalent to @var{expr},
-such that @var{a} and @var{b} are purely real.
+such that @var{a} and @var{b} are purely real. To retrieve @var{a} and @var{b}
+directly, use @mrefdot{real_imag_part}
 
 Example:
 

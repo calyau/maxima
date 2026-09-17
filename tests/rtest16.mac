@@ -4325,6 +4325,13 @@ block([errors : [], l, nd, n, d, %edispflag, exptdispflag],
 [];
 
 
+/* Issue #5258: "Provide $real_imag_part user-level function" */
+
+block([[r, i] : real_imag_part(log(x)), ri : rectform(log(x))],
+ r + %i * i - ri);
+0;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
