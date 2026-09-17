@@ -1777,6 +1777,8 @@ See also @mref{num} and @mrefdot{denom}
 @c num_denom(g1);
 @c g2:sin(x)/10*cos(x)/y;
 @c num_denom(g2);
+@c [n, d] : num_denom(g2)$
+@c print("The numerator is", n, "and the denominator is", d)$
 @c ===end===
 @example maxima
 @group
