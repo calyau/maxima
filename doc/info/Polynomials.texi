@@ -396,8 +396,9 @@ Examples:
 
 Returns the denominator of @var{expr} if it is a ratio.
 If @var{expr} is not a ratio, @code{1} is returned.
-For exponentials @code{%e^-x} or @code{a^-x}, the behavior depends on
-@mref{%edispflag} and @mrefcomma{exptdispflag} respectively.
+For @code{%e^-x}, @code{2^-x} and @code{x/2}, the behavior depends on
+@mrefcomma{%edispflag} @mrefcomma{exptdispflag} and @mrefcomma{pfeformat}
+respectively.
 
 See also @mref{num} and @mrefdot{num_denom}
 
@@ -1716,8 +1717,9 @@ Examples:
 
 Returns the numerator of @var{expr} if it is a ratio.
 If @var{expr} is not a ratio, @var{expr} is returned.
-For exponentials @code{%e^-x} or @code{a^-x}, the behavior depends on
-@mref{%edispflag} and @mrefcomma{exptdispflag} respectively.
+For @code{%e^-x}, @code{2^-x} and @code{x/2}, the behavior depends on
+@mrefcomma{%edispflag} @mrefcomma{exptdispflag} and @mrefcomma{pfeformat}
+respectively.
 
 @code{num} evaluates its argument.
 

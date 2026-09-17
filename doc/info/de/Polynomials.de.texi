@@ -326,9 +326,9 @@ Beispiel:
 
 Gibt den Nenner des Ausdrucks @var{expr} zur@"uck, wenn dieser ein
 Quotient ist.  Ist der Ausdruck @var{expr} kein Quotient, wird @code{1}
-zur@"uckgegeben.  F@"ur Exponentialfunktionen @code{%e^-x} oder @code{a^-x}
-h@"ngt das Verhalten von den Optionen @mref{%edispflag} bzw. @mref{exptdispflag}
-ab.
+zur@"uckgegeben.  F@"ur @code{%e^-x}, @code{2^-x} und @code{x/2} h@"ngt das
+Verhalten von den Optionen @mrefcomma{%edispflag} @mref{exptdispflag} und
+@mref{pfeformat} ab.
 
 Die Funktion @code{denom} wertet das Argument aus.  Siehe auch die Funktionen
 @mref{num} und @mrefdot{num_denom}
@@ -1495,9 +1495,9 @@ Beispiele:
 
 Gibt den Z@"ahler des Ausdrucks @var{expr} zur@"uck, wenn dieser ein
 Quotient ist.  Ist der Ausdruck @var{expr} kein Quotient, wird @var{expr}
-zur@"uckgegeben.  F@"ur Exponentialfunktionen @code{%e^-x} oder @code{a^-x}
-h@"ngt das Verhalten von den Optionen @mref{%edispflag} bzw. @mref{exptdispflag}
-ab.
+zur@"uckgegeben.  F@"ur @code{%e^-x}, @code{2^-x} und @code{x/2} h@"ngt das
+Verhalten von den Optionen @mrefcomma{%edispflag} @mref{exptdispflag} und
+@mref{pfeformat} ab.
 
 Die Funktion @code{num} wertet das Argument aus.  Siehe auch die Funktionen
 @mref{denom} und @mrefdot{num_denom}
