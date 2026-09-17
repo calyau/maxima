@@ -478,7 +478,7 @@ through @var{x_n}. For an empty argument list, @code{max} yields @code{minf}.
 
 The option variable @code{maxmin_effort} controls which simplification methods are 
 applied. Using the default value of @emph{twelve} for @code{maxmin_effort}, 
-@code{max} uses @emph{all} available simplification methods. To to inhibit all 
+@code{max} uses @emph{all} available simplification methods. To inhibit all 
 simplifications, set @code{maxmin_effort} to zero.
 
 When @code{maxmin_effort} is one or more, for an explicit list of real numbers, 
@@ -527,11 +527,11 @@ members and excludes those that are in between; for example
 @deffn {Function} min (@var{x_1}, @dots{}, @var{x_n})
 
 Return a simplified value for the numerical minimum of the expressions @var{x_1} 
-through @var{x_n}. For an empty argument list, @code{minf} yields @code{inf}.
+through @var{x_n}. For an empty argument list, @code{min} yields @code{inf}.
 
 The option variable @code{maxmin_effort} controls which simplification methods are 
 applied. Using the default value of @emph{twelve} for @code{maxmin_effort}, 
-@code{max} uses @emph{all} available simplification methods. To to inhibit all 
+@code{min} uses @emph{all} available simplification methods. To to inhibit all 
 simplifications, set @code{maxmin_effort} to zero.
 
 When @code{maxmin_effort} is one or more, for an explicit list of real numbers, 
@@ -568,7 +568,7 @@ Finally, when @code{maxmin_effort} is three or more, @code{min} compares triples
 members and excludes those that are in between; for example
 @example
 (%i1) block([maxmin_effort : 4], min(x, 2*x, 3*x, 4*x));
-(%o1) max(x,4*x)
+(%o1) min(x,4*x)
 @end example
 
 @opencatbox{Categories:}
