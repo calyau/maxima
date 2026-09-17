@@ -8,6 +8,7 @@ Bug fixes for numbered bugs:
 * \#4020 various limit bugs with exp(%i*x)
 * \#4137 simplimplus bugs
 * \#4162 limit(exp(x^2+%i*x),x,inf)
+* \#4714 lurkmathml does not co-operate with ordergreat/less
 * \#4822 Antiderivative of acoth is complex where acoth is real
 * \#4830 Non-total ordering between constant & scalar and scalar
 * \#4928 expintegral_si and expintegral_ci are wrong on the imaginary axis
@@ -90,6 +91,7 @@ Bug fixes for numbered bugs:
 * \#5249 integrate(%e^(2*x)*tan(%e^x)^2,x) is non-real
 * \#5254 limit(gamma_incomplete(-1,x), x, 0, plus) -> minf
 * \#5255 limit(1/x+%i/sqrt(x), x, 0, plus) -> inf
+* \#5260 lurkmathml typesets t(x) incorrectly
 
 Bug fixes for unnumbered bugs:
 ------------------------------
