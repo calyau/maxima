@@ -2409,22 +2409,31 @@ found a root, and a warning is printed.  Zero means no limit."
 	   (setq ivar new-var)	;; change of variables to get sin(new-var)
 	   (setq a (add bb (mul a cc)))
 	   (setq b (add bb (mul b cc)))))
-       (setq limit-diff (m+ b (m* -1 a)))
+       ;; $EXPAND because the change of variables above leaves the
+       ;; limits unexpanded, as in 3*(a + 2*%pi/3), and the difference
+       ;; has to collapse for the whole-period test below to see it.
+       (setq limit-diff ($expand (m+ b (m* -1 a))))
        (when (or (not (period %pi2 e ivar))
 		 (member a *infinities*)
-		 (member b *infinities*)
-		 (not (and ($constantp a)
-			   ($constantp b))))
-	 ;; Exit if b or a is not a constant or if the integrand
-	 ;; doesn't appear to have a period of 2 pi.
+		 (member b *infinities*))
+	 ;; Exit if a limit is infinite or if the integrand doesn't
+	 ;; appear to have a period of 2 pi.
 	 (return nil))
        
-       ;; Multiples of 2*%pi in limits.
+       ;; Multiples of 2*%pi in limits.  Only the difference of the
+       ;; limits is needed here: the integrand repeats, so over a whole
+       ;; number of periods the integral is that number of times the
+       ;; integral over one, wherever the interval happens to start.
        (cond ((integerp (setq d (let (($float nil))
 				 (m// limit-diff %pi2))))
 	      (cond ((setq ans (intsc e %pi2 ivar))
 		     (return (m* d ans)))
 		    (t (return nil)))))
+
+       ;; What follows splits the limits themselves into whole periods
+       ;; and a remainder, which needs them to be constants.
+       (when (not (and ($constantp a) ($constantp b)))
+	 (return nil))
        
        ;; The integral is not over a full period (2*%pi) or multiple
        ;; of a full period.  

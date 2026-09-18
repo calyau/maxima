@@ -100,6 +100,8 @@ Bug fixes for numbered bugs:
 
 Bug fixes for unnumbered bugs:
 ------------------------------
+* integrate(f(x), x, a, a+2*%pi) returned 0 for a periodic f with a
+  symbolic a
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
 * various merror calls were missing arguments
