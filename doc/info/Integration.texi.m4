@@ -430,6 +430,37 @@ Maxima can solve the following integrals, when @mref{intanalysis} is set to
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{intanalysis_max_discontinuities}
+@defvr {Option variable} intanalysis_max_discontinuities
+Default value: @code{1000}
+
+How many possible discontinuities definite integration is willing to split the
+interval of integration at.  Zero means no limit.
+
+An antiderivative of a periodic integrand is typically discontinuous once per
+period, and definite integration has to split the interval of integration at
+every one of those points to account for the jump there.  @mref{solve} returns
+only one solution of a trigonometric equation, so the others are put back by
+adding a period at a time; over an interval spanning very many periods that is
+a great deal of work.  When more than
+@code{intanalysis_max_discontinuities} of them are found, those periodic copies
+are not put back: the interval is split only where @mref{solve} found a root
+directly, exactly as it was before this variable existed, and a warning is
+printed that the result may be wrong.  It may equally well be right: what is
+found are the discontinuities of parts of the antiderivative, and two of them
+can cancel.  Raise the variable, or set it to @code{0}, to have the copies put
+back however many there are.
+
+The check is only made when @mref{intanalysis} is @code{true}.
+
+See also @mrefdot{intanalysis}
+
+@opencatbox{Categories:}
+@category{Integral calculus}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{integrate}
 @deffn  {Function} integrate @
 @fname{integrate} (@var{expr}, @var{x}) @

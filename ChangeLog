@@ -41,6 +41,7 @@ Bug fixes for numbered bugs:
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
 * \#5120 forget(notequal(a*b,0)) deletes an assumed notequal(a,0) that the database never entailed
+* \#5154 integrate(1/(2+sin(x)^2), x, 1, 9) returns a value below the smallest the integral can take
 * \#5169 GREAT says a[1] > a[1]
 * \#5170 limit(a*x+b, x, inf) = 0 when answering that a=0
 * \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
@@ -116,6 +117,8 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
+* New option variable intanalysis_max_discontinuities, bounding how many
+  discontinuities definite integration splits the interval of integration at
 * New function read_struct: reads a .csv file whose first line names
   the columns into a structure, so that data@t is the column headed t
 * read_matrix and the other numericalio text readers are about twice as

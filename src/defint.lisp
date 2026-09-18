@@ -146,6 +146,15 @@
   "When @code{true}, definite integration tries to find poles in the integrand 
 in the interval of integration.")
 
+(defmvar $intanalysis_max_discontinuities 1000
+  "How many possible discontinuities definite integration is willing to split
+the interval of integration at.  Beyond it the periodic copies of a
+discontinuity are not put back, so the interval is split only where SOLVE
+found a root, and a warning is printed.  Zero means no limit."
+  :setting-predicate #'(lambda (x)
+                         (values (and (integerp x) (>= x 0))
+                                 "must be a non-negative integer")))
+
 ;; Currently, if true, $solvetrigwarn is set to true.  No additional
 ;; debugging information is displayed.
 (defvar *defintdebug* ()
@@ -1108,13 +1117,146 @@ in the interval of integration.")
       (walk expr)
       result)))
 
+;; True when substituting IMAGE for IVAR maps the zeros of E onto
+;; themselves, which it does whenever the substitution multiplies E by
+;; a constant: 1 when IMAGE is IVAR shifted by a period of E, -1 for
+;; the half period %pi of COS(IVAR), and, say, -%e^%pi for
+;; %e^IVAR*SIN(IVAR)+%e^IVAR*COS(IVAR).
+(defun zeros-map-p (image e ivar)
+  (let ((e0 (no-err-sub-var ivar e ivar))
+        (e1 (no-err-sub-var image e ivar)))
+    (and (not (eq e0 t))                ; T means the substitution failed
+         (not (eq e1 t))
+         (or (alike1 e0 e1)
+             (let ((ratio (sratsimp (div e1 e0))))
+               (and (free ratio ivar)
+                    (not (zerop1 ratio))))))))
+
+;; The period at which the zeros of E repeat, or NIL if we cannot
+;; establish one.  The candidates come from the trigonometric argument
+;; C*IVAR + B, which has to be the same throughout E.
+(defun zeros-period (e ivar)
+  (let ((trigarg (find-first-trigarg e ivar)))
+    (when (and trigarg (every-trigarg-alike e trigarg ivar))
+      (let* ((arg (simple-trig-arg trigarg ivar))
+             (c (cdras 'c arg))
+             (half (and c
+                        (member ($csign c) '($pos $neg))
+                        (div '$%pi (ftake 'mabs c)))))
+        (when half
+          (cond ((zeros-map-p (add ivar half) e ivar) half)
+                ((zeros-map-p (add ivar (mul 2 half)) e ivar)
+                 (mul 2 half))))))))
+
+;; The range (KMIN . KMAX) of the integers K for which ROOT + K*PERIOD
+;; lies between LL and UL, or NIL when there is no counting them, as
+;; there is not when a limit is infinite or is not a number.
+(defun periodic-image-range (root period ll ul)
+  (let ((kmin (mfuncall '$ceiling (div (sub ll root) period)))
+        (kmax (mfuncall '$floor (div (sub ul root) period))))
+    (when (and (integerp kmin) (integerp kmax))
+      (cons kmin kmax))))
+
+(defun periodic-image-count (range)
+  (if range (max 0 (1+ (- (cdr range) (car range)))) 1))
+
+(defun periodic-images (root period range)
+  (loop for k from (car range) to (cdr range)
+        collect (add root (mul k period))))
+
+;; The factors of E, after $FACTOR, that contain a trigonometric
+;; function of IVAR, each consed to its real roots, or NIL when E does
+;; not factor.  A product vanishes exactly where one of its factors
+;; does, and each may repeat at its own period.  $FACTOR because the
+;; same antiderivative reaches us sometimes factored and sometimes
+;; expanded, and a trig factor buried in a sum would otherwise never be
+;; isolated, leaving ZEROS-PERIOD with the coarser period of the whole
+;; sum.
+(defun discontinuity-factors (e ivar)
+  (let ((fe (let (($ratprint nil)) ($factor e))))
+    (when (mtimesp fe)
+      (loop for f in (cdr fe)
+            when (find-first-trigarg f ivar)
+              collect (cons f (real-roots f ivar))))))
+
+;; The one of FACTORS, as DISCONTINUITY-FACTORS lists them, that has
+;; ROOT among its roots, or E when none has.  A factor's roots only say
+;; which factor ROOT belongs to; they are not candidates themselves.
+;; SOLVE finds roots in a factor that it does not find in the product,
+;; and every candidate the product did not yield is a new place to put
+;; a split, which with symbolic limits is a new question to the user.
+;; Nor is ROOT substituted into the factors to see which vanishes: the
+;; simplifier asks about the sign of what a substitution leaves under a
+;; radical.
+(defun vanishing-factor (root factors e)
+  (or (car (find-if #'(lambda (fr)
+                        (and (not (eq (cdr fr) '$no))
+                             (member root (cdr fr) :key #'car :test #'alike1)))
+                    factors))
+      e))
+
+;; The real roots of the expressions in EXPRS, without multiplicities
+;; and with duplicates removed, or $NO if there are none.  SOLVE returns
+;; only the principal solution of a trigonometric equation ("using
+;; arc-trig functions to get a solution.  Some solutions will be
+;; lost."), so where the zeros of an expression repeat, the solutions
+;; it dropped are put back.  The period is that of the factor the root
+;; belongs to, because the antiderivative the expression comes from may
+;; well mix several periods, or none.  The factors supply only the
+;; period, never roots of their own: SOLVE finds roots in a factor that
+;; it does not find in the product, and every root it did not find
+;; before is a new candidate to place, which with symbolic limits is a
+;; new question to the user.
+;;
+;; Splitting the interval at more than $INTANALYSIS_MAX_DISCONTINUITIES
+;; places costs more than it is worth, so past that the roots are left as
+;; SOLVE returned them -- the interval is still split there, just not at
+;; the periodic copies -- and the user is told the result may be wrong.
+;; It may equally well be right: these are the discontinuities of pieces
+;; of the antiderivative, and two of them can cancel.  Zero means no
+;; limit.
+(defun discontinuity-roots (exprs ivar ll ul)
+  ;; (ROOT PERIOD RANGE) for every root, RANGE being the images of it
+  ;; that lie in the interval and NIL when there are none to enumerate.
+  (let* ((found
+          (loop for e in exprs
+                for roots = (real-roots e ivar)
+                unless (eq roots '$no)
+                  append (let ((factors (discontinuity-factors e ivar)))
+                           (loop for root in (mapcar #'car roots)
+                                 for period = (zeros-period
+                                               (vanishing-factor root factors e)
+                                               ivar)
+                                 collect (list root period
+                                               (and period
+                                                    (periodic-image-range
+                                                     root period ll ul)))))))
+         (total (loop for (nil nil range) in found
+                      sum (periodic-image-count range)))
+         (split (or (zerop $intanalysis_max_discontinuities)
+                    (<= total $intanalysis_max_discontinuities))))
+    (unless split
+      (mtell (intl:gettext
+              "defint: found ~M possible discontinuities in the interval.~%~
+               That is more than intanalysis_max_discontinuities, so the~%~
+               interval is split only where solve found a root directly~%~
+               and the result may be wrong.~%")
+             total))
+    (or (delete-duplicates
+         (loop for (root period range) in found
+               append (if (and split range)
+                          (periodic-images root period range)
+                          (list root)))
+         :test #'alike1)
+        '$no)))
+
 ;; returns list of places where the expressions in EXPRS, as returned by
 ;; DISCONTINUITIES, have a root in ivar.
 ;; list begins with ll and ends with ul, and include any values between
 ;; ll and ul.
 ;; return '$no if no discontinuities found.
 (defun discontinuities-in-interval (exprs ivar ll ul)
-  (let ((roots (real-roots exprs ivar :multi t)))
+  (let ((roots (discontinuity-roots exprs ivar ll ul)))
     (cond
 	  ((eq roots '$no)
 	   '$no)
@@ -3820,23 +3962,9 @@ in the interval of integration.")
        (or (eq ll '$minf) 
 	   (eq ($asksign (m+ place (m- ll))) '$pos))))
 
-(defun real-roots (exp ivar &key multi)
- "If :MULTI is NIL, solves EXP = 0 for IVAR and returns a list consisting of
- (SOLUTION . MULTIPLICITY) pairs, or $NO if no solutions were found.
- If :MULTI is non-NIL, EXP is expected to be a Lisp list of expressions, and
- and each will be solved. All solutions are returned as a single list, without
- multiplicities, with duplicate solutions removed."
- (if multi
-  (or (delete-duplicates (apply #'nconc
-                                (mapcar #'(lambda (e)
-                                            (let ((ans (real-roots e ivar)))
-                                              (if (eq ans '$no)
-                                                nil
-                                                (mapcar #'car ans))))
-                                        exp))
-                          :test #'alike1)
-      '$no)
-  ;; Normal mode of operation: EXP is a single expression.
+(defun real-roots (exp ivar)
+ "Solves EXP = 0 for IVAR and returns a list consisting of
+ (SOLUTION . MULTIPLICITY) pairs, or $NO if no solutions were found."
   (let (($solvetrigwarn (cond (*defintdebug* t) ;Rest of the code for
 			      (t ())))	;TRIGS in denom needed.
 	($solveradcan (cond ((or (among '$%i exp)
@@ -3858,7 +3986,7 @@ in the interval of integration.")
 			    (cons (cons
 				   ($rectform (caddar dummy))
 				   (cadr dummy))
-				  rootlist))))))))))
+				  rootlist)))))))))
 
 (defun ask-greateq (x y)
 ;;; Is x > y. X or Y can be $MINF or $INF, zeroA or zeroB.

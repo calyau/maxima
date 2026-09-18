@@ -2009,6 +2009,73 @@ block([ans],
 integrate(x*sin(%pi/2*x), x,0,1 ), numer;
 0.4052847345693511;
 
+/* SF bug #5154: the antiderivative of a periodic integrand jumps once
+   per period, but only the first jump was compensated for */
+
+is(abs(integrate(1/(2+sin(x)^2),x,1,9) - 3.1969786142881604) < 1e-12);
+true$
+
+is(abs(integrate(1/(2+sin(x)^2),x,-5,5) - 4.0411521342341725) < 1e-12);
+true$
+
+is(abs(integrate(1/(2+cos(x)^2),x,1,9) - 3.3339996419802667) < 1e-12);
+true$
+
+/* a periodic term summed with one of a different period, and with a
+   polynomial term */
+
+is(abs(integrate(1/(2+sin(x)^2)+1/(2+sin(2*x)^2),x,1,9) - 6.457454346213278)
+   < 1e-12);
+true$
+
+is(abs(integrate(x^2+1/(2+sin(x)^2),x,1,9) - 245.8636452809548) < 1e-10);
+true$
+
+/* the two factors of the antiderivative's discontinuity repeat at
+   different periods */
+
+is(abs(integrate(1/((2+sin(x)^2)*(3+cos(2*x))),x,1,9) - 1.1316259960598356)
+   < 1e-12);
+true$
+
+/* the same integral again, after enough has run that the antiderivative
+   comes back expanded rather than factored: the split must not depend on
+   which form it arrives in */
+
+block([],
+  integrate(1/(2+sin(x)^2),x,0,20),
+  integrate(1/(2+sin(x)+cos(x)),x,0,20),
+  is(abs(integrate(1/((2+sin(x)^2)*(3+cos(2*x))),x,1,9) - 1.1316259960598356)
+     < 1e-12));
+true$
+
+/* past intanalysis_max_discontinuities the periodic copies are not put
+   back, so the uncompensated result comes back with a warning */
+
+block([intanalysis_max_discontinuities: 1],
+  is(abs(integrate(1/(2+sin(x)^2),x,1,9) - 3.1969786142881604) > 1));
+true$
+
+block([intanalysis_max_discontinuities: 2],
+  is(abs(integrate(1/(2+sin(x)^2),x,1,9) - 3.1969786142881604) < 1e-12));
+true$
+
+/* zero means no limit */
+
+block([intanalysis_max_discontinuities: 0],
+  is(abs(integrate(1/((2+sin(x)^2)*(3+cos(2*x))),x,1,9) - 1.1316259960598356)
+     < 1e-12));
+true$
+
+/* only a non-negative integer is accepted, and a rejected assignment
+   leaves the value alone */
+
+block([m: intanalysis_max_discontinuities],
+  [errcatch(intanalysis_max_discontinuities: -1),
+   errcatch(intanalysis_max_discontinuities: 2.5),
+   is(intanalysis_max_discontinuities = m)]);
+[[], [], true]$
+
 
 (kill(values),0);
 0$
