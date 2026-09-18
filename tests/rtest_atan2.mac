@@ -236,9 +236,13 @@ block([ans : atan2(inf,inf)],
 'atan2(9,0);
 %pi/2$
 
-/* #3127 incorrect integral of expression containing atan2*/
+/* #3127 incorrect integral of expression containing atan2.
+   The value is 3*%pi/4: quad_qags gives 2.3561944901923453, and
+   sin(t)*arg(1-2*exp(-%i*t)) integrates to %pi-%pi/4 by the Fourier
+   series of the argument.  Maxima returns %pi/4, so this problem is
+   a registered known failure. */
 integrate(sin(t)*atan2(2*sin(t),1-2*cos(t)),t,0,%pi);
-%pi/4$
+3*%pi/4$
 
 /* #4613 integrate(atan2(sin(x), cos(x)), x, 0, 9*%pi);*/
 integrate(atan2(sin(x), cos(x)), x, 0, 9*%pi);

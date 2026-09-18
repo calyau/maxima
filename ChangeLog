@@ -100,6 +100,9 @@ Bug fixes for numbered bugs:
 
 Bug fixes for unnumbered bugs:
 ------------------------------
+* solve(tan(x) = cos(a), x) returned an unsolved equation: a
+  trigonometric function of a parameter counted as a second kind of
+  kernel, so tan(x) was split into sin(x)/cos(x) and no longer inverted
 * solve() returned roots at which the equation is undefined, such as
   x = 0 for solve(csc(x) = cot(x), x): they are poles left behind by
   clearing a denominator, not solutions.  The new option variable
@@ -123,6 +126,8 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
+* solve() solves an equation in several trigonometric functions of one
+  argument by rewriting it in the tangent of the half argument
 * New option variable intanalysis_max_discontinuities, bounding how many
   discontinuities definite integration splits the interval of integration at
 * New function read_struct: reads a .csv file whose first line names

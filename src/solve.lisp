@@ -442,14 +442,21 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 ;;; are around and then make a reasonable substitution.
 
 (defun trig-subst-p (vlist)
-  (and (not (trig-not-subst-p vlist))
-       (do ((var (car vlist) (car vlist))
+  ;; Only the kernels containing *VAR decide whether to canonicalize:
+  ;; a trigonometric function of a parameter is not a second kind to be
+  ;; reconciled with, and counting it turned TAN(*VAR) into
+  ;; SIN(*VAR)/COS(*VAR), which USOLVE can no longer invert.
+  (and (not (trig-not-subst-p
+	     (remove-if #'(lambda (v) (free v *var)) vlist)))
+       (do ((all vlist)
+	    (var (car vlist) (car vlist))
 	    (vlist (cdr vlist) (cdr vlist))
 	    (subst-list))
 	   ((null var) subst-list)
 	 (cond ((and (not (atom var))
 		     (trig-cannon (g-rep-operator var))
-		     (not (free var *var)))
+		     (not (free var *var))
+		     (not (half-angle-kernel-p var all)))
 		(push var subst-list))))))
 
 ;; Predicate to see when obviously not to substitute for trigs.
@@ -561,6 +568,115 @@ out zero is not asked: SOLVE has already made a numerator vanish."
   (div* (make-g-rep '%cosh (g-rep-first-operand x))
 	(make-g-rep '%sinh (g-rep-first-operand x))))
 
+;;; Equations in several trigonometric functions of one argument U.  No
+;;; single inverse function solves those, and SOLVE gives up on them
+;;; with one kernel isolated in terms of another.  In TAN(U/2) they are
+;;; rational in one kernel, which the ordinary machinery does solve.
+
+;; The functions TAN(U/2) makes rational.
+(defvar *half-angle-ops* '(%sin %cos %tan %cot %sec %csc))
+
+;; True while SOLVE-HALF-ANGLE is solving what it rewrote.  The rewrite
+;; leaves one kernel, so it never needs itself, and a second round would
+;; halve the argument and double the degree again.
+(defvar *half-angle-p* nil)
+
+;; True when VAR is TAN or COT of half the argument of another
+;; trigonometric kernel in VLIST.  SOLVE-HALF-ANGLE wants such a kernel
+;; exactly as it stands, so TRIG-SUBST-P leaves it alone rather than
+;; canonicalizing it into SIN and COS of the half argument.
+(defun half-angle-kernel-p (var vlist)
+  (and (member (g-rep-operator var) '(%tan %cot))
+       (let ((u (mul 2 (g-rep-first-operand var))))
+	 (dolist (v vlist)
+	   (when (and (not (atom v))
+		      (member (g-rep-operator v) *half-angle-ops*)
+		      (alike1 u (g-rep-first-operand v)))
+	     (return t))))))
+
+(defun half-angle-half-p (k)
+  (member (caar k) '(%tan %cot)))
+
+(defun half-angle-fits-p (k u)
+  (or (alike1 (cadr k) u)
+      (and (half-angle-half-p k) (alike1 (mul 2 (cadr k)) u))))
+
+;; The argument U that the trigonometric functions of *VAR in EXP share,
+;; and those kernels, or NIL.  TAN and COT may have U/2 instead of U,
+;; *VAR may occur nowhere but in them, and there must be two of them or
+;; more: one alone is what USOLVE's inverse functions already solve, and
+;; in a better form.
+(defun half-angle-arg (exp)
+  (let ((kernels nil) (ok t))
+    (labels ((walk (e)
+	       (cond ((free e *var))
+		     ((or (atom e) (atom (car e))) (setq ok nil))
+		     ((member (caar e) *half-angle-ops*)
+		      (pushnew e kernels :test #'alike1))
+		     (t (mapc #'walk (cdr e))))))
+      (walk exp))
+    (when (and ok (cdr kernels))
+      ;; A TAN or COT kernel admits its own argument and twice it; the
+      ;; plain arguments come first, for the finer period.
+      (dolist (u (append (mapcar #'cadr kernels)
+			 (mapcar #'(lambda (k) (mul 2 (cadr k)))
+				 (remove-if-not #'half-angle-half-p kernels))))
+	(when (every #'(lambda (k) (half-angle-fits-p k u)) kernels)
+	  (return (values u kernels)))))))
+
+;; The kernel K, whose argument is U or, for TAN and COT, U/2, written
+;; in TH = TAN(U/2).
+(defun half-angle-image (k u th)
+  (let* ((q (add 1 (power th 2)))
+	 (sn (div (mul 2 th) q))
+	 (cs (div (sub 1 (power th 2)) q)))
+    (if (alike1 (cadr k) u)
+	(case (caar k)
+	  (%sin sn)
+	  (%cos cs)
+	  (%tan (div sn cs))
+	  (%cot (div cs sn))
+	  (%sec (inv cs))
+	  (%csc (inv sn)))
+	(if (eq (caar k) '%tan) th (inv th)))))
+
+;; MAXIMA-SUBSTITUTE is no use here: it matches by object identity, and
+;; rewriting one kernel rebuilds the expression around the others.
+(defun half-angle-subst (exp u kernels th)
+  (let ((k (find-if #'(lambda (k) (alike1 k exp)) kernels)))
+    (cond (k (half-angle-image k u th))
+	  ((atom exp) exp)
+	  (t (recur-apply #'(lambda (e) (half-angle-subst e u kernels th))
+				  exp)))))
+
+;; Solve EXP = 0 for *VAR, EXP being built from the trigonometric
+;; functions of U in KERNELS.  In TH = TAN(U/2) it is a rational
+;; function of the one kernel TH, and SOLVE inverts that with ATAN, so
+;; the solutions lost to two kernels come back -- one per period, as
+;; ever.  U = %pi is not among them, TH being infinite there: it is a
+;; root exactly when the numerator's degree in TH falls short of the
+;; denominator's, and by as much.  Returns NIL when nothing comes of
+;; this method, leaving the caller its own.
+(defun solve-half-angle (exp u kernels mult)
+  ;; TH stands in for TAN(U/2) while the degrees are taken, $HIPOW
+  ;; wanting a symbol rather than a kernel, and goes back into the
+  ;; numerator before SOLVE sees it.
+  (let* ((th (gensym "HALF-ANGLE-"))
+	 (rat (sratsimp (half-angle-subst exp u kernels th)))
+	 (num (ratdisrep ($ratnumer rat)))
+	 (k (- ($hipow (ratdisrep ($ratdenom rat)) th) ($hipow num th)))
+	 (n (maxima-substitute (ftake '%tan (div u 2)) th num)))
+    (multiple-value-bind (roots failures)
+	(let ((*roots nil) (*failures nil) (*half-angle-p* t))
+	  (solve n *var mult)
+	  (when (plusp k)
+	    (solve (sub u '$%pi) *var (mul k mult)))
+	  (values *roots *failures))
+      (when (or roots failures)
+	(setq *roots (append roots *roots))
+	(setq *failures (append failures *failures))
+	t))))
+
 ;; Predicate to replace ISLINEAR....Returns NIL if not of for A*X+B, A and B
 ;; freeof X, else returns (A . B)
 
@@ -640,11 +756,19 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 
 (defun solve1a (exp mult) 
   (let ((*myvar *myvar)
-	(*g nil)) 
+	(*g nil)
+	(gexp nil) (u nil) (kernels nil)) 
     (cond ((atom exp) nil)
           ((not (memalike (setq *myvar (simplify (pdis (list (car exp) 1 1))))
                           *has*var))
            nil)
+	  ;; Several trigonometric kernels of one argument: rewriting
+	  ;; them in the tangent of the half argument leaves one.
+	  ((and (not *half-angle-p*)
+		(cdr *has*var)
+		(setq gexp (pdis exp))
+		(multiple-value-setq (u kernels) (half-angle-arg gexp))
+		(solve-half-angle gexp u kernels mult)))
 	  ((equal (cadr exp) 1) (solvelin exp))
 	  ((of-form-A*F<X>^N+B exp) (solve-A*F<X>^N+B exp t))
 	  ((equal (cadr exp) 2) (solvequad exp))

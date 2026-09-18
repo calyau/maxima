@@ -1038,3 +1038,47 @@ block([solve_reject_undefined: limit], solve([x*log(x*y), y-1], [x,y]));
 block([m: solve_reject_undefined],
   [errcatch(solve_reject_undefined: foo), is(solve_reject_undefined = m)]);
 [[], true];
+
+/* An equation in several trigonometric functions of one argument is
+   solved by rewriting it in the tangent of the half argument. */
+
+solve(sin(x)+cos(x)+1, x);
+[x = %pi, x = -%pi/2];
+
+solve(3*sin(x)+4*cos(x)-5, x);
+[x = 2*atan(1/3)];
+
+solve(2*sin(x)/(cos(x)+1)+2*sqrt(3)+4, x);
+[x = -2*atan(sqrt(3)+2)];
+
+/* the root at which the tangent of the half argument is infinite */
+solve(sin(2*x)+cos(2*x)+1, x);
+[x = %pi/2, x = -%pi/4];
+
+solve(sin(x+1)+cos(x+1)+1, x);
+[x = %pi-1, x = -((%pi+2)/2)];
+
+/* tan(x/2) is left as it stands rather than split into sin and cos */
+solve(tan(x)+tan(x/2), x);
+[x = -2*%pi/3, x = 2*%pi/3, x = 0];
+
+solve(sin(x)^2+cos(x)^2-1, x);
+[x = x];
+
+/* nothing is lost where the rewrite solves nothing */
+solve(sin(x)-cos(x), x);
+[sin(x) = cos(x)];
+
+/* a trigonometric function of a parameter is not a second kind of
+   kernel for the unknown's to be reconciled with */
+solve(tan(x)-cos(phi), x);
+[x = atan(cos(phi))];
+
+/* these reach an explicit root only through the rewrite, and the pole
+   each brings with it is dropped */
+
+solve(sec(x)+tan(x)-2, x);
+[x = 2*atan(1/3)];
+
+solve(csc(x)+cot(x)-3, x);
+[x = 2*atan(1/3)];
