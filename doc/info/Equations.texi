@@ -1755,6 +1755,55 @@ exponentials and logarithms to be solved.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{solve_reject_undefined}
+@defvr {Option variable} solve_reject_undefined
+Default value: @code{true}
+
+Whether @mref{solve} rejects a solution at which the equation is undefined, and
+how it decides that it is.
+
+The check asks only whether the equation can be evaluated at the solution, not
+whether it comes out zero there: @mref{solve} has already made a numerator
+vanish, and requiring the substituted equation to simplify back to zero would
+reject correct answers whose radicals Maxima cannot cancel, among them every
+root of a general quartic.
+
+@mref{solve} works on the numerator of an equation, so a denominator cleared
+along the way leaves its poles behind among the roots.  The zeros of
+@code{1 - cos(x)} include the zero of the @code{sin(x)} that is divided out of
+@code{csc(x) - cot(x)}, and nothing in the rational arithmetic can cancel the
+two, since it does not know that @code{sin(x)^2 + cos(x)^2 = 1}.  Without a
+check, @code{solve(csc(x) = cot(x), x)} therefore returns @code{x = 0}, where
+neither function is defined.
+
+@table @code
+@item true
+Substitute each solution into the equations and reject it where they cannot be
+evaluated.  This is what excludes @code{x = 0} above, and @code{x = 0} from
+@code{solve(x*log(x) = 0, x)}.
+@item false
+Return whatever was found, as Maxima did before this variable existed.
+@item limit
+Also keep a solution at which an equation merely has a removable singularity,
+that is where the limit there is zero.  @code{solve(x*log(x) = 0, x)} then
+returns @code{x = 0} as well as @code{x = 1}.  This costs a limit computation
+per rejected solution and may ask questions.  The equations of an independent
+system are each taken on their own, with the unknowns an equation does not
+contain substituted first; Maxima has no limit in several variables, so an
+equation in two of them falls back to what @code{true} does.
+@end table
+
+The check applies to a single equation and to a list of equations alike.  It is
+not applied to the solving that @mref{integrate} and other internal callers do,
+which need every candidate they can get: a point where an antiderivative is
+undefined is exactly where definite integration has to split the interval.
+
+@opencatbox{Categories:}
+@category{Algebraic equations}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{solvetrigwarn}
 @defvr {Option variable} solvetrigwarn
 Default value: @code{true}

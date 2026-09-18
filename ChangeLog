@@ -100,6 +100,10 @@ Bug fixes for numbered bugs:
 
 Bug fixes for unnumbered bugs:
 ------------------------------
+* solve() returned roots at which the equation is undefined, such as
+  x = 0 for solve(csc(x) = cot(x), x): they are poles left behind by
+  clearing a denominator, not solutions.  The new option variable
+  solve_reject_undefined, true by default, controls the check
 * integrate(f(x), x, a, a+2*%pi) returned 0 for a periodic f with a
   symbolic a
 * tlimit never asks the sign questions that limit asks

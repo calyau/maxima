@@ -39,6 +39,17 @@
 	 null equation list or a null variable list.  For example,
 	 SOLVE([],[]); would print two warning messages and return [].")
 
+(defmvar $solve_reject_undefined t
+  "Whether SOLVE rejects a solution at which an equation is undefined.
+TRUE substitutes the solution and rejects it where an equation cannot be
+evaluated, FALSE returns whatever was found, and LIMIT keeps a solution
+at which an equation merely has a removable singularity, at the cost of
+a limit computation that may ask questions.  Whether the equation comes
+out zero is not asked: SOLVE has already made a numerator vanish."
+  :setting-predicate #'(lambda (x)
+			 (values (member x '(t nil $limit))
+				 "must be true, false or limit")))
+
 ;; Utility macros
 
 ;; This macro returns the number of trivial equations.  It counts up the
@@ -130,12 +141,15 @@
        ;; as unknowns: SOLVEX.
        ((or varl-p
             (= (length varl) (length eql)))
-        (setq eql (solvex eql varl (not $programmode) t))
-        (return
-          (cond ((and (cdr eql)
-                      (not ($listp (cadr eql))))
-                 (make-mlist eql))
-                (t eql)))))
+        (let ((eqns eql))
+          (setq eql (solvex eql varl (not $programmode) t))
+          (return
+            (solve-drop-bad-solutions
+             (cond ((and (cdr eql)
+                         (not ($listp (cadr eql))))
+                    (make-mlist eql))
+                   (t eql))
+             eqns varl)))))
 
      ;; We don't know what to do, so complain. The let sets u to varl
      ;; but as an MLIST list and e to the original eqns coerced to a
@@ -169,6 +183,102 @@
 	   (unless (maxima-constantp fl) (push fl vl)))
 	  ((every #'$constantp (cdr fl)) (push fl vl)))))
 
+;;; Verifying a solution.  SOLVE works on numerators, so a denominator
+;;; cleared along the way leaves its poles among the roots: the zeros
+;;; of 1-COS(X) include the zero of the SIN(X) divided out of
+;;; CSC(X)-COT(X), and the rational package cannot cancel the two,
+;;; knowing nothing of SIN^2+COS^2 = 1.  $SOLVE_REJECT_UNDEFINED says
+;;; what to do about that.
+
+;; SOL, one solution as a list of equations, as the (VAR . VALUE) pairs
+;; to substitute, or NIL when it is not of a shape we can substitute:
+;; every equation has to give one of VARS a value free of all of them.
+(defun solve-solution-pairs (sol vars)
+  (let ((pairs nil))
+    (dolist (e sol pairs)
+      (unless (and (not (atom e))
+		   (not (atom (car e)))
+		   (eq (caar e) 'mequal)
+		   (member (cadr e) vars :test #'alike1)
+		   (every #'(lambda (v) (free (caddr e) v)) vars))
+	(return nil))
+      (push (cons (cadr e) (caddr e)) pairs))))
+
+;; E with every (VAR . VALUE) of PAIRS substituted, or T when a
+;; substitution signals, which is what NO-ERR-SUB-VAR answers.
+(defun solve-subst-pairs (e pairs)
+  (dolist (p pairs e)
+    (setq e (no-err-sub-var (cdr p) e (car p)))
+    (when (eq e t) (return t))))
+
+;; True when the limit L came back as a definite finite value, rather
+;; than as UND, IND or an infinity, so that the singularity it was
+;; taken at is removable.
+(defun solve-finite-limit-p (l)
+  (and (not (member l '($und $ind $inf $minf $infinity)))
+       (free l '$und) (free l '$ind)
+       (free l '$inf) (free l '$minf) (free l '$infinity)))
+
+;; True when the equation E is defined at PAIRS.  It is when it can be
+;; evaluated there at all: SOLVE has already made a numerator vanish,
+;; so an equation that survives substitution holds.
+;;
+;; Under LIMIT a removable singularity counts as well, and there the
+;; limit has to be zero, not merely finite.  That is not a different
+;; standard, it is the same one: substitution answers "is it defined"
+;; and "does it hold" together, while a limit answers only the first.
+;; SIN(X)/X extends continuously to 1 at 0, so the singularity is
+;; removable and the extension is still not a root; asking only that
+;; the limit exist puts X = 0 back into solve(sin(x)/x = 0, x).
+;;
+;; A limit needs E to depend on one unknown only, Maxima having none
+;; in several variables and an iterated one not being the same thing.
+;; That is asked of the equation rather than of the solution, so the
+;; equations of an independent system are each taken on their own; the
+;; unknowns E does not contain are substituted first.  An equation in
+;; two of them falls back to what TRUE does.
+(defun solve-defined-p (e pairs)
+  (or (not (eq t (solve-subst-pairs e pairs)))
+      (and (eq $solve_reject_undefined '$limit)
+	   (let ((in (remove-if #'(lambda (p) (free e (car p))) pairs)))
+	     (and in (null (cdr in))
+		  (let ((e1 (solve-subst-pairs e (remove (car in) pairs))))
+		    (and (not (eq e1 t))
+			 (let ((l (errcatch (mfuncall '$limit e1 (caar in) (cdar in)))))
+			   (and l (solve-finite-limit-p (car l))
+				(zerop1 (car l)))))))))))
+
+(defun solve-solution-defined-p (pairs eqns)
+  (dolist (e eqns t)
+    (unless (solve-defined-p e pairs)
+      (return nil))))
+
+;; Drop from *ROOTS the roots of EXP that do not verify, keeping each
+;; root with its multiplicity.
+(defun solve-drop-bad-roots (exp var)
+  (when $solve_reject_undefined
+    (setq *roots
+	  (loop for (r m) on *roots by #'cddr
+		for pairs = (solve-solution-pairs (list r) (list var))
+		when (or (null pairs)
+			 (solve-solution-defined-p pairs (list exp)))
+		  append (list r m)))))
+
+;; The same for the solution sets $SOLVE returns for a list of
+;; equations.  This filters what $SOLVE returns rather than what SOLVEX
+;; does, DEFINT calling SOLVEX directly and wanting every candidate it
+;; can get.
+(defun solve-drop-bad-solutions (sols eqns vars)
+  (if (and $solve_reject_undefined ($listp sols))
+      (make-mlist-l
+       (remove-if #'(lambda (sol)
+		      (and ($listp sol)
+			   (let ((pairs (solve-solution-pairs (cdr sol) vars)))
+			     (and pairs
+				  (not (solve-solution-defined-p pairs eqns))))))
+		  (cdr sols)))
+      sols))
+
 ;; Solve a single equation for a single unknown.
 ;; Obtains roots via solve and prints them.
 
@@ -177,6 +287,7 @@
 	equations multi)
     (cond ((null *var) '$all)
 	  (t (solve exp *var 1)
+	     (solve-drop-bad-roots exp *var)
 	     (cond ((not (or *roots *failures)) (make-mlist))
 		   ($programmode
 		    (prog1

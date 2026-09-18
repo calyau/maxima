@@ -985,3 +985,56 @@ solve([a*x+b = 0],[x]);
 
 solve([(a*x+b)*(c*x+d)*(d*x + e)],[x]);
 [x = -(f/e), x = -(e/d), x = -(c/b)];
+
+/* A root of the numerator at which the expression itself is undefined
+   is a pole left behind by clearing the denominator, not a solution. */
+
+solve(csc(x)-cot(x), x);
+[];
+
+solve(sin(x)/x, x);
+[];
+
+solve(x*log(x), x);
+[x = 1];
+
+/* a list of equations is checked the same way */
+solve([x*log(x), y-1], [x,y]);
+[];
+
+/* solve_reject_undefined: false returns whatever was found */
+
+block([solve_reject_undefined: false], solve(csc(x)-cot(x), x));
+[x = 0];
+
+block([solve_reject_undefined: false], solve([x*log(x), y-1], [x,y]));
+[[x = 0, y = 1]];
+
+/* limit keeps a removable singularity, for a single unknown */
+
+block([solve_reject_undefined: limit], solve(x*log(x), x));
+[x = 1, x = 0];
+
+block([solve_reject_undefined: limit], solve(sin(x)/x, x));
+[];
+
+/* the equations of an independent system are each taken on their own */
+
+block([solve_reject_undefined: limit], solve([x*log(x), y-1], [x,y]));
+[[x = 0, y = 1]];
+
+block([solve_reject_undefined: limit], solve([x*log(x), y*log(y)], [x,y]));
+[[x = 0, y = 0]];
+
+/* Maxima has no limit in several variables, so an equation in two of
+   them falls back to substituting */
+
+block([solve_reject_undefined: limit], solve([x*log(x*y), y-1], [x,y]));
+[];
+
+/* only false, true and limit are accepted, and a rejected assignment
+   leaves the value alone */
+
+block([m: solve_reject_undefined],
+  [errcatch(solve_reject_undefined: foo), is(solve_reject_undefined = m)]);
+[[], true];
