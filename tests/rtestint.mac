@@ -2076,6 +2076,18 @@ block([m: intanalysis_max_discontinuities],
    is(intanalysis_max_discontinuities = m)]);
 [[], [], true]$
 
+/* solve returns one of the two solutions of sin(x) = -1/2 per period;
+   the pole at 7*%pi/6 is the other one */
+
+errcatch(integrate(cos(x)/(sin(x)+1/2),x,%pi,3*%pi/2));
+[]$
+
+error;
+["defint: integral is divergent."]$
+
+integrate(cos(x)/(sin(x)+1/2),x,0,%pi);
+0$
+
 
 (kill(values),0);
 0$

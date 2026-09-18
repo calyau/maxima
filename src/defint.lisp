@@ -1133,20 +1133,29 @@ found a root, and a warning is printed.  Zero means no limit."
                     (not (zerop1 ratio))))))))
 
 ;; The period at which the zeros of E repeat, or NIL if we cannot
-;; establish one.  The candidates come from the trigonometric argument
-;; C*IVAR + B, which has to be the same throughout E.
+;; establish one, and as a second value a point S such that IVAR ->
+;; S - IVAR maps the zeros onto themselves, or NIL.  Both come from the
+;; trigonometric argument U = C*IVAR + B, which has to be the same
+;; throughout E: the period is %pi/|C| or 2*%pi/|C|, and S takes U to
+;; %pi - U, which keeps SIN(U), or to -U, which keeps COS(U).  The two
+;; solutions of SIN(U) = A, and those of COS(U) = A, are images of each
+;; other under one of these, and SOLVE returns only one of them.
 (defun zeros-period (e ivar)
   (let ((trigarg (find-first-trigarg e ivar)))
     (when (and trigarg (every-trigarg-alike e trigarg ivar))
       (let* ((arg (simple-trig-arg trigarg ivar))
              (c (cdras 'c arg))
+             (b (cdras 'b arg))
              (half (and c
                         (member ($csign c) '($pos $neg))
                         (div '$%pi (ftake 'mabs c)))))
         (when half
-          (cond ((zeros-map-p (add ivar half) e ivar) half)
-                ((zeros-map-p (add ivar (mul 2 half)) e ivar)
-                 (mul 2 half))))))))
+          (values (cond ((zeros-map-p (add ivar half) e ivar) half)
+                        ((zeros-map-p (add ivar (mul 2 half)) e ivar)
+                         (mul 2 half)))
+                  (find-if #'(lambda (s) (zeros-map-p (sub s ivar) e ivar))
+                           (list (div (sub '$%pi (mul 2 b)) c)
+                                 (div (mul -2 b) c)))))))))
 
 ;; The range (KMIN . KMAX) of the integers K for which ROOT + K*PERIOD
 ;; lies between LL and UL, or NIL when there is no counting them, as
@@ -1224,13 +1233,30 @@ found a root, and a warning is printed.  Zero means no limit."
                 unless (eq roots '$no)
                   append (let ((factors (discontinuity-factors e ivar)))
                            (loop for root in (mapcar #'car roots)
-                                 for period = (zeros-period
-                                               (vanishing-factor root factors e)
-                                               ivar)
+                                 for (period mirror)
+                                   = (multiple-value-list
+                                      (zeros-period
+                                       (vanishing-factor root factors e)
+                                       ivar))
                                  collect (list root period
                                                (and period
                                                     (periodic-image-range
-                                                     root period ll ul)))))))
+                                                     root period ll ul)))
+                                 ;; The solution SOLVE dropped, unless it
+                                 ;; is an image of the one it kept, and
+                                 ;; only where its images can be counted:
+                                 ;; a candidate that cannot be placed is
+                                 ;; a question to the user.
+                                 when (and period mirror)
+                                   append (let* ((other (sub mirror root))
+                                                 (range (periodic-image-range
+                                                         other period ll ul)))
+                                            (and range
+                                                 (not (maxima-integerp
+                                                       (div (sub other root)
+                                                            period)))
+                                                 (list (list other period
+                                                             range))))))))
          (total (loop for (nil nil range) in found
                       sum (periodic-image-count range)))
          (split (or (zerop $intanalysis_max_discontinuities)
