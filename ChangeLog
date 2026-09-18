@@ -96,6 +96,7 @@ Bug fixes for numbered bugs:
 * \#5258 Provide $real_imag_part user-level function
 * \#5260 lurkmathml typesets t(x) incorrectly
 * \#5261 Result of integrate(1/(x+%i),x,0,1) depends on exptdispflag
+* \#5262 MEQP leaks the sign specials
 
 Bug fixes for unnumbered bugs:
 ------------------------------

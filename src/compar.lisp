@@ -1180,7 +1180,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (and (maxima-undeclared-arrayp b) (maxima-undeclared-array-meqp a b)))
 	((maxima-undeclared-arrayp b) nil)
 	(t
-	 (let ((z) (sign))
+	 ;; Bind the SIGN specials: DCOMPARE sets them, and MEQP is called from
+	 ;; inside sign computations that must keep their own.
+	 (let ((z) sign minus odds evens)
 	   (setq a (specrepcheck a))
 	   (setq b (specrepcheck b))
 	   (cond ((or (like a b)) (not (member a indefinites)))

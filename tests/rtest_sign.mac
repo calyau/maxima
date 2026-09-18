@@ -2778,6 +2778,24 @@ block([negative, xnz, xpn, xpnz, o],
   [pos], [pos], [neg]]];
 
 
+/* Bug #5262: "MEQP leaks the sign specials" */
+
+(assume(x^2 >= y), 0);
+0;
+
+sign((x^2-y)*(y-x));
+pnz;
+
+sign((x^2-y)*(x-y));
+pnz;
+
+is((x^2-y)*(y-x) <= 0);
+unknown;
+
+(forget(x^2 >= y), 0);
+0;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
