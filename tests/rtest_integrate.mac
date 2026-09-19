@@ -6973,7 +6973,8 @@ block([f : 1/(x*(log(x)^3-2)), F],
  [freeof('integrate, F), freeof(%i, F), ratsimp(radcan(diff(F, x) - f))]);
 [true, true, 0];
 
-/* R factors into pieces of degree at most four here, although it is of
+/* Two calls, not one: the denominator splits before the resultant is
+ * taken, so R comes out of degree two and then of degree four, never of
  * degree six.
  */
 
@@ -6982,8 +6983,10 @@ block([f : 1/(x*(log(x)^6+1)), F],
  [freeof('integrate, F), ratsimp(radcan(diff(F, x) - f))]);
 [true, 0];
 
-/* A factor of degree five is left alone, and so is a quartic whose roots
- * SOLVE only writes down in a form too big to compute a gcd with.
+/* Both are turned away by RISCH-RT-SOLVABLE-P.  R is an irreducible
+ * quintic in the first; in the second it is an irreducible quartic that
+ * is not quadratic in any power of z, which is where SOLVE reaches for
+ * Ferrari.
  */
 
 freeof('integrate, risch(1/(x*(log(x)^5-2)), x));
@@ -6998,6 +7001,16 @@ false;
 
 risch(1/(log(x)^2-2), x);
 'integrate(1/(log(x)^2-2), x);
+
+/* Two of the four residues coincide here, so R has two double roots and
+ * the logarithms come off the member of degree two of the remainder
+ * sequence, not off its last member.
+ */
+
+block([f : (log(x)^3+log(x))/(x*(log(x)^4+1)), F],
+ F : risch(f, x),
+ [F, ratsimp(radcan(diff(F, x) - f))]);
+[log(log(x)^4+1)/4+atan(log(x)^2)/2, 0];
 
 
 /**************************************/
