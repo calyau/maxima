@@ -1127,6 +1127,7 @@ warning is printed.  Zero means no limit."
         (e1 (no-err-sub-var image e ivar)))
     (and (not (eq e0 t))                ; T means the substitution failed
          (not (eq e1 t))
+         (not (zerop1 e0))              ; nothing to say about a zero
          (or (alike1 e0 e1)
              (let ((ratio (sratsimp (div e1 e0))))
                (and (free ratio ivar)
