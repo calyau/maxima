@@ -6923,6 +6923,84 @@ block([f, F, dF],
 0;
 
 
+/* Rothstein-Trager reduction of the logarithmic part in rischint.  The
+ * residues of these integrands are not in the field the integrand is
+ * written over, so RISCHLOGEPROG's test for a constant coefficient fails
+ * and RISCH-RT-LOGPART supplies the logarithms.
+ */
+
+risch(1/(x*(log(x)^2-2)), x);
+log(log(x)-sqrt(2))/2^(3/2)-log(log(x)+sqrt(2))/2^(3/2);
+
+risch(1/(x*(log(x)^2+1)), x);
+atan(log(x));
+
+risch(1/(x*(log(x)^2+log(x)+1)), x);
+2*atan((2*log(x)+1)/sqrt(3))/sqrt(3);
+
+risch(1/(x*log(x)*(log(log(x))^2+1)), x);
+atan(log(log(x)));
+
+/* Hermite reduction first, then Rothstein-Trager on what is left. */
+
+risch(1/(x*(log(x)^2+1)^2), x);
+atan(log(x))/2+log(x)/(2*log(x)^2+2);
+
+/* Two generators, so the answer is not reachable by substitution. */
+
+block([f : 2*sqrt(2)*(1-log(x))/(log(x)^2-2*x^2), F],
+ F : risch(f, x),
+ [freeof('integrate, F), ratsimp(radcan(diff(F, x) - f))]);
+[true, 0];
+
+/* A quadratic factor whose roots carry a symbolic parameter. */
+
+risch(1/(x*(log(x)^2+a)), x);
+atan(log(x)/sqrt(a))/sqrt(a);
+
+/* Factors of degree three and four: SOLVE supplies the roots and the
+ * conjugate pairs are recombined, so the answer stays real.
+ */
+
+risch(1/(x*(log(x)^4+1)), x);
+log(log(x)^2+sqrt(2)*log(x)+1)/2^(5/2)
+ -log(log(x)^2-sqrt(2)*log(x)+1)/2^(5/2)
+ +atan((2*log(x)+sqrt(2))/sqrt(2))/2^(3/2)
+ +atan((2*log(x)-sqrt(2))/sqrt(2))/2^(3/2);
+
+block([f : 1/(x*(log(x)^3-2)), F],
+ F : risch(f, x),
+ [freeof('integrate, F), freeof(%i, F), ratsimp(radcan(diff(F, x) - f))]);
+[true, true, 0];
+
+/* Two calls, not one: the denominator splits before the resultant is
+ * taken, so R comes out of degree two and then of degree four, never of
+ * degree six.
+ */
+
+block([f : 1/(x*(log(x)^6+1)), F],
+ F : risch(f, x),
+ [freeof('integrate, F), ratsimp(radcan(diff(F, x) - f))]);
+[true, 0];
+
+/* A factor of degree five is left alone, and so is a quartic whose roots
+ * SOLVE only writes down in a form too big to compute a gcd with.
+ */
+
+freeof('integrate, risch(1/(x*(log(x)^5-2)), x));
+false;
+
+freeof('integrate, risch(1/(x*(log(x)^4+log(x)+1)), x));
+false;
+
+/* No elementary logarithmic part: the Rothstein-Trager resultant has roots
+ * that are not constants.
+ */
+
+risch(1/(log(x)^2-2), x);
+'integrate(1/(log(x)^2-2), x);
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
