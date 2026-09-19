@@ -412,22 +412,25 @@
   (risch-rt-monic (car (errcatch ($gcd ($ratsimp (sub pm (mul c dm))) qm)))
                   v))
 
-;; Complex double for E, or NIL when E is not a number.
-(defun risch-rt-number (e)
-  (let ((r (car (errcatch ($float ($realpart e)))))
-        (i (car (errcatch ($float ($imagpart e))))))
-    (and (floatp r) (floatp i) (complex r i))))
+;; E in rectangular form, which is how SOLVE's (-1)^(1/4) and the like
+;; become ordinary numbers.  Only a constant is rewritten: on an expression
+;; carrying a symbolic parameter RECTFORM yields atan2 and abs, and on one
+;; carrying a logarithm it takes that apart under $DOMAIN complex.
+(defun risch-rt-rectform (e)
+  (if ($constantp e)
+      (or (car (errcatch ($rectform e))) e)
+      e))
 
-;; SOLVE writes the roots of a quartic with (-1)^(1/4) and the like, which
-;; RECTFORM turns into a+b*%i -- readable, and recognizable by
-;; RISCH-RT-CONJUGATE.  Only a root that is a number is rewritten: on one
-;; carrying a symbolic parameter RECTFORM yields atan2 and abs instead.  On
-;; the roots of a quartic that does not factor it can grow the expression
-;; thirtyfold and the gcds then do not finish, so the rewriting is kept
-;; only while it stays about the same size.
-(defun risch-rt-rectform (c)
-  (let ((r (and (risch-rt-number c) (car (errcatch ($rectform c))))))
-    (if (and r (< (conssize r) (* 4 (conssize c)))) r c)))
+;; E with each coefficient of a power of V rewritten by RISCH-RT-RECTFORM.
+(defun risch-rt-realify (e v)
+  (let ((d (risch-rt-degree e v)))
+    (if (minusp d)
+        e
+        (do ((k 0 (1+ k))
+             (sum 0))
+            ((> k d) sum)
+          (setq sum (add sum (mul (risch-rt-rectform ($ratcoef e v k))
+                                  (power v k))))))))
 
 ;; C with %i negated, which is its conjugate as long as every other symbol
 ;; in it is real.
@@ -451,11 +454,17 @@
 ;;     s*log(G1*G2) + 2*u*atan(A/B)
 ;;
 ;; with s, u the real and imaginary parts of C1 and A, B those of G1, each
-;; taken as a half sum or half difference of the pair so that no RECTFORM
-;; is needed on a G.  Differentiated, the rewriting is an identity for any
-;; two roots; the pairing decides only whether the answer comes out real.
-(defun risch-rt-terms (cs gs)
+;; taken as a half sum or half difference of the pair, so that splitting a
+;; G apart needs no RECTFORM.  Differentiated, the rewriting is an identity
+;; for any two roots; the pairing decides only whether the answer comes out
+;; real.
+(defun risch-rt-terms (cs gs v)
   (let* ((n (length cs))
+         ;; The gcds were taken with the roots as SOLVE wrote them, which is
+         ;; the form they divide fastest in.  From here on the rectangular
+         ;; form is the one wanted, both to recognize a conjugate pair and
+         ;; to keep the constants in the answer readable.
+         (cs (mapcar #'risch-rt-rectform cs))
          (used (make-array n :initial-element nil))
          (terms nil))
     (dotimes (i n terms)
@@ -469,15 +478,20 @@
                     (s ($ratsimp (div (add (nth i cs) (nth j cs)) 2)))
                     (u ($ratsimp (div (sub (nth i cs) (nth j cs))
                                       (mul 2 '$%i))))
-                    (aa ($ratsimp (div (add g1 g2) 2)))
-                    (bb ($ratsimp (div (sub g1 g2) (mul 2 '$%i)))))
+                    (aa (risch-rt-realify ($ratsimp (div (add g1 g2) 2)) v))
+                    (bb (risch-rt-realify
+                         ($ratsimp (div (sub g1 g2) (mul 2 '$%i))) v)))
                (unless (zerop1 s)
-                 (push (mul s (logmabs ($ratsimp (mul g1 g2)))) terms))
+                 (push (mul s (logmabs (risch-rt-realify
+                                        ($ratsimp (mul g1 g2)) v)))
+                       terms))
                (unless (or (zerop1 u) (zerop1 bb))
                  (push (mul 2 u (ftake '%atan ($ratsimp (div aa bb))))
                        terms))))
             (t
-             (push (mul (nth i cs) (logmabs (nth i gs))) terms))))))))
+             (push (mul (nth i cs)
+                        (logmabs (risch-rt-realify (nth i gs) v)))
+                   terms))))))))
 
 ;; The roots of the irreducible F, or NIL when SOLVE cannot list them all.
 ;; The internal SOLVE leaves them on *ROOTS, alternating with their
@@ -486,9 +500,10 @@
 ;; $MULTIPLICITIES and reads $PROGRAMMODE, $BREAKUP and the null warnings,
 ;; every one of which a caller has to bind out of the way.  Being an
 ;; ordinary DEFUN it is also late bound, so it adds no compile-time
-;; dependency on solve.lisp, which is compiled after this file.  A $REALONLY set by
-;; the user drops the complex roots, and the count below then rejects what
-;; is left rather than integrating with part of the sum missing.
+;; dependency on solve.lisp, which is compiled after this file.  A
+;; $REALONLY set by the user drops the complex roots, and the count below
+;; then rejects what is left rather than integrating with part of the sum
+;; missing.
 (defun risch-rt-roots (f zvar d)
   (let ((*roots nil) (*failures nil))
     (errcatch (solve f zvar 1))
@@ -500,7 +515,7 @@
           (unless (and (mequalp e) (eq (cadr e) zvar)
                        (freeof zvar (caddr e)))
             (return nil))
-          (push (risch-rt-rectform (caddr e)) roots))))))
+          (push (caddr e) roots))))))
 
 ;; The logarithmic part of NUM/DEN as a list of Maxima expressions, or NIL
 ;; when the integrand has no elementary one or this implementation cannot
@@ -535,7 +550,7 @@
           (unless (and gs (every #'identity gs))
             (return-from risch-rt-logpart nil))
           (dolist (g gs) (incf total (risch-rt-degree g tvar)))
-          (setq terms (nconc (risch-rt-terms cs gs) terms))))
+          (setq terms (nconc (risch-rt-terms cs gs tvar) terms))))
       ;; The gcds are coprime and multiply out to DEN, so a total degree
       ;; other than DEN's means a residue was missed or counted twice and
       ;; the sum is not an antiderivative.
