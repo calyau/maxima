@@ -269,10 +269,9 @@ The block, indented with spaces as newly written functions should be:
 ;; $MULTIPLICITIES and reads $PROGRAMMODE, $BREAKUP and the null warnings,
 ;; every one of which a caller has to bind out of the way.  Being an
 ;; ordinary DEFUN it is also late bound, so it adds no compile-time
-;; dependency on solve.lisp, which is compiled after this file.  A
-;; $REALONLY set by the user drops the complex roots, and the count below
-;; then rejects what is left rather than integrating with part of the sum
-;; missing.
+;; dependency on solve.lisp, which is compiled after this file.  The count
+;; rejects a list that is short of the degree rather than integrating with
+;; part of the sum missing.
 (defun risch-rt-roots (f zvar d)
   (let ((*roots nil) (*failures nil))
     (errcatch (solve f zvar 1))
@@ -444,7 +443,8 @@ block([f : 1/(x*(log(x)^3-2)), F],
  [freeof('integrate, F), freeof(%i, F), ratsimp(radcan(diff(F, x) - f))]);
 [true, true, 0];
 
-/* R factors into pieces of degree at most four here, although it is of
+/* Two calls, not one: the denominator splits before the resultant is
+ * taken, so R comes out of degree two and then of degree four, never of
  * degree six.
  */
 

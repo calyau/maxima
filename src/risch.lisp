@@ -451,10 +451,15 @@
 ;; halves of the test earn their place.
 ;;
 ;; Drop the second and SOLVE reaches for Cardano or Ferrari on the rest of
-;; degree three and four.  Substituting what comes back is of no use to
-;; anybody: 1/(x*(log(x)^3+log(x)+1)) integrates to 1800 characters, and
-;; 1/(x*(log(x)^4+log(x)+1)) does not integrate at all -- the substitution
-;; ends in a division by zero.
+;; degree three and four, and what comes back is bounded by nothing: of
+;; two hundred random integrands of this shape the third,
+;; (3-2*log(x)^3)/(3*x*log(x)^4+2*x*log(x)^3+x*log(x)-3*x), exhausts the
+;; heap and takes the image down with it.  Short of that the answers are
+;; merely long, 1/(x*(log(x)^3+log(x)+1)) integrating to 1800 characters.
+;; This is not free: a few cubics the gcd that preceded this did reach go
+;; with them, among them
+;; (3-log(x)^2)/(3*x*log(x)^3+3*x*log(x)^2+x*log(x)+3*x), which is correct
+;; in 533 characters and is now turned away.
 ;;
 ;; Drop the first and SOLVE still cracks a binomial of higher degree, and
 ;; quickly.  What it cannot do is write the roots so that RECTFORM reduces
