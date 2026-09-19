@@ -15,7 +15,11 @@
 (load-macsyma-macros rzmac ratmac)
 
 (declare-top (special *mosesflag
-                      context *in-risch-p*))
+                      context *in-risch-p*
+                      ;; SOLVE leaves its results on these.  They are
+                      ;; declared, never defined, so each caller declares
+                      ;; them for itself.
+                      *roots *failures))
 
 (defmvar $erfflag t "Controls whether `risch' generates `erfs'")
 
@@ -476,13 +480,27 @@
              (push (mul (nth i cs) (logmabs (nth i gs))) terms))))))))
 
 ;; The roots of the irreducible F, or NIL when SOLVE cannot list them all.
+;; The internal SOLVE leaves them on *ROOTS, alternating with their
+;; multiplicities, and whatever it could not solve on *FAILURES.  It is
+;; taken in preference to $SOLVE, whose contract is the user's: it assigns
+;; $MULTIPLICITIES and reads $PROGRAMMODE, $BREAKUP and the null warnings,
+;; every one of which a caller has to bind out of the way.  Being an
+;; ordinary DEFUN it is also late bound, so it adds no compile-time
+;; dependency on solve.lisp, which is compiled after this file.  A $REALONLY set by
+;; the user drops the complex roots, and the count below then rejects what
+;; is left rather than integrating with part of the sum missing.
 (defun risch-rt-roots (f zvar d)
-  (let* (($programmode t) $multiplicities
-         (sol (car (errcatch ($solve f zvar)))))
-    (when (and ($listp sol) (= (length (cdr sol)) d))
-      (let ((roots (mapcar #'(lambda (e) (risch-rt-rectform (caddr e)))
-                           (cdr sol))))
-        (and (every #'(lambda (r) (freeof zvar r)) roots) roots)))))
+  (let ((*roots nil) (*failures nil))
+    (errcatch (solve f zvar 1))
+    (when (and (null *failures) (= (length *roots) (* 2 d)))
+      (do ((r *roots (cddr r))
+           (roots nil))
+          ((null r) roots)
+        (let ((e (car r)))
+          (unless (and (mequalp e) (eq (cadr e) zvar)
+                       (freeof zvar (caddr e)))
+            (return nil))
+          (push (risch-rt-rectform (caddr e)) roots))))))
 
 ;; The logarithmic part of NUM/DEN as a list of Maxima expressions, or NIL
 ;; when the integrand has no elementary one or this implementation cannot
