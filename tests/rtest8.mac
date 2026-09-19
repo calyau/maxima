@@ -1123,3 +1123,22 @@ solve(sinh(x)-cosh(x), x);
    tangent */
 solve(sinh(x)+cos(x), x);
 [sinh(x) = -cos(x)];
+
+/* An equation that is a polynomial in a kernel, whose exponents share
+   a factor, is reduced by it, solved, and the kernel then inverted.
+   The inversion was left out where the kernel was not an atom. */
+
+solve(sin(y)^4-5*sin(y)^2+4, y);
+[y = asin(2), y = -asin(2), y = %pi/2, y = -%pi/2];
+
+solve(log(y)^4-5*log(y)^2+4, y);
+[y = %e^2, y = %e^-2, y = %e, y = %e^-1];
+
+/* the rewrite in the tangent of the half argument leaves one */
+solve(sin(x)*tan(x)-1, x);
+[x = 2*atan(sqrt(sqrt(5)-2)), x = -2*atan(sqrt(sqrt(5)-2)),
+ x = 2*atan(sqrt(-sqrt(5)-2)), x = -2*atan(sqrt(-sqrt(5)-2))];
+
+solve(sinh(x)^2-cosh(x), x);
+[x = 2*atanh(sqrt(sqrt(5)-2)), x = -2*atanh(sqrt(sqrt(5)-2)),
+ x = 2*atanh(sqrt(-sqrt(5)-2)), x = -2*atanh(sqrt(-sqrt(5)-2))];

@@ -109,6 +109,10 @@ Bug fixes for unnumbered bugs:
   solve_reject_undefined, true by default, controls the check
 * integrate(f(x), x, a, a+2*%pi) returned 0 for a periodic f with a
   symbolic a
+* solve(sin(x)^4-5*sin(x)^2+4, x) returned []: an equation that is a
+  polynomial in a kernel, and whose exponents share a factor, was
+  reduced by that factor and solved, but the kernel was then not
+  inverted unless it was a symbol
 * tlimit never asks the sign questions that limit asks
 * limits of atanh at an infinity ignore the imaginary part of the argument
 * various merror calls were missing arguments
