@@ -369,48 +369,112 @@
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom risch-klth)))))
 
-;; Rothstein-Trager reduction of the logarithmic part.  For an integrand
-;; NUM/DEN with DEN monic and squarefree in the monomial and deg(NUM) <
-;; deg(DEN), that part is
+;; Lazard-Rioboo-Trager reduction of the logarithmic part.  For an
+;; integrand NUM/DEN with DEN monic and squarefree in the monomial and
+;; deg(NUM) < deg(DEN), that part is
 ;;
-;;      sum(c * log(gcd(NUM - c*DIVISOR, DEN)))
+;;      sum over i, and over the roots c of Q_i, of c*log(S_i(c))
 ;;
-;; over the roots C of the Rothstein-Trager resultant
+;; where R(z) = resultant(NUM - z*DIVISOR, DEN), taken in the monomial, is
+;; the product of the Q_i^i and S_i is the member of degree i of the
+;; remainder sequence of DEN and NUM - z*DIVISOR.  DIVISOR is the
+;; derivative of DEN that RISCHLOGEPROG has already reduced.  The
+;; logarithmic part is elementary only when every root of R is constant,
+;; which R -- made monic in z -- witnesses by being free of the variable of
+;; integration.
 ;;
-;;      R(z) = resultant(NUM - z*DIVISOR, DEN)
+;; Reading the logarithms off the remainder sequence rather than out of a
+;; gcd taken with each root keeps every step a polynomial one: nothing is
+;; divided by an algebraic number, so neither $ALGEBRAIC nor an algebraic
+;; $GCD is wanted here, and $ALGEBRAIC is bound away.  Leaving it set is
+;; not merely wasteful.  Lift the bound in RISCH-RT-SOLVABLE-P to let the
+;; fifth roots of 1/50000 through, and with $ALGEBRAIC set the answer comes
+;; back wrong -- its derivative misses the integrand by 5e-4 -- while with
+;; it bound off the same answer is exact.  What is different is that SOLVE
+;; then writes two of those roots in a reduced form; which step the reduced
+;; form spoils was not run down.
 ;;
-;; taken in the monomial, DIVISOR being the derivative of DEN that
-;; RISCHLOGEPROG has already reduced.  The logarithmic part is elementary
-;; only when every root of R is constant, which R -- made monic in z --
-;; witnesses by being free of the variable of integration.  R is factored
-;; over the rationals and each irreducible factor of degree at most four is
-;; solved for its roots; a factor of higher degree, or a set of gcds that
-;; does not multiply out to DEN, leaves the noun in place.
+;; The members of the sequence are the subresultants only up to a factor
+;; free of the monomial.  That factor is not free of the variable of
+;; integration, so it cannot just be carried along: RISCH-RT-MONIC divides
+;; it out with the rest of the leading coefficient, which leaves the monic
+;; gcd.  Leave it in and the integral of
+;; 2*sqrt(2)*(1-log(x))/(log(x)^2-2*x^2) comes back wrong.
 ;;
 ;; $RESULTANT seeds VARLIST with its third argument and NEWVAR prepends
 ;; whatever else it finds, so the monomial stays last in VARLIST, where
-;; ORDERPOINTER numbers it highest and POINTERGP therefore ranks it above
-;; everything else.  It is the main variable of the resultant whatever
-;; GREAT would have made of it.
+;; ORDERPOINTER numbers it highest and POINTERGP ranks it above everything
+;; else.  It is the main variable of the resultant whatever GREAT would
+;; have made of it.
 
 (defun risch-rt-degree (e v)
   (let ((d (car (errcatch ($hipow e v)))))
     (if (integerp d) d -1)))
 
-;; The distinct irreducible factors of E that involve V.
+;; Alist of (irreducible factor . multiplicity) for the factors of E that
+;; involve V.
 (defun risch-rt-factors (e v)
-  (cond ((mtimesp e) (mapcan #'(lambda (f) (risch-rt-factors f v)) (cdr e)))
-        ((mexptp e) (risch-rt-factors (cadr e) v))
+  (cond ((mtimesp e)
+         (mapcan #'(lambda (f) (risch-rt-factors f v)) (cdr e)))
+        ((and (mexptp e) (integerp (caddr e)) (plusp (caddr e)))
+         (mapcar #'(lambda (p) (cons (car p) (* (cdr p) (caddr e))))
+                 (risch-rt-factors (cadr e) v)))
         ((freeof v e) nil)
-        (t (list e))))
+        (t (list (cons e 1)))))
 
 (defun risch-rt-monic (g v)
   (let ((d (risch-rt-degree g v)))
     (if (< d 1) nil ($ratsimp (div g ($ratcoef g v d))))))
 
-(defun risch-rt-gcd (c pm qm dm v)
-  (risch-rt-monic (car (errcatch ($gcd ($ratsimp (sub pm (mul c dm))) qm)))
-                  v))
+;; The remainder sequence of A and B in V, A included, as an alist of
+;; (degree . member) taken over the field the coefficients lie in.  Each
+;; member is the subresultant of its degree up to a factor free of V, which
+;; RISCH-RT-MONIC divides out of the substituted member.
+;; A division drops the degree, so one degree names one member, and the
+;; sequence is no longer than the degree of A.
+(defun risch-rt-prs (a b v)
+  (let ((seq (list (cons (risch-rt-degree a v) a))))
+    (do () (nil seq)
+      (when (or (null b) (zerop1 b)) (return seq))
+      (let ((d (risch-rt-degree b v)))
+        (unless (< -1 d (caar seq)) (return seq))
+        (push (cons d b) seq)
+        (when (zerop d) (return seq))
+        (let ((qr (car (errcatch ($divide a b v)))))
+          (unless ($listp qr) (return seq))
+          (setq a b
+                b ($ratsimp (caddr qr))))))))
+
+;; T when F has degree at most four and is linear or quadratic in some
+;; power of V -- a quadratic, a binomial, or a biquadratic.  SOLVE writes
+;; the roots of those as a surd, or a surd times a root of unity, and both
+;; halves of the test earn their place.
+;;
+;; Drop the second and SOLVE reaches for Cardano or Ferrari on the rest of
+;; degree three and four, and what comes back is bounded by nothing: of
+;; two hundred random integrands of this shape the third,
+;; (3-2*log(x)^3)/(3*x*log(x)^4+2*x*log(x)^3+x*log(x)-3*x), exhausts the
+;; heap and takes the image down with it.  Short of that the answers are
+;; merely long, 1/(x*(log(x)^3+log(x)+1)) integrating to 1800 characters.
+;; This is not free: a few cubics the gcd that preceded this did reach go
+;; with them, among them
+;; (3-log(x)^2)/(3*x*log(x)^3+3*x*log(x)^2+x*log(x)+3*x), which is correct
+;; in 533 characters and is now turned away.
+;;
+;; Drop the first and SOLVE still cracks a binomial of higher degree, and
+;; quickly.  What it cannot do is write the roots so that RECTFORM reduces
+;; them to a recognizable conjugate pair, so RISCH-RT-TERMS pairs nothing
+;; and %i survives: 1/(x*(log(x)^5-2)) comes back correct -- it agrees
+;; with QUAD_QAGS to fifteen digits -- in 1882 characters carrying %i,
+;; where the quartic 1/(x*(log(x)^4+1)) takes 159 and is real.
+(defun risch-rt-solvable-p (f v)
+  (let ((d (risch-rt-degree f v))
+        (g 0))
+    (do ((k 1 (1+ k)))
+        ((> k d))
+      (unless (zerop1 ($ratcoef f v k))
+        (setq g (gcd g k))))
+    (and (plusp d) (<= d 4) (<= d (* 2 g)))))
 
 ;; E in rectangular form, which is how SOLVE's (-1)^(1/4) and the like
 ;; become ordinary numbers.  Only a constant is rewritten: on an expression
@@ -516,9 +580,6 @@
             (return nil))
           (push (caddr e) roots))))))
 
-;; The logarithmic part of NUM/DEN as a list of Maxima expressions, or NIL
-;; when the integrand has no elementary one or this implementation cannot
-;; reach it.
 (defun risch-rt-logpart (num den divisor risch-intvar risch-var)
   (let* ((risch-ratform (list 'mrat 'simp varlist genvar))
          (tvar (get risch-var 'rischexpr))
@@ -526,11 +587,12 @@
          (pm (disrep (ratfix num) risch-ratform))
          (qm (disrep (ratfix den) risch-ratform))
          (dm (disrep (ratfix divisor) risch-ratform)))
-    (let (($algebraic t) ($gcd '$algebraic) ($ratfac nil) ($keepfloat nil)
+    (let (($algebraic nil) ($ratfac nil) ($keepfloat nil)
           ($errormsg nil) (varlist nil) (genvar nil)
-          (terms nil) (total 0) res n fl)
+          (terms nil) (total 0) (degq 0) res n fl prs)
+      (setq degq (risch-rt-degree qm tvar))
       (when (or (zerop1 dm) (zerop1 qm)
-                (>= (risch-rt-degree pm tvar) (risch-rt-degree qm tvar)))
+                (>= (risch-rt-degree pm tvar) degq))
         (return-from risch-rt-logpart nil))
       (setq res (car (errcatch ($resultant (sub pm (mul zvar dm)) qm tvar))))
       (unless res (return-from risch-rt-logpart nil))
@@ -542,19 +604,24 @@
         (return-from risch-rt-logpart nil))
       (setq fl (car (errcatch ($factor ($num res)))))
       (unless fl (return-from risch-rt-logpart nil))
+      (setq prs (risch-rt-prs qm ($ratsimp (sub pm (mul zvar dm))) tvar))
       (dolist (f (risch-rt-factors fl zvar))
-        (let* ((d (risch-rt-degree f zvar))
-               (cs (and (<= 1 d 4) (risch-rt-roots f zvar d)))
-               (gs (mapcar #'(lambda (c) (risch-rt-gcd c pm qm dm tvar)) cs)))
+        (let* ((mult (cdr f))
+               (s (cdr (assoc mult prs)))
+               (d (risch-rt-degree (car f) zvar))
+               (cs (and s (risch-rt-solvable-p (car f) zvar)
+                        (risch-rt-roots (car f) zvar d)))
+               (gs (mapcar #'(lambda (c)
+                               (risch-rt-monic
+                                ($ratsimp (maxima-substitute c zvar s))
+                                tvar))
+                           cs)))
           (unless (and gs (every #'identity gs))
             (return-from risch-rt-logpart nil))
           (dolist (g gs) (incf total (risch-rt-degree g tvar)))
           (setq terms (nconc (risch-rt-terms cs gs tvar) terms))))
-      ;; The gcds are coprime and multiply out to DEN, so a total degree
-      ;; other than DEN's means a residue was missed or counted twice and
-      ;; the sum is not an antiderivative.
       (and terms
-           (= total (risch-rt-degree qm tvar))
+           (= total degq)
            (mapcar #'resimplify terms)))))
 
 (defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff
@@ -611,8 +678,14 @@
 		       (disrep logcoef risch-ratform)
 		       (logmabs (disrep p2e risch-ratform))))))
 	    (unless risch-expflag
-	      (let ((rt (risch-rt-logpart p1e p2e my-divisor risch-intvar
-					  risch-var)))
+	      ;; RISCH-RT-SOLVABLE-P turns away every factor SOLVE does not
+	      ;; write down usefully, and nothing else guards the divisions
+	      ;; that substituting a root does: loosen it and a quartic
+	      ;; ends in a division by zero.  Caught here that is a noun
+	      ;; and a message, not an error out of RISCHINT.
+	      (let ((rt (car (errcatch
+			      (risch-rt-logpart p1e p2e my-divisor
+						risch-intvar risch-var)))))
 		(when rt (return (cons (rzero) rt)))))
 	    (if (and risch-expflag
 		     $liflag
