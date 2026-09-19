@@ -1501,6 +1501,15 @@ solved for, say @code{F(X)}, then it is first solved for @code{F(X)} (call the
 result @var{C}), then the equation @code{F(X)=C} can be solved for @var{X}
 provided the inverse of the function @var{F} is known.
 
+Where @var{E} is built from several trigonometric functions of one argument
+@var{U}, or from several hyperbolic ones, no single inverse applies.
+@code{solve} then rewrites @var{E} in @code{tan(@var{U}/2)}, or in
+@code{tanh(@var{U}/2)}, which leaves it rational in that one function, and
+solves the result.  This needs @var{E} to be a rational function of its
+trigonometric or hyperbolic parts: @code{sqrt(cos(x))} and @code{log(sin(x))}
+are not, and a mixture of circular and hyperbolic functions is rational in
+neither tangent.
+
 @mref{breakup} if @code{false} will cause @code{solve} to express the solutions
 of cubic or quartic equations as single expressions rather than as made
 up of several common subexpressions which is the default.

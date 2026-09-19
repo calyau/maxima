@@ -126,8 +126,9 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
-* solve() solves an equation in several trigonometric functions of one
-  argument by rewriting it in the tangent of the half argument
+* solve() solves an equation in several trigonometric, or several
+  hyperbolic, functions of one argument by rewriting it in the tangent,
+  or the hyperbolic tangent, of the half argument
 * New option variable intanalysis_max_discontinuities, bounding how many
   discontinuities definite integration splits the interval of integration at
 * New function read_struct: reads a .csv file whose first line names
