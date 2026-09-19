@@ -378,61 +378,16 @@
 ;; taken in the monomial, DIVISOR being the derivative of DEN that
 ;; RISCHLOGEPROG has already reduced.  The logarithmic part is elementary
 ;; only when every root of R is constant, which R -- made monic in z --
-;; witnesses by being free of the variable of integration.
+;; witnesses by being free of the variable of integration.  R is factored
+;; over the rationals and each irreducible factor of degree at most four is
+;; solved for its roots; a factor of higher degree, or a set of gcds that
+;; does not multiply out to DEN, leaves the noun in place.
 ;;
-;; The resultant needs the monomial to be the main variable of the CRE
-;; ordering, which the ordering derived from GREAT does not give it, so the
-;; polynomials are first rewritten over placeholder symbols whose names fix
-;; that order.  Placeholders standing for generators free of the variable of
-;; integration are restored before R is factored, since abstracting them
-;; would lose algebraic relations among them -- a sqrt(2) in the integrand,
-;; say.
-
-(defvar *risch-rt-monomial* '$%rt_z
-  "Placeholder for the monomial a Rothstein-Trager resultant is taken in.
-Its name orders it above every other placeholder.")
-
-(defvar *risch-rt-indeterminate* '$%rt_m
-  "Placeholder for the indeterminate of a Rothstein-Trager resultant.")
-
-(defun risch-rt-placeholder (n)
-  (intern (format nil "$%RT_A~D" n) :maxima))
-
-;; Three values: an alist mapping each polynomial variable to its
-;; placeholder, and the (placeholder expression) pairs undoing that map,
-;; split into the generators free of RISCH-INTVAR and the rest.
-(defun risch-rt-varmaps (risch-var risch-intvar)
-  (do ((vl varlist (cdr vl))
-       (gl genvar (cdr gl))
-       (n 0 (1+ n))
-       (to nil) (const nil) (back nil))
-      ((or (null vl) (null gl)) (values to const back))
-    (let* ((top (eq (car gl) risch-var))
-           (ph (if top *risch-rt-monomial* (risch-rt-placeholder n))))
-      (push (cons (car gl) ph) to)
-      (if (and (not top) (freeof risch-intvar (car vl)))
-          (push (list ph (car vl)) const)
-          (push (list ph (car vl)) back)))))
-
-;; Maxima expression for the polynomial or rational form P over the
-;; placeholders in ALIST.  Built from the sparse form rather than by DISREP,
-;; which would resimplify a power of a monomial into a different monomial.
-(defun risch-rt-disrep (p alist)
-  (cond ((pcoefp p) p)
-        ((or (not (atom (car p))) (numberp (car p))) ;P IS A RATFORM
-         (div (risch-rt-disrep (car p) alist)
-              (risch-rt-disrep (cdr p) alist)))
-        (t
-         (do ((l (cdr p) (cddr l))
-              (v (cdr (assoc (car p) alist :test #'eq)))
-              (sum 0))
-             ((null l) sum)
-           (setq sum (add sum (mul (power v (car l))
-                                   (risch-rt-disrep (cadr l) alist))))))))
-
-(defun risch-rt-restore (e pairs)
-  (dolist (p pairs e)
-    (setq e (maxima-substitute (cadr p) (car p) e))))
+;; $RESULTANT seeds VARLIST with its third argument and NEWVAR prepends
+;; whatever else it finds, so the monomial stays last in VARLIST, where
+;; ORDERPOINTER numbers it highest and POINTERGP therefore ranks it above
+;; everything else.  It is the main variable of the resultant whatever
+;; GREAT would have made of it.
 
 (defun risch-rt-degree (e v)
   (let ((d (car (errcatch ($hipow e v)))))
@@ -453,89 +408,122 @@ Its name orders it above every other placeholder.")
   (risch-rt-monic (car (errcatch ($gcd ($ratsimp (sub pm (mul c dm))) qm)))
                   v))
 
-;; The logarithmic part of NUM/DEN as a list of Maxima expressions, or NIL
-;; when the integrand has no elementary one or this implementation cannot
-;; reach it -- only roots of R lying in an extension of degree at most two
-;; are handled.
-(defun risch-rt-logpart (num den divisor risch-intvar risch-var)
-  (multiple-value-bind (to-ph const back)
-      (risch-rt-varmaps risch-var risch-intvar)
-    (let* ((tsym *risch-rt-monomial*)
-           (zsym *risch-rt-indeterminate*)
-           ($algebraic t) ($gcd '$algebraic) ($ratfac nil) ($keepfloat nil)
-           ($errormsg nil)
-           (varlist nil) (genvar nil)
-           (pm (risch-rt-disrep (ratfix num) to-ph))
-           (qm (risch-rt-disrep (ratfix den) to-ph))
-           (dm (risch-rt-disrep (ratfix divisor) to-ph))
-           (terms nil) (total 0) res n fl)
-      (when (or (zerop1 dm) (zerop1 qm)
-                (>= (risch-rt-degree pm tsym) (risch-rt-degree qm tsym)))
-        (return-from risch-rt-logpart nil))
-      (setq res (car (errcatch ($resultant (sub pm (mul zsym dm)) qm tsym))))
-      (unless res (return-from risch-rt-logpart nil))
-      (setq res (risch-rt-restore ($ratsimp res) const)
-            pm (risch-rt-restore pm const)
-            qm (risch-rt-restore qm const)
-            dm (risch-rt-restore dm const))
-      (setq n (risch-rt-degree res zsym))
-      (when (< n 1) (return-from risch-rt-logpart nil))
-      (setq res ($ratsimp (div res ($ratcoef res zsym n))))
-      (dolist (b back)
-        (unless (freeof (car b) res)
-          (return-from risch-rt-logpart nil)))
-      (setq fl (car (errcatch ($factor ($num res)))))
-      (unless fl (return-from risch-rt-logpart nil))
-      (dolist (f (risch-rt-factors fl zsym))
-        (let ((d (risch-rt-degree f zsym)))
+;; Complex double for E, or NIL when E is not a number.
+(defun risch-rt-number (e)
+  (let ((r (car (errcatch ($float ($realpart e)))))
+        (i (car (errcatch ($float ($imagpart e))))))
+    (and (floatp r) (floatp i) (complex r i))))
+
+;; SOLVE writes the roots of a quartic with (-1)^(1/4) and the like, which
+;; RECTFORM turns into a+b*%i -- readable, and recognizable by
+;; RISCH-RT-CONJUGATE.  Only a root that is a number is rewritten: on one
+;; carrying a symbolic parameter RECTFORM yields atan2 and abs instead.  On
+;; the roots of a quartic that does not factor it can grow the expression
+;; thirtyfold and the gcds then do not finish, so the rewriting is kept
+;; only while it stays about the same size.
+(defun risch-rt-rectform (c)
+  (let ((r (and (risch-rt-number c) (car (errcatch ($rectform c))))))
+    (if (and r (< (conssize r) (* 4 (conssize c)))) r c)))
+
+;; C with %i negated, which is its conjugate as long as every other symbol
+;; in it is real.
+(defun risch-rt-conjugate (c)
+  ($ratsimp (maxima-substitute (neg '$%i) '$%i c)))
+
+;; Position of an unused root conjugate to the one at I, or NIL.  A real
+;; root is its own conjugate and the roots of an irreducible factor are
+;; distinct, so a real root never finds a partner.
+(defun risch-rt-partner (i cs used)
+  (do ((j (1+ i) (1+ j)))
+      ((>= j (length cs)) nil)
+    (when (and (not (aref used j))
+               (zerop1 ($ratsimp (sub (nth i cs)
+                                      (risch-rt-conjugate (nth j cs))))))
+      (return j))))
+
+;; The terms C*log(G) over the roots of one irreducible factor of R.  A
+;; conjugate pair is rewritten as
+;;
+;;     s*log(G1*G2) + 2*u*atan(A/B)
+;;
+;; with s, u the real and imaginary parts of C1 and A, B those of G1, each
+;; taken as a half sum or half difference of the pair so that no RECTFORM
+;; is needed on a G.  Differentiated, the rewriting is an identity for any
+;; two roots; the pairing decides only whether the answer comes out real.
+(defun risch-rt-terms (cs gs)
+  (let* ((n (length cs))
+         (used (make-array n :initial-element nil))
+         (terms nil))
+    (dotimes (i n terms)
+      (unless (aref used i)
+        (let ((j (risch-rt-partner i cs used)))
+          (setf (aref used i) t)
           (cond
-            ((= d 1)
-             (let* ((c ($ratsimp (div (neg ($ratcoef f zsym 0))
-                                      ($ratcoef f zsym 1))))
-                    (g (risch-rt-gcd c pm qm dm tsym)))
-               (unless g (return-from risch-rt-logpart nil))
-               (incf total (risch-rt-degree g tsym))
-               (push (mul c (logmabs g)) terms)))
-            ;; A quadratic factor contributes the conjugate pair
-            ;; C1,C2 = S +- SD.  Writing G1,G2 = A +- sqrt(DISC)*B keeps the
-            ;; sum real: it is S*log(G1*G2) plus either SD*log(G1/G2) or, for
-            ;; a negative numeric discriminant, an arc tangent.
-            ((= d 2)
-             (let* ((a2 ($ratcoef f zsym 2))
-                    (a1 ($ratcoef f zsym 1))
-                    (a0 ($ratcoef f zsym 0))
-                    (disc ($ratsimp (sub (power a1 2) (mul 4 a2 a0))))
-                    (sq ($sqrt disc))
-                    (s ($ratsimp (div (neg a1) (mul 2 a2))))
-                    (sd ($ratsimp (div sq (mul 2 a2))))
-                    (g1 (risch-rt-gcd (add s sd) pm qm dm tsym))
-                    (g2 (risch-rt-gcd (sub s sd) pm qm dm tsym)))
-               (unless (and g1 g2) (return-from risch-rt-logpart nil))
-               (incf total (+ (risch-rt-degree g1 tsym)
-                              (risch-rt-degree g2 tsym)))
+            (j
+             (setf (aref used j) t)
+             (let* ((g1 (nth i gs)) (g2 (nth j gs))
+                    (s ($ratsimp (div (add (nth i cs) (nth j cs)) 2)))
+                    (u ($ratsimp (div (sub (nth i cs) (nth j cs))
+                                      (mul 2 '$%i))))
+                    (aa ($ratsimp (div (add g1 g2) 2)))
+                    (bb ($ratsimp (div (sub g1 g2) (mul 2 '$%i)))))
                (unless (zerop1 s)
                  (push (mul s (logmabs ($ratsimp (mul g1 g2)))) terms))
-               (cond
-                 ((and (mnump disc) (eq ($sign disc) '$neg))
-                  (let* ((sp ($sqrt (neg disc)))
-                         (aa ($ratsimp (div (add g1 g2) 2)))
-                         (bb ($ratsimp (div (sub g1 g2) (mul 2 sq)))))
-                    (when (zerop1 bb)
-                      (return-from risch-rt-logpart nil))
-                    (push (mul (div sp a2)
-                               (ftake '%atan
-                                      ($ratsimp (div aa (mul sp bb)))))
-                          terms)))
-                 (t
-                  (push (mul sd (logmabs ($ratsimp (div g1 g2)))) terms)))))
-            (t (return-from risch-rt-logpart nil)))))
+               (unless (or (zerop1 u) (zerop1 bb))
+                 (push (mul 2 u (ftake '%atan ($ratsimp (div aa bb))))
+                       terms))))
+            (t
+             (push (mul (nth i cs) (logmabs (nth i gs))) terms))))))))
+
+;; The roots of the irreducible F, or NIL when SOLVE cannot list them all.
+(defun risch-rt-roots (f zvar d)
+  (let* (($programmode t) $multiplicities
+         (sol (car (errcatch ($solve f zvar)))))
+    (when (and ($listp sol) (= (length (cdr sol)) d))
+      (let ((roots (mapcar #'(lambda (e) (risch-rt-rectform (caddr e)))
+                           (cdr sol))))
+        (and (every #'(lambda (r) (freeof zvar r)) roots) roots)))))
+
+;; The logarithmic part of NUM/DEN as a list of Maxima expressions, or NIL
+;; when the integrand has no elementary one or this implementation cannot
+;; reach it.
+(defun risch-rt-logpart (num den divisor risch-intvar risch-var)
+  (let* ((risch-ratform (list 'mrat 'simp varlist genvar))
+         (tvar (get risch-var 'rischexpr))
+         (zvar (gensym))
+         (pm (disrep (ratfix num) risch-ratform))
+         (qm (disrep (ratfix den) risch-ratform))
+         (dm (disrep (ratfix divisor) risch-ratform)))
+    (let (($algebraic t) ($gcd '$algebraic) ($ratfac nil) ($keepfloat nil)
+          ($errormsg nil) (varlist nil) (genvar nil)
+          (terms nil) (total 0) res n fl)
+      (when (or (zerop1 dm) (zerop1 qm)
+                (>= (risch-rt-degree pm tvar) (risch-rt-degree qm tvar)))
+        (return-from risch-rt-logpart nil))
+      (setq res (car (errcatch ($resultant (sub pm (mul zvar dm)) qm tvar))))
+      (unless res (return-from risch-rt-logpart nil))
+      (setq res ($ratsimp res))
+      (setq n (risch-rt-degree res zvar))
+      (when (< n 1) (return-from risch-rt-logpart nil))
+      (setq res ($ratsimp (div res ($ratcoef res zvar n))))
+      (unless (freeof risch-intvar res)
+        (return-from risch-rt-logpart nil))
+      (setq fl (car (errcatch ($factor ($num res)))))
+      (unless fl (return-from risch-rt-logpart nil))
+      (dolist (f (risch-rt-factors fl zvar))
+        (let* ((d (risch-rt-degree f zvar))
+               (cs (and (<= 1 d 4) (risch-rt-roots f zvar d)))
+               (gs (mapcar #'(lambda (c) (risch-rt-gcd c pm qm dm tvar)) cs)))
+          (unless (and gs (every #'identity gs))
+            (return-from risch-rt-logpart nil))
+          (dolist (g gs) (incf total (risch-rt-degree g tvar)))
+          (setq terms (nconc (risch-rt-terms cs gs) terms))))
       ;; The gcds are coprime and multiply out to DEN, so a total degree
       ;; other than DEN's means a residue was missed or counted twice and
       ;; the sum is not an antiderivative.
       (and terms
-           (= total (risch-rt-degree qm tsym))
-           (mapcar #'(lambda (e) (resimplify (risch-rt-restore e back)))
-                   terms)))))
+           (= total (risch-rt-degree qm tvar))
+           (mapcar #'resimplify terms)))))
 
 (defun rischlogeprog (p risch-ratform risch-switch1 risch-intvar risch-expstuff
 		      risch-var risch-expflag risch-mainvar risch-expint)

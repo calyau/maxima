@@ -120,7 +120,9 @@ Other changes:
 * risch reduces the logarithmic part of a transcendental integral with
   the Rothstein-Trager resultant, so residues outside the field the
   integrand is written over no longer stop it: risch(1/(x*(log(x)^2+1)),
-  x) is atan(log(x)) rather than a noun
+  x) is atan(log(x)) rather than a noun.  Residues of degree up to four
+  over the rationals are reached, and conjugate pairs are recombined so
+  that the answer stays real
 * New function read_struct: reads a .csv file whose first line names
   the columns into a structure, so that data@t is the column headed t
 * read_matrix and the other numericalio text readers are about twice as

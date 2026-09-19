@@ -6930,7 +6930,7 @@ block([f, F, dF],
  */
 
 risch(1/(x*(log(x)^2-2)), x);
-log((log(x)-sqrt(2))/(log(x)+sqrt(2)))/2^(3/2);
+log(log(x)-sqrt(2))/2^(3/2)-log(log(x)+sqrt(2))/2^(3/2);
 
 risch(1/(x*(log(x)^2+1)), x);
 atan(log(x));
@@ -6952,6 +6952,45 @@ block([f : 2*sqrt(2)*(1-log(x))/(log(x)^2-2*x^2), F],
  F : risch(f, x),
  [freeof('integrate, F), ratsimp(radcan(diff(F, x) - f))]);
 [true, 0];
+
+/* A quadratic factor whose roots carry a symbolic parameter. */
+
+risch(1/(x*(log(x)^2+a)), x);
+atan(log(x)/sqrt(a))/sqrt(a);
+
+/* Factors of degree three and four: SOLVE supplies the roots and the
+ * conjugate pairs are recombined, so the answer stays real.
+ */
+
+risch(1/(x*(log(x)^4+1)), x);
+log(log(x)^2+sqrt(2)*log(x)+1)/2^(5/2)
+ -log(log(x)^2-sqrt(2)*log(x)+1)/2^(5/2)
+ +atan((2*log(x)+sqrt(2))/sqrt(2))/2^(3/2)
+ +atan((2*log(x)-sqrt(2))/sqrt(2))/2^(3/2);
+
+block([f : 1/(x*(log(x)^3-2)), F],
+ F : risch(f, x),
+ [freeof('integrate, F), freeof(%i, F), ratsimp(radcan(diff(F, x) - f))]);
+[true, true, 0];
+
+/* R factors into pieces of degree at most four here, although it is of
+ * degree six.
+ */
+
+block([f : 1/(x*(log(x)^6+1)), F],
+ F : risch(f, x),
+ [freeof('integrate, F), ratsimp(radcan(diff(F, x) - f))]);
+[true, 0];
+
+/* A factor of degree five is left alone, and so is a quartic whose roots
+ * SOLVE only writes down in a form too big to compute a gcd with.
+ */
+
+freeof('integrate, risch(1/(x*(log(x)^5-2)), x));
+false;
+
+freeof('integrate, risch(1/(x*(log(x)^4+log(x)+1)), x));
+false;
 
 /* No elementary logarithmic part: the Rothstein-Trager resultant has roots
  * that are not constants.
