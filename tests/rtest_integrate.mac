@@ -6923,6 +6923,44 @@ block([f, F, dF],
 0;
 
 
+/* Rothstein-Trager reduction of the logarithmic part in rischint.  The
+ * residues of these integrands are not in the field the integrand is
+ * written over, so RISCHLOGEPROG's test for a constant coefficient fails
+ * and RISCH-RT-LOGPART supplies the logarithms.
+ */
+
+risch(1/(x*(log(x)^2-2)), x);
+log((log(x)-sqrt(2))/(log(x)+sqrt(2)))/2^(3/2);
+
+risch(1/(x*(log(x)^2+1)), x);
+atan(log(x));
+
+risch(1/(x*(log(x)^2+log(x)+1)), x);
+2*atan((2*log(x)+1)/sqrt(3))/sqrt(3);
+
+risch(1/(x*log(x)*(log(log(x))^2+1)), x);
+atan(log(log(x)));
+
+/* Hermite reduction first, then Rothstein-Trager on what is left. */
+
+risch(1/(x*(log(x)^2+1)^2), x);
+atan(log(x))/2+log(x)/(2*log(x)^2+2);
+
+/* Two generators, so the answer is not reachable by substitution. */
+
+block([f : 2*sqrt(2)*(1-log(x))/(log(x)^2-2*x^2), F],
+ F : risch(f, x),
+ [freeof('integrate, F), ratsimp(radcan(diff(F, x) - f))]);
+[true, 0];
+
+/* No elementary logarithmic part: the Rothstein-Trager resultant has roots
+ * that are not constants.
+ */
+
+risch(1/(log(x)^2-2), x);
+'integrate(1/(log(x)^2-2), x);
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
