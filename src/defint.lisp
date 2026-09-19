@@ -149,8 +149,8 @@ in the interval of integration.")
 (defmvar $intanalysis_max_discontinuities 1000
   "How many possible discontinuities definite integration is willing to split
 the interval of integration at.  Beyond it the periodic copies of a
-discontinuity are not put back, so the interval is split only where SOLVE
-found a root, and a warning is printed.  Zero means no limit."
+discontinuity are not put back, only the roots themselves are split at, and a
+warning is printed.  Zero means no limit."
   :setting-predicate #'(lambda (x)
                          (values (and (integerp x) (>= x 0))
                                  "must be a non-negative integer")))
@@ -1204,59 +1204,55 @@ found a root, and a warning is printed.  Zero means no limit."
                     factors))
       e))
 
-;; The real roots of the expressions in EXPRS, without multiplicities
-;; and with duplicates removed, or $NO if there are none.  SOLVE returns
-;; only the principal solution of a trigonometric equation ("using
-;; arc-trig functions to get a solution.  Some solutions will be
-;; lost."), so where the zeros of an expression repeat, the solutions
-;; it dropped are put back.  The period is that of the factor the root
+;; (ROOT PERIOD RANGE) for every real root of E, RANGE being the range
+;; of images of ROOT that lie in the interval and NIL when there are
+;; none to enumerate.  The period is that of the factor the root
 ;; belongs to, because the antiderivative the expression comes from may
 ;; well mix several periods, or none.  The factors supply only the
 ;; period, never roots of their own: SOLVE finds roots in a factor that
 ;; it does not find in the product, and every root it did not find
 ;; before is a new candidate to place, which with symbolic limits is a
 ;; new question to the user.
+(defun discontinuity-entries (e ivar ll ul)
+  (let ((roots (real-roots e ivar)))
+    (unless (eq roots '$no)
+      (let ((factors (discontinuity-factors e ivar)))
+        (loop for root in (mapcar #'car roots)
+              for (period mirror)
+                = (multiple-value-list
+                   (zeros-period (vanishing-factor root factors e) ivar))
+              collect (list root period
+                            (and period
+                                 (periodic-image-range root period ll ul)))
+              ;; The solution SOLVE dropped, unless it is an image of
+              ;; the one it kept, and only where its images can be
+              ;; counted: a candidate that cannot be placed is a
+              ;; question to the user.
+              when (and period mirror)
+                append (let* ((other (sub mirror root))
+                              (range (periodic-image-range
+                                      other period ll ul)))
+                         (and range
+                              (not (maxima-integerp
+                                    (div (sub other root) period)))
+                              (list (list other period range)))))))))
+
+;; The real roots of the expressions in EXPRS, without multiplicities
+;; and with duplicates removed, or $NO if there are none.  SOLVE returns
+;; only the principal solution of a trigonometric equation ("using
+;; arc-trig functions to get a solution.  Some solutions will be
+;; lost."), so where the zeros of an expression repeat, the solutions
+;; it dropped are put back.
 ;;
 ;; Splitting the interval at more than $INTANALYSIS_MAX_DISCONTINUITIES
-;; places costs more than it is worth, so past that the roots are left as
-;; SOLVE returned them -- the interval is still split there, just not at
-;; the periodic copies -- and the user is told the result may be wrong.
-;; It may equally well be right: these are the discontinuities of pieces
-;; of the antiderivative, and two of them can cancel.  Zero means no
-;; limit.
+;; places costs more than it is worth, so past that only the roots
+;; themselves are kept, not their periodic copies, and the user is told
+;; the result may be wrong.  It may equally well be right: these are the
+;; discontinuities of pieces of the antiderivative, and two of them can
+;; cancel.  Zero means no limit.
 (defun discontinuity-roots (exprs ivar ll ul)
-  ;; (ROOT PERIOD RANGE) for every root, RANGE being the images of it
-  ;; that lie in the interval and NIL when there are none to enumerate.
-  (let* ((found
-          (loop for e in exprs
-                for roots = (real-roots e ivar)
-                unless (eq roots '$no)
-                  append (let ((factors (discontinuity-factors e ivar)))
-                           (loop for root in (mapcar #'car roots)
-                                 for (period mirror)
-                                   = (multiple-value-list
-                                      (zeros-period
-                                       (vanishing-factor root factors e)
-                                       ivar))
-                                 collect (list root period
-                                               (and period
-                                                    (periodic-image-range
-                                                     root period ll ul)))
-                                 ;; The solution SOLVE dropped, unless it
-                                 ;; is an image of the one it kept, and
-                                 ;; only where its images can be counted:
-                                 ;; a candidate that cannot be placed is
-                                 ;; a question to the user.
-                                 when (and period mirror)
-                                   append (let* ((other (sub mirror root))
-                                                 (range (periodic-image-range
-                                                         other period ll ul)))
-                                            (and range
-                                                 (not (maxima-integerp
-                                                       (div (sub other root)
-                                                            period)))
-                                                 (list (list other period
-                                                             range))))))))
+  (let* ((found (loop for e in exprs
+                      append (discontinuity-entries e ivar ll ul)))
          (total (loop for (nil nil range) in found
                       sum (periodic-image-count range)))
          (split (or (zerop $intanalysis_max_discontinuities)
@@ -1265,8 +1261,8 @@ found a root, and a warning is printed.  Zero means no limit."
       (mtell (intl:gettext
               "defint: found ~M possible discontinuities in the interval.~%~
                That is more than intanalysis_max_discontinuities, so the~%~
-               interval is split only where solve found a root directly~%~
-               and the result may be wrong.~%")
+               periodic copies of a root are left out and the result may~%~
+               be wrong.~%")
              total))
     (or (delete-duplicates
          (loop for (root period range) in found

@@ -444,9 +444,8 @@ only one solution of a trigonometric equation, so the others are put back by
 adding a period at a time; over an interval spanning very many periods that is
 a great deal of work.  When more than
 @code{intanalysis_max_discontinuities} of them are found, those periodic copies
-are not put back: the interval is split only where @mref{solve} found a root
-directly, exactly as it was before this variable existed, and a warning is
-printed that the result may be wrong.  It may equally well be right: what is
+are not put back: only the roots themselves are split at, much as before this
+variable existed, and a warning is printed that the result may be wrong.  It may equally well be right: what is
 found are the discontinuities of parts of the antiderivative, and two of them
 can cancel.  Raise the variable, or set it to @code{0}, to have the copies put
 back however many there are.

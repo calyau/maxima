@@ -196,9 +196,7 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 (defun solve-solution-pairs (sol vars)
   (let ((pairs nil))
     (dolist (e sol pairs)
-      (unless (and (not (atom e))
-		   (not (atom (car e)))
-		   (eq (caar e) 'mequal)
+      (unless (and (mequalp e)
 		   (member (cadr e) vars :test #'alike1)
 		   (every #'(lambda (v) (free (caddr e) v)) vars))
 	(return nil))
@@ -215,9 +213,8 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 ;; than as UND, IND or an infinity, so that the singularity it was
 ;; taken at is removable.
 (defun solve-finite-limit-p (l)
-  (and (not (member l '($und $ind $inf $minf $infinity)))
-       (free l '$und) (free l '$ind)
-       (free l '$inf) (free l '$minf) (free l '$infinity)))
+  (every #'(lambda (x) (free l x))
+	 '($und $ind $inf $minf $infinity)))
 
 ;; True when the equation E is defined at PAIRS.  It is when it can be
 ;; evaluated there at all: SOLVE has already made a numerator vanish,
@@ -244,14 +241,13 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 	     (and in (null (cdr in))
 		  (let ((e1 (solve-subst-pairs e (remove (car in) pairs))))
 		    (and (not (eq e1 t))
-			 (let ((l (errcatch (mfuncall '$limit e1 (caar in) (cdar in)))))
+			 (let ((l (errcatch
+				   (mfuncall '$limit e1 (caar in) (cdar in)))))
 			   (and l (solve-finite-limit-p (car l))
 				(zerop1 (car l)))))))))))
 
 (defun solve-solution-defined-p (pairs eqns)
-  (dolist (e eqns t)
-    (unless (solve-defined-p e pairs)
-      (return nil))))
+  (every #'(lambda (e) (solve-defined-p e pairs)) eqns))
 
 ;; Drop from *ROOTS the roots of EXP that do not verify, keeping each
 ;; root with its multiplicity.
@@ -272,10 +268,10 @@ out zero is not asked: SOLVE has already made a numerator vanish."
   (if (and $solve_reject_undefined ($listp sols))
       (make-mlist-l
        (remove-if #'(lambda (sol)
-		      (and ($listp sol)
-			   (let ((pairs (solve-solution-pairs (cdr sol) vars)))
-			     (and pairs
-				  (not (solve-solution-defined-p pairs eqns))))))
+		      (let ((pairs (and ($listp sol)
+					(solve-solution-pairs (cdr sol) vars))))
+			(and pairs
+			     (not (solve-solution-defined-p pairs eqns)))))
 		  (cdr sols)))
       sols))
 
