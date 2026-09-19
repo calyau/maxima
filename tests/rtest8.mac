@@ -1142,3 +1142,13 @@ solve(sin(x)*tan(x)-1, x);
 solve(sinh(x)^2-cosh(x), x);
 [x = 2*atanh(sqrt(sqrt(5)-2)), x = -2*atanh(sqrt(sqrt(5)-2)),
  x = 2*atanh(sqrt(-sqrt(5)-2)), x = -2*atanh(sqrt(-sqrt(5)-2))];
+
+/* Where what is left of the equation is kernel = R with R still
+   containing the unknown, no inverse applies; a place where R
+   vanishes is a root only if the kernel vanishes there as well. */
+
+solve(sin(x)^2+sec(x)-1, x);
+[x = 0];
+
+solve(cos(x)^2-cot(x)^2-1/2, x);
+[];

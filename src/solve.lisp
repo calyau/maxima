@@ -881,6 +881,26 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 	(t (solventhp (cddr l)
 		      (gcd (car l) gcd)))))
 
+;; ROOT is VARB = R, what is left of an equation once SOLVENTH has
+;; reduced the exponents and undone the power.  SOLVE inverts that
+;; where R is free of the unknown.  Where it is not, no inverse
+;; applies and all that can be looked for is where R vanishes -- and
+;; such a point is a root only if VARB vanishes there as well, which
+;; is what solve(cos(x)^2-cot(x)^2-1/2, x) answering %pi/2, where the
+;; equation is -1/2, comes of not asking.
+(defun solventh-invert (root mult)
+  (if (broken-freeof *var (mequal-rhs root))
+      (solve root *myvar mult)
+      (let ((found (let ((*roots nil) (*failures nil))
+		     (solve (make-mequal (mequal-rhs root) 0)
+			    *myvar mult)
+		     *roots)))
+	(loop for (r m) on found by #'cddr
+	      when (let ((v (and (mequalp r)
+				 (no-err-sub-var (caddr r) *varb *var))))
+		     (and v (not (eq v t)) (zerop1 (sratsimp v))))
+		do (setq *roots (list* r m *roots))))))
+
 ;; Reduces exponents by their gcd.
 
 (defun solventh (exp *g) 
@@ -896,9 +916,7 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 		       (t (let ((rts (re-solve-full
 				      (make-mequal *power (mequal-rhs w))
 				      *varb)))
-			    (map2c #'(lambda (root mult)
-				       (solve root *myvar mult))
-				   (solution-wins rts))))))
+			    (map2c #'solventh-invert (solution-wins rts))))))
 	     wins)
       (map2c #'(lambda (w z)
 		 (push z *failures)
