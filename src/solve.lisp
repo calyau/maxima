@@ -605,7 +605,10 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 ;; and those kernels, or NIL.  TAN and COT may have U/2 instead of U,
 ;; *VAR may occur nowhere but in them, and there must be two of them or
 ;; more: one alone is what USOLVE's inverse functions already solve, and
-;; in a better form.
+;; in a better form.  Only a rational function of the kernels becomes
+;; one of TH, so nothing but sums, products and integer powers of them
+;; may stand in between: SQRT(COS(U)) and LOG(SIN(U)) do not, and
+;; rewriting those yields an equation with TH on both sides.
 (defun half-angle-arg (exp)
   (let ((kernels nil) (ok t))
     (labels ((walk (e)
@@ -613,7 +616,10 @@ out zero is not asked: SOLVE has already made a numerator vanish."
 		     ((or (atom e) (atom (car e))) (setq ok nil))
 		     ((member (caar e) *half-angle-ops*)
 		      (pushnew e kernels :test #'alike1))
-		     (t (mapc #'walk (cdr e))))))
+		     ((member (caar e) '(mplus mtimes)) (mapc #'walk (cdr e)))
+		     ((and (eq (caar e) 'mexpt) (integerp (caddr e)))
+		      (walk (cadr e)))
+		     (t (setq ok nil)))))
       (walk exp))
     (when (and ok (cdr kernels))
       ;; A TAN or COT kernel admits its own argument and twice it; the
@@ -661,7 +667,12 @@ out zero is not asked: SOLVE has already made a numerator vanish."
   ;; TH stands in for TAN(U/2) while the degrees are taken, $HIPOW
   ;; wanting a symbol rather than a kernel, and goes back into the
   ;; numerator before SOLVE sees it.
-  (let* ((th (gensym "HALF-ANGLE-"))
+  ;;
+  ;; $ALGEBRAIC because a rewritten equation whose coefficients are
+  ;; algebraic numbers keeps a factor of 1+TH^2 in both parts
+  ;; otherwise, which is a wrong degree gap and roots at an infinite U.
+  (let* (($algebraic t)
+	 (th (gensym "HALF-ANGLE-"))
 	 (rat (sratsimp (half-angle-subst exp u kernels th)))
 	 (num (ratdisrep ($ratnumer rat)))
 	 (k (- ($hipow (ratdisrep ($ratdenom rat)) th) ($hipow num th)))

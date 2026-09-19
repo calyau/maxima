@@ -1082,3 +1082,22 @@ solve(sec(x)+tan(x)-2, x);
 
 solve(csc(x)+cot(x)-3, x);
 [x = 2*atan(1/3)];
+
+/* The rewrite in the tangent of the half argument needs a rational
+   function of the kernels: these are none and are left to the methods
+   that come before it. */
+
+solve(sqrt(cos(x))+sin(x)-1, x);
+[sin(x) = 1-sqrt(cos(x))];
+
+solve(log(sin(x))+cos(x), x);
+[log(sin(x)) = -cos(x)];
+
+solve(abs(sin(x))+cos(x)-1, x);
+[abs(sin(x)) = 1-cos(x)];
+
+/* with algebraic coefficients what the rewrite leaves over the tangent
+   has to cancel, or an infinite x comes back as a root */
+solve(2^(5/2)*sin(2*x)^3+(2^(5/2)*cos(2*x)^2+(3*2^(7/2)+32)*cos(2*x)
+                          +17*2^(5/2)+96)*sin(2*x), x);
+[x = -%i*atanh(sqrt(2)), x = %i*atanh(sqrt(2)), x = 0];
