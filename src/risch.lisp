@@ -386,11 +386,13 @@
 ;; Reading the logarithms off the remainder sequence rather than out of a
 ;; gcd taken with each root keeps every step a polynomial one: nothing is
 ;; divided by an algebraic number, so neither $ALGEBRAIC nor an algebraic
-;; $GCD is wanted here, and $ALGEBRAIC is bound away.  That is not only for
-;; speed.  $RATSIMP under $ALGEBRAIC reduces a radical modulo the minimal
-;; polynomial ALGPGET assigns it, and for a fifth root of unity that is
-;; z^5+1, which is reducible; the reduction is then not well defined and
-;; the answer comes back wrong.
+;; $GCD is wanted here, and $ALGEBRAIC is bound away.  Leaving it set is
+;; not merely wasteful.  Lift the bound in RISCH-RT-SOLVABLE-P to let the
+;; fifth roots of 1/50000 through, and with $ALGEBRAIC set the answer comes
+;; back wrong -- its derivative misses the integrand by 5e-4 -- while with
+;; it bound off the same answer is exact.  What is different is that SOLVE
+;; then writes two of those roots in a reduced form; which step the reduced
+;; form spoils was not run down.
 ;;
 ;; The members of the sequence are the subresultants only up to a factor
 ;; free of the monomial, which is harmless: RISCH-RT-MONIC divides it out,
