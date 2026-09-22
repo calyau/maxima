@@ -30,8 +30,8 @@ The following projects are included in the installer:
   Website: https://gmplib.org/
   License: https://gmplib.org/manual/Copying
 * TCL/TK
-  Website: https://tcl.tk
-  License: https://tcl.tk/software/tcltk/license.html
+  Website: https://www.tcl-lang.org/
+  License: https://www.tcl-lang.org/software/tcltk/license.html
 * Gnuplot
   Website: http://gnuplot.info
   License: https://sourceforge.net/p/gnuplot/gnuplot-main/ci/master/tree/Copyright
