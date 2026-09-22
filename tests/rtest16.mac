@@ -4344,6 +4344,15 @@ solve(sin(x)^2+sec(x)-1 = 0, x);
 [x = 0];
 
 
+/* Bug #5274: "solve(tan(x) = sqrt(2)+1) -> []" */
+
+solve(tan(x) = sqrt(2) + 1, x);
+[x = 3*%pi/8];
+
+solve(atanh(x) = 2, x);
+[x = tanh(2)];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

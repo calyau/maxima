@@ -870,7 +870,12 @@
                  (check-l (and inverse-exp-l (errcatch (ftake op (car inverse-exp-l))))))
             (if (or (null inverse-exp-l)
                     (null check-l)
-                    (not (meqp (car check-l) exp)))
+                    ;; Workaround until SIGN gets smarter at judging zeroness
+                    ;; of a constant: Disable $SIGNBFLOAT, which for a constant
+                    ;; that is really zero is basically a coin flip due to
+                    ;; rounding errors, e.g. it would confidently say that
+                    ;; atanh(tanh(2)) is not equal to 2.
+                    (not (let ($signbfloat) (meqp (car check-l) exp))))
               (return nil)
 	      `((mplus) ((mminus) ,(cadr *myvar))
 		,(car inverse-exp-l)))))
