@@ -274,8 +274,8 @@
 			       ((of-form-A*F<X>^N+B exp) (solve1a exp mult))
 			       ((and (not (pcoefp exp))
 				     (cddr exp)
-				     (not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp))))))
-				(solventh exp *g))
+				     (not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp)))))
+				     (solventh-p exp *g)))
 			       (t (cond ($solvefactors 
 					 (map2c (lambda (x y) (solve1a x (m* mult y)))
 						(pfactor exp)))
@@ -537,8 +537,8 @@
 	  ((equal (cadr exp) 1) (solvelin exp))
 	  ((of-form-A*F<X>^N+B exp) (solve-A*F<X>^N+B exp t))
 	  ((equal (cadr exp) 2) (solvequad exp))
-	  ((not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp)))))
-	   (solventh exp *g))
+	  ((and (not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp)))))
+		(solventh-p exp *g)))
 	  ((equal (cadr exp) 3) (solvecubic exp))
 	  ((equal (cadr exp) 4) (solvequartic exp))
 	  (t (let ((tt (solve-by-decomposition exp *myvar)))
@@ -617,6 +617,21 @@
 	(t (solventhp (cddr l)
 		      (gcd (car l) gcd)))))
 
+;; ROOT is *VARB = R, what is left of an equation once SOLVENTH has reduced the
+;; exponents and undone the power. SOLVE inverts that where R is free of the
+;; unknown. Where it is not, no inverse applies, and all that can be looked for
+;; is where R vanishes - and such a point is a root only if *VARB vanishes there
+;; as well.
+(defun solventh-invert (root mult)
+  (if (broken-freeof *var (mequal-rhs root))
+    (solve root *myvar mult)
+    (let ((found (let (*roots *failures)
+                   (solve (make-mequal (mequal-rhs root) 0) *myvar mult)
+                   *roots)))
+      (loop for (r m) on found by #'cddr
+            when (zerop1 (no-err-sub-var (mequal-rhs r) *varb *var))
+              do (setq *roots (list* r m *roots))))))
+
 ;; Reduces exponents by their gcd.
 
 (defun solventh (exp *g) 
@@ -632,16 +647,21 @@
 		       (t (let ((rts (re-solve-full
 				      (make-mequal *power (mequal-rhs w))
 				      *varb)))
-			    (map2c #'(lambda (root mult)
-				       (solve (make-mequal (mequal-rhs root) 0)
-					      *myvar mult))
-				   (solution-wins rts))))))
+			    (map2c #'solventh-invert (solution-wins rts))))))
 	     wins)
       (map2c #'(lambda (w z)
 		 (push z *failures)
 		 (push (solventh3 w *power *varb) *failures))
 	     fails)
       *roots)))
+
+;; SOLVENTH, answering whether it found anything. It can come up empty, having
+;; reduced the exponents and then found nothing to invert, and that settles
+;; nothing - the ordinary methods still get their chance at the equation.
+(defun solventh-p (exp *g)
+  (let ((roots *roots) (failures *failures))
+    (solventh exp *g)
+    (not (and (eq roots *roots) (eq failures *failures)))))
 
 (defun solventh3 (w *power *varb &aux varlist genvar *flg w1 w2)
   (cond ((broken-freeof *varb w) w)

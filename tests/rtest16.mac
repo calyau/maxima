@@ -4332,6 +4332,18 @@ block([[r, i] : real_imag_part(log(x)), ri : rectform(log(x))],
 0;
 
 
+/* Bug #5267: "solve(x^4-5*x^2+4) vs. solve(sin(x)^4-5*sin(x)^2+4)" */
+
+solve(sin(x)^4-5*sin(x)^2+4 = 0, x);
+[x = asin(2), x = -asin(2), x = %pi/2, x = -%pi/2];
+
+solve(log(x)^4-5*log(x)^2+4 = 0, x);
+[x = %e^2, x = %e^-2, x = %e, x = %e^-1];
+
+solve(sin(x)^2+sec(x)-1 = 0, x);
+[x = 0];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
