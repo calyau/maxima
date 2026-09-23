@@ -2185,9 +2185,20 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun sign-asin/acos/atanh (x)
   (cond ((and *complexsign*
+              (eq (caar x) '%acos)
+              (eq t (mgrp (cadr x) 1))) ; x > 1 proven
+         ;; acos(x) = %i*acosh(x) for x > 1, so it's imaginary.
+         ;; asin and atanh are merely complex part off [-1, 1].
+         (setq sign '$imaginary))
+        ((and *complexsign*
 	      (or (not (eq t (mgqp (cadr x) -1)))
 		  (not (eq t (mgqp 1 (cadr x)))))) ; x < -1 or x > 1
 	 (setq sign '$complex))
+        ((and (not *complexsign*)
+              (or (eq t (mgrp (cadr x) 1))
+                  (eq t (mlsp (cadr x) -1)))) ; x > 1 or x < -1
+         ;; Provably off [-1, 1], where none of the three is real.
+         (imag-err x))
 	((not (eq (caar x) '%acos))
 	 (sign-oddfun x))
 	((eq t (mlsp (cadr x) 1)) ; x < 1
@@ -2196,8 +2207,16 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (setq sign '$pz))))
 
 (defun sign-acosh (x)
-  (cond ((and *complexsign* (not (eq t (mgqp (cadr x) 1)))) ; x < 1
-	 (setq sign '$complex))
+  (cond ((and *complexsign*
+              (eq t (mgqp (cadr x) -1))
+              (eq t (mlsp (cadr x) 1))) ; -1 <= x < 1 proven
+         ;; acosh(x) = %i*acos(x) there, so it's imaginary.
+         (setq sign '$imaginary))
+        ((and *complexsign* (not (eq t (mgqp (cadr x) 1)))) ; x >= 1 not proven
+         (setq sign '$complex))
+        ((and (not *complexsign*) (eq t (mlsp (cadr x) 1))) ; x < 1 proven
+         ;; Provably non-real.
+         (imag-err x))
 	((eq t (mgrp (cadr x) 1)) ; x > 1
 	 (sign-posfun x))
 	(t ; x >= 1
