@@ -6923,6 +6923,15 @@ block([f, F, dF],
 0;
 
 
+/* Bug #5268: "risch gives up on nested exponential" */
+
+risch(%e^(%e^-(1/x)*x-1/x)*(x+%e^(1/x)+1), x);
+%e^(%e^-(1/x)*x)*x;
+
+risch(diff(x^2*%e^(x*%e^(-1/x)), x), x);
+%e^(%e^-(1/x)*x)*x^2;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -98,6 +98,7 @@ Bug fixes for numbered bugs:
 * \#5261 Result of integrate(1/(x+%i),x,0,1) depends on exptdispflag
 * \#5262 MEQP leaks the sign specials
 * \#5267 solve(x^4-5*x^2+4) vs. solve(sin(x)^4-5*sin(x)^2+4)
+* \#5268 risch gives up on nested exponential
 * \#5274 solve(tan(x) = sqrt(2)+1) -> []
 
 Bug fixes for unnumbered bugs:

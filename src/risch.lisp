@@ -816,7 +816,7 @@
 				 0))))))
      (go l3)
    down2
-     (cond ((> (1- risch-beta) risch-gamma)
+     (cond ((or (pzerop s) (> (1- risch-beta) risch-gamma))
 	    (setq k (+ risch-alphar (1- risch-beta)))
 	    (setq denom #'(lambda ()
 			    (ratti risch-alphar (polcoef r risch-beta risch-var) t))))
