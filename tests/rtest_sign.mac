@@ -2827,6 +2827,15 @@ block([x], local(x), assume(x > 1),
 [imaginary, pos, complex];
 
 
+/* Bug #5264: "sign(a+b) -> pnz or error, depending on whether a or b is declared imaginary" */
+
+block([a, j, z],
+ local(a, j, z),
+ declare(j, imaginary),
+ [errcatch(sign(a + j)), errcatch(sign(z + j)), csign(a + j), csign(z + j)]);
+[[], [], complex, complex];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

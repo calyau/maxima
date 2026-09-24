@@ -1885,11 +1885,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (when (atom x) (setq x (cons '(mplus) (list x))))
   (do ((l (cdr x) (cdr l)) (s '$zero))
       ((null l) (setq sign s minus nil odds (list x) evens nil)
-       (cond (*complexsign*
-	      ;; Because we have continued the loop in Complex Mode
-	      ;; we have to look for the sign '$pnz and return nil.
-	      (if (eq s '$pnz) nil t))
-	     (t t))) ; in Real Mode return T
+       (if (eq s '$pnz) nil t))
     ;; Call sign1 and not sign, because sign1 handles constant expressions.
     (sign1 (car l))
     (cond ((and *complexsign* (eq sign '$complex))
@@ -1917,21 +1913,16 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	       (and (member sign '($nz $neg) :test #'eq) (member s '($zero $nz) :test #'eq))
 	       (and (eq sign '$pn) (eq s '$zero)))
 	   (setq s sign))
+	  ((and *complexsign* (eq s '$imaginary))
+	   ;; The current term is a non-zero real, and the accumulated sign is $imaginary,
+	   ;; so the total is $complex.
+	   (setq sign '$complex odds nil evens nil minus nil)
+	   (return t))
 	  (t
-	   (cond (*complexsign*
-          ;; The current term is real and its sign is not $zero.
-          ;; If the accumulated sign is $imaginary, the final sign is $complex.
-          (if (eq s '$imaginary)
-            (progn
-              (setq sign '$complex odds nil evens nil minus nil)
-              (return t))
-            ;; In Complex Mode we have to continue the loop to look further
-		    ;; for a complex or imaginay expression.
-		    (setq s '$pnz)))
-		 (t
-		  ;; In Real mode the loop stops when the sign is 'pnz.
-		  (setq sign '$pnz odds (list x) evens nil minus nil)
-		  (return nil)))))))
+	   ;; Carry on with an indeterminate total rather than stop here:
+	   ;; the terms not yet reached still have to be looked at, one of
+	   ;; them may be non-real, and SIGN1 reports that by throwing.
+	   (setq s '$pnz)))))
 
 (defun signfactor (x)
   (let (y (factored t))
