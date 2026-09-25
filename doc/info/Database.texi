@@ -1817,15 +1817,17 @@ killed.  If the first available unkilled context is @code{global} then
 @code{initial} is used instead.  If the @code{initial} context is killed, a
 new, empty @code{initial} context is created.
 
-@code{killcontext} refuses to kill a context which is
-currently active, either because it is a subcontext of the current
-context, or by use of the function @mrefdot{activate}
+@code{killcontext} refuses to kill a context which is a subcontext of the
+current context or of a context activated by @mrefcomma{activate} since that
+context depends on it.  A context which has been activated itself is
+deactivated before it is killed.
 
 @code{killcontext} evaluates its arguments.
 
 @code{killcontext} returns @code{not_done} if any of the named contexts could
-not be killed, because it does not exist, is currently active, or is the context
-@code{global}. Otherwise, it returns @code{done}.
+not be killed, because it does not exist, is a subcontext of the current or an
+activated context, or is the context @code{global}. Otherwise, it returns
+@code{done}.
 
 @opencatbox{Categories:}
 @category{Declarations and inferences}

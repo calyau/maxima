@@ -1596,16 +1596,17 @@ Kontext @code{global}, dann wird der Kontext @code{initial} zum aktuellen
 Kontext.  Wird der Kontext @code{initial} gel@"oscht, dann wird eine neuer 
 leerer Kontext @code{initial} erzeugt.
 
-@code{killcontext} l@"oscht einen Kontext nicht, wenn dieser ein Unterkontext 
-des aktuellen Kontextes ist oder wenn der Kontext mit der Funktion 
-@code{activate} aktiviert wurde.
+@code{killcontext} l@"oscht einen Kontext nicht, wenn dieser ein Unterkontext
+des aktuellen Kontextes oder eines mit der Funktion @code{activate} aktivierten
+Kontextes ist, da jener Kontext von ihm abh@"angt.  Ein Kontext, der selbst
+aktiviert wurde, wird vor dem L@"oschen deaktiviert.
 
 @code{killcontext} wertet die Argumente aus.
 
 @code{killcontext} gibt @code{not_done} zur@"uck, wenn einer der angegebenen
-Kontexte nicht gel@"oscht werden konnte, da er nicht existiert, gerade aktiv ist
-oder der Kontext @code{global} ist. Anderenfalls wird @code{done}
-zur@"ckgegeben.
+Kontexte nicht gel@"oscht werden konnte, da er nicht existiert, ein Unterkontext
+des aktuellen oder eines aktivierten Kontextes ist oder der Kontext
+@code{global} ist. Anderenfalls wird @code{done} zur@"uckgegeben.
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------

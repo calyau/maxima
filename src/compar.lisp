@@ -272,14 +272,17 @@
 	 (mapc #'remov (zl-get '$initial 'data))
 	 (remprop '$initial 'data)
 	 t)
-	((and (not (eq $context x)) (contextmark) (< 0 (zl-get x 'cmark)))
+	;; Refuse killing X if the current context or another activated context is
+	;; built on it. After CONTEXTMARK, the CMARK of X counts the current and
+	;; the activated contexts that are X or built on X.
+	((and (not (eq $context x))
+	      (progn (contextmark)
+	             (< (if (member x (cdr $activecontexts)) 1 0)
+	                (or (zl-get x 'cmark) 0)))) ; missing CMARK -> zero
 	 (mtell (intl:gettext "killcontext: context ~M is currently active.") x)
 	 nil)
         (t (if (member x $activecontexts)
-               ;; Context is on the list of active contexts. The test above 
-               ;; checks for active contexts, but it seems not to work in all
-               ;; cases. So deactivate the context at this place to remove it 
-               ;; from the list of active contexts before it is deleted.
+               ;; X may have been activated. Deactivate it before deleting.
                ($deactivate x))
 	   (setq $contexts ($delete x $contexts))
 	   (cond ((and (eq x $context)

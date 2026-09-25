@@ -2836,6 +2836,50 @@ block([a, j, z],
 [[], [], complex, complex];
 
 
+/* Bug #5277: "newcontext(foo)$ newcontext(bar)$ is(y>0)$ killcontext(foo); -> Lisp error"
+   Bug #5278: "killcontext doesn't always refuse to kill an active context" */
+
+block([r],
+ local(c1, c2),
+ newcontext(c1),
+ newcontext(c2),
+ r : killcontext(c1),
+ context : initial,
+ [r, killcontext(c2), contexts]);
+[done, done, [initial, global]]$
+
+block([r],
+ local(c1, c2, p),
+ supcontext(c1),
+ assume(p > 0),
+ supcontext(c2),
+ r : [is(p > 0), killcontext(c1), is(p > 0), contexts],
+ context : initial,
+ [r, killcontext(c2, c1), contexts, facts()]);
+[[true, not_done, true, [c2, c1, initial, global]], done, [initial, global], []]$
+
+block([r],
+ local(c1, c2, p),
+ supcontext(c1),
+ assume(p > 0),
+ supcontext(c2),
+ context : initial,
+ activate(c2),
+ r : [is(p > 0), killcontext(c1), is(p > 0)],
+ [r, killcontext(c2, c1), activecontexts, contexts, is(p > 0)]);
+[[true, not_done, true], done, [], [initial, global], unknown]$
+
+block([r],
+ local(c1, c2, p),
+ newcontext(c1),
+ assume(p > 0),
+ context : initial,
+ activate(c1),
+ r : killcontext(c1),
+ [r, activecontexts, contexts, is(p > 0)]);
+[done, [], [initial, global], unknown]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
