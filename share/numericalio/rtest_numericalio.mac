@@ -841,5 +841,8 @@ errcatch (read_from_string (read_struct, "", 'measurement, 'comma));
 
 (apply (kill, [op (d1)]), apply (kill, [op (d2)]), apply (kill, [op (dd)]),
  kill (measurement, ss, dd, d1, d2),
- structures);
-[];
+ kill (b, h1, h2, h3, hh, hh1),
+ kill (a1, a2, s, a3, b1, b2, b3, m1, m2, m3, l1, l2, l3, L, tmp_msb, tmp_lsb,
+       L4, L4b, L4c, A4, tmp2_msb, tmp2_lsb, A4b, A4c, l4, zz, aa, yy),
+ [structures, arrays, values]);
+[[], [], []];
