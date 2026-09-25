@@ -8,6 +8,7 @@
 (mk:defsystem gentran
   :source-pathname (maxima::maxima-load-pathname-directory)
   :binary-pathname (maxima::maxima-objdir "share" "gentran")
+  :source-extension "lisp"
   :components
   ((:file "allgentran")))
 
