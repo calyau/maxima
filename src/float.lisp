@@ -766,11 +766,13 @@
 	   (setq y ($bfloat (cadr x)))
 	   (if ($bfloatp y)
 	       (cond ((eq (caar x) '$entier) ($entier y))
-		     ;; The next six are computed from 1/y, so catch a zero argument.
-		     ((and (zerop1 y) (eq (caar x) '%acot))
+		     ((and (eq (caar x) '%acot) (zerop1 y))
 		      ($bfloat (div '$%pi 2)))
+		     ((and (eq (caar x) '%acoth) (zerop1 y))
+		      ($bfloat (div (mul '$%i '$%pi) -2)))
+		     ;; The next five are computed from 1/y, so catch a zero argument.
 		     ((and (zerop1 y)
-		           (member (caar x) '(%acoth %acsc %acsch %asec %asech)))
+		           (member (caar x) '(%acsc %acsch %asec %asech)))
 		      (domain-error y (caar x)))
 		     ((arcp (caar x))
 		      (setq y ($bfloat (logarc (caar x) y)))

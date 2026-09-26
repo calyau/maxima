@@ -2221,8 +2221,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; acsc(x) = asin(1/x), asech(x) = acosh(1/x) and acoth(x) = atanh(1/x).
 ;;
 (defun sign-asec/acsc/asech/acoth (x)
-  (if (zerop1 (cadr x))
-    ;; Of these four, acoth(0) = %i*%pi/2 is the only one defined at zero.
+  (if (eq '$zero (sign* (cadr x)))
+    ;; Of these four, acoth(0) = -%i*%pi/2 is the only one defined at zero.
     ;; The others should have been caught by the simplifier already before
     ;; reaching this code, but better safe than sorry. At zero, there's a
     ;; division by zero in their logarithmic form, so use DBZS-ERR.
@@ -2232,8 +2232,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         (imag-err x))
       (dbzs-err x))
     ;; Not zero. Rewrite asec(x) = acos(1/x) etc., and call SIGN on that.
+    ;; Don't go through the simplifier, because a tellsimp rule might be in
+    ;; place that undoes the rewrite, which would cause endless recursion.
     (let ((f (get (get (get (caar x) '$inverse) 'recip) '$inverse)))
-      (sign (ftake f (inv (cadr x)))))))
+      (sign `((,f) ,(inv (cadr x)))))))
 
 ;; This code handles sign(sin(x)), where -%pi <= x <= %pi. Of course, at the 
 ;; expense of a great deal of additional complexity, this code could catch far 

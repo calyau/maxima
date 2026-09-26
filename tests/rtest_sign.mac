@@ -2880,6 +2880,15 @@ block([r],
 [done, [], [initial, global], unknown]$
 
 
+/* Related to bug #5242: "rectform(acoth(0)) and acoth(0.0) cause division by zero error, but should be -%i*%pi/2" */
+
+block([x],
+ local(x),
+ assume(equal(x, 0)),
+ [errcatch(sign(acoth(x))), csign(acoth(x))]);
+[[], imaginary]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -469,6 +469,10 @@
                 (=0 (cdr (risplit (div (cadr l) (caddr l))))))
            ;; Case atan2(y,x) and y/x a real expression.
            (cons l 0))
+	  ;; acoth(0) = -%i*%pi/2, but the simplifier doesn't do this
+	  ;; It does handle acoth(0.0) and acoth(0b0), so just handle 0 here.
+	  ((and (eq (caar l) '%acoth) (eql 0 (cadr l)))
+	   (cons 0 (div '$%pi -2)))
 	  ((or (arcp (caar l)) (eq (caar l) '%atan2))
 	   (let ((ans (risplit (logarc (caar l)
 				       ;; atan2 has 2 args, unlike all

@@ -754,3 +754,15 @@ block([s1, s2, v : [x = 0.7, a = 1.1, b = 0.4], r1, r2],
 
 acot(0b0) - bfloat(%pi / 2);
 0b0;
+
+
+/* Bug #5242: "rectform(acoth(0)) and acoth(0.0) cause division by zero error, but should be -%i*%pi/2" */
+
+rectform(acoth(0));
+-%i*%pi/2$
+
+acoth(0.0) + float(%i*%pi/2);
+0.0$
+
+acoth(0b0) + bfloat(%i*%pi/2);
+0b0$

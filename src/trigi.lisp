@@ -149,6 +149,12 @@
     (/ (- (cl:log (+ 1 x)) (cl:log (- 1 x))) 2)
     (cl:atanh x)))
 
+(defun maxima-branch-acoth (x)
+  ;; Allow 0.0 in domain of acoth, otherwise use atanh(1/x)
+  (if (and (equal (realpart x) 0.0) (equal (imagpart x) 0.0))
+    (complex 0.0 #.(/ (float pi) -2))
+    (maxima-branch-atanh (/ 1 x))))
+
 ;; Fill the hash table.
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *flonum-op*) ,dfun)))
   (frob mplus #'+)
@@ -280,9 +286,7 @@
 	      (let ((y (ignore-errors (acsch x))))
 		(if y y (domain-error x 'acsch))))))
 
-  (frob %acoth #'(lambda (x)
-		   (let ((y (ignore-errors (maxima-branch-atanh (/ 1 x))))) 
-		     (if y y (domain-error x 'acoth)))))
+  (frob %acoth #'maxima-branch-acoth)
 
   (frob mabs #'cl:abs)
   (frob %exp #'cl:exp)

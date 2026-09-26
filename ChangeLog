@@ -87,6 +87,7 @@ Bug fixes for numbered bugs:
 * \#5238 sign(signum(x) - a) says pn
 * \#5240 Risch integrator drops negative powers of exponential
 * \#5241 Risch integrator drops algebraic unit from a denominator
+* \#5242 rectform(acoth(0)) and acoth(0.0) cause division by zero error, but should be -%i*%pi/2
 * \#5244 logabs:true applies abs to a complex log argument, collapsing the antiderivative to zero
 * \#5249 integrate(%e^(2*x)*tan(%e^x)^2,x) is non-real
 * \#5254 limit(gamma_incomplete(-1,x), x, 0, plus) -> minf
