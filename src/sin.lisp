@@ -1580,7 +1580,7 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (expr var2)
-  (prog (y repl y1 y2 *yy* z m n *yz*)
+  (prog (y repl y1 y2 *yy* z m n *yz* ans)
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
@@ -1743,7 +1743,7 @@
      ;; this allows Maxima to correctly compute many definite integrals involving
      ;; trigonometric functions, e.g., integrate((1-cos(x))^(3/2), x, 0, 2*%pi).
      (setq *risch-use-triginv-all* t)
-     (return
+     (setq ans
        ;; Do not integrate for the global variable VAR, but substitute it.
        ;; This way possible assumptions on VAR are no longer present. The
        ;; algorithm of DEFINT depends on this behavior. See Bug 3085498.
@@ -1752,7 +1752,18 @@
                    newvar
                    (integrator (maxima-substitute newvar 'x y) newvar)
                    var2
-                   expr)))))
+                   expr)))
+     ;; If z = sin failed, try z = cos.  With z = sin, cos^2 becomes 1-z^2,
+     ;; and INTEGRATOR turns sqrt(1+sin^4/cos^4) into
+     ;; sqrt(2*z^4-2*z^2+1)/(abs(z-1)*abs(z+1)), not knowing that
+     ;; abs(z) <= 1, and fails.  Example: tan(x)/sqrt(1+tan(x)^4).
+     (when (and (isinop ans '%integrate)
+                (eq (caar repl) '%sin)
+                (m2 y1 '((coeffpt) (c rat1 cos* sin* -1)
+                         ((mexpt) sin* (n odd1 -1)))))
+       (setq repl (list '(%cos) var2))
+       (go get3))
+     (return ans)))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)

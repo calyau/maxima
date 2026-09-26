@@ -117,6 +117,7 @@ Bug fixes for unnumbered bugs:
   plus sign and an upper case marker, as in 9.87E+52 where every other
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
+* integrate(tan(x)/sqrt(1+tan(x)^4),x) was complex and wrong for every x
 
 Changes in the Windows installer:
 ---------------------------------

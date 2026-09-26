@@ -6931,6 +6931,15 @@ risch(%e^(%e^-(1/x)*x-1/x)*(x+%e^(1/x)+1), x);
 risch(diff(x^2*%e^(x*%e^(-1/x)), x), x);
 %e^(%e^-(1/x)*x)*x^2;
 
+/* TRIGINT: the substitution z = sin(x) fails, z = cos(x) works.  Without
+   the fallback, the result came from RISCHINT and was wrong for all x. */
+
+integrate(tan(x)/sqrt(1+tan(x)^4), x);
+-asinh((4*cos(x)^2-2)/2)/2^(3/2);
+
+integrate(tan(x)/sqrt(1+tan(x)^4), x, 1, 2);
+asinh(2*cos(1)^2-1)/2^(3/2)-asinh(2*cos(2)^2-1)/2^(3/2);
+
 
 /**************************************/
 /* Leave this at the end of the file! */
