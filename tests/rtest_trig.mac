@@ -847,3 +847,18 @@ block([z : atan(-2.0*%i)],
 
 [errcatch(atan(1.0*%i)), errcatch(acot(-1.0*%i)), errcatch(bfloat(atan(1b0*%i)))];
 [[], [], []]$
+
+
+/* Bug #5283: "bfloat(acos(%i)), bfloat(asec(%i)), bfloat(acosh(%i)) and bfloat(asech(%i)) don't evaluate" */
+
+bfloat([%i, 1 + %i]);
+[1.0b0*%i, 1.0b0*%i + 1.0b0]$
+
+map(lambda([e], block([b : bfloat(e)], freeof(op(e), b) and is(cabs(b - rectform(float(e))) < 1e-13))),
+    [acos(%i), asec(%i), acosh(%i), asech(%i), exp(%i), log(%i), gamma(%i)]);
+[true, true, true, true, true, true, true]$
+
+block([%iargs : false],
+  map(lambda([e], block([b : bfloat(e)], freeof(op(e), b) and is(cabs(b - rectform(float(e))) < 1e-13))),
+      [asin(%i), sin(%i), sec(%i), cosh(%i)]));
+[true, true, true, true]$

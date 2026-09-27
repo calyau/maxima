@@ -731,9 +731,9 @@
 (defmfun ($bfloat :properties ((evfun t))) (x)
   (let (y)
     (cond ((bigfloatp x))
-	  #+nil
           ((eq x '$%i)
-	   ;; Handle %i specially.
+	   ;; Return 1.0b0*%i rather than %i, so that the simplifier
+	   ;; evaluates f(%i) numerically, as $FLOAT does with 1.0*%i.
 	   (mul ($bfloat 1) '$%i))
 	  ((or (numberp x)
 	       (member x *builtin-numeric-constants* :test #'eq))

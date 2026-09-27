@@ -106,6 +106,7 @@ Bug fixes for numbered bugs:
 * \#5278 killcontext doesn't always refuse to kill an active context
 * \#5280 csch/sech/coth don't simplify at inverse hyperbolic arguments
 * \#5281 Float atan and acot take the other side of their branch cuts from bigfloat and exact evaluation
+* \#5283 bfloat(acos(%i)), bfloat(asec(%i)), bfloat(acosh(%i)) and bfloat(asech(%i)) don't evaluate
 
 Bug fixes for unnumbered bugs:
 ------------------------------
