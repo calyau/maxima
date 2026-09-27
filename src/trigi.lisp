@@ -153,7 +153,7 @@
 
 (defun maxima-branch-acot (x)
   ;; Allow 0.0 in domain of acot, otherwise use atan(1/x)
-  (if (and (equal (realpart x) 0.0) (equal (imagpart x) 0.0))
+  (if (zerop x)
     #.(/ (float pi) 2)
     (maxima-branch-atan (/ 1 x))))
 
@@ -171,7 +171,7 @@
 
 (defun maxima-branch-acoth (x)
   ;; Allow 0.0 in domain of acoth, otherwise use atanh(1/x)
-  (if (and (equal (realpart x) 0.0) (equal (imagpart x) 0.0))
+  (if (zerop x)
     (complex 0.0 #.(/ (float pi) -2))
     (maxima-branch-atanh (/ 1 x))))
 
