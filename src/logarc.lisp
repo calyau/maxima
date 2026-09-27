@@ -48,6 +48,11 @@
     	((eq f '%atanh)
 	 ;; (log(x+1)-log(1-x))/2
 	 (div (sub (take '(%log) (add 1 x)) (take '(%log) (sub 1 x))) 2))
+	;; acot(0) and acoth(0) are defined, but the forms below would divide by 0.
+	((and (eq f '%acot) (zerop1 x))
+	 (div '$%pi 2))
+	((and (eq f '%acoth) (zerop1 x))
+	 (div (mul '$%i '$%pi) -2))
     	((member f '(%asec %acsc %acot %asech %acsch %acoth) :test #'eq)
 	 ;; asec(x) = acos(1/x), and etc.
 	 (logarc (zl-get (zl-get (get f '$inverse) 'recip) '$inverse) (inv x)))

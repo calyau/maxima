@@ -862,3 +862,9 @@ block([%iargs : false],
   map(lambda([e], block([b : bfloat(e)], freeof(op(e), b) and is(cabs(b - rectform(float(e))) < 1e-13))),
       [asin(%i), sin(%i), sec(%i), cosh(%i)]));
 [true, true, true, true]$
+
+
+/* Bug #5284: "logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)" */
+
+[block([%piargs : false], logarc(acot(0))), logarc(acoth(0)), ev(acoth(0), logarc : true)];
+[%pi/2, -%i*%pi/2, -%i*%pi/2]$
