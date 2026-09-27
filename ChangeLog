@@ -105,6 +105,7 @@ Bug fixes for numbered bugs:
 * \#5277 newcontext(foo)$ newcontext(bar)$ is(y>0)$ killcontext(foo); -> Lisp error
 * \#5278 killcontext doesn't always refuse to kill an active context
 * \#5280 csch/sech/coth don't simplify at inverse hyperbolic arguments
+* \#5281 Float atan and acot take the other side of their branch cuts from bigfloat and exact evaluation
 
 Bug fixes for unnumbered bugs:
 ------------------------------

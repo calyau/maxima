@@ -972,7 +972,10 @@
 
 (defun big-float-atan (x &optional y)
   "Compute atan(x+%i*y) when X and Y are bigfloat objects.  Y is optional." 
-  (cond (y
+  (cond ((and y (zerop1 x) (zerop1 (sub (mul y y) 1)))
+         ;; The poles at +/-%i.
+         (domain-error (add x (mul '$%i y)) 'atan))
+        (y
          ;; atan(z) = -i*atanh(i*z)
          (multiple-value-bind (u v)
              (complex-atanh (neg y) x)

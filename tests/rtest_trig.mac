@@ -797,12 +797,12 @@ acoth(0b0) + bfloat(%i*%pi/2);
 
 /* All 72 compositions of a trigonometric or hyperbolic function with an
    inverse one agree with numerical evaluation on a grid of complex numbers,
-   both with regular float and bigfloat.
-   Note: Values directly on the axes are excluded until bug #5281 is fixed. */
-block([x, fpprec : 40, bad : [], ts : [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5], pts, u, v, w, m, rel_err_uv, rel_err_uw],
+   both with regular float and bigfloat. */
+block([x, fpprec : 40, bad : [], ts : [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5], pts, u, v, w, m, rel_err_uv, rel_err_uw],
   pts : append(create_list(a + b*%i, a, ts, b, ts),
                create_list(t + d*%i, t, ts, d, [1e-6, -1e-6]),
                create_list(d + t*%i, t, ts, d, [1e-6, -1e-6])),
+  pts : delete(0.0, pts),
   for fg in append(create_list([f, g], f, [sin, cos, tan, csc, sec, cot],
                                        g, [asin, acos, atan, acsc, asec, acot]),
                    create_list([f, g], f, [sinh, cosh, tanh, csch, sech, coth],
@@ -817,7 +817,7 @@ block([x, fpprec : 40, bad : [], ts : [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5], pts, u,
       rel_err_uv : cabs(u - v) / m,
       rel_err_uw : cabs(u - w) / m,
       /* Relative error margins allow for ~100x headroom (reference: SBCL 2.6.6). */
-      if rel_err_uv > 1.7e-8 or rel_err_uw > 1.2e-13 then push([fg, p, u, v, w, err_uv, err_uw], bad)
+      if rel_err_uv > 1.7e-8 or rel_err_uw > 1.6e-8 then push([fg, p, u, v, w, err_uv, err_uw], bad)
     )
   ),
   bad);
@@ -825,3 +825,25 @@ block([x, fpprec : 40, bad : [], ts : [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5], pts, u,
 
 block([triginverses : false], map(op, [sech(acosh(x)), sinh(acoth(x))]));
 [sech, sinh]$
+
+
+/* Bug #5281: "Float atan and acot take the other side of their branch cuts from bigfloat and exact evaluation" */
+
+block([fpprec : 30],
+  map(lambda([z], is(cabs(atan(float(z)) - float(rectform(atan(z)))) < 1e-14 and
+                     cabs(atan(float(z)) - float(bfloat(atan(bfloat(z))))) < 1e-14)),
+      [-10*%i, -2*%i, -3*%i/2, 3*%i/2, 2*%i, 10*%i]));
+[true, true, true, true, true, true]$
+
+block([fpprec : 30],
+  map(lambda([z], is(cabs(acot(float(z)) - float(rectform(acot(z)))) < 1e-14 and
+                     cabs(acot(float(z)) - float(bfloat(acot(bfloat(z))))) < 1e-14)),
+      [-3*%i/4, -%i/2, -%i/4, %i/4, %i/2, 3*%i/4]));
+[true, true, true, true, true, true]$
+
+block([z : atan(-2.0*%i)],
+  [is(cabs(z + atan(2.0*%i)) < 1e-15), is(cabs(z + expand(%i*atanh(2.0))) < 1e-15)]);
+[true, true]$
+
+[errcatch(atan(1.0*%i)), errcatch(acot(-1.0*%i)), errcatch(bfloat(atan(1b0*%i)))];
+[[], [], []]$

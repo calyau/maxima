@@ -135,11 +135,27 @@
     (- #.(/ (float pi) 2) (maxima-branch-asin x))
     (cl:acos x)))
 
+;; On the branch cut (imaginary axis beyond +/-%i), use atan(%i*y) = %i*atanh(y)
+;; with MAXIMA-BRANCH-ATANH, so that atan agrees with atanh, with bigfloat and
+;; exact evaluation, and with atan(-x) = -atan(x). Return NIL at the poles +/-%i,
+;; otherwise punt to CL:ATAN.
+(defun maxima-branch-atan (x)
+  (let ((re (realpart x))
+        (im (imagpart x)))
+    (cond ((or (not (zerop re)) (< (abs im) 1))
+           (cl:atan x))
+          ((= (abs im) 1)
+           nil)
+          (t
+           ;; %i*(u+%i*v) = -v+%i*u
+           (let ((w (maxima-branch-atanh im)))
+             (complex (- (imagpart w)) (realpart w)))))))
+
 (defun maxima-branch-acot (x)
   ;; Allow 0.0 in domain of acot, otherwise use atan(1/x)
   (if (and (equal (realpart x) 0.0) (equal (imagpart x) 0.0))
     #.(/ (float pi) 2)
-    (cl:atan (/ 1 x))))
+    (maxima-branch-atan (/ 1 x))))
 
 ;; Apply formula from CLHS if X falls on a branch cut.
 ;; Otherwise punt to CL:ATANH.
@@ -181,7 +197,9 @@
   (frob %acos #'maxima-branch-acos)
   (frob %asin #'maxima-branch-asin)
 
-  (frob %atan #'cl:atan)
+  (frob %atan #'(lambda (x)
+		  (let ((y (ignore-errors (maxima-branch-atan x))))
+		    (if y y (domain-error x 'atan)))))
 
   (frob %asec #'(lambda (x)
 		  (let ((y (ignore-errors (maxima-branch-acos (/ 1 x))))) 
