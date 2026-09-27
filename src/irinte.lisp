@@ -14,7 +14,10 @@
 
 (load-macsyma-macros rzmac)
 
-(defun integerpfr (a) (if (not (maxima-integerp a)) (integerp1 a)))
+;; T if A is half an odd integer. The INTEGERP2 test excludes an
+;; integral float such as 2.0, which MAXIMA-INTEGERP does not accept.
+(defun integerpfr (a)
+  (if (not (or (maxima-integerp a) (integerp2 a))) (integerp1 a)))
 
 (defun hasvar2 (exp var2)
   (not (freevar2 exp var2)))
@@ -368,11 +371,11 @@
      (setq n (cdras 'n assoclist))
      ;; r12 1//2)
      ;; (format t "n = ~A~%" n)
-     (when (or (null assoclist)
-	       (maxima-integerp n))
-       (return nil))
      (when (floatp n)
        (setq n (rdis (ration1 n))))
+     (when (or (null assoclist)
+               (maxima-integerp n))
+       (return nil))
      (setq d (cdras 'd assoclist))
      (when (equal d 0) (return 0))
      (setq c (cdras 'a assoclist))
