@@ -2183,3 +2183,12 @@ integer_partitions(5, 0);
 
 integer_partitions(0, 0);
 {[]};
+
+/* 5450 lreduce, rreduce and xreduce error message shows $lreduce */map(lambda([fn],
+      block([s: make_string_output_stream(), msg],
+        with_stdout(s, errcatch(apply(fn, [f, []]))),
+        msg: get_output_stream_string(s),
+        close(s),
+        ssearch(sconcat(fn, ": either a nonempty set"), msg))),
+    [lreduce, rreduce, xreduce]);
+[1, 1, 1]$

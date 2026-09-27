@@ -1122,7 +1122,7 @@
 	 (reduce #'(lambda (x y) (mfuncall f x y)) s :from-end left 
 		 :initial-value init))
 	((null s)
-	 (merror (intl:gettext "~a: either a nonempty set or initial value must be given.") fn))
+	 (merror (intl:gettext "~M: either a nonempty set or initial value must be given.") fn))
 	(t
 	 (reduce #'(lambda (x y) (mfuncall f x y)) s :from-end left))))
 
