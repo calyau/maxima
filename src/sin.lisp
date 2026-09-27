@@ -1564,7 +1564,7 @@
 (defun odd1 (n cc &optional (offset 1))
   (declare (special *yz*))
   (cond ((not (numberp n)) nil)
-	((not (equal (rem n 2) 0))
+	((not (zerop (rem n 2)))
 	 (setq *yz*
 	       (maxima-substitute cc
 				  'c

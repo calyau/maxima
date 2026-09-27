@@ -6954,6 +6954,19 @@ integrate(sqrt(x)*(1+x)^2.0, x) - integrate(sqrt(x)*(1+x)^2, x);
 [0, 0]$
 
 
+/* Bug #5525: "integrate takes an even float power such as cos(x)^2.0 for an odd one" */
+
+block([F : integrate(cos(x)^2.0*sin(x)^3, x),
+       G : integrate(cos(x)^2  *sin(x)^3, x)],
+  is(abs(float(subst(x = 3, F - G) - subst(x = 2, F - G))) < 1e-10));
+true$
+
+block([F : integrate(sin(x)^3/cos(x)^2.0, x),
+       G : integrate(sin(x)^3/cos(x)^2  , x)],
+  is(abs(float(subst(x = 3, F - G) - subst(x = 2, F - G))) < 1e-10));
+true$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
