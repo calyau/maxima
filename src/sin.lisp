@@ -1078,6 +1078,10 @@
 		  (setq n2 (integerp2 (timesk r2 d2)))
 		  (setq w (list* (cons 'd1 d1) (cons 'd2 d2)
 				 (cons 'n1 n1) (cons 'n2 n2)
+				 ;; Exact r1 and r2, so that a float
+				 ;; exponent such as 2.0 becomes 2.
+				 (cons 'r1 (setq r1 (div n1 d1)))
+				 (cons 'r2 (setq r2 (div n2 d2)))
 				 w))))
 	#+nil
 	(progn
