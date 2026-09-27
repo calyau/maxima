@@ -158,12 +158,16 @@
     (maxima-branch-atan (/ 1 x))))
 
 ;; Apply formula from CLHS if X falls on a branch cut.
+;; Return NIL at the poles +/-1, where some Lisps return an infinity.
 ;; Otherwise punt to CL:ATANH.
 (defun maxima-branch-atanh (x)
   ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
-  (if (and (> (abs (realpart x)) 1.0) (equal (imagpart x) 0.0))
-    (/ (- (cl:log (+ 1 x)) (cl:log (- 1 x))) 2)
-    (cl:atanh x)))
+  (cond ((and (= (abs (realpart x)) 1) (zerop (imagpart x)))
+         nil)
+        ((and (> (abs (realpart x)) 1.0) (equal (imagpart x) 0.0))
+         (/ (- (cl:log (+ 1 x)) (cl:log (- 1 x))) 2))
+        (t
+         (cl:atanh x))))
 
 (defun maxima-branch-acoth (x)
   ;; Allow 0.0 in domain of acoth, otherwise use atanh(1/x)
@@ -269,7 +273,9 @@
   (frob %acosh #'cl:acosh)
   (frob %asinh #'cl:asinh)
   
-  (frob %atanh #'maxima-branch-atanh)
+  (frob %atanh #'(lambda (x)
+		   (let ((y (ignore-errors (maxima-branch-atanh x))))
+		     (if y y (domain-error x 'atanh)))))
 
   (frob %asech #'(lambda (x)
 		   (let ((y (ignore-errors (cl:acosh (/ 1 x)))))
@@ -304,7 +310,9 @@
 	      (let ((y (ignore-errors (acsch x))))
 		(if y y (domain-error x 'acsch))))))
 
-  (frob %acoth #'maxima-branch-acoth)
+  (frob %acoth #'(lambda (x)
+		   (let ((y (ignore-errors (maxima-branch-acoth x))))
+		     (if y y (domain-error x 'acoth)))))
 
   (frob mabs #'cl:abs)
   (frob %exp #'cl:exp)

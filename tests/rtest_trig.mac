@@ -868,3 +868,46 @@ block([%iargs : false],
 
 [block([%piargs : false], logarc(acot(0))), logarc(acoth(0)), ev(acoth(0), logarc : true)];
 [%pi/2, -%i*%pi/2, -%i*%pi/2]$
+
+
+[errcatch(atanh(1.0)), errcatch(atanh(-1.0)), errcatch(acoth(1.0)), errcatch(acoth(-1.0))];
+[[], [], [], []];
+
+
+/* The inverse trigonometric and hyperbolic functions agree, on and off their
+   branch cuts, however they are evaluated: float and bigfloat evaluation, the
+   simplifier (exact values, reflection rules, %iargs) followed by float() or
+   bfloat(), rectform() and logarc(). At the poles, all of them signal an
+   error. The reference is bigfloat evaluation at fpprec 40. */
+
+block([fpprec : 40, ratprint : false, bad : [], ts : [-2, -1, -1/2, 0, 1/2, 1, 2], d : 1/1024, pts,
+       poles : [[atan, %i], [atan, -%i], [acot, %i], [acot, -%i], [atanh, 1], [atanh, -1],
+                [acoth, 1], [acoth, -1], [acsc, 0], [asec, 0], [acsch, 0], [asech, 0]]],
+  pts : unique(append(create_list(a + b*%i, a, ts, b, ts),
+                      create_list(t + o*%i, t, ts, o, [d, -d]),
+                      create_list(o + t*%i, t, ts, o, [d, -d]),
+                      /* Arguments with exact values */
+                      create_list(s*v, s, [-1, 1],
+                                  v, [sqrt(2)-1, 1/sqrt(3), 1/sqrt(2), sqrt(3)/2,
+                                      2/sqrt(3), sqrt(2), sqrt(3), sqrt(2)+1]))),
+  for f in [asin, acos, atan, acsc, asec, acot, asinh, acosh, atanh, acsch, asech, acoth] do
+    for p in pts do block([errormsg : false, r, v],
+      r : errcatch(expand(apply(f, [bfloat(p)]))),
+      v : [errcatch(expand(apply(f, [float(p)]))),
+           errcatch(expand(float(apply(f, [p])))),
+           errcatch(expand(bfloat(apply(f, [p])))),
+           errcatch(expand(bfloat(rectform(apply(f, [p]))))),
+           /* logarc() of f(p) itself, not of what the simplifier makes of it */
+           errcatch(expand(bfloat(rectform(block([%iargs : false, %piargs : false, trigsign : false], logarc(apply(f, [p])))))))],
+      if member([f, p], poles) then (
+        if r # [] or some(lambda([u], u # []), v) then push([f, p, r, v], bad))
+      /* Every path must give a number, else a difference can simplify to 0 */
+      else if r = [] or member([], v) or
+              not every(lambda([u], numberp(realpart(u[1])) and numberp(imagpart(u[1]))), cons(r, v))
+      then push([f, p, r, v], bad)
+      else block([m : max(1, cabs(r[1])), e],
+        e : map(lambda([u], cabs(u[1] - r[1]) / m), v),
+        /* Relative error margins allow for ~100x headroom (reference: SBCL 2.2.9). */
+        if e[1] > 5e-14 or e[2] > 5e-14 or lmax(rest(e, 2)) > 1b-35 then push([f, p, r, v], bad))),
+  bad);
+[]$
