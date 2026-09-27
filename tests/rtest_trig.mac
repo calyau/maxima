@@ -817,7 +817,7 @@ block([x, fpprec : 40, bad : [], ts : [-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5], pt
       rel_err_uv : cabs(u - v) / m,
       rel_err_uw : cabs(u - w) / m,
       /* Relative error margins allow for ~100x headroom (reference: SBCL 2.6.6). */
-      if rel_err_uv > 1.7e-8 or rel_err_uw > 1.6e-8 then push([fg, p, u, v, w, err_uv, err_uw], bad)
+      if rel_err_uv > 1.7e-8 or rel_err_uw > 1.6e-8 then push([fg, p, u, v, w, rel_err_uv, rel_err_uw], bad)
     )
   ),
   bad);
