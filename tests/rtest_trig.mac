@@ -766,3 +766,62 @@ acoth(0.0) + float(%i*%pi/2);
 
 acoth(0b0) + bfloat(%i*%pi/2);
 0b0$
+
+
+/* Bug #5280: "csch/sech/coth don't simplify at inverse hyperbolic arguments" */
+
+[csch(asinh(x)), sech(asinh(x)), coth(asinh(x))];
+[1/x, 1/sqrt(x^2+1), sqrt(x^2+1)/x]$
+
+[csch(acosh(x)), sech(acosh(x)), coth(acosh(x))];
+[1/(sqrt(x-1)*sqrt(x+1)), 1/x, x/(sqrt(x-1)*sqrt(x+1))]$
+
+[csch(atanh(x)), sech(atanh(x)), coth(atanh(x))];
+[sqrt(1-x)*sqrt(x+1)/x, sqrt(1-x)*sqrt(x+1), 1/x]$
+
+[sinh(acsch(x)), cosh(acsch(x)), tanh(acsch(x)), sech(acsch(x)), coth(acsch(x))];
+[1/x, sqrt(1/x^2+1), 1/(sqrt(1/x^2+1)*x), 1/sqrt(1/x^2+1), sqrt(1/x^2+1)*x]$
+
+[sinh(asech(x)), cosh(asech(x)), tanh(asech(x)), csch(asech(x)), coth(asech(x))];
+[sqrt(1/x-1)*sqrt(1/x+1), 1/x, sqrt(1/x-1)*sqrt(1/x+1)*x, 1/(sqrt(1/x-1)*sqrt(1/x+1)), 1/(sqrt(1/x-1)*sqrt(1/x+1)*x)]$
+
+[sinh(acoth(x)), cosh(acoth(x)), tanh(acoth(x)), csch(acoth(x)), sech(acoth(x))];
+[1/(sqrt(1-1/x)*sqrt(1/x+1)*x), 1/(sqrt(1-1/x)*sqrt(1/x+1)), 1/x, sqrt(1-1/x)*sqrt(1/x+1)*x, sqrt(1-1/x)*sqrt(1/x+1)]$
+
+/* acoth(0) = -%i*%pi/2 is left alone, and so is everything at it but coth */
+[sinh(acoth(0)), cosh(acoth(0)), tanh(acoth(0)), csch(acoth(0)), sech(acoth(0)), coth(acoth(0))];
+[sinh(acoth(0)), cosh(acoth(0)), tanh(acoth(0)), csch(acoth(0)), sech(acoth(0)), 0]$
+
+[sinh(acoth(0.0)), csch(acoth(0.0))];
+[-1.0*%i, 1.0*%i]$
+
+/* All 72 compositions of a trigonometric or hyperbolic function with an
+   inverse one agree with numerical evaluation on a grid of complex numbers,
+   both with regular float and bigfloat.
+   Note: Values directly on the axes are excluded until bug #5281 is fixed. */
+block([x, fpprec : 40, bad : [], ts : [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5], pts, u, v, w, m, rel_err_uv, rel_err_uw],
+  pts : append(create_list(a + b*%i, a, ts, b, ts),
+               create_list(t + d*%i, t, ts, d, [1e-6, -1e-6]),
+               create_list(d + t*%i, t, ts, d, [1e-6, -1e-6])),
+  for fg in append(create_list([f, g], f, [sin, cos, tan, csc, sec, cot],
+                                       g, [asin, acos, atan, acsc, asec, acot]),
+                   create_list([f, g], f, [sinh, cosh, tanh, csch, sech, coth],
+                                       g, [asinh, acosh, atanh, acsch, asech, acoth])) do
+  (
+    for p in pts do
+    (
+      u : float(rectform(apply(fg[1], [apply(fg[2], [p])]))),
+      v : float(rectform(subst(x = p, apply(fg[1], [apply(fg[2], [x])])))),
+      w : float(rectform(bfloat(subst(x = bfloat(p), apply(fg[1], [apply(fg[2], [x])]))))),
+      m : max(1, cabs(u)),
+      rel_err_uv : cabs(u - v) / m,
+      rel_err_uw : cabs(u - w) / m,
+      /* Relative error margins allow for ~100x headroom (reference: SBCL 2.6.6). */
+      if rel_err_uv > 1.7e-8 or rel_err_uw > 1.2e-13 then push([fg, p, u, v, w, err_uv, err_uw], bad)
+    )
+  ),
+  bad);
+[]$
+
+block([triginverses : false], map(op, [sech(acosh(x)), sinh(acoth(x))]));
+[sech, sinh]$

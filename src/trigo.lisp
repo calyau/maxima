@@ -14,6 +14,55 @@
 
 (load-macsyma-macros mrgmac)
 
+;; The value of the hyperbolic function FUN (%SINH, ..., %COTH) at the
+;; inverse hyperbolic function INVFUN (%ASINH, ..., %ACOTH) of X, as an
+;; algebraic expression, or NIL when INVFUN is not one. csch, sech and coth
+;; are 1/sinh, 1/cosh and 1/tanh, and acsch(x), asech(x) and acoth(x) are
+;; asinh(1/x), acosh(1/x) and atanh(1/x). The forms follow from the
+;; logarithmic forms of asinh, acosh and atanh (see LOGARC) by algebra alone,
+;; with no choice of branch. They are built here rather than by simplifying,
+;; say, cosh(asinh(1/x)), which a user rule rewriting asinh(1/x) to acsch(x)
+;; would turn straight back. acoth(0) is left alone, as the simplifier
+;; leaves acoth(0) itself alone: sinh, cosh and csch are defined there, but
+;; the forms divide by zero.
+(defun hyperbolic-of-inverse (fun invfun x)
+  (let ((base-invfun (case invfun
+                       (%acsch '%asinh) (%asech '%acosh) (%acoth '%atanh)
+                       (t invfun)))
+        (base-fun (case fun
+                    (%csch '%sinh) (%sech '%cosh) (%coth '%tanh)
+                    (t fun)))
+        val)
+    (unless (and (eq invfun '%acoth) (zerop1 x))
+      (unless (eq base-invfun invfun)
+        (setq x (div 1 x)))
+      (setq val
+            (case base-invfun
+              (%asinh
+               ;; asinh(x) = log(x+r) with r = sqrt(x^2+1), and
+               ;; (x+r)*(r-x) = 1, so exp(-asinh(x)) = r-x.
+               (case base-fun
+                 (%sinh x)
+                 (%cosh (sqrt1+x^2 x))
+                 (%tanh (div x (sqrt1+x^2 x)))))
+              (%acosh
+               ;; acosh(x) = log(x+s) with s = sqrt(x-1)*sqrt(x+1), and
+               ;; (x+s)*(x-s) = 1, so exp(-acosh(x)) = x-s.
+               (let ((s (mul (power (sub x 1) 1//2) (power (add x 1) 1//2))))
+                 (case base-fun
+                   (%sinh s)
+                   (%cosh x)
+                   (%tanh (div s x)))))
+              (%atanh
+               ;; atanh(x) = (log(1+x)-log(1-x))/2, so
+               ;; exp(atanh(x)) = sqrt(1+x)/sqrt(1-x).
+               (let ((s (mul (power (sub 1 x) 1//2) (power (add 1 x) 1//2))))
+                 (case base-fun
+                   (%sinh (div x s))
+                   (%cosh (div 1 s))
+                   (%tanh x)))))))
+    (and val (if (eq base-fun fun) val (div 1 val)))))
+
 (def-simplifier sinh (y)
   (cond ((flonum-eval (mop form) y))
 	((big-float-eval (mop form) y))
@@ -21,21 +70,7 @@
 	((and $%piargs (if (zerop1 y) 0)))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (ftake* '%sin (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
-	      (let ((fcn (caar y))
-		    (arg (cadr y)))
-		(cond ((eq '%asinh fcn)
-		       arg)
-		      ((eq '%acosh fcn)
-		       ;; ratsimp(logarc(exponentialize(sinh(acosh(x))))),algebraic;
-		       ;; -> sqrt(x-1)*sqrt(x+1)
-		       (mul (power (sub arg 1) 1//2)
-			    (power (add arg 1) 1//2)))
-		      ((eq '%atanh fcn)
-		       ;; radcan(logarc(exponentialize(sinh(atanh(x)))));
-		       ;; -> x/(sqrt(1-x)*sqrt(1+x))
-		       (div arg
-			    (mul (power (sub 1 arg) 1//2)
-				 (power (add 1 arg) 1//2))))))))
+	      (hyperbolic-of-inverse '%sinh (caar y) (cadr y))))
 	((and $trigexpand (trigexpand '%sinh y)))
 	($exponentialize (exponentialize '%sinh y))
 	((and $halfangles (halfangle '%sinh y)))
@@ -50,24 +85,7 @@
 	((and $%piargs (if (zerop1 y) 1)))
 	((and $%iargs (multiplep y '$%i)) (ftake* '%cos (coeff y '$%i 1)))
 	((and $triginverses (not (atom y))
-	      (let ((fcn (caar y))
-		    (arg (cadr y)))
-		(cond ((eq '%acosh fcn)
-		       arg)
-		      ((eq '%asinh fcn)
-		       ;; ex: cosh(asinh(x));
-		       ;; ex,exponentialize,logarc;
-		       ;; ratsimp(%),algebraic
-		       ;; -> sqrt(x^2+1)
-		       ;; 
-		       (sqrt1+x^2 arg))
-		      ((eq '%atanh fcn)
-		       ;; ex: cosh(atanh(x))
-		       ;; radcan(logarc(exponentialize(ex)))
-		       ;; -> 1/sqrt(1-x)/sqrt(1+x)
-		       (div 1
-			    (mul (power (sub 1 arg) 1//2)
-				 (power (add 1 arg) 1//2))))))))
+	      (hyperbolic-of-inverse '%cosh (caar y) (cadr y))))
 	((and $trigexpand (trigexpand '%cosh y)))
 	($exponentialize (exponentialize '%cosh y))
 	((and $halfangles (halfangle '%cosh y)))
@@ -82,20 +100,7 @@
 	((and $%piargs (if (zerop1 y) 0)))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (ftake* '%tan (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
-	      (let ((fcn (caar y))
-		    (arg (cadr y)))
-		(cond ((eq '%atanh fcn)
-		       arg)
-		      ((eq '%asinh fcn)
-		       ;; ratsimp(logarc(exponentialize(tanh(asinh(x))))),algebraic;
-		       ;; --> x/sqrt(1+x^2)
-		       (div arg (sqrt1+x^2 arg)))
-		      ((eq '%acosh fcn)
-		       ;; ratsimp(logarc(exponentialize(tanh(acosh(x))))),algebraic;
-		       ;; sqrt(x-1)*sqrt(x+1)/x
-		       (div (mul (power (sub arg 1) 1//2)
-				 (power (add arg 1) 1//2))
-			    arg))))))
+	      (hyperbolic-of-inverse '%tanh (caar y) (cadr y))))
 	((and $trigexpand (trigexpand '%tanh y)))
 	($exponentialize (exponentialize '%tanh y))
 	((and $halfangles (halfangle '%tanh y)))
@@ -109,7 +114,10 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) (domain-error y 'coth))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%cot (coeff y '$%i 1))))
-	((and $triginverses (not (atom y)) (if (eq '%acoth (caar y)) (cadr y))))
+	((and $triginverses (not (atom y))
+	      (if (eq '%acoth (caar y))
+	        (cadr y)
+	        (hyperbolic-of-inverse '%coth (caar y) (cadr y)))))
 	((and $trigexpand (trigexpand '%coth y)))
 	($exponentialize (exponentialize '%coth y))
 	((and $halfangles (halfangle '%coth y)))
@@ -123,7 +131,10 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) (domain-error y 'csch)))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%csc (coeff y '$%i 1))))
-	((and $triginverses (not (atom y)) (if (eq '%acsch (caar y)) (cadr y))))
+	((and $triginverses (not (atom y))
+	      (if (eq '%acsch (caar y))
+	        (cadr y)
+	        (hyperbolic-of-inverse '%csch (caar y) (cadr y)))))
 	((and $trigexpand (trigexpand '%csch y)))
 	($exponentialize (exponentialize '%csch y))
 	((and $halfangles (halfangle '%csch y)))
@@ -137,7 +148,10 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (zerop1 y)) 1)
 	((and $%iargs (multiplep y '$%i)) (ftake* '%sec (coeff y '$%i 1)))
-	((and $triginverses (not (atom y)) (if (eq '%asech (caar y)) (cadr y))))
+	((and $triginverses (not (atom y))
+	      (if (eq '%asech (caar y))
+	        (cadr y)
+	        (hyperbolic-of-inverse '%sech (caar y) (cadr y)))))
 	((and $trigexpand (trigexpand '%sech y)))
 	($exponentialize (exponentialize '%sech y))
 	((and $halfangles (halfangle '%sech y)))

@@ -104,6 +104,7 @@ Bug fixes for numbered bugs:
 * \#5274 solve(tan(x) = sqrt(2)+1) -> []
 * \#5277 newcontext(foo)$ newcontext(bar)$ is(y>0)$ killcontext(foo); -> Lisp error
 * \#5278 killcontext doesn't always refuse to kill an active context
+* \#5280 csch/sech/coth don't simplify at inverse hyperbolic arguments
 
 Bug fixes for unnumbered bugs:
 ------------------------------
