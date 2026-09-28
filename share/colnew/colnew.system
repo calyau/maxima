@@ -9,8 +9,7 @@
 ;; Defsystem for colnew.
 (mk:defsystem colnew
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "colnew"
-					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :binary-pathname (maxima::maxima-objdir "share" "colnew")
   :source-extension "lisp"
   :components
   ((:module package
@@ -76,8 +75,7 @@
 
 (mk:defsystem colnew-if
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "colnew"
-					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :binary-pathname (maxima::maxima-objdir "share" "colnew")
   :source-extension "lisp"
   :depends-on ("colnew")
   :components
@@ -94,8 +92,7 @@
 ;; Test problem 1.  This works.  Use (colnew::*main*) to run the test.
 (mk:defsystem colnew-ex1
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "colnew"
-					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :binary-pathname (maxima::maxima-objdir "share" "colnew")
   :source-extension "lisp"
   :depends-on ("colnew")
   :components
@@ -112,8 +109,7 @@
 ;; Test problem 2.  This works.  Use (colnew::*main*) to run the test.
 (mk:defsystem colnew-ex2
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "colnew"
-					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :binary-pathname (maxima::maxima-objdir "share" "colnew")
   :source-extension "lisp"
   :depends-on ("colnew")
   :components
@@ -130,8 +126,7 @@
 ;; Test problem 3.  This works.  Use (colnew::*main*) to run the test.
 (mk:defsystem colnew-ex3
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "colnew"
-					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :binary-pathname (maxima::maxima-objdir "share" "colnew")
   :source-extension "lisp"
   :depends-on ("colnew")
   :components
