@@ -401,6 +401,15 @@ inf$
 max(-inf,inf);
 inf$
 
+/* \#5417 max() and lmax() modify the caller's expressions and lists */
+/* SIMP-MAX: max(z, m) must not modify the arguments of the nested max m */
+block ([m : max (x, y)], max (z, m), m);
+max(x,y)$
+
+/* SIMP-MAX: lmax must not sort or prune the list passed to it */
+block ([maxmin_effort : 0, l : [z, y, x, minf]], lmax (l), l);
+[z,y,x,minf]$
+
 values;
 []$
 

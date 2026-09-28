@@ -1750,6 +1750,12 @@ inf$
 limit(1/(acos(x)-%pi/2),x,0, 'plus);
 minf$
 
+/* Bug #5403: "tlimit((x-1)!*x,x,0) gives 0 instead of 1" */
+tlimit((x-1)!*x, x, 0);
+1$
+
+tlimit((x-2)!*x, x, 0);
+-1$
 
 /* clean up*/
 /*(kill(values),0);

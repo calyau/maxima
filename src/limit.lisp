@@ -1293,7 +1293,7 @@ ignoring dummy variables and array indices."
 		        ((and (integerp n) (< n 0))
                   (setq n (mul -1 n))
 		          (div (if (oddp n) 1 -1) 
-				      (mul (ftake 'mfactorial (sub n 1)) (add var n))))
+				      (mul (ftake 'mfactorial (sub n 1)) (add (cadr e) n))))
 				(t e))))
 	((and (eq (caar e) 'mqapply)		;; polylogarithm
 	      (eq (subfunname e) '$li)

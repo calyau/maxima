@@ -1,5 +1,5 @@
 ;; Maxima functions for finding the maximum or minimum
-;; Copyright (C) 2005, 2007, 2021, 2024, 2025 Barton Willis
+;; Copyright (C) 2005, 2007, 2021, 2024, 2025, 2026 Barton Willis
 
 ;; Barton Willis
 ;; Department of Mathematics 
@@ -117,8 +117,10 @@
 
 (defun simp-max (l tmp z)
   (declare (ignore tmp))
-  (let ((acc nil) (sgn) (num-max nil) (issue-warning) (all-real))
-    (setq l (cdr l))
+    (let ((acc nil) (sgn) (num-max nil) (issue-warning) (all-real))
+    ;; L is sorted and pruned destructively below, so copy the argument
+    ;; lists of the input and of any nested max.
+    (setq l (copy-list (cdr l)))
 
     ;; When maxmin_effort > 0, simplify each member of l and flatten (that is, do
     ;; max(a,max(a,b)) -> max(a,b,c)). Additionally, we accumulate the largest real
@@ -129,7 +131,7 @@
           (setq li (maybe-simplifya (specrepcheck li) z))
           (cond 
             ((max-p li)
-              (setq acc (append acc (cdr li))))
+              (setq acc (append acc (copy-list (cdr li)))))
             ((mnump li) 
               (setq num-max (if (or (null num-max) (mgrp li num-max)) li num-max)))
             ;; Removing minf & -inf now results in things like max(minf, %i*inf)-->%i*inf.
