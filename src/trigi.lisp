@@ -62,7 +62,7 @@
     (maxima-$error ()
       (domain-error y name))))
 
-;; Some Lisp implementations goof up branch cuts for ASIN, ACOS, and/or ATANH.
+;; Some Lisp implementations goof up branch cuts for ASIN, ACOS, ASINH, and/or ATANH.
 ;; Here are definitions which have the right branch cuts
 ;; (assuming LOG, PHASE, and SQRT have the right branch cuts).
 ;; Don't bother trying to sort out which implementations get it right or wrong;
@@ -156,6 +156,20 @@
   (if (zerop x)
     #.(/ (float pi) 2)
     (maxima-branch-atan (/ 1 x))))
+
+;; On the branch cut (imaginary axis beyond +/-%i), use asinh(%i*y) = %i*asin(y)
+;; with MAXIMA-BRANCH-ASIN, and asinh(-x) = -asinh(x), as bigfloat and exact
+;; evaluation do. Lisps differ there, as some take the side of the cut from the
+;; sign of a zero real part. Otherwise punt to CL:ASINH.
+(defun maxima-branch-asinh (x)
+  (let ((re (realpart x))
+        (im (imagpart x)))
+    (if (and (zerop re) (> (abs im) 1))
+        ;; %i*(u+%i*v) = -v+%i*u
+        (let* ((w (maxima-branch-asin (abs im)))
+               (v (complex (- (imagpart w)) (realpart w))))
+          (if (minusp im) (- v) v))
+        (cl:asinh x))))
 
 ;; Apply formula from CLHS if X falls on a branch cut.
 ;; Return NIL at the poles +/-1, where some Lisps return an infinity.
@@ -271,7 +285,7 @@
 		    (if y y (domain-error x 'coth)))))
 
   (frob %acosh #'cl:acosh)
-  (frob %asinh #'cl:asinh)
+  (frob %asinh #'maxima-branch-asinh)
   
   (frob %atanh #'(lambda (x)
 		   (let ((y (ignore-errors (maxima-branch-atanh x))))
@@ -306,7 +320,7 @@
 				      (sqrt double-float-epsilon)))
 			      (float-sign x (- (log 2d0) (log (abs x)))))
 			     (t
-			      (cl:asinh (/ x)))))))
+			      (maxima-branch-asinh (/ x)))))))
 	      (let ((y (ignore-errors (acsch x))))
 		(if y y (domain-error x 'acsch))))))
 
