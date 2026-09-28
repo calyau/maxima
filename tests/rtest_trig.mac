@@ -926,3 +926,9 @@ block([fpprec : 30],
       [asinh(-2.0*%i), asinh(2.0*%i), asinh(-1.0e6*%i), acsch(1.0e-6*%i), acsch(0.5*%i), acsch(-0.5*%i)],
       [asinh(-2b0*%i), asinh(2b0*%i), asinh(-1b6*%i), acsch(1b-6*%i), acsch(0.5b0*%i), acsch(-0.5b0*%i)]));
 [true, true, true, true, true, true]$
+
+
+/* Bug #5585: "With GCL 2.7.x, float log(0.0), csc(0.0), asech(0.0) etc. return infinities" */
+
+map(lambda([f], errcatch(apply(f, [0.0]))), [log, csc, cot, csch, coth, acsc, asec, acsch, asech, lambda([x], 1.0 / x)]);
+[[], [], [], [], [], [], [], [], [], []]$

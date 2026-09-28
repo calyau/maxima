@@ -41,9 +41,9 @@ Bug fixes for numbered bugs:
 * \#5093 After assume(notequal(x,0)), is(log(x) > 0) returns false and sign(log(x)) signals an imaginary argument error
 * \#5115 csign(%i*j) returns neg for j declared imaginary, so abs(%i*j) can evaluate to a negative number
 * \#5120 forget(notequal(a*b,0)) deletes an assumed notequal(a,0) that the database never entailed
+* \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
 * \#5169 GREAT says a[1] > a[1]
 * \#5170 limit(a*x+b, x, inf) = 0 when answering that a=0
-* \#5159 limit() returns inf for complex-valued limits at infinity where no real infinite limit exists
 * \#5171 limits of the form inf * constant
 * \#5172 assume(a>1,b>0)$ is(a*b>1) -> true
 * \#5173 assume(b <= 0)$; limit(log(b + %i*x), x, 0, plus) = log(b)
@@ -110,14 +110,15 @@ Bug fixes for numbered bugs:
 * \#5284 logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)
 * \#5286 Float atanh/acoth at +-1.0
 * \#5394 integrate((1-x^2)^2.0*(1+x^2)^(-3.0),x) signals a Lisp error
+* \#5403 tlimit((x-1)!*x,x,0) gives 0 instead of 1
+* \#5417 max() and lmax() modify the caller's expressions and lists
+* \#5450 lreduce, rreduce and xreduce error message shows $lreduce
 * \#5450 lreduce, rreduce and xreduce error message shows $lreduce
 * \#5520 integrate(x^3.0*(1+x^2)^2,x) signals a Lisp error; integrate(sqrt(x)*(1+x)^2.0,x) is wrong
 * \#5525 integrate takes an even float power such as cos(x)^2.0 for an odd one
 * \#5561 acot(-0.0) signals 'argument -0.0 isn't in the domain of acot'
 * \#5569 acsch( 1.0e-6*%i );
-* \#5403 tlimit((x-1)!*x,x,0) gives 0 instead of 1
-* \#5417 max() and lmax() modify the caller's expressions and lists
-* \#5450 lreduce, rreduce and xreduce error message shows $lreduce
+* \#5585 With GCL 2.7.x, float log(0.0), csc(0.0), asech(0.0) etc. return infinities
 
 Bug fixes for unnumbered bugs:
 ------------------------------

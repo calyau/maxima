@@ -667,6 +667,17 @@ maxima [options] --batch-string='batch_answers_from_file:false; ...'
   
   ;; GCL: print special floats, which are generated whether or not this flag is enabled
   #+gcl (setf si:*print-nans* t)
+  ;; GCL 2.7.x doesn't trap floating point exceptions by default, so 1/0.0
+  ;; returns an infinity where other Lisps signal an error. Float evaluation
+  ;; relies on the error, e.g. for the domain error of asech(0.0). Trap division
+  ;; by zero, invalid operations and overflow, as SBCL does.
+  ;; Do it safely so that it won't break if the internal function doesn't exist.
+  #+gcl
+  (let ((f (and (find-package "FPE")
+                (find-symbol "BREAK-ON-FLOATING-POINT-EXCEPTIONS" "FPE"))))
+    (when (and f (fboundp f))
+      (funcall f :division-by-zero t :floating-point-invalid-operation t
+                 :floating-point-overflow t)))
   #+ccl
   (progn
     (setf ccl::*invoke-debugger-hook-on-interrupt* t)
