@@ -2853,8 +2853,9 @@ ignoring dummy variables and array indices."
     (cond 
       ((null ilim)
        (throw 'limit t))
-      ((not (infinityp ilim))
-       '$und)
+	  ((not (infinityp ilim))
+       ;; A bounded sum of the infinities leaves the terms to decide.
+       (if (eq ilim '$und) '$und answer))
       (t
        (setq ratios (mapcar #'(lambda (term)
                                 (simplimplus-term-ratio term i))

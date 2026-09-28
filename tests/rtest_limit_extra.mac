@@ -1757,6 +1757,14 @@ tlimit((x-1)!*x, x, 0);
 tlimit((x-2)!*x, x, 0);
 -1$
 
+/* Bug #5402: "limit(sqrt(x^2+1)-x+%i*x,x,inf) gives und instead of infinity" */
+
+limit(sqrt(x^2+1)-x+%i*x, x, inf);
+infinity$
+
+limit(sqrt(x^2+1)-x+(1+%i)^x, x, inf);
+infinity$
+
 /* clean up*/
 /*(kill(values),0);
 0$*/
