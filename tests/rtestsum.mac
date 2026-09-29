@@ -1206,3 +1206,18 @@ true;
 
 block([p: product(lambda([i],i^2),i,1,n)], [p, is(p = expand(p,0,0))]);
 [lambda([i],i^2)^n, true];
+
+
+/* Bug #5301: "simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)" */
+
+block([simpsum: true, fbino_m],
+ local(fbino_m),
+ assume(fbino_m < 5),
+ sum(binomial(10, 2*k), k, 0, fbino_m));
+'sum(binomial(10, 2*k), k, 0, fbino_m)$
+
+sum(binomial(n, 2*k) + 1, k, j, n), simpsum;
+'sum(binomial(n, 2*k), k, j, n) + n - j + 1$
+
+sum(binomial(n, 2*k + j), k, 0, n), simpsum;
+'sum(binomial(n, 2*k + j), k, 0, n)$

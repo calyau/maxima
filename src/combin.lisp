@@ -1246,7 +1246,7 @@
 
 	 ;; sum(binomial(n,2*k),k,0,floor(n/2))=2^(n-1)
 	 ;; sum(binomial(n,2*k+1),k,0,floor((n-1)/2))=2^(n-1)
-	 ((and (equal 0 (cdr n)) (equal 2 (cdr d)))
+	 ((and (equal 0 (cdr n)) (equal 2 (cdr d)) (integerp (car d)))
 	  ;; sum(binomial(a,2*k+b),k,l,h)=sum(binomial(a,2*k),k,l+b/2,h+b/2), b even
 	  ;; sum(binomial(a,2*k+b),k,l,h)=sum(binomial(a,2*k+1),k,l+(b-1)/2,h+(b-1)/2), b odd
 	  (let ((a (car n))
@@ -1254,12 +1254,16 @@
 		(l1 (if (oddp (car d))
 			(m+ l (truncate (1- (car d)) 2))
 			(m+ l (truncate (car d) 2)))))
-	    (when (and (integerp l1)
-		       (member (asksign (m- a hi)) '($zero $positive) :test #'eq))
-	      (adsum (m* y (m^ 2 (m- a 1))))
-	      (when (> l1 0)
-		(adsum (m* -1 y (dosum (list '(%binomial) a (m+ poly-var poly-var r1))
-				       poly-var 0 (m- l1 1) t :evaluate-summand nil)))))))
+	    ;; we only do sums with 2*h+b >= a
+	    (if (and (integerp l1)
+		     (member (asksign (m- (m+ h h (car d)) a))
+			     '($zero $positive) :test #'eq))
+		(progn
+		  (adsum (m* y (m^ 2 (m- a 1))))
+		  (when (> l1 0)
+		    (adsum (m* -1 y (dosum (list '(%binomial) a (m+ poly-var poly-var r1))
+					   poly-var 0 (m- l1 1) t :evaluate-summand nil)))))
+		(adusum e))))
 
 	 ;; other sums we can't do
 	 (t
