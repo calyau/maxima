@@ -144,7 +144,9 @@ Bug fixes for unnumbered bugs:
 
 Changes in the Windows installer:
 ---------------------------------
-...
+* Update MS WebView2
+* Update SBCL
+* Correct link to TCL/TK Website
 
 Other changes:
 --------------
