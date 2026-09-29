@@ -2377,9 +2377,13 @@ ignoring dummy variables and array indices."
                               (t (throw 'limit t))))
         ((eq el '$minf)  (cond ((abeq1 bl)
                                 (if (equal (getsignl bl) 1) 1 '$ind))
-                               ((not (abless1 bl))
+
+							   ((equal (getsignl (m1- `((mabs) ,bl))) 1)
                                 (if (equal (getsignl bl) 1) '$zeroa 0))
+								
+                               ((not (abless1 bl)) (throw 'limit t))
                                ((ratgreaterp 0 bl)  '$infinity)
+                          
                                (t '$inf)))
         ((eq el '$infinity)
          (if (equal val '$infinity)
