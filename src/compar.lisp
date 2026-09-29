@@ -1883,11 +1883,16 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
            (push (car l) acc)))))
 
 (defun signsum (x)
+ ;; SIGN-SHIFT rewrites X into an expression of the same sign, in which a
+ ;; symbol with a numeric bound n (a > n > 0 or a < n < 0) stands for a - n.
+ ;; ODDS, which ASKSIGN asks about, must name X itself: ORIG is X with the
+ ;; terms found to be zero taken out.
+ (let ((orig x))
   (setq x (sign-shift x))
   ;; x might be simplified to an atom in sign-shift.
   (when (atom x) (setq x (cons '(mplus) (list x))))
   (do ((l (cdr x) (cdr l)) (s '$zero))
-      ((null l) (setq sign s minus nil odds (list x) evens nil)
+      ((null l) (setq sign s minus nil odds (list orig) evens nil)
        (if (eq s '$pnz) nil t))
     ;; Call sign1 and not sign, because sign1 handles constant expressions.
     (sign1 (car l))
@@ -1908,7 +1913,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
             (setq sign '$complex odds nil evens nil minus nil)
 	        (return t))))
       ((or (and (eq sign '$zero)
-		    (setq x (sub x (car l))))
+		    (setq orig (sub orig (car l))))
 	       (and (eq s sign) (not (eq s '$pn))) ; $PN + $PN = $PNZ
 	       (and (eq s '$pos) (eq sign '$pz))
 	       (and (eq s '$neg) (eq sign '$nz))))
@@ -1925,7 +1930,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	   ;; Carry on with an indeterminate total rather than stop here:
 	   ;; the terms not yet reached still have to be looked at, one of
 	   ;; them may be non-real, and SIGN1 reports that by throwing.
-	   (setq s '$pnz)))))
+	   (setq s '$pnz))))))
 
 (defun signfactor (x)
   (let (y (factored t))

@@ -2889,6 +2889,15 @@ block([x],
 [[], imaginary]$
 
 
+/* Bug #5311: "asksign asks about, and records an answer for, a different expression after SIGN-SHIFT" */
+
+block([b],
+ local(b),
+ assume(b > 3),
+ [asksign(b - 5), is(b > 5)]), ask_hide_prompt; p;
+[pos, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
