@@ -772,7 +772,7 @@
      (cond ((not (and (equal risch-alphar risch-m)
 		      (not (zerop risch-m))))
 	    (go down2)))
-     (setq k (+ risch-alphar risch-beta -2))
+     (setq k (+ risch-alphar risch-beta -1))
      (setq wl nil)
    l2
      (setq wv (list (cons (polcoef tt k risch-var) 1)))
