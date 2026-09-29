@@ -114,6 +114,7 @@ Bug fixes for numbered bugs:
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
 * \#5394 integrate((1-x^2)^2.0*(1+x^2)^(-3.0),x) signals a Lisp error
 * \#5402 limit(sqrt(x^2+1)-x+%i*x,x,inf) gives und instead of infinity
+* \#5400 limit(erf((2+%i)/x),x,0,plus) gives -1 instead of 1
 * \#5401 limit(b^(-1.0*x),x,inf) gives 0 for a symbolic base b
 * \#5403 tlimit((x-1)!*x,x,0) gives 0 instead of 1
 * \#5417 max() and lmax() modify the caller's expressions and lists

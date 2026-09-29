@@ -1772,6 +1772,15 @@ block([r], assume(a > 0),
   r : [limit(a^(-1.0*x), x, inf), limit(a^(-x), x, inf)],
   forget(a > 0), r), ask_hide_prompt; neg;
 [inf, inf]$
+
+/* Bug \#5400: "limit(erf((2+%i)/x),x,0,plus) gives -1 instead of 1" */
+
+limit(erf((2+%i)/x), x, 0, plus);
+1$
+
+limit(erf((2+%i)/x), x, 0, minus);
+-1$
+
 /* clean up*/
 /*(kill(values),0);
 0$*/

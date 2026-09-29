@@ -3827,7 +3827,7 @@ ignoring dummy variables and array indices."
 	  ((eq arglim '$infinity)
 	   (destructuring-bind (rpart . ipart)
                (trisplit arg)
-	     (setq rlim (limit rpart var origval 'think))
+		 (setq rlim (limit rpart var val 'think))
 	     (cond ((eq fn '%tanh)
 		    (cond ((equal rlim '$inf) 1)
 			  ((equal rlim '$minf) -1)))
