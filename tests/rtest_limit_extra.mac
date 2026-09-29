@@ -1765,6 +1765,13 @@ infinity$
 limit(sqrt(x^2+1)-x+(1+%i)^x, x, inf);
 infinity$
 
+
+/* Bug \#5401: "limit(b^(-1.0*x),x,inf) gives 0 for a symbolic base b" */
+
+block([r], assume(a > 0),
+  r : [limit(a^(-1.0*x), x, inf), limit(a^(-x), x, inf)],
+  forget(a > 0), r), ask_hide_prompt; neg;
+[inf, inf]$
 /* clean up*/
 /*(kill(values),0);
 0$*/
