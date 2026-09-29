@@ -4353,6 +4353,18 @@ solve(atanh(x) = 2, x);
 [x = tanh(2)];
 
 
+/* Bug #5581: "with keepfloat:true, ratsimp(1.0*%i/(1.0+1.0*%i)^2) returns 1.0 instead of 0.5" */
+
+[ratsimp(1.0*%i/(1.0 + 1.0*%i)^2), ratsimp(%i/(1.0 + %i)^2), ratsimp(1.0*%i/(1 + %i)^2)], keepfloat;
+[0.5, 0.5, 0.5]$
+
+rectform(((1.0*%i)/(1.0*%i + 1.0)^2)^(1/4));
+0.8408964152537145$
+
+expand(rat(1.2)*rat(1/2) - 11/5, 0, 0), keepfloat;
+-1.6$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
