@@ -1695,6 +1695,15 @@
 	((not (mnump (cadr x))) (cons '(mtimes) (cons 1 (cdr x))))
 	(t x)))
 
+;; Multiply FACTOR into the product of the list RES, as TMS does, and return
+;; the new list of factors. TMS changes RES in place when it can, but returns
+;; a new product when TIMESIN rebuilt it, so only its value can be relied on.
+(defun tms-factors (factor res)
+  (let ((product (tms factor 1 (cons '(mtimes) res))))
+    (if (mtimesp product)
+      (cdr product)
+      (list product))))
+
 (defun plsk (x y)
   (cond ($ratsimpexpons (sratsimp (list '(mplus) x y)))
 	((and (mnump x) (mnump y)) (addk x y))
@@ -2278,10 +2287,7 @@
                          (setq rad (power* ; RADEXPAND=()?
                                      (cons '(mtimes) (nreverse rad)) pot))
                          (cond ((not (onep1 rad))
-                                (setq rad
-                                      (testt (tms rad 1 (cons '(mtimes) res))))
-                                (cond (*rulesw*
-                                       (setq *rulesw* nil res (cdr rad))))))
+                                (setq res (tms-factors rad res))))
                          (eqtest (testt (cons '(mtimes) res)) check))))
                ;; Check with $csign to be more complete. This prevents wrong 
                ;; simplifications like sqrt(-z^2)->%i*sqrt(z^2) for z complex.
@@ -2297,9 +2303,8 @@
                      ((member z '($pn $pnz))
                       (setq rad (cons w rad)))
                      (t
-                      (setq w (testt (tms (simplifya (list '(mexpt) w pot) t)
-                                          1 (cons '(mtimes) res))))))
-               (cond (*rulesw* (setq *rulesw* nil res (cdr w))))))
+                      (setq res (tms-factors
+                                 (simplifya (list '(mexpt) w pot) t) res))))))
      
   start
      (cond ((and (cdr res) (onep1 (car res)) (ratnump (cadr res)))
@@ -2313,8 +2318,7 @@
            ((mnump (car gr))
             (setq y (list '(mexpt) (car gr) pot)))
            (t (setq y (list '(mexpt simp) (car gr) pot))))
-     (setq w (testt (tms (simplifya y t) 1 (cons '(mtimes) res))))
-     (cond (*rulesw* (setq *rulesw* nil res (cdr w))))
+     (setq res (tms-factors (simplifya y t) res))
      (go start)
      
   retno
