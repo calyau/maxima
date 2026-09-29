@@ -1889,8 +1889,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
  ;; terms found to be zero taken out.
  (let ((orig x))
   (setq x (sign-shift x))
-  ;; x might be simplified to an atom in sign-shift.
-  (when (atom x) (setq x (cons '(mplus) (list x))))
+  ;; x might be simplified to a single term in sign-shift.
+  (unless (mplusp x) (setq x (cons '(mplus) (list x))))
   (do ((l (cdr x) (cdr l)) (s '$zero))
       ((null l) (setq sign s minus nil odds (list orig) evens nil)
        (if (eq s '$pnz) nil t))

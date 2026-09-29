@@ -2898,6 +2898,21 @@ block([b],
 [pos, true]$
 
 
+/* Bug #5310: "sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product" */
+
+block([a, b],
+ local(a, b),
+ assume(b > 1),
+ sign(a^2*b - a^2));
+pz;
+
+block([a, b],
+ local(a, b),
+ assume(a < -1, b < 0),
+ sign(a*b + b));
+pos;
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

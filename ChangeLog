@@ -109,6 +109,7 @@ Bug fixes for numbered bugs:
 * \#5283 bfloat(acos(%i)), bfloat(asec(%i)), bfloat(acosh(%i)) and bfloat(asech(%i)) don't evaluate
 * \#5284 logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)
 * \#5286 Float atanh/acoth at +-1.0
+* \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
 * \#5394 integrate((1-x^2)^2.0*(1+x^2)^(-3.0),x) signals a Lisp error
 * \#5402 limit(sqrt(x^2+1)-x+%i*x,x,inf) gives und instead of infinity
