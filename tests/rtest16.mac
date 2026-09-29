@@ -4365,6 +4365,15 @@ expand(rat(1.2)*rat(1/2) - 11/5, 0, 0), keepfloat;
 -1.6$
 
 
+/* Bug #5507: "resultant(x^3+1, x, x) gives 1 instead of -1: wrong sign when the second polynomial has a factor c*x^k" */
+
+[resultant(x^3+1, x, x), determinant(sylvester_matrix(x^3+1, x, x))];
+[-1, -1]$
+
+resultant(x^5+3*x+1, x^3+x, x);
+-17$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
