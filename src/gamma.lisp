@@ -1527,7 +1527,7 @@
                   ($factor (simplify (list '($pochhammer) (sub 1 a) n))))
                 (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))
               (mul -1
-                (power '$%e (mul -1 z2))
+                (power '$%e (mul -1 z1))
                 (let ((index (gensumindex)))
                   (simpsum1
                     (div

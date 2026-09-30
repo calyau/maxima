@@ -4400,3 +4400,17 @@ limit(x*gamma_incomplete(-1,x),x,0,plus);
  gamma_incomplete_regularized(-2.0, 0.3 + 0.5*%i),
  block([z], gamma_incomplete_regularized(-3, z))];
 [0, 0, 0, 0, 0]$
+
+/* Bug #5364: "gamma_incomplete_generalized(a-n,z1,z2) with gamma_expand:true multiplies the z1 terms by %e^-z2" */
+
+block([a, z1, z2, gamma_expand : true],
+  gamma_incomplete_generalized(a - 1, z1, z2));
+gamma_incomplete_generalized(a,z1,z2)/(a-1)
+ +(%e^-z2*z2^(a-1))/(a-1)-(%e^-z1*z1^(a-1))/(a-1)$
+
+block([a, z1, z2, gamma_expand : true],
+  is(abs(float(subst([a = 3.5, z1 = 0.5, z2 = 1.5],
+                     gamma_incomplete_generalized(a - 2, z1, z2)))
+
+         - gamma_incomplete_generalized(1.5, 0.5, 1.5)) < 1e-14));
+true$
