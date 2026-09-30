@@ -367,6 +367,13 @@ limit(1/(exp(x)/(1+1/x)^x^2),x,inf);
 gruntz((1/%pi*(atan(n/%pi)+%pi/2))^n, n, inf), taylor_logexpand : false;
 %e^-1;
 
+/* Bug #5398: "gruntz(sinh(x)/exp(x),x,inf) gives 0 instead of 1/2" */
+
+gruntz(sinh(x)/exp(x), x, inf);
+1/2$
+
+gruntz(tanh(x), x, inf);
+1$
 
 /* Any leftover facts, contexts, or values? */
 facts();

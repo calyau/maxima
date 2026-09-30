@@ -5045,7 +5045,11 @@ ignoring dummy variables and array indices."
 				  (mfuncall '$assume (ftake 'mlessp *large-positive-number* 'prin-inf)) ; *large-positive-number* < prin-inf
 				  (mfuncall '$activate cx) ;not sure this is needed, but OK	
 				  (setq exp (resimplify exp)) ;simplify in new context
-                  (setq exp (resimp-extra-simp (sratsimp exp))) ;additional simplifications
+				   ;; Additional simplifications. EXTRA-SIMP reads the limit
+                  ;; variable from the special VAR.
+                  (setq exp (let ((var newvar))
+                              (declare (special var))
+                              (resimp-extra-simp (sratsimp exp))))
 				  (limitinf exp newvar)) ;compute & return limit
 			($killcontext cx))))) ;kill context & forget all new facts.	 			
 
