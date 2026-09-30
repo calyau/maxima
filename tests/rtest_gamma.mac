@@ -4390,3 +4390,13 @@ infinity;
 
 limit(x*gamma_incomplete(-1,x),x,0,plus);
 1;
+
+
+/* Bug #5365: "gamma_incomplete_regularized(-2, 0.3) signals a Lisp division by zero" */
+
+[gamma_incomplete_regularized(-2, 0.3),
+ gamma_incomplete_regularized(-2.0, 1.7),
+ gamma_incomplete_regularized(-2.0b0, 0.3b0),
+ gamma_incomplete_regularized(-2.0, 0.3 + 0.5*%i),
+ block([z], gamma_incomplete_regularized(-3, z))];
+[0, 0, 0, 0, 0]$

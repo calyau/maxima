@@ -1624,7 +1624,10 @@
                ((member sgn '($pos $pz)) 1)
                (t (give-up)))))  
 
-      ((zerop1 a) 0)
+        ;; 1/gamma(a) is zero for a zero or negative integer.
+      ((or (zerop1 a)
+           (and (integer-representation-p a) (eq ($sign a) '$neg)))
+       0)
       ((eq z '$inf) 0)
 
       ;; Check for numerical evaluation in Float or Bigfloat precision

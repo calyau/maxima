@@ -112,6 +112,7 @@ Bug fixes for numbered bugs:
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
 * \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
+* \#5365 gamma_incomplete_regularized(-2, 0.3) signals a Lisp division by zero
 * \#5394 integrate((1-x^2)^2.0*(1+x^2)^(-3.0),x) signals a Lisp error
 * \#5397 limit(abs((a*x^2+x^3)^(1/3)),x,0,plus) signals a Lisp error
 * \#5398 gruntz(sinh(x)/exp(x),x,inf) gives 0 instead of 1/2
