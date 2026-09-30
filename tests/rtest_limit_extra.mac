@@ -1765,6 +1765,13 @@ infinity$
 limit(sqrt(x^2+1)-x+(1+%i)^x, x, inf);
 infinity$
 
+/* Bug \#5399: "limit(1/acosh(x),x,1,minus) gives inf instead of infinity" */
+
+limit(1/acosh(x), x, 1, minus);
+infinity$
+
+limit(1/acosh(cos(x)), x, 0);
+infinity$
 
 /* Bug \#5401: "limit(b^(-1.0*x),x,inf) gives 0 for a symbolic base b" */
 
