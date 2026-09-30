@@ -1881,7 +1881,7 @@ ignoring dummy variables and array indices."
 	  (return 0))
 	 ((=0 ans) ())	;Do it again.
 	 (t (setq ans (getsignl ans))
-	(cond (n (return ans))
+	(cond (n (return (or ans 0)))
 		  ((equal ans 1)
 		   (return (if (eq val '$zeroa) 1 -1)))
 		  ((equal ans -1)
