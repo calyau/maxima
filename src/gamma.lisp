@@ -144,7 +144,7 @@
        (intl:gettext 
          "double_factorial: double_factorial(~:M) is undefined.") z))
 
-    ((integerp z)   ; at this point odd negative integer. Evaluate.
+    ((and (integerp z) (minusp z))   ; odd negative integer. Evaluate.
      (cond
        ((= z -1)  1)  ; Special cases -1 and -3 
        ((= z -3) -1)

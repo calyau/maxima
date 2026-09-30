@@ -4414,3 +4414,10 @@ block([a, z1, z2, gamma_expand : true],
 
          - gamma_incomplete_generalized(1.5, 0.5, 1.5)) < 1e-14));
 true$
+
+/* Bug #5363: "double_factorial(n) for an integer n >= factlim gives a false domain error or exhausts the stack" */
+
+block([factlim : 5],
+  [double_factorial(4), string(double_factorial(10)),
+   string(double_factorial(2^70))]);
+[8, "double_factorial(10)", "double_factorial(1180591620717411303424)"]$
