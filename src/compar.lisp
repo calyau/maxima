@@ -1481,6 +1481,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '%acsc 'sign-asec/acsc/asech/acoth)
 	 (list '%asech 'sign-asec/acsc/asech/acoth)
 	 (list '%acoth 'sign-asec/acsc/asech/acoth)
+	 (list '%tan 'sign-tan/cot)
+	 (list '%cot 'sign-tan/cot)
 	 (list '%signum #'(lambda (x) (sign (cadr x))))
 	 (list '%erf #'(lambda (x) (sign (cadr x))))
 	 (list '$li #'(lambda (x) 
@@ -2247,6 +2249,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     ;; place that undoes the rewrite, which would cause endless recursion.
     (let ((f (get (get (get (caar x) '$inverse) 'recip) '$inverse)))
       (sign `((,f) ,(inv (cadr x)))))))
+
+;; tan(%i*y) = %i*tanh(y) and cot(%i*y) = -%i*coth(y) are imaginary, and tan
+;; and cot of other non-real arguments are complex.
+(defun sign-tan/cot (x)
+  (case (and *complexsign* (sign* (cadr x)))
+    ($imaginary (setq sign '$imaginary minus nil odds nil evens nil))
+    ($complex (setq sign '$complex minus nil odds nil evens nil))
+    (t (sign-oddfun x))))
 
 ;; This code handles sign(sin(x)), where -%pi <= x <= %pi. Of course, at the 
 ;; expense of a great deal of additional complexity, this code could catch far 

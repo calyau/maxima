@@ -2946,6 +2946,16 @@ block([ans],
 [pz, nz, true, pz]$
 
 
+/* Bug #5605: "csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0" */
+
+block([j, z],
+ local(j, z),
+ declare(j, imaginary, z, complex),
+ [csign(tan(j)), csign(cot(j)), csign(tan(z)), csign(cot(z)), csign(tan(x)),
+  subst(j = %i, abs(tan(j)^2)), subst(j = %i, abs(cot(j)^2)), subst(j = %i, sqrt(tan(j)^2))]);
+[imaginary, imaginary, complex, complex, pnz, tanh(1)^2, coth(1)^2, %i*tanh(1)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
