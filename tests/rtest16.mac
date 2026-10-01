@@ -4392,6 +4392,17 @@ block ([x, y], [ratcoef (x^2 + x + 1, 2*x), ratcoef (3*x*y, 2*x)]);
 [cos(x), 2*sin(u)]$
 
 
+/* Bug #5490: "poisexpt(sin(x), -1) never returns" */
+
+block([s : make_string_output_stream(), r],
+  with_stdout(s, errcatch(poisexpt(sin(x), 1/2))),
+  r : get_output_stream_string(s), close(s),
+  if integerp(ssearch("poisexpt: second argument", r))
+  then errcatch(poisexpt(sin(x), -1))
+  else r);
+[]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

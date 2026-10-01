@@ -144,6 +144,7 @@ Bug fixes for numbered bugs:
 * \#5449 ratcoef(taylor_series, y, 0) returns the whole series even when it depends on y
 * \#5488 poistimes(0, sin(x)) gives a Lisp error instead of 0
 * \#5489 poisdiff(sin(x), x) gives a Lisp error instead of cos(x)
+* \#5490 poisexpt(sin(x), -1) never returns
 
 Bug fixes for unnumbered bugs:
 ------------------------------

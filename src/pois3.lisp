@@ -580,6 +580,11 @@
      (return (list '(mpois simp) (untree slc) (untree clc)))))
 
 (defmfun $poisexpt (p n)
+  (unless (and (integerp n) (>= n 0))
+    (merror
+     (intl:gettext
+      "poisexpt: second argument must be a nonnegative integer; found: ~M")
+     n))
   (prog (u h)
      (cond ((oddp n) (setq u p)) (t (setq u (setq h (intopois 1.)))))
      a    (setq n (ash n -1))
