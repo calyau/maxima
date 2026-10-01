@@ -611,7 +611,7 @@ done;
 
 /* mailing list 2015-08-25: "Strange symmetry of acoth(x), area cotangens hyperbolicus function (#552)" */
 
-(kill (x), - acoth (- x));
+(kill(x), block(local(x), assume(notequal(x, 0)), -acoth(-x)));
 acoth (x);
 
 /* SF bug #2620: "atan2(y,x)+atan2(-y,x) doesn't always return 0 " */
@@ -932,3 +932,12 @@ block([fpprec : 30],
 
 map(lambda([f], errcatch(apply(f, [0.0]))), [log, csc, cot, csch, coth, acsc, asec, acsch, asech, lambda([x], 1.0 / x)]);
 [[], [], [], [], [], [], [], [], [], []]$
+
+
+/* Bug #5593: "acot(-x) and acoth(-x) are reflected even if x can be 0" */
+
+(kill(x), [subst(x = 0, acot(-x)), subst(x = 0, acoth(-x)), acot(-2), acoth(-2)]);
+[%pi/2, acoth(0), -acot(2), -acoth(2)]$
+
+block(local(y), assume(y > 0), [acot(-y), acoth(-y)]);
+[-acot(y), -acoth(y)]$

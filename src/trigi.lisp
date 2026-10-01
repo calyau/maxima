@@ -384,6 +384,12 @@
 (defun even-function-reflect (op x)
   (take (list op) (neg x)))
 
+;; Reflect only when X is known to be nonzero. Used for acot and acoth, which
+;; are non-zero at zero, but odd everywhere else.
+(defun odd-function-reflect-nonzero (op x)
+  (when (eq t (mnqp x 0))
+    (odd-function-reflect op x)))
+
 ;; Put the reflection rule on the property list of the exponential-like
 ;; functions.
 
@@ -401,7 +407,7 @@
 (setf (get '%atan 'reflection-rule) 'odd-function-reflect)
 (setf (get '%asec 'reflection-rule) #'(lambda (op x) (sub '$%pi (take (list op) (neg x)))))
 (setf (get '%acsc 'reflection-rule) 'odd-function-reflect)
-(setf (get '%acot 'reflection-rule) 'odd-function-reflect)
+(setf (get '%acot 'reflection-rule) 'odd-function-reflect-nonzero)
 
 (setf (get '%cosh 'reflection-rule) 'even-function-reflect)
 (setf (get '%sinh 'reflection-rule) 'odd-function-reflect)
@@ -413,7 +419,7 @@
 (setf (get '%asinh 'reflection-rule) 'odd-function-reflect)
 (setf (get '%atanh 'reflection-rule) 'odd-function-reflect)
 (setf (get '%acsch 'reflection-rule) 'odd-function-reflect)
-(setf (get '%acoth 'reflection-rule) 'odd-function-reflect)
+(setf (get '%acoth 'reflection-rule) 'odd-function-reflect-nonzero)
 
 ;; When b is nil, do not apply the reflection rule. For trigonometric like
 ;; functions, b is $trigsign.  This function uses 'great' to decide when to
