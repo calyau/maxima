@@ -4386,6 +4386,12 @@ block ([x, y], [ratcoef (x^2 + x + 1, 2*x), ratcoef (3*x*y, 2*x)]);
 [0, cos(u)]$
 
 
+/* Bug #5489: "poisdiff(sin(x), x) gives a Lisp error instead of cos(x)" */
+
+[outofpois(poisdiff(sin(x), x)), outofpois(poisctimes(2, sin(u)))];
+[cos(x), 2*sin(u)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

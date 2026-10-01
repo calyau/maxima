@@ -143,6 +143,7 @@ Bug fixes for numbered bugs:
 * \#5448 ratcoef with a numeric multiple of a monomial as second argument truncates the coefficient
 * \#5449 ratcoef(taylor_series, y, 0) returns the whole series even when it depends on y
 * \#5488 poistimes(0, sin(x)) gives a Lisp error instead of 0
+* \#5489 poisdiff(sin(x), x) gives a Lisp error instead of cos(x)
 
 Bug fixes for unnumbered bugs:
 ------------------------------

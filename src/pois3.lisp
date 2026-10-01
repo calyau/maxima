@@ -231,6 +231,7 @@
 ;;; WHICH IS FREE OF SINES AND COSINES .
 
 (defmfun $poisctimes (c p)
+  (setq p (intopois p))
   (list '(mpois simp) (poisctimes1 (setq c (intopoisco c)) (cadr p)) (poisctimes1 c (caddr p))))
 
 (defmfun $outofpois (p)
@@ -295,6 +296,7 @@
 
 (defmfun $poisdiff (p m)
   (declare (special m))
+  (setq p (intopois p))
   (cond ((member m '($u $v $w $x $y $z) :test #'eq)
 	 (list (car p) (cosdif (caddr p) m) (sindif (cadr p) m)))
 	(t (list (car p) (poisdif4(cadr p)) (poisdif4 (caddr p))))))
