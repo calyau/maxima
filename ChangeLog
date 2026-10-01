@@ -145,6 +145,7 @@ Bug fixes for numbered bugs:
 * \#5585 With GCL 2.7.x, float log(0.0), csc(0.0), asech(0.0) etc. return infinities
 * \#5588 1-d output formatting: -1/7 has redundant parentheses: -(1/7)
 * \#5593 acot(-x) and acoth(-x) are reflected even if x can be 0
+* \#5602 rectform(sqrt(3 - erfc(%i))) fails with sign: argument cannot be non-real
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol

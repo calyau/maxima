@@ -324,7 +324,10 @@
 (defun risplit-expt-real^rat (base power)
   (case (cond ((mnegp base) '$neg)
               (implicit-real '$pos)
-              (t ($sign base)))    ; Use $sign not asksign
+              ;; BASE is real, but can contain %i, as %i*erf(%i) does.
+              ;; Use $sign not asksign.
+              (t (let ((sign-imag-errp nil))
+                   (catch 'sign-imag-err ($sign base)))))
     ($neg (risplit-expt-general-form (neg base) '$%pi power 0))
     ($zero (cons (power 0 power) 0))
     ($pos (cons (power base power) 0))
@@ -341,7 +344,10 @@
     (let* ((abs2 (spabs sp)) (abs (power abs2 1//2))
            (n (abs (cadr power)))
            (pos? (> (cadr power) -1))
-           (imag-sign ($sign imag)))
+           ;; IMAG is real, but can contain %i, as %i*(1-erfc(%i)) for
+           ;; erfc(%i) does.
+           (imag-sign (let ((sign-imag-errp nil))
+                        (catch 'sign-imag-err ($sign imag)))))
       (cond
         ((member imag-sign '($neg $pos))
          ;; Here, we use the half-angle formulas for cos and sin. Assuming we

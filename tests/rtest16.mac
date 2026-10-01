@@ -4417,6 +4417,19 @@ outofpois(intopois(x^2.5));
 x^2.5$
 
 
+/* Bug #5602: "rectform(sqrt(3 - erfc(%i))) fails with sign: argument cannot be non-real" */
+
+block(
+ local(nv),
+ nv(e) := float(expand(rectform(float(e)))),
+ map(lambda([u],
+            [closeto(nv(rectform(u)) - nv(u), 1e-14),
+             closeto(nv(realpart(u)) - realpart(nv(u)), 1e-14),
+             closeto(nv(imagpart(u)) - imagpart(nv(u)), 1e-14)]),
+     [sqrt(3 - erfc(%i)), sqrt(%i*erf(%i)), (3 - erfc(%i))^(3/2), sqrt(1 + gamma(%i))]));
+[[true, true, true], [true, true, true], [true, true, true], [true, true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
