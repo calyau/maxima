@@ -4411,6 +4411,12 @@ block([s : make_string_output_stream(), r],
  (e^3/6-e)*cos(w-u)-(1-e^2/2)*sin(w-u)]$
 
 
+/* Bug #5492: "intopois(x^2.5) gives a Lisp error instead of a Poisson coefficient" */
+
+outofpois(intopois(x^2.5));
+x^2.5$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

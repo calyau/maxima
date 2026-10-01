@@ -141,7 +141,7 @@
 	((eq (caar a) 'mpois) a)
 	((eq (caar a) '%sin) (poissine (cadr a)))
 	((eq (caar a) '%cos) (poiscosine (cadr a)))
-	((and (eq (caar a) 'mexpt) (numberp (caddr a)) (> (caddr a) 0.))
+	((and (eq (caar a) 'mexpt) (integerp (caddr a)) (> (caddr a) 0.))
 	 ($poisexpt (intopois (cadr a)) (caddr a)))
 	((eq (caar a) 'mplus)
 	 (setq *a (intopois (cadr a)))
