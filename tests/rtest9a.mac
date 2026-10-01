@@ -476,7 +476,7 @@ block ([display2d_unicode: false], print_string_2d (-a/b));
 ";
 
 string (-a/b);
-"-(a/b)";
+"-a/b";
 
 block ([display2d_unicode: false], print_string_2d (-(a/b)));
 "  a
@@ -485,7 +485,7 @@ block ([display2d_unicode: false], print_string_2d (-(a/b)));
 ";
 
 string (-(a/b));
-"-(a/b)";
+"-a/b";
 
 block ([display2d_unicode: false], print_string_2d ((-a)/b));
 "  a
@@ -494,7 +494,7 @@ block ([display2d_unicode: false], print_string_2d ((-a)/b));
 ";
 
 string ((-a)/b);
-"-(a/b)";
+"-a/b";
 
 /* -(a + b)/c and (-(a + b))/c parse to the same thing,
  * but -((a + b)/c) parses to something else,

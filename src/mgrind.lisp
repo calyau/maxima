@@ -346,11 +346,37 @@
 (defprop mminus 134. rbp)
 (defprop mminus 100. lbp)
 
+;; If X, the operand of a unary minus, is a product or quotient whose leftmost
+;; factor is an atom or binds more tightly than "-" (possibly inside further
+;; products and quotients), return X with the minus moved onto that factor,
+;; else NIL. Printed with the usual rules, the result is "-a*b" for -(a*b): The
+;; parser binds a prefix "-" more tightly than "*" and "/" and reads it back as
+;;  (-a)*b, the tree returned here. A sum as that factor would absorb the sign
+;; on simplification, so -(a+b)*c would read back as (-b-a)*c.
+(defun mminus-onto-leftmost-factor (x)
+  (setq x (nformat-check x))
+  (when (and (consp x)
+             (consp (car x))
+             (or (and (eq (caar x) 'mtimes) (cddr x))
+                 (and (member (caar x) '(mquotient rat)) (= (length x) 3))))
+    (let* ((y (nformat-check (cadr x)))
+           (z (cond ((atom y) (list '(mminus) y))
+                    ((not (consp (car y))) nil)
+                    ((member (caar y) '(mtimes mquotient rat))
+                     (mminus-onto-leftmost-factor y))
+                    ((> (lbp (caar y)) (rbp '|$-|)) (list '(mminus) y)))))
+      (and z (list* (list (caar x)) z (cddr x))))))
+
 (defun msize-mminus (x l r)
   (cond ((null (cddr x))
          (if (null (cdr x))
              (msize-function x l r t)
-             (msize (cadr x) (append (ncons #\- ) l) r 'mminus rop)))
+             ;; Without simplification, the minus stays where it is, so that the
+             ;; expression reads back unchanged.
+             (let ((y (and $simp (mminus-onto-leftmost-factor (cadr x)))))
+               (if y
+                   (msize y l r lop rop)
+                   (msize (cadr x) (append (ncons #\- ) l) r 'mminus rop)))))
         (t
          (setq l (msize (cadr x) l nil lop 'mminus)
                x (cddr x))

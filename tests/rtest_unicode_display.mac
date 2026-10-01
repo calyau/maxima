@@ -260,7 +260,7 @@ block ([display2d_unicode: true], print_string_2d (-a/b));
 ";
 
 string (-a/b);
-"-(a/b)";
+"-a/b";
 
 block ([display2d_unicode: true], print_string_2d (-(a/b)));
 "  a
@@ -269,7 +269,7 @@ block ([display2d_unicode: true], print_string_2d (-(a/b)));
 ";
 
 string (-(a/b));
-"-(a/b)";
+"-a/b";
 
 block ([display2d_unicode: true], print_string_2d ((-a)/b));
 "  a
