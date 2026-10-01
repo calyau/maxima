@@ -4421,3 +4421,9 @@ block([factlim : 5],
   [double_factorial(4), string(double_factorial(10)),
    string(double_factorial(2^70))]);
 [8, "double_factorial(10)", "double_factorial(1180591620717411303424)"]$
+
+/* Bug #5360: "log_gamma of a complex bigfloat with negative real part leaves log(sin(...)) unevaluated" */
+
+block([v : log_gamma(-3.5b0 + %i)],
+  [freeof(sin, v), is(abs(v - log_gamma(-3.5 + %i)) < 1e-13)]);
+[true, true]$

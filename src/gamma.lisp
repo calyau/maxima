@@ -2010,9 +2010,9 @@
            (mul -1 
              (simplify (list '(%log) 
                (simplify (list '(%sin) 
-                 (mul 
-                   bigfloat%pi 
-                   (sub z (simplify (list '($floor) ($realpart z))))))))))
+                         (cmul 
+                           bigfloat%pi 
+                           (sub z (simplify (list '($floor) ($realpart z))))))))))
            (mul
              bigfloat%pi '$%i
              (simplify (list '($floor) ($realpart z)))
