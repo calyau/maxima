@@ -4427,3 +4427,9 @@ block([factlim : 5],
 block([v : log_gamma(-3.5b0 + %i)],
   [freeof(sin, v), is(abs(v - log_gamma(-3.5 + %i)) < 1e-13)]);
 [true, true]$
+
+/* Bug #5359: "inverse_erfc of any complex number signals a Lisp error" */
+
+[is(abs(erfc(inverse_erfc(0.5 + 0.1*%i)) - (0.5 + 0.1*%i)) < 1e-14),
+ is(abs(erfc(inverse_erfc(0.5b0 + 0.1b0*%i)) - (0.5b0 + 0.1b0*%i)) < 1e-14)];
+[true, true]$
