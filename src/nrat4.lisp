@@ -84,7 +84,10 @@
      (setq exp (cdr (ratrep* exp)))
      (setq var (cdr (ratrep* var)))
      (setq bas (cadr (ratrep* bas)))
-     (if (and (onep1 (cdr exp)) (onep1 (cdr var)) (pureprod (car var)))
+     ;; PRODCOEF truncates numeric quotients, so only take this shortcut
+     ;; when the monomial VAR has coefficient 1 or -1.
+     (if (and (onep1 (cdr exp)) (onep1 (cdr var)) (pureprod (car var))
+	      (member (leadcoefficient (car var)) '(1 -1)))
 	 (return (pdis* (prodcoef (car var) (car exp)))))
      (setq exp (ratquotient exp var))
      (if (null minvar) (return (pdis* (prodcoef (cdr exp) (car exp)))))

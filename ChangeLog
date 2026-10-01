@@ -140,6 +140,7 @@ Bug fixes for numbered bugs:
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 * \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2
+* \#5448 ratcoef with a numeric multiple of a monomial as second argument truncates the coefficient
 
 Bug fixes for unnumbered bugs:
 ------------------------------
