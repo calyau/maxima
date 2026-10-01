@@ -120,9 +120,9 @@ Bug fixes for numbered bugs:
 * \#5397 limit(abs((a*x^2+x^3)^(1/3)),x,0,plus) signals a Lisp error
 * \#5398 gruntz(sinh(x)/exp(x),x,inf) gives 0 instead of 1/2
 * \#5399 limit(1/acosh(x),x,1,minus) gives inf instead of infinity
-* \#5402 limit(sqrt(x^2+1)-x+%i*x,x,inf) gives und instead of infinity
 * \#5400 limit(erf((2+%i)/x),x,0,plus) gives -1 instead of 1
 * \#5401 limit(b^(-1.0*x),x,inf) gives 0 for a symbolic base b
+* \#5402 limit(sqrt(x^2+1)-x+%i*x,x,inf) gives und instead of infinity
 * \#5403 tlimit((x-1)!*x,x,0) gives 0 instead of 1
 * \#5417 max() and lmax() modify the caller's expressions and lists
 * \#5450 lreduce, rreduce and xreduce error message shows $lreduce
@@ -138,6 +138,7 @@ Bug fixes for numbered bugs:
 * \#5588 1-d output formatting: -1/7 has redundant parentheses: -(1/7)
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
+* \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2
 
 Bug fixes for unnumbered bugs:
 ------------------------------

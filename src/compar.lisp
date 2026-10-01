@@ -1942,7 +1942,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (cond ((or (mplusp y) (> (conssize y) 50.))
 	   (setq sign '$pnz)
 	   nil)
-	  (t (sign y)))))
+	  ;; SIGN returns nothing useful. Return NIL, so that SIGN-MPLUS
+	  ;; keeps the stronger of this sign and the one it had before.
+	  (t (sign y) nil))))
 
 (defun factor-if-small (x)
   (if (< (conssize x) 51.)

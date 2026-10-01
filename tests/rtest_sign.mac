@@ -2936,6 +2936,16 @@ block([ans],
 [pnz, pnz]$
 
 
+/* Bug #5629: "sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2" */
+
+block([ans],
+ assume(x^3 >= y, y >= x^2),
+ ans : [sign(x^3-x^2), sign(x^2-x^3), is(x^3 >= x^2), sign(atan(x^3)-atan(x^2))],
+ forget(x^3 >= y, y >= x^2),
+ ans);
+[pz, nz, true, pz]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
