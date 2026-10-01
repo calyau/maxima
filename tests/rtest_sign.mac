@@ -2924,6 +2924,18 @@ block([ans],
 [complex, pnz, pnz, []];
 
 
+/* Bug #5628: "sign(abs(abs(a)-1)+1) gives pz instead of pos" */
+
+[sign(abs(abs(a)-1)+1), sign(-abs(abs(a)-1)-1), sign(abs(x^2-1)+1), sign(abs(a^2+b^2-3)+3)];
+[pos, neg, pos, pos]$
+
+[is(abs(abs(a)-1)+1 > 0), is(abs(x^2-1)+1 > 0)];
+[true, true]$
+
+[sign(abs(abs(a)-1)-1), sign(1-abs(abs(a)-1))];
+[pnz, pnz]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

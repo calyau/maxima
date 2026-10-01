@@ -137,6 +137,7 @@ Bug fixes for numbered bugs:
 * \#5585 With GCL 2.7.x, float log(0.0), csc(0.0), asech(0.0) etc. return infinities
 * \#5588 1-d output formatting: -1/7 has redundant parentheses: -(1/7)
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
+* \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 
 Bug fixes for unnumbered bugs:
 ------------------------------

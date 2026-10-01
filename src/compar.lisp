@@ -1771,8 +1771,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
              (s1 (sign* (sub a b)))
              (s2 (sign* (sub (neg a) b)))
              (max-sign (sminmax '$max s1 s2)))
-        (when (not (eq max-sign '$pnz))
-          (setq sgn max-sign))))
+        ;; abs(a) - b >= -b, which the signs of a - b and -a - b need not show:
+        ;; for abs(abs(x) - 1) + 1, they are pz and pnz.
+        (cond ((eq (sign* (neg b)) '$pos)
+               (setq sgn '$pos))
+              ((not (eq max-sign '$pnz))
+               (setq sgn max-sign)))))
     
     ;; For the following test, swap XLHS and XRHS, if necessary, so that XRHS is
     ;; the number, e.g. x^2 - 3 -> 3 - x^2, and remember to flip the result.
