@@ -33,7 +33,7 @@
 
 (defun nonperiod (p)
   (and (null (cadr p))
-       (= (caaddr p) poishift)
+       (eql (caaddr p) poishift)
        (null (cddr (caddr p)))))
 
 (poislim1 nil 5)

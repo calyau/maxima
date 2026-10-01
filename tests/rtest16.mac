@@ -4380,6 +4380,12 @@ block ([x, y], [ratcoef (x^2 + x + 1, 2*x), ratcoef (3*x*y, 2*x)]);
 [1/2, 3*y/2]$
 
 
+/* Bug #5488: "poistimes(0, sin(x)) gives a Lisp error instead of 0" */
+
+[outofpois(poistimes(0, sin(x))), outofpois(poissubst(u, v, cos(v), 0, 3))];
+[0, cos(u)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
