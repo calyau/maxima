@@ -1475,6 +1475,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '%csch #'(lambda (x) (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x))))))
 	 (list '%acos 'sign-asin/acos/atanh)
 	 (list '%asin 'sign-asin/acos/atanh)
+	 (list '%atan 'sign-atan/asinh)
+	 (list '%asinh 'sign-atan/asinh)
 	 (list '%acosh 'sign-acosh)
 	 (list '%atanh 'sign-asin/acos/atanh)
 	 (list '%asec 'sign-asec/acsc/asech/acoth)
@@ -2249,6 +2251,14 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     ;; place that undoes the rewrite, which would cause endless recursion.
     (let ((f (get (get (get (caar x) '$inverse) 'recip) '$inverse)))
       (sign `((,f) ,(inv (cadr x)))))))
+
+;; atan(%i*y) = %i*atanh(y) and asinh(%i*y) = %i*asin(y) are imaginary only
+;; for -1 <= y <= 1, so the rule of SIGN-ODDFUN that takes the sign of the
+;; argument does not carry over to imaginary arguments.
+(defun sign-atan/asinh (x)
+  (sign-oddfun x)
+  (when (eq sign '$imaginary)
+    (setq sign '$complex minus nil odds nil evens nil)))
 
 ;; tan(%i*y) = %i*tanh(y) and cot(%i*y) = -%i*coth(y) are imaginary, and tan
 ;; and cot of other non-real arguments are complex.
