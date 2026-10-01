@@ -2936,7 +2936,10 @@
 		;; good enough.  But if 1-z is 1, inverse_erf is
 		;; undefined, so we need to do something else.
 		(let ((result
-			(let ((1-z (float (- 1 z) 0.0)))
+      (let ((1-z (if (complexp z)
+            ;; FLOAT takes only a real number.
+            (- 1 z)
+            (float (- 1 z) 0.0))))
 			  (cond ((= 1 1-z)
 				 (if (minusp (realpart z))
 				     (bf-inverse-erf (+ 1 (* 5 maxima::+flonum-epsilon+)))
