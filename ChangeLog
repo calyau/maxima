@@ -139,6 +139,7 @@ Bug fixes for numbered bugs:
 * \#5520 integrate(x^3.0*(1+x^2)^2,x) signals a Lisp error; integrate(sqrt(x)*(1+x)^2.0,x) is wrong
 * \#5525 integrate takes an even float power such as cos(x)^2.0 for an odd one
 * \#5561 acot(-0.0) signals 'argument -0.0 isn't in the domain of acot'
+* \#5566 exp(%i*x/2+%i*%pi) is not simplified
 * \#5569 acsch( 1.0e-6*%i );
 * \#5580 sqrt(2*(1-y)^2*(y-1)^2) simplifies to sqrt(2)
 * \#5581 with keepfloat:true, ratsimp(1.0*%i/(1.0+1.0*%i)^2) returns 1.0 instead of 0.5

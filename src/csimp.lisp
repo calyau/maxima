@@ -401,7 +401,7 @@
      loop (cond ((atom c)
 		 (cond ((equal c 0) (return nil))
 		       ((equal 1 d) (return c))
-		       (t (return (list '(rat) c d))))))
+		       (t (return (div c d))))))
      (setq c (ptterm (cdr c) 0))
      (go loop)))
 

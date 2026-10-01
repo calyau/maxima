@@ -4430,6 +4430,15 @@ block(
 [[true, true, true], [true, true, true], [true, true, true], [true, true, true]]$
 
 
+/* Bug #5566: "exp(%i*x/2+%i*%pi) is not simplified" */
+
+[exp(%i*x/2+%i*%pi), exp(%i*(x/3+%pi)), exp(%i*x/4+%i*%pi/2), exp(%i*x/2+2*%i*%pi)];
+[-%e^(%i*x/2), -%e^(%i*x/3), %i*%e^(%i*x/4), %e^(%i*x/2)]$
+
+[exp(%i*(x+2*%pi)/2), exp(%i*(x+4*%pi)/2), exp(%i*(x+6*%pi)/4), exp(%i*(x+3*%pi)/6)];
+[-%e^(%i*x/2), %e^(%i*x/2), -%i*%e^(%i*x/4), %i*%e^(%i*x/6)]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
