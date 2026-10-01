@@ -145,6 +145,7 @@ Bug fixes for numbered bugs:
 * \#5488 poistimes(0, sin(x)) gives a Lisp error instead of 0
 * \#5489 poisdiff(sin(x), x) gives a Lisp error instead of cos(x)
 * \#5490 poisexpt(sin(x), -1) never returns
+* \#5491 poissubst(w, v, cos(u-v), e, 3) gives the cos(w-u) term the wrong sign
 
 Bug fixes for unnumbered bugs:
 ------------------------------

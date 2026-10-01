@@ -704,8 +704,10 @@
 					 (setq dp ($poistimes dp d)))))
 	   (fancypois1s d dp (1+ n) lim))))
 
-;;; COS(R+K*B) ==> K*COS(R+K*A)*DC - K*SIN(R+K*A)*DS
-;;; SIN(R+K*B) ==> K*COS(R+K*A)*DS + K*SIN(R+K*A)*DC
+;;; SUBSTITUTING A+D FOR B, WITH DC AND DS THE SERIES FOR COS(D) AND SIN(D):
+;;; COS(R+K*B) ==> COS(R+K*A)*DC - K*SIN(R+K*A)*DS
+;;; SIN(R+K*B) ==> K*COS(R+K*A)*DS + SIN(R+K*A)*DC
+;;; THIS IS CORRECT ONLY FOR K = 1 OR -1.
 
 (defun fancypac (c)
   (prog nil
@@ -720,7 +722,7 @@
 	   ($poisplus *ans
 		      ($poisplus ($poistimes (list '(mpois simp)
 						   nil
-						   (poismergec *coef *argc nil))
+						   (poismergec (cadr c) *argc nil))
 					     dc)
 				 ($poistimes (list '(mpois simp)
 						   (poismerges (poisco* -1 *coef) *argc nil)
@@ -743,7 +745,7 @@
 							(poismergec *coef *argc nil))
 						  ds)
 				      ($poistimes (list '(mpois simp)
-							(poismerges *coef *argc nil)
+							(poismerges (cadr c) *argc nil)
 							nil)
 						  dc))))
      end  (fancypas (cddr c))))
