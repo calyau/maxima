@@ -1,7 +1,7 @@
 
 ROMBERG is now MACSYM;ROMBRG FASL and is autoloading.  Just call 
 ROMBERG and it will be there. - JPG
-
+
 GJC@MIT-MC 01/12/81 13:50:27
 To: (FILE [SHARE;ROMBRG USAGE]) at MIT-MC
 The old conventions of what are efficient ways to call ROMBERG, 
@@ -40,7 +40,7 @@ p.s. These same extensions apply to the syntax of the
 INTERPOLATE command. However, the restrictions on the
 use of the PLOT2 command unfortunately still hold.
 This takes lots of work on PLOT2 to fix.
-
+
 GJC@MIT-MC 03/20/80 19:09:30
 To: (FILE [SHARE;ROMBRG USAGE]) at MIT-MC
 The source for ROMBERG is now MAXSRC;ROMBRG > and NUMER;ROMBRG MMACRO.
@@ -49,7 +49,7 @@ not just translated functions. Problems with arguments not getting
 properly floated, e.g. ROMBERG(X,X,1/10,2/10) have been fixed, problems
 with the arguments to ROMBERG not getting evaluated in compiled code
 have been fixed.
-
+
 CFFK@MIT-MC 12 AUG 1979 1743-EDT
 To: (FILE [SHARE;ROMBRG USAGE]) at MIT-MC
 At SK's suggestion, ROMBERG (BROMBERG) will now exit if an absolute
@@ -95,7 +95,7 @@ N;  ==> 130
 
 So if F(X) were a function that took a long time to compute, the
 second method would be about 2 times quicker.
-
+
 CFFK@MIT-MC 05/04/78 16:52:43
 To: (FILE [SHARE;ROMBRG USAGE]) at MIT-MC
 There is a new option ROMBERGMIN whose default value is 0, that

@@ -12,7 +12,7 @@ mcset es "File" "Archivo"
 mcset es "Batch File Silently" "Ejecutar batch en silencio"
 mcset es "Open a file to Batch Silently" "Abrir archivo batch silenciosamente"
 mcset es "Save Expressions to File" "Guardar expresiones a un archivo"
-mcset es "Interrupt" "InterrupciÛn"
+mcset es "Interrupt" "Interrupci√≥n"
 mcset es "Restart" "Reiniciar"
 mcset es "Input prompt" "Cursor de entrada"
 mcset es "Exit" "Salir"
@@ -28,7 +28,7 @@ mcset es "Clear input" "Limpiar entrada"
 mcset es "Save Console to File" "Guardar la terminal a un archivo"
 mcset es "Options" "Opciones"
 mcset es "Toggle Browser Visibility" "Alternar la visibilidad del navegador"
-mcset es "Plot Windows" "Ventanas de graficaciÛn"
+mcset es "Plot Windows" "Ventanas de graficaci√≥n"
 mcset es "Embedded" "Embebida"
 mcset es "Separate" "Separada"
 mcset es "Multiple" "Multiple"
@@ -56,8 +56,8 @@ mcset es "Maxima Manual (xmaxima browser)" "Maxima - manual(navegador Xmaxima)"
 mcset es "Xmaxima Manual (xmaxima browser)" "Xmaxima - manual (navegador Xmaxima)"
 mcset es "Maxima Manual (web browser)" "Maxima - manual (navegador Web)"
 mcset es "Xmaxima Manual (web browser)" "Xmaxima - manual (navegador Web)"
-mcset es "Maxima Homepage" "P·gina Web de Maxima"
-mcset es "Project Page" "P·gina del proyecto"
+mcset es "Maxima Homepage" "P√°gina Web de Maxima"
+mcset es "Project Page" "P√°gina del proyecto"
 mcset es "Bug Reports" "Reporte de bugs"
 
 
@@ -69,7 +69,7 @@ mcset es "args to href.  Wanted 1, got:" "args to href. Wanted 1, got:"
 mcset es "unable to call" "incapaz de invocar a"
 
 ### EOpenplot.tcl
-mcset es "not allowed, only" "no permitido, ˙nicamente"
+mcset es "not allowed, only" "no permitido, √∫nicamente"
 
 
 ### Bindings.tcl
@@ -95,23 +95,23 @@ containing those characters will be considered.
 <Alt-s>     Print again the Maxima input prompt.
 " "
 Atajos:
-<Return>  Esto envia la expresiÛn actual (ie es decir donde
+<Return>  Esto envia la expresi√≥n actual (ie es decir donde
 se encuentra el cursor) para ser evaluada.
-<Linefeed> (Control-j) Inserta una nueva lÌnea, lo cual es muy ˙til
-para el ingreso de entradas multilÌneas.
-<Control-k> Elimina la lÌnea actual y la coloca en la papelera.
-Control-K's sucesivos borrar·n las lÌneas posteriores, incluyendo salidas.
+<Linefeed> (Control-j) Inserta una nueva l√≠nea, lo cual es muy √∫til
+para el ingreso de entradas multil√≠neas.
+<Control-k> Elimina la l√≠nea actual y la coloca en la papelera.
+Control-K's sucesivos borrar√°n las l√≠neas posteriores, incluyendo salidas.
 <Control-y> Yank out the last kill, Meta-y cycles thru previous
 kills.
 <Control-g> Interrumpe el computo actual.
 <Alt-p> Accede a la entrada previa en la historia de entradas de la
-sesiÛn; si se llega al comienzo, continuar· en la ˙ltima entrada.
-Si se escriben algunos caracteres antes de oprimir Alt-p, ser·n
-consideradas ˙nicamente las entradas que contengan esos caractÈres.
-<Alt-n> Accede a la prÛxima entrada en la historia de entradas de la
-sesiÛn; si se llega al final, continuar· en la primera entrada.
-Si se escriben algunos caracteres antes de oprimir Alt-n, ser·n
-consideradas ˙nicamente las entradas que contengan esos caractÈres.
+sesi√≥n; si se llega al comienzo, continuar√° en la √∫ltima entrada.
+Si se escriben algunos caracteres antes de oprimir Alt-p, ser√°n
+consideradas √∫nicamente las entradas que contengan esos caract√©res.
+<Alt-n> Accede a la pr√≥xima entrada en la historia de entradas de la
+sesi√≥n; si se llega al final, continuar√° en la primera entrada.
+Si se escriben algunos caracteres antes de oprimir Alt-n, ser√°n
+consideradas √∫nicamente las entradas que contengan esos caract√©res.
 <Alt-s> Introduce nuevamente el indicador de entrada de datos de
 Maxima.
 "
@@ -121,27 +121,27 @@ Maxima.
 mcset es "illegal command in rich text:" "comando ilegal en texto enriquecido"
 mcset es "unable to evaluate command:" "incapaz de evaluar el comando:"
 mcset es "History List" "Historial"
-mcset es "This window may be dragged elsewhere by grabbing this title bar with the mouse.  Double clicking on a history item, moves to that page." "Esta ventana puede ser arrastrada a otra parte agarrando esta barra de tÌtulo con el mouse. Haciendo doble click en uno de los items del historial, llevar· a dicha p·gina."
+mcset es "This window may be dragged elsewhere by grabbing this title bar with the mouse.  Double clicking on a history item, moves to that page." "Esta ventana puede ser arrastrada a otra parte agarrando esta barra de t√≠tulo con el mouse. Haciendo doble click en uno de los items del historial, llevar√° a dicha p√°gina."
 mcset es "Close" "Cerrar"
 mcset es "Remove the history list" "Remover del historial"
 mcset es "unknown type:" "tipo desconocido:"
 mcset es "error unsupported url type:" "error: url de tipo desconocido"
-mcset es "Error connecting to %s on %s\n%s" "Error conect·ndose a %s en %s\n%s"
+mcset es "Error connecting to %s on %s\n%s" "Error conect√°ndose a %s en %s\n%s"
 mcset es "not supported" "no soportado"
-mcset es "need version of tk with 'binary' command for images" "se necesita la versiÛn de tk con el comando 'binary' para im·genes"
+mcset es "need version of tk with 'binary' command for images" "se necesita la versi√≥n de tk con el comando 'binary' para im√°genes"
 mcset es "could not get image" "no se puede obtener la imagen"
 mcset es "unknown type of image" "tipo de imagen desconocido"
 mcset es "cant remove tmp file" "no se puede remover el archivo temporal"
 mcset es "Unable to open an image for" "incapaz de abrir una image por"
 mcset es "Opening" "Abriendo"
 mcset es "unable to evaluate" "incapaz de evaluar"
-mcset es "Font Settings\nThe proportional font is " "ConfiguraciÛn de Fuentes\nLa fuente proporcional es "
-mcset es "with a size adjustment of " "con un tamaÒo de "
+mcset es "Font Settings\nThe proportional font is " "Configuraci√≥n de Fuentes\nLa fuente proporcional es "
+mcset es "with a size adjustment of " "con un tama√±o de "
 mcset es "\nThe fixed font is " "\n La fuente fijada es "
 mcset es "Default nmtp servers  " "Servidores nmtp por defecto "
 mcset es "http Proxy host and port:" "Servidor proxy y puerto"
-mcset es "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `foo.ma.utexas.edu 3128', otherwise leave this blank" "\nSi tu equipo est· detr·s de una firewall ingresa el nombre y el puerto del servidor proxy, \n eg: `foo.ma.utexas.edu 3128', de otra manera deja este espacio en blanco."
-mcset es "\nShould plot windows be " "\nDesplegar las ventanas de graficaciÛn " 
+mcset es "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `foo.ma.utexas.edu 3128', otherwise leave this blank" "\nSi tu equipo est√° detr√°s de una firewall ingresa el nombre y el puerto del servidor proxy, \n eg: `foo.ma.utexas.edu 3128', de otra manera deja este espacio en blanco."
+mcset es "\nShould plot windows be " "\nDesplegar las ventanas de graficaci√≥n " 
 mcset es "embedded" "embebida"
 mcset es "separate" "separada"
 mcset es "multiple" "multiple"
@@ -159,21 +159,21 @@ mcset es "writing" "escribiendo"
 ### Myhtml.tcl
 mcset es "Internal font error:" "Erro interno de fuente"
 mcset es "bad window" "ventana errada"
-mcset es "not yet" "no a˙n"
-mcset es "Click to follow link to" "Haz click en el siguente vÌnculo"
+mcset es "not yet" "no a√∫n"
+mcset es "Click to follow link to" "Haz click en el siguente v√≠nculo"
 mcset es " Enter search keywords: " "Ingresa las palabras a buscar"
 mcset es "cant decode hex" "no se puede decodificar hex"
 
 
 ### OpenMath.tcl
-mcset es "Back" "Atr·s"
+mcset es "Back" "Atr√°s"
 mcset es "Forward" "Siguiente"
 mcset es "Edit" "Editar"
-mcset es "Bring down a menu with some edit options" "Despliega un menu con algunas opciones para ediciÛn"
-mcset es "show edit bar" "mostrar barra de ediciÛn"
-mcset es "Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program specified below." "Marca la regiÛn seleccionada actualmente en la ventana de texto, asÌ que dando click en esta regiÛn causar· la evaluaciÛn por el programa especificado m·s abajo."
+mcset es "Bring down a menu with some edit options" "Despliega un menu con algunas opciones para edici√≥n"
+mcset es "show edit bar" "mostrar barra de edici√≥n"
+mcset es "Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program specified below." "Marca la regi√≥n seleccionada actualmente en la ventana de texto, as√≠ que dando click en esta regi√≥n causar√° la evaluaci√≥n por el programa especificado m√°s abajo."
 mcset es "mark for eval" "marcar para evaluar"
-mcset es "Set `%s' to be the current type used by 'mark for eval' for making the selected region sensitive to double clicking." "Establece '%s' como el programa que evaluar· las regiones marcadas para evaluaciÛn, es decir aquellas que son sensibles al doble click."
+mcset es "Set `%s' to be the current type used by 'mark for eval' for making the selected region sensitive to double clicking." "Establece '%s' como el programa que evaluar√° las regiones marcadas para evaluaci√≥n, es decir aquellas que son sensibles al doble click."
 mcset es "Options" "Opciones"
 mcset es "File" "Archivo"
 mcset es "Offer possible help options, including toggling \n	whether to show balloon help messages" "Ofrece posibles opciones de ayuda, incluyendo mostrar o ocultar el globo de mensajes de ayuda."
@@ -188,16 +188,16 @@ mcset es {Try to abort the current remote computation.} {Intenta abortar el comp
 mcset es "Stop" "Parar"
 mcset es {Stop reading the current url or image.} {Para la lectura de la url o imagen actual.}
 mcset es "Forget" "Eliminar"
-mcset es {Move back one in the history, and remove the current one from the history, unless it was the first window.} {Se desplaza sobre el historial de archivos y remueve el archivo actual, a menos que sea el ˙nico archivo abierto.}
+mcset es {Move back one in the history, and remove the current one from the history, unless it was the first window.} {Se desplaza sobre el historial de archivos y remueve el archivo actual, a menos que sea el √∫nico archivo abierto.}
 mcset es "History" "Historial"
 mcset es {Display the history list, so that one may be selected by clicking.} \
-         {Muestra el historial, y asÌ puedes dar click para seleccionar el archivo.}
+         {Muestra el historial, y as√≠ puedes dar click para seleccionar el archivo.}
 mcset es "Base Program" "Programa base"
 mcset es {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.} \
-         {Muestra y altera el programa base, el cual muestra cual es el servidor por defecto para la ejecuciÛn de programas. TambiÈn puede ser especificado mediante la etiqueta <body baseprogram=....> en el archivo html.} 
+         {Muestra y altera el programa base, el cual muestra cual es el servidor por defecto para la ejecuci√≥n de programas. Tambi√©n puede ser especificado mediante la etiqueta <body baseprogram=....> en el archivo html.} 
 mcset es "Save to file" "Guardar a un archivo"
 mcset es "Fonts" "Fuentes"
-mcset es {set the default font sizes and types} {Configura los tipos y tamaÒos de fuente por defecto}
+mcset es {set the default font sizes and types} {Configura los tipos y tama√±os de fuente por defecto}
 mcset es "Exit" "Salir"
 mcset es {Exit this program} {Salir de este programa}
 mcset es {Fetch the URL or FILE indicated in the entry box. \
@@ -208,16 +208,16 @@ mcset es {Fetch the URL or FILE indicated in the entry box. \
 				   comienza con http.}
 
 mcset es {Address of the current document.  You may modify it and type Enter, to fetch a new document.} \
-         {La direcciÛn del documento actual. Puedes modificarla y presionar enter, para abrir un nuevo documento.}
+         {La direcci√≥n del documento actual. Puedes modificarla y presionar enter, para abrir un nuevo documento.}
 mcset es "Could not open file %s\n%s" "No se puede abrir el archivo %s\n%s"
 mcset es "wrote" "escrito"
 mcset es "Double clicking (with the left mouse button), in the marked region will cause evaluation. " \
-         "Haciendo doble click (con el botÛn izquierdo del mouse), en la regiÛn marcada causar· su evaluaciÛn"
-mcset es "No result field with" "Ning˙n resultado con"
-mcset es "Failed to eval region" "Falla al evaluar la regiÛn"
+         "Haciendo doble click (con el bot√≥n izquierdo del mouse), en la regi√≥n marcada causar√° su evaluaci√≥n"
+mcset es "No result field with" "Ning√∫n resultado con"
+mcset es "Failed to eval region" "Falla al evaluar la regi√≥n"
 mcset es "Reload the current URL displayed in the window." "Recarga la URL actual mostrada en la ventana"
 mcset es " by %s." " por %s"
-mcset es " The result will be inserted." "El resultado ser· insertado."
+mcset es " The result will be inserted." "El resultado ser√° insertado."
 mcset es " The result field is named" "El resultado esta nombrado"
 
 
@@ -234,35 +234,35 @@ mcset es "This is a menu window" "Esta es una ventana de menu"
 
 ### Tryembed.tcl
 mcset es "unknown host:" "equipo desconocido"
-mcset es "connection from %s and %s disallowed" "conecciÛn desde %s y %s rechazada"
-mcset es "bad port:" "puerto inv·lido"
+mcset es "connection from %s and %s disallowed" "conecci√≥n desde %s y %s rechazada"
+mcset es "bad port:" "puerto inv√°lido"
 mcset es "wrong args: socket host port OR socket -server command port" \
-	 "argumentos inv·lidos: socket equipo puerto o socket -servidor comando puerto"
+	 "argumentos inv√°lidos: socket equipo puerto o socket -servidor comando puerto"
 mcset es "Cannot change" "No se puede cambiar"
-mcset es "unknown option" "opciÛn desconocida"
+mcset es "unknown option" "opci√≥n desconocida"
 
 
 ### Tkmaxima.tcl
 mcset es "Usage: xmaxima \[options\] \[url\]" "Uso: xmaxima \[opciones\] \[url\]"
-mcset es "           If given, \[url\] will be opened in the help browser instead" "           Si se pasa como argumento, \[url\] deberÌa ser abierta en el navegador de ayuda en cambio de"
-mcset es "           of the default starting page." "           la p·gina de inicio por defecto."
+mcset es "           If given, \[url\] will be opened in the help browser instead" "           Si se pasa como argumento, \[url\] deber√≠a ser abierta en el navegador de ayuda en cambio de"
+mcset es "           of the default starting page." "           la p√°gina de inicio por defecto."
 mcset es "options:" "opciones"
 mcset es "    --help: Display this usage message." "    --help: Muestra este mensaje de uso."
-mcset es "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>." "    -l <lisp>, --lisp=<lisp>: Usa la implementaciÛn lisp indicada por <lisp>."
-mcset es "    --use-version=<version>: Launch maxima version <version>." "    --use-version=<version>: Ejecuta la versiÛn de maxima indicada por <version>."
+mcset es "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>." "    -l <lisp>, --lisp=<lisp>: Usa la implementaci√≥n lisp indicada por <lisp>."
+mcset es "    --use-version=<version>: Launch maxima version <version>." "    --use-version=<version>: Ejecuta la versi√≥n de maxima indicada por <version>."
 mcset es "Error: arguments %s not understood." "Error: argumentos %s no entendidos"
 mcset es "Error sourcing %s\n%s" "Error en la fuente %s\n%s"
 mcset es "Error starting Maxima:" "Error iniciando Maxima:"
 
 
 ### Send-some.tcl
-mcset es "connection closed" "conecciÛn cerrada"
+mcset es "connection closed" "conecci√≥n cerrada"
 mcset es "sending" "enviando"
 mcset es "on" "sobre"
 mcset es "had error in" "se tuvo un error en"
-mcset es "connecting to" "conectandÛse a"
+mcset es "connecting to" "conectand√≥se a"
 mcset es "connected to" "conectado a"
-mcset es "Sending scoket interrupt" "Enviando el socket de interrupciÛn"
+mcset es "Sending scoket interrupt" "Enviando el socket de interrupci√≥n"
 mcset es "connecting" "conectando"
 mcset es "Can't connect to" "No me puedo conectar a"
 mcset es "You can try another host by altering Base Program under the \"File\" menu." \
@@ -270,19 +270,19 @@ mcset es "You can try another host by altering Base Program under the \"File\" m
 	 
 
 ### RunMaxima.tcl	 
-mcset es "Could not start Maxima - empty command" "No se puede iniciar Maxima - comando vacÌo"
+mcset es "Could not start Maxima - empty command" "No se puede iniciar Maxima - comando vac√≠o"
 mcset es "Can't execute" "No puedo ejecutar"
 mcset es "Could not open a socket " "No se pudo abrir el socket"
 mcset es "Closed socket" "Socket cerrado"
 mcset es "Killed process" "Proceso terminado"
 mcset es "Starting Maxima" "Iniciando Maxima"
-mcset es "Starting maxima timed out.  Wait longer?" "La inicializaciÛn de maxima excediÛ el tiempo permitido. Esperar m·s tiempo?"
-mcset es "Starting Maxima timed out" "la inicializaciÛn de Maxima excediÛ el tiempo permitido"
-mcset es "Failed to start Maxima" "FallÛ la ejecuciÛn de Maxima"
+mcset es "Starting maxima timed out.  Wait longer?" "La inicializaci√≥n de maxima excedi√≥ el tiempo permitido. Esperar m√°s tiempo?"
+mcset es "Starting Maxima timed out" "la inicializaci√≥n de Maxima excedi√≥ el tiempo permitido"
+mcset es "Failed to start Maxima" "Fall√≥ la ejecuci√≥n de Maxima"
 mcset es "Started Maxima" "Maxima se ha inicializado"
 mcset es "Error sending to Maxima:" "Error enviando a Maxima:"
 mcset es "You must Restart" "Debes reiniciar"
 mcset es "You may need to Restart" "Puede que sea necesario reiniciar"
 mcset es "socket closed" "socket cerrado"
 mcset es "timed out" "tiempo excedido"
-mcset es "Sending signal %s to process %s" "Enviando la seÒal %s al proceso %s"
+mcset es "Sending signal %s to process %s" "Enviando la se√±al %s al proceso %s"
