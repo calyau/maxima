@@ -2146,7 +2146,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun sign-log (x)
  (let* ((arg (cadr x))
-        (dummy (sign arg)) ;; SIGN sets SIGN, MINUS, ODDS, EVENS, describing ARG.
+        (dummy (sign1 arg)) ;; SIGN sets SIGN, MINUS, ODDS, EVENS, describing ARG.
         (arg-sign sign))   ;; Its return value is meaningless.
   (declare (ignore dummy))
   (setq sign

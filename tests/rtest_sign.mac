@@ -2913,6 +2913,17 @@ block([a, b],
 pos;
 
 
+/* Bug #5622: "sign() and csign() of log(u) ignore assumptions about u when u is not a symbol" */
+
+block([ans],
+ ans : [csign(log(a*b)), sign(log(c*d))],
+ assume(a*b > 0, c*d < 0),
+ ans : append(ans, [csign(log(a*b)), errcatch(sign(log(c*d)))]),
+ forget(a*b > 0, c*d < 0),
+ ans);
+[complex, pnz, pnz, []];
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
