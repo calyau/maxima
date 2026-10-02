@@ -153,6 +153,7 @@ Bug fixes for numbered bugs:
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
+* \#5624 integrate asks for signs of complex coefficients, fails for imaginary ones
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 * \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2
 

@@ -6978,6 +6978,20 @@ block([f : %e^(1/(x+1))*(x^2+2*x+2)/(x+1)^3],
 0$
 
 
+/* Bug #5624: "integrate asks for signs of complex coefficients, fails for imaginary ones" */
+
+block([r, j, z],
+ local(j, z),
+ declare(j, imaginary, z, complex),
+ map(lambda([q], block([f : 1/q, F],
+                       F : integrate(f, x),
+                       is(freeof('integrate, F) and equal(diff(F, x), f)))),
+     [x^2+j, x^2+z, x^2+j*r, x^2+j*z, x^2+r*z,
+      x^3+j, x^3+z, x^3+j*r, x^3+j*z, x^3+r*z]));
+[true, true, true, true, true,
+ true, true, true, true, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

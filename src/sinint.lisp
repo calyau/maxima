@@ -183,7 +183,8 @@
     (list '(%log) x)))
 
 (defun npask (npask-exp)
-  (cond ((freeof '$%i npask-exp)
+  (cond ((and (freeof '$%i npask-exp)
+	      (not (member ($csign npask-exp) '($complex $imaginary))))
 	 (learn `((mnotequal) ,npask-exp 0)
 		t)
 	 (asksign npask-exp))
