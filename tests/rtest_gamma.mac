@@ -4023,8 +4023,8 @@ beta_incomplete_regularized(m,n,1/2)
  -((n+m)*((((-m)-1)*2^((-n)-m))/((-n)-m)+2^((-n)-m-1)))/(m*(m+1)*beta(m,n));
 
 beta_incomplete_regularized (m - 2, n, 1/2), beta_expand = true;
-beta_incomplete_regularized(m,n,1/2)
- -(((1-m)*2^((-n)-m+2))/((-n)-m+2)+2^((-n)-m+1))/(beta(m,n)*(n+m-1));
+((2^(-n-m+2)*(1-m))/(-n-m+2)+2^(-n-m+1))/(beta(m,n)*(n+m-1))
+ +beta_incomplete_regularized(m,n,1/2);
 
 beta_incomplete_generalized (m + 2, n, x, y), beta_expand = true;
 ((-(1-y)^n*y^(m+1))+(((-m)-1)*((1-x)^n*x^m-(1-y)^n*y^m))/((-n)-m)
@@ -4438,4 +4438,16 @@ block([v : log_gamma(-3.5b0 + %i)],
 
 [is(abs(erf(inverse_erf(1.0*%i)) - 1.0*%i) < 1e-14),
  is(abs(erf(inverse_erf(0.6b0 + 0.8b0*%i)) - (0.6b0 + 0.8b0*%i)) < 1e-14)];
+[true, true]$
+
+/* Bug #5362: "beta_incomplete_regularized(a-n,b,z) with beta_expand:true has the wrong sign" */
+
+block([a, b, z, beta_expand : true],
+  [is(abs(float(subst([a = 3.5, b = 2.5, z = 0.3],
+                      beta_incomplete_regularized(a - 1, b, z)))
+
+          - beta_incomplete_regularized(2.5, 2.5, 0.3)) < 1e-14),
+   is(abs(float(subst([a = 3.5, b = 2.5, z = 0.3],
+                      beta_incomplete_regularized(a - 2, b, z)))
+          - beta_incomplete_regularized(1.5, 2.5, 0.3)) < 1e-14)]);
 [true, true]$

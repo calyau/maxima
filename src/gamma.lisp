@@ -4036,7 +4036,7 @@
       ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
        (let ((n (- (cadr a)))
              (a (simplify (cons '(mplus) (cddr a)))))
-         (sub
+         (add
            (take '(%beta_incomplete_regularized) a b z)
            (mul
              (power (add a b -1) -1)
