@@ -112,6 +112,7 @@ Bug fixes for numbered bugs:
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
 * \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
+* \#5358 inverse_erf(1.0*%i) and other complex points with abs(z) = 1 report undefined 
 * \#5359 inverse_erfc of any complex number signals a Lisp error
 * \#5360 log_gamma of a complex bigfloat with negative real part leaves log(sin(...)) unevaluated
 * \#5363 double_factorial(n) for an integer n >= factlim gives a false domain error or exhausts the stack 

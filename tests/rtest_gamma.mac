@@ -4433,3 +4433,9 @@ block([v : log_gamma(-3.5b0 + %i)],
 [is(abs(erfc(inverse_erfc(0.5 + 0.1*%i)) - (0.5 + 0.1*%i)) < 1e-14),
  is(abs(erfc(inverse_erfc(0.5b0 + 0.1b0*%i)) - (0.5b0 + 0.1b0*%i)) < 1e-14)];
 [true, true]$
+
+/* Bug #5358: "inverse_erf(1.0*%i) and other complex points with abs(z) = 1 report undefined" */
+
+[is(abs(erf(inverse_erf(1.0*%i)) - 1.0*%i) < 1e-14),
+ is(abs(erf(inverse_erf(0.6b0 + 0.8b0*%i)) - (0.6b0 + 0.8b0*%i)) < 1e-14)];
+[true, true]$

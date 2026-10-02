@@ -2860,7 +2860,7 @@
 (defun bf-inverse-erf (z)
   (cond ((zerop z)
 	 z)
-	((= (abs z) 1)
+	((or (= z 1) (= z -1))
 	 (maxima::merror
 	  (intl:gettext "bf-inverse-erf: inverse_erf(~M) is undefined")
 	  z))
