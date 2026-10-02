@@ -192,7 +192,10 @@ permute (P: [2, 3, 4, 5, 6, 7, 8, 1], L: ["foo", "bar", "baz", "quux", "mumble",
 perm_inverse (P);
 [8, 1, 2, 3, 4, 5, 6, 7];
 
-permute (P2: permute (P, P), L);
+permult (P, P);
+''(permute (P, P));
+
+permute (P2: permult (P, P), L);
 ["baz", "quux", "mumble", "blurf", "blarg", "argh", "foo", "bar"];
 
 perm_inverse (P2);
@@ -204,17 +207,32 @@ permute (Q: [1, 2, 6, 5, 4, 3, 7, 8], L: [11, 22, 33, 44, 55, 66, 77, 88]);
 perm_inverse (Q);
 ''Q;
 
-permute (permute (P2, Q), L);
+permult (P2, Q);
+''(permute (P2, Q));
+
+permult (P, P, Q);
+''(permult (permult (P, P), Q));
+
+permult (P, P, Q);
+''(permult (P, permult (P, Q)));
+
+permute (permult (P2, Q), L);
 [66, 55, 44, 33, 77, 88, 11, 22];
 
-perm_inverse (permute (P2, Q));
-''(permute (perm_inverse (Q), perm_inverse (P2)));
+perm_inverse (permult (P2, Q));
+''(permult (perm_inverse (Q), perm_inverse (P2)));
 
-permute (permute (Q, permute (P2, Q)), L);
+permute (permult (Q, P2, Q), L);
 [66, 55, 88, 77, 33, 44, 11, 22];
 
-perm_inverse (permute (Q, permute (P2, Q)));
-''(permute (perm_inverse (permute (P2, Q)), perm_inverse (Q)));
+perm_inverse (permult (Q, P2, Q));
+''(permult (perm_inverse (permult (P2, Q)), perm_inverse (Q)));
+
+perm_inverse (permult (Q, P2, Q));
+''(permult (perm_inverse (Q), perm_inverse (permult (Q, P2))));
+
+perm_inverse (permult (Q, P2, Q));
+''(permult (perm_inverse (Q), perm_inverse (P2), perm_inverse (Q)));
 
 R: perm_undecomp ([[1, 2, 3, 5], [7, 11, 13, 17, 19], [4, 6, 8, 9], [10, 12, 14, 15], [16, 18, 20]], 20);
 [2, 3, 5, 6, 1, 8, 11, 9, 4, 12, 13, 14, 17, 15, 10, 18, 19, 20, 7, 16];
@@ -231,17 +249,14 @@ L: makelist (i^2, i, 0, 19);
 permute (R, L);
 ''(makelist (L[i], i, R));
 
-(inverse_index(i) := first (sublist_indices (R, lambda ([j], R[j] = i))), 0);
-0;
-
 permute (R_inverse, L);
-''(makelist (L[inverse_index(i)], i, R));
+''(block ([L1: copy (L)], for i thru length (L) do L1[R[i]]: L[i], L1));
 
 permute (R_inverse, permute (R, L));
 ''L;
 
-permute (perm_inverse (R), R);
+permult (perm_inverse (R), R);
 ''(makelist (i, i, 1, 20));
 
-permute (R, perm_inverse (R));
+permult (R, perm_inverse (R));
 ''(makelist (i, i, 1, 20));
