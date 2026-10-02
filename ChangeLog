@@ -115,6 +115,7 @@ Bug fixes for numbered bugs:
 * \#5358 inverse_erf(1.0*%i) and other complex points with abs(z) = 1 report undefined 
 * \#5359 inverse_erfc of any complex number signals a Lisp error
 * \#5360 log_gamma of a complex bigfloat with negative real part leaves log(sin(...)) unevaluated
+* \#5361 beta_incomplete_generalized(a,b,0,z) returns the negative of the integral
 * \#5362 beta_incomplete_regularized(a-n,b,z) with beta_expand:true has the wrong sign
 * \#5363 double_factorial(n) for an integer n >= factlim gives a false domain error or exhausts the stack 
 * \#5364 gamma_incomplete_generalized(a-n,z1,z2) with gamma_expand:true multiplies the z1 terms by %e^-z2

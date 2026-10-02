@@ -3742,7 +3742,7 @@
                     "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
                     a b z1 z2))
                ((member sgn '($pos $pz)) 
-                (mul -1 (ftake '%beta_incomplete a b z2)))
+                (ftake '%beta_incomplete a b z2))
                (t 
                 (give-up)))))
 

@@ -4451,3 +4451,14 @@ block([a, b, z, beta_expand : true],
                       beta_incomplete_regularized(a - 2, b, z)))
           - beta_incomplete_regularized(1.5, 2.5, 0.3)) < 1e-14)]);
 [true, true]$
+
+/* Bug #5361: "beta_incomplete_generalized(a,b,0,z) returns the negative of the integral" */
+
+is(abs(beta_incomplete_generalized(2.5, 1.5, 0, 0.5)
+
+       - beta_incomplete(2.5, 1.5, 0.5)) < 1e-15);
+true$
+
+block([b, z],
+  beta_incomplete_generalized(2, b, 0, z) - beta_incomplete(2, b, z));
+0$
