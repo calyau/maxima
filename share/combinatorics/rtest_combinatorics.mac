@@ -166,3 +166,82 @@ random_perm (0);
 random_perm (1);
 [1];
 
+/* tests for nontrivial arguments */
+
+permute ([1, 2, 3], '[a, b, c]);
+[a, b, c];
+
+permute ([3, 2, 1], '[x, y, z]);
+[z, y, x];
+
+perm_inverse ([1, 2, 3]);
+[1, 2, 3];
+
+perm_inverse ([3, 2, 1]);
+[3, 2, 1];
+
+permute ([1, 3, 2], '[xx, yy, zz]);
+[xx, zz, yy];
+
+perm_inverse ([1, 3, 2]);
+[1, 3, 2];
+
+permute (P: [2, 3, 4, 5, 6, 7, 8, 1], L: ["foo", "bar", "baz", "quux", "mumble", "blurf", "blarg", "argh"]);
+["bar", "baz", "quux", "mumble", "blurf", "blarg", "argh", "foo"];
+
+perm_inverse (P);
+[8, 1, 2, 3, 4, 5, 6, 7];
+
+permute (P2: permute (P, P), L);
+["baz", "quux", "mumble", "blurf", "blarg", "argh", "foo", "bar"];
+
+perm_inverse (P2);
+[7, 8, 1, 2, 3, 4, 5, 6];
+
+permute (Q: [1, 2, 6, 5, 4, 3, 7, 8], L: [11, 22, 33, 44, 55, 66, 77, 88]);
+[11, 22, 66, 55, 44, 33, 77, 88];
+
+perm_inverse (Q);
+''Q;
+
+permute (permute (P2, Q), L);
+[66, 55, 44, 33, 77, 88, 11, 22];
+
+perm_inverse (permute (P2, Q));
+''(permute (perm_inverse (Q), perm_inverse (P2)));
+
+permute (permute (Q, permute (P2, Q)), L);
+[66, 55, 88, 77, 33, 44, 11, 22];
+
+perm_inverse (permute (Q, permute (P2, Q)));
+''(permute (perm_inverse (permute (P2, Q)), perm_inverse (Q)));
+
+R: perm_undecomp ([[1, 2, 3, 5], [7, 11, 13, 17, 19], [4, 6, 8, 9], [10, 12, 14, 15], [16, 18, 20]], 20);
+[2, 3, 5, 6, 1, 8, 11, 9, 4, 12, 13, 14, 17, 15, 10, 18, 19, 20, 7, 16];
+
+R_inverse: perm_undecomp ([[1, 5, 3, 2], [7, 19, 17, 13, 11], [4, 9, 8, 6], [10, 15, 14, 12], [16, 20, 18]], 20);
+[5, 1, 2, 9, 3, 4, 19, 6, 8, 15, 7, 10, 11, 12, 14, 20, 13, 16, 17, 18];
+
+is (perm_inverse (R) = R_inverse);
+true;
+
+L: makelist (i^2, i, 0, 19);
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361];
+
+permute (R, L);
+''(makelist (L[i], i, R));
+
+(inverse_index(i) := first (sublist_indices (R, lambda ([j], R[j] = i))), 0);
+0;
+
+permute (R_inverse, L);
+''(makelist (L[inverse_index(i)], i, R));
+
+permute (R_inverse, permute (R, L));
+''L;
+
+permute (perm_inverse (R), R);
+''(makelist (i, i, 1, 20));
+
+permute (R, perm_inverse (R));
+''(makelist (i, i, 1, 20));
