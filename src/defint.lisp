@@ -2407,9 +2407,21 @@ in the interval of integration.")
 			   (alike1 b half%pi))
 		       (setq dn* (scrat sc b ivar)))
 		  dn*)
-		 ((setq nn* (antideriv sc ivar))
-		  (sin-cos-intsubs nn* ivar 0. b))
+		 ((intsc-antideriv sc b ivar))
 		 (t ()))))))
+
+;; integrate(sc, ivar, 0, b) with an antiderivative. The antiderivative can
+;; depend on what is assumed about IVAR, and the assumptions in force can be
+;; those of another interval, so assume 0 < IVAR < B meanwhile.
+(defun intsc-antideriv (sc b ivar)
+  (let ((old-assumptions *defint-assumptions*))
+    (unwind-protect
+         (progn
+           (make-defint-assumptions 'noask ivar 0 b)
+           (let ((f (antideriv sc ivar)))
+             (and f (sin-cos-intsubs f ivar 0 b))))
+      (restore-defint-assumptions old-assumptions *defint-assumptions*)
+      (setq *defint-assumptions* old-assumptions))))
 
 ;;;Is careful about substitution of limits where the denominator may be zero
 ;;;because of various assumptions made.
