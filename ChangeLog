@@ -89,6 +89,7 @@ Bug fixes for numbered bugs:
 * \#5241 Risch integrator drops algebraic unit from a denominator
 * \#5242 rectform(acoth(0)) and acoth(0.0) cause division by zero error, but should be -%i*%pi/2
 * \#5244 logabs:true applies abs to a complex log argument, collapsing the antiderivative to zero
+* \#5245 integrate merges two even roots without a sign guard
 * \#5249 integrate(%e^(2*x)*tan(%e^x)^2,x) is non-real
 * \#5254 limit(gamma_incomplete(-1,x), x, 0, plus) -> minf
 * \#5255 limit(1/x+%i/sqrt(x), x, 0, plus) -> inf
@@ -153,6 +154,7 @@ Bug fixes for numbered bugs:
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
+* \#5623 integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives
 * \#5624 integrate asks for signs of complex coefficients, fails for imaginary ones
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 * \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2

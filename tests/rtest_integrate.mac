@@ -865,7 +865,7 @@ integrate(%e^(a*asinh(z)),z);
 
 /* Problem 182: NEW 12/2009 */
 integrate(%e^acosh(z),z);
--log(2*sqrt(z^2-1)+2*z)/2+z*sqrt(z^2-1)/2+z^2/2;
+-log(2*sqrt(z-1)*sqrt(z+1)+2*z)/2+z*sqrt(z-1)*sqrt(z+1)/2+z^2/2;
 
 /* Problem 183: NOUN */
 integrate(%e^(a*acosh(z)),z);
@@ -905,7 +905,7 @@ integrate(%e^(a*acsch(z)),z);
 assume(x>0);
 [x>0];
 integrate(%e^asech(x),x),ratsimp;
--log((2*sqrt(1-x^2)+2)/x)+log(x)+sqrt(1-x^2)$
+-log((2*sqrt(1-x)*sqrt(x+1)+2)/x)+log(x)+sqrt(1-x)*sqrt(x+1)$
 forget(x>0);
 [x>0];
 
@@ -6998,6 +6998,22 @@ block([f: sqrt(1-cos(x))],
  [is(abs(float(integrate(f, x, -1, 0) - 2^(3/2)*(1-cos(1/2)))) < 1e-12),
   is(abs(float(integrate(f, x, -2, -1) - 2^(3/2)*(cos(1/2)-cos(1)))) < 1e-12)]);
 [true, true]$
+
+
+/* Bug #5245: "integrate merges two even roots without a sign guard" */
+
+map(lambda([f, a, b],
+      block([F: integrate(f, x)],
+        is(abs(float(rectform(subst(x = b, F) - subst(x = a, F))) - first(quad_qags(f, x, a, b))) < 1e-8))),
+    [sqrt(x-1)/sqrt(x+1), sqrt(x+1)/sqrt(x+2), sqrt(x-1)*sqrt(x+1), sqrt(-x-1)*sqrt(x-2)],
+    [-4, -4, -4, 0], [-3, -3, -3, 1]);
+[true, true, true, true]$
+
+
+/* Bug #5623: "integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives" */
+
+integrate(sqrt(x-1)/sqrt(x+1), x);
+sqrt(x-1)*sqrt(x+1)-log(2*sqrt(x-1)*sqrt(x+1)+2*x)$
 
 
 /**************************************/

@@ -136,19 +136,43 @@
 		      r0 e0 rofpos eneg rofneg eneg x)))))
 
 (defun pp-intir1-exec (d p r0 e0 rofmax emax rofmin emin x)
-  (intir (mul d p (if (equal e0 0) 1 (power r0 e0))
-	      (power rofmax (add emax (mul -1 emin)))
-	      (power ($expand (mul rofmax rofmin)) emin)) x))
+  (intir1-exec d p r0 e0 rofmax emax rofmin emin x))
 
 ;; Handle integrals of the form d*p(x)*r0(x)^e0*r1(x)^e1*r2(x)^e2
 ;; where p(x) is a polynomial, e1 < 0, and e2 < 0 and are both half an
 ;; odd integer, and e3 is an integer.  And e2 > e1.
 (defun mm-intir1-exec (d p r0 e0 rofmin emin rofmax emax x)
-  (intir (mul d p
-	      (if (equal e0 0) 1
-		  (power r0 e0))
-	      (power rofmax (add emax (mul -1 emin)))
-	      (power ($expand (mul rofmax rofmin)) emin)) x))
+  (intir1-exec d p r0 e0 rofmax emax rofmin emin x))
+
+;; Integrate d*p*r0^e0*rofmax^emax*rofmin^emin as
+;; d*p*r0^e0*rofmax^(emax-emin)*q^emin with q = rofmax*rofmin. The two
+;; differ by the factor u = rofmax^emin*rofmin^emin/q^emin, which is 1 or
+;; -1 and constant wherever neither rofmax nor rofmin crosses a branch cut,
+;; e.g. -1 for sqrt(x-1)*sqrt(x+1) with x < -1. Write the terms of the
+;; result with powers of q in rofmax and rofmin again, and multiply the
+;; other terms that depend on x, e.g. asin(x), by u.
+(defun intir1-exec (d p r0 e0 rofmax emax rofmin emin x)
+  (let* ((q ($expand (mul rofmax rofmin)))
+         (res (intir (mul d p (if (equal e0 0) 1 (power r0 e0))
+                          (power rofmax (add emax (mul -1 emin)))
+                          (power q emin))
+                     x)))
+    (when res
+      (addn (mapcar #'(lambda (term)
+                        (let ((new (intir1-unsplit term q rofmax rofmin)))
+                          (cond ((not (alike1 new term)) new)
+                                ((freeof x term) term)
+                                (t (mul (power rofmax emin) (power rofmin emin)
+                                        (power q (neg emin)) term)))))
+                    (if (mplusp res) (cdr res) (list res)))
+            t))))
+
+;; Replace q^k in E by r1^k*r2^k for k not an integer.
+(defun intir1-unsplit (e q r1 r2)
+  (cond ((atom e) e)
+        ((and (mexptp e) (alike1 (cadr e) q) (not (integerp (caddr e))))
+         (mul (power r1 (caddr e)) (power r2 (caddr e))))
+        (t (recur-apply #'(lambda (y) (intir1-unsplit y q r1 r2)) e))))
 
 ;; Integrating the form (e*x^2+f*x+g)^m*r0(x)^e0.
 
