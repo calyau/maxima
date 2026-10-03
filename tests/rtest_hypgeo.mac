@@ -2214,6 +2214,24 @@ niceindices(specint(exp(-s * x) * laguerre(n, x), x));
 0;
 
 
+/* Bug #5632: "specint drops exp(f(t)) factors next to unit_step or sum" */
+
+block(local(s), assume(s > 0),
+ radcan([specint(unit_step(t-1)*exp(-t^2)*exp(-s*t), t) - sqrt(%pi)/2*%e^(s^2/4)*(1-erf(1+s/2)),
+         specint(unit_step(t-1)*t*exp(-t^2)*exp(-s*t), t) - %e^(-1-s)/2 + s*sqrt(%pi)/4*%e^(s^2/4)*(1-erf(1+s/2))]));
+[0, 0]$
+
+block(local(s),
+ assume(s > 0),
+ specint(sum(exp(-k*t), k, 0, n)*exp(-exp(-t))*exp(-s*t), t));
+'sum(gamma_incomplete_lower(s+k,1),k,0,n)$
+
+block(local(s),
+ assume(s > 0),
+ niceindices(specint(sum(exp(-k*t), k, 0, n)*exp(-k*exp(-t))*exp(-s*t), t)));
+'sum(k^(-s-i)*gamma_incomplete_lower(s+i,k),i,0,n)$
+
+
 kill(all);
 done;
  

@@ -159,6 +159,7 @@ Bug fixes for numbered bugs:
 * \#5628 sign(abs(abs(a)-1)+1) gives pz instead of pos
 * \#5629 sign(x^3-x^2) gives pnz although the facts imply x^3 >= x^2
 * \#5631 Wrong definite integral of sqrt(1-cos(x)) for limits in [-%pi, 0]
+* \#5632 specint drops exp(f(t)) factors next to unit_step or sum
 
 Bug fixes for unnumbered bugs:
 ------------------------------

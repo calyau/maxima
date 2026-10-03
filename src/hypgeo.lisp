@@ -1311,18 +1311,31 @@
        ;; Temporarily assume lo <= summation index <= hi so that
        ;; Maxima doesn't ask about the sign of the summation index.
        (with-new-context (context)
-         (let ((i (cdras 'i l)) (lo (cdras 'l l)) (hi (cdras 'h l)))
+         (let ((i (cdras 'i l)) (lo (cdras 'l l)) (hi (cdras 'h l))
+               (v (cdras 'u l))
+               (ef (if (equal e 0) 1 (power '$%e (mul e f)))))
+           ;; The integrand is u*%e^(e*f), and %e^(e*f) goes into the sum.
+           ;; Rename the summation index if it would capture a free
+           ;; variable of the same name in %e^(e*f).
+           (unless (free ef i)
+             (let ((j (do ((j (gensumindex) (gensumindex)))
+                          ((free (list nil v ef) j) j))))
+               (setq v (maxima-substitute j i v)
+                     i j)))
            (unless (eq t (csign lo)) (assume (ftake 'mgeqp i lo)))
            (unless (eq t (csign hi)) (assume (ftake 'mleqp i hi)))
            (mul (cdras 'c l)
                 (take '(%sum)
-                      (sendexec 1 (cdras 'u l))
+                      (sendexec ef v)
                       i lo hi)))))
           
 	  ((setq l (m2-unit_step u *hypgeo-var*))
 	   ;; We have found the Unit Step function.
 	   (setq u (cdras 'u l)
 		 a (cdras 'a l))
+	   ;; The integrand is u*%e^(e*f). Keep that factor.
+	   (unless (equal e 0)
+	     (setq u (mul u (power '$%e (mul e f)))))
            (mul (power '$%e (mul a *hypgeo-par*))
                 (sendexec (cond (($freeof *hypgeo-var* u) u) 
                                 (t (maxima-substitute (sub *hypgeo-var* a) *hypgeo-var* u)))
