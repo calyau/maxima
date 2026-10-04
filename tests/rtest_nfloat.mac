@@ -169,6 +169,12 @@ nfloat(1.0*%i,[],20);
 close_p(nfloat((sqrt(1+x)-1)/x,[x=1/10^15],15),1/2, 15);
 true$
 
+
+/* Bug #5437: "nfloat cannot deliver more than about 320 digits" */
+
+block([max_fpprec: 1000, fpprec: 400], is(nfloat(1/3,[],400) = bfloat(1/3)));
+true$
+
 /* Bug #5438: "nfloat returns wrong atan2 values when the arguments carry large errors" */
 
 nfloat(atan2(a-10^20+1,-1),[a=10^20+1],20);
