@@ -1281,13 +1281,14 @@
 	    (mfuncall '$assume `((mgreaterp) ,*hypgeo-par* 0))
 
 	    (return
-	      (prog1
-		(maxima-substitute
-		  (mul -1 s)
-		  *hypgeo-par*
-		  (ltscale u c 0 e f))
+	      (unwind-protect
+		(let ((result (ltscale u c 0 e f)))
+		  ;; $SPECINT binds $RADEXPAND to '$ALL, which would split (-%i)^(-psey)
+		  ;; into (-1)^(-3*psey/2) and leave the principal branch.
+		  (let (($radexpand t))
+		    (maxima-substitute (mul -1 s) *hypgeo-par* result)))
 
-		;; We forget the rule after finishing the calculation.
+		;; We forget the rule after the calculation, even after an error.
 		(mfuncall '$forget `((mgreaterp) ,*hypgeo-par* 0))))))
 
      (return
@@ -1329,6 +1330,15 @@
                       (sendexec ef v)
                       i lo hi)))))
           
+	  ((and (setq l (m2-unit_step u *hypgeo-var*))
+		(let ((sgn ($csign (cdras 'a l))))
+		  ;; Ask for an unknown sign of a real shift, as LAPHSTEP does.
+		  (or (member sgn '($pos $pz $zero))
+		      (and (member sgn '($pn $pnz))
+			   (member ($asksign (cdras 'a l)) '($pos $zero))))))
+	   ;; unit_step(t+a) with a >= 0 is 1 for t > 0, so drop it.
+	   (sendexec (cdras 'u l) (if (equal e 0) 1 (power '$%e (mul e f)))))
+
 	  ((setq l (m2-unit_step u *hypgeo-var*))
 	   ;; We have found the Unit Step function.
 	   (setq u (cdras 'u l)
@@ -1642,6 +1652,19 @@
                                  (list (add v 1))
                                  (mul z z '((rat simp) 1 4))))))))
 
+;; Compute Z^P on the principal branch. A numeric complex Z gives
+;; |Z|^P*%e^(%i*P*arg(Z)), so that conjugate bases such as %i and -%i give
+;; matching factors (%i^P itself simplifies to (-1)^(P/2)). Any other Z gives
+;; the power built with $RADEXPAND = T, because the binding of $RADEXPAND to
+;; '$ALL by $SPECINT splits (-b)^P into (-1)^P*b^P, which is wrong for b < 0.
+(defun principal-power (z p)
+  (multiple-value-bind (cnum re im) (complex-number-p z 'mnump)
+    (if (and cnum (not (zerop1 im)))
+      (mul (power (power (add (mul re re) (mul im im)) '((rat simp) 1 2)) p)
+           (power '$%e (mul '$%i p (ftake '%atan2 im re))))
+      (let (($radexpand t))
+        (power z p)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Algorithm 1.4: Laplace transform of exp(exp(-t))
@@ -1651,13 +1674,13 @@
 ;;; p. 147, formula 36:
 ;;;
 ;;; exp(-a*exp(-t))
-;;;   -> a^(-p)*gamma(p,a)
+;;;   -> a^(-p)*gamma_incomplete_lower(p,a)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun f36p147 (c a)
   (let ((-a (mul -1 a)))
     (mul c
-         (power -a (mul -1 *hypgeo-par*))
+         (principal-power -a (mul -1 *hypgeo-par*))
          `((%gamma_incomplete_lower simp) ,*hypgeo-par* ,-a))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1674,7 +1697,7 @@
 
 (defun f37p147 (c a)
   (mul c
-       (power a *hypgeo-par*)
+       (principal-power a *hypgeo-par*)
        (take '(%gamma_incomplete) (mul -1 *hypgeo-par*) a)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

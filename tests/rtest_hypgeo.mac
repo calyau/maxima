@@ -2050,7 +2050,7 @@ ratsimp(specint(exp(-s*t)*t^2*bessel_y(1,t),t) - 1/(2*%i)*(res1-res2));
  *
  * Check this formula for some values.
  */
-(assume(4*?psey-1>0, 4*s-1>0),done);
+(assume(4*s-1>0),done);
 done;
 
 (lt(a,v,z):=2^(-a+v/2+1)*sqrt(%pi)*gamma(2*a)/gamma(a+(1-v)/2)
@@ -2230,6 +2230,83 @@ block(local(s),
  assume(s > 0),
  niceindices(specint(sum(exp(-k*t), k, 0, n)*exp(-k*exp(-t))*exp(-s*t), t)));
 'sum(k^(-s-i)*gamma_incomplete_lower(s+i,k),i,0,n)$
+
+
+(forget(a > 0, b > 0, n > 0, s > b, s > a, s > 2*a, s > 1/4, s > 1/2), 0);
+0$
+
+
+/* Bug #5633: "specint: wrong branch in the transforms of exp(a*exp(-t)) and exp(a*exp(t))" */
+
+block(local(s, b),
+ assume(s > 0, b < 0),
+ [specint(sin(exp(-t))*exp(-s*t), t),
+  specint(cos(3*exp(-t))*exp(-s*t), t),
+  specint(exp(b*exp(-t))*exp(-s*t), t),
+  specint(sin(exp(t))*exp(-s*t), t),
+  specint(exp(b*exp(t))*exp(-s*t), t)]);
+[(%e^-((%i*%pi*s)/2)*%i*gamma_incomplete_lower(s,%i)-%e^((%i*%pi*s)/2)*%i*gamma_incomplete_lower(s,-%i))/2,
+ ((%e^-((%i*%pi*s)/2)*gamma_incomplete_lower(s,3*%i))/3^s+(%e^((%i*%pi*s)/2)*gamma_incomplete_lower(s,-3*%i))/3^s)/2,
+ gamma_incomplete_lower(s,-b)/(-b)^s,
+ (%e^((%i*%pi*s)/2)*%i*gamma_incomplete(-s,%i)-%e^-((%i*%pi*s)/2)*%i*gamma_incomplete(-s,-%i))/2,
+ (-b)^s*gamma_incomplete(-s,-b)]$
+
+/* At s = 1/2: integrate(u^(-1/2)*sin(u), u, 0, 1) and integrate(u^(-3/2)*sin(u), u, 1, inf) */
+block(local(s),
+ assume(s > 0),
+ map(lambda([d], is(abs(expand(float(rectform(d)))) < 1e-12)),
+  subst(s = 1/2, [specint(sin(exp(-t))*exp(-s*t), t) - sqrt(2*%pi)*fresnel_s(sqrt(2/%pi)),
+                  specint(sin(exp(t))*exp(-s*t), t) - 2*sin(1)-sqrt(2*%pi)*(1-2*fresnel_c(sqrt(2/%pi)))])));
+[true, true]$
+
+/* The Mellin transform of sin(x), assembled from both transforms, simplifies to gamma(s)*sin(%pi*s/2). */
+block(local(s, p),
+ assume(s > 0, p > 0),
+ expand(demoivre(subst(gamma_incomplete_lower = lambda([a, z], gamma(a) - gamma_incomplete(a, z)),
+                       specint(sin(exp(-t))*exp(-s*t), t) + subst(p = -s, specint(sin(exp(t))*exp(-p*t), t))))));
+gamma(s)*sin((%pi*s)/2)$
+
+
+/* Bug #5634: "specint gives wrong results for unit_step(t+a) with a > 0" */
+
+block(local(s, c),
+ assume(s > 0, c > 0),
+ [specint(unit_step(t+1)*exp(-s*t), t),
+  specint(unit_step(t+c)*exp(-s*t), t),
+  specint(unit_step(t+1)*unit_step(t-2)*exp(-s*t), t),
+  specint(unit_step(t+2)*sin(t)*exp(-s*t), t),
+  specint(unit_step(t-c)*exp(-s*t), t)]);
+[1/s, 1/s, %e^(-2*s)/s, (%i/(s+%i)-%i/(s-%i))/2, %e^(-c*s)/s]$
+
+block(local(s),
+ assume(s > 0),
+ expand(specint(unit_step(t+1)*exp(-t^2)*exp(-s*t), t) - sqrt(%pi)/2*%e^(s^2/4)*(1-erf(s/2))));
+0$
+
+/* A non-real shift must not make specint signal an error. */
+block(local(s),
+ assume(s > 0),
+ specint(unit_step(t+%i)*exp(-s*t), t));
+%e^(%i*s)/s$
+
+/* An unknown sign of the shift is asked for, as laplace does. */
+block(local(s),
+ assume(s > 0),
+ specint(unit_step(t+a)*exp(-s*t), t)), ask_hide_prompt; pos;
+1/s$
+
+block(local(s),
+ assume(s > 0),
+ specint(unit_step(t+a)*exp(-s*t), t)), ask_hide_prompt; neg;
+%e^(a*s)/s$
+
+
+/* Bug #5635: "specint leaves a fact about its internal variable psey after an error" */
+
+block(local(s),
+ assume(s > 0),
+ errcatch(specint(t^%i*log(t)*exp(-s*t), t)), facts(?psey));
+[]$
 
 
 kill(all);
