@@ -169,6 +169,11 @@ nfloat(1.0*%i,[],20);
 close_p(nfloat((sqrt(1+x)-1)/x,[x=1/10^15],15),1/2, 15);
 true$
 
+/* Bug #5438: "nfloat returns wrong atan2 values when the arguments carry large errors" */
+
+nfloat(atan2(a-10^20+1,-1),[a=10^20+1],20);
+2.0344439357957027355b0$
+
 
 /* Bug #5439: "nfloat fails on sinh/cosh (and misestimates other one-argument functions)" */
 

@@ -175,7 +175,9 @@
 	 (x (second l))
 	 (d (/ 1 (+ (* (first x) (first x)) (* (first y) (first y))))))
     (list (atan (first y) (first x))
-	  (* (+ (* (abs (second y)) (first x)) (* (abs (second x)) (first y))) d))))
+	  (* (+ (* (abs (second y)) (abs (first x)))
+                (* (abs (second x)) (abs (first y)))) d))))
+;;;;	  (* (+ (* (abs (second y)) (first x)) (* (abs (second x)) (first y))) d))))
     
 (defun running-error-realpart (l)
   (setq l (first l))

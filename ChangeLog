@@ -130,6 +130,7 @@ Bug fixes for numbered bugs:
 * \#5402 limit(sqrt(x^2+1)-x+%i*x,x,inf) gives und instead of infinity
 * \#5403 tlimit((x-1)!*x,x,0) gives 0 instead of 1
 * \#5417 max() and lmax() modify the caller's expressions and lists
+* \#5438 nfloat returns wrong atan2 values when the arguments carry large errors
 * \#5439 nfloat fails on sinh/cosh (and misestimates other one-argument functions)
 * \#5440 nfloat ignores values set with numerval
 * \#5441 nfloat signals a Lisp error on an assignment
