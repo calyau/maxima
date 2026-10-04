@@ -198,6 +198,12 @@ block([r], numerval(b_numer,5), r : nfloat(b_numer), kill(b_numer), r);
 5.0b0$
 
 
+/* Bug #5443: "nfloat returns hypergeometric values with too few correct digits" */
+
+nfloat(hypergeometric([100],[1],x),[x=-98/100],20);
+1.0949075518673197941b-1$
+
+
 /* Bug #5444: "nfloat returns inaccurate values for product(...)" */
 
 nfloat('product(k*10^7*(c-1),k,1,4),[c=1+1/10000]);

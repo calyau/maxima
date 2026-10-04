@@ -137,6 +137,7 @@ Bug fixes for numbered bugs:
 * \#5440 nfloat ignores values set with numerval
 * \#5441 nfloat signals a Lisp error on an assignment
 * \#5442 nfloat returns inaccurate powers and fails for 0^n
+* \#5443 nfloat returns hypergeometric values with too few correct digits
 * \#5444 nfloat returns inaccurate values for product(...)
 * \#5445 unevaluated nfloat forgets the user's max-digits argument
 * \#5448 ratcoef with a numeric multiple of a monomial as second argument truncates the coefficient
