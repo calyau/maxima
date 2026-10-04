@@ -174,3 +174,7 @@ true$
 0$
 
 
+/* Bug #5445: "unevaluated nfloat forgets the user's max-digits argument" */
+
+args(nfloat(x,[],16,100));
+[x,[],16,100]$

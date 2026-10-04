@@ -375,6 +375,6 @@
 					  (margs e)))))
 		 (t
 		  (setq f (nfloat e subs digits max-digits))
-		  (if (complex-number-p f 'bigfloat-or-number-p) f 
-		    `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec)))))
-	  (t  `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec)))))
+          (if (complex-number-p f 'bigfloat-or-number-p) f 
+                    `(($nfloat simp) ,e ,subs ,digits ,max-digits)))))
+          (t  `(($nfloat simp) ,e ,subs ,digits ,max-digits)))))
