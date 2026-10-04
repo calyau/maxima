@@ -175,6 +175,13 @@ true$
 nfloat('product(k*10^7*(c-1),k,1,4),[c=1+1/10000]);
 2.4b13$
 
+
+/* Bug #5442: "nfloat returns inaccurate powers and fails for 0^n" */
+
+[nfloat((a-1)^2*10^16,[a=1+1/10^8]), nfloat(x^2,[x=0])];
+[1.0b0, 0.0b0]$
+
+
 (remvalue(start,time), remove(x,complex), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
  remfunction(close_p),0);
 0$

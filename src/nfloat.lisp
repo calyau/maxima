@@ -59,13 +59,11 @@
   (setq x (first x))
   (list (- (first x)) (second x)))
 
-;;(%i46) (x*(1+ex))^(n *(1+en));
-;;(%o46) ((ex+1)*x)^((en+1)*n)
-;;(%i47) taylor(%,[ex,en],0,1);
-;;(%o47) x^n+(x^n*n*ex+x^n*n*log(x)*en)+...
-;;(%i48) factor(%);
-;;(%o48) x^n*(en*n*log(x)+ex*n+1)
-
+;;(%o2) en*x^n*log(x)+x^n+ex*n*x^(n-1)
+;;(%i3)  (x+ex)^(n+en);
+;;(%o3) (x+ex)^(n+en)
+;;(%i4) expand(taylor(%,[ex,en],0,1));
+;;(%o4) en*x^n*log(x)+x^n+ex*n*x^(n-1)
 (defun running-error-expt (l)
   (let* ((s) (x (first l)) (n (second l)) (ex) (en))
     (setq ex (second x))
@@ -73,7 +71,8 @@
     (setq x (first x))
     (setq n (first n))
     (setq s (bigfloat::expt x n))
-    (list s (+ (abs (* s en n (log x))) (abs (* s ex n))))))
+	  (list s (+ (if (zerop en) 0 (abs (* s en (log x))))
+               (abs (* n (expt x (- n 1)) ex))))))
 
 ;; sqrt(x + ex) = sqrt(x)+(sqrt(x)*ex)/(2*x)+... = sqrt(x) + ex / (2 * sqrt(x)) + ...
 (defun running-error-sqrt (x)
