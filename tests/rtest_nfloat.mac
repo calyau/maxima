@@ -169,6 +169,13 @@ nfloat(1.0*%i,[],20);
 close_p(nfloat((sqrt(1+x)-1)/x,[x=1/10^15],15),1/2, 15);
 true$
 
+
+/* Bug #5439: "nfloat fails on sinh/cosh (and misestimates other one-argument functions)" */
+
+nfloat(sinh(x),[x=10],20);
+1.1013232874703393377b4$
+
+
 /* Bug #5440: "nfloat ignores values set with numerval" */
 
 block([r], numerval(b_numer,5), r : nfloat(b_numer), kill(b_numer), r);

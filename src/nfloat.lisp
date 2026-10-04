@@ -266,7 +266,10 @@
 	   (let ((x (running-error-eval (cadr e) subs bits)) (f) (df))
 	     (setq f (maxima::take (list (caar e)) (maxima::to (first x))))
 	     (setq df (get (caar e) 'maxima::grad))
-	     (setq df (maxima::$rectform (maxima::$substitute f (caar df) (cadr df))))
+
+           (setq df (maxima::$rectform
+                       (maxima::$substitute (maxima::to (first x))
+                                            (caar df) (cadr df))))
 	     (setq df (bigfloat::to df))
 	     (list (bigfloat::to f) (* (second x) (abs df)))))
 
