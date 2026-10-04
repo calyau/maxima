@@ -1685,19 +1685,19 @@ radcan(specint(%e^(-s*t)*cosh(2*sqrt(a*t))^2/sqrt(t),t));
 radcan(specint(%e^(-s*t)*log(t),t));
 -(1/s)*(log(s)+%gamma);
 
-/* Problem 215: No. 02 (Ok noun form) 
+/* Problem 215: No. 02 OK
    Tabulated result: -(1/s)*%e^(s/a)*ei(-s/a);
 */
 
 radcan(specint(%e^(-s*t)*log(1+a*t),t));
-'specint(%e^-(s*t)*log(a*t+1),t);
+%e^(s/a)*expintegral_e1(s/a)/s;
 
-/* Problem 216: No. 03 (OK noun form New)
+/* Problem 216: No. 03 OK
    Tabulated result: 1/s*(log(a)-%e^(a*s)*ei(-a*s));
 */
 
 radcan(specint(%e^(-s*t)*log(t+a),t));
-specint(%e^(-s*t)*log(t+a),t);
+(%e^(a*s)*expintegral_e1(a*s)+log(a))/s;
 
 /* Problem 217: No. 04 OK New
    Tabulated result is equivalent to Maxima result.
@@ -1944,7 +1944,7 @@ specint(%e^(-s*t)*asin(t),t);
 'specint(%e^(-s*t)*asin(t),t);
 
 specint(%e^(-s*t)*atan(t),t);
-'specint(%e^(-s*t)*atan(t),t);
+(expintegral_ci(s)*sin(s)+cos(s)*(%pi/2-expintegral_si(s)))/s;
 
 /* The results for an argument 1/sqrt(t) have to be checked.
  *
@@ -2307,6 +2307,57 @@ block(local(s),
  assume(s > 0),
  errcatch(specint(t^%i*log(t)*exp(-s*t), t)), facts(?psey));
 []$
+
+
+/* Bug #5636: "specint returns noun forms for log(a*t+b), atan(a*t), atanh(a*t) and unit_step(exp(b*t)-c)" */
+
+block(local(a, b, s),
+ assume(a > 0, b > 0, s > 0),
+ [specint(log(a*t+b)*exp(-s*t), t),
+  specint(log(b-a*t)*exp(-s*t), t)]);
+[(%e^((b*s)/a)*expintegral_e1((b*s)/a)+log(b))/s,
+ (%e^-((b*s)/a)*(%i*%pi-expintegral_ei((b*s)/a))+log(b))/s]$
+
+block(local(a, s),
+ assume(a > 0, s > 0),
+ [specint(atan(a*t)*exp(-s*t), t),
+  specint(atanh(a*t)*exp(-s*t), t)]);
+[(expintegral_ci(s/a)*sin(s/a)+cos(s/a)*(%pi/2-expintegral_si(s/a)))/s,
+ (%e^(s/a)*expintegral_e1(s/a))/(2*s)-(%e^-(s/a)*(%i*%pi-expintegral_ei(s/a)))/(2*s)]$
+
+/* atan of a nonlinear argument still gives the correct noun form: */
+block(local(s), assume(s > 0), specint(atan(t^2)*exp(-s*t), t));
+'specint(%e^(-s*t)*atan(t^2),t)$
+
+block(local(s),
+ assume(s > 0),
+ [specint(unit_step(exp(t)-2)*exp(-s*t), t),
+  specint(unit_step(exp(-t)-1/2)*exp(-s*t), t),
+  specint(unit_step(exp(t)-1/2)*exp(-s*t), t),
+  specint(unit_step(exp(-t)-2)*exp(-s*t), t),
+  specint(t*unit_step(exp(t)-2)*exp(-s*t), t)]);
+[1/(2^s*s), 1/s-1/(2^s*s), 1/s, 0, (log(2)/s+1/s^2)/2^s]$
+
+/* A factor exp(f(t)) is kept, and a step that is 0 for t > 0 gives 0: */
+block(local(s),
+ assume(s > 0),
+ [radcan(specint(unit_step(exp(t)-2)*exp(-t^2)*exp(-s*t), t) - sqrt(%pi)/2*%e^(s^2/4)*(1-erf(log(2)+s/2))),
+  specint(unit_step(exp(-t)-2)*atan(t^2)*exp(-s*t), t)]);
+[0, 0]$
+
+/* Non-real parameters give noun forms, not errors: */
+block(local(s, z),
+ assume(s > 0),
+ declare(z, complex),
+ map(lambda([f], is(errcatch(specint(f*exp(-s*t), t)) # [])),
+     [log(%i*t+1), log(t+%i), atan(z*t), atanh(z*t), unit_step(exp(%i*t)-2)]));
+[true, true, true, true, true]$
+
+/* An unknown sign is asked for: */
+block(local(s, w),
+ assume(s > 0),
+ specint(log(t+w)*exp(-s*t), t)), ask_hide_prompt; pos;
+(%e^(s*w)*expintegral_e1(s*w)+log(w))/s$
 
 
 kill(all);

@@ -163,6 +163,7 @@ Bug fixes for numbered bugs:
 * \#5633 specint: wrong branch in the transforms of exp(a*exp(-t)) and exp(a*exp(t))
 * \#5634 specint gives wrong results for unit_step(t+a) with a > 0
 * \#5635 specint leaves a fact about its internal variable psey after an error
+* \#5636 specint returns noun forms for log(a*t+b), atan(a*t), atanh(a*t) and unit_step(exp(b*t)-c)
 
 Bug fixes for unnumbered bugs:
 ------------------------------

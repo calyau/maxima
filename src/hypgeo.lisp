@@ -157,6 +157,14 @@
          ((%atan) (w has ,var2)))
         ((coeffpp) (a equal 0)))))
 
+;; Recognize atanh(w)
+(defun m2-atanh (expr var2)
+  (m2 expr
+      `((mplus)
+        ((coeffpt) (u nonzerp)
+         ((%atanh) (w has ,var2)))
+        ((coeffpp) (a equal 0)))))
+
 ;; Recognize bessel_j(v,w)
 (defun m2-onej (expr var2)
   (m2 expr
@@ -1350,6 +1358,7 @@
                 (sendexec (cond (($freeof *hypgeo-var* u) u) 
                                 (t (maxima-substitute (sub *hypgeo-var* a) *hypgeo-var* u)))
                           1)))
+	  ((lt-unitstep-exp (if (equal e 0) u (mul u (power '$%e (mul e f))))))
           
 	  ((equal e 0)
 	   ;; The simple case of u*%e^(-p*t)
@@ -1384,6 +1393,53 @@
          (u nonzerp)
          (($unit_step) ((mplus) (x alike1 ,var2) ((coeffpp) (a true)))))
         ((coeffpp) (d zerp)))))
+
+;; True unless $CSIGN finds X complex or imaginary. $ASKSIGN signals an
+;; error for such an X.
+(defun lt-real-p (x)
+  (not (member ($csign x) '($complex $imaginary))))
+
+;; True if X is positive. Asks for the sign of a real X if unknown.
+(defun lt-pos-p (x)
+  (and (lt-real-p x) (eq ($asksign x) '$pos)))
+
+;;; Laplace transform of v(t)*unit_step(%e^(b*t)-c), b and c free of t.
+;;; Returns NIL for anything else so that LT-EXEC can go on.
+(defun lt-unitstep-exp (u)
+  (unless (freeof '$unit_step u)
+    (let* ((l (m2 u `((mplus) ((coeffpt) (v nonzerp)
+                                          (($unit_step) (w has ,*hypgeo-var*)))
+                               ((coeffpp) (d zerp)))))
+           (bc (and l (split-exp-minus-const (cdras 'w l) *hypgeo-var*)))
+           (v (cdras 'v l))
+           (b (car bc))
+           (c (cdr bc)))
+      (when (and bc (lt-real-p b) (lt-real-p c))
+        (flet ((full ()
+                 (sendexec v 1))
+               (shifted ()
+                 ;; v(t)*unit_step(t-t0) with t0 = log(c)/b
+                 (mul (power c (div (mul -1 *hypgeo-par*) b))
+                      (sendexec (maxima-substitute
+                                 (add *hypgeo-var* (div (take '(%log) c) b))
+                                 *hypgeo-var* v)
+                                1))))
+          (cond
+            ;; c <= 0, or b > 0 and c <= 1: the step is 1 for t > 0.
+            ((or (not (eq ($asksign c) '$pos))
+                 (and (eq ($asksign b) '$pos)
+                      (not (eq ($asksign (sub c 1)) '$pos))))
+             (full))
+            ;; b < 0 and c >= 1: the step is 0 for t > 0.
+            ((and (eq ($asksign b) '$neg)
+                  (not (eq ($asksign (sub 1 c)) '$pos)))
+             0)
+            ;; b > 0 and c > 1: the step is unit_step(t-t0).
+            ((eq ($asksign b) '$pos)
+             (shifted))
+            ;; b < 0 and 0 < c < 1: the step is 1-unit_step(t-t0).
+            ((eq ($asksign b) '$neg)
+             (sub (full) (shifted)))))))))
 
 ;; Recognize c*t^v.
 ;; This is a duplicate of m2-arbpow1. Look if we can use it.
@@ -1445,6 +1501,16 @@
 ;; Recognize %e^t
 (defun m2-e^t (expr var2)
   (m2 expr `((mexpt) $%e (u alike1 ,var2))))
+
+;; Recognize w = %e^(b*var) - c, b and c free of var. Returns (b . c) or nil.
+(defun split-exp-minus-const (w var2)
+  (when (and (consp w) (eq (caar w) 'mplus) (= (length (cdr w)) 2))
+    (let* ((terms (cdr w))
+           (c0 (find-if (lambda (x) ($freeof var2 x)) terms))
+           (ex (find-if-not (lambda (x) ($freeof var2 x)) terms)))
+      (when (and c0 ex (consp ex) (eq (caar ex) 'mexpt) (eq (cadr ex) '$%e))
+        (let ((l (m2-a*t (caddr ex) var2)))
+          (when l (cons (cdras 'a l) (mul -1 c0))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1726,6 +1792,23 @@
 ;;;   The ordering of the calls to match a pattern is important.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; c*atan(a*t) with a > 0
+;; -> c*(Ci(p)*sin(p) + (%pi/2 - Si(p))*cos(p))/s with p = s/a
+(defun lt-atan (rest arg)
+  (let ((l (m2-a*t arg *hypgeo-var*)))
+    (cond ((and l
+                (freeof *hypgeo-var* rest)
+                (lt-pos-p (cdras 'a l)))
+           (let ((p (div *hypgeo-par* (cdras 'a l))))
+             (mul rest
+                  (inv *hypgeo-par*)
+                  (add (mul (take '(%expintegral_ci) p)
+                            (take '(%sin) p))
+                       (mul (sub (div '$%pi 2)
+                                 (take '(%expintegral_si) p))
+                            (take '(%cos) p))))))
+          (t (setq *hyp-return-noun-flag* 'lt-atan-failed)))))
+
 (defun lt-sf-log (u)
   (prog (l index1 index11 index2 index21 arg1 arg2 rest)
      
@@ -1739,7 +1822,17 @@
      (cond ((setq l (m2-atan u *hypgeo-var*))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
-            (return (lt-ltp 'atan rest arg1 nil))))
+            (return (lt-atan rest arg1))))
+
+     ;; Laplace transform of atanh(w) = (log(1+w) - log(1-w))/2
+     (cond ((setq l (m2-atanh u *hypgeo-var*))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return
+              (sendexec rest
+                        (mul '((rat simp) 1 2)
+                             (sub (take '(%log) (add 1 arg1))
+                                  (take '(%log) (sub 1 arg1))))))))
      
      ;; Laplace transform of two Bessel J functions
      (cond ((setq l (m2-twoj u *hypgeo-var*))
@@ -2492,20 +2585,52 @@
 
 (defun lt-log (rest arg)
   (let* ((l (m2-c*t^v rest *hypgeo-var*))
-	 (c (cdras 'c l))
-	 (v (add (cdras 'v l) 1))) ; because v -> v-1
+         (c (and l (cdras 'c l)))
+         (v (and l (add (cdras 'v l) 1)))) ; because v -> v-1
     (cond
-      ((and l (eq ($asksign v) '$pos))
-       (let* ((l1 (m2-a*t arg *hypgeo-var*))
-              (a  (cdras 'a l1)))
-         (cond (l1
-                (mul c
-                     (take '(%gamma) v)
-                     (inv (power *hypgeo-par* v))
-                     (sub (take '(mqapply) (list '($psi array) 0) v)
-                          (take '(%log) (div *hypgeo-par* a)))))
-               (t
-                (setq *hyp-return-noun-flag* 'lt-log-failed)))))
+      ;; c*t^(v-1)*log(a*t) -> c*gamma(v)*s^(-v)*(psi[0](v) - log(s/a))
+      ((and l
+            (eq ($asksign v) '$pos)
+            (let ((l1 (m2-a*t arg *hypgeo-var*)))
+              (and l1
+                   (let ((a (cdras 'a l1)))
+                     (mul c
+                          (take '(%gamma) v)
+                          (inv (power *hypgeo-par* v))
+                          (sub (take '(mqapply) (list '($psi array) 0) v)
+                               (take '(%log) (div *hypgeo-par* a)))))))))
+
+      ;; c*log(a*t+b) with a, b > 0
+      ;; -> c*(log(b) + %e^p*E1(p))/s with p = s*b/a
+      ((let ((l2 (m2-atb arg *hypgeo-var*)))
+         (and l2
+              (freeof *hypgeo-var* rest)
+              (let ((a (cdras 'a l2))
+                    (b (cdras 'b l2)))
+                (and (lt-pos-p a)
+                     (lt-pos-p b)
+                     (let ((p (div (mul *hypgeo-par* b) a)))
+                       (mul rest
+                            (inv *hypgeo-par*)
+                            (add (take '(%log) b)
+                                 (mul (power '$%e p)
+                                      (take '(%expintegral_e1) p))))))))))
+      ;; c*log(b-a*t) with a, b > 0, imaginary part %pi for t > b/a
+      ;; -> c*(log(b) + %e^(-p)*(%i*%pi - Ei(p)))/s with p = s*b/a
+      ((let ((l2 (m2-atb arg *hypgeo-var*)))
+         (and l2
+              (freeof *hypgeo-var* rest)
+              (let ((a (mul -1 (cdras 'a l2)))
+                    (b (cdras 'b l2)))
+                (and (lt-pos-p a)
+                     (lt-pos-p b)
+                     (let ((p (div (mul *hypgeo-par* b) a)))
+                       (mul rest
+                            (inv *hypgeo-par*)
+                            (add (take '(%log) b)
+                                 (mul (power '$%e (mul -1 p))
+                                      (sub (mul '$%i '$%pi)
+                                           (take '(%expintegral_ei) p)))))))))))
       (t
        (setq *hyp-return-noun-flag* 'lt-log-failed)))))
 
@@ -2516,6 +2641,12 @@
    `((mplus)
      ((mtimes) (u alike1 ,var2) (a free ,var2))
      ((coeffpp) (c equal 0)))))
+
+;; Recognize a*t+b with a, b free of t
+(defun m2-atb (expr var2)
+  (m2 expr
+      `((mplus) ((coeffpt) (a free ,var2) (u alike1 ,var2))
+                ((coeffpp) (b free ,var2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Algorithm 2.4: Laplace transform of the Whittaker function
