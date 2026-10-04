@@ -12,8 +12,9 @@
 ;;;;
 ;;;; This file attaches checks to an unmodified, built Maxima image with
 ;;;; SB-INT:ENCAPSULATE, so it is SBCL-only and costs nothing unless it is
-;;;; loaded. It never changes a result: a check that would need to ask a
-;;;; question, print, or signal an error gives up instead.
+;;;; loaded. It must not change a result: a check that would need to ask
+;;;; a question, signal an error or throw gives up instead, and what it
+;;;; prints is discarded.
 ;;;;
 ;;;;     ./maxima-local --no-init --batch-string='
 ;;;;     :lisp (load "lisp-utils/check-expressions.lisp")
@@ -415,6 +416,8 @@ a question, signal an error, throw, or E is too big."
                            (maxima::errcatch t)
                            (maxima::$errormsg nil)
                            (maxima::$error maxima::$error)
+                           ;; SUMTIMES numbers new sum indices with it.
+                           (maxima::$gensumnum maxima::$gensumnum)
                            (maxima::*merror-signals-$error-p* t))
                        (call-catching-throws
                         *throw-tags*
@@ -926,7 +929,7 @@ state. Return the number of inputs run."
                    (fuzz-expression (1- depth))))
         (5 (format nil "(~A/~A)" (fuzz-expression (1- depth))
                    (fuzz-expression (1- depth))))
-        (6 (format nil "(~A)^~A" (fuzz-expression (1- depth))
+        (6 (format nil "(~A)^(~A)" (fuzz-expression (1- depth))
                    (fuzz-pick *fuzz-exponents*)))
         (t (format nil (fuzz-pick *fuzz-functions*)
                    (fuzz-expression (1- depth)))))))
