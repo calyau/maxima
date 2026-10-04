@@ -130,6 +130,7 @@ Bug fixes for numbered bugs:
 * \#5402 limit(sqrt(x^2+1)-x+%i*x,x,inf) gives und instead of infinity
 * \#5403 tlimit((x-1)!*x,x,0) gives 0 instead of 1
 * \#5417 max() and lmax() modify the caller's expressions and lists
+* \#5441 nfloat signals a Lisp error on an assignment
 * \#5442 nfloat returns inaccurate powers and fails for 0^n
 * \#5444 nfloat returns inaccurate values for product(...)
 * \#5445 unevaluated nfloat forgets the user's max-digits argument

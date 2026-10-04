@@ -175,6 +175,10 @@ true$
 nfloat('product(k*10^7*(c-1),k,1,4),[c=1+1/10000]);
 2.4b13$
 
+/* Bug #5441: "nfloat signals a Lisp error on an assignment" */
+
+block([b_msetq], nfloat('(b_msetq : 3), [b_msetq = 5]));
+3.0b0$
 
 /* Bug #5442: "nfloat returns inaccurate powers and fails for 0^n" */
 

@@ -281,7 +281,9 @@
 	  
 	  ;; special case assignment
 	  ((eq (caar e) 'maxima::msetq)
-	   (maxima::mset (car e) (car (running-error-eval (cadr e) subs bits))))
+	    (let ((x (running-error-eval (caddr e) subs bits)))
+             (maxima::mset (cadr e) (maxima::to (car x)))
+             x))
 	  
 	  ;; Yes, via nformat, this can happen. Try, for example, nfloat('(a,b),[a=3,b=7]).
 	  ((eq (caar e) 'maxima::mprogn)
