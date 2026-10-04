@@ -359,8 +359,9 @@
 					(t (bigfloat::epsilon (second z)))))
 					
 			    (setq digits (* 2 digits))))
-	     
-	     (if (or (null (first z)) (>= digits max-digits))
+		  (if (or (null (first z))
+                     (bigfloat::not-done (second z) (first z) eps
+                                         machine-epsilon))
 		 (merror "Unable to evaluate to requested number of digits")
 	       (maxima::bind-fpprec dig (values (maxima::to (first z)) (maxima::to (second z))))))))))
 
