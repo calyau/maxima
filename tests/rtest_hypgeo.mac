@@ -2360,6 +2360,32 @@ block(local(s, w),
 (%e^(s*w)*expintegral_e1(s*w)+log(w))/s$
 
 
+/* Bug #5637: "specint returns a noun form for integrals like exp(-x^2)/(x^2+a^2)" */
+
+block(local(a),
+ assume(a > 0),
+ [specint(exp(-x^2)/(x^2+a^2), x),
+  specint(x*exp(-x^2)/(x^2+a^2), x),
+  specint(exp(-x^2)*bessel_j(0,x), x)]);
+[(%e^a^2*%pi)/(2*a)-(%e^a^2*%pi*erf(a))/(2*a),
+ (%e^a^2*gamma_incomplete(0,a^2))/2,
+ (%e^-(1/8)*sqrt(%pi)*bessel_i(0,1/8))/2]$
+
+block(local(a),
+ assume(a > 0),
+ is(abs(float(subst(a = 7/10, specint(exp(-x^2)/(x^2+a^2), x)))
+        - first(quad_qagi(exp(-x^2)/(x^2+49/100), x, 0, inf))) < 1e-10));
+true$
+
+/* A free variable u in the integrand stays a parameter: */
+specint(u*exp(-x^2)/(x^2+1), x);
+(%e*%pi*u)/2-(%e*%pi*erf(1)*u)/2$
+
+/* If the substitution fails too, the noun form shows the original integrand: */
+specint(exp(-x^2)*log(x^2+1), x);
+'specint(%e^-x^2*log(x^2+1),x)$
+
+
 kill(all);
 done;
  

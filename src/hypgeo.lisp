@@ -963,6 +963,20 @@
      (setq $radexpand '$all)
      (return (defintegrate expr var2))))
 
+;; Set while DEFINT-SQRT-SUBST runs, so that it is tried only once.
+(defvar *specint-sqrt-subst-active* nil)
+
+;; int_0^inf f(x) dx = int_0^inf f(sqrt(u))/(2 sqrt(u)) du
+;; Only called when the direct route returned a noun form.
+(defun defint-sqrt-subst (form var2)
+  (let* ((*specint-sqrt-subst-active* t)
+         (u (gensym "U"))
+         (r (power u '((rat simp) 1 2)))
+         (new ($ratsimp (div (maxima-substitute r var2 form) (mul 2 r)))))
+    (when (freeof var2 new)
+      (let ((res (defintegrate new u)))
+        (and (freeof u res) (not (among '%specint res)) res)))))
+
 (defun defintegrate (expr var2)
   ;; This used to have $exponentialize enabled for everything, but I
   ;; don't think we should do that.  If various routines want
@@ -1051,7 +1065,12 @@
         
 	(t
 	  ;; At this point we expand the integrand.
-	 (distrdefexecinit ($expand form) var2))))))
+	 (let ((res (distrdefexecinit ($expand form) var2)))
+	   ;; If that failed, try the substitution x = sqrt(u).
+	   (or (and (among '%specint res)
+		    (not *specint-sqrt-subst-active*)
+		    (defint-sqrt-subst form var2))
+	       res)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
