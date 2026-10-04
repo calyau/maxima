@@ -217,13 +217,16 @@
 	  ((maxima::complex-number-p e #'(lambda (s) (or (maxima::$ratnump s) (maxima::$numberp s))))
 	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0e0)) (maxima::$bfloat e) (maxima::$float e))))
 	   (list e (abs e)))
-	  
-	  ((and (atom e) (maxima::mget e '$numer))
-	   (running-error-eval (maxima::mget e 'maxima::$numer) '((mlist)) bits))
+	   
+      ;; Check sysconst before $numer: the $numer value of a system
+      ;; constant such as %pi is only a double-float.
+      ((and (atom e) (get e 'maxima::sysconst))
+           (running-error-eval (maxima::$bfloat e) '((mlist)) bits))
 
-	  ((and (atom e) (get e 'maxima::sysconst))
-	   (running-error-eval (maxima::$bfloat e) '((mlist)) bits))
-	    
+      ((and (atom e) (maxima::mget e 'maxima::$numer))
+           (running-error-eval (maxima::mget e 'maxima::$numer) subs bits))
+
+
 	  ((atom e) 
 	   (setq e (maxima::$sublis subs e))
 	   (if (maxima::complex-number-p e 'maxima::bigfloat-or-number-p)
