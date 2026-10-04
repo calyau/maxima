@@ -150,8 +150,9 @@
 	     (setq x (maxima::simplify x))
 	     (setq x (running-error-eval x subs bits))
 	     (incf lo)
-	     (setq acc (* acc (first x)))
-	     (setq err (+ err (second x) (abs acc))))
+		     (setq err (+ (* err (abs (first x))) (* (abs acc) (second x))))
+             (setq acc (* acc (first x)))
+             (setq err (+ err (abs acc))))
 	   (list acc err))
 	  (t (throw 'maxima::nfloat-nounform-return 'return-nounform)))))
 

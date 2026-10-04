@@ -169,6 +169,12 @@ nfloat(1.0*%i,[],20);
 close_p(nfloat((sqrt(1+x)-1)/x,[x=1/10^15],15),1/2, 15);
 true$
 
+
+/* Bug #5444: "nfloat returns inaccurate values for product(...)" */
+
+nfloat('product(k*10^7*(c-1),k,1,4),[c=1+1/10000]);
+2.4b13$
+
 (remvalue(start,time), remove(x,complex), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
  remfunction(close_p),0);
 0$
