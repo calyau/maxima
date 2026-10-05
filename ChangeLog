@@ -193,6 +193,10 @@ Bug fixes for unnumbered bugs:
 
 Changes in the Windows installer:
 ---------------------------------
+* Remove winkill.exe, winkill_lib.dll and win_signals.lisp. Wherever
+  the Lisp has threads, xmaxima and wxMaxima interrupt Maxima through a
+  socket instead; a Lisp without threads can no longer be interrupted
+* MAXIMA_SIGNALS_THREAD and the --enable-winkill configure option are gone
 * Update MS WebView2
 * Update SBCL
 * Correct link to TCL/TK Website

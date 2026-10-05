@@ -526,13 +526,9 @@ proc CMresetFilter { win } {
 
 proc CMkill {  signal pid } {
     # Windows pids can be negative
-    if {[string is int $pid]} {
+    if {[string is int $pid] && $::xmaxima_priv(kill) != ""} {
 	maxStatus [mc "Sending signal %s to process %s" "$signal" "$pid"]
-	if {$::tcl_platform(platform) == "windows" } {
-	    exec $::xmaxima_priv(kill) $signal $pid
-	} else {
-	    exec $::xmaxima_priv(kill) $signal $pid
-	}
+	exec $::xmaxima_priv(kill) $signal $pid
     }
 }
 
@@ -542,7 +538,7 @@ proc CMinterrupt { win } {
 	maxStatus [mc "Sending socket interrupt"]
     } else {
 	# No interrupt channel (the Lisp has no threads, or Maxima is older
-	# than the channel): send a signal, via winkill.exe on MS Windows.
+	# than the channel): send a signal. MS Windows has none.
 	set pid [oget $win pid]
 	if {$pid != "" && $pid != "none"} {
 	    CMkill   -INT $pid

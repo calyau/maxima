@@ -193,11 +193,6 @@ rem SBCL Steel Bank Common Lisp
 :dosbcl
 rem run executable image if it exists
 if exist "%maxima_image_base%.exe" goto dosbcl_exec
-if "%MAXIMA_SIGNALS_THREAD%" == "" (
-  set start_maxima="(cl-user::run)"
-) else ( 
-  set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
-)
 
 rem At least in the crosscompiled installer, SBCL_HOME is not defined - set it here
 if not defined SBCL_HOME if exist "%maxima_prefix%/bin/sbcl.exe" set "SBCL_HOME=%~dp0"
@@ -212,7 +207,7 @@ if exist "%maxima_prefix%/bin/libgcc_s_seh-1.dll" (
     rem I am a 32 bit build - the SBCL workaround for load(lapack) will not work
 )
 
-@SBCL_NAME@ --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
+@SBCL_NAME@ --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
 goto :EOF
 
 :dosbcl_exec
@@ -220,23 +215,13 @@ goto :EOF
 goto :EOF
 
 :doopenmcl
-if "%MAXIMA_SIGNALS_THREAD%" == "" (
-  set start_maxima="(cl-user::run)"
-) else ( 
-  set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
-)
-@OPENMCL_NAME@ -I "%maxima_image_base%" %lisp_options% -e %start_maxima% -- %*
+@OPENMCL_NAME@ -I "%maxima_image_base%" %lisp_options% -e "(cl-user::run)" -- %*
 goto :EOF
 
 :doccl64
-if "%MAXIMA_SIGNALS_THREAD%" == "" (
-  set start_maxima="(cl-user::run)"
-) else ( 
-  set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
-)
 rem set codepage to unicode
 chcp 65001 >nul
-@CCL64_NAME@ -I "%maxima_image_base%.image" %lisp_options% -e %start_maxima% -- %*
+@CCL64_NAME@ -I "%maxima_image_base%.image" %lisp_options% -e "(cl-user::run)" -- %*
 goto :EOF
 
 :doabcl

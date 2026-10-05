@@ -12,10 +12,6 @@ endif
 SUBDIRS = msgs $(DOC_DIR)
 if XMAXIMA_EXE
 SUBDIRS += win32
-else
-if WINKILL_EXE
-SUBDIRS += win32
-endif
 endif
 
 genericdir = $(xmaximadir)

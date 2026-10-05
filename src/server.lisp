@@ -120,13 +120,9 @@
 ;;; The interrupt channel
 ;;;
 ;;; How a frontend interrupts a computation without depending on signals.
-;;; POSIX has kill(SIGINT), but MS Windows has nothing like it: there a
-;;; frontend without this channel runs winkill.exe, which sets a bit in a
-;;; shared-memory segment named after the Lisp's pid, which in turn only
-;;; exists if maxima.bat loaded win_signals.lisp and winkill_lib.dll. Virus
-;;; scanners tend to dislike a small console program that writes into
-;;; another process's shared memory, and when any link of that chain breaks
-;;; the user can only restart Maxima and lose the session.
+;;; POSIX has kill(SIGINT), but MS Windows has nothing like it, so there
+;;; this channel is the only way a frontend can interrupt a computation
+;;; without the user losing the session.
 ;;;
 ;;; So a frontend that passes a token in the environment variable
 ;;; MAXIMA_INTERRUPT_TOKEN gets a second connection to the port it already

@@ -320,25 +320,16 @@ externalproject_add(maxima
 )
 
 
-option(STRIP_HELPERPROGRAMS "Strip the included helper programs (winkill, winkill_lib, maxima_longnames)." YES)
-
-# crosscompiling winkill with autoconf does not work, compile it using CMake.
-add_library(winkill_lib SHARED ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/winkill_lib.c)
-add_executable(winkill ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/winkill.c)
-set_target_properties(winkill_lib PROPERTIES PREFIX "") # remove 'lib' prefix from libwinkill_lib.dll
-target_link_libraries(winkill winkill_lib)
+option(STRIP_HELPERPROGRAMS "Strip the included helper programs (maxima_longnames)." YES)
 
 # convert windows short names to long names (e.g.
 # "C:/Users/TESTTE~1/AppData/Local/Temp" to "C:/Users/test test/AppData/Local/Temp")
 # CLISP can (currently not handle short names.
 add_executable(maxima_longnames maxima_longnames.c)
 if(STRIP_HELPERPROGRAMS)
-    add_custom_command(TARGET winkill POST_BUILD COMMAND ${CMAKE_STRIP} winkill.exe)
-    add_custom_command(TARGET winkill_lib POST_BUILD COMMAND ${CMAKE_STRIP} winkill_lib.dll)
     add_custom_command(TARGET maxima_longnames POST_BUILD COMMAND ${CMAKE_STRIP} maxima_longnames.exe)
 endif()
-install(TARGETS winkill winkill_lib maxima_longnames COMPONENT Maxima RUNTIME DESTINATION bin LIBRARY DESTINATION bin/)
-install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/ COMPONENT Maxima)
+install(TARGETS maxima_longnames COMPONENT Maxima RUNTIME DESTINATION bin LIBRARY DESTINATION bin/)
 
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/

@@ -6,11 +6,8 @@
 #
 # Interrupting Maxima without signals.
 #
-# On MS Windows there is no kill(SIGINT). Without this channel xmaxima runs
-# winkill.exe instead, which sets a bit in a shared-memory segment that
-# Maxima's Lisp watches -- but only if maxima.bat loaded win_signals.lisp and
-# winkill_lib.dll, and virus scanners tend to object to a small console
-# program writing into another process's memory.
+# On MS Windows there is no kill(SIGINT), so there this channel is the only
+# way xmaxima can interrupt Maxima.
 #
 # So xmaxima passes Maxima a random token in the environment variable
 # MAXIMA_INTERRUPT_TOKEN and keeps listening on the port Maxima connects to.
