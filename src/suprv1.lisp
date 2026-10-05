@@ -224,7 +224,16 @@
 			 (remove-transl-array-fun-props x)))
       (when (not (get x 'sysconst))
 	(remprop x 'lineinfo)
-	(remprop x 'mprops))
+	;; MPROPS holds the definitions that functions and macros list.
+	;; Drop the listings with them, or an interrupt in between leaves
+	;; functions listing a function that has no definition.  (The
+	;; deletions further down are then no-ops.)
+	(with-interrupts-deferred
+	  (remprop x 'mprops)
+	  (setf $functions
+		(delete (assoc (ncons x) $functions :test #'equal) $functions :count 1 :test #'equal))
+	  (setf $macros
+		(delete (assoc (ncons x) $macros :test #'equal) $macros :count 1 :test #'equal))))
       (dolist (u '(bindtest nonarray evfun evflag opers mode))
 	(remprop x u))
       (dolist (u opers)
@@ -401,13 +410,19 @@
   (setq *mdebug* y))
 
 (defun errlfun1 (mpdls)
-  (do ((l bindlist (cdr l))
-       (l1))
-      ((eq l (car mpdls)) (munbind l1))
-    (setq l1 (cons (car l) l1)))
-  (do ()
-      ((eq loclist (cdr mpdls)))
-    (munlocal)))
+  (munbind-to (car mpdls))
+  (munlocal-to (cdr mpdls)))
+
+(defun unwind-maxima-frames (mpdls stack-mark)
+  "Unwind BINDLIST and LOCLIST to the marks in MPDLS, as ERRLFUN1 does, and
+the function call stack to STACK-MARK.  A top level calls this before each
+input, to repair what an interrupt may have left behind: the cleanups on the
+way out of an evaluation restore everything, but an interrupt that lands in
+one of those cleanups abandons the rest of it, and only an outer cleanup can
+finish the job.  At the top there is no outer cleanup, so this is it."
+  (errlfun1 mpdls)
+  (when (> (fill-pointer *mlambda-call-stack*) stack-mark)
+    (setf (fill-pointer *mlambda-call-stack*) stack-mark)))
 
 (defun makealias (x)
   (implode (cons #\$ (exploden x))))

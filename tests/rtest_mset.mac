@@ -376,3 +376,48 @@ listarray (h2[blurf]);
 
 (reset(use_fast_arrays),1);
 1;
+
+/* SF bug #5614: a user interrupt must not leave Maxima's own bookkeeping
+   half done.  The checks are in tests/interrupt-safety-check.lisp. */
+
+(kill(all),load(file_search("interrupt-safety-check.lisp",file_search_tests)),0);
+0$
+
+member(interrupt_deferral_check(), [true, skipped]);
+true$
+
+/* An interrupt abandons the cleanup of a function call, a block and a block
+   with local() half way; the top level's repair finishes it. */
+interrupted_cleanup_check(function_call);
+[true, true, true, true, true, true, true, true]$
+
+interrupted_cleanup_check(block_variables);
+[true, true, true, true, true, true, true, true]$
+
+interrupted_cleanup_check(block_local);
+[true, true, true, true, true, true, true, true]$
+
+(interrupt_test_f(a) := block([b:a, simp:simp, fpprec:20, interrupt_test_a:a], b),
+ interrupt_test_g(n) := block([interrupt_test_a:n], local(h), h(y):=y, h(interrupt_test_a)),
+ 0);
+0$
+
+/* Real interrupts at random moments: a loop of function calls, with block
+   variables, option variables and local(). */
+member(interrupt_stress_check('(for i thru 100 do (interrupt_test_f(i), interrupt_test_g(i))), 300), [true, skipped]);
+true$
+
+/* assume() and forget(): facts() and the database have to agree. */
+member(interrupt_stress_check('(for i thru 30 do (assume(interrupt_test_x>0), forget(interrupt_test_x>0))), 300), [true, skipped]);
+true$
+
+/* The working precision has to agree with fpprec. */
+member(interrupt_stress_check('(for i thru 30 do (fpprec:30, fpprec:16)), 300), [true, skipped]);
+true$
+
+/* functions must not list a function without a definition. */
+member(interrupt_stress_check('(for i thru 30 do (interrupt_test_k(z):=z, kill(interrupt_test_k))), 300), [true, skipped]);
+true$
+
+(remfunction(interrupt_test_f, interrupt_test_g), [facts(), contexts, fpprec]);
+[[], [initial, global], 16]$

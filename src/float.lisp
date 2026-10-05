@@ -105,14 +105,27 @@
           (zerop (logand x (1- (ash 1 k))))))))))
 
 (defun fpprec1 (assign-var q)
-  (declare (ignore assign-var))
   (if (or (not (fixnump q)) (< q 1))
       (merror (intl:gettext "fpprec: value must be a positive integer; found: ~M") q))
-  (setq fpprec (+ 2 (integer-length (expt 10. q)))
-	*bigfloatone* ($bfloat 1)
-	*bigfloatzero* ($bfloat 0)
-	*bfhalf* (list (car *bigfloatone*) (cadr *bigfloatone*) 0)
-	*bfmhalf* (list (car *bigfloatone*) (- (cadr *bigfloatone*)) 0))
+  ;; The working precision, the constants built for it and $FPPREC itself
+  ;; change together or not at all: compute the new values first, then
+  ;; store them where an interrupt cannot separate them.  Called as the
+  ;; ASSIGN property of $FPPREC (ASSIGN-VAR non-NIL), MSET stores $FPPREC
+  ;; again after this returns, but an interrupt before it does would
+  ;; otherwise leave $FPPREC disagreeing with the precision bfloat()
+  ;; actually uses.  BIND-FPPREC passes NIL and binds $FPPREC itself, so
+  ;; the global value must not be touched then.
+  (let* ((prec (+ 2 (integer-length (expt 10. q))))
+	 (one (let ((fpprec prec)) ($bfloat 1)))
+	 (zero (let ((fpprec prec)) ($bfloat 0))))
+    (with-interrupts-deferred
+      (setq fpprec prec
+	    *bigfloatone* one
+	    *bigfloatzero* zero
+	    *bfhalf* (list (car one) (cadr one) 0)
+	    *bfmhalf* (list (car one) (- (cadr one)) 0))
+      (when assign-var
+	(setq $fpprec q))))
   q)
 
 ;; FPSCAN is called by lexical scan when a

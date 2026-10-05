@@ -198,7 +198,8 @@
   (cond ((not (symbolp y)) (nc-err "context assignment" y))
 	((eq y '$global)
 	 (merror (intl:gettext "context: ~M cannot be made the current context.") y))
-	((member y $contexts :test #'eq) (setq context y $context y))
+	((member y $contexts :test #'eq)
+	 (with-interrupts-deferred (setq context y $context y)))
 	(t ($newcontext y))))
 
 ;;; This function actually creates a context whose subcontext is $GLOBAL.
@@ -250,51 +251,53 @@
   (if done '$done '$not_done)))
 
 (defun killallcontexts ()
-  (mapcar #'killcontext (cdr $contexts))
-  (setq $context '$initial context '$initial current '$initial
-	$contexts '((mlist) $initial $global))
-  ;;The DB variables
-  ;;conmark, conunmrk, conindex, connumber, and contexts
-  ;;concern garbage-collectible contexts, and so we're
-  ;;better off not resetting them.
-  (defprop $global 1 cmark) (defprop $initial 1 cmark)
-  (defprop $initial ($global) subc)
-  (db-gc))
+  (with-interrupts-deferred
+    (mapcar #'killcontext (cdr $contexts))
+    (setq $context '$initial context '$initial current '$initial
+	  $contexts '((mlist) $initial $global))
+    ;;The DB variables
+    ;;conmark, conunmrk, conindex, connumber, and contexts
+    ;;concern garbage-collectible contexts, and so we're
+    ;;better off not resetting them.
+    (defprop $global 1 cmark) (defprop $initial 1 cmark)
+    (defprop $initial ($global) subc)
+    (db-gc)))
 
 (defun killcontext (x)
   "Kills the context X and returns T. Complains and returns NIL when X is not a
   context or is currently active, and returns NIL for the global context."
-  (cond ((not (member x $contexts :test #'eq))
-	 (mtell (intl:gettext "killcontext: no such context ~M.") x)
-	 nil)
-	((eq x '$global) nil)
-	((eq x '$initial)
-	 (mapc #'remov (zl-get '$initial 'data))
-	 (remprop '$initial 'data)
-	 t)
-	;; Refuse killing X if the current context or another activated context is
-	;; built on it. After CONTEXTMARK, the CMARK of X counts the current and
-	;; the activated contexts that are X or built on X.
-	((and (not (eq $context x))
-	      (progn (contextmark)
-	             (< (if (member x (cdr $activecontexts)) 1 0)
-	                (or (zl-get x 'cmark) 0)))) ; missing CMARK -> zero
-	 (mtell (intl:gettext "killcontext: context ~M is currently active.") x)
-	 nil)
-        (t (if (member x $activecontexts)
-               ;; X may have been activated. Deactivate it before deleting.
-               ($deactivate x))
-	   (setq $contexts ($delete x $contexts))
-	   (cond ((and (eq x $context)
-		       (equal ;;replace eq ?? wfs
-			(zl-get x 'subc) '($global)))
-		  (setq $context '$initial)
-		  (setq context '$initial))
-		 ((eq x $context)
-		  (setq $context (car (zl-get x 'subc)))
-		  (setq context (car (zl-get x 'subc)))))
-	   (killc x)
-	   t)))
+  (with-interrupts-deferred
+    (cond ((not (member x $contexts :test #'eq))
+	   (mtell (intl:gettext "killcontext: no such context ~M.") x)
+	   nil)
+	  ((eq x '$global) nil)
+	  ((eq x '$initial)
+	   (mapc #'remov (zl-get '$initial 'data))
+	   (remprop '$initial 'data)
+	   t)
+	  ;; Refuse killing X if the current context or another activated context is
+	  ;; built on it. After CONTEXTMARK, the CMARK of X counts the current and
+	  ;; the activated contexts that are X or built on X.
+	  ((and (not (eq $context x))
+		(progn (contextmark)
+		       (< (if (member x (cdr $activecontexts)) 1 0)
+			  (or (zl-get x 'cmark) 0)))) ; missing CMARK -> zero
+	   (mtell (intl:gettext "killcontext: context ~M is currently active.") x)
+	   nil)
+	  (t (if (member x $activecontexts)
+		 ;; X may have been activated. Deactivate it before deleting.
+		 ($deactivate x))
+	     (setq $contexts ($delete x $contexts))
+	     (cond ((and (eq x $context)
+			 (equal ;;replace eq ?? wfs
+			  (zl-get x 'subc) '($global)))
+		    (setq $context '$initial)
+		    (setq context '$initial))
+		   ((eq x $context)
+		    (setq $context (car (zl-get x 'subc)))
+		    (setq context (car (zl-get x 'subc)))))
+	     (killc x)
+	     t))))
 
 (defun nc-err (fn x)
   (merror (intl:gettext "~M: context name must be a symbol; found ~M") fn x))
@@ -657,14 +660,18 @@
                (or flag
                    (eq t (mevalp2 pat (caar pat) (cadr pat) (caddr pat)))))
       (let ((oldcontext context))
-        (if (eq oldcontext '$initial)
-            (asscontext nil '$learndata)) ; switch to context '$learndata
-        ; learn additional facts
-        (learn ($substitute (cadr tmp) tmp pat) flag)
-        (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag)
-        (when (eq oldcontext '$initial)
-          (asscontext nil oldcontext)     ; switch back to context on entry
-          ($activate '$learndata))))      ; context '$learndata is active
+        ;; Switch back however LEARN exits, error or interrupt included,
+        ;; or the session would carry on in $LEARNDATA.
+        (unwind-protect
+             (progn
+               (if (eq oldcontext '$initial)
+                   (asscontext nil '$learndata)) ; switch to context '$learndata
+               ; learn additional facts
+               (learn ($substitute (cadr tmp) tmp pat) flag)
+               (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag))
+          (when (and (eq oldcontext '$initial) (not (eq context oldcontext)))
+            (asscontext nil oldcontext)     ; switch back to context on entry
+            ($activate '$learndata)))))     ; context '$learndata is active
     nil))
 
 ;;; The value of a constant expression which can be numerically evaluated is
@@ -705,12 +712,15 @@
                (or (not (mnump (cadr patnew)))    ; not both sides of the
                    (not (mnump (caddr patnew))))) ; relation can be number
       (let ((oldcontext $context))
-        (if (eq oldcontext '$initial)
-          (asscontext nil '$learndata)) ; switch to context '$learndata
-        (learn patnew flag)             ; learn additional fact
-        (when (eq oldcontext '$initial) 
-          (asscontext nil oldcontext)   ; switch back to context on entry
-          ($activate '$learndata))))    ; context '$learndata is active
+        ;; As in LEARN-ABS: switch back however LEARN exits.
+        (unwind-protect
+             (progn
+               (if (eq oldcontext '$initial)
+                 (asscontext nil '$learndata)) ; switch to context '$learndata
+               (learn patnew flag))            ; learn additional fact
+          (when (and (eq oldcontext '$initial) (not (eq $context oldcontext)))
+            (asscontext nil oldcontext)   ; switch back to context on entry
+            ($activate '$learndata)))))   ; context '$learndata is active
     nil))
 
 (defmspec $forget (x)
@@ -3144,16 +3154,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         (when (and x y) (mkill r x y)))))
 
 (defun mfact (r x y)
-  (let ((f (datum (list r x y))))
-    (cntxt f context)
-    (addf f x)
-    (addf f y)))
+  (with-interrupts-deferred
+    (let ((f (datum (list r x y))))
+      (cntxt f context)
+      (addf f x)
+      (addf f y))))
 
 (defun mkill (r x y)
-  (let ((f (car (datum (list r x y)))))
-    (kcntxt f context)
-    (maxima-remf f x)
-    (maxima-remf f y)))
+  (with-interrupts-deferred
+    (let ((f (car (datum (list r x y)))))
+      (kcntxt f context)
+      (maxima-remf f x)
+      (maxima-remf f y))))
 
 (defun mkind (x y)
   (kind (dintern x) (dintern y)))

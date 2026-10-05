@@ -74,14 +74,17 @@
 	    (t
 	     (maxima-error "Bad variable specification: ~a" variable-specification)))))
 
-(defmacro mbinding-sub (variables values function-name &rest body &aux (win (gensym)))
-  `(let ((,win nil))
+(defmacro mbinding-sub (variables values function-name &rest body &aux (mark (gensym)))
+  ;; The cleanup unwinds BINDLIST to where it was on entry instead of
+  ;; undoing VARIABLES once a flag says MBIND returned: an interrupt between
+  ;; MBIND returning and the flag being set would otherwise leave every
+  ;; binding in place for good.
+  `(let ((,mark bindlist))
      (unwind-protect
 	  (progn
 	    (mbind ,variables ,values ,function-name)
-	    (setq ,win t)
 	    ,@body)
-       (if ,win (munbind ,variables)))))
+       (munbind-to ,mark))))
 
 ;; How About MTYPEP like (MTYPEP EXP 'ATAN) or (MTYPEP EXP '*) - Jim.
 ;; Better, (EQ (MTYPEP EXP) 'ATAN).

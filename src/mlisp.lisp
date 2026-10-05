@@ -195,7 +195,15 @@ is EQ to FNNAME if the latter is non-NIL."
 				 (t (meval (car args)))) a)))
 	    (t (merror (intl:gettext "lambda: formal argument must be a symbol or quoted symbol; found: ~M") (car params))))
       (setq args (cdr args) params (cdr params)))
-    (let (finish2033 (finish2032 params) (ar *mlambda-call-stack*))
+    ;; The cleanup unwinds the call stack, LOCLIST and BINDLIST back to
+    ;; where they were on entry rather than undoing a count of entries
+    ;; once a flag says the setup finished: that is right wherever an
+    ;; interrupt lands, in the setup, in the body or in the cleanup of a
+    ;; frame further in.
+    (let ((ar *mlambda-call-stack*)
+	  (stack-mark (fill-pointer *mlambda-call-stack*))
+	  (bind-mark bindlist)
+	  (loc-mark loclist))
       (declare (type (vector t) ar))
       (unwind-protect
 	   (progn
@@ -206,19 +214,17 @@ is EQ to FNNAME if the latter is non-NIL."
 	     (vector-push params ar)
 	     (vector-push args ar)
 	     (vector-push fnname ar)
-	     (mbind finish2032 args fnname)
+	     (mbind params args fnname)
 	     (push nil loclist)
-	     (setq finish2033 t)
 	     (let ((aexprp (and aexprp (not (atom (caddr fn)))
 				(eq (caar (caddr fn)) 'lambda))))
 	       (cond ((null (cddr fn)) (merror (intl:gettext "lambda: no body present.")))
 		     ((cdddr fn) (mevaln (cddr fn)))
 		     (t (meval (caddr fn))))))
-	(if finish2033
-	    (progn
-	      (incf (fill-pointer *mlambda-call-stack*) -5)
-	      (munlocal)
-	      (munbind finish2032)))))))
+	(when (> (fill-pointer *mlambda-call-stack*) stack-mark)
+	  (setf (fill-pointer *mlambda-call-stack*) stack-mark))
+	(munlocal-to loc-mark)
+	(munbind-to bind-mark)))))
 
 
 (defmspec mprogn (form)
@@ -540,11 +546,33 @@ wrapper for this."
     (let ((var (car vars)))
       (when (not (every 'symbolp (cdr ($listofvars var))))
 	  (merror (intl:gettext "Only symbols can be bound; found: ~M") var))
-      (let ((value (symbol-values-in var)))
-	(let ((mbindp t))
-	  (mset var (car args)))
-	(psetq bindlist (cons var bindlist)
-	       mspeclist (cons value mspeclist))))))
+      (let ((value (symbol-values-in var))
+	    (entry nil)
+	    (done nil))
+	;; Record the value to restore before changing anything, so that
+	;; however the MSET below is left -- an interrupt can land anywhere
+	;; in it -- MBIND's or an outer frame's cleanup finds the entry and
+	;; restores the old value.  The two pushes go together or not at
+	;; all.
+	(with-interrupts-deferred
+	  (setq entry (cons var bindlist)
+		bindlist entry
+		mspeclist (cons value mspeclist)))
+	(unwind-protect
+	     (let ((mbindp t))
+	       (mset var (car args))
+	       (setq done t))
+	  ;; If MSET was left before it changed the value -- typically
+	  ;; because the ASSIGN property refused it, or VAR cannot be
+	  ;; assigned at all -- there is nothing to restore, and restoring
+	  ;; through that same ASSIGN property would be wrong: take the
+	  ;; entry back off.
+	  (unless done
+	    (with-interrupts-deferred
+	      (when (and (eq bindlist entry)
+			 (eq (symbol-values-in var) value))
+		(setq bindlist (cdr bindlist)
+		      mspeclist (cdr mspeclist))))))))))
 
 (defun mbind (lamvars fnargs fnname)
   "Error-handling wrapper around MBIND-DOIT."
@@ -560,8 +588,7 @@ wrapper for this."
 		 (with-$error (mbind-doit lamvars fnargs fnname))
 	       (setq win t))
 	  (unless win
-	    (unless (eq bindlist old-bindlist)
-	      (munbind (nreverse (ldiff bindlist old-bindlist))))
+	    (munbind-to old-bindlist)
 	    (when fnname
 	      (pop-mlambda-call-stack fnname)))))
     (maxima-$error (c)
@@ -593,6 +620,19 @@ wrapper for this."
       (mset var (car mspeclist)))
     (setq mspeclist (cdr mspeclist) bindlist (cdr bindlist))))
 
+(defun munbind-to (mark)
+  "Undo every MBIND binding made since BINDLIST was MARK, newest first.
+Unlike MUNBIND, which pops as many entries as it is given variables, this
+stops at MARK, so it is right however many entries an interrupted MBIND or
+MUNBIND left behind.  Each entry is restored before it is popped: an
+interrupt in between leaves it on the stack for the next cleanup to restore
+again, which is harmless."
+  (loop until (or (eq bindlist mark) (null bindlist))
+	do (let ((munbindp t))
+	     (mset (car bindlist) (car mspeclist)))
+	   (with-interrupts-deferred
+	     (setq mspeclist (cdr mspeclist) bindlist (cdr bindlist)))))
+
 ;;This takes the place of something like
 ;; (DELETE (ASSOC (NCONS VAR) $DEPENDENCIES) $DEPENDENCIES 1)
 
@@ -616,15 +656,18 @@ wrapper for this."
        ;; HMM. I DON'T UNDERSTAND WHY DECLARED ARRAYS ARE OFF-LIMITS:
        ;; THE ARRAY IS JUST A PROPERTY LIKE ANY OTHER, IS IT NOT ??
        (merror (intl:gettext "local: argument cannot be a declared array; found: ~M") var)))
-    (setq mproplist (cons (get var 'mprops) mproplist)
-	  factlist (cons (get var 'data) factlist))
     ;; Record VAR on the LOCLIST frame right away, in lock-step with the
-    ;; MPROPLIST/FACTLIST pushes above, so that MUNLOCAL restores
-    ;; everything processed so far even if a later argument turns out to
-    ;; be invalid.
-    (rplaca loclist (cons var (car loclist)))
-    (dolist (fact (car factlist))
-      (putprop fact -1 'ulabs))
+    ;; MPROPLIST/FACTLIST pushes, so that MUNLOCAL restores everything
+    ;; processed so far even if a later argument turns out to be invalid.
+    ;; The three pushes, and hiding VAR's facts, go together or not at
+    ;; all; an interrupt between them would leave MUNLOCAL pairing one
+    ;; variable with another's saved properties.
+    (with-interrupts-deferred
+      (setq mproplist (cons (get var 'mprops) mproplist)
+	    factlist (cons (get var 'data) factlist))
+      (rplaca loclist (cons var (car loclist)))
+      (dolist (fact (car factlist))
+	(putprop fact -1 'ulabs)))
     (progn
       (mfunction-delete var $functions)
       (mfunction-delete var $macros)
@@ -636,8 +679,14 @@ wrapper for this."
   '$done)
 
 (defun munlocal ()
-  (dolist (var (car loclist))
-    (let ((mprop (car mproplist))
+  ;; Take the variables off the frame one at a time, popping each together
+  ;; with its saved properties and facts, so that an interrupt part way
+  ;; leaves a frame MUNLOCAL can simply be run on again.  Everything before
+  ;; that final step only sets things to their saved state, so it can be
+  ;; repeated.
+  (loop while (car loclist) do
+    (let ((var (caar loclist))
+	  (mprop (car mproplist))
 	  (y nil)
 	  (fact (car factlist)))
       (remcompary var)
@@ -655,13 +704,24 @@ wrapper for this."
 	     (add2lnc (cons (ncons var) y) $dependencies))
 	    (t (mfunction-delete var $dependencies)))
       (rempropchk var)
-      (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (get var 'data))
-      (cput var fact 'data)
-      (dolist (u fact)
-	(zl-remprop u 'ulabs))
-      (setq mproplist (cdr mproplist)
-	    factlist (cdr factlist))))
-  (setq loclist (cdr loclist)))
+      ;; Restoring the facts cannot be repeated (it removes whatever VAR
+      ;; has now), so it goes with the pops.
+      (with-interrupts-deferred
+	(mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (get var 'data))
+	(cput var fact 'data)
+	(dolist (u fact)
+	  (zl-remprop u 'ulabs))
+	(setq mproplist (cdr mproplist)
+	      factlist (cdr factlist))
+	(rplaca loclist (cdar loclist)))))
+  (with-interrupts-deferred
+    (when loclist
+      (setq loclist (cdr loclist)))))
+
+(defun munlocal-to (mark)
+  "Undo every LOCAL frame pushed since LOCLIST was MARK."
+  (loop until (or (eq loclist mark) (null loclist))
+	do (munlocal)))
 
 (defmacro msetq (a b)
   `(mset ',a ,b))
@@ -1033,9 +1093,10 @@ wrapper for this."
 	((null l)
 	 ; Ensure that MUNLOCAL gets called so that we don't leak any local
 	 ; function definitions if we run into an error
-	 (push nil loclist)
+	 (let ((loc-mark loclist))
 	 (unwind-protect
 	     (progn
+	       (push nil loclist)
 	       (mbinding (bndvars bndvars)
 			 (let ((mlocp t))
 			   (meval `(($local) ,@locvars)))
@@ -1071,7 +1132,7 @@ wrapper for this."
 				      (t (setq exp exp1) (go loop)))))
 			 (if (and ratf (not $numer) (not $float))
 			     (setq exp (let ($norepeat) (ratf exp))))))
-	   (munlocal))
+	   (munlocal-to loc-mark)))
 	 exp)
       (if (not (or (atom (car l))
 		   (member 'array (cdaar l) :test #'eq)
@@ -2193,9 +2254,14 @@ wrapper for this."
       (cond ((not ary) (if (and evp (member fnname (car loclist) :test #'eq))
 			   (mputprop fnname t 'local-fun)
 			   (remove-transl-fun-props fnname))
-	     (add2lnc (cons (ncons fnname) args) $functions)
-	     (set-lineinfo fnname (cadar fun) body)
-	     (mputprop fnname (mdefine1 args body) 'mexpr)
+	     ;; Listing the function in functions and storing its
+	     ;; definition go together, or an interrupt in between leaves
+	     ;; a listed function without a definition.
+	     (let ((definition (mdefine1 args body)))
+	       (with-interrupts-deferred
+		 (add2lnc (cons (ncons fnname) args) $functions)
+		 (set-lineinfo fnname (cadar fun) body)
+		 (mputprop fnname definition 'mexpr)))
 	     (if $translate (translate-function fnname)))
 	    ((prog2 (add2lnc fnname $arrays)
 	       (setq ary (mgetl fnname '(hashar array)))
@@ -2471,10 +2537,14 @@ wrapper for this."
     (let ((dup (find-duplicate vars :test #'eq)))
       (when dup
         (merror (intl:gettext "block: ~M occurs more than once in the variable list") dup)))
-    (setq loclist (cons nil loclist))
     ; Ensure that MUNLOCAL gets called so that we don't leak local
-    ; properties if we run into an error
+    ; properties if we run into an error.  The frame is pushed inside the
+    ; UNWIND-PROTECT and taken down by mark, so an interrupt cannot fall
+    ; between pushing it and protecting it.
+    (let ((loc-mark loclist))
     (unwind-protect
+	(progn
+	(setq loclist (cons nil loclist))
 	(mbinding (vars vals)
 		  (do ((prog prog (cdr prog)) (mprogp prog)
 		       (bindl bindlist) (val '$done) (retp) (x) ($%% '$%%))
@@ -2494,8 +2564,8 @@ wrapper for this."
 			  ((not (atom x)) (setq retp t val (car x)))
 			  ((not (setq prog (member x mprogp :test #'equal)))
 			   (merror (intl:gettext "block: no such tag: ~:M") x)))
-		    (if retp (setq prog '(nil)))))
-      (munlocal))))
+		    (if retp (setq prog '(nil))))))
+      (munlocal-to loc-mark)))))
 
 (defun mreturn (&optional (x nil) &rest args)
   (cond 
