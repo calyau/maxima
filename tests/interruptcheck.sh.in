@@ -1,0 +1,20 @@
+#!/bin/sh
+# Interrupt Maxima through the interrupt channel src/server.lisp opens for
+# xmaxima. Usage: interruptcheck.sh <lisp>
+# Exit 77 (Automake SKIP) without a tclsh, or on a Lisp without threads.
+set -eu
+
+if test "$#" -ne 1; then
+    echo "Usage: $0 <lisp>" >&2
+    exit 2
+fi
+
+LOCAL_MAXIMA=${MAXIMA:-@abs_top_builddir@/maxima-local}
+TCLSH=${TCLSH:-tclsh}
+if ! command -v "$TCLSH" >/dev/null 2>&1; then
+    echo "interruptcheck: SKIP (no tclsh)"
+    exit 77
+fi
+
+exec "$TCLSH" '@abs_top_srcdir@/tests/interruptcheck.tcl' "$LOCAL_MAXIMA" \
+    "$1" '@abs_top_srcdir@/interfaces/xmaxima/Tkmaxima/InterruptChannel.tcl'

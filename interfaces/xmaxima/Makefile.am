@@ -69,6 +69,7 @@ TKSOURCES = \
 	Tkmaxima/OpenMath.tcl \
 	Tkmaxima/NConsole.tcl \
 	Tkmaxima/String.tcl \
+	Tkmaxima/InterruptChannel.tcl \
 	Tkmaxima/RunMaxima.tcl \
 	Tkmaxima/Menu.tcl \
 	Tkmaxima/Paths.tcl \

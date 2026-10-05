@@ -199,6 +199,10 @@ Changes in the Windows installer:
 
 Other changes:
 --------------
+* Xmaxima interrupts a computation through a second socket connection
+  instead of a signal, wherever the Lisp has threads (SBCL, CCL, ECL,
+  clisp built with threads). Any frontend that starts Maxima with -s
+  can use the same channel by passing a token in MAXIMA_INTERRUPT_TOKEN
 * New function read_struct: reads a .csv file whose first line names
   the columns into a structure, so that data@t is the column headed t
 * read_matrix and the other numericalio text readers are about twice as
