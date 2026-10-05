@@ -175,6 +175,7 @@ Bug fixes for numbered bugs:
 * \#5635 specint leaves a fact about its internal variable psey after an error
 * \#5636 specint returns noun forms for log(a*t+b), atan(a*t), atanh(a*t) and unit_step(exp(b*t)-c)
 * \#5637 specint returns a noun form for integrals like exp(-x^2)/(x^2+a^2)
+* \#5648 defsystem cannot load what it compiles with ECL for Windows built with MSVC
 
 Bug fixes for unnumbered bugs:
 ------------------------------

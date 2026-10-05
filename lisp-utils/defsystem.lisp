@@ -1386,6 +1386,11 @@ marked :DEPENDENCIES-COMPLETE T are exempt.")
     (pushnew :ibm-rt-pc *features*))
   )
 
+;;; ECL for Windows, if built with its bytecodes compiler, starts out with
+;;; that one, whose output does not load as a .fas file. Load the C
+;;; compiler before the Lisp language below takes COMPILE-FILE.
+#+ecl (require 'cmp)
+
 ;;; *filename-extensions* is a cons of the source and binary extensions.
 (defvar *filename-extensions*
   (car `(#+(and Symbolics Lispm)              ("lisp" . "bin")
@@ -1394,7 +1399,7 @@ marked :DEPENDENCIES-COMPLETE T are exempt.")
  	 #+ACLPC                              ("lsp"  . "fsl")
  	 #+CLISP                              ("lisp" . "fas")
          #+KCL                                ("lsp"  . "o")
-         #+ECL                                ("lsp"  . #+msvc "obj" #-msvc "fas")
+         #+ECL                                ("lsp"  . "fas")
          #+IBCL                               ("lsp"  . "o")
          #+Xerox                              ("lisp" . "dfasl")
 	 ;; Lucid on Silicon Graphics
