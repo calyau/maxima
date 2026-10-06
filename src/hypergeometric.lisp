@@ -560,8 +560,8 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 				  ;(incf local-fpprec (+ (- digits d) 10))))
 				  (setq local-fpprec (* 2 local-fpprec))))
 	   
-	   (if (>= local-fpprec maxima::$max_fpprec) 
-	       (progn
+     (if (or (null f) (< d digits))
+               (progn
 		 (maxima::mtell "Exceeded maximum allowed fpprec.~%")
 		 (values nil nil))
 	     (values f d))))))
