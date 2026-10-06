@@ -7016,6 +7016,12 @@ integrate(sqrt(x-1)/sqrt(x+1), x);
 sqrt(x-1)*sqrt(x+1)-log(2*sqrt(x-1)*sqrt(x+1)+2*x)$
 
 
+/* Bug #5650: "integrate(sqrt(cos(x))*(1+cos(x))*sin(x),x) causes error" */
+
+integrate(sqrt(cos(x))*(1+cos(x))*sin(x),x);
+-((6*cos(x)^(5/2)+10*cos(x)^(3/2))/15)$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
