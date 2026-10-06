@@ -57,11 +57,11 @@
 (defun classify-hypergeometric (a b x)
   (let ((ah nil) (bh nil))
   
-    ;; Let bh = the least member of b that is a negative integer. If there is
+    ;; Let bh = the greatest member of b that is a negative integer. If there is
     ;; no such member, set bh = nil.
-    
+
     (dolist (bk b)
-      (if (and (integerp bk) (<= bk 0) (or (eq bh nil) (< bk bh))) (setq bh bk)))
+      (if (and (integerp bk) (<= bk 0) (or (eq bh nil) (> bk bh))) (setq bh bk)))
 	  
     ;; Let ah = the greatest member of a that is a negative integer. If there is
     ;; no such member, set ah = nil.

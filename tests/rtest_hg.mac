@@ -683,6 +683,14 @@ block([max_fpprec : 100], hypergeometric([1/3],[2/3],30.0*%i));
  block([fpprec : 15, max_fpprec : 600], hypergeometric([1/3],[2/3],700.0*%i));
  0.07919076489137405*%i + 0.023423055025917086$
 
+/* Bug #5382: "hypergeometric([-3],[-1,-5],2) signals a Lisp division-by-zero error" */
+
+args(hypergeometric([-3],[-1,-5],2));
+[[-3],[-5,-1],2]$
+
+args(hypergeometric([-3],[-1,-5],2.0));
+[[-3],[-5,-1],2.0]$
+
 /* clisp isn't very fast => with is(time < 40) we got build failures on launchpad. */
 (time : (absolute_real_time ()- start), print(time), is(time < 400));
 true$
