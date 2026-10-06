@@ -14,11 +14,22 @@
 
 (load-macsyma-macros ratmac)
 
+;; Divides P by Q. Under $ALGEBRAIC, PGCD normalizes its output via ALGNORMAL,
+;; meaning Q might only divide P up to a constant factor rather than perfectly.
+;; We return this scaled quotient and let CPROG handle the final rescaling.
+(defun rootfac-quotient (p q)
+  (if $algebraic
+    (let ((r (rquotient p q)))
+      (if (equal (cdr r) 1)
+        (car r)
+        (cadr (oldcontent (car r)))))
+    (pquotient p q)))
+
 (defun rootfac (q sinint-var)
   (prog (nthdq nthdq1 simproots ans n-loops)
      (setq nthdq (pgcd q (pderivative q sinint-var)))
-     (setq simproots (pquotient q nthdq))
-     (setq ans (list (pquotient simproots (pgcd nthdq simproots))))
+     (setq simproots (rootfac-quotient q nthdq))
+     (setq ans (list (rootfac-quotient simproots (pgcd nthdq simproots))))
      (setq n-loops 0)
    amen
      (cond
@@ -27,8 +38,8 @@
        ((or (pcoefp nthdq) (pointergp sinint-var (car nthdq)))
         (return (reverse ans))))
      (setq nthdq1 (pgcd (pderivative nthdq sinint-var) nthdq))
-     (push (pquotient (pgcd nthdq simproots)
-		      (pgcd nthdq1 simproots))
+     (push (rootfac-quotient (pgcd nthdq simproots)
+			     (pgcd nthdq1 simproots))
 	   ans)
      (setq nthdq nthdq1)
      (incf n-loops)
@@ -56,6 +67,12 @@
      (setq frpart (pdivide top bottom))
      (setq sinint-wholepart (car frpart))
      (setq frpart (cadr frpart))
+     ;; With algebraic coefficients, the factors from ROOTFAC can multiply to a
+     ;; constant multiple of BOTTOM.
+     (when $algebraic
+       (let ((prod (reduce #'ptimes sinint-pardenom)))
+         (unless (equal prod bottom)
+           (setq frpart (ratti frpart (rquotient prod bottom) t)))))
      (if (= (length sinint-pardenom) 1)
 	 (return (values (list frpart) sinint-wholepart)))
      (setq pardenomc (cdr sinint-pardenom))
