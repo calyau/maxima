@@ -163,7 +163,6 @@ Bug fixes for numbered bugs:
 * \#5602 rectform(sqrt(3 - erfc(%i))) fails with sign: argument cannot be non-real
 * \#5603 csign(atan(b)) is imaginary for an imaginary b, so abs(atan(b)^2) = -atan(b)^2
 * \#5605 csign(tan(b)) is pnz for an imaginary b, so abs(tan(b)^2) = tan(b)^2 < 0
-* \#5614 handling of interrupts
 * \#5622 sign() and csign() of log(u) ignore assumptions about u when u is not a symbol
 * \#5623 integrate(sqrt(x-1)/sqrt(x+1), x) and similar returns only partially valid antiderivatives
 * \#5624 integrate asks for signs of complex coefficients, fails for imaginary ones
@@ -193,20 +192,12 @@ Bug fixes for unnumbered bugs:
 
 Changes in the Windows installer:
 ---------------------------------
-* Remove winkill.exe, winkill_lib.dll and win_signals.lisp. Wherever
-  the Lisp has threads, xmaxima and wxMaxima interrupt Maxima through a
-  socket instead; a Lisp without threads can no longer be interrupted
-* MAXIMA_SIGNALS_THREAD and the --enable-winkill configure option are gone
 * Update MS WebView2
 * Update SBCL
 * Correct link to TCL/TK Website
 
 Other changes:
 --------------
-* Xmaxima interrupts a computation through a second socket connection
-  instead of a signal, wherever the Lisp has threads (SBCL, CCL, ECL,
-  clisp built with threads). Any frontend that starts Maxima with -s
-  can use the same channel by passing a token in MAXIMA_INTERRUPT_TOKEN
 * New function read_struct: reads a .csv file whose first line names
   the columns into a structure, so that data@t is the column headed t
 * read_matrix and the other numericalio text readers are about twice as

@@ -55,7 +55,6 @@
 # Source Tkmaxima/OpenMath.tcl 		;# active
 # Source Tkmaxima/NConsole.tcl 		;# can be autoloaded
 # Source Tkmaxima/String.tcl 		;# can be autoloaded
-# Source Tkmaxima/InterruptChannel.tcl	;# can be autoloaded
 # Source Tkmaxima/RunMaxima.tcl		;# can be autoloaded
 # Source Tkmaxima/Menu.tcl
 # Source Tkmaxima/Paths.tcl

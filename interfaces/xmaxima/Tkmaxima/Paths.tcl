@@ -10,6 +10,9 @@
 
 proc setMaxDir {} {
     if {$::tcl_platform(platform) == "windows"} {
+	# Make sure the signals thread is started
+	set ::env(MAXIMA_SIGNALS_THREAD) "1"
+
 	# Assume the executable is one level down from the top
 	# for 5.6 this was src/ and for 5.9 its bin/
 	set up [file dir [file dir [info name]]]

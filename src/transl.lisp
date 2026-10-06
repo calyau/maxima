@@ -931,10 +931,11 @@ APPLY means like APPLY.")
   (destructuring-let* (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
 		       (local-declares (make-declares arglist t))
 		       (body (if *local*
-				 `((let ((mlocp t) (munlocal-mark loclist))
+				 `((let ((mlocp t))
+				     (push nil loclist)
 				     (unwind-protect
-					 (progn (push nil loclist) ,@nbody)
-				       (munlocal-to munlocal-mark))))
+					 (progn ,@nbody)
+				       (munlocal))))
 				 nbody)))
     ;; -> BINDING of variables with ASSIGN properties may be difficult to
     ;; do correctly and efficiently if arbitrary code is to be run.

@@ -54,36 +54,6 @@
   (def-op f1+ fixnum 1+)
   (def-op quotient t quot))
 
-;;; WITH-INTERRUPTS-DEFERRED -- make a short multi-step update atomic with
-;;; respect to Ctrl+C.
-;;;
-;;; A user interrupt (SIGINT, or INTERRUPT-THREAD, which is what SBCL's own
-;;; SIGINT handler and the frontends' interrupt channels use) can arrive
-;;; between any two instructions.  Maxima answers it by throwing back to its
-;;; top level, which runs the UNWIND-PROTECT cleanups on the way.  A cleanup
-;;; can only undo what it can see, though: if the interrupt lands between the
-;;; two halves of an update -- a value stored but not yet recorded on the
-;;; stack that will restore it, a fact put on its nodes but not yet on its
-;;; context -- nothing ever undoes the half that happened, and the session
-;;; carries on with a corrupted state.  See tests/README.interrupt-safety.
-;;;
-;;; This macro runs BODY with interrupts held back; one that arrives in the
-;;; meantime is delivered as soon as BODY is done.  It is for bookkeeping
-;;; only: BODY must be short and must not run user code, wait for input or
-;;; do mathematics, since nothing in it can be interrupted.  Errors and
-;;; nonlocal exits out of BODY are fine.
-;;;
-;;; On a lisp without such a primitive it is a PROGN, which is what every
-;;; lisp had before; the stack discipline in mlisp.lisp (record before
-;;; changing, restore idempotently, unwind to a mark) still narrows the
-;;; window there.
-(defmacro with-interrupts-deferred (&body body)
-  #+sbcl `(sb-sys:without-interrupts ,@body)
-  #+(or cmu scl) `(sys:without-interrupts ,@body)
-  #+ccl `(ccl:without-interrupts ,@body)
-  #+(and ecl threads) `(mp:without-interrupts ,@body)
-  #-(or sbcl cmu scl ccl (and ecl threads)) `(progn ,@body))
-
 ;;this is essentially what the quotient is supposed to do.
 
 (declaim (inline quot))

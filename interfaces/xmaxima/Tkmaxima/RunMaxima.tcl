@@ -109,11 +109,6 @@ proc openMaxima { win filter } {
 	# if {$::xmaxima_priv(platform) == "cygwin"} {lappend command "/bin/bash"}
 	append com    $::xmaxima_priv(localMaximaServer)
 	regsub PORT $com $port com
-	# Ask Maxima for a second connection we can interrupt it through
-	# (see InterruptChannel.tcl). It arrives at the same server socket.
-	set token [icNewToken]
-	icExpect $win $token [list closeMaximaServer $win]
-	set ::env(MAXIMA_INTERRUPT_TOKEN) $token
 	if { [info exists ::env(MAXIMA_INT_INPUT_STRING)] } {
 	    regsub PORT $::env(MAXIMA_INT_INPUT_STRING) $port ::env(MAXIMA_INT_INPUT_STRING)
 	    #puts ::env(MAXIMA_INT_LISP_PRELOAD)=$::env(MAXIMA_INT_LISP_PRELOAD)
@@ -132,14 +127,8 @@ proc openMaxima { win filter } {
 
 
 proc runMaxima { win  filter sock args } {
-    linkLocal $win server maximaSocket
-    if { [info exists maximaSocket] && $maximaSocket != "" } {
-	# Maxima is already connected: this can only be its interrupt
-	# channel, which proves itself with the token -- or an impostor.
-	icCandidate $win $sock
-	return
-    }
-    set maximaSocket $sock
+    linkLocal $win server
+    oset $win maximaSocket $sock
     fconfigure $sock -blocking 0 -translation lf
     
     # Starting from 5.47post, Maxima now outputs UTF-8
@@ -147,20 +136,6 @@ proc runMaxima { win  filter sock args } {
     
     fileevent $sock readable "$filter $win $sock"
 
-    # Keep listening while Maxima may still open its interrupt channel.
-    if { [info exists ::icState($win,token)] } {
-	return
-    }
-    closeMaximaServer $win
-}
-
-# closeMaximaServer --
-#
-#   Stops listening for connections from Maxima. Called once Maxima has
-#   connected and, if it was asked to, has opened its interrupt channel.
-#
-proc closeMaximaServer { win } {
-    linkLocal $win server
     if { [info exists server] } {
 	# puts "closing server $server"
 	catch {
@@ -178,11 +153,6 @@ proc closeMaxima { win } {
 
     # first close the open Maxima session
     catch { sendMaxima $win "quit();" } 
-
-    # A Lisp without threads never opens the interrupt channel, and then
-    # we are still listening for it.
-    icClose $win
-    closeMaximaServer $win
  
     # and then close the socket
     if {[info exists maximaSocket]} {
@@ -526,23 +496,21 @@ proc CMresetFilter { win } {
 
 proc CMkill {  signal pid } {
     # Windows pids can be negative
-    if {[string is int $pid] && $::xmaxima_priv(kill) != ""} {
+    if {[string is int $pid]} {
 	maxStatus [mc "Sending signal %s to process %s" "$signal" "$pid"]
-	exec $::xmaxima_priv(kill) $signal $pid
+	if {$::tcl_platform(platform) == "windows" } {
+	    exec $::xmaxima_priv(kill) $signal $pid
+	} else {
+	    exec $::xmaxima_priv(kill) $signal $pid
+	}
     }
 }
 
 proc CMinterrupt { win } {
 
-    if {[icSendInterrupt $win]} {
-	maxStatus [mc "Sending socket interrupt"]
-    } else {
-	# No interrupt channel (the Lisp has no threads, or Maxima is older
-	# than the channel): send a signal. MS Windows has none.
-	set pid [oget $win pid]
-	if {$pid != "" && $pid != "none"} {
-	    CMkill   -INT $pid
-	}
+    set pid [oget $win pid]
+    if {$pid != "" && $pid != "none"} {
+	CMkill   -INT $pid
     }
     CMresetFilter $win
 }

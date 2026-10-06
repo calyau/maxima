@@ -1148,6 +1148,19 @@ AC_ARG_ENABLE(xmaxima_exe,
    [xmaxima_exe=false])
 AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe = xtrue)
 
+dnl Optionally build winkill.exe under windows
+dnl default to false as additional software
+AC_ARG_ENABLE(winkill_exe,
+  [AS_HELP_STRING([--enable-winkill],
+  [Build Windows winkill.exe and winkill_lib.dll for installer])],
+  [case "${enableval}" in
+       		yes) winkill_exe=true ;;
+       		no)  winkill_exe=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-winkill-exe) ;;
+   esac],
+   [winkill_exe=false])
+AM_CONDITIONAL(WINKILL_EXE, test x$winkill_exe = xtrue)
+
 dnl Should we build a win64 installer?
 AC_ARG_ENABLE(win64-installer,
   [AS_HELP_STRING([--enable-win64-installer],
@@ -1569,7 +1582,6 @@ AC_CONFIG_FILES([src/startmaxima_abcl.sh], chmod +x src/startmaxima_abcl.sh)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([tests/depcheck.sh], chmod +x tests/depcheck.sh)
-AC_CONFIG_FILES([tests/interruptcheck.sh], chmod +x tests/interruptcheck.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
 AC_CONFIG_FILES([src/maxima], chmod +x src/maxima)
 AC_CONFIG_FILES([src/maxima.bat])

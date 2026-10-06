@@ -346,27 +346,26 @@
 		     -sl nil))))))
 
 (defun clear ()
-  (with-interrupts-deferred
-    (when dbtrace
-      (format *trace-output* "~%CLEAR: clearing ~A" *marks*))
-    (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
-    (mapc #'(lambda (sym) (push+sto (sel sym -labs) nil)) -labs)
-    (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
-    (setq +s nil
-	  +sm nil
-	  +sl nil
-	  -s nil
-	  -sm nil
-	  -sl nil
-	  *labs* nil
-	  *lprs* nil
-	  *labindex* 0
-	  *lprindex* +labnumber+
-	  *marks* 0
-	  +labs nil
-	  -labs nil
-	  ulabs nil)
-    (contextmark)))
+  (when dbtrace
+    (format *trace-output* "~%CLEAR: clearing ~A" *marks*))
+  (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
+  (mapc #'(lambda (sym) (push+sto (sel sym -labs) nil)) -labs)
+  (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
+  (setq +s nil
+	+sm nil
+	+sl nil
+	-s nil
+	-sm nil
+	-sl nil
+	*labs* nil
+	*lprs* nil
+	*labindex* 0
+	*lprindex* +labnumber+
+	*marks* 0
+	+labs nil
+	-labs nil
+	ulabs nil)
+  (contextmark))
 
 (defun truep (pat)
   (clear)
@@ -464,28 +463,24 @@
               (mark+ p (+labs p)))))))))
 
 (defun true* (pat)
-  (with-interrupts-deferred
-    (if (eq (car pat) 'kind)
-     (mkind (cadr pat) (caddr pat))
-     (let ((dum (semant pat)))
-      (if dum
-	  (cntxt (ind (ncons dum)) context))))))
+  (if (eq (car pat) 'kind)
+   (mkind (cadr pat) (caddr pat))
+   (let ((dum (semant pat)))
+    (if dum
+	(cntxt (ind (ncons dum)) context)))))
 
 (defun fact (fun arg val)
-  (with-interrupts-deferred
-    (cntxt (ind (datum (list fun arg val))) context)))
+  (cntxt (ind (datum (list fun arg val))) context))
 
 (defun kind (x y)
-  (with-interrupts-deferred
-    (setq y (datum (list 'kind x y)))
-    (cntxt y context)
-    (addf y x)))
+  (setq y (datum (list 'kind x y)))
+  (cntxt y context)
+  (addf y x))
 
 (defun par (s y)
-  (with-interrupts-deferred
-    (setq y (datum (list 'par s y)))
-    (cntxt y context)
-    (mapc #'(lambda (lis) (addf y lis)) s)))
+  (setq y (datum (list 'par s y)))
+  (cntxt y context)
+  (mapc #'(lambda (lis) (addf y lis)) s))
 
 (defun datum (pat)
   (ncons pat))
@@ -609,65 +604,63 @@
       (t (setq above (car lis))))))
 
 (defun dintnum (x &aux foo)
-  (with-interrupts-deferred
-   (flet ((unlink-edge-below (node)
-	    (dolist (d (sel node data))
-		(let ((p (car d)))
-		  (when (and (eq 'mgrp (car p))
-			     (eq node (cadr p))
-			     (null (zl-get d 'con)))
-		    (remov d)
-		    (putprop 'global
-			     (delete d (get 'global 'data) :test #'eq :count 1)
-			     'data)
-		    (return))))))
-    (cond ((assol x *nobjects*))
-	  ((progn (setq x (dbnode x)) nil))
-	  ((null *nobjects*)
-	   (setq *nobjects* (list x))
-	   x)
-	  ((eq '$zero (setq foo (rgrp (car x) (caar *nobjects*))))
-	   (let ((context 'global))
-	     (fact 'meqp x (car *nobjects*)))
-	   (push x *nobjects*)
-	   x)
-	  ((eq '$pos foo)
-	   (let ((context 'global))
-	     (fact 'mgrp x (car *nobjects*)))
-	   (push x *nobjects*)
-	   x)
-	  (t
-	   (do ((lis *nobjects* (cdr lis))
-		(context '$global))
-	       ((null (cdr lis))
-		(let ((context 'global))
-		  (fact 'mgrp (car lis) x))
-		(rplacd lis (list x)) x)
-	     (cond ((eq '$zero (setq foo (rgrp (car x) (caadr lis))))
-		(let ((context 'global))
-		  (fact 'meqp (cadr lis) x))
-		(rplacd lis (cons x (cdr lis)))
-		(return x))
-	   ((eq '$pos foo)
-		    ;; X goes strictly between (CAR LIS) and (CADR LIS). Drop the edge
-		    ;; leaving (CAR LIS) so that the number nodes stay a chain and don't
-		    ;; become a DAG.
-		    (unlink-edge-below (car lis))
-		    ;; Insert the new edge.
-		    (let ((context 'global))
-		      (fact 'mgrp (car lis) x)
-		      (fact 'mgrp x (cadr lis)))
-		    (rplacd lis (cons x (cdr lis)))
-		    (return x)))))))))
+ (flet ((unlink-edge-below (node)
+          (dolist (d (sel node data))
+              (let ((p (car d)))
+                (when (and (eq 'mgrp (car p))
+                           (eq node (cadr p))
+                           (null (zl-get d 'con)))
+                  (remov d)
+                  (putprop 'global
+                           (delete d (get 'global 'data) :test #'eq :count 1)
+                           'data)
+                  (return))))))
+  (cond ((assol x *nobjects*))
+	((progn (setq x (dbnode x)) nil))
+	((null *nobjects*)
+	 (setq *nobjects* (list x))
+	 x)
+	((eq '$zero (setq foo (rgrp (car x) (caar *nobjects*))))
+	 (let ((context 'global))
+	   (fact 'meqp x (car *nobjects*)))
+	 (push x *nobjects*)
+	 x)
+	((eq '$pos foo)
+	 (let ((context 'global))
+	   (fact 'mgrp x (car *nobjects*)))
+	 (push x *nobjects*)
+	 x)
+	(t
+	 (do ((lis *nobjects* (cdr lis))
+	      (context '$global))
+	     ((null (cdr lis))
+	      (let ((context 'global))
+		(fact 'mgrp (car lis) x))
+	      (rplacd lis (list x)) x)
+	   (cond ((eq '$zero (setq foo (rgrp (car x) (caadr lis))))
+              (let ((context 'global))
+                (fact 'meqp (cadr lis) x))
+              (rplacd lis (cons x (cdr lis)))
+              (return x))
+         ((eq '$pos foo)
+		  ;; X goes strictly between (CAR LIS) and (CADR LIS). Drop the edge
+		  ;; leaving (CAR LIS) so that the number nodes stay a chain and don't
+		  ;; become a DAG.
+		  (unlink-edge-below (car lis))
+		  ;; Insert the new edge.
+		  (let ((context 'global))
+		    (fact 'mgrp (car lis) x)
+		    (fact 'mgrp x (cadr lis)))
+		  (rplacd lis (cons x (cdr lis)))
+		  (return x))))))))
 
 (defun doutern (x)
   (if (atom x) x (car x)))
 
 (defun unkind (x y)
-  (with-interrupts-deferred
-    (setq y (car (datum (list 'kind x y))))
-    (kcntxt y context)
-    (maxima-remf y x)))
+  (setq y (car (datum (list 'kind x y))))
+  (kcntxt y context)
+  (maxima-remf y x))
 
 (defun remov (fact)
   (mapc #'(lambda (arg) (remov4 fact arg)) (cdar fact)))
@@ -695,29 +688,26 @@
 	 (mapc #'(lambda (lis) (remov4 fact lis)) (cdar cl)))))
 
 (defun killframe (cl)
-  (with-interrupts-deferred
-    (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (sel cl data))
-    (zl-remprop cl '+labs)
-    (zl-remprop cl '-labs)
-    (zl-remprop cl 'obj)
-    (zl-remprop cl 'var)
-    (zl-remprop cl 'fact)))
+  (mapc #'(lambda (dat) (uncntxt dat) (remov dat)) (sel cl data))
+  (zl-remprop cl '+labs)
+  (zl-remprop cl '-labs)
+  (zl-remprop cl 'obj)
+  (zl-remprop cl 'var)
+  (zl-remprop cl 'fact))
 
 (defun activate (&rest l)
-  (with-interrupts-deferred
-    (dolist (e l)
-      (cond ((member e contexts :test #'eq) nil)
-	    (t (push e contexts)
-	       (cmark e))))))
+  (dolist (e l)
+    (cond ((member e contexts :test #'eq) nil)
+	  (t (push e contexts)
+	     (cmark e)))))
 
 (defun deactivate (&rest l)
-  (with-interrupts-deferred
-    (dolist (e l)
-      (cond ((not (member e contexts :test #'eq))
-	     nil)
-	    (t
-	     (cunmrk e)
-	     (setq contexts (delete e contexts :test #'eq)))))))
+  (dolist (e l)
+    (cond ((not (member e contexts :test #'eq))
+	   nil)
+	  (t
+	   (cunmrk e)
+	   (setq contexts (delete e contexts :test #'eq))))))
 
 (defun gccon ()
   (gccon1)
@@ -814,24 +804,23 @@
     (setq dobjects (remove-if-not #'dnode-live-p dobjects))))
 
 (defun db-gc-nobjects ()
-  (with-interrupts-deferred
-    (unless (every #'dnum-live-p *nobjects*)
-      ;; Take the chain down ...
-      (dolist (dat (get 'global 'data)) (remov dat))
-      (remprop 'global 'data)
-      (setq *nobjects* (remove-if-not #'dnum-live-p *nobjects*))
-      ;; ... and lay it again over what is left. *NOBJECTS* is sorted
-      ;; descending, so linking each node to its successor reproduces both what
-      ;; DINTNUM builds and the order it builds it in: The edge to the smaller
-      ;; neighbor is pushed onto a node's DATA last and so is tried first.
-      ;; Reachability among the surviving nodes is unchanged, since a node that
-      ;; goes carried no fact and was only ever a waypoint between the two nodes
-      ;; that are now joined directly.
-      (let ((context 'global))
-	(do ((l *nobjects* (cdr l)))
-	    ((null (cdr l)))
-	  (fact (if (eq '$zero (rgrp (caar l) (caadr l))) 'meqp 'mgrp)
-		(car l) (cadr l)))))))
+  (unless (every #'dnum-live-p *nobjects*)
+    ;; Take the chain down ...
+    (dolist (dat (get 'global 'data)) (remov dat))
+    (remprop 'global 'data)
+    (setq *nobjects* (remove-if-not #'dnum-live-p *nobjects*))
+    ;; ... and lay it again over what is left. *NOBJECTS* is sorted
+    ;; descending, so linking each node to its successor reproduces both what
+    ;; DINTNUM builds and the order it builds it in: The edge to the smaller
+    ;; neighbor is pushed onto a node's DATA last and so is tried first.
+    ;; Reachability among the surviving nodes is unchanged, since a node that
+    ;; goes carried no fact and was only ever a waypoint between the two nodes
+    ;; that are now joined directly.
+    (let ((context 'global))
+      (do ((l *nobjects* (cdr l)))
+	  ((null (cdr l)))
+	(fact (if (eq '$zero (rgrp (caar l) (caadr l))) 'meqp 'mgrp)
+	      (car l) (cadr l))))))
 
 (defun killc (con)
   (contextmark)

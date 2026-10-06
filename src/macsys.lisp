@@ -105,16 +105,10 @@
 	 (etime-used)
 	 (c-tag)
 	 (d-tag)
-	 ;; Where the binding stacks stood when this loop started.
-	 (frames-mark (cons bindlist loclist))
-	 (stack-mark (fill-pointer *mlambda-call-stack*))
          (finish nil one-shot))
         (finish nil)
       (declare (ignorable area-before area-after))
       (catch 'return-from-debugger
-	;; An interrupt throws back to here.  Inside the CATCH, so that
-	;; another interrupt during the repair just starts it over.
-	(unwind-maxima-frames frames-mark stack-mark)
 	(when (or (not (checklabel $inchar))
 		  (not (checklabel $outchar)))
 	  (incf $linenum))
@@ -435,16 +429,11 @@
     (catch 'quit-to-lisp
       (in-package :maxima)
       (loop
-	 with frames-mark = (cons bindlist loclist)
-	 with stack-mark = (fill-pointer *mlambda-call-stack*)
 	 do
 	   (catch #+gcl si::*quit-tag*
 		  #+(or cmu scl sbcl openmcl lispworks) 'continue
 		  #-(or gcl cmu scl sbcl openmcl lispworks) nil
 		  (catch 'macsyma-quit
-		    ;; As in CONTINUE: repair what an interrupted cleanup
-		    ;; may have left behind before reading on.
-		    (unwind-maxima-frames frames-mark stack-mark)
 		    (continue :stream input-stream :batch-or-demo-flag batch-flag)
 		    (format t *maxima-epilog*)
 		    (bye)))))))

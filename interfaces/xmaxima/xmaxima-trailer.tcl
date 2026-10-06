@@ -20,9 +20,12 @@ if { [llength $::xmaxima_priv(plotfile)] > 0 } {
 } else {
     ################ MAXTkmaxima tkmaxima
     if {$tcl_platform(platform) == "windows" } {
-        # MS Windows has no kill: Maxima is interrupted through its
-        # interrupt channel (InterruptChannel.tcl) or not at all.
-        set ::xmaxima_priv(kill) ""
+        set dir [file dir [info name]]
+        # These should be in the same directory as the xmaxima.exe
+        set ::xmaxima_priv(kill) [file join $dir winkill.exe]
+        set file [file join $dir tclwinkill.dll]
+        if {[file isfile $file]} {catch {load  $file}}
+        unset file
     } else {
         # unix
         set ::xmaxima_priv(kill) kill}

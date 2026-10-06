@@ -10,7 +10,5 @@ multipage.eps
 test.sh
 depcheck.sh
 *-depcheck.sh*
-interruptcheck.sh
-*-interrupt-channel.sh*
 bin
 
