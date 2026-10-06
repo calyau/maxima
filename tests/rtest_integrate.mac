@@ -7030,9 +7030,17 @@ block([algebraic : true,
        F, G],
  F : integrate(f, x),
  G : integrate(g, x),
- [is(freeof('integrate, F) and equal(diff(F, x) - f, 0)),
-  is(freeof('integrate, G) and equal(diff(G, x) - g, 0))]);
+ [is(freeof('integrate, F) and equal(diff(F, x), f)),
+  is(freeof('integrate, G) and equal(diff(G, x), g))]);
 [true, true]$
+
+
+/* Bug #5653: "Some integrals with algebraic:true cause 'PTPTQUOTIENT: Polynomial quotient is not exact'" */
+
+block([algebraic : true, f : x/((x^2+sqrt(2))*(sqrt(3)*x^2+x+1)), F],
+ F : integrate(f, x),
+ is(freeof('integrate, F) and equal(diff(F, x), f)));
+true;
 
 
 /**************************************/
