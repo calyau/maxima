@@ -150,13 +150,16 @@
 ;; -1 and constant wherever neither rofmax nor rofmin crosses a branch cut,
 ;; e.g. -1 for sqrt(x-1)*sqrt(x+1) with x < -1. Write the terms of the
 ;; result with powers of q in rofmax and rofmin again, and multiply the
-;; other terms that depend on x, e.g. asin(x), by u.
+;; other terms that depend on x, e.g. asin(x), by u. If u is 1 for every
+;; real x, return the result as it is.
 (defun intir1-exec (d p r0 e0 rofmax emax rofmin emin x)
   (let* ((q ($expand (mul rofmax rofmin)))
          (res (intir (mul d p (if (equal e0 0) 1 (power r0 e0))
                           (power rofmax (add emax (mul -1 emin)))
                           (power q emin))
                      x)))
+    (when (and res (intir1-merge-exact-p rofmax rofmin x))
+      (return-from intir1-exec res))
     (when res
       (addn (mapcar #'(lambda (term)
                         (let ((new (intir1-unsplit term q rofmax rofmin)))
@@ -166,6 +169,28 @@
                                         (power q (neg emin)) term)))))
                     (if (mplusp res) (cdr res) (list res)))
             t))))
+
+;; Return T if R = sqrt(r1)*sqrt(r2) is equal to sqrt(r1*r2) for every real x,
+;; which holds for r1 = a1*x+b1 and r2 = a2*x+b2 with real numbers a1*a2 < 0 and
+;; abs(a2)*b1+abs(a1)*b2 >= 0, as for 1-x and 1+x. A positive combination of
+;; r1 and r2 is then a constant >= 0, so their imaginary parts have opposite
+;; signs, and they are never both negative.
+(defun intir1-merge-exact-p (r1 r2 x)
+  (flet ((coeffs (r)
+           (let* ((r ($expand r))
+                  (a ($coeff r x 1))
+                  (b ($coeff r x 0)))
+             (when (and (freeof x a)
+                        (freeof x b)
+                        (alike1 ($expand (add (mul a x) b)) r)
+                        (zerop1 ($imagpart a)))
+               (list a b)))))
+    (let ((c1 (coeffs r1))
+          (c2 (coeffs r2)))
+      (and c1 c2
+           (eq t (mgrp 0 (mul (first c1) (first c2))))
+           (eq t (mgqp (add (mul (ftake 'mabs (first c2)) (second c1))
+                            (mul (ftake 'mabs (first c1)) (second c2))) 0))))))
 
 ;; Replace q^k in E by r1^k*r2^k for k not an integer.
 (defun intir1-unsplit (e q r1 r2)

@@ -905,7 +905,7 @@ integrate(%e^(a*acsch(z)),z);
 assume(x>0);
 [x>0];
 integrate(%e^asech(x),x),ratsimp;
--log((2*sqrt(1-x)*sqrt(x+1)+2)/x)+log(x)+sqrt(1-x)*sqrt(x+1)$
+-log((2*sqrt(1-x^2)+2)/x)+log(x)+sqrt(1-x^2)$
 forget(x>0);
 [x>0];
 
@@ -7040,7 +7040,15 @@ block([algebraic : true,
 block([algebraic : true, f : x/((x^2+sqrt(2))*(sqrt(3)*x^2+x+1)), F],
  F : integrate(f, x),
  is(freeof('integrate, F) and equal(diff(F, x), f)));
-true;
+true$
+
+
+/* Bug #5651: "Some integrals take too much time"
+ * Note: Not actually measuring time or checking the very long antiderivative here,
+ * but the slow-down would be noticed by anyone running the test suite. */
+
+freeof('integrate, integrate(sqrt(a+%i*a*tan(c+d*x))/tan(c+d*x)^(3/2), x));
+true$
 
 
 /**************************************/
