@@ -117,6 +117,7 @@ Bug fixes for numbered bugs:
 * \#5308 asksign(d^m) asks about d instead of d^m for d <= 0 and m < 0
 * \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
+* \#5312 lambert_w is not treated as complex: csign(lambert_w(x)) gives pnz
 * \#5358 inverse_erf(1.0*%i) and other complex points with abs(z) = 1 report undefined 
 * \#5359 inverse_erfc of any complex number signals a Lisp error
 * \#5360 log_gamma of a complex bigfloat with negative real part leaves log(sin(...)) unevaluated

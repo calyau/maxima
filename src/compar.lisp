@@ -3453,7 +3453,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  (kind %acosh $increasing) (kind %acosh $complex)
 	  (kind %atanh $increasing) (kind %atanh $oddfun)
 	  (kind $li $complex)
-	  (kind $lambert_w $complex)
+	  (kind %lambert_w $complex)
 	  (kind %cabs $real)
 	  (kind %cabs $evenfun))))
 

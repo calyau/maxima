@@ -3009,6 +3009,14 @@ block([x, y, z, w],
 [[x > 1.5], [y > 10^30], [], []]$
 
 
+/* Bug #5312: "lambert_w is not treated as complex: csign(lambert_w(x)) gives pnz" */
+
+block([x],
+ local(x),
+ [csign(lambert_w(x)), featurep(lambert_w, complex)]);
+[complex, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
