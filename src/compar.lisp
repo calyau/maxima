@@ -2548,7 +2548,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
         ((and (eq ind '$feature)
               (member e $features)
               t))
-        ((eq ind '$alphabetic)
+        ((and (eq ind '$alphabetic) (stringp e))
          (dolist (l (coerce e 'list) t)
            (when (not (member l *alphabet*)) (return nil))))
         ;; Properties related to the assume database.

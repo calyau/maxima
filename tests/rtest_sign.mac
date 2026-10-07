@@ -3017,6 +3017,12 @@ block([x],
 [complex, true]$
 
 
+/* Bug #5304: "featurep(x, alphabetic) raises a Lisp error for a non-string argument" */
+
+[featurep('x, alphabetic), featurep(1, alphabetic), featurep("_", alphabetic)];
+[false, false, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
