@@ -3023,6 +3023,15 @@ block([x],
 [false, false, true]$
 
 
+/* Bug #5309: "sign() loses a proven sign when one side of the difference is a min or max" */
+
+block([x, y],
+ local(x, y),
+ assume(x > 0),
+ [sign(2^x - min(1, y)), is(2^x > min(1, y))]);
+[pos, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

@@ -1826,7 +1826,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
                 (unless (eq diff-sign '$pnz)
                   (setq sgn diff-sign))))))))
 
-    (when (and $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
+    (when (and (null sgn) $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
       (setq sgn (signdiff-minmax xlhs xrhs)))
     (when sgn (setq sign (if flip-sign (flip sgn) sgn) minus nil odds nil evens nil)
 	  t)))

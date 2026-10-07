@@ -116,6 +116,7 @@ Bug fixes for numbered bugs:
 * \#5306 is(equal(list1, list2)) gives unknown for lists that provably differ, depending on element order
 * \#5307 asksign(b^n) asks "Is 1 zero or nonzero?" for b < 0 and n # 0
 * \#5308 asksign(d^m) asks about d instead of d^m for d <= 0 and m < 0
+* \#5309 sign() loses a proven sign when one side of the difference is a min or max
 * \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
 * \#5312 lambert_w is not treated as complex: csign(lambert_w(x)) gives pnz
