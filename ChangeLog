@@ -111,6 +111,7 @@ Bug fixes for numbered bugs:
 * \#5284 logarc doesn't handle acoth(0) and (under %piargs : false) acot(0)
 * \#5286 Float atanh/acoth at +-1.0
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
+* \#5306 is(equal(list1, list2)) gives unknown for lists that provably differ, depending on element order
 * \#5307 asksign(b^n) asks "Is 1 zero or nonzero?" for b < 0 and n # 0
 * \#5308 asksign(d^m) asks about d instead of d^m for d <= 0 and m < 0
 * \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product

@@ -1254,7 +1254,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  (t
 	   (setq z (meqp (car p) (car q)))
 	   (cond ((eq z nil) nil)
-		 ((or (eq z '$unknown) (op-equalp z '$equal)) z)
+		 ((or (eq z '$unknown) (op-equalp z '$equal))
+		  ;; An unequal pair further on still makes P and Q unequal.
+		  (if (null (list-meqp (cdr p) (cdr q))) nil z))
 		 (t (list-meqp (cdr p) (cdr q))))))))
 
 (defun lambda-meqp (a b)

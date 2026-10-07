@@ -2992,6 +2992,14 @@ block([d, m],
 [neg, true]$
 
 
+/* Bug #5306: "is(equal(list1, list2)) gives unknown for lists that provably differ, depending on element order" */
+
+block([x, y],
+ local(x, y),
+ [is(equal([x, 1], [y, 2])), is(equal([1, x], [2, y])), is(equal([x, y], [y, x]))]);
+[false, false, unknown]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
