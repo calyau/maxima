@@ -2968,6 +2968,21 @@ block([j],
  imaginary, imaginary, pnz, pnz]$
 
 
+/* Bug #5307: "asksign(b^n) asks "Is 1 zero or nonzero?" for b < 0 and n # 0" */
+
+block([c, n],
+ local(c, n),
+ assume(c < 0, notequal(n, 0)),
+ [asksign(c^n), is(c^n > 0)]), ask_hide_prompt; p;
+[pos, true]$
+
+block([c, n, y],
+ local(c, n, y),
+ assume(c < 0, notequal(n, 0)),
+ [asksign (y*c^n), is (y*c^n > 0)]), ask_hide_prompt; p;
+[pos, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

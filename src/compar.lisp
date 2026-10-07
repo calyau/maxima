@@ -2097,9 +2097,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		  (setq odds (ncons x) evens nil minus nil sign (if (eq sign-base '$neg) '$pn '$pnz)))))
 	  ((eq sign-expt '$pn)
 	   (cond ((eq sign-base '$neg)
-		  (setq sign '$pn))
+		  (setq sign '$pn odds (ncons x) evens nil minus nil))
 		 ((eq sign-base '$nz)
-		  (setq sign '$pnz))))
+		  (setq sign '$pnz odds (ncons x) evens nil minus nil))))
 	  ((ratnump expt)
 	   (cond ((and (eq $domain '$complex) (eq sign-base '$neg))
 			 ;; With domain : complex, a negative base raised to a non-integer
