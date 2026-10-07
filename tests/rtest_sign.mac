@@ -3000,6 +3000,15 @@ block([x, y],
 [false, false, unknown]$
 
 
+/* Bug #5305: "facts(number) misses floats and bignums and matches parts of rationals and bigfloats" */
+
+block([x, y, z, w],
+ local(x, y, z, w),
+ assume(x > 1.5, y > 10^30, z > 1.5b0, w > 3/7),
+ [facts(1.5), facts(10^30), facts(1), facts(7)]);
+[[x > 1.5], [y > 10^30], [], []]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

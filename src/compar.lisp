@@ -167,7 +167,7 @@
 (defun facts2 (expr)
   (labels ((among (x l)
              (cond ((null l) nil)
-                   ((atom l) (eq x l))
+                   ((or (atom l) (mnump l)) (alike1 x l))
                    ((alike1 x l) t)
                    (t
                     (do ((ll (cdr l) (cdr ll)))
