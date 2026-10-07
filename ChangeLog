@@ -112,6 +112,7 @@ Bug fixes for numbered bugs:
 * \#5286 Float atanh/acoth at +-1.0
 * \#5301 simpsum gives a wrong 2^(a-1), drops the term, or hits a Lisp error for sums of binomial(a,2*k+b)
 * \#5307 asksign(b^n) asks "Is 1 zero or nonzero?" for b < 0 and n # 0
+* \#5308 asksign(d^m) asks about d instead of d^m for d <= 0 and m < 0
 * \#5310 sign() gives a wrong definite sign when SIGN-SHIFT collapses a sum to a product
 * \#5311 asksign asks about, and records an answer for, a different expression after SIGN-SHIFT
 * \#5358 inverse_erf(1.0*%i) and other complex points with abs(z) = 1 report undefined 

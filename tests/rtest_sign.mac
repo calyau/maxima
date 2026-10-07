@@ -2983,6 +2983,15 @@ block([c, n, y],
 [pos, true]$
 
 
+/* Bug #5308: "asksign(d^m) asks about d instead of d^m for d <= 0 and m < 0" */
+
+block([d, m],
+ local(d, m),
+ assume(d <= 0, m < 0),
+ [asksign(d^m), is(d^m < 0)]), ask_hide_prompt; n;
+[neg, true]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

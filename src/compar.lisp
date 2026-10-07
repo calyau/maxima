@@ -2089,9 +2089,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	        ;; Leave rational exponents to the (RATNUMP EXPT) clause, which
 	        ;; knows their parity: xnz^(-1/3) is neg, not pn.
 	        (not (ratnump expt)))
-	   (setq sign (if (eq sign-base '$pz)
-			  '$pos
-			  '$pn)))
+	   (setq sign (if (eq sign-base '$pz) '$pos '$pn)
+		 odds (ncons x) evens nil minus nil))
 	  ((member sign-expt '($pz $nz $pnz))
 	   (cond ((member sign-base '($neg $nz))
 		  (setq odds (ncons x) evens nil minus nil sign (if (eq sign-base '$neg) '$pn '$pnz)))))
