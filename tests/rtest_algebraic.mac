@@ -157,3 +157,12 @@ block([p,r],
  r: ratsimp(p),
  [radcan(r), ratsimp(r-x/(x^3-4))]);
 [x/(x^3-4),0];
+
+
+/* Bug #5655: "linsolve returns wrong solutions for some systems with %i or radicals" */
+
+block([eqs, sol],
+ eqs : [x + c*y + %i*z = 1 + %i, c*x + sqrt(2)*y + z = 2, -x + y + sqrt(c)*z = %i],
+ sol : linsolve(eqs, [x, y, z]),
+ ratsimp(subst(sol, map(lambda([e], lhs(e) - rhs(e)), eqs))));
+[0, 0, 0]$

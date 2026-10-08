@@ -186,8 +186,10 @@ Bug fixes for numbered bugs:
 * \#5637 specint returns a noun form for integrals like exp(-x^2)/(x^2+a^2)
 * \#5648 defsystem cannot load what it compiles with ECL for Windows built with MSVC
 * \#5650 integrate(sqrt(cos(x))*(1+cos(x))*sin(x),x) causes error
+* \#5651 Some integrals take too much time
 * \#5652 Some integrals with algebraic:true cause "CQUOTIENT: quotient is not exact"
 * \#5653 Some integrals with algebraic:true cause "PTPTQUOTIENT: Polynomial quotient is not exact"
+* \#5655 linsolve returns wrong solutions for some systems with %i or radicals
 
 Bug fixes for unnumbered bugs:
 ------------------------------

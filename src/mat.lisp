@@ -243,7 +243,14 @@
         ((equal 0 mess2) 0)
         (t   ;;   (pquotient mess1 mess2) ; fixed by line below. RJF 1/12/2017
 
-         (car (ratreduce mess1 mess2))
+         ;; The quotient is exact, but with algebraic numbers in the entries,
+         ;; RATREDUCE can leave part of it in the denominator - divide that out.
+         ;; floats can cause the division to fail, then only use the numerator.
+         (let ((q (ratreduce mess1 mess2)))
+           (if (equal (cdr q) 1)
+               (car q)
+               (or (pquotientchk-safe (car q) (cdr q))
+                   (car q))))
          )
         ))))
     (do ((l (1+ i) (1+ l)))
