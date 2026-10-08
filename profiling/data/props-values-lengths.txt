@@ -1,0 +1,320 @@
+LENLOG rtest_ask1 props=2 values=0 facts-contexts=2
+LENLOG-END rtest_ask1 props=2 values=0
+LENLOG rtest_sqdnst props=2 values=0 facts-contexts=2
+LENLOG-END rtest_sqdnst props=2 values=0
+LENLOG rtest_extensions props=2 values=0 facts-contexts=2
+LENLOG-END rtest_extensions props=2 values=0
+LENLOG rtest_rules props=2 values=0 facts-contexts=2
+LENLOG-END rtest_rules props=6 values=2
+LENLOG rtestnset props=6 values=2 facts-contexts=2
+LENLOG-END rtestnset props=4 values=12
+LENLOG rtest1 props=4 values=12 facts-contexts=2
+LENLOG-END rtest1 props=4 values=18
+LENLOG rtest1a props=4 values=18 facts-contexts=2
+LENLOG-END rtest1a props=4 values=10
+LENLOG rtest2 props=4 values=10 facts-contexts=2
+LENLOG-END rtest2 props=9 values=19
+LENLOG rtest4 props=9 values=19 facts-contexts=2
+LENLOG-END rtest4 props=7 values=1
+LENLOG rtest5 props=7 values=1 facts-contexts=2
+LENLOG-END rtest5 props=8 values=0
+LENLOG rtest6 props=8 values=0 facts-contexts=2
+LENLOG-END rtest6 props=8 values=5
+LENLOG rtest6a props=8 values=5 facts-contexts=2
+LENLOG-END rtest6a props=11 values=0
+LENLOG rtest6b props=11 values=0 facts-contexts=2
+LENLOG-END rtest6b props=11 values=3
+LENLOG rtest7 props=11 values=3 facts-contexts=2
+LENLOG-END rtest7 props=14 values=0
+LENLOG rtest9 props=14 values=0 facts-contexts=2
+LENLOG-END rtest9 props=24 values=13
+LENLOG rtest9a props=24 values=13 facts-contexts=2
+LENLOG-END rtest9a props=15 values=3
+LENLOG rtest10 props=15 values=3 facts-contexts=2
+LENLOG-END rtest10 props=69 values=4
+LENLOG rtest11 props=69 values=4 facts-contexts=2
+LENLOG-END rtest11 props=22 values=9
+LENLOG rtest13 props=22 values=9 facts-contexts=2
+LENLOG-END rtest13 props=16 values=20
+LENLOG rtest13s props=16 values=20 facts-contexts=2
+LENLOG-END rtest13s props=18 values=23
+LENLOG rtest14 props=18 values=23 facts-contexts=2
+LENLOG-END rtest14 props=22 values=23
+LENLOG rtest15 props=22 values=23 facts-contexts=2
+LENLOG-END rtest15 props=65 values=24
+LENLOG rtest16 props=65 values=24 facts-contexts=2
+LENLOG-END rtest16 props=24 values=0
+LENLOG rtestode props=24 values=0 facts-contexts=2
+LENLOG-END rtestode props=14 values=0
+LENLOG rtestode_zp props=14 values=0 facts-contexts=2
+LENLOG-END rtestode_zp props=19 values=11
+LENLOG rtest3 props=19 values=11 facts-contexts=2
+LENLOG-END rtest3 props=33 values=0
+LENLOG rtest8 props=33 values=0 facts-contexts=2
+LENLOG-END rtest8 props=14 values=7
+LENLOG rtest12 props=14 values=7 facts-contexts=2
+LENLOG-END rtest12 props=19 values=3
+LENLOG rexamples props=19 values=3 facts-contexts=2
+LENLOG-END rexamples props=15 values=0
+LENLOG rtesthyp props=15 values=0 facts-contexts=2
+LENLOG-END rtesthyp props=20 values=1
+LENLOG rtest_hypgeo props=20 values=1 facts-contexts=2
+LENLOG-END rtest_hypgeo props=15 values=0
+LENLOG rtestmt19937 props=15 values=0 facts-contexts=2
+LENLOG-END rtestmt19937 props=15 values=2
+LENLOG rtest_allnummod props=15 values=2 facts-contexts=2
+LENLOG-END rtest_allnummod props=15 values=0
+LENLOG rtest_maxmin props=15 values=0 facts-contexts=2
+LENLOG-END rtest_maxmin props=15 values=0
+LENLOG rtestconjugate props=15 values=0 facts-contexts=2
+LENLOG-END rtestconjugate props=15 values=0
+LENLOG rtestsum props=15 values=0 facts-contexts=2
+LENLOG-END rtestsum props=15 values=1
+LENLOG rtest_trig props=15 values=1 facts-contexts=2
+LENLOG-END rtest_trig props=19 values=6
+LENLOG rtest_zeta props=19 values=6 facts-contexts=3
+LENLOG-END rtest_zeta props=15 values=0
+LENLOG rtest_diff_invtrig props=15 values=0 facts-contexts=2
+LENLOG-END rtest_diff_invtrig props=15 values=0
+LENLOG rtest_scalarp props=15 values=0 facts-contexts=2
+LENLOG-END rtest_scalarp props=15 values=0
+LENLOG rtest_everysome props=15 values=0 facts-contexts=2
+LENLOG-END rtest_everysome props=15 values=0
+LENLOG rtestint props=15 values=0 facts-contexts=2
+LENLOG-END rtestint props=56 values=0
+LENLOG rtest_mactex props=56 values=0 facts-contexts=2
+LENLOG-END rtest_mactex props=16 values=0
+LENLOG rtest_numth props=16 values=0 facts-contexts=2
+LENLOG-END rtest_numth props=16 values=5
+LENLOG rtestifactor props=16 values=5 facts-contexts=2
+LENLOG-END rtestifactor props=16 values=7
+LENLOG rtest_equal props=16 values=7 facts-contexts=2
+LENLOG-END rtest_equal props=16 values=22
+LENLOG rtest_abs props=16 values=22 facts-contexts=2
+LENLOG-END rtest_abs props=17 values=1
+LENLOG rtest_taylor props=17 values=1 facts-contexts=2
+LENLOG-END rtest_taylor props=21 values=2
+LENLOG rtest_dot props=21 values=2 facts-contexts=2
+LENLOG-END rtest_dot props=18 values=2
+LENLOG rtest_mset props=18 values=2 facts-contexts=2
+LENLOG-END rtest_mset props=17 values=5
+LENLOG rtest_boolean props=17 values=5 facts-contexts=2
+LENLOG-END rtest_boolean props=18 values=4
+LENLOG rtest_round props=18 values=4 facts-contexts=2
+LENLOG-END rtest_round props=18 values=0
+LENLOG rtest_map props=18 values=0 facts-contexts=2
+LENLOG-END rtest_map props=18 values=2
+LENLOG rtest_sign props=18 values=2 facts-contexts=2
+LENLOG-END rtest_sign props=29 values=2
+LENLOG rtest_algebraic props=29 values=2 facts-contexts=2
+LENLOG-END rtest_algebraic props=17 values=0
+LENLOG rtest_gamma props=17 values=0 facts-contexts=2
+LENLOG-END rtest_gamma props=26 values=17
+LENLOG rtest_expintegral props=26 values=17 facts-contexts=2
+LENLOG-END rtest_expintegral props=17 values=0
+LENLOG rtest_signum props=17 values=0 facts-contexts=2
+LENLOG-END rtest_signum props=22 values=2
+LENLOG rtest_lambert_w props=22 values=2 facts-contexts=2
+LENLOG-END rtest_lambert_w props=22 values=3
+LENLOG rtest_elliptic props=22 values=3 facts-contexts=2
+LENLOG-END rtest_elliptic props=17 values=10
+LENLOG rtest_integrate props=17 values=10 facts-contexts=2
+LENLOG-END rtest_integrate props=433 values=5
+LENLOG rtest_integrate_special props=433 values=5 facts-contexts=2
+LENLOG-END rtest_integrate_special props=33 values=2
+LENLOG rtest_sqrt props=33 values=2 facts-contexts=2
+LENLOG-END rtest_sqrt props=28 values=12
+LENLOG rtest_carg props=28 values=12 facts-contexts=2
+LENLOG-END rtest_carg props=21 values=0
+LENLOG rtest_log props=21 values=0 facts-contexts=2
+LENLOG-END rtest_log props=44 values=13
+LENLOG rtest_power props=44 values=13 facts-contexts=2
+LENLOG-END rtest_power props=25 values=0
+LENLOG rtestdefstruct props=25 values=0 facts-contexts=3
+LENLOG-END rtestdefstruct props=19 values=10
+LENLOG rtest_limit props=19 values=10 facts-contexts=2
+LENLOG-END rtest_limit props=32 values=4
+LENLOG rtest_powerseries props=32 values=4 facts-contexts=2
+LENLOG-END rtest_powerseries props=19 values=0
+LENLOG rtest_laplace props=19 values=0 facts-contexts=2
+LENLOG-END rtest_laplace props=35 values=0
+LENLOG rtest_plotoptions props=35 values=0 facts-contexts=2
+LENLOG-END rtest_plotoptions props=35 values=2
+LENLOG rtest_algsys props=35 values=2 facts-contexts=2
+LENLOG-END rtest_algsys props=20 values=0
+LENLOG rtest_trace props=20 values=0 facts-contexts=2
+LENLOG-END rtest_trace props=20 values=0
+LENLOG rtest_polynomialp props=20 values=0 facts-contexts=2
+LENLOG-END rtest_polynomialp props=20 values=0
+LENLOG rtest_limit_extra props=20 values=0 facts-contexts=2
+LENLOG-END rtest_limit_extra props=32 values=4
+LENLOG rtest_limit_gruntz props=32 values=4 facts-contexts=2
+LENLOG-END rtest_limit_gruntz props=33 values=0
+LENLOG rtest_limit_wester props=33 values=0 facts-contexts=2
+LENLOG-END rtest_limit_wester props=33 values=0
+LENLOG rtest_great props=33 values=0 facts-contexts=2
+LENLOG-END rtest_great props=33 values=0
+LENLOG rtest_atan2 props=33 values=0 facts-contexts=2
+LENLOG-END rtest_atan2 props=36 values=0
+LENLOG rtest_gcd props=36 values=0 facts-contexts=3
+LENLOG-END rtest_gcd props=24 values=2
+LENLOG rtest_hstep props=24 values=2 facts-contexts=2
+LENLOG-END rtest_hstep props=24 values=2
+LENLOG rtest_sinc props=24 values=2 facts-contexts=2
+LENLOG-END rtest_sinc props=25 values=2
+LENLOG rtest_hg props=25 values=2 facts-contexts=3
+LENLOG-END rtest_hg props=22 values=2
+LENLOG rtest_nfloat props=22 values=2 facts-contexts=2
+LENLOG-END rtest_nfloat props=21 values=0
+LENLOG rtest_ilt props=21 values=0 facts-contexts=2
+LENLOG-END rtest_ilt props=21 values=0
+LENLOG ulp_tests props=21 values=0 facts-contexts=2
+LENLOG-END ulp_tests props=21 values=0
+LENLOG rtest_unicode_display props=21 values=0 facts-contexts=2
+LENLOG-END rtest_unicode_display props=21 values=32
+LENLOG rtest_setvar props=21 values=32 facts-contexts=2
+LENLOG-END rtest_setvar props=21 values=32
+LENLOG rtest_operators props=21 values=32 facts-contexts=2
+LENLOG-END rtest_operators props=21 values=0
+LENLOG rtest_wxmx props=21 values=0 facts-contexts=2
+LENLOG-END rtest_wxmx props=21 values=0
+LENLOG rtest_load_relative props=21 values=0 facts-contexts=2
+LENLOG-END rtest_load_relative props=21 values=0
+LENLOG rtest_facexp props=21 values=0 facts-contexts=2
+LENLOG-END rtest_facexp props=27 values=21
+LENLOG rtest_orthopoly props=27 values=21 facts-contexts=2
+LENLOG-END rtest_orthopoly props=27 values=34
+LENLOG rtest_pslq props=27 values=34 facts-contexts=2
+LENLOG-END rtest_pslq props=29 values=11
+LENLOG rtestflatten props=29 values=11 facts-contexts=2
+LENLOG-END rtestflatten props=23 values=0
+LENLOG rtest_z_transform props=23 values=0 facts-contexts=2
+LENLOG-END rtest_z_transform props=36 values=4
+LENLOG rtest_zeilberger_extreme props=36 values=4 facts-contexts=2
+LENLOG-END rtest_zeilberger_extreme props=22 values=33
+LENLOG rtest_zeilberger props=22 values=33 facts-contexts=2
+LENLOG-END rtest_zeilberger props=22 values=53
+LENLOG rtest_boolsimp props=22 values=53 facts-contexts=2
+LENLOG-END rtest_boolsimp props=24 values=6
+LENLOG rtest_eigen props=24 values=6 facts-contexts=2
+LENLOG-END rtest_eigen props=58 values=20
+LENLOG rtest_lsquares props=58 values=20 facts-contexts=2
+LENLOG-END rtest_lsquares props=23 values=19
+LENLOG rtest_pytranslate props=23 values=19 facts-contexts=2
+LENLOG-END rtest_pytranslate props=23 values=2
+LENLOG rtest_odelin props=23 values=2 facts-contexts=2
+LENLOG-END rtest_odelin props=41 values=3
+LENLOG rtestezunits props=41 values=3 facts-contexts=2
+LENLOG-END rtestezunits props=136 values=52
+LENLOG rtest_numericalio props=136 values=52 facts-contexts=3
+LENLOG-END rtest_numericalio props=36 values=0
+LENLOG rtest_simplify_sum props=36 values=0 facts-contexts=2
+LENLOG-END rtest_simplify_sum props=97 values=83
+LENLOG rtest_solve_rec props=97 values=83 facts-contexts=2
+LENLOG-END rtest_solve_rec props=66 values=29
+LENLOG rtest_stringproc props=66 values=29 facts-contexts=2
+LENLOG-END rtest_stringproc props=36 values=0
+LENLOG rtest_md5sum props=36 values=0 facts-contexts=2
+LENLOG-END rtest_md5sum props=36 values=1
+LENLOG rtest_opproperties props=36 values=1 facts-contexts=2
+LENLOG-END rtest_opproperties props=51 values=1
+LENLOG rtest_stats props=51 values=1 facts-contexts=2
+LENLOG-END rtest_stats props=41 values=7
+LENLOG rtest_distrib props=41 values=7 facts-contexts=2
+LENLOG-END rtest_distrib props=40 values=10
+LENLOG rtest_descriptive props=40 values=10 facts-contexts=2
+LENLOG-END rtest_descriptive props=42 values=8
+LENLOG rtest_interpol props=42 values=8 facts-contexts=2
+LENLOG-END rtest_interpol props=38 values=5
+LENLOG rtest_levin props=38 values=5 facts-contexts=2
+LENLOG-END rtest_levin props=38 values=0
+LENLOG rtest_fractals props=38 values=0 facts-contexts=2
+LENLOG-END rtest_fractals props=56 values=3
+LENLOG rtest_bernstein props=56 values=3 facts-contexts=2
+LENLOG-END rtest_bernstein props=38 values=0
+LENLOG rtest_atensor props=38 values=0 facts-contexts=2
+LENLOG-END rtest_atensor props=44 values=4
+LENLOG rtest_ctensor props=44 values=4 facts-contexts=2
+LENLOG-END rtest_ctensor props=68 values=35
+LENLOG rtest_itensor props=68 values=35 facts-contexts=2
+LENLOG-END rtest_itensor props=75 values=40
+LENLOG rtest_dlsode props=75 values=40 facts-contexts=2
+LENLOG-END rtest_dlsode props=75 values=52
+LENLOG rtest_fourier_elim props=75 values=52 facts-contexts=2
+LENLOG-END rtest_fourier_elim props=42 values=0
+LENLOG rtest_sequence props=42 values=0 facts-contexts=2
+LENLOG-END rtest_sequence props=43 values=0
+LENLOG rtest_cholesky props=43 values=0 facts-contexts=2
+LENLOG-END rtest_cholesky props=45 values=1
+LENLOG rtest_eigens_by_jacobi props=45 values=1 facts-contexts=2
+LENLOG-END rtest_eigens_by_jacobi props=45 values=1
+LENLOG rtest_lu props=45 values=1 facts-contexts=2
+LENLOG-END rtest_lu props=46 values=0
+LENLOG rtest_linalg props=46 values=0 facts-contexts=2
+LENLOG-END rtest_linalg props=46 values=0
+LENLOG rtest_matrixexp props=46 values=0 facts-contexts=2
+LENLOG-END rtest_matrixexp props=46 values=0
+LENLOG rtest_romberg props=46 values=0 facts-contexts=2
+LENLOG-END rtest_romberg props=46 values=8
+LENLOG rtest_wilcoxon props=46 values=8 facts-contexts=2
+LENLOG-END rtest_wilcoxon props=62 values=2
+LENLOG rtest_accumulate props=62 values=2 facts-contexts=2
+LENLOG-END rtest_accumulate props=62 values=1
+LENLOG rtest_list_operations props=62 values=1 facts-contexts=2
+LENLOG-END rtest_list_operations props=62 values=11
+LENLOG rtest_bitwise props=62 values=11 facts-contexts=2
+LENLOG-END rtest_bitwise props=67 values=11
+LENLOG rtest_gf props=67 values=11 facts-contexts=2
+LENLOG-END rtest_gf props=67 values=11
+LENLOG rtest_arag props=67 values=11 facts-contexts=2
+LENLOG-END rtest_arag props=41 values=35
+LENLOG rtest_pdiff props=41 values=35 facts-contexts=2
+LENLOG-END rtest_pdiff props=41 values=0
+LENLOG rtest_to_poly props=41 values=0 facts-contexts=2
+LENLOG-END rtest_to_poly props=42 values=0
+LENLOG rtestprintf props=42 values=0 facts-contexts=2
+LENLOG-END rtestprintf props=42 values=3
+LENLOG rtest_simplex props=42 values=3 facts-contexts=2
+LENLOG-END rtest_simplex props=43 values=0
+LENLOG rtest_graphs props=43 values=0 facts-contexts=2
+LENLOG-END rtest_graphs props=46 values=8
+LENLOG rtest_abs_integrate props=46 values=8 facts-contexts=2
+LENLOG-END rtest_abs_integrate props=339 values=0
+LENLOG rtest_pochhammer props=339 values=0 facts-contexts=2
+LENLOG-END rtest_pochhammer props=43 values=0
+LENLOG rtest_to_poly_solve props=43 values=0 facts-contexts=2
+LENLOG-END rtest_to_poly_solve props=42 values=0
+LENLOG rtest_sym props=42 values=0 facts-contexts=2
+LENLOG-END rtest_sym props=42 values=12
+LENLOG rtest_mnewton props=42 values=12 facts-contexts=2
+LENLOG-END rtest_mnewton props=42 values=16
+LENLOG rtest_solve_rat_ineq props=42 values=16 facts-contexts=2
+LENLOG-END rtest_solve_rat_ineq props=42 values=1
+LENLOG rtest_vect props=42 values=1 facts-contexts=2
+LENLOG-END rtest_vect props=95 values=58
+LENLOG rtest_antid props=95 values=58 facts-contexts=2
+LENLOG-END rtest_antid props=53 values=4
+LENLOG rtest_bffac props=53 values=4 facts-contexts=2
+LENLOG-END rtest_bffac props=42 values=1
+LENLOG rtest_diff_form props=42 values=1 facts-contexts=2
+LENLOG-END rtest_diff_form props=64 values=27
+LENLOG rtest_grobner props=64 values=27 facts-contexts=2
+LENLOG-END rtest_grobner props=63 values=34
+LENLOG rtest_finance props=63 values=34 facts-contexts=2
+LENLOG-END rtest_finance props=45 values=2
+LENLOG rtest_fft props=45 values=2 facts-contexts=2
+LENLOG-END rtest_fft props=45 values=8
+LENLOG rtest_rfft props=45 values=8 facts-contexts=2
+LENLOG-END rtest_rfft props=45 values=8
+LENLOG rtest_rk_adaptive props=45 values=8 facts-contexts=2
+LENLOG-END rtest_rk_adaptive props=49 values=8
+LENLOG rtest_wrstcse props=49 values=8 facts-contexts=2
+LENLOG-END rtest_wrstcse props=49 values=11
+LENLOG rtest_draw props=49 values=11 facts-contexts=2
+LENLOG-END rtest_draw props=49 values=228
+LENLOG rtest_engineering_format props=49 values=228 facts-contexts=2
+LENLOG-END rtest_engineering_format props=49 values=228
+LENLOG rtest_raddenest props=49 values=228 facts-contexts=2
+LENLOG-END rtest_raddenest props=45 values=0
+LENLOG rtest_decfp props=45 values=0 facts-contexts=2
+LENLOG-END rtest_decfp props=45 values=1

@@ -1,0 +1,373 @@
+# samples per test file (332056 of 332104 in a test file)
+# compiler samples total 22652 (6.82%)
+# GC samples total 183 (0.06%)
+
+  80010  24.09%  rtest14  (compiler 0.45%)
+              6.39%  FPQUOTIENT
+              3.73%  FPROUND
+              3.48%  FPDIFFERENCE
+              1.66%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+              1.33%  FPTIMES*
+              0.98%  FPPLUS
+              0.77%  BIGFLOAT-IMPL:*
+              0.65%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:ABS (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+
+  50964  15.35%  rtest15  (compiler 0.33%)
+              1.30%  CQUOTIENT
+              0.99%  PUTODR
+              0.95%  PCTIMES
+              0.88%  ORDERPOINTER
+              0.81%  PCTIMES1
+              0.71%  TIMESIN
+              0.59%  PTPT-SUBTRACT-POWERED-PRODUCT
+              0.50%  PCOEFADD
+
+  50597  15.24%  rtest16  (compiler 1.32%)
+              1.32%  <SBCL compiler>
+              0.88%  NORMALIZED-MODULUS
+              0.63%  BEG
+              0.61%  PCOEFADD
+              0.59%  PGCDU1
+              0.59%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+              0.58%  TIMESIN
+              0.43%  FPROUND
+
+  44510  13.40%  rtest_extensions  (compiler 0.00%)
+              6.16%  PCTIMES
+              4.36%  PCPLUS
+              1.57%  PCDIFFER
+              0.62%  CQUOTIENT
+              0.25%  NORMALIZED-MODULUS
+              0.20%  PCOEFADD
+              0.05%  PCONTENT1
+              0.04%  PMINUS
+
+  40532  12.20%  rtest_trig  (compiler 0.00%)
+              1.17%  PLS
+              0.77%  TIMESIN
+              0.59%  MAKSYM
+              0.51%  RATDISREPD
+              0.41%  LISTOFVARS-IMPL
+              0.40%  ADD2
+              0.37%  TMS
+              0.34%  ORDERPOINTER
+
+  10919   3.29%  rtest_rules  (compiler 3.23%)
+              3.23%  <SBCL compiler>
+              0.02%  (LABELS EXPAND :IN COLLECT-DIRECTORIES)
+              0.00%  SCAN-TOKEN
+              0.00%  IMPLODE
+              0.00%  REMOVE1
+              0.00%  ADD-LINEINFO
+              0.00%  FILE-EXISTS-P
+              0.00%  <GC>
+
+   7116   2.14%  rtest5  (compiler 0.04%)
+              0.93%  (LABELS PREGEXP::OR-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.47%  (LABELS PREGEXP::SEQ-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.25%  (LABELS PREGEXP::MATCH-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.24%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+              0.08%  PREGEXP::PREGEXP-MAKE-BACKREF-LIST
+              0.05%  DIRECTORY-CACHED
+              0.04%  <SBCL compiler>
+              0.03%  PREGEXP::PREGEXP-READ-BRANCH
+
+   5977   1.80%  rtest8  (compiler 0.19%)
+              0.24%  FPQUOTIENT
+              0.19%  <SBCL compiler>
+              0.18%  FPROUND
+              0.13%  FPPLUS
+              0.08%  FPTIMES*
+              0.07%  BIGFLOAT::INTERPOLATE-CHECK
+              0.05%  TIMESIN
+              0.05%  BIGFLOAT::FIND-ROOT-SUBR
+
+   5209   1.57%  rtesthyp  (compiler 0.00%)
+              0.19%  COMPLETEVECTOR
+              0.15%  PUTODR
+              0.07%  PMINDEGVEC
+              0.06%  DEGVECTOR
+              0.06%  BEG
+              0.05%  TIMESIN
+              0.05%  PCQUOTIENT
+              0.05%  PCTIMES1
+
+   4758   1.43%  rtest_allnummod  (compiler 0.05%)
+              0.12%  FPQUOTIENT
+              0.07%  TIMESIN
+              0.05%  <SBCL compiler>
+              0.05%  FPROUND
+              0.05%  MEVAL1
+              0.05%  FPDIFFERENCE
+              0.04%  INTERVAL2
+              0.04%  MBIND-DOIT
+
+   4373   1.32%  rtest_hypgeo  (compiler 0.00%)
+              0.16%  BEG
+              0.15%  M2
+              0.08%  TIMESIN
+              0.07%  QUEUE+P
+              0.03%  ORDERPOINTER
+              0.03%  MID
+              0.03%  RATDISREPD
+              0.03%  PLS
+
+   4311   1.30%  rtestsum  (compiler 0.03%)
+              0.11%  PLS
+              0.07%  BEG
+              0.05%  ADD2
+              0.04%  QUEUE+P
+              0.04%  LISTOFVARS-IMPL
+              0.04%  TIMESIN
+              0.03%  TOPLEVEL-$LIMIT
+              0.03%  MID
+
+   4278   1.29%  rtest_maxmin  (compiler 0.00%)
+              0.14%  TIMESIN
+              0.07%  PLS
+              0.05%  TMS
+              0.05%  LISTOFVARS-IMPL
+              0.04%  DEGVECTOR
+              0.04%  EQTEST
+              0.04%  MAKSYM
+              0.04%  RATDISREPD
+
+   3663   1.10%  rtest3  (compiler 0.05%)
+              0.07%  BEG
+              0.05%  MEVALP1
+              0.05%  <SBCL compiler>
+              0.04%  EQTEST
+              0.04%  TIMESIN
+              0.03%  MBIND-DOIT
+              0.03%  RATDISREPD
+              0.03%  MEVALARGS
+
+   3008   0.91%  rtest6a  (compiler 0.05%)
+              0.12%  RATREP*
+              0.11%  RATDISREPD
+              0.05%  <SBCL compiler>
+              0.04%  TIMESIN
+              0.03%  PLS
+              0.02%  ORDERPOINTER
+              0.02%  TMS
+              0.02%  MAKSYM
+
+   2371   0.71%  rtest13  (compiler 0.69%)
+              0.69%  <SBCL compiler>
+              0.00%  FILE-EXISTS-P
+              0.00%  ADD-LINEINFO
+              0.00%  DIRECTORY-CACHED
+              0.00%  PLUSIN
+              0.00%  INTERN-INVERT-CASE
+              0.00%  REMOVE1
+              0.00%  PLS
+
+   2075   0.62%  rexamples  (compiler 0.15%)
+              0.15%  <SBCL compiler>
+              0.09%  REMOVE1
+              0.04%  FILE-MTIME-OR-NIL
+              0.03%  (LABELS EXISTING-PATH-MTIME-PAIRS :IN DIRECTORY-CACHED)
+              0.02%  UNKIND
+              0.02%  MEVAL1
+              0.02%  KILL1-ATOM
+              0.01%  I-$REMOVE
+
+   1299   0.39%  rtest10  (compiler 0.00%)
+              0.04%  TIMESIN
+              0.03%  BEG
+              0.01%  TMS
+              0.01%  FPQUOTIENT
+              0.01%  PLS
+              0.01%  RATDISREPD
+              0.01%  ORDERPOINTER
+              0.01%  QUEUE+P
+
+   1181   0.36%  rtest2  (compiler 0.04%)
+              0.05%  MEVAL1
+              0.04%  <SBCL compiler>
+              0.03%  DEGVECTOR
+              0.03%  PCTIMES1
+              0.03%  PSIMP
+              0.02%  PCQUOTIENT
+              0.02%  INTERVAL2
+              0.01%  COMPLETEVECTOR
+
+   1178   0.35%  rtestode  (compiler 0.00%)
+              0.02%  TIMESIN
+              0.02%  M2
+              0.02%  RATREP*
+              0.02%  RATDISREPD
+              0.01%  ORDERPOINTER
+              0.01%  BEG
+              0.01%  TMS
+              0.01%  PLS
+
+    910   0.27%  rtestnset  (compiler 0.00%)
+              0.16%  NUM_PARTITIONS-IMPL
+              0.02%  INTEGER-PARTITIONS
+              0.01%  SIMPARGS
+              0.01%  PLS
+              0.01%  EQTEST
+              0.00%  TIMESIN
+              0.00%  MEVAL1
+              0.00%  MEVALARGS
+
+    563   0.17%  rtest11  (compiler 0.05%)
+              0.05%  <SBCL compiler>
+              0.01%  (LABELS PREGEXP::OR-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.01%  (LABELS PREGEXP::SEQ-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.01%  MEVALARGS
+              0.01%  MEVAL1
+              0.01%  REMOVE1
+              0.00%  PREGEXP::PREGEXP-MAKE-BACKREF-LIST
+              0.00%  (LABELS PREGEXP::ONE-OF-CHARS-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+
+    413   0.12%  rtest12  (compiler 0.10%)
+              0.10%  <SBCL compiler>
+              0.00%  REMOVE1
+              0.00%  TIMESIN
+              0.00%  TMS
+              0.00%  I-$REMOVE
+              0.00%  BEG
+              0.00%  MID
+              0.00%  RATREP*
+
+    372   0.11%  rtestconjugate  (compiler 0.00%)
+              0.01%  MID
+              0.01%  BEG
+              0.01%  EQTEST
+              0.01%  (LAMBDA (I J) :IN GENMATRIX-IMPL)
+              0.01%  MEVAL2
+              0.00%  SIMPARGS
+              0.00%  DISTRIBUTE-OVER
+              0.00%  TIMESIN
+
+    356   0.11%  rtest6  (compiler 0.03%)
+              0.03%  <SBCL compiler>
+              0.02%  (LABELS EXPAND :IN COLLECT-DIRECTORIES)
+              0.00%  BEG
+              0.00%  TIMESIN
+              0.00%  EXPLODEC
+              0.00%  EQTEST
+              0.00%  REMOVE1
+              0.00%  DMARK
+
+    169   0.05%  rtest1  (compiler 0.01%)
+              0.01%  <SBCL compiler>
+              0.00%  MEVAL1
+              0.00%  NEXT-COSET
+              0.00%  TIMESIN
+              0.00%  RATDISREPD
+              0.00%  MEVALARGS
+              0.00%  PLS
+              0.00%  IMPLODE
+
+    155   0.05%  rtest9  (compiler 0.00%)
+              0.00%  TIMESIN
+              0.00%  BEG
+              0.00%  PGCDA
+              0.00%  PCTIMES1
+              0.00%  SIMPEXPT
+              0.00%  PLS
+              0.00%  DEGVECTOR
+              0.00%  MEVALARGS
+
+    148   0.04%  rtestode_zp  (compiler 0.00%)
+              0.00%  SCAN-TOKEN
+              0.00%  PSIMP
+              0.00%  ADD2LNC
+              0.00%  TIMESIN
+              0.00%  INTERN-INVERT-CASE
+              0.00%  MEVALP1
+              0.00%  GETL-LM-FCN-PROP
+              0.00%  PCTIMES1
+
+    140   0.04%  rtest4  (compiler 0.00%)
+              0.00%  PCTIMES1
+              0.00%  DEGVECTOR
+              0.00%  PCOEFADD
+              0.00%  NORMALIZED-MODULUS
+              0.00%  PSIMP
+              0.00%  ADD-LINEINFO
+              0.00%  PTPT-SUBTRACT-POWERED-PRODUCT
+              0.00%  PTIMES1
+
+    128   0.04%  rtest9a  (compiler 0.00%)
+              0.00%  M2
+              0.00%  BEG
+              0.00%  $PRINTF
+              0.00%  TMS
+              0.00%  ADD-LINEINFO
+              0.00%  (LABELS PREGEXP::OR-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.00%  SCAN-STRING
+              0.00%  IMPLODE
+
+    105   0.03%  rtest_ask1  (compiler 0.00%)
+              0.00%  BEG
+              0.00%  TIMESIN
+              0.00%  RATDISREPD
+              0.00%  ORDERPOINTER
+              0.00%  TAYLOR1
+              0.00%  RATREP*
+              0.00%  EXTENDED-REAL-P
+              0.00%  TMS
+
+     97   0.03%  rtestmt19937  (compiler 0.00%)
+              0.01%  MEVAL1
+              0.00%  INTERVAL2
+              0.00%  GETL-LM-FCN-PROP
+              0.00%  PLS
+              0.00%  TIMESIN
+              0.00%  MBIND-DOIT
+              0.00%  FMAP1
+              0.00%  ADD2LNC
+
+     79   0.02%  rtest7  (compiler 0.00%)
+              0.00%  REMOVE1
+              0.00%  FFACTOR
+              0.00%  BEG
+              0.00%  TIMESIN
+              0.00%  RATDISREPD
+              0.00%  PLS
+              0.00%  TEST-BATCH
+              0.00%  PCTIMES1
+
+     33   0.01%  rtest1a  (compiler 0.00%)
+              0.00%  TIMESIN
+              0.00%  REMOVE1
+              0.00%  OP-EQUALP
+              0.00%  DRAW-LINEAR
+              0.00%  SCAN-TOKEN
+              0.00%  TEST-BATCH
+              0.00%  RECUR-APPLY
+              0.00%  DIMENSION-ARRAY
+
+     30   0.01%  rtest6b  (compiler 0.00%)
+              0.00%  (LABELS PREGEXP::OR-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.00%  (LABELS PREGEXP::SEQ-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.00%  <SBCL compiler>
+              0.00%  PREGEXP::PREGEXP-MAKE-BACKREF-LIST
+              0.00%  (LABELS PREGEXP::MATCH-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.00%  STRCAT
+              0.00%  EQTEST
+              0.00%  REMOVE1
+
+     21   0.01%  rtest_sqdnst  (compiler 0.00%)
+              0.00%  TMS
+              0.00%  EXPTRL
+              0.00%  GET-SMALL-FACTORS
+              0.00%  TIMESIN
+              0.00%  PDIS*
+              0.00%  *RED
+              0.00%  NEG
+              0.00%  PRSMATCH
+
+      8   0.00%  rtest13s  (compiler 0.00%)
+              0.00%  (LABELS PREGEXP::SEQ-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.00%  (FLET DISPLAY-ITEM :IN DIMENSION-BUILD-INFO)
+              0.00%  ENSURE-READABLY-PRINTABLE-STRING
+              0.00%  *DEFINE-INITIAL-SYMBOLS
+              0.00%  PRINT-INVERT-CASE
+              0.00%  EXPLODEC
+              0.00%  SYMBOLCONC
+              0.00%  ADD-LINEINFO

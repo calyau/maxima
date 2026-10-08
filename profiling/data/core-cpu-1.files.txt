@@ -1,0 +1,682 @@
+# samples per test file (20829 of 21001 in a test file)
+# compiler samples total 521 (2.48%)
+# GC samples total 679 (3.23%)
+
+   4105  19.55%  rtest_integrate  (compiler 0.02%)
+              1.97%  ALIKE1
+              1.43%  ALIKE
+              0.85%  GETL
+              0.84%  MEVAL1
+              0.60%  SIMPLIFYA
+              0.43%  ORDLIST
+              0.40%  <GC>
+              0.36%  NTHELEM
+
+   3273  15.58%  rtest_limit_extra  (compiler 0.01%)
+              0.72%  SIMPLIFYA
+              0.56%  ORDERPOINTER
+              0.54%  <GC>
+              0.40%  EQTEST
+              0.36%  ALIKE1
+              0.32%  PRENUMBER
+              0.30%  DEGVECTOR
+              0.26%  TIMESIN
+
+   1680   8.00%  rtest_limit_gruntz  (compiler 0.00%)
+              1.54%  ALIKE1
+              0.60%  ALIKE
+              0.26%  ASSOL
+              0.20%  SIMPLIFYA
+              0.16%  <GC>
+              0.15%  NORMALIZED-MODULUS
+              0.15%  TIMESIN
+              0.14%  MEMBER-EQ
+
+   1656   7.89%  rtest_limit  (compiler 0.02%)
+              0.38%  SIMPLIFYA
+              0.32%  ORDERPOINTER
+              0.27%  ALIKE1
+              0.25%  <GC>
+              0.20%  EQTEST
+              0.19%  TIMESIN
+              0.18%  PRENUMBER
+              0.14%  NORMALIZED-MODULUS
+
+   1474   7.02%  rtest_trig  (compiler 0.06%)
+              0.39%  FPQUOTIENT
+              0.33%  SIMPLIFYA
+              0.26%  <GC>
+              0.23%  EQTEST
+              0.20%  FPROUND
+              0.15%  TIMESIN
+              0.14%  DOLLARIFY
+              0.13%  SIMPTIMES
+
+    978   4.66%  rtest16  (compiler 0.38%)
+              0.38%  <SBCL compiler>
+              0.16%  GETL
+              0.15%  SIMPLIFYA
+              0.14%  MEVAL1
+              0.14%  <GC>
+              0.13%  NORMALIZED-MODULUS
+              0.12%  DRAW2D
+              0.08%  EQTEST
+
+    905   4.31%  rtest_gamma  (compiler 0.00%)
+              0.72%  (LABELS K :IN FACTORIAL)
+              0.39%  FPQUOTIENT
+              0.31%  FPROUND
+              0.24%  SIMPLIFYA
+              0.20%  <GC>
+              0.19%  BFLOAT-IMPL
+              0.17%  FPDIFFERENCE
+              0.13%  FPPLUS
+
+    810   3.86%  rtest15  (compiler 0.10%)
+              0.77%  PCTIMES
+              0.56%  CQUOTIENT
+              0.13%  <GC>
+              0.11%  ALIKE1
+              0.10%  <SBCL compiler>
+              0.10%  ASSOO
+              0.09%  TIMESIN
+              0.09%  SIMPLIFYA
+
+    763   3.63%  rtest14  (compiler 0.17%)
+              0.67%  FPQUOTIENT
+              0.57%  FPROUND
+              0.29%  FPDIFFERENCE
+              0.20%  <GC>
+              0.17%  <SBCL compiler>
+              0.14%  FPTIMES*
+              0.11%  FPPLUS
+              0.10%  FPMAGNITUDE-LENGTH
+
+    716   3.41%  rtestint  (compiler 0.02%)
+              0.17%  SIMPLIFYA
+              0.14%  ALIKE1
+              0.09%  MEVAL1
+              0.09%  <GC>
+              0.07%  TIMESIN
+              0.07%  GETL
+              0.07%  PRENUMBER
+              0.06%  PCONTENT1
+
+    639   3.04%  rtest_extensions  (compiler 0.00%)
+              2.03%  PCTIMES
+              0.49%  CQUOTIENT
+              0.16%  PCPLUS
+              0.12%  <GC>
+              0.06%  PCDIFFER
+              0.05%  NORMALIZED-MODULUS
+              0.02%  PTIMES1
+              0.02%  PTIMES
+
+    621   2.96%  rtest_hg  (compiler 0.08%)
+              0.81%  FPQUOTIENT
+              0.36%  FPROUND
+              0.20%  <GC>
+              0.16%  FPTIMES*
+              0.15%  FPDIFFERENCE
+              0.09%  FPPLUS
+              0.08%  <SBCL compiler>
+              0.06%  HIPART-ZEROP
+
+    539   2.57%  rtest_numth  (compiler 0.00%)
+              0.82%  GF-TIMES
+              0.68%  GET-ONE-FACTOR-POLLARD
+              0.34%  GF-NXYECPLUS
+              0.30%  GF-SQ
+              0.12%  <GC>
+              0.05%  GET-SMALL-FACTORS
+              0.03%  POWER-MOD
+              0.02%  GF-XECTIMES
+
+    320   1.52%  rtest_expintegral  (compiler 0.00%)
+              0.15%  BFLOAT-IMPL
+              0.14%  FPROUND
+              0.10%  SIMPLIFYA
+              0.10%  SIMPTIMES
+              0.09%  <GC>
+              0.07%  PLS
+              0.06%  FPPLUS
+              0.06%  FPQUOTIENT
+
+    232   1.10%  rtest_taylor  (compiler 0.01%)
+              0.06%  ALPHALESSP
+              0.05%  PRINT-INVERT-CASE
+              0.05%  ALIKE1
+              0.05%  DOLLARIFY
+              0.05%  TIMESIN
+              0.04%  MGET
+              0.04%  SIMPLIFYA
+              0.04%  GREAT
+
+    204   0.97%  rtest_rules  (compiler 0.88%)
+              0.88%  <SBCL compiler>
+              0.03%  <GC>
+              0.01%  MEVAL1
+              0.01%  (LABELS EXPAND :IN COLLECT-DIRECTORIES)
+              0.00%  LAMBDA-EXPR-FUN
+              0.00%  META-ADD2LNC
+              0.00%  MHEADER
+              0.00%  PART+-MPLUS
+
+    181   0.86%  rtest_elliptic  (compiler 0.00%)
+              0.08%  FPROUND
+              0.07%  FPQUOTIENT
+              0.04%  FPDIFFERENCE
+              0.04%  <GC>
+              0.02%  FPPLUS
+              0.02%  FPTIMES*
+              0.02%  (FLET SB-C::VALUES-TYPE-CHECK :IN FPPLUSMINUS)
+              0.02%  ORDERPOINTER
+
+    139   0.66%  rtest_algsys  (compiler 0.00%)
+              0.04%  SIMPLIFYA
+              0.03%  NORMALIZED-MODULUS
+              0.03%  <GC>
+              0.02%  DEGVECTOR
+              0.02%  *RED
+              0.02%  TIMESIN
+              0.02%  NEWVAR1
+              0.02%  SIMPTIMES
+
+    122   0.58%  rtest3  (compiler 0.01%)
+              0.04%  MEVAL1
+              0.04%  GETL
+              0.01%  MEVAL
+              0.01%  MUNBIND-MAKUNBOUND
+              0.01%  OPTIONP
+              0.01%  MBIND-DOIT
+              0.01%  GETL-LM-FCN-PROP
+              0.01%  EQTEST
+
+    109   0.52%  rtest_log  (compiler 0.01%)
+              0.05%  MEVAL1
+              0.04%  GETL
+              0.03%  MUNBIND-MAKUNBOUND
+              0.03%  SIMPLIFYA
+              0.01%  <SBCL compiler>
+              0.01%  MBIND-DOIT
+              0.01%  MGET
+              0.01%  RATDISREPD
+
+    103   0.49%  rtestsum  (compiler 0.01%)
+              0.02%  SIMPSUM1
+              0.02%  SIMPLIFYA
+              0.01%  EQTEST
+              0.01%  <GC>
+              0.01%  MARK+
+              0.01%  GETL
+              0.01%  OPER-APPLY
+              0.01%  KINDP
+
+     90   0.43%  rtest_allnummod  (compiler 0.02%)
+              0.03%  GETL-LM-FCN-PROP
+              0.03%  MEVAL1
+              0.02%  SIMPLUS
+              0.02%  <SBCL compiler>
+              0.01%  MEVAL
+              0.01%  SIMPTIMES
+              0.01%  FPROUND
+              0.01%  MFUNCALL
+
+     83   0.40%  rtest_hypgeo  (compiler 0.00%)
+              0.02%  ALIKE1
+              0.01%  M2
+              0.01%  AMONG
+              0.01%  <GC>
+              0.01%  PRINT-INVERT-CASE
+              0.01%  PLUSIN
+              0.01%  ALPHALESSP
+              0.01%  RATSETUP2
+
+     77   0.37%  rtest_maxmin  (compiler 0.00%)
+              0.03%  SIMPLIFYA
+              0.01%  FREEL
+              0.01%  $RATP
+              0.01%  <GC>
+              0.01%  UNKNOWN-ATOMS
+              0.01%  RATDISREPD
+              0.01%  CONSTANT
+              0.01%  ATOMVARS
+
+     70   0.33%  rtest8  (compiler 0.06%)
+              0.06%  <SBCL compiler>
+              0.02%  FPQUOTIENT
+              0.02%  SIMPLIFYA
+              0.02%  FPPLUS
+              0.01%  <GC>
+              0.01%  FPTIMES*
+              0.01%  PRENUMBER
+              0.01%  MEVAL2
+
+     69   0.33%  rtesthyp  (compiler 0.00%)
+              0.02%  TIMESIN
+              0.01%  PUTODR
+              0.01%  ALIKE1
+              0.01%  SIMPLUS
+              0.01%  <GC>
+              0.01%  QUEUE+P
+              0.01%  EQTEST
+              0.01%  ALIKE
+
+     58   0.28%  rexamples  (compiler 0.03%)
+              0.08%  FILE-MTIME-OR-NIL
+              0.03%  <SBCL compiler>
+              0.02%  MEVAL1
+              0.01%  KILL1-ATOM
+              0.01%  SIMPTIMES
+              0.01%  CPUT
+              0.00%  PEEK-ONE-TOKEN
+              0.00%  APPLY1
+
+     56   0.27%  rtest_laplace  (compiler 0.05%)
+              0.05%  <SBCL compiler>
+              0.02%  MEVAL1
+              0.01%  GETL
+              0.01%  MBIND-DOIT
+              0.01%  ZL-GET
+              0.01%  ALIKE1
+              0.01%  MARK+1
+              0.00%  LBP
+
+     55   0.26%  rtest13  (compiler 0.25%)
+              0.25%  <SBCL compiler>
+              0.00%  <GC>
+              0.00%  PTTERM
+              0.00%  PRINT-INVERT-CASE
+
+     49   0.23%  rtest6a  (compiler 0.01%)
+              0.02%  SIMPLIFYA
+              0.02%  MUNBIND-MAKUNBOUND
+              0.01%  <SBCL compiler>
+              0.01%  RATDISREPD
+              0.01%  PCONTENT1
+              0.01%  MEVAL1
+              0.00%  SIGN-SHIFT
+              0.00%  POINTERGP
+
+     42   0.20%  rtest5  (compiler 0.01%)
+              0.04%  (LABELS PREGEXP::MATCH-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+              0.03%  PREGEXP::PREGEXP-MAKE-BACKREF-LIST
+              0.02%  <GC>
+              0.02%  PREGEXP:PREGEXP-MATCH-POSITIONS
+              0.01%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+              0.01%  PREGEXP::PREGEXP-READ-BRANCH
+              0.01%  PREGEXP::PREGEXP-READ-PATTERN
+              0.01%  <SBCL compiler>
+
+     41   0.20%  rtest_limit_wester  (compiler 0.00%)
+              0.01%  ORDERPOINTER
+              0.01%  SIMPLIFYA
+              0.01%  CNTP
+              0.01%  EQTEST
+              0.01%  DEGVECTOR
+              0.00%  FR1
+              0.00%  BIG-FLOAT-EVAL
+              0.00%  ORDLIST
+
+     37   0.18%  rtest_sign  (compiler 0.01%)
+              0.01%  <SBCL compiler>
+              0.01%  TIMESIN
+              0.01%  PLS
+              0.01%  CNTP
+              0.01%  SIMPLIFYA
+              0.01%  BEG
+              0.01%  SIGNDIFF-SPECIAL
+              0.00%  PARSE
+
+     33   0.16%  rtest_atan2  (compiler 0.00%)
+              0.01%  ORDERPOINTER
+              0.01%  SIMPLIFYA
+              0.01%  PLS
+              0.00%  <SBCL compiler>
+              0.00%  EQTEST
+              0.00%  FR1
+              0.00%  *RED
+              0.00%  SAFE-MGET
+
+     30   0.14%  rtest_sqrt  (compiler 0.01%)
+              0.01%  <SBCL compiler>
+              0.01%  *RED
+              0.01%  SIMPLIFYA
+              0.01%  ORDERPOINTER
+              0.00%  DEGVECTOR
+              0.00%  SIMPLUS
+              0.00%  PCONTENT1
+              0.00%  E=
+
+     30   0.14%  rtest_gcd  (compiler 0.01%)
+              0.01%  DEGVECTOR
+              0.01%  <SBCL compiler>
+              0.01%  CQUOTIENT
+              0.01%  MSET
+              0.00%  SCAN-ONE-TOKEN-G
+              0.00%  OPTIONP
+              0.00%  SAFE-MGET
+              0.00%  TIMESIN
+
+     29   0.14%  rtest_diff_invtrig  (compiler 0.00%)
+              0.04%  SIMPLIFYA
+              0.02%  TIMESIN
+              0.01%  PRINT-INVERT-CASE
+              0.01%  SIMPTIMES
+              0.00%  TIMESK
+              0.00%  EXPTB
+              0.00%  HYPOTENUSE-NUMERICAL
+              0.00%  SIMPLUS
+
+     29   0.14%  rtest_integrate_special  (compiler 0.00%)
+              0.02%  REMOVE1
+              0.01%  GETL
+              0.00%  FUNCTIONP
+              0.00%  TESTT
+              0.00%  ORDLIST
+              0.00%  ORDERPOINTER
+              0.00%  UNKNOWN-ATOMS
+              0.00%  RATDISREPD
+
+     27   0.13%  rtest1  (compiler 0.00%)
+              0.06%  REPLACE-COSET-IN-MULTIPLY-TABLE
+              0.02%  FILL-IN-INVERSES
+              0.01%  TODD-COXETER
+              0.00%  RATPLUS
+              0.00%  ABSARG1
+              0.00%  BADFUNCHK
+              0.00%  VERBIFY-IMPL
+              0.00%  READLIST
+
+     27   0.13%  rtest2  (compiler 0.03%)
+              0.03%  <SBCL compiler>
+              0.01%  DEGVECTOR
+              0.01%  SIMPLIFYA
+              0.00%  SYSTEM-IMPL
+              0.00%  READ-COMMAND-TOKEN-AUX
+              0.00%  EXPONENT-OF
+              0.00%  PCQUOTIENT
+              0.00%  PSIMP
+
+     25   0.12%  rtest_algebraic  (compiler 0.00%)
+              0.01%  ALIKE1
+              0.01%  PALGP
+              0.01%  UNSIMPLIFY
+              0.01%  ORDERPOINTER
+              0.00%  PCTIMES1
+              0.00%  SOLVE
+              0.00%  PCOEFADD
+              0.00%  RECUR-APPLY
+
+     25   0.12%  rtest_nfloat  (compiler 0.09%)
+              0.09%  <SBCL compiler>
+              0.00%  BIGFLOAT::NOT-DONE
+              0.00%  MGET
+              0.00%  MEVAL1
+              0.00%  <GC>
+              0.00%  GETL-LM-FCN-PROP
+              0.00%  BIGFLOAT-IMPL:>
+              0.00%  SIMPTIMES
+
+     24   0.11%  rtest10  (compiler 0.00%)
+              0.01%  EQTEST
+              0.00%  $TOTALDISREP
+              0.00%  CLEAR
+              0.00%  SIMPLIFYA
+              0.00%  BEG
+              0.00%  ZL-REMPROP
+              0.00%  PRENUMBER
+              0.00%  PREP1
+
+     24   0.11%  rtestifactor  (compiler 0.00%)
+              0.04%  GET-ONE-FACTOR-POLLARD
+              0.04%  GET-SMALL-FACTORS
+              0.01%  ECM-FACTOR-WITH-CURVE
+              0.01%  PRIMEP
+              0.00%  POWER-MOD
+              0.00%  GET-ONE-FACTOR
+              0.00%  <GC>
+
+     23   0.11%  rtestode  (compiler 0.00%)
+              0.01%  MEVAL1
+              0.00%  KILL1-ATOM
+              0.00%  ASKSIGN1
+              0.00%  SYMBOL-VALUES-IN
+              0.00%  ZL-GET
+              0.00%  FACTOR
+              0.00%  PTIMES
+              0.00%  LISTP-IMPL
+
+     23   0.11%  rtest_equal  (compiler 0.00%)
+              0.01%  CONSTP
+              0.01%  UNKNOWN-ATOMS
+              0.01%  PRINT-INVERT-CASE
+              0.00%  DOLLARIFY
+              0.00%  SIGN1
+              0.00%  PLS
+              0.00%  <GC>
+              0.00%  SIMPTIMES
+
+     15   0.07%  rtest6  (compiler 0.01%)
+              0.01%  (LABELS EXPAND :IN COLLECT-DIRECTORIES)
+              0.01%  <SBCL compiler>
+              0.00%  PLS
+              0.00%  LBP
+              0.00%  KILL1-ATOM
+              0.00%  EXTREME-FLOAT-VALUES
+              0.00%  ADD2LNC
+              0.00%  SCAN-MACSYMA-TOKEN
+
+     15   0.07%  rtest11  (compiler 0.01%)
+              0.01%  <SBCL compiler>
+              0.00%  SPECREPP
+              0.00%  EXPLODEC
+              0.00%  <GC>
+              0.00%  MSET
+              0.00%  MEVAL
+              0.00%  GETL-LM-FCN-PROP
+              0.00%  OPTIONP
+
+     14   0.07%  rtestconjugate  (compiler 0.00%)
+              0.00%  REMOVE1
+              0.00%  UNSIMPLIFY
+              0.00%  SCAN-ONE-TOKEN-G
+              0.00%  SIGN-SHIFT
+              0.00%  OP-EQUALP
+              0.00%  PLS
+              0.00%  MAKSYM
+              0.00%  IMPLODE
+
+     12   0.06%  rtestnset  (compiler 0.00%)
+              0.01%  MMAPCAR
+              0.00%  SIMPLIFYA
+              0.00%  PLS
+              0.00%  NUD-CALL
+              0.00%  NUM_PARTITIONS-IMPL
+              0.00%  DEGVECTOR
+              0.00%  MAPPLY1
+              0.00%  KINDP
+
+     12   0.06%  rtest_everysome  (compiler 0.00%)
+              0.01%  GETL
+              0.01%  MUNBIND-MAKUNBOUND
+              0.00%  MEVAL1
+              0.00%  FMAP1
+              0.00%  <GC>
+              0.00%  SIMPLIFYA
+              0.00%  MATCHECK
+              0.00%  LOAD-FUNCTION
+
+      9   0.04%  rtest_lambert_w  (compiler 0.00%)
+              0.01%  FPQUOTIENT
+              0.01%  FPROUND
+              0.00%  FPDIFFERENCE
+              0.00%  ERRLFUN1
+              0.00%  MBIND
+              0.00%  MEVAL1
+
+      9   0.04%  rtest_powerseries  (compiler 0.00%)
+              0.00%  REMPROPCHK
+              0.00%  M2
+              0.00%  SUMCOMBINE2
+              0.00%  FACT5
+              0.00%  SIGN
+              0.00%  TEST-BATCH
+              0.00%  TYI-PARSE-INT
+              0.00%  MAPATOM-IMPL
+
+      7   0.03%  rtestode_zp  (compiler 0.00%)
+              0.01%  SIMPTIMES
+              0.00%  MUNBIND
+              0.00%  MEVAL1
+              0.00%  TYI
+              0.00%  SIMPLIFYA
+              0.00%  TYI-PARSE-INT
+
+      7   0.03%  rtest12  (compiler 0.02%)
+              0.02%  <SBCL compiler>
+              0.00%  PDISREP
+              0.00%  SIGN
+
+      6   0.03%  rtest_mactex  (compiler 0.00%)
+              0.00%  PREGEXP:PREGEXP-MATCH-POSITIONS
+              0.00%  SIGN-SHIFT
+              0.00%  <SBCL compiler>
+              0.00%  EQTEST
+              0.00%  GF-IRR-P
+              0.00%  KILL1-ATOM
+
+      6   0.03%  rtest_signum  (compiler 0.00%)
+              0.00%  RATDISREP-IMPL
+              0.00%  SIGN-ANY
+              0.00%  TYI-RAW
+              0.00%  (FLET RESOLVE-OBJECT :IN DCOMP)
+              0.00%  DMARK
+              0.00%  LEARN
+
+      6   0.03%  rtest_trace  (compiler 0.02%)
+              0.02%  <SBCL compiler>
+              0.00%  SCAN-MACSYMA-TOKEN
+              0.00%  KILLCONTEXT-IMPL
+
+      6   0.03%  rtest_unicode_display  (compiler 0.00%)
+              0.01%  INTERN-INVERT-CASE
+              0.00%  TYI-RAW
+              0.00%  REMOVE1
+              0.00%  DB-GC-NOBJECTS
+              0.00%  PDEGREEVECTOR
+
+      5   0.02%  rtest_abs  (compiler 0.00%)
+              0.00%  TEST-BATCH
+              0.00%  RATDISREPD
+              0.00%  PTIMES1
+              0.00%  <SBCL compiler>
+              0.00%  PARSE
+
+      4   0.02%  rtest_ask1  (compiler 0.00%)
+              0.00%  SUBST1
+              0.00%  KINDP
+              0.00%  ORDMEXPT
+              0.00%  SIGN-ANY
+
+      4   0.02%  rtest4  (compiler 0.00%)
+              0.00%  KILL1-ATOM
+              0.00%  PGCDU1
+              0.00%  PCOEFADD
+              0.00%  PMINUSP
+
+      4   0.02%  rtest9  (compiler 0.00%)
+              0.00%  EXPLOG-FUNS
+              0.00%  FACTOR
+              0.00%  FILE-EXISTS-P
+              0.00%  SIMPLIFYA
+
+      4   0.02%  rtest_round  (compiler 0.01%)
+              0.01%  <SBCL compiler>
+              0.00%  SIMPLIFYA
+              0.00%  MAXIMA-REMF
+
+      4   0.02%  rtest_carg  (compiler 0.00%)
+              0.00%  PCTIMES1
+              0.00%  PMINDEGVEC
+              0.00%  PRINT-INVERT-CASE
+              0.00%  EQTEST
+
+      3   0.01%  rtest9a  (compiler 0.00%)
+              0.00%  <GC>
+              0.00%  TIMESIN
+              0.00%  TEST-BATCH
+
+      3   0.01%  rtest_zeta  (compiler 0.00%)
+              0.00%  DOLLARIFY
+              0.00%  FPROUND
+              0.00%  NUD-CALL
+
+      3   0.01%  rtest_boolean  (compiler 0.00%)
+              0.00%  <SBCL compiler>
+              0.00%  CONTEXTMARK
+              0.00%  MAXIMA-REMF
+
+      3   0.01%  rtest_power  (compiler 0.00%)
+              0.00%  GOBBLE-COMMENT
+              0.00%  ATOMVARS
+              0.00%  PLS
+
+      2   0.01%  rtest7  (compiler 0.00%)
+              0.00%  CONSSIZE
+              0.00%  DIMENSION-INFIX
+
+      2   0.01%  rtestmt19937  (compiler 0.00%)
+              0.00%  MSET
+              0.00%  GETL
+
+      2   0.01%  rtest_mset  (compiler 0.00%)
+              0.00%  <SBCL compiler>
+              0.00%  KILL1-ATOM
+
+      2   0.01%  rtest_hstep  (compiler 0.00%)
+              0.00%  PLS
+              0.00%  TOPLEVEL-$LIMIT
+
+      2   0.01%  rtest_sinc  (compiler 0.00%)
+              0.00%  MEXPLODEN
+              0.00%  PARSE-TYIPEEK
+
+      1   0.00%  rtest_sqdnst  (compiler 0.00%)
+              0.00%  ALIKE
+
+      1   0.00%  rtest1a  (compiler 0.00%)
+              0.00%  MEVAL2
+
+      1   0.00%  rtest_scalarp  (compiler 0.00%)
+              0.00%  ZL-GET
+
+      1   0.00%  rtest_dot  (compiler 0.00%)
+              0.00%  CPUT
+
+      1   0.00%  rtest_map  (compiler 0.00%)
+              0.00%  GETL
+
+      1   0.00%  rtestdefstruct  (compiler 0.00%)
+              0.00%  IMPLODE
+
+      1   0.00%  rtest_plotoptions  (compiler 0.00%)
+              0.00%  PARSER-ASSOC
+
+      1   0.00%  rtest_ilt  (compiler 0.00%)
+              0.00%  PDISREP*
+
+      1   0.00%  ulp_tests  (compiler 0.00%)
+              0.00%  DECODE_FLOAT-IMPL
+
+      1   0.00%  rtest_setvar  (compiler 0.00%)
+              0.00%  TEST-BATCH
+
+      1   0.00%  rtest_operators  (compiler 0.00%)
+              0.00%  CSTRSETUP
+
+      1   0.00%  rtest_wxmx  (compiler 0.00%)
+              0.00%  MGET
+
+      1   0.00%  rtest_load_relative  (compiler 0.00%)
+              0.00%  PATHNAME_TYPE-IMPL

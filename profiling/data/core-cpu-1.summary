@@ -1,0 +1,8 @@
+lisp SBCL 2.6.9
+mode CPU interval 0.004
+run-time 87.393 s
+real-time 88.688 s
+gc-time 4.549 s (5.2% of run)
+bytes-consed 36,431,252,656
+samples 21001 unique-traces 20057
+samples*interval 84.004 s

@@ -1,0 +1,1421 @@
+# Samples attributed to the innermost Maxima frame (library time charged to its Maxima caller)
+# total 332104 samples
+
+  23687   7.13%  PCTIMES   (incl. 8.12%)
+            leaf   7.13%  ALLOC-TRAMP
+            from   4.52%  PTIMES1
+            from   1.44%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.50%  PCETIMES1
+            from   0.41%  PCTIMES1
+  23438   7.06%  FPQUOTIENT   (incl. 8.32%)
+            leaf   6.13%  ALLOC-TRAMP
+            leaf   0.92%  LIST-ALLOC-TRAMP
+            from   5.74%  FPROOT
+            from   0.66%  FPLOG
+            from   0.38%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-/ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.12%  FPEXP1
+  22652   6.82%  <SBCL compiler>   (incl. 0.00%)
+  15297   4.61%  PCPLUS   (incl. 4.89%)
+            leaf   4.61%  ALLOC-TRAMP
+            from   4.29%  PTIMES1
+            from   0.19%  PGCD2
+            from   0.13%  PTPTPLUS
+            from   0.00%  BACKWARD
+  14650   4.41%  FPROUND   (incl. 4.44%)
+            leaf   4.41%  ALLOC-TRAMP
+            from   1.26%  FPQUOTIENT
+            from   1.25%  FPDIFFERENCE
+            from   1.00%  FPTIMES*
+            from   0.50%  FPPLUS
+  12520   3.77%  FPDIFFERENCE   (incl. 5.24%)
+            leaf   2.79%  ALLOC-TRAMP
+            leaf   0.98%  LIST-ALLOC-TRAMP
+            from   2.53%  FPROOT
+            from   0.93%  FPLESSP
+            from   0.07%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-- (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.07%  FPGREATERP
+   9898   2.98%  TIMESIN   (incl. 4.85%)
+            leaf   2.98%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   2.98%  TMS
+   7457   2.25%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES   (incl. 22.67%)
+            leaf   2.17%  SYS-ALLOC-TRAMP
+            leaf   0.06%  ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   2.25%  BIGFLOAT::HYPERGEOMETRIC-FLOAT-EVAL
+   7113   2.14%  PLS   (incl. 3.46%)
+            leaf   2.14%  LIST-ALLOC-TRAMP
+            from   2.14%  SIMPLUS
+   6397   1.93%  CQUOTIENT   (incl. 1.93%)
+            leaf   1.93%  ALLOC-TRAMP
+            from   1.80%  PCQUOTIENT
+            from   0.11%  PTPTQUOTIENT
+            from   0.01%  PGCDCOFACTS
+            from   0.00%  BPROG
+   5870   1.77%  PCDIFFER   (incl. 1.78%)
+            leaf   1.77%  ALLOC-TRAMP
+            from   1.46%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.30%  PTPTDIFFER
+            from   0.00%  FORWARD
+            from   0.00%  BACKWARD
+   5602   1.69%  ORDERPOINTER   (incl. 1.69%)
+            leaf   1.26%  SYS-ALLOC-TRAMP
+            leaf   0.29%  ALLOC-TRAMP
+            leaf   0.14%  LIST-ALLOC-TRAMP
+            from   1.45%  RATREP*
+            from   0.24%  FR1
+            from   0.00%  TAYLOR1
+            from   0.00%  INTSETUP
+   5237   1.58%  FPTIMES*   (incl. 2.59%)
+            leaf   0.95%  ALLOC-TRAMP
+            leaf   0.63%  LIST-ALLOC-TRAMP
+            from   0.42%  FPEXPT
+            from   0.33%  FPLOG
+            from   0.31%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.15%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+   5095   1.53%  RATDISREPD   (incl. 2.40%)
+            leaf   1.53%  SYS-LIST-ALLOC-TRAMP
+            from   1.53%  RATDISREP-IMPL
+   4778   1.44%  PCOEFADD   (incl. 1.44%)
+            leaf   1.44%  LIST-ALLOC-TRAMP
+            from   0.61%  PGCDU1
+            from   0.41%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.19%  PGCD2
+            from   0.06%  PDERIVATIVE
+   4749   1.43%  PUTODR   (incl. 1.43%)
+            leaf   1.43%  LIST-ALLOC-TRAMP
+            from   1.31%  PMINDEGVEC
+            from   0.12%  PDEGREEVECTOR
+   4712   1.42%  PCTIMES1   (incl. 2.45%)
+            leaf   1.41%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.93%  PCTIMES
+            from   0.22%  PSQUOREM1
+            from   0.18%  PGCD2
+            from   0.07%  PTIMES
+   4487   1.35%  FPPLUS   (incl. 1.91%)
+            leaf   1.08%  ALLOC-TRAMP
+            leaf   0.27%  LIST-ALLOC-TRAMP
+            from   0.58%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.30%  FPLOG
+            from   0.13%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.07%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+   4159   1.25%  BEG   (incl. 1.67%)
+            leaf   0.81%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.44%  LIST-ALLOC-TRAMP
+            from   1.18%  KINDP
+            from   0.04%  DECL-COMPLEX-KIND
+            from   0.03%  KIND-ANY-OF
+            from   0.00%  TRUEP
+   4087   1.23%  TMS   (incl. 6.04%)
+            leaf   1.23%  LIST-ALLOC-TRAMP
+            from   1.22%  SIMPTIMES
+            from   0.01%  SIMPEXPT
+   4006   1.21%  NORMALIZED-MODULUS   (incl. 1.21%)
+            leaf   1.21%  ALLOC-TRAMP
+            from   0.89%  PGCDU1
+            from   0.18%  PTIMES1
+            from   0.07%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.01%  PCETIMES1
+   3651   1.10%  RATREP*   (incl. 14.23%)
+            leaf   1.10%  LIST-ALLOC-TRAMP
+            from   0.36%  FR1
+            from   0.21%  FFACTOR
+            from   0.17%  RATCOEF
+            from   0.15%  RATSUBST-IMPL
+   3199   0.96%  (LABELS PREGEXP::OR-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)   (incl. 0.96%)
+            leaf   0.96%  ALLOC-TRAMP
+            from   0.96%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+            from   0.00%  (LAMBDA (PREGEXP::I1) :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+   2767   0.83%  MAKSYM   (incl. 1.16%)
+            leaf   0.61%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.10%  SYS-ALLOC-TRAMP
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            leaf   0.06%  ALLOC-TRAMP
+            from   0.83%  MAKSYMP
+   2659   0.80%  PSIMP   (incl. 0.80%)
+            leaf   0.80%  LIST-ALLOC-TRAMP
+            from   0.12%  MFACPPLUS
+            from   0.09%  RATTIMES
+            from   0.08%  PCTIMES1
+            from   0.08%  FACRTIMES
+   2550   0.77%  BIGFLOAT-IMPL:*   (incl. 1.19%)
+            leaf   0.68%  SYS-ALLOC-TRAMP
+            leaf   0.09%  foreign function listify_rest_arg
+            from   0.77%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:ABS (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.00%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:EXPT (BIGFLOAT-IMPL:BIGFLOAT INTEGER))
+   2547   0.77%  COMPLETEVECTOR   (incl. 0.77%)
+            leaf   0.77%  LIST-ALLOC-TRAMP
+            from   0.77%  DEGVECTOR
+   2519   0.76%  LISTOFVARS-IMPL   (incl. 1.68%)
+            leaf   0.76%  LIST-ALLOC-TRAMP
+            from   0.52%  SYMBOLS
+            from   0.14%  UNKNOWN-ATOMS
+            from   0.10%  MBIND-DOIT
+            from   0.00%  ALLROOTS-IMPL
+   2346   0.71%  DEGVECTOR   (incl. 1.47%)
+            leaf   0.71%  LIST-ALLOC-TRAMP
+            from   0.46%  PMINDEGVEC
+            from   0.25%  PDEGREEVECTOR
+   2282   0.69%  EQTEST   (incl. 0.69%)
+            leaf   0.69%  LIST-ALLOC-TRAMP
+            from   0.23%  SIMPTIMES
+            from   0.12%  MEVALP1
+            from   0.09%  SIMPLUS
+            from   0.07%  SIMPEXPT
+   2246   0.68%  PCQUOTIENT   (incl. 4.03%)
+            leaf   0.68%  LIST-ALLOC-TRAMP
+            from   0.22%  OLDCONTENT
+            from   0.21%  PTERMCONT
+            from   0.09%  BPROG
+            from   0.07%  MFACPPLUS
+   2237   0.67%  ADD2   (incl. 0.67%)
+            leaf   0.67%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.25%  SPLITSUM
+            from   0.25%  DCOMPARE
+            from   0.03%  SIGNDIFF-SPECIAL
+            from   0.02%  %ESPECIAL
+   2202   0.66%  PMINDEGVEC   (incl. 3.17%)
+            leaf   0.66%  LIST-ALLOC-TRAMP
+            from   0.65%  PTERMCONT
+            from   0.01%  FACTOROUT
+   2170   0.65%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:ABS (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))   (incl. 2.53%)
+            leaf   0.65%  SYS-ALLOC-TRAMP
+            from   0.65%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+   2049   0.62%  PTPT-SUBTRACT-POWERED-PRODUCT   (incl. 4.03%)
+            leaf   0.59%  LIST-ALLOC-TRAMP
+            leaf   0.03%  ALLOC-TRAMP
+            from   0.59%  PTPTQUOTIENT
+            from   0.03%  PGCDU1
+            from   0.00%  MEVAL1
+   2000   0.60%  PGCDU1   (incl. 2.24%)
+            leaf   0.60%  ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.60%  PMODREM
+            from   0.01%  PMODQUO
+   1873   0.56%  QUEUE+P   (incl. 0.56%)
+            leaf   0.56%  LIST-ALLOC-TRAMP
+            from   0.42%  BEG
+            from   0.14%  MID
+   1866   0.56%  BCONS   (incl. 0.56%)
+            leaf   0.56%  LIST-ALLOC-TRAMP
+            from   0.12%  BIGFLOATP
+            from   0.09%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:SQRT (BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.06%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.06%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))
+   1850   0.56%  PLUSIN   (incl. 1.09%)
+            leaf   0.56%  LIST-ALLOC-TRAMP
+            from   0.56%  PLS
+   1819   0.55%  PDIS*   (incl. 0.55%)
+            leaf   0.55%  LIST-ALLOC-TRAMP
+            from   0.55%  PDIS
+            from   0.00%  RATCOEF
+   1759   0.53%  MUL2   (incl. 0.53%)
+            leaf   0.50%  LIST-ALLOC-TRAMP
+            leaf   0.03%  ALLOC-TRAMP
+            from   0.15%  SPLITPROD
+            from   0.09%  TESTTNEG
+            from   0.03%  EXPANDTIMES
+            from   0.03%  RISPLIT-TIMES
+   1728   0.52%  (LABELS PREGEXP::SEQ-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)   (incl. 0.52%)
+            leaf   0.52%  ALLOC-TRAMP
+            from   0.49%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+            from   0.03%  (LAMBDA (PREGEXP::I1) :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+   1684   0.51%  PGCDA   (incl. 8.20%)
+            leaf   0.47%  LIST-ALLOC-TRAMP
+            leaf   0.04%  ALLOC-TRAMP
+            from   0.38%  PGCDCOFACTS
+            from   0.13%  PGCD
+   1667   0.50%  POWER   (incl. 0.50%)
+            leaf   0.50%  LIST-ALLOC-TRAMP
+            from   0.34%  DIV
+            from   0.03%  EXPANDTIMES
+            from   0.03%  TIMESIN
+            from   0.02%  SPLITPROD
+   1603   0.48%  *RED   (incl. 0.48%)
+            leaf   0.44%  LIST-ALLOC-TRAMP
+            leaf   0.04%  ALLOC-TRAMP
+            from   0.19%  TIMESKL
+            from   0.13%  EXPTB
+            from   0.06%  SIMPTIMES
+            from   0.04%  BERN
+   1466   0.44%  ADD2LNC   (incl. 0.44%)
+            leaf   0.44%  LIST-ALLOC-TRAMP
+            from   0.20%  ATOMVARS
+            from   0.18%  LISTOFVARS-IMPL
+            from   0.05%  MSET
+            from   0.00%  MEVAL1
+   1447   0.44%  MEVALARGS   (incl. 41.72%)
+            leaf   0.44%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.44%  MEVAL1
+   1348   0.41%  FFACTOR   (incl. 5.98%)
+            leaf   0.41%  SYS-LIST-ALLOC-TRAMP
+            from   0.35%  FACTOR
+            from   0.06%  WHICHFN
+   1333   0.40%  PGCDCOFACTS   (incl. 7.06%)
+            leaf   0.40%  LIST-ALLOC-TRAMP
+            from   0.14%  FPGCDCO
+            from   0.13%  PSQFR
+            from   0.12%  RATREDUCE
+            from   0.01%  DOPGCDCOFACTS
+   1318   0.40%  NEG   (incl. 2.03%)
+            leaf   0.39%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.19%  SUB
+            from   0.06%  DCOMPARE
+            from   0.03%  APPLY-REFLECTION-SIMP
+            from   0.03%  COMPSPLT-GENERAL
+   1281   0.39%  MEVALP1   (incl. 8.69%)
+            leaf   0.39%  LIST-ALLOC-TRAMP
+            from   0.33%  MEVALP
+            from   0.04%  MEVAL1
+            from   0.01%  ASSUME
+   1280   0.39%  BIGFLOAT-IMPL:+   (incl. 0.69%)
+            leaf   0.33%  SYS-ALLOC-TRAMP
+            leaf   0.05%  foreign function listify_rest_arg
+            from   0.38%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:ABS (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.00%  BIGFLOAT::EXPT-EXTRA-BITS
+            from   0.00%  (SB-PCL::FAST-METHOD BIGFLOAT::UNARY-CEILING (BIGFLOAT-IMPL:BIGFLOAT))
+   1266   0.38%  M2   (incl. 0.69%)
+            leaf   0.38%  LIST-ALLOC-TRAMP
+            from   0.15%  LT-SF-LOG
+            from   0.07%  INTEGRATE-EXP-SPECIAL
+            from   0.05%  SP1
+            from   0.03%  DIFFDIV
+   1260   0.38%  OP-EQUALP   (incl. 0.38%)
+            leaf   0.38%  foreign function listify_rest_arg
+            from   0.19%  MAPATOM-IMPL
+            from   0.12%  MEQP
+            from   0.02%  LENIENT-EXTENDED-REALP
+            from   0.02%  LIMIT-OK
+   1192   0.36%  PTCPLUS   (incl. 0.38%)
+            leaf   0.36%  LIST-ALLOC-TRAMP
+            from   0.28%  PCPLUS
+            from   0.08%  PPLUS
+   1177   0.35%  PDISREP2   (incl. 0.64%)
+            leaf   0.35%  LIST-ALLOC-TRAMP
+            from   0.35%  PDISREP
+   1162   0.35%  MID   (incl. 0.49%)
+            leaf   0.27%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            from   0.32%  MARK+
+            from   0.03%  MARK+1
+   1133   0.34%  GET-SMALL-FACTORS   (incl. 0.34%)
+            leaf   0.30%  ALLOC-TRAMP
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.34%  GET-FACTOR-LIST
+   1123   0.34%  MEVAL1   (incl. 93.12%)
+            leaf   0.32%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.00%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.34%  MEVAL
+   1050   0.32%  RDIS*   (incl. 0.32%)
+            leaf   0.32%  LIST-ALLOC-TRAMP
+            from   0.29%  RDIS
+            from   0.02%  RATCOEF
+   1046   0.31%  PTPTQUOTIENT   (incl. 2.84%)
+            leaf   0.31%  LIST-ALLOC-TRAMP
+            from   0.31%  PQUOTIENT
+    980   0.30%  RECUR-APPLY   (incl. 1.49%)
+            leaf   0.29%  LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.00%  foreign function listify_rest_arg
+            from   0.06%  SIMP-%HANKEL_1
+            from   0.05%  NUMER
+            from   0.05%  SIMP-%HANKEL_2
+            from   0.05%  FLOAT-IMPL
+    923   0.28%  PGET   (incl. 0.28%)
+            leaf   0.28%  LIST-ALLOC-TRAMP
+            from   0.19%  RGET
+            from   0.04%  PFLATTEN
+            from   0.04%  MAKPROD
+            from   0.00%  CD1
+    906   0.27%  PCONTENT1   (incl. 0.27%)
+            leaf   0.27%  ALLOC-TRAMP
+            from   0.26%  PGCDA
+            from   0.01%  PCONTENTZ
+            from   0.00%  PCONTENT
+    886   0.27%  PREP1   (incl. 13.02%)
+            leaf   0.27%  LIST-ALLOC-TRAMP
+            from   0.21%  RATREP*
+            from   0.03%  FR1
+            from   0.01%  ALGPCHK
+            from   0.01%  NEWVARMEXPT
+    881   0.27%  (LABELS PREGEXP::MATCH-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)   (incl. 0.27%)
+            leaf   0.27%  ALLOC-TRAMP
+            from   0.26%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+            from   0.00%  (LAMBDA (PREGEXP::I1) :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+    868   0.26%  INTOFP   (incl. 0.50%)
+            leaf   0.26%  LIST-ALLOC-TRAMP
+            from   0.10%  FPROOT
+            from   0.08%  FPLOG
+            from   0.04%  BFLOAT-IMPL
+            from   0.02%  FPEXPT
+    865   0.26%  COMPSPLT-SINGLE   (incl. 3.27%)
+            leaf   0.26%  LIST-ALLOC-TRAMP
+            from   0.23%  COMPSPLT
+            from   0.03%  COMPSPLT-GENERAL
+    837   0.25%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX   (incl. 2.16%)
+            leaf   0.21%  ALLOC-TRAMP
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.25%  PREGEXP:PREGEXP-MATCH-POSITIONS
+    820   0.25%  GETL-LM-FCN-PROP   (incl. 0.25%)
+            leaf   0.25%  LIST-ALLOC-TRAMP
+            from   0.25%  MEVAL1
+    811   0.24%  DMARK   (incl. 0.34%)
+            leaf   0.16%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            from   0.10%  DLS
+            from   0.07%  DGR
+            from   0.07%  DEQ
+            from   0.00%  DNQ
+    777   0.23%  MEVAL2   (incl. 0.23%)
+            leaf   0.23%  LIST-ALLOC-TRAMP
+            from   0.23%  MEVAL1
+    748   0.23%  MBIND-DOIT   (incl. 0.57%)
+            leaf   0.23%  LIST-ALLOC-TRAMP
+            from   0.23%  MBIND
+    744   0.22%  BIGFLOATP   (incl. 0.35%)
+            leaf   0.11%  LIST-ALLOC-TRAMP
+            leaf   0.11%  ALLOC-TRAMP
+            from   0.10%  FPROOT
+            from   0.07%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT NUMBER))
+            from   0.04%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:BIGFLOAT RATIONAL))
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:BIGFLOAT RATIONAL))
+    743   0.22%  HIPART-ZEROP   (incl. 0.22%)
+            leaf   0.22%  ALLOC-TRAMP
+            from   0.18%  FPDIFFERENCE
+            from   0.04%  FPSHIFT
+            from   0.01%  FPROUND
+            from   0.00%  FPPLUS
+    741   0.22%  PRINT-INVERT-CASE   (incl. 0.22%)
+            leaf   0.22%  ALLOC-TRAMP
+            from   0.22%  EXPLODEN
+            from   0.00%  EXPLODEC
+    713   0.21%  RGET   (incl. 0.41%)
+            leaf   0.21%  LIST-ALLOC-TRAMP
+            from   0.19%  RATREP*
+            from   0.02%  FR1
+    697   0.21%  PMINUS   (incl. 0.39%)
+            leaf   0.17%  ALLOC-TRAMP
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.13%  PTPTDIFFER
+            from   0.03%  PTMINUS
+            from   0.02%  OLDCONTENT
+            from   0.02%  PSQUOREM1
+    696   0.21%  PCETIMES1   (incl. 0.77%)
+            leaf   0.20%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.20%  PTIMES1
+            from   0.01%  PGCD2
+            from   0.00%  PSQUOREM1
+            from   0.00%  PTPT-SUBTRACT-POWERED-PRODUCT
+    675   0.20%  DCOMPARE   (incl. 2.00%)
+            leaf   0.20%  LIST-ALLOC-TRAMP
+            from   0.09%  SIGN1
+            from   0.06%  SIGN-ANY
+            from   0.04%  SIGNDIFF
+            from   0.01%  MEQP
+    670   0.20%  SIMPEXPT   (incl. 6.78%)
+            leaf   0.20%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.04%  SIMPTIMES
+            from   0.03%  TIMESIN
+            from   0.02%  SIMPLUS
+            from   0.01%  %ESPECIAL
+    650   0.20%  DOLLARIFY   (incl. 0.94%)
+            leaf   0.10%  foreign function listify_rest_arg
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.04%  SIMP-%SIN
+            from   0.03%  SIMP-%COS
+            from   0.03%  SIMP-%ATAN2
+            from   0.02%  SIMP-%LOG
+    616   0.19%  ADDK   (incl. 0.19%)
+            leaf   0.15%  LIST-ALLOC-TRAMP
+            leaf   0.03%  ALLOC-TRAMP
+            from   0.11%  PLS
+            from   0.06%  PLUSIN
+            from   0.01%  DIFFEXPT
+            from   0.01%  EXPTRL
+    607   0.18%  PTMINUS   (incl. 0.21%)
+            leaf   0.18%  LIST-ALLOC-TRAMP
+            from   0.18%  PMINUS
+            from   0.00%  PTPTDIFFER
+    598   0.18%  PGCD2   (incl. 8.89%)
+            leaf   0.18%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.17%  PSQUOREM1
+            from   0.01%  MEVAL1
+    580   0.17%  SPLITSUM   (incl. 1.69%)
+            leaf   0.17%  LIST-ALLOC-TRAMP
+            from   0.17%  COMPSPLT-SINGLE
+    575   0.17%  IMPLODE   (incl. 0.17%)
+            leaf   0.17%  ALLOC-TRAMP
+            from   0.12%  DOLLARIFY
+            from   0.05%  SCAN-MACSYMA-TOKEN
+            from   0.01%  CONCAT-IMPL
+    567   0.17%  RATSETUP2   (incl. 1.44%)
+            leaf   0.17%  SYS-LIST-ALLOC-TRAMP
+            from   0.11%  FR1
+            from   0.06%  RATREP*
+    548   0.17%  SIMPARGS   (incl. 0.61%)
+            leaf   0.17%  LIST-ALLOC-TRAMP
+            from   0.06%  MEVALP1
+            from   0.03%  MEVAL1
+            from   0.01%  FR1
+            from   0.01%  MLAMBDA
+    544   0.16%  INTERN-INVERT-CASE   (incl. 0.16%)
+            leaf   0.16%  ALLOC-TRAMP
+            from   0.11%  DOLLARIFY
+            from   0.05%  SCAN-MACSYMA-TOKEN
+            from   0.00%  CONCAT-IMPL
+    543   0.16%  FR1   (incl. 17.42%)
+            leaf   0.16%  LIST-ALLOC-TRAMP
+            from   0.13%  FULLRATSIMP
+            from   0.02%  MAPFR1
+            from   0.01%  FR-ARGS
+            from   0.00%  RADCAN1
+    525   0.16%  RATTIMES   (incl. 1.58%)
+            leaf   0.16%  LIST-ALLOC-TRAMP
+            from   0.10%  PREP1
+            from   0.02%  RATDIVIDE
+            from   0.01%  PSEXPT1
+            from   0.01%  RATCOEF
+    517   0.16%  NUM_PARTITIONS-IMPL   (incl. 0.16%)
+            leaf   0.16%  ALLOC-TRAMP
+            from   0.16%  MMAPCAR
+    510   0.15%  PUTONVLIST   (incl. 0.15%)
+            leaf   0.15%  LIST-ALLOC-TRAMP
+            from   0.11%  NEWVAR1
+            from   0.03%  FR1
+            from   0.01%  NEWVARMEXPT
+            from   0.01%  NEWVAR
+    488   0.15%  PDISREP*CHK   (incl. 0.15%)
+            leaf   0.15%  LIST-ALLOC-TRAMP
+            from   0.13%  PDISREP*
+            from   0.02%  PDISREP*EXPAND
+    484   0.15%  REMOVE1   (incl. 0.20%)
+            leaf   0.15%  LIST-ALLOC-TRAMP
+            from   0.15%  I-$REMOVE
+    473   0.14%  SIGN-SHIFT   (incl. 0.42%)
+            leaf   0.14%  LIST-ALLOC-TRAMP
+            from   0.14%  SIGNSUM
+    457   0.14%  UNSIMPLIFY   (incl. 0.14%)
+            leaf   0.14%  LIST-ALLOC-TRAMP
+            from   0.14%  SIMPLIFYA
+    440   0.13%  PUTPROP   (incl. 0.13%)
+            leaf   0.13%  LIST-ALLOC-TRAMP
+            from   0.09%  DMARK
+            from   0.02%  MARK+1
+            from   0.01%  IND
+            from   0.01%  CNTXT
+    420   0.13%  EXPTRL   (incl. 1.22%)
+            leaf   0.11%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.12%  SIMPEXPT
+            from   0.00%  TIMESIN
+    416   0.13%  COEFL   (incl. 0.13%)
+            leaf   0.13%  LIST-ALLOC-TRAMP
+            from   0.13%  CONTSORT
+    411   0.12%  MAKEALIAS   (incl. 0.23%)
+            leaf   0.12%  LIST-ALLOC-TRAMP
+            from   0.12%  DOLLARIFY
+    409   0.12%  PTERMCONT   (incl. 3.64%)
+            leaf   0.12%  LIST-ALLOC-TRAMP
+            from   0.07%  PGCDA
+            from   0.05%  PSQFR
+    405   0.12%  MLAMBDA   (incl. 40.07%)
+            leaf   0.12%  LIST-ALLOC-TRAMP
+            from   0.10%  MEVAL1
+            from   0.02%  MMAPCAR
+            from   0.00%  SUBLIST-IMPL
+            from   0.00%  RULE-APPLY
+    395   0.12%  READLIST   (incl. 0.12%)
+            leaf   0.12%  ALLOC-TRAMP
+            from   0.11%  DOLLARIFY
+            from   0.01%  PARSE
+            from   0.00%  PEEK-ONE-TOKEN-G
+            from   0.00%  MAKE-NUMBER
+    388   0.12%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-/ (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))   (incl. 0.12%)
+            leaf   0.12%  SYS-ALLOC-TRAMP
+            from   0.12%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+    382   0.12%  PDISREP+   (incl. 0.12%)
+            leaf   0.12%  LIST-ALLOC-TRAMP
+            from   0.08%  CDISREP
+            from   0.03%  RETFACTOR1
+            from   0.01%  PDISREP2
+            from   0.00%  PDISREP2EXPAND
+    359   0.11%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (NUMBER NUMBER))   (incl. 0.11%)
+            leaf   0.11%  ALLOC-TRAMP
+            from   0.10%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+            from   0.00%  BIGFLOAT::BF-RF
+            from   0.00%  BIGFLOAT::BF-RD
+            from   0.00%  BIGFLOAT::INTERPOLATE-CHECK
+    358   0.11%  BIGFLOAT-IMPL:TO   (incl. 0.18%)
+            leaf   0.11%  SYS-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.03%  BIGFLOAT::HYPERGEOMETRIC-FLOAT-EVAL
+            from   0.03%  BIGFLOAT::%TO
+            from   0.03%  SIMPABS
+            from   0.01%  (FLET BIGFLOAT::CONVERT :IN BIGFLOAT::FIND-ROOT-SUBR)
+    357   0.11%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT NUMBER))   (incl. 0.14%)
+            leaf   0.11%  SYS-ALLOC-TRAMP
+            from   0.11%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+    353   0.11%  MUNBIND   (incl. 0.12%)
+            leaf   0.11%  LIST-ALLOC-TRAMP
+            from   0.06%  (FLET "CLEANUP-FUN-4" :IN MLAMBDA)
+            from   0.05%  MEVAL1
+            from   0.00%  (FLET "CLEANUP-FUN-6" :IN DOSUM)
+    353   0.11%  CDISREP   (incl. 0.87%)
+            leaf   0.11%  LIST-ALLOC-TRAMP
+            from   0.10%  RATDISREPD
+            from   0.00%  PSDISREP2
+            from   0.00%  TAYLOR_SIMPLIFY_RECURSE
+            from   0.00%  SRDISREP
+    350   0.11%  PREGEXP::PREGEXP-MAKE-BACKREF-LIST   (incl. 0.11%)
+            leaf   0.11%  LIST-ALLOC-TRAMP
+            from   0.11%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+    347   0.10%  EXPANDTIMES   (incl. 0.65%)
+            leaf   0.10%  LIST-ALLOC-TRAMP
+            from   0.10%  SIMPTIMES
+    346   0.10%  DEGVECDISREP   (incl. 0.10%)
+            leaf   0.10%  LIST-ALLOC-TRAMP
+            from   0.10%  PTERMCONT
+    340   0.10%  SLATEC::ZBKNU   (incl. 0.12%)
+            leaf   0.10%  ALLOC-TRAMP
+            from   0.05%  SLATEC:ZBESH
+            from   0.04%  SLATEC::ZACON
+            from   0.01%  SLATEC:ZBESK
+            from   0.00%  SLATEC::ZACAI
+    337   0.10%  DELETE-IMPL   (incl. 0.10%)
+            leaf   0.10%  LIST-ALLOC-TRAMP
+            from   0.10%  COEFF
+            from   0.00%  KILLCONTEXT
+            from   0.00%  MEVAL1
+    336   0.10%  LISTOVARS0   (incl. 0.10%)
+            leaf   0.10%  LIST-ALLOC-TRAMP
+            from   0.09%  LISTOVARS
+            from   0.01%  LISTOVARS1
+    325   0.10%  FLOAT-IMPL   (incl. 0.24%)
+            leaf   0.08%  ALLOC-TRAMP
+            leaf   0.01%  SYS-ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.05%  RECUR-APPLY
+            from   0.04%  FLONUM-EVAL
+            from   0.01%  MEVAL1
+            from   0.00%  SIMP-%ATAN2
+    322   0.10%  INTEXT   (incl. 0.10%)
+            leaf   0.10%  LIST-ALLOC-TRAMP
+            from   0.10%  FACTS1
+    321   0.10%  SIMPNRT   (incl. 0.95%)
+            leaf   0.10%  LIST-ALLOC-TRAMP
+            from   0.10%  EXPTRL
+            from   0.00%  SOLVECUBIC
+    321   0.10%  SUBST1   (incl. 0.80%)
+            leaf   0.10%  LIST-ALLOC-TRAMP
+            from   0.10%  MAXIMA-SUBSTITUTE
+            from   0.00%  SUBST-EXCEPT-SECOND-ARG
+    315   0.09%  BIGFLOAT::INTOFP   (incl. 0.22%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.05%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:BIGFLOAT RATIONAL))
+            from   0.02%  BIGFLOAT-IMPL:BIGFLOAT
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT NUMBER))
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-- (BIGFLOAT-IMPL:BIGFLOAT RATIONAL))
+    311   0.09%  TIMESKL   (incl. 0.28%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.06%  TIMESIN
+            from   0.02%  PLS
+            from   0.01%  PLUSIN
+            from   0.00%  SPANG1
+    311   0.09%  ADDN   (incl. 0.09%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.04%  SIGNSUM
+            from   0.03%  SIMPTIMES
+            from   0.02%  RISPLIT-MPLUS
+            from   0.00%  EXPANINTEXPT
+    309   0.09%  SIMPMAP   (incl. 0.12%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.09%  SIMPARGS
+            from   0.00%  SIMPMATRIX
+            from   0.00%  SIMPDERIV
+            from   0.00%  SIMPINTEG
+    307   0.09%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-= (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))   (incl. 0.21%)
+            leaf   0.09%  SYS-ALLOC-TRAMP
+            from   0.09%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+    299   0.09%  PTIMES1   (incl. 9.87%)
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.09%  PTIMES
+    299   0.09%  MULN   (incl. 0.09%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.02%  RISPLIT-TIMES
+            from   0.02%  SIGN-SHIFT
+            from   0.01%  PLUSIN
+            from   0.01%  SIMPNRT
+    295   0.09%  PDISREP*EXPAND   (incl. 0.11%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.09%  PDISREP2EXPAND
+    295   0.09%  TAGIRR   (incl. 0.09%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.09%  RETFACTOR1
+    290   0.09%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (NUMBER NUMBER))   (incl. 0.09%)
+            leaf   0.09%  ALLOC-TRAMP
+            from   0.08%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+            from   0.00%  BIGFLOAT::LI2NUMER
+            from   0.00%  FLOAT-ZETA
+            from   0.00%  BIGFLOAT::BF-RF
+    289   0.09%  NEWVARMEXPT   (incl. 0.77%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.05%  NEWVAR1
+            from   0.03%  PREP1
+            from   0.00%  FR1
+            from   0.00%  NEWVAR
+    286   0.09%  FACTS1   (incl. 0.19%)
+            leaf   0.09%  LIST-ALLOC-TRAMP
+            from   0.05%  SIGN-SHIFT
+            from   0.02%  CHECK-INTEGER-FACTS
+            from   0.02%  EQUAL-FACTS-SIMP
+    279   0.08%  SPLITPROD   (incl. 1.12%)
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            from   0.08%  COMPSPLT-SINGLE
+    278   0.08%  OLDCONTENT   (incl. 1.08%)
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            from   0.07%  FPCONTENT
+            from   0.01%  PSQFR
+            from   0.01%  ZGCD
+            from   0.00%  OLDGCD
+    274   0.08%  PDISREP!   (incl. 0.08%)
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            from   0.08%  PDISREP2
+            from   0.00%  PDISREP2EXPAND
+    273   0.08%  PRIMCYCLO   (incl. 1.19%)
+            leaf   0.07%  SYS-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            leaf   0.00%  foreign function make_list
+            from   0.08%  RATSETUP2
+    270   0.08%  GAMMA-LANCZOS   (incl. 0.08%)
+            leaf   0.08%  ALLOC-TRAMP
+            from   0.08%  SIMP-%GAMMA
+            from   0.00%  GAMMA-INCOMPLETE
+    259   0.08%  PFACTOR11   (incl. 1.11%)
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            from   0.08%  PFACTOR
+    254   0.08%  CARTESIAN-PRODUCT   (incl. 0.08%)
+            leaf   0.08%  LIST-ALLOC-TRAMP
+            from   0.08%  CARTESIAN_PRODUCT_LIST-IMPL
+            from   0.00%  CARTESIAN_PRODUCT-IMPL
+    246   0.07%  INTERVAL2   (incl. 0.09%)
+            leaf   0.07%  LIST-ALLOC-TRAMP
+            from   0.07%  MEVAL1
+    243   0.07%  TIMESK   (incl. 0.08%)
+            leaf   0.05%  ALLOC-TRAMP
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.07%  TIMESIN
+            from   0.00%  PRETTY-GOOD-FLOOR-OR-CEILING
+    240   0.07%  PDISREP*   (incl. 0.20%)
+            leaf   0.07%  LIST-ALLOC-TRAMP
+            from   0.07%  PDISREP2
+    239   0.07%  BIGFLOAT::INTERPOLATE-CHECK   (incl. 0.09%)
+            leaf   0.07%  SYS-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.07%  BIGFLOAT::FIND-ROOT-SUBR
+    238   0.07%  TOPLEVEL-$LIMIT   (incl. 2.79%)
+            leaf   0.03%  SYS-ALLOC-TRAMP
+            leaf   0.02%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.01%  foreign function listify_rest_arg
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            from   0.04%  BOTH-SIDE
+            from   0.03%  LIMIT-IMPL
+            from   0.00%  SIMPINF-IC
+    236   0.07%  MEXPLODEN   (incl. 0.17%)
+            leaf   0.07%  LIST-ALLOC-TRAMP
+            from   0.07%  DOLLARIFY
+    226   0.07%  FINDTHEM   (incl. 0.07%)
+            leaf   0.07%  LIST-ALLOC-TRAMP
+            from   0.07%  TESTA*
+    224   0.07%  RISPLIT   (incl. 4.54%)
+            leaf   0.07%  LIST-ALLOC-TRAMP
+            from   0.04%  RISPLIT-TIMES
+            from   0.01%  SIGN-PREP
+            from   0.01%  RISPLIT-MPLUS
+            from   0.01%  IMAGPART-IMPL
+    224   0.07%  PSQFR   (incl. 3.31%)
+            leaf   0.07%  LIST-ALLOC-TRAMP
+            from   0.07%  PFACTOR
+    220   0.07%  PMOD   (incl. 0.09%)
+            leaf   0.07%  LIST-ALLOC-TRAMP
+            from   0.02%  QUICK-SQFR-CHECK
+            from   0.02%  GCD-DEGREE-VECTOR
+            from   0.02%  ZGCD1
+            from   0.00%  NPROD
+    219   0.07%  DIRECTORY-CACHED   (incl. 0.21%)
+            leaf   0.05%  SYS-ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.07%  NEW-FILE-SEARCH
+    215   0.06%  EXTENDED-REAL-P   (incl. 0.06%)
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            from   0.06%  EXTRA-SIMP
+            from   0.00%  SIMPLIMSUBST
+    211   0.06%  SCAN-TOKEN   (incl. 0.06%)
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            from   0.06%  SCAN-MACSYMA-TOKEN
+            from   0.00%  SCAN-LISP-TOKEN
+    205   0.06%  MFACPPLUS   (incl. 2.78%)
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            from   0.06%  PREP1
+    201   0.06%  FILE-MTIME-OR-NIL   (incl. 0.06%)
+            leaf   0.04%  ALLOC-TRAMP
+            leaf   0.02%  SYS-ALLOC-TRAMP
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            from   0.06%  (LABELS EXISTING-PATH-MTIME-PAIRS :IN DIRECTORY-CACHED)
+    199   0.06%  CYCLOTOMIC   (incl. 0.13%)
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            from   0.03%  PRIMCYCLO
+            from   0.02%  FACTXN-1
+            from   0.01%  FACTXN+1
+    196   0.06%  FPSHIFT   (incl. 0.10%)
+            leaf   0.06%  ALLOC-TRAMP
+            from   0.05%  FPPLUS
+            from   0.00%  FPDIFFERENCE
+            from   0.00%  FPQUOTIENT
+    189   0.06%  CDINF   (incl. 0.07%)
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            from   0.06%  FACRTIMES
+    188   0.06%  PDEGREEVECTOR   (incl. 0.46%)
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            from   0.04%  PFACTOR1
+            from   0.01%  PGCDA
+            from   0.00%  ZGCD1
+            from   0.00%  HEURTRIAL1
+    187   0.06%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-= (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))   (incl. 0.09%)
+            leaf   0.06%  SYS-ALLOC-TRAMP
+            from   0.06%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+    184   0.06%  MBUILDQ-SUBST   (incl. 0.06%)
+            leaf   0.06%  LIST-ALLOC-TRAMP
+            from   0.06%  MEVAL1
+    183   0.06%  <GC>   (incl. 0.00%)
+    182   0.05%  FACTOR   (incl. 13.75%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.05%  FACTOR-IF-SMALL
+            from   0.00%  NUMDEN*
+            from   0.00%  FACTOR-IMPL
+    181   0.05%  ADD-LINEINFO   (incl. 0.05%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.02%  LED-CALL
+            from   0.01%  MREAD-RAW
+            from   0.01%  PARSE-INFIX
+            from   0.01%  NUD-CALL
+    178   0.05%  RATPLUS   (incl. 0.59%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.05%  PREP1
+            from   0.00%  PSEXPT1
+            from   0.00%  EVERYSUBST00
+            from   0.00%  PSEXPT
+    177   0.05%  SIGN-ANY   (incl. 0.29%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.05%  SIGN1
+            from   0.00%  SIGN-MABS
+    172   0.05%  MUL3   (incl. 0.05%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.02%  %ESPECIAL
+            from   0.01%  EXPANINTEXPT
+            from   0.01%  RISPLIT-EXPT-GENERAL-FORM
+            from   0.01%  EXPONENTIALIZE
+    168   0.05%  SLATEC::ZMLRI   (incl. 0.08%)
+            leaf   0.05%  ALLOC-TRAMP
+            from   0.05%  SLATEC::ZBINU
+    165   0.05%  POWER-MOD   (incl. 0.05%)
+            leaf   0.05%  ALLOC-TRAMP
+            from   0.05%  MILLER-RABIN-KERNEL
+    164   0.05%  FPENTIER   (incl. 0.06%)
+            leaf   0.05%  ALLOC-TRAMP
+            from   0.03%  SIMP-FLOOR
+            from   0.02%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:TRUNCATE (BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.00%  (SB-PCL::FAST-METHOD BIGFLOAT::UNARY-FLOOR (BIGFLOAT-IMPL:BIGFLOAT))
+    163   0.05%  MAKNAM   (incl. 0.05%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            leaf   0.02%  ALLOC-TRAMP
+            leaf   0.01%  SYS-ALLOC-TRAMP
+            from   0.05%  DIMENSION
+    159   0.05%  PCONTENT   (incl. 0.05%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.05%  PFACTOR
+            from   0.00%  RZCONTENT
+    158   0.05%  SIGN-MTIMES-FINISH   (incl. 0.17%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.03%  SIGN1
+            from   0.02%  SIGNFACTOR
+    156   0.05%  RISPLIT-TIMES   (incl. 3.92%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.05%  RISPLIT
+    156   0.05%  BIGFLOAT::FIND-ROOT-SUBR   (incl. 0.92%)
+            leaf   0.05%  SYS-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.05%  %FIND-ROOT
+    150   0.05%  TESTTNEG   (incl. 0.44%)
+            leaf   0.05%  LIST-ALLOC-TRAMP
+            from   0.05%  SIMPTIMES
+    148   0.04%  MFORMAT   (incl. 0.19%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            leaf   0.00%  foreign function listify_rest_arg
+            from   0.04%  MTELL
+            from   0.01%  ERRORMSG-IMPL
+            from   0.00%  TR-FORMAT
+    148   0.04%  EXPLODEN   (incl. 0.44%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            leaf   0.02%  ALLOC-TRAMP
+            from   0.03%  FLATSIZE
+            from   0.01%  STRING*
+            from   0.01%  MFORMAT
+            from   0.00%  DIMENSION-ATOM
+    146   0.04%  PCSUBSTY   (incl. 0.04%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  QUICK-SQFR-CHECK
+            from   0.00%  ZGCD-LIFT
+            from   0.00%  LINOUT
+            from   0.00%  CONST
+    145   0.04%  FPROOT   (incl. 11.25%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:SQRT (BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.00%  EXPTBIGFLOAT
+    143   0.04%  FIND-DUPLICATE   (incl. 0.04%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  MEVAL1
+            from   0.00%  MDEFCHK
+    140   0.04%  SIGNSUM   (incl. 8.15%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  SIGN-MPLUS
+    138   0.04%  SIMPABS   (incl. 4.03%)
+            leaf   0.03%  SYS-ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.03%  PRETTY-GOOD-FLOOR-OR-CEILING
+            from   0.01%  FR1
+            from   0.00%  SIGNDIFF-SPECIAL
+            from   0.00%  MEVAL1
+    137   0.04%  PTPTDIFFER   (incl. 0.51%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.03%  PDIFFERENCE
+            from   0.01%  MEVAL1
+    137   0.04%  MID-   (incl. 0.05%)
+            leaf   0.03%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.04%  MARK+1
+            from   0.00%  MARK-1
+    134   0.04%  FREEOF-IMPL   (incl. 0.04%)
+            leaf   0.02%  foreign function listify_rest_arg
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  TOPLEVEL-$LIMIT
+            from   0.01%  LENIENT-COMPLEX-P
+            from   0.01%  MEVAL1
+            from   0.01%  SIMPSUM1
+    132   0.04%  DRAW-LINEAR   (incl. 0.04%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  OUTPUT-LINEAR
+    131   0.04%  POWER*   (incl. 0.04%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.03%  SIMPNRT
+            from   0.00%  DIV*
+            from   0.00%  DEMOIVRE
+            from   0.00%  SP1TIMES
+    130   0.04%  MFACT   (incl. 0.06%)
+            leaf   0.02%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.03%  DADDGR
+            from   0.01%  DADDGQ
+            from   0.00%  DADDEQ
+            from   0.00%  DADDNQ
+    129   0.04%  PTPTPLUS   (incl. 0.24%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.03%  PPLUS
+            from   0.01%  PALGSIMP
+    128   0.04%  LOOPP   (incl. 0.29%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.03%  M2
+            from   0.01%  ZEPOW
+    127   0.04%  FACTOROUT   (incl. 0.15%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  PFACTOR
+    127   0.04%  MONOMGCDCO   (incl. 0.13%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  PGCDA
+    126   0.04%  PSQUOREM1   (incl. 9.10%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            leaf   0.02%  ALLOC-TRAMP
+            from   0.04%  BPROG
+            from   0.00%  PGCD1
+    125   0.04%  MEQP-BY-CSIGN   (incl. 8.45%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.04%  MEQP
+    122   0.04%  MAKESTRING   (incl. 0.04%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.03%  DIMENSION-ATOM
+            from   0.01%  STRING*1
+    121   0.04%  (LABELS EXISTING-PATH-MTIME-PAIRS :IN DIRECTORY-CACHED)   (incl. 0.10%)
+            leaf   0.03%  SYS-ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.04%  DIRECTORY-CACHED
+    120   0.04%  UNKIND   (incl. 0.05%)
+            leaf   0.04%  LIST-ALLOC-TRAMP
+            from   0.04%  REMOVE1
+    118   0.04%  FPCOFRAT1   (incl. 0.04%)
+            leaf   0.04%  ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.02%  RECUR-APPLY
+            from   0.01%  TIMESK
+            from   0.00%  EXPTB
+            from   0.00%  MEVAL1
+    116   0.03%  RISPLIT-MPLUS   (incl. 3.04%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  RISPLIT
+    115   0.03%  (LABELS PREGEXP::Q-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)   (incl. 0.03%)
+            leaf   0.03%  ALLOC-TRAMP
+            from   0.03%  (LAMBDA (PREGEXP::I1) :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+            from   0.00%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+    111   0.03%  FR-ARGS   (incl. 3.71%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  FR1
+    110   0.03%  (LABELS EXPAND :IN COLLECT-DIRECTORIES)   (incl. 0.04%)
+            leaf   0.02%  ALLOC-TRAMP
+            leaf   0.01%  SYS-ALLOC-TRAMP
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            from   0.03%  DIRECTORY-CACHED
+    109   0.03%  CHEKVALUE   (incl. 0.03%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.02%  ASSIGN-MODE-CHECK
+            from   0.01%  MEVAL1
+    106   0.03%  CFACTOR   (incl. 0.43%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.01%  SIMPNRT
+            from   0.01%  FACTXN-1
+            from   0.01%  CFACTORW
+            from   0.00%  FACTXN+1
+    104   0.03%  MAPPLY1   (incl. 3.09%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.01%  MEVAL1
+            from   0.01%  IGNORE-ERRORS-MFUNCALL
+            from   0.00%  FACSUM-EXPONENT
+            from   0.00%  DEFINITELY-SO
+    104   0.03%  PREGEXP::PREGEXP-READ-BRANCH   (incl. 0.06%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  PREGEXP::PREGEXP-READ-PATTERN
+    103   0.03%  NUD-CALL   (incl. 0.24%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  PARSE
+    102   0.03%  GET-CONST-OR-INT-TERMS   (incl. 0.13%)
+            leaf   0.03%  ALLOC-TRAMP
+            from   0.02%  HAS-CONST-OR-INT-TERM
+            from   0.01%  %PIARGS-SIN/COS
+            from   0.00%  %PIARGS-TAN/COT
+    100   0.03%  COEFFT   (incl. 0.05%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.02%  COEFFPT
+            from   0.01%  LOOPP
+     99   0.03%  FACRTIMES   (incl. 0.63%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  PREP1
+     99   0.03%  COEFFPT   (incl. 0.14%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  LOOPP
+     96   0.03%  ZEPOW   (incl. 0.18%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.02%  COEFFPORT
+            from   0.01%  LOOPP
+            from   0.00%  M2
+     93   0.03%  (LABELS NRTHK2 :IN NRTHK)   (incl. 0.03%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  SIMPNRT
+     93   0.03%  NUMER   (incl. 0.31%)
+            leaf   0.03%  foreign function listify_rest_arg
+            from   0.02%  SIGN1
+            from   0.01%  SIGNDIFF
+     90   0.03%  RATINVERT   (incl. 0.03%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.02%  RATQUOTIENT
+            from   0.01%  PREP1
+            from   0.00%  PSEXPT
+            from   0.00%  PSMONSUBST1
+     90   0.03%  I-$REMOVE   (incl. 0.24%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  KILL1-ATOM
+     90   0.03%  SIMP-NUMMOD   (incl. 0.13%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.03%  MEVALARGS
+     89   0.03%  COMPUMD   (incl. 0.05%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  TREEDET
+     88   0.03%  SPANG1   (incl. 0.03%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  %ESPECIAL
+     87   0.03%  FACTXN+1   (incl. 0.10%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  FACTXN-1
+            from   0.00%  FACTXN+-1
+     87   0.03%  MONOMGCD   (incl. 0.03%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  MONOMGCDCO
+     86   0.03%  TEST-BATCH   (incl. 93.11%)
+            leaf   0.02%  ALLOC-TRAMP
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.00%  |TESTFILE rtest16|
+            from   0.00%  |TESTFILE rtest_allnummod|
+            from   0.00%  |TESTFILE rtest14|
+            from   0.00%  |TESTFILE rtest_hypgeo|
+     86   0.03%  INTL::LOCATE-DOMAIN-FILE   (incl. 0.03%)
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.03%  INTL::LOAD-DOMAIN
+     86   0.03%  LED-CALL   (incl. 0.30%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  PARSE
+     86   0.03%  SIMP-%SIN   (incl. 0.92%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.01%  FR1
+            from   0.00%  SIMPTIMES
+            from   0.00%  RECUR-APPLY
+            from   0.00%  RISPLIT
+     85   0.03%  KILL1-ATOM   (incl. 0.27%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  KILL1
+            from   0.00%  MEVAL1
+     85   0.03%  SDIFFTIMES   (incl. 0.40%)
+            leaf   0.03%  LIST-ALLOC-TRAMP
+            from   0.03%  SDIFF
+     85   0.03%  FLOAT-ZETA   (incl. 0.32%)
+            leaf   0.02%  SYS-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.00%  SYS-LIST-ALLOC-TRAMP
+            from   0.03%  SIMP-%ZETA
+     84   0.03%  SLATEC::ZABS   (incl. 0.03%)
+            leaf   0.03%  ALLOC-TRAMP
+            from   0.02%  SLATEC::ZMLRI
+            from   0.00%  SLATEC::ZBKNU
+            from   0.00%  SLATEC::ZSQRT$
+            from   0.00%  SLATEC::ZDIV
+     83   0.02%  BIGFLOAT-IMPL:-   (incl. 0.05%)
+            leaf   0.02%  SYS-ALLOC-TRAMP
+            leaf   0.00%  foreign function listify_rest_arg
+            from   0.02%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:TRUNCATE (BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:FLOOR (BIGFLOAT-IMPL:BIGFLOAT))
+     80   0.02%  RATFIX   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  RATQU
+            from   0.01%  RATTI
+            from   0.00%  RATDIVIDE
+            from   0.00%  BPROG
+     80   0.02%  FACTOR-LIST   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  ORDFN
+     79   0.02%  EXPANINTEXPT   (incl. 0.09%)
+            leaf   0.02%  ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.02%  RISPLIT-EXPT
+            from   0.00%  RISPLIT-EXPT-FIXNUM-POW
+     79   0.02%  M1   (incl. 0.07%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  ZEPOW
+            from   0.00%  COEFFPORT
+            from   0.00%  LOOPP
+            from   0.00%  EACHP
+     76   0.02%  DATUM   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  UNKIND
+            from   0.00%  MFACT
+            from   0.00%  MKILL
+            from   0.00%  FACT
+     76   0.02%  FORM-MTIMES   (incl. 0.04%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  NUM-DENOM-SPLIT
+            from   0.00%  DENOM-IMPL
+            from   0.00%  FORM-MPLUS
+            from   0.00%  NUM-IMPL
+     76   0.02%  DIVISORS   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  CYCLOTOMIC
+            from   0.00%  FACTXN-1
+            from   0.00%  FACTXN+1
+     75   0.02%  MYADD2LNC   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  LISTOFVARS-IMPL
+            from   0.01%  ATOMVARS
+     75   0.02%  MAP2C   (incl. 0.44%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  RETFACTOR
+     75   0.02%  %ESPECIAL   (incl. 2.75%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  SIMPEXPT
+            from   0.00%  TIMESIN
+     74   0.02%  FACTOROUT1   (incl. 0.03%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  PFACTOR
+     74   0.02%  FPABS   (incl. 0.02%)
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.02%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-/ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:ABS (BIGFLOAT-IMPL:BIGFLOAT))
+     73   0.02%  PTCSUB-ARGS   (incl. 0.05%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  PCSUB
+     72   0.02%  NONVANISHING-COMMON-FACTOR   (incl. 0.15%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  SIMP-%ATAN2
+     70   0.02%  SIMP-SET   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  NONVANISHING-COMMON-FACTOR
+            from   0.00%  SIMP-MAX
+            from   0.00%  MEVALARGS
+            from   0.00%  MEVAL1
+     70   0.02%  APDL   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  NEXTLEVEL
+     68   0.02%  SIMP-%COS   (incl. 0.96%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.00%  FR1
+            from   0.00%  SIMPLUS
+            from   0.00%  RECUR-APPLY
+            from   0.00%  RISPLIT-EXPT-GENERAL-FORM
+     68   0.02%  TESTA*   (incl. 0.09%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  TESTA
+     68   0.02%  FACTXN+-1   (incl. 0.15%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  PFACTOR1
+     67   0.02%  FPMINUS   (incl. 0.02%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.02%  BFLOAT-IMPL
+            from   0.00%  FPSIN
+            from   0.00%  BF-NEWEST-SL
+            from   0.00%  FPSINCOS1
+     66   0.02%  CANCEL   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  MARK+1
+     65   0.02%  SIMP-%LOG   (incl. 0.72%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.00%  FR1
+            from   0.00%  RISPLIT-EXPT-GENERAL-FORM
+            from   0.00%  SIMPTIMES
+            from   0.00%  SIMPLIFYA
+     64   0.02%  RATION1   (incl. 0.02%)
+            leaf   0.02%  ALLOC-TRAMP
+            from   0.01%  PREPFLOAT
+            from   0.01%  MAXIMA-RATIONALIZE
+     64   0.02%  RGRP   (incl. 0.02%)
+            leaf   0.02%  ALLOC-TRAMP
+            from   0.02%  SIGN
+            from   0.00%  DGR
+            from   0.00%  DINTNUM
+            from   0.00%  DLS
+     64   0.02%  SIMPSUM1   (incl. 1.15%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.02%  OPER-APPLY
+     64   0.02%  RESTORE1   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  ZEPOW
+            from   0.00%  M2
+            from   0.00%  COEFFPT
+            from   0.00%  LOOPP
+     62   0.02%  IROOT   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  CNTHROOT
+     61   0.02%  APPLY-IMPL   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  MEVAL1
+     61   0.02%  BFLOAT-IMPL   (incl. 0.80%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  TIMESIN
+            from   0.01%  PLS
+            from   0.00%  BIGFLOAT::HYPERGEOMETRIC-FLOAT-EVAL
+            from   0.00%  PRETTY-GOOD-FLOOR-OR-CEILING
+     60   0.02%  TERM-LIST   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  ORDFN
+     59   0.02%  DADDGR   (incl. 0.18%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  FORGET1
+            from   0.00%  MAKE-LIMIT-ASSUMPTIONS
+            from   0.00%  LIMIT-CONTEXT
+            from   0.00%  MEVAL1
+     59   0.02%  SCAN-MACSYMA-TOKEN   (incl. 0.18%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.01%  PEEK-ONE-TOKEN-G
+            from   0.01%  PARSE
+     58   0.02%  INTEGER-PARTITIONS   (incl. 0.02%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  foreign function make_list
+            from   0.02%  INTEGER_PARTITIONS-IMPL
+     58   0.02%  DISTRIBUTE-OVER   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  SIMPLIFYA
+     58   0.02%  LMAKE   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  FPGCDCO
+            from   0.00%  LMAKE2
+     57   0.02%  FILE-EXISTS-P   (incl. 0.02%)
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.01%  DIRECTORY-CACHED
+            from   0.00%  FILE_SEARCH-IMPL
+            from   0.00%  NEW-FILE-SEARCH
+     54   0.02%  MUL2*   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  MMOD
+            from   0.00%  DEMOIVRE
+            from   0.00%  INTEGERP1
+            from   0.00%  ISTRENGTH
+     54   0.02%  RATSUBST-IMPL   (incl. 0.83%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  EQUAL-FACTS-SIMP
+            from   0.00%  MEVAL1
+            from   0.00%  SUBSC
+     54   0.02%  FLONUM-EVAL   (incl. 0.06%)
+            leaf   0.02%  ALLOC-TRAMP
+            from   0.01%  SIMP-%SIN
+            from   0.00%  SIMP-%COS
+            from   0.00%  SIMP-%LOG
+            from   0.00%  SIMP-%SINH
+     54   0.02%  ADDF   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  MFACT
+            from   0.01%  IND1
+            from   0.00%  DADDGR
+            from   0.00%  DADDGQ
+     53   0.02%  E+   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  PSEXPT1
+            from   0.00%  PSTIMES*2
+            from   0.00%  EXPCOT-FUNS
+            from   0.00%  TSTIMES-GET-PW
+     52   0.02%  SLATEC::ZACON   (incl. 0.13%)
+            leaf   0.02%  ALLOC-TRAMP
+            from   0.02%  SLATEC:ZBESH
+     51   0.02%  RATREDUCE   (incl. 2.07%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.01%  PREP1
+            from   0.00%  RATTIMES
+            from   0.00%  RQUOTIENT
+            from   0.00%  RATEXPT
+     51   0.02%  PDIVIDE   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  RATDIVIDE
+            from   0.00%  PARTFRAC
+            from   0.00%  RATCOEF1
+            from   0.00%  DIVIDE-IMPL
+     51   0.02%  SCAN-DIGITS   (incl. 0.02%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  PARSE
+            from   0.01%  PEEK-ONE-TOKEN-G
+     51   0.02%  MFUNCALL   (incl. 0.02%)
+            leaf   0.02%  foreign function listify_rest_arg
+            from   0.00%  SUBLIST-IMPL
+            from   0.00%  FACSUM-EXPONENT
+            from   0.00%  SIMPSUM1
+            from   0.00%  DEFINITELY-SO
+     51   0.02%  (LABELS PREGEXP::ONE-OF-CHARS-LOOP :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)   (incl. 0.02%)
+            leaf   0.02%  ALLOC-TRAMP
+            from   0.01%  (LAMBDA (PREGEXP::I1) :IN PREGEXP::PREGEXP-MATCH-POSITIONS-AUX)
+            from   0.00%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+     51   0.02%  MAPFR1   (incl. 2.29%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.01%  FR-ARGS
+            from   0.00%  RATVARS-IMPL
+            from   0.00%  JOINVARLIST
+     51   0.02%  SIGNDIFF-SPECIAL   (incl. 10.94%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  SIGNDIFF
+     50   0.02%  DRAW2D   (incl. 0.10%)
+            leaf   0.02%  LIST-ALLOC-TRAMP
+            from   0.02%  (SB-PCL::FAST-METHOD PLOT2D-COMMAND (GNUPLOT-PLOT T T T))
+     49   0.01%  RATEXPT   (incl. 0.14%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  PREP1
+     49   0.01%  RESTORELIM   (incl. 0.01%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  SIGN-IMPL
+            from   0.00%  CLEAN-LIMIT-EXP
+            from   0.00%  ASKSIGN-IMPL
+     49   0.01%  RETFACTOR   (incl. 4.76%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  FFACTOR
+     48   0.01%  NEW-FILE-SEARCH   (incl. 0.24%)
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            from   0.01%  FILE_SEARCH-IMPL
+     48   0.01%  MREAD-RAW   (incl. 0.39%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  TEST-BATCH
+            from   0.00%  BATCHLOAD-STREAM
+            from   0.00%  DBM-READ
+     47   0.01%  MCONS-EXP-ARGS   (incl. 0.01%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  CONS-IMPL
+            from   0.01%  APPEND-IMPL
+     47   0.01%  TRIGRED   (incl. 0.01%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  %ESPECIAL
+     45   0.01%  PRSMATCH   (incl. 0.28%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  LED-CALL
+            from   0.00%  PARSE-MATCHFIX
+            from   0.00%  NUD-CALL
+     45   0.01%  TREEDET   (incl. 0.08%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  CHARPOLY-IMPL
+            from   0.00%  ADJOINT-IMPL
+     45   0.01%  CNTXT   (incl. 0.02%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.01%  SYS-LIST-ALLOC-TRAMP
+            from   0.01%  MFACT
+            from   0.01%  DB-GC-NOBJECTS
+            from   0.00%  DINTNUM
+     45   0.01%  MNQP   (incl. 3.68%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  SIGN-MABS
+            from   0.00%  SIMP-%ATAN2
+            from   0.00%  MEVALP1
+            from   0.00%  SIGN-LOG
+     44   0.01%  FLOATTOFP   (incl. 0.01%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.01%  ALLOC-TRAMP
+            from   0.01%  BFLOAT-IMPL
+            from   0.01%  BIGFLOAT::INTOFP
+     44   0.01%  ALGPCHK   (incl. 0.11%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  RATSETUP2
+            from   0.00%  (FLET "WRAPPER27" :IN FR1)
+     44   0.01%  EXPLODEN-FORMAT-FLOAT-PRETTY   (incl. 0.18%)
+            leaf   0.01%  ALLOC-TRAMP
+            leaf   0.00%  SYS-ALLOC-TRAMP
+            from   0.01%  EXPLODEN
+     44   0.01%  FACSUM-EXPONENT   (incl. 0.67%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  INTEGRATE-EXP-SPECIAL
+     43   0.01%  MAKE-LIMIT-ASSUMPTIONS   (incl. 0.13%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  LIMIT-CONTEXT
+     43   0.01%  RAT   (incl. 0.01%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            from   0.01%  MEVAL1
+     42   0.01%  PRODCOEF1   (incl. 0.02%)
+            leaf   0.01%  LIST-ALLOC-TRAMP
+            leaf   0.00%  ALLOC-TRAMP
+            from   0.01%  BOTHPRODCOEF
+            from   0.00%  RATCOEF

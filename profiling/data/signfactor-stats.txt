@@ -1,0 +1,15 @@
+    779545   12.270 s  linear=T NO-GAIN sign=$PNZ
+    139434    5.004 s  linear=NIL NO-GAIN sign=$PNZ
+      1593    0.068 s  linear=NIL GAINED sign=$POS
+      1591    0.050 s  linear=T GAINED sign=$POS
+       484    0.028 s  linear=NIL GAINED sign=$NEG
+       815    0.024 s  linear=T GAINED sign=$NEG
+       127    0.008 s  linear=NIL GAINED sign=$PZ
+       381    0.006 s  linear=T GAINED sign=$PN
+         7    0.004 s  linear=T GAINED sign=$COMPLEX
+        12    0.002 s  linear=NIL GAINED sign=$COMPLEX
+        74    0.001 s  linear=T GAINED sign=$NZ
+        36    0.001 s  linear=T GAINED sign=$PZ
+        14    0.001 s  linear=NIL GAINED sign=$NZ
+         9    0.000 s  linear=NIL GAINED sign=$PN
+         7    0.000 s  linear=NIL GAINED sign=$ZERO

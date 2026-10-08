@@ -1,0 +1,53 @@
+# A/B timings: run_testsuite CPU time (s), baseline (base) and prototype (new) run
+# concurrently, two repetitions. ok=1 means No unexpected errors. The
+# simplifya rows used a broken prototype (a local named OPERS bound Maxima's
+# special OPERS); simplifya2 is the corrected one. all = dollarify fpsqrt
+# genvar simplifya. best = dollarify fpsqrt simplifya signfactor mbind gc.
+dollarify-new-1 run=145.186530 gc=8.339 ok=1 
+dollarify-base-1 run=148.661984 gc=8.181 ok=1 
+dollarify-new-2 run=144.548986 gc=8.232 ok=1 
+dollarify-base-2 run=147.849488 gc=8.044 ok=1 
+fpsqrt-new-1 run=146.432648 gc=7.992 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+fpsqrt-base-1 run=151.198162 gc=8.309 ok=1 
+fpsqrt-new-2 run=147.310110 gc=8.044 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+fpsqrt-base-2 run=150.848337 gc=8.269 ok=1 
+genvar-new-1 run=151.176444 gc=8.596 ok=0 The following 1 problem failed: (49) Error summary: Error(s) found: 
+genvar-base-1 run=151.589508 gc=8.323 ok=1 
+genvar-base-2 run=156.252140 gc=8.533 ok=1 
+genvar-new-2 run=156.172872 gc=8.752 ok=0 The following 1 problem failed: (49) Error summary: Error(s) found: 
+simplifya-new-1 run=156.498130 gc=8.680 ok=0 The following 1 problem failed: (182) The following 41 problems failed: (60 64 65 74 78 79 84 85 89 98 99 100 101 110 Error summary: 
+simplifya-base-1 run=156.771323 gc=8.725 ok=1 
+simplifya-new-2 run=153.410911 gc=8.503 ok=0 The following 1 problem failed: (182) The following 41 problems failed: (60 64 65 74 78 79 84 85 89 98 99 100 101 110 Error summary: 
+simplifya-base-2 run=155.352707 gc=8.584 ok=1 
+gc-new-1 run=151.975292 gc=2.927 ok=1 
+gc-base-1 run=154.811295 gc=8.443 ok=1 
+gc-new-2 run=149.478466 gc=2.967 ok=1 
+gc-base-2 run=153.714374 gc=8.573 ok=1 
+all-new-1 run=146.960342 gc=8.228 ok=0 The following 1 problem failed: (49) The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) 
+all-base-1 run=157.478526 gc=8.605 ok=1 
+all-new-2 run=137.891369 gc=7.908 ok=0 The following 1 problem failed: (49) The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) 
+all-base-2 run=149.888295 gc=8.220 ok=1 
+signfactor-new-1 run=142.644977 gc=8.206 ok=1 
+signfactor-base-1 run=150.429125 gc=8.457 ok=1 
+signfactor-new-2 run=140.043280 gc=7.989 ok=1 
+signfactor-base-2 run=147.867604 gc=8.248 ok=1 
+simplifya2-new-1 run=149.258593 gc=8.386 ok=1 
+simplifya2-base-1 run=149.921343 gc=8.277 ok=1 
+simplifya2-new-2 run=150.113399 gc=8.426 ok=1 
+simplifya2-base-2 run=151.012538 gc=8.404 ok=1 
+mbind-new-1 run=147.996761 gc=8.419 ok=1 
+mbind-base-1 run=148.350900 gc=8.219 ok=1 
+mbind-new-2 run=149.165296 gc=8.377 ok=1 
+mbind-base-2 run=151.163904 gc=8.352 ok=1 
+signfactor-core-new-1 run=79.316828 gc=3.582 ok=1 
+signfactor-core-base-1 run=86.163015 gc=3.801 ok=1 
+signfactor-core-new-2 run=78.844602 gc=3.534 ok=1 
+signfactor-core-base-2 run=86.662229 gc=3.859 ok=1 
+best-new-1 run=129.266318 gc=2.653 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+best-base-1 run=150.904496 gc=8.326 ok=1 
+best-new-2 run=129.317122 gc=2.655 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+best-base-2 run=149.141008 gc=8.223 ok=1 
+best-core-new-1 run=68.648211 gc=1.062 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+best-core-base-1 run=84.582602 gc=3.748 ok=1 
+best-core-new-2 run=71.709249 gc=1.139 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+best-core-base-2 run=86.391457 gc=3.872 ok=1 
