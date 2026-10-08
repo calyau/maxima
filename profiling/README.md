@@ -21,9 +21,14 @@ file): `sh bootstrap && ./configure --enable-sbcl && make`.
 - "Attributed" time charges each sample to the innermost Maxima function on
   the stack, so time spent in `GET`, bignum or list primitives lands on the
   Maxima function that called them.
-- Candidate fixes were prototyped as runtime redefinitions (`prototypes/`) and
-  timed A/B on the full suite: baseline and variant run concurrently, two
-  repetitions, CPU time from `run_testsuite`'s own `time` report.
+- Candidate fixes were prototyped as runtime redefinitions (`prototypes/`).
+  The A/B figures below still come from baseline and prototype run
+  concurrently, two repetitions, and are being re-measured with `abseq.sh`:
+  one discarded warm-up run, then three rounds in which the baseline and
+  every prototype run once each, sequentially, in an order rotated per round,
+  pinned to one CPU with nothing else running. Times are `run_testsuite`'s
+  own CPU time, and each change is taken against the baseline of the same
+  round.
 
 Caveats:
 
@@ -309,7 +314,8 @@ picture.
   run into `profiling/out/`.
 - `stk.py FILES CMD ...`: queries on folded stacks (`tables`, `incl`,
   `callers`, `callees`, `tree`, `files`, `leaves`, `attr`), reads `.gz`.
-- `abrun.sh`, `abpair.sh`: A/B timing of `prototypes/*.lisp`.
+- `abrun.sh` times one run with `prototypes/*.lisp` loaded, `abseq.sh` runs
+  the interleaved rounds, `abstat.py` summarizes them.
 - `instrumentation/`: the counting wrappers behind the numbers above
   (`sfstat.lisp`, `sfdebug.lisp`, `simpstat.lisp`, `loadlog.lisp`,
   `lenlog.lisp`, `fpsqrt-check.lisp`, `fpsqrt-exact.lisp`).
