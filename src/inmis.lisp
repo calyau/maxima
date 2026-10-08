@@ -81,8 +81,10 @@
         (let ((displa-val (if non-maxima `((mprogn) ,@val) val)))
           (displa `((mtext) "reset: bind " ,key " to " ,displa-val))))
       (nconc actually-reset (list key))
+      ;; Bind a copy: code like ADD2LNC changes some of these lists in
+      ;; place, which must not change the stored initial value.
       (let ((munbindp t))
-        (meval `((msetq) ,key ((mquote) ,val)))))))
+        (meval `((msetq) ,key ((mquote) ,(copy-tree val))))))))
 
 (defmspec $reset_verbosely (L)
   (reset-do-the-work (cdr L) t))

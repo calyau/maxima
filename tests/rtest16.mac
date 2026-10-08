@@ -4439,6 +4439,18 @@ block(
 [-%e^(%i*x/2), %e^(%i*x/2), -%i*%e^(%i*x/4), %i*%e^(%i*x/6)]$
 
 
+/* Bug #5638: "reset() undoes declare(x, feature) only the first time" */
+
+block(
+ local(f1, f2),
+ declare(f1, feature),
+ reset(features),
+ declare(f2, feature),
+ reset(features),
+ [member(f1, features), member(f2, features)]);
+[false, false]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
