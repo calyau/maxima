@@ -190,6 +190,7 @@ Bug fixes for numbered bugs:
 * \#5652 Some integrals with algebraic:true cause "CQUOTIENT: quotient is not exact"
 * \#5653 Some integrals with algebraic:true cause "PTPTQUOTIENT: Polynomial quotient is not exact"
 * \#5655 linsolve returns wrong solutions for some systems with %i or radicals
+* \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 
 Bug fixes for unnumbered bugs:
 ------------------------------

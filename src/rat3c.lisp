@@ -160,7 +160,7 @@
      (setq rpol1 (pquotient pol1 gcdab))
      (desetq (gcdcd rpol2) (linhackcontent var2 pol2 nonlindeg))
      (cond ((equal gcdcd 1)
-	    (cond ((setq coeff12 (testdivide rpol2 rpol1))
+	    (cond ((setq coeff12 (testdivide* rpol2 rpol1))
 		   (return (list rpol1 gcdab coeff12)))
 		  (t (return (list 1 pol1 pol2))))))
      (cond (cofac? (desetq (gcdcoef coeff11 coeff12)

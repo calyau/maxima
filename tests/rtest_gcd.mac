@@ -164,3 +164,13 @@ block([e, s, gcd: spmod, fpprec: 40],
  s: trigsimp(trigexpand(e)),
  is(abs(bfloat(subst([a=7/10,m=13/10,r=21/10,theta=6/10], s-e))) < 10^-30));
 true;
+
+
+/* Bug #5658: "gcd and ratsimp miss some common factors that are linear in one variable" */
+
+[check_gcd((y^2+1)*(x+2), (y^2+x)*(x+2), x+2),
+ check_gcd((z^2+x)*(2*y+3), (z^2+x*y+1)*(2*y+3), 2*y+3)];
+[true, true]$
+
+ratsimp(expand((y^2+1)*(x+2))/expand((y^2+x)*(x+2)));
+(y^2+1)/(y^2+x)$
