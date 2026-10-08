@@ -6,7 +6,8 @@
 RESULTS holds abrun.sh lines (TAG-NAME-ROUND run=.. gc=.. real=.. ok=..).
 The warm-up line is ignored. For every config, prints the mean and range of
 the CPU time over the rounds, and the change against the baseline config
-BASE (default "base") computed per round, as mean and range over rounds.
+BASE (default "base") computed per round, with its mean and standard error
+over the rounds.
 """
 import re
 import statistics
@@ -47,7 +48,10 @@ def main():
         else:
             md = statistics.mean(deltas)
             per = ', '.join(f'{d:+.1f}' for d in deltas)
-            change = f'{md:+.1f} s ({100 * md / bmean:+.1f}%)'
+            se = (statistics.stdev(deltas) / len(deltas) ** 0.5
+                  if len(deltas) > 1 else float('nan'))
+            change = (f'{md:+.1f} ± {se:.1f} s '
+                      f'({100 * md / bmean:+.1f}%)')
         print(f'| {name} | {len(rs)} | {statistics.mean(cpu):.1f} '
               f'[{min(cpu):.1f}, {max(cpu):.1f}] | '
               f'{statistics.mean(gcs):.1f} | {per} | {change} | '
