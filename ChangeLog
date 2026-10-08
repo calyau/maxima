@@ -191,6 +191,7 @@ Bug fixes for numbered bugs:
 * \#5653 Some integrals with algebraic:true cause "PTPTQUOTIENT: Polynomial quotient is not exact"
 * \#5655 linsolve returns wrong solutions for some systems with %i or radicals
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
+* \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
 
 Bug fixes for unnumbered bugs:
 ------------------------------

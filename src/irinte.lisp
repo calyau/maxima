@@ -1147,6 +1147,11 @@
 	 ;; -1/sqrt(a)*log((2*a+b*x+2*sqrt(a*R))/x)
 	 ;;
 	 ;; R = c*x^2+b*x+a.
+	 ;;
+	 ;; For real x, dividing by abs(x) instead of x keeps the result
+	 ;; real. For complex x, that would make it wrong.
+	 (when (decl-complexp x)
+	   (setq exp3 (inv x)))
 	 (return (mul* -1 exp1
 		       `((%log)
 			 ,(add (mul b x exp3)
