@@ -1,53 +1,191 @@
-# A/B timings: run_testsuite CPU time (s), baseline (base) and prototype (new) run
-# concurrently, two repetitions. ok=1 means No unexpected errors. The
-# simplifya rows used a broken prototype (a local named OPERS bound Maxima's
-# special OPERS); simplifya2 is the corrected one. all = dollarify fpsqrt
-# genvar simplifya. best = dollarify fpsqrt simplifya signfactor mbind gc.
-dollarify-new-1 run=145.186530 gc=8.339 ok=1 
-dollarify-base-1 run=148.661984 gc=8.181 ok=1 
-dollarify-new-2 run=144.548986 gc=8.232 ok=1 
-dollarify-base-2 run=147.849488 gc=8.044 ok=1 
-fpsqrt-new-1 run=146.432648 gc=7.992 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
-fpsqrt-base-1 run=151.198162 gc=8.309 ok=1 
-fpsqrt-new-2 run=147.310110 gc=8.044 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
-fpsqrt-base-2 run=150.848337 gc=8.269 ok=1 
-genvar-new-1 run=151.176444 gc=8.596 ok=0 The following 1 problem failed: (49) Error summary: Error(s) found: 
-genvar-base-1 run=151.589508 gc=8.323 ok=1 
-genvar-base-2 run=156.252140 gc=8.533 ok=1 
-genvar-new-2 run=156.172872 gc=8.752 ok=0 The following 1 problem failed: (49) Error summary: Error(s) found: 
-simplifya-new-1 run=156.498130 gc=8.680 ok=0 The following 1 problem failed: (182) The following 41 problems failed: (60 64 65 74 78 79 84 85 89 98 99 100 101 110 Error summary: 
-simplifya-base-1 run=156.771323 gc=8.725 ok=1 
-simplifya-new-2 run=153.410911 gc=8.503 ok=0 The following 1 problem failed: (182) The following 41 problems failed: (60 64 65 74 78 79 84 85 89 98 99 100 101 110 Error summary: 
-simplifya-base-2 run=155.352707 gc=8.584 ok=1 
-gc-new-1 run=151.975292 gc=2.927 ok=1 
-gc-base-1 run=154.811295 gc=8.443 ok=1 
-gc-new-2 run=149.478466 gc=2.967 ok=1 
-gc-base-2 run=153.714374 gc=8.573 ok=1 
-all-new-1 run=146.960342 gc=8.228 ok=0 The following 1 problem failed: (49) The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) 
-all-base-1 run=157.478526 gc=8.605 ok=1 
-all-new-2 run=137.891369 gc=7.908 ok=0 The following 1 problem failed: (49) The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) 
-all-base-2 run=149.888295 gc=8.220 ok=1 
-signfactor-new-1 run=142.644977 gc=8.206 ok=1 
-signfactor-base-1 run=150.429125 gc=8.457 ok=1 
-signfactor-new-2 run=140.043280 gc=7.989 ok=1 
-signfactor-base-2 run=147.867604 gc=8.248 ok=1 
-simplifya2-new-1 run=149.258593 gc=8.386 ok=1 
-simplifya2-base-1 run=149.921343 gc=8.277 ok=1 
-simplifya2-new-2 run=150.113399 gc=8.426 ok=1 
-simplifya2-base-2 run=151.012538 gc=8.404 ok=1 
-mbind-new-1 run=147.996761 gc=8.419 ok=1 
-mbind-base-1 run=148.350900 gc=8.219 ok=1 
-mbind-new-2 run=149.165296 gc=8.377 ok=1 
-mbind-base-2 run=151.163904 gc=8.352 ok=1 
-signfactor-core-new-1 run=79.316828 gc=3.582 ok=1 
-signfactor-core-base-1 run=86.163015 gc=3.801 ok=1 
-signfactor-core-new-2 run=78.844602 gc=3.534 ok=1 
-signfactor-core-base-2 run=86.662229 gc=3.859 ok=1 
-best-new-1 run=129.266318 gc=2.653 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
-best-base-1 run=150.904496 gc=8.326 ok=1 
-best-new-2 run=129.317122 gc=2.655 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
-best-base-2 run=149.141008 gc=8.223 ok=1 
-best-core-new-1 run=68.648211 gc=1.062 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
-best-core-base-1 run=84.582602 gc=3.748 ok=1 
-best-core-new-2 run=71.709249 gc=1.139 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
-best-core-base-2 run=86.391457 gc=3.872 ok=1 
+# A/B timings from profiling/abseq.sh, run_testsuite CPU time in s.
+# One discarded warm-up, then interleaved rounds, sequential, pinned to
+# one CPU, nothing else running. best = dollarify fpsqrt simplifya
+# signfactor mbind gc. Summaries by profiling/abstat.py follow each set.
+
+## full
+full-warmup run=134.575328 gc=8.189 real=138.652 ok=1 
+full-base-1 run=130.454313 gc=8.031 real=132.848 ok=1 
+full-signfactor-1 run=124.820977 gc=8.006 real=127.084 ok=1 
+full-fpsqrt-1 run=132.050808 gc=8.166 real=134.448 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+full-dollarify-1 run=135.363782 gc=8.566 real=137.216 ok=1 
+full-gc-1 run=133.134176 gc=3.106 real=134.856 ok=1 
+full-mbind-1 run=133.341347 gc=8.590 real=135.284 ok=1 
+full-simplifya-1 run=129.656880 gc=8.372 real=131.476 ok=1 
+full-best-1 run=117.479252 gc=2.695 real=119.368 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+full-signfactor-2 run=126.565505 gc=8.007 real=128.424 ok=1 
+full-fpsqrt-2 run=128.582990 gc=7.883 real=130.988 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+full-dollarify-2 run=129.623669 gc=8.289 real=131.816 ok=1 
+full-gc-2 run=128.055961 gc=2.742 real=129.656 ok=1 
+full-mbind-2 run=129.997470 gc=8.382 real=131.880 ok=1 
+full-simplifya-2 run=126.559549 gc=8.067 real=128.396 ok=1 
+full-best-2 run=112.967769 gc=2.513 real=115.032 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+full-base-2 run=133.464067 gc=8.339 real=135.376 ok=1 
+full-fpsqrt-3 run=130.157601 gc=8.058 real=132.048 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+full-dollarify-3 run=130.858052 gc=8.436 real=132.672 ok=1 
+full-gc-3 run=124.948020 gc=2.756 real=126.732 ok=1 
+full-mbind-3 run=127.528440 gc=8.114 real=129.504 ok=1 
+full-simplifya-3 run=127.780085 gc=8.074 real=129.552 ok=1 
+full-best-3 run=110.342575 gc=2.535 real=112.340 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+full-base-3 run=127.842807 gc=8.126 real=129.988 ok=1 
+full-signfactor-3 run=120.808723 gc=7.776 real=123.072 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 130.6 [127.8, 133.5] | 8.2 | – | – | pass |
+| signfactor | 3 | 124.1 [120.8, 126.6] | 7.9 | -5.6, -6.9, -7.0 | -6.5 ± 0.4 s (-5.0%) | pass |
+| fpsqrt | 3 | 130.3 [128.6, 132.1] | 8.0 | +1.6, -4.9, +2.3 | -0.3 ± 2.3 s (-0.2%) | 2 problems failed: (742 743) 5 problems failed: (75 235 245 250 254) 1 problem failed: (187) |
+| dollarify | 3 | 131.9 [129.6, 135.4] | 8.4 | +4.9, -3.8, +3.0 | +1.4 ± 2.7 s (+1.0%) | pass |
+| gc | 3 | 128.7 [124.9, 133.1] | 2.9 | +2.7, -5.4, -2.9 | -1.9 ± 2.4 s (-1.4%) | pass |
+| mbind | 3 | 130.3 [127.5, 133.3] | 8.4 | +2.9, -3.5, -0.3 | -0.3 ± 1.8 s (-0.2%) | pass |
+| simplifya | 3 | 128.0 [126.6, 129.7] | 8.2 | -0.8, -6.9, -0.1 | -2.6 ± 2.2 s (-2.0%) | pass |
+| best | 3 | 113.6 [110.3, 117.5] | 2.6 | -13.0, -20.5, -17.5 | -17.0 ± 2.2 s (-13.0%) | 2 problems failed: (742 743) 5 problems failed: (75 235 245 250 254) 1 problem failed: (187) |
+
+## core
+core-warmup run=70.387163 gc=3.683 real=71.212 ok=1 
+core-base-1 run=70.929612 gc=3.686 real=71.948 ok=1 
+core-signfactor-1 run=66.875481 gc=3.453 real=67.752 ok=1 
+core-fpsqrt-1 run=69.800334 gc=3.471 real=70.708 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+core-dollarify-1 run=71.876295 gc=3.840 real=72.892 ok=1 
+core-gc-1 run=70.536371 gc=1.250 real=71.352 ok=1 
+core-mbind-1 run=75.037967 gc=3.761 real=75.952 ok=1 
+core-simplifya-1 run=71.847636 gc=3.768 real=72.788 ok=1 
+core-best-1 run=61.450077 gc=1.081 real=62.236 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+core-signfactor-2 run=69.075991 gc=3.565 real=69.956 ok=1 
+core-fpsqrt-2 run=70.010509 gc=3.485 real=70.972 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+core-dollarify-2 run=69.222851 gc=3.666 real=69.988 ok=1 
+core-gc-2 run=72.126985 gc=1.276 real=73.040 ok=1 
+core-mbind-2 run=73.789888 gc=3.783 real=74.892 ok=1 
+core-simplifya-2 run=68.937987 gc=3.644 real=69.724 ok=1 
+core-best-2 run=59.148037 gc=1.033 real=60.024 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+core-base-2 run=73.748366 gc=3.776 real=74.780 ok=1 
+core-fpsqrt-3 run=68.656696 gc=3.332 real=69.496 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+core-dollarify-3 run=69.702250 gc=3.593 real=70.680 ok=1 
+core-gc-3 run=69.819442 gc=1.250 real=70.768 ok=1 
+core-mbind-3 run=72.245476 gc=3.690 real=73.292 ok=1 
+core-simplifya-3 run=70.778097 gc=3.695 real=71.512 ok=1 
+core-best-3 run=62.999063 gc=1.093 real=63.624 ok=0 The following 2 problems failed: (742 743) The following 5 problems failed: (75 235 245 250 254) The following 1 problem failed: (187) 
+core-base-3 run=71.951294 gc=3.669 real=72.808 ok=1 
+core-signfactor-3 run=65.278496 gc=3.365 real=66.056 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 72.2 [70.9, 73.7] | 3.7 | – | – | pass |
+| signfactor | 3 | 67.1 [65.3, 69.1] | 3.5 | -4.1, -4.7, -6.7 | -5.1 ± 0.8 s (-7.1%) | pass |
+| fpsqrt | 3 | 69.5 [68.7, 70.0] | 3.4 | -1.1, -3.7, -3.3 | -2.7 ± 0.8 s (-3.8%) | 2 problems failed: (742 743) 5 problems failed: (75 235 245 250 254) 1 problem failed: (187) |
+| dollarify | 3 | 70.3 [69.2, 71.9] | 3.7 | +0.9, -4.5, -2.2 | -1.9 ± 1.6 s (-2.7%) | pass |
+| gc | 3 | 70.8 [69.8, 72.1] | 1.3 | -0.4, -1.6, -2.1 | -1.4 ± 0.5 s (-1.9%) | pass |
+| mbind | 3 | 73.7 [72.2, 75.0] | 3.7 | +4.1, +0.0, +0.3 | +1.5 ± 1.3 s (+2.1%) | pass |
+| simplifya | 3 | 70.5 [68.9, 71.8] | 3.7 | +0.9, -4.8, -1.2 | -1.7 ± 1.7 s (-2.3%) | pass |
+| best | 3 | 61.2 [59.1, 63.0] | 1.1 | -9.5, -14.6, -9.0 | -11.0 ± 1.8 s (-15.2%) | 2 problems failed: (742 743) 5 problems failed: (75 235 245 250 254) 1 problem failed: (187) |
+
+## t-fpsqrt
+tsqrt-warmup run=8.060929 gc=0.394 real=8.116 ok=1 
+tsqrt-base-1 run=7.901456 gc=0.390 real=7.952 ok=1 
+tsqrt-fpsqrt-1 run=4.931278 gc=0.274 real=4.956 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-fpsqrt-2 run=5.049282 gc=0.273 real=5.100 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-base-2 run=7.877629 gc=0.391 real=7.980 ok=1 
+tsqrt-base-3 run=8.149958 gc=0.402 real=8.220 ok=1 
+tsqrt-fpsqrt-3 run=5.216690 gc=0.312 real=5.428 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-fpsqrt-4 run=5.501530 gc=0.306 real=5.560 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-base-4 run=7.998984 gc=0.402 real=8.096 ok=1 
+tsqrt-base-5 run=7.877797 gc=0.401 real=8.0000 ok=1 
+tsqrt-fpsqrt-5 run=5.092553 gc=0.277 real=5.156 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-fpsqrt-6 run=5.016831 gc=0.284 real=5.100 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-base-6 run=7.883813 gc=0.392 real=8.028 ok=1 
+tsqrt-base-7 run=7.907526 gc=0.390 real=7.984 ok=1 
+tsqrt-fpsqrt-7 run=5.270054 gc=0.288 real=5.332 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-fpsqrt-8 run=5.723251 gc=0.296 real=5.784 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-base-8 run=7.779322 gc=0.385 real=7.868 ok=1 
+tsqrt-base-9 run=7.650916 gc=0.387 real=7.752 ok=1 
+tsqrt-fpsqrt-9 run=5.314007 gc=0.310 real=5.384 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-fpsqrt-10 run=5.298227 gc=0.292 real=5.340 ok=0 The following 2 problems failed: (742 743) 
+tsqrt-base-10 run=7.749969 gc=0.392 real=7.848 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 10 | 7.9 [7.7, 8.1] | 0.4 | – | – | pass |
+| fpsqrt | 10 | 5.2 [4.9, 5.7] | 0.3 | -3.0, -2.8, -2.9, -2.5, -2.8, -2.9, -2.6, -2.1, -2.3, -2.5 | -2.6 ± 0.1 s (-33.5%) | 2 problems failed: (742 743) |
+
+## t-dollarify
+tdol-warmup run=16.646821 gc=0.495 real=16.744 ok=1 
+tdol-base-1 run=15.328051 gc=0.470 real=15.452 ok=1 
+tdol-dollarify-1 run=15.361062 gc=0.488 real=15.480 ok=1 
+tdol-dollarify-2 run=14.410567 gc=0.461 real=14.592 ok=1 
+tdol-base-2 run=17.313971 gc=0.508 real=17.480 ok=1 
+tdol-base-3 run=15.947497 gc=0.496 real=16.036 ok=1 
+tdol-dollarify-3 run=15.292768 gc=0.483 real=15.504 ok=1 
+tdol-dollarify-4 run=14.552314 gc=0.471 real=14.700 ok=1 
+tdol-base-4 run=14.765436 gc=0.464 real=14.844 ok=1 
+tdol-base-5 run=14.373954 gc=0.460 real=14.512 ok=1 
+tdol-dollarify-5 run=14.144871 gc=0.447 real=14.364 ok=1 
+tdol-dollarify-6 run=14.946057 gc=0.469 real=15.120 ok=1 
+tdol-base-6 run=15.325386 gc=0.477 real=15.512 ok=1 
+tdol-base-7 run=15.380763 gc=0.478 real=15.616 ok=1 
+tdol-dollarify-7 run=15.126422 gc=0.467 real=15.308 ok=1 
+tdol-dollarify-8 run=15.306479 gc=0.489 real=15.416 ok=1 
+tdol-base-8 run=15.530325 gc=0.494 real=15.732 ok=1 
+tdol-base-9 run=14.533384 gc=0.466 real=14.652 ok=1 
+tdol-dollarify-9 run=16.768452 gc=0.495 real=16.936 ok=1 
+tdol-dollarify-10 run=14.570631 gc=0.468 real=14.720 ok=1 
+tdol-base-10 run=15.030031 gc=0.470 real=15.116 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 10 | 15.4 [14.4, 17.3] | 0.5 | – | – | pass |
+| dollarify | 10 | 15.0 [14.1, 16.8] | 0.5 | +0.0, -2.9, -0.7, -0.2, -0.2, -0.4, -0.3, -0.2, +2.2, -0.5 | -0.3 ± 0.4 s (-2.0%) | pass |
+
+## t-integrate
+tint-warmup run=25.932621 gc=0.675 real=26.120 ok=1 
+tint-base-1 run=26.358724 gc=0.695 real=26.696 ok=1 
+tint-mbind-1 run=25.872944 gc=0.678 real=26.272 ok=1 
+tint-simplifya-1 run=26.223458 gc=0.676 real=26.500 ok=1 
+tint-gc-1 run=25.412047 gc=0.234 real=25.624 ok=1 
+tint-mbind-2 run=25.196040 gc=0.655 real=25.492 ok=1 
+tint-simplifya-2 run=25.581000 gc=0.671 real=25.956 ok=1 
+tint-gc-2 run=27.642695 gc=0.249 real=27.912 ok=1 
+tint-base-2 run=26.136952 gc=0.673 real=26.456 ok=1 
+tint-simplifya-3 run=26.269414 gc=0.688 real=26.652 ok=1 
+tint-gc-3 run=26.786319 gc=0.253 real=26.944 ok=1 
+tint-base-3 run=27.639246 gc=0.718 real=27.944 ok=1 
+tint-mbind-3 run=25.538065 gc=0.667 real=25.852 ok=1 
+tint-gc-4 run=25.459592 gc=0.238 real=25.688 ok=1 
+tint-base-4 run=26.543284 gc=0.693 real=26.896 ok=1 
+tint-mbind-4 run=26.182565 gc=0.685 real=26.468 ok=1 
+tint-simplifya-4 run=26.969456 gc=0.666 real=27.208 ok=1 
+tint-base-5 run=25.925135 gc=0.683 real=26.136 ok=1 
+tint-mbind-5 run=25.345494 gc=0.656 real=25.676 ok=1 
+tint-simplifya-5 run=25.376346 gc=0.654 real=25.596 ok=1 
+tint-gc-5 run=25.910586 gc=0.241 real=26.296 ok=1 
+tint-mbind-6 run=23.734052 gc=0.637 real=24.016 ok=1 
+tint-simplifya-6 run=25.648494 gc=0.663 real=25.952 ok=1 
+tint-gc-6 run=25.843072 gc=0.237 real=26.092 ok=1 
+tint-base-6 run=26.215204 gc=0.686 real=26.528 ok=1 
+tint-simplifya-7 run=26.191205 gc=0.686 real=26.620 ok=1 
+tint-gc-7 run=27.824590 gc=0.246 real=28.324 ok=1 
+tint-base-7 run=26.533084 gc=0.680 real=26.808 ok=1 
+tint-mbind-7 run=26.010817 gc=0.687 real=26.392 ok=1 
+tint-gc-8 run=26.249843 gc=0.257 real=26.480 ok=1 
+tint-base-8 run=26.659488 gc=0.707 real=27.048 ok=1 
+tint-mbind-8 run=26.642355 gc=0.678 real=26.920 ok=1 
+tint-simplifya-8 run=26.422758 gc=0.676 real=26.780 ok=1 
+tint-base-9 run=25.113319 gc=0.677 real=25.372 ok=1 
+tint-mbind-9 run=25.683375 gc=0.677 real=26.020 ok=1 
+tint-simplifya-9 run=26.756469 gc=0.676 real=27.068 ok=1 
+tint-gc-9 run=25.204841 gc=0.247 real=25.452 ok=1 
+tint-mbind-10 run=24.743961 gc=0.641 real=25.064 ok=1 
+tint-simplifya-10 run=25.668365 gc=0.658 real=26.0000 ok=1 
+tint-gc-10 run=25.833254 gc=0.229 real=26.164 ok=1 
+tint-base-10 run=26.573281 gc=0.693 real=27.044 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 10 | 26.4 [25.1, 27.6] | 0.7 | – | – | pass |
+| mbind | 10 | 25.5 [23.7, 26.6] | 0.7 | -0.5, -0.9, -2.1, -0.4, -0.6, -2.5, -0.5, -0.0, +0.6, -1.8 | -0.9 ± 0.3 s (-3.3%) | pass |
+| simplifya | 10 | 26.1 [25.4, 27.0] | 0.7 | -0.1, -0.6, -1.4, +0.4, -0.5, -0.6, -0.3, -0.2, +1.6, -0.9 | -0.3 ± 0.3 s (-1.0%) | pass |
+| gc | 10 | 26.2 [25.2, 27.8] | 0.2 | -0.9, +1.5, -0.9, -1.1, -0.0, -0.4, +1.3, -0.4, +0.1, -0.7 | -0.2 ± 0.3 s (-0.6%) | pass |
+
+## DOLLARIFY calls (profiling/instrumentation, counted in one run)
+rtest_trig rtest_limit rtest_limit_gruntz: 623261 calls
+full suite: 2009245 calls
+cost per call: original 1.01 us, memoized lookup 0.004 us

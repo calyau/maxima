@@ -21,14 +21,12 @@ file): `sh bootstrap && ./configure --enable-sbcl && make`.
 - "Attributed" time charges each sample to the innermost Maxima function on
   the stack, so time spent in `GET`, bignum or list primitives lands on the
   Maxima function that called them.
-- Candidate fixes were prototyped as runtime redefinitions (`prototypes/`).
-  The A/B figures below still come from baseline and prototype run
-  concurrently, two repetitions, and are being re-measured with `abseq.sh`:
-  one discarded warm-up run, then three rounds in which the baseline and
-  every prototype run once each, sequentially, in an order rotated per round,
-  pinned to one CPU with nothing else running. Times are `run_testsuite`'s
-  own CPU time, and each change is taken against the baseline of the same
-  round.
+- Candidate fixes were prototyped as runtime redefinitions (`prototypes/`)
+  and timed with `abseq.sh`: one discarded warm-up run, then rounds in which
+  the baseline and every prototype run once each, sequentially, in an order
+  rotated per round, pinned to one CPU with nothing else running. Times are
+  `run_testsuite`'s own CPU time. Each change is taken against the baseline
+  of the same round and given as mean ± standard error over the rounds.
 
 Caveats:
 
@@ -45,9 +43,13 @@ Caveats:
 |                                     | core      | full      |
 |-------------------------------------|-----------|-----------|
 | CPU time (profiled, 2 runs)         | 85–87 s   | 150 s     |
+| CPU time (unprofiled, A/B host)     | 72.2 s    | 130.6 s   |
 | GC time                             | 5.1%      | 6.1%      |
 | bytes consed                        | 36.4 GB   | 67.6 GB   |
 | SBCL compiler running at test time  | 2.5%      | 5.2%      |
+
+The container was restarted between profiling and the A/B runs, and the
+new host is about 13% faster, so compare times only within one table.
 
 Test files with the largest share of CPU samples:
 
@@ -98,23 +100,37 @@ Top attributed Maxima functions (full suite): SBCL compiler 5.2%, GC 3.5%,
 
 ## Hot spots, ranked
 
-A/B numbers are full-suite CPU time, baseline vs prototype, mean of two
-concurrent pairs.
+Run to run, the unprofiled baseline varies by about ±2%, so three rounds of
+a whole suite resolve changes of a few seconds only. Prototypes with smaller
+effects were measured again on the test files that carry their hot spot,
+with ten rounds each.
 
-| prototype (`prototypes/`)                  | item | full suite             | tests                 |
-|--------------------------------------------|------|------------------------|-----------------------|
-| `signfactor`: no `factor` for linear sums  | 1    | −7.8 s (−5.2%)         | pass                  |
-| `fpsqrt`: `isqrt` bigfloat square root     | 3    | −4.2 s (−2.7%)         | 8 expectations change |
-| `dollarify`: memoized `DOLLARIFY`          | 4    | −3.4 s (−2.3%)         | pass                  |
-| `gc`: 4× `bytes-consed-between-gcs`        | 10   | −3.5 s (−2.3%)         | pass                  |
-| `mbind`: cheaper binding/unbinding         | 6    | −1.2 s (−0.8%)         | pass                  |
-| `simplifya`: one plist pass per dispatch   | 2    | −0.8 s (−0.5%)         | pass                  |
-| `genvar`: `MAKE-SYMBOL`, direct global set | –    | −0.2 s (−0.2%)         | 1 changes             |
-| the first six together                     |      | 150.0 → 129.3 s (−13.8%) | the 8 above |
+Whole suites, three rounds:
 
-The first six together take the core suite from 85.5 to 70.2 s (−17.9%),
-and `signfactor` alone from 86.4 to 79.1 s (−8.5%). Per-pair figures are in
-`data/ab-results.txt`. The two pairs of each prototype agree within 2 s.
+| prototype (`prototypes/`)                  | item | full, base 130.6 s     | core, base 72.2 s      | tests     |
+|--------------------------------------------|------|------------------------|------------------------|-----------|
+| `signfactor`: no `factor` for linear sums  | 1    | −6.5 ± 0.4 s (−5.0%)   | −5.1 ± 0.8 s (−7.1%)   | pass      |
+| `fpsqrt`: `isqrt` bigfloat square root     | 3    | −0.3 ± 2.3 s           | −2.7 ± 0.8 s (−3.8%)   | 8 change  |
+| `dollarify`: memoized `DOLLARIFY`          | 4    | +1.4 ± 2.7 s           | −1.9 ± 1.6 s           | pass      |
+| `gc`: 4× `bytes-consed-between-gcs`        | 10   | −1.9 ± 2.4 s           | −1.4 ± 0.5 s (−1.9%)   | pass      |
+| `mbind`: cheaper binding/unbinding         | 6    | −0.3 ± 1.8 s           | +1.5 ± 1.3 s           | pass      |
+| `simplifya`: one plist pass per dispatch   | 2    | −2.6 ± 2.2 s           | −1.7 ± 1.7 s           | pass      |
+| all six together                           |      | −17.0 ± 2.2 s (−13.0%) | −11.0 ± 1.8 s (−15.2%) | 8 change  |
+
+Targeted, ten rounds:
+
+| prototype   | test files                                    | base   | change                  |
+|-------------|-----------------------------------------------|--------|-------------------------|
+| `fpsqrt`    | `rtest14`, `rtest_hg`, `rtest_gamma`          | 7.9 s  | −2.6 ± 0.1 s (−34%)     |
+| `mbind`     | `rtest_integrate`, `rtest_abs_integrate`      | 26.4 s | −0.9 ± 0.3 s (−3.3%)    |
+| `dollarify` | `rtest_trig`, `rtest_limit`, `rtest_limit_gruntz` | 15.4 s | −0.3 ± 0.4 s         |
+| `simplifya` | `rtest_integrate`, `rtest_abs_integrate`      | 26.4 s | −0.3 ± 0.3 s            |
+| `gc`        | `rtest_integrate`, `rtest_abs_integrate`      | 26.4 s | −0.2 ± 0.3 s            |
+
+So `signfactor`, `fpsqrt` and `mbind` are measurably faster, and the six
+together save 13% of the full and 15% of the core suite. `dollarify` is too
+small for these runs but can be costed directly (item 4). `simplifya` and
+`gc` show no effect beyond the noise. All runs are in `data/ab-results.txt`.
 
 ### 1. `sign` factors every undecided sum (`SIGNFACTOR` → `FACTOR-IF-SMALL`)
 
@@ -143,8 +159,8 @@ normalization `factor` uses (coefficient of the greatest term positive, and a
 Running old and new side by side on every call of the full suite, the
 resulting sign differed in 7 of ~924k calls, all sums containing a `log`
 whose argument `factor` rewrites (old `$complex`, new `$pnz`). No test
-changed. A/B: −7.8 s (−5.2%) on the full suite and −7.3 s (−8.5%) on the core
-suite, all tests pass.
+changed. A/B: −6.5 ± 0.4 s (−5.0%) on the full suite and −5.1 ± 0.8 s
+(−7.1%) on the core suite, all tests pass.
 
 The 139k non-linear calls that gained nothing cost another 5 s, so a cheap
 test for when factoring can pay off would be the next step.
@@ -163,7 +179,8 @@ properties walk the whole list. Main callers (share of full-suite `GET3`):
   calls walking 542M plist cells: 8.6–8.7 per call for `MPLUS`/`MTIMES`,
   42–47 for `MLIST`, `MEQUAL`, `MABS` and the relational operators (three
   full misses). Prototype `prototypes/simplifya.lisp` collects all three in
-  one pass. A/B: only −0.8 s (−0.5%), all tests pass, so the walks
+  one pass. A/B: no effect beyond the noise (−0.3 ± 0.3 s on
+  `rtest_integrate` and `rtest_abs_integrate`), all tests pass, so the walks
   themselves are a small part of what `GET3` costs here.
 - `MEVAL1` function dispatch, see item 6.
 - `EQTEST` re-reads `msimpind` for every simplified sum and product.
@@ -177,7 +194,9 @@ power-of-two start with a full-precision `FPQUOTIENT` per step. For n = 2,
 `isqrt` of the shifted mantissa plus a sticky bit and one `FPROUND`
 (`prototypes/fpsqrt.lisp`) is 8–19× faster per call (56 to 3,333 bits) and
 correctly rounded, while the current `FPROOT` result is 1 ulp off in about 19%
-of random arguments at every precision tested. A/B: −4.2 s (−2.7%). Eight tests
+of random arguments at every precision tested. A/B: 7.9 → 5.2 s on `rtest14`,
+`rtest_hg` and `rtest_gamma` (−2.6 ± 0.1 s), −2.7 ± 0.8 s on the core suite.
+Eight tests
 change: `rtest_gamma` 742–743, `rtest_elliptic` 75, 235, 245, 250, 254 and
 `rtest_limit_extra` 187. All compare at or near the last bit of the old results,
 so they would need re-baselining.
@@ -195,7 +214,11 @@ roots altogether.
 `simp-%atan2`, `cabs` and the rest. `DOLLARIFY` prints and re-reads each symbol
 (`MEXPLODEN`, `READLIST`, `MAKEALIAS`). The name is only needed when the
 arity is wrong. Fix: compute it inside the error branch or at macroexpansion
-time. Prototype (memoized `DOLLARIFY`): −3.4 s (−2.3%), all tests pass.
+time. The full suite makes 2.0M `DOLLARIFY` calls at about 1.0 µs each, so
+the fix is worth about 2 s per full run (1.5%), all tests pass with the
+memoized prototype. That is below what three rounds can resolve, and ten
+rounds on `rtest_trig`, `rtest_limit` and `rtest_limit_gruntz` (623k calls,
+about 0.6 s) measured −0.3 ± 0.4 s.
 
 ### 5. Share packages loaded as Lisp source
 
@@ -247,8 +270,10 @@ variable:
   checks.
 
 Prototype `prototypes/mbind.lisp` (symbol fast path, hand-written delete):
-−1.2 s (−0.8%), all tests pass. Going further needs a different
-structure for `$values` membership, such as a hash set kept beside the list.
+−0.9 ± 0.3 s (−3.3%) on `rtest_integrate` and `rtest_abs_integrate`, which
+carry 60% of the binding cost, all tests pass. Going further needs a
+different structure for `$values` membership, such as a hash set kept beside
+the list.
 
 ### 7. Limit cache as an alist (`GETLIMVAL`/`PUTLIMVAL`)
 
@@ -283,8 +308,10 @@ this against matcher speed.
 `PCPLUS` 4.6%, `FPROUND` 4.4%, `FPDIFFERENCE` 3.8%, `TIMESIN` 3.0%.
 `HYPERGEOMETRIC-BY-SERIES` is 22.7% inclusive. Bignum results dominate.
 Prototype `prototypes/gc.lisp` raises `bytes-consed-between-gcs` from 51 to
-205 MB: GC time 8.5 → 2.9 s, total −3.5 s (−2.3%), all tests pass, at the
-cost of a larger heap.
+205 MB. GC time drops from 8.2 to 2.9 s in the full suite, but total CPU time
+moves by no more than the noise (−1.9 ± 2.4 s full, −1.4 ± 0.5 s core,
+−0.2 ± 0.3 s on the integrate files), so the GC time saved is apparently paid
+back elsewhere. Cutting allocation itself is the better lever.
 
 ### Smaller items
 
@@ -292,7 +319,8 @@ cost of a larger heap.
   `GENSYM` per variable on each `ratrep*`, then `SET` on every genvar. Using
   `MAKE-SYMBOL` and writing the global value directly saved nothing measurable
   (≤0.3%) and changed `rtest15` #49 (genvar names matter for ordering
-  somewhere), so not worth it as is. (A/B −0.2 s.)
+  somewhere), so not worth it as is. (−0.2 s in an early concurrent
+  screening, not re-measured.)
 - `FPROUND` binds `*print-base*` and `*print-radix*` on every call though only
   the decimal branch needs them.
 - `NORMALIZED-MODULUS` (1.4% full) is generic `mod` on bignums in modular
@@ -318,11 +346,11 @@ picture.
   the interleaved rounds, `abstat.py` summarizes them.
 - `instrumentation/`: the counting wrappers behind the numbers above
   (`sfstat.lisp`, `sfdebug.lisp`, `simpstat.lisp`, `loadlog.lisp`,
-  `lenlog.lisp`, `fpsqrt-check.lisp`, `fpsqrt-exact.lisp`).
+  `dolcount.lisp`, `lenlog.lisp`, `fpsqrt-check.lisp`, `fpsqrt-exact.lisp`).
 - `data/`: per-run summaries, sb-sprof flat reports, attribution and per-file
   tables, folded stacks (`*.folded.gz`), combined tables
   (`tables-core.txt`, `tables-full.txt`), share load times, SIGNFACTOR
-  statistics, A/B results.
+  statistics, A/B runs and their summaries (`ab-results.txt`).
 
 Reproduce: build, run the full suite once (compiles the `.system` share
 packages), then
@@ -330,6 +358,12 @@ packages), then
     profiling/runprof.sh core-cpu :cpu 0.004 ''
     profiling/runprof.sh full-cpu :cpu 0.004 'share_tests=true'
     profiling/stk.py profiling/out/full-cpu.folded tables 40
+
+A/B timing of prototypes, for example:
+
+    PIN=3 profiling/abseq.sh full 3 'share_tests=true' \
+      base= signfactor=signfactor best=signfactor+fpsqrt > full.txt
+    profiling/abstat.py full.txt
 
 Flame graph with Brendan Gregg's `flamegraph.pl`:
 
