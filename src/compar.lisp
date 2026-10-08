@@ -2480,8 +2480,22 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;;; end compare min/max
 
 (defun sign-posfun (xx)
-  (declare (ignore xx))
-  (setq sign '$pos
+  ;; A function declared $POSFUN is positive for real arguments, and for all if
+  ;; it is also declared $REAL. Take the signs of the arguments anyways, to not
+  ;; swallow errors (IMAG-ERR, division by zero, log(0)).
+  ;; If any argument is non-real, return $COMPLEX.
+  (setq sign (let* ((realp (or (get (caar xx) 'real-valued) ; 2 ways to declare
+                               (kindp (caar xx) '$real)))   ; a function real
+                    (sgns (mapcar #'(lambda (a)
+                                      (if realp
+                                        (let ((sign-imag-errp nil))
+                                          (catch 'sign-imag-err (sign* a)))
+                                        (sign* a)))
+                                  (margs xx))))
+               (if (and (not realp)
+                        (intersection sgns '($imaginary $complex)))
+                 '$complex
+                 '$pos))
 	minus nil
 	odds nil
 	evens nil))

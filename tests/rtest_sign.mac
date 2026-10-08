@@ -3032,6 +3032,40 @@ block([x, y],
 [pos, true]$
 
 
+/* Bug #5596: "csign() of a posfun is pos even for complex arguments, so abs(erfc(%i)) = erfc(%i)" */
+
+block([c, b, f, h],
+ local(c, b, f, h),
+ declare(c, complex, b, imaginary, f, posfun, h, posfun, h, real),
+ [csign(cosh(c)), csign(sech(c)), csign(erfc(c)), csign(erfc(b)),
+  csign(erfc(%i)), csign(cosh(1 + %i)), csign(f(c)),
+  csign(cosh(x)), csign(erfc(x)), csign(f(x)), csign(erfc(2)),
+  csign(h(c)), csign(h(b))]);
+[complex, complex, complex, complex, complex, complex, complex,
+ pos, pos, pos, pos, pos, pos]$
+
+block([c],
+ local(c),
+ declare(c, complex),
+ [is(abs(cosh(c)) = cosh(c)), is(sqrt(cosh(c)^2) = cosh(c)),
+  abs(erfc(%i)) - cabs(erfc(%i))]);
+[false, false, 0]$
+
+block([c, b, f, h],
+ local(c, b, f, h),
+ declare(c, complex, b, imaginary, f, posfun, h, posfun, h, real),
+ [errcatch(sign(erfc(%i))), errcatch(sign(erfc(%i*x))), errcatch(sign(f(b))),
+  is(f(b) > 0), sign(erfc(c)), sign(h(b)), is(h(b) > 0)]);
+[[], [], [], false, pos, pos, true]$
+
+block([a, h],
+ local(a, h),
+ declare(h, posfun, h, real),
+ assume(equal(a, 0)),
+ [errcatch(sign(h(1/a))), errcatch(sign(h(log(a)))), sign(h(%i))]);
+[[], [], pos]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
