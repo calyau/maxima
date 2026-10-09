@@ -169,8 +169,11 @@ with a full-precision division per step, and is 1 ulp off for about 19% of
 arguments. Nearly all calls are square roots (bigfloat `sqrt`, `abs` of
 complex bigfloats). For `n = 2`, `FPROOT-SQRT` takes `ISQRT` of the mantissa,
 shifted so the root has two guard bits, adds a sticky bit if the root is
-inexact, and rounds once with `FPROUND`: always correctly rounded, 8 to 19
-times faster per call at 56 to 3,333 bits. Zero, negative arguments and
+inexact, and rounds once with `FPROUND`: always correctly rounded, 11 to 20
+times faster per call from 5 to 100,000 digits, for random arguments and
+for exact squares. It only does integer arithmetic on the exponent, while
+`FPROOT` builds its start value `2^(e/2)` by repeated squaring, which takes
+about 1 s for an exponent near `2^100000`. Zero, negative arguments and
 decimal bigfloats still go the old way. The name `FPSQRT` is taken in
 `src/cpoly.lisp`.
 
