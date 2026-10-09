@@ -523,11 +523,13 @@ are always correctly rounded, and sqrt() of a bigfloat at fpprec : 100
 is about 4.5 times faster. This speeds up bigfloat hypergeometric and
 elliptic functions.
 
-Some tests failed because they compared two computed values with each
-other, or used tolerances below the accuracy of the tested function.
-They now compare with correct values. rtest_limit_extra 187 fails
-because of an existing limit() bug (#NNNN) and is listed as an
-expected failure.
+The old tolerances were fitted to the rounding errors of the old
+results, some even below one ulp, so any change in the last bits broke
+them, even one toward the correct value. The tests now compare with
+correct values, and their tolerances reflect the real accuracy of the
+tested functions, which depends on far more than the square root.
+rtest_limit_extra 187 fails because of an existing limit() bug (#NNNN)
+and is listed as an expected failure.
 
 AI-Assisted-By: Claude Opus 5.5
 ```
