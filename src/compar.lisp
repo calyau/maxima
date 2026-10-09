@@ -1944,7 +1944,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun signfactor (x)
   (let (y (factored t))
-    (setq y (factor-if-small x))
+    (setq y (or (factor-linear-sum x) (factor-if-small x)))
     (cond ((or (mplusp y) (> (conssize y) 50.))
 	   (setq sign '$pnz)
 	   nil)
@@ -1957,6 +1957,28 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (let ($ratprint $factor_max_degree_print_warning)
 	(declare (special $ratprint)) ; Really necessary? $RATPRINT is in globals.lisp!
 	(factor x)) x))
+
+;; For a sum with rational coefficients that is linear in its kernels, as most
+;; sums that reach SIGNFACTOR are, FACTOR can only pull out the numeric content
+;; and make the coefficient of the last term positive. This does the same much
+;; faster. It returns X when that changes nothing, and NIL for any other sum.
+;; The product stays unsimplified, as MUL would distribute a content of -1.
+(defun factor-linear-sum (x)
+  (flet ((linear-kernel-p (e)
+           (or (atom e) (not (member (caar e) '(mplus mtimes mexpt))))))
+    (let ((g 0) (l 1) c)
+      (dolist (term (cdr x))
+        (setq c (cond ((mnump term) term)
+                      ((linear-kernel-p term) 1)
+                      ((and (mtimesp term) (null (cdddr term))
+                            (linear-kernel-p (caddr term)))
+                       (cadr term))))
+        (unless (or (integerp c) (ratnump c))
+          (return-from factor-linear-sum nil))
+        (setq g (gcd g (num1 c)) l (lcm l (denom1 c))))
+      (setq g (div (if (minusp (num1 c)) (- g) g) l))
+      (if (eql g 1) x
+        `((mtimes) ,g ,(addn (mapcar #'(lambda (e) (div e g)) (cdr x)) t))))))
 
 (defun sign-mexpt (x)
   (let* ((expt (caddr x)) (base1 (cadr x))
