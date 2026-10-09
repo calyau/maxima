@@ -539,25 +539,33 @@ The correct values are `0.2282498061811287`, `-0.2325715776527406*%i` and `0.828
 The tests 240 to 250 in `rtest_elliptic.mac` do not notice, because they only check that `sin(jacobi_am(z, m))` equals `jacobi_sn(z, m)`.
 ````
 
-**Commit message:**
+**Commit message.** Drop the Jacobi paragraph if the `jacobi_sn()` fix is
+in, and the paragraph on 187 if the `limit()` fix is in:
 
 ```
-Compute bigfloat square roots exactly and faster
+Make bigfloat sqrt() correctly rounded and faster
 
-Bigfloat square roots came from a Newton iteration with a full
-division in every step, and about one in five was off in the last
-bit. Now they come from an integer square root of the mantissa and
-are always correctly rounded, and sqrt() of a bigfloat at fpprec : 100
-is about 4.5 times faster. This speeds up bigfloat hypergeometric and
-elliptic functions.
+Bigfloat square roots were computed by a Newton iteration with a full
+division in every step, and about one in five was rounded incorrectly.
 
-The old tolerances were fitted to the rounding errors of the old
+Now they come from the integer square root (ISQRT) of the mantissa.
+The results are always correctly rounded, and sqrt() of a bigfloat at
+fpprec : 100 is about 4.5 times faster. This speeds up many bigfloat
+functions, since square roots are so common.
+
+Some tests used tolerances fitted to the rounding errors of the old
 results, some even below one ulp, so any change in the last bits broke
-them, even one toward the correct value. The tests now compare with
+them, even one toward the correct value. These tests now compare with
 correct values, and their tolerances reflect the real accuracy of the
 tested functions, which depends on far more than the square root.
-rtest_limit_extra 187 fails because of an existing limit() bug (#NNNN)
-and is listed as an expected failure.
+
+The Jacobi functions have accuracy problems of their own (bug #5663),
+which the new tests expose and the new square root makes slightly more
+visible. Until they are fixed, two tests in rtest_elliptic have larger
+tolerances.
+
+rtest_limit_extra 187 now fails because of an existing limit() bug
+(#NNNN) and is listed as an expected failure.
 
 AI-Assisted-By: Claude Opus 5.5
 ```
