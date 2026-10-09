@@ -198,9 +198,37 @@ the same functions evaluated at twice the precision:
 | `rtest_elliptic` 245, 250 | `sin(jacobi_am(z, m))` with `jacobi_sn(z, m)`, largest gap for `m = .5b0` and `1.75b0+%i` | 1.8e-32, 4.81e-32 | 7.4e-32, 4.82e-32 |
 | `rtest_limit_extra` 187 | `limit(atan(x), x, bfloat(sqrt(2)))` with `atan(bfloat(sqrt(2)))` | equal | `ind`, see the bug report below |
 
-So `inverse_erf`, `elliptic_kc` and `elliptic_e` get more accurate, and
-`jacobi_am` stays within 1 ulp, where the old result happened to be exact.
-The tests at 235 and 254 allow less than 2 ulp of difference to a literal.
+So `elliptic_kc` and `elliptic_e` get more accurate, and `jacobi_am` stays
+within 1 ulp, where the old result happened to be exact. The tests at 235
+and 254 allow less than 2 ulp of difference to a literal.
+
+`inverse_erf` is as accurate as before: over 40 arguments from 1.05 to 3,
+its mean error is 2.6e-24 with both square roots. The round trip through
+`erf()` fails because `erf()` itself is only accurate to 6e-24 on average
+at `fpprec : 24`, and to 2.6e-23 at worst, so a tolerance of 5.9e-24 tests
+noise. The continued fraction in `complex-bfloat-gamma-incomplete` stops
+at a relative change of `10^-fpprec`, about 5 ulp, and rounding errors add
+up over hundreds of iterations. The Newton iteration of `inverse_erf`
+starts from a value built with complex square roots, so a different last
+bit there makes it stop a few ulps away, where the error of `erf()`
+differs. Over the 40 arguments, the round trip exceeds 5.9e-24 in 21
+cases before the patch and in 23 after. Comparing `inverse_erf()` with a
+reference value instead passes before and after:
+
+```
+relerror(
+ inverse_erf(2b0),
+ 8.694175653261841213253760328274b-1 - 1.340594818530277116093626874327b0*%i,
+ 1b-23);
+true;
+
+relerror(
+ inverse_erf(-2b0),
+ -8.694175653261841213253760328274b-1 + 1.340594818530277116093626874327b0*%i,
+ 1b-23);
+true;
+```
+
 `jacobi_sn` gets worse for some `m`: over 80 arguments its mean relative
 error at `fpprec : 32` goes from 1.8e-32 to 7.1e-32 for `m = 0.1`, from
 3.6e-32 to 1.8e-31 for `m = 0.5`, and stays at 9.2e-32 for `m = 0.9`. Its
