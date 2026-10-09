@@ -70,7 +70,7 @@ differed in 7 of 924,000 calls, all sums with a `log` whose argument
 
 ```diff
 diff --git a/src/compar.lisp b/src/compar.lisp
-index 360d968..3bf4281 100644
+index 360d968..d4ae78b 100644
 --- a/src/compar.lisp
 +++ b/src/compar.lisp
 @@ -1944,7 +1944,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
@@ -82,35 +82,27 @@ index 360d968..3bf4281 100644
      (cond ((or (mplusp y) (> (conssize y) 50.))
  	   (setq sign '$pnz)
  	   nil)
-@@ -1958,6 +1958,39 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
+@@ -1958,6 +1958,31 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
  	(declare (special $ratprint)) ; Really necessary? $RATPRINT is in globals.lisp!
  	(factor x)) x))
  
-+;; Most sums that reach SIGNFACTOR are linear in their kernels, and FACTOR can
-+;; only pull a numeric content out of those. FACTOR-LINEAR-SUM does just that,
-+;; much faster: for a sum X with rational coefficients, it returns X itself or
-+;; the content times the primitive sum, with the coefficient of the last term
-+;; made positive as FACTOR does. It returns NIL for any other sum. The product
-+;; is left unsimplified, since MUL would distribute a content of -1 again, and
-+;; it only goes to SIGN.
++;; For a sum with rational coefficients that is linear in its kernels, as most
++;; sums that reach SIGNFACTOR are, FACTOR can only pull out the numeric content
++;; and make the coefficient of the last term positive. This does the same much
++;; faster. It returns X when that changes nothing, and NIL for any other sum.
++;; The product stays unsimplified, as MUL would distribute a content of -1.
 +(defun factor-linear-sum (x)
-+  (let ((g 0) (l 1) (c 1))
++  (let ((g 0) (l 1) c)
 +    (dolist (term (cdr x))
-+      (setq c (cond ((or (integerp term) (ratnump term)) term)
-+                    ((mnump term) (return-from factor-linear-sum nil))
++      (setq c (cond ((mnump term) term)
 +                    ((linear-kernelp term) 1)
 +                    ((and (mtimesp term) (null (cdddr term))
-+                          (or (integerp (cadr term)) (ratnump (cadr term)))
 +                          (linear-kernelp (caddr term)))
-+                     (cadr term))
-+                    (t (return-from factor-linear-sum nil))))
-+      (if (integerp c)
-+          (setq g (gcd g c))
-+          (setq g (gcd g (cadr c)) l (lcm l (caddr c)))))
-+    (setq g (div g l))
-+    ;; C is the coefficient of the last term now.
-+    (when (mminusp c)
-+      (setq g (neg g)))
++                     (cadr term))))
++      (unless (or (integerp c) (ratnump c))
++        (return-from factor-linear-sum nil))
++      (setq g (gcd g (num1 c)) l (lcm l (denom1 c))))
++    (setq g (div (if (minusp (num1 c)) (- g) g) l))
 +    (if (eql g 1)
 +        x
 +        (list '(mtimes) g
@@ -123,6 +115,23 @@ index 360d968..3bf4281 100644
    (let* ((expt (caddr x)) (base1 (cadr x))
  	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
 ```
+
+**Examples,** executed, next to what `factor()` gives. The products of
+`FACTOR-LINEAR-SUM` are unsimplified, hence `-1*(x-1)`:
+
+| sum | `FACTOR-LINEAR-SUM` | `factor()` |
+|-----|---------------------|------------|
+| `2*a-2*b` | `-2*(b-a)` | `-2*(b-a)` |
+| `a/2-b/2` | `(-1/2)*(b-a)` | `-((b-a)/2)` |
+| `3/2-(3*x)/2` | `(-3/2)*(x-1)` | `(-3*(x-1))/2` |
+| `4*sin(y)+6*x+2` | `2*(2*sin(y)+3*x+1)` | `2*(2*sin(y)+3*x+1)` |
+| `1-x` | `-1*(x-1)` | `-(x-1)` |
+| `b+a+1` | the sum itself | `b+a+1` |
+| `x^2-1` | NIL, a power | `(x-1)*(x+1)` |
+| `a*b+2*a` | NIL, a product of kernels | `a*(b+2)` |
+| `c+2*(b+a)` | NIL, a sum in a product | `c+2*b+2*a` |
+| `0.5*x+1` | NIL, a float | `(x+2)/2` |
+| `sqrt(2)*x+2` | NIL, an irrational coefficient | `sqrt(2)*x+2` |
 
 **Proposed test,** in `tests/rtest_sign.mac` before the block marked "Leave
 this at the end of the file!". Same result before and after the patch:
