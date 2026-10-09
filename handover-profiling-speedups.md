@@ -223,6 +223,12 @@ cancellation-free form would be a separate change.
 `rtest_elliptic` pass with and without the patch, and `rtest_limit_extra`
 fails only at 187 with it.
 
+If the `limit()` fix in `handover-limit-bigfloat-point.md` goes in first,
+187 passes with this patch and needs no registry entry. If the
+`jacobi_sn()` fix in `handover-jacobi-sn-digits.md` goes in first, its
+versions of 245 and 250 pass with this patch, so skip those two here. The
+other changes are needed either way.
+
 `tests/rtest_gamma.mac` 742 and 743: check both functions against correct
 values instead of the round trip.
 
