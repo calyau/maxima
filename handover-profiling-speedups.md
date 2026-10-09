@@ -177,6 +177,15 @@ decimal bigfloats still go the old way. The name `FPSQRT` is taken in
 **Effect.** −2.6 ± 0.1 s (−34%) on `rtest14`, `rtest_hg` and `rtest_gamma`,
 where nearly all square roots happen, −2.7 ± 0.8 s (−3.8%) on the core suite.
 
+**Accuracy.** Over 32,000 arguments (5,000 non-square integers and 5,000
+random values in [1, 4) at `fpprec` 16, 30 and 100, 1,000 of each at
+1000), the old root is correctly rounded for 81% of them, with errors up
+to 0.70 ulp, and the new one for all. Squaring back with `^2` is a weak
+check, since even a correctly rounded root gives back `x` only about half
+the time. Both do that equally often, but the old root misses by 2 ulp in
+2 to 4% of the cases and the new one never by more than 1. Squared
+exactly, without rounding, the new root is always the closest bigfloat.
+
 **Needs a decision before committing.** Eight tests change. Errors against
 the same functions evaluated at twice the precision:
 
