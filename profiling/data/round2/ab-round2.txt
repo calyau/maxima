@@ -109,3 +109,48 @@ core-r2-3 run=55.125347 gc=2.898 real=56.096 ok=1
 | base | 3 | 60.8 [60.5, 61.1] | 3.1 | – | – | pass |
 | r2 | 3 | 54.7 [54.2, 55.1] | 2.9 | -6.3, -6.9, -5.4 | -6.2 ± 0.4 s (-10.1%) | pass |
 
+
+== mabsx (item 2 variants, with items 1 and 3)
+mabsx-warmup run=31.858700 gc=1.207 real=32.184 ok=1 
+mabsx-base-1 run=31.689324 gc=1.195 real=31.992 ok=1 
+mabsx-old3-1 run=26.953294 gc=0.955 real=27.240 ok=1 
+mabsx-new3-1 run=26.904691 gc=0.996 real=27.096 ok=1 
+mabsx-old3-2 run=27.254898 gc=0.966 real=27.708 ok=1 
+mabsx-new3-2 run=27.169645 gc=1.008 real=27.376 ok=1 
+mabsx-base-2 run=30.830167 gc=1.174 real=31.092 ok=1 
+mabsx-new3-3 run=27.084034 gc=1.004 real=27.404 ok=1 
+mabsx-base-3 run=31.094708 gc=1.162 real=31.456 ok=1 
+mabsx-old3-3 run=27.071482 gc=0.959 real=27.460 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 31.2 [30.8, 31.7] | 1.2 | – | – | pass |
+| old3 | 3 | 27.1 [27.0, 27.3] | 1.0 | -4.7, -3.6, -4.0 | -4.1 ± 0.3 s (-13.2%) | pass |
+| new3 | 3 | 27.1 [26.9, 27.2] | 1.0 | -4.8, -3.7, -4.0 | -4.2 ± 0.3 s (-13.3%) | pass |
+
+== pfull, pcore (handover patch built in: new; same build with the old definitions loaded: old)
+pfull-warmup run=112.146793 gc=7.183 real=113.724 ok=1 
+pfull-old-1 run=111.823970 gc=7.177 real=113.436 ok=1 
+pfull-new-1 run=100.911434 gc=6.784 real=102.404 ok=1 
+pfull-new-2 run=100.047308 gc=6.690 real=101.584 ok=1 
+pfull-old-2 run=110.468736 gc=7.095 real=111.996 ok=1 
+pfull-old-3 run=111.588807 gc=7.181 real=113.244 ok=1 
+pfull-new-3 run=98.434476 gc=6.673 real=99.864 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs old, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| old | 3 | 111.3 [110.5, 111.8] | 7.2 | – | – | pass |
+| new | 3 | 99.8 [98.4, 100.9] | 6.7 | -10.9, -10.4, -13.2 | -11.5 ± 0.8 s (-10.3%) | pass |
+
+pcore-warmup run=57.102890 gc=2.926 real=57.608 ok=1 
+pcore-old-1 run=56.205981 gc=2.919 real=56.608 ok=1 
+pcore-new-1 run=50.050065 gc=2.625 real=50.448 ok=1 
+pcore-new-2 run=50.256454 gc=2.629 real=50.568 ok=1 
+pcore-old-2 run=56.002385 gc=2.905 real=56.468 ok=1 
+pcore-old-3 run=55.420347 gc=2.903 real=55.796 ok=1 
+pcore-new-3 run=49.097472 gc=2.587 real=49.360 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs old, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| old | 3 | 55.9 [55.4, 56.2] | 2.9 | – | – | pass |
+| new | 3 | 49.8 [49.1, 50.3] | 2.6 | -6.2, -5.7, -6.3 | -6.1 ± 0.2 s (-10.9%) | pass |

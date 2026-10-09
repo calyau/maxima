@@ -391,7 +391,10 @@ Whole suites, three rounds:
 |-------------------------------------|------------------------|------------------------|
 | `r2`: items 1–5                     | −10.5 ± 0.3 s (−9.2%)  | −6.2 ± 0.4 s (−10.1%)  |
 
-All runs pass. `ab-round2.txt` in `data/round2/` has every run.
+All runs pass. The patch in `handover-speedups-round2.md` (items 1–5, item 2
+as `mabscsign`), built in and timed against the same build with the old
+definitions loaded: core −6.1 ± 0.2 s (−10.9%), full −11.5 ± 0.8 s (−10.3%).
+`ab-round2.txt` in `data/round2/` has every run.
 
 ### 1. `SIGNDIFF-SPECIAL` calls `EXPT-OF-BASE` before the cheap tests
 
@@ -429,10 +432,14 @@ A plain skip loses real cases: under `assume(notequal(x+y,0))`,
 `sign(abs((x+1)^2-x^2-2*x+y^2))` is `pos` only because ratsimp turns the
 argument into `y^2+1`. `prototypes/mabsrewrite.lisp` keeps both: for `pnz`
 it runs the cheap part of `MEQP` (`PROVABLY-NONZERO-P` and `DCOMPARE`) and
-calls `MNQP` only when ratsimp and the equality facts rewrite `-e`. It is not
-strictly equivalent: when the rewrite changes nothing, `$csign` could still
-answer differently than the `sign` that just failed, since it rebinds
-`limitp` and `factored`. That never occurred in either suite.
+calls `MNQP` only when ratsimp and the equality facts rewrite `-e`.
+`prototypes/mabscsign.lisp`, the version for a patch, keeps all of `MEQP`
+instead: `MEQP` and `MNQP` take an optional `csign`, and with it false `MEQP`
+skips only its final `csign` when ratsimp changes nothing. Both are equally
+fast (−4.1 ± 0.3 and −4.2 ± 0.3 s with items 1 and 3, `ab-round2.txt`).
+Neither is strictly equivalent: when the rewrite changes nothing, `$csign`
+could still answer differently than the `sign` that just failed, since it
+rebinds `limitp` and `factored`. That never occurred in either suite.
 
 ### 3. `SIGN-LOG` computes each comparison twice
 
@@ -525,7 +532,7 @@ are `fourier_elim`, `stringproc`, `to_poly_solve`, `grobner`, `numdistrib`,
   statistics, A/B runs and their summaries (`ab-results.txt`).
 - Round 2: `data/round2/` (same files, plus `ab-round2.txt`), `rounds.py`
   (subsystem shares of both rounds), prototypes `exptofbase`, `mabsrewrite`,
-  `signlog`, `limhash`, `scalarclass`, `modfix`, `faslcache`, and
+  `mabscsign`, `signlog`, `limhash`, `scalarclass`, `modfix`, `faslcache`, and
   instrumentation `eobcount.lisp`, `mabscount.lisp`, `mabsalike.lisp`,
   `scalarclasscount.lisp` (with `scalarclass-setup.mac`).
 
