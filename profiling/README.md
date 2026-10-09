@@ -334,6 +334,178 @@ Reading test files (`MREAD`) is 0.5–0.6% and result comparison
 (`BATCH-EQUAL-CHECK`) 0.3%, so the harness itself does not distort the
 picture.
 
+## Round 2: master with the first three patches
+
+Master at `eec2fa780`, which has the `sign` shortcut for linear sums
+(`4fa98b94a`), the cheaper `def-simplifier` (`3d4c7d2af`) and the new bigfloat
+square root (`eec2fa780`). Same build and method as above: one unprofiled
+warm-up, two `:cpu` runs per suite at 4 ms, one `:alloc` run of the full
+suite, all reporting `No unexpected errors`. Data in `data/round2/`.
+
+|                                     | core          | full            |
+|-------------------------------------|---------------|-----------------|
+| CPU time (profiled, 2 runs)         | 62.5–63.2 s   | 116.4–117.2 s   |
+| CPU time (unprofiled, A/B baseline) | 60.8 s        | 114.6 s         |
+| GC time                             | 6.2%          | 7.6%            |
+| bytes consed                        | 29.0 GB       | 59.0 GB         |
+
+Round 1 profiled on a slower host, so the comparison uses shares
+(`rounds.py`):
+
+| subsystem (frame on stack)              | core r1 | core r2 | full r1 | full r2 |
+|-----------------------------------------|---------|---------|---------|---------|
+| `limit`                                 | 32.3%   | 29.0%   | 19.8%   | 16.2%   |
+| `sign` (`SIGN1`)                        | 24.6%   | 17.6%   | 20.1%   | 14.2%   |
+| `MEQP` (equality via `csign`)           | 12.7%   | 10.2%   | 10.0%   |  7.9%   |
+| `ratsimp` (`FULLRATSIMP`/`SRATSIMP`)    | 21.2%   | 17.0%   | 20.1%   | 16.5%   |
+| `integrate`                             | 17.8%   | 20.0%   | 14.3%   | 15.0%   |
+| `factor`                                | 15.5%   |  8.2%   | 11.2%   |  5.5%   |
+| bigfloat arithmetic (`FP*`)             |  8.7%   |  4.2%   |  5.8%   |  3.0%   |
+| `taylor`                                |  6.6%   |  7.0%   |  4.1%   |  4.1%   |
+| SBCL compiler at test time              |  2.6%   |  3.5%   |  5.4%   |  6.5%   |
+
+`factor` and `FP*` halved, as expected. Everything else now has a larger share
+of a smaller total. Top test files: core `rtest_integrate` 22.0%,
+`rtest_limit_extra` 12.0%, `rtest_limit_gruntz` 8.2%, `rtest_limit` 6.5%,
+`rtest_trig` 5.8%. Full `rtest_integrate` 11.8%, `rtest_abs_integrate` 10.4%,
+`rtest_matrixexp` 6.9%, `rtest_limit_extra` 6.3%, `rtest_limit_gruntz` 4.4%,
+`rtest_cholesky` 4.3%.
+
+### Measured gains
+
+Prototypes are in `prototypes/` as before. Targeted runs, three rounds after a
+discarded warm-up:
+
+| prototype     | item | test files (baseline)                                          | change                |
+|---------------|------|----------------------------------------------------------------|-----------------------|
+| `exptofbase`  | 1    | `rtest_limit_extra`, `rtest_trig`, `rtest_limit`, `rtest16`, `rtest_integrate` (32.1 s) | −2.6 ± 0.1 s (−8.1%)  |
+| + `mabsrewrite` | 2  | same                                                           | −3.4 ± 0.3 s (−10.6%) |
+| + `signlog`   | 3    | same                                                           | −4.3 ± 0.2 s (−13.5%) |
+| `limhash`     | 4    | `rtest_limit_extra`, `rtest_limit_gruntz`, `rtest_limit` (17.2 s) | −1.5 ± 0.3 s (−8.9%) |
+| `scalarclass` | 5    | `rtest_cholesky`, `rtest_matrixexp` (12.1 s)                    | −1.9 ± 0.3 s (−15.9%) |
+| `modfix`      | –    | the limit files / `rtest_cholesky`, `rtest_matrixexp`           | −0.0 ± 0.3 s / −0.3 ± 0.4 s |
+
+Whole suites, three rounds:
+
+| config                              | full, base 114.6 s     | core, base 60.8 s      |
+|-------------------------------------|------------------------|------------------------|
+| `r2`: items 1–5                     | −10.5 ± 0.3 s (−9.2%)  | −6.2 ± 0.4 s (−10.1%)  |
+
+All runs pass. `ab-round2.txt` in `data/round2/` has every run.
+
+### 1. `SIGNDIFF-SPECIAL` calls `EXPT-OF-BASE` before the cheap tests
+
+`SIGNDIFF-SPECIAL` is 8.0% of the core suite, and 3.7% is `EXPT-OF-BASE`,
+which decides via `MEQP` (`csign` of a ratsimped difference) whether one
+expression is a power of another. Two rules call it before the sign tests that
+decide whether its answer matters:
+
+- `Q^R - S`: the guard `(not (expt-of-base xrhs (cadr xlhs)))` comes before
+  `Q > 0` and `S > 0`.
+- `Q^m - Q^n`: both exponents `m` and `n` are looked up (two `MEQP`s) before
+  `Q > 0` and the sign of `Q - 1`. Over `rtest_limit_extra`, `rtest_trig`,
+  `rtest_limit`, `rtest16` and `rtest_integrate` this rule ran 89,800 times.
+  `Q` was not known positive in 82,800 of them, and the rule could apply in
+  only 2,100.
+
+Prototype `prototypes/exptofbase.lisp` moves the sign tests first. All the
+reordered tests are side-effect-free predicates, so the result is the same,
+and the recursion guard still comes before the recursive `sign*`.
+`EXPT-OF-BASE` calls in those five files drop from 200,384 to 7,823 (2.82 to
+0.15 s).
+
+### 2. `SIGN-MABS`: `MNQP` repeats a sign computation that just failed
+
+`sign(abs(e))` first takes the sign of `e`. If that is `pnz`, `mnqp(0, e)`
+asks whether `e` can be zero. Over the full suite that happened 132,116
+times and never succeeded, yet these calls are 3.9% of the core and 2.4% of
+the full suite's samples. Within that `MEQP`, `csign` takes 64%,
+`sratsimp` 23% and the fact database 2%. In 98% of the calls (119,295 of
+121,614, on four files) `sratsimp(-e)` is `-e` again, so the `csign` only
+repeats the computation that just returned `pnz`.
+
+A plain skip loses real cases: under `assume(notequal(x+y,0))`,
+`sign(abs(x+y))` is `pos` only through the fact database, and
+`sign(abs((x+1)^2-x^2-2*x+y^2))` is `pos` only because ratsimp turns the
+argument into `y^2+1`. `prototypes/mabsrewrite.lisp` keeps both: for `pnz`
+it runs the cheap part of `MEQP` (`PROVABLY-NONZERO-P` and `DCOMPARE`) and
+calls `MNQP` only when ratsimp and the equality facts rewrite `-e`. It is not
+strictly equivalent: when the rewrite changes nothing, `$csign` could still
+answer differently than the `sign` that just failed, since it rebinds
+`limitp` and `factored`. That never occurred in either suite.
+
+### 3. `SIGN-LOG` computes each comparison twice
+
+For a positive argument, `SIGN-LOG` tries `mgrp(1, arg)`, `meqp(arg, 1)`,
+`mgqp(1, arg)`, `mgrp(arg, 1)`, `mgqp(arg, 1)` and `mnqp(arg, 1)` in turn.
+That is `csign(1 - arg)`, `meqp(arg, 1)` and `csign(arg - 1)` twice each.
+`prototypes/signlog.lisp` computes each once, under the same condition as its
+first use in the cascade, and reuses it, so the result is the same.
+
+### 4. Limit cache lookups (round 1, item 7)
+
+`GETLIMVAL` and `PUTLIMVAL` cost 3.0% of the core suite in `ALIKE1`, `ALIKE`
+and `ASSOL`, a linear search of `limit-answers` with `ALIKE1` on every key.
+`prototypes/limhash.lisp` stores a hash code with each entry, built from
+operators, symbols, integers and strings four levels deep and ignoring header
+flags, so `ALIKE1`-equal keys always get equal codes. `ALIKE1` then runs only
+on entries whose code matches.
+
+### 5. `SCALARCLASS` re-walks constant subtrees (round 1, item 8)
+
+Now 2.4% of the full suite, nearly all from `rtest_cholesky` problems 35
+and 36 (block matrices in `noncommutingring`), 3.6 s of the file's 3.8 s.
+`CONSTTERMP` runs `$constantp` over a term and then `SCALARCLASS` on it,
+which runs `CONSTTERMP` on each argument again, so every level walks its
+whole subtree once more. Problem 36 makes 36.6M `$constantp` calls for 3.0M
+`SCALARCLASS` calls. In `prototypes/scalarclass.lisp` `SCALARCLASS` and
+`SCALARCLASS-LIST` take an optional flag saying that `$constantp` of the
+expression is already known to be true. Then the arguments are constant too
+(that is how `$constantp` is defined), and the walk is not repeated. Same
+results, 5.4M `$constantp` calls.
+
+### 6. Share Lisp files are compiled at every load (round 1, item 5)
+
+The SBCL compiler now takes 6.5% of the full suite, about 7 s per run.
+`load()` of share `.lisp` files accounts for 3.4–3.7% (`LOADFILE` on the
+stack), rule definitions (`META-FSET`) about 0.8%, `translate` 0.1%, the rest
+are stacks too deep to tell. Loading those files from fasls compiled once
+would save most of the 4 s, but a cache bolted onto `LOADFILE` changes what
+the files mean, because loading source compiles and runs one form at a time:
+
+- Compiling the file first (`COMPILE-FILE`, then load the fasl) breaks
+  `fourier_elim`: `fourier_elim.lisp` loads `to_poly.lisp`, which defines the
+  `OPAPPLY` macro it uses, only at load time, so the fasl calls `OPAPPLY` as
+  a function.
+- Compiling after the load (`prototypes/faslcache.lisp`) gets that right, but
+  then declarations later in a file apply to forms before them. With it, the
+  full suite fails in `rtest_itensor` and exhausts the heap in itensor's
+  `DELTA`.
+
+So this needs work per package: make the heavy ones compile cleanly as
+files, as the `.system` packages (`draw`, `lapack`, ...) already do, and
+compile them into the objdir. By load time in the full suite the candidates
+are `fourier_elim`, `stringproc`, `to_poly_solve`, `grobner`, `numdistrib`,
+`bitwise`, `itensor` and `pslq` (`data/share-loads.txt`).
+
+### Smaller items and non-starters
+
+- `NORMALIZED-MODULUS` (1.4% full) is generic `mod`. A fixnum fast path
+  (`prototypes/modfix.lisp`) measured nothing beyond the noise.
+- `MEQP` ratsimps the difference, then `MEQP-BY-CSIGN` ratsimps it again
+  (1.25% core, 0.8% full). Over the full suite the second pass changed the
+  expression in 12,043 of 296,254 calls, so it cannot simply go.
+- Binding (`MBIND-DOIT` + `MUNBIND`, 4.4% full) is unchanged since round 1.
+  `$values` holds about ten entries, so the remaining cost is volume. The
+  round-1 `mbind` prototype still applies.
+- `GET3` is 8.8% of full-suite samples (self). Plists are already ordered
+  for the simplifier (`OPTIMIZED-PLIST` in `src/init-cl.lisp`), so the walks
+  are short. `MOPP1`'s share (11% of `GET3`) goes with item 5.
+- `HYPERGEO21-FLOAT` (`share/orthopoly`, 0.9% full) is a float loop in
+  generic arithmetic.
+- `PCTIMES`/`PCPLUS` lead allocation (8% and 5%, mostly `rtest_extensions`
+  and `rtest15`): bignum polynomial arithmetic, nothing local to fix.
+
 ## Files
 
 - `prof.lisp`: the harness (`prof-start`, `prof-finish`): per-test-file
@@ -351,6 +523,11 @@ picture.
   tables, folded stacks (`*.folded.gz`), combined tables
   (`tables-core.txt`, `tables-full.txt`), share load times, SIGNFACTOR
   statistics, A/B runs and their summaries (`ab-results.txt`).
+- Round 2: `data/round2/` (same files, plus `ab-round2.txt`), `rounds.py`
+  (subsystem shares of both rounds), prototypes `exptofbase`, `mabsrewrite`,
+  `signlog`, `limhash`, `scalarclass`, `modfix`, `faslcache`, and
+  instrumentation `eobcount.lisp`, `mabscount.lisp`, `mabsalike.lisp`,
+  `scalarclasscount.lisp` (with `scalarclass-setup.mac`).
 
 Reproduce: build, run the full suite once (compiles the `.system` share
 packages), then

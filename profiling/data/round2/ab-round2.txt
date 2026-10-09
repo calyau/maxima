@@ -1,0 +1,111 @@
+== sign5
+sign5-warmup run=31.943238 gc=1.196 real=32.220 ok=1 
+sign5-base-1 run=32.144042 gc=1.198 real=32.464 ok=1 
+sign5-eob-1 run=32.197453 gc=1.126 real=32.676 ok=1 
+sign5-mabs-1 run=30.977512 gc=1.101 real=31.556 ok=1 
+sign5-both-1 run=30.360685 gc=1.068 real=30.760 ok=1 
+sign5-eob-2 run=31.679304 gc=1.108 real=32.156 ok=1 
+sign5-mabs-2 run=31.782700 gc=1.138 real=32.116 ok=1 
+sign5-both-2 run=30.885087 gc=1.079 real=31.236 ok=1 
+sign5-base-2 run=31.841375 gc=1.198 real=32.164 ok=1 
+sign5-mabs-3 run=31.824383 gc=1.156 real=32.320 ok=1 
+sign5-both-3 run=30.565648 gc=1.085 real=30.964 ok=1 
+sign5-base-3 run=32.006771 gc=1.201 real=32.312 ok=1 
+sign5-eob-3 run=31.995380 gc=1.135 real=32.368 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 32.0 [31.8, 32.1] | 1.2 | – | – | pass |
+| eob | 3 | 32.0 [31.7, 32.2] | 1.1 | +0.1, -0.2, -0.0 | -0.0 ± 0.1 s (-0.1%) | pass |
+| mabs | 3 | 31.5 [31.0, 31.8] | 1.1 | -1.2, -0.1, -0.2 | -0.5 ± 0.4 s (-1.5%) | pass |
+| both | 3 | 30.6 [30.4, 30.9] | 1.1 | -1.8, -1.0, -1.4 | -1.4 ± 0.2 s (-4.4%) | pass |
+
+== sign5b
+sign5b-warmup run=31.864134 gc=1.179 real=32.288 ok=1 
+sign5b-base-1 run=31.886409 gc=1.286 real=32.304 ok=1 
+sign5b-eob-1 run=29.484504 gc=1.023 real=29.852 ok=1 
+sign5b-eobmabs-1 run=28.303647 gc=1.003 real=28.716 ok=1 
+sign5b-all3-1 run=27.999415 gc=0.973 real=28.468 ok=1 
+sign5b-eob-2 run=29.463162 gc=1.010 real=30.028 ok=1 
+sign5b-eobmabs-2 run=28.499740 gc=1.016 real=28.852 ok=1 
+sign5b-all3-2 run=27.838904 gc=0.985 real=28.172 ok=1 
+sign5b-base-2 run=32.292292 gc=1.197 real=32.760 ok=1 
+sign5b-eobmabs-3 run=29.142141 gc=1.044 real=29.896 ok=1 
+sign5b-all3-3 run=27.326936 gc=0.965 real=27.704 ok=1 
+sign5b-base-3 run=32.007278 gc=1.194 real=32.436 ok=1 
+sign5b-eob-3 run=29.468656 gc=1.011 real=29.780 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 32.1 [31.9, 32.3] | 1.2 | – | – | pass |
+| eob | 3 | 29.5 [29.5, 29.5] | 1.0 | -2.4, -2.8, -2.5 | -2.6 ± 0.1 s (-8.1%) | pass |
+| eobmabs | 3 | 28.6 [28.3, 29.1] | 1.0 | -3.6, -3.8, -2.9 | -3.4 ± 0.3 s (-10.6%) | pass |
+| all3 | 3 | 27.7 [27.3, 28.0] | 1.0 | -3.9, -4.5, -4.7 | -4.3 ± 0.2 s (-13.5%) | pass |
+
+== lim3
+lim3-warmup run=17.142621 gc=0.619 real=17.392 ok=1 
+lim3-base-1 run=16.711216 gc=0.596 real=16.900 ok=1 
+lim3-limhash-1 run=15.452645 gc=0.610 real=15.700 ok=1 
+lim3-modfix-1 run=17.296285 gc=0.617 real=17.548 ok=1 
+lim3-limhash-2 run=15.580248 gc=0.618 real=15.852 ok=1 
+lim3-modfix-2 run=17.100732 gc=0.611 real=17.316 ok=1 
+lim3-base-2 run=17.715013 gc=0.622 real=18.024 ok=1 
+lim3-modfix-3 run=16.923360 gc=0.611 real=17.156 ok=1 
+lim3-base-3 run=17.028834 gc=0.616 real=17.244 ok=1 
+lim3-limhash-3 run=15.866924 gc=0.635 real=16.080 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 17.2 [16.7, 17.7] | 0.6 | – | – | pass |
+| limhash | 3 | 15.6 [15.5, 15.9] | 0.6 | -1.3, -2.1, -1.2 | -1.5 ± 0.3 s (-8.9%) | pass |
+| modfix | 3 | 17.1 [16.9, 17.3] | 0.6 | +0.6, -0.6, -0.1 | -0.0 ± 0.3 s (-0.3%) | pass |
+
+== chol
+chol-warmup run=12.362543 gc=0.694 real=12.524 ok=1 
+chol-base-1 run=12.534149 gc=0.701 real=12.700 ok=1 
+chol-scalarclass-1 run=10.063943 gc=0.655 real=10.188 ok=1 
+chol-modfix-1 run=11.612988 gc=0.648 real=11.764 ok=1 
+chol-scalarclass-2 run=10.057592 gc=0.656 real=10.184 ok=1 
+chol-modfix-2 run=11.696521 gc=0.655 real=11.828 ok=1 
+chol-base-2 run=11.919829 gc=0.667 real=12.064 ok=1 
+chol-modfix-3 run=12.064985 gc=0.691 real=12.304 ok=1 
+chol-base-3 run=11.759728 gc=0.673 real=11.876 ok=1 
+chol-scalarclass-3 run=10.336722 gc=0.676 real=10.504 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 12.1 [11.8, 12.5] | 0.7 | – | – | pass |
+| scalarclass | 3 | 10.2 [10.1, 10.3] | 0.7 | -2.5, -1.9, -1.4 | -1.9 ± 0.3 s (-15.9%) | pass |
+| modfix | 3 | 11.8 [11.6, 12.1] | 0.7 | -0.9, -0.2, +0.3 | -0.3 ± 0.4 s (-2.3%) | pass |
+
+== full
+full-warmup run=106.034068 gc=7.996 real=107.828 ok=1 
+full-r2fasl-1 run= gc= real= ok=0 (heap exhausted in rtest_itensor)
+full-base-1 run=114.577334 gc=7.473 real=116.520 ok=1 
+full-r2-1 run=103.543205 gc=7.008 real=105.440 ok=1 
+full-base-2 run=115.313134 gc=7.464 real=117.552 ok=1 
+full-r2-2 run=105.262990 gc=7.172 real=107.316 ok=1 
+full-r2fasl-2 run= gc= real= ok=0 (heap exhausted in rtest_itensor)
+full-r2-3 run=103.263511 gc=7.054 real=105.196 ok=1 
+full-r2fasl-3 run= gc= real= ok=0 (heap exhausted in rtest_itensor)
+full-base-3 run=113.780111 gc=7.350 real=115.584 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 114.6 [113.8, 115.3] | 7.4 | – | – | pass |
+| r2 | 3 | 104.0 [103.3, 105.3] | 7.1 | -11.0, -10.1, -10.5 | -10.5 ± 0.3 s (-9.2%) | pass |
+
+== core
+core-warmup run=60.700155 gc=3.147 real=61.608 ok=1 
+core-base-1 run=60.858366 gc=3.103 real=61.724 ok=1 
+core-r2-1 run=54.599513 gc=2.881 real=55.640 ok=1 
+core-r2-2 run=54.228157 gc=2.869 real=54.912 ok=1 
+core-base-2 run=61.097960 gc=3.151 real=61.888 ok=1 
+core-base-3 run=60.490272 gc=3.115 real=61.384 ok=1 
+core-r2-3 run=55.125347 gc=2.898 real=56.096 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 60.8 [60.5, 61.1] | 3.1 | – | – | pass |
+| r2 | 3 | 54.7 [54.2, 55.1] | 2.9 | -6.3, -6.9, -5.4 | -6.2 ± 0.4 s (-10.1%) | pass |
+

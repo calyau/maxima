@@ -1,0 +1,20 @@
+;;; Round 2. For SIGN-MABS calls whose argument E has sign $PNZ, counts how
+;;; often SRATSIMP of -E is ALIKE1 to -E (so the csign in MNQP repeats the
+;;; failed sign computation). Report with m2report().
+(in-package :maxima)
+(defvar *m2* (make-hash-table :test 'equal))
+(defun sign-mabs (x)
+  (let ((*complexsign* t))
+    (sign (cadr x))
+    (when (eq sign '$pnz)
+      (let* ((e (cadr x))
+             (z (let ($ratprint) (sratsimp (sub 0 e))))
+             (k (cond ((alike1 z (neg e)) 'alike-neg)
+                      ((alike1 z e) 'alike-e)
+                      (t 'different))))
+        (incf (gethash k *m2* 0))))
+    (cond ((member sign '($pos $zero) :test #'eq))
+	  ((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
+	  ((eq t (mnqp 0 (cadr x))) (setq sign '$pos))
+	  (t (setq sign '$pz minus nil evens (nconc odds evens) odds nil)))))
+(defun $m2report () (maphash (lambda (k v) (format *debug-io* "~&~20a ~10d~%" k v)) *m2*))

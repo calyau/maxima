@@ -1,0 +1,17 @@
+;;; Round 2. Counts EXPT-OF-BASE calls and the time of the outermost ones.
+;;; Report with eobreport().
+(in-package :maxima)
+(defvar *eob-n* 0)
+(defvar *eob-depth* 0)
+(defvar *eob-t* 0)
+(let ((orig (fdefinition 'expt-of-base)))
+  (setf (fdefinition 'expt-of-base)
+        (lambda (expr q)
+          (incf *eob-n*)
+          (if (> *eob-depth* 0)
+              (let ((*eob-depth* (1+ *eob-depth*))) (funcall orig expr q))
+              (let ((t0 (get-internal-run-time)))
+                (prog1 (let ((*eob-depth* 1)) (funcall orig expr q))
+                  (incf *eob-t* (- (get-internal-run-time) t0))))))))
+(defun $eobreport ()
+  (format *debug-io* "~&EXPT-OF-BASE calls ~d, outermost time ~,2f s~%" *eob-n* (/ *eob-t* internal-time-units-per-second)))
