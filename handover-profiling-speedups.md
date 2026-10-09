@@ -168,8 +168,8 @@ AI-Assisted-By: Claude Opus 5.5
 with a full-precision division per step, and is 1 ulp off for about 19% of
 arguments. Nearly all calls are square roots (bigfloat `sqrt`, `abs` of
 complex bigfloats). For `n = 2`, `FPROOT-SQRT` takes `ISQRT` of the mantissa,
-shifted so the root has two guard bits, adds a sticky bit if the root is
-inexact, and rounds once with `FPROUND`: always correctly rounded, 11 to 20
+shifted so the root has one bit more than the result, adds a sticky bit if
+the root is inexact, and rounds once with `FPROUND`: always correctly rounded, 11 to 20
 times faster per call from 5 to 100,000 digits, for random arguments and
 for exact squares. It only does integer arithmetic on the exponent, while
 `FPROOT` builds its start value `2^(e/2)` by repeated squaring, which takes
@@ -418,10 +418,10 @@ index 8fe4463..2c9be77 100644
 
 ```diff
 diff --git a/src/float.lisp b/src/float.lisp
-index 486bcd9..1ab46e5 100644
+index 486bcd9..c3731e8 100644
 --- a/src/float.lisp
 +++ b/src/float.lisp
-@@ -1855,6 +1855,36 @@
+@@ -1855,6 +1855,37 @@
  	((< n 0) (invertbigfloat (exptbigfloat p (- n))))
  	(t (bcons (fpexpt (cdr p) n)))))
  
@@ -436,9 +436,10 @@ index 486bcd9..1ab46e5 100644
 +;; a power of 2.
 +(defun fproot-sqrt (a)
 +  (destructuring-bind (m e) (cdr (bigfloatp a))
-+    (let* (;; Enough bits for the integer root to have FPPREC+2 bits: FPPREC
-+           ;; for the result and two guard bits for the rounding.
-+           (shift (max 0 (- (+ (* 2 fpprec) 4) (integer-length m))))
++    (let* (;; Enough bits for the integer root to have FPPREC+1 bits: FPPREC
++           ;; for the result and the bit below them, which decides the
++           ;; rounding.
++           (shift (max 0 (- (* 2 (1+ fpprec)) (integer-length m))))
 +           ;; One more if needed, so that the exponent can be halved.
 +           (shift (if (oddp (- e fpprec shift)) (1+ shift) shift))
 +           (scaled (ash m shift))
@@ -458,7 +459,7 @@ index 486bcd9..1ab46e5 100644
  (defun fproot (a n)  ; computes a^(1/n)  see Fitch, SIGSAM Bull Nov 74
  
    ;; Special case for a = 0b0. General algorithm loops endlessly in that case.
-@@ -1864,6 +1894,11 @@
+@@ -1864,6 +1895,11 @@
    ;; '((BIGFLOAT ...) FOO BAR) instead of '(FOO BAR).
    ;; However FPROOT does return something like '(FOO BAR).
  
