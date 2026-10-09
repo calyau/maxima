@@ -1863,6 +1863,11 @@
   ;; FPROOT assumes it is called with an argument like
   ;; '((BIGFLOAT ...) FOO BAR) instead of '(FOO BAR).
   ;; However FPROOT does return something like '(FOO BAR).
+  
+  ;; Square roots, the most common case by far, are much faster and
+  ;; correctly rounded with FPROOT-SQRT.
+  (when (and (eql n 2) (null *decfp) (plusp (cadr a)))
+    (return-from fproot (fproot-sqrt a)))
 
   (if (eql (cadr a) 0)
       '(0 0)
@@ -1879,6 +1884,40 @@
 		   (> (- (cadr x) (cadr bk)) ofprec))
 	       (setq a x))))
 	(list (fpround (car a)) (+ -2 *m (cadr a))))))
+
+;;
+;; FPROOT-SQRT:
+;;
+;; Correctly rounded square root of the positive bigfloat A, given and returned
+;; like the argument and the result of FPROOT.
+;;
+;; A is M*2^(E-FPPREC). With M shifted left by SHIFT bits,
+;;
+;;   sqrt(A) = sqrt(M*2^SHIFT) * 2^((E-FPPREC-SHIFT)/2),
+;;
+;; so the square root of A is the integer square root of M*2^SHIFT, scaled by
+;; a power of 2.
+;;
+(defun fproot-sqrt (a)
+  (destructuring-bind (m e) (cdr (bigfloatp a))
+    (let* (;; Enough bits for the integer root to have FPPREC+1 bits: FPPREC
+           ;; for the result and the bit below them, which decides the rounding.
+           (shift (max 0 (- (* 2 (1+ fpprec)) (integer-length m))))
+           ;; One more if needed, so that the exponent can be halved.
+           (shift (if (oddp (- e fpprec shift)) (1+ shift) shift))
+           (scaled (ash m shift))
+           ;; The root, rounded down to an integer.
+           (root (isqrt scaled))
+           ;; 1 if ROOT is not exact. Without this bit, FPROUND could take a
+           ;; root just above a tie between two results for the tie itself.
+           (sticky (if (= (* root root) scaled) 0 1))
+           ;; Round ROOT with the sticky bit appended, which is 2*ROOT+STICKY,
+           ;; to FPPREC bits. FPROUND sets *M to the number of bits it cut off.
+           (mantissa (fpround (+ (* 2 root) sticky))))
+      ;; The result is MANTISSA*2^(*M-1+(E-FPPREC-SHIFT)/2), where -1 undoes
+      ;; the appended bit. A bigfloat (MANTISSA X) has the value
+      ;; MANTISSA*2^(X-FPPREC), hence the FPPREC.
+      (list mantissa (+ *m -1 (/ (- e fpprec shift) 2) fpprec)))))
 
 (defun timesbigfloat (h)
   (prog (fans r nfans)

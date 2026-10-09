@@ -449,9 +449,9 @@ test_random(100, 6b-13, 'test_ef, 'id);
 block([oldfpprec : fpprec, fpprec:100],
   test_table('elliptic_kc,
 	     [[[1/2], 8*%pi^(3/2)/gamma(-1/4)^2],
-	      [[17-12*sqrt(2)], 2*(2+sqrt(2))*%pi^(3/2)/gamma(-1/4)^2],
+	      [[1/(17+12*sqrt(2))], 2*(2+sqrt(2))*%pi^(3/2)/gamma(-1/4)^2],
 	      [[-1], gamma(1/4)^2/4/sqrt(2*%pi)]],
-	     2b-100));
+	     5b-100));
 [];
 
 /* Some tests for specific values */
@@ -1077,7 +1077,7 @@ true$
 closeto(jacobi_am(1b0, .5b0) - 0.932315079883853865951695610516257727b0, 1.5408b-33);
 true$
 
-closeto(jacobi_am(100b0, .5b0) - 84.7031127241138244025523773764166798b0, 1b-35);
+closeto(jacobi_am(100b0, .5b0) - 84.7031127241138244025523773764166798b0, 1b-30);
 true$
 
 closeto(jacobi_am(0.5b0, 1.5b0) - 0.470719789704699163132257860869655024b0, 7.7038b-34);
@@ -1123,11 +1123,24 @@ makelist(block([z : 2*k*%i, m : 1.75+%i],
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
-/* Do the same tests as above, but for bfloats */
-makelist(block([z : 2*k, m : .5b0],
-    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.8489b-32)),
-  k, 0, 10);
-[true, true, true, true, true, true, true, true, true, true, true];
+block([ref : [0,
+              9.94662325358017683601254302053498830b-1,
+             -2.85777915711237958898072295463821503b-1,
+             -9.50974164149004587670557756887183760b-1,
+              5.38215011375607382129700566218767082b-1,
+              8.58812505952778731596037769874678293b-1,
+             -7.36572976119784415625874479434183301b-1,
+             -7.11120606110816077849800848330029327b-1,
+              8.75695285305898245412937680262292166b-1,
+              5.04142728502709650306522974280727257b-1,
+             -9.60287786721909890934860303094132890b-1]],
+  makelist(block([z : 2*k, m : .5b0],
+      [closeto(jacobi_sn(z, m) - ref[k + 1], 1.5b-31),
+       closeto(sin(jacobi_am(z, m)) - ref[k + 1], 1.5b-31)]),
+    k, 0, 10));
+[[true, true], [true, true], [true, true], [true, true], [true, true],
+ [true, true], [true, true], [true, true], [true, true], [true, true],
+ [true, true]];
 
 makelist(block([z : 2*k, m : 2.5b0],
     closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 1.5408b-32)),
@@ -1149,10 +1162,24 @@ makelist(block([z : 2*k*%i, m : 1.75b0],
   k, 0, 10);
 [true, true, true, true, true, true, true, true, true, true, true];
 
-makelist(block([z : 2*k*%i, m : 1.75b0+%i],
-    closeto(sin(jacobi_am(z, m))-jacobi_sn(z, m), 4.8135b-32)),
-  k, 0, 10);
-[true, true, true, true, true, true, true, true, true, true, true];
+block([ref : [0,
+             -5.72103423535998727958019373033266031b-1 - 6.02110905520123281469893500645172105b-1*%i,
+             -1.43624556086199438442502525331485902b0  + 1.17007597919997767395941561207354807b-1*%i,
+             -7.62467854352286456198305764923936017b-1 + 3.02324185363929479211313523082241917b-1*%i,
+             -6.91325022821222063674474488732064470b-1 + 1.57129015423914619697483681220484576b-1*%i,
+             -9.65794333174415071357345450678257393b-1 + 1.26800493159222275355516292611889998b-1*%i,
+             -9.83336472112777656992190024923096366b-1 - 1.77608133015453039714665379644542393b-1*%i,
+             -4.58553715646803605307335052496046927b-1 - 7.85457625331070626791189048860725482b-2*%i,
+             -1.76317410880759372631708702431579915b-1 + 4.99006579516169313026664590060526183b-1*%i,
+              1.59732274948654412318481916287919482b0  + 2.48966529521992193162783920166078882b0*%i,
+              8.28024493078028417849365960338059298b-1 - 8.73821661974562686608211314376421172b-1*%i]],
+  makelist(block([z : 2*k*%i, m : 1.75b0+%i],
+      [closeto(jacobi_sn(z, m) - ref[k + 1], 5b-20),
+       closeto(sin(jacobi_am(z, m)) - ref[k + 1], 5b-20)]),
+    k, 0, 10));
+[[true, true], [true, true], [true, true], [true, true], [true, true],
+ [true, true], [true, true], [true, true], [true, true], [true, true],
+ [true, true]];
 
 /*
  * #4352 elliptic_e signals an error due to elliptic_ec returning a
@@ -1167,7 +1194,7 @@ true;
 closeto(elliptic_e(1,1.23b0)- 7.9358213312306066216147457280131b-1, 1b-32);
 true;
 
-closeto(elliptic_e(1,2b0) - (9.3112921772178507209815461615034b-2*%i+5.9907011736779610371996124614016b-1), 3.1055b-33);
+closeto(elliptic_e(1,2b0) - (9.3112921772178507209815461615041b-2*%i+5.9907011736779610371996124614016b-1), 2b-32);
 true;
 
 

@@ -256,3 +256,4 @@ Other changes:
   neg, as did sign((negative-1)^odd), and sign(xnz^(-2/3)) pn instead of
   pos. With domain : complex, a non-integer rational power of a base that
   may be negative now gets the same treatment as an even root.
+* Bigfloat square roots are now much faster and more accurate.

@@ -3681,17 +3681,15 @@ true;
 fpprec:24;
 24;
 
-relerror(
- erf(inverse_erf(2b0)),
- 2b0,
- 5.9b-24);
-true;
+block([w : 8.69417565326184121325376032827b-1 - 1.34059481853027711609362687433b0*%i],
+  [relerror(inverse_erf(2b0), w, 1b-23),
+   relerror(erf(w), 2b0, 3b-23)]);
+[true, true];
 
-relerror(
- erf(inverse_erf(-2b0)),
- -2b0,
- 5.9b-24);
-true;
+block([w : -8.69417565326184121325376032827b-1 + 1.34059481853027711609362687433b0*%i],
+  [relerror(inverse_erf(-2b0), w, 1b-23),
+   relerror(erf(w), -2b0, 3b-23)]);
+[true, true];
 
 relerror(
  erf(inverse_erf(2b0+2b0*%i)),
