@@ -842,7 +842,7 @@
                             (list (power-mod g (truncate ord (apply #'expt pe)) m)) ))
                         f ))
               gs ords fs-ords ))
-    (setq pegs (sort (apply #'append pegs) #'zn-pe>))
+    (setq pegs (stable-sort (apply #'append pegs) #'zn-pe>))
     (do ((todo pegs (nreverse left)) 
          (q 0 0) (fg 1 1) (left nil nil)
           g fgs )
