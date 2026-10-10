@@ -694,7 +694,6 @@ wrapper for this."
 		  (setq y $setval)))))
      (cond ((atom x)
 	    (when (or (not (symbolp x))
-		      (member x '(t nil) :test #'eq)
                       (mget x '$numer)
                       (get x 'sysconst))
 	      (if munbindp (return nil))
