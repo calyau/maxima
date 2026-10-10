@@ -476,11 +476,18 @@ saving over `signlog` at 0.6 s on the full suite. On the five files above it
 is below the noise, -0.0 ± 0.3 s.
 
 `MEQP` never decided anything in the suite. In all 2,618 calls where the sign
-of `arg - 1` was open, it answered unknown too, at about 1 s in total. It is
+of `arg - 1` was open, it answered unknown too, at about 0.6 s in total. It is
 not redundant though: before its `csign` it substitutes every `equal()` fact
 and ratsimps, which `sign` does not. Under
 `assume(x > 0, y > 0, z > 0, equal(x, y + z))`, `sign(log(x/(y + z)))` is
 `zero` with it and `pnz` without.
+
+`prototypes/signlog4.lisp` (load after `mabscsign.lisp`) also passes item 2's
+new `MEQP` argument as false when the sign of `arg - 1` is `pz`, `nz` or
+`pnz`. `MEQP` then repeats that sign only when ratsimp or the equality facts
+rewrite `arg - 1`, so the case above still gives `zero`. In the full suite
+that skipped the repeat in 1,210 of the 2,618 calls and cut their `MEQP` time
+from 0.63 s to 0.26 s, with the same results.
 
 ### 4. Limit cache lookups (round 1, item 7)
 
