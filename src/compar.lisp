@@ -2185,13 +2185,16 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (setq sign
 	(cond ((eq sign '$zero) (log0-err x)) ; log(0) is undefined.
           ((member sign '($pos $pz)) ; accept $PZ - we already handled definitely 0
-	       (cond ((eq t (mgrp 1 arg)) '$neg)
-		     ((eq t (meqp arg 1)) '$zero);; log(1) = 0.
-		     ((eq t (mgqp 1 arg)) '$nz)
-		     ((eq t (mgrp arg 1)) '$pos)
-		     ((eq t (mgqp arg 1)) '$pz)
-		     ((eq t (mnqp arg 1)) '$pn)
-		     (t '$pnz)))
+	       ;; log(ARG) has the sign of ARG - 1. Where that sign leaves open
+	       ;; whether ARG = 1, ask MEQP, which can decide more cases.
+	       (let ((s (csign (sub arg 1))))
+		 (if (member s '($pos $neg $zero $pn))
+		   s
+		   (let ((one (meqp arg 1)))
+		     (cond ((eq one t) '$zero) ; log(1) = 0.
+			   ((member s '($pz $nz)) s)
+			   ((not one) '$pn)
+			   (t '$pnz))))))
 	      ((and  *complexsign* (eql 1 (cabs arg))) '$imaginary)
 	      (*complexsign* '$complex)
 	      ((member sign '($pnz $pn)) '$pnz)
