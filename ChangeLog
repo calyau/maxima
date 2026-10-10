@@ -208,6 +208,9 @@ Bug fixes for unnumbered bugs:
   plus sign and an upper case marker, as in 9.87E+52 where every other
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
+* sign() could recurse until the stack overflowed when an equal() fact
+  held a radical, as in radcan(sqrt(1/x^2+1)) after
+  assume(equal(y, sqrt(1/x^2+1)))
 
 Changes in the Windows installer:
 ---------------------------------

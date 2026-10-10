@@ -3094,6 +3094,31 @@ block([a, b, c, d, e, f, g],
 [pos, neg, pz, nz, pn, pnz, zero]$
 
 
+/* sign() must not recurse endlessly when MEQP, comparing bases for
+   SIGNDIFF-SPECIAL, simplifies the radical of an equal() fact */
+
+block([r],
+  assume(equal(y, sqrt(1/x^2+1))),
+  r : radcan(sqrt(1/x^2+1)),
+  forget(equal(y, sqrt(1/x^2+1))),
+  r);
+sqrt(x^2+1)/abs(x)$
+
+block([r],
+  assume(x > 0, equal(y, sqrt(1/x^2-2))),
+  r : [radcan(sqrt(1/x^2-2)), sign(x^2-1/2)],
+  forget(x > 0, equal(y, sqrt(1/x^2-2))),
+  r);
+[sqrt(1-2*x^2)/x, pnz]$
+
+block([r],
+  assume(x > 0, x < 1, equal(y, sqrt(1/x^2-2))),
+  r : radcan(sqrt(1/x^2-2)),
+  forget(x > 0, x < 1, equal(y, sqrt(1/x^2-2))),
+  r);
+sqrt(1-2*x^2)/x$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/

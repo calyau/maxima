@@ -7085,6 +7085,24 @@ block([g, G],
 [true, true, true, true, true]$
 
 
+/* integrate() must not overflow the stack through the equal() facts
+   that the integrator records for its substitutions */
+
+block([r],
+  assume(x > 1),
+  r : [integrate(%e^(x^(3/2))*x^2, x), integrate(%e^(x^(5/2))*x^4, x)],
+  forget(x > 1),
+  r);
+[(2*%e^x^(3/2)*(x^(3/2)-1))/3, (2*%e^x^(5/2)*(x^(5/2)-1))/5]$
+
+block([r],
+  assume(x > 0, x < 1),
+  r : integrate(%e^(x^(3/2))*x^2, x),
+  forget(x > 0, x < 1),
+  r);
+(2*%e^x^(3/2)*(x^(3/2)-1))/3$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
