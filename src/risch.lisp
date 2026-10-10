@@ -238,9 +238,7 @@
           ;; Found an integral. Evaluate the result again.
           ;; Set the flag *in-risch-p* to make sure that we do not call
           ;; rischint again from the integrator. This avoids endless loops.
-          ;; RISCHINT binds $logsimp and $%e_to_numlog to NIL. Bind them to T,
-          ;; so that kernels like %e^(log(x+1)+log(x-1)) in these integrals
-          ;; become (x+1)*(x-1) and the integrator can evaluate them.
+          ;; Simplify %e^(r*log(u)) to u^r, which RISCHINT's bindings prevent.
           (let ((*in-risch-p* t) ($logsimp t) ($%e_to_numlog t))
             (sratsimp (meval (list '($ev) result '$nouns))))
           result))))
