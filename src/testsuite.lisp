@@ -109,8 +109,7 @@
 	((mlist simp) "rtest_gamma"
 	 #+allegro   ((mlist simp) 48 198 663 745))
         "rtest_expintegral"
-        ((mlist simp) "rtest_signum"
-     #+gcl ((mlist simp) 78 79))
+        ((mlist simp) "rtest_signum")
         "rtest_lambert_w"
         ((mlist simp) "rtest_elliptic"
 	 #-allegro ((mlist simp) 135)
@@ -158,8 +157,7 @@
 	   #-ccl ((mlist simp)))
 	;; The tests that failed with abcl 1.5.0
 	((mlist simp) "rtest_hg"
-	 #+(or gcl abcl) ((mlist simp) 120)
-	 #-(or gcl abcl) ((mlist simp)))
+	 #+abcl ((mlist simp) 120))
 	((mlist simp) "rtest_nfloat"
 	 #-gcl((mlist simp) 25))
 	((mlist simp) "rtest_ilt")
