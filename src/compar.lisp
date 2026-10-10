@@ -2199,7 +2199,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	       (let ((s (csign (sub arg 1))))
 		 (if (member s '($pos $neg $zero $pn))
 		   s
-		   (let ((one (meqp arg 1)))
+		   ;; For a weak sign of ARG - 1, the second try in MEQP can possibly be
+		   ;; skipped, so pass NIL as the third argument to MEQP in that case.
+		   (let ((one (meqp arg 1 (not (member s '($pz $nz $pnz))))))
 		     (cond ((eq one t) '$zero) ; log(1) = 0.
 			   ((member s '($pz $nz)) s)
 			   ((not one) '$pn)
