@@ -538,7 +538,7 @@ wrapper for this."
 			    (cons (ncons fnname) lamvars))
 			(cons '(mlist) fnargs)))))
     (let ((var (car vars)))
-      (when (not (every 'symbolp (cdr ($listofvars var))))
+      (unless (or (symbolp var) (every 'symbolp (cdr ($listofvars var))))
 	  (merror (intl:gettext "Only symbols can be bound; found: ~M") var))
       (let ((value (symbol-values-in var)))
 	(let ((mbindp t))
@@ -585,7 +585,13 @@ wrapper for this."
 
 (defun munbind-makunbound (var)
   (makunbound var)
-  (setf $values (delete var $values :count 1 :test #'eq)))
+  ;; Remove VAR from $VALUES, like (DELETE VAR $VALUES :COUNT 1 :TEST #'EQ),
+  ;; but without the overhead of a generic DELETE. This is called a lot.
+  (do ((l $values (cdr l)))
+      ((atom (cdr l)))
+    (when (eq (cadr l) var)
+      (rplacd l (cddr l))
+      (return))))
 
 (defun munbind (vars)
   (dolist (var (reverse vars))
@@ -688,7 +694,6 @@ wrapper for this."
 		  (setq y $setval)))))
      (cond ((atom x)
 	    (when (or (not (symbolp x))
-		      (member x '(t nil) :test #'eq)
                       (mget x '$numer)
                       (get x 'sysconst))
 	      (if munbindp (return nil))

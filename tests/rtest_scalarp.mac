@@ -60,11 +60,19 @@ f(f(0,g(1,a,d)),g(-1,b,c))$
 0$
 
 
+/* scalarp() and nonscalarp() of constant expressions */
 
+block([c, e : 1],
+  local(c),
+  declare(c, constant, c, nonscalar),
+  for i thru 30 do e : sqrt(e + 1),
+  [scalarp(e), nonscalarp(e), scalarp(e + c), nonscalarp(e + c),
+   nonscalarp(e*c^2), scalarp(%pi^2 + sqrt(2)),
+   nonscalarp(sqrt(2)*matrix([1, 2]))]);
+[true, false, false, true, true, true, true]$
 
-
-
-
-
-
-
+block([c],
+  local(c),
+  declare(c, constant, c, nonscalar),
+  [2 . matrix([1, 2]), %pi . matrix([1]), c . matrix([1])]);
+[matrix([2, 4]), matrix([%pi]), c . matrix([1])]$

@@ -132,10 +132,14 @@
 (defun scalar-or-constant-p (x flag)
   (if flag (not ($nonscalarp x)) ($scalarp x)))
 
+(defun consttermp (x &optional constant)
+  (and (or constant ($constantp x))
+       (not (eq (scalarclass x t) '$nonscalar))))
 
-(defun consttermp (x) (and ($constantp x) (not ($nonscalarp x))))
-
-(defun scalarclass (exp) ;  Returns $SCALAR, $NONSCALAR, or NIL (unknown).
+;; The optional argument CONSTANT, if T, says that ($CONSTANTP EXP) is known to
+;; be true. Then the arguments of EXP are constant too, so CONSTTERMP need not
+;; check them again.
+(defun scalarclass (exp &optional constant) ;  Returns $SCALAR, $NONSCALAR, or NIL (unknown).
   (cond ((mnump exp)
          ;; Maxima numbers are scalar.
          '$scalar)
@@ -148,13 +152,14 @@
 	        '$nonscalar)
 	       ((or (mget exp '$scalar)
 	            ;; Include constant atoms which are not declared nonscalar.
+	            constant
 	            ($constantp exp))
 	        '$scalar)))
         ((member 'array (car exp))
          (cond ((mget (caar exp) '$scalar) '$scalar)
                ((mget (caar exp) '$nonscalar) '$nonscalar)
                (t nil)))
-	((specrepp exp) (scalarclass (specdisrep exp)))
+	((specrepp exp) (scalarclass (specdisrep exp) constant))
 	;; If the function is declared scalar or nonscalar, then return. If it
         ;; isn't explicitly declared, then try to be intelligent by looking at 
         ;; the arguments to the function.
@@ -166,8 +171,8 @@
         ;; <scalar> - <scalar> SCALARP.
 	((member (caar exp) '(mplus mtimes))
 	 (do ((l (cdr exp) (cdr l))) ((null l) '$scalar)
-	   (if (not (consttermp (car l)))
-	       (return (scalarclass-list l)))))
+	   (if (not (consttermp (car l) constant))
+	       (return (scalarclass-list l constant)))))
 	((and (eq (caar exp) 'mqapply) (scalarclass (cadr exp))))
 	((mxorlistp exp) '$nonscalar)
 	;; If we can't find out anything about the operator, then look at the
@@ -175,8 +180,8 @@
         ;; point.  -cwh
 	(t
 	 (do ((exp (cdr exp) (cdr exp)) (l '(1)))
-	      ((null exp) (scalarclass-list l))
-	    (if (not (consttermp (car exp)))
+	      ((null exp) (scalarclass-list l constant))
+	    (if (not (consttermp (car exp) constant))
 	        (setq l (cons (car exp) l)))))))
 
 ;;  Could also do <scalar> +|-|*|/ |^ <declared constant>, but this is not
@@ -185,11 +190,11 @@
 ;;  SCALARCLASS-LIST takes a list of expressions as its argument.  If their
 ;;  scalarclasses all agree, then that scalarclass is returned.
 
-(defun scalarclass-list (llist)
+(defun scalarclass-list (llist &optional constant)
   (cond ((null llist) nil)
-	((null (cdr llist)) (scalarclass (car llist)))
-	(t (let ((sc-car (scalarclass (car llist)))
-		 (sc-cdr (scalarclass-list (cdr llist))))
+	((null (cdr llist)) (scalarclass (car llist) constant))
+	(t (let ((sc-car (scalarclass (car llist) constant))
+		 (sc-cdr (scalarclass-list (cdr llist) constant)))
 	     (cond ((or (eq sc-car '$nonscalar)
 			(eq sc-cdr '$nonscalar))
 		    '$nonscalar)
