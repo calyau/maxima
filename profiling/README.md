@@ -677,6 +677,29 @@ Seven problems take about 25 s of the full suite's 125 s
    (round 2's `modfix` measured nothing). `PCTIMES` and `PCPLUS` still lead
    allocation (7.9% and 5.1%).
 
+### Item 1 tried: the `INTCV` guard
+
+`prototypes/dintexp.lisp` makes `INTCV` skip inverse roots with nested
+radicals in the new variable. `solve` returns those for cubic and quartic
+equations, so the change of variable `yx = exp(p(x))` (`DINTEXP`) or
+`yx = p(x)` (`LOGX1`) is no longer tried for such a `p`. Only the root is
+rejected, not the method: `exp(x^(3/2))`, `exp(-t^4)` and `exp(sqrt(x))` on
+finite intervals still go through it. Data in `data/round3/ab-dintexp.txt`.
+
+- Full suite: all pass. Its 65 `INTCV` calls (`instrumentation/cvlog.lisp`)
+  all end as before, but the failing `DINTEXP` ones take 0.02 s instead of
+  4.9 s.
+- `rtest_integrate`: −5.5 ± 0.2 s (−34%, five rounds). Both suites cons
+  0.5 GB less. Their times were too noisy today to show the 5.5 s (core
+  −4.4 ± 1.8 s, full +0.7 ± 3.0 s, identical runs differ by up to 6 s).
+- Outside the suite, master needs 97 s for `integrate(exp(-x^3-x),x,0,inf)`,
+  more than 240 s for `exp(-x^3-x^2)`, and dies with "Heap exhausted, game
+  over" in `INTCV` on `exp(-x^4-x)`. With the guard each takes 0.1 s and
+  gives the noun form, as master does for the first.
+- Found on the way, unrelated to the guard: `integrate(exp(-(x-1)^3),x,1,inf)`
+  returns `-(((sqrt(3)*%i+1)*gamma(1/3))/6)`, on master too. The answer is
+  `gamma(1/3)/3`.
+
 ## Files
 
 - `prof.lisp`: the harness (`prof-start`, `prof-finish`): per-test-file
@@ -701,8 +724,9 @@ Seven problems take about 25 s of the full suite's 125 s
   instrumentation `eobcount.lisp`, `mabscount.lisp`, `mabsalike.lisp`,
   `scalarclasscount.lisp` (with `scalarclass-setup.mac`).
 - Round 3: `data/round3/` (same files, plus `timings.txt` and
-  `slow-problems.txt`), `rounds.py` now covers all three rounds,
-  instrumentation `optcount.lisp`.
+  `slow-problems.txt`, `ab-dintexp.txt`), `rounds.py` now covers all three
+  rounds, prototype `dintexp`, instrumentation `optcount.lisp`,
+  `cvlog.lisp`.
 
 Reproduce: build, run the full suite once (compiles the `.system` share
 packages), then

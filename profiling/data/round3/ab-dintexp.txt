@@ -1,0 +1,89 @@
+== intcv: INTCV calls over the full suite (instrumentation/cvlog.lisp), master and with prototypes/dintexp.lisp
+-- cvlog
+DINTEXP|SOLVE|FAIL        24 calls    4.887 s
+DINTEXP|SOLVE|OK          11 calls    0.039 s
+LOGX1|BXN|FAIL             8 calls    0.046 s
+LOGX1|BXN|OK              12 calls    0.059 s
+LOGX1|SOLVE|FAIL           8 calls    0.132 s
+LOGX1|SOLVE|OK             2 calls    0.012 s
+-- cvlog-guard
+DINTEXP|SOLVE|FAIL        24 calls    0.018 s
+DINTEXP|SOLVE|OK          11 calls    0.039 s
+LOGX1|BXN|FAIL             8 calls    0.046 s
+LOGX1|BXN|OK              12 calls    0.057 s
+LOGX1|SOLVE|FAIL           8 calls    0.181 s
+LOGX1|SOLVE|OK             2 calls    0.017 s
+
+== integ (rtest_integrate alone)
+integ-warmup run=15.177455 gc=0.253 real=15.368 ok=1 
+integ-base-1 run=16.090030 gc=0.272 real=16.268 ok=1 
+integ-guard-1 run=10.053476 gc=0.202 real=10.132 ok=1 
+integ-guard-2 run=10.121430 gc=0.200 real=10.252 ok=1 
+integ-base-2 run=15.809869 gc=0.264 real=16.016 ok=1 
+integ-base-3 run=15.849512 gc=0.260 real=16.136 ok=1 
+integ-guard-3 run=10.255905 gc=0.199 real=10.380 ok=1 
+integ-guard-4 run=11.096637 gc=0.213 real=11.224 ok=1 
+integ-base-4 run=16.149757 gc=0.271 real=16.360 ok=1 
+integ-base-5 run=15.740883 gc=0.254 real=15.856 ok=1 
+integ-guard-5 run=10.861257 gc=0.208 real=10.948 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 5 | 15.9 [15.7, 16.1] | 0.3 | – | – | pass |
+| guard | 5 | 10.5 [10.1, 11.1] | 0.2 | -6.0, -5.7, -5.6, -5.1, -4.9 | -5.5 ± 0.2 s (-34.2%) | pass |
+
+== core
+core-warmup run=74.816976 gc=3.131 real=75.728 ok=1 
+core-base-1 run=70.037260 gc=3.098 real=70.596 ok=1 
+core-guard-1 run=62.295919 gc=2.929 real=62.964 ok=1 
+core-guard-2 run=61.173541 gc=2.891 real=61.824 ok=1 
+core-base-2 run=65.095279 gc=2.945 real=65.724 ok=1 
+core-base-3 run=66.362096 gc=3.006 real=66.876 ok=1 
+core-guard-3 run=64.746147 gc=3.035 real=65.416 ok=1 
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 67.2 [65.1, 70.0] | 3.0 | – | – | pass |
+| guard | 3 | 62.7 [61.2, 64.7] | 3.0 | -7.7, -3.9, -1.6 | -4.4 ± 1.8 s (-6.6%) | pass |
+
+== full
+full-warmup run=121.462584 gc=7.301 real=123.188 ok=1 
+full-base-1 run=126.550762 gc=7.577 real=128.024 ok=1 
+full-guard-1 run=132.724255 gc=7.804 real=134.328 ok=1 
+full-guard-2 run=122.034711 gc=7.484 real=123.724 ok=1 
+full-base-2 run=126.094988 gc=7.557 real=127.812 ok=1 
+full-base-3 run=119.869267 gc=7.175 real=121.676 ok=1 
+full-guard-3 run=120.001652 gc=7.532 real=121.404 ok=1 
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 124.2 [119.9, 126.6] | 7.4 | – | – | pass |
+| guard | 3 | 124.9 [120.0, 132.7] | 7.6 | +6.2, -4.1, +0.1 | +0.7 ± 3.0 s (+0.6%) | pass |
+
+== bytes consed per run
+core-base-1 26,046,022,832 bytes consed
+core-base-2 26,046,020,016 bytes consed
+core-base-3 26,046,465,264 bytes consed
+core-guard-1 25,539,963,344 bytes consed
+core-guard-2 25,539,694,480 bytes consed
+core-guard-3 25,539,694,480 bytes consed
+full-base-1 55,034,864,608 bytes consed
+full-base-2 55,032,862,640 bytes consed
+full-base-3 55,033,419,312 bytes consed
+full-guard-1 54,527,639,936 bytes consed
+full-guard-2 54,527,774,000 bytes consed
+full-guard-3 54,527,642,160 bytes consed
+
+== probes outside the suite, one process each (master, then prototypes/dintexp.lisp)
+master   96.7 s  integrate(exp(-x^3-x),x,0,inf);
+          -> (%o3) 'integrate(%e^(-x^3-x),x,0,inf)
+master  240.0 s  integrate(exp(-x^3-x^2),x,0,inf);
+          -> TIMEOUT
+master  138.2 s  integrate(exp(-x^4-x),x,0,inf);  (SBCL: "Heap exhausted, game over." in INTCV)
+          -> TIMEOUT
+master    0.2 s  integrate(exp(-x^4-x^2),x,minf,inf);
+          -> (%o3) 'integrate(%e^(-x^4-x^2),x,minf,inf)
+master    0.2 s  integrate(exp(-x^4-x^2),x,0,inf);
+          -> (%o3) 'integrate(%e^(-x^4-x^2),x,0,inf)
+master    0.1 s  integrate(x*exp(-x^4-x^2),x,0,inf);
+          -> (%o3) (%e^(1/4)*sqrt(%pi))/4-(%e^(1/4)*sqrt(%pi)*erf(1/2))/4
+guard: each of these 0.1 s with the same results; integrate(log(x^4+x+1),x,0,1) does not finish in 300 s on either
+integrate(exp(-(x-1)^3),x,1,inf) gives -(((sqrt(3)*%i+1)*gamma(1/3))/6) on both, a wrong answer (correct: gamma(1/3)/3)
