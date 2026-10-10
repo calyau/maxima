@@ -6337,7 +6337,7 @@ fullratsimp(diff(integrate(1/(x^6+%i+1),x),x) - 1/(x^6+%i+1));
 
 /* Bug #4067: "integrate(sqrt(u)/(sqrt(u-u*v)),u) --> expt: undefined: 0 to a negative exponent" */
 integrate(sqrt(u)/(sqrt(u-u*v)),u);
-u/sqrt(1-v);
+(2*sqrt(u)*sqrt(u-u*v))/(2-2*v);
 
 /* Bug #4581: "integrate ((log (1 - t)) / t, t, 0, x) is wrong" */
 assume(x > 0, x < 1);
@@ -7122,6 +7122,31 @@ block([G, H],
                       < 1e-12)),
        [-3, -3/10, 1/2, 2])]);
 [true, true, [true, true, true, true], [true, true, true, true]]$
+
+
+/* Integrands with a product of two square roots of rational functions,
+   as left by integration by parts with the antiderivatives and derivatives
+   of acosh, asech, asin and products of square roots */
+
+block([gs, Gs],
+  gs : [x^3*(a+b*log(c*x^n))/(sqrt(d-e*x)*sqrt(d+e*x)), acosh(1/x),
+        x^4*(a+b*asech(c*x)), 1/(x*sqrt(1/x-1)*sqrt(1/x+1)),
+        x^3*asin(x)/sqrt(1-x^4)],
+  Gs : map(lambda([g], integrate(g, x)), gs),
+  [map(lambda([G], freeof('integrate, G)), Gs),
+   map(lambda([s], is(abs(float(rectform(subst(s, diff(first(Gs), x) - first(gs))))) < 1e-12)),
+       [[a=2, b=3, c=2, d=2, e=1, n=3, x=1/2], [a=2, b=3, c=2, d=2, e=1, n=3, x=3/2],
+        [a=2, b=3, c=2, d=-1, e=1, n=3, x=1/2], [a=2, b=3, c=2, d=-1, e=1, n=3, x=3]]),
+   map(lambda([p], is(abs(float(rectform(subst(x=p, diff(second(Gs), x) - second(gs))))) < 1e-12)),
+       [3/10, 7/10, -3/10, 3]),
+   map(lambda([p], is(abs(float(rectform(subst([a=2, b=3, c=2, x=p], diff(third(Gs), x) - third(gs))))) < 1e-12)),
+       [1/10, 3/10, -3/10, 2]),
+   map(lambda([p], is(abs(float(rectform(subst(x=p, diff(fourth(Gs), x) - fourth(gs))))) < 1e-12)),
+       [3/10, 7/10, -3/10, 2]),
+   map(lambda([p], is(abs(float(subst(x=p, diff(fifth(Gs), x) - fifth(gs)))) < 1e-12)),
+       [-9/10, -1/2, 1/10, 1/2, 9/10])]);
+[[true, true, true, true, true], [true, true, true, true], [true, true, true, true],
+ [true, true, true, true], [true, true, true, true], [true, true, true, true, true]]$
 
 
 /**************************************/

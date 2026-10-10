@@ -211,6 +211,7 @@ Bug fixes for unnumbered bugs:
 * sign() could recurse until the stack overflowed when an equal() fact
   held a radical, as in radcan(sqrt(1/x^2+1)) after
   assume(equal(y, sqrt(1/x^2+1)))
+* integrate(sqrt(u)/sqrt(u-u*v),u) was wrong for u < 0 and v > 1
 
 Changes in the Windows installer:
 ---------------------------------
