@@ -284,8 +284,7 @@
 
   (defun integrator (*exp* var2 &optional stack)
     (declare (special *exp*))
-    (prog (y const w arcpart coef integrand result *risch-use-triginv-all*
-           orig-exp)
+    (prog (y const w arcpart coef integrand result *risch-use-triginv-all* exp0)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
@@ -298,8 +297,7 @@
        (setq w (partition *exp* var2 1))
        (setq const (car w))
        (setq *exp* (cdr w))
-       ;; INTFORM may rewrite *EXP*.
-       (setq orig-exp *exp*)
+       (setq exp0 *exp*) ; INTFORM may change *EXP*
        #+nil
        (progn
          (format t "w = ~A~%" w)
@@ -438,8 +436,7 @@
 			    ((and (not powerl)
 				  (setq y (powerlist *exp* var2)))
 			     y)
-			    ((setq y (integrate-sqrt-pair orig-exp var2))
-			     y)
+			    ((setq y (integrate-sqrt-pair exp0 var2)) y)
 			    ((and (not *in-risch-p*) ; Not called from rischint
 			          (setq y
                         ;; Call RISCHINT, dynamically binding $TRIGINVERSES to
@@ -466,63 +463,40 @@
 				 result
 				 (list '(%integrate) *exp* var2)))))))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defvar *integrate-sqrt-pair* nil
-  "Non-NIL while INTEGRATE-SQRT-PAIR integrates a rewritten integrand.")
+  "True while INTEGRATE-SQRT-PAIR integrates a rewritten integrand.")
 
-;; Integrate EXPR if it is odd in Y = r1^(1/2)*r2^(1/2), where r1 and r2 are
-;; rational in VAR2, and has no other radicals in VAR2, as for
-;; 1/(x*sqrt(1/x-1)*sqrt(1/x+1)). If r1 = r2*c, where c > 0 is a polynomial,
-;; r1^k = r2^k*c^k, and Y = r2*c^(1/2). Otherwise, as in INTIR1-EXEC, each
-;; product r1^k1*r2^k2 becomes r1^(k1-k)*r2^(k2-k)*q^k with q = r1*r2 and
-;; k = min(k1,k2). This multiplies EXPR by u = q^(1/2)/Y, which is 1 or -1
-;; and constant wherever neither r1 nor r2 crosses a branch cut. Writing each
-;; q^(n/2) in the result as r1^(n/2)*r2^(n/2) again maps an antiderivative
-;; for q^(1/2) to one for -q^(1/2), provided that it depends on q^(1/2) only
-;; explicitly, as log(q^(1/2)+1) does, and not implicitly, as asin(x) does
-;; for q = 1-x^2. So its partial derivatives with respect to VAR2 and
-;; q^(1/2) must be rational in q^(1/2) and free of other radicals in VAR2.
-;; Return NIL if any of this fails.
+;; Integrate EXPR if it is odd in Y = r1^(1/2)*r2^(1/2), with r1 and r2
+;; rational in VAR2 and no other radicals in VAR2, as for
+;; 1/(x*sqrt(1/x-1)*sqrt(1/x+1)). If r1 = r2*c with a polynomial c > 0, use
+;; r1^k = r2^k*c^k. Otherwise integrate with q^(1/2), q = r1*r2, in place of
+;; Y, as INTIR1-EXEC does, and write q^(1/2) as Y again. This is right also
+;; where Y = -q^(1/2) if the result depends on q^(1/2) only explicitly, as
+;; log(q^(1/2)+1) does, but not asin(x) for q = 1-x^2 (see ALGEBRAIC-IN-Y).
 (defun integrate-sqrt-pair (expr var2)
   (let ((y (gensym)) r1 r2 q g res)
     (labels
         ((parity (e)
-           ;; Parities of the exponents of r1^(1/2) and r2^(1/2), the same
-           ;; in each term of E, or NIL.
-           (cond ((freevar2 e var2) '(0 . 0))
-                 ((atom e) '(0 . 0))
+           ;; Parities of the exponents of r1^(1/2) and r2^(1/2) as bits 0
+           ;; and 1, the same in each term of E, or NIL.
+           (cond ((or (atom e) (freevar2 e var2)) 0)
                  ((mplusp e)
-                  (let ((p (parity (cadr e))))
-                    (and p
-                         (every #'(lambda (a) (equal (parity a) p)) (cddr e))
-                         p)))
+                  (let ((ps (mapcar #'parity (cdr e))))
+                    (and (every #'eql ps (cdr ps)) (car ps))))
                  ((mtimesp e)
-                  (let ((p '(0 . 0)))
-                    (dolist (a (cdr e) p)
-                      (let ((pa (parity a)))
-                        (unless pa (return nil))
-                        (setq p (cons (logxor (car p) (car pa))
-                                      (logxor (cdr p) (cdr pa))))))))
+                  (let ((ps (mapcar #'parity (cdr e))))
+                    (and (every #'integerp ps) (reduce #'logxor ps))))
                  ((mexptp e)
                   (let ((b (cadr e)) (k (caddr e)))
                     (cond ((integerp k)
                            (let ((p (parity b)))
-                             (if (and p (evenp k)) '(0 . 0) p)))
+                             (if (and p (evenp k)) 0 p)))
                           ((and (ratnump k) (eql (caddr k) 2) (rat8 b var2))
-                           (cond ((or (null r1) (alike1 b r1))
-                                  (setq r1 b)
-                                  '(1 . 0))
-                                 ((or (null r2) (alike1 b r2))
-                                  (setq r2 b)
-                                  '(0 . 1))))
-                          ((and (freevar2 b var2)
-                                (equal (parity k) '(0 . 0)))
-                           '(0 . 0)))))
-                 ((every #'(lambda (a) (equal (parity a) '(0 . 0))) (cdr e))
-                  '(0 . 0))))
+                           (cond ((or (null r1) (alike1 b r1)) (setq r1 b) 1)
+                                 ((or (null r2) (alike1 b r2)) (setq r2 b) 2)))
+                          ((and (freevar2 b var2) (eql (parity k) 0)) 0))))
+                 ((every #'(lambda (a) (eql (parity a) 0)) (cdr e)) 0)))
          (split-root (a b)
-           ;; If a = b*c with a polynomial c > 0, replace each a^k by b^k*c^k.
            (let ((c (sratsimp (div a b))))
              (and (polyp-var c var2)
                   (eq ($sign c) '$pos)
@@ -530,10 +504,10 @@
          (root-p (e r)
            (and (mexptp e) (alike1 (cadr e) r) (not (integerp (caddr e)))))
          (merge-roots (e)
-           (let ((f1 (and (mtimesp e)
-                          (find-if #'(lambda (a) (root-p a r1)) (cdr e))))
-                 (f2 (and (mtimesp e)
-                          (find-if #'(lambda (a) (root-p a r2)) (cdr e)))))
+           ;; Replace r1^k1*r2^k2 by r1^(k1-k)*r2^(k2-k)*q^k, k = min(k1,k2).
+           (let* ((l (and (mtimesp e) (cdr e)))
+                  (f1 (find-if #'(lambda (a) (root-p a r1)) l))
+                  (f2 (find-if #'(lambda (a) (root-p a r2)) l)))
              (cond ((and f1 f2)
                     (let* ((k1 (caddr f1))
                            (k2 (caddr f2))
@@ -561,33 +535,30 @@
                   (algebraic-in-y (cadr e)))
                  (t
                   (and (freevar2 (cadr e) var2)
-                       (freeof y (cadr e))
-                       (freeof y (caddr e))
+                       (freeof y e)
                        (algebraic-in-y (caddr e))))))
          (integrate-new (e)
-           ;; The antiderivative of E, or NIL. The new context drops the
-           ;; $equal facts that MAKE-NEW-VAR records, since a second such
-           ;; fact for the same radical can make SIGN recurse endlessly.
+           ;; The new context drops the equal() facts of MAKE-NEW-VAR. A second
+           ;; one for the same radical can make SIGN recurse endlessly.
            (declare (special *integrator-level*))
-           (let ((*integrate-sqrt-pair* t)
-                 (*integrator-level* *integrator-level*))
+           (let* ((*integrate-sqrt-pair* t)
+                  (*integrator-level* *integrator-level*)
+                  (res (with-new-context (context) (integrator e var2))))
              (declare (special *integrator-level*))
-             (let ((res (with-new-context (context)
-                          (integrator e var2))))
-               (unless (isinop res '%integrate) res)))))
+             (unless (isinop res '%integrate) res))))
       (when (and (not *integrate-sqrt-pair*)
-                 (equal (parity (setq expr (specrepcheck expr))) '(1 . 1)))
+                 (eql (parity (setq expr (specrepcheck expr))) 3))
         (cond ((setq g (or (split-root r1 r2) (split-root r2 r1)))
                (integrate-new g))
               (t
                (setq q ($expand (mul r1 r2))
                      g (merge-roots expr))
-               (when (and (not (has-root g))
-                          (setq res (integrate-new g)))
-                 (setq g (intir1-unsplit res q y y))
-                 (when (and (algebraic-in-y (sdiff g var2))
-                            (algebraic-in-y (sdiff g y)))
-                   (intir1-unsplit res q r1 r2)))))))))
+               (and (not (has-root g))
+                    (setq res (integrate-new g))
+                    (setq g (intir1-unsplit res q y y))
+                    (algebraic-in-y (sdiff g var2))
+                    (algebraic-in-y (sdiff g y))
+                    (intir1-unsplit res q r1 r2))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
