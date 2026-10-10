@@ -792,6 +792,15 @@
 	    (go l2)))
      (multiple-value-setq (risch-y risch-m)
        (lsa wl))
+     ;; The top equation, 0 = tt[alphar+beta-1], has no unknowns, so there is
+     ;; no solution when it fails. With FLAG nil, solve the other equations
+     ;; instead, which leaves only the top term of tt: the caller, RISCHEXPLOG,
+     ;; computes the remainder of the returned solution itself and passes it
+     ;; to CXERFARG, or returns NIL when its own FLAG is nil.
+     (if (and (null flag)
+	      (eq risch-y 'inconsistent))
+	 (multiple-value-setq (risch-y risch-m)
+	   (lsa (butlast wl))))
      (if (or (eq risch-y 'singular)
 	     (eq risch-y 'inconsistent))
 	 (cond ((null flag)
