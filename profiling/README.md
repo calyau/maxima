@@ -465,6 +465,23 @@ That is `csign(1 - arg)`, `meqp(arg, 1)` and `csign(arg - 1)` twice each.
 `prototypes/signlog.lisp` computes each once, under the same condition as its
 first use in the cascade, and reuses it, so the result is the same.
 
+Simpler still is `prototypes/signlog2.lisp`. For `arg > 0`, `log(arg)` has the
+sign of `arg - 1`, and the sign of `1 - arg` is just its flip. So one `csign`
+settles `pos`, `neg`, `zero` and `pn`, and only for `pz`, `nz` and `pnz` can
+`MEQP` add something, by proving `arg = 1`. Over the full suite 3,593 calls
+had `arg >= 0`. The sign of `1 - arg` was `pnz` 2,616 times, `neg` 908, `pos`
+67, `nz` 2 and `zero` never. The two signs were always flips of each other,
+and the result always matched the cascade's. The instrumented run puts the
+saving over `signlog` at 0.6 s on the full suite. On the five files above it
+is below the noise, -0.0 ± 0.3 s.
+
+`MEQP` never decided anything in the suite. In all 2,618 calls where the sign
+of `arg - 1` was open, it answered unknown too, at about 1 s in total. It is
+not redundant though: before its `csign` it substitutes every `equal()` fact
+and ratsimps, which `sign` does not. Under
+`assume(x > 0, y > 0, z > 0, equal(x, y + z))`, `sign(log(x/(y + z)))` is
+`zero` with it and `pnz` without.
+
 ### 4. Limit cache lookups (round 1, item 7)
 
 `GETLIMVAL` and `PUTLIMVAL` cost 3.0% of the core suite in `ALIKE1`, `ALIKE`

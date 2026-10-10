@@ -154,3 +154,17 @@ pcore-new-3 run=49.097472 gc=2.587 real=49.360 ok=1
 |---|---|---|---|---|---|---|
 | old | 3 | 55.9 [55.4, 56.2] | 2.9 | – | – | pass |
 | new | 3 | 49.8 [49.1, 50.3] | 2.6 | -6.2, -5.7, -6.3 | -6.1 ± 0.2 s (-10.9%) | pass |
+
+== slog (item 3: signlog = hand, signlog2 = new, on the five sign files)
+slog-warmup run=38.565702 gc=1.166 real=38.916 ok=1 
+slog-hand-1 run=38.646645 gc=1.183 real=38.996 ok=1 
+slog-new-1 run=39.151047 gc=1.130 real=39.583 ok=1 
+slog-new-2 run=38.929761 gc=1.194 real=39.304 ok=1 
+slog-hand-2 run=39.280603 gc=1.173 real=39.584 ok=1 
+slog-hand-3 run=38.817745 gc=1.142 real=39.160 ok=1 
+slog-new-3 run=38.627113 gc=1.182 real=38.920 ok=1 
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs hand, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| hand | 3 | 38.9 [38.6, 39.3] | 1.2 | – | – | pass |
+| new | 3 | 38.9 [38.6, 39.2] | 1.2 | +0.5, -0.4, -0.2 | -0.0 ± 0.3 s (-0.0%) | pass |
