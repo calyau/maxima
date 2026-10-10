@@ -1168,8 +1168,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           (or (and (mnump (third e)) (mnegp (third e)))
           (eq t (mnqp (second e) 0)))))))
 
-(defun meqp (a b)
+(defun meqp (a b &optional (csign t))
   ;; Check for some particular types before falling into the general case.
+  ;; With CSIGN = NIL, the final $CSIGN test is made only if SRATSIMP and
+  ;; EQUAL-FACTS-SIMP rewrite A - B. This can be used in cases where other
+  ;; code has already tried to determine the sign, but couldn't decide equality.
   (cond ((stringp a)
 	 (and (stringp b) (equal a b)))
 	((stringp b) nil)
@@ -1219,7 +1222,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		 ((memq sign '($pos $neg $pn)) nil)
 
 		 ;; if database lookup failed, apply all equality facts
-		 (t (meqp-by-csign (equal-facts-simp (sratsimp (sub a b))) a b)))))))
+		 (t (let* ((d (sub a b))
+			   (z (equal-facts-simp (sratsimp d))))
+		      (if (or csign (not (alike1 z d)))
+			  (meqp-by-csign z a b)
+			  `(($equal) ,a ,b)))))))))
 
 ;; Two arrays are equal (according to MEQP)
 ;; if (1) they have the same dimensions,
@@ -1327,8 +1334,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
          (merror (intl:gettext "greater than or equal: arguments are incomparable; found: ~:M, ~:M") a b))))
      (t (mgqp-general a b))))
 
-(defun mnqp (x y)
-  (let ((b (meqp x y)))
+(defun mnqp (x y &optional (csign t))
+  (let ((b (meqp x y csign)))
     (cond ((eq b '$unknown) b)
 	  ((or (eq b t) (eq b nil)) (not b))
 	  (t `(($notequal) ,x ,y)))))
@@ -2215,7 +2222,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (sign (cadr x))
     (cond ((member sign '($pos $zero) :test #'eq))
 	  ((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
-	  ((eq t (mnqp 0 (cadr x))) (setq sign '$pos)) ; abs(nonzero) > 0
+	  ;; abs(nonzero) > 0. If SIGN found nothing ('$PNZ), pass NIL as the third
+	  ;; argument to MNQP, allowing it to skip a redundant second $CSIGN call.
+	  ((eq t (mnqp 0 (cadr x) (not (eq sign '$pnz)))) (setq sign '$pos))
 	  (t (setq sign '$pz minus nil evens (nconc odds evens) odds nil)))))
 
 (defun sign-asin/acos/atanh (x)
