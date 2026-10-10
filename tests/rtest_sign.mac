@@ -3066,6 +3066,34 @@ block([a, h],
 [[], [], pos]$
 
 
+/* sign() of Q^R - S, Q^m - Q^n, abs() and log() */
+
+block([a, m, n, x, y],
+  local(a, m, n, x, y),
+  assume(a > 2, x > 1, 0 < y, y < 1, m > n),
+  [sign(a^2 - 4), sign(a^2 - a), sign(x^3 - x^2), sign(y^3 - y^2),
+   sign(x^m - x^n), sign(y^m - y^n), sign(%e^x - 1)]);
+[pos, pos, pos, neg, pos, neg, pos]$
+
+[sign(abs((x + 1)^2 - x^2 - 2*x + y^2)), sign(abs(x - y))];
+[pos, pz]$
+
+block([r],
+  assume(notequal(x + y, 0)),
+  r : sign(abs(x + y)),
+  forget(notequal(x + y, 0)),
+  r);
+pos$
+
+block([a, b, c, d, e, f, g],
+  local(a, b, c, d, e, f, g),
+  assume(a > 1, 0 < b, b < 1, c >= 1, 0 < d, d <= 1, e > 0, notequal(e, 1),
+         f > 0, equal(g, 1)),
+  [sign(log(a)), sign(log(b)), sign(log(c)), sign(log(d)), sign(log(e)),
+   sign(log(f)), sign(log(g))]);
+[pos, neg, pz, nz, pn, pnz, zero]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
