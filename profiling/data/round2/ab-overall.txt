@@ -1,0 +1,39 @@
+== full (before: eec2fa780 with 4fa98b94a 3d4c7d2af eec2fa780 reverted, round1: eec2fa780, round2: eec2fa780 + handover-speedups-round2.md)
+full-warmup_before run=127.268307 gc=9.658 real=128.808 ok=1
+full-warmup_round1 run=108.421768 gc=7.261 real=112.288 ok=1
+full-warmup_round2 run=105.493988 gc=8.517 real=106.968 ok=1
+full-before-1 run=121.215033 gc=7.831 real=122.644 ok=1
+full-round1-1 run=109.412467 gc=7.306 real=111.312 ok=1
+full-round2-1 run=98.641627 gc=6.877 real=99.772 ok=1
+full-round1-2 run=106.913071 gc=7.263 real=108.200 ok=1
+full-round2-2 run=97.637764 gc=6.843 real=98.980 ok=1
+full-before-2 run=118.649054 gc=7.719 real=120.248 ok=1
+full-round2-3 run=97.855393 gc=6.811 real=99.408 ok=1
+full-before-3 run=120.043796 gc=7.739 real=121.832 ok=1
+full-round1-3 run=108.079941 gc=7.212 real=109.912 ok=1
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs before, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| before | 3 | 120.0 [118.6, 121.2] | 7.8 | – | – | pass |
+| round1 | 3 | 108.1 [106.9, 109.4] | 7.3 | -11.8, -11.7, -12.0 | -11.8 ± 0.1 s (-9.9%) | pass |
+| round2 | 3 | 98.0 [97.6, 98.6] | 6.8 | -22.6, -21.0, -22.2 | -21.9 ± 0.5 s (-18.3%) | pass |
+
+== core
+core-warmup_before run=67.946499 gc=3.586 real=68.580 ok=1
+core-warmup_round1 run=56.317759 gc=3.014 real=56.864 ok=1
+core-warmup_round2 run=51.148536 gc=2.744 real=51.756 ok=1
+core-before-1 run=67.899069 gc=3.611 real=68.668 ok=1
+core-round1-1 run=58.053318 gc=3.068 real=58.748 ok=1
+core-round2-1 run=50.914972 gc=2.715 real=51.476 ok=1
+core-round1-2 run=58.620156 gc=3.120 real=59.336 ok=1
+core-round2-2 run=51.427010 gc=2.752 real=51.980 ok=1
+core-before-2 run=68.393815 gc=3.642 real=69.240 ok=1
+core-round2-3 run=50.937542 gc=2.760 real=51.456 ok=1
+core-before-3 run=67.786736 gc=3.622 real=68.512 ok=1
+core-round1-3 run=57.505370 gc=3.065 real=57.972 ok=1
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs before, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| before | 3 | 68.0 [67.8, 68.4] | 3.6 | – | – | pass |
+| round1 | 3 | 58.1 [57.5, 58.6] | 3.1 | -9.8, -9.8, -10.3 | -10.0 ± 0.2 s (-14.7%) | pass |
+| round2 | 3 | 51.1 [50.9, 51.4] | 2.7 | -17.0, -17.0, -16.8 | -16.9 ± 0.0 s (-24.9%) | pass |

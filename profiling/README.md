@@ -396,6 +396,22 @@ as `mabscsign`), built in and timed against the same build with the old
 definitions loaded: core −6.1 ± 0.2 s (−10.9%), full −11.5 ± 0.8 s (−10.3%).
 `ab-round2.txt` in `data/round2/` has every run.
 
+### All patches together
+
+Three separate builds timed against each other (`abmulti.sh`, one discarded
+warm-up per build, three rotated rounds, pinned): master `eec2fa780` with
+the three round-1 commits reverted, master as is, and master with the round-2
+handover applied. All runs pass.
+
+| build                        | core           | full            |
+|------------------------------|----------------|-----------------|
+| before both rounds           | 68.0 s         | 120.0 s         |
+| round 1 (on master)          | 58.1 s (−14.7%) | 108.1 s (−9.9%) |
+| rounds 1 and 2               | 51.1 s (−24.9%) | 98.0 s (−18.3%) |
+
+Round 2 alone: core −7.0 ± 0.2 s (−12.0%), full −10.1 ± 0.4 s (−9.3%).
+Runs in `data/round2/ab-overall.txt`.
+
 ### 1. `SIGNDIFF-SPECIAL` calls `EXPT-OF-BASE` before the cheap tests
 
 `SIGNDIFF-SPECIAL` is 8.0% of the core suite, and 3.7% is `EXPT-OF-BASE`,
@@ -522,7 +538,8 @@ are `fourier_elim`, `stringproc`, `to_poly_solve`, `grobner`, `numdistrib`,
 - `stk.py FILES CMD ...`: queries on folded stacks (`tables`, `incl`,
   `callers`, `callees`, `tree`, `files`, `leaves`, `attr`), reads `.gz`.
 - `abrun.sh` times one run with `prototypes/*.lisp` loaded, `abseq.sh` runs
-  the interleaved rounds, `abstat.py` summarizes them.
+  the interleaved rounds, `abstat.py` summarizes them. `abmulti.sh` does the
+  same for separate builds.
 - `instrumentation/`: the counting wrappers behind the numbers above
   (`sfstat.lisp`, `sfdebug.lisp`, `simpstat.lisp`, `loadlog.lisp`,
   `dolcount.lisp`, `lenlog.lisp`, `fpsqrt-check.lisp`, `fpsqrt-exact.lisp`).
