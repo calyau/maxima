@@ -1705,16 +1705,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     retval))
 
 (defvar *in-expt-of-base* nil
-  "True while EXPT-OF-BASE compares bases with MEQP.")
+  "True inside EXPT-OF-BASE, whose MEQP can recurse into SIGNDIFF-SPECIAL.")
 
 (defun expt-of-base (expr q)
   "If EXPR is a power of base Q (or EXPR = Q, then the exponent is implicitly 1),
   returns the exponent (1 or k). Otherwise returns NIL.
-  Equality of EXPR's base and Q or EXPR and Q is checked via MEQP.
-  MEQP can come back to the sign question that led here, e.g. when
-  EQUAL-FACTS-SIMP simplifies the radical of an equal() fact, so while
-  *IN-EXPT-OF-BASE* is true, SIGNDIFF-SPECIAL skips the rules that call
-  EXPT-OF-BASE."
+  Equality of EXPR's base and Q or EXPR and Q is checked via MEQP."
   (let ($ratprint (*in-expt-of-base* t))
     (if (mexptp expr)
       (if (eq t (meqp (cadr expr) q))
@@ -1742,7 +1738,6 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			;; Do NOT apply when Spos is itself a power of Qpos (e.g. S = Q):
 			;; The reduction would just toggle the exponent R <-> 1/R and recurse forever.
 			;; That same-base case is handled by the exponent-comparison rule further below.
-			;; Nor while EXPT-OF-BASE compares bases, see there.
 			(not *in-expt-of-base*)
 			(not (expt-of-base xrhs (cadr xlhs)))
 			(eq (sign* (sub (cadr xlhs)
