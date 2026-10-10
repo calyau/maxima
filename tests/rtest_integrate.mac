@@ -7103,6 +7103,27 @@ block([r],
 (2*%e^x^(3/2)*(x^(3/2)-1))/3$
 
 
+/* sqrt(r1)*sqrt(r2) = sqrt(r1*r2) for complex conjugate linear radicands:
+   integrate() hung on %e^(3*%i*atan(a*x)) and left a noun form for the
+   second integrand */
+
+block([G, H],
+  G : integrate(%e^(3*%i*atan(a*x)), x),
+  H : block([r],
+        assume(d > 0, k > 0),
+        r : integrate((a+b*asinh(c*x))*sqrt(d+%i*c*d*x)*sqrt(k-%i*c*k*x), x),
+        forget(d > 0, k > 0),
+        r),
+  [freeof('integrate, G), freeof('integrate, H),
+   map(lambda([s], is(abs(float(rectform(subst(s, diff(G, x) - %e^(3*%i*atan(a*x)))))) < 1e-12)),
+       [[a=2, x=-3], [a=2, x=1/2], [a=-3/2, x=-3/10], [a=-3/2, x=2]]),
+   map(lambda([p], is(abs(float(rectform(subst([a=2/5, b=11/10, c=13/10, d=2, k=7/10, x=p],
+                                                 diff(H, x) - (a+b*asinh(c*x))*sqrt(d+%i*c*d*x)*sqrt(k-%i*c*k*x)))))
+                      < 1e-12)),
+       [-3, -3/10, 1/2, 2])]);
+[true, true, [true, true, true, true], [true, true, true, true]]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
