@@ -2285,7 +2285,10 @@ wrapper for this."
 (defun mopp (fun)
   (and (not (eq fun 'mqapply))
        (or (mopp1 fun)
-	   (and (get fun 'operators) (not (rulechk fun))
+	   ;; TELLSIMP rules give FUN an OPERATORS property too, so with rules
+	   ;; check the simplifier FUN had before them, last in its OLDRULES.
+	   (and (get fun 'operators)
+		(or (not (rulechk fun)) (car (last (mget fun 'oldrules))))
 		(not (member fun rulefcnl :test #'eq)) (not (get fun 'opers))))))
 
 (defun mopp1 (fun)
