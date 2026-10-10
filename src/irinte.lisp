@@ -171,11 +171,10 @@
             t))))
 
 ;; Return T if R = sqrt(r1)*sqrt(r2) is equal to sqrt(r1*r2) for every real x,
-;; which holds for r1 = a1*x+b1 and r2 = a2*x+b2 if k = -a1/a2 is a real number
-;; > 0 and b1+k*b2 a real number >= 0, as for 1-x and 1+x, or 1-%i*x and
-;; 1+%i*x. The positive combination r1+k*r2 of r1 and r2 is then a constant
-;; >= 0, so their imaginary parts have opposite signs, and they are never both
-;; negative.
+;; which holds for r1 = a1*x+b1 and r2 = a2*x+b2 with real k = -a1/a2 > 0 and
+;; b1+k*b2 >= 0, as for 1-%i*x and 1+%i*x. A positive combination of
+;; r1 and r2 is then a constant >= 0, so their imaginary parts have opposite
+;; signs, and they are never both negative.
 (defun intir1-merge-exact-p (r1 r2 x)
   (flet ((coeffs (r)
            (let* ((r ($expand r))
@@ -183,12 +182,12 @@
                   (b ($coeff r x 0)))
              (when (and (freeof x a)
                         (freeof x b)
-                        (alike1 ($expand (add (mul a x) b)) r))
+                        (alike1 ($expand (add (mul a x) b)) r)
+                        (not (zerop1 a)))
                (list a b)))))
     (let ((c1 (coeffs r1))
           (c2 (coeffs r2)))
       (and c1 c2
-           (not (zerop1 (first c2)))
            (let ((k (div (neg (first c1)) (first c2))))
              (and (eq t (mgrp k 0))
                   (eq t (mgqp (add (second c1) (mul k (second c2))) 0))))))))
