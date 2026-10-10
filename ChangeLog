@@ -195,6 +195,7 @@ Bug fixes for numbered bugs:
 * \#5658 gcd and ratsimp miss some common factors that are linear in one variable
 * \#5662 integrate gives a wrong antiderivative for sqrt(a-%i*a*tan(x))/tan(x)^(3/2)
 * \#5664 two minor tolerance test failures in tests/rtest16.mac
+* \#5665 integrate(exp(p(x)),x,a,b) with a cubic or quartic p takes minutes or exhausts the heap
 
 Bug fixes for unnumbered bugs:
 ------------------------------
