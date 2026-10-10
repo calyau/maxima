@@ -457,6 +457,17 @@ Neither is strictly equivalent: when the rewrite changes nothing, `$csign`
 could still answer differently than the `sign` that just failed, since it
 rebinds `limitp` and `factored`. That never occurred in either suite.
 
+The argument only helps where the caller has just taken the sign of the same
+expression. Of the 75 `MEQP` and `MNQP` calls in `src/`, only `SIGN-MABS` and
+`SIGN-LOG` (item 3) do. Two more come close, but neither is worth a patch.
+`SIMP-%ATAN2`'s `trigsign` rule calls `mnqp(y, 0)` after taking `$sign(y)`,
+for 0.12% of the full suite. `SIMPLIMTIMES` calls `mnqp(e, 0)` after
+`GETSIGNL` failed on the limit of `e`, but `GETSIGNL` returns only 1, -1, 0
+or `NIL`, for 0.09%. Everywhere else, `MEQP` is the first sign test on its
+expression: `is(equal())`, `assume()`, `EXPT-OF-BASE`, `compare()` of
+non-real arguments, and the tests on real and imaginary parts in `limit()`
+and `conjugate()`.
+
 ### 3. `SIGN-LOG` computes each comparison twice
 
 For a positive argument, `SIGN-LOG` tries `mgrp(1, arg)`, `meqp(arg, 1)`,
