@@ -846,10 +846,17 @@
 	  (limitp (eps-sign a))
 	  (t '$zero))))
 
+;; True if %i occurs in X outside of abs, whose value is always real.
+(defun %i-outside-abs-p (x)
+  (cond ((atom x) (eq x '$%i))
+        ((specrepp x) (not (free x '$%i)))
+        ((eq (caar x) 'mabs) nil)
+        (t (some #'%i-outside-abs-p (cdr x)))))
+
 ;; csign returns t if x appears to be complex.
 ;; Else, it returns the sign.
 (defun csign (x)
-  (or (not (free x '$%i))
+  (or (%i-outside-abs-p x)
       (let (sign-imag-errp limitp) (catch 'sign-imag-err ($sign x)))))
 
 ;;; $csign works like $sign but switches the sign-functions into a complex
