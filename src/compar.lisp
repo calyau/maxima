@@ -1723,12 +1723,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			(eq (sign* (sub (cadr xlhs) 1)) '$pos))
 		       (and (not (eq $domain '$complex))
 			;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos).
+			(eq (sign* (cadr xlhs)) '$pos)
+			(eq (sign* xrhs) '$pos)
 			;; Do NOT apply when Spos is itself a power of Qpos (e.g. S = Q):
 			;; The reduction would just toggle the exponent R <-> 1/R and recurse forever.
 			;; That same-base case is handled by the exponent-comparison rule further below.
 			(not (expt-of-base xrhs (cadr xlhs)))
-			(eq (sign* (cadr xlhs)) '$pos)
-			(eq (sign* xrhs) '$pos)
 			(eq (sign* (sub (cadr xlhs)
 					(power xrhs (div 1 (caddr xlhs)))))
 			    '$pos))))
