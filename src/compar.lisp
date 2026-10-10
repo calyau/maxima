@@ -1821,17 +1821,19 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (let ((q (cond ((mexptp xlhs) (cadr xlhs))
                      ((mexptp xrhs) (cadr xrhs)))))
         (when q
-          (let ((m (expt-of-base xlhs q))
-                (n (expt-of-base xrhs q)))
-            (when (and m n
-                       (zerop1 ($imagpart m))
-                       (zerop1 ($imagpart n)))
-              (let* ((qcmp (and (eq (sign* q) '$pos) (sign* (sub q 1))))
-                     (diff-sign (cond ((eq qcmp '$pos) (sign* (sub m n)))
-                                      ((eq qcmp '$neg) (sign* (sub n m)))
-                                      (t '$pnz))))
-                (unless (eq diff-sign '$pnz)
-                  (setq sgn diff-sign))))))))
+          ;; Compare Q with 1 first, as each EXPT-OF-BASE costs am expensive MEQP.
+          (let ((qcmp (and (eq (sign* q) '$pos) (sign* (sub q 1)))))
+            (when (member qcmp '($pos $neg))
+              (let ((m (expt-of-base xlhs q))
+                    (n (expt-of-base xrhs q)))
+                (when (and m n
+                           (zerop1 ($imagpart m))
+                           (zerop1 ($imagpart n)))
+                  (let ((diff-sign (if (eq qcmp '$pos)
+                                       (sign* (sub m n))
+                                       (sign* (sub n m)))))
+                    (unless (eq diff-sign '$pnz)
+                      (setq sgn diff-sign))))))))))
 
     (when (and (null sgn) $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
       (setq sgn (signdiff-minmax xlhs xrhs)))
