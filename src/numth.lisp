@@ -842,7 +842,10 @@
                             (list (power-mod g (truncate ord (apply #'expt pe)) m)) ))
                         f ))
               gs ords fs-ords ))
-    (setq pegs (sort (apply #'append pegs) #'zn-pe>))
+    ;; entries (p e g) with equal p and e tie under ZN-PE>, and their order
+    ;; decides which g goes into which factor generator. SORT may break ties
+    ;; at random (GCL does), so keep the order of GS.
+    (setq pegs (stable-sort (apply #'append pegs) #'zn-pe>))
     (do ((todo pegs (nreverse left)) 
          (q 0 0) (fg 1 1) (left nil nil)
           g fgs )

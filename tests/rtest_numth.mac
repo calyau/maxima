@@ -912,3 +912,10 @@ matrix([1, 1], [3, 1], [5, 1], [7, 1]);
 zn_power_table(7);
 matrix([1, 1, 1, 1, 1, 1], [2, 4, 1, 2, 4, 1], [3, 2, 6, 4, 5, 1],
        [4, 2, 1, 4, 2, 1], [5, 4, 6, 2, 3, 1], [6, 1, 6, 1, 6, 1]);
+
+/* (Z/24)* = Z2 x Z2 x Z2, (Z/65)* = Z4 x Z12 and (Z/104)* = Z2 x Z2 x Z12.
+   The construction yields several candidates of the same prime power order
+   for each, and how they are combined must not depend on how the Lisp's
+   SORT breaks ties. */
+[zn_factor_generators(24), zn_factor_generators(65), zn_factor_generators(104)];
+[[7, 19, 17], [27, 11], [79, 27, 89]];
