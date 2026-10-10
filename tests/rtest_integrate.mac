@@ -7084,7 +7084,6 @@ block([g, G],
  map(lambda([p], is(abs(float(subst(z=p, diff(G, z) - g))) < 1e-12)), [2, -3, 1+%i, -1+%i/2, -2-3*%i]));
 [true, true, true, true, true]$
 
-
 /* integrate() must not overflow the stack through the equal() facts
    that the integrator records for its substitutions */
 
@@ -7102,6 +7101,15 @@ block([r],
   r);
 (2*%e^x^(3/2)*(x^(3/2)-1))/3$
 
+/* This overflowed the stack as well. The result is right where cos(2*x) > 0 */
+
+block([g, G],
+  g : cos(x)*sqrt(cos(2*x)),
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p], is(abs(float(subst(x=p, diff(G, x) - g))) < 1e-10)),
+       [3/10, -1/2, 3/5])]);
+[true, [true, true, true]]$
 
 /* sqrt(r1)*sqrt(r2) = sqrt(r1*r2) for complex conjugate linear radicands:
    integrate() hung on %e^(3*%i*atan(a*x)) and left a noun form for the
@@ -7123,6 +7131,23 @@ block([G, H],
        [-3, -3/10, 1/2, 2])]);
 [true, true, [true, true, true, true], [true, true, true, true]]$
 
+/* The same with real linear radicands, and with sqrt(r1)*sqrt(r2) in the
+   denominator */
+
+block([gs, Gs, a, b, c, d, k],
+  assume(d > 0, k > 0),
+  gs : [(b*asin(c*x)+a)/(sqrt(c*d*x+d)*sqrt(k-c*k*x)),
+        (b*asinh(c*x)+a)/(sqrt(%i*c*d*x+d)*sqrt(k-%i*c*k*x))],
+  Gs : map(lambda([g], integrate(g, x)), gs),
+  forget(d > 0, k > 0),
+  [map(lambda([G], freeof('integrate, G)), Gs),
+   map(lambda([i],
+              map(lambda([p],
+                         is(abs(float(rectform(subst(p, diff(Gs[i], x) - gs[i])))) < 1e-10)),
+                  [[a=1, b=2, c=1/2, d=3/2, k=2/3, x=1/2], [a=1, b=2, c=1/2, d=3/2, k=2/3, x=-1],
+                   [a=1, b=2, c=-1/2, d=3/2, k=2/3, x=1]])),
+       [1, 2])]);
+[[true, true], [[true, true, true], [true, true, true]]]$
 
 /* Integrands with a product of two square roots of rational functions,
    as left by integration by parts with the antiderivatives and derivatives
@@ -7148,6 +7173,15 @@ block([gs, Gs],
 [[true, true, true, true, true], [true, true, true, true], [true, true, true, true],
  [true, true, true, true], [true, true, true, true], [true, true, true, true, true]]$
 
+/* The same for asech(sqrt(x)) */
+
+block([g, G],
+  g : asech(sqrt(x))/x^2,
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p], is(abs(float(rectform(subst(x=p, diff(G, x) - g)))) < 1e-10)),
+       [1/3, 4/5, 2, -1/2])]);
+[true, [true, true, true, true]]$
 
 /* The Risch integrator solves the equations it can when the top one of
    its linear system fails, as before, if the caller checks the remainder */
@@ -7161,6 +7195,16 @@ block([G],
        [1/10, 1/2, 1, 2])]);
 [true, [true, true, true, true]]$
 
+/* RISCHINT tries without partial solutions in RISCHEXPVAR first, since
+   they can leave an integral that another method does not leave */
+
+block([g, G, a],
+  g : %e^(2*%i*atan(a*x))/sqrt(a^2*x^2+1),
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p], is(abs(float(rectform(subst(p, diff(G, x) - g)))) < 1e-10)),
+       [[a=2, x=-3], [a=2, x=1/2], [a=-3/2, x=2]])]);
+[true, [true, true, true]]$
 
 /* TRIGIN1 simplifies %e^(log(x+1)+log(x-1)) and the like in the integrals
    that the Risch integrator leaves, so that they can be evaluated.
@@ -7171,6 +7215,95 @@ block([g, G],
   G : integrate(g, x),
   [freeof('integrate, G),
    map(lambda([p], is(abs(float(subst(x=p, diff(G, x) - g))) < 1e-12)), [11/10, 2, 7/2, 10])]);
+[true, [true, true, true, true]]$
+
+/* Integrands odd in three square roots with r1*r2/r3 free of x, as left by
+   integrating asinh(c*x) and acosh(c*x) by parts */
+
+block([gs, Gs, a, b, c, d, f],
+  gs : [1/(sqrt(x-1)*sqrt(x+1)*sqrt(x^2-1)),
+        (b*asinh(c*x)+a)/((%i*c*d*x+d)^(3/2)*(f-%i*c*f*x)^(3/2)),
+        (b*acosh(c*x)+a)/(d-c^2*d*x^2)^(3/2),
+        acosh(a*x)/(x^2*sqrt(1-a^2*x^2))],
+  Gs : map(lambda([g], integrate(g, x)), gs),
+  [map(lambda([G], freeof('integrate, G)), Gs),
+   map(lambda([p], is(abs(float(subst(x=p, diff(Gs[1], x) - gs[1]))) < 1e-10)),
+       [-2, 3/2, 2]),
+   map(lambda([p], is(abs(float(rectform(subst(p, diff(Gs[2], x) - gs[2])))) < 1e-10)),
+       [[a=1, b=1, c=1, d=1, f=1, x=2/5], [a=1/2, b=2, c=1, d=-1, f=2, x=-7/10],
+        [a=1/2, b=2, c=1, d=2, f=-1, x=-7/10], [a=1/2, b=2, c=1, d=-2, f=-1, x=7/10]]),
+   map(lambda([p], is(abs(float(rectform(subst(p, diff(Gs[3], x) - gs[3])))) < 1e-10)),
+       [[a=3/5, b=13/10, c=4/5, d=7/5, x=1/2], [a=3/5, b=13/10, c=4/5, d=-7/5, x=2],
+        [a=3/5, b=13/10, c=-4/5, d=-7/5, x=-2]]),
+   map(lambda([p], is(abs(float(rectform(subst(p, diff(Gs[4], x) - gs[4])))) < 1e-10)),
+       [[a=4/5, x=1/2], [a=4/5, x=2], [a=4/5, x=-2], [a=-4/5, x=2]])]);
+[[true, true, true, true], [true, true, true], [true, true, true, true], [true, true, true],
+ [true, true, true, true]]$
+
+block([g, G, c, d],
+  g : x*acosh(c*x)^2/sqrt(d-c^2*d*x^2),
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p], is(abs(float(rectform(subst(p, diff(G, x) - g)))) < 1e-10)),
+       [[c=4/5, d=7/5, x=1/2], [c=4/5, d=-7/5, x=2], [c=-4/5, d=-7/5, x=-2],
+        [c=4/5, d=-7/5, x=1/2], [c=4/5, d=7/5, x=2]])]);
+[true, [true, true, true, true, true]]$
+
+/* Integrands odd in sqrt(r1)*sqrt(r2) with a further root, as left by
+   integrating acosh by parts: an unrelated root, and a related one, for
+   which the result was wrong */
+
+block([gs, Gs],
+  gs : [acosh(2*x)/(x^2+3)^(3/2), acosh(2*x)/(x^2*sqrt(3-12*x^2))],
+  Gs : map(lambda([g], integrate(g, x)), gs),
+  [map(lambda([G], freeof('integrate, G)), Gs),
+   map(lambda([i],
+              map(lambda([p],
+                         is(abs(float(rectform(subst(x=p, diff(Gs[i], x) - gs[i])))) < 1e-10)),
+                  [1/4, 2, -2, -1/4])),
+       [1, 2])]);
+[[true, true], [[true, true, true, true], [true, true, true, true]]]$
+
+/* TRIGIN1 took minutes for this integrand */
+
+block([g, G, a, c, d],
+  assume(a > 0),
+  g : cot(d*x+c)^(7/2)*sqrt(%i*a*tan(d*x+c)+a),
+  G : integrate(g, x),
+  forget(a > 0),
+  [freeof('integrate, G),
+   map(lambda([p], is(abs(float(rectform(subst([a=13/10, c=3/10, d=1, x=p],
+                                                 diff(G, x) - g)))) < 1e-10)),
+       [1/2, 2, 7/2, 5])]);
+[true, [true, true, true, true]]$
+
+/* No antiderivative from the integrals that RISCHINT leaves here, with
+   radicals split on a wrong branch: a noun form, or a result that is right
+   also where cos(d*x+c) < 0 */
+
+block([g, G, a, c, d],
+  assume(a > 0),
+  g : sqrt(tan(d*x+c))/sqrt(%i*a*tan(d*x+c)+a),
+  G : integrate(g, x),
+  forget(a > 0),
+  if freeof('integrate, G)
+  then every(lambda([p], is(abs(float(rectform(subst([a=13/10, c=0, d=1, x=p],
+                                                     diff(G, x) - g)))) < 1e-10)),
+             [1/2, 2, 7/2, 5])
+  else true);
+true$
+
+/* integrate() failed with "CQUOTIENT: quotient is not exact" */
+
+block([g, G, a, c, d, A, B],
+  assume(a > 0),
+  g : cot(d*x+c)^(9/2)*(B*tan(d*x+c)+A)*(%i*a*tan(d*x+c)+a)^(3/2),
+  G : integrate(g, x),
+  forget(a > 0),
+  [freeof('integrate, G),
+   map(lambda([p], is(abs(float(rectform(subst([a=13/10, c=3/10, d=1, A=2, B=1/3, x=p],
+                                                 diff(G, x) - g)))) < 1e-10)),
+       [1/2, 2, 7/2, 5])]);
 [true, [true, true, true, true]]$
 
 

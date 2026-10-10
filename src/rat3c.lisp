@@ -65,7 +65,11 @@
   (let ((a (pgcda x y t)))
     (cond ((cdr a) a)
 	  ((equal (setq a (car a)) 1) (list 1 x y))
-	  ((and $algebraic (not (pcoefp a)))
+	  ((and $algebraic
+		;; OLDGCD can return a number that does not divide X or Y.
+		(not (and (pcoefp a)
+			  (pquotientchk-safe x a)
+			  (pquotientchk-safe y a))))
 	   (cons a (prog2 (setq x (rquotient x a)
 				y (rquotient y a)
 				a (pgcdcofacts (cdr x) (cdr y)))

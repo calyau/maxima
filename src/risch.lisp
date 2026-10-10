@@ -22,6 +22,10 @@
 (defvar *changevp* t
   "When nil prevents changevar hack")
 
+(defvar *risch-partial* nil
+  "T lets RISCHEXPVAR return partial solutions. While INTEGRATOR tries without
+  them, it is OFF, and RISCHEXPVAR sets it to NEEDED where one could help.")
+
 (defmacro pair (al bl) `(mapcar #'cons ,al ,bl))
 
 ;; internal representation of risch expressions: list with canonical rational
@@ -205,6 +209,22 @@
           (meval (list '($ev) result '$nouns)))
         result)))
 
+;; Return the real and imaginary parts of E at a sample point, where VAR is
+;; 0.3 and the other variables are 0.67, 1.04 and so on, or NIL.
+(defun value-at-sample (e var)
+  (let ((v (car (let (($errormsg nil))
+                  (errcatch
+                   (let ((k 0))
+                     (dolist (u (cdr (let ($listconstvars) ($listofvars e))))
+                       (unless (eq u var)
+                         (setq e (maxima-substitute (+ 0.3 (* 0.37 (incf k)))
+                                                    u e))))
+                     ($float ($rectform (maxima-substitute 0.3 var e)))))))))
+    (and v
+         (setq v (list ($realpart v) ($imagpart v)))
+         (every #'numberp v)
+         v)))
+
 (defun trigin1 (risch-*exp risch-var)
   (let ((yyy (hypertrigint1 risch-*exp risch-var nil)))
     (setq yyy (multiple-value-bind (num denom)
@@ -215,18 +235,24 @@
 	  $logarc $exponentialize result)
      ;; Split into real and imaginary part. This automatically converts back to
      ;; trigonometric functions, which were converted to exponential form before.
-     (destructuring-let (((yyy-re . yyy-im) (risplit yyy)))
-      (flet ((locally-const-p (e)
+     (destructuring-let (((yyy-re . yyy-im) (risplit yyy))
+			 (f (value-at-sample risch-*exp risch-var)))
+      (flet ((locally-const-p (e g)
         "E is locally constant iff its derivative vanishes."
+        ;; G is the matching part of the integrand at the sample point. If it
+        ;; is not zero, E is not constant, and RADCAN1 can take very long.
+        (unless (and g (> (abs g) 1d-8))
         (let ((e (let (($exponentialize t) ($logarc t))
                    (radcan1 (resimplify e) risch-var))))
           (or (freeof risch-var e)
-              (zerop1 (radcan1 (sdiff e risch-var) risch-var))))))
+              (zerop1 (radcan1 (sdiff e risch-var) risch-var)))))))
       ;; Strip locally constant parts (unsolved integrals survive this).
       ;; ERRCATCH: In case of an error (occurs during test suite, treat the part
       ;; as non-constant - keeping is always safe, dropping is not.
-      (let ((yyy-re (if (car (errcatch (locally-const-p yyy-re))) 0 yyy-re))
-            (yyy-im (if (car (errcatch (locally-const-p yyy-im))) 0 yyy-im)))
+      (let ((yyy-re (if (car (errcatch (locally-const-p yyy-re (car f))))
+                        0 yyy-re))
+            (yyy-im (if (car (errcatch (locally-const-p yyy-im (cadr f))))
+                        0 yyy-im)))
       ;; If YYY-RE contains a noun-form %REALPART or YYY-IM contains a noun-form
       ;; %IMAGPART, then just work with YYY instead of YYY-RE + %i * YYY-IM.
       (setq result (sratsimp (if (and (freeof '%realpart yyy-re)
@@ -795,8 +821,10 @@
        (lsa wl))
      ;; The top equation has no unknowns. If it fails and FLAG is nil, solve
      ;; the others: the caller, RISCHEXPLOG, then checks the remainder itself.
-     (if (and (null flag) (eq risch-y 'inconsistent))
-	 (multiple-value-setq (risch-y risch-m) (lsa (butlast wl))))
+     (when (and (null flag) (eq risch-y 'inconsistent))
+       (if (eq *risch-partial* t)
+	   (multiple-value-setq (risch-y risch-m) (lsa (butlast wl)))
+	   (when *risch-partial* (setq *risch-partial* 'needed))))
      (if (or (eq risch-y 'singular)
 	     (eq risch-y 'inconsistent))
 	 (cond ((null flag)
