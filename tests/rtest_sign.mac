@@ -3094,6 +3094,13 @@ block([a, b, c, d, e, f, g],
 [pos, neg, pz, nz, pn, pnz, zero]$
 
 
+/* Bug #5666: "is(abs(z) >= 0) returns false when z contains %i" */
+
+[is(abs(b - %i*a) >= 0), is(abs(b - %i*a) > -1),
+ is(abs(b - %i*a) > 0), is(abs(f(x) - %i*g(x)) > 1/1000)];
+[true, true, unknown, unknown]$
+
+
 /**************************************/
 /* Leave this at the end of the file! */
 /**************************************/
