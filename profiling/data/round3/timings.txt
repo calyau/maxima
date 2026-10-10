@@ -1,0 +1,19 @@
+# Unprofiled runs on the round-3 build (abrun.sh). warmup-full is the discarded first run.
+warmup-full run=127.692544 gc=9.693 real=130.104 ok=1 
+plain-core-1 run=67.586637 gc=3.012 real=68.376 ok=1 
+plain-full-1 run=123.122865 gc=7.403 real=124.940 ok=1 
+plain-core-2 run=65.487163 gc=2.929 real=66.188 ok=1 
+plain-full-2 run=126.235209 gc=7.469 real=128.148 ok=1 
+
+# Core suite, pre-round-1 build (scratchpad worktree 'before', eec2fa780 with the round-1 commits reverted) against this build, abmulti.sh, pinned
+calib-warmup_before run=85.350093 gc=3.915 real=88.752 ok=1
+calib-warmup_now run=69.324396 gc=3.046 real=70.076 ok=1
+calib-before-1 run=85.113271 gc=3.969 real=86.312 ok=1
+calib-now-1 run=70.733708 gc=3.120 real=71.368 ok=1
+calib-now-2 run=66.004688 gc=2.894 real=66.592 ok=1
+calib-before-2 run=88.531003 gc=3.878 real=89.632 ok=1
+
+| config | rounds | CPU s, mean [min, max] | GC s | change vs before, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| before | 2 | 86.8 [85.1, 88.5] | 3.9 | – | – | pass |
+| now | 2 | 68.4 [66.0, 70.7] | 3.0 | -14.4, -22.5 | -18.5 ± 4.1 s (-21.3%) | pass |

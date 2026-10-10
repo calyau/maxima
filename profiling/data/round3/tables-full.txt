@@ -1,0 +1,82 @@
+58991 samples
+
+test files
+ 14.09%  rtest_integrate
+  9.20%  rtest_abs_integrate
+  8.22%  rtest_matrixexp
+  4.96%  rtest_limit_gruntz
+  4.95%  rtest_limit_extra
+  3.40%  rtest_orthopoly
+  3.33%  rtest_limit
+  3.18%  rtest_odelin
+  2.72%  rtest15
+  2.70%  rtest16
+  2.37%  rtest_trig
+  2.30%  rtestint
+  2.27%  rtest_gamma
+  2.15%  rtest_cholesky
+  2.06%  rtest_extensions
+  2.04%  rtest_numth
+  1.82%  rtest_to_poly_solve
+  1.71%  rtest_simplify_sum
+  1.63%  rtest_fourier_elim
+  1.35%  rtest14
+  1.16%  rtest_sym
+  1.12%  rtestezunits
+  1.03%  rtest_hg
+  0.91%  rtest_decfp
+  0.86%  rtest_expintegral
+
+self (innermost frame)
+  7.83%  SB-IMPL::GET3
+  3.75%  ALIKE1
+  3.47%  foreign function pthread_sigmask
+  2.67%  GETL
+  2.40%  SB-KERNEL:%MEMBER-EQ
+  2.39%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+  1.96%  SYMBOL-PLIST
+  1.91%  ALIKE
+  1.58%  MEVAL1
+  1.48%  <no info>
+  1.35%  SIMPLIFYA
+  1.32%  TIMESIN
+  1.24%  SB-BIGNUM:BIGNUM-TRUNCATE
+  1.03%  PSIMP
+  1.02%  FLOOR
+  0.96%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+  0.93%  PCTIMES1
+  0.90%  PTPTPLUS
+  0.76%  SIMPTIMES
+  0.71%  GREAT
+  0.69%  PTIMES
+  0.67%  PTIMES1
+  0.64%  SB-IMPL::GET-INFO-VALUE
+  0.64%  PLUSIN
+  0.58%  TMS
+
+attributed to innermost Maxima frame
+  6.72%  <SBCL compiler>
+  3.76%  ALIKE1
+  3.48%  SIMPLIFYA
+  3.47%  <GC>
+  2.87%  GETL
+  2.86%  MEVAL1
+  2.27%  PCTIMES
+  2.10%  ALIKE
+  1.79%  PSIMP
+  1.55%  NORMALIZED-MODULUS
+  1.41%  TIMESIN
+  1.36%  EQTEST
+  1.18%  DEGVECTOR
+  1.08%  PCTIMES1
+  1.04%  CQUOTIENT
+  0.97%  PTPTPLUS
+  0.91%  PTIMES
+  0.88%  ORDERPOINTER
+  0.88%  OPTIONP
+  0.87%  HYPERGEO21-FLOAT
+  0.84%  MSET
+  0.83%  FPROUND
+  0.82%  SIMPTIMES
+  0.77%  GETL-LM-FCN-PROP
+  0.77%  GREAT

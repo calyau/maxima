@@ -564,6 +564,119 @@ are `fourier_elim`, `stringproc`, `to_poly_solve`, `grobner`, `numdistrib`,
 - `PCTIMES`/`PCPLUS` lead allocation (8% and 5%, mostly `rtest_extensions`
   and `rtest15`): bignum polynomial arithmetic, nothing local to fix.
 
+## Round 3: master with the round-2 patches
+
+Master at `6f25daa24`, which has the round-2 changes to `SIGNDIFF-SPECIAL`,
+`SIGN-MABS`, `SIGN-LOG` (with `MEQP`'s new argument) and `SCALARCLASS`, and
+the cheaper `MBIND-DOIT` and `MUNBIND-MAKUNBOUND`, but not the limit cache.
+Clean build of the image, runtime objdir removed, then one unprofiled run of
+the full suite (127.7 s, it compiles the share packages), discarded. Then two
+`:cpu` runs per suite at 4 ms, one `:alloc` run of the full suite and two
+unprofiled runs per suite, all reporting `No unexpected errors`. Data in
+`data/round3/`.
+
+|                                | core            | full            |
+|--------------------------------|-----------------|-----------------|
+| CPU time (profiled, 2 runs)    | 65.9–67.7 s     | 124.1–125.5 s   |
+| CPU time (unprofiled, 2 runs)  | 65.5–67.6 s     | 123.1–126.2 s   |
+| GC time                        | 5.2%            | 7.0%            |
+| bytes consed (round 2)         | 26.1 GB (29.0)  | 55.1 GB (59.0)  |
+
+The host is slower than in round 2: the build from before round 1 took
+68.0 s for the core suite then and 86.8 s now. So compare times only within
+a round. Against that build, the core suite is now 21 ± 5% faster (two
+rounds, noisy, `timings.txt`). Bytes consed do not depend on the host: −10%
+on the core suite, −7% on the full suite.
+
+| subsystem (frame on stack) | core r1 | core r2 | core r3 | full r1 | full r2 | full r3 |
+|---|---|---|---|---|---|---|
+| `limit` | 32.3% | 29.0% | 29.2% | 19.8% | 16.2% | 16.4% |
+| `sign` (`SIGN1`) | 24.6% | 17.6% | 11.0% | 20.1% | 14.2% | 9.2% |
+| `MEQP` | 12.7% | 10.2% | 3.6% | 10.0% | 7.9% | 2.6% |
+| `ratsimp` (`FULLRATSIMP`/`SRATSIMP`) | 21.2% | 17.0% | 16.4% | 20.1% | 16.5% | 17.8% |
+| `integrate` | 17.8% | 20.0% | 22.2% | 14.3% | 15.0% | 15.2% |
+| `factor` | 15.5% | 8.2% | 8.6% | 11.2% | 5.5% | 6.1% |
+| bigfloat arithmetic (`FP*`) | 8.7% | 4.2% | 4.7% | 5.8% | 3.0% | 3.6% |
+| `taylor` | 6.6% | 7.0% | 8.7% | 4.1% | 4.1% | 4.7% |
+| SBCL compiler at test time | 2.6% | 3.5% | 3.4% | 5.4% | 6.5% | 6.9% |
+| `SIGNDIFF-SPECIAL` | 13.0% | 7.9% | 2.4% | 10.0% | 6.6% | 1.9% |
+| `SIGN-MABS` | 7.5% | 5.7% | 1.3% | 4.7% | 3.3% | 0.8% |
+| `SIGN-LOG` | 4.6% | 3.9% | 1.8% | 2.6% | 2.2% | 0.9% |
+| binding (`MBIND-DOIT`, `MUNBIND`) | 2.7% | 3.2% | 2.6% | 3.8% | 4.4% | 3.6% |
+| `SCALARCLASS` | 0.0% | 0.0% | 0.0% | 1.6% | 2.4% | 0.2% |
+| limit cache (`GETLIMVAL`, `PUTLIMVAL`) | 2.8% | 3.3% | 3.6% | 1.6% | 1.7% | 1.8% |
+
+The round-2 targets shrank as planned: `sign` from 14.2% to 9.2% of the full
+suite, `MEQP` from 7.9% to 2.6%, `SCALARCLASS` from 2.4% to 0.2%. Binding went
+from 4.4% to 3.6%. Top test files: core `rtest_integrate` 25.4%,
+`rtest_limit_gruntz` 10.0%, `rtest_limit_extra` 9.4%, `rtest_limit` 6.8%. Full
+`rtest_integrate` 13.9%, `rtest_abs_integrate` 9.4%, `rtest_matrixexp` 8.2%,
+`rtest_limit_gruntz` 5.1%, `rtest_limit_extra` 4.9%.
+
+### A few test problems take a fifth of the full suite
+
+Seven problems take about 25 s of the full suite's 125 s
+(`slow-problems.txt`, one run per file with `time=all`):
+
+| problem                                                              | time  |
+|----------------------------------------------------------------------|-------|
+| `rtest_matrixexp` 75: `matrixfun(lambda([x],x+1/x),mat)`             | 8.4 s |
+| `rtest_integrate` 911: `integrate(exp(-(1-x)^2-x^4),x,minf,inf)`     | 5.6 s |
+| `rtest_abs_integrate` 246: `integrate(diff((tan(x)+x)*exp(tan(x)),x),x)` | 3.7 s |
+| `rtest_limit_gruntz` 37: `limit(exp(gamma(x-exp(-x))*exp(1/x))-exp(gamma(x)),x,inf)` | 2.5 s |
+| `rtest_integrate` 834: antiderivatives of `x^a*log(x)^b/(1+x^c)`, checked by `diff` | 2.1 s |
+| `rtest_abs_integrate` 129: `hyper_int(sqrt(x)*(x^2-x+1)^(1/3)*...)` | 1.5 s |
+| `rtest_matrixexp` 74: `matrixfun(lambda([x],x^2),mat)`              | 1.5 s |
+
+1. `rtest_integrate` 911 (bug #3781) takes 8% of the core suite, nearly all of
+   it in `INTCV2` (7.5% of the samples). `DINTEXP` is meant for `f(exp(k*x))`
+   (comment at the top of `defint.lisp`), but `FUNCLOGOR%E` hands it the
+   whole integrand `exp(-x^4-(1-x)^2)`. `INTCV` then inverts
+   `yx = exp(-x^4-(1-x)^2)` with `solve`, which needs the quartic formula,
+   and `INTCV2` ratsimps the integrand rewritten in those radicals. That
+   takes 5 s, and then the integral fails anyway: the test expects the noun
+   form. It is also why `ORDLIST` is 5.5% of the core suite: 90% of it comes
+   from the sums `PLUSIN` builds here, 0.55% from everything else. Skipping
+   the substitution when the exponent is not linear in the variable, or when
+   `solve` returns nested radicals, would remove it. That changes which
+   integrals `DINTEXP` attempts, so it needs the integration tests.
+2. `rtest_matrixexp` 75 spends 98% in the final `fullratsimp`
+   (`MATRIXEXP-SIMP`). The eigenvalues of `matrix([x,1,0],[1,1,1],[0,1,1])` are
+   cubic-formula radicals, and simplifying `f(λ)` times the projectors back
+   to the rational result takes 7.5 s and 8.2 GB. Problem 74 is the same
+   call with `x^2`.
+   A fix would be in the algorithm, for instance applying a rational `f` to
+   the matrix directly.
+3. `rtest_abs_integrate` 246 runs interpreted code from `abs_integrate`.
+   `MEVAL1` and its `GETL` lookups take 26% of its samples (self), `MSET`,
+   `MBIND-DOIT` and `OPTIONP` another 10%. See items 5 and 7.
+
+### Mechanical items
+
+4. Limit cache (round 2, item 4): `GETLIMVAL` and `PUTLIMVAL` are now 3.6%
+   of the core suite and 1.8% of the full suite, nearly all `ALIKE1` in
+   `ASSOL`. `prototypes/limhash.lisp` still applies.
+5. Binding with a long `$values`: in `rtest_abs_integrate`, `$values` holds
+   92 entries on average and up to 123, because `abs_integrate` defines many
+   globals. `OPTIONP` (0.85% of the full suite, 2.8 million calls in that
+   file, `instrumentation/optcount.lisp`), `ADD2LNC` (0.6%) and
+   `MUNBIND-MAKUNBOUND` (0.8%) each walk it. Binding locals at the front of
+   `$values` instead of the end would shorten all three walks. Investigated
+   after round 2, that gave −2.1% on the full suite with `ADD2LNC`'s
+   membership check dropped, which needs the stale `q` that
+   `share/sym/resolcayley.lisp` puts on `$values` removed.
+6. SBCL compiler at test time: 6.9% of the full suite, as in round 2
+   (item 6, needs work per package).
+7. `MEVAL1`'s property lookups: `GETL` called from `MEVAL1` is 2.6% of the
+   full suite (self). Every call of a Maxima function looks up `noun`,
+   `translated-mmacro`, `trace`, `translated`, `local-fun` and `subr` on the
+   operator, several of them absent, and an absent property walks the whole
+   plist.
+8. Smaller: `HYPERGEO21-FLOAT` (`share/orthopoly`) is 0.88% of the full
+   suite, a float loop in generic arithmetic. `NORMALIZED-MODULUS` is 1.6%
+   (round 2's `modfix` measured nothing). `PCTIMES` and `PCPLUS` still lead
+   allocation (7.9% and 5.1%).
+
 ## Files
 
 - `prof.lisp`: the harness (`prof-start`, `prof-finish`): per-test-file
@@ -587,6 +700,9 @@ are `fourier_elim`, `stringproc`, `to_poly_solve`, `grobner`, `numdistrib`,
   `mabscsign`, `signlog`, `limhash`, `scalarclass`, `modfix`, `faslcache`, and
   instrumentation `eobcount.lisp`, `mabscount.lisp`, `mabsalike.lisp`,
   `scalarclasscount.lisp` (with `scalarclass-setup.mac`).
+- Round 3: `data/round3/` (same files, plus `timings.txt` and
+  `slow-problems.txt`), `rounds.py` now covers all three rounds,
+  instrumentation `optcount.lisp`.
 
 Reproduce: build, run the full suite once (compiles the `.system` share
 packages), then

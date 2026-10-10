@@ -1,0 +1,21 @@
+;; Round 3. Counts OPTIONP calls per symbol and the lengths of $VALUES and
+;; $LABELS it walks. Load before run_testsuite, then :lisp (opt-report).
+(in-package :maxima)
+(defvar *opt-calls* 0) (defvar *opt-vlen* 0) (defvar *opt-llen* 0) (defvar *opt-sum-v* 0) (defvar *opt-sum-l* 0)
+(defvar *opt-syms* (make-hash-table))
+(let ((orig (fdefinition 'optionp)))
+  (setf (fdefinition 'optionp)
+        (lambda (x)
+          (incf *opt-calls*)
+          (incf (gethash x *opt-syms* 0))
+          (let ((v (length $values)) (l (length $labels)))
+            (incf *opt-sum-v* v) (incf *opt-sum-l* l)
+            (setf *opt-vlen* (max *opt-vlen* v) *opt-llen* (max *opt-llen* l)))
+          (funcall orig x))))
+(defun opt-report ()
+  (format t "~&OPTIONP calls ~D, $values max ~D mean ~,1F, $labels max ~D mean ~,1F~%"
+          *opt-calls* *opt-vlen* (/ *opt-sum-v* (max 1 *opt-calls*))
+          *opt-llen* (/ *opt-sum-l* (max 1 *opt-calls*)))
+  (let (l) (maphash (lambda (k v) (push (cons v k) l)) *opt-syms*)
+    (dolist (e (subseq (sort l #'> :key #'car) 0 (min 10 (length l))))
+      (format t "  ~9D ~S~%" (car e) (cdr e)))))

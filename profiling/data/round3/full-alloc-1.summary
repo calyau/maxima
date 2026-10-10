@@ -1,0 +1,7 @@
+lisp SBCL 2.6.9
+mode ALLOC interval 0.004
+run-time 128.256 s
+real-time 130.092 s
+gc-time 11.024 s (8.6% of run)
+bytes-consed 55,064,812,656
+samples 301074 unique-traces 140975

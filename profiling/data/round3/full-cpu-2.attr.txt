@@ -1,0 +1,1996 @@
+# Samples attributed to the innermost Maxima frame (library time charged to its Maxima caller)
+# total 29319 samples
+
+   2002   6.83%  <SBCL compiler>   (incl. 0.00%)
+   1092   3.72%  ALIKE1   (incl. 3.92%)
+            from   2.29%  ALIKE
+            from   0.43%  ASSOL
+            from   0.21%  ORDLIST
+            from   0.17%  FREE
+   1057   3.61%  SIMPLIFYA   (incl. 8.46%)
+            leaf   1.84%  SB-IMPL::GET3
+            leaf   0.37%  SYMBOL-PLIST
+            leaf   0.01%  LENGTH
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  EQUAL
+            from   0.35%  MEVALARGS
+            from   0.35%  MEVALP1
+            from   0.26%  MEVAL1
+            from   0.24%  SIMPTIMES
+   1021   3.48%  <GC>   (incl. 0.00%)
+    841   2.87%  GETL   (incl. 2.87%)
+            leaf   0.12%  SYMBOL-PLIST
+            leaf   0.09%  SB-KERNEL:%MEMBER-EQ
+            from   2.59%  MEVAL1
+            from   0.17%  SIMPARGS
+            from   0.03%  MEVAL
+            from   0.02%  NUD-CALL
+    825   2.81%  MEVAL1   (incl. 89.09%)
+            leaf   0.37%  SB-IMPL::GET3
+            leaf   0.18%  (LAMBDA (PROG) :IN "/home/user/maxima/src/mlisp.lisp")
+            leaf   0.11%  (LAMBDA (FORM) :IN "/home/user/maxima/src/mlisp.lisp")
+            leaf   0.06%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.06%  GETF
+            from   2.76%  MEVAL
+            from   0.01%  MEVALARGS
+            from   0.01%  MEVALP1
+            from   0.01%  MAPPLY1
+    695   2.37%  PCTIMES   (incl. 3.71%)
+            leaf   1.72%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+            leaf   0.08%  <no info>
+            leaf   0.05%  SB-BIGNUM::MULTIPLY-BIGNUM-AND-FIXNUM-BMI2
+            leaf   0.02%  SB-BIGNUM::%NORMALIZE-BIGNUM-BUFFER
+            leaf   0.02%  SB-BIGNUM::%NORMALIZE-BIGNUM
+            from   0.93%  PTIMES1
+            from   0.61%  PCTIMES1
+            from   0.41%  PCETIMES1
+            from   0.24%  PTPT-SUBTRACT-POWERED-PRODUCT
+    609   2.08%  ALIKE   (incl. 4.51%)
+            leaf   0.09%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.08%  EQUAL
+            leaf   0.04%  %EQL/INTEGER
+            from   1.12%  ORDLIST
+            from   0.46%  ASSOL
+            from   0.20%  PLUSIN
+            from   0.08%  MEMALIKE
+    524   1.79%  PSIMP   (incl. 1.82%)
+            leaf   0.45%  SB-IMPL::GET3
+            leaf   0.27%  SYMBOL-PLIST
+            leaf   0.01%  FPR-RESTORE
+            leaf   0.01%  foreign function pthread_mutex_lock
+            leaf   0.00%  FPR-SAVE
+            from   0.42%  PCTIMES1
+            from   0.36%  PTPTPLUS
+            from   0.35%  PTIMES1
+            from   0.25%  PCETIMES1
+    439   1.50%  NORMALIZED-MODULUS   (incl. 1.50%)
+            leaf   0.44%  SB-BIGNUM:BIGNUM-TRUNCATE-SINGLE-DIGIT
+            leaf   0.43%  FLOOR
+            leaf   0.09%  <no info>
+            leaf   0.08%  SB-KERNEL:TWO-ARG-<=
+            leaf   0.06%  SB-BIGNUM::NEGATE-BIGNUM-NOT-FULLY-NORMALIZED
+            from   0.35%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.31%  PTCSUB
+            from   0.23%  PCTIMES1
+            from   0.15%  PGCDU1
+    406   1.38%  EQTEST   (incl. 1.38%)
+            leaf   0.50%  SB-IMPL::GET3
+            leaf   0.26%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.09%  SYMBOL-PLIST
+            leaf   0.02%  EQUAL
+            from   0.47%  SIMPTIMES
+            from   0.35%  SIMPLUS
+            from   0.18%  SIMPEXPT
+            from   0.10%  PLUSIN
+    377   1.29%  TIMESIN   (incl. 9.62%)
+            leaf   0.02%  GENERIC-=
+            leaf   0.01%  LENGTH
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.01%  SB-KERNEL:TWO-ARG-=
+            leaf   0.00%  SB-KERNEL:TWO-ARG-*
+            from   1.27%  TMS
+            from   0.02%  SIMPTIMES
+    348   1.19%  PCTIMES1   (incl. 4.34%)
+            leaf   0.08%  GENERIC-*
+            leaf   0.02%  GENERIC-=
+            leaf   0.01%  GENERIC-<
+            leaf   0.01%  <no info>
+            leaf   0.01%  FLOOR
+            from   0.80%  PCTIMES
+            from   0.18%  PTIMES
+            from   0.17%  PASIMP1
+            from   0.02%  PCETIMES1
+    337   1.15%  DEGVECTOR   (incl. 1.60%)
+            leaf   0.18%  NCONC
+            leaf   0.14%  SB-KERNEL:%ASSOC-TEST
+            leaf   0.09%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.05%  EQUAL
+            leaf   0.05%  SB-KERNEL:%LAST1
+            from   0.79%  PMINDEGVEC
+            from   0.33%  PDEGREEVECTOR
+            from   0.01%  DEFINT
+            from   0.01%  PTERMCONT
+    320   1.09%  CQUOTIENT   (incl. 1.10%)
+            leaf   0.76%  SB-BIGNUM:BIGNUM-TRUNCATE
+            leaf   0.17%  FLOOR
+            leaf   0.02%  SB-BIGNUM::BIGNUM-ASHIFT-LEFT-UNALIGNED
+            leaf   0.02%  SB-BIGNUM::NEGATE-BIGNUM-NOT-FULLY-NORMALIZED
+            leaf   0.01%  SB-BIGNUM::NEGATE-BIGNUM-BUFFER-IN-PLACE
+            from   0.97%  PCQUOTIENT
+            from   0.08%  PTPTQUOTIENT
+            from   0.02%  PGCDA
+            from   0.00%  MONOMGCDCO
+    279   0.95%  PTPTPLUS   (incl. 1.98%)
+            leaf   0.05%  GENERIC-=
+            leaf   0.01%  GENERIC-+
+            leaf   0.01%  GENERIC-*
+            leaf   0.01%  SB-KERNEL:TWO-ARG-<=
+            leaf   0.00%  foreign function gc_close_region
+            from   0.77%  PPLUS
+            from   0.15%  PALGSIMP
+            from   0.01%  NIL
+            from   0.01%  FULLRATSIMP-IMPL
+    265   0.90%  OPTIONP   (incl. 0.90%)
+            leaf   0.81%  SB-KERNEL:%MEMBER-EQ
+            from   0.90%  MSET
+    257   0.88%  ORDERPOINTER   (incl. 1.56%)
+            leaf   0.25%  TRUNCATE
+            leaf   0.21%  (LABELS SB-IMPL::RECURSE :IN SB-IMPL::%SYMBOL-NAMEIFY)
+            leaf   0.12%  SB-KERNEL:%MAKE-SYMBOL
+            leaf   0.06%  SB-IMPL::CALC-SYMBOL-NAME-HASH
+            leaf   0.04%  NCONC
+            from   0.65%  RATREP*
+            from   0.20%  FR1
+            from   0.01%  TAYLOR1
+            from   0.01%  SIMPNRT
+    254   0.87%  MSET   (incl. 3.23%)
+            leaf   0.35%  SB-IMPL::GET3
+            leaf   0.16%  SB-KERNEL:%LAST1
+            leaf   0.06%  SYMBOL-PLIST
+            leaf   0.03%  NCONC
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            from   0.45%  MBIND-DOIT
+            from   0.28%  MUNBIND
+            from   0.13%  MEVAL1
+            from   0.00%  PART*-MTIMES
+    251   0.86%  HYPERGEO21-FLOAT   (incl. 0.86%)
+            leaf   0.21%  <no info>
+            leaf   0.17%  SB-KERNEL:TWO-ARG-*
+            leaf   0.10%  SB-KERNEL:TWO-ARG-+
+            leaf   0.07%  IMAGPART
+            leaf   0.07%  SB-KERNEL:TWO-ARG-/
+            leaf   0.06%  REALPART
+            from   0.86%  $HYPERGEO21
+    245   0.84%  PTIMES   (incl. 8.08%)
+            leaf   0.12%  SB-IMPL::GET3
+            leaf   0.05%  SYMBOL-PLIST
+            leaf   0.03%  GENERIC->
+            leaf   0.01%  GENERIC-<
+            leaf   0.01%  GENERIC-+
+            from   0.25%  PCTIMES1
+            from   0.22%  PCETIMES1
+            from   0.19%  PTIMES1
+            from   0.03%  RATTIMES
+    244   0.83%  FPROUND   (incl. 0.95%)
+            leaf   0.11%  <no info>
+            leaf   0.10%  SB-BIGNUM:BIGNUM-ASHIFT-RIGHT
+            leaf   0.06%  SB-BIGNUM:BIGNUM-LOGBITP
+            leaf   0.05%  SB-KERNEL:%NEGATE
+            leaf   0.03%  ASH
+            from   0.29%  FPTIMES*
+            from   0.21%  FPPLUS
+            from   0.14%  FPQUOTIENT
+            from   0.09%  FPDIFFERENCE
+    240   0.82%  SIMPTIMES   (incl. 15.21%)
+            leaf   0.01%  GENERIC-=
+            leaf   0.01%  LENGTH
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.00%  SB-IMPL::LIST-NREVERSE
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            from   0.10%  NEG
+            from   0.09%  SIMPLUS
+            from   0.04%  MEVALARGS
+            from   0.04%  RISPLIT-TIMES
+    225   0.77%  GREAT   (incl. 2.95%)
+            leaf   0.02%  GETF
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.01%  GENERIC->
+            leaf   0.01%  CHAR-UPCASE
+            leaf   0.01%  CHAR-DOWNCASE
+            from   0.47%  PLUSIN
+            from   0.17%  TIMESIN
+            from   0.05%  SORTGREAT
+            from   0.03%  ORDFN
+    224   0.76%  PTIMES1   (incl. 7.56%)
+            leaf   0.03%  GENERIC-+
+            leaf   0.01%  GENERIC-<
+            leaf   0.01%  GENERIC-=
+            leaf   0.00%  SB-IMPL::GET3
+            leaf   0.00%  GENERIC-*
+            from   0.74%  PTIMES
+            from   0.01%  PCETIMES1
+            from   0.01%  PSIMP
+            from   0.00%  NIL
+    210   0.72%  TMS   (incl. 10.40%)
+            leaf   0.05%  GENERIC-=
+            leaf   0.04%  APPEND
+            leaf   0.02%  SB-KERNEL:TWO-ARG-=
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            from   0.68%  SIMPTIMES
+            from   0.01%  SIMPEXPT
+            from   0.01%  NEG
+            from   0.00%  SIMPLUS
+    205   0.70%  GF-TIMES   (incl. 0.83%)
+            leaf   0.19%  FLOOR
+            leaf   0.00%  foreign function lisp_alloc
+            leaf   0.00%  GENERIC-=
+            leaf   0.00%  SB-BIGNUM:BIGNUM-TRUNCATE-SINGLE-DIGIT
+            leaf   0.00%  <no info>
+            from   0.50%  *F-PRIM-P-2
+            from   0.15%  GF-POW
+            from   0.05%  GF-COMPOSE
+            from   0.00%  GF-MAKE-LOGS
+    196   0.67%  PLUSIN   (incl. 6.51%)
+            leaf   0.03%  GENERIC-=
+            leaf   0.03%  LENGTH
+            leaf   0.01%  SB-KERNEL:%LAST1
+            leaf   0.01%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.01%  GENERIC->
+            from   0.67%  PLS
+    193   0.66%  MUNBIND-MAKUNBOUND   (incl. 0.66%)
+            leaf   0.11%  SB-IMPL::GET-INFO-VALUE
+            leaf   0.07%  SB-KERNEL:ASSERT-SYMBOL-HOME-PACKAGE-UNLOCKED
+            leaf   0.05%  MAKUNBOUND
+            leaf   0.04%  SB-INT:ABOUT-TO-MODIFY-SYMBOL-VALUE
+            leaf   0.03%  SB-IMPL::PACKAGE-LOCK-VIOLATION-P
+            from   0.66%  MSET
+    193   0.66%  SIMPEXPT   (incl. 8.76%)
+            leaf   0.02%  SB-KERNEL:TWO-ARG-=
+            leaf   0.02%  TAIL-CALL-VARIABLE
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.01%  GENERIC-=
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            from   0.13%  SIMPTIMES
+            from   0.12%  DIV
+            from   0.06%  FLOAT-IMPL
+            from   0.06%  TIMESIN
+    187   0.64%  PRENUMBER   (incl. 0.64%)
+            leaf   0.17%  SB-IMPL::GET-INFO-VALUE
+            leaf   0.11%  SB-INT:ABOUT-TO-MODIFY-SYMBOL-VALUE
+            leaf   0.07%  SET
+            leaf   0.06%  SB-KERNEL:ASSERT-SYMBOL-HOME-PACKAGE-UNLOCKED
+            leaf   0.05%  SB-KERNEL:%SYMBOL-PACKAGE
+            from   0.63%  ORDERPOINTER
+            from   0.00%  FR1
+            from   0.00%  RATREP*
+    181   0.62%  PCETIMES1   (incl. 4.38%)
+            leaf   0.04%  GENERIC-*
+            leaf   0.02%  GENERIC-<
+            leaf   0.01%  GENERIC-=
+            leaf   0.01%  <no info>
+            leaf   0.01%  GENERIC->
+            from   0.58%  PTIMES1
+            from   0.03%  PTIMES
+            from   0.01%  NIL
+            from   0.00%  PSIMP
+    177   0.60%  SAFE-MGET   (incl. 0.61%)
+            leaf   0.35%  SB-IMPL::GET3
+            leaf   0.12%  SYMBOL-PLIST
+            from   0.60%  MEVAL1
+            from   0.01%  MEVAL
+    177   0.60%  MGET   (incl. 0.60%)
+            leaf   0.32%  SB-IMPL::GET3
+            leaf   0.14%  SYMBOL-PLIST
+            from   0.21%  GREAT
+            from   0.17%  MSET
+            from   0.06%  SCALARCLASS
+            from   0.05%  UNKNOWN-ATOMS
+    169   0.58%  ADD2LNC   (incl. 0.65%)
+            leaf   0.52%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  SB-IMPL::GET3
+            leaf   0.00%  EQUAL
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.00%  SB-KERNEL:%ASSOC-TEST
+            from   0.49%  MSET
+            from   0.03%  ATOMVARS
+            from   0.02%  RATVARS-IMPL
+            from   0.01%  DECLVALUE
+    168   0.57%  MBIND-DOIT   (incl. 1.84%)
+            leaf   0.10%  SB-IMPL::GET-INFO-VALUE
+            leaf   0.06%  SB-INT:ABOUT-TO-MODIFY-SYMBOL-VALUE
+            leaf   0.04%  SET
+            leaf   0.03%  SB-KERNEL:%SYMBOL-PACKAGE
+            leaf   0.03%  SB-IMPL::PACKAGE-LOCK-VIOLATION-P
+            from   0.56%  MBIND
+            from   0.01%  MLAMBDA
+            from   0.00%  MEVAL1
+    161   0.55%  GETL-LM-FCN-PROP   (incl. 0.73%)
+            leaf   0.37%  SB-IMPL::GET3
+            leaf   0.04%  SYMBOL-PLIST
+            leaf   0.03%  MACRO-FUNCTION
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  SB-IMPL::GET-INFO-VALUE
+            from   0.55%  MEVAL1
+    161   0.55%  AMONG   (incl. 0.55%)
+            from   0.24%  TOTALDISREP-IMPL
+            from   0.13%  MNLOG
+            from   0.09%  SIMPEXPT
+            from   0.04%  LIMIT
+    158   0.54%  GET-ONE-FACTOR-POLLARD   (incl. 0.54%)
+            leaf   0.21%  SB-BIGNUM:BIGNUM-TRUNCATE
+            leaf   0.06%  <no info>
+            leaf   0.04%  SB-BIGNUM::%NORMALIZE-BIGNUM-BUFFER
+            leaf   0.04%  FLOOR
+            leaf   0.04%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+            leaf   0.03%  SB-BIGNUM::BIGNUM-ASHIFT-LEFT-UNALIGNED
+            from   0.54%  GET-ONE-FACTOR
+    155   0.53%  PREP1   (incl. 14.08%)
+            leaf   0.05%  SB-KERNEL:%ASSOC-EQ
+            leaf   0.02%  SB-KERNEL:%ASSOC-TEST
+            leaf   0.02%  (LABELS SB-IMPL::S :IN SUBLIS)
+            leaf   0.01%  EQL
+            leaf   0.01%  SB-KERNEL:%MAP-FOR-EFFECT-ARITY-1
+            from   0.30%  RATREP*
+            from   0.08%  RATSETUP2
+            from   0.06%  NEWVARMEXPT
+            from   0.06%  FR1
+    152   0.52%  NTHELEM   (incl. 0.52%)
+            leaf   0.21%  NTHCDR
+            from   0.48%  ORDLIST
+            from   0.02%  PLUSIN
+            from   0.01%  TIMESIN
+            from   0.00%  SORTGREAT
+    150   0.51%  FPQUOTIENT   (incl. 0.69%)
+            leaf   0.21%  SB-BIGNUM:BIGNUM-TRUNCATE
+            leaf   0.07%  <no info>
+            leaf   0.05%  SB-BIGNUM::BIGNUM-ASHIFT-LEFT-UNALIGNED
+            leaf   0.03%  SB-BIGNUM::%NORMALIZE-BIGNUM
+            leaf   0.03%  SB-BIGNUM::%NORMALIZE-BIGNUM-BUFFER
+            from   0.16%  FPLOG
+            from   0.07%  DIV
+            from   0.06%  FPATAN
+            from   0.05%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-/ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+    147   0.50%  ORDLIST   (incl. 3.47%)
+            leaf   0.21%  LENGTH
+            leaf   0.02%  GENERIC--
+            leaf   0.01%  NTHCDR
+            leaf   0.00%  GENERIC-=
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            from   0.43%  PLUSIN
+            from   0.05%  TIMESIN
+            from   0.01%  SORTGREAT
+            from   0.00%  SIMP-%COS
+    143   0.49%  KINDP   (incl. 2.88%)
+            leaf   0.20%  SB-IMPL::GET3
+            leaf   0.06%  SYMBOL-PLIST
+            leaf   0.03%  MARK-CARD
+            from   0.16%  GREAT
+            from   0.13%  TIMESIN
+            from   0.04%  SCALARCLASS
+            from   0.04%  ATOMVARS
+    141   0.48%  (LABELS K :IN FACTORIAL)   (incl. 0.48%)
+            leaf   0.47%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+            leaf   0.00%  SB-KERNEL:TWO-ARG-<=
+            leaf   0.00%  <no info>
+            from   0.28%  MEVALARGS
+            from   0.20%  MLAMBDA
+            from   0.00%  POCHHAMMER-QUOTIENT
+    137   0.47%  PLS   (incl. 7.61%)
+            leaf   0.08%  COPY-LIST
+            leaf   0.01%  SB-KERNEL:TWO-ARG-+
+            leaf   0.01%  SB-KERNEL:%LAST1
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.01%  <no info>
+            from   0.44%  SIMPLUS
+            from   0.01%  MNLOG
+            from   0.00%  MEVALARGS
+            from   0.00%  SIMPEXPT
+    130   0.44%  ALPHALESSP   (incl. 0.44%)
+            leaf   0.07%  LOWER-CASE-P
+            leaf   0.05%  UPPER-CASE-P
+            leaf   0.05%  CHAR-DOWNCASE
+            leaf   0.01%  CHAR-UPCASE
+            from   0.39%  GREAT
+            from   0.05%  TIMESIN
+            from   0.00%  PLUSIN
+    123   0.42%  RATDISREPD   (incl. 1.22%)
+            leaf   0.13%  SB-KERNEL:%PUT
+            leaf   0.09%  SB-KERNEL:%SET-SYMBOL-PLIST
+            leaf   0.03%  SYMBOL-PLIST
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  MARK-CARD
+            from   0.41%  RATDISREP-IMPL
+            from   0.01%  FR1
+    123   0.42%  MOPP1   (incl. 0.42%)
+            leaf   0.23%  SB-IMPL::GET3
+            leaf   0.17%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.42%  MOPP
+    121   0.41%  PCPLUS   (incl. 0.50%)
+            leaf   0.10%  SB-BIGNUM:ADD-BIGNUMS
+            leaf   0.08%  <no info>
+            leaf   0.03%  SB-KERNEL:TWO-ARG-+
+            leaf   0.02%  SB-BIGNUM::%NORMALIZE-BIGNUM-BUFFER
+            leaf   0.02%  SB-BIGNUM::%NORMALIZE-BIGNUM
+            from   0.19%  PTPTPLUS
+            from   0.16%  PTIMES1
+            from   0.01%  PGCD2
+            from   0.01%  PPLUS
+    120   0.41%  FPPLUS   (incl. 0.76%)
+            leaf   0.04%  SB-BIGNUM::BIGNUM-ASHIFT-LEFT-UNALIGNED
+            leaf   0.04%  SB-KERNEL:TWO-ARG-+
+            leaf   0.03%  <no info>
+            leaf   0.03%  SB-BIGNUM::%NORMALIZE-BIGNUM
+            leaf   0.03%  SB-BIGNUM::%NORMALIZE-BIGNUM-BUFFER
+            from   0.13%  ADDBIGFLOAT
+            from   0.07%  FPLOG
+            from   0.05%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.04%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))
+    113   0.39%  ZL-GET   (incl. 0.39%)
+            from   0.07%  CNTP
+            from   0.05%  KINDP
+            from   0.04%  MARK+1
+            from   0.04%  DQ+
+    108   0.37%  PGCDA   (incl. 7.32%)
+            leaf   0.03%  SB-KERNEL:TWO-ARG-GCD
+            leaf   0.02%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.02%  COMMON-LISP:GCD
+            leaf   0.02%  SB-IMPL::LIST-NREVERSE
+            leaf   0.01%  SB-BIGNUM::BIGNUM-BINARY-GCD
+            from   0.22%  PGCD
+            from   0.14%  PGCDCOFACTS
+            from   0.00%  NIL
+            from   0.00%  PSQFR
+    105   0.36%  NEWVAR1   (incl. 1.45%)
+            leaf   0.03%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  SB-IMPL::LIST-REVERSE
+            leaf   0.00%  LENGTH
+            leaf   0.00%  SB-KERNEL:SEQUENCEP
+            leaf   0.00%  GENERIC-<
+            from   0.17%  NEWVAR
+            from   0.15%  FR1
+            from   0.01%  LNEWVAR
+            from   0.01%  NEWVARMEXPT
+    105   0.36%  *RED   (incl. 0.36%)
+            leaf   0.16%  SB-KERNEL:TWO-ARG-GCD
+            leaf   0.05%  COMMON-LISP:GCD
+            leaf   0.03%  SB-KERNEL::TRUNCATE1
+            leaf   0.01%  SB-BIGNUM::MAKE-GCD-BIGNUM-ODD
+            leaf   0.01%  ALLOC-UNSIGNED-BIGNUM-IN-RBX
+            from   0.16%  TIMESKL
+            from   0.11%  EXPTB
+            from   0.05%  SIMPEXPT
+            from   0.02%  SIMPTIMES
+    104   0.35%  PPLUS   (incl. 1.94%)
+            leaf   0.02%  GENERIC-=
+            leaf   0.00%  GENERIC->
+            from   0.23%  PTPTPLUS
+            from   0.06%  PTIMES1
+            from   0.03%  RATPLUS
+            from   0.01%  MFACPPLUS
+    102   0.35%  SIMPARGS   (incl. 0.98%)
+            leaf   0.17%  SB-IMPL::GET3
+            leaf   0.03%  SYMBOL-PLIST
+            leaf   0.03%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  LENGTH
+            from   0.10%  MEVALP1
+            from   0.09%  MEVAL1
+            from   0.03%  MEVALARGS
+            from   0.02%  MLAMBDA
+    102   0.35%  SIMPLUS   (incl. 11.90%)
+            leaf   0.01%  COPY-LIST
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.00%  SB-IMPL::GET3
+            leaf   0.00%  GENERIC-=
+            from   0.04%  SIMPTIMES
+            from   0.03%  DCOMPARE
+            from   0.02%  SPLITSUM
+            from   0.02%  RISPLIT-TIMES
+    100   0.34%  BFLOAT-IMPL   (incl. 1.04%)
+            leaf   0.18%  SB-IMPL::GET3
+            leaf   0.05%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  SB-KERNEL:%NEGATE
+            leaf   0.00%  GENERIC-=
+            from   0.19%  TIMESIN
+            from   0.11%  PLS
+            from   0.02%  MEVAL1
+            from   0.01%  SIMPEXPT
+     98   0.33%  DQ+   (incl. 0.38%)
+            leaf   0.11%  SB-IMPL::GET3
+            leaf   0.04%  SYMBOL-PLIST
+            leaf   0.01%  SB-KERNEL:TWO-ARG-XOR
+            from   0.31%  KINDP
+            from   0.02%  DECL-COMPLEX-KIND
+     96   0.33%  BEG   (incl. 0.57%)
+            leaf   0.16%  SB-KERNEL:%PUT
+            leaf   0.03%  MARK-CARD
+            leaf   0.03%  SYMBOL-PLIST
+            leaf   0.02%  MARK-SYMBOL-CARD
+            leaf   0.00%  SYS-LIST-ALLOC-TRAMP
+            from   0.32%  KINDP
+            from   0.01%  DECL-COMPLEX-KIND
+     94   0.32%  FPTIMES*   (incl. 0.68%)
+            leaf   0.11%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+            leaf   0.04%  SB-BIGNUM:BIGNUM-LOGBITP
+            leaf   0.02%  <no info>
+            leaf   0.02%  MARK-CARD
+            leaf   0.02%  SB-KERNEL:TWO-ARG-=
+            from   0.07%  TIMESBIGFLOAT
+            from   0.06%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.04%  FPLOG
+            from   0.02%  FPATAN
+     94   0.32%  EXPTRL   (incl. 1.62%)
+            leaf   0.03%  SB-KERNEL::FLOOR1
+            leaf   0.03%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.02%  <no info>
+            leaf   0.01%  SB-KERNEL:TWO-ARG-=
+            leaf   0.01%  foreign function floor
+            from   0.31%  SIMPEXPT
+            from   0.01%  TIMESIN
+     92   0.31%  PCOEFADD   (incl. 0.31%)
+            leaf   0.01%  foreign function __pthread_mutex_unlock
+            leaf   0.00%  FPR-RESTORE
+            leaf   0.00%  foreign function alloc_list
+            from   0.15%  PPLUS
+            from   0.05%  PTPTPLUS
+            from   0.03%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.03%  PGCDU1
+     89   0.30%  MEVAL   (incl. 89.09%)
+            leaf   0.05%  MARK-SYMBOL-CARD
+            leaf   0.03%  MARK-CARD
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.01%  RETURN-MULTIPLE
+            from   0.08%  MEVAL1
+            from   0.07%  MEVALARGS
+            from   0.06%  MEVALP1
+            from   0.05%  MLAMBDA
+     85   0.29%  ASSOL   (incl. 2.13%)
+            from   0.16%  GETLIMVAL
+            from   0.04%  PUTLIMVAL
+            from   0.03%  PREP1
+            from   0.02%  DINTERNP
+     85   0.29%  MUNBIND   (incl. 1.72%)
+            leaf   0.05%  SB-IMPL::LIST-REVERSE
+            leaf   0.04%  SET
+            leaf   0.03%  SB-INT:ABOUT-TO-MODIFY-SYMBOL-VALUE
+            leaf   0.03%  SB-IMPL::GET-INFO-VALUE
+            leaf   0.01%  SB-IMPL::GET3
+            from   0.15%  MEVAL1
+            from   0.13%  (FLET "CLEANUP-FUN-4" :IN MLAMBDA)
+            from   0.01%  (FLET "CLEANUP-FUN-6" :IN DOSUM)
+     83   0.28%  CNTP   (incl. 0.36%)
+            leaf   0.11%  SB-IMPL::GET3
+            leaf   0.05%  SYMBOL-PLIST
+            leaf   0.04%  GETF
+            from   0.24%  MARK+0
+            from   0.02%  DLS
+            from   0.01%  DEQ
+            from   0.01%  DGR
+     83   0.28%  GF-SQ   (incl. 0.41%)
+            leaf   0.05%  FLOOR
+            leaf   0.00%  <no info>
+            leaf   0.00%  SB-IMPL::LIST-REVERSE
+            from   0.28%  GF-POW
+     80   0.27%  MEMALIKE   (incl. 0.56%)
+            leaf   0.00%  EQUAL
+            from   0.21%  NEWVAR1
+            from   0.03%  ADD2LNC
+            from   0.01%  NEWVARMEXPT
+            from   0.01%  COEFF
+     80   0.27%  MEVALP1   (incl. 10.16%)
+            leaf   0.01%  SB-KERNEL:STRING=*
+            leaf   0.00%  <no info>
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  SB-IMPL::GET3
+            from   0.24%  MEVALP
+            from   0.03%  MEVAL1
+            from   0.00%  ASSUME
+            from   0.00%  IS-MOR
+     77   0.26%  COMPLETEVECTOR   (incl. 0.26%)
+            leaf   0.01%  FPR-SAVE
+            from   0.26%  DEGVECTOR
+     77   0.26%  ATOMVARS   (incl. 0.75%)
+            leaf   0.05%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.04%  NCONC
+            leaf   0.01%  SB-KERNEL:%LAST1
+            leaf   0.00%  SB-IMPL::GET3
+            from   0.25%  LISTOFVARS-IMPL
+            from   0.01%  UNKNOWN-ATOMS
+            from   0.00%  NIL
+            from   0.00%  SYMBOLS
+     76   0.26%  SPECREPP   (incl. 0.26%)
+            from   0.09%  SPECREPCHECK
+            from   0.02%  ATOMVARS
+            from   0.02%  SUBST1
+            from   0.01%  SIGN1
+     75   0.26%  CLEAR   (incl. 0.46%)
+            leaf   0.00%  REMPROP
+            from   0.23%  KINDP
+            from   0.02%  DCOMP
+            from   0.00%  KIND-ANY-OF
+            from   0.00%  TRUEP
+     75   0.26%  MLAMBDA   (incl. 34.14%)
+            leaf   0.02%  NRECONC
+            leaf   0.00%  MARK-SYMBOL-CARD
+            leaf   0.00%  FPR-SAVE
+            from   0.24%  MEVAL1
+            from   0.01%  SUBLIST-IMPL
+            from   0.01%  MMAPCAR
+     75   0.26%  GF-NXYECPLUS   (incl. 0.26%)
+            leaf   0.03%  FLOOR
+            leaf   0.01%  SB-KERNEL:%LAST1
+            from   0.23%  GF-NRED
+            from   0.03%  GF-NREM
+     73   0.25%  CONSTANT   (incl. 0.28%)
+            leaf   0.12%  SB-IMPL::GET3
+            leaf   0.03%  SYMBOL-PLIST
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  TAIL-CALL-VARIABLE
+            from   0.12%  GREAT
+            from   0.08%  TIMESIN
+            from   0.03%  ORDFNA
+            from   0.01%  TMS
+     73   0.25%  MARK+   (incl. 1.08%)
+            leaf   0.10%  SB-IMPL::GET3
+            leaf   0.03%  SYMBOL-PLIST
+            leaf   0.01%  MARK-CARD
+            leaf   0.00%  SB-KERNEL:%PUT
+            from   0.24%  KINDP
+            from   0.00%  DECL-COMPLEX-KIND
+            from   0.00%  KIND-ANY-OF
+     71   0.24%  PTPT-SUBTRACT-POWERED-PRODUCT   (incl. 1.14%)
+            leaf   0.03%  GENERIC-*
+            leaf   0.01%  SB-KERNEL:TWO-ARG-<=
+            leaf   0.01%  <no info>
+            leaf   0.01%  GENERIC-=
+            leaf   0.01%  GENERIC--
+            from   0.14%  PGCDU1
+            from   0.10%  PTPTQUOTIENT
+            from   0.00%  MEVAL1
+     71   0.24%  SAFE-MGETL   (incl. 0.24%)
+            leaf   0.10%  SB-IMPL::GET3
+            leaf   0.06%  SYMBOL-PLIST
+            from   0.23%  MEVAL1
+            from   0.01%  MEVAL
+     71   0.24%  GETOPR0   (incl. 0.24%)
+            leaf   0.16%  SB-IMPL::GET3
+            leaf   0.02%  SYMBOL-PLIST
+            from   0.24%  GETOPR
+            from   0.00%  SUBST1
+     70   0.24%  PCQUOTIENT   (incl. 1.65%)
+            leaf   0.00%  GENERIC-=
+            leaf   0.00%  GENERIC-*
+            leaf   0.00%  GENERIC--
+            leaf   0.00%  foreign function __pthread_mutex_unlock
+            leaf   0.00%  foreign function pthread_mutex_lock
+            from   0.08%  PTERMCONT
+            from   0.04%  OLDCONTENT
+            from   0.04%  PGCDCOFACTS
+            from   0.02%  EZTESTDIVIDE
+     69   0.24%  MEMBER-EQ   (incl. 0.24%)
+            from   0.19%  ALIKE1
+            from   0.02%  NIL
+            from   0.01%  ASSOL
+            from   0.01%  ALIKE
+     68   0.23%  MEVALARGS   (incl. 23.34%)
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  GENERIC--
+            leaf   0.00%  SB-IMPL::GET3
+            leaf   0.00%  FPR-SAVE
+            from   0.22%  MEVAL1
+            from   0.01%  MEVAL
+     68   0.23%  SPECREPCHECK   (incl. 0.34%)
+            leaf   0.00%  SB-IMPL::PACKED-INFO-VALUE-INDEX
+            from   0.03%  MEVALP1
+            from   0.03%  ATOM-IMPL
+            from   0.02%  MAPATOM-IMPL
+            from   0.02%  MAPATOM
+     67   0.23%  FREE   (incl. 0.40%)
+            from   0.14%  FREEL
+            from   0.03%  INFSIMP*
+            from   0.01%  SIGN-IMPL
+            from   0.01%  NIL
+     67   0.23%  FUNCTIONP   (incl. 0.24%)
+            leaf   0.10%  SB-IMPL::GET-INFO-VALUE
+            leaf   0.08%  SB-IMPL::PACKED-INFO-VALUE-INDEX
+            leaf   0.01%  MACRO-FUNCTION
+            from   0.17%  GETL-LM-FCN-PROP
+            from   0.02%  MAPPLY1
+            from   0.01%  MFUNCALL
+            from   0.01%  NIL
+     66   0.23%  SIGN   (incl. 0.27%)
+            leaf   0.14%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            leaf   0.01%  GENERIC->
+            leaf   0.00%  UNWIND
+            from   0.18%  SIGN1
+            from   0.03%  SIGNFACTOR
+            from   0.01%  SPLITPROD
+            from   0.00%  SIGN01
+     65   0.22%  PQUOTIENT   (incl. 1.85%)
+            leaf   0.03%  SB-IMPL::LIST-NREVERSE
+            leaf   0.01%  GENERIC--
+            leaf   0.00%  SYMBOL-PLIST
+            leaf   0.00%  FLOOR
+            from   0.09%  PCQUOTIENT
+            from   0.04%  PTERMCONT
+            from   0.04%  PTPTQUOTIENT
+            from   0.01%  MFACPPLUS
+     65   0.22%  GET-SMALL-FACTORS   (incl. 0.22%)
+            leaf   0.06%  SB-BIGNUM:BIGNUM-TRUNCATE-SINGLE-DIGIT
+            leaf   0.05%  FLOOR
+            leaf   0.02%  SB-KERNEL:VECTOR-HAIRY-DATA-VECTOR-REF/CHECK-BOUNDS
+            leaf   0.02%  SB-VM::SLOW-HAIRY-DATA-VECTOR-REF/CHECK-BOUNDS
+            leaf   0.01%  <no info>
+            from   0.22%  GET-FACTOR-LIST
+     64   0.22%  LOAD-FUNCTION   (incl. 0.22%)
+            leaf   0.19%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.21%  MEVAL1
+            from   0.00%  MEVAL
+     63   0.21%  QUEUE+P   (incl. 0.23%)
+            leaf   0.11%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.19%  BEG
+            from   0.02%  MID
+            from   0.00%  MARK+1
+     63   0.21%  SIGN1   (incl. 8.80%)
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.00%  NCONC
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.00%  ABS
+            from   0.11%  SIGN01
+            from   0.04%  SIGNSUM
+            from   0.03%  SIGN-MTIMES
+            from   0.02%  SIGN*
+     59   0.20%  REMOVE1   (incl. 0.28%)
+            leaf   0.09%  DELETE
+            leaf   0.04%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.02%  EQUAL
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  REMPROP
+            from   0.20%  I-$REMOVE
+            from   0.00%  MDEFMACRO1
+     59   0.20%  FPROOT-SQRT   (incl. 0.23%)
+            leaf   0.04%  SB-BIGNUM:BIGNUM-TRUNCATE
+            leaf   0.03%  <no info>
+            leaf   0.02%  ISQRT
+            leaf   0.01%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+            leaf   0.01%  SB-BIGNUM::BIGNUM-ASHIFT-LEFT-UNALIGNED
+            leaf   0.01%  SB-BIGNUM::%NORMALIZE-BIGNUM
+            from   0.15%  (SB-PCL::FAST-METHOD BIGFLOAT-IMPL:SQRT (BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.04%  EXPTBIGFLOAT
+            from   0.01%  COMPLEX-SQRT
+            from   0.00%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES
+     58   0.20%  EXPTB   (incl. 0.34%)
+            leaf   0.06%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+            leaf   0.03%  <no info>
+            leaf   0.01%  EXPT
+            leaf   0.01%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.01%  SB-KERNEL::INTEXP
+            from   0.19%  SIMPEXPT
+            from   0.00%  TIMESIN
+     58   0.20%  OP-EQUALP   (incl. 0.20%)
+            leaf   0.08%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.02%  EQUAL
+            leaf   0.01%  foreign function listify_rest_arg
+            from   0.09%  MAPATOM-IMPL
+            from   0.03%  FMAP1
+            from   0.02%  LIMIT-OK
+            from   0.02%  MAP1
+     57   0.19%  RATSETUP2   (incl. 1.04%)
+            leaf   0.05%  REMPROP
+            leaf   0.02%  SYMBOL-PLIST
+            leaf   0.01%  SB-KERNEL:%PUT
+            leaf   0.01%  SB-KERNEL:%SET-SYMBOL-PLIST
+            leaf   0.00%  COPY-LIST
+            from   0.15%  RATREP*
+            from   0.04%  FR1
+            from   0.00%  FULLRATSIMP
+     57   0.19%  MAXIMA-CONSTANTP   (incl. 0.19%)
+            leaf   0.10%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.10%  TIMESIN
+            from   0.09%  GREAT
+            from   0.01%  TMS
+     57   0.19%  PALGP   (incl. 0.21%)
+            leaf   0.04%  SB-IMPL::GET3
+            leaf   0.02%  SYMBOL-PLIST
+            from   0.15%  RALGP
+            from   0.02%  RATTIMES
+            from   0.01%  PGCDA
+            from   0.01%  RATPLUS
+     56   0.19%  FR1   (incl. 18.17%)
+            leaf   0.02%  SB-KERNEL:%LAST1
+            leaf   0.02%  NCONC
+            leaf   0.01%  SORT
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  CALL-SYMBOL
+            from   0.11%  FULLRATSIMP
+            from   0.06%  MAPFR1
+            from   0.02%  FR-ARGS
+     55   0.19%  SYSTEM-IMPL   (incl. 0.19%)
+            leaf   0.16%  foreign function _Fork
+            leaf   0.01%  foreign function poll
+            leaf   0.00%  SB-ALIEN-INTERNALS:%SAP-ALIEN
+            leaf   0.00%  foreign function syscall
+            leaf   0.00%  MACRO-FUNCTION
+            leaf   0.00%  SB-IMPL::DEALLOCATE-POLLFDS
+            from   0.18%  DRAW_GNUPLOT
+            from   0.00%  MEVAL1
+     55   0.19%  CPUT   (incl. 0.25%)
+            leaf   0.12%  REMPROP
+            leaf   0.02%  SYMBOL-PLIST
+            leaf   0.00%  SB-IMPL::%REMF
+            from   0.16%  CLEAR
+            from   0.01%  MKILL
+            from   0.01%  DMARK
+            from   0.01%  REMOVE1
+     54   0.18%  ORDFN   (incl. 0.42%)
+            leaf   0.00%  LENGTH
+            from   0.14%  PLUSIN
+            from   0.03%  TIMESIN
+            from   0.01%  APPLY-REFLECTION-SIMP
+            from   0.00%  SORTGREAT
+     53   0.18%  FILE-MTIME-OR-NIL   (incl. 0.18%)
+            leaf   0.10%  foreign function fstatat
+            leaf   0.01%  SB-INT:HASHSET-FIND
+            leaf   0.01%  SB-IMPL::%WRITE-STRING
+            leaf   0.01%  SB-IMPL::HASH-PATHNAME-PIECE
+            leaf   0.01%  RETURN-MULTIPLE
+            leaf   0.01%  MERGE-PATHNAMES
+            from   0.18%  (LABELS EXISTING-PATH-MTIME-PAIRS :IN DIRECTORY-CACHED)
+     53   0.18%  FREEL   (incl. 0.47%)
+            from   0.14%  INFSIMP*
+            from   0.01%  SIGN-IMPL
+            from   0.01%  FINDPOWERS1
+            from   0.01%  NIL
+     53   0.18%  VERBIFY-IMPL   (incl. 0.18%)
+            leaf   0.13%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.16%  FREEOF
+            from   0.01%  MBUILDQ-ASSOCIATE
+            from   0.00%  XREDUCE-IMPL
+     53   0.18%  PTCSUB   (incl. 1.24%)
+            leaf   0.02%  GENERIC-*
+            leaf   0.01%  <no info>
+            leaf   0.01%  FLOOR
+            leaf   0.01%  SB-KERNEL:TWO-ARG-<=
+            leaf   0.01%  GENERIC-=
+            from   0.14%  PTCSUB-ARGS
+            from   0.04%  GCD-DEGREE-VECTOR
+            from   0.00%  LINOUT
+     52   0.18%  TESTT   (incl. 0.18%)
+            from   0.13%  SIMPTIMES
+            from   0.04%  PLUSIN
+            from   0.00%  PLS
+            from   0.00%  FMAP1
+     52   0.18%  PGCDU1   (incl. 1.04%)
+            leaf   0.06%  GENERIC-*
+            leaf   0.02%  GENERIC--
+            leaf   0.01%  GENERIC-=
+            leaf   0.01%  GENERIC-+
+            leaf   0.01%  SB-KERNEL::TRUNCATE1
+            from   0.16%  PMODREM
+            from   0.01%  PMODQUO
+     51   0.17%  PUTODR   (incl. 0.17%)
+            leaf   0.00%  foreign function lisp_alloc
+            leaf   0.00%  foreign function alloc_list
+            leaf   0.00%  foreign function gc_close_region
+            from   0.14%  PMINDEGVEC
+            from   0.04%  PDEGREEVECTOR
+     51   0.17%  PALGSIMP   (incl. 2.02%)
+            leaf   0.01%  GENERIC--
+            leaf   0.01%  GENERIC-<
+            from   0.06%  PTIMES1
+            from   0.06%  PCETIMES1
+            from   0.03%  PCTIMES1
+            from   0.00%  PSIMP
+     49   0.17%  PCONTENT1   (incl. 0.20%)
+            leaf   0.06%  SB-KERNEL:TWO-ARG-GCD
+            leaf   0.01%  SB-BIGNUM:BIGNUM-TRUNCATE
+            leaf   0.01%  COMMON-LISP:GCD
+            leaf   0.01%  SB-BIGNUM:BIGNUM-GCD
+            leaf   0.00%  SB-BIGNUM::BIGNUM-GCD-ORDER-AND-SUBTRACT
+            from   0.15%  PGCDA
+            from   0.01%  PCONTENT
+            from   0.00%  RZCONTENT
+            from   0.00%  PCONTENTZ
+     49   0.17%  PMINDEGVEC   (incl. 1.40%)
+            leaf   0.05%  SB-IMPL::LIST-REVERSE
+            leaf   0.04%  LENGTH
+            leaf   0.01%  GENERIC-+
+            leaf   0.01%  SB-KERNEL:%ASSOC-TEST
+            leaf   0.00%  REVERSE
+            from   0.15%  PTERMCONT
+            from   0.02%  FACTOROUT
+     47   0.16%  RECUR-APPLY   (incl. 1.17%)
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.01%  SB-KERNEL:%COERCE-CALLABLE-TO-FUN
+            leaf   0.00%  foreign function alloc_list
+            leaf   0.00%  EQ
+            from   0.08%  FLOAT-IMPL
+            from   0.04%  NUMER
+            from   0.00%  SP1
+            from   0.00%  MAKEFACT-IMPL
+     46   0.16%  UNSIMPLIFY   (incl. 0.16%)
+            leaf   0.08%  REMOVE
+            leaf   0.01%  SB-KERNEL:%COERCE-CALLABLE-TO-FUN
+            leaf   0.01%  EQ
+            leaf   0.01%  NTHCDR
+            leaf   0.00%  foreign function alloc_list
+            from   0.16%  SIMPLIFYA
+     46   0.16%  MAPATOM   (incl. 0.29%)
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            from   0.08%  MAPATOM-IMPL
+            from   0.02%  FMAP1
+            from   0.02%  LIMIT-OK
+            from   0.02%  MAP1
+     46   0.16%  COMPLEX-NUMBER-P   (incl. 0.19%)
+            leaf   0.01%  FLOATP
+            from   0.07%  SIGN-COMPLEX-FLOAT
+            from   0.03%  FLONUM-EVAL
+            from   0.02%  SIMPEXPT
+            from   0.01%  NIL
+     45   0.15%  MARK+1   (incl. 0.23%)
+            leaf   0.02%  SB-IMPL::GET3
+            leaf   0.02%  GETF
+            leaf   0.01%  SYMBOL-PLIST
+            leaf   0.00%  MARK-CARD
+            from   0.15%  MARK+
+            from   0.00%  KINDP
+     45   0.15%  SUBST1   (incl. 1.50%)
+            leaf   0.01%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.01%  EQUAL
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.00%  (LAMBDA (X ANS A3))
+            leaf   0.00%  LENGTH
+            from   0.15%  MAXIMA-SUBSTITUTE
+     45   0.15%  MEVAL2   (incl. 0.18%)
+            leaf   0.04%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.02%  REMOVE
+            leaf   0.02%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            leaf   0.01%  EQUAL
+            from   0.14%  MEVAL1
+            from   0.01%  MEVAL
+            from   0.00%  SAFE-MGET
+     44   0.15%  FPDIFFERENCE   (incl. 0.31%)
+            leaf   0.02%  SB-BIGNUM::BIGNUM-ASHIFT-LEFT-UNALIGNED
+            leaf   0.01%  SB-BIGNUM::%NORMALIZE-BIGNUM-BUFFER
+            leaf   0.01%  <no info>
+            leaf   0.01%  SB-BIGNUM::%NORMALIZE-BIGNUM
+            leaf   0.01%  SB-BIGNUM:SUBTRACT-BIGNUM
+            from   0.09%  FPLESSP
+            from   0.02%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-- (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+            from   0.01%  FPGREATERP
+     44   0.15%  CONSTANTP-IMPL   (incl. 0.59%)
+            leaf   0.08%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.05%  SCALARCLASS
+            from   0.04%  ATOMVARS
+            from   0.03%  CONSTTERMP
+            from   0.02%  MANIFESTLY-PURE-IMAGINARY-P
+     43   0.15%  M1   (incl. 0.27%)
+            leaf   0.03%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.01%  EQUAL
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            from   0.05%  ZEPOW
+            from   0.04%  COEFFPORT
+            from   0.02%  LOOPP
+            from   0.01%  COEFFPT
+     42   0.14%  PEXPT   (incl. 0.25%)
+            leaf   0.01%  SB-KERNEL::INTEXP
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.01%  EXPT
+            leaf   0.00%  GENERIC-=
+            leaf   0.00%  GENERIC-+
+            from   0.10%  RATEXPT
+            from   0.03%  PTCSUB
+            from   0.00%  RESULTANT-IMPL
+            from   0.00%  PFACTORQUAD
+     42   0.14%  RATTIMES   (incl. 1.98%)
+            leaf   0.00%  SB-KERNEL:TWO-ARG-*
+            leaf   0.00%  GENERIC-=
+            from   0.10%  PREP1
+            from   0.01%  PARTFRAC
+            from   0.01%  PSCTIMES*
+            from   0.01%  TSTIMES
+     41   0.14%  TESTTNEG   (incl. 0.33%)
+            leaf   0.00%  FPR-RESTORE
+            from   0.06%  SIMPTIMES
+            from   0.03%  PLS
+            from   0.02%  PLUSIN
+            from   0.01%  SIMPLUS
+     41   0.14%  ORDFNA   (incl. 0.51%)
+            leaf   0.02%  SB-KERNEL:%LAST1
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.00%  SB-KERNEL:TWO-ARG-/
+            leaf   0.00%  SB-KERNEL:TWO-ARG->
+            from   0.08%  GREAT
+            from   0.03%  TIMESIN
+            from   0.01%  PLUSIN
+            from   0.01%  SORTGREAT
+     41   0.14%  MAPPLY1   (incl. 9.20%)
+            leaf   0.08%  SB-IMPL::GET3
+            leaf   0.00%  MACRO-FUNCTION
+            leaf   0.00%  SYMBOL-PLIST
+            from   0.04%  MEVAL1
+            from   0.02%  SUBLIST-IMPL
+            from   0.02%  DEFINITELY-SO
+            from   0.02%  IGNORE-ERRORS-MFUNCALL
+     40   0.14%  NOUNIFY-IMPL   (incl. 0.15%)
+            leaf   0.10%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.13%  FREEOF
+            from   0.00%  FREEOFL
+     40   0.14%  PDISREP*   (incl. 0.19%)
+            leaf   0.05%  NCONC
+            leaf   0.02%  SB-KERNEL:%LAST1
+            leaf   0.00%  FPR-SAVE
+            from   0.13%  PDISREP2
+            from   0.01%  PDISREP
+     40   0.14%  ADDK   (incl. 0.14%)
+            leaf   0.02%  SB-KERNEL:TWO-ARG-+
+            leaf   0.01%  SB-KERNEL::TRUNCATE1
+            leaf   0.00%  GENERIC-+
+            leaf   0.00%  SB-KERNEL:TWO-ARG-GCD
+            leaf   0.00%  COMMON-LISP:GCD
+            from   0.10%  PLS
+            from   0.02%  PLUSIN
+            from   0.01%  EXPTRL
+            from   0.01%  SIMPLUS
+     40   0.14%  TIMESK   (incl. 0.14%)
+            leaf   0.02%  SB-KERNEL:TWO-ARG-*
+            leaf   0.00%  SB-IMPL::GET3
+            from   0.11%  TIMESIN
+            from   0.02%  TMS
+     40   0.14%  BADFUNCHK   (incl. 0.14%)
+            from   0.12%  MEVAL1
+            from   0.01%  MEVAL
+            from   0.01%  MAPPLY1
+     40   0.14%  DRAW_GNUPLOT   (incl. 0.37%)
+            leaf   0.02%  SB-IMPL::PRINT-FLOAT
+            leaf   0.02%  TRUNCATE
+            leaf   0.01%  (LAMBDA (SB-IMPL::D) :IN SB-IMPL::PRINT-FLOAT)
+            leaf   0.01%  (SB-VM::OPTIMIZED-DATA-VECTOR-REF DOUBLE-FLOAT)
+            leaf   0.01%  SB-VM::CHARACTER-STRING-TO-UTF8-AVX2
+            leaf   0.01%  SB-IMPL::PRINT-FLOAT-EXPONENT
+            from   0.14%  MEVAL1
+     39   0.13%  PDISREP2   (incl. 0.43%)
+            leaf   0.00%  COPY-LIST
+            leaf   0.00%  SB-KERNEL:%LAST1
+            from   0.13%  PDISREP
+     39   0.13%  RISPLIT   (incl. 4.25%)
+            leaf   0.00%  foreign function lisp_alloc
+            from   0.04%  RISPLIT-TIMES
+            from   0.03%  RECTFORM-IMPL
+            from   0.02%  RISPLIT-MPLUS
+            from   0.01%  IMAGPART-IMPL
+     38   0.13%  KILL1-ATOM   (incl. 0.44%)
+            leaf   0.07%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.02%  DELETE
+            leaf   0.01%  REMPROP
+            leaf   0.01%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.00%  EQUAL
+            from   0.12%  KILL1
+            from   0.01%  MEVAL1
+     38   0.13%  MBIND   (incl. 1.97%)
+            leaf   0.02%  MARK-CARD
+            from   0.09%  MEVAL1
+            from   0.03%  MLAMBDA
+            from   0.00%  DOSUM
+            from   0.00%  ALGSYS-IMPL
+     38   0.13%  <non-Maxima: COMMON-LISP>   (incl. 0.00%)
+     38   0.13%  CONSTP   (incl. 0.14%)
+            from   0.12%  SIGN1
+            from   0.00%  SIGNDIFF
+            from   0.00%  SIGN01
+     37   0.13%  HIPART-ZEROP   (incl. 0.13%)
+            leaf   0.02%  SB-KERNEL:TWO-ARG-<=
+            leaf   0.00%  SB-KERNEL:TWO-ARG--
+            leaf   0.00%  <no info>
+            from   0.05%  FPPLUS
+            from   0.03%  FPROUND
+            from   0.02%  FPDIFFERENCE
+            from   0.01%  FPSHIFT
+     37   0.13%  ONPU   (incl. 0.16%)
+            leaf   0.03%  GETF
+            leaf   0.01%  SB-KERNEL:TWO-ARG-AND
+            leaf   0.00%  SYMBOL-PLIST
+            from   0.12%  MARK+0
+            from   0.01%  MARK+
+            from   0.00%  CNTP
+     37   0.13%  FLONUM-EVAL   (incl. 0.18%)
+            leaf   0.02%  SB-IMPL::GETHASH/EQL-HASH
+            leaf   0.01%  <no info>
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.01%  foreign function arch_set_fp_modes
+            leaf   0.00%  SB-KERNEL:TWO-ARG-*
+            from   0.03%  SIMP-%LOG
+            from   0.03%  SIMPEXPT
+            from   0.01%  SIMP-%COS
+            from   0.01%  SIMP-%SIN
+     37   0.13%  MAKSYM   (incl. 0.25%)
+            leaf   0.03%  (LABELS SB-IMPL::RECURSE :IN SB-IMPL::%SYMBOL-NAMEIFY)
+            leaf   0.02%  SB-IMPL::CALC-SYMBOL-NAME-HASH
+            leaf   0.01%  TRUNCATE
+            leaf   0.01%  SB-IMPL::GET-INFO-VALUE
+            leaf   0.01%  SB-KERNEL:%PUT
+            leaf   0.01%  <no info>
+            from   0.12%  MAKSYMP
+            from   0.00%  MAKPROD
+     36   0.12%  RATEXPT   (incl. 0.46%)
+            leaf   0.03%  SB-BIGNUM::MULTIPLY-BIGNUMS-BMI2
+            leaf   0.01%  EXPT
+            leaf   0.00%  GENERIC-<
+            leaf   0.00%  GENERIC-*
+            leaf   0.00%  SB-KERNEL::INTEXP
+            from   0.07%  PREP1
+            from   0.03%  PSEXPT
+            from   0.00%  RATREP*
+            from   0.00%  EVERYSUBST00
+     35   0.12%  PDISREP   (incl. 0.56%)
+            leaf   0.03%  SB-IMPL::GET3
+            leaf   0.02%  SYMBOL-PLIST
+            leaf   0.01%  SB-IMPL::LIST-NREVERSE
+            leaf   0.00%  NCONC
+            from   0.05%  CDISREP
+            from   0.03%  PDISREP2
+            from   0.02%  RETFACTOR1
+            from   0.01%  PDISREP2EXPAND
+     34   0.12%  PCDIFFER   (incl. 0.12%)
+            leaf   0.06%  SB-BIGNUM:SUBTRACT-BIGNUM
+            leaf   0.02%  <no info>
+            leaf   0.00%  SB-BIGNUM:SUBTRACT-FIXNUM-BIGNUM
+            leaf   0.00%  SB-KERNEL:TWO-ARG--
+            from   0.09%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.02%  PTPTDIFFER
+            from   0.00%  PTCDIFFER
+            from   0.00%  FORWARD
+     34   0.12%  FILE-EXISTS-P   (incl. 0.12%)
+            leaf   0.07%  foreign function fstatat
+            leaf   0.00%  SB-KERNEL:TWO-ARG->=
+            leaf   0.00%  SB-KERNEL:UB32-BASH-COPY
+            leaf   0.00%  WRITE-STRING
+            leaf   0.00%  foreign function realpath
+            leaf   0.00%  SB-KERNEL:%CONCATENATE-TO-STRING
+            from   0.10%  DIRECTORY-CACHED
+            from   0.01%  FILE_SEARCH-IMPL
+     34   0.12%  RATREP*   (incl. 6.76%)
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  SB-KERNEL:%MAP-FOR-EFFECT-ARITY-1
+            leaf   0.00%  SB-KERNEL:%MAKE-SYMBOL
+            leaf   0.00%  REMPROP
+            leaf   0.00%  LENGTH
+            from   0.03%  RATF
+            from   0.03%  FR1
+            from   0.02%  FFACTOR
+            from   0.01%  SIMPNRT
+     33   0.11%  MINLIST-IN-PLACE   (incl. 0.11%)
+            from   0.11%  DEGVECTOR
+            from   0.00%  PFACTOR
+     33   0.11%  SORTGREAT   (incl. 0.61%)
+            leaf   0.03%  (LABELS SB-IMPL::RECUR :IN SB-IMPL::STABLE-SORT-LIST)
+            leaf   0.02%  IDENTITY
+            leaf   0.02%  SB-IMPL::STABLE-SORT-LIST
+            leaf   0.01%  STABLE-SORT
+            leaf   0.01%  SB-KERNEL:%COERCE-CALLABLE-TO-FUN
+            from   0.08%  FR1
+            from   0.03%  NEWVAR
+            from   0.00%  RETFACTOR
+     33   0.11%  ALG   (incl. 0.11%)
+            from   0.06%  PTIMES
+            from   0.01%  PALGP
+            from   0.01%  PEXPT
+            from   0.01%  PTPTQUOTIENT
+     32   0.11%  PTCPLUS   (incl. 0.16%)
+            leaf   0.00%  GENERIC-=
+            leaf   0.00%  FLOOR
+            from   0.07%  PCPLUS
+            from   0.04%  PPLUS
+            from   0.00%  MFACPPLUS
+     32   0.11%  PASIMP1   (incl. 1.28%)
+            from   0.11%  PALGSIMP
+     31   0.11%  FLOAT-IMPL   (incl. 0.78%)
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  GENERIC-=
+            leaf   0.01%  SB-KERNEL:%DOUBLE-FLOAT
+            leaf   0.01%  GETF
+            leaf   0.01%  GENERIC->
+            from   0.08%  RECUR-APPLY
+            from   0.01%  MAXIMA-TO-LISP-COMPLEX-FLOAT
+            from   0.01%  NUMER
+            from   0.00%  (FLET EVALUATE :IN %COERCE-FLOAT-FUN)
+     31   0.11%  FIND-DUPLICATE   (incl. 0.11%)
+            leaf   0.04%  SB-KERNEL:%MEMBER-TEST
+            leaf   0.02%  EQ
+            from   0.11%  MEVAL1
+     31   0.11%  MEVALP   (incl. 6.81%)
+            from   0.06%  MEVAL1
+            from   0.02%  IS-MOR
+            from   0.01%  IS-MAND
+            from   0.01%  IS
+     31   0.11%  NEWVARMEXPT   (incl. 1.68%)
+            leaf   0.00%  SB-KERNEL:%ASSOC-EQ
+            from   0.04%  PREP1
+            from   0.03%  NEWVAR1
+            from   0.02%  FR1
+            from   0.01%  RATREP*
+     30   0.10%  DRAW2D   (incl. 0.12%)
+            leaf   0.05%  NTHCDR
+            leaf   0.05%  NTH
+            from   0.10%  (SB-PCL::FAST-METHOD PLOT2D-COMMAND (GNUPLOT-PLOT T T T))
+     30   0.10%  MUL2   (incl. 0.10%)
+            leaf   0.01%  SB-KERNEL:TWO-ARG-*
+            leaf   0.00%  <no info>
+            from   0.01%  SPLITPROD
+            from   0.01%  TESTTNEG
+            from   0.01%  RECTFORM-IMPL
+            from   0.01%  TIMESIN
+     29   0.10%  BIGFLOATP   (incl. 0.18%)
+            leaf   0.01%  SB-KERNEL:%LAST1
+            leaf   0.01%  ASH
+            leaf   0.00%  GENERIC-NEGATE
+            from   0.03%  BFLOAT-IMPL
+            from   0.02%  ADDBIGFLOAT
+            from   0.02%  TIMESBIGFLOAT
+            from   0.00%  FPSIN
+     29   0.10%  $RATP   (incl. 0.10%)
+            from   0.10%  SIMPEXPT
+            from   0.00%  MRATCHECK
+     29   0.10%  SIGN-IMPL   (incl. 9.21%)
+            from   0.04%  CSIGN
+            from   0.03%  CSIGN-IMPL
+            from   0.02%  NRTHK
+            from   0.00%  LENIENT-EXTENDED-REALP
+     28   0.10%  FPMAGNITUDE-LENGTH   (incl. 0.10%)
+            leaf   0.01%  SB-BIGNUM:BIGNUM-INTEGER-LENGTH
+            leaf   0.01%  INTEGER-LENGTH
+            from   0.08%  FPROUND
+            from   0.01%  FPTIMES*
+            from   0.00%  FPDIFFERENCE
+     28   0.10%  LISTP-IMPL   (incl. 0.10%)
+            from   0.04%  ADD2LNC
+            from   0.01%  MEVAL1
+            from   0.01%  MSET
+            from   0.00%  FORMAT1
+     28   0.10%  FREEOF   (incl. 0.43%)
+            from   0.07%  FREEOFL
+            from   0.01%  EXTRA-SIMP
+            from   0.01%  FREEOF-IMPL
+            from   0.00%  NIL
+     27   0.09%  <non-Maxima: <other>>   (incl. 0.00%)
+     27   0.09%  OPER-APPLY   (incl. 2.11%)
+            leaf   0.05%  SB-IMPL::GET3
+            leaf   0.00%  SB-IMPL::GET-INFO-VALUE
+            leaf   0.00%  SYMBOL-PLIST
+            from   0.09%  SIMPLIFYA
+            from   0.00%  OUTATIVE
+     26   0.09%  BIGFLOAT-PREC   (incl. 0.09%)
+            leaf   0.03%  SB-KERNEL:%LAST1
+            from   0.07%  BIGFLOATP
+            from   0.00%  TIMESBIGFLOAT
+            from   0.00%  FPENTIER
+            from   0.00%  BIGFLOAT-IMPL:BIGFLOAT
+     26   0.09%  PUTPROP   (incl. 0.09%)
+            leaf   0.00%  SB-IMPL::%PUTF
+            from   0.02%  RATDISREPD
+            from   0.02%  BEG
+            from   0.01%  DMARK
+            from   0.01%  MID
+     26   0.09%  NFORMAT   (incl. 0.09%)
+            leaf   0.06%  SB-IMPL::GET3
+            leaf   0.00%  SYMBOL-PLIST
+            leaf   0.00%  SB-IMPL::HS-CELLS-OCCUPANCY
+            from   0.03%  FORM-MTIMES
+            from   0.01%  MPART
+            from   0.01%  FORM-MPLUS
+            from   0.01%  NUM-DENOM-SPLIT
+     26   0.09%  OLDCONTENT   (incl. 2.18%)
+            leaf   0.03%  (LABELS SB-IMPL::RECUR :IN SB-IMPL::STABLE-SORT-LIST)
+            leaf   0.01%  SB-IMPL::MERGE-LISTS*
+            leaf   0.01%  SB-IMPL::STABLE-SORT-LIST
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  GENERIC-NEGATE
+            from   0.05%  FPCONTENT
+            from   0.03%  ZGCD
+            from   0.00%  LOBJ->POLY
+            from   0.00%  OLDGCD
+     25   0.09%  FPSHIFT   (incl. 0.10%)
+            leaf   0.02%  SB-KERNEL:TWO-ARG-<
+            leaf   0.01%  SB-BIGNUM:BIGNUM-ASHIFT-RIGHT
+            leaf   0.01%  SB-BIGNUM:ADD-BIGNUM-FIXNUM
+            leaf   0.01%  ASH
+            leaf   0.01%  <no info>
+            from   0.06%  FPPLUS
+            from   0.02%  FPDIFFERENCE
+            from   0.01%  FPQUOTIENT
+     25   0.09%  DMARK   (incl. 0.12%)
+            leaf   0.03%  SB-IMPL::GET3
+            leaf   0.01%  SB-KERNEL:%PUT
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.03%  DGR
+            from   0.03%  DLS
+            from   0.02%  DEQ
+     25   0.09%  CRECIP-GENERAL   (incl. 0.09%)
+            leaf   0.05%  SB-KERNEL::TRUNCATE1
+            from   0.09%  PGCDU1
+     25   0.09%  CDISREP   (incl. 0.79%)
+            leaf   0.00%  SB-IMPL::GET3
+            leaf   0.00%  foreign function lisp_alloc
+            from   0.08%  RATDISREPD
+            from   0.00%  PSLOG
+            from   0.00%  STRIP-ZEROES
+     25   0.09%  LISTOFVARS-IMPL   (incl. 0.85%)
+            leaf   0.01%  NCONC
+            leaf   0.00%  SB-KERNEL:%LAST1
+            leaf   0.00%  FPR-SAVE
+            from   0.06%  SYMBOLS
+            from   0.02%  UNKNOWN-ATOMS
+            from   0.00%  COMPSPLT
+            from   0.00%  UNKS-IN-EQ
+     25   0.09%  MARGS   (incl. 0.09%)
+            from   0.03%  ATOMVARS
+            from   0.02%  ORDFNA
+            from   0.01%  FIRST-IMPL
+            from   0.01%  NIL
+     25   0.09%  SIMPNRT   (incl. 1.13%)
+            leaf   0.01%  TRUNCATE
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.00%  LIST-ALLOC-TRAMP
+            leaf   0.00%  UNWIND
+            leaf   0.00%  SB-KERNEL:TWO-ARG-GCD
+            from   0.09%  EXPTRL
+     25   0.09%  PCSUB   (incl. 0.79%)
+            from   0.06%  PTCSUB
+            from   0.01%  PTCSUB-ARGS
+            from   0.01%  GCD-DEGREE-VECTOR
+            from   0.01%  QUICK-SQFR-CHECK
+     25   0.09%  ORDMEXPT   (incl. 0.15%)
+            from   0.06%  PLUSIN
+            from   0.01%  TIMESIN
+            from   0.01%  GREAT
+            from   0.01%  ORDFN
+     24   0.08%  MAXLIST-IN-PLACE   (incl. 0.08%)
+            from   0.08%  DEGVECTOR
+            from   0.01%  ZGCD1
+     23   0.08%  BIGFLOAT::HYPERGEOMETRIC-BY-SERIES   (incl. 1.28%)
+            leaf   0.03%  (LAMBDA (SB-PCL::.ARG0. SB-PCL::.ARG1.) :IN "SYS:SRC;PCL;DLISP3.LISP")
+            leaf   0.02%  <no info>
+            leaf   0.02%  (LAMBDA (SB-PCL::.ARG0.) :IN "SYS:SRC;PCL;DLISP3.LISP")
+            leaf   0.01%  foreign function hypotf64
+            leaf   0.00%  REALPART
+            from   0.08%  BIGFLOAT::HYPERGEOMETRIC-FLOAT-EVAL
+            from   0.00%  BIGFLOAT::RUNNING-ERROR-HYPERGEOMETRIC
+     23   0.08%  IROOT   (incl. 0.08%)
+            leaf   0.04%  SB-KERNEL::TRUNCATE1
+            leaf   0.01%  EXPT
+            leaf   0.00%  SB-KERNEL::INTEXP
+            leaf   0.00%  ASH
+            from   0.08%  CNTHROOT
+            from   0.00%  PNTHROOTP
+     23   0.08%  M2   (incl. 0.62%)
+            leaf   0.07%  COPY-TREE
+            from   0.03%  INTEGRATE-EXP-SPECIAL
+            from   0.02%  SP1
+            from   0.01%  DIFFDIV
+            from   0.01%  MONSTERTRIG
+     23   0.08%  MAPATOM-IMPL   (incl. 0.41%)
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            from   0.03%  INFSIMP*
+            from   0.01%  SIGN1
+            from   0.01%  HAS-FLOAT
+            from   0.01%  MEVAL1
+     23   0.08%  PMOD   (incl. 0.12%)
+            leaf   0.01%  GENERIC-*
+            leaf   0.00%  foreign function alloc_list
+            leaf   0.00%  GENERIC--
+            from   0.04%  ZGCD1
+            from   0.04%  GCD-DEGREE-VECTOR
+            from   0.00%  POLYSUBST
+     23   0.08%  FACTOR-LIST   (incl. 0.08%)
+            from   0.07%  ORDFN
+            from   0.00%  PLUSIN
+            from   0.00%  TIMESIN
+     22   0.08%  PTPTQUOTIENT   (incl. 0.66%)
+            leaf   0.01%  GENERIC->
+            leaf   0.00%  FLOOR
+            leaf   0.00%  SB-BIGNUM:BIGNUM-TRUNCATE
+            from   0.07%  PQUOTIENT
+            from   0.00%  CQUOTIENT
+     22   0.08%  DEGVECDISREP   (incl. 0.08%)
+            from   0.08%  PTERMCONT
+     22   0.08%  RGET   (incl. 0.10%)
+            leaf   0.00%  foreign function __pthread_mutex_unlock
+            from   0.06%  RATREP*
+            from   0.01%  FR1
+            from   0.00%  RATF
+     22   0.08%  DCOMP   (incl. 0.60%)
+            leaf   0.02%  SB-KERNEL:%ASSOC
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.00%  GETF
+            from   0.08%  DCOMPARE
+     21   0.07%  SCAN-MACSYMA-TOKEN   (incl. 0.24%)
+            leaf   0.03%  SB-IMPL::%LOOKUP-SYMBOL
+            leaf   0.01%  SB-IMPL::CALC-SYMBOL-NAME-HASH
+            leaf   0.01%  SB-IMPL::LIST-NREVERSE
+            leaf   0.01%  SB-KERNEL:UB32-BASH-COPY
+            leaf   0.00%  SB-KERNEL:STRING=*
+            leaf   0.00%  <no info>
+            from   0.04%  PEEK-ONE-TOKEN-G
+            from   0.03%  PARSE
+            from   0.00%  SLOW-MLIST-FROM-STRING
+     20   0.07%  SUBVARP-IMPL   (incl. 0.07%)
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.01%  EQUAL
+            leaf   0.00%  LENGTH
+            from   0.03%  MAPATOM
+            from   0.02%  CONSTANT
+            from   0.01%  MAPATOM-IMPL
+            from   0.00%  TIMESIN
+     20   0.07%  MID   (incl. 0.11%)
+            leaf   0.02%  SB-KERNEL:%PUT
+            leaf   0.01%  MARK-SYMBOL-CARD
+            leaf   0.01%  SYMBOL-PLIST
+            leaf   0.00%  FPR-SAVE
+            from   0.06%  MARK+
+            from   0.00%  MARK+1
+     20   0.07%  BCONS   (incl. 0.07%)
+            from   0.01%  ADDBIGFLOAT
+            from   0.01%  TIMESBIGFLOAT
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-* (BIGFLOAT-IMPL:BIGFLOAT BIGFLOAT-IMPL:BIGFLOAT))
+            from   0.01%  (SB-PCL::FAST-METHOD BIGFLOAT::TWO-ARG-+ (BIGFLOAT-IMPL:COMPLEX-BIGFLOAT BIGFLOAT-IMPL:COMPLEX-BIGFLOAT))
+     20   0.07%  BEYOND-EXTREME-VALUES   (incl. 0.08%)
+            leaf   0.03%  SB-KERNEL:TWO-ARG->
+            leaf   0.02%  SB-KERNEL:TWO-ARG-<
+            leaf   0.01%  GENERIC->
+            leaf   0.00%  GENERIC-<
+            from   0.04%  FLOAT-IMPL
+            from   0.02%  EXPTB
+            from   0.01%  SIMPEXPT
+     20   0.07%  PTERMCONT   (incl. 1.82%)
+            leaf   0.03%  GENERIC->
+            leaf   0.00%  REVERSE
+            from   0.06%  PGCDA
+            from   0.01%  PSQFR
+     20   0.07%  PTIMES*   (incl. 0.07%)
+            from   0.06%  RATTIMES
+            from   0.00%  PREP1
+     20   0.07%  PDISREP+   (incl. 0.07%)
+            leaf   0.01%  SB-KERNEL:%LAST1
+            from   0.03%  PDISREP2
+            from   0.03%  CDISREP
+            from   0.01%  RETFACTOR1
+            from   0.00%  PDISREP2EXPAND
+     20   0.07%  SYMBOLS   (incl. 0.67%)
+            leaf   0.00%  NCONC
+            from   0.04%  COMPSPLT-SINGLE
+            from   0.02%  SPLITSUM
+            from   0.01%  SPLITPROD
+            from   0.00%  COMPSPLT-GENERAL
+     20   0.07%  TESTP   (incl. 0.07%)
+            from   0.05%  SIMPLUS
+            from   0.00%  SIGNSUM
+            from   0.00%  MGRP-GENERAL
+            from   0.00%  RISPLIT-MPLUS
+     20   0.07%  PMINUSP   (incl. 0.07%)
+            leaf   0.00%  SB-KERNEL:TWO-ARG-<
+            from   0.02%  PGCD
+            from   0.01%  RATREDUCE
+            from   0.01%  PSQFR
+            from   0.01%  OLDCONTENT
+     20   0.07%  ATOM-IMPL   (incl. 0.14%)
+            from   0.02%  MAPATOM
+            from   0.01%  MAPATOM-IMPL
+            from   0.01%  SPECREPCHECK
+            from   0.01%  FMAP1
+     19   0.06%  PDIFFERENCE   (incl. 0.15%)
+            leaf   0.00%  GENERIC-=
+            from   0.04%  PTPT-SUBTRACT-POWERED-PRODUCT
+            from   0.02%  PTPTDIFFER
+            from   0.01%  BOTHPRODCOEF
+            from   0.00%  PTCDIFFER-MINUS
+     19   0.06%  COMPSPLT-SINGLE   (incl. 1.94%)
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  FPR-RESTORE
+            from   0.05%  COMPSPLT
+            from   0.01%  COMPSPLT-GENERAL
+     19   0.06%  RATDISREP-IMPL   (incl. 1.28%)
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  DELETE
+            from   0.03%  FR1
+            from   0.01%  MAKPROD1
+            from   0.01%  PRESULTANT
+            from   0.01%  RATDISREP
+     19   0.06%  PTMINUS   (incl. 0.09%)
+            leaf   0.00%  GENERIC-NEGATE
+            from   0.05%  PMINUS
+            from   0.01%  PTPTDIFFER
+     19   0.06%  EXPANDTIMES   (incl. 1.03%)
+            leaf   0.01%  SB-IMPL::LIST-NREVERSE
+            leaf   0.00%  SB-IMPL::GET3
+            leaf   0.00%  GENERIC-=
+            leaf   0.00%  NREVERSE
+            from   0.06%  SIMPTIMES
+     19   0.06%  UNKNOWN-ATOMS   (incl. 0.35%)
+            leaf   0.05%  REMOVE-IF
+            leaf   0.01%  NTHCDR
+            from   0.06%  COMPSPLT
+     19   0.06%  NEG   (incl. 1.04%)
+            leaf   0.00%  SB-KERNEL:%NEGATE
+            leaf   0.00%  CALL-SYMBOL
+            from   0.03%  SUB
+            from   0.01%  DCOMPARE
+            from   0.01%  SPLITSUM
+            from   0.01%  RISPLIT-TIMES
+     19   0.06%  TOPLEVEL-$LIMIT   (incl. 14.60%)
+            leaf   0.01%  TRUNCATE
+            leaf   0.00%  SB-KERNEL:%SET-SYMBOL-PLIST
+            leaf   0.00%  SB-KERNEL:%MAP-FOR-EFFECT-ARITY-1
+            leaf   0.00%  (LABELS SB-IMPL::RECURSE :IN SB-IMPL::%SYMBOL-NAMEIFY)
+            from   0.04%  BOTH-SIDE
+            from   0.01%  LIMIT-IMPL
+            from   0.01%  SIMPINF-IC
+     19   0.06%  ADD2   (incl. 0.06%)
+            leaf   0.00%  <no info>
+            leaf   0.00%  foreign function pthread_mutex_lock
+            from   0.02%  DCOMPARE
+            from   0.01%  MGRP-GENERAL
+            from   0.01%  SPLITSUM
+            from   0.00%  EXPONENTIATE-SUM
+     18   0.06%  (LABELS EXPAND :IN COLLECT-DIRECTORIES)   (incl. 0.06%)
+            leaf   0.02%  foreign function fstatat
+            leaf   0.01%  foreign function readlink
+            leaf   0.00%  (FLET SB-IMPL::ITERATE :IN SB-EXT:MAP-DIRECTORY)
+            leaf   0.00%  SB-VM::ASCII-SAP-TO-CHARACTER-STRING
+            leaf   0.00%  foreign function getdents64
+            leaf   0.00%  SB-EXT:PARSE-NATIVE-NAMESTRING
+            from   0.06%  DIRECTORY-CACHED
+     18   0.06%  <non-Maxima: SB-KERNEL>   (incl. 0.00%)
+     18   0.06%  PREGEXP::PREGEXP-MAKE-BACKREF-LIST   (incl. 0.06%)
+            leaf   0.02%  SB-IMPL::APPEND2
+            from   0.06%  PREGEXP::PREGEXP-MATCH-POSITIONS-AUX
+     18   0.06%  LISTOVARS1   (incl. 0.08%)
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            from   0.06%  LISTOVARS
+     18   0.06%  RISPLIT-TIMES   (incl. 3.47%)
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.00%  GENERIC-+
+            leaf   0.00%  FPR-SAVE
+            from   0.06%  RISPLIT
+     18   0.06%  ASSOO   (incl. 0.06%)
+            leaf   0.04%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.01%  EQUAL
+            from   0.06%  COMPUMD
+     18   0.06%  GETOPR   (incl. 0.30%)
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.00%  SB-KERNEL:STRING=*
+            leaf   0.00%  SB-IMPL::GETHASH/EQUAL
+            from   0.03%  SUBST1
+            from   0.01%  APPLY-IMPL
+            from   0.01%  MAPPLY1
+            from   0.00%  REMOVE1
+     18   0.06%  RATPLUS   (incl. 5.92%)
+            leaf   0.01%  GENERIC-=
+            leaf   0.00%  GENERIC-+
+            leaf   0.00%  FPR-SAVE
+            from   0.05%  PREP1
+            from   0.01%  PSEXPT1
+     18   0.06%  MARK+0   (incl. 0.50%)
+            leaf   0.01%  GETF
+            leaf   0.00%  SB-IMPL::GET3
+            from   0.06%  MARK+
+     18   0.06%  SIGNDIFF-SPECIAL   (incl. 1.86%)
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.00%  CALL-SYMBOL
+            from   0.06%  SIGNDIFF
+     18   0.06%  RATP-IMPL   (incl. 0.06%)
+            from   0.06%  SIMPEXPT
+            from   0.00%  SIMPTIMES
+     18   0.06%  LIMIT-OK   (incl. 0.13%)
+            leaf   0.02%  SB-KERNEL:%MAP-FOR-EFFECT-ARITY-1
+            leaf   0.02%  SB-IMPL::GET3
+            leaf   0.00%  SYMBOL-PLIST
+            from   0.04%  (FLET "WRAPPER6" :IN LIMIT-OK)
+            from   0.02%  LIMUNKNOWN
+     18   0.06%  ALGPCHK   (incl. 0.32%)
+            leaf   0.02%  COPY-LIST
+            leaf   0.01%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            from   0.05%  RATSETUP2
+            from   0.01%  FR1
+     18   0.06%  CEXPT   (incl. 0.17%)
+            leaf   0.01%  SB-KERNEL:TWO-ARG-<=
+            leaf   0.00%  FLOOR
+            leaf   0.00%  SB-KERNEL:ASH-RIGHT
+            leaf   0.00%  GENERIC--
+            from   0.04%  PTCSUB
+            from   0.01%  PEXPT
+            from   0.01%  PTCSUB-ARGS
+     18   0.06%  MFACPPLUS   (incl. 1.31%)
+            leaf   0.01%  GENERIC-=
+            leaf   0.01%  IDENTITY
+            leaf   0.01%  SB-IMPL::STABLE-SORT-LIST
+            leaf   0.01%  SB-IMPL::MERGE-LISTS*
+            leaf   0.01%  (LABELS SB-IMPL::RECUR :IN SB-IMPL::STABLE-SORT-LIST)
+            from   0.06%  PREP1
+     18   0.06%  FMAP1   (incl. 0.41%)
+            leaf   0.02%  NCONC
+            leaf   0.01%  SB-KERNEL:%LAST1
+            leaf   0.00%  SB-IMPL::LIST-NREVERSE
+            leaf   0.00%  NREVERSE
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            from   0.06%  FMAPL1
+     17   0.06%  PARSER-ASSOC   (incl. 0.06%)
+            from   0.06%  READ-COMMAND-TOKEN-AUX
+     17   0.06%  SIMPCHECK   (incl. 0.93%)
+            leaf   0.00%  UNWIND
+            from   0.03%  SIMPMAP
+            from   0.01%  SIMPARGS
+            from   0.01%  SIMP-CONJUGATE
+            from   0.00%  SIMP-%BINOMIAL
+     17   0.06%  LISTOVARS0   (incl. 0.06%)
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            from   0.04%  LISTOVARS
+            from   0.02%  LISTOVARS1
+     17   0.06%  (FLET "CLEANUP-FUN-4" :IN MLAMBDA)   (incl. 0.83%)
+            leaf   0.01%  MARK-CARD
+            from   0.05%  MLAMBDA
+            from   0.00%  NIL
+     17   0.06%  SYMBOL-VALUES-IN   (incl. 0.06%)
+            from   0.05%  MBIND-DOIT
+            from   0.01%  MBIND
+     17   0.06%  SIGN-SHIFT   (incl. 0.30%)
+            leaf   0.01%  REVERSE
+            leaf   0.00%  SB-IMPL::LIST-REVERSE
+            from   0.06%  SIGNSUM
+     17   0.06%  COEFL   (incl. 0.06%)
+            from   0.05%  CONTSORT
+            from   0.01%  OLDCONTENT
+            from   0.00%  NIL
+     17   0.06%  ZL-REMPROP   (incl. 0.06%)
+            leaf   0.01%  SB-IMPL::%REMF
+            from   0.04%  CPUT
+            from   0.00%  IND
+            from   0.00%  KILLC
+            from   0.00%  KCNTXT
+     16   0.05%  SAVEFACTORS   (incl. 0.10%)
+            from   0.05%  PREP1
+     16   0.05%  LOOPP   (incl. 0.49%)
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  foreign function lisp_alloc
+            leaf   0.00%  LENGTH
+            from   0.05%  M2
+            from   0.01%  ZEPOW
+     16   0.05%  AMONGL   (incl. 0.05%)
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            from   0.03%  COMPARE-IMPL
+            from   0.01%  LIMIT
+            from   0.01%  LENIENT-EXTENDED-REALP
+            from   0.00%  EXPFACTORP
+     16   0.05%  TIMESKL   (incl. 0.23%)
+            from   0.04%  TIMESIN
+            from   0.01%  PLS
+            from   0.01%  TMS
+     16   0.05%  GAMMAC   (incl. 0.05%)
+            leaf   0.02%  <no info>
+            leaf   0.02%  SB-BIGNUM::MULTIPLY-BIGNUM-AND-FIXNUM-BMI2
+            leaf   0.01%  SB-BIGNUM::NEGATE-BIGNUM-BUFFER-IN-PLACE
+            leaf   0.01%  foreign function prepare_pages
+            from   0.05%  GAMMARED
+     16   0.05%  TERM-LIST   (incl. 0.05%)
+            from   0.04%  ORDFN
+            from   0.01%  PLUSIN
+     15   0.05%  RATSETUP1   (incl. 0.05%)
+            from   0.04%  RATREP*
+            from   0.01%  RATSETUP
+     15   0.05%  RATREDUCE   (incl. 4.56%)
+            from   0.03%  RATTIMES
+            from   0.01%  PREP1
+            from   0.00%  SPC7
+            from   0.00%  RQUOTIENT
+     15   0.05%  RGRP   (incl. 0.05%)
+            leaf   0.01%  SB-KERNEL::INTEGER-/-INTEGER
+            leaf   0.00%  SB-KERNEL:TWO-ARG->
+            from   0.04%  SIGN
+            from   0.01%  SIGN1
+            from   0.00%  DNUM-NEIGHBORS
+     15   0.05%  GENSYM-READABLE   (incl. 0.05%)
+            from   0.05%  ORDERPOINTER
+            from   0.00%  NIL
+     15   0.05%  INTL::LOCATE-DOMAIN-FILE   (incl. 0.07%)
+            leaf   0.03%  foreign function fstatat
+            leaf   0.01%  MERGE-PATHNAMES
+            leaf   0.00%  SB-INT:SANE-DEFAULT-PATHNAME-DEFAULTS
+            leaf   0.00%  SB-IMPL::HASH-PATHNAME-PIECE
+            leaf   0.00%  SB-IMPL::COMPARE-COMPONENT
+            leaf   0.00%  (LAMBDA (SB-IMPL::RESULT SB-IMPL::SOURCE SB-IMPL::START SB-IMPL::DUMMY) :IN GET-OUTPUT-STREAM-STRING)
+            from   0.05%  INTL::LOAD-DOMAIN
+     15   0.05%  FACTOR   (incl. 5.91%)
+            leaf   0.00%  NCONC
+            leaf   0.00%  SB-IMPL::LIST-NREVERSE
+            leaf   0.00%  SB-IMPL::GET3
+            from   0.03%  NUMDEN*
+            from   0.01%  FACTOR-IMPL
+            from   0.00%  FACTOR-IF-SMALL
+            from   0.00%  LHOP-NUMDEN
+     15   0.05%  PDISREP*CHK   (incl. 0.05%)
+            from   0.05%  PDISREP*
+     15   0.05%  SPLITSUM   (incl. 0.94%)
+            leaf   0.02%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  CALL-SYMBOL
+            from   0.05%  COMPSPLT-SINGLE
+     15   0.05%  PDEGREEVECTOR   (incl. 0.57%)
+            leaf   0.01%  SB-IMPL::LIST-REVERSE
+            leaf   0.00%  GENERIC-+
+            from   0.02%  ZGCD1
+            from   0.01%  PFACTOR1
+            from   0.01%  PGCDA
+            from   0.01%  ZPDEGREEVECTOR
+     15   0.05%  PDISREP!   (incl. 0.05%)
+            leaf   0.00%  SB-IMPL::GET3
+            from   0.05%  PDISREP2
+     15   0.05%  NEWVAR   (incl. 1.20%)
+            leaf   0.02%  NCONC
+            leaf   0.00%  STABLE-SORT
+            leaf   0.00%  SB-IMPL::LIST-NREVERSE
+            from   0.02%  RATF
+            from   0.01%  SIMPNRT
+            from   0.00%  RESULTANT-IMPL
+            from   0.00%  RATCOEF
+     15   0.05%  GETALIAS   (incl. 0.05%)
+            leaf   0.04%  SB-IMPL::GET3
+            leaf   0.01%  SYMBOL-PLIST
+            from   0.03%  PEEK-ONE-TOKEN-G
+            from   0.01%  PARSE
+            from   0.01%  PRSMATCH
+            from   0.00%  NOUNIFY-IMPL
+     14   0.05%  PGCD   (incl. 4.31%)
+            leaf   0.00%  EQUAL
+            leaf   0.00%  GENERIC-<
+            leaf   0.00%  GENERIC-=
+            from   0.03%  OLDCONTENT2
+            from   0.00%  ZGCD1
+            from   0.00%  MFACPPLUS
+            from   0.00%  LINHACKCONTENT
+     14   0.05%  FPCOFRAT1   (incl. 0.05%)
+            leaf   0.02%  SB-KERNEL::DOUBLE-FLOAT-RATIO
+            leaf   0.02%  SB-KERNEL::INTEGER-/-INTEGER
+            leaf   0.00%  SB-KERNEL:%DOUBLE-FLOAT
+            leaf   0.00%  foreign function gc_close_region
+            from   0.04%  RECUR-APPLY
+            from   0.00%  MEVAL1
+            from   0.00%  FLOAT-IMPL
+     14   0.05%  SAVEFACTOR1   (incl. 0.05%)
+            leaf   0.02%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            leaf   0.02%  SB-KERNEL:%MEMBER-TEST
+            leaf   0.01%  EQUAL
+            from   0.05%  SAVEFACTORS
+     14   0.05%  CONTEXTMARK   (incl. 0.07%)
+            from   0.04%  KINDP
+            from   0.01%  FACTS1
+            from   0.00%  SIGN-SHIFT
+     14   0.05%  TESTA   (incl. 0.18%)
+            leaf   0.00%  SB-KERNEL:%ASSOC-TEST
+            leaf   0.00%  FBOUNDP
+            from   0.04%  M1
+            from   0.00%  COEFFRET
+            from   0.00%  COEFFPT
+            from   0.00%  ZEPOW
+     14   0.05%  FLOAT-INF-P   (incl. 0.06%)
+            leaf   0.01%  GENERIC-=
+            from   0.02%  FLOAT-IMPL
+            from   0.02%  EXPTB
+            from   0.01%  SIMPEXPT
+     14   0.05%  PFLOATP   (incl. 0.08%)
+            from   0.04%  PGCDA
+            from   0.00%  CQUOTIENT
+            from   0.00%  PGCDCOFACTS
+     14   0.05%  MPART   (incl. 0.12%)
+            leaf   0.00%  LENGTH
+            from   0.04%  INPART-IMPL
+            from   0.01%  PART-IMPL
+     14   0.05%  PSQFR   (incl. 1.03%)
+            leaf   0.01%  SORT
+            leaf   0.01%  (LABELS SB-IMPL::RECUR :IN SB-IMPL::STABLE-SORT-LIST)
+            leaf   0.00%  SB-IMPL::STABLE-SORT-LIST
+            leaf   0.00%  SB-IMPL::MERGE-LISTS*
+            leaf   0.00%  SB-KERNEL:%COERCE-CALLABLE-TO-FUN
+            from   0.04%  PFACTOR
+            from   0.00%  RETFACTOR
+     13   0.04%  REPLACE-COSET-IN-MULTIPLY-TABLE   (incl. 0.06%)
+            leaf   0.03%  %DATA-VECTOR-AND-INDEX/CHECK-BOUND
+            leaf   0.00%  SB-VM::SLOW-HAIRY-DATA-VECTOR-REF/CHECK-BOUNDS
+            from   0.04%  TODD-COXETER
+     13   0.04%  TYI-RAW   (incl. 0.04%)
+            leaf   0.01%  READ-CHAR-NO-HANG
+            leaf   0.01%  foreign function read
+            leaf   0.01%  SB-IMPL::FD-STREAM-MISC-ROUTINE
+            leaf   0.00%  SB-IMPL::SYSREAD-MAY-BLOCK-P
+            leaf   0.00%  SB-VM::UTF8-TO-CHARACTER-STRING-AVX2
+            from   0.04%  TYI
+            from   0.00%  TYI-PARSE-INT
+     13   0.04%  TREEDET   (incl. 0.15%)
+            leaf   0.04%  SB-KERNEL:%LAST1
+            from   0.04%  CHARPOLY-IMPL
+     13   0.04%  PTPTDIFFER   (incl. 0.11%)
+            leaf   0.00%  GENERIC--
+            from   0.04%  PDIFFERENCE
+     13   0.04%  NARG1   (incl. 0.04%)
+            leaf   0.01%  NTHCDR
+            from   0.02%  OUTERMAP1
+            from   0.02%  MAP1
+            from   0.01%  MMAPCAR
+     13   0.04%  E>   (incl. 0.04%)
+            leaf   0.00%  EQUAL
+            from   0.01%  PSTIMES*2
+            from   0.01%  VAR-EXPAND
+            from   0.01%  PSTERM
+            from   0.01%  TSTIMES
+     13   0.04%  UNCNTXT   (incl. 0.05%)
+            leaf   0.03%  DELETE
+            leaf   0.01%  NTHCDR
+            leaf   0.00%  SB-KERNEL:%PUT
+            from   0.03%  FDEL
+            from   0.01%  KILLFRAME
+            from   0.00%  MAXIMA-REMF
+     13   0.04%  MUNLOCAL   (incl. 0.04%)
+            leaf   0.00%  DELETE
+            leaf   0.00%  GETF
+            from   0.02%  MEVAL1
+            from   0.02%  (FLET "CLEANUP-FUN-4" :IN MLAMBDA)
+     13   0.04%  SIGN-COMPLEX-FLOAT   (incl. 0.12%)
+            leaf   0.01%  FLOATP
+            from   0.04%  SIGN1
+            from   0.00%  SIGN01
+     13   0.04%  FORMAT1   (incl. 0.05%)
+            from   0.01%  MEVAL1
+            from   0.01%  FIRST-IMPL
+            from   0.01%  REST-IMPL
+            from   0.00%  FMAP1
+     13   0.04%  FACTOR-LINEAR-SUM   (incl. 0.16%)
+            leaf   0.02%  SB-KERNEL:TWO-ARG-GCD
+            leaf   0.01%  SB-KERNEL:TWO-ARG-LCM
+            leaf   0.00%  GENERIC-*
+            from   0.04%  SIGNFACTOR
+            from   0.00%  SIGN-MPLUS
+     13   0.04%  SUB   (incl. 0.54%)
+            leaf   0.00%  SB-KERNEL:TWO-ARG--
+            from   0.02%  SPLITSUM
+            from   0.01%  DCOMPARE
+            from   0.01%  RISPLIT-TIMES
+            from   0.00%  MGRP-GENERAL
+     13   0.04%  TIMESBIGFLOAT   (incl. 0.24%)
+            leaf   0.01%  GENERIC-=
+            leaf   0.00%  foreign function gc_find_freeish_pages
+            leaf   0.00%  SB-IMPL::LIST-NREVERSE
+            from   0.03%  TIMESIN
+            from   0.02%  BFLOAT-IMPL
+     13   0.04%  PGET   (incl. 0.04%)
+            from   0.03%  RGET
+            from   0.01%  MAKPROD
+            from   0.00%  PFLATTEN
+            from   0.00%  FACTOROUT1
+     13   0.04%  OUTERMAP1   (incl. 0.29%)
+            leaf   0.00%  COPY-LIST
+            leaf   0.00%  SUBSEQ
+            leaf   0.00%  GENERIC-NEGATE
+            leaf   0.00%  SB-KERNEL:LIST-SUBSEQ
+            from   0.02%  FMAP1
+            from   0.01%  MXPLUSC
+            from   0.01%  MXTIMESC
+     12   0.04%  CMNULLF   (incl. 0.07%)
+            leaf   0.01%  SB-KERNEL:HAIRY-DATA-VECTOR-REF
+            leaf   0.00%  (SB-VM::OPTIMIZED-DATA-VECTOR-REF T)
+            leaf   0.00%  GENERIC-*
+            leaf   0.00%  (SB-VM::OPTIMIZED-DATA-VECTOR-SET T)
+            leaf   0.00%  SB-VM::SLOW-HAIRY-DATA-VECTOR-REF
+            from   0.04%  CPBER1
+     12   0.04%  IMPLODE   (incl. 0.04%)
+            leaf   0.01%  (FLET SB-IMPL::F :IN SB-IMPL::VECTOR-MAP-INTO/SIMPLE-CHARACTER-STRING)
+            leaf   0.01%  SB-IMPL::VECTOR-MAP-INTO/SIMPLE-CHARACTER-STRING
+            leaf   0.00%  SB-KERNEL:%MAP
+            leaf   0.00%  LENGTH
+            leaf   0.00%  <no info>
+            from   0.04%  SCAN-MACSYMA-TOKEN
+            from   0.00%  PROC-$TELLSIMPAFTER
+     12   0.04%  PARSE-TYIPEEK   (incl. 0.17%)
+            leaf   0.01%  MARK-SYMBOL-CARD
+            from   0.01%  GOBBLE-WHITESPACE
+            from   0.01%  READ-COMMAND-TOKEN
+            from   0.01%  GOBBLE-COMMENT
+            from   0.00%  READ-COMMAND-TOKEN-AUX
+     12   0.04%  ALPHABETP   (incl. 0.04%)
+            leaf   0.03%  SB-INT:MISC-INDEX
+            from   0.03%  SCAN-TOKEN
+            from   0.01%  OPERATOR-TERMINATED-P
+     12   0.04%  SPLITPROD   (incl. 0.86%)
+            leaf   0.01%  CALL-SYMBOL
+            leaf   0.00%  SB-IMPL::GET3
+            from   0.04%  COMPSPLT-SINGLE
+     12   0.04%  FR-ARGS   (incl. 8.87%)
+            leaf   0.01%  REMOVE
+            leaf   0.00%  EQ
+            from   0.04%  FR1
+     12   0.04%  FREEOFL   (incl. 0.34%)
+            from   0.01%  EXTRA-SIMP
+            from   0.01%  SIMPLIMIT
+            from   0.00%  (LABELS RISCHFORM-IMPL :IN RISCHFORM)
+            from   0.00%  ARGSFREEOF
+     12   0.04%  FACTS1   (incl. 0.12%)
+            leaf   0.01%  SB-IMPL::GET3
+            leaf   0.00%  SYMBOL-PLIST
+            from   0.02%  SIGN-SHIFT
+            from   0.02%  EQUAL-FACTS-SIMP
+            from   0.00%  CHECK-INTEGER-FACTS
+     12   0.04%  EXTRA-SIMP   (incl. 1.17%)
+            leaf   0.02%  SB-KERNEL:%MEMBER
+            leaf   0.00%  GENERIC-=
+            from   0.02%  TOPLEVEL-$LIMIT
+            from   0.02%  (LAMBDA (Q) :IN CALCULATE-SERIES)
+     12   0.04%  ATOMCHK   (incl. 0.04%)
+            from   0.02%  MEMBER-IMPL
+            from   0.01%  FIRST-IMPL
+            from   0.01%  CONS-IMPL
+            from   0.00%  MEVAL1
+     12   0.04%  PGCDCOFACTS   (incl. 5.58%)
+            from   0.02%  RATREDUCE
+            from   0.01%  PLCM
+            from   0.01%  PSQFR
+            from   0.00%  RATTIMES
+     12   0.04%  SIMPSUM1   (incl. 1.05%)
+            leaf   0.02%  (LABELS SB-IMPL::S :IN SUBST)
+            leaf   0.01%  EQ
+            leaf   0.00%  EQL
+            leaf   0.00%  SB-IMPL::GET3
+            leaf   0.00%  SUBST
+            from   0.03%  OPER-APPLY
+            from   0.01%  SIMP-%BETA_INCOMPLETE_GENERALIZED
+            from   0.00%  MEVAL1
+     12   0.04%  SUBST0   (incl. 0.12%)
+            leaf   0.01%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  (LABELS SB-IMPL::EQUAL-NOT-INLINE :IN EQUAL)
+            from   0.03%  SUBST1
+            from   0.01%  MAXIMA-SUBSTITUTE
+     12   0.04%  SIMPMAP   (incl. 0.20%)
+            from   0.04%  SIMPARGS
+     12   0.04%  RULE-APPLY   (incl. 0.11%)
+            leaf   0.00%  (LAMBDA (RULE-SYMBOL-5472293))
+            leaf   0.00%  (LAMBDA (RULE-SYMBOL-5472296))
+            leaf   0.00%  SB-KERNEL:%MEMBER-EQ
+            leaf   0.00%  TAIL-CALL-CALLABLE-VARIABLE
+            leaf   0.00%  (LAMBDA (RULE-SYMBOL-5472245))
+            from   0.04%  APPLY1
+            from   0.00%  APPLY1HACK
+     12   0.04%  TOTALDISREP-IMPL   (incl. 0.32%)
+            from   0.02%  FULLRATSIMP
+            from   0.01%  ORDERLESSP-IMPL
+            from   0.01%  FREEOF-IMPL
+            from   0.00%  DIVIDE-IMPL
+     11   0.04%  PMINUS   (incl. 0.09%)
+            leaf   0.01%  SB-KERNEL:%NEGATE
+            leaf   0.00%  FPR-RESTORE
+            from   0.02%  PTMINUS
+            from   0.00%  OLDCONTENT2
+            from   0.00%  FACTXN+1
+            from   0.00%  PTPT-SUBTRACT-POWERED-PRODUCT
+     11   0.04%  PARSE   (incl. 0.84%)
+            leaf   0.01%  SB-IMPL::READ-TOKEN
+            leaf   0.01%  SB-IMPL::GET-CMT-ENTRY
+            leaf   0.01%  SB-IMPL::MAKE-INTEGER
+            leaf   0.00%  SB-IMPL::RELEASE-TOKEN-BUF
+            leaf   0.00%  SB-IMPL::ACQUIRE-TOKEN-BUF
+            leaf   0.00%  (FLET SB-IMPL::CHARACTER-IN :IN SB-IMPL::%INIT-STRING-INPUT-STREAM)
+            from   0.02%  PRSMATCH
+            from   0.01%  LED-CALL
+            from   0.01%  PARSE-INFIX
+            from   0.00%  PARSE-$DO
+     11   0.04%  FINDTHEM   (incl. 0.04%)
+            leaf   0.02%  SB-KERNEL:%ASSOC-EQ
+            from   0.04%  TESTA*

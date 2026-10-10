@@ -1,0 +1,33 @@
+# Slowest problems per file: run_testsuite(tests=[F], display_all=true, time=all), one run each
+
+rtest_integrate: 935 problems, 16.1 s
+    5.60 s  problem  911 (line 6749)  cumulative 35%
+    2.08 s  problem  834 (line 6368)  cumulative 48%
+    0.24 s  problem  910 (line 6743)  cumulative 49%
+    0.18 s  problem   41 (line 216)  cumulative 50%
+    0.18 s  problem  904 (line 6705)  cumulative 52%
+    0.14 s  problem  845 (line 6406)  cumulative 52%
+
+rtest_matrixexp: 77 problems, 11.2 s
+    8.36 s  problem   75 (line 292)  cumulative 75%
+    1.45 s  problem   74 (line 289)  cumulative 87%
+    0.24 s  problem   42 (line 158)  cumulative 90%
+    0.10 s  problem   68 (line 271)  cumulative 90%
+    0.07 s  problem   26 (line 108)  cumulative 91%
+    0.07 s  problem   30 (line 120)  cumulative 92%
+
+rtest_abs_integrate: 254 problems, 9.9 s
+    3.67 s  problem  246 (line 841)  cumulative 37%
+    1.54 s  problem  129 (line 414)  cumulative 52%
+    0.84 s  problem  216 (line 721)  cumulative 61%
+    0.80 s  problem  225 (line 764)  cumulative 69%
+    0.28 s  problem  250 (line 860)  cumulative 72%
+    0.28 s  problem    1 (line 6)  cumulative 75%
+
+rtest_limit_gruntz: 105 problems, 5.6 s
+    2.50 s  problem   37 (line 157)  cumulative 45%
+    0.64 s  problem   23 (line 115)  cumulative 56%
+    0.57 s  problem   38 (line 160)  cumulative 66%
+    0.57 s  problem   25 (line 121)  cumulative 77%
+    0.27 s  problem    2 (line 47)  cumulative 81%
+    0.15 s  problem   16 (line 92)  cumulative 84%
