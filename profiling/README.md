@@ -680,22 +680,39 @@ Seven problems take about 25 s of the full suite's 125 s
 ### Item 1 tried: the `INTCV` guard
 
 `prototypes/dintexp.lisp` makes `INTCV` skip inverse roots with nested
-radicals in the new variable. `solve` returns those for cubic and quartic
-equations, so the change of variable `yx = exp(p(x))` (`DINTEXP`) or
-`yx = p(x)` (`LOGX1`) is no longer tried for such a `p`. Only the root is
-rejected, not the method: `exp(x^(3/2))`, `exp(-t^4)` and `exp(sqrt(x))` on
-finite intervals still go through it. Data in `data/round3/ab-dintexp.txt`.
+radicals in the new variable, when `DINTEXP` asks for the change of variable
+`yx = exp(p(x))`. `solve` returns such roots for cubic and quartic `p` (and
+biquadratic ones). Only the root is rejected, not the method:
+`exp(x^(3/2))`, `exp(-t^4)` and `exp(sqrt(x))` on finite intervals still go
+through it. Data in `data/round3/ab-dintexp.txt`.
 
 - Full suite: all pass. Its 65 `INTCV` calls (`instrumentation/cvlog.lisp`)
-  all end as before, but the failing `DINTEXP` ones take 0.02 s instead of
+  all end as before, but the failing `DINTEXP` ones take 0.03 s instead of
   4.9 s.
-- `rtest_integrate`: −5.5 ± 0.2 s (−34%, five rounds). Both suites cons
-  0.5 GB less. Their times were too noisy today to show the 5.5 s (core
-  −4.4 ± 1.8 s, full +0.7 ± 3.0 s, identical runs differ by up to 6 s).
+- `rtest_integrate`: −6.0 ± 0.7 s (−37%, three rounds). Both suites cons
+  0.5 GB less. Their times were too noisy today to show it (identical runs
+  differ by up to 6 s).
 - Outside the suite, master needs 97 s for `integrate(exp(-x^3-x),x,0,inf)`,
   more than 240 s for `exp(-x^3-x^2)`, and dies with "Heap exhausted, game
   over" in `INTCV` on `exp(-x^4-x)`. With the guard each takes 0.1 s and
   gives the noun form, as master does for the first.
+- A first version also guarded `LOGX1`'s change of variable `yx = p(x)`, and
+  that blocks correct results. For `log(p(x))*p'(x)*h(p(x))`, the
+  substitution cancels `p'(x)` and with it the radicals of the inverse. All
+  four integrals below go from 0 to 1, except the last (0 to inf):
+
+  | integrand | master, guard | first version |
+  |---|---|---|
+  | `log(x^4-2*x^2+1)*(4*x^3-4*x)/sqrt((x^4-2*x^2+1)*(1-(x^4-2*x^2+1)))` | `2*%pi*log(2)` | noun form |
+  | `log(x^4+2*x^2)*(4*x^3+4*x)/(1+x^4+2*x^2)` | `log(3)*log(4)+li[2](-3)` | same value, but with `log(-2)` and `li[2](3)` |
+  | `log(x^6+2*x^3)*(6*x^5+6*x^2)/(1+x^6+2*x^3)` | `log(3)*log(4)+li[2](-3)` | noun form |
+  | `log(x^3+x)*(3*x^2+1)/(1+(x^3+x)^2)` | `0` | noun form |
+
+  The last one inverts with the cubic formula, so no rule on the shape of
+  the root keeps all four. In `DINTEXP` nothing can cancel the radicals: its
+  integrand is a function of `exp(p(x))` alone (`FUNCLOGOR%E` refuses any
+  other occurrence of `x`, and `log(exp(p))` simplifies to `p`), so the new
+  integrand keeps the derivative of the inverse.
 - Found on the way, unrelated to the guard: `integrate(exp(-(x-1)^3),x,1,inf)`
   returns `-(((sqrt(3)*%i+1)*gamma(1/3))/6)`, on master too. The answer is
   `gamma(1/3)/3`.

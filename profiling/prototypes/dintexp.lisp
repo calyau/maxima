@@ -1,8 +1,11 @@
-;; Round 3. INTCV inverts a change of variable with SOLVE. When the exponent
-;; (DINTEXP) or log argument (LOGX1) is a cubic or quartic in the variable,
-;; SOLVE answers with the cubic or quartic formula, and INTCV2 then spends
-;; seconds ratsimping the integrand rewritten in those radicals, only for the
-;; integral to fail. Skip roots with nested radicals in YX.
+;; Round 3. DINTEXP substitutes yx = exp(p(x)), and INTCV inverts that with
+;; SOLVE. For a cubic or quartic p, SOLVE answers with the cubic or quartic
+;; formula, and INTCV2 then spends seconds ratsimping the integrand rewritten
+;; in those radicals, only for the integral to fail. DINTEXP's integrand is a
+;; function of exp(p(x)) alone, so nothing in it can cancel the radicals the
+;; inverse brings in. INTCV now takes SKIP-NESTED, which only DINTEXP passes,
+;; and then skips roots with nested radicals in YX. LOGX1 must not pass it:
+;; its integrand can contain p'(x), which cancels them (README, round 3).
 (in-package :maxima)
 (declare-top (special *roots *failures))
 
@@ -20,7 +23,7 @@
                       (some #'nested-p (cdr e))))))
     (nested-p e)))
 
-(defun intcv (nv flag ivar ll ul)
+(defun intcv (nv flag ivar ll ul &optional skip-nested)
   (let ((d (bx**n+a nv ivar))
 	(*roots ())  (*failures ())  ($breakup ()))
     (cond ((and (eq ul '$inf)
@@ -50,11 +53,11 @@
 			       (do* ((roots *roots (cddr roots))
 				     (root (caddar roots) (caddar roots)))
 				    ((null root) nil)
-				    ;; Roots with nested radicals in YX come
-				    ;; from the cubic or quartic formula, and
-				    ;; the integrand rewritten in them is too
-				    ;; big to integrate.
-				    (if (and (not (nested-radical-p root 'yx))
+				    ;; For DINTEXP, roots with nested radicals
+				    ;; in YX leave the new integrand too big
+				    ;; to integrate.
+				    (if (and (not (and skip-nested
+							(nested-radical-p root 'yx)))
 					     (or (real-infinityp ll)
 						 (test-inverse nv ivar root 'yx ll))
 					     (or (real-infinityp ul)
@@ -63,3 +66,28 @@
 			 (cond (flag (intcv2 d nv ivar ll ul))
 			       (t (intcv1 d nv ivar ll ul))))
 			(t ()))))))))
+
+(defun dintexp (exp ivar ll ul &aux ans)
+  (declare (special exp))
+  (let ((*dintexp-recur* t))		;recursion stopper
+    (cond ((and (sinintp exp ivar)     ;To be moved higher in the code.
+		(setq ans (antideriv exp ivar))
+		(setq ans (intsubs ans ll ul ivar)))
+	   ;; If we can integrate it directly, do so and take the appropriate
+	   ;; limits. INTSUBS builds the difference of two endpoint limits without
+	   ;; simplifying across it, so the parts that cancel have to be brought
+	   ;; together here.
+	   (setq ans ($expand ans)))
+	  ((setq ans (funclogor%e exp ivar))
+	   ;; ans is the list (f(x) exp(k*x)).
+	   (cond ((and (equal ll 0.)
+		       (eq ul '$inf))
+		  ;; Use the substitution s + 1 = exp(k*x).  The
+		  ;; integral becomes integrate(f(s+1)/(s+1),s,0,inf)
+		  (setq ans (m+t -1 (cadr ans))))
+		 (t
+		  ;; Use the substitution y=exp(k*x) because the
+		  ;; limits are minf to inf.
+		  (setq ans (cadr ans))))
+	   ;; Apply the substitution and integrate it.
+	   (intcv ans nil ivar ll ul t)))))

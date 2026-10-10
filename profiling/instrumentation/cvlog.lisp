@@ -18,10 +18,10 @@
             (funcall orig exp ll ul ivar)))))
 (let ((orig (fdefinition 'intcv)))
   (setf (fdefinition 'intcv)
-        (lambda (nv flag ivar ll ul)
+        (lambda (nv flag ivar ll ul &rest more)
           (let* ((t0 (get-internal-run-time))
                  (bx (bx**n+a nv ivar))
-                 (res (funcall orig nv flag ivar ll ul))
+                 (res (apply orig nv flag ivar ll ul more))
                  (dt (/ (- (get-internal-run-time) t0)
                         internal-time-units-per-second)))
             (format *debug-io* "~&CV|~A|~A|~A|~,3F|~A|~A|~A|~A~%"

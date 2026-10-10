@@ -87,3 +87,27 @@ master    0.1 s  integrate(x*exp(-x^4-x^2),x,0,inf);
           -> (%o3) (%e^(1/4)*sqrt(%pi))/4-(%e^(1/4)*sqrt(%pi)*erf(1/2))/4
 guard: each of these 0.1 s with the same results; integrate(log(x^4+x+1),x,0,1) does not finish in 300 s on either
 integrate(exp(-(x-1)^3),x,1,inf) gives -(((sqrt(3)*%i+1)*gamma(1/3))/6) on both, a wrong answer (correct: gamma(1/3)/3)
+
+== counterexamples to the first version (guard in every INTCV call), each in its own process
+first version: noun forms for 1, 3, 4, and for 2 the same value as -((-12*log(-2)*log(3)-12*li[2](3)+%pi^2)/6)-%pi^2/2
+master and the final version (DINTEXP only):
+1. integrate(log(x^4-2*x^2+1)*(4*x^3-4*x)/sqrt((x^4-2*x^2+1)*(1-(x^4-2*x^2+1))),x,0,1);
+2. integrate(log(x^4+2*x^2)*(4*x^3+4*x)/(1+x^4+2*x^2),x,0,1);
+3. integrate(log(x^6+2*x^3)*(6*x^5+6*x^2)/(1+x^6+2*x^3),x,0,1);
+4. integrate(log(x^3+x)*(3*x^2+1)/(1+(x^3+x)^2),x,0,inf);
+-> 2*%pi*log(2), log(3)*log(4)+li[2](-3), log(3)*log(4)+li[2](-3), 0
+quad_qags of 1: 4.3551721810 (2*%pi*log(2) = 4.3551721806), of 2: -0.4163753999 (both forms)
+
+== final version (DINTEXP only), full suite: all pass, 65 INTCV calls end as on master, DINTEXP failures 0.029 s
+== integ2 (rtest_integrate alone, final version)
+integ2-warmup run=18.071477 gc=0.277 real=18.296 ok=1 
+integ2-base-1 run=17.007634 gc=0.272 real=17.180 ok=1 
+integ2-guard-1 run=10.367005 gc=0.207 real=10.492 ok=1 
+integ2-guard-2 run=10.768199 gc=0.207 real=10.844 ok=1 
+integ2-base-2 run=15.472650 gc=0.262 real=15.588 ok=1 
+integ2-base-3 run=16.578232 gc=0.269 real=16.672 ok=1 
+integ2-guard-3 run=9.811341 gc=0.196 real=9.880 ok=1 
+| config | rounds | CPU s, mean [min, max] | GC s | change vs base, per round | mean change | tests |
+|---|---|---|---|---|---|---|
+| base | 3 | 16.4 [15.5, 17.0] | 0.3 | – | – | pass |
+| guard | 3 | 10.3 [9.8, 10.8] | 0.2 | -6.6, -4.7, -6.8 | -6.0 ± 0.7 s (-36.9%) | pass |
