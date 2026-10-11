@@ -139,13 +139,16 @@
 	 (cond ((equal c 1) (go nextb))
 	       ((equal ai 1) (go bloop)))
 	aloop
-	 (when (setq t1 (testdivide ai c))
+	 ;; Do not count how often an algebraic C divides AI and BJ: a unit
+	 ;; such as %i divides them any number of times.
+	 (when (and (not (alg c)) (setq t1 (testdivide ai c)))
            (setq ai t1)
            (incf d1)
            (go aloop))
 	bloop
 	 (and (= d1 1)
 	      (not (equal bj 1))
+	      (not (alg c))
 	      (do ((t1
 		    (testdivide bj c)
 		    (testdivide bj c)))
@@ -170,9 +173,11 @@
      (return (list g a b))))
 
 (defun makprodg (p sw)
-  (if (pcoefp p)
-      p
-      (car (makprod p sw))))
+  (cond ((pcoefp p) p)
+        ;; A monomial such as -%i needs a kernel of its own, since its main
+        ;; variable alone, which MAKPROD would give, drops the coefficient.
+        ((and (pureprod p) (not (equal p (pget (car p))))) (maksym p))
+        (t (car (makprod p sw)))))
 
 (defun dopgcdcofacts (x y)
   (let (($gcd $gcd)

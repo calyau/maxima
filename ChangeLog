@@ -4,6 +4,7 @@ Maxima 5.50-post change log
 Bug fixes for numbered bugs:
 ----------------------------
 * \#2596 error in matrix exponentiation
+* \#3906 integration error 0 to negative exponent
 * \#3994 limits of some gamma_incomplete expressions
 * \#4020 various limit bugs with exp(%i*x)
 * \#4137 simplimplus bugs
@@ -208,10 +209,16 @@ Bug fixes for unnumbered bugs:
   plus sign and an upper case marker, as in 9.87E+52 where every other
   lisp prints 9.87e52, and tex() copied the plus sign into the TeX it
   generated
-* sign() could recurse until the stack overflowed when an equal() fact
-  held a radical, as in radcan(sqrt(1/x^2+1)) after
-  assume(equal(y, sqrt(1/x^2+1)))
-* integrate(sqrt(u)/sqrt(u-u*v),u) was wrong for u < 0 and v > 1
+* factor() could drop the coefficient of a common factor such as -%i,
+  and return a wrong sign or hang
+* factor() could hang when a unit such as %i divided two factors, as
+  could integrate(%e^(3*%i*atan(a*x))/(a^2*c*x^2+c)^(3/2),x)
+* sign() could overflow the stack when comparing powers, as for
+  sign(%e^x-%e^2) with assume(x>0) or limit(sqrt(%e^x-1),x,2)
+* integrate() dropped the real part of some antiderivatives, as for
+  sqrt(asin(a*x))/sqrt(c-a^2*c*x^2)
+* integrate() gave wrong antiderivatives for some products of square
+  roots, such as sqrt(cos(x))*sqrt(b*cos(x)) where b < 0
 
 Changes in the Windows installer:
 ---------------------------------

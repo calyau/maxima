@@ -27,6 +27,10 @@
 ;; integrator to avoid endless loops when calling the integrator from risch.
 (defvar *in-risch-p* nil)
 
+(defvar *integrate-sqrt-pair* nil
+  "T while INTEGRATE-SQRT-PAIR integrates, COEF while integration by parts
+  integrates its first factor.")
+
 (defvar *risch-use-triginv-all* nil
   "Dynamically bound flag set to T by TRIGINT to tell INTEGRATOR to use
   $TRIGINVERSES = '$ALL when ultimately trying RISCHINT")
@@ -284,7 +288,7 @@
 
   (defun integrator (*exp* var2 &optional stack)
     (declare (special *exp*))
-    (prog (y const w arcpart coef integrand result *risch-use-triginv-all* exp0)
+    (prog (y const w arcpart coef integrand result *risch-use-triginv-all*)
        (declare (special *integrator-level*))
        (setq powerl nil)
        ;; Increment recursion counter
@@ -297,7 +301,7 @@
        (setq w (partition *exp* var2 1))
        (setq const (car w))
        (setq *exp* (cdr w))
-       (setq exp0 *exp*) ; INTFORM may change *EXP*
+       (setq integrand *exp*) ; INTFORM may change *EXP*
        #+nil
        (progn
          (format t "w = ~A~%" w)
@@ -384,16 +388,15 @@
          (format t "arcpart = ~A~%" arcpart)
          (format t "coef =~%")
          (maxima-display coef))
-       ;; Integrands odd in three roots go to INTEGRATE-SQRT-PAIR before
-       ;; integration by parts, which can leave r3^(1/2)/(r1*r2) for RISCHINT.
-       (cond ((and arcpart (setq y (integrate-sqrt-pair exp0 var2 t)))
-	      (return (mul* const y)))
-	     ((and (not (null arcpart))
+       (when (and arcpart (setq y (integrate-sqrt-pair integrand var2 t)))
+         (return (mul* const y)))
+       (cond ((and (not (null arcpart))
 		   (do  ((stacklist stack (cdr stacklist)))
 		        ((null stacklist) t)
 		     (cond ((alike1 (car stacklist) coef)
 			    (return nil))))
-		   (not (isinop (setq w (let ((stack (cons coef stack)))
+		   (not (isinop (setq w (let ((stack (cons coef stack))
+					      (*integrate-sqrt-pair* 'coef))
 					  (integrator coef var2 stack)))
 			        '%integrate))
 		   (setq integrand (mul2 w (sdiff arcpart var2)))
@@ -440,26 +443,16 @@
 			    ((and (not powerl)
 				  (setq y (powerlist *exp* var2)))
 			     y)
-			    ((setq y (integrate-sqrt-pair exp0 var2)) y)
+			    ((unless arcpart
+			       (integrate-sqrt-pair integrand var2 nil)))
 			    ((and (not *in-risch-p*) ; Not called from rischint
 			          (setq y
                         ;; Call RISCHINT, dynamically binding $TRIGINVERSES to
                         ;; '$ALL if we earlier remembered to do so.
-                        ;; If that leaves an integral, retry with partial
-                        ;; solutions in RISCHEXPVAR where they could help.
                         (let (($triginverses (if *risch-use-triginv-all*
                                                 '$all
                                                 $triginverses)))
-                          (if *risch-partial*
-                              (rischint *exp* var2)
-                              (let ((*risch-partial* 'off))
-                                (setq y (rischint *exp* var2))
-                                (or (and (eq *risch-partial* 'needed)
-                                         (isinop y '%integrate)
-                                         (setq *risch-partial* t)
-                                         (let ((z (rischint *exp* var2)))
-                                           (and (not (isinop z '%integrate)) z)))
-                                    y)))))
+                          (rischint *exp* var2)))
 				  ;; rischint has not found an integral but
 				  ;; returns a noun form. Do not return that
 				  ;; noun form as result at this point, but
@@ -478,134 +471,71 @@
 				 result
 				 (list '(%integrate) *exp* var2)))))))))))
 
-(defvar *integrate-sqrt-pair* nil
-  "True while INTEGRATE-SQRT-PAIR integrates a rewritten integrand.")
-
-;; Integrate EXPR if it is odd in Y = r1^(1/2)*r2^(1/2), with r1 and r2
-;; rational in VAR2 and no other radicals in VAR2, as for
-;; 1/(x*sqrt(1/x-1)*sqrt(1/x+1)). If r1 = r2*c with a polynomial c > 0, use
-;; r1^k = r2^k*c^k. Otherwise integrate with q^(1/2), q = r1*r2, in place of
-;; Y, as INTIR1-EXEC does, and write q^(1/2) as Y again. This is right also
-;; where Y = -q^(1/2) if the result depends on q^(1/2) only explicitly, as
-;; log(q^(1/2)+1) does, but not asin(x) for q = 1-x^2 (see ALGEBRAIC-IN-Y).
-;; EXPR may also be odd in a third root r3^(1/2) with r1*r2/r3 free of VAR2,
-;; as for x/(sqrt(1+%i*x)*sqrt(1-%i*x)*sqrt(1+x^2)). Then Y/r3^(1/2) is
-;; constant where the roots are continuous, so integrate with y*r3^(1/2) in
-;; place of Y, y a symbol, and write y as Y/r3^(1/2) again. With ONLY3, do
-;; only this. For other r3, integrate with q^(1/2) in place of Y and multiply
-;; the result by Y/q^(1/2), which is 1 or -1.
-(defun integrate-sqrt-pair (expr var2 &optional only3)
-  (let ((y (gensym)) r1 r2 r3 q g res)
-    (labels
-        ((parity (e)
-           ;; Parities of the exponents of r1^(1/2), r2^(1/2) and r3^(1/2) as
-           ;; bits 0, 1 and 2, the same in each term of E, or NIL.
-           (cond ((or (atom e) (freevar2 e var2)) 0)
-                 ((mplusp e)
-                  (let ((ps (mapcar #'parity (cdr e))))
-                    (and (every #'eql ps (cdr ps)) (car ps))))
-                 ((mtimesp e)
-                  (let ((ps (mapcar #'parity (cdr e))))
-                    (and (every #'integerp ps) (reduce #'logxor ps))))
-                 ((mexptp e)
-                  (let ((b (cadr e)) (k (caddr e)))
-                    (cond ((integerp k)
-                           (let ((p (parity b)))
-                             (if (and p (evenp k)) 0 p)))
-                          ((and (ratnump k) (eql (caddr k) 2) (rat8 b var2))
-                           (cond ((or (null r1) (alike1 b r1)) (setq r1 b) 1)
-                                 ((or (null r2) (alike1 b r2)) (setq r2 b) 2)
-                                 ((or (null r3) (alike1 b r3)) (setq r3 b) 4)))
-                          ((and (freevar2 b var2) (eql (parity k) 0)) 0))))
-                 ((every #'(lambda (a) (eql (parity a) 0)) (cdr e)) 0)))
-         (split-root (a b)
-           (let ((c (sratsimp (div a b))))
-             (and (polyp-var c var2)
-                  (eq ($sign c) '$pos)
-                  (intir1-unsplit expr a b c))))
-         (root-p (e r)
-           (and (mexptp e) (alike1 (cadr e) r) (not (integerp (caddr e)))))
-         (merge-roots (e)
-           ;; Replace r1^k1*r2^k2 by r1^(k1-k)*r2^(k2-k)*q^k, k = min(k1,k2),
-           ;; with y^(2*k)*r3^k in place of q^k if there is r3.
-           (let* ((l (and (mtimesp e) (cdr e)))
-                  (f1 (find-if #'(lambda (a) (root-p a r1)) l))
-                  (f2 (find-if #'(lambda (a) (root-p a r2)) l)))
-             (cond ((and f1 f2)
-                    (let* ((k1 (caddr f1))
-                           (k2 (caddr f2))
-                           (k (if (< (cadr k1) (cadr k2)) k1 k2)))
-                      (mul (power r1 (sub k1 k)) (power r2 (sub k2 k))
-                           (if r3
-                               (mul (power y (mul 2 k)) (power r3 k))
-                               (power q k))
-                           (muln (mapcar #'merge-roots
-                                         (remove f1 (remove f2 (cdr e))))
-                                 t))))
-                   ((atom e) e)
-                   (t (recur-apply #'merge-roots e)))))
-         (has-root (e)
-           (and (not (atom e))
-                (or (root-p e r1)
-                    (root-p e r2)
-                    (some #'has-root (cdr e)))))
-         (algebraic-in-y (e)
-           ;; T if E is rational in Y and free of radicals in VAR2.
-           (cond ((atom e) t)
-                 ((member (caar e) '(mplus mtimes))
-                  (every #'algebraic-in-y (cdr e)))
-                 ((not (mexptp e))
-                  (and (freeof y e) (every #'algebraic-in-y (cdr e))))
-                 ((integerp (caddr e))
-                  (algebraic-in-y (cadr e)))
-                 (t
-                  (and (freevar2 (cadr e) var2)
-                       (freeof y e)
-                       (algebraic-in-y (caddr e))))))
-         (integrate-new (e)
-           ;; The new context drops the equal() facts of MAKE-NEW-VAR. A second
-           ;; one for the same radical can make SIGN recurse endlessly.
-           (declare (special *integrator-level*))
-           (let* ((*integrate-sqrt-pair* t)
-                  (*integrator-level* *integrator-level*)
-                  (res (with-new-context (context) (integrator e var2))))
-             (declare (special *integrator-level*))
-             (unless (isinop res '%integrate) res))))
-      (when (and (not *integrate-sqrt-pair*)
-                 ;; Not for integrals left by RISCHINT, which can have split
-                 ;; their radicals on a wrong branch.
-                 (not *in-risch-p*)
-                 (eql (parity (setq expr (specrepcheck expr))) (if r3 7 3))
-                 (or r3 (not only3)))
-        (cond ((and r3
-                    (loop repeat 3
-                          thereis (freevar2 (sratsimp (div (mul r1 r2) r3))
-                                            var2)
-                          do (rotatef r1 r2 r3)))
-               (and (not (has-root (setq g (merge-roots expr))))
-                    (setq res (integrate-new g))
-                    (maxima-substitute
-                     (mul (power r1 1//2) (power r2 1//2) (power r3 -1//2))
-                     y res)))
-              ((and r3 (not only3))
-               (setq q ($expand (mul r1 r2))
-                     r3 nil
-                     g (merge-roots expr))
-               (and (not (has-root g))
-                    (setq res (integrate-new g))
-                    (mul res (power r1 1//2) (power r2 1//2) (power q -1//2))))
-              (r3 nil)
-              ((setq g (or (split-root r1 r2) (split-root r2 r1)))
-               (integrate-new g))
-              (t
-               (setq q ($expand (mul r1 r2))
-                     g (merge-roots expr))
-               (and (not (has-root g))
-                    (setq res (integrate-new g))
-                    (setq g (intir1-unsplit res q y y))
-                    (algebraic-in-y (sdiff g var2))
-                    (algebraic-in-y (sdiff g y))
-                    (intir1-unsplit res q r1 r2))))))))
+;; Integrate EXPR with square roots of radicands r1, r2 and maybe r3 rational
+;; in VAR2 with y*m^k in place of r2^(k/2), where m = s*q^(1/2)/r1^(1/2),
+;; q = r1*r2/s^2, and s = r3^(1/2) if q is then free of VAR2, s = r1 if q is
+;; then a polynomial, else s = 1. As y = r2^(1/2)/m and y^2 = 1, y is 1 or -1
+;; and constant wherever the roots are continuous, and y = 1 if s = r1 and
+;; q > 0. Otherwise take EXPR only if it is odd or even in y, and integrate
+;; it with y = 1. EARLY, before integration by parts, leaves s = 1 to it and
+;; avoids RISCHINT. For the factor that integration by parts integrates
+;; first, take only algebraic results, as others lead it to integrals it
+;; cannot do. Not within RISCHINT, which can split radicals wrongly.
+(defun integrate-sqrt-pair (expr var2 early)
+  (let ((y (gensym)) rs r1 r2 r3 n s q m res one)
+    (labels ((roots (e)
+               (cond ((atom e))
+                     ((and (mexptp e) (ratnump (caddr e))
+                           (eql (caddr (caddr e)) 2)
+                           (rat8 (cadr e) var2) (not (freevar2 e var2)))
+                      (unless (member (cadr e) rs :test #'alike1)
+                        (setq rs (append rs (list (cadr e))))))
+                     (t (mapc #'roots (cdr e)))))
+             (sub (e)
+               (cond ((atom e) e)
+                     ((and (mexptp e) (alike1 (cadr e) r2) (ratnump (caddr e))
+                           (eql (caddr (caddr e)) 2))
+                      (mul y (power m (mul 2 (caddr e)))))
+                     (t (recur-apply #'sub e))))
+             (alg (e)
+               (or (freevar2 e var2) (atom e)
+                   (and (member (caar e) '(mplus mtimes mexpt))
+                        (every #'alg (cdr e))))))
+      (roots expr)
+      (setq r1 (first rs) r2 (second rs) r3 (third rs) n (length rs) rs nil)
+      (when (and r2 (< n 4) (not implicit-real)
+                 (not (eq *integrate-sqrt-pair* t)))
+        (setq s (or (and r3
+                         (loop repeat 3
+                               thereis (and (freevar2 (sratsimp
+                                                       (div (mul r1 r2) r3))
+                                                      var2)
+                                            (power r3 1//2))
+                               do (rotatef r1 r2 r3)))
+                    (loop repeat 2
+                          thereis (and (polyp-var (sratsimp (div r2 r1)) var2)
+                                       r1)
+                          do (rotatef r1 r2))
+                    1)
+              q ($expand (sratsimp (div (mul r1 r2) (mul s s))))
+              m (div (mul s (power q 1//2)) (power r1 1//2))
+              one (and (eq s r1)
+                       (eq (let ((sign-imag-errp nil))
+                             (catch 'sign-imag-err ($sign q)))
+                           '$pos)))
+        (roots (setq expr (sub expr)))
+        (and (< (length rs) n)
+             (or (not early) (not (eql s 1)))
+             (or one
+                 (let ((e1 (sratsimp (maxima-substitute 1 y expr)))
+                       (e2 (sratsimp (maxima-substitute -1 y expr))))
+                   (cond ((alike1 e2 (sratsimp (neg e1))) t)
+                         ((alike1 e2 e1) (setq one t)))))
+             (setq res (let ((*integrate-sqrt-pair* t) (*in-risch-p* early))
+                         (integrator (maxima-substitute 1 y expr) var2)))
+             (not (isinop res '%integrate))
+             (or (alg res) (not (eq *integrate-sqrt-pair* 'coef)))
+             (if one res (mul (div (power r2 1//2) m) res)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1180,8 +1110,10 @@
 ;; I (rtoy) think that for this code to work, r1, r2, and q must be numbers.
 (defun chebyf (expr var2)
   (prog (r1 r2 d1 d2 n1 n2 w q)
-     ;; Return NIL if the expression doesn't match.
-     (when (not (setq w (m2-chebyform expr var2)))
+     ;; Return NIL if the expression doesn't match, or matches without a
+     ;; binomial factor, as x^-1 does.
+     (when (not (and (setq w (m2-chebyform expr var2))
+                     (assoc 'q w)))
        (return nil))
      #+nil
      (format t "w = ~A~%" w)
