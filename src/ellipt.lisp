@@ -51,30 +51,52 @@
 ;;; functions and integrals.
 (in-package #:bigfloat)
 
+#+nil
 (declaim (inline descending-transform ascending-transform))
 
 (defun ascending-transform (u m)
   ;; A&S 16.14.1
+  ;;
+  ;; mu = 4*sqrt(m)/(1+sqrt(m))^2
+  ;; mu1 = ((1-sqrt(m))/(1+sqrt(m)))^2
+  ;; nu = u/(1+sqrt(mu1))
+  ;;
+  ;; Return v, mu, sqrt(mu1)
   ;;
   ;; Take care in computing this transform.  For the case where
   ;; m is complex, we should compute sqrt(mu1) first as
   ;; (1-sqrt(m))/(1+sqrt(m)), and then square this to get mu1.
   ;; If not, we may choose the wrong branch when computing
   ;; sqrt(mu1).
+  ;;
+  ;; Also, (1-sqrt(m))/(1+sqrt(m)) has round-off issues when m is near
+  ;; 1.  Instead, compute multiply numerator and denominator by
+  ;; 1+sqrt(m) to get (1-m)/(1+sqrt(m))^2.  There's still a round-off
+  ;; issue if m is near 1, but I don't think there's much that we can
+  ;; do about that.
   (let* ((root-m (sqrt m))
 	 (mu (/ (* 4 root-m)
 		(expt (1+ root-m) 2)))
-	 (root-mu1 (/ (- 1 root-m) (+ 1 root-m)))
+	 (root-mu1 (/ (- 1 m) (expt (+ 1 root-m) 2)))
 	 (v (/ u (1+ root-mu1))))
     (values v mu root-mu1)))
 
 (defun descending-transform (u m)
+  ;; A&S 16.12.1
+  ;;
+  ;; mu = ((1-sqrt(m1))/(1+sqrt(m1)))^2
+  ;; v = u/(1+sqrt(mu))
+  ;;
   ;; Note: Don't calculate mu first, as given in 16.12.1.  We
   ;; should calculate sqrt(mu) = (1-sqrt(m1)/(1+sqrt(m1)), and
   ;; then compute mu = sqrt(mu)^2.  If we calculate mu first,
   ;; sqrt(mu) loses information when m or m1 is complex.
+  ;;
+  ;; As with the ascending transform, (1-sqrt(m1))/(1+sqrt(m1)) has
+  ;; roundoff issues for m1 near 1.  Compute this as
+  ;; (1-m1)/(1+sqrt(m1))^2 = m/(1+sqrt(m1))^2 since m1 = 1-m.
   (let* ((root-m1 (sqrt (- 1 m)))
-	 (root-mu (/ (- 1 root-m1) (+ 1 root-m1)))
+	 (root-mu (/ m (expt (+ 1 root-m1) 2)))
 	 (mu (* root-mu root-mu))
 	 (v (/ u (1+ root-mu))))
     (values v mu root-mu)))
@@ -86,9 +108,19 @@
   (cond ((= m 1)
 	 ;; A&S 16.6.1
 	 (tanh u))
-	((< (abs m) (epsilon u))
-	 ;; A&S 16.6.1
-	 (sin u))
+        ((or (zerop m)
+             (< (+ (log (abs m))
+                   (* 2 (abs (imagpart u))))
+                (log (epsilon u))))
+         ;; A&S 16.13.1 says
+         ;;  sn(u,m) = sin(u) + O(m*sin(u)*cos(u)^2).
+         ;; But |cos(x+%i*y)|^2 =
+         ;; sin(x)^2*sinh(y)^2+cos(x)^2*cosh(y)^2 so it grows like
+         ;; exp(2*|y|).  This approximation for small m is only true
+         ;; if m = 0 or if exp(2*y) is small enough to be ignored.
+         ;; Hence only apply this if |m|*exp(2*{y}) <= eps, or
+         ;; log(|m|) + 2*|y| < log(eps).
+         (sin u))
 	(t
 	 (multiple-value-bind (v mu root-mu)
 	     (descending-transform u m)
@@ -109,6 +141,24 @@
 	 ;;
 	 ;; sn(u,m) = tanh(u) + 1/4*(1-m)*(sinh(u)*cosh(u)-u)*sech(u)^2
 	 (tanh u))
+        ((and (realp m) (> (abs m) 1))
+         ;; See http://functions.wolfram.com/09.36.16.0024.01 and https://dlmf.nist.gov/22.17.E2:
+         ;;
+         ;; sn(sqrt(m)*z, 1/m) = sqrt(m)*sn(z, m)
+         ;;
+         ;; Or sn(z, m) = 1/sqrt(m)*sn(sqrt(m)*z, 1/m)
+         ;;
+         ;; This improves the accuracy of sn for real abs(m) > 1:
+         ;; https://sourceforge.net/p/maxima/bugs/5663/
+         ;;
+         ;; Note that no restrictions are given for m, but experiments
+         ;; show that this doesn't work for complex m if we do this
+         ;; for |m| > 1.  [DLMF
+         ;; 22.17(ii)](https://dlmf.nist.gov/22.17.ii) says all the
+         ;; formulas hold for complex k too.
+         (let ((sqrt-m (sqrt m)))
+           (/ (sn (* sqrt-m u) (/ m))
+              sqrt-m)))
 	(t
 	 ;; Use the ascending Landen transformation to compute sn.
 	 (let ((s (elliptic-sn-descending u m)))
@@ -152,9 +202,12 @@
 	 ;; Note that (1-sqrt(1-mu))/(1+sqrt(1-mu)) is the same as
 	 ;; -(mu+2*sqrt(1-mu)-2)/mu.  Also, the former is more
 	 ;; accurate for small mu.
+         ;;
+         ;; Also (1-sqrt(1-mu))/(1+sqrt(1-mu)) =
+         ;; (1-(1-mu))/(1+sqrt(1-mu))^2 = mu/(1+sqrt(1-mu))^2 which is
+         ;; more accurate when mu is near 1.
 	 (let* ((root (let ((root-1-m (sqrt (- 1 m))))
-			(/ (- 1 root-1-m)
-			   (+ 1 root-1-m))))
+                        (/ m (expt (+ 1 root-1-m) 2))))
 		(z (/ u (+ 1 root)))
 		(s (elliptic-sn-descending z (* root root)))
 		(p (* root s s )))

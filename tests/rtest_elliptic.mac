@@ -1186,6 +1186,15 @@ closeto('elliptic_e(1.0, 0.5) - 0.9273298836244401, 1e-15);
 true;
 
 
+closeto(jacobi_sn(20.0,2.5) - 0.2282498061811287, 4.7740e-15);
+true;
+
+closeto(jacobi_sn(20.0*%i, 0.75)- (-0.2325715776527406*%i),  4.4687e-15);
+true;
+
+closeto(jacobi_sn(20.0*%i, 1.75+%i)-(0.8280244930780284-0.8738216619745627*%i), 3.9119e-13);
+true;
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
 
