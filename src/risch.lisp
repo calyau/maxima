@@ -127,7 +127,14 @@
      (cond (risch-trigint
 	    (return (trigin1 exp risch-intvar)))
 	   (risch-hypertrigint
-	    (return (hypertrigint1 exp risch-intvar t)))
+	    (let ((r (hypertrigint1 exp risch-intvar t)) p)
+	      ;; If that leaves an integral, try partial solutions of
+	      ;; RISCHEXPVAR, and take their result if it leaves none.
+	      (when (isinop r '%integrate)
+		(setq p (let ((*risch-partial* t) ($errormsg nil))
+			  (car (errcatch
+				(hypertrigint1 exp risch-intvar t))))))
+	      (return (if (and p (not (isinop p '%integrate))) p r))))
 	   (risch-operator
 	    (go noun)))
      (multiple-value-setq (risch-y risch-operator)
@@ -198,18 +205,15 @@
 
 (defun hypertrigint1 (exp risch-var hyperfunc)
   (let ((result (if hyperfunc
-                    (let ((*risch-partial* t))
-                      (sinint (resimplify exp) risch-var))
+                    (sinint (resimplify exp) risch-var)
                     (rischint (resimplify exp) risch-var))))
     ;; The result can contain solvable integrals. Look for this case.
     (if (isinop result '%integrate)
         ;; Found an integral. Evaluate the result again.
         ;; Set the flag *in-risch-p* to make sure that we do not call
         ;; rischint again from the integrator. This avoids endless loops.
-        ;; Keep the integrals if that fails.
-        (let ((*in-risch-p* t) ($errormsg nil))
-          (or (car (errcatch (meval (list '($ev) result '$nouns))))
-              result))
+        (let ((*in-risch-p* t)) 
+          (meval (list '($ev) result '$nouns)))
         result)))
 
 (defun trigin1 (risch-*exp risch-var)

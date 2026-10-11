@@ -7337,6 +7337,14 @@ block([g, G],
   else true);
 true$
 
+/* INTEGRATE-SQRT-PAIR must leave a product alone if the integrator fails
+   on the integrand that it makes */
+
+map(lambda([g], length(errcatch(integrate(g, x)))),
+    [sqrt((2*c*x^2)/(b-sqrt(b^2-4*a*c))+1)/sqrt(1-(2*c*x^2)/(sqrt(b^2-4*a*c)+b)),
+     1/(sqrt((sqrt(3)-3)*x^2+3)*sqrt(2*sqrt(3)*x^2-3^(3/2)+3))]);
+[1, 1]$
+
 /* For hyperbolic integrands, the Risch integrator solves the equations it
    can when the top one of its linear system fails */
 
@@ -7360,13 +7368,24 @@ block([g, G, a],
        [[a=2, x=-3], [a=2, x=1/2], [a=-3/2, x=2]])]);
 [true, [true, true, true]]$
 
-/* HYPERTRIGINT1 must keep an integral that it cannot evaluate. Here the
-   partial solution leaves one with log(-1) */
+/* An error in the second try with partial solutions must leave the
+   integral as it is. Here the partial solution leaves one with log(-1) */
 
 block(local(a, b),
   assume(a > 0, b > 0),
   length(errcatch(integrate(sqrt(atanh(coth(a+b*x)))/x^(3/2), x))));
 1$
+
+/* Partial solutions must not replace a closed form that the integrator
+   finds without them */
+
+block([g, G],
+  g : %e^acsch(a*x^2)/x,
+  G : integrate(g, x),
+  [freeof('integrate, G),
+   map(lambda([p], is(abs(float(subst(p, diff(G, x) - g))) < 1e-10)),
+       [[a=13/10, x=2/5], [a=4/5, x=3/2]])]);
+[true, [true, true]]$
 
 
 /**************************************/
